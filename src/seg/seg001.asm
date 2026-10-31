@@ -2,7 +2,7 @@
 ; a file-head count, find-first paths, the DOS memory block, a 4-byte lookup,
 ; far-pointer lookup, a counted copy, multiply and divide, file writes,
 ; character widths, the INT 8 handler, the game port, the keyboard hook,
-; the monochrome console, and the CallCount waits.
+; the monochrome console, the CallCount waits, and line clipping.
 ; The first bytes finish the seg000 routine that ends on this paragraph.
 
 ; DGROUP words this segment uses. The bytes live in the near data, not here.
@@ -4341,7 +4341,7 @@ L1EE6:
 ; Order two points into the record at [bp+0Eh]. LineOpen skips the box test.
 ; LineClip rejects a line when both ends share an outcode against the box at
 ; 74F2h/74F4h and 74FCh/74FEh, and otherwise stores a direction byte. The
-; equal-Y path, the overflow path, and the outcode dispatch are still incbin.
+; equal-Y path is LineFlat and the overflow path is LineOverflow.
 ; A line with no clip bits returns 0 from LineOk.
 
 LineOpen:
@@ -4389,7 +4389,7 @@ L1F53:
 	mov	word [si + 0xa], ax
 L1F5F:
 	jne	short L1F64
-	jmp	near 0x252E			; still incbin
+	jmp	near LineFlat
 L1F64:
 	db	0x33, 0xD2			; xor dx, dx
 	cmp	byte [bp - 3], 0
@@ -4400,7 +4400,7 @@ L1F64:
 	db	0x3B, 0xC1			; cmp ax, cx
 	jl	short L1F80
 	mov	dl, 8
-	jmp	near 0x233B			; still incbin
+	jmp	near LineReject
 L1F80:
 	db	0x3B, 0xC3			; cmp ax, bx
 	jge	short L1F87
@@ -4410,7 +4410,7 @@ L1F87:
 	db	0x3B, 0xC3			; cmp ax, bx
 	jge	short L1F93
 	mov	dl, 4
-	jmp	near 0x233B			; still incbin
+	jmp	near LineReject
 L1F93:
 	db	0x3B, 0xC1			; cmp ax, cx
 	jl	short L1F9A
@@ -4439,7 +4439,7 @@ L1FC4:
 	test	dh, dl
 	je	short L1FCD
 	db	0x22, 0xD6			; and dl, dh
-	jmp	near 0x233B			; still incbin
+	jmp	near LineReject
 L1FCD:
 	db	0x0A, 0xD6			; or dl, dh
 	db	0x32, 0xF6			; xor dh, dh
@@ -4448,7 +4448,7 @@ L1FCD:
 	sub	cx, word [si + 6]
 	jno	short L1FDF
 L1FDC:
-	jmp	near 0x25D6			; still incbin
+	jmp	near LineOverflow
 L1FDF:
 	mov	dx, word [si + 8]
 	sub	dx, word [si + 2]
@@ -4518,7 +4518,7 @@ L2059:
 	jmp	word [cs:bx+LineTab]
 LineTab:
 	dw	LineOk
-	dw	0x23B4
+	dw	ClipRight
 	dw	ClipLeft
 	dw	ClipLeft
 	dw	ClipTop
@@ -4543,8 +4543,8 @@ LineOk:
 
 ; Slide an endpoint onto one edge of the box. ClipTop uses the top,
 ; ClipBottom the bottom, and ClipLeft the left. The direction byte
-; picks how X or Y moves with that edge. Each case then jumps into
-; the stepper, which is still incbin. ClipRet returns with AH 0.
+; picks how X or Y moves with that edge. Each case then jumps to
+; AfterTop, AfterBottom, or AfterLeft. ClipRet returns with AH 0.
 
 
 ClipTop:
@@ -4567,29 +4567,29 @@ TopTab:
 	dw	L2126
 L20B3:
 	sub	word [si + 0xe], cx
-	jmp	near 0x24CD		; still incbin
+	jmp	near AfterTop
 L20B9:
 	sub	word [si + 2], cx
 	sub	word [si + 0xe], cx
-	jmp	near 0x24CD		; still incbin
+	jmp	near AfterTop
 L20C2:
 	add	word [si + 2], cx
 	sub	word [si + 0xe], cx
-	jmp	near 0x24CD		; still incbin
+	jmp	near AfterTop
 L20CB:
 	mov	ax, word [si + 0xc]
 	mul	cx
 	sub	word [si], ax
 	sbb	word [si + 2], dx
 	sub	word [si + 0xe], cx
-	jmp	near 0x24CD		; still incbin
+	jmp	near AfterTop
 L20DB:
 	mov	ax, word [si + 0xc]
 	mul	cx
 	add	word [si], ax
 	adc	word [si + 2], dx
 	sub	word [si + 0xe], cx
-	jmp	near 0x24CD		; still incbin
+	jmp	near AfterTop
 L20EB:
 	mov	word [si + 6], ax
 	db	0x8B, 0xD1			; mov dx, cx
@@ -4605,14 +4605,14 @@ L20EB:
 	mul	word [si + 0xc]
 	add	word [si + 4], ax
 	adc	word [si + 6], dx
-	jmp	near 0x24CD		; still incbin
+	jmp	near AfterTop
 L2112:
 	mov	word [si + 0xe], 1
 	mov	ax, word [0x74f2]
 	mov	word [si + 6], ax
 	mov	ax, word [si + 8]
 	mov	word [si + 2], ax
-	jmp	near 0x24CD		; still incbin
+	jmp	near AfterTop
 L2126:
 	mov	word [si + 6], ax
 	db	0x8B, 0xD1			; mov dx, cx
@@ -4628,7 +4628,7 @@ L2126:
 	mul	word [si + 0xc]
 	add	word [si + 4], ax
 	adc	word [si + 6], dx
-	jmp	near 0x24CD		; still incbin
+	jmp	near AfterTop
 
 ClipBottom:
 	mov	cx, word [si + 0xa]
@@ -4651,15 +4651,15 @@ BotTab:
 	dw	L21FA
 L2176:
 	sub	word [si + 0xe], cx
-	jmp	near 0x24D7		; still incbin
+	jmp	near AfterBottom
 L217C:
 	add	word [si + 8], cx
 	sub	word [si + 0xe], cx
-	jmp	near 0x24D7		; still incbin
+	jmp	near AfterBottom
 L2185:
 	sub	word [si + 8], cx
 	sub	word [si + 0xe], cx
-	jmp	near 0x24D7		; still incbin
+	jmp	near AfterBottom
 L218E:
 	mov	dx, word [si + 0xe]
 	db	0x2B, 0xD1			; sub dx, cx
@@ -4674,7 +4674,7 @@ L218E:
 	add	bx, 0x8000
 	adc	cx, 0
 	mov	word [si + 8], cx
-	jmp	near 0x24D7		; still incbin
+	jmp	near AfterBottom
 L21B2:
 	mov	dx, word [si + 0xe]
 	db	0x2B, 0xD1			; sub dx, cx
@@ -4687,7 +4687,7 @@ L21B2:
 	add	ax, 0x8000
 	adc	dx, 0
 	mov	word [si + 8], dx
-	jmp	near 0x24D7		; still incbin
+	jmp	near AfterBottom
 L21D1:
 	db	0x33, 0xC0			; xor ax, ax
 	sub	ax, word [si + 4]
@@ -4704,7 +4704,7 @@ L21E7:
 	mov	word [si + 8], dx
 	inc	ax
 	mov	word [si + 0xe], ax
-	jmp	near 0x24D7		; still incbin
+	jmp	near AfterBottom
 L21F6:
 	db	0x33, 0xC0			; xor ax, ax
 	jmp	short L21E7
@@ -4723,7 +4723,7 @@ L21FA:
 	mov	word [si + 8], dx
 	inc	ax
 	mov	word [si + 0xe], ax
-	jmp	near 0x24D7		; still incbin
+	jmp	near AfterBottom
 
 ClipLeft:
 	mov	bl, byte [si + 0x12]
@@ -4747,7 +4747,7 @@ L223B:
 	add	word [si + 0x16], cx
 	sub	word [si + 0xe], cx
 	sub	word [si + 0xa], cx
-	jmp	near 0x2521		; still incbin
+	jmp	near AfterLeft
 L2253:
 	mov	ax, word [si + 2]
 	mov	cx, word [0x74fc]
@@ -4756,7 +4756,7 @@ L2253:
 	add	word [si + 0x14], cx
 	add	word [si + 6], cx
 	sub	word [si + 0xe], cx
-	jmp	near 0x2521		; still incbin
+	jmp	near AfterLeft
 L226B:
 	mov	ax, word [si]
 	mov	dx, word [si + 2]
@@ -4778,7 +4778,7 @@ L2288:
 	dec	ax
 	add	ax, word [si + 6]
 	mov	word [si + 0xa], ax
-	jmp	near 0x2521		; still incbin
+	jmp	near AfterLeft
 L229D:
 	mov	ax, 1
 	jmp	short L2288
@@ -4800,7 +4800,7 @@ L22A2:
 	mul	word [si + 0xc]
 	add	word [si], ax
 	adc	word [si + 2], dx
-	jmp	near 0x2521		; still incbin
+	jmp	near AfterLeft
 L22D1:
 	jmp	short L2338
 L22D3:
@@ -4820,7 +4820,7 @@ L22D3:
 	db	0x2B, 0xC2			; sub ax, dx
 	mov	word [si + 0xa], dx
 	add	word [si + 0x16], ax
-	jmp	near 0x2521		; still incbin
+	jmp	near AfterLeft
 L2302:
 	mov	cx, word [si + 2]
 	mov	ax, word [0x74fc]
@@ -4840,9 +4840,10 @@ L2302:
 	adc	dx, 0
 	db	0x2B, 0xD1			; sub dx, cx
 	add	word [si + 0x14], dx
-	jmp	near 0x2521		; still incbin
+	jmp	near AfterLeft
 L2338:
 	mov	dx, 2
+LineReject:
 	mov	byte [si + 0x13], dl
 	mov	word [si + 0xe], 0
 	mov	al, byte [si + 0x13]
@@ -4896,4 +4897,334 @@ ClipRet:
 	leave
 	retf
 
-	incbin	"Extracted/segments/seg001.bin", 0x23B4, 0x33E0 - 0x23B4
+
+; ClipRight pulls the line onto the right edge. Directions 0 and 1
+; are unused. Direction 2 rejects the line. The other cases move an
+; endpoint onto that edge. AfterTop runs ClipBottom when the bottom
+; outcode is still set. AfterBottom rebuilds the left and right
+; outcodes: both ends on one side is LineReject, and a side bit that
+; remains goes back through LineTab. AfterLeft runs ClipRight when
+; the right outcode is still set. LineFlat is the equal-Y path.
+; LineOverflow shifts an endpoint that sits far outside the box.
+
+ClipRight:
+	mov	bl, byte [si + 0x12]
+	db	0x32, 0xFF			; xor bh, bh
+	db	0x03, 0xDB			; add bx, bx
+	jmp	word [cs:bx+RightTab]
+RightTab:
+	dw	0
+	dw	0
+	dw	L23D2
+	dw	L23D8
+	dw	L23F0
+	dw	L2409
+	dw	L2435
+	dw	L2468
+	dw	L24A0
+L23D2:
+	mov	dx, 1
+	jmp	near LineReject
+L23D8:
+	mov	cx, word [si + 2]
+	mov	ax, word [0x74fe]
+	dec	ax
+	mov	word [si + 2], ax
+	db	0x2B, 0xC8			; sub cx, ax
+	add	word [si + 6], cx
+	sub	word [si + 0xe], cx
+	add	word [si + 0x18], cx
+	jmp	near LineOk
+L23F0:
+	mov	cx, word [0x74fe]
+	dec	cx
+	mov	ax, word [si + 8]
+	mov	word [si + 8], cx
+	db	0x2B, 0xC1			; sub ax, cx
+	add	word [si + 0x1a], ax
+	sub	word [si + 0xe], ax
+	sub	word [si + 0xa], ax
+	jmp	near LineOk
+L2409:
+	mov	ax, word [si]
+	mov	dx, word [si + 2]
+	sub	dx, word [0x74fe]
+	inc	dx
+	mov	cx, word [si + 0xc]
+	div	cx
+	shr	cx, 1
+	db	0x2B, 0xCA			; sub cx, dx
+	adc	ax, 0
+	sub	word [si + 0xe], ax
+	jle	short L23D2
+	add	word [si + 6], ax
+	add	word [si + 0x18], ax
+	mul	word [si + 0xc]
+	sub	word [si], ax
+	sbb	word [si + 2], dx
+	jmp	near LineOk
+L2435:
+	mov	dx, word [0x74fe]
+	dec	dx
+	mov	word [si + 8], dx
+	db	0x33, 0xC0			; xor ax, ax
+	sub	ax, word [si]
+	sbb	dx, word [si + 2]
+	jl	short L23D2
+	mov	cx, word [si + 0xc]
+	div	cx
+	shr	cx, 1
+	db	0x2B, 0xCA			; sub cx, dx
+	adc	ax, 0
+	inc	ax
+	mov	cx, word [si + 0xe]
+	mov	word [si + 0xe], ax
+	db	0x2B, 0xC8			; sub cx, ax
+	add	word [si + 0x1a], cx
+	dec	ax
+	add	ax, word [si + 6]
+	mov	word [si + 0xa], ax
+	jmp	near LineOk
+L2468:
+	mov	ax, word [si + 2]
+	mov	cx, word [0x74fe]
+	dec	cx
+	db	0x2B, 0xC1			; sub ax, cx
+	mov	word [si + 2], cx
+	sub	word [si + 0xe], ax
+	mul	word [si + 0xc]
+	mov	bx, word [si + 4]
+	mov	cx, word [si + 6]
+	db	0x03, 0xC3			; add ax, bx
+	db	0x13, 0xD1			; adc dx, cx
+	mov	word [si + 4], ax
+	mov	word [si + 6], dx
+	add	bx, 0x8000
+	adc	cx, 0
+	add	ax, 0x8000
+	adc	dx, 0
+	db	0x2B, 0xD1			; sub dx, cx
+	add	word [si + 0x18], dx
+	jmp	near LineOk
+L24A0:
+	mov	ax, word [0x74fe]
+	db	0x8B, 0xC8			; mov cx, ax
+	dec	cx
+	mov	word [si + 8], cx
+	sub	ax, word [si + 2]
+	mov	word [si + 0xe], ax
+	dec	ax
+	mul	word [si + 0xc]
+	add	ax, word [si + 4]
+	adc	dx, word [si + 6]
+	add	ax, 0x8000
+	adc	dx, 0
+	mov	ax, word [si + 0xa]
+	db	0x2B, 0xC2			; sub ax, dx
+	mov	word [si + 0xa], dx
+	add	word [si + 0x1a], ax
+	jmp	near LineOk
+AfterTop:
+	test	word [bp - 2], 8
+	je	short AfterBottom
+	jmp	near ClipBottom
+AfterBottom:
+	db	0x33, 0xD2			; xor dx, dx
+	mov	ax, word [si + 2]
+	cmp	ax, word [0x74fc]
+	jge	short L24E5
+	or	dh, 2
+L24E5:
+	mov	bx, word [si]
+	add	bx, 0x8000
+	adc	ax, 0
+	cmp	ax, word [0x74fe]
+	jl	short L24F7
+	or	dh, 1
+L24F7:
+	mov	ax, word [si + 8]
+	cmp	ax, word [0x74fc]
+	jge	short L2503
+	or	dl, 2
+L2503:
+	cmp	ax, word [0x74fe]
+	jl	short L250C
+	or	dl, 1
+L250C:
+	test	dh, dl
+	je	short L2515
+	db	0x22, 0xD6			; and dl, dh
+	jmp	near LineReject
+L2515:
+	db	0x0A, 0xD6			; or dl, dh
+	je	short L252B
+	db	0x32, 0xF6			; xor dh, dh
+	mov	word [bp - 2], dx
+	jmp	near L2059
+AfterLeft:
+	test	word [bp - 2], 1
+	je	short L252B
+	jmp	near ClipRight
+L252B:
+	jmp	near LineOk
+LineFlat:
+	mov	byte [si + 0x12], 1
+	db	0x3B, 0xCA			; cmp cx, dx
+	jne	short L253A
+	mov	byte [si + 0x12], 9
+L253A:
+	jle	short L2548
+	mov	byte [si + 0x12], 0
+	mov	word [si + 2], dx
+	mov	word [si + 8], cx
+	db	0x87, 0xCA			; xchg dx, cx
+L2548:
+	cmp	byte [bp - 3], 0
+	jne	short L256C
+	mov	bx, word [0x74f2]
+	db	0x3B, 0xC3			; cmp ax, bx
+	jge	short L2575
+	mov	al, 4
+	mov	word [si + 6], bx
+	mov	word [si + 0xa], bx
+L255E:
+	mov	byte [si + 0x13], al
+	mov	word [si + 0xe], 0
+	db	0x32, 0xE4			; xor ah, ah
+	pop	di
+	pop	si
+	leave
+	retf
+L256C:
+	db	0x2B, 0xD1			; sub dx, cx
+	inc	dx
+	mov	word [si + 0xe], dx
+	jmp	near LineOk
+L2575:
+	mov	bx, word [0x74f4]
+	db	0x3B, 0xC3			; cmp ax, bx
+	jl	short L2587
+	mov	al, 8
+	mov	word [si + 6], bx
+	mov	word [si + 0xa], bx
+	jmp	short L255E
+L2587:
+	db	0x8B, 0xC2			; mov ax, dx
+	db	0x2B, 0xC1			; sub ax, cx
+	inc	ax
+	mov	word [si + 0xe], ax
+	cmp	dx, word [0x74fc]
+	jge	short L25A1
+	dec	word [si + 0xa]
+	mov	word [si + 0x16], 1
+	mov	al, 2
+	jmp	short L255E
+L25A1:
+	cmp	cx, word [0x74fe]
+	jl	short L25B3
+	dec	word [si + 0xa]
+	mov	word [si + 0x1a], 1
+	mov	al, 1
+	jmp	short L255E
+L25B3:
+	mov	ax, word [0x74fc]
+	db	0x8B, 0xD8			; mov bx, ax
+	db	0x2B, 0xC1			; sub ax, cx
+	jle	short L25C2
+	mov	word [si + 2], bx
+	sub	word [si + 0xe], ax
+L25C2:
+	db	0x8B, 0xC2			; mov ax, dx
+	mov	bx, word [0x74fe]
+	dec	bx
+	db	0x2B, 0xC3			; sub ax, bx
+	jle	short L25D3
+	sub	word [si + 0xe], ax
+	mov	word [si + 8], bx
+L25D3:
+	jmp	near LineOk
+LineOverflow:
+	mov	cx, word [si + 0xa]
+	sar	cx, 1
+	mov	ax, word [si + 6]
+	sar	ax, 1
+	db	0x2B, 0xC8			; sub cx, ax
+	sar	cx, 1
+	mov	dx, word [si + 8]
+	sar	dx, 1
+	mov	ax, word [si + 2]
+	sar	ax, 1
+	db	0x2B, 0xD0			; sub dx, ax
+	sar	dx, 1
+L25F2:
+	cmp	word [si + 6], 0xc180
+	jg	short L262F
+L25F9:
+	mov	ax, word [si + 6]
+	db	0x03, 0xC1			; add ax, cx
+	mov	word [si + 6], ax
+	db	0x8B, 0xD8			; mov bx, ax
+	sub	ax, word [0x74f2]
+	jle	short L262A
+	db	0x3B, 0xC1			; cmp ax, cx
+	jle	short L260F
+	db	0x8B, 0xC1			; mov ax, cx
+L260F:
+	sub	bx, word [0x74f4]
+	jle	short L2619
+	db	0x2B, 0xC3			; sub ax, bx
+	jle	short L262A
+L2619:
+	mov	bx, word [si + 2]
+	cmp	bx, word [0x74fc]
+	jge	short L2627
+	add	word [si + 0x14], ax
+	jmp	short L262A
+L2627:
+	add	word [si + 0x18], ax
+L262A:
+	add	word [si + 2], dx
+	jmp	short L25F2
+L262F:
+	cmp	word [si + 0xa], 0x3e80
+	jge	short L2655
+	cmp	word [si + 2], 0xc180
+	jle	short L25F9
+	cmp	word [si + 2], 0x3e80
+	jge	short L25F9
+	cmp	word [si + 8], 0xc180
+	jle	short L2655
+	cmp	word [si + 8], 0x3e80
+	jge	short L2655
+	jmp	near L1F64
+L2655:
+	mov	ax, word [si + 0xa]
+	db	0x2B, 0xC1			; sub ax, cx
+	mov	word [si + 0xa], ax
+	db	0x8B, 0xD8			; mov bx, ax
+	sub	ax, word [0x74f4]
+	inc	ax
+	jge	short L268A
+	neg	ax
+	db	0x3B, 0xC1			; cmp ax, cx
+	jle	short L266E
+	db	0x8B, 0xC1			; mov ax, cx
+L266E:
+	sub	bx, word [0x74f2]
+	inc	bx
+	jge	short L2679
+	db	0x03, 0xC3			; add ax, bx
+	jle	short L268A
+L2679:
+	mov	bx, word [si + 8]
+	cmp	bx, word [0x74fc]
+	jge	short L2687
+	add	word [si + 0x16], ax
+	jmp	short L268A
+L2687:
+	add	word [si + 0x1a], ax
+L268A:
+	sub	word [si + 8], dx
+	jmp	short L262F
+	db	0
+	incbin	"Extracted/segments/seg001.bin", 0x2690, 0x33E0 - 0x2690

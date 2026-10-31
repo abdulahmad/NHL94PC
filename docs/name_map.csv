@@ -803,7 +803,7 @@ seg001:1E65,FillFarBody,,new,high,"Repeats the byte into AH, normalizes ES:DI, t
 seg001:1F00,LineOpen,,new,high,"Orders two points into the record at bp+0Eh and stores a direction byte. Skips the box test",src/seg/seg001.asm
 seg001:1F0E,LineClip,,new,high,"Same setup after a box test. Both ends outside one edge is a reject",src/seg/seg001.asm
 seg001:1F1A,LineBody,,new,high,"Shared point ordering, outcodes, and direction byte",src/seg/seg001.asm
-seg001:2065,LineTab,,new,high,"Sixteen words. The outcode selects the still-incbin continuation, or LineOk",src/seg/seg001.asm
+seg001:2065,LineTab,,new,high,"Sixteen words. The outcode selects ClipRight, ClipLeft, ClipTop, ClipBottom, or LineOk",src/seg/seg001.asm
 seg001:2085,LineOk,,new,high,"xor ax, ax and the epilogue. Taken when the outcode is 0",src/seg/seg001.asm
 seg001:208B,ClipTop,,new,high,"Pulls the line onto the top of the box. The direction byte selects how X moves",src/seg/seg001.asm
 seg001:20A1,TopTab,,new,high,"Nine words, one per direction. 0 and 1 are unused",src/seg/seg001.asm
@@ -812,3 +812,11 @@ seg001:2164,BotTab,,new,high,"Direction table for the bottom edge",src/seg/seg00
 seg001:221F,ClipLeft,,new,high,"Pulls the line onto the left of the box",src/seg/seg001.asm
 seg001:2229,LeftTab,,new,high,"Direction table for the left edge",src/seg/seg001.asm
 seg001:23AE,ClipRet,,new,high,"Clears AH and returns. Some edge cases land here",src/seg/seg001.asm
+seg001:233B,LineReject,,new,high,"Marks the line rejected and returns through ClipRet. Both ends outside one edge land here",src/seg/seg001.asm
+seg001:23B4,ClipRight,,new,high,"Pulls the line onto the right of the box. LineTab outcode 1",src/seg/seg001.asm
+seg001:23C0,RightTab,,new,high,"Direction table for the right edge. 0 and 1 are unused",src/seg/seg001.asm
+seg001:24CD,AfterTop,,new,high,"After a top clip, runs ClipBottom when that outcode is still set",src/seg/seg001.asm
+seg001:24D7,AfterBottom,,new,high,"Rebuilds the left and right outcodes. A shared side bit rejects the line",src/seg/seg001.asm
+seg001:2521,AfterLeft,,new,high,"After a left clip, runs ClipRight when that outcode is still set",src/seg/seg001.asm
+seg001:252E,LineFlat,,new,high,"Equal-Y path. Clamps the horizontal line to the box unless the open flag is set",src/seg/seg001.asm
+seg001:25D6,LineOverflow,,new,high,"Arithmetic-shifts an endpoint far outside the box, then clips again",src/seg/seg001.asm
