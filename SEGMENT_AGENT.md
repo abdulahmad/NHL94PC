@@ -35,7 +35,7 @@ Source style (same as the sibling repos):
 
 ## Current segment
 
-seg000 (source through the number helpers; the floating-point emulator is still incbin). <- CURRENT
+seg001. <- CURRENT
 
 ## Sources
 
@@ -81,6 +81,7 @@ seg000 (source through the number helpers; the floating-point emulator is still 
 
 ## History
 
+- 2026-10-31: seg000 finished. The floating-point emulator is source (`FpConvert`, `FpExec`, and the helpers after it). Nothing in seg000 is incbin.
 - 2026-10-31: seg000 number helpers after `_output`: `_atol`, `fflush`, `_memmove`, `_memset`, and the float-format helpers. The emulator is still incbin.
 - 2026-10-31: seg000 formatted output: `_flsbuf`, `_stbuf`, `_ftbuf`, `_output`.
 - 2026-10-31: seg000 from `__chkstk` through `DosMapErr`: `_printf`, `_open`, `_read`, `_write`, `_close`, `_lseek`, the `_dos_*` calls, `_strcpy` / `_strlen` / `_strncpy`, `rand`, the long helpers, and the runtime messages.
@@ -100,8 +101,8 @@ seg000 (source through the number helpers; the floating-point emulator is still 
 | File | Status | File offset | Bytes | MZ paragraph |
 |---|---|---|---|---|
 | mz_header | incbin (MZ header fields are source) | 0x00000 | 7168 |  |
-| seg000 | source through number helpers; emulator incbin <- CURRENT | 0x01C00 | 14896 | 0x0000 |
-| seg001 | incbin | 0x05630 | 13280 | 0x03A3 |
+| seg000 | source | 0x01C00 | 14896 | 0x0000 |
+| seg001 | incbin <- CURRENT | 0x05630 | 13280 | 0x03A3 |
 | seg002 | incbin | 0x08A10 | 5472 | 0x06E1 |
 | seg003 | incbin | 0x09F70 | 16 | 0x0837 |
 | seg004 | incbin | 0x09F80 | 3088 | 0x0838 |
