@@ -863,3 +863,10 @@ seg002:0000,BlankBit,,new,high,"Reads port 3DAh and returns bit 0 in AX",src/seg
 seg002:0008,MakeChain,,new,high,"Caps LargestFree, AllocBytes, and links 24h-byte records. BufCount below CCh calls seg022",src/seg/seg002.asm
 seg002:02DA,SetBuf,,new,high,"Stores the near buffer and the count MakeChain reads",src/seg/seg002.asm
 seg002:02EC,InsertRec,,new,high,"Links a 24h-byte record into a gap in the chain. Bits in the flag word pick which chain",src/seg/seg002.asm
+seg002:086A,ResizeRec,,new,high,"Grows a record into the gap before the next one. A short gap with the flag set calls seg022",src/seg/seg002.asm
+seg002:0944,FindRec,,new,high,"Walks the chain for the record whose base far pointer matches the argument",src/seg/seg002.asm
+seg002:099A,FindUnlink,,new,high,"FindRec, then UnlinkRec",src/seg/seg002.asm
+seg002:09B2,UnlinkRec,,new,high,"Splices a record out of the next and previous links",src/seg/seg002.asm
+seg002:09FC,FindTrim,,new,high,"FindRec, then TrimAfter",src/seg/seg002.asm
+seg002:0A14,TrimAfter,,new,high,"Unlinks following records whose flag byte lacks bit 20h",src/seg/seg002.asm
+seg002:0A5E,DropOldest,,new,high,"Unlinks the oldest record of the requested class and returns 1, or 0",src/seg/seg002.asm

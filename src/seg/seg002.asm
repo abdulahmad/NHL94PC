@@ -793,4 +793,299 @@ L0863:
 	leave
 	retf
 	nop
-	incbin	"Extracted/segments/seg002.bin", 0x86A, 0x1560 - 0x86A
+
+; ResizeRec grows the record when the next one leaves room. A nonzero
+; word at [bp+0Eh] reports a short gap through seg022. FindRec walks the
+; chain for the far base that matches the argument. UnlinkRec splices a
+; record out. FindUnlink and FindTrim find first. TrimAfter drops the
+; following records whose flag byte lacks bit 20h. DropOldest unlinks
+; the oldest record of the requested class.
+
+ResizeRec:
+	enter	0xc, 0
+	push	di
+	push	si
+	mov	ax, word [bp + 0xa]
+	mov	dx, word [bp + 0xc]
+	les	bx, [bp + 6]
+	db	0x8B, 0xF3			; mov si, bx
+	mov	word [bp - 2], es
+	cmp	word es:[bx + 0x12], dx
+	jl	short L08AA
+	jg	short L088C
+	cmp	word es:[bx + 0x10], ax
+	jbe	short L08AA
+L088C:
+	mov	es, word [bp - 2]
+	mov	word es:[si + 0x14], ax
+	mov	word es:[si + 0x16], dx
+	add	ax, strict word 0xf
+	adc	dx, 0
+	and	al, 0xf0
+	mov	word es:[si + 0x10], ax
+	mov	word es:[si + 0x12], dx
+	jmp	near L0931
+L08AA:
+	mov	es, word [bp - 2]
+	test	byte es:[si + 0x18], 0x80
+	jne	short L08EC
+	push	word es:[si + 2]
+	push	word es:[si]
+	call	0x3A3:FarToLinear
+	add	sp, 4
+	mov	es, word [bp - 2]
+		les	bx, es:[si + 0x1c]
+	push	word es:[bx + 2]
+	push	word es:[bx]
+	db	0x8B, 0xF8			; mov di, ax
+	mov	word [bp - 0xc], di
+	mov	word [bp - 0xa], dx
+	call	0x3A3:FarToLinear
+	add	sp, 4
+	sub	ax, word [bp - 0xc]
+	sbb	dx, word [bp - 0xa]
+	mov	word [bp - 8], ax
+	jmp	short L0905
+L08EC:
+	mov	ax, es
+		les	bx, es:[si + 0x1c]
+	mov	cx, word es:[bx]
+	mov	dx, word es:[bx + 2]
+	mov	es, ax
+	sub	cx, word es:[si]
+	sbb	dx, word es:[si + 2]
+	mov	word [bp - 8], cx
+L0905:
+	mov	word [bp - 6], dx
+	mov	ax, word [bp + 0xa]
+	mov	dx, word [bp + 0xc]
+	cmp	word [bp - 6], dx
+	jl	short L0920
+	jle	short L0918
+	jmp	near L088C
+L0918:
+	cmp	word [bp - 8], ax
+	jbe	short L0920
+	jmp	near L088C
+L0920:
+	cmp	word [bp + 0xe], 0
+	je	short L093C
+	push	0x393
+	call	0xF4A:0x3E4		; seg022
+	add	sp, 2
+L0931:
+	mov	ax, word [bp + 0xa]
+	mov	dx, word [bp + 0xc]
+	pop	si
+	pop	di
+	leave
+	retf
+	nop
+L093C:
+	db	0x2B, 0xC0			; sub ax, ax
+	cwd
+	pop	si
+	pop	di
+	leave
+	retf
+	nop
+FindRec:
+	enter	4, 0
+	push	si
+	les	si, [ChainPtr+0xc]
+	mov	ax, word es:[si + 0x1c]
+	mov	dx, word es:[si + 0x1e]
+	db	0x8B, 0xD8			; mov bx, ax
+	mov	cx, word [bp + 6]
+	mov	ds, dx
+L095C:
+	mov	ax, word [bp + 8]
+	cmp	word [bx], cx
+	jne	short L0968
+	cmp	word [bx + 2], ax
+	je	short L0978
+L0968:
+		lds	bx, [bx + 0x1c]
+	mov	ax, ds
+	db	0x0B, 0xC3			; or ax, bx
+	jne	short L095C
+	mov	ax, DGROUP
+	mov	ds, ax
+	jmp	short L0984
+L0978:
+	db	0x8B, 0xC3			; mov ax, bx
+	mov	dx, ds
+	mov	cx, DGROUP
+	mov	ds, cx
+	pop	si
+	leave
+	retf
+L0984:
+	push	word [bp + 8]
+	push	cx
+	push	0x3b7
+	call	0xF4A:0x3E4		; seg022
+	add	sp, 6
+	db	0x2B, 0xC0			; sub ax, ax
+	cwd
+	pop	si
+	leave
+	retf
+	nop
+FindUnlink:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	word [bp + 8]
+	push	word [bp + 6]
+	push	cs
+		call	FindRec
+	db	0x8B, 0xE5			; mov sp, bp
+	push	dx
+	push	ax
+	push	cs
+		call	UnlinkRec
+	leave
+	retf
+	nop
+UnlinkRec:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	di
+	push	si
+	mov	si, word [bp + 6]
+	mov	es, word [bp + 8]
+	mov	ax, es
+		les	bx, es:[si + 0x20]
+	mov	cx, es
+	mov	es, ax
+	mov	dx, word es:[si + 0x1c]
+	mov	di, word es:[si + 0x1e]
+	mov	es, cx
+	mov	word es:[bx + 0x1c], dx
+	mov	word es:[bx + 0x1e], di
+	mov	es, ax
+	mov	cx, word es:[si + 0x20]
+	mov	dx, word es:[si + 0x22]
+		les	bx, es:[si + 0x1c]
+	mov	word es:[bx + 0x20], cx
+	mov	word es:[bx + 0x22], dx
+	push	ax
+	push	si
+	push	cs
+	call	0x1486			; still incbin
+	add	sp, 4
+	pop	si
+	pop	di
+	leave
+	retf
+FindTrim:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	word [bp + 8]
+	push	word [bp + 6]
+	push	cs
+		call	FindRec
+	db	0x8B, 0xE5			; mov sp, bp
+	push	dx
+	push	ax
+	push	cs
+		call	TrimAfter
+	leave
+	retf
+	nop
+TrimAfter:
+	enter	8, 0
+	push	di
+	push	si
+	les	bx, [bp + 6]
+		les	bx, es:[bx + 0x1c]
+	db	0x8B, 0xF3			; mov si, bx
+	mov	word [bp - 2], es
+	test	byte es:[bx + 0x18], 0x20
+	jne	short L0A5A
+L0A2D:
+	mov	es, word [bp - 2]
+		les	bx, es:[si + 0x1c]
+	db	0x8B, 0xF3			; mov si, bx
+	mov	word [bp - 2], es
+	push	word es:[bx + 0x22]
+	push	word es:[bx + 0x20]
+	db	0x8B, 0xFE			; mov di, si
+	mov	word [bp - 8], di
+	mov	word [bp - 6], es
+	push	cs
+		call	UnlinkRec
+	add	sp, 4
+	les	bx, [bp - 8]
+	test	byte es:[bx + 0x18], 0x20
+	je	short L0A2D
+L0A5A:
+	pop	si
+	pop	di
+	leave
+	retf
+DropOldest:
+	enter	0x12, 0
+	push	si
+	db	0x2B, 0xC0			; sub ax, ax
+	mov	word [bp - 0xe], ax
+	mov	word [bp - 0x10], ax
+	mov	ax, word [bp + 6]
+	mov	word [bp - 6], ax
+	mov	word [bp - 8], 0
+	les	si, [ChainPtr+4]
+	mov	ax, word es:[si + 0x1c]
+	mov	dx, word es:[si + 0x1e]
+	db	0x8B, 0xD8			; mov bx, ax
+	mov	ds, dx
+L0A86:
+	test	byte [bx + 0x18], 8
+	je	short L0AC4
+	mov	al, byte [bx + 0x18]
+	and	ax, strict word 7
+	mov	word [bp - 0x12], ax
+	cmp	ax, word [bp - 6]
+	ja	short L0AAE
+	mov	ax, word [bp - 6]
+	cmp	word [bp - 0x12], ax
+	jne	short L0AC4
+	mov	ax, word ss:[RecSeq]
+	sub	ax, word [bx + 0x1a]
+	cmp	ax, word [bp - 8]
+	jl	short L0AC4
+L0AAE:
+	mov	word [bp - 0x10], bx
+	mov	word [bp - 0xe], ds
+	mov	ax, word [bp - 0x12]
+	mov	word [bp - 6], ax
+	mov	ax, word ss:[RecSeq]
+	sub	ax, word [bx + 0x1a]
+	mov	word [bp - 8], ax
+L0AC4:
+		lds	bx, [bx + 0x1c]
+	mov	ax, ds
+	db	0x0B, 0xC3			; or ax, bx
+	jne	short L0A86
+	mov	ax, DGROUP
+	mov	ds, ax
+	mov	cx, word [bp - 0x10]
+	mov	ax, word [bp - 0xe]
+	db	0x0B, 0xC1			; or ax, cx
+	je	short L0AEE
+	mov	ax, word [bp - 0xe]
+	push	ax
+	push	cx
+	push	cs
+		call	UnlinkRec
+	add	sp, 4
+	mov	ax, 1
+	pop	si
+	leave
+	retf
+L0AEE:
+	db	0x2B, 0xC0			; sub ax, ax
+	pop	si
+	leave
+	retf
+	nop
+	incbin	"Extracted/segments/seg002.bin", 0xAF4, 0x1560 - 0xAF4
