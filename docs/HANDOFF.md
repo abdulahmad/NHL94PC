@@ -4,7 +4,7 @@
 
 - Full build MATCH (SHA-1 `d94450ddff26528bddac6646c234277076fd36cb`, 244,854 bytes); `tools/verify_all.sh` MATCH.
 - seg056 is source: the resident RTLink/Plus manager and the overlay thunks (10,992 bytes). seg057 was the thunk tail and is merged into seg056.
-- seg000 is entirely source (`src/seg/seg000.asm`). Nothing in it is incbin. seg005 is source. seg001 is source from the start through `ScaleStick2Y` (offset `0x149D`); the rest is incbin. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`) and seg056.
+- seg000 is entirely source (`src/seg/seg000.asm`). Nothing in it is incbin. seg005 is source. seg001 is source from the start through `WaitKeyUntil` (offset `0x174C`); the rest is incbin. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`) and seg056.
 - seg011 is still a false split (merge into seg010 when seg010 is disassembled). The `ovl_*` slices were not resliced.
 
 ## Known facts
@@ -204,6 +204,8 @@ The spill at the start of seg001 finishes `test bx, 8`, then `pop bp` / `ret 0xe
 `PollJoy` times the two axes on port `0x201` and sets bits in `JoyBits` when a count falls outside the inner range. `InitJoy` turns that read on and sets the initial limits. `JoyScaleX` and `JoyScaleY` scale a count against its low limit.
 
 `PollSticks` times up to four axes. The mask is the byte at `JoyOn` in the table at `0x7074`. Bit 0 of `JoyOn` fills `Stick1Bits`. Bit 1 fills `Stick2Bits`. `InitStick1` and `InitStick2` are what `_main` calls. `ScaleStick1X` through `ScaleStick2Y` scale each axis.
+
+`HookKbd` points INT 9 at `KbdIrq`, INT 16h at `Int16Hook`, and INT 23h at `BreakIrq`, and registers `UnhookKbd`. `KbdIrq` records the scan code and queues a translated byte. One path stores `0x1234` at `0:0472h` and jumps to `FFFF:0000`. `KeyService` is the INT 16h body. `BiosKey` is `int 0x16` / `ret`, used while the hook is removed.
 
 ## Unsure / open
 

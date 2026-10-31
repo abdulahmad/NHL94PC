@@ -1,7 +1,7 @@
 ; Segment seg001. EMS maps, far copies, the INT 24h hook, file length,
 ; a file-head count, find-first paths, the DOS memory block, a 4-byte lookup,
 ; far-pointer lookup, a counted copy, multiply and divide, file writes,
-; character widths, the INT 8 handler, and the game port sticks.
+; character widths, the INT 8 handler, the game port, and the keyboard hook.
 ; The first bytes finish the seg000 routine that ends on this paragraph.
 
 ; DGROUP words this segment uses. The bytes live in the near data, not here.
@@ -47,6 +47,13 @@ Stick2Y		equ	0x7032
 Stick1Bits	equ	0x7055
 Stick2Bits	equ	0x7056
 StickRaw		equ	0x7054
+KeyPtr		equ	0x7306
+KeyHook		equ	0x7302
+KeyHead		equ	0x70A8
+KeyTail		equ	0x70AA
+KeyMask		equ	0x70AC
+KeyBuf		equ	0x7088
+KeyState	equ	0x70AE
 GamePort	equ	0x201
 FmtSave		equ	0x64CE
 FmtBuf		equ	0x64D6
@@ -2862,4 +2869,362 @@ L1491:
 	sub	ax, 0x1f
 	retf
 
-	incbin	"Extracted/segments/seg001.bin", 0x149D, 0x33E0 - 0x149D
+	db	0x00
+
+
+; Save DS at KbdDs. If INT 9 is not already KbdIrq, save INT 9, INT 16h,
+; and INT 23h, and point them at KbdIrq, Int16Hook, and BreakIrq. Point KeyPtr
+; at KeyService, clear the key-state bytes, and register UnhookKbd.
+HookKbd:
+	push	di
+	mov	word [cs:KbdDs], ds
+	in	al, 0x21
+	db	0x8A, 0xE0			; mov ah, al
+	or	al, 3
+	out	0x21, al
+	db	0x33, 0xDB			; xor bx, bx
+	mov	es, bx
+	mov	bx, word es:[0x24]
+	cmp	bx, KbdIrq
+	je	short L1517
+	mov	word [0x712e], bx
+	mov	bx, word es:[0x26]
+	mov	word [0x7130], bx
+	mov	word [es:0x24], KbdIrq
+	mov	word es:[0x26], cs
+	mov	bx, word es:[0x58]
+	mov	word [0x7132], bx
+	mov	bx, word es:[0x5a]
+	mov	word [0x7134], bx
+	mov	word [es:0x58], Int16Hook
+	mov	word es:[0x5a], cs
+	mov	bx, word es:[0x8c]
+	mov	word [0x7136], bx
+	mov	bx, word es:[0x8e]
+	mov	word [0x7138], bx
+	mov	word [es:0x8c], BreakIrq
+	mov	word es:[0x8e], cs
+	mov	bx, KeyService
+	mov	word [KeyPtr], bx
+L1517:
+	db	0x8A, 0xC4			; mov al, ah
+	out	0x21, al
+	mov	ax, ds
+	mov	es, ax
+	mov	di, KeyState
+	mov	cx, 0x5a
+	db	0x33, 0xC0			; xor ax, ax
+	rep stosb
+	push	cs
+	mov	ax, UnhookKbd
+	push	ax
+	call	0x3A3:OnexitThunk
+	add	sp, 4
+	pop	di
+	retf
+
+
+; Restore those three vectors when a previous INT 9 offset was saved.
+; Point KeyPtr at BiosKey and clear the BIOS shift flags.
+UnhookKbd:
+	in	al, 0x21
+	db	0x8A, 0xE0			; mov ah, al
+	or	al, 3
+	out	0x21, al
+	db	0x33, 0xDB			; xor bx, bx
+	mov	es, bx
+	mov	bx, word [0x712e]
+	db	0x0B, 0xDB			; or bx, bx
+	je	short L158F
+	mov	word es:[0x24], bx
+	mov	bx, word [0x7130]
+	mov	word es:[0x26], bx
+	mov	bx, word [0x7132]
+	mov	word es:[0x58], bx
+	mov	bx, word [0x7134]
+	mov	word es:[0x5a], bx
+	mov	bx, word [0x7136]
+	mov	word es:[0x8c], bx
+	mov	bx, word [0x7138]
+	mov	word es:[0x8e], bx
+	mov	bx, BiosKey
+	mov	word [KeyPtr], bx
+	mov	al, byte es:[0x417]
+	and	al, 0xf0
+	mov	byte es:[0x417], al
+L158F:
+	db	0x8A, 0xC4			; mov al, ah
+	out	0x21, al
+	retf
+KbdDs:
+	dw	0
+
+
+; INT 9. Acknowledges the keyboard, reads the scan code, and sends EOI.
+; A break code clears the key-state byte. A make code sets it and, unless a
+; translation flag sends it elsewhere, queues the byte from the table at 713Ah.
+; One flag path stores 1234h at 0:0472h and jumps to FFFF:0000h.
+KbdIrq:
+	sti
+	push	ax
+	push	bx
+	push	ds
+	in	al, 0x61
+	db	0x8A, 0xE0			; mov ah, al
+	or	al, 0x80
+	out	0x61, al
+	db	0x8A, 0xC4			; mov al, ah
+	out	0x61, al
+	db	0x33, 0xC0			; xor ax, ax
+	in	al, 0x60
+	db	0x8B, 0xD8			; mov bx, ax
+	mov	al, 0x20
+	out	0x20, al
+	mov	ds, word [cs:KbdDs]
+	db	0x0A, 0xDB			; or bl, bl
+	jns	short L15C2
+	mov	byte [bx + 0x702e], 0
+	pop	ds
+	pop	bx
+	pop	ax
+	iret
+L15C2:
+	mov	byte [bx + KeyState], 1
+	test	byte [0x70e6], 1
+	jne	short L1631
+	test	byte [0x70cb], 1
+	jne	short L1623
+	test	byte [0x70d8], 1
+	jne	short L161D
+	test	byte [0x70e4], 1
+	jne	short L161D
+	test	byte [0x70e8], 1
+	jne	short L163E
+	mov	al, byte [bx + 0x713a]
+L15EE:
+	db	0x0A, 0xC0			; or al, al
+	js	short L160F
+L15F2:
+	mov	bx, word [KeyHead]
+	mov	word [bx + KeyBuf], ax
+	add	bx, 2
+	and	bx, word [KeyMask]
+	cmp	word [KeyTail], bx
+	je	short L160B
+	mov	word [KeyHead], bx
+L160B:
+	pop	ds
+	pop	bx
+	pop	ax
+	iret
+L160F:
+	db	0x8A, 0xE0			; mov ah, al
+	db	0x32, 0xC0			; xor al, al
+	cmp	ah, 0x90
+	jb	short L15F2
+	and	ah, 0x7f
+	jmp	short L15F2
+L161D:
+	mov	al, byte [bx + 0x7195]
+	jmp	short L15EE
+L1623:
+	mov	al, byte [bx + 0x724b]
+	cmp	bx, 1
+	jne	short L15EE
+	call	0xF4A:0x3E2
+L1631:
+	test	byte [0x70cb], 1
+	jne	short L1644
+L1638:
+	mov	al, byte [bx + 0x72a6]
+	jmp	short L15EE
+L163E:
+	mov	al, byte [bx + 0x71f0]
+	jmp	short L15EE
+L1644:
+	test	byte [0x7101], 1
+	je	short L1638
+	db	0x33, 0xC0			; xor ax, ax
+	mov	es, ax
+	mov	ax, 0x1234
+	mov	word es:[0x472], ax
+	jmp	0xFFFF:0x0
+
+
+; INT 23h. Saves the registers, calls seg041, and returns from the interrupt.
+BreakIrq:
+	push	bp
+	push	ax
+	push	bx
+	push	cx
+	push	dx
+	push	si
+	push	di
+	push	ds
+	push	es
+	call	0x1570:0x224		; seg041
+	pop	es
+	pop	ds
+	pop	di
+	pop	si
+	pop	dx
+	pop	cx
+	pop	bx
+	pop	ax
+	pop	bp
+	iret
+
+
+; INT 16h. Loads DS from KbdDs, calls KeyService, and returns with retf 2.
+Int16Hook:
+	push	bx
+	push	ds
+	mov	ds, word [cs:KbdDs]
+	call	KeyService
+	pop	ds
+	pop	bx
+	retf	0x2
+
+
+; AH 0 reads a queued key. AH 1 reports one without removing it.
+; Any other AH returns the two flag bytes ORed together.
+KeyService:
+	cmp	ah, 1
+	jb	short L1698
+	ja	short L16B4
+	mov	bx, word [KeyTail]
+	cmp	bx, word [KeyHead]
+	je	short L16BE
+	mov	ax, word [bx + KeyBuf]
+	ret
+L1698:
+	mov	bx, word [KeyTail]
+	cmp	bx, word [KeyHead]
+	je	short L16BE
+	mov	ax, word [bx + KeyBuf]
+	add	bx, 2
+	and	bx, word [KeyMask]
+	mov	word [KeyTail], bx
+	db	0x0B, 0xC0			; or ax, ax
+	ret
+L16B4:
+	db	0x33, 0xC0			; xor ax, ax
+	mov	al, byte [0x70d8]
+	or	al, byte [0x70e4]
+	ret
+L16BE:
+	db	0x33, 0xC0			; xor ax, ax
+	ret
+
+
+; The key-state byte for the scan code argument.
+KeyDown:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	mov	bx, word [bp + 6]
+	mov	al, byte [bx + KeyState]
+	db	0x32, 0xE4			; xor ah, ah
+	leave
+	retf
+	db	0x00
+
+
+; INT 16h, then a near return. KeyPtr points here while the hook is removed.
+BiosKey:
+	int	0x16
+	ret
+
+
+; Ask KeyPtr whether a key is waiting, then read it.
+ReadKey:
+	mov	ah, 1
+	call	word [KeyPtr]
+	jne	short L16DE
+	db	0x33, 0xC0			; xor ax, ax
+	retf
+L16DE:
+	db	0x32, 0xE4			; xor ah, ah
+	call	word [KeyPtr]
+	db	0x0A, 0xC0			; or al, al
+	je	short L16EA
+	db	0x32, 0xE4			; xor ah, ah
+L16EA:
+	retf
+
+
+; Far jump through KeyHook.
+KeyJump:
+	jmp	far [KeyHook]
+
+
+; Like ReadKey, but a zero low byte stays zero instead of being read again.
+ReadKeyNz:
+	mov	ah, 1
+	call	word [KeyPtr]
+	jne	short L16FA
+	db	0x33, 0xC0			; xor ax, ax
+	retf
+L16FA:
+	db	0x0A, 0xC0			; or al, al
+	je	short L1700
+	db	0x32, 0xE4			; xor ah, ah
+L1700:
+	retf
+
+
+; Store the far pointer argument at KeyHook.
+SetKeyHook:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	mov	ax, word [bp + 6]
+	mov	word [KeyHook], ax
+	mov	ax, word [bp + 8]
+	mov	word [0x7304], ax
+	leave
+	retf
+
+
+; Return that far pointer.
+GetKeyHook:
+	mov	ax, word [KeyHook]
+	mov	dx, word [0x7304]
+	retf
+
+
+; Call KeyJump until it returns nonzero.
+WaitKey:
+	push	cs
+	call	KeyJump
+	cmp	ax, 0
+	je	short WaitKey
+	retf
+
+
+; Call ReadKey until it returns zero.
+FlushKeys:
+	push	cs
+	call	ReadKey
+	db	0x0B, 0xC0			; or ax, ax
+	jne	short FlushKeys
+	retf
+
+
+; Call KeyJump until it returns nonzero or the long from seg001:1A0Eh
+; passes the long at 751Eh.
+WaitKeyUntil:
+	push	cs
+	call	KeyJump
+	cmp	ax, 0
+	jne	short L174B
+	call	0x3A3:0x1A0E		; seg001, still incbin
+	cmp	dx, word [0x7520]
+	jb	short WaitKeyUntil
+	ja	short L1749
+	cmp	ax, word [0x751e]
+	jb	short WaitKeyUntil
+L1749:
+	db	0x33, 0xC0			; xor ax, ax
+L174B:
+	retf
+
+	incbin	"Extracted/segments/seg001.bin", 0x174C, 0x33E0 - 0x174C
