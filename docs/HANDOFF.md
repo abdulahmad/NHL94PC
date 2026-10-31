@@ -4,7 +4,7 @@
 
 - Full build MATCH (SHA-1 `d94450ddff26528bddac6646c234277076fd36cb`, 244,854 bytes); `tools/verify_all.sh` MATCH.
 - seg056 is source: the resident RTLink/Plus manager and the overlay thunks (10,992 bytes). seg057 was the thunk tail and is merged into seg056.
-- seg000 is entirely source (`src/seg/seg000.asm`). Nothing in it is incbin. seg005 is source. seg001 is source from the start through `WaitKeyUntil` (offset `0x174C`); the rest is incbin. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`) and seg056.
+- seg000 is entirely source (`src/seg/seg000.asm`). Nothing in it is incbin. seg005 is source. seg001 is source from the start through `SetDeadline` (offset `0x1A80`); the rest is incbin. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`) and seg056.
 - seg011 is still a false split (merge into seg010 when seg010 is disassembled). The `ovl_*` slices were not resliced.
 
 ## Known facts
@@ -207,6 +207,8 @@ The spill at the start of seg001 finishes `test bx, 8`, then `pop bp` / `ret 0xe
 
 `HookKbd` points INT 9 at `KbdIrq`, INT 16h at `Int16Hook`, and INT 23h at `BreakIrq`, and registers `UnhookKbd`. `KbdIrq` records the scan code and queues a translated byte. One path stores `0x1234` at `0:0472h` and jumps to `FFFF:0000`. `KeyService` is the INT 16h body. `BiosKey` is `int 0x16` / `ret`, used while the hook is removed.
 
+`ReadCallCount` returns `CallCount`, the dword `Int8Handler` increments. `WaitKeyUntil` and `WaitKeyAdd` compare it with `Deadline`. The monochrome console writes the B000h buffer: `ConPrint` formats through `_sprintf`, and `ScrollMono` moves one row.
+
 ## Unsure / open
 
 - `NullStartup6` and `NullStartup4` are each a single `retf`. The usual MSC pair in that slot is `__FPMATH` and `__fptrap`, or the null `__setargv` and `__setenvp`. The bodies do not say which.
@@ -228,4 +230,5 @@ The spill at the start of seg001 finishes `test bx, 8`, then `pop bp` / `ret 0xe
 - `PassFlag1`, `PassFlag0`, `AddrFlag0`, `AddrFlag1`, and `ArgSetup` are named from the flag and the pointer they set. The body they jump to (offset `0x29D2`) is still incbin, so the job is not named.
 - `FoldScale` calls offsets `0x1DD4`, `0x32EA`, and `0x32F1`. Those are still incbin, so the fold is not named as a trig or table operation.
 - `FormatCall` is not the target of a far call in the EXE. The four pops are the far return address and two words. What `_sprintf` uses as its format is the word under those on the caller's stack.
+- `HaltSpin` stores `0xFBEA` under SP and halts until that word changes or the count runs out. Nothing in this chunk writes that word.
 - `ExitSavedSp` loads DGROUP and, when `SavedSp` is nonzero, uses that word as SP, then calls `_exit(0)`. `AllocBytes` is what stores `SavedSp`, along with CS and DS. Nothing in the disassembled bytes reads `SavedCs` or `SavedDs` yet.
