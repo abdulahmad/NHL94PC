@@ -4,7 +4,7 @@
 
 - Full build MATCH (SHA-1 `d94450ddff26528bddac6646c234277076fd36cb`, 244,854 bytes); `tools/verify_all.sh` MATCH.
 - seg056 is source: the resident RTLink/Plus manager and the overlay thunks (10,992 bytes). seg057 was the thunk tail and is merged into seg056.
-- seg000 is entirely source (`src/seg/seg000.asm`). Nothing in it is incbin. seg005 is source. seg001 is source from the start through `SpanBack` (offset `0x30DE`); the rest is incbin. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`) and seg056.
+- seg000 is entirely source (`src/seg/seg000.asm`). Nothing in it is incbin. seg005 is source. seg001 is entirely source (`src/seg/seg001.asm`). Nothing in it is incbin. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`) and seg056.
 - seg011 is still a false split (merge into seg010 when seg010 is disassembled). The `ovl_*` slices were not resliced.
 
 ## Known facts
@@ -179,7 +179,7 @@ The `_main` call pushes three words, so the pointers are near. That is the mediu
 
 The spill at the start of seg001 finishes `test bx, 8`, then `pop bp` / `ret 0xe`. That is the tail of the seg000 routine. It is not merged back.
 
-`EmsMap` is the near INT 67h AH=44h loop. `EmsInit` checks the driver name at offset 10 of the INT 67h vector against `EmmName`, allocates pages, and registers `EmsFree` with `_onexit`. The call that registers it is still a numeric far call: its target, offset `0x4AE`, is in the incbin tail. `HookCrit` installs `CritHandler` as INT 24h and registers `CritRestore` the same way.
+`EmsMap` is the near INT 67h AH=44h loop. `EmsInit` checks the driver name at offset 10 of the INT 67h vector against `EmmName`, allocates pages, and registers `EmsFree` with `_onexit` through `OnexitThunk`. `HookCrit` installs `CritHandler` as INT 24h and registers `CritRestore` the same way.
 
 `ReadEndPtr`, `SetEndMark`, `WaitEnd`, `EndReached`, and `WaitAdd` only read and spin on the far pointer at `EndPtr`. Nothing in this chunk writes that pointer except `SetEndMark`, which stores a sum of it.
 
@@ -191,11 +191,11 @@ The spill at the start of seg001 finishes `test bx, 8`, then `pop bp` / `ret 0xe
 
 `FileHeadArg`, `FileHead`, and `FileHeadMsg` read four bytes and return the 24-bit value in bytes 1..3 divided by 16, rounded up. `FindPath` and `FindNextPath` search with attribute 6 and build a full path in `PathBuf` from the directory and the DTA name. `LargestFree` is the failing AH=48h probe. `AllocBytes` stores `SavedCs`, `SavedDs`, and `SavedSp`, then allocates the requested paragraphs or the largest block.
 
-`FoldScale` calls `Atan2`, then folds the angle into `0..100h` and divides a shifted argument by a second result. The two routines after the angle are still incbin. `MapEsBx` maps a long and returns ES:BX. `LookupArg`, `Lookup`, and `LookupMsg` search a 4-byte key in that block. A space matches a 0 in the key. A hit returns a long built from the record.
+`FoldScale` calls `Atan2`, then folds the angle into `0..100h`. Above `80h` it divides the first word by `SinLookup`; otherwise it divides the second word by `CosLookup`. `MapEsBx` maps a long and returns ES:BX. `LookupArg`, `Lookup`, and `LookupMsg` search a 4-byte key in that block. A space matches a 0 in the key. A hit returns a long built from the record.
 
 `FillFar` writes one byte through a far pointer for a long count. Offsets stay under 16, then the fill moves 32K at a time. `FillFarZero` writes zeros. The dword path is the same test `CopyFar` uses.
 
-`LineOpen` orders two points into the record at `[bp+0Eh]` and stores a direction byte. `LineClip` does the same after a box test: both ends outside one edge is a reject. A line with no clip bits returns 0. `ClipTop`, `ClipBottom`, `ClipLeft`, and `ClipRight` slide the crossed end onto that edge. `AfterTop`, `AfterBottom`, and `AfterLeft` run the next edge when that outcode is still set. `LineFlat` is the equal-Y path. `LineOverflow` shifts an endpoint that sits far outside the box. `FileOpenArg`, `ReadAtArg`, and `ReadCloseArg` are the DOS reads after that. `CpuProbe` sets `Cpu286`, `Cpu386`, `Cpu486`, and `CpuPe`. `NormDsSi` and `NormEsDi` are the pointer normalizers `CopyFar` calls. The next bytes are still incbin.
+`LineOpen` orders two points into the record at `[bp+0Eh]` and stores a direction byte. `LineClip` does the same after a box test: both ends outside one edge is a reject. A line with no clip bits returns 0. `ClipTop`, `ClipBottom`, `ClipLeft`, and `ClipRight` slide the crossed end onto that edge. `AfterTop`, `AfterBottom`, and `AfterLeft` run the next edge when that outcode is still set. `LineFlat` is the equal-Y path. `LineOverflow` shifts an endpoint that sits far outside the box. `FileOpenArg`, `ReadAtArg`, and `ReadCloseArg` are the DOS reads after that. `CpuProbe` sets `Cpu286`, `Cpu386`, `Cpu486`, and `CpuPe`. `NormDsSi` and `NormEsDi` are the pointer normalizers `CopyFar` calls. `FillPoly` and `FillRec` scan the edges, `SpanMargin` writes the scanline tables, and `SaveMode` / `WaitBlank` finish the segment.
 
 `FindFar` and `FindFarMsg` look up a long key in a far table and return a far pointer. `FindFarList` and `FindFarQuiet` walk a list of keys. `FarToLinear` and `LinearToFar` convert between a far pointer and the 20-bit address. `LinearToFarRegs` does that conversion with the address already in DX:AX.
 
@@ -235,7 +235,7 @@ The spill at the start of seg001 finishes `test bx, 8`, then `pop bp` / `ret 0xe
 - `ReturnBytePtr` is written from the reload return hook; what that byte represents is not pinned down.
 - `ReadEndPtr` and the four routines around it spin on `EndPtr`. The bytes do not say what advances that pointer.
 - `FillPoly` walks a point list, clips the rising edges, and calls `ScanFn` once per scanline. The offsets stored in `ScanFn` (`3ABBh` and `48D2h`) and `LineFn` (`0Ch`) are not labels in this segment.
-- `FoldScale` calls `Atan2`, then the routines at `0x32EA` and `0x32F1`. Those two are still incbin, so the divide that follows the angle is not named.
+- `SinLookup` and `CosLookup` read one of four word tables from the high byte of the angle, and may negate the result. What those tables hold is not named.
 - `FormatCall` is not the target of a far call in the EXE. The four pops are the far return address and two words. What `_sprintf` uses as its format is the word under those on the caller's stack.
 - `HaltSpin` stores `0xFBEA` under SP and halts until that word changes or the count runs out. Nothing in this chunk writes that word.
 - `ExitSavedSp` loads DGROUP and, when `SavedSp` is nonzero, uses that word as SP, then calls `_exit(0)`. `AllocBytes` is what stores `SavedSp`, along with CS and DS. Nothing in the disassembled bytes reads `SavedCs` or `SavedDs` yet.
