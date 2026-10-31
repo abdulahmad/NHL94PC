@@ -588,9 +588,9 @@ seg001:03C8,CritHandler,,new,high,"INT 24h handler. Far-calls CritRoutine",src/s
 seg001:03E4,HookCrit,,new,high,"Saves INT 24h, points it at CritHandler, and registers CritRestore with _onexit. _main calls this",src/seg/seg001.asm
 seg001:0425,CritRestore,,new,high,"Restores INT 24h unless the saved segment word equals the saved offset word",src/seg/seg001.asm
 DGROUP:6402,SavedSp,,new,medium,"ExitSavedSp uses this as SP when it is nonzero. What stores it is not in this chunk. See HANDOFF",src/seg/seg001.asm
-seg001:0440,PassFlag1,,new,medium,"Sets SI from [bp+0Eh] and the flag byte to 1, then jumps to ArgSetup. Body at 0x29D2 is still incbin. See HANDOFF",src/seg/seg001.asm
+seg001:0440,PassFlag1,,new,medium,"Sets SI from [bp+0Eh] and the flag byte to 1, then jumps to ArgSetup and FillPoly. See HANDOFF",src/seg/seg001.asm
 seg001:0452,PassFlag0,,new,medium,"Sets SI from [bp+0Eh] and the flag byte to 0, then falls into ArgSetup",src/seg/seg001.asm
-seg001:0462,ArgSetup,,new,medium,"Stores the arguments and jumps to offset 0x29D2, still incbin",src/seg/seg001.asm
+seg001:0462,ArgSetup,,new,medium,"Stores the arguments and jumps to FillPoly. ScanFn is set to 3ABBh",src/seg/seg001.asm
 seg001:0489,AddrFlag0,,new,medium,"Sets SI to the address of [bp+0Eh] and the flag byte to 0, then jumps to ArgSetup",src/seg/seg001.asm
 seg001:049B,AddrFlag1,,new,medium,"Sets SI to the address of [bp+0Eh] and the flag byte to 1, then jumps to ArgSetup",src/seg/seg001.asm
 seg001:04AE,OnexitThunk,,new,high,"jmp _onexit. EmsInit and HookCrit call this to register a routine",src/seg/seg001.asm
@@ -839,3 +839,8 @@ seg001:2940,NormFar,,new,high,"Returns the caller's far pointer with the offset 
 seg001:2953,NormDsSi,,new,high,"Folds DS:SI so SI is under 16. CopyFar calls this",src/seg/seg001.asm
 seg001:2964,NormEsDi,,new,high,"Folds ES:DI so DI is under 16. CopyFar and FillFar call this",src/seg/seg001.asm
 seg001:2976,FarZero,,new,high,"xor ax, ax and retf",src/seg/seg001.asm
+seg001:297A,FillFlag1,,new,high,"Enters FillPoly with SI from [bp+0Ah] and the flag byte 1. ScanFn is 48D2h",src/seg/seg001.asm
+seg001:2989,FillFlag0,,new,high,"Same entry with the flag byte 0",src/seg/seg001.asm
+seg001:29A7,FillAddr1,,new,high,"Enters FillPoly with SI the address of [bp+0Ah] and the flag byte 1",src/seg/seg001.asm
+seg001:29B6,FillAddr0,,new,high,"Same entry with the flag byte 0",src/seg/seg001.asm
+seg001:29D2,FillPoly,,new,high,"Walks an X,Y point list, clips rising edges, and calls ScanFn once per scanline",src/seg/seg001.asm
