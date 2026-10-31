@@ -19,4 +19,7 @@ HookInt8	equ	0xCCA
 AllocSlot	equ	0xD8C
 InitStick1	equ	0x1405
 InitStick2	equ	0x1423
+MouseOpen	equ	0x1C7B
+MouseRead	equ	0x1B34
+ReadPots	equ	0x1D72
 %include "seg/seg005.asm"

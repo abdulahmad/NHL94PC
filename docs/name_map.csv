@@ -766,3 +766,23 @@ seg001:1A66,SetDeadline,,new,high,"Stores CallCount plus the long argument at De
 seg001:1A80,WaitDeadline,,new,high,"Specific EOI for IRQ 0, then hlt until CallCount reaches Deadline. Restarts if the low word does not change",src/seg/seg001.asm
 seg001:1AA8,DeadlineReached,,new,high,"AX is 1 when CallCount is at or past Deadline",src/seg/seg001.asm
 seg001:1ABE,WaitCount,,new,high,"Spins until CallCount reaches its current value plus the long argument",src/seg/seg001.asm
+DGROUP:6420,MouseOn,,new,high,"0 means no mouse. 1 and 2 select which INT 33h function numbers are used",src/seg/seg001.asm
+DGROUP:6422,MouseX,,new,high,"Last X stored by MouseMove and MouseSample, before the shift",src/seg/seg001.asm
+DGROUP:6424,MouseY,,new,high,"Last Y stored by MouseMove and MouseSample, before the shift",src/seg/seg001.asm
+DGROUP:6426,MouseBtn,,new,high,"Last button word from INT 33h AX=3",src/seg/seg001.asm
+DGROUP:6428,MouseXShift,,new,high,"Shift applied to X between screen units and mouse units. 1 when the width is at most 320",src/seg/seg001.asm
+DGROUP:642A,MouseYShift,,new,high,"Shift applied to Y",src/seg/seg001.asm
+DGROUP:642C,MouseLevel,,new,high,"Show count. MouseShow calls AX=1 when it becomes positive. MouseHide calls AX=2 at 0",src/seg/seg001.asm
+DGROUP:642E,MouseRatioShift,,new,high,"Shift applied to the mickey counts passed to INT 33h AX=0Fh",src/seg/seg001.asm
+seg001:1ADE,MouseRatio,,new,high,"INT 33h AX=0Fh when a mouse is present. Arguments are shifted by MouseRatioShift",src/seg/seg001.asm
+seg001:1B03,MouseMove,,new,high,"INT 33h AX=4. Stores the arguments then shifts them into mouse units",src/seg/seg001.asm
+seg001:1B34,MouseRead,,new,high,"INT 33h AX=3. Stores buttons, X, and Y through three near pointers. _main calls this",src/seg/seg001.asm
+seg001:1B7B,MouseXRange,,new,high,"INT 33h AX=7, or AX=10h when MouseOn is above 1",src/seg/seg001.asm
+seg001:1BA5,MouseYRange,,new,high,"INT 33h AX=8, or AX=11h when MouseOn is not 1",src/seg/seg001.asm
+seg001:1BCD,MouseRange,,new,high,"Sets the X range and the Y range",src/seg/seg001.asm
+seg001:1C16,MouseButtons,,new,high,"INT 33h AX=3. Returns the button word",src/seg/seg001.asm
+seg001:1C3D,MouseSample,,new,high,"INT 33h AX=3. Stores the scaled position and the buttons",src/seg/seg001.asm
+seg001:1C7B,MouseOpen,,new,high,"INT 33h AX=0. Returns 0 when no driver answers. _main calls this with the screen size",src/seg/seg001.asm
+seg001:1D37,MouseShow,,new,high,"INT 33h AX=1 when the show count becomes positive",src/seg/seg001.asm
+seg001:1D56,MouseHide,,new,high,"INT 33h AX=2 when the show count reaches 0. Registered with _onexit",src/seg/seg001.asm
+seg001:1D72,ReadPots,,new,high,"Times four bits on port 201h and stores the counts and the button nibble. _main calls this",src/seg/seg001.asm
