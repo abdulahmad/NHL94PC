@@ -710,3 +710,27 @@ seg001:1441,ScaleStick1X,,new,high,"(Stick1X minus its low limit) times the X sc
 seg001:1458,ScaleStick1Y,,new,high,"The same scale for Stick1Y",src/seg/seg001.asm
 seg001:146F,ScaleStick2X,,new,high,"The same scale for Stick2X",src/seg/seg001.asm
 seg001:1486,ScaleStick2Y,,new,high,"The same scale for Stick2Y",src/seg/seg001.asm
+DGROUP:7306,KeyPtr,,new,high,"Near pointer HookKbd sets to KeyService and UnhookKbd sets to BiosKey",src/seg/seg001.asm
+DGROUP:7302,KeyHook,,new,high,"Far pointer KeyJump jumps through. SetKeyHook stores it",src/seg/seg001.asm
+DGROUP:70A8,KeyHead,,new,high,"Write index of the key queue",src/seg/seg001.asm
+DGROUP:70AA,KeyTail,,new,high,"Read index of the key queue",src/seg/seg001.asm
+DGROUP:70AC,KeyMask,,new,high,"Mask applied to the key-queue index",src/seg/seg001.asm
+DGROUP:7088,KeyBuf,,new,high,"Key queue. KbdIrq writes it and KeyService reads it",src/seg/seg001.asm
+DGROUP:70AE,KeyState,,new,high,"One byte per scan code. Make sets it, break clears it",src/seg/seg001.asm
+seg001:149E,HookKbd,,new,high,"Installs KbdIrq, Int16Hook, and BreakIrq, and registers UnhookKbd",src/seg/seg001.asm
+seg001:1538,UnhookKbd,,new,high,"Restores INT 9, INT 16h, and INT 23h and points KeyPtr at BiosKey",src/seg/seg001.asm
+seg001:1594,KbdDs,,new,high,"DS saved by HookKbd and loaded by KbdIrq and Int16Hook",src/seg/seg001.asm
+seg001:1596,KbdIrq,,new,high,"INT 9. Records the scan code and queues a translated byte",src/seg/seg001.asm
+seg001:165B,BreakIrq,,new,high,"INT 23h. Saves registers and calls seg041",src/seg/seg001.asm
+seg001:1673,Int16Hook,,new,high,"INT 16h. Calls KeyService and returns with retf 2",src/seg/seg001.asm
+seg001:1682,KeyService,,new,high,"AH 0 reads a queued key. AH 1 reports one. Other AH returns two flag bytes",src/seg/seg001.asm
+seg001:16C1,KeyDown,,new,high,"Returns the key-state byte for a scan code",src/seg/seg001.asm
+seg001:16D0,BiosKey,,new,high,"int 0x16 then ret. KeyPtr points here while the hook is removed",src/seg/seg001.asm
+seg001:16D3,ReadKey,,new,high,"Checks KeyPtr, then reads a key and clears AH when the low byte is nonzero",src/seg/seg001.asm
+seg001:16EB,KeyJump,,new,high,"Far jump through KeyHook",src/seg/seg001.asm
+seg001:16EF,ReadKeyNz,,new,high,"Checks for a key. A zero low byte is returned without a second read",src/seg/seg001.asm
+seg001:1701,SetKeyHook,,new,high,"Stores the far pointer argument at KeyHook",src/seg/seg001.asm
+seg001:1712,GetKeyHook,,new,high,"Returns the far pointer at KeyHook",src/seg/seg001.asm
+seg001:171A,WaitKey,,new,high,"Calls KeyJump until AX is nonzero",src/seg/seg001.asm
+seg001:1724,FlushKeys,,new,high,"Calls ReadKey until AX is zero",src/seg/seg001.asm
+seg001:172D,WaitKeyUntil,,new,high,"Calls KeyJump until a key arrives or the long from seg001:1A0E passes the stored long",src/seg/seg001.asm
