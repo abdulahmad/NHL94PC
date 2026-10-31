@@ -4,7 +4,7 @@
 
 - Full build MATCH (SHA-1 `d94450ddff26528bddac6646c234277076fd36cb`, 244,854 bytes); `tools/verify_all.sh` MATCH.
 - seg056 is source: the resident RTLink/Plus manager and the overlay thunks (10,992 bytes). seg057 was the thunk tail and is merged into seg056.
-- seg000 is entirely source (`src/seg/seg000.asm`). Nothing in it is incbin. seg005 is source. seg001 is source from the start through `FillFarZero` (offset `0x1F00`); the rest is incbin. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`) and seg056.
+- seg000 is entirely source (`src/seg/seg000.asm`). Nothing in it is incbin. seg005 is source. seg001 is source from the start through `LineOk` (offset `0x208B`); the rest is incbin. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`) and seg056.
 - seg011 is still a false split (merge into seg010 when seg010 is disassembled). The `ovl_*` slices were not resliced.
 
 ## Known facts
@@ -194,6 +194,8 @@ The spill at the start of seg001 finishes `test bx, 8`, then `pop bp` / `ret 0xe
 `FoldScale` calls `Atan2`, then folds the angle into `0..100h` and divides a shifted argument by a second result. The two routines after the angle are still incbin. `MapEsBx` maps a long and returns ES:BX. `LookupArg`, `Lookup`, and `LookupMsg` search a 4-byte key in that block. A space matches a 0 in the key. A hit returns a long built from the record.
 
 `FillFar` writes one byte through a far pointer for a long count. Offsets stay under 16, then the fill moves 32K at a time. `FillFarZero` writes zeros. The dword path is the same test `CopyFar` uses.
+
+`LineOpen` orders two points into the record at `[bp+0Eh]` and stores a direction byte. `LineClip` does the same after a box test: both ends outside one edge is a reject. A line with no clip bits returns 0. The equal-Y path, the overflow path, and the outcode dispatch are still incbin.
 
 `FindFar` and `FindFarMsg` look up a long key in a far table and return a far pointer. `FindFarList` and `FindFarQuiet` walk a list of keys. `FarToLinear` and `LinearToFar` convert between a far pointer and the 20-bit address. `LinearToFarRegs` does that conversion with the address already in DX:AX.
 

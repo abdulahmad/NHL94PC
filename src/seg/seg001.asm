@@ -4338,4 +4338,207 @@ L1EE6:
 	retf
 	db	0x00
 
-	incbin	"Extracted/segments/seg001.bin", 0x1F00, 0x33E0 - 0x1F00
+; Order two points into the record at [bp+0Eh]. LineOpen skips the box test.
+; LineClip rejects a line when both ends share an outcode against the box at
+; 74F2h/74F4h and 74FCh/74FEh, and otherwise stores a direction byte. The
+; equal-Y path, the overflow path, and the outcode dispatch are still incbin.
+; A line with no clip bits returns 0 from LineOk.
+
+LineOpen:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	add	sp, -4
+	push	si
+	push	di
+	mov	byte [bp - 3], 1
+	jmp	short LineBody
+
+LineClip:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	add	sp, -4
+	push	si
+	push	di
+	mov	byte [bp - 3], 0
+
+LineBody:
+	mov	si, word [bp + 0xe]
+	mov	word [si + 0x12], 0xff
+	db	0x33, 0xC0			; xor ax, ax
+	mov	word [si], ax
+	mov	word [si + 4], ax
+	mov	word [si + 0x14], ax
+	mov	word [si + 0x16], ax
+	mov	word [si + 0x18], ax
+	mov	word [si + 0x1a], ax
+	mov	ax, word [bp + 8]
+	mov	bx, word [bp + 0xc]
+	mov	cx, word [bp + 6]
+	mov	dx, word [bp + 0xa]
+	db	0x3B, 0xC3			; cmp ax, bx
+	jg	short L1F53
+	mov	word [si + 2], cx
+	mov	word [si + 6], ax
+	mov	word [si + 8], dx
+	mov	word [si + 0xa], bx
+	jmp	short L1F5F
+L1F53:
+	mov	word [si + 2], dx
+	mov	word [si + 6], bx
+	mov	word [si + 8], cx
+	mov	word [si + 0xa], ax
+L1F5F:
+	jne	short L1F64
+	jmp	near 0x252E			; still incbin
+L1F64:
+	db	0x33, 0xD2			; xor dx, dx
+	cmp	byte [bp - 3], 0
+	jne	short L1FCD
+	mov	ax, word [si + 6]
+	mov	bx, word [0x74f2]
+	mov	cx, word [0x74f4]
+	db	0x3B, 0xC1			; cmp ax, cx
+	jl	short L1F80
+	mov	dl, 8
+	jmp	near 0x233B			; still incbin
+L1F80:
+	db	0x3B, 0xC3			; cmp ax, bx
+	jge	short L1F87
+	or	dh, 4
+L1F87:
+	mov	ax, word [si + 0xa]
+	db	0x3B, 0xC3			; cmp ax, bx
+	jge	short L1F93
+	mov	dl, 4
+	jmp	near 0x233B			; still incbin
+L1F93:
+	db	0x3B, 0xC1			; cmp ax, cx
+	jl	short L1F9A
+	or	dl, 8
+L1F9A:
+	mov	bx, word [0x74fc]
+	mov	cx, word [0x74fe]
+	mov	ax, word [si + 2]
+	db	0x3B, 0xC3			; cmp ax, bx
+	jge	short L1FAC
+	or	dh, 2
+L1FAC:
+	db	0x3B, 0xC1			; cmp ax, cx
+	jl	short L1FB3
+	or	dh, 1
+L1FB3:
+	mov	ax, word [si + 8]
+	db	0x3B, 0xC3			; cmp ax, bx
+	jge	short L1FBD
+	or	dl, 2
+L1FBD:
+	db	0x3B, 0xC1			; cmp ax, cx
+	jl	short L1FC4
+	or	dl, 1
+L1FC4:
+	test	dh, dl
+	je	short L1FCD
+	db	0x22, 0xD6			; and dl, dh
+	jmp	near 0x233B			; still incbin
+L1FCD:
+	db	0x0A, 0xD6			; or dl, dh
+	db	0x32, 0xF6			; xor dh, dh
+	mov	word [bp - 2], dx
+	mov	cx, word [si + 0xa]
+	sub	cx, word [si + 6]
+	jno	short L1FDF
+L1FDC:
+	jmp	near 0x25D6			; still incbin
+L1FDF:
+	mov	dx, word [si + 8]
+	sub	dx, word [si + 2]
+	jo	short L1FDC
+	jne	short L1FF3
+	inc	cx
+	mov	word [si + 0xe], cx
+	mov	byte [si + 0x12], 2
+	jmp	short L2059
+L1FF3:
+	jl	short L203B
+	db	0x3B, 0xD1			; cmp dx, cx
+	jb	short L202F
+	je	short L2035
+	mov	byte [si + 0x12], 8
+L1FFF:
+	db	0x87, 0xCA			; xchg dx, cx
+L2001:
+	cmp	cx, word [0x78d2]
+	jge	short L2017
+	db	0x8B, 0xD9			; mov bx, cx
+	db	0x03, 0xDB			; add bx, bx
+	mov	bx, word [bx + 0x78d4]
+	db	0x03, 0xDA			; add bx, dx
+	db	0x03, 0xDA			; add bx, dx
+	mov	ax, word [bx]
+	jmp	short L2024
+L2017:
+	db	0x33, 0xC0			; xor ax, ax
+	div	cx
+	db	0x8B, 0xD9			; mov bx, cx
+	shr	bx, 1
+	db	0x2B, 0xDA			; sub bx, dx
+	adc	ax, 0
+L2024:
+	mov	word [si + 0xc], ax
+	inc	cx
+	jo	short L1FDC
+	mov	word [si + 0xe], cx
+	jmp	short L2059
+L202F:
+	mov	byte [si + 0x12], 6
+	jmp	short L2001
+L2035:
+	mov	byte [si + 0x12], 4
+	jmp	short L2055
+L203B:
+	neg	dx
+	jo	short L1FDC
+	db	0x3B, 0xD1			; cmp dx, cx
+	jb	short L204B
+	je	short L2051
+	mov	byte [si + 0x12], 7
+	jmp	short L1FFF
+L204B:
+	mov	byte [si + 0x12], 5
+	jmp	short L2001
+L2051:
+	mov	byte [si + 0x12], 3
+L2055:
+	inc	cx
+	mov	word [si + 0xe], cx
+L2059:
+	mov	bx, word [bp - 2]
+	db	0x03, 0xDB			; add bx, bx
+	je	short LineOk
+	jmp	word [cs:bx+LineTab]
+LineTab:
+	dw	LineOk
+	dw	0x23B4
+	dw	0x221F
+	dw	0x221F
+	dw	0x208B
+	dw	0x208B
+	dw	0x208B
+	dw	0x208B
+	dw	0x214D
+	dw	0x214D
+	dw	0x214D
+	dw	0x214D
+	dw	0x208B
+	dw	0x208B
+	dw	0x208B
+	dw	0x208B
+
+LineOk:
+	db	0x33, 0xC0			; xor ax, ax
+	pop	di
+	pop	si
+	leave
+	retf
+
+	incbin	"Extracted/segments/seg001.bin", 0x208B, 0x33E0 - 0x208B

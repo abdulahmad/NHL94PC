@@ -800,3 +800,8 @@ seg001:1E51,AtanDecTwo,,new,high,"Subtract 200h",src/seg/seg001.asm
 seg001:1E56,FillFar,,new,high,"Fills a far buffer with the byte argument. Long count. Same 32K window as CopyFar",src/seg/seg001.asm
 seg001:1E5F,FillFarZero,,new,high,"Same fill with a zero byte",src/seg/seg001.asm
 seg001:1E65,FillFarBody,,new,high,"Repeats the byte into AH, normalizes ES:DI, then stosw or stosd",src/seg/seg001.asm
+seg001:1F00,LineOpen,,new,high,"Orders two points into the record at bp+0Eh and stores a direction byte. Skips the box test",src/seg/seg001.asm
+seg001:1F0E,LineClip,,new,high,"Same setup after a box test. Both ends outside one edge is a reject",src/seg/seg001.asm
+seg001:1F1A,LineBody,,new,high,"Shared point ordering, outcodes, and direction byte",src/seg/seg001.asm
+seg001:2065,LineTab,,new,high,"Sixteen words. The outcode selects the still-incbin continuation, or LineOk",src/seg/seg001.asm
+seg001:2085,LineOk,,new,high,"xor ax, ax and the epilogue. Taken when the outcode is 0",src/seg/seg001.asm
