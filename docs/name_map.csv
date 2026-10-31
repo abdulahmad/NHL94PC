@@ -457,3 +457,15 @@ seg058:0035,RtlFileAdjust,0035,new,medium,"Dword in seg058 added to a seek when 
 seg058:004A,RtlErrorSlot,004A,new,medium,"Far pointer ReportFileError and ReportOverlayError jump through. seg058 and seg000 are still incbin",src/seg/seg056.asm
 seg056:equ,SectionStride,equ,new,high,"Section records are 18 bytes",src/seg/seg056.asm
 seg056:equ,FileSlotSize,equ,new,high,"Each overlay file slot is 128 bytes",src/seg/seg056.asm
+seg000:0010,_outp,,MSC,high,"Far. Writes the byte at bp+8 to the port at bp+6",src/seg/seg000.asm
+seg000:001E,_inp,,MSC,high,"Far. Reads the port at bp+6 and returns the byte in AX",src/seg/seg000.asm
+seg000:002B,VgaCopyWrapped,,new,high,"Write mode 1 copy of a rectangle out of the circular VGA buffer. Source wraps by 0x4200. Args dest column row width height",src/seg/seg000.asm
+seg000:00CB,VgaCopyToPitch,,new,high,"Latched copy of packed rows into a pitched destination. Args source dest width height",src/seg/seg000.asm
+seg000:0123,VgaCopyFromPitch,,new,high,"Latched copy of pitched rows into a packed destination. Args source dest width height",src/seg/seg000.asm
+seg000:017B,VgaStamp8,,new,high,"8-row 2-byte VGA copy. Flag 0x800 swaps the two bytes one plane at a time. Flag 0x1000 walks rows backward",src/seg/seg000.asm
+seg000:025C,VgaPageFlip,,new,high,"Waits for vertical retrace then sets the CRT start address and the pel pan. Toggles the page word",src/seg/seg000.asm
+seg000:02D5,VgaStorePlanes,,new,high,"Copies two bitmaps into VGA one plane at a time. Args far sources and sizes. Fixed destination",src/seg/seg000.asm
+seg000:0360,VgaCopyStrip,,new,high,"Latched copy of a fixed strip out of the circular VGA buffer. Arg destination",src/seg/seg000.asm
+seg000:03D9,VgaCopyBlock,,new,high,"Latched copy of one fixed-length VGA block. Args source destination",src/seg/seg000.asm
+seg000:041D,VgaCopyBytes,,new,high,"Latched copy of a caller-supplied byte count inside VGA memory",src/seg/seg000.asm
+seg000:0461,VgaCopyRect,,new,high,"Latched copy of a pitched rectangle onto another pitched rectangle",src/seg/seg000.asm

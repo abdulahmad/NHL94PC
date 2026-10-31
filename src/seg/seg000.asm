@@ -1,8 +1,752 @@
-; Segment seg000. Microsoft C startup and the C runtime, and the VGA
-; copies that were linked in front of them. __astart (seg056) jumps to
-; MscStartup. The bytes before that, and everything after __chkstk, are
-; still the original image.
-	incbin	"Extracted/segments/seg000.bin", 0, 0x4CA
+; Segment seg000. VGA copies and port I/O, then the Microsoft C startup
+; and the C runtime. __astart (seg056) jumps to MscStartup. Everything
+; after __chkstk is still the original image.
+
+; Sixteen zero bytes. The first routine starts on the next paragraph.
+	db	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+
+; VGA ports and the graphics window.
+VgaGc		equ	0x3CE
+VgaGcData	equ	0x3CF
+VgaSeq		equ	0x3C4
+VgaSeqData	equ	0x3C5
+VgaAttr		equ	0x3C0
+VgaCrtc		equ	0x3D4
+VgaStatus	equ	0x3DA
+VgaMem		equ	0xA000
+
+
+; _outp: write one byte to an I/O port.
+; Arguments: port, value. No result.
+_outp:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	dx
+	mov	dx, word [bp+6]			; port
+	mov	al, byte [bp+8]			; value
+	out	dx, al
+	pop	dx
+	pop	bp
+	retf
+
+; _inp: read one byte from an I/O port.
+; Argument: port. Result in AX, high byte cleared.
+_inp:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	dx
+	mov	dx, word [bp+6]			; port
+	in	al, dx
+	db	0x32, 0xE4			; xor	ah, ah
+	pop	dx
+	pop	bp
+	retf
+
+; VgaCopyWrapped: latched VGA copy of one rectangle out of the circular
+; buffer. Write mode 1, all four planes. The source wraps inside the
+; buffer. Arguments: destination, column, row, width, height.
+VgaCopyWrapped:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	ds
+	push	di
+	push	si
+	mov	dx, VgaGc			; graphics controller, mode register
+	mov	ax, 5
+	out	dx, al
+	inc	dx
+	in	al, dx
+	push	ax
+	and	al, 0xfc			; write mode 1: latched copy
+	inc	al
+	out	dx, al
+	mov	dx, VgaSeq			; sequencer, map mask
+	mov	ax, 2
+	out	dx, al
+	inc	dx
+	in	al, dx
+	push	ax
+	and	al, 0xf0			; all four planes
+	add	ax, strict word 0xf
+	out	dx, al
+	mov	bx, word [bp+0xa]
+	mov	cx, word [bp+8]
+	mov	ax, word [0x8fc]		; row stride
+	mul	bx
+	mov	di, word [bp+6]
+	db	0x03, 0xF8			; add	di, ax
+	db	0x03, 0xF9			; add	di, cx
+	mov	ax, 0x60
+	mov	dx, word [0xb0c2]
+	shl	dx, 3
+	db	0x03, 0xDA			; add	bx, dx
+	cmp	bx, 0xb0			; keep the row inside the circular buffer
+	jb	.nowrap
+	sub	bx, 0xb0
+.nowrap:
+	mul	bx
+	mov	si, 0x86a0			; source base in VGA memory
+	db	0x03, 0xF0			; add	si, ax
+	db	0x03, 0xF1			; add	si, cx
+	mov	dx, word [0xb096]
+	db	0x03, 0xF2			; add	si, dx
+	db	0x03, 0xF2			; add	si, dx
+	mov	ax, word [bp+0xc]
+	mov	bx, word [0x8fc]
+	db	0x2B, 0xD8			; sub	bx, ax
+	mov	dx, 0x60
+	db	0x2B, 0xD0			; sub	dx, ax
+	cld
+	mov	cx, VgaMem			; VGA graphics window
+	mov	ds, cx
+	mov	es, cx
+	db	0x3D, 0x52, 0x00		; cmp	ax, 0x52
+	jb	.row
+	nop
+.row:
+	db	0x8B, 0xC8			; mov	cx, ax
+	rep movsb
+	db	0x03, 0xFB			; add	di, bx
+	db	0x03, 0xF2			; add	si, dx
+	cmp	si, 0xc8a0			; wrap the source
+	jb	.srcok
+	sub	si, 0x4200
+.srcok:
+	dec	word [bp+0xe]			; one less row
+	jne	.row
+	mov	dx, VgaSeqData			; restore the map mask and the mode
+	pop	ax
+	out	dx, al
+	pop	ax
+	mov	dx, VgaGcData
+	out	dx, al
+	pop	si
+	pop	di
+	pop	ds
+	pop	bp
+	retf
+
+; VgaCopyToPitch: latched copy of packed rows into a pitched destination.
+; Arguments: source, destination, width, height. The row stride is the
+; near word used by the other copies.
+VgaCopyToPitch:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	ds
+	push	di
+	push	si
+	mov	dx, VgaGc
+	mov	ax, 5
+	out	dx, al
+	inc	dx
+	in	al, dx
+	push	ax
+	and	al, 0xfc
+	inc	al
+	out	dx, al
+	mov	dx, VgaSeq
+	mov	ax, 2
+	out	dx, al
+	inc	dx
+	in	al, dx
+	push	ax
+	and	al, 0xf0
+	add	ax, strict word 0xf
+	out	dx, al
+	mov	bx, word [0x8fc]
+	sub	bx, word [bp+0xa]
+	mov	ax, VgaMem
+	mov	ds, ax
+	mov	es, ax
+	mov	si, word [bp+6]
+	mov	di, word [bp+8]
+	mov	ax, word [bp+0xc]
+	cld
+	mov	dx, word [bp+0xa]
+.row:
+	db	0x8B, 0xCA			; mov	cx, dx
+	rep movsb
+	db	0x03, 0xFB			; add	di, bx. destination moves down one row
+	dec	ax
+	jne	.row
+	mov	dx, VgaSeqData
+	pop	ax
+	out	dx, al
+	pop	ax
+	mov	dx, VgaGcData
+	out	dx, al
+	pop	si
+	pop	di
+	pop	ds
+	pop	bp
+	retf
+
+; VgaCopyFromPitch: latched copy of pitched rows into a packed destination.
+; Arguments: source, destination, width, height.
+VgaCopyFromPitch:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	ds
+	push	di
+	push	si
+	mov	dx, VgaGc
+	mov	ax, 5
+	out	dx, al
+	inc	dx
+	in	al, dx
+	push	ax
+	and	al, 0xfc
+	inc	al
+	out	dx, al
+	mov	dx, VgaSeq
+	mov	ax, 2
+	out	dx, al
+	inc	dx
+	in	al, dx
+	push	ax
+	and	al, 0xf0
+	add	ax, strict word 0xf
+	out	dx, al
+	mov	bx, word [0x8fc]
+	sub	bx, word [bp+0xa]
+	mov	ax, VgaMem
+	mov	ds, ax
+	mov	es, ax
+	mov	si, word [bp+6]
+	mov	di, word [bp+8]
+	mov	ax, word [bp+0xc]
+	cld
+	mov	dx, word [bp+0xa]
+.row:
+	db	0x8B, 0xCA			; mov	cx, dx
+	rep movsb
+	db	0x03, 0xF3			; add	si, bx. source moves down one row
+	dec	ax
+	jne	.row
+	mov	dx, VgaSeqData
+	pop	ax
+	out	dx, al
+	pop	ax
+	mov	dx, VgaGcData
+	out	dx, al
+	pop	si
+	pop	di
+	pop	ds
+	pop	bp
+	retf
+
+; VgaStamp8: copy an 8-row, 2-byte VGA block. Bit 0x800 selects the
+; plane-by-plane path that swaps the two bytes. Bit 0x1000 walks the
+; rows backward. Arguments: source, destination, flags.
+VgaStamp8:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	ds
+	push	di
+	push	si
+	mov	bx, 0x60
+	mov	ax, VgaMem
+	mov	ds, ax
+	mov	es, ax
+	mov	si, word [bp+6]
+	mov	di, word [bp+8]
+	test	word [bp+0xa], 0x800		; bit 0x800: swap the two bytes, one plane at a time
+	je	.latched
+	jmp	.planes
+	nop
+.latched:
+	mov	dx, VgaGc
+	mov	ax, 5
+	out	dx, al
+	inc	dx
+	in	al, dx
+	and	al, 0xfc
+	inc	al
+	out	dx, al
+	mov	dx, VgaSeq
+	mov	ax, 2
+	out	dx, al
+	inc	dx
+	in	al, dx
+	and	al, 0xf0
+	add	ax, strict word 0xf
+	out	dx, al
+	mov	cx, 8
+	test	word [bp+0xa], 0x1000		; bit 0x1000: walk the rows backward
+	je	.down
+	shl	bx, 3
+	db	0x03, 0xFB			; add	di, bx
+	shr	bx, 3
+	db	0x2B, 0xFB			; sub	di, bx
+	neg	bx
+.down:
+	sub	bx, 2
+	cld
+.byte:
+	movsb
+	movsb
+	db	0x03, 0xFB			; add	di, bx
+	loop	.byte
+	jmp	.done
+	nop
+.planes:
+	mov	dx, VgaGc
+	mov	ax, 5
+	out	dx, al
+	inc	dx
+	in	al, dx
+	and	al, 0xfc			; write mode 0
+	out	dx, al
+	mov	dx, VgaGc
+	mov	al, 4				; read map select
+	out	dx, al
+	inc	dx
+	in	al, dx
+	and	al, 0xfc
+	out	dx, al
+	mov	dx, VgaSeq
+	mov	al, 2
+	out	dx, al
+	inc	dx
+	in	al, dx
+	and	al, 0xf0
+	add	al, 8				; start on plane 3
+	out	dx, al
+	mov	ah, 8
+	test	word [bp+0xa], 0x1000
+	je	.down2
+	shl	bx, 3
+	db	0x03, 0xFB			; add	di, bx
+	shr	bx, 3
+	db	0x2B, 0xFB			; sub	di, bx
+	neg	bx
+.down2:
+	push	si
+	push	di
+	mov	cx, 4
+.plane:
+	pop	di
+	pop	si
+	push	si
+	push	di
+	push	cx
+	mov	cx, 8
+.pair:
+	mov	al, byte [si]
+	mov	byte [es:di+1], al		; exchange the two bytes
+	mov	al, byte [si+1]
+	mov	byte [es:di], al
+	db	0x03, 0xFB			; add	di, bx
+	add	si, 2
+	loop	.pair
+	mov	dx, VgaSeq
+	mov	al, 2
+	out	dx, al
+	inc	dx
+	in	al, dx
+	and	al, 0xf0
+	shr	ah, 1				; next plane
+	db	0x02, 0xC4			; add	al, ah
+	out	dx, al
+	mov	dx, VgaGc
+	mov	al, 4
+	out	dx, al
+	inc	dx
+	in	al, dx
+	inc	al
+	out	dx, al
+	pop	cx
+	loop	.plane
+	in	al, dx
+	dec	al
+	out	dx, al
+	pop	di
+	pop	si
+.done:
+	pop	si
+	pop	di
+	pop	ds
+	pop	bp
+	retf
+
+; VgaPageFlip: wait for the vertical retrace, then point the CRT at the
+; other page and set the pel pan. No arguments. Toggles the page word.
+VgaPageFlip:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	di
+	push	ax
+	push	bx
+	push	cx
+	push	dx
+	mov	bx, word [0x74dc]
+	and	bx, 1				; toggle the displayed page
+	xor	bx, 1
+	mov	word [0x74dc], bx
+	cmp	bx, 1
+	je	.page1
+	mov	di, 0xb00			; the two page bases
+	jmp	.origin
+	nop
+.page1:
+	mov	di, 0x4400
+.origin:
+	mov	ax, word [0x8fc]
+	mul	word [0xb092]
+	mov	bx, word [0xb094]
+	db	0x8B, 0xCB			; mov	cx, bx
+	shr	bx, 1
+	shr	bx, 1
+	db	0x03, 0xD8			; add	bx, ax
+	db	0x03, 0xDF			; add	bx, di
+	and	cx, 3
+	shl	cx, 1
+	mov	dx, VgaStatus			; input status: wait until the retrace is active
+.blank:
+	in	al, dx
+	and	al, 8
+	cmp	al, 8
+	jne	.blank
+	mov	dx, VgaCrtc			; CRT start address, high then low
+	mov	al, 0xc
+	db	0x8A, 0xE7			; mov	ah, bh
+	out	dx, ax
+	inc	ax
+	db	0x8A, 0xE3			; mov	ah, bl
+	out	dx, ax
+	mov	dx, VgaStatus			; wait until the retrace ends
+.visible:
+	in	al, dx
+	and	al, 8
+	cmp	al, 8
+	je	.visible
+.blank2:
+	in	al, dx
+	and	al, 8
+	cmp	al, 8
+	jne	.blank2
+	mov	dx, VgaAttr			; attribute controller, pel pan
+	mov	al, 0x33
+	out	dx, al
+	in	al, dx
+	and	ax, 0xf0
+	db	0x03, 0xC1			; add	ax, cx
+	out	dx, al
+	pop	dx
+	pop	cx
+	pop	bx
+	pop	ax
+	pop	di
+	pop	bp
+	retf
+
+; VgaStorePlanes: copy two bitmaps into VGA memory, one plane at a time.
+; Arguments: pointer to the two far sources, pointer to the two sizes.
+; Both images land at the same VGA offset, one after the other.
+VgaStorePlanes:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	ds
+	push	si
+	push	di
+	mov	dx, VgaGc
+	mov	ax, 5
+	out	dx, al
+	inc	dx
+	in	al, dx
+	push	ax
+	and	al, 0xfc			; write mode 0
+	out	dx, al
+	mov	dx, VgaSeq
+	mov	ax, 2
+	out	dx, al
+	inc	dx
+	in	al, dx
+	push	ax
+	mov	ah, 1				; plane 0 first
+	and	al, 0xf0
+	mov	si, word [bp+8]
+	mov	bx, word [si]
+	shr	bx, 2				; byte count, four planes
+	push	ds
+	mov	si, word [bp+6]
+	lds	si, [si]			; far pointer to the first bitmap
+	mov	cx, VgaMem
+	mov	es, cx
+	mov	cx, 4
+.plane:
+	db	0x02, 0xC4			; add	al, ah
+	out	dx, al
+	db	0x2A, 0xC4			; sub	al, ah
+	shl	ah, 1
+	push	cx
+	db	0x8B, 0xCB			; mov	cx, bx
+	mov	di, 0xda78			; fixed VGA destination
+	cld
+	rep movsb
+	pop	cx
+	loop	.plane
+	pop	ds
+	push	ds
+	mov	si, word [bp+8]
+	mov	bx, word [si+2]
+	shr	bx, 2
+	mov	si, word [bp+6]
+	lds	si, [si+4]			; second bitmap
+	mov	cx, 4
+	mov	ah, 1
+.plane2:
+	push	di
+	push	cx
+	db	0x02, 0xC4			; add	al, ah
+	out	dx, al
+	db	0x2A, 0xC4			; sub	al, ah
+	shl	ah, 1
+	db	0x8B, 0xCB			; mov	cx, bx
+	rep movsb
+	pop	cx
+	pop	di
+	loop	.plane2
+	pop	ds
+	mov	dx, VgaSeq
+	mov	ax, 2
+	out	dx, al
+	inc	dx
+	pop	ax
+	out	dx, al
+	mov	dx, VgaGc
+	mov	ax, 5
+	out	dx, al
+	inc	dx
+	pop	ax
+	out	dx, al
+	pop	di
+	pop	si
+	pop	ds
+	pop	bp
+	retf
+
+; VgaCopyStrip: latched copy of a fixed strip out of the circular buffer.
+; Argument: destination offset.
+VgaCopyStrip:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	ds
+	push	si
+	push	di
+	mov	dx, VgaGc
+	mov	ax, 5
+	out	dx, al
+	inc	dx
+	in	al, dx
+	push	ax
+	and	al, 0xfc
+	inc	al
+	out	dx, al
+	mov	dx, VgaSeq
+	mov	ax, 2
+	out	dx, al
+	inc	dx
+	in	al, dx
+	push	ax
+	and	al, 0xf0
+	add	al, 0xf
+	out	dx, al
+	mov	ax, word [0xb0c2]		; row inside the circular buffer
+	mov	dx, 0x300
+	mul	dx
+	db	0x8B, 0xF0			; mov	si, ax
+	add	si, 0x86a0			; buffer base
+	mov	dx, word [0xb096]
+	db	0x03, 0xF2			; add	si, dx
+	db	0x03, 0xF2			; add	si, dx
+	mov	di, word [bp+6]
+	mov	ax, 0xb0
+	mov	bx, 0x52
+	mov	dx, 0xe
+	mov	cx, VgaMem
+	mov	ds, cx
+	mov	es, cx
+.row:
+	db	0x8B, 0xCB			; mov	cx, bx
+	rep movsb
+	db	0x03, 0xF2			; add	si, dx
+	cmp	si, 0xc8a0			; wrap
+	jb	.srcok
+	sub	si, 0x4200
+.srcok:
+	dec	ax
+	jne	.row
+	mov	dx, VgaSeq
+	mov	ax, 2
+	out	dx, al
+	inc	dx
+	pop	ax
+	out	dx, al
+	mov	dx, VgaGc
+	mov	ax, 5
+	out	dx, al
+	inc	dx
+	pop	ax
+	out	dx, al
+	pop	di
+	pop	si
+	pop	ds
+	pop	bp
+	retf
+
+; VgaCopyBlock: latched copy of one fixed-size VGA block.
+; Arguments: source, destination.
+VgaCopyBlock:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	ds
+	push	di
+	push	si
+	mov	dx, VgaGc
+	mov	ax, 5
+	out	dx, al
+	inc	dx
+	in	al, dx
+	push	ax
+	and	al, 0xfc
+	inc	al
+	out	dx, al
+	mov	dx, VgaSeq
+	mov	ax, 2
+	out	dx, al
+	inc	dx
+	in	al, dx
+	push	ax
+	and	al, 0xf0
+	add	ax, strict word 0xf
+	out	dx, al
+	mov	ax, VgaMem
+	mov	ds, ax
+	mov	es, ax
+	mov	si, word [bp+6]
+	mov	di, word [bp+8]
+	mov	cx, 0xa40			; fixed length
+	cld
+	rep movsb
+	pop	ax
+	out	dx, al
+	pop	ax
+	mov	dx, VgaGcData
+	out	dx, al
+	pop	si
+	pop	di
+	pop	ds
+	pop	bp
+	retf
+
+; VgaCopyBytes: latched copy of a byte count inside VGA memory.
+; Arguments: source, destination, count.
+VgaCopyBytes:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	ds
+	push	di
+	push	si
+	mov	dx, VgaGc
+	mov	ax, 5
+	out	dx, al
+	inc	dx
+	in	al, dx
+	push	ax
+	and	al, 0xfc
+	inc	al
+	out	dx, al
+	mov	dx, VgaSeq
+	mov	ax, 2
+	out	dx, al
+	inc	dx
+	in	al, dx
+	push	ax
+	and	al, 0xf0
+	add	ax, strict word 0xf
+	out	dx, al
+	mov	ax, VgaMem
+	mov	ds, ax
+	mov	es, ax
+	mov	si, word [bp+6]
+	mov	di, word [bp+8]
+	mov	cx, word [bp+0xa]		; byte count
+	cld
+	rep movsb
+	pop	ax
+	out	dx, al
+	pop	ax
+	mov	dx, VgaGcData
+	out	dx, al
+	pop	si
+	pop	di
+	pop	ds
+	pop	bp
+	retf
+
+; VgaCopyRect: latched copy of a pitched rectangle to another pitched
+; rectangle. Arguments: source base, destination base, column, row,
+; width, height.
+VgaCopyRect:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	ds
+	push	di
+	push	si
+	mov	dx, VgaGc
+	mov	ax, 5
+	out	dx, al
+	inc	dx
+	in	al, dx
+	push	ax
+	and	al, 0xfc
+	inc	al
+	out	dx, al
+	mov	dx, VgaSeq
+	mov	ax, 2
+	out	dx, al
+	inc	dx
+	in	al, dx
+	push	ax
+	and	al, 0xf0
+	add	ax, strict word 0xf
+	out	dx, al
+	mov	bx, word [bp+0xc]
+	mov	cx, word [bp+0xa]
+	mov	ax, word [0x8fc]		; row stride
+	mul	bx
+	db	0x8B, 0xF8			; mov	di, ax
+	db	0x03, 0xF9			; add	di, cx
+	db	0x8B, 0xF7			; mov	si, di
+	add	di, word [bp+8]
+	add	si, word [bp+6]
+	mov	ax, word [bp+0xe]
+	mov	bx, word [0x8fc]
+	db	0x2B, 0xD8			; sub	bx, ax
+	cld
+	mov	cx, VgaMem
+	mov	ds, cx
+	mov	es, cx
+.row:
+	db	0x8B, 0xC8			; mov	cx, ax
+	rep movsb
+	db	0x03, 0xFB			; add	di, bx. both source and destination are pitched
+	db	0x03, 0xF3			; add	si, bx
+	dec	word [bp+0x10]
+	jne	.row
+	mov	dx, VgaSeqData
+	pop	ax
+	out	dx, al
+	pop	ax
+	mov	dx, VgaGcData
+	out	dx, al
+	pop	si
+	pop	di
+	pop	ds
+	pop	bp
+	retf
+
 
 ; Targets that are still the original bytes later in this segment.
 __FF_MSGBANNER	equ	0x160C			; prints the runtime banner
