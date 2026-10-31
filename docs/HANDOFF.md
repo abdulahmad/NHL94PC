@@ -4,7 +4,7 @@
 
 - Full build MATCH (SHA-1 `d94450ddff26528bddac6646c234277076fd36cb`, 244,854 bytes); `tools/verify_all.sh` MATCH.
 - seg056 is source: the resident RTLink/Plus manager and the overlay thunks (10,992 bytes). seg057 was the thunk tail and is merged into seg056.
-- seg000 is source from the start through `DosMapErr` (`src/seg/seg000.asm`): VGA copies, `MscStartup`, and the low-level file, DOS, string, and runtime-message routines. The bytes after `DosMapErr` are still incbin. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`) and seg056.
+- seg000 is source from the start through `_output` (`src/seg/seg000.asm`). The bytes after `_output` are still incbin. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`) and seg056.
 - seg011 is still a false split (merge into seg010 when seg010 is disassembled). The `ovl_*` slices were not resliced.
 
 ## Known facts
@@ -147,6 +147,10 @@ NHL 95 PC does not load code overlays. Its retail EXE is one Watcom LE image bou
 A search of that tree for `RTLink`, `.OVL` and an overlay manager found nothing else. Nothing there describes the 94 thunks or the `.OVL`
 file layout. The 94 load path above is from this EXE and `lst/game/`.
 
+## seg000 formatted output
+
+`_flsbuf` flushes one FILE. `_stbuf` and `_ftbuf` add and drop the temporary buffer around `_printf`. `_output` is the formatter. Its character switch is the eight words just before the routine.
+
 ## seg000 file and DOS routines
 
 From `__chkstk` through `DosMapErr`: `_printf`, `_open` / `_sopen`, `_read`, `_write`, `_close`, `_lseek`, the `_dos_*` calls, `_strcpy`, `_strcat`, `_strlen`, `_strncpy`, `_stricmp`, `rand` / `srand`, `atexit` / `_onexit`, the long multiply and divide helpers, and the runtime messages (`__FF_MSGBANNER`, `__NMSG_TEXT`, `__NMSG_WRITE`, `__nullcheck`). `DosRet` is the shared success and error return.
@@ -168,7 +172,11 @@ The `_main` call pushes three words, so the pointers are near. That is the mediu
 - `NullStartup6` and `NullStartup4` (seg005 offsets 6 and 4). Each is a `retf`. The usual MSC pair in that slot is `__FPMATH` and `__fptrap`, or the null `__setargv` and `__setenvp`. The bodies are identical, so neither pair is named yet.
 - `InitRuntime` does the divide-handler install, the `_C_FILE_INFO` inherit, the `_osfile` device bits and `_initterm`. It is one far function. The MSC library symbol for that whole function was not confirmed.
 - `_initterm` here walks the far-pointer table from the top down. Later MSC `_initterm` walks upward. The name is the job; the direction is this copy's.
-- `FpFail` (offset `0x162E`, still incbin) is `mov ax, 2` then a jump to `AmsgExit`. That is the R6002 path. The public name is not confirmed.
+- `FpFail` is `mov ax, 2` then a jump to `AmsgExit`. That is the R6002 path. The public name is not confirmed.
+- `JumpAhead` is a near jump into the bytes that are still incbin. Its target is not named yet.
+- `StrIndexInSet` returns an index, not a pointer, so it is not named `_strpbrk`.
+- `EmulatedFloat` uses the floating-point emulator interrupts. The operation it performs is not named.
+- `CallArg` calls through a pointer argument. The library symbol is not confirmed.
 - seg056:0x0D00 (four zero bytes) and seg056:0x0D10 through 0x0D20 are not read by this segment. The byte at 0x0B71 is not read either.
 - The seg058 routines called from seg056 (`RtlSectionHook`, `RtlWriteText`, `RtlSaveVectors`, `RtlSetHandler`, `RtlAfterFiles`,
   `RtlBeforeClose`, `RtlFindFile`, `RtlExePath`) are named from the call sites. seg058 is still incbin. Its first three bytes finish

@@ -35,7 +35,7 @@ Source style (same as the sibling repos):
 
 ## Current segment
 
-seg000 (source through `DosMapErr`; the rest is still incbin). <- CURRENT
+seg000 (source through `_output`; the rest is still incbin). <- CURRENT
 
 ## Sources
 
@@ -81,6 +81,7 @@ seg000 (source through `DosMapErr`; the rest is still incbin). <- CURRENT
 
 ## History
 
+- 2026-10-31: seg000 formatted output: `_flsbuf`, `_stbuf`, `_ftbuf`, `_output`.
 - 2026-10-31: seg000 from `__chkstk` through `DosMapErr`: `_printf`, `_open`, `_read`, `_write`, `_close`, `_lseek`, the `_dos_*` calls, `_strcpy` / `_strlen` / `_strncpy`, `rand`, the long helpers, and the runtime messages.
 - 2026-10-31: seg000 VGA copies in front of `MscStartup`: `_outp`, `_inp`, and the latched VGA copies (`VgaCopyWrapped`, `VgaCopyToPitch`, `VgaCopyFromPitch`, `VgaStamp8`, `VgaPageFlip`, `VgaStorePlanes`, `VgaCopyStrip`, `VgaCopyBlock`, `VgaCopyBytes`, `VgaCopyRect`).
 - 2026-10-31: seg000 startup. `MscStartup` (where `__astart` jumps), `__cintDIV`, `InitRuntime`, `_exit` / `__exit` / `_cexit` / `__cexit`, `_initterm`, `__chkstk`. `_main` is the far call to seg005 offset 8 (still a `retf` in that incbin). The rest of seg000 is still incbin.
@@ -98,7 +99,7 @@ seg000 (source through `DosMapErr`; the rest is still incbin). <- CURRENT
 | File | Status | File offset | Bytes | MZ paragraph |
 |---|---|---|---|---|
 | mz_header | incbin (MZ header fields are source) | 0x00000 | 7168 |  |
-| seg000 | source through DosMapErr; rest incbin <- CURRENT | 0x01C00 | 14896 | 0x0000 |
+| seg000 | source through _output; rest incbin <- CURRENT | 0x01C00 | 14896 | 0x0000 |
 | seg001 | incbin | 0x05630 | 13280 | 0x03A3 |
 | seg002 | incbin | 0x08A10 | 5472 | 0x06E1 |
 | seg003 | incbin | 0x09F70 | 16 | 0x0837 |

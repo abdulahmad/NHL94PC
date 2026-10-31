@@ -530,3 +530,7 @@ seg000:16E2,DosMapErr,,new,high,"Stores _doserrno and errno from the DOS error c
 DGROUP:8550,errno,,MSC,high,"DosMapErr stores the translated C error here",src/seg/seg000.asm
 DGROUP:855B,_doserrno,,MSC,high,"DosMapErr stores the raw DOS error here",src/seg/seg000.asm
 DGROUP:855D,_nfile,,MSC,high,"_close _read and _write reject a handle at or above this word",src/seg/seg000.asm
+seg000:1710,_flsbuf,,MSC,high,"Flushes one FILE. Tests the write and buffer flags in the FILE",src/seg/seg000.asm
+seg000:17F4,_stbuf,,MSC,high,"Gives stdout or stderr a buffer when formatted output starts",src/seg/seg000.asm
+seg000:1867,_ftbuf,,MSC,high,"Drops that temporary buffer after formatted output",src/seg/seg000.asm
+seg000:18B6,_output,,MSC,high,"Formats into a FILE. The switch before it handles flags, width, precision, size, and the conversion",src/seg/seg000.asm
