@@ -110,3 +110,30 @@ register sets and a connection/feedback byte, then envelope or pitch-sweep param
 records are 70 bytes, type `08`, with many `e8 03` (1000) words; the PC speaker map (`PCFF003.PAT`) is the only one that uses them. Playing these
 needs the sound driver's code to be read and an OPL2 emulator, which is the next step for FM effects and for the
 `.KMS` music.
+
+## Handoff (paused 2026-10-31)
+
+**Done**
+
+- The `.TIM`/`.DIG` container, the digital timbre record and the `.PAT` program map are decoded (sections above).
+- `tools/audio/sfx.py list` and `export` work on the retail files: all 30 Sound Blaster samples export to WAV, with
+  loops.
+- `tools/audio/sfx_player.html` plays the same samples in a browser from local files.
+- The PAT-to-card table comes from the code: `MENUS.OVL` builds `PCFF%03d` from byte 1 of the card's `.SCN`.
+
+**Next**
+
+1. Name the samples. Find where the game triggers a sound effect (a program number from 123 to 179 in the Sound
+   Blaster map) and label each call site: whistle, horn, check, post and so on.
+2. Find the note the game plays digital programs at, so the PAT transpose (byte 7) can be applied on export.
+3. Decode the FM records (banks 0 and 2) with the layout in `docs/MUSIC_FORMAT.md` (#52), and render the FM effects
+   through an OPL2 emulator. The same renderer serves the `.KMS` music.
+4. Decode the 70-byte PC speaker records (bank 3).
+5. Fill in the unknown PAT record bytes (2 to 6, 8 to 19) and timbre byte 1 from the driver code.
+
+**Open questions**
+
+- What does `PCFF005.PAT` belong to? No `.SCN` selects it.
+- On the MT-32 (`PCFF002.PAT`), is the timbre byte an MT-32 sound number? It goes up to 173 while `PCFF000.TIM` has 144.
+- The three byte-identical samples (`15e431b9`, `4f1a9016`, `7e332665`): are they one sound reused by three programs on
+  purpose?
