@@ -534,3 +534,17 @@ seg000:1710,_flsbuf,,MSC,high,"Flushes one FILE. Tests the write and buffer flag
 seg000:17F4,_stbuf,,MSC,high,"Gives stdout or stderr a buffer when formatted output starts",src/seg/seg000.asm
 seg000:1867,_ftbuf,,MSC,high,"Drops that temporary buffer after formatted output",src/seg/seg000.asm
 seg000:18B6,_output,,MSC,high,"Formats into a FILE. The switch before it handles flags, width, precision, size, and the conversion",src/seg/seg000.asm
+seg000:1DA2,_atol,,MSC,high,"Optional sign and decimal digits into DX:AX",src/seg/seg000.asm
+seg000:1DF6,Mul16Diff,,new,medium,"(a-b) shifted left 4, plus c, minus d. Four arguments, result in DX:AX",src/seg/seg000.asm
+seg000:1E22,ScanFloat,,new,medium,"Classifies a character and looks for an exponent marker",src/seg/seg000.asm
+seg000:1E8A,ScanPoint,,new,medium,"Scans for a decimal point",src/seg/seg000.asm
+seg000:272A,fflush,,MSC,high,"Null argument flushes every open FILE. Otherwise flushes that FILE",src/seg/seg000.asm
+seg000:27A6,FlushAll,,new,high,"Walks the FILE table and fflushs each open one",src/seg/seg000.asm
+seg000:27F2,JmpFpConvert,,new,high,"Far jump to the floating-point convert routine that is still ahead in this segment",src/seg/seg000.asm
+seg000:2312,FpError,,new,high,"Prints the runtime banner and a floating-point message, then _exit",src/seg/seg000.asm
+seg000:291C,_memmove,,MSC,high,"Near copy that runs backward when the ranges overlap",src/seg/seg000.asm
+seg000:2964,_memset,,MSC,high,"Fills with stosw of the repeated byte",src/seg/seg000.asm
+seg000:2992,WriteCounted,,new,high,"First byte is a count. Writes that many following bytes to handle 2",src/seg/seg000.asm
+seg000:28AE,StoreOne,,new,medium,"Stores 1 through a far pointer and returns 0",src/seg/seg000.asm
+seg000:28C5,StoreZero,,new,medium,"Stores 0 through a far pointer",src/seg/seg000.asm
+seg000:28E3,StoreWord,,new,medium,"Stores a word through a far pointer",src/seg/seg000.asm
