@@ -786,3 +786,14 @@ seg001:1C7B,MouseOpen,,new,high,"INT 33h AX=0. Returns 0 when no driver answers.
 seg001:1D37,MouseShow,,new,high,"INT 33h AX=1 when the show count becomes positive",src/seg/seg001.asm
 seg001:1D56,MouseHide,,new,high,"INT 33h AX=2 when the show count reaches 0. Registered with _onexit",src/seg/seg001.asm
 seg001:1D72,ReadPots,,new,high,"Times four bits on port 201h and stores the counts and the button nibble. _main calls this",src/seg/seg001.asm
+DGROUP:77D0,AtanByte,,new,high,"Quarter-turn bytes. Atan2 indexes them by the ratio of the two absolute values",src/seg/seg001.asm
+seg001:1DD4,Atan2,,new,high,"Two signed words to an angle. A full turn is 100h. FoldScale calls this",src/seg/seg001.asm
+seg001:1E1D,AtanTab,,new,high,"Eight words. The sign and swap flags select which adjustment runs",src/seg/seg001.asm
+seg001:1E2D,AtanNegInc,,new,high,"neg ax, then add 100h",src/seg/seg001.asm
+seg001:1E32,AtanDone,,new,high,"Shared return from the octant adjustments",src/seg/seg001.asm
+seg001:1E35,AtanInc,,new,high,"Add 100h",src/seg/seg001.asm
+seg001:1E3A,AtanNegTwo,,new,high,"neg ax, then add 200h",src/seg/seg001.asm
+seg001:1E41,AtanNeg,,new,high,"neg ax",src/seg/seg001.asm
+seg001:1E45,AtanDec,,new,high,"Subtract 100h",src/seg/seg001.asm
+seg001:1E4A,AtanIncNeg,,new,high,"Add 100h, then neg ax",src/seg/seg001.asm
+seg001:1E51,AtanDecTwo,,new,high,"Subtract 200h",src/seg/seg001.asm

@@ -4,7 +4,7 @@
 
 - Full build MATCH (SHA-1 `d94450ddff26528bddac6646c234277076fd36cb`, 244,854 bytes); `tools/verify_all.sh` MATCH.
 - seg056 is source: the resident RTLink/Plus manager and the overlay thunks (10,992 bytes). seg057 was the thunk tail and is merged into seg056.
-- seg000 is entirely source (`src/seg/seg000.asm`). Nothing in it is incbin. seg005 is source. seg001 is source from the start through `ReadPots` (offset `0x1DD4`); the rest is incbin. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`) and seg056.
+- seg000 is entirely source (`src/seg/seg000.asm`). Nothing in it is incbin. seg005 is source. seg001 is source from the start through `Atan2` (offset `0x1E56`); the rest is incbin. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`) and seg056.
 - seg011 is still a false split (merge into seg010 when seg010 is disassembled). The `ovl_*` slices were not resliced.
 
 ## Known facts
@@ -191,7 +191,7 @@ The spill at the start of seg001 finishes `test bx, 8`, then `pop bp` / `ret 0xe
 
 `FileHeadArg`, `FileHead`, and `FileHeadMsg` read four bytes and return the 24-bit value in bytes 1..3 divided by 16, rounded up. `FindPath` and `FindNextPath` search with attribute 6 and build a full path in `PathBuf` from the directory and the DTA name. `LargestFree` is the failing AH=48h probe. `AllocBytes` stores `SavedCs`, `SavedDs`, and `SavedSp`, then allocates the requested paragraphs or the largest block.
 
-`FoldScale` folds one result into `0..100h` and divides a shifted argument by a second result. The three routines it calls are still incbin. `MapEsBx` maps a long and returns ES:BX. `LookupArg`, `Lookup`, and `LookupMsg` search a 4-byte key in that block. A space matches a 0 in the key. A hit returns a long built from the record.
+`FoldScale` calls `Atan2`, then folds the angle into `0..100h` and divides a shifted argument by a second result. The two routines after the angle are still incbin. `MapEsBx` maps a long and returns ES:BX. `LookupArg`, `Lookup`, and `LookupMsg` search a 4-byte key in that block. A space matches a 0 in the key. A hit returns a long built from the record.
 
 `FindFar` and `FindFarMsg` look up a long key in a far table and return a far pointer. `FindFarList` and `FindFarQuiet` walk a list of keys. `FarToLinear` and `LinearToFar` convert between a far pointer and the 20-bit address. `LinearToFarRegs` does that conversion with the address already in DX:AX.
 
@@ -232,7 +232,7 @@ The spill at the start of seg001 finishes `test bx, 8`, then `pop bp` / `ret 0xe
 - `ReadEndPtr` and the four routines around it spin on `EndPtr`. The bytes do not say what advances that pointer.
 - The word `CopyFar` tests at ss:`0x763C` selects dword moves. Its symbol is not named.
 - `PassFlag1`, `PassFlag0`, `AddrFlag0`, `AddrFlag1`, and `ArgSetup` are named from the flag and the pointer they set. The body they jump to (offset `0x29D2`) is still incbin, so the job is not named.
-- `FoldScale` calls offsets `0x1DD4`, `0x32EA`, and `0x32F1`. Those are still incbin, so the fold is not named as a trig or table operation.
+- `FoldScale` calls `Atan2`, then the routines at `0x32EA` and `0x32F1`. Those two are still incbin, so the divide that follows the angle is not named.
 - `FormatCall` is not the target of a far call in the EXE. The four pops are the far return address and two words. What `_sprintf` uses as its format is the word under those on the caller's stack.
 - `HaltSpin` stores `0xFBEA` under SP and halts until that word changes or the count runs out. Nothing in this chunk writes that word.
 - `ExitSavedSp` loads DGROUP and, when `SavedSp` is nonzero, uses that word as SP, then calls `_exit(0)`. `AllocBytes` is what stores `SavedSp`, along with CS and DS. Nothing in the disassembled bytes reads `SavedCs` or `SavedDs` yet.

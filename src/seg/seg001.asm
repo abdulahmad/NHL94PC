@@ -71,6 +71,7 @@ MouseXShift	equ	0x6428
 MouseYShift	equ	0x642A
 MouseLevel	equ	0x642C
 MouseRatioShift	equ	0x642E
+AtanByte	equ	0x77D0
 GamePort	equ	0x201
 FmtSave		equ	0x64CE
 FmtBuf		equ	0x64D6
@@ -1068,17 +1069,17 @@ AllocBytes:
 
 	db	0
 
-; Call the routine at 0x1DD4 with the two words, take the absolute value,
-; and fold it: at or above 100h it becomes 200h minus the value. Above 80h
-; the result comes from the routine at 0x32EA and the first word; otherwise
-; from 0x32F1 and the second word. The dividend is the absolute word shifted
-; left 14, then divided by that result. Those three calls are still incbin.
+; Call Atan2 with the two words, take the absolute value, and fold it:
+; at or above 100h it becomes 200h minus the value. Above 80h the result
+; comes from the routine at 0x32EA and the first word; otherwise from 0x32F1
+; and the second word. The dividend is the absolute word shifted left 14,
+; then divided by that result. Those two calls are still incbin.
 FoldScale:
 	push	bp
 	db	0x8B, 0xEC			; mov bp, sp
 	push	word [bp+8]
 	push	word [bp+6]
-	call	0x3A3:0x1DD4			; seg001, still incbin
+	call	0x3A3:Atan2			; seg001
 	add	sp, 4
 	db	0x0B, 0xC0			; or ax, ax
 	jge	short .1
@@ -4165,4 +4166,85 @@ L1DC6:
 	jmp	short L1DA7
 	db	0x00
 
-	incbin	"Extracted/segments/seg001.bin", 0x1DD4, 0x33E0 - 0x1DD4
+
+
+; Two signed words. The byte table at AtanByte is indexed by the
+; ratio of the smaller absolute value to the larger. The flags in DI
+; record the signs and which value was larger. The word table then
+; negates the result and adds or subtracts 100h or 200h, so a full
+; turn is 100h. FoldScale calls this.
+Atan2:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	di
+	db	0x33, 0xFF			; xor di, di
+	mov	dx, word [bp+6]
+	mov	cx, word [bp+8]
+	db	0x0B, 0xD2			; or dx, dx
+	jge	short .dxpos
+	or	di, 8
+	neg	dx
+.dxpos:
+	db	0x0B, 0xC9			; or cx, cx
+	jge	short .cxpos
+	or	di, 4
+	neg	cx
+.cxpos:
+	db	0x3B, 0xD1			; cmp dx, cx
+	jl	short .ratio
+	je	short .half
+	db	0x87, 0xD1			; xchg cx, dx
+	or	di, 2
+.ratio:
+	db	0x33, 0xC0			; xor ax, ax
+	div	cx
+	db	0x8A, 0xDC			; mov bl, ah
+	db	0x32, 0xFF			; xor bh, bh
+	add	al, 0x80
+	adc	bx, 0
+	mov	al, byte [bx+AtanByte]
+	db	0x32, 0xE4			; xor ah, ah
+	jmp	word [cs:di+AtanTab]
+.half:
+	mov	ax, 0x80
+	jmp	word [cs:di+AtanTab]
+
+AtanTab:
+	dw	AtanDone
+	dw	AtanNegInc
+	dw	AtanNegTwo
+	dw	AtanInc
+	dw	AtanNeg
+	dw	AtanDec
+	dw	AtanDecTwo
+	dw	AtanIncNeg
+
+AtanNegInc:
+	neg	ax
+	add	ah, 1
+AtanDone:
+	pop	di
+	leave
+	retf
+AtanInc:
+	add	ah, 1
+	jmp	short AtanDone
+AtanNegTwo:
+	neg	ax
+	add	ah, 2
+	jmp	short AtanDone
+AtanNeg:
+	neg	ax
+	jmp	short AtanDone
+AtanDec:
+	sub	ah, 1
+	jmp	short AtanDone
+AtanIncNeg:
+	add	ah, 1
+	neg	ax
+	jmp	short AtanDone
+AtanDecTwo:
+	sub	ah, 2
+	jmp	short AtanDone
+
+	incbin	"Extracted/segments/seg001.bin", 0x1E56, 0x33E0 - 0x1E56
