@@ -4,7 +4,7 @@
 
 - Full build MATCH (SHA-1 `d94450ddff26528bddac6646c234277076fd36cb`, 244,854 bytes); `tools/verify_all.sh` MATCH.
 - seg056 is source: the resident RTLink/Plus manager and the overlay thunks (10,992 bytes). seg057 was the thunk tail and is merged into seg056.
-- seg000 is entirely source (`src/seg/seg000.asm`). Nothing in it is incbin. seg005 is source. seg001 is source from the start through `IdivDword` (offset `0xA28`); the rest is incbin. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`) and seg056.
+- seg000 is entirely source (`src/seg/seg000.asm`). Nothing in it is incbin. seg005 is source. seg001 is source from the start through `StrnDiff` (offset `0xBFA`); the rest is incbin. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`) and seg056.
 - seg011 is still a false split (merge into seg010 when seg010 is disassembled). The `ovl_*` slices were not resliced.
 
 ## Known facts
@@ -196,6 +196,8 @@ The spill at the start of seg001 finishes `test bx, 8`, then `pop bp` / `ret 0xe
 `FindFar` and `FindFarMsg` look up a long key in a far table and return a far pointer. `FindFarList` and `FindFarQuiet` walk a list of keys. `FarToLinear` and `LinearToFar` convert between a far pointer and the 20-bit address. `LinearToFarRegs` does that conversion with the address already in DX:AX.
 
 `CopyBytes` calls `CopyFar` with the high half of the count forced to zero. `FormatCall` pops a far return address and two words, calls `_sprintf` with `FmtBuf`, then calls seg028 and far-returns. `ImulWords`, `MulWords`, `IdivWords`, `DivWords`, `Idiv32`, and `IdivDword` are the multiply and divide helpers. `ImulRegs` and `MulRegs` are the register entries inside the first two.
+
+`WriteFile` creates a file and writes a far buffer in 16K pieces. A short write or a DOS error deletes the file. `WriteFile` then calls seg022 and returns 0. `WriteFileCode` returns the error instead. `TableCount`, `TableAt`, and `TableStore` read the same kind of far table `FindFar` searches. `PathTail` points just past the last separator. `CopyStrN` copies up to a count. `StrnDiff` returns 0 when the bytes match through a null.
 
 ## Unsure / open
 

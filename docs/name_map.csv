@@ -645,3 +645,15 @@ seg001:09D8,IdivWords,,new,high,"Signed DX:AX divided by the third stack word",s
 seg001:09E6,DivWords,,new,high,"Unsigned DX:AX divided by the third stack word",src/seg/seg001.asm
 seg001:09F4,Idiv32,,new,high,"Signed DX:AX divided by BX with a 32-bit idiv. Quotient returns in DX:AX",src/seg/seg001.asm
 seg001:0A0F,IdivDword,,new,high,"Stack dword divided by the stack word. High half cleared, then idiv. Quotient in DX:AX",src/seg/seg001.asm
+seg001:0A28,WriteFile,,new,high,"Creates a file and writes a far buffer in 16K pieces. A short write deletes the file, then seg022 is called and AX is 0",src/seg/seg001.asm
+seg001:0A38,WriteFileCode,,new,high,"Same write. Returns the DOS error, or 1 when a write was short",src/seg/seg001.asm
+seg001:0A46,WriteFileBody,,new,high,"Shared create, write, close, and delete-on-failure path",src/seg/seg001.asm
+seg001:0ADA,RoundSeg,,new,high,"Adds (offset+15)/16 to the segment and clears AX",src/seg/seg001.asm
+seg001:0AEC,TableCount,,new,high,"Word at offset 4 of the far structure",src/seg/seg001.asm
+seg001:0AF6,TableAt,,new,high,"Far pointer for an entry index, or 0 past the count. Normalized like a FindFar hit",src/seg/seg001.asm
+seg001:0B44,TableStore,,new,high,"Stores that entry dword through a near pointer, or stores 0",src/seg/seg001.asm
+seg001:0B78,PathTail,,new,high,"DX:AX just past the last colon, at-sign, slash, or backslash in a near string",src/seg/seg001.asm
+seg001:0B82,PathTailFar,,new,high,"Same scan of a far string",src/seg/seg001.asm
+seg001:0BAE,CopyStrN,,new,high,"Copies a near string, including the null, and stops at the null or the count",src/seg/seg001.asm
+seg001:0BBC,CopyStrNFar,,new,high,"Same copy from a far string",src/seg/seg001.asm
+seg001:0BD7,StrnDiff,,new,high,"Compares up to the count. AX is 0 when the bytes match through a null, else 1",src/seg/seg001.asm
