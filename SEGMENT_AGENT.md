@@ -81,6 +81,7 @@ seg002. <- CURRENT
 
 ## History
 
+- 2026-10-31: seg002 through `CopyByName` is source. `NameBase` returns the record base for a near name. `CopyByName` copies that record into a new chain entry.
 - 2026-10-31: seg002 through `AxClear` is source. `FindName` walks the chain for a 12-byte name.
 - 2026-10-31: seg002 through `MoveRec` is source. It copies a record's bytes into a new chain entry, in pieces no larger than C000h.
 - 2026-10-31: seg002 through `DropOldest` is source. `FindRec` walks the chain, `UnlinkRec` splices a record out, and `ResizeRec` grows one into the gap ahead of it.
@@ -117,7 +118,7 @@ seg002. <- CURRENT
 | mz_header | incbin (MZ header fields are source) | 0x00000 | 7168 |  |
 | seg000 | source | 0x01C00 | 14896 | 0x0000 |
 | seg001 | source | 0x05630 | 13280 | 0x03A3 |
-| seg002 | source through AxClear, rest incbin <- CURRENT | 0x08A10 | 5472 | 0x06E1 |
+| seg002 | source through CopyByName, rest incbin <- CURRENT | 0x08A10 | 5472 | 0x06E1 |
 | seg003 | incbin | 0x09F70 | 16 | 0x0837 |
 | seg004 | incbin | 0x09F80 | 3088 | 0x0838 |
 | seg005 | source (_main, two retf stubs) | 0x0AB90 | 1040 | 0x08F9 |
