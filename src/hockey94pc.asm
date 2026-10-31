@@ -122,9 +122,7 @@ section seg055 follows=seg054 align=16 vstart=0
 %include "seg/seg055.asm"
 section seg056 follows=seg055 align=16 vstart=0
 %include "seg/seg056.asm"
-section seg057 follows=seg056 align=16 vstart=0
-%include "seg/seg057.asm"
-section seg058 follows=seg057 align=16 vstart=0
+section seg058 follows=seg056 align=16 vstart=0
 %include "seg/seg058.asm"
 
 section overlay follows=seg058 align=1
