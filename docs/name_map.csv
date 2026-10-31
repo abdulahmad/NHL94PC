@@ -1,1 +1,19 @@
 address,name,auto_name,source,confidence,evidence,file
+seg000:04CA,MscStartup,,new,high,"__astart far-jumps here. DOS version check then DGROUP stack BSS zero InitRuntime _main _exit",src/seg/seg000.asm
+seg000:058D,__cintDIV,,MSC,high,"Interrupt 0 handler. Loads DGROUP and enters AmsgExit with message 3 (R6003 integer divide by 0)",src/seg/seg000.asm
+seg000:059D,AmsgExit,,new,high,"Prints the runtime banner and the message number in AX then _exit(255). __cintDIV falls into it and __chkstk jumps to it with AX 0 (R6000)",src/seg/seg000.asm
+seg000:05BF,CintdivDgroup,,new,high,"Relocated DGROUP word read by __cintDIV before InitRuntime",src/seg/seg000.asm
+seg000:05C2,InitRuntime,,new,medium,"Far routine called from MscStartup. Installs the divide handler inherits _C_FILE_INFO into _osfile marks device handles and calls _initterm. MSC symbol for the whole function not confirmed",src/seg/seg000.asm
+seg000:0687,_exit,,MSC,high,"cx 0. Runs atexit terminators then DOS AH=4Ch. MscStartup calls it with the status from _main",src/seg/seg000.asm
+seg000:068E,__exit,,MSC,high,"cx 1. Skips atexit then DOS AH=4Ch. C _exit",src/seg/seg000.asm
+seg000:0696,_cexit,,MSC,high,"cx 0x100. Runs atexit then returns to the caller. C _cexit",src/seg/seg000.asm
+seg000:06A0,__cexit,,MSC,high,"cx 0x101. Skips atexit and returns to the caller. C _c_exit",src/seg/seg000.asm
+seg000:06A8,ExitCommon,,new,high,"Shared tail of _exit __exit _cexit and __cexit",src/seg/seg000.asm
+seg000:070A,ExitRestore,,new,high,"Near helper on the exit path. Restores interrupt 0 and the math error vector",src/seg/seg000.asm
+seg000:0737,_initterm,,MSC,medium,"Calls each far pointer in a table from the top down skipping nulls. Later MSC _initterm walks upward",src/seg/seg000.asm
+seg000:074A,__chkstk,,MSC,high,"Far. Drops SP by AX under the return address. Overflow is R6000 through AmsgExit or the alternate handler",src/seg/seg000.asm
+seg005:0008,_main,,MSC,high,"Far call after three near pushes (environ argv argc) and before _exit. Body is still the seg005 incbin and is a single retf",src/seg/seg000.asm
+seg005:0004,NullStartup4,,new,low,"Far call from MscStartup. Bytes are retf. May be __fptrap or null __setenvp. See HANDOFF Unsure",src/seg/seg000.asm
+seg005:0006,NullStartup6,,new,low,"Far call from MscStartup just before NullStartup4. Bytes are retf. May be __FPMATH or null __setargv. See HANDOFF Unsure",src/seg/seg000.asm
+DGROUP:8556,__psp,,MSC,high,"Startup stores the incoming DS (the PSP) here and later reads the environment segment from it",src/seg/seg000.asm
+DGROUP:855F,_osfile,,MSC,high,"_C_FILE_INFO nibbles are stored here and the IOCTL loop sets the device bit on handles 0 to 4",src/seg/seg000.asm

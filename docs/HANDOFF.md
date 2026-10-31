@@ -2,17 +2,15 @@
 
 ## State (2026-10-31)
 
-- Full build MATCH (SHA-1 `d94450ddff26528bddac6646c234277076fd36cb`, 244,854 bytes); `tools/verify_all.sh` MATCH (full build and all 88 segments built on
-  their own).
-- Everything is incbin except the MZ header fields (`src/header/mz_header.asm`). Next: seg000.
-- Structure pass only. No segment was disassembled, and the `ovl_*` slices were not resliced. Two false splits are marked in
-  `SEGMENT_AGENT.md` and stay as their own incbin files until the segment that owns them is disassembled.
+- Full build MATCH (SHA-1 `d94450ddff26528bddac6646c234277076fd36cb`, 244,854 bytes).
+- seg000 startup is source, from `MscStartup` through `__chkstk` (`src/seg/seg000.asm`). The bytes before `MscStartup` and the bytes after `__chkstk` are still incbin. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`).
+- Structure pass is done. The `ovl_*` slices were not resliced. Two false splits are marked in `SEGMENT_AGENT.md` and stay as their own incbin files until the segment that owns them is disassembled.
 
 ## Known facts
 
 - 16-bit real-mode MZ: header 0x1C00 bytes (1727 relocations), load image 123,975 bytes, then 113,711 bytes after the
   load module. Entry 1B35:082F (segment seg056, label `__astart`); stack segment past the image (`e_ss` 0x5400, `e_sp` 0x1800).
-- Microsoft C large model: "MS Run-Time Library - Copyright (c) 1990, Microsoft Corp", R6000-R6009 messages, "This program requires an
+- Microsoft C medium model (far code, near data): "MS Run-Time Library - Copyright (c) 1990, Microsoft Corp", R6000-R6009 messages, "This program requires an
   80286". Linked with RTLink/Plus ("Internal error in .RTLink(R)/Plus run-time code" is in seg058).
 - EACLIB error strings (`initmemman`, `reservemem`, `findmemblock`, `getmemblock`, `unpacka`) are in this EXE too: anchors for names.
 - `lst/game/` has the external overlays and the data files for now (temporary, same as the EXE). Overlay files read for this map:
@@ -147,8 +145,20 @@ NHL 95 PC does not load code overlays. Its retail EXE is one Watcom LE image bou
 A search of that tree for `RTLink`, `.OVL` and an overlay manager found nothing else. Nothing there describes the 94 thunks or the `.OVL`
 file layout. The 94 load path above is from this EXE and `lst/game/`.
 
+## seg000 startup
+
+`__astart` far-jumps to `MscStartup`. That checks for DOS 2, sets SS to DGROUP, shrinks the memory block, zeros the BSS, calls two stubs in seg005, calls `InitRuntime`, pushes three near words (environ, argv, argc) and calls `_main`, then `_exit`.
+
+`_main` is not in seg000. The call is `seg005` offset 8, and those bytes are a single `retf`. The two calls just before `InitRuntime` are seg005 offsets 6 and 4, also each a `retf`. They are named `NullStartup6` and `NullStartup4` until the real symbols are settled.
+
+The `_main` call pushes three words, so the pointers are near. That is the medium model (far code, near data). The earlier "large model" note came from the far calls; medium model has those too.
+
 ## Unsure / open
 
+- `NullStartup6` and `NullStartup4` (seg005 offsets 6 and 4). Each is a `retf`. The usual MSC pair in that slot is `__FPMATH` and `__fptrap`, or the null `__setargv` and `__setenvp`. The bodies are identical, so neither pair is named yet.
+- `InitRuntime` does the divide-handler install, the `_C_FILE_INFO` inherit, the `_osfile` device bits and `_initterm`. It is one far function. The MSC library symbol for that whole function was not confirmed.
+- `_initterm` here walks the far-pointer table from the top down. Later MSC `_initterm` walks upward. The name is the job; the direction is this copy's.
+- `FpFail` (offset `0x162E`, still incbin) is `mov ax, 2` then a jump to `AmsgExit`. That is the R6002 path. The public name is not confirmed.
 - The word at record offset `0x0C` (`0xFFFF`, or 3, or 7). The load path traced does not read it.
 - Flag bit `0x20` (the patched far call on the other read path) was not followed. None of these 21 records has that bit set.
 - seg058's calls are the error helper and the file open/seek used by the manager. The individual functions in seg058 are not named yet.
