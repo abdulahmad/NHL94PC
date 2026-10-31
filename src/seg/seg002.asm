@@ -341,7 +341,7 @@ L039B:
 	or	ax, word [bp - 8]
 	jne	short L0400
 	push	cs
-	call	0xD28			; still incbin
+	call	AxClear
 	db	0x0B, 0xC0			; or ax, ax
 	je	short L03AE
 	jmp	near L0326
@@ -603,7 +603,7 @@ L067C:
 	jmp	near L0517
 L0682:
 	push	cs
-	call	0xD28			; still incbin
+	call	AxClear
 	db	0x0B, 0xC0			; or ax, ax
 	je	short L068D
 	jmp	near L04FB
@@ -678,7 +678,7 @@ L0726:
 	and	ax, strict word 7
 	push	ax
 	push	cs
-	call	0xA5E			; still incbin
+	call	DropOldest
 	add	sp, 2
 	db	0x0B, 0xC0			; or ax, ax
 	jne	short L06DC
@@ -1159,7 +1159,7 @@ L0B5A:
 	push	dx
 	push	ax
 	push	cs
-	call	0xCBC			; still incbin
+	call	FindName
 	add	sp, 4
 	db	0x8B, 0xF0			; mov si, ax
 	mov	word [bp - 2], dx
@@ -1304,4 +1304,66 @@ L0CA6:
 	pop	di
 	leave
 	retf
-	incbin	"Extracted/segments/seg002.bin", 0xCBC, 0x1560 - 0xCBC
+
+; FindName keeps the tail of the far string and walks the chain at
+; ChainPtr+4. A 12-byte name match returns that record. A miss returns
+; AX 0. AxClear is the retf that returns AX 0.
+
+FindName:
+	enter	0xc, 0
+	push	di
+	push	si
+	push	word [bp + 8]
+	push	word [bp + 6]
+	call	0x3A3:PathTailFar
+	add	sp, 4
+	db	0x8B, 0xF8			; mov di, ax
+	mov	word [bp - 0xa], dx
+	mov	ax, word [ChainPtr+4]
+	mov	dx, word [ChainPtr+6]
+	db	0x8B, 0xF0			; mov si, ax
+	mov	word [bp - 6], dx
+	db	0x0B, 0xD0			; or dx, ax
+	je	short L0D20
+L0CE5:
+	push	0xc
+	mov	dx, word [bp - 6]
+	add	ax, strict word 4
+	push	dx
+	push	ax
+	push	word [bp - 0xa]
+	push	di
+	call	0x3A3:StrnDiff
+	add	sp, 0xa
+	db	0x0B, 0xC0			; or ax, ax
+	je	short L0D16
+	mov	es, word [bp - 6]
+	mov	ax, word es:[si + 0x1c]
+	mov	dx, word es:[si + 0x1e]
+	db	0x8B, 0xF0			; mov si, ax
+	mov	word [bp - 6], dx
+	db	0x0B, 0xD0			; or dx, ax
+	jne	short L0CE5
+	jmp	short L0D20
+	nop
+L0D16:
+	db	0x8B, 0xC6			; mov ax, si
+	mov	dx, word [bp - 6]
+	pop	si
+	pop	di
+	leave
+	retf
+	nop
+L0D20:
+	db	0x2B, 0xC0			; sub ax, ax
+	cwd
+	pop	si
+	pop	di
+	leave
+	retf
+	nop
+AxClear:
+	db	0x2B, 0xC0			; sub ax, ax
+	retf
+	nop
+	incbin	"Extracted/segments/seg002.bin", 0xD2C, 0x1560 - 0xD2C

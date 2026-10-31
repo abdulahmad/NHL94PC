@@ -11,4 +11,6 @@ FarToLinear	equ	0x92E
 LinearToFarRegs	equ	0x959
 EmsMapFrame	equ	0x192
 CopyBytes	equ	0x968
+PathTailFar	equ	0xB82
+StrnDiff	equ	0xBD7
 %include "seg/seg002.asm"
