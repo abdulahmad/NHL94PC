@@ -5614,8 +5614,7 @@ FarZero:
 
 ; Another four entries into FillPoly. SI comes from [bp+0Ah], or from the
 ; address of that argument. ScanFn is 48D2h instead of the 3ABBh ArgSetup
-; stores. The byte at [bp-9] is read by the edge recorder, which is still
-; incbin.
+; stores. The byte at [bp-9] selects which direction table SpanBack uses.
 ; FillPoly walks a list of X,Y points. [bp+8] is the count. A list that
 ; misses the box returns. A flat list calls LineFn. Each rising edge goes
 ; through LineClip or LineOpen, and ScanFn is called once per scanline
@@ -5791,12 +5790,12 @@ L2ACB:
 	je	short L2AEB
 	call	0x3A3:LineClip
 	mov	word [bp - 0x14], di
-	call	0x2B83			; still incbin
+	call	SpanMargin
 	jmp	short L2AF6
 L2AEB:
 	call	0x3A3:LineOpen
 	mov	word [bp - 0x14], di
-	call	0x2C19			; still incbin
+	call	SpanFill
 L2AF6:
 	mov	di, word [bp - 0x14]
 	add	sp, 0xa
@@ -5828,7 +5827,7 @@ L2B2E:
 	call	0x3A3:LineOpen
 L2B33:
 	mov	word [bp - 0x14], di
-	call	0x2D10			; still incbin
+	call	SpanBack
 	mov	di, word [bp - 0x14]
 	add	sp, 0xa
 L2B3F:
@@ -5865,4 +5864,698 @@ L2B7F:
 	pop	si
 	leave
 	retf
-	incbin	"Extracted/segments/seg001.bin", 0x2B83, 0x33E0 - 0x2B83
+
+; Write one clipped edge into the two scanline tables. They sit 3C0h
+; bytes apart, one word per row. SpanMargin fills the rows the clipper
+; counted with the left or right side of the box. SpanFill and SpanBack
+; walk the edge. The direction byte selects the case. SpanBack uses
+; SpanTab3 when the byte at [bp-9] is 0, and SpanTab2 otherwise.
+; Directions 0, 1, and 9 return.
+
+SpanMargin:
+	mov	cx, word [si + 0x14]
+	db	0x0B, 0xC9			; or cx, cx
+	jle	short L2BAE
+	mov	di, word [si + 6]
+	mov	dx, word [si + 4]
+	add	dx, 0x8000
+	adc	di, 0
+	db	0x2B, 0xF9			; sub di, cx
+	db	0x03, 0xFF			; add di, di
+	add	di, word [bp - 0x16]
+	mov	ax, word [0x74fc]
+	push	cx
+	push	di
+	rep stosw
+	pop	di
+	pop	cx
+	add	di, 0x3c0
+	dec	ax
+	rep stosw
+L2BAE:
+	mov	cx, word [si + 0x18]
+	db	0x0B, 0xC9			; or cx, cx
+	jle	short L2BD9
+	mov	di, word [si + 6]
+	mov	dx, word [si + 4]
+	add	dx, 0x8000
+	adc	di, 0
+	db	0x2B, 0xF9			; sub di, cx
+	db	0x03, 0xFF			; add di, di
+	add	di, word [bp - 0x16]
+	mov	ax, word [0x74fe]
+	push	cx
+	push	di
+	rep stosw
+	pop	di
+	pop	cx
+	add	di, 0x3c0
+	dec	ax
+	rep stosw
+L2BD9:
+	mov	cx, word [si + 0x16]
+	db	0x0B, 0xC9			; or cx, cx
+	jle	short L2BF9
+	mov	di, word [si + 0xa]
+	inc	di
+	db	0x03, 0xFF			; add di, di
+	add	di, word [bp - 0x16]
+	mov	ax, word [0x74fc]
+	push	cx
+	push	di
+	rep stosw
+	pop	di
+	pop	cx
+	add	di, 0x3c0
+	dec	ax
+	rep stosw
+L2BF9:
+	mov	cx, word [si + 0x1a]
+	db	0x0B, 0xC9			; or cx, cx
+	jle	short SpanFill
+	mov	di, word [si + 0xa]
+	inc	di
+	db	0x03, 0xFF			; add di, di
+	add	di, word [bp - 0x16]
+	mov	ax, word [0x74fe]
+	push	cx
+	push	di
+	rep stosw
+	pop	di
+	pop	cx
+	add	di, 0x3c0
+	dec	ax
+	rep stosw
+SpanFill:
+	mov	cx, word [si + 0xe]
+	db	0x0B, 0xC9			; or cx, cx
+	jle	short L2C55
+	mov	di, word [si + 6]
+	db	0x03, 0xFF			; add di, di
+	add	di, word [bp - 0x16]
+	mov	bl, byte [si + 0x12]
+	db	0x32, 0xFF			; xor bh, bh
+	db	0x03, 0xDB			; add bx, bx
+	jmp	word [cs:bx+SpanTab]
+SpanTab:
+	dw	L2C55
+	dw	L2C55
+	dw	L2C48
+	dw	L2C56
+	dw	L2C65
+	dw	L2C74
+	dw	L2C93
+	dw	L2CB2
+	dw	L2CDE
+	dw	L2C55
+L2C48:
+	mov	cx, word [si + 0xe]
+	mov	ax, word [si + 2]
+L2C4E:
+	mov	word [di + 0x3c0], ax
+	stosw
+	loop	L2C4E
+L2C55:
+	ret
+L2C56:
+	mov	cx, word [si + 0xe]
+	mov	ax, word [si + 2]
+L2C5C:
+	mov	word [di + 0x3c0], ax
+	stosw
+	dec	ax
+	loop	L2C5C
+	ret
+L2C65:
+	mov	cx, word [si + 0xe]
+	mov	ax, word [si + 2]
+L2C6B:
+	mov	word [di + 0x3c0], ax
+	stosw
+	inc	ax
+	loop	L2C6B
+	ret
+L2C74:
+	mov	cx, word [si + 0xe]
+	mov	ax, word [si + 2]
+	mov	dx, word [si]
+	add	dx, 0x8000
+	adc	ax, 0
+	mov	bx, word [si + 0xc]
+L2C86:
+	mov	word [di + 0x3c0], ax
+	stosw
+	db	0x2B, 0xD3			; sub dx, bx
+	sbb	ax, 0
+	loop	L2C86
+	ret
+L2C93:
+	mov	cx, word [si + 0xe]
+	mov	ax, word [si + 2]
+	mov	dx, word [si]
+	add	dx, 0x8000
+	adc	ax, 0
+	mov	bx, word [si + 0xc]
+L2CA5:
+	mov	word [di + 0x3c0], ax
+	stosw
+	db	0x03, 0xD3			; add dx, bx
+	adc	ax, 0
+	loop	L2CA5
+	ret
+L2CB2:
+	mov	cx, word [si + 0xe]
+	mov	ax, word [si + 2]
+	mov	bx, word [si + 0xc]
+	mov	dx, word [si + 4]
+	add	dx, 0x8000
+	jae	short L2CC7
+	add	di, 2
+L2CC7:
+	mov	word [di + 0x3c0], ax
+L2CCB:
+	db	0x03, 0xD3			; add dx, bx
+	jae	short L2CD7
+	stosw
+	dec	ax
+	loop	L2CC7
+	sub	di, 2
+	ret
+L2CD7:
+	dec	ax
+	loop	L2CCB
+	inc	ax
+	mov	word [di], ax
+	ret
+L2CDE:
+	mov	cx, word [si + 0xe]
+	mov	ax, word [si + 2]
+	mov	bx, word [si + 0xc]
+	mov	dx, word [si + 4]
+	add	dx, 0x8000
+	jae	short L2CF3
+	add	di, 2
+L2CF3:
+	mov	word [di], ax
+L2CF5:
+	db	0x03, 0xD3			; add dx, bx
+	jae	short L2D07
+	mov	word [di + 0x3c0], ax
+	add	di, 2
+	inc	ax
+	loop	L2CF3
+	sub	di, 2
+	ret
+L2D07:
+	inc	ax
+	loop	L2CF5
+	dec	ax
+	mov	word [di + 0x3c0], ax
+	ret
+SpanBack:
+	mov	cx, word [si + 0xe]
+	db	0x0B, 0xC9			; or cx, cx
+	jle	short L2D5A
+	mov	di, word [si + 6]
+	db	0x03, 0xFF			; add di, di
+	add	di, word [bp - 0x16]
+	mov	bl, byte [si + 0x12]
+	db	0x32, 0xFF			; xor bh, bh
+	db	0x03, 0xDB			; add bx, bx
+	cmp	byte [bp - 9], 0
+	jne	short L2D31
+	jmp	word [cs:bx+SpanTab3]
+L2D31:
+	jmp	word [cs:bx+SpanTab2]
+SpanTab2:
+	dw	L2C55
+	dw	L2C55
+	dw	L2D4A
+	dw	L2D69
+	dw	L2D8D
+	dw	L2DB1
+	dw	L2DE9
+	dw	L2E21
+	dw	L2E63
+	dw	L2C55
+L2D4A:
+	mov	ax, word [si + 2]
+L2D4D:
+	cmp	word [di + 0x3c0], ax
+	jl	short L2D5D
+	cmp	word [di], ax
+	jle	short L2D61
+	stosw
+	loop	L2D4D
+L2D5A:
+	jmp	near L3062
+L2D5D:
+	mov	word [di + 0x3c0], ax
+L2D61:
+	add	di, 2
+	loop	L2D4D
+	jmp	near L3062
+L2D69:
+	mov	cx, word [si + 0xe]
+	mov	ax, word [si + 2]
+L2D6F:
+	cmp	word [di + 0x3c0], ax
+	jl	short L2D80
+	cmp	word [di], ax
+	jle	short L2D84
+	stosw
+	dec	ax
+	loop	L2D6F
+	jmp	near L3062
+L2D80:
+	mov	word [di + 0x3c0], ax
+L2D84:
+	add	di, 2
+	dec	ax
+	loop	L2D6F
+	jmp	near L3062
+L2D8D:
+	mov	cx, word [si + 0xe]
+	mov	ax, word [si + 2]
+L2D93:
+	cmp	word [di + 0x3c0], ax
+	jl	short L2DA4
+	cmp	word [di], ax
+	jle	short L2DA8
+	stosw
+	inc	ax
+	loop	L2D93
+	jmp	near L3062
+L2DA4:
+	mov	word [di + 0x3c0], ax
+L2DA8:
+	add	di, 2
+	inc	ax
+	loop	L2D93
+	jmp	near L3062
+L2DB1:
+	mov	cx, word [si + 0xe]
+	mov	ax, word [si + 2]
+	mov	dx, word [si]
+	add	dx, 0x8000
+	adc	ax, 0
+	mov	bx, word [si + 0xc]
+L2DC3:
+	cmp	word [di + 0x3c0], ax
+	jl	short L2DD8
+	cmp	word [di], ax
+	jle	short L2DDC
+	stosw
+	db	0x2B, 0xD3			; sub dx, bx
+	sbb	ax, 0
+	loop	L2DC3
+	jmp	near L3062
+L2DD8:
+	mov	word [di + 0x3c0], ax
+L2DDC:
+	add	di, 2
+	db	0x2B, 0xD3			; sub dx, bx
+	sbb	ax, 0
+	loop	L2DC3
+	jmp	near L3062
+L2DE9:
+	mov	cx, word [si + 0xe]
+	mov	ax, word [si + 2]
+	mov	dx, word [si]
+	add	dx, 0x8000
+	adc	ax, 0
+	mov	bx, word [si + 0xc]
+L2DFB:
+	cmp	word [di + 0x3c0], ax
+	jl	short L2E10
+	cmp	word [di], ax
+	jle	short L2E14
+	stosw
+	db	0x03, 0xD3			; add dx, bx
+	adc	ax, 0
+	loop	L2DFB
+	jmp	near L3062
+L2E10:
+	mov	word [di + 0x3c0], ax
+L2E14:
+	add	di, 2
+	db	0x03, 0xD3			; add dx, bx
+	adc	ax, 0
+	loop	L2DFB
+	jmp	near L3062
+L2E21:
+	mov	cx, word [si + 0xe]
+	mov	ax, word [si + 2]
+	mov	bx, word [si + 0xc]
+	mov	dx, word [si + 4]
+	add	dx, 0x8000
+	jae	short L2E36
+	add	di, 2
+L2E36:
+	cmp	word [di + 0x3c0], ax
+	jge	short L2E40
+	mov	word [di + 0x3c0], ax
+L2E40:
+	db	0x03, 0xD3			; add dx, bx
+	jae	short L2E56
+	cmp	word [di], ax
+	jle	short L2E4A
+	mov	word [di], ax
+L2E4A:
+	add	di, 2
+	dec	ax
+	loop	L2E36
+	sub	di, 2
+	jmp	near L3062
+L2E56:
+	dec	ax
+	loop	L2E40
+	inc	ax
+	cmp	word [di], ax
+	jle	short L2E60
+	mov	word [di], ax
+L2E60:
+	jmp	near L3062
+L2E63:
+	mov	cx, word [si + 0xe]
+	mov	ax, word [si + 2]
+	mov	bx, word [si + 0xc]
+	mov	dx, word [si + 4]
+	add	dx, 0x8000
+	jae	short L2E78
+	add	di, 2
+L2E78:
+	cmp	word [di], ax
+	jle	short L2E7E
+	mov	word [di], ax
+L2E7E:
+	db	0x03, 0xD3			; add dx, bx
+	jae	short L2E98
+	cmp	word [di + 0x3c0], ax
+	jge	short L2E8C
+	mov	word [di + 0x3c0], ax
+L2E8C:
+	add	di, 2
+	inc	ax
+	loop	L2E78
+	sub	di, 2
+	jmp	near L3062
+L2E98:
+	inc	ax
+	loop	L2E7E
+	dec	ax
+	cmp	word [di + 0x3c0], ax
+	jge	short L2E60
+	mov	word [di + 0x3c0], ax
+	jmp	near L3062
+SpanTab3:
+	dw	L2C55
+	dw	L2C55
+	dw	L2EBD
+	dw	L2EE3
+	dw	L2F0E
+	dw	L2F39
+	dw	L2F7C
+	dw	L2FBF
+	dw	L300E
+	dw	L2C55
+L2EBD:
+	mov	cx, word [si + 0xe]
+	mov	ax, word [si + 2]
+L2EC3:
+	cmp	word [di], ax
+	jg	short L2ED5
+	cmp	word [di + 0x3c0], ax
+	jl	short L2EDA
+	add	di, 2
+	loop	L2EC3
+	jmp	near L3062
+L2ED5:
+	rep stosw
+	jmp	near L3062
+L2EDA:
+	add	di, 0x3c0
+	rep stosw
+	jmp	near L3062
+L2EE3:
+	mov	cx, word [si + 0xe]
+	mov	ax, word [si + 2]
+L2EE9:
+	cmp	word [di], ax
+	jg	short L2EFC
+	cmp	word [di + 0x3c0], ax
+	jl	short L2F03
+	add	di, 2
+	dec	ax
+	loop	L2EE9
+	jmp	near L3062
+L2EFC:
+	stosw
+	dec	ax
+	loop	L2EFC
+	jmp	near L3062
+L2F03:
+	add	di, 0x3c0
+L2F07:
+	stosw
+	dec	ax
+	loop	L2F07
+	jmp	near L3062
+L2F0E:
+	mov	cx, word [si + 0xe]
+	mov	ax, word [si + 2]
+L2F14:
+	cmp	word [di], ax
+	jg	short L2F27
+	cmp	word [di + 0x3c0], ax
+	jl	short L2F2E
+	add	di, 2
+	inc	ax
+	loop	L2F14
+	jmp	near L3062
+L2F27:
+	stosw
+	inc	ax
+	loop	L2F27
+	jmp	near L3062
+L2F2E:
+	add	di, 0x3c0
+L2F32:
+	stosw
+	inc	ax
+	loop	L2F32
+	jmp	near L3062
+L2F39:
+	mov	cx, word [si + 0xe]
+	mov	ax, word [si + 2]
+	mov	dx, word [si]
+	add	dx, 0x8000
+	adc	ax, 0
+	mov	bx, word [si + 0xc]
+L2F4B:
+	cmp	word [di], ax
+	jg	short L2F62
+	cmp	word [di + 0x3c0], ax
+	jl	short L2F6D
+	add	di, 2
+	db	0x2B, 0xD3			; sub dx, bx
+	sbb	ax, 0
+	loop	L2F4B
+	jmp	near L3062
+L2F62:
+	stosw
+	db	0x2B, 0xD3			; sub dx, bx
+	sbb	ax, 0
+	loop	L2F62
+	jmp	near L3062
+L2F6D:
+	add	di, 0x3c0
+L2F71:
+	stosw
+	db	0x2B, 0xD3			; sub dx, bx
+	sbb	ax, 0
+	loop	L2F71
+	jmp	near L3062
+L2F7C:
+	mov	cx, word [si + 0xe]
+	mov	ax, word [si + 2]
+	mov	dx, word [si]
+	add	dx, 0x8000
+	adc	ax, 0
+	mov	bx, word [si + 0xc]
+L2F8E:
+	cmp	word [di], ax
+	jg	short L2FA5
+	cmp	word [di + 0x3c0], ax
+	jl	short L2FB0
+	add	di, 2
+	db	0x03, 0xD3			; add dx, bx
+	adc	ax, 0
+	loop	L2F8E
+	jmp	near L3062
+L2FA5:
+	stosw
+	db	0x03, 0xD3			; add dx, bx
+	adc	ax, 0
+	loop	L2FA5
+	jmp	near L3062
+L2FB0:
+	add	di, 0x3c0
+L2FB4:
+	stosw
+	db	0x03, 0xD3			; add dx, bx
+	adc	ax, 0
+	loop	L2FB4
+	jmp	near L3062
+L2FBF:
+	mov	cx, word [si + 0xe]
+	mov	ax, word [si + 2]
+	mov	bx, word [si + 0xc]
+	mov	dx, word [si + 4]
+	add	dx, 0x8000
+	jae	short L2FD4
+	add	di, 2
+L2FD4:
+	cmp	word [di + 0x3c0], ax
+	jl	short L2FEA
+	db	0x03, 0xD3			; add dx, bx
+	jae	short L2FE5
+	cmp	word [di], ax
+	jg	short L3000
+	add	di, 2
+L2FE5:
+	dec	ax
+	loop	L2FD4
+	jmp	short L3062
+L2FEA:
+	add	di, 0x3c0
+L2FEE:
+	stosw
+L2FEF:
+	dec	ax
+	db	0x03, 0xD3			; add dx, bx
+	jae	short L2FF8
+	loop	L2FEE
+	jmp	short L3062
+L2FF8:
+	loop	L2FEF
+	jmp	short L3062
+L2FFC:
+	db	0x03, 0xD3			; add dx, bx
+	jae	short L3006
+L3000:
+	stosw
+	dec	ax
+	loop	L2FFC
+	jmp	short L3062
+L3006:
+	dec	ax
+	loop	L2FFC
+	inc	ax
+	mov	word [di], ax
+	jmp	short L3062
+L300E:
+	mov	cx, word [si + 0xe]
+	mov	ax, word [si + 2]
+	mov	bx, word [si + 0xc]
+	mov	dx, word [si + 4]
+	add	dx, 0x8000
+	jae	short L3023
+	add	di, 2
+L3023:
+	cmp	word [di], ax
+	jg	short L305C
+	db	0x03, 0xD3			; add dx, bx
+	jae	short L3034
+	cmp	word [di + 0x3c0], ax
+	jl	short L3039
+	add	di, 2
+L3034:
+	inc	ax
+	loop	L3023
+	jmp	short L3062
+L3039:
+	add	di, 0x3c0
+L303D:
+	mov	word [di], ax
+L303F:
+	inc	ax
+	db	0x03, 0xD3			; add dx, bx
+	jae	short L304E
+	add	di, 2
+	loop	L303D
+	dec	ax
+	mov	word [di], ax
+	jmp	short L3062
+L304E:
+	loop	L303F
+	add	di, 2
+	dec	ax
+	mov	word [di], ax
+	jmp	short L3062
+L3058:
+	db	0x03, 0xD3			; add dx, bx
+	jae	short L305D
+L305C:
+	stosw
+L305D:
+	inc	ax
+	loop	L3058
+	jmp	short L3062
+L3062:
+	cmp	byte [bp - 0xa], 0
+	jne	short L3069
+	ret
+L3069:
+	mov	cx, word [si + 0x14]
+	db	0x0B, 0xC9			; or cx, cx
+	jle	short L3089
+	mov	di, word [si + 6]
+	mov	dx, word [si + 4]
+	add	dx, 0x8000
+	adc	di, 0
+	db	0x2B, 0xF9			; sub di, cx
+	db	0x03, 0xFF			; add di, di
+	add	di, word [bp - 0x16]
+	mov	ax, word [0x74fc]
+	rep stosw
+L3089:
+	mov	cx, word [si + 0x18]
+	db	0x0B, 0xC9			; or cx, cx
+	jle	short L30AE
+	mov	di, word [si + 6]
+	mov	dx, word [si + 4]
+	add	dx, 0x8000
+	adc	di, 0
+	db	0x2B, 0xF9			; sub di, cx
+	db	0x03, 0xFF			; add di, di
+	add	di, word [bp - 0x16]
+	add	di, 0x3c0
+	mov	ax, word [0x74fe]
+	dec	ax
+	rep stosw
+L30AE:
+	mov	cx, word [si + 0x16]
+	db	0x0B, 0xC9			; or cx, cx
+	jle	short L30C3
+	mov	di, word [si + 0xa]
+	inc	di
+	db	0x03, 0xFF			; add di, di
+	add	di, word [bp - 0x16]
+	mov	ax, word [0x74fc]
+	rep stosw
+L30C3:
+	mov	cx, word [si + 0x1a]
+	db	0x0B, 0xC9			; or cx, cx
+	jle	short L30DD
+	mov	di, word [si + 0xa]
+	inc	di
+	db	0x03, 0xFF			; add di, di
+	add	di, word [bp - 0x16]
+	add	di, 0x3c0
+	mov	ax, word [0x74fe]
+	dec	ax
+	rep stosw
+L30DD:
+	ret
+	incbin	"Extracted/segments/seg001.bin", 0x30DE, 0x33E0 - 0x30DE
