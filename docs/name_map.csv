@@ -763,3 +763,6 @@ seg001:1A2C,CallCountStep,,new,high,"Returns the change in CallCount since the p
 seg001:1A46,ClearCallCount,,new,high,"Zeros CallCount",src/seg/seg001.asm
 seg001:1A4F,HaltSpin,,new,high,"Stores FBEAh under SP and hlts until that word changes or the count expires. See HANDOFF",src/seg/seg001.asm
 seg001:1A66,SetDeadline,,new,high,"Stores CallCount plus the long argument at Deadline",src/seg/seg001.asm
+seg001:1A80,WaitDeadline,,new,high,"Specific EOI for IRQ 0, then hlt until CallCount reaches Deadline. Restarts if the low word does not change",src/seg/seg001.asm
+seg001:1AA8,DeadlineReached,,new,high,"AX is 1 when CallCount is at or past Deadline",src/seg/seg001.asm
+seg001:1ABE,WaitCount,,new,high,"Spins until CallCount reaches its current value plus the long argument",src/seg/seg001.asm

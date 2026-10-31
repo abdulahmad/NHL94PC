@@ -2,7 +2,7 @@
 ; a file-head count, find-first paths, the DOS memory block, a 4-byte lookup,
 ; far-pointer lookup, a counted copy, multiply and divide, file writes,
 ; character widths, the INT 8 handler, the game port, the keyboard hook,
-; and the monochrome console.
+; the monochrome console, and the CallCount waits.
 ; The first bytes finish the seg000 routine that ends on this paragraph.
 
 ; DGROUP words this segment uses. The bytes live in the near data, not here.
@@ -3693,4 +3693,59 @@ SetDeadline:
 	mov	word [0x7520], dx
 	retf
 
-	incbin	"Extracted/segments/seg001.bin", 0x1A80, 0x33E0 - 0x1A80
+; Specific EOI for IRQ 0, then hlt until CallCount reaches Deadline.
+; If the low word of CallCount does not change, start over.
+WaitDeadline:
+	mov	al, 0x60
+	out	0x20, al
+L1A84:
+	db	0x33, 0xC9			; xor cx, cx
+	mov	bx, word [CallCount]
+	jmp	short L1A8D
+L1A8C:
+	hlt
+L1A8D:
+	les	ax, [CallCount]
+	mov	dx, es
+	sub	ax, word [Deadline]
+	sbb	dx, word [0x7520]
+	jns	short L1AA7
+	loop	L1A8C
+	cmp	word [CallCount], bx
+	jne	short L1A84
+	jmp	short WaitDeadline
+L1AA7:
+	retf
+
+
+; AX is 1 when CallCount is at or past Deadline.
+DeadlineReached:
+	db	0x33, 0xC0			; xor ax, ax
+	les	bx, [CallCount]
+	mov	dx, es
+	sub	bx, word [Deadline]
+	sbb	dx, word [0x7520]
+	adc	ax, -2
+	not	ax
+	retf
+
+
+; Spin until CallCount reaches its current value plus the long argument.
+WaitCount:
+	db	0x8B, 0xDC			; mov bx, sp
+	mov	ax, word [bx + 4]
+	mov	dx, word [bx + 6]
+	les	bx, [CallCount]
+	mov	cx, es
+	db	0x03, 0xC3			; add ax, bx
+	db	0x13, 0xD1			; adc dx, cx
+L1AD0:
+	les	bx, [CallCount]
+	mov	cx, es
+	db	0x2B, 0xD8			; sub bx, ax
+	db	0x1B, 0xCA			; sbb cx, dx
+	js	short L1AD0
+	retf
+	db	0x00
+
+	incbin	"Extracted/segments/seg001.bin", 0x1ADE, 0x33E0 - 0x1ADE
