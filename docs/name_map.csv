@@ -558,3 +558,32 @@ seg000:35E8,FpPush,,new,medium,"Called by FpConvert to push a value",src/seg/seg
 seg000:3664,FpPop,,new,medium,"Called by FpConvert when the first push does not fit",src/seg/seg000.asm
 seg000:391C,FpFormat,,new,medium,"Walks a far digit string at the end of the emulator",src/seg/seg000.asm
 seg000:39D6,FpCall,,new,medium,"Called from FpScale",src/seg/seg000.asm
+DGROUP:024C,EmsMapCache,,new,high,"Four words. Each is the logical page last mapped on that physical page. The high bit marks it stale",src/seg/seg001.asm
+DGROUP:0254,EmsWindowOff,,new,high,"Added to the offset within the page when EmsMapRange returns a pointer",src/seg/seg001.asm
+DGROUP:025C,EmsOutPtr,,new,high,"Far pointer EmsInit writes the allocated size through",src/seg/seg001.asm
+DGROUP:0260,EmsFrame,,new,high,"Page-frame segment from INT 67h AH=41h",src/seg/seg001.asm
+DGROUP:0262,EmsHandle,,new,high,"EMS handle from INT 67h AH=43h. -1 means none",src/seg/seg001.asm
+DGROUP:0264,EmmName,,new,high,"Eight bytes compared with the device name at offset 10 of the INT 67h vector",src/seg/seg001.asm
+DGROUP:6DA4,EndPtr,,new,medium,"Far pointer ReadEndPtr returns. What writes it is not in this chunk. See HANDOFF",src/seg/seg001.asm
+DGROUP:62F6,EndMark,,new,medium,"Long stored by SetEndMark. WaitEnd spins until EndPtr passes it",src/seg/seg001.asm
+DGROUP:62FE,CritRoutine,,new,high,"Far routine CritHandler calls. HookCrit stores the caller's pointer here",src/seg/seg001.asm
+DGROUP:62FA,CritOld,,new,high,"INT 24h vector saved by HookCrit and restored by CritRestore",src/seg/seg001.asm
+seg001:000E,EmsMap,,new,high,"Near. INT 67h AH=44h. Maps CX logical pages from BX onto physical pages from AL",src/seg/seg001.asm
+seg001:004D,EmsMapRange,,new,high,"Maps a byte range into a free physical window and returns a pointer in the page frame",src/seg/seg001.asm
+seg001:00D3,EmsMarkStale,,new,high,"Sets the high bit on the four EmsMapCache words",src/seg/seg001.asm
+seg001:00E7,EmsInit,,new,high,"Checks EMMXXXX0, allocates pages, registers EmsFree with _onexit, then calls seg030. _main calls this",src/seg/seg001.asm
+seg001:017C,EmsFree,,new,high,"INT 67h AH=45h and stores -1. Registered with _onexit",src/seg/seg001.asm
+seg001:0192,EmsMapFrame,,new,high,"Maps four physical pages at the 16K page of the argument and returns a frame pointer",src/seg/seg001.asm
+seg001:01B9,EmsSaveMap,,new,high,"Copies the four cached logical pages to a near buffer",src/seg/seg001.asm
+seg001:01D1,EmsRestoreMap,,new,high,"Maps the four saved logical pages back onto physical pages 0-3",src/seg/seg001.asm
+seg001:0208,ReadEndPtr,,new,medium,"Returns the far pointer at EndPtr. See HANDOFF",src/seg/seg001.asm
+seg001:020F,SetEndMark,,new,medium,"Stores EndPtr plus the long argument at EndMark",src/seg/seg001.asm
+seg001:0227,WaitEnd,,new,medium,"Spins until EndPtr is at or past EndMark",src/seg/seg001.asm
+seg001:023A,EndReached,,new,medium,"AX is 1 when EndPtr is at or past EndMark",src/seg/seg001.asm
+seg001:0250,WaitAdd,,new,medium,"Adds the long argument to EndPtr and spins until EndPtr reaches that sum",src/seg/seg001.asm
+seg001:0276,CopyFar,,new,high,"Far byte copy. Normalizes to a 32K window. Dword moves when the tested word is nonzero",src/seg/seg001.asm
+seg001:032C,CopyParas,,new,high,"Copies paragraphs from one segment to another, 64K at a time",src/seg/seg001.asm
+seg001:0374,CopyParasDown,,new,high,"Same copy from the top so an overlap moves downward",src/seg/seg001.asm
+seg001:03C8,CritHandler,,new,high,"INT 24h handler. Far-calls CritRoutine",src/seg/seg001.asm
+seg001:03E4,HookCrit,,new,high,"Saves INT 24h, points it at CritHandler, and registers CritRestore with _onexit. _main calls this",src/seg/seg001.asm
+seg001:0425,CritRestore,,new,high,"Restores INT 24h unless the saved segment word equals the saved offset word",src/seg/seg001.asm
