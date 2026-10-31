@@ -2,7 +2,7 @@
 ; a file-head count, find-first paths, the DOS memory block, a 4-byte lookup,
 ; far-pointer lookup, a counted copy, multiply and divide, file writes,
 ; character widths, the INT 8 handler, the game port, the keyboard hook,
-; the monochrome console, the CallCount waits, line clipping, file reads, and a CPU probe.
+; the monochrome console, the CallCount waits, line clipping, file reads, a CPU probe, and a polygon fill.
 ; The first bytes finish the seg000 routine that ends on this paragraph.
 
 ; DGROUP words this segment uses. The bytes live in the near data, not here.
@@ -80,6 +80,8 @@ Cpu286		equ	0x763A
 Cpu386		equ	0x763C
 Cpu486		equ	0x763E
 CpuPe		equ	0x7640
+ScanFn		equ	0x7668
+LineFn		equ	0x766C
 GamePort	equ	0x201
 FmtSave		equ	0x64CE
 FmtBuf		equ	0x64D6
@@ -683,9 +685,9 @@ CritRestore:
 
 
 ; These four set SI and one flag byte, then ArgSetup stores the arguments
-; and jumps to the body that is still incbin. Nothing in the EXE far-calls them.
+; and jumps to FillPoly. Nothing in the EXE far-calls them.
 ; PassFlag1 and PassFlag0 take the word at [bp+0Eh]. AddrFlag0 and AddrFlag1
-; take its address. The flag is the byte at [bp-9].
+; take its address. The flag is the byte at [bp-9]. ScanFn is set to 3ABBh.
 PassFlag1:
 	push	bp
 	db	0x8B, 0xEC			; mov bp, sp
@@ -715,10 +717,10 @@ ArgSetup:
 	mov	ax, word [bp+0xc]
 	mov	word [bp+8], ax
 	mov	ax, 0x3abb
-	mov	word [0x7668], ax
+	mov	word [ScanFn], ax
 	mov	ax, 0xc
-	mov	word [0x766c], ax
-	jmp	near 0x29d2			; body still incbin
+	mov	word [LineFn], ax
+	jmp	near FillPoly
 
 AddrFlag0:
 	push	bp
@@ -5609,4 +5611,258 @@ FarZero:
 	db	0x33, 0xC0			; xor ax, ax
 	retf
 	db	0
-	incbin	"Extracted/segments/seg001.bin", 0x297A, 0x33E0 - 0x297A
+
+; Another four entries into FillPoly. SI comes from [bp+0Ah], or from the
+; address of that argument. ScanFn is 48D2h instead of the 3ABBh ArgSetup
+; stores. The byte at [bp-9] is read by the edge recorder, which is still
+; incbin.
+; FillPoly walks a list of X,Y points. [bp+8] is the count. A list that
+; misses the box returns. A flat list calls LineFn. Each rising edge goes
+; through LineClip or LineOpen, and ScanFn is called once per scanline
+; with the two edge tables built on the stack.
+
+FillFlag1:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	add	sp, -0x7ce
+	push	si
+	push	di
+	mov	byte [bp - 9], 1
+	jmp	short FillArg
+FillFlag0:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	add	sp, -0x7ce
+	push	si
+	push	di
+	mov	byte [bp - 9], 0
+FillArg:
+	mov	ax, 0x48d2
+	mov	word [ScanFn], ax
+	mov	ax, 0xc
+	mov	word [LineFn], ax
+	mov	si, word [bp + 0xa]
+	jmp	short FillPoly
+FillAddr1:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	add	sp, -0x7ce
+	push	si
+	push	di
+	mov	byte [bp - 9], 1
+	jmp	short FillAddr
+FillAddr0:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	add	sp, -0x7ce
+	push	si
+	push	di
+	mov	byte [bp - 9], 0
+FillAddr:
+	mov	ax, 0x48d2
+	mov	word [ScanFn], ax
+	mov	ax, 0xc
+	mov	word [LineFn], ax
+	lea	si, [bp + 0xa]
+FillPoly:
+	mov	word [bp - 6], si
+	mov	cx, word [bp + 8]
+	db	0x8B, 0xC1			; mov ax, cx
+	dec	ax
+	db	0x03, 0xC0			; add ax, ax
+	db	0x03, 0xC0			; add ax, ax
+	db	0x03, 0xC6			; add ax, si
+	mov	word [bp - 8], ax
+	cld
+	mov	ax, ss
+	mov	es, ax
+	lea	ax, [bp - 0x796]
+	mov	word [bp - 0x16], ax
+	mov	ax, word [0x74fc]
+	mov	word [bp - 2], ax
+	mov	ax, word [0x74fe]
+	dec	ax
+	mov	word [bp - 4], ax
+	mov	ax, word [si + 2]
+	mov	word [bp - 0xc], ax
+	mov	word [bp - 0x10], ax
+	mov	bx, word [si]
+	db	0x8B, 0xD3			; mov dx, bx
+	mov	word [bp - 0xe], si
+	mov	word [bp - 0x12], si
+	add	si, 4
+	dec	cx
+	jne	short L2A31
+	push	word [bp + 6]
+	mov	si, word [bp - 6]
+	push	word [si + 2]
+	push	word [si]
+	push	word [si + 2]
+	push	word [si]
+	call	far [LineFn]
+	add	sp, 0xa
+	pop	di
+	pop	si
+	leave
+	retf
+L2A31:
+	mov	ax, word [si + 2]
+	cmp	ax, word [bp - 0xc]
+	jg	short L2A3F
+	mov	word [bp - 0xc], ax
+	mov	word [bp - 0xe], si
+L2A3F:
+	cmp	ax, word [bp - 0x10]
+	jle	short L2A4A
+	mov	word [bp - 0x10], ax
+	mov	word [bp - 0x12], si
+L2A4A:
+	mov	ax, word [si]
+	db	0x3B, 0xC3			; cmp ax, bx
+	jge	short L2A52
+	db	0x8B, 0xD8			; mov bx, ax
+L2A52:
+	db	0x3B, 0xC2			; cmp ax, dx
+	jle	short L2A58
+	db	0x8B, 0xD0			; mov dx, ax
+L2A58:
+	add	si, 4
+	loop	L2A31
+	cmp	dx, word [bp - 2]
+	jl	short L2AB0
+	cmp	bx, word [bp - 4]
+	jge	short L2AB0
+	mov	ax, word [bp - 0x10]
+	cmp	ax, word [0x74f2]
+	jl	short L2AB0
+	mov	cx, word [bp - 0xc]
+	cmp	cx, word [0x74f4]
+	jge	short L2AB0
+	mov	byte [bp - 0xa], 0
+	cmp	dx, word [bp - 4]
+	jg	short L2A93
+	cmp	bx, word [bp - 2]
+	jl	short L2A93
+	cmp	ax, word [0x74f4]
+	jge	short L2A93
+	cmp	cx, word [0x74f2]
+	jge	short L2A97
+L2A93:
+	mov	byte [bp - 0xa], 1
+L2A97:
+	db	0x3B, 0xC1			; cmp ax, cx
+	je	short L2A9F
+	db	0x3B, 0xD3			; cmp dx, bx
+	jne	short L2AB4
+L2A9F:
+	push	word [bp + 6]
+	mov	si, word [bp - 6]
+	push	ax
+	push	dx
+	push	cx
+	push	bx
+	call	far [LineFn]
+	add	sp, 0xa
+L2AB0:
+	pop	di
+	pop	si
+	leave
+	retf
+L2AB4:
+	lea	si, [bp - 0x7ce]
+	mov	di, word [bp - 0xe]
+L2ABB:
+	mov	ax, word [di + 2]
+	mov	cx, word [di]
+	add	di, 4
+	cmp	di, word [bp - 8]
+	jbe	short L2ACB
+	mov	di, word [bp - 6]
+L2ACB:
+	mov	dx, word [di + 2]
+	db	0x3B, 0xD0			; cmp dx, ax
+	jle	short L2AFC
+	push	si
+	push	dx
+	push	word [di]
+	push	ax
+	push	cx
+	cmp	byte [bp - 0xa], 0
+	je	short L2AEB
+	call	0x3A3:LineClip
+	mov	word [bp - 0x14], di
+	call	0x2B83			; still incbin
+	jmp	short L2AF6
+L2AEB:
+	call	0x3A3:LineOpen
+	mov	word [bp - 0x14], di
+	call	0x2C19			; still incbin
+L2AF6:
+	mov	di, word [bp - 0x14]
+	add	sp, 0xa
+L2AFC:
+	cmp	di, word [bp - 0x12]
+	jne	short L2ABB
+	mov	di, word [bp - 0xe]
+L2B04:
+	mov	ax, word [di + 2]
+	mov	cx, word [di]
+	sub	di, 4
+	cmp	di, word [bp - 6]
+	jae	short L2B14
+	mov	di, word [bp - 8]
+L2B14:
+	mov	dx, word [di + 2]
+	db	0x3B, 0xD0			; cmp dx, ax
+	jle	short L2B3F
+	push	si
+	push	dx
+	push	word [di]
+	push	ax
+	push	cx
+	cmp	byte [bp - 0xa], 0
+	je	short L2B2E
+	call	0x3A3:LineClip
+	jmp	short L2B33
+L2B2E:
+	call	0x3A3:LineOpen
+L2B33:
+	mov	word [bp - 0x14], di
+	call	0x2D10			; still incbin
+	mov	di, word [bp - 0x14]
+	add	sp, 0xa
+L2B3F:
+	cmp	di, word [bp - 0x12]
+	jne	short L2B04
+	mov	ax, word [bp - 0x10]
+	cmp	ax, word [0x74f4]
+	jl	short L2B51
+	mov	ax, word [0x74f4]
+	dec	ax
+L2B51:
+	mov	bx, word [bp - 0xc]
+	cmp	bx, word [0x74f2]
+	jge	short L2B5E
+	mov	bx, word [0x74f2]
+L2B5E:
+	db	0x2B, 0xC3			; sub ax, bx
+	jle	short L2B7F
+	inc	ax
+	push	word [bp + 6]
+	push	ax
+	push	bx
+	db	0x03, 0xDB			; add bx, bx
+	lea	ax, [bp - 0x3d6]
+	db	0x03, 0xC3			; add ax, bx
+	push	ax
+	lea	ax, [bp - 0x796]
+	db	0x03, 0xC3			; add ax, bx
+	push	ax
+	call	far [ScanFn]
+	add	sp, 0xa
+L2B7F:
+	pop	di
+	pop	si
+	leave
+	retf
+	incbin	"Extracted/segments/seg001.bin", 0x2B83, 0x33E0 - 0x2B83
