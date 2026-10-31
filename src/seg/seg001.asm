@@ -1,4 +1,5 @@
-; Segment seg001. EMS maps, far copies, the INT 24h hook, and file length.
+; Segment seg001. EMS maps, far copies, the INT 24h hook, file length,
+; a file-head count, find-first paths, and the DOS memory block.
 ; The first bytes finish the seg000 routine that ends on this paragraph.
 
 ; DGROUP words this segment uses. The bytes live in the near data, not here.
@@ -13,6 +14,13 @@ EndMark		equ	0x62F6
 CritRoutine	equ	0x62FE
 CritOld		equ	0x62FA
 SavedSp		equ	0x6402
+PathBuf		equ	0x6310
+PathCut		equ	0x6374
+FindDta		equ	0x6376
+BlockEnd		equ	0x63F8
+BlockSeg		equ	0x63FC
+SavedCs		equ	0x63FE
+SavedDs		equ	0x6400
 
 ; The previous segment ends on the first byte of test bx, 8.
 ; These bytes finish that test, then pop bp / ret 0xe.
@@ -767,4 +775,242 @@ FileSizeBody:
 	leave
 	retf
 
-	incbin	"Extracted/segments/seg001.bin", 0x543, 0x33E0 - 0x543
+
+; Open the path at [bp+6] and read four bytes. Bytes 1, 2 and 3 are a
+; 24-bit count; byte 0 is unused. The result is that count divided by 16,
+; plus 1 when the low nibble was set. The word at [bp-8] selects the failure
+; path, same as FileSize. FileHeadArg takes it from the caller. FileHead
+; forces 0 (return AX 0). FileHeadMsg forces 1 (call seg022). That call is
+; not followed by a return here: the next instruction is FindPath.
+FileHeadArg:
+	push	bp
+	db	0x8B, 0xEC
+	add	sp, -8
+	push	ds
+	push	si
+	push	di
+	mov	ax, word [bp+8]
+	mov	word [bp-8], ax
+	jmp	short FileHeadBody
+FileHead:
+	push	bp
+	db	0x8B, 0xEC
+	add	sp, -8
+	push	ds
+	push	si
+	push	di
+	mov	word [bp-8], 0
+	jmp	short FileHeadBody
+FileHeadMsg:
+	push	bp
+	db	0x8B, 0xEC
+	add	sp, -8
+	push	ds
+	push	si
+	push	di
+	mov	word [bp-8], 1
+FileHeadBody:
+	mov	dx, word [bp+6]
+	mov	dx, word [bp+6]
+	mov	ah, 0x3d
+	db	0x32, 0xC0
+	int	0x21
+	jae	short .1
+	jmp	short .3
+.1:
+	mov	word [bp-2], ax
+	mov	bx, word [bp-2]
+	lea	dx, [bp-6]
+	mov	cx, 4
+	mov	ah, 0x3f
+	int	0x21
+	db	0x3B, 0xC1			; cmp ax, cx
+	jne	short .2
+	mov	bx, word [bp-2]
+	mov	ah, 0x3e
+	int	0x21
+	mov	ax, word [bp-5]
+	mov	dx, word [bp-3]
+	db	0x32, 0xF6
+	db	0x33, 0xDB
+	test	ax, 0xf
+	je	short .4
+	mov	bx, 1
+.4:
+	shr	dx, 1
+	rcr	ax, 1
+	shr	dx, 1
+	rcr	ax, 1
+	shr	dx, 1
+	rcr	ax, 1
+	shr	dx, 1
+	rcr	ax, 1
+	db	0x03, 0xC3
+	pop	di
+	pop	si
+	pop	ds
+	leave
+	retf
+.2:
+	mov	bx, word [bp-2]
+	mov	ah, 0x3e
+	int	0x21
+.3:
+	cmp	word [bp-8], 0
+	jne	short .5
+	db	0x33, 0xC0
+	pop	di
+	pop	si
+	pop	ds
+	leave
+	retf
+.5:
+	mov	ax, 0x6302
+	mov	bx, ss
+	mov	ds, bx
+	push	word [bp+6]
+	push	ax
+	call	0xF4A:0x3E4
+
+
+; Find first file. Sets the DTA, searches with attribute 6, copies the
+; directory part of the path (through the last ":" or "\") into PathBuf,
+; then appends the 13-byte name from the DTA. Returns PathBuf, or 0.
+FindPath:
+	push	bp
+	db	0x8B, 0xEC
+	push	ds
+	push	si
+	push	di
+	mov	dx, FindDta
+	mov	ah, 0x1a
+	int	0x21
+	mov	dx, word [bp+6]
+	mov	cl, 6
+	mov	ah, 0x4e
+	int	0x21
+	jb	short FindNone
+	mov	di, PathBuf
+	mov	word [PathCut], di
+	mov	si, word [bp+6]
+	mov	cx, 0x57
+	mov	ax, ds
+	mov	es, ax
+.1:
+	lodsb
+	stosb
+	cmp	al, 0
+	je	short FindCopyName
+	cmp	al, 0x3a
+	je	short .2
+	cmp	al, 0x5c
+	jne	short .3
+.2:
+	mov	word [PathCut], di
+.3:
+	loop	.1
+FindCopyName:
+	mov	ax, ds
+	mov	es, ax
+	mov	si, FindDta+0x1e
+	mov	di, word [PathCut]
+	mov	cx, 0xd
+	cld
+	rep	movsb
+	mov	ax, PathBuf
+FindExit:
+	pop	di
+	pop	si
+	pop	ds
+	leave
+	retf
+FindNone:
+	db	0x33, 0xC0
+	jmp	short FindExit
+
+
+; Find next file and append that DTA name at the same cut. Returns PathBuf, or 0.
+FindNextPath:
+	push	bp
+	db	0x8B, 0xEC
+	push	ds
+	push	si
+	push	di
+	mov	dx, FindDta
+	mov	ah, 0x1a
+	int	0x21
+	mov	ah, 0x4f
+	int	0x21
+	jb	short FindNone
+	jmp	short FindCopyName
+	db	0
+
+
+; INT 21h AH=48h with BX=FFFFh. That fails and leaves the largest free
+; block in BX. Returns that size in bytes (paragraphs shifted up by 4).
+LargestFree:
+	push	si
+	push	di
+	mov	bx, 0xffff
+	mov	ah, 0x48
+	int	0x21
+	db	0x8B, 0xC3
+	db	0x33, 0xD2
+	db	0x03, 0xC0
+	db	0x13, 0xD2
+	db	0x03, 0xC0
+	db	0x13, 0xD2
+	db	0x03, 0xC0
+	db	0x13, 0xD2
+	db	0x03, 0xC0
+	db	0x13, 0xD2
+	pop	di
+	pop	si
+	retf
+
+
+; DX:AX is a byte size, not a stack argument. Rounds it up to paragraphs
+; and allocates that. If the alloc fails, the second AH=48h uses the largest
+; block DOS reported in BX. Stores CS, DS, SP, the block segment and the
+; paragraph past the block. Returns the allocated size in bytes.
+AllocBytes:
+	push	si
+	push	di
+	mov	word [SavedCs], cs
+	mov	word [SavedDs], ds
+	mov	word [SavedSp], sp
+	add	ax, 0xf
+	adc	dx, 0
+	shr	dx, 1
+	rcr	ax, 1
+	shr	dx, 1
+	rcr	ax, 1
+	shr	dx, 1
+	rcr	ax, 1
+	shr	dx, 1
+	rcr	ax, 1
+	db	0x8B, 0xD8
+	mov	ah, 0x48
+	int	0x21
+	jae	short .1
+	mov	ah, 0x48
+	int	0x21
+.1:
+	mov	word [BlockSeg], ax
+	db	0x03, 0xC3
+	mov	word [BlockEnd], ax
+	db	0x8B, 0xC3
+	db	0x33, 0xD2
+	db	0x03, 0xC0
+	db	0x13, 0xD2
+	db	0x03, 0xC0
+	db	0x13, 0xD2
+	db	0x03, 0xC0
+	db	0x13, 0xD2
+	db	0x03, 0xC0
+	db	0x13, 0xD2
+	pop	di
+	pop	si
+	retf
+
+	incbin	"Extracted/segments/seg001.bin", 0x6C9, 0x33E0 - 0x6C9
