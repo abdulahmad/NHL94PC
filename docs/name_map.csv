@@ -616,3 +616,11 @@ seg001:0640,FindNone,,new,high,"Returns AX 0 through FindPath's epilogue",src/se
 seg001:0644,FindNextPath,,new,high,"Findnext, then FindCopyName. Returns 0 when the search ends",src/seg/seg001.asm
 seg001:065A,LargestFree,,new,high,"AH=48h BX=FFFFh. Returns the largest free block in bytes",src/seg/seg001.asm
 seg001:067A,AllocBytes,,new,high,"DX:AX is a byte size. Allocates that many paragraphs, or the largest block if the first try fails. Stores SavedCs SavedDs SavedSp",src/seg/seg001.asm
+seg001:06CA,FoldScale,,new,medium,"Folds a result into 0..100h and divides a word shifted left 14. Callees 0x1DD4 0x32EA 0x32F1 are still incbin. See HANDOFF",src/seg/seg001.asm
+seg001:0734,RetZero,,new,high,"xor ax, ax / retf",src/seg/seg001.asm
+seg001:0738,MapEsBx,,new,high,"Near. Calls EmsMarkStale, maps the long, returns ES:BX",src/seg/seg001.asm
+seg001:0756,PadSpace4,,new,high,"Near. After a 0, fills the rest of four bytes with spaces",src/seg/seg001.asm
+seg001:076A,LookupArg,,new,high,"4-byte key lookup. Failure flag comes from the caller",src/seg/seg001.asm
+seg001:077A,Lookup,,new,high,"Same lookup with the failure flag forced to 0",src/seg/seg001.asm
+seg001:0789,LookupMsg,,new,high,"Same lookup with the failure flag forced to 1, which calls seg022",src/seg/seg001.asm
+seg001:0796,LookupBody,,new,high,"Maps the block, scans 4-byte records, and on a hit returns a long built from the record",src/seg/seg001.asm
