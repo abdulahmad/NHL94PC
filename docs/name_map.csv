@@ -1,4 +1,22 @@
 address,name,auto_name,source,confidence,evidence,file
+seg000:04CA,MscStartup,,new,high,"__astart far-jumps here. DOS version check then DGROUP stack BSS zero InitRuntime _main _exit",src/seg/seg000.asm
+seg000:058D,__cintDIV,,MSC,high,"Interrupt 0 handler. Loads DGROUP and enters AmsgExit with message 3 (R6003 integer divide by 0)",src/seg/seg000.asm
+seg000:059D,AmsgExit,,new,high,"Prints the runtime banner and the message number in AX then _exit(255). __cintDIV falls into it and __chkstk jumps to it with AX 0 (R6000)",src/seg/seg000.asm
+seg000:05BF,CintdivDgroup,,new,high,"Relocated DGROUP word read by __cintDIV before InitRuntime",src/seg/seg000.asm
+seg000:05C2,InitRuntime,,new,medium,"Far routine called from MscStartup. Installs the divide handler inherits _C_FILE_INFO into _osfile marks device handles and calls _initterm. MSC symbol for the whole function not confirmed",src/seg/seg000.asm
+seg000:0687,_exit,,MSC,high,"cx 0. Runs atexit terminators then DOS AH=4Ch. MscStartup calls it with the status from _main",src/seg/seg000.asm
+seg000:068E,__exit,,MSC,high,"cx 1. Skips atexit then DOS AH=4Ch. C _exit",src/seg/seg000.asm
+seg000:0696,_cexit,,MSC,high,"cx 0x100. Runs atexit then returns to the caller. C _cexit",src/seg/seg000.asm
+seg000:06A0,__cexit,,MSC,high,"cx 0x101. Skips atexit and returns to the caller. C _c_exit",src/seg/seg000.asm
+seg000:06A8,ExitCommon,,new,high,"Shared tail of _exit __exit _cexit and __cexit",src/seg/seg000.asm
+seg000:070A,ExitRestore,,new,high,"Near helper on the exit path. Restores interrupt 0 and the math error vector",src/seg/seg000.asm
+seg000:0737,_initterm,,MSC,medium,"Calls each far pointer in a table from the top down skipping nulls. Later MSC _initterm walks upward",src/seg/seg000.asm
+seg000:074A,__chkstk,,MSC,high,"Far. Drops SP by AX under the return address. Overflow is R6000 through AmsgExit or the alternate handler",src/seg/seg000.asm
+seg005:0008,_main,,MSC,high,"Far call after three near pushes (environ argv argc) and before _exit. Body is still the seg005 incbin and is a single retf",src/seg/seg000.asm
+seg005:0004,NullStartup4,,new,low,"Far call from MscStartup. Bytes are retf. May be __fptrap or null __setenvp. See HANDOFF Unsure",src/seg/seg000.asm
+seg005:0006,NullStartup6,,new,low,"Far call from MscStartup just before NullStartup4. Bytes are retf. May be __FPMATH or null __setargv. See HANDOFF Unsure",src/seg/seg000.asm
+DGROUP:8556,__psp,,MSC,high,"Startup stores the incoming DS (the PSP) here and later reads the environment segment from it",src/seg/seg000.asm
+DGROUP:855F,_osfile,,MSC,high,"_C_FILE_INFO nibbles are stored here and the IOCTL loop sets the device bit on handles 0 to 4",src/seg/seg000.asm
 seg056:082F,__astart,082F,MSC,high,"EXE entry (e_ip). Microsoft C name for the startup; this copy sets up RTLink and jumps to the C startup in seg000",src/seg/seg056.asm
 seg056:01F0,NotifySectionLoaded,01F0,new,high,"Called after a section is marked resident; the body is nop then retf",src/seg/seg056.asm
 seg056:01F2,ReleaseSection,01F2,new,high,"Clears the resident flag, optionally fills the section with 8E8E, returns carry if pinned",src/seg/seg056.asm
@@ -427,7 +445,6 @@ seg056:2ACB,OvlThunk278,2ACB,new,high,"Overlay thunk: near call LoadFromThunk, f
 seg056:2AD5,OvlThunk279,2AD5,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
 seg056:2ADF,OvlThunk280,2ADF,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
 seg056:2AE9,OvlThunk281,2AE9,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section split across seg058",src/seg/seg056.asm
-seg000:04CA,MscStartup,04CA,new,medium,"Microsoft C startup. seg000 is still incbin",src/seg/seg056.asm
 seg058:0003,RtlSectionHook,0003,new,medium,"Far hook called while releasing or loading a section; carry skips the resident shortcut. seg058 and seg000 are still incbin",src/seg/seg056.asm
 seg058:0005,RtlWriteText,0005,new,medium,"Writes a message (DS:DX) with a number in CX, used before a fatal overlay error. seg058 and seg000 are still incbin",src/seg/seg056.asm
 seg058:00CF,RtlSaveVectors,00CF,new,medium,"Called at startup with ES the PSP. seg058 and seg000 are still incbin",src/seg/seg056.asm

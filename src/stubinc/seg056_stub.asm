@@ -2,7 +2,8 @@
 ;	for checking against the EXE (tools/verify_segment.py seg056).
 	bits	16
 	org	0x0
-; seg000 and seg058 are still incbin, so the far targets in this segment are equates.
+; seg058 is still incbin, so those far targets are equates. MscStartup is a label in the
+; full build (seg000); this equate is only for building seg056 on its own.
 MscStartup	equ	0x04CA			; seg000, Microsoft C startup
 RtlSectionHook	equ	3			; seg058
 RtlWriteText	equ	5			; seg058

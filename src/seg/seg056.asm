@@ -3,9 +3,7 @@
 ; and jumps to the Microsoft C startup. The file-name slots and the thunks
 ; follow the manager in the same segment.
 
-%ifndef MscStartup
-MscStartup	equ	0x04CA			; seg000, Microsoft C startup
-%endif
+; MscStartup is the label in seg000. The standalone stub still equates it.
 %ifndef RtlSectionHook
 RtlSectionHook	equ	3		; seg058
 %endif
