@@ -19,11 +19,11 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 
 # Bank number = the nnn in PCFFnnn.TIM. What each bank holds (from its timbre type byte).
 BANK_NAMES = {0: "FM (OPL2) instruments", 1: "Sound Blaster digital samples",
-              2: "FM (OPL2) extras for AdLib", 3: "Roland MT-32 timbres"}
-TIMBRE_TYPES = {0x04: "FM", 0x06: "DIG", 0x08: "MT32"}  # first byte of each timbre record
-# PCFFnnn.PAT: which driver set uses which patch map (inferred from the banks each one references).
-PAT_NAMES = {1: "Sound Blaster (FM bank 0 + digital bank 1)", 2: "bank 0 only (references timbres up to 173: older/unused set?)",
-             3: "Roland MT-32 (bank 3)", 4: "AdLib (FM bank 0 + FM bank 2)", 5: "AdLib variant (FM bank 0 + FM bank 2)"}
+              2: "FM (OPL2) extras for AdLib", 3: "PC speaker timbres"}
+TIMBRE_TYPES = {0x04: "FM", 0x06: "DIG", 0x08: "BEEP"}  # first byte of each timbre record
+# PCFFnnn.PAT: the patch map number is byte 1 of each card's .SCN file.
+PAT_NAMES = {1: "Sound Blaster (FM bank 0 + digital bank 1, SBDAC.SCN and MT32SBDA.SCN)", 2: "Roland MT-32 (MT32.SCN)",
+             3: "PC speaker (bank 3, PCBEEP.SCN)", 4: "AdLib (FM bank 0 + FM bank 2, ADLIB.SCN)", 5: "AdLib variant (FM bank 0 + FM bank 2), no .SCN selects it"}
 
 
 def read_table(data):

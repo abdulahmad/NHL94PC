@@ -21,21 +21,24 @@ Tools:
 | `PCFF001.TIM` | bank 1: 30 Sound Blaster digital timbres, 32 bytes each, plus the name of the sample file |
 | `PCFF001.DIG` | the 30 samples that bank 1 points at |
 | `PCFF002.TIM` | bank 2: 31 FM timbres used in place of the digital ones on AdLib |
-| `PCFF003.TIM` | bank 3: 28 Roland MT-32 timbres, 70 bytes each |
+| `PCFF003.TIM` | bank 3: 28 PC speaker timbres, 70 bytes each |
 | `PCFF001.PAT` … `PCFF005.PAT` | program maps: which bank and timbre each program number plays |
 
 The banks are shared by the music (`.KMS`) and the sound effects. In the Sound Blaster map, programs 1 to 122 are FM
 instruments and programs 123 to 179 are mostly sound effects, 33 of them digital.
 
-Which PAT goes with which card, from the banks each one uses *(guess for 2 and 5)*:
+The game picks the patch map from byte 1 of the card's `.SCN` file: `MENUS.OVL` builds the name with `sprintf("PCFF%03d", scn[1])`. The FM timbre layout is covered in `docs/MUSIC_FORMAT.md`.
 
-| PAT | Banks used | Card |
-| --- | --- | --- |
-| 1 | 0 (FM) + 1 (digital) | Sound Blaster |
-| 2 | 0 only, but refers to timbres up to 173 while bank 0 has 144 | older set, maybe unused |
-| 3 | 3 | Roland MT-32 |
-| 4 | 0 + 2 | AdLib |
-| 5 | 0 + 2, a few programs differ from 4 | AdLib variant |
+| `.SCN` file | Byte 1 | PAT | Banks the PAT uses |
+| --- | --- | --- | --- |
+| `SBDAC.SCN`, `MT32SBDA.SCN` | 1 | `PCFF001.PAT` | 0 (FM) + 1 (digital) |
+| `MT32.SCN` | 2 | `PCFF002.PAT` | "bank 0" only, timbres up to 173 |
+| `PCBEEP.SCN` | 3 | `PCFF003.PAT` | 3 (PC speaker) |
+| `ADLIB.SCN` | 4 | `PCFF004.PAT` | 0 + 2 (FM) |
+| none | 5 | `PCFF005.PAT` | 0 + 2, a few programs differ from 4; no `.SCN` selects it |
+
+The MT-32 map refers to timbres up to 173 while `PCFF000.TIM` has only 144, so on the MT-32 the record's timbre byte is
+probably an MT-32 sound number rather than an entry in a `.TIM` file *(guess)*.
 
 ## Shared container (.TIM and .DIG)
 
@@ -60,7 +63,7 @@ data with no header. The header size matches the file size (323,967 bytes).
 
 | Offset | Size | Field |
 | --- | --- | --- |
-| 0x00 | u8 | type, `06` = digital (FM is `04`, MT-32 is `08`) |
+| 0x00 | u8 | type, `06` = digital (FM is `04`, PC speaker is `08`) |
 | 0x01 | u8 | unknown, varies per sample |
 | 0x02 | 4 | sample id in `PCFF001.DIG` |
 | 0x06 | 11 | zero |
@@ -100,10 +103,10 @@ Record (20 bytes), as far as it is known:
 For the digital programs the transpose would shift the playback rate by 2^(t/12), but the note the game plays them at
 is not known yet, so the exporter writes every sample at its stored rate.
 
-## FM and MT-32 timbres (not decoded yet)
+## FM and PC speaker timbres (not decoded yet)
 
 Bank 0 and bank 2 records are 80 bytes and start with type `04`, followed by what look like the two OPL2 operator
 register sets and a connection/feedback byte, then envelope or pitch-sweep parameters from about offset 0x10. Bank 3
-records are 70 bytes, type `08`, with many `e8 03` (1000) words, which looks like MT-32 timbre parameters. Playing these
+records are 70 bytes, type `08`, with many `e8 03` (1000) words; the PC speaker map (`PCFF003.PAT`) is the only one that uses them. Playing these
 needs the sound driver's code to be read and an OPL2 emulator, which is the next step for FM effects and for the
 `.KMS` music.
