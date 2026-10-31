@@ -657,3 +657,14 @@ seg001:0B82,PathTailFar,,new,high,"Same scan of a far string",src/seg/seg001.asm
 seg001:0BAE,CopyStrN,,new,high,"Copies a near string, including the null, and stops at the null or the count",src/seg/seg001.asm
 seg001:0BBC,CopyStrNFar,,new,high,"Same copy from a far string",src/seg/seg001.asm
 seg001:0BD7,StrnDiff,,new,high,"Compares up to the count. AX is 0 when the bytes match through a null, else 1",src/seg/seg001.asm
+DGROUP:6D50,CharSeg,,new,high,"Segment of the character table. TextWidth reads it. UseCharSeg stores it",src/seg/seg001.asm
+seg001:0BFA,TextWidth,,new,high,"Sums per-character values from CharSeg for the count in the second argument. Zero count returns 0",src/seg/seg001.asm
+seg001:0C0A,TextWidthAll,,new,high,"The same sum through the terminating 0",src/seg/seg001.asm
+seg001:0C4E,SetCharPtr,,new,high,"Stores a far pointer at the start of the CharSeg block",src/seg/seg001.asm
+seg001:0C64,SetCharPtr2,,new,high,"Stores a far pointer at offset 8 of the CharSeg block",src/seg/seg001.asm
+seg001:0C7A,SaveCharTab,,new,high,"Copies 11 words from CharSeg into a near buffer and stores the segment at offset 0x16",src/seg/seg001.asm
+seg001:0C9C,LoadCharTab,,new,high,"Restores CharSeg from the buffer and copies the 11 words back",src/seg/seg001.asm
+seg001:0CB8,UseCharSeg,,new,high,"Normalizes a far pointer and stores its segment as CharSeg",src/seg/seg001.asm
+seg001:0CCA,HookInt8,,new,high,"Points INT 8 at seg001:0xE20, writes 0xB6 to port 0x43 and 0x2E9C to port 0x40, registers UnhookInt8. _main calls this",src/seg/seg001.asm
+seg001:0D51,UnhookInt8,,new,high,"Restores the saved INT 8 vector when it still points at seg001:0xE20, and writes 0 to port 0x40 twice",src/seg/seg001.asm
+seg001:0D8C,AllocSlot,,new,high,"Stores two words in a free pair among the eight at 0x6DB4. Calls seg022 when all are in use. _main calls this",src/seg/seg001.asm

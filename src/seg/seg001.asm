@@ -1,6 +1,7 @@
 ; Segment seg001. EMS maps, far copies, the INT 24h hook, file length,
 ; a file-head count, find-first paths, the DOS memory block, a 4-byte lookup,
-; far-pointer lookup, a counted copy, multiply and divide, and file writes.
+; far-pointer lookup, a counted copy, multiply and divide, file writes,
+; character widths, and the INT 8 hook.
 ; The first bytes finish the seg000 routine that ends on this paragraph.
 
 ; DGROUP words this segment uses. The bytes live in the near data, not here.
@@ -22,6 +23,7 @@ BlockEnd		equ	0x63F8
 BlockSeg		equ	0x63FC
 SavedCs		equ	0x63FE
 SavedDs		equ	0x6400
+CharSeg		equ	0x6D50
 FmtSave		equ	0x64CE
 FmtBuf		equ	0x64D6
 
@@ -1781,4 +1783,254 @@ StrnDiff:
 	retf
 	db	0x00
 
-	incbin	"Extracted/segments/seg001.bin", 0xBFA, 0x33E0 - 0xBFA
+; Sum per-character values from the table in CharSeg. [bp+8] is how many
+; characters to read; zero returns 0. The word at ES:10h is the value used
+; when the flag byte at ES:14h is set. Otherwise the word at ES:(char*2+16h).
+TextWidth:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	si
+	push	di
+	mov	dx, word [bp + 8]
+	db	0x0B, 0xD2			; or dx, dx
+	jne	short TextWidthBody
+	db	0x33, 0xC0			; xor ax, ax
+	jmp	short L0C49
+
+
+; The same sum through the terminating 0.
+TextWidthAll:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	si
+	push	di
+	db	0x33, 0xD2			; xor dx, dx
+
+TextWidthBody:
+	mov	es, word [CharSeg]
+	mov	si, word [bp + 6]
+	db	0x33, 0xC0			; xor ax, ax
+	mov	cl, byte es:[0x14]
+	mov	di, word es:[0x10]
+L0C24:
+	mov	bl, byte [si]
+	db	0x0A, 0xDB			; or bl, bl
+	je	short L0C49
+	inc	si
+	db	0x32, 0xFF			; xor bh, bh
+	db	0x03, 0xDB			; add bx, bx
+	mov	bx, word es:[bx + 0x16]
+	db	0x0B, 0xDB			; or bx, bx
+	je	short L0C24
+	db	0x0A, 0xC9			; or cl, cl
+	je	short L0C42
+	mov	bl, byte es:[bx]
+	db	0x32, 0xFF			; xor bh, bh
+	db	0x8B, 0xFB			; mov di, bx
+L0C42:
+	db	0x03, 0xC7			; add ax, di
+	dec	dx
+	je	short L0C49
+	jmp	short L0C24
+L0C49:
+	pop	di
+	pop	si
+	leave
+	retf
+	db	0x00
+
+
+; Store the far pointer at the start of the CharSeg block.
+SetCharPtr:
+	db	0x8B, 0xDC			; mov bx, sp
+	mov	ax, word [bx + 4]
+	mov	dx, word [bx + 6]
+	mov	es, word [CharSeg]
+	mov	word es:[0], ax
+	mov	word es:[2], dx
+	retf
+
+
+; Store the far pointer at offset 8 of the CharSeg block.
+SetCharPtr2:
+	db	0x8B, 0xDC			; mov bx, sp
+	mov	ax, word [bx + 4]
+	mov	dx, word [bx + 6]
+	mov	es, word [CharSeg]
+	mov	word es:[8], ax
+	mov	word es:[0xa], dx
+	retf
+
+
+; Copy 11 words from the start of CharSeg into the near buffer, and
+; store CharSeg at offset 16h of that buffer.
+SaveCharTab:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	ds
+	push	di
+	push	si
+	db	0x33, 0xF6			; xor si, si
+	mov	di, word [bp + 6]
+	mov	ax, ds
+	mov	es, ax
+	mov	ds, word [CharSeg]
+	cld
+	mov	word es:[di + 0x16], ds
+	mov	cx, 0xb
+	rep movsw
+	pop	si
+	pop	di
+	pop	ds
+	leave
+	retf
+
+
+; The reverse. The segment word at offset 16h of the buffer becomes CharSeg.
+LoadCharTab:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	di
+	push	si
+	mov	si, word [bp + 6]
+	mov	ax, word [si + 0x16]
+	mov	word [CharSeg], ax
+	mov	es, ax
+	db	0x33, 0xFF			; xor di, di
+	cld
+	mov	cx, 0xb
+	rep movsw
+	pop	si
+	pop	di
+	leave
+	retf
+
+
+; Normalize the far pointer and store its segment as CharSeg.
+UseCharSeg:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	di
+	les	di, [bp + 6]
+	call	0x2964			; still incbin
+	mov	word [CharSeg], es
+	pop	di
+	leave
+	retf
+	db	0x00
+
+
+; Write 0B6h to port 43h, mask IRQ 0 and IRQ 1, point INT 8 at seg001:0E20h
+; if that is not already the vector, unmask, and write 2E9Ch to port 40h.
+; Registers UnhookInt8 with _onexit. _main calls this.
+HookInt8:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	mov	dx, 0x2e9c
+	mov	word [0x6daa], 0x2e9b
+	cli
+	mov	word [0x6da8], 0
+	mov	word [0x6db0], 1
+	mov	word [0x6db4], 0
+	mov	word [0x6db6], 0
+	mov	word cs:[0xe1e], ds
+	sti
+	mov	al, 0xb6
+	out	0x43, al
+	in	al, 0x21
+	or	al, 3
+	out	0x21, al
+	db	0x33, 0xC0			; xor ax, ax
+	mov	es, ax
+	cli
+	mov	ax, word es:[0x20]
+	cmp	ax, 0xe20
+	je	short L0D10
+	mov	word [0x6d98], ax
+L0D10:
+	mov	ax, word es:[0x22]
+	mov	bx, cs
+	db	0x3B, 0xC3			; cmp ax, bx
+	je	short L0D33
+	mov	word [0x6d9a], ax
+	mov	word es:[0x20], 0xe20
+	mov	word es:[0x22], cs
+	mov	word [0x6d9c], 0xe1d
+	mov	word [0x6d9e], cs
+L0D33:
+	in	al, 0x21
+	and	al, 0xfc
+	out	0x21, al
+	sti
+	db	0x8A, 0xC2			; mov al, dl
+	out	0x40, al
+	db	0x8A, 0xC6			; mov al, dh
+	out	0x40, al
+	push	cs
+	mov	ax, 0xd51
+	push	ax
+	call	0x3A3:OnexitThunk
+	add	sp, 4
+	leave
+	retf
+
+
+; If INT 8 still points at seg001:0E20h, mask IRQ 0 and IRQ 1, restore the
+; saved vector, unmask, and write 0 to port 40h twice.
+UnhookInt8:
+	db	0x33, 0xC0			; xor ax, ax
+	mov	es, ax
+	mov	ax, word es:[0x22]
+	mov	dx, cs
+	db	0x3B, 0xC2			; cmp ax, dx
+	je	short L0D60
+	retf
+L0D60:
+	mov	ax, word es:[0x20]
+	cmp	ax, 0xe20
+	je	short L0D6A
+	retf
+L0D6A:
+	in	al, 0x21
+	or	al, 3
+	out	0x21, al
+	cli
+	mov	ax, word [0x6d98]
+	mov	word es:[0x20], ax
+	mov	ax, word [0x6d9a]
+	mov	word es:[0x22], ax
+	in	al, 0x21
+	and	al, 0xfc
+	out	0x21, al
+	sti
+	db	0x32, 0xC0			; xor al, al
+	out	0x40, al
+	out	0x40, al
+
+
+; Find a free pair in the eight pairs at 6DB4h and store the two arguments.
+; Calls seg022 when every pair is in use. _main calls this.
+AllocSlot:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	mov	cx, 8
+	mov	bx, 0x6db4
+L0D95:
+	cmp	word [bx + 2], 0
+	je	short L0DA9
+	add	bx, 4
+	loop	L0D95
+	mov	ax, 0x6ddc
+	push	ax
+	call	0xF4A:0x3E4			; seg022
+L0DA9:
+	mov	ax, word [bp + 6]
+	mov	word [bx], ax
+	mov	word [bx + 2], 0
+	mov	ax, word [bp + 8]
+	mov	word [bx + 2], ax
+	mov	word [bx + 6], 0
+	leave
+	retf
+
+	incbin	"Extracted/segments/seg001.bin", 0xDC0, 0x33E0 - 0xDC0

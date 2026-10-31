@@ -15,4 +15,6 @@ OvlThunk27	equ	0x20FD
 EmsInit		equ	0xE7
 HookCrit	equ	0x3E4
 FindFarMsg	equ	0x847
+HookInt8	equ	0xCCA
+AllocSlot	equ	0xD8C
 %include "seg/seg005.asm"
