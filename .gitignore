@@ -24,3 +24,7 @@ __pycache__/
 *.log
 .DS_Store
 !lst/HOCKEY.EXE
+
+# Retail game folder (temporary, like the EXE)
+!lst/game/
+!lst/game/**
