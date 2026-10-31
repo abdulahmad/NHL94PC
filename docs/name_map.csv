@@ -874,3 +874,5 @@ seg002:0AF4,MoveFound,,new,high,"FindRec, then MoveRec with flag 81h",src/seg/se
 seg002:0B10,MovePtr,,new,high,"MoveRec on the caller's record with flag 81h",src/seg/seg002.asm
 seg002:0B22,MoveFlag,,new,high,"FindRec, then MoveRec with the caller's flag word",src/seg/seg002.asm
 seg002:0B3E,MoveRec,,new,high,"Copies a record into a new chain entry in pieces no larger than C000h",src/seg/seg002.asm
+seg002:0CBC,FindName,,new,high,"Walks the chain for a 12-byte name. The far string is reduced to its tail first",src/seg/seg002.asm
+seg002:0D28,AxClear,,new,high,"sub ax, ax and retf. Callers that push CS treat it as a far return",src/seg/seg002.asm
