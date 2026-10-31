@@ -870,3 +870,7 @@ seg002:09B2,UnlinkRec,,new,high,"Splices a record out of the next and previous l
 seg002:09FC,FindTrim,,new,high,"FindRec, then TrimAfter",src/seg/seg002.asm
 seg002:0A14,TrimAfter,,new,high,"Unlinks following records whose flag byte lacks bit 20h",src/seg/seg002.asm
 seg002:0A5E,DropOldest,,new,high,"Unlinks the oldest record of the requested class and returns 1, or 0",src/seg/seg002.asm
+seg002:0AF4,MoveFound,,new,high,"FindRec, then MoveRec with flag 81h",src/seg/seg002.asm
+seg002:0B10,MovePtr,,new,high,"MoveRec on the caller's record with flag 81h",src/seg/seg002.asm
+seg002:0B22,MoveFlag,,new,high,"FindRec, then MoveRec with the caller's flag word",src/seg/seg002.asm
+seg002:0B3E,MoveRec,,new,high,"Copies a record into a new chain entry in pieces no larger than C000h",src/seg/seg002.asm

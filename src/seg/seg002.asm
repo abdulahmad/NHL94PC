@@ -1088,4 +1088,220 @@ L0AEE:
 	leave
 	retf
 	nop
-	incbin	"Extracted/segments/seg002.bin", 0xAF4, 0x1560 - 0xAF4
+
+; MoveFound and MoveFlag find the record first. MovePtr passes the
+; caller's pointer. All three enter MoveRec. Flag 81h is the fixed
+; value. MoveRec copies the 12-byte name, asks InsertRec for a new
+; record, and copies the bytes across in pieces no larger than C000h.
+; A failed insert tries DropOldest and asks again.
+
+MoveFound:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	0x81
+	push	word [bp + 8]
+	push	word [bp + 6]
+	push	cs
+	call	FindRec
+	add	sp, 4
+	push	dx
+	push	ax
+	push	cs
+	call	MoveRec
+	leave
+	retf
+	nop
+MovePtr:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	0x81
+	push	word [bp + 8]
+	push	word [bp + 6]
+	push	cs
+	call	MoveRec
+	leave
+	retf
+MoveFlag:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	word [bp + 0xa]
+	push	word [bp + 8]
+	push	word [bp + 6]
+	push	cs
+	call	FindRec
+	add	sp, 4
+	push	dx
+	push	ax
+	push	cs
+	call	MoveRec
+	leave
+	retf
+	nop
+MoveRec:
+	enter	0x32, 0
+	push	di
+	push	si
+	mov	ax, word [bp + 6]
+	mov	dx, word [bp + 8]
+	db	0x8B, 0xF8			; mov di, ax
+	mov	word [bp - 0x1a], dx
+	db	0x0B, 0xD0			; or dx, ax
+	jne	short L0B5A
+	db	0x2B, 0xC0			; sub ax, ax
+	cwd
+	pop	si
+	pop	di
+	leave
+	retf
+L0B5A:
+	mov	dx, word [bp - 0x1a]
+	add	ax, strict word 4
+	push	dx
+	push	ax
+	push	cs
+	call	0xCBC			; still incbin
+	add	sp, 4
+	db	0x8B, 0xF0			; mov si, ax
+	mov	word [bp - 2], dx
+	db	0x0B, 0xD0			; or dx, ax
+	je	short L0B7E
+	mov	ax, word [bp - 2]
+	push	ax
+	push	si
+	push	cs
+	call	UnlinkRec
+	add	sp, 4
+L0B7E:
+	db	0x2B, 0xF6			; sub si, si
+	mov	word [bp - 0x1c], di
+	mov	es, word [bp - 0x1a]
+L0B86:
+	db	0x8B, 0xDF			; mov bx, di
+	add	bx, 4
+	mov	al, byte es:[bx + si]
+	mov	byte [bp + si - 0x32], al
+	inc	si
+	cmp	si, 0xc
+	jl	short L0B86
+	mov	byte [bp - 0x26], 0
+L0B9B:
+	push	0
+	mov	es, word [bp - 0x1a]
+	mov	ax, word es:[di + 0x18]
+	or	al, 0x88
+	push	ax
+	push	word es:[di + 0x16]
+	push	word es:[di + 0x14]
+	lea	ax, [bp - 0x32]
+	push	ax
+	push	cs
+	call	InsertRec
+	add	sp, 0xa
+	db	0x8B, 0xF0			; mov si, ax
+	mov	word [bp - 0x1e], dx
+	db	0x0B, 0xD0			; or dx, ax
+	jne	short L0BD1
+	push	word [bp + 0xa]
+	push	cs
+	call	DropOldest
+	add	sp, 2
+	db	0x0B, 0xC0			; or ax, ax
+	jne	short L0B9B
+L0BD1:
+	mov	ax, word [bp - 0x1e]
+	db	0x0B, 0xC6			; or ax, si
+	jne	short L0BDB
+	jmp	near L0CA6
+L0BDB:
+	mov	es, word [bp - 0x1e]
+	mov	ax, word es:[si + 0x14]
+	mov	dx, word es:[si + 0x16]
+	mov	word [bp - 4], ax
+	mov	word [bp - 2], dx
+	mov	cx, word es:[si]
+	mov	bx, word es:[si + 2]
+	mov	word [bp - 8], cx
+	mov	word [bp - 6], bx
+	mov	es, word [bp - 0x1a]
+	mov	cx, word es:[di]
+	mov	bx, word es:[di + 2]
+	mov	word [bp - 0x24], cx
+	mov	word [bp - 0x22], bx
+	db	0x0B, 0xD0			; or dx, ax
+	jne	short L0C10
+	jmp	near L0CA6
+L0C10:
+	mov	word [bp - 0x20], si
+L0C13:
+	cmp	word [bp - 2], 0
+	jl	short L0C28
+	jg	short L0C22
+	cmp	word [bp - 4], 0xc000
+	jbe	short L0C28
+L0C22:
+	mov	si, 0xc000
+	jmp	short L0C2B
+	nop
+L0C28:
+	mov	si, word [bp - 4]
+L0C2B:
+	push	word [bp - 6]
+	push	word [bp - 8]
+	call	0x3A3:EmsMapFrame
+	add	sp, 4
+	db	0x8B, 0xF8			; mov di, ax
+	mov	word [bp - 0xe], dx
+	db	0x0B, 0xD0			; or dx, ax
+	je	short L0C90
+	push	si
+	push	word [bp - 0x22]
+	push	word [bp - 0x24]
+	mov	ax, word [bp - 0xe]
+	push	ax
+	push	di
+	call	0x3A3:CopyBytes
+	add	sp, 0xa
+	db	0x2B, 0xC9			; sub cx, cx
+	add	word [bp - 8], si
+	adc	word [bp - 6], cx
+	push	word [bp - 0x22]
+	push	word [bp - 0x24]
+	db	0x8B, 0xF9			; mov di, cx
+	call	0x3A3:FarToLinear
+	add	sp, 4
+	db	0x03, 0xC6			; add ax, si
+	db	0x13, 0xD7			; adc dx, di
+	call	0x3A3:LinearToFarRegs
+	mov	word [bp - 0x24], ax
+	mov	word [bp - 0x22], dx
+	sub	word [bp - 4], si
+	sbb	word [bp - 2], di
+	mov	ax, word [bp - 2]
+	or	ax, word [bp - 4]
+	jne	short L0C13
+	mov	si, word [bp - 0x20]
+	jmp	short L0CA6
+L0C90:
+	mov	si, word [bp - 0x20]
+	push	word [bp - 0x1e]
+	push	si
+	push	cs
+	call	UnlinkRec
+	add	sp, 4
+	db	0x2B, 0xC0			; sub ax, ax
+	cwd
+	db	0x8B, 0xF0			; mov si, ax
+	mov	word [bp - 0x1e], dx
+L0CA6:
+	push	word [bp - 0x1a]
+	push	word [bp - 0x1c]
+	push	cs
+	call	UnlinkRec
+	add	sp, 4
+	db	0x8B, 0xC6			; mov ax, si
+	mov	dx, word [bp - 0x1e]
+	pop	si
+	pop	di
+	leave
+	retf
+	incbin	"Extracted/segments/seg002.bin", 0xCBC, 0x1560 - 0xCBC
