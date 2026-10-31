@@ -1,0 +1,598 @@
+{
+ "exe": {
+  "label": "NHL Hockey (NHL '94) PC retail HOCKEY.EXE (16-bit DOS, Microsoft C, RTLink/Plus overlays)",
+  "file": "HOCKEY.EXE",
+  "sha1": "d94450ddff26528bddac6646c234277076fd36cb",
+  "crc32": "D2905BC2",
+  "size": 244854
+ },
+ "segments": [
+  {
+   "name": "mz_header",
+   "off": 0,
+   "size": 7168,
+   "file": "header/mz_header.asm"
+  },
+  {
+   "name": "seg000",
+   "off": 7168,
+   "size": 14896,
+   "file": "seg/seg000.asm",
+   "para": 0
+  },
+  {
+   "name": "seg001",
+   "off": 22064,
+   "size": 13280,
+   "file": "seg/seg001.asm",
+   "para": 931
+  },
+  {
+   "name": "seg002",
+   "off": 35344,
+   "size": 5472,
+   "file": "seg/seg002.asm",
+   "para": 1761
+  },
+  {
+   "name": "seg003",
+   "off": 40816,
+   "size": 16,
+   "file": "seg/seg003.asm",
+   "para": 2103
+  },
+  {
+   "name": "seg004",
+   "off": 40832,
+   "size": 3088,
+   "file": "seg/seg004.asm",
+   "para": 2104
+  },
+  {
+   "name": "seg005",
+   "off": 43920,
+   "size": 1040,
+   "file": "seg/seg005.asm",
+   "para": 2297
+  },
+  {
+   "name": "seg006",
+   "off": 44960,
+   "size": 752,
+   "file": "seg/seg006.asm",
+   "para": 2362
+  },
+  {
+   "name": "seg007",
+   "off": 45712,
+   "size": 1168,
+   "file": "seg/seg007.asm",
+   "para": 2409
+  },
+  {
+   "name": "seg008",
+   "off": 46880,
+   "size": 9408,
+   "file": "seg/seg008.asm",
+   "para": 2482
+  },
+  {
+   "name": "seg009",
+   "off": 56288,
+   "size": 304,
+   "file": "seg/seg009.asm",
+   "para": 3070
+  },
+  {
+   "name": "seg010",
+   "off": 56592,
+   "size": 64,
+   "file": "seg/seg010.asm",
+   "para": 3089
+  },
+  {
+   "name": "seg011",
+   "off": 56656,
+   "size": 16,
+   "file": "seg/seg011.asm",
+   "para": 3093
+  },
+  {
+   "name": "seg012",
+   "off": 56672,
+   "size": 192,
+   "file": "seg/seg012.asm",
+   "para": 3094
+  },
+  {
+   "name": "seg013",
+   "off": 56864,
+   "size": 2592,
+   "file": "seg/seg013.asm",
+   "para": 3106
+  },
+  {
+   "name": "seg014",
+   "off": 59456,
+   "size": 208,
+   "file": "seg/seg014.asm",
+   "para": 3268
+  },
+  {
+   "name": "seg015",
+   "off": 59664,
+   "size": 1664,
+   "file": "seg/seg015.asm",
+   "para": 3281
+  },
+  {
+   "name": "seg016",
+   "off": 61328,
+   "size": 608,
+   "file": "seg/seg016.asm",
+   "para": 3385
+  },
+  {
+   "name": "seg017",
+   "off": 61936,
+   "size": 192,
+   "file": "seg/seg017.asm",
+   "para": 3423
+  },
+  {
+   "name": "seg018",
+   "off": 62128,
+   "size": 144,
+   "file": "seg/seg018.asm",
+   "para": 3435
+  },
+  {
+   "name": "seg019",
+   "off": 62272,
+   "size": 448,
+   "file": "seg/seg019.asm",
+   "para": 3444
+  },
+  {
+   "name": "seg020",
+   "off": 62720,
+   "size": 5312,
+   "file": "seg/seg020.asm",
+   "para": 3472
+  },
+  {
+   "name": "seg021",
+   "off": 68032,
+   "size": 1760,
+   "file": "seg/seg021.asm",
+   "para": 3804
+  },
+  {
+   "name": "seg022",
+   "off": 69792,
+   "size": 1008,
+   "file": "seg/seg022.asm",
+   "para": 3914
+  },
+  {
+   "name": "seg023",
+   "off": 70800,
+   "size": 224,
+   "file": "seg/seg023.asm",
+   "para": 3977
+  },
+  {
+   "name": "seg024",
+   "off": 71024,
+   "size": 32,
+   "file": "seg/seg024.asm",
+   "para": 3991
+  },
+  {
+   "name": "seg025",
+   "off": 71056,
+   "size": 112,
+   "file": "seg/seg025.asm",
+   "para": 3993
+  },
+  {
+   "name": "seg026",
+   "off": 71168,
+   "size": 1216,
+   "file": "seg/seg026.asm",
+   "para": 4000
+  },
+  {
+   "name": "seg027",
+   "off": 72384,
+   "size": 48,
+   "file": "seg/seg027.asm",
+   "para": 4076
+  },
+  {
+   "name": "seg028",
+   "off": 72432,
+   "size": 18768,
+   "file": "seg/seg028.asm",
+   "para": 4079
+  },
+  {
+   "name": "seg029",
+   "off": 91200,
+   "size": 112,
+   "file": "seg/seg029.asm",
+   "para": 5252
+  },
+  {
+   "name": "seg030",
+   "off": 91312,
+   "size": 96,
+   "file": "seg/seg030.asm",
+   "para": 5259
+  },
+  {
+   "name": "seg031",
+   "off": 91408,
+   "size": 192,
+   "file": "seg/seg031.asm",
+   "para": 5265
+  },
+  {
+   "name": "seg032",
+   "off": 91600,
+   "size": 432,
+   "file": "seg/seg032.asm",
+   "para": 5277
+  },
+  {
+   "name": "seg033",
+   "off": 92032,
+   "size": 560,
+   "file": "seg/seg033.asm",
+   "para": 5304
+  },
+  {
+   "name": "seg034",
+   "off": 92592,
+   "size": 288,
+   "file": "seg/seg034.asm",
+   "para": 5339
+  },
+  {
+   "name": "seg035",
+   "off": 92880,
+   "size": 304,
+   "file": "seg/seg035.asm",
+   "para": 5357
+  },
+  {
+   "name": "seg036",
+   "off": 93184,
+   "size": 128,
+   "file": "seg/seg036.asm",
+   "para": 5376
+  },
+  {
+   "name": "seg037",
+   "off": 93312,
+   "size": 592,
+   "file": "seg/seg037.asm",
+   "para": 5384
+  },
+  {
+   "name": "seg038",
+   "off": 93904,
+   "size": 928,
+   "file": "seg/seg038.asm",
+   "para": 5421
+  },
+  {
+   "name": "seg039",
+   "off": 94832,
+   "size": 48,
+   "file": "seg/seg039.asm",
+   "para": 5479
+  },
+  {
+   "name": "seg040",
+   "off": 94880,
+   "size": 96,
+   "file": "seg/seg040.asm",
+   "para": 5482
+  },
+  {
+   "name": "seg041",
+   "off": 94976,
+   "size": 864,
+   "file": "seg/seg041.asm",
+   "para": 5488
+  },
+  {
+   "name": "seg042",
+   "off": 95840,
+   "size": 1136,
+   "file": "seg/seg042.asm",
+   "para": 5542
+  },
+  {
+   "name": "seg043",
+   "off": 96976,
+   "size": 64,
+   "file": "seg/seg043.asm",
+   "para": 5613
+  },
+  {
+   "name": "seg044",
+   "off": 97040,
+   "size": 224,
+   "file": "seg/seg044.asm",
+   "para": 5617
+  },
+  {
+   "name": "seg045",
+   "off": 97264,
+   "size": 112,
+   "file": "seg/seg045.asm",
+   "para": 5631
+  },
+  {
+   "name": "seg046",
+   "off": 97376,
+   "size": 96,
+   "file": "seg/seg046.asm",
+   "para": 5638
+  },
+  {
+   "name": "seg047",
+   "off": 97472,
+   "size": 32,
+   "file": "seg/seg047.asm",
+   "para": 5644
+  },
+  {
+   "name": "seg048",
+   "off": 97504,
+   "size": 544,
+   "file": "seg/seg048.asm",
+   "para": 5646
+  },
+  {
+   "name": "seg049",
+   "off": 98048,
+   "size": 3104,
+   "file": "seg/seg049.asm",
+   "para": 5680
+  },
+  {
+   "name": "seg050",
+   "off": 101152,
+   "size": 5408,
+   "file": "seg/seg050.asm",
+   "para": 5874
+  },
+  {
+   "name": "seg051",
+   "off": 106560,
+   "size": 960,
+   "file": "seg/seg051.asm",
+   "para": 6212
+  },
+  {
+   "name": "seg052",
+   "off": 107520,
+   "size": 656,
+   "file": "seg/seg052.asm",
+   "para": 6272
+  },
+  {
+   "name": "seg053",
+   "off": 108176,
+   "size": 256,
+   "file": "seg/seg053.asm",
+   "para": 6313
+  },
+  {
+   "name": "seg054",
+   "off": 108432,
+   "size": 9968,
+   "file": "seg/seg054.asm",
+   "para": 6329
+  },
+  {
+   "name": "seg055",
+   "off": 118400,
+   "size": 208,
+   "file": "seg/seg055.asm",
+   "para": 6952
+  },
+  {
+   "name": "seg056",
+   "off": 118608,
+   "size": 8160,
+   "file": "seg/seg056.asm",
+   "para": 6965
+  },
+  {
+   "name": "seg057",
+   "off": 126768,
+   "size": 2832,
+   "file": "seg/seg057.asm",
+   "para": 7475
+  },
+  {
+   "name": "seg058",
+   "off": 129600,
+   "size": 1543,
+   "file": "seg/seg058.asm",
+   "para": 7652
+  },
+  {
+   "name": "ovl_00000",
+   "off": 131143,
+   "size": 4096,
+   "file": "overlay/ovl_00000.asm"
+  },
+  {
+   "name": "ovl_01000",
+   "off": 135239,
+   "size": 4096,
+   "file": "overlay/ovl_01000.asm"
+  },
+  {
+   "name": "ovl_02000",
+   "off": 139335,
+   "size": 4096,
+   "file": "overlay/ovl_02000.asm"
+  },
+  {
+   "name": "ovl_03000",
+   "off": 143431,
+   "size": 4096,
+   "file": "overlay/ovl_03000.asm"
+  },
+  {
+   "name": "ovl_04000",
+   "off": 147527,
+   "size": 4096,
+   "file": "overlay/ovl_04000.asm"
+  },
+  {
+   "name": "ovl_05000",
+   "off": 151623,
+   "size": 4096,
+   "file": "overlay/ovl_05000.asm"
+  },
+  {
+   "name": "ovl_06000",
+   "off": 155719,
+   "size": 4096,
+   "file": "overlay/ovl_06000.asm"
+  },
+  {
+   "name": "ovl_07000",
+   "off": 159815,
+   "size": 4096,
+   "file": "overlay/ovl_07000.asm"
+  },
+  {
+   "name": "ovl_08000",
+   "off": 163911,
+   "size": 4096,
+   "file": "overlay/ovl_08000.asm"
+  },
+  {
+   "name": "ovl_09000",
+   "off": 168007,
+   "size": 4096,
+   "file": "overlay/ovl_09000.asm"
+  },
+  {
+   "name": "ovl_0A000",
+   "off": 172103,
+   "size": 4096,
+   "file": "overlay/ovl_0A000.asm"
+  },
+  {
+   "name": "ovl_0B000",
+   "off": 176199,
+   "size": 4096,
+   "file": "overlay/ovl_0B000.asm"
+  },
+  {
+   "name": "ovl_0C000",
+   "off": 180295,
+   "size": 4096,
+   "file": "overlay/ovl_0C000.asm"
+  },
+  {
+   "name": "ovl_0D000",
+   "off": 184391,
+   "size": 4096,
+   "file": "overlay/ovl_0D000.asm"
+  },
+  {
+   "name": "ovl_0E000",
+   "off": 188487,
+   "size": 4096,
+   "file": "overlay/ovl_0E000.asm"
+  },
+  {
+   "name": "ovl_0F000",
+   "off": 192583,
+   "size": 4096,
+   "file": "overlay/ovl_0F000.asm"
+  },
+  {
+   "name": "ovl_10000",
+   "off": 196679,
+   "size": 4096,
+   "file": "overlay/ovl_10000.asm"
+  },
+  {
+   "name": "ovl_11000",
+   "off": 200775,
+   "size": 4096,
+   "file": "overlay/ovl_11000.asm"
+  },
+  {
+   "name": "ovl_12000",
+   "off": 204871,
+   "size": 4096,
+   "file": "overlay/ovl_12000.asm"
+  },
+  {
+   "name": "ovl_13000",
+   "off": 208967,
+   "size": 4096,
+   "file": "overlay/ovl_13000.asm"
+  },
+  {
+   "name": "ovl_14000",
+   "off": 213063,
+   "size": 4096,
+   "file": "overlay/ovl_14000.asm"
+  },
+  {
+   "name": "ovl_15000",
+   "off": 217159,
+   "size": 4096,
+   "file": "overlay/ovl_15000.asm"
+  },
+  {
+   "name": "ovl_16000",
+   "off": 221255,
+   "size": 4096,
+   "file": "overlay/ovl_16000.asm"
+  },
+  {
+   "name": "ovl_17000",
+   "off": 225351,
+   "size": 4096,
+   "file": "overlay/ovl_17000.asm"
+  },
+  {
+   "name": "ovl_18000",
+   "off": 229447,
+   "size": 4096,
+   "file": "overlay/ovl_18000.asm"
+  },
+  {
+   "name": "ovl_19000",
+   "off": 233543,
+   "size": 4096,
+   "file": "overlay/ovl_19000.asm"
+  },
+  {
+   "name": "ovl_1A000",
+   "off": 237639,
+   "size": 4096,
+   "file": "overlay/ovl_1A000.asm"
+  },
+  {
+   "name": "ovl_1B000",
+   "off": 241735,
+   "size": 3119,
+   "file": "overlay/ovl_1B000.asm"
+  }
+ ]
+}
