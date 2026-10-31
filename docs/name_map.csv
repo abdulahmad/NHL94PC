@@ -548,3 +548,13 @@ seg000:2992,WriteCounted,,new,high,"First byte is a count. Writes that many foll
 seg000:28AE,StoreOne,,new,medium,"Stores 1 through a far pointer and returns 0",src/seg/seg000.asm
 seg000:28C5,StoreZero,,new,medium,"Stores 0 through a far pointer",src/seg/seg000.asm
 seg000:28E3,StoreWord,,new,medium,"Stores a word through a far pointer",src/seg/seg000.asm
+seg000:2C5D,FpConvert,,new,high,"Exponent check against -24, then the convert helpers. JmpFpConvert lands here. Out of range returns zero",src/seg/seg000.asm
+seg000:2C99,FpExec,,new,high,"Emulator body. INT 34h-3Dh are the coprocessor escapes. Constant tables sit between the routines",src/seg/seg000.asm
+seg000:30D0,FpDecode,,new,medium,"Emulator helper reached after the first constant table",src/seg/seg000.asm
+seg000:31A5,FpRound,,new,medium,"Emulator helper",src/seg/seg000.asm
+seg000:332A,FpPack,,new,medium,"Emulator helper called while formatting a float",src/seg/seg000.asm
+seg000:3592,FpScale,,new,medium,"Emulator helper that scales a value",src/seg/seg000.asm
+seg000:35E8,FpPush,,new,medium,"Called by FpConvert to push a value",src/seg/seg000.asm
+seg000:3664,FpPop,,new,medium,"Called by FpConvert when the first push does not fit",src/seg/seg000.asm
+seg000:391C,FpFormat,,new,medium,"Walks a far digit string at the end of the emulator",src/seg/seg000.asm
+seg000:39D6,FpCall,,new,medium,"Called from FpScale",src/seg/seg000.asm

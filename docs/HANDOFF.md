@@ -4,7 +4,7 @@
 
 - Full build MATCH (SHA-1 `d94450ddff26528bddac6646c234277076fd36cb`, 244,854 bytes); `tools/verify_all.sh` MATCH.
 - seg056 is source: the resident RTLink/Plus manager and the overlay thunks (10,992 bytes). seg057 was the thunk tail and is merged into seg056.
-- seg000 is source from the start through the number helpers (`_atol`, `fflush`, `_memmove`, `_memset`). The floating-point emulator after that is still incbin. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`) and seg056.
+- seg000 is entirely source (`src/seg/seg000.asm`). Nothing in it is incbin. Next in file order: seg001. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`) and seg056.
 - seg011 is still a false split (merge into seg010 when seg010 is disassembled). The `ovl_*` slices were not resliced.
 
 ## Known facts
@@ -146,6 +146,10 @@ NHL 95 PC does not load code overlays. Its retail EXE is one Watcom LE image bou
 
 A search of that tree for `RTLink`, `.OVL` and an overlay manager found nothing else. Nothing there describes the 94 thunks or the `.OVL`
 file layout. The 94 load path above is from this EXE and `lst/game/`.
+
+## seg000 floating-point emulator
+
+`FpConvert` turns a floating value into an integer, or zero when the exponent is out of range. `JmpFpConvert` jumps to it. `FpExec` is the emulator body: interrupts 34h through 3Dh stand in for the coprocessor. The long runs of zeros and `40h` bytes between those routines are the constant tables, left as data.
 
 ## seg000 number helpers
 
