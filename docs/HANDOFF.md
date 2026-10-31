@@ -4,7 +4,7 @@
 
 - Full build MATCH (SHA-1 `d94450ddff26528bddac6646c234277076fd36cb`, 244,854 bytes); `tools/verify_all.sh` MATCH.
 - seg056 is source: the resident RTLink/Plus manager and the overlay thunks (10,992 bytes). seg057 was the thunk tail and is merged into seg056.
-- seg000 is entirely source (`src/seg/seg000.asm`). Nothing in it is incbin. seg005 is source. seg001 is source from the start through `CritRestore` (offset `0x440`); the rest is incbin. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`) and seg056.
+- seg000 is entirely source (`src/seg/seg000.asm`). Nothing in it is incbin. seg005 is source. seg001 is source from the start through `FileSizeMsg` (offset `0x543`); the rest is incbin. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`) and seg056.
 - seg011 is still a false split (merge into seg010 when seg010 is disassembled). The `ovl_*` slices were not resliced.
 
 ## Known facts
@@ -183,6 +183,12 @@ The spill at the start of seg001 finishes `test bx, 8`, then `pop bp` / `ret 0xe
 
 `ReadEndPtr`, `SetEndMark`, `WaitEnd`, `EndReached`, and `WaitAdd` only read and spin on the far pointer at `EndPtr`. Nothing in this chunk writes that pointer except `SetEndMark`, which stores a sum of it.
 
+`OnexitThunk` is `jmp _onexit`. `EmsInit` and `HookCrit` call it. `ExitSavedSp` loads DGROUP and, when `SavedSp` is nonzero, makes that word SP, then calls `_exit(0)`.
+
+`PassFlag1`, `PassFlag0`, `AddrFlag0`, and `AddrFlag1` only set SI and the byte at `[bp-9]`. `ArgSetup` stores the arguments and jumps to offset `0x29D2`, which is still incbin. No far call in the EXE names those four entries.
+
+`FileSize`, `FileSizeMsg`, and `FileSizeArg` open a path, seek to the end, close it, and return the length. `FileSizeMsg` is the far entry. A failed open returns 0, or calls seg022 when the flag word is nonzero.
+
 ## Unsure / open
 
 - `NullStartup6` and `NullStartup4` are each a single `retf`. The usual MSC pair in that slot is `__FPMATH` and `__fptrap`, or the null `__setargv` and `__setenvp`. The bodies do not say which.
@@ -201,4 +207,5 @@ The spill at the start of seg001 finishes `test bx, 8`, then `pop bp` / `ret 0xe
 - `ReturnBytePtr` is written from the reload return hook; what that byte represents is not pinned down.
 - `ReadEndPtr` and the four routines around it spin on `EndPtr`. The bytes do not say what advances that pointer.
 - The word `CopyFar` tests at ss:`0x763C` selects dword moves. Its symbol is not named.
-- seg001 offset `0x4AE` is called as the `_onexit` register but is still incbin, so it is not named yet.
+- `PassFlag1`, `PassFlag0`, `AddrFlag0`, `AddrFlag1`, and `ArgSetup` are named from the flag and the pointer they set. The body they jump to (offset `0x29D2`) is still incbin, so the job is not named.
+- `ExitSavedSp` is not a far-call target in the EXE. The bytes load DGROUP, maybe replace SP, and call `_exit(0)`. What stores `SavedSp` is not in this chunk.

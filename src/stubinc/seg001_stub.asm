@@ -2,4 +2,7 @@
 ;	for checking against the EXE (tools/verify_segment.py seg001).
 	bits	16
 	org	0x0
+DGROUP		equ	0x45C9
+_onexit		equ	0xE78
+_exit		equ	0x687
 %include "seg/seg001.asm"

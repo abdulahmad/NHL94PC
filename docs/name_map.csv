@@ -587,3 +587,15 @@ seg001:0374,CopyParasDown,,new,high,"Same copy from the top so an overlap moves 
 seg001:03C8,CritHandler,,new,high,"INT 24h handler. Far-calls CritRoutine",src/seg/seg001.asm
 seg001:03E4,HookCrit,,new,high,"Saves INT 24h, points it at CritHandler, and registers CritRestore with _onexit. _main calls this",src/seg/seg001.asm
 seg001:0425,CritRestore,,new,high,"Restores INT 24h unless the saved segment word equals the saved offset word",src/seg/seg001.asm
+DGROUP:6402,SavedSp,,new,medium,"ExitSavedSp uses this as SP when it is nonzero. What stores it is not in this chunk. See HANDOFF",src/seg/seg001.asm
+seg001:0440,PassFlag1,,new,medium,"Sets SI from [bp+0Eh] and the flag byte to 1, then jumps to ArgSetup. Body at 0x29D2 is still incbin. See HANDOFF",src/seg/seg001.asm
+seg001:0452,PassFlag0,,new,medium,"Sets SI from [bp+0Eh] and the flag byte to 0, then falls into ArgSetup",src/seg/seg001.asm
+seg001:0462,ArgSetup,,new,medium,"Stores the arguments and jumps to offset 0x29D2, still incbin",src/seg/seg001.asm
+seg001:0489,AddrFlag0,,new,medium,"Sets SI to the address of [bp+0Eh] and the flag byte to 0, then jumps to ArgSetup",src/seg/seg001.asm
+seg001:049B,AddrFlag1,,new,medium,"Sets SI to the address of [bp+0Eh] and the flag byte to 1, then jumps to ArgSetup",src/seg/seg001.asm
+seg001:04AE,OnexitThunk,,new,high,"jmp _onexit. EmsInit and HookCrit call this to register a routine",src/seg/seg001.asm
+seg001:04B3,ExitSavedSp,,new,medium,"Loads DGROUP, uses SavedSp as SP when that word is nonzero, then _exit(0). See HANDOFF",src/seg/seg001.asm
+seg001:04CE,FileSizeArg,,new,high,"File length. The report-on-failure flag comes from the caller",src/seg/seg001.asm
+seg001:04DF,FileSize,,new,high,"File length. A failed open returns 0",src/seg/seg001.asm
+seg001:04EF,FileSizeMsg,,new,high,"File length. A failed open calls seg022. This is the far entry",src/seg/seg001.asm
+seg001:04FD,FileSizeBody,,new,high,"Shared open, seek-to-end, close. Returns the length in DX:AX",src/seg/seg001.asm
