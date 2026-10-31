@@ -84,11 +84,11 @@ _main:
 	call	0x0000:_exit		; seg000
 .5:
 	call	0x0FEF:0x39A		; seg028
-	call	0x03A3:0xCCA		; seg001
+	call	0x03A3:HookInt8		; seg001
 	mov	word [0x524], 0
 	push	0x969
 	push	0x3fe
-	call	0x03A3:0xD8C		; seg001
+	call	0x03A3:AllocSlot		; seg001
 	add	sp, 4
 	push	0
 	call	0x0FEF:0x1320		; seg028
