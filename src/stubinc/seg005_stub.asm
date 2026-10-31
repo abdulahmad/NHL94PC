@@ -22,4 +22,5 @@ InitStick2	equ	0x1423
 MouseOpen	equ	0x1C7B
 MouseRead	equ	0x1B34
 ReadPots	equ	0x1D72
+NullFar		equ	0xC
 %include "seg/seg005.asm"

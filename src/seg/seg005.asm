@@ -372,7 +372,7 @@ _main:
 	push	1
 	call	0x1B35:OvlThunk23		; seg056
 	add	sp, 8
-	call	0x0837:0xC		; seg003
+	call	0x0837:NullFar		; seg003
 
 ; The far call continues in the next segment. Those bytes complete it as
 ; a call to _exit.
