@@ -4,7 +4,7 @@
 
 - Full build MATCH (SHA-1 `d94450ddff26528bddac6646c234277076fd36cb`, 244,854 bytes); `tools/verify_all.sh` MATCH.
 - seg056 is source: the resident RTLink/Plus manager and the overlay thunks (10,992 bytes). seg057 was the thunk tail and is merged into seg056.
-- seg000 is entirely source (`src/seg/seg000.asm`). Nothing in it is incbin. seg005 is source. seg001 is entirely source (`src/seg/seg001.asm`). Nothing in it is incbin. seg002 is entirely source (`src/seg/seg002.asm`). Nothing in it is incbin. seg003 is still incbin. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`) and seg056.
+- seg000 is entirely source (`src/seg/seg000.asm`). Nothing in it is incbin. seg005 is source. seg001 is entirely source (`src/seg/seg001.asm`). Nothing in it is incbin. seg002 is entirely source (`src/seg/seg002.asm`). Nothing in it is incbin. seg003 is source (`src/seg/seg003.asm`). `RecFlag` returns the word at offset 18h. `NullFar` is the `retf` `_main` calls. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`) and seg056.
 - seg011 is still a false split (merge into seg010 when seg010 is disassembled). The `ovl_*` slices were not resliced.
 
 ## Known facts
@@ -27,7 +27,7 @@ cut is a normalized pointer or a relocation frame in the middle of that segment.
 **Real (57):** seg000–seg010, seg012–seg056, seg058. That includes three slices that contain no relocation of their own but are still real,
 because far calls name their paragraph:
 
-- seg003, paragraph `0x0837`, 16 bytes. One far function (`push bp` … `retf`). seg002 ends on the previous paragraph with `retf`.
+- seg003, paragraph `0x0837`, 16 bytes, is source. `RecFlag` is the `push bp` function. `_main` calls `NullFar` at offset `0xC`, a lone `retf`. seg002 ends on the previous paragraph with `retf`.
 - seg030, paragraph `0x148B`, 96 bytes. Far calls enter at offset 4, which is the `enter` of its first function. The four bytes in front of
   that are the previous function's epilogue.
 - seg047, paragraph `0x160C`, 32 bytes. Far calls enter at offset 8 (`push bp`). The bytes in front of that are the previous function's

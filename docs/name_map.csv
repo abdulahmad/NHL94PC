@@ -891,3 +891,5 @@ seg002:1508,RecBase,,new,high,"The record base. Bit 80h maps it through EmsMapFr
 seg002:1532,RawBase,,new,high,"The far pointer stored at the start of the record",src/seg/seg002.asm
 seg002:1542,RecSpan,,new,high,"The size dword stored at offset 14h",src/seg/seg002.asm
 seg002:1552,NamePtr,,new,high,"The caller's far pointer plus 4, the name field",src/seg/seg002.asm
+seg003:0000,RecFlag,,new,high,"Returns the word at offset 18h of the far record",src/seg/seg003.asm
+seg003:000C,NullFar,,new,high,"A lone retf. _main calls it",src/seg/seg003.asm
