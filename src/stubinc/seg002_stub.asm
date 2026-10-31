@@ -14,4 +14,5 @@ CopyBytes	equ	0x968
 PathTailFar	equ	0xB82
 StrnDiff	equ	0xBD7
 CopyParasDown	equ	0x374
+CopyParas	equ	0x32C
 %include "seg/seg002.asm"
