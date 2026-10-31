@@ -859,3 +859,6 @@ seg001:3330,ClearHold,,new,high,"Stores 0 at HoldWord and returns",src/seg/seg00
 seg001:3338,SaveMode,,new,high,"Records the BIOS video mode, equipment byte, columns, and rows, and registers RestoreMode",src/seg/seg001.asm
 seg001:336D,RestoreMode,,new,high,"Restores that mode. An 80-column mode 3 with a tall row count selects the 8x8 font",src/seg/seg001.asm
 seg001:33D2,WaitBlank,,new,high,"Waits through one pulse of status port 3DAh bit 0",src/seg/seg001.asm
+seg002:0000,BlankBit,,new,high,"Reads port 3DAh and returns bit 0 in AX",src/seg/seg002.asm
+seg002:0008,MakeChain,,new,high,"Caps LargestFree, AllocBytes, and links 24h-byte records. BufCount below CCh calls seg022",src/seg/seg002.asm
+seg002:02DA,SetBuf,,new,high,"Stores the near buffer and the count MakeChain reads",src/seg/seg002.asm

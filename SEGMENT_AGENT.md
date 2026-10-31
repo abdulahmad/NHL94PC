@@ -35,7 +35,7 @@ Source style (same as the sibling repos):
 
 ## Current segment
 
-seg001 is source. seg002 is next and is not started.
+seg002. <- CURRENT
 
 ## Sources
 
@@ -81,6 +81,7 @@ seg001 is source. seg002 is next and is not started.
 
 ## History
 
+- 2026-10-31: seg002 through `SetBuf` is source. `BlankBit` reads port 3DAh. `MakeChain` allocates a DOS block and links 24h-byte records. The cut from seg001 is a finished `retf`; it is not a spill.
 - 2026-10-31: seg001 is source. `FillRec1` walks a list of line records. `SinLookup` and `CosLookup` are the `FoldScale` callees. `SaveMode` records the BIOS video mode and `WaitBlank` waits on port 3DAh. seg002 is not started.
 - 2026-10-31: seg001 through `SpanBack` is source. `SpanMargin`, `SpanFill`, and `SpanBack` write the clipped edge into the scanline tables. The two `FoldScale` callees are still incbin.
 - 2026-10-31: seg001 through `FillPoly` is source. That is the scan fill `ArgSetup` jumps to. The edge recorders and the two `FoldScale` callees are still incbin.
@@ -112,7 +113,7 @@ seg001 is source. seg002 is next and is not started.
 | mz_header | incbin (MZ header fields are source) | 0x00000 | 7168 |  |
 | seg000 | source | 0x01C00 | 14896 | 0x0000 |
 | seg001 | source | 0x05630 | 13280 | 0x03A3 |
-| seg002 | incbin | 0x08A10 | 5472 | 0x06E1 |
+| seg002 | source through SetBuf, rest incbin <- CURRENT | 0x08A10 | 5472 | 0x06E1 |
 | seg003 | incbin | 0x09F70 | 16 | 0x0837 |
 | seg004 | incbin | 0x09F80 | 3088 | 0x0838 |
 | seg005 | source (_main, two retf stubs) | 0x0AB90 | 1040 | 0x08F9 |
