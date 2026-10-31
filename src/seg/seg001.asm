@@ -1,5 +1,5 @@
 ; Segment seg001. EMS maps, far copies, the INT 24h hook, file length,
-; a file-head count, find-first paths, and the DOS memory block.
+; a file-head count, find-first paths, the DOS memory block, and a 4-byte lookup.
 ; The first bytes finish the seg000 routine that ends on this paragraph.
 
 ; DGROUP words this segment uses. The bytes live in the near data, not here.
@@ -1013,4 +1013,210 @@ AllocBytes:
 	pop	si
 	retf
 
-	incbin	"Extracted/segments/seg001.bin", 0x6C9, 0x33E0 - 0x6C9
+	db	0
+
+; Call the routine at 0x1DD4 with the two words, take the absolute value,
+; and fold it: at or above 100h it becomes 200h minus the value. Above 80h
+; the result comes from the routine at 0x32EA and the first word; otherwise
+; from 0x32F1 and the second word. The dividend is the absolute word shifted
+; left 14, then divided by that result. Those three calls are still incbin.
+FoldScale:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	word [bp+8]
+	push	word [bp+6]
+	call	0x3A3:0x1DD4			; seg001, still incbin
+	add	sp, 4
+	db	0x0B, 0xC0			; or ax, ax
+	jge	short .1
+	neg	ax
+.1:
+	cmp	ax, 0x100
+	jl	short .2
+	sub	ax, 0x200
+	neg	ax
+.2:
+	cmp	ax, 0x80
+	jg	short .4
+	push	ax
+	call	0x3A3:0x32F1			; seg001, still incbin
+	add	sp, 2
+	db	0x8B, 0xD8			; mov bx, ax
+	mov	dx, word [bp+8]
+	db	0x0B, 0xD2			; or dx, dx
+	jge	short .3
+	neg	dx
+.3:
+	db	0x33, 0xC0			; xor ax, ax
+	sar	dx, 1
+	rcr	ax, 1
+	sar	dx, 1
+	rcr	ax, 1
+	div	bx
+	leave
+	retf
+.4:
+	push	ax
+	call	0x3A3:0x32EA			; seg001, still incbin
+	add	sp, 2
+	db	0x8B, 0xD8			; mov bx, ax
+	mov	dx, word [bp+6]
+	db	0x0B, 0xD2			; or dx, dx
+	jge	short .5
+	neg	dx
+.5:
+	db	0x33, 0xC0			; xor ax, ax
+	sar	dx, 1
+	rcr	ax, 1
+	sar	dx, 1
+	rcr	ax, 1
+	div	bx
+	leave
+	retf
+
+RetZero:
+	db	0x33, 0xC0			; xor ax, ax
+	retf
+
+	db	0
+
+; Near. Mark the EMS map stale, map the long at [bp+4], and return it in ES:BX.
+MapEsBx:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	call	0x3A3:EmsMarkStale		; seg001
+	mov	ax, word [bp+6]
+	push	ax
+	mov	ax, word [bp+4]
+	push	ax
+	call	0x3A3:EmsMapFrame		; seg001
+	add	sp, 4
+	mov	es, dx
+	db	0x8B, 0xD8			; mov bx, ax
+	leave
+	ret
+
+; Near. Walk at most four bytes at SI. After a 0, fill the rest of the four with spaces.
+PadSpace4:
+	cld
+	mov	cx, 4
+.1:
+	cmp	byte [si], 0
+	je	short .2
+	inc	si
+	loop	.1
+	ret
+.2:
+	mov	byte [si], 0x20
+	inc	si
+	loop	.2
+	ret
+
+; Look up a 4-byte key at [bp+0Ah] in the block addressed by the long at [bp+6].
+; The word at [bp-2] is the failure flag: LookupArg takes it from the caller,
+; Lookup forces 0, LookupMsg forces 1. A hit returns a long. A miss returns 0,
+; or calls seg022 when the flag is 1.
+LookupArg:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	add	sp, -2
+	push	si
+	push	di
+	mov	ax, word [bp+0xc]
+	mov	word [bp-2], ax
+	jmp	short LookupBody
+Lookup:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	add	sp, -2
+	push	si
+	push	di
+	mov	word [bp-2], 0
+	jmp	short LookupBody
+LookupMsg:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	add	sp, -2
+	push	si
+	push	di
+	mov	word [bp-2], 1
+LookupBody:
+	mov	ax, word [bp+6]
+	mov	dx, word [bp+8]
+	db	0x0B, 0xC2			; or ax, dx
+	je	short .miss
+	mov	ax, 8
+	push	ax
+	push	word [bp+8]
+	push	word [bp+6]
+	call	MapEsBx
+	add	sp, 6
+	mov	ax, word [es:bx+4]
+	db	0x03, 0xC0			; add ax, ax
+	db	0x03, 0xC0			; add ax, ax
+	db	0x03, 0xC0			; add ax, ax
+	add	ax, 8
+	push	ax
+	push	word [bp+8]
+	push	word [bp+6]
+	call	MapEsBx
+	add	sp, 6
+	db	0x8B, 0xFB			; mov di, bx
+	mov	si, word [bp+0xa]
+	call	PadSpace4
+	mov	dx, word [es:di+4]
+	db	0x8B, 0xC2			; mov ax, dx
+	db	0x0B, 0xC0			; or ax, ax
+	je	short .none
+	add	di, 6
+	db	0x8B, 0xDF			; mov bx, di
+.rec:
+	db	0x8B, 0xFB			; mov di, bx
+	mov	si, word [bp+0xa]
+	mov	cx, 4
+.cmp:
+	cmpsb
+	jne	short .ne
+	loop	.cmp
+	jmp	short .hit
+.ne:
+	cmp	byte [es:di-1], 0
+	jne	short .next
+	cmp	byte [si-1], 0x20
+	je	short .hit
+.next:
+	add	bx, 4
+	dec	ax
+	jge	short .rec
+.none:
+	cmp	word [bp-2], 1
+	jne	short .miss
+	mov	dx, 0x6430
+	push	word [bp+0xa]
+	push	dx
+	call	0xF4A:0x3E4			; seg022
+.miss:
+	db	0x33, 0xC0			; xor ax, ax
+	db	0x8B, 0xD0			; mov dx, ax
+	pop	di
+	pop	si
+	leave
+	retf
+.hit:
+	db	0x8B, 0xC2			; mov ax, dx
+	db	0x03, 0xC0			; add ax, ax
+	db	0x03, 0xC0			; add ax, ax
+	db	0x03, 0xD8			; add bx, ax
+	db	0x03, 0xC0			; add ax, ax
+	add	ax, 6
+	add	ax, word [bp+6]
+	mov	dx, word [bp+8]
+	adc	dx, 0
+	add	ax, word [es:bx]
+	adc	dx, word [es:bx+2]
+	pop	di
+	pop	si
+	leave
+	retf
+
+	incbin	"Extracted/segments/seg001.bin", 0x83E, 0x33E0 - 0x83E
