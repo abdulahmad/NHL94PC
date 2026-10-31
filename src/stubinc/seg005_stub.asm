@@ -17,4 +17,6 @@ HookCrit	equ	0x3E4
 FindFarMsg	equ	0x847
 HookInt8	equ	0xCCA
 AllocSlot	equ	0xD8C
+InitStick1	equ	0x1405
+InitStick2	equ	0x1423
 %include "seg/seg005.asm"

@@ -140,7 +140,7 @@ _main:
 	je	short .9
 .8:
 	or	byte [0xaece], 2
-	call	0x03A3:0x1405		; seg001
+	call	0x03A3:InitStick1	; seg001
 	call	0x1508:0x232		; seg037
 	mov	word [0x51e], 1
 .9:
@@ -152,7 +152,7 @@ _main:
 	je	short .11
 .10:
 	or	byte [0xaece], 4
-	call	0x03A3:0x1423		; seg001
+	call	0x03A3:InitStick2	; seg001
 	call	0x1508:0x244		; seg037
 	mov	word [0x520], 1
 .11:

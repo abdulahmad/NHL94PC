@@ -1,7 +1,7 @@
 ; Segment seg001. EMS maps, far copies, the INT 24h hook, file length,
 ; a file-head count, find-first paths, the DOS memory block, a 4-byte lookup,
 ; far-pointer lookup, a counted copy, multiply and divide, file writes,
-; character widths, the INT 8 handler, and the game port.
+; character widths, the INT 8 handler, and the game port sticks.
 ; The first bytes finish the seg000 routine that ends on this paragraph.
 
 ; DGROUP words this segment uses. The bytes live in the near data, not here.
@@ -40,6 +40,13 @@ JoyY		equ	0x6FFA
 JoyBtn		equ	0x6FFD
 JoyBits		equ	0x6FFE
 JoyOn		equ	0x7308
+Stick1X		equ	0x7050
+Stick1Y		equ	0x7052
+Stick2X		equ	0x7030
+Stick2Y		equ	0x7032
+Stick1Bits	equ	0x7055
+Stick2Bits	equ	0x7056
+StickRaw		equ	0x7054
 GamePort	equ	0x201
 FmtSave		equ	0x64CE
 FmtBuf		equ	0x64D6
@@ -2475,4 +2482,384 @@ L1114:
 	sub	ax, 0x1f
 	retf
 
-	incbin	"Extracted/segments/seg001.bin", 0x1120, 0x33E0 - 0x1120
+; If JoyOn is 0, return 0. Otherwise time up to four axes on port 201h.
+; The axis mask comes from the byte at JoyOn in the table at 7074h. Bit 0 of
+; JoyOn calibrates the first pair into Stick1Bits. Bit 1 calibrates the second
+; pair into Stick2Bits. AL is Stick1Bits and AH is Stick2Bits.
+PollSticks:
+	mov	bl, byte [JoyOn]
+	db	0x0A, 0xDB			; or bl, bl
+	jne	short L112B
+	db	0x33, 0xC0			; xor ax, ax
+	retf
+L112B:
+	mov	byte [Stick1Bits], 0
+	mov	byte [Stick2Bits], 0
+	mov	dx, GamePort
+	in	al, dx
+	mov	byte [StickRaw], al
+	db	0x32, 0xFF			; xor bh, bh
+	mov	bl, byte [bx + 0x7074]
+	mov	ax, 0x50
+	mov	word [Stick1X], ax
+	mov	word [Stick1Y], ax
+	mov	word [Stick2X], ax
+	mov	word [Stick2Y], ax
+	cli
+	out	dx, al
+	mov	cx, 0x14
+	db	0xE2, 0xFE			; loop 0x1156
+	db	0x33, 0xC9			; xor cx, cx
+L115A:
+	in	al, dx
+	db	0x22, 0xC3			; and al, bl
+	db	0x32, 0xC3			; xor al, bl
+	jne	short L116A
+	inc	cx
+	cmp	cx, 0xfa0
+	jl	short L115A
+	jmp	short L11A4
+L116A:
+	test	al, 1
+	jne	short L1185
+L116E:
+	test	al, 2
+	jne	short L1190
+L1172:
+	test	al, 4
+	jne	short L119B
+L1176:
+	test	al, 8
+	je	short L115A
+	mov	word [Stick2Y], cx
+	and	bl, 7
+	jne	short L115A
+	jmp	short L11A4
+L1185:
+	mov	word [Stick1X], cx
+	and	bl, 0xe
+	jne	short L116E
+	jmp	short L11A4
+L1190:
+	mov	word [Stick1Y], cx
+	and	bl, 0xd
+	jne	short L1172
+	jmp	short L11A4
+L119B:
+	mov	word [Stick2X], cx
+	and	bl, 0xb
+	jne	short L1176
+L11A4:
+	sti
+	test	byte [JoyOn], 1
+	jne	short L11AF
+	jmp	near L12D0
+L11AF:
+	mov	bx, word [Stick1X]
+	cmp	bx, word [0x7058]
+	jge	short L11F2
+	mov	word [0x7058], bx
+	mov	bx, word [0x705a]
+L11C1:
+	sub	bx, word [0x7058]
+	jle	short L11D1
+	db	0x33, 0xD2			; xor dx, dx
+	mov	ax, 0x4000
+	div	bx
+	mov	word [0x7070], ax
+L11D1:
+	db	0x8B, 0xC3			; mov ax, bx
+	mov	dx, GamePort
+	shr	ax, 1
+	db	0x8B, 0xD8			; mov bx, ax
+	shr	bx, 1
+	add	ax, word [0x7058]
+	db	0x03, 0xC3			; add ax, bx
+	mov	word [0x7062], ax
+	db	0x2B, 0xC3			; sub ax, bx
+	db	0x2B, 0xC3			; sub ax, bx
+	mov	word [0x7060], ax
+	mov	bx, word [Stick1X]
+	jmp	short L1214
+L11F2:
+	cmp	bx, word [0x705a]
+	jle	short L1214
+	dec	word [0x705e]
+	je	short L120A
+	cmp	bx, word [0x705c]
+	jge	short L1220
+	mov	word [0x705c], bx
+	jmp	short L1220
+L120A:
+	mov	bx, word [0x705c]
+	mov	word [0x705a], bx
+	jmp	short L11C1
+L1214:
+	mov	word [0x705e], 8
+	mov	word [0x705c], 0x4e20
+L1220:
+	cmp	bx, word [0x7060]
+	jl	short L1274
+	cmp	bx, word [0x7062]
+	jl	short L1231
+	or	byte [Stick1Bits], 4
+L1231:
+	mov	bx, word [Stick1Y]
+	cmp	bx, word [0x7064]
+	jae	short L127B
+	mov	word [0x7064], bx
+	mov	bx, word [0x7066]
+L1243:
+	sub	bx, word [0x7064]
+	jle	short L1253
+	db	0x33, 0xD2			; xor dx, dx
+	mov	ax, 0x4000
+	div	bx
+	mov	word [0x7072], ax
+L1253:
+	db	0x8B, 0xC3			; mov ax, bx
+	mov	dx, GamePort
+	shr	ax, 1
+	db	0x8B, 0xD8			; mov bx, ax
+	shr	bx, 1
+	add	ax, word [0x7064]
+	db	0x03, 0xC3			; add ax, bx
+	mov	word [0x706e], ax
+	db	0x2B, 0xC3			; sub ax, bx
+	db	0x2B, 0xC3			; sub ax, bx
+	mov	word [0x706c], ax
+	mov	bx, word [Stick1Y]
+	jmp	short L129D
+L1274:
+	or	byte [Stick1Bits], 8
+	jmp	short L1231
+L127B:
+	cmp	bx, word [0x7066]
+	jle	short L129D
+	dec	word [0x706a]
+	je	short L1293
+	cmp	bx, word [0x7068]
+	jge	short L12A9
+	mov	word [0x7068], bx
+	jmp	short L12A9
+L1293:
+	mov	bx, word [0x7068]
+	mov	word [0x7066], bx
+	jmp	short L1243
+L129D:
+	mov	word [0x706a], 8
+	mov	word [0x7068], 0x4e20
+L12A9:
+	cmp	bx, word [0x706c]
+	jb	short L12C9
+	cmp	bx, word [0x706e]
+	jb	short L12BA
+	or	byte [Stick1Bits], 2
+L12BA:
+	in	al, dx
+	and	al, byte [StickRaw]
+	and	al, 0x30
+	xor	al, 0x30
+	or	byte [Stick1Bits], al
+	jmp	short L12D0
+L12C9:
+	or	byte [Stick1Bits], 1
+	jmp	short L12BA
+L12D0:
+	test	byte [JoyOn], 2
+	jne	short L12DA
+	jmp	near L13F6
+L12DA:
+	mov	bx, word [Stick2X]
+	cmp	bx, word [0x7034]
+	jge	short L131D
+	mov	word [0x7034], bx
+	mov	bx, word [0x7036]
+L12EC:
+	sub	bx, word [0x7034]
+	jle	short L12FC
+	db	0x33, 0xD2			; xor dx, dx
+	mov	ax, 0x4000
+	div	bx
+	mov	word [0x704c], ax
+L12FC:
+	db	0x8B, 0xC3			; mov ax, bx
+	mov	dx, GamePort
+	shr	ax, 1
+	db	0x8B, 0xD8			; mov bx, ax
+	shr	bx, 1
+	add	ax, word [0x7034]
+	db	0x03, 0xC3			; add ax, bx
+	mov	word [0x703e], ax
+	db	0x2B, 0xC3			; sub ax, bx
+	db	0x2B, 0xC3			; sub ax, bx
+	mov	word [0x703c], ax
+	mov	bx, word [Stick2X]
+	jmp	short L133F
+L131D:
+	cmp	bx, word [0x7036]
+	jle	short L133F
+	dec	word [0x703a]
+	je	short L1335
+	cmp	bx, word [0x7038]
+	jge	short L134B
+	mov	word [0x7038], bx
+	jmp	short L134B
+L1335:
+	mov	bx, word [0x7038]
+	mov	word [0x7036], bx
+	jmp	short L12EC
+L133F:
+	mov	word [0x703a], 8
+	mov	word [0x7038], 0x4e20
+L134B:
+	cmp	bx, word [0x703c]
+	jl	short L139F
+	cmp	bx, word [0x703e]
+	jl	short L135C
+	or	byte [Stick2Bits], 4
+L135C:
+	mov	bx, word [Stick2Y]
+	cmp	bx, word [0x7040]
+	jae	short L13A6
+	mov	word [0x7040], bx
+	mov	bx, word [0x7042]
+L136E:
+	sub	bx, word [0x7040]
+	jle	short L137E
+	db	0x33, 0xD2			; xor dx, dx
+	mov	ax, 0x4000
+	div	bx
+	mov	word [0x704e], ax
+L137E:
+	db	0x8B, 0xC3			; mov ax, bx
+	mov	dx, GamePort
+	shr	ax, 1
+	db	0x8B, 0xD8			; mov bx, ax
+	shr	bx, 1
+	add	ax, word [0x7040]
+	db	0x03, 0xC3			; add ax, bx
+	mov	word [0x704a], ax
+	db	0x2B, 0xC3			; sub ax, bx
+	db	0x2B, 0xC3			; sub ax, bx
+	mov	word [0x7048], ax
+	mov	bx, word [Stick2Y]
+	jmp	short L13C8
+L139F:
+	or	byte [Stick2Bits], 8
+	jmp	short L135C
+L13A6:
+	cmp	bx, word [0x7042]
+	jle	short L13C8
+	dec	word [0x7046]
+	je	short L13BE
+	cmp	bx, word [0x7044]
+	jge	short L13D4
+	mov	word [0x7044], bx
+	jmp	short L13D4
+L13BE:
+	mov	bx, word [0x7044]
+	mov	word [0x7042], bx
+	jmp	short L136E
+L13C8:
+	mov	word [0x7046], 8
+	mov	word [0x7044], 0x4e20
+L13D4:
+	cmp	bx, word [0x7048]
+	jb	short L13FE
+	cmp	bx, word [0x704a]
+	jb	short L13E5
+	or	byte [Stick2Bits], 2
+L13E5:
+	in	al, dx
+	and	al, byte [StickRaw]
+	and	al, 0xc0
+	xor	al, 0xc0
+	shr	al, 1
+	shr	al, 1
+	or	byte [Stick2Bits], al
+L13F6:
+	mov	al, byte [Stick1Bits]
+	mov	ah, byte [Stick2Bits]
+	retf
+L13FE:
+	or	byte [Stick2Bits], 1
+	jmp	short L13E5
+
+
+; Set JoyOn bit 0 and the initial limits for the first pair. _main calls this.
+InitStick1:
+	or	byte [JoyOn], 1
+	mov	word [0x7058], 0x50
+	mov	word [0x705a], 0
+	mov	word [0x7064], 0x50
+	mov	word [0x7066], 0
+	retf
+
+
+; Set JoyOn bit 1 and the initial limits for the second pair. _main calls this.
+InitStick2:
+	or	byte [JoyOn], 2
+	mov	word [0x7034], 0x50
+	mov	word [0x7036], 0
+	mov	word [0x7040], 0x50
+	mov	word [0x7042], 0
+	retf
+
+
+; (Stick1X minus its low limit) times the X scale. High word of the product minus 1Fh.
+ScaleStick1X:
+	mov	ax, word [Stick1X]
+	sub	ax, word [0x7058]
+	jge	short L144C
+	db	0x33, 0xC0			; xor ax, ax
+L144C:
+	mul	word [0x7070]
+	db	0x8A, 0xC4			; mov al, ah
+	db	0x8A, 0xE2			; mov ah, dl
+	sub	ax, 0x1f
+	retf
+
+
+; The same scale for Stick1Y.
+ScaleStick1Y:
+	mov	ax, word [Stick1Y]
+	sub	ax, word [0x7064]
+	jge	short L1463
+	db	0x33, 0xC0			; xor ax, ax
+L1463:
+	mul	word [0x7072]
+	db	0x8A, 0xC4			; mov al, ah
+	db	0x8A, 0xE2			; mov ah, dl
+	sub	ax, 0x1f
+	retf
+
+
+; The same scale for Stick2X.
+ScaleStick2X:
+	mov	ax, word [Stick2X]
+	sub	ax, word [0x7034]
+	jge	short L147A
+	db	0x33, 0xC0			; xor ax, ax
+L147A:
+	mul	word [0x704c]
+	db	0x8A, 0xC4			; mov al, ah
+	db	0x8A, 0xE2			; mov ah, dl
+	sub	ax, 0x1f
+	retf
+
+
+; The same scale for Stick2Y.
+ScaleStick2Y:
+	mov	ax, word [Stick2Y]
+	sub	ax, word [0x7040]
+	jge	short L1491
+	db	0x33, 0xC0			; xor ax, ax
+L1491:
+	mul	word [0x704e]
+	db	0x8A, 0xC4			; mov al, ah
+	db	0x8A, 0xE2			; mov ah, dl
+	sub	ax, 0x1f
+	retf
+
+	incbin	"Extracted/segments/seg001.bin", 0x149D, 0x33E0 - 0x149D
