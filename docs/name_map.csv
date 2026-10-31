@@ -427,7 +427,7 @@ seg056:2ACB,OvlThunk278,2ACB,new,high,"Overlay thunk: near call LoadFromThunk, f
 seg056:2AD5,OvlThunk279,2AD5,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
 seg056:2ADF,OvlThunk280,2ADF,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
 seg056:2AE9,OvlThunk281,2AE9,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section split across seg058",src/seg/seg056.asm
-seg000:04CA,MscStartup,04CA,new,medium,"Microsoft C startup. seg000 is still incbin. seg058 and seg000 are still incbin",src/seg/seg056.asm
+seg000:04CA,MscStartup,04CA,new,medium,"Microsoft C startup. seg000 is still incbin",src/seg/seg056.asm
 seg058:0003,RtlSectionHook,0003,new,medium,"Far hook called while releasing or loading a section; carry skips the resident shortcut. seg058 and seg000 are still incbin",src/seg/seg056.asm
 seg058:0005,RtlWriteText,0005,new,medium,"Writes a message (DS:DX) with a number in CX, used before a fatal overlay error. seg058 and seg000 are still incbin",src/seg/seg056.asm
 seg058:00CF,RtlSaveVectors,00CF,new,medium,"Called at startup with ES the PSP. seg058 and seg000 are still incbin",src/seg/seg056.asm

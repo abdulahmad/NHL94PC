@@ -1,0 +1,67 @@
+0000  77 08 FF 77 06 52 50 FF 77 04 EB BD  db 0x77, 0x08, 0xFF, 0x77, 0x06, 0x52, 0x50, 0xFF, 0x77, 0x04, 0xEB, 0xBD
+000C  C8 04 00 00               enter 4, 0
+0010  57                        push di
+0011  56                        push si
+0012  C4 5E 06                  les bx, ptr [bp + 6]
+0015  26 8B 4F 0A               mov cx, word ptr es:[bx + 0xa]
+0019  83 E9 04                  sub cx, 4
+001C  8B 36 BC 02               mov si, word ptr [0x2bc]
+0020  C7 46 FC 00 00            mov word ptr [bp - 4], 0
+0025  8B 7E FC                  mov di, word ptr [bp - 4]
+0028  EB 0A                     jmp 0x34
+002A  8B FE                     mov di, si
+002C  8B 05                     mov ax, word ptr [di]
+002E  40                        inc ax
+002F  40                        inc ax
+0030  D1 E0                     shl ax, 1
+0032  03 F0                     add si, ax
+0034  3B F1                     cmp si, cx
+0036  72 F2                     jb 0x2a
+0038  3B CE                     cmp cx, si
+003A  74 09                     je 0x45
+003C  68 28 6D                  push 0x6d28
+003F  9A E4 03 4A 0F            lcall 0xf4a, 0x3e4
+0044  5B                        pop bx
+0045  FF 4C 02                  dec word ptr [si + 2]
+0048  83 7C 02 00               cmp word ptr [si + 2], 0
+004C  7F 2D                     jg 0x7b
+004E  8B 14                     mov dx, word ptr [si]
+0050  D1 E2                     shl dx, 1
+0052  03 D6                     add dx, si
+0054  83 C2 04                  add dx, 4
+0057  3B 16 9C AE               cmp dx, word ptr [0xae9c]
+005B  73 0E                     jae 0x6b
+005D  8B DA                     mov bx, dx
+005F  83 7F 02 00               cmp word ptr [bx + 2], 0
+0063  7F 06                     jg 0x6b
+0065  8B 07                     mov ax, word ptr [bx]
+0067  40                        inc ax
+0068  40                        inc ax
+0069  01 04                     add word ptr [si], ax
+006B  0B FF                     or di, di
+006D  74 0C                     je 0x7b
+006F  83 7D 02 00               cmp word ptr [di + 2], 0
+0073  7F 06                     jg 0x7b
+0075  8B 04                     mov ax, word ptr [si]
+0077  40                        inc ax
+0078  40                        inc ax
+0079  01 05                     add word ptr [di], ax
+007B  C4 5E 06                  les bx, ptr [bp + 6]
+007E  26 FF 77 02               push word ptr es:[bx + 2]
+0082  26 FF 37                  push word ptr es:[bx]
+0085  9A 9A 09 E1 06            lcall 0x6e1, 0x99a
+008A  83 C4 04                  add sp, 4
+008D  5E                        pop si
+008E  5F                        pop di
+008F  C9                        leave
+0090  CB                        retf
+0091  90 C8 10 00 00 57 56 8B 7E 06 D1 FF E9 92 00 89  db 0x90, 0xC8, 0x10, 0x00, 0x00, 0x57, 0x56, 0x8B, 0x7E, 0x06, 0xD1, 0xFF, 0xE9, 0x92, 0x00, 0x89
+00A1  7E FC EB 79 8B 5E FC 2B DF 8B 56 08 89 7E FE EB  db 0x7E, 0xFC, 0xEB, 0x79, 0x8B, 0x5E, 0xFC, 0x2B, 0xDF, 0x8B, 0x56, 0x08, 0x89, 0x7E, 0xFE, 0xEB
+00B1  62 8B F3 D1 E6 03 F2 8B 04 8B F7 03 F3 D1 E6 03  db 0x62, 0x8B, 0xF3, 0xD1, 0xE6, 0x03, 0xF2, 0x8B, 0x04, 0x8B, 0xF7, 0x03, 0xF3, 0xD1, 0xE6, 0x03
+00C1  F2 39 04 7E 52 8B F3 D1 E6 8B C6 03 F2 8B 0C 89  db 0xF2, 0x39, 0x04, 0x7E, 0x52, 0x8B, 0xF3, 0xD1, 0xE6, 0x8B, 0xC6, 0x03, 0xF2, 0x8B, 0x0C, 0x89
+00D1  76 FA 8B F3 03 F7 D1 E6 89 76 F8 03 F2 89 46 F6  db 0x76, 0xFA, 0x8B, 0xF3, 0x03, 0xF7, 0xD1, 0xE6, 0x89, 0x76, 0xF8, 0x03, 0xF2, 0x89, 0x46, 0xF6
+00E1  8B 04 89 76 F4 8B 76 FA 89 04 8B 76 F4 89 0C 8B  db 0x8B, 0x04, 0x89, 0x76, 0xF4, 0x8B, 0x76, 0xFA, 0x89, 0x04, 0x8B, 0x76, 0xF4, 0x89, 0x0C, 0x8B
+00F1  76 F6 03 76 0A 8B 0C 8B C6 8B 76 F8 03 76 0A 89  db 0x76, 0xF6, 0x03, 0x76, 0x0A, 0x8B, 0x0C, 0x8B, 0xC6, 0x8B, 0x76, 0xF8, 0x03, 0x76, 0x0A, 0x89
+0101  46 F2 8B 04 89 76 F0 8B 76 F2 89 04 8B 76 F0 89  db 0x46, 0xF2, 0x8B, 0x04, 0x89, 0x76, 0xF0, 0x8B, 0x76, 0xF2, 0x89, 0x04, 0x8B, 0x76, 0xF0, 0x89
+0111  0C 2B DF 0B DB 7D 9A FF 46 FC 8B 7E FE 8B 46 06  db 0x0C, 0x2B, 0xDF, 0x0B, 0xDB, 0x7D, 0x9A, 0xFF, 0x46, 0xFC, 0x8B, 0x7E, 0xFE, 0x8B, 0x46, 0x06
+0121  39 46 FC 7D 03 E9 7C FF 89 7E FE D1 7E FE 8B  db 0x39, 0x46, 0xFC, 0x7D, 0x03, 0xE9, 0x7C, 0xFF, 0x89, 0x7E, 0xFE, 0xD1, 0x7E, 0xFE, 0x8B

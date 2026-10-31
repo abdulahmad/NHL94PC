@@ -1,0 +1,29 @@
+0000  34 68 C4 00 9A D7 23 35 1B 83 C4 04 CB 90  db 0x34, 0x68, 0xC4, 0x00, 0x9A, 0xD7, 0x23, 0x35, 0x1B, 0x83, 0xC4, 0x04, 0xCB, 0x90
+000E  83 3E 3E 0A 00            cmp word ptr [0xa3e], 0
+0013  74 0B                     je 0x20
+0015  9A 0E 00 15 0C            lcall 0xc15, 0xe
+001A  C7 06 3E 0A 00 00         mov word ptr [0xa3e], 0
+0020  8E 06 1E 8B               mov es, word ptr [0x8b1e]
+0024  26 83 3E 00 00 00         cmp word ptr es:[0], 0
+002A  74 1A                     je 0x46
+002C  9A 10 00 37 08            lcall 0x837, 0x10
+0031  9A 0C 00 37 08            lcall 0x837, 0xc
+0036  9A 10 00 37 08            lcall 0x837, 0x10
+003B  8E 06 1E 8B               mov es, word ptr [0x8b1e]
+003F  26 C7 06 00 00 00 00      mov word ptr es:[0], 0
+0046  83 3E 08 05 00            cmp word ptr [0x508], 0
+004B  75 03                     jne 0x50
+004D  2B C0                     sub ax, ax
+004F  CB                        retf
+0050  FF 0E 08 05               dec word ptr [0x508]
+0054  A0 0A 05                  mov al, byte ptr [0x50a]
+0057  FE C0                     inc al
+0059  25 1F 00                  and ax, 0x1f
+005C  A3 0A 05                  mov word ptr [0x50a], ax
+005F  C1 E0 03                  shl ax, 3
+0062  05 D0 AE                  add ax, 0xaed0
+0065  CB                        retf
+0066  C7 06 0A 05 1F 00         mov word ptr [0x50a], 0x1f
+006C  2B C0                     sub ax, ax
+006E  A3                        db 0xA3
+006F  08                        db 0x08

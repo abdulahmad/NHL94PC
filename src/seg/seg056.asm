@@ -381,7 +381,7 @@ LoadSection:
 	push	ax
 	push	word [cs:bx+8]
 	push	ds
-	call	0:0			; compressed-section hook, stored as zeros
+	call	0:0			; other read path; far call stored as zeros
 	pop	ds
 	db	0x0B, 0xC0		; or ax, ax
 	je	.t19

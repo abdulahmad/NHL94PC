@@ -1,0 +1,18 @@
+0000  56 FA 8B C6 8B 56 FA 5E 5F C9 CB 90 90 90  db 0x56, 0xFA, 0x8B, 0xC6, 0x8B, 0x56, 0xFA, 0x5E, 0x5F, 0xC9, 0xCB, 0x90, 0x90, 0x90
+000E  C8 0A 00 00               enter 0xa, 0
+0012  8D 46 FA                  lea ax, [bp - 6]
+0015  50                        push ax
+0016  8D 46 F6                  lea ax, [bp - 0xa]
+0019  50                        push ax
+001A  8D 46 FE                  lea ax, [bp - 2]
+001D  50                        push ax
+001E  FF 76 06                  push word ptr [bp + 6]
+0021  9A 9E 26 A3 03            lcall 0x3a3, 0x269e
+0026  83 C4 08                  add sp, 8
+0029  FF 76 FE                  push word ptr [bp - 2]
+002C  9A 9D 27 A3 03            lcall 0x3a3, 0x279d
+0031  5B                        pop bx
+0032  83 7E FE 00               cmp word ptr [bp - 2], 0
+0036  74 05                     je 0x3d
+0038  C7 46 FE 01 00            mov word ptr [bp - 2], 1
+003D  8B 46 FE                  mov ax, word ptr [bp - 2]

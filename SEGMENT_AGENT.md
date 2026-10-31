@@ -39,16 +39,27 @@ seg000. <- CURRENT
 
 ## Sources
 
-- Reference EXE: `lst/HOCKEY.EXE` (committed for now, temporary). The other game files (`.INT`, `.OVL`, `.CFG`, `.MAP`, `.BIN`) are not
-  available yet (see README).
+- Reference EXE: `lst/HOCKEY.EXE` (committed for now, temporary). The other game files are in `lst/game/` for now, the same way, and are
+  not committed as source. Overlays used for the load path below: `AI.OVL`, `INIT.OVL`, `GAME.OVL`, `MENUS.OVL`, `STATS.OVL`, `LP.OVL`,
+  `MOVIE.OVL`, `FADES.OVL`, `FADES1.OVL`–`FADES12.OVL`.
 - Each segment starts as an `incbin` of its bytes from `Extracted/segments/` (cut by `tools/extract.py` from `segmap.json`).
 - Segments: the MZ load image is cut at every segment base the relocations name (the segment numbers stored at the relocated words, plus
   the relocation sites' own segments and the entry segment). Two adjacent bases may belong to one compiler segment; merge them if so. A
   segment can also be split further: add a file in the same `section`, cut the incbin with `incbin "<file>", <start>, <length>`.
-- The 28 `ovl_*` files are the 113,711 bytes after the load module (not loaded by DOS). The EXE names
-  RTLink/Plus ("Internal error in .RTLink(R)/Plus run-time code"); this area is probably RTLink overlay data or tables. Identify it.
+- Boundary check (2026-10-31), detail in `docs/HANDOFF.md`: 57 of the 59 cuts are real linker segments. Two are false splits — merge them
+  into the previous segment when that segment is disassembled, do not disassemble them on their own:
+  - `seg011` (paragraph `0x0C15`, 16 bytes) into `seg010`. The bytes are the tail of seg010's function plus padding. The far call that
+    names `0x0C15` is that address written normalized (offset under 16).
+  - `seg057` (paragraph `0x1D33`, 2832 bytes) is merged into `seg056`. It was the thunk tail. Callers use segment `0x1B35`
+    with offsets past `0x1FE0`. Every thunk near-calls `LoadFromThunk`.
+- A real boundary still usually has the previous function's last few bytes on the next paragraph (`leave` / `retf`, sometimes the tail of
+  a near call), and the new function's `enter` or `push bp` a few bytes later. That spill is not a false split. Do not merge two segments
+  whose far calls use different paragraphs.
+- The 28 `ovl_*` files are arbitrary 4KB slices of one RTLink dynamic segment stored after the DOS load module (113,711 bytes). They are
+  not 28 overlays. The external overlays are the `.OVL` files. How each one is loaded is in `docs/HANDOFF.md`. Reslice `ovl_*` to the
+  relocation list and the image when that area becomes source; do not disassemble it before that.
 - Names: NHLPA93SNES (https://github.com/abdulahmad/NHLPA93SNES), NHL94Genesis (https://github.com/abdulahmad/NHL94Genesis),
-  NHL94PCDemo (https://github.com/abdulahmad/NHL94PCDemo).
+  NHL94PCDemo (https://github.com/abdulahmad/NHL94PCDemo). NHL95PC was compared for overlay loading only; it has none (see HANDOFF).
 
 ## Build and verify
 
@@ -70,6 +81,9 @@ seg000. <- CURRENT
 
 ## History
 
+- 2026-10-31: structure map only (no segment disassembled). 57 of seg000–seg058 are real linker segments; seg011 and seg057 are false
+  splits (merge into seg010 and seg056). The 113,711 bytes after the load module are one preloaded RTLink segment (relocation list, then
+  image). Each `.OVL` is one dynamic segment, loaded by the thunks in seg056. Detail in `docs/HANDOFF.md`.
 - 2026-10-31: bootstrap. 88 incbin segments (MZ header, 59 image segments, 28 overlay-area chunks), a stub per
   segment, prebuild EXE check, extractor, NASM build and verify (MATCH). Trial: MZ header fields as source, `reloc_table`, `image_start`,
   `__astart`.
@@ -92,7 +106,7 @@ seg000. <- CURRENT
 | seg008 | incbin | 0x0B720 | 9408 | 0x09B2 |
 | seg009 | incbin | 0x0DBE0 | 304 | 0x0BFE |
 | seg010 | incbin | 0x0DD10 | 64 | 0x0C11 |
-| seg011 | incbin | 0x0DD50 | 16 | 0x0C15 |
+| seg011 | incbin (false split, merge into seg010) | 0x0DD50 | 16 | 0x0C15 |
 | seg012 | incbin | 0x0DD60 | 192 | 0x0C16 |
 | seg013 | incbin | 0x0DE20 | 2592 | 0x0C22 |
 | seg014 | incbin | 0x0E840 | 208 | 0x0CC4 |

@@ -1,0 +1,43 @@
+0000  5F 5E C9 CB               db 0x5F, 0x5E, 0xC9, 0xCB
+0004  C8 02 00 00               enter 2, 0
+0008  57                        push di
+0009  56                        push si
+000A  8B 76 08                  mov si, word ptr [bp + 8]
+000D  8B 7E 0C                  mov di, word ptr [bp + 0xc]
+0010  2B FE                     sub di, si
+0012  8B 46 0A                  mov ax, word ptr [bp + 0xa]
+0015  2B 46 06                  sub ax, word ptr [bp + 6]
+0018  40                        inc ax
+0019  89 46 FE                  mov word ptr [bp - 2], ax
+001C  0B C0                     or ax, ax
+001E  7E 28                     jle 0x48
+0020  FF 76 0E                  push word ptr [bp + 0xe]
+0023  6A 01                     push 1
+0025  50                        push ax
+0026  56                        push si
+0027  FF 76 06                  push word ptr [bp + 6]
+002A  9A DE 00 EF 0F            lcall 0xfef, 0xde
+002F  83 C4 0A                  add sp, 0xa
+0032  FF 76 0E                  push word ptr [bp + 0xe]
+0035  6A 01                     push 1
+0037  FF 76 FE                  push word ptr [bp - 2]
+003A  FF 76 0C                  push word ptr [bp + 0xc]
+003D  FF 76 06                  push word ptr [bp + 6]
+0040  9A DE 00 EF 0F            lcall 0xfef, 0xde
+0045  83 C4 0A                  add sp, 0xa
+0048  0B FF                     or di, di
+004A  7E 24                     jle 0x70
+004C  FF 76 0E                  push word ptr [bp + 0xe]
+004F  57                        push di
+0050  6A 01                     push 1
+0052  56                        push si
+0053  FF 76 06                  push word ptr [bp + 6]
+0056  9A DE 00 EF 0F            lcall 0xfef, 0xde
+005B  83 C4 0A                  add sp, 0xa
+005E  FF 76 0E                  push word ptr [bp + 0xe]
+0061  57                        push di
+0062  6A 01                     push 1
+0064  56                        push si
+0065  FF 76 0A                  push word ptr [bp + 0xa]
+0068  9A DE 00 EF 0F            lcall 0xfef, 0xde
+006D  83 C4 0A                  add sp, 0xa

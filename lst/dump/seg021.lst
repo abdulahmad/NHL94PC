@@ -1,0 +1,463 @@
+0000  CB 90                     db 0xCB, 0x90
+0002  C8 02 00 00               enter 2, 0
+0006  57                        push di
+0007  56                        push si
+0008  F6 06 B6 01 80            test byte ptr [0x1b6], 0x80
+000D  75 03                     jne 0x12
+000F  E9 C6 01                  jmp 0x1d8
+0012  F6 06 C6 01 0A            test byte ptr [0x1c6], 0xa
+0017  75 03                     jne 0x1c
+0019  E9 BC 01                  jmp 0x1d8
+001C  8B 3E 54 4A               mov di, word ptr [0x4a54]
+0020  2B 3E 18 0A               sub di, word ptr [0xa18]
+0024  6B 5E 06 1E               imul bx, word ptr [bp + 6], 0x1e
+0028  8B C7                     mov ax, di
+002A  99                        cdq
+002B  33 C2                     xor ax, dx
+002D  2B C2                     sub ax, dx
+002F  3B C3                     cmp ax, bx
+0031  7E 11                     jle 0x44
+0033  0B FF                     or di, di
+0035  7C 07                     jl 0x3e
+0037  01 1E 18 0A               add word ptr [0xa18], bx
+003B  EB 0D                     jmp 0x4a
+003D  90                        db 0x90
+003E  29 1E 18 0A               sub word ptr [0xa18], bx
+0042  EB 06                     jmp 0x4a
+0044  A1 54 4A                  mov ax, word ptr [0x4a54]
+0047  A3 18 0A                  mov word ptr [0xa18], ax
+004A  81 3E 18 0A 00 02         cmp word ptr [0xa18], 0x200
+0050  7D 04                     jge 0x56
+0052  2B F6                     sub si, si
+0054  EB 30                     jmp 0x86
+0056  81 3E 18 0A 90 03         cmp word ptr [0xa18], 0x390
+005C  7D 10                     jge 0x6e
+005E  A1 18 0A                  mov ax, word ptr [0xa18]
+0061  2D 00 02                  sub ax, 0x200
+0064  B9 0A 00                  mov cx, 0xa
+0067  99                        cdq
+0068  F7 F9                     idiv cx
+006A  8B F0                     mov si, ax
+006C  EB 0E                     jmp 0x7c
+006E  8B 36 18 0A               mov si, word ptr [0xa18]
+0072  81 EE 90 03               sub si, 0x390
+0076  C1 FE 02                  sar si, 2
+0079  83 C6 28                  add si, 0x28
+007C  F6 06 C6 01 08            test byte ptr [0x1c6], 8
+0081  74 03                     je 0x86
+0083  83 C6 20                  add si, 0x20
+0086  83 FE 7F                  cmp si, 0x7f
+0089  7E 03                     jle 0x8e
+008B  BE 7F 00                  mov si, 0x7f
+008E  A1 18 0A                  mov ax, word ptr [0xa18]
+0091  B9 0C 00                  mov cx, 0xc
+0094  99                        cdq
+0095  F7 F9                     idiv cx
+0097  8B F8                     mov di, ax
+0099  83 C7 0A                  add di, 0xa
+009C  F6 06 C6 01 08            test byte ptr [0x1c6], 8
+00A1  74 03                     je 0xa6
+00A3  83 C7 32                  add di, 0x32
+00A6  83 FF 7F                  cmp di, 0x7f
+00A9  7E 03                     jle 0xae
+00AB  BF 7F 00                  mov di, 0x7f
+00AE  83 FF 0A                  cmp di, 0xa
+00B1  7D 03                     jge 0xb6
+00B3  BF 0A 00                  mov di, 0xa
+00B6  83 3E 1A 0A 00            cmp word ptr [0xa1a], 0
+00BB  7E 27                     jle 0xe4
+00BD  0B F6                     or si, si
+00BF  75 23                     jne 0xe4
+00C1  56                        push si
+00C2  6A 08                     push 8
+00C4  A0 6E 10                  mov al, byte ptr [0x106e]
+00C7  2A E4                     sub ah, ah
+00C9  50                        push ax
+00CA  9A 0A 00 C4 0C            lcall 0xcc4, 0xa
+00CF  83 C4 06                  add sp, 6
+00D2  6A 24                     push 0x24
+00D4  6A 08                     push 8
+00D6  A0 6E 10                  mov al, byte ptr [0x106e]
+00D9  2A E4                     sub ah, ah
+00DB  50                        push ax
+00DC  9A B4 00 C4 0C            lcall 0xcc4, 0xb4
+00E1  EB 2F                     jmp 0x112
+00E3  90                        db 0x90
+00E4  83 3E 1A 0A 00            cmp word ptr [0xa1a], 0
+00E9  75 2A                     jne 0x115
+00EB  0B F6                     or si, si
+00ED  7E 26                     jle 0x115
+00EF  6A 7D                     push 0x7d
+00F1  6A 24                     push 0x24
+00F3  6A 08                     push 8
+00F5  A0 6E 10                  mov al, byte ptr [0x106e]
+00F8  2A E4                     sub ah, ah
+00FA  50                        push ax
+00FB  9A 5A 00 C4 0C            lcall 0xcc4, 0x5a
+0100  83 C4 08                  add sp, 8
+0103  6A 40                     push 0x40
+0105  6A 08                     push 8
+0107  A0 6E 10                  mov al, byte ptr [0x106e]
+010A  2A E4                     sub ah, ah
+010C  50                        push ax
+010D  9A 32 00 C4 0C            lcall 0xcc4, 0x32
+0112  83 C4 06                  add sp, 6
+0115  0B F6                     or si, si
+0117  7E 49                     jle 0x162
+0119  56                        push si
+011A  6A 08                     push 8
+011C  A0 6E 10                  mov al, byte ptr [0x106e]
+011F  2A E4                     sub ah, ah
+0121  50                        push ax
+0122  9A 0A 00 C4 0C            lcall 0xcc4, 0xa
+0127  83 C4 06                  add sp, 6
+012A  83 FE 7F                  cmp si, 0x7f
+012D  7D 07                     jge 0x136
+012F  83 3E 1A 0A 7F            cmp word ptr [0xa1a], 0x7f
+0134  7C 2C                     jl 0x162
+0136  83 FE 7F                  cmp si, 0x7f
+0139  7C 0B                     jl 0x146
+013B  B8 06 00                  mov ax, 6
+013E  9A 06 00 11 0C            lcall 0xc11, 6
+0143  EB 03                     jmp 0x148
+0145  90                        db 0x90
+0146  2B C0                     sub ax, ax
+0148  89 46 FE                  mov word ptr [bp - 2], ax
+014B  B8 40 00                  mov ax, 0x40
+014E  2B 46 FE                  sub ax, word ptr [bp - 2]
+0151  50                        push ax
+0152  6A 08                     push 8
+0154  A0 6E 10                  mov al, byte ptr [0x106e]
+0157  2A E4                     sub ah, ah
+0159  50                        push ax
+015A  9A 32 00 C4 0C            lcall 0xcc4, 0x32
+015F  83 C4 06                  add sp, 6
+0162  89 36 1A 0A               mov word ptr [0xa1a], si
+0166  83 3E 1C 0A 00            cmp word ptr [0xa1c], 0
+016B  75 18                     jne 0x185
+016D  0B FF                     or di, di
+016F  7E 14                     jle 0x185
+0171  6A 7E                     push 0x7e
+0173  6A 24                     push 0x24
+0175  6A 07                     push 7
+0177  A0 6E 10                  mov al, byte ptr [0x106e]
+017A  2A E4                     sub ah, ah
+017C  50                        push ax
+017D  9A 5A 00 C4 0C            lcall 0xcc4, 0x5a
+0182  83 C4 08                  add sp, 8
+0185  57                        push di
+0186  6A 07                     push 7
+0188  A0 6E 10                  mov al, byte ptr [0x106e]
+018B  2A E4                     sub ah, ah
+018D  50                        push ax
+018E  9A 0A 00 C4 0C            lcall 0xcc4, 0xa
+0193  83 C4 06                  add sp, 6
+0196  8B C7                     mov ax, di
+0198  B9 03 00                  mov cx, 3
+019B  99                        cdq
+019C  F7 F9                     idiv cx
+019E  8B F0                     mov si, ax
+01A0  83 C6 20                  add si, 0x20
+01A3  A0 C6 01                  mov al, byte ptr [0x1c6]
+01A6  25 08 00                  and ax, 8
+01A9  3D 01 00                  cmp ax, 1
+01AC  F5                        cmc
+01AD  1B C0                     sbb ax, ax
+01AF  25 32 00                  and ax, 0x32
+01B2  2B C7                     sub ax, di
+01B4  3D F6 FF                  cmp ax, 0xfff6
+01B7  75 0A                     jne 0x1c3
+01B9  B8 06 00                  mov ax, 6
+01BC  9A 06 00 11 0C            lcall 0xc11, 6
+01C1  03 F0                     add si, ax
+01C3  56                        push si
+01C4  6A 07                     push 7
+01C6  A0 6E 10                  mov al, byte ptr [0x106e]
+01C9  2A E4                     sub ah, ah
+01CB  50                        push ax
+01CC  9A 32 00 C4 0C            lcall 0xcc4, 0x32
+01D1  83 C4 06                  add sp, 6
+01D4  89 3E 1C 0A               mov word ptr [0xa1c], di
+01D8  5E                        pop si
+01D9  5F                        pop di
+01DA  C9                        leave
+01DB  CB                        retf
+01DC  F6 06 B6 01 80            test byte ptr [0x1b6], 0x80
+01E1  74 69                     je 0x24c
+01E3  F6 06 C6 01 0A            test byte ptr [0x1c6], 0xa
+01E8  74 62                     je 0x24c
+01EA  83 3E 1A 0A 00            cmp word ptr [0xa1a], 0
+01EF  7E 2A                     jle 0x21b
+01F1  6A 00                     push 0
+01F3  6A 08                     push 8
+01F5  A0 6E 10                  mov al, byte ptr [0x106e]
+01F8  2A E4                     sub ah, ah
+01FA  50                        push ax
+01FB  9A 0A 00 C4 0C            lcall 0xcc4, 0xa
+0200  83 C4 06                  add sp, 6
+0203  6A 24                     push 0x24
+0205  6A 08                     push 8
+0207  A0 6E 10                  mov al, byte ptr [0x106e]
+020A  2A E4                     sub ah, ah
+020C  50                        push ax
+020D  9A B4 00 C4 0C            lcall 0xcc4, 0xb4
+0212  83 C4 06                  add sp, 6
+0215  C7 06 1A 0A 00 00         mov word ptr [0xa1a], 0
+021B  83 3E 1C 0A 00            cmp word ptr [0xa1c], 0
+0220  7E 2A                     jle 0x24c
+0222  6A 00                     push 0
+0224  6A 07                     push 7
+0226  A0 6E 10                  mov al, byte ptr [0x106e]
+0229  2A E4                     sub ah, ah
+022B  50                        push ax
+022C  9A 0A 00 C4 0C            lcall 0xcc4, 0xa
+0231  83 C4 06                  add sp, 6
+0234  6A 24                     push 0x24
+0236  6A 07                     push 7
+0238  A0 6E 10                  mov al, byte ptr [0x106e]
+023B  2A E4                     sub ah, ah
+023D  50                        push ax
+023E  9A B4 00 C4 0C            lcall 0xcc4, 0xb4
+0243  83 C4 06                  add sp, 6
+0246  C7 06 1C 0A 00 00         mov word ptr [0xa1c], 0
+024C  CB                        retf
+024D  90 56 8B 36 54 4A F6 06 B6 01 80 74 3E F6 06 C6  db 0x90, 0x56, 0x8B, 0x36, 0x54, 0x4A, 0xF6, 0x06, 0xB6, 0x01, 0x80, 0x74, 0x3E, 0xF6, 0x06, 0xC6
+025D  01 0A 74 37 0B F6 7E 2B   db 0x01, 0x0A, 0x74, 0x37, 0x0B, 0xF6, 0x7E, 0x2B
+0265  B8 01 00                  mov ax, 1
+0268  99                        cdq
+0269  9A 6E 1A A3 03            lcall 0x3a3, 0x1a6e
+026E  83 2E 54 4A 32            sub word ptr [0x4a54], 0x32
+0273  79 06                     jns 0x27b
+0275  C7 06 54 4A 00 00         mov word ptr [0x4a54], 0
+027B  6A 02                     push 2
+027D  0E                        push cs
+027E  E8 81 FD                  call 2
+0281  83 C4 02                  add sp, 2
+0284  9A 84 1A A3 03            lcall 0x3a3, 0x1a84
+0289  83 3E 54 4A 00            cmp word ptr [0x4a54], 0
+028E  7F D5                     jg 0x265
+0290  0E                        push cs
+0291  E8 48 FF                  call 0x1dc
+0294  89 36 54 4A               mov word ptr [0x4a54], si
+0298  5E                        pop si
+0299  CB                        retf
+029A  2B C0 A3 18 0A A3 1A 0A A3 1C 0A CB 83 3E C6 01  db 0x2B, 0xC0, 0xA3, 0x18, 0x0A, 0xA3, 0x1A, 0x0A, 0xA3, 0x1C, 0x0A, 0xCB, 0x83, 0x3E, 0xC6, 0x01
+02AA  02 75 11 F6 06 B7 01 01 74 0A  db 0x02, 0x75, 0x11, 0xF6, 0x06, 0xB7, 0x01, 0x01, 0x74, 0x0A
+02B4  9A 32 05 B2 09            lcall 0x9b2, 0x532
+02B9  9A C0 22 B2 09            lcall 0x9b2, 0x22c0
+02BE  CB                        retf
+02BF  90 83 3E C6 01 02 75 15 F6 06 B7 01 01 74 0E  db 0x90, 0x83, 0x3E, 0xC6, 0x01, 0x02, 0x75, 0x15, 0xF6, 0x06, 0xB7, 0x01, 0x01, 0x74, 0x0E
+02CE  9A 2A 04 B2 09            lcall 0x9b2, 0x42a
+02D3  0B C0                     or ax, ax
+02D5  74 05                     je 0x2dc
+02D7  B8 01 00                  mov ax, 1
+02DA  CB                        retf
+02DB  90                        db 0x90
+02DC  2B C0                     sub ax, ax
+02DE  CB                        retf
+02DF  90 C8 18 00 00 56 8B 76 06 89 36 52 4A 0E E8 D0  db 0x90, 0xC8, 0x18, 0x00, 0x00, 0x56, 0x8B, 0x76, 0x06, 0x89, 0x36, 0x52, 0x4A, 0x0E, 0xE8, 0xD0
+02EF  FF 0B C0 74 09 81 FE 9C 00 74 03 E9 93 00 83 3E  db 0xFF, 0x0B, 0xC0, 0x74, 0x09, 0x81, 0xFE, 0x9C, 0x00, 0x74, 0x03, 0xE9, 0x93, 0x00, 0x83, 0x3E
+02FF  C6 01 08 74 07 83 3E C6 01 04 75 0C 81 FE A0 00  db 0xC6, 0x01, 0x08, 0x74, 0x07, 0x83, 0x3E, 0xC6, 0x01, 0x04, 0x75, 0x0C, 0x81, 0xFE, 0xA0, 0x00
+030F  74 7F 81 FE A1 00 74 79 83 FE 7D 75 0C 81 06 54  db 0x74, 0x7F, 0x81, 0xFE, 0xA1, 0x00, 0x74, 0x79, 0x83, 0xFE, 0x7D, 0x75, 0x0C, 0x81, 0x06, 0x54
+031F  4A F4 01 5E C9 CB 90 90 90 83 3E C6 01 04 75 41  db 0x4A, 0xF4, 0x01, 0x5E, 0xC9, 0xCB, 0x90, 0x90, 0x90, 0x83, 0x3E, 0xC6, 0x01, 0x04, 0x75, 0x41
+032F  81 FE AA 00 75 3B A1 B2 0F 8B 16 B4 0F 89 46 EC  db 0x81, 0xFE, 0xAA, 0x00, 0x75, 0x3B, 0xA1, 0xB2, 0x0F, 0x8B, 0x16, 0xB4, 0x0F, 0x89, 0x46, 0xEC
+033F  89 56 EE A1 B6 0F 8B 16 B8 0F 89 46 F0 89 56 F2  db 0x89, 0x56, 0xEE, 0xA1, 0xB6, 0x0F, 0x8B, 0x16, 0xB8, 0x0F, 0x89, 0x46, 0xF0, 0x89, 0x56, 0xF2
+034F  C6 46 F9 FF C6 46 FA 3F C7 46 F4 14 00 C6 46 FB  db 0xC6, 0x46, 0xF9, 0xFF, 0xC6, 0x46, 0xFA, 0x3F, 0xC7, 0x46, 0xF4, 0x14, 0x00, 0xC6, 0x46, 0xFB
+035F  00 8D 46 E8 16 50         db 0x00, 0x8D, 0x46, 0xE8, 0x16, 0x50
+0365  9A C6 0B F2 16            lcall 0x16f2, 0xbc6
+036A  83 C4 04                  add sp, 4
+036D  5E                        pop si
+036E  C9                        leave
+036F  CB                        retf
+0370  81 FE 90 00 75 11 83 3E C6 01 04 75 09 56  db 0x81, 0xFE, 0x90, 0x00, 0x75, 0x11, 0x83, 0x3E, 0xC6, 0x01, 0x04, 0x75, 0x09, 0x56
+037E  9A D4 0F F2 16            lcall 0x16f2, 0xfd4
+0383  83 C4 02                  add sp, 2
+0386  46                        inc si
+0387  56                        push si
+0388  9A D4 0F F2 16            lcall 0x16f2, 0xfd4
+038D  83 C4 02                  add sp, 2
+0390  5E                        pop si
+0391  C9                        leave
+0392  CB                        retf
+0393  90 55 8B EC 83 3E C6 01 02 75 20 F6 06 B7 01 01  db 0x90, 0x55, 0x8B, 0xEC, 0x83, 0x3E, 0xC6, 0x01, 0x02, 0x75, 0x20, 0xF6, 0x06, 0xB7, 0x01, 0x01
+03A3  74 19                     db 0x74, 0x19
+03A5  9A 32 05 B2 09            lcall 0x9b2, 0x532
+03AA  FF 76 0E                  push word ptr [bp + 0xe]
+03AD  FF 76 0C                  push word ptr [bp + 0xc]
+03B0  FF 76 0A                  push word ptr [bp + 0xa]
+03B3  FF 76 08                  push word ptr [bp + 8]
+03B6  FF 76 06                  push word ptr [bp + 6]
+03B9  9A 32 20 B2 09            lcall 0x9b2, 0x2032
+03BE  C9                        leave
+03BF  CB                        retf
+03C0  55 8B EC 83 3E C6 01 02 75 1A F6 06 B7 01 01 74  db 0x55, 0x8B, 0xEC, 0x83, 0x3E, 0xC6, 0x01, 0x02, 0x75, 0x1A, 0xF6, 0x06, 0xB7, 0x01, 0x01, 0x74
+03D0  13                        db 0x13
+03D1  9A 32 05 B2 09            lcall 0x9b2, 0x532
+03D6  FF 76 0A                  push word ptr [bp + 0xa]
+03D9  FF 76 08                  push word ptr [bp + 8]
+03DC  FF 76 06                  push word ptr [bp + 6]
+03DF  9A 44 1E B2 09            lcall 0x9b2, 0x1e44
+03E4  C9                        leave
+03E5  CB                        retf
+03E6  55 8B EC 83 3E C6 01 02 75 26 F6 06 B7 01 01 74  db 0x55, 0x8B, 0xEC, 0x83, 0x3E, 0xC6, 0x01, 0x02, 0x75, 0x26, 0xF6, 0x06, 0xB7, 0x01, 0x01, 0x74
+03F6  1F                        db 0x1F
+03F7  9A 32 05 B2 09            lcall 0x9b2, 0x532
+03FC  FF 76 12                  push word ptr [bp + 0x12]
+03FF  FF 76 10                  push word ptr [bp + 0x10]
+0402  FF 76 0E                  push word ptr [bp + 0xe]
+0405  FF 76 0C                  push word ptr [bp + 0xc]
+0408  FF 76 0A                  push word ptr [bp + 0xa]
+040B  FF 76 08                  push word ptr [bp + 8]
+040E  FF 76 06                  push word ptr [bp + 6]
+0411  9A 3C 1B B2 09            lcall 0x9b2, 0x1b3c
+0416  C9                        leave
+0417  CB                        retf
+0418  C8 02 00 00 57 56 8B 7E 06 89 7E FE 83 FF 18 7C  db 0xC8, 0x02, 0x00, 0x00, 0x57, 0x56, 0x8B, 0x7E, 0x06, 0x89, 0x7E, 0xFE, 0x83, 0xFF, 0x18, 0x7C
+0428  05 C7 46 FE 09 00 83 FF 18 7C 02 47 47 8B 76 08  db 0x05, 0xC7, 0x46, 0xFE, 0x09, 0x00, 0x83, 0xFF, 0x18, 0x7C, 0x02, 0x47, 0x47, 0x8B, 0x76, 0x08
+0438  83 FE 18 7C 02 46 46 83 3E C6 01 02 75 24 F6 06  db 0x83, 0xFE, 0x18, 0x7C, 0x02, 0x46, 0x46, 0x83, 0x3E, 0xC6, 0x01, 0x02, 0x75, 0x24, 0xF6, 0x06
+0448  B7 01 01 74 1D D1 E7 FF B5 E0 01 D1 E6 FF B4 E0  db 0xB7, 0x01, 0x01, 0x74, 0x1D, 0xD1, 0xE7, 0xFF, 0xB5, 0xE0, 0x01, 0xD1, 0xE6, 0xFF, 0xB4, 0xE0
+0458  01 8B 5E FE D1 E3 FF B7 E0 01  db 0x01, 0x8B, 0x5E, 0xFE, 0xD1, 0xE3, 0xFF, 0xB7, 0xE0, 0x01
+0462  9A FA 17 B2 09            lcall 0x9b2, 0x17fa
+0467  83 C4 06                  add sp, 6
+046A  5E                        pop si
+046B  5F                        pop di
+046C  C9                        leave
+046D  CB                        retf
+046E  55 8B EC 83 3E C6 01 02 75 15 F6 06 B7 01 01 74  db 0x55, 0x8B, 0xEC, 0x83, 0x3E, 0xC6, 0x01, 0x02, 0x75, 0x15, 0xF6, 0x06, 0xB7, 0x01, 0x01, 0x74
+047E  0E FF 76 0A FF 76 08 FF 76 06  db 0x0E, 0xFF, 0x76, 0x0A, 0xFF, 0x76, 0x08, 0xFF, 0x76, 0x06
+0488  9A E2 16 B2 09            lcall 0x9b2, 0x16e2
+048D  C9                        leave
+048E  CB                        retf
+048F  90 83 3E C6 01 02 75 0C F6 06 B7 01 01 74 05  db 0x90, 0x83, 0x3E, 0xC6, 0x01, 0x02, 0x75, 0x0C, 0xF6, 0x06, 0xB7, 0x01, 0x01, 0x74, 0x05
+049E  9A 8A 12 B2 09            lcall 0x9b2, 0x128a
+04A3  CB                        retf
+04A4  83 3E C6 01 02 75 0C F6 06 B7 01 01 74 05  db 0x83, 0x3E, 0xC6, 0x01, 0x02, 0x75, 0x0C, 0xF6, 0x06, 0xB7, 0x01, 0x01, 0x74, 0x05
+04B2  9A EC 12 B2 09            lcall 0x9b2, 0x12ec
+04B7  CB                        retf
+04B8  83 3E C6 01 02 75 0C F6 06 B7 01 01 74 05  db 0x83, 0x3E, 0xC6, 0x01, 0x02, 0x75, 0x0C, 0xF6, 0x06, 0xB7, 0x01, 0x01, 0x74, 0x05
+04C6  9A 62 13 B2 09            lcall 0x9b2, 0x1362
+04CB  CB                        retf
+04CC  83 3E C6 01 02 75 0C F6 06 B7 01 01 74 05  db 0x83, 0x3E, 0xC6, 0x01, 0x02, 0x75, 0x0C, 0xF6, 0x06, 0xB7, 0x01, 0x01, 0x74, 0x05
+04DA  9A C4 13 B2 09            lcall 0x9b2, 0x13c4
+04DF  CB                        retf
+04E0  55 8B EC 56 83 3E C6 01 02 75 25 F6 06 B7 01 01  db 0x55, 0x8B, 0xEC, 0x56, 0x83, 0x3E, 0xC6, 0x01, 0x02, 0x75, 0x25, 0xF6, 0x06, 0xB7, 0x01, 0x01
+04F0  74 1E 8B 76 06 D1 E6 FF B4 E0 01 8B 5E 08 D1 E3  db 0x74, 0x1E, 0x8B, 0x76, 0x06, 0xD1, 0xE6, 0xFF, 0xB4, 0xE0, 0x01, 0x8B, 0x5E, 0x08, 0xD1, 0xE3
+0500  FF B7 E0 01 FF B4 E0 01   db 0xFF, 0xB7, 0xE0, 0x01, 0xFF, 0xB4, 0xE0, 0x01
+0508  9A 26 14 B2 09            lcall 0x9b2, 0x1426
+050D  83 C4 06                  add sp, 6
+0510  5E                        pop si
+0511  C9                        leave
+0512  CB                        retf
+0513  90 55 8B EC 83 3E C6 01 02 75 21 F6 06 B7 01 01  db 0x90, 0x55, 0x8B, 0xEC, 0x83, 0x3E, 0xC6, 0x01, 0x02, 0x75, 0x21, 0xF6, 0x06, 0xB7, 0x01, 0x01
+0523  74 1A FF 76 0E FF 76 0C FF 76 0A FF 76 08 8B 5E  db 0x74, 0x1A, 0xFF, 0x76, 0x0E, 0xFF, 0x76, 0x0C, 0xFF, 0x76, 0x0A, 0xFF, 0x76, 0x08, 0x8B, 0x5E
+0533  06 D1 E3 FF B7 E0 01      db 0x06, 0xD1, 0xE3, 0xFF, 0xB7, 0xE0, 0x01
+053A  9A 46 15 B2 09            lcall 0x9b2, 0x1546
+053F  C9                        leave
+0540  CB                        retf
+0541  90 55 8B EC 56 83 3E C6 01 02 75 2E F6 06 B7 01  db 0x90, 0x55, 0x8B, 0xEC, 0x56, 0x83, 0x3E, 0xC6, 0x01, 0x02, 0x75, 0x2E, 0xF6, 0x06, 0xB7, 0x01
+0551  01 74 27 8B 76 06 FF 76 0E FF 76 0C FF 76 0A D1  db 0x01, 0x74, 0x27, 0x8B, 0x76, 0x06, 0xFF, 0x76, 0x0E, 0xFF, 0x76, 0x0C, 0xFF, 0x76, 0x0A, 0xD1
+0561  E6 FF B4 E0 01 8B 5E 08 D1 E3 FF B7 E0 01 FF B4  db 0xE6, 0xFF, 0xB4, 0xE0, 0x01, 0x8B, 0x5E, 0x08, 0xD1, 0xE3, 0xFF, 0xB7, 0xE0, 0x01, 0xFF, 0xB4
+0571  E0 01                     db 0xE0, 0x01
+0573  9A 1A 19 B2 09            lcall 0x9b2, 0x191a
+0578  83 C4 0C                  add sp, 0xc
+057B  5E                        pop si
+057C  C9                        leave
+057D  CB                        retf
+057E  55 8B EC 83 3E C6 01 02 75 09  db 0x55, 0x8B, 0xEC, 0x83, 0x3E, 0xC6, 0x01, 0x02, 0x75, 0x09
+0588  9A 22 23 B2 09            lcall 0x9b2, 0x2322
+058D  0B C0                     or ax, ax
+058F  74 F7                     je 0x588
+0591  C9                        leave
+0592  CB                        retf
+0593  90 55 8B EC 57 56 83 3E C6 01 02 75 14 8B 76 06  db 0x90, 0x55, 0x8B, 0xEC, 0x57, 0x56, 0x83, 0x3E, 0xC6, 0x01, 0x02, 0x75, 0x14, 0x8B, 0x76, 0x06
+05A3  8B 7E 08                  db 0x8B, 0x7E, 0x08
+05A6  57                        push di
+05A7  56                        push si
+05A8  9A 54 23 B2 09            lcall 0x9b2, 0x2354
+05AD  83 C4 04                  add sp, 4
+05B0  0B C0                     or ax, ax
+05B2  74 F2                     je 0x5a6
+05B4  5E                        pop si
+05B5  5F                        pop di
+05B6  C9                        leave
+05B7  CB                        retf
+05B8  83 3E 14 0A FF            cmp word ptr [0xa14], -1
+05BD  75 07                     jne 0x5c6
+05BF  83 3E 16 0A FF            cmp word ptr [0xa16], -1
+05C4  74 30                     je 0x5f6
+05C6  FF 36 16 0A               push word ptr [0xa16]
+05CA  FF 36 14 0A               push word ptr [0xa14]
+05CE  9A 26 12 F2 16            lcall 0x16f2, 0x1226
+05D3  83 C4 04                  add sp, 4
+05D6  0B C0                     or ax, ax
+05D8  75 1C                     jne 0x5f6
+05DA  FF 36 16 0A               push word ptr [0xa16]
+05DE  FF 36 14 0A               push word ptr [0xa14]
+05E2  9A BA 11 F2 16            lcall 0x16f2, 0x11ba
+05E7  83 C4 04                  add sp, 4
+05EA  C7 06 14 0A FF FF         mov word ptr [0xa14], 0xffff
+05F0  C7 06 16 0A FF FF         mov word ptr [0xa16], 0xffff
+05F6  CB                        retf
+05F7  90                        db 0x90
+05F8  55                        push bp
+05F9  8B EC                     mov bp, sp
+05FB  0E                        push cs
+05FC  E8 B9 FF                  call 0x5b8
+05FF  8B 46 06                  mov ax, word ptr [bp + 6]
+0602  8B 56 08                  mov dx, word ptr [bp + 8]
+0605  A3 DA B2                  mov word ptr [0xb2da], ax
+0608  89 16 DC B2               mov word ptr [0xb2dc], dx
+060C  8B 46 0A                  mov ax, word ptr [bp + 0xa]
+060F  8B 56 0C                  mov dx, word ptr [bp + 0xc]
+0612  A3 DE B2                  mov word ptr [0xb2de], ax
+0615  89 16 E0 B2               mov word ptr [0xb2e0], dx
+0619  C6 06 E7 B2 FF            mov byte ptr [0xb2e7], 0xff
+061E  C6 06 E8 B2 3F            mov byte ptr [0xb2e8], 0x3f
+0623  C7 06 E2 B2 14 00         mov word ptr [0xb2e2], 0x14
+0629  C6 06 E9 B2 00            mov byte ptr [0xb2e9], 0
+062E  1E                        push ds
+062F  68 D6 B2                  push 0xb2d6
+0632  9A C6 0B F2 16            lcall 0x16f2, 0xbc6
+0637  A3 14 0A                  mov word ptr [0xa14], ax
+063A  89 16 16 0A               mov word ptr [0xa16], dx
+063E  C9                        leave
+063F  CB                        retf
+0640  FF 36 16 0A               push word ptr [0xa16]
+0644  FF 36 14 0A               push word ptr [0xa14]
+0648  9A 26 12 F2 16            lcall 0x16f2, 0x1226
+064D  83 C4 04                  add sp, 4
+0650  0B C0                     or ax, ax
+0652  74 EC                     je 0x640
+0654  CB                        retf
+0655  90 C8 02 00 00 56 8B 76 06 83 FE 06 7D 42 8B DE  db 0x90, 0xC8, 0x02, 0x00, 0x00, 0x56, 0x8B, 0x76, 0x06, 0x83, 0xFE, 0x06, 0x7D, 0x42, 0x8B, 0xDE
+0665  C1 E3 02 89 5E FE 8B 87 20 B3 0B 87 1E B3 74 1D  db 0xC1, 0xE3, 0x02, 0x89, 0x5E, 0xFE, 0x8B, 0x87, 0x20, 0xB3, 0x0B, 0x87, 0x1E, 0xB3, 0x74, 0x1D
+0675  FF B7 38 B3 FF B7 36 B3 FF B7 20 B3 FF B7 1E B3  db 0xFF, 0xB7, 0x38, 0xB3, 0xFF, 0xB7, 0x36, 0xB3, 0xFF, 0xB7, 0x20, 0xB3, 0xFF, 0xB7, 0x1E, 0xB3
+0685  0E E8 6F FF 83 C4 08 BE 0C 00 EB 14 90  db 0x0E, 0xE8, 0x6F, 0xFF, 0x83, 0xC4, 0x08, 0xBE, 0x0C, 0x00, 0xEB, 0x14, 0x90
+0692  9A 12 10 00 00            lcall 0, 0x1012
+0697  80 E4 7F                  and ah, 0x7f
+069A  B9 03 00                  mov cx, 3
+069D  99                        cdq
+069E  F7 F9                     idiv cx
+06A0  8B F2                     mov si, dx
+06A2  83 C6 06                  add si, 6
+06A5  83 FE 09                  cmp si, 9
+06A8  7D 18                     jge 0x6c2
+06AA  8B DE                     mov bx, si
+06AC  C1 E3 02                  shl bx, 2
+06AF  FF B7 FC B2               push word ptr [bx - 0x4d04]
+06B3  FF B7 FA B2               push word ptr [bx - 0x4d06]
+06B7  FF B7 F0 B2               push word ptr [bx - 0x4d10]
+06BB  FF B7 EE B2               push word ptr [bx - 0x4d12]
+06BF  EB 19                     jmp 0x6da
+06C1  90                        db 0x90
+06C2  83 FE 0C                  cmp si, 0xc
+06C5  7D 1A                     jge 0x6e1
+06C7  C1 E6 02                  shl si, 2
+06CA  FF B4 D8 B2               push word ptr [si - 0x4d28]
+06CE  FF B4 D6 B2               push word ptr [si - 0x4d2a]
+06D2  FF B4 CC B2               push word ptr [si - 0x4d34]
+06D6  FF B4 CA B2               push word ptr [si - 0x4d36]
+06DA  0E                        push cs
+06DB  E8 1A FF                  call 0x5f8
+06DE  83                        db 0x83
+06DF  C4                        db 0xC4
