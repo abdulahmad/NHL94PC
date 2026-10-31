@@ -81,6 +81,7 @@ seg004. <- CURRENT
 
 ## History
 
+- 2026-10-31: seg004 through `Expand` is source. `Unpack` accepts the word 31FBh and writes the output. `Expand` accepts 47FBh and emits through the three maps.
 - 2026-10-31: seg004 through `GetBits` is source. `ReadHead` returns a 3-byte value when the type is in range. `EmitByte` expands a byte through two maps. `GetBits` refills a bit buffer from a far pointer.
 - 2026-10-31: seg004 through `TypeId` is source. `NineCmp` compares 9 bytes with the block at 402h. `ReadBe` folds counted bytes into a dword. `TypeId` turns a short header into a type code.
 - 2026-10-31: seg003 is source. `RecFlag` returns the word at offset 18h. `NullFar` is the `retf` `_main` calls. seg004 is not started.
@@ -125,7 +126,7 @@ seg004. <- CURRENT
 | seg001 | source | 0x05630 | 13280 | 0x03A3 |
 | seg002 | source | 0x08A10 | 5472 | 0x06E1 |
 | seg003 | source | 0x09F70 | 16 | 0x0837 |
-| seg004 | source through GetBits, rest incbin <- CURRENT | 0x09F80 | 3088 | 0x0838 |
+| seg004 | source through Expand, rest incbin <- CURRENT | 0x09F80 | 3088 | 0x0838 |
 | seg005 | source (_main, two retf stubs) | 0x0AB90 | 1040 | 0x08F9 |
 | seg006 | incbin | 0x0AFA0 | 752 | 0x093A |
 | seg007 | incbin | 0x0B290 | 1168 | 0x0969 |
