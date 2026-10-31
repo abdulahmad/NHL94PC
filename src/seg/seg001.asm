@@ -63,6 +63,14 @@ ConBuf		equ	0x7450
 ConKeep		equ	0x7447
 Deadline		equ	0x751E
 LastCount	equ	0x7522
+MouseOn		equ	0x6420
+MouseX		equ	0x6422
+MouseY		equ	0x6424
+MouseBtn		equ	0x6426
+MouseXShift	equ	0x6428
+MouseYShift	equ	0x642A
+MouseLevel	equ	0x642C
+MouseRatioShift	equ	0x642E
 GamePort	equ	0x201
 FmtSave		equ	0x64CE
 FmtBuf		equ	0x64D6
@@ -3748,4 +3756,413 @@ L1AD0:
 	retf
 	db	0x00
 
-	incbin	"Extracted/segments/seg001.bin", 0x1ADE, 0x33E0 - 0x1ADE
+; If a mouse is present, INT 33h AX=0Fh. The two arguments are shifted
+; right by MouseRatioShift and become the mickey counts.
+MouseRatio:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	si
+	push	di
+	cmp	word [MouseOn], 0
+	je	short L1AFF
+	mov	ax, 0xf
+	mov	bx, word [bp + 6]
+	mov	dx, word [bp + 8]
+	mov	cx, word [MouseRatioShift]
+	shr	bx, cl
+	shr	dx, cl
+	db	0x8B, 0xCB			; mov cx, bx
+	int	0x33
+L1AFF:
+	pop	di
+	pop	si
+	leave
+	retf
+
+
+; If a mouse is present, store the arguments and INT 33h AX=4.
+; X is shifted by MouseXShift and Y by MouseYShift.
+MouseMove:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	si
+	push	di
+	cmp	word [MouseOn], 0
+	je	short L1B30
+	mov	ax, 4
+	mov	cx, word [MouseXShift]
+	mov	bx, word [bp + 6]
+	mov	word [MouseX], bx
+	shl	bx, cl
+	mov	cx, word [MouseYShift]
+	mov	dx, word [bp + 8]
+	mov	word [MouseY], dx
+	shl	dx, cl
+	db	0x8B, 0xCB			; mov cx, bx
+	int	0x33
+L1B30:
+	pop	di
+	pop	si
+	leave
+	retf
+
+
+; INT 33h AX=3. Store buttons, X, and Y through the three near pointers.
+; X and Y are shifted back down. _main calls this. Nothing is stored when MouseOn is 0.
+MouseRead:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	si
+	push	di
+	db	0x33, 0xC0			; xor ax, ax
+	cmp	word [MouseOn], 1
+	jb	short L1B77
+	je	short L1B53
+	mov	ax, 3
+	int	0x33
+	and	ax, 1
+	and	bx, 2
+	db	0x0B, 0xD8			; or bx, ax
+	jmp	short L1B58
+L1B53:
+	mov	ax, 3
+	int	0x33
+L1B58:
+	db	0x8B, 0xC1			; mov ax, cx
+	mov	cx, word [MouseXShift]
+	shr	ax, cl
+	mov	cx, word [MouseYShift]
+	shr	dx, cl
+	db	0x8B, 0xCB			; mov cx, bx
+	mov	bx, word [bp + 6]
+	mov	word [bx], cx
+	mov	bx, word [bp + 8]
+	mov	word [bx], ax
+	mov	bx, word [bp + 0xa]
+	mov	word [bx], dx
+L1B77:
+	pop	di
+	pop	si
+	leave
+	retf
+
+
+; INT 33h AX=7, or AX=10h when MouseOn is above 1. The limits are shifted up.
+MouseXRange:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	si
+	push	di
+	mov	ax, 7
+	cmp	word [MouseOn], 1
+	jb	short L1BA1
+	je	short L1B8F
+	mov	ax, 0x10
+L1B8F:
+	mov	cx, word [MouseXShift]
+	mov	bx, word [bp + 6]
+	mov	dx, word [bp + 8]
+	shl	bx, cl
+	shl	dx, cl
+	db	0x8B, 0xCB			; mov cx, bx
+	int	0x33
+L1BA1:
+	pop	di
+	pop	si
+	leave
+	retf
+
+
+; INT 33h AX=8, or AX=11h when MouseOn is not 1. The limits are shifted up.
+MouseYRange:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	si
+	push	di
+	mov	ax, 8
+	cmp	word [MouseOn], 1
+	je	short L1BB7
+	mov	ax, 0x11
+L1BB7:
+	mov	cx, word [MouseYShift]
+	mov	bx, word [bp + 6]
+	mov	dx, word [bp + 8]
+	shl	bx, cl
+	shl	dx, cl
+	db	0x8B, 0xCB			; mov cx, bx
+	int	0x33
+	pop	di
+	pop	si
+	leave
+	retf
+
+
+; Set both ranges. X limits are the first and third words, Y the second and fourth.
+MouseRange:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	si
+	push	di
+	mov	ax, 7
+	cmp	word [MouseOn], 1
+	jb	short L1C12
+	je	short L1BE1
+	mov	ax, 0x10
+L1BE1:
+	mov	cx, word [MouseXShift]
+	mov	bx, word [bp + 6]
+	mov	dx, word [bp + 0xa]
+	shl	bx, cl
+	shl	dx, cl
+	db	0x8B, 0xCB			; mov cx, bx
+	int	0x33
+	mov	ax, 8
+	cmp	word [MouseOn], 1
+	je	short L1C00
+	mov	ax, 0x11
+L1C00:
+	mov	cx, word [MouseYShift]
+	mov	bx, word [bp + 8]
+	mov	dx, word [bp + 0xc]
+	shl	bx, cl
+	shl	dx, cl
+	db	0x8B, 0xCB			; mov cx, bx
+	int	0x33
+L1C12:
+	pop	di
+	pop	si
+	leave
+	retf
+
+
+; INT 33h AX=3. Return the button word, with bits masked when MouseOn is above 1.
+MouseButtons:
+	push	si
+	push	di
+	db	0x33, 0xC0			; xor ax, ax
+	cmp	word [MouseOn], 1
+	jb	short L1C3A
+	ja	short L1C2D
+	mov	ax, 3
+	int	0x33
+	db	0x8B, 0xC3			; mov ax, bx
+	pop	di
+	pop	si
+	retf
+L1C2D:
+	mov	ax, 3
+	int	0x33
+	and	ax, 1
+	and	bx, 2
+	db	0x0B, 0xC3			; or ax, bx
+L1C3A:
+	pop	di
+	pop	si
+	retf
+
+
+; INT 33h AX=3. Store the scaled position and the buttons.
+MouseSample:
+	push	si
+	push	di
+	db	0x33, 0xC0			; xor ax, ax
+	cmp	word [MouseOn], 1
+	jb	short L1C75
+	je	short L1C59
+	mov	ax, 3
+	int	0x33
+	and	ax, 1
+	and	bx, 2
+	db	0x0B, 0xD8			; or bx, ax
+	jmp	short L1C5E
+L1C59:
+	mov	ax, 3
+	int	0x33
+L1C5E:
+	db	0x8B, 0xC1			; mov ax, cx
+	mov	cx, word [MouseXShift]
+	shr	ax, cl
+	mov	cx, word [MouseYShift]
+	shr	dx, cl
+	mov	word [MouseX], ax
+	mov	word [MouseY], dx
+	db	0x8B, 0xC3			; mov ax, bx
+L1C75:
+	mov	word [MouseBtn], ax
+	pop	di
+	pop	si
+	retf
+
+
+; Reset the mouse with INT 33h AX=0. Return 0 when no driver answers.
+; Width at most 320 sets MouseXShift. The box is the size minus one, the pointer
+; starts at one quarter of the size, and the mickey count is 16. _main calls this.
+; Registers MouseHide with _onexit.
+MouseOpen:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	si
+	push	di
+	mov	word [MouseOn], 0
+	mov	word [MouseRatioShift], 0
+	db	0x33, 0xC0			; xor ax, ax
+	int	0x33
+	db	0x0B, 0xC0			; or ax, ax
+	jne	short L1C97
+	jmp	near L1D30
+L1C97:
+	inc	word [MouseOn]
+	mov	word [MouseYShift], 0
+	cmp	word [0x6406], 0
+	je	short L1CC1
+	mov	word [MouseRatioShift], 2
+	inc	word [MouseYShift]
+	mov	ax, 3
+	int	0x33
+	db	0x0B, 0xC0			; or ax, ax
+	jne	short L1CC1
+	mov	word [MouseOn], 2
+L1CC1:
+	db	0x33, 0xC0			; xor ax, ax
+	cmp	word [bp + 6], 0x140
+	jg	short L1CCB
+	inc	ax
+L1CCB:
+	mov	word [MouseXShift], ax
+	mov	ax, word [bp + 8]
+	dec	ax
+	push	ax
+	mov	ax, word [bp + 6]
+	dec	ax
+	push	ax
+	db	0x33, 0xC0			; xor ax, ax
+	push	ax
+	push	ax
+	push	cs
+	call	MouseRange
+	mov	ax, word [bp + 8]
+	shr	ax, 1
+	shr	ax, 1
+	push	ax
+	mov	ax, word [bp + 6]
+	shr	ax, 1
+	shr	ax, 1
+	push	ax
+	push	cs
+	call	MouseMove
+	mov	ax, 0x10
+	push	ax
+	push	ax
+	push	cs
+	call	MouseRatio
+	mov	ax, cs
+	mov	word [0x640c], 0x1d56
+	mov	word [0x640e], ax
+	mov	word [0x6410], 0x1d56
+	mov	word [0x6412], ax
+	mov	word [0x6414], 0x1d37
+	mov	word [0x6416], ax
+	mov	word [0x6418], 0x1c3d
+	mov	word [0x641a], ax
+	push	ax
+	push	word [0x6410]
+	call	0x3A3:OnexitThunk
+	add	sp, 0x14
+L1D30:
+	mov	ax, word [MouseOn]
+	pop	di
+	pop	si
+	leave
+	retf
+
+
+; Increment the show count. INT 33h AX=1 once it becomes positive.
+MouseShow:
+	push	si
+	push	di
+	inc	word [MouseLevel]
+	cmp	word [MouseLevel], 1
+	jl	short L1D53
+	mov	ax, 1
+	mov	word [MouseLevel], ax
+	cmp	word [MouseOn], 0
+	je	short L1D53
+	int	0x33
+L1D53:
+	pop	di
+	pop	si
+	retf
+
+
+; Decrement the show count. INT 33h AX=2 when it reaches 0.
+MouseHide:
+	push	si
+	push	di
+	dec	word [MouseLevel]
+	cmp	word [MouseLevel], 0
+	jne	short L1D6F
+	cmp	word [MouseOn], 0
+	je	short L1D6F
+	mov	ax, 2
+	int	0x33
+L1D6F:
+	pop	di
+	pop	si
+	retf
+
+
+; Time four bits on port 201h. The mask is the byte at 75E0h. Store the
+; four counts and the button nibble. On a timeout, store the bits still set and retry.
+; _main calls this.
+ReadPots:
+	push	bp
+	push	si
+	push	di
+	mov	ah, byte [0x75e0]
+	mov	cx, 0x2710
+	mov	dx, GamePort
+	db	0x33, 0xDB			; xor bx, bx
+	db	0x8B, 0xEB			; mov bp, bx
+	db	0x8B, 0xF3			; mov si, bx
+	db	0x8B, 0xFB			; mov di, bx
+	cli
+	out	dx, al
+	jmp	short L1D9F
+L1D8B:
+	shr	al, 1
+	adc	bp, 0
+	shr	al, 1
+	adc	si, 0
+	shr	al, 1
+	adc	di, 0
+	shr	al, 1
+	adc	bx, 0
+L1D9F:
+	in	al, dx
+	test	ah, al
+	loopne	L1D8B
+	sti
+	jcxz	L1DC6
+L1DA7:
+	shr	al, 1
+	shr	al, 1
+	shr	al, 1
+	shr	al, 1
+	mov	byte [0x75de], al
+	mov	word [0x75d6], bp
+	mov	word [0x75d8], si
+	mov	word [0x75da], di
+	mov	word [0x75dc], bx
+	pop	di
+	pop	si
+	pop	bp
+	retf
+L1DC6:
+	db	0x8A, 0xE0			; mov ah, al
+	not	ah
+	and	ah, 0xf
+	mov	byte [0x75e0], ah
+	jmp	short L1DA7
+	db	0x00
+
+	incbin	"Extracted/segments/seg001.bin", 0x1DD4, 0x33E0 - 0x1DD4

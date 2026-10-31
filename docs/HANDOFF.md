@@ -4,7 +4,7 @@
 
 - Full build MATCH (SHA-1 `d94450ddff26528bddac6646c234277076fd36cb`, 244,854 bytes); `tools/verify_all.sh` MATCH.
 - seg056 is source: the resident RTLink/Plus manager and the overlay thunks (10,992 bytes). seg057 was the thunk tail and is merged into seg056.
-- seg000 is entirely source (`src/seg/seg000.asm`). Nothing in it is incbin. seg005 is source. seg001 is source from the start through `WaitCount` (offset `0x1ADE`); the rest is incbin. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`) and seg056.
+- seg000 is entirely source (`src/seg/seg000.asm`). Nothing in it is incbin. seg005 is source. seg001 is source from the start through `ReadPots` (offset `0x1DD4`); the rest is incbin. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`) and seg056.
 - seg011 is still a false split (merge into seg010 when seg010 is disassembled). The `ovl_*` slices were not resliced.
 
 ## Known facts
@@ -210,6 +210,8 @@ The spill at the start of seg001 finishes `test bx, 8`, then `pop bp` / `ret 0xe
 `ReadCallCount` returns `CallCount`, the dword `Int8Handler` increments. `WaitKeyUntil` and `WaitKeyAdd` compare it with `Deadline`. The monochrome console writes the B000h buffer: `ConPrint` formats through `_sprintf`, and `ScrollMono` moves one row.
 
 `WaitDeadline` sends a specific EOI for IRQ 0 and halts until `CallCount` reaches `Deadline`. `DeadlineReached` returns 1 when that has happened. `WaitCount` spins until `CallCount` has advanced by the long argument.
+
+`MouseOpen` resets the mouse with INT 33h AX=0 and returns 0 when no driver answers. `MouseRead` is INT 33h AX=3 and stores buttons, X, and Y. `_main` calls both. `ReadPots` times four bits on port `0x201`. `MouseShow` and `MouseHide` are INT 33h AX=1 and AX=2 with a count.
 
 ## Unsure / open
 

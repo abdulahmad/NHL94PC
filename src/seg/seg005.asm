@@ -124,13 +124,13 @@ _main:
 	or	byte [0xaece], 8
 	push	0xc8
 	push	0x140
-	call	0x03A3:0x1C7B		; seg001
+	call	0x03A3:MouseOpen		; seg001
 	add	sp, 4
 	db	0x0B, 0xC0			; or	ax, ax
 	je	short .7
 	or	byte [0xaece], 1
 .7:
-	call	0x03A3:0x1D72		; seg001
+	call	0x03A3:ReadPots		; seg001
 	mov	word [bp-6], ax
 	test	byte [0x75e0], 3
 	je	short .9
@@ -161,7 +161,7 @@ _main:
 	push	ax
 	push	ax
 	push	ax
-	call	0x03A3:0x1B34		; seg001
+	call	0x03A3:MouseRead		; seg001
 	add	sp, 6
 	push	0xd90
 	push	0x14b8
