@@ -1,6 +1,6 @@
 ; Segment seg001. EMS maps, far copies, the INT 24h hook, file length,
 ; a file-head count, find-first paths, the DOS memory block, a 4-byte lookup,
-; far-pointer lookup, a counted copy, and multiply and divide.
+; far-pointer lookup, a counted copy, multiply and divide, and file writes.
 ; The first bytes finish the seg000 routine that ends on this paragraph.
 
 ; DGROUP words this segment uses. The bytes live in the near data, not here.
@@ -1498,4 +1498,287 @@ IdivDword:
 	shr	edx, 0x10
 	retf
 
-	incbin	"Extracted/segments/seg001.bin", 0xA28, 0x33E0 - 0xA28
+; Create the path at [bp+6] and write the far buffer at [bp+8]. The long
+; at [bp+0Ch] is the byte count, moved 16K at a time. A short write or a DOS
+; error deletes the file. This entry then calls seg022 and returns 0.
+WriteFile:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	add	sp, -6
+	push	ds
+	push	si
+	push	di
+	mov	word [bp - 4], 0
+	jmp	short WriteFileBody
+
+
+; The same write. Returns the DOS error, or 1 when a write was short.
+WriteFileCode:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	add	sp, -6
+	push	ds
+	push	si
+	push	di
+	mov	word [bp - 4], 1
+
+WriteFileBody:
+	mov	dx, word [bp + 6]
+	db	0x33, 0xC9			; xor cx, cx
+	mov	ah, 0x3c
+	int	0x21
+	jb	short .A9D
+	mov	word [bp - 2], ax
+.A54:
+	cmp	word [bp + 0xc], 0
+	jne	short .A60
+	cmp	word [bp + 0xe], 0
+	je	short .ACB
+.A60:
+	mov	cx, 0x4000
+	mov	ax, word [bp + 0xc]
+	sub	word [bp + 0xc], cx
+	sbb	word [bp + 0xe], 0
+	jae	short .A80
+	mov	cx, word [bp + 0xc]
+	mov	word [bp + 0xc], 0
+	mov	word [bp + 0xe], 0
+	add	cx, 0x4000
+.A80:
+	mov	ds, word [bp + 0xa]
+	mov	dx, word [bp + 8]
+	mov	bx, word [bp - 2]
+	mov	ah, 0x40
+	int	0x21
+	jb	short .A9D
+	db	0x3B, 0xC1			; cmp ax, cx
+	jne	short .A9A
+	add	word [bp + 0xa], 0x400
+	jmp	short .A54
+.A9A:
+	mov	ax, 1
+.A9D:
+	mov	word [bp - 6], ax
+	mov	bx, word [bp - 2]
+	mov	ah, 0x3e
+	int	0x21
+	mov	ax, ss
+	mov	ds, ax
+	mov	dx, word [bp + 6]
+	mov	ah, 0x41
+	int	0x21
+	mov	ax, word [bp - 6]
+	cmp	word [bp - 4], 0
+	jne	short .AD4
+	mov	ax, ss
+	mov	ds, ax
+	mov	ax, 0x6d3e
+	push	word [bp + 6]
+	push	ax
+	call	0xF4A:0x3E4			; seg022
+.ACB:
+	mov	bx, word [bp - 2]
+	mov	ah, 0x3e
+	int	0x21
+	db	0x33, 0xC0			; xor ax, ax
+.AD4:
+	pop	di
+	pop	si
+	pop	ds
+	leave
+	retf
+	db	0x00
+
+
+; Add (offset+15)/16 to the segment. AX is 0.
+RoundSeg:
+	db	0x8B, 0xDC			; mov bx, sp
+	mov	dx, word [bx + 4]
+	add	dx, 0xf
+	shr	dx, 4
+	add	dx, word [bx + 6]
+	db	0x33, 0xC0			; xor ax, ax
+	retf
+	db	0x00
+
+
+; Return the word at offset 4 of the far structure.
+TableCount:
+	db	0x8B, 0xDC			; mov bx, sp
+	les	bx, [bx + 4]
+	mov	ax, word es:[bx + 4]
+	retf
+
+
+; Far pointer for the entry index, or 0 when the index is past the count.
+; The pointer is normalized the same way FindFar normalizes a hit.
+TableAt:
+	db	0x8B, 0xDC			; mov bx, sp
+	mov	dx, word [bx + 8]
+	les	bx, [bx + 4]
+	mov	ax, word es:[bx + 4]
+	db	0x3B, 0xD0			; cmp dx, ax
+	jae	short .B3F
+	db	0x03, 0xD0			; add dx, ax
+	db	0x03, 0xD2			; add dx, dx
+	db	0x03, 0xD2			; add dx, dx
+	db	0x03, 0xC0			; add ax, ax
+	db	0x03, 0xC0			; add ax, ax
+	db	0x03, 0xC0			; add ax, ax
+	db	0x03, 0xC3			; add ax, bx
+	add	ax, 6
+	db	0x03, 0xDA			; add bx, dx
+	mov	dx, word es:[bx + 6]
+	and	dx, 0xf
+	db	0x03, 0xC2			; add ax, dx
+	mov	dx, word es:[bx + 6]
+	mov	cx, word es:[bx + 8]
+	shr	cx, 1
+	rcr	dx, 1
+	shr	cx, 1
+	rcr	dx, 1
+	shr	cx, 1
+	rcr	dx, 1
+	shr	cx, 1
+	rcr	dx, 1
+	mov	cx, es
+	db	0x03, 0xD1			; add dx, cx
+	retf
+.B3F:
+	db	0x33, 0xC0			; xor ax, ax
+	db	0x8B, 0xD0			; mov dx, ax
+	retf
+
+
+; Store that entry's dword through the near pointer, or store 0.
+TableStore:
+	db	0x8B, 0xDC			; mov bx, sp
+	mov	ax, word [bx + 8]
+	mov	cx, word [bx + 0xa]
+	les	bx, [bx + 4]
+	cmp	ax, word es:[bx + 4]
+	jae	short .B6B
+	db	0x03, 0xC0			; add ax, ax
+	db	0x03, 0xC0			; add ax, ax
+	db	0x03, 0xD8			; add bx, ax
+	mov	ax, word es:[bx + 6]
+	mov	dx, word es:[bx + 8]
+	db	0x8B, 0xD9			; mov bx, cx
+	mov	word [bx], ax
+	mov	word [bx + 2], dx
+	retf
+.B6B:
+	db	0x8B, 0xD9			; mov bx, cx
+	mov	word [bx], 0
+	mov	word [bx + 2], 0
+	retf
+	db	0x00
+
+
+; DX:AX points just past the last colon, at-sign, slash, or backslash.
+; PathTail reads a near string. PathTailFar reads a far string.
+PathTail:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	ds
+	push	si
+	mov	si, word [bp + 6]
+	jmp	short PathTailBody
+
+PathTailFar:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	ds
+	push	si
+	lds	si, [bp + 6]
+
+PathTailBody:
+	db	0x8B, 0xDE			; mov bx, si
+	cld
+.B8D:
+	lodsb
+	db	0x0A, 0xC0			; or al, al
+	je	short .BA6
+	cmp	al, 0x3a
+	je	short .BA2
+	cmp	al, 0x40
+	je	short .BA2
+	cmp	al, 0x2f
+	je	short .BA2
+	cmp	al, 0x5c
+	jne	short .B8D
+.BA2:
+	db	0x8B, 0xDE			; mov bx, si
+	jmp	short .B8D
+.BA6:
+	db	0x8B, 0xC3			; mov ax, bx
+	mov	dx, ds
+	pop	si
+	pop	ds
+	leave
+	retf
+
+
+; Copy bytes, including the null, and stop at the null or at the count.
+; CopyStrN reads a near string. CopyStrNFar reads a far string. The destination is far.
+CopyStrN:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	ds
+	push	si
+	push	di
+	mov	si, word [bp + 0xa]
+	mov	cx, word [bp + 0xc]
+	jmp	short CopyStrNBody
+
+CopyStrNFar:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	ds
+	push	si
+	push	di
+	lds	si, [bp + 0xa]
+	mov	cx, word [bp + 0xe]
+
+CopyStrNBody:
+	les	di, [bp + 6]
+	cld
+.BCC:
+	lodsb
+	stosb
+	db	0x0A, 0xC0			; or al, al
+	loopne	.BCC
+	pop	di
+	pop	si
+	pop	ds
+	leave
+	retf
+
+
+; Compare up to the count. AX is 0 when the bytes match through a null, else 1.
+StrnDiff:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	ds
+	push	si
+	push	di
+	lds	si, [bp + 0xa]
+	les	di, [bp + 6]
+	mov	cx, word [bp + 0xe]
+	cld
+	mov	ax, 1
+.BEA:
+	cmpsb
+	jne	short .BF4
+	cmp	byte [si - 1], ah
+	loopne	.BEA
+	db	0x33, 0xC0			; xor ax, ax
+.BF4:
+	pop	di
+	pop	si
+	pop	ds
+	leave
+	retf
+	db	0x00
+
+	incbin	"Extracted/segments/seg001.bin", 0xBFA, 0x33E0 - 0xBFA
