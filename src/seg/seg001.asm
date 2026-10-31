@@ -1,5 +1,6 @@
 ; Segment seg001. EMS maps, far copies, the INT 24h hook, file length,
-; a file-head count, find-first paths, the DOS memory block, and a 4-byte lookup.
+; a file-head count, find-first paths, the DOS memory block, a 4-byte lookup,
+; and far-pointer lookup.
 ; The first bytes finish the seg000 routine that ends on this paragraph.
 
 ; DGROUP words this segment uses. The bytes live in the near data, not here.
@@ -1219,4 +1220,173 @@ LookupBody:
 	leave
 	retf
 
-	incbin	"Extracted/segments/seg001.bin", 0x83E, 0x33E0 - 0x83E
+; Look up the long at the near pointer [bp+8] in the far table at [bp+4].
+; Records start at offset 6 and are four bytes. A miss with BX nonzero calls
+; seg022. A hit returns the far pointer stored after the keys, added to DS.
+; FindFar passes no message. FindFarAlt uses 0x6485. FindFarMsg uses 0x645c.
+FindFar:
+	db	0x33, 0xDB			; xor bx, bx
+	jmp	short FindFarBody
+FindFarAlt:
+	mov	bx, 0x6485
+	jmp	short FindFarBody
+FindFarMsg:
+	mov	bx, 0x645c
+FindFarBody:
+	db	0x8B, 0xC4			; mov ax, sp
+	push	bp
+	push	si
+	push	ds
+	db	0x8B, 0xE8			; mov bp, ax
+	mov	si, word [bp+8]
+	mov	ax, word [si]
+	mov	dx, word [si+2]
+	lds	si, [bp+4]
+	mov	cx, word [si+4]
+	add	si, 6
+	db	0x0B, 0xC9			; or cx, cx
+	jne	short .scan
+.miss:
+	db	0x0B, 0xDB			; or bx, bx
+	je	short .zero
+	mov	ax, ss
+	mov	ds, ax
+	push	word [bp+8]
+	push	bx
+	call	0xF4A:0x3E4			; seg022
+.zero:
+	db	0x33, 0xD2			; xor dx, dx
+	db	0x33, 0xC0			; xor ax, ax
+	jmp	short .leave
+.jcx:
+	jcxz	.miss
+.next:
+	add	si, 4
+.scan:
+	cmp	dx, word [si+2]
+	loopne	.next
+	jne	short .miss
+	cmp	ax, word [si]
+	jne	short .jcx
+	mov	bx, word [bp+4]
+	mov	ax, word [bx+4]
+	db	0x03, 0xC0			; add ax, ax
+	db	0x03, 0xC0			; add ax, ax
+	db	0x03, 0xF0			; add si, ax
+	db	0x03, 0xC0			; add ax, ax
+	add	ax, 6
+	db	0x03, 0xC3			; add ax, bx
+	mov	dx, word [si]
+	and	dx, 0xf
+	db	0x03, 0xC2			; add ax, dx
+	mov	dx, word [si]
+	mov	cx, word [si+2]
+	shr	cx, 1
+	rcr	dx, 1
+	shr	cx, 1
+	rcr	dx, 1
+	shr	cx, 1
+	rcr	dx, 1
+	shr	cx, 1
+	rcr	dx, 1
+	mov	cx, ds
+	db	0x03, 0xD1			; add dx, cx
+.leave:
+	pop	ds
+	pop	si
+	pop	bp
+	retf
+
+; Walk keys at [bp+8] until a 0 byte. Each call of FindFarMsg stores DX:AX at DI.
+FindFarList:
+	db	0x8B, 0xC4			; mov ax, sp
+	push	si
+	push	di
+	push	bp
+	db	0x8B, 0xE8			; mov bp, ax
+	mov	si, word [bp+8]
+	mov	di, word [bp+0xa]
+	push	si
+	push	word [bp+6]
+	push	word [bp+4]
+	jmp	short .2
+.1:
+	mov	word [bp-8], si
+	call	0x3A3:FindFarMsg		; seg001
+	mov	word [di], ax
+	mov	word [di+2], dx
+	add	di, 4
+	add	si, 4
+.2:
+	cmp	byte [si], 0
+	jne	short .1
+	add	sp, 6
+	pop	bp
+	pop	di
+	pop	si
+	retf
+
+; The same walk, calling FindFar so a miss stays quiet.
+FindFarQuiet:
+	db	0x8B, 0xC4			; mov ax, sp
+	push	si
+	push	di
+	push	bp
+	db	0x8B, 0xE8			; mov bp, ax
+	mov	si, word [bp+8]
+	mov	di, word [bp+0xa]
+	push	si
+	push	word [bp+6]
+	push	word [bp+4]
+	jmp	short .2
+.1:
+	mov	word [bp-8], si
+	call	0x3A3:FindFar			; seg001
+	mov	word [di], ax
+	mov	word [di+2], dx
+	add	di, 4
+	add	si, 4
+.2:
+	cmp	byte [si], 0
+	jne	short .1
+	add	sp, 6
+	pop	bp
+	pop	di
+	pop	si
+	retf
+
+; Far pointer on the stack to a 20-bit address in DX:AX.
+FarToLinear:
+	db	0x8B, 0xDC			; mov bx, sp
+	mov	ax, word [bx+6]
+	rol	ax, 4
+	db	0x8B, 0xD0			; mov dx, ax
+	and	ax, 0xfff0
+	and	dx, 0xf
+	add	ax, word [bx+4]
+	adc	dx, 0
+	retf
+
+; 20-bit address on the stack back to a far pointer with offset under 16.
+LinearToFar:
+	db	0x8B, 0xDC			; mov bx, sp
+	mov	ax, word [bx+4]
+	db	0x8B, 0xD0			; mov dx, ax
+	and	ax, 0xf
+	and	dx, 0xfff0
+	or	dx, word [bx+6]
+	ror	dx, 4
+	retf
+
+; Same conversion with the low word in AX and the high word in DX.
+LinearToFarRegs:
+	db	0x8B, 0xD8			; mov bx, ax
+	and	ax, 0xf
+	and	bx, 0xfff0
+	db	0x0B, 0xD3			; or dx, bx
+	ror	dx, 4
+	retf
+
+	db	0
+
+	incbin	"Extracted/segments/seg001.bin", 0x968, 0x33E0 - 0x968

@@ -81,7 +81,7 @@ seg001. <- CURRENT
 
 ## History
 
-- 2026-10-31: seg001 through `LookupMsg` is source. `FoldScale` calls three routines that are still incbin, including the body at `0x29D2`'s neighbors `0x32EA` and `0x32F1`.
+- 2026-10-31: seg001 through `LinearToFarRegs` is source. `FindFarMsg` is what `_main` calls at offset `0x847`. The body at `0x29D2` is still incbin.
 - 2026-10-31: seg001 through `CritRestore` is source (EMS map, far copies, INT 24h). The rest of seg001 is still incbin.
 - 2026-10-31: seg005 is source. `NullStartup4` and `NullStartup6` are each a `retf`. `_main` at offset 8 is `enter 0x24, 0` and the rest of the segment, not a lone `retf`.
 - 2026-10-31: seg000 finished. The floating-point emulator is source (`FpConvert`, `FpExec`, and the helpers after it). Nothing in seg000 is incbin.
@@ -105,7 +105,7 @@ seg001. <- CURRENT
 |---|---|---|---|---|
 | mz_header | incbin (MZ header fields are source) | 0x00000 | 7168 |  |
 | seg000 | source | 0x01C00 | 14896 | 0x0000 |
-| seg001 | source through LookupMsg, rest incbin <- CURRENT | 0x05630 | 13280 | 0x03A3 |
+| seg001 | source through LinearToFarRegs, rest incbin <- CURRENT | 0x05630 | 13280 | 0x03A3 |
 | seg002 | incbin | 0x08A10 | 5472 | 0x06E1 |
 | seg003 | incbin | 0x09F70 | 16 | 0x0837 |
 | seg004 | incbin | 0x09F80 | 3088 | 0x0838 |
