@@ -1,0 +1,56 @@
+0000  C9 CB 55 8B EC 57 56 06 8B DA 0B D0 75 05 2B C0  db 0xC9, 0xCB, 0x55, 0x8B, 0xEC, 0x57, 0x56, 0x06, 0x8B, 0xDA, 0x0B, 0xD0, 0x75, 0x05, 0x2B, 0xC0
+0010  EB 72 90 81 FB FF 3F 72 0C 77 04 0B C0 74 06 B8  db 0xEB, 0x72, 0x90, 0x81, 0xFB, 0xFF, 0x3F, 0x72, 0x0C, 0x77, 0x04, 0x0B, 0xC0, 0x74, 0x06, 0xB8
+0020  FF 7F EB 60 90 8B C8 83 FB 00 77 15 81 F9 40 06  db 0xFF, 0x7F, 0xEB, 0x60, 0x90, 0x8B, 0xC8, 0x83, 0xFB, 0x00, 0x77, 0x15, 0x81, 0xF9, 0x40, 0x06
+0030  73 0F B8 FF FF 05 02 00 2B C8 79 F9 D1 F8 EB 44  db 0x73, 0x0F, 0xB8, 0xFF, 0xFF, 0x05, 0x02, 0x00, 0x2B, 0xC8, 0x79, 0xF9, 0xD1, 0xF8, 0xEB, 0x44
+0040  90 8E C3 8B F1 BF 0A 00 B8 00 80 BA 00 00 81 FB  db 0x90, 0x8E, 0xC3, 0x8B, 0xF1, 0xBF, 0x0A, 0x00, 0xB8, 0x00, 0x80, 0xBA, 0x00, 0x00, 0x81, 0xFB
+0050  F0 00 73 0E 8A C5 8A E3 8A D7 2A F6 05 02 00 83  db 0xF0, 0x00, 0x73, 0x0E, 0x8A, 0xC5, 0x8A, 0xE3, 0x8A, 0xD7, 0x2A, 0xF6, 0x05, 0x02, 0x00, 0x83
+0060  D2 00                     db 0xD2, 0x00
+0062  8B C8                     mov cx, ax
+0064  8B DA                     mov bx, dx
+0066  52                        push dx
+0067  50                        push ax
+0068  06                        push es
+0069  56                        push si
+006A  9A 8C 11 00 00            lcall 0, 0x118c
+006F  03 C1                     add ax, cx
+0071  13 D3                     adc dx, bx
+0073  D1 FA                     sar dx, 1
+0075  D1 D8                     rcr ax, 1
+0077  3B C8                     cmp cx, ax
+0079  75 04                     jne 0x7f
+007B  3B DA                     cmp bx, dx
+007D  74 05                     je 0x84
+007F  83 EF 01                  sub di, 1
+0082  75 DE                     jne 0x62
+0084  07                        pop es
+0085  5E                        pop si
+0086  5F                        pop di
+0087  C9                        leave
+0088  CB                        retf
+0089  55                        push bp
+008A  8B EC                     mov bp, sp
+008C  8B C8                     mov cx, ax
+008E  0B C2                     or ax, dx
+0090  75 05                     jne 0x97
+0092  B8 08 00                  mov ax, 8
+0095  C9                        leave
+0096  CB                        retf
+0097  BB 00 00                  mov bx, 0
+009A  83 F9 00                  cmp cx, 0
+009D  7D 05                     jge 0xa4
+009F  F7 D9                     neg cx
+00A1  83 CB 01                  or bx, 1
+00A4  0B D2                     or dx, dx
+00A6  7D 05                     jge 0xad
+00A8  F7 DA                     neg dx
+00AA  83 CB 02                  or bx, 2
+00AD  8B C2                     mov ax, dx
+00AF  D1 E2                     shl dx, 1
+00B1  3B D1                     cmp dx, cx
+00B3  72 03                     jb 0xb8
+00B5  83 CB 04                  or bx, 4
+00B8  D1 E1                     shl cx, 1
+00BA  3B C8                     cmp cx, ax
+00BC  72 03                     jb 0xc1
+00BE  83                        db 0x83
+00BF  CB                        retf

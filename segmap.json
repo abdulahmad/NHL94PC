@@ -408,16 +408,9 @@
   {
    "name": "seg056",
    "off": 118608,
-   "size": 8160,
+   "size": 10992,
    "file": "seg/seg056.asm",
    "para": 6965
-  },
-  {
-   "name": "seg057",
-   "off": 126768,
-   "size": 2832,
-   "file": "seg/seg057.asm",
-   "para": 7475
   },
   {
    "name": "seg058",

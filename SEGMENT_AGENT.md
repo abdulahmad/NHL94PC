@@ -50,8 +50,8 @@ seg000 (startup through `__chkstk` is source; the rest of the segment is still i
   into the previous segment when that segment is disassembled, do not disassemble them on their own:
   - `seg011` (paragraph `0x0C15`, 16 bytes) into `seg010`. The bytes are the tail of seg010's function plus padding. The far call that
     names `0x0C15` is that address written normalized (offset under 16).
-  - `seg057` (paragraph `0x1D33`, 2832 bytes) into `seg056`. It is the thunk tail of the RTLink segment. Callers use segment `0x1B35`
-    with offsets past the end of the seg056 slice. Every thunk near-calls seg056:`0x05F8`, which only works with that CS.
+  - `seg057` (paragraph `0x1D33`, 2832 bytes) is merged into `seg056`. It was the thunk tail. Callers use segment `0x1B35`
+    with offsets past `0x1FE0`. Every thunk near-calls `LoadFromThunk`.
 - A real boundary still usually has the previous function's last few bytes on the next paragraph (`leave` / `retf`, sometimes the tail of
   a near call), and the new function's `enter` or `push bp` a few bytes later. That spill is not a false split. Do not merge two segments
   whose far calls use different paragraphs.
@@ -88,6 +88,8 @@ seg000 (startup through `__chkstk` is source; the rest of the segment is still i
 - 2026-10-31: bootstrap. 88 incbin segments (MZ header, 59 image segments, 28 overlay-area chunks), a stub per
   segment, prebuild EXE check, extractor, NASM build and verify (MATCH). Trial: MZ header fields as source, `reloc_table`, `image_start`,
   `__astart`.
+- 2026-10-31: seg056 disassembled (resident RTLink/Plus manager, `__astart`, overlay thunks). seg057 was the thunk tail
+  (15 zero bytes, then the thunks) and is merged into seg056. No `_malloc` or `__chkstk` in this segment.
 
 ## Segment map
 
@@ -150,8 +152,7 @@ seg000 (startup through `__chkstk` is source; the rest of the segment is still i
 | seg053 | incbin | 0x1A690 | 256 | 0x18A9 |
 | seg054 | incbin | 0x1A790 | 9968 | 0x18B9 |
 | seg055 | incbin | 0x1CE80 | 208 | 0x1B28 |
-| seg056 | incbin (entry label __astart) | 0x1CF50 | 8160 | 0x1B35 |
-| seg057 | incbin (false split, merge into seg056) | 0x1EF30 | 2832 | 0x1D33 |
+| seg056 | source (RTLink manager, __astart, thunks) | 0x1CF50 | 10992 | 0x1B35 |
 | seg058 | incbin | 0x1FA40 | 1543 | 0x1DE4 |
 | ovl_00000 | incbin | 0x20047 | 4096 |  |
 | ovl_01000 | incbin | 0x21047 | 4096 |  |

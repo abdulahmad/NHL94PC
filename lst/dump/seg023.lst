@@ -1,0 +1,66 @@
+0000  E5 9A 87 06 00 00 C9 CB 55 8B EC 57 56 8B 7E 0A  db 0xE5, 0x9A, 0x87, 0x06, 0x00, 0x00, 0xC9, 0xCB, 0x55, 0x8B, 0xEC, 0x57, 0x56, 0x8B, 0x7E, 0x0A
+0010  8B 46 0C 0B C7 74 73 8B 76 06 FF 76 0C 57 FF 76  db 0x8B, 0x46, 0x0C, 0x0B, 0xC7, 0x74, 0x73, 0x8B, 0x76, 0x06, 0xFF, 0x76, 0x0C, 0x57, 0xFF, 0x76
+0020  08 56                     db 0x08, 0x56
+0022  9A DA 13 00 00            lcall 0, 0x13da
+0027  83 C4 08                  add sp, 8
+002A  68 01 37                  push 0x3701
+002D  68 A6 0B                  push 0xba6
+0030  FF 76 08                  push word ptr [bp + 8]
+0033  56                        push si
+0034  9A 10 14 00 00            lcall 0, 0x1410
+0039  83 C4 08                  add sp, 8
+003C  FF 76 10                  push word ptr [bp + 0x10]
+003F  FF 76 0E                  push word ptr [bp + 0xe]
+0042  FF 76 08                  push word ptr [bp + 8]
+0045  56                        push si
+0046  9A 10 14 00 00            lcall 0, 0x1410
+004B  83 C4 08                  add sp, 8
+004E  FF 76 08                  push word ptr [bp + 8]
+0051  56                        push si
+0052  9A 02 00 39 0D            lcall 0xd39, 2
+0057  83 C4 04                  add sp, 4
+005A  3B 46 12                  cmp ax, word ptr [bp + 0x12]
+005D  7E 40                     jle 0x9f
+005F  8E 46 0C                  mov es, word ptr [bp + 0xc]
+0062  26 8A 05                  mov al, byte ptr es:[di]
+0065  8E 46 08                  mov es, word ptr [bp + 8]
+0068  26 88 04                  mov byte ptr es:[si], al
+006B  26 C6 44 01 2E            mov byte ptr es:[si + 1], 0x2e
+0070  26 C6 44 02 20            mov byte ptr es:[si + 2], 0x20
+0075  26 C6 44 03 00            mov byte ptr es:[si + 3], 0
+007A  FF 76 10                  push word ptr [bp + 0x10]
+007D  FF 76 0E                  push word ptr [bp + 0xe]
+0080  06                        push es
+0081  56                        push si
+0082  9A 10 14 00 00            lcall 0, 0x1410
+0087  EB 13                     jmp 0x9c
+0089  90 8B 76 06 FF 76 10 FF 76 0E FF 76 08 56  db 0x90, 0x8B, 0x76, 0x06, 0xFF, 0x76, 0x10, 0xFF, 0x76, 0x0E, 0xFF, 0x76, 0x08, 0x56
+0097  9A DA 13 00 00            lcall 0, 0x13da
+009C  83 C4 08                  add sp, 8
+009F  FF 76 08                  push word ptr [bp + 8]
+00A2  56                        push si
+00A3  9A 02 00 39 0D            lcall 0xd39, 2
+00A8  83 C4 04                  add sp, 4
+00AB  3B 46 12                  cmp ax, word ptr [bp + 0x12]
+00AE  7E 2B                     jle 0xdb
+00B0  8B 7E 12                  mov di, word ptr [bp + 0x12]
+00B3  FF 76 08                  push word ptr [bp + 8]
+00B6  56                        push si
+00B7  9A 98 13 00 00            lcall 0, 0x1398
+00BC  83 C4 04                  add sp, 4
+00BF  8B D8                     mov bx, ax
+00C1  8B 46 08                  mov ax, word ptr [bp + 8]
+00C4  03 DE                     add bx, si
+00C6  8E C0                     mov es, ax
+00C8  26 C6 47 FF 00            mov byte ptr es:[bx - 1], 0
+00CD  50                        push ax
+00CE  56                        push si
+00CF  9A 02 00 39 0D            lcall 0xd39, 2
+00D4  83 C4 04                  add sp, 4
+00D7  3B C7                     cmp ax, di
+00D9  7F D8                     jg 0xb3
+00DB  5E                        pop si
+00DC  5F                        pop di
+00DD  C9                        leave
+00DE  CB                        retf
+00DF  90                        db 0x90

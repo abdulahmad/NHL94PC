@@ -17,3 +17,443 @@ seg005:0004,NullStartup4,,new,low,"Far call from MscStartup. Bytes are retf. May
 seg005:0006,NullStartup6,,new,low,"Far call from MscStartup just before NullStartup4. Bytes are retf. May be __FPMATH or null __setargv. See HANDOFF Unsure",src/seg/seg000.asm
 DGROUP:8556,__psp,,MSC,high,"Startup stores the incoming DS (the PSP) here and later reads the environment segment from it",src/seg/seg000.asm
 DGROUP:855F,_osfile,,MSC,high,"_C_FILE_INFO nibbles are stored here and the IOCTL loop sets the device bit on handles 0 to 4",src/seg/seg000.asm
+seg056:082F,__astart,082F,MSC,high,"EXE entry (e_ip). Microsoft C name for the startup; this copy sets up RTLink and jumps to the C startup in seg000",src/seg/seg056.asm
+seg056:01F0,NotifySectionLoaded,01F0,new,high,"Called after a section is marked resident; the body is nop then retf",src/seg/seg056.asm
+seg056:01F2,ReleaseSection,01F2,new,high,"Clears the resident flag, optionally fills the section with 8E8E, returns carry if pinned",src/seg/seg056.asm
+seg056:025C,LoadSection,025C,new,high,"Loads one overlay section and applies its relocations",src/seg/seg056.asm
+seg056:04E4,OpenOverlayFile,04E4,new,high,"Opens an overlay file or the EXE and keeps the DOS handle",src/seg/seg056.asm
+seg056:05F8,LoadFromThunk,05F8,new,high,"Target of every thunk's near call; loads the section named after the far jump",src/seg/seg056.asm
+seg056:068B,ZeroParagraphs,068B,new,high,"Zeros a run of paragraphs",src/seg/seg056.asm
+seg056:06C3,MeasureThunkList,06C3,new,high,"Finds where the overlay thunks start and end",src/seg/seg056.asm
+seg056:06FA,CheckThunkList,06FA,new,high,"Fatal eov0009 if the thunk list has changed",src/seg/seg056.asm
+seg056:0740,IsOverlayThunk,0740,new,high,"Recognises a call to LoadFromThunk followed by a far jump and a section index",src/seg/seg056.asm
+seg056:0768,ThunkListStart,0768,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:076A,ThunkListEnd,076A,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:076C,LoadSectionAl,076C,new,high,"1-based section number in AL, published through LoadEntryPtr",src/seg/seg056.asm
+seg056:0772,OverlayReturn,0772,new,high,"Return hook: either unwinds a thunk frame or jumps through the saved vector",src/seg/seg056.asm
+seg056:07BF,PassToSavedHook,07BF,new,high,"Pops the flags and jumps through the vector saved from ReturnHookPtr",src/seg/seg056.asm
+seg056:07C4,OverlayReturnGate,07C4,new,high,"Address written as an overlay's far return",src/seg/seg056.asm
+seg056:07C8,PopReloadFrame,07C8,new,high,"Pops one reload frame; fatal eov0005 on underflow",src/seg/seg056.asm
+seg056:07E0,ReloadUnwind,07E0,new,high,"Restores the caller's return and reloads the section underneath",src/seg/seg056.asm
+seg056:0878,InitOverlay,0878,new,high,"Startup: PSP vector, EndOverlays handler, reload stack",src/seg/seg056.asm
+seg056:08E9,PrepareSections,08E9,new,high,"DOS version, thunk audit, preload, install return hook",src/seg/seg056.asm
+seg056:09E9,ReloadStateSize,09E9,new,high,"Byte size of the buffer SaveReloadState writes",src/seg/seg056.asm
+seg056:0A19,SaveReloadState,0A19,new,high,"Far save of the reload stack and resident sections",src/seg/seg056.asm
+seg056:0A22,SaveReloadStateNear,0A22,new,high,"Near entry; DS:DX is already the buffer",src/seg/seg056.asm
+seg056:0A24,SaveReloadBody,0A24,new,high,"Shared save loop",src/seg/seg056.asm
+seg056:0A6D,RestoreReloadState,0A6D,new,high,"Far restore; reloads the sections named in the buffer",src/seg/seg056.asm
+seg056:0A79,RestoreReloadStateNear,0A79,new,high,"Near entry; DS:DX is the buffer and AX is the length",src/seg/seg056.asm
+seg056:0A7B,RestoreReloadBody,0A7B,new,high,"Shared restore loop",src/seg/seg056.asm
+seg056:0AE2,EndOverlays,0AE2,new,high,"Closes the overlay file and sets OverlaysEnded (eov0010 / $$RTL_TERMINATE)",src/seg/seg056.asm
+seg056:0AF6,CloseOverlayFile,0AF6,new,high,"DOS close of the overlay handle",src/seg/seg056.asm
+seg056:0B2A,ReportFileError,0B2A,new,high,"Fatal eov error, including the open file name",src/seg/seg056.asm
+seg056:0B40,ErrorMsg,0B40,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0B42,ErrorText,0B42,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0B44,ErrorFile,0B44,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0B46,ErrorLead,0B46,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0B4A,ReportOverlayError,0B4A,new,high,"Fatal eov error",src/seg/seg056.asm
+seg056:0B50,SetupErrorText,0B50,new,high,"Splits an eov message at its null and loads the error vector",src/seg/seg056.asm
+seg056:0B6D,ErrorVector,0B6D,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0B72,ReloadSp,0B72,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0B74,ReloadBase,0B74,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0B76,ReloadSeg,0B76,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0B78,ReloadLimit,0B78,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0B7A,ReturnHookPtr,0B7A,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0B7E,LoadEntryPtr,0B7E,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0B82,ReturnBytePtr,0B82,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0B86,SavedHook,0B86,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0B8A,SearchOrder,0B8A,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0B96,ProbeOn,0B96,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0B97,OpenMode,0B97,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0B98,EntryEs,0B98,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0B9A,EntryDs,0B9A,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0B9C,CurrentSection,0B9C,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0B9E,OpenFileName,0B9E,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0BA4,FixupBuffer,0BA4,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0D04,ChainLoads,0D04,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0D05,MemLow,0D05,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0D07,MemHigh,0D07,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0D09,ExeFileName,0D09,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0D0B,ExeDataOff,0D0B,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0D0F,OverlaysEnded,0D0F,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0D21,ManagerFlags,0D21,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0D23,InitStackSeg,0D23,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0D25,MemLowOut,0D25,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0D29,MemHighOut,0D29,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0D2F,ReloadPad,0D2F,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0D31,ReloadStackBytes,0D31,new,high,"RTLink overlay manager data",src/seg/seg056.asm
+seg056:0000,MsgPtrClose,0000,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:0002,MsgPtrCannot,0002,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:0004,MsgPtrOpen,0004,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:0006,MsgPtrRead,0006,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:0008,MsgPtrCommit,0008,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:000A,MsgPtrIntersect,000A,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:000C,MsgPtrIntersect2,000C,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:000E,MsgPtrCorrupt,000E,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:0010,MsgPtrVector,0010,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:0012,MsgPtrAfter,0012,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:0014,MsgPtrAfterH,0014,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:0016,MsgPtrOverflow,0016,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:0018,MsgPtrUnderflow,0018,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:001A,MsgCloseQuote,001A,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:001E,MsgEov0001,001E,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:0028,MsgCannotFind,0028,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:0043,MsgEov0002,0043,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:004D,MsgOpenError,004D,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:006A,MsgEov0003,006A,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:0074,MsgReadError,0074,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:0091,MsgEov0007,0091,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:009B,MsgCommit,009B,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:00B2,MsgIntersectLead,00B2,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:00B6,MsgIntersect,00B6,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:00D5,MsgIntersect2Lead,00D5,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:00D9,MsgIntersect2,00D9,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:00DD,MsgEov0009,00DD,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:00E7,MsgVector,00E7,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:00F1,MsgVectorAt,00F1,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:010B,MsgEov0010,010B,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:0115,MsgLoadAfter,0115,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:012D,MsgAfterLead,012D,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:0131,MsgAfterH,0131,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:014C,MsgEov0004,014C,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:0156,MsgOverflow,0156,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:01AD,MsgEov0005,01AD,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:01B7,MsgUnderflow,01B7,new,high,"RTLink overlay-manager message (eovxxxx strings)",src/seg/seg056.asm
+seg056:156F,FileMenus,156F,new,high,"File slot for MENUS.OVL",src/seg/seg056.asm
+seg056:15EF,FileLp,15EF,new,high,"File slot for LP.OVL",src/seg/seg056.asm
+seg056:166F,FileStats,166F,new,high,"File slot for STATS.OVL",src/seg/seg056.asm
+seg056:16EF,FileGame,16EF,new,high,"File slot for GAME.OVL",src/seg/seg056.asm
+seg056:176F,FileInit,176F,new,high,"File slot for INIT.OVL",src/seg/seg056.asm
+seg056:17EF,FileAi,17EF,new,high,"File slot for AI.OVL",src/seg/seg056.asm
+seg056:186F,FileMovie,186F,new,high,"File slot for MOVIE.OVL",src/seg/seg056.asm
+seg056:18EF,FileFades,18EF,new,high,"File slot for FADES.OVL",src/seg/seg056.asm
+seg056:196F,FileFades1,196F,new,high,"File slot for FADES1.OVL",src/seg/seg056.asm
+seg056:19EF,FileFades2,19EF,new,high,"File slot for FADES2.OVL",src/seg/seg056.asm
+seg056:1A6F,FileFades3,1A6F,new,high,"File slot for FADES3.OVL",src/seg/seg056.asm
+seg056:1AEF,FileFades4,1AEF,new,high,"File slot for FADES4.OVL",src/seg/seg056.asm
+seg056:1B6F,FileFades5,1B6F,new,high,"File slot for FADES5.OVL",src/seg/seg056.asm
+seg056:1BEF,FileFades6,1BEF,new,high,"File slot for FADES6.OVL",src/seg/seg056.asm
+seg056:1C6F,FileFades7,1C6F,new,high,"File slot for FADES7.OVL",src/seg/seg056.asm
+seg056:1CEF,FileFades8,1CEF,new,high,"File slot for FADES8.OVL",src/seg/seg056.asm
+seg056:1D6F,FileFades9,1D6F,new,high,"File slot for FADES9.OVL",src/seg/seg056.asm
+seg056:1DEF,FileFades10,1DEF,new,high,"File slot for FADES10.OVL",src/seg/seg056.asm
+seg056:1E6F,FileFades11,1E6F,new,high,"File slot for FADES11.OVL",src/seg/seg056.asm
+seg056:1EEF,FileFades12,1EEF,new,high,"File slot for FADES12.OVL",src/seg/seg056.asm
+seg056:1F6F,FileHockey,1F6F,new,high,"File slot for HOCKEY.EXE",src/seg/seg056.asm
+seg056:0D33,SecMenus,0D33,new,high,"18-byte section record for MENUS.OVL",src/seg/seg056.asm
+seg056:0D45,SecLp,0D45,new,high,"18-byte section record for LP.OVL",src/seg/seg056.asm
+seg056:0D57,SecStats,0D57,new,high,"18-byte section record for STATS.OVL",src/seg/seg056.asm
+seg056:0D69,SecGame,0D69,new,high,"18-byte section record for GAME.OVL",src/seg/seg056.asm
+seg056:0D7B,SecInit,0D7B,new,high,"18-byte section record for INIT.OVL",src/seg/seg056.asm
+seg056:0D8D,SecAi,0D8D,new,high,"18-byte section record for AI.OVL",src/seg/seg056.asm
+seg056:0D9F,SecMovie,0D9F,new,high,"18-byte section record for MOVIE.OVL",src/seg/seg056.asm
+seg056:0DB1,SecFades,0DB1,new,high,"18-byte section record for FADES.OVL",src/seg/seg056.asm
+seg056:0DC3,SecFades1,0DC3,new,high,"18-byte section record for FADES1.OVL",src/seg/seg056.asm
+seg056:0DD5,SecFades2,0DD5,new,high,"18-byte section record for FADES2.OVL",src/seg/seg056.asm
+seg056:0DE7,SecFades3,0DE7,new,high,"18-byte section record for FADES3.OVL",src/seg/seg056.asm
+seg056:0DF9,SecFades4,0DF9,new,high,"18-byte section record for FADES4.OVL",src/seg/seg056.asm
+seg056:0E0B,SecFades5,0E0B,new,high,"18-byte section record for FADES5.OVL",src/seg/seg056.asm
+seg056:0E1D,SecFades6,0E1D,new,high,"18-byte section record for FADES6.OVL",src/seg/seg056.asm
+seg056:0E2F,SecFades7,0E2F,new,high,"18-byte section record for FADES7.OVL",src/seg/seg056.asm
+seg056:0E41,SecFades8,0E41,new,high,"18-byte section record for FADES8.OVL",src/seg/seg056.asm
+seg056:0E53,SecFades9,0E53,new,high,"18-byte section record for FADES9.OVL",src/seg/seg056.asm
+seg056:0E65,SecFades10,0E65,new,high,"18-byte section record for FADES10.OVL",src/seg/seg056.asm
+seg056:0E77,SecFades11,0E77,new,high,"18-byte section record for FADES11.OVL",src/seg/seg056.asm
+seg056:0E89,SecFades12,0E89,new,high,"18-byte section record for FADES12.OVL",src/seg/seg056.asm
+seg056:0E9B,SecHockey,0E9B,new,high,"18-byte section record for HOCKEY.EXE",src/seg/seg056.asm
+seg056:0EAD,ReloadStack,0EAD,new,high,"Reload stack placed after the section table",src/seg/seg056.asm
+seg056:1FEF,OverlayThunks,1FEF,new,high,"First overlay thunk; the 15 bytes before it are the tail of the HOCKEY.EXE file slot",src/seg/seg056.asm
+seg056:1FEF,OvlThunk0,1FEF,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:1FF9,OvlThunk1,1FF9,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:2003,OvlThunk2,2003,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:200D,OvlThunk3,200D,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL",src/seg/seg056.asm
+seg056:2017,OvlThunk4,2017,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL",src/seg/seg056.asm
+seg056:2021,OvlThunk5,2021,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL",src/seg/seg056.asm
+seg056:202B,OvlThunk6,202B,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:2035,OvlThunk7,2035,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:203F,OvlThunk8,203F,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:2049,OvlThunk9,2049,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:2053,OvlThunk10,2053,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:205D,OvlThunk11,205D,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:2067,OvlThunk12,2067,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:2071,OvlThunk13,2071,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:207B,OvlThunk14,207B,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:2085,OvlThunk15,2085,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:208F,OvlThunk16,208F,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:2099,OvlThunk17,2099,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:20A3,OvlThunk18,20A3,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:20AD,OvlThunk19,20AD,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:20B7,OvlThunk20,20B7,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:20C1,OvlThunk21,20C1,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:20CB,OvlThunk22,20CB,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:20D5,OvlThunk23,20D5,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section FADES4.OVL",src/seg/seg056.asm
+seg056:20DF,OvlThunk24,20DF,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:20E9,OvlThunk25,20E9,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL",src/seg/seg056.asm
+seg056:20F3,OvlThunk26,20F3,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:20FD,OvlThunk27,20FD,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:2107,OvlThunk28,2107,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:2111,OvlThunk29,2111,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:211B,OvlThunk30,211B,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:2125,OvlThunk31,2125,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:212F,OvlThunk32,212F,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:2139,OvlThunk33,2139,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:2143,OvlThunk34,2143,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:214D,OvlThunk35,214D,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:2157,OvlThunk36,2157,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:2161,OvlThunk37,2161,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:216B,OvlThunk38,216B,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:2175,OvlThunk39,2175,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:217F,OvlThunk40,217F,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:2189,OvlThunk41,2189,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:2193,OvlThunk42,2193,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:219D,OvlThunk43,219D,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:21A7,OvlThunk44,21A7,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:21B1,OvlThunk45,21B1,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:21BB,OvlThunk46,21BB,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:21C5,OvlThunk47,21C5,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:21CF,OvlThunk48,21CF,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:21D9,OvlThunk49,21D9,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:21E3,OvlThunk50,21E3,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:21ED,OvlThunk51,21ED,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:21F7,OvlThunk52,21F7,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:2201,OvlThunk53,2201,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:220B,OvlThunk54,220B,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:2215,OvlThunk55,2215,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:221F,OvlThunk56,221F,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:2229,OvlThunk57,2229,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:2233,OvlThunk58,2233,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:223D,OvlThunk59,223D,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:2247,OvlThunk60,2247,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:2251,OvlThunk61,2251,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:225B,OvlThunk62,225B,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:2265,OvlThunk63,2265,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:226F,OvlThunk64,226F,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:2279,OvlThunk65,2279,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:2283,OvlThunk66,2283,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:228D,OvlThunk67,228D,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:2297,OvlThunk68,2297,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:22A1,OvlThunk69,22A1,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:22AB,OvlThunk70,22AB,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:22B5,OvlThunk71,22B5,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:22BF,OvlThunk72,22BF,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:22C9,OvlThunk73,22C9,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:22D3,OvlThunk74,22D3,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:22DD,OvlThunk75,22DD,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:22E7,OvlThunk76,22E7,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:22F1,OvlThunk77,22F1,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:22FB,OvlThunk78,22FB,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:2305,OvlThunk79,2305,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:230F,OvlThunk80,230F,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:2319,OvlThunk81,2319,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:2323,OvlThunk82,2323,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:232D,OvlThunk83,232D,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:2337,OvlThunk84,2337,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:2341,OvlThunk85,2341,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:234B,OvlThunk86,234B,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:2355,OvlThunk87,2355,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:235F,OvlThunk88,235F,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:2369,OvlThunk89,2369,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:2373,OvlThunk90,2373,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:237D,OvlThunk91,237D,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:2387,OvlThunk92,2387,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:2391,OvlThunk93,2391,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:239B,OvlThunk94,239B,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:23A5,OvlThunk95,23A5,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:23AF,OvlThunk96,23AF,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:23B9,OvlThunk97,23B9,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:23C3,OvlThunk98,23C3,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:23CD,OvlThunk99,23CD,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL",src/seg/seg056.asm
+seg056:23D7,OvlThunk100,23D7,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:23E1,OvlThunk101,23E1,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL",src/seg/seg056.asm
+seg056:23EB,OvlThunk102,23EB,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL",src/seg/seg056.asm
+seg056:23F5,OvlThunk103,23F5,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:23FF,OvlThunk104,23FF,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2409,OvlThunk105,2409,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2413,OvlThunk106,2413,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:241D,OvlThunk107,241D,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MOVIE.OVL",src/seg/seg056.asm
+seg056:2427,OvlThunk108,2427,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MOVIE.OVL",src/seg/seg056.asm
+seg056:2431,OvlThunk109,2431,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MOVIE.OVL",src/seg/seg056.asm
+seg056:243B,OvlThunk110,243B,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MOVIE.OVL",src/seg/seg056.asm
+seg056:2445,OvlThunk111,2445,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:244F,OvlThunk112,244F,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:2459,OvlThunk113,2459,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:2463,OvlThunk114,2463,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:246D,OvlThunk115,246D,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:2477,OvlThunk116,2477,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:2481,OvlThunk117,2481,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:248B,OvlThunk118,248B,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:2495,OvlThunk119,2495,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:249F,OvlThunk120,249F,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:24A9,OvlThunk121,24A9,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL",src/seg/seg056.asm
+seg056:24B3,OvlThunk122,24B3,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL",src/seg/seg056.asm
+seg056:24BD,OvlThunk123,24BD,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:24C7,OvlThunk124,24C7,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:24D1,OvlThunk125,24D1,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:24DB,OvlThunk126,24DB,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:24E5,OvlThunk127,24E5,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section GAME.OVL",src/seg/seg056.asm
+seg056:24EF,OvlThunk128,24EF,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:24F9,OvlThunk129,24F9,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:2503,OvlThunk130,2503,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:250D,OvlThunk131,250D,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:2517,OvlThunk132,2517,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2521,OvlThunk133,2521,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:252B,OvlThunk134,252B,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL",src/seg/seg056.asm
+seg056:2535,OvlThunk135,2535,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL",src/seg/seg056.asm
+seg056:253F,OvlThunk136,253F,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:2549,OvlThunk137,2549,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:2553,OvlThunk138,2553,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:255D,OvlThunk139,255D,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:2567,OvlThunk140,2567,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL",src/seg/seg056.asm
+seg056:2571,OvlThunk141,2571,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section GAME.OVL",src/seg/seg056.asm
+seg056:257B,OvlThunk142,257B,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL",src/seg/seg056.asm
+seg056:2585,OvlThunk143,2585,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL",src/seg/seg056.asm
+seg056:258F,OvlThunk144,258F,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL",src/seg/seg056.asm
+seg056:2599,OvlThunk145,2599,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL",src/seg/seg056.asm
+seg056:25A3,OvlThunk146,25A3,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL",src/seg/seg056.asm
+seg056:25AD,OvlThunk147,25AD,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL",src/seg/seg056.asm
+seg056:25B7,OvlThunk148,25B7,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:25C1,OvlThunk149,25C1,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL",src/seg/seg056.asm
+seg056:25CB,OvlThunk150,25CB,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL",src/seg/seg056.asm
+seg056:25D5,OvlThunk151,25D5,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL",src/seg/seg056.asm
+seg056:25DF,OvlThunk152,25DF,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL",src/seg/seg056.asm
+seg056:25E9,OvlThunk153,25E9,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL",src/seg/seg056.asm
+seg056:25F3,OvlThunk154,25F3,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL",src/seg/seg056.asm
+seg056:25FD,OvlThunk155,25FD,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL",src/seg/seg056.asm
+seg056:2607,OvlThunk156,2607,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL",src/seg/seg056.asm
+seg056:2611,OvlThunk157,2611,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL",src/seg/seg056.asm
+seg056:261B,OvlThunk158,261B,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL",src/seg/seg056.asm
+seg056:2625,OvlThunk159,2625,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL",src/seg/seg056.asm
+seg056:262F,OvlThunk160,262F,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL",src/seg/seg056.asm
+seg056:2639,OvlThunk161,2639,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL",src/seg/seg056.asm
+seg056:2643,OvlThunk162,2643,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL",src/seg/seg056.asm
+seg056:264D,OvlThunk163,264D,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL",src/seg/seg056.asm
+seg056:2657,OvlThunk164,2657,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL",src/seg/seg056.asm
+seg056:2661,OvlThunk165,2661,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL",src/seg/seg056.asm
+seg056:266B,OvlThunk166,266B,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL",src/seg/seg056.asm
+seg056:2675,OvlThunk167,2675,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL",src/seg/seg056.asm
+seg056:267F,OvlThunk168,267F,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:2689,OvlThunk169,2689,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:2693,OvlThunk170,2693,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:269D,OvlThunk171,269D,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:26A7,OvlThunk172,26A7,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:26B1,OvlThunk173,26B1,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL",src/seg/seg056.asm
+seg056:26BB,OvlThunk174,26BB,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section FADES12.OVL",src/seg/seg056.asm
+seg056:26C5,OvlThunk175,26C5,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:26CF,OvlThunk176,26CF,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:26D9,OvlThunk177,26D9,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:26E3,OvlThunk178,26E3,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:26ED,OvlThunk179,26ED,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:26F7,OvlThunk180,26F7,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:2701,OvlThunk181,2701,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:270B,OvlThunk182,270B,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:2715,OvlThunk183,2715,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:271F,OvlThunk184,271F,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:2729,OvlThunk185,2729,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:2733,OvlThunk186,2733,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:273D,OvlThunk187,273D,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:2747,OvlThunk188,2747,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:2751,OvlThunk189,2751,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:275B,OvlThunk190,275B,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:2765,OvlThunk191,2765,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:276F,OvlThunk192,276F,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL",src/seg/seg056.asm
+seg056:2779,OvlThunk193,2779,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2783,OvlThunk194,2783,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:278D,OvlThunk195,278D,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2797,OvlThunk196,2797,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:27A1,OvlThunk197,27A1,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:27AB,OvlThunk198,27AB,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:27B5,OvlThunk199,27B5,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:27BF,OvlThunk200,27BF,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:27C9,OvlThunk201,27C9,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:27D3,OvlThunk202,27D3,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:27DD,OvlThunk203,27DD,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:27E7,OvlThunk204,27E7,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:27F1,OvlThunk205,27F1,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:27FB,OvlThunk206,27FB,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2805,OvlThunk207,2805,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:280F,OvlThunk208,280F,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2819,OvlThunk209,2819,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2823,OvlThunk210,2823,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:282D,OvlThunk211,282D,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2837,OvlThunk212,2837,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2841,OvlThunk213,2841,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:284B,OvlThunk214,284B,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2855,OvlThunk215,2855,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:285F,OvlThunk216,285F,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2869,OvlThunk217,2869,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2873,OvlThunk218,2873,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:287D,OvlThunk219,287D,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2887,OvlThunk220,2887,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2891,OvlThunk221,2891,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:289B,OvlThunk222,289B,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:28A5,OvlThunk223,28A5,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:28AF,OvlThunk224,28AF,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:28B9,OvlThunk225,28B9,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:28C3,OvlThunk226,28C3,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:28CD,OvlThunk227,28CD,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:28D7,OvlThunk228,28D7,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:28E1,OvlThunk229,28E1,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:28EB,OvlThunk230,28EB,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:28F5,OvlThunk231,28F5,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:28FF,OvlThunk232,28FF,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2909,OvlThunk233,2909,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2913,OvlThunk234,2913,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:291D,OvlThunk235,291D,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2927,OvlThunk236,2927,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2931,OvlThunk237,2931,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL",src/seg/seg056.asm
+seg056:293B,OvlThunk238,293B,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2945,OvlThunk239,2945,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:294F,OvlThunk240,294F,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2959,OvlThunk241,2959,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2963,OvlThunk242,2963,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:296D,OvlThunk243,296D,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2977,OvlThunk244,2977,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL",src/seg/seg056.asm
+seg056:2981,OvlThunk245,2981,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL",src/seg/seg056.asm
+seg056:298B,OvlThunk246,298B,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL",src/seg/seg056.asm
+seg056:2995,OvlThunk247,2995,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL",src/seg/seg056.asm
+seg056:299F,OvlThunk248,299F,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL",src/seg/seg056.asm
+seg056:29A9,OvlThunk249,29A9,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:29B3,OvlThunk250,29B3,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:29BD,OvlThunk251,29BD,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:29C7,OvlThunk252,29C7,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:29D1,OvlThunk253,29D1,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:29DB,OvlThunk254,29DB,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:29E5,OvlThunk255,29E5,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:29EF,OvlThunk256,29EF,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:29F9,OvlThunk257,29F9,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL",src/seg/seg056.asm
+seg056:2A03,OvlThunk258,2A03,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL",src/seg/seg056.asm
+seg056:2A0D,OvlThunk259,2A0D,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL",src/seg/seg056.asm
+seg056:2A17,OvlThunk260,2A17,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL",src/seg/seg056.asm
+seg056:2A21,OvlThunk261,2A21,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2A2B,OvlThunk262,2A2B,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2A35,OvlThunk263,2A35,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2A3F,OvlThunk264,2A3F,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL",src/seg/seg056.asm
+seg056:2A49,OvlThunk265,2A49,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section GAME.OVL",src/seg/seg056.asm
+seg056:2A53,OvlThunk266,2A53,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2A5D,OvlThunk267,2A5D,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2A67,OvlThunk268,2A67,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2A71,OvlThunk269,2A71,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL",src/seg/seg056.asm
+seg056:2A7B,OvlThunk270,2A7B,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL",src/seg/seg056.asm
+seg056:2A85,OvlThunk271,2A85,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL",src/seg/seg056.asm
+seg056:2A8F,OvlThunk272,2A8F,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2A99,OvlThunk273,2A99,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2AA3,OvlThunk274,2AA3,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2AAD,OvlThunk275,2AAD,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL",src/seg/seg056.asm
+seg056:2AB7,OvlThunk276,2AB7,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2AC1,OvlThunk277,2AC1,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2ACB,OvlThunk278,2ACB,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2AD5,OvlThunk279,2AD5,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2ADF,OvlThunk280,2ADF,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL",src/seg/seg056.asm
+seg056:2AE9,OvlThunk281,2AE9,new,high,"Overlay thunk: near call LoadFromThunk, far jump, section split across seg058",src/seg/seg056.asm
+seg058:0003,RtlSectionHook,0003,new,medium,"Far hook called while releasing or loading a section; carry skips the resident shortcut. seg058 and seg000 are still incbin",src/seg/seg056.asm
+seg058:0005,RtlWriteText,0005,new,medium,"Writes a message (DS:DX) with a number in CX, used before a fatal overlay error. seg058 and seg000 are still incbin",src/seg/seg056.asm
+seg058:00CF,RtlSaveVectors,00CF,new,medium,"Called at startup with ES the PSP. seg058 and seg000 are still incbin",src/seg/seg056.asm
+seg058:00F4,RtlSetHandler,00F4,new,medium,"Registers EndOverlays (AL = 1, DX = its offset). seg058 and seg000 are still incbin",src/seg/seg056.asm
+seg058:01C9,RtlAfterFiles,01C9,new,medium,"Called after the initial overlay files are opened. seg058 and seg000 are still incbin",src/seg/seg056.asm
+seg058:0224,RtlBeforeClose,0224,new,medium,"Called immediately before the overlay file is closed. seg058 and seg000 are still incbin",src/seg/seg056.asm
+seg058:02FD,RtlFindFile,02FD,new,medium,"Searches for an overlay using SearchOrder. seg058 and seg000 are still incbin",src/seg/seg056.asm
+seg058:0443,RtlExePath,0443,new,medium,"Turns the PSP into the path of this EXE. seg058 and seg000 are still incbin",src/seg/seg056.asm
+seg058:0035,RtlFileAdjust,0035,new,medium,"Dword in seg058 added to a seek when the file is the EXE. seg058 and seg000 are still incbin",src/seg/seg056.asm
+seg058:004A,RtlErrorSlot,004A,new,medium,"Far pointer ReportFileError and ReportOverlayError jump through. seg058 and seg000 are still incbin",src/seg/seg056.asm
+seg056:equ,SectionStride,equ,new,high,"Section records are 18 bytes",src/seg/seg056.asm
+seg056:equ,FileSlotSize,equ,new,high,"Each overlay file slot is 128 bytes",src/seg/seg056.asm

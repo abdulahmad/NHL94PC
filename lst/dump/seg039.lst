@@ -1,0 +1,19 @@
+0000  90 90                     db 0x90, 0x90
+0002  55                        push bp
+0003  8B EC                     mov bp, sp
+0005  57                        push di
+0006  56                        push si
+0007  8B 7E 06                  mov di, word ptr [bp + 6]
+000A  57                        push di
+000B  9A 0A 0C A3 03            lcall 0x3a3, 0xc0a
+0010  5B                        pop bx
+0011  8E 06 08 8D               mov es, word ptr [0x8d08]
+0015  26 8B 36 FE 74            mov si, word ptr es:[0x74fe]
+001A  2B F0                     sub si, ax
+001C  26 2B 36 FC 74            sub si, word ptr es:[0x74fc]
+0021  D1 FE                     sar si, 1
+0023  26 03 36 FC 74            add si, word ptr es:[0x74fc]
+0028  FF 76 08                  push word ptr [bp + 8]
+002B  8D 44 01                  lea ax, [si + 1]
+002E  50                        push ax
+002F  57                        push di

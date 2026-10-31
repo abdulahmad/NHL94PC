@@ -1,0 +1,80 @@
+0000  9A 09 E1 06 83 C4 04 E9 63 FD  db 0x9A, 0x09, 0xE1, 0x06, 0x83, 0xC4, 0x04, 0xE9, 0x63, 0xFD
+000A  C8 04 00 00               enter 4, 0
+000E  8A 46 08                  mov al, byte ptr [bp + 8]
+0011  0C B0                     or al, 0xb0
+0013  88 46 FC                  mov byte ptr [bp - 4], al
+0016  C6 46 FD 07               mov byte ptr [bp - 3], 7
+001A  8A 46 0A                  mov al, byte ptr [bp + 0xa]
+001D  88 46 FE                  mov byte ptr [bp - 2], al
+0020  6A 03                     push 3
+0022  8D 46 FC                  lea ax, [bp - 4]
+0025  50                        push ax
+0026  8A 46 06                  mov al, byte ptr [bp + 6]
+0029  50                        push ax
+002A  9A 34 09 30 16            lcall 0x1630, 0x934
+002F  C9                        leave
+0030  CB                        retf
+0031  90                        db 0x90
+0032  C8 04 00 00               enter 4, 0
+0036  8A 46 08                  mov al, byte ptr [bp + 8]
+0039  0C E0                     or al, 0xe0
+003B  88 46 FC                  mov byte ptr [bp - 4], al
+003E  C6 46 FD 00               mov byte ptr [bp - 3], 0
+0042  8A 46 0A                  mov al, byte ptr [bp + 0xa]
+0045  88 46 FE                  mov byte ptr [bp - 2], al
+0048  6A 03                     push 3
+004A  8D 46 FC                  lea ax, [bp - 4]
+004D  50                        push ax
+004E  8A 46 06                  mov al, byte ptr [bp + 6]
+0051  50                        push ax
+0052  9A 34 09 30 16            lcall 0x1630, 0x934
+0057  C9                        leave
+0058  CB                        retf
+0059  90                        db 0x90
+005A  C8 0A 00 00               enter 0xa, 0
+005E  57                        push di
+005F  56                        push si
+0060  8B 7E 06                  mov di, word ptr [bp + 6]
+0063  8B 76 08                  mov si, word ptr [bp + 8]
+0066  8B C6                     mov ax, si
+0068  8B CE                     mov cx, si
+006A  0C C0                     or al, 0xc0
+006C  88 46 FA                  mov byte ptr [bp - 6], al
+006F  8A 46 0C                  mov al, byte ptr [bp + 0xc]
+0072  88 46 FB                  mov byte ptr [bp - 5], al
+0075  6A 02                     push 2
+0077  8D 46 FA                  lea ax, [bp - 6]
+007A  50                        push ax
+007B  8B D7                     mov dx, di
+007D  52                        push dx
+007E  89 4E F8                  mov word ptr [bp - 8], cx
+0081  89 56 F6                  mov word ptr [bp - 0xa], dx
+0084  9A 34 09 30 16            lcall 0x1630, 0x934
+0089  83 C4 06                  add sp, 6
+008C  8A 46 F8                  mov al, byte ptr [bp - 8]
+008F  0C 90                     or al, 0x90
+0091  88 46 FA                  mov byte ptr [bp - 6], al
+0094  8A 46 0A                  mov al, byte ptr [bp + 0xa]
+0097  88 46 FB                  mov byte ptr [bp - 5], al
+009A  C6 46 FC 40               mov byte ptr [bp - 4], 0x40
+009E  6A 03                     push 3
+00A0  8D 46 FA                  lea ax, [bp - 6]
+00A3  50                        push ax
+00A4  8A 46 F6                  mov al, byte ptr [bp - 0xa]
+00A7  50                        push ax
+00A8  9A 34 09 30 16            lcall 0x1630, 0x934
+00AD  83 C4 06                  add sp, 6
+00B0  5E                        pop si
+00B1  5F                        pop di
+00B2  C9                        leave
+00B3  CB                        retf
+00B4  C8 04 00 00               enter 4, 0
+00B8  8A 46 08                  mov al, byte ptr [bp + 8]
+00BB  0C 80                     or al, 0x80
+00BD  88 46 FC                  mov byte ptr [bp - 4], al
+00C0  8A 46 0A                  mov al, byte ptr [bp + 0xa]
+00C3  88 46 FD                  mov byte ptr [bp - 3], al
+00C6  C6 46 FE 00               mov byte ptr [bp - 2], 0
+00CA  6A 03                     push 3
+00CC  8D 46 FC                  lea ax, [bp - 4]
+00CF  50                        push ax
