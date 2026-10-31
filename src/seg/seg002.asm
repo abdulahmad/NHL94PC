@@ -298,7 +298,7 @@ L0326:
 	test	byte [bp + 0xc], 0x10
 	jne	short L0330
 	push	cs
-	call	0xE54			; still incbin
+	call	SlideDown
 L0330:
 	les	bx, [ChainPtr+0xc]
 	mov	ax, word es:[bx + 0x1c]
@@ -467,7 +467,7 @@ L04FB:
 	cmp	word [bp - 0xe], 0
 	je	short L0505
 	push	cs
-	call	0xE54			; still incbin
+	call	SlideDown
 L0505:
 	les	bx, [ChainPtr+8]
 	mov	ax, word es:[bx + 0x20]
@@ -1503,4 +1503,244 @@ L0E4C:
 	leave
 	retf
 	nop
-	incbin	"Extracted/segments/seg002.bin", 0xE54, 0x1560 - 0xE54
+
+; Slide a record whose flag word is 10h down into the gap below it.
+; The move is CopyParasDown, then the next and previous links are rewritten.
+
+SlideDown:
+	enter	0x2c, 0
+	push	di
+	push	si
+	les	bx, [ChainPtr+8]
+	mov	ax, word es:[bx + 0x20]
+	mov	dx, word es:[bx + 0x22]
+	db	0x8B, 0xF8			; mov di, ax
+	mov	word [bp - 0x16], dx
+	db	0x8B, 0xF0			; mov si, ax
+	mov	word [bp - 0x12], dx
+S0E70:
+	push	word es:[bx + 2]
+	push	word es:[bx]
+S0E77:
+	call	0x3A3:FarToLinear
+	add	sp, 4
+	mov	word [bp - 4], ax
+	mov	word [bp - 2], dx
+	db	0x2B, 0xC0			; sub ax, ax
+	mov	word [bp - 6], ax
+	mov	word [bp - 8], ax
+S0E8D:
+	mov	es, word [bp - 0x16]
+	push	word es:[di + 2]
+	push	word es:[di]
+	call	0x3A3:FarToLinear
+	add	sp, 4
+	mov	es, word [bp - 0x16]
+	add	ax, word es:[di + 0x10]
+	adc	dx, word es:[di + 0x12]
+	cmp	dx, word [bp - 2]
+	jl	short S0EE2
+	jg	short S0EB6
+	cmp	ax, word [bp - 4]
+	jb	short S0EE2
+S0EB6:
+	push	word es:[di + 2]
+	push	word es:[di]
+	call	0x3A3:FarToLinear
+	add	sp, 4
+	mov	word [bp - 4], ax
+	mov	word [bp - 2], dx
+	mov	es, word [bp - 0x16]
+	mov	ax, word es:[di + 0x20]
+	mov	dx, word es:[di + 0x22]
+	db	0x8B, 0xF8			; mov di, ax
+	mov	word [bp - 0x16], dx
+	db	0x0B, 0xD0			; or dx, ax
+	jne	short S0E8D
+	jmp	short S0F12
+	nop
+S0EE2:
+	push	word es:[di + 2]
+	push	word es:[di]
+	call	0x3A3:FarToLinear
+	add	sp, 4
+	mov	es, word [bp - 0x16]
+	add	ax, word es:[di + 0x10]
+	adc	dx, word es:[di + 0x12]
+	mov	cx, word [bp - 4]
+	mov	bx, word [bp - 2]
+	db	0x2B, 0xC8			; sub cx, ax
+	db	0x1B, 0xDA			; sbb bx, dx
+	mov	word [bp - 8], cx
+	mov	word [bp - 6], bx
+	mov	word [bp - 4], ax
+	mov	word [bp - 2], dx
+S0F12:
+	mov	ax, word [bp - 6]
+	or	ax, word [bp - 8]
+	jne	short S0F1D
+	jmp	near S10E6
+S0F1D:
+	mov	es, word [bp - 0x12]
+	cmp	word es:[si + 0x18], 0x10
+	jne	short S0F42
+	push	word es:[si + 2]
+	push	word es:[si]
+	call	0x3A3:FarToLinear
+	add	sp, 4
+	cmp	dx, word [bp - 2]
+	jl	short S0F5A
+	jg	short S0F42
+	cmp	ax, word [bp - 4]
+	jbe	short S0F5A
+S0F42:
+	mov	es, word [bp - 0x12]
+	mov	ax, word es:[si + 0x20]
+	mov	dx, word es:[si + 0x22]
+	db	0x8B, 0xF0			; mov si, ax
+	mov	word [bp - 0x12], dx
+	db	0x0B, 0xD0			; or dx, ax
+	jne	short S0F1D
+	pop	si
+	pop	di
+	leave
+	retf
+S0F5A:
+	mov	es, word [bp - 0x12]
+	push	word es:[si + 2]
+	push	word es:[si]
+	call	0x3A3:FarToLinear
+	add	sp, 4
+	mov	es, word [bp - 0x12]
+	add	ax, word es:[si + 0x10]
+	adc	dx, word es:[si + 0x12]
+	cmp	ax, word [bp - 4]
+	jne	short S0FEC
+	cmp	dx, word [bp - 2]
+	jne	short S0FEC
+	mov	ax, word [bp - 8]
+	mov	dx, word [bp - 6]
+	sub	ax, word es:[si + 0x10]
+	sbb	dx, word es:[si + 0x12]
+	add	ax, word [bp - 4]
+	adc	dx, word [bp - 2]
+	mov	word [bp - 0x28], si
+	mov	word [bp - 0x26], es
+	call	0x3A3:LinearToFarRegs
+	mov	word [bp - 0x1c], ax
+	mov	word [bp - 0x1a], dx
+	les	bx, [bp - 0x28]
+	mov	dx, word es:[bx + 2]
+	mov	word [bp - 0x1e], dx
+	mov	ax, word es:[bx + 0x10]
+	mov	dx, word es:[bx + 0x12]
+	sar	dx, 1
+	rcr	ax, 1
+	sar	dx, 1
+	rcr	ax, 1
+	sar	dx, 1
+	rcr	ax, 1
+	sar	dx, 1
+	rcr	ax, 1
+	push	ax
+	push	word [bp - 0x1a]
+	push	word [bp - 0x1e]
+	call	0x3A3:CopyParasDown
+	add	sp, 6
+	mov	ax, word [bp - 0x1c]
+	mov	dx, word [bp - 0x1a]
+	les	bx, [bp - 0x28]
+	mov	word es:[bx], ax
+	mov	word es:[bx + 2], dx
+	push	dx
+	push	ax
+	jmp	near S0E77
+S0FEC:
+	mov	ax, word [bp - 8]
+	mov	dx, word [bp - 6]
+	cmp	word es:[si + 0x12], dx
+	jle	short S0FFB
+	jmp	near S10D8
+S0FFB:
+	jl	short S1006
+	cmp	word es:[si + 0x10], ax
+	jbe	short S1006
+	jmp	near S10D8
+S1006:
+	sub	ax, word es:[si + 0x10]
+	sbb	dx, word es:[si + 0x12]
+	add	ax, word [bp - 4]
+	adc	dx, word [bp - 2]
+	mov	word [bp - 0x2c], si
+	mov	word [bp - 0x2a], es
+	call	0x3A3:LinearToFarRegs
+	mov	word [bp - 0x1c], ax
+	mov	word [bp - 0x1a], dx
+	les	bx, [bp - 0x2c]
+	mov	dx, word es:[bx + 2]
+	mov	word [bp - 0x1e], dx
+	mov	ax, word es:[bx + 0x10]
+	mov	dx, word es:[bx + 0x12]
+	sar	dx, 1
+	rcr	ax, 1
+	sar	dx, 1
+	rcr	ax, 1
+	sar	dx, 1
+	rcr	ax, 1
+	sar	dx, 1
+	rcr	ax, 1
+	push	ax
+	push	word [bp - 0x1a]
+	push	word [bp - 0x1e]
+	call	0x3A3:CopyParasDown
+	add	sp, 6
+	mov	ax, word [bp - 0x1c]
+	mov	dx, word [bp - 0x1a]
+	les	bx, [bp - 0x2c]
+	mov	word es:[bx], ax
+	mov	word es:[bx + 2], dx
+	mov	ax, word es:[bx + 0x1c]
+	mov	dx, word es:[bx + 0x1e]
+	les	bx, es:[bx + 0x20]
+	mov	word es:[bx + 0x1c], ax
+	mov	word es:[bx + 0x1e], dx
+	les	bx, [bp - 0x2c]
+	mov	ax, word es:[bx + 0x20]
+	mov	dx, word es:[bx + 0x22]
+	les	bx, es:[bx + 0x1c]
+	mov	word es:[bx + 0x20], ax
+	mov	word es:[bx + 0x22], dx
+	mov	es, word [bp - 0x16]
+	mov	ax, word es:[di + 0x1c]
+	mov	dx, word es:[di + 0x1e]
+	mov	cx, es
+	les	bx, [bp - 0x2c]
+	mov	word es:[bx + 0x1c], ax
+	mov	word es:[bx + 0x1e], dx
+	mov	word es:[bx + 0x20], di
+	mov	word es:[bx + 0x22], cx
+	mov	es, cx
+	db	0x8B, 0xC1			; mov ax, cx
+	les	bx, es:[di + 0x1c]
+	mov	cx, word [bp - 0x2c]
+	mov	dx, word [bp - 0x2a]
+	mov	word es:[bx + 0x20], cx
+	mov	word es:[bx + 0x22], dx
+	mov	es, ax
+	mov	word es:[di + 0x1c], cx
+	mov	word es:[di + 0x1e], dx
+	mov	es, dx
+	db	0x8B, 0xD9			; mov bx, cx
+	jmp	near S0E70
+S10D8:
+	mov	es, word [bp - 0x16]
+	push	word es:[di + 2]
+	push	word es:[di]
+	jmp	near S0E77
+	nop
+S10E6:
+	pop	si
+	pop	di
+	leave
+	retf
+	incbin	"Extracted/segments/seg002.bin", 0x10EA, 0x1560 - 0x10EA

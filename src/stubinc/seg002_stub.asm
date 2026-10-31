@@ -13,4 +13,5 @@ EmsMapFrame	equ	0x192
 CopyBytes	equ	0x968
 PathTailFar	equ	0xB82
 StrnDiff	equ	0xBD7
+CopyParasDown	equ	0x374
 %include "seg/seg002.asm"

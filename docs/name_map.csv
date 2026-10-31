@@ -878,3 +878,4 @@ seg002:0CBC,FindName,,new,high,"Walks the chain for a 12-byte name. The far stri
 seg002:0D28,AxClear,,new,high,"sub ax, ax and retf. Callers that push CS treat it as a far return",src/seg/seg002.asm
 seg002:0D2C,NameBase,,new,high,"Looks up a near name and returns the record base far pointer",src/seg/seg002.asm
 seg002:0D58,CopyByName,,new,high,"Finds a named record, inserts another of the same size, and copies the bytes",src/seg/seg002.asm
+seg002:0E54,SlideDown,,new,high,"Slides a record with flag word 10h down into the gap below it and relinks the chain",src/seg/seg002.asm
