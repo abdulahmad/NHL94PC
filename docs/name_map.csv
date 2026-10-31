@@ -469,3 +469,64 @@ seg000:0360,VgaCopyStrip,,new,high,"Latched copy of a fixed strip out of the cir
 seg000:03D9,VgaCopyBlock,,new,high,"Latched copy of one fixed-length VGA block. Args source destination",src/seg/seg000.asm
 seg000:041D,VgaCopyBytes,,new,high,"Latched copy of a caller-supplied byte count inside VGA memory",src/seg/seg000.asm
 seg000:0461,VgaCopyRect,,new,high,"Latched copy of a pitched rectangle onto another pitched rectangle",src/seg/seg000.asm
+seg000:076E,_printf,,MSC,high,"Prepares a FILE, calls _output with the format and the argument pointer, then _ftbuf",src/seg/seg000.asm
+seg000:07AC,_close,,MSC,high,"INT 21h AH=3Eh and clears the _osfile byte. EBADF if the handle is past _nfile",src/seg/seg000.asm
+seg000:07CC,_lseek,,MSC,high,"INT 21h AH=42h with origin in the high word of the offset",src/seg/seg000.asm
+seg000:0846,_sopen,,MSC,high,"Sharing byte then the same open path as _open",src/seg/seg000.asm
+seg000:0860,_open,,MSC,high,"INT 21h AH=3Dh. Text or binary comes from the access flags and is stored in _osfile",src/seg/seg000.asm
+seg000:0A02,_read,,MSC,high,"INT 21h AH=3Fh from a C file handle",src/seg/seg000.asm
+seg000:0AEC,_write,,MSC,high,"INT 21h AH=40h. Newlines expand when the _osfile text bit is set",src/seg/seg000.asm
+seg000:0C2C,_strcat,,MSC,high,"Finds the end of the destination and appends the source",src/seg/seg000.asm
+seg000:0C6C,_strcpy,,MSC,high,"Copies a string a word at a time and preserves SI and DI",src/seg/seg000.asm
+seg000:0C9E,_strlen,,MSC,high,"scasb length not counting the terminator",src/seg/seg000.asm
+seg000:0CBA,_strncpy,,MSC,high,"Copies up to a count and pads the rest with zeros",src/seg/seg000.asm
+seg000:0CE6,WriteStderr,,new,medium,"Writes the C string argument to handle 2 via _strlen and _write",src/seg/seg000.asm
+seg000:0D74,_sprintf,,MSC,medium,"Builds a stand-in FILE and calls _output. Same shape as sprintf",src/seg/seg000.asm
+seg000:0DCE,_stricmp,,MSC,high,"Compares two strings after folding A-Z",src/seg/seg000.asm
+seg000:0E10,StrIndexInSet,,new,medium,"Index of the first character of the first string that occurs in the second",src/seg/seg000.asm
+seg000:0E6A,_abs,,MSC,high,"cdq / xor / sub absolute value of a signed int",src/seg/seg000.asm
+seg000:0E78,_onexit,,MSC,high,"Stores a function in the atexit table and returns that pointer",src/seg/seg000.asm
+seg000:0E80,atexit,,MSC,high,"Stores a function and returns 0",src/seg/seg000.asm
+seg000:1000,_srand,,MSC,high,"Stores the seed for rand",src/seg/seg000.asm
+seg000:1012,_rand,,MSC,high,"seed = seed * 214013 + 2531011, returns the high 15 bits. The Microsoft C generator",src/seg/seg000.asm
+seg000:103A,_mkdir,,MSC,high,"INT 21h AH=39h, then the same path call as _chdir",src/seg/seg000.asm
+seg000:1041,_chdir,,MSC,high,"INT 21h AH=3Bh",src/seg/seg000.asm
+seg000:104E,_rmdir,,MSC,high,"INT 21h AH=3Ah. A star or question mark in the name is a distinct error",src/seg/seg000.asm
+seg000:1076,_unlink,,MSC,high,"INT 21h AH=41h",src/seg/seg000.asm
+seg000:1084,_dos_close,,MSC,high,"INT 21h AH=3Eh with no _osfile update",src/seg/seg000.asm
+seg000:1092,_dos_creatnew,,MSC,high,"INT 21h AH=5Bh",src/seg/seg000.asm
+seg000:1099,_dos_creat,,MSC,high,"INT 21h AH=3Ch",src/seg/seg000.asm
+seg000:10BC,_dos_findnext,,MSC,high,"INT 21h AH=4Fh",src/seg/seg000.asm
+seg000:10C7,_dos_findfirst,,MSC,high,"INT 21h AH=4Eh after switching the DTA",src/seg/seg000.asm
+seg000:10FA,_dos_open,,MSC,high,"INT 21h AH=3Dh and stores the handle through a pointer",src/seg/seg000.asm
+seg000:1119,_dos_write,,MSC,high,"INT 21h AH=40h from a far buffer",src/seg/seg000.asm
+seg000:1144,_dos_getdiskfree,,MSC,high,"INT 21h AH=36h",src/seg/seg000.asm
+seg000:1172,_dos_gettime,,MSC,high,"INT 21h AH=2Ch into four bytes",src/seg/seg000.asm
+seg000:118C,__aFldiv,,MSC,high,"Signed long divide, result in DX:AX, retf 8",src/seg/seg000.asm
+seg000:1226,__aFlmul,,MSC,high,"Long multiply, result in DX:AX, retf 8",src/seg/seg000.asm
+seg000:1258,__aFlshl,,MSC,high,"Shift DX:AX left by CX",src/seg/seg000.asm
+seg000:1264,__aFlsar,,MSC,high,"Arithmetic shift of DX:AX right by CX",src/seg/seg000.asm
+seg000:12AC,__aFlshr,,MSC,high,"Logical shift of DX:AX right by CX",src/seg/seg000.asm
+seg000:12B8,_fmemcpy,,MSC,high,"Far copy of a byte count",src/seg/seg000.asm
+seg000:1316,_fmemcmp,,MSC,medium,"Far compare. Name from the call shape",src/seg/seg000.asm
+seg000:135C,_fmemchr,,MSC,medium,"Far scan for a byte",src/seg/seg000.asm
+seg000:13DA,_fstrlen,,MSC,high,"Far scasb length",src/seg/seg000.asm
+seg000:1410,_fstrcat,,MSC,high,"Append one far string to another",src/seg/seg000.asm
+seg000:1456,_fmemset,,MSC,high,"Fill a far buffer",src/seg/seg000.asm
+seg000:149E,_fstrcpy,,MSC,medium,"Far string copy",src/seg/seg000.asm
+seg000:14FA,_fmemmove,,MSC,medium,"Far copy that allows overlap",src/seg/seg000.asm
+seg000:15C4,EmulatedFloat,,new,low,"Uses the floating-point emulator interrupts. The operation is not named",src/seg/seg000.asm
+seg000:15F8,CopyTemplate,,new,medium,"Copies twelve near words",src/seg/seg000.asm
+seg000:160C,__FF_MSGBANNER,,MSC,high,"Prints runtime message numbers FC and FF",src/seg/seg000.asm
+seg000:162E,FpFail,,new,medium,"mov ax, 2 then AmsgExit. R6002",src/seg/seg000.asm
+seg000:1634,__nullcheck,,MSC,high,"Checksum of the first 0x42 DGROUP bytes against 0x55",src/seg/seg000.asm
+seg000:1658,__NMSG_TEXT,,MSC,high,"Looks up a runtime message number and returns the string",src/seg/seg000.asm
+seg000:1683,__NMSG_WRITE,,MSC,high,"Writes that string to handle 2",src/seg/seg000.asm
+seg000:16BA,DosRet,,new,high,"Success returns 0. Carry maps the DOS error and returns -1",src/seg/seg000.asm
+seg000:16C2,DosRetCode,,new,high,"Success returns 0. Carry returns the low byte after mapping errno",src/seg/seg000.asm
+seg000:16CF,DosRetLong,,new,high,"Success keeps DX:AX. Carry returns -1",src/seg/seg000.asm
+seg000:16DC,DosRetErrno,,new,high,"Maps the DOS error and returns",src/seg/seg000.asm
+seg000:16E2,DosMapErr,,new,high,"Stores _doserrno and errno from the DOS error code",src/seg/seg000.asm
+DGROUP:8550,errno,,MSC,high,"DosMapErr stores the translated C error here",src/seg/seg000.asm
+DGROUP:855B,_doserrno,,MSC,high,"DosMapErr stores the raw DOS error here",src/seg/seg000.asm
+DGROUP:855D,_nfile,,MSC,high,"_close _read and _write reject a handle at or above this word",src/seg/seg000.asm
