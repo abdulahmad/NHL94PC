@@ -5,4 +5,5 @@
 DGROUP		equ	0x45C9
 _onexit		equ	0xE78
 _exit		equ	0x687
+_sprintf	equ	0xD74
 %include "seg/seg001.asm"

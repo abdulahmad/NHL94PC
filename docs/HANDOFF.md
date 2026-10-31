@@ -4,7 +4,7 @@
 
 - Full build MATCH (SHA-1 `d94450ddff26528bddac6646c234277076fd36cb`, 244,854 bytes); `tools/verify_all.sh` MATCH.
 - seg056 is source: the resident RTLink/Plus manager and the overlay thunks (10,992 bytes). seg057 was the thunk tail and is merged into seg056.
-- seg000 is entirely source (`src/seg/seg000.asm`). Nothing in it is incbin. seg005 is source. seg001 is source from the start through `LinearToFarRegs` (offset `0x968`); the rest is incbin. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`) and seg056.
+- seg000 is entirely source (`src/seg/seg000.asm`). Nothing in it is incbin. seg005 is source. seg001 is source from the start through `IdivDword` (offset `0xA28`); the rest is incbin. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`) and seg056.
 - seg011 is still a false split (merge into seg010 when seg010 is disassembled). The `ovl_*` slices were not resliced.
 
 ## Known facts
@@ -195,6 +195,8 @@ The spill at the start of seg001 finishes `test bx, 8`, then `pop bp` / `ret 0xe
 
 `FindFar` and `FindFarMsg` look up a long key in a far table and return a far pointer. `FindFarList` and `FindFarQuiet` walk a list of keys. `FarToLinear` and `LinearToFar` convert between a far pointer and the 20-bit address. `LinearToFarRegs` does that conversion with the address already in DX:AX.
 
+`CopyBytes` calls `CopyFar` with the high half of the count forced to zero. `FormatCall` pops a far return address and two words, calls `_sprintf` with `FmtBuf`, then calls seg028 and far-returns. `ImulWords`, `MulWords`, `IdivWords`, `DivWords`, `Idiv32`, and `IdivDword` are the multiply and divide helpers. `ImulRegs` and `MulRegs` are the register entries inside the first two.
+
 ## Unsure / open
 
 - `NullStartup6` and `NullStartup4` are each a single `retf`. The usual MSC pair in that slot is `__FPMATH` and `__fptrap`, or the null `__setargv` and `__setenvp`. The bodies do not say which.
@@ -215,4 +217,5 @@ The spill at the start of seg001 finishes `test bx, 8`, then `pop bp` / `ret 0xe
 - The word `CopyFar` tests at ss:`0x763C` selects dword moves. Its symbol is not named.
 - `PassFlag1`, `PassFlag0`, `AddrFlag0`, `AddrFlag1`, and `ArgSetup` are named from the flag and the pointer they set. The body they jump to (offset `0x29D2`) is still incbin, so the job is not named.
 - `FoldScale` calls offsets `0x1DD4`, `0x32EA`, and `0x32F1`. Those are still incbin, so the fold is not named as a trig or table operation.
+- `FormatCall` is not the target of a far call in the EXE. The four pops are the far return address and two words. What `_sprintf` uses as its format is the word under those on the caller's stack.
 - `ExitSavedSp` loads DGROUP and, when `SavedSp` is nonzero, uses that word as SP, then calls `_exit(0)`. `AllocBytes` is what stores `SavedSp`, along with CS and DS. Nothing in the disassembled bytes reads `SavedCs` or `SavedDs` yet.

@@ -633,3 +633,15 @@ seg001:08F9,FindFarQuiet,,new,high,"The same walk calling FindFar, so a miss sta
 seg001:092E,FarToLinear,,new,high,"Far pointer on the stack to a 20-bit address in DX:AX",src/seg/seg001.asm
 seg001:0945,LinearToFar,,new,high,"20-bit address on the stack to a far pointer whose offset is under 16",src/seg/seg001.asm
 seg001:0959,LinearToFarRegs,,new,high,"Same conversion with the low word in AX and the high word in DX",src/seg/seg001.asm
+DGROUP:64CE,FmtSave,,new,medium,"Four words FormatCall pops: far return offset, far return segment, then two arguments. See HANDOFF",src/seg/seg001.asm
+DGROUP:64D6,FmtBuf,,new,medium,"Pointer passed to _sprintf as its first argument from FormatCall",src/seg/seg001.asm
+seg001:0968,CopyBytes,,new,high,"Calls CopyFar. The byte count is the word at bp+0Eh and the high half is zero",src/seg/seg001.asm
+seg001:0988,FormatCall,,new,medium,"Pops a far return and two words, calls _sprintf with FmtBuf, calls seg028, then far-returns. No far call lands here. See HANDOFF",src/seg/seg001.asm
+seg001:09C2,ImulWords,,new,high,"Signed product of two stack words in DX:AX. Falls into ImulRegs",src/seg/seg001.asm
+seg001:09CA,ImulRegs,,new,high,"imul dx / retf. Far calls land here",src/seg/seg001.asm
+seg001:09CD,MulWords,,new,high,"Unsigned product of two stack words in DX:AX. Falls into MulRegs",src/seg/seg001.asm
+seg001:09D5,MulRegs,,new,high,"mul dx / retf. Far calls land here",src/seg/seg001.asm
+seg001:09D8,IdivWords,,new,high,"Signed DX:AX divided by the third stack word",src/seg/seg001.asm
+seg001:09E6,DivWords,,new,high,"Unsigned DX:AX divided by the third stack word",src/seg/seg001.asm
+seg001:09F4,Idiv32,,new,high,"Signed DX:AX divided by BX with a 32-bit idiv. Quotient returns in DX:AX",src/seg/seg001.asm
+seg001:0A0F,IdivDword,,new,high,"Stack dword divided by the stack word. High half cleared, then idiv. Quotient in DX:AX",src/seg/seg001.asm
