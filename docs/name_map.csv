@@ -879,3 +879,15 @@ seg002:0D28,AxClear,,new,high,"sub ax, ax and retf. Callers that push CS treat i
 seg002:0D2C,NameBase,,new,high,"Looks up a near name and returns the record base far pointer",src/seg/seg002.asm
 seg002:0D58,CopyByName,,new,high,"Finds a named record, inserts another of the same size, and copies the bytes",src/seg/seg002.asm
 seg002:0E54,SlideDown,,new,high,"Slides a record with flag word 10h down into the gap below it and relinks the chain",src/seg/seg002.asm
+seg002:10EA,SlideUp,,new,high,"Slides a record with flag word 10h up into a gap. The move is CopyParas",src/seg/seg002.asm
+seg002:1366,NoteLow,,new,high,"If the largest gap starts below ChainPtr, store that address there",src/seg/seg002.asm
+seg002:1396,LargestGap,,new,high,"After SlideDown, the biggest hole between a record and the next one",src/seg/seg002.asm
+seg002:1432,GapParas,,new,high,"LargestGap shifted down by 4, so the size is in paragraphs",src/seg/seg002.asm
+seg002:1448,SumUsed,,new,high,"Adds the sizes of records whose flag byte lacks bit 10h",src/seg/seg002.asm
+seg002:1486,FreeRec,,new,high,"Pushes a record onto the free list at ChainPtr+10h",src/seg/seg002.asm
+seg002:14A8,AllocRec,,new,high,"Pops a record off the free list. An empty list calls seg022",src/seg/seg002.asm
+seg002:14EC,RecSize,,new,high,"FindRec, then the size dword at offset 10h",src/seg/seg002.asm
+seg002:1508,RecBase,,new,high,"The record base. Bit 80h maps it through EmsMapFrame first",src/seg/seg002.asm
+seg002:1532,RawBase,,new,high,"The far pointer stored at the start of the record",src/seg/seg002.asm
+seg002:1542,RecSpan,,new,high,"The size dword stored at offset 14h",src/seg/seg002.asm
+seg002:1552,NamePtr,,new,high,"The caller's far pointer plus 4, the name field",src/seg/seg002.asm

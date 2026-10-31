@@ -248,7 +248,7 @@ L02BD:
 	mov	word es:[si + 0x1e], ax
 	mov	word es:[si + 0x1c], ax
 	push	cs
-	call	0x1396			; still incbin
+	call	LargestGap
 	mov	word [ChainPtr], ax
 	mov	word [ChainPtr+2], dx
 	pop	si
@@ -351,7 +351,7 @@ L03AE:
 	jmp	near L084F
 L03B6:
 	push	cs
-	call	0x1396			; still incbin
+	call	LargestGap
 	push	dx
 	push	ax
 	push	word [bp + 0xa]
@@ -389,7 +389,7 @@ L040E:
 	jmp	near L04CC
 L0418:
 	push	cs
-	call	0x14A8			; still incbin
+	call	AllocRec
 	mov	word [bp - 0x1a], ax
 	mov	word [bp - 0x18], dx
 	mov	es, dx
@@ -441,7 +441,7 @@ L0418:
 	mov	word es:[bx + 0x20], ax
 	mov	word es:[bx + 0x22], dx
 L04C0:
-	call	0x1366			; still incbin
+	call	NoteLow
 	mov	ax, word [bp - 0x1a]
 	mov	dx, word [bp - 0x18]
 	pop	si
@@ -462,7 +462,7 @@ L04EC:
 	test	byte [bp + 0xc], 0x10
 	jne	short L04FB
 	push	cs
-	call	0x10EA			; still incbin
+	call	SlideUp
 L04FB:
 	cmp	word [bp - 0xe], 0
 	je	short L0505
@@ -543,7 +543,7 @@ L05C0:
 	jmp	near L067C
 L05CA:
 	push	cs
-	call	0x14A8			; still incbin
+	call	AllocRec
 	mov	word [bp - 0x1a], ax
 	mov	word [bp - 0x18], dx
 	mov	es, dx
@@ -613,7 +613,7 @@ L068D:
 	jmp	near L084F
 L0695:
 	push	cs
-	call	0x1396			; still incbin
+	call	LargestGap
 	push	dx
 	push	ax
 	push	word [bp + 0xa]
@@ -711,7 +711,7 @@ L077C:
 	jmp	near L082C
 L0786:
 	push	cs
-	call	0x14A8			; still incbin
+	call	AllocRec
 	mov	word [bp - 0x1a], ax
 	mov	word [bp - 0x18], dx
 	mov	es, dx
@@ -972,7 +972,7 @@ UnlinkRec:
 	push	ax
 	push	si
 	push	cs
-	call	0x1486			; still incbin
+	call	FreeRec
 	add	sp, 4
 	pop	si
 	pop	di
@@ -1743,4 +1743,463 @@ S10E6:
 	pop	di
 	leave
 	retf
-	incbin	"Extracted/segments/seg002.bin", 0x10EA, 0x1560 - 0x10EA
+
+; SlideUp is the other direction: CopyParas moves a flag-10h record up
+; into a gap. NoteLow keeps the lowest free address at ChainPtr.
+; LargestGap is the biggest hole after a SlideDown. GapParas is that
+; size in paragraphs. SumUsed adds the sizes of records whose flag
+; byte lacks bit 10h. FreeRec and AllocRec are the free list.
+; RecSize, RecBase, RawBase, RecSpan, and NamePtr read one field.
+
+SlideUp:
+	enter	0x2c, 0
+	push	di
+	push	si
+	les	bx, [ChainPtr+0xc]
+	mov	ax, word es:[bx + 0x1c]
+	mov	dx, word es:[bx + 0x1e]
+	db	0x8B, 0xF8			; mov di, ax
+	mov	word [bp - 0x12], dx
+	db	0x8B, 0xF0			; mov si, ax
+	mov	word [bp - 0x16], dx
+	push	word es:[bx + 2]
+	push	word es:[bx]
+	call	0x3A3:FarToLinear
+	add	sp, 4
+S1115:
+	mov	word [bp - 4], ax
+	mov	word [bp - 2], dx
+S111B:
+	db	0x2B, 0xC0			; sub ax, ax
+	mov	word [bp - 6], ax
+	mov	word [bp - 8], ax
+S1123:
+	mov	es, word [bp - 0x16]
+	push	word es:[si + 2]
+	push	word es:[si]
+	call	0x3A3:FarToLinear
+	add	sp, 4
+	cmp	dx, word [bp - 2]
+	jg	short S1178
+	jl	short S1141
+	cmp	ax, word [bp - 4]
+	ja	short S1178
+S1141:
+	mov	es, word [bp - 0x16]
+	push	word es:[si + 2]
+	push	word es:[si]
+	call	0x3A3:FarToLinear
+	add	sp, 4
+	mov	es, word [bp - 0x16]
+	add	ax, word es:[si + 0x10]
+	adc	dx, word es:[si + 0x12]
+	mov	word [bp - 4], ax
+	mov	word [bp - 2], dx
+	mov	ax, word es:[si + 0x1c]
+	mov	dx, word es:[si + 0x1e]
+	db	0x8B, 0xF0			; mov si, ax
+	mov	word [bp - 0x16], dx
+	db	0x0B, 0xD0			; or dx, ax
+	jne	short S1123
+	jmp	short S1196
+	nop
+S1178:
+	mov	es, word [bp - 0x16]
+	push	word es:[si + 2]
+	push	word es:[si]
+	call	0x3A3:FarToLinear
+	add	sp, 4
+	sub	ax, word [bp - 4]
+	sbb	dx, word [bp - 2]
+	mov	word [bp - 8], ax
+	mov	word [bp - 6], dx
+S1196:
+	mov	ax, word [bp - 6]
+	or	ax, word [bp - 8]
+	jne	short S11A1
+	jmp	near S1362
+S11A1:
+	mov	es, word [bp - 0x12]
+	cmp	word es:[di + 0x18], 0x10
+	jne	short S11C6
+	push	word es:[di + 2]
+	push	word es:[di]
+	call	0x3A3:FarToLinear
+	add	sp, 4
+	cmp	dx, word [bp - 2]
+	jg	short S11DE
+	jl	short S11C6
+	cmp	ax, word [bp - 4]
+	jae	short S11DE
+S11C6:
+	mov	es, word [bp - 0x12]
+	mov	ax, word es:[di + 0x1c]
+	mov	dx, word es:[di + 0x1e]
+	db	0x8B, 0xF8			; mov di, ax
+	mov	word [bp - 0x12], dx
+	db	0x0B, 0xD0			; or dx, ax
+	jne	short S11A1
+	pop	si
+	pop	di
+	leave
+	retf
+S11DE:
+	mov	ax, word [bp - 0x16]
+	mov	cx, word [bp - 0x12]
+	db	0x3B, 0xF7			; cmp si, di
+	jne	short S1256
+	db	0x3B, 0xC1			; cmp ax, cx
+	jne	short S1256
+	mov	ax, word [bp - 4]
+	mov	dx, word [bp - 2]
+	call	0x3A3:LinearToFarRegs
+	mov	word [bp - 0x1c], ax
+	mov	word [bp - 0x1a], dx
+	mov	es, word [bp - 0x12]
+	mov	dx, word es:[di + 2]
+	mov	word [bp - 0x1e], dx
+	mov	ax, word es:[di + 0x10]
+	mov	dx, word es:[di + 0x12]
+	sar	dx, 1
+	rcr	ax, 1
+	sar	dx, 1
+	rcr	ax, 1
+	sar	dx, 1
+	rcr	ax, 1
+	sar	dx, 1
+	rcr	ax, 1
+	push	ax
+	push	word [bp - 0x1a]
+	push	word [bp - 0x1e]
+	mov	word [bp - 0x28], di
+	mov	word [bp - 0x26], es
+	call	0x3A3:CopyParas
+	add	sp, 6
+	mov	ax, word [bp - 0x1c]
+	mov	dx, word [bp - 0x1a]
+	les	bx, [bp - 0x28]
+	mov	word es:[bx], ax
+	mov	word es:[bx + 2], dx
+S1244:
+	mov	ax, word es:[bx + 0x10]
+	mov	dx, word es:[bx + 0x12]
+	add	word [bp - 4], ax
+	adc	word [bp - 2], dx
+	jmp	near S111B
+	nop
+S1256:
+	mov	ax, word [bp - 8]
+	mov	dx, word [bp - 6]
+	mov	es, cx
+	cmp	word es:[di + 0x12], dx
+	jle	short S1267
+	jmp	near S1342
+S1267:
+	jl	short S1272
+	cmp	word es:[di + 0x10], ax
+	jbe	short S1272
+	jmp	near S1342
+S1272:
+	mov	ax, word [bp - 4]
+	mov	dx, word [bp - 2]
+	call	0x3A3:LinearToFarRegs
+	mov	word [bp - 0x1c], ax
+	mov	word [bp - 0x1a], dx
+	mov	es, word [bp - 0x12]
+	mov	dx, word es:[di + 2]
+	mov	word [bp - 0x1e], dx
+	mov	ax, word es:[di + 0x10]
+	mov	dx, word es:[di + 0x12]
+	sar	dx, 1
+	rcr	ax, 1
+	sar	dx, 1
+	rcr	ax, 1
+	sar	dx, 1
+	rcr	ax, 1
+	sar	dx, 1
+	rcr	ax, 1
+	push	ax
+	push	word [bp - 0x1a]
+	push	word [bp - 0x1e]
+	mov	word [bp - 0x2c], di
+	mov	word [bp - 0x2a], es
+	call	0x3A3:CopyParas
+	add	sp, 6
+	mov	ax, word [bp - 0x1c]
+	mov	dx, word [bp - 0x1a]
+	les	bx, [bp - 0x2c]
+	mov	word es:[bx], ax
+	mov	word es:[bx + 2], dx
+	mov	ax, word es:[bx + 0x1c]
+	mov	dx, word es:[bx + 0x1e]
+	les	bx, es:[bx + 0x20]
+	mov	word es:[bx + 0x1c], ax
+	mov	word es:[bx + 0x1e], dx
+	les	bx, [bp - 0x2c]
+	mov	ax, word es:[bx + 0x20]
+	mov	dx, word es:[bx + 0x22]
+	les	bx, es:[bx + 0x1c]
+	mov	word es:[bx + 0x20], ax
+	mov	word es:[bx + 0x22], dx
+	mov	ax, word [bp - 0x16]
+	les	bx, [bp - 0x2c]
+	mov	word es:[bx + 0x1c], si
+	mov	word es:[bx + 0x1e], ax
+	mov	es, ax
+	mov	ax, word es:[si + 0x20]
+	mov	dx, word es:[si + 0x22]
+	mov	cx, es
+	les	bx, [bp - 0x2c]
+	mov	word es:[bx + 0x20], ax
+	mov	word es:[bx + 0x22], dx
+	mov	es, cx
+	db	0x8B, 0xC1			; mov ax, cx
+	les	bx, es:[si + 0x20]
+	mov	cx, word [bp - 0x2c]
+	mov	dx, word [bp - 0x2a]
+	mov	word es:[bx + 0x1c], cx
+	mov	word es:[bx + 0x1e], dx
+	mov	es, ax
+	mov	word es:[si + 0x20], cx
+	mov	word es:[si + 0x22], dx
+	mov	es, dx
+	db	0x8B, 0xD9			; mov bx, cx
+	jmp	near S1244
+	nop
+S1342:
+	mov	es, word [bp - 0x16]
+	push	word es:[si + 2]
+	push	word es:[si]
+	call	0x3A3:FarToLinear
+	add	sp, 4
+	mov	es, word [bp - 0x16]
+	add	ax, word es:[si + 0x10]
+	adc	dx, word es:[si + 0x12]
+	jmp	near S1115
+S1362:
+	pop	si
+	pop	di
+	leave
+	retf
+NoteLow:
+	enter	4, 0
+	push	cs
+	call	LargestGap
+	mov	word [bp - 4], ax
+	mov	word [bp - 2], dx
+	mov	ax, word [ChainPtr]
+	mov	dx, word [ChainPtr+2]
+	cmp	word [bp - 2], dx
+	jg	short S1394
+	jl	short S1387
+	cmp	word [bp - 4], ax
+	jae	short S1394
+S1387:
+	mov	ax, word [bp - 4]
+	mov	dx, word [bp - 2]
+	mov	word [ChainPtr], ax
+	mov	word [ChainPtr+2], dx
+S1394:
+	leave
+	ret
+LargestGap:
+	enter	0x14, 0
+	push	di
+	push	si
+	push	cs
+	call	SlideDown
+	les	bx, [ChainPtr+0xc]
+	db	0x8B, 0xFB			; mov di, bx
+	mov	word [bp - 0xa], es
+	mov	ax, word es:[bx + 0x1c]
+	mov	dx, word es:[bx + 0x1e]
+	db	0x8B, 0xF0			; mov si, ax
+	mov	word [bp - 0xe], dx
+	db	0x2B, 0xC0			; sub ax, ax
+	mov	word [bp - 6], ax
+	mov	word [bp - 8], ax
+S13BE:
+	push	word es:[di + 2]
+	push	word es:[di]
+	call	0x3A3:FarToLinear
+	add	sp, 4
+	mov	es, word [bp - 0xe]
+	push	word es:[si + 2]
+	push	word es:[si]
+	mov	word [bp - 0x14], ax
+	mov	word [bp - 0x12], dx
+	call	0x3A3:FarToLinear
+	add	sp, 4
+	mov	es, word [bp - 0xa]
+	sub	ax, word es:[di + 0x10]
+	sbb	dx, word es:[di + 0x12]
+	sub	ax, word [bp - 0x14]
+	sbb	dx, word [bp - 0x12]
+	cmp	dx, word [bp - 6]
+	jl	short S1408
+	jg	short S1402
+	cmp	ax, word [bp - 8]
+	jbe	short S1408
+S1402:
+	mov	word [bp - 8], ax
+	mov	word [bp - 6], dx
+S1408:
+	mov	ax, word [bp - 0xe]
+	db	0x8B, 0xCE			; mov cx, si
+	db	0x8B, 0xF9			; mov di, cx
+	mov	word [bp - 0xa], ax
+	mov	es, ax
+	db	0x8B, 0xDE			; mov bx, si
+	mov	ax, word es:[bx + 0x1c]
+	mov	dx, word es:[bx + 0x1e]
+	db	0x8B, 0xF0			; mov si, ax
+	mov	word [bp - 0xe], dx
+	db	0x0B, 0xD0			; or dx, ax
+	jne	short S13BE
+	mov	ax, word [bp - 8]
+	mov	dx, word [bp - 6]
+	pop	si
+	pop	di
+	leave
+	retf
+	nop
+GapParas:
+	push	cs
+	call	LargestGap
+	sar	dx, 1
+	rcr	ax, 1
+	sar	dx, 1
+	rcr	ax, 1
+	sar	dx, 1
+	rcr	ax, 1
+	sar	dx, 1
+	rcr	ax, 1
+	retf
+	nop
+SumUsed:
+	enter	4, 0
+	db	0x2B, 0xC0			; sub ax, ax
+	mov	word [bp - 2], ax
+	mov	word [bp - 4], ax
+	les	bx, [ChainPtr+0xc]
+	mov	ax, es
+	db	0x0B, 0xC3			; or ax, bx
+	je	short S147D
+S145E:
+	test	byte es:[bx + 0x18], 0x10
+	jne	short S1473
+	mov	ax, word es:[bx + 0x10]
+	mov	dx, word es:[bx + 0x12]
+	add	word [bp - 4], ax
+	adc	word [bp - 2], dx
+S1473:
+	les	bx, es:[bx + 0x1c]
+	mov	ax, es
+	db	0x0B, 0xC3			; or ax, bx
+	jne	short S145E
+S147D:
+	mov	ax, word [bp - 4]
+	mov	dx, word [bp - 2]
+	leave
+	retf
+	nop
+FreeRec:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	mov	bx, word [bp + 6]
+	mov	ax, word [ChainPtr+0x10]
+	mov	dx, word [ChainPtr+0x12]
+	mov	es, word [bp + 8]
+	mov	word es:[bx + 0x1c], ax
+	mov	word es:[bx + 0x1e], dx
+	mov	word [ChainPtr+0x10], bx
+	mov	word [ChainPtr+0x12], es
+	leave
+	retf
+AllocRec:
+	enter	4, 0
+	push	si
+	mov	ax, word [ChainPtr+0x12]
+	or	ax, word [ChainPtr+0x10]
+	je	short S14DE
+	mov	ax, word [ChainPtr+0x10]
+	mov	dx, word [ChainPtr+0x12]
+	db	0x8B, 0xD8			; mov bx, ax
+	mov	word [bp - 2], dx
+	les	si, [ChainPtr+0x10]
+	mov	ax, word es:[si + 0x1c]
+	mov	dx, word es:[si + 0x1e]
+	mov	word [ChainPtr+0x10], ax
+	mov	word [ChainPtr+0x12], dx
+	db	0x8B, 0xC3			; mov ax, bx
+	mov	dx, word [bp - 2]
+	pop	si
+	leave
+	retf
+	nop
+S14DE:
+	push	0x3dd
+	call	0xF4A:0x3E4		; seg022
+	add	sp, 2
+	pop	si
+	leave
+	retf
+RecSize:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	word [bp + 8]
+	push	word [bp + 6]
+	push	cs
+	call	FindRec
+	mov	es, dx
+	db	0x8B, 0xD8			; mov bx, ax
+	mov	ax, word es:[bx + 0x10]
+	mov	dx, word es:[bx + 0x12]
+	leave
+	retf
+	nop
+RecBase:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	si
+	les	si, [bp + 6]
+	test	byte es:[si + 0x18], 0x80
+	je	short S1528
+	push	word es:[si + 2]
+	push	word es:[si]
+	call	0x3A3:EmsMapFrame
+	add	sp, 4
+	pop	si
+	leave
+	retf
+S1528:
+	mov	ax, word es:[si]
+	mov	dx, word es:[si + 2]
+	pop	si
+	leave
+	retf
+RawBase:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	les	bx, [bp + 6]
+	mov	ax, word es:[bx]
+	mov	dx, word es:[bx + 2]
+	leave
+	retf
+	nop
+RecSpan:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	les	bx, [bp + 6]
+	mov	ax, word es:[bx + 0x14]
+	mov	dx, word es:[bx + 0x16]
+	leave
+	retf
+NamePtr:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	mov	ax, word [bp + 6]
+	mov	dx, word [bp + 8]
+	add	ax, strict word 4
+	leave
+	retf
