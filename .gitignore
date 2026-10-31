@@ -30,3 +30,6 @@ __pycache__/
 # Retail game folder (temporary, like the EXE)
 !lst/game/
 !lst/game/**
+
+# SDL2 port: third-party code fetched by port/fetch-deps.sh
+port/third_party/
