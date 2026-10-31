@@ -805,3 +805,10 @@ seg001:1F0E,LineClip,,new,high,"Same setup after a box test. Both ends outside o
 seg001:1F1A,LineBody,,new,high,"Shared point ordering, outcodes, and direction byte",src/seg/seg001.asm
 seg001:2065,LineTab,,new,high,"Sixteen words. The outcode selects the still-incbin continuation, or LineOk",src/seg/seg001.asm
 seg001:2085,LineOk,,new,high,"xor ax, ax and the epilogue. Taken when the outcode is 0",src/seg/seg001.asm
+seg001:208B,ClipTop,,new,high,"Pulls the line onto the top of the box. The direction byte selects how X moves",src/seg/seg001.asm
+seg001:20A1,TopTab,,new,high,"Nine words, one per direction. 0 and 1 are unused",src/seg/seg001.asm
+seg001:214D,ClipBottom,,new,high,"Pulls the line onto the bottom of the box",src/seg/seg001.asm
+seg001:2164,BotTab,,new,high,"Direction table for the bottom edge",src/seg/seg001.asm
+seg001:221F,ClipLeft,,new,high,"Pulls the line onto the left of the box",src/seg/seg001.asm
+seg001:2229,LeftTab,,new,high,"Direction table for the left edge",src/seg/seg001.asm
+seg001:23AE,ClipRet,,new,high,"Clears AH and returns. Some edge cases land here",src/seg/seg001.asm
