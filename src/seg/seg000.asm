@@ -749,11 +749,7 @@ VgaCopyRect:
 
 
 
-; seg005 is still incbin. Each entry is one retf. Which library symbol the
-; first two are is not settled (see docs/HANDOFF.md).
-NullStartup4	equ	4			; seg005 offset 4
-NullStartup6	equ	6			; seg005 offset 6
-_main		equ	8			; seg005 offset 8
+; NullStartup4, NullStartup6 and _main are labels in seg005.
 
 ; Near data in DGROUP (past the load image, not this segment).
 DGROUP		equ	0x45C9
