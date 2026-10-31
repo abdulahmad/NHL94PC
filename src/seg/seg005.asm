@@ -53,7 +53,7 @@ _main:
 .2:
 	push	0x40
 	push	0
-	call	0x03A3:0xE7		; seg001
+	call	0x03A3:EmsInit		; seg001
 	add	sp, 4
 	mov	word [bp-4], ax
 	mov	word [bp-2], dx
@@ -165,7 +165,7 @@ _main:
 	add	sp, 6
 	push	0xd90
 	push	0x14b8
-	call	0x03A3:0x3E4		; seg001
+	call	0x03A3:HookCrit		; seg001
 	add	sp, 4
 	push	0x3701
 	push	0xbd0

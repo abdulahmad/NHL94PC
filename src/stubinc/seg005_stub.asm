@@ -12,4 +12,6 @@ OvlThunk24	equ	0x20DF
 OvlThunk25	equ	0x20E9
 OvlThunk26	equ	0x20F3
 OvlThunk27	equ	0x20FD
+EmsInit		equ	0xE7
+HookCrit	equ	0x3E4
 %include "seg/seg005.asm"
