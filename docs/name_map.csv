@@ -797,3 +797,6 @@ seg001:1E41,AtanNeg,,new,high,"neg ax",src/seg/seg001.asm
 seg001:1E45,AtanDec,,new,high,"Subtract 100h",src/seg/seg001.asm
 seg001:1E4A,AtanIncNeg,,new,high,"Add 100h, then neg ax",src/seg/seg001.asm
 seg001:1E51,AtanDecTwo,,new,high,"Subtract 200h",src/seg/seg001.asm
+seg001:1E56,FillFar,,new,high,"Fills a far buffer with the byte argument. Long count. Same 32K window as CopyFar",src/seg/seg001.asm
+seg001:1E5F,FillFarZero,,new,high,"Same fill with a zero byte",src/seg/seg001.asm
+seg001:1E65,FillFarBody,,new,high,"Repeats the byte into AH, normalizes ES:DI, then stosw or stosd",src/seg/seg001.asm

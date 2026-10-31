@@ -4247,4 +4247,95 @@ AtanDecTwo:
 	sub	ah, 2
 	jmp	short AtanDone
 
-	incbin	"Extracted/segments/seg001.bin", 0x1E56, 0x33E0 - 0x1E56
+; Fill the far buffer with the byte argument. The count is the long at [bp+0Ah].
+; Offsets stay under 16, then the fill moves 32K at a time. Word stores, or dword
+; stores when the word at ss:763Ch is nonzero. FillFarZero uses a zero byte.
+
+FillFar:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	di
+	mov	ax, word [bp + 0xe]
+	jmp	short FillFarBody
+
+FillFarZero:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	di
+	db	0x33, 0xC0			; xor ax, ax
+
+FillFarBody:
+	db	0x8A, 0xE0			; mov ah, al
+	les	di, [bp + 6]
+	call	0x2964			; still incbin
+	mov	cx, word [bp + 0xa]
+	mov	dx, word [bp + 0xc]
+	cld
+	jmp	short L1E7F
+L1E76:
+	sub	cx, 1
+	sbb	dx, 0
+	jb	short L1EB7
+	stosb
+L1E7F:
+	test	di, 0xf
+	jne	short L1E76
+	cmp	word ss:[0x763c], 0
+	jne	short L1EBA
+	db	0x8B, 0xD9			; mov bx, cx
+	db	0x03, 0xC9			; add cx, cx
+	db	0x13, 0xD2			; adc dx, dx
+	jmp	short L1EA6
+L1E95:
+	mov	cx, 0x4000
+	rep stosw
+	sub	di, 0x8000
+	mov	cx, es
+	add	cx, 0x800
+	mov	es, cx
+L1EA6:
+	dec	dx
+	jns	short L1E95
+	db	0x8B, 0xCB			; mov cx, bx
+	and	cx, 0x7fff
+	shr	cx, 1
+	rep stosw
+	db	0x13, 0xC9			; adc cx, cx
+	rep stosb
+L1EB7:
+	pop	di
+	leave
+	retf
+L1EBA:
+	db	0x8B, 0xD8			; mov bx, ax
+	shl	eax, 0x10
+	db	0x8B, 0xC3			; mov ax, bx
+	db	0x8B, 0xD9			; mov bx, cx
+	db	0x66, 0x33, 0xC9			; xor ecx, ecx
+	and	edi, 0xffff
+	db	0x03, 0xC9			; add cx, cx
+	db	0x13, 0xD2			; adc dx, dx
+	jmp	short L1EE6
+L1ED4:
+	mov	cx, 0x2000
+	rep stosd
+	sub	di, 0x8000
+	mov	cx, es
+	add	cx, 0x800
+	mov	es, cx
+L1EE6:
+	dec	dx
+	jns	short L1ED4
+	db	0x8B, 0xCB			; mov cx, bx
+	and	cx, 0x7fff
+	shr	cx, 2
+	rep stosd
+	db	0x8B, 0xCB			; mov cx, bx
+	and	cx, 3
+	rep stosb
+	pop	di
+	leave
+	retf
+	db	0x00
+
+	incbin	"Extracted/segments/seg001.bin", 0x1F00, 0x33E0 - 0x1F00
