@@ -1029,4 +1029,314 @@ S0950:
 	pop	di
 	leave
 	ret	8
-	incbin	"Extracted/segments/seg004.bin", 0x95C, 0xC10 - 0x95C
+
+; AddCopy accepts 62FBh or 66FBh and writes each input byte plus a
+; running count. LoadBlock picks the unpacker from the type byte:
+; 30h and 32h call Unpack, 46h calls Expand, 60h 62h and 66h call
+; AddCopy, and 6Ah and 6Eh copy from five bytes into the header.
+; Anything else, when the flag word is set, calls seg022. A zero
+; result copies the header bytes themselves. LoadReport passes flag
+; 1. LoadQuiet passes flag 0. Its near call finishes in seg005.
+
+AddCopy:
+	enter	0x10, 0
+	push	si
+	mov	ax, word [bp + 4]
+	mov	dx, word [bp + 6]
+	mov	word [bp - 8], ax
+	mov	word [bp - 6], dx
+	db	0x2B, 0xC0			; sub ax, ax
+	mov	word [bp - 0xe], ax
+	mov	word [bp - 0x10], ax
+	mov	ax, word [bp + 8]
+	mov	dx, word [bp + 0xa]
+	mov	word [bp - 4], ax
+	mov	word [bp - 2], dx
+	db	0x0B, 0xD0			; or dx, ax
+	jne	short S0988
+	jmp	near S0A9E
+S0988:
+	db	0xC4, 0x5E, 0xFC			; les bx, ptr [bp - 4]
+	add	word [bp - 4], 1
+	jae	short S0996
+	add	word [bp - 2], 0x1000
+S0996:
+	mov	al, byte es:[bx]
+	db	0x2A, 0xE4			; sub ah, ah
+	db	0x8B, 0xF0			; mov si, ax
+	db	0xC4, 0x5E, 0xFC			; les bx, ptr [bp - 4]
+	add	word [bp - 4], 1
+	jae	short S09AB
+	add	word [bp - 2], 0x1000
+S09AB:
+	mov	cl, byte es:[bx]
+	db	0x8A, 0xE8			; mov ch, al
+	db	0x8B, 0xF1			; mov si, cx
+	cmp	si, 0x62fb
+	jne	short S09BE
+	add	word [bp - 4], 3
+	jmp	short S09C8
+S09BE:
+	cmp	si, 0x66fb
+	jne	short S09D0
+	add	word [bp - 4], 4
+S09C8:
+	db	0x1B, 0xC0			; sbb ax, ax
+	and	ax, 0x1000
+	add	word [bp - 2], ax
+S09D0:
+	db	0xC4, 0x5E, 0xFC			; les bx, ptr [bp - 4]
+	add	word [bp - 4], 1
+	jae	short S09DE
+	add	word [bp - 2], 0x1000
+S09DE:
+	mov	al, byte es:[bx]
+	db	0x2A, 0xE4			; sub ah, ah
+	mov	word [bp - 0x10], ax
+	mov	word [bp - 0xe], 0
+	mov	dx, word [bp - 0xe]
+	db	0x8A, 0xF2			; mov dh, dl
+	db	0x8A, 0xD4			; mov dl, ah
+	db	0x8A, 0xE0			; mov ah, al
+	db	0x2A, 0xC0			; sub al, al
+	db	0xC4, 0x5E, 0xFC			; les bx, ptr [bp - 4]
+	add	word [bp - 4], 1
+	jae	short S0A04
+	add	word [bp - 2], 0x1000
+S0A04:
+	mov	cl, byte es:[bx]
+	db	0x2A, 0xED			; sub ch, ch
+	db	0x2B, 0xDB			; sub bx, bx
+	db	0x03, 0xC8			; add cx, ax
+	db	0x13, 0xDA			; adc bx, dx
+	mov	word [bp - 0x10], cx
+	mov	word [bp - 0xe], bx
+	db	0x8B, 0xC1			; mov ax, cx
+	db	0x8B, 0xD3			; mov dx, bx
+	db	0x8A, 0xF2			; mov dh, dl
+	db	0x8A, 0xD4			; mov dl, ah
+	db	0x8A, 0xE0			; mov ah, al
+	db	0x2A, 0xC0			; sub al, al
+	db	0xC4, 0x5E, 0xFC			; les bx, ptr [bp - 4]
+	add	word [bp - 4], 1
+	jae	short S0A2F
+	add	word [bp - 2], 0x1000
+S0A2F:
+	mov	cl, byte es:[bx]
+	db	0x2A, 0xED			; sub ch, ch
+	db	0x2B, 0xDB			; sub bx, bx
+	db	0x03, 0xC1			; add ax, cx
+	db	0x13, 0xD3			; adc dx, bx
+	mov	word [bp - 0x10], ax
+	mov	word [bp - 0xe], dx
+	add	ax, word [bp - 8]
+	db	0x13, 0xD3			; adc dx, bx
+	mov	cx, 0xc
+	shl	dx, cl
+	add	dx, word [bp - 6]
+	mov	word [bp - 0xc], ax
+	mov	word [bp - 0xa], dx
+	db	0x2B, 0xF6			; sub si, si
+	cmp	dx, word [bp - 6]
+	jb	short S0A9E
+	ja	short S0A61
+	cmp	ax, word [bp - 8]
+	jbe	short S0A9E
+S0A61:
+	db	0xC4, 0x5E, 0xFC			; les bx, ptr [bp - 4]
+	add	word [bp - 4], 1
+	jae	short S0A6F
+	add	word [bp - 2], 0x1000
+S0A6F:
+	mov	al, byte es:[bx]
+	db	0x8B, 0xCE			; mov cx, si
+	db	0x02, 0xC1			; add al, cl
+	db	0x2A, 0xE4			; sub ah, ah
+	db	0x8B, 0xF0			; mov si, ax
+	db	0xC4, 0x5E, 0xF8			; les bx, ptr [bp - 8]
+	mov	byte es:[bx], al
+	add	word [bp - 8], 1
+	db	0x1B, 0xC0			; sbb ax, ax
+	and	ax, 0x1000
+	add	word [bp - 6], ax
+	mov	ax, word [bp - 8]
+	mov	dx, word [bp - 6]
+	cmp	dx, word [bp - 0xa]
+	jb	short S0A61
+	ja	short S0A9E
+	cmp	ax, word [bp - 0xc]
+	jb	short S0A61
+S0A9E:
+	mov	ax, word [bp - 0x10]
+	mov	dx, word [bp - 0xe]
+	pop	si
+	leave
+	ret	8
+	nop
+LoadBlock:
+	enter	0xc, 0
+	push	di
+	push	si
+	mov	di, word [bp + 6]
+	push	word [bp + 0x10]
+	push	word [bp + 0xe]
+	mov	ax, word [bp + 8]
+	push	ax
+	push	di
+	db	0x8B, 0xF0			; mov si, ax
+	push	cs
+	call	ReadHead
+	add	sp, 8
+	mov	word [bp - 8], ax
+	mov	word [bp - 6], dx
+	db	0x2B, 0xC0			; sub ax, ax
+	mov	word [bp - 2], ax
+	mov	word [bp - 4], ax
+	db	0x8B, 0xC7			; mov ax, di
+	db	0x8B, 0xD6			; mov dx, si
+	push	dx
+	push	ax
+	push	cs
+	call	2
+	add	sp, 4
+	mov	es, dx
+	db	0x8B, 0xD8			; mov bx, ax
+	db	0x8B, 0xF3			; mov si, bx
+	mov	word [bp - 0xa], es
+	cmp	byte es:[bx + 1], 0xfb
+	je	short S0AF5
+	jmp	near S0BA0
+S0AF5:
+	mov	al, byte es:[si]
+	and	ax, 0xfe
+	cmp	ax, strict word 0x6e
+	je	short S0B76
+	ja	short S0B14
+	cmp	al, 0x60
+	je	short S0B66
+	jg	short S0B36
+	sub	al, 0x30
+	je	short S0B44
+	sub	al, 2
+	je	short S0B44
+	sub	al, 0x14
+	je	short S0B58
+S0B14:
+	cmp	word [bp + 0x12], 0
+	jne	short S0B1D
+	jmp	near S0BA0
+S0B1D:
+	mov	es, word [bp - 0xa]
+	mov	al, byte es:[si + 1]
+	db	0x2A, 0xE4			; sub ah, ah
+	push	ax
+	push	0x40c
+	call	0xF4A:0x3E4		; seg022
+	add	sp, 4
+	jmp	short S0BA0
+	nop
+	nop
+S0B36:
+	sub	al, 0x62
+	je	short S0B66
+	sub	al, 4
+	je	short S0B66
+	sub	al, 4
+	je	short S0B76
+	jmp	short S0B14
+S0B44:
+	push	1
+	push	word [bp + 0xc]
+	push	word [bp + 0xa]
+	push	es
+	push	si
+	push	cs
+	call	Unpack
+	add	sp, 0xa
+	jmp	short S0B9A
+	nop
+S0B58:
+	push	es
+	push	si
+	push	word [bp + 0xc]
+	push	word [bp + 0xa]
+	call	Expand
+	jmp	short S0B9A
+	nop
+S0B66:
+	push	word [bp - 0xa]
+	push	si
+	push	word [bp + 0xc]
+	push	word [bp + 0xa]
+	call	AddCopy
+	jmp	short S0B9A
+	nop
+S0B76:
+	push	word [bp - 6]
+	push	word [bp - 8]
+	push	word [bp + 0xc]
+	push	word [bp + 0xa]
+	db	0x8B, 0xC6			; mov ax, si
+	mov	dx, word [bp - 0xa]
+	add	ax, strict word 5
+	push	dx
+	push	ax
+	call	0x3A3:CopyFar
+	add	sp, 0xc
+	mov	ax, word [bp - 8]
+	mov	dx, word [bp - 6]
+S0B9A:
+	mov	word [bp - 4], ax
+	mov	word [bp - 2], dx
+S0BA0:
+	mov	ax, word [bp - 2]
+	or	ax, word [bp - 4]
+	jne	short S0BCD
+	push	word [bp - 6]
+	push	word [bp - 8]
+	push	word [bp + 0xc]
+	push	word [bp + 0xa]
+	mov	ax, word [bp - 0xa]
+	push	ax
+	push	si
+	call	0x3A3:CopyFar
+	add	sp, 0xc
+	mov	ax, word [bp - 8]
+	mov	dx, word [bp - 6]
+	mov	word [bp - 4], ax
+	mov	word [bp - 2], dx
+S0BCD:
+	mov	ax, word [bp - 4]
+	mov	dx, word [bp - 2]
+	pop	si
+	pop	di
+	leave
+	retf
+	nop
+LoadReport:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	1
+	push	word [bp + 0x10]
+	push	word [bp + 0xe]
+	push	word [bp + 0xc]
+	push	word [bp + 0xa]
+	push	word [bp + 8]
+	push	word [bp + 6]
+	push	cs
+	call	LoadBlock
+	leave
+	retf
+	nop
+LoadQuiet:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	0
+	push	word [bp + 0x10]
+	push	word [bp + 0xe]
+	push	word [bp + 0xc]
+	push	word [bp + 0xa]
+	push	word [bp + 8]
+	push	word [bp + 6]
+	push	cs
+	db	0xE8, 0x99			; call LoadBlock, finished in seg005
