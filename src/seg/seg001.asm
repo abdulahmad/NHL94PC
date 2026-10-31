@@ -4519,20 +4519,20 @@ L2059:
 LineTab:
 	dw	LineOk
 	dw	0x23B4
-	dw	0x221F
-	dw	0x221F
-	dw	0x208B
-	dw	0x208B
-	dw	0x208B
-	dw	0x208B
-	dw	0x214D
-	dw	0x214D
-	dw	0x214D
-	dw	0x214D
-	dw	0x208B
-	dw	0x208B
-	dw	0x208B
-	dw	0x208B
+	dw	ClipLeft
+	dw	ClipLeft
+	dw	ClipTop
+	dw	ClipTop
+	dw	ClipTop
+	dw	ClipTop
+	dw	ClipBottom
+	dw	ClipBottom
+	dw	ClipBottom
+	dw	ClipBottom
+	dw	ClipTop
+	dw	ClipTop
+	dw	ClipTop
+	dw	ClipTop
 
 LineOk:
 	db	0x33, 0xC0			; xor ax, ax
@@ -4541,4 +4541,359 @@ LineOk:
 	leave
 	retf
 
-	incbin	"Extracted/segments/seg001.bin", 0x208B, 0x33E0 - 0x208B
+; Slide an endpoint onto one edge of the box. ClipTop uses the top,
+; ClipBottom the bottom, and ClipLeft the left. The direction byte
+; picks how X or Y moves with that edge. Each case then jumps into
+; the stepper, which is still incbin. ClipRet returns with AH 0.
+
+
+ClipTop:
+	mov	ax, word [si + 6]
+	mov	cx, word [0x74f2]
+	mov	word [si + 6], cx
+	db	0x2B, 0xC8			; sub cx, ax
+	mov	bl, byte [si + 0x12]
+	db	0x03, 0xDB			; add bx, bx
+	jmp	word [cs:bx+TopTab]
+TopTab:
+	dw	0
+	dw	0
+	dw	L20B3
+	dw	L20B9
+	dw	L20C2
+	dw	L20CB
+	dw	L20DB
+	dw	L20EB
+	dw	L2126
+L20B3:
+	sub	word [si + 0xe], cx
+	jmp	near 0x24CD		; still incbin
+L20B9:
+	sub	word [si + 2], cx
+	sub	word [si + 0xe], cx
+	jmp	near 0x24CD		; still incbin
+L20C2:
+	add	word [si + 2], cx
+	sub	word [si + 0xe], cx
+	jmp	near 0x24CD		; still incbin
+L20CB:
+	mov	ax, word [si + 0xc]
+	mul	cx
+	sub	word [si], ax
+	sbb	word [si + 2], dx
+	sub	word [si + 0xe], cx
+	jmp	near 0x24CD		; still incbin
+L20DB:
+	mov	ax, word [si + 0xc]
+	mul	cx
+	add	word [si], ax
+	adc	word [si + 2], dx
+	sub	word [si + 0xe], cx
+	jmp	near 0x24CD		; still incbin
+L20EB:
+	mov	word [si + 6], ax
+	db	0x8B, 0xD1			; mov dx, cx
+	db	0x33, 0xC0			; xor ax, ax
+	mov	cx, word [si + 0xc]
+	div	cx
+	shr	cx, 1
+	db	0x2B, 0xCA			; sub cx, dx
+	adc	ax, 0
+	sub	word [si + 2], ax
+	sub	word [si + 0xe], ax
+	jle	short L2112
+	mul	word [si + 0xc]
+	add	word [si + 4], ax
+	adc	word [si + 6], dx
+	jmp	near 0x24CD		; still incbin
+L2112:
+	mov	word [si + 0xe], 1
+	mov	ax, word [0x74f2]
+	mov	word [si + 6], ax
+	mov	ax, word [si + 8]
+	mov	word [si + 2], ax
+	jmp	near 0x24CD		; still incbin
+L2126:
+	mov	word [si + 6], ax
+	db	0x8B, 0xD1			; mov dx, cx
+	db	0x33, 0xC0			; xor ax, ax
+	mov	cx, word [si + 0xc]
+	div	cx
+	shr	cx, 1
+	db	0x2B, 0xCA			; sub cx, dx
+	adc	ax, 0
+	add	word [si + 2], ax
+	sub	word [si + 0xe], ax
+	jle	short L2112
+	mul	word [si + 0xc]
+	add	word [si + 4], ax
+	adc	word [si + 6], dx
+	jmp	near 0x24CD		; still incbin
+
+ClipBottom:
+	mov	cx, word [si + 0xa]
+	mov	dx, word [0x74f4]
+	dec	dx
+	mov	word [si + 0xa], dx
+	db	0x2B, 0xCA			; sub cx, dx
+	mov	bl, byte [si + 0x12]
+	db	0x03, 0xDB			; add bx, bx
+	jmp	word [cs:bx+BotTab]
+BotTab:
+	dw	0
+	dw	0
+	dw	L2176
+	dw	L217C
+	dw	L2185
+	dw	L218E
+	dw	L21B2
+	dw	L21D1
+	dw	L21FA
+L2176:
+	sub	word [si + 0xe], cx
+	jmp	near 0x24D7		; still incbin
+L217C:
+	add	word [si + 8], cx
+	sub	word [si + 0xe], cx
+	jmp	near 0x24D7		; still incbin
+L2185:
+	sub	word [si + 8], cx
+	sub	word [si + 0xe], cx
+	jmp	near 0x24D7		; still incbin
+L218E:
+	mov	dx, word [si + 0xe]
+	db	0x2B, 0xD1			; sub dx, cx
+	mov	word [si + 0xe], dx
+	dec	dx
+	mov	ax, word [si + 0xc]
+	mul	dx
+	mov	bx, word [si]
+	mov	cx, word [si + 2]
+	db	0x2B, 0xD8			; sub bx, ax
+	db	0x1B, 0xCA			; sbb cx, dx
+	add	bx, 0x8000
+	adc	cx, 0
+	mov	word [si + 8], cx
+	jmp	near 0x24D7		; still incbin
+L21B2:
+	mov	dx, word [si + 0xe]
+	db	0x2B, 0xD1			; sub dx, cx
+	mov	word [si + 0xe], dx
+	dec	dx
+	mov	ax, word [si + 0xc]
+	mul	dx
+	add	ax, word [si]
+	adc	dx, word [si + 2]
+	add	ax, 0x8000
+	adc	dx, 0
+	mov	word [si + 8], dx
+	jmp	near 0x24D7		; still incbin
+L21D1:
+	db	0x33, 0xC0			; xor ax, ax
+	sub	ax, word [si + 4]
+	sbb	dx, word [si + 6]
+	jl	short L21F6
+	mov	cx, word [si + 0xc]
+	div	cx
+	shr	cx, 1
+	db	0x2B, 0xCA			; sub cx, dx
+	adc	ax, 0
+L21E7:
+	mov	dx, word [si + 2]
+	db	0x2B, 0xD0			; sub dx, ax
+	mov	word [si + 8], dx
+	inc	ax
+	mov	word [si + 0xe], ax
+	jmp	near 0x24D7		; still incbin
+L21F6:
+	db	0x33, 0xC0			; xor ax, ax
+	jmp	short L21E7
+L21FA:
+	db	0x33, 0xC0			; xor ax, ax
+	sub	ax, word [si + 4]
+	sbb	dx, word [si + 6]
+	jl	short L21F6
+	mov	cx, word [si + 0xc]
+	div	cx
+	shr	cx, 1
+	db	0x2B, 0xCA			; sub cx, dx
+	adc	ax, 0
+	mov	dx, word [si + 2]
+	db	0x03, 0xD0			; add dx, ax
+	mov	word [si + 8], dx
+	inc	ax
+	mov	word [si + 0xe], ax
+	jmp	near 0x24D7		; still incbin
+
+ClipLeft:
+	mov	bl, byte [si + 0x12]
+	db	0x03, 0xDB			; add bx, bx
+	jmp	word [cs:bx+LeftTab]
+LeftTab:
+	dw	0
+	dw	0
+	dw	L2338
+	dw	L223B
+	dw	L2253
+	dw	L226B
+	dw	L22A2
+	dw	L22D3
+	dw	L2302
+L223B:
+	mov	cx, word [0x74fc]
+	mov	ax, word [si + 8]
+	mov	word [si + 8], cx
+	db	0x2B, 0xC8			; sub cx, ax
+	add	word [si + 0x16], cx
+	sub	word [si + 0xe], cx
+	sub	word [si + 0xa], cx
+	jmp	near 0x2521		; still incbin
+L2253:
+	mov	ax, word [si + 2]
+	mov	cx, word [0x74fc]
+	mov	word [si + 2], cx
+	db	0x2B, 0xC8			; sub cx, ax
+	add	word [si + 0x14], cx
+	add	word [si + 6], cx
+	sub	word [si + 0xe], cx
+	jmp	near 0x2521		; still incbin
+L226B:
+	mov	ax, word [si]
+	mov	dx, word [si + 2]
+	mov	cx, word [0x74fc]
+	mov	word [si + 8], cx
+	db	0x2B, 0xD1			; sub dx, cx
+	jl	short L229D
+	mov	cx, word [si + 0xc]
+	div	cx
+	shr	cx, 1
+	db	0x2B, 0xCA			; sub cx, dx
+	adc	ax, 0
+	inc	ax
+L2288:
+	mov	cx, word [si + 0xe]
+	mov	word [si + 0xe], ax
+	db	0x2B, 0xC8			; sub cx, ax
+	add	word [si + 0x16], cx
+	dec	ax
+	add	ax, word [si + 6]
+	mov	word [si + 0xa], ax
+	jmp	near 0x2521		; still incbin
+L229D:
+	mov	ax, 1
+	jmp	short L2288
+L22A2:
+	mov	dx, word [0x74fc]
+	db	0x33, 0xC0			; xor ax, ax
+	sub	ax, word [si]
+	sbb	dx, word [si + 2]
+	jl	short L22D1
+	mov	cx, word [si + 0xc]
+	div	cx
+	shr	cx, 1
+	db	0x2B, 0xCA			; sub cx, dx
+	adc	ax, 0
+	add	word [si + 6], ax
+	add	word [si + 0x14], ax
+	sub	word [si + 0xe], ax
+	jle	short L2338
+	mul	word [si + 0xc]
+	add	word [si], ax
+	adc	word [si + 2], dx
+	jmp	near 0x2521		; still incbin
+L22D1:
+	jmp	short L2338
+L22D3:
+	mov	ax, word [si + 2]
+	mov	dx, word [0x74fc]
+	mov	word [si + 8], dx
+	db	0x2B, 0xC2			; sub ax, dx
+	db	0x8B, 0xC8			; mov cx, ax
+	inc	cx
+	mov	word [si + 0xe], cx
+	mul	word [si + 0xc]
+	add	ax, word [si + 4]
+	adc	dx, word [si + 6]
+	add	ax, 0x8000
+	adc	dx, 0
+	mov	ax, word [si + 0xa]
+	db	0x2B, 0xC2			; sub ax, dx
+	mov	word [si + 0xa], dx
+	add	word [si + 0x16], ax
+	jmp	near 0x2521		; still incbin
+L2302:
+	mov	cx, word [si + 2]
+	mov	ax, word [0x74fc]
+	mov	word [si + 2], ax
+	db	0x2B, 0xC1			; sub ax, cx
+	sub	word [si + 0xe], ax
+	mul	word [si + 0xc]
+	mov	bx, word [si + 4]
+	mov	cx, word [si + 6]
+	db	0x03, 0xC3			; add ax, bx
+	db	0x13, 0xD1			; adc dx, cx
+	mov	word [si + 4], ax
+	mov	word [si + 6], dx
+	add	bx, 0x8000
+	adc	cx, 0
+	add	ax, 0x8000
+	adc	dx, 0
+	db	0x2B, 0xD1			; sub dx, cx
+	add	word [si + 0x14], dx
+	jmp	near 0x2521		; still incbin
+L2338:
+	mov	dx, 2
+	mov	byte [si + 0x13], dl
+	mov	word [si + 0xe], 0
+	mov	al, byte [si + 0x13]
+	test	al, 4
+	je	short L235C
+	mov	bx, word [0x74f2]
+	mov	word [si + 6], bx
+	mov	word [si + 4], 0
+	dec	bx
+	mov	word [si + 0xa], bx
+	jmp	short ClipRet
+L235C:
+	test	al, 8
+	je	short L236E
+	mov	bx, word [0x74f4]
+	mov	word [si + 6], bx
+	mov	word [si + 4], 0
+	jmp	short ClipRet
+L236E:
+	mov	cx, word [si + 0xa]
+	cmp	cx, word [0x74f4]
+	jl	short L237C
+	mov	cx, word [0x74f4]
+	dec	cx
+L237C:
+	mov	dx, word [si + 6]
+	mov	bx, word [si + 4]
+	add	bx, 0x8000
+	adc	dx, 0
+	cmp	dx, word [0x74f2]
+	jge	short L2393
+	mov	dx, word [0x74f2]
+L2393:
+	mov	word [si + 6], dx
+	mov	word [si + 4], 0
+	db	0x2B, 0xCA			; sub cx, dx
+	dec	dx
+	inc	cx
+	mov	word [si + 0xa], dx
+	test	al, 2
+	je	short L23AB
+	add	word [si + 0x16], cx
+	jmp	short ClipRet
+L23AB:
+	add	word [si + 0x1a], cx
+
+ClipRet:
+	db	0x32, 0xE4			; xor ah, ah
+	pop	di
+	pop	si
+	leave
+	retf
+
+	incbin	"Extracted/segments/seg001.bin", 0x23B4, 0x33E0 - 0x23B4
