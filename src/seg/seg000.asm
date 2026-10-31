@@ -1,6 +1,7 @@
 ; Segment seg000. VGA copies, the C startup, file and DOS calls,
-; strings, runtime messages, and formatted output. __astart jumps to
-; MscStartup. The bytes after _output are still the original image.
+; strings, runtime messages, formatted output, and the number
+; helpers. __astart jumps to MscStartup. The floating-point emulator
+; after these helpers is still the original image.
 
 ; Sixteen zero bytes. The first routine starts on the next paragraph.
 	db	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -1813,7 +1814,7 @@ _strncpy:
 	retf
 
 JumpAhead:
-	jmp	near 0x1DA2
+	jmp	near _atol
 	db	0
 
 ; WriteStderr: write a C string to handle 2.
@@ -3453,7 +3454,7 @@ _stbuf:
 	push	bx
 	mov	ax, 0x200
 	push	ax
-	call	0:0x27F2
+	call	0:JmpFpConvert
 	pop	bx
 	pop	bx
 	db	0x0B, 0xC0			; or	ax, ax
@@ -3484,7 +3485,7 @@ _ftbuf:
 	je	short .out
 	push	si
 	push	cs
-	call	0x272a
+	call	fflush
 	pop	ax
 	cmp	word [bp+4], 0
 	je	short .out
@@ -4032,4 +4033,1712 @@ _output:
 	retf
 	db	0,89,90,161,138,133,59,196,115,7,43,196,247,216,82,81
 	db	203,51,192,235,249
-	incbin	"Extracted/segments/seg000.bin", 0x1DA2
+
+; Number conversion, fflush, and memory moves.
+
+
+; _atol: read an optional sign and decimal digits into a long.
+; Argument: string. Result in DX:AX.
+_atol:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	di
+	push	si
+	mov	si, word [bp+6]
+	db	0x33, 0xC0			; xor	ax, ax
+	db	0x99			; cdq
+	db	0x33, 0xDB			; xor	bx, bx
+	lodsb
+	cmp	al, 0x20
+	je	short 0x1DAF
+	cmp	al, 9
+	je	short 0x1DAF
+	push	ax
+	cmp	al, 0x2d
+	je	short 0x1DC1
+	cmp	al, 0x2b
+	jne	short 0x1DC2
+	lodsb
+	cmp	al, 0x39
+	ja	short 0x1DE5
+	sub	al, 0x30
+	jb	short 0x1DE5
+	shl	bx, 1
+	rcl	dx, 1
+	db	0x8B, 0xCB			; mov	cx, bx
+	db	0x8B, 0xFA			; mov	di, dx
+	shl	bx, 1
+	rcl	dx, 1
+	shl	bx, 1
+	rcl	dx, 1
+	db	0x03, 0xD9			; add	bx, cx
+	db	0x13, 0xD7			; adc	dx, di
+	db	0x03, 0xD8			; add	bx, ax
+	adc	dx, 0
+	jmp	short 0x1DC1
+	pop	ax
+	cmp	al, 0x2d
+	xchg	bx, ax
+	jne	short 0x1DF2
+	neg	ax
+	adc	dx, 0
+	neg	dx
+	pop	si
+	pop	di
+	pop	bp
+	retf
+
+Mul16Diff:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	mov	ax, word [bp+8]
+	sub	ax, word [bp+0xc]
+	db	0x1B, 0xD2			; sbb	dx, dx
+	db	0x03, 0xC0			; add	ax, ax
+	db	0x13, 0xD2			; adc	dx, dx
+	db	0x03, 0xC0			; add	ax, ax
+	db	0x13, 0xD2			; adc	dx, dx
+	db	0x03, 0xC0			; add	ax, ax
+	db	0x13, 0xD2			; adc	dx, dx
+	db	0x03, 0xC0			; add	ax, ax
+	db	0x13, 0xD2			; adc	dx, dx
+	add	ax, word [bp+6]
+	adc	dx, 0
+	sub	ax, word [bp+0xa]
+	sbb	dx, 0
+	pop	bp
+	retf	8
+	db	0
+
+ScanFloat:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	sub	sp, 6
+	mov	bx, word [bp+6]
+	mov	al, byte [bx]
+	db	0x98			; cwde
+	db	0x8B, 0xD8			; mov	bx, ax
+	test	byte [bx-0x7a73], 1
+	je	short 0x1E3C
+	lea	ax, [bx+0x20]
+	jmp	short 0x1E42
+	mov	bx, word [bp+6]
+	mov	al, byte [bx]
+	db	0x98			; cwde
+	db	0x3D, 0x65, 0x00			; cmp	ax, 0x65
+	je	short 0x1E59
+	inc	word [bp+6]
+	mov	bx, word [bp+6]
+	mov	al, byte [bx]
+	db	0x98			; cwde
+	db	0x8B, 0xD8			; mov	bx, ax
+	test	byte [bx-0x7a73], 4
+	jne	short 0x1E47
+	mov	bx, word [bp+6]
+	mov	al, byte [bx]
+	mov	byte [bp-2], al
+	mov	byte [bx], 0x2e
+	inc	word [bp+6]
+	mov	bx, word [bp+6]
+	mov	al, byte [bx]
+	mov	byte [bp-4], al
+	mov	al, byte [bp-2]
+	mov	byte [bx], al
+	mov	al, byte [bp-4]
+	mov	byte [bp-2], al
+	mov	bx, word [bp+6]
+	inc	word [bp+6]
+	cmp	byte [bx], 0
+	jne	short 0x1E67
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+	db	144
+
+ScanPoint:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	sub	sp, 4
+	jmp	short 0x1E9A
+	cmp	byte [bx], 0x2e
+	je	short 0x1EA2
+	inc	word [bp+6]
+	mov	bx, word [bp+6]
+	cmp	byte [bx], 0
+	jne	short 0x1E92
+	inc	word [bp+6]
+	cmp	byte [bx], 0
+	je	short 0x1EF3
+	jmp	short 0x1EB9
+	cmp	byte [bx], 0x65
+	je	short 0x1EC1
+	cmp	byte [bx], 0x45
+	je	short 0x1EC1
+	inc	word [bp+6]
+	mov	bx, word [bp+6]
+	cmp	byte [bx], 0
+	jne	short 0x1EAC
+	db	0x8B, 0xC3			; mov	ax, bx
+	dec	word [bp+6]
+	mov	word [bp-2], ax
+	jmp	short 0x1ECF
+	db	144
+	dec	word [bp+6]
+	mov	bx, word [bp+6]
+	cmp	byte [bx], 0x30
+	je	short 0x1ECC
+	cmp	byte [bx], 0x2e
+	jne	short 0x1EDF
+	dec	word [bp+6]
+	mov	bx, word [bp-2]
+	inc	word [bp-2]
+	mov	al, byte [bx]
+	inc	word [bp+6]
+	mov	bx, word [bp+6]
+	mov	byte [bx], al
+	db	0x0A, 0xC0			; or	al, al
+	jne	short 0x1EDF
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+	db	144
+
+FloatLoad:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	sub	sp, 2
+	mov	bx, word [bp+6]
+	int	0x39
+	pop	es
+	int	0x38
+	push	ss
+	push	ss
+	db	141,205,57,216,205,57,126,254,205,61,138,102,255,158,114,8
+	db	184,1,0,139,229,93,203,144,43,192,139,229,93,203
+
+FormatFloat:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	di
+	push	si
+	mov	ax, word [bp+6]
+	dec	ax
+	je	short 0x1F68
+	dec	ax
+	je	short 0x1F4E
+	push	word [bp+0xc]
+	db	0x9A, 0xF8, 0x27, 0x00, 0x00			; call	0:SkipSpace
+	add	sp, 2
+	db	0x8B, 0xD8			; mov	bx, ax
+	int	0x39
+	pop	es
+	les	bx, [bp+8]
+	int	0x3c
+	fstp	dword [bx]
+	jmp	short 0x1F60
+	db	144
+	push	word [bp+0xc]
+	db	0x9A, 0x18, 0x2C, 0x00, 0x00			; call	0:FloatStatus
+	add	sp, 2
+	les	bx, [bp+8]
+	int	0x3c
+	db	0xDB, 0x3F			; fstp	xword [bx]
+	int	0x3d
+	pop	si
+	pop	di
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+	push	word [bp+0xc]
+	db	0x9A, 0xF8, 0x27, 0x00, 0x00			; call	0:SkipSpace
+	add	sp, 2
+	db	0x8B, 0xF0			; mov	si, ax
+	les	di, [bp+8]
+	movsw
+	movsw
+	movsw
+	movsw
+	pop	si
+	pop	di
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+
+FloatBuf:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	sub	sp, 4
+	push	di
+	push	si
+	cmp	byte [0x8a1c], 0
+	je	short 0x1FBC
+	mov	bx, word [0x909e]
+	mov	word [bp-2], bx
+	cmp	word [bx], 0x2d
+	jne	short 0x1FA2
+	mov	si, 1
+	jmp	short 0x1FA4
+	db	0x2B, 0xF6			; sub	si, si
+	add	si, word [bp+8]
+	push	si
+	cmp	word [bp+0xa], 0
+	jle	short 0x1FB4
+	mov	ax, 1
+	jmp	short 0x1FB6
+	db	144
+	db	0x2B, 0xC0			; sub	ax, ax
+	push	ax
+	call	0x22e8
+	jmp	short 0x2009
+	mov	bx, word [bp+6]
+	push	word [bx+6]
+	push	word [bx+4]
+	push	word [bx+2]
+	push	word [bx]
+	db	0x9A, 0xD2, 0x2B, 0x00, 0x00			; call	0:PackArgs
+	add	sp, 8
+	mov	word [bp-2], ax
+	push	ax
+	mov	ax, word [bp+0xa]
+	inc	ax
+	push	ax
+	cmp	word [bp+0xa], 0
+	jle	short 0x1FE6
+	mov	ax, 1
+	jmp	short 0x1FE8
+	db	0x2B, 0xC0			; sub	ax, ax
+	mov	bx, word [bp-2]
+	mov	word [bp-4], ax
+	cmp	word [bx], 0x2d
+	jne	short 0x1FF8
+	mov	ax, 1
+	jmp	short 0x1FFA
+	db	0x2B, 0xC0			; sub	ax, ax
+	add	ax, word [bp-4]
+	add	ax, word [bp+8]
+	push	ax
+	db	0x9A, 0x3E, 0x28, 0x00, 0x00			; call	0:WriteDigits
+	add	sp, 6
+	mov	si, word [bp+8]
+	mov	bx, word [bp-2]
+	cmp	word [bx], 0x2d
+	jne	short 0x2018
+	mov	byte [si], 0x2d
+	inc	si
+	cmp	word [bp+0xa], 0
+	jle	short 0x202B
+	mov	al, byte [si+1]
+	mov	byte [si], al
+	lea	ax, [si+1]
+	db	0x8B, 0xF0			; mov	si, ax
+	mov	byte [si], 0x2e
+	mov	ax, 0x8a16
+	push	ax
+	cmp	byte [0x8a1c], 1
+	db	0x1B, 0xC0			; sbb	ax, ax
+	neg	ax
+	add	ax, word [bp+0xa]
+	db	0x03, 0xC6			; add	ax, si
+	push	ax
+	call	0:0xC6C
+	add	sp, 4
+	db	0x8B, 0xF0			; mov	si, ax
+	cmp	word [bp+0xc], 0
+	je	short 0x2051
+	mov	byte [si], 0x45
+	inc	si
+	mov	bx, word [bp-2]
+	mov	bx, word [bx+6]
+	cmp	byte [bx], 0x30
+	je	short 0x20A2
+	mov	bx, word [bp-2]
+	mov	di, word [bx+2]
+	dec	di
+	jns	short 0x206F
+	db	0x8B, 0xC7			; mov	ax, di
+	neg	ax
+	db	0x8B, 0xF8			; mov	di, ax
+	mov	byte [si], 0x2d
+	inc	si
+	cmp	di, 0x64
+	jl	short 0x2086
+	db	0x8B, 0xC7			; mov	ax, di
+	mov	cx, 0x64
+	db	0x99			; cdq
+	idiv	cx
+	add	byte [si], al
+	db	0x8B, 0xC7			; mov	ax, di
+	db	0x99			; cdq
+	idiv	cx
+	db	0x8B, 0xFA			; mov	di, dx
+	inc	si
+	cmp	di, 0xa
+	jl	short 0x209D
+	db	0x8B, 0xC7			; mov	ax, di
+	mov	cx, 0xa
+	db	0x99			; cdq
+	idiv	cx
+	add	byte [si], al
+	db	0x8B, 0xC7			; mov	ax, di
+	db	0x99			; cdq
+	idiv	cx
+	db	0x8B, 0xFA			; mov	di, dx
+	db	0x8B, 0xC7			; mov	ax, di
+	inc	si
+	add	byte [si], al
+	mov	ax, word [bp+8]
+	pop	si
+	pop	di
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+	db	144
+
+FloatToStr:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	sub	sp, 2
+	mov	byte [0x8a1c], 1
+	push	word [bp+0xc]
+	push	word [bp+0xa]
+	push	word [bp+8]
+	push	word [bp+6]
+	push	cs
+	call	0x1f82
+	mov	byte [0x8a1c], 0
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+
+FloatWidth:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	sub	sp, 6
+	push	si
+	cmp	byte [0x8a1c], 0
+	je	short 0x210A
+	mov	bx, word [0x909e]
+	mov	word [bp-2], bx
+	cmp	word [bx], 0x2d
+	jne	short 0x20F0
+	mov	si, 1
+	jmp	short 0x20F2
+	db	144
+	db	0x2B, 0xF6			; sub	si, si
+	add	si, word [bp+8]
+	mov	ax, word [0x8a1e]
+	cmp	word [bp+0xa], ax
+	jne	short 0x2146
+	db	0x8B, 0xD8			; mov	bx, ax
+	mov	byte [bx+si], 0x30
+	db	0x03, 0xDE			; add	bx, si
+	inc	bx
+	mov	byte [bx], 0
+	jmp	short 0x2146
+	mov	bx, word [bp+6]
+	push	word [bx+6]
+	push	word [bx+4]
+	push	word [bx+2]
+	push	word [bx]
+	db	0x9A, 0xD2, 0x2B, 0x00, 0x00			; call	0:PackArgs
+	add	sp, 8
+	mov	word [bp-2], ax
+	push	ax
+	db	0x8B, 0xD8			; mov	bx, ax
+	mov	ax, word [bx+2]
+	add	ax, word [bp+0xa]
+	push	ax
+	cmp	word [bx], 0x2d
+	jne	short 0x2138
+	mov	ax, 1
+	jmp	short 0x213A
+	db	144
+	db	0x2B, 0xC0			; sub	ax, ax
+	add	ax, word [bp+8]
+	push	ax
+	db	0x9A, 0x3E, 0x28, 0x00, 0x00			; call	0:WriteDigits
+	add	sp, 6
+	mov	si, word [bp+8]
+	mov	bx, word [bp-2]
+	cmp	word [bx], 0x2d
+	jne	short 0x2155
+	mov	byte [si], 0x2d
+	inc	si
+	cmp	word [bx+2], 0
+	jg	short 0x216A
+	push	si
+	mov	ax, 1
+	push	ax
+	call	0x22e8
+	mov	byte [si], 0x30
+	inc	si
+	jmp	short 0x216D
+	db	144
+	add	si, word [bx+2]
+	cmp	word [bp+0xa], 0
+	jle	short 0x21BB
+	push	si
+	mov	ax, 1
+	push	ax
+	call	0x22e8
+	mov	byte [si], 0x2e
+	inc	si
+	mov	bx, word [bp-2]
+	cmp	word [bx+2], 0
+	jge	short 0x21BB
+	cmp	byte [0x8a1c], 0
+	je	short 0x2196
+	mov	ax, word [bx+2]
+	neg	ax
+	jmp	short 0x21A3
+	mov	ax, word [bx+2]
+	neg	ax
+	cmp	ax, word [bp+0xa]
+	jle	short 0x21A3
+	mov	ax, word [bp+0xa]
+	mov	word [bp+0xa], ax
+	push	si
+	push	ax
+	call	0x22e8
+	push	word [bp+0xa]
+	mov	ax, 0x30
+	push	ax
+	push	si
+	db	0x9A, 0x64, 0x29, 0x00, 0x00			; call	0:_memset
+	add	sp, 6
+	mov	ax, word [bp+8]
+	pop	si
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+	db	144
+
+FloatToSci:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	sub	sp, 2
+	mov	byte [0x8a1c], 1
+	push	word [bp+0xa]
+	push	word [bp+8]
+	push	word [bp+6]
+	push	cs
+	call	0x20d0
+	mov	byte [0x8a1c], 0
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+	db	144
+
+FormatOne:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	sub	sp, 4
+	mov	bx, word [bp+6]
+	push	word [bx+6]
+	push	word [bx+4]
+	push	word [bx+2]
+	push	word [bx]
+	db	0x9A, 0xD2, 0x2B, 0x00, 0x00			; call	0:PackArgs
+	add	sp, 8
+	mov	word [0x909e], ax
+	db	0x8B, 0xD8			; mov	bx, ax
+	mov	ax, word [bx+2]
+	dec	ax
+	mov	word [0x8a1e], ax
+	push	bx
+	push	word [bp+0xa]
+	cmp	word [bx], 0x2d
+	jne	short 0x221C
+	mov	ax, 1
+	jmp	short 0x221E
+	db	0x2B, 0xC0			; sub	ax, ax
+	add	ax, word [bp+8]
+	mov	word [bp-2], ax
+	push	ax
+	db	0x9A, 0x3E, 0x28, 0x00, 0x00			; call	0:WriteDigits
+	add	sp, 6
+	mov	bx, word [0x909e]
+	mov	ax, word [bx+2]
+	dec	ax
+	mov	word [bp-4], ax
+	cmp	ax, word [0x8a1e]
+	jle	short 0x2242
+	mov	al, 1
+	jmp	short 0x2244
+	db	0x2A, 0xC0			; sub	al, al
+	mov	byte [0x8a20], al
+	mov	ax, word [bp-4]
+	mov	word [0x8a1e], ax
+	db	0x3D, 0xFC, 0xFF			; cmp	ax, 0xfffc
+	jl	short 0x2257
+	cmp	ax, word [bp+0xa]
+	jl	short 0x226E
+	push	word [bp+0xc]
+	push	word [bp+0xa]
+	push	word [bp+8]
+	push	word [bp+6]
+	push	cs
+	call	0x20ac
+	add	sp, 8
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+	cmp	byte [0x8a20], 0
+	je	short 0x2287
+	mov	bx, word [bp-2]
+	inc	word [bp-2]
+	cmp	byte [bx], 0
+	jne	short 0x2275
+	mov	bx, word [bp-2]
+	mov	byte [bx-2], 0
+	push	word [bp+0xa]
+	push	word [bp+8]
+	push	word [bp+6]
+	push	cs
+	call	0x21c4
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+
+FormatExp:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	cmp	word [bp+0xa], 0x65
+	je	short 0x22A7
+	cmp	word [bp+0xa], 0x45
+	jne	short 0x22BE
+	push	word [bp+0xe]
+	push	word [bp+0xc]
+	push	word [bp+8]
+	push	word [bp+6]
+	push	cs
+	call	0x1f82
+	db	0x8B, 0xE5			; mov	sp, bp
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+	db	144
+	cmp	word [bp+0xa], 0x66
+	jne	short 0x22D4
+	push	word [bp+0xc]
+	push	word [bp+8]
+	push	word [bp+6]
+	push	cs
+	call	0x20d0
+	jmp	short 0x22B7
+	db	144
+	push	word [bp+0xe]
+	push	word [bp+0xc]
+	push	word [bp+8]
+	push	word [bp+6]
+	push	cs
+	call	0x21e6
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+
+FormatLen:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	cmp	word [bp+4], 0
+	je	short 0x230C
+	push	word [bp+6]
+	call	0:0xC9E
+	db	0x8B, 0xE5			; mov	sp, bp
+	inc	ax
+	push	ax
+	push	word [bp+6]
+	mov	ax, word [bp+4]
+	add	ax, word [bp+6]
+	push	ax
+	db	0x9A, 0x1C, 0x29, 0x00, 0x00			; call	0:_memmove
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	ret	4
+
+; FpError: print a floating-point error and exit.
+; The code in AX is adjusted and used as a runtime message.
+FpError:
+	pop	dx
+	pop	dx
+	mov	dx, 0x45c9
+	mov	ds, dx
+	db	0x2A, 0xE4			; sub	ah, ah
+	push	ax
+	sub	ax, 0x81
+	mov	word [0x8a40], ax
+	call	0:0x160C
+	mov	bx, word [0x8a40]
+	shl	bx, 1
+	mov	cx, word [bx-0x75de]
+	mov	bx, 0x8a3a
+	mov	word [bx+4], cx
+	db	0x9A, 0x92, 0x29, 0x00, 0x00			; call	0:WriteCounted
+	mov	ax, 0xfd
+	push	ax
+	call	0:0x1683
+	mov	ax, word [0x8a40]
+	add	ax, strict word 0x65
+	push	ax
+	call	0:0x1683
+	call	0:0x687
+
+FormatFixed:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	sub	sp, 0x1a
+	mov	bx, word [bp+6]
+	push	word [bx+8]
+	push	word [bx+6]
+	push	word [bx+4]
+	push	word [bx+2]
+	push	word [bx]
+	mov	ax, word [bp+0xa]
+	inc	ax
+	db	0x3D, 0x01, 0x00			; cmp	ax, 1
+	jge	short 0x2379
+	mov	ax, 1
+	push	ax
+	db	0x2B, 0xC0			; sub	ax, ax
+	push	ax
+	lea	ax, [bp-0x1a]
+	push	ax
+	call	0x29c4
+	push	word [bp+0xc]
+	push	word [bp+0xa]
+	push	word [bp+8]
+	lea	ax, [bp-0x1a]
+	push	ax
+	push	cs
+	call	0x239a
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+	db	144
+
+FormatPad:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	sub	sp, 8
+	mov	ax, word [bp+8]
+	mov	word [bp-2], ax
+	mov	cx, word [bp+6]
+	add	cx, 4
+	mov	word [bp-6], cx
+	mov	bx, word [bp+6]
+	cmp	byte [bx+2], 0x2d
+	jne	short 0x23C1
+	db	0x8B, 0xD8			; mov	bx, ax
+	mov	byte [bx], 0x2d
+	inc	ax
+	mov	word [bp-2], ax
+	mov	bx, word [bp+6]
+	cmp	byte [bx+3], 0
+	je	short 0x23DC
+	db	0x8B, 0xD9			; mov	bx, cx
+	inc	word [bp-6]
+	mov	al, byte [bx]
+	mov	bx, word [bp-2]
+	inc	word [bp-2]
+	mov	byte [bx], al
+	jmp	short 0x23ED
+	db	144
+	mov	bx, word [bp-2]
+	inc	word [bp-2]
+	mov	byte [bx], 0x30
+	mov	bx, word [bp+6]
+	inc	byte [bx+3]
+	inc	word [bx]
+	cmp	word [bp+0xa], 0
+	jle	short 0x2436
+	mov	bx, word [bp-2]
+	inc	word [bp-2]
+	mov	byte [bx], 0x2e
+	mov	bx, word [bp+6]
+	mov	al, byte [bx+3]
+	db	0x98			; cwde
+	dec	ax
+	mov	word [bp-4], ax
+	sub	word [bp+0xa], ax
+	jmp	short 0x241F
+	mov	bx, word [bp-6]
+	inc	word [bp-6]
+	mov	al, byte [bx]
+	mov	bx, word [bp-2]
+	inc	word [bp-2]
+	mov	byte [bx], al
+	dec	word [bp-4]
+	cmp	word [bp-4], 0
+	jne	short 0x240C
+	jmp	short 0x2431
+	db	144
+	mov	bx, word [bp-2]
+	inc	word [bp-2]
+	mov	byte [bx], 0x30
+	dec	word [bp+0xa]
+	jns	short 0x2428
+	cmp	word [bp+0xc], 0
+	je	short 0x2448
+	mov	bx, word [bp-2]
+	inc	word [bp-2]
+	mov	byte [bx], 0x45
+	jmp	short 0x2451
+	db	144
+	mov	bx, word [bp-2]
+	inc	word [bp-2]
+	mov	byte [bx], 0x65
+	mov	bx, word [bp+6]
+	mov	ax, word [bx]
+	dec	ax
+	mov	word [bp-8], ax
+	db	0x0B, 0xC0			; or	ax, ax
+	jge	short 0x246E
+	neg	ax
+	mov	word [bp-8], ax
+	mov	bx, word [bp-2]
+	inc	word [bp-2]
+	mov	byte [bx], 0x2d
+	jmp	short 0x2477
+	mov	bx, word [bp-2]
+	inc	word [bp-2]
+	mov	byte [bx], 0x2b
+	cmp	ax, 0x3e8
+	jl	short 0x2495
+	mov	cx, 0x3e8
+	db	0x99			; cdq
+	idiv	cx
+	add	al, 0x30
+	mov	bx, word [bp-2]
+	inc	word [bp-2]
+	mov	byte [bx], al
+	mov	ax, word [bp-8]
+	db	0x99			; cdq
+	idiv	cx
+	mov	word [bp-8], dx
+	mov	ax, word [bp-8]
+	mov	cx, 0x64
+	db	0x99			; cdq
+	idiv	cx
+	add	al, 0x30
+	mov	bx, word [bp-2]
+	inc	word [bp-2]
+	mov	byte [bx], al
+	mov	ax, word [bp-8]
+	db	0x99			; cdq
+	idiv	cx
+	mov	word [bp-8], dx
+	db	0x8B, 0xC2			; mov	ax, dx
+	mov	cx, 0xa
+	db	0x99			; cdq
+	idiv	cx
+	add	al, 0x30
+	mov	bx, word [bp-2]
+	inc	word [bp-2]
+	mov	byte [bx], al
+	mov	ax, word [bp-8]
+	db	0x99			; cdq
+	idiv	cx
+	add	dl, 0x30
+	mov	bx, word [bp-2]
+	inc	word [bp-2]
+	mov	byte [bx], dl
+	mov	bx, word [bp-2]
+	inc	word [bp-2]
+	mov	byte [bx], 0
+	mov	ax, word [bp+8]
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+
+FormatG:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	sub	sp, 0x1a
+	mov	bx, word [bp+6]
+	push	word [bx+8]
+	push	word [bx+6]
+	push	word [bx+4]
+	push	word [bx+2]
+	push	word [bx]
+	mov	ax, word [bp+0xa]
+	db	0x0B, 0xC0			; or	ax, ax
+	jge	short 0x2504
+	db	0x2B, 0xC0			; sub	ax, ax
+	push	ax
+	mov	ax, 1
+	push	ax
+	lea	ax, [bp-0x1a]
+	push	ax
+	call	0x29c4
+	push	word [bp+0xa]
+	push	word [bp+8]
+	lea	ax, [bp-0x1a]
+	push	ax
+	push	cs
+	call	0x2522
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+
+FormatCopy:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	sub	sp, 0xa
+	mov	ax, word [bp+8]
+	mov	word [bp-2], ax
+	mov	bx, word [bp+6]
+	mov	cx, word [bx]
+	mov	word [bp-8], cx
+	lea	cx, [bx+4]
+	mov	word [bp-6], cx
+	cmp	byte [bx+2], 0x2d
+	jne	short 0x254B
+	db	0x8B, 0xD8			; mov	bx, ax
+	mov	byte [bx], 0x2d
+	inc	ax
+	mov	word [bp-2], ax
+	cmp	word [bp-8], 0
+	jle	short 0x259C
+	mov	bx, word [bp+6]
+	mov	al, byte [bx+3]
+	db	0x98			; cwde
+	cmp	ax, word [bp-8]
+	jle	short 0x2560
+	mov	ax, word [bp-8]
+	mov	word [bp-4], ax
+	sub	word [bp-8], ax
+	mov	al, byte [bp-4]
+	sub	byte [bx+3], al
+	jmp	short 0x257E
+	mov	bx, word [bp-6]
+	inc	word [bp-6]
+	mov	al, byte [bx]
+	mov	bx, word [bp-2]
+	inc	word [bp-2]
+	mov	byte [bx], al
+	mov	ax, word [bp-4]
+	dec	word [bp-4]
+	db	0x0B, 0xC0			; or	ax, ax
+	jne	short 0x256E
+	cmp	word [bp-8], 0
+	je	short 0x25A5
+	dec	word [bp-8]
+	mov	bx, word [bp-2]
+	inc	word [bp-2]
+	mov	byte [bx], 0x30
+	jmp	short 0x2588
+	mov	bx, word [bp-2]
+	inc	word [bp-2]
+	mov	byte [bx], 0x30
+	cmp	word [bp+0xa], 0
+	jle	short 0x2615
+	mov	bx, word [bp-2]
+	inc	word [bp-2]
+	mov	byte [bx], 0x2e
+	mov	bx, word [bp+6]
+	mov	al, byte [bx+3]
+	db	0x98			; cwde
+	sub	ax, word [bp-8]
+	neg	ax
+	add	word [bp+0xa], ax
+	jmp	short 0x25CF
+	db	144
+	mov	bx, word [bp-2]
+	inc	word [bp-2]
+	mov	byte [bx], 0x30
+	mov	ax, word [bp-8]
+	inc	word [bp-8]
+	db	0x0B, 0xC0			; or	ax, ax
+	jl	short 0x25C6
+	mov	bx, word [bp+6]
+	mov	al, byte [bx+3]
+	db	0x98			; cwde
+	mov	word [bp-4], ax
+	jmp	short 0x25F6
+	db	144
+	mov	bx, word [bp-6]
+	inc	word [bp-6]
+	mov	al, byte [bx]
+	mov	bx, word [bp-2]
+	inc	word [bp-2]
+	mov	byte [bx], al
+	mov	ax, word [bp-4]
+	dec	word [bp-4]
+	db	0x0B, 0xC0			; or	ax, ax
+	jne	short 0x25E6
+	jmp	short 0x260B
+	mov	bx, word [bp-2]
+	inc	word [bp-2]
+	mov	byte [bx], 0x30
+	mov	ax, word [bp+0xa]
+	dec	word [bp+0xa]
+	db	0x0B, 0xC0			; or	ax, ax
+	jg	short 0x2602
+	mov	bx, word [bp-2]
+	mov	byte [bx], 0
+	mov	ax, word [bp+8]
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+
+FormatDigits:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	sub	sp, 0x1a
+	cmp	word [bp+0xa], 0
+	jg	short 0x2633
+	mov	word [bp+0xa], 1
+	mov	bx, word [bp+6]
+	push	word [bx+8]
+	push	word [bx+6]
+	push	word [bx+4]
+	push	word [bx+2]
+	push	word [bx]
+	push	word [bp+0xa]
+	db	0x2B, 0xC0			; sub	ax, ax
+	push	ax
+	lea	ax, [bp-0x1a]
+	push	ax
+	call	0x29c4
+	cmp	word [bp-0x1a], -4
+	jle	short 0x265F
+	mov	ax, word [bp-0x1a]
+	cmp	word [bp+0xa], ax
+	jge	short 0x267A
+	push	word [bp+0xc]
+	mov	ax, word [bp+0xa]
+	dec	ax
+	push	ax
+	push	word [bp+8]
+	lea	ax, [bp-0x1a]
+	push	ax
+	push	cs
+	call	0x239a
+	add	sp, 8
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+	db	144
+	mov	ax, word [bp+0xa]
+	sub	ax, word [bp-0x1a]
+	push	ax
+	push	word [bp+8]
+	lea	ax, [bp-0x1a]
+	push	ax
+	push	cs
+	call	0x2522
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+
+FormatExp2:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	cmp	word [bp+0xa], 0x65
+	je	short 0x269F
+	cmp	word [bp+0xa], 0x45
+	jne	short 0x26B6
+	push	word [bp+0xe]
+	push	word [bp+0xc]
+	push	word [bp+8]
+	push	word [bp+6]
+	push	cs
+	call	0x2356
+	db	0x8B, 0xE5			; mov	sp, bp
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+	db	144
+	cmp	word [bp+0xa], 0x66
+	je	short 0x26C2
+	cmp	word [bp+0xa], 0x46
+	jne	short 0x26D2
+	push	word [bp+0xc]
+	push	word [bp+8]
+	push	word [bp+6]
+	push	cs
+	call	0x24e4
+	jmp	short 0x26AF
+	db	144
+	push	word [bp+0xe]
+	push	word [bp+0xc]
+	push	word [bp+8]
+	push	word [bp+6]
+	push	cs
+	call	0x2622
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+
+ConvertFloat:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	si
+	mov	si, word [bp+4]
+	mov	ax, 0x200
+	push	ax
+	db	0x9A, 0xF2, 0x27, 0x00, 0x00			; call	0:JmpFpConvert
+	pop	cx
+	db	0x8B, 0xDE			; mov	bx, si
+	sub	bx, 0x86ca
+	add	bx, 0x876a
+	db	0x0B, 0xC0			; or	ax, ax
+	je	short 0x2710
+	or	byte [si+6], 8
+	mov	word [bx+2], 0x200
+	jmp	short 0x271C
+	or	byte [si+6], 4
+	mov	word [bx+2], 1
+	lea	ax, [bx+1]
+	mov	word [si], ax
+	mov	word [si+4], ax
+	mov	word [si+2], 0
+	pop	si
+	pop	bp
+	ret
+	db	0
+
+; fflush: flush one FILE, or every open FILE when the argument is null.
+fflush:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	sub	sp, 2
+	push	di
+	push	si
+	db	0x2B, 0xFF			; sub	di, di
+	cmp	word [bp+6], di
+	jne	short .one
+	db	0x2B, 0xC0			; sub	ax, ax
+	push	ax
+	call	0x27a6
+	jmp	short 0x2798
+	db	144
+.one:
+	mov	si, word [bp+6]
+	mov	al, byte [si+6]
+	db	0x8B, 0xC8			; mov	cx, ax
+	and	al, 3
+	cmp	al, 2
+	jne	short 0x278C
+	test	cl, 8
+	jne	short 0x2762
+	db	0x8B, 0xDE			; mov	bx, si
+	sub	bx, 0x86ca
+	test	byte [bx-0x7896], 1
+	je	short 0x278C
+	mov	ax, word [si]
+	sub	ax, word [si+4]
+	mov	word [bp-2], ax
+	db	0x0B, 0xC0			; or	ax, ax
+	jle	short 0x278C
+	push	ax
+	push	word [si+4]
+	mov	cl, byte [si+7]
+	db	0x2A, 0xED			; sub	ch, ch
+	push	cx
+	call	0:0xAEC
+	add	sp, 6
+	cmp	word [bp-2], ax
+	je	short 0x278C
+	or	byte [si+6], 0x20
+	mov	di, 0xffff
+	mov	ax, word [si+4]
+	mov	word [si], ax
+	mov	word [si+2], 0
+	db	0x8B, 0xC7			; mov	ax, di
+	pop	si
+	pop	di
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+	db	184,1,0,80,232,1,0,203
+
+FlushAll:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	sub	sp, 2
+	push	di
+	push	si
+	mov	si, 0x86ca
+	db	0x2B, 0xFF			; sub	di, di
+	mov	word [bp-2], di
+	jmp	short 0x27C0
+	mov	word [bp-2], 0xffff
+	add	si, 8
+	cmp	word [0x880a], si
+	jb	short 0x27DC
+	test	byte [si+6], 0x83
+	je	short 0x27BD
+	push	si
+	db	0x9A, 0x2A, 0x27, 0x00, 0x00			; call	0:fflush
+	add	sp, 2
+	inc	ax
+	je	short 0x27B8
+	inc	di
+	jmp	short 0x27BD
+	db	144
+	cmp	word [bp+4], 1
+	jne	short 0x27E6
+	db	0x8B, 0xC7			; mov	ax, di
+	jmp	short 0x27E9
+	mov	ax, word [bp-2]
+	pop	si
+	pop	di
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	ret	2
+	db	144
+
+JmpFpConvert:
+	jmp	0:0x2C5D
+	db	0
+
+SkipSpace:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	di
+	push	si
+	mov	si, word [bp+6]
+	jmp	short 0x2803
+	inc	si
+	mov	al, byte [si]
+	db	0x98			; cwde
+	db	0x8B, 0xD8			; mov	bx, ax
+	test	byte [bx-0x7a73], 8
+	jne	short 0x2802
+	db	0x2B, 0xC0			; sub	ax, ax
+	push	ax
+	push	ax
+	push	si
+	call	0:0xC9E
+	add	sp, 2
+	push	ax
+	push	si
+	call	0:0x3592
+	add	sp, 8
+	db	0x8B, 0xD8			; mov	bx, ax
+	mov	ax, 0x90a0
+	push	si
+	db	0x8B, 0xF8			; mov	di, ax
+	lea	si, [bx+8]
+	push	ds
+	pop	es
+	movsw
+	movsw
+	movsw
+	movsw
+	pop	si
+	pop	si
+	pop	di
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+
+WriteDigits:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	di
+	push	si
+	mov	bx, word [bp+0xa]
+	mov	di, word [bx+6]
+	mov	bx, word [bp+6]
+	mov	byte [bx], 0x30
+	lea	si, [bx+1]
+	jmp	short 0x2867
+	cmp	byte [di], 0
+	je	short 0x2860
+	mov	al, byte [di]
+	mov	byte [si], al
+	inc	di
+	jmp	short 0x2863
+	mov	byte [si], 0x30
+	inc	si
+	dec	word [bp+8]
+	cmp	word [bp+8], 0
+	jg	short 0x2854
+	mov	byte [si], 0
+	cmp	word [bp+8], 0
+	jl	short 0x2889
+	cmp	byte [di], 0x35
+	jl	short 0x2889
+	jmp	short 0x2881
+	db	144
+	mov	byte [si], 0x30
+	dec	si
+	cmp	byte [si], 0x39
+	je	short 0x287E
+	inc	byte [si]
+	mov	bx, word [bp+6]
+	cmp	byte [bx], 0x31
+	jne	short 0x289A
+	mov	bx, word [bp+0xa]
+	inc	word [bx+2]
+	jmp	short 0x28A7
+	db	144
+	db	0x8B, 0xC3			; mov	ax, bx
+	inc	ax
+	push	ax
+	push	bx
+	call	0:0xC6C
+	add	sp, 4
+	pop	si
+	pop	di
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+	db	144
+
+StoreOne:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	bx
+	push	es
+	les	bx, [bp+0xa]
+	mov	word [es:bx], 1
+	db	0x33, 0xC0			; xor	ax, ax
+	pop	es
+	pop	bx
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf	8
+
+StoreZero:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	bx
+	push	es
+	les	bx, [bp+6]
+	db	0x33, 0xC0			; xor	ax, ax
+	mov	byte [es:bx], al
+	pop	es
+	pop	bx
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf	4
+
+RetPop10:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf	0xa
+
+StoreWord:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	bx
+	push	es
+	mov	ax, word [bp+0xa]
+	les	bx, [bp+6]
+	mov	word [es:bx], ax
+	pop	es
+	pop	bx
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf	6
+
+RetPop2:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf	2
+
+WriteFar:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	ds
+	mov	cx, word [bp+0xa]
+	mov	bx, word [bp+0x10]
+	lds	dx, [bp+0xc]
+	mov	ah, 0x40
+	int	0x21
+	db	0x33, 0xC0			; xor	ax, ax
+	pop	ds
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf	0xc
+
+; _memmove: copy bytes, including when the ranges overlap.
+; Arguments: destination, source, count.
+_memmove:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	db	0x8B, 0xD7			; mov	dx, di
+	db	0x8B, 0xDE			; mov	bx, si
+	mov	ax, ds
+	mov	es, ax
+	mov	si, word [bp+8]
+	mov	di, word [bp+6]
+	db	0x8B, 0xC7			; mov	ax, di
+	mov	cx, word [bp+0xa]
+	jcxz	0x295E
+	db	0x3B, 0xFE			; cmp	di, si
+	jbe	short 0x294E
+	db	0x8B, 0xC6			; mov	ax, si
+	db	0x03, 0xC1			; add	ax, cx
+	db	0x3B, 0xF8			; cmp	di, ax
+	jae	short 0x294E
+	db	0x8B, 0xC7			; mov	ax, di
+	db	0x03, 0xF1			; add	si, cx
+	db	0x03, 0xF9			; add	di, cx
+	dec	si
+	dec	di
+	std
+	rep movsb
+	cld
+	jmp	short 0x295E
+	db	0x8B, 0xC7			; mov	ax, di
+	test	al, 1
+	je	short 0x2956
+	movsb
+	dec	cx
+	shr	cx, 1
+	rep movsw
+	db	0x13, 0xC9			; adc	cx, cx
+	rep movsb
+	db	0x8B, 0xF3			; mov	si, bx
+	db	0x8B, 0xFA			; mov	di, dx
+	pop	bp
+	retf
+
+; _memset: fill a count of bytes with one value.
+; Arguments: destination, byte, count.
+_memset:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	db	0x8B, 0xD7			; mov	dx, di
+	mov	ax, ds
+	mov	es, ax
+	mov	di, word [bp+6]
+	db	0x8B, 0xDF			; mov	bx, di
+	mov	cx, word [bp+0xa]
+	jcxz	0x298C
+	mov	al, byte [bp+8]
+	db	0x8A, 0xE0			; mov	ah, al
+	test	di, 1
+	je	short 0x2984
+	stosb
+	dec	cx
+	shr	cx, 1
+	rep stosw
+	db	0x13, 0xC9			; adc	cx, cx
+	rep stosb
+	db	0x8B, 0xFA			; mov	di, dx
+	xchg	bx, ax
+	pop	bp
+	retf
+	db	0
+
+WriteCounted:
+	mov	cl, byte [bx]
+	db	0x2A, 0xED			; sub	ch, ch
+	inc	bx
+	db	0x8B, 0xD3			; mov	dx, bx
+	mov	bx, 2
+	cmp	word [0x8ae4], 0xd6d6
+	jne	short 0x29A8
+	call	word [0x8ae6]
+	mov	ah, 0x40
+	int	0x21
+	retf
+	db	0,205,204,204,204,204,204,204,204,251,63,205,204,204,204,204
+	db	204,204,204,204,204,251,63
+
+HexConvert:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	sub	sp, 0xc
+	push	si
+	push	di
+	push	ds
+	db	0x33, 0xC0			; xor	ax, ax
+	xchg	word [bp+8], ax
+	mov	word [bp-2], ax
+	mov	di, word [bp+4]
+	mov	ax, word [bp+0x12]
+	mov	byte [ss:di+2], 0x20
+	test	ah, 0x80
+	je	short 0x29F1
+	and	byte [bp+0x13], 0x7f
+	mov	byte [ss:di+2], 0x2d
+	and	ax, 0x7fff
+	db	0x0B, 0xC0			; or	ax, ax
+	jne	short 0x2A05
+	mov	ax, word [bp+0xa]
+	or	ax, word [bp+0xc]
+	or	ax, word [bp+0xe]
+	or	ax, word [bp+0x10]
+	je	short 0x2A50
+	jmp	short 0x2A6A
+	cmp	ax, 0x7fff
+	jne	short 0x2A6A
+	mov	ax, word [bp+0xa]
+	or	ax, word [bp+0xc]
+	or	ax, word [bp+0xe]
+	mov	ax, word [bp+0x10]
+	jne	short 0x2A2F
+	mov	si, 0x8a52
+	cmp	ax, 0x8000
+	je	short 0x2A3A
+	cmp	ax, 0xc000
+	jne	short 0x2A2F
+	mov	si, 0x8a58
+	cmp	byte [ss:di+2], 0x2d
+	je	short 0x2A3A
+	mov	si, 0x8a44
+	test	ax, 0x4000
+	je	short 0x2A3A
+	mov	si, 0x8a4b
+	mov	word [ss:di], 1
+	push	ss
+	pop	es
+	lea	di, [di+3]
+	db	0x33, 0xC9			; xor	cx, cx
+	mov	cl, byte [si]
+	inc	cx
+	rep movsb
+	db	0x33, 0xC0			; xor	ax, ax
+	jmp	near 0x2BC9
+	mov	di, word [bp+4]
+	mov	word [ss:di], 0
+	mov	byte [ss:di+2], 0x20
+	mov	byte [ss:di+3], 0
+	mov	byte [ss:di+4], 0
+	jmp	near 0x2BC6
+	db	0x33, 0xFF			; xor	di, di
+	mov	bh, byte [bp+0x11]
+	mov	ax, word [bp+0x12]
+	db	0x8B, 0xC8			; mov	cx, ax
+	mov	dx, 0x4d10
+	mul	dx
+	xchg	cx, ax
+	mov	al, 0x4d
+	mul	ah
+	db	0x03, 0xC8			; add	cx, ax
+	db	0x13, 0xD7			; adc	dx, di
+	mov	al, 0x9a
+	mul	bh
+	db	0x03, 0xC8			; add	cx, ax
+	db	0x13, 0xFA			; adc	di, dx
+	sub	cx, 0x12f4
+	sbb	di, 0x1343
+	push	di
+	neg	di
+	lea	ax, [bp+8]
+	push	ss
+	push	ax
+	push	di
+	mov	ax, 1
+	push	ax
+	call	0x30d0
+	pop	di
+	cmp	word [bp+0x12], 0x3fff
+	jb	short 0x2ABA
+	inc	di
+	lea	ax, [bp+8]
+	push	ss
+	push	ax
+	mov	ax, 0x29b8
+	push	cs
+	push	ax
+	call	0x31a5
+	jmp	short 0x2AA3
+	mov	bx, word [bp+4]
+	mov	word [ss:bx], di
+	mov	ax, word [bp-2]
+	test	word [bp+6], 1
+	je	short 0x2AD0
+	db	0x03, 0xC7			; add	ax, di
+	jns	short 0x2AD0
+	jmp	short 0x2A50
+	db	0x3D, 0x15, 0x00			; cmp	ax, 0x15
+	jbe	short 0x2AD8
+	mov	ax, 0x15
+	mov	word [bp-2], ax
+	inc	ax
+	mov	word [bp-0xc], ax
+	mov	ax, word [bp+0x12]
+	sub	ax, 0x3ffe
+	neg	ax
+	db	0x32, 0xE4			; xor	ah, ah
+	mov	bx, word [bp+0x10]
+	mov	cx, word [bp+0xe]
+	mov	dx, word [bp+0xc]
+	mov	si, word [bp+0xa]
+	mov	di, word [bp+8]
+	db	0x0A, 0xC0			; or	al, al
+	je	short 0x2B0C
+	shr	bx, 1
+	rcr	cx, 1
+	rcr	dx, 1
+	rcr	si, 1
+	rcr	di, 1
+	rcr	ah, 1
+	dec	al
+	jne	short 0x2AFC
+	push	ss
+	pop	es
+	mov	word [bp-0xa], di
+	mov	di, word [bp+4]
+	lea	di, [di+4]
+	xchg	word [bp-0xa], di
+	db	0x32, 0xC0			; xor	al, al
+	mov	word [bp+0x12], bx
+	mov	word [bp+0x10], cx
+	mov	word [bp+0xe], dx
+	mov	word [bp+0xc], si
+	mov	word [bp+0xa], di
+	mov	byte [bp+9], ah
+	shl	ah, 1
+	rcl	di, 1
+	rcl	si, 1
+	rcl	dx, 1
+	rcl	cx, 1
+	rcl	bx, 1
+	rcl	al, 1
+	shl	ah, 1
+	rcl	di, 1
+	rcl	si, 1
+	rcl	dx, 1
+	rcl	cx, 1
+	rcl	bx, 1
+	rcl	al, 1
+	add	ah, byte [bp+9]
+	adc	di, word [bp+0xa]
+	adc	si, word [bp+0xc]
+	adc	dx, word [bp+0xe]
+	adc	cx, word [bp+0x10]
+	adc	bx, word [bp+0x12]
+	adc	al, 0
+	shl	ah, 1
+	rcl	di, 1
+	rcl	si, 1
+	rcl	dx, 1
+	rcl	cx, 1
+	rcl	bx, 1
+	rcl	al, 1
+	add	al, 0x30
+	xchg	word [bp-0xa], di
+	stosb
+	xchg	word [bp-0xa], di
+	dec	word [bp-0xc]
+	jne	short 0x2B1A
+	mov	di, word [bp-0xa]
+	mov	si, word [bp+4]
+	sub	di, 2
+	cmp	al, 0x35
+	jb	short 0x2BB1
+	lea	cx, [si+4]
+	jmp	short 0x2B97
+	cmp	byte [es:di], 0x39
+	jne	short 0x2BA3
+	mov	byte [es:di], 0x30
+	dec	di
+	db	0x3B, 0xCF			; cmp	cx, di
+	jbe	short 0x2B8C
+	inc	di
+	mov	byte [es:di], 0x30
+	inc	word [ss:si]
+	inc	byte [es:di]
+	db	0x2B, 0xF9			; sub	di, cx
+	db	0x8B, 0xDF			; mov	bx, di
+	inc	bx
+	mov	byte [ss:si+3], bl
+	jmp	short 0x2BC6
+	mov	cx, word [bp-2]
+	jcxz	0x2BBE
+	mov	al, 0x30
+	std
+	repe scasb
+	cld
+	jne	short 0x2BC1
+	jmp	near 0x2A50
+	inc	cx
+	mov	byte [ss:si+3], cl
+	mov	ax, 1
+	pop	ds
+	pop	di
+	pop	si
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	ret	0x10
+
+PackArgs:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	si
+	push	di
+	cld
+	mov	ax, ds
+	mov	es, ax
+	lea	si, [bp+6]
+	mov	di, 0x8a66
+	db	0x36, 0xA5			; movsw
+	db	0x36, 0xA5			; movsw
+	db	0x36, 0xA5			; movsw
+	db	0x36, 0xA5			; movsw
+	mov	si, 0x8a66
+	push	bp
+	call	0x2cd3
+	pop	bp
+	mov	di, 0x8a6e
+	db	0x8B, 0xC8			; mov	cx, ax
+	lodsb
+	db	0x98			; cwde
+	xchg	cx, ax
+	rep movsb
+	xchg	cx, ax
+	stosb
+	mov	di, 0x8a5e
+	db	0x32, 0xFF			; xor	bh, bh
+	mov	word [di], bx
+	mov	word [di+2], dx
+	mov	word [di+4], cx
+	mov	word [di+6], 0x8a6e
+	db	0x8B, 0xC7			; mov	ax, di
+	pop	di
+	pop	si
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+
+FloatStatus:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	sub	sp, 0xe
+	lea	ax, [bp-0xa]
+	push	ss
+	push	ax
+	lea	cx, [bp-0xe]
+	push	ss
+	push	cx
+	push	ds
+	push	word [bp+6]
+	mov	cx, 1
+	push	cx
+	call	0x332a
+	int	0x37
+	outsb
+	db	0xF6, 0x8B, 0xE5, 0x5D, 0xCB			; test	byte [bp+di+0x5de5], -0x35
+	nop
+
+AdjustStack:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	si
+	mov	bx, word [bp+6]
+	mov	si, 0x851c
+	cmp	word [si+6], bx
+	jae	short 0x2C58
+	dec	bx
+	dec	bx
+	or	byte [bx], 1
+	cmp	word [si+8], bx
+	jbe	short 0x2C58
+	mov	word [si+8], bx
+	pop	si
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+	incbin	"Extracted/segments/seg000.bin", 0x2C5D
