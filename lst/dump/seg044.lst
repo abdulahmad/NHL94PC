@@ -1,0 +1,87 @@
+0000  C9 CB                     db 0xC9, 0xCB
+0002  C8 0E 03 00               enter 0x30e, 0
+0006  52                        push dx
+0007  50                        push ax
+0008  56                        push si
+0009  8A C2                     mov al, dl
+000B  2A E4                     sub ah, ah
+000D  89 46 F8                  mov word ptr [bp - 8], ax
+0010  8B 86 EE FC               mov ax, word ptr [bp - 0x312]
+0014  B1 08                     mov cl, 8
+0016  9A AC 12 00 00            lcall 0, 0x12ac
+001B  2A E4                     sub ah, ah
+001D  89 46 F6                  mov word ptr [bp - 0xa], ax
+0020  8A 86 EE FC               mov al, byte ptr [bp - 0x312]
+0024  89 46 F4                  mov word ptr [bp - 0xc], ax
+0027  C7 46 FA 0F 27            mov word ptr [bp - 6], 0x270f
+002C  8D 86 F2 FC               lea ax, [bp - 0x30e]
+0030  16                        push ss
+0031  50                        push ax
+0032  68 00 01                  push 0x100
+0035  6A 00                     push 0
+0037  9A 66 03 EF 0F            lcall 0xfef, 0x366
+003C  83 C4 08                  add sp, 8
+003F  8D B6 F2 FC               lea si, [bp - 0x30e]
+0043  C7 46 FC 00 00            mov word ptr [bp - 4], 0
+0048  B8 76 39                  mov ax, 0x3976
+004B  8E C0                     mov es, ax
+004D  8B 5E FC                  mov bx, word ptr [bp - 4]
+0050  26 80 BF 00 01 00         cmp byte ptr es:[bx + 0x100], 0
+0056  75 05                     jne 0x5d
+0058  83 C6 03                  add si, 3
+005B  EB 7A                     jmp 0xd7
+005D  8B 5E F8                  mov bx, word ptr [bp - 8]
+0060  AC                        lodsb al, byte ptr [si]
+0061  2A E4                     sub ah, ah
+0063  2B D8                     sub bx, ax
+0065  8B C3                     mov ax, bx
+0067  8B C8                     mov cx, ax
+0069  F7 E9                     imul cx
+006B  89 46 FE                  mov word ptr [bp - 2], ax
+006E  3B 46 FA                  cmp ax, word ptr [bp - 6]
+0071  7C 04                     jl 0x77
+0073  46                        inc si
+0074  46                        inc si
+0075  EB 60                     jmp 0xd7
+0077  8B 5E F6                  mov bx, word ptr [bp - 0xa]
+007A  AC                        lodsb al, byte ptr [si]
+007B  2A E4                     sub ah, ah
+007D  2B D8                     sub bx, ax
+007F  8B C3                     mov ax, bx
+0081  8B C8                     mov cx, ax
+0083  F7 E9                     imul cx
+0085  01 46 FE                  add word ptr [bp - 2], ax
+0088  8B 46 FA                  mov ax, word ptr [bp - 6]
+008B  39 46 FE                  cmp word ptr [bp - 2], ax
+008E  7C 03                     jl 0x93
+0090  46                        inc si
+0091  EB 44                     jmp 0xd7
+0093  8B 5E F4                  mov bx, word ptr [bp - 0xc]
+0096  AC                        lodsb al, byte ptr [si]
+0097  2A E4                     sub ah, ah
+0099  2B D8                     sub bx, ax
+009B  8B C3                     mov ax, bx
+009D  8B C8                     mov cx, ax
+009F  F7 E9                     imul cx
+00A1  01 46 FE                  add word ptr [bp - 2], ax
+00A4  74 17                     je 0xbd
+00A6  80 7C FD 00               cmp byte ptr [si - 3], 0
+00AA  75 11                     jne 0xbd
+00AC  80 7C FE 00               cmp byte ptr [si - 2], 0
+00B0  75 0B                     jne 0xbd
+00B2  80 7C FF 00               cmp byte ptr [si - 1], 0
+00B6  75 05                     jne 0xbd
+00B8  C7 46 FE 0F 27            mov word ptr [bp - 2], 0x270f
+00BD  8B 46 FA                  mov ax, word ptr [bp - 6]
+00C0  39 46 FE                  cmp word ptr [bp - 2], ax
+00C3  7D 12                     jge 0xd7
+00C5  8A 46 FC                  mov al, byte ptr [bp - 4]
+00C8  2A E4                     sub ah, ah
+00CA  89 46 F2                  mov word ptr [bp - 0xe], ax
+00CD  8B 46 FE                  mov ax, word ptr [bp - 2]
+00D0  89 46 FA                  mov word ptr [bp - 6], ax
+00D3  0B C0                     or ax, ax
+00D5  74 0D                     je 0xe4
+00D7  FF 46 FC                  inc word ptr [bp - 4]
+00DA  81 7E FC 00 01            cmp word ptr [bp - 4], 0x100
+00DF  7D                        db 0x7D

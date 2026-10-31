@@ -1,0 +1,337 @@
+0000  08 15 83 C4 08 CB C8 18 00 00 53 52 50 57 56 8B  db 0x08, 0x15, 0x83, 0xC4, 0x08, 0xCB, 0xC8, 0x18, 0x00, 0x00, 0x53, 0x52, 0x50, 0x57, 0x56, 0x8B
+0010  FA 8B C2 99 52 50 8B 76 E2 6A 00 56  db 0xFA, 0x8B, 0xC2, 0x99, 0x52, 0x50, 0x8B, 0x76, 0xE2, 0x6A, 0x00, 0x56
+001C  9A 26 12 00 00            lcall 0, 0x1226
+0021  05 30 00                  add ax, 0x30
+0024  83 D2 00                  adc dx, 0
+0027  FF 76 E6                  push word ptr [bp - 0x1a]
+002A  52                        push dx
+002B  50                        push ax
+002C  68 0A 74                  push 0x740a
+002F  89 46 F0                  mov word ptr [bp - 0x10], ax
+0032  9A 13 00 DB 14            lcall 0x14db, 0x13
+0037  83 C4 08                  add sp, 8
+003A  8E C2                     mov es, dx
+003C  8B D8                     mov bx, ax
+003E  8B 46 F0                  mov ax, word ptr [bp - 0x10]
+0041  26 03 07                  add ax, word ptr es:[bx]
+0044  26 8B 57 02               mov dx, word ptr es:[bx + 2]
+0048  2D 1E 00                  sub ax, 0x1e
+004B  89 46 F4                  mov word ptr [bp - 0xc], ax
+004E  89 56 F6                  mov word ptr [bp - 0xa], dx
+0051  6A 00                     push 0
+0053  6A 12                     push 0x12
+0055  52                        push dx
+0056  26 FF 37                  push word ptr es:[bx]
+0059  89 46 EC                  mov word ptr [bp - 0x14], ax
+005C  89 56 EE                  mov word ptr [bp - 0x12], dx
+005F  89 5E E8                  mov word ptr [bp - 0x18], bx
+0062  8C 46 EA                  mov word ptr [bp - 0x16], es
+0065  9A 5F 1E A3 03            lcall 0x3a3, 0x1e5f
+006A  83 C4 08                  add sp, 8
+006D  C4 5E E8                  les bx, ptr [bp - 0x18]
+0070  26 C4 1F                  les bx, ptr es:[bx]
+0073  26 89 37                  mov word ptr es:[bx], si
+0076  26 89 7F 02               mov word ptr es:[bx + 2], di
+007A  8B C3                     mov ax, bx
+007C  8C C1                     mov cx, es
+007E  C4 5E EC                  les bx, ptr [bp - 0x14]
+0081  26 C7 47 16 00 00         mov word ptr es:[bx + 0x16], 0
+0087  26 8B 57 16               mov dx, word ptr es:[bx + 0x16]
+008B  26 89 57 10               mov word ptr es:[bx + 0x10], dx
+008F  26 89 57 1A               mov word ptr es:[bx + 0x1a], dx
+0093  26 89 57 0C               mov word ptr es:[bx + 0xc], dx
+0097  26 89 77 18               mov word ptr es:[bx + 0x18], si
+009B  8B D6                     mov dx, si
+009D  26 89 57 14               mov word ptr es:[bx + 0x14], dx
+00A1  26 89 57 1C               mov word ptr es:[bx + 0x1c], dx
+00A5  26 89 57 0E               mov word ptr es:[bx + 0xe], dx
+00A9  26 89 7F 12               mov word ptr es:[bx + 0x12], di
+00AD  26 89 07                  mov word ptr es:[bx], ax
+00B0  26 89 4F 02               mov word ptr es:[bx + 2], cx
+00B4  A1 BC 02                  mov ax, word ptr [0x2bc]
+00B7  89 46 FE                  mov word ptr [bp - 2], ax
+00BA  8B D8                     mov bx, ax
+00BC  89 76 F8                  mov word ptr [bp - 8], si
+00BF  8B D7                     mov dx, di
+00C1  8E 46 F6                  mov es, word ptr [bp - 0xa]
+00C4  39 1E 9C AE               cmp word ptr [0xae9c], bx
+00C8  76 38                     jbe 0x102
+00CA  8B 0F                     mov cx, word ptr [bx]
+00CC  3B CA                     cmp cx, dx
+00CE  7C 16                     jl 0xe6
+00D0  83 7F 02 00               cmp word ptr [bx + 2], 0
+00D4  74 10                     je 0xe6
+00D6  83 7F 04 10               cmp word ptr [bx + 4], 0x10
+00DA  75 0A                     jne 0xe6
+00DC  8B 47 06                  mov ax, word ptr [bx + 6]
+00DF  2B C6                     sub ax, si
+00E1  3D 10 00                  cmp ax, 0x10
+00E4  74 08                     je 0xee
+00E6  41                        inc cx
+00E7  41                        inc cx
+00E8  D1 E1                     shl cx, 1
+00EA  03 D9                     add bx, cx
+00EC  EB D6                     jmp 0xc4
+00EE  FF 47 02                  inc word ptr [bx + 2]
+00F1  8B 76 F4                  mov si, word ptr [bp - 0xc]
+00F4  8D 47 04                  lea ax, [bx + 4]
+00F7  26 89 44 0A               mov word ptr es:[si + 0xa], ax
+00FB  8B C6                     mov ax, si
+00FD  8C C2                     mov dx, es
+00FF  E9 95 00                  jmp 0x197
+0102  8B 0E BC 02               mov cx, word ptr [0x2bc]
+0106  8B 16 9C AE               mov dx, word ptr [0xae9c]
+010A  8B 7E E4                  mov di, word ptr [bp - 0x1c]
+010D  3B CA                     cmp cx, dx
+010F  73 7D                     jae 0x18e
+0111  8B D9                     mov bx, cx
+0113  8B 1F                     mov bx, word ptr [bx]
+0115  3B DF                     cmp bx, di
+0117  7C 08                     jl 0x121
+0119  8B F1                     mov si, cx
+011B  83 7C 02 00               cmp word ptr [si + 2], 0
+011F  74 09                     je 0x12a
+0121  8D 47 02                  lea ax, [bx + 2]
+0124  D1 E0                     shl ax, 1
+0126  03 C8                     add cx, ax
+0128  EB E3                     jmp 0x10d
+012A  8D 45 04                  lea ax, [di + 4]
+012D  3B C3                     cmp ax, bx
+012F  7F 16                     jg 0x147
+0131  8B C3                     mov ax, bx
+0133  2B C7                     sub ax, di
+0135  48                        dec ax
+0136  48                        dec ax
+0137  8B F7                     mov si, di
+0139  D1 E6                     shl si, 1
+013B  03 F1                     add si, cx
+013D  89 44 04                  mov word ptr [si + 4], ax
+0140  C7 44 06 00 00            mov word ptr [si + 6], 0
+0145  EB 02                     jmp 0x149
+0147  8B FB                     mov di, bx
+0149  8B D9                     mov bx, cx
+014B  89 3F                     mov word ptr [bx], di
+014D  C7 47 02 01 00            mov word ptr [bx + 2], 1
+0152  83 C3 04                  add bx, 4
+0155  8B 76 F4                  mov si, word ptr [bp - 0xc]
+0158  26 89 5C 0A               mov word ptr es:[si + 0xa], bx
+015C  BE 10 00                  mov si, 0x10
+015F  8B CB                     mov cx, bx
+0161  C7 46 FA 00 00            mov word ptr [bp - 6], 0
+0166  89 7E E4                  mov word ptr [bp - 0x1c], di
+0169  89 4E FE                  mov word ptr [bp - 2], cx
+016C  8B CE                     mov cx, si
+016E  8B 5E FA                  mov bx, word ptr [bp - 6]
+0171  8B 7E FE                  mov di, word ptr [bp - 2]
+0174  8B 56 F8                  mov dx, word ptr [bp - 8]
+0177  EB 08                     jmp 0x181
+0179  47                        inc di
+017A  47                        inc di
+017B  89 4D FE                  mov word ptr [di - 2], cx
+017E  03 CA                     add cx, dx
+0180  43                        inc bx
+0181  39 5E E4                  cmp word ptr [bp - 0x1c], bx
+0184  7F F3                     jg 0x179
+0186  8B 46 F4                  mov ax, word ptr [bp - 0xc]
+0189  8B 56 F6                  mov dx, word ptr [bp - 0xa]
+018C  EB 09                     jmp 0x197
+018E  68 16 74                  push 0x7416
+0191  9A E4 03 4A 0F            lcall 0xf4a, 0x3e4
+0196  5B                        pop bx
+0197  5E                        pop si
+0198  5F                        pop di
+0199  C9                        leave
+019A  CB                        retf
+019B  90                        db 0x90
+019C  C8 1C 00 00               enter 0x1c, 0
+01A0  50                        push ax
+01A1  57                        push di
+01A2  56                        push si
+01A3  8B F2                     mov si, dx
+01A5  89 76 FA                  mov word ptr [bp - 6], si
+01A8  53                        push bx
+01A9  8B F8                     mov di, ax
+01AB  83 C7 03                  add di, 3
+01AE  C1 FF 02                  sar di, 2
+01B1  8B C7                     mov ax, di
+01B3  F7 E6                     mul si
+01B5  8B C8                     mov cx, ax
+01B7  F7 D8                     neg ax
+01B9  25 0F 00                  and ax, 0xf
+01BC  8B D0                     mov dx, ax
+01BE  03 C1                     add ax, cx
+01C0  8B C8                     mov cx, ax
+01C2  8B DA                     mov bx, dx
+01C4  2B D2                     sub dx, dx
+01C6  89 4E F2                  mov word ptr [bp - 0xe], cx
+01C9  B1 02                     mov cl, 2
+01CB  89 5E F0                  mov word ptr [bp - 0x10], bx
+01CE  89 46 EC                  mov word ptr [bp - 0x14], ax
+01D1  89 56 EE                  mov word ptr [bp - 0x12], dx
+01D4  9A 58 12 00 00            lcall 0, 0x1258
+01D9  05 2E 00                  add ax, 0x2e
+01DC  83 D2 00                  adc dx, 0
+01DF  52                        push dx
+01E0  50                        push ax
+01E1  68 4E 75                  push 0x754e
+01E4  9A 30 00 DB 14            lcall 0x14db, 0x30
+01E9  83 C4 08                  add sp, 8
+01EC  B1 02                     mov cl, 2
+01EE  8B D8                     mov bx, ax
+01F0  8B CA                     mov cx, dx
+01F2  8B C2                     mov ax, dx
+01F4  B1 02                     mov cl, 2
+01F6  89 5E E8                  mov word ptr [bp - 0x18], bx
+01F9  89 46 EA                  mov word ptr [bp - 0x16], ax
+01FC  8B 46 EC                  mov ax, word ptr [bp - 0x14]
+01FF  8B 56 EE                  mov dx, word ptr [bp - 0x12]
+0202  05 04 00                  add ax, 4
+0205  83 D2 00                  adc dx, 0
+0208  9A 58 12 00 00            lcall 0, 0x1258
+020D  FF 76 EA                  push word ptr [bp - 0x16]
+0210  FF 76 E8                  push word ptr [bp - 0x18]
+0213  89 46 E4                  mov word ptr [bp - 0x1c], ax
+0216  89 56 E6                  mov word ptr [bp - 0x1a], dx
+0219  9A 2E 09 A3 03            lcall 0x3a3, 0x92e
+021E  83 C4 04                  add sp, 4
+0221  03 46 E4                  add ax, word ptr [bp - 0x1c]
+0224  13 56 E6                  adc dx, word ptr [bp - 0x1a]
+0227  9A 59 09 A3 03            lcall 0x3a3, 0x959
+022C  89 46 F4                  mov word ptr [bp - 0xc], ax
+022F  89 56 F6                  mov word ptr [bp - 0xa], dx
+0232  6A 00                     push 0
+0234  6A 10                     push 0x10
+0236  FF 76 EA                  push word ptr [bp - 0x16]
+0239  FF 76 E8                  push word ptr [bp - 0x18]
+023C  9A 5F 1E A3 03            lcall 0x3a3, 0x1e5f
+0241  83 C4 08                  add sp, 8
+0244  C4 5E E8                  les bx, ptr [bp - 0x18]
+0247  26 89 3F                  mov word ptr es:[bx], di
+024A  26 89 77 02               mov word ptr es:[bx + 2], si
+024E  8B 46 F0                  mov ax, word ptr [bp - 0x10]
+0251  C1 E0 0C                  shl ax, 0xc
+0254  8B C8                     mov cx, ax
+0256  26 33 47 0E               xor ax, word ptr es:[bx + 0xe]
+025A  80 E4 0F                  and ah, 0xf
+025D  33 C8                     xor cx, ax
+025F  26 89 4F 0E               mov word ptr es:[bx + 0xe], cx
+0263  33 C0                     xor ax, ax
+0265  C4 5E F4                  les bx, ptr [bp - 0xc]
+0268  26 89 47 10               mov word ptr es:[bx + 0x10], ax
+026C  26 89 47 1A               mov word ptr es:[bx + 0x1a], ax
+0270  26 89 47 0C               mov word ptr es:[bx + 0xc], ax
+0274  26 89 7F 14               mov word ptr es:[bx + 0x14], di
+0278  26 89 7F 0E               mov word ptr es:[bx + 0xe], di
+027C  8B 46 E2                  mov ax, word ptr [bp - 0x1e]
+027F  26 89 47 18               mov word ptr es:[bx + 0x18], ax
+0283  26 89 47 1C               mov word ptr es:[bx + 0x1c], ax
+0287  26 89 77 12               mov word ptr es:[bx + 0x12], si
+028B  8B 46 F0                  mov ax, word ptr [bp - 0x10]
+028E  26 89 47 16               mov word ptr es:[bx + 0x16], ax
+0292  8B 46 E8                  mov ax, word ptr [bp - 0x18]
+0295  8B 56 EA                  mov dx, word ptr [bp - 0x16]
+0298  26 89 07                  mov word ptr es:[bx], ax
+029B  26 89 57 02               mov word ptr es:[bx + 2], dx
+029F  52                        push dx
+02A0  50                        push ax
+02A1  9A 2E 09 A3 03            lcall 0x3a3, 0x92e
+02A6  B1 04                     mov cl, 4
+02A8  83 C4 04                  add sp, 4
+02AB  9A 64 12 00 00            lcall 0, 0x1264
+02B0  89 46 FC                  mov word ptr [bp - 4], ax
+02B3  8B 46 F2                  mov ax, word ptr [bp - 0xe]
+02B6  C1 E8 04                  shr ax, 4
+02B9  01 46 FC                  add word ptr [bp - 4], ax
+02BC  8B 4E FC                  mov cx, word ptr [bp - 4]
+02BF  C4 5E F4                  les bx, ptr [bp - 0xc]
+02C2  26 89 4F 04               mov word ptr es:[bx + 4], cx
+02C6  03 C8                     add cx, ax
+02C8  26 89 4F 06               mov word ptr es:[bx + 6], cx
+02CC  03 C8                     add cx, ax
+02CE  89 4E FC                  mov word ptr [bp - 4], cx
+02D1  26 89 4F 08               mov word ptr es:[bx + 8], cx
+02D5  A1 BC 02                  mov ax, word ptr [0x2bc]
+02D8  8B D8                     mov bx, ax
+02DA  8B 0E 9C AE               mov cx, word ptr [0xae9c]
+02DE  89 7E F8                  mov word ptr [bp - 8], di
+02E1  3B D9                     cmp bx, cx
+02E3  73 38                     jae 0x31d
+02E5  8B 17                     mov dx, word ptr [bx]
+02E7  3B 56 FA                  cmp dx, word ptr [bp - 6]
+02EA  72 16                     jb 0x302
+02EC  83 7F 02 00               cmp word ptr [bx + 2], 0
+02F0  74 10                     je 0x302
+02F2  83 7F 04 10               cmp word ptr [bx + 4], 0x10
+02F6  75 0A                     jne 0x302
+02F8  8B 47 06                  mov ax, word ptr [bx + 6]
+02FB  2B C7                     sub ax, di
+02FD  3D 10 00                  cmp ax, 0x10
+0300  74 08                     je 0x30a
+0302  42                        inc dx
+0303  42                        inc dx
+0304  D1 E2                     shl dx, 1
+0306  03 DA                     add bx, dx
+0308  EB D7                     jmp 0x2e1
+030A  FF 47 02                  inc word ptr [bx + 2]
+030D  8B 7E F4                  mov di, word ptr [bp - 0xc]
+0310  8D 47 04                  lea ax, [bx + 4]
+0313  26 89 45 0A               mov word ptr es:[di + 0xa], ax
+0317  8B C7                     mov ax, di
+0319  8C C2                     mov dx, es
+031B  EB 7F                     jmp 0x39c
+031D  8B 1E BC 02               mov bx, word ptr [0x2bc]
+0321  8B 7E FA                  mov di, word ptr [bp - 6]
+0324  3B D9                     cmp bx, cx
+0326  73 6B                     jae 0x393
+0328  8B 17                     mov dx, word ptr [bx]
+032A  3B D7                     cmp dx, di
+032C  72 06                     jb 0x334
+032E  83 7F 02 00               cmp word ptr [bx + 2], 0
+0332  74 08                     je 0x33c
+0334  42                        inc dx
+0335  42                        inc dx
+0336  D1 E2                     shl dx, 1
+0338  03 DA                     add bx, dx
+033A  EB E8                     jmp 0x324
+033C  8D 45 04                  lea ax, [di + 4]
+033F  3B C2                     cmp ax, dx
+0341  77 16                     ja 0x359
+0343  8B C2                     mov ax, dx
+0345  2B C7                     sub ax, di
+0347  48                        dec ax
+0348  48                        dec ax
+0349  8B F7                     mov si, di
+034B  D1 E6                     shl si, 1
+034D  03 F3                     add si, bx
+034F  89 44 04                  mov word ptr [si + 4], ax
+0352  C7 44 06 00 00            mov word ptr [si + 6], 0
+0357  EB 02                     jmp 0x35b
+0359  8B FA                     mov di, dx
+035B  89 3F                     mov word ptr [bx], di
+035D  C7 47 02 01 00            mov word ptr [bx + 2], 1
+0362  8D 47 04                  lea ax, [bx + 4]
+0365  8B 76 F4                  mov si, word ptr [bp - 0xc]
+0368  26 89 44 0A               mov word ptr es:[si + 0xa], ax
+036C  B9 10 00                  mov cx, 0x10
+036F  8B D8                     mov bx, ax
+0371  C7 46 FC 00 00            mov word ptr [bp - 4], 0
+0376  8B 56 FC                  mov dx, word ptr [bp - 4]
+0379  89 7E FA                  mov word ptr [bp - 6], di
+037C  EB 09                     jmp 0x387
+037E  43                        inc bx
+037F  43                        inc bx
+0380  89 4F FE                  mov word ptr [bx - 2], cx
+0383  03 4E F8                  add cx, word ptr [bp - 8]
+0386  42                        inc dx
+0387  3B FA                     cmp di, dx
+0389  77 F3                     ja 0x37e
+038B  8B 46 F4                  mov ax, word ptr [bp - 0xc]
+038E  8B 56 F6                  mov dx, word ptr [bp - 0xa]
+0391  EB 09                     jmp 0x39c
+0393  68 59 75                  push 0x7559
+0396  9A E4 03 4A 0F            lcall 0xf4a, 0x3e4
+039B  5B                        pop bx
+039C  5E                        pop si
+039D  5F                        pop di
+039E  C9                        leave
+039F  CB                        retf

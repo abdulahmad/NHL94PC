@@ -1,0 +1,31 @@
+0000  2A E4 5E 5F C9 CB         db 0x2A, 0xE4, 0x5E, 0x5F, 0xC9, 0xCB
+0006  55                        push bp
+0007  8B EC                     mov bp, sp
+0009  50                        push ax
+000A  A1 02 2A                  mov ax, word ptr [0x2a02]
+000D  BA 2D E6                  mov dx, 0xe62d
+0010  9A D5 09 A3 03            lcall 0x3a3, 0x9d5
+0015  8B D8                     mov bx, ax
+0017  A1 00 2A                  mov ax, word ptr [0x2a00]
+001A  8B C8                     mov cx, ax
+001C  BA 40 BB                  mov dx, 0xbb40
+001F  9A D5 09 A3 03            lcall 0x3a3, 0x9d5
+0024  03 D8                     add bx, ax
+0026  8B C1                     mov ax, cx
+0028  BA 2D E6                  mov dx, 0xe62d
+002B  9A D5 09 A3 03            lcall 0x3a3, 0x9d5
+0030  03 D3                     add dx, bx
+0032  05 01 00                  add ax, 1
+0035  83 D2 00                  adc dx, 0
+0038  A3 00 2A                  mov word ptr [0x2a00], ax
+003B  89 16 02 2A               mov word ptr [0x2a02], dx
+003F  8A C4                     mov al, ah
+0041  8A E2                     mov ah, dl
+0043  5A                        pop dx
+0044  9A D5 09 A3 03            lcall 0x3a3, 0x9d5
+0049  8B C2                     mov ax, dx
+004B  C9                        leave
+004C  CB                        retf
+004D  00                        db 0x00
+004E  CB                        retf
+004F  90                        db 0x90

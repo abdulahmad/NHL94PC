@@ -1,0 +1,39 @@
+0000  03 E9 69 FF 8B 46 F2 5E C9 CB 90 90  db 0x03, 0xE9, 0x69, 0xFF, 0x8B, 0x46, 0xF2, 0x5E, 0xC9, 0xCB, 0x90, 0x90
+000C  C8 0E 00 00               enter 0xe, 0
+0010  57                        push di
+0011  56                        push si
+0012  FF 76 08                  push word ptr [bp + 8]
+0015  FF 76 06                  push word ptr [bp + 6]
+0018  9A EC 0A A3 03            lcall 0x3a3, 0xaec
+001D  83 C4 04                  add sp, 4
+0020  89 46 F2                  mov word ptr [bp - 0xe], ax
+0023  2B C0                     sub ax, ax
+0025  89 46 F6                  mov word ptr [bp - 0xa], ax
+0028  89 46 F4                  mov word ptr [bp - 0xc], ax
+002B  33 F6                     xor si, si
+002D  EB 38                     jmp 0x67
+002F  56                        push si
+0030  FF 76 08                  push word ptr [bp + 8]
+0033  FF 76 06                  push word ptr [bp + 6]
+0036  9A F6 0A A3 03            lcall 0x3a3, 0xaf6
+003B  83 C4 06                  add sp, 6
+003E  8B F8                     mov di, ax
+0040  8E C2                     mov es, dx
+0042  26 8B 45 02               mov ax, word ptr es:[di + 2]
+0046  26 F7 2D                  imul word ptr es:[di]
+0049  05 10 00                  add ax, 0x10
+004C  2B D2                     sub dx, dx
+004E  89 56 FA                  mov word ptr [bp - 6], dx
+0051  3B 56 F6                  cmp dx, word ptr [bp - 0xa]
+0054  7C 10                     jl 0x66
+0056  7F 05                     jg 0x5d
+0058  3B 46 F4                  cmp ax, word ptr [bp - 0xc]
+005B  76 09                     jbe 0x66
+005D  8B 56 FA                  mov dx, word ptr [bp - 6]
+0060  89 46 F4                  mov word ptr [bp - 0xc], ax
+0063  89 56 F6                  mov word ptr [bp - 0xa], dx
+0066  46                        inc si
+0067  39 76 F2                  cmp word ptr [bp - 0xe], si
+006A  7F C3                     jg 0x2f
+006C  8B 46 F4                  mov ax, word ptr [bp - 0xc]
+006F  8B                        db 0x8B
