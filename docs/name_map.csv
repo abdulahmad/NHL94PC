@@ -599,3 +599,20 @@ seg001:04CE,FileSizeArg,,new,high,"File length. The report-on-failure flag comes
 seg001:04DF,FileSize,,new,high,"File length. A failed open returns 0",src/seg/seg001.asm
 seg001:04EF,FileSizeMsg,,new,high,"File length. A failed open calls seg022. This is the far entry",src/seg/seg001.asm
 seg001:04FD,FileSizeBody,,new,high,"Shared open, seek-to-end, close. Returns the length in DX:AX",src/seg/seg001.asm
+DGROUP:6310,PathBuf,,new,high,"FindPath returns this buffer. The directory is copied here and the DTA name is appended",src/seg/seg001.asm
+DGROUP:6374,PathCut,,new,high,"Offset in PathBuf just past the last colon or backslash",src/seg/seg001.asm
+DGROUP:6376,FindDta,,new,high,"DOS DTA for FindPath and FindNextPath. Set with INT 21h AH=1Ah",src/seg/seg001.asm
+DGROUP:63F8,BlockEnd,,new,high,"Paragraph past the block AllocBytes allocated",src/seg/seg001.asm
+DGROUP:63FC,BlockSeg,,new,high,"Segment AllocBytes got from INT 21h AH=48h",src/seg/seg001.asm
+DGROUP:63FE,SavedCs,,new,high,"CS stored by AllocBytes. Not read in the bytes disassembled so far",src/seg/seg001.asm
+DGROUP:6400,SavedDs,,new,high,"DS stored by AllocBytes. Not read in the bytes disassembled so far",src/seg/seg001.asm
+seg001:0543,FileHeadArg,,new,high,"Reads four bytes. Failure flag comes from the caller. Result is bytes 1..3 divided by 16 rounded up",src/seg/seg001.asm
+seg001:0554,FileHead,,new,high,"Same as FileHeadArg with the failure flag forced to 0",src/seg/seg001.asm
+seg001:0564,FileHeadMsg,,new,high,"Same as FileHeadArg with the failure flag forced to 1. The seg022 call returns into FindPath",src/seg/seg001.asm
+seg001:0572,FileHeadBody,,new,high,"Open, read 4, close. Shifts the 24-bit value in bytes 1..3 right by 4 and adds 1 if the low nibble was set",src/seg/seg001.asm
+seg001:05EA,FindPath,,new,high,"Findfirst attribute 6. Builds PathBuf from the directory and the DTA name. Returns PathBuf or 0",src/seg/seg001.asm
+seg001:0627,FindCopyName,,new,high,"Appends the 13-byte DTA name at PathCut and returns PathBuf",src/seg/seg001.asm
+seg001:0640,FindNone,,new,high,"Returns AX 0 through FindPath's epilogue",src/seg/seg001.asm
+seg001:0644,FindNextPath,,new,high,"Findnext, then FindCopyName. Returns 0 when the search ends",src/seg/seg001.asm
+seg001:065A,LargestFree,,new,high,"AH=48h BX=FFFFh. Returns the largest free block in bytes",src/seg/seg001.asm
+seg001:067A,AllocBytes,,new,high,"DX:AX is a byte size. Allocates that many paragraphs, or the largest block if the first try fails. Stores SavedCs SavedDs SavedSp",src/seg/seg001.asm
