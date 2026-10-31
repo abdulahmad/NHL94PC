@@ -1,6 +1,15 @@
 ; Segment seg004. NineCmp and TypeId look at a short header.
 ; The first two bytes are retf and nop.
 
+; DGROUP words this segment uses. The bytes live in the near data, not here.
+MapLo		equ	0x8ED6
+MapHi		equ	0x8ED8
+MapPair		equ	0x8EE2
+OutPtr		equ	0x8EDA
+InPtr		equ	0x8EDE
+BitBuf		equ	0x8EE4
+BitCount	equ	0x8EE8
+
 	retf
 	nop
 ; Compare 9 bytes of the far string with the bytes at 402h.
@@ -345,4 +354,172 @@ S028C:
 	pop	di
 	leave
 	retf
-	incbin	"Extracted/segments/seg004.bin", 0x292, 0xC10 - 0x292
+
+; ReadHead runs NineCmp and TypeId. A type from 1 to 1Ch returns the
+; 3-byte value that follows the two type bytes. Otherwise the caller
+; dword is returned.
+; EmitByte writes one byte through OutPtr, or expands it through the
+; two maps when the low map marks it. GetBits pulls that many bits
+; from BitBuf, refilling from InPtr when fewer than 16 remain.
+
+ReadHead:
+	enter	4, 0
+	push	di
+	push	si
+	cmp	word [bp + 0xc], 0
+	jl	short S02F0
+	jg	short S02A6
+	cmp	word [bp + 0xa], 2
+	jbe	short S02F0
+S02A6:
+	push	word [bp + 8]
+	push	word [bp + 6]
+	push	cs
+	call	2
+	add	sp, 4
+	db	0x8B, 0xF0			; mov si, ax
+	mov	word [bp - 2], dx
+	db	0x8B, 0xCE			; mov cx, si
+	db	0x8B, 0xDA			; mov bx, dx
+	sub	ax, word [bp + 6]
+	db	0x1B, 0xD2			; sbb dx, dx
+	sub	word [bp + 0xa], ax
+	sbb	word [bp + 0xc], dx
+	push	bx
+	push	cx
+	push	cs
+	call	TypeId
+	add	sp, 4
+	db	0x8B, 0xF8			; mov di, ax
+	db	0x0B, 0xFF			; or di, di
+	jle	short S02F0
+	cmp	di, 0x1c
+	jg	short S02F0
+	push	3
+	mov	cx, word [bp - 2]
+	inc	si
+	inc	si
+	push	cx
+	push	si
+	push	cs
+	call	ReadBe
+	add	sp, 6
+	pop	si
+	pop	di
+	leave
+	retf
+	nop
+S02F0:
+	mov	ax, word [bp + 0xa]
+	mov	dx, word [bp + 0xc]
+	pop	si
+	pop	di
+	leave
+	retf
+EmitByte:
+	enter	2, 0
+	push	si
+	mov	bl, byte [bp + 4]
+	db	0x2A, 0xFF			; sub bh, bh
+	mov	word [bp - 2], bx
+	mov	si, word [MapLo]
+	cmp	byte [bx + si], bh
+	je	short S032C
+	mov	si, word [MapHi]
+	mov	al, byte [bx + si]
+	push	ax
+	call	EmitByte
+	mov	bx, word [bp - 2]
+	mov	si, word [MapPair]
+	mov	al, byte [bx + si]
+	push	ax
+	call	EmitByte
+	pop	si
+	leave
+	ret	2
+	nop
+S032C:
+	mov	al, byte [bp + 4]
+	les	bx, [OutPtr]
+	mov	byte es:[bx], al
+	add	word [OutPtr], 1
+	db	0x1B, 0xC0			; sbb ax, ax
+	and	ax, 0x1000
+	add	word [OutPtr+2], ax
+	pop	si
+	leave
+	ret	2
+	nop
+GetBits:
+	enter	4, 0
+	push	si
+	mov	si, word [bp + 6]
+	cmp	si, 0x10
+	jle	short S037C
+	lea	ax, [si - 0x10]
+	push	ax
+	push	cs
+	call	GetBits
+	add	sp, 2
+	mov	word [bp - 4], 0
+	mov	word [bp - 2], ax
+	push	0x10
+	push	cs
+	call	GetBits
+	add	sp, 2
+	or	ax, word [bp - 4]
+	or	dx, word [bp - 2]
+	pop	si
+	leave
+	retf
+S037C:
+	mov	ax, word [BitBuf]
+	mov	dx, word [BitBuf+2]
+	mov	cl, 0x20
+	db	0x8B, 0xDE			; mov bx, si
+	db	0x2A, 0xCB			; sub cl, bl
+	je	short S0393
+S038B:
+	shr	dx, 1
+	rcr	ax, 1
+	dec	cl
+	jne	short S038B
+S0393:
+	mov	word [bp - 4], ax
+	mov	word [bp - 2], dx
+	push	bx
+	push	0x8ee4
+	call	0:LongShlAt
+	sub	word [BitCount], si
+	cmp	word [BitCount], 0x10
+	jge	short S03E9
+S03AD:
+	les	bx, [InPtr]
+	add	word [InPtr], 1
+	jae	short S03BE
+	add	word [InPtr+2], 0x1000
+S03BE:
+	mov	al, byte es:[bx]
+	db	0x2A, 0xE4			; sub ah, ah
+	db	0x2B, 0xD2			; sub dx, dx
+	mov	cl, 0x18
+	sub	cl, byte [BitCount]
+	je	short S03D5
+S03CD:
+	shl	ax, 1
+	rcl	dx, 1
+	dec	cl
+	jne	short S03CD
+S03D5:
+	or	word [BitBuf], ax
+	or	word [BitBuf+2], dx
+	add	word [BitCount], 8
+	cmp	word [BitCount], 0x10
+	jl	short S03AD
+S03E9:
+	mov	ax, word [bp - 4]
+	mov	dx, word [bp - 2]
+	pop	si
+	leave
+	retf
+	incbin	"Extracted/segments/seg004.bin", 0x3F2, 0xC10 - 0x3F2
