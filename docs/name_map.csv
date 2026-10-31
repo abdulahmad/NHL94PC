@@ -696,3 +696,17 @@ seg001:10C3,InitJoy,,new,high,"Sets JoyOn bit 0 and the initial axis limits",src
 seg001:10E1,JoyNibble,,new,high,"Low nibble of the argument indexes the 16 bytes at 701Fh",src/seg/seg001.asm
 seg001:10F2,JoyScaleX,,new,high,"(JoyX minus the low limit) times the X scale. High word of the product minus 1Fh",src/seg/seg001.asm
 seg001:1109,JoyScaleY,,new,high,"The same scale for JoyY",src/seg/seg001.asm
+DGROUP:7050,Stick1X,,new,high,"First timed axis in PollSticks",src/seg/seg001.asm
+DGROUP:7052,Stick1Y,,new,high,"Second timed axis in PollSticks",src/seg/seg001.asm
+DGROUP:7030,Stick2X,,new,high,"Third timed axis in PollSticks",src/seg/seg001.asm
+DGROUP:7032,Stick2Y,,new,high,"Fourth timed axis in PollSticks",src/seg/seg001.asm
+DGROUP:7055,Stick1Bits,,new,high,"Direction and button bits for the first pair. Returned in AL",src/seg/seg001.asm
+DGROUP:7056,Stick2Bits,,new,high,"Direction and button bits for the second pair. Returned in AH",src/seg/seg001.asm
+DGROUP:7054,StickRaw,,new,high,"Port 201h sample taken before the axes are timed",src/seg/seg001.asm
+seg001:1120,PollSticks,,new,high,"Times up to four axes. JoyOn bit 0 fills Stick1Bits and bit 1 fills Stick2Bits",src/seg/seg001.asm
+seg001:1405,InitStick1,,new,high,"Sets JoyOn bit 0 and the initial limits for the first pair. _main calls this",src/seg/seg001.asm
+seg001:1423,InitStick2,,new,high,"Sets JoyOn bit 1 and the initial limits for the second pair. _main calls this",src/seg/seg001.asm
+seg001:1441,ScaleStick1X,,new,high,"(Stick1X minus its low limit) times the X scale, high word minus 1Fh",src/seg/seg001.asm
+seg001:1458,ScaleStick1Y,,new,high,"The same scale for Stick1Y",src/seg/seg001.asm
+seg001:146F,ScaleStick2X,,new,high,"The same scale for Stick2X",src/seg/seg001.asm
+seg001:1486,ScaleStick2Y,,new,high,"The same scale for Stick2Y",src/seg/seg001.asm
