@@ -1,5 +1,6 @@
-;	Segment build for seg/seg004.asm: sets its origin and the outside labels it uses, then includes the file on its own
-;	for checking against the EXE (tools/verify_segment.py seg004).
+;	Segment build for seg/seg004.asm. Labels defined in seg000.
 	bits	16
 	org	0x0
+_fmemchr	equ	0x135C
+RetOnly		equ	0x1398
 %include "seg/seg004.asm"
