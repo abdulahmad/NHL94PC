@@ -4,7 +4,7 @@
 
 - Full build MATCH (SHA-1 `d94450ddff26528bddac6646c234277076fd36cb`, 244,854 bytes); `tools/verify_all.sh` MATCH.
 - seg056 is source: the resident RTLink/Plus manager and the overlay thunks (10,992 bytes). seg057 was the thunk tail and is merged into seg056.
-- seg000 is entirely source (`src/seg/seg000.asm`). Nothing in it is incbin. seg005 is source. seg001 is source from the start through `ReadCloseFail` (offset `0x28BE`); the rest is incbin. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`) and seg056.
+- seg000 is entirely source (`src/seg/seg000.asm`). Nothing in it is incbin. seg005 is source. seg001 is source from the start through `FarZero` (offset `0x297A`); the rest is incbin. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`) and seg056.
 - seg011 is still a false split (merge into seg010 when seg010 is disassembled). The `ovl_*` slices were not resliced.
 
 ## Known facts
@@ -195,7 +195,7 @@ The spill at the start of seg001 finishes `test bx, 8`, then `pop bp` / `ret 0xe
 
 `FillFar` writes one byte through a far pointer for a long count. Offsets stay under 16, then the fill moves 32K at a time. `FillFarZero` writes zeros. The dword path is the same test `CopyFar` uses.
 
-`LineOpen` orders two points into the record at `[bp+0Eh]` and stores a direction byte. `LineClip` does the same after a box test: both ends outside one edge is a reject. A line with no clip bits returns 0. `ClipTop`, `ClipBottom`, `ClipLeft`, and `ClipRight` slide the crossed end onto that edge. `AfterTop`, `AfterBottom`, and `AfterLeft` run the next edge when that outcode is still set. `LineFlat` is the equal-Y path. `LineOverflow` shifts an endpoint that sits far outside the box. `FileOpenArg`, `ReadAtArg`, and `ReadCloseArg` are the DOS reads after that. The next bytes are still incbin.
+`LineOpen` orders two points into the record at `[bp+0Eh]` and stores a direction byte. `LineClip` does the same after a box test: both ends outside one edge is a reject. A line with no clip bits returns 0. `ClipTop`, `ClipBottom`, `ClipLeft`, and `ClipRight` slide the crossed end onto that edge. `AfterTop`, `AfterBottom`, and `AfterLeft` run the next edge when that outcode is still set. `LineFlat` is the equal-Y path. `LineOverflow` shifts an endpoint that sits far outside the box. `FileOpenArg`, `ReadAtArg`, and `ReadCloseArg` are the DOS reads after that. `CpuProbe` sets `Cpu286`, `Cpu386`, `Cpu486`, and `CpuPe`. `NormDsSi` and `NormEsDi` are the pointer normalizers `CopyFar` calls. The next bytes are still incbin.
 
 `FindFar` and `FindFarMsg` look up a long key in a far table and return a far pointer. `FindFarList` and `FindFarQuiet` walk a list of keys. `FarToLinear` and `LinearToFar` convert between a far pointer and the 20-bit address. `LinearToFarRegs` does that conversion with the address already in DX:AX.
 
@@ -234,7 +234,6 @@ The spill at the start of seg001 finishes `test bx, 8`, then `pop bp` / `ret 0xe
 - Flag bit `0x20` selects the other read path (`call 0:0` in `LoadSection`). None of these 21 records has that bit set, and the far call is stored as zeros.
 - `ReturnBytePtr` is written from the reload return hook; what that byte represents is not pinned down.
 - `ReadEndPtr` and the four routines around it spin on `EndPtr`. The bytes do not say what advances that pointer.
-- The word `CopyFar` tests at ss:`0x763C` selects dword moves. Its symbol is not named.
 - `PassFlag1`, `PassFlag0`, `AddrFlag0`, `AddrFlag1`, and `ArgSetup` are named from the flag and the pointer they set. The body they jump to (offset `0x29D2`) is still incbin, so the job is not named.
 - `FoldScale` calls `Atan2`, then the routines at `0x32EA` and `0x32F1`. Those two are still incbin, so the divide that follows the angle is not named.
 - `FormatCall` is not the target of a far call in the EXE. The four pops are the far return address and two words. What `_sprintf` uses as its format is the word under those on the caller's stack.

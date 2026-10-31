@@ -2,7 +2,7 @@
 ; a file-head count, find-first paths, the DOS memory block, a 4-byte lookup,
 ; far-pointer lookup, a counted copy, multiply and divide, file writes,
 ; character widths, the INT 8 handler, the game port, the keyboard hook,
-; the monochrome console, the CallCount waits, line clipping, and file reads.
+; the monochrome console, the CallCount waits, line clipping, file reads, and a CPU probe.
 ; The first bytes finish the seg000 routine that ends on this paragraph.
 
 ; DGROUP words this segment uses. The bytes live in the near data, not here.
@@ -76,6 +76,10 @@ AltPath		equ	0x7607
 AltBuf		equ	0x762F
 AltCall		equ	0x7633
 AltSize		equ	0x7637
+Cpu286		equ	0x763A
+Cpu386		equ	0x763C
+Cpu486		equ	0x763E
+CpuPe		equ	0x7640
 GamePort	equ	0x201
 FmtSave		equ	0x64CE
 FmtBuf		equ	0x64D6
@@ -418,7 +422,7 @@ WaitAdd:
 
 ; CopyFar: copy the long byte count at [bp+0Eh] from the far pointer at [bp+6]
 ; to the far pointer at [bp+0Ah]. Offsets are kept under 16, then the copy moves
-; 32K at a time. Word moves, or dword moves when the word at 0x763C is not zero.
+; 32K at a time. Word moves, or dword moves when Cpu386 is not zero.
 CopyFar:
 	push	bp
 	db	0x8B, 0xEC			; mov bp, sp
@@ -427,8 +431,8 @@ CopyFar:
 	push	di
 	lds	si, [bp + 6]
 	les	di, [bp + 0xa]
-	call	0x2953			; still incbin
-	call	0x2964			; still incbin
+	call	NormDsSi
+	call	NormEsDi
 	mov	cx, word [bp + 0xe]
 	mov	dx, word [bp + 0x10]
 	cld
@@ -441,7 +445,7 @@ CopyFar:
 .2:
 	test	di, 0xf
 	jne	short .1
-	cmp	word [ss:0x763c], 0
+	cmp	word [ss:Cpu386], 0
 	jne	short .6
 	db	0x8B, 0xD9			; mov bx, cx
 	db	0x03, 0xC9			; add cx, cx
@@ -1965,7 +1969,7 @@ UseCharSeg:
 	db	0x8B, 0xEC			; mov bp, sp
 	push	di
 	les	di, [bp + 6]
-	call	0x2964			; still incbin
+	call	NormEsDi
 	mov	word [CharSeg], es
 	pop	di
 	leave
@@ -4253,7 +4257,7 @@ AtanDecTwo:
 
 ; Fill the far buffer with the byte argument. The count is the long at [bp+0Ah].
 ; Offsets stay under 16, then the fill moves 32K at a time. Word stores, or dword
-; stores when the word at ss:763Ch is nonzero. FillFarZero uses a zero byte.
+; stores when Cpu386 is nonzero. FillFarZero uses a zero byte.
 
 FillFar:
 	push	bp
@@ -4271,7 +4275,7 @@ FillFarZero:
 FillFarBody:
 	db	0x8A, 0xE0			; mov ah, al
 	les	di, [bp + 6]
-	call	0x2964			; still incbin
+	call	NormEsDi
 	mov	cx, word [bp + 0xa]
 	mov	dx, word [bp + 0xc]
 	cld
@@ -4284,7 +4288,7 @@ L1E76:
 L1E7F:
 	test	di, 0xf
 	jne	short L1E76
-	cmp	word ss:[0x763c], 0
+	cmp	word ss:[Cpu386], 0
 	jne	short L1EBA
 	db	0x8B, 0xD9			; mov bx, cx
 	db	0x03, 0xC9			; add cx, cx
@@ -5502,4 +5506,107 @@ L28AE:
 	push	word [bp + 6]
 	push	ax
 	call	0xF4A:0x3E4			; seg022
-	incbin	"Extracted/segments/seg001.bin", 0x28BE, 0x33E0 - 0x28BE
+
+; (arg1 * arg2 + 1FFFh) >> 14, returned in AX. The two words sit above
+; the far return address.
+; CpuProbe records the processor. A 286 or later pushes SP before
+; decrementing it, so the compare falls through and Cpu286 is set.
+; Flag bits 12-14 stick on a 386 or later, which sets Cpu386. CopyFar
+; and FillFar test that word before a dword move. CpuPe is the PE bit
+; from smsw. Cpu486 is set when the alignment flag can be flipped.
+; An 8086 leaves all four words clear.
+; NormFar returns the caller's pointer with the offset under 16.
+; NormDsSi and NormEsDi do that for DS:SI and ES:DI. FarZero returns AX 0.
+
+Mul16k:
+	db	0x8B, 0xDC			; mov bx, sp
+	mov	ax, word [bx + 4]
+	mov	dx, word [bx + 6]
+	imul	dx
+	add	ax, 0x1fff
+	adc	dx, 0
+	db	0x03, 0xC0			; add ax, ax
+	db	0x13, 0xD2			; adc dx, dx
+	db	0x03, 0xC0			; add ax, ax
+	db	0x13, 0xD2			; adc dx, dx
+	db	0x8B, 0xC2			; mov ax, dx
+	retf
+	db	0
+CpuProbe:
+	pushf
+	push	sp
+	pop	bx
+	db	0x3B, 0xDC			; cmp bx, sp
+	jne	short CpuProbeDone
+	mov	word [Cpu286], 1
+	pushf
+	pop	bx
+	or	bx, 0x7000
+	push	bx
+	popf
+	pushf
+	pop	bx
+	and	bx, 0x7000
+	je	short CpuProbeDone
+	mov	word [Cpu386], 1
+	movzx	esp, sp
+	smsw	ax
+	and	ax, 1
+	mov	word [CpuPe], ax
+	and	esp, 0xffff
+	db	0x66, 0x8B, 0xD4			; mov edx, esp
+	and	esp, 0xfffffffc
+	pushfd
+	pop	eax
+	db	0x66, 0x8B, 0xC8			; mov ecx, eax
+	xor	eax, 0x40000
+	push	eax
+	popfd
+	pushfd
+	pop	eax
+	db	0x66, 0x33, 0xC1			; xor eax, ecx
+	shr	eax, 0x12
+	and	ax, 1
+	mov	word [Cpu486], ax
+	db	0x66, 0x8B, 0xE2			; mov esp, edx
+CpuProbeDone:
+	popf
+	retf
+	db	0
+NormFar:
+	db	0x8B, 0xDC			; mov bx, sp
+	mov	ax, word [bx + 4]
+	mov	dx, word [bx + 6]
+	db	0x8B, 0xD8			; mov bx, ax
+	and	ax, 0xf
+	shr	bx, 4
+	db	0x03, 0xD3			; add dx, bx
+	retf
+NormDsSi:
+	push	ax
+	push	si
+	shr	si, 4
+	mov	ax, ds
+	db	0x03, 0xC6			; add ax, si
+	mov	ds, ax
+	pop	si
+	and	si, 0xf
+	pop	ax
+	ret
+NormEsDi:
+	push	ax
+	push	di
+	shr	di, 4
+	mov	ax, es
+	db	0x03, 0xC7			; add ax, di
+	mov	es, ax
+	pop	di
+	and	di, 0xf
+	pop	ax
+	ret
+	db	0
+FarZero:
+	db	0x33, 0xC0			; xor ax, ax
+	retf
+	db	0
+	incbin	"Extracted/segments/seg001.bin", 0x297A, 0x33E0 - 0x297A

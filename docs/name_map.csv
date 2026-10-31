@@ -581,7 +581,7 @@ seg001:020F,SetEndMark,,new,medium,"Stores EndPtr plus the long argument at EndM
 seg001:0227,WaitEnd,,new,medium,"Spins until EndPtr is at or past EndMark",src/seg/seg001.asm
 seg001:023A,EndReached,,new,medium,"AX is 1 when EndPtr is at or past EndMark",src/seg/seg001.asm
 seg001:0250,WaitAdd,,new,medium,"Adds the long argument to EndPtr and spins until EndPtr reaches that sum",src/seg/seg001.asm
-seg001:0276,CopyFar,,new,high,"Far byte copy. Normalizes to a 32K window. Dword moves when the tested word is nonzero",src/seg/seg001.asm
+seg001:0276,CopyFar,,new,high,"Far byte copy. Normalizes to a 32K window. Dword moves when Cpu386 is nonzero",src/seg/seg001.asm
 seg001:032C,CopyParas,,new,high,"Copies paragraphs from one segment to another, 64K at a time",src/seg/seg001.asm
 seg001:0374,CopyParasDown,,new,high,"Same copy from the top so an overlap moves downward",src/seg/seg001.asm
 seg001:03C8,CritHandler,,new,high,"INT 24h handler. Far-calls CritRoutine",src/seg/seg001.asm
@@ -833,3 +833,9 @@ seg001:2840,ReadCloseArg,,new,high,"Reads until a short read, then closes the ha
 seg001:284F,ReadClose,,new,high,"Same read with the failure word forced to 0",src/seg/seg001.asm
 seg001:285D,ReadCloseMsg,,new,high,"Same read with the failure word forced to 1",src/seg/seg001.asm
 seg001:2869,ReadCloseBody,,new,high,"Shared read-to-end and close",src/seg/seg001.asm
+seg001:28BE,Mul16k,,new,high,"(arg1 * arg2 + 1FFFh) >> 14, returned in AX",src/seg/seg001.asm
+seg001:28DA,CpuProbe,,new,high,"Sets Cpu286, Cpu386, Cpu486, and CpuPe. Cpu386 selects dword moves",src/seg/seg001.asm
+seg001:2940,NormFar,,new,high,"Returns the caller's far pointer with the offset under 16",src/seg/seg001.asm
+seg001:2953,NormDsSi,,new,high,"Folds DS:SI so SI is under 16. CopyFar calls this",src/seg/seg001.asm
+seg001:2964,NormEsDi,,new,high,"Folds ES:DI so DI is under 16. CopyFar and FillFar call this",src/seg/seg001.asm
+seg001:2976,FarZero,,new,high,"xor ax, ax and retf",src/seg/seg001.asm
