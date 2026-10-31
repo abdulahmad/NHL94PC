@@ -172,3 +172,30 @@ For the AdLib the game uses `PCFF004.PAT` (from `ADLIB.SCN`), which takes its ti
   AdLib driver, which cannot play the digital timbres.
 - The fade-out and the master volume setting from the menus: `kms.py --vol` sets the master volume, default 127.
 - The rest of the FM timbre (envelope and vibrato tables) and of the patch record.
+
+## Handoff (paused 2026-10-31)
+
+**Done.** The `.KMS`/`.CFG` format, the game's sequencer (decoder `1630:0A90`, executor `1630:01D2`, song start
+`1630:17E6`, timer callback `1630:003C`, MIDI send with +24 at `1844:022E`) and the YM30 driver interface are worked
+out and written up above. `tools/audio/kms.py` renders all 70 AdLib and team songs by running the real `YM30.BGP`
+under unicorn into Nuked OPL3. It also writes VGM and MIDI files.
+
+**Next.**
+1. Compare a render (for example `ADTITLE`, `BOS1`) with a DOSBox capture of the game set to AdLib. Check the pitch,
+   the tempo and the volume balance. The first OPL write comes 3 timer ticks in; check that against DOSBox too.
+2. Sound Blaster: load `SB30.BGP` the same way. Its function table probably matches YM30's; check it. Use
+   `PCFF001.PAT` and add the DAC path for the digital programs, which needs DMA/IRQ emulation or a hook.
+3. MT-32: `MT30.BGP` with the `MT*.KMS` songs and `PCFF002.PAT`, sending the MIDI to Munt (libmt32emu, ROMs needed).
+4. Decode the rest of the 80-byte FM timbre (the envelope and vibrato bytes after +0x0F) and the patch record
+   fields +8 to +0x0E, from the driver's tick function (`03DA`, `1418`, `150A`).
+5. Find who sets the song handle's master volume, pan and transpose (+0x11 to +0x13) and the fade-out (`1630:0234`
+   region). The menus' music volume should feed `--vol`.
+6. Label these routines in the disassembly when the root segments that hold them (around file `0x16300` to `0x18700`)
+   are turned into source.
+
+**Open questions.**
+- The PAT record's `+0xF` has no bit 7 in the files, so as written the executor would select driver 7Fh. The loader
+  probably sets it at run time. That has not been checked; `kms.py` sends everything to the one driver.
+- The game sends the `.CFG` volume byte as the initial pan (it reads `+6` twice). This looks like a bug, kept as is.
+- The `.SCN` byte 1 → PAT mapping gives MT-32 map 2. The sound effects notes guess map 3 for MT-32; one of the two
+  needs fixing once the MT-32 path is run.
