@@ -1,6 +1,6 @@
 ; Segment seg001. EMS maps, far copies, the INT 24h hook, file length,
 ; a file-head count, find-first paths, the DOS memory block, a 4-byte lookup,
-; and far-pointer lookup.
+; far-pointer lookup, a counted copy, and multiply and divide.
 ; The first bytes finish the seg000 routine that ends on this paragraph.
 
 ; DGROUP words this segment uses. The bytes live in the near data, not here.
@@ -22,6 +22,8 @@ BlockEnd		equ	0x63F8
 BlockSeg		equ	0x63FC
 SavedCs		equ	0x63FE
 SavedDs		equ	0x6400
+FmtSave		equ	0x64CE
+FmtBuf		equ	0x64D6
 
 ; The previous segment ends on the first byte of test bx, 8.
 ; These bytes finish that test, then pop bp / ret 0xe.
@@ -1389,4 +1391,111 @@ LinearToFarRegs:
 
 	db	0
 
-	incbin	"Extracted/segments/seg001.bin", 0x968, 0x33E0 - 0x968
+; Copy the word count at [bp+0Eh] from the far pointer at [bp+0Ah]
+; to the far pointer at [bp+6]. The high half of the count is zero.
+CopyBytes:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	db	0x33, 0xC0			; xor ax, ax
+	push	ax
+	push	word [bp+0xe]
+	push	word [bp+8]
+	push	word [bp+6]
+	push	word [bp+0xc]
+	push	word [bp+0xa]
+	call	0x3A3:CopyFar			; seg001
+	add	sp, 0xc
+	leave
+	retf
+
+	db	0
+
+; Pops the far return address and two words. Calls _sprintf with FmtBuf,
+; then calls seg028 with those two words and FmtBuf, then far-returns
+; through the saved address. No far call in the EXE lands on this entry.
+FormatCall:
+	pop	ax
+	mov	word [FmtSave], ax
+	pop	ax
+	mov	word [FmtSave+2], ax
+	pop	ax
+	mov	word [FmtSave+4], ax
+	pop	ax
+	mov	word [FmtSave+6], ax
+	mov	ax, FmtBuf
+	push	ax
+	call	0:_sprintf			; seg000
+	add	sp, 2
+	push	word [FmtSave+6]
+	push	word [FmtSave+4]
+	mov	ax, FmtBuf
+	push	ax
+	call	0xFEF:0xE85			; seg028
+	add	sp, 2
+	push	word [FmtSave+2]
+	push	word [FmtSave]
+	retf
+
+	db	0
+
+; Signed product of the two stack words, in DX:AX.
+ImulWords:
+	db	0x8B, 0xDC			; mov bx, sp
+	mov	ax, word [bx+4]
+	mov	dx, word [bx+6]
+ImulRegs:
+	imul	dx
+	retf
+
+; Unsigned product of the two stack words, in DX:AX.
+MulWords:
+	db	0x8B, 0xDC			; mov bx, sp
+	mov	ax, word [bx+4]
+	mov	dx, word [bx+6]
+MulRegs:
+	mul	dx
+	retf
+
+; Signed DX:AX divided by the third stack word.
+IdivWords:
+	db	0x8B, 0xDC			; mov bx, sp
+	mov	ax, word [bx+4]
+	mov	dx, word [bx+6]
+	mov	bx, word [bx+8]
+	idiv	bx
+	retf
+
+; Unsigned DX:AX divided by the third stack word.
+DivWords:
+	db	0x8B, 0xDC			; mov bx, sp
+	mov	ax, word [bx+4]
+	mov	dx, word [bx+6]
+	mov	bx, word [bx+8]
+	div	bx
+	retf
+
+; Signed DX:AX divided by BX. Quotient comes back in DX:AX.
+Idiv32:
+	shl	edx, 0x10
+	db	0x8B, 0xD0			; mov dx, ax
+	db	0x66, 0x8B, 0xC2		; mov eax, edx
+	movzx	ecx, bx
+	db	0x66, 0x33, 0xD2		; xor edx, edx
+	idiv	ecx
+	db	0x66, 0x8B, 0xD0		; mov edx, eax
+	shr	edx, 0x10
+	retf
+
+; Stack dword divided by the stack word. The high half is cleared first.
+; Quotient comes back in DX:AX.
+IdivDword:
+	db	0x8B, 0xDC			; mov bx, sp
+	db	0x66, 0x33, 0xD2		; xor edx, edx
+	mov	eax, dword [bx+4]
+	movzx	ebx, word [bx+8]
+	idiv	ebx
+	db	0x66, 0x8B, 0xD0		; mov edx, eax
+	shr	edx, 0x10
+	retf
+
+	incbin	"Extracted/segments/seg001.bin", 0xA28, 0x33E0 - 0xA28
