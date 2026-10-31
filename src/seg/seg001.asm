@@ -1,4 +1,4 @@
-; Segment seg001. EMS maps, far copies, and the INT 24h hook.
+; Segment seg001. EMS maps, far copies, the INT 24h hook, and file length.
 ; The first bytes finish the seg000 routine that ends on this paragraph.
 
 ; DGROUP words this segment uses. The bytes live in the near data, not here.
@@ -12,6 +12,7 @@ EndPtr		equ	0x6DA4
 EndMark		equ	0x62F6
 CritRoutine	equ	0x62FE
 CritOld		equ	0x62FA
+SavedSp		equ	0x6402
 
 ; The previous segment ends on the first byte of test bx, 8.
 ; These bytes finish that test, then pop bp / ret 0xe.
@@ -191,7 +192,7 @@ EmsInit:
 	mov	word [es:bx+2], dx
 	push	strict word 0x3A3		; seg001
 	push	strict word EmsFree
-	call	0x3A3:0x4AE		; seg001, _onexit thunk still incbin
+	call	0x3A3:OnexitThunk		; seg001
 	add	sp, 4
 .3:
 	call	0x148B:0x4		; seg030
@@ -570,7 +571,7 @@ HookCrit:
 	push	cs
 	mov	ax, CritRestore
 	push	ax
-	call	0x3A3:0x4AE		; seg001, _onexit thunk still incbin
+	call	0x3A3:OnexitThunk		; seg001
 	add	sp, 4
 	mov	ax, word [bp + 6]
 	mov	word [CritRoutine], ax
@@ -610,4 +611,160 @@ CritRestore:
 	retf
 	db	0x00
 
-	incbin	"Extracted/segments/seg001.bin", 0x440, 0x33E0 - 0x440
+
+; These four set SI and one flag byte, then ArgSetup stores the arguments
+; and jumps to the body that is still incbin. Nothing in the EXE far-calls them.
+; PassFlag1 and PassFlag0 take the word at [bp+0Eh]. AddrFlag0 and AddrFlag1
+; take its address. The flag is the byte at [bp-9].
+PassFlag1:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	add	sp, -0x7ce
+	push	si
+	push	di
+	mov	si, word [bp+0xe]
+	mov	byte [bp-9], 1
+	jmp	short ArgSetup
+
+PassFlag0:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	add	sp, -0x7ce
+	push	si
+	push	di
+	mov	si, word [bp+0xe]
+	mov	byte [bp-9], 0
+
+ArgSetup:
+	mov	ax, word [bp+6]
+	mov	word [0x7664], ax
+	mov	ax, word [bp+0xa]
+	mov	word [0x7666], ax
+	mov	ax, word [bp+8]
+	mov	word [bp+6], ax
+	mov	ax, word [bp+0xc]
+	mov	word [bp+8], ax
+	mov	ax, 0x3abb
+	mov	word [0x7668], ax
+	mov	ax, 0xc
+	mov	word [0x766c], ax
+	jmp	near 0x29d2			; body still incbin
+
+AddrFlag0:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	add	sp, -0x7ce
+	push	si
+	push	di
+	lea	si, [bp+0xe]
+	mov	byte [bp-9], 0
+	jmp	short ArgSetup
+
+AddrFlag1:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	add	sp, -0x7ce
+	push	si
+	push	di
+	lea	si, [bp+0xe]
+	mov	byte [bp-9], 1
+	jmp	short ArgSetup
+
+	db	0
+
+; Tail call. The far return from _onexit goes to this caller's caller.
+OnexitThunk:
+	jmp	0:_onexit			; seg000
+
+; If SavedSp is nonzero, SS becomes DGROUP and SP becomes that word. Then _exit(0).
+ExitSavedSp:
+	mov	ax, DGROUP
+	mov	ds, ax
+	cmp	word [SavedSp], 0
+	je	short .1
+	mov	ss, ax
+	mov	sp, word [SavedSp]
+.1:
+	db	0x33, 0xC0			; xor ax, ax
+	push	ax
+	call	0:_exit			; seg000
+
+	db	0
+
+; File length. Opens the path at [bp+6] for reading, seeks to the end, closes,
+; and returns the length in DX:AX. The word at [bp-4] is nonzero to report a
+; failed open through seg022; zero returns AX 0 instead.
+; FileSizeArg takes that word from the caller. FileSize forces zero.
+; FileSizeMsg forces one.
+FileSizeArg:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	add	sp, -4
+	push	ds
+	push	si
+	push	di
+	mov	ax, word [bp+8]
+	mov	word [bp-4], ax
+	jmp	short FileSizeBody
+
+FileSize:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	add	sp, -4
+	push	ds
+	push	si
+	push	di
+	mov	word [bp-4], 0
+	jmp	short FileSizeBody
+
+FileSizeMsg:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	add	sp, -4
+	push	ds
+	push	si
+	push	di
+	mov	word [bp-4], 1
+
+FileSizeBody:
+	mov	dx, word [bp+6]
+	mov	ah, 0x3d
+	db	0x32, 0xC0			; xor al, al
+	int	0x21
+	jae	short .1
+	cmp	word [bp-4], 0
+	jne	short .2
+	db	0x33, 0xC0			; xor ax, ax
+	pop	di
+	pop	si
+	pop	ds
+	leave
+	retf
+.2:
+	mov	ax, 0x6302
+	mov	bx, ss
+	mov	ds, bx
+	push	word [bp+6]
+	push	ax
+	call	0xF4A:0x3E4			; seg022
+.1:
+	mov	word [bp-2], ax
+	db	0x8B, 0xD8			; mov bx, ax
+	db	0x2B, 0xC9			; sub cx, cx
+	db	0x2B, 0xD2			; sub dx, dx
+	mov	ax, 0x4202
+	int	0x21
+	push	dx
+	push	ax
+	mov	bx, word [bp-2]
+	mov	ah, 0x3e
+	int	0x21
+	pop	ax
+	pop	dx
+	pop	di
+	pop	si
+	pop	ds
+	leave
+	retf
+
+	incbin	"Extracted/segments/seg001.bin", 0x543, 0x33E0 - 0x543
