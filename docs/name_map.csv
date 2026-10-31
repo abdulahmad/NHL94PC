@@ -668,3 +668,21 @@ seg001:0CB8,UseCharSeg,,new,high,"Normalizes a far pointer and stores its segmen
 seg001:0CCA,HookInt8,,new,high,"Points INT 8 at seg001:0xE20, writes 0xB6 to port 0x43 and 0x2E9C to port 0x40, registers UnhookInt8. _main calls this",src/seg/seg001.asm
 seg001:0D51,UnhookInt8,,new,high,"Restores the saved INT 8 vector when it still points at seg001:0xE20, and writes 0 to port 0x40 twice",src/seg/seg001.asm
 seg001:0D8C,AllocSlot,,new,high,"Stores two words in a free pair among the eight at 0x6DB4. Calls seg022 when all are in use. _main calls this",src/seg/seg001.asm
+DGROUP:6DB4,SlotTab,,new,high,"Eight far-pointer pairs. AllocSlot fills one, FreeSlot removes one, Int8Handler calls the ones in use",src/seg/seg001.asm
+DGROUP:6DB0,TickGate,,new,high,"Int8Handler decrements this and skips the callbacks unless it lands on 0",src/seg/seg001.asm
+DGROUP:6DB2,TickSkip,,new,high,"Byte. Nonzero makes Int8Handler skip the callbacks",src/seg/seg001.asm
+DGROUP:6F08,Int8Sp,,new,high,"SS:SP saved around the callback walk. The private stack is the word before Int8Sp",src/seg/seg001.asm
+DGROUP:6F0A,Int8Ss,,new,high,"SS saved with Int8Sp",src/seg/seg001.asm
+DGROUP:6DA0,CallCount,,new,high,"Dword incremented once per callback walk",src/seg/seg001.asm
+DGROUP:6DA8,TickFrac,,new,high,"TickStep is added here. Carry bumps TickTotal and the BIOS tick",src/seg/seg001.asm
+DGROUP:6DAA,TickStep,,new,high,"Addend for TickFrac. HookInt8 stores 2E9Bh",src/seg/seg001.asm
+DGROUP:6DA4,TickTotal,,new,high,"Dword bumped when TickFrac carries",src/seg/seg001.asm
+DGROUP:6F0E,SkipEoi,,new,high,"Nonzero skips the EOI write to port 20h",src/seg/seg001.asm
+DGROUP:640A,WantText,,new,high,"ResetText runs when this word is nonzero, then clears it",src/seg/seg001.asm
+seg001:0DC0,FreeSlot,,new,high,"Removes the SlotTab pair matching the two arguments and slides the later pairs down",src/seg/seg001.asm
+seg001:0DFF,CountSlots,,new,high,"Counts SlotTab pairs whose second word is nonzero",src/seg/seg001.asm
+seg001:0E11,SsIsDs,,new,high,"AX is 1 when SS equals DS",src/seg/seg001.asm
+seg001:0E1D,EmptyRet,,new,high,"A single retf. HookInt8 stores this address beside the saved INT 8 vector",src/seg/seg001.asm
+seg001:0E1E,Int8Ds,,new,high,"Word in the code segment. HookInt8 stores DS here and Int8Handler loads it",src/seg/seg001.asm
+seg001:0E20,Int8Handler,,new,high,"INT 8. Far-calls in-use SlotTab pairs, updates the BIOS tick at 0:046Ch, and shuts the floppy motors off",src/seg/seg001.asm
+seg001:0ECE,ResetText,,new,high,"When WantText is set, forces 80-column color and INT 10h mode 3",src/seg/seg001.asm

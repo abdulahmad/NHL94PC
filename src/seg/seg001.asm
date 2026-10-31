@@ -1,7 +1,7 @@
 ; Segment seg001. EMS maps, far copies, the INT 24h hook, file length,
 ; a file-head count, find-first paths, the DOS memory block, a 4-byte lookup,
 ; far-pointer lookup, a counted copy, multiply and divide, file writes,
-; character widths, and the INT 8 hook.
+; character widths, and the INT 8 handler.
 ; The first bytes finish the seg000 routine that ends on this paragraph.
 
 ; DGROUP words this segment uses. The bytes live in the near data, not here.
@@ -24,6 +24,17 @@ BlockSeg		equ	0x63FC
 SavedCs		equ	0x63FE
 SavedDs		equ	0x6400
 CharSeg		equ	0x6D50
+SlotTab		equ	0x6DB4
+TickGate		equ	0x6DB0
+TickSkip		equ	0x6DB2
+Int8Sp		equ	0x6F08
+Int8Ss		equ	0x6F0A
+CallCount	equ	0x6DA0
+TickFrac		equ	0x6DA8
+TickStep		equ	0x6DAA
+TickTotal	equ	0x6DA4
+SkipEoi		equ	0x6F0E
+WantText		equ	0x640A
 FmtSave		equ	0x64CE
 FmtBuf		equ	0x64D6
 
@@ -1933,7 +1944,7 @@ HookInt8:
 	mov	word [0x6db0], 1
 	mov	word [0x6db4], 0
 	mov	word [0x6db6], 0
-	mov	word cs:[0xe1e], ds
+	mov	word [cs:Int8Ds], ds
 	sti
 	mov	al, 0xb6
 	out	0x43, al
@@ -1944,7 +1955,7 @@ HookInt8:
 	mov	es, ax
 	cli
 	mov	ax, word es:[0x20]
-	cmp	ax, 0xe20
+	cmp	ax, Int8Handler
 	je	short L0D10
 	mov	word [0x6d98], ax
 L0D10:
@@ -1953,9 +1964,9 @@ L0D10:
 	db	0x3B, 0xC3			; cmp ax, bx
 	je	short L0D33
 	mov	word [0x6d9a], ax
-	mov	word es:[0x20], 0xe20
+	mov	word [es:0x20], Int8Handler
 	mov	word es:[0x22], cs
-	mov	word [0x6d9c], 0xe1d
+	mov	word [0x6d9c], EmptyRet
 	mov	word [0x6d9e], cs
 L0D33:
 	in	al, 0x21
@@ -1967,7 +1978,7 @@ L0D33:
 	db	0x8A, 0xC6			; mov al, dh
 	out	0x40, al
 	push	cs
-	mov	ax, 0xd51
+	mov	ax, UnhookInt8
 	push	ax
 	call	0x3A3:OnexitThunk
 	add	sp, 4
@@ -1987,7 +1998,7 @@ UnhookInt8:
 	retf
 L0D60:
 	mov	ax, word es:[0x20]
-	cmp	ax, 0xe20
+	cmp	ax, Int8Handler
 	je	short L0D6A
 	retf
 L0D6A:
@@ -2033,4 +2044,189 @@ L0DA9:
 	leave
 	retf
 
-	incbin	"Extracted/segments/seg001.bin", 0xDC0, 0x33E0 - 0xDC0
+; Remove the pair at SlotTab that matches the two arguments, and slide the
+; later pairs down. The last pair is cleared.
+FreeSlot:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	mov	cx, 8
+	mov	bx, SlotTab
+	mov	ax, word [bp + 6]
+	mov	dx, word [bp + 8]
+L0DCF:
+	cmp	word [bx], ax
+	jne	short L0DD8
+	cmp	word [bx + 2], dx
+	je	short L0DDF
+L0DD8:
+	add	bx, 4
+	loop	L0DCF
+	leave
+	retf
+L0DDF:
+	cli
+	dec	cx
+	je	short L0DF3
+L0DE3:
+	mov	ax, word [bx + 4]
+	mov	word [bx], ax
+	mov	ax, word [bx + 6]
+	mov	word [bx + 2], ax
+	add	bx, 4
+	loop	L0DE3
+L0DF3:
+	mov	word [bx], 0
+	mov	word [bx + 2], 0
+	sti
+	leave
+	retf
+
+
+; AX is how many SlotTab pairs have a nonzero second word.
+CountSlots:
+	db	0x33, 0xC0			; xor ax, ax
+	mov	bx, SlotTab
+L0E04:
+	cmp	word [bx + 2], 0
+	je	short L0E10
+	add	bx, 4
+	inc	ax
+	jmp	short L0E04
+L0E10:
+	retf
+
+
+; AX is 1 when SS equals DS, else 0.
+SsIsDs:
+	db	0x33, 0xC0			; xor ax, ax
+	mov	bx, ss
+	mov	dx, ds
+	db	0x3B, 0xDA			; cmp bx, dx
+	jne	short L0E1C
+	inc	ax
+L0E1C:
+	retf
+
+
+; A far return. HookInt8 stores this address next to the old INT 8 vector.
+EmptyRet:
+	retf
+Int8Ds:
+	dw	0
+
+
+; INT 8. Loads DS from Int8Ds. Sends EOI unless SkipEoi is set. When
+; TickGate drops to 0 and TickSkip is clear, switches to the stack at Int8Sp
+; and far-calls every SlotTab pair whose second word is nonzero. Adds TickStep
+; into TickFrac. On carry, bumps TickTotal and the BIOS tick at 0:046Ch, rolls
+; that tick over at midnight, and turns the floppy motors off when the BIOS
+; motor count reaches 0.
+Int8Handler:
+	push	ds
+	push	ax
+	mov	ds, word cs:[0xe1e]
+	cmp	word [SkipEoi], 0
+	jne	short L0E32
+	mov	al, 0x20
+	out	0x20, al
+L0E32:
+	sti
+	push	bx
+	dec	word [TickGate]
+	jne	short L0E7D
+	cmp	byte [TickSkip], 0
+	jne	short L0E7D
+	push	cx
+	push	dx
+	push	si
+	push	es
+	mov	ax, ss
+	mov	word [Int8Sp], sp
+	mov	word [Int8Ss], ax
+	mov	ax, ds
+	mov	ss, ax
+	mov	sp, 0x6f04
+	mov	si, SlotTab
+	cld
+	inc	word [CallCount]
+	jne	short L0E6A
+	inc	word [0x6da2]
+	jmp	short L0E6A
+L0E65:
+	db	0xFF, 0x1C			; lcall [si]
+	add	si, 4
+L0E6A:
+	cmp	word [si + 2], 0
+	jne	short L0E65
+	mov	ax, word [Int8Ss]
+	mov	ss, ax
+	mov	sp, word [Int8Sp]
+	pop	es
+	pop	si
+	pop	dx
+	pop	cx
+L0E7D:
+	inc	word [TickGate]
+	mov	ax, word [TickStep]
+	add	word [TickFrac], ax
+	jae	short L0ECA
+	inc	word [TickTotal]
+	jne	short L0E94
+	inc	word [0x6da6]
+L0E94:
+	db	0x33, 0xC0			; xor ax, ax
+	mov	ds, ax
+	mov	bx, 0x46c
+	inc	word [bx]
+	jne	short L0EA2
+	inc	word [bx + 2]
+L0EA2:
+	cmp	word [bx + 2], 0x18
+	jb	short L0EB7
+	cmp	word [bx], 0xb0
+	jb	short L0EB7
+	mov	word [bx], ax
+	mov	word [bx + 2], ax
+	mov	byte [bx + 4], 1
+L0EB7:
+	dec	byte [0x440]
+	jne	short L0ECA
+	push	dx
+	mov	dx, 0x3f2
+	mov	al, 0xf
+	out	dx, al
+	pop	dx
+	and	byte [0x43f], 0xf0
+L0ECA:
+	pop	bx
+	pop	ax
+	pop	ds
+	iret
+
+
+; If WantText is nonzero, clears it, calls seg028, forces the BIOS equipment
+; word to 80-column color, and sets video mode 3 with background 0.
+ResetText:
+	cmp	word [WantText], 0
+	je	short L0F06
+	mov	word [WantText], 0
+	db	0x33, 0xC0			; xor ax, ax
+	push	ax
+	call	0xFEF:0x3A84		; seg028
+	add	sp, 2
+	mov	ax, 0x40
+	mov	es, ax
+	mov	ax, word es:[0x10]
+	and	ax, 0xffcf
+	or	ax, 0x10
+	mov	word es:[0x10], ax
+	db	0x32, 0xE4			; xor ah, ah
+	mov	al, 3
+	int	0x10
+	mov	ah, 0xb
+	mov	bx, 0
+	int	0x10
+L0F06:
+	retf
+
+	incbin	"Extracted/segments/seg001.bin", 0xF07, 0x33E0 - 0xF07
