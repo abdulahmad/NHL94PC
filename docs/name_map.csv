@@ -862,3 +862,4 @@ seg001:33D2,WaitBlank,,new,high,"Waits through one pulse of status port 3DAh bit
 seg002:0000,BlankBit,,new,high,"Reads port 3DAh and returns bit 0 in AX",src/seg/seg002.asm
 seg002:0008,MakeChain,,new,high,"Caps LargestFree, AllocBytes, and links 24h-byte records. BufCount below CCh calls seg022",src/seg/seg002.asm
 seg002:02DA,SetBuf,,new,high,"Stores the near buffer and the count MakeChain reads",src/seg/seg002.asm
+seg002:02EC,InsertRec,,new,high,"Links a 24h-byte record into a gap in the chain. Bits in the flag word pick which chain",src/seg/seg002.asm
