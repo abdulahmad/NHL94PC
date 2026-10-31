@@ -1,6 +1,6 @@
-; Segment seg000. VGA copies and port I/O, then the Microsoft C startup
-; and the C runtime. __astart (seg056) jumps to MscStartup. Everything
-; after __chkstk is still the original image.
+; Segment seg000. VGA copies, the Microsoft C startup, the low-level
+; file and DOS routines, strings, and the runtime messages. __astart
+; jumps to MscStartup. The bytes after DosMapErr are still the original image.
 
 ; Sixteen zero bytes. The first routine starts on the next paragraph.
 	db	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -748,11 +748,6 @@ VgaCopyRect:
 	retf
 
 
-; Targets that are still the original bytes later in this segment.
-__FF_MSGBANNER	equ	0x160C			; prints the runtime banner
-__NMSG_WRITE	equ	0x1683			; writes one runtime message
-__nullcheck	equ	0x1634			; checksum of the low DGROUP bytes
-FpFail		equ	0x162E			; mov ax, 2 / jmp AmsgExit (R6002)
 
 ; seg005 is still incbin. Each entry is one retf. Which library symbol the
 ; first two are is not settled (see docs/HANDOFF.md).
@@ -1148,4 +1143,2168 @@ __chkstk:
 .altstack:
 	jmp	far [0x8586]		; jump to the alternate stack-overflow handler
 
-	incbin	"Extracted/segments/seg000.bin", $ - $$
+
+; Low-level C files, DOS calls, strings, and the runtime messages.
+_stbuf		equ	0x17F4		; still the original bytes
+_output		equ	0x18B6
+_ftbuf		equ	0x1867
+_nfile		equ	0x855D		; highest C handle
+errno		equ	0x8550
+_doserrno	equ	0x855B
+
+
+; _printf: print to the standard output.
+; Prepares that FILE, formats, then flushes.
+; Argument: format, then the values. Result is the _output count.
+_printf:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	sub	sp, 4
+	push	di
+	push	si
+	mov	si, 0x86d2
+	push	si
+	call	_stbuf
+	add	sp, 2
+	db	0x8B, 0xF8			; mov	di, ax
+	lea	ax, [bp+8]
+	push	ax
+	push	word [bp+6]
+	mov	ax, 0x86d2
+	push	ax
+	call	0:0x18B6
+	add	sp, 6
+	mov	word [bp-4], ax
+	mov	ax, 0x86d2
+	push	ax
+	push	di
+	call	_ftbuf
+	add	sp, 4
+	mov	ax, word [bp-4]
+	pop	si
+	pop	di
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+
+; _close: close a C file handle and clear its _osfile byte.
+; Argument: handle. Returns 0, or an error through DosRet.
+_close:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	mov	bx, word [bp+6]
+	db	0x3B, 0x1E, 0x5D, 0x85			; cmp	bx, word [_nfile]
+	jb	short .valid
+	mov	ax, 0x900
+	stc
+	jmp	short .join
+.valid:
+	mov	ah, 0x3e
+	int	0x21
+	jb	short .join
+	mov	byte [bx-0x7aa1], 0
+.join:
+	jmp	near DosRet
+
+; _lseek: move a file position.
+; Arguments: handle, offset low, offset high, origin. Result is the new position.
+_lseek:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	sub	sp, 4
+	mov	bx, word [bp+6]
+	db	0x3B, 0x1E, 0x5D, 0x85			; cmp	bx, word [_nfile]
+	jb	short .seek
+	mov	ax, 0x900
+	jmp	short 0x80A
+.seek:
+	test	word [bp+0xa], 0x8000
+	je	short .doseek
+	cmp	word [bp+0xc], 0
+	je	short .bad
+	db	0x33, 0xC9			; xor	cx, cx
+	db	0x8B, 0xD1			; mov	dx, cx
+	mov	ax, 0x4201
+	int	0x21
+	jb	short 0x843
+	test	word [bp+0xc], 2
+	jne	short .fromend
+	add	ax, word [bp+8]
+	adc	dx, word [bp+0xa]
+	jns	short .doseek
+.bad:
+	mov	ax, 0x1600
+	stc
+	jmp	short 0x843
+.fromend:
+	mov	word [bp-2], dx
+	mov	word [bp-4], ax
+	db	0x8B, 0xD1			; mov	dx, cx
+	mov	ax, 0x4202
+	int	0x21
+	add	ax, word [bp+8]
+	adc	dx, word [bp+0xa]
+	jns	short .doseek
+	mov	cx, word [bp-2]
+	mov	dx, word [bp-4]
+	mov	ax, 0x4200
+	int	0x21
+	jmp	short .bad
+.doseek:
+	mov	dx, word [bp+8]
+	mov	cx, word [bp+0xa]
+	mov	al, byte [bp+0xc]
+	mov	ah, 0x42
+	int	0x21
+	jb	short 0x843
+	and	byte [bx-0x7aa1], 0xfd
+	jmp	near DosRetLong
+
+; _sopen: open a file with a sharing mode, then the same path as _open.
+; Arguments: path, access, share.
+_sopen:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	sub	sp, 4
+	db	0x32, 0xFF			; xor	bh, bh
+	cmp	byte [0x8558], 3
+	jb	short .noshare
+	mov	bh, byte [bp+0xa]
+.noshare:
+	mov	ax, word [bp+0xc]
+	mov	word [bp+0xa], ax
+	jmp	short OpenBody
+
+; _open: open a file and record text or binary in _osfile.
+; Arguments: path, access flags.
+_open:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	sub	sp, 4
+	db	0x32, 0xFF			; xor	bh, bh
+
+OpenBody:
+	mov	byte [bp-2], bh
+	mov	ax, word [bp+8]
+	db	0x8B, 0xC8			; mov	cx, ax
+	mov	byte [bp-4], 0
+	test	ax, 0x8000
+	jne	short .haveflag
+	test	ax, 0x4000
+	jne	short .binary
+	test	byte [0x8875], 0x80
+	jne	short .haveflag
+.binary:
+	mov	byte [bp-4], 0x80
+.haveflag:
+	mov	dx, word [bp+6]
+	and	al, 3
+	db	0x0A, 0xC7			; or	al, bh
+	mov	ah, 0x3d
+	int	0x21
+	jae	short .opened
+	db	0x3D, 0x02, 0x00			; cmp	ax, 2
+	jne	short .fail
+	test	cx, 0x100
+	je	short .fail
+	jmp	near 0x943
+.fail:
+	stc
+	jmp	near DosRetLong
+.opened:
+	xchg	bx, ax
+	db	0x8B, 0xC1			; mov	ax, cx
+	and	ax, 0x500
+	cmp	ax, 0x500
+	jne	short 0x8BC
+	mov	ah, 0x3e
+	int	0x21
+	mov	ax, 0x1100
+	jmp	short .fail
+	mov	byte [bp-3], 1
+	mov	ax, 0x4400
+	int	0x21
+	test	dl, 0x80
+	je	short 0x8CE
+	or	byte [bp-4], 0x40
+	test	byte [bp-4], 0x40
+	je	short 0x8D7
+	jmp	near 0x9AA
+	mov	ax, word [bp+8]
+	test	ax, 0x200
+	je	short 0x8FB
+	test	ax, 3
+	je	short 0x8ED
+	db	0x33, 0xC9			; xor	cx, cx
+	mov	ah, 0x40
+	int	0x21
+	jmp	near 0x9AA
+	mov	ah, 0x3e
+	int	0x21
+	mov	dx, word [bp+6]
+	mov	ax, 0x4300
+	int	0x21
+	jmp	short 0x960
+	test	byte [bp-4], 0x80
+	jne	short 0x904
+	jmp	near 0x9AA
+	test	ax, 2
+	jne	short 0x90C
+	jmp	near 0x9AA
+	mov	cx, 0xffff
+	db	0x8B, 0xD1			; mov	dx, cx
+	mov	ax, 0x4202
+	int	0x21
+	neg	cx
+	lea	dx, [bp-1]
+	mov	ah, 0x3f
+	int	0x21
+	db	0x0B, 0xC0			; or	ax, ax
+	je	short 0x938
+	cmp	byte [bp-1], 0x1a
+	jne	short 0x938
+	neg	cx
+	db	0x8B, 0xD1			; mov	dx, cx
+	mov	ax, 0x4202
+	int	0x21
+	db	0x33, 0xC9			; xor	cx, cx
+	mov	ah, 0x40
+	int	0x21
+	db	0x33, 0xC9			; xor	cx, cx
+	db	0x8B, 0xD1			; mov	dx, cx
+	mov	ax, 0x4200
+	int	0x21
+	jmp	short 0x9AA
+	mov	byte [bp-3], 0
+	mov	cx, word [bp+0xa]
+	call	0x9f1
+	mov	word [bp+0xa], cx
+	test	byte [bp-2], 0xff
+	jne	short 0x95D
+	test	word [bp+8], 2
+	jne	short 0x960
+	and	cl, 0xfe
+	mov	dx, word [bp+6]
+	mov	ah, 0x3c
+	int	0x21
+	jae	short 0x96C
+	jmp	near DosRetLong
+	xchg	bx, ax
+	test	byte [bp-2], 0xff
+	jne	short 0x97A
+	test	word [bp+8], 2
+	jne	short 0x9AA
+	mov	ah, 0x3e
+	int	0x21
+	mov	al, byte [bp+8]
+	and	al, 3
+	or	al, byte [bp-2]
+	mov	dx, word [bp+6]
+	mov	ah, 0x3d
+	int	0x21
+	jb	short 0x969
+	xchg	bx, ax
+	test	byte [bp-3], 1
+	jne	short 0x9AA
+	test	word [bp+0xa], 1
+	je	short 0x9AA
+	or	cl, 1
+	mov	dx, word [bp+6]
+	mov	ax, 0x4301
+	int	0x21
+	jb	short 0x969
+	test	byte [bp-4], 0x40
+	jne	short 0x9ED
+	mov	dx, word [bp+6]
+	mov	ax, 0x4300
+	int	0x21
+	db	0x8B, 0xC1			; mov	ax, cx
+	db	0x32, 0xC9			; xor	cl, cl
+	db	0x25, 0x01, 0x00			; and	ax, 1
+	je	short 0x9C3
+	mov	cl, 0x10
+	test	word [bp+8], 8
+	je	short 0x9CD
+	or	cl, 0x20
+	db	0x3B, 0x1E, 0x5D, 0x85			; cmp	bx, word [_nfile]
+	jb	short 0x9DD
+	mov	ah, 0x3e
+	int	0x21
+	mov	ax, 0x1800
+	jmp	near .fail
+	or	cl, byte [bp-4]
+	or	cl, 1
+	mov	byte [bx-0x7aa1], cl
+	db	0x8B, 0xC3			; mov	ax, bx
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+	db	0x32, 0xC9			; xor	cl, cl
+	jmp	short 0x9CD
+	mov	ax, word [0x8552]
+	not	ax
+	db	0x23, 0xC1			; and	ax, cx
+	db	0x33, 0xC9			; xor	cx, cx
+	test	al, 0x80
+	jne	short 0xA01
+	or	cl, 1
+	ret
+
+; _read: read bytes from a C file handle.
+; Arguments: handle, buffer, count.
+_read:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	sub	sp, 2
+	mov	bx, word [bp+6]
+	db	0x3B, 0x1E, 0x5D, 0x85			; cmp	bx, word [_nfile]
+	jb	short .go
+	stc
+	mov	ax, 0x900
+	jmp	short 0xA7F
+.go:
+	db	0x33, 0xC0			; xor	ax, ax
+	mov	cx, word [bp+0xa]
+	jcxz	0xA7F
+	test	byte [bx-0x7aa1], 2
+	jne	short 0xA7F
+	cmp	word [0x8ae4], 0xd6d6
+	jne	short 0xA31
+	call	word [0x8ae6]
+	mov	cx, word [bp+0xa]
+	mov	dx, word [bp+8]
+	mov	ah, 0x3f
+	int	0x21
+	jae	short 0xA41
+	mov	ah, 9
+	jmp	short 0xA7F
+	test	byte [bx-0x7aa1], 0x80
+	je	short 0xA7F
+	and	byte [bx-0x7aa1], 0xfb
+	push	si
+	push	di
+	cld
+	db	0x8B, 0xF2			; mov	si, dx
+	db	0x8B, 0xFA			; mov	di, dx
+	db	0x8B, 0xC8			; mov	cx, ax
+	jcxz	0xA7D
+	mov	ah, 0xd
+	cmp	byte [si], 0xa
+	jne	short 0xA64
+	or	byte [bx-0x7aa1], 4
+	lodsb
+	db	0x3A, 0xC4			; cmp	al, ah
+	je	short 0xA82
+	cmp	al, 0x1a
+	jne	short 0xA74
+	or	byte [bx-0x7aa1], 2
+	jmp	short 0xA79
+	mov	byte [di], al
+	inc	di
+	loop	0xA64
+	db	0x8B, 0xC7			; mov	ax, di
+	db	0x2B, 0xC2			; sub	ax, dx
+	pop	di
+	pop	si
+	jmp	near DosRetLong
+	cmp	cx, 1
+	je	short 0xA8E
+	cmp	byte [si], 0xa
+	je	short 0xA77
+	jmp	short 0xA74
+	test	byte [bx-0x7aa1], 0x40
+	je	short 0xAAD
+	mov	ax, 0x4400
+	int	0x21
+	test	dx, 0x20
+	jne	short 0xAA9
+	lea	dx, [bp-1]
+	mov	ah, 0x3f
+	int	0x21
+	jb	short 0xA7D
+	mov	al, 0xa
+	jmp	short 0xAD9
+	mov	byte [bp-1], 0
+	lea	dx, [bp-1]
+	mov	ah, 0x3f
+	int	0x21
+	jb	short 0xA7D
+	db	0x0B, 0xC0			; or	ax, ax
+	je	short 0xAD7
+	cmp	word [bp+0xa], 1
+	je	short 0xAE3
+	mov	cx, 0xffff
+	db	0x8B, 0xD1			; mov	dx, cx
+	mov	ax, 0x4201
+	int	0x21
+	mov	cx, 1
+	cmp	byte [bp-1], 0xa
+	je	short 0xADE
+	mov	al, 0xd
+	mov	dx, word [bp+8]
+	jmp	short 0xA74
+	mov	dx, word [bp+8]
+	jmp	short 0xA77
+	cmp	byte [bp-1], 0xa
+	jne	short 0xAC4
+	jmp	short 0xAA9
+	db	0
+
+; _write: write bytes, expanding newlines when the handle is text.
+; Arguments: handle, buffer, count.
+_write:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	sub	sp, 8
+	mov	bx, word [bp+6]
+	db	0x3B, 0x1E, 0x5D, 0x85			; cmp	bx, word [_nfile]
+	jb	short .go
+	mov	ax, 0x900
+	stc
+	jmp	near DosRetLong
+.go:
+	cmp	word [0x8ae4], 0xd6d6
+	jne	short 0xB0E
+	call	word [0x8ae6]
+	test	byte [bx-0x7aa1], 0x20
+	je	short 0xB20
+	mov	ax, 0x4202
+	db	0x33, 0xC9			; xor	cx, cx
+	db	0x8B, 0xD1			; mov	dx, cx
+	int	0x21
+	jb	short 0xAFF
+	test	byte [bx-0x7aa1], 0x80
+	je	short 0xB97
+	mov	dx, word [bp+8]
+	push	ds
+	pop	es
+	db	0x33, 0xC0			; xor	ax, ax
+	mov	word [bp-2], ax
+	mov	word [bp-4], ax
+	cld
+	push	di
+	push	si
+	db	0x8B, 0xFA			; mov	di, dx
+	db	0x8B, 0xF2			; mov	si, dx
+	mov	word [bp-8], sp
+	mov	cx, word [bp+0xa]
+	jcxz	0xB7D
+	mov	al, 0xa
+	repne scasb
+	jne	short 0xB95
+	call	0:0x1D8E
+	cmp	ax, 0xa8
+	jbe	short 0xB99
+	sub	sp, 2
+	db	0x8B, 0xDC			; mov	bx, sp
+	mov	dx, 0x200
+	cmp	ax, 0x228
+	jae	short 0xB63
+	mov	dx, 0x80
+	db	0x2B, 0xE2			; sub	sp, dx
+	db	0x8B, 0xD4			; mov	dx, sp
+	db	0x8B, 0xFA			; mov	di, dx
+	push	ss
+	pop	es
+	mov	cx, word [bp+0xa]
+	lodsb
+	cmp	al, 0xa
+	je	short 0xB7F
+	db	0x3B, 0xFB			; cmp	di, bx
+	je	short 0xB90
+	stosb
+	loop	0xB6E
+	call	0xba0
+	jmp	short 0xBEA
+	mov	al, 0xd
+	db	0x3B, 0xFB			; cmp	di, bx
+	jne	short 0xB88
+	call	0xba0
+	stosb
+	mov	al, 0xa
+	inc	word [bp-4]
+	jmp	short 0xB73
+	call	0xba0
+	jmp	short 0xB77
+	pop	si
+	pop	di
+	jmp	short 0xBF8
+	mov	ax, 0xfffc
+	push	cs
+	call	0x74a
+	push	ax
+	push	bx
+	push	cx
+	db	0x8B, 0xCF			; mov	cx, di
+	db	0x2B, 0xCA			; sub	cx, dx
+	jcxz	0xBBB
+	push	cx
+	mov	bx, word [bp+6]
+	mov	ah, 0x40
+	int	0x21
+	pop	cx
+	jb	short 0xBC1
+	add	word [bp-2], ax
+	db	0x3B, 0xC8			; cmp	cx, ax
+	ja	short 0xBC1
+	pop	cx
+	pop	bx
+	pop	ax
+	db	0x8B, 0xFA			; mov	di, dx
+	ret
+	lahf
+	add	sp, 8
+	cmp	word [bp-2], 0
+	jne	short 0xBEA
+	sahf
+	jae	short 0xBD2
+	mov	ah, 9
+	jmp	short 0xBF0
+	test	byte [bx-0x7aa1], 0x40
+	je	short 0xBE4
+	mov	bx, word [bp+8]
+	cmp	byte [bx], 0x1a
+	jne	short 0xBE4
+	clc
+	jmp	short 0xBF0
+	stc
+	mov	ax, 0x1c00
+	jmp	short 0xBF0
+	mov	ax, word [bp-2]
+	sub	ax, word [bp-4]
+	mov	sp, word [bp-8]
+	pop	si
+	pop	di
+	jmp	near DosRetLong
+	mov	cx, word [bp+0xa]
+	db	0x0B, 0xC9			; or	cx, cx
+	jne	short 0xC04
+	db	0x8B, 0xC1			; mov	ax, cx
+	jmp	near DosRetLong
+	mov	dx, word [bp+8]
+	mov	ah, 0x40
+	int	0x21
+	jae	short 0xC11
+	mov	ah, 9
+	jmp	short 0xBF5
+	db	0x0B, 0xC0			; or	ax, ax
+	jne	short 0xBF5
+	test	byte [bx-0x7aa1], 0x40
+	je	short 0xC26
+	db	0x8B, 0xDA			; mov	bx, dx
+	cmp	byte [bx], 0x1a
+	jne	short 0xC26
+	clc
+	jmp	short 0xBF5
+	stc
+	mov	ax, 0x1c00
+	jmp	short 0xBF5
+
+Rt0C2C:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	db	0x8B, 0xD7			; mov	dx, di
+	db	0x8B, 0xDE			; mov	bx, si
+	mov	ax, ds
+	mov	es, ax
+	mov	di, word [bp+6]
+	db	0x33, 0xC0			; xor	ax, ax
+	mov	cx, 0xffff
+	repne scasb
+	lea	si, [di-1]
+	mov	di, word [bp+8]
+	mov	cx, 0xffff
+	repne scasb
+	not	cx
+	db	0x2B, 0xF9			; sub	di, cx
+	db	0x87, 0xFE			; xchg	si, di
+	mov	ax, word [bp+6]
+	test	si, 1
+	je	short 0xC5D
+	movsb
+	dec	cx
+	shr	cx, 1
+	rep movsw
+	db	0x13, 0xC9			; adc	cx, cx
+	rep movsb
+	db	0x8B, 0xF3			; mov	si, bx
+	db	0x8B, 0xFA			; mov	di, dx
+	pop	bp
+	retf
+	db	0
+
+; _strcpy: copy a string, a word at a time once the destination is even.
+; Arguments: destination, source. Preserves SI and DI.
+_strcpy:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	db	0x8B, 0xD7			; mov	dx, di
+	db	0x8B, 0xDE			; mov	bx, si
+	mov	si, word [bp+8]
+	db	0x8B, 0xFE			; mov	di, si
+	mov	ax, ds
+	mov	es, ax
+	db	0x33, 0xC0			; xor	ax, ax
+	mov	cx, 0xffff
+	repne scasb
+	not	cx
+	mov	di, word [bp+6]
+	db	0x8B, 0xC7			; mov	ax, di
+	test	al, 1
+	je	short .words
+	movsb
+	dec	cx
+.words:
+	shr	cx, 1
+	rep movsw
+	db	0x13, 0xC9			; adc	cx, cx
+	rep movsb
+	db	0x8B, 0xF3			; mov	si, bx
+	db	0x8B, 0xFA			; mov	di, dx
+	pop	bp
+	retf
+
+; _strlen: length of a string, not counting the zero.
+; Argument: string. Result in AX.
+_strlen:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	db	0x8B, 0xD7			; mov	dx, di
+	mov	ax, ds
+	mov	es, ax
+	mov	di, word [bp+6]
+	db	0x33, 0xC0			; xor	ax, ax
+	mov	cx, 0xffff
+	repne scasb
+	not	cx
+	dec	cx
+	xchg	cx, ax
+	db	0x8B, 0xFA			; mov	di, dx
+	pop	bp
+	retf
+	db	0
+
+; _strncpy: copy at most a count of bytes, then pad with zeros.
+; Arguments: destination, source, count. Result is the destination.
+_strncpy:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	di
+	push	si
+	push	ds
+	pop	es
+	mov	di, word [bp+6]
+	mov	si, word [bp+8]
+	db	0x8B, 0xDF			; mov	bx, di
+	mov	cx, word [bp+0xa]
+	jcxz	.done
+.copy:
+	lodsb
+	db	0x0A, 0xC0			; or	al, al
+	je	short .pad
+	stosb
+	loop	.copy
+.pad:
+	db	0x32, 0xC0			; xor	al, al
+	rep stosb
+.done:
+	db	0x8B, 0xC3			; mov	ax, bx
+	pop	si
+	pop	di
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+
+JumpAhead:
+	jmp	near 0x1DA2
+	db	0
+
+; WriteStderr: write a C string to handle 2.
+; Argument: string.
+WriteStderr:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	sub	sp, 2
+	push	di
+	push	si
+	mov	si, word [bp+6]
+	mov	di, 2
+	db	0x0B, 0xF6			; or	si, si
+	je	short 0xD24
+	cmp	byte [si], 0
+	je	short 0xD24
+	push	si
+	db	0x9A, 0x9E, 0x0C, 0x00, 0x00			; call	0:_strlen
+	db	0x03, 0xE7			; add	sp, di
+	push	ax
+	push	si
+	db	0x8B, 0xC7			; mov	ax, di
+	push	ax
+	db	0x9A, 0xEC, 0x0A, 0x00, 0x00			; call	0:_write
+	add	sp, 6
+	db	0x8B, 0xC7			; mov	ax, di
+	push	ax
+	mov	ax, 0x868e
+	push	ax
+	db	0x8B, 0xC7			; mov	ax, di
+	push	ax
+	db	0x9A, 0xEC, 0x0A, 0x00, 0x00			; call	0:_write
+	add	sp, 6
+	db	0x83, 0x3E, 0x50, 0x85, 0x00			; cmp	word [errno], 0
+	jl	short 0xD34
+	db	0xA1, 0x50, 0x85			; mov	ax, word [errno]
+	cmp	word [0x8a14], ax
+	jg	short 0xD3A
+	mov	ax, word [0x8a14]
+	jmp	short 0xD3D
+	db	144
+	db	0xA1, 0x50, 0x85			; mov	ax, word [errno]
+	mov	word [bp-2], ax
+	mov	bx, word [bp-2]
+	shl	bx, 1
+	mov	si, word [bx-0x7638]
+	push	si
+	db	0x9A, 0x9E, 0x0C, 0x00, 0x00			; call	0:_strlen
+	db	0x03, 0xE7			; add	sp, di
+	push	ax
+	push	si
+	push	di
+	db	0x9A, 0xEC, 0x0A, 0x00, 0x00			; call	0:_write
+	add	sp, 6
+	mov	ax, 1
+	push	ax
+	mov	ax, 0x8691
+	push	ax
+	push	di
+	db	0x9A, 0xEC, 0x0A, 0x00, 0x00			; call	0:_write
+	add	sp, 6
+	pop	si
+	pop	di
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+	db	144
+
+_sprintf:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	sub	sp, 2
+	push	di
+	push	si
+	mov	byte [0x909c], 0x42
+	mov	ax, word [bp+6]
+	mov	word [0x909a], ax
+	mov	si, 0x9096
+	mov	word [si], ax
+	mov	word [0x9098], 0x7fff
+	lea	ax, [bp+0xa]
+	push	ax
+	push	word [bp+8]
+	db	0x8B, 0xC6			; mov	ax, si
+	push	ax
+	call	0:0x18B6
+	add	sp, 6
+	db	0x8B, 0xF8			; mov	di, ax
+	dec	word [0x9098]
+	js	short 0xDBA
+	mov	bx, word [0x9096]
+	inc	word [0x9096]
+	mov	byte [bx], 0
+	jmp	short 0xDC6
+	db	144
+	push	si
+	db	0x2B, 0xC0			; sub	ax, ax
+	push	ax
+	call	0:0x1710
+	add	sp, 4
+	db	0x8B, 0xC7			; mov	ax, di
+	pop	si
+	pop	di
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+
+; _stricmp: compare two strings without regard to case.
+; Arguments: two strings. Result is negative, zero, or positive.
+_stricmp:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	db	0x8B, 0xD6			; mov	dx, si
+	mov	si, word [bp+8]
+	mov	bx, word [bp+6]
+	mov	al, 0xff
+	db	0x0A, 0xC0			; or	al, al
+	je	short 0xE0B
+	lodsb
+	mov	ah, byte [bx]
+	inc	bx
+	db	0x3A, 0xE0			; cmp	ah, al
+	je	short 0xDDB
+	sub	al, 0x41
+	cmp	al, 0x1a
+	db	0x1A, 0xC9			; sbb	cl, cl
+	and	cl, 0x20
+	db	0x02, 0xC1			; add	al, cl
+	add	al, 0x41
+	db	0x86, 0xE0			; xchg	al, ah
+	sub	al, 0x41
+	cmp	al, 0x1a
+	db	0x1A, 0xC9			; sbb	cl, cl
+	and	cl, 0x20
+	db	0x02, 0xC1			; add	al, cl
+	add	al, 0x41
+	db	0x3A, 0xC4			; cmp	al, ah
+	je	short 0xDDB
+	db	0x1A, 0xC0			; sbb	al, al
+	sbb	al, 0xff
+	db	0x98			; cwde
+	db	0x8B, 0xF2			; mov	si, dx
+	pop	bp
+	retf
+
+; StrIndexInSet: index in the first string of the first character that
+; also occurs in the second. Result in AX, or -1.
+StrIndexInSet:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	sub	sp, 0x20
+	push	si
+	push	di
+	mov	si, word [bp+8]
+	mov	ax, ss
+	mov	es, ax
+	mov	cx, 0x10
+	db	0x33, 0xC0			; xor	ax, ax
+	lea	di, [bp-0x20]
+	rep stosw
+	lodsb
+	db	0x0A, 0xC0			; or	al, al
+	je	short 0xE42
+	db	0x8B, 0xF8			; mov	di, ax
+	db	0x8B, 0xC8			; mov	cx, ax
+	mov	al, 1
+	and	cl, 7
+	shl	al, cl
+	mov	cl, 3
+	shr	di, cl
+	or	byte [bp+di-0x20], al
+	jmp	short 0xE29
+	mov	si, word [bp+6]
+	mov	bx, 0xffff
+	inc	bx
+	lodsb
+	and	ax, 0xff
+	je	short 0xE63
+	db	0x8B, 0xF8			; mov	di, ax
+	db	0x8B, 0xC8			; mov	cx, ax
+	mov	al, 1
+	and	cl, 7
+	shl	al, cl
+	mov	cl, 3
+	shr	di, cl
+	and	al, byte [bp+di-0x20]
+	je	short 0xE48
+	xchg	bx, ax
+	pop	di
+	pop	si
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+
+; _abs: absolute value of a signed int.
+; Argument: value. Result in AX.
+_abs:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	mov	ax, word [bp+6]
+	db	0x99			; cdq
+	db	0x33, 0xC2			; xor	ax, dx
+	db	0x2B, 0xC2			; sub	ax, dx
+	pop	bp
+	retf
+	db	144
+
+; _onexit: register a function and return its pointer.
+_onexit:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	mov	ax, 0xffff
+	jmp	short 0xE85
+
+; atexit: register a function. Returns 0, or nothing useful if the table is full.
+atexit:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	db	0x33, 0xC0			; xor	ax, ax
+	db	0x8B, 0xC8			; mov	cx, ax
+	db	0x99			; cdq
+	mov	bx, word [0x8694]
+	cmp	bx, 0x9138
+	je	short 0xEA6
+	add	word [0x8694], 4
+	mov	dx, word [bp+8]
+	mov	word [bx+2], dx
+	mov	ax, word [bp+6]
+	mov	word [bx], ax
+	jcxz	0xEA6
+	db	0x33, 0xC0			; xor	ax, ax
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+
+CallArg:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	si
+	push	di
+	cmp	word [bp+0xa], 0
+	je	short 0xED5
+	mov	cx, word [bp+8]
+	jcxz	0xED5
+	dec	cx
+	je	short 0xED5
+	mov	si, word [bp+6]
+	db	0x8B, 0xF9			; mov	di, cx
+	push	si
+	add	si, word [bp+0xa]
+	push	si
+	call	far [bp+0xc]
+	add	sp, 4
+	db	0x8B, 0xCF			; mov	cx, di
+	db	0x0B, 0xC0			; or	ax, ax
+	js	short 0xEDB
+	loop	0xEC0
+	pop	di
+	pop	si
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+	mov	ax, word [bp+8]
+	dec	ax
+	db	0x33, 0xC9			; xor	cx, cx
+	shr	ax, 1
+	loopne	0xEE1
+	neg	cx
+	mov	ax, 4
+	mul	cx
+	jb	short 0xF0F
+	db	0x8B, 0xF0			; mov	si, ax
+	call	0:0x1D8E
+	db	0x3B, 0xC6			; cmp	ax, si
+	jb	short 0xF0F
+	push	bp
+	db	0x8B, 0xFC			; mov	di, sp
+	mov	ax, word [bp+8]
+	dec	ax
+	mul	word [bp+0xa]
+	add	ax, word [bp+6]
+	push	ax
+	push	word [bp+6]
+	jmp	short 0xF18
+	pop	bp
+	jmp	short 0xED5
+	mov	ax, 0xfffc
+	push	cs
+	call	0x74a
+	jmp	short 0xED5
+	db	0x3B, 0xE7			; cmp	sp, di
+	jae	short 0xF0C
+	db	0x8B, 0xEC			; mov	bp, sp
+	mov	si, word [bp]
+	cmp	si, word [bp+2]
+	jb	short 0xF2B
+	add	sp, 4
+	jmp	short 0xF18
+	sub	sp, 4
+	mov	dx, word [bp+2]
+	mov	word [bp-2], dx
+	add	dx, word [ss:di+0x10]
+	mov	word [bp-4], si
+	push	dx
+	add	si, word [ss:di+0x10]
+	cmp	si, word [bp+2]
+	je	short 0xF5B
+	push	word [bp]
+	push	si
+	call	far [ss:di+0x12]
+	add	sp, 4
+	db	0x0B, 0xC0			; or	ax, ax
+	jg	short 0xF5B
+	je	short 0xF3C
+	mov	word [bp-4], si
+	jmp	short 0xF3C
+	pop	dx
+	push	si
+	db	0x8B, 0xF2			; mov	si, dx
+	sub	si, word [ss:di+0x10]
+	push	si
+	push	word [bp]
+	call	far [ss:di+0x12]
+	add	sp, 4
+	db	0x0B, 0xC0			; or	ax, ax
+	jg	short 0xF7E
+	je	short 0xF79
+	mov	word [bp-2], si
+	jmp	short 0xF5F
+	cmp	si, word [bp]
+	jne	short 0xF5F
+	db	0x8B, 0xD6			; mov	dx, si
+	pop	si
+	db	0x3B, 0xD6			; cmp	dx, si
+	jbe	short 0xF98
+	mov	ax, word [ss:di+0x10]
+	db	0x87, 0xFA			; xchg	dx, di
+	call	0xfe2
+	db	0x87, 0xFA			; xchg	dx, di
+	mov	word [bp-2], dx
+	mov	word [bp-4], si
+	jmp	short 0xF3B
+	mov	ax, word [ss:di+0x10]
+	db	0x87, 0xFA			; xchg	dx, di
+	db	0x8B, 0xCE			; mov	cx, si
+	mov	si, word [bp]
+	call	0xfe2
+	db	0x8B, 0xF1			; mov	si, cx
+	db	0x87, 0xFA			; xchg	dx, di
+	mov	si, word [bp+2]
+	sub	si, word [bp-2]
+	add	si, word [bp]
+	sub	si, word [bp-4]
+	jb	short 0xFCD
+	mov	cx, word [bp]
+	mov	ax, word [bp-2]
+	mov	word [bp], ax
+	mov	ax, word [bp-4]
+	mov	word [bp-2], ax
+	mov	word [bp-4], cx
+	jmp	near 0xF1C
+	mov	cx, word [bp+2]
+	mov	ax, word [bp-4]
+	mov	word [bp+2], ax
+	mov	ax, word [bp-2]
+	mov	word [bp-4], ax
+	mov	word [bp-2], cx
+	jmp	near 0xF1C
+	db	0x8B, 0xD8			; mov	bx, ax
+	test	bx, 1
+	je	short 0xFF3
+	dec	bx
+	mov	al, byte [bx+si]
+	xchg	byte [bx+di], al
+	mov	byte [bx+si], al
+	je	short 0xFFE
+	sub	bx, 2
+	mov	ax, word [bx+si]
+	xchg	word [bx+di], ax
+	mov	word [bx+si], ax
+	jne	short 0xFF3
+	ret
+	db	0
+
+; _srand: set the rand seed.
+; Argument: seed.
+_srand:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	mov	ax, word [bp+6]
+	mov	word [0x8696], ax
+	mov	word [0x8698], 0
+	pop	bp
+	retf
+	db	144
+
+; _rand: advance the Microsoft C seed and return the high 15 bits.
+_rand:
+	mov	ax, 0x43fd
+	mov	dx, 3
+	push	dx
+	push	ax
+	push	word [0x8698]
+	push	word [0x8696]
+	db	0x9A, 0x26, 0x12, 0x00, 0x00			; call	0:__aFlmul
+	add	ax, strict word 0x9ec3
+	adc	dx, 0x26
+	mov	word [0x8696], ax
+	mov	word [0x8698], dx
+	db	0x8B, 0xC2			; mov	ax, dx
+	and	ah, 0x7f
+	retf
+
+; _mkdir: create a directory. Shares the path call with _chdir.
+; Argument: path.
+_mkdir:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	mov	ah, 0x39
+	jmp	short ChdirPath
+
+; _chdir: change directory.
+; Argument: path.
+_chdir:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	mov	ah, 0x3b
+
+ChdirPath:
+	mov	dx, word [bp+6]
+	int	0x21
+
+ChdirErr:
+	jmp	near DosRet
+
+; _rmdir: remove a directory. A wildcard in the name becomes a distinct error.
+; Argument: path.
+_rmdir:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	mov	ah, 0x3a
+	mov	dx, word [bp+6]
+	int	0x21
+	jae	short ChdirErr
+	db	0x3D, 0x10, 0x00			; cmp	ax, 0x10
+	jne	short ChdirErr
+	xchg	dx, ax
+	xchg	bx, ax
+.scan:
+	mov	al, byte [bx]
+	inc	bx
+	cmp	al, 0
+	je	short .denied
+	cmp	al, 0x3f
+	je	short .wild
+	cmp	al, 0x2a
+	jne	short .scan
+.wild:
+	mov	dl, 3
+.denied:
+	xchg	dx, ax
+	stc
+	jmp	short ChdirErr
+
+; _unlink: delete a file.
+; Argument: path.
+_unlink:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	mov	dx, word [bp+6]
+	mov	ah, 0x41
+	int	0x21
+	jmp	near DosRet
+	db	0
+
+; _dos_close: close a DOS handle.
+; Argument: handle.
+_dos_close:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	mov	bx, word [bp+6]
+	mov	ah, 0x3e
+	int	0x21
+	jmp	near DosRetCode
+	db	0
+
+; _dos_creatnew: create a file only if it does not exist.
+; Arguments: path, attribute, pointer that receives the handle.
+_dos_creatnew:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	mov	bh, 0x5b
+	jmp	short DosCreate
+
+; _dos_creat: create or truncate a file.
+; Arguments: path, attribute, pointer that receives the handle.
+_dos_creat:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	mov	bh, 0x3c
+
+DosCreate:
+	mov	dx, word [bp+6]
+	mov	cx, word [bp+8]
+	db	0x8A, 0xE7			; mov	ah, bh
+	int	0x21
+	jae	short .store
+	db	0x3D, 0x50, 0x00			; cmp	ax, 0x50
+	stc
+	jne	short .join
+	mov	ah, 0x11
+	jmp	short .join
+.store:
+	mov	bx, word [bp+0xa]
+	mov	word [bx], ax
+.join:
+	jmp	near DosRetCode
+
+; _dos_findnext: continue a find.
+; Argument: the find buffer.
+_dos_findnext:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	ds
+	mov	al, 0x4f
+	mov	dx, word [bp+6]
+	jmp	short FindCommon
+
+; _dos_findfirst: start a find.
+; Arguments: name, attribute, find buffer.
+_dos_findfirst:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	ds
+	mov	al, 0x4e
+	mov	dx, word [bp+0xa]
+
+FindCommon:
+	mov	ah, 0x2f
+	int	0x21
+	mov	ah, 0x1a
+	int	0x21
+	cmp	al, 0x4e
+	jne	short .go
+	mov	dx, word [bp+6]
+	mov	cx, word [bp+8]
+.go:
+	db	0x8A, 0xE0			; mov	ah, al
+	int	0x21
+	push	ax
+	lahf
+	push	ax
+	mov	dx, es
+	mov	ds, dx
+	db	0x8B, 0xD3			; mov	dx, bx
+	mov	ah, 0x1a
+	int	0x21
+	pop	ax
+	sahf
+	pop	ax
+	pop	ds
+	jmp	near DosRetCode
+
+; _dos_open: open a file and store the handle.
+; Arguments: path, access, pointer that receives the handle.
+_dos_open:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	mov	dx, word [bp+6]
+	mov	ax, word [bp+8]
+	mov	ah, 0x3d
+	int	0x21
+	jb	short .join
+	mov	bx, word [bp+0xa]
+	mov	word [bx], ax
+.join:
+	jmp	near DosRetCode
+	db	0
+
+_dos_read:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	mov	ah, 0x3f
+	jmp	short 0x111E
+
+; _dos_write: write from a far buffer.
+; Arguments: handle, far buffer, count.
+_dos_write:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	mov	ah, 0x40
+	mov	bx, word [bp+6]
+	mov	cx, word [bp+0xc]
+	cmp	word [0x8ae4], 0xd6d6
+	jne	short .write
+	call	word [0x8ae6]
+.write:
+	push	ds
+	lds	dx, [bp+8]
+	int	0x21
+	pop	ds
+	jb	short 0x113E
+	mov	bx, word [bp+0xe]
+	mov	word [bx], ax
+	jmp	near DosRetCode
+	db	0,250,203
+
+; _dos_getdiskfree: free space on a drive.
+; Arguments: drive, pointer to the result.
+_dos_getdiskfree:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	mov	dl, byte [bp+6]
+	mov	ah, 0x36
+	int	0x21
+	db	0x3D, 0xFF, 0xFF			; cmp	ax, 0xffff
+	jne	short .fill
+	db	0xC7, 0x06, 0x50, 0x85, 0x16, 0x00			; mov	word [errno], 0x16
+	jmp	short .done
+.fill:
+	push	si
+	mov	si, word [bp+8]
+	mov	word [si+4], ax
+	mov	word [si+2], bx
+	mov	word [si+6], cx
+	mov	word [si], dx
+	pop	si
+	db	0x33, 0xC0			; xor	ax, ax
+.done:
+	pop	bp
+	retf
+	db	0,251,203
+
+; _dos_gettime: time of day into hour, minute, second, and hundredths.
+; Argument: pointer to four bytes.
+_dos_gettime:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	mov	ah, 0x2c
+	int	0x21
+	mov	bx, word [bp+6]
+	mov	byte [bx], ch
+	mov	byte [bx+1], cl
+	mov	byte [bx+2], dh
+	mov	byte [bx+3], dl
+	db	0x33, 0xC0			; xor	ax, ax
+	pop	bp
+	retf
+	db	0
+
+; __aFldiv: signed divide of two longs. Result in DX:AX. Pops 8 bytes.
+__aFldiv:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	di
+	push	si
+	push	bx
+	db	0x33, 0xFF			; xor	di, di
+	mov	ax, word [bp+8]
+	db	0x0B, 0xC0			; or	ax, ax
+	jge	short .pos
+	inc	di
+	mov	dx, word [bp+6]
+	neg	ax
+	neg	dx
+	db	0x1D, 0x00, 0x00			; sbb	ax, 0
+	mov	word [bp+8], ax
+	mov	word [bp+6], dx
+.pos:
+	mov	ax, word [bp+0xc]
+	db	0x0B, 0xC0			; or	ax, ax
+	jge	short 0x11C4
+	inc	di
+	mov	dx, word [bp+0xa]
+	neg	ax
+	neg	dx
+	db	0x1D, 0x00, 0x00			; sbb	ax, 0
+	mov	word [bp+0xc], ax
+	mov	word [bp+0xa], dx
+	db	0x0B, 0xC0			; or	ax, ax
+	jne	short 0x11DD
+	mov	cx, word [bp+0xa]
+	mov	ax, word [bp+8]
+	db	0x33, 0xD2			; xor	dx, dx
+	div	cx
+	db	0x8B, 0xD8			; mov	bx, ax
+	mov	ax, word [bp+6]
+	div	cx
+	db	0x8B, 0xD3			; mov	dx, bx
+	jmp	short 0x1215
+	db	0x8B, 0xD8			; mov	bx, ax
+	mov	cx, word [bp+0xa]
+	mov	dx, word [bp+8]
+	mov	ax, word [bp+6]
+	shr	bx, 1
+	rcr	cx, 1
+	shr	dx, 1
+	rcr	ax, 1
+	db	0x0B, 0xDB			; or	bx, bx
+	jne	short 0x11E8
+	div	cx
+	db	0x8B, 0xF0			; mov	si, ax
+	mul	word [bp+0xc]
+	xchg	cx, ax
+	mov	ax, word [bp+0xa]
+	mul	si
+	db	0x03, 0xD1			; add	dx, cx
+	jb	short 0x1211
+	cmp	dx, word [bp+8]
+	ja	short 0x1211
+	jb	short 0x1212
+	cmp	ax, word [bp+6]
+	jbe	short 0x1212
+	dec	si
+	db	0x33, 0xD2			; xor	dx, dx
+	xchg	si, ax
+	dec	di
+	jne	short 0x121F
+	neg	dx
+	neg	ax
+	sbb	dx, 0
+	pop	bx
+	pop	si
+	pop	di
+	pop	bp
+	retf	8
+
+; __aFlmul: multiply two longs. DX:AX is the product.
+; Arguments: low and high of each long. Pops 8 bytes.
+__aFlmul:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	mov	ax, word [bp+8]
+	mov	cx, word [bp+0xc]
+	db	0x0B, 0xC8			; or	cx, ax
+	mov	cx, word [bp+0xa]
+	jne	short .full
+	mov	ax, word [bp+6]
+	mul	cx
+	pop	bp
+	retf	8
+.full:
+	push	bx
+	mul	cx
+	db	0x8B, 0xD8			; mov	bx, ax
+	mov	ax, word [bp+6]
+	mul	word [bp+0xc]
+	db	0x03, 0xD8			; add	bx, ax
+	mov	ax, word [bp+6]
+	mul	cx
+	db	0x03, 0xD3			; add	dx, bx
+	pop	bx
+	pop	bp
+	retf	8
+
+; __aFlshl: shift DX:AX left by CX.
+; No frame. Result in DX:AX.
+__aFlshl:
+	db	0x32, 0xED			; xor	ch, ch
+	jcxz	.done
+	shl	ax, 1
+	rcl	dx, 1
+	loop	0x125C
+.done:
+	retf
+	db	0
+
+; __aFlsar: arithmetic shift of DX:AX right by CX.
+__aFlsar:
+	db	0x32, 0xED			; xor	ch, ch
+	jcxz	.done
+	sar	dx, 1
+	rcr	ax, 1
+	loop	0x1268
+.done:
+	retf
+	db	0
+
+LongShlAt:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	bx
+	mov	bx, word [bp+6]
+	mov	ax, word [bx]
+	mov	dx, word [bx+2]
+	mov	cx, word [bp+8]
+	push	cs
+	call	0x1258
+	mov	word [bx], ax
+	mov	word [bx+2], dx
+	pop	bx
+	pop	bp
+	retf	4
+	db	0
+
+LongSarAt:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	bx
+	mov	bx, word [bp+6]
+	mov	ax, word [bx]
+	mov	dx, word [bx+2]
+	mov	cx, word [bp+8]
+	push	cs
+	call	0x1264
+	mov	word [bx], ax
+	mov	word [bx+2], dx
+	pop	bx
+	pop	bp
+	retf	4
+	db	0
+
+; __aFlshr: logical shift of DX:AX right by CX.
+__aFlshr:
+	db	0x32, 0xED			; xor	ch, ch
+	jcxz	.done
+	shr	dx, 1
+	rcr	ax, 1
+	loop	0x12B0
+.done:
+	retf
+	db	0
+
+; _fmemcpy: copy a count of bytes through far pointers.
+; Arguments: destination, source, count.
+_fmemcpy:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	mov	cx, word [bp+0xe]
+	push	ds
+	push	di
+	push	si
+	jcxz	.done
+	lds	si, [bp+0xa]
+	les	di, [bp+6]
+	db	0x8B, 0xC1			; mov	ax, cx
+	dec	ax
+	db	0x8B, 0xD7			; mov	dx, di
+	not	dx
+	db	0x2B, 0xC2			; sub	ax, dx
+	db	0x1B, 0xDB			; sbb	bx, bx
+	db	0x23, 0xC3			; and	ax, bx
+	db	0x03, 0xC2			; add	ax, dx
+	db	0x8B, 0xD6			; mov	dx, si
+	not	dx
+	db	0x2B, 0xC2			; sub	ax, dx
+	db	0x1B, 0xDB			; sbb	bx, bx
+	db	0x23, 0xC3			; and	ax, bx
+	db	0x03, 0xC2			; add	ax, dx
+	inc	ax
+	xchg	cx, ax
+	db	0x2B, 0xC1			; sub	ax, cx
+	shr	cx, 1
+	rep movsw
+	db	0x13, 0xC9			; adc	cx, cx
+	rep movsb
+	xchg	cx, ax
+	jcxz	.done
+	db	0x0B, 0xF6			; or	si, si
+	jne	short 0x12FE
+	mov	ax, ds
+	add	ax, strict word 0x1000
+	mov	ds, ax
+	db	0x0B, 0xFF			; or	di, di
+	jne	short 0x12C9
+	mov	ax, es
+	add	ax, strict word 0x1000
+	mov	es, ax
+	jmp	short 0x12C9
+.done:
+	mov	ax, word [bp+6]
+	mov	dx, word [bp+8]
+	pop	si
+	pop	di
+	pop	ds
+	pop	bp
+	retf
+
+_fmemcmp:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	db	0x8B, 0xD6			; mov	dx, si
+	push	ds
+	lds	si, [bp+0xa]
+	les	bx, [bp+6]
+	mov	al, 0xff
+	db	0x0A, 0xC0			; or	al, al
+	je	short 0x1355
+	lodsb
+	mov	ah, byte [es:bx]
+	inc	bx
+	db	0x3A, 0xE0			; cmp	ah, al
+	je	short 0x1324
+	sub	al, 0x41
+	cmp	al, 0x1a
+	db	0x1A, 0xC9			; sbb	cl, cl
+	and	cl, 0x20
+	db	0x02, 0xC1			; add	al, cl
+	add	al, 0x41
+	db	0x86, 0xE0			; xchg	al, ah
+	sub	al, 0x41
+	cmp	al, 0x1a
+	db	0x1A, 0xC9			; sbb	cl, cl
+	and	cl, 0x20
+	db	0x02, 0xC1			; add	al, cl
+	add	al, 0x41
+	db	0x3A, 0xC4			; cmp	al, ah
+	je	short 0x1324
+	db	0x1A, 0xC0			; sbb	al, al
+	sbb	al, 0xff
+	db	0x98			; cwde
+	pop	ds
+	db	0x8B, 0xF2			; mov	si, dx
+	pop	bp
+	retf
+	db	0
+
+_fmemchr:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	di
+	push	si
+	push	ds
+	mov	cx, word [bp+0xe]
+	jcxz	.none
+	db	0x8B, 0xD9			; mov	bx, cx
+	les	di, [bp+6]
+	db	0x8B, 0xF7			; mov	si, di
+	db	0x33, 0xC0			; xor	ax, ax
+	repne scasb
+	neg	cx
+	db	0x03, 0xCB			; add	cx, bx
+	db	0x8B, 0xFE			; mov	di, si
+	lds	si, [bp+0xa]
+	repe cmpsb
+	mov	al, byte [si-1]
+	db	0x33, 0xC9			; xor	cx, cx
+	cmp	al, byte [es:di-1]
+	ja	short 0x138C
+	je	short .none
+	dec	cx
+	dec	cx
+	not	cx
+.none:
+	db	0x8B, 0xC1			; mov	ax, cx
+	pop	ds
+	pop	si
+	pop	di
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+	db	0
+
+RetOnly:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	db	0x8B, 0xD7			; mov	dx, di
+	les	di, [bp+6]
+	db	0x33, 0xC0			; xor	ax, ax
+	mov	cx, 0xffff
+	repne scasb
+	not	cx
+	dec	cx
+	xchg	cx, ax
+	db	0x8B, 0xFA			; mov	di, dx
+	pop	bp
+	retf
+	db	0
+
+RetOnly2:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	db	0x8B, 0xD7			; mov	dx, di
+	db	0x8B, 0xDE			; mov	bx, si
+	push	ds
+	lds	si, [bp+6]
+	les	di, [bp+0xa]
+	db	0x33, 0xC0			; xor	ax, ax
+	mov	cx, 0xffff
+	repne scasb
+	not	cx
+	db	0x2B, 0xF9			; sub	di, cx
+	repe cmpsb
+	je	short 0x13D2
+	db	0x1B, 0xC0			; sbb	ax, ax
+	db	0x1D, 0xFF, 0xFF			; sbb	ax, 0xffff
+	pop	ds
+	db	0x8B, 0xF3			; mov	si, bx
+	db	0x8B, 0xFA			; mov	di, dx
+	pop	bp
+	retf
+	db	0
+
+; _fstrlen: length of a far string.
+_fstrlen:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	db	0x8B, 0xD7			; mov	dx, di
+	db	0x8B, 0xDE			; mov	bx, si
+	push	ds
+	lds	si, [bp+0xa]
+	db	0x8B, 0xFE			; mov	di, si
+	mov	ax, ds
+	mov	es, ax
+	db	0x33, 0xC0			; xor	ax, ax
+	mov	cx, 0xffff
+	repne scasb
+	not	cx
+	les	di, [bp+6]
+	db	0x8B, 0xC7			; mov	ax, di
+	test	al, 1
+	je	short 0x13FF
+	movsb
+	dec	cx
+	shr	cx, 1
+	rep movsw
+	db	0x13, 0xC9			; adc	cx, cx
+	rep movsb
+	db	0x8B, 0xF3			; mov	si, bx
+	db	0x8B, 0xFA			; mov	di, dx
+	pop	ds
+	mov	dx, es
+	pop	bp
+	retf
+
+; _fstrcat: append one far string to another.
+_fstrcat:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	db	0x8B, 0xD7			; mov	dx, di
+	db	0x8B, 0xDE			; mov	bx, si
+	push	ds
+	les	di, [bp+6]
+	db	0x33, 0xC0			; xor	ax, ax
+	mov	cx, 0xffff
+	repne scasb
+	lea	si, [di-1]
+	les	di, [bp+0xa]
+	mov	cx, 0xffff
+	repne scasb
+	not	cx
+	db	0x2B, 0xF9			; sub	di, cx
+	mov	ax, es
+	mov	ds, ax
+	mov	es, word [bp+8]
+	db	0x87, 0xFE			; xchg	si, di
+	mov	ax, word [bp+6]
+	test	si, 1
+	je	short 0x1445
+	movsb
+	dec	cx
+	shr	cx, 1
+	rep movsw
+	db	0x13, 0xC9			; adc	cx, cx
+	rep movsb
+	db	0x8B, 0xF3			; mov	si, bx
+	db	0x8B, 0xFA			; mov	di, dx
+	pop	ds
+	mov	dx, es
+	pop	bp
+	retf
+
+; _fmemset: fill a far buffer.
+; Arguments: destination, byte, count.
+_fmemset:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	mov	cx, word [bp+0xc]
+	jcxz	.done
+	push	di
+	les	di, [bp+6]
+	db	0x8B, 0xD7			; mov	dx, di
+	neg	dx
+	je	short 0x1474
+	db	0x2B, 0xD1			; sub	dx, cx
+	db	0x1B, 0xDB			; sbb	bx, bx
+	db	0x23, 0xD3			; and	dx, bx
+	db	0x03, 0xD1			; add	dx, cx
+	db	0x87, 0xD1			; xchg	cx, dx
+	db	0x2B, 0xD1			; sub	dx, cx
+	mov	ax, word [bp+0xa]
+	db	0x8A, 0xE0			; mov	ah, al
+	shr	cx, 1
+	rep stosw
+	db	0x13, 0xC9			; adc	cx, cx
+	rep stosb
+	db	0x87, 0xD1			; xchg	cx, dx
+	jcxz	0x1495
+	mov	bx, es
+	add	bx, 0x1000
+	mov	es, bx
+	shr	cx, 1
+	rep stosw
+	db	0x13, 0xC9			; adc	cx, cx
+	rep stosb
+	pop	di
+.done:
+	mov	ax, word [bp+6]
+	mov	dx, word [bp+8]
+	pop	bp
+	retf
+
+_fstrcpy:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	sub	sp, 0x20
+	push	si
+	push	di
+	push	ds
+	lds	si, [bp+0xa]
+	mov	ax, ss
+	mov	es, ax
+	mov	cx, 0x10
+	db	0x33, 0xC0			; xor	ax, ax
+	lea	di, [bp-0x20]
+	rep stosw
+	lodsb
+	db	0x0A, 0xC0			; or	al, al
+	je	short 0x14D1
+	db	0x8B, 0xF8			; mov	di, ax
+	db	0x8B, 0xC8			; mov	cx, ax
+	mov	al, 1
+	and	cl, 7
+	shl	al, cl
+	mov	cl, 3
+	shr	di, cl
+	or	byte [bp+di-0x20], al
+	jmp	short 0x14B8
+	lds	si, [bp+6]
+	mov	bx, 0xffff
+	inc	bx
+	lodsb
+	and	ax, 0xff
+	je	short 0x14F2
+	db	0x8B, 0xF8			; mov	di, ax
+	db	0x8B, 0xC8			; mov	cx, ax
+	mov	al, 1
+	and	cl, 7
+	shl	al, cl
+	mov	cl, 3
+	shr	di, cl
+	and	al, byte [bp+di-0x20]
+	je	short 0x14D7
+	xchg	bx, ax
+	pop	ds
+	pop	di
+	pop	si
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+
+; _fmemmove: copy far bytes, including when the ranges overlap.
+_fmemmove:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	mov	cx, word [bp+0xe]
+	push	ds
+	push	di
+	push	si
+	db	0x0B, 0xC9			; or	cx, cx
+	jne	short .copy
+	jmp	near .done
+.copy:
+	lds	si, [bp+0xa]
+	les	di, [bp+6]
+	push	ds
+	push	si
+	push	es
+	push	di
+	call	0:0x1DF6
+	mov	cx, word [bp+0xe]
+	db	0x0B, 0xD2			; or	dx, dx
+	js	short 0x1577
+	db	0x2B, 0xC1			; sub	ax, cx
+	sbb	dx, 0
+	jae	short 0x1577
+	dec	cx
+	db	0x03, 0xF1			; add	si, cx
+	jae	short 0x1533
+	mov	ax, ds
+	add	ax, strict word 0x1000
+	mov	ds, ax
+	db	0x03, 0xF9			; add	di, cx
+	jae	short 0x153E
+	mov	ax, es
+	add	ax, strict word 0x1000
+	mov	es, ax
+	inc	cx
+	db	0x8B, 0xC1			; mov	ax, cx
+	dec	ax
+	db	0x2B, 0xC7			; sub	ax, di
+	db	0x1B, 0xDB			; sbb	bx, bx
+	db	0x23, 0xC3			; and	ax, bx
+	db	0x03, 0xC7			; add	ax, di
+	db	0x2B, 0xC6			; sub	ax, si
+	db	0x1B, 0xDB			; sbb	bx, bx
+	db	0x23, 0xC3			; and	ax, bx
+	db	0x03, 0xC6			; add	ax, si
+	inc	ax
+	xchg	cx, ax
+	db	0x2B, 0xC1			; sub	ax, cx
+	std
+	rep movsb
+	cld
+	xchg	cx, ax
+	jcxz	.done
+	cmp	si, -1
+	jne	short 0x1569
+	mov	ax, ds
+	sub	ax, 0x1000
+	mov	ds, ax
+	cmp	di, -1
+	jne	short 0x153F
+	mov	ax, es
+	sub	ax, 0x1000
+	mov	es, ax
+	jmp	short 0x153F
+	db	0x8B, 0xC1			; mov	ax, cx
+	dec	ax
+	db	0x8B, 0xD7			; mov	dx, di
+	not	dx
+	db	0x2B, 0xC2			; sub	ax, dx
+	db	0x1B, 0xDB			; sbb	bx, bx
+	db	0x23, 0xC3			; and	ax, bx
+	db	0x03, 0xC2			; add	ax, dx
+	db	0x8B, 0xD6			; mov	dx, si
+	not	dx
+	db	0x2B, 0xC2			; sub	ax, dx
+	db	0x1B, 0xDB			; sbb	bx, bx
+	db	0x23, 0xC3			; and	ax, bx
+	db	0x03, 0xC2			; add	ax, dx
+	inc	ax
+	xchg	cx, ax
+	db	0x2B, 0xC1			; sub	ax, cx
+	shr	cx, 1
+	rep movsw
+	db	0x13, 0xC9			; adc	cx, cx
+	rep movsb
+	xchg	cx, ax
+	jcxz	.done
+	db	0x0B, 0xF6			; or	si, si
+	jne	short 0x15AC
+	mov	ax, ds
+	add	ax, strict word 0x1000
+	mov	ds, ax
+	db	0x0B, 0xFF			; or	di, di
+	jne	short 0x1577
+	mov	ax, es
+	add	ax, strict word 0x1000
+	mov	es, ax
+	jmp	short 0x1577
+.done:
+	mov	ax, word [bp+6]
+	mov	dx, word [bp+8]
+	pop	si
+	pop	di
+	pop	ds
+	pop	bp
+	retf
+
+; EmulatedFloat: floating-point work done with the emulator interrupts.
+EmulatedFloat:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	sub	sp, 0xc
+	push	bx
+	push	cx
+	push	si
+	push	di
+	int	0x35
+	jle	short 0x15D0
+	int	0x3d
+	mov	ax, word [bp-2]
+	or	ah, 0xc
+	mov	word [bp-4], ax
+	int	0x35
+	outsb
+	cld
+	int	0x3b
+	jle	short 0x15D9
+	int	0x35
+	outsb
+	dec	byte [bp+di-0xbba]
+	mov	dx, word [bp-0xa]
+	pop	di
+	pop	si
+	pop	cx
+	pop	bx
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+	db	0
+
+; CopyTemplate: copy twelve words from one near buffer to another.
+CopyTemplate:
+	push	si
+	push	di
+	mov	ax, ds
+	mov	es, ax
+	mov	si, 0x869a
+	mov	di, 0x8876
+	mov	cx, 0xc
+	rep movsw
+	pop	di
+	pop	si
+	retf
+
+; __FF_MSGBANNER: print the runtime banner lines.
+; No arguments.
+__FF_MSGBANNER:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	mov	ax, 0xfc
+	push	ax
+	push	cs
+	call	0x1683
+	cmp	word [0x86b4], 0
+	je	short .nobannerhook
+	call	far [0x86b2]
+.nobannerhook:
+	mov	ax, 0xff
+	push	ax
+	push	cs
+	call	0x1683
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+
+; FpFail: report R6002, floating-point support not loaded, and abort.
+FpFail:
+	mov	ax, 2
+	jmp	near 0x59D
+
+; __nullcheck: checksum the first bytes of DGROUP.
+; If it does not match, report the null-pointer assignment.
+__nullcheck:
+	push	si
+	db	0x33, 0xF6			; xor	si, si
+	mov	cx, 0x42
+	db	0x32, 0xE4			; xor	ah, ah
+	cld
+.sum:
+	lodsb
+	db	0x32, 0xE0			; xor	ah, al
+	loop	.sum
+	xor	ah, 0x55
+	je	short .ok
+	push	cs
+	call	0x160c
+	mov	ax, 1
+	push	ax
+	push	cs
+	call	0x1683
+	mov	ax, 1
+.ok:
+	pop	si
+	retf
+
+; __NMSG_TEXT: find the text for a runtime message number.
+; Argument: number. Result is the string, or 0.
+__NMSG_TEXT:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	si
+	push	di
+	push	ds
+	pop	es
+	mov	dx, word [bp+6]
+	mov	si, 0x8d26
+.next:
+	lodsw
+	db	0x3B, 0xC2			; cmp	ax, dx
+	je	short .found
+	inc	ax
+	xchg	si, ax
+	je	short .found
+	xchg	di, ax
+	db	0x33, 0xC0			; xor	ax, ax
+	mov	cx, 0xffff
+	repne scasb
+	db	0x8B, 0xF7			; mov	si, di
+	jmp	short .next
+.found:
+	xchg	si, ax
+	pop	di
+	pop	si
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf	2
+
+; __NMSG_WRITE: write one runtime message to handle 2.
+; Argument: message number.
+__NMSG_WRITE:
+	push	bp
+	db	0x8B, 0xEC			; mov	bp, sp
+	push	di
+	push	word [bp+6]
+	push	cs
+	call	0x1658
+	db	0x0B, 0xC0			; or	ax, ax
+	je	short .none
+	xchg	dx, ax
+	db	0x8B, 0xFA			; mov	di, dx
+	db	0x33, 0xC0			; xor	ax, ax
+	mov	cx, 0xffff
+	repne scasb
+	not	cx
+	dec	cx
+	mov	bx, 2
+	cmp	word [0x8ae4], 0xd6d6
+	jne	short .nodebug
+	call	word [0x8ae6]
+.nodebug:
+	mov	ah, 0x40
+	int	0x21
+.none:
+	pop	di
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf	2
+	db	0
+
+; DosRet: success returns 0. A carry returns -1 after mapping the DOS error.
+DosRet:
+	jb	short DosRetBad
+
+DosRetZero:
+	db	0x33, 0xC0			; xor	ax, ax
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+
+; DosRetCode: success returns 0. A carry maps the error and returns its low byte.
+DosRetCode:
+	jae	short DosRetZero
+	push	ax
+	call	0x16e2
+	pop	ax
+	db	0x32, 0xE4			; xor	ah, ah
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+
+; DosRetLong: success keeps DX:AX. A carry maps the error and returns -1.
+DosRetLong:
+	jae	short DosRetLeave
+
+DosRetBad:
+	call	0x16e2
+	mov	ax, 0xffff
+	db	0x99			; cdq
+
+DosRetLeave:
+	db	0x8B, 0xE5			; mov	sp, bp
+	pop	bp
+	retf
+
+; DosRetErrno: map the DOS error in AX and return.
+DosRetErrno:
+	db	0x32, 0xE4			; xor	ah, ah
+	call	0x16e2
+	retf
+
+; DosMapErr: store the DOS error in _doserrno and the C errno.
+DosMapErr:
+	db	0xA2, 0x5B, 0x85			; mov	byte [_doserrno], al
+	db	0x0A, 0xE4			; or	ah, ah
+	jne	short .high
+	cmp	byte [0x8558], 3
+	jb	short .low
+	cmp	al, 0x22
+	jae	short 0x1700
+	cmp	al, 0x20
+	jb	short .low
+	mov	al, 5
+	jmp	short .map
+.low:
+	cmp	al, 0x13
+	jbe	short .map
+	mov	al, 0x13
+.map:
+	mov	bx, 0x86b6
+	xlatb
+	db	0x98			; cwde
+	db	0xA3, 0x50, 0x85			; mov	word [errno], ax
+	ret
+.high:
+	db	0x8A, 0xC4			; mov	al, ah
+	jmp	short 0x1706
+	db	0
+	incbin	"Extracted/segments/seg000.bin", 0x1710

@@ -4,7 +4,7 @@
 
 - Full build MATCH (SHA-1 `d94450ddff26528bddac6646c234277076fd36cb`, 244,854 bytes); `tools/verify_all.sh` MATCH.
 - seg056 is source: the resident RTLink/Plus manager and the overlay thunks (10,992 bytes). seg057 was the thunk tail and is merged into seg056.
-- seg000 is source from the start through `__chkstk` (`src/seg/seg000.asm`): the VGA copies, then `MscStartup`. The bytes after `__chkstk` are still incbin. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`) and seg056.
+- seg000 is source from the start through `DosMapErr` (`src/seg/seg000.asm`): VGA copies, `MscStartup`, and the low-level file, DOS, string, and runtime-message routines. The bytes after `DosMapErr` are still incbin. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`) and seg056.
 - seg011 is still a false split (merge into seg010 when seg010 is disassembled). The `ovl_*` slices were not resliced.
 
 ## Known facts
@@ -146,6 +146,10 @@ NHL 95 PC does not load code overlays. Its retail EXE is one Watcom LE image bou
 
 A search of that tree for `RTLink`, `.OVL` and an overlay manager found nothing else. Nothing there describes the 94 thunks or the `.OVL`
 file layout. The 94 load path above is from this EXE and `lst/game/`.
+
+## seg000 file and DOS routines
+
+From `__chkstk` through `DosMapErr`: `_printf`, `_open` / `_sopen`, `_read`, `_write`, `_close`, `_lseek`, the `_dos_*` calls, `_strcpy`, `_strcat`, `_strlen`, `_strncpy`, `_stricmp`, `rand` / `srand`, `atexit` / `_onexit`, the long multiply and divide helpers, and the runtime messages (`__FF_MSGBANNER`, `__NMSG_TEXT`, `__NMSG_WRITE`, `__nullcheck`). `DosRet` is the shared success and error return.
 
 ## seg000 VGA copies
 
