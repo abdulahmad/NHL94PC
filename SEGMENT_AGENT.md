@@ -35,7 +35,7 @@ Source style (same as the sibling repos):
 
 ## Current segment
 
-seg000 (startup through `__chkstk` is source; the rest of the segment is still incbin). <- CURRENT
+seg000 (through `__chkstk` is source; the bytes after it are still incbin). <- CURRENT
 
 ## Sources
 
@@ -81,6 +81,7 @@ seg000 (startup through `__chkstk` is source; the rest of the segment is still i
 
 ## History
 
+- 2026-10-31: seg000 VGA copies in front of `MscStartup`: `_outp`, `_inp`, and the latched VGA copies (`VgaCopyWrapped`, `VgaCopyToPitch`, `VgaCopyFromPitch`, `VgaStamp8`, `VgaPageFlip`, `VgaStorePlanes`, `VgaCopyStrip`, `VgaCopyBlock`, `VgaCopyBytes`, `VgaCopyRect`).
 - 2026-10-31: seg000 startup. `MscStartup` (where `__astart` jumps), `__cintDIV`, `InitRuntime`, `_exit` / `__exit` / `_cexit` / `__cexit`, `_initterm`, `__chkstk`. `_main` is the far call to seg005 offset 8 (still a `retf` in that incbin). The rest of seg000 is still incbin.
 - 2026-10-31: structure map only (no segment disassembled). 57 of seg000–seg058 are real linker segments; seg011 and seg057 are false
   splits (merge into seg010 and seg056). The 113,711 bytes after the load module are one preloaded RTLink segment (relocation list, then
@@ -96,7 +97,7 @@ seg000 (startup through `__chkstk` is source; the rest of the segment is still i
 | File | Status | File offset | Bytes | MZ paragraph |
 |---|---|---|---|---|
 | mz_header | incbin (MZ header fields are source) | 0x00000 | 7168 |  |
-| seg000 | startup through __chkstk; rest incbin <- CURRENT | 0x01C00 | 14896 | 0x0000 |
+| seg000 | through __chkstk source; rest incbin <- CURRENT | 0x01C00 | 14896 | 0x0000 |
 | seg001 | incbin | 0x05630 | 13280 | 0x03A3 |
 | seg002 | incbin | 0x08A10 | 5472 | 0x06E1 |
 | seg003 | incbin | 0x09F70 | 16 | 0x0837 |

@@ -4,7 +4,7 @@
 
 - Full build MATCH (SHA-1 `d94450ddff26528bddac6646c234277076fd36cb`, 244,854 bytes); `tools/verify_all.sh` MATCH.
 - seg056 is source: the resident RTLink/Plus manager and the overlay thunks (10,992 bytes). seg057 was the thunk tail and is merged into seg056.
-- seg000 startup is source, from `MscStartup` through `__chkstk` (`src/seg/seg000.asm`). The bytes before `MscStartup` and the bytes after `__chkstk` are still incbin. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`).
+- seg000 is source from the start through `__chkstk` (`src/seg/seg000.asm`): the VGA copies, then `MscStartup`. The bytes after `__chkstk` are still incbin. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`) and seg056.
 - seg011 is still a false split (merge into seg010 when seg010 is disassembled). The `ovl_*` slices were not resliced.
 
 ## Known facts
@@ -146,6 +146,10 @@ NHL 95 PC does not load code overlays. Its retail EXE is one Watcom LE image bou
 
 A search of that tree for `RTLink`, `.OVL` and an overlay manager found nothing else. Nothing there describes the 94 thunks or the `.OVL`
 file layout. The 94 load path above is from this EXE and `lst/game/`.
+
+## seg000 VGA copies
+
+The bytes in front of `MscStartup` are `_outp`, `_inp`, and latched VGA copies (write mode 1, all four planes, segment `0xA000`). `VgaPageFlip` waits for the retrace and sets the CRT start address. Nothing in the retail EXE far-calls these; they are public far routines. NHL 95 PC's startup drawing (`DrawFrameSprite`, `FadePalette`, `SetScreenSize`) is not these copies.
 
 ## seg000 startup
 
