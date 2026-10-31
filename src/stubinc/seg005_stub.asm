@@ -14,4 +14,5 @@ OvlThunk26	equ	0x20F3
 OvlThunk27	equ	0x20FD
 EmsInit		equ	0xE7
 HookCrit	equ	0x3E4
+FindFarMsg	equ	0x847
 %include "seg/seg005.asm"

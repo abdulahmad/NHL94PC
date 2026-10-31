@@ -188,7 +188,7 @@ _main:
 	push	0x4c7
 	push	dx
 	push	ax
-	call	0x03A3:0x847		; seg001
+	call	0x03A3:FindFarMsg		; seg001
 	add	sp, 6
 	mov	word [0xae98], ax
 	mov	word [0xae9a], dx

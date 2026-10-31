@@ -624,3 +624,12 @@ seg001:076A,LookupArg,,new,high,"4-byte key lookup. Failure flag comes from the 
 seg001:077A,Lookup,,new,high,"Same lookup with the failure flag forced to 0",src/seg/seg001.asm
 seg001:0789,LookupMsg,,new,high,"Same lookup with the failure flag forced to 1, which calls seg022",src/seg/seg001.asm
 seg001:0796,LookupBody,,new,high,"Maps the block, scans 4-byte records, and on a hit returns a long built from the record",src/seg/seg001.asm
+seg001:083E,FindFar,,new,high,"Looks up a long key in a far table. A miss returns 0 and does not call seg022",src/seg/seg001.asm
+seg001:0842,FindFarAlt,,new,medium,"Same lookup. On a miss calls seg022 with the pointer at 0x6485",src/seg/seg001.asm
+seg001:0847,FindFarMsg,,new,high,"Same lookup. On a miss calls seg022 with the pointer at 0x645c. _main calls this",src/seg/seg001.asm
+seg001:084A,FindFarBody,,new,high,"Shared search. A hit returns the far pointer after the keys, added to DS",src/seg/seg001.asm
+seg001:08C4,FindFarList,,new,high,"Walks keys until a 0 byte and stores each FindFarMsg result",src/seg/seg001.asm
+seg001:08F9,FindFarQuiet,,new,high,"The same walk calling FindFar, so a miss stays quiet",src/seg/seg001.asm
+seg001:092E,FarToLinear,,new,high,"Far pointer on the stack to a 20-bit address in DX:AX",src/seg/seg001.asm
+seg001:0945,LinearToFar,,new,high,"20-bit address on the stack to a far pointer whose offset is under 16",src/seg/seg001.asm
+seg001:0959,LinearToFarRegs,,new,high,"Same conversion with the low word in AX and the high word in DX",src/seg/seg001.asm
