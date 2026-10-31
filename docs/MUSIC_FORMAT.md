@@ -188,8 +188,8 @@ under unicorn into Nuked OPL3. It also writes VGM and MIDI files.
 3. MT-32: `MT30.BGP` with the `MT*.KMS` songs and `PCFF002.PAT`, sending the MIDI to Munt (libmt32emu, ROMs needed).
 4. Decode the rest of the 80-byte FM timbre (the envelope and vibrato bytes after +0x0F) and the patch record
    fields +8 to +0x0E, from the driver's tick function (`03DA`, `1418`, `150A`).
-5. Find who sets the song handle's master volume, pan and transpose (+0x11 to +0x13) and the fade-out (`1630:0234`
-   region). The menus' music volume should feed `--vol`.
+5. Find who sets the song handle's master volume, pan and transpose (+0x11 to +0x13) and the fade-out (the code at the top of
+   `1630:01D2`). The menus' music volume should feed `--vol`.
 6. Label these routines in the disassembly when the root segments that hold them (around file `0x16300` to `0x18700`)
    are turned into source.
 
