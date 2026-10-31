@@ -35,7 +35,7 @@ Source style (same as the sibling repos):
 
 ## Current segment
 
-seg003 is source. seg004 is next and is not started.
+seg004. <- CURRENT
 
 ## Sources
 
@@ -81,6 +81,7 @@ seg003 is source. seg004 is next and is not started.
 
 ## History
 
+- 2026-10-31: seg004 through `TypeId` is source. `NineCmp` compares 9 bytes with the block at 402h. `ReadBe` folds counted bytes into a dword. `TypeId` turns a short header into a type code.
 - 2026-10-31: seg003 is source. `RecFlag` returns the word at offset 18h. `NullFar` is the `retf` `_main` calls. seg004 is not started.
 - 2026-10-31: seg002 is source. `SlideUp` moves a record up into a gap. `FreeRec` and `AllocRec` are the free list. `SumUsed` adds the sizes that are not marked with bit 10h.
 - 2026-10-31: seg002 through `SlideDown` is source. It moves a record whose flag word is 10h down into the gap below it.
@@ -123,7 +124,7 @@ seg003 is source. seg004 is next and is not started.
 | seg001 | source | 0x05630 | 13280 | 0x03A3 |
 | seg002 | source | 0x08A10 | 5472 | 0x06E1 |
 | seg003 | source | 0x09F70 | 16 | 0x0837 |
-| seg004 | incbin | 0x09F80 | 3088 | 0x0838 |
+| seg004 | source through TypeId, rest incbin <- CURRENT | 0x09F80 | 3088 | 0x0838 |
 | seg005 | source (_main, two retf stubs) | 0x0AB90 | 1040 | 0x08F9 |
 | seg006 | incbin | 0x0AFA0 | 752 | 0x093A |
 | seg007 | incbin | 0x0B290 | 1168 | 0x0969 |

@@ -893,3 +893,7 @@ seg002:1542,RecSpan,,new,high,"The size dword stored at offset 14h",src/seg/seg0
 seg002:1552,NamePtr,,new,high,"The caller's far pointer plus 4, the name field",src/seg/seg002.asm
 seg003:0000,RecFlag,,new,high,"Returns the word at offset 18h of the far record",src/seg/seg003.asm
 seg003:000C,NullFar,,new,high,"A lone retf. _main calls it",src/seg/seg003.asm
+seg004:0002,NineCmp,,new,high,"Compares 9 bytes of a far string with the bytes at 402h. A match calls RetOnly",src/seg/seg004.asm
+seg004:0042,ReadBe,,new,high,"Folds a counted far byte string into a dword, one byte at a time",src/seg/seg004.asm
+seg004:008E,TypeId,,new,high,"A second byte of FBh selects a type code. Otherwise four bytes are a big-endian dword",src/seg/seg004.asm
+seg004:00DA,TypeTab,,new,high,"Eight words. The low bits of the type byte select the case",src/seg/seg004.asm
