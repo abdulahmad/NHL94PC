@@ -4,4 +4,5 @@
 _fmemchr	equ	0x135C
 RetOnly		equ	0x1398
 LongShlAt	equ	0x1270
+CopyFar		equ	0x276
 %include "seg/seg004.asm"

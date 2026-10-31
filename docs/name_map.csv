@@ -903,3 +903,7 @@ seg004:034A,GetBits,,new,high,"Pulls a bit count from BitBuf. Fewer than 16 bits
 seg004:03F2,ReadVar,,new,high,"Reads a variable-length number from the bit stream",src/seg/seg004.asm
 seg004:0430,Unpack,,new,high,"Word 31FBh starts a decode into OutPtr. A following 32FBh adds a running sum",src/seg/seg004.asm
 seg004:072E,Expand,,new,high,"Word 47FBh fills the three maps on the stack and emits the bytes. ret 8",src/seg/seg004.asm
+seg004:095C,AddCopy,,new,high,"Words 62FBh and 66FBh. Writes each input byte plus a running count. ret 8",src/seg/seg004.asm
+seg004:0AAA,LoadBlock,,new,high,"Picks Unpack, Expand, AddCopy, or CopyFar from the type byte. An unknown type can call seg022",src/seg/seg004.asm
+seg004:0BD8,LoadReport,,new,high,"LoadBlock with the report flag set",src/seg/seg004.asm
+seg004:0BF6,LoadQuiet,,new,high,"LoadBlock with the report flag clear. The near call finishes in seg005",src/seg/seg004.asm
