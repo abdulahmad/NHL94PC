@@ -844,3 +844,9 @@ seg001:2989,FillFlag0,,new,high,"Same entry with the flag byte 0",src/seg/seg001
 seg001:29A7,FillAddr1,,new,high,"Enters FillPoly with SI the address of [bp+0Ah] and the flag byte 1",src/seg/seg001.asm
 seg001:29B6,FillAddr0,,new,high,"Same entry with the flag byte 0",src/seg/seg001.asm
 seg001:29D2,FillPoly,,new,high,"Walks an X,Y point list, clips rising edges, and calls ScanFn once per scanline",src/seg/seg001.asm
+seg001:2B83,SpanMargin,,new,high,"Fills the clipped-off scanline rows with the left or right side of the box",src/seg/seg001.asm
+seg001:2C19,SpanFill,,new,high,"Writes one edge into the two scanline tables. The direction byte selects the case",src/seg/seg001.asm
+seg001:2C34,SpanTab,,new,high,"Ten words, one per direction. 0, 1, and 9 return",src/seg/seg001.asm
+seg001:2D10,SpanBack,,new,high,"Same edge walk. The flag byte at bp-9 selects SpanTab2 or SpanTab3",src/seg/seg001.asm
+seg001:2D36,SpanTab2,,new,high,"Direction table used when the FillPoly flag byte is set",src/seg/seg001.asm
+seg001:2EA9,SpanTab3,,new,high,"Direction table used when the FillPoly flag byte is clear",src/seg/seg001.asm
