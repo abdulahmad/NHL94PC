@@ -4,7 +4,7 @@
 
 - Full build MATCH (SHA-1 `d94450ddff26528bddac6646c234277076fd36cb`, 244,854 bytes); `tools/verify_all.sh` MATCH.
 - seg056 is source: the resident RTLink/Plus manager and the overlay thunks (10,992 bytes). seg057 was the thunk tail and is merged into seg056.
-- seg000 is entirely source (`src/seg/seg000.asm`). Nothing in it is incbin. seg005 is source. seg001 is source from the start through `ResetText` (offset `0xF07`); the rest is incbin. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`) and seg056.
+- seg000 is entirely source (`src/seg/seg000.asm`). Nothing in it is incbin. seg005 is source. seg001 is source from the start through `JoyScaleY` (offset `0x1120`); the rest is incbin. Every other segment is still incbin, except the MZ header fields (`src/header/mz_header.asm`) and seg056.
 - seg011 is still a false split (merge into seg010 when seg010 is disassembled). The `ovl_*` slices were not resliced.
 
 ## Known facts
@@ -200,6 +200,8 @@ The spill at the start of seg001 finishes `test bx, 8`, then `pop bp` / `ret 0xe
 `WriteFile` creates a file and writes a far buffer in 16K pieces. A short write or a DOS error deletes the file. `WriteFile` then calls seg022 and returns 0. `WriteFileCode` returns the error instead. `TableCount`, `TableAt`, and `TableStore` read the same kind of far table `FindFar` searches. `PathTail` points just past the last separator. `CopyStrN` copies up to a count. `StrnDiff` returns 0 when the bytes match through a null.
 
 `TextWidth` sums per-character values from the table in `CharSeg`. `SaveCharTab`, `LoadCharTab`, and `UseCharSeg` copy and select that table. `HookInt8` points INT 8 at `Int8Handler`, writes `0xB6` to port `0x43` and `0x2E9C` to port `0x40`, and registers `UnhookInt8`. `AllocSlot` fills a free pair in the eight pairs at `SlotTab`. `FreeSlot` removes a matching pair. `Int8Handler` far-calls the pairs whose second word is nonzero, keeps the BIOS tick at `0:046Ch`, and turns the floppy motors off when the BIOS motor count hits 0. `ResetText` sets mode 3 when `WantText` is set.
+
+`PollJoy` times the two axes on port `0x201` and sets bits in `JoyBits` when a count falls outside the inner range. `InitJoy` turns that read on and sets the initial limits. `JoyScaleX` and `JoyScaleY` scale a count against its low limit.
 
 ## Unsure / open
 

@@ -1,7 +1,7 @@
 ; Segment seg001. EMS maps, far copies, the INT 24h hook, file length,
 ; a file-head count, find-first paths, the DOS memory block, a 4-byte lookup,
 ; far-pointer lookup, a counted copy, multiply and divide, file writes,
-; character widths, and the INT 8 handler.
+; character widths, the INT 8 handler, and the game port.
 ; The first bytes finish the seg000 routine that ends on this paragraph.
 
 ; DGROUP words this segment uses. The bytes live in the near data, not here.
@@ -35,6 +35,12 @@ TickStep		equ	0x6DAA
 TickTotal	equ	0x6DA4
 SkipEoi		equ	0x6F0E
 WantText		equ	0x640A
+JoyX		equ	0x6FF8
+JoyY		equ	0x6FFA
+JoyBtn		equ	0x6FFD
+JoyBits		equ	0x6FFE
+JoyOn		equ	0x7308
+GamePort	equ	0x201
 FmtSave		equ	0x64CE
 FmtBuf		equ	0x64D6
 
@@ -2229,4 +2235,244 @@ ResetText:
 L0F06:
 	retf
 
-	incbin	"Extracted/segments/seg001.bin", 0xF07, 0x33E0 - 0xF07
+	db	0x00
+
+
+; If bit 0 of JoyOn is clear, return JoyBits. Otherwise read port 201h.
+; Bits 4 and 5 are the buttons. Bits 0 and 1 are timed until they drop, or
+; until the count reaches 0FA0h. The counts are kept against running limits,
+; and JoyBits gains a bit when a count falls outside the inner range.
+PollJoy:
+	mov	byte [JoyBits], 0
+	test	byte [JoyOn], 1
+	jne	short L0F17
+	jmp	near L10B6
+L0F17:
+	mov	dx, GamePort
+	in	al, dx
+	and	al, 0x30
+	mov	byte [JoyBtn], al
+	mov	bl, 3
+	mov	word [JoyX], 0x50
+	mov	word [JoyY], 0x50
+	cli
+	out	dx, al
+	mov	cx, 0x14
+	db	0xE2, 0xFE			; loop 0xf33
+	db	0x33, 0xC9			; xor cx, cx
+L0F37:
+	in	al, dx
+	db	0x22, 0xC3			; and al, bl
+	db	0x32, 0xC3			; xor al, bl
+	jne	short L0F47
+	inc	cx
+	cmp	cx, 0xfa0
+	jl	short L0F37
+	jmp	short L0F63
+L0F47:
+	test	al, 1
+	jne	short L0F5A
+L0F4B:
+	test	al, 2
+	je	short L0F37
+	mov	word [JoyY], cx
+	and	bl, 1
+	jne	short L0F37
+	jmp	short L0F63
+L0F5A:
+	mov	word [JoyX], cx
+	and	bl, 2
+	jne	short L0F4B
+L0F63:
+	sti
+	mov	ax, word [JoyX]
+	cmp	ax, word [0x6fff]
+	jge	short L0FBA
+	dec	word [0x7007]
+	jle	short L0F7E
+	cmp	ax, word [0x7001]
+	jl	short L0FED
+	mov	word [0x7001], ax
+	jmp	short L0FED
+L0F7E:
+	mov	bx, word [0x7001]
+	mov	word [0x6fff], bx
+	mov	bx, word [0x7003]
+L0F8A:
+	sub	bx, word [0x6fff]
+	jle	short L0F9A
+	db	0x33, 0xD2			; xor dx, dx
+	mov	ax, 0x4000
+	div	bx
+	mov	word [0x701b], ax
+L0F9A:
+	db	0x8B, 0xC3			; mov ax, bx
+	mov	dx, GamePort
+	shr	ax, 1
+	db	0x8B, 0xD8			; mov bx, ax
+	shr	bx, 1
+	add	ax, word [0x6fff]
+	db	0x03, 0xC3			; add ax, bx
+	mov	word [0x700b], ax
+	db	0x2B, 0xC3			; sub ax, bx
+	db	0x2B, 0xC3			; sub ax, bx
+	mov	word [0x7009], ax
+	mov	ax, word [JoyX]
+	jmp	short L0FDB
+L0FBA:
+	cmp	ax, word [0x7003]
+	jle	short L0FDB
+	dec	word [0x7007]
+	jle	short L0FD1
+	cmp	ax, word [0x7005]
+	jge	short L0FED
+	mov	word [0x7005], ax
+	jmp	short L0FED
+L0FD1:
+	mov	bx, word [0x7005]
+	mov	word [0x7003], bx
+	jmp	short L0F8A
+L0FDB:
+	mov	word [0x7007], 0x14
+	mov	word [0x7005], 0x4e20
+	mov	word [0x7001], 0
+L0FED:
+	cmp	ax, word [0x7009]
+	jl	short L1054
+	cmp	ax, word [0x700b]
+	jl	short L0FFE
+	or	byte [JoyBits], 4
+L0FFE:
+	mov	ax, word [JoyY]
+	cmp	ax, word [0x700d]
+	jae	short L105B
+	dec	word [0x7015]
+	jle	short L1018
+	cmp	ax, word [0x700f]
+	jl	short L108E
+	mov	word [0x700f], ax
+	jmp	short L108E
+L1018:
+	mov	bx, word [0x700f]
+	mov	word [0x700d], bx
+	mov	bx, word [0x7011]
+L1024:
+	sub	bx, word [0x700d]
+	jle	short L1034
+	db	0x33, 0xD2			; xor dx, dx
+	mov	ax, 0x4000
+	div	bx
+	mov	word [0x701d], ax
+L1034:
+	db	0x8B, 0xC3			; mov ax, bx
+	mov	dx, GamePort
+	shr	ax, 1
+	db	0x8B, 0xD8			; mov bx, ax
+	shr	bx, 1
+	add	ax, word [0x700d]
+	db	0x03, 0xC3			; add ax, bx
+	mov	word [0x7019], ax
+	db	0x2B, 0xC3			; sub ax, bx
+	db	0x2B, 0xC3			; sub ax, bx
+	mov	word [0x7017], ax
+	mov	ax, word [JoyY]
+	jmp	short L107C
+L1054:
+	or	byte [JoyBits], 8
+	jmp	short L0FFE
+L105B:
+	cmp	ax, word [0x7011]
+	jle	short L107C
+	dec	word [0x7015]
+	je	short L1072
+	cmp	ax, word [0x7013]
+	jge	short L108E
+	mov	word [0x7013], ax
+	jmp	short L108E
+L1072:
+	mov	bx, word [0x7013]
+	mov	word [0x7011], bx
+	jmp	short L1024
+L107C:
+	mov	word [0x7015], 0x14
+	mov	word [0x7013], 0x4e20
+	mov	word [0x700f], 0
+L108E:
+	cmp	ax, word [0x7017]
+	jb	short L10BC
+	cmp	ax, word [0x7019]
+	jb	short L109F
+	or	byte [JoyBits], 2
+L109F:
+	in	al, dx
+	and	al, 0x30
+	cmp	al, byte [JoyBtn]
+	je	short L10AD
+	mov	al, byte [0x6ffc]
+	jmp	short L10B2
+L10AD:
+	xor	al, 0x30
+	mov	byte [0x6ffc], al
+L10B2:
+	or	byte [JoyBits], al
+L10B6:
+	mov	al, byte [JoyBits]
+	db	0x32, 0xE4			; xor ah, ah
+	retf
+L10BC:
+	or	byte [JoyBits], 1
+	jmp	short L109F
+
+
+; Set bit 0 of JoyOn and the initial axis limits.
+InitJoy:
+	mov	byte [JoyOn], 1
+	mov	word [0x6fff], 0x50
+	mov	word [0x7003], 0
+	mov	word [0x700d], 0x50
+	mov	word [0x7011], 0
+	retf
+
+
+; The low nibble of the argument indexes the 16 bytes at 701Fh.
+JoyNibble:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	mov	bx, word [bp + 6]
+	and	bx, 0xf
+	mov	al, byte [bx + 0x701f]
+	db	0x32, 0xE4			; xor ah, ah
+	leave
+	retf
+
+
+; (JoyX minus the low limit) times the X scale. The high word of that
+; product, minus 1Fh, is the result. A reading under the limit returns the
+; scale of zero, then the same subtract.
+JoyScaleX:
+	mov	ax, word [JoyX]
+	sub	ax, word [0x6fff]
+	jge	short L10FD
+	db	0x33, 0xC0			; xor ax, ax
+L10FD:
+	mul	word [0x701b]
+	db	0x8A, 0xC4			; mov al, ah
+	db	0x8A, 0xE2			; mov ah, dl
+	sub	ax, 0x1f
+	retf
+
+
+; The same scale for JoyY.
+JoyScaleY:
+	mov	ax, word [JoyY]
+	sub	ax, word [0x700d]
+	jge	short L1114
+	db	0x33, 0xC0			; xor ax, ax
+L1114:
+	mul	word [0x701d]
+	db	0x8A, 0xC4			; mov al, ah
+	db	0x8A, 0xE2			; mov ah, dl
+	sub	ax, 0x1f
+	retf
+
+	incbin	"Extracted/segments/seg001.bin", 0x1120, 0x33E0 - 0x1120

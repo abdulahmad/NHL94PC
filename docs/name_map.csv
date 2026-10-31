@@ -686,3 +686,13 @@ seg001:0E1D,EmptyRet,,new,high,"A single retf. HookInt8 stores this address besi
 seg001:0E1E,Int8Ds,,new,high,"Word in the code segment. HookInt8 stores DS here and Int8Handler loads it",src/seg/seg001.asm
 seg001:0E20,Int8Handler,,new,high,"INT 8. Far-calls in-use SlotTab pairs, updates the BIOS tick at 0:046Ch, and shuts the floppy motors off",src/seg/seg001.asm
 seg001:0ECE,ResetText,,new,high,"When WantText is set, forces 80-column color and INT 10h mode 3",src/seg/seg001.asm
+DGROUP:6FF8,JoyX,,new,high,"Axis count from game port bit 0",src/seg/seg001.asm
+DGROUP:6FFA,JoyY,,new,high,"Axis count from game port bit 1",src/seg/seg001.asm
+DGROUP:6FFD,JoyBtn,,new,high,"Game port bits 4 and 5, sampled before the axis timing",src/seg/seg001.asm
+DGROUP:6FFE,JoyBits,,new,high,"PollJoy result. Direction bits and the button bits are ORed in",src/seg/seg001.asm
+DGROUP:7308,JoyOn,,new,high,"Bit 0 selects the timed read. Clear returns JoyBits without touching the port",src/seg/seg001.asm
+seg001:0F08,PollJoy,,new,high,"Times port 201h axes and sets JoyBits from the counts and the buttons",src/seg/seg001.asm
+seg001:10C3,InitJoy,,new,high,"Sets JoyOn bit 0 and the initial axis limits",src/seg/seg001.asm
+seg001:10E1,JoyNibble,,new,high,"Low nibble of the argument indexes the 16 bytes at 701Fh",src/seg/seg001.asm
+seg001:10F2,JoyScaleX,,new,high,"(JoyX minus the low limit) times the X scale. High word of the product minus 1Fh",src/seg/seg001.asm
+seg001:1109,JoyScaleY,,new,high,"The same scale for JoyY",src/seg/seg001.asm
