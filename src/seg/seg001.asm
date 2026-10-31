@@ -2,7 +2,7 @@
 ; a file-head count, find-first paths, the DOS memory block, a 4-byte lookup,
 ; far-pointer lookup, a counted copy, multiply and divide, file writes,
 ; character widths, the INT 8 handler, the game port, the keyboard hook,
-; the monochrome console, the CallCount waits, line clipping, file reads, a CPU probe, and a polygon fill.
+; the monochrome console, the CallCount waits, line clipping, file reads, a CPU probe, a polygon fill, and the video-mode save.
 ; The first bytes finish the seg000 routine that ends on this paragraph.
 
 ; DGROUP words this segment uses. The bytes live in the near data, not here.
@@ -82,6 +82,15 @@ Cpu486		equ	0x763E
 CpuPe		equ	0x7640
 ScanFn		equ	0x7668
 LineFn		equ	0x766C
+HoldWord	equ	0x7672
+Sin0		equ	0x8268
+Sin1		equ	0x8468
+Sin2		equ	0x8068
+Sin3		equ	0x8A68
+VidMode		equ	0x77C2
+VidEquip	equ	0x77C3
+VidCols		equ	0x77C4
+VidRows		equ	0x77C6
 GamePort	equ	0x201
 FmtSave		equ	0x64CE
 FmtBuf		equ	0x64D6
@@ -1081,9 +1090,9 @@ AllocBytes:
 
 ; Call Atan2 with the two words, take the absolute value, and fold it:
 ; at or above 100h it becomes 200h minus the value. Above 80h the result
-; comes from the routine at 0x32EA and the first word; otherwise from 0x32F1
+; comes from SinLookup and the first word; otherwise from CosLookup
 ; and the second word. The dividend is the absolute word shifted left 14,
-; then divided by that result. Those two calls are still incbin.
+; then divided by that result.
 FoldScale:
 	push	bp
 	db	0x8B, 0xEC			; mov bp, sp
@@ -1103,7 +1112,7 @@ FoldScale:
 	cmp	ax, 0x80
 	jg	short .4
 	push	ax
-	call	0x3A3:0x32F1			; seg001, still incbin
+	call	0x3A3:CosLookup		; seg001
 	add	sp, 2
 	db	0x8B, 0xD8			; mov bx, ax
 	mov	dx, word [bp+8]
@@ -1121,7 +1130,7 @@ FoldScale:
 	retf
 .4:
 	push	ax
-	call	0x3A3:0x32EA			; seg001, still incbin
+	call	0x3A3:SinLookup		; seg001
 	add	sp, 2
 	db	0x8B, 0xD8			; mov bx, ax
 	mov	dx, word [bp+6]
@@ -6558,4 +6567,360 @@ L30C3:
 	rep stosw
 L30DD:
 	ret
-	incbin	"Extracted/segments/seg001.bin", 0x30DE, 0x33E0 - 0x30DE
+
+; FillRec1 and FillRec0 walk a list of pointers to line records. The
+; flag byte selects the span table, as in FillPoly. LineFn is 3C9Ah.
+; SinLookup and CosLookup read a quadrant of the word table. CosLookup
+; increments AH first. SaveMode records the BIOS mode, equipment byte,
+; columns, and rows, and registers RestoreMode. WaitBlank waits through
+; one pulse of status port 3DAh bit 0.
+
+FillRec1:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	add	sp, -0x7ce
+	push	si
+	push	di
+	mov	byte [bp - 9], 1
+	mov	ax, 0x48d2
+	mov	word [ScanFn], ax
+	mov	ax, 0x3c9a
+	mov	word [LineFn], ax
+	jmp	short FillRec
+FillRec0:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	add	sp, -0x7ce
+	push	si
+	push	di
+	mov	byte [bp - 9], 0
+	mov	ax, 0x48d2
+	mov	word [ScanFn], ax
+	mov	ax, 0x3c9a
+	mov	word [LineFn], ax
+FillRec:
+	lea	si, [bp + 0xa]
+	mov	word [bp - 6], si
+	mov	cx, word [bp + 8]
+	db	0x8B, 0xC1			; mov ax, cx
+	dec	ax
+	db	0x03, 0xC0			; add ax, ax
+	db	0x03, 0xC6			; add ax, si
+	mov	word [bp - 8], ax
+	cld
+	mov	ax, ss
+	mov	es, ax
+	lea	ax, [bp - 0x796]
+	mov	word [bp - 0x16], ax
+	mov	ax, word [0x74fc]
+	mov	word [bp - 2], ax
+	mov	ax, word [0x74fe]
+	dec	ax
+	mov	word [bp - 4], ax
+	mov	di, word [si]
+	mov	ax, word [di + 6]
+	sub	ax, word [di + 0x14]
+	sub	ax, word [di + 0x18]
+	mov	word [bp - 0xc], ax
+	mov	ax, word [di + 0xa]
+	add	ax, word [di + 0x16]
+	add	ax, word [di + 0x1a]
+	mov	word [bp - 0x10], ax
+	mov	word [bp - 0x7ce], 3
+	mov	bx, word [di + 2]
+	mov	dx, word [di + 8]
+	db	0x3B, 0xDA			; cmp bx, dx
+	jle	short L316A
+	db	0x87, 0xDA			; xchg dx, bx
+L316A:
+	mov	word [bp - 0xe], si
+	mov	word [bp - 0x12], si
+	add	si, 2
+	dec	cx
+	jne	short L3188
+	mov	ax, word [bp + 6]
+	mov	word [bp + di + 6], ax
+	push	di
+	call	far [LineFn]
+	add	sp, 2
+	pop	di
+	pop	si
+	leave
+	retf
+L3188:
+	mov	di, word [si]
+	mov	ax, word [di + 6]
+	sub	ax, word [di + 0x14]
+	sub	ax, word [di + 0x18]
+	cmp	ax, word [bp - 0xc]
+	jg	short L31AF
+	jne	short L31A2
+	test	word [bp - 0x7ce], 1
+	je	short L31B4
+L31A2:
+	mov	word [bp - 0xc], ax
+	mov	word [bp - 0xe], si
+	or	word [bp - 0x7ce], 1
+	jmp	short L31B4
+L31AF:
+	and	word [bp - 0x7ce], 2
+L31B4:
+	mov	ax, word [di + 0xa]
+	add	ax, word [di + 0x16]
+	add	ax, word [di + 0x1a]
+	cmp	ax, word [bp - 0x10]
+	jl	short L31D9
+	jne	short L31CC
+	test	word [bp - 0x7ce], 2
+	jne	short L31DE
+L31CC:
+	mov	word [bp - 0x10], ax
+	mov	word [bp - 0x12], si
+	or	word [bp - 0x7ce], 2
+	jmp	short L31DE
+L31D9:
+	and	word [bp - 0x7ce], 1
+L31DE:
+	mov	ax, word [di + 2]
+	db	0x3B, 0xC3			; cmp ax, bx
+	jge	short L31E7
+	db	0x8B, 0xD8			; mov bx, ax
+L31E7:
+	db	0x3B, 0xC2			; cmp ax, dx
+	jle	short L31ED
+	db	0x8B, 0xD0			; mov dx, ax
+L31ED:
+	mov	ax, word [di + 8]
+	db	0x3B, 0xC3			; cmp ax, bx
+	jge	short L31F6
+	db	0x8B, 0xD8			; mov bx, ax
+L31F6:
+	db	0x3B, 0xC2			; cmp ax, dx
+	jle	short L31FC
+	db	0x8B, 0xD0			; mov dx, ax
+L31FC:
+	add	si, 2
+	loop	L3188
+	cmp	dx, word [bp - 2]
+	jl	short L3250
+	cmp	bx, word [bp - 4]
+	jge	short L3250
+	mov	ax, word [bp - 0x10]
+	cmp	ax, word [0x74f2]
+	jl	short L3250
+	mov	cx, word [bp - 0xc]
+	cmp	cx, word [0x74f4]
+	jge	short L3250
+	mov	byte [bp - 0xa], 0
+	cmp	dx, word [bp - 4]
+	jg	short L3237
+	cmp	bx, word [bp - 2]
+	jl	short L3237
+	cmp	ax, word [0x74f4]
+	jge	short L3237
+	cmp	cx, word [0x74f2]
+	jge	short L323B
+L3237:
+	mov	byte [bp - 0xa], 1
+L323B:
+	db	0x3B, 0xC1			; cmp ax, cx
+	je	short L3243
+	db	0x3B, 0xD3			; cmp dx, bx
+	jne	short L3254
+L3243:
+	mov	si, word [bp - 6]
+	mov	di, word [si]
+	push	di
+	call	far [LineFn]
+	add	sp, 2
+L3250:
+	pop	di
+	pop	si
+	leave
+	retf
+L3254:
+	mov	di, word [bp - 0xe]
+L3257:
+	mov	si, word [di]
+	cmp	byte [si + 0x12], 2
+	jl	short L3273
+	mov	word [bp - 0x14], di
+	cmp	byte [bp - 0xa], 0
+	je	short L326D
+	call	SpanMargin
+	jmp	short L3270
+L326D:
+	call	SpanFill
+L3270:
+	mov	di, word [bp - 0x14]
+L3273:
+	cmp	di, word [bp - 0x12]
+	je	short L3285
+	add	di, 2
+	cmp	di, word [bp - 8]
+	jbe	short L3257
+	mov	di, word [bp - 6]
+	jmp	short L3257
+L3285:
+	mov	di, word [bp - 0xe]
+L3288:
+	sub	di, 2
+	cmp	di, word [bp - 6]
+	jae	short L3293
+	mov	di, word [bp - 8]
+L3293:
+	cmp	di, word [bp - 0x12]
+	je	short L32AB
+	mov	si, word [di]
+	cmp	byte [si + 0x12], 2
+	jl	short L3288
+	mov	word [bp - 0x14], di
+	call	SpanBack
+	mov	di, word [bp - 0x14]
+	jmp	short L3288
+L32AB:
+	mov	ax, word [bp - 0x10]
+	cmp	ax, word [0x74f4]
+	jl	short L32B8
+	mov	ax, word [0x74f4]
+	dec	ax
+L32B8:
+	mov	bx, word [bp - 0xc]
+	cmp	bx, word [0x74f2]
+	jge	short L32C5
+	mov	bx, word [0x74f2]
+L32C5:
+	db	0x2B, 0xC3			; sub ax, bx
+	jle	short L32E6
+	inc	ax
+	push	word [bp + 6]
+	push	ax
+	push	bx
+	db	0x03, 0xDB			; add bx, bx
+	lea	ax, [bp - 0x3d6]
+	db	0x03, 0xC3			; add ax, bx
+	push	ax
+	lea	ax, [bp - 0x796]
+	db	0x03, 0xC3			; add ax, bx
+	push	ax
+	call	far [ScanFn]
+	add	sp, 0xa
+L32E6:
+	pop	di
+	pop	si
+	leave
+	retf
+SinLookup:
+	db	0x8B, 0xDC			; mov bx, sp
+	mov	ax, word [bx + 4]
+	jmp	short AngleTab
+CosLookup:
+	db	0x8B, 0xDC			; mov bx, sp
+	mov	ax, word [bx + 4]
+	inc	ah
+AngleTab:
+	and	ah, 3
+	jnp	short L3308
+	jne	short L3322
+	db	0x03, 0xC0			; add ax, ax
+	db	0x8B, 0xD8			; mov bx, ax
+	mov	ax, word [bx + Sin0]
+	retf
+L3308:
+	dec	ah
+	jne	short L3317
+	neg	ax
+	db	0x03, 0xC0			; add ax, ax
+	db	0x8B, 0xD8			; mov bx, ax
+	mov	ax, word [bx + Sin1]
+	retf
+L3317:
+	db	0x03, 0xC0			; add ax, ax
+	db	0x8B, 0xD8			; mov bx, ax
+	mov	ax, word [bx + Sin2]
+	neg	ax
+	retf
+L3322:
+	neg	ax
+	db	0x03, 0xC0			; add ax, ax
+	db	0x8B, 0xD8			; mov bx, ax
+	mov	ax, word [bx + Sin3]
+	neg	ax
+	retf
+	db	0
+ClearHold:
+	mov	word [HoldWord], 0
+	retf
+	db	0
+SaveMode:
+	cmp	byte [VidMode], 0
+	jne	short L336C
+	mov	ah, 0xf
+	int	0x10
+	mov	byte [VidMode], al
+	db	0x33, 0xC0			; xor ax, ax
+	mov	es, ax
+	mov	al, byte es:[0x410]
+	mov	byte [VidEquip], al
+	mov	ax, word es:[0x44a]
+	mov	word [VidCols], ax
+	mov	al, byte es:[0x484]
+	mov	byte [VidRows], al
+	mov	ax, 0x336d
+	push	cs
+	push	ax
+	call	0x3A3:OnexitThunk
+	add	sp, 4
+L336C:
+	retf
+RestoreMode:
+	cmp	byte [VidMode], 0
+	je	short L33D1
+	db	0x33, 0xC0			; xor ax, ax
+	mov	es, ax
+	mov	al, byte [VidEquip]
+	mov	byte es:[0x410], al
+	db	0x32, 0xE4			; xor ah, ah
+	mov	al, byte [VidMode]
+	int	0x10
+	cmp	byte [VidMode], 3
+	jne	short L33A9
+	cmp	word [VidCols], 0x50
+	jne	short L33A9
+	cmp	byte [VidRows], 0x2a
+	jb	short L33A9
+	cmp	byte [VidRows], 0x32
+	ja	short L33A9
+	mov	ax, 0x1112
+	db	0x33, 0xDB			; xor bx, bx
+	int	0x10
+L33A9:
+	db	0x33, 0xC0			; xor ax, ax
+	mov	es, ax
+	mov	al, byte [VidEquip]
+	mov	byte es:[0x410], al
+	and	al, 0x30
+	cmp	al, 0x30
+	jne	short L33C5
+	db	0x33, 0xC0			; xor ax, ax
+	push	ax
+	call	0xFEF:0x3A84		; seg028
+	add	sp, 2
+L33C5:
+	mov	ah, 0xb
+	mov	bx, 0
+	int	0x10
+	mov	byte [VidMode], 0
+L33D1:
+	retf
+WaitBlank:
+	mov	dx, 0x3da
+L33D5:
+	in	al, dx
+	test	al, 1
+	je	short L33D5
+L33DA:
+	in	al, dx
+	test	al, 1
+	jne	short L33DA
+	retf

@@ -616,7 +616,7 @@ seg001:0640,FindNone,,new,high,"Returns AX 0 through FindPath's epilogue",src/se
 seg001:0644,FindNextPath,,new,high,"Findnext, then FindCopyName. Returns 0 when the search ends",src/seg/seg001.asm
 seg001:065A,LargestFree,,new,high,"AH=48h BX=FFFFh. Returns the largest free block in bytes",src/seg/seg001.asm
 seg001:067A,AllocBytes,,new,high,"DX:AX is a byte size. Allocates that many paragraphs, or the largest block if the first try fails. Stores SavedCs SavedDs SavedSp",src/seg/seg001.asm
-seg001:06CA,FoldScale,,new,medium,"Folds a result into 0..100h and divides a word shifted left 14. Callees 0x1DD4 0x32EA 0x32F1 are still incbin. See HANDOFF",src/seg/seg001.asm
+seg001:06CA,FoldScale,,new,high,"Folds an angle into 0..100h and divides a shifted word by SinLookup or CosLookup",src/seg/seg001.asm
 seg001:0734,RetZero,,new,high,"xor ax, ax / retf",src/seg/seg001.asm
 seg001:0738,MapEsBx,,new,high,"Near. Calls EmsMarkStale, maps the long, returns ES:BX",src/seg/seg001.asm
 seg001:0756,PadSpace4,,new,high,"Near. After a 0, fills the rest of four bytes with spaces",src/seg/seg001.asm
@@ -850,3 +850,12 @@ seg001:2C34,SpanTab,,new,high,"Ten words, one per direction. 0, 1, and 9 return"
 seg001:2D10,SpanBack,,new,high,"Same edge walk. The flag byte at bp-9 selects SpanTab2 or SpanTab3",src/seg/seg001.asm
 seg001:2D36,SpanTab2,,new,high,"Direction table used when the FillPoly flag byte is set",src/seg/seg001.asm
 seg001:2EA9,SpanTab3,,new,high,"Direction table used when the FillPoly flag byte is clear",src/seg/seg001.asm
+seg001:30DE,FillRec1,,new,high,"Walks a list of pointers to line records. The flag byte is 1. LineFn is 3C9Ah",src/seg/seg001.asm
+seg001:30F9,FillRec0,,new,high,"Same walk with the flag byte 0",src/seg/seg001.asm
+seg001:3112,FillRec,,new,high,"Shared body. Calls SpanMargin, SpanFill, or SpanBack, then ScanFn once per scanline",src/seg/seg001.asm
+seg001:32EA,SinLookup,,new,high,"Word from one of four tables, selected by the high byte of the angle. FoldScale uses this above 80h",src/seg/seg001.asm
+seg001:32F1,CosLookup,,new,high,"Same lookup after incrementing AH. FoldScale uses this at 80h and below",src/seg/seg001.asm
+seg001:3330,ClearHold,,new,high,"Stores 0 at HoldWord and returns",src/seg/seg001.asm
+seg001:3338,SaveMode,,new,high,"Records the BIOS video mode, equipment byte, columns, and rows, and registers RestoreMode",src/seg/seg001.asm
+seg001:336D,RestoreMode,,new,high,"Restores that mode. An 80-column mode 3 with a tall row count selects the 8x8 font",src/seg/seg001.asm
+seg001:33D2,WaitBlank,,new,high,"Waits through one pulse of status port 3DAh bit 0",src/seg/seg001.asm
