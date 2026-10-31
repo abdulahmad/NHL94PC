@@ -1366,4 +1366,141 @@ AxClear:
 	db	0x2B, 0xC0			; sub ax, ax
 	retf
 	nop
-	incbin	"Extracted/segments/seg002.bin", 0xD2C, 0x1560 - 0xD2C
+
+; NameBase looks the near name up and returns the record base.
+; CopyByName finds that record, inserts another with the same size,
+; and copies the bytes across in pieces no larger than C000h.
+
+NameBase:
+	enter	4, 0
+	push	si
+	push	word [bp + 6]
+	push	cs
+	call	CopyByName
+	add	sp, 2
+	db	0x8B, 0xF0			; mov si, ax
+	mov	word [bp - 2], dx
+	db	0x0B, 0xD0			; or dx, ax
+	je	short L0D52
+	mov	es, word [bp - 2]
+	mov	ax, word es:[si]
+	mov	dx, word es:[si + 2]
+	pop	si
+	leave
+	retf
+	nop
+L0D52:
+	db	0x2B, 0xC0			; sub ax, ax
+	cwd
+	pop	si
+	leave
+	retf
+CopyByName:
+	enter	0x1c, 0
+	push	di
+	push	si
+	mov	di, word [bp + 6]
+	push	ds
+	push	di
+	push	cs
+	call	FindName
+	add	sp, 4
+	db	0x8B, 0xF0			; mov si, ax
+	mov	word [bp - 0xa], dx
+	db	0x0B, 0xD0			; or dx, ax
+	jne	short L0D76
+	jmp	near L0E4C
+L0D76:
+	push	0
+	mov	es, word [bp - 0xa]
+	mov	ax, word es:[si + 0x18]
+	and	al, 0x77
+	push	ax
+	push	word es:[si + 0x16]
+	push	word es:[si + 0x14]
+	push	di
+	push	cs
+	call	InsertRec
+	add	sp, 0xa
+	mov	word [bp - 0x14], ax
+	mov	word [bp - 0x12], dx
+	db	0x0B, 0xD0			; or dx, ax
+	jne	short L0D9F
+	jmp	near L0E4C
+L0D9F:
+	mov	es, word [bp - 0xa]
+	mov	ax, word es:[si + 0x14]
+	mov	dx, word es:[si + 0x16]
+	mov	word [bp - 4], ax
+	mov	word [bp - 2], dx
+	mov	cx, word es:[si]
+	mov	bx, word es:[si + 2]
+	mov	word [bp - 8], cx
+	mov	word [bp - 6], bx
+	db	0xC4, 0x5E, 0xEC			; les bx, ptr [bp - 0x14]
+	mov	cx, word es:[bx]
+	mov	si, word es:[bx + 2]
+	db	0x8B, 0xF9			; mov di, cx
+	mov	word [bp - 0x16], si
+	db	0x0B, 0xD0			; or dx, ax
+	je	short L0E42
+L0DD0:
+	cmp	word [bp - 2], 0
+	jl	short L0DE4
+	jg	short S0DDF
+	cmp	word [bp - 4], 0xc000
+	jbe	short L0DE4
+S0DDF:
+	mov	si, 0xc000
+	jmp	short L0DE7
+L0DE4:
+	mov	si, word [bp - 4]
+L0DE7:
+	push	si
+	push	word [bp - 6]
+	push	word [bp - 8]
+	call	0x3A3:EmsMapFrame
+	add	sp, 4
+	push	dx
+	push	ax
+	push	word [bp - 0x16]
+	push	di
+	call	0x3A3:CopyBytes
+	add	sp, 0xa
+	db	0x2B, 0xC9			; sub cx, cx
+	add	word [bp - 8], si
+	adc	word [bp - 6], cx
+	push	word [bp - 0x16]
+	push	di
+	mov	word [bp - 0x1c], si
+	mov	word [bp - 0x1a], cx
+	call	0x3A3:FarToLinear
+	add	sp, 4
+	add	ax, word [bp - 0x1c]
+	adc	dx, word [bp - 0x1a]
+	call	0x3A3:LinearToFarRegs
+	db	0x8B, 0xF8			; mov di, ax
+	mov	word [bp - 0x16], dx
+	mov	ax, word [bp - 0x1c]
+	mov	dx, word [bp - 0x1a]
+	sub	word [bp - 4], ax
+	sbb	word [bp - 2], dx
+	mov	ax, word [bp - 2]
+	or	ax, word [bp - 4]
+	jne	short L0DD0
+L0E42:
+	mov	ax, word [bp - 0x14]
+	mov	dx, word [bp - 0x12]
+	pop	si
+	pop	di
+	leave
+	retf
+L0E4C:
+	db	0x2B, 0xC0			; sub ax, ax
+	cwd
+	pop	si
+	pop	di
+	leave
+	retf
+	nop
+	incbin	"Extracted/segments/seg002.bin", 0xE54, 0x1560 - 0xE54
