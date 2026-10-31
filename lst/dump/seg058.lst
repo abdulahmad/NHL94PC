@@ -1,0 +1,587 @@
+0000  23 05 00                  db 0x23, 0x05, 0x00
+0003  F9                        stc
+0004  CB                        retf
+0005  50                        push ax
+0006  57                        push di
+0007  06                        push es
+0008  8C D8                     mov ax, ds
+000A  8E C0                     mov es, ax
+000C  8B C1                     mov ax, cx
+000E  8B FA                     mov di, dx
+0010  E8 04 00                  call 0x17
+0013  07                        pop es
+0014  5F                        pop di
+0015  58                        pop ax
+0016  CB                        retf
+0017  50                        push ax
+0018  8A C4                     mov al, ah
+001A  E8 01 00                  call 0x1e
+001D  58                        pop ax
+001E  50                        push ax
+001F  D0 E8                     shr al, 1
+0021  D0 E8                     shr al, 1
+0023  D0 E8                     shr al, 1
+0025  D0 E8                     shr al, 1
+0027  E8 01 00                  call 0x2b
+002A  58                        pop ax
+002B  24 0F                     and al, 0xf
+002D  04 90                     add al, 0x90
+002F  27                        daa
+0030  14 40                     adc al, 0x40
+0032  27                        daa
+0033  AA                        stosb byte ptr es:[di], al
+0034  C3                        ret
+0035  00 00 00 00 50 2E 87 36 4A 00 8C D8 2E 87 06 4C  db 0x00, 0x00, 0x00, 0x00, 0x50, 0x2E, 0x87, 0x36, 0x4A, 0x00, 0x8C, 0xD8, 0x2E, 0x87, 0x06, 0x4C
+0045  00 8E D8 58 CB 54 00 E4 1D 00 00 00 00 00 00 53  db 0x00, 0x8E, 0xD8, 0x58, 0xCB, 0x54, 0x00, 0xE4, 0x1D, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x53
+0055  BB 02 00 B9 01 00 B4 46 CD 21 5B 1E 8C C8 8E D8  db 0xBB, 0x02, 0x00, 0xB9, 0x01, 0x00, 0xB4, 0x46, 0xCD, 0x21, 0x5B, 0x1E, 0x8C, 0xC8, 0x8E, 0xD8
+0065  8B 16 31 02 B4 09 CD 21 1F 8B 37 0B F6 74 12 AC  db 0x8B, 0x16, 0x31, 0x02, 0xB4, 0x09, 0xCD, 0x21, 0x1F, 0x8B, 0x37, 0x0B, 0xF6, 0x74, 0x12, 0xAC
+0075  0A C0 74 08 8A D0 B4 02 CD 21 EB F3 83 C3 02 EB  db 0x0A, 0xC0, 0x74, 0x08, 0x8A, 0xD0, 0xB4, 0x02, 0xCD, 0x21, 0xEB, 0xF3, 0x83, 0xC3, 0x02, 0xEB
+0085  E8 8C C8 8E D8 B4 0F CD 10 3C 03 76 10 3C 07 74  db 0xE8, 0x8C, 0xC8, 0x8E, 0xD8, 0xB4, 0x0F, 0xCD, 0x10, 0x3C, 0x03, 0x76, 0x10, 0x3C, 0x07, 0x74
+0095  0C 8B 16 33 02 B4 09 CD 21 B4 07 CD 21 B8 01 4C  db 0x0C, 0x8B, 0x16, 0x33, 0x02, 0xB4, 0x09, 0xCD, 0x21, 0xB4, 0x07, 0xCD, 0x21, 0xB8, 0x01, 0x4C
+00A5  CD 21 50 06 B0 01 E8 55 01 2E 8E 06 52 00 FA 2E  db 0xCD, 0x21, 0x50, 0x06, 0xB0, 0x01, 0xE8, 0x55, 0x01, 0x2E, 0x8E, 0x06, 0x52, 0x00, 0xFA, 0x2E
+00B5  A1 4E 00 26 A3 0A 00 2E A1 50 00 26 A3 0C 00 2E  db 0xA1, 0x4E, 0x00, 0x26, 0xA3, 0x0A, 0x00, 0x2E, 0xA1, 0x50, 0x00, 0x26, 0xA3, 0x0C, 0x00, 0x2E
+00C5  C7 06 07 01 00 00 FB 07 58 CB  db 0xC7, 0x06, 0x07, 0x01, 0x00, 0x00, 0xFB, 0x07, 0x58, 0xCB
+00CF  50                        push ax
+00D0  2E 8C 06 52 00            mov word ptr cs:[0x52], es
+00D5  2E A1 4E 00               mov ax, word ptr cs:[0x4e]
+00D9  2E 0B 06 50 00            or ax, word ptr cs:[0x50]
+00DE  75 12                     jne 0xf2
+00E0  FA                        cli
+00E1  26 A1 0A 00               mov ax, word ptr es:[0xa]
+00E5  2E A3 4E 00               mov word ptr cs:[0x4e], ax
+00E9  26 A1 0C 00               mov ax, word ptr es:[0xc]
+00ED  2E A3 50 00               mov word ptr cs:[0x50], ax
+00F1  FB                        sti
+00F2  58                        pop ax
+00F3  CB                        retf
+00F4  53                        push bx
+00F5  50                        push ax
+00F6  BB 4C 01                  mov bx, 0x14c
+00F9  2E 8B 07                  mov ax, word ptr cs:[bx]
+00FC  2E 0B 47 02               or ax, word ptr cs:[bx + 2]
+0100  74 07                     je 0x109
+0102  83 C3 06                  add bx, 6
+0105  EB F2                     jmp 0xf9
+0107  00 00                     db 0x00, 0x00
+0109  2E F7 06 07 01 FF 00      test word ptr cs:[0x107], 0xff
+0110  75 22                     jne 0x134
+0112  58                        pop ax
+0113  50                        push ax
+0114  A8 02                     test al, 2
+0116  74 1C                     je 0x134
+0118  2E C7 06 07 01 FF 00      mov word ptr cs:[0x107], 0xff
+011F  06                        push es
+0120  2E 8E 06 52 00            mov es, word ptr cs:[0x52]
+0125  FA                        cli
+0126  26 C7 06 0A 00 D7 01      mov word ptr es:[0xa], 0x1d7
+012D  26 8C 0E 0C 00            mov word ptr es:[0xc], cs
+0132  FB                        sti
+0133  07                        pop es
+0134  81 FB 94 01               cmp bx, 0x194
+0138  74 0E                     je 0x148
+013A  2E 89 17                  mov word ptr cs:[bx], dx
+013D  2E 8C 5F 02               mov word ptr cs:[bx + 2], ds
+0141  58                        pop ax
+0142  2E 88 47 04               mov byte ptr cs:[bx + 4], al
+0146  5B                        pop bx
+0147  CB                        retf
+0148  0E                        push cs
+0149  E8 4C 00                  call 0x198
+014C  00 00                     add byte ptr [bx + si], al
+014E  00 00                     add byte ptr [bx + si], al
+0150  00 00                     add byte ptr [bx + si], al
+0152  00 00                     add byte ptr [bx + si], al
+0154  00 00                     add byte ptr [bx + si], al
+0156  00 00                     add byte ptr [bx + si], al
+0158  00 00                     add byte ptr [bx + si], al
+015A  00 00                     add byte ptr [bx + si], al
+015C  00 00                     add byte ptr [bx + si], al
+015E  00 00                     add byte ptr [bx + si], al
+0160  00 00                     add byte ptr [bx + si], al
+0162  00 00                     add byte ptr [bx + si], al
+0164  00 00                     add byte ptr [bx + si], al
+0166  00 00                     add byte ptr [bx + si], al
+0168  00 00                     add byte ptr [bx + si], al
+016A  00 00                     add byte ptr [bx + si], al
+016C  00 00                     add byte ptr [bx + si], al
+016E  00 00                     add byte ptr [bx + si], al
+0170  00 00                     add byte ptr [bx + si], al
+0172  00 00                     add byte ptr [bx + si], al
+0174  00 00                     add byte ptr [bx + si], al
+0176  00 00                     add byte ptr [bx + si], al
+0178  00 00                     add byte ptr [bx + si], al
+017A  00 00                     add byte ptr [bx + si], al
+017C  00 00                     add byte ptr [bx + si], al
+017E  00 00                     add byte ptr [bx + si], al
+0180  00 00                     add byte ptr [bx + si], al
+0182  00 00                     add byte ptr [bx + si], al
+0184  00 00                     add byte ptr [bx + si], al
+0186  00 00                     add byte ptr [bx + si], al
+0188  00 00                     add byte ptr [bx + si], al
+018A  00 00                     add byte ptr [bx + si], al
+018C  00 00                     add byte ptr [bx + si], al
+018E  00 00                     add byte ptr [bx + si], al
+0190  00 00                     add byte ptr [bx + si], al
+0192  00 00                     add byte ptr [bx + si], al
+0194  00 00                     add byte ptr [bx + si], al
+0196  00 00                     add byte ptr [bx + si], al
+0198  8C C8                     mov ax, cs
+019A  8E D8                     mov ds, ax
+019C  8B 1E 35 02               mov bx, word ptr [0x235]
+01A0  2E 89 1E C3 01            mov word ptr cs:[0x1c3], bx
+01A5  8B 1E 37 02               mov bx, word ptr [0x237]
+01A9  2E 89 1E C5 01            mov word ptr cs:[0x1c5], bx
+01AE  2E C7 06 C7 01 00 00      mov word ptr cs:[0x1c7], 0
+01B5  BB C3 01                  mov bx, 0x1c3
+01B8  B4 06                     mov ah, 6
+01BA  B0 01                     mov al, 1
+01BC  33 C9                     xor cx, cx
+01BE  2E FF 2E 4A 00            ljmp cs:[0x4a]
+01C3  00 00 00 00 00 00         db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+01C9  50                        push ax
+01CA  06                        push es
+01CB  B0 04                     mov al, 4
+01CD  E8 33 00                  call 0x203
+01D0  07                        pop es
+01D1  58                        pop ax
+01D2  CB                        retf
+01D3  E8 2D 00 CB 50 06 B0 02 E8 25 00 2E 8E 06 52 00  db 0xE8, 0x2D, 0x00, 0xCB, 0x50, 0x06, 0xB0, 0x02, 0xE8, 0x25, 0x00, 0x2E, 0x8E, 0x06, 0x52, 0x00
+01E3  FA 2E A1 4E 00 26 A3 0A 00 2E A1 50 00 26 A3 0C  db 0xFA, 0x2E, 0xA1, 0x4E, 0x00, 0x26, 0xA3, 0x0A, 0x00, 0x2E, 0xA1, 0x50, 0x00, 0x26, 0xA3, 0x0C
+01F3  00 2E C7 06 07 01 00 00 FB 07 58 2E FF 2E 4E 00  db 0x00, 0x2E, 0xC7, 0x06, 0x07, 0x01, 0x00, 0x00, 0xFB, 0x07, 0x58, 0x2E, 0xFF, 0x2E, 0x4E, 0x00
+0203  53                        push bx
+0204  52                        push dx
+0205  BB 4C 01                  mov bx, 0x14c
+0208  2E 8B 17                  mov dx, word ptr cs:[bx]
+020B  2E 0B 57 02               or dx, word ptr cs:[bx + 2]
+020F  74 10                     je 0x221
+0211  2E 84 47 04               test byte ptr cs:[bx + 4], al
+0215  74 05                     je 0x21c
+0217  9C                        pushf
+0218  2E FF 1F                  lcall cs:[bx]
+021B  9D                        popf
+021C  83 C3 06                  add bx, 6
+021F  EB E7                     jmp 0x208
+0221  5A                        pop dx
+0222  5B                        pop bx
+0223  C3                        ret
+0224  B8 FF FF                  mov ax, 0xffff
+0227  CB                        retf
+0228  B9 FF FF CB 33 C0 8B D0 CB 39 02 46 02 64 02 6E  db 0xB9, 0xFF, 0xFF, 0xCB, 0x33, 0xC0, 0x8B, 0xD0, 0xCB, 0x39, 0x02, 0x46, 0x02, 0x64, 0x02, 0x6E
+0238  02 46 61 74 61 6C 20 45 72 72 6F 72 20 24 0D 0A  db 0x02, 0x46, 0x61, 0x74, 0x61, 0x6C, 0x20, 0x45, 0x72, 0x72, 0x6F, 0x72, 0x20, 0x24, 0x0D, 0x0A
+0248  50 72 65 73 73 20 61 6E 79 20 6B 65 79 20 74 6F  db 0x50, 0x72, 0x65, 0x73, 0x73, 0x20, 0x61, 0x6E, 0x79, 0x20, 0x6B, 0x65, 0x79, 0x20, 0x74, 0x6F
+0258  20 74 65 72 6D 69 6E 61 74 65 2E 24 65 67 65 30  db 0x20, 0x74, 0x65, 0x72, 0x6D, 0x69, 0x6E, 0x61, 0x74, 0x65, 0x2E, 0x24, 0x65, 0x67, 0x65, 0x30
+0268  30 30 31 3A 20 00 49 6E 74 65 72 6E 61 6C 20 65  db 0x30, 0x30, 0x31, 0x3A, 0x20, 0x00, 0x49, 0x6E, 0x74, 0x65, 0x72, 0x6E, 0x61, 0x6C, 0x20, 0x65
+0278  72 72 6F 72 20 69 6E 20 2E 52 54 4C 69 6E 6B 28  db 0x72, 0x72, 0x6F, 0x72, 0x20, 0x69, 0x6E, 0x20, 0x2E, 0x52, 0x54, 0x4C, 0x69, 0x6E, 0x6B, 0x28
+0288  52 29 2F 50 6C 75 73 20 72 75 6E 2D 74 69 6D 65  db 0x52, 0x29, 0x2F, 0x50, 0x6C, 0x75, 0x73, 0x20, 0x72, 0x75, 0x6E, 0x2D, 0x74, 0x69, 0x6D, 0x65
+0298  20 63 6F 64 65 2E 0D 0A 00  db 0x20, 0x63, 0x6F, 0x64, 0x65, 0x2E, 0x0D, 0x0A, 0x00
+02A1  50                        push ax
+02A2  51                        push cx
+02A3  57                        push di
+02A4  56                        push si
+02A5  1E                        push ds
+02A6  06                        push es
+02A7  55                        push bp
+02A8  8B EC                     mov bp, sp
+02AA  8E C0                     mov es, ax
+02AC  26 8B 0E 2C 00            mov cx, word ptr es:[0x2c]
+02B1  E3 41                     jcxz 0x2f4
+02B3  8E C1                     mov es, cx
+02B5  33 FF                     xor di, di
+02B7  26 8A 05                  mov al, byte ptr es:[di]
+02BA  0A C0                     or al, al
+02BC  74 36                     je 0x2f4
+02BE  8B 76 06                  mov si, word ptr [bp + 6]
+02C1  AC                        lodsb al, byte ptr [si]
+02C2  0A C0                     or al, al
+02C4  75 08                     jne 0x2ce
+02C6  26 80 3D 3D               cmp byte ptr es:[di], 0x3d
+02CA  74 13                     je 0x2df
+02CC  EB 08                     jmp 0x2d6
+02CE  26 8A 25                  mov ah, byte ptr es:[di]
+02D1  47                        inc di
+02D2  3A C4                     cmp al, ah
+02D4  74 EB                     je 0x2c1
+02D6  32 C0                     xor al, al
+02D8  B9 FF FF                  mov cx, 0xffff
+02DB  F2 AE                     repne scasb al, byte ptr es:[di]
+02DD  EB D8                     jmp 0x2b7
+02DF  8C C0                     mov ax, es
+02E1  8E D8                     mov ds, ax
+02E3  8B F7                     mov si, di
+02E5  46                        inc si
+02E6  8E 46 02                  mov es, word ptr [bp + 2]
+02E9  8B 7E 08                  mov di, word ptr [bp + 8]
+02EC  AC                        lodsb al, byte ptr [si]
+02ED  AA                        stosb byte ptr es:[di], al
+02EE  0A C0                     or al, al
+02F0  75 FA                     jne 0x2ec
+02F2  EB 01                     jmp 0x2f5
+02F4  F9                        stc
+02F5  5D                        pop bp
+02F6  07                        pop es
+02F7  1F                        pop ds
+02F8  5E                        pop si
+02F9  5F                        pop di
+02FA  59                        pop cx
+02FB  58                        pop ax
+02FC  CB                        retf
+02FD  50                        push ax
+02FE  53                        push bx
+02FF  51                        push cx
+0300  52                        push dx
+0301  57                        push di
+0302  56                        push si
+0303  55                        push bp
+0304  1E                        push ds
+0305  06                        push es
+0306  8B EC                     mov bp, sp
+0308  AC                        lodsb al, byte ptr [si]
+0309  56                        push si
+030A  BB 32 03                  mov bx, 0x332
+030D  53                        push bx
+030E  0A C0                     or al, al
+0310  74 3C                     je 0x34e
+0312  3C 43                     cmp al, 0x43
+0314  75 02                     jne 0x318
+0316  EB 41                     jmp 0x359
+0318  3C 45                     cmp al, 0x45
+031A  75 02                     jne 0x31e
+031C  EB 49                     jmp 0x367
+031E  3C 50                     cmp al, 0x50
+0320  75 03                     jne 0x325
+0322  E9 A2 00                  jmp 0x3c7
+0325  3C 41                     cmp al, 0x41
+0327  75 03                     jne 0x32c
+0329  E9 CD 00                  jmp 0x3f9
+032C  83 C4 02                  add sp, 2
+032F  5E                        pop si
+0330  EB D6                     jmp 0x308
+0332  5E 72 0B 89 46 10 2E F6 06 FC 04 FF EB 0F 8E 5E  db 0x5E, 0x72, 0x0B, 0x89, 0x46, 0x10, 0x2E, 0xF6, 0x06, 0xFC, 0x04, 0xFF, 0xEB, 0x0F, 0x8E, 0x5E
+0342  02 AC 0A C0 74 06 3C 2C 74 BC EB F5  db 0x02, 0xAC, 0x0A, 0xC0, 0x74, 0x06, 0x3C, 0x2C, 0x74, 0xBC, 0xEB, 0xF5
+034E  F9                        stc
+034F  07                        pop es
+0350  1F                        pop ds
+0351  5D                        pop bp
+0352  5E                        pop si
+0353  5F                        pop di
+0354  5A                        pop dx
+0355  59                        pop cx
+0356  5B                        pop bx
+0357  58                        pop ax
+0358  CB                        retf
+0359  8E 46 0C                  mov es, word ptr [bp + 0xc]
+035C  33 FF                     xor di, di
+035E  32 C0                     xor al, al
+0360  E8 A2 00                  call 0x405
+0363  E8 46 01                  call 0x4ac
+0366  C3                        ret
+0367  56                        push si
+0368  AC                        lodsb al, byte ptr [si]
+0369  0A C0                     or al, al
+036B  74 04                     je 0x371
+036D  3C 2C                     cmp al, 0x2c
+036F  75 F7                     jne 0x368
+0371  8B FE                     mov di, si
+0373  4F                        dec di
+0374  C6 05 00                  mov byte ptr [di], 0
+0377  5E                        pop si
+0378  50                        push ax
+0379  57                        push di
+037A  8E 46 0C                  mov es, word ptr [bp + 0xc]
+037D  BF 50 00                  mov di, 0x50
+0380  8B 46 10                  mov ax, word ptr [bp + 0x10]
+0383  0E                        push cs
+0384  E8 1A FF                  call 0x2a1
+0387  5B                        pop bx
+0388  58                        pop ax
+0389  88 07                     mov byte ptr [bx], al
+038B  73 01                     jae 0x38e
+038D  C3                        ret
+038E  8C C0                     mov ax, es
+0390  8E D8                     mov ds, ax
+0392  8B F7                     mov si, di
+0394  8E 46 0C                  mov es, word ptr [bp + 0xc]
+0397  33 FF                     xor di, di
+0399  AC                        lodsb al, byte ptr [si]
+039A  0A C0                     or al, al
+039C  74 09                     je 0x3a7
+039E  3C 3B                     cmp al, 0x3b
+03A0  74 05                     je 0x3a7
+03A2  AA                        stosb byte ptr es:[di], al
+03A3  8A E0                     mov ah, al
+03A5  EB F2                     jmp 0x399
+03A7  0B FF                     or di, di
+03A9  74 16                     je 0x3c1
+03AB  8A D8                     mov bl, al
+03AD  80 FC 5C                  cmp ah, 0x5c
+03B0  74 08                     je 0x3ba
+03B2  80 FC 3A                  cmp ah, 0x3a
+03B5  74 03                     je 0x3ba
+03B7  B0 5C                     mov al, 0x5c
+03B9  AA                        stosb byte ptr es:[di], al
+03BA  E8 EF 00                  call 0x4ac
+03BD  72 02                     jb 0x3c1
+03BF  F8                        clc
+03C0  C3                        ret
+03C1  0A DB                     or bl, bl
+03C3  75 D2                     jne 0x397
+03C5  F9                        stc
+03C6  C3                        ret
+03C7  B8 00 30                  mov ax, 0x3000
+03CA  CD 21                     int 0x21
+03CC  3C 03                     cmp al, 3
+03CE  73 07                     jae 0x3d7
+03D0  F9                        stc
+03D1  C3                        ret
+03D2  50 41 54 48 00            db 0x50, 0x41, 0x54, 0x48, 0x00
+03D7  8B 46 10                  mov ax, word ptr [bp + 0x10]
+03DA  0E                        push cs
+03DB  E8 65 00                  call 0x443
+03DE  72 F1                     jb 0x3d1
+03E0  83 FB FF                  cmp bx, -1
+03E3  75 03                     jne 0x3e8
+03E5  F9                        stc
+03E6  EB E9                     jmp 0x3d1
+03E8  8B F2                     mov si, dx
+03EA  8B CB                     mov cx, bx
+03EC  2B CA                     sub cx, dx
+03EE  8E 46 0C                  mov es, word ptr [bp + 0xc]
+03F1  33 FF                     xor di, di
+03F3  F3 A4                     rep movsb byte ptr es:[di], byte ptr [si]
+03F5  E8 B4 00                  call 0x4ac
+03F8  C3                        ret
+03F9  E8 01 01                  call 0x4fd
+03FC  73 01                     jae 0x3ff
+03FE  C3                        ret
+03FF  E8 AA 00                  call 0x4ac
+0402  72 F5                     jb 0x3f9
+0404  C3                        ret
+0405  50                        push ax
+0406  51                        push cx
+0407  52                        push dx
+0408  56                        push si
+0409  1E                        push ds
+040A  0A C0                     or al, al
+040C  75 06                     jne 0x414
+040E  B4 19                     mov ah, 0x19
+0410  CD 21                     int 0x21
+0412  FE C0                     inc al
+0414  8A D0                     mov dl, al
+0416  04 40                     add al, 0x40
+0418  AA                        stosb byte ptr es:[di], al
+0419  B8 3A 5C                  mov ax, 0x5c3a
+041C  AB                        stosw word ptr es:[di], ax
+041D  8B F7                     mov si, di
+041F  8C C0                     mov ax, es
+0421  8E D8                     mov ds, ax
+0423  B4 47                     mov ah, 0x47
+0425  CD 21                     int 0x21
+0427  32 C0                     xor al, al
+0429  B9 40 00                  mov cx, 0x40
+042C  F2 AE                     repne scasb al, byte ptr es:[di]
+042E  4F                        dec di
+042F  26 80 7D FF 5C            cmp byte ptr es:[di - 1], 0x5c
+0434  74 03                     je 0x439
+0436  B0 5C                     mov al, 0x5c
+0438  AA                        stosb byte ptr es:[di], al
+0439  26 C6 05 00               mov byte ptr es:[di], 0
+043D  1F                        pop ds
+043E  5E                        pop si
+043F  5A                        pop dx
+0440  59                        pop cx
+0441  58                        pop ax
+0442  C3                        ret
+0443  50                        push ax
+0444  53                        push bx
+0445  51                        push cx
+0446  52                        push dx
+0447  57                        push di
+0448  06                        push es
+0449  55                        push bp
+044A  8B EC                     mov bp, sp
+044C  8B F8                     mov di, ax
+044E  B8 00 30                  mov ax, 0x3000
+0451  CD 21                     int 0x21
+0453  3C 03                     cmp al, 3
+0455  73 09                     jae 0x460
+0457  F9                        stc
+0458  5D                        pop bp
+0459  07                        pop es
+045A  5F                        pop di
+045B  5A                        pop dx
+045C  59                        pop cx
+045D  5B                        pop bx
+045E  58                        pop ax
+045F  CB                        retf
+0460  8E C7                     mov es, di
+0462  26 8B 0E 2C 00            mov cx, word ptr es:[0x2c]
+0467  E3 EE                     jcxz 0x457
+0469  8E C1                     mov es, cx
+046B  B9 00 80                  mov cx, 0x8000
+046E  33 FF                     xor di, di
+0470  32 C0                     xor al, al
+0472  26 80 3D 00               cmp byte ptr es:[di], 0
+0476  74 04                     je 0x47c
+0478  F2 AE                     repne scasb al, byte ptr es:[di]
+047A  EB F6                     jmp 0x472
+047C  47                        inc di
+047D  26 83 3D 01               cmp word ptr es:[di], 1
+0481  75 D4                     jne 0x457
+0483  83 C7 02                  add di, 2
+0486  8B D7                     mov dx, di
+0488  BB FF FF                  mov bx, 0xffff
+048B  26 8A 05                  mov al, byte ptr es:[di]
+048E  47                        inc di
+048F  0A C0                     or al, al
+0491  74 0C                     je 0x49f
+0493  3C 5C                     cmp al, 0x5c
+0495  74 04                     je 0x49b
+0497  3C 3A                     cmp al, 0x3a
+0499  75 F0                     jne 0x48b
+049B  8B DF                     mov bx, di
+049D  EB EC                     jmp 0x48b
+049F  8C C0                     mov ax, es
+04A1  8E D8                     mov ds, ax
+04A3  89 56 06                  mov word ptr [bp + 6], dx
+04A6  89 5E 0A                  mov word ptr [bp + 0xa], bx
+04A9  F8                        clc
+04AA  EB AC                     jmp 0x458
+04AC  E8 11 00                  call 0x4c0
+04AF  52                        push dx
+04B0  1E                        push ds
+04B1  8E 5E 0C                  mov ds, word ptr [bp + 0xc]
+04B4  33 D2                     xor dx, dx
+04B6  8A 46 0E                  mov al, byte ptr [bp + 0xe]
+04B9  B4 3D                     mov ah, 0x3d
+04BB  CD 21                     int 0x21
+04BD  1F                        pop ds
+04BE  5A                        pop dx
+04BF  C3                        ret
+04C0  50                        push ax
+04C1  56                        push si
+04C2  1E                        push ds
+04C3  06                        push es
+04C4  8E 46 0C                  mov es, word ptr [bp + 0xc]
+04C7  8E 5E 00                  mov ds, word ptr [bp]
+04CA  8B 76 08                  mov si, word ptr [bp + 8]
+04CD  AC                        lodsb al, byte ptr [si]
+04CE  AA                        stosb byte ptr es:[di], al
+04CF  0A C0                     or al, al
+04D1  75 FA                     jne 0x4cd
+04D3  2E C6 06 FC 04 00         mov byte ptr cs:[0x4fc], 0
+04D9  26 8B 45 FB               mov ax, word ptr es:[di - 5]
+04DD  80 CC 20                  or ah, 0x20
+04E0  3D 2E 65                  cmp ax, 0x652e
+04E3  75 12                     jne 0x4f7
+04E5  26 8B 45 FD               mov ax, word ptr es:[di - 3]
+04E9  0D 20 20                  or ax, 0x2020
+04EC  3D 78 65                  cmp ax, 0x6578
+04EF  75 06                     jne 0x4f7
+04F1  2E C6 06 FC 04 01         mov byte ptr cs:[0x4fc], 1
+04F7  07                        pop es
+04F8  1F                        pop ds
+04F9  5E                        pop si
+04FA  58                        pop ax
+04FB  C3                        ret
+04FC  00                        db 0x00
+04FD  33 DB                     xor bx, bx
+04FF  B4 45                     mov ah, 0x45
+0501  CD 21                     int 0x21
+0503  50                        push ax
+0504  BB 01 00                  mov bx, 1
+0507  B4 45                     mov ah, 0x45
+0509  CD 21                     int 0x21
+050B  50                        push ax
+050C  BB 02 00                  mov bx, 2
+050F  33 C9                     xor cx, cx
+0511  B4 46                     mov ah, 0x46
+0513  CD 21                     int 0x21
+0515  BB 02 00                  mov bx, 2
+0518  B9 01 00                  mov cx, 1
+051B  B4 46                     mov ah, 0x46
+051D  CD 21                     int 0x21
+051F  8C CB                     mov bx, cs
+0521  8E DB                     mov ds, bx
+0523  8B 16 D5 05               mov dx, word ptr [0x5d5]
+0527  B4 09                     mov ah, 9
+0529  CD 21                     int 0x21
+052B  33 FF                     xor di, di
+052D  E8 90 FF                  call 0x4c0
+0530  B0 24                     mov al, 0x24
+0532  8E 46 0C                  mov es, word ptr [bp + 0xc]
+0535  AA                        stosb byte ptr es:[di], al
+0536  8E 5E 0C                  mov ds, word ptr [bp + 0xc]
+0539  33 D2                     xor dx, dx
+053B  B4 09                     mov ah, 9
+053D  CD 21                     int 0x21
+053F  8E DB                     mov ds, bx
+0541  8B 16 D7 05               mov dx, word ptr [0x5d7]
+0545  B4 09                     mov ah, 9
+0547  CD 21                     int 0x21
+0549  8E 5E 0C                  mov ds, word ptr [bp + 0xc]
+054C  BA 50 00                  mov dx, 0x50
+054F  C6 06 50 00 FE            mov byte ptr [0x50], 0xfe
+0554  B4 0A                     mov ah, 0xa
+0556  CD 21                     int 0x21
+0558  8A 0E 51 00               mov cl, byte ptr [0x51]
+055C  8E DB                     mov ds, bx
+055E  8B 16 D9 05               mov dx, word ptr [0x5d9]
+0562  B4 09                     mov ah, 9
+0564  CD 21                     int 0x21
+0566  32 ED                     xor ch, ch
+0568  F9                        stc
+0569  E3 4C                     jcxz 0x5b7
+056B  8E 5E 0C                  mov ds, word ptr [bp + 0xc]
+056E  BE 52 00                  mov si, 0x52
+0571  8E 46 0C                  mov es, word ptr [bp + 0xc]
+0574  33 FF                     xor di, di
+0576  80 7C 01 3A               cmp byte ptr [si + 1], 0x3a
+057A  75 14                     jne 0x590
+057C  80 7C 02 5C               cmp byte ptr [si + 2], 0x5c
+0580  74 23                     je 0x5a5
+0582  8A 04                     mov al, byte ptr [si]
+0584  83 C6 02                  add si, 2
+0587  83 E9 02                  sub cx, 2
+058A  24 DF                     and al, 0xdf
+058C  2C 40                     sub al, 0x40
+058E  EB 12                     jmp 0x5a2
+0590  80 3C 5C                  cmp byte ptr [si], 0x5c
+0593  75 0B                     jne 0x5a0
+0595  B4 19                     mov ah, 0x19
+0597  CD 21                     int 0x21
+0599  04 41                     add al, 0x41
+059B  B4 3A                     mov ah, 0x3a
+059D  AB                        stosw word ptr es:[di], ax
+059E  EB 05                     jmp 0x5a5
+05A0  32 C0                     xor al, al
+05A2  E8 60 FE                  call 0x405
+05A5  F3 A4                     rep movsb byte ptr es:[di], byte ptr [si]
+05A7  26 8A 45 FF               mov al, byte ptr es:[di - 1]
+05AB  3C 5C                     cmp al, 0x5c
+05AD  74 07                     je 0x5b6
+05AF  3C 3A                     cmp al, 0x3a
+05B1  74 03                     je 0x5b6
+05B3  B0 5C                     mov al, 0x5c
+05B5  AA                        stosb byte ptr es:[di], al
+05B6  F8                        clc
+05B7  9F                        lahf
+05B8  8B D0                     mov dx, ax
+05BA  5B                        pop bx
+05BB  B9 01 00                  mov cx, 1
+05BE  B4 46                     mov ah, 0x46
+05C0  CD 21                     int 0x21
+05C2  B4 3E                     mov ah, 0x3e
+05C4  CD 21                     int 0x21
+05C6  5B                        pop bx
+05C7  33 C9                     xor cx, cx
+05C9  B4 46                     mov ah, 0x46
+05CB  CD 21                     int 0x21
+05CD  B4 3E                     mov ah, 0x3e
+05CF  CD 21                     int 0x21
+05D1  8B C2                     mov ax, dx
+05D3  9E                        sahf
+05D4  C3                        ret
+05D5  DB 05 F0 05 04 06 45 6E 74 65 72 20 64 69 72 65  db 0xDB, 0x05, 0xF0, 0x05, 0x04, 0x06, 0x45, 0x6E, 0x74, 0x65, 0x72, 0x20, 0x64, 0x69, 0x72, 0x65
+05E5  63 74 6F 72 79 20 66 6F 72 20 24 20 28 45 6E 74  db 0x63, 0x74, 0x6F, 0x72, 0x79, 0x20, 0x66, 0x6F, 0x72, 0x20, 0x24, 0x20, 0x28, 0x45, 0x6E, 0x74
+05F5  65 72 20 74 6F 20 71 75 69 74 29 20 3A 20 24 0D  db 0x65, 0x72, 0x20, 0x74, 0x6F, 0x20, 0x71, 0x75, 0x69, 0x74, 0x29, 0x20, 0x3A, 0x20, 0x24, 0x0D
+0605  0A 24                     db 0x0A, 0x24

@@ -1,0 +1,10 @@
+0000  8B 56 F8 5E 5F C9 CB 90   db 0x8B, 0x56, 0xF8, 0x5E, 0x5F, 0xC9, 0xCB, 0x90
+0008  55                        push bp
+0009  8B EC                     mov bp, sp
+000B  57                        push di
+000C  56                        push si
+000D  33 F6                     xor si, si
+000F  8B 7E 06                  mov di, word ptr [bp + 6]
+0012  8E 46 08                  mov es, word ptr [bp + 8]
+0015  EB 0C                     jmp 0x23
+0017  8B DF 03 DE 26 8A 07 88 84  db 0x8B, 0xDF, 0x03, 0xDE, 0x26, 0x8A, 0x07, 0x88, 0x84

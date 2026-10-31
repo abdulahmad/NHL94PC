@@ -1,0 +1,206 @@
+0000  8B 56 F6 5E 5F C9 CB 90   db 0x8B, 0x56, 0xF6, 0x5E, 0x5F, 0xC9, 0xCB, 0x90
+0008  55                        push bp
+0009  8B EC                     mov bp, sp
+000B  6A 01                     push 1
+000D  FF 76 08                  push word ptr [bp + 8]
+0010  FF 76 06                  push word ptr [bp + 6]
+0013  9A 2C 00 B8 14            lcall 0x14b8, 0x2c
+0018  C9                        leave
+0019  CB                        retf
+001A  55                        push bp
+001B  8B EC                     mov bp, sp
+001D  6A 00                     push 0
+001F  FF 76 08                  push word ptr [bp + 8]
+0022  FF 76 06                  push word ptr [bp + 6]
+0025  9A 2C 00 B8 14            lcall 0x14b8, 0x2c
+002A  C9                        leave
+002B  CB                        retf
+002C  C8 04 00 00               enter 4, 0
+0030  56                        push si
+0031  FF 76 0A                  push word ptr [bp + 0xa]
+0034  FF 76 08                  push word ptr [bp + 8]
+0037  FF 76 06                  push word ptr [bp + 6]
+003A  9A 82 00 B8 14            lcall 0x14b8, 0x82
+003F  83 C4 06                  add sp, 6
+0042  8B F0                     mov si, ax
+0044  89 56 FE                  mov word ptr [bp - 2], dx
+0047  0B D0                     or dx, ax
+0049  74 0D                     je 0x58
+004B  8E 46 FE                  mov es, word ptr [bp - 2]
+004E  26 8B 04                  mov ax, word ptr es:[si]
+0051  26 8B 54 02               mov dx, word ptr es:[si + 2]
+0055  5E                        pop si
+0056  C9                        leave
+0057  CB                        retf
+0058  33 C0                     xor ax, ax
+005A  99                        cdq
+005B  5E                        pop si
+005C  C9                        leave
+005D  CB                        retf
+005E  55 8B EC 6A 01 FF 76 08 FF 76 06  db 0x55, 0x8B, 0xEC, 0x6A, 0x01, 0xFF, 0x76, 0x08, 0xFF, 0x76, 0x06
+0069  9A 82 00 B8 14            lcall 0x14b8, 0x82
+006E  C9                        leave
+006F  CB                        retf
+0070  55 8B EC 6A 00 FF 76 08 FF 76 06  db 0x55, 0x8B, 0xEC, 0x6A, 0x00, 0xFF, 0x76, 0x08, 0xFF, 0x76, 0x06
+007B  9A 82 00 B8 14            lcall 0x14b8, 0x82
+0080  C9                        leave
+0081  CB                        retf
+0082  C8 1A 00 00               enter 0x1a, 0
+0086  57                        push di
+0087  56                        push si
+0088  F6 46 08 80               test byte ptr [bp + 8], 0x80
+008C  75 15                     jne 0xa3
+008E  FF 76 06                  push word ptr [bp + 6]
+0091  9A 58 0D E1 06            lcall 0x6e1, 0xd58
+0096  5B                        pop bx
+0097  8B F0                     mov si, ax
+0099  89 56 F6                  mov word ptr [bp - 0xa], dx
+009C  0B D0                     or dx, ax
+009E  74 03                     je 0xa3
+00A0  E9 36 01                  jmp 0x1d9
+00A3  FF 76 0A                  push word ptr [bp + 0xa]
+00A6  8D 46 EE                  lea ax, [bp - 0x12]
+00A9  50                        push ax
+00AA  8D 4E EA                  lea cx, [bp - 0x16]
+00AD  51                        push cx
+00AE  8D 4E F2                  lea cx, [bp - 0xe]
+00B1  51                        push cx
+00B2  FF 76 06                  push word ptr [bp + 6]
+00B5  9A 90 26 A3 03            lcall 0x3a3, 0x2690
+00BA  83 C4 0A                  add sp, 0xa
+00BD  8B 46 F0                  mov ax, word ptr [bp - 0x10]
+00C0  0B 46 EE                  or ax, word ptr [bp - 0x12]
+00C3  75 06                     jne 0xcb
+00C5  33 C0                     xor ax, ax
+00C7  99                        cdq
+00C8  E9 11 01                  jmp 0x1dc
+00CB  8B 76 0A                  mov si, word ptr [bp + 0xa]
+00CE  56                        push si
+00CF  FF 76 EC                  push word ptr [bp - 0x14]
+00D2  FF 76 EA                  push word ptr [bp - 0x16]
+00D5  FF 76 F2                  push word ptr [bp - 0xe]
+00D8  9A E0 01 B8 14            lcall 0x14b8, 0x1e0
+00DD  83 C4 08                  add sp, 8
+00E0  89 46 F8                  mov word ptr [bp - 8], ax
+00E3  89 56 FA                  mov word ptr [bp - 6], dx
+00E6  0B D0                     or dx, ax
+00E8  75 0B                     jne 0xf5
+00EA  FF 76 F2                  push word ptr [bp - 0xe]
+00ED  9A 9D 27 A3 03            lcall 0x3a3, 0x279d
+00F2  5B                        pop bx
+00F3  EB D0                     jmp 0xc5
+00F5  8B 56 FA                  mov dx, word ptr [bp - 6]
+00F8  89 46 FC                  mov word ptr [bp - 4], ax
+00FB  89 56 FE                  mov word ptr [bp - 2], dx
+00FE  3B 56 F0                  cmp dx, word ptr [bp - 0x10]
+0101  7F 13                     jg 0x116
+0103  7C 05                     jl 0x10a
+0105  3B 46 EE                  cmp ax, word ptr [bp - 0x12]
+0108  73 0C                     jae 0x116
+010A  8B 46 EE                  mov ax, word ptr [bp - 0x12]
+010D  8B 56 F0                  mov dx, word ptr [bp - 0x10]
+0110  89 46 FC                  mov word ptr [bp - 4], ax
+0113  89 56 FE                  mov word ptr [bp - 2], dx
+0116  56                        push si
+0117  FF 76 08                  push word ptr [bp + 8]
+011A  8B 46 FC                  mov ax, word ptr [bp - 4]
+011D  8B 56 FE                  mov dx, word ptr [bp - 2]
+0120  05 E8 03                  add ax, 0x3e8
+0123  83 D2 00                  adc dx, 0
+0126  52                        push dx
+0127  50                        push ax
+0128  FF 76 06                  push word ptr [bp + 6]
+012B  9A EC 02 E1 06            lcall 0x6e1, 0x2ec
+0130  83 C4 0A                  add sp, 0xa
+0133  8B F8                     mov di, ax
+0135  89 56 F6                  mov word ptr [bp - 0xa], dx
+0138  0B D0                     or dx, ax
+013A  74 AE                     je 0xea
+013C  8E 46 F6                  mov es, word ptr [bp - 0xa]
+013F  26 FF 75 02               push word ptr es:[di + 2]
+0143  26 FF 35                  push word ptr es:[di]
+0146  9A 2E 09 A3 03            lcall 0x3a3, 0x92e
+014B  83 C4 04                  add sp, 4
+014E  2B 46 EE                  sub ax, word ptr [bp - 0x12]
+0151  1B 56 F0                  sbb dx, word ptr [bp - 0x10]
+0154  03 46 FC                  add ax, word ptr [bp - 4]
+0157  13 56 FE                  adc dx, word ptr [bp - 2]
+015A  05 E8 03                  add ax, 0x3e8
+015D  83 D2 00                  adc dx, 0
+0160  9A 59 09 A3 03            lcall 0x3a3, 0x959
+0165  8B F0                     mov si, ax
+0167  89 56 FA                  mov word ptr [bp - 6], dx
+016A  FF 76 0A                  push word ptr [bp + 0xa]
+016D  8B C2                     mov ax, dx
+016F  50                        push ax
+0170  56                        push si
+0171  FF 76 F0                  push word ptr [bp - 0x10]
+0174  FF 76 EE                  push word ptr [bp - 0x12]
+0177  FF 76 EC                  push word ptr [bp - 0x14]
+017A  FF 76 EA                  push word ptr [bp - 0x16]
+017D  FF 76 F2                  push word ptr [bp - 0xe]
+0180  89 76 E6                  mov word ptr [bp - 0x1a], si
+0183  89 46 E8                  mov word ptr [bp - 0x18], ax
+0186  9A AE 27 A3 03            lcall 0x3a3, 0x27ae
+018B  83 C4 10                  add sp, 0x10
+018E  FF 76 0A                  push word ptr [bp + 0xa]
+0191  8E 46 F6                  mov es, word ptr [bp - 0xa]
+0194  26 FF 75 02               push word ptr es:[di + 2]
+0198  26 FF 35                  push word ptr es:[di]
+019B  FF 76 E8                  push word ptr [bp - 0x18]
+019E  56                        push si
+019F  9A AA 0A 38 08            lcall 0x838, 0xaaa
+01A4  83 C4 0A                  add sp, 0xa
+01A7  FF 76 0A                  push word ptr [bp + 0xa]
+01AA  FF 76 FE                  push word ptr [bp - 2]
+01AD  FF 76 FC                  push word ptr [bp - 4]
+01B0  FF 76 F6                  push word ptr [bp - 0xa]
+01B3  57                        push di
+01B4  9A 6A 08 E1 06            lcall 0x6e1, 0x86a
+01B9  83 C4 0A                  add sp, 0xa
+01BC  FF 76 F2                  push word ptr [bp - 0xe]
+01BF  9A 9D 27 A3 03            lcall 0x3a3, 0x279d
+01C4  5B                        pop bx
+01C5  F6 46 08 80               test byte ptr [bp + 8], 0x80
+01C9  74 0C                     je 0x1d7
+01CB  FF 76 F6                  push word ptr [bp - 0xa]
+01CE  57                        push di
+01CF  9A 10 0B E1 06            lcall 0x6e1, 0xb10
+01D4  83 C4 04                  add sp, 4
+01D7  8B C7                     mov ax, di
+01D9  8B 56 F6                  mov dx, word ptr [bp - 0xa]
+01DC  5E                        pop si
+01DD  5F                        pop di
+01DE  C9                        leave
+01DF  CB                        retf
+01E0  C8 0C 00 00               enter 0xc, 0
+01E4  FF 76 0C                  push word ptr [bp + 0xc]
+01E7  8D 46 F4                  lea ax, [bp - 0xc]
+01EA  16                        push ss
+01EB  50                        push ax
+01EC  6A 00                     push 0
+01EE  6A 08                     push 8
+01F0  FF 76 0A                  push word ptr [bp + 0xa]
+01F3  FF 76 08                  push word ptr [bp + 8]
+01F6  FF 76 06                  push word ptr [bp + 6]
+01F9  9A AE 27 A3 03            lcall 0x3a3, 0x27ae
+01FE  83 C4 10                  add sp, 0x10
+0201  0B D0                     or dx, ax
+0203  74 2F                     je 0x234
+0205  8A 46 F6                  mov al, byte ptr [bp - 0xa]
+0208  2A E4                     sub ah, ah
+020A  2B D2                     sub dx, dx
+020C  B1 08                     mov cl, 8
+020E  9A 58 12 00 00            lcall 0, 0x1258
+0213  8A 4E F7                  mov cl, byte ptr [bp - 9]
+0216  2A ED                     sub ch, ch
+0218  03 C1                     add ax, cx
+021A  83 D2 00                  adc dx, 0
+021D  B1 08                     mov cl, 8
+021F  9A 58 12 00 00            lcall 0, 0x1258
+0224  8A 4E F8                  mov cl, byte ptr [bp - 8]
+0227  2A ED                     sub ch, ch
+0229  03 C1                     add ax, cx
+022B  83 D2 00                  adc dx, 0
+022E  89                        db 0x89
+022F  46                        inc si
