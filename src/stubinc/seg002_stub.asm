@@ -9,4 +9,6 @@ CopyStrN	equ	0x0BAE
 PathTail		equ	0xB78
 FarToLinear	equ	0x92E
 LinearToFarRegs	equ	0x959
+EmsMapFrame	equ	0x192
+CopyBytes	equ	0x968
 %include "seg/seg002.asm"
