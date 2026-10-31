@@ -81,6 +81,7 @@ seg001. <- CURRENT
 
 ## History
 
+- 2026-10-31: seg001 through `ReadCloseFail` is source. `FileOpenArg`, `FileClose`, `ReadAtArg`, and `ReadCloseArg` are the DOS file reads. The body at `0x29D2` is still incbin.
 - 2026-10-31: seg001 through `LineOverflow` is source. `ClipRight` is the right edge. `AfterTop`, `AfterBottom`, and `AfterLeft` are the stepper. `LineFlat` and `LineOverflow` finish the line record. The body at `0x29D2` is still incbin.
 - 2026-10-31: seg001 through `ClipRet` is source. `ClipTop`, `ClipBottom`, and `ClipLeft` slide a line onto the box. The body at `0x29D2` is still incbin.
 - 2026-10-31: seg001 through `CritRestore` is source (EMS map, far copies, INT 24h). The rest of seg001 is still incbin.
@@ -106,7 +107,7 @@ seg001. <- CURRENT
 |---|---|---|---|---|
 | mz_header | incbin (MZ header fields are source) | 0x00000 | 7168 |  |
 | seg000 | source | 0x01C00 | 14896 | 0x0000 |
-| seg001 | source through LineOverflow, rest incbin <- CURRENT | 0x05630 | 13280 | 0x03A3 |
+| seg001 | source through ReadCloseFail, rest incbin <- CURRENT | 0x05630 | 13280 | 0x03A3 |
 | seg002 | incbin | 0x08A10 | 5472 | 0x06E1 |
 | seg003 | incbin | 0x09F70 | 16 | 0x0837 |
 | seg004 | incbin | 0x09F80 | 3088 | 0x0838 |

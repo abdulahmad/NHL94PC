@@ -820,3 +820,16 @@ seg001:24D7,AfterBottom,,new,high,"Rebuilds the left and right outcodes. A share
 seg001:2521,AfterLeft,,new,high,"After a left clip, runs ClipRight when that outcode is still set",src/seg/seg001.asm
 seg001:252E,LineFlat,,new,high,"Equal-Y path. Clamps the horizontal line to the box unless the open flag is set",src/seg/seg001.asm
 seg001:25D6,LineOverflow,,new,high,"Arithmetic-shifts an endpoint far outside the box, then clips again",src/seg/seg001.asm
+seg001:2690,FileOpenArg,,new,high,"Opens a path and writes the handle, length, and start position. Failure word from the caller",src/seg/seg001.asm
+seg001:269E,FileOpen,,new,high,"Same open with the failure word forced to 0",src/seg/seg001.asm
+seg001:26AB,FileOpenMsg,,new,high,"Same open with the failure word forced to 1",src/seg/seg001.asm
+seg001:26B6,FileOpenBody,,new,high,"INT 21h open, seek end, seek start. AltPath is the fallback",src/seg/seg001.asm
+seg001:279D,FileClose,,new,high,"INT 21h AH=3Eh. A zero handle skips the call",src/seg/seg001.asm
+seg001:27AE,ReadAtArg,,new,high,"Seeks, then reads a count in 4000h chunks into a far buffer",src/seg/seg001.asm
+seg001:27BD,ReadAt,,new,high,"Same read with the failure word forced to 0",src/seg/seg001.asm
+seg001:27CB,ReadAtMsg,,new,high,"Same read with the failure word forced to 1",src/seg/seg001.asm
+seg001:27D7,ReadAtBody,,new,high,"Shared seek and chunked read",src/seg/seg001.asm
+seg001:2840,ReadCloseArg,,new,high,"Reads until a short read, then closes the handle",src/seg/seg001.asm
+seg001:284F,ReadClose,,new,high,"Same read with the failure word forced to 0",src/seg/seg001.asm
+seg001:285D,ReadCloseMsg,,new,high,"Same read with the failure word forced to 1",src/seg/seg001.asm
+seg001:2869,ReadCloseBody,,new,high,"Shared read-to-end and close",src/seg/seg001.asm
