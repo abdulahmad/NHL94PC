@@ -2,7 +2,7 @@
 ; a file-head count, find-first paths, the DOS memory block, a 4-byte lookup,
 ; far-pointer lookup, a counted copy, multiply and divide, file writes,
 ; character widths, the INT 8 handler, the game port, the keyboard hook,
-; the monochrome console, the CallCount waits, and line clipping.
+; the monochrome console, the CallCount waits, line clipping, and file reads.
 ; The first bytes finish the seg000 routine that ends on this paragraph.
 
 ; DGROUP words this segment uses. The bytes live in the near data, not here.
@@ -72,6 +72,10 @@ MouseYShift	equ	0x642A
 MouseLevel	equ	0x642C
 MouseRatioShift	equ	0x642E
 AtanByte	equ	0x77D0
+AltPath		equ	0x7607
+AltBuf		equ	0x762F
+AltCall		equ	0x7633
+AltSize		equ	0x7637
 GamePort	equ	0x201
 FmtSave		equ	0x64CE
 FmtBuf		equ	0x64D6
@@ -5227,4 +5231,275 @@ L268A:
 	sub	word [si + 8], dx
 	jmp	short L262F
 	db	0
-	incbin	"Extracted/segments/seg001.bin", 0x2690, 0x33E0 - 0x2690
+
+; Open the path at [bp+6] for reading. The handle is written through [bp+8],
+; the length through [bp+0Ch], and the position after a seek to the start
+; through [bp+0Ah]. FileOpenArg takes the failure word from the caller.
+; FileOpen forces 0. FileOpenMsg forces 1. Zero clears those three results.
+; One reports the path through seg022. A failed open whose AltPath byte is
+; set reads 400h bytes from that path and calls the far routine at AltCall.
+; FileClose closes the handle at [bp+6], and skips the DOS call when it is 0.
+; ReadAt seeks to the dword at [bp+8], then reads [bp+0Ch] bytes in 4000h
+; chunks into the far buffer at [bp+10h]. ReadClose reads until a short
+; read and then closes the handle. Both return that far pointer, or zero
+; when the flag is 0. A flag of 1 reports the handle through seg022.
+
+FileOpenArg:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	add	sp, -2
+	mov	ax, word [bp + 0xe]
+	mov	word [bp - 2], ax
+	jmp	short FileOpenBody
+FileOpen:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	add	sp, -2
+	mov	word [bp - 2], 0
+	jmp	short FileOpenBody
+FileOpenMsg:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	add	sp, -2
+	mov	word [bp - 2], 1
+FileOpenBody:
+	mov	dx, word [bp + 6]
+	db	0x32, 0xC0			; xor al, al
+	mov	ah, 0x3d
+	int	0x21
+	jb	short FileOpenAlt
+	mov	bx, word [bp + 8]
+	mov	word [bx], ax
+	db	0x8B, 0xD8			; mov bx, ax
+	mov	ax, 0x4202
+	db	0x33, 0xC9			; xor cx, cx
+	db	0x33, 0xD2			; xor dx, dx
+	int	0x21
+	jb	short FileOpenAlt
+	mov	bx, word [bp + 0xc]
+	mov	word [bx], ax
+	mov	word [bx + 2], dx
+	mov	bx, word [bp + 8]
+	mov	bx, word [bx]
+	mov	ax, 0x4200
+	db	0x33, 0xC9			; xor cx, cx
+	db	0x33, 0xD2			; xor dx, dx
+	int	0x21
+	jb	short FileOpenAlt
+	mov	bx, word [bp + 0xa]
+	mov	word [bx], ax
+	mov	word [bx + 2], ax		; both words from AX
+	leave
+	retf
+FileOpenAlt:
+	cmp	byte [AltPath], 0
+	je	short FileOpenFail
+	mov	dx, AltPath
+	db	0x32, 0xC0			; xor al, al
+	mov	ah, 0x3d
+	int	0x21
+	jb	short FileOpenFail
+	mov	bx, word [bp + 8]
+	mov	word [bx], ax
+	db	0x8B, 0xD8			; mov bx, ax
+	lds	dx, [AltBuf]
+	mov	cx, 0x400
+	mov	ah, 0x3f
+	int	0x21
+	mov	ax, ss
+	mov	ds, ax
+	jb	short FileOpenFail
+	push	word [bp + 6]
+	push	word [AltBuf+2]
+	push	word [AltBuf]
+	call	far [AltCall]
+	add	sp, 6
+	db	0x0B, 0xC0			; or ax, ax
+	jne	short L2739
+	db	0x0B, 0xD2			; or dx, dx
+	je	short FileOpenFail
+L2739:
+	mov	bx, word [bp + 0xa]
+	mov	word [bx], ax
+	mov	word [bx + 2], dx
+	mov	bx, word [AltSize]
+	mov	cx, word [bx]
+	mov	ax, word [bx + 2]
+	mov	bx, word [bp + 0xc]
+	mov	word [bx], cx
+	mov	word [bx + 2], ax
+	db	0x8B, 0xC8			; mov cx, ax
+	mov	ax, 0x4200
+	mov	bx, word [bp + 8]
+	mov	bx, word [bx]
+	int	0x21
+	jb	short FileOpenFail
+	leave
+	retf
+FileOpenFail:
+	mov	bx, word [bp + 8]
+	mov	ax, word [bx]
+	mov	word [bx], 0
+	push	ax
+	push	cs
+	call	FileClose
+	add	sp, 2
+	cmp	word [bp - 2], 0
+	jne	short L278D
+	mov	bx, word [bp + 0xc]
+	db	0x33, 0xC0			; xor ax, ax
+	mov	word [bx], ax
+	mov	word [bx + 2], ax
+	mov	bx, word [bp + 0xa]
+	mov	word [bx], ax
+	mov	word [bx + 2], ax
+	leave
+	retf
+L278D:
+	mov	ax, ss
+	mov	ds, ax
+	mov	ax, 0x75e2
+	push	word [bp + 6]
+	push	ax
+	call	0xF4A:0x3E4			; seg022
+FileClose:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	mov	bx, word [bp + 6]
+	cmp	bx, 0
+	je	short L27AC
+	mov	ah, 0x3e
+	int	0x21
+L27AC:
+	leave
+	retf
+ReadAtArg:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	add	sp, -6
+	push	ds
+	mov	ax, word [bp + 0x14]
+	mov	word [bp - 6], ax
+	jmp	short ReadAtBody
+ReadAt:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	add	sp, -6
+	push	ds
+	mov	word [bp - 6], 0
+	jmp	short ReadAtBody
+ReadAtMsg:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	add	sp, -6
+	push	ds
+	mov	word [bp - 6], 1
+ReadAtBody:
+	mov	ax, word [bp + 0x10]
+	mov	word [bp - 2], ax
+	mov	ax, word [bp + 0x12]
+	mov	word [bp - 4], ax
+	mov	bx, word [bp + 6]
+	mov	ax, 0x4200
+	mov	cx, word [bp + 0xa]
+	mov	dx, word [bp + 8]
+	int	0x21
+	jb	short ReadAtFail
+L27F3:
+	mov	ds, word [bp - 4]
+	mov	dx, word [bp - 2]
+	mov	cx, 0x4000
+	sub	word [bp + 0xc], cx
+	sbb	word [bp + 0xe], 0
+	jge	short L280A
+	add	cx, word [bp + 0xc]
+	jle	short L281A
+L280A:
+	mov	bx, word [bp + 6]
+	mov	ah, 0x3f
+	int	0x21
+	jb	short ReadAtFail
+	add	word [bp - 4], 0x400
+	jmp	short L27F3
+L281A:
+	mov	ax, word [bp + 0x10]
+	mov	dx, word [bp + 0x12]
+	pop	ds
+	leave
+	retf
+ReadAtFail:
+	cmp	word [bp - 6], 0
+	jne	short L2830
+	db	0x33, 0xC0			; xor ax, ax
+	db	0x33, 0xD2			; xor dx, dx
+	pop	ds
+	leave
+	retf
+L2830:
+	mov	ax, 0x75f1
+	mov	bx, ss
+	mov	ds, bx
+	push	word [bp + 6]
+	push	ax
+	call	0xF4A:0x3E4			; seg022
+ReadCloseArg:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	add	sp, -6
+	push	ds
+	mov	ax, word [bp + 0xc]
+	mov	word [bp - 6], ax
+	jmp	short ReadCloseBody
+ReadClose:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	add	sp, -6
+	push	ds
+	mov	word [bp - 6], 0
+	jmp	short ReadCloseBody
+ReadCloseMsg:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	add	sp, -6
+	push	ds
+	mov	word [bp - 6], 1
+ReadCloseBody:
+	mov	ax, word [bp + 8]
+	mov	word [bp - 2], ax
+	mov	ax, word [bp + 0xa]
+	mov	word [bp - 4], ax
+L2875:
+	mov	ds, word [bp - 4]
+	mov	dx, word [bp - 2]
+	mov	cx, 0x4000
+	mov	bx, word [bp + 6]
+	mov	ah, 0x3f
+	int	0x21
+	jb	short ReadCloseFail
+	add	word [bp - 4], 0x400
+	cmp	ax, 0x4000
+	je	short L2875
+	mov	bx, word [bp + 6]
+	mov	ah, 0x3e
+	int	0x21
+	mov	ax, word [bp + 8]
+	mov	dx, word [bp + 0xa]
+	pop	ds
+	leave
+	retf
+ReadCloseFail:
+	cmp	word [bp - 6], 0
+	jne	short L28AE
+	db	0x33, 0xC0			; xor ax, ax
+	db	0x33, 0xD2			; xor dx, dx
+	pop	ds
+	leave
+	retf
+L28AE:
+	mov	ax, 0x75f1
+	mov	bx, ss
+	mov	ds, bx
+	push	word [bp + 6]
+	push	ax
+	call	0xF4A:0x3E4			; seg022
+	incbin	"Extracted/segments/seg001.bin", 0x28BE, 0x33E0 - 0x28BE
