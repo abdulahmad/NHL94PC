@@ -734,3 +734,32 @@ seg001:1712,GetKeyHook,,new,high,"Returns the far pointer at KeyHook",src/seg/se
 seg001:171A,WaitKey,,new,high,"Calls KeyJump until AX is nonzero",src/seg/seg001.asm
 seg001:1724,FlushKeys,,new,high,"Calls ReadKey until AX is zero",src/seg/seg001.asm
 seg001:172D,WaitKeyUntil,,new,high,"Calls KeyJump until a key arrives or the long from seg001:1A0E passes the stored long",src/seg/seg001.asm
+DGROUP:7446,TextRow,,new,high,"Row used by ScrollMono and as the default cursor row. Clamped to 0..24",src/seg/seg001.asm
+DGROUP:74DA,TextAttr,,new,high,"Attribute byte paired with each character written to the monochrome buffer",src/seg/seg001.asm
+DGROUP:744A,TextPos,,new,high,"Byte offset of the cursor in the monochrome buffer",src/seg/seg001.asm
+DGROUP:7448,TextMark,,new,high,"TextPos saved when ConKeep is set, restored at the end of the string",src/seg/seg001.asm
+DGROUP:7450,ConBuf,,new,high,"Buffer _sprintf fills before the monochrome writer walks it",src/seg/seg001.asm
+DGROUP:7447,ConKeep,,new,high,"Nonzero makes the writer save TextPos into TextMark",src/seg/seg001.asm
+DGROUP:751E,Deadline,,new,high,"Long that WaitKeyUntil compares with ReadCallCount. SetDeadline stores it",src/seg/seg001.asm
+DGROUP:7522,LastCount,,new,high,"Previous CallCount sample. CallCountStep subtracts it",src/seg/seg001.asm
+seg001:174C,WaitKeyAdd,,new,high,"Adds a long to ReadCallCount and waits for a key or that deadline",src/seg/seg001.asm
+seg001:1782,ClearMono,,new,high,"Fills the B000h text buffer with zeros",src/seg/seg001.asm
+seg001:1796,RetFar,,new,high,"A single retf",src/seg/seg001.asm
+seg001:1797,ScrollMono,,new,high,"Scrolls the monochrome buffer up one row from TextRow",src/seg/seg001.asm
+seg001:17C8,ConFlush,,new,high,"Writes the string already in ConBuf",src/seg/seg001.asm
+seg001:17CA,ConPrint,,new,high,"Formats through _sprintf into ConBuf, then writes it to B000h",src/seg/seg001.asm
+seg001:18AB,ConPrintAt,,new,high,"Sets the cursor from a row and column, then formats and writes",src/seg/seg001.asm
+seg001:18D7,SetTextRow,,new,high,"Clamps the argument to 0..24 and stores TextRow",src/seg/seg001.asm
+seg001:18F1,SetTextAttr,,new,high,"Stores the low byte as TextAttr",src/seg/seg001.asm
+seg001:18FA,WriteHex,,new,high,"Writes two hex digits at the remembered cursor",src/seg/seg001.asm
+seg001:1912,WriteHexAt,,new,high,"Writes two hex digits at a row and column",src/seg/seg001.asm
+seg001:1964,WriteChar,,new,high,"Writes the low byte at the remembered cursor",src/seg/seg001.asm
+seg001:197C,WriteCharAt,,new,high,"Writes the low byte at a row and column",src/seg/seg001.asm
+seg001:19B2,SaveTextState,,new,high,"Copies 15 words from 74E2h and 15 words from the selected block into a buffer",src/seg/seg001.asm
+seg001:19E1,LoadTextState,,new,high,"Copies those words back",src/seg/seg001.asm
+seg001:1A0E,ReadCallCount,,new,high,"Returns CallCount in DX:AX. Int8Handler increments it. WaitKeyUntil calls this",src/seg/seg001.asm
+seg001:1A15,CallCountDiff,,new,high,"Returns CallCount minus the long argument",src/seg/seg001.asm
+seg001:1A2C,CallCountStep,,new,high,"Returns the change in CallCount since the previous sample and stores the new one",src/seg/seg001.asm
+seg001:1A46,ClearCallCount,,new,high,"Zeros CallCount",src/seg/seg001.asm
+seg001:1A4F,HaltSpin,,new,high,"Stores FBEAh under SP and hlts until that word changes or the count expires. See HANDOFF",src/seg/seg001.asm
+seg001:1A66,SetDeadline,,new,high,"Stores CallCount plus the long argument at Deadline",src/seg/seg001.asm

@@ -1,7 +1,8 @@
 ; Segment seg001. EMS maps, far copies, the INT 24h hook, file length,
 ; a file-head count, find-first paths, the DOS memory block, a 4-byte lookup,
 ; far-pointer lookup, a counted copy, multiply and divide, file writes,
-; character widths, the INT 8 handler, the game port, and the keyboard hook.
+; character widths, the INT 8 handler, the game port, the keyboard hook,
+; and the monochrome console.
 ; The first bytes finish the seg000 routine that ends on this paragraph.
 
 ; DGROUP words this segment uses. The bytes live in the near data, not here.
@@ -54,6 +55,14 @@ KeyTail		equ	0x70AA
 KeyMask		equ	0x70AC
 KeyBuf		equ	0x7088
 KeyState	equ	0x70AE
+TextRow		equ	0x7446
+TextAttr		equ	0x74DA
+TextPos		equ	0x744A
+TextMark		equ	0x7448
+ConBuf		equ	0x7450
+ConKeep		equ	0x7447
+Deadline		equ	0x751E
+LastCount	equ	0x7522
 GamePort	equ	0x201
 FmtSave		equ	0x64CE
 FmtBuf		equ	0x64D6
@@ -3209,14 +3218,13 @@ FlushKeys:
 	retf
 
 
-; Call KeyJump until it returns nonzero or the long from seg001:1A0Eh
-; passes the long at 751Eh.
+; Call KeyJump until it returns nonzero or ReadCallCount passes Deadline.
 WaitKeyUntil:
 	push	cs
 	call	KeyJump
 	cmp	ax, 0
 	jne	short L174B
-	call	0x3A3:0x1A0E		; seg001, still incbin
+	call	0x3A3:ReadCallCount	; seg001
 	cmp	dx, word [0x7520]
 	jb	short WaitKeyUntil
 	ja	short L1749
@@ -3227,4 +3235,462 @@ L1749:
 L174B:
 	retf
 
-	incbin	"Extracted/segments/seg001.bin", 0x174C, 0x33E0 - 0x174C
+; Add the long argument to ReadCallCount, then wait for a key or until
+; that sum is reached. A key returns in AX. The time path returns 0.
+WaitKeyAdd:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	add	sp, -4
+	call	0x3A3:ReadCallCount		; seg001
+	add	ax, word [bp + 6]
+	adc	dx, word [bp + 8]
+	mov	word [bp - 4], ax
+	mov	word [bp - 2], dx
+L1763:
+	push	cs
+	call	0x16EB
+	cmp	ax, 0
+	jne	short L177F
+	call	0x3A3:ReadCallCount		; seg001
+	cmp	dx, word [bp - 2]
+	jb	short L1763
+	ja	short L177D
+	cmp	ax, word [bp - 4]
+	jb	short L1763
+L177D:
+	db	0x33, 0xC0			; xor ax, ax
+L177F:
+	leave
+	retf
+	db	0x00
+
+
+; Fill the monochrome text buffer at B000h with zeros.
+ClearMono:
+	push	di
+	push	es
+	mov	ax, 0xb000
+	mov	es, ax
+	db	0x33, 0xFF			; xor di, di
+	mov	cx, 0x7d0
+	db	0x33, 0xC0			; xor ax, ax
+	cld
+	rep stosw
+	pop	es
+	pop	di
+	retf
+
+
+; A single retf.
+RetFar:
+	retf
+
+
+; Scroll the monochrome buffer up one row from TextRow and clear the last row.
+ScrollMono:
+	push	si
+	push	di
+	push	ds
+	mov	al, byte [TextRow]
+	mov	bl, 0xa0
+	mul	bl
+	db	0x8B, 0xF0			; mov si, ax
+	db	0x8B, 0xFE			; mov di, si
+	add	si, 0xa0
+	mov	ax, 0x18
+	sub	al, byte [TextRow]
+	mov	bl, 0x50
+	mul	bl
+	db	0x8B, 0xC8			; mov cx, ax
+	mov	ax, es
+	mov	ds, ax
+	cld
+	rep movsw
+	db	0x33, 0xC0			; xor ax, ax
+	mov	cx, 0x50
+	rep stosw
+	pop	ds
+	pop	di
+	pop	si
+	retf
+
+
+; Write the string already at ConBuf. ConPrint formats into that buffer first.
+ConFlush:
+	jmp	short ConOut
+
+ConPrint:
+	pop	ax
+	mov	word [0x744c], ax
+	pop	ax
+	mov	word [0x744e], ax
+	mov	ax, ConBuf
+	push	ax
+	call	0:_sprintf			; seg000
+	add	sp, 2
+	mov	byte [ConKeep], 1
+	mov	ax, word [TextMark]
+	mov	word [TextPos], ax
+L17E9:
+	mov	ax, word [0x744e]
+	push	ax
+	mov	ax, word [0x744c]
+	push	ax
+
+ConOut:
+	push	si
+	mov	ax, 0xb000
+	mov	es, ax
+	mov	si, ConBuf
+	mov	dh, byte [TextAttr]
+L17FE:
+	mov	dl, byte [si]
+	inc	si
+	db	0x0A, 0xD2			; or dl, dl
+	je	short L1829
+	cmp	dl, 0x20
+	jb	short L1838
+	mov	bx, word [TextPos]
+	cmp	bx, 0xfa0
+	jl	short L181F
+	push	cs
+	call	ScrollMono
+	mov	bx, 0xf00
+	mov	word [TextPos], bx
+L181F:
+	mov	word es:[bx], dx
+	add	word [TextPos], 2
+	jmp	short L17FE
+L1829:
+	cmp	byte [ConKeep], 0
+	je	short L1836
+	mov	ax, word [TextPos]
+	mov	word [TextMark], ax
+L1836:
+	pop	si
+	retf
+L1838:
+	cmp	dl, 0xa
+	jne	short L1862
+	mov	ax, word [TextPos]
+	mov	bx, 0xa0
+	div	bl
+	db	0x32, 0xE4			; xor ah, ah
+	inc	al
+	mul	bl
+	mov	word [TextPos], ax
+	cmp	word [TextPos], 0xfa0
+	jl	short L17FE
+	push	cs
+	call	ScrollMono
+	mov	word [TextPos], 0xf00
+	jmp	short L17FE
+L1862:
+	cmp	dl, 8
+	jne	short L1875
+	cmp	word [TextPos], 0
+	je	short L17FE
+	sub	word [TextPos], 2
+	jmp	short L17FE
+L1875:
+	cmp	dl, 0xc
+	jne	short L188B
+	push	cs
+	call	ClearMono
+	mov	al, byte [TextRow]
+	mov	bl, 0xa0
+	mul	bl
+	mov	word [TextPos], ax
+	jmp	near L17FE
+L188B:
+	cmp	dl, 0xb
+	jne	short L1899
+	mov	word [TextPos], 0
+	jmp	near L17FE
+L1899:
+	cmp	dl, 9
+	jne	short L18A8
+	add	word [TextPos], 0x10
+	and	word [TextPos], 0xfff0
+L18A8:
+	jmp	near L17FE
+
+
+; Set the cursor from a row and column, format into ConBuf, and write it.
+ConPrintAt:
+	pop	ax
+	mov	word [0x744c], ax
+	pop	ax
+	mov	word [0x744e], ax
+	pop	bx
+	pop	ax
+	mov	dl, 0xa0
+	mul	dl
+	db	0x03, 0xDB			; add bx, bx
+	db	0x03, 0xC3			; add ax, bx
+	mov	word [TextPos], ax
+	mov	ax, ConBuf
+	push	ax
+	call	0:_sprintf			; seg000
+	add	sp, 2
+	sub	sp, 4
+	mov	byte [ConKeep], 0
+	jmp	near L17E9
+
+
+; Clamp the argument into 0..24 and store it as TextRow.
+SetTextRow:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	mov	ax, word [bp + 6]
+	cmp	ax, 0
+	jge	short L18E4
+	db	0x33, 0xC0			; xor ax, ax
+L18E4:
+	cmp	ax, 0x18
+	jle	short L18EC
+	mov	ax, 0x18
+L18EC:
+	mov	byte [TextRow], al
+	leave
+	retf
+
+
+; Store the low byte as the attribute used with each character.
+SetTextAttr:
+	db	0x8B, 0xDC			; mov bx, sp
+	mov	ax, word [bx + 4]
+	mov	byte [TextAttr], al
+	retf
+
+
+; Write the argument as two hex digits at the remembered cursor.
+WriteHex:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	ax
+	push	bx
+	push	cx
+	push	dx
+	push	es
+	mov	byte [ConKeep], 1
+	mov	dx, word [bp + 6]
+	mov	ax, word [TextMark]
+	mov	word [TextPos], ax
+	jmp	short L1934
+
+
+; Write two hex digits at the row and column arguments.
+WriteHexAt:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	ax
+	push	bx
+	push	cx
+	push	dx
+	push	es
+	mov	dx, word [bp + 6]
+	mov	ax, word [bp + 8]
+	mov	bx, 0xa0
+	mul	bl
+	db	0x03, 0xC2			; add ax, dx
+	db	0x03, 0xC2			; add ax, dx
+	mov	word [TextPos], ax
+	mov	byte [ConKeep], 0
+	mov	dx, word [bp + 0xa]
+L1934:
+	db	0x8B, 0xDA			; mov bx, dx
+	and	bx, 0xf
+	mov	al, byte [bx + 0x74c8]
+	mov	byte [0x7451], al
+	db	0x8B, 0xDA			; mov bx, dx
+	shr	bx, 1
+	shr	bx, 1
+	shr	bx, 1
+	shr	bx, 1
+	and	bx, 0xf
+	mov	al, byte [bx + 0x74c8]
+	mov	byte [ConBuf], al
+	mov	byte [0x7452], 0
+	push	cs
+	call	ConFlush
+	pop	es
+	pop	dx
+	pop	cx
+	pop	bx
+	pop	ax
+	leave
+	retf
+
+
+; Write the low byte at the remembered cursor.
+WriteChar:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	ax
+	push	bx
+	push	cx
+	push	dx
+	push	es
+	mov	byte [ConKeep], 1
+	mov	ax, word [TextMark]
+	mov	word [TextPos], ax
+	mov	dx, word [bp + 6]
+	jmp	short L199E
+
+
+; Write the low byte at the row and column arguments.
+WriteCharAt:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	ax
+	push	bx
+	push	cx
+	push	dx
+	push	es
+	mov	dx, word [bp + 6]
+	mov	ax, word [bp + 8]
+	mov	bx, 0xa0
+	mul	bl
+	db	0x03, 0xC2			; add ax, dx
+	db	0x03, 0xC2			; add ax, dx
+	mov	word [TextPos], ax
+	mov	byte [ConKeep], 0
+	mov	dx, word [bp + 0xa]
+L199E:
+	mov	byte [ConBuf], dl
+	mov	byte [0x7451], 0
+	push	cs
+	call	ConFlush
+	pop	es
+	pop	dx
+	pop	cx
+	pop	bx
+	pop	ax
+	leave
+	retf
+
+
+; Copy 15 words from 74E2h and 15 words from the block selected by 74DCh
+; into the near buffer.
+SaveTextState:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	di
+	push	si
+	mov	si, 0x74e2
+	mov	di, word [bp + 6]
+	mov	ax, ds
+	mov	es, ax
+	mov	cx, 0xf
+	rep movsw
+	mov	bx, word [0x74dc]
+	db	0x03, 0xDB			; add bx, bx
+	db	0x03, 0xDB			; add bx, bx
+	mov	si, word [bx + 0x7570]
+	mov	ds, word [bx + 0x7572]
+	mov	cx, 0xf
+	rep movsw
+	mov	ds, ax
+	pop	si
+	pop	di
+	leave
+	retf
+
+
+; Copy those words back from the near buffer.
+LoadTextState:
+	push	bp
+	db	0x8B, 0xEC			; mov bp, sp
+	push	di
+	push	si
+	mov	si, word [bp + 6]
+	mov	ax, ds
+	mov	es, ax
+	mov	di, 0x74e2
+	mov	cx, 0xf
+	rep movsw
+	mov	bx, word [0x74dc]
+	db	0x03, 0xDB			; add bx, bx
+	db	0x03, 0xDB			; add bx, bx
+	mov	di, word [bx + 0x7570]
+	mov	es, word [bx + 0x7572]
+	mov	cx, 0xf
+	rep movsw
+	pop	si
+	pop	di
+	leave
+	retf
+
+
+; Return CallCount in DX:AX. Int8Handler increments that dword.
+ReadCallCount:
+	les	ax, [CallCount]
+	mov	dx, es
+	retf
+
+
+; Return CallCount minus the long argument.
+CallCountDiff:
+	db	0x8B, 0xDC			; mov bx, sp
+	mov	ax, word [bx + 4]
+	mov	dx, word [bx + 6]
+	db	0x8B, 0xD8			; mov bx, ax
+	db	0x8B, 0xCA			; mov cx, dx
+	les	ax, [CallCount]
+	mov	dx, es
+	db	0x2B, 0xC3			; sub ax, bx
+	db	0x1B, 0xD1			; sbb dx, cx
+	retf
+
+
+; Return CallCount minus the previous sample, and store the new sample.
+CallCountStep:
+	mov	bx, word [LastCount]
+	mov	cx, word [0x7524]
+	les	ax, [CallCount]
+	mov	dx, es
+	mov	word [LastCount], ax
+	mov	word [0x7524], dx
+	db	0x2B, 0xC3			; sub ax, bx
+	db	0x1B, 0xD1			; sbb dx, cx
+	retf
+
+
+; Zero CallCount.
+ClearCallCount:
+	db	0x33, 0xC0			; xor ax, ax
+	mov	word [CallCount], ax
+	mov	word [0x6da2], ax
+	retf
+
+
+; Store FBEAh just under SP and hlt until that word changes or the count expires.
+HaltSpin:
+	db	0x8B, 0xDC			; mov bx, sp
+	sub	bx, 2
+	mov	cx, 0x2710
+	mov	ax, 0xfbea
+	mov	word [bx], ax
+L1A5C:
+	hlt
+	cmp	word [bx], ax
+	loope	L1A5C
+	mov	word [bx], 0
+	retf
+
+
+; Store CallCount plus the long argument at Deadline. WaitKeyUntil compares it.
+SetDeadline:
+	db	0x8B, 0xDC			; mov bx, sp
+	mov	ax, word [bx + 4]
+	mov	dx, word [bx + 6]
+	les	bx, [CallCount]
+	mov	cx, es
+	db	0x03, 0xC3			; add ax, bx
+	db	0x13, 0xD1			; adc dx, cx
+	mov	word [Deadline], ax
+	mov	word [0x7520], dx
+	retf
+
+	incbin	"Extracted/segments/seg001.bin", 0x1A80, 0x33E0 - 0x1A80
