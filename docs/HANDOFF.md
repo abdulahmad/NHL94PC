@@ -171,13 +171,13 @@ The bytes in front of `MscStartup` are `_outp`, `_inp`, and latched VGA copies (
 
 `__astart` far-jumps to `MscStartup`. That checks for DOS 2, sets SS to DGROUP, shrinks the memory block, zeros the BSS, calls two stubs in seg005, calls `InitRuntime`, pushes three near words (environ, argv, argc) and calls `_main`, then `_exit`.
 
-`_main` is not in seg000. The call is `seg005` offset 8, and those bytes are a single `retf`. The two calls just before `InitRuntime` are seg005 offsets 6 and 4, also each a `retf`. They are named `NullStartup6` and `NullStartup4` until the real symbols are settled.
+`_main` is seg005 offset 8. It is not a lone `retf`: it is `enter 0x24, 0` and the rest of that segment. `NullStartup4` (offset 4) and `NullStartup6` (offset 6) are each a single `retf`.
 
 The `_main` call pushes three words, so the pointers are near. That is the medium model (far code, near data). The earlier "large model" note came from the far calls; medium model has those too.
 
 ## Unsure / open
 
-- `NullStartup6` and `NullStartup4` (seg005 offsets 6 and 4). Each is a `retf`. The usual MSC pair in that slot is `__FPMATH` and `__fptrap`, or the null `__setargv` and `__setenvp`. The bodies are identical, so neither pair is named yet.
+- `NullStartup6` and `NullStartup4` are each a single `retf`. The usual MSC pair in that slot is `__FPMATH` and `__fptrap`, or the null `__setargv` and `__setenvp`. The bodies do not say which.
 - `InitRuntime` does the divide-handler install, the `_C_FILE_INFO` inherit, the `_osfile` device bits and `_initterm`. It is one far function. The MSC library symbol for that whole function was not confirmed.
 - `_initterm` here walks the far-pointer table from the top down. Later MSC `_initterm` walks upward. The name is the job; the direction is this copy's.
 - `FpFail` is `mov ax, 2` then a jump to `AmsgExit`. That is the R6002 path. The public name is not confirmed.

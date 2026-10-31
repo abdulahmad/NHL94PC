@@ -12,9 +12,9 @@ seg000:06A8,ExitCommon,,new,high,"Shared tail of _exit __exit _cexit and __cexit
 seg000:070A,ExitRestore,,new,high,"Near helper on the exit path. Restores interrupt 0 and the math error vector",src/seg/seg000.asm
 seg000:0737,_initterm,,MSC,medium,"Calls each far pointer in a table from the top down skipping nulls. Later MSC _initterm walks upward",src/seg/seg000.asm
 seg000:074A,__chkstk,,MSC,high,"Far. Drops SP by AX under the return address. Overflow is R6000 through AmsgExit or the alternate handler",src/seg/seg000.asm
-seg005:0008,_main,,MSC,high,"Far call after three near pushes (environ argv argc) and before _exit. Body is still the seg005 incbin and is a single retf",src/seg/seg000.asm
-seg005:0004,NullStartup4,,new,low,"Far call from MscStartup. Bytes are retf. May be __fptrap or null __setenvp. See HANDOFF Unsure",src/seg/seg000.asm
-seg005:0006,NullStartup6,,new,low,"Far call from MscStartup just before NullStartup4. Bytes are retf. May be __FPMATH or null __setargv. See HANDOFF Unsure",src/seg/seg000.asm
+seg005:0008,_main,,MSC,high,"MscStartup calls this after the three near pushes and before _exit. The bytes are enter 0x24, 0 and the rest of seg005, not a lone retf",src/seg/seg005.asm
+seg005:0004,NullStartup4,,new,low,"Single retf. Called from MscStartup. May be __fptrap or null __setenvp. See HANDOFF Unsure",src/seg/seg005.asm
+seg005:0006,NullStartup6,,new,low,"Single retf. Called from MscStartup. May be __FPMATH or null __setargv. See HANDOFF Unsure",src/seg/seg005.asm
 DGROUP:8556,__psp,,MSC,high,"Startup stores the incoming DS (the PSP) here and later reads the environment segment from it",src/seg/seg000.asm
 DGROUP:855F,_osfile,,MSC,high,"_C_FILE_INFO nibbles are stored here and the IOCTL loop sets the device bit on handles 0 to 4",src/seg/seg000.asm
 seg056:082F,__astart,082F,MSC,high,"EXE entry (e_ip). Microsoft C name for the startup; this copy sets up RTLink and jumps to the C startup in seg000",src/seg/seg056.asm

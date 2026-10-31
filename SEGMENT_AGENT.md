@@ -81,6 +81,7 @@ seg001. <- CURRENT
 
 ## History
 
+- 2026-10-31: seg005 is source. `NullStartup4` and `NullStartup6` are each a `retf`. `_main` at offset 8 is `enter 0x24, 0` and the rest of the segment, not a lone `retf`.
 - 2026-10-31: seg000 finished. The floating-point emulator is source (`FpConvert`, `FpExec`, and the helpers after it). Nothing in seg000 is incbin.
 - 2026-10-31: seg000 number helpers after `_output`: `_atol`, `fflush`, `_memmove`, `_memset`, and the float-format helpers. The emulator is still incbin.
 - 2026-10-31: seg000 formatted output: `_flsbuf`, `_stbuf`, `_ftbuf`, `_output`.
@@ -106,7 +107,7 @@ seg001. <- CURRENT
 | seg002 | incbin | 0x08A10 | 5472 | 0x06E1 |
 | seg003 | incbin | 0x09F70 | 16 | 0x0837 |
 | seg004 | incbin | 0x09F80 | 3088 | 0x0838 |
-| seg005 | incbin | 0x0AB90 | 1040 | 0x08F9 |
+| seg005 | source (_main, two retf stubs) | 0x0AB90 | 1040 | 0x08F9 |
 | seg006 | incbin | 0x0AFA0 | 752 | 0x093A |
 | seg007 | incbin | 0x0B290 | 1168 | 0x0969 |
 | seg008 | incbin | 0x0B720 | 9408 | 0x09B2 |

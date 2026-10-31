@@ -1,5 +1,15 @@
-;	Segment build for seg/seg005.asm: sets its origin and the outside labels it uses, then includes the file on its own
-;	for checking against the EXE (tools/verify_segment.py seg005).
+;	Segment build for seg/seg005.asm. The full build has these labels in seg000 and seg056.
 	bits	16
 	org	0x0
+__aFldiv	equ	0x118C
+_printf		equ	0x76E
+_exit		equ	0x687
+_dos_gettime	equ	0x1172
+_srand		equ	0x1000
+OvlThunk22	equ	0x20CB
+OvlThunk23	equ	0x20D5
+OvlThunk24	equ	0x20DF
+OvlThunk25	equ	0x20E9
+OvlThunk26	equ	0x20F3
+OvlThunk27	equ	0x20FD
 %include "seg/seg005.asm"
