@@ -2,11 +2,10 @@
 
 ## State (2026-10-31)
 
-- Full build MATCH (SHA-1 `d94450ddff26528bddac6646c234277076fd36cb`, 244,854 bytes); `tools/verify_all.sh` MATCH (full build and all 88 segments built on
-  their own).
-- Everything is incbin except the MZ header fields (`src/header/mz_header.asm`). Next: seg000.
-- Structure pass only. No segment was disassembled, and the `ovl_*` slices were not resliced. Two false splits are marked in
-  `SEGMENT_AGENT.md` and stay as their own incbin files until the segment that owns them is disassembled.
+- Full build MATCH (SHA-1 `d94450ddff26528bddac6646c234277076fd36cb`, 244,854 bytes); `tools/verify_all.sh` MATCH.
+- seg056 is source: the resident RTLink/Plus manager and the overlay thunks (10,992 bytes). seg057 was the thunk tail and is merged into
+  seg056. Everything else is still incbin except the MZ header fields (`src/header/mz_header.asm`). Next in file order: seg000.
+- seg011 is still a false split (merge into seg010 when seg010 is disassembled). The `ovl_*` slices were not resliced.
 
 ## Known facts
 
@@ -34,15 +33,16 @@ because far calls name their paragraph:
 - seg047, paragraph `0x160C`, 32 bytes. Far calls enter at offset 8 (`push bp`). The bytes in front of that are the previous function's
   epilogue.
 
-**False splits (2), merge when disassembling, do not treat as their own segment:**
+**False splits:** seg057 is merged into seg056. One remains, merge it when that segment is disassembled:
 
 - seg011, paragraph `0x0C15`, 16 bytes, into seg010. The slice is the tail of the function that starts at seg010+6 (`push bp` at file
   `0xDD16`) through `leave` / `retf`, then padding. The one far call that stores segment `0x0C15` uses offset `0xE`, the padding `retf`.
   That is the same address as seg010:`0x4E`, written normalized (offset under 16).
-- seg057, paragraph `0x1D33`, 2832 bytes, into seg056. Nothing stores segment `0x1D33`. The 19 far calls in the root that land in these bytes store
-  segment `0x1B35` and an offset past `0x1FE0` (the end of the seg056 slice). The bytes are 15 zero bytes, then 281 thunks of 10 bytes:
-  `call` seg056:`0x05F8`, `jmp far <overlay>:<offset>`, `dw <segment index>`. The near call only reaches the loader if CS is seg056.
-  The relocation entries for the `jmp far` segment words are framed at paragraph `0x1D33`, which is why the cut exists.
+- seg057, paragraph `0x1D33`, 2832 bytes, is now the end of seg056. Nothing stores segment `0x1D33`. The far calls that land in these bytes store
+  segment `0x1B35` and an offset past `0x1FE0`. The bytes are 15 zero bytes, then thunks of 10 bytes:
+  `call LoadFromThunk`, `jmp far`, `dw` section index. The near call only reaches the loader if CS is seg056.
+  The relocation entries for the `jmp far` segment words are framed at paragraph `0x1D33`, which is why the cut existed. The last thunk
+  is split: its far jump continues in the first three bytes of seg058.
 
 A real boundary is not a clean instruction boundary. The linker starts the next segment on a paragraph, and the previous function's last
 instruction runs a few bytes into that paragraph. The new function (`enter` or `push bp`) starts just after the `retf`. Checked at file
@@ -70,7 +70,7 @@ Laid out from the end of the DOS module:
 
 ## How each .OVL is loaded
 
-Resident code is seg056 (CS `0x1B35`), including the thunks currently sliced off as seg057. The dynamic-segment table is 21 records of 18
+Resident code is seg056 (CS `0x1B35`), including the thunks. The dynamic-segment table is 21 records of 18
 bytes at seg056:`0x0D33`. The count, 21, is the word at seg056:`0x0D2D`. Record `i` is segment index `i`.
 
 Each record:
@@ -83,7 +83,7 @@ Each record:
 | 6 | high byte of that position in the low byte; flags in the high byte |
 | 8 | memory size in paragraphs (also how much the loader clears) |
 | 0xA | number of relocation entries |
-| 0xC | `0xFFFF`, or 3 (INIT, AI), or 7 (FADES1–FADES12). Not read on the load path traced here. |
+| 0xC | Value `LoadSection` returns in AX. `0xFFFF`, or 3 (INIT, AI), or 7 (FADES1–FADES12). If `ChainLoads` is set and this is not -1, that section is loaded next. |
 | 0xE | section number passed to the seg058 error helper. It is the record index plus 2. |
 | 0x10 | paragraphs of image to read from the file |
 
@@ -149,6 +149,9 @@ file layout. The 94 load path above is from this EXE and `lst/game/`.
 
 ## Unsure / open
 
-- The word at record offset `0x0C` (`0xFFFF`, or 3, or 7). The load path traced does not read it.
-- Flag bit `0x20` (the patched far call on the other read path) was not followed. None of these 21 records has that bit set.
-- seg058's calls are the error helper and the file open/seek used by the manager. The individual functions in seg058 are not named yet.
+- seg056:0x0D00 (four zero bytes) and seg056:0x0D10 through 0x0D20 are not read by this segment. The byte at 0x0B71 is not read either.
+- The seg058 routines called from seg056 (`RtlSectionHook`, `RtlWriteText`, `RtlSaveVectors`, `RtlSetHandler`, `RtlAfterFiles`,
+  `RtlBeforeClose`, `RtlFindFile`, `RtlExePath`) are named from the call sites. seg058 is still incbin. Its first three bytes finish
+  `OvlThunk281`; `stc` / `retf` is at seg058:0003.
+- Flag bit `0x20` selects the other read path (`call 0:0` in `LoadSection`). None of these 21 records has that bit set, and the far call is stored as zeros.
+- `ReturnBytePtr` is written from the reload return hook; what that byte represents is not pinned down.
