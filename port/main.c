@@ -37,9 +37,70 @@ void logf_(const char *fmt, ...)
 
 void video_set_title(const char *t) { if (win) SDL_SetWindowTitle(win, t); }
 
-/* ---- joystick (game port): none yet ---- */
-uint8_t joy_port(void) { return 0xF0; }
-void joy_trigger(void) {}
+/* ---- joystick: SDL game controllers on the game port (201h) ----
+ * The first controller is joystick A (axes bits 0-1, buttons bits 4-5, plus X/Y as buttons 3-4 of a four-button stick
+ * on bits 6-7 when there is no second controller); the second is joystick B (bits 2-3, 6-7). A write to 201h starts
+ * the four one-shots; each axis bit stays 1 for a time that grows with the stick position. The game times them with a
+ * counting loop and calibrates, so the time is counted in emulated instructions, which keeps it independent of the
+ * host's speed. */
+static SDL_GameController *pad[2];
+static uint64_t joy_t0; static unsigned joy_len[4];
+
+static void pads_open(void)
+{
+  for (int i = 0; i < 2; i++)
+    if (pad[i] && !SDL_GameControllerGetAttached(pad[i])) { SDL_GameControllerClose(pad[i]); pad[i] = NULL; }
+  for (int j = 0; j < SDL_NumJoysticks(); j++) {
+    if (!SDL_IsGameController(j)) continue;
+    SDL_JoystickID id = SDL_JoystickGetDeviceInstanceID(j);
+    int used = 0;
+    for (int i = 0; i < 2; i++) if (pad[i] && SDL_JoystickInstanceID(SDL_GameControllerGetJoystick(pad[i])) == id) used = 1;
+    if (used) continue;
+    for (int i = 0; i < 2; i++) if (!pad[i]) { pad[i] = SDL_GameControllerOpen(j); break; }
+  }
+}
+
+/* -1..1 from the left stick, with the d-pad pushing it all the way */
+static double pad_axis(SDL_GameController *c, SDL_GameControllerAxis a, SDL_GameControllerButton lo, SDL_GameControllerButton hi)
+{
+  if (SDL_GameControllerGetButton(c, lo)) return -1;
+  if (SDL_GameControllerGetButton(c, hi)) return 1;
+  double v = SDL_GameControllerGetAxis(c, a) / 32767.0;
+  return v < -1 ? -1 : v;
+}
+
+void joy_trigger(void)
+{
+  joy_t0 = cpu_instr_count();
+  for (int i = 0; i < 2; i++) {
+    joy_len[2 * i] = joy_len[2 * i + 1] = 0;
+    if (!pad[i]) continue;
+    double x = pad_axis(pad[i], SDL_CONTROLLER_AXIS_LEFTX, SDL_CONTROLLER_BUTTON_DPAD_LEFT, SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
+    double y = pad_axis(pad[i], SDL_CONTROLLER_AXIS_LEFTY, SDL_CONTROLLER_BUTTON_DPAD_UP, SDL_CONTROLLER_BUTTON_DPAD_DOWN);
+    joy_len[2 * i] = 300 + (unsigned)((x + 1) * 2000);     /* centre about 2300 instructions, ~330 turns of the loop */
+    joy_len[2 * i + 1] = 300 + (unsigned)((y + 1) * 2000);
+  }
+}
+
+uint8_t joy_port(void)
+{
+  uint64_t t = cpu_instr_count() - joy_t0;
+  uint8_t v = 0xF0;
+  for (int i = 0; i < 4; i++) if (t < joy_len[i]) v |= 1 << i;
+  if (pad[0]) {
+    if (SDL_GameControllerGetButton(pad[0], SDL_CONTROLLER_BUTTON_A)) v &= ~0x10;
+    if (SDL_GameControllerGetButton(pad[0], SDL_CONTROLLER_BUTTON_B)) v &= ~0x20;
+    if (!pad[1]) {
+      if (SDL_GameControllerGetButton(pad[0], SDL_CONTROLLER_BUTTON_X)) v &= ~0x40;
+      if (SDL_GameControllerGetButton(pad[0], SDL_CONTROLLER_BUTTON_Y)) v &= ~0x80;
+    }
+  }
+  if (pad[1]) {
+    if (SDL_GameControllerGetButton(pad[1], SDL_CONTROLLER_BUTTON_A)) v &= ~0x40;
+    if (SDL_GameControllerGetButton(pad[1], SDL_CONTROLLER_BUTTON_B)) v &= ~0x80;
+  }
+  return v;
+}
 
 /* ---- keyboard: SDL scancode -> XT set 1 (0x100 = E0 prefix) ---- */
 static int xt_code(SDL_Scancode s)
@@ -140,6 +201,24 @@ static void dump_ppm(void)
   fclose(f);
 }
 
+/* where the picture goes: 4:3, centred, in renderer pixels */
+static void view_rect(SDL_Rect *r)
+{
+  int ww, wh; SDL_GetRendererOutputSize(ren, &ww, &wh);
+  if (ww * 3 > wh * 4) { r->h = wh; r->w = wh * 4 / 3; } else { r->w = ww; r->h = ww * 3 / 4; }
+  r->x = (ww - r->w) / 2; r->y = (wh - r->h) / 2;
+}
+
+/* the host pointer drives the game's pointer directly: the window position maps onto the driver's 640 x 200 virtual
+ * screen of mode 13h, the way the DOS pointer covers the picture */
+static void mouse_abs(int wx, int wy)
+{
+  int ww, wh, ow, oh; SDL_GetWindowSize(win, &ww, &wh); SDL_GetRendererOutputSize(ren, &ow, &oh);
+  SDL_Rect r; view_rect(&r);
+  double x = (wx * (double)ow / ww - r.x) / r.w, y = (wy * (double)oh / wh - r.y) / r.h;
+  mouse_set_pos((int)(x * 640), (int)(y * 200));
+}
+
 void host_present(void)
 {
   uint32_t pal[256];
@@ -152,10 +231,7 @@ void host_present(void)
     tex_w = frame_w; tex_h = frame_h;
   }
   SDL_UpdateTexture(tex, NULL, rgb, frame_w * 4);
-  int ww, wh; SDL_GetRendererOutputSize(ren, &ww, &wh);
-  SDL_Rect r; /* 4:3, centred */
-  if (ww * 3 > wh * 4) { r.h = wh; r.w = wh * 4 / 3; } else { r.w = ww; r.h = ww * 3 / 4; }
-  r.x = (ww - r.w) / 2; r.y = (wh - r.h) / 2;
+  SDL_Rect r; view_rect(&r);
   SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
   SDL_RenderClear(ren);
   SDL_RenderCopy(ren, tex, NULL, &r);
@@ -177,7 +253,8 @@ void host_poll(void)
       }
       key(xt_code(e.key.keysym.scancode), e.type == SDL_KEYDOWN);
       break;
-    case SDL_MOUSEMOTION: mouse_move(e.motion.xrel, e.motion.yrel); break;
+    case SDL_CONTROLLERDEVICEADDED: case SDL_CONTROLLERDEVICEREMOVED: pads_open(); break;
+    case SDL_MOUSEMOTION: mouse_abs(e.motion.x, e.motion.y); break;
     case SDL_MOUSEBUTTONDOWN: case SDL_MOUSEBUTTONUP: {
       int m = SDL_GetMouseState(NULL, NULL), b = 0;
       if (m & SDL_BUTTON_LMASK) b |= 1; if (m & SDL_BUTTON_RMASK) b |= 2; if (m & SDL_BUTTON_MMASK) b |= 4;
@@ -221,7 +298,11 @@ int main(int argc, char **argv)
   win = SDL_CreateWindow("NHL Hockey '94", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 960, 720, SDL_WINDOW_RESIZABLE);
   if (win) ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_PRESENTVSYNC * 0);
   if (ren) SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
+  SDL_ShowCursor(SDL_DISABLE);                 /* the game draws its own pointer */
 
+  if (getenv("NHL94_VPAD"))                     /* testing: a virtual controller with nothing pressed */
+    SDL_JoystickAttachVirtual(SDL_JOYSTICK_TYPE_GAMECONTROLLER, SDL_CONTROLLER_AXIS_MAX, SDL_CONTROLLER_BUTTON_MAX, 0);
+  pads_open();
   cpu_init();
   pc_init();
   vga_init();

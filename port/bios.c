@@ -144,7 +144,7 @@ void mouse_move(int dx, int dy)
   ms_fx -= ix; ms_fy -= iy;
   ms_x += ix; ms_y += iy; ms_clamp();
 }
-void mouse_set_pos(int x, int y) { ms_x = x; ms_y = y; ms_clamp(); }
+void mouse_set_pos(int x, int y) { ms_mx += (x - ms_x) * ms_mick_x / 8; ms_my += (y - ms_y) * ms_mick_y / 8; ms_x = x; ms_y = y; ms_clamp(); }
 void mouse_get_range(int *x0, int *x1, int *y0, int *y1) { *x0 = ms_xmin; *x1 = ms_xmax; *y0 = ms_ymin; *y1 = ms_ymax; }
 void mouse_get_pos(int *x, int *y) { *x = ms_x; *y = ms_y; }
 

@@ -180,12 +180,17 @@ static void string_io(x86emu_t *emu, u8 op1)
 
 /* NHL94_BREAK="cs:ip,cs:ip": print the registers (and 8 bytes at DS:AX) each time one of these runs (debugging) */
 static uint32_t brk[16]; static int nbrk;
+static double cov_t; static uint8_t *cov;
 static int code_check(x86emu_t *emu)
 {
   uint32_t a = emu->x86.R_CS_BASE + emu->x86.R_EIP;
+  /* NHL94_COVER=seconds: from then on, print each code address reached for the first time (debugging) */
+  if (cov && a < 0x110000 && !cov[a] && host_time() >= cov_t) {
+    cov[a] = 1; fprintf(stderr, "cover %04X:%04X\n", emu->x86.R_CS, emu->x86.R_IP);
+  }
   for (int i = 0; i < nbrk; i++) if (a == brk[i]) {
     uint32_t p = lin(emu->x86.R_DS, emu->x86.R_AX);
-    uint32_t q = getenv("NHL94_BREAK_DI") ? lin(emu->x86.R_ES, emu->x86.R_DI - 8) : lin(emu->x86.R_SS, emu->x86.R_BP - 8);
+    uint32_t q = getenv("NHL94_BREAK_DI") ? lin(emu->x86.R_ES, emu->x86.R_DI - 8) : lin(emu->x86.R_SS, emu->x86.R_BP + (getenv("NHL94_BREAK_BP") ? (int)strtol(getenv("NHL94_BREAK_BP"), 0, 0) : -8));
     fprintf(stderr, "break %04X:%04X  [ds:ax] %02X %02X %02X %02X %02X %02X %02X %02X  [bp-8] %02X %02X %02X %02X %02X %02X %02X %02X  ",
             emu->x86.R_CS, emu->x86.R_IP, rd8(p), rd8(p + 1), rd8(p + 2), rd8(p + 3), rd8(p + 4), rd8(p + 5), rd8(p + 6), rd8(p + 7),
             rd8(q), rd8(q + 1), rd8(q + 2), rd8(q + 3), rd8(q + 4), rd8(q + 5), rd8(q + 6), rd8(q + 7));
@@ -212,7 +217,8 @@ void cpu_init(void)
   cpu = x86emu_new(X86EMU_PERM_RWX, X86EMU_PERM_RW);
   x86emu_set_memio_handler(cpu, memio);
   x86emu_set_intr_handler(cpu, intr);
-  if (nbrk) x86emu_set_code_handler(cpu, code_check);
+  if (getenv("NHL94_COVER")) { cov_t = host_time() + atof(getenv("NHL94_COVER")); cov = calloc(1, 0x110000); }
+  if (nbrk || cov) x86emu_set_code_handler(cpu, code_check);
   /* ROM stubs: int n / retf 2 */
   for (int v = 0; v < 256; v++) {
     uint32_t a = lin(ROM_SEG, rom_stub(v));
