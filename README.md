@@ -39,6 +39,23 @@ NHL '94 PC is based on [NHLPA93SNES](https://github.com/abdulahmad/NHLPA93SNES) 
 
 Needs NASM 2.15+ and Python 3. `./build.sh` ends with `MATCH output/HOCKEY.EXE`. `sh tools/verify_all.sh` deletes `output/` and `Extracted/`, rebuilds, checks every segment, last line MATCH.
 
+## Running the game on a modern PC (SDL2 port)
+
+`port/` runs the retail `HOCKEY.EXE`, its overlays and EA's sound drivers on a built-in x86 CPU core (libx86emu), with DOS, the
+BIOS, EMS, the VGA, the keyboard, mouse, joystick and the sound cards answered by the host through SDL2. `src/` is untouched, so
+`./build.sh` still ends with `MATCH`. Build, settings and internals: [docs/SDL2_PORT.md](docs/SDL2_PORT.md).
+
+* **Build**: `port/build.sh` (Linux, needs `gcc git libsdl2-dev`) writes `build/hockey94`; `port/build-win.sh` cross-compiles
+  `build/win/hockey94.exe` for 64-bit Windows with mingw-w64. Put the program in the game folder (beside `HOCKEY.EXE`) or set
+  `NHL94_ROOT`.
+* **Video**: OpenGL, 4:3, sharp scaling, CRT, MiSTer and custom looks, picture height, 60/70 Hz or VRR and a stats display, as in
+  the NHL 95 port (Windows menu bar, or `hockey94.ini` next to the program); Alt+Enter for fullscreen.
+* **Input**: keyboard, mouse (the glove follows the system pointer), up to two controllers on the game port, input bindings
+  (Options > Input bindings...); Ctrl+F11 records the sound.
+* **Sound**: PC speaker, AdLib, Sound Blaster (default, found by the game's own detection) and MT-32 through Munt (your
+  `MT32_CONTROL.ROM` and `MT32_PCM.ROM` in a `roms` folder). The game's `SND.CFG` picks the card: 0 none, 1 PC speaker, 2 AdLib,
+  3 Sound Blaster, 4 MT-32.
+
 ## AI assistance
 
 This project is AI-assisted. The work is directed by a strict ruleset and curated by hand, with the aim of producing clean, correct, correctly labelled and commented code that closely matches what the original developers likely had. We can't guarantee it's perfect, and ultimately this will always be a work in progress. If you see something that needs fixing, raise an issue, or even better, raise a PR.
@@ -50,6 +67,11 @@ Thanks to chaos, StaticEck, McMarkis and Drezz for their help with the disassemb
 Special thanks to smozoma and kingraph, whose past contributions to the NHL modding community made this work easier.
 
 And thank you to the original developers of the game.
+
+The SDL2 port runs on [libx86emu](https://github.com/wfeldt/libx86emu) (the CPU core, SciTech/SUSE licence), plays FM through
+[Nuked-OPL3](https://github.com/nukeykt/Nuked-OPL3) and the MT-32 through [Munt](https://github.com/munt/munt) (both LGPL 2.1+). They
+are downloaded at build time, not committed. Its sound devices and OpenGL looks come from the NHL 95 PC port (`sdl2-port` branch of
+[nhl95pc](https://github.com/abdulahmad/nhl95pc)).
 
 This project is the result of my work and the work of the people credited above. If you build anything from it, including mods, ROM or EXE hacks, ports, released forks, tools, or any other derivative work, you must credit us:
 
