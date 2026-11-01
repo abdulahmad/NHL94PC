@@ -2,7 +2,7 @@
 # Build the 64-bit Windows program (build/win/hockey94.exe + SDL2.dll) with mingw-w64 from Linux or WSL:
 #   sudo apt install gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64 git
 # and SDL2 for MinGW: unpack SDL2-devel-2.x-mingw.tar.gz (github.com/libsdl-org/SDL/releases) next to the repository, or point
-# SDL2_MINGW at its x86_64-w64-mingw32 directory. Copy hockey94.exe and SDL2.dll into the game folder (beside HOCKEY.EXE).
+# SDL2_MINGW at its x86_64-w64-mingw32 directory. Copy hockey94.exe, SDL2.dll and the mister folder into the game folder (beside HOCKEY.EXE).
 set -e
 cd "$(dirname "$0")/.."
 SDL2_MINGW=${SDL2_MINGW:-$(ls -d SDL2-*/x86_64-w64-mingw32 ../SDL2-*/x86_64-w64-mingw32 2>/dev/null | head -1)}
@@ -28,8 +28,9 @@ if [ -d port/third_party/munt/mt32emu/src ]; then
 fi
 $CC $CFLAGS -Wall -Wno-misleading-indentation -Wno-format-truncation -I$X -Iport -I"$SDL2_MINGW/include/SDL2" -o $OUT/hockey94.exe \
   port/main.c port/cpu.c port/pc.c port/vga.c port/dos.c port/bios.c port/sound.c port/audio.c port/opl.c port/sb.c port/dma.c \
-  port/mpu.c port/speaker.c port/video_gl.c port/third_party/nuked-opl3/opl3.c $OUT/x86emu_*.o $MUNT \
-  -L"$SDL2_MINGW/lib" -lmingw32 -lSDL2main -lSDL2 -lopengl32 -static-libgcc -static-libstdc++ \
+  port/mpu.c port/speaker.c port/video_gl.c port/video.c port/input.c port/bindings.c port/bindings_win.c port/menu_win.c port/plat.c port/third_party/nuked-opl3/opl3.c $OUT/x86emu_*.o $MUNT \
+  -L"$SDL2_MINGW/lib" -lmingw32 -lSDL2main -lSDL2 -lopengl32 -lpdh -lcomctl32 -lgdi32 -static-libgcc -static-libstdc++ \
   -Wl,-Bstatic -lstdc++ -lpthread -Wl,-Bdynamic -lm -mwindows
 cp "$SDL2_MINGW/bin/SDL2.dll" $OUT/
+rm -rf $OUT/mister && cp -r port/mister $OUT/mister
 echo "built $OUT/hockey94.exe (with SDL2.dll)"

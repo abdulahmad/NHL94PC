@@ -21,5 +21,6 @@ gcc $CFLAGS -w -I$X/include -c $X/ops2.c -o build/x86emu_ops2.o &&
 gcc $CFLAGS -w -I$X/include -c $X/prim_ops.c -o build/x86emu_prim_ops.o || exit 1
 gcc $CFLAGS -Wall -Wno-misleading-indentation -Wno-format-truncation -I$X -Iport -o build/hockey94 port/main.c port/cpu.c port/pc.c port/vga.c \
   port/dos.c port/bios.c port/sound.c port/audio.c port/opl.c port/sb.c port/dma.c port/mpu.c port/speaker.c \
-  port/video_gl.c port/third_party/nuked-opl3/opl3.c build/x86emu_*.o $MUNT $(pkg-config --cflags --libs sdl2) -lGL -lm || exit 1
+  port/video_gl.c port/video.c port/input.c port/bindings.c port/plat.c port/third_party/nuked-opl3/opl3.c build/x86emu_*.o $MUNT $(pkg-config --cflags --libs sdl2) -lGL -lm || exit 1
+rm -rf build/mister && cp -r port/mister build/mister    # the MiSTer filter files the "MiSTer" looks use
 echo "built build/hockey94"

@@ -48,8 +48,10 @@ BIOS, EMS, the VGA, the keyboard, mouse, joystick and the sound cards answered b
 * **Build**: `port/build.sh` (Linux, needs `gcc git libsdl2-dev`) writes `build/hockey94`; `port/build-win.sh` cross-compiles
   `build/win/hockey94.exe` for 64-bit Windows with mingw-w64. Put the program in the game folder (beside `HOCKEY.EXE`) or set
   `NHL94_ROOT`.
-* **Video**: OpenGL, 4:3, sharp scaling or CRT looks from the NHL 95 port (`look` in `hockey94.ini`); Alt+Enter for fullscreen.
-* **Input**: keyboard as on DOS; the glove follows the system pointer; SDL game controllers are the PC joystick.
+* **Video**: OpenGL, 4:3, sharp scaling, CRT, MiSTer and custom looks, picture height, 60/70 Hz or VRR and a stats display, as in
+  the NHL 95 port (Windows menu bar, or `hockey94.ini` next to the program); Alt+Enter for fullscreen.
+* **Input**: keyboard, mouse (the glove follows the system pointer), up to two controllers on the game port, input bindings
+  (Options > Input bindings...); Ctrl+F11 records the sound.
 * **Sound**: PC speaker, AdLib, Sound Blaster (default, found by the game's own detection) and MT-32 through Munt (your
   `MT32_CONTROL.ROM` and `MT32_PCM.ROM` in a `roms` folder). The game's `SND.CFG` picks the card: 0 none, 1 PC speaker, 2 AdLib,
   3 Sound Blaster, 4 MT-32.

@@ -45,6 +45,10 @@ void cpu_init(void);
 void cpu_reset_to(uint16_t cs, uint16_t ip, uint16_t ss, uint16_t sp, uint16_t ds, uint16_t es);
 int  cpu_run(unsigned instructions);   /* returns 1 when the CPU halted (hlt) */
 uint64_t cpu_instr_count(void);
+/* put a hook on the game's code at cs:ip when the bytes there are `expect` (one instruction, see cpu.c); each time it runs, *hit
+ * gets the time and the DS, SS and SP of that moment (before the instruction). 0 if the bytes differ. */
+struct hook_hit { double t; uint16_t ds, ss, sp; unsigned count; };
+int cpu_hook(uint16_t cs, uint16_t ip, const uint8_t *expect, int len, struct hook_hit *hit);
 void cpu_set_vector(int n, uint16_t seg, uint16_t off);
 void cpu_get_vector(int n, uint16_t *seg, uint16_t *off);
 uint16_t rom_stub(int vector);         /* offset of the ROM stub for this vector */

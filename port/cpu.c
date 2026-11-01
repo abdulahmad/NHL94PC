@@ -178,6 +178,60 @@ static void string_io(x86emu_t *emu, u8 op1)
   if (MODE_REP) { if (a32) emu->x86.R_ECX = 0; else emu->x86.R_CX = 0; }
 }
 
+/* ---- game hooks ----
+ * A few of the game's routines tell the host what the game is doing: an int3 (CCh) is written over the first instruction of each
+ * (in memory only, after the EXE is loaded, and only when the bytes there are the expected ones). When the CPU reaches one, the host
+ * notes the time and does that instruction itself, then the game goes on. The instructions replaced are simple: push r16, mov r8 from
+ * [imm16] (DS), cmp word [imm16] (DS) with a sign-extended byte. */
+static struct { uint32_t lin; uint8_t orig[5]; int len; struct hook_hit *hit; } hooks[8];
+static int nhooks;
+static void (*cc_orig)(x86emu_t *, u8);
+
+static void op_cc(x86emu_t *emu, u8 op1)
+{
+  uint32_t a = emu->x86.R_CS_BASE + emu->x86.R_EIP - 1;
+  for (int i = 0; i < nhooks; i++) {
+    if (hooks[i].lin != a) continue;
+    const uint8_t *o = hooks[i].orig;
+    hooks[i].hit->t = host_time(); hooks[i].hit->ds = emu->x86.R_DS; hooks[i].hit->ss = emu->x86.R_SS; hooks[i].hit->sp = emu->x86.R_SP;
+    hooks[i].hit->count++;
+    if (o[0] >= 0x50 && o[0] <= 0x57) {                         /* push r16 */
+      uint16_t v;
+      switch (o[0] - 0x50) {
+      case 0: v = emu->x86.R_AX; break; case 1: v = emu->x86.R_CX; break; case 2: v = emu->x86.R_DX; break;
+      case 3: v = emu->x86.R_BX; break; case 4: v = emu->x86.R_SP; break; case 5: v = emu->x86.R_BP; break;
+      case 6: v = emu->x86.R_SI; break; default: v = emu->x86.R_DI; break;
+      }
+      emu->x86.R_SP -= 2;
+      wr16(lin(emu->x86.R_SS, emu->x86.R_SP), v);
+    } else if (o[0] == 0x8A && o[1] == 0x1E) {                  /* mov bl, [imm16] */
+      emu->x86.R_BL = rd8(lin(emu->x86.R_DS, o[2] | o[3] << 8));
+    } else if (o[0] == 0x83 && o[1] == 0x3E) {                  /* cmp word [imm16], simm8 */
+      uint16_t x = rd16(lin(emu->x86.R_DS, o[2] | o[3] << 8)), y = (uint16_t)(int16_t)(int8_t)o[4], r = x - y;
+      emu->x86.R_FLG &= ~(F_CF | F_ZF | F_SF | F_OF | F_PF | F_AF);
+      if (x < y) emu->x86.R_FLG |= F_CF;
+      if (!r) emu->x86.R_FLG |= F_ZF;
+      if (r & 0x8000) emu->x86.R_FLG |= F_SF;
+      if (((x ^ y) & (x ^ r)) & 0x8000) emu->x86.R_FLG |= F_OF;
+      if (!__builtin_parity(r & 0xFF)) emu->x86.R_FLG |= F_PF;
+      if ((x ^ y ^ r) & 0x10) emu->x86.R_FLG |= F_AF;
+    }
+    emu->x86.R_EIP += hooks[i].len - 1;
+    return;
+  }
+  cc_orig(emu, op1);
+}
+
+int cpu_hook(uint16_t cs, uint16_t ip, const uint8_t *expect, int len, struct hook_hit *hit)
+{
+  uint32_t a = lin(cs, ip);
+  if (nhooks >= 8 || memcmp(mem + a, expect, len)) return 0;
+  hooks[nhooks].lin = a; memcpy(hooks[nhooks].orig, expect, len); hooks[nhooks].len = len; hooks[nhooks].hit = hit;
+  nhooks++;
+  mem[a] = 0xCC;
+  return 1;
+}
+
 /* NHL94_BREAK="cs:ip,cs:ip": print the registers (and 8 bytes at DS:AX) each time one of these runs (debugging) */
 static uint32_t brk[16]; static int nbrk;
 static double cov_t; static uint8_t *cov;
@@ -212,6 +266,7 @@ void cpu_init(void)
   }
   for (int i = 0x6C; i <= 0x6F; i++) x86emu_optab[i] = string_io;
   for (int i = 0xD8; i <= 0xDF; i++) x86emu_optab[i] = esc_nofpu;
+  cc_orig = x86emu_optab[0xCC]; x86emu_optab[0xCC] = op_cc;
   mem = calloc(1, MEM_SIZE + 16);
   ems = calloc(EMS_PAGES, 16384);
   cpu = x86emu_new(X86EMU_PERM_RWX, X86EMU_PERM_RW);
