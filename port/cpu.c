@@ -150,14 +150,64 @@ static void esc_nofpu(x86emu_t *emu, u8 op1)
   if (mod != 3) decode_rm_address(emu, mod, rl);
 }
 
+/* ins / outs (6Ch-6Fh), replacing libx86emu's: its outs reads ES:SI instead of DS:SI (or the segment override) and
+ * both step the index by 1 for words. The game writes the VGA palette with rep outsb. */
+static void string_io(x86emu_t *emu, u8 op1)
+{
+  int size = (op1 & 1) ? (MODE_DATA32 ? 4 : 2) : 1, out = op1 >= 0x6E;
+  int a32 = MODE_ADDR32 ? 1 : 0;
+  s32 inc = (ACCESS_FLAG(F_DF) ? -1 : 1) * size;
+  u32 count = MODE_REP ? (a32 ? emu->x86.R_ECX : emu->x86.R_CX) : 1;
+  sel_t *src = emu->x86.default_seg ? emu->x86.default_seg : emu->x86.seg + R_DS_INDEX;
+  while (count--) {
+    if (out) {
+      u32 si = a32 ? emu->x86.R_ESI : emu->x86.R_SI;
+      if (size == 1) store_io_byte(emu, emu->x86.R_DX, fetch_data_byte_abs(emu, src, si));
+      else if (size == 2) store_io_word(emu, emu->x86.R_DX, fetch_data_word_abs(emu, src, si));
+      else store_io_long(emu, emu->x86.R_DX, fetch_data_long_abs(emu, src, si));
+      if (a32) emu->x86.R_ESI += inc; else emu->x86.R_SI += inc;
+    } else {
+      u32 di = a32 ? emu->x86.R_EDI : emu->x86.R_DI;
+      sel_t *es = emu->x86.seg + R_ES_INDEX;
+      if (size == 1) store_data_byte_abs(emu, es, di, fetch_io_byte(emu, emu->x86.R_DX));
+      else if (size == 2) store_data_word_abs(emu, es, di, fetch_io_word(emu, emu->x86.R_DX));
+      else store_data_long_abs(emu, es, di, fetch_io_long(emu, emu->x86.R_DX));
+      if (a32) emu->x86.R_EDI += inc; else emu->x86.R_DI += inc;
+    }
+  }
+  if (MODE_REP) { if (a32) emu->x86.R_ECX = 0; else emu->x86.R_CX = 0; }
+}
+
+/* NHL94_BREAK="cs:ip,cs:ip": print the registers (and 8 bytes at DS:AX) each time one of these runs (debugging) */
+static uint32_t brk[16]; static int nbrk;
+static int code_check(x86emu_t *emu)
+{
+  uint32_t a = emu->x86.R_CS_BASE + emu->x86.R_EIP;
+  for (int i = 0; i < nbrk; i++) if (a == brk[i]) {
+    uint32_t p = lin(emu->x86.R_DS, emu->x86.R_AX);
+    fprintf(stderr, "break %04X:%04X  [ds:ax] %02X %02X %02X %02X %02X %02X %02X %02X  ", emu->x86.R_CS, emu->x86.R_IP,
+            rd8(p), rd8(p + 1), rd8(p + 2), rd8(p + 3), rd8(p + 4), rd8(p + 5), rd8(p + 6), rd8(p + 7));
+    cpu_dump("");
+  }
+  return 0;
+}
+
 void cpu_init(void)
 {
+  const char *b = getenv("NHL94_BREAK");
+  while (b && *b && nbrk < 16) {
+    unsigned cs, ip; int n;
+    if (sscanf(b, "%x:%x%n", &cs, &ip, &n) != 2) break;
+    brk[nbrk++] = lin(cs, ip); b += n; if (*b == ',') b++;
+  }
+  for (int i = 0x6C; i <= 0x6F; i++) x86emu_optab[i] = string_io;
   for (int i = 0xD8; i <= 0xDF; i++) x86emu_optab[i] = esc_nofpu;
   mem = calloc(1, MEM_SIZE + 16);
   ems = calloc(EMS_PAGES, 16384);
   cpu = x86emu_new(X86EMU_PERM_RWX, X86EMU_PERM_RW);
   x86emu_set_memio_handler(cpu, memio);
   x86emu_set_intr_handler(cpu, intr);
+  if (nbrk) x86emu_set_code_handler(cpu, code_check);
   /* ROM stubs: int n / retf 2 */
   for (int v = 0; v < 256; v++) {
     uint32_t a = lin(ROM_SEG, rom_stub(v));

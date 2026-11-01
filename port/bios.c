@@ -160,6 +160,7 @@ void mouse_buttons(int mask)
 
 static int int33(void)
 {
+  if (r_ax() != 3 || ms_btn) LOG("int 33h AX=%04X BX=%04X CX=%04X DX=%04X at %04X:%04X ret %04X:%04X\n", r_ax(), r_bx(), r_cx(), r_dx(), r_cs(), r_ip(), rd16(lin(r_ss(), r_bp() + 4)), rd16(lin(r_ss(), r_bp() + 2)));
   if (!mouse_present) return 1;
   switch (r_ax()) {
   case 0x00: case 0x21:
