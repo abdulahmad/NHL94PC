@@ -14,6 +14,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <strings.h>
+#include <math.h>
 
 int trace;
 volatile int intro_skip;
@@ -24,6 +26,62 @@ static SDL_Texture *tex;
 static int tex_w, tex_h;
 static const char *dump_dir;
 static double t_start;
+
+/* ---- settings: hockey94.ini next to the game ("key = value" lines; # comments), each overridden by NHL94_<KEY> ----
+ * look = sharp | 5x | 7x | 11x | crt-light | crt-medium | crt-strong | crt-soft | crt-soft-grille   (the OpenGL picture)
+ * filter = cubic | linear | nearest      renderer = gl | sdl      fullscreen = 0 | 1      vsync = 1 | 0 */
+static char ini_keys[32][32], ini_vals[32][128]; static int n_ini;
+static void ini_load(const char *root)
+{
+  char path[1200]; snprintf(path, sizeof path, "%s/hockey94.ini", root);
+  FILE *f = fopen(path, "r");
+  if (!f) return;
+  char line[256];
+  while (n_ini < 32 && fgets(line, sizeof line, f)) {
+    char *h = strchr(line, '#'); if (h) *h = 0;
+    char *eq = strchr(line, '='); if (!eq) continue;
+    *eq = 0;
+    char *k = line, *v = eq + 1;
+    while (*k == ' ' || *k == '\t') k++;
+    while (*v == ' ' || *v == '\t') v++;
+    for (char *e = k + strlen(k); e > k && (e[-1] == ' ' || e[-1] == '\t'); ) *--e = 0;
+    for (char *e = v + strlen(v); e > v && (e[-1] == ' ' || e[-1] == '\t' || e[-1] == '\n' || e[-1] == '\r'); ) *--e = 0;
+    snprintf(ini_keys[n_ini], 32, "%s", k); snprintf(ini_vals[n_ini], 128, "%s", v); n_ini++;
+  }
+  fclose(f);
+}
+static const char *setting(const char *key, const char *def)
+{
+  char env[64]; snprintf(env, sizeof env, "NHL94_%s", key);
+  for (char *c = env; *c; c++) if (*c >= 'a' && *c <= 'z') *c -= 32;
+  if (getenv(env)) return getenv(env);
+  for (int i = 0; i < n_ini; i++) if (!strcasecmp(ini_keys[i], key)) return ini_vals[i];
+  return def;
+}
+
+/* ---- the OpenGL picture (video_gl.c, from the NHL 95 port) ---- */
+int vgl_init(SDL_Window *win);
+void vgl_draw(SDL_Window *win, const uint32_t *argb, int w, int h, int vx, int vy, int vw, int vh);
+void vgl_set_look(int pre, float sigma, float gain, float center, int period, int style);
+void vgl_set_vsync(int on);
+static int use_gl, look_mode;
+static const char *look_names[] = { "sharp", "5x", "7x", "11x", "crt-light", "crt-medium", "crt-strong", "crt-soft", "crt-soft-grille" };
+#define NLOOKS (int)(sizeof look_names / sizeof *look_names)
+
+/* the look as the shader takes it: the integer pre-scale, the scanline width, and the style (1, 2: the soft CRT looks) */
+static void look_params(int w, int rows, int *pre, float *scan, float *center, float *gain, int *style)
+{
+  static const int pres[4] = { 3, 5, 7, 11 };
+  static const float strength[3] = { 0.80f, 0.60f, 0.45f };
+  int m = look_mode;
+  *scan = 0; *style = 0;
+  if (w <= 320) *pre = m < 4 ? pres[m] : 3; else *pre = m < 4 ? m + 1 : 1;
+  if (m >= 4 && m < 7) *scan = strength[m - 4];
+  if (m >= 7) { *style = m - 6; *pre = 1; }
+  if (rows < 1) rows = 1;
+  *center = ((rows - 1) / 2 + 0.5f) / rows; *gain = 1;
+  if (*scan > 0) { float sum = 0; for (int r = 0; r < rows; r++) { float d = ((r + 0.5f) / rows - *center) / *scan; sum += expf(-d * d); } *gain = rows / sum; }
+}
 
 void kbd_pump(void);
 
@@ -204,7 +262,8 @@ static void dump_ppm(void)
 /* where the picture goes: 4:3, centred, in renderer pixels */
 static void view_rect(SDL_Rect *r)
 {
-  int ww, wh; SDL_GetRendererOutputSize(ren, &ww, &wh);
+  int ww = 1, wh = 1;
+  if (use_gl) SDL_GL_GetDrawableSize(win, &ww, &wh); else if (ren) SDL_GetRendererOutputSize(ren, &ww, &wh);
   if (ww * 3 > wh * 4) { r->h = wh; r->w = wh * 4 / 3; } else { r->w = ww; r->h = ww * 3 / 4; }
   r->x = (ww - r->w) / 2; r->y = (wh - r->h) / 2;
 }
@@ -213,7 +272,8 @@ static void view_rect(SDL_Rect *r)
  * screen of mode 13h, the way the DOS pointer covers the picture */
 static void mouse_abs(int wx, int wy)
 {
-  int ww, wh, ow, oh; SDL_GetWindowSize(win, &ww, &wh); SDL_GetRendererOutputSize(ren, &ow, &oh);
+  int ww, wh, ow = 1, oh = 1; SDL_GetWindowSize(win, &ww, &wh);
+  if (use_gl) SDL_GL_GetDrawableSize(win, &ow, &oh); else if (ren) SDL_GetRendererOutputSize(ren, &ow, &oh);
   SDL_Rect r; view_rect(&r);
   double x = (wx * (double)ow / ww - r.x) / r.w, y = (wy * (double)oh / wh - r.y) / r.h;
   mouse_set_pos((int)(x * 640), (int)(y * 200));
@@ -224,6 +284,15 @@ void host_present(void)
   uint32_t pal[256];
   vga_render(frame, &frame_w, &frame_h, pal);
   for (int i = 0; i < frame_w * frame_h; i++) rgb[i] = pal[frame[i]];
+  if (use_gl) {
+    int ww, wh, dw, dh; SDL_GetWindowSize(win, &ww, &wh); SDL_GL_GetDrawableSize(win, &dw, &dh);
+    SDL_Rect r; view_rect(&r);                      /* drawable pixels, origin at the bottom left for GL */
+    int pre, style; float scan, center, gain;
+    look_params(frame_w, (r.h + frame_h / 2) / frame_h, &pre, &scan, &center, &gain, &style);
+    vgl_set_look(pre, scan, gain, center, 1, style);
+    vgl_draw(win, rgb, frame_w, frame_h, r.x, dh - r.y - r.h, r.w, r.h);
+    return;
+  }
   if (!ren) return;
   if (!tex || tex_w != frame_w || tex_h != frame_h) {
     if (tex) SDL_DestroyTexture(tex);
@@ -295,9 +364,24 @@ int main(int argc, char **argv)
   for (int i = 1; i < argc; i++) { strncat(args, " ", sizeof args - strlen(args) - 1); strncat(args, argv[i], sizeof args - strlen(args) - 1); }
 
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER) < 0) { fprintf(stderr, "SDL: %s\n", SDL_GetError()); return 1; }
-  win = SDL_CreateWindow("NHL Hockey '94", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 960, 720, SDL_WINDOW_RESIZABLE);
-  if (win) ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_PRESENTVSYNC * 0);
-  if (ren) SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
+  ini_load(root);
+  const char *lk = setting("look", "sharp");
+  for (int i = 0; i < NLOOKS; i++) if (!strcasecmp(lk, look_names[i])) look_mode = i;
+  if (!strcasecmp(lk, "3x")) look_mode = 0;
+  if (!getenv("NHL94_FILTER") && strcmp(setting("filter", "cubic"), "cubic")) setenv("NHL94_FILTER", setting("filter", "cubic"), 1);
+  int want_gl = strcasecmp(setting("renderer", "gl"), "sdl") != 0 && !dump_dir;
+  Uint32 wf = SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI | (want_gl ? SDL_WINDOW_OPENGL : 0);
+  if (atoi(setting("fullscreen", "0"))) wf |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+  win = SDL_CreateWindow("NHL Hockey '94", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 960, 720, wf);
+  if (win && want_gl && vgl_init(win)) { use_gl = 1; vgl_set_vsync(0); }
+  if (win && !use_gl) {
+    if (want_gl) {                               /* no OpenGL: start again with a plain window and SDL's renderer */
+      SDL_DestroyWindow(win);
+      win = SDL_CreateWindow("NHL Hockey '94", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 960, 720, wf & ~SDL_WINDOW_OPENGL);
+    }
+    if (win) ren = SDL_CreateRenderer(win, -1, 0);
+    if (ren) SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
+  }
   SDL_ShowCursor(SDL_DISABLE);                 /* the game draws its own pointer */
 
   if (getenv("NHL94_VPAD"))                     /* testing: a virtual controller with nothing pressed */
