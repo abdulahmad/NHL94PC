@@ -1,7 +1,7 @@
 /* The OpenGL presentation path: the game's frame as a texture, drawn by a fragment shader that scales it with a cubic (Catmull-Rom)
  * filter. For the 320x200 screens the shader first takes the image as if it had been enlarged 3x with nearest-neighbour (so every
  * pixel stays a crisp block) and filters that, which is "sharp" scaling to any window size; the 640x480 screens are filtered directly.
- * NHL94_FILTER=nearest|linear|cubic (default cubic) picks the filter. OpenGL 2.0 is enough (compatibility profile). If anything here
+ * filter = nearest|linear|cubic (default cubic) in hockey94.ini, or NHL94_FILTER, picks the filter. OpenGL 2.0 is enough (compatibility profile). If anything here
  * fails, main.c falls back to SDL's renderer. Taken from the NHL 95 PC port. */
 #include <stdint.h>
 #include <stdio.h>
@@ -36,6 +36,7 @@ static int have_tables, mask_w = 1, mask_h = 1;
 static int look_pre = 1, look_period = 1, look_style, tgt_w, tgt_h;
 static float look_scan, look_gain = 1, look_center = 0.5f;
 static int tex_w, tex_h, filter_mode = 2;
+const char *vgl_filter;                         /* set by main.c from hockey94.ini / NHL94_FILTER */
 
 static const char *vs_src =
     "#version 110\n"
@@ -195,7 +196,7 @@ int vgl_init(SDL_Window *win)
 {
     GLuint vs, fs;
     GLint ok = 0;
-    const char *f = getenv("NHL94_FILTER");
+    const char *f = vgl_filter;
     ctx = SDL_GL_CreateContext(win);
     if (!ctx) return 0;
     LOAD(glCreateShader); LOAD(glShaderSource); LOAD(glCompileShader); LOAD(glGetShaderiv); LOAD(glGetShaderInfoLog);

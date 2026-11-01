@@ -64,6 +64,7 @@ int vgl_init(SDL_Window *win);
 void vgl_draw(SDL_Window *win, const uint32_t *argb, int w, int h, int vx, int vy, int vw, int vh);
 void vgl_set_look(int pre, float sigma, float gain, float center, int period, int style);
 void vgl_set_vsync(int on);
+extern const char *vgl_filter;
 static int use_gl, look_mode;
 static const char *look_names[] = { "sharp", "5x", "7x", "11x", "crt-light", "crt-medium", "crt-strong", "crt-soft", "crt-soft-grille" };
 #define NLOOKS (int)(sizeof look_names / sizeof *look_names)
@@ -368,7 +369,7 @@ int main(int argc, char **argv)
   const char *lk = setting("look", "sharp");
   for (int i = 0; i < NLOOKS; i++) if (!strcasecmp(lk, look_names[i])) look_mode = i;
   if (!strcasecmp(lk, "3x")) look_mode = 0;
-  if (!getenv("NHL94_FILTER") && strcmp(setting("filter", "cubic"), "cubic")) setenv("NHL94_FILTER", setting("filter", "cubic"), 1);
+  vgl_filter = setting("filter", "cubic");
   int want_gl = strcasecmp(setting("renderer", "gl"), "sdl") != 0 && !dump_dir;
   Uint32 wf = SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI | (want_gl ? SDL_WINDOW_OPENGL : 0);
   if (atoi(setting("fullscreen", "0"))) wf |= SDL_WINDOW_FULLSCREEN_DESKTOP;
