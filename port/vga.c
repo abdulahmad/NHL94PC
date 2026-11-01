@@ -12,6 +12,7 @@ static uint8_t seq[8], seq_idx, gc[16], gc_idx, crtc[32], crtc_idx, attr[32], at
 static uint8_t dac[256][3], dac_widx, dac_ridx, dac_comp, dac_rcomp, dac_mask = 0xFF;
 static int cur_mode = 3;
 int vga_dirty = 1;
+int vga_flips, vga_status_reads;                     /* page flips (start address changes), for NHL94_STATS */
 uint8_t text_mem[0x8000];          /* B8000 text, kept in conventional memory by cpu.c; unused here */
 
 int vga_mode(void) { return cur_mode; }
@@ -117,6 +118,7 @@ uint8_t vga_in(uint16_t port)
   case 0x3D4: case 0x3B4: return crtc_idx;
   case 0x3D5: case 0x3B5: return crtc[crtc_idx & 31];
   case 0x3DA: case 0x3BA: {
+    vga_status_reads++;
     attr_ff = 0;
     double t = host_time() - retrace_t0;
     double per = 1.0 / 70.086, ph = t / per - (long long)(t / per);
@@ -148,7 +150,9 @@ void vga_out(uint16_t port, uint8_t v)
   case 0x3CE: gc_idx = v; return;
   case 0x3CF: gc[gc_idx & 15] = v; return;
   case 0x3D4: case 0x3B4: crtc_idx = v; return;
-  case 0x3D5: case 0x3B5: crtc[crtc_idx & 31] = v; vga_dirty = 1; return;
+  case 0x3D5: case 0x3B5:
+    if ((crtc_idx & 31) == 0x0C && crtc[0x0C] != v) vga_flips++;
+    crtc[crtc_idx & 31] = v; vga_dirty = 1; return;
   }
 }
 

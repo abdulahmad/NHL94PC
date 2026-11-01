@@ -183,7 +183,6 @@ static uint32_t brk[16]; static int nbrk;
 static int code_check(x86emu_t *emu)
 {
   uint32_t a = emu->x86.R_CS_BASE + emu->x86.R_EIP;
-  if (getenv("NHL94_HACK") && a == lin(0x106C, 0x00C8) && rd8(lin(emu->x86.R_SS, emu->x86.R_BP - 8)) == 1) wr8(lin(emu->x86.R_SS, emu->x86.R_BP - 5), 0);
   for (int i = 0; i < nbrk; i++) if (a == brk[i]) {
     uint32_t p = lin(emu->x86.R_DS, emu->x86.R_AX);
     uint32_t q = getenv("NHL94_BREAK_DI") ? lin(emu->x86.R_ES, emu->x86.R_DI - 8) : lin(emu->x86.R_SS, emu->x86.R_BP - 8);

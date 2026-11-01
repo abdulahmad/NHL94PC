@@ -253,7 +253,10 @@ int main(int argc, char **argv)
     if (dump_dir && now >= next_dump) { dump_ppm(); next_dump += 0.5; }
     if (stats && now >= next_stat) {
       uint64_t n = cpu_instr_count();
-      fprintf(stderr, "%.1f MIPS, PIT %.1f Hz, mode %02X\n", (n - last_instr) / 2e6, pit_hz(), vga_mode());
+      extern int vga_flips, vga_status_reads;
+      fprintf(stderr, "%.1f MIPS, PIT %.1f Hz, mode %02X, %.1f page flips/s, %d retrace polls/s\n", (n - last_instr) / 2e6, pit_hz(),
+              vga_mode(), vga_flips / 2.0, vga_status_reads / 2);
+      vga_flips = vga_status_reads = 0;
       last_instr = n; next_stat += 2;
     }
     if (halted) {
