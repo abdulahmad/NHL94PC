@@ -174,6 +174,7 @@ void vga_set_mode(int mode)
   mode &= 0x7F;
   memset(seq, 0, sizeof seq); memset(gc, 0, sizeof gc); memset(crtc, 0, sizeof crtc);
   for (int i = 0; i < 16; i++) attr[i] = i;
+  crtc[0x18] = 0xFF; 
   attr[0x12] = 0x0F; attr[0x13] = 0; attr[0x14] = 0;
   seq[0] = 3; seq[1] = 0x01; seq[2] = 0x0F; seq[4] = 0x06;
   gc[5] = 0; gc[6] = 0x05; gc[7] = 0x0F; gc[8] = 0xFF;
@@ -222,6 +223,9 @@ void vga_render(uint8_t *dst, int *pw, int *ph, uint32_t pal[256])
   uint32_t pitch = crtc[0x13] * 2;
   int shift = (crtc[0x14] & 0x40) ? 2 : (crtc[0x17] & 0x40) ? 0 : 1;
   int c256 = attr[0x10] & 0x40;
+  /* line compare: the scan line after it shows memory from address 0 (a split screen, e.g. the game's score bar) */
+  int lc = crtc[0x18] | ((crtc[0x07] & 0x10) << 4) | ((crtc[0x09] & 0x40) << 3);
+  int split = (lc + 1 + msl - 1) / msl;
   if (lines > 600) lines = 600;
   if (lines < 1) lines = 1;
   for (int i = 0; i < 256; i++) {
@@ -236,7 +240,7 @@ void vga_render(uint8_t *dst, int *pw, int *ph, uint32_t pal[256])
     int w = chars * 4;
     if (w > 800) w = 800;
     for (int y = 0; y < lines; y++) {
-      uint32_t addr = start + y * pitch;
+      uint32_t addr = y >= split ? (y - split) * pitch : start + y * pitch;
       uint8_t *d = dst + y * w;
       for (int c = 0; c < chars; c++, addr++) {
         uint32_t o = (addr << shift) & 0xFFFF;
@@ -248,7 +252,7 @@ void vga_render(uint8_t *dst, int *pw, int *ph, uint32_t pal[256])
     int w = chars * 8;
     if (w > 800) w = 800;
     for (int y = 0; y < lines; y++) {
-      uint32_t addr = start + y * pitch;
+      uint32_t addr = y >= split ? (y - split) * pitch : start + y * pitch;
       uint8_t *d = dst + y * w;
       for (int c = 0; c < chars; c++, addr++) {
         uint32_t o = (addr << shift) & 0xFFFF;

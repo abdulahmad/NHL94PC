@@ -183,11 +183,17 @@ static uint32_t brk[16]; static int nbrk;
 static int code_check(x86emu_t *emu)
 {
   uint32_t a = emu->x86.R_CS_BASE + emu->x86.R_EIP;
+  if (getenv("NHL94_HACK") && a == lin(0x106C, 0x00C8) && rd8(lin(emu->x86.R_SS, emu->x86.R_BP - 8)) == 1) wr8(lin(emu->x86.R_SS, emu->x86.R_BP - 5), 0);
   for (int i = 0; i < nbrk; i++) if (a == brk[i]) {
     uint32_t p = lin(emu->x86.R_DS, emu->x86.R_AX);
-    fprintf(stderr, "break %04X:%04X  [ds:ax] %02X %02X %02X %02X %02X %02X %02X %02X  ", emu->x86.R_CS, emu->x86.R_IP,
-            rd8(p), rd8(p + 1), rd8(p + 2), rd8(p + 3), rd8(p + 4), rd8(p + 5), rd8(p + 6), rd8(p + 7));
+    uint32_t q = getenv("NHL94_BREAK_DI") ? lin(emu->x86.R_ES, emu->x86.R_DI - 8) : lin(emu->x86.R_SS, emu->x86.R_BP - 8);
+    fprintf(stderr, "break %04X:%04X  [ds:ax] %02X %02X %02X %02X %02X %02X %02X %02X  [bp-8] %02X %02X %02X %02X %02X %02X %02X %02X  ",
+            emu->x86.R_CS, emu->x86.R_IP, rd8(p), rd8(p + 1), rd8(p + 2), rd8(p + 3), rd8(p + 4), rd8(p + 5), rd8(p + 6), rd8(p + 7),
+            rd8(q), rd8(q + 1), rd8(q + 2), rd8(q + 3), rd8(q + 4), rd8(q + 5), rd8(q + 6), rd8(q + 7));
     cpu_dump("");
+    fprintf(stderr, "  return %04X:%04X\n", rd16(lin(emu->x86.R_SS, emu->x86.R_SP + 2)), rd16(lin(emu->x86.R_SS, emu->x86.R_SP)));
+    const char *dm = getenv("NHL94_BREAK_MEM");
+    if (dm) { FILE *f = fopen(dm, "wb"); if (f) { fwrite(mem, 1, 0xA0000, f); fclose(f); } }
   }
   return 0;
 }
