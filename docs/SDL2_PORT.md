@@ -97,7 +97,8 @@ recording of the sound (`nhl94-capture-N.wav` next to the program).
 
 The game draws its own pointers (the glove in the menus, a pointer in play when a team uses the mouse), so with
 `system_pointer = auto` the Windows pointer is hidden over the picture where the game shows the glove, and while a team plays
-with the mouse it is hidden and kept on the 4:3 picture. In fullscreen the pointer is always kept on the picture.
+with the mouse it is hidden and kept on the 4:3 picture. In fullscreen the pointer is always kept on the picture, and while a team
+plays it is always hidden, whatever the control devices.
 
 How the host knows (`port/input.c`, hooks set by `cpu_hook` in `port/cpu.c`: the first instruction is replaced by an int3 that
 notes the time and runs the instruction):
