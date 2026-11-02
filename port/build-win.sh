@@ -26,9 +26,13 @@ if [ -d port/third_party/munt/mt32emu/src ]; then
   CXX=$CXX AR=$AR sh port/munt-build.sh $OUT/munt "-static"
   MUNT="-DHAVE_MUNT -I$OUT/munt/inc -Iport/third_party/munt/mt32emu/src $OUT/munt/libmt32emu.a"
 fi
+# the program's icon (resource 1, which SDL uses for the window as well)
+WINDRES=${WINDRES:-x86_64-w64-mingw32-windres}
+command -v "$WINDRES" >/dev/null 2>&1 || WINDRES=windres
+$WINDRES -O coff port/icon/icon.rc -o $OUT/icon.o
 $CC $CFLAGS -Wall -Wno-misleading-indentation -Wno-format-truncation -I$X -Iport -I"$SDL2_MINGW/include/SDL2" -o $OUT/hockey94.exe \
   port/main.c port/cpu.c port/pc.c port/vga.c port/dos.c port/bios.c port/sound.c port/audio.c port/opl.c port/sb.c port/dma.c \
-  port/mpu.c port/speaker.c port/video_gl.c port/video.c port/input.c port/bindings.c port/bindings_win.c port/menu_win.c port/plat.c port/third_party/nuked-opl3/opl3.c $OUT/x86emu_*.o $MUNT \
+  port/mpu.c port/speaker.c port/video_gl.c port/video.c port/input.c port/bindings.c port/bindings_win.c port/menu_win.c port/plat.c port/third_party/nuked-opl3/opl3.c $OUT/icon.o $OUT/x86emu_*.o $MUNT \
   -L"$SDL2_MINGW/lib" -lmingw32 -lSDL2main -lSDL2 -lopengl32 -lpdh -lcomctl32 -lgdi32 -static-libgcc -static-libstdc++ \
   -Wl,-Bstatic -lstdc++ -lpthread -Wl,-Bdynamic -lm -mwindows
 cp "$SDL2_MINGW/bin/SDL2.dll" $OUT/
