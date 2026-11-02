@@ -65,7 +65,7 @@ setting is in the window's menu bar (Options, Display, Picture); elsewhere edit 
 | Key | Values |
 | --- | --- |
 | `lores_scaling` | the look of the game's 320x200 screens: `3x` (default: 3x nearest-neighbour, then cubic to the window), `5x`, `7x`, `11x`, `crt-light`, `crt-medium`, `crt-strong` (scanlines), `crt-soft`, `crt-soft-grille`, `mister` (the MiSTer scaler's filter, gamma and shadow mask files, from `mister/` next to the program; Picture > MiSTer presets), `custom` (scanline darkness, gamma, mask strength, sharpness from `custom_*`) |
-| `lores_picture_height` | `fit`, `integer` (even scanlines), `overscan` (the next multiple up, a few rows cut off), `auto-crop` (the next multiple up when 6 rows (320x200) or 10 rows (640x480) or fewer are cut off, else integer). Only rows are cut off: when the next multiple up is wider than the window, `overscan` and `auto-crop` use integer. On Windows the picture follows these rules while the window is being sized. |
+| `lores_picture_height` | `fit`, `integer` (even scanlines), `overscan` (the next multiple up, a few rows cut off), `auto-crop` (the next multiple up when 6 (320x200) or 10 (640x480) of the game's own rows or fewer are cut off, else integer). Only rows are cut off: when the next multiple up is wider than the window, `overscan` and `auto-crop` use integer. On Windows the picture follows these rules while the window is being sized. |
 | `lores_scan` | `15` (one scanline per game line, a TV) or `31` (double scan, a VGA monitor) for the CRT looks |
 | `lores_mister_*` | the MiSTer files, mask scale and brightness |
 | `refresh` | `vrr` (default: draw each new picture, for variable refresh rate monitors), `60`, `70` |
