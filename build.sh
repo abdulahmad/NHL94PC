@@ -9,6 +9,6 @@ mkdir -p output; rm -f output/HOCKEY.EXE
 "$NASM" -f bin -I src/ -o output/HOCKEY.EXE src/hockey94pc.asm || { echo "MISMATCH (assembly failed)"; exit 1; }
 ref=$(python3 tools/exefile.py) || exit 1
 if command -v sha1sum >/dev/null; then SHA="sha1sum"; else SHA="shasum -a 1"; fi
-a=$($SHA "$ref" | cut -d' ' -f1); b=$($SHA output/HOCKEY.EXE | cut -d' ' -f1)
+a=$($SHA "$ref" | cut -d' ' -f1 | tr -d '\\'); b=$($SHA output/HOCKEY.EXE | cut -d' ' -f1 | tr -d '\\')
 echo "ref $a  $(wc -c <"$ref") bytes"; echo "out $b  $(wc -c <output/HOCKEY.EXE) bytes"
 if [ "$a" = "$b" ]; then echo "MATCH output/HOCKEY.EXE"; else echo MISMATCH; cmp -l "$ref" output/HOCKEY.EXE | head -20; exit 1; fi
