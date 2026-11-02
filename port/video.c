@@ -340,7 +340,7 @@ static void settings_save(void)
   fprintf(f, "; stats: on or off (pictures per second, CPU and GPU use, in the top right corner; the ` key)\nstats=%s\n", osd_on ? "on" : "off");
   fprintf(f, "; lores_scaling (the 320x200 screens: all of the game's own): 3x, 5x, 7x, 11x, crt-light, crt-medium, crt-strong, crt-soft, crt-soft-grille, mister, custom\nlores_scaling=%s\n", lores_names[lores_mode]);
   fprintf(f, "; hires_scaling (640x480 screens, if any): 1x, 2x, 3x, 4x, crt-light, crt-medium, crt-strong, crt-soft, crt-soft-grille, mister, custom\nhires_scaling=%s\n", hires_names[hires_mode]);
-  fprintf(f, "; lores_picture_height and hires_picture_height: fit (the window), integer (the biggest whole multiple of the source lines that fits: even scanlines),\n; overscan (the next multiple up, a little cut off) or auto-crop (the next multiple up when 6 (320x200) or 10 (640x480) window rows or fewer are cut off, else integer)\nlores_picture_height=%s\nhires_picture_height=%s\n", vscale_names[vscale_lo], vscale_names[vscale_hi]);
+  fprintf(f, "; lores_picture_height and hires_picture_height: fit (the window), integer (the biggest whole multiple of the source lines that fits: even scanlines),\n; overscan (the next multiple up, a little cut off) or auto-crop (the next multiple up when 6 (320x200) or 10 (640x480) window rows or fewer are cut off, else integer;\n; overscan and auto-crop never cut off columns: when the next multiple up is wider than the window they use integer)\nlores_picture_height=%s\nhires_picture_height=%s\n", vscale_names[vscale_lo], vscale_names[vscale_hi]);
   fprintf(f, "; the MiSTer look uses the MiSTer scaler's own files: paths relative to this folder, starting with the folder of the MiSTer SD card they come from\n");
   fprintf(f, "; (Filters, Gamma, Shadow_Masks; empty gamma or shadow mask: none), the mask scale (1-4) and the brightness (1.0 is the files' own)\n");
   for (int c = 1; c >= 0; c--) {
@@ -519,6 +519,7 @@ void video_view(int *vx, int *vy, int *vw, int *vh)
     if (kf < 1) kf = 1;
     while (kf > 1 && kf * unit * 4 / 3 > ww) kf--;
     kc = (wh + unit - 1) / unit;
+    if (kc * unit * 4 / 3 > ww) kc = kf;          /* the rows may be cropped a little (overscan, auto crop), the columns never: too wide is one multiple down */
     if (kc < kf) kc = kf;
     if (vs == 1) k = kf;
     else if (vs == 2) k = kc;
