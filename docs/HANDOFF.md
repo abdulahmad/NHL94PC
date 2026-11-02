@@ -1,5 +1,13 @@
 # Handoff
 
+## Now
+
+- Stage / unit: see the shared plan (https://github.com/abdulahmad/nhl-disasm-report/blob/main/docs/ALIGNMENT.md); alignment work for 94PC is on `claude/project-thread-ggw7zu`.
+- Branch: `claude/project-thread-ggw7zu`
+- Last check: (update when you stop)
+- Next: (update when you stop)
+- Open PRs: none
+
 ## Stop (2026-10-31)
 
 Disassembly stopped after seg004. The next work is seg006, not a later segment.
