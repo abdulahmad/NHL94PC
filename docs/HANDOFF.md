@@ -2,11 +2,11 @@
 
 ## Now
 
-- Stage / unit: see the shared plan (https://github.com/abdulahmad/nhl-disasm-report/blob/main/docs/ALIGNMENT.md); alignment work for 94PC is on `claude/project-thread-ggw7zu`.
+- Stage / unit: CONTRIBUTING.md rewrite (stay on the cleanup branch; lineage in `docs/name_map.csv` only).
 - Branch: `claude/project-thread-ggw7zu`
-- Last check: (update when you stop)
-- Next: (update when you stop)
-- Open PRs: none
+- Last check: docs-only
+- Next: do not merge to main. Disassembly still stopped after seg004 (next incbin is seg006).
+- Open PRs: (this unit)
 
 ## Stop (2026-10-31)
 
