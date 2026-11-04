@@ -1,0 +1,144 @@
+<title>NHL '94 PC Sound Board</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one narrow column, a scoreboard-style header strip, then the sample table. */
+:root {
+  --bg: #f3f5f8; --panel: #ffffff; --fg: #17202b; --muted: #5b6878; --line: #d5dce5;
+  --accent: #c8102e; --ice: #2a6fb0; --wave: #2a6fb0;
+  --display: "Saira Condensed", "Arial Narrow", sans-serif;
+  --body: "IBM Plex Sans", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f151c; --panel: #161e28; --fg: #e4eaf1; --muted: #93a1b1; --line: #2a3644;
+  --accent: #ff4d63; --ice: #74b3f0; --wave: #74b3f0; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0f151c; --panel: #161e28; --fg: #e4eaf1; --muted: #93a1b1; --line: #2a3644;
+  --accent: #ff4d63; --ice: #74b3f0; --wave: #74b3f0; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font: 15px/1.5 var(--body); }
+.wrap { max-width: 900px; margin: 0 auto; padding-block: 28px 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; flex-direction: column; gap: 20px; }
+h1 { font: 700 2.1rem/1 var(--display); letter-spacing: .02em; margin: 0; text-transform: uppercase; text-wrap: balance; }
+h1 span { color: var(--accent); }
+p { margin: 0; max-width: 65ch; color: var(--muted); }
+code { font-family: var(--mono); font-size: .9em; }
+.pick { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 16px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.pick label { font: 600 .8rem var(--display); letter-spacing: .08em; text-transform: uppercase; }
+.btn { font: 600 .95rem var(--display); letter-spacing: .06em; text-transform: uppercase; border: 1px solid var(--accent); color: var(--accent); background: transparent; border-radius: 4px; padding: 6px 12px; cursor: pointer; }
+.btn:hover { background: var(--accent); color: var(--panel); }
+.btn:focus-visible, input:focus-visible { outline: 2px solid var(--ice); outline-offset: 2px; }
+#status { font-family: var(--mono); font-size: .85rem; color: var(--muted); }
+.tablebox { overflow-x: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: left; white-space: nowrap; }
+th { font: 600 .75rem var(--display); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+td.m { font-family: var(--mono); font-size: .85rem; }
+canvas { display: block; width: 160px; height: 28px; }
+.chip { font: 500 .72rem var(--mono); border: 1px solid var(--ice); color: var(--ice); border-radius: 3px; padding: 1px 5px; }
+.empty { padding: 28px 16px; color: var(--muted); text-align: center; }
+</style>
+
+<div class="wrap">
+  <header style="display:flex;flex-direction:column;gap:8px">
+    <h1>NHL Hockey <span>'94</span> PC sound board</h1>
+    <p>Plays the Sound Blaster digital effects straight from the retail <code>PCFF001.TIM</code> and <code>PCFF001.DIG</code>. Pick both files from your game folder (and <code>PCFF001.PAT</code> to see which game programs use each one). Nothing is uploaded; the files are read in this browser.</p>
+  </header>
+
+  <div class="pick">
+    <label for="files">Game files</label>
+    <input id="files" type="file" multiple accept=".tim,.dig,.pat,.TIM,.DIG,.PAT">
+    <span id="status">No files loaded.</span>
+  </div>
+
+  <div class="tablebox">
+    <table>
+      <thead><tr><th></th><th>Timbre</th><th>Sample id</th><th>Rate</th><th>Length</th><th>Loop</th><th>Programs</th><th>Waveform</th></tr></thead>
+      <tbody id="rows"><tr><td colspan="8" class="empty">Load <code>PCFF001.TIM</code> and <code>PCFF001.DIG</code> to list the 30 samples (whistle, crowd, checks, posts, organ hits and more).</td></tr></tbody>
+    </table>
+  </div>
+  <p>Format: <code>DIG</code> holds signed 8-bit mono PCM; each 32-byte <code>TIM</code> record gives the sample id, rate (11025 or 22050 Hz), length and optional loop. Full notes in <code>docs/SFX_FORMAT.md</code> of the NHL94PC disassembly.</p>
+</div>
+
+<script>
+const $ = (s) => document.querySelector(s);
+let ctx = null, current = null;
+
+function table(buf) {
+  const v = new DataView(buf), n = v.getUint16(4, true), base = 6 + 8 * n, u8 = new Uint8Array(buf);
+  const ids = [], offs = [];
+  for (let i = 0; i < n; i++) { ids.push(u8.slice(6 + 4 * i, 10 + 4 * i)); offs.push(v.getUint32(6 + 4 * n + 4 * i, true)); }
+  const valid = offs.filter(o => o !== 0xffffffff).sort((a, b) => a - b).concat([buf.byteLength - base]);
+  return ids.map((id, i) => {
+    const o = offs[i];
+    if (o === 0xffffffff) return { id, data: new Uint8Array(0) };
+    return { id, data: u8.slice(base + o, base + valid[valid.indexOf(o) + 1]) };
+  });
+}
+const hex = (a) => Array.from(a, b => b.toString(16).padStart(2, "0")).join("");
+
+function build(tim, dig, pat) {
+  const samples = new Map(table(dig).map(e => [hex(e.id), e.data]));
+  const users = {};
+  if (pat) {
+    const p = new Uint8Array(pat), map = p.slice(2, 0x102);
+    for (let prog = 0; prog < 256; prog++) {
+      const r = map[prog]; if (!r) continue;
+      const rec = p.slice(0x102 + 20 * r, 0x122 + 20 * r);
+      if (rec[0] === 1) { const t = rec[7] > 127 ? rec[7] - 256 : rec[7]; (users[rec[1]] ||= []).push(prog + (t ? ` (${t > 0 ? "+" : ""}${t})` : "")); }
+    }
+  }
+  const rows = [];
+  table(tim).forEach(e => {
+    if (e.id[0] !== 0x80 || e.data[0] !== 0x06) return;
+    const t = e.data, dv = new DataView(t.buffer);
+    const num = (e.id[2] << 8) | e.id[3], sid = hex(t.slice(2, 6));
+    rows.push({ num, sid, loop: t[0x11], rate: dv.getUint16(0x12, true),
+      ls: dv.getUint32(0x18, true), le: dv.getUint32(0x1c, true), pcm: samples.get(sid) || new Uint8Array(0), progs: users[num] || [] });
+  });
+  return rows;
+}
+
+function play(r, btn) {
+  ctx ||= new (window.AudioContext || window.webkitAudioContext)();
+  if (current) { current.src.stop(); current.btn.textContent = "Play"; if (current.btn === btn) { current = null; return; } }
+  const b = ctx.createBuffer(1, r.pcm.length, r.rate), ch = b.getChannelData(0);
+  for (let i = 0; i < r.pcm.length; i++) ch[i] = ((r.pcm[i] ^ 0x80) - 128) / 128;
+  const src = ctx.createBufferSource(); src.buffer = b;
+  if (r.loop) { src.loop = true; src.loopStart = r.ls / r.rate; src.loopEnd = r.le / r.rate; setTimeout(() => { try { src.stop(); } catch (e) {} }, 4000); }
+  src.connect(ctx.destination); src.start();
+  btn.textContent = "Stop"; current = { src, btn };
+  src.onended = () => { btn.textContent = "Play"; if (current && current.src === src) current = null; };
+}
+
+function draw(cv, pcm) {
+  const css = getComputedStyle(document.documentElement), w = cv.width = 320, h = cv.height = 56, g = cv.getContext("2d");
+  g.strokeStyle = css.getPropertyValue("--wave").trim(); g.beginPath();
+  const step = Math.max(1, Math.floor(pcm.length / w));
+  for (let x = 0; x < w; x++) {
+    let mn = 0, mx = 0;
+    for (let i = x * step; i < Math.min(pcm.length, (x + 1) * step); i++) { const s = pcm[i] > 127 ? pcm[i] - 256 : pcm[i]; if (s < mn) mn = s; if (s > mx) mx = s; }
+    g.moveTo(x + .5, h / 2 - mx / 128 * h / 2); g.lineTo(x + .5, h / 2 - mn / 128 * h / 2 + 1);
+  }
+  g.stroke();
+}
+
+$("#files").addEventListener("change", async (ev) => {
+  const f = {}; for (const file of ev.target.files) f[file.name.split(".").pop().toLowerCase()] = await file.arrayBuffer();
+  if (!f.tim || !f.dig) { $("#status").textContent = "Pick both PCFF001.TIM and PCFF001.DIG (hold Ctrl or Cmd to select several)."; return; }
+  let rows;
+  try { rows = build(f.tim, f.dig, f.pat); } catch (e) { $("#status").textContent = "Could not read these files: " + e.message; return; }
+  if (!rows.length) { $("#status").textContent = "No digital timbres found. Use PCFF001.TIM, the Sound Blaster bank."; return; }
+  $("#status").textContent = `${rows.length} samples loaded${f.pat ? ", program map from PAT" : ""}.`;
+  const tb = $("#rows"); tb.innerHTML = "";
+  rows.forEach(r => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td><button class="btn" type="button">Play</button></td><td class="m">${r.num}</td><td class="m">${r.sid}</td><td class="m">${r.rate} Hz</td>
+      <td class="m">${(r.pcm.length / r.rate).toFixed(2)} s</td><td>${r.loop ? `<span class="chip">${r.ls}–${r.le}</span>` : ""}</td>
+      <td class="m">${r.progs.join(", ")}</td><td><canvas></canvas></td>`;
+    tr.querySelector("button").addEventListener("click", (e) => play(r, e.currentTarget));
+    tb.appendChild(tr); draw(tr.querySelector("canvas"), r.pcm);
+  });
+});
+</script>
