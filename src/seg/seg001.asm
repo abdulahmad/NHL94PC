@@ -497,7 +497,7 @@ CopyFar:
 	jmp	short .8
 .7:
 	mov	cx, 0x2000
-	rep movsd
+	db	0xF3, 0x66, 0xA5		; rep movsd
 	sub	si, 0x8000
 	mov	ax, ds
 	add	ax, 0x800
@@ -513,7 +513,7 @@ CopyFar:
 	and	cx, 0x7fff
 	shr	cx, 1
 	shr	cx, 1
-	rep movsd
+	db	0xF3, 0x66, 0xA5		; rep movsd
 	db	0x8B, 0xCB			; mov cx, bx
 	and	cx, 3
 	rep movsb
@@ -4337,7 +4337,7 @@ L1EBA:
 	jmp	short L1EE6
 L1ED4:
 	mov	cx, 0x2000
-	rep stosd
+	db	0xF3, 0x66, 0xAB		; rep stosd
 	sub	di, 0x8000
 	mov	cx, es
 	add	cx, 0x800
@@ -4348,7 +4348,7 @@ L1EE6:
 	db	0x8B, 0xCB			; mov cx, bx
 	and	cx, 0x7fff
 	shr	cx, 2
-	rep stosd
+	db	0xF3, 0x66, 0xAB		; rep stosd
 	db	0x8B, 0xCB			; mov cx, bx
 	and	cx, 3
 	rep stosb
