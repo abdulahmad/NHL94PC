@@ -1,5 +1,13 @@
 # Handoff
 
+## Now
+
+- Stage / unit: CONTRIBUTING.md rewrite (stay on the cleanup branch; lineage in `docs/name_map.csv` only).
+- Branch: `claude/project-thread-ggw7zu`
+- Last check: docs-only
+- Next: do not merge to main. Disassembly still stopped after seg004 (next incbin is seg006).
+- Open PRs: (this unit)
+
 ## Stop (2026-10-31)
 
 Disassembly stopped after seg004. The next work is seg006, not a later segment.
