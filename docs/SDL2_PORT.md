@@ -39,6 +39,10 @@ The load segment is 0732h, so a segment with paragraph P in `segmap.json` runs a
 
 ## Build and run
 
+The host menu, overlay and scaler are [Overbar](https://github.com/abdulahmad/overbar), the git submodule `port/overbar`:
+clone with `--recurse-submodules`, or run `git submodule update --init` once after a plain clone. The build scripts
+read Overbar's file list from `port/overbar/sources.txt`.
+
 Linux (macOS should work the same way):
 
 ```
