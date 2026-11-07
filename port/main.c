@@ -7,6 +7,7 @@
 #include "machine.h"
 #include "sound.h"
 #include "host.h"
+#include "overbar_client.h"
 #include <SDL.h>
 #include <stdarg.h>
 #include <sys/stat.h>
@@ -75,9 +76,14 @@ int main(int argc, char **argv)
   uint64_t last_instr = 0;
   int stats = getenv("NHL94_STATS") != NULL;
   while (!cpu_quit) {
-    int halted = cpu_run(20000);
+    int halted = 0;
     double now = host_time();
-    pit_advance(now - last);
+    if (overbar_client_quit()) cpu_quit = 1;
+    if (!overbar_client_open()) {
+      halted = cpu_run(20000);
+      pit_advance(now - last);
+    } else
+      halted = 1;
     last = now;
     kbd_pump();
     sound_pump(now);
