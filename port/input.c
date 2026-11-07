@@ -209,7 +209,7 @@ static void joy_update(void)
   if (overbar_client_open()) return;
   for (int i = 0; i < 2; i++) {
     SDL_GameController *g = pad[i];
-    int p, sh, h, pv = bind.joy[i][ACT_PASS], sv = bind.joy[i][ACT_SHOOT], hv = bind.joy[i][ACT_HOLD];
+    int p, sh, h, pv = binds.joy[i][ACT_PASS], sv = binds.joy[i][ACT_SHOOT], hv = binds.joy[i][ACT_HOLD];
     joy_b1[i] = joy_b2[i] = 0;
     if (!g) continue;
     p = pv == PAD_DEFAULT ? (SDL_GameControllerGetButton(g, SDL_CONTROLLER_BUTTON_A) || SDL_GameControllerGetButton(g, SDL_CONTROLLER_BUTTON_X)) : pv >= 2 ? pad_button(g, PAD_ID(pv)) : 0;
@@ -217,7 +217,7 @@ static void joy_update(void)
     h = hv >= 2 ? pad_button(g, PAD_ID(hv)) : 0;
     joy_b1[i] = p || h; joy_b2[i] = sh || h;
     for (int a = ACT_NUMBERS; a < NACT; a++) {
-      int v = bind.joy[i][a], now = v >= 2 && pad_button(g, PAD_ID(v)) && input_in_game();
+      int v = binds.joy[i][a], now = v >= 2 && pad_button(g, PAD_ID(v)) && input_in_game();
       if (now != was[i][a]) { key_xt(act_default_key(a), now); was[i][a] = (unsigned char)now; }
     }
   }

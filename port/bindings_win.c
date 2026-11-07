@@ -358,7 +358,7 @@ static void apply(void)
 {
     int t;
     for (t = 0; t < 4; t++) if (!own[t]) *slot(t, ACT_HOLD) = 0;
-    bind = W;
+    binds = W;
     settings_save_all();
     close_dlg();
 }
@@ -457,7 +457,7 @@ void bindings_dialog_open(void *parent)
         fmono = CreateFontA(-14, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, 0, 0, CLEARTYPE_QUALITY, 0, "Consolas");
         registered = 1;
     }
-    W = bind;
+    W = binds;
     cur = 2;
     listen = pick = hov = -1;
     own[0] = W.joy[0][ACT_HOLD] != 0; own[1] = W.joy[1][ACT_HOLD] != 0; own[2] = W.kb[ACT_HOLD] != 0; own[3] = W.ms[2] != 0;

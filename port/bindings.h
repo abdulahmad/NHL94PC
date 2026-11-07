@@ -20,7 +20,7 @@ struct bindings {
     int joy[2][NACT];                           /* Joystick One and Two: PAD_NONE, PAD_DEFAULT or PAD_VALUE(button) */
 };
 
-extern struct bindings bind;
+extern struct bindings binds;
 
 const char *act_name(int a);                    /* the name in the ini file */
 const char *act_label(int a);                   /* the name on the screen */

@@ -38,7 +38,7 @@ $CC $CFLAGS -Wall -Wno-misleading-indentation -Wno-format-truncation -DOB_SDL_BA
   port/mpu.c port/speaker.c port/video_gl.c port/video.c port/input.c port/bindings.c port/bindings_win.c port/menu_win.c port/plat.c \
   port/overbar_client.c $OVERBAR_SRCS \
   port/third_party/nuked-opl3/opl3.c $OUT/icon.o $OUT/x86emu_*.o $MUNT \
-  -L"$SDL2_MINGW/lib" -lmingw32 -lSDL2main -lSDL2 -lopengl32 -lpdh -lcomctl32 -lgdi32 -static-libgcc -static-libstdc++ \
+  -L"$SDL2_MINGW/lib" -lmingw32 -lSDL2main -lSDL2 -lopengl32 -lpdh -lcomctl32 -lgdi32 -lws2_32 -static-libgcc -static-libstdc++ \
   -Wl,-Bstatic -lstdc++ -lpthread -Wl,-Bdynamic -lm -mwindows
 cp "$SDL2_MINGW/bin/SDL2.dll" $OUT/
 rm -rf $OUT/mister && cp -r port/mister $OUT/mister
