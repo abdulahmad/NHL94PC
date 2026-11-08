@@ -118,6 +118,7 @@ static uint16_t err_of(int e)
 #define NHANDLES 64
 static int hfd[NHANDLES];
 static char hname[NHANDLES][64];
+static char fdname[NHANDLES][64];      /* the file a host descriptor was opened for (not in the machine's state: hname is) */
 
 static int new_handle(int fd)
 {
@@ -398,6 +399,7 @@ int dos_int21(void)
     if (fd < 0) { fail(err_of(errno)); return 1; }
     int h = new_handle(fd); if (h < 0) { close(fd); fail(4); return 1; }
     snprintf(hname[h], sizeof hname[h], "%s", name);
+    snprintf(fdname[h], sizeof fdname[h], "%s", name);
     s_ax(h); ok(); return 1;
   }
   case 0x3D: {
@@ -410,6 +412,7 @@ int dos_int21(void)
     if (fd < 0) { fail(err_of(errno)); return 1; }
     int h = new_handle(fd); if (h < 0) { close(fd); fail(4); return 1; }
     snprintf(hname[h], sizeof hname[h], "%s", name);
+    snprintf(fdname[h], sizeof fdname[h], "%s", name);
     s_ax(h); ok(); return 1;
   }
   case 0x3E: {
@@ -477,10 +480,11 @@ int dos_int21(void)
     if (ah == 0x45) {
       int fd = h < 5 ? hfd[h] : dup(hfd[h]);
       int n = new_handle(fd); if (n < 0) { fail(4); return 1; }
+      memcpy(hname[n], hname[h], sizeof hname[n]); memcpy(fdname[n], hname[h], sizeof fdname[n]);
       s_ax(n); ok(); return 1;
     }
     int n = r_cx();
-    if (n < NHANDLES) { if (n >= 5 && hfd[n] >= 0) close(hfd[n]); hfd[n] = h < 5 ? hfd[h] : dup(hfd[h]); }
+    if (n < NHANDLES) { if (n >= 5 && hfd[n] >= 0) close(hfd[n]); hfd[n] = h < 5 ? hfd[h] : dup(hfd[h]); memcpy(hname[n], hname[h], sizeof hname[n]); memcpy(fdname[n], hname[h], sizeof fdname[n]); }
     ok(); return 1;
   }
   case 0x47: {
@@ -579,7 +583,17 @@ void dos_positions(int64_t out[64])
 {
   for (int i = 0; i < NHANDLES; i++) out[i] = (i >= 5 && hfd[i] >= 0) ? (int64_t)lseek(hfd[i], 0, SEEK_CUR) : -1;
 }
+/* after a state is put back: the files the game had open then are open again (opened or closed since, they are put as they were), each at its position */
 void dos_seek_back(const int64_t in[64])
 {
-  for (int i = 5; i < NHANDLES; i++) if (hfd[i] >= 0 && in[i] >= 0) lseek(hfd[i], (off_t)in[i], SEEK_SET);
+  for (int i = 5; i < NHANDLES; i++) {
+    if (in[i] < 0) { if (hfd[i] >= 0) { close(hfd[i]); hfd[i] = -1; } continue; }
+    if (hfd[i] >= 0 && !strcmp(fdname[i], hname[i])) { lseek(hfd[i], (off_t)in[i], SEEK_SET); continue; }
+    if (hfd[i] >= 0) { close(hfd[i]); hfd[i] = -1; }
+    { char hp[1024];
+      if (!host_path(hname[i], hp, sizeof hp, 1)) {
+        int fd = open(hp, O_RDONLY | O_BINARY);
+        if (fd >= 0) { hfd[i] = fd; memcpy(fdname[i], hname[i], sizeof fdname[i]); lseek(fd, (off_t)in[i], SEEK_SET); }
+      } }
+  }
 }
