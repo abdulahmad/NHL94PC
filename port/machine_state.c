@@ -6,6 +6,7 @@
 #include "include/x86emu_int.h"
 #include "overbar/snap.h"
 #include <string.h>
+#include <stddef.h>
 
 void pc_state(void (*add)(void *, size_t));
 void vga_state(void (*add)(void *, size_t));
@@ -25,7 +26,15 @@ static void add(void *p, size_t n) { if (nregs < MAXR) { regs[nregs].p = p; regs
 int machine_regions(const ob_snap_region **out)
 {
   nregs = 0;
-  add(&cpu->x86, sizeof cpu->x86);
+  {                                                          /* the CPU's registers, without its pointers (they differ from one process to the next) */
+    uint8_t *x = (uint8_t *)&cpu->x86;
+    size_t o_msr = offsetof(typeof(cpu->x86), msr), o_ds = offsetof(typeof(cpu->x86), default_seg), o_dis = offsetof(typeof(cpu->x86), disasm_ptr);
+    size_t o_mode = offsetof(typeof(cpu->x86), mode);
+    add(x, o_msr);
+    add(x + o_mode, o_ds - o_mode);
+    add(x + o_ds + sizeof(void *), o_dis - o_ds - sizeof(void *));
+    add(x + o_dis + sizeof(void *), sizeof cpu->x86 - o_dis - sizeof(void *));
+  }
   add(cpu->x86.msr, 0x11 * sizeof *cpu->x86.msr);                     /* (0x10 is the instruction counter) */
   add(cpu->x86.msr + 0x13, (X86EMU_MSRS - 0x13) * sizeof *cpu->x86.msr);   /* (not 0x11, 0x12: the host's real time) */
   add(mem, MEM_SIZE);
