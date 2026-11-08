@@ -96,10 +96,26 @@ double host_time(void)
   return ts.tv_sec + ts.tv_nsec * 1e-9;
 }
 
+static double v_clock, v_ips;
+static uint64_t v_chunk_tsc;
+double vtime_ips(void)
+{
+  if (v_ips == 0) { const char *e = getenv("NHL94_IPS"); v_ips = e && atof(e) > 1e6 ? atof(e) : 30e6; }
+  return v_ips;
+}
+double vtime(void) { return v_clock + (double)(cpu_instr_count() - v_chunk_tsc) / vtime_ips(); }
+void vtime_begin_chunk(void) { v_chunk_tsc = cpu_instr_count(); }
+void vtime_end_chunk(double extra)
+{
+  v_clock += (double)(cpu_instr_count() - v_chunk_tsc) / vtime_ips() + extra;
+  v_chunk_tsc = cpu_instr_count();
+}
+
 static double pit_period(int c) { return (pit[c].reload ? pit[c].reload : 65536) / PIT_CLOCK; }
 double pit_hz(void) { return 1.0 / pit_period(0); }
 
 static double pit_acc;
+double pit_to_next_tick(void) { double d = pit_period(0) - pit_acc; return d > 0 ? d : 0; }
 void pit_advance(double dt)
 {
   double per = pit_period(0);
@@ -113,7 +129,7 @@ static uint16_t pit_count(int c)
 {
   double per = pit_period(c), ph;
   if (c == 0) ph = pit[0].phase;
-  else { double t = host_time(); ph = t / per - (long long)(t / per); }
+  else { double t = vtime(); ph = t / per - (long long)(t / per); }
   uint32_t r = pit[c].reload ? pit[c].reload : 65536;
   uint32_t v = r - (uint32_t)(ph * r);
   if (v == 0) v = 1;

@@ -1,6 +1,7 @@
 /* The Yamaha OPL2/OPL3 FM chip of the AdLib (ports 388h-389h) and of the Sound Blaster (base+0..3 and base+8..9, mapped here by
  * sound_ports.c). The sound is made by Nuked OPL3; the two timers and the status flags the drivers use to detect the card are done
  * here against the clock. */
+#include "machine.h"
 #include "sndhost.h"
 #include "audio.h"
 #include "third_party/nuked-opl3/opl3.h"
@@ -14,7 +15,7 @@ static const int64_t t_period_ns[2] = { 80000, 320000 };
 
 static void timers_update(void)
 {
-    int64_t now = plat_now_ns();
+    int64_t now = vtime_ns();
     int i;
     for (i = 0; i < 2; i++) {
         int64_t p;
@@ -36,8 +37,8 @@ static void write_reg(unsigned array, unsigned reg, uint8_t val)
             t_mask[0] = (val >> 6) & 1;
             t_mask[1] = (val >> 5) & 1;
             timers_update();
-            if ((val & 1) && !t_run[0]) t_expiry[0] = plat_now_ns() + (256 - t_val[0]) * t_period_ns[0];
-            if ((val & 2) && !t_run[1]) t_expiry[1] = plat_now_ns() + (256 - t_val[1]) * t_period_ns[1];
+            if ((val & 1) && !t_run[0]) t_expiry[0] = vtime_ns() + (256 - t_val[0]) * t_period_ns[0];
+            if ((val & 2) && !t_run[1]) t_expiry[1] = vtime_ns() + (256 - t_val[1]) * t_period_ns[1];
             t_run[0] = val & 1;
             t_run[1] = (val >> 1) & 1;
             return;

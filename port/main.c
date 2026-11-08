@@ -80,8 +80,17 @@ int main(int argc, char **argv)
     double now = host_time();
     if (overbar_client_quit()) cpu_quit = 1;
     if (!overbar_client_open()) {
-      halted = cpu_run(20000);
-      pit_advance(now - last);
+      if ((now - t_start) - vtime() > 0.25) { vtime_begin_chunk(); vtime_end_chunk((now - t_start) - vtime() - 0.05); }   /* (after a pause: no catching up) */
+      if (vtime() <= now - t_start) {            /* the PC's time is behind the host's: run it (it never runs ahead of it) */
+        double wait = 0;
+        uint64_t tsc0 = cpu_instr_count();
+        vtime_begin_chunk();
+        halted = cpu_run(20000);
+        if (halted) wait = pit_to_next_tick() + 1e-9;   /* waiting for an interrupt: the time until the timer's */
+        pit_advance((double)(cpu_instr_count() - tsc0) / vtime_ips() + wait);
+        vtime_end_chunk(wait);
+      } else
+        halted = 1;                               /* (ahead: the host's pause below) */
     } else
       halted = 1;
     last = now;
@@ -100,8 +109,8 @@ int main(int argc, char **argv)
     if (stats && now >= next_stat) {
       uint64_t n = cpu_instr_count();
       extern int vga_flips, vga_status_reads;
-      fprintf(stderr, "%.1f MIPS, PIT %.1f Hz, mode %02X, %.1f page flips/s, %d retrace polls/s\n", (n - last_instr) / 2e6, pit_hz(),
-              vga_mode(), vga_flips / 2.0, vga_status_reads / 2);
+      fprintf(stderr, "%.1f MIPS, PIT %.1f Hz, mode %02X, %.1f page flips/s, %d retrace polls/s, the PC's time is %.3f s behind the host's\n", (n - last_instr) / 2e6, pit_hz(),
+              vga_mode(), vga_flips / 2.0, vga_status_reads / 2, (now - t_start) - vtime());
       vga_flips = vga_status_reads = 0;
       last_instr = n; next_stat += 2;
     }

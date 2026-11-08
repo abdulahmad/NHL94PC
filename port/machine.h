@@ -67,6 +67,15 @@ double pit_hz(void);                   /* channel 0 rate */
 void pit_advance(double seconds);      /* host clock moved: raise IRQ 0 as needed */
 void kbd_scancode(uint8_t code);       /* queue a make or break code from the host keyboard */
 double host_time(void);                /* seconds, monotonic */
+/* The emulated PC's own time: the instructions the CPU has run, at NHL94_IPS (default 30 million) a second, and the time it waited for an
+ * interrupt (main.c). Everything the game can see of time (the timers, the VGA retrace, the sound chips' timers) follows it, so a game
+ * played from the same inputs runs the same, whatever the host's speed. The host's clock only paces it (main.c). */
+double vtime(void);                    /* seconds */
+static inline int64_t vtime_ns(void) { return (int64_t)(vtime() * 1e9); }
+void vtime_begin_chunk(void);          /* before cpu_run */
+void vtime_end_chunk(double extra);    /* after it: the instructions run, and `extra` seconds of waiting */
+double vtime_ips(void);
+double pit_to_next_tick(void);         /* seconds until the timer's next interrupt */
 
 /* vga.c */
 void vga_init(void);

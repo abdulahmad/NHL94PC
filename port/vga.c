@@ -120,7 +120,7 @@ uint8_t vga_in(uint16_t port)
   case 0x3DA: case 0x3BA: {
     vga_status_reads++;
     attr_ff = 0;
-    double t = host_time() - retrace_t0;
+    double t = vtime() - retrace_t0;
     double per = 1.0 / 70.086, ph = t / per - (long long)(t / per);
     uint8_t r = 0;
     if (ph > 0.95) r |= 8 | 1;                 /* vertical retrace (and blank) */
@@ -212,7 +212,7 @@ void vga_set_mode(int mode)
   LOG("video mode %02X\n", mode);
 }
 
-void vga_init(void) { vga_set_mode(3); retrace_t0 = host_time(); }
+void vga_init(void) { vga_set_mode(3); retrace_t0 = vtime(); }
 
 /* Draw the picture the CRTC would show. Returns its size; dst holds w*h palette indices. */
 void vga_render(uint8_t *dst, int *pw, int *ph, uint32_t pal[256])
