@@ -36,7 +36,7 @@ OVERBAR_SRCS=$(tr -d '\r' < port/overbar/sources.txt | sed 's|^|port/overbar/|')
 $CC $CFLAGS -Wall -Wno-misleading-indentation -Wno-format-truncation -DOB_SDL_BASE -Iport/overbar/include -I$X -Iport -I"$SDL2_MINGW/include/SDL2" -o $OUT/hockey94.exe \
   port/main.c port/cpu.c port/pc.c port/vga.c port/dos.c port/bios.c port/sound.c port/audio.c port/opl.c port/sb.c port/dma.c \
   port/mpu.c port/speaker.c port/video_gl.c port/video.c port/input.c port/bindings.c port/bindings_win.c port/menu_win.c port/plat.c \
-  port/overbar_client.c port/machine_state.c port/snaptest.c $OVERBAR_SRCS \
+  port/overbar_client.c port/machine_state.c port/snaptest.c port/netplay.c $OVERBAR_SRCS \
   port/third_party/nuked-opl3/opl3.c $OUT/icon.o $OUT/x86emu_*.o $MUNT \
   -L"$SDL2_MINGW/lib" -lmingw32 -lSDL2main -lSDL2 -lopengl32 -lpdh -lcomctl32 -lgdi32 -lws2_32 -static-libgcc -static-libstdc++ \
   -Wl,-Bstatic -lstdc++ -lpthread -Wl,-Bdynamic -lm -mwindows

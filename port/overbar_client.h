@@ -12,6 +12,8 @@
 void overbar_client_init(ob_profile profile, void (*apply_host)(ob_host *h));
 void overbar_client_free(void);
 ob_host *overbar_client_host(void);
+void overbar_client_online_open(void);
+void netplay_online_setup(ob_host *h);
 int overbar_client_open(void);
 int overbar_client_quit(void);
 int overbar_client_key(int scancode);           /* 1 if overlay/stats consumed it */

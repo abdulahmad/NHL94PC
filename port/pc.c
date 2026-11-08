@@ -98,6 +98,9 @@ double host_time(void)
 
 static double v_clock, v_ips;
 static uint64_t v_chunk_tsc;
+int vtime_wall_fixed;   /* netplay: the DOS clock is the same on every machine (a fixed start plus virtual time) */
+time_t vtime_wall(void) { return vtime_wall_fixed ? (time_t)1767225600 + (time_t)vtime() : time(0); }
+int vtime_wall_cs(void) { if (!vtime_wall_fixed) { struct timespec ts; clock_gettime(CLOCK_REALTIME, &ts); return (int)(ts.tv_nsec / 10000000); } { double t = vtime(); return (int)((t - (long long)t) * 100); } }
 int vtime_free;   /* snaptest: run without waiting for the host's clock */
 double vtime_ips(void)
 {

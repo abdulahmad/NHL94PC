@@ -369,9 +369,9 @@ int dos_int21(void)
   case 0x19: s_al(2); return 1;
   case 0x1A: dta_seg = r_ds(); dta_off = r_dx(); return 1;
   case 0x25: cpu_set_vector(r_al(), r_ds(), r_dx()); LOG("set vector %02X = %04X:%04X\n", r_al(), r_ds(), r_dx()); return 1;
-  case 0x2A: { time_t t = time(0); struct tm *m = localtime(&t); s_cx(m->tm_year + 1900); s_dh(m->tm_mon + 1); s_dl(m->tm_mday); s_al(m->tm_wday); return 1; }
-  case 0x2C: { struct timespec ts; clock_gettime(CLOCK_REALTIME, &ts); struct tm *m = localtime(&ts.tv_sec);
-    s_ch(m->tm_hour); s_cl(m->tm_min); s_dh(m->tm_sec); s_dl(ts.tv_nsec / 10000000); return 1; }
+  case 0x2A: { time_t t = vtime_wall(); struct tm *m = localtime(&t); s_cx(m->tm_year + 1900); s_dh(m->tm_mon + 1); s_dl(m->tm_mday); s_al(m->tm_wday); return 1; }
+  case 0x2C: { time_t tt = vtime_wall(); struct tm *m = localtime(&tt);
+    s_ch(m->tm_hour); s_cl(m->tm_min); s_dh(m->tm_sec); s_dl(vtime_wall_cs()); return 1; }
   case 0x2B: case 0x2D: s_al(0); return 1;
   case 0x2F: s_es(dta_seg); s_bx(dta_off); return 1;
   case 0x30: s_ax(0x0005); s_bx(0xFF00); s_cx(0); return 1;

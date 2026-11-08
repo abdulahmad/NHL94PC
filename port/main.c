@@ -79,7 +79,9 @@ int main(int argc, char **argv)
     int halted = 0;
     double now = host_time();
     if (overbar_client_quit()) cpu_quit = 1;
-    if (!overbar_client_open()) {
+    int net_idle = 0;
+    if (netplay_frame(now, &net_idle)) halted = net_idle;
+    else if (!overbar_client_open()) {
       if (!vtime_free && (now - t_start) - vtime() > 0.25) { vtime_begin_chunk(); vtime_end_chunk((now - t_start) - vtime() - 0.05); }   /* (after a pause: no catching up) */
       if (vtime_free || vtime() <= now - t_start) {            /* the PC's time is behind the host's: run it (it never runs ahead of it) */
         double wait = 0;

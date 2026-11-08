@@ -15,6 +15,7 @@ static void (*apply_host)(ob_host *h);
 void overbar_client_init(ob_profile profile, void (*apply)(ob_host *h))
 {
     ob_host_init(&host, OB_PORT_PC94, profile);
+    netplay_online_setup(&host);        /* the Online page (netplay.c) */
     apply_host = apply;
 }
 
@@ -25,6 +26,7 @@ void overbar_client_free(void)
 
 ob_host *overbar_client_host(void) { return &host; }
 
+void overbar_client_online_open(void) { ob_online_open(&host); }
 int overbar_client_open(void) { return host.overlay_open; }
 int overbar_client_quit(void) { return host.request_quit; }
 

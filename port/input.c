@@ -75,9 +75,10 @@ int xt_code(SDL_Scancode s)
   }
 }
 
+static int net_on;                              /* netplay: the game's input comes from the session's pad words (input_net_apply), not the host */
 static void key_xt(int code, int down)
 {
-  if (!code) return;
+  if (!code || net_on) return;
   if (code & 0x100) kbd_scancode(0xE0);
   kbd_scancode((code & 0x7F) | (down ? 0 : 0x80));
 }
@@ -85,6 +86,7 @@ static void key_xt(int code, int down)
 /* a key of the keyboard: during play the bindings may send other keys of the game for it; the release lets go of what the press sent */
 static void key_physical(SDL_Scancode s, int down)
 {
+  if (net_on) return;
   static int sent[SDL_NUM_SCANCODES][4], nsent[SDL_NUM_SCANCODES];
   int xt = xt_code(s), out[4], n;
   if (!xt) return;
@@ -104,6 +106,7 @@ static void key_physical(SDL_Scancode s, int down)
 static unsigned char mdown[8];
 static void mouse_update_buttons(void)
 {
+  if (net_on) return;
   int b;
   if (input_in_game()) b = bindings_mouse(mdown);
   else b = (mdown[SDL_BUTTON_LEFT] ? 1 : 0) | (mdown[SDL_BUTTON_RIGHT] ? 2 : 0) | (mdown[SDL_BUTTON_MIDDLE] ? 4 : 0);
@@ -113,6 +116,7 @@ static void mouse_update_buttons(void)
 /* the host pointer drives the game's pointer directly: the 4:3 picture maps onto the driver's 640 x 200 screen of mode 13h */
 static void mouse_abs(int wx, int wy)
 {
+  if (net_on) return;
   int vx, vy, vw, vh;
   video_view(&vx, &vy, &vw, &vh);
   if (vw <= 0 || vh <= 0) return;
@@ -121,6 +125,7 @@ static void mouse_abs(int wx, int wy)
 
 static void cursor_update(void)
 {
+  if (net_on) return;
   static int hidden = -1;
   SDL_Window *w = video_window();
   int active = w && SDL_GetKeyboardFocus() == w, px, py, vx, vy, vw, vh, over, drawn, hide, play_mouse;
@@ -147,6 +152,7 @@ static void cursor_update(void)
 static SDL_GameController *pad[2];
 static uint64_t joy_t0; static unsigned joy_len[4];
 static int joy_b1[2], joy_b2[2];
+static int net_jx[2], net_jy[2];                /* netplay: joystick A and B, -1 0 1 */
 
 static void pads_open(void)
 {
@@ -204,6 +210,7 @@ static void joy_overlay(void)
 
 static void joy_update(void)
 {
+  if (net_on) return;
   static unsigned char was[2][NACT];
   joy_overlay();
   if (overbar_client_open()) return;
@@ -235,6 +242,13 @@ static double pad_axis(SDL_GameController *c, SDL_GameControllerAxis a, SDL_Game
 void joy_trigger(void)
 {
   joy_t0 = cpu_instr_count();
+  if (net_on) {
+    for (int i = 0; i < 2; i++) {
+      joy_len[2 * i] = 300 + (unsigned)((net_jx[i] + 1) * 2000);
+      joy_len[2 * i + 1] = 300 + (unsigned)((net_jy[i] + 1) * 2000);
+    }
+    return;
+  }
   for (int i = 0; i < 2; i++) {
     joy_len[2 * i] = joy_len[2 * i + 1] = 0;
     if (!pad[i]) continue;
@@ -391,4 +405,109 @@ void input_poll(void)
       break;
     }
   }
+}
+
+/* ---- netplay: the game's input as one 16-bit word per team and step (netplay.c) ----
+ * bit 0 up, 1 down, 2 left, 3 right, 4 pass (A), 5 shoot (B), 6 Return, 7 Esc, 8 R, 9 Tab, 10-13 the F key (1-10, 0 none). In play a word
+ * goes to the device its team plays with (DS:052C+team: 8 keyboard, 2 joystick A, 4 joystick B); in the menus both teams' arrows move the
+ * glove. The keys and sticks it sets are part of the machine's state (input_state). */
+#define W_UP 1
+#define W_DOWN 2
+#define W_LEFT 4
+#define W_RIGHT 8
+#define W_A 16
+#define W_B 32
+static uint16_t nk_prev[32]; static int nk_n;       /* the keys the last step held down for the game */
+
+void input_net(int on)
+{
+  if (!on && net_on) for (int i = 0; i < nk_n; i++) { net_on = 0; key_xt(nk_prev[i], 0); net_on = 1; }
+  if (!on) { nk_n = 0; net_jx[0] = net_jx[1] = net_jy[0] = net_jy[1] = 0; joy_b1[0] = joy_b1[1] = joy_b2[0] = joy_b2[1] = 0; }
+  net_on = on;
+}
+
+void input_state(void (*add)(void *, size_t))
+{
+  add(&hit_pad.tsc, sizeof hit_pad.tsc); add(&hit_pad.ds, sizeof hit_pad.ds);
+  add(&joy_t0, sizeof joy_t0); add(joy_len, sizeof joy_len); add(joy_b1, sizeof joy_b1); add(joy_b2, sizeof joy_b2);
+  add(net_jx, sizeof net_jx); add(net_jy, sizeof net_jy); add(nk_prev, sizeof nk_prev); add(&nk_n, sizeof nk_n);
+}
+
+int input_net_in_game(void) { return hit_pad.tsc && cpu_instr_count() - hit_pad.tsc < (uint64_t)(vtime_ips() * 0.5); }
+/* the device a team plays with in the running game (0 none/computer) */
+int input_net_device(int team) { return input_net_in_game() ? rd8(lin(hit_pad.ds, 0x52C + team)) : 0; }
+
+void input_net_apply(uint16_t w0, uint16_t w1)
+{
+  static const uint16_t dirkey[4] = { 0x148, 0x150, 0x14B, 0x14D };
+  uint16_t w[2] = { w0, w1 }, cur[32];
+  unsigned kb = 0;
+  int n = 0, i, ig = input_net_in_game();
+  for (i = 0; i < 2; i++) { net_jx[i] = net_jy[i] = 0; joy_b1[i] = joy_b2[i] = 0; }
+  if (!ig) kb = (w0 | w1) & 0x3F;
+  else for (i = 0; i < 2; i++) {
+    int dev = rd8(lin(hit_pad.ds, 0x52C + i));
+    if (dev == 8) kb |= w[i] & 0x3F;
+    else if (dev == 2 || dev == 4) {
+      int j = dev == 2 ? 0 : 1;
+      net_jx[j] = (w[i] & W_RIGHT ? 1 : 0) - (w[i] & W_LEFT ? 1 : 0);
+      net_jy[j] = (w[i] & W_DOWN ? 1 : 0) - (w[i] & W_UP ? 1 : 0);
+      joy_b1[j] = (w[i] & W_A) != 0; joy_b2[j] = (w[i] & W_B) != 0;
+    }
+  }
+  for (i = 0; i < 4; i++) if (kb & (1u << i)) cur[n++] = dirkey[i];
+  if (kb & W_A) cur[n++] = 0x38;
+  if (kb & W_B) cur[n++] = 0x39;
+  { unsigned c = w0 | w1;
+    if (c & 0x40) cur[n++] = 0x1C;
+    if (c & 0x80) cur[n++] = 0x01;
+    if (c & 0x100) cur[n++] = 0x13;
+    if (c & 0x200) cur[n++] = 0x0F;
+    if (c >> 10 & 15) cur[n++] = (uint16_t)(0x3A + (c >> 10 & 15)); }
+  { int was = net_on;
+    net_on = 0;
+    for (i = 0; i < nk_n; i++) { int k, keep = 0; for (k = 0; k < n; k++) if (cur[k] == nk_prev[i]) keep = 1; if (!keep) key_xt(nk_prev[i], 0); }
+    for (i = 0; i < n; i++) { int k, had = 0; for (k = 0; k < nk_n; k++) if (cur[i] == nk_prev[k]) had = 1; if (!had) key_xt(cur[i], 1); }
+    net_on = was; }
+  memcpy(nk_prev, cur, (size_t)n * sizeof cur[0]); nk_n = n;
+}
+
+/* this machine's keyboard and controller as a word */
+uint16_t input_net_local(void)
+{
+  const uint8_t *ks = SDL_GetKeyboardState(NULL);
+  uint16_t w = 0;
+  int s, f = 0, i;
+  if (overbar_client_open()) return 0;
+  for (s = 4; s < SDL_NUM_SCANCODES; s++) {
+    int xt, lo;
+    if (!ks[s]) continue;
+    xt = xt_code((SDL_Scancode)s);
+    if (!xt) continue;
+    lo = xt & 0xFF;
+    if (xt == binds.kb[ACT_UP] || lo == 0x48) w |= W_UP;
+    if (xt == binds.kb[ACT_DOWN] || lo == 0x50) w |= W_DOWN;
+    if (xt == binds.kb[ACT_LEFT] || lo == 0x4B) w |= W_LEFT;
+    if (xt == binds.kb[ACT_RIGHT] || lo == 0x4D) w |= W_RIGHT;
+    if (xt == binds.kb[ACT_PASS] || xt == 0x152 || lo == 0x38) w |= W_A;
+    if (xt == binds.kb[ACT_SHOOT] || lo == 0x39) w |= W_B;
+    if (xt == 0x1C || xt == 0x11C) w |= 0x40;
+    if (xt == binds.kb[ACT_PAUSE] || xt == 0x01) w |= 0x80;
+    if (xt == binds.kb[ACT_REPLAY] || xt == 0x13) w |= 0x100;
+    if (xt == binds.kb[ACT_NUMBERS] || xt == 0x0F) w |= 0x200;
+    if (lo >= 0x3B && lo <= 0x44 && !(xt & 0x100)) f = lo - 0x3A;
+    for (i = 0; i < 8; i++) if (xt == binds.kb[ACT_HOME1 + i]) f = 1 + i;
+  }
+  w |= (uint16_t)(f << 10);
+  for (i = 0; i < 2; i++) {
+    SDL_GameController *g = pad[i];
+    if (!g) continue;
+    { double x = pad_axis(g, SDL_CONTROLLER_AXIS_LEFTX, SDL_CONTROLLER_BUTTON_DPAD_LEFT, SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
+      double y = pad_axis(g, SDL_CONTROLLER_AXIS_LEFTY, SDL_CONTROLLER_BUTTON_DPAD_UP, SDL_CONTROLLER_BUTTON_DPAD_DOWN);
+      if (x < -0.5) w |= W_LEFT; if (x > 0.5) w |= W_RIGHT; if (y < -0.5) w |= W_UP; if (y > 0.5) w |= W_DOWN; }
+    if (SDL_GameControllerGetButton(g, SDL_CONTROLLER_BUTTON_A) || SDL_GameControllerGetButton(g, SDL_CONTROLLER_BUTTON_X)) w |= W_A;
+    if (SDL_GameControllerGetButton(g, SDL_CONTROLLER_BUTTON_B) || SDL_GameControllerGetButton(g, SDL_CONTROLLER_BUTTON_Y)) w |= W_B;
+    break;
+  }
+  return w;
 }

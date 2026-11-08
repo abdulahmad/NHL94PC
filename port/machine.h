@@ -9,6 +9,7 @@
 
 #include <stdint.h>
 #include <stddef.h>
+#include <time.h>
 
 #define MEM_SIZE    0x110000u          /* 1 MB + the HMA */
 #define ROM_SEG     0xF000u            /* our BIOS stubs live at F000:xxxx */
@@ -47,7 +48,7 @@ int  cpu_run(unsigned instructions);   /* returns 1 when the CPU halted (hlt) */
 uint64_t cpu_instr_count(void);
 /* put a hook on the game's code at cs:ip when the bytes there are `expect` (one instruction, see cpu.c); each time it runs, *hit
  * gets the time and the DS, SS and SP of that moment (before the instruction). 0 if the bytes differ. */
-struct hook_hit { double t; uint16_t ds, ss, sp; unsigned count; };
+struct hook_hit { double t; uint16_t ds, ss, sp; unsigned count; uint64_t tsc; /* the instruction count of the last hit */ };
 int cpu_hook(uint16_t cs, uint16_t ip, const uint8_t *expect, int len, struct hook_hit *hit);
 void cpu_set_vector(int n, uint16_t seg, uint16_t off);
 void cpu_get_vector(int n, uint16_t *seg, uint16_t *off);
@@ -64,6 +65,7 @@ void pic_raise(int irq);
 int  pic_pending(void);                /* vector to deliver, or -1 */
 void pic_ack(int vector);
 double pit_hz(void);                   /* channel 0 rate */
+void kbd_pump(void);                  /* hand the next queued key to the game */
 void pit_advance(double seconds);      /* host clock moved: raise IRQ 0 as needed */
 void kbd_scancode(uint8_t code);       /* queue a make or break code from the host keyboard */
 double host_time(void);                /* seconds, monotonic */
@@ -75,6 +77,9 @@ static inline int64_t vtime_ns(void) { return (int64_t)(vtime() * 1e9); }
 void vtime_begin_chunk(void);          /* before cpu_run */
 void vtime_end_chunk(double extra);    /* after it: the instructions run, and `extra` seconds of waiting */
 double vtime_ips(void);
+extern int vtime_wall_fixed;          /* 1: DOS/BIOS time is a fixed start plus virtual time (netplay) */
+time_t vtime_wall(void);
+int vtime_wall_cs(void);
 extern int vtime_free;                 /* 1: the PC runs as fast as it can, not paced by the host (a replay) */
 double pit_to_next_tick(void);         /* seconds until the timer's next interrupt */
 
@@ -121,6 +126,8 @@ int machine_regions(const struct ob_snap_region **out);
 size_t machine_blob(void *buf, size_t cap);
 void machine_unblob(const void *buf, size_t n);
 uint64_t machine_hash(void);
+/* netplay.c */
+int netplay_frame(double now, int *idle);   /* 1: a session has the CPU (it ran a step, or waits); *idle: nothing ran */
 /* snaptest.c (NHL94_SNAPTEST=1): a state taken, the machine run on, put back, run on again, and compared */
 void snaptest_chunk(void);             /* after each slice of the CPU */
 

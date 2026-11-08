@@ -320,10 +320,10 @@ int bios_int(int n)
     switch (r_ah()) {
     case 0x00: { uint32_t t = rd32(BDA + 0x6C); s_cx(t >> 16); s_dx(t); s_al(rd8(BDA + 0x70)); wr8(BDA + 0x70, 0); return 1; }
     case 0x01: wr32(BDA + 0x6C, (uint32_t)r_cx() << 16 | r_dx()); return 1;
-    case 0x02: { time_t t = time(0); struct tm *m = localtime(&t);
+    case 0x02: { time_t t = vtime_wall(); struct tm *m = localtime(&t);
       #define BCD(x) ((((x) / 10) << 4) | ((x) % 10))
       s_ch(BCD(m->tm_hour)); s_cl(BCD(m->tm_min)); s_dh(BCD(m->tm_sec)); s_dl(0); set_cf(0); return 1; }
-    case 0x04: { time_t t = time(0); struct tm *m = localtime(&t);
+    case 0x04: { time_t t = vtime_wall(); struct tm *m = localtime(&t);
       s_ch(BCD((m->tm_year + 1900) / 100)); s_cl(BCD(m->tm_year % 100)); s_dh(BCD(m->tm_mon + 1)); s_dl(BCD(m->tm_mday)); set_cf(0); return 1; }
     }
     return 1;

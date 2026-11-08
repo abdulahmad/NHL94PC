@@ -195,6 +195,7 @@ static void op_cc(x86emu_t *emu, u8 op1)
     const uint8_t *o = hooks[i].orig;
     hooks[i].hit->t = host_time(); hooks[i].hit->ds = emu->x86.R_DS; hooks[i].hit->ss = emu->x86.R_SS; hooks[i].hit->sp = emu->x86.R_SP;
     hooks[i].hit->count++;
+    hooks[i].hit->tsc = emu->x86.R_TSC;
     if (o[0] >= 0x50 && o[0] <= 0x57) {                         /* push r16 */
       uint16_t v;
       switch (o[0] - 0x50) {

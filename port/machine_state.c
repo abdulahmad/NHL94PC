@@ -13,6 +13,7 @@ void bios_state(void (*add)(void *, size_t));
 void dos_state(void (*add)(void *, size_t));
 void speaker_state(void (*add)(void *, size_t));
 void opl_state(void (*add)(void *, size_t));
+void input_state(void (*add)(void *, size_t));
 void dos_positions(int64_t out[64]);
 void dos_seek_back(const int64_t in[64]);
 
@@ -30,7 +31,7 @@ int machine_regions(const ob_snap_region **out)
   add(mem, MEM_SIZE);
   add(ems, (size_t)EMS_PAGES * 16384u);
   add(ems_map, sizeof ems_map);
-  pc_state(add); vga_state(add); bios_state(add); dos_state(add); speaker_state(add); opl_state(add);
+  pc_state(add); vga_state(add); bios_state(add); dos_state(add); speaker_state(add); opl_state(add); input_state(add);
   *out = regs;
   return nregs;
 }
