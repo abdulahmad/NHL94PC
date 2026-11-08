@@ -12,6 +12,10 @@ static ob_snap snap;
 static int on = -1, phase, a = 3000, n = 500;
 static long chunk, goal;
 static uint64_t h1;
+static unsigned char *copy[128];
+#include <string.h>
+static void keep(void){ const ob_snap_region *r; int i,k=machine_regions(&r); for(i=0;i<k;i++){ free(copy[i]); copy[i]=malloc(r[i].n); memcpy(copy[i],r[i].p,r[i].n);} }
+static void diffs(void){ const ob_snap_region *r; int i,k=machine_regions(&r); for(i=0;i<k;i++){ const unsigned char *q=r[i].p; size_t j; int c=0; size_t tot=0; for(j=0;j<r[i].n;j++) if(q[j]!=copy[i][j]){ if(c<6){ printf("snaptest diff region %d (size %zu) +%zx: %02x -> %02x\n",i,r[i].n,j,copy[i][j],q[j]); c++;} tot++; } if(tot) printf("snaptest region %d differs in %zu bytes\n",i,tot);} fflush(stdout);}
 
 static void say(const char *m, uint64_t x) { printf("snaptest %s %016llx (chunk %ld)\n", m, (unsigned long long)x, chunk); fflush(stdout); }
 
@@ -36,14 +40,14 @@ void snaptest_chunk(void)
   } else if (phase == 1 && chunk >= goal) {
     size_t bn;
     const void *b = ob_snap_blob(&snap, &bn);
-    h1 = machine_hash(); say("first run", h1);
+    h1 = machine_hash(); say("first run", h1); keep();
     if (ob_snap_put(store, &snap)) { puts("snaptest FAIL put"); on = 0; return; }
     machine_unblob(b, bn);
     say("restored", machine_hash());
     chunk = a; goal = a + n; phase = 2; vtime_free = 1;
   } else if (phase == 2 && chunk >= goal) {
     uint64_t h2 = machine_hash();
-    say("second run", h2);
+    say("second run", h2); diffs();
     printf("snaptest %s\n", h1 == h2 ? "PASS" : "FAIL (different)");
     fflush(stdout);
     vtime_free = 0; phase = 3; on = 0;
