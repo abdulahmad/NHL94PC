@@ -80,8 +80,8 @@ int main(int argc, char **argv)
     double now = host_time();
     if (overbar_client_quit()) cpu_quit = 1;
     if (!overbar_client_open()) {
-      if ((now - t_start) - vtime() > 0.25) { vtime_begin_chunk(); vtime_end_chunk((now - t_start) - vtime() - 0.05); }   /* (after a pause: no catching up) */
-      if (vtime() <= now - t_start) {            /* the PC's time is behind the host's: run it (it never runs ahead of it) */
+      if (!vtime_free && (now - t_start) - vtime() > 0.25) { vtime_begin_chunk(); vtime_end_chunk((now - t_start) - vtime() - 0.05); }   /* (after a pause: no catching up) */
+      if (vtime_free || vtime() <= now - t_start) {            /* the PC's time is behind the host's: run it (it never runs ahead of it) */
         double wait = 0;
         uint64_t tsc0 = cpu_instr_count();
         vtime_begin_chunk();
@@ -89,6 +89,7 @@ int main(int argc, char **argv)
         if (halted) wait = pit_to_next_tick() + 1e-9;   /* waiting for an interrupt: the time until the timer's */
         pit_advance((double)(cpu_instr_count() - tsc0) / vtime_ips() + wait);
         vtime_end_chunk(wait);
+        snaptest_chunk();
       } else
         halted = 1;                               /* (ahead: the host's pause below) */
     } else

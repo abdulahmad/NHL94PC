@@ -85,3 +85,11 @@ void opl_out(unsigned port, uint32_t val)
     }
     audio_unlock();
 }
+
+/* the machine's state (machine_state.c) */
+void opl_state(void (*add)(void *, size_t))
+{
+#define S(v) add(&(v), sizeof (v))
+  S(latch); S(status); S(t_val); S(t_mask); S(t_run); S(t_expiry);
+#undef S
+}

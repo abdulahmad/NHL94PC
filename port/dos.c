@@ -565,3 +565,21 @@ int dos_int2f(void)
   if (r_ah() == 0x16 || r_ah() == 0x43 || r_ah() == 0x15) { if (r_ah() != 0x15) s_al(0); return 1; }
   return 1;
 }
+
+/* the machine's state (machine_state.c) */
+void dos_state(void (*add)(void *, size_t))
+{
+#define S(v) add(&(v), sizeof (v))
+  S(cwd); S(cur_psp); S(dta_seg); S(dta_off); S(last_error); S(exit_code); S(hname); S(finds);
+#undef S
+}
+
+/* the files' positions, for a state of the machine (machine_state.c): -1 for a handle that is not a file */
+void dos_positions(int64_t out[64])
+{
+  for (int i = 0; i < NHANDLES; i++) out[i] = (i >= 5 && hfd[i] >= 0) ? (int64_t)lseek(hfd[i], 0, SEEK_CUR) : -1;
+}
+void dos_seek_back(const int64_t in[64])
+{
+  for (int i = 5; i < NHANDLES; i++) if (hfd[i] >= 0 && in[i] >= 0) lseek(hfd[i], (off_t)in[i], SEEK_SET);
+}

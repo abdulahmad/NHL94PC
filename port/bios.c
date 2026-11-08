@@ -354,3 +354,11 @@ void bios_init(void)
     wr32(BDA + 0x6C, (uint32_t)((m->tm_hour * 3600 + m->tm_min * 60 + m->tm_sec) * 18.2065));
   }
 }
+
+/* the machine's state (machine_state.c) */
+void bios_state(void (*add)(void *, size_t))
+{
+#define S(v) add(&(v), sizeof (v))
+  S(e0_prefix); S(ems_owner); S(ems_hpages); S(ems_hcount); S(ems_hused); S(ems_hname); S(ems_saved);
+#undef S
+}

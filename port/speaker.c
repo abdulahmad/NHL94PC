@@ -60,3 +60,11 @@ void speaker_out(unsigned port, uint32_t val)
     }
     audio_unlock();
 }
+
+/* the machine's state (machine_state.c) */
+void speaker_state(void (*add)(void *, size_t))
+{
+#define S(v) add(&(v), sizeof (v))
+  S(port61); S(reload); S(rw_state); S(lo); S(mode); S(reload_time); S(phase);
+#undef S
+}

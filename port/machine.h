@@ -75,6 +75,7 @@ static inline int64_t vtime_ns(void) { return (int64_t)(vtime() * 1e9); }
 void vtime_begin_chunk(void);          /* before cpu_run */
 void vtime_end_chunk(double extra);    /* after it: the instructions run, and `extra` seconds of waiting */
 double vtime_ips(void);
+extern int vtime_free;                 /* 1: the PC runs as fast as it can, not paced by the host (a replay) */
 double pit_to_next_tick(void);         /* seconds until the timer's next interrupt */
 
 /* vga.c */
@@ -112,5 +113,15 @@ void host_present(void);
 extern int trace;
 void logf_(const char *fmt, ...);
 #define LOG(...) do { if (trace) logf_(__VA_ARGS__); } while (0)
+
+
+/* machine_state.c: the state of the machine, for rollback (overbar/snap.h). */
+struct ob_snap_region;
+int machine_regions(const struct ob_snap_region **out);
+size_t machine_blob(void *buf, size_t cap);
+void machine_unblob(const void *buf, size_t n);
+uint64_t machine_hash(void);
+/* snaptest.c (NHL94_SNAPTEST=1): a state taken, the machine run on, put back, run on again, and compared */
+void snaptest_chunk(void);             /* after each slice of the CPU */
 
 #endif

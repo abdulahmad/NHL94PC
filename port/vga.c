@@ -275,3 +275,11 @@ void vga_render(uint8_t *dst, int *pw, int *ph, uint32_t pal[256])
     *pw = w; *ph = lines;
   }
 }
+
+/* the machine's state (machine_state.c) */
+void vga_state(void (*add)(void *, size_t))
+{
+#define S(v) add(&(v), sizeof (v))
+  S(plane); S(latch); S(seq); S(seq_idx); S(gc); S(gc_idx); S(crtc); S(crtc_idx); S(attr); S(attr_idx); S(attr_ff); S(misc); S(dac); S(dac_widx); S(dac_ridx); S(dac_comp); S(dac_rcomp); S(dac_mask); S(cur_mode); S(vga_dirty); S(retrace_t0);
+#undef S
+}

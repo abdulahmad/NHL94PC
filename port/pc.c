@@ -98,6 +98,7 @@ double host_time(void)
 
 static double v_clock, v_ips;
 static uint64_t v_chunk_tsc;
+int vtime_free;   /* snaptest: run without waiting for the host's clock */
 double vtime_ips(void)
 {
   if (v_ips == 0) { const char *e = getenv("NHL94_IPS"); v_ips = e && atof(e) > 1e6 ? atof(e) : 30e6; }
@@ -246,4 +247,12 @@ void pc_init(void)
   pic[0].imr = 0x00; pic[1].imr = 0x00;
   pit[0].reload = 0; pit[0].access = 3; pit[0].mode = 3;
   pit[2].access = 3; pit[2].mode = 3;
+}
+
+/* the machine's state (machine_state.c) */
+void pc_state(void (*add)(void *, size_t))
+{
+#define S(v) add(&(v), sizeof (v))
+  S(pic); S(pit); S(pit_acc); S(v_clock); S(v_chunk_tsc); S(kq); S(kq_head); S(kq_tail); S(k60); S(port61);
+#undef S
 }
