@@ -39,20 +39,15 @@ void video_mister_pick(int cls, int kind, const char *rel);  /* a MiSTer look fi
 const char *video_mister_path(int cls, int kind);
 int video_mister_preset_active(int cls, const char *rel);
 
-/* ---- menu_win.c: the window's menu bar (Windows only) ---- */
-#ifdef _WIN32
-void menu_init(void *sdl_window);
+/* ---- shell.c: the window, its events and the menu bar, from Overbar's SDL2 platform layer ---- */
 void menu_sync(void);
 void menu_show(int on);
-void menu_event(void *syswm_msg);
 int menu_client_size(int *w, int *h);                  /* the client area as Windows has it, 0 if unknown */
-#else
-static inline void menu_init(void *w) { (void)w; }
-static inline void menu_sync(void) {}
-static inline void menu_show(int on) { (void)on; }
-static inline void menu_event(void *m) { (void)m; }
-static inline int menu_client_size(int *w, int *h) { (void)w; (void)h; return 0; }
-#endif
+struct SDL_Window;
+struct SDL_Window *shell_open(const char *title, int w, int h, int gl);   /* the layer's window (OpenGL if gl), the bar and the events */
+void shell_close(void);
+union SDL_Event;
+void input_event(const union SDL_Event *e);            /* input.c: an event the layer did not use (the game's keys, mouse, pads) */
 
 /* ---- plat.c ---- */
 int plat_cpu_percent(void);                            /* this process, -1 if unknown */

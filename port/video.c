@@ -699,22 +699,24 @@ void video_init(int want_gl)
   vgl_filter = getenv("NHL94_FILTER");
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
   if (want_gl && !getenv("NHL94_NOGL") && SDL_strcmp(SDL_GetCurrentVideoDriver(), "dummy")) {
-    win = SDL_CreateWindow(base_title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, ww, wh, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+    win = shell_open(base_title, ww, wh, 1);
     if (win && vgl_init(win)) {
-      use_gl = 1; vgl_set_vsync(vsync_on); menu_init(win); title_refresh();
+      use_gl = 1; vgl_set_vsync(vsync_on); title_refresh();
       if (getenv("NHL94_MAXIMIZE")) SDL_MaximizeWindow(win);
       return;
     }
     fprintf(stderr, "OpenGL scaling is not available, using SDL's renderer\n");
-    if (win) SDL_DestroyWindow(win);
+    if (win) shell_close();
     win = 0;
+    SDL_FlushEvent(SDL_QUIT);
+    SDL_FlushEvent(SDL_WINDOWEVENT);
   }
-  win = SDL_CreateWindow(base_title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, ww, wh, SDL_WINDOW_RESIZABLE);
+  win = shell_open(base_title, ww, wh, 0);
   if (!win) { fprintf(stderr, "SDL window: %s\n", SDL_GetError()); exit(1); }
   ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | (vsync_on ? SDL_RENDERER_PRESENTVSYNC : 0));
   if (!ren) ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_SOFTWARE);
   if (!ren) { fprintf(stderr, "SDL renderer: %s\n", SDL_GetError()); exit(1); }
-  menu_init(win);
+  title_refresh();
 }
 
 /* NHL94_DUMP=dir: a PPM of the picture (called twice a second) */

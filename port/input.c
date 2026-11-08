@@ -15,6 +15,7 @@
 #include "bindings.h"
 #include "overbar_client.h"
 #include <SDL.h>
+#include <overbar/plat.h>
 
 /* ---- what the game is doing ---- */
 #define SEG(p) (0x0732 + (p))                   /* the load segment plus a segment's paragraph in segmap.json */
@@ -335,76 +336,47 @@ static void overlay_mouse(int wx, int wy, int what)
 #endif
 }
 
-void input_poll(void)
+/* The events Overbar's layer (shell.c) did not use: the overlay, its keys, Alt+Enter, quit and the bar's are the layer's. These are the game's. */
+void input_event(const SDL_Event *ep)
 {
-  SDL_Event e;
-  joy_update();
-  cursor_update();
-  while (SDL_PollEvent(&e)) {
-    switch (e.type) {
-    case SDL_QUIT: cpu_quit = 1; break;
-    case SDL_KEYDOWN:
-      if (e.key.keysym.scancode == SDL_SCANCODE_RETURN && (e.key.keysym.mod & KMOD_ALT)) {     /* Alt+Enter: fullscreen */
-        if (!e.key.repeat) video_toggle_fullscreen();
-        break;
-      }
-      if (e.key.keysym.scancode == SDL_SCANCODE_F11 && (e.key.keysym.mod & KMOD_CTRL)) {        /* Ctrl+F11: record the sound */
-        if (!e.key.repeat) audio_capture_toggle();
-        break;
-      }
-      if (!e.key.repeat && overbar_client_key(e.key.keysym.scancode)) break;   /* ` / F11 overlay, F12 stats */
-      if (overbar_client_open()) {
-        int in = -1;
-        SDL_Scancode k = e.key.keysym.scancode;
-        if (k == SDL_SCANCODE_UP) in = MDRT_MENU_UP;
-        else if (k == SDL_SCANCODE_DOWN) in = MDRT_MENU_DOWN;
-        else if (k == SDL_SCANCODE_LEFT) in = MDRT_MENU_LEFT;
-        else if (k == SDL_SCANCODE_RIGHT) in = MDRT_MENU_RIGHT;
-        else if (k == SDL_SCANCODE_RETURN || k == SDL_SCANCODE_KP_ENTER) in = MDRT_MENU_OK;
-        else if (k == SDL_SCANCODE_ESCAPE) in = MDRT_MENU_BACK;
-        if (in >= 0) {
-          int r = overbar_client_input(in);
-#ifdef _WIN32
-          if (r == OB_ID_CONTROLLERS) bindings_dialog_open(NULL);
-#else
-          (void)r;
-#endif
-        }
-        break;
-      }
-      if (!e.key.repeat) key_physical(e.key.keysym.scancode, 1);
-      break;
-    case SDL_KEYUP:
-      if (e.key.keysym.scancode == SDL_SCANCODE_GRAVE || e.key.keysym.scancode == SDL_SCANCODE_F11
-          || e.key.keysym.scancode == SDL_SCANCODE_F12) break;
-      if (overbar_client_open()) break;
-      key_physical(e.key.keysym.scancode, 0);
-      break;
-    case SDL_SYSWMEVENT: menu_event(e.syswm.msg); break;
-    case SDL_CONTROLLERDEVICEADDED: case SDL_CONTROLLERDEVICEREMOVED: pads_open(); break;
-    case SDL_MOUSEMOTION:
-      if (overbar_client_open()) { overlay_mouse(e.motion.x, e.motion.y, 0); break; }
-      mouse_abs(e.motion.x, e.motion.y);
-      break;
-    case SDL_MOUSEWHEEL:
-      if (overbar_client_open()) {
-        int mx, my;
-        SDL_GetMouseState(&mx, &my);
-        overlay_mouse(mx, my, e.wheel.y > 0 ? 3 : e.wheel.y < 0 ? 4 : -1);
-      }
-      break;
-    case SDL_MOUSEBUTTONDOWN: case SDL_MOUSEBUTTONUP:
-      if (overbar_client_open()) {
-        if (e.type == SDL_MOUSEBUTTONDOWN)
-          overlay_mouse(e.button.x, e.button.y, e.button.button == SDL_BUTTON_LEFT ? 1
-                        : e.button.button == SDL_BUTTON_RIGHT ? 2 : -1);
-        break;
-      }
-      if (e.button.button >= 1 && e.button.button <= 5) mdown[e.button.button] = e.type == SDL_MOUSEBUTTONDOWN;
-      mouse_update_buttons();
+  const SDL_Event e = *ep;
+  switch (e.type) {
+  case SDL_KEYDOWN:
+    if (!e.key.repeat) key_physical(e.key.keysym.scancode, 1);
+    break;
+  case SDL_KEYUP:
+    key_physical(e.key.keysym.scancode, 0);
+    break;
+  case SDL_CONTROLLERDEVICEADDED: case SDL_CONTROLLERDEVICEREMOVED: pads_open(); break;
+  case SDL_MOUSEMOTION:
+    if (overbar_client_open()) { overlay_mouse(e.motion.x, e.motion.y, 0); break; }
+    mouse_abs(e.motion.x, e.motion.y);
+    break;
+  case SDL_MOUSEWHEEL:
+    if (overbar_client_open()) {
+      int mx, my;
+      SDL_GetMouseState(&mx, &my);
+      overlay_mouse(mx, my, e.wheel.y > 0 ? 3 : e.wheel.y < 0 ? 4 : -1);
+    }
+    break;
+  case SDL_MOUSEBUTTONDOWN: case SDL_MOUSEBUTTONUP:
+    if (overbar_client_open()) {
+      if (e.type == SDL_MOUSEBUTTONDOWN)
+        overlay_mouse(e.button.x, e.button.y, e.button.button == SDL_BUTTON_LEFT ? 1
+                      : e.button.button == SDL_BUTTON_RIGHT ? 2 : -1);
       break;
     }
+    if (e.button.button >= 1 && e.button.button <= 5) mdown[e.button.button] = e.type == SDL_MOUSEBUTTONDOWN;
+    mouse_update_buttons();
+    break;
   }
+}
+
+void input_poll(void)
+{
+  joy_update();
+  cursor_update();
+  ob_plat_pump();
 }
 
 /* ---- netplay: the game's input as one 16-bit word per team and step (netplay.c) ----

@@ -15,6 +15,7 @@ ob_host *overbar_client_host(void);
 void overbar_client_online_open(void);
 void netplay_online_setup(ob_host *h);
 int overbar_client_open(void);
+void overbar_client_apply(void);              /* run apply_host on the ob_host: a change made outside the overlay (the menu bar) */
 int overbar_client_quit(void);
 int overbar_client_key(int scancode);           /* 1 if overlay/stats consumed it */
 int overbar_client_pad_back(void);
