@@ -154,6 +154,22 @@ static int st_load(void *user, const void *in, size_t size)
 }
 static const ob_net_states states = { NULL, st_save, st_load };
 
+/* tests: a short hash of each region of the machine, to find which one differs between two machines */
+static void region_line(const char *tag, uint32_t step)
+{
+  const ob_snap_region *r;
+  int n = machine_regions(&r), i;
+  fprintf(stderr, "rh %s %u:", tag, (unsigned)step);
+  for (i = 0; i < n; i++) {
+    const uint8_t *q = r[i].p;
+    uint32_t h = 2166136261u;
+    size_t k;
+    for (k = 0; k < r[i].n; k++) { h ^= q[k]; h *= 16777619u; }
+    fprintf(stderr, " %u:%04x", i, (unsigned)(h & 0xFFFF));
+  }
+  fputc('\n', stderr);
+}
+
 static void end_net(const char *m)
 {
   if (net) {
@@ -235,6 +251,7 @@ static void go(void)
   if (store) ob_snap_store_free(store);
   store = ob_snap_store_new(NULL);
   mode = PLAY;
+  if (getenv("NHL94_REGIONS")) region_line("go", 0);
   if (verbose) fprintf(stderr, "online: go, I play pad %d\n", me);
 }
 
@@ -275,6 +292,7 @@ int netplay_frame(double now, int *idle)
   run_to(base + cnt * STEP_S);
   if (cnt > hi) hi = cnt; else n_replayed++;
   n_steps++;
+  if (getenv("NHL94_REGIONS") && cnt <= 42 && cnt >= hi) region_line("step", cnt);
   if (cnt % 40 == 0) ob_net_check(net, cnt - 1, machine_hash());
   if (verbose && cnt % 200 == 0 && cnt >= hi) {
     char line[200];
