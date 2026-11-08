@@ -7,6 +7,7 @@
  * step; a wrong guess loads the state and the steps run again, as fast as the CPU goes. Not yet in it: the sound cards (run with
  * NHL94_SOUND=none), the mouse. */
 #include "machine.h"
+#include "include/x86emu_int.h"
 #include "host.h"
 #include "overbar_client.h"
 #include "overbar/net.h"
@@ -106,7 +107,10 @@ static int unpack(const uint8_t *p, size_t n)
     k += len;
   }
   if (k != raw) { free(flat); return -1; }
-  for (i = 0; i < rn; i++) { memcpy(r[i].p, flat + at, r[i].n); at += r[i].n; }
+  { u64 *msr = cpu->x86.msr; unsigned char *perm = cpu->x86.msr_perm; sel_t *dseg = cpu->x86.default_seg; char *dis = cpu->x86.disasm_ptr;
+    for (i = 0; i < rn; i++) { memcpy(r[i].p, flat + at, r[i].n); at += r[i].n; }
+    cpu->x86.msr = msr; cpu->x86.msr_perm = perm; cpu->x86.default_seg = dseg; cpu->x86.disasm_ptr = dis;   /* (the host's pointers mean nothing here) */
+  }
   machine_unblob(flat + at, 512);
   free(flat);
   return 0;
