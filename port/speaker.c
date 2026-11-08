@@ -34,10 +34,9 @@ void speaker_init(void)
 
 uint32_t speaker_in(unsigned port)
 {
-    static unsigned toggle;
     if (port == 0x61) {
         uint32_t v = port61 & 3;
-        v |= (++toggle & 1) << 4;                                  /* the refresh bit toggles */
+        v |= (unsigned)(((long long)(vtime() * 66000.0) & 1) << 4);                                  /* the refresh bit toggles */
         v |= ((vtime_ns() * 1193182 / 1000000000 / (reload ? reload : 1)) & 1) << 5;   /* channel 2 output */
         return v;
     }

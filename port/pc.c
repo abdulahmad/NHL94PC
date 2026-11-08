@@ -204,7 +204,8 @@ static uint8_t in8(uint16_t port)
   case 0xA0: case 0xA1: return pic_in(1, port & 1);
   case 0x40: case 0x41: case 0x42: return pit_in(port);
   case 0x60: return k60;
-  case 0x61: { static int t; t ^= 0x10; return (port61 & 0x0F) | t | ((port61 & 1) ? 0x20 : 0); }
+  case 0x61: { int t = ((long long)(vtime() * 66000.0) & 1) ? 0x10 : 0;   /* (bit 4 is the memory refresh: it flips every 15 us of the PC's time) */
+    return (port61 & 0x0F) | t | ((port61 & 1) ? 0x20 : 0); }
   case 0x64: return 0x1C | (kq_head != kq_tail ? 1 : 0);
   case 0x201: return joy_port();
   }
