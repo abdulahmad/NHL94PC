@@ -5,8 +5,8 @@ Built from [abdulahmad/nhl94pc](https://github.com/abdulahmad/nhl94pc) by abdula
 [libx86emu](https://github.com/wfeldt/libx86emu); FM sound is [Nuked-OPL3](https://github.com/nukeykt/Nuked-OPL3); the MT-32 is
 [Munt](https://github.com/munt/munt). The sound devices, the OpenGL looks, the window and menu bar, the input bindings and the pointer
 rules are taken from the NHL 95 PC port ([nhl95pc](https://github.com/abdulahmad/nhl95pc), branch `sdl2-port`). The MiSTer look
-reads the MiSTer FPGA project's filter, gamma, shadow mask and preset files (`port/mister`, GPL-3.0; authors in
-`port/mister/README.md`). Ship this credit with any build you release.
+reads the MiSTer FPGA project's filter, gamma, shadow mask and preset files (`port/overbar/mister`, GPL-3.0; authors in
+`port/overbar/mister/README.md`). Ship this credit with any build you release.
 
 ## How it works
 

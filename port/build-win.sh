@@ -41,5 +41,5 @@ $CC $CFLAGS -Wall -Wno-misleading-indentation -Wno-format-truncation -DOB_SDL_BA
   -L"$SDL2_MINGW/lib" -lmingw32 -lSDL2main -lSDL2 -lopengl32 -lpdh -lcomctl32 -lgdi32 -lws2_32 -static-libgcc -static-libstdc++ \
   -Wl,-Bstatic -lstdc++ -lpthread -Wl,-Bdynamic -lm -mwindows
 cp "$SDL2_MINGW/bin/SDL2.dll" $OUT/
-rm -rf $OUT/mister && cp -r port/mister $OUT/mister
+rm -rf $OUT/mister && cp -r port/overbar/mister $OUT/mister
 echo "built $OUT/hockey94.exe (with SDL2.dll)"
