@@ -27,5 +27,5 @@ gcc $CFLAGS -Wall -Wno-misleading-indentation -Wno-format-truncation -DOB_SDL_BA
   port/video_gl.c port/video.c port/input.c port/bindings.c port/plat.c \
   port/overbar_client.c $OVERBAR_SRCS \
   port/third_party/nuked-opl3/opl3.c build/x86emu_*.o $MUNT $(pkg-config --cflags --libs sdl2) -lGL -lm || exit 1
-rm -rf build/mister && cp -r port/mister build/mister    # the MiSTer filter files the "MiSTer" looks use
+rm -rf build/mister && cp -r port/overbar/mister build/mister    # the MiSTer filter files the "MiSTer" looks use
 echo "built build/hockey94"
