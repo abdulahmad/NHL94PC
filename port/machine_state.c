@@ -25,7 +25,8 @@ int machine_regions(const ob_snap_region **out)
 {
   nregs = 0;
   add(&cpu->x86, sizeof cpu->x86);
-  add(cpu->x86.msr, X86EMU_MSRS * sizeof *cpu->x86.msr);   /* (the instruction counter is in it) */
+  add(cpu->x86.msr, 0x11 * sizeof *cpu->x86.msr);                     /* (0x10 is the instruction counter) */
+  add(cpu->x86.msr + 0x13, (X86EMU_MSRS - 0x13) * sizeof *cpu->x86.msr);   /* (not 0x11, 0x12: the host's real time) */
   add(mem, MEM_SIZE);
   add(ems, (size_t)EMS_PAGES * 16384u);
   add(ems_map, sizeof ems_map);
