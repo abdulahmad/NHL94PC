@@ -433,6 +433,7 @@ void input_state(void (*add)(void *, size_t))
   add(net_jx, sizeof net_jx); add(net_jy, sizeof net_jy); add(nk_prev, sizeof nk_prev); add(&nk_n, sizeof nk_n);
 }
 
+void input_net_set_device(int team, int dev) { if (hit_pad.ds) wr8(lin(hit_pad.ds, 0x52C + team), (uint8_t)dev); }   /* (tests) */
 int input_net_in_game(void) { return hit_pad.tsc && cpu_instr_count() - hit_pad.tsc < (uint64_t)(vtime_ips() * 0.5); }
 /* the device a team plays with in the running game (0 none/computer) */
 int input_net_device(int team) { return input_net_in_game() ? rd8(lin(hit_pad.ds, 0x52C + team)) : 0; }

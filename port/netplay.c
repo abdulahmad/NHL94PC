@@ -21,6 +21,7 @@ void input_net_apply(uint16_t w0, uint16_t w1);
 void input_net(int on);
 int input_net_in_game(void);
 int input_net_device(int team);
+void input_net_set_device(int team, int dev);
 
 #define STEP_S 0.05
 #define RB_SLOTS 32
@@ -187,6 +188,7 @@ static void start_session(void)
   size_t n = 0;
   uint8_t *p = NULL;
   int d0 = input_net_device(0), d1 = input_net_device(1);
+  if (getenv("NHL94_NETTEST") && d1 == 0 && d0 == 8) { input_net_set_device(1, 8); d1 = 8; }   /* (tests: the computer team plays too) */
   if (verbose) fprintf(stderr, "online: a game is on, devices %d and %d\n", d0, d1);
   if (!((d0 == 8 || d0 == 2 || d0 == 4) && (d1 == 8 || d1 == 2 || d1 == 4) && (d0 != d1 || getenv("NHL94_NETTEST")))) {
     snprintf(why, sizeof why, "online play needs a person on each team, each on a different device (keyboard, joystick A, joystick B)");
@@ -256,6 +258,10 @@ int netplay_frame(double now, int *idle)
   cnt = ob_net_step_count(net);
   if (cnt >= hi && (now - t_go) < (double)hi * STEP_S) { *idle = 1; return 1; }   /* (a new step waits for its time) */
   local = input_net_local();
+  if (getenv("NHL94_AUTOPAD")) {                    /* tests: a pattern of moves and buttons, different on each machine */
+    unsigned t = (unsigned)((now - t_go) * 4) + (unsigned)me * 5;
+    local = (uint16_t)(1u << (t % 4)) | ((t % 7) == 0 ? 16 : 0) | ((t % 11) == 0 ? 32 : 0);
+  }
   r = ob_net_frame(net, 1, &local, all);
   if (r < 0) { end_net(NULL); return 0; }
   if (r == OB_NET_WAIT) { *idle = 1; return 1; }
