@@ -292,7 +292,7 @@ int netplay_frame(double now, int *idle)
   run_to(base + cnt * STEP_S);
   if (cnt > hi) hi = cnt; else n_replayed++;
   n_steps++;
-  if (getenv("NHL94_REGIONS") && cnt <= 42 && cnt >= hi) region_line("step", cnt);
+  if (getenv("NHL94_REGIONS") && (cnt <= 42 || cnt % 40 == 0)) region_line("step", cnt);
   if (cnt % 40 == 0) ob_net_check(net, cnt - 1, machine_hash());
   if (verbose && cnt % 200 == 0 && cnt >= hi) {
     char line[200];
