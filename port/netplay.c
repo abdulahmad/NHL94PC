@@ -187,7 +187,8 @@ static void start_session(void)
   size_t n = 0;
   uint8_t *p = NULL;
   int d0 = input_net_device(0), d1 = input_net_device(1);
-  if (!((d0 == 8 || d0 == 2 || d0 == 4) && (d1 == 8 || d1 == 2 || d1 == 4) && d0 != d1)) {
+  if (verbose) fprintf(stderr, "online: a game is on, devices %d and %d\n", d0, d1);
+  if (!((d0 == 8 || d0 == 2 || d0 == 4) && (d1 == 8 || d1 == 2 || d1 == 4) && (d0 != d1 || getenv("NHL94_NETTEST")))) {
     snprintf(why, sizeof why, "online play needs a person on each team, each on a different device (keyboard, joystick A, joystick B)");
     mode = IDLE;
     return;
