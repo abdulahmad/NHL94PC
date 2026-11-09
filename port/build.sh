@@ -22,9 +22,9 @@ gcc $CFLAGS -w -I$X/include -c $X/prim_ops.c -o build/x86emu_prim_ops.o || exit 
 # Overbar, the host menu and scaler: the git submodule port/overbar (git submodule update --init)
 [ -f port/overbar/sources.txt ] || { echo "no Overbar at port/overbar: git submodule update --init" >&2; exit 1; }
 OVERBAR_SRCS=$(tr -d '\r' < port/overbar/sources.txt | sed 's|^|port/overbar/|')
-gcc $CFLAGS -Wall -Wno-misleading-indentation -Wno-format-truncation -DOB_SDL_BASE -Iport/overbar/include -I$X -Iport -o build/hockey94 port/main.c port/cpu.c port/pc.c port/vga.c \
+gcc $CFLAGS -Wall -Wno-misleading-indentation -Wno-format-truncation -DOB_SDL_BASE -DHAVE_GL -Iport/overbar/include -I$X -Iport -o build/hockey94 port/main.c port/cpu.c port/pc.c port/vga.c \
   port/dos.c port/bios.c port/sound.c port/audio.c port/opl.c port/sb.c port/dma.c port/mpu.c port/speaker.c \
-  port/video_gl.c port/video.c port/input.c port/shell.c port/bindings.c port/plat.c \
+  port/video.c port/input.c port/shell.c port/bindings.c port/plat.c \
   port/overbar_client.c port/machine_state.c port/snaptest.c port/netplay.c $OVERBAR_SRCS \
   port/third_party/nuked-opl3/opl3.c build/x86emu_*.o $MUNT $(pkg-config --cflags --libs sdl2) -lGL -lm || exit 1
 rm -rf build/mister && cp -r port/overbar/mister build/mister    # the MiSTer filter files the "MiSTer" looks use
