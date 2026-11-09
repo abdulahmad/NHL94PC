@@ -47,6 +47,7 @@ struct SDL_Window;
 struct SDL_Window *shell_open(const char *title, int w, int h, int gl);   /* the layer's window (OpenGL if gl), the bar and the events */
 void shell_close(void);
 union SDL_Event;
+void input_osk_key(int scancode, int down);            /* input.c: a key typed on the on-screen keyboard */
 void input_event(const union SDL_Event *e);            /* input.c: an event the layer did not use (the game's keys, mouse, pads) */
 
 /* ---- plat.c ---- */

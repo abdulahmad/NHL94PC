@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <SDL.h>
+#include <overbar/plat.h>
 
 static SDL_Window *win;
 static SDL_Renderer *ren;
@@ -761,6 +762,7 @@ void video_present(void)
   }
   if (!overbar_client_open()) overbar_client_set_class(w <= 320);
   if (overbar_client_open()) overbar_client_draw(argb, w, h, w);
+  if (ob_plat_osk_is_open()) ob_plat_osk_draw(argb, w, h, w);
   {
     int vx, vy, vw, vh;
     video_view(&vx, &vy, &vw, &vh);
