@@ -212,6 +212,12 @@ static void op_cc(x86emu_t *emu, u8 op1)
       wr16(lin(emu->x86.R_SS, emu->x86.R_SP), emu->x86.R_BP);
       emu->x86.R_BP = emu->x86.R_SP;
       emu->x86.R_SP -= o[1] | o[2] << 8;
+    } else if (o[0] == 0x0B && o[1] == 0xC0) {                  /* or ax, ax */
+      uint16_t r = emu->x86.R_AX;
+      emu->x86.R_FLG &= ~(F_CF | F_ZF | F_SF | F_OF | F_PF);
+      if (!r) emu->x86.R_FLG |= F_ZF;
+      if (r & 0x8000) emu->x86.R_FLG |= F_SF;
+      if (!__builtin_parity(r & 0xFF)) emu->x86.R_FLG |= F_PF;
     } else if (o[0] == 0xC9) {                                  /* leave */
       emu->x86.R_SP = emu->x86.R_BP;
       emu->x86.R_BP = rd16(lin(emu->x86.R_SS, emu->x86.R_SP));
@@ -298,12 +304,21 @@ void cpu_probe(void)
  * and last bytes, at paragraph-aligned overlay positions) and an int3 is written over its `enter` and over the `leave` before its return;
  * the hits are counted (the keyboard is up while the entries are one more than the exits). */
 static int cpu_hook_at(uint32_t a, const uint8_t *expect, int len, struct hook_hit *hit);
-int cpu_text_editing(void) { return text_in.count != text_out.count; }
+/* The hook on the routine's entry can be missed (the overlay is loaded just before it runs, and the int3 is written afterwards), so the
+ * editing state comes from the loop that waits for keys (it runs all the time while the box is up, hits are counted) and from the leave. */
+int cpu_text_editing(void)
+{
+  static unsigned in_seen, out_seen;
+  static int inside;
+  if (text_out.count != out_seen) { out_seen = text_out.count; in_seen = text_in.count; inside = 0; }
+  else if (text_in.count != in_seen) { in_seen = text_in.count; inside = 1; }
+  return inside;
+}
 void cpu_text_find(void)
 {
   static const uint8_t head[12] = { 0xC8, 0x0A, 0x00, 0x00, 0x57, 0x56, 0x8B, 0x76, 0x18, 0x9A, 0xA6, 0x01 };
   static const uint8_t tail[8] = { 0x5E, 0x5F, 0xC9, 0xCB, 0xC8, 0x92, 0x01, 0x00 };
-  static const uint8_t enter4[4] = { 0xC8, 0x0A, 0x00, 0x00 }, leave1[1] = { 0xC9 };
+  static const uint8_t orax[2] = { 0x0B, 0xC0 }, leave1[1] = { 0xC9 };
   static double last;
   double now = host_time();
   if (now - last < 0.01) return;
@@ -311,9 +326,9 @@ void cpu_text_find(void)
   for (uint32_t a = 12; a + 0x330 < 0xA0000; a += 16) {            /* a: 12 modulo 16 (the routine is 0x25C into a paragraph-aligned overlay) */
     if (mem[a] != 0xC8 || memcmp(mem + a, head, sizeof head) || memcmp(mem + a + 0x328, tail, sizeof tail)) continue;
     int have = 0;
-    for (int i = 0; i < nhooks; i++) if (hooks[i].lin == a) have = 1;
-    if (have) { mem[a] = 0xCC; mem[a + 0x32A] = 0xCC; if (getenv("NHL94_TEXTLOG")) fprintf(stderr, "text editor at %05X loaded again, hooks written again (in %u out %u)\n", a, text_in.count, text_out.count); continue; }   /* loaded again: the int3s are gone */
-    int r1 = cpu_hook_at(a, enter4, 4, &text_in), r2 = cpu_hook_at(a + 0x32A, leave1, 1, &text_out);
+    for (int i = 0; i < nhooks; i++) if (hooks[i].lin == a + 0x6B) have = 1;
+    if (have) { if (mem[a + 0x6B] == 0xCC && mem[a + 0x32A] == 0xCC) continue; mem[a + 0x6B] = 0xCC; mem[a + 0x32A] = 0xCC; if (getenv("NHL94_TEXTLOG")) fprintf(stderr, "text editor at %05X loaded again, hooks written again (in %u out %u)\n", a, text_in.count, text_out.count); continue; }   /* loaded again: the int3s are gone */
+    int r1 = cpu_hook_at(a + 0x6B, orax, 2, &text_in), r2 = cpu_hook_at(a + 0x32A, leave1, 1, &text_out);
     if (getenv("NHL94_TEXTLOG")) fprintf(stderr, "text editor found at %05X, hooks %d %d, %d hooks\n", a, r1, r2, nhooks);
   }
 }
