@@ -186,6 +186,7 @@ static void string_io(x86emu_t *emu, u8 op1)
 static struct { uint32_t lin; uint8_t orig[5]; int len; struct hook_hit *hit; } hooks[8];
 static int nhooks;
 static void (*cc_orig)(x86emu_t *, u8);
+static struct hook_hit text_in, text_out;               /* the game's line editor (cpu_text_find) */
 
 static void op_cc(x86emu_t *emu, u8 op1)
 {
@@ -195,6 +196,7 @@ static void op_cc(x86emu_t *emu, u8 op1)
     const uint8_t *o = hooks[i].orig;
     hooks[i].hit->t = host_time(); hooks[i].hit->ds = emu->x86.R_DS; hooks[i].hit->ss = emu->x86.R_SS; hooks[i].hit->sp = emu->x86.R_SP;
     hooks[i].hit->count++;
+    if (getenv("NHL94_TEXTLOG") && (hooks[i].hit == &text_in || hooks[i].hit == &text_out)) fprintf(stderr, "text editor %s hit %u\n", hooks[i].hit == &text_in ? "enter" : "leave", hooks[i].hit->count);
     hooks[i].hit->tsc = emu->x86.R_TSC;
     if (o[0] >= 0x50 && o[0] <= 0x57) {                         /* push r16 */
       uint16_t v;
@@ -295,7 +297,6 @@ void cpu_probe(void)
  * overlay is loaded, and it may be loaded again at another place. So once in a while the memory is searched for the routine (its first
  * and last bytes, at paragraph-aligned overlay positions) and an int3 is written over its `enter` and over the `leave` before its return;
  * the hits are counted (the keyboard is up while the entries are one more than the exits). */
-static struct hook_hit text_in, text_out;
 static int cpu_hook_at(uint32_t a, const uint8_t *expect, int len, struct hook_hit *hit);
 int cpu_text_editing(void) { return text_in.count != text_out.count; }
 void cpu_text_find(void)
@@ -305,15 +306,15 @@ void cpu_text_find(void)
   static const uint8_t enter4[4] = { 0xC8, 0x0A, 0x00, 0x00 }, leave1[1] = { 0xC9 };
   static double last;
   double now = host_time();
-  if (now - last < 0.25) return;
+  if (now - last < 0.01) return;
   last = now;
   for (uint32_t a = 12; a + 0x330 < 0xA0000; a += 16) {            /* a: 12 modulo 16 (the routine is 0x25C into a paragraph-aligned overlay) */
     if (mem[a] != 0xC8 || memcmp(mem + a, head, sizeof head) || memcmp(mem + a + 0x328, tail, sizeof tail)) continue;
     int have = 0;
     for (int i = 0; i < nhooks; i++) if (hooks[i].lin == a) have = 1;
-    if (have) { mem[a] = 0xCC; mem[a + 0x32A] = 0xCC; continue; }                  /* loaded again: the int3s are gone */
-    cpu_hook_at(a, enter4, 4, &text_in);
-    cpu_hook_at(a + 0x32A, leave1, 1, &text_out);
+    if (have) { mem[a] = 0xCC; mem[a + 0x32A] = 0xCC; if (getenv("NHL94_TEXTLOG")) fprintf(stderr, "text editor at %05X loaded again, hooks written again (in %u out %u)\n", a, text_in.count, text_out.count); continue; }   /* loaded again: the int3s are gone */
+    int r1 = cpu_hook_at(a, enter4, 4, &text_in), r2 = cpu_hook_at(a + 0x32A, leave1, 1, &text_out);
+    if (getenv("NHL94_TEXTLOG")) fprintf(stderr, "text editor found at %05X, hooks %d %d, %d hooks\n", a, r1, r2, nhooks);
   }
 }
 
