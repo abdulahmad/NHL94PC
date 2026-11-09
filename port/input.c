@@ -374,8 +374,23 @@ void input_event(const SDL_Event *ep)
 
 void input_osk_key(int scancode, int down) { key_physical((SDL_Scancode)scancode, down); }
 
+/* The on-screen keyboard follows the game's line editor (league names, owner names, created players): up while the editor runs (cpu.c).
+ * OVERBAR_TEST_LOG gets "TEST osk-auto open / close" lines. F9 still opens it by hand. */
+static void osk_auto_poll(void)
+{
+  static int shown;
+  cpu_text_find();
+  int want = cpu_text_editing();
+  if (want == shown) return;
+  shown = want;
+  const char *lf = getenv("OVERBAR_TEST_LOG");
+  if (lf) { FILE *f = fopen(lf, "ab"); if (f) { fprintf(f, "TEST osk-auto %s\n", want ? "open" : "close"); fclose(f); } }
+  if (want) ob_plat_osk_open(); else ob_plat_osk_close();
+}
+
 void input_poll(void)
 {
+  osk_auto_poll();
   joy_update();
   cursor_update();
   ob_plat_pump();

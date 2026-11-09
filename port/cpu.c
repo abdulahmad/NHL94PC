@@ -205,6 +205,15 @@ static void op_cc(x86emu_t *emu, u8 op1)
       }
       emu->x86.R_SP -= 2;
       wr16(lin(emu->x86.R_SS, emu->x86.R_SP), v);
+    } else if (o[0] == 0xC8 && o[3] == 0) {                     /* enter imm16, 0 */
+      emu->x86.R_SP -= 2;
+      wr16(lin(emu->x86.R_SS, emu->x86.R_SP), emu->x86.R_BP);
+      emu->x86.R_BP = emu->x86.R_SP;
+      emu->x86.R_SP -= o[1] | o[2] << 8;
+    } else if (o[0] == 0xC9) {                                  /* leave */
+      emu->x86.R_SP = emu->x86.R_BP;
+      emu->x86.R_BP = rd16(lin(emu->x86.R_SS, emu->x86.R_SP));
+      emu->x86.R_SP += 2;
     } else if (o[0] == 0x8A && o[1] == 0x1E) {                  /* mov bl, [imm16] */
       emu->x86.R_BL = rd8(lin(emu->x86.R_DS, o[2] | o[3] << 8));
     } else if (o[0] == 0x83 && o[1] == 0x3E) {                  /* cmp word [imm16], simm8 */
@@ -223,9 +232,14 @@ static void op_cc(x86emu_t *emu, u8 op1)
   cc_orig(emu, op1);
 }
 
+static int cpu_hook_at(uint32_t a, const uint8_t *expect, int len, struct hook_hit *hit);
 int cpu_hook(uint16_t cs, uint16_t ip, const uint8_t *expect, int len, struct hook_hit *hit)
 {
-  uint32_t a = lin(cs, ip);
+  return cpu_hook_at(lin(cs, ip), expect, len, hit);
+}
+
+static int cpu_hook_at(uint32_t a, const uint8_t *expect, int len, struct hook_hit *hit)
+{
   if (nhooks >= 8 || memcmp(mem + a, expect, len)) return 0;
   hooks[nhooks].lin = a; memcpy(hooks[nhooks].orig, expect, len); hooks[nhooks].len = len; hooks[nhooks].hit = hit;
   nhooks++;
@@ -274,6 +288,32 @@ void cpu_probe(void)
       fprintf(f, "\n"); fclose(f);
     }
     ntab = 0; samples = 0;
+  }
+}
+
+/* The game's line editor (the routine behind "Enter New League Name" and the other text boxes) is overlay code: it is not in memory until the
+ * overlay is loaded, and it may be loaded again at another place. So once in a while the memory is searched for the routine (its first
+ * and last bytes, at paragraph-aligned overlay positions) and an int3 is written over its `enter` and over the `leave` before its return;
+ * the hits are counted (the keyboard is up while the entries are one more than the exits). */
+static struct hook_hit text_in, text_out;
+static int cpu_hook_at(uint32_t a, const uint8_t *expect, int len, struct hook_hit *hit);
+int cpu_text_editing(void) { return text_in.count != text_out.count; }
+void cpu_text_find(void)
+{
+  static const uint8_t head[12] = { 0xC8, 0x0A, 0x00, 0x00, 0x57, 0x56, 0x8B, 0x76, 0x18, 0x9A, 0xA6, 0x01 };
+  static const uint8_t tail[8] = { 0x5E, 0x5F, 0xC9, 0xCB, 0xC8, 0x92, 0x01, 0x00 };
+  static const uint8_t enter4[4] = { 0xC8, 0x0A, 0x00, 0x00 }, leave1[1] = { 0xC9 };
+  static double last;
+  double now = host_time();
+  if (now - last < 0.25) return;
+  last = now;
+  for (uint32_t a = 12; a + 0x330 < 0xA0000; a += 16) {            /* a: 12 modulo 16 (the routine is 0x25C into a paragraph-aligned overlay) */
+    if (mem[a] != 0xC8 || memcmp(mem + a, head, sizeof head) || memcmp(mem + a + 0x328, tail, sizeof tail)) continue;
+    int have = 0;
+    for (int i = 0; i < nhooks; i++) if (hooks[i].lin == a) have = 1;
+    if (have) { mem[a] = 0xCC; mem[a + 0x32A] = 0xCC; continue; }                  /* loaded again: the int3s are gone */
+    cpu_hook_at(a, enter4, 4, &text_in);
+    cpu_hook_at(a + 0x32A, leave1, 1, &text_out);
   }
 }
 
