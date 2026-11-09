@@ -46,6 +46,7 @@ void cpu_init(void);
 void cpu_reset_to(uint16_t cs, uint16_t ip, uint16_t ss, uint16_t sp, uint16_t ds, uint16_t es);
 int  cpu_run(unsigned instructions);   /* returns 1 when the CPU halted (hlt) */
 uint64_t cpu_instr_count(void);
+void cpu_probe(void);                /* OVERBAR_PROBE=file: sample where the CPU is, to find a routine */
 /* put a hook on the game's code at cs:ip when the bytes there are `expect` (one instruction, see cpu.c); each time it runs, *hit
  * gets the time and the DS, SS and SP of that moment (before the instruction). 0 if the bytes differ. */
 struct hook_hit { double t; uint16_t ds, ss, sp; unsigned count; uint64_t tsc; /* the instruction count of the last hit */ };

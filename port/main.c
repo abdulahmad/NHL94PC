@@ -98,6 +98,7 @@ int main(int argc, char **argv)
       halted = 1;
     last = now;
     kbd_pump();
+    cpu_probe();
     sound_pump(now);
     input_script_run(now - t_start);
     if (now >= next_poll) { input_poll(); next_poll = now + 1.0 / 250; }

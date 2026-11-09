@@ -233,6 +233,50 @@ int cpu_hook(uint16_t cs, uint16_t ip, const uint8_t *expect, int len, struct ho
   return 1;
 }
 
+/* OVERBAR_PROBE=file: find a routine of the game by sampling. Every 20 ms the CPU's CS:IP and the words on top of its stack are counted
+ * (segments as paragraphs from the load segment 0732, the units of segmap.json); every 3 s the ones seen in most samples go to the file. */
+void cpu_probe(void)
+{
+  static const char *path; static int init, samples, ntab;
+  static double last, report;
+  static struct { uint16_t kind, seg, off; int n; } tab[1024];
+  if (!init) { init = 1; path = getenv("OVERBAR_PROBE"); }
+  if (!path || !cpu) return;
+  double now = host_time();
+  if (now - last < 0.02) return;
+  last = now; if (!report) report = now;
+  samples++;
+  struct { uint16_t kind, seg, off; } keys[48]; int nk = 0;
+  uint16_t cs = cpu->x86.R_CS - 0x0732, ss = cpu->x86.R_SS, sp = cpu->x86.R_SP;
+  keys[nk].kind = 0; keys[nk].seg = cs; keys[nk++].off = cpu->x86.R_IP;
+  for (int i = 0; i < 24; i++) {
+    uint16_t w = rd16(lin(ss, (uint16_t)(sp + 2 * i)));
+    keys[nk].kind = 1; keys[nk].seg = cs; keys[nk++].off = w;                 /* a near return address (the word, with the current segment) */
+    uint16_t w2 = rd16(lin(ss, (uint16_t)(sp + 2 * i + 2)));
+    if (w2 > 0x0732 && w2 < 0x7000) { keys[nk].kind = 2; keys[nk].seg = w2 - 0x0732; keys[nk++].off = w; }   /* a far one (word, then the segment) */
+  }
+  for (int k = 0; k < nk; k++) {
+    int j; for (j = 0; j < ntab && (tab[j].kind != keys[k].kind || tab[j].seg != keys[k].seg || tab[j].off != keys[k].off); j++) ;
+    if (j == ntab && ntab < 1024) { tab[j].kind = keys[k].kind; tab[j].seg = keys[k].seg; tab[j].off = keys[k].off; tab[j].n = 0; ntab++; }
+    if (j < ntab) tab[j].n++;
+  }
+  if (now - report > 3) {
+    report = now;
+    FILE *f = fopen(path, "a");
+    if (f) {
+      fprintf(f, "probe: %d samples; seen in most samples (ip: where it is; near: a word on the stack read as an offset in the current segment; far: offset and segment); segment = paragraph from the load segment, as in segmap.json:\n", samples);
+      for (int r = 0; r < 24; r++) {
+        int b = -1; for (int j = 0; j < ntab; j++) if (tab[j].n > 0 && (b < 0 || tab[j].n > tab[b].n)) b = j;
+        if (b < 0) break;
+        fprintf(f, "  %s %04X:%04X  %d%%\n", tab[b].kind == 0 ? "ip  " : tab[b].kind == 1 ? "near" : "far ", tab[b].seg, tab[b].off, tab[b].n * 100 / samples);
+        tab[b].n = -tab[b].n;
+      }
+      fprintf(f, "\n"); fclose(f);
+    }
+    ntab = 0; samples = 0;
+  }
+}
+
 /* NHL94_BREAK="cs:ip,cs:ip": print the registers (and 8 bytes at DS:AX) each time one of these runs (debugging) */
 static uint32_t brk[16]; static int nbrk;
 static double cov_t; static uint8_t *cov;
