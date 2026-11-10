@@ -2,6 +2,7 @@
  * loading HOCKEY.EXE (MZ image, relocations, PSP, environment). Drive C: is the game folder; a DOS name is matched
  * against the host's files ignoring case. */
 #include "machine.h"
+#include "season.h"
 #include <ctype.h>
 #include <dirent.h>
 #include <errno.h>
@@ -84,6 +85,9 @@ static void dos_canon(const char *dos, char *out, size_t n)
 int host_path(const char *dos, char *out, size_t n, int must_exist)
 {
   char rel[512]; struct stat st;
+  int mapped = port_season_map_dos(dos, out, (int)n);
+  if (mapped == 1) return 0;
+  if (mapped == -1) return -1;
   dos_canon(dos, rel, sizeof rel);
   resolve_in(game_root, rel, out, n);
   if (!must_exist || !stat(out, &st)) return 0;
@@ -378,7 +382,14 @@ int dos_int21(void)
   case 0x30: s_ax(0x0005); s_bx(0xFF00); s_cx(0); return 1;
   case 0x33: if (r_al() == 0 || r_al() == 2) s_dl(0); else if (r_al() == 5) s_dl(3); return 1;
   case 0x35: { uint16_t s, o; cpu_get_vector(r_al(), &s, &o); s_es(s); s_bx(o); return 1; }
-  case 0x36: s_ax(64); s_bx(0x8000); s_cx(512); s_dx(0xFFFF); return 1;
+  case 0x36: {
+    unsigned tc, fc, spc, bps;
+    int letter = r_dl() ? 'A' + (int)r_dl() - 1 : 'A';
+    if (port_season_diskfree(letter, &tc, &fc, &spc, &bps) == 0) {
+      s_ax((uint16_t)spc); s_bx((uint16_t)fc); s_cx((uint16_t)bps); s_dx((uint16_t)tc); return 1;
+    }
+    s_ax(64); s_bx(0x8000); s_cx(512); s_dx(0xFFFF); return 1;
+  }
   case 0x37: s_dl('/'); s_al(0); return 1;
   case 0x38: s_bx(1); ok(); return 1;
   case 0x39: read_str(r_ds(), r_dx(), name, sizeof name); host_path(name, hp, sizeof hp, 0); MKDIR(hp); ok(); return 1;

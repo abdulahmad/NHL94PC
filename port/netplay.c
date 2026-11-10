@@ -10,6 +10,7 @@
 #include "include/x86emu_int.h"
 #include "host.h"
 #include "overbar_client.h"
+#include "season.h"
 #include "overbar/net.h"
 #include "overbar/snap.h"
 #include <SDL.h>
@@ -176,6 +177,7 @@ static void end_net(const char *m)
     if (ob_net_state(net) == OB_NET_ENDED && ob_net_why(net)[0]) snprintf(why, sizeof why, "%s", ob_net_why(net));
     else if (m) snprintf(why, sizeof why, "%s", m);
     if (verbose) fprintf(stderr, "online: session ends: %s\n", why);
+    port_season_unbind_net();
     ob_net_free(net);
     net = NULL;
   } else if (m) snprintf(why, sizeof why, "%s", m);
@@ -226,6 +228,7 @@ static void start_session(void)
   net = ob_net_new(&cfg, &g, err, sizeof err);
   free(p);
   if (!net) { snprintf(why, sizeof why, "%s", err); mode = IDLE; return; }
+  port_season_bind_net(net);
   if (getenv("NHL94_NETSIM")) {
     int d = 0, j = 0, l = 0;
     sscanf(getenv("NHL94_NETSIM"), "%d,%d,%d", &d, &j, &l);
@@ -270,12 +273,14 @@ int netplay_frame(double now, int *idle)
   }
   if (mode == CONNECT) {
     int st = ob_net_poll(net);
+    port_season_poll();
     *idle = 1;
     if (st == OB_NET_ENDED) { end_net("the session did not start"); return 0; }
     if (st == OB_NET_GO) go();
     return 1;
   }
   if (ob_net_poll(net) == OB_NET_ENDED) { end_net(NULL); return 0; }
+  port_season_poll();
   cnt = ob_net_step_count(net);
   if (cnt >= hi && (now - t_go) < (double)hi * STEP_S) { *idle = 1; return 1; }   /* (a new step waits for its time) */
   local = input_net_local();
