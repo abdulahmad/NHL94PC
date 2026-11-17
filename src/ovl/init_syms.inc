@@ -56,6 +56,15 @@ FindUnlink		equ	0x99A
 FitNameToWidth		equ	0x8
 FlushInputEvents		equ	0x66
 FontPtr		equ	0x6D4E
+Game_1E45_0000		equ	0x0
+Game_1E64_0002		equ	0x2
+Game_1E7E_0060		equ	0x60
+Game_1E7E_0120		equ	0x120
+Game_1E7E_017E		equ	0x17E
+Game_1E7E_04C0		equ	0x4C0
+Game_1E7E_0A74		equ	0xA74
+Game_1F54_0002		equ	0x2
+Game_1F54_0316		equ	0x316
 GetBlockAt		equ	0x11DD
 GetInputEvent		equ	0xE
 GetPaletteFar		equ	0x366
