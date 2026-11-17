@@ -12,106 +12,106 @@
    "sha1": "7a321f9253615e3263243fdbddd9fce6b130100a",
    "segments": [
     {
-     "name": "menus_00",
+     "name": "controls_dlg",
      "para": 7749,
      "size": 4256,
-     "file": "ovl/menus/menus_00.asm"
+     "file": "pc/controls_dlg.asm"
     },
     {
-     "name": "menus_01",
+     "name": "highlights",
      "para": 8015,
      "size": 1248,
-     "file": "ovl/menus/menus_01.asm"
+     "file": "front/highlights.asm"
     },
     {
-     "name": "menus_02",
+     "name": "title",
      "para": 8093,
      "size": 2464,
-     "file": "ovl/menus/menus_02.asm"
+     "file": "front/title.asm"
     },
     {
-     "name": "menus_03",
+     "name": "side_controls",
      "para": 8247,
      "size": 256,
-     "file": "ovl/menus/menus_03.asm"
+     "file": "front/side_controls.asm"
     },
     {
-     "name": "menus_04",
+     "name": "game_lines",
      "para": 8263,
      "size": 12624,
-     "file": "ovl/menus/menus_04.asm"
+     "file": "front/game_lines.asm"
     },
     {
-     "name": "menus_05",
+     "name": "alert_box",
      "para": 9052,
      "size": 944,
-     "file": "ovl/menus/menus_05.asm"
+     "file": "front/alert_box.asm"
     },
     {
-     "name": "menus_06",
+     "name": "jersey_shape",
      "para": 9111,
      "size": 192,
-     "file": "ovl/menus/menus_06.asm"
+     "file": "front/jersey_shape.asm"
     },
     {
-     "name": "menus_07",
+     "name": "file_dialogs",
      "para": 9123,
      "size": 6224,
-     "file": "ovl/menus/menus_07.asm"
+     "file": "pc/file_dialogs.asm"
     },
     {
-     "name": "menus_08",
+     "name": "sound_config",
      "para": 9512,
      "size": 2896,
-     "file": "ovl/menus/menus_08.asm"
+     "file": "pc/sound_config.asm"
     },
     {
-     "name": "menus_09",
+     "name": "lockerroom",
      "para": 9693,
      "size": 3952,
-     "file": "ovl/menus/menus_09.asm"
+     "file": "front/lockerroom.asm"
     },
     {
-     "name": "menus_10",
+     "name": "playoff_mode",
      "para": 9940,
      "size": 17360,
-     "file": "ovl/menus/menus_10.asm"
+     "file": "front/playoff_mode.asm"
     },
     {
-     "name": "menus_11",
+     "name": "settings_heading",
      "para": 11025,
      "size": 336,
-     "file": "ovl/menus/menus_11.asm"
+     "file": "front/settings_heading.asm"
     },
     {
-     "name": "menus_12",
+     "name": "league_settings",
      "para": 11046,
      "size": 3968,
-     "file": "ovl/menus/menus_12.asm"
+     "file": "pc/league_settings.asm"
     },
     {
-     "name": "menus_13",
+     "name": "mode_settings",
      "para": 11294,
      "size": 2240,
-     "file": "ovl/menus/menus_13.asm"
+     "file": "pc/mode_settings.asm"
     },
     {
-     "name": "menus_14",
+     "name": "exh_settings",
      "para": 11434,
      "size": 1248,
-     "file": "ovl/menus/menus_14.asm"
+     "file": "pc/exh_settings.asm"
     },
     {
-     "name": "menus_15",
+     "name": "desk",
      "para": 11512,
      "size": 6016,
-     "file": "ovl/menus/menus_15.asm"
+     "file": "front/desk.asm"
     },
     {
-     "name": "menus_16",
+     "name": "desk_main",
      "para": 11888,
      "size": 8666,
-     "file": "ovl/menus/menus_16.asm"
+     "file": "front/desk_main.asm"
     }
    ],
    "entries": [
@@ -433,118 +433,118 @@
    "sha1": "565bb6a3a46a19559f824f00e03a4908e77f76fd",
    "segments": [
     {
-     "name": "lp_00",
+     "name": "edit_field",
      "para": 7749,
      "size": 1408,
-     "file": "ovl/lp/lp_00.asm"
+     "file": "pc/edit_field.asm"
     },
     {
-     "name": "lp_01",
+     "name": "home_pals",
      "para": 7837,
      "size": 272,
-     "file": "ovl/lp/lp_01.asm"
+     "file": "front/home_pals.asm"
     },
     {
-     "name": "lp_02",
+     "name": "clear_lines",
      "para": 7854,
      "size": 464,
-     "file": "ovl/lp/lp_02.asm"
+     "file": "front/clear_lines.asm"
     },
     {
-     "name": "lp_03",
+     "name": "league_teams",
      "para": 7883,
      "size": 1632,
-     "file": "ovl/lp/lp_03.asm"
+     "file": "front/league_teams.asm"
     },
     {
-     "name": "lp_04",
+     "name": "league_setup",
      "para": 7985,
      "size": 6992,
-     "file": "ovl/lp/lp_04.asm"
+     "file": "front/league_setup.asm"
     },
     {
-     "name": "lp_05",
+     "name": "league_records",
      "para": 8422,
      "size": 288,
-     "file": "ovl/lp/lp_05.asm"
+     "file": "front/league_records.asm"
     },
     {
-     "name": "lp_06",
+     "name": "floppy_drive",
      "para": 8440,
      "size": 1040,
-     "file": "ovl/lp/lp_06.asm"
+     "file": "pc/floppy_drive.asm"
     },
     {
-     "name": "lp_07",
+     "name": "floppy_export",
      "para": 8505,
      "size": 6560,
-     "file": "ovl/lp/lp_07.asm"
+     "file": "pc/floppy_export.asm"
     },
     {
-     "name": "lp_08",
+     "name": "league_info",
      "para": 8915,
      "size": 800,
-     "file": "ovl/lp/lp_08.asm"
+     "file": "pc/league_info.asm"
     },
     {
-     "name": "lp_09",
+     "name": "league_list",
      "para": 8965,
      "size": 2688,
-     "file": "ovl/lp/lp_09.asm"
+     "file": "front/league_list.asm"
     },
     {
-     "name": "lp_10",
+     "name": "simgame",
      "para": 9133,
      "size": 8272,
-     "file": "ovl/lp/lp_10.asm"
+     "file": "front/simgame.asm"
     },
     {
-     "name": "lp_11",
+     "name": "league_game",
      "para": 9650,
      "size": 12128,
-     "file": "ovl/lp/lp_11.asm"
+     "file": "front/league_game.asm"
     },
     {
-     "name": "lp_12",
+     "name": "league_password",
      "para": 10408,
      "size": 592,
-     "file": "ovl/lp/lp_12.asm"
+     "file": "front/league_password.asm"
     },
     {
-     "name": "lp_13",
+     "name": "season",
      "para": 10445,
      "size": 5344,
-     "file": "ovl/lp/lp_13.asm"
+     "file": "front/season.asm"
     },
     {
-     "name": "lp_14",
+     "name": "new_league",
      "para": 10779,
      "size": 960,
-     "file": "ovl/lp/lp_14.asm"
+     "file": "front/new_league.asm"
     },
     {
-     "name": "lp_15",
+     "name": "trade",
      "para": 10839,
      "size": 9728,
-     "file": "ovl/lp/lp_15.asm"
+     "file": "front/trade.asm"
     },
     {
-     "name": "lp_16",
+     "name": "database_merge",
      "para": 11447,
      "size": 5648,
-     "file": "ovl/lp/lp_16.asm"
+     "file": "pc/database_merge.asm"
     },
     {
-     "name": "lp_17",
+     "name": "league_game_ref",
      "para": 11800,
      "size": 736,
-     "file": "ovl/lp/lp_17.asm"
+     "file": "front/league_game_ref.asm"
     },
     {
-     "name": "lp_18",
+     "name": "awards",
      "para": 11846,
      "size": 5836,
-     "file": "ovl/lp/lp_18.asm"
+     "file": "front/awards.asm"
     }
    ],
    "entries": [
@@ -666,88 +666,88 @@
    "sha1": "3ca7d67f3ad3da24bf71fd972aabb2aa6bcfc920",
    "segments": [
     {
-     "name": "stats_00",
+     "name": "stats_menus",
      "para": 7749,
      "size": 1680,
-     "file": "ovl/stats/stats_00.asm"
+     "file": "front/stats_menus.asm"
     },
     {
-     "name": "stats_01",
+     "name": "stats_menu_loops",
      "para": 7854,
      "size": 7792,
-     "file": "ovl/stats/stats_01.asm"
+     "file": "front/stats_menu_loops.asm"
     },
     {
-     "name": "stats_02",
+     "name": "stats_util",
      "para": 8341,
      "size": 1264,
-     "file": "ovl/stats/stats_02.asm"
+     "file": "front/stats_util.asm"
     },
     {
-     "name": "stats_03",
+     "name": "crests_palette",
      "para": 8420,
      "size": 256,
-     "file": "ovl/stats/stats_03.asm"
+     "file": "front/crests_palette.asm"
     },
     {
-     "name": "stats_04",
+     "name": "goalie_card",
      "para": 8436,
      "size": 1632,
-     "file": "ovl/stats/stats_04.asm"
+     "file": "front/goalie_card.asm"
     },
     {
-     "name": "stats_05",
+     "name": "stats_screens",
      "para": 8538,
      "size": 3808,
-     "file": "ovl/stats/stats_05.asm"
+     "file": "front/stats_screens.asm"
     },
     {
-     "name": "stats_06",
+     "name": "stats_actions",
      "para": 8776,
      "size": 1712,
-     "file": "ovl/stats/stats_06.asm"
+     "file": "front/stats_actions.asm"
     },
     {
-     "name": "stats_07",
+     "name": "easn_stats",
      "para": 8883,
      "size": 2528,
-     "file": "ovl/stats/stats_07.asm"
+     "file": "front/easn_stats.asm"
     },
     {
-     "name": "stats_08",
+     "name": "cal_stats",
      "para": 9041,
      "size": 2112,
-     "file": "ovl/stats/stats_08.asm"
+     "file": "front/cal_stats.asm"
     },
     {
-     "name": "stats_09",
+     "name": "skater_card",
      "para": 9173,
      "size": 1808,
-     "file": "ovl/stats/stats_09.asm"
+     "file": "front/skater_card.asm"
     },
     {
-     "name": "stats_10",
+     "name": "roster_screen",
      "para": 9286,
      "size": 2560,
-     "file": "ovl/stats/stats_10.asm"
+     "file": "front/roster_screen.asm"
     },
     {
-     "name": "stats_11",
+     "name": "standings",
      "para": 9446,
      "size": 4080,
-     "file": "ovl/stats/stats_11.asm"
+     "file": "front/standings.asm"
     },
     {
-     "name": "stats_12",
+     "name": "team_stats",
      "para": 9701,
      "size": 3472,
-     "file": "ovl/stats/stats_12.asm"
+     "file": "front/team_stats.asm"
     },
     {
-     "name": "stats_13",
+     "name": "leaders",
      "para": 9918,
      "size": 5208,
-     "file": "ovl/stats/stats_13.asm"
+     "file": "front/leaders.asm"
     }
    ],
    "entries": [
@@ -1017,34 +1017,34 @@
    "sha1": "2dedac88571abea058512e1fd1d0e85847eaaee2",
    "segments": [
     {
-     "name": "game_00",
+     "name": "cup_final",
      "para": 7749,
      "size": 496,
-     "file": "ovl/game/game_00.asm"
+     "file": "front/cup_final.asm"
     },
     {
-     "name": "game_01",
+     "name": "team_palette",
      "para": 7780,
      "size": 416,
-     "file": "ovl/game/game_01.asm"
+     "file": "engine/team_palette.asm"
     },
     {
-     "name": "game_02",
+     "name": "game_main",
      "para": 7806,
      "size": 2736,
-     "file": "ovl/game/game_02.asm"
+     "file": "front/game_main.asm"
     },
     {
-     "name": "game_03",
+     "name": "scroll",
      "para": 7977,
      "size": 688,
-     "file": "ovl/game/game_03.asm"
+     "file": "pc/video/scroll.asm"
     },
     {
-     "name": "game_04",
+     "name": "sprite_clip",
      "para": 8020,
      "size": 1144,
-     "file": "ovl/game/game_04.asm"
+     "file": "pc/video/sprite_clip.asm"
     }
    ],
    "entries": [
@@ -1134,112 +1134,112 @@
    "sha1": "580d8ac3f8d3a74f1f4fff7e2042b00bbb65d6b5",
    "segments": [
     {
-     "name": "init_00",
+     "name": "game_gfx",
      "para": 8092,
      "size": 1712,
-     "file": "ovl/init/init_00.asm"
+     "file": "pc/assets/game_gfx.asm"
     },
     {
-     "name": "init_01",
+     "name": "matchup",
      "para": 8199,
      "size": 2576,
-     "file": "ovl/init/init_01.asm"
+     "file": "front/matchup.asm"
     },
     {
-     "name": "init_02",
+     "name": "lineups",
      "para": 8360,
      "size": 2288,
-     "file": "ovl/init/init_02.asm"
+     "file": "front/lineups.asm"
     },
     {
-     "name": "init_03",
+     "name": "arena_jingles",
      "para": 8503,
      "size": 1248,
-     "file": "ovl/init/init_03.asm"
+     "file": "pc/sound/arena_jingles.asm"
     },
     {
-     "name": "init_04",
+     "name": "period_title",
      "para": 8581,
      "size": 448,
-     "file": "ovl/init/init_04.asm"
+     "file": "front/period_title.asm"
     },
     {
-     "name": "init_05",
+     "name": "game_summary",
      "para": 8609,
      "size": 5712,
-     "file": "ovl/init/init_05.asm"
+     "file": "front/game_summary.asm"
     },
     {
-     "name": "init_06",
+     "name": "team_summary",
      "para": 8966,
      "size": 1904,
-     "file": "ovl/init/init_06.asm"
+     "file": "front/team_summary.asm"
     },
     {
-     "name": "init_07",
+     "name": "end_game",
      "para": 9085,
      "size": 1248,
-     "file": "ovl/init/init_07.asm"
+     "file": "front/end_game.asm"
     },
     {
-     "name": "init_08",
+     "name": "title_movies",
      "para": 9163,
      "size": 1440,
-     "file": "ovl/init/init_08.asm"
+     "file": "front/title_movies.asm"
     },
     {
-     "name": "init_09",
+     "name": "team_db",
      "para": 9253,
      "size": 2960,
-     "file": "ovl/init/init_09.asm"
+     "file": "front/team_db.asm"
     },
     {
-     "name": "init_10",
+     "name": "rink_tiles",
      "para": 9438,
      "size": 1024,
-     "file": "ovl/init/init_10.asm"
+     "file": "front/rink_tiles.asm"
     },
     {
-     "name": "init_11",
+     "name": "scoreboard_init",
      "para": 9502,
      "size": 272,
-     "file": "ovl/init/init_11.asm"
+     "file": "front/scoreboard_init.asm"
     },
     {
-     "name": "init_12",
+     "name": "team_names",
      "para": 9519,
      "size": 976,
-     "file": "ovl/init/init_12.asm"
+     "file": "front/team_names.asm"
     },
     {
-     "name": "init_13",
+     "name": "free_game",
      "para": 9580,
      "size": 336,
-     "file": "ovl/init/init_13.asm"
+     "file": "pc/free_game.asm"
     },
     {
-     "name": "init_14",
+     "name": "replay_controls",
      "para": 9601,
      "size": 5392,
-     "file": "ovl/init/init_14.asm"
+     "file": "front/replay_controls.asm"
     },
     {
-     "name": "init_15",
+     "name": "replay_draw",
      "para": 9938,
      "size": 2976,
-     "file": "ovl/init/init_15.asm"
+     "file": "engine/replay_draw.asm"
     },
     {
-     "name": "init_16",
+     "name": "game_saveload",
      "para": 10124,
      "size": 5856,
-     "file": "ovl/init/init_16.asm"
+     "file": "pc/game_saveload.asm"
     },
     {
-     "name": "init_17",
+     "name": "replay_gadgets",
      "para": 10490,
      "size": 648,
-     "file": "ovl/init/init_17.asm"
+     "file": "front/replay_gadgets.asm"
     }
    ],
    "entries": [
@@ -1361,106 +1361,106 @@
    "sha1": "81897f14b1709fc4f36ae52fe17e5a6db9c128e0",
    "segments": [
     {
-     "name": "ai_00",
+     "name": "setup_controllers",
      "para": 8092,
      "size": 224,
-     "file": "ovl/ai/ai_00.asm"
+     "file": "front/setup_controllers.asm"
     },
     {
-     "name": "ai_01",
+     "name": "highlight_game",
      "para": 8106,
      "size": 2272,
-     "file": "ovl/ai/ai_01.asm"
+     "file": "engine/highlight_game.asm"
     },
     {
-     "name": "ai_02",
+     "name": "replay",
      "para": 8248,
      "size": 672,
-     "file": "ovl/ai/ai_02.asm"
+     "file": "engine/replay.asm"
     },
     {
-     "name": "ai_03",
+     "name": "play_hilight",
      "para": 8290,
      "size": 528,
-     "file": "ovl/ai/ai_03.asm"
+     "file": "front/play_hilight.asm"
     },
     {
-     "name": "ai_04",
+     "name": "hud_panel",
      "para": 8323,
      "size": 3600,
-     "file": "ovl/ai/ai_04.asm"
+     "file": "engine/hud_panel.asm"
     },
     {
-     "name": "ai_05",
+     "name": "faceoff",
      "para": 8548,
      "size": 4272,
-     "file": "ovl/ai/ai_05.asm"
+     "file": "engine/faceoff.asm"
     },
     {
-     "name": "ai_06",
+     "name": "hud",
      "para": 8815,
      "size": 3632,
-     "file": "ovl/ai/ai_06.asm"
+     "file": "engine/hud.asm"
     },
     {
-     "name": "ai_07",
+     "name": "gamelog",
      "para": 9042,
      "size": 3376,
-     "file": "ovl/ai/ai_07.asm"
+     "file": "engine/gamelog.asm"
     },
     {
-     "name": "ai_08",
+     "name": "skate",
      "para": 9253,
      "size": 3904,
-     "file": "ovl/ai/ai_08.asm"
+     "file": "engine/skate.asm"
     },
     {
-     "name": "ai_09",
+     "name": "logic",
      "para": 9497,
      "size": 14880,
-     "file": "ovl/ai/ai_09.asm"
+     "file": "engine/logic.asm"
     },
     {
-     "name": "ai_10",
+     "name": "physics",
      "para": 10427,
      "size": 13968,
-     "file": "ovl/ai/ai_10.asm"
+     "file": "engine/physics.asm"
     },
     {
-     "name": "ai_11",
+     "name": "input",
      "para": 11300,
      "size": 2784,
-     "file": "ovl/ai/ai_11.asm"
+     "file": "engine/input.asm"
     },
     {
-     "name": "ai_12",
+     "name": "intro",
      "para": 11474,
      "size": 5888,
-     "file": "ovl/ai/ai_12.asm"
+     "file": "engine/intro.asm"
     },
     {
-     "name": "ai_13",
+     "name": "hockey",
      "para": 11842,
      "size": 12096,
-     "file": "ovl/ai/ai_13.asm"
+     "file": "engine/hockey.asm"
     },
     {
-     "name": "ai_14",
+     "name": "rink_objects",
      "para": 12598,
      "size": 1088,
-     "file": "ovl/ai/ai_14.asm"
+     "file": "engine/rink_objects.asm"
     },
     {
-     "name": "ai_15",
+     "name": "lines",
      "para": 12666,
      "size": 4112,
-     "file": "ovl/ai/ai_15.asm"
+     "file": "engine/lines.asm"
     },
     {
-     "name": "ai_16",
+     "name": "penalty",
      "para": 12923,
      "size": 3290,
-     "file": "ovl/ai/ai_16.asm"
+     "file": "engine/penalty.asm"
     }
    ],
    "entries": [
@@ -1806,16 +1806,16 @@
    "sha1": "d005d0266b62df7b85a514bc4940d16f282c15ae",
    "segments": [
     {
-     "name": "movie_00",
+     "name": "planar",
      "para": 13129,
      "size": 224,
-     "file": "ovl/movie/movie_00.asm"
+     "file": "lib/planar.asm"
     },
     {
-     "name": "movie_01",
+     "name": "mvi_player",
      "para": 13143,
      "size": 3032,
-     "file": "ovl/movie/movie_01.asm"
+     "file": "lib/mvi_player.asm"
     }
    ],
    "entries": [
@@ -1849,10 +1849,10 @@
    "sha1": "12f79899ffbd0eadcc8ee21d632da6bce65cbb67",
    "segments": [
     {
-     "name": "fades_00",
+     "name": "fades",
      "para": 13129,
      "size": 232,
-     "file": "ovl/fades/fades_00.asm"
+     "file": "front/fade/fades.asm"
     }
    ],
    "entries": [
@@ -1882,10 +1882,10 @@
    "sha1": "e32b43866555ea3f34cffdec763c9dc2f30d80dc",
    "segments": [
     {
-     "name": "fades1_00",
+     "name": "venetian",
      "para": 13144,
      "size": 436,
-     "file": "ovl/fades1/fades1_00.asm"
+     "file": "front/fade/venetian.asm"
     }
    ],
    "entries": []
@@ -1902,10 +1902,10 @@
    "sha1": "0682e62a9373c0d793bd61ce66726d8d7389fb05",
    "segments": [
     {
-     "name": "fades2_00",
+     "name": "wipe",
      "para": 13144,
      "size": 474,
-     "file": "ovl/fades2/fades2_00.asm"
+     "file": "front/fade/wipe.asm"
     }
    ],
    "entries": []
@@ -1922,10 +1922,10 @@
    "sha1": "d30cd2c43d1ba3f8a1ab616a24147ca2461182d2",
    "segments": [
     {
-     "name": "fades3_00",
+     "name": "plane_bands",
      "para": 13144,
      "size": 460,
-     "file": "ovl/fades3/fades3_00.asm"
+     "file": "front/fade/plane_bands.asm"
     }
    ],
    "entries": []
@@ -1942,10 +1942,10 @@
    "sha1": "d8cc4471b8d3682b26992459987057c9e70fc8ea",
    "segments": [
     {
-     "name": "fades4_00",
+     "name": "palette_in",
      "para": 13144,
      "size": 210,
-     "file": "ovl/fades4/fades4_00.asm"
+     "file": "front/fade/palette_in.asm"
     }
    ],
    "entries": [
@@ -1967,10 +1967,10 @@
    "sha1": "4e0ef663fcce8e88234d46e11e043e5f19800803",
    "segments": [
     {
-     "name": "fades5_00",
+     "name": "block_sweep",
      "para": 13144,
      "size": 436,
-     "file": "ovl/fades5/fades5_00.asm"
+     "file": "front/fade/block_sweep.asm"
     }
    ],
    "entries": []
@@ -1987,10 +1987,10 @@
    "sha1": "6960763cc01e52259c00bd11c7437b1d5dc9e4f8",
    "segments": [
     {
-     "name": "fades6_00",
+     "name": "slide_strips",
      "para": 13144,
      "size": 356,
-     "file": "ovl/fades6/fades6_00.asm"
+     "file": "front/fade/slide_strips.asm"
     }
    ],
    "entries": []
@@ -2007,10 +2007,10 @@
    "sha1": "6b52f8a19409088156ad6a253fddef43c74d1a7f",
    "segments": [
     {
-     "name": "fades7_00",
+     "name": "split_center",
      "para": 13144,
      "size": 528,
-     "file": "ovl/fades7/fades7_00.asm"
+     "file": "front/fade/split_center.asm"
     }
    ],
    "entries": []
@@ -2027,10 +2027,10 @@
    "sha1": "1353af353556da0caa2d01d6df4940ad7ba5db3f",
    "segments": [
     {
-     "name": "fades8_00",
+     "name": "random_blocks",
      "para": 13144,
      "size": 508,
-     "file": "ovl/fades8/fades8_00.asm"
+     "file": "front/fade/random_blocks.asm"
     }
    ],
    "entries": []
@@ -2047,10 +2047,10 @@
    "sha1": "3caa49cfb36ef244125c77cfe27f9275ccfb82d3",
    "segments": [
     {
-     "name": "fades9_00",
+     "name": "dissolve",
      "para": 13144,
      "size": 262,
-     "file": "ovl/fades9/fades9_00.asm"
+     "file": "front/fade/dissolve.asm"
     }
    ],
    "entries": []
@@ -2067,10 +2067,10 @@
    "sha1": "038631952320f9a27029e19e6a6971d7d4744ebb",
    "segments": [
     {
-     "name": "fades10_00",
+     "name": "box_grow",
      "para": 13144,
      "size": 552,
-     "file": "ovl/fades10/fades10_00.asm"
+     "file": "front/fade/box_grow.asm"
     }
    ],
    "entries": []
@@ -2087,10 +2087,10 @@
    "sha1": "fa82bb72c64f426eb300b87055436e69a59442d0",
    "segments": [
     {
-     "name": "fades11_00",
+     "name": "directional",
      "para": 13144,
      "size": 894,
-     "file": "ovl/fades11/fades11_00.asm"
+     "file": "front/fade/directional.asm"
     }
    ],
    "entries": []
@@ -2107,10 +2107,10 @@
    "sha1": "d74e24d43e282ec0914a5e017f70a3b24b423fb6",
    "segments": [
     {
-     "name": "fades12_00",
+     "name": "zoom_rect",
      "para": 13144,
      "size": 408,
-     "file": "ovl/fades12/fades12_00.asm"
+     "file": "front/fade/zoom_rect.asm"
     }
    ],
    "entries": [

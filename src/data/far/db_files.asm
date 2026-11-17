@@ -1,5 +1,5 @@
 ; Far data, paragraph 3415h, 400 bytes: the database file list. Used by UseDbDescriptor, SaveGame.
-f_3415_0000:                                    ; used by INIT, MENUS (to name)
+exhstate:                                    ; used by INIT, MENUS (to name)
         db 0x00, 0x00
 f_3415_0002:                                    ; used by MENUS, STATS (to name)
         db 0x2E, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
@@ -10,7 +10,7 @@ f_3415_0002:                                    ; used by MENUS, STATS (to name)
         times 17 db 0
         db 0x09, 0x00, 0x07, 0x00, 0xFF, 0x7B, 0xFF, 0xFF, 0xFE, 0xFF, 0x10, 0x00, 0x10, 0x00, 0x00, 0x00
         db 0x01, 0x00
-f_3415_0062:                                    ; used by INIT, MENUS (to name)
+postate:                                    ; used by INIT, MENUS (to name)
         db 0x01, 0x00
 f_3415_0064:                                    ; used by MENUS, STATS (to name)
         db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
@@ -30,7 +30,7 @@ f_3415_00B7:                                    ; used by MENUS (to name)
 f_3415_00BC:                                    ; used by MENUS (to name)
         db 0x10, 0x00, 0x10, 0x00, 0x00, 0x00
         db 0x01, 0x00
-f_3415_00C4:                                    ; used by INIT, LP, MENUS (to name)
+lgstate:                                    ; used by INIT, LP, MENUS (to name)
         db 0x02, 0x00
 f_3415_00C6:                                    ; used by MENUS, STATS (to name)
         db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00

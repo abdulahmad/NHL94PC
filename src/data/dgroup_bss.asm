@@ -161,11 +161,11 @@ g_A06C:                                         ; used by MENUS (to name)
         resb 508
 g_A268:                                         ; used by INIT (to name)
         resb 744
-g_A550:                                         ; used by AI, INIT, MENUS (to name)
+hmroster:                                         ; used by AI, INIT, MENUS (to name)
         resb 6
 g_A556:                                         ; used by AI, INIT, MENUS (to name)
         resb 1
-g_A557:                                         ; used by AI (to name)
+hmrosterpos:                                         ; used by AI (to name)
         resb 1113
 g_A9B0:                                         ; used by INIT (to name)
         resb 1120
@@ -253,29 +253,29 @@ CursorY:                                        ; cursor y; used by EventToCurso
         resb 152
 PadStatePtr:                                    ; pad state being updated; used by StickToPad, PadTimerTick
         resb 2
-g_B06C:                                         ; used by AI, INIT (to name)
+curevent:                                         ; used by AI, INIT (to name)
         resb 2
-g_B06E:                                         ; used by AI (to name)
+curevent_b1:                                         ; used by AI (to name)
         resb 1
-g_B06F:                                         ; used by AI (to name)
+curevent_b2:                                         ; used by AI (to name)
         resb 1
-g_B070:                                         ; used by AI (to name)
+curevent_b3:                                         ; used by AI (to name)
         resb 1
-g_B071:                                         ; used by AI (to name)
+curevent_b4:                                         ; used by AI (to name)
         resb 1
-g_B072:                                         ; used by AI (to name)
+curevent_b5:                                         ; used by AI (to name)
         resb 1
-g_B073:                                         ; used by AI (to name)
+curevent_b6:                                         ; used by AI (to name)
         resb 1
-g_B074:                                         ; used by AI (to name)
+curevent_b7:                                         ; used by AI (to name)
         resb 1
-g_B075:                                         ; used by AI (to name)
+curevent_b8:                                         ; used by AI (to name)
         resb 1
-g_B076:                                         ; used by AI (to name)
+curevent_b9:                                         ; used by AI (to name)
         resb 1
-g_B077:                                         ; used by AI (to name)
+curevent_b10:                                         ; used by AI (to name)
         resb 1
-g_B078:                                         ; used by AI, INIT (to name)
+goalevent:                                         ; used by AI, INIT (to name)
         resb 2
 g_B07A:                                         ; used by AI (to name)
         resb 1
@@ -468,7 +468,7 @@ g_B36A:                                         ; used by INIT, LP (to name)
         resb 2
 g_B36C:                                         ; used by INIT (to name)
         resb 2
-g_B36E:                                         ; used by AI, INIT, LP, MENUS (to name)
+hmscore:                                         ; used by AI, INIT, LP, MENUS (to name)
         resb 2
 g_B370:                                         ; used by INIT (to name)
         resb 2
@@ -478,11 +478,11 @@ g_B374:                                         ; used by INIT (to name)
         resb 2
 g_B376:                                         ; used by INIT (to name)
         resb 2
-g_B378:                                         ; used by AI (to name)
+hmtmline:                                         ; used by AI (to name)
         resb 2
-g_B37A:                                         ; used by AI (to name)
+hmtmlcnt:                                         ; used by AI (to name)
         resb 2
-g_B37C:                                         ; used by AI (to name)
+hmtmextra:                                         ; used by AI (to name)
         resb 2
 g_B37E:                                         ; used by AI (to name)
         resb 2
@@ -490,13 +490,13 @@ g_B380:                                         ; used by AI (to name)
         resb 2
 g_B382:                                         ; used by AI (to name)
         resb 2
-g_B384:                                         ; used by AI, INIT, MENUS (to name)
+hmtmap:                                         ; used by AI, INIT, MENUS (to name)
         resb 2
-g_B386:                                         ; used by AI, INIT, LP (to name)
+hmtmgoalie:                                         ; used by AI, INIT, LP (to name)
         resb 1
 g_B387:                                         ; used by AI (to name)
         resb 5
-g_B38C:                                         ; used by AI, MENUS (to name)
+hmtmflags:                                         ; used by AI, MENUS (to name)
         resb 2
 g_B38E:                                         ; used by AI (to name)
         resb 56
@@ -504,21 +504,21 @@ g_B3C6:                                         ; used by AI (to name)
         resb 56
 g_B3FE:                                         ; used by AI (to name)
         resb 28
-g_B41A:                                         ; used by AI (to name)
+hmtmcoach_d2:                                         ; used by AI (to name)
         resb 1
-g_B41B:                                         ; used by AI (to name)
+hmtmcoach_d3:                                         ; used by AI (to name)
         resb 1
-g_B41C:                                         ; used by AI (to name)
+hmtmcoachflags:                                         ; used by AI (to name)
         resb 1
-g_B41D:                                         ; used by AI (to name)
+hmtmcoachmode:                                         ; used by AI (to name)
         resb 1
-g_B41E:                                         ; used by AI (to name)
+hmtmcoachenergy:                                         ; used by AI (to name)
         resb 2
-g_B420:                                         ; used by AI, INIT, LP (to name)
+hmtmlines:                                         ; used by AI, INIT, LP (to name)
         resb 2
-g_B422:                                         ; used by AI, INIT (to name)
+hmtmsort:                                         ; used by AI, INIT (to name)
         resb 2
-g_B424:                                         ; used by AI, INIT (to name)
+hmtmplattr:                                         ; used by AI, INIT (to name)
         resb 2
 g_B426:                                         ; used by AI, INIT (to name)
         resb 2
@@ -528,21 +528,21 @@ g_B42A:                                         ; used by AI, INIT (to name)
         resb 2
 g_B42C:                                         ; used by AI, INIT (to name)
         resb 2
-g_B42E:                                         ; used by AI, INIT (to name)
+hmtmglstats:                                         ; used by AI, INIT (to name)
         resb 2
-g_B430:                                         ; used by AI, INIT (to name)
+hmtmroster:                                         ; used by AI, INIT (to name)
         resb 2
 g_B432:                                         ; used by AI, INIT (to name)
         resb 2
-g_B434:                                         ; used by AI, INIT (to name)
+hmtmptrF2:                                         ; used by AI, INIT (to name)
         resb 2
 g_B436:                                         ; used by AI, INIT (to name)
         resb 14
-g_B444:                                         ; used by AI, LP, MENUS (to name)
+awscore:                                         ; used by AI, LP, MENUS (to name)
         resb 10
-g_B44E:                                         ; used by AI (to name)
+awtmline:                                         ; used by AI (to name)
         resb 2
-g_B450:                                         ; used by AI (to name)
+awtmlcnt:                                         ; used by AI (to name)
         resb 2
 g_B452:                                         ; used by AI (to name)
         resb 2
@@ -552,43 +552,43 @@ g_B456:                                         ; used by AI (to name)
         resb 2
 g_B458:                                         ; used by AI (to name)
         resb 2
-g_B45A:                                         ; used by AI, INIT (to name)
+awtmap:                                         ; used by AI, INIT (to name)
         resb 2
-g_B45C:                                         ; used by AI, INIT, LP (to name)
+awtmgoalie:                                         ; used by AI, INIT, LP (to name)
         resb 6
-g_B462:                                         ; used by AI, MENUS (to name)
+awtmflags:                                         ; used by AI, MENUS (to name)
         resb 114
 g_B4D4:                                         ; used by AI (to name)
         resb 28
-g_B4F0:                                         ; used by AI (to name)
+awtmcoach_d2:                                         ; used by AI (to name)
         resb 1
-g_B4F1:                                         ; used by AI (to name)
+awtmcoach_d3:                                         ; used by AI (to name)
         resb 1
-g_B4F2:                                         ; used by AI (to name)
+awtmcoachflags:                                         ; used by AI (to name)
         resb 1
-g_B4F3:                                         ; used by AI (to name)
+awtmcoachmode:                                         ; used by AI (to name)
         resb 1
-g_B4F4:                                         ; used by AI (to name)
+awtmcoachenergy:                                         ; used by AI (to name)
         resb 2
 g_B4F6:                                         ; used by AI, INIT, LP (to name)
         resb 2
-g_B4F8:                                         ; used by AI, INIT (to name)
+awtmsort:                                         ; used by AI, INIT (to name)
         resb 2
 g_B4FA:                                         ; used by AI, INIT (to name)
         resb 2
-g_B4FC:                                         ; used by AI, INIT (to name)
+awtmglattr:                                         ; used by AI, INIT (to name)
         resb 2
-g_B4FE:                                         ; used by AI, INIT (to name)
+awtmlines:                                         ; used by AI, INIT (to name)
         resb 2
-g_B500:                                         ; used by AI, INIT (to name)
+awtmplstats:                                         ; used by AI, INIT (to name)
         resb 2
-g_B502:                                         ; used by AI, INIT (to name)
+awtmglstats:                                         ; used by AI, INIT (to name)
         resb 2
 g_B504:                                         ; used by AI, INIT (to name)
         resb 2
 g_B506:                                         ; used by AI, INIT (to name)
         resb 2
-g_B508:                                         ; used by AI, INIT (to name)
+awtmptrF2:                                         ; used by AI, INIT (to name)
         resb 2
 g_B50A:                                         ; used by AI, INIT (to name)
         resb 2
@@ -600,7 +600,7 @@ g_B514:                                         ; used by AI (to name)
         resb 20
 g_B528:                                         ; used by AI (to name)
         resb 42
-g_B552:                                         ; used by AI (to name)
+CwdExciteLvl:                                         ; used by AI (to name)
         resb 1
 g_B553:                                         ; used by AI (to name)
         resb 2
@@ -624,7 +624,7 @@ g_BB9C:                                         ; used by AI (to name)
         resb 116
 g_BC10:                                         ; used by AI (to name)
         resb 4
-g_BC14:                                         ; used by AI (to name)
+puckstruct:                                         ; used by AI (to name)
         resb 4
 g_BC18:                                         ; used by AI (to name)
         resb 2
@@ -638,13 +638,13 @@ g_BC2A:                                         ; used by AI (to name)
         resb 2
 g_BC2C:                                         ; used by AI (to name)
         resb 8
-g_BC34:                                         ; used by AI (to name)
+pucktemp1:                                         ; used by AI (to name)
         resb 2
 g_BC36:                                         ; used by AI (to name)
         resb 22
 g_BC4C:                                         ; used by AI (to name)
         resb 7
-g_BC53:                                         ; used by AI (to name)
+puckpflags2:                                         ; used by AI (to name)
         resb 3
 g_BC56:                                         ; used by AI (to name)
         resb 56
@@ -678,9 +678,9 @@ g_BD0E:                                         ; used by AI (to name)
         resb 2
 g_BD10:                                         ; used by AI (to name)
         resb 4
-g_BD14:                                         ; used by AI (to name)
+refYpos2:                                         ; used by AI (to name)
         resb 6
-g_BD1A:                                         ; used by AI (to name)
+refXvel:                                         ; used by AI (to name)
         resb 2
 g_BD1C:                                         ; used by AI (to name)
         resb 4
@@ -688,13 +688,13 @@ g_BD20:                                         ; used by AI (to name)
         resb 8
 g_BD28:                                         ; used by AI (to name)
         resb 2
-g_BD2A:                                         ; used by AI (to name)
+refposition:                                         ; used by AI (to name)
         resb 2
-g_BD2C:                                         ; used by AI (to name)
+refasslist:                                         ; used by AI (to name)
         resb 8
 g_BD34:                                         ; used by AI (to name)
         resb 4
-g_BD38:                                         ; used by AI (to name)
+reftemp3:                                         ; used by AI (to name)
         resb 2
 g_BD3A:                                         ; used by AI (to name)
         resb 2
@@ -718,9 +718,9 @@ g_BD94:                                         ; used by MENUS (to name)
         resb 2
 g_BD96:                                         ; used by MENUS (to name)
         resb 1
-g_BD97:                                         ; used by MENUS (to name)
+gmrosterjersey:                                         ; used by MENUS (to name)
         resb 1
-g_BD98:                                         ; used by MENUS (to name)
+gmrosterslot:                                         ; used by MENUS (to name)
         resb 1
 g_BD99:                                         ; used by MENUS (to name)
         resb 1
@@ -742,7 +742,7 @@ g_BFC1:                                         ; used by MENUS (to name)
         resb 1
 g_BFC2:                                         ; used by MENUS (to name)
         resb 60
-g_BFFE:                                         ; used by AI, GAME, INIT, LP, MENUS (to name)
+curperiod:                                         ; used by AI, GAME, INIT, LP, MENUS (to name)
         resb 2
 g_C000:                                         ; used by LP (to name)
         resb 32
@@ -750,23 +750,23 @@ g_C020:                                         ; used by LP (to name)
         resb 32
 g_C040:                                         ; used by LP, MENUS, STATS (to name)
         resb 2
-g_C042:                                         ; used by LP, MENUS, STATS (to name)
+statsgoaliebuf:                                         ; used by LP, MENUS, STATS (to name)
         resb 2
 g_C044:                                         ; used by LP, MENUS, STATS (to name)
         resb 2
-g_C046:                                         ; used by LP, MENUS, STATS (to name)
+statsskaterbuf:                                         ; used by LP, MENUS, STATS (to name)
         resb 2
 g_C048:                                         ; used by LP, MENUS, STATS (to name)
         resb 2
-g_C04A:                                         ; used by LP, MENUS, STATS (to name)
+statsplayerbuf:                                         ; used by LP, MENUS, STATS (to name)
         resb 2
 g_C04C:                                         ; used by LP, MENUS, STATS (to name)
         resb 2
-g_C04E:                                         ; used by LP, MENUS, STATS (to name)
+statsteambuf:                                         ; used by LP, MENUS, STATS (to name)
         resb 2
 g_C050:                                         ; used by MENUS, STATS (to name)
         resb 2
-g_C052:                                         ; used by LP, MENUS, STATS (to name)
+leaguestatsmode:                                         ; used by LP, MENUS, STATS (to name)
         resb 2
 g_C054:                                         ; used by MENUS (to name)
         resb 2
@@ -782,7 +782,7 @@ g_C05E:                                         ; used by MENUS (to name)
         resb 126
 g_C0DC:                                         ; used by MENUS (to name)
         resb 2
-g_C0DE:                                         ; used by MENUS (to name)
+lgfiles:                                         ; used by MENUS (to name)
         resb 2
 g_C0E0:                                         ; used by MENUS (to name)
         resb 2
@@ -790,7 +790,7 @@ g_C0E2:                                         ; used by MENUS (to name)
         resb 2
 g_C0E4:                                         ; used by MENUS (to name)
         resb 2
-g_C0E6:                                         ; used by MENUS (to name)
+lgfilenames:                                         ; used by MENUS (to name)
         resb 126
 g_C164:                                         ; used by MENUS (to name)
         resb 2
@@ -804,7 +804,7 @@ g_C16C:                                         ; used by MENUS (to name)
         resb 2
 g_C16E:                                         ; used by MENUS (to name)
         resb 126
-g_C1EC:                                         ; used by MENUS (to name)
+fdlgtab:                                         ; used by MENUS (to name)
         resb 2
 g_C1EE:                                         ; used by MENUS (to name)
         resb 1
@@ -816,7 +816,7 @@ g_C1F2:                                         ; used by MENUS (to name)
         resb 2
 g_C1F4:                                         ; used by MENUS (to name)
         resb 16
-g_C204:                                         ; used by MENUS, STATS (to name)
+playofftree:                                         ; used by MENUS, STATS (to name)
         resb 2
 g_C206:                                         ; used by MENUS (to name)
         resb 30
@@ -862,7 +862,7 @@ g_C270:                                         ; used by LP (to name)
         resb 2
 g_C272:                                         ; used by LP (to name)
         resb 2
-g_C274:                                         ; used by LP (to name)
+teamselresult:                                         ; used by LP (to name)
         resb 2
 g_C276:                                         ; used by LP (to name)
         resb 2
@@ -884,11 +884,11 @@ g_C29C:                                         ; used by LP (to name)
         resb 1
 g_C29D:                                         ; used by LP (to name)
         resb 1
-g_C29E:                                         ; used by LP (to name)
+lgschedrec_b4:                                         ; used by LP (to name)
         resb 1
 g_C29F:                                         ; used by LP (to name)
         resb 1
-g_C2A0:                                         ; used by LP, STATS (to name)
+statspalshape:                                         ; used by LP, STATS (to name)
         resb 2
 g_C2A2:                                         ; used by LP (to name)
         resb 2
@@ -906,13 +906,13 @@ g_C2AE:                                         ; used by LP (to name)
         resb 2
 g_C2B0:                                         ; used by LP (to name)
         resb 2
-g_C2B2:                                         ; used by LP, STATS (to name)
+statsbgshapes:                                         ; used by LP, STATS (to name)
         resb 2
 g_C2B4:                                         ; used by LP, STATS (to name)
         resb 2
-g_C2B6:                                         ; used by AI, LP (to name)
+startm:                                         ; used by AI, LP (to name)
         resb 2
-g_C2B8:                                         ; used by AI, LP (to name)
+starpl:                                         ; used by AI, LP (to name)
         resb 10
 g_C2C2:                                         ; used by LP (to name)
         resb 1
@@ -972,7 +972,7 @@ g_CF1A:                                         ; used by STATS (to name)
         resb 1
 g_CF1B:                                         ; used by STATS (to name)
         resb 1
-g_CF1C:                                         ; used by STATS (to name)
+statsplayer:                                         ; used by STATS (to name)
         resb 1
 g_CF1D:                                         ; used by STATS (to name)
         resb 16
@@ -1012,9 +1012,9 @@ g_CFCC:                                         ; used by STATS (to name)
         resb 2
 g_CFCE:                                         ; used by STATS (to name)
         resb 2
-g_CFD0:                                         ; used by STATS (to name)
+fileoncd:                                         ; used by STATS (to name)
         resb 2
-g_CFD2:                                         ; used by STATS (to name)
+cddriveptr:                                         ; used by STATS (to name)
         resb 2
 g_CFD4:                                         ; used by STATS (to name)
         resb 40
@@ -1022,13 +1022,13 @@ g_CFFC:                                         ; used by GAME, INIT (to name)
         resb 2
 g_CFFE:                                         ; used by GAME, INIT (to name)
         resb 2
-g_D000:                                         ; used by AI (to name)
+regd5:                                         ; used by AI (to name)
         resb 2
 g_D002:                                         ; used by AI (to name)
         resb 2
 g_D004:                                         ; used by AI, INIT (to name)
         resb 2
-g_D006:                                         ; used by AI (to name)
+LastShooterTeam:                                         ; used by AI (to name)
         resb 2
 g_D008:                                         ; used by AI (to name)
         resb 2
@@ -1060,9 +1060,9 @@ g_D022:                                         ; used by AI (to name)
         resb 394
 g_D1AC:                                         ; used by AI, INIT (to name)
         resb 2
-g_D1AE:                                         ; used by AI, INIT (to name)
+rinkobjs:                                         ; used by AI, INIT (to name)
         resb 2
-g_D1B0:                                         ; used by INIT (to name)
+rinkobjs_w2:                                         ; used by INIT (to name)
         resb 278
 g_D2C6:                                         ; used by AI, INIT (to name)
         resb 2
@@ -1082,15 +1082,15 @@ g_D46C:                                         ; used by AI, GAME, INIT (to nam
         resb 2
 g_D46E:                                         ; used by AI, GAME, INIT (to name)
         resb 2
-g_D470:                                         ; used by AI, GAME, INIT (to name)
+lcline:                                         ; used by AI, GAME, INIT (to name)
         resb 2
-g_D472:                                         ; used by GAME, INIT (to name)
+lctimer:                                         ; used by GAME, INIT (to name)
         resb 2
 g_D474:                                         ; used by AI (to name)
         resb 34
 g_D496:                                         ; used by AI, INIT (to name)
         resb 34
-g_D4B8:                                         ; used by AI, INIT (to name)
+textline3:                                         ; used by AI, INIT (to name)
         resb 59
 g_D4F3:                                         ; used by AI (to name)
         resb 1
@@ -1098,19 +1098,19 @@ g_D4F4:                                         ; used by AI, INIT (to name)
         resb 1
 g_D4F5:                                         ; used by AI (to name)
         resb 17
-g_D506:                                         ; used by AI, INIT (to name)
+textline1:                                         ; used by AI, INIT (to name)
         resb 60
-g_D542:                                         ; used by AI, INIT (to name)
+textline2:                                         ; used by AI, INIT (to name)
         resb 60
-g_D57E:                                         ; used by AI, INIT (to name)
+textline4:                                         ; used by AI, INIT (to name)
         resb 60
-g_D5BA:                                         ; used by AI, INIT (to name)
+textline5:                                         ; used by AI, INIT (to name)
         resb 60
-g_D5F6:                                         ; used by AI, INIT (to name)
+PlList:                                         ; used by AI, INIT (to name)
         resb 6
 g_D5FC:                                         ; used by AI (to name)
         resb 6
-g_D602:                                         ; used by AI, INIT (to name)
+fofdata2:                                         ; used by AI, INIT (to name)
         resb 2
 g_D604:                                         ; used by AI (to name)
         resb 2
@@ -1130,7 +1130,7 @@ g_D612:                                         ; used by INIT (to name)
         resb 2
 g_D614:                                         ; used by INIT (to name)
         resb 2
-g_D616:                                         ; used by INIT (to name)
+puckcross:                                         ; used by INIT (to name)
         resb 2
 g_D618:                                         ; used by AI (to name)
         resb 1
@@ -1140,19 +1140,19 @@ g_D61C:                                         ; used by AI (to name)
         resb 1
 g_D61D:                                         ; used by AI (to name)
         resb 1
-g_D61E:                                         ; used by AI, INIT (to name)
+GoalState:                                         ; used by AI, INIT (to name)
         resb 2
-g_D620:                                         ; used by AI, INIT (to name)
+lj1:                                         ; used by AI, INIT (to name)
         resb 2
-g_D622:                                         ; used by AI, INIT (to name)
+lj2:                                         ; used by AI, INIT (to name)
         resb 2
-g_D624:                                         ; used by AI, INIT (to name)
+lasttouch:                                         ; used by AI, INIT (to name)
         resb 2
-g_D626:                                         ; used by AI, INIT (to name)
+ltx:                                         ; used by AI, INIT (to name)
         resb 2
-g_D628:                                         ; used by AI, INIT (to name)
+lty:                                         ; used by AI, INIT (to name)
         resb 2
-g_D62A:                                         ; used by AI, INIT (to name)
+iflags:                                         ; used by AI, INIT (to name)
         resb 1
 g_D62B:                                         ; used by AI (to name)
         resb 1
@@ -1188,7 +1188,7 @@ g_D668:                                         ; used by AI, INIT (to name)
         resb 2
 g_D66A:                                         ; used by INIT (to name)
         resb 2
-g_D66C:                                         ; used by AI, INIT (to name)
+regd0:                                         ; used by AI, INIT (to name)
         resb 1
 g_D66D:                                         ; used by INIT (to name)
         resb 1
@@ -1196,19 +1196,19 @@ g_D66E:                                         ; used by AI, INIT (to name)
         resb 2
 g_D670:                                         ; used by INIT (to name)
         resb 2
-g_D672:                                         ; used by AI, INIT (to name)
+regd1:                                         ; used by AI, INIT (to name)
         resb 1
 g_D673:                                         ; used by AI (to name)
         resb 1
 g_D674:                                         ; used by AI (to name)
         resb 2
-g_D676:                                         ; used by AI (to name)
+PenBuf:                                         ; used by AI (to name)
         resb 1
-g_D677:                                         ; used by AI (to name)
+PenBuf_pl:                                         ; used by AI (to name)
         resb 1
 g_D678:                                         ; used by AI (to name)
         resb 64
-g_D6B8:                                         ; used by AI, INIT (to name)
+regd2:                                         ; used by AI, INIT (to name)
         resb 2
 g_D6BA:                                         ; used by AI (to name)
         resb 2
@@ -1216,27 +1216,27 @@ g_D6BC:                                         ; used by INIT (to name)
         resb 2
 g_D6BE:                                         ; used by INIT (to name)
         resb 2
-g_D6C0:                                         ; used by AI (to name)
+regd3:                                         ; used by AI (to name)
         resb 2
 g_D6C2:                                         ; used by AI (to name)
         resb 2
 g_D6C4:                                         ; used by AI, INIT (to name)
         resb 2
-g_D6C6:                                         ; used by AI, INIT (to name)
+PBnum:                                         ; used by AI, INIT (to name)
         resb 1
 g_D6C7:                                         ; used by AI (to name)
         resb 1
-g_D6C8:                                         ; used by AI, INIT (to name)
+regd4:                                         ; used by AI, INIT (to name)
         resb 2
 g_D6CA:                                         ; used by AI (to name)
         resb 2
-g_D6CC:                                         ; used by AI, GAME, INIT (to name)
+viewscrollx:                                         ; used by AI, GAME, INIT (to name)
         resb 2
 g_D6CE:                                         ; used by AI, GAME, INIT (to name)
         resb 2
-g_D6D0:                                         ; used by AI, GAME, INIT (to name)
+frameaccum:                                         ; used by AI, GAME, INIT (to name)
         resb 2
-g_D6D2:                                         ; used by AI, GAME, INIT (to name)
+hudhundaccum:                                         ; used by AI, GAME, INIT (to name)
         resb 2
 g_D6D4:                                         ; used by AI, INIT (to name)
         resb 2
@@ -1254,7 +1254,7 @@ g_D71C:                                         ; used by GAME, INIT (to name)
         resb 2
 g_D71E:                                         ; used by GAME, INIT (to name)
         resb 10
-g_D728:                                         ; used by AI, GAME, INIT (to name)
+hudhundstep:                                         ; used by AI, GAME, INIT (to name)
         resb 686
 g_D9D6:                                         ; used by GAME (to name)
         resb 4
@@ -1294,7 +1294,7 @@ g_DA78:                                         ; used by AI (to name)
         resb 38
 g_DA9E:                                         ; used by AI (to name)
         resb 2
-g_DAA0:                                         ; used by AI (to name)
+clockcolon:                                         ; used by AI (to name)
         resb 2
 g_DAA2:                                         ; used by AI (to name)
         resb 2
@@ -1344,7 +1344,7 @@ g_DB1A:                                         ; used by INIT (to name)
         resb 2
 g_DB1C:                                         ; used by INIT (to name)
         resb 2
-g_DB1E:                                         ; used by INIT (to name)
+replayptrx:                                         ; used by INIT (to name)
         resb 2
 g_DB20:                                         ; used by INIT (to name)
         resb 2
@@ -1432,31 +1432,31 @@ g_DC3A:                                         ; used by AI (to name)
         resb 56
 g_DC72:                                         ; used by AI (to name)
         resb 96
-g_DCD2:                                         ; used by AI (to name)
+lastimpact:                                         ; used by AI (to name)
         resb 2
-g_DCD4:                                         ; used by AI (to name)
+gwgplayer:                                         ; used by AI (to name)
         resb 2
-g_DCD6:                                         ; used by AI (to name)
+gwgteam:                                         ; used by AI (to name)
         resb 2
 g_DCD8:                                         ; used by AI (to name)
         resb 52
-g_DD0C:                                         ; used by AI (to name)
+offsort_fwd:                                         ; used by AI (to name)
         resb 50
-g_DD3E:                                         ; used by AI (to name)
+defsort_d:                                         ; used by AI (to name)
         resb 400
-g_DECE:                                         ; used by AI (to name)
+dressflags:                                         ; used by AI (to name)
         resb 25
 g_DEE7:                                         ; used by AI (to name)
         resb 25
-g_DF00:                                         ; used by AI (to name)
+lineslotmark:                                         ; used by AI (to name)
         resb 50
 g_DF32:                                         ; used by AI (to name)
         resb 50
-g_DF64:                                         ; used by AI (to name)
+dresseddefs:                                         ; used by AI (to name)
         resb 2
-g_DF66:                                         ; used by AI (to name)
+dressedfwds:                                         ; used by AI (to name)
         resb 2
-g_DF68:                                         ; used by AI (to name)
+dressedskaters:                                         ; used by AI (to name)
         resb 2
 g_DF6A:                                         ; used by FADES, FADES10, FADES11, FADES12, FADES5, FADES6, FADES8 (to name)
         resb 2

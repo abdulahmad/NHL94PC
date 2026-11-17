@@ -1,0 +1,484 @@
+; Rink objects: penalty box doors and crowd level (AI.OVL)
+; The first bytes finish the last routine of hockey.asm.
+        add sp, 0x2
+        push word 0xb438
+        push cs
+        call forcepldata - 0x2F40
+        add sp, 0x2
+        retf
+
+;-----------------------------------------------------------------------------
+; SetRinkObject                                              3136:000E  94 PC
+; Fills a rink object slot from a frame's position and animation.
+;
+; Takes 2 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
+SetRinkObject:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        push di
+        push si
+        mov di, [bp + 0x6]
+        mov si, [bp + 0x8]
+        db 0x8B, 0xC7                           ; insn: mov ax, di
+        shl di, 1
+        db 0x03, 0xF8                           ; insn: add di, ax
+        shl di, 1
+        db 0x03, 0xF8                           ; insn: add di, ax
+        shl di, 1
+        mov [di + rinkobjs], si
+        db 0x8B, 0xC6                           ; insn: mov ax, si
+        mov cx, 0x10
+        cwd
+        idiv cx
+        db 0x8B, 0xC6                           ; insn: mov ax, si
+        db 0x8B, 0xDA                           ; insn: mov bx, dx
+        cwd
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        sar ax, byte 0x4
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        db 0x8B, 0xD3                           ; insn: mov dx, bx
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        shl bx, 1
+        db 0x8B, 0xCA                           ; insn: mov cx, dx
+        mov ax, 0x1
+        shl ax, cl
+        or [bx + g_D9DA], ax
+        mov ax, 0x3
+        imul si
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        shl bx, 1
+        mov es, [g_8CE2]
+        mov cx, [es:bx + 0xf8]
+        add di, 0xd1ae
+        mov [di + 0x6], cx
+        inc ax
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        db 0x8B, 0xDE                           ; insn: mov bx, si
+        shl bx, 1
+        mov ax, [es:bx + 0xf8]
+        mov [di + 0x8], ax
+        inc si
+        db 0x8B, 0xDE                           ; insn: mov bx, si
+        shl bx, 1
+        mov bx, [es:bx + 0xf8]
+        mov [di + 0xa], bx
+        db 0x26, 0x8A, 0x87, 0x00, 0x00         ; insn: mov al, [es:bx + 0x0]
+        mov [di + 0xc], al
+        mov bx, [di + 0xa]
+        db 0x26, 0x8A, 0x87, 0x01, 0x00         ; insn: mov al, [es:bx + 0x1]
+        mov [di + 0x4], al
+        mov byte [di + 0x2], 0xc
+        mov byte [di + 0x3], 0x1
+        pop si
+        pop di
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; SetBoxDoorObject                                           3136:00A6  94 PC
+; Opens or closes a team's penalty box door.
+;
+; Takes 1 word of stack arguments. Calls SetRinkObject. Far routine (retf).
+;-----------------------------------------------------------------------------
+SetBoxDoorObject:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        cmp word [bp + 0x6], 0x0
+        jz short .1
+        push word 0x88
+        push 0x13
+        jmp short .2
+.1:
+        push word 0x87
+        push 0x12
+.2:
+        push cs
+        call SetRinkObject
+        leave
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; DecayCrowdLevel                                            3136:00C2  94 PC
+; Decays the crowd level and picks a random crowd event at 0.
+;
+; Calls randomd0, SetRinkObject. Far routine (retf).
+;-----------------------------------------------------------------------------
+DecayCrowdLevel:
+        enter 0x4, 0x0
+        push di
+        push si
+        cmp word [CrowdSound], 0x2bc
+        jng short .1
+        sub word [CrowdSound], 0x2
+        jmp short .2
+        db 0x90
+.1:
+        cmp word [CrowdSound], 0x15e
+        jng short .2
+        sub word [CrowdSound], 0x3
+.2:
+        dec word [CrowdSound]
+        jns short .3
+        mov word [CrowdSound], 0x0
+        mov ax, 0x10
+        call 0x0C11:randomd0
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jnz short .3
+        mov ax, 0x20
+        call 0x0C11:randomd0
+        mov [CrowdSound], ax
+.3:
+        mov word [bp - 0x2], 0x0
+        mov word [bp - 0x4], 0xd1ae
+.4:
+        mov si, [bp - 0x4]
+        cmp word [si], 0x0
+        jl short .5
+        jmp near .13
+.5:
+        dec byte [si + 0x2]
+        js short .6
+        jmp near .21
+.6:
+        cmp word [bp - 0x4], 0xd2aa
+        jnz short .7
+        mov ax, 0x11
+        call 0x0C11:randomd0
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        add si, 0x89
+        jmp near .12
+        db 0x90
+.7:
+        cmp word [bp - 0x4], 0xd2b8
+        jnz short .8
+        mov ax, 0x11
+        call 0x0C11:randomd0
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        add si, 0x9a
+        jmp near .12
+.8:
+        cmp word [bp - 0x4], 0xd29c
+        jnz short .9
+        test byte [gmode], 0x1
+        jz short .9
+        mov ax, 0x4
+        call 0x0C11:randomd0
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        cmp si, 0x2
+        jnl short .9
+        add si, 0x85
+        jmp short .12
+        db 0x90
+.9:
+        mov ax, 0x85
+        call 0x0C11:randomd0
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        mov cx, 0x10
+        cwd
+        idiv cx
+        db 0x8B, 0xC6                           ; insn: mov ax, si
+        db 0x8B, 0xDA                           ; insn: mov bx, dx
+        cwd
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        sar ax, byte 0x4
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        db 0x8B, 0xF8                           ; insn: mov di, ax
+        shl di, 1
+        db 0x8B, 0xCB                           ; insn: mov cx, bx
+        mov ax, 0x1
+        shl ax, cl
+        test [di + g_D9DA], ax
+        jz short .12
+.10:
+        inc si
+        cmp si, 0x85
+        jl short .11
+        db 0x2B, 0xF6                           ; insn: sub si, si
+.11:
+        db 0x8B, 0xC6                           ; insn: mov ax, si
+        mov cx, 0x10
+        cwd
+        idiv cx
+        db 0x8B, 0xC6                           ; insn: mov ax, si
+        db 0x8B, 0xDA                           ; insn: mov bx, dx
+        cwd
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        sar ax, byte 0x4
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        db 0x8B, 0xF8                           ; insn: mov di, ax
+        shl di, 1
+        db 0x8B, 0xCB                           ; insn: mov cx, bx
+        mov ax, 0x1
+        shl ax, cl
+        test [di + g_D9DA], ax
+        jnz short .10
+.12:
+        push si
+        push word [bp - 0x2]
+        push cs
+        call SetRinkObject
+        add sp, 0x4
+        jmp near .21
+        db 0x90
+.13:
+        dec byte [si + 0x2]
+        js short .14
+        jmp near .21
+.14:
+        mov al, [si + 0xc]
+        cbw
+        cwd
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        db 0x8B, 0xC8                           ; insn: mov cx, ax
+        mov al, [si + 0x3]
+        cbw
+        db 0x3B, 0xC8                           ; insn: cmp cx, ax
+        jng short .15
+        mov byte [si + 0x2], 0xc
+        inc byte [si + 0x3]
+        mov al, [si + 0x3]
+        cbw
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        add bx, [si + 0xa]
+        mov es, [g_8CE2]
+        db 0x26, 0x8A, 0x87, 0x00, 0x00         ; insn: mov al, [es:bx + 0x0]
+        mov [si + 0x4], al
+        jmp near .21
+.15:
+        cmp byte [si + 0xc], 0x0
+        jnl short .16
+        mov ax, 0x2
+        call 0x0C11:randomd0
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jz short .16
+        mov es, [g_8CE2]
+        mov bx, [si + 0xa]
+        db 0x26, 0x8A, 0x87, 0x01, 0x00         ; insn: mov al, [es:bx + 0x1]
+        mov [si + 0x4], al
+        mov byte [si + 0x2], 0xc
+        mov byte [si + 0x3], 0x1
+        jmp short .21
+        db 0x90
+.16:
+        mov ax, [si]
+        mov cx, 0x10
+        cwd
+        idiv cx
+        mov ax, [si]
+        db 0x8B, 0xDA                           ; insn: mov bx, dx
+        cwd
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        sar ax, byte 0x4
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        db 0x8B, 0xF8                           ; insn: mov di, ax
+        shl di, 1
+        db 0x8B, 0xCB                           ; insn: mov cx, bx
+        mov ax, 0x1
+        shl ax, cl
+        not ax
+        and [di + g_D9DA], ax
+        mov word [si], 0xffff
+        mov ax, 0x3e8
+        sub ax, [CrowdSound]
+        cwd
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        sar ax, byte 0x3
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        db 0x8B, 0xF8                           ; insn: mov di, ax
+        cmp di, 0x14
+        jnl short .17
+        mov di, 0x14
+.17:
+        cmp word [bp - 0x4], 0xd2aa
+        jc short .18
+        cmp di, 0x64
+        jnl short .18
+        mov di, 0x64
+.18:
+        cmp word [bp - 0x4], 0xd29c
+        jnz short .19
+        test byte [gmode], 0x1
+        jz short .19
+        mov di, 0x78
+        jmp short .20
+.19:
+        db 0x8B, 0xC7                           ; insn: mov ax, di
+        call 0x0C11:randomd0
+        db 0x8B, 0xF8                           ; insn: mov di, ax
+.20:
+        db 0x8B, 0xC7                           ; insn: mov ax, di
+        mov [si + 0x2], al
+.21:
+        inc word [bp - 0x2]
+        add word [bp - 0x4], 0xe
+        cmp word [bp - 0x4], 0xd2c6
+        jnc short .22
+        jmp near .4
+.22:
+        pop si
+        pop di
+        leave
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; DrawRinkObjects                                            3136:02E2  94 PC
+; Draws the rink object slots and the side sprites.
+;
+; Calls DrawSpriteClipped, DrawFrameSprite.
+;-----------------------------------------------------------------------------
+DrawRinkObjects:
+        enter 0x6, 0x0
+        push di
+        push si
+        mov si, 0xd1ae
+        mov di, 0x12
+.1:
+        cmp word [si], 0x0
+        jl short .4
+        push 0x0
+        push -0x1
+        cmp word [si + 0x6], 0xc0
+        jng short .2
+        mov ax, 0x1
+        jmp short .3
+        db 0x90
+.2:
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+.3:
+        push ax
+        mov ax, [g_B098]
+        shl ax, byte 0x3
+        sub ax, [si + 0x8]
+        neg ax
+        push ax
+        mov ax, [g_B096]
+        shl ax, byte 0x3
+        sub ax, [si + 0x6]
+        neg ax
+        push ax
+        mov al, [si + 0x4]
+        cbw
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        shl bx, byte 0x2
+        push word [bx + g_D2C8]
+        push word [bx + g_D2C6]
+        call 0x1F54:DrawSpriteClipped
+        add sp, 0xe
+.4:
+        add si, 0xe
+        dec di
+        jnz short .1
+        add si, 0xe
+        mov di, 0x1
+.5:
+        cmp word [si], 0x0
+        jnl short .6
+        mov word [bp - 0x2], 0xffff
+        jmp short .7
+.6:
+        mov al, [si + 0x4]
+        cbw
+        mov [bp - 0x2], ax
+.7:
+        mov ax, [g_B096]
+        shl ax, byte 0x3
+        sub ax, [si + 0x6]
+        neg ax
+        mov [bp - 0x4], ax
+        mov ax, [g_B098]
+        shl ax, byte 0x3
+        sub ax, [si + 0x8]
+        neg ax
+        mov [bp - 0x6], ax
+        cmp word [bp - 0x2], 0x64
+        jg short .8
+        cmp word [si], 0x0
+        jnl short .9
+.8:
+        push 0x0
+        push di
+        push 0x0
+        mov ax, [g_B098]
+        shl ax, byte 0x3
+        db 0x8B, 0xDF                           ; insn: mov bx, di
+        shl bx, 1
+        sub ax, [bx + g_61CA]
+        neg ax
+        push ax
+        mov ax, [g_B096]
+        shl ax, byte 0x3
+        sub ax, strict word 0x4
+        neg ax
+        push ax
+        push word [g_D448]
+        push word [g_D446]
+        call 0x1F54:DrawSpriteClipped
+        add sp, 0xe
+.9:
+        cmp word [bp - 0x2], 0x0
+        jl short .10
+        push 0x0
+        push di
+        push 0x0
+        push word [bp - 0x6]
+        push word [bp - 0x4]
+        mov bx, [bp - 0x2]
+        shl bx, byte 0x2
+        push word [bx + g_D2C8]
+        push word [bx + g_D2C6]
+        call 0x1F54:DrawSpriteClipped
+        add sp, 0xe
+.10:
+        db 0x0B, 0xFF                           ; insn: or di, di
+        jnz short .11
+        push di
+        push -0x1
+        push di
+        mov ax, [g_B098]
+        shl ax, byte 0x3
+        db 0x8B, 0xDF                           ; insn: mov bx, di
+        shl bx, 1
+        sub ax, [bx + g_61CA]
+        neg ax
+        push ax
+        mov ax, [g_B096]
+        shl ax, byte 0x3
+        sub ax, strict word 0x4
+        neg ax
+        push ax
+        push word [g_D458]
+        push word [g_D456]
+        call 0x1F54:DrawSpriteClipped
+        add sp, 0xe
+        jmp short .12
+.11:
+        test byte [gmode], 0x80
+        jz short .12
+        mov word [bp - 0x2], 0xbc8e
+        cmp word [g_BCA0], 0x362
+        jl short .12
+        push 0x0
+        push 0x0
+        push word [g_BC94]
+        push word [g_BC90]
+        push word [g_BCA0]
+        call 0x1E7E:DrawFrameSprite
+        add sp, 0xa
+.12:
+        sub si, 0xe
+        dec di
+        js short DrawRinkObjectsTail + 0x440

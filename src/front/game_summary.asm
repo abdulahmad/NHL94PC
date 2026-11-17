@@ -1,0 +1,2041 @@
+; Period and game summary screen (INIT.OVL)
+; The first bytes and DrawPeriodTitleTail finish DrawPeriodTitle from period_title.asm.
+        add sp, 0x6
+DrawPeriodTitleTail:
+        pop si
+        pop di
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; ShowGameSummary                                            21A1:0008  94 PC
+; Period / game summary screen from gsummary.
+;
+; Takes 4 words of stack arguments. Calls FlushInputEvents, LoadRawHeader, PlayJingle, UseOtherPage,
+; ClearClipRect, LoadStudioSpeech, BuildPathFar, LoadPackedHeader and others.
+;-----------------------------------------------------------------------------
+ShowGameSummary:
+        enter 0x78a, 0x0
+        push di
+        push si
+        mov ax, 0xffff
+        mov [bp - 0x50], ax
+        mov [bp - 0x73e], ax
+        mov [bp - 0x4a], ax
+        mov [bp - 0x48], ax
+        mov [bp - 0x5c], ax
+        call 0x0F99:FlushInputEvents
+        mov word [bp - 0x15e], 0x0
+        jmp short .4
+.1:
+        inc word [bp - 0x73a]
+.2:
+        cmp word [bp - 0x73a], 0x19
+        jnl short .3
+        imul si, [bp - 0x15e], 0x19
+        add si, [bp - 0x73a]
+        mov byte [bp + si - 0x98], 0x0
+        jmp short .1
+        db 0x90
+.3:
+        inc word [bp - 0x15e]
+.4:
+        cmp word [bp - 0x15e], 0x2
+        jnl short .5
+        mov word [bp - 0x73a], 0x0
+        jmp short .2
+        db 0x90
+.5:
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [bp - 0xfc], ax
+        mov [bp - 0xfe], ax
+        mov [bp - 0x62], ax
+        mov [bp - 0x64], ax
+        test byte [bp + 0x6], 0x20
+        jnz short .8
+        cmp word [SoundOptions], 0x8
+        jnz short .6
+        push ax
+        push strict word str_MtsumKms_2
+        call 0x149D:LoadRawHeader
+        add sp, 0x4
+        mov [bp - 0xfe], ax
+        mov [bp - 0xfc], dx
+        push 0x0
+        push strict word str_MtsumCfg_2
+        jmp short .7
+.6:
+        push ax
+        push strict word str_AdsumKms_2
+        call 0x149D:LoadRawHeader
+        add sp, 0x4
+        mov [bp - 0xfe], ax
+        mov [bp - 0xfc], dx
+        push 0x0
+        push strict word str_AdsumCfg_2
+.7:
+        call 0x149D:LoadRawHeader
+        add sp, 0x4
+        mov [bp - 0x64], ax
+        mov [bp - 0x62], dx
+        push dx
+        push ax
+        push word [bp - 0xfc]
+        push word [bp - 0xfe]
+        call 0x0EDC:PlayJingle
+        add sp, 0x8
+.8:
+        call 0x0FEF:UseOtherPage
+        push 0x0
+        call 0x0FEF:ClearClipRect
+        add sp, 0x2
+        call 0x0EDC:LoadStudioSpeech
+        mov word [bp - 0x73c], 0xffff
+        mov al, [bp + 0x8]
+        mov [bp - 0x46], al
+        mov byte [bp - 0x754], 0x0
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [bp - 0x15a], ax
+        mov [bp - 0x748], ax
+        mov [bp - 0x60], ax
+        mov [bp - 0xa0], ax
+        mov [bp - 0x52], ax
+        mov [bp - 0x15e], ax
+        jmp short .10
+.9:
+        db 0x2A, 0xC0                           ; insn: sub al, al
+        mov si, [bp - 0x15e]
+        mov [bp + si - 0x2c], al
+        mov [bp + si - 0x9e], al
+        inc word [bp - 0x15e]
+.10:
+        cmp word [bp - 0x15e], 0x2
+        jl short .9
+        push word 0x3701
+        push strict word str_Qpp
+        push ds
+        push strict word str_Crests4_3
+        push 0x0
+        push 0x0
+        lea ax, [bp - 0x12]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        push 0x0
+        lea ax, [bp - 0x12]
+        push ax
+        call 0x14B8:LoadPackedHeader
+        add sp, 0x4
+        mov [bp - 0x44], ax
+        mov [bp - 0x42], dx
+        push word 0x3701
+        push strict word str_Qpp
+        push ds
+        push strict word str_Summary_2
+        push 0x0
+        push 0x0
+        lea ax, [bp - 0x12]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        push strict word str_City_2
+        push 0x0
+        lea ax, [bp - 0x12]
+        push ax
+        call 0x14B8:LoadPackedHeader
+        add sp, 0x4
+        mov [bp - 0x124], ax
+        mov [bp - 0x122], dx
+        push dx
+        push ax
+        call 0x03A3:FindFarMsg
+        add sp, 0x6
+        mov [bp - 0x162], ax
+        mov [bp - 0x160], dx
+        push word 0x3701
+        push strict word str_Qpp
+        push ds
+        push strict word str_Summary2
+        push 0x0
+        push 0x0
+        lea ax, [bp - 0x12]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        lea ax, [bp - 0x120]
+        push ax
+        push strict word str_Defnforwlineootspairscrasummtoni
+        push 0x0
+        lea cx, [bp - 0x12]
+        push cx
+        call 0x14B8:LoadPackedHeader
+        add sp, 0x4
+        mov [bp - 0x5a], ax
+        mov [bp - 0x58], dx
+        push dx
+        push ax
+        call 0x03A3:FindFarList
+        add sp, 0x8
+        push 0x0
+        push strict word str_Crests2Bin_2
+        call 0x149D:LoadRawHeader
+        add sp, 0x4
+        mov [bp - 0x750], ax
+        mov [bp - 0x74e], dx
+        push 0x0
+        push strict word str_S1Fnt_2
+        call 0x149D:LoadRawHeader
+        add sp, 0x4
+        mov [bp - 0xf6], ax
+        mov [bp - 0xf4], dx
+        lea ax, [bp - 0x2a]
+        push ax
+        call 0x03A3:SaveCharTab
+        add sp, 0x2
+        push word [bp - 0xf4]
+        push word [bp - 0xf6]
+        call 0x03A3:UseCharSeg
+        add sp, 0x4
+        push 0x0
+        push word 0xd9
+        call 0x0D39:SetTextColors
+        add sp, 0x4
+        test byte [bp + 0x6], 0x24
+        jnz short .11
+        push word 0x100
+        mov ax, [bp - 0x750]
+        mov dx, [bp - 0x74e]
+        add ah, 0x1d
+        push dx
+        push ax
+        push word 0x3a0b
+        push strict word f_3A0B_AF4C
+        call 0x0000:_fmemcpy
+        add sp, 0xa
+        push word 0x3a0b
+        push strict word f_3A0B_AF4C
+        call 0x0FEF:SetRemapTable
+        add sp, 0x4
+        push word [bp - 0x160]
+        push word [bp - 0x162]
+        call 0x0FEF:DrawRleTransRemapFastBody
+        add sp, 0x4
+        test byte [bp + 0x6], 0x1
+        jnz short .11
+        lea ax, [bp - 0x740]
+        push ax
+        push 0x0
+        lea ax, [bp - 0x120]
+        push ss
+        push ax
+        push word [bp - 0x74e]
+        push word [bp - 0x750]
+        mov al, [bp + 0x8]
+        push ax
+        push word [bp + 0x6]
+        call 0x2185:DrawPeriodTitle
+        add sp, 0x10
+.11:
+        push word 0x3701
+        push strict word str_Db_2
+        push ds
+        push strict word str_Gsummary_2
+        push word 0x3701
+        push strict word f_3701_0E53
+        lea ax, [bp - 0xf2]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        mov word [bp - 0x15e], 0x0
+        lea ax, [bp - 0x5c]
+        push ax
+        lea cx, [bp - 0xf2]
+        push cx
+        call 0x0CD1:OpenReadShared
+        add sp, 0x4
+        mov [bp - 0x738], ax
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jnz short .12
+        push ax
+        lea ax, [bp - 0x38]
+        push ss
+        push ax
+        push word [bp - 0x5c]
+        call 0x0CD1:ReadEntry12
+        add sp, 0x8
+        mov [bp - 0x738], ax
+.12:
+        test byte [bp + 0x6], 0x20
+        jz short .13
+        jmp near .17
+.13:
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jnz short .14
+        lea ax, [bp - 0x36]
+        mov [bp - 0x752], ax
+        mov ax, [bp - 0x32]
+        mov [bp - 0x756], ax
+        mov al, [bp - 0x34]
+        mov [bp - 0x164], al
+        mov al, [bp - 0x33]
+        mov [bp - 0x163], al
+        push word 0x3701
+        push strict word str_Db_2
+        mov es, [g_8CA6]
+        push word [es:0xb7e]
+        push word [es:0xb7c]
+        push word 0x3701
+        push strict word f_3701_0E53
+        lea ax, [bp - 0xf2]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        lea ax, [bp - 0x50]
+        push ax
+        lea ax, [bp - 0xf2]
+        push ax
+        call 0x0CD1:OpenReadShared
+        add sp, 0x4
+        mov [bp - 0x738], ax
+.14:
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jnz short .15
+        mov al, [bp - 0x164]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        push ax
+        lea ax, [bp - 0x734]
+        push ss
+        push ax
+        push word [bp - 0x50]
+        call 0x0CD1:ReadEntry744
+        add sp, 0x8
+        mov [bp - 0x738], ax
+.15:
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jnz short .16
+        mov al, [bp - 0x163]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        push ax
+        lea ax, [bp - 0x44c]
+        push ss
+        push ax
+        push word [bp - 0x50]
+        call 0x0CD1:ReadEntry744
+        add sp, 0x8
+        mov [bp - 0x738], ax
+.16:
+        lea ax, [bp - 0x50]
+        push ax
+        call 0x0CD1:CloseHandlePtr
+        add sp, 0x2
+.17:
+        cmp word [bp - 0x738], 0x0
+        jnz short .18
+        push word 0x3701
+        push strict word str_Db_2
+        mov es, [g_8CA6]
+        push word [es:0xb6e]
+        push word [es:0xb6c]
+        push word 0x3701
+        push strict word f_3701_0E53
+        lea ax, [bp - 0xf2]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        lea ax, [bp - 0x73e]
+        push ax
+        lea ax, [bp - 0xf2]
+        push ax
+        call 0x0CD1:OpenReadShared
+        add sp, 0x4
+        mov [bp - 0x738], ax
+.18:
+        cmp word [bp - 0x738], 0x0
+        jnz short .19
+        mov es, [g_8CA6]
+        push word [es:0xb82]
+        push word [es:0xb80]
+        lea ax, [bp - 0x12]
+        push ss
+        push ax
+        call 0x0000:_fstrcpy
+        add sp, 0x8
+        lea ax, [bp - 0x12]
+        push ax
+        push word 0xc000
+        lea ax, [bp - 0xf2]
+        push ax
+        call 0x0000:_sprintf
+        add sp, 0x6
+        lea ax, [bp - 0x4a]
+        push ax
+        lea ax, [bp - 0xf2]
+        push ax
+        call 0x0CD1:OpenReadWriteShared
+        add sp, 0x4
+        mov [bp - 0x738], ax
+.19:
+        cmp word [bp - 0x738], 0x0
+        jnz short .20
+        mov es, [g_8CA6]
+        push word [es:0xb82]
+        push word [es:0xb80]
+        lea ax, [bp - 0x12]
+        push ss
+        push ax
+        call 0x0000:_fstrcpy
+        add sp, 0x8
+        lea ax, [bp - 0x12]
+        push ax
+        push word 0xc020
+        lea ax, [bp - 0xf2]
+        push ax
+        call 0x0000:_sprintf
+        add sp, 0x6
+        lea ax, [bp - 0x48]
+        push ax
+        lea ax, [bp - 0xf2]
+        push ax
+        call 0x0CD1:OpenReadWriteShared
+        add sp, 0x4
+        mov [bp - 0x738], ax
+.20:
+        test byte [bp + 0x6], 0x1c
+        jz short .21
+        mov al, [g_29CA]
+        mov [bp - 0x164], al
+        mov al, [g_29CC]
+        mov [bp - 0x163], al
+.21:
+        mov word [bp - 0x15c], 0x50
+        mov word [bp - 0x3c], 0xae10
+        mov word [bp - 0x3a], 0xae40
+        test byte [bp + 0x6], 0x20
+        jnz short .22
+        jmp near .42
+.22:
+        mov word [bp - 0x15e], 0x0
+        jmp near .29
+.23:
+        push strict word str_1st
+.24:
+        lea ax, [bp - 0xf2]
+        push ax
+        call 0x0000:_sprintf
+        add sp, 0x4
+        cmp byte [bp - 0x46], 0x3
+        jnc short .25
+        push strict word str_Period
+        lea ax, [bp - 0xf2]
+        push ax
+        call 0x0000:_strcat
+        add sp, 0x4
+.25:
+        lea ax, [bp - 0xf2]
+        push ss
+        push ax
+        push word [bp - 0x15c]
+        push word 0xb4
+        call 0x0D39:DrawShadowText
+        add sp, 0x8
+        cmp word [bp - 0x73c], 0x0
+        jz short .26
+        call 0x0EDC:AnnounceElseAroundNhl
+        mov word [bp - 0x73c], 0x0
+.26:
+        call 0x0FEF:CopyPlane
+        cmp word [bp - 0x15e], 0x0
+        jnz short .27
+        push 0x10
+        push word [bp - 0x74e]
+        push word [bp - 0x750]
+        push 0x0
+        call 0x1B35:FadePaletteInThunk
+        add sp, 0x8
+.27:
+        push 0x0
+        push word 0x3e8
+        call 0x0C16:WaitButtonTimed
+        add sp, 0x4
+        mov [bp - 0x15a], ax
+.28:
+        inc word [bp - 0x15e]
+.29:
+        cmp word [bp - 0x15e], 0x6
+        jl short .30
+        jmp near .52
+.30:
+        cmp word [bp - 0x15a], 0x2
+        jl short .31
+        jmp near .52
+.31:
+        cmp word [bp - 0x738], 0x0
+        jz short .32
+        jmp near .52
+.32:
+        mov bx, [bp - 0x15e]
+        shl bx, 1
+        mov al, [bx + g_B0B6]
+        mov [bp - 0x164], al
+        mov al, [bx + g_B0B7]
+        mov [bp - 0x163], al
+        mov al, [bx + g_B09E]
+        mov [bp - 0x46], al
+        mov al, [bx + g_B0AA]
+        mov [bp - 0x9e], al
+        mov al, [bx + g_B0AB]
+        mov [bp - 0x9d], al
+        cmp word [bp - 0x738], 0x0
+        jnz short .33
+        push word 0x3701
+        push strict word str_Db_2
+        mov es, [g_8CA6]
+        push word [es:0xb7e]
+        push word [es:0xb7c]
+        push word 0x3701
+        push strict word f_3701_0E53
+        lea ax, [bp - 0xf2]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        lea ax, [bp - 0x50]
+        push ax
+        lea ax, [bp - 0xf2]
+        push ax
+        call 0x0CD1:OpenReadShared
+        add sp, 0x4
+        mov [bp - 0x738], ax
+.33:
+        cmp word [bp - 0x738], 0x0
+        jnz short .34
+        mov al, [bp - 0x164]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        push ax
+        lea ax, [bp - 0x734]
+        push ss
+        push ax
+        push word [bp - 0x50]
+        call 0x0CD1:ReadEntry744
+        add sp, 0x8
+        mov [bp - 0x738], ax
+.34:
+        cmp word [bp - 0x738], 0x0
+        jnz short .35
+        mov al, [bp - 0x163]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        push ax
+        lea ax, [bp - 0x44c]
+        push ss
+        push ax
+        push word [bp - 0x50]
+        call 0x0CD1:ReadEntry744
+        add sp, 0x8
+        mov [bp - 0x738], ax
+.35:
+        lea ax, [bp - 0x50]
+        push ax
+        call 0x0CD1:CloseHandlePtr
+        add sp, 0x2
+        cmp word [bp - 0x738], 0x0
+        jz short .36
+        jmp near .28
+.36:
+        call 0x0FEF:UseOtherPage
+        push word 0x100
+        mov ax, [bp - 0x750]
+        mov dx, [bp - 0x74e]
+        add ah, 0x1d
+        push dx
+        push ax
+        push word 0x3a0b
+        push strict word f_3A0B_AF4C
+        call 0x0000:_fmemcpy
+        add sp, 0xa
+        push word 0x3a0b
+        push strict word f_3A0B_AF4C
+        call 0x0FEF:SetRemapTable
+        add sp, 0x4
+        push word [bp - 0x160]
+        push word [bp - 0x162]
+        call 0x0FEF:DrawRleTransRemapFastBody
+        add sp, 0x4
+        lea ax, [bp - 0x740]
+        push ax
+        push 0x0
+        lea ax, [bp - 0x120]
+        push ss
+        push ax
+        push word [bp - 0x74e]
+        push word [bp - 0x750]
+        mov al, [bp + 0x8]
+        push ax
+        push word [bp + 0x6]
+        call 0x2185:DrawPeriodTitle
+        add sp, 0x10
+        lea ax, [bp - 0x432]
+        push ss
+        push ax
+        lea ax, [bp - 0xf2]
+        push ss
+        push ax
+        call 0x0000:_fstrcpy
+        add sp, 0x8
+        lea ax, [bp - 0xf2]
+        push ss
+        push ax
+        push 0x50
+        push 0x14
+        call 0x0D39:DrawShadowText
+        add sp, 0x8
+        mov al, [bp - 0x9d]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        push ax
+        push word 0x4d8d
+        lea ax, [bp - 0xf2]
+        push ax
+        call 0x0000:_sprintf
+        add sp, 0x6
+        lea ax, [bp - 0xf2]
+        push ss
+        push ax
+        push 0x50
+        push word 0x82
+        call 0x0D39:DrawShadowText
+        add sp, 0x8
+        lea ax, [bp - 0x71a]
+        push ss
+        push ax
+        lea ax, [bp - 0xf2]
+        push ss
+        push ax
+        call 0x0000:_fstrcpy
+        add sp, 0x8
+        lea ax, [bp - 0xf2]
+        push ss
+        push ax
+        push 0x60
+        push 0x14
+        call 0x0D39:DrawShadowText
+        add sp, 0x8
+        mov al, [bp - 0x9e]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        push ax
+        push word 0x4d90
+        lea ax, [bp - 0xf2]
+        push ax
+        call 0x0000:_sprintf
+        add sp, 0x6
+        lea ax, [bp - 0xf2]
+        push ss
+        push ax
+        push 0x60
+        push word 0x82
+        call 0x0D39:DrawShadowText
+        add sp, 0x8
+        mov word [bp - 0x15c], 0x58
+        mov al, [bp - 0x46]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        dec ax
+        jnz short .37
+        jmp near .23
+.37:
+        dec ax
+        jz short .38
+        dec ax
+        jz short .39
+        dec ax
+        jz short .40
+        dec ax
+        jz short .41
+        push strict word str_Final
+        jmp near .24
+        db 0x90
+.38:
+        push strict word str_2nd
+        jmp near .24
+.39:
+        push strict word str_3rd
+        jmp near .24
+.40:
+        push word 0x4d9f
+        jmp near .24
+.41:
+        push strict word str_FinalOt
+        jmp near .24
+.42:
+        test byte [bp + 0x6], 0x4
+        jnz short .43
+        jmp near .53
+.43:
+        mov word [bp - 0x73a], 0x0
+.44:
+        call 0x0FEF:UseOtherPage
+        push 0x0
+        call 0x0FEF:ClearClipRect
+        add sp, 0x2
+        push word 0x100
+        mov ax, [bp - 0x750]
+        mov dx, [bp - 0x74e]
+        add ah, 0x1d
+        push dx
+        push ax
+        push word 0x3a0b
+        push strict word f_3A0B_AF4C
+        call 0x0000:_fmemcpy
+        add sp, 0xa
+        push word 0x3a0b
+        push strict word f_3A0B_AF4C
+        call 0x0FEF:SetRemapTable
+        add sp, 0x4
+        push word [bp - 0x160]
+        push word [bp - 0x162]
+        call 0x0FEF:DrawRleTransRemapFastBody
+        add sp, 0x4
+        lea ax, [bp - 0x740]
+        push ax
+        push 0x0
+        lea ax, [bp - 0x120]
+        push ss
+        push ax
+        push word [bp - 0x74e]
+        push word [bp - 0x750]
+        mov al, [bp + 0x8]
+        push ax
+        push word [bp + 0x6]
+        call 0x2185:DrawPeriodTitle
+        add sp, 0x10
+        mov si, [bp - 0x73a]
+        mov bl, [bp + si - 0x164]
+        db 0x2A, 0xFF                           ; insn: sub bh, bh
+        db 0x8B, 0xC3                           ; insn: mov ax, bx
+        shl bx, 1
+        push word [bx + g_5604]
+        push word [bp - 0x42]
+        push word [bp - 0x44]
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        call 0x03A3:FindFarMsg
+        add sp, 0x6
+        mov [bp - 0x4e], ax
+        mov [bp - 0x4c], dx
+        push word 0x100
+        db 0x8B, 0xC6                           ; insn: mov ax, si
+        db 0x8A, 0xE0                           ; insn: mov ah, al
+        db 0x2A, 0xC0                           ; insn: sub al, al
+        add ax, [bp - 0x750]
+        mov dx, [bp - 0x74e]
+        add ah, 0x3
+        push dx
+        push ax
+        push word 0x3a0b
+        push strict word f_3A0B_AF4C
+        call 0x0000:_fmemcpy
+        add sp, 0xa
+        mov es, [g_8CA8]
+        mov byte [es:0xaf8f], 0xd9
+        push word 0x3a0b
+        push strict word f_3A0B_AF4C
+        call 0x0FEF:SetRemapTable
+        add sp, 0x4
+        push 0x1c
+        push word 0x110
+        push word [bp - 0x4c]
+        push word [bp - 0x4e]
+        call 0x0FEF:DrawRleTransRemapFastAt
+        add sp, 0x8
+        les bx, [FontPtr]
+        mov ax, [es:bx + 0xe]
+        add ax, strict word 0x3c
+        mov [bp - 0x15c], ax
+        mov word [bp - 0x15e], 0x0
+.45:
+        cmp word [bp - 0x738], 0x0
+        jz short .46
+        jmp near .50
+.46:
+        mov si, [bp - 0x73a]
+        shl si, 1
+        mov bx, [bp + si - 0x3c]
+        mov si, [bp - 0x15e]
+        mov al, [bx + si + 0x28]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        mov [bp - 0x2], ax
+        cmp ax, strict word 0x64
+        jl short .47
+        jmp near .49
+.47:
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        imul ax, [bp - 0x73a], word 0xba
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        shl bx, byte 0x2
+        mov ax, [bx + g_9FCC]
+        mov dx, [bx + g_9FCE]
+        mov [bp - 0x744], ax
+        mov [bp - 0x742], dx
+        push dx
+        push ax
+        lea ax, [bp - 0x158]
+        push ss
+        push ax
+        push word [bp - 0x73e]
+        call 0x0CD1:ReadRecord52
+        add sp, 0xa
+        mov [bp - 0x738], ax
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jnz short .48
+        push 0x64
+        lea ax, [bp - 0x145]
+        push ss
+        push ax
+        push 0x0
+        push 0x0
+        lea ax, [bp - 0xf2]
+        push ss
+        push ax
+        call 0x0F89:FitNameToWidth
+        add sp, 0xe
+        lea ax, [bp - 0xf2]
+        push ss
+        push ax
+        push word [bp - 0x15c]
+        push 0x14
+        call 0x0D39:DrawShadowText
+        add sp, 0x8
+        imul ax, [bp - 0x73a], 0x1c
+        add ax, [bp - 0x2]
+        imul bx, ax, 0x28
+        cmp byte [bx + hmroster], 0x1
+        jnz short .48
+        push ds
+        push strict word str_Injured
+        push word [bp - 0x15c]
+        push word 0xc8
+        call 0x0D39:DrawShadowText
+        add sp, 0x8
+.48:
+        les bx, [FontPtr]
+        mov ax, [es:bx + 0xe]
+        add [bp - 0x15c], ax
+.49:
+        inc word [bp - 0x15e]
+        cmp word [bp - 0x15e], 0x8
+        jnl short .50
+        jmp near .45
+.50:
+        call 0x0FEF:CopyPlane
+        cmp word [bp - 0x73a], 0x0
+        jnz short .51
+        push 0x10
+        push word [bp - 0x74e]
+        push word [bp - 0x750]
+        push 0x0
+        call 0x1B35:FadePaletteInThunk
+        add sp, 0x8
+.51:
+        push 0x0
+        push word 0x3e8
+        call 0x0C16:WaitButtonTimed
+        add sp, 0x4
+        mov [bp - 0x15a], ax
+        inc word [bp - 0x73a]
+        cmp word [bp - 0x73a], 0x2
+        jnl short .52
+        jmp near .44
+.52:
+        mov word [bp - 0xa0], 0xffff
+.53:
+        push 0x0
+        mov ax, [bp - 0x756]
+        db 0x8B, 0xC8                           ; insn: mov cx, ax
+        shl ax, 1
+        db 0x03, 0xC1                           ; insn: add ax, cx
+        shl ax, byte 0x2
+        cwd
+        add ax, strict word 0x1
+        adc dx, 0x0
+        push dx
+        push ax
+        push strict word str_Evnt
+        call 0x14DB:AllocRecData
+        add sp, 0x8
+        mov [bp - 0x56], ax
+        mov [bp - 0x54], dx
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [bp - 0xf8], ax
+        mov [bp - 0x15e], ax
+        mov [bp - 0x100], ax
+        db 0x2A, 0xC0                           ; insn: sub al, al
+        mov [bp - 0x740], al
+        mov [bp - 0x73f], al
+.54:
+        push word [bp - 0x15e]
+        mov ax, [bp - 0xf8]
+        db 0x8B, 0xC8                           ; insn: mov cx, ax
+        shl ax, 1
+        db 0x03, 0xC1                           ; insn: add ax, cx
+        shl ax, byte 0x2
+        db 0x8B, 0xC8                           ; insn: mov cx, ax
+        add ax, [bp - 0x56]
+        mov dx, [bp - 0x54]
+        push dx
+        push ax
+        push word [bp - 0x5c]
+        db 0x8B, 0xF1                           ; insn: mov si, cx
+        call 0x0CD1:ReadEntry12
+        add sp, 0x8
+        mov [bp - 0x738], ax
+        les bx, [bp - 0x56]
+        cmp byte [es:bx + si], 0x1
+        jnz short .55
+        test byte [bp + 0x6], 0x1
+        jnz short .57
+.55:
+        mov bx, [bp - 0xf8]
+        db 0x8B, 0xC3                           ; insn: mov ax, bx
+        shl bx, 1
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        shl bx, byte 0x2
+        mov si, [bp - 0x56]
+        cmp byte [es:bx + si], 0x2
+        jnz short .56
+        test byte [bp + 0x6], 0x2
+        jnz short .57
+.56:
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        shl bx, 1
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        shl bx, byte 0x2
+        cmp byte [es:bx + si], 0x4
+        jnz short .60
+        test byte [bp + 0x6], 0x3
+        jz short .60
+.57:
+        mov bx, [bp - 0xf8]
+        db 0x8B, 0xC3                           ; insn: mov ax, bx
+        shl bx, 1
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        shl bx, byte 0x2
+        mov si, [bp - 0x56]
+        cmp byte [es:bx + si], 0x4
+        jnz short .58
+        inc word [bp - 0x100]
+.58:
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        shl bx, 1
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        shl bx, byte 0x2
+        cmp byte [es:bx + si], 0x1
+        jnz short .59
+        db 0x03, 0xF3                           ; insn: add si, bx
+        inc si
+        inc si
+        mov [bp - 0x40], si
+        mov [bp - 0x3e], es
+        mov al, [es:si]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        inc byte [bp + si - 0x740]
+.59:
+        inc word [bp - 0xf8]
+.60:
+        inc word [bp - 0x15e]
+        cmp word [bp - 0x738], 0x0
+        jnz short .61
+        mov ax, [bp - 0x15e]
+        cmp [bp - 0x756], ax
+        jl short .61
+        jmp near .54
+.61:
+        push 0x0
+        mov ax, [bp - 0x100]
+        cwd
+        shl ax, 1
+        rcl dx, 1
+        shl ax, 1
+        rcl dx, 1
+        add ax, strict word 0x1
+        adc dx, 0x0
+        push dx
+        push ax
+        push strict word str_Prds
+        call 0x14DB:AllocRecData
+        add sp, 0x8
+        mov [bp - 0x9c], ax
+        mov [bp - 0x9a], dx
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [bp - 0x15e], ax
+        mov [bp - 0x73a], ax
+.62:
+        mov bx, [bp - 0x15e]
+        db 0x8B, 0xC3                           ; insn: mov ax, bx
+        shl bx, 1
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        shl bx, byte 0x2
+        les si, [bp - 0x56]
+        cmp byte [es:bx + si], 0x4
+        jnz short .63
+        db 0x03, 0xF3                           ; insn: add si, bx
+        inc si
+        inc si
+        mov bx, [bp - 0x73a]
+        shl bx, byte 0x2
+        mov ax, es
+        les di, [bp - 0x9c]
+        mov [es:bx + di], si
+        mov [es:bx + di + 0x2], ax
+        inc word [bp - 0x73a]
+.63:
+        inc word [bp - 0x15e]
+        mov ax, [bp - 0x15e]
+        cmp [bp - 0x756], ax
+        jl short .64
+        mov ax, [bp - 0x73a]
+        cmp [bp - 0x100], ax
+        jg short .62
+.64:
+        test byte [bp + 0x6], 0x24
+        jz short .65
+        jmp near .73
+.65:
+        lea ax, [bp - 0x740]
+        push ax
+        push word [bp - 0x100]
+        lea ax, [bp - 0x120]
+        push ss
+        push ax
+        push word [bp - 0x74e]
+        push word [bp - 0x750]
+        mov al, [bp + 0x8]
+        push ax
+        push word [bp + 0x6]
+        call 0x2185:DrawPeriodTitle
+        add sp, 0x10
+        test byte [bp + 0x6], 0x1
+        jz short .73
+        mov word [bp - 0x73c], 0x0
+        mov es, [g_8CAA]
+        cmp word [es:0x126], 0x1
+        jz short .66
+        mov al, [bp + 0x8]
+        cmp [bp + 0xa], al
+        jz short .67
+.66:
+        push -0x1
+        push 0x0
+        jmp short .71
+.67:
+        cmp byte [bp - 0x46], 0x4
+        jnc short .69
+        push 0x0
+        push 0x0
+        mov al, [bp - 0x46]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+.68:
+        push ax
+        jmp short .72
+.69:
+        cmp byte [bp - 0x46], 0x7
+        jnc short .70
+        mov al, [bp - 0x73f]
+        cmp [bp - 0x740], al
+        jnz short .70
+        mov es, [g_8CAC]
+        cmp word [es:0x78c], 0x3f0
+        jl short .70
+        push 0x0
+        push -0x1
+        mov al, [bp - 0x46]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        sub ax, strict word 0x3
+        jmp short .68
+        db 0x90
+.70:
+        push 0x0
+        push -0x1
+.71:
+        push 0x0
+.72:
+        call 0x0EDC:AnnouncePeriodSummary
+        add sp, 0x6
+.73:
+        mov word [bp - 0x15e], 0x0
+        db 0x2A, 0xC0                           ; insn: sub al, al
+        mov [bp - 0x66], al
+        mov [bp - 0x758], al
+        jmp near .138
+.74:
+        cmp word [bp - 0xa0], 0x0
+        jz short .75
+        jmp near .139
+.75:
+        mov ax, [bp - 0x15e]
+        cmp [bp - 0xf8], ax
+        jg short .76
+        jmp near .139
+.76:
+        cmp word [bp - 0x15a], 0x2
+        jl short .77
+        jmp near .139
+.77:
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        shl bx, 1
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        shl bx, byte 0x2
+        les si, [bp - 0x56]
+        mov al, [es:bx + si]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        dec ax
+        jz short .80
+        dec ax
+        jnz short .78
+        jmp near .103
+.78:
+        dec ax
+        dec ax
+        jnz short .79
+        jmp near .110
+.79:
+        jmp near .100
+        db 0x90
+.80:
+        mov ax, [bp - 0x15e]
+        db 0x8B, 0xC8                           ; insn: mov cx, ax
+        shl ax, 1
+        db 0x03, 0xC1                           ; insn: add ax, cx
+        shl ax, byte 0x2
+        add ax, [bp - 0x56]
+        mov dx, [bp - 0x54]
+        inc ax
+        inc ax
+        mov [bp - 0x40], ax
+        mov [bp - 0x3e], dx
+        mov es, dx
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        mov cl, [es:bx + 0x1]
+        mov al, [es:bx]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        imul si, ax, 0x19
+        db 0x2A, 0xED                           ; insn: sub ch, ch
+        db 0x03, 0xF1                           ; insn: add si, cx
+        inc byte [bp + si - 0x98]
+        mov dl, [bp + 0x8]
+        cmp [es:bx + 0x5], dl
+        jnc short .81
+        jmp near .100
+.81:
+        mov dl, [bp + 0xa]
+        cmp [es:bx + 0x5], dl
+        jna short .82
+        jmp near .100
+.82:
+        test byte [bp + 0x6], 0x1
+        jnz short .83
+        jmp near .100
+.83:
+        mov [bp - 0x2], cx
+        imul ax, ax, word 0xba
+        db 0x8B, 0xF1                           ; insn: mov si, cx
+        db 0x03, 0xF0                           ; insn: add si, ax
+        shl si, byte 0x2
+        mov ax, [bp + si - 0x6e8]
+        mov dx, [bp + si - 0x6e6]
+        mov [bp - 0x744], ax
+        mov [bp - 0x742], dx
+        push dx
+        push ax
+        lea ax, [bp - 0x158]
+        push ss
+        push ax
+        push word [bp - 0x73e]
+        call 0x0CD1:ReadRecord52
+        add sp, 0xa
+        mov [bp - 0x738], ax
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jz short .84
+        jmp near .85
+.84:
+        les bx, [bp - 0x40]
+        mov al, [es:bx]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        imul si, ax, word 0x2e8
+        lea ax, [bp + si - 0x734]
+        push ax
+        push word 0x4dcd
+        lea ax, [bp - 0xf2]
+        push ax
+        call 0x0000:_sprintf
+        add sp, 0x6
+        lea ax, [bp - 0xf2]
+        push ss
+        push ax
+        push word [bp - 0x15c]
+        push 0x14
+        call 0x0D39:DrawShadowText
+        add sp, 0x8
+        push 0x64
+        lea ax, [bp - 0x145]
+        push ss
+        push ax
+        push 0x0
+        push 0x0
+        lea ax, [bp - 0xf2]
+        push ss
+        push ax
+        call 0x0F89:FitNameToWidth
+        add sp, 0xe
+        mov ax, [bp - 0x12c]
+        mov dx, [bp - 0x12a]
+        mov [bp - 0x744], ax
+        mov [bp - 0x742], dx
+        push dx
+        push ax
+        lea ax, [bp - 0x788]
+        push ss
+        push ax
+        les bx, [bp - 0x40]
+        mov al, [es:bx]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        shl si, 1
+        push word [bp + si - 0x4a]
+        call 0x0CD1:ReadRecord48
+        add sp, 0xa
+        mov [bp - 0x738], ax
+.85:
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jz short .86
+        jmp near .100
+.86:
+        les bx, [bp - 0x40]
+        mov al, [es:bx]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        imul si, ax, 0x19
+        add si, [bp - 0x2]
+        mov al, [bp + si - 0x98]
+        cbw
+        mov [bp - 0x746], ax
+        test byte [AnnouncerFlags], 0x2
+        jz short .87
+        add ax, [bp - 0x786]
+        mov [bp - 0x746], ax
+        jmp short .88
+        db 0x90, 0x90
+.87:
+        mov ax, [bp - 0x774]
+        add [bp - 0x746], ax
+.88:
+        push word [bp - 0x746]
+        push strict word str_D_3
+        lea ax, [bp - 0x12]
+        push ax
+        call 0x0000:_sprintf
+        add sp, 0x6
+        lea ax, [bp - 0x12]
+        push ax
+        lea ax, [bp - 0xf2]
+        push ax
+        call 0x0000:_strcat
+        add sp, 0x4
+        mov ax, [bp - 0x746]
+        mov cx, 0x64
+        cwd
+        idiv cx
+        mov [bp - 0x736], dx
+        mov ax, [bp - 0x746]
+        mov cx, 0xa
+        cwd
+        idiv cx
+        mov [bp - 0x5e], dx
+        dec dx
+        jnz short .89
+        cmp word [bp - 0x736], 0xb
+        jz short .89
+        push strict word str_St
+        jmp short .92
+.89:
+        cmp word [bp - 0x5e], 0x2
+        jnz short .90
+        cmp word [bp - 0x736], 0xc
+        jz short .90
+        push strict word str_Nd
+        jmp short .92
+.90:
+        cmp word [bp - 0x5e], 0x3
+        jnz short .91
+        cmp word [bp - 0x736], 0xd
+        jz short .91
+        push strict word str_Rd
+        jmp short .92
+.91:
+        push strict word str_Th
+.92:
+        lea ax, [bp - 0xf2]
+        push ax
+        call 0x0000:_strcat
+        add sp, 0x4
+        les bx, [bp - 0x40]
+        test byte [es:bx + 0x4], 0x2
+        jz short .93
+        push strict word str_Sh_2
+        jmp short .94
+        db 0x90
+.93:
+        test byte [es:bx + 0x4], 0x4
+        jz short .95
+        push strict word str_Pp_2
+.94:
+        lea ax, [bp - 0xf2]
+        push ax
+        call 0x0000:_strcat
+        add sp, 0x4
+.95:
+        lea ax, [bp - 0xf2]
+        push ss
+        push ax
+        push word [bp - 0x15c]
+        push 0x38
+        call 0x0D39:DrawShadowText
+        add sp, 0x8
+        mov byte [bp - 0x66], 0xff
+        les bx, [bp - 0x40]
+        mov al, [es:bx + 0x7]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        push ax
+        mov al, [es:bx + 0x6]
+        push ax
+        push strict word str_02d02d_2
+        lea ax, [bp - 0xf2]
+        push ax
+        call 0x0000:_sprintf
+        add sp, 0x8
+        lea ax, [bp - 0xf2]
+        push ss
+        push ax
+        push word [bp - 0x15c]
+        push word 0xfa
+        call 0x0D39:DrawShadowText
+        add sp, 0x8
+        les bx, [FontPtr]
+        mov ax, [es:bx + 0xe]
+        add [bp - 0x15c], ax
+        les bx, [bp - 0x40]
+        cmp byte [es:bx + 0x2], 0xff
+        jnz short .96
+        jmp near .99
+.96:
+        mov al, [es:bx + 0x2]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        mov [bp - 0x2], ax
+        mov cl, [es:bx]
+        db 0x2A, 0xED                           ; insn: sub ch, ch
+        imul si, cx, word 0xba
+        db 0x03, 0xF0                           ; insn: add si, ax
+        shl si, byte 0x2
+        mov ax, [bp + si - 0x6e8]
+        mov dx, [bp + si - 0x6e6]
+        mov [bp - 0x744], ax
+        mov [bp - 0x742], dx
+        push dx
+        push ax
+        lea ax, [bp - 0x158]
+        push ss
+        push ax
+        push word [bp - 0x73e]
+        call 0x0CD1:ReadRecord52
+        add sp, 0xa
+        mov [bp - 0x738], ax
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jnz short .97
+        push 0x64
+        lea ax, [bp - 0x145]
+        push ss
+        push ax
+        push 0x0
+        push 0x0
+        lea ax, [bp - 0x12]
+        push ss
+        push ax
+        call 0x0F89:FitNameToWidth
+        add sp, 0xe
+        lea ax, [bp - 0x12]
+        push ax
+        push strict word str_S_2
+        lea ax, [bp - 0xf2]
+        push ax
+        call 0x0000:_sprintf
+        add sp, 0x6
+.97:
+        les bx, [bp - 0x40]
+        cmp byte [es:bx + 0x3], 0xff
+        jz short .98
+        mov al, [es:bx + 0x3]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        mov [bp - 0x2], ax
+        mov cl, [es:bx]
+        db 0x2A, 0xED                           ; insn: sub ch, ch
+        imul si, cx, word 0xba
+        db 0x03, 0xF0                           ; insn: add si, ax
+        shl si, byte 0x2
+        mov ax, [bp + si - 0x6e8]
+        mov dx, [bp + si - 0x6e6]
+        mov [bp - 0x744], ax
+        mov [bp - 0x742], dx
+        push dx
+        push ax
+        lea ax, [bp - 0x158]
+        push ss
+        push ax
+        push word [bp - 0x73e]
+        call 0x0CD1:ReadRecord52
+        add sp, 0xa
+        mov [bp - 0x738], ax
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jnz short .98
+        push 0x64
+        lea ax, [bp - 0x145]
+        push ss
+        push ax
+        push 0x0
+        push 0x0
+        lea ax, [bp - 0x12]
+        push ss
+        push ax
+        call 0x0F89:FitNameToWidth
+        add sp, 0xe
+        push word 0x4dfb
+        lea ax, [bp - 0xf2]
+        push ax
+        call 0x0000:_strcat
+        add sp, 0x4
+        lea ax, [bp - 0x12]
+        push ax
+        lea ax, [bp - 0xf2]
+        push ax
+        call 0x0000:_strcat
+        add sp, 0x4
+.98:
+        cmp word [bp - 0x738], 0x0
+        jnz short .99
+        push word 0x4dfe
+        lea ax, [bp - 0xf2]
+        push ax
+        call 0x0000:_strcat
+        add sp, 0x4
+        lea ax, [bp - 0xf2]
+        push ss
+        push ax
+        push word [bp - 0x15c]
+        push 0x38
+        call 0x0D39:DrawShadowText
+        add sp, 0x8
+.99:
+        les bx, [FontPtr]
+        mov ax, [es:bx + 0xe]
+        add [bp - 0x15c], ax
+.100:
+        inc word [bp - 0x15e]
+        cmp word [bp - 0x15c], 0x84
+        jnl short .101
+        cmp word [bp - 0x60], 0x0
+        jnz short .101
+        cmp word [bp - 0xa0], 0x0
+        jnz short .101
+        cmp word [bp - 0x738], 0x0
+        jnz short .101
+        jmp near .138
+.101:
+        test byte [bp + 0x6], 0x1
+        jnz short .102
+        jmp near .116
+.102:
+        db 0x2A, 0xC0                           ; insn: sub al, al
+        mov [bp - 0x9e], al
+        mov [bp - 0x9d], al
+        mov [bp - 0x2c], al
+        mov [bp - 0x2b], al
+        mov word [bp - 0x73a], 0x0
+        jmp near .114
+        db 0x90
+.103:
+        test byte [bp + 0x6], 0x2
+        jz short .100
+        mov al, [bp + 0x8]
+        mov bx, [bp - 0x15e]
+        db 0x8B, 0xCB                           ; insn: mov cx, bx
+        shl bx, 1
+        db 0x03, 0xD9                           ; insn: add bx, cx
+        shl bx, byte 0x2
+        add bx, [bp - 0x56]
+        mov es, [bp - 0x54]
+        inc bx
+        inc bx
+        mov [bp - 0x74c], bx
+        mov [bp - 0x74a], es
+        cmp [es:bx + 0x4], al
+        jc short .100
+        mov al, [bp + 0xa]
+        cmp [es:bx + 0x4], al
+        ja short .100
+        mov al, [es:bx]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        imul si, ax, word 0x2e8
+        lea ax, [bp + si - 0x734]
+        push ax
+        push word 0x4e00
+        lea ax, [bp - 0xf2]
+        push ax
+        call 0x0000:_sprintf
+        add sp, 0x6
+        lea ax, [bp - 0xf2]
+        push ss
+        push ax
+        push word [bp - 0x15c]
+        push 0x5
+        call 0x0D39:DrawShadowText
+        add sp, 0x8
+        les bx, [bp - 0x74c]
+        mov al, [es:bx + 0x1]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        mov [bp - 0x2], ax
+        mov cl, [es:bx]
+        db 0x2A, 0xED                           ; insn: sub ch, ch
+        imul si, cx, word 0xba
+        db 0x03, 0xF0                           ; insn: add si, ax
+        shl si, byte 0x2
+        mov ax, [bp + si - 0x6e8]
+        mov dx, [bp + si - 0x6e6]
+        mov [bp - 0x744], ax
+        mov [bp - 0x742], dx
+        push dx
+        push ax
+        lea ax, [bp - 0x158]
+        push ss
+        push ax
+        push word [bp - 0x73e]
+        call 0x0CD1:ReadRecord52
+        add sp, 0xa
+        mov [bp - 0x738], ax
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jz short .104
+        jmp near .100
+.104:
+        lea ax, [bp - 0x145]
+        push ss
+        push ax
+        lea ax, [bp - 0x12]
+        push ss
+        push ax
+        call 0x0000:_fstrcpy
+        add sp, 0x8
+.105:
+        mov word [bp - 0x738], 0x0
+        les bx, [bp - 0x74c]
+        cmp byte [es:bx + 0x3], 0xff
+        jnz short .106
+        mov bl, [es:bx + 0x2]
+        db 0x2A, 0xFF                           ; insn: sub bh, bh
+        shl bx, 1
+        push word [bx + g_575A]
+        lea ax, [bp - 0x12]
+        push ax
+        push strict word str_SS_2
+        lea ax, [bp - 0xf2]
+        push ax
+        call 0x0000:_sprintf
+        add sp, 0x8
+        jmp short .107
+        db 0x90
+.106:
+        mov bl, [es:bx + 0x2]
+        db 0x2A, 0xFF                           ; insn: sub bh, bh
+        shl bx, 1
+        push word [bx + g_575A]
+        mov bx, [bp - 0x74c]
+        mov al, [es:bx + 0x3]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        push ax
+        lea ax, [bp - 0x12]
+        push ax
+        push strict word str_SDMinS
+        lea ax, [bp - 0xf2]
+        push ax
+        call 0x0000:_sprintf
+        add sp, 0xa
+.107:
+        lea ax, [bp - 0xf2]
+        push ax
+        call 0x03A3:TextWidthAll
+        add sp, 0x2
+        cmp ax, 0xe1
+        jng short .108
+        lea ax, [bp - 0x12]
+        push ax
+        call 0x0000:_strlen
+        add sp, 0x2
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        mov byte [bp + si - 0x13], 0x0
+        mov word [bp - 0x738], 0xffff
+.108:
+        cmp word [bp - 0x738], 0x0
+        jz short .109
+        jmp near .105
+.109:
+        lea ax, [bp - 0xf2]
+        push ss
+        push ax
+        push word [bp - 0x15c]
+        push 0x28
+        call 0x0D39:DrawShadowText
+        add sp, 0x8
+        les bx, [bp - 0x74c]
+        mov al, [es:bx + 0x6]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        push ax
+        mov al, [es:bx + 0x5]
+        push ax
+        push strict word str_02d02d
+        lea ax, [bp - 0xf2]
+        push ax
+        call 0x0000:_sprintf
+        add sp, 0x8
+        lea ax, [bp - 0xf2]
+        push ss
+        push ax
+        push word [bp - 0x15c]
+        push word 0x113
+        call 0x0D39:DrawShadowText
+        add sp, 0x8
+        mov byte [bp - 0x758], 0xff
+        jmp near .99
+.110:
+        mov al, [bp + 0x8]
+        inc byte [bp - 0x754]
+        cmp [bp - 0x754], al
+        jnc short .111
+        jmp near .100
+.111:
+        mov al, [bp + 0xa]
+        cmp [bp - 0x754], al
+        jna short .112
+        jmp near .100
+.112:
+        mov word [bp - 0x15c], 0x84
+        mov ax, 0xffff
+        mov [bp - 0x60], ax
+        mov [bp - 0x748], ax
+        jmp near .100
+        db 0x90
+.113:
+        inc word [bp - 0x73a]
+.114:
+        mov al, [bp - 0x46]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        cmp ax, [bp - 0x73a]
+        jng short .115
+        mov bx, [bp - 0x73a]
+        shl bx, byte 0x2
+        les si, [bp - 0x9c]
+        les bx, [es:bx + si]
+        mov al, [es:bx]
+        add [bp - 0x9e], al
+        mov al, [es:bx + 0x2]
+        add [bp - 0x9d], al
+        mov al, [es:bx + 0x1]
+        add [bp - 0x2c], al
+        mov al, [es:bx + 0x3]
+        add [bp - 0x2b], al
+        jmp short .113
+.115:
+        push ds
+        push strict word str_ShotsOnGoal
+        push word 0xa2
+        call 0x0D39:DrawShadowTextCentered
+        add sp, 0x6
+        les bx, [FontPtr]
+        mov ax, [es:bx + 0xe]
+        add ax, 0xa2
+        mov [bp - 0x15c], ax
+        mov al, [bp - 0x2c]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        push ax
+        mov al, [bp - 0x46]
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        shl si, byte 0x2
+        les bx, [bp - 0x9c]
+        les di, [es:bx + si - 0x4]
+        mov cl, [es:di + 0x1]
+        db 0x2A, 0xED                           ; insn: sub ch, ch
+        push cx
+        lea cx, [bp - 0x71a]
+        push cx
+        push strict word str_SDD_2
+        lea cx, [bp - 0xf2]
+        push cx
+        call 0x0000:_sprintf
+        add sp, 0xa
+        lea ax, [bp - 0xf2]
+        push ss
+        push ax
+        push word [bp - 0x15c]
+        lea cx, [bp - 0xf2]
+        push cx
+        call 0x03A3:TextWidthAll
+        add sp, 0x2
+        sub ax, 0x9c
+        neg ax
+        mov [bp - 0xfa], ax
+        push ax
+        call 0x0D39:DrawShadowText
+        add sp, 0x8
+        mov al, [bp - 0x2b]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        push ax
+        les bx, [bp - 0x9c]
+        les bx, [es:bx + si - 0x4]
+        mov al, [es:bx + 0x3]
+        push ax
+        lea ax, [bp - 0x432]
+        push ax
+        push strict word str_SDD
+        lea ax, [bp - 0xf2]
+        push ax
+        call 0x0000:_sprintf
+        add sp, 0xa
+        lea ax, [bp - 0xf2]
+        push ss
+        push ax
+        push word [bp - 0x15c]
+        mov ax, 0xa4
+        mov [bp - 0xfa], ax
+        push ax
+        call 0x0D39:DrawShadowText
+        add sp, 0x8
+.116:
+        cmp word [bp - 0x748], 0x0
+        jnz short .122
+        mov ax, [bp - 0x15e]
+        mov [bp - 0x73a], ax
+.117:
+        mov bx, [bp - 0x73a]
+        db 0x8B, 0xC3                           ; insn: mov ax, bx
+        shl bx, 1
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        shl bx, byte 0x2
+        les si, [bp - 0x56]
+        cmp byte [es:bx + si], 0x4
+        jz short .121
+        cmp byte [es:bx + si], 0x1
+        jnz short .118
+        test byte [bp + 0x6], 0x1
+        jnz short .120
+.118:
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        shl bx, 1
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        shl bx, byte 0x2
+        cmp byte [es:bx + si], 0x2
+        jz short .119
+        jmp near .134
+.119:
+        test byte [bp + 0x6], 0x2
+        jnz short .120
+        jmp near .134
+.120:
+        mov ax, [bp - 0x15e]
+        mov [bp - 0x73a], ax
+.121:
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        mov [bp - 0x15e], bx
+        shl bx, 1
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        shl bx, byte 0x2
+        cmp byte [es:bx + si], 0x4
+        jnz short .122
+        inc ax
+        mov [bp - 0x15e], ax
+        mov word [bp - 0x748], 0xffff
+.122:
+        cmp byte [bp - 0x66], 0x0
+        jnz short .123
+        test byte [bp + 0x6], 0x1
+        jz short .123
+        push word 0x38e9
+        push strict word 0x0
+        push 0x6a
+        push word 0x38e9
+        push strict word 0x0
+        call 0x0D39:TextWidthFar
+        add sp, 0x4
+        sub ax, 0x140
+        neg ax
+        cwd
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        sar ax, 1
+        push ax
+        call 0x0D39:DrawShadowText
+        add sp, 0x8
+.123:
+        cmp byte [bp - 0x758], 0x0
+        jnz short .124
+        test byte [bp + 0x6], 0x2
+        jz short .124
+        push word 0x38e9
+        push strict word 0xc
+        push 0x6a
+        push word 0x38e9
+        push strict word 0xc
+        call 0x0D39:TextWidthFar
+        add sp, 0x4
+        sub ax, 0x140
+        neg ax
+        cwd
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        sar ax, 1
+        push ax
+        call 0x0D39:DrawShadowText
+        add sp, 0x8
+.124:
+        mov al, [bp - 0x46]
+        cmp [bp + 0xa], al
+        jnz short .126
+        mov ax, [bp - 0x15e]
+        cmp [bp - 0xf8], ax
+        jz short .125
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        shl bx, 1
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        shl bx, byte 0x2
+        les si, [bp - 0x56]
+        cmp byte [es:bx + si], 0x4
+        jnz short .126
+.125:
+        mov word [bp - 0xa0], 0xffff
+.126:
+        cmp word [bp - 0x748], 0x0
+        jz short .128
+        cmp byte [bp - 0x46], 0x5
+        jnc short .127
+        mov word [bp - 0x73c], 0xffff
+.127:
+        inc byte [bp - 0x46]
+.128:
+        mov word [bp - 0x748], 0x0
+        db 0x2A, 0xC0                           ; insn: sub al, al
+        mov [bp - 0x66], al
+        mov [bp - 0x758], al
+        call 0x0FEF:CopyPlane
+        cmp word [bp - 0x52], 0x0
+        jnz short .129
+        mov word [bp - 0x52], 0xffff
+        push 0x10
+        push word [bp - 0x74e]
+        push word [bp - 0x750]
+        push 0x0
+        call 0x1B35:FadePaletteInThunk
+        add sp, 0x8
+        test byte [bp + 0x6], 0x1
+        jz short .129
+        mov al, [bp - 0x46]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        mov [bp - 0x73a], ax
+        cmp ax, strict word 0x4
+        jng short .129
+        mov word [bp - 0x73a], 0x4
+.129:
+        push 0x0
+        push word 0x3e8
+        call 0x0C16:WaitButtonTimed
+        add sp, 0x4
+        mov [bp - 0x15a], ax
+        mov word [bp - 0x60], 0x0
+        mov word [bp - 0x15c], 0x50
+        cmp word [bp - 0xa0], 0x0
+        jz short .130
+        jmp near .138
+.130:
+        cmp word [bp - 0x738], 0x0
+        jz short .131
+        jmp near .138
+.131:
+        cmp ax, strict word 0x2
+        jl short .132
+        jmp near .138
+.132:
+        call 0x0FEF:UseOtherPage
+        push word 0x100
+        mov ax, [bp - 0x750]
+        mov dx, [bp - 0x74e]
+        add ah, 0x1d
+        push dx
+        push ax
+        push word 0x3a0b
+        push strict word f_3A0B_AF4C
+        call 0x0000:_fmemcpy
+        add sp, 0xa
+        push word 0x3a0b
+        push strict word f_3A0B_AF4C
+        call 0x0FEF:SetRemapTable
+        add sp, 0x4
+        push word [bp - 0x160]
+        push word [bp - 0x162]
+        call 0x0FEF:DrawRleTransRemapFastBody
+        add sp, 0x4
+        lea ax, [bp - 0x740]
+        push ax
+        push word [bp - 0x100]
+        lea ax, [bp - 0x120]
+        push ss
+        push ax
+        push word [bp - 0x74e]
+        push word [bp - 0x750]
+        mov al, [bp - 0x46]
+        push ax
+        push word [bp + 0x6]
+        call 0x2185:DrawPeriodTitle
+        add sp, 0x10
+        test byte [bp + 0x6], 0x1
+        jz short .138
+        cmp word [bp - 0x73c], 0x0
+        jz short .138
+        mov word [bp - 0x73c], 0x0
+        mov es, [g_8CAA]
+        cmp word [es:0x126], 0x1
+        jz short .138
+        mov al, [bp + 0x8]
+        cmp [bp + 0xa], al
+        jnz short .138
+        cmp byte [bp - 0x46], 0x4
+        jnc short .135
+        push 0x0
+        push 0x0
+        mov al, [bp - 0x46]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+.133:
+        push ax
+        jmp short .137
+        db 0x90
+.134:
+        inc word [bp - 0x73a]
+        jmp near .117
+        db 0x90
+.135:
+        cmp byte [bp - 0x46], 0x7
+        jnc short .136
+        mov al, [bp - 0x73f]
+        cmp [bp - 0x740], al
+        jnz short .136
+        mov es, [g_8CAC]
+        cmp word [es:0x78c], 0x3f0
+        jl short .136
+        push 0x0
+        push -0x1
+        mov al, [bp - 0x46]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        sub ax, strict word 0x3
+        jmp short .133
+        db 0x90
+.136:
+        push 0x0
+        push -0x1
+        push 0x0
+.137:
+        call 0x0EDC:AnnouncePeriodSummary
+        add sp, 0x6
+.138:
+        cmp word [bp - 0x738], 0x0
+        jnz short .139
+        jmp near .74
+.139:
+        call 0x0EDC:StopJingle
+        push 0x10
+        push word [bp - 0x74e]
+        push word [bp - 0x750]
+        push 0x1
+        call 0x1B35:FadePaletteInThunk
+        add sp, 0x8
+        call 0x0FEF:UseCurrentPage
+        push 0x0
+        call 0x0FEF:ClearClipRect
+        add sp, 0x2
+        push word [bp - 0x9a]
+        push word [bp - 0x9c]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        push word [bp - 0x54]
+        push word [bp - 0x56]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        lea ax, [bp - 0x48]
+        push ax
+        call 0x0CD1:CloseHandlePtr
+        add sp, 0x2
+        lea ax, [bp - 0x4a]
+        push ax
+        call 0x0CD1:CloseHandlePtr
+        add sp, 0x2
+        lea ax, [bp - 0x73e]
+        push ax
+        call 0x0CD1:CloseHandlePtr
+        add sp, 0x2
+        lea ax, [bp - 0x5c]
+        push ax
+        call 0x0CD1:CloseHandlePtr
+        add sp, 0x2
+        lea ax, [bp - 0x2a]
+        push ax
+        call 0x03A3:LoadCharTab
+        add sp, 0x2
+        push word [bp - 0xf4]
+        push word [bp - 0xf6]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        push word [bp - 0x74e]
+        push word [bp - 0x750]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        push word [bp - 0x58]
+        push word [bp - 0x5a]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        push word [bp - 0x122]
+        push word [bp - 0x124]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        push word [bp - 0x42]
+        push word [bp - 0x44]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        mov ax, [bp - 0xfc]
+        or ax, [bp - 0xfe]
+        jz short .140
+        push word [bp - 0xfc]
+        push word [bp - 0xfe]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+.140:
+        mov ax, [bp - 0x62]
+        or ax, [bp - 0x64]
+        jz short .141
+        push word [bp - 0x62]
+        push word [bp - 0x64]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+.141:
+        mov bx, [g_29CC]
+        shl bx, 1
+        push word [bx + TeamNameClips]
+        mov bx, [g_29CA]
+        shl bx, 1
+        push word [bx + TeamNameClips]
+        call 0x0EDC:LoadPlayByPlaySpeech
+        add sp, 0x4
+        mov word [bp - 0xa0], 0x0
+        cmp word [bp - 0x15a], 0x3
+        jnz short ShowGameSummaryTail + 0x1650
+        mov word [bp - 0xa0], 0x4

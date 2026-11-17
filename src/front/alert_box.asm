@@ -1,0 +1,397 @@
+; Small dialog helpers: centre text in a box, the roster alert box, wait for a click (MENUS.OVL)
+; The first bytes finish the last routine of game_lines.asm.
+        add sp, 0xc
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        pop si
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; CenterTextX                                                235C:000C  94 PC
+; X that centres a string in a box.
+;
+; Takes 1 word of stack arguments. Calls TextWidthAll. Far routine (retf).
+;-----------------------------------------------------------------------------
+CenterTextX:
+        enter 0x50, 0x0
+        push di
+        push si
+        lds di, [bp + 0x6]
+        db 0x2B, 0xF6                           ; insn: sub si, si
+        cmp byte [di], 0x0
+        jz short .2
+.1:
+        db 0x8B, 0xDF                           ; insn: mov bx, di
+        mov al, [bx + si]
+        mov [bp + si - 0x50], al
+        inc si
+        cmp byte [bx + si], 0x0
+        jnz short .1
+.2:
+        mov ax, DGROUP
+        mov ds, ax
+        mov byte [bp + si - 0x50], 0x0
+        lea ax, [bp - 0x50]
+        push ax
+        call 0x03A3:TextWidthAll
+        add sp, 0x2
+        pop si
+        pop di
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; RosterAlertBox                                             235C:0042  94 PC
+; 'DBOX' alert with the roster message.
+;
+; Takes 10 words of stack arguments. Calls UseCharSeg, CenterTextX, AllocRecData, GetBlockAt,
+; DrawDlgFrame, DrawTextFar, FlushInputEvents, WaitDialogClick and others. Far routine (retf).
+;-----------------------------------------------------------------------------
+RosterAlertBox:
+        enter 0x18, 0x0
+        push di
+        push si
+        push word [HeapSizeHi]
+        push word [HeapSizeLo]
+        call 0x03A3:UseCharSeg
+        add sp, 0x4
+        mov word [bp - 0x8], 0xc
+        push word [bp + 0xc]
+        push word [bp + 0xa]
+        push cs
+        call CenterTextX
+        add sp, 0x4
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        mov ax, [bp + 0x10]
+        or ax, [bp + 0xe]
+        jz short .2
+        push word [bp + 0x10]
+        push word [bp + 0xe]
+        push cs
+        call CenterTextX
+        add sp, 0x4
+        db 0x8B, 0xF8                           ; insn: mov di, ax
+        db 0x3B, 0xFE                           ; insn: cmp di, si
+        jng short .1
+        db 0x8B, 0xF7                           ; insn: mov si, di
+.1:
+        mov word [bp - 0x8], 0x12
+.2:
+        mov [bp - 0x2], si
+        mov ax, [bp + 0x14]
+        or ax, [bp + 0x12]
+        jz short .4
+        push word [bp + 0x14]
+        push word [bp + 0x12]
+        push cs
+        call CenterTextX
+        add sp, 0x4
+        db 0x8B, 0xF8                           ; insn: mov di, ax
+        db 0x3B, 0xFE                           ; insn: cmp di, si
+        jng short .3
+        mov [bp - 0x2], di
+.3:
+        add word [bp - 0x8], 0x6
+.4:
+        add word [bp - 0x2], 0xa
+        cmp word [bp + 0x6], 0x0
+        jnl short .5
+        mov ax, 0x140
+        sub ax, [bp - 0x2]
+        cwd
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        sar ax, 1
+        jmp short .6
+.5:
+        mov ax, [bp + 0x6]
+.6:
+        mov [bp - 0xa], ax
+        add ax, [bp - 0x2]
+        dec ax
+        mov [bp - 0x12], ax
+        cmp word [bp + 0x8], 0x0
+        jnl short .7
+        mov ax, 0xc8
+        sub ax, [bp - 0x8]
+        cwd
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        sar ax, 1
+        jmp short .8
+.7:
+        mov ax, [bp + 0x8]
+.8:
+        mov [bp - 0xc], ax
+        mov [bp - 0xe], ax
+        push 0x0
+        mov ax, [bp - 0x2]
+        add ax, strict word 0x6
+        cwd
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        sar ax, byte 0x2
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        inc ax
+        mov cx, [bp - 0x8]
+        add cx, 0x4
+        db 0x8B, 0xD0                           ; insn: mov dx, ax
+        db 0x8B, 0xDA                           ; insn: mov bx, dx
+        imul cx
+        shl ax, 1
+        rcl dx, 1
+        shl ax, 1
+        rcl dx, 1
+        add ax, strict word 0x12
+        adc dx, 0x0
+        push dx
+        push ax
+        push strict word str_Dbox_10
+        db 0x8B, 0xF1                           ; insn: mov si, cx
+        db 0x8B, 0xFB                           ; insn: mov di, bx
+        call 0x14DB:AllocRecData
+        add sp, 0x8
+        mov [bp - 0x16], ax
+        mov [bp - 0x14], dx
+        mov ax, [DialogData]
+        mov dx, [DialogDataSeg]
+        push si
+        push di
+        push ds
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        mov ds, dx
+        les di, [bp - 0x16]
+        mov cx, 0x9
+        rep movsw
+        pop ds
+        pop di
+        pop si
+        mov bx, [bp - 0x16]
+        mov [es:bx], di
+        mov [es:bx + 0x2], si
+        push word [bp - 0xc]
+        mov ax, [bp - 0xa]
+        cwd
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        sar ax, byte 0x2
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        shl ax, byte 0x2
+        mov [bp - 0x10], ax
+        push ax
+        push es
+        push bx
+        call 0x0FEF:GetBlockAt
+        add sp, 0x8
+        push 0x1
+        mov ax, [bp - 0xc]
+        add ax, [bp - 0x8]
+        dec ax
+        push ax
+        push word [bp - 0x12]
+        push word [bp - 0xc]
+        push word [bp - 0xa]
+        call 0x2047:DrawDlgFrame
+        add sp, 0xa
+        mov ax, 0x7d
+        mov dx, 0xff
+        call 0x03A3:SetCharPtr.regs
+        push word [bp + 0xc]
+        push word [bp + 0xa]
+        mov ax, [bp - 0xc]
+        add ax, strict word 0x3
+        push ax
+        mov ax, [bp - 0xa]
+        add ax, strict word 0x5
+        mov [bp - 0x18], ax
+        push ax
+        call 0x0FA0:DrawTextFar
+        add sp, 0x8
+        mov ax, [bp + 0x10]
+        or ax, [bp + 0xe]
+        jz short .9
+        push word [bp + 0x10]
+        push word [bp + 0xe]
+        mov ax, [bp - 0xc]
+        add ax, strict word 0x9
+        push ax
+        push word [bp - 0x18]
+        call 0x0FA0:DrawTextFar
+        add sp, 0x8
+        mov ax, [bp + 0x14]
+        or ax, [bp + 0x12]
+        jz short .9
+        push word [bp + 0x14]
+        push word [bp + 0x12]
+        mov ax, [bp - 0xc]
+        add ax, strict word 0x11
+        push ax
+        push word [bp - 0x18]
+        call 0x0FA0:DrawTextFar
+        add sp, 0x8
+.9:
+        call 0x0F99:FlushInputEvents
+        push word [bp + 0x18]
+        push word [bp + 0x16]
+        push cs
+        call WaitDialogClick
+        add sp, 0x4
+        push word [bp - 0xe]
+        push word [bp - 0x10]
+        push word [bp - 0x14]
+        push word [bp - 0x16]
+        call 0x0FEF:PutBlockAt
+        add sp, 0x8
+        push word [bp - 0x14]
+        push word [bp - 0x16]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        mov ax, [bp - 0x8]
+        pop si
+        pop di
+        leave
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; WaitDialogClick                                            235C:0240  94 PC
+; Pointer loop until a click.
+;
+; Takes 3 words of stack arguments. Calls AllocRecData, MouseMove, GetBlockAt,
+; DrawRleTransRemapFastAt, FlushInputEvents, GetInputEvent, PutBlockAt, FindUnlink.
+;-----------------------------------------------------------------------------
+WaitDialogClick:
+        enter 0x12, 0x0
+        push di
+        push si
+        push 0x0
+        les bx, [DialogData]
+        mov cx, [es:bx]
+        inc cx
+        mov ax, [es:bx + 0x2]
+        inc ax
+        imul cx
+        shl ax, byte 0x2
+        add ax, strict word 0x12
+        cwd
+        push dx
+        push ax
+        push strict word str_Pointer_13
+        call 0x14DB:AllocRecData
+        add sp, 0x8
+        mov [bp - 0x12], ax
+        mov [bp - 0x10], dx
+        mov ax, [DialogData]
+        mov dx, [DialogDataSeg]
+        push ds
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        mov ds, dx
+        les di, [bp - 0x12]
+        mov cx, 0x9
+        rep movsw
+        pop ds
+        les bx, [DialogData]
+        mov ax, [es:bx]
+        inc ax
+        les bx, [bp - 0x12]
+        mov [es:bx], ax
+        les si, [DialogData]
+        mov ax, [es:si + 0x2]
+        inc ax
+        les bx, [bp - 0x12]
+        mov [es:bx + 0x2], ax
+        mov si, [bp + 0x6]
+        mov ax, [si]
+        mov [bp - 0x6], ax
+        mov [bp - 0xc], ax
+        mov si, [bp + 0x8]
+        mov ax, [si]
+        mov [bp - 0x4], ax
+        mov [bp - 0xe], ax
+        push ax
+        push word [bp - 0x6]
+        call 0x03A3:MouseMove
+        add sp, 0x4
+        push word [bp - 0x4]
+        push word [bp - 0x6]
+        push word [bp - 0x10]
+        push word [bp - 0x12]
+        call 0x0FEF:GetBlockAt
+        add sp, 0x8
+        push word [bp - 0x4]
+        push word [bp - 0x6]
+        push word [DialogDataSeg]
+        push word [DialogData]
+        call 0x0FEF:DrawRleTransRemapFastAt
+        add sp, 0x8
+        call 0x0F99:FlushInputEvents
+        mov si, [bp - 0x6]
+        mov di, [bp - 0x4]
+.1:
+        call 0x0F99:GetInputEvent
+        mov [bp - 0x2], ax
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jz short .1
+        lea ax, [bp - 0xe]
+        push ax
+        lea ax, [bp - 0xc]
+        push ax
+        push word [bp - 0x2]
+        call far [HotKeyFn]
+        add sp, 0x6
+        test al, 0x2
+        jnz short .3
+        cmp [bp - 0xc], si
+        jnz short .2
+        cmp [bp - 0xe], di
+        jz short .1
+.2:
+        push di
+        push si
+        push word [bp - 0x10]
+        push word [bp - 0x12]
+        call 0x0FEF:PutBlockAt
+        add sp, 0x8
+        push word [bp - 0xe]
+        push word [bp - 0xc]
+        push word [bp - 0x10]
+        push word [bp - 0x12]
+        call 0x0FEF:GetBlockAt
+        add sp, 0x8
+        push word [bp - 0xe]
+        push word [bp - 0xc]
+        push word [DialogDataSeg]
+        push word [DialogData]
+        call 0x0FEF:DrawRleTransRemapFastAt
+        add sp, 0x8
+        mov si, [bp - 0xc]
+        mov di, [bp - 0xe]
+        jmp short .1
+        db 0x90
+.3:
+        mov [bp - 0x4], di
+        mov di, [bp - 0x12]
+        mov cx, [bp - 0x4]
+        push cx
+        push si
+        mov ax, [bp - 0x10]
+        push ax
+        push di
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        call 0x0FEF:PutBlockAt
+        add sp, 0x8
+        call 0x0F99:FlushInputEvents
+        push word [bp - 0xe]
+        push word [bp - 0xc]
+        call 0x03A3:MouseMove
+        add sp, 0x4
+        push si
+        push di
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        mov ax, [bp - 0xc]
+        mov bx, [bp + 0x6]
+        mov [bx], ax
+        mov ax, [bp - 0xe]
+        mov bx, [bp + 0x8]
+        mov [bx], ax

@@ -1,0 +1,572 @@
+; Saved highlights menu: view, load and delete highlight files (MENUS.OVL)
+
+;-----------------------------------------------------------------------------
+; SetCtlTeamsTail                                            1F4F:0000  94 PC
+; The rest of SetCtlTeams, which runs on into this module.
+;
+; Calls SetSideControls. Far routine (retf).
+;-----------------------------------------------------------------------------
+SetCtlTeamsTail:
+        mov word [g_01BE], 0x1
+.1:
+        call 0x2037:SetSideControls
+        leave
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; CmpInt                                                     1F4F:000E  94 PC
+; Qsort comparator of two ints.
+;
+; Takes 2 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
+CmpInt:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        push di
+        mov di, [bp + 0x8]
+        mov bx, [bp + 0x6]
+        db 0x2B, 0xD2                           ; insn: sub dx, dx
+        mov ax, [bx]
+        cmp [di], ax
+        jnl short .1
+        mov dx, 0x1
+        db 0x8B, 0xC2                           ; insn: mov ax, dx
+        pop di
+        leave
+        retf
+.1:
+        cmp [di], ax
+        jng short .2
+        mov dx, 0xffff
+.2:
+        db 0x8B, 0xC2                           ; insn: mov ax, dx
+        pop di
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; TeamFromHiName                                             1F4F:0034  94 PC
+; Team index from a highlight file name.
+;
+; Takes 1 word of stack arguments. Calls StrIndexInSet, _stricmp. Far routine (retf).
+;-----------------------------------------------------------------------------
+TeamFromHiName:
+        enter 0x4, 0x0
+        push di
+        push si
+        mov di, [bp + 0x6]
+        mov word [bp - 0x4], 0xffff
+        push word 0xaa0
+        push di
+        call 0x0000:StrIndexInSet
+        add sp, 0x4
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        db 0x03, 0xDF                           ; insn: add bx, di
+        mov byte [bx], 0x0
+        db 0x2B, 0xF6                           ; insn: sub si, si
+        mov word [bp - 0x2], 0x1e0
+        mov di, [bp - 0x2]
+.1:
+        push word [di]
+        push word [bp + 0x6]
+        call 0x0000:_stricmp
+        add sp, 0x4
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jnz short .2
+        mov [bp - 0x4], si
+.2:
+        inc si
+        inc di
+        inc di
+        cmp di, 0x210
+        jc short .1
+        mov ax, [bp - 0x4]
+        pop si
+        pop di
+        leave
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; FormatHilightDesc                                          1F4F:0086  94 PC
+; '%d %d, %s vs %s, Period %d, Time %02d:%02d'
+;
+; Takes 3 words of stack arguments. Calls _sprintf. Far routine (retf).
+;-----------------------------------------------------------------------------
+FormatHilightDesc:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        push si
+        mov si, [bp + 0x8]
+        mov es, [bp + 0xa]
+        push word [es:si + 0x40]
+        push word [es:si + 0x3e]
+        push word [es:si + 0x3c]
+        mov bl, [es:si + 0x1f]
+        db 0x2A, 0xFF                           ; insn: sub bh, bh
+        shl bx, 1
+        push word [bx + 0x218]
+        mov bl, [es:si + 0x2]
+        db 0x2A, 0xFF                           ; insn: sub bh, bh
+        shl bx, 1
+        push word [bx + 0x218]
+        mov al, [es:si + 0x1]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        push ax
+        mov al, [es:si]
+        push ax
+        push strict word str_DDSVsSPeriodDTime02d02d
+        push word [bp + 0x6]
+        call 0x0000:_sprintf
+        add sp, 0x12
+        pop si
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; SelectHilight                                              1F4F:00D0  94 PC
+; 'Select a team', 'Select a hilight' (.HI files)
+;
+; Takes 6 words of stack arguments. Calls BuildPathFar, _dos_findfirst, TeamFromHiName, _dos_findnext,
+; _qsort, ListDialog, FileSizeMsg, OpenReadShared and others. Far routine (retf).
+;-----------------------------------------------------------------------------
+SelectHilight:
+        enter 0x18e, 0x0
+        push di
+        push si
+        mov word [bp - 0x14], 0xffff
+        db 0x2B, 0xF6                           ; insn: sub si, si
+        push word 0x3701
+        push strict word str_Hi
+        push word 0x3701
+        push strict word f_3701_0BA8
+        push word [bp + 0xc]
+        push word [bp + 0xa]
+        lea ax, [bp - 0x12a]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        lea ax, [bp - 0x64]
+        push ax
+        push 0x0
+        lea ax, [bp - 0x12a]
+        push ax
+        call 0x0000:_dos_findfirst
+        add sp, 0x6
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jnz short .3
+        lea ax, [bp - 0x46]
+        push ax
+        push cs
+        call TeamFromHiName
+        add sp, 0x2
+        mov [bp - 0x94], ax
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        shl bx, 1
+        mov ax, [bx + 0x218]
+        mov [bp - 0x18a], ax
+        mov [bp - 0x188], ds
+        mov word [bp - 0x6], 0x1
+        lea di, [bp - 0x92]
+.1:
+        lea ax, [bp - 0x64]
+        push ax
+        call 0x0000:_dos_findnext
+        add sp, 0x2
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        db 0x0B, 0xF6                           ; insn: or si, si
+        jnz short .2
+        lea ax, [bp - 0x46]
+        push ax
+        push cs
+        call TeamFromHiName
+        add sp, 0x2
+        inc di
+        inc di
+        mov [di - 0x2], ax
+        inc word [bp - 0x6]
+.2:
+        db 0x0B, 0xF6                           ; insn: or si, si
+        jz short .1
+        mov si, [bp - 0x6]
+.3:
+        db 0x0B, 0xF6                           ; insn: or si, si
+        jnz short .4
+        jmp near .22
+.4:
+        push word 0x1f4f
+        push strict word CmpInt
+        push 0x2
+        push si
+        lea ax, [bp - 0x94]
+        push ax
+        call 0x0000:_qsort
+        add sp, 0xa
+        mov word [bp - 0x12], 0x0
+        db 0x0B, 0xF6                           ; insn: or si, si
+        jng short .6
+        mov [bp - 0x6], si
+.5:
+        mov di, [bp - 0x12]
+        shl di, 1
+        mov bx, [bp + di - 0x94]
+        shl bx, 1
+        mov ax, [bx + 0x218]
+        mov di, [bp - 0x12]
+        shl di, byte 0x2
+        mov [bp + di - 0x18a], ax
+        mov [bp + di - 0x188], ds
+        inc word [bp - 0x12]
+        cmp [bp - 0x12], si
+        jl short .5
+.6:
+        lea ax, [bp - 0x38]
+        push ss
+        push ax
+        push 0x0
+        push 0x2
+        push word 0x3701
+        push strict word str_SelectATeam
+        push si
+        lea ax, [bp - 0x18a]
+        push ss
+        push ax
+        call 0x0D90:ListDialog
+        add sp, 0x12
+        db 0x8B, 0xF8                           ; insn: mov di, ax
+        db 0x0B, 0xFF                           ; insn: or di, di
+        jnl short .7
+        jmp near .23
+.7:
+        mov si, [bp + 0x6]
+        push word 0x3701
+        push strict word str_Hi
+        shl di, 1
+        mov bx, [bp + di - 0x94]
+        shl bx, 1
+        push ds
+        push word [bx + TeamNameClips]
+        push 0x0
+        push 0x0
+        push ds
+        push si
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        push 0x0
+        push 0x0
+        push ds
+        push si
+        push word [bp + 0xc]
+        push word [bp + 0xa]
+        lea ax, [bp - 0x12a]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        lea ax, [bp - 0x12a]
+        push ax
+        call 0x03A3:FileSizeMsg
+        add sp, 0x2
+        mov [bp - 0x4], ax
+        mov [bp - 0x2], dx
+        lea ax, [bp - 0x14]
+        push ax
+        lea ax, [bp - 0x12a]
+        push ax
+        call 0x0CD1:OpenReadShared
+        add sp, 0x4
+        mov [bp - 0x8], ax
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jz short .8
+        jmp near .20
+.8:
+        push ax
+        push ax
+        push word 0x964a
+        push word [bp - 0x2]
+        push word [bp - 0x4]
+        call 0x0000:__aFldiv
+        db 0x8B, 0xF8                           ; insn: mov di, ax
+        shl ax, byte 0x2
+        cwd
+        push dx
+        push ax
+        push strict word str_Hltl
+        call 0x14DB:AllocRecData
+        add sp, 0x8
+        mov [bp - 0x1c], ax
+        mov [bp - 0x1a], dx
+        push 0x0
+        imul ax, di, 0x51
+        cwd
+        push dx
+        push ax
+        push strict word str_Hlt
+        call 0x14DB:AllocRecData
+        add sp, 0x8
+        mov [bp - 0x20], ax
+        mov [bp - 0x1e], dx
+        mov [bp - 0x6], di
+        cmp word [bp + 0xe], 0x0
+        jnz short .9
+        jmp near .21
+.9:
+        push 0x0
+        db 0x8B, 0xC7                           ; insn: mov ax, di
+        cwd
+        push dx
+        push ax
+        push strict word str_Hlts
+        call 0x14DB:AllocRecData
+        add sp, 0x8
+        mov bx, [bp + 0x10]
+        mov [bx], ax
+        mov [bx + 0x2], dx
+        mov word [bp - 0x12], 0x0
+        mov [bp - 0x6], di
+        db 0x0B, 0xFF                           ; insn: or di, di
+        jg short .10
+        jmp near .21
+.10:
+        mov bx, [bp + 0x10]
+        db 0x8B, 0xCF                           ; insn: mov cx, di
+        mov si, [bp - 0x8]
+.11:
+        db 0x0B, 0xF6                           ; insn: or si, si
+        jnz short .12
+        les di, [bx]
+        add di, [bp - 0x12]
+        mov byte [es:di], 0x0
+        inc word [bp - 0x12]
+        cmp [bp - 0x12], cx
+        jl short .11
+.12:
+        mov word [bp - 0x12], 0x0
+        db 0x0B, 0xC9                           ; insn: or cx, cx
+        jg short .13
+        jmp near .17
+.13:
+        mov di, [bp - 0x20]
+        mov si, [bp - 0x8]
+.14:
+        db 0x0B, 0xF6                           ; insn: or si, si
+        jz short .15
+        jmp near .16
+.15:
+        push 0x44
+        push si
+        push word 0x964a
+        mov ax, [bp - 0x12]
+        cwd
+        push dx
+        push ax
+        call 0x0000:__aFlmul
+        push dx
+        push ax
+        lea ax, [bp - 0xd8]
+        push ss
+        push ax
+        push word [bp - 0x14]
+        call 0x0CD1:ReadAtOffset
+        add sp, 0xc
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        db 0x8B, 0xC7                           ; insn: mov ax, di
+        mov dx, [bp - 0x1e]
+        imul cx, [bp - 0x12], 0x51
+        mov [bp - 0x18e], ax
+        mov [bp - 0x18c], dx
+        db 0x03, 0xC1                           ; insn: add ax, cx
+        mov bx, [bp - 0x12]
+        shl bx, byte 0x2
+        add bx, [bp - 0x1c]
+        mov es, [bp - 0x1a]
+        mov [es:bx], ax
+        mov [es:bx + 0x2], dx
+        lea ax, [bp - 0xd8]
+        push ss
+        push ax
+        lea ax, [bp - 0x12a]
+        push ax
+        push cs
+        call FormatHilightDesc
+        add sp, 0x6
+        lea ax, [bp - 0x12a]
+        push ss
+        push ax
+        mov ax, [bp - 0x18e]
+        mov dx, [bp - 0x18c]
+        imul cx, [bp - 0x12], 0x51
+        db 0x03, 0xC1                           ; insn: add ax, cx
+        push dx
+        push ax
+        call 0x0000:_fstrcpy
+        add sp, 0x8
+        mov ax, [bp - 0x6]
+        inc word [bp - 0x12]
+        cmp [bp - 0x12], ax
+        jnl short .16
+        jmp near .14
+.16:
+        mov [bp - 0x8], si
+.17:
+        cmp word [bp - 0x8], 0x0
+        jnz short .19
+        mov di, [bp + 0x8]
+        mov bx, [bp + 0x10]
+        push word [bx + 0x2]
+        push word [bx]
+        push word [bp + 0xe]
+        push 0x2
+        push word 0x3701
+        push strict word str_SelectAHilight
+        push word [bp - 0x6]
+        push word [bp - 0x1a]
+        push word [bp - 0x1c]
+        call 0x0D90:ListDialog
+        add sp, 0x12
+        mov [di], ax
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jnl short .18
+        mov word [bp - 0x8], 0xffff
+.18:
+        cmp word [bp + 0xe], 0x0
+        jz short .19
+        mov ax, [bp - 0x6]
+        mov [di], ax
+.19:
+        push word [bp - 0x1e]
+        push word [bp - 0x20]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        push word [bp - 0x1a]
+        push word [bp - 0x1c]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+.20:
+        lea ax, [bp - 0x14]
+        push ax
+        call 0x0CD1:CloseHandlePtr
+        add sp, 0x2
+        mov si, [bp - 0x8]
+        db 0x8B, 0xC6                           ; insn: mov ax, si
+        pop si
+        pop di
+        leave
+        retf
+        db 0x90
+.21:
+        db 0x8B, 0xCF                           ; insn: mov cx, di
+        jmp near .12
+        db 0x90
+.22:
+        lea ax, [bp - 0x16]
+        push ax
+        lea cx, [bp - 0x18]
+        push cx
+        lea dx, [bp - 0x12]
+        push dx
+        call 0x03A3:MouseRead
+        add sp, 0x6
+        push -0x1
+        lea ax, [bp - 0x16]
+        push ax
+        lea ax, [bp - 0x18]
+        push ax
+        push 0x0
+        push 0x0
+        push 0x0
+        push 0x1
+        push word 0x35f3
+        push strict word f_35F3_0017
+        push -0x1
+        push -0x1
+        call 0x0D90:MessageBox
+        add sp, 0x16
+.23:
+        mov si, 0xffff
+        db 0x8B, 0xC6                           ; insn: mov ax, si
+        pop si
+        pop di
+        leave
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; ViewHilights                                               1F4F:0440  94 PC
+; Loads and plays a saved highlight.
+;
+; Calls SetDialogColors, SelectHilight, BuildPathFar, OpenReadShared, __aFlmul, ReadAtOffset,
+; CloseHandlePtr.
+;-----------------------------------------------------------------------------
+ViewHilights:
+        enter 0x32, 0x0
+        push si
+        mov word [bp - 0x2], 0xffff
+        push 0x0
+        push 0x11
+        push 0x5
+        push 0x11
+        push 0xb
+        call 0x0D90:SetDialogColors
+        add sp, 0xa
+        push 0x0
+        push 0x0
+        push word 0x3701
+        push strict word f_3701_0E53
+        lea ax, [bp - 0x4]
+        push ax
+        lea ax, [bp - 0x12]
+        push ax
+        push cs
+        call SelectHilight
+        add sp, 0xc
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        db 0x0B, 0xF6                           ; insn: or si, si
+        jnz short .1
+        push si
+        push si
+        lea ax, [bp - 0x12]
+        push ss
+        push ax
+        push word 0x3701
+        push strict word f_3701_0E53
+        lea ax, [bp - 0x32]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        lea ax, [bp - 0x2]
+        push ax
+        lea ax, [bp - 0x32]
+        push ax
+        call 0x0CD1:OpenReadShared
+        add sp, 0x4
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+.1:
+        db 0x0B, 0xF6                           ; insn: or si, si
+        jnz short .2
+        push word 0x964a
+        push si
+        push word 0x964a
+        mov ax, [bp - 0x4]
+        cwd
+        push dx
+        push ax
+        call 0x0000:__aFlmul
+        push dx
+        push ax
+        push word 0x3a0b
+        push strict word f_3A0B_0D8E
+        push word [bp - 0x2]
+        call 0x0CD1:ReadAtOffset
+        add sp, 0xc
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+.2:
+        lea ax, [bp - 0x2]
+        push ax
+        call 0x0CD1:CloseHandlePtr
+        add sp, 0x2
+        db 0x0B, 0xF6                           ; insn: or si, si

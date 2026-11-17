@@ -95,7 +95,7 @@ g_01C4:                                         ; used by MENUS (to name)
 SoundOptions:                                   ; bits 2 and 8 gate crowd and effects; used by
                                                 ; CrowdNoiseUpdate, CrowdNoiseOff, CrowdFadeOut ...
         db 0x10, 0x00
-g_01C8:                                         ; used by AI, INIT (to name)
+gsumheader:                                         ; used by AI, INIT (to name)
         db 0x00, 0x00
 g_01CA:                                         ; used by INIT (to name)
         db 0x00
@@ -107,7 +107,7 @@ g_01CD:                                         ; used by INIT (to name)
         db 0x00
 g_01CE:                                         ; used by AI, INIT (to name)
         db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-g_01D4:                                         ; used by AI, INIT (to name)
+gsumtail:                                         ; used by AI, INIT (to name)
         db 0x04, 0x00
 g_01D6:                                         ; used by AI, INIT (to name)
         db 0x00
@@ -2156,31 +2156,31 @@ g_21B4:                                         ; used by MENUS, STATS (to name)
         db 0x00, 0x00
 g_21B6:                                         ; used by MENUS, STATS (to name)
         db 0x00, 0x00
-g_21B8:                                         ; used by LP, MENUS, STATS (to name)
+statscategory:                                         ; used by LP, MENUS, STATS (to name)
         db 0x00, 0x00
 g_21BA:                                         ; used by STATS (to name)
         times 2 db 0
-g_21BC:                                         ; used by LP, MENUS, STATS (to name)
+statsredrawcb:                                         ; used by LP, MENUS, STATS (to name)
         times 2 db 0
 g_21BE:                                         ; used by LP, MENUS, STATS (to name)
         times 2 db 0
 g_21C0:                                         ; used by STATS (to name)
         times 2 db 0
-g_21C2:                                         ; used by LP, MENUS, STATS (to name)
+teamstatscb:                                         ; used by LP, MENUS, STATS (to name)
         times 2 db 0
-g_21C4:                                         ; used by LP, MENUS (to name)
+skaterstatscb:                                         ; used by LP, MENUS (to name)
         times 2 db 0
-g_21C6:                                         ; used by LP, MENUS, STATS (to name)
+goaliestatscb:                                         ; used by LP, MENUS, STATS (to name)
         times 2 db 0
-g_21C8:                                         ; used by LP, MENUS (to name)
+standingscb:                                         ; used by LP, MENUS (to name)
         times 2 db 0
-g_21CA:                                         ; used by LP, MENUS, STATS (to name)
+standingsmenucb:                                         ; used by LP, MENUS, STATS (to name)
         times 2 db 0
-g_21CC:                                         ; used by LP, MENUS (to name)
+gameopts:                                         ; used by LP, MENUS (to name)
         times 2 db 0
-g_21CE:                                         ; used by LP, MENUS, STATS (to name)
+VisTeam:                                         ; used by LP, MENUS, STATS (to name)
         times 2 db 0
-g_21D0:                                         ; used by LP, MENUS, STATS (to name)
+HomeTeam:                                         ; used by LP, MENUS, STATS (to name)
         times 2 db 0
 g_21D2:                                         ; used by LP, MENUS (to name)
         times 2 db 0
@@ -2582,99 +2582,99 @@ g_2986:                                         ; used by AI, GAME, INIT (to nam
         db 0xD8, 0x0D
 g_2988:                                         ; used by AI, GAME, INIT (to name)
         db 0x0B, 0x3A
-g_298A:                                         ; used by AI, INIT, MENUS (to name)
+puckx:                                         ; used by AI, INIT, MENUS (to name)
         db 0x10, 0xBC
-g_298C:                                         ; used by AI, MENUS (to name)
+puckvx:                                         ; used by AI, MENUS (to name)
         db 0x1A, 0xBC
-g_298E:                                         ; used by AI, INIT, MENUS (to name)
+pucky:                                         ; used by AI, INIT, MENUS (to name)
         db 0x14, 0xBC
-g_2990:                                         ; used by AI, MENUS (to name)
+puckvy:                                         ; used by AI, MENUS (to name)
         db 0x1C, 0xBC
-g_2992:                                         ; used by AI (to name)
+puckz:                                         ; used by AI (to name)
         db 0x18, 0xBC
-g_2994:                                         ; used by AI (to name)
+puckvz:                                         ; used by AI (to name)
         db 0x1E, 0xBC
-g_2996:                                         ; used by AI, MENUS (to name)
+puckc:                                         ; used by AI, MENUS (to name)
         db 0x50, 0xBC
-g_2998:                                         ; used by AI, GAME, INIT (to name)
+camx:                                         ; used by AI, GAME, INIT (to name)
         db 0x00, 0x00
-g_299A:                                         ; used by AI, GAME, INIT (to name)
+camy:                                         ; used by AI, GAME, INIT (to name)
         db 0x00, 0x00
-g_299C:                                         ; used by AI (to name)
+wcradiusx:                                         ; used by AI (to name)
         db 0x00, 0x00
-g_299E:                                         ; used by AI (to name)
+wcradiusy:                                         ; used by AI (to name)
         db 0x00, 0x00
-g_29A0:                                         ; used by AI, INIT (to name)
+shotplayer:                                         ; used by AI, INIT (to name)
         times 2 db 0
-g_29A2:                                         ; used by AI, INIT (to name)
+lastplayer:                                         ; used by AI, INIT (to name)
         times 2 db 0
-g_29A4:                                         ; used by AI, INIT (to name)
+passdir:                                         ; used by AI, INIT (to name)
         times 2 db 0
-g_29A6:                                         ; used by AI, INIT (to name)
+passspeed:                                         ; used by AI, INIT (to name)
         times 2 db 0
-g_29A8:                                         ; used by AI, INIT (to name)
+passplayer:                                         ; used by AI, INIT (to name)
         times 2 db 0
-g_29AA:                                         ; used by AI, INIT (to name)
+threat:                                         ; used by AI, INIT (to name)
         times 2 db 0
-g_29AC:                                         ; used by AI, INIT (to name)
+xc1:                                         ; used by AI, INIT (to name)
         times 2 db 0
-g_29AE:                                         ; used by AI, INIT (to name)
+yc1:                                         ; used by AI, INIT (to name)
         times 2 db 0
-g_29B0:                                         ; used by AI, INIT (to name)
+yleader:                                         ; used by AI, INIT (to name)
         times 2 db 0
-g_29B2:                                         ; used by AI, INIT (to name)
+fox:                                         ; used by AI, INIT (to name)
         times 2 db 0
-g_29B4:                                         ; used by AI, INIT (to name)
+foy:                                         ; used by AI, INIT (to name)
         times 2 db 0
-g_29B6:                                         ; used by AI, INIT (to name)
+fodir1:                                         ; used by AI, INIT (to name)
         times 2 db 0
-g_29B8:                                         ; used by AI, INIT (to name)
+fodir2:                                         ; used by AI, INIT (to name)
         times 2 db 0
-g_29BA:                                         ; used by AI, INIT (to name)
+collflag:                                         ; used by AI, INIT (to name)
         db 0x00
-g_29BB:                                         ; used by AI, GAME, INIT, MENUS (to name)
+gmode:                                         ; used by AI, GAME, INIT, MENUS (to name)
         db 0x00
-g_29BC:                                         ; used by AI, GAME, INIT (to name)
+sflags:                                         ; used by AI, GAME, INIT (to name)
         times 2 db 0
-g_29BE:                                         ; used by AI, INIT (to name)
+gmode2:                                         ; used by AI, INIT (to name)
         times 2 db 0
-g_29C0:                                         ; used by AI, INIT (to name)
+sflags3:                                         ; used by AI, INIT (to name)
         times 2 db 0
-g_29C2:                                         ; used by AI, INIT, MENUS (to name)
+c1playernum:                                         ; used by AI, INIT, MENUS (to name)
         db 0xFF
 g_29C3:                                         ; used by AI (to name)
         db 0xFF
-g_29C4:                                         ; used by AI, INIT, MENUS (to name)
+c2playernum:                                         ; used by AI, INIT, MENUS (to name)
         db 0xFF
 g_29C5:                                         ; used by AI (to name)
         db 0xFF
-g_29C6:                                         ; used by AI, INIT, MENUS (to name)
+cont1team:                                         ; used by AI, INIT, MENUS (to name)
         db 0x00, 0x00
-g_29C8:                                         ; used by AI, INIT, MENUS (to name)
+cont2team:                                         ; used by AI, INIT, MENUS (to name)
         db 0x00, 0x00
 g_29CA:                                         ; used by AI, GAME, INIT, LP, MENUS (to name)
         db 0x09, 0x00
 g_29CC:                                         ; used by AI, GAME, INIT, LP, MENUS (to name)
         db 0x07, 0x00
-g_29CE:                                         ; used by AI, INIT (to name)
+PenCntDwn:                                         ; used by AI, INIT (to name)
         db 0xFF, 0xFF
-g_29D0:                                         ; used by AI, INIT (to name)
+Penaltytimer:                                         ; used by AI, INIT (to name)
         db 0x00, 0x00
-g_29D2:                                         ; used by AI, INIT (to name)
+refsignal:                                         ; used by AI, INIT (to name)
         db 0x00, 0x00
-g_29D4:                                         ; used by AI, INIT (to name)
+RefStep:                                         ; used by AI, INIT (to name)
         db 0xFF
 g_29D5:                                         ; used by AI (to name)
         db 0xFF
-g_29D6:                                         ; used by AI, INIT (to name)
+RefPen:                                         ; used by AI, INIT (to name)
         db 0x00, 0x00
 g_29D8:                                         ; used by AI, INIT (to name)
         db 0xFF, 0xFF
-g_29DA:                                         ; used by AI, INIT, MENUS (to name)
+gsp:                                         ; used by AI, INIT, MENUS (to name)
         db 0x00, 0x00
-g_29DC:                                         ; used by AI, GAME, INIT, MENUS (to name)
+gameclock:                                         ; used by AI, GAME, INIT, MENUS (to name)
         db 0x00, 0x00
-g_29DE:                                         ; used by AI, GAME, INIT (to name)
+clockticks:                                         ; used by AI, GAME, INIT (to name)
         db 0x00, 0x00
 g_29E0:                                         ; used by AI (to name)
         db 0x00, 0x00
@@ -2688,12 +2688,12 @@ seed:                                           ; the seed randomd0 steps; the h
         dw 0x4321
 g_2A02:                                         ; used by AI, INIT (to name)
         db 0xCD, 0xAB
-g_2A04:                                         ; used by AI (to name)
+pendelaytab:                                         ; used by AI (to name)
         db 0x00, 0x0A, 0x0A, 0x03, 0x01, 0x00, 0x01, 0x01
         db 0x01, 0x0A, 0x0A, 0x04, 0x04, 0x04
         db 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x01
         db 0x00, 0x01, 0x01, 0x00
-g_2A1E:                                         ; used by AI (to name)
+penmintab:                                         ; used by AI (to name)
         db 0x00, 0x00, 0x00, 0x00
         db 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0xFF
         db 0x05, 0x00, 0x00, 0x00, 0x00, 0x00
@@ -3624,13 +3624,13 @@ g_48AF:                                         ; used by AI (to name)
         db 0xFF
 g_48B0:                                         ; used by AI (to name)
         db 0x00, 0x01, 0x02, 0x04, 0x03, 0x05, 0x06, 0x00
-g_48B8:                                         ; used by AI, GAME, INIT (to name)
+shownumbers:                                         ; used by AI, GAME, INIT (to name)
         db 0x00, 0x00, 0x00, 0x00
-g_48BC:                                         ; used by AI, INIT (to name)
+SortPending:                                         ; used by AI, INIT (to name)
         db 0x00, 0x00
-g_48BE:                                         ; used by AI, GAME, INIT (to name)
+exitgame:                                         ; used by AI, GAME, INIT (to name)
         db 0x01, 0x00
-g_48C0:                                         ; used by AI, GAME, INIT (to name)
+gameover:                                         ; used by AI, GAME, INIT (to name)
         db 0x01, 0x00
 g_48C2:                                         ; used by AI (to name)
         db 0x2C, 0x01, 0x58, 0x02, 0xB0, 0x04, 0xB0, 0x04
@@ -3640,11 +3640,11 @@ g_48CC:                                         ; used by AI, INIT (to name)
         db 0x00, 0x00
 g_48CE:                                         ; used by AI, INIT, MENUS (to name)
         db 0x00, 0x00
-g_48D0:                                         ; used by AI, INIT, MENUS (to name)
+energywarn:                                         ; used by AI, INIT, MENUS (to name)
         db 0x00, 0x00
-g_48D2:                                         ; used by AI, INIT (to name)
+lcblink:                                         ; used by AI, INIT (to name)
         times 2 db 0
-g_48D4:                                         ; used by INIT (to name)
+lcblinktime:                                         ; used by INIT (to name)
         times 2 db 0
 g_48D6:                                         ; used by AI, INIT (to name)
         times 2 db 0
@@ -3658,7 +3658,7 @@ g_48DE:                                         ; used by AI, INIT (to name)
         times 2 db 0
 g_48E0:                                         ; used by INIT (to name)
         times 2 db 0
-g_48E2:                                         ; used by AI, INIT, MENUS (to name)
+lcboxon:                                         ; used by AI, INIT, MENUS (to name)
         times 2 db 0
 g_48E4:                                         ; used by AI, INIT, MENUS (to name)
         times 2 db 0
@@ -3677,31 +3677,31 @@ g_48E4:                                         ; used by AI, INIT, MENUS (to na
 g_49A6:                                         ; used by AI (to name)
         db 0xE6, 0x48, 0xF6, 0x48, 0x16, 'I&I6IFIVIfIvI'
         db 0x86, 0x49, 0x96, 0x49
-g_49BC:                                         ; used by AI, INIT (to name)
+puckfaceoff2_ptab:                                         ; used by AI, INIT (to name)
         db 0x00, 0x00
-g_49BE:                                         ; used by AI, INIT (to name)
+puckfaceoff2_ptab_y:                                         ; used by AI, INIT (to name)
         db 0x24, 0xFF, 0xDD, 0xFF, 0xD3, 0xFF, 0x23, 0x00, 0xD3, 0xFF, 0xCC, 0xFF, 0xF6, 0xFF, 0x00, 0x00
         db 0xF8, 0xFF, 0x34, 0x00, 0xF6, 0xFF, 0x00, 0x00
         db 0xC9, 0xFF
-g_49D8:                                         ; used by AI, INIT (to name)
+apl:                                         ; used by AI, INIT (to name)
         db 0x00, 0x01, 0x02, 0x03, 0x04, 0x05
         db 0x06, 0x00, 0x00, 0x01, 0x05, 0x03, 0x04, 0x02, 0x00, 0x00, 0x00, 0x03, 0x05, 0x01, 0x04, 0x00
         db 0x00, 0x00
-g_49F0:                                         ; used by AI, INIT (to name)
+ovltimer:                                         ; used by AI, INIT (to name)
         db 0xFF, 0xFF
-g_49F2:                                         ; used by AI, INIT (to name)
+refhitcount:                                         ; used by AI, INIT (to name)
         db 0x00, 0x00
-g_49F4:                                         ; used by AI, GAME, INIT (to name)
+fadeinpending:                                         ; used by AI, GAME, INIT (to name)
         db 0x00, 0x00
-g_49F6:                                         ; used by AI, INIT (to name)
+injurystop:                                         ; used by AI, INIT (to name)
         db 0x00, 0x00
-g_49F8:                                         ; used by AI, INIT (to name)
+bannermsg:                                         ; used by AI, INIT (to name)
         db 0xFF, 0xFF
-g_49FA:                                         ; used by AI, INIT (to name)
+bannertimer:                                         ; used by AI, INIT (to name)
         db 0x00, 0x00
-g_49FC:                                         ; used by AI, INIT (to name)
+ovlseq:                                         ; used by AI, INIT (to name)
         db 0xFF, 0xFF
-g_49FE:                                         ; used by AI, INIT (to name)
+ovlstep:                                         ; used by AI, INIT (to name)
         db 0xFF, 0xFF
 g_4A00:                                         ; used by AI, INIT (to name)
         db 'j)p)u)z)', 0x80, 0x29
@@ -3717,7 +3717,7 @@ g_4A1E:                                         ; used by AI (to name)
         db 0x00, 0x01, 0x01, 0x01, 0x00
 g_4A24:                                         ; used by AI, INIT (to name)
         db 0x00, 0x00
-g_4A26:                                         ; used by AI, INIT (to name)
+PenCntDwn2:                                         ; used by AI, INIT (to name)
         db 0xFF, 0xFF
 g_4A28:                                         ; used by AI, INIT (to name)
         db 0x85, 0x01, 0x86, 0x01
@@ -3730,7 +3730,7 @@ g_4A4E:                                         ; used by AI, INIT (to name)
         db 0x00
 g_4A4F:                                         ; used by AI (to name)
         db 0x00
-g_4A50:                                         ; used by AI, INIT (to name)
+ltack:                                         ; used by AI, INIT (to name)
         db 0x00, 0x00
 lastsfx:                                        ; last sound effect played; used by PlaySoundEffect
         dw 0xFFFF
@@ -3749,11 +3749,11 @@ g_4A5E:                                         ; used by INIT (to name)
         times 2 db 0
 g_4A60:                                         ; used by INIT (to name)
         times 2 db 0
-g_4A62:                                         ; used by AI, INIT (to name)
+demoflag:                                         ; used by AI, INIT (to name)
         times 2 db 0
-g_4A64:                                         ; used by AI, GAME, INIT (to name)
+introskipped:                                         ; used by AI, GAME, INIT (to name)
         times 2 db 0
-g_4A66:                                         ; used by AI, INIT (to name)
+onetimerflag:                                         ; used by AI, INIT (to name)
         times 2 db 0
 str_HomepalsBin_2:                              ; string 'HOMEPALS.BIN'; used by GAME
         db 'HOMEPALS.BIN', 0x00
@@ -3770,13 +3770,13 @@ str_Pal_12:                                     ; string '!pal'; used by GAME
         db 0xFF, 0xFF, 0x00, 0x00, 0x80, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
         db 0xFF, 0xFF, 0xFF, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
         times 16 db 0
-g_4AFE:                                         ; used by AI, MENUS (to name)
+samesideflag:                                         ; used by AI, MENUS (to name)
         times 2 db 0
-g_4B00:                                         ; used by AI, GAME, INIT (to name)
+inputframes:                                         ; used by AI, GAME, INIT (to name)
         times 2 db 0
 g_4B02:                                         ; used by AI, GAME, MENUS (to name)
         times 2 db 0
-g_4B04:                                         ; used by AI, GAME (to name)
+joyrec:                                         ; used by AI, GAME (to name)
         times 6 db 0
 g_4B0A:                                         ; used by GAME (to name)
         db 0x01
@@ -4236,9 +4236,9 @@ g_544E:                                         ; used by AI (to name)
         db 0xC9, 0xFF, 0x00, 0x00
 g_547C:                                         ; used by INIT (to name)
         db 0xFF, 0xFF
-g_547E:                                         ; used by AI (to name)
+replaytick:                                         ; used by AI (to name)
         db 0x01, 0x00
-g_5480:                                         ; used by AI, INIT (to name)
+replaysfx:                                         ; used by AI, INIT (to name)
         db 0xFF, 0xFF, '3000', 0x00
         db '3001', 0x00
         db '3002', 0x00
@@ -4285,17 +4285,17 @@ g_5550:                                         ; used by AI (to name)
         db 0xA0, 0x0F, 0xA0, 0x0F, 0xA0, 0x0F, 0xA0, 0x0F
         db 0xA0, 0x0F, 0xA0
         db 0x0F, 0xA0, 0x0F, 0xA0, 0x0F
-g_5560:                                         ; used by AI, GAME, INIT (to name)
+hudclockmin:                                         ; used by AI, GAME, INIT (to name)
         db 0x05, 0x00
-g_5562:                                         ; used by AI, GAME, INIT (to name)
+hudclocksec:                                         ; used by AI, GAME, INIT (to name)
         db 0x00, 0x00
-g_5564:                                         ; used by AI, GAME, INIT (to name)
+hudclockhund:                                         ; used by AI, GAME, INIT (to name)
         db 0x00, 0x00
-g_5566:                                         ; used by AI (to name)
+panelprevmin:                                         ; used by AI (to name)
         db 0x63, 0x00
-g_5568:                                         ; used by AI (to name)
+panelprevsec:                                         ; used by AI (to name)
         db 0x63, 0x00
-g_556A:                                         ; used by AI (to name)
+panelprevhund:                                         ; used by AI (to name)
         db 0x63, 0x00
 g_556C:                                         ; used by AI, INIT (to name)
         db 0xFF, 0xFF
@@ -4333,15 +4333,15 @@ g_5604:                                         ; used by AI, INIT, LP, MENUS (t
         db 0xF5, 0x54, 0xFA, 0x54, 0xFF, 0x54, 0x04, 0x55, 0x09, 0x55, 0x0E, 0x55, 0x13, 0x55, 0x18, 0x55
         db 0x1D, 'U"U', 0x27
         db 'U,U1U6U;U'
-g_5638:                                         ; used by AI (to name)
+panelhund:                                         ; used by AI (to name)
         db 0x00, 0x00
-g_563A:                                         ; used by AI, GAME, INIT, MENUS (to name)
+deferpending:                                         ; used by AI, GAME, INIT, MENUS (to name)
         times 2 db 0
 g_563C:                                         ; used by AI (to name)
         times 2 db 0
 g_563E:                                         ; used by AI (to name)
         times 2 db 0
-g_5640:                                         ; used by AI (to name)
+hudhomeline:                                         ; used by AI (to name)
         times 2 db 0
 g_5642:                                         ; used by AI (to name)
         times 2 db 0
@@ -4359,9 +4359,9 @@ str_Srb3:                                       ; string 'srb3'; used by AI
         db 'srb3', 0x00
 str_Crests4:                                    ; string 'crests4'; used by AI
         db 'crests4', 0x00, 0x00
-g_5662:                                         ; used by AI, MENUS (to name)
+goaliemenuflags:                                         ; used by AI, MENUS (to name)
         db 0xE2, 0x01, 0x48, 0x34, 0xFB, 0x01, 0x48, 0x34
-g_566A:                                         ; used by AI, MENUS (to name)
+goaliemenuflags_e02:                                         ; used by AI, MENUS (to name)
         db 0x14, 0x02, 0x48, 0x34, 0x32, 0x02, 0x48, 0x34, 0x4B, 0x02, 0x48, 0x34, 0x64, 0x02, 0x48, 0x34
 g_567A:                                         ; used by AI (to name)
         db 0x00, 'UU', 0x00, 0x00, 0xAA, 0xAA, 0x00
@@ -4459,7 +4459,7 @@ g_58A6:                                         ; used by AI (to name)
 g_58E2:                                         ; used by AI (to name)
         db 0x86, 0x58, 0x8F, 0x58, 0x90, 0x58, 0x99, 0x58
         db 0xA2, 0x58, 0xAB, 0x58, 0xB2, 0x58, 0xBA, 0x58, 0xC3, 0x58, 0xCC, 0x58, 0xD4, 0x58, 0xDA, 0x58
-g_58FA:                                         ; used by AI (to name)
+doplayeracc_ftab:                                         ; used by AI (to name)
         db 0x00, 0x00, 0x10, 0x00, 0x10, 0x00, 0x10, 0x00, 0x00, 0x00, 0xF0, 0xFF, 0xF0, 0xFF, 0xF0, 0xFF
 g_590A:                                         ; used by AI (to name)
         db 0x00, 0x90
@@ -4483,46 +4483,46 @@ g_5950:                                         ; used by AI (to name)
         db 0x32, 0x00, 0x05, 0x00
         db 0x37, 0x00, 0x32, 0x00, 0xBE, 0x00, 0x14, 0x00
         db 0x64, 0x00, 0x1E, 0x00, 0xDA, 0x00, 0x14, 0x00
-g_596A:                                         ; used by AI (to name)
+asscentero_dedata:                                         ; used by AI (to name)
         db 0x00, 0x00
-g_596C:                                         ; used by AI (to name)
+asscentero_dedata_xrand:                                         ; used by AI (to name)
         db 0x46, 0x00
-g_596E:                                         ; used by AI (to name)
+asscentero_dedata_y:                                         ; used by AI (to name)
         db 0xC0, 0xFF
-g_5970:                                         ; used by AI (to name)
+asscentero_dedata_yrand:                                         ; used by AI (to name)
         db 0x0A, 0x00, 0x00, 0x00
         db 0x46, 0x00, 0x34, 0x00, 0x0A, 0x00, 0x00, 0x00
         db 0x3C, 0x00, 0xA0, 0x00, 0x1E, 0x00, 0x00, 0x00
         db 0x64, 0x00, 0x9B, 0x00, 0x14, 0x00
-g_598A:                                         ; used by AI (to name)
+assscore_dancecnt:                                         ; used by AI (to name)
         db 0x00, 0x00
-g_598C:                                         ; used by AI (to name)
+goaliesave_saveanim_m2:                                         ; used by AI (to name)
         db 0xB1, 0x00, 0xC9, 0x00
         db 0x31, 0x01, 0x59, 0x01, 0x01, 0x01, 0x19, 0x01
-g_5998:                                         ; used by AI (to name)
+asspuckc_postab2:                                         ; used by AI (to name)
         db 0x92, 0xFF
-g_599A:                                         ; used by AI (to name)
+asspuckc_postab2_y:                                         ; used by AI (to name)
         db 0xEC, 0xFF, 0x6E, 0x00, 0xEC, 0xFF, 0x7E
         db 0xFF, 0x24, 0x00, 0x1E, 0x00
         db 0x24, 0x00, 0x82, 0x00
         db 0x24, 0x00, 0xE2, 0xFF, 0x24, 0x00, 0xCE, 0xFF, 0xCC, 0x00, 0x00, 0x00, 0xBC, 0x00, 0x1E, 0x00
         db 0xC6, 0x00, 0x28, 0x00, 0xC6
-g_59BF:                                         ; used by AI (to name)
+Endfaceoff_ftab_m1:                                         ; used by AI (to name)
         db 0x00, 0x00, 0x08, 0x10, 0x00, 0x08, 0x10
-g_59C6:                                         ; used by AI (to name)
+refsigdir:                                         ; used by AI (to name)
         db 0xFF, 0xFF, 0xFF, 0xFF
         db 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x04, 0x00
         db 0xFF, 0xFF, 0x04, 0x00, 0x04, 0x00, 0x04, 0x00, 0x04, 0x00, 0x04, 0x00, 0x04, 0x00, 0x04, 0x00
         db 0x04, 0x00, 0x04, 0x00, 0x04, 0x00, 0xFF, 0xFF
         db 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
-g_59F8:                                         ; used by AI (to name)
+refsigspa_m2:                                         ; used by AI (to name)
         db 0x00, 0x00
         times 16 db 0
         db 0x63, 0x0C, 0x00, 0x00
         db 0x73, 0x0C, 0x8B, 0x0C, 0x63, 0x0C, 0x9B, 0x0C, 0xAB, 0x0C, 0xBB, 0x0C, 0xCB, 0x0C, 0xD9, 0x0C
         db 0xE7, 0x0C, 0xF5, 0x0C, 0x00, 0x00, 0x00, 0x00
         db 0x00, 0x00, 0x00, 0x00
-g_5A2A:                                         ; used by AI (to name)
+nethit:                                         ; used by AI (to name)
         db 0x00, 0x00
 g_5A2C:                                         ; used by AI (to name)
         db 0xC1, 0x05
@@ -4536,7 +4536,7 @@ g_5A2C:                                         ; used by AI (to name)
         db 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0xA5, 0xA5
 g_5AD0:                                         ; used by AI (to name)
         db 0x00, 0x00
-g_5AD2:                                         ; used by AI (to name)
+shotsetz:                                         ; used by AI (to name)
         db 0x0C, 0x00, 0x10, 0x00, 0x0C, 0x00, 0x10, 0x00
         db 0x06, 0x00, 0x10, 0x00, 0x00, 0x00
         db 0x00, 0x00, 0x00, 0x00, 0xF0, 0xFF, 0x00, 0x00, 0xF0, 0xFF, 0x06, 0x00, 0xF0, 0xFF, 0x0C, 0x00
@@ -4560,13 +4560,13 @@ g_5B67:                                         ; used by AI (to name)
         db 0x0C, 0x0E, 0x0C, 0x13, 0xFE, 0x0F, 0xF9, 0x06
         db 0xF5
         db 0xF6, 0xF4, 0xEF, 0xF9, 0xEE, 0x04
-g_5B76:                                         ; used by AI, INIT (to name)
+teamrocktune:                                         ; used by AI, INIT (to name)
         db 0x01, 0x01, 0x00, 0x01, 0x01, 0x00, 0x01, 0x01
         db 0x01, 0x00
         db 0x01, 0x01, 0x01, 0x00, 0x01, 0x01, 0x00, 0x01, 0x01, 0x01, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00
-g_5B90:                                         ; used by AI (to name)
+RockTuneIds:                                         ; used by AI (to name)
         db 0xFE, 0x01, 0x3A, 0x02
-g_5B94:                                         ; used by AI (to name)
+introstandanims_m2:                                         ; used by AI (to name)
         db 0x67, 0x0D, 0x7B, 0x0D, 0x57, 0x0D, 0x89, 0x0D
         db 0x45, 0x0D
 g_5B9E:                                         ; used by AI (to name)
@@ -4574,9 +4574,9 @@ g_5B9E:                                         ; used by AI (to name)
         db 0x14, 0x00
 g_5BA2:                                         ; used by AI (to name)
         db 0x0A, 0x14, 0x28, 0x00
-g_5BA6:                                         ; used by AI (to name)
+assstarskate_path:                                         ; used by AI (to name)
         db 0x89, 0xFF
-g_5BA8:                                         ; used by AI (to name)
+assstarskate_path_y:                                         ; used by AI (to name)
         db 0xC9, 0xFF, 0xCA, 0xFF, 0xD3, 0xFF, 0xC5, 0xFF
         db 0x0F, 0x00, 0x84, 0xFF, 0x0A, 0x00, 0xA2, 0xFF, 0x14, 0x00, 0xD4, 0xFF, 0x05, 0x00, 0xC0, 0xFF
         db 0xCE, 0xFF, 0x8E, 0xFF, 0xEC, 0xFF, 0x31, 0x73, 0x74, 0x00
@@ -4702,7 +4702,7 @@ g_61B8:                                         ; used by AI (to name)
         db 0x64, 0x01
 g_61CA:                                         ; used by AI (to name)
         db 0xA5, 0x01, 0x2D, 0x01
-g_61CE:                                         ; used by AI (to name)
+dressbystatus:                                         ; used by AI (to name)
         db 0x00, 0x00
         db 0x02, 0x01, 0x01, 0x00, 0x00, 0x01, 0x00, 0x00
 g_61D8:                                         ; used by AI (to name)
@@ -4717,7 +4717,7 @@ g_622A:                                         ; used by AI (to name)
         db 0x00, 0x05, 0x0A, 0x00, 0x05, 0x0A
         db 0x00, 0x05, 0x0A, 0x00, 0x05, 0x0A, 0x0F, 0x13, 0x0F, 0x13, 0x0F, 0x13, 0x17, 0x1E, 0x25, 0x2C, 0x32
         db 0x17, 0x1E, '%,28?FL8?FL'
-g_624E:                                         ; used by AI (to name)
+penshotstart:                                         ; used by AI (to name)
         db 0xFF, 0xFF, 0xFF
         db 0xFF, 0xFF, 0xFF, 0x02, 0x00, 0x02, 0x00, 0x02, 0x00, 0x05, 0x00, 0xFF, 0xFF, 0x04, 0x00, 0x06
         db 0x00, 0xFF, 0xFF, 0x06, 0x00, 0x06, 0x00, 0x06, 0x00, 0x06, 0x00, 0x06, 0x00, 0x06, 0x00, 0x06
@@ -6026,9 +6026,9 @@ g_8B70:                                         ; used by MENUS (to name)
         db 0x48, 0x34
 g_8B72:                                         ; used by MENUS (to name)
         db 0x48, 0x34
-g_8B74:                                         ; used by MENUS (to name)
+schedgameidx:                                         ; used by MENUS (to name)
         db 0x0B, 0x3A
-g_8B76:                                         ; used by MENUS (to name)
+musicslot:                                         ; used by MENUS (to name)
         db 0xC9, 0x45
 g_8B78:                                         ; used by MENUS (to name)
         db 0x15, 0x34
@@ -6264,7 +6264,7 @@ g_8C6A:                                         ; used by STATS (to name)
         db 0x4B, 0x38
 g_8C6C:                                         ; used by STATS (to name)
         db 0x0B, 0x3A
-g_8C6E:                                         ; used by STATS (to name)
+PoStandingsMode:                                         ; used by STATS (to name)
         db 0xC9, 0x45
 g_8C70:                                         ; used by STATS (to name)
         db 0x0B, 0x3A
@@ -6356,9 +6356,9 @@ g_8CCC:                                         ; used by INIT (to name)
         db 0xF6, 0x38
 g_8CCE:                                         ; used by INIT (to name)
         db 0xF6, 0x38
-g_8CD0:                                         ; used by INIT (to name)
+hmplstats:                                         ; used by INIT (to name)
         db 0x0B, 0x3A
-g_8CD2:                                         ; used by INIT (to name)
+hmglstats:                                         ; used by INIT (to name)
         db 0x0B, 0x3A
 g_8CD4:                                         ; used by INIT (to name)
         db 0x63, 0x38

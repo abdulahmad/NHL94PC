@@ -1,0 +1,1250 @@
+; Sound settings dialog: sound card, music and effects, loading the driver (MENUS.OVL)
+; The first bytes finish the last routine of file_dialogs.asm.
+        pop si
+        pop di
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; MenuSoundSettings                                          2528:0004  94 PC
+; Sound card dialog.
+;
+; Calls VgaCopyBytes, DrawSoundCardDlg, DrawSoundCardOpts, CopyPlane, SoundCardDlgLoop. Far routine
+; (retf).
+;-----------------------------------------------------------------------------
+MenuSoundSettings:
+        push word 0x3f00
+        push word 0xbd00
+        push word 0x7e00
+        call 0x0000:VgaCopyBytes
+        add sp, 0x6
+        push cs
+        call DrawSoundCardDlg
+        push cs
+        call DrawSoundCardOpts
+        call 0x0FEF:CopyPlane
+        push word 0x3f00
+        push word 0x3f00
+        push word 0x7e00
+        call 0x0000:VgaCopyBytes
+        add sp, 0x6
+        call 0x0FEF:CopyPlane
+        push cs
+        call SoundCardDlgLoop
+        push word 0x3f00
+        push word 0x7e00
+        push word 0xbd00
+        call 0x0000:VgaCopyBytes
+        add sp, 0x6
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        retf
+
+;-----------------------------------------------------------------------------
+; DrawSoundCardDlg                                           2528:0050  94 PC
+; 'sound' dbox.
+;
+; Calls UseOtherPage, BuildPathFar, LoadPackedHeader, FindFarMsg, DrawRleTransFastAt, FindUnlink. Far
+; routine (retf).
+;-----------------------------------------------------------------------------
+DrawSoundCardDlg:
+        enter 0xe, 0x0
+        push di
+        push si
+        call 0x0FEF:UseOtherPage
+        push word 0x3701
+        push strict word str_Qpp
+        push ds
+        push strict word str_Sound
+        push 0x0
+        push 0x0
+        lea ax, [bp - 0xe]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        push 0xa
+        push 0xa
+        push strict word str_Dbox_8
+        push 0x0
+        lea ax, [bp - 0xe]
+        push ax
+        call 0x14B8:LoadPackedHeader
+        add sp, 0x4
+        push dx
+        push ax
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        db 0x8B, 0xFA                           ; insn: mov di, dx
+        call 0x03A3:FindFarMsg
+        add sp, 0x6
+        push dx
+        push ax
+        call 0x0FEF:DrawRleTransFastAt
+        add sp, 0x8
+        push di
+        push si
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        pop si
+        pop di
+        leave
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; DrawSoundCardOpts                                          2528:00B2  94 PC
+; Option boxes.
+;
+; Calls GetPaletteFar, WaitRetraceEnd, SetPaletteFar. Far routine (retf).
+;-----------------------------------------------------------------------------
+DrawSoundCardOpts:
+        enter 0x48, 0x0
+        push si
+        lea ax, [bp - 0x48]
+        push ss
+        push ax
+        push 0x18
+        push word 0x80
+        call 0x0FEF:GetPaletteFar
+        add sp, 0x8
+        mov ax, [SoundOptions]
+        mov [g_B35E], ax
+        db 0x2B, 0xF6                           ; insn: sub si, si
+.1:
+        mov al, 0x3f
+        mov [bp + si - 0x46], al
+        mov [bp + si - 0x47], al
+        mov [bp + si - 0x48], al
+        mov al, 0x17
+        mov [bp + si - 0x2e], al
+        mov [bp + si - 0x2f], al
+        mov [bp + si - 0x30], al
+        mov al, 0x3f
+        mov [bp + si - 0x16], al
+        mov [bp + si - 0x17], al
+        mov [bp + si - 0x18], al
+        add si, 0x3
+        cmp si, 0x18
+        jl short .1
+        db 0x2B, 0xF6                           ; insn: sub si, si
+.2:
+        db 0x8B, 0xCE                           ; insn: mov cx, si
+        mov ax, 0x1
+        shl ax, cl
+        test [g_B35E], ax
+        jnz short .3
+        inc si
+        cmp si, 0x7
+        jl short .2
+        jmp short .4
+        db 0x90
+.3:
+        mov al, 0x17
+        shl si, 1
+        db 0x03, 0xF1                           ; insn: add si, cx
+        mov [bp + si - 0x46], al
+        mov [bp + si - 0x47], al
+        mov [bp + si - 0x48], al
+        mov al, 0x3f
+        mov [bp + si - 0x2e], al
+        mov [bp + si - 0x2f], al
+        mov [bp + si - 0x30], al
+.4:
+        db 0x2B, 0xD2                           ; insn: sub dx, dx
+        lea si, [bp - 0x16]
+.5:
+        db 0x8B, 0xCA                           ; insn: mov cx, dx
+        mov ax, 0x1
+        shl ax, cl
+        test [g_01C4], ax
+        jnz short .6
+        mov al, 0x17
+        mov [si], al
+        mov [si - 0x1], al
+        mov [si - 0x2], al
+.6:
+        inc dx
+        add si, 0x3
+        lea ax, [bp - 0x1]
+        db 0x3B, 0xF0                           ; insn: cmp si, ax
+        jc short .5
+        call 0x0FEF:WaitRetraceEnd
+        lea ax, [bp - 0x48]
+        push ss
+        push ax
+        push 0x18
+        push word 0x80
+        call 0x0FEF:SetPaletteFar
+        add sp, 0x8
+        pop si
+        leave
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; SoundCardHitTest                                           2528:016E  94 PC
+; Box under the pointer.
+;
+; Takes 3 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
+SoundCardHitTest:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        push di
+        mov di, [bp + 0x6]
+        sub di, 0xa
+        sub word [bp + 0x8], 0xa
+        db 0x2B, 0xC9                           ; insn: sub cx, cx
+        mov bx, 0x0
+        mov [bp + 0x6], di
+        mov ax, 0x36a8
+        mov ds, ax
+.1:
+        cmp [bx], di
+        jg short .2
+        cmp [bx + 0x4], di
+        jl short .2
+        mov ax, [bp + 0x8]
+        cmp [bx + 0x2], ax
+        jg short .2
+        cmp [bx + 0x6], ax
+        jnl short .3
+.2:
+        inc cx
+        add bx, 0x8
+        cmp bx, strict word 0x38
+        jc short .1
+        mov ax, DGROUP
+        mov ds, ax
+        jmp short .4
+.3:
+        mov ax, DGROUP
+        mov ds, ax
+        mov bx, [bp + 0xa]
+        mov [bx], cx
+        mov ax, 0x1
+        pop di
+        leave
+        retf
+.4:
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        pop di
+        leave
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; RedrawSoundCardOpts                                        2528:01C6  94 PC
+; Redraws the chosen boxes.
+;
+; Calls GetPaletteFar, WaitRetraceEnd, SetPaletteFar. Far routine (retf).
+;-----------------------------------------------------------------------------
+RedrawSoundCardOpts:
+        enter 0x48, 0x0
+        push di
+        push si
+        lea ax, [bp - 0x48]
+        push ss
+        push ax
+        push 0x18
+        push word 0x80
+        call 0x0FEF:GetPaletteFar
+        add sp, 0x8
+        db 0x2B, 0xFF                           ; insn: sub di, di
+        lea si, [bp - 0x46]
+.1:
+        db 0x8B, 0xCF                           ; insn: mov cx, di
+        mov ax, 0x1
+        shl ax, cl
+        test [g_B35E], ax
+        jz short .2
+        mov al, 0x17
+        mov [si], al
+        mov [si - 0x1], al
+        mov [si - 0x2], al
+        mov al, 0x3f
+        jmp short .3
+.2:
+        mov al, 0x3f
+        mov [si], al
+        mov [si - 0x1], al
+        mov [si - 0x2], al
+        mov al, 0x17
+.3:
+        mov [si + 0x18], al
+        mov [si + 0x17], al
+        mov [si + 0x16], al
+        mov ax, 0x1
+        shl ax, cl
+        test [g_01C4], ax
+        jnz short .4
+        mov al, 0x17
+        mov [si + 0x30], al
+        mov [si + 0x2f], al
+        mov [si + 0x2e], al
+.4:
+        inc di
+        add si, 0x3
+        lea ax, [bp - 0x31]
+        db 0x3B, 0xF0                           ; insn: cmp si, ax
+        jc short .1
+        call 0x0FEF:WaitRetraceEnd
+        lea ax, [bp - 0x48]
+        push ss
+        push ax
+        push 0x18
+        push word 0x80
+        call 0x0FEF:SetPaletteFar
+        add sp, 0x8
+        pop si
+        pop di
+        leave
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; SoundCardDlgLoop                                           2528:0250  94 PC
+; Input loop of the sound card dialog.
+;
+; Calls MouseRead, UseCurrentPage, DrawRleTransAt, FlushInputEvents, GetInputEvent, VgaCopyRect,
+; SoundCardHitTest, SetDialogColors and others. Far routine (retf).
+;-----------------------------------------------------------------------------
+SoundCardDlgLoop:
+        enter 0xc, 0x0
+        push si
+        lea ax, [bp - 0x8]
+        push ax
+        lea cx, [bp - 0xa]
+        push cx
+        lea dx, [bp - 0x6]
+        push dx
+        call 0x03A3:MouseRead
+        add sp, 0x6
+        mov ax, [bp - 0xa]
+        mov [bp - 0x2], ax
+        mov ax, [bp - 0x8]
+        mov [bp - 0x4], ax
+        call 0x0FEF:UseCurrentPage
+        push word [bp - 0x4]
+        mov ax, [bp - 0x2]
+        sub ax, strict word 0x4
+        push ax
+        push word [DialogDataSeg]
+        push word [DialogData]
+        call 0x0FEF:DrawRleTransAt
+        add sp, 0x8
+        call 0x0F99:FlushInputEvents
+.1:
+        mov word [bp - 0x6], 0x0
+.2:
+        call 0x0F99:GetInputEvent
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        db 0x0B, 0xF6                           ; insn: or si, si
+        jz short .3
+        lea ax, [bp - 0x4]
+        push ax
+        lea ax, [bp - 0x2]
+        push ax
+        push si
+        call far [HotKeyFn]
+        add sp, 0x6
+        mov [bp - 0x6], ax
+        test byte [bp - 0x6], 0x6
+        jz short .2
+.3:
+        mov al, [bp - 0x6]
+        and al, 0x2
+        jnz short .6
+        test byte [bp - 0x6], 0x4
+        jnz short .6
+        mov ax, [bp - 0xa]
+        cmp [bp - 0x2], ax
+        jnz short .4
+        mov ax, [bp - 0x8]
+        cmp [bp - 0x4], ax
+        jz short .1
+.4:
+        call 0x0FEF:UseCurrentPage
+        les bx, [DialogData]
+        push word [es:bx + 0x2]
+        mov ax, [es:bx]
+        inc ax
+        push ax
+        push word [bp - 0x8]
+        mov ax, [bp - 0xa]
+        sub ax, strict word 0x4
+        cwd
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        sar ax, byte 0x2
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        push ax
+        push word 0x3f00
+        push word 0x7e00
+        call 0x0000:VgaCopyRect
+        add sp, 0xc
+.5:
+        push word [bp - 0x4]
+        mov ax, [bp - 0x2]
+        sub ax, strict word 0x4
+        push ax
+        push word [DialogDataSeg]
+        push word [DialogData]
+        call 0x0FEF:DrawRleTransAt
+        add sp, 0x8
+        mov ax, [bp - 0x2]
+        mov [bp - 0xa], ax
+        mov ax, [bp - 0x4]
+        mov [bp - 0x8], ax
+        jmp near .1
+.6:
+        mov al, [bp - 0x6]
+        and al, 0x2
+        jnz short .7
+        jmp near .14
+.7:
+        les bx, [DialogData]
+        push word [es:bx + 0x2]
+        mov ax, [es:bx]
+        inc ax
+        push ax
+        push word [bp - 0x8]
+        mov ax, [bp - 0xa]
+        sub ax, strict word 0x4
+        cwd
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        sar ax, byte 0x2
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        push ax
+        push word 0x3f00
+        push word 0x7e00
+        call 0x0000:VgaCopyRect
+        add sp, 0xc
+        lea ax, [bp - 0xc]
+        push ax
+        push word [bp - 0x4]
+        push word [bp - 0x2]
+        push cs
+        call SoundCardHitTest
+        add sp, 0x6
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jz short .13
+        mov cl, [bp - 0xc]
+        mov ax, 0x1
+        shl ax, cl
+        mov [bp - 0xc], ax
+        test [g_B35E], ax
+        jnz short .13
+        test [g_01C4], ax
+        jz short .13
+        cmp ax, strict word 0x40
+        jz short .17
+        ja short .12
+        cmp al, 0x8
+        jz short .9
+        jg short .8
+        dec al
+        jl short .12
+        dec al
+        jng short .9
+        sub al, 0x2
+        jz short .9
+        jmp short .12
+        db 0x90, 0x90
+.8:
+        sub al, 0x10
+        jz short .9
+        sub al, 0x10
+        jz short .10
+        jmp short .12
+.9:
+        mov ax, [bp - 0xc]
+        jmp short .11
+        db 0x90
+.10:
+        push 0x0
+        push 0x11
+        push 0x5
+        push 0x11
+        push 0xb
+        call 0x0D90:SetDialogColors
+        add sp, 0xa
+        push word [g_B35E]
+        push cs
+        call SetSoundDevice
+        add sp, 0x2
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jnz short .16
+        mov ax, [g_B35E]
+        xor [g_01C4], ax
+        mov ax, [SoundOptions]
+.11:
+        mov [g_B35E], ax
+.12:
+        push cs
+        call RedrawSoundCardOpts
+.13:
+        call 0x0FEF:UseCurrentPage
+        jmp near .5
+.14:
+        test byte [bp - 0x6], 0x4
+        jnz short .15
+        jmp near .1
+.15:
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        pop si
+        leave
+        retf
+.16:
+        mov ax, [g_B35E]
+        mov [SoundOptions], ax
+.17:
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        pop si
+        leave
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; SetSoundDevice                                             2528:0426  94 PC
+; Loads the driver, patches and songs ('PCBEEP' .. 'MT32')
+;
+; Takes 2 words of stack arguments. Calls SpeechShutdown, FindUnlink, ShutdownSequencer,
+; WaitDeadlineNoEoi, UnloadSong, InitSequencer, LoadSoundDriver, LoadRawHeader and others.
+;-----------------------------------------------------------------------------
+SetSoundDevice:
+        enter 0x66, 0x0
+        push di
+        push si
+        mov word [bp - 0x22], 0xffff
+        mov ax, [g_0F68]
+        or ax, [g_0F66]
+        jz short .2
+        cmp word [SoundOptions], 0x2
+        jnz short .1
+        call 0x09B2:SpeechShutdown
+        push word [g_C1F2]
+        push word [g_C1F0]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [g_C1F2], ax
+        mov [g_C1F0], ax
+.1:
+        call 0x16F2:ShutdownSequencer
+        mov ax, 0x64
+        cwd
+        call 0x03A3:SetDeadline.regs
+        call 0x03A3:WaitDeadlineNoEoi
+        push word [g_0F68]
+        push word [g_0F66]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [g_0F68], ax
+        mov [g_0F66], ax
+.2:
+        mov ax, [g_0F6C]
+        or ax, [g_0F6A]
+        jz short .3
+        push word [g_0F6C]
+        push word [g_0F6A]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [g_0F6C], ax
+        mov [g_0F6A], ax
+.3:
+        mov ax, [g_0F70]
+        or ax, [g_0F6E]
+        jz short .4
+        push word [g_0F70]
+        push word [g_0F6E]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [g_0F70], ax
+        mov [g_0F6E], ax
+.4:
+        mov word [bp - 0x26], 0x0
+.5:
+        mov bx, [bp - 0x26]
+        shl bx, byte 0x2
+        mov ax, [bx + 0xf74]
+        or ax, [bx + 0xf72]
+        jz short .6
+        push word [bx + 0xf74]
+        push word [bx + 0xf72]
+        db 0x8B, 0xF3                           ; insn: mov si, bx
+        call 0x16F2:UnloadSong
+        add sp, 0x4
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [si + 0xf74], ax
+        mov [si + 0xf72], ax
+.6:
+        inc word [bp - 0x26]
+        cmp word [bp - 0x26], 0x10
+        jl short .5
+        mov ax, [SfxBankSeg]
+        or ax, [SfxBankOff]
+        jz short .7
+        push word [SfxBankSeg]
+        push word [SfxBankOff]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [SfxBankSeg], ax
+        mov [SfxBankOff], ax
+.7:
+        mov ax, [SfxBank2Seg]
+        or ax, [SfxBank2Off]
+        jz short .8
+        push word [SfxBank2Seg]
+        push word [SfxBank2Off]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [SfxBank2Seg], ax
+        mov [SfxBank2Off], ax
+.8:
+        mov word [bp - 0x2a], 0x0
+.9:
+        mov ax, [bp + 0x6]
+        dec ax
+        jz short .13
+        dec ax
+        jnz short .10
+        jmp near .19
+.10:
+        dec ax
+        dec ax
+        jnz short .11
+        jmp near .20
+.11:
+        sub ax, strict word 0x4
+        jnz short .12
+        jmp near .21
+.12:
+        mov di, str_Pcbeep
+        lea si, [bp - 0x62]
+        push ds
+        pop es
+        mov cx, 0xffff
+        db 0x33, 0xC0                           ; insn: xor ax, ax
+        repne scasb
+        not cx
+        db 0x2B, 0xF9                           ; insn: sub di, cx
+        xchg di, si
+        shr cx, 1
+        rep movsw
+        db 0x13, 0xC9                           ; insn: adc cx, cx
+        rep movsb
+        mov di, 0x100a
+        jmp short .14
+        db 0x90
+.13:
+        mov di, str_Pcbeep_2
+        lea si, [bp - 0x62]
+        push ds
+        pop es
+        mov cx, 0xffff
+        db 0x33, 0xC0                           ; insn: xor ax, ax
+        repne scasb
+        not cx
+        db 0x2B, 0xF9                           ; insn: sub di, cx
+        xchg di, si
+        shr cx, 1
+        rep movsw
+        db 0x13, 0xC9                           ; insn: adc cx, cx
+        rep movsb
+        mov di, 0xfe0
+.14:
+        lea si, [bp - 0x44]
+        mov cx, 0xffff
+        db 0x33, 0xC0                           ; insn: xor ax, ax
+        repne scasb
+        not cx
+        db 0x2B, 0xF9                           ; insn: sub di, cx
+        xchg di, si
+        shr cx, 1
+        rep movsw
+        db 0x13, 0xC9                           ; insn: adc cx, cx
+        rep movsb
+        mov byte [bp - 0x54], 0x0
+        mov byte [CrowdChannel], 0x0
+.15:
+        push word 0x1020
+        call 0x16F2:InitSequencer
+        add sp, 0x2
+        mov di, str_Scn
+        lea si, [bp - 0x62]
+        push ds
+        pop es
+        mov cx, 0xffff
+        db 0x33, 0xC0                           ; insn: xor ax, ax
+        repne scasb
+        not cx
+        db 0x2B, 0xF9                           ; insn: sub di, cx
+        db 0x8B, 0xD9                           ; insn: mov bx, cx
+        xchg di, si
+        mov cx, 0xffff
+        repne scasb
+        dec di
+        db 0x8B, 0xCB                           ; insn: mov cx, bx
+        shr cx, 1
+        rep movsw
+        db 0x13, 0xC9                           ; insn: adc cx, cx
+        rep movsb
+        mov di, str_30Bgp
+        lea si, [bp - 0x44]
+        mov cx, 0xffff
+        db 0x33, 0xC0                           ; insn: xor ax, ax
+        repne scasb
+        not cx
+        db 0x2B, 0xF9                           ; insn: sub di, cx
+        db 0x8B, 0xD9                           ; insn: mov bx, cx
+        xchg di, si
+        mov cx, 0xffff
+        repne scasb
+        dec di
+        db 0x8B, 0xCB                           ; insn: mov cx, bx
+        shr cx, 1
+        rep movsw
+        db 0x13, 0xC9                           ; insn: adc cx, cx
+        rep movsb
+        mov [g_0F6C], ax
+        mov [g_0F6A], ax
+        lea ax, [bp - 0x44]
+        push ax
+        call 0x1844:LoadSoundDriver
+        add sp, 0x2
+        mov [g_0F66], ax
+        mov [g_0F68], dx
+        db 0x8B, 0xC2                           ; insn: mov ax, dx
+        or ax, [g_0F66]
+        jz short .17
+        cmp byte [bp - 0x54], 0x0
+        jz short .16
+        mov di, str_30Bgp
+        lea si, [bp - 0x54]
+        push ds
+        pop es
+        mov cx, 0xffff
+        db 0x33, 0xC0                           ; insn: xor ax, ax
+        repne scasb
+        not cx
+        db 0x2B, 0xF9                           ; insn: sub di, cx
+        db 0x8B, 0xD9                           ; insn: mov bx, cx
+        xchg di, si
+        mov cx, 0xffff
+        repne scasb
+        dec di
+        db 0x8B, 0xCB                           ; insn: mov cx, bx
+        shr cx, 1
+        rep movsw
+        db 0x13, 0xC9                           ; insn: adc cx, cx
+        rep movsb
+        lea ax, [bp - 0x54]
+        push ax
+        call 0x1844:LoadSoundDriver
+        add sp, 0x2
+        mov [g_0F6A], ax
+        mov [g_0F6C], dx
+        db 0x8B, 0xC2                           ; insn: mov ax, dx
+        or ax, [g_0F6A]
+        jz short .17
+.16:
+        mov word [bp - 0x2a], 0xffff
+.17:
+        cmp word [bp - 0x2a], 0x0
+        jnz short .18
+        jmp near .31
+.18:
+        push 0x0
+        lea ax, [bp - 0x62]
+        push ax
+        call 0x149D:LoadRawHeader
+        add sp, 0x4
+        mov es, dx
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        mov [bp - 0x30], bx
+        mov [bp - 0x2e], es
+        mov al, [es:bx + 0x1]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        push ax
+        push strict word str_Pcff03d
+        lea ax, [bp - 0x10]
+        push ax
+        call 0x0000:_sprintf
+        add sp, 0x6
+        mov di, str_Pat
+        lea si, [bp - 0x10]
+        push ds
+        pop es
+        mov cx, 0xffff
+        db 0x33, 0xC0                           ; insn: xor ax, ax
+        repne scasb
+        not cx
+        db 0x2B, 0xF9                           ; insn: sub di, cx
+        db 0x8B, 0xD9                           ; insn: mov bx, cx
+        xchg di, si
+        mov cx, 0xffff
+        repne scasb
+        dec di
+        db 0x8B, 0xCB                           ; insn: mov cx, bx
+        shr cx, 1
+        rep movsw
+        db 0x13, 0xC9                           ; insn: adc cx, cx
+        rep movsb
+        lea ax, [bp - 0x10]
+        push ax
+        call 0x16F2:LoadPatchBank
+        add sp, 0x2
+        mov [g_0F6E], ax
+        mov [g_0F70], dx
+        mov word [bp - 0x26], 0x0
+        jmp near .23
+        db 0x90
+.19:
+        mov di, str_Sbdac
+        lea si, [bp - 0x62]
+        push ds
+        pop es
+        mov cx, 0xffff
+        db 0x33, 0xC0                           ; insn: xor ax, ax
+        repne scasb
+        not cx
+        db 0x2B, 0xF9                           ; insn: sub di, cx
+        xchg di, si
+        shr cx, 1
+        rep movsw
+        db 0x13, 0xC9                           ; insn: adc cx, cx
+        rep movsb
+        mov di, 0xff6
+        lea si, [bp - 0x44]
+        mov cx, 0xffff
+        db 0x33, 0xC0                           ; insn: xor ax, ax
+        repne scasb
+        not cx
+        db 0x2B, 0xF9                           ; insn: sub di, cx
+        xchg di, si
+        shr cx, 1
+        rep movsw
+        db 0x13, 0xC9                           ; insn: adc cx, cx
+        rep movsb
+        mov di, 0xfec
+        lea si, [bp - 0x54]
+        mov cx, 0xffff
+        db 0x33, 0xC0                           ; insn: xor ax, ax
+        repne scasb
+        not cx
+        db 0x2B, 0xF9                           ; insn: sub di, cx
+        xchg di, si
+        shr cx, 1
+        rep movsw
+        db 0x13, 0xC9                           ; insn: adc cx, cx
+        rep movsb
+        mov al, 0x1
+        mov [g_106D], al
+        mov [CrowdChannel], al
+        jmp near .15
+.20:
+        mov di, str_Adlib
+        lea si, [bp - 0x62]
+        push ds
+        pop es
+        mov cx, 0xffff
+        db 0x33, 0xC0                           ; insn: xor ax, ax
+        repne scasb
+        not cx
+        db 0x2B, 0xF9                           ; insn: sub di, cx
+        xchg di, si
+        shr cx, 1
+        rep movsw
+        db 0x13, 0xC9                           ; insn: adc cx, cx
+        rep movsb
+        mov di, 0xff6
+        jmp near .14
+        db 0x90
+.21:
+        mov di, str_Mt32
+        lea si, [bp - 0x62]
+        push ds
+        pop es
+        mov cx, 0xffff
+        db 0x33, 0xC0                           ; insn: xor ax, ax
+        repne scasb
+        not cx
+        db 0x2B, 0xF9                           ; insn: sub di, cx
+        xchg di, si
+        shr cx, 1
+        rep movsw
+        db 0x13, 0xC9                           ; insn: adc cx, cx
+        rep movsb
+        mov di, 0x1000
+        jmp near .14
+        db 0x90
+.22:
+        lea bx, [bx + 0x14]
+        mov si, [bp - 0x26]
+        mov al, [es:bx + si]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        push ax
+        push strict word str_Pcff03d
+        lea ax, [bp - 0x20]
+        push ax
+        call 0x0000:_sprintf
+        add sp, 0x6
+        push si
+        mov di, str_Tim
+        lea si, [bp - 0x20]
+        push ds
+        pop es
+        mov cx, 0xffff
+        db 0x33, 0xC0                           ; insn: xor ax, ax
+        repne scasb
+        not cx
+        db 0x2B, 0xF9                           ; insn: sub di, cx
+        db 0x8B, 0xD9                           ; insn: mov bx, cx
+        xchg di, si
+        mov cx, 0xffff
+        repne scasb
+        dec di
+        db 0x8B, 0xCB                           ; insn: mov cx, bx
+        shr cx, 1
+        rep movsw
+        db 0x13, 0xC9                           ; insn: adc cx, cx
+        rep movsb
+        pop si
+        lea ax, [bp - 0x20]
+        push ax
+        push 0x0
+        push 0x0
+        push 0x0
+        call 0x16F2:LoadSongMode
+        add sp, 0x8
+        shl si, byte 0x2
+        mov [si + 0xf72], ax
+        mov [si + 0xf74], dx
+        inc word [bp - 0x26]
+.23:
+        les bx, [bp - 0x30]
+        mov al, [es:bx + 0x3]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        cmp ax, [bp - 0x26]
+        jg short .22
+        push es
+        push bx
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        call 0x16F2:SendPatches
+        cmp word [bp + 0x6], 0x4
+        jnz short .24
+        push ds
+        push strict word str_Kms_3
+        push ds
+        push strict word str_Slapshot_2
+        push 0x0
+        push 0x0
+        lea ax, [bp - 0x44]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        push 0x0
+        lea ax, [bp - 0x44]
+        push ax
+        call 0x149D:LoadRawHeader
+        add sp, 0x4
+        mov [SfxBankOff], ax
+        mov [SfxBankSeg], dx
+        push ds
+        push strict word str_Cfg_5
+        push ds
+        push strict word str_Slapshot
+        push 0x0
+        push 0x0
+        lea ax, [bp - 0x44]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        push 0x0
+        lea ax, [bp - 0x44]
+        push ax
+        call 0x149D:LoadRawHeader
+        add sp, 0x4
+        mov [SfxBank2Off], ax
+        mov [SfxBank2Seg], dx
+.24:
+        cmp word [bp + 0x6], 0x8
+        jz short .25
+        jmp near .27
+.25:
+        cmp word [g_0FBA], 0x0
+        jz short .26
+        jmp near .27
+.26:
+        push 0x0
+        lea ax, [bp - 0x28]
+        push ax
+        lea ax, [bp - 0x24]
+        push ax
+        push 0x0
+        push 0x0
+        push 0x0
+        push 0x2
+        push word 0x36a8
+        push strict word f_36A8_00AC
+        push -0x1
+        push -0x1
+        call 0x0D90:MessageBox
+        add sp, 0x16
+        push ds
+        push strict word str_Kms_2
+        push ds
+        push strict word str_Mt32hock_2
+        push 0x0
+        push 0x0
+        lea ax, [bp - 0x44]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        push 0x0
+        lea ax, [bp - 0x44]
+        push ax
+        call 0x149D:LoadRawHeader
+        add sp, 0x4
+        mov [bp - 0x66], ax
+        mov [bp - 0x64], dx
+        push ds
+        push strict word str_Cfg_4
+        push ds
+        push strict word str_Mt32hock
+        push 0x0
+        push 0x0
+        lea ax, [bp - 0x44]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        push 0x0
+        lea ax, [bp - 0x44]
+        push ax
+        call 0x149D:LoadRawHeader
+        add sp, 0x4
+        mov [bp - 0x36], ax
+        mov [bp - 0x34], dx
+        mov word [g_0FBA], 0xffff
+        push dx
+        push ax
+        push word [bp - 0x64]
+        push word [bp - 0x66]
+        call 0x0EDC:PlayJingle
+        add sp, 0x8
+        call 0x0EDC:WaitJingle
+        push word [bp - 0x64]
+        push word [bp - 0x66]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        push word [bp - 0x34]
+        push word [bp - 0x36]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        call 0x0D90:RestoreUnderBox
+.27:
+        mov ax, [bp + 0x6]
+        mov [SoundOptions], ax
+        mov [g_B35E], ax
+        push ds
+        push strict word str_Cfg_3
+        push ds
+        push strict word str_Snd_2
+        push 0x0
+        push 0x0
+        lea ax, [bp - 0x44]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        lea ax, [bp - 0x22]
+        push ax
+        lea ax, [bp - 0x44]
+        push ax
+        call 0x0CD1:CreateFileNormal
+        add sp, 0x4
+        mov [bp - 0x32], ax
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jnz short .30
+        mov byte [bp - 0x2c], 0x0
+        jmp short .29
+        db 0x90
+.28:
+        inc byte [bp - 0x2c]
+.29:
+        mov ax, [bp + 0x6]
+        mov bl, [bp - 0x2c]
+        db 0x2A, 0xFF                           ; insn: sub bh, bh
+        shl bx, 1
+        cmp [bx + g_1070], ax
+        jnz short .28
+        push 0x1
+        push 0x0
+        push 0x0
+        lea ax, [bp - 0x2c]
+        push ss
+        push ax
+        push word [bp - 0x22]
+        call 0x0CD1:WriteAtOffset
+        add sp, 0xc
+        mov [bp - 0x32], ax
+.30:
+        lea ax, [bp - 0x22]
+        push ax
+        call 0x0CD1:CloseHandlePtr
+        add sp, 0x2
+        jmp near .45
+        db 0x90
+.31:
+        cmp word [bp + 0x6], 0x10
+        jnz short .32
+        jmp near .42
+.32:
+        cmp word [bp + 0x6], 0x1
+        jnz short .33
+        jmp near .42
+.33:
+        mov ax, [bp + 0x6]
+        cmp ax, strict word 0x8
+        jnz short .34
+        jmp near .41
+.34:
+        ja short .37
+        sub al, 0x2
+        jz short .36
+        sub al, 0x2
+        jnz short .35
+        jmp near .40
+.35:
+        jmp short .37
+.36:
+        mov es, [g_8B42]
+        mov word [es:0x7b], 0x5f
+        mov word [es:0x7d], 0x36a8
+.37:
+        lea ax, [bp - 0x28]
+        push ax
+        lea cx, [bp - 0x24]
+        push cx
+        lea dx, [bp - 0x12]
+        push dx
+        call 0x03A3:MouseRead
+        add sp, 0x6
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [bp - 0x46], ax
+        push ax
+        lea ax, [bp - 0x28]
+        push ax
+        lea ax, [bp - 0x24]
+        push ax
+        push 0x0
+        push 0x0
+        push 0x0
+        push 0x3
+        push word 0x36a8
+        push strict word f_36A8_0077
+        push -0x1
+        push -0x1
+        call 0x0D90:MessageBox
+        add sp, 0x16
+.38:
+        call 0x0F99:GetInputEvent
+        mov [bp - 0x2], ax
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jz short .39
+        lea cx, [bp - 0x28]
+        push cx
+        lea cx, [bp - 0x24]
+        push cx
+        push ax
+        call far [HotKeyFn]
+        add sp, 0x6
+        mov [bp - 0x46], ax
+.39:
+        test byte [bp - 0x46], 0x2
+        jz short .38
+        call 0x0D90:RestoreUnderBox
+        mov word [bp + 0x6], 0x10
+        jmp short .43
+        db 0x90
+.40:
+        mov es, [g_8B42]
+        mov word [es:0x7b], 0x6c
+        mov word [es:0x7d], 0x36a8
+        jmp near .37
+        db 0x90
+.41:
+        mov es, [g_8B42]
+        mov word [es:0x7b], 0x72
+        mov word [es:0x7d], 0x36a8
+        jmp near .37
+        db 0x90
+.42:
+        mov word [bp - 0x2a], 0xffff
+.43:
+        call 0x16F2:ShutdownSequencer
+        mov ax, 0x64
+        cwd
+        call 0x03A3:SetDeadline.regs
+        call 0x03A3:WaitDeadlineNoEoi
+        mov ax, [g_0F68]
+        or ax, [g_0F66]
+        jz short .44
+        push word [g_0F68]
+        push word [g_0F66]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [g_0F68], ax
+        mov [g_0F66], ax
+.44:
+        mov ax, [g_0F6C]
+        or ax, [g_0F6A]
+        jz short .45
+        push word [g_0F6C]
+        push word [g_0F6A]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [g_0F6C], ax
+        mov [g_0F6A], ax
+.45:
+        cmp word [bp - 0x2a], 0x0
+        jnz short .46
+        jmp near .9
+.46:
+        cmp word [SoundOptions], 0x2
+        jnz short .47
+        push 0x0
+        push 0x0
+        push word 0x400
+        push strict word str_Emmcopybuf
+        call 0x14DB:AllocRecData
+        add sp, 0x8
+        mov [g_C1F0], ax
+        mov [g_C1F2], dx
+        push 0x0
+        push word 0x400
+        push dx
+        push ax
+        push 0xc
+        push word 0x3500
+        mov al, [g_106D]
+        push ax
+        call 0x09B2:SpeechInit
+        add sp, 0xe
+.47:
+        mov ax, 0x1
