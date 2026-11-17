@@ -57,7 +57,7 @@ F037_0004:
 	mov	[bp - 0x4], dx
 	push	dx
 	push	ax
-	call	0x0FEF:F028_0048
+	call	0x0FEF:SetCanvas
 	add	sp, 0x4
 	push	word 0xc8
 	push	word 0x140
@@ -65,17 +65,17 @@ F037_0004:
 	push	0x0
 	push	0x0
 	push	0x0
-	call	0x0FEF:F028_4262
+	call	0x0FEF:CopyPlanesRect
 	add	sp, 0xc
-	call	0x0FEF:F028_01A6
+	call	0x0FEF:UseCurrentPage
 	db	0x33, 0xC0		; xor ax, ax
-	call	0x0FEF:F028_00B9
+	call	0x0FEF:ClearClipRectColor
 	push	word 0xc8
 	push	0x0
 	mov	es, [g_8D06]
 	push	word [es:0x74f6]
 	push	0x0
-	call	0x0FEF:F028_3A59
+	call	0x0FEF:SetClipRectPlanes
 	add	sp, 0x8
 	mov	ax, 0xf
 	cwd
@@ -105,28 +105,28 @@ F037_0004:
 	push	0x1
 	push	0x46
 	push	word 0x82
-	call	0x0FEF:F028_0136
+	call	0x0FEF:FillRect
 	add	sp, 0xa
 	push	0xf
 	push	0x5b
 	push	0x1
 	push	0x46
 	push	word 0xaa
-	call	0x0FEF:F028_0136
+	call	0x0FEF:FillRect
 	add	sp, 0xa
 	push	0xf
 	push	0x1
 	push	0x79
 	push	0x64
 	push	0x5a
-	call	0x0FEF:F028_0136
+	call	0x0FEF:FillRect
 	add	sp, 0xa
 	push	0xf
 	push	0x1
 	push	0x79
 	push	word 0x82
 	push	0x5a
-	call	0x0FEF:F028_0136
+	call	0x0FEF:FillRect
 	add	sp, 0xa
 	mov	si, 0xffff
 	push	0x5
@@ -158,7 +158,7 @@ F037_0004:
 	shl	bx, 1
 	push	word [bx + g_6F22]
 	push	word [bx + g_6F10]
-	call	0x0FEF:F028_0136
+	call	0x0FEF:FillRect
 	add	sp, 0xa
 	inc	si
 .8:
@@ -172,7 +172,7 @@ F037_0004:
 	push	word [di + g_6F22]
 	push	word [di + g_6F10]
 	db	0x8B, 0xF0		; mov si, ax
-	call	0x0FEF:F028_0136
+	call	0x0FEF:FillRect
 	add	sp, 0xa
 .9:
 	call	0x03A3:ReadKey
@@ -185,7 +185,7 @@ F037_0004:
 	les	bx, [bp - 0x6]
 	push	word [es:bx + 0x2]
 	push	word [es:bx]
-	call	0x0FEF:F028_075A
+	call	0x0FEF:DrawRawBody
 	add	sp, 0x4
 	push	word [bp - 0x4]
 	push	word [bp - 0x6]

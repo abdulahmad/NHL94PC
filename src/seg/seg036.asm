@@ -32,14 +32,14 @@ F036_000E:
 	push	ax
 	push	si
 	push	word [bp + 0x6]
-	call	0x0FEF:F028_352C
+	call	0x0FEF:XorRect
 	add	sp, 0xa
 	push	word [bp + 0xe]
 	push	0x1
 	push	word [bp - 0x2]
 	push	word [bp + 0xc]
 	push	word [bp + 0x6]
-	call	0x0FEF:F028_352C
+	call	0x0FEF:XorRect
 	add	sp, 0xa
 .1:
 	db	0x0B, 0xFF		; or di, di
@@ -51,12 +51,12 @@ F036_000E:
 	push	ax
 	push	word [bp + 0x6]
 	db	0x8B, 0xF0		; mov si, ax
-	call	0x0FEF:F028_352C
+	call	0x0FEF:XorRect
 	add	sp, 0xa
 	push	word [bp + 0xe]
 	push	di
 	push	0x1
 	push	si
 	push	word [bp + 0xa]
-	call	0x0FEF:F028_352C
+	call	0x0FEF:XorRect
 	add	sp, 0xa

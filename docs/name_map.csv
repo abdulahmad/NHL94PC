@@ -1088,3 +1088,125 @@ seg026:036A,DrawMenuItemHilite,F026_036A,new,medium,one item in the highlight co
 seg026:03FE,MenuHitTest,F026_03FE,new,high,menu and item under a point,src/seg/seg026.asm
 seg027:0000,NullFar7,F027_0000,new,high,a lone retf,src/seg/seg027.asm
 seg027:0002,DrawTextCenteredInWindow,F027_0002,new,medium,x centred between the window's left and right edges,src/seg/seg027.asm
+seg028:000C,DrawLine,F028_000C,new,medium,Bresenham steps over the row table of the current canvas,src/seg/seg028.asm
+seg028:0048,SetCanvas,F028_0048,new,high,copies a 0x1E-byte canvas record into CurCanvas,src/seg/seg028.asm
+seg028:0064,SetClipRect,F028_0064,new,high,stores left/right/top/bottom into the CurCanvas clip fields,src/seg/seg028.asm
+seg028:008F,SetClipRectRegs,F028_008F,new,medium,"same as SetClipRect, arguments in registers",src/seg/seg028.asm
+seg028:00B4,ClearClipRect,F028_00B4,new,medium,fills the clip rectangle with colour 0,src/seg/seg028.asm
+seg028:00B9,ClearClipRectColor,F028_00B9,new,medium,fills the clip rectangle with the given colour,src/seg/seg028.asm
+seg028:00DE,FillRectClip,F028_00DE,new,medium,fills a rectangle clipped to the canvas,src/seg/seg028.asm
+seg028:0136,FillRect,F028_0136,new,medium,fills a rectangle without clipping,src/seg/seg028.asm
+seg028:01A6,UseCurrentPage,F028_01A6,new,medium,points CurCanvas at the page in g_74DC,src/seg/seg028.asm
+seg028:01C6,DrawText,F028_01C6,new,medium,draws a string with the 1-bpp font,src/seg/seg028.asm
+seg028:01E1,DrawTextAt,F028_01E1,new,medium,"DrawText entry taking x,y",src/seg/seg028.asm
+seg028:0366,GetPaletteFar,F028_0366,new,high,reads DAC registers through port 3C7h/3C9h into a far buffer,src/seg/seg028.asm
+seg028:039A,InitGraphics,F028_039A,new,medium,sets mode 13h and unchains it,src/seg/seg028.asm
+seg028:03EE,OpenResource,F028_03EE,new,low,calls the file loader F042_0134 with mode 0,src/seg/seg028.asm
+seg028:03F5,LoadResource,F028_03F5,new,low,calls the file loader F042_0134 with mode 1,src/seg/seg028.asm
+seg028:040C,LoadResourceHeader,F028_040C,new,low,"loader mode 1, returns the first dword of the data",src/seg/seg028.asm
+seg028:0414,OpenResourceHeader,F028_0414,new,low,"loader mode 0, returns the first dword of the data",src/seg/seg028.asm
+seg028:041B,ResourceHeaderMode,F028_041B,new,low,"loader with explicit mode, returns the first dword of the data",src/seg/seg028.asm
+seg028:0442,SetRemapTable,F028_0442,new,high,copies 256 bytes into the remap table,src/seg/seg028.asm
+seg028:045D,GetRemapTable,F028_045D,new,high,copies the remap table out,src/seg/seg028.asm
+seg028:0474,SetRemapRange,F028_0474,new,medium,writes a range of remap entries,src/seg/seg028.asm
+seg028:0492,PutBlock,F028_0492,new,medium,"raw block copy to the canvas, hotspot entry",src/seg/seg028.asm
+seg028:04B5,PutBlockAt,F028_04B5,new,medium,"PutBlock at x,y",src/seg/seg028.asm
+seg028:04D2,PutBlockBody,F028_04D2,new,medium,PutBlock body,src/seg/seg028.asm
+seg028:071A,DrawRaw,F028_071A,new,medium,"raw planar shape, hotspot entry",src/seg/seg028.asm
+seg028:073D,DrawRawAt,F028_073D,new,medium,"DrawRaw at x,y",src/seg/seg028.asm
+seg028:075A,DrawRawBody,F028_075A,new,medium,DrawRaw body,src/seg/seg028.asm
+seg028:085C,DrawRle,F028_085C,new,medium,"RLE shape (runs, literals, 0 ends plane), clipped",src/seg/seg028.asm
+seg028:087F,DrawRleAt,F028_087F,new,medium,"DrawRle at x,y",src/seg/seg028.asm
+seg028:089C,DrawRleBody,F028_089C,new,medium,DrawRle body,src/seg/seg028.asm
+seg028:0C22,DrawRleFast,F028_0C22,new,medium,RLE shape without clipping,src/seg/seg028.asm
+seg028:0C45,DrawRleFastAt,F028_0C45,new,medium,"DrawRleFast at x,y",src/seg/seg028.asm
+seg028:0C62,DrawRleFastHere,F028_0C62,new,medium,DrawRleFast at the shape's own +8/+0A position,src/seg/seg028.asm
+seg028:0C9A,DrawRleFastBody,F028_0C9A,new,medium,DrawRleFast body,src/seg/seg028.asm
+seg028:0E5E,DrawText2,F028_0E5E,new,low,second font text routine,src/seg/seg028.asm
+seg028:0E85,DrawChar,F028_0E85,new,low,single character for DrawText2,src/seg/seg028.asm
+seg028:1096,CopyPlaneA,F028_1096,new,low,CopyPlane entry,src/seg/seg028.asm
+seg028:109F,CopyPlaneB,F028_109F,new,low,CopyPlane entry,src/seg/seg028.asm
+seg028:10A7,CopyPlane,F028_10A7,new,medium,copies one VGA plane between buffers,src/seg/seg028.asm
+seg028:118C,UseOtherPage,F028_118C,new,medium,points CurCanvas at the page not shown,src/seg/seg028.asm
+seg028:11B1,GetPage,F028_11B1,new,medium,returns g_74DC,src/seg/seg028.asm
+seg028:11B5,GetOtherPage,F028_11B5,new,medium,returns the other page index,src/seg/seg028.asm
+seg028:11BA,GetBlock,F028_11BA,new,medium,"reads a block from the canvas, hotspot entry",src/seg/seg028.asm
+seg028:11DD,GetBlockAt,F028_11DD,new,medium,"GetBlock at x,y",src/seg/seg028.asm
+seg028:1200,GetBlockBody,F028_1200,new,medium,GetBlock body,src/seg/seg028.asm
+seg028:12DA,GetPixel,F028_12DA,new,medium,reads one pixel through the read map register,src/seg/seg028.asm
+seg028:1320,SetStartPage,F028_1320,new,medium,writes the CRTC start address for a page,src/seg/seg028.asm
+seg028:137E,UseOffscreenCanvas,F028_137E,new,medium,points CurCanvas at the off-screen buffer,src/seg/seg028.asm
+seg028:1390,DrawRawTrans,F028_1390,new,medium,"raw shape, colour FF transparent, hotspot entry",src/seg/seg028.asm
+seg028:13B0,DrawRawTransAt,F028_13B0,new,medium,"DrawRawTrans at x,y",src/seg/seg028.asm
+seg028:13CA,DrawRawTransBody,F028_13CA,new,medium,DrawRawTrans body,src/seg/seg028.asm
+seg028:1612,DrawRleFlip,F028_1612,new,medium,mirrored RLE shape,src/seg/seg028.asm
+seg028:1637,DrawRleFlipAt,F028_1637,new,medium,"DrawRleFlip at x,y",src/seg/seg028.asm
+seg028:1654,DrawRleFlipHere,F028_1654,new,medium,DrawRleFlip at the shape's own position,src/seg/seg028.asm
+seg028:1686,DrawRleFlipBody,F028_1686,new,medium,DrawRleFlip body,src/seg/seg028.asm
+seg028:1834,DrawRleTrans,F028_1834,new,medium,"RLE shape, run byte FF transparent, clipped",src/seg/seg028.asm
+seg028:1857,DrawRleTransAt,F028_1857,new,medium,"DrawRleTrans at x,y",src/seg/seg028.asm
+seg028:1874,DrawRleTransBody,F028_1874,new,medium,DrawRleTrans body,src/seg/seg028.asm
+seg028:1C4E,DrawRleTransFast,F028_1C4E,new,medium,transparent RLE without clipping,src/seg/seg028.asm
+seg028:1C71,DrawRleTransFastAt,F028_1C71,new,medium,"DrawRleTransFast at x,y",src/seg/seg028.asm
+seg028:1C8E,DrawRleTransFastHere,F028_1C8E,new,medium,DrawRleTransFast at the shape's own position,src/seg/seg028.asm
+seg028:1CBB,DrawRleTransFastBody,F028_1CBB,new,medium,DrawRleTransFast body,src/seg/seg028.asm
+seg028:1EC6,DrawRawTransRemap,F028_1EC6,new,medium,transparent raw shape through the remap table,src/seg/seg028.asm
+seg028:1EE9,DrawRawTransRemapAt,F028_1EE9,new,medium,"DrawRawTransRemap at x,y",src/seg/seg028.asm
+seg028:1F06,DrawRawTransRemapBody,F028_1F06,new,medium,DrawRawTransRemap body,src/seg/seg028.asm
+seg028:2160,DrawRleTransRemap,F028_2160,new,medium,"transparent RLE through the remap table, clipped",src/seg/seg028.asm
+seg028:2183,DrawRleTransRemapAt,F028_2183,new,medium,"DrawRleTransRemap at x,y",src/seg/seg028.asm
+seg028:21A0,DrawRleTransRemapHere,F028_21A0,new,medium,DrawRleTransRemap at the shape's own position,src/seg/seg028.asm
+seg028:21CD,DrawRleTransRemapBody,F028_21CD,new,medium,DrawRleTransRemap body,src/seg/seg028.asm
+seg028:245C,DrawRleFlipTrans,F028_245C,new,medium,mirrored transparent RLE,src/seg/seg028.asm
+seg028:2481,DrawRleFlipTransAt,F028_2481,new,medium,"DrawRleFlipTrans at x,y",src/seg/seg028.asm
+seg028:249E,DrawRleFlipTransBody,F028_249E,new,medium,DrawRleFlipTrans body,src/seg/seg028.asm
+seg028:28A8,DrawRleFlipTransRemap,F028_28A8,new,medium,mirrored transparent RLE through the remap table,src/seg/seg028.asm
+seg028:28D3,DrawRleFlipTransRemapAt,F028_28D3,new,medium,"DrawRleFlipTransRemap at x,y",src/seg/seg028.asm
+seg028:28F0,DrawRleFlipTransRemapBody,F028_28F0,new,medium,DrawRleFlipTransRemap body,src/seg/seg028.asm
+seg028:2D34,DrawRleFlipRemap,F028_2D34,new,medium,mirrored RLE through the remap table,src/seg/seg028.asm
+seg028:2D5F,DrawRleFlipRemapAt,F028_2D5F,new,medium,"DrawRleFlipRemap at x,y",src/seg/seg028.asm
+seg028:2D7C,DrawRleFlipRemapHere,F028_2D7C,new,medium,DrawRleFlipRemap at the shape's own position,src/seg/seg028.asm
+seg028:2DAE,DrawRleFlipRemapBody,F028_2DAE,new,medium,DrawRleFlipRemap body,src/seg/seg028.asm
+seg028:2F98,DrawRleTransRemapFast,F028_2F98,new,medium,transparent remapped RLE without clipping,src/seg/seg028.asm
+seg028:2FBB,DrawRleTransRemapFastAt,F028_2FBB,new,medium,"DrawRleTransRemapFast at x,y",src/seg/seg028.asm
+seg028:2FD8,DrawRleTransRemapFastBody,F028_2FD8,new,medium,DrawRleTransRemapFast body,src/seg/seg028.asm
+seg028:3406,WaitRetraceCount,F028_3406,new,medium,waits for N vertical retraces,src/seg/seg028.asm
+seg028:340B,WaitRetraceCountRegs,F028_340B,new,medium,"WaitRetraceCount, count in a register",src/seg/seg028.asm
+seg028:341E,WaitRetraceFar,F028_341E,new,medium,far jump to WaitRetrace,src/seg/seg028.asm
+seg028:3423,WaitTimerRetrace,F028_3423,new,medium,waits on the timer tick or the retrace bit of 3DAh,src/seg/seg028.asm
+seg028:344C,SetPaletteFar,F028_344C,new,high,writes DAC registers from a far buffer,src/seg/seg028.asm
+seg028:3482,WaitRetraceEnd,F028_3482,new,medium,polls 3DAh bit 3 until clear,src/seg/seg028.asm
+seg028:3499,WaitRetraceStart,F028_3499,new,medium,polls 3DAh bit 3 until set,src/seg/seg028.asm
+seg028:34A7,WaitRetrace,F028_34A7,new,medium,waits for the end then the start of a vertical retrace,src/seg/seg028.asm
+seg028:34B5,InRetrace,F028_34B5,new,medium,returns 3DAh bit 3,src/seg/seg028.asm
+seg028:34BE,PutPixel,F028_34BE,new,medium,writes one pixel through the map mask,src/seg/seg028.asm
+seg028:34CB,PutPixelAt,F028_34CB,new,medium,PutPixel entry,src/seg/seg028.asm
+seg028:352C,XorRect,F028_352C,new,medium,XORs a rectangle via RectSpanPlanes,src/seg/seg028.asm
+seg028:3584,XorRectRegs,F028_3584,new,medium,XorRect entry,src/seg/seg028.asm
+seg028:3602,CopyPageToPage,F028_3602,new,low,page copy using a plane jump table,src/seg/seg028.asm
+seg028:3704,CopyPageRect,F028_3704,new,low,rectangle page copy using a plane jump table,src/seg/seg028.asm
+seg028:3804,AllocCanvases,F028_3804,new,medium,allocates the page and off-screen buffers and fills the canvas records,src/seg/seg028.asm
+seg028:3A59,SetClipRectPlanes,F028_3A59,new,medium,sets the clip rectangle in plane units,src/seg/seg028.asm
+seg028:3A84,ClearScreenColor,F028_3A84,new,medium,fills video memory with a colour,src/seg/seg028.asm
+seg028:3AA8,DrawScaledColor,F028_3AA8,new,low,sets g_7664/g_7666 then enters DrawScaled,src/seg/seg028.asm
+seg028:3ABB,DrawScaled,F028_3ABB,new,low,pattern or scaled draw,src/seg/seg028.asm
+seg028:3C9A,DrawLineClipped,F028_3C9A,new,medium,line clipped to the canvas,src/seg/seg028.asm
+seg028:4130,FillSpanLinear,F028_4130,new,medium,fills a span in linear mode 13h,src/seg/seg028.asm
+seg028:4156,FillSpanVga,F028_4156,new,medium,fills a span in unchained mode with edge masks,src/seg/seg028.asm
+seg028:41D2,RectSpanPlanes,F028_41D2,new,low,splits a span into planar edges using the mask table at 77BDh,src/seg/seg028.asm
+seg028:4262,CopyPlanesRect,F028_4262,new,low,copies a rectangle plane by plane with the read map,src/seg/seg028.asm
+seg028:4346,DrawRawFast,F028_4346,new,low,"fast raw shape, hotspot entry",src/seg/seg028.asm
+seg028:4366,DrawRawFastAt,F028_4366,new,low,"DrawRawFast at x,y",src/seg/seg028.asm
+seg028:4380,DrawRawFastBody,F028_4380,new,low,DrawRawFast body,src/seg/seg028.asm
+seg028:4488,DrawRawTransFast,F028_4488,new,low,"fast transparent raw shape, hotspot entry",src/seg/seg028.asm
+seg028:44AB,DrawRawTransFastAt,F028_44AB,new,low,"DrawRawTransFast at x,y",src/seg/seg028.asm
+seg028:44C8,DrawRawTransFastBody,F028_44C8,new,low,DrawRawTransFast body,src/seg/seg028.asm
+seg028:45E8,UnchainVga,F028_45E8,new,high,clears chain-4 in the sequencer and CRTC,src/seg/seg028.asm
+seg028:4634,SetMaxScanLine,F028_4634,new,medium,writes CRTC register 9,src/seg/seg028.asm
+seg028:4647,SetMode13Linear,F028_4647,new,medium,"sets mode 13h, chained",src/seg/seg028.asm
+seg028:4665,SetModeX,F028_4665,new,medium,sets the unchained mode,src/seg/seg028.asm
+seg028:4682,XorSpan,F028_4682,new,medium,XORs one span,src/seg/seg028.asm
+seg028:46A8,SetCanvasClip,F028_46A8,new,medium,sets a canvas record's clip rectangle,src/seg/seg028.asm
+seg028:472A,RemapShapeBank,F028_472A,new,low,remaps every shape in a bank through a table,src/seg/seg028.asm
+seg028:4782,ConvertShapeBank,F028_4782,new,low,converts the shapes of a bank in place,src/seg/seg028.asm
+seg028:48D2,FillPolySpans,F028_48D2,new,medium,fills a list of spans,src/seg/seg028.asm

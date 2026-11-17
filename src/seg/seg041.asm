@@ -5,13 +5,13 @@
 F041_0002:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
-	call	0x0FEF:F028_01A6
+	call	0x0FEF:UseCurrentPage
 	push	word [bp + 0x4]
 	push	word [bp + 0x6]
 	les	bx, [bp + 0x8]
 	push	word [es:bx + 0x2]
 	push	word [es:bx]
-	call	0x0FEF:F028_11DD
+	call	0x0FEF:GetBlockAt
 	leave
 	ret	0x8
 	db	0x90
@@ -19,13 +19,13 @@ F041_0002:
 F041_0024:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
-	call	0x0FEF:F028_01A6
+	call	0x0FEF:UseCurrentPage
 	push	word [bp + 0x4]
 	push	word [bp + 0x6]
 	les	bx, [bp + 0x8]
 	push	word [es:bx + 0x2]
 	push	word [es:bx]
-	call	0x0FEF:F028_073D
+	call	0x0FEF:DrawRawAt
 	leave
 	ret	0x8
 	db	0x90
@@ -71,19 +71,19 @@ F041_0046:
 	push	word [es:bx + 0x7570]
 	mov	[bp - 0x5c], ax
 	mov	[bp - 0x5e], cx
-	call	0x0FEF:F028_46A8
+	call	0x0FEF:SetCanvasClip
 	add	sp, 0xc
 	call	far [g_6410]
 	push	word [bp - 0x4]
 	push	word [bp - 0x6]
-	call	0x0FEF:F028_0048
+	call	0x0FEF:SetCanvas
 	add	sp, 0x4
 	push	word [bp - 0x4]
 	push	word [bp - 0x6]
 	push	di
 	push	si
 	call	F041_0002
-	call	0x0FEF:F028_01A6
+	call	0x0FEF:UseCurrentPage
 	db	0x33, 0xC0		; xor ax, ax
 	cwd
 	call	0x15F1:F044_0002
@@ -92,7 +92,7 @@ F041_0046:
 	push	word [bp + 0x8]
 	push	si
 	push	di
-	call	0x0FEF:F028_0136
+	call	0x0FEF:FillRect
 	add	sp, 0xa
 	db	0x33, 0xC0		; xor ax, ax
 	mov	dx, 0x2a
@@ -130,7 +130,7 @@ F041_0046:
 	shl	bx, byte 0x2
 	push	word [es:bx + 0x7572]
 	push	word [es:bx + 0x7570]
-	call	0x0FEF:F028_46A8
+	call	0x0FEF:SetCanvasClip
 	add	sp, 0xc
 	mov	si, [bp + 0x4]
 .1:
@@ -169,7 +169,7 @@ F041_0046:
 	shl	bx, byte 0x2
 	push	word [es:bx + 0x7572]
 	push	word [es:bx + 0x7570]
-	call	0x0FEF:F028_46A8
+	call	0x0FEF:SetCanvasClip
 	add	sp, 0xc
 	call	far [g_640C]
 	push	word [bp - 0x4]
@@ -240,7 +240,7 @@ F041_0240:
 	push	ax
 	push	si
 	db	0x8B, 0xF8		; mov di, ax
-	call	0x0FEF:F028_0048
+	call	0x0FEF:SetCanvas
 	add	sp, 0x4
 	push	word 0xc8
 	push	word 0xbe
@@ -251,7 +251,7 @@ F041_0240:
 	shl	bx, byte 0x2
 	push	word [es:bx + 0x7572]
 	push	word [es:bx + 0x7570]
-	call	0x0FEF:F028_46A8
+	call	0x0FEF:SetCanvasClip
 	add	sp, 0xc
 	call	far [g_6410]
 	push	di
@@ -259,7 +259,7 @@ F041_0240:
 	push	0x0
 	push	word 0xbe
 	call	F041_0002
-	call	0x0FEF:F028_01A6
+	call	0x0FEF:UseCurrentPage
 	db	0x33, 0xC0		; xor ax, ax
 	cwd
 	call	0x15F1:F044_0002
@@ -268,7 +268,7 @@ F041_0240:
 	push	word 0x140
 	push	word 0xbe
 	push	0x0
-	call	0x0FEF:F028_0136
+	call	0x0FEF:FillRect
 	add	sp, 0xa
 	mov	ax, 0x3f3f
 	mov	dx, 0x3f

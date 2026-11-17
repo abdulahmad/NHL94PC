@@ -153,7 +153,7 @@ SaveVgaPlanes:
 	and	ax, 0xf0
 	out	dx, al
 	push	word 0xc7
-	call	0x0FEF:F028_1320
+	call	0x0FEF:SetStartPage
 	add	sp, 0x2
 	mov	bx, 0x7570
 	mov	es, [g_8B1C]
@@ -178,23 +178,23 @@ SaveVgaPlanes:
 	push	word 0x140
 	push	word 0xc8
 	push	word 0x140
-	call	0x0FEF:F028_3804
+	call	0x0FEF:AllocCanvases
 	add	sp, 0xe
 	push	word 0xc8
-	call	0x0FEF:F028_1320
+	call	0x0FEF:SetStartPage
 	add	sp, 0x2
-	call	0x0FEF:F028_01A6
+	call	0x0FEF:UseCurrentPage
 	push	0x0
-	call	0x0FEF:F028_00B4
+	call	0x0FEF:ClearClipRect
 	add	sp, 0x2
-	call	0x0FEF:F028_118C
+	call	0x0FEF:UseOtherPage
 	push	0x0
-	call	0x0FEF:F028_00B4
+	call	0x0FEF:ClearClipRect
 	add	sp, 0x2
-	call	0x0FEF:F028_11B1
+	call	0x0FEF:GetPage
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .2
-	call	0x0FEF:F028_10A7
+	call	0x0FEF:CopyPlane
 .2:
 	pop	si
 	leave
@@ -326,7 +326,7 @@ RestoreVgaPlanes:
 	mov	dx, 0x3cf
 	out	dx, al
 	push	word 0xa8
-	call	0x0FEF:F028_1320
+	call	0x0FEF:SetStartPage
 	add	sp, 0x2
 	mov	bx, 0x7570
 	mov	es, [g_8B1C]
@@ -351,12 +351,12 @@ RestoreVgaPlanes:
 	push	word 0x140
 	push	word 0xb0
 	push	word 0x148
-	call	0x0FEF:F028_3804
+	call	0x0FEF:AllocCanvases
 	add	sp, 0xe
-	call	0x0FEF:F028_11B1
+	call	0x0FEF:GetPage
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .2
-	call	0x0FEF:F028_10A7
+	call	0x0FEF:CopyPlane
 .2:
 	pop	si
 	leave

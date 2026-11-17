@@ -7,6 +7,6 @@ F033_0008		equ	0x8
 BuildPathFar		equ	0x3E
 FindFarMsg		equ	0x847
 FindUnlink		equ	0x99A
-F028_344C		equ	0x344C
+SetPaletteFar		equ	0x344C
 DGROUP		equ	0x45C9
 %include "seg/seg019.asm"

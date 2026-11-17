@@ -23,7 +23,7 @@ F044_0002:
 	push	ax
 	push	word 0x100
 	push	0x0
-	call	0x0FEF:F028_0366
+	call	0x0FEF:GetPaletteFar
 	add	sp, 0x8
 	lea	si, [bp - 0x30e]
 	mov	word [bp - 0x4], 0x0

@@ -24,14 +24,14 @@ F029_0004:
 	push	ax
 	push	si
 	push	word [bp + 0x6]
-	call	0x0FEF:F028_00DE
+	call	0x0FEF:FillRectClip
 	add	sp, 0xa
 	push	word [bp + 0xe]
 	push	0x1
 	push	word [bp - 0x2]
 	push	word [bp + 0xc]
 	push	word [bp + 0x6]
-	call	0x0FEF:F028_00DE
+	call	0x0FEF:FillRectClip
 	add	sp, 0xa
 .1:
 	db	0x0B, 0xFF		; or di, di
@@ -41,12 +41,12 @@ F029_0004:
 	push	0x1
 	push	si
 	push	word [bp + 0x6]
-	call	0x0FEF:F028_00DE
+	call	0x0FEF:FillRectClip
 	add	sp, 0xa
 	push	word [bp + 0xe]
 	push	di
 	push	0x1
 	push	si
 	push	word [bp + 0xa]
-	call	0x0FEF:F028_00DE
+	call	0x0FEF:FillRectClip
 	add	sp, 0xa

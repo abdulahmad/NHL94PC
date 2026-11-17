@@ -171,7 +171,7 @@ LoadTeamPalettes:
 	push	word 0xa8e
 	push	word 0x100
 	push	0x0
-	call	0x0FEF:F028_344C
+	call	0x0FEF:SetPaletteFar
 	add	sp, 0x8
 	pop	si
 	pop	di

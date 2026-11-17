@@ -64,10 +64,10 @@ DrawShadowTextBuffered:
 	push	ax
 	push	si
 	db	0x8B, 0xF8		; mov di, ax
-	call	0x0FEF:F028_0048
+	call	0x0FEF:SetCanvas
 	add	sp, 0x4
 	push	word 0xff
-	call	0x0FEF:F028_00B4
+	call	0x0FEF:ClearClipRect
 	add	sp, 0x2
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
@@ -85,7 +85,7 @@ DrawShadowTextBuffered:
 	mov	es, di
 	push	word [es:si + 0x2]
 	push	word [es:si]
-	call	0x0FEF:F028_13B0
+	call	0x0FEF:DrawRawTransAt
 	add	sp, 0x8
 	push	di
 	push	si

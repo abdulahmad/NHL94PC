@@ -405,7 +405,7 @@ F042_0134:
 	db	0x8B, 0xF8		; mov di, ax
 	mov	[bp - 0x82], bx
 	mov	[bp - 0x80], di
-	call	0x0FEF:F028_4782
+	call	0x0FEF:ConvertShapeBank
 	add	sp, 0x8
 	push	word [bp - 0x6]
 	push	si
@@ -415,7 +415,7 @@ F042_0134:
 	les	bx, [bp - 0x82]
 	push	word [es:bx + 0x2]
 	push	word [es:bx]
-	call	0x0FEF:F028_472A
+	call	0x0FEF:RemapShapeBank
 	add	sp, 0x6
 	mov	ax, [bp - 0x82]
 	db	0x8B, 0xD7		; mov dx, di

@@ -24,8 +24,8 @@ CopyByName		equ	0xD58
 _stricmp		equ	0xDCE
 __aFlshl		equ	0x1258
 ConPrint		equ	0x17CA
-F028_472A		equ	0x472A
-F028_4782		equ	0x4782
+RemapShapeBank		equ	0x472A
+ConvertShapeBank		equ	0x4782
 g_76DE		equ	0x76DE
 str_Qns		equ	0x7730
 str_Pns		equ	0x7735

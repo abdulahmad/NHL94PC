@@ -204,7 +204,7 @@ DrawFrameBox:
 	push	cx
 	db	0x8B, 0xF0		; mov si, ax
 	db	0x8B, 0xF9		; mov di, cx
-	call	0x0FEF:F028_0136
+	call	0x0FEF:FillRect
 	add	sp, 0xa
 	push	word [bp + 0xe]
 	push	si
@@ -213,7 +213,7 @@ DrawFrameBox:
 	push	ax
 	push	si
 	push	di
-	call	0x0FEF:F028_000C
+	call	0x0FEF:DrawLine
 	add	sp, 0xa
 	push	word [bp + 0xe]
 	mov	ax, [bp + 0xc]
@@ -222,7 +222,7 @@ DrawFrameBox:
 	push	di
 	push	si
 	push	di
-	call	0x0FEF:F028_000C
+	call	0x0FEF:DrawLine
 	add	sp, 0xa
 	push	word [bp + 0x12]
 	push	word [bp + 0xc]
@@ -230,7 +230,7 @@ DrawFrameBox:
 	lea	ax, [si + 0x1]
 	push	ax
 	push	word [bp + 0xa]
-	call	0x0FEF:F028_000C
+	call	0x0FEF:DrawLine
 	add	sp, 0xa
 	push	word [bp + 0x12]
 	push	word [bp + 0xc]
@@ -238,7 +238,7 @@ DrawFrameBox:
 	push	word [bp + 0xc]
 	lea	ax, [di + 0x1]
 	push	ax
-	call	0x0FEF:F028_000C
+	call	0x0FEF:DrawLine
 	add	sp, 0xa
 	pop	si
 	pop	di
@@ -273,7 +273,7 @@ DrawTextFar:
 	push	word [bp + 0x6]
 	lea	ax, [bp - 0x50]
 	push	ax
-	call	0x0FEF:F028_01C6
+	call	0x0FEF:DrawText
 	add	sp, 0x6
 	pop	si
 	pop	di
@@ -308,7 +308,7 @@ DrawTextFar2:
 	push	word [bp + 0x6]
 	lea	ax, [bp - 0x50]
 	push	ax
-	call	0x0FEF:F028_0E85
+	call	0x0FEF:DrawChar
 	add	sp, 0x6
 	pop	si
 	pop	di
@@ -358,7 +358,7 @@ DrawMenuItem:
 	push	di
 	mov	[bp - 0x4], si
 	mov	[bp - 0x2], es
-	call	0x0FEF:F028_0136
+	call	0x0FEF:FillRect
 	add	sp, 0xa
 	mov	ax, [bp + 0xe]
 	mov	dx, 0xff
@@ -422,7 +422,7 @@ DrawMenuItemHilite:
 	push	di
 	mov	[bp - 0x4], si
 	mov	[bp - 0x2], es
-	call	0x0FEF:F028_0136
+	call	0x0FEF:FillRect
 	add	sp, 0xa
 	mov	ax, [bp + 0xe]
 	mov	dx, 0xff

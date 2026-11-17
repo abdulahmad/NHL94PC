@@ -54,7 +54,7 @@ DrawBevelBox:
 	push	word [bp + 0xa]
 	push	si
 	push	di
-	call	0x0FEF:F028_0136
+	call	0x0FEF:FillRect
 	add	sp, 0xa
 	push	word [bp + 0x10]
 	db	0x8B, 0xC6		; mov ax, si
@@ -66,7 +66,7 @@ DrawBevelBox:
 	push	di
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x2], cx
-	call	0x0FEF:F028_000C
+	call	0x0FEF:DrawLine
 	add	sp, 0xa
 	push	word [bp + 0x10]
 	push	si
@@ -78,21 +78,21 @@ DrawBevelBox:
 	push	ax
 	db	0x8B, 0xF8		; mov di, ax
 	mov	[bp - 0x4], cx
-	call	0x0FEF:F028_000C
+	call	0x0FEF:DrawLine
 	add	sp, 0xa
 	push	word [bp + 0x12]
 	push	word [bp - 0x2]
 	push	word [bp - 0x4]
 	push	word [bp - 0x2]
 	push	di
-	call	0x0FEF:F028_000C
+	call	0x0FEF:DrawLine
 	add	sp, 0xa
 	push	word [bp + 0x12]
 	push	word [bp - 0x2]
 	push	word [bp - 0x4]
 	push	si
 	push	word [bp - 0x4]
-	call	0x0FEF:F028_000C
+	call	0x0FEF:DrawLine
 	add	sp, 0xa
 	pop	si
 	pop	di
@@ -105,7 +105,7 @@ NumberEntryDialog:
 	push	di
 	push	si
 	call	0x0BFE:InputShutdown
-	call	0x0FEF:F028_01A6
+	call	0x0FEF:UseCurrentPage
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	call	0x0D39:TextWidthFar
@@ -455,7 +455,7 @@ DrawListRow:
 	push	word [bp + 0xe]
 	push	word [bp + 0xc]
 	push	si
-	call	0x0FEF:F028_0136
+	call	0x0FEF:FillRect
 	add	sp, 0xa
 	push	word [bp + 0x14]
 	push	di
@@ -551,7 +551,7 @@ ListDialog:
 	enter	0x32, 0x0
 	push	di
 	push	si
-	call	0x0FEF:F028_01A6
+	call	0x0FEF:UseCurrentPage
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[bp - 0x6], ax
 	mov	[bp - 0x4], ax
@@ -801,13 +801,13 @@ ListDialog:
 	push	ax
 	push	word [bp - 0xa]
 	push	word [bp - 0xc]
-	call	0x0FEF:F028_11DD
+	call	0x0FEF:GetBlockAt
 	add	sp, 0x8
 	push	word [bp - 0x1a]
 	push	word [bp - 0x16]
 	push	word [0xae9a]
 	push	word [0xae98]
-	call	0x0FEF:F028_1857
+	call	0x0FEF:DrawRleTransAt
 	add	sp, 0x8
 	call	0x0F99:FlushInputEvents
 	mov	word [bp - 0x14], 0x0
@@ -846,7 +846,7 @@ ListDialog:
 	push	word [bp - 0x16]
 	push	word [bp - 0xa]
 	push	word [bp - 0xc]
-	call	0x0FEF:F028_04B5
+	call	0x0FEF:PutBlockAt
 	add	sp, 0x8
 	jmp	near .25
 	db	0x90
@@ -855,7 +855,7 @@ ListDialog:
 	push	word [bp - 0x16]
 	push	word [bp - 0xa]
 	push	word [bp - 0xc]
-	call	0x0FEF:F028_04B5
+	call	0x0FEF:PutBlockAt
 	add	sp, 0x8
 	test	byte [bp - 0x32], 0x2
 	jnz	short .17
@@ -990,13 +990,13 @@ ListDialog:
 	push	word [bp - 0x8]
 	push	word [bp - 0xa]
 	push	word [bp - 0xc]
-	call	0x0FEF:F028_11DD
+	call	0x0FEF:GetBlockAt
 	add	sp, 0x8
 	push	word [bp - 0xe]
 	push	word [bp - 0x8]
 	push	word [0xae9a]
 	push	word [0xae98]
-	call	0x0FEF:F028_1857
+	call	0x0FEF:DrawRleTransAt
 	add	sp, 0x8
 	mov	ax, [bp - 0x8]
 	mov	[bp - 0x16], ax
@@ -1011,7 +1011,7 @@ ListDialog:
 	push	word [bp - 0x16]
 	push	word [bp - 0xa]
 	push	word [bp - 0xc]
-	call	0x0FEF:F028_04B5
+	call	0x0FEF:PutBlockAt
 	add	sp, 0x8
 	push	word [bp - 0xa]
 	push	word [bp - 0xc]
@@ -1554,7 +1554,7 @@ SaveUnderBox:
 	push	ax
 	push	word [0x9fc]
 	push	word [0x9fa]
-	call	0x0FEF:F028_11DD
+	call	0x0FEF:GetBlockAt
 	add	sp, 0x8
 .1:
 	pop	si
@@ -1570,7 +1570,7 @@ RestoreUnderBox:
 	push	word [g_B2CC]
 	push	word [g_09FC]
 	push	word [g_09FA]
-	call	0x0FEF:F028_04B5
+	call	0x0FEF:PutBlockAt
 	add	sp, 0x8
 	push	word [g_09FC]
 	push	word [g_09FA]
@@ -1634,7 +1634,7 @@ MessageBox:
 	push	di
 	push	si
 	mov	di, [bp + 0xe]
-	call	0x0FEF:F028_01A6
+	call	0x0FEF:UseCurrentPage
 	push	cs
 	call	RestoreUnderBox
 	db	0x2B, 0xC0		; sub ax, ax
@@ -1958,13 +1958,13 @@ MessageBoxLoop:
 	push	word [bp - 0xc]
 	push	word [bp - 0x16]
 	push	word [bp - 0x18]
-	call	0x0FEF:F028_11DD
+	call	0x0FEF:GetBlockAt
 	add	sp, 0x8
 	push	word [bp - 0xe]
 	push	word [bp - 0xc]
 	push	word [0xae9a]
 	push	word [0xae98]
-	call	0x0FEF:F028_1857
+	call	0x0FEF:DrawRleTransAt
 	add	sp, 0x8
 .1:
 	push	0x1
@@ -2004,7 +2004,7 @@ MessageBoxLoop:
 	push	si
 	push	word [bp - 0x16]
 	push	word [bp - 0x18]
-	call	0x0FEF:F028_04B5
+	call	0x0FEF:PutBlockAt
 	add	sp, 0x8
 	cmp	word [bp + 0xe], 0x0
 	jng	short .6
@@ -2046,13 +2046,13 @@ MessageBoxLoop:
 	push	si
 	push	word [bp - 0x16]
 	push	word [bp - 0x18]
-	call	0x0FEF:F028_11DD
+	call	0x0FEF:GetBlockAt
 	add	sp, 0x8
 	push	di
 	push	si
 	push	word [0xae9a]
 	push	word [0xae98]
-	call	0x0FEF:F028_1857
+	call	0x0FEF:DrawRleTransAt
 	add	sp, 0x8
 .10:
 	cmp	[bp - 0x8], si
@@ -2064,19 +2064,19 @@ MessageBoxLoop:
 	push	si
 	push	word [bp - 0x16]
 	push	word [bp - 0x18]
-	call	0x0FEF:F028_04B5
+	call	0x0FEF:PutBlockAt
 	add	sp, 0x8
 	push	word [bp - 0xa]
 	push	word [bp - 0x8]
 	push	word [bp - 0x16]
 	push	word [bp - 0x18]
-	call	0x0FEF:F028_11DD
+	call	0x0FEF:GetBlockAt
 	add	sp, 0x8
 	push	word [bp - 0xa]
 	push	word [bp - 0x8]
 	push	word [0xae9a]
 	push	word [0xae98]
-	call	0x0FEF:F028_1857
+	call	0x0FEF:DrawRleTransAt
 	add	sp, 0x8
 	mov	si, [bp - 0x8]
 	mov	di, [bp - 0xa]
@@ -2106,7 +2106,7 @@ MessageBoxLoop:
 	push	ax
 	push	si
 	db	0x8B, 0xF8		; mov di, ax
-	call	0x0FEF:F028_04B5
+	call	0x0FEF:PutBlockAt
 	add	sp, 0x8
 	call	0x0F99:FlushInputEvents
 	push	word [bp - 0xa]

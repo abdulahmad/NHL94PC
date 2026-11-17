@@ -326,7 +326,7 @@ SaveGameNameDialog:
 	mov	cx, 0x9
 	rep	movsw
 	pop	ds
-	call	0x0FEF:F028_01A6
+	call	0x0FEF:UseCurrentPage
 	lea	ax, [bp - 0x24]
 	push	ax
 	lea	cx, [bp - 0x22]
@@ -339,18 +339,18 @@ SaveGameNameDialog:
 	mov	[bp - 0x8], ax
 	mov	ax, [bp - 0x24]
 	mov	[bp - 0xe], ax
-	call	0x0FEF:F028_01A6
+	call	0x0FEF:UseCurrentPage
 	push	word [bp - 0x24]
 	push	word [bp - 0x22]
 	push	word [bp - 0xa]
 	push	word [bp - 0xc]
-	call	0x0FEF:F028_11DD
+	call	0x0FEF:GetBlockAt
 	add	sp, 0x8
 	push	word [bp - 0x24]
 	push	word [bp - 0x22]
 	push	word [0xae9a]
 	push	word [0xae98]
-	call	0x0FEF:F028_1C71
+	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 	push	word 0x3701
 	push	word 0xbd0
@@ -420,13 +420,13 @@ SaveGameNameDialog:
 	push	cx
 	push	word [bp - 0x4]
 	push	word [bp - 0x6]
-	call	0x0FEF:F028_11DD
+	call	0x0FEF:GetBlockAt
 	add	sp, 0x8
 	push	word [bp - 0x2a]
 	push	word [bp - 0x26]
 	push	word [bp - 0x5a]
 	push	word [bp - 0x5c]
-	call	0x0FEF:F028_0C45
+	call	0x0FEF:DrawRleFastAt
 	add	sp, 0x8
 	mov	ax, 0x11
 	mov	dx, 0x5
@@ -473,7 +473,7 @@ SaveGameNameDialog:
 	push	word [bp - 0x22]
 	push	word [bp - 0xa]
 	push	word [bp - 0xc]
-	call	0x0FEF:F028_073D
+	call	0x0FEF:DrawRawAt
 	add	sp, 0x8
 .1:
 	mov	bx, [bp + 0x6]
@@ -508,7 +508,7 @@ SaveGameNameDialog:
 	push	ax
 	push	word [bp - 0x4]
 	push	word [bp - 0x6]
-	call	0x0FEF:F028_073D
+	call	0x0FEF:DrawRawAt
 	add	sp, 0x8
 	push	word [bp - 0x4]
 	push	word [bp - 0x6]
@@ -564,13 +564,13 @@ SaveGameNameDialog:
 	push	cx
 	push	word [bp - 0x4]
 	push	word [bp - 0x6]
-	call	0x0FEF:F028_11DD
+	call	0x0FEF:GetBlockAt
 	add	sp, 0x8
 	push	word [bp - 0x2a]
 	push	word [bp - 0x26]
 	push	word [bp - 0x5a]
 	push	word [bp - 0x5c]
-	call	0x0FEF:F028_1C71
+	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 	les	bx, [bp - 0x5c]
 	mov	ax, [es:bx + 0x4]
@@ -593,7 +593,7 @@ SaveGameNameDialog:
 	push	word [bp - 0x2a]
 	push	word [bp - 0x26]
 	push	si
-	call	0x0FEF:F028_0E85
+	call	0x0FEF:DrawChar
 	add	sp, 0x6
 	push	0x6c
 	push	word 0xbf
@@ -604,13 +604,13 @@ SaveGameNameDialog:
 	push	word 0xc0
 	push	word [bp - 0xa]
 	push	word [bp - 0xc]
-	call	0x0FEF:F028_11DD
+	call	0x0FEF:GetBlockAt
 	add	sp, 0x8
 	push	0x6c
 	push	word 0xc0
 	push	word [0xae9a]
 	push	word [0xae98]
-	call	0x0FEF:F028_1C71
+	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 	mov	ax, 0xc0
 	mov	[bp - 0x8], ax
@@ -650,19 +650,19 @@ SaveGameNameDialog:
 	push	word [bp - 0x22]
 	push	word [bp - 0xa]
 	push	word [bp - 0xc]
-	call	0x0FEF:F028_04B5
+	call	0x0FEF:PutBlockAt
 	add	sp, 0x8
 	push	word [bp - 0xe]
 	push	word [bp - 0x8]
 	push	word [bp - 0xa]
 	push	word [bp - 0xc]
-	call	0x0FEF:F028_11DD
+	call	0x0FEF:GetBlockAt
 	add	sp, 0x8
 	push	word [bp - 0xe]
 	push	word [bp - 0x8]
 	push	word [0xae9a]
 	push	word [0xae98]
-	call	0x0FEF:F028_1857
+	call	0x0FEF:DrawRleTransAt
 	add	sp, 0x8
 	mov	ax, [bp - 0x8]
 	mov	[bp - 0x22], ax
@@ -687,7 +687,7 @@ SaveGameNameDialog:
 	push	word [bp - 0x22]
 	push	word [bp - 0xa]
 	push	word [bp - 0xc]
-	call	0x0FEF:F028_04B5
+	call	0x0FEF:PutBlockAt
 	add	sp, 0x8
 	mov	ax, 0x50
 	les	bx, [bp - 0x5c]
@@ -706,7 +706,7 @@ SaveGameNameDialog:
 	push	cx
 	push	word [bp - 0x4]
 	push	word [bp - 0x6]
-	call	0x0FEF:F028_073D
+	call	0x0FEF:DrawRawAt
 	add	sp, 0x8
 	push	word [bp - 0x4]
 	push	word [bp - 0x6]
@@ -755,7 +755,7 @@ SaveGameNameDialog:
 	push	word [bp - 0x22]
 	push	word [bp - 0xa]
 	push	word [bp - 0xc]
-	call	0x0FEF:F028_04B5
+	call	0x0FEF:PutBlockAt
 	add	sp, 0x8
 	mov	ax, 0x50
 	les	bx, [bp - 0x5c]
@@ -774,7 +774,7 @@ SaveGameNameDialog:
 	push	cx
 	push	word [bp - 0x4]
 	push	word [bp - 0x6]
-	call	0x0FEF:F028_073D
+	call	0x0FEF:DrawRawAt
 	add	sp, 0x8
 	push	word [bp - 0x4]
 	push	word [bp - 0x6]
@@ -806,7 +806,7 @@ SaveGameNameDialog:
 	push	word [bp - 0x22]
 	push	word [bp - 0xa]
 	push	word [bp - 0xc]
-	call	0x0FEF:F028_04B5
+	call	0x0FEF:PutBlockAt
 	add	sp, 0x8
 	les	bx, [bp - 0x5c]
 	mov	ax, [es:bx + 0x2]
@@ -822,7 +822,7 @@ SaveGameNameDialog:
 	push	ax
 	push	word [bp - 0x4]
 	push	word [bp - 0x6]
-	call	0x0FEF:F028_073D
+	call	0x0FEF:DrawRawAt
 	add	sp, 0x8
 	push	word [bp - 0x4]
 	push	word [bp - 0x6]
@@ -878,13 +878,13 @@ SaveGameNameDialog:
 	push	cx
 	push	word [bp - 0x4]
 	push	word [bp - 0x6]
-	call	0x0FEF:F028_11DD
+	call	0x0FEF:GetBlockAt
 	add	sp, 0x8
 	push	word [bp - 0x2a]
 	push	word [bp - 0x26]
 	push	word [bp - 0x5a]
 	push	word [bp - 0x5c]
-	call	0x0FEF:F028_0C45
+	call	0x0FEF:DrawRleFastAt
 	add	sp, 0x8
 	les	bx, [bp - 0x5c]
 	mov	ax, [es:bx + 0x4]
@@ -895,7 +895,7 @@ SaveGameNameDialog:
 	push	word [bp - 0x22]
 	push	word [bp - 0xa]
 	push	word [bp - 0xc]
-	call	0x0FEF:F028_11DD
+	call	0x0FEF:GetBlockAt
 	add	sp, 0x8
 .18:
 	mov	word [bp - 0x28], 0x0
@@ -958,7 +958,7 @@ SaveGameNameDialog:
 	push	word [bp - 0x22]
 	push	word [bp - 0xa]
 	push	word [bp - 0xc]
-	call	0x0FEF:F028_04B5
+	call	0x0FEF:PutBlockAt
 	add	sp, 0x8
 	mov	ax, 0x50
 	les	bx, [bp - 0x5c]
@@ -977,7 +977,7 @@ SaveGameNameDialog:
 	push	cx
 	push	word [bp - 0x4]
 	push	word [bp - 0x6]
-	call	0x0FEF:F028_073D
+	call	0x0FEF:DrawRawAt
 	add	sp, 0x8
 	push	word [bp - 0x4]
 	push	word [bp - 0x6]

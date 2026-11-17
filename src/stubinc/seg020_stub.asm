@@ -3,18 +3,18 @@
 	bits	16
 	org	0x0
 TextWidthFar		equ	0x2
-F028_000C		equ	0xC
+DrawLine		equ	0xC
 GetInputEvent		equ	0xE
 InputInit		equ	0xE
 SetTextColors		equ	0x24
 F034_0030		equ	0x30
 InputShutdown		equ	0x4C
 FlushInputEvents		equ	0x66
-F028_0136		equ	0x136
+FillRect		equ	0x136
 DrawShadowText		equ	0x166
-F028_01A6		equ	0x1A6
+UseCurrentPage		equ	0x1A6
 DrawTextFar		equ	0x246
-F028_04B5		equ	0x4B5
+PutBlockAt		equ	0x4B5
 FindUnlink		equ	0x99A
 g_09EE		equ	0x9EE
 g_09F0		equ	0x9F0
@@ -25,10 +25,10 @@ g_09FA		equ	0x9FA
 g_09FC		equ	0x9FC
 JumpAhead		equ	0xCE2
 __aFldiv		equ	0x118C
-F028_11DD		equ	0x11DD
+GetBlockAt		equ	0x11DD
 __aFlmul		equ	0x1226
 KeyDown		equ	0x16C1
-F028_1857		equ	0x1857
+DrawRleTransAt		equ	0x1857
 MouseMove		equ	0x1B03
 MouseRead		equ	0x1B34
 OvlThunk102		equ	0x23EB
