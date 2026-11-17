@@ -4,7 +4,7 @@
 	leave
 	retf
 
-F023_0008:
+FitNameToWidth:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	di

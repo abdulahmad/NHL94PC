@@ -5,7 +5,7 @@
 F034_0013		equ	0x13
 F034_0030		equ	0x30
 BufPtr		equ	0x2BC
-F022_03E4		equ	0x3E4
+FatalError		equ	0x3E4
 FarToLinear		equ	0x92E
 LinearToFarRegs		equ	0x959
 __aFlmul		equ	0x1226

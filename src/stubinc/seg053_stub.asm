@@ -5,4 +5,5 @@
 CopyFar		equ	0x276
 FarToLinear		equ	0x92E
 FillFar		equ	0x1E56
+DGROUP		equ	0x45C9
 %include "seg/seg053.asm"

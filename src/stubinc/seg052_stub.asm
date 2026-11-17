@@ -5,6 +5,7 @@
 F053_0002		equ	0x2
 F034_0092		equ	0x92
 EmsMapFrame		equ	0x192
-F022_03E4		equ	0x3E4
+FatalError		equ	0x3E4
 LinearToFarRegs		equ	0x959
+DGROUP		equ	0x45C9
 %include "seg/seg052.asm"

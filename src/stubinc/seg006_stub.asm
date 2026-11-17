@@ -17,6 +17,7 @@ KeyJump		equ	0x16EB
 MouseMove		equ	0x1B03
 MouseRead		equ	0x1B34
 g_AECE		equ	0xAECE
+g_AED0		equ	0xAED0
 g_AFD0		equ	0xAFD0
 g_AFD2		equ	0xAFD2
 %include "seg/seg006.asm"

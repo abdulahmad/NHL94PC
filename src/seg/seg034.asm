@@ -136,7 +136,7 @@ F034_00DB:
 	jnz	short .2
 	mov	ax, str_ThisProgramRequiresAn80286
 	push	ax
-	call	0x0F4A:F022_03E4
+	call	0x0F4A:FatalError
 .2:
 	call	0x06E1:MakeChain
 	add	sp, 0xa

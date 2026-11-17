@@ -11,7 +11,7 @@ F032_007C		equ	0x7C
 F033_0082		equ	0x82
 CopyFar		equ	0x276
 InsertRec		equ	0x2EC
-F022_03E4		equ	0x3E4
+FatalError		equ	0x3E4
 FindFar		equ	0x83E
 FindUnlink		equ	0x99A
 UnlinkRec		equ	0x9B2

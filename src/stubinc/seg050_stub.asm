@@ -27,4 +27,5 @@ __aFlshl		equ	0x1258
 _fmemcpy		equ	0x12B8
 _fmemset		equ	0x1456
 RawBase		equ	0x1532
+DGROUP		equ	0x45C9
 %include "seg/seg050.asm"

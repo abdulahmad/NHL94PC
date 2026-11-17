@@ -7,7 +7,7 @@ F053_0002:
 	push	di
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	les	bx, [bp + 0x6]
 	mov	[bp - 0x16], bx

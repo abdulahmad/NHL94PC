@@ -2,8 +2,8 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
+DrawTextCenteredInWindow		equ	0x2
 F044_0002		equ	0x2
-F027_0002		equ	0x2
 F029_0004		equ	0x4
 F035_000C		equ	0xC
 F028_0048		equ	0x48
@@ -11,7 +11,7 @@ F028_0136		equ	0x136
 F038_019C		equ	0x19C
 F028_01A6		equ	0x1A6
 WaitAdd		equ	0x250
-F022_03E2		equ	0x3E2
+NullFar5		equ	0x3E2
 F028_073D		equ	0x73D
 SaveCharTab		equ	0xC7A
 LoadCharTab		equ	0xC9C

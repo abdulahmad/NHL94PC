@@ -7,7 +7,7 @@ F013_0000:
 	leave
 	retf
 
-F013_0006:
+SaveGame:
 	enter	0x2a, 0x0
 	push	di
 	push	si
@@ -18,7 +18,7 @@ F013_0006:
 	lea	ax, [bp - 0x26]
 	push	ax
 	push	cs
-	call	F013_02E2
+	call	SaveGameNameDialog
 	add	sp, 0x2
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .2
@@ -45,7 +45,7 @@ F013_0006:
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .3
 	push	word 0x902
-	call	0x0F4A:F022_03E4
+	call	0x0F4A:FatalError
 	add	sp, 0x2
 .3:
 	push	0x62
@@ -59,7 +59,7 @@ F013_0006:
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .4
 	push	word 0x905
-	call	0x0F4A:F022_03E4
+	call	0x0F4A:FatalError
 	add	sp, 0x2
 .4:
 	push	0x0
@@ -83,7 +83,7 @@ F013_0006:
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .5
 	push	word 0x920
-	call	0x0F4A:F022_03E4
+	call	0x0F4A:FatalError
 	add	sp, 0x2
 .5:
 	mov	ax, [bp - 0x2]
@@ -102,7 +102,7 @@ F013_0006:
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .6
 	push	word 0x923
-	call	0x0F4A:F022_03E4
+	call	0x0F4A:FatalError
 	add	sp, 0x2
 .6:
 	push	0xc
@@ -116,7 +116,7 @@ F013_0006:
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .7
 	push	word 0x926
-	call	0x0F4A:F022_03E4
+	call	0x0F4A:FatalError
 	add	sp, 0x2
 .7:
 	push	0xc
@@ -130,7 +130,7 @@ F013_0006:
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .8
 	push	word 0x929
-	call	0x0F4A:F022_03E4
+	call	0x0F4A:FatalError
 	add	sp, 0x2
 .8:
 	push	word [bp - 0x6]
@@ -154,7 +154,7 @@ F013_0006:
 	push	0x5
 	push	0x11
 	push	0xb
-	call	0x0D90:F020_0A3C
+	call	0x0D90:SetDialogColors
 	add	sp, 0xa
 	mov	ax, 0xe53
 	mov	cx, 0x3701
@@ -212,7 +212,7 @@ F013_0006:
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .10
 	push	word 0x937
-	call	0x0F4A:F022_03E4
+	call	0x0F4A:FatalError
 	add	sp, 0x2
 .10:
 	cmp	word [g_01B4], 0x2
@@ -228,7 +228,7 @@ F013_0006:
 	push	strict word 0x2b
 	push	-0x1
 	push	-0x1
-	call	0x0D90:F020_0FC8
+	call	0x0D90:MessageBox
 	add	sp, 0x16
 	mov	es, [g_8B16]
 	or	byte [es:0x119], 0x80
@@ -253,7 +253,7 @@ F013_0006:
 	push	strict word 0x33
 	push	-0x1
 	push	-0x1
-	call	0x0D90:F020_0FC8
+	call	0x0D90:MessageBox
 	add	sp, 0x16
 	mov	es, [g_8B18]
 	or	byte [es:0xb7], 0x80
@@ -285,18 +285,18 @@ F013_0006:
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .13
 	push	word 0x94c
-	call	0x0F4A:F022_03E4
+	call	0x0F4A:FatalError
 	add	sp, 0x2
 .13:
 	call	0x03A3:L1A84
-	call	0x0D90:F020_0F22
+	call	0x0D90:RestoreUnderBox
 	pop	si
 	pop	di
 	leave
 	retf
 	db	0x90
 
-F013_02E2:
+SaveGameNameDialog:
 	enter	0x62, 0x0
 	push	di
 	push	si
@@ -599,7 +599,7 @@ F013_02E2:
 	push	word 0xbf
 	call	0x03A3:MouseMove
 	add	sp, 0x4
-	call	0x0F99:F025_0066
+	call	0x0F99:FlushInputEvents
 	push	0x6c
 	push	word 0xc0
 	push	word [bp - 0xa]
@@ -622,7 +622,7 @@ F013_02E2:
 .6:
 	mov	word [bp - 0x62], 0x0
 .7:
-	call	0x0F99:F025_000E
+	call	0x0F99:GetInputEvent
 	mov	[bp - 0x2], ax
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .8

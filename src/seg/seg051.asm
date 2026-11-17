@@ -16,7 +16,7 @@ F051_000E:
 	push	di
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	push	0x0
 	push	word [bp + 0x6]
@@ -110,7 +110,7 @@ F051_000E:
 
 F051_0110:
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	pop	ds
 	retf
@@ -119,7 +119,7 @@ F051_0118:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
@@ -133,7 +133,7 @@ F051_0130:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	push	word [bp + 0xa]
 	push	word [bp + 0x8]
@@ -149,7 +149,7 @@ F051_014E:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	push	word [bp + 0xa]
 	push	word [bp + 0x8]
@@ -169,7 +169,7 @@ F051_0178:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
@@ -183,7 +183,7 @@ F051_0190:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
@@ -197,7 +197,7 @@ F051_01A8:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
@@ -211,7 +211,7 @@ F051_01C0:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	push	word [bp + 0x8]
 	mov	al, [bp + 0x6]
@@ -227,7 +227,7 @@ F051_01DC:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	push	word [bp + 0x8]
 	push	word [bp + 0xc]
@@ -243,42 +243,42 @@ F051_01DC:
 
 F051_01FE:
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	pop	ds
 	retf
 
 F051_0206:
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	pop	ds
 	retf
 
 F051_020E:
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	pop	ds
 	retf
 
 F051_0216:
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	pop	ds
 	retf
 
 F051_021E:
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	pop	ds
 	retf
 
 F051_0226:
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	pop	ds
 	retf
@@ -288,7 +288,7 @@ F051_022E:
 	db	0x8B, 0xEC		; mov bp, sp
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	al, [0x84c6]
 	cmp	[bp + 0x6], al
@@ -323,7 +323,7 @@ F051_0274:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	ax, [bp + 0x8]
 	mov	dx, [bp + 0xa]
@@ -337,7 +337,7 @@ F051_028C:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	push	word [bp + 0xa]
 	push	word [bp + 0x8]
@@ -351,7 +351,7 @@ F051_02A6:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	test	byte [bp + 0xe], 0x80
 	jz	short .1
@@ -404,7 +404,7 @@ F051_0324:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]

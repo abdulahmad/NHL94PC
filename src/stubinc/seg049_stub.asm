@@ -14,4 +14,5 @@ __aFldiv		equ	0x118C
 __aFlshl		equ	0x1258
 F050_1434		equ	0x1434
 F050_144A		equ	0x144A
+DGROUP		equ	0x45C9
 %include "seg/seg049.asm"

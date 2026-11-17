@@ -46,6 +46,10 @@ OpenStudioSpeech		equ	0x2322
 OpenPlayByPlaySpeech		equ	0x2354
 g_4A52		equ	0x4A52
 g_4A54		equ	0x4A54
+g_B2CA		equ	0xB2CA
+g_B2CC		equ	0xB2CC
+g_B2D6		equ	0xB2D6
+g_B2D8		equ	0xB2D8
 g_B2DA		equ	0xB2DA
 g_B2DC		equ	0xB2DC
 g_B2DE		equ	0xB2DE
@@ -54,4 +58,12 @@ g_B2E2		equ	0xB2E2
 g_B2E7		equ	0xB2E7
 g_B2E8		equ	0xB2E8
 g_B2E9		equ	0xB2E9
+g_B2EE		equ	0xB2EE
+g_B2F0		equ	0xB2F0
+g_B2FA		equ	0xB2FA
+g_B2FC		equ	0xB2FC
+g_B31E		equ	0xB31E
+g_B320		equ	0xB320
+g_B336		equ	0xB336
+g_B338		equ	0xB338
 %include "seg/seg021.asm"

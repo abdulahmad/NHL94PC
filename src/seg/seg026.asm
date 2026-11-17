@@ -6,7 +6,7 @@
 	mov	[g_0514], ax
 	retf
 
-F026_000E:
+DrawMenuBar:
 	enter	0x8, 0x0
 	push	di
 	push	si
@@ -30,7 +30,7 @@ F026_000E:
 	push	0x0
 	push	word [es:si]
 	push	cs
-	call	F026_01BA
+	call	DrawFrameBox
 	add	sp, 0xe
 	mov	es, [bp - 0x2]
 	push	word [es:si + 0xa]
@@ -61,14 +61,14 @@ F026_000E:
 	inc	ax
 	push	ax
 	push	cs
-	call	F026_01BA
+	call	DrawFrameBox
 	add	sp, 0xe
 	pop	si
 	pop	di
 	leave
 	retf
 
-F026_00A4:
+DrawMenuPanel:
 	enter	0x10, 0x0
 	push	di
 	push	si
@@ -97,7 +97,7 @@ F026_00A4:
 	add	ax, [bp + 0xc]
 	push	ax
 	push	cs
-	call	F026_01BA
+	call	DrawFrameBox
 	add	sp, 0xe
 	les	bx, [bp - 0x10]
 	mov	ax, [es:bx + 0xe]
@@ -182,7 +182,7 @@ F026_00A4:
 	leave
 	retf
 
-F026_01BA:
+DrawFrameBox:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	di
@@ -263,7 +263,7 @@ DrawTextFar:
 	cmp	byte [bx + si], 0x0
 	jnz	short .1
 .2:
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	db	0x8B, 0xDF		; mov bx, di
 	mov	es, [bp + 0xc]
@@ -298,7 +298,7 @@ DrawTextFar2:
 	cmp	byte [bx + si], 0x0
 	jnz	short .1
 .2:
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	db	0x8B, 0xDF		; mov bx, di
 	mov	es, [bp + 0xc]
@@ -315,7 +315,7 @@ DrawTextFar2:
 	leave
 	retf
 
-F026_02D6:
+DrawMenuItem:
 	enter	0x4, 0x0
 	push	di
 	push	si
@@ -379,7 +379,7 @@ F026_02D6:
 	leave
 	retf
 
-F026_036A:
+DrawMenuItemHilite:
 	enter	0x4, 0x0
 	push	di
 	push	si
@@ -443,7 +443,7 @@ F026_036A:
 	leave
 	retf
 
-F026_03FE:
+MenuHitTest:
 	enter	0x10, 0x0
 	push	di
 	push	si

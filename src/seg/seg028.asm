@@ -7266,11 +7266,11 @@ F028_3804:
 .15:
 	mov	ax, 0x7586
 	push	ax
-	call	0x0F4A:F022_03E4
+	call	0x0F4A:FatalError
 .16:
 	mov	ax, 0x75a7
 	push	ax
-	call	0x0F4A:F022_03E4
+	call	0x0F4A:FatalError
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds

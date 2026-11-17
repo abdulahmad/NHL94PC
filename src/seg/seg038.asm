@@ -166,7 +166,7 @@ F038_0006:
 	jmp	short .13
 .12:
 	push	word 0x7416
-	call	0x0F4A:F022_03E4
+	call	0x0F4A:FatalError
 	pop	bx
 .13:
 	pop	si
@@ -374,7 +374,7 @@ F038_019C:
 	jmp	short .13
 .12:
 	push	word 0x7559
-	call	0x0F4A:F022_03E4
+	call	0x0F4A:FatalError
 	pop	bx
 .13:
 	pop	si

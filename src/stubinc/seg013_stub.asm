@@ -4,14 +4,14 @@
 	org	0x0
 F032_0002		equ	0x2
 F033_0008		equ	0x8
-F025_000E		equ	0xE
+GetInputEvent		equ	0xE
 F034_0030		equ	0x30
 BuildPathFar		equ	0x3E
-F025_0066		equ	0x66
+FlushInputEvents		equ	0x66
 F028_01A6		equ	0x1A6
 g_01B4		equ	0x1B4
 g_01B7		equ	0x1B7
-F022_03E4		equ	0x3E4
+FatalError		equ	0x3E4
 CreateFileNormal		equ	0x40C
 CloseHandlePtr		equ	0x41E
 WriteAtOffset		equ	0x496
@@ -24,11 +24,11 @@ str_GameSav		equ	0x92E
 str_Sav		equ	0x93A
 str_Db		equ	0x93F
 FindUnlink		equ	0x99A
-F020_0A3C		equ	0xA3C
+SetDialogColors		equ	0xA3C
 F028_0C45		equ	0xC45
 F028_0E85		equ	0xE85
-F020_0F22		equ	0xF22
-F020_0FC8		equ	0xFC8
+RestoreUnderBox		equ	0xF22
+MessageBox		equ	0xFC8
 _dos_findfirst		equ	0x10C7
 F028_11DD		equ	0x11DD
 _fstrcpy		equ	0x13DA

@@ -4,7 +4,7 @@
 	org	0x0
 MakeChain		equ	0x8
 InsertRec		equ	0x2EC
-F022_03E4		equ	0x3E4
+FatalError		equ	0x3E4
 ResizeRec		equ	0x86A
 FindRec		equ	0x944
 CpuProbe		equ	0x28DA

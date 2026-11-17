@@ -8,4 +8,5 @@ BuildPathFar		equ	0x3E
 FindFarMsg		equ	0x847
 FindUnlink		equ	0x99A
 F028_344C		equ	0x344C
+DGROUP		equ	0x45C9
 %include "seg/seg019.asm"

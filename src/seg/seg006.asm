@@ -89,7 +89,7 @@ PollInputEvents:
 	jz	short .11
 	mov	bx, [g_050C]
 	shl	bx, byte 0x3
-	lea	di, [bx - 0x5130]
+	lea	di, [bx + g_AED0]
 	lea	si, [bp - 0x8]
 	mov	ax, ds
 	mov	es, ax

@@ -22,7 +22,7 @@ InputInit:
 	push	strict word 0x8
 	call	0x03A3:AllocSlot
 	add	sp, 0x4
-	call	0x0F99:F025_0066
+	call	0x0F99:FlushInputEvents
 	mov	word [g_B08E], 0x70
 	mov	word [g_B090], 0xbfe
 	retf

@@ -4,12 +4,12 @@
 	org	0x0
 TextWidthFar		equ	0x2
 F028_000C		equ	0xC
+GetInputEvent		equ	0xE
 InputInit		equ	0xE
-F025_000E		equ	0xE
 SetTextColors		equ	0x24
 F034_0030		equ	0x30
 InputShutdown		equ	0x4C
-F025_0066		equ	0x66
+FlushInputEvents		equ	0x66
 F028_0136		equ	0x136
 DrawShadowText		equ	0x166
 F028_01A6		equ	0x1A6
@@ -33,6 +33,7 @@ MouseMove		equ	0x1B03
 MouseRead		equ	0x1B34
 OvlThunk102		equ	0x23EB
 g_6D4E		equ	0x6D4E
+g_858D		equ	0x858D
 g_B2CC		equ	0xB2CC
 g_B2CE		equ	0xB2CE
 g_B2D0		equ	0xB2D0

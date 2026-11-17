@@ -11,7 +11,7 @@ WaitButtonTimed:
 	mov	[bp - 0xc], si
 .1:
 	mov	[bp - 0x6], si
-	call	0x0F99:F025_000E
+	call	0x0F99:GetInputEvent
 	db	0x8B, 0xF8		; mov di, ax
 	db	0x0B, 0xFF		; or di, di
 	jnz	short .2

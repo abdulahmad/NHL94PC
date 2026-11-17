@@ -118,7 +118,7 @@ F041_0046:
 	lea	ax, [si + 0x9]
 	push	ax
 	push	word [bp + 0xe]
-	call	0x0FEC:F027_0002
+	call	0x0FEC:DrawTextCenteredInWindow
 	add	sp, 0x4
 	call	far [g_6414]
 	push	word 0xc8
@@ -208,7 +208,7 @@ F041_0224:
 	call	F041_0046
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .1
-	call	0x0F4A:F022_03E2
+	call	0x0F4A:NullFar5
 .1:
 	retf
 	db	0x90
@@ -277,7 +277,7 @@ F041_0240:
 	call	0x03A3:0xC56
 	push	word 0xbf
 	push	word [bp + 0x6]
-	call	0x0FEC:F027_0002
+	call	0x0FEC:DrawTextCenteredInWindow
 	add	sp, 0x4
 	call	far [g_6414]
 	push	word [bp + 0xa]

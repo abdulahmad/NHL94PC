@@ -437,7 +437,7 @@ F042_0134:
 	cmp	[bp + 0xa], ax
 	jz	short .28
 	push	word 0x775d
-	call	0x0F4A:F022_03E4
+	call	0x0F4A:FatalError
 	pop	bx
 .28:
 	push	word 0x7788

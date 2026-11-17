@@ -4,7 +4,7 @@ F052_0000:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	ax, [bp + 0x8]
 	mov	dx, [bp + 0xa]
@@ -18,7 +18,7 @@ F052_0018:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	push	word [bp + 0xa]
 	push	word [bp + 0x8]
@@ -33,7 +33,7 @@ F052_0032:
 	push	di
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	di, [bp + 0x8]
 	mov	ax, [bp + 0xa]
@@ -221,7 +221,7 @@ F052_0032:
 	cmp	word [bp + 0xc], 0x0
 	jz	short .13
 	push	word 0x84a8
-	call	0x0F4A:F022_03E4
+	call	0x0F4A:FatalError
 	pop	bx
 .13:
 	db	0x33, 0xC0		; xor ax, ax
@@ -237,7 +237,7 @@ F052_0252:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	push	0x0
 	push	word [bp + 0xa]
@@ -254,7 +254,7 @@ F052_0272:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	push	0x1
 	push	word [bp + 0xa]

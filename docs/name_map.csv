@@ -1019,3 +1019,72 @@ seg018:004B,UnhookDivideError,F018_004B,new,high,restores INT 0,src/seg/seg018.a
 seg018:005C,DivideHandler,F018_005C,new,high,INT 0 handler: steps the return address over the faulting divide,src/seg/seg018.asm
 seg026:0246,DrawTextFar,F026_0246,new,high,copies a far string to the stack and calls DrawText,src/seg/seg026.asm
 seg026:028E,DrawTextFar2,F026_028E,new,medium,the same with the second text routine,src/seg/seg026.asm
+seg013:0006,SaveGame,F013_0006,new,high,"writes game.sav (the database record, sizes, three 12-byte records) or copies the .db files to .sav",src/seg/seg013.asm
+seg013:02E2,SaveGameNameDialog,F013_02E2,new,medium,"asks for the save name (file list, text entry) before SaveGame",src/seg/seg013.asm
+seg019:0000,DivideHandlerTail,F019_0000,new,low,the end of DivideHandler (iret) in the next paragraph,src/seg/seg019.asm
+seg019:000C,LoadTeamPalettes,F019_000C,new,high,"home and away palette parts (1C0h bytes a team) and the arena palette, then SetPaletteFar",src/seg/seg019.asm
+seg020:0000,AskYesNo,F020_0000,new,medium,two-button message box at the mouse; keeps the answer string,src/seg/seg020.asm
+seg020:0060,DrawBevelBox,F020_0060,new,high,filled rectangle and four edge lines in a light and a dark colour,src/seg/seg020.asm
+seg020:00E6,NumberEntryDialog,F020_00E6,new,medium,text entry box read back with atol,src/seg/seg020.asm
+seg020:032A,ItemColors,F020_032A,new,medium,picks the normal or highlight colour pair for a list row,src/seg/seg020.asm
+seg020:0354,ListHitTest,F020_0354,new,medium,list row under the cursor,src/seg/seg020.asm
+seg020:03D6,DrawListRow,F020_03D6,new,medium,one list row with its colours,src/seg/seg020.asm
+seg020:049A,DrawListRows,F020_049A,new,medium,the visible rows,src/seg/seg020.asm
+seg020:04FA,ListDialog,F020_04FA,new,medium,"scrolling list with a scroll bar, mouse and keys",src/seg/seg020.asm
+seg020:0A12,GrowToTextWidth,F020_0A12,new,high,widens a box to a string's width and adds a line height,src/seg/seg020.asm
+seg020:0A3C,SetDialogColors,F020_0A3C,new,high,the five dialog colours,src/seg/seg020.asm
+seg020:0A60,HiliteButton,F020_0A60,new,medium,redraws the old and the new button,src/seg/seg020.asm
+seg020:0B16,DrawButtons,F020_0B16,new,medium,every button of a message box,src/seg/seg020.asm
+seg020:0B4C,DrawButton,F020_0B4C,new,medium,one button: bevel box and centred label,src/seg/seg020.asm
+seg020:0C14,ScrollBarInit,F020_0C14,new,high,"scroll bar position, size and thumb length from the item counts",src/seg/seg020.asm
+seg020:0C76,DrawScrollBar,F020_0C76,new,medium,bar and thumb,src/seg/seg020.asm
+seg020:0D28,ScrollBarDrag,F020_0D28,new,medium,moves the thumb with the mouse and updates the first item,src/seg/seg020.asm
+seg020:0E7A,SaveUnderBox,F020_0E7A,new,high,allocates a block and saves the screen under a box (GetBlock),src/seg/seg020.asm
+seg020:0F22,RestoreUnderBox,F020_0F22,new,high,puts the saved screen back and frees the block,src/seg/seg020.asm
+seg020:0F5C,GrowToItemBox,F020_0F5C,new,medium,widens and heightens a box to fit an item rectangle,src/seg/seg020.asm
+seg020:0FC8,MessageBox,F020_0FC8,new,high,box with text lines and buttons; returns the button chosen,src/seg/seg020.asm
+seg020:1260,MessageBoxLoop,F020_1260,new,medium,"input loop of MessageBox (mouse, keys, highlight)",src/seg/seg020.asm
+seg020:14B8,MessageBoxReset,F020_14B8,new,low,sets the last button to -1,src/seg/seg020.asm
+seg021:0000,NullFar6,F021_0000,new,high,a lone retf,src/seg/seg021.asm
+seg021:0002,CrowdNoiseUpdate,F021_0002,new,high,"eases the crowd level toward CrowdTarget and drives the MIDI crowd notes (volume, pitch)",src/seg/seg021.asm
+seg021:01DC,CrowdNoiseOff,F021_01DC,new,high,note off and volume 0 on the two crowd channels,src/seg/seg021.asm
+seg021:024E,CrowdFadeOut,F021_024E,new,high,lowers CrowdTarget step by step to silence,src/seg/seg021.asm
+seg021:029A,CrowdReset,F021_029A,new,high,crowd level and both note states to 0,src/seg/seg021.asm
+seg021:02A6,AnnounceOneMinute,F021_02A6,new,high,"digital sound with speech on: pause, SayOneMinuteLeft",src/seg/seg021.asm
+seg021:02C0,AnnouncerBusy,F021_02C0,new,high,digital sound with speech on and SpeechBusy,src/seg/seg021.asm
+seg021:02E0,PlaySoundEffect,F021_02E0,new,high,sound effect by number; 7Dh raises the crowd; skipped while the announcer talks,src/seg/seg021.asm
+seg021:0394,AnnounceGoal,F021_0394,new,high,"pause, SayGoal",src/seg/seg021.asm
+seg021:03C0,AnnouncePlayerFrom,F021_03C0,new,high,"pause, SayPlayerFrom",src/seg/seg021.asm
+seg021:03E6,AnnouncePenalty,F021_03E6,new,high,"pause, SayPenalty",src/seg/seg021.asm
+seg021:0418,AnnounceTonightsGame,F021_0418,new,high,"team names from TeamAbbrevs, SayTonightsGame",src/seg/seg021.asm
+seg021:046E,AnnouncePeriodSummary,F021_046E,new,high,SayPeriodSummary,src/seg/seg021.asm
+seg021:0490,AnnounceIntro,F021_0490,new,high,SayEaNhlIntro,src/seg/seg021.asm
+seg021:04A4,AnnounceGoodnight,F021_04A4,new,high,SayGoodnight,src/seg/seg021.asm
+seg021:04B8,AnnounceLineups,F021_04B8,new,high,SayLineups,src/seg/seg021.asm
+seg021:04CC,AnnounceElseAroundNhl,F021_04CC,new,high,SayElseAroundNhl,src/seg/seg021.asm
+seg021:04E0,AnnounceHighlightMatchup,F021_04E0,new,high,SayHighlightMatchup,src/seg/seg021.asm
+seg021:0514,AnnouncePlayoffResult,F021_0514,new,high,SayPlayoffResult,src/seg/seg021.asm
+seg021:0542,AnnounceTonightsPlayoffGame,F021_0542,new,high,SayTonightsPlayoffGame,src/seg/seg021.asm
+seg021:057E,LoadStudioSpeech,F021_057E,new,high,OpenStudioSpeech until it succeeds,src/seg/seg021.asm
+seg021:0594,LoadPlayByPlaySpeech,F021_0594,new,high,OpenPlayByPlaySpeech until it succeeds,src/seg/seg021.asm
+seg021:05B8,StopJingle,F021_05B8,new,high,stops the digital sample playing in JingleHandle,src/seg/seg021.asm
+seg021:05F8,PlayJingle,F021_05F8,new,high,"plays a digital sample (pointer, length) and keeps its handle",src/seg/seg021.asm
+seg021:0640,WaitJingle,F021_0640,new,high,waits until the jingle sample has finished,src/seg/seg021.asm
+seg021:0656,PlayArenaJingle,F021_0656,new,medium,"the loaded clip for the event, else a random one of three, through PlayJingle",src/seg/seg021.asm
+seg022:0004,SaveVgaPlanes,F022_0004,new,high,copies the four VGA planes (plane0..plane3 blocks) through the read map,src/seg/seg022.asm
+seg022:0224,RestoreVgaPlanes,F022_0224,new,high,writes the four planes back through the map mask,src/seg/seg022.asm
+seg022:03E2,NullFar5,F022_03E2,new,high,a lone retf,src/seg/seg022.asm
+seg022:03E4,FatalError,F022_03E4,new,high,prints the message with ConPrint and exits,src/seg/seg022.asm
+seg023:0008,FitNameToWidth,F023_0008,new,high,"""first last"", else ""F. last"", then cut until it fits the width",src/seg/seg023.asm
+seg024:0000,UseDbDescriptor,F024_0000,new,low,"pushes the far descriptor of the database set (0, 1 or 2) for the overlay call that follows",src/seg/seg024.asm
+seg025:0000,UseDbDescriptorTail,F025_0000,new,low,the end of UseDbDescriptor in the next paragraph (the overlay call),src/seg/seg025.asm
+seg025:000E,GetInputEvent,F025_000E,new,high,"runs pending hooks, then pops the next 8-byte event from the queue, or 0",src/seg/seg025.asm
+seg025:0066,FlushInputEvents,F025_0066,new,high,empties the event queue,src/seg/seg025.asm
+seg026:000E,DrawMenuBar,F026_000E,new,high,menu titles in boxes across the top line,src/seg/seg026.asm
+seg026:00A4,DrawMenuPanel,F026_00A4,new,medium,an open menu's items,src/seg/seg026.asm
+seg026:01BA,DrawFrameBox,F026_01BA,new,high,filled rectangle with a light and a dark edge,src/seg/seg026.asm
+seg026:02D6,DrawMenuItem,F026_02D6,new,medium,one item in the normal colour,src/seg/seg026.asm
+seg026:036A,DrawMenuItemHilite,F026_036A,new,medium,one item in the highlight colour,src/seg/seg026.asm
+seg026:03FE,MenuHitTest,F026_03FE,new,high,menu and item under a point,src/seg/seg026.asm
+seg027:0000,NullFar7,F027_0000,new,high,a lone retf,src/seg/seg027.asm
+seg027:0002,DrawTextCenteredInWindow,F027_0002,new,medium,x centred between the window's left and right edges,src/seg/seg027.asm

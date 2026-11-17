@@ -10,7 +10,7 @@ F049_0001:
 
 F049_0008:
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	call	0x03A3:SsIsDs
 	db	0x0B, 0xC0		; or ax, ax
@@ -34,7 +34,7 @@ F049_003C:
 	push	di
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	inc	byte [0x846a]
 	cmp	byte [0x8502], 0xff
@@ -195,7 +195,7 @@ F049_01D2:
 	push	di
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	si, [bp + 0x6]
 	mov	es, [bp + 0x8]
@@ -660,7 +660,7 @@ F049_06C2:
 	db	0x8B, 0xEC		; mov bp, sp
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	si, [bp + 0x6]
 	mov	es, [bp + 0x8]
@@ -746,7 +746,7 @@ F049_0792:
 	push	di
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	si, [bp + 0x6]
 	mov	es, [bp + 0x8]
@@ -780,7 +780,7 @@ F049_07DE:
 	push	di
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	ax, [0x84c8]
 	mov	dx, [0x84ca]
@@ -819,7 +819,7 @@ F049_0826:
 	db	0x8B, 0xEC		; mov bp, sp
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	si, [bp + 0x6]
 	mov	es, [bp + 0x8]
@@ -847,7 +847,7 @@ F049_0864:
 	enter	0x8, 0x0
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	ax, [0x84cc]
 	mov	dx, [0x84ce]
@@ -934,7 +934,7 @@ F049_0934:
 	db	0x8B, 0xEC		; mov bp, sp
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	cmp	word [0x84f8], 0x0
 	jnz	short .3
@@ -973,7 +973,7 @@ F049_098E:
 	push	di
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	db	0x33, 0xF6		; xor si, si
 	cmp	[0x84f6], si
@@ -1029,7 +1029,7 @@ F049_0A00:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	al, [bp + 0x8]
 	or	al, 0xc0
@@ -1051,7 +1051,7 @@ F049_0A2C:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	al, [bp + 0x8]
 	or	al, 0xb0
@@ -1075,7 +1075,7 @@ F049_0A5E:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	al, [bp + 0x8]
 	or	al, 0xb0
@@ -1100,7 +1100,7 @@ F049_0A90:
 	push	di
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	di, [bp + 0x8]
 	mov	[bp - 0x8], di

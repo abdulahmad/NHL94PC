@@ -4,7 +4,7 @@ F022_0000:
 	db	0x08, 0x5E, 0xC9		; db 0x08
 	retf
 
-F022_0004:
+SaveVgaPlanes:
 	enter	0x6, 0x0
 	push	si
 	push	str_Que
@@ -201,7 +201,7 @@ F022_0004:
 	retf
 	db	0x90
 
-F022_0224:
+RestoreVgaPlanes:
 	enter	0x6, 0x0
 	push	si
 	mov	ax, 0x2
@@ -362,11 +362,11 @@ F022_0224:
 	leave
 	retf
 
-F022_03E2:
+NullFar5:
 	retf
 	db	0x90
 
-F022_03E4:
+FatalError:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	word [bp + 0x6]

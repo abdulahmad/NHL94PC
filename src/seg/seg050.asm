@@ -11,7 +11,7 @@ F050_0008:
 	enter	0x10, 0x0
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	ax, [bp + 0x6]
 	mov	dx, [bp + 0x8]
@@ -108,7 +108,7 @@ F050_00EC:
 	push	di
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
@@ -211,7 +211,7 @@ F050_01DE:
 	push	di
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	db	0x33, 0xF6		; xor si, si
 .1:
@@ -277,7 +277,7 @@ F050_01DE:
 
 F050_0280:
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	push	0x0
 	push	0x0
@@ -329,7 +329,7 @@ F050_0280:
 F050_0308:
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	push	word 0x1630
 	push	strict word 0x8
@@ -367,7 +367,7 @@ F050_0308:
 
 F050_036C:
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	db	0x33, 0xC0		; xor ax, ax
 	cwd
@@ -377,7 +377,7 @@ F050_036C:
 
 F050_0378:
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	db	0x33, 0xC0		; xor ax, ax
 	pop	ds
@@ -387,7 +387,7 @@ F050_0382:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	push	word [bp + 0x6]
 	push	word 0x8481
@@ -405,7 +405,7 @@ F050_03A8:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	push	0x0
 	push	word [bp + 0x6]
@@ -421,7 +421,7 @@ F050_03C8:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
@@ -437,7 +437,7 @@ F050_03E4:
 	push	di
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	ax, [0xdff6]
 	or	ax, [0xdff4]
@@ -545,7 +545,7 @@ F050_04EA:
 	db	0x8B, 0xEC		; mov bp, sp
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	db	0x33, 0xDB		; xor bx, bx
 .1:
@@ -575,7 +575,7 @@ F050_0522:
 	push	di
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	cx, [bp + 0xc]
 	db	0x0B, 0xC9		; or cx, cx
@@ -769,7 +769,7 @@ F050_071C:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	push	word [bp + 0xe]
 	push	word [bp + 0xc]
@@ -791,7 +791,7 @@ F050_074E:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	push	word [bp + 0xa]
 	push	word [bp + 0x8]
@@ -813,7 +813,7 @@ F050_077E:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	push	0x0
 	push	0x0
@@ -830,7 +830,7 @@ F050_079C:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	push	0x0
 	push	word [bp + 0xa]
@@ -848,7 +848,7 @@ F050_07BC:
 	db	0x8B, 0xEC		; mov bp, sp
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	db	0x33, 0xDB		; xor bx, bx
 	mov	cx, [bp + 0x6]
@@ -885,7 +885,7 @@ F050_07FE:
 	push	di
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	si, [bp + 0x6]
 	mov	ax, [bp + 0x8]
@@ -930,7 +930,7 @@ F050_07FE:
 
 F050_0866:
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	db	0x33, 0xC0		; xor ax, ax
 	cwd
@@ -940,7 +940,7 @@ F050_0866:
 
 F050_0872:
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	db	0x33, 0xC0		; xor ax, ax
 	pop	ds
@@ -951,7 +951,7 @@ F050_087C:
 	push	di
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	ax, [0xdff4]
 	mov	dx, [0xdff6]
@@ -984,7 +984,7 @@ F050_08BE:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	ax, [0xdff6]
 	or	ax, [0xdff4]
@@ -1009,7 +1009,7 @@ F050_08BE:
 F050_08F0:
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	db	0x33, 0xDB		; xor bx, bx
 .1:
@@ -1068,7 +1068,7 @@ F050_0976:
 	push	di
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	db	0x33, 0xFF		; xor di, di
 .1:
@@ -1126,7 +1126,7 @@ F050_09E6:
 	push	di
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	db	0x33, 0xF6		; xor si, si
 .1:
@@ -1182,7 +1182,7 @@ F050_0A4E:
 	push	di
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	di, [bp + 0x6]
 	cmp	byte [di - 0x1ee0], 0x0
@@ -1279,7 +1279,7 @@ F050_0B58:
 	db	0x8B, 0xEC		; mov bp, sp
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	db	0x33, 0xDB		; xor bx, bx
 	mov	cx, [bp + 0x6]
@@ -1311,7 +1311,7 @@ F050_0B8C:
 	enter	0x4, 0x0
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	ax, [0x84c8]
 	mov	dx, [0x84ca]
@@ -1345,7 +1345,7 @@ F050_0BC6:
 	push	di
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	si, [bp + 0x6]
 	add	word [0x84f0], 0x1
@@ -1531,7 +1531,7 @@ F050_0DD6:
 	enter	0xa, 0x0
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	inc	word [0x84f4]
 	push	word [bp + 0x8]
@@ -1578,7 +1578,7 @@ F050_0DD6:
 
 F050_0E58:
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	db	0x33, 0xC0		; xor ax, ax
 	cwd
@@ -1591,7 +1591,7 @@ F050_0E64:
 	push	di
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	cmp	word [bp + 0x6], 0x100
 	jc	short .1
@@ -1724,7 +1724,7 @@ F050_0FB8:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	push	0x0
 	push	0x0
@@ -1741,7 +1741,7 @@ F050_0FD4:
 	push	di
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	di, [bp + 0x6]
 	cmp	di, 0x100
@@ -1784,7 +1784,7 @@ F050_0FD4:
 F050_1028:
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	inc	word [0x84f4]
 	cmp	word [0x84fc], 0x0
@@ -1816,7 +1816,7 @@ F050_1070:
 	push	di
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	cmp	word [bp + 0x6], -0x1
 	jnz	short .1
@@ -1945,7 +1945,7 @@ F050_11BA:
 	enter	0x4, 0x0
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	ax, [0x84c8]
 	mov	dx, [0x84ca]
@@ -1987,7 +1987,7 @@ F050_11BA:
 F050_1226:
 	enter	0x4, 0x0
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	ax, [0x84c8]
 	mov	dx, [0x84ca]
@@ -2023,7 +2023,7 @@ F050_1226:
 F050_1268:
 	enter	0x4, 0x0
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	ax, [0x84c8]
 	mov	dx, [0x84ca]
@@ -2060,7 +2060,7 @@ F050_12AA:
 	enter	0x4, 0x0
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	ax, [0x84c8]
 	mov	dx, [0x84ca]
@@ -2101,7 +2101,7 @@ F050_12F4:
 	push	di
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	ax, [0x84c8]
 	mov	dx, [0x84ca]
@@ -2144,7 +2144,7 @@ F050_1350:
 	push	di
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	ax, [0x84c8]
 	mov	dx, [0x84ca]
@@ -2181,7 +2181,7 @@ F050_1350:
 
 F050_13A8:
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	word [0x84fc], 0x1
 	pop	ds
@@ -2189,7 +2189,7 @@ F050_13A8:
 
 F050_13B6:
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	word [0x84fc], 0x0
 	pop	ds
@@ -2197,7 +2197,7 @@ F050_13B6:
 
 F050_13C4:
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	cmp	word [0x84fc], 0x0
 	jz	short .1
@@ -2212,7 +2212,7 @@ F050_13C4:
 
 F050_13E2:
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	ax, [0x84fc]
 	pop	ds
@@ -2221,7 +2221,7 @@ F050_13E2:
 
 F050_13EE:
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	word [0x84fe], 0x1
 	pop	ds
@@ -2229,7 +2229,7 @@ F050_13EE:
 
 F050_13FC:
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	word [0x84fe], 0x0
 	pop	ds
@@ -2237,7 +2237,7 @@ F050_13FC:
 
 F050_140A:
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	cmp	word [0x84fe], 0x0
 	jz	short .1
@@ -2252,7 +2252,7 @@ F050_140A:
 
 F050_1428:
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	ax, [0x84fe]
 	pop	ds
@@ -2263,7 +2263,7 @@ F050_1434:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	les	bx, [bp + 0x6]
 	mov	ax, [es:bx]
@@ -2276,7 +2276,7 @@ F050_144A:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	les	bx, [bp + 0x6]
 	mov	ax, [es:bx]
@@ -2290,7 +2290,7 @@ F050_145C:
 	push	di
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	ds, [bp + 0x8]
 	mov	si, [bp + 0x6]
@@ -2322,7 +2322,7 @@ F050_1496:
 	enter	0x4, 0x0
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	ds, [bp + 0x8]
 	mov	si, [bp + 0x6]
@@ -2366,7 +2366,7 @@ F050_14E8:
 	push	di
 	push	si
 	push	ds
-	mov	ax, 0x45c9
+	mov	ax, DGROUP
 	mov	ds, ax
 	mov	ds, [bp + 0x8]
 	mov	di, [bp + 0x6]

@@ -10,4 +10,5 @@ g_0510		equ	0x510
 g_0512		equ	0x512
 g_0514		equ	0x514
 F028_0E85		equ	0xE85
+DGROUP		equ	0x45C9
 %include "seg/seg026.asm"

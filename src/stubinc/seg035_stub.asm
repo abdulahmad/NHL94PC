@@ -3,7 +3,7 @@
 	bits	16
 	org	0x0
 BufPtr		equ	0x2BC
-F022_03E4		equ	0x3E4
+FatalError		equ	0x3E4
 FindUnlink		equ	0x99A
 ChainIdx		equ	0xAE9C
 %include "seg/seg035.asm"

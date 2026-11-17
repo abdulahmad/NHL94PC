@@ -2,7 +2,7 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
-F025_0066		equ	0x66
+FlushInputEvents		equ	0x66
 g_0516		equ	0x516
 g_0518		equ	0x518
 str_SecondsMsc		equ	0x5A2

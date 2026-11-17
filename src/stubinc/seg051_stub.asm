@@ -11,4 +11,5 @@ FindUnlink		equ	0x99A
 _sprintf		equ	0xD74
 RecBase		equ	0x1508
 RawBase		equ	0x1532
+DGROUP		equ	0x45C9
 %include "seg/seg051.asm"
