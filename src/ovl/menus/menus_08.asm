@@ -1200,4 +1200,4 @@ Menus_2528_0426:
 	call	0x09B2:SpeechInit
 	add	sp, 0xe
 .47:
-	db	0xB8
+	mov	ax, 0x1

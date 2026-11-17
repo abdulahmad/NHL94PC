@@ -107,4 +107,4 @@ Ai_1F9C_0000:
 	push	0x64
 	push	word 0xa0
 	call	0x03A3:MouseMove
-	db	0x83
+	add	sp, 0x4

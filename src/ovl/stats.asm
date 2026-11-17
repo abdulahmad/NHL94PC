@@ -322,31 +322,31 @@ section stats_relocs start=0
         dw 0x08F1, 0x26BE, 0x0EB1, 0x26BE, 0x0E8A, 0x26BE, 0x0B08, 0x26BE
         dw 0x0A2E, 0x26BE, 0x0DEA, 0x26BE, 0x0C5E, 0x26BE, 0x13EC, 0x26BE
         dw 0x0E4A, 0x26BE, 0x0EF4, 0x26BE, 0x0DD7, 0x26BE
-section stats_00 follows=stats_relocs align=16 vstart=0
+section stats_00 follows=stats_relocs align=16 vstart=0x0
 %include "ovl/stats/stats_00.asm"
-section stats_01 follows=stats_00 align=16 vstart=0
+section stats_01 follows=stats_00 align=1 vstart=0x0
 %include "ovl/stats/stats_01.asm"
-section stats_02 follows=stats_01 align=16 vstart=0
+section stats_02 follows=stats_01 align=1 vstart=0x2
 %include "ovl/stats/stats_02.asm"
-section stats_03 follows=stats_02 align=16 vstart=0
+section stats_03 follows=stats_02 align=1 vstart=0x0
 %include "ovl/stats/stats_03.asm"
-section stats_04 follows=stats_03 align=16 vstart=0
+section stats_04 follows=stats_03 align=1 vstart=0x0
 %include "ovl/stats/stats_04.asm"
-section stats_05 follows=stats_04 align=16 vstart=0
+section stats_05 follows=stats_04 align=1 vstart=0x1
 %include "ovl/stats/stats_05.asm"
-section stats_06 follows=stats_05 align=16 vstart=0
+section stats_06 follows=stats_05 align=1 vstart=0x0
 %include "ovl/stats/stats_06.asm"
-section stats_07 follows=stats_06 align=16 vstart=0
+section stats_07 follows=stats_06 align=1 vstart=0x0
 %include "ovl/stats/stats_07.asm"
-section stats_08 follows=stats_07 align=16 vstart=0
+section stats_08 follows=stats_07 align=1 vstart=0x1
 %include "ovl/stats/stats_08.asm"
-section stats_09 follows=stats_08 align=16 vstart=0
+section stats_09 follows=stats_08 align=1 vstart=0x0
 %include "ovl/stats/stats_09.asm"
-section stats_10 follows=stats_09 align=16 vstart=0
+section stats_10 follows=stats_09 align=1 vstart=0x1
 %include "ovl/stats/stats_10.asm"
-section stats_11 follows=stats_10 align=16 vstart=0
+section stats_11 follows=stats_10 align=1 vstart=0x0
 %include "ovl/stats/stats_11.asm"
-section stats_12 follows=stats_11 align=16 vstart=0
+section stats_12 follows=stats_11 align=1 vstart=0x0
 %include "ovl/stats/stats_12.asm"
-section stats_13 follows=stats_12 align=16 vstart=0
+section stats_13 follows=stats_12 align=1 vstart=0x3
 %include "ovl/stats/stats_13.asm"

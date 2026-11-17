@@ -887,4 +887,4 @@ Stats_22B3_062E:
 	mov	[si - 0x3dfc], ax
 	inc	si
 	inc	si
-	db	0x83, 0xFE
+	cmp	si, 0x3e

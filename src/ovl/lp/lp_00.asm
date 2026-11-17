@@ -597,4 +597,4 @@ Lp_1E45_025C:
 	push	word [bp + 0x18]
 	push	cs
 	call	Lp_1E45_0000
-	db	0x83
+	add	sp, 0x2

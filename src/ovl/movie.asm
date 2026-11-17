@@ -10,7 +10,7 @@ section movie_relocs start=0
         dw 0x0713, 0x3357, 0x0937, 0x3357, 0x032A, 0x3357, 0x02D3, 0x3357
         dw 0x026C, 0x3357, 0x09A7, 0x3357, 0x0925, 0x3357, 0x0841, 0x3357
         dw 0x077B, 0x3357
-section movie_00 follows=movie_relocs align=16 vstart=0
+section movie_00 follows=movie_relocs align=16 vstart=0x0
 %include "ovl/movie/movie_00.asm"
-section movie_01 follows=movie_00 align=16 vstart=0
+section movie_01 follows=movie_00 align=1 vstart=0x2
 %include "ovl/movie/movie_01.asm"

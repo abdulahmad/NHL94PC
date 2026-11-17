@@ -2,5 +2,5 @@
 ; 3 relocation entries (offset, segment paragraph), zero fill to the next paragraph, then the image.
 section fades3_relocs start=0
         dw 0x0098, 0x3358, 0x0009, 0x3358, 0x01BD, 0x3358
-section fades3_00 follows=fades3_relocs align=16 vstart=0
+section fades3_00 follows=fades3_relocs align=16 vstart=0x0
 %include "ovl/fades3/fades3_00.asm"

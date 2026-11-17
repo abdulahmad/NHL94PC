@@ -3,5 +3,5 @@
 section fades11_relocs start=0
         dw 0x02AD, 0x3358, 0x001B, 0x3358, 0x0348, 0x3358, 0x0320, 0x3358
         dw 0x02F6, 0x3358, 0x02CE, 0x3358, 0x0369, 0x3358
-section fades11_00 follows=fades11_relocs align=16 vstart=0
+section fades11_00 follows=fades11_relocs align=16 vstart=0x0
 %include "ovl/fades11/fades11_00.asm"

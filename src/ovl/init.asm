@@ -292,39 +292,39 @@ section init_relocs start=0
         dw 0x11D3, 0x278C, 0x1223, 0x278C, 0x0278, 0x28FA, 0x015E, 0x28FA
         dw 0x0108, 0x28FA, 0x0222, 0x28FA, 0x00CE, 0x28FA, 0x026B, 0x28FA
         dw 0x003B, 0x28FA, 0x0170, 0x28FA, 0x011A, 0x28FA, 0x004B, 0x28FA
-section init_00 follows=init_relocs align=16 vstart=0
+section init_00 follows=init_relocs align=16 vstart=0x0
 %include "ovl/init/init_00.asm"
-section init_01 follows=init_00 align=16 vstart=0
+section init_01 follows=init_00 align=1 vstart=0x0
 %include "ovl/init/init_01.asm"
-section init_02 follows=init_01 align=16 vstart=0
+section init_02 follows=init_01 align=1 vstart=0x0
 %include "ovl/init/init_02.asm"
-section init_03 follows=init_02 align=16 vstart=0
+section init_03 follows=init_02 align=1 vstart=0x1
 %include "ovl/init/init_03.asm"
-section init_04 follows=init_03 align=16 vstart=0
+section init_04 follows=init_03 align=1 vstart=0x0
 %include "ovl/init/init_04.asm"
-section init_05 follows=init_04 align=16 vstart=0
+section init_05 follows=init_04 align=1 vstart=0x1
 %include "ovl/init/init_05.asm"
-section init_06 follows=init_05 align=16 vstart=0
+section init_06 follows=init_05 align=1 vstart=0x2
 %include "ovl/init/init_06.asm"
-section init_07 follows=init_06 align=16 vstart=0
+section init_07 follows=init_06 align=1 vstart=0x0
 %include "ovl/init/init_07.asm"
-section init_08 follows=init_07 align=16 vstart=0
+section init_08 follows=init_07 align=1 vstart=0x0
 %include "ovl/init/init_08.asm"
-section init_09 follows=init_08 align=16 vstart=0
+section init_09 follows=init_08 align=1 vstart=0x0
 %include "ovl/init/init_09.asm"
-section init_10 follows=init_09 align=16 vstart=0
+section init_10 follows=init_09 align=1 vstart=0x1
 %include "ovl/init/init_10.asm"
-section init_11 follows=init_10 align=16 vstart=0
+section init_11 follows=init_10 align=1 vstart=0x0
 %include "ovl/init/init_11.asm"
-section init_12 follows=init_11 align=16 vstart=0
+section init_12 follows=init_11 align=1 vstart=0x2
 %include "ovl/init/init_12.asm"
-section init_13 follows=init_12 align=16 vstart=0
+section init_13 follows=init_12 align=1 vstart=0x2
 %include "ovl/init/init_13.asm"
-section init_14 follows=init_13 align=16 vstart=0
+section init_14 follows=init_13 align=1 vstart=0x0
 %include "ovl/init/init_14.asm"
-section init_15 follows=init_14 align=16 vstart=0
+section init_15 follows=init_14 align=1 vstart=0x0
 %include "ovl/init/init_15.asm"
-section init_16 follows=init_15 align=16 vstart=0
+section init_16 follows=init_15 align=1 vstart=0x2
 %include "ovl/init/init_16.asm"
-section init_17 follows=init_16 align=16 vstart=0
+section init_17 follows=init_16 align=1 vstart=0x0
 %include "ovl/init/init_17.asm"

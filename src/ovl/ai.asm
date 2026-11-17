@@ -300,37 +300,37 @@ section ai_relocs start=0
         dw 0x03F1, 0x327B, 0x0385, 0x327B, 0x026C, 0x327B, 0x0186, 0x327B
         dw 0x0534, 0x327B, 0x04D3, 0x327B, 0x055F, 0x327B, 0x0C9F, 0x327B
         dw 0x02BC, 0x327B, 0x0430, 0x327B, 0x05E6, 0x327B
-section ai_00 follows=ai_relocs align=16 vstart=0
+section ai_00 follows=ai_relocs align=16 vstart=0x0
 %include "ovl/ai/ai_00.asm"
-section ai_01 follows=ai_00 align=16 vstart=0
+section ai_01 follows=ai_00 align=1 vstart=0x2
 %include "ovl/ai/ai_01.asm"
-section ai_02 follows=ai_01 align=16 vstart=0
+section ai_02 follows=ai_01 align=1 vstart=0x0
 %include "ovl/ai/ai_02.asm"
-section ai_03 follows=ai_02 align=16 vstart=0
+section ai_03 follows=ai_02 align=1 vstart=0x1
 %include "ovl/ai/ai_03.asm"
-section ai_04 follows=ai_03 align=16 vstart=0
+section ai_04 follows=ai_03 align=1 vstart=0x1
 %include "ovl/ai/ai_04.asm"
-section ai_05 follows=ai_04 align=16 vstart=0
+section ai_05 follows=ai_04 align=1 vstart=0x2
 %include "ovl/ai/ai_05.asm"
-section ai_06 follows=ai_05 align=16 vstart=0
+section ai_06 follows=ai_05 align=1 vstart=0x0
 %include "ovl/ai/ai_06.asm"
-section ai_07 follows=ai_06 align=16 vstart=0
+section ai_07 follows=ai_06 align=1 vstart=0x1
 %include "ovl/ai/ai_07.asm"
-section ai_08 follows=ai_07 align=16 vstart=0
+section ai_08 follows=ai_07 align=1 vstart=0x0
 %include "ovl/ai/ai_08.asm"
-section ai_09 follows=ai_08 align=16 vstart=0
+section ai_09 follows=ai_08 align=1 vstart=0x0
 %include "ovl/ai/ai_09.asm"
-section ai_10 follows=ai_09 align=16 vstart=0
+section ai_10 follows=ai_09 align=1 vstart=0x0
 %include "ovl/ai/ai_10.asm"
-section ai_11 follows=ai_10 align=16 vstart=0
+section ai_11 follows=ai_10 align=1 vstart=0x0
 %include "ovl/ai/ai_11.asm"
-section ai_12 follows=ai_11 align=16 vstart=0
+section ai_12 follows=ai_11 align=1 vstart=0x4
 %include "ovl/ai/ai_12.asm"
-section ai_13 follows=ai_12 align=16 vstart=0
+section ai_13 follows=ai_12 align=1 vstart=0x1
 %include "ovl/ai/ai_13.asm"
-section ai_14 follows=ai_13 align=16 vstart=0
+section ai_14 follows=ai_13 align=1 vstart=0x0
 %include "ovl/ai/ai_14.asm"
-section ai_15 follows=ai_14 align=16 vstart=0
+section ai_15 follows=ai_14 align=1 vstart=0x0
 %include "ovl/ai/ai_15.asm"
-section ai_16 follows=ai_15 align=16 vstart=0
+section ai_16 follows=ai_15 align=1 vstart=0x0
 %include "ovl/ai/ai_16.asm"

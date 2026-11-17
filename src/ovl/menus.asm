@@ -608,37 +608,37 @@ section menus_relocs start=0
         dw 0x176B, 0x2E70, 0x1630, 0x2E70, 0x1C42, 0x2E70, 0x1AB7, 0x2E70
         dw 0x1973, 0x2E70, 0x1F43, 0x2E70, 0x1E3E, 0x2E70, 0x212C, 0x2E70
         dw 0x20BD, 0x2E70
-section menus_00 follows=menus_relocs align=16 vstart=0
+section menus_00 follows=menus_relocs align=16 vstart=0x0
 %include "ovl/menus/menus_00.asm"
-section menus_01 follows=menus_00 align=16 vstart=0
+section menus_01 follows=menus_00 align=1 vstart=0x0
 %include "ovl/menus/menus_01.asm"
-section menus_02 follows=menus_01 align=16 vstart=0
+section menus_02 follows=menus_01 align=1 vstart=0x0
 %include "ovl/menus/menus_02.asm"
-section menus_03 follows=menus_02 align=16 vstart=0
+section menus_03 follows=menus_02 align=1 vstart=0x0
 %include "ovl/menus/menus_03.asm"
-section menus_04 follows=menus_03 align=16 vstart=0
+section menus_04 follows=menus_03 align=1 vstart=0x2
 %include "ovl/menus/menus_04.asm"
-section menus_05 follows=menus_04 align=16 vstart=0
+section menus_05 follows=menus_04 align=1 vstart=0x4
 %include "ovl/menus/menus_05.asm"
-section menus_06 follows=menus_05 align=16 vstart=0
+section menus_06 follows=menus_05 align=1 vstart=0x1
 %include "ovl/menus/menus_06.asm"
-section menus_07 follows=menus_06 align=16 vstart=0
+section menus_07 follows=menus_06 align=1 vstart=0x0
 %include "ovl/menus/menus_07.asm"
-section menus_08 follows=menus_07 align=16 vstart=0
+section menus_08 follows=menus_07 align=1 vstart=0x0
 %include "ovl/menus/menus_08.asm"
-section menus_09 follows=menus_08 align=16 vstart=0
+section menus_09 follows=menus_08 align=1 vstart=0x2
 %include "ovl/menus/menus_09.asm"
-section menus_10 follows=menus_09 align=16 vstart=0
+section menus_10 follows=menus_09 align=1 vstart=0x1
 %include "ovl/menus/menus_10.asm"
-section menus_11 follows=menus_10 align=16 vstart=0
+section menus_11 follows=menus_10 align=1 vstart=0x0
 %include "ovl/menus/menus_11.asm"
-section menus_12 follows=menus_11 align=16 vstart=0
+section menus_12 follows=menus_11 align=1 vstart=0x0
 %include "ovl/menus/menus_12.asm"
-section menus_13 follows=menus_12 align=16 vstart=0
+section menus_13 follows=menus_12 align=1 vstart=0x0
 %include "ovl/menus/menus_13.asm"
-section menus_14 follows=menus_13 align=16 vstart=0
+section menus_14 follows=menus_13 align=1 vstart=0x2
 %include "ovl/menus/menus_14.asm"
-section menus_15 follows=menus_14 align=16 vstart=0
+section menus_15 follows=menus_14 align=1 vstart=0x3
 %include "ovl/menus/menus_15.asm"
-section menus_16 follows=menus_15 align=16 vstart=0
+section menus_16 follows=menus_15 align=1 vstart=0x3
 %include "ovl/menus/menus_16.asm"

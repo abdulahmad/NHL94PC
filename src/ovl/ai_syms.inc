@@ -27,6 +27,7 @@ FatalError		equ	0x3E4
 FillRect		equ	0x136
 FindFarMsg		equ	0x847
 FindUnlink		equ	0x99A
+FlushInputEvents		equ	0x66
 FoldScale		equ	0x6CA
 GetPaletteFar		equ	0x366
 HeapSizeHi		equ	0xAE92

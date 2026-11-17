@@ -1357,4 +1357,4 @@ Stats_25E5_064A:
 .51:
 	push	word [0xcfce]
 	push	word [0xcfcc]
-	db	0x9A, 0x9A
+	call	0x06E1:FindUnlink

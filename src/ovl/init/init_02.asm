@@ -770,4 +770,4 @@ Init_20A8_0004:
 	push	word [bp - 0x32]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	db	0x8B, 0x86, 0x3A
+	mov	ax, [bp - 0xc6]

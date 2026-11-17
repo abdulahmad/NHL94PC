@@ -913,4 +913,4 @@ Menus_2C1E_0570:
 .28:
 	call	0x16F2:SfxOff
 .29:
-	db	0x9A, 0x00, 0x00
+	call	0x0F97:UseDbDescriptor

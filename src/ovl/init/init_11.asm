@@ -90,4 +90,4 @@ Init_251E_0038:
 	mov	[0xda2c], dx
 	push	word 0xda0a
 	push	word 0x52ff
-	db	0xFF, 0x36
+	push	word [0xc25a]

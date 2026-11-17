@@ -1242,7 +1242,12 @@ Menus_23A3_09E4:
 	jmp	[cs:bx + 0xc40]
 	db	0x90
 Menus_23A3_09E4JumpTable:
-	db	0x25, 0x0C, 0x20, 0x0C, 0x1B, 0x0C, 0x16, 0x0C, 0x11, 0x0C, 0x0C, 0x0C
+	dw	Menus_23A3_09E4.16
+	dw	Menus_23A3_09E4.15
+	dw	Menus_23A3_09E4.14
+	dw	Menus_23A3_09E4.13
+	dw	Menus_23A3_09E4.12
+	dw	Menus_23A3_09E4.11
 .1:
 	or	word [0xc1ee], 0xf903
 	mov	es, [0x8b3e]

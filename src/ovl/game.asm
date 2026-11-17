@@ -38,13 +38,13 @@ section game_relocs start=0
         dw 0x0375, 0x1F54, 0x030B, 0x1F54, 0x0302, 0x1F54, 0x0104, 0x1F54
         dw 0x00DC, 0x1F54, 0x0210, 0x1F54, 0x0065, 0x1F54, 0x03B9, 0x1F54
         dw 0x001D, 0x1F54, 0x0167, 0x1F54, 0x033D, 0x1F54
-section game_00 follows=game_relocs align=16 vstart=0
+section game_00 follows=game_relocs align=16 vstart=0x0
 %include "ovl/game/game_00.asm"
-section game_01 follows=game_00 align=16 vstart=0
+section game_01 follows=game_00 align=1 vstart=0x0
 %include "ovl/game/game_01.asm"
-section game_02 follows=game_01 align=16 vstart=0
+section game_02 follows=game_01 align=1 vstart=0x0
 %include "ovl/game/game_02.asm"
-section game_03 follows=game_02 align=16 vstart=0
+section game_03 follows=game_02 align=1 vstart=0x1
 %include "ovl/game/game_03.asm"
-section game_04 follows=game_03 align=16 vstart=0
+section game_04 follows=game_03 align=1 vstart=0x0
 %include "ovl/game/game_04.asm"

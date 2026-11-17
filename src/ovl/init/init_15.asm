@@ -1142,4 +1142,4 @@ Init_26D2_03F2:
 	push	word [0xdb4a]
 	push	word [0xdb8e]
 	call	0x1E7E:0x120
-	db	0x83
+	add	sp, 0xa

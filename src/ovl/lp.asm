@@ -543,41 +543,41 @@ section lp_relocs start=0
         dw 0x1211, 0x2E46, 0x1419, 0x2E46, 0x16AA, 0x2E46, 0x06CA, 0x2E46
         dw 0x0E61, 0x2E46, 0x15FB, 0x2E46, 0x156A, 0x2E46, 0x1528, 0x2E46
         dw 0x14FC, 0x2E46, 0x0F68, 0x2E46
-section lp_00 follows=lp_relocs align=16 vstart=0
+section lp_00 follows=lp_relocs align=16 vstart=0x0
 %include "ovl/lp/lp_00.asm"
-section lp_01 follows=lp_00 align=16 vstart=0
+section lp_01 follows=lp_00 align=1 vstart=0x2
 %include "ovl/lp/lp_01.asm"
-section lp_02 follows=lp_01 align=16 vstart=0
+section lp_02 follows=lp_01 align=1 vstart=0x2
 %include "ovl/lp/lp_02.asm"
-section lp_03 follows=lp_02 align=16 vstart=0
+section lp_03 follows=lp_02 align=1 vstart=0x4
 %include "ovl/lp/lp_03.asm"
-section lp_04 follows=lp_03 align=16 vstart=0
+section lp_04 follows=lp_03 align=1 vstart=0x1
 %include "ovl/lp/lp_04.asm"
-section lp_05 follows=lp_04 align=16 vstart=0
+section lp_05 follows=lp_04 align=1 vstart=0x0
 %include "ovl/lp/lp_05.asm"
-section lp_06 follows=lp_05 align=16 vstart=0
+section lp_06 follows=lp_05 align=1 vstart=0x1
 %include "ovl/lp/lp_06.asm"
-section lp_07 follows=lp_06 align=16 vstart=0
+section lp_07 follows=lp_06 align=1 vstart=0x0
 %include "ovl/lp/lp_07.asm"
-section lp_08 follows=lp_07 align=16 vstart=0
+section lp_08 follows=lp_07 align=1 vstart=0x0
 %include "ovl/lp/lp_08.asm"
-section lp_09 follows=lp_08 align=16 vstart=0
+section lp_09 follows=lp_08 align=1 vstart=0x0
 %include "ovl/lp/lp_09.asm"
-section lp_10 follows=lp_09 align=16 vstart=0
+section lp_10 follows=lp_09 align=1 vstart=0x0
 %include "ovl/lp/lp_10.asm"
-section lp_11 follows=lp_10 align=16 vstart=0
+section lp_11 follows=lp_10 align=1 vstart=0x1
 %include "ovl/lp/lp_11.asm"
-section lp_12 follows=lp_11 align=16 vstart=0
+section lp_12 follows=lp_11 align=1 vstart=0x0
 %include "ovl/lp/lp_12.asm"
-section lp_13 follows=lp_12 align=16 vstart=0
+section lp_13 follows=lp_12 align=1 vstart=0x0
 %include "ovl/lp/lp_13.asm"
-section lp_14 follows=lp_13 align=16 vstart=0
+section lp_14 follows=lp_13 align=1 vstart=0x0
 %include "ovl/lp/lp_14.asm"
-section lp_15 follows=lp_14 align=16 vstart=0
+section lp_15 follows=lp_14 align=1 vstart=0x3
 %include "ovl/lp/lp_15.asm"
-section lp_16 follows=lp_15 align=16 vstart=0
+section lp_16 follows=lp_15 align=1 vstart=0x0
 %include "ovl/lp/lp_16.asm"
-section lp_17 follows=lp_16 align=16 vstart=0
+section lp_17 follows=lp_16 align=1 vstart=0x2
 %include "ovl/lp/lp_17.asm"
-section lp_18 follows=lp_17 align=16 vstart=0
+section lp_18 follows=lp_17 align=1 vstart=0x0
 %include "ovl/lp/lp_18.asm"

@@ -255,4 +255,4 @@ Ai_2038_0060:
 	mov	ax, 0xffff
 	db	0xEB, 0x03		; jmp short 0x2a1
 .14:
-	db	0xA1, 0x52
+	mov	ax, [lastsfx]

@@ -69,4 +69,4 @@ Menus_2037_0000:
 	mov	es, [0x8b2a]
 .7:
 	db	0x2B, 0xC0		; sub ax, ax
-	db	0x26, 0xA3
+	mov	[es:0x10c6], ax

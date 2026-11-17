@@ -148,4 +148,4 @@ Lp_20E6_0110:
 	push	word [bp + 0xe]
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
-	db	0xFF, 0x76
+	push	word [bp + 0x8]

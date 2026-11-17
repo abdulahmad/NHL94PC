@@ -679,4 +679,4 @@ Stats_23D5_0002:
 	push	word [bp - 0x4e]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	db	0x8B, 0x46
+	mov	ax, [bp - 0x2]

@@ -2905,4 +2905,4 @@ Stats_1EAE_12F6:
 	mov	[bp - 0x58], ax
 	mov	[bp - 0x5a], ax
 	mov	[bp - 0x30], ax
-	db	0x89
+	mov	[bp - 0x32], ax

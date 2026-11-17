@@ -37,7 +37,7 @@ def setup(name):
     SEGS[:] = []
     for s in OV['segments']:
         s = dict(s)
-        s['lin'] = (s['para'] - OV['para']) * 16
+        s['base'] = s['lin'] = (s['para'] - OV['para']) * 16      # base: offset 0 of the frame; lin: first byte
         s['end'] = s['lin'] + s['size']
         SEGS.append(s)
     RELOC.clear()
@@ -141,7 +141,8 @@ class Flow:
                     self.bad.add(lin)
                     break
                 # overlap with existing instruction?
-                if any((lin + k) in self.ins for k in range(1, ins.size)):
+                if any((lin + k) in self.ins for k in range(1, ins.size)) or \
+                        any((lin - k) in self.ins and self.ins[lin - k][0] > k for k in range(1, 8)):
                     self.bad.add(lin)
                     break
                 self.ins[lin] = (ins.size, cs)
@@ -192,6 +193,9 @@ class Flow:
                 n += 1
                 if n > 256:
                     break
+            lim = switch_limit(lin)
+            if lim is not None and lim < n:
+                n = lim
             n = TABLE_LIN.get(tlin, n)
             self.tables[tlin] = max(n, 0)
             for k in range(n):
@@ -199,6 +203,21 @@ class Flow:
                 t = CSB(cs) + v
                 self.labels.setdefault(t, 'loc')
                 work.append((t, cs))
+
+
+def switch_limit(jlin):
+    """entries of a C switch table: the compiler bounds the index with cmp ax/bx, N then ja/jna to the default just
+    before the indexed jump, so the table has N + 1 words"""
+    b = IMG[max(jlin - 24, 0):jlin]
+    best = None
+    for k in range(len(b) - 2):
+        if b[k] == 0x3D and k + 3 <= len(b):                       # cmp ax, imm16
+            best = b[k + 1] | b[k + 2] << 8
+        elif b[k] == 0x83 and b[k + 1] in (0xF8, 0xFB) and k + 3 <= len(b):   # cmp ax/bx, imm8
+            best = b[k + 2]
+        elif b[k] == 0x81 and b[k + 1] == 0xFB and k + 4 <= len(b):           # cmp bx, imm16
+            best = b[k + 2] | b[k + 3] << 8
+    return best + 1 if best is not None and best < 256 else None
 
 
 def prologue_at(lin):
@@ -237,8 +256,9 @@ def try_gap(flow, s, p, g1, cov):
     return ok and sus <= 1 and q > p
 
 
-def linear_gaps(flow, targets):
-    # A gap that decodes cleanly up to a ret/jmp (or into known code) is taken as code.
+def linear_gaps(flow, targets, final=False):
+    # A gap that decodes cleanly up to a ret/jmp (or into known code) is taken as code. A gap that opens a frame
+    # right after undecoded bytes waits for the final round: the instruction before it may run into the frame.
     new = []
     cov = set()
     for a, (sz, _) in flow.ins.items():
@@ -260,6 +280,8 @@ def linear_gaps(flow, targets):
             cands = [p] + [k for k in range(p + 1, g1) if IMG[k - 1] in (0xC3, 0xCB, 0xCF, 0x90) or
                            (k >= 3 and IMG[k - 3] in (0xC2, 0xCA))]
             for c in cands:
+                if c == s['base'] and not final and (c - 1) not in cov and seg_at(c - 1) is not None:
+                    break
                 if try_gap(flow, s, c, g1, cov):
                     new.append((c, s['para']))
                     break
@@ -312,7 +334,7 @@ def read_map():
 def ndis(seg_bytes, starts, skips):
     d = tempfile.mkdtemp()
     p = os.path.join(d, 'b.bin')
-    open(p, 'wb').write(seg_bytes)
+    open(p, 'wb').write(seg_bytes + bytes(16))     # ndisasm gives up on an instruction near the end of the file
     args = ['ndisasm', '-b', '16']
     for s in starts:
         args += ['-s', str(s)]
@@ -450,7 +472,7 @@ def analyze():
         s = next((x for x in SEGS if x['para'] == segv), None)
         if s is None:
             continue
-        lin = s['lin'] + offv
+        lin = s['base'] + offv
         if seg_at(lin) is None:
             continue
         if (segv, offv) in ptrs and (segv, offv) not in calls and not prologue_at(lin):
@@ -469,24 +491,43 @@ def analyze():
     GEN[:] = targets
     while True:
         new = linear_gaps(flow, targets)
+        if not new:
+            new = linear_gaps(flow, targets, final=True)
         for l, _ in new:
             funcs.add(l)
         if not new:
             break
-        flow.run(new)
+        flow.run(sorted(new, reverse=True))     # lowest first: an instruction running into the next frame wins
+    for l in list(funcs):
+        if l in flow.bad and l not in flow.ins:
+            funcs.discard(l)      # a gap start that turned out to be inside an instruction
+            flow.labels.pop(l, None)
     for l in funcs:
         flow.labels[l] = 'func'
     for l, k in list(flow.labels.items()):
         if k == 'func':
             funcs.add(l)
+    modules(flow)
     return flow, funcs, targets
+
+
+def modules(flow):
+    """A frame paragraph is where the linker's segment for the next module is numbered from, not where its first
+    byte is: the last instruction of the module before can run into that paragraph. Each section starts after it."""
+    for k in range(1, len(SEGS)):
+        b = SEGS[k]['base']
+        for a in range(b - 1, max(b - 16, 0), -1):
+            if a in flow.ins and a + flow.ins[a][0] > b:
+                SEGS[k]['lin'] = a + flow.ins[a][0]
+                SEGS[k - 1]['end'] = SEGS[k]['lin']
+                break
 
 
 def lname(lin, flow, funcs, known, owner=None):
     s = seg_at(lin)
     if GEN and lin not in funcs and TOK:
         return f'@{lin}@'
-    off = lin - s['lin']
+    off = lin - s['base']
     k = known.get(s['para'], {})
     if off in k:
         return k[off]
@@ -742,7 +783,7 @@ def emit(s, flow, funcs, known):
         ins = decode(it[1], s['para'])
         tgt = None
         if ins is not None and (capstone.CS_GRP_JUMP in ins.groups or ins.id == x86.X86_INS_CALL or bs[0] in (0xE0, 0xE1, 0xE2, 0xE3)) and ins.operands and ins.operands[0].type == x86.X86_OP_IMM and bs[0] not in (0x9A, 0xEA):
-            tgt = s['lin'] + (ins.operands[0].imm & 0xFFFF)
+            tgt = s['base'] + (ins.operands[0].imm & 0xFFFF)
             tname = lname(tgt, flow, funcs, known) if (seg_at(tgt) is s and can_label(tgt)) else None
             t = branch_text(bs, it[2], tname) if tname else None
             if t is None:
@@ -758,8 +799,10 @@ def emit(s, flow, funcs, known):
             if (it[1] + 3) in RELOC:
                 own = next((x for x in SEGS if x['para'] == sg), None)
                 if own is not None:
-                    tl = own['lin'] + off
-                    nm = lname(tl, flow, funcs, known) if (tl in funcs or tl in starts_set) and seg_at(tl) else None
+                    tl = own['base'] + off
+                    ts = seg_at(tl)
+                    nm = lname(tl, flow, funcs, known) if (tl in funcs or tl in starts_set) and ts and \
+                        ts['base'] == own['base'] else None
                 else:
                     nm = far_name(sg, off, known)
             it[2] = f'{mn}\t{h(sg, 4)}:{nm}' if nm else f'{mn}\t{h(sg, 4)}:{h(off)}'
@@ -803,7 +846,7 @@ def emit(s, flow, funcs, known):
             out.append('\t' + it[2] + (f'\t\t; {c}' if c else ''))
         elif it[0] == 'dw':
             v = it[2]
-            t = s['lin'] + v
+            t = s['base'] + v
             if seg_at(t) is s and t in starts_set:
                 out.append(f'\tdw\t{lname(t, flow, funcs, known)}')
             else:
@@ -834,8 +877,9 @@ def write_top():
         ent = [struct.unpack_from('<HH', d, 4 * j) for j in range(k, min(k + 4, OV['relocs']))]
         out.append('        dw ' + ', '.join(f'0x{a:04X}, 0x{b:04X}' for a, b in ent))
     prev = f'{lo}_relocs'
-    for s in OV['segments']:
-        out.append(f'section {s["name"]} follows={prev} align=16 vstart=0')
+    for k, s in enumerate(SEGS):
+        al = 16 if k == 0 else 1
+        out.append(f'section {s["name"]} follows={prev} align={al} vstart=0x{s["lin"] - s["base"]:X}')
         out.append(f'%include "{s["file"]}"')
         prev = s['name']
     open(os.path.join(ROOT, 'src', 'ovl', lo + '.asm'), 'w').write('\n'.join(out) + '\n')

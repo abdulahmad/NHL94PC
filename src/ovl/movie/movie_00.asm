@@ -57,28 +57,28 @@ Movie_3349_006E:
 	mov	[bp - 0x6], ax
 	mov	[bp - 0x4], dx
 	mov	word [bp - 0x2], 0x0
-	jmp	short Movie_3349_0098.3
-
-Movie_3349_0098:
-	mov	al, [es:bx]
+	jmp	short .5
 .1:
+	mov	al, [es:bx]
+.2:
 	les	bx, [bp - 0x6]
 	inc	word [bp - 0x6]
 	mov	[es:bx], al
 	add	word [bp - 0xe], 0x4
 	inc	word [bp - 0x8]
+.3:
 	mov	ax, [bp - 0xa]
 	cmp	[bp - 0x8], ax
-	jnc	short .2
+	jnc	short .4
 	mov	al, [bp + 0xe]
 	les	bx, [bp - 0xe]
 	cmp	[es:bx], al
-	jnz	short Movie_3349_0098
+	jnz	short .1
 	mov	al, 0xff
-	jmp	short .1
-.2:
+	jmp	short .2
+.4:
 	inc	word [bp - 0x2]
-.3:
+.5:
 	cmp	word [bp - 0x2], 0x4
 	db	0x73, 0x19		; jnc 0xe4
 	mov	ax, [bp + 0x6]
@@ -87,4 +87,4 @@ Movie_3349_0098:
 	add	ax, strict word 0x10
 	mov	[bp - 0xe], ax
 	mov	[bp - 0xc], dx
-	db	0xC7, 0x46, 0xF8
+	mov	word [bp - 0x8], 0x0

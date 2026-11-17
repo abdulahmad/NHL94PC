@@ -1198,4 +1198,4 @@ Init_2425_0B20:
 	db	0x8B, 0xCB		; mov cx, bx
 	shr	cx, 1
 	rep	movsw
-	db	0x13
+	db	0x13, 0xC9		; adc cx, cx
