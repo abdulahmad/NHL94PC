@@ -5,7 +5,7 @@
         leave
         retf
 
-Menus_235C_000C:
+CenterTextX:
         enter 0x50, 0x0
         push di
         push si
@@ -33,7 +33,7 @@ Menus_235C_000C:
         leave
         retf
 
-Menus_235C_0042:
+RosterAlertBox:
         enter 0x18, 0x0
         push di
         push si
@@ -45,7 +45,7 @@ Menus_235C_0042:
         push word [bp + 0xc]
         push word [bp + 0xa]
         push cs
-        call Menus_235C_000C
+        call CenterTextX
         add sp, 0x4
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov ax, [bp + 0x10]
@@ -54,7 +54,7 @@ Menus_235C_0042:
         push word [bp + 0x10]
         push word [bp + 0xe]
         push cs
-        call Menus_235C_000C
+        call CenterTextX
         add sp, 0x4
         db 0x8B, 0xF8                           ; insn: mov di, ax
         db 0x3B, 0xFE                           ; insn: cmp di, si
@@ -70,7 +70,7 @@ Menus_235C_0042:
         push word [bp + 0x14]
         push word [bp + 0x12]
         push cs
-        call Menus_235C_000C
+        call CenterTextX
         add sp, 0x4
         db 0x8B, 0xF8                           ; insn: mov di, ax
         db 0x3B, 0xFE                           ; insn: cmp di, si
@@ -177,7 +177,7 @@ Menus_235C_0042:
         push word [bp - 0x12]
         push word [bp - 0xc]
         push word [bp - 0xa]
-        call 0x2047:Menus_2047_20E4
+        call 0x2047:DrawDlgFrame
         add sp, 0xa
         mov ax, 0x7d
         mov dx, 0xff
@@ -220,7 +220,7 @@ Menus_235C_0042:
         push word [bp + 0x18]
         push word [bp + 0x16]
         push cs
-        call Menus_235C_0240
+        call WaitDialogClick
         add sp, 0x4
         push word [bp - 0xe]
         push word [bp - 0x10]
@@ -239,7 +239,7 @@ Menus_235C_0042:
         retf
         db 0x90
 
-Menus_235C_0240:
+WaitDialogClick:
         enter 0x12, 0x0
         push di
         push si

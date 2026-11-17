@@ -2531,3 +2531,174 @@ Lp_2E46_000E,PickAwardWinners,Lp_2E46_000E,95 PC,high,trophy winners from the db
 Lp_2E46_06B4,ShowAwardScreens,Lp_2E46_06B4,95 PC,high,one screen per award ('sparkle'),src/ovl/lp/lp_18.asm
 Lp_2E46_1068,DrawAwardsSummary,Lp_2E46_1068,95 PC,high,'Awards Summary',src/ovl/lp/lp_18.asm
 Lp_2E46_125A,AwardsCeremony,Lp_2E46_125A,95 PC,high,'Welcome to the NHL awards presentation.',src/ovl/lp/lp_18.asm
+Menus_1E45_0000,MenuP1ControlsExh,Menus_1E45_0000,95 PC,high,controls dialog for player 1 (exhibition),src/ovl/menus/menus_00.asm
+Menus_1E45_000A,MenuP2ControlsExh,Menus_1E45_000A,95 PC,high,controls dialog for player 2 (exhibition),src/ovl/menus/menus_00.asm
+Menus_1E45_0014,ControlsDlgExh,Menus_1E45_0014,95 PC,high,exhibition controls dialog,src/ovl/menus/menus_00.asm
+Menus_1E45_00FE,MenuP1ControlsInGame,Menus_1E45_00FE,95 PC,high,"in-game controls dialog, player 1",src/ovl/menus/menus_00.asm
+Menus_1E45_0108,MenuP2ControlsInGame,Menus_1E45_0108,95 PC,high,"in-game controls dialog, player 2",src/ovl/menus/menus_00.asm
+Menus_1E45_0112,CtlSwapScoreFix,Menus_1E45_0112,95 PC,medium,swaps the scoring side when a player changes team,src/ovl/menus/menus_00.asm
+Menus_1E45_01BC,CtlSwapTeamFlag,Menus_1E45_01BC,95 PC,medium,flips a player's team flag,src/ovl/menus/menus_00.asm
+Menus_1E45_020A,ReassignCtlPlayer,Menus_1E45_020A,95 PC,medium,gives the controlled skater to the new side,src/ovl/menus/menus_00.asm
+Menus_1E45_0384,ClearCtlBlink,Menus_1E45_0384,95 PC,medium,clears the controller blink flags,src/ovl/menus/menus_00.asm
+Menus_1E45_0452,ControlsDlgInGame,Menus_1E45_0452,95 PC,high,in-game controls dialog ('BKGD' saved under it),src/ovl/menus/menus_00.asm
+Menus_1E45_0654,MenuP1ControlsPlayoff,Menus_1E45_0654,95 PC,high,"playoff controls dialog, player 1",src/ovl/menus/menus_00.asm
+Menus_1E45_065E,MenuP2ControlsPlayoff,Menus_1E45_065E,95 PC,high,"playoff controls dialog, player 2",src/ovl/menus/menus_00.asm
+Menus_1E45_0668,ControlsDlgPlayoff,Menus_1E45_0668,95 PC,high,playoff controls dialog,src/ovl/menus/menus_00.asm
+Menus_1E45_07E2,DrawControlsDlg,Menus_1E45_07E2,95 PC,high,"dialog box with both teams ('teams.db', 'player', 'dbox')",src/ovl/menus/menus_00.asm
+Menus_1E45_09F2,DrawControlsOpts,Menus_1E45_09F2,95 PC,high,the controller boxes,src/ovl/menus/menus_00.asm
+Menus_1E45_0B98,CtlDlgHitTest,Menus_1E45_0B98,95 PC,high,box under the pointer,src/ovl/menus/menus_00.asm
+Menus_1E45_0BF0,DrawCtlBoxes,Menus_1E45_0BF0,95 PC,high,highlights the chosen boxes,src/ovl/menus/menus_00.asm
+Menus_1E45_0C64,ControlsDlgLoop,Menus_1E45_0C64,95 PC,high,controls dialog input loop,src/ovl/menus/menus_00.asm
+Menus_1E45_0FD2,SetCtlTeams,Menus_1E45_0FD2,95 PC,high,applies the chosen controllers to the teams,src/ovl/menus/menus_00.asm
+Menus_1F4F_000E,CmpInt,Menus_1F4F_000E,95 PC,high,qsort comparator of two ints,src/ovl/menus/menus_01.asm
+Menus_1F4F_0034,TeamFromHiName,Menus_1F4F_0034,95 PC,high,team index from a highlight file name,src/ovl/menus/menus_01.asm
+Menus_1F4F_0086,FormatHilightDesc,Menus_1F4F_0086,95 PC,high,"'%d %d, %s vs %s, Period %d, Time %02d:%02d'",src/ovl/menus/menus_01.asm
+Menus_1F4F_00D0,SelectHilight,Menus_1F4F_00D0,95 PC,high,"'Select a team', 'Select a hilight' (.HI files)",src/ovl/menus/menus_01.asm
+Menus_1F4F_0440,ViewHilights,Menus_1F4F_0440,95 PC,high,loads and plays a saved highlight,src/ovl/menus/menus_01.asm
+Menus_1F9D_000C,TitleScreen,Menus_1F9D_000C,95 PC,high,"EA open, title movie, copyright",src/ovl/menus/menus_02.asm
+Menus_1F9D_0580,GoodnightScreen,Menus_1F9D_0580,new,high,exit screen with AnnounceGoodnight,src/ovl/menus/menus_02.asm
+Menus_2037_0000,SetSideControls,Menus_2037_0000,95 PC,high,sets the controls menu items for the human side(s),src/ovl/menus/menus_03.asm
+Menus_2047_0008,GameLineEditor,Menus_2047_0008,95 PC,high,"in-game line editor ('linedit.fnt', 'lineditp')",src/ovl/menus/menus_04.asm
+Menus_2047_013A,GameRosterCmp,Menus_2047_013A,95 PC,high,qsort comparator of roster rows,src/ovl/menus/menus_04.asm
+Menus_2047_01B2,GameLineEditorLoop,Menus_2047_01B2,95 PC,high,line editor input loop,src/ovl/menus/menus_04.asm
+Menus_2047_15C0,LineEdHitTest,Menus_2047_15C0,95 PC,medium,line slot under the pointer,src/ovl/menus/menus_04.asm
+Menus_2047_1640,LoadGameRoster,Menus_2047_1640,95 PC,high,roster of a team from the key db,src/ovl/menus/menus_04.asm
+Menus_2047_186A,DrawGameLineJerseys,Menus_2047_186A,95 PC,high,jerseys of the lines ('%c %2d %s'),src/ovl/menus/menus_04.asm
+Menus_2047_19E0,DrawLineEditorScreen,Menus_2047_19E0,95 PC,high,"plaque, line titles ('forward line 1' .. 'extra attackers')",src/ovl/menus/menus_04.asm
+Menus_2047_1F76,LoadJerseyColours,Menus_2047_1F76,95 PC,high,HOMEPALS.BIN remap for the jerseys,src/ovl/menus/menus_04.asm
+Menus_2047_20E4,DrawDlgFrame,Menus_2047_20E4,95 PC,high,bevelled dialog frame,src/ovl/menus/menus_04.asm
+Menus_2047_229A,ShadeRect,Menus_2047_229A,new,medium,darkens a rectangle pixel by pixel,src/ovl/menus/menus_04.asm
+Menus_2047_22F2,CheckGameRosterComplete,Menus_2047_22F2,95 PC,high,'Your Roster is incomplete.',src/ovl/menus/menus_04.asm
+Menus_2047_248A,PruneGameLines,Menus_2047_248A,95 PC,high,removes scratched players from the lines,src/ovl/menus/menus_04.asm
+Menus_2047_252E,MenuUseTheseLines,Menus_2047_252E,95 PC,high,menu item: use these lines,src/ovl/menus/menus_04.asm
+Menus_2047_25EE,MenuLineEdCancel,Menus_2047_25EE,95 PC,high,menu item: cancel,src/ovl/menus/menus_04.asm
+Menus_2047_25F2,MenuUseOriginalLines,Menus_2047_25F2,95 PC,high,menu item: original lines,src/ovl/menus/menus_04.asm
+Menus_2047_2706,MenuUseDefaultLines,Menus_2047_2706,95 PC,high,menu item: default lines,src/ovl/menus/menus_04.asm
+Menus_2047_281A,WriteTeamLines,Menus_2047_281A,new,medium,writes the home team's lines into the teams db,src/ovl/menus/menus_04.asm
+Menus_2047_2A60,WriteTeamLines2,Menus_2047_2A60,new,medium,writes the away team's lines into the teams db,src/ovl/menus/menus_04.asm
+Menus_2047_2C90,MenuGameShowPlayerStats,Menus_2047_2C90,95 PC,high,player stats from the line editor,src/ovl/menus/menus_04.asm
+Menus_2047_2FA0,MenuReturnToLineEditor,Menus_2047_2FA0,95 PC,high,menu item: back to the line editor,src/ovl/menus/menus_04.asm
+Menus_2047_2FA4,GameScratchPlayer,Menus_2047_2FA4,95 PC,high,scratches the selected player,src/ovl/menus/menus_04.asm
+Menus_2047_30E6,GameDressPlayer,Menus_2047_30E6,95 PC,high,dresses the selected player,src/ovl/menus/menus_04.asm
+Menus_235C_000C,CenterTextX,Menus_235C_000C,new,medium,x that centres a string in a box,src/ovl/menus/menus_05.asm
+Menus_235C_0042,RosterAlertBox,Menus_235C_0042,new,medium,'DBOX' alert with the roster message,src/ovl/menus/menus_05.asm
+Menus_235C_0240,WaitDialogClick,Menus_235C_0240,new,medium,pointer loop until a click,src/ovl/menus/menus_05.asm
+Menus_2397_0006,BlitJerseyDigit,Menus_2397_0006,95 PC,high,one jersey digit,src/ovl/menus/menus_06.asm
+Menus_2397_0040,MakeJerseyShape,Menus_2397_0040,95 PC,high,jersey with its number,src/ovl/menus/menus_06.asm
+Menus_23A3_0004,MenuOpenSaved,Menus_23A3_0004,95 PC,high,"open a saved game (gsummary.db, game.sav)",src/ovl/menus/menus_07.asm
+Menus_23A3_03FE,DrawFileDlgTabs,Menus_23A3_03FE,95 PC,high,file dialog tabs,src/ovl/menus/menus_07.asm
+Menus_23A3_04FC,CmpFileNames,Menus_23A3_04FC,95 PC,high,qsort comparator of file names,src/ovl/menus/menus_07.asm
+Menus_23A3_0516,ScanSavedGames,Menus_23A3_0516,95 PC,high,finds *.po and *.nhl saves,src/ovl/menus/menus_07.asm
+Menus_23A3_072A,PrintTextCopy,Menus_23A3_072A,95 PC,high,DrawText of a copied string,src/ovl/menus/menus_07.asm
+Menus_23A3_0766,DrawFileDlg,Menus_23A3_0766,95 PC,high,dialogbx frame,src/ovl/menus/menus_07.asm
+Menus_23A3_098C,FileDlgHitTest,Menus_23A3_098C,95 PC,high,row under the pointer,src/ovl/menus/menus_07.asm
+Menus_23A3_09E4,DrawFileDlgList,Menus_23A3_09E4,95 PC,high,list of saves,src/ovl/menus/menus_07.asm
+Menus_23A3_0D94,RunFileDlg,Menus_23A3_0D94,95 PC,high,file dialog input loop,src/ovl/menus/menus_07.asm
+Menus_23A3_121A,DeleteSavedGame,Menus_23A3_121A,95 PC,high,deletes a save and its directory,src/ovl/menus/menus_07.asm
+Menus_23A3_1518,SelectSavedFile,Menus_23A3_1518,95 PC,high,'LA  at MTL ...' line of a save,src/ovl/menus/menus_07.asm
+Menus_23A3_1778,ReadGameSettings,Menus_23A3_1778,95 PC,high,game.set of a save,src/ovl/menus/menus_07.asm
+Menus_2528_0004,MenuSoundSettings,Menus_2528_0004,95 PC,high,sound card dialog,src/ovl/menus/menus_08.asm
+Menus_2528_0050,DrawSoundCardDlg,Menus_2528_0050,95 PC,high,'sound' dbox,src/ovl/menus/menus_08.asm
+Menus_2528_00B2,DrawSoundCardOpts,Menus_2528_00B2,95 PC,high,option boxes,src/ovl/menus/menus_08.asm
+Menus_2528_016E,SoundCardHitTest,Menus_2528_016E,95 PC,high,box under the pointer,src/ovl/menus/menus_08.asm
+Menus_2528_01C6,RedrawSoundCardOpts,Menus_2528_01C6,95 PC,high,redraws the chosen boxes,src/ovl/menus/menus_08.asm
+Menus_2528_0250,SoundCardDlgLoop,Menus_2528_0250,95 PC,high,input loop,src/ovl/menus/menus_08.asm
+Menus_2528_0426,SetSoundDevice,Menus_2528_0426,95 PC,high,"loads the driver, patches and songs ('PCBEEP' .. 'MT32')",src/ovl/menus/menus_08.asm
+Menus_25DD_0006,LockerRoomScreen,Menus_25DD_0006,95 PC,high,locker room,src/ovl/menus/menus_09.asm
+Menus_25DD_006E,DrawLockerRoom,Menus_25DD_006E,95 PC,high,"lockrm background, jerseys",src/ovl/menus/menus_09.asm
+Menus_25DD_05F0,LockerHitTest,Menus_25DD_05F0,95 PC,high,item under the pointer,src/ovl/menus/menus_09.asm
+Menus_25DD_063E,DrawLockerJersey,Menus_25DD_063E,95 PC,high,'JER%sV' / 'JER%sH',src/ovl/menus/menus_09.asm
+Menus_25DD_0AC8,LockerRoomLoop,Menus_25DD_0AC8,95 PC,high,input loop,src/ovl/menus/menus_09.asm
+Menus_26D4_000E,POMenuResult4,Menus_26D4_000E,new,high,menu item returning 4,src/ovl/menus/menus_10.asm
+Menus_26D4_0012,POMenuResult1,Menus_26D4_0012,new,high,menu item returning 1,src/ovl/menus/menus_10.asm
+Menus_26D4_0016,MenuPlayoffHilights,Menus_26D4_0016,new,high,highlights from the playoff desk,src/ovl/menus/menus_10.asm
+Menus_26D4_0180,CreatePlayoffs,Menus_26D4_0180,95 PC,high,'Please Enter New Play-Off Name',src/ovl/menus/menus_10.asm
+Menus_26D4_08CC,POSeedTeams,Menus_26D4_08CC,95 PC,medium,seeds the playoff teams,src/ovl/menus/menus_10.asm
+Menus_26D4_0B92,POPickConfTeams,Menus_26D4_0B92,95 PC,medium,picks each conference's teams,src/ovl/menus/menus_10.asm
+Menus_26D4_0D3A,POCreateSchedule,Menus_26D4_0D3A,95 PC,high,writes schedule.db,src/ovl/menus/menus_10.asm
+Menus_26D4_0F72,POSetSeriesTeams,Menus_26D4_0F72,95 PC,high,sets a series' two teams,src/ovl/menus/menus_10.asm
+Menus_26D4_0FEA,POInitSchedule,Menus_26D4_0FEA,95 PC,high,empty playoff schedule,src/ovl/menus/menus_10.asm
+Menus_26D4_1226,SeriesWinner,Menus_26D4_1226,95 PC,high,winner of a series,src/ovl/menus/menus_10.asm
+Menus_26D4_12BA,POSeriesScore,Menus_26D4_12BA,95 PC,medium,wins of each team in a series,src/ovl/menus/menus_10.asm
+Menus_26D4_1334,POSeedRound2,Menus_26D4_1334,95 PC,high,second round,src/ovl/menus/menus_10.asm
+Menus_26D4_164A,POSeedConfFinals,Menus_26D4_164A,95 PC,high,conference finals,src/ovl/menus/menus_10.asm
+Menus_26D4_1826,POSeedFinal,Menus_26D4_1826,95 PC,high,final,src/ovl/menus/menus_10.asm
+Menus_26D4_192E,POSimSeriesTeamWins,Menus_26D4_192E,95 PC,medium,simulates until a team has its wins,src/ovl/menus/menus_10.asm
+Menus_26D4_1A6C,POSimSeries,Menus_26D4_1A6C,95 PC,medium,simulates a series,src/ovl/menus/menus_10.asm
+Menus_26D4_1BB8,POPreSimRound1,Menus_26D4_1BB8,95 PC,medium,simulates round 1 series without humans,src/ovl/menus/menus_10.asm
+Menus_26D4_1C26,POPreSimRound2,Menus_26D4_1C26,95 PC,medium,same for round 2,src/ovl/menus/menus_10.asm
+Menus_26D4_1C94,POPreSimConfFinals,Menus_26D4_1C94,95 PC,medium,same for the conference finals,src/ovl/menus/menus_10.asm
+Menus_26D4_1D02,POHandleElimination,Menus_26D4_1D02,95 PC,high,human team eliminated,src/ovl/menus/menus_10.asm
+Menus_26D4_2112,POAfterGame,Menus_26D4_2112,95 PC,high,after a playoff game,src/ovl/menus/menus_10.asm
+Menus_26D4_29F2,LoadScheduleDB,Menus_26D4_29F2,95 PC,high,loads schedule.db,src/ovl/menus/menus_10.asm
+Menus_26D4_2A34,SaveScheduleDB,Menus_26D4_2A34,95 PC,high,writes schedule.db,src/ovl/menus/menus_10.asm
+Menus_26D4_2A80,PlayoffModeLoop,Menus_26D4_2A80,95 PC,high,playoff desk loop,src/ovl/menus/menus_10.asm
+Menus_26D4_35E8,PORestoreSlot,Menus_26D4_35E8,new,medium,puts back the block under a tree slot,src/ovl/menus/menus_10.asm
+Menus_26D4_365E,POHiliteSlot,Menus_26D4_365E,95 PC,high,XOR box on a tree slot,src/ovl/menus/menus_10.asm
+Menus_26D4_373C,PlayoffTreeMenu,Menus_26D4_373C,95 PC,high,playoff tree input loop,src/ovl/menus/menus_10.asm
+Menus_26D4_4146,DrawPlayoffTree,Menus_26D4_4146,95 PC,high,'Playoff standings',src/ovl/menus/menus_10.asm
+Menus_2B11_000C,DrawSettingsHeading,Menus_2B11_000C,95 PC,high,'Exhibition' / 'Playoff' / 'League',src/ovl/menus/menus_11.asm
+Menus_2B11_00A8,SetModeMenuLabels,Menus_2B11_00A8,95 PC,high,'... Settings ...' menu labels,src/ovl/menus/menus_11.asm
+Menus_2B26_0000,LeagueSettingsDlg,Menus_2B26_0000,95 PC,medium,league settings dialog,src/ovl/menus/menus_12.asm
+Menus_2B26_0052,MenuLeagueSettingsEdit,Menus_2B26_0052,95 PC,medium,"league settings, editable",src/ovl/menus/menus_12.asm
+Menus_2B26_0112,EditPlayoffSettings,Menus_2B26_0112,95 PC,medium,"playoff settings, writes game.set",src/ovl/menus/menus_12.asm
+Menus_2B26_019C,MenuShowLeagueSettings,Menus_2B26_019C,95 PC,medium,"league settings, view",src/ovl/menus/menus_12.asm
+Menus_2B26_02B0,MenuShowLeagueSettings2,Menus_2B26_02B0,95 PC,medium,"same, view loop",src/ovl/menus/menus_12.asm
+Menus_2B26_03C4,DrawLeagueSetDlgSel,Menus_2B26_03C4,95 PC,high,'setting5' dbox,src/ovl/menus/menus_12.asm
+Menus_2B26_0530,SetLeagueSetImage,Menus_2B26_0530,95 PC,high,embnhl / setting5 / setting3 images,src/ovl/menus/menus_12.asm
+Menus_2B26_0696,DrawLeagueSetDlg,Menus_2B26_0696,95 PC,high,'setting3' dbox,src/ovl/menus/menus_12.asm
+Menus_2B26_07B4,DrawLeagueSetChecks,Menus_2B26_07B4,95 PC,medium,all check boxes,src/ovl/menus/menus_12.asm
+Menus_2B26_091A,LeagueOptsToBits,Menus_2B26_091A,95 PC,medium,option index to its flag bits,src/ovl/menus/menus_12.asm
+Menus_2B26_09D8,DrawLeagueSetCheck,Menus_2B26_09D8,new,medium,one check box,src/ovl/menus/menus_12.asm
+Menus_2B26_0AB8,LeagueSetViewLoop,Menus_2B26_0AB8,95 PC,high,view-only loop,src/ovl/menus/menus_12.asm
+Menus_2B26_0BC4,LeagueSetEditLoop,Menus_2B26_0BC4,95 PC,high,edit loop,src/ovl/menus/menus_12.asm
+Menus_2C1E_0004,MenuModeSettings,Menus_2C1E_0004,95 PC,high,game mode settings dialog,src/ovl/menus/menus_13.asm
+Menus_2C1E_015C,DrawModeSetDlg,Menus_2C1E_015C,95 PC,high,'setting7' / 'setting4' dbox,src/ovl/menus/menus_13.asm
+Menus_2C1E_0222,DrawModeSetChecks,Menus_2C1E_0222,95 PC,high,all check boxes,src/ovl/menus/menus_13.asm
+Menus_2C1E_0340,ModeSetHitTest,Menus_2C1E_0340,95 PC,high,box under the pointer,src/ovl/menus/menus_13.asm
+Menus_2C1E_03C4,DrawModeSetCheck,Menus_2C1E_03C4,new,medium,one check box,src/ovl/menus/menus_13.asm
+Menus_2C1E_0464,ModeSetViewLoop,Menus_2C1E_0464,95 PC,high,view-only loop,src/ovl/menus/menus_13.asm
+Menus_2C1E_0570,ModeSetEditLoop,Menus_2C1E_0570,95 PC,high,edit loop,src/ovl/menus/menus_13.asm
+Menus_2CAA_0008,MenuExhibitionSettings,Menus_2CAA_0008,95 PC,high,exhibition settings dialog,src/ovl/menus/menus_14.asm
+Menus_2CAA_0056,DrawExhSetDlg,Menus_2CAA_0056,95 PC,high,'setting6' dbox,src/ovl/menus/menus_14.asm
+Menus_2CAA_0108,ExhSetHitTest,Menus_2CAA_0108,95 PC,high,box under the pointer,src/ovl/menus/menus_14.asm
+Menus_2CAA_018C,ExhSetEditLoop,Menus_2CAA_018C,95 PC,high,edit loop,src/ovl/menus/menus_14.asm
+Menus_2CF8_000E,SportsDesk,Menus_2CF8_000E,95 PC,high,the in-game desk ('eadesk%1d'),src/ovl/menus/menus_15.asm
+Menus_2CF8_0E04,DeskReloadGame,Menus_2CF8_0E04,95 PC,medium,reloads crests and team palettes after the desk,src/ovl/menus/menus_15.asm
+Menus_2CF8_0F98,DeskBackToGame,Menus_2CF8_0F98,95 PC,high,menu item: back to the game,src/ovl/menus/menus_15.asm
+Menus_2CF8_0FB2,DeskToSportsDesk,Menus_2CF8_0FB2,95 PC,medium,menu item: to the sports desk,src/ovl/menus/menus_15.asm
+Menus_2CF8_0FCE,DeskReturnConfirm,Menus_2CF8_0FCE,95 PC,high,confirmation box,src/ovl/menus/menus_15.asm
+Menus_2CF8_10A4,DeskExitGame,Menus_2CF8_10A4,95 PC,high,quits to DOS,src/ovl/menus/menus_15.asm
+Menus_2CF8_1206,DeskGoToReplay,Menus_2CF8_1206,95 PC,high,instant replay,src/ovl/menus/menus_15.asm
+Menus_2CF8_12AA,DeskHomeLines,Menus_2CF8_12AA,95 PC,high,home line editor,src/ovl/menus/menus_15.asm
+Menus_2CF8_1388,DeskVisitorLines,Menus_2CF8_1388,95 PC,high,visitor line editor,src/ovl/menus/menus_15.asm
+Menus_2CF8_1466,DeskGameStats,Menus_2CF8_1466,95 PC,high,team stats screen,src/ovl/menus/menus_15.asm
+Menus_2CF8_14D4,DeskPenaltySummary,Menus_2CF8_14D4,95 PC,high,penalty summary,src/ovl/menus/menus_15.asm
+Menus_2CF8_1550,DeskScoringSummary,Menus_2CF8_1550,95 PC,high,scoring summary,src/ovl/menus/menus_15.asm
+Menus_2CF8_15CC,DeskTeamScratches,Menus_2CF8_15CC,95 PC,medium,game summary page,src/ovl/menus/menus_15.asm
+Menus_2CF8_1646,DeskHomeGoalie1,Menus_2CF8_1646,95 PC,high,home goalie 1,src/ovl/menus/menus_15.asm
+Menus_2CF8_167C,DeskHomeGoalie2,Menus_2CF8_167C,95 PC,high,home goalie 2,src/ovl/menus/menus_15.asm
+Menus_2CF8_16B2,DeskHomeGoalieNone,Menus_2CF8_16B2,95 PC,high,pull the home goalie,src/ovl/menus/menus_15.asm
+Menus_2CF8_16E8,DeskAwayGoalie1,Menus_2CF8_16E8,95 PC,high,away goalie 1,src/ovl/menus/menus_15.asm
+Menus_2CF8_171E,DeskAwayGoalie2,Menus_2CF8_171E,95 PC,high,away goalie 2,src/ovl/menus/menus_15.asm
+Menus_2CF8_1754,DeskAwayGoalieNone,Menus_2CF8_1754,95 PC,high,pull the away goalie,src/ovl/menus/menus_15.asm
+Menus_2E70_000A,MainDeskLoop,Menus_2E70_000A,95 PC,high,the main EASN desk,src/ovl/menus/menus_16.asm
+Menus_2E70_0964,MenuExit,Menus_2E70_0964,95 PC,high,menu item: exit,src/ovl/menus/menus_16.asm
+Menus_2E70_0968,SaveModeState,Menus_2E70_0968,95 PC,high,copies the mode settings out,src/ovl/menus/menus_16.asm
+Menus_2E70_09FE,LoadModeState,Menus_2E70_09FE,95 PC,high,copies them back and applies them,src/ovl/menus/menus_16.asm
+Menus_2E70_0D0A,WriteModeState,Menus_2E70_0D0A,95 PC,high,writes game.set,src/ovl/menus/menus_16.asm
+Menus_2E70_0E36,CopyGameSettings,Menus_2E70_0E36,95 PC,high,copies a game.set,src/ovl/menus/menus_16.asm
+Menus_2E70_0F22,MenuNewExhibition,Menus_2E70_0F22,95 PC,high,new exhibition game,src/ovl/menus/menus_16.asm
+Menus_2E70_11EC,MenuNewLeague,Menus_2E70_11EC,95 PC,high,new league,src/ovl/menus/menus_16.asm
+Menus_2E70_144A,MenuAddTeam,Menus_2E70_144A,95 PC,high,add a human team,src/ovl/menus/menus_16.asm
+Menus_2E70_1594,MenuRemoveTeam,Menus_2E70_1594,95 PC,high,remove a human team,src/ovl/menus/menus_16.asm
+Menus_2E70_16DE,MenuLeagueSettings,Menus_2E70_16DE,95 PC,high,league settings,src/ovl/menus/menus_16.asm
+Menus_2E70_18A6,MenuRebuildDbs,Menus_2E70_18A6,95 PC,high,rebuild the league dbs,src/ovl/menus/menus_16.asm
+Menus_2E70_18E2,MenuMergeUpdateDbs,Menus_2E70_18E2,95 PC,high,merge update dbs,src/ovl/menus/menus_16.asm
+Menus_2E70_1A26,MenuMergeLeagueFiles,Menus_2E70_1A26,95 PC,high,merge league files,src/ovl/menus/menus_16.asm
+Menus_2E70_1B6A,MenuUpdateTeamDbs,Menus_2E70_1B6A,95 PC,high,update team dbs,src/ovl/menus/menus_16.asm
+Menus_2E70_1BA6,MenuTradePlayers,Menus_2E70_1BA6,95 PC,high,trade players,src/ovl/menus/menus_16.asm
+Menus_2E70_1CF0,MenuNextLeagueGame,Menus_2E70_1CF0,95 PC,high,next league game,src/ovl/menus/menus_16.asm
+Menus_2E70_1EEC,MenuLeagueHilights,Menus_2E70_1EEC,95 PC,high,league highlights,src/ovl/menus/menus_16.asm
+Menus_2E70_2054,MenuImportDbs,Menus_2E70_2054,95 PC,high,import dbs,src/ovl/menus/menus_16.asm
+Menus_2E70_2090,MenuExportDbs,Menus_2E70_2090,95 PC,high,export dbs,src/ovl/menus/menus_16.asm

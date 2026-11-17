@@ -2,12 +2,12 @@
 SegStart_010A0:
         mov word [g_01BE], 0x1
 .1:
-        call 0x2037:Menus_2037_0000
+        call 0x2037:SetSideControls
         leave
         retf
         db 0x90
 
-Menus_1F4F_000E:
+CmpInt:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -32,7 +32,7 @@ Menus_1F4F_000E:
         leave
         retf
 
-Menus_1F4F_0034:
+TeamFromHiName:
         enter 0x4, 0x0
         push di
         push si
@@ -70,7 +70,7 @@ Menus_1F4F_0034:
         retf
         db 0x90
 
-Menus_1F4F_0086:
+FormatHilightDesc:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push si
@@ -100,7 +100,7 @@ Menus_1F4F_0086:
         leave
         retf
 
-Menus_1F4F_00D0:
+SelectHilight:
         enter 0x18e, 0x0
         push di
         push si
@@ -129,7 +129,7 @@ Menus_1F4F_00D0:
         lea ax, [bp - 0x46]
         push ax
         push cs
-        call Menus_1F4F_0034
+        call TeamFromHiName
         add sp, 0x2
         mov [bp - 0x94], ax
         db 0x8B, 0xD8                           ; insn: mov bx, ax
@@ -150,7 +150,7 @@ Menus_1F4F_00D0:
         lea ax, [bp - 0x46]
         push ax
         push cs
-        call Menus_1F4F_0034
+        call TeamFromHiName
         add sp, 0x2
         inc di
         inc di
@@ -166,7 +166,7 @@ Menus_1F4F_00D0:
         jmp near .22
 .4:
         push word 0x1f4f
-        push strict word Menus_1F4F_000E
+        push strict word CmpInt
         push 0x2
         push si
         lea ax, [bp - 0x94]
@@ -359,7 +359,7 @@ Menus_1F4F_00D0:
         lea ax, [bp - 0x12a]
         push ax
         push cs
-        call Menus_1F4F_0086
+        call FormatHilightDesc
         add sp, 0x6
         lea ax, [bp - 0x12a]
         push ss
@@ -462,7 +462,7 @@ Menus_1F4F_00D0:
         retf
         db 0x90
 
-Menus_1F4F_0440:
+ViewHilights:
         enter 0x32, 0x0
         push si
         mov word [bp - 0x2], 0xffff
@@ -482,7 +482,7 @@ Menus_1F4F_0440:
         lea ax, [bp - 0x12]
         push ax
         push cs
-        call Menus_1F4F_00D0
+        call SelectHilight
         add sp, 0xc
         db 0x8B, 0xF0                           ; insn: mov si, ax
         db 0x0B, 0xF6                           ; insn: or si, si

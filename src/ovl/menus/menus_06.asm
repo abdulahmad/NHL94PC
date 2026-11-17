@@ -5,7 +5,7 @@
         retf
         db 0x90
 
-Menus_2397_0006:
+BlitJerseyDigit:
         enter 0x2, 0x0
         push di
         push si
@@ -35,7 +35,7 @@ Menus_2397_0006:
         retf
         db 0x90
 
-Menus_2397_0040:
+MakeJerseyShape:
         enter 0x4, 0x0
         push di
         push si
@@ -78,7 +78,7 @@ Menus_2397_0040:
         mov [bp - 0x4], di
         mov [bp - 0x2], ax
         push cs
-        call Menus_2397_0006
+        call BlitJerseyDigit
         add sp, 0xa
         mov al, [bp + 0xe]
         push ax
@@ -96,5 +96,5 @@ Menus_2397_0040:
 .3:
         push ax
         push cs
-        call Menus_2397_0006
+        call BlitJerseyDigit
         add sp, 0xa

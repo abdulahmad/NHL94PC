@@ -7,7 +7,7 @@ SegStart_01587:
         leave
         retf
 
-Menus_1F9D_000C:
+TitleScreen:
         enter 0x35a, 0x0
         push di
         push si
@@ -507,7 +507,7 @@ Menus_1F9D_000C:
         leave
         retf
 
-Menus_1F9D_0580:
+GoodnightScreen:
         enter 0x76, 0x0
         push si
         call 0x0EDC:LoadStudioSpeech

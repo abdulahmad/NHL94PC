@@ -6,15 +6,15 @@ SegStart_0E652:
         retf
         db 0x90
 
-Menus_2CAA_0008:
+MenuExhibitionSettings:
         push word 0x3f00
         push word 0xbd00
         push word 0x7e00
         call 0x0000:VgaCopyBytes
         add sp, 0x6
         push cs
-        call Menus_2CAA_0056
-        call 0x2B26:Menus_2B26_07B4
+        call DrawExhSetDlg
+        call 0x2B26:DrawLeagueSetChecks
         call 0x0FEF:CopyPlane
         push word 0x3f00
         push word 0x3f00
@@ -23,7 +23,7 @@ Menus_2CAA_0008:
         add sp, 0x6
         call 0x0FEF:CopyPlane
         push cs
-        call Menus_2CAA_018C
+        call ExhSetEditLoop
         push word 0x3f00
         push word 0x7e00
         push word 0xbd00
@@ -33,7 +33,7 @@ Menus_2CAA_0008:
         retf
         db 0x90
 
-Menus_2CAA_0056:
+DrawExhSetDlg:
         enter 0x10e, 0x0
         push di
         push si
@@ -104,14 +104,14 @@ Menus_2CAA_0056:
         push 0x6
         push 0xa
         push 0xa
-        call 0x2B11:Menus_2B11_000C
+        call 0x2B11:DrawSettingsHeading
         add sp, 0xa
         pop si
         pop di
         leave
         retf
 
-Menus_2CAA_0108:
+ExhSetHitTest:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -176,7 +176,7 @@ Menus_2CAA_0108:
         retf
         db 0x90
 
-Menus_2CAA_018C:
+ExhSetEditLoop:
         enter 0xc, 0x0
         push si
         lea ax, [bp - 0x2]
@@ -319,7 +319,7 @@ Menus_2CAA_018C:
         push word [bp - 0x8]
         push word [bp - 0x6]
         push cs
-        call Menus_2CAA_0108
+        call ExhSetHitTest
         add sp, 0x6
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .17
@@ -364,7 +364,7 @@ Menus_2CAA_018C:
         db 0x0B, 0xC1                           ; insn: or ax, cx
         mov [g_B35E], ax
 .16:
-        call 0x2B26:Menus_2B26_09D8
+        call 0x2B26:DrawLeagueSetCheck
 .17:
         call 0x0FEF:UseCurrentPage
         jmp near .8

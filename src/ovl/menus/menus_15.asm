@@ -8,7 +8,7 @@ SegStart_0EB33:
         retf
         db 0x90
 
-Menus_2CF8_000E:
+SportsDesk:
         enter 0x39e, 0x0
         push di
         push si
@@ -17,7 +17,7 @@ Menus_2CF8_000E:
         mov [bp - 0x70], ax
         mov word [bp - 0x4], 0x3e8
         push word [DbSaveMode]
-        call 0x2B11:Menus_2B11_00A8
+        call 0x2B11:SetModeMenuLabels
         add sp, 0x2
         mov ax, [bp + 0x6]
         add ax, strict word 0x3
@@ -35,7 +35,7 @@ Menus_2CF8_000E:
         db 0x90
 .1:
         mov es, [g_8B60]
-        mov word [es:0x119c], strict word Menus_2CF8_1206
+        mov word [es:0x119c], strict word DeskGoToReplay
         mov word [es:0x119e], 0x2cf8
 .2:
         lea ax, [bp - 0x76]
@@ -1237,7 +1237,7 @@ Menus_2CF8_000E:
         mov ax, [bp - 0x52]
         jmp near .26
 
-Menus_2CF8_0E04:
+DeskReloadGame:
         enter 0x1a0, 0x0
         push di
         push si
@@ -1383,7 +1383,7 @@ Menus_2CF8_0E04:
         retf
         db 0x90
 
-Menus_2CF8_0F98:
+DeskBackToGame:
         call 0x1B35:OvlThunk144
         call 0x1B35:OvlThunk143
         call 0x1B35:OvlThunk142
@@ -1393,7 +1393,7 @@ Menus_2CF8_0F98:
         retf
         db 0x90
 
-Menus_2CF8_0FB2:
+DeskToSportsDesk:
         call 0x1B35:OvlThunk144
         call 0x1B35:OvlThunk143
         call 0x1B35:OvlThunk142
@@ -1403,7 +1403,7 @@ Menus_2CF8_0FB2:
         mov ax, 0x5
         retf
 
-Menus_2CF8_0FCE:
+DeskReturnConfirm:
         enter 0x6, 0x0
         lea ax, [bp - 0x2]
         push ax
@@ -1481,7 +1481,7 @@ Menus_2CF8_0FCE:
         retf
         db 0x90
 
-Menus_2CF8_10A4:
+DeskExitGame:
         enter 0x30a, 0x0
         lea ax, [bp - 0x2]
         push ax
@@ -1584,7 +1584,7 @@ Menus_2CF8_10A4:
         jz short .3
         call 0x0FEF:CopyPlane
 .3:
-        call 0x1F9D:Menus_1F9D_0580
+        call 0x1F9D:GoodnightScreen
         lea ax, [bp - 0x306]
         push ss
         push ax
@@ -1604,7 +1604,7 @@ Menus_2CF8_10A4:
         retf
         db 0x90
 
-Menus_2CF8_1206:
+DeskGoToReplay:
         enter 0x2, 0x0
         call 0x1B35:OvlThunk142
         call 0x1B35:OvlThunk143
@@ -1664,7 +1664,7 @@ Menus_2CF8_1206:
         retf
         db 0x90
 
-Menus_2CF8_12AA:
+DeskHomeLines:
         push di
         push si
         push 0x0
@@ -1707,7 +1707,7 @@ Menus_2CF8_12AA:
         push strict word f_3448_1584
         push word 0xae10
         push 0x0
-        call 0x2047:Menus_2047_0008
+        call 0x2047:GameLineEditor
         add sp, 0xa
         push 0x0
         push 0x0
@@ -1750,7 +1750,7 @@ Menus_2CF8_12AA:
         retf
         db 0x90
 
-Menus_2CF8_1388:
+DeskVisitorLines:
         push di
         push si
         push 0x0
@@ -1793,7 +1793,7 @@ Menus_2CF8_1388:
         push strict word f_3448_1584
         push word 0xae40
         push 0x1
-        call 0x2047:Menus_2047_0008
+        call 0x2047:GameLineEditor
         add sp, 0xa
         push 0x0
         push 0x0
@@ -1836,7 +1836,7 @@ Menus_2CF8_1388:
         retf
         db 0x90
 
-Menus_2CF8_1466:
+DeskGameStats:
         push di
         push si
         push 0x0
@@ -1879,7 +1879,7 @@ Menus_2CF8_1466:
         pop di
         retf
 
-Menus_2CF8_14D4:
+DeskPenaltySummary:
         push di
         push si
         push 0x0
@@ -1928,7 +1928,7 @@ Menus_2CF8_14D4:
         retf
         db 0x90
 
-Menus_2CF8_1550:
+DeskScoringSummary:
         push di
         push si
         push 0x0
@@ -1977,7 +1977,7 @@ Menus_2CF8_1550:
         retf
         db 0x90
 
-Menus_2CF8_15CC:
+DeskTeamScratches:
         push di
         push si
         push 0x0
@@ -2026,7 +2026,7 @@ Menus_2CF8_15CC:
         retf
         db 0x90
 
-Menus_2CF8_1646:
+DeskHomeGoalie1:
         push 0x0
         push 0x0
         call 0x1B35:OvlThunk148
@@ -2043,7 +2043,7 @@ Menus_2CF8_1646:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         retf
 
-Menus_2CF8_167C:
+DeskHomeGoalie2:
         push 0x1
         push 0x0
         call 0x1B35:OvlThunk148
@@ -2060,7 +2060,7 @@ Menus_2CF8_167C:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         retf
 
-Menus_2CF8_16B2:
+DeskHomeGoalieNone:
         push -0x1
         push 0x0
         call 0x1B35:OvlThunk148
@@ -2077,7 +2077,7 @@ Menus_2CF8_16B2:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         retf
 
-Menus_2CF8_16E8:
+DeskAwayGoalie1:
         push 0x0
         push 0x1
         call 0x1B35:OvlThunk148
@@ -2094,7 +2094,7 @@ Menus_2CF8_16E8:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         retf
 
-Menus_2CF8_171E:
+DeskAwayGoalie2:
         push 0x1
         push 0x1
         call 0x1B35:OvlThunk148
@@ -2111,7 +2111,7 @@ Menus_2CF8_171E:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         retf
 
-Menus_2CF8_1754:
+DeskAwayGoalieNone:
         push -0x1
         push 0x1
         call 0x1B35:OvlThunk148

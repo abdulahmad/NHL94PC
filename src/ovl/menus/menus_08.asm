@@ -4,16 +4,16 @@
         leave
         retf
 
-Menus_2528_0004:
+MenuSoundSettings:
         push word 0x3f00
         push word 0xbd00
         push word 0x7e00
         call 0x0000:VgaCopyBytes
         add sp, 0x6
         push cs
-        call Menus_2528_0050
+        call DrawSoundCardDlg
         push cs
-        call Menus_2528_00B2
+        call DrawSoundCardOpts
         call 0x0FEF:CopyPlane
         push word 0x3f00
         push word 0x3f00
@@ -22,7 +22,7 @@ Menus_2528_0004:
         add sp, 0x6
         call 0x0FEF:CopyPlane
         push cs
-        call Menus_2528_0250
+        call SoundCardDlgLoop
         push word 0x3f00
         push word 0x7e00
         push word 0xbd00
@@ -31,7 +31,7 @@ Menus_2528_0004:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         retf
 
-Menus_2528_0050:
+DrawSoundCardDlg:
         enter 0xe, 0x0
         push di
         push si
@@ -75,7 +75,7 @@ Menus_2528_0050:
         retf
         db 0x90
 
-Menus_2528_00B2:
+DrawSoundCardOpts:
         enter 0x48, 0x0
         push si
         lea ax, [bp - 0x48]
@@ -159,7 +159,7 @@ Menus_2528_00B2:
         retf
         db 0x90
 
-Menus_2528_016E:
+SoundCardHitTest:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -205,7 +205,7 @@ Menus_2528_016E:
         retf
         db 0x90
 
-Menus_2528_01C6:
+RedrawSoundCardOpts:
         enter 0x48, 0x0
         push di
         push si
@@ -268,7 +268,7 @@ Menus_2528_01C6:
         retf
         db 0x90
 
-Menus_2528_0250:
+SoundCardDlgLoop:
         enter 0xc, 0x0
         push si
         lea ax, [bp - 0x8]
@@ -387,7 +387,7 @@ Menus_2528_0250:
         push word [bp - 0x4]
         push word [bp - 0x2]
         push cs
-        call Menus_2528_016E
+        call SoundCardHitTest
         add sp, 0x6
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .13
@@ -433,7 +433,7 @@ Menus_2528_0250:
         add sp, 0xa
         push word [g_B35E]
         push cs
-        call Menus_2528_0426
+        call SetSoundDevice
         add sp, 0x2
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .16
@@ -444,7 +444,7 @@ Menus_2528_0250:
         mov [g_B35E], ax
 .12:
         push cs
-        call Menus_2528_01C6
+        call RedrawSoundCardOpts
 .13:
         call 0x0FEF:UseCurrentPage
         jmp near .5
@@ -467,7 +467,7 @@ Menus_2528_0250:
         retf
         db 0x90
 
-Menus_2528_0426:
+SetSoundDevice:
         enter 0x66, 0x0
         push di
         push si

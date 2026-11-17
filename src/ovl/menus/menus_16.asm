@@ -3,7 +3,7 @@
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         retf
 
-Menus_2E70_000A:
+MainDeskLoop:
         enter 0x96, 0x0
         push di
         push si
@@ -68,7 +68,7 @@ Menus_2E70_000A:
         call 0x03A3:MouseMove
         add sp, 0x4
         call far [MousePosFn]
-        call 0x2037:Menus_2037_0000
+        call 0x2037:SetSideControls
         push 0x0
         call 0x1B35:OvlThunk116
         add sp, 0x2
@@ -838,11 +838,11 @@ Menus_2E70_000A:
         jmp near .8
         db 0x90
 
-Menus_2E70_0964:
+MenuExit:
         mov ax, 0x1
         retf
 
-Menus_2E70_0968:
+SaveModeState:
         enter 0x4, 0x0
         push si
         mov si, [bp + 0x6]
@@ -898,7 +898,7 @@ Menus_2E70_0968:
         leave
         retf
 
-Menus_2E70_09FE:
+LoadModeState:
         enter 0xa, 0x0
         push di
         push si
@@ -1123,7 +1123,7 @@ Menus_2E70_09FE:
 .30:
         call 0x16F2:SfxOff
 .31:
-        call 0x2037:Menus_2037_0000
+        call 0x2037:SetSideControls
         cmp word [DbSaveMode], 0x0
         jz short .32
         jmp near .40
@@ -1208,7 +1208,7 @@ Menus_2E70_09FE:
         retf
         db 0x90
 
-Menus_2E70_0D0A:
+WriteModeState:
         enter 0x22, 0x0
         push di
         push si
@@ -1328,7 +1328,7 @@ Menus_2E70_0D0A:
         retf
         db 0x90
 
-Menus_2E70_0E36:
+CopyGameSettings:
         enter 0xc6, 0x0
         push di
         push si
@@ -1436,7 +1436,7 @@ Menus_2E70_0E36:
         leave
         retf
 
-Menus_2E70_0F22:
+MenuNewExhibition:
         enter 0x16, 0x0
         push di
         push si
@@ -1676,14 +1676,14 @@ Menus_2E70_0F22:
         retf
         db 0x90
 
-Menus_2E70_11EC:
+MenuNewLeague:
         enter 0x14, 0x0
         push di
         push si
         push word 0x3415
         push strict word f_3415_0000
         push cs
-        call Menus_2E70_0968
+        call SaveModeState
         add sp, 0x4
         mov es, [g_8B78]
         mov word [es:0xc4], 0x2
@@ -1737,10 +1737,10 @@ Menus_2E70_11EC:
         push es
         push word 0xc4
         push cs
-        call Menus_2E70_09FE
+        call LoadModeState
         add sp, 0x4
         push 0x0
-        call 0x2B26:Menus_2B26_0530
+        call 0x2B26:SetLeagueSetImage
         add sp, 0x2
         call 0x1B35:OvlThunk151
         mov es, [g_8B78]
@@ -1775,7 +1775,7 @@ Menus_2E70_11EC:
         push word 0x3415
         push strict word f_3415_0000
         push cs
-        call Menus_2E70_09FE
+        call LoadModeState
         add sp, 0x4
         push 0x0
         push 0x0
@@ -1871,19 +1871,19 @@ Menus_2E70_11EC:
         leave
         retf
 
-Menus_2E70_144A:
+MenuAddTeam:
         enter 0x14, 0x0
         push di
         push si
         push word 0x3415
         push strict word f_3415_0000
         push cs
-        call Menus_2E70_0968
+        call SaveModeState
         add sp, 0x4
         push word 0x3415
         push strict word f_3415_00C4
         push cs
-        call Menus_2E70_09FE
+        call LoadModeState
         add sp, 0x4
         push 0x3
         call 0x1B35:OvlThunk116
@@ -1895,12 +1895,12 @@ Menus_2E70_144A:
         push word 0x3415
         push strict word f_3415_00C4
         push cs
-        call Menus_2E70_0968
+        call SaveModeState
         add sp, 0x4
         push word 0x3415
         push strict word f_3415_0000
         push cs
-        call Menus_2E70_09FE
+        call LoadModeState
         add sp, 0x4
         push 0x0
         push 0x0
@@ -1997,19 +1997,19 @@ Menus_2E70_144A:
         retf
         db 0x90
 
-Menus_2E70_1594:
+MenuRemoveTeam:
         enter 0x14, 0x0
         push di
         push si
         push word 0x3415
         push strict word f_3415_0000
         push cs
-        call Menus_2E70_0968
+        call SaveModeState
         add sp, 0x4
         push word 0x3415
         push strict word f_3415_00C4
         push cs
-        call Menus_2E70_09FE
+        call LoadModeState
         add sp, 0x4
         push 0x3
         call 0x1B35:OvlThunk116
@@ -2021,12 +2021,12 @@ Menus_2E70_1594:
         push word 0x3415
         push strict word f_3415_00C4
         push cs
-        call Menus_2E70_0968
+        call SaveModeState
         add sp, 0x4
         push word 0x3415
         push strict word f_3415_0000
         push cs
-        call Menus_2E70_09FE
+        call LoadModeState
         add sp, 0x4
         push 0x0
         push 0x0
@@ -2123,7 +2123,7 @@ Menus_2E70_1594:
         retf
         db 0x90
 
-Menus_2E70_16DE:
+MenuLeagueSettings:
         enter 0x24, 0x0
         push di
         push si
@@ -2131,12 +2131,12 @@ Menus_2E70_16DE:
         push word 0x3415
         push strict word f_3415_0000
         push cs
-        call Menus_2E70_0968
+        call SaveModeState
         add sp, 0x4
         push word 0x3415
         push strict word f_3415_00C4
         push cs
-        call Menus_2E70_09FE
+        call LoadModeState
         add sp, 0x4
         call 0x1B35:OvlThunk154
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -2277,17 +2277,17 @@ Menus_2E70_16DE:
 .4:
         db 0x0B, 0xF6                           ; insn: or si, si
         jz short .5
-        call 0x2B26:Menus_2B26_0000
+        call 0x2B26:LeagueSettingsDlg
 .5:
         push word 0x3415
         push strict word f_3415_00C4
         push cs
-        call Menus_2E70_0968
+        call SaveModeState
         add sp, 0x4
         push word 0x3415
         push strict word f_3415_0000
         push cs
-        call Menus_2E70_09FE
+        call LoadModeState
         add sp, 0x4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         pop si
@@ -2296,56 +2296,56 @@ Menus_2E70_16DE:
         retf
         db 0x90
 
-Menus_2E70_18A6:
+MenuRebuildDbs:
         push word 0x3415
         push strict word f_3415_0000
         push cs
-        call Menus_2E70_0968
+        call SaveModeState
         add sp, 0x4
         push word 0x3415
         push strict word f_3415_00C4
         push cs
-        call Menus_2E70_09FE
+        call LoadModeState
         add sp, 0x4
         call 0x1B35:OvlThunk153
         push word 0x3415
         push strict word f_3415_00C4
         push cs
-        call Menus_2E70_0968
+        call SaveModeState
         add sp, 0x4
         push word 0x3415
         push strict word f_3415_0000
         push cs
-        call Menus_2E70_09FE
+        call LoadModeState
         add sp, 0x4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         retf
 
-Menus_2E70_18E2:
+MenuMergeUpdateDbs:
         enter 0x14, 0x0
         push di
         push si
         push word 0x3415
         push strict word f_3415_0000
         push cs
-        call Menus_2E70_0968
+        call SaveModeState
         add sp, 0x4
         push word 0x3415
         push strict word f_3415_00C4
         push cs
-        call Menus_2E70_09FE
+        call LoadModeState
         add sp, 0x4
         call 0x1B35:OvlThunk152
         db 0x8B, 0xF0                           ; insn: mov si, ax
         push word 0x3415
         push strict word f_3415_00C4
         push cs
-        call Menus_2E70_0968
+        call SaveModeState
         add sp, 0x4
         push word 0x3415
         push strict word f_3415_0000
         push cs
-        call Menus_2E70_09FE
+        call LoadModeState
         add sp, 0x4
         db 0x0B, 0xF6                           ; insn: or si, si
         jnz short .1
@@ -2451,31 +2451,31 @@ Menus_2E70_18E2:
         leave
         retf
 
-Menus_2E70_1A26:
+MenuMergeLeagueFiles:
         enter 0x14, 0x0
         push di
         push si
         push word 0x3415
         push strict word f_3415_0000
         push cs
-        call Menus_2E70_0968
+        call SaveModeState
         add sp, 0x4
         push word 0x3415
         push strict word f_3415_00C4
         push cs
-        call Menus_2E70_09FE
+        call LoadModeState
         add sp, 0x4
         call 0x1B35:OvlThunk158
         db 0x8B, 0xF0                           ; insn: mov si, ax
         push word 0x3415
         push strict word f_3415_00C4
         push cs
-        call Menus_2E70_0968
+        call SaveModeState
         add sp, 0x4
         push word 0x3415
         push strict word f_3415_0000
         push cs
-        call Menus_2E70_09FE
+        call LoadModeState
         add sp, 0x4
         db 0x0B, 0xF6                           ; insn: or si, si
         jnz short .1
@@ -2581,44 +2581,44 @@ Menus_2E70_1A26:
         leave
         retf
 
-Menus_2E70_1B6A:
+MenuUpdateTeamDbs:
         push word 0x3415
         push strict word f_3415_0000
         push cs
-        call Menus_2E70_0968
+        call SaveModeState
         add sp, 0x4
         push word 0x3415
         push strict word f_3415_00C4
         push cs
-        call Menus_2E70_09FE
+        call LoadModeState
         add sp, 0x4
         call 0x1B35:OvlThunk157
         push word 0x3415
         push strict word f_3415_00C4
         push cs
-        call Menus_2E70_0968
+        call SaveModeState
         add sp, 0x4
         push word 0x3415
         push strict word f_3415_0000
         push cs
-        call Menus_2E70_09FE
+        call LoadModeState
         add sp, 0x4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         retf
 
-Menus_2E70_1BA6:
+MenuTradePlayers:
         enter 0x14, 0x0
         push di
         push si
         push word 0x3415
         push strict word f_3415_0000
         push cs
-        call Menus_2E70_0968
+        call SaveModeState
         add sp, 0x4
         push word 0x3415
         push strict word f_3415_00C4
         push cs
-        call Menus_2E70_09FE
+        call LoadModeState
         add sp, 0x4
         push 0x3
         call 0x1B35:OvlThunk116
@@ -2630,12 +2630,12 @@ Menus_2E70_1BA6:
         push word 0x3415
         push strict word f_3415_00C4
         push cs
-        call Menus_2E70_0968
+        call SaveModeState
         add sp, 0x4
         push word 0x3415
         push strict word f_3415_0000
         push cs
-        call Menus_2E70_09FE
+        call LoadModeState
         add sp, 0x4
         push 0x0
         push 0x0
@@ -2732,25 +2732,25 @@ Menus_2E70_1BA6:
         retf
         db 0x90
 
-Menus_2E70_1CF0:
+MenuNextLeagueGame:
         enter 0x26, 0x0
         push di
         push si
         push word 0x3415
         push strict word f_3415_0000
         push cs
-        call Menus_2E70_0968
+        call SaveModeState
         add sp, 0x4
         push word 0x3415
         push strict word f_3415_00C4
         push cs
-        call Menus_2E70_09FE
+        call LoadModeState
         add sp, 0x4
         push 0x3
         call 0x1B35:OvlThunk116
         add sp, 0x2
         push 0x1
-        call 0x2B26:Menus_2B26_0530
+        call 0x2B26:SetLeagueSetImage
         add sp, 0x2
         push 0x2
         call 0x1B35:OvlThunk133
@@ -2813,12 +2813,12 @@ Menus_2E70_1CF0:
         push word 0x3415
         push strict word f_3415_00C4
         push cs
-        call Menus_2E70_0968
+        call SaveModeState
         add sp, 0x4
         push word 0x3415
         push strict word f_3415_0000
         push cs
-        call Menus_2E70_09FE
+        call LoadModeState
         add sp, 0x4
         push 0x0
         push 0x0
@@ -2915,22 +2915,22 @@ Menus_2E70_1CF0:
         retf
         db 0x90
 
-Menus_2E70_1EEC:
+MenuLeagueHilights:
         enter 0x10, 0x0
         push di
         push si
         push word 0x3415
         push strict word f_3415_0000
         push cs
-        call Menus_2E70_0968
+        call SaveModeState
         add sp, 0x4
         push word 0x3415
         push strict word f_3415_00C4
         push cs
-        call Menus_2E70_09FE
+        call LoadModeState
         add sp, 0x4
         mov word [DbSaveMode], 0x0
-        call 0x1F4F:Menus_1F4F_0440
+        call 0x1F4F:ViewHilights
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .1
         jmp near .3
@@ -2944,7 +2944,7 @@ Menus_2E70_1EEC:
         push word 0x3415
         push strict word f_3415_0000
         push cs
-        call Menus_2E70_09FE
+        call LoadModeState
         add sp, 0x4
         call 0x0FEF:GetPage
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -3056,44 +3056,44 @@ Menus_2E70_1EEC:
         leave
         retf
 
-Menus_2E70_2054:
+MenuImportDbs:
         push word 0x3415
         push strict word f_3415_0000
         push cs
-        call Menus_2E70_0968
+        call SaveModeState
         add sp, 0x4
         push word 0x3415
         push strict word f_3415_00C4
         push cs
-        call Menus_2E70_09FE
+        call LoadModeState
         add sp, 0x4
         call 0x1B35:OvlThunk159
         push word 0x3415
         push strict word f_3415_00C4
         push cs
-        call Menus_2E70_0968
+        call SaveModeState
         add sp, 0x4
         push word 0x3415
         push strict word f_3415_0000
         push cs
-        call Menus_2E70_09FE
+        call LoadModeState
         add sp, 0x4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         retf
 
-Menus_2E70_2090:
+MenuExportDbs:
         enter 0x14, 0x0
         push di
         push si
         push word 0x3415
         push strict word f_3415_0000
         push cs
-        call Menus_2E70_0968
+        call SaveModeState
         add sp, 0x4
         push word 0x3415
         push strict word f_3415_00C4
         push cs
-        call Menus_2E70_09FE
+        call LoadModeState
         add sp, 0x4
         push 0x3
         call 0x1B35:OvlThunk116
@@ -3105,12 +3105,12 @@ Menus_2E70_2090:
         push word 0x3415
         push strict word f_3415_00C4
         push cs
-        call Menus_2E70_0968
+        call SaveModeState
         add sp, 0x4
         push word 0x3415
         push strict word f_3415_0000
         push cs
-        call Menus_2E70_09FE
+        call LoadModeState
         add sp, 0x4
         push 0x0
         push 0x0

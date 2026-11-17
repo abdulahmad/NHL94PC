@@ -4,7 +4,7 @@
         leave
         retf
 
-Menus_25DD_0006:
+LockerRoomScreen:
         enter 0x300, 0x0
         push si
         lea ax, [bp - 0x300]
@@ -20,9 +20,9 @@ Menus_25DD_0006:
         call 0x0000:VgaCopyBytes
         add sp, 0x6
         push cs
-        call Menus_25DD_006E
+        call DrawLockerRoom
         push cs
-        call Menus_25DD_0AC8
+        call LockerRoomLoop
         db 0x8B, 0xF0                           ; insn: mov si, ax
         push word 0x3f00
         push word 0x7e00
@@ -46,7 +46,7 @@ Menus_25DD_0006:
         retf
         db 0x90
 
-Menus_25DD_006E:
+DrawLockerRoom:
         enter 0x62a, 0x0
         push di
         push si
@@ -572,7 +572,7 @@ Menus_25DD_006E:
         retf
         db 0x90
 
-Menus_25DD_05F0:
+LockerHitTest:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -615,7 +615,7 @@ Menus_25DD_05F0:
         retf
         db 0x90
 
-Menus_25DD_063E:
+DrawLockerJersey:
         enter 0xe0, 0x0
         push di
         push si
@@ -1069,7 +1069,7 @@ Menus_25DD_063E:
         leave
         retf
 
-Menus_25DD_0AC8:
+LockerRoomLoop:
         enter 0x318, 0x0
         mov ax, [g_29CC]
         mov [bp - 0x14], ax
@@ -1198,7 +1198,7 @@ Menus_25DD_0AC8:
 .13:
         test byte [bp - 0x16], 0x2
         jnz short .14
-        jmp near Menus_25DD_0AC8JumpTable.2
+        jmp near LockerRoomLoopJumpTable.2
 .14:
         cmp word [bp - 0xe], 0xc8
         jnl short .17
@@ -1238,11 +1238,11 @@ Menus_25DD_0AC8:
         push word [bp - 0x6]
         push word [bp - 0x4]
         push cs
-        call Menus_25DD_05F0
+        call LockerHitTest
         add sp, 0x6
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .18
-        jmp near Menus_25DD_0AC8JumpTable.1
+        jmp near LockerRoomLoopJumpTable.1
 .18:
         mov ax, [bp - 0xa]
         jmp near .57
@@ -1283,9 +1283,9 @@ Menus_25DD_0AC8:
         push 0x0
 .23:
         push cs
-        call Menus_25DD_063E
+        call DrawLockerJersey
         add sp, 0xa
-        jmp near Menus_25DD_0AC8JumpTable.1
+        jmp near LockerRoomLoopJumpTable.1
         db 0x90
 .24:
         cmp word [DbSaveMode], 0x0
@@ -1534,23 +1534,23 @@ Menus_25DD_0AC8:
         db 0x90
 .57:
         cmp ax, strict word 0x7
-        ja short Menus_25DD_0AC8JumpTable.1
+        ja short LockerRoomLoopJumpTable.1
         shl ax, 1
         xchg ax, bx
         jmp [cs:bx + 0xf40]
         db 0x90
-Menus_25DD_0AC8JumpTable:
-        dw Menus_25DD_0AC8.24
-        dw Menus_25DD_0AC8.31
-        dw Menus_25DD_0AC8.19
-        dw Menus_25DD_0AC8.24
-        dw Menus_25DD_0AC8.27
-        dw Menus_25DD_0AC8.31
-        dw Menus_25DD_0AC8.34
-        dw Menus_25DD_0AC8.50
+LockerRoomLoopJumpTable:
+        dw LockerRoomLoop.24
+        dw LockerRoomLoop.31
+        dw LockerRoomLoop.19
+        dw LockerRoomLoop.24
+        dw LockerRoomLoop.27
+        dw LockerRoomLoop.31
+        dw LockerRoomLoop.34
+        dw LockerRoomLoop.50
 .1:
         call 0x0FEF:UseCurrentPage
-        jmp near Menus_25DD_0AC8.12
+        jmp near LockerRoomLoop.12
 .2:
         cmp word [g_01B8], 0x1
         jnz short .3

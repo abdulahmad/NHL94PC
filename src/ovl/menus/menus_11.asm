@@ -6,7 +6,7 @@
         leave
         retf
 
-Menus_2B11_000C:
+DrawSettingsHeading:
         enter 0x18, 0x0
         push di
         push si
@@ -82,7 +82,7 @@ Menus_2B11_000C:
         leave
         retf
 
-Menus_2B11_00A8:
+SetModeMenuLabels:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, [bp + 0x6]

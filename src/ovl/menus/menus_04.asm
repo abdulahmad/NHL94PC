@@ -3,7 +3,7 @@
         retf
         db 0x90
 
-Menus_2047_0008:
+GameLineEditor:
         enter 0x36, 0x0
         push di
         push si
@@ -74,14 +74,14 @@ Menus_2047_0008:
         mov [bp - 0x36], si
         mov [bp - 0x34], ax
         push cs
-        call Menus_2047_19E0
+        call DrawLineEditorScreen
         add sp, 0x10
         push di
         push cs
-        call Menus_2047_1640
+        call LoadGameRoster
         add sp, 0x2
         push word 0x2047
-        push strict word Menus_2047_013A
+        push strict word GameRosterCmp
         push 0x16
         push 0x1c
         push word 0xbd96
@@ -99,7 +99,7 @@ Menus_2047_0008:
         push word [bp - 0x36]
         push word [bp + 0x8]
         push cs
-        call Menus_2047_01B2
+        call GameLineEditorLoop
         add sp, 0x16
         push word [bp - 0x30]
         push word [bp - 0x32]
@@ -118,7 +118,7 @@ Menus_2047_0008:
         leave
         retf
 
-Menus_2047_013A:
+GameRosterCmp:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -189,7 +189,7 @@ Menus_2047_013A:
         leave
         retf
 
-Menus_2047_01B2:
+GameLineEditorLoop:
         enter 0xac, 0x0
         push di
         push si
@@ -328,7 +328,7 @@ Menus_2047_01B2:
         add al, 0x60
         mov [bp - 0x3a], al
         mov es, [g_8B2E]
-        mov word [es:0x15bc], strict word Menus_2047_2A60
+        mov word [es:0x15bc], strict word WriteTeamLines2
         mov word [es:0x15be], 0x2047
         mov ax, strict word OvlThunk16
         mov dx, 0x1b35
@@ -451,7 +451,7 @@ Menus_2047_01B2:
         push ax
         db 0x8B, 0xF0                           ; insn: mov si, ax
         push cs
-        call Menus_2047_1F76
+        call LoadJerseyColours
         add sp, 0xa
         push word [bp + 0x10]
         push word [bp + 0xe]
@@ -463,7 +463,7 @@ Menus_2047_01B2:
         lea ax, [bp - 0x88]
         push ax
         push cs
-        call Menus_2047_186A
+        call DrawGameLineJerseys
         add sp, 0x8
         push word [HeapSizeHi]
         push word [HeapSizeLo]
@@ -661,7 +661,7 @@ Menus_2047_01B2:
         push ax
         push word 0x3680
         push strict word f_3680_0000
-        call 0x2397:Menus_2397_0040
+        call 0x2397:MakeJerseyShape
         add sp, 0xa
         push word 0x3680
         push strict word f_3680_0000
@@ -1247,7 +1247,7 @@ Menus_2047_01B2:
         push word [bp - 0x1e]
         push word [bp - 0x1c]
         push cs
-        call Menus_2047_15C0
+        call LineEdHitTest
         add sp, 0x6
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .80
@@ -1372,12 +1372,12 @@ Menus_2047_01B2:
         push ax
         push word 0x3680
         push strict word f_3680_0000
-        call 0x2397:Menus_2397_0040
+        call 0x2397:MakeJerseyShape
         add sp, 0xa
         jmp short .90
 .92:
         mov es, [g_8B2E]
-        mov word [es:0x15bc], strict word Menus_2047_2A60
+        mov word [es:0x15bc], strict word WriteTeamLines2
         mov word [es:0x15be], 0x2047
         mov ax, strict word OvlThunk16
         mov dx, 0x1b35
@@ -1487,7 +1487,7 @@ Menus_2047_01B2:
         push ax
         push word 0x3680
         push strict word f_3680_0000
-        call 0x2397:Menus_2397_0040
+        call 0x2397:MakeJerseyShape
         add sp, 0xa
         jmp short .99
         db 0x90
@@ -1592,7 +1592,7 @@ Menus_2047_01B2:
         push ax
         push word 0x3680
         push strict word f_3680_0000
-        call 0x2397:Menus_2397_0040
+        call 0x2397:MakeJerseyShape
         add sp, 0xa
         jmp near .109
         db 0x90
@@ -1690,7 +1690,7 @@ Menus_2047_01B2:
         push ax
         push word 0x3680
         push strict word f_3680_0000
-        call 0x2397:Menus_2397_0040
+        call 0x2397:MakeJerseyShape
         add sp, 0xa
         jmp short .120
         db 0x90
@@ -1765,7 +1765,7 @@ Menus_2047_01B2:
         push ax
         push word 0x3680
         push strict word f_3680_0000
-        call 0x2397:Menus_2397_0040
+        call 0x2397:MakeJerseyShape
         add sp, 0xa
         jmp short .130
         db 0x90
@@ -1835,7 +1835,7 @@ Menus_2047_01B2:
         push ax
         push word 0x3680
         push strict word f_3680_0000
-        call 0x2397:Menus_2397_0040
+        call 0x2397:MakeJerseyShape
         add sp, 0xa
         jmp short .139
         db 0x90
@@ -2001,7 +2001,7 @@ Menus_2047_01B2:
         jmp near .33
         db 0x90
 
-Menus_2047_15C0:
+LineEdHitTest:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -2066,7 +2066,7 @@ Menus_2047_15C0:
         retf
         db 0x90
 
-Menus_2047_1640:
+LoadGameRoster:
         enter 0x8c, 0x0
         push di
         push si
@@ -2282,7 +2282,7 @@ Menus_2047_1640:
         retf
         db 0x90
 
-Menus_2047_186A:
+DrawGameLineJerseys:
         enter 0xc, 0x0
         push di
         push si
@@ -2336,7 +2336,7 @@ Menus_2047_186A:
         push ax
         push word 0x3680
         push strict word f_3680_0000
-        call 0x2397:Menus_2397_0040
+        call 0x2397:MakeJerseyShape
         add sp, 0xa
         jmp short .10
 .8:
@@ -2389,16 +2389,16 @@ Menus_2047_186A:
         imul bx, ax, 0x28
         mov al, [bx + g_A550]
         db 0x0A, 0xC0                           ; insn: or al, al
-        jz short Menus_2047_186AJumpTable.5
+        jz short DrawGameLineJerseysJumpTable.5
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         dec ax
         cmp ax, strict word 0x7
-        ja short Menus_2047_186AJumpTable.4
+        ja short DrawGameLineJerseysJumpTable.4
         shl ax, 1
         xchg ax, bx
         jmp [cs:bx + 0x1982]
         db 0x90
-Menus_2047_186AJumpTable:
+DrawGameLineJerseysJumpTable:
         dw .3
         dw .1
         dw .2
@@ -2436,7 +2436,7 @@ Menus_2047_186AJumpTable:
         add word [bp - 0x2], 0x6
         add si, 0x16
         cmp si, 0xc000
-        jc short Menus_2047_186A.12
+        jc short DrawGameLineJerseys.12
 .5:
         pop si
         pop di
@@ -2444,7 +2444,7 @@ Menus_2047_186AJumpTable:
         retf
         db 0x90
 
-Menus_2047_19E0:
+DrawLineEditorScreen:
         enter 0x138, 0x0
         push di
         push si
@@ -2578,7 +2578,7 @@ Menus_2047_19E0:
         push 0x1a
         push word 0xe0
         push cs
-        call Menus_2047_20E4
+        call DrawDlgFrame
         add sp, 0xa
         push word 0x3701
         push strict word str_Qpp
@@ -2654,7 +2654,7 @@ Menus_2047_19E0:
         push 0xe
         push 0x5
         push cs
-        call Menus_2047_229A
+        call ShadeRect
         add sp, 0xa
         push 0x1
         push 0x1b
@@ -2662,7 +2662,7 @@ Menus_2047_19E0:
         push 0xb
         push 0x2
         push cs
-        call Menus_2047_20E4
+        call DrawDlgFrame
         add sp, 0xa
         push 0xe
         push 0x7
@@ -2680,7 +2680,7 @@ Menus_2047_19E0:
         push 0x26
         push 0x5
         push cs
-        call Menus_2047_229A
+        call ShadeRect
         add sp, 0xa
         push 0x1
         push 0x33
@@ -2688,7 +2688,7 @@ Menus_2047_19E0:
         push 0x23
         push 0x2
         push cs
-        call Menus_2047_20E4
+        call DrawDlgFrame
         add sp, 0xa
         push 0x26
         push 0x7
@@ -2706,7 +2706,7 @@ Menus_2047_19E0:
         push 0x3e
         push 0x5
         push cs
-        call Menus_2047_229A
+        call ShadeRect
         add sp, 0xa
         push 0x1
         push 0x4b
@@ -2714,7 +2714,7 @@ Menus_2047_19E0:
         push 0x3b
         push 0x2
         push cs
-        call Menus_2047_20E4
+        call DrawDlgFrame
         add sp, 0xa
         push 0x3e
         push 0x7
@@ -2732,7 +2732,7 @@ Menus_2047_19E0:
         push 0x56
         push 0x5
         push cs
-        call Menus_2047_229A
+        call ShadeRect
         add sp, 0xa
         push 0x1
         push 0x63
@@ -2740,7 +2740,7 @@ Menus_2047_19E0:
         push 0x53
         push 0x2
         push cs
-        call Menus_2047_20E4
+        call DrawDlgFrame
         add sp, 0xa
         push 0x56
         push 0x7
@@ -2758,7 +2758,7 @@ Menus_2047_19E0:
         push 0x70
         push 0x5
         push cs
-        call Menus_2047_229A
+        call ShadeRect
         add sp, 0xa
         push 0x1
         push 0x7d
@@ -2766,7 +2766,7 @@ Menus_2047_19E0:
         push 0x6d
         push 0x2
         push cs
-        call Menus_2047_20E4
+        call DrawDlgFrame
         add sp, 0xa
         push 0x70
         push 0x7
@@ -2784,7 +2784,7 @@ Menus_2047_19E0:
         push word 0x88
         push 0x5
         push cs
-        call Menus_2047_229A
+        call ShadeRect
         add sp, 0xa
         push 0x1
         push word 0x95
@@ -2792,7 +2792,7 @@ Menus_2047_19E0:
         push word 0x85
         push 0x2
         push cs
-        call Menus_2047_20E4
+        call DrawDlgFrame
         add sp, 0xa
         push word 0x88
         push 0x7
@@ -2810,7 +2810,7 @@ Menus_2047_19E0:
         push word 0xa2
         push 0x9
         push cs
-        call Menus_2047_229A
+        call ShadeRect
         add sp, 0xa
         push 0x1
         push word 0xae
@@ -2818,7 +2818,7 @@ Menus_2047_19E0:
         push word 0x9f
         push 0x6
         push cs
-        call Menus_2047_20E4
+        call DrawDlgFrame
         add sp, 0xa
         push word 0xa2
         push 0xb
@@ -2836,7 +2836,7 @@ Menus_2047_19E0:
         push word 0xba
         push 0x9
         push cs
-        call Menus_2047_229A
+        call ShadeRect
         add sp, 0xa
         push 0x1
         push word 0xc7
@@ -2844,7 +2844,7 @@ Menus_2047_19E0:
         push word 0xb7
         push 0x6
         push cs
-        call Menus_2047_20E4
+        call DrawDlgFrame
         add sp, 0xa
         push word 0xba
         push 0xb
@@ -2862,7 +2862,7 @@ Menus_2047_19E0:
         push 0xe
         push word 0x87
         push cs
-        call Menus_2047_229A
+        call ShadeRect
         add sp, 0xa
         push 0x1
         push 0x1b
@@ -2870,7 +2870,7 @@ Menus_2047_19E0:
         push 0xb
         push word 0x84
         push cs
-        call Menus_2047_20E4
+        call DrawDlgFrame
         add sp, 0xa
         push 0xe
         push word 0x89
@@ -2888,7 +2888,7 @@ Menus_2047_19E0:
         push 0x26
         push word 0x87
         push cs
-        call Menus_2047_229A
+        call ShadeRect
         add sp, 0xa
         push 0x1
         push 0x33
@@ -2896,7 +2896,7 @@ Menus_2047_19E0:
         push 0x23
         push word 0x84
         push cs
-        call Menus_2047_20E4
+        call DrawDlgFrame
         add sp, 0xa
         push 0x26
         push word 0x89
@@ -2914,7 +2914,7 @@ Menus_2047_19E0:
         push 0x3e
         push word 0x87
         push cs
-        call Menus_2047_229A
+        call ShadeRect
         add sp, 0xa
         push 0x1
         push 0x4b
@@ -2922,7 +2922,7 @@ Menus_2047_19E0:
         push 0x3b
         push word 0x84
         push cs
-        call Menus_2047_20E4
+        call DrawDlgFrame
         add sp, 0xa
         push 0x3e
         push word 0x89
@@ -2940,7 +2940,7 @@ Menus_2047_19E0:
         push 0x70
         push word 0x9f
         push cs
-        call Menus_2047_229A
+        call ShadeRect
         add sp, 0xa
         push 0x1
         push 0x78
@@ -2948,7 +2948,7 @@ Menus_2047_19E0:
         push 0x6d
         push word 0x9c
         push cs
-        call Menus_2047_20E4
+        call DrawDlgFrame
         add sp, 0xa
         push 0x70
         push word 0xa1
@@ -2961,7 +2961,7 @@ Menus_2047_19E0:
         push 0x56
         push 0x7f
         push cs
-        call Menus_2047_229A
+        call ShadeRect
         add sp, 0xa
         push 0x1
         push 0x63
@@ -2969,7 +2969,7 @@ Menus_2047_19E0:
         push 0x53
         push 0x7c
         push cs
-        call Menus_2047_20E4
+        call DrawDlgFrame
         add sp, 0xa
         push 0x56
         push word 0x81
@@ -2987,7 +2987,7 @@ Menus_2047_19E0:
         retf
         db 0x90
 
-Menus_2047_1F76:
+LoadJerseyColours:
         enter 0x12, 0x0
         push di
         push si
@@ -3116,7 +3116,7 @@ Menus_2047_1F76:
         retf
         db 0x90
 
-Menus_2047_20E4:
+DrawDlgFrame:
         enter 0xa, 0x0
         push di
         push si
@@ -3291,7 +3291,7 @@ Menus_2047_20E4:
         leave
         retf
 
-Menus_2047_229A:
+ShadeRect:
         enter 0x8, 0x0
         push di
         push si
@@ -3340,7 +3340,7 @@ Menus_2047_229A:
         retf
         db 0x90
 
-Menus_2047_22F2:
+CheckGameRosterComplete:
         enter 0x7c, 0x0
         push di
         push si
@@ -3534,7 +3534,7 @@ Menus_2047_22F2:
         push ax
         push -0x1
         push -0x1
-        call 0x235C:Menus_235C_0042
+        call 0x235C:RosterAlertBox
         add sp, 0x14
         mov ax, 0x1
         pop si
@@ -3549,7 +3549,7 @@ Menus_2047_22F2:
         leave
         retf
 
-Menus_2047_248A:
+PruneGameLines:
         enter 0x6, 0x0
         push di
         push si
@@ -3630,7 +3630,7 @@ Menus_2047_248A:
         retf
         db 0x90
 
-Menus_2047_252E:
+MenuUseTheseLines:
         enter 0x8, 0x0
         push di
         push si
@@ -3639,7 +3639,7 @@ Menus_2047_252E:
         mov al, [bp + 0xa]
         push ax
         push cs
-        call Menus_2047_22F2
+        call CheckGameRosterComplete
         add sp, 0x6
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .1
@@ -3726,11 +3726,11 @@ Menus_2047_252E:
         retf
         db 0x90
 
-Menus_2047_25EE:
+MenuLineEdCancel:
         mov ax, 0x1
         retf
 
-Menus_2047_25F2:
+MenuUseOriginalLines:
         enter 0x2, 0x0
         push di
         push si
@@ -3741,10 +3741,10 @@ Menus_2047_25F2:
         push di
         push ax
         push cs
-        call Menus_2047_248A
+        call PruneGameLines
         add sp, 0x4
         mov es, [g_8B2E]
-        mov word [es:0x15bc], strict word Menus_2047_2A60
+        mov word [es:0x15bc], strict word WriteTeamLines2
         mov word [es:0x15be], 0x2047
         mov ax, strict word OvlThunk16
         mov dx, 0x1b35
@@ -3808,7 +3808,7 @@ Menus_2047_25F2:
         push word [bp + 0xe]
         push word [bp + 0x6]
         push cs
-        call Menus_2047_186A
+        call DrawGameLineJerseys
         add sp, 0x8
         mov bx, [bp + 0xc]
         mov word [bx], 0xffff
@@ -3824,7 +3824,7 @@ Menus_2047_25F2:
         retf
         db 0x90
 
-Menus_2047_2706:
+MenuUseDefaultLines:
         enter 0x2, 0x0
         push di
         push si
@@ -3835,10 +3835,10 @@ Menus_2047_2706:
         push di
         push ax
         push cs
-        call Menus_2047_248A
+        call PruneGameLines
         add sp, 0x4
         mov es, [g_8B2E]
-        mov word [es:0x15bc], strict word Menus_2047_2A60
+        mov word [es:0x15bc], strict word WriteTeamLines2
         mov word [es:0x15be], 0x2047
         mov ax, strict word OvlThunk16
         mov dx, 0x1b35
@@ -3902,7 +3902,7 @@ Menus_2047_2706:
         push word [bp + 0xe]
         push word [bp + 0x6]
         push cs
-        call Menus_2047_186A
+        call DrawGameLineJerseys
         add sp, 0x8
         mov bx, [bp + 0xc]
         mov word [bx], 0xffff
@@ -3918,7 +3918,7 @@ Menus_2047_2706:
         retf
         db 0x90
 
-Menus_2047_281A:
+WriteTeamLines:
         enter 0x312, 0x0
         push di
         push si
@@ -3927,7 +3927,7 @@ Menus_2047_281A:
         mov al, [bp + 0xa]
         push ax
         push cs
-        call Menus_2047_22F2
+        call CheckGameRosterComplete
         add sp, 0x6
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .1
@@ -4160,7 +4160,7 @@ Menus_2047_281A:
         retf
         db 0x90
 
-Menus_2047_2A60:
+WriteTeamLines2:
         enter 0x312, 0x0
         push di
         push si
@@ -4169,7 +4169,7 @@ Menus_2047_2A60:
         mov al, [bp + 0xa]
         push ax
         push cs
-        call Menus_2047_22F2
+        call CheckGameRosterComplete
         add sp, 0x6
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .1
@@ -4398,7 +4398,7 @@ Menus_2047_2A60:
         retf
         db 0x90
 
-Menus_2047_2C90:
+MenuGameShowPlayerStats:
         enter 0x304, 0x0
         push di
         push si
@@ -4607,7 +4607,7 @@ Menus_2047_2C90:
         mov [bp - 0x304], di
         mov [bp - 0x302], ax
         push cs
-        call Menus_2047_19E0
+        call DrawLineEditorScreen
         add sp, 0x10
         mov al, [bp + 0xa]
         push ax
@@ -4615,7 +4615,7 @@ Menus_2047_2C90:
         push word [bp - 0x304]
         push word [bp + 0x6]
         push cs
-        call Menus_2047_186A
+        call DrawGameLineJerseys
         add sp, 0x8
         cmp word [si], 0x0
         jl short .10
@@ -4670,11 +4670,11 @@ Menus_2047_2C90:
         leave
         retf
 
-Menus_2047_2FA0:
+MenuReturnToLineEditor:
         mov ax, 0x1
         retf
 
-Menus_2047_2FA4:
+GameScratchPlayer:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -4697,7 +4697,7 @@ Menus_2047_2FA4:
         cmp si, 0x28
         jl short .1
         mov es, [g_8B2E]
-        mov word [es:0x15bc], strict word Menus_2047_2A60
+        mov word [es:0x15bc], strict word WriteTeamLines2
         mov word [es:0x15be], 0x2047
         mov ax, strict word OvlThunk16
         mov dx, 0x1b35
@@ -4759,7 +4759,7 @@ Menus_2047_2FA4:
         push word [bp + 0xe]
         push word [bp + 0x6]
         push cs
-        call Menus_2047_186A
+        call DrawGameLineJerseys
         add sp, 0x8
         mov ax, 0x7e
         mov dx, 0x5f
@@ -4792,7 +4792,7 @@ Menus_2047_2FA4:
         retf
         db 0x90
 
-Menus_2047_30E6:
+GameDressPlayer:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push si
@@ -4811,7 +4811,7 @@ Menus_2047_30E6:
         push word [bp + 0xe]
         push word [bp + 0x6]
         push cs
-        call Menus_2047_186A
+        call DrawGameLineJerseys
         add sp, 0x8
         mov ax, 0x7d
         mov dx, 0x5f

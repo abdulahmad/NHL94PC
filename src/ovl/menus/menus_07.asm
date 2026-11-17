@@ -4,21 +4,21 @@
         leave
         retf
 
-Menus_23A3_0004:
+MenuOpenSaved:
         enter 0x34, 0x0
         push di
         push si
         push cs
-        call Menus_23A3_0516
+        call ScanSavedGames
         push word 0x3f00
         push word 0xbd00
         push word 0x7e00
         call 0x0000:VgaCopyBytes
         add sp, 0x6
         push cs
-        call Menus_23A3_0766
+        call DrawFileDlg
         push cs
-        call Menus_23A3_03FE
+        call DrawFileDlgTabs
         call 0x0FEF:CopyPlane
         push word 0x3f00
         push word 0x3f00
@@ -27,7 +27,7 @@ Menus_23A3_0004:
         add sp, 0x6
         call 0x0FEF:CopyPlane
         push cs
-        call Menus_23A3_0D94
+        call RunFileDlg
         db 0x8B, 0xF0                           ; insn: mov si, ax
         push word 0x3f00
         push word 0x7e00
@@ -230,7 +230,7 @@ Menus_23A3_0004:
         and byte [es:0x55], 0x7f
         lea ax, [bp - 0x4]
         push ax
-        call 0x2E70:Menus_2E70_0F22
+        call 0x2E70:MenuNewExhibition
         add sp, 0x2
         db 0x8B, 0xF0                           ; insn: mov si, ax
 .16:
@@ -406,7 +406,7 @@ Menus_23A3_0004:
         leave
         retf
 
-Menus_23A3_03FE:
+DrawFileDlgTabs:
         enter 0x60, 0x0
         push si
         db 0x2B, 0xF6                           ; insn: sub si, si
@@ -506,7 +506,7 @@ Menus_23A3_03FE:
         leave
         retf
 
-Menus_23A3_04FC:
+CmpFileNames:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov bx, [bp + 0x8]
@@ -519,7 +519,7 @@ Menus_23A3_04FC:
         leave
         retf
 
-Menus_23A3_0516:
+ScanSavedGames:
         enter 0x2c, 0x0
         push di
         push si
@@ -569,7 +569,7 @@ Menus_23A3_0516:
         jz short .1
 .4:
         push word 0x23a3
-        push strict word Menus_23A3_04FC
+        push strict word CmpFileNames
         push 0x4
         push word [g_C054]
         push word 0xc05c
@@ -632,7 +632,7 @@ Menus_23A3_0516:
         jz short .7
 .10:
         push word 0x23a3
-        push strict word Menus_23A3_04FC
+        push strict word CmpFileNames
         push 0x4
         push word [g_C164]
         push word 0xc16c
@@ -696,7 +696,7 @@ Menus_23A3_0516:
         jz short .13
 .16:
         push word 0x23a3
-        push strict word Menus_23A3_04FC
+        push strict word CmpFileNames
         push 0x4
         push word [g_C0DC]
         push word 0xc0e4
@@ -724,7 +724,7 @@ Menus_23A3_0516:
         retf
         db 0x90
 
-Menus_23A3_072A:
+PrintTextCopy:
         enter 0x40, 0x0
         push di
         push si
@@ -754,7 +754,7 @@ Menus_23A3_072A:
         leave
         retf
 
-Menus_23A3_0766:
+DrawFileDlg:
         enter 0x18, 0x0
         push di
         push si
@@ -811,7 +811,7 @@ Menus_23A3_0766:
 .3:
         cmp word [g_C1EC], 0x0
         jnl short .4
-        jmp near Menus_23A3_0766JumpTable.7
+        jmp near DrawFileDlgJumpTable.7
 .4:
         or word [g_C1EE], 0x20c
         mov ax, 0x11
@@ -832,7 +832,7 @@ Menus_23A3_0766:
         push word [bx + si + 0xa]
         push word [bx + si + 0x8]
         push cs
-        call Menus_23A3_072A
+        call PrintTextCopy
         add sp, 0x8
         mov di, [si + 0x4]
         mov word [bp - 0xa], 0xa
@@ -861,7 +861,7 @@ Menus_23A3_0766:
         push word [di + 0x2]
         push word [di]
         push cs
-        call Menus_23A3_072A
+        call PrintTextCopy
         add sp, 0x8
         add di, 0x4
         add si, 0x8
@@ -939,11 +939,11 @@ Menus_23A3_0766:
         mov ax, [si]
         dec ax
         cmp ax, strict word 0x5
-        ja short Menus_23A3_0766JumpTable.7
+        ja short DrawFileDlgJumpTable.7
         shl ax, 1
         xchg ax, bx
         jmp [cs:bx + 0x95e]
-Menus_23A3_0766JumpTable:
+DrawFileDlgJumpTable:
         dw .6
         dw .5
         dw .4
@@ -968,7 +968,7 @@ Menus_23A3_0766JumpTable:
         leave
         retf
 
-Menus_23A3_098C:
+FileDlgHitTest:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -1014,7 +1014,7 @@ Menus_23A3_098C:
         retf
         db 0x90
 
-Menus_23A3_09E4:
+DrawFileDlgList:
         enter 0x6a, 0x0
         push di
         push si
@@ -1120,7 +1120,7 @@ Menus_23A3_09E4:
         push word [bx + si + 0xa]
         push word [bx + si + 0x8]
         push cs
-        call Menus_23A3_072A
+        call PrintTextCopy
         add sp, 0x8
         jmp short .3
 .5:
@@ -1142,7 +1142,7 @@ Menus_23A3_09E4:
         push word [bx + si + 0xa]
         push word [bx + si + 0x8]
         push cs
-        call Menus_23A3_072A
+        call PrintTextCopy
         add sp, 0x8
         inc word [bp - 0x4]
         cmp word [bp - 0x4], 0x6
@@ -1163,7 +1163,7 @@ Menus_23A3_09E4:
         push word [bx + si + 0xa]
         push word [bx + si + 0x8]
         push cs
-        call Menus_23A3_072A
+        call PrintTextCopy
         add sp, 0x8
 .8:
         mov word [bp - 0x4], 0x4b
@@ -1213,7 +1213,7 @@ Menus_23A3_09E4:
         add sp, 0xa
         mov bx, [bp + 0x6]
         cmp word [bx], 0x6
-        jg short Menus_23A3_09E4JumpTable.1
+        jg short DrawFileDlgListJumpTable.1
         and word [g_C1EE], 0x6fc
         mov ax, [bx]
         jmp short .17
@@ -1229,25 +1229,25 @@ Menus_23A3_09E4:
         or byte [g_C1EF], 0x8
 .16:
         or byte [g_C1EF], 0x4
-        jmp near Menus_23A3_09E4JumpTable.2
+        jmp near DrawFileDlgListJumpTable.2
         db 0x90
 .17:
         dec ax
         cmp ax, strict word 0x5
         jna short .18
-        jmp near Menus_23A3_09E4JumpTable.2
+        jmp near DrawFileDlgListJumpTable.2
 .18:
         shl ax, 1
         xchg ax, bx
         jmp [cs:bx + 0xc40]
         db 0x90
-Menus_23A3_09E4JumpTable:
-        dw Menus_23A3_09E4.16
-        dw Menus_23A3_09E4.15
-        dw Menus_23A3_09E4.14
-        dw Menus_23A3_09E4.13
-        dw Menus_23A3_09E4.12
-        dw Menus_23A3_09E4.11
+DrawFileDlgListJumpTable:
+        dw DrawFileDlgList.16
+        dw DrawFileDlgList.15
+        dw DrawFileDlgList.14
+        dw DrawFileDlgList.13
+        dw DrawFileDlgList.12
+        dw DrawFileDlgList.11
 .1:
         or word [g_C1EE], 0xf903
         mov es, [g_8B3E]
@@ -1370,7 +1370,7 @@ Menus_23A3_09E4JumpTable:
         leave
         retf
 
-Menus_23A3_0D94:
+RunFileDlg:
         enter 0x1a, 0x0
         mov word [bp - 0x18], 0x0
         lea ax, [bp - 0xe]
@@ -1495,7 +1495,7 @@ Menus_23A3_0D94:
         push word [bp - 0x6]
         push word [bp - 0x4]
         push cs
-        call Menus_23A3_098C
+        call FileDlgHitTest
         add sp, 0x6
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .13
@@ -1647,7 +1647,7 @@ Menus_23A3_0D94:
         push word [bp - 0x6]
         push word [bp - 0x4]
         push cs
-        call Menus_23A3_098C
+        call FileDlgHitTest
         add sp, 0x6
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .31
@@ -1723,7 +1723,7 @@ Menus_23A3_0D94:
         push bx
 .41:
         push cs
-        call Menus_23A3_09E4
+        call DrawFileDlgList
         add sp, 0x2
 .42:
         call 0x0FEF:UseCurrentPage
@@ -1807,7 +1807,7 @@ Menus_23A3_0D94:
         db 0x90
 .54:
         push cs
-        call Menus_23A3_1518
+        call SelectSavedFile
         leave
         retf
 .55:
@@ -1815,7 +1815,7 @@ Menus_23A3_0D94:
         shl bx, 1
         push word [bx + g_0EDC]
         push cs
-        call Menus_23A3_121A
+        call DeleteSavedGame
         add sp, 0x2
         cmp word [g_C1EC], 0x0
         jnl short .56
@@ -1845,7 +1845,7 @@ Menus_23A3_0D94:
         push word [bp - 0x6]
         push word [bp - 0x4]
         push cs
-        call Menus_23A3_098C
+        call FileDlgHitTest
         add sp, 0x6
         cmp word [bp - 0xa], 0x9
         jg short .59
@@ -1868,7 +1868,7 @@ Menus_23A3_0D94:
         retf
         db 0x90
 
-Menus_23A3_121A:
+DeleteSavedGame:
         enter 0x46, 0x0
         push di
         push si
@@ -2176,7 +2176,7 @@ Menus_23A3_121A:
         and byte [g_C1EE], 0xf3
 .29:
         push cs
-        call Menus_23A3_03FE
+        call DrawFileDlgTabs
 .30:
         pop si
         pop di
@@ -2184,7 +2184,7 @@ Menus_23A3_121A:
         retf
         db 0x90
 
-Menus_23A3_1518:
+SelectSavedFile:
         enter 0x18, 0x0
         push di
         push si
@@ -2239,11 +2239,11 @@ Menus_23A3_1518:
         push word 0x3415
         push strict word f_3415_0000
         push cs
-        call Menus_23A3_1778
+        call ReadGameSettings
         add sp, 0x8
         push word 0x3415
         push strict word f_3415_0000
-        call 0x2E70:Menus_2E70_09FE
+        call 0x2E70:LoadModeState
         add sp, 0x4
         mov es, [g_8B36]
         mov ax, [es:0x50]
@@ -2332,7 +2332,7 @@ Menus_23A3_1518:
         push word 0x3415
         push strict word f_3415_0062
         push cs
-        call Menus_23A3_1778
+        call ReadGameSettings
         add sp, 0x8
         mov [bp - 0x2], ax
         mov es, [g_8B40]
@@ -2351,7 +2351,7 @@ Menus_23A3_1518:
         add sp, 0x8
         lea ax, [bp - 0x6]
         push ax
-        call 0x26D4:Menus_26D4_29F2
+        call 0x26D4:LoadScheduleDB
         add sp, 0x2
         push word 0x3415
         push strict word f_3415_0002
@@ -2406,7 +2406,7 @@ Menus_23A3_1518:
         push word 0x3415
         push strict word f_3415_00C4
         push cs
-        call Menus_23A3_1778
+        call ReadGameSettings
         add sp, 0x8
         mov [bp - 0x2], ax
         mov es, [g_8B40]
@@ -2424,7 +2424,7 @@ Menus_23A3_1518:
         retf
         db 0x90
 
-Menus_23A3_1778:
+ReadGameSettings:
         enter 0x2, 0x0
         push di
         push si
