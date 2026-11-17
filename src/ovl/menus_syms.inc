@@ -495,7 +495,6 @@ g_C258		equ	0xC258
 g_C25A		equ	0xC25A
 g_C25C		equ	0xC25C
 g_C25E		equ	0xC25E
-g_DA0D		equ	0xDA0D
 g_E36B		equ	0xE36B
 randomd0		equ	0x6
 str_0000_3		equ	0x11C4

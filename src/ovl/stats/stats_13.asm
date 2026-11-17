@@ -1546,15 +1546,15 @@ Stats_26BE_08DA:
 .53:
         cmp word [bp + 0x6], 0x8
         jl short .54
-        jmp near Stats_26BE_12CA.7
+        jmp near Stats_26BE_08DAJumpTable.7
 .54:
         push word [g_C046]
         push word [g_C044]
-        jmp near Stats_26BE_12CA.8
+        jmp near Stats_26BE_08DAJumpTable.8
         db 0x90
 .55:
         mov word [bp - 0x17c], 0x0
-        jmp near Stats_26BE_12CA.2
+        jmp near Stats_26BE_08DAJumpTable.2
         db 0x90
 .56:
         imul bx, [bp - 0x1b6], 0x30
@@ -1671,7 +1671,7 @@ Stats_26BE_08DA:
 .68:
         call 0x0D39:DrawShadowTextF2
         add sp, 0xa
-        jmp near Stats_26BE_12CA.1
+        jmp near Stats_26BE_08DAJumpTable.1
 .69:
         les bx, [bp - 0x1ba]
         push word [es:bx + 0xe]
@@ -1713,7 +1713,7 @@ Stats_26BE_08DA:
         add sp, 0x8
         cmp word [g_200E], 0x0
         jz short .71
-        jmp near Stats_26BE_12CA.1
+        jmp near Stats_26BE_08DAJumpTable.1
 .71:
         les bx, [bp - 0x1ba]
         push word [es:bx + 0x6]
@@ -1724,7 +1724,7 @@ Stats_26BE_08DA:
         push word 0x10e
         call 0x0D39:DrawShadowTextF
         add sp, 0x8
-        jmp near Stats_26BE_12CA.1
+        jmp near Stats_26BE_08DAJumpTable.1
         db 0x90
 .74:
         les bx, [bp - 0x1ba]
@@ -1769,24 +1769,23 @@ Stats_26BE_08DA:
         jmp near .68
 .76:
         cmp ax, strict word 0xa
-        ja short Stats_26BE_12CA.1
+        ja short Stats_26BE_08DAJumpTable.1
         shl ax, 1
         xchg ax, bx
         jmp [cs:bx + 0x12ca]
         db 0x90
-
-Stats_26BE_12CA:
-        db 0xE0, 0x12                           ; insn: loopne 0x12db
-        loopne .1
-        db 0xE0, 0x12                           ; insn: loopne 0x12df
-        xor dl, [bx + di]
-        cmp al, 0x11
-        push sp
-        adc [bp + si + 0x11], cx
-        bound dx, [bx + di]
-        lodsb
-        adc sp, bp
-        adc [bx + si + 0x12], cx
+Stats_26BE_08DAJumpTable:
+        dw .1
+        dw .1
+        dw .1
+        dw Stats_26BE_08DA.62
+        dw Stats_26BE_08DA.63
+        dw Stats_26BE_08DA.66
+        dw Stats_26BE_08DA.65
+        dw Stats_26BE_08DA.67
+        dw Stats_26BE_08DA.69
+        dw Stats_26BE_08DA.70
+        dw Stats_26BE_08DA.74
 .1:
         mov ax, [bp - 0x6c]
         add [bp - 0x17a], ax

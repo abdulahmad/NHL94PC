@@ -1198,7 +1198,7 @@ Menus_25DD_0AC8:
 .13:
         test byte [bp - 0x16], 0x2
         jnz short .14
-        jmp near Menus_25DD_0F40.2
+        jmp near Menus_25DD_0AC8JumpTable.2
 .14:
         cmp word [bp - 0xe], 0xc8
         jnl short .17
@@ -1242,7 +1242,7 @@ Menus_25DD_0AC8:
         add sp, 0x6
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .18
-        jmp near Menus_25DD_0F40.1
+        jmp near Menus_25DD_0AC8JumpTable.1
 .18:
         mov ax, [bp - 0xa]
         jmp near .57
@@ -1285,7 +1285,7 @@ Menus_25DD_0AC8:
         push cs
         call Menus_25DD_063E
         add sp, 0xa
-        jmp near Menus_25DD_0F40.1
+        jmp near Menus_25DD_0AC8JumpTable.1
         db 0x90
 .24:
         cmp word [DbSaveMode], 0x0
@@ -1534,21 +1534,20 @@ Menus_25DD_0AC8:
         db 0x90
 .57:
         cmp ax, strict word 0x7
-        ja short Menus_25DD_0F40.1
+        ja short Menus_25DD_0AC8JumpTable.1
         shl ax, 1
         xchg ax, bx
         jmp [cs:bx + 0xf40]
         db 0x90
-
-Menus_25DD_0F40:
-        hlt
-        or al, 0x7a
-        or ax, 0xc90
-        hlt
-        or al, 0x20
-        or ax, 0xd7a
-        mov [g_DA0D], al
-        push cs
+Menus_25DD_0AC8JumpTable:
+        dw Menus_25DD_0AC8.24
+        dw Menus_25DD_0AC8.31
+        dw Menus_25DD_0AC8.19
+        dw Menus_25DD_0AC8.24
+        dw Menus_25DD_0AC8.27
+        dw Menus_25DD_0AC8.31
+        dw Menus_25DD_0AC8.34
+        dw Menus_25DD_0AC8.50
 .1:
         call 0x0FEF:UseCurrentPage
         jmp near Menus_25DD_0AC8.12

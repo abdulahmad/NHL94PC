@@ -22,7 +22,7 @@ IMG = b''
 SEGS = []
 RELOC = set()
 OV = None
-DATA_LIN, CODE_LIN, TABLE_LIN = set(), [], {}
+DATA_LIN, CODE_LIN, TABLE_LIN, TABLE_BYTES = set(), [], {}, set()
 OVERRIDES = {}      # overlay name -> {'data': [(lin0, lin1)], 'code': [lin], 'tables': {lin: n}}
 
 
@@ -46,13 +46,27 @@ def setup(name):
         off, f = struct.unpack_from('<HH', d, 4 * k)
         RELOC.add((f - OV['para']) * 16 + off)
     o = OVERRIDES.get(name, {})
-    DATA_LIN.clear(); CODE_LIN[:] = []; TABLE_LIN.clear()
+    DATA_LIN.clear(); CODE_LIN[:] = []; TABLE_LIN.clear(); TABLE_BYTES.clear()
     for a, b in o.get('data', []):
         DATA_LIN.update(range(a, b))
     for a in o.get('code', []):
         s = seg_at(a)
         CODE_LIN.append((a, s['para']))
     TABLE_LIN.update(o.get('tables', {}))
+    prescan_tables()
+
+
+def prescan_tables():
+    """switch tables (jmp [cs:bx+disp] after a cmp bound): their words are data before any decoding starts, so a
+    linear pass or a gap entry can never decode them as instructions"""
+    for s in SEGS:
+        for j in range(s['lin'], s['end'] - 5):
+            if IMG[j] == 0x2E and IMG[j + 1] == 0xFF and IMG[j + 2] == 0xA7:
+                lim = switch_limit(j)
+                tlin = s['base'] + (IMG[j + 3] | IMG[j + 4] << 8)
+                if lim and s['lin'] <= tlin and tlin + 2 * lim <= s['end'] and tlin not in TABLE_LIN:
+                    TABLE_LIN[tlin] = lim
+                    TABLE_BYTES.update(range(tlin, tlin + 2 * lim))
 
 
 def CSB(cs):
@@ -133,7 +147,7 @@ class Flow:
         while work:
             lin, cs = work.pop()
             while True:
-                if lin in self.ins or lin in self.bad or lin in DATA_LIN:
+                if lin in self.ins or lin in self.bad or lin in DATA_LIN or lin in TABLE_BYTES:
                     break
                 if not (0 <= lin < len(IMG)):
                     break
@@ -142,7 +156,7 @@ class Flow:
                     self.bad.add(lin)
                     break
                 # overlap with existing instruction?
-                if any((lin + k) in self.ins for k in range(1, ins.size)) or \
+                if any((lin + k) in self.ins or (lin + k) in TABLE_BYTES for k in range(1, ins.size)) or \
                         any((lin - k) in self.ins and self.ins[lin - k][0] > k for k in range(1, 8)):
                     self.bad.add(lin)
                     break
@@ -236,7 +250,7 @@ def looks_text(b):
 
 
 def try_gap(flow, s, p, g1, cov):
-    if p >= g1 or p in flow.bad or p in DATA_LIN or (looks_text(IMG[p:min(g1, p + 24)]) and not prologue_at(p)):
+    if p >= g1 or p in flow.bad or p in DATA_LIN or p in TABLE_BYTES or (looks_text(IMG[p:min(g1, p + 24)]) and not prologue_at(p)):
         return False
     if prologue_at(p):
         return True

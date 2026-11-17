@@ -811,7 +811,7 @@ Menus_23A3_0766:
 .3:
         cmp word [g_C1EC], 0x0
         jnl short .4
-        jmp near Menus_23A3_095E.7
+        jmp near Menus_23A3_0766JumpTable.7
 .4:
         or word [g_C1EE], 0x20c
         mov ax, 0x11
@@ -939,17 +939,17 @@ Menus_23A3_0766:
         mov ax, [si]
         dec ax
         cmp ax, strict word 0x5
-        ja short Menus_23A3_095E.7
+        ja short Menus_23A3_0766JumpTable.7
         shl ax, 1
         xchg ax, bx
         jmp [cs:bx + 0x95e]
-
-Menus_23A3_095E:
-        or word [bx + di], 0x7e
-        or [bx + di + 0x9], di
-        jz short .2
-        outsw
-        or [bp + si + 0x9], bp
+Menus_23A3_0766JumpTable:
+        dw .6
+        dw .5
+        dw .4
+        dw .3
+        dw .2
+        dw .1
 .1:
         or byte [g_C1EF], 0x80
 .2:
