@@ -1281,7 +1281,6 @@ seg049:0001,SeqPad,F049_0001,new,low,stray bytes before the sequencer timer entr
 seg049:0008,SeqTimerTick,F049_0008,new,medium,"timer hook: runs SeqService unless busy, re-entered or no driver is loaded",src/seg/seg049.asm
 seg049:003C,SeqService,F049_003C,new,medium,services the driver (EMS map saved) and steps every playing track,src/seg/seg049.asm
 seg049:01D2,SeqStepTrack,F049_01D2,new,medium,advances one track slot and handles its pending events,src/seg/seg049.asm
-seg049:03FF,SeqTrackEvents,F049_03FF,new,low,"event handling shared with SeqStepTrack, starts with a jump table",src/seg/seg049.asm
 seg049:06C2,SendController,F049_06C2,new,medium,"sends controller 7 or 0Ah (volume, pan) scaled for the track",src/seg/seg049.asm
 seg049:0792,SendVoiceNoteOff,F049_0792,new,medium,sends a note-off for a voice record,src/seg/seg049.asm
 seg049:07DE,SetSongTempo,F049_07DE,new,medium,sets the tick rate (7D00h / tempo) for every slot of a song,src/seg/seg049.asm

@@ -63,21 +63,7 @@ g_8F68:
 g_8F69:
 	resb	1
 g_8F6A:
-	resb	22
-g_8F80:
-	resb	1
-g_8F81:
-	resb	1
-g_8F82:
-	resb	2
-g_8F84:
-	resb	2
-g_8F86:
-	resb	2
-g_8F88:
-	resb	2
-g_8F8A:
-	resb	30
+	resb	62
 g_8FA8:
 	resb	1
 g_8FA9:

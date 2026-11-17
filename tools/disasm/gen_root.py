@@ -26,6 +26,7 @@ OVERRIDES = {
     'seg054': {'data': [(0x0000, 0x003B), (0x0055, 0x005C), (0x09CA, 0x0C20)],
                'code': [0x003B, 0x005C, 0x0C28, 0x0C45],
                'tables': {0x0C20: 4, 0x0C3D: 4}},
+    'seg049': {'data': [(0x03FF, 0x0423)], 'tables': {0x03FF: 18}},
     'seg058': {'data': [(0x0035, 0x0039), (0x004A, 0x0054)],
                'code': [0x0054]},
 }
@@ -459,7 +460,7 @@ def analyze(names):
     flow.run(entries)
     for _s in SEGS:
         for a, _ in OVERRIDES.get(_s['name'], {}).get('data', []):
-            if a:
+            if a and _s['lin'] + a not in TABLE_LIN:
                 flow.labels.setdefault(_s['lin'] + a, 'data')
                 funcs.add(_s['lin'] + a)
     targets = [s for s in SEGS if s['name'] in names]

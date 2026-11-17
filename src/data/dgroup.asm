@@ -183,9 +183,7 @@ g_050C:
 g_050E:
 	dw	0x000A
 g_0510:
-	db	0x00
-g_0511:
-	db	0x00
+	dw	0x0000
 g_0512:
 	dw	0x0000
 g_0514:
@@ -242,9 +240,7 @@ str_PenaltyMsc:
 str_GoalsMsc:
 	db	'goals.msc', 0x00
 str_AssistedMsc:
-	db	'assisted.ms'
-g_05CF:
-	db	0x63, 0x00, 0x00
+	db	'assisted.msc', 0x00, 0x00
 str_OneminMsc:
 	db	'onemin.msc', 0x00, 0x00
 str_2minsOff:

@@ -3,7 +3,6 @@ F049_0001 MergeRemapTablesTail | new | medium | end of MergeRemapTables in seg04
 F049_0008 SeqTimerTick | new | medium | timer hook: runs SeqService unless busy, re-entered or no driver is loaded
 F049_003C SeqService | new | medium | services the driver (EMS map saved) and steps every playing track
 F049_01D2 SeqStepTrack | new | medium | advances one track slot and handles its pending events
-F049_03FF SeqTrackEvents | new | low | event handling shared with SeqStepTrack, starts with a jump table
 F049_06C2 SendController | new | medium | sends controller 7 or 0Ah (volume, pan) scaled for the track
 F049_0792 SendVoiceNoteOff | new | medium | sends a note-off for a voice record
 F049_07DE SetSongTempo | new | medium | sets the tick rate (7D00h / tempo) for every slot of a song

@@ -202,7 +202,7 @@ SeqStepTrack:
 	mov	ax, [es:si + 0xc]
 	or	ax, [es:si + 0xa]
 	jnz	short .1
-	jmp	near SeqTrackEvents.31
+	jmp	near SeqStepTrackJumpTable.30
 .1:
 	mov	byte [g_8F68], 0x80
 	test	byte [es:si + 0x56], 0x8
@@ -249,7 +249,7 @@ SeqStepTrack:
 	mov	[si + 0xc], ax
 	mov	[si + 0xa], ax
 	mov	[si + 0x56], al
-	jmp	near SeqTrackEvents.31
+	jmp	near SeqStepTrackJumpTable.30
 .6:
 	mov	es, [bp + 0x8]
 	les	bx, [es:si + 0x4]
@@ -305,12 +305,12 @@ SeqStepTrack:
 	mov	ax, [es:si + 0x50]
 	cmp	[es:si + 0x4e], ax
 	jnl	short .10
-	jmp	near SeqTrackEvents.31
+	jmp	near SeqStepTrackJumpTable.30
 .10:
 	mov	ax, [es:si + 0xc]
 	or	ax, [es:si + 0xa]
 	jnz	short .11
-	jmp	near SeqTrackEvents.31
+	jmp	near SeqStepTrackJumpTable.30
 .11:
 	mov	ax, [0x84cc]
 	mov	dx, [0x84ce]
@@ -377,7 +377,7 @@ SeqStepTrack:
 	add	[es:si + 0xa], ax
 	cmp	byte [0x8f80], 0xd9
 	jnc	short .19
-	jmp	near SeqTrackEvents.24
+	jmp	near SeqStepTrackJumpTable.23
 .19:
 	mov	al, [0x8f81]
 	mov	[bp - 0x5], al
@@ -385,31 +385,33 @@ SeqStepTrack:
 	sub	ax, 0xd9
 	cmp	ax, strict word 0x11
 	jna	short .20
-	jmp	near SeqTrackEvents.29
+	jmp	near SeqStepTrackJumpTable.28
 .20:
 	shl	ax, 1
 	xchg	ax, bx
 	jmp	[cs:bx + 0x3ff]
-
-SeqTrackEvents:
-	and	ax, [si]
-	and	ax, [si]
-	gs	add al, 0x85
-	add	al, 0xda
-	add	al, 0x83
-	push	es
-	rep	add al, 0x83
-	push	es
-	add	word [g_0511], 0x43
-	add	ax, 0x585
-	xchg	ax, dx
-	add	ax, 0x5a2
-	add	word [g_05CF], -0x7d
-	push	es
-	db	0xE1, 0x05		; loope 0x428
+SeqStepTrackJumpTable:
+	dw	.1
+	dw	.1
+	dw	.3
+	dw	.5
+	dw	.10
+	dw	.28
+	dw	.12
+	dw	.28
+	dw	.28
+	dw	.14
+	dw	.15
+	dw	.18
+	dw	.19
+	dw	.20
+	dw	.28
+	dw	.21
+	dw	.28
+	dw	.22
 .1:
 	mov	es, [bp + 0x8]
-	db	0x26, 0x80, 0x7C, 0x31, 0x00		; es
+	cmp	byte [es:si + 0x31], 0x0
 	jz	short .2
 	mov	bl, [es:si + 0x31]
 	db	0x2A, 0xFF		; sub bh, bh
@@ -419,86 +421,85 @@ SeqTrackEvents:
 	mov	[es:si + 0xa], ax
 	mov	[es:si + 0xc], dx
 	dec	byte [es:si + 0x31]
-	jmp	near .29
+	jmp	near .28
 .2:
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[es:si + 0xc], ax
 	mov	[es:si + 0xa], ax
 	mov	[es:si + 0x2], ax
-.3:
 	mov	[es:si], ax
 	mov	[es:si + 0x56], al
-	jmp	near .29
-.4:
+	jmp	near .28
+.3:
 	db	0x32, 0xC0		; xor al, al
 	mov	es, [bp + 0x8]
 	mov	[es:si + 0x31], al
 	mov	[es:si + 0x30], al
 	mov	ax, [es:si + 0x32]
 	mov	dx, [es:si + 0x34]
-.5:
+.4:
 	mov	[es:si + 0xa], ax
 	mov	[es:si + 0xc], dx
-	jmp	near .29
-.6:
+	jmp	near .28
+.5:
 	mov	al, [bp - 0x5]
 	mov	es, [bp + 0x8]
 	mov	[es:si + 0x4b], al
 	mov	cl, [es:si + 0x4c]
 	or	cl, 0xc0
-	mov	[g_8F68], cl
-	mov	[g_8F69], al
+	mov	[0x8f68], cl
+	mov	[0x8f69], al
 	push	ax
 	call	0x16F2:GetPatch
 	mov	es, dx
 	db	0x8B, 0xD8		; mov bx, ax
 	db	0x8B, 0xF8		; mov di, ax
 	test	byte [es:bx + 0xf], 0x80
-	jz	short .7
+	jz	short .6
 	mov	al, [es:di + 0xf]
 	and	al, 0x7f
-	jmp	short .8
-.7:
+	jmp	short .7
+.6:
 	mov	al, 0x7f
-.8:
+.7:
 	mov	es, [bp + 0x8]
 	mov	[es:si + 0x4d], al
 	push	ds
 	push	word 0x8f68
 	push	0x2
-.9:
+.8:
 	mov	es, [bp + 0x8]
 	mov	al, [es:si + 0x4d]
 	push	ax
 	call	0x1844:DrvSendMidi
-.10:
+.9:
 	add	sp, 0x8
-	jmp	near .29
-.11:
+	jmp	near .28
+.10:
 	mov	al, [bp - 0x5]
 	push	ax
 	mov	es, [bp + 0x8]
 	push	word [es:si + 0x2]
 	push	word [es:si]
 	call	0x1630:SetSongTempo
-.12:
+.11:
 	add	sp, 0x6
-	jmp	near .29
-.13:
+	jmp	near .28
+.12:
 	mov	es, [bp + 0x8]
 	test	byte [es:si + 0x56], 0x8
-	jz	short .14
-	jmp	near .29
-.14:
-	mov	al, [g_8F82]
+	jz	short .13
+	jmp	near .28
+.13:
+	mov	al, [0x8f82]
 	push	ax
 	mov	al, [bp - 0x5]
 	push	ax
 	push	es
 	push	si
 	call	0x1630:SendController
-	jmp	short .10
-.15:
+	jmp	short .9
+.14:
 	mov	es, [bp + 0x8]
 	mov	ax, [es:si + 0xa]
 	mov	dx, [es:si + 0xc]
@@ -513,11 +514,11 @@ SeqTrackEvents:
 	db	0x2A, 0xFF		; sub bh, bh
 	mov	[es:bx + si + 0x12], al
 	inc	byte [es:si + 0x30]
-	jmp	near .29
-.16:
+	jmp	near .28
+.15:
 	mov	es, [bp + 0x8]
 	cmp	byte [es:si + 0x30], 0x0
-	jz	short .17
+	jz	short .16
 	mov	bl, [es:si + 0x30]
 	db	0x2A, 0xFF		; sub bh, bh
 	shl	bx, byte 0x2
@@ -530,25 +531,25 @@ SeqTrackEvents:
 	mov	al, [es:bx + si + 0x11]
 	dec	byte [es:bx + si + 0x11]
 	db	0x0A, 0xC0		; or al, al
-	jz	short .18
+	jz	short .17
+.16:
+	jmp	near .28
 .17:
-	jmp	near .29
-.18:
 	mov	es, [bp + 0x8]
 	dec	byte [es:si + 0x30]
-	jmp	near .29
-.19:
+	jmp	near .28
+.18:
 	mov	al, [bp - 0x5]
 	mov	es, [bp + 0x8]
 	mov	[es:si + 0x57], al
-	jmp	near .29
-.20:
-	push	word [g_8F82]
+	jmp	near .28
+.19:
+	push	word [0x8f82]
 	push	word [bp + 0x8]
 	push	si
 	call	0x1630:SendPitchBend
-	jmp	near .12
-.21:
+	jmp	near .11
+.20:
 	mov	es, [bp + 0x8]
 	inc	byte [es:si + 0x31]
 	mov	ax, [es:si + 0xa]
@@ -558,52 +559,52 @@ SeqTrackEvents:
 	shl	bx, byte 0x2
 	mov	[es:bx + si + 0x32], ax
 	mov	[es:bx + si + 0x34], dx
-	mov	ax, [g_8F82]
-	mov	dx, [g_8F84]
+	mov	ax, [0x8f82]
+	mov	dx, [0x8f84]
 	add	ax, strict word 0x4
-	jmp	near .5
-.22:
+	jmp	near .4
+.21:
 	push	word 0x3a0b
 	push	word 0xb96e
-	mov	al, [g_8F86]
+	mov	al, [0x8f86]
 	db	0x2A, 0xE4		; sub ah, ah
 	sub	ax, strict word 0x4
 	push	ax
-	jmp	near .9
-.23:
+	jmp	near .8
+.22:
 	mov	al, [bp - 0x5]
 	mov	es, [bp + 0x8]
 	mov	[es:si + 0x4a], al
-	jmp	near .29
-.24:
-	cmp	byte [g_8F80], 0x80
-	jnc	short .25
+	jmp	near .28
+.23:
+	cmp	byte [0x8f80], 0x80
+	jnc	short .24
 	mov	es, [bp + 0x8]
 	mov	al, [es:si + 0x57]
-	mov	[g_8F81], al
+	mov	[0x8f81], al
+.24:
+	and	byte [0x8f80], 0x7f
+	mov	es, [bp + 0x8]
+	cmp	byte [es:si + 0x4c], 0x9
+	jz	short .25
+	les	bx, [es:si + 0x4]
+	mov	al, [es:bx + 0x13]
+	add	[0x8f80], al
 .25:
-	and	byte [g_8F80], 0x7f
+	cmp	word [0x84fe], 0x0
+	jz	short .28
 	mov	es, [bp + 0x8]
 	cmp	byte [es:si + 0x4c], 0x9
 	jz	short .26
-	les	bx, [es:si + 0x4]
-	mov	al, [es:bx + 0x13]
-	add	[g_8F80], al
-.26:
-	cmp	word [g_84FE], 0x0
-	jz	short .29
-	mov	es, [bp + 0x8]
-	cmp	byte [es:si + 0x4c], 0x9
-	jz	short .27
 	push	word [es:si + 0x2]
 	push	word [es:si]
 	mov	al, [es:si + 0x8]
 	push	ax
 	mov	al, [es:si + 0x4d]
 	push	ax
-	jmp	short .28
-.27:
-	mov	al, [g_8F80]
+	jmp	short .27
+.26:
+	mov	al, [0x8f80]
 	add	al, 0x5c
 	push	ax
 	call	0x16F2:GetPatch
@@ -618,36 +619,36 @@ SeqTrackEvents:
 	and	al, 0x7f
 	push	ax
 	mov	es, [bp + 0x8]
-.28:
+.27:
 	mov	al, [es:si + 0x4c]
 	push	ax
-	push	word [g_8F84]
-	push	word [g_8F82]
-	mov	al, [g_8F81]
+	push	word [0x8f84]
+	push	word [0x8f82]
+	mov	al, [0x8f81]
 	push	ax
-	mov	al, [g_8F80]
+	mov	al, [0x8f80]
 	push	ax
 	call	0x1630:AllocVoice
 	add	sp, 0x12
-.29:
+.28:
 	mov	es, [bp + 0x8]
 	mov	ax, [es:si + 0xc]
 	or	ax, [es:si + 0xa]
-	jnz	short .30
+	jnz	short .29
 	jmp	near SeqStepTrack.18
-.30:
+.29:
 	push	word [es:si + 0xc]
 	push	word [es:si + 0xa]
 	push	word 0x8f88
 	call	0x1630:ParseMidiEvent
 	add	sp, 0x6
-	mov	ax, [g_8F88]
-	mov	dx, [g_8F8A]
+	mov	ax, [0x8f88]
+	mov	dx, [0x8f8a]
 	mov	es, [bp + 0x8]
 	mov	[es:si + 0xe], ax
 	mov	[es:si + 0x10], dx
 	jmp	near SeqStepTrack.18
-.31:
+.30:
 	pop	ds
 	pop	si
 	pop	di
