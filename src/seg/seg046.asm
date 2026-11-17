@@ -12,7 +12,7 @@ F046_0006:
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	call	0x03A3:TableCount
-	add	sp, byte +0x4
+	add	sp, 0x4
 	mov	[bp - 0x6], ax
 	inc	ax
 	inc	ax
@@ -21,13 +21,13 @@ F046_0006:
 	mov	[bp - 0xa], ax
 	mov	[bp - 0x8], dx
 	db	0x33, 0xF6		; xor si, si
-	jmp	short L046_0058
-L046_002D:
+	jmp	short .2
+.1:
 	push	si
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	call	0x03A3:TableAt
-	add	sp, byte +0x6
+	add	sp, 0x6
 	db	0x8B, 0xF8		; mov di, ax
 	mov	es, dx
 	mov	ax, [es:di + 0x2]
@@ -39,7 +39,7 @@ L046_002D:
 	add	[bp - 0xa], ax
 	adc	[bp - 0x8], dx
 	inc	si
-L046_0058:
+.2:
 	cmp	[bp - 0x6], si
-	jg	short L046_002D
+	jg	short .1
 	mov	ax, [bp - 0xa]

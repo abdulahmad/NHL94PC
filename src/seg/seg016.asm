@@ -10,7 +10,7 @@ F016_0002:
 	push	ss
 	push	ax
 	call	0x0000:_fstrlen
-	add	sp, byte +0x8
+	add	sp, 0x8
 	lea	ax, [bp - 0x52]
 	push	ax
 	call	0x03A3:TextWidthAll
@@ -38,14 +38,14 @@ F016_0036:
 	push	ss
 	push	ax
 	call	0x0000:_fstrlen
-	add	sp, byte +0x8
+	add	sp, 0x8
 	lea	ax, [bp - 0x92]
 	push	ax
 	call	0x03A3:TextWidthAll
-	add	sp, byte +0x2
+	add	sp, 0x2
 	db	0x8B, 0xF8		; mov di, ax
-	and	di, byte -0x40
-	add	di, byte +0x40
+	and	di, -0x40
+	add	di, 0x40
 	db	0x8B, 0xC7		; mov ax, di
 	les	bx, [0x6d4e]
 	mov	dx, [es:bx + 0xe]
@@ -57,38 +57,38 @@ F016_0036:
 	lea	ax, [bp - 0x40]
 	push	ax
 	call	0x03A3:SaveTextState
-	add	sp, byte +0x2
+	add	sp, 0x2
 	mov	ax, [bp - 0x2]
 	push	ax
 	push	si
 	db	0x8B, 0xF8		; mov di, ax
 	call	0x0FEF:F028_0048
-	add	sp, byte +0x4
+	add	sp, 0x4
 	push	word 0xff
 	call	0x0FEF:F028_00B4
-	add	sp, byte +0x2
+	add	sp, 0x2
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
-	push	byte +0x0
-	push	byte +0x0
+	push	0x0
+	push	0x0
 	push	cs
 	call	F016_0166
-	add	sp, byte +0x8
+	add	sp, 0x8
 	lea	ax, [bp - 0x40]
 	push	ax
 	call	0x03A3:LoadTextState
-	add	sp, byte +0x2
+	add	sp, 0x2
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	mov	es, di
 	push	word [es:si + 0x2]
 	push	word [es:si]
 	call	0x0FEF:F028_13B0
-	add	sp, byte +0x8
+	add	sp, 0x8
 	push	di
 	push	si
 	call	0x14ED:F035_000C
-	add	sp, byte +0x4
+	add	sp, 0x4
 	pop	si
 	pop	di
 	leave
@@ -107,7 +107,7 @@ F016_00E4:
 	push	cx
 	db	0x8B, 0xF0		; mov si, ax
 	call	0x0000:_fstrlen
-	add	sp, byte +0x8
+	add	sp, 0x8
 	db	0x8B, 0xC7		; mov ax, di
 	db	0x8B, 0xD6		; mov dx, si
 	lea	cx, [bp - 0x52]
@@ -115,7 +115,7 @@ F016_00E4:
 	db	0x8B, 0xF0		; mov si, ax
 	db	0x8B, 0xFA		; mov di, dx
 	call	0x03A3:TextWidthAll
-	add	sp, byte +0x2
+	add	sp, 0x2
 	sub	ax, 0x140
 	neg	ax
 	cwd
@@ -136,7 +136,7 @@ F016_00E4:
 	mov	[bp - 0x56], cx
 	mov	[bp - 0x54], di
 	call	0x0FA0:F026_0246
-	add	sp, byte +0x8
+	add	sp, 0x8
 	mov	ax, [0x998]
 	les	bx, [0x6d4e]
 	mov	[es:bx], ax
@@ -145,7 +145,7 @@ F016_00E4:
 	push	word [bp + 0x6]
 	push	si
 	call	0x0FA0:F026_0246
-	add	sp, byte +0x8
+	add	sp, 0x8
 	pop	si
 	pop	di
 	leave
@@ -171,7 +171,7 @@ F016_0166:
 	mov	[bp - 0x4], si
 	mov	[bp - 0x2], ax
 	call	0x0FA0:F026_0246
-	add	sp, byte +0x8
+	add	sp, 0x8
 	mov	ax, [0x998]
 	les	bx, [0x6d4e]
 	mov	[es:bx], ax
@@ -180,7 +180,7 @@ F016_0166:
 	push	di
 	push	word [bp + 0x6]
 	call	0x0FA0:F026_0246
-	add	sp, byte +0x8
+	add	sp, 0x8
 	pop	si
 	pop	di
 	leave
@@ -196,7 +196,7 @@ F016_01B8:
 	mov	[es:bx], ax
 	db	0x2B, 0xF6		; sub si, si
 	mov	di, [bp + 0xa]
-L016_01CC:
+.1:
 	push	word [bp + 0xc]
 	push	di
 	mov	ax, [si + 0x9a4]
@@ -206,11 +206,11 @@ L016_01CC:
 	add	ax, [bp + 0x6]
 	push	ax
 	call	0x0FA0:F026_0246
-	add	sp, byte +0x8
+	add	sp, 0x8
 	inc	si
 	inc	si
-	cmp	si, byte +0x8
-	jl	short L016_01CC
+	cmp	si, 0x8
+	jl	short .1
 	mov	ax, [0x998]
 	les	bx, [0x6d4e]
 	mov	[es:bx], ax
@@ -219,7 +219,7 @@ L016_01CC:
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	call	0x0FA0:F026_0246
-	add	sp, byte +0x8
+	add	sp, 0x8
 	pop	si
 	pop	di
 	leave
@@ -233,7 +233,7 @@ F016_0210:
 	lea	ax, [bp - 0x52]
 	push	ax
 	call	0x0000:_sprintf
-	add	sp, byte +0x6
+	add	sp, 0x6
 	lea	ax, [bp - 0x52]
 	push	ss
 	push	ax
@@ -253,7 +253,7 @@ F016_0238:
 	lea	ax, [bp - 0x52]
 	push	ax
 	call	0x0000:_sprintf
-	add	sp, byte +0x8
+	add	sp, 0x8
 	lea	ax, [bp - 0x52]
 	push	ss
 	push	ax

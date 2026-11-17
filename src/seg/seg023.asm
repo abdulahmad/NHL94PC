@@ -12,32 +12,32 @@ F023_0008:
 	mov	di, [bp + 0xa]
 	mov	ax, [bp + 0xc]
 	db	0x0B, 0xC7		; or ax, di
-	jz	short L023_008A
+	jz	short .1
 	mov	si, [bp + 0x6]
 	push	word [bp + 0xc]
 	push	di
 	push	word [bp + 0x8]
 	push	si
 	call	0x0000:_fstrlen
-	add	sp, byte +0x8
+	add	sp, 0x8
 	push	word 0x3701
 	push	word 0xba6
 	push	word [bp + 0x8]
 	push	si
 	call	0x0000:_fstrcat
-	add	sp, byte +0x8
+	add	sp, 0x8
 	push	word [bp + 0x10]
 	push	word [bp + 0xe]
 	push	word [bp + 0x8]
 	push	si
 	call	0x0000:_fstrcat
-	add	sp, byte +0x8
+	add	sp, 0x8
 	push	word [bp + 0x8]
 	push	si
 	call	0x0D39:F016_0002
-	add	sp, byte +0x4
+	add	sp, 0x4
 	cmp	ax, [bp + 0x12]
-	jng	short L023_009F
+	jng	short .3
 	mov	es, [bp + 0xc]
 	mov	al, [es:di]
 	mov	es, [bp + 0x8]
@@ -50,30 +50,30 @@ F023_0008:
 	push	es
 	push	si
 	call	0x0000:_fstrcat
-	jmp	short L023_009C
+	jmp	short .2
 	db	0x90
-L023_008A:
+.1:
 	mov	si, [bp + 0x6]
 	push	word [bp + 0x10]
 	push	word [bp + 0xe]
 	push	word [bp + 0x8]
 	push	si
 	call	0x0000:_fstrlen
-L023_009C:
-	add	sp, byte +0x8
-L023_009F:
+.2:
+	add	sp, 0x8
+.3:
 	push	word [bp + 0x8]
 	push	si
 	call	0x0D39:F016_0002
-	add	sp, byte +0x4
+	add	sp, 0x4
 	cmp	ax, [bp + 0x12]
-	jng	short L023_00DB
+	jng	short .5
 	mov	di, [bp + 0x12]
-L023_00B3:
+.4:
 	push	word [bp + 0x8]
 	push	si
 	call	0x0000:RetOnly
-	add	sp, byte +0x4
+	add	sp, 0x4
 	db	0x8B, 0xD8		; mov bx, ax
 	mov	ax, [bp + 0x8]
 	db	0x03, 0xDE		; add bx, si
@@ -82,10 +82,10 @@ L023_00B3:
 	push	ax
 	push	si
 	call	0x0D39:F016_0002
-	add	sp, byte +0x4
+	add	sp, 0x4
 	db	0x3B, 0xC7		; cmp ax, di
-	jg	short L023_00B3
-L023_00DB:
+	jg	short .4
+.5:
 	pop	si
 	pop	di
 	leave

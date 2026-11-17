@@ -10,49 +10,49 @@ F017_0002:
 	push	es
 	db	0x8B, 0xDA		; mov bx, dx
 	db	0x0B, 0xD0		; or dx, ax
-	jnz	short L017_0013
+	jnz	short .1
 	db	0x2B, 0xC0		; sub ax, ax
-	jmp	short L017_0084
+	jmp	short .8
 	db	0x90
-L017_0013:
+.1:
 	cmp	bx, 0x3fff
-	jc	short L017_0025
-	ja	short L017_001F
+	jc	short .3
+	ja	short .2
 	db	0x0B, 0xC0		; or ax, ax
-	jz	short L017_0025
-L017_001F:
+	jz	short .3
+.2:
 	mov	ax, 0x7fff
-	jmp	short L017_0084
+	jmp	short .8
 	db	0x90
-L017_0025:
+.3:
 	db	0x8B, 0xC8		; mov cx, ax
-	cmp	bx, byte +0x0
-	ja	short L017_0041
+	cmp	bx, 0x0
+	ja	short .5
 	cmp	cx, 0x640
-	jnc	short L017_0041
+	jnc	short .5
 	mov	ax, 0xffff
-L017_0035:
+.4:
 	add	ax, strict word 0x2
 	db	0x2B, 0xC8		; sub cx, ax
-	jns	short L017_0035
+	jns	short .4
 	sar	ax, 1
-	jmp	short L017_0084
+	jmp	short .8
 	db	0x90
-L017_0041:
+.5:
 	mov	es, bx
 	db	0x8B, 0xF1		; mov si, cx
 	mov	di, 0xa
 	mov	ax, 0x8000
 	mov	dx, 0x0
 	cmp	bx, 0xf0
-	jnc	short L017_0062
+	jnc	short .6
 	db	0x8A, 0xC5		; mov al, ch
 	db	0x8A, 0xE3		; mov ah, bl
 	db	0x8A, 0xD7		; mov dl, bh
 	db	0x2A, 0xF6		; sub dh, dh
 	add	ax, strict word 0x2
-	adc	dx, byte +0x0
-L017_0062:
+	adc	dx, 0x0
+.6:
 	db	0x8B, 0xC8		; mov cx, ax
 	db	0x8B, 0xDA		; mov bx, dx
 	push	dx
@@ -65,13 +65,13 @@ L017_0062:
 	sar	dx, 1
 	rcr	ax, 1
 	db	0x3B, 0xC8		; cmp cx, ax
-	jnz	short L017_007F
+	jnz	short .7
 	db	0x3B, 0xDA		; cmp bx, dx
-	jz	short L017_0084
-L017_007F:
-	sub	di, byte +0x1
-	jnz	short L017_0062
-L017_0084:
+	jz	short .8
+.7:
+	sub	di, 0x1
+	jnz	short .6
+.8:
 	pop	es
 	pop	si
 	pop	di
@@ -83,28 +83,28 @@ F017_0089:
 	db	0x8B, 0xEC		; mov bp, sp
 	db	0x8B, 0xC8		; mov cx, ax
 	db	0x0B, 0xC2		; or ax, dx
-	jnz	short L017_0097
+	jnz	short .1
 	mov	ax, 0x8
 	leave
 	retf
-L017_0097:
+.1:
 	mov	bx, 0x0
-	cmp	cx, byte +0x0
-	jnl	short L017_00A4
+	cmp	cx, 0x0
+	jnl	short .2
 	neg	cx
-	or	bx, byte +0x1
-L017_00A4:
+	or	bx, 0x1
+.2:
 	db	0x0B, 0xD2		; or dx, dx
-	jnl	short L017_00AD
+	jnl	short .3
 	neg	dx
-	or	bx, byte +0x2
-L017_00AD:
+	or	bx, 0x2
+.3:
 	db	0x8B, 0xC2		; mov ax, dx
 	shl	dx, 1
 	db	0x3B, 0xD1		; cmp dx, cx
-	jc	short L017_00B8
-	or	bx, byte +0x4
-L017_00B8:
+	jc	short .4
+	or	bx, 0x4
+.4:
 	shl	cx, 1
 	db	0x3B, 0xC8		; cmp cx, ax
 	db	0x72, 0x03		; jc 0xc1

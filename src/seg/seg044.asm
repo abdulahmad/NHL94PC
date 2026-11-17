@@ -22,20 +22,20 @@ F044_0002:
 	push	ss
 	push	ax
 	push	word 0x100
-	push	byte +0x0
+	push	0x0
 	call	0x0FEF:F028_0366
-	add	sp, byte +0x8
+	add	sp, 0x8
 	lea	si, [bp - 0x30e]
 	mov	word [bp - 0x4], 0x0
 	mov	ax, 0x3976
 	mov	es, ax
-L044_004D:
+.1:
 	mov	bx, [bp - 0x4]
 	cmp	byte [es:bx + 0x100], 0x0
-	jnz	short L044_005D
-	add	si, byte +0x3
-	jmp	short L044_00D7
-L044_005D:
+	jnz	short .2
+	add	si, 0x3
+	jmp	short .6
+.2:
 	mov	bx, [bp - 0x8]
 	lodsb
 	db	0x2A, 0xE4		; sub ah, ah
@@ -45,11 +45,11 @@ L044_005D:
 	imul	cx
 	mov	[bp - 0x2], ax
 	cmp	ax, [bp - 0x6]
-	jl	short L044_0077
+	jl	short .3
 	inc	si
 	inc	si
-	jmp	short L044_00D7
-L044_0077:
+	jmp	short .6
+.3:
 	mov	bx, [bp - 0xa]
 	lodsb
 	db	0x2A, 0xE4		; sub ah, ah
@@ -60,10 +60,10 @@ L044_0077:
 	add	[bp - 0x2], ax
 	mov	ax, [bp - 0x6]
 	cmp	[bp - 0x2], ax
-	jl	short L044_0093
+	jl	short .4
 	inc	si
-	jmp	short L044_00D7
-L044_0093:
+	jmp	short .6
+.4:
 	mov	bx, [bp - 0xc]
 	lodsb
 	db	0x2A, 0xE4		; sub ah, ah
@@ -72,18 +72,18 @@ L044_0093:
 	db	0x8B, 0xC8		; mov cx, ax
 	imul	cx
 	add	[bp - 0x2], ax
-	jz	short L044_00BD
+	jz	short .5
 	cmp	byte [si - 0x3], 0x0
-	jnz	short L044_00BD
+	jnz	short .5
 	cmp	byte [si - 0x2], 0x0
-	jnz	short L044_00BD
+	jnz	short .5
 	cmp	byte [si - 0x1], 0x0
-	jnz	short L044_00BD
+	jnz	short .5
 	mov	word [bp - 0x2], 0x270f
-L044_00BD:
+.5:
 	mov	ax, [bp - 0x6]
 	cmp	[bp - 0x2], ax
-	jnl	short L044_00D7
+	jnl	short .6
 	mov	al, [bp - 0x4]
 	db	0x2A, 0xE4		; sub ah, ah
 	mov	[bp - 0xe], ax
@@ -91,7 +91,7 @@ L044_00BD:
 	mov	[bp - 0x6], ax
 	db	0x0B, 0xC0		; or ax, ax
 	db	0x74, 0x0D		; jz 0xe4
-L044_00D7:
+.6:
 	inc	word [bp - 0x4]
 	cmp	word [bp - 0x4], 0x100
 	db	0x7D

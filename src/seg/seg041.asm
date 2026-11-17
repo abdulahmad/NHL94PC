@@ -55,7 +55,7 @@ F041_0046:
 	push	word 0x39ad
 	push	strict word 0x0
 	call	0x03A3:UseCharSeg
-	add	sp, byte +0x4
+	add	sp, 0x4
 	mov	ax, [bp + 0x6]
 	db	0x03, 0xC6		; add ax, si
 	push	ax
@@ -72,12 +72,12 @@ F041_0046:
 	mov	[bp - 0x5c], ax
 	mov	[bp - 0x5e], cx
 	call	0x0FEF:F028_46A8
-	add	sp, byte +0xc
+	add	sp, 0xc
 	call	far [0x6410]
 	push	word [bp - 0x4]
 	push	word [bp - 0x6]
 	call	0x0FEF:F028_0048
-	add	sp, byte +0x4
+	add	sp, 0x4
 	push	word [bp - 0x4]
 	push	word [bp - 0x6]
 	push	di
@@ -93,7 +93,7 @@ F041_0046:
 	push	si
 	push	di
 	call	0x0FEF:F028_0136
-	add	sp, byte +0xa
+	add	sp, 0xa
 	db	0x33, 0xC0		; xor ax, ax
 	mov	dx, 0x2a
 	call	0x15F1:F044_0002
@@ -109,7 +109,7 @@ F041_0046:
 	lea	ax, [di + 0x4]
 	push	ax
 	call	0x1484:F029_0004
-	add	sp, byte +0xa
+	add	sp, 0xa
 	mov	ax, 0x3f3f
 	mov	dx, 0x3f
 	call	0x15F1:F044_0002
@@ -119,43 +119,43 @@ F041_0046:
 	push	ax
 	push	word [bp + 0xe]
 	call	0x0FEC:F027_0002
-	add	sp, byte +0x4
+	add	sp, 0x4
 	call	far [0x6414]
 	push	word 0xc8
-	push	byte +0x0
+	push	0x0
 	push	word 0x140
-	push	byte +0x0
+	push	0x0
 	mov	es, [0x8d0a]
 	mov	bx, [0x74dc]
 	shl	bx, byte 0x2
 	push	word [es:bx + 0x7572]
 	push	word [es:bx + 0x7570]
 	call	0x0FEF:F028_46A8
-	add	sp, byte +0xc
+	add	sp, 0xc
 	mov	si, [bp + 0x4]
-L041_0175:
+.1:
 	call	far [0x6418]
 	test	si, ax
-	jnz	short L041_0175
-L041_017D:
+	jnz	short .1
+.2:
 	call	0x03A3:ReadKey
 	db	0x8B, 0xF8		; mov di, ax
 	call	far [0x6418]
 	and	ax, [bp + 0x4]
 	db	0x8B, 0xF0		; mov si, ax
 	db	0x0B, 0xFF		; or di, di
-	jnz	short L041_0195
+	jnz	short .3
 	db	0x0B, 0xF6		; or si, si
-	jz	short L041_017D
-L041_0195:
+	jz	short .2
+.3:
 	mov	[bp - 0x2], di
-	and	si, byte +0x1
+	and	si, 0x1
 	db	0x8B, 0xD7		; mov dx, di
 	or	dl, 0x20
-	cmp	dx, byte +0x79
-	jnz	short L041_01A8
+	cmp	dx, 0x79
+	jnz	short .4
 	mov	si, 0x1
-L041_01A8:
+.4:
 	mov	ax, [bp + 0x6]
 	add	ax, [bp + 0xa]
 	push	ax
@@ -170,7 +170,7 @@ L041_01A8:
 	push	word [es:bx + 0x7572]
 	push	word [es:bx + 0x7570]
 	call	0x0FEF:F028_46A8
-	add	sp, byte +0xc
+	add	sp, 0xc
 	call	far [0x640c]
 	push	word [bp - 0x4]
 	push	word [bp - 0x6]
@@ -189,7 +189,7 @@ L041_01A8:
 	push	word [bp - 0x4]
 	push	word [bp - 0x6]
 	call	0x14ED:F035_000C
-	add	sp, byte +0x4
+	add	sp, 0x4
 	call	far [0x7646]
 	mov	word [0x6db2], 0x0
 	db	0x8B, 0xC6		; mov ax, si
@@ -200,16 +200,16 @@ L041_01A8:
 
 F041_0224:
 	push	word 0x76a4
-	push	byte +0x50
-	push	byte +0x58
+	push	0x50
+	push	0x58
 	push	word 0xa0
-	push	byte +0x18
-	push	byte +0x7
+	push	0x18
+	push	0x7
 	call	F041_0046
 	db	0x0B, 0xC0		; or ax, ax
-	jz	short L041_023E
+	jz	short .1
 	call	0x0F4A:F022_03E2
-L041_023E:
+.1:
 	retf
 	db	0x90
 
@@ -235,28 +235,28 @@ F041_0240:
 	push	word 0x39ad
 	push	strict word 0x0
 	call	0x03A3:UseCharSeg
-	add	sp, byte +0x4
+	add	sp, 0x4
 	mov	ax, [bp - 0x2]
 	push	ax
 	push	si
 	db	0x8B, 0xF8		; mov di, ax
 	call	0x0FEF:F028_0048
-	add	sp, byte +0x4
+	add	sp, 0x4
 	push	word 0xc8
 	push	word 0xbe
 	push	word 0x140
-	push	byte +0x0
+	push	0x0
 	mov	es, [0x8d0a]
 	mov	bx, [0x74dc]
 	shl	bx, byte 0x2
 	push	word [es:bx + 0x7572]
 	push	word [es:bx + 0x7570]
 	call	0x0FEF:F028_46A8
-	add	sp, byte +0xc
+	add	sp, 0xc
 	call	far [0x6410]
 	push	di
 	push	si
-	push	byte +0x0
+	push	0x0
 	push	word 0xbe
 	call	F041_0002
 	call	0x0FEF:F028_01A6
@@ -264,12 +264,12 @@ F041_0240:
 	cwd
 	call	0x15F1:F044_0002
 	push	ax
-	push	byte +0xa
+	push	0xa
 	push	word 0x140
 	push	word 0xbe
-	push	byte +0x0
+	push	0x0
 	call	0x0FEF:F028_0136
-	add	sp, byte +0xa
+	add	sp, 0xa
 	mov	ax, 0x3f3f
 	mov	dx, 0x3f
 	call	0x15F1:F044_0002
@@ -278,16 +278,16 @@ F041_0240:
 	push	word 0xbf
 	push	word [bp + 0x6]
 	call	0x0FEC:F027_0002
-	add	sp, byte +0x4
+	add	sp, 0x4
 	call	far [0x6414]
 	push	word [bp + 0xa]
 	push	word [bp + 0x8]
 	call	0x03A3:WaitAdd
-	add	sp, byte +0x4
+	add	sp, 0x4
 	call	far [0x640c]
 	push	di
 	push	si
-	push	byte +0x0
+	push	0x0
 	push	word 0xbe
 	call	F041_0024
 	call	far [0x6414]
@@ -302,7 +302,7 @@ F041_0240:
 	push	di
 	push	si
 	call	0x14ED:F035_000C
-	add	sp, byte +0x4
+	add	sp, 0x4
 	mov	word [0x6db2], 0x0
 	pop	si
 	pop	di
@@ -312,8 +312,8 @@ F041_0240:
 
 F041_0352:
 	push	word 0x76b6
-	push	byte +0x10
-	push	byte +0x58
+	push	0x10
+	push	0x58
 	push	word 0x120
-	push	byte +0x18
-	push	byte +0x1
+	push	0x18
+	push	0x1

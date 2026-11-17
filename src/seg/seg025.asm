@@ -3,32 +3,32 @@
 F025_0000:
 	xor	al, 0x68
 	les	ax, [bx + si]
-L025_0004:
+.1:
 	call	0x1B35:OvlThunk100
-	add	sp, byte +0x4
+	add	sp, 0x4
 	retf
 	db	0x90
 
 F025_000E:
-	cmp	word [0xa3e], byte +0x0
-	jz	short L025_0020
+	cmp	word [0xa3e], 0x0
+	jz	short .1
 	call	0x0C15:F011_000E
 	mov	word [0xa3e], 0x0
-L025_0020:
+.1:
 	mov	es, [0x8b1e]
-	cmp	word [es:0x0], byte +0x0
-	jz	short L025_0046
+	cmp	word [es:0x0], 0x0
+	jz	short .2
 	call	0x0837:0x10
 	call	0x0837:NullFar
 	call	0x0837:0x10
 	mov	es, [0x8b1e]
 	mov	word [es:0x0], 0x0
-L025_0046:
-	cmp	word [0x508], byte +0x0
-	jnz	short L025_0050
+.2:
+	cmp	word [0x508], 0x0
+	jnz	short .3
 	db	0x2B, 0xC0		; sub ax, ax
 	retf
-L025_0050:
+.3:
 	dec	word [0x508]
 	mov	al, [0x50a]
 	inc	al

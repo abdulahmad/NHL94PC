@@ -16,89 +16,89 @@ F051_000E:
 	push	ds
 	mov	ax, 0x45c9
 	mov	ds, ax
-	push	byte +0x0
+	push	0x0
 	push	word [bp + 0x6]
 	call	0x14B8:F033_001A
-	add	sp, byte +0x4
+	add	sp, 0x4
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x6], dx
 	db	0x0B, 0xD0		; or dx, ax
-	jnz	short L051_005D
+	jnz	short .2
 	push	word [bp + 0x6]
 	push	word 0x849a
 	push	word 0x9046
 	call	0x0000:_sprintf
-	add	sp, byte +0x6
-	push	byte +0x0
+	add	sp, 0x6
+	push	0x0
 	push	word 0x9046
 	call	0x14B8:F033_001A
-	add	sp, byte +0x4
+	add	sp, 0x4
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x6], dx
 	db	0x0B, 0xD0		; or dx, ax
-	jnz	short L051_005D
-L051_0057:
+	jnz	short .2
+.1:
 	db	0x33, 0xC0		; xor ax, ax
 	cwd
-	jmp	near L051_010A
-L051_005D:
+	jmp	near .5
+.2:
 	push	word [bp - 0x6]
 	push	si
-	imul	ax, [0x84c6], byte +0x38
+	imul	ax, [0x84c6], 0x38
 	add	ax, 0x8fd6
 	push	ax
 	call	0x1880:F052_0272
-	add	sp, byte +0x6
-	imul	bx, [0x84c6], byte +0x38
+	add	sp, 0x6
+	imul	bx, [0x84c6], 0x38
 	call	far [bx - 0x702a]
 	mov	[bp - 0x4], ax
 	mov	[bp - 0x2], dx
 	push	dx
 	push	ax
-	imul	bx, [0x84c6], byte +0x38
+	imul	bx, [0x84c6], 0x38
 	call	far [bx - 0x7026]
 	db	0x0B, 0xC0		; or ax, ax
-	jnz	short L051_009E
+	jnz	short .3
 	push	word [bp - 0x6]
 	push	si
 	call	0x06E1:FindUnlink
-	add	sp, byte +0x4
-	jmp	short L051_0057
-L051_009E:
+	add	sp, 0x4
+	jmp	short .1
+.3:
 	push	word [bp - 0x2]
 	push	word [bp - 0x4]
 	push	word 0x16f2
 	push	word 0x8be
 	push	word 0x16f2
 	push	word 0x87c
-	imul	bx, [0x84c6], byte +0x38
+	imul	bx, [0x84c6], 0x38
 	call	far [bx - 0x7022]
 	mov	bx, [0x84c6]
 	shl	bx, byte 0x2
 	mov	ax, [bp - 0x6]
 	mov	[bx - 0x7032], si
 	mov	[bx - 0x7030], ax
-	push	byte +0x3
-	imul	bx, [0x84c6], byte +0x38
+	push	0x3
+	imul	bx, [0x84c6], 0x38
 	call	far [bx - 0x7012]
 	mov	bx, [0x84c6]
 	shl	bx, byte 0x2
 	mov	[bx - 0x1f7c], ax
 	mov	[bx - 0x1f7a], dx
-	push	byte +0x7
-	imul	bx, [0x84c6], byte +0x38
+	push	0x7
+	imul	bx, [0x84c6], 0x38
 	call	far [bx - 0x7012]
 	db	0x8B, 0xF8		; mov di, ax
-	cmp	di, byte +0x64
-	jnc	short L051_0101
+	cmp	di, 0x64
+	jnc	short .4
 	mov	al, [0x84c6]
 	mov	[0x8502], al
 	mov	[0x8500], di
-L051_0101:
+.4:
 	inc	word [0x84c6]
 	db	0x8B, 0xC6		; mov ax, si
 	mov	dx, [bp - 0x6]
-L051_010A:
+.5:
 	pop	ds
 	pop	si
 	pop	di
@@ -121,7 +121,7 @@ F051_0118:
 	mov	ds, ax
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
-	imul	bx, ax, byte +0x38
+	imul	bx, ax, 0x38
 	call	far [bx - 0x702a]
 	pop	ds
 	leave
@@ -137,7 +137,7 @@ F051_0130:
 	push	word [bp + 0x8]
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
-	imul	bx, ax, byte +0x38
+	imul	bx, ax, 0x38
 	call	far [bx - 0x7026]
 	pop	ds
 	leave
@@ -157,7 +157,7 @@ F051_014E:
 	push	word [bp + 0x10]
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
-	imul	bx, ax, byte +0x38
+	imul	bx, ax, 0x38
 	call	far [bx - 0x7022]
 	pop	ds
 	leave
@@ -171,7 +171,7 @@ F051_0178:
 	mov	ds, ax
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
-	imul	bx, ax, byte +0x38
+	imul	bx, ax, 0x38
 	call	far [bx - 0x701e]
 	pop	ds
 	leave
@@ -185,7 +185,7 @@ F051_0190:
 	mov	ds, ax
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
-	imul	bx, ax, byte +0x38
+	imul	bx, ax, 0x38
 	call	far [bx - 0x701a]
 	pop	ds
 	leave
@@ -199,7 +199,7 @@ F051_01A8:
 	mov	ds, ax
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
-	imul	bx, ax, byte +0x38
+	imul	bx, ax, 0x38
 	call	far [bx - 0x7016]
 	pop	ds
 	leave
@@ -214,7 +214,7 @@ F051_01C0:
 	push	word [bp + 0x8]
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
-	imul	bx, ax, byte +0x38
+	imul	bx, ax, 0x38
 	call	far [bx - 0x7012]
 	pop	ds
 	leave
@@ -232,7 +232,7 @@ F051_01DC:
 	push	word [bp + 0xa]
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
-	imul	bx, ax, byte +0x38
+	imul	bx, ax, 0x38
 	call	far [bx - 0x700e]
 	pop	ds
 	leave
@@ -290,28 +290,28 @@ F051_022E:
 	mov	ds, ax
 	mov	al, [0x84c6]
 	cmp	[bp + 0x6], al
-	ja	short L051_0270
+	ja	short .3
 	mov	si, [bp + 0xa]
 	mov	es, [bp + 0xc]
 	mov	al, [es:si]
 	and	al, 0xf0
 	cmp	al, 0x80
-	jz	short L051_0258
+	jz	short .1
 	mov	al, [es:si]
 	and	al, 0xf0
 	cmp	al, 0x90
-	jnz	short L051_025D
-L051_0258:
+	jnz	short .2
+.1:
 	add	byte [es:si + 0x1], 0x18
-L051_025D:
+.2:
 	push	word [bp + 0x8]
 	push	word [bp + 0xc]
 	push	si
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
-	imul	bx, ax, byte +0x38
+	imul	bx, ax, 0x38
 	call	far [bx - 0x6ffe]
-L051_0270:
+.3:
 	pop	ds
 	pop	si
 	leave
@@ -340,7 +340,7 @@ F051_028C:
 	push	word [bp + 0xa]
 	push	word [bp + 0x8]
 	call	0x03A3:EmsMapFrame
-	add	sp, byte +0x4
+	add	sp, 0x4
 	pop	ds
 	leave
 	retf
@@ -352,7 +352,7 @@ F051_02A6:
 	mov	ax, 0x45c9
 	mov	ds, ax
 	test	byte [bp + 0xe], 0x80
-	jz	short L051_02E0
+	jz	short .1
 	push	word [bp + 0x8]
 	mov	ax, [bp + 0x10]
 	mov	dx, [bp + 0x12]
@@ -368,13 +368,13 @@ F051_02A6:
 	push	word [bp + 0x1c]
 	push	word 0x1844
 	push	word 0x28c
-	jmp	short L051_0311
-L051_02E0:
+	jmp	short .2
+.1:
 	push	word [bp + 0x8]
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
 	call	0x03A3:FarToLinear
-	add	sp, byte +0x4
+	add	sp, 0x4
 	add	ax, [bp + 0x10]
 	adc	dx, [bp + 0x12]
 	push	dx
@@ -387,11 +387,11 @@ L051_02E0:
 	push	word [bp + 0x1c]
 	push	word 0x1844
 	push	word 0x274
-L051_0311:
+.2:
 	push	word [bp + 0x20]
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
-	imul	bx, ax, byte +0x38
+	imul	bx, ax, 0x38
 	call	far [bx - 0x6ff6]
 	pop	ds
 	leave
@@ -407,14 +407,14 @@ F051_0324:
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
 	call	0x06E1:0x1560
-	add	sp, byte +0x4
+	add	sp, 0x4
 	test	al, 0x80
-	jz	short L051_0372
+	jz	short .1
 	push	word [bp + 0x8]
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
 	call	0x06E1:RawBase
-	add	sp, byte +0x4
+	add	sp, 0x4
 	add	ax, [bp + 0xe]
 	adc	dx, [bp + 0x10]
 	push	dx
@@ -427,17 +427,17 @@ F051_0324:
 	push	word [bp + 0x1a]
 	push	word 0x1844
 	push	word 0x28c
-	jmp	short L051_03AD
-L051_0372:
+	jmp	short .2
+.1:
 	push	word [bp + 0x8]
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
 	call	0x06E1:RecBase
-	add	sp, byte +0x4
+	add	sp, 0x4
 	push	dx
 	push	ax
 	call	0x03A3:FarToLinear
-	add	sp, byte +0x4
+	add	sp, 0x4
 	add	ax, [bp + 0xe]
 	adc	dx, [bp + 0x10]
 	push	dx
@@ -450,11 +450,11 @@ L051_0372:
 	push	word [bp + 0x1a]
 	push	word 0x1844
 	push	word 0x274
-L051_03AD:
+.2:
 	push	word [bp + 0x1e]
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
-	imul	bx, ax, byte +0x38
+	imul	bx, ax, 0x38
 	call	far [bx - 0x6ff6]
 	pop	ds
 	leave

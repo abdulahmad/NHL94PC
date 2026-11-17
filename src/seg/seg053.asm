@@ -13,21 +13,21 @@ F053_0002:
 	mov	[bp - 0x16], bx
 	mov	[bp - 0x14], es
 	cmp	word [es:bx], 0x5a4d
-	jz	short L053_0023
+	jz	short .1
 	db	0x33, 0xC0		; xor ax, ax
-	jmp	near L053_00ED
-L053_0023:
+	jmp	near .8
+.1:
 	les	bx, [bp - 0x16]
 	mov	bx, [es:bx + 0x8]
 	shl	bx, byte 0x4
 	mov	si, [bp - 0x16]
-	cmp	word [es:si + 0x2], byte +0x0
-	jz	short L053_003D
+	cmp	word [es:si + 0x2], 0x0
+	jz	short .2
 	mov	cx, [es:si + 0x2]
-	jmp	short L053_0040
-L053_003D:
+	jmp	short .3
+.2:
 	mov	cx, 0x200
-L053_0040:
+.3:
 	mov	ax, [es:si + 0x4]
 	dec	ax
 	shl	ax, byte 0x9
@@ -39,10 +39,10 @@ L053_0040:
 	mov	[bp - 0x12], cx
 	db	0x03, 0xC1		; add ax, cx
 	mov	[bp - 0xe], ax
-	cmp	word [bp + 0xa], byte +0x0
-	jnz	short L053_0067
-	jmp	near L053_00EA
-L053_0067:
+	cmp	word [bp + 0xa], 0x0
+	jnz	short .4
+	jmp	near .7
+.4:
 	db	0x8B, 0xC6		; mov ax, si
 	mov	dx, es
 	db	0x03, 0xC3		; add ax, bx
@@ -56,8 +56,8 @@ L053_0067:
 	mov	[bp - 0x6], ax
 	db	0x33, 0xF6		; xor si, si
 	mov	[bp - 0xa], di
-	jmp	short L053_00B2
-L053_008A:
+	jmp	short .6
+.5:
 	db	0x8B, 0xDE		; mov bx, si
 	shl	bx, byte 0x2
 	add	bx, [bp - 0x4]
@@ -65,28 +65,28 @@ L053_008A:
 	push	word [es:bx + 0x2]
 	push	word [es:bx]
 	call	0x03A3:FarToLinear
-	add	sp, byte +0x4
+	add	sp, 0x4
 	db	0x8B, 0xD8		; mov bx, ax
 	db	0x03, 0xDF		; add bx, di
 	mov	es, [bp - 0x8]
 	mov	ax, [bp - 0x6]
 	add	[es:bx], ax
 	inc	si
-L053_00B2:
+.6:
 	les	bx, [bp - 0x16]
 	cmp	[es:bx + 0x6], si
-	ja	short L053_008A
+	ja	short .5
 	mov	si, [bp - 0x10]
-	push	byte +0x0
+	push	0x0
 	push	si
 	push	es
 	push	bx
 	push	word [bp - 0x8]
 	push	word [bp - 0xa]
 	call	0x03A3:CopyFar
-	add	sp, byte +0xc
-	push	byte +0x0
-	push	byte +0x0
+	add	sp, 0xc
+	push	0x0
+	push	0x0
 	push	word [bp - 0x12]
 	mov	ax, [bp - 0x16]
 	mov	dx, [bp - 0x14]
@@ -94,10 +94,10 @@ L053_00B2:
 	push	dx
 	push	ax
 	call	0x03A3:FillFar
-	add	sp, byte +0xa
-L053_00EA:
+	add	sp, 0xa
+.7:
 	mov	ax, [bp - 0xe]
-L053_00ED:
+.8:
 	pop	ds
 	pop	si
 	pop	di

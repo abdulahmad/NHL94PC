@@ -23,7 +23,7 @@ F010_0006:
 	call	0x03A3:MulRegs
 	db	0x03, 0xD3		; add dx, bx
 	add	ax, strict word 0x1
-	adc	dx, byte +0x0
+	adc	dx, 0x0
 	mov	[0x2a00], ax
 	mov	[0x2a02], dx
 	db	0x8A

@@ -15,54 +15,54 @@ F026_000E:
 	mov	dx, 0xff
 	call	0x03A3:0xC56
 	db	0x0B, 0xFF		; or di, di
-	jng	short L026_0078
+	jng	short .2
 	mov	ax, [bp + 0x6]
 	mov	dx, [bp + 0x8]
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x2], dx
-L026_0031:
+.1:
 	push	word [bp + 0x10]
 	push	word [bp + 0xe]
 	push	word [bp + 0xc]
 	mov	es, [bp - 0x2]
 	push	word [es:si + 0x6]
 	push	word [es:si + 0x4]
-	push	byte +0x0
+	push	0x0
 	push	word [es:si]
 	push	cs
 	call	F026_01BA
-	add	sp, byte +0xe
+	add	sp, 0xe
 	mov	es, [bp - 0x2]
 	push	word [es:si + 0xa]
 	push	word [es:si + 0x8]
-	push	byte +0x2
+	push	0x2
 	mov	ax, [es:si]
 	add	ax, strict word 0x3
 	push	ax
 	push	cs
 	call	F026_0246
-	add	sp, byte +0x8
-	add	si, byte +0x16
+	add	sp, 0x8
+	add	si, 0x16
 	mov	ax, [bp - 0x2]
 	dec	di
-	jnz	short L026_0031
+	jnz	short .1
 	mov	di, [bp + 0xa]
-L026_0078:
+.2:
 	push	word [bp + 0x10]
 	push	word [bp + 0xe]
 	push	word [bp + 0xc]
-	imul	bx, di, byte +0x16
+	imul	bx, di, 0x16
 	add	bx, [bp + 0x6]
 	mov	es, [bp + 0x8]
 	push	word [es:bx - 0x10]
 	push	word 0x13f
-	push	byte +0x0
+	push	0x0
 	mov	ax, [es:bx - 0x12]
 	inc	ax
 	push	ax
 	push	cs
 	call	F026_01BA
-	add	sp, byte +0xe
+	add	sp, 0xe
 	pop	si
 	pop	di
 	leave
@@ -79,7 +79,7 @@ F026_00A4:
 	push	word [bp + 0x10]
 	db	0x8B, 0xDF		; mov bx, di
 	mov	es, [bp + 0x8]
-	imul	ax, si, byte +0x16
+	imul	ax, si, 0x16
 	mov	[bp - 0x10], bx
 	mov	[bp - 0xe], es
 	db	0x03, 0xD8		; add bx, ax
@@ -98,21 +98,21 @@ F026_00A4:
 	push	ax
 	push	cs
 	call	F026_01BA
-	add	sp, byte +0xe
+	add	sp, 0xe
 	les	bx, [bp - 0x10]
 	mov	ax, [es:bx + 0xe]
 	or	ax, [es:bx + 0xc]
-	jnz	short L026_0112
+	jnz	short .1
 	mov	es, [bp + 0x8]
 	mov	ax, [es:di + 0x12]
 	or	ax, [es:di + 0x10]
-	jnz	short L026_0112
+	jnz	short .1
 	mov	ax, [bp + 0x14]
-	jmp	short L026_0115
+	jmp	short .2
 	db	0x90
-L026_0112:
+.1:
 	mov	ax, [bp + 0x10]
-L026_0115:
+.2:
 	mov	dx, 0xff
 	call	0x03A3:0xC56
 	mov	es, [bp + 0x8]
@@ -129,9 +129,9 @@ L026_0115:
 	push	ax
 	push	cs
 	call	F026_0246
-	add	sp, byte +0x8
-	cmp	si, byte +0x1
-	jng	short L026_01B6
+	add	sp, 0x8
+	cmp	si, 0x1
+	jng	short .6
 	lea	ax, [di + 0x22]
 	mov	dx, [bp + 0x8]
 	db	0x8B, 0xC8		; mov cx, ax
@@ -139,20 +139,20 @@ L026_0115:
 	lea	ax, [si - 0x1]
 	db	0x8B, 0xF1		; mov si, cx
 	db	0x8B, 0xF8		; mov di, ax
-L026_015A:
+.3:
 	mov	es, [bp - 0xa]
 	mov	ax, [es:si + 0x2]
 	or	ax, [es:si]
-	jnz	short L026_0176
+	jnz	short .4
 	mov	ax, [es:si + 0x6]
 	or	ax, [es:si + 0x4]
-	jnz	short L026_0176
+	jnz	short .4
 	mov	ax, [bp + 0x14]
-	jmp	short L026_0179
+	jmp	short .5
 	db	0x90
-L026_0176:
+.4:
 	mov	ax, [bp + 0x10]
-L026_0179:
+.5:
 	mov	dx, 0xff
 	call	0x03A3:0xC56
 	mov	es, [bp - 0xa]
@@ -171,12 +171,12 @@ L026_0179:
 	push	ax
 	push	cs
 	call	F026_0246
-	add	sp, byte +0x8
-	add	si, byte +0x16
+	add	sp, 0x8
+	add	si, 0x16
 	mov	ax, [bp - 0xa]
 	dec	di
-	jnz	short L026_015A
-L026_01B6:
+	jnz	short .3
+.6:
 	pop	si
 	pop	di
 	leave
@@ -205,7 +205,7 @@ F026_01BA:
 	db	0x8B, 0xF0		; mov si, ax
 	db	0x8B, 0xF9		; mov di, cx
 	call	0x0FEF:F028_0136
-	add	sp, byte +0xa
+	add	sp, 0xa
 	push	word [bp + 0xe]
 	push	si
 	mov	ax, [bp + 0xa]
@@ -214,7 +214,7 @@ F026_01BA:
 	push	si
 	push	di
 	call	0x0FEF:F028_000C
-	add	sp, byte +0xa
+	add	sp, 0xa
 	push	word [bp + 0xe]
 	mov	ax, [bp + 0xc]
 	dec	ax
@@ -223,7 +223,7 @@ F026_01BA:
 	push	si
 	push	di
 	call	0x0FEF:F028_000C
-	add	sp, byte +0xa
+	add	sp, 0xa
 	push	word [bp + 0x12]
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
@@ -231,7 +231,7 @@ F026_01BA:
 	push	ax
 	push	word [bp + 0xa]
 	call	0x0FEF:F028_000C
-	add	sp, byte +0xa
+	add	sp, 0xa
 	push	word [bp + 0x12]
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
@@ -239,7 +239,7 @@ F026_01BA:
 	lea	ax, [di + 0x1]
 	push	ax
 	call	0x0FEF:F028_000C
-	add	sp, byte +0xa
+	add	sp, 0xa
 	pop	si
 	pop	di
 	leave
@@ -252,17 +252,17 @@ F026_0246:
 	lds	di, [bp + 0xa]
 	db	0x2B, 0xF6		; sub si, si
 	cmp	byte [di], 0x0
-	jz	short L026_0268
-L026_0256:
-	cmp	si, byte +0x4f
-	jnl	short L026_0268
+	jz	short .2
+.1:
+	cmp	si, 0x4f
+	jnl	short .2
 	db	0x8B, 0xDF		; mov bx, di
 	mov	al, [bx + si]
 	mov	[bp + si - 0x50], al
 	inc	si
 	cmp	byte [bx + si], 0x0
-	jnz	short L026_0256
-L026_0268:
+	jnz	short .1
+.2:
 	mov	ax, 0x45c9
 	mov	ds, ax
 	db	0x8B, 0xDF		; mov bx, di
@@ -274,7 +274,7 @@ L026_0268:
 	lea	ax, [bp - 0x50]
 	push	ax
 	call	0x0FEF:F028_01C6
-	add	sp, byte +0x6
+	add	sp, 0x6
 	pop	si
 	pop	di
 	leave
@@ -287,17 +287,17 @@ F026_028E:
 	lds	di, [bp + 0xa]
 	db	0x2B, 0xF6		; sub si, si
 	cmp	byte [di], 0x0
-	jz	short L026_02B0
-L026_029E:
-	cmp	si, byte +0x4f
-	jnl	short L026_02B0
+	jz	short .2
+.1:
+	cmp	si, 0x4f
+	jnl	short .2
 	db	0x8B, 0xDF		; mov bx, di
 	mov	al, [bx + si]
 	mov	[bp + si - 0x50], al
 	inc	si
 	cmp	byte [bx + si], 0x0
-	jnz	short L026_029E
-L026_02B0:
+	jnz	short .1
+.2:
 	mov	ax, 0x45c9
 	mov	ds, ax
 	db	0x8B, 0xDF		; mov bx, di
@@ -309,7 +309,7 @@ L026_02B0:
 	lea	ax, [bp - 0x50]
 	push	ax
 	call	0x0FEF:F028_0E85
-	add	sp, byte +0x6
+	add	sp, 0x6
 	pop	si
 	pop	di
 	leave
@@ -322,23 +322,23 @@ F026_02D6:
 	les	si, [bp + 0x6]
 	mov	ax, [es:si + 0xe]
 	or	ax, [es:si + 0xc]
-	jnz	short L026_02FA
+	jnz	short .1
 	mov	ax, [es:si + 0x12]
 	or	ax, [es:si + 0x10]
-	jnz	short L026_02FA
+	jnz	short .1
 	db	0x2B, 0xC0		; sub ax, ax
 	pop	si
 	pop	di
 	leave
 	retf
 	db	0x90
-L026_02FA:
+.1:
 	mov	di, [bp + 0xa]
 	mov	ax, [es:si]
 	db	0x8B, 0xC8		; mov cx, ax
 	inc	ax
 	db	0x03, 0xF8		; add di, ax
-	cmp	word [es:si + 0x2], byte +0x1
+	cmp	word [es:si + 0x2], 0x1
 	db	0x1B, 0xC0		; sbb ax, ax
 	neg	ax
 	db	0x8B, 0xD0		; mov dx, ax
@@ -359,7 +359,7 @@ L026_02FA:
 	mov	[bp - 0x4], si
 	mov	[bp - 0x2], es
 	call	0x0FEF:F028_0136
-	add	sp, byte +0xa
+	add	sp, 0xa
 	mov	ax, [bp + 0xe]
 	mov	dx, 0xff
 	call	0x03A3:0xC56
@@ -373,7 +373,7 @@ L026_02FA:
 	push	ax
 	push	cs
 	call	F026_0246
-	add	sp, byte +0x8
+	add	sp, 0x8
 	pop	si
 	pop	di
 	leave
@@ -386,23 +386,23 @@ F026_036A:
 	les	si, [bp + 0x6]
 	mov	ax, [es:si + 0xe]
 	or	ax, [es:si + 0xc]
-	jnz	short L026_038E
+	jnz	short .1
 	mov	ax, [es:si + 0x12]
 	or	ax, [es:si + 0x10]
-	jnz	short L026_038E
+	jnz	short .1
 	db	0x2B, 0xC0		; sub ax, ax
 	pop	si
 	pop	di
 	leave
 	retf
 	db	0x90
-L026_038E:
+.1:
 	mov	di, [bp + 0xa]
 	mov	ax, [es:si]
 	db	0x8B, 0xC8		; mov cx, ax
 	inc	ax
 	db	0x03, 0xF8		; add di, ax
-	cmp	word [es:si + 0x2], byte +0x1
+	cmp	word [es:si + 0x2], 0x1
 	db	0x1B, 0xC0		; sbb ax, ax
 	neg	ax
 	db	0x8B, 0xD0		; mov dx, ax
@@ -423,7 +423,7 @@ L026_038E:
 	mov	[bp - 0x4], si
 	mov	[bp - 0x2], es
 	call	0x0FEF:F028_0136
-	add	sp, byte +0xa
+	add	sp, 0xa
 	mov	ax, [bp + 0xe]
 	mov	dx, 0xff
 	call	0x03A3:0xC56
@@ -437,7 +437,7 @@ L026_038E:
 	push	ax
 	push	cs
 	call	F026_0246
-	add	sp, byte +0x8
+	add	sp, 0x8
 	pop	si
 	pop	di
 	leave
@@ -449,9 +449,9 @@ F026_03FE:
 	push	si
 	mov	si, [bp + 0xc]
 	db	0x0B, 0xF6		; or si, si
-	jnl	short L026_040E
-	jmp	near L026_04BC
-L026_040E:
+	jnl	short .1
+	jmp	near .7
+.1:
 	db	0x8B, 0xFE		; mov di, si
 	shl	di, byte 0x2
 	db	0x8B, 0xC7		; mov ax, di
@@ -466,16 +466,16 @@ L026_040E:
 	mov	[bp - 0xe], si
 	db	0x8B, 0xF2		; mov si, dx
 	mov	cx, [bp - 0xe]
-L026_0432:
+.2:
 	mov	ax, [si + 0x2]
 	or	ax, [si]
-	jz	short L026_0498
+	jz	short .5
 	mov	word [bp - 0x8], 0x0
 	mov	bx, [bp - 0xa]
 	mov	ax, [bx]
 	mov	[bp - 0x10], ax
 	db	0x0B, 0xC0		; or ax, ax
-	jng	short L026_0498
+	jng	short .5
 	mov	[bp - 0xe], cx
 	mov	ax, [si]
 	mov	dx, [si + 0x2]
@@ -483,39 +483,39 @@ L026_0432:
 	db	0x8B, 0xD8		; mov bx, ax
 	mov	cx, [bp - 0x8]
 	mov	[bp - 0xc], si
-L026_045C:
+.3:
 	mov	ax, [es:bx]
 	add	ax, [di]
 	cmp	ax, [bp + 0x6]
-	jg	short L026_0489
+	jg	short .4
 	mov	ax, [es:bx + 0x4]
 	add	ax, [di]
 	cmp	ax, [bp + 0x6]
-	jl	short L026_0489
+	jl	short .4
 	mov	ax, [es:bx + 0x2]
 	add	ax, [di + 0x2]
 	cmp	ax, [bp + 0x8]
-	jg	short L026_0489
+	jg	short .4
 	mov	ax, [es:bx + 0x6]
 	add	ax, [di + 0x2]
 	cmp	ax, [bp + 0x8]
-	jnl	short L026_04A8
-L026_0489:
-	add	bx, byte +0x16
+	jnl	short .6
+.4:
+	add	bx, 0x16
 	inc	cx
 	cmp	[bp - 0x10], cx
-	jg	short L026_045C
+	jg	short .3
 	mov	si, [bp - 0xc]
 	mov	cx, [bp - 0xe]
-L026_0498:
-	sub	di, byte +0x4
-	sub	word [bp - 0xa], byte +0x2
-	sub	si, byte +0x4
+.5:
+	sub	di, 0x4
+	sub	word [bp - 0xa], 0x2
+	sub	si, 0x4
 	dec	cx
-	jns	short L026_0432
-	jmp	short L026_04BC
+	jns	short .2
+	jmp	short .7
 	db	0x90
-L026_04A8:
+.6:
 	mov	ax, [bp - 0xe]
 	mov	bx, [bp + 0x12]
 	mov	[bx], ax
@@ -526,7 +526,7 @@ L026_04A8:
 	pop	di
 	leave
 	retf
-L026_04BC:
+.7:
 	db	0x2B, 0xC0		; sub ax, ax
 	pop	si
 	pop	di

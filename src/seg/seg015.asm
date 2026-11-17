@@ -16,16 +16,16 @@ F015_000C:
 	push	word [bp + 0x6]
 	push	cs
 	call	F015_03D6
-	add	sp, byte +0x4
+	add	sp, 0x4
 	db	0x0B, 0xC0		; or ax, ax
-	jnz	short L015_002D
+	jnz	short .1
 	mov	si, 0x1
-L015_002D:
+.1:
 	lea	ax, [bp - 0x2]
 	push	ax
 	push	cs
 	call	F015_041E
-	add	sp, byte +0x2
+	add	sp, 0x2
 	db	0x8B, 0xC6		; mov ax, si
 	pop	si
 	leave
@@ -40,10 +40,10 @@ F015_003E:
 	mov	di, [bp + 0xa]
 	mov	ax, [bp + 0xc]
 	db	0x0B, 0xC7		; or ax, di
-	jz	short L015_007E
+	jz	short .1
 	mov	es, [bp + 0xc]
 	cmp	byte [es:di], 0x0
-	jz	short L015_007E
+	jz	short .1
 	mov	si, [bp + 0x6]
 	mov	ax, es
 	push	ax
@@ -51,41 +51,41 @@ F015_003E:
 	push	word [bp + 0x8]
 	push	si
 	call	0x0000:_fstrlen
-	add	sp, byte +0x8
+	add	sp, 0x8
 	push	word 0x3701
 	push	word 0xbaa
 	push	word [bp + 0x8]
 	push	si
 	call	0x0000:_fstrcat
-	add	sp, byte +0x8
-	jmp	short L015_0088
+	add	sp, 0x8
+	jmp	short .2
 	db	0x90
-L015_007E:
+.1:
 	mov	si, [bp + 0x6]
 	mov	es, [bp + 0x8]
 	mov	byte [es:si], 0x0
-L015_0088:
+.2:
 	mov	ax, [bp + 0x10]
 	or	ax, [bp + 0xe]
-	jz	short L015_00A2
+	jz	short .3
 	push	word [bp + 0x10]
 	push	word [bp + 0xe]
 	push	word [bp + 0x8]
 	push	si
 	call	0x0000:_fstrcat
-	add	sp, byte +0x8
-L015_00A2:
+	add	sp, 0x8
+.3:
 	mov	ax, [bp + 0x14]
 	or	ax, [bp + 0x12]
-	jz	short L015_00BD
+	jz	short .4
 	push	word [bp + 0x14]
 	push	word [bp + 0x12]
 	mov	ax, [bp + 0x8]
 	push	ax
 	push	si
 	call	0x0000:_fstrcat
-	add	sp, byte +0x8
-L015_00BD:
+	add	sp, 0x8
+.4:
 	pop	si
 	pop	di
 	leave
@@ -120,7 +120,7 @@ F015_00C2:
 	push	ss
 	push	ax
 	call	0x0000:_fstrcat
-	add	sp, byte +0x8
+	add	sp, 0x8
 	lea	si, [bp - 0x22]
 	push	ds
 	pop	es
@@ -146,7 +146,7 @@ F015_00C2:
 	push	ss
 	push	ax
 	call	0x0000:_fstrcat
-	add	sp, byte +0x8
+	add	sp, 0x8
 	lea	si, [bp - 0x22]
 	push	ds
 	pop	es
@@ -168,30 +168,30 @@ F015_00C2:
 	rep	movsb
 	lea	ax, [bp - 0x4e]
 	push	ax
-	push	byte +0x0
+	push	0x0
 	lea	ax, [bp - 0x22]
 	push	ax
 	call	0x0000:_dos_findfirst
-	add	sp, byte +0x6
+	add	sp, 0x6
 	mov	[bp - 0x2], ax
 	db	0x0B, 0xC0		; or ax, ax
-	jz	short L015_017D
-	jmp	near L015_0250
-L015_017D:
+	jz	short .1
+	jmp	near .4
+.1:
 	push	ds
 	push	word [bp + 0x6]
 	lea	ax, [bp - 0x22]
 	push	ss
 	push	ax
 	call	0x0000:_fstrlen
-	add	sp, byte +0x8
+	add	sp, 0x8
 	push	word [bp - 0x50]
 	push	word [bp - 0x52]
 	lea	ax, [bp - 0x22]
 	push	ss
 	push	ax
 	call	0x0000:_fstrcat
-	add	sp, byte +0x8
+	add	sp, 0x8
 	lea	di, [bp - 0x30]
 	lea	si, [bp - 0x22]
 	push	ss
@@ -214,15 +214,15 @@ L015_017D:
 	lea	ax, [bp - 0x22]
 	push	ax
 	call	0x0000:_unlink
-	add	sp, byte +0x2
-L015_01D4:
+	add	sp, 0x2
+.2:
 	lea	ax, [bp - 0x4e]
 	push	ax
 	call	0x0000:_dos_findnext
-	add	sp, byte +0x2
+	add	sp, 0x2
 	mov	[bp - 0x2], ax
 	db	0x0B, 0xC0		; or ax, ax
-	jnz	short L015_024A
+	jnz	short .3
 	lea	si, [bp - 0x22]
 	push	ds
 	pop	es
@@ -243,7 +243,7 @@ L015_01D4:
 	push	ss
 	push	ax
 	call	0x0000:_fstrcat
-	add	sp, byte +0x8
+	add	sp, 0x8
 	lea	di, [bp - 0x30]
 	lea	si, [bp - 0x22]
 	push	ss
@@ -266,11 +266,11 @@ L015_01D4:
 	lea	ax, [bp - 0x22]
 	push	ax
 	call	0x0000:_unlink
-	add	sp, byte +0x2
-L015_024A:
-	cmp	word [bp - 0x2], byte +0x0
-	jz	short L015_01D4
-L015_0250:
+	add	sp, 0x2
+.3:
+	cmp	word [bp - 0x2], 0x0
+	jz	short .2
+.4:
 	mov	ax, [bp - 0x2]
 	pop	si
 	pop	di
@@ -306,39 +306,39 @@ F015_0258:
 	push	ss
 	push	ax
 	call	0x0000:_fstrcat
-	add	sp, byte +0x8
+	add	sp, 0x8
 	push	word 0x3701
 	push	word 0xba8
 	lea	ax, [bp - 0x22]
 	push	ss
 	push	ax
 	call	0x0000:_fstrcat
-	add	sp, byte +0x8
+	add	sp, 0x8
 	push	word 0x3701
 	push	word 0xbf4
 	lea	ax, [bp - 0x22]
 	push	ss
 	push	ax
 	call	0x0000:_fstrcat
-	add	sp, byte +0x8
+	add	sp, 0x8
 	push	word 0x3701
 	push	word 0xba8
 	lea	ax, [bp - 0x22]
 	push	ss
 	push	ax
 	call	0x0000:_fstrcat
-	add	sp, byte +0x8
+	add	sp, 0x8
 	lea	ax, [bp - 0x4e]
 	push	ax
-	push	byte +0x0
+	push	0x0
 	lea	ax, [bp - 0x22]
 	push	ax
 	call	0x0000:_dos_findfirst
-	add	sp, byte +0x6
+	add	sp, 0x6
 	db	0x0B, 0xC0		; or ax, ax
-	jz	short L015_02E8
-	jmp	near L015_03C7
-L015_02E8:
+	jz	short .1
+	jmp	near .4
+.1:
 	lea	si, [bp - 0x22]
 	push	ds
 	pop	es
@@ -359,7 +359,7 @@ L015_02E8:
 	push	ss
 	push	ax
 	call	0x0000:_fstrcat
-	add	sp, byte +0x8
+	add	sp, 0x8
 	lea	di, [bp - 0x30]
 	lea	si, [bp - 0x22]
 	push	ss
@@ -382,15 +382,15 @@ L015_02E8:
 	lea	ax, [bp - 0x22]
 	push	ax
 	call	0x0000:_unlink
-	add	sp, byte +0x2
-L015_034B:
+	add	sp, 0x2
+.2:
 	lea	ax, [bp - 0x4e]
 	push	ax
 	call	0x0000:_dos_findnext
-	add	sp, byte +0x2
+	add	sp, 0x2
 	mov	[bp - 0x2], ax
 	db	0x0B, 0xC0		; or ax, ax
-	jnz	short L015_03C1
+	jnz	short .3
 	lea	si, [bp - 0x22]
 	push	ds
 	pop	es
@@ -411,7 +411,7 @@ L015_034B:
 	push	ss
 	push	ax
 	call	0x0000:_fstrcat
-	add	sp, byte +0x8
+	add	sp, 0x8
 	lea	di, [bp - 0x30]
 	lea	si, [bp - 0x22]
 	push	ss
@@ -434,14 +434,14 @@ L015_034B:
 	lea	ax, [bp - 0x22]
 	push	ax
 	call	0x0000:_unlink
-	add	sp, byte +0x2
-L015_03C1:
-	cmp	word [bp - 0x2], byte +0x0
-	jz	short L015_034B
-L015_03C7:
+	add	sp, 0x2
+.3:
+	cmp	word [bp - 0x2], 0x0
+	jz	short .2
+.4:
 	push	word [bp + 0x6]
 	call	0x0000:_rmdir
-	add	sp, byte +0x2
+	add	sp, 0x2
 	pop	si
 	pop	di
 	leave
@@ -451,7 +451,7 @@ F015_03D6:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	word [bp + 0x8]
-	push	byte +0x40
+	push	0x40
 	push	word [bp + 0x6]
 	call	0x0000:_dos_open
 	leave
@@ -461,7 +461,7 @@ F015_03E8:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	word [bp + 0x8]
-	push	byte +0x41
+	push	0x41
 	push	word [bp + 0x6]
 	call	0x0000:_dos_open
 	leave
@@ -471,7 +471,7 @@ F015_03FA:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	word [bp + 0x8]
-	push	byte +0x42
+	push	0x42
 	push	word [bp + 0x6]
 	call	0x0000:_dos_open
 	leave
@@ -481,7 +481,7 @@ F015_040C:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	word [bp + 0x8]
-	push	byte +0x0
+	push	0x0
 	push	word [bp + 0x6]
 	call	0x0000:_dos_creat
 	leave
@@ -495,12 +495,12 @@ F015_041E:
 	mov	di, [bp + 0x6]
 	db	0x2B, 0xF6		; sub si, si
 	cmp	[di], si
-	jl	short L015_0438
+	jl	short .1
 	push	word [di]
 	call	0x0000:_dos_close
-	add	sp, byte +0x2
+	add	sp, 0x2
 	db	0x8B, 0xF0		; mov si, ax
-L015_0438:
+.1:
 	mov	word [di], 0xffff
 	db	0x8B, 0xC6		; mov ax, si
 	pop	si
@@ -513,19 +513,19 @@ F015_0442:
 	push	si
 	db	0x2B, 0xF6		; sub si, si
 	cmp	[bp + 0xe], si
-	jl	short L015_0467
+	jl	short .1
 	push	si
 	push	word [bp + 0xe]
 	push	word [bp + 0xc]
 	push	word [bp + 0x6]
 	call	0x0000:_lseek
-	add	sp, byte +0x8
+	add	sp, 0x8
 	db	0x0B, 0xD2		; or dx, dx
-	jnl	short L015_0467
+	jnl	short .1
 	mov	si, 0xffff
-L015_0467:
+.1:
 	db	0x0B, 0xF6		; or si, si
-	jnz	short L015_0485
+	jnz	short .2
 	lea	ax, [bp - 0x2]
 	push	ax
 	push	word [bp + 0x10]
@@ -533,14 +533,14 @@ L015_0467:
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	call	0x0000:_dos_read
-	add	sp, byte +0xa
+	add	sp, 0xa
 	db	0x8B, 0xF0		; mov si, ax
-L015_0485:
+.2:
 	mov	ax, [bp + 0x10]
 	cmp	[bp - 0x2], ax
-	jz	short L015_0490
+	jz	short .3
 	mov	si, 0x1
-L015_0490:
+.3:
 	db	0x8B, 0xC6		; mov ax, si
 	pop	si
 	leave
@@ -552,19 +552,19 @@ F015_0496:
 	push	si
 	db	0x2B, 0xF6		; sub si, si
 	cmp	[bp + 0xe], si
-	jl	short L015_04BB
+	jl	short .1
 	push	si
 	push	word [bp + 0xe]
 	push	word [bp + 0xc]
 	push	word [bp + 0x6]
 	call	0x0000:_lseek
-	add	sp, byte +0x8
+	add	sp, 0x8
 	db	0x0B, 0xD2		; or dx, dx
-	jnl	short L015_04BB
+	jnl	short .1
 	mov	si, 0xffff
-L015_04BB:
+.1:
 	db	0x0B, 0xF6		; or si, si
-	jnz	short L015_04D9
+	jnz	short .2
 	lea	ax, [bp - 0x2]
 	push	ax
 	push	word [bp + 0x10]
@@ -572,14 +572,14 @@ L015_04BB:
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	call	0x0000:_dos_write
-	add	sp, byte +0xa
+	add	sp, 0xa
 	db	0x8B, 0xF0		; mov si, ax
-L015_04D9:
+.2:
 	mov	ax, [bp + 0x10]
 	cmp	[bp - 0x2], ax
-	jz	short L015_04E4
+	jz	short .3
 	mov	si, 0x1
-L015_04E4:
+.3:
 	db	0x8B, 0xC6		; mov ax, si
 	pop	si
 	leave
@@ -589,7 +589,7 @@ L015_04E4:
 F015_04EA:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
-	push	byte +0x34
+	push	0x34
 	push	word [bp + 0xe]
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
@@ -603,7 +603,7 @@ F015_04EA:
 F015_0504:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
-	push	byte +0x34
+	push	0x34
 	push	word [bp + 0xe]
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
@@ -633,17 +633,17 @@ F015_051E:
 	push	ax
 	push	cs
 	call	F015_003E
-	add	sp, byte +0x10
+	add	sp, 0x10
 	lea	ax, [bp - 0x6]
 	push	ax
 	lea	ax, [bp - 0x28]
 	push	ax
 	push	cs
 	call	F015_03D6
-	add	sp, byte +0x4
+	add	sp, 0x4
 	db	0x8B, 0xF0		; mov si, ax
 	db	0x0B, 0xF6		; or si, si
-	jnz	short L015_058F
+	jnz	short .1
 	push	word [bp + 0x10]
 	push	word [bp + 0xe]
 	mov	ax, [bp + 0x8]
@@ -656,19 +656,19 @@ F015_051E:
 	push	ax
 	push	cs
 	call	F015_003E
-	add	sp, byte +0x10
+	add	sp, 0x10
 	lea	ax, [bp - 0x4]
 	push	ax
 	lea	ax, [bp - 0x48]
 	push	ax
 	push	cs
 	call	F015_040C
-	add	sp, byte +0x4
+	add	sp, 0x4
 	db	0x8B, 0xF0		; mov si, ax
-L015_058F:
+.1:
 	db	0x0B, 0xF6		; or si, si
-	jnz	short L015_05E5
-L015_0593:
+	jnz	short .4
+.2:
 	lea	ax, [bp - 0x2]
 	push	ax
 	push	word 0x400
@@ -677,12 +677,12 @@ L015_0593:
 	push	ax
 	push	word [bp - 0x6]
 	call	0x0000:_dos_read
-	add	sp, byte +0xa
+	add	sp, 0xa
 	db	0x8B, 0xF0		; mov si, ax
 	db	0x0B, 0xF6		; or si, si
-	jnz	short L015_05DB
+	jnz	short .3
 	cmp	[bp - 0x2], si
-	jng	short L015_05DB
+	jng	short .3
 	lea	ax, [bp - 0x8]
 	push	ax
 	push	word [bp - 0x2]
@@ -691,28 +691,28 @@ L015_0593:
 	push	cx
 	push	word [bp - 0x4]
 	call	0x0000:_dos_write
-	add	sp, byte +0xa
+	add	sp, 0xa
 	db	0x8B, 0xF0		; mov si, ax
 	mov	ax, [bp - 0x2]
 	cmp	[bp - 0x8], ax
-	jz	short L015_05DB
+	jz	short .3
 	mov	si, 0x1
-L015_05DB:
-	cmp	word [bp - 0x2], byte +0x0
-	jng	short L015_05E5
+.3:
+	cmp	word [bp - 0x2], 0x0
+	jng	short .4
 	db	0x0B, 0xF6		; or si, si
-	jz	short L015_0593
-L015_05E5:
+	jz	short .2
+.4:
 	lea	ax, [bp - 0x4]
 	push	ax
 	push	cs
 	call	F015_041E
-	add	sp, byte +0x2
+	add	sp, 0x2
 	lea	ax, [bp - 0x6]
 	push	ax
 	push	cs
 	call	F015_041E
-	add	sp, byte +0x2
+	add	sp, 0x2
 	db	0x8B, 0xC6		; mov ax, si
 	pop	si
 	pop	di
@@ -723,7 +723,7 @@ L015_05E5:
 F015_0602:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
-	push	byte +0x30
+	push	0x30
 	push	word [bp + 0xe]
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
@@ -737,7 +737,7 @@ F015_0602:
 F015_061C:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
-	push	byte +0x6
+	push	0x6
 	mov	ax, [bp + 0xc]
 	db	0x8B, 0xC8		; mov cx, ax
 	shl	ax, 1
@@ -761,7 +761,7 @@ F015_0640:
 	db	0x8B, 0xEC		; mov bp, sp
 	push	word 0x2e8
 	imul	ax, [bp + 0xc], word 0x2e8
-	push	byte +0x0
+	push	0x0
 	push	ax
 	push	word [bp + 0xa]
 	push	word [bp + 0x8]
@@ -775,7 +775,7 @@ F015_0640:
 F015_065E:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
-	push	byte +0xc
+	push	0xc
 	mov	ax, [bp + 0xc]
 	db	0x8B, 0xC8		; mov cx, ax
 	shl	ax, 1

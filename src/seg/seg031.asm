@@ -16,7 +16,7 @@ F031_0002:
 	sub	ax, [bp + 0x6]
 	push	ax
 	call	0x03A3:Atan2
-	add	sp, byte +0x4
+	add	sp, 0x4
 	db	0x8B, 0xF0		; mov si, ax
 	call	0x03A3:0x32F6
 	db	0x8B, 0xD0		; mov dx, ax
@@ -71,9 +71,9 @@ F031_0002:
 	mov	[bp - 0x2], cx
 	lea	ax, [bp - 0x10]
 	push	ax
-	push	byte +0x4
+	push	0x4
 	push	word [bp + 0xe]
 	call	0x03A3:FillFlag0
-	add	sp, byte +0x6
+	add	sp, 0x6
 	pop	si
 	pop	di

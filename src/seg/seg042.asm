@@ -9,38 +9,38 @@ F042_0004:
 	push	di
 	push	si
 	mov	di, [bp + 0x6]
-	push	byte +0x0
+	push	0x0
 	push	word [bp + 0x8]
 	push	di
 	call	0x15FF:F045_000C
-	add	sp, byte +0x4
+	add	sp, 0x4
 	push	dx
 	push	ax
 	push	word 0x76d6
 	call	0x14DB:F034_0038
-	add	sp, byte +0x8
+	add	sp, 0x8
 	mov	[bp - 0x12], ax
 	mov	[bp - 0x10], dx
 	db	0x0B, 0xD0		; or dx, ax
-	jnz	short L042_0037
+	jnz	short .1
 	db	0x33, 0xC0		; xor ax, ax
-	jmp	near L042_0130
-L042_0037:
+	jmp	near .10
+.1:
 	push	word [bp + 0x8]
 	push	di
 	call	0x03A3:TableCount
-	add	sp, byte +0x4
+	add	sp, 0x4
 	mov	[bp - 0x16], ax
 	db	0x33, 0xF6		; xor si, si
 	mov	[bp - 0x14], si
 	db	0x8B, 0xFE		; mov di, si
-	jmp	near L042_0117
-L042_0050:
+	jmp	near .8
+.2:
 	push	di
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	call	0x03A3:TableAt
-	add	sp, byte +0x6
+	add	sp, 0x6
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0xc], dx
 	lea	ax, [bp - 0x1a]
@@ -49,7 +49,7 @@ L042_0050:
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	call	0x03A3:TableStore
-	add	sp, byte +0x8
+	add	sp, 0x8
 	mov	es, [bp - 0xc]
 	mov	ax, [es:si + 0x2]
 	sar	word [es:si], byte 0x2
@@ -62,13 +62,13 @@ L042_0050:
 	mov	[bp - 0xa], ax
 	mov	[bp - 0x8], dx
 	cmp	byte [bp - 0x1a], 0x21
-	jz	short L042_0116
+	jz	short .7
 	mov	[bp - 0x14], di
 	mov	[bp - 0xe], si
 	db	0x33, 0xC9		; xor cx, cx
 	mov	es, dx
-	jmp	short L042_00E5
-L042_00AE:
+	jmp	short .6
+.3:
 	mov	ax, [bp - 0xe]
 	mov	dx, [bp - 0xc]
 	db	0x03, 0xC1		; add ax, cx
@@ -79,23 +79,23 @@ L042_00AE:
 	mov	[bp - 0x4], cx
 	mov	cx, [bp - 0x2]
 	mov	si, [bp - 0xa]
-	jmp	short L042_00D9
-L042_00CD:
+	jmp	short .5
+.4:
 	db	0x8B, 0xDF		; mov bx, di
-	add	di, byte +0x4
+	add	di, 0x4
 	mov	al, [bx]
 	mov	[es:si], al
 	inc	si
 	inc	cx
-L042_00D9:
+.5:
 	cmp	[bp - 0x6], cx
-	ja	short L042_00CD
+	ja	short .4
 	mov	[bp - 0xa], si
 	mov	cx, [bp - 0x4]
 	inc	cx
-L042_00E5:
-	cmp	cx, byte +0x4
-	jc	short L042_00AE
+.6:
+	cmp	cx, 0x4
+	jc	short .3
 	push	ss
 	pop	ds
 	mov	ax, [bp - 0x6]
@@ -112,21 +112,21 @@ L042_00E5:
 	push	word [bp - 0x10]
 	push	word [bp - 0x12]
 	call	0x03A3:CopyFar
-	add	sp, byte +0xc
+	add	sp, 0xc
 	mov	di, [bp - 0x14]
-L042_0116:
+.7:
 	inc	di
-L042_0117:
+.8:
 	cmp	[bp - 0x16], di
-	jna	short L042_011F
-	jmp	near L042_0050
-L042_011F:
+	jna	short .9
+	jmp	near .2
+.9:
 	push	word [bp - 0x10]
 	push	word [bp - 0x12]
 	call	0x06E1:FindUnlink
-	add	sp, byte +0x4
+	add	sp, 0x4
 	mov	ax, 0x1
-L042_0130:
+.10:
 	pop	si
 	pop	di
 	leave
@@ -140,28 +140,28 @@ F042_0134:
 	lea	ax, [bp - 0x7e]
 	push	ax
 	call	0x0000:_strcpy
-	add	sp, byte +0x4
+	add	sp, 0x4
 	lea	si, [bp - 0x7e]
-	jmp	short L042_0154
-L042_014E:
+	jmp	short .2
+.1:
 	cmp	byte [si], 0x2e
-	jz	short L042_0159
+	jz	short .3
 	inc	si
-L042_0154:
+.2:
 	cmp	byte [si], 0x0
-	jnz	short L042_014E
-L042_0159:
+	jnz	short .1
+.3:
 	cmp	byte [si], 0x0
-	jnz	short L042_01C4
+	jnz	short .8
 	db	0x33, 0xFF		; xor di, di
 	mov	[bp - 0x2], si
-	jmp	short L042_018C
-L042_0165:
+	jmp	short .6
+.4:
 	db	0x8B, 0xDF		; mov bx, di
 	push	word [bx + di + 0x76de]
 	push	si
 	call	0x0000:_strcpy
-	add	sp, byte +0x4
+	add	sp, 0x4
 	lea	ax, [bp - 0x7e]
 	push	ax
 	call	0x06E1:CopyByName
@@ -169,35 +169,35 @@ L042_0165:
 	mov	[bp - 0x8], ax
 	mov	[bp - 0x6], dx
 	db	0x0B, 0xD0		; or dx, ax
-	jz	short L042_018B
+	jz	short .5
 	db	0xE9, 0xE9, 0x02		; jmp 0x474
-L042_018B:
+.5:
 	inc	di
-L042_018C:
+.6:
 	db	0x8B, 0xDF		; mov bx, di
 	mov	bx, [bx + di + 0x76de]
 	cmp	byte [bx], 0x0
-	jnz	short L042_0165
+	jnz	short .4
 	db	0x33, 0xFF		; xor di, di
-L042_0199:
+.7:
 	db	0x8B, 0xDF		; mov bx, di
 	mov	bx, [bx + di + 0x76de]
 	cmp	byte [bx], 0x0
-	jz	short L042_01DD
+	jz	short .9
 	db	0x8B, 0xDF		; mov bx, di
 	push	word [bx + di + 0x76de]
 	push	si
 	call	0x0000:_strcpy
-	add	sp, byte +0x4
+	add	sp, 0x4
 	lea	ax, [bp - 0x7e]
 	push	ax
 	call	0x15ED:F043_000E
 	pop	bx
 	db	0x0B, 0xC0		; or ax, ax
-	jnz	short L042_01DD
+	jnz	short .9
 	inc	di
-	jmp	short L042_0199
-L042_01C4:
+	jmp	short .7
+.8:
 	mov	[bp - 0x2], si
 	lea	ax, [bp - 0x7e]
 	push	ax
@@ -206,14 +206,14 @@ L042_01C4:
 	db	0x8B, 0xF8		; mov di, ax
 	mov	[bp - 0x6], dx
 	db	0x0B, 0xD0		; or dx, ax
-	jz	short L042_01DD
+	jz	short .9
 	db	0xE9, 0x97, 0x02		; jmp 0x474
-L042_01DD:
+.9:
 	push	word [bp - 0x2]
 	lea	ax, [bp - 0x1a]
 	push	ax
 	call	0x0000:_strcpy
-	add	sp, byte +0x4
+	add	sp, 0x4
 	mov	ax, [bp + 0x8]
 	and	al, 0x7f
 	mov	[bp - 0xa], ax
@@ -224,59 +224,59 @@ L042_01DD:
 	lea	cx, [bp - 0x1a]
 	push	cx
 	call	0x0000:_stricmp
-	add	sp, byte +0x4
+	add	sp, 0x4
 	db	0x0B, 0xC0		; or ax, ax
-	jz	short L042_0222
+	jz	short .10
 	push	word 0x7735
 	lea	ax, [bp - 0x1a]
 	push	ax
 	call	0x0000:_stricmp
-	add	sp, byte +0x4
+	add	sp, 0x4
 	db	0x0B, 0xC0		; or ax, ax
-	jnz	short L042_0225
-L042_0222:
-	jmp	near L042_031D
-L042_0225:
+	jnz	short .11
+.10:
+	jmp	near .21
+.11:
 	push	word 0x773a
 	lea	ax, [bp - 0x1a]
 	push	ax
 	call	0x0000:_stricmp
-	add	sp, byte +0x4
+	add	sp, 0x4
 	db	0x0B, 0xC0		; or ax, ax
-	jz	short L042_024B
+	jz	short .12
 	push	word 0x773f
 	lea	ax, [bp - 0x1a]
 	push	ax
 	call	0x0000:_stricmp
-	add	sp, byte +0x4
+	add	sp, 0x4
 	db	0x0B, 0xC0		; or ax, ax
-	jnz	short L042_024E
-L042_024B:
-	jmp	near L042_030C
-L042_024E:
+	jnz	short .13
+.12:
+	jmp	near .20
+.13:
 	push	word 0x7744
 	lea	ax, [bp - 0x1a]
 	push	ax
 	call	0x0000:_stricmp
-	add	sp, byte +0x4
+	add	sp, 0x4
 	db	0x0B, 0xC0		; or ax, ax
-	jnz	short L042_0264
-	jmp	near L042_02F5
-L042_0264:
+	jnz	short .14
+	jmp	near .19
+.14:
 	push	word 0x7749
 	lea	ax, [bp - 0x1a]
 	push	ax
 	call	0x0000:_stricmp
-	add	sp, byte +0x4
+	add	sp, 0x4
 	db	0x0B, 0xC0		; or ax, ax
-	jz	short L042_02F5
+	jz	short .19
 	push	word 0x774e
 	lea	ax, [bp - 0x1a]
 	push	ax
 	call	0x0000:_stricmp
-	add	sp, byte +0x4
+	add	sp, 0x4
 	db	0x0B, 0xC0		; or ax, ax
-	jnz	short L042_02B3
+	jnz	short .16
 	push	word [bp + 0xa]
 	mov	ax, [bp + 0x8]
 	not	ax
@@ -285,41 +285,41 @@ L042_0264:
 	lea	ax, [bp - 0x7e]
 	push	ax
 	call	0x149D:F032_007C
-L042_029F:
-	add	sp, byte +0x6
+.15:
+	add	sp, 0x6
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x6], dx
 	mov	ax, 0x1
 	mov	[bp - 0x4], ax
 	mov	[bp - 0x10], ax
-	jmp	near L042_0334
-L042_02B3:
+	jmp	near .23
+.16:
 	push	word 0x7753
 	lea	ax, [bp - 0x1a]
 	push	ax
 	call	0x0000:_stricmp
-	add	sp, byte +0x4
+	add	sp, 0x4
 	db	0x0B, 0xC0		; or ax, ax
-	jnz	short L042_02E4
+	jnz	short .18
 	push	word [bp + 0xa]
 	push	word [bp - 0xa]
 	lea	ax, [bp - 0x7e]
 	push	ax
 	call	0x149D:F032_007C
-L042_02D5:
-	add	sp, byte +0x6
+.17:
+	add	sp, 0x6
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x6], dx
 	mov	word [bp - 0x10], 0x1
-	jmp	short L042_0334
-L042_02E4:
+	jmp	short .23
+.18:
 	push	word [bp + 0xa]
 	push	word [bp - 0xa]
 	lea	ax, [bp - 0x7e]
 	push	ax
 	call	0x149D:F032_007C
-	jmp	short L042_032C
-L042_02F5:
+	jmp	short .22
+.19:
 	push	word [bp + 0xa]
 	mov	ax, [bp + 0x8]
 	not	ax
@@ -328,39 +328,39 @@ L042_02F5:
 	lea	ax, [bp - 0x7e]
 	push	ax
 	call	0x14B8:F033_0082
-	jmp	short L042_029F
-L042_030C:
+	jmp	short .15
+.20:
 	push	word [bp + 0xa]
 	push	word [bp - 0xa]
 	lea	ax, [bp - 0x7e]
 	push	ax
 	call	0x14B8:F033_0082
-	jmp	short L042_02D5
-L042_031D:
+	jmp	short .17
+.21:
 	push	word [bp + 0xa]
 	push	word [bp - 0xa]
 	lea	ax, [bp - 0x7e]
 	push	ax
 	call	0x14B8:F033_0082
-L042_032C:
-	add	sp, byte +0x6
+.22:
+	add	sp, 0x6
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x6], dx
-L042_0334:
-	cmp	word [bp - 0x4], byte +0x0
-	jnz	short L042_033D
-	jmp	near L042_040B
-L042_033D:
+.23:
+	cmp	word [bp - 0x4], 0x0
+	jnz	short .24
+	jmp	near .27
+.24:
 	db	0x8B, 0xC2		; mov ax, dx
 	db	0x0B, 0xC6		; or ax, si
-	jnz	short L042_0346
-	jmp	near L042_040B
-L042_0346:
+	jnz	short .25
+	jmp	near .27
+.25:
 	mov	es, dx
 	push	word [es:si + 0x2]
 	push	word [es:si]
 	call	0x1606:F046_0006
-	add	sp, byte +0x4
+	add	sp, 0x4
 	mov	[bp - 0x4], ax
 	mov	[bp - 0x2], dx
 	push	word 0x7758
@@ -368,18 +368,18 @@ L042_0346:
 	push	word [es:si + 0x2]
 	push	word [es:si]
 	call	0x03A3:FindFar
-	add	sp, byte +0x6
+	add	sp, 0x6
 	mov	[bp - 0xe], ax
 	mov	[bp - 0xc], dx
 	db	0x0B, 0xD0		; or dx, ax
-	jz	short L042_038C
+	jz	short .26
 	mov	dx, [bp - 0xc]
 	add	ax, strict word 0x10
 	push	dx
 	push	ax
 	call	0x160C:F047_0008
-	add	sp, byte +0x4
-L042_038C:
+	add	sp, 0x4
+.26:
 	push	word [bp + 0xa]
 	push	word [bp - 0xa]
 	push	word [bp - 0x2]
@@ -387,7 +387,7 @@ L042_038C:
 	lea	ax, [bp - 0x7e]
 	push	ax
 	call	0x06E1:InsertRec
-	add	sp, byte +0xa
+	add	sp, 0xa
 	mov	es, dx
 	db	0x8B, 0xD8		; mov bx, ax
 	mov	ax, es
@@ -406,51 +406,51 @@ L042_038C:
 	mov	[bp - 0x82], bx
 	mov	[bp - 0x80], di
 	call	0x0FEF:F028_4782
-	add	sp, byte +0x8
+	add	sp, 0x8
 	push	word [bp - 0x6]
 	push	si
 	call	0x06E1:UnlinkRec
-	add	sp, byte +0x4
+	add	sp, 0x4
 	push	word 0x76f2
 	les	bx, [bp - 0x82]
 	push	word [es:bx + 0x2]
 	push	word [es:bx]
 	call	0x0FEF:F028_472A
-	add	sp, byte +0x6
+	add	sp, 0x6
 	mov	ax, [bp - 0x82]
 	db	0x8B, 0xD7		; mov dx, di
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x6], dx
-L042_040B:
-	cmp	word [bp - 0x10], byte +0x0
-	jz	short L042_0454
+.27:
+	cmp	word [bp - 0x10], 0x0
+	jz	short .29
 	db	0x8B, 0xC2		; mov ax, dx
 	db	0x0B, 0xC6		; or ax, si
-	jz	short L042_0454
+	jz	short .29
 	mov	es, dx
 	push	word [es:si + 0x2]
 	push	word [es:si]
 	call	0x15A6:F042_0004
-	add	sp, byte +0x4
+	add	sp, 0x4
 	db	0x0B, 0xC0		; or ax, ax
-	jnz	short L042_0454
+	jnz	short .29
 	cmp	[bp + 0xa], ax
-	jz	short L042_043A
+	jz	short .28
 	push	word 0x775d
 	call	0x0F4A:F022_03E4
 	pop	bx
-L042_043A:
+.28:
 	push	word 0x7788
 	call	0x03A3:ConPrint
 	pop	bx
 	push	word [bp - 0x6]
 	push	si
 	call	0x06E1:UnlinkRec
-	add	sp, byte +0x4
+	add	sp, 0x4
 	db	0x33, 0xC0		; xor ax, ax
 	cwd
 	db	0xEB, 0x23		; jmp short 0x477
-L042_0454:
+.29:
 	mov	ax, [bp - 0x6]
 	db	0x0B, 0xC6		; or ax, si
 	db	0x74, 0x17		; jz 0x472
@@ -459,6 +459,6 @@ L042_0454:
 	push	word [bp - 0x6]
 	push	si
 	call	0x06E1:MovePtr
-	add	sp, byte +0x4
+	add	sp, 0x4
 	db	0x8B, 0xF0		; mov si, ax
 	db	0x89

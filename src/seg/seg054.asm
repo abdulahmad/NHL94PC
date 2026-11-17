@@ -44,9 +44,9 @@
 F054_029E:
 	or	byte [0x17], 0x2
 	cmp	byte [0x4], 0x0
-	jz	short L054_02AD
+	jz	short .1
 	or	ah, 0x2
-L054_02AD:
+.1:
 	ret
 
 F054_02AE:
@@ -58,12 +58,12 @@ F054_02B4:
 
 F054_02B5:
 	inc	bx
-	jmp	short L054_02D1
+	jmp	short F054_02B8.1
 
 F054_02B8:
 	push	ax
 	push	bp
-	sub	sp, byte +0x1c
+	sub	sp, 0x1c
 	db	0x8B, 0xEC		; mov bp, sp
 	wait
 	fnstenv	[bp + 0x0]
@@ -73,18 +73,18 @@ F054_02B8:
 	push	bx
 	push	ds
 	lds	bx, [bp + 0x6]
-L054_02D1:
+.1:
 	mov	ax, [bx]
 	add	al, 0x28
 	jnc	short F054_02B5
 	xchg	al, ah
 	mov	[bp + 0x8], ax
-	jmp	short L054_02EE
+	jmp	short F054_02DE.1
 
 F054_02DE:
 	push	ax
 	push	bp
-	sub	sp, byte +0x1c
+	sub	sp, 0x1c
 	db	0x8B, 0xEC		; mov bp, sp
 	fnstenv	[bp + 0x0]
 	wait
@@ -92,79 +92,79 @@ F054_02DE:
 	sti
 	push	bx
 	push	ds
-L054_02EE:
+.1:
 	mov	ds, [cs:0x0]
 	db	0x33, 0xC0		; xor ax, ax
 	mov	al, [bp + 0x2]
 	db	0x32, 0xFF		; xor bh, bh
-	cmp	word [0xa4], byte +0x0
-	jnz	short L054_0304
+	cmp	word [0xa4], 0x0
+	jnz	short .2
 	or	bh, 0x1
-L054_0304:
+.2:
 	test	bh, 0x1
-	jnz	short L054_0313
+	jnz	short .3
 	test	al, 0x1
-	jz	short L054_0313
+	jz	short .3
 	or	bh, 0x1
-	jmp	near L054_0397
-L054_0313:
+	jmp	near .11
+.3:
 	test	al, 0x2
-	jz	short L054_031A
-	jmp	near L054_0518
-L054_031A:
+	jz	short .4
+	jmp	near F054_04EA.3
+.4:
 	test	bh, 0x4
-	jnz	short L054_032B
+	jnz	short .5
 	test	al, 0x4
-	jz	short L054_032B
+	jz	short .5
 	or	bh, 0x4
 	call	F054_062F
-	jmp	short L054_0304
-L054_032B:
+	jmp	short .2
+.5:
 	test	bh, 0x8
-	jnz	short L054_033A
+	jnz	short .6
 	test	al, 0x8
-	jz	short L054_033A
+	jz	short .6
 	or	bh, 0x8
 	jmp	near F054_0619
-L054_033A:
+.6:
 	mov	bl, [0x6]
 	or	bl, 0xc0
 	and	bl, 0xfd
 	not	bl
 	db	0x22, 0xC3		; and al, bl
 	test	al, 0x1
-	jz	short L054_036B
+	jz	short .8
 	push	ax
 	mov	ax, [bp + 0x8]
 	and	ah, 0x7
 	cmp	ax, 0x1fa
-	jnz	short L054_035D
+	jnz	short .7
 	pop	ax
 	or	al, 0x80
-	jmp	short L054_036B
-L054_035D:
+	jmp	short .8
+.7:
 	mov	ax, [bp + 0x8]
 	and	ax, 0x338
 	cmp	ax, 0x100
 	pop	ax
-	jnz	short L054_036B
+	jnz	short .8
 	xor	al, 0x1
-L054_036B:
+.8:
 	wait
 	fnclex
 	wait
 	fldcw	[bp + 0x0]
-L054_0372:
+.9:
 	or	[0x8], ax
 	pop	ds
 	pop	bx
-	add	sp, byte +0x1c
+	add	sp, 0x1c
 	pop	bp
 	test	ax, 0xbfff
-	jnz	short L054_0383
+	jnz	short .10
 	pop	ax
 	ret
-L054_0383:
+.10:
 	push	ax
 	push	bx
 	db	0x8B, 0xDC		; mov bx, sp
@@ -172,9 +172,9 @@ L054_0383:
 	mov	[ss:bx + 0x6], ax
 	pop	bx
 	pop	ax
-	add	sp, byte +0x2
-	jmp	near L054_0691
-L054_0397:
+	add	sp, 0x2
+	jmp	near F054_0637.4
+.11:
 	push	si
 	push	bx
 	push	cx
@@ -189,69 +189,69 @@ L054_0397:
 	shr	cl, 1
 	ror	bx, cl
 	test	bh, 0xc0
-	jz	short L054_0406
+	jz	short .16
 	mov	dx, [bp + 0x8]
 	xor	dx, 0x1e0
 	test	dl, 0xc0
-	jnz	short L054_03E0
+	jnz	short .13
 	test	dx, 0x120
-	jnz	short L054_0406
+	jnz	short .16
 	test	dl, 0x10
-	jnz	short L054_03D3
+	jnz	short .12
 	test	dl, 0x8
-	jnz	short L054_03E6
-	jmp	short L054_0406
+	jnz	short .14
+	jmp	short .16
 	db	0x90
-L054_03D3:
+.12:
 	cmp	dl, 0x12
-	jz	short L054_03E6
+	jz	short .14
 	cmp	dl, 0x14
-	jz	short L054_03E6
-	jmp	short L054_0406
+	jz	short .14
+	jmp	short .16
 	db	0x90
-L054_03E0:
+.13:
 	test	dx, 0x110
-	jnz	short L054_0406
-L054_03E6:
+	jnz	short .16
+.14:
 	and	bh, 0x3f
 	mov	si, [0x10]
 	cmp	si, [0x12]
-	jnz	short L054_03F6
+	jnz	short .15
 	call	F054_029E
-L054_03F6:
-	add	si, byte +0xc
+.15:
+	add	si, 0xc
 	mov	[0x10], si
 	wait
 	fdecstp
 	wait
 	fstp	tword [si]
-	jmp	near L054_050B
-L054_0406:
+	jmp	near F054_04EA.2
+.16:
 	test	bl, 0x3
-	jz	short L054_040E
-	jmp	short L054_0457
+	jz	short .17
+	jmp	short .22
 	db	0x90
-L054_040E:
+.17:
 	mov	dx, [bp + 0x8]
 	xor	dx, 0x1e0
 	test	dl, 0xc0
-	jz	short L054_0423
+	jz	short .18
 	test	dx, 0x110
-	jnz	short L054_0423
-	jmp	short L054_0457
+	jnz	short .18
+	jmp	short .22
 	db	0x90
-L054_0423:
+.18:
 	db	0x0B, 0xDB		; or bx, bx
-	jz	short L054_042D
+	jz	short .19
 	call	F054_04EA
-	jmp	short L054_0457
+	jmp	short .22
 	db	0x90
-L054_042D:
+.19:
 	mov	si, [0x10]
 	cmp	si, [0xe]
-	jnz	short L054_043A
-	jmp	near L054_04F8
-L054_043A:
+	jnz	short .20
+	jmp	near F054_04EA.1
+.20:
 	or	bl, 0x3
 	wait
 	fincstp
@@ -259,18 +259,18 @@ L054_043A:
 	fld	tword [si]
 	mov	si, [0x10]
 	cmp	si, [0xe]
-	jnz	short L054_0450
+	jnz	short .21
 	call	F054_02AE
-L054_0450:
-	sub	si, byte +0xc
+.21:
+	sub	si, 0xc
 	mov	[0x10], si
-L054_0457:
+.22:
 	test	bl, 0xc
-	jnz	short L054_04AC
+	jnz	short .25
 	db	0x8B, 0xF3		; mov si, bx
-	and	si, byte -0x10
+	and	si, -0x10
 	db	0x0B, 0xF6		; or si, si
-	jz	short L054_047F
+	jz	short .23
 	wait
 	fstp	tword [0x4a]
 	shr	bx, 1
@@ -281,11 +281,11 @@ L054_0457:
 	shl	bx, 1
 	shl	bx, 1
 	or	bl, 0x3
-	jmp	short L054_04AC
-L054_047F:
+	jmp	short .25
+.23:
 	mov	si, [0x10]
 	cmp	si, [0xe]
-	jz	short L054_04AC
+	jz	short .25
 	or	bl, 0xc
 	wait
 	fincstp
@@ -297,40 +297,40 @@ L054_047F:
 	fdecstp
 	mov	si, [0x10]
 	cmp	si, [0xe]
-	jnz	short L054_04A5
+	jnz	short .24
 	call	F054_02AE
-L054_04A5:
-	sub	si, byte +0xc
+.24:
+	sub	si, 0xc
 	mov	[0x10], si
-L054_04AC:
+.25:
 	mov	dx, [bp + 0x8]
 	xor	dx, 0x1e0
 	test	dl, 0xc0
-	jnz	short L054_04C3
+	jnz	short .26
 	test	dx, 0x120
-	jnz	short L054_04D7
+	jnz	short .28
 	test	dl, 0x10
-	jnz	short L054_04C6
-L054_04C3:
-	jmp	short L054_050B
+	jnz	short .27
+.26:
+	jmp	short F054_04EA.2
 	db	0x90
-L054_04C6:
+.27:
 	db	0x8A, 0xCA		; mov cl, dl
 	and	cl, 0xf
 	mov	dx, 0x50c4
 	shl	dx, cl
-	jns	short L054_04C3
+	jns	short .26
 	test	bl, 0xc
-	jnz	short L054_04C3
-L054_04D7:
-	and	dx, byte +0x7
+	jnz	short .26
+.28:
+	and	dx, 0x7
 	shl	dl, 1
 	db	0x8B, 0xCA		; mov cx, dx
 	db	0x8B, 0xD3		; mov dx, bx
 	ror	dx, cl
 	test	dl, 0x3
-	jnz	short L054_050B
-	jmp	short L054_04F8
+	jnz	short F054_04EA.2
+	jmp	short F054_04EA.1
 	db	0x90
 
 F054_04EA:
@@ -341,7 +341,7 @@ F054_04EA:
 	test	bx, 0x3
 	jz	short F054_04EA
 	ret
-L054_04F8:
+.1:
 	or	ah, 0x4
 	mov	byte [bp + 0x2], 0x0
 	wait
@@ -351,8 +351,8 @@ L054_04F8:
 	pop	cx
 	pop	bx
 	pop	si
-	jmp	near L054_0372
-L054_050B:
+	jmp	near F054_02DE.9
+.2:
 	and	al, 0xfe
 	call	F054_062F
 	pop	di
@@ -360,39 +360,39 @@ L054_050B:
 	pop	cx
 	pop	bx
 	pop	si
-	jmp	near L054_0304
-L054_0518:
+	jmp	near F054_02DE.2
+.3:
 	or	byte [0x8], 0x2
 	push	cx
 	mov	cx, [bp + 0x8]
 	and	cl, 0xc0
 	cmp	cl, 0xc0
-	jz	short L054_0596
+	jz	short .8
 	mov	cx, [bp + 0x8]
 	and	cx, 0x338
-	cmp	cx, byte +0x8
-	jz	short L054_0542
-	cmp	cx, byte +0x10
-	jz	short L054_0542
+	cmp	cx, 0x8
+	jz	short .4
+	cmp	cx, 0x10
+	jz	short .4
 	and	cl, 0x30
-	cmp	cx, byte +0x30
-	jnz	short L054_0596
-L054_0542:
+	cmp	cx, 0x30
+	jnz	short .8
+.4:
 	test	bh, 0xc0
-	jz	short L054_0564
+	jz	short .6
 	and	bh, 0x3f
 	mov	si, [0x10]
 	cmp	si, [0x12]
-	jnz	short L054_0557
+	jnz	short .5
 	call	F054_029E
-L054_0557:
-	add	si, byte +0xc
+.5:
+	add	si, 0xc
 	mov	[0x10], si
 	wait
 	fdecstp
 	wait
 	fstp	tword [si]
-L054_0564:
+.6:
 	mov	cx, [bp + 0x8]
 	push	cx
 	and	cx, 0x400
@@ -401,30 +401,30 @@ L054_0564:
 	call	F054_0637
 	call	F054_05D7
 	pop	cx
-	and	cx, byte +0x38
+	and	cx, 0x38
 	cmp	cl, 0x8
-	jz	short L054_058A
+	jz	short .7
 	cmp	cl, 0x10
-	jz	short L054_05B5
+	jz	short .10
 	xor	cl, 0x8
-L054_058A:
+.7:
 	or	cx, 0x6c1
 	mov	[bp + 0x8], cx
 	call	F054_062F
-	jmp	short L054_05D1
-L054_0596:
+	jmp	short .11
+.8:
 	mov	cx, [bp + 0x8]
 	and	cx, 0x738
 	cmp	cx, 0x328
-	jz	short L054_05B0
+	jz	short .9
 	and	cx, 0x138
 	cmp	cx, 0x100
-	jz	short L054_05B0
+	jz	short .9
 	call	F054_062F
-L054_05B0:
+.9:
 	call	F054_05D7
-	jmp	short L054_05D1
-L054_05B5:
+	jmp	short .11
+.10:
 	or	ah, 0x40
 	wait
 	fnclex
@@ -440,10 +440,10 @@ L054_05B5:
 	fnstsw	[0x16]
 	wait
 	or	al, [0x16]
-L054_05D1:
+.11:
 	pop	cx
 	and	al, 0xfd
-	jmp	near L054_0304
+	jmp	near F054_02DE.2
 
 F054_05D7:
 	wait
@@ -451,31 +451,31 @@ F054_05D7:
 	wait
 	mov	cx, [bp + 0x1a]
 	test	cx, 0x7fff
-	jz	short L054_0606
+	jz	short .3
 	test	byte [bp + 0x19], 0x80
-	jnz	short L054_0601
+	jnz	short .1
 	wait
 	fild	qword [bp + 0x12]
 	wait
 	fstp	tword [bp + 0x12]
 	wait
-	cmp	word [bp + 0x1a], byte +0x0
-	jz	short L054_0606
+	cmp	word [bp + 0x1a], 0x0
+	jz	short .3
 	sub	cx, 0x403e
 	add	[bp + 0x1a], cx
-L054_0601:
+.1:
 	wait
 	db	0xDB, 0x6E
-L054_0604:
+.2:
 	db	0x12, 0xC3		; adc al, bl
-L054_0606:
+.3:
 	db	0x33, 0xC9		; xor cx, cx
 	mov	[bp + 0x12], cx
 	mov	[bp + 0x14], cx
 	mov	[bp + 0x16], cx
 	mov	[bp + 0x18], cx
 	mov	[bp + 0x1a], cx
-	jmp	short L054_0601
+	jmp	short .1
 
 F054_0619:
 	push	ax
@@ -484,14 +484,14 @@ F054_0619:
 	xor	ah, 0x1
 	cmp	ax, 0xc0
 	pop	ax
-	jnc	short L054_062C
+	jnc	short .1
 	call	F054_062F
-L054_062C:
-	jmp	near L054_0304
+.1:
+	jmp	near F054_02DE.2
 
 F054_062F:
 	test	ah, 0x40
-	jnz	short L054_0690
+	jnz	short F054_0637.3
 	or	ah, 0x40
 
 F054_0637:
@@ -503,21 +503,21 @@ F054_0637:
 	wait
 	fnclex
 	mov	di, ss
-	cmp	word [0x14], byte +0x0
-	jz	short L054_064C
+	cmp	word [0x14], 0x0
+	jz	short .1
 	mov	di, [0x56]
-L054_064C:
+.1:
 	mov	cx, [bp + 0x8]
 	db	0x8B, 0xD9		; mov bx, cx
 	and	ch, 0x7
 	or	ch, 0xd8
 	and	bl, 0xc0
 	xor	bl, 0xc0
-	jz	short L054_0668
+	jz	short .2
 	and	cl, 0x38
 	or	cl, 0x4
 	lds	si, [bp + 0xa]
-L054_0668:
+.2:
 	xchg	ch, cl
 	mov	[bp + 0x14], di
 	lea	di, [bp + 0x16]
@@ -535,50 +535,50 @@ L054_0668:
 	fnstsw	[0x16]
 	wait
 	or	al, [0x16]
-L054_0690:
+.3:
 	ret
-L054_0691:
+.4:
 	push	ds
 	push	bx
 	mov	bl, 0x8b
 	test	ah, 0x4
-	jnz	short L054_06D2
+	jnz	short .5
 	mov	bl, 0x8a
 	test	ah, 0x2
-	jnz	short L054_06D2
+	jnz	short .5
 	mov	bl, 0x88
 	test	al, 0x80
-	jnz	short L054_06D2
+	jnz	short .5
 	mov	bl, 0x89
 	test	ah, 0x1
-	jnz	short L054_06D2
+	jnz	short .5
 	mov	bl, 0x81
 	test	al, 0x1
-	jnz	short L054_06D2
+	jnz	short .5
 	mov	bl, 0x83
 	test	al, 0x4
-	jnz	short L054_06D2
+	jnz	short .5
 	mov	bl, 0x84
 	test	al, 0x8
-	jnz	short L054_06D2
+	jnz	short .5
 	mov	bl, 0x85
 	test	al, 0x10
-	jnz	short L054_06D2
+	jnz	short .5
 	mov	bl, 0x86
 	test	al, 0x20
-	jnz	short L054_06D2
+	jnz	short .5
 	mov	bl, 0x87
 	test	al, 0x40
-	jnz	short L054_06D2
-L054_06D2:
+	jnz	short .5
+.5:
 	mov	ds, [cs:0x0]
 	mov	ax, [0x0]
 	or	ax, [0x2]
-	jnz	short L054_06E5
+	jnz	short .6
 	xchg	ax, bx
 	mov	ah, 0x4c
 	int	0x21
-L054_06E5:
+.6:
 	xchg	ax, bx
 	pop	bx
 	call	far [0x0]
@@ -590,11 +590,11 @@ F054_06EE:
 	mov	[0x6], ax
 	and	ax, 0xff3c
 	cmp	byte [0x4], 0x0
-	jz	short L054_0703
+	jz	short .1
 	mov	[0x1a], ax
 	wait
 	fldcw	[0x1a]
-L054_0703:
+.1:
 	mov	[0xa], ax
 	ret
 
@@ -605,13 +605,13 @@ F054_0707:
 F054_070B:
 	db	0x33, 0xC0		; xor ax, ax
 	cmp	al, [0x4]
-	jz	short L054_071E
+	jz	short .1
 	wait
 	fnstsw	[0x16]
 	wait
 	mov	al, [0x16]
 	and	al, 0x3f
-L054_071E:
+.1:
 	or	ax, [0x8]
 	and	ax, 0x1fff
 	mov	[0x8], ax
@@ -620,7 +620,7 @@ L054_071E:
 F054_0729:
 	and	ax, 0xc00
 	cmp	byte [0x4], 0x0
-	jz	short L054_0753
+	jz	short .1
 	wait
 	fnstcw	[0xa]
 	wait
@@ -635,7 +635,7 @@ F054_0729:
 	wait
 	fldcw	[0xa]
 	ret
-L054_0753:
+.1:
 	mov	cx, [0xa]
 	push	cx
 	and	ch, 0xf3
@@ -651,7 +651,7 @@ L054_0753:
 F054_076E:
 	and	ax, 0xc00
 	cmp	byte [0x4], 0x0
-	jz	short L054_07A1
+	jz	short .1
 	wait
 	fnstcw	[0xa]
 	wait
@@ -668,7 +668,7 @@ F054_076E:
 	mov	ax, [0x1a]
 	mov	dx, [0x1c]
 	ret
-L054_07A1:
+.1:
 	mov	cx, [0xa]
 	push	cx
 	and	ch, 0xf3
@@ -682,13 +682,13 @@ L054_07A1:
 	call	F054_07D4
 	mov	si, [0x10]
 	cmp	si, [0xe]
-	jnz	short L054_07C8
+	jnz	short .2
 	call	F054_02AE
-L054_07C8:
-	sub	si, byte +0xc
+.2:
+	sub	si, 0xc
 	mov	[0x10], si
 	pop	word [0xa]
-L054_07D3:
+.3:
 	ret
 
 F054_07D4:
@@ -703,9 +703,9 @@ F054_07D4:
 	not	cl
 	mov	ch, [0x17]
 	test	cx, 0xdfff
-	jz	short L054_07D3
+	jz	short F054_076E.3
 	xchg	ax, cx
-	jmp	near L054_0691
+	jmp	near F054_0637.4
 
 F054_07FE:
 	sti
@@ -732,21 +732,21 @@ F054_07FE:
 	mov	[si], ax
 	push	bx
 	mov	bx, 0x1
-	jmp	short L054_084B
+	jmp	short F054_0833.2
 
 F054_082B:
 	sti
 	wait
 	push	ax
 	mov	ax, 0xa23d
-	jmp	short L054_0839
+	jmp	short F054_0833.1
 
 F054_0833:
 	sti
 	wait
 	push	ax
 	mov	ax, 0x5c32
-L054_0839:
+.1:
 	push	bp
 	push	ds
 	push	si
@@ -758,28 +758,28 @@ L054_0839:
 	sub	[si], ax
 	push	bx
 	db	0x33, 0xDB		; xor bx, bx
-L054_084B:
+.2:
 	push	sp
 	pop	ax
 	db	0x3B, 0xC4		; cmp ax, sp
-	jnz	short L054_0879
+	jnz	short .4
 	mov	ax, [bx + si + 0x1]
 	and	ax, 0x30fb
 	cmp	ax, 0x30d9
-	jnz	short L054_0863
+	jnz	short .3
 	mov	al, [bx + si + 0x2]
 	cmp	al, 0xf0
-	jc	short L054_0879
-L054_0863:
+	jc	short .4
+.3:
 	mov	ax, [bx + si + 0x1]
 	and	ax, 0xfeff
 	cmp	ax, 0xe2db
-	jz	short L054_0879
+	jz	short .4
 	mov	ax, [bx + si + 0x1]
 	cmp	ax, 0xe0df
-	jz	short L054_0879
+	jz	short .4
 	mov	byte [si], 0x90
-L054_0879:
+.4:
 	pop	bx
 	pop	si
 	pop	ds
@@ -787,183 +787,183 @@ L054_0879:
 	pop	ax
 	iret
 	db	0x90
-T054_0880:
-	dw	L054_0D5C
-	dw	L054_0D12
-	dw	L054_0D40
-	dw	L054_0DB4
-	dw	L054_0D5A
-	dw	L054_0D14
-	dw	L054_0D42
-	dw	L054_0DB4
-	dw	L054_0D52
-	dw	L054_0D04
-	dw	L054_0D32
-	dw	L054_0DB4
-	dw	L054_0D50
-	dw	L054_0D02
-	dw	L054_0D30
-	dw	L054_0DB4
-	dw	L054_0D64
-	dw	L054_0D1A
-	dw	L054_0D48
-	dw	L054_0DB4
-	dw	L054_0CF0
-	dw	L054_0D18
-	dw	L054_0D46
-	dw	L054_0DB4
-	dw	L054_0D60
-	dw	L054_0CF4
-	dw	L054_0D22
-	dw	L054_0DB4
-	dw	L054_0CEC
-	dw	L054_0D16
-	dw	L054_0D44
-	dw	L054_0DB4
-T054_08C0:
+F054_0833JumpTable:
+	dw	F054_0CC6.23
+	dw	F054_0CC6.7
+	dw	F054_0CC6.15
+	dw	F054_0CC6.27
+	dw	F054_0CC6.22
+	dw	F054_0CC6.8
+	dw	F054_0CC6.16
+	dw	F054_0CC6.27
+	dw	F054_0CC6.21
+	dw	F054_0CC6.6
+	dw	F054_0CC6.14
+	dw	F054_0CC6.27
+	dw	F054_0CC6.20
+	dw	F054_0CC6.5
+	dw	F054_0CC6.13
+	dw	F054_0CC6.27
+	dw	F054_0CC6.25
+	dw	F054_0CC6.11
+	dw	F054_0CC6.19
+	dw	F054_0CC6.27
+	dw	F054_0CC6.3
+	dw	F054_0CC6.10
+	dw	F054_0CC6.18
+	dw	F054_0CC6.27
+	dw	F054_0CC6.24
+	dw	F054_0CC6.4
+	dw	F054_0CC6.12
+	dw	F054_0CC6.27
+	dw	F054_0CC6.2
+	dw	F054_0CC6.9
+	dw	F054_0CC6.17
+	dw	F054_0CC6.27
+F054_0833JumpTableJumpTable:
 	dw	F054_1036
 	dw	F054_101C
-	dw	L054_1FF3
-	dw	L054_1FEE
+	dw	F054_1DB9.38
+	dw	F054_1DB9.37
 	dw	F054_1016
-	dw	L054_1010
+	dw	F054_1009.1
 	dw	F054_1024
 	dw	F054_102E
-T054_08D0:
-	dw	L054_0F26
+F054_0833JumpTableJumpTableJumpTable:
+	dw	F054_0ED1.4
 	dw	F054_1009
-	dw	L054_0F30
-	dw	L054_0F3A
+	dw	F054_0ED1.5
+	dw	F054_0ED1.6
 	dw	F054_1009
-	dw	L054_0F5B
+	dw	F054_0ED1.9
 	dw	F054_1009
-	dw	L054_0F65
-	dw	L054_0F6F
-	dw	L054_0FE7
-	dw	L054_0FFF
-	dw	L054_0FF0
-	dw	L054_0F7B
-	dw	L054_0FC3
-	dw	L054_0FCF
-	dw	L054_0FDB
-T054_08F0:
-	dw	L054_16A9
-	dw	L054_1BB5
-	dw	L054_1892
-	dw	L054_1B00
-T054_08F8:
-	dw	L054_1764
-	dw	L054_1C0B
-	dw	L054_19C0
-	dw	L054_1B68
-T054_0900:
-	dw	L054_1F90
-	dw	L054_1E4A
+	dw	F054_0ED1.10
+	dw	F054_0ED1.11
+	dw	F054_0ED1.23
+	dw	F054_0ED1.25
+	dw	F054_0ED1.24
+	dw	F054_0ED1.13
+	dw	F054_0ED1.20
+	dw	F054_0ED1.21
+	dw	F054_0ED1.22
+F054_0833JumpTableJumpTableJumpTableJumpTable:
+	dw	F054_1431.40
+	dw	F054_1431.109
+	dw	F054_1431.69
+	dw	F054_1431.99
+F054_0833JumpTableJumpTableJumpTableJumpTableJumpTable:
+	dw	F054_1431.52
+	dw	F054_1431.114
+	dw	F054_1431.82
+	dw	F054_1431.104
+F054_0833JumpTableJumpTableJumpTableJumpTableJumpTableJumpTable:
+	dw	F054_1DB9.28
+	dw	F054_1DB9.11
 	dw	F054_1009
-	dw	L054_1C6D
-T054_0908:
-	dw	L054_1F99
-	dw	L054_1F4A
-	dw	L054_1FA0
-	dw	L054_1CC7
-T054_0910:
-	dw	L054_20F2
-	dw	L054_20D9
-	dw	L054_20DE
-	dw	L054_20D4
-	dw	L054_20E3
-	dw	L054_20E8
-	dw	L054_20ED
+	dw	F054_1C17.6
+F054_0833JumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTable:
+	dw	F054_1DB9.29
+	dw	F054_1DB9.24
+	dw	F054_1DB9.30
+	dw	F054_1C17.11
+F054_0833JumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTable:
+	dw	F054_1DB9.64
+	dw	F054_1DB9.59
+	dw	F054_1DB9.60
+	dw	F054_1DB9.58
+	dw	F054_1DB9.61
+	dw	F054_1DB9.62
+	dw	F054_1DB9.63
 	dw	F054_1009
-T054_0920:
-	dw	L054_2543
-	dw	L054_256B
-	dw	L054_2489
-	dw	L054_24B5
-	dw	F054_1009
-	dw	F054_1009
+F054_0833JumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTable:
+	dw	F054_24DD.3
+	dw	F054_254B.1
+	dw	F054_2411.3
+	dw	F054_24AE.1
 	dw	F054_1009
 	dw	F054_1009
-T054_0930:
-	dw	L054_21B8
-	dw	L054_2611
-	dw	L054_22CE
+	dw	F054_1009
+	dw	F054_1009
+F054_0833JumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTable:
+	dw	F054_1DB9.83
+	dw	F054_2593.5
+	dw	F054_22C1.1
 	dw	F054_1009
 	dw	F054_1D4F
-	dw	L054_1FA7
+	dw	F054_1DB9.31
 	dw	F054_1009
 	dw	F054_1009
-T054_0940:
-	dw	L054_2018
-	dw	L054_2062
-	dw	L054_2054
-	dw	L054_2068
-	dw	L054_206F
-	dw	L054_203F
-	dw	L054_2054
-	dw	L054_2068
-	dw	L054_2054
-	dw	L054_2054
-	dw	L054_2054
-	dw	L054_2054
-	dw	L054_205B
-	dw	L054_205B
-	dw	L054_2054
-	dw	L054_2076
-T054_0960:
-	dw	L054_2062
-	dw	L054_203F
-	dw	L054_2054
-	dw	L054_205B
-	dw	L054_10EF
-	dw	L054_1059
-	dw	L054_106D
-	dw	L054_105D
-	dw	L054_105D
-	dw	L054_1059
-	dw	L054_106D
-	dw	L054_105D
-	dw	L054_106B
-	dw	L054_106B
-	dw	L054_10D3
-	dw	L054_106B
-	dw	L054_1059
-	dw	L054_1059
-	dw	L054_106D
-	dw	L054_10C6
-	dw	L054_121F
-	dw	L054_1074
-	dw	L054_106D
-	dw	L054_1088
-	dw	L054_1074
-	dw	L054_1074
-	dw	L054_106D
-	dw	L054_1092
-	dw	L054_106B
-	dw	L054_106B
-	dw	L054_10D3
-	dw	L054_106B
-	dw	L054_1088
-	dw	L054_1092
-	dw	L054_106D
-	dw	L054_1088
-	dw	L054_13A0
-	dw	L054_1074
-	dw	L054_106D
-	dw	L054_1088
-	dw	L054_1083
-	dw	L054_108D
-	dw	L054_1064
-	dw	L054_1083
-	dw	L054_106B
-	dw	L054_106B
-	dw	L054_10D3
-	dw	L054_106B
-	dw	L054_1074
-	dw	L054_1074
-	dw	L054_106D
-	dw	L054_1092
-	dw	L054_0604
+F054_0833JumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTable:
+	dw	F054_1DB9.41
+	dw	F054_1DB9.48
+	dw	F054_1DB9.46
+	dw	F054_1DB9.49
+	dw	F054_1DB9.50
+	dw	F054_1DB9.43
+	dw	F054_1DB9.46
+	dw	F054_1DB9.49
+	dw	F054_1DB9.46
+	dw	F054_1DB9.46
+	dw	F054_1DB9.46
+	dw	F054_1DB9.46
+	dw	F054_1DB9.47
+	dw	F054_1DB9.47
+	dw	F054_1DB9.46
+	dw	F054_1DB9.51
+F054_0833JumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTable:
+	dw	F054_1DB9.48
+	dw	F054_1DB9.43
+	dw	F054_1DB9.46
+	dw	F054_1DB9.47
+	dw	F054_10B9.5
+	dw	F054_1036.3
+	dw	F054_1036.7
+	dw	F054_1036.4
+	dw	F054_1036.4
+	dw	F054_1036.3
+	dw	F054_1036.7
+	dw	F054_1036.4
+	dw	F054_1036.6
+	dw	F054_1036.6
+	dw	F054_10B9.3
+	dw	F054_1036.6
+	dw	F054_1036.3
+	dw	F054_1036.3
+	dw	F054_1036.7
+	dw	F054_10B9.2
+	dw	F054_10B9.23
+	dw	F054_1036.8
+	dw	F054_1036.7
+	dw	F054_1036.11
+	dw	F054_1036.8
+	dw	F054_1036.8
+	dw	F054_1036.7
+	dw	F054_1036.13
+	dw	F054_1036.6
+	dw	F054_1036.6
+	dw	F054_10B9.3
+	dw	F054_1036.6
+	dw	F054_1036.11
+	dw	F054_1036.13
+	dw	F054_1036.7
+	dw	F054_1036.11
+	dw	F054_10B9.40
+	dw	F054_1036.8
+	dw	F054_1036.7
+	dw	F054_1036.11
+	dw	F054_1036.10
+	dw	F054_1036.12
+	dw	F054_1036.5
+	dw	F054_1036.10
+	dw	F054_1036.6
+	dw	F054_1036.6
+	dw	F054_10B9.3
+	dw	F054_1036.6
+	dw	F054_1036.8
+	dw	F054_1036.8
+	dw	F054_1036.7
+	dw	F054_1036.13
+	dw	F054_05D7.2
 	db	0x40, 0x42, 0x01, 0x03, 0x05, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xC0
 	db	0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x00, 0x03, 0x00, 0x00
 	db	0x00, 0x00, 0x00, 0x00, 0x00, 0xC0, 0x00, 0x40, 0x80, 0x02, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
@@ -1002,19 +1002,19 @@ T054_0960:
 	db	0xBB, 'vp>[', 0x02, 0xAC, 0x8E, 0x05, 0x00, 0x80, 0x00, 0x60, 0xEF, 0x33, 0xA9
 	db	0xD0, 0x1F, 0x04, 0x9C, 0x08, 0x00, 0x00, 0x00, 0x96, 0xBB, 0x83, 0x6C, 0xE0, 0xF4, 0x5F, 0xC0
 	db	0x09, 0x00, 0x80, 0x00
-T054_0C20:
-	dw	L054_0C71
-	dw	L054_0C80
-	dw	L054_0C76
-	dw	L054_0C7C
+F054_0833JumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTable:
+	dw	F054_0C51.1
+	dw	F054_0C51.4
+	dw	F054_0C51.2
+	dw	F054_0C51.3
 	dw	0x1E55
 	db	0x56, 0x8B, 0xEC, 0xC5, 0x76, 0x06, 0x4E, 0x4E, 0x89, 0x76, 0x06, 0xC7, 0x04, 0x89, 0xC0, 0x5E
 	db	0x1F, 0x5D, 0xCF
-T054_0C3D:
-	dw	L054_0C71
-	dw	L054_0C7C
-	dw	L054_0C76
-	dw	L054_0C80
+F054_0833JumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTableJumpTable:
+	dw	F054_0C51.1
+	dw	F054_0C51.3
+	dw	F054_0C51.2
+	dw	F054_0C51.4
 	db	0xFB, 0x50, 0x06, 0x1E, 'WVRQS', 0x83, 0xEC, 0x02
 
 F054_0C51:
@@ -1030,27 +1030,27 @@ F054_0C51:
 	db	0x8B, 0xD9		; mov bx, cx
 	rol	bl, 1
 	rol	bl, 1
-	and	bx, byte +0x3
+	and	bx, 0x3
 	rol	bx, 1
 	jmp	[cs:bx + 0xc3d]
-L054_0C71:
+.1:
 	mov	es, [bp + 0xe]
-	jmp	short L054_0C80
-L054_0C76:
+	jmp	short .4
+.2:
 	mov	bx, ds
 	mov	es, bx
-	jmp	short L054_0C80
-L054_0C7C:
+	jmp	short .4
+.3:
 	mov	bx, ss
 	mov	es, bx
-L054_0C80:
+.4:
 	mov	[bp + 0x2], es
-	jmp	short L054_0CDC
-L054_0C85:
+	jmp	short F054_0CC6.1
+.5:
 	db	0x8B, 0xD3		; mov dx, bx
 	db	0x8A, 0xD9		; mov bl, cl
 	shr	bl, byte 0x2
-	and	bx, byte +0x6
+	and	bx, 0x6
 	inc	di
 	mov	cx, [di - 0x2]
 	jmp	[cs:bx + 0xc20]
@@ -1074,12 +1074,12 @@ F054_0CA2:
 	db	0x8B, 0xC7		; mov ax, di
 	lds	di, [bp + 0x14]
 	mov	cx, [di]
-	add	di, byte +0x2
+	add	di, 0x2
 	add	cl, 0x28
-	jnc	short L054_0C85
+	jnc	short F054_0C51.5
 	mov	es, dx
 	db	0x8B, 0xD3		; mov dx, bx
-	jmp	short L054_0CDC
+	jmp	short F054_0CC6.1
 
 F054_0CBC:
 	sti
@@ -1105,96 +1105,96 @@ F054_0CC6:
 	inc	di
 	mov	cx, [di - 0x2]
 	sub	cl, 0x34
-L054_0CDC:
+.1:
 	rol	ch, 1
 	rol	ch, 1
 	db	0x8A, 0xDD		; mov bl, ch
-	and	bx, byte +0x1f
+	and	bx, 0x1f
 	shl	bx, 1
 	jmp	[cs:bx + 0x880]
-L054_0CEC:
+.2:
 	db	0x8B, 0xF2		; mov si, dx
-	jmp	short L054_0D64
-L054_0CF0:
+	jmp	short .25
+.3:
 	db	0x8B, 0xF0		; mov si, ax
-	jmp	short L054_0D64
-L054_0CF4:
+	jmp	short .25
+.4:
 	mov	si, [bp + 0x0]
 	mov	es, [bp + 0x2]
 	mov	al, [di]
 	cbw
 	inc	di
 	db	0x03, 0xF0		; add si, ax
-	jmp	short L054_0D64
-L054_0D02:
+	jmp	short .25
+.5:
 	db	0x8B, 0xF0		; mov si, ax
-L054_0D04:
+.6:
 	add	si, [bp + 0x0]
 	mov	es, [bp + 0x2]
 	mov	al, [di]
 	cbw
 	inc	di
 	db	0x03, 0xF0		; add si, ax
-	jmp	short L054_0D64
-L054_0D12:
+	jmp	short .25
+.7:
 	db	0x8B, 0xC6		; mov ax, si
-L054_0D14:
+.8:
 	db	0x03, 0xD0		; add dx, ax
-L054_0D16:
+.9:
 	db	0x8B, 0xC2		; mov ax, dx
-L054_0D18:
+.10:
 	db	0x8B, 0xF0		; mov si, ax
-L054_0D1A:
+.11:
 	mov	al, [di]
 	cbw
 	inc	di
 	db	0x03, 0xF0		; add si, ax
-	jmp	short L054_0D64
-L054_0D22:
+	jmp	short .25
+.12:
 	mov	si, [bp + 0x0]
 	mov	es, [bp + 0x2]
 	add	si, [di]
-	add	di, byte +0x2
-	jmp	short L054_0D64
+	add	di, 0x2
+	jmp	short .25
 	db	0x90
-L054_0D30:
+.13:
 	db	0x8B, 0xF0		; mov si, ax
-L054_0D32:
+.14:
 	add	si, [bp + 0x0]
 	mov	es, [bp + 0x2]
 	add	si, [di]
-	add	di, byte +0x2
-	jmp	short L054_0D64
+	add	di, 0x2
+	jmp	short .25
 	db	0x90
-L054_0D40:
+.15:
 	db	0x8B, 0xC6		; mov ax, si
-L054_0D42:
+.16:
 	db	0x03, 0xD0		; add dx, ax
-L054_0D44:
+.17:
 	db	0x8B, 0xC2		; mov ax, dx
-L054_0D46:
+.18:
 	db	0x8B, 0xF0		; mov si, ax
-L054_0D48:
+.19:
 	add	si, [di]
-	add	di, byte +0x2
-	jmp	short L054_0D64
+	add	di, 0x2
+	jmp	short .25
 	db	0x90
-L054_0D50:
+.20:
 	db	0x8B, 0xF0		; mov si, ax
-L054_0D52:
+.21:
 	add	si, [bp + 0x0]
 	mov	es, [bp + 0x2]
-	jmp	short L054_0D64
-L054_0D5A:
+	jmp	short .25
+.22:
 	db	0x8B, 0xF0		; mov si, ax
-L054_0D5C:
+.23:
 	db	0x03, 0xF2		; add si, dx
-	jmp	short L054_0D64
-L054_0D60:
+	jmp	short .25
+.24:
 	mov	si, [di]
 	inc	di
 	inc	di
-L054_0D64:
+.25:
 	mov	[bp + 0x14], di
 	mov	bl, [di]
 	mov	ds, [cs:0x0]
@@ -1205,28 +1205,28 @@ L054_0D64:
 	shr	ch, 1
 	shr	ch, 1
 	db	0x8A, 0xDD		; mov bl, ch
-	and	bx, byte +0xe
+	and	bx, 0xe
 	test	cl, 0x1
-	jz	short L054_0D94
+	jz	short .26
 	mov	ax, 0xe74
 	push	ax
 	jmp	[cs:bx + 0x8d0]
 	db	0x90
-L054_0D94:
+.26:
 	push	bx
 	db	0x8B, 0xD9		; mov bx, cx
-	and	bx, byte +0x6
+	and	bx, 0x6
 	call	[cs:bx + 0x8f0]
 	pop	bx
 	mov	ax, ds
 	mov	es, ax
 	mov	si, [0x10]
 	db	0x8B, 0xFE		; mov di, si
-	sub	di, byte +0xc
+	sub	di, 0xc
 	mov	[0x96], di
-	jmp	short L054_0E05
+	jmp	short .31
 	db	0x90
-L054_0DB4:
+.27:
 	mov	[bp + 0x14], di
 	mov	bl, [di]
 	db	0x33, 0xC0		; xor ax, ax
@@ -1240,46 +1240,46 @@ L054_0DB4:
 	shr	bl, 1
 	shr	bl, 1
 	shr	bl, 1
-	and	bx, byte +0xe
+	and	bx, 0xe
 	test	cl, 0x1
-	jz	short L054_0DE6
+	jz	short .28
 	call	[cs:bx + 0x8e0]
-	jmp	near L054_0E74
+	jmp	near F054_0E67.1
 	db	0x90
-L054_0DE6:
+.28:
 	call	F054_0E35
-	jc	short L054_0E2B
+	jc	short .35
 	mov	[0x96], si
 	test	cl, 0x4
-	jz	short L054_0DF8
+	jz	short .29
 	mov	[0x96], di
-L054_0DF8:
+.29:
 	test	bl, 0x8
-	jz	short L054_0E00
+	jz	short .30
 	xor	bl, 0x2
-L054_0E00:
+.30:
 	test	cl, 0x2
-	jz	short L054_0E22
-L054_0E05:
+	jz	short .34
+.31:
 	call	[cs:bx + 0x8c0]
 	mov	si, [0x10]
 	cmp	si, [0xe]
-	jz	short L054_0E1D
-L054_0E14:
-	sub	si, byte +0xc
+	jz	short .33
+.32:
+	sub	si, 0xc
 	mov	[0x10], si
-	jmp	short L054_0E74
-L054_0E1D:
+	jmp	short F054_0E67.1
+.33:
 	call	F054_02AE
-	jmp	short L054_0E14
-L054_0E22:
+	jmp	short .32
+.34:
 	mov	ax, 0xe74
 	push	ax
 	jmp	[cs:bx + 0x8c0]
-L054_0E2B:
+.35:
 	call	F054_02AE
-	or	word [0x16], byte +0x1
-	jmp	short L054_0E74
+	or	word [0x16], 0x1
+	jmp	short F054_0E67.1
 
 F054_0E35:
 	mov	si, [0x10]
@@ -1293,18 +1293,18 @@ F054_0E35:
 	db	0x2B, 0xFA		; sub di, dx
 	cmp	di, [0xe]
 	clc
-	jg	short L054_0E52
+	jg	short .1
 	cmc
-L054_0E52:
+.1:
 	ret
 
 F054_0E53:
 	call	F054_1009
-	jmp	short L054_0E74
+	jmp	short F054_0E67.1
 	db	0x90
-L054_0E59:
+.1:
 	pop	bp
-	add	sp, byte +0x2
+	add	sp, 0x2
 	pop	bx
 	pop	cx
 	pop	dx
@@ -1312,11 +1312,11 @@ L054_0E59:
 	pop	di
 	pop	ds
 	pop	es
-	jmp	near L054_0691
+	jmp	near F054_0637.4
 
 F054_0E67:
 	pop	bp
-	add	sp, byte +0x2
+	add	sp, 0x2
 	pop	bx
 	pop	cx
 	pop	dx
@@ -1326,7 +1326,7 @@ F054_0E67:
 	pop	es
 	pop	ax
 	iret
-L054_0E74:
+.1:
 	mov	ax, [0x16]
 	or	[0x8], ax
 	or	[0xc], al
@@ -1337,7 +1337,7 @@ L054_0E74:
 	db	0x0A, 0xC7		; or al, bh
 	not	al
 	test	ax, 0xdfff
-	jnz	short L054_0E59
+	jnz	short F054_0E53.1
 	jmp	[0xa7]
 
 F054_0E98:
@@ -1345,7 +1345,7 @@ F054_0E98:
 	jnz	short F054_0E67
 	db	0x8B, 0xEC		; mov bp, sp
 	lds	di, [bp + 0x14]
-	add	di, byte +0x3
+	add	di, 0x3
 	mov	cx, [di - 0x2]
 	sub	cl, 0x34
 	cmp	cl, 0x7
@@ -1358,34 +1358,34 @@ F054_0E98:
 	rol	ch, 1
 	rol	ch, 1
 	db	0x8A, 0xDD		; mov bl, ch
-	and	bx, byte +0x1f
+	and	bx, 0x1f
 	shl	bx, 1
 	jmp	[cs:bx + 0x880]
 
 F054_0ED1:
 	mov	cl, [0xa6]
 	cmp	cl, 0x9b
-	jz	short L054_0EEE
+	jz	short .2
 	cmp	cl, 0x90
-	jz	short L054_0EEE
+	jz	short .2
 	xor	cl, 0x20
 	cmp	cl, 0xf8
-L054_0EE5:
+.1:
 	jc	short F054_0E67
 	db	0x8B, 0xEC		; mov bp, sp
 	lds	di, [bp + 0x14]
-	jmp	short L054_0EFE
-L054_0EEE:
+	jmp	short .3
+.2:
 	db	0x8B, 0xEC		; mov bp, sp
 	lds	di, [bp + 0x14]
 	inc	di
 	mov	cl, [di]
 	xor	cl, 0x20
 	cmp	cl, 0xf8
-	jc	short L054_0EE5
-L054_0EFE:
+	jc	short .1
+.3:
 	mov	ch, [di + 0x1]
-	add	di, byte +0x2
+	add	di, 0x2
 	add	cl, 0x8
 	mov	ax, [bp + 0xc]
 	mov	dx, [bp + 0x4]
@@ -1395,147 +1395,147 @@ L054_0EFE:
 	rol	ch, 1
 	rol	ch, 1
 	db	0x8A, 0xDD		; mov bl, ch
-	and	bx, byte +0x1f
+	and	bx, 0x1f
 	shl	bx, 1
 	jmp	[cs:bx + 0x880]
-L054_0F26:
+.4:
 	db	0x8B, 0xD9		; mov bx, cx
-	and	bx, byte +0x6
+	and	bx, 0x6
 	jmp	[cs:bx + 0x8f0]
-L054_0F30:
+.5:
 	db	0x8B, 0xD9		; mov bx, cx
-	and	bx, byte +0x6
+	and	bx, 0x6
 	jmp	[cs:bx + 0x8f8]
-L054_0F3A:
+.6:
 	db	0x8B, 0xD9		; mov bx, cx
-	and	bx, byte +0x6
+	and	bx, 0x6
 	call	[cs:bx + 0x8f8]
 	mov	si, [0x10]
 	cmp	si, [0xe]
-	jna	short L054_0F56
-L054_0F4E:
-	sub	si, byte +0xc
+	jna	short .8
+.7:
+	sub	si, 0xc
 	mov	[0x10], si
 	ret
-L054_0F56:
+.8:
 	call	F054_02AE
-	jmp	short L054_0F4E
-L054_0F5B:
+	jmp	short .7
+.9:
 	db	0x8B, 0xD9		; mov bx, cx
-	and	bx, byte +0x6
+	and	bx, 0x6
 	jmp	[cs:bx + 0x900]
-L054_0F65:
+.10:
 	db	0x8B, 0xD9		; mov bx, cx
-	and	bx, byte +0x6
+	and	bx, 0x6
 	jmp	[cs:bx + 0x908]
-L054_0F6F:
+.11:
 	test	cx, 0x6
-	jnz	short L054_0F78
-	jmp	near L054_2162
-L054_0F78:
-	jmp	near L054_211C
-L054_0F7B:
+	jnz	short .12
+	jmp	near F054_1DB9.75
+.12:
+	jmp	near F054_1DB9.67
+.13:
 	test	cx, 0x806
-	jz	short L054_0FA5
+	jz	short .16
 	xor	cx, 0x203
 	test	cx, 0x603
-	jnz	short L054_0F9C
+	jnz	short .15
 	cmp	cx, 0x8104
-	jz	short L054_0F98
+	jz	short .14
 	mov	word [0xc], 0x0
 	ret
-L054_0F98:
+.14:
 	push	sp
 	pop	ax
 	db	0x3B, 0xC4		; cmp ax, sp
-L054_0F9C:
+.15:
 	jnz	short F054_1009
 	mov	ax, [0xc]
 	mov	[bp + 0x12], ax
 	ret
-L054_0FA5:
+.16:
 	test	cx, 0x1000
-	jz	short L054_0FB7
+	jz	short .18
 	test	cx, 0x400
-	jnz	short L054_0FB4
-	jmp	near L054_20BD
-L054_0FB4:
-	jmp	near L054_209F
-L054_0FB7:
+	jnz	short .17
+	jmp	near F054_1DB9.57
+.17:
+	jmp	near F054_1DB9.55
+.18:
 	test	cx, 0x400
-	jnz	short L054_0FC0
-	jmp	near L054_1F87
-L054_0FC0:
-	jmp	near L054_1F7E
-L054_0FC3:
+	jnz	short .19
+	jmp	near F054_1DB9.27
+.19:
+	jmp	near F054_1DB9.26
+.20:
 	db	0x8A, 0xDD		; mov bl, ch
 	shr	bl, 1
-	and	bx, byte +0xe
+	and	bx, 0xe
 	jmp	[cs:bx + 0x910]
-L054_0FCF:
+.21:
 	db	0x8A, 0xDD		; mov bl, ch
 	shr	bl, 1
-	and	bx, byte +0xe
+	and	bx, 0xe
 	jmp	[cs:bx + 0x920]
-L054_0FDB:
+.22:
 	db	0x8A, 0xDD		; mov bl, ch
 	shr	bl, 1
-	and	bx, byte +0xe
+	and	bx, 0xe
 	jmp	[cs:bx + 0x930]
-L054_0FE7:
+.23:
 	test	cx, 0x6
 	jnz	short F054_1009
-	jmp	near L054_2140
-L054_0FF0:
+	jmp	near F054_1DB9.71
+.24:
 	xor	cl, 0x4
 	test	cx, 0x6
 	jnz	short F054_1009
 	mov	ax, 0x1
-	jmp	near L054_2189
-L054_0FFF:
+	jmp	near F054_1DB9.78
+.25:
 	test	cl, 0x6
 	jz	short F054_1009
 	db	0x33, 0xC0		; xor ax, ax
-	jmp	near L054_2189
+	jmp	near F054_1DB9.78
 
 F054_1009:
-	or	word [0x16], byte +0x40
+	or	word [0x16], 0x40
 	ret
 	db	0x90
-L054_1010:
+.1:
 	mov	dx, 0x8000
-	jmp	short L054_1038
+	jmp	short F054_1036.1
 	db	0x90
 
 F054_1016:
 	mov	dx, 0x80
-	jmp	short L054_1038
+	jmp	short F054_1036.1
 	db	0x90
 
 F054_101C:
 	db	0x33, 0xD2		; xor dx, dx
 	mov	bx, 0x988
-	jmp	short L054_103B
+	jmp	short F054_1036.2
 	db	0x90
 
 F054_1024:
 	db	0x33, 0xD2		; xor dx, dx
 	xchg	si, di
 	mov	bx, 0x9a8
-	jmp	short L054_103B
+	jmp	short F054_1036.2
 	db	0x90
 
 F054_102E:
 	db	0x33, 0xD2		; xor dx, dx
 	mov	bx, 0x9a8
-	jmp	short L054_103B
+	jmp	short F054_1036.2
 	db	0x90
 
 F054_1036:
 	db	0x33, 0xD2		; xor dx, dx
-L054_1038:
+.1:
 	mov	bx, 0x968
-L054_103B:
+.2:
 	mov	al, [di + 0xb]
 	shl	al, 1
 	shl	al, 1
@@ -1548,39 +1548,39 @@ L054_103B:
 	mov	cx, [di + 0x8]
 	mov	ax, [si + 0x8]
 	jmp	[cs:bx]
-L054_1059:
+.3:
 	db	0x8B, 0xF7		; mov si, di
 	db	0x8A, 0xD6		; mov dl, dh
-L054_105D:
+.4:
 	call	F054_10B1
 	mov	[di + 0xa], dl
 	ret
-L054_1064:
-	or	word [0x16], byte +0x4
-	jmp	short L054_106D
-L054_106B:
+.5:
+	or	word [0x16], 0x4
+	jmp	short .7
+.6:
 	db	0x8B, 0xF7		; mov si, di
-L054_106D:
-	or	word [0x16], byte +0x1
+.7:
+	or	word [0x16], 0x1
 	jmp	short F054_10B1
-L054_1074:
+.8:
 	mov	si, 0x9d0
-L054_1077:
+.9:
 	db	0x32, 0xF2		; xor dh, dl
 	and	dh, 0x80
 	call	F054_109A
 	or	[di + 0xa], dh
 	ret
-L054_1083:
-	or	word [0x16], byte +0x4
-L054_1088:
+.10:
+	or	word [0x16], 0x4
+.11:
 	mov	si, 0x9dc
-	jmp	short L054_1077
-L054_108D:
-	or	word [0x16], byte +0x4
-L054_1092:
+	jmp	short .9
+.12:
+	or	word [0x16], 0x4
+.13:
 	mov	si, 0x9e8
-	or	word [0x16], byte +0x1
+	or	word [0x16], 0x1
 
 F054_109A:
 	mov	di, [0x96]
@@ -1592,14 +1592,14 @@ F054_109E:
 	cs	movsw
 	cs	movsw
 	cs	movsw
-	sub	di, byte +0xc
-	sub	si, byte +0xc
+	sub	di, 0xc
+	sub	si, 0xc
 	ret
 
 F054_10B1:
 	mov	di, [0x96]
 	db	0x3B, 0xF7		; cmp si, di
-	jz	short L054_10C5
+	jz	short F054_10B9.1
 
 F054_10B9:
 	movsw
@@ -1608,64 +1608,64 @@ F054_10B9:
 	movsw
 	movsw
 	movsw
-	sub	di, byte +0xc
-	sub	si, byte +0xc
-L054_10C5:
+	sub	di, 0xc
+	sub	si, 0xc
+.1:
 	ret
-L054_10C6:
+.2:
 	test	byte [0xb], 0x10
-	jz	short L054_1092
+	jz	short F054_1036.13
 	db	0x32, 0xD6		; xor dl, dh
-	js	short L054_1092
-	jmp	short L054_1059
-L054_10D3:
+	js	short F054_1036.13
+	jmp	short F054_1036.3
+.3:
 	db	0x8B, 0xC6		; mov ax, si
 	db	0x8B, 0xDF		; mov bx, di
-	add	si, byte +0x6
-	add	di, byte +0x6
+	add	si, 0x6
+	add	di, 0x6
 	mov	cx, 0x4
 	std
 	repe	cmpsw
 	cld
-	jc	short L054_10EA
+	jc	short .4
 	db	0x8B, 0xF0		; mov si, ax
-	jmp	short L054_106D
-L054_10EA:
+	jmp	short F054_1036.7
+.4:
 	db	0x8B, 0xF3		; mov si, bx
-	jmp	near L054_106D
-L054_10EF:
+	jmp	near F054_1036.7
+.5:
 	db	0x2B, 0xC1		; sub ax, cx
-	jl	short L054_10FB
+	jl	short .6
 	xchg	si, di
 	xchg	dh, dl
 	db	0x03, 0xC8		; add cx, ax
 	neg	ax
-L054_10FB:
+.6:
 	neg	ax
 	cmp	ax, strict word 0x43
-	jng	short L054_1131
+	jng	short .9
 	push	bp
 	push	dx
 	mov	si, [di + 0x8]
 	mov	bp, 0x1
 	db	0x32, 0xD6		; xor dl, dh
-	jns	short L054_1110
+	jns	short .7
 	neg	bp
-L054_1110:
+.7:
 	mov	dx, [di]
 	mov	cx, [di + 0x2]
 	mov	bx, [di + 0x4]
 	mov	di, [di + 0x6]
 	db	0x0B, 0xED		; or bp, bp
-	js	short L054_1122
-	jmp	near L054_1582
-L054_1122:
-	sub	dx, byte +0x1
-	sbb	cx, byte +0x0
-	sbb	bx, byte +0x0
-	sbb	di, byte +0x0
-	jmp	near L054_14BC
-L054_1131:
+	js	short .8
+	jmp	near F054_1431.22
+.8:
+	sub	dx, 0x1
+	sbb	cx, 0x0
+	sbb	bx, 0x0
+	sbb	di, 0x0
+	jmp	near F054_1431.9
+.9:
 	push	bp
 	push	dx
 	push	cx
@@ -1682,31 +1682,31 @@ L054_1131:
 	db	0x33, 0xF6		; xor si, si
 	xchg	bp, si
 	db	0x0B, 0xF6		; or si, si
-	jz	short L054_11BB
-L054_114B:
-	cmp	si, byte +0xe
-	jl	short L054_116A
+	jz	short .17
+.10:
+	cmp	si, 0xe
+	jl	short .12
 	db	0x0B, 0xED		; or bp, bp
-	jz	short L054_1157
-	or	dx, byte +0x1
-L054_1157:
+	jz	short .11
+	or	dx, 0x1
+.11:
 	db	0x8B, 0xEA		; mov bp, dx
 	db	0x8B, 0xD1		; mov dx, cx
 	db	0x8B, 0xCB		; mov cx, bx
 	db	0x8B, 0xD8		; mov bx, ax
 	db	0x33, 0xC0		; xor ax, ax
-	sub	si, byte +0x10
-	ja	short L054_114B
-	jz	short L054_11BB
-	jc	short L054_1193
-L054_116A:
-	cmp	si, byte +0x6
-	jl	short L054_11A2
+	sub	si, 0x10
+	ja	short .10
+	jz	short .17
+	jc	short .14
+.12:
+	cmp	si, 0x6
+	jl	short .15
 	xchg	ax, bp
 	db	0x0A, 0xC0		; or al, al
-	jz	short L054_1177
+	jz	short .13
 	or	ah, 0x1
-L054_1177:
+.13:
 	db	0x8A, 0xC4		; mov al, ah
 	db	0x8A, 0xE2		; mov ah, dl
 	xchg	ax, bp
@@ -1718,64 +1718,64 @@ L054_1177:
 	db	0x8A, 0xF8		; mov bh, al
 	db	0x8A, 0xC4		; mov al, ah
 	db	0x32, 0xE4		; xor ah, ah
-	sub	si, byte +0x8
-	ja	short L054_11A2
-	jz	short L054_11BB
-L054_1193:
+	sub	si, 0x8
+	ja	short .15
+	jz	short .17
+.14:
 	shl	bp, 1
 	rcl	dx, 1
 	rcl	cx, 1
 	rcl	bx, 1
 	rcl	ax, 1
 	inc	si
-	jnz	short L054_1193
-	jmp	short L054_11BB
-L054_11A2:
+	jnz	short .14
+	jmp	short .17
+.15:
 	xchg	cx, si
 	test	bp, 0x3f
-	jz	short L054_11AD
-	or	bp, byte +0x20
-L054_11AD:
+	jz	short .16
+	or	bp, 0x20
+.16:
 	shr	ax, 1
 	rcr	bx, 1
 	rcr	si, 1
 	rcr	dx, 1
 	rcr	bp, 1
-	loop	L054_11AD
+	loop	.16
 	db	0x8B, 0xCE		; mov cx, si
-L054_11BB:
+.17:
 	db	0x8B, 0xF7		; mov si, di
 	db	0x8B, 0xF8		; mov di, ax
 	test	bp, 0x3fff
-	jz	short L054_11C8
-	or	bp, byte +0x1
-L054_11C8:
+	jz	short .18
+	or	bp, 0x1
+.18:
 	popf
 	pop	ax
-	js	short L054_11EE
+	js	short .21
 	add	dx, [si]
 	adc	cx, [si + 0x2]
 	adc	bx, [si + 0x4]
 	adc	di, [si + 0x6]
-	jnc	short L054_11E9
+	jnc	short .20
 	rcr	di, 1
 	rcr	bx, 1
 	rcr	cx, 1
 	rcr	dx, 1
 	rcr	bp, 1
-	jnc	short L054_11E8
-	or	bp, byte +0x1
-L054_11E8:
+	jnc	short .19
+	or	bp, 0x1
+.19:
 	inc	ax
-L054_11E9:
+.20:
 	db	0x8B, 0xF0		; mov si, ax
-	jmp	near L054_1582
-L054_11EE:
+	jmp	near F054_1431.22
+.21:
 	sub	dx, [si]
 	sbb	cx, [si + 0x2]
 	sbb	bx, [si + 0x4]
 	sbb	di, [si + 0x6]
-	jnc	short L054_1215
+	jnc	short .22
 	db	0x33, 0xF6		; xor si, si
 	not	di
 	not	bx
@@ -1788,14 +1788,14 @@ L054_11EE:
 	db	0x13, 0xDE		; adc bx, si
 	db	0x13, 0xFE		; adc di, si
 	db	0x8B, 0xF0		; mov si, ax
-	jmp	near L054_14BC
-L054_1215:
+	jmp	near F054_1431.9
+.22:
 	db	0x8B, 0xF0		; mov si, ax
 	pop	ax
 	xor	ah, 0x80
 	push	ax
-	jmp	near L054_14BC
-L054_121F:
+	jmp	near F054_1431.9
+.23:
 	push	bp
 	db	0x8A, 0xFE		; mov bh, dh
 	db	0x32, 0xF2		; xor dh, dl
@@ -1809,118 +1809,118 @@ L054_121F:
 	db	0x8B, 0xCB		; mov cx, bx
 	mov	ax, [si]
 	db	0x0B, 0xC0		; or ax, ax
-	jz	short L054_1243
+	jz	short .24
 	mov	dx, [di]
 	db	0x0B, 0xD2		; or dx, dx
-	jz	short L054_1243
+	jz	short .24
 	mul	dx
 	db	0x8B, 0xE8		; mov bp, ax
 	db	0x8B, 0xCA		; mov cx, dx
-L054_1243:
+.24:
 	push	bp
 	db	0x33, 0xED		; xor bp, bp
 	mov	ax, [si]
 	db	0x0B, 0xC0		; or ax, ax
-	jz	short L054_125C
+	jz	short .25
 	mov	dx, [di + 0x2]
 	db	0x0B, 0xD2		; or dx, dx
-	jz	short L054_125C
+	jz	short .25
 	mul	dx
 	db	0x03, 0xC8		; add cx, ax
 	db	0x13, 0xDA		; adc bx, dx
-	adc	bp, byte +0x0
-L054_125C:
+	adc	bp, 0x0
+.25:
 	mov	ax, [si + 0x2]
 	db	0x0B, 0xC0		; or ax, ax
-	jz	short L054_1272
+	jz	short .26
 	mov	dx, [di]
 	db	0x0B, 0xD2		; or dx, dx
-	jz	short L054_1272
+	jz	short .26
 	mul	dx
 	db	0x03, 0xC8		; add cx, ax
 	db	0x13, 0xDA		; adc bx, dx
-	adc	bp, byte +0x0
-L054_1272:
+	adc	bp, 0x0
+.26:
 	pop	ax
 	db	0x0B, 0xC1		; or ax, cx
 	push	ax
 	db	0x33, 0xC9		; xor cx, cx
 	mov	ax, [si]
 	db	0x0B, 0xC0		; or ax, ax
-	jz	short L054_128E
+	jz	short .27
 	mov	dx, [di + 0x4]
 	db	0x0B, 0xD2		; or dx, dx
-	jz	short L054_128E
+	jz	short .27
 	mul	dx
 	db	0x03, 0xD8		; add bx, ax
 	db	0x13, 0xEA		; adc bp, dx
-	adc	cx, byte +0x0
-L054_128E:
+	adc	cx, 0x0
+.27:
 	mov	ax, [si + 0x2]
 	db	0x0B, 0xC0		; or ax, ax
-	jz	short L054_12A5
+	jz	short .28
 	mov	dx, [di + 0x2]
 	db	0x0B, 0xD2		; or dx, dx
-	jz	short L054_12A5
+	jz	short .28
 	mul	dx
 	db	0x03, 0xD8		; add bx, ax
 	db	0x13, 0xEA		; adc bp, dx
-	adc	cx, byte +0x0
-L054_12A5:
+	adc	cx, 0x0
+.28:
 	mov	ax, [si + 0x4]
 	db	0x0B, 0xC0		; or ax, ax
-	jz	short L054_12BB
+	jz	short .29
 	mov	dx, [di]
 	db	0x0B, 0xD2		; or dx, dx
-	jz	short L054_12BB
+	jz	short .29
 	mul	dx
 	db	0x03, 0xD8		; add bx, ax
 	db	0x13, 0xEA		; adc bp, dx
-	adc	cx, byte +0x0
-L054_12BB:
+	adc	cx, 0x0
+.29:
 	pop	ax
 	db	0x0B, 0xC3		; or ax, bx
 	push	ax
 	db	0x33, 0xDB		; xor bx, bx
 	mov	ax, [si]
 	db	0x0B, 0xC0		; or ax, ax
-	jz	short L054_12D1
+	jz	short .30
 	mul	word [di + 0x6]
 	db	0x03, 0xE8		; add bp, ax
 	db	0x13, 0xCA		; adc cx, dx
-	adc	bx, byte +0x0
-L054_12D1:
+	adc	bx, 0x0
+.30:
 	mov	ax, [si + 0x2]
 	db	0x0B, 0xC0		; or ax, ax
-	jz	short L054_12E8
+	jz	short .31
 	mov	dx, [di + 0x4]
 	db	0x0B, 0xD2		; or dx, dx
-	jz	short L054_12E8
+	jz	short .31
 	mul	dx
 	db	0x03, 0xE8		; add bp, ax
 	db	0x13, 0xCA		; adc cx, dx
-	adc	bx, byte +0x0
-L054_12E8:
+	adc	bx, 0x0
+.31:
 	mov	ax, [si + 0x4]
 	db	0x0B, 0xC0		; or ax, ax
-	jz	short L054_12FF
+	jz	short .32
 	mov	dx, [di + 0x2]
 	db	0x0B, 0xD2		; or dx, dx
-	jz	short L054_12FF
+	jz	short .32
 	mul	dx
 	db	0x03, 0xE8		; add bp, ax
 	db	0x13, 0xCA		; adc cx, dx
-	adc	bx, byte +0x0
-L054_12FF:
+	adc	bx, 0x0
+.32:
 	mov	ax, [si + 0x6]
 	mov	dx, [di]
 	db	0x0B, 0xD2		; or dx, dx
-	jz	short L054_1311
+	jz	short .33
 	mul	dx
 	db	0x03, 0xE8		; add bp, ax
 	db	0x13, 0xCA		; adc cx, dx
-	adc	bx, byte +0x0
-L054_1311:
+	adc	bx, 0x0
+.33:
 	db	0x8B, 0xD5		; mov dx, bp
 	and	bp, 0x3fff
 	pop	ax
@@ -1930,51 +1930,51 @@ L054_1311:
 	push	dx
 	mov	ax, [si + 0x2]
 	db	0x0B, 0xC0		; or ax, ax
-	jz	short L054_132F
+	jz	short .34
 	mul	word [di + 0x6]
 	db	0x03, 0xC8		; add cx, ax
 	db	0x13, 0xDA		; adc bx, dx
-	adc	bp, byte +0x0
-L054_132F:
+	adc	bp, 0x0
+.34:
 	mov	ax, [si + 0x4]
 	db	0x0B, 0xC0		; or ax, ax
-	jz	short L054_1346
+	jz	short .35
 	mov	dx, [di + 0x4]
 	db	0x0B, 0xD2		; or dx, dx
-	jz	short L054_1346
+	jz	short .35
 	mul	dx
 	db	0x03, 0xC8		; add cx, ax
 	db	0x13, 0xDA		; adc bx, dx
-	adc	bp, byte +0x0
-L054_1346:
+	adc	bp, 0x0
+.35:
 	mov	ax, [si + 0x6]
 	mov	dx, [di + 0x2]
 	db	0x0B, 0xD2		; or dx, dx
-	jz	short L054_1359
+	jz	short .36
 	mul	dx
 	db	0x03, 0xC8		; add cx, ax
 	db	0x13, 0xDA		; adc bx, dx
-	adc	bp, byte +0x0
-L054_1359:
+	adc	bp, 0x0
+.36:
 	push	cx
 	db	0x33, 0xC9		; xor cx, cx
 	mov	ax, [si + 0x4]
 	db	0x0B, 0xC0		; or ax, ax
-	jz	short L054_136D
+	jz	short .37
 	mul	word [di + 0x6]
 	db	0x03, 0xD8		; add bx, ax
 	db	0x13, 0xEA		; adc bp, dx
-	adc	cx, byte +0x0
-L054_136D:
+	adc	cx, 0x0
+.37:
 	mov	ax, [si + 0x6]
 	mov	dx, [di + 0x4]
 	db	0x0B, 0xD2		; or dx, dx
-	jz	short L054_1380
+	jz	short .38
 	mul	dx
 	db	0x03, 0xD8		; add bx, ax
 	db	0x13, 0xEA		; adc bp, dx
-	adc	cx, byte +0x0
-L054_1380:
+	adc	cx, 0x0
+.38:
 	mov	ax, [si + 0x6]
 	mul	word [di + 0x6]
 	db	0x03, 0xC5		; add ax, bp
@@ -1987,12 +1987,12 @@ L054_1380:
 	db	0x8B, 0xD8		; mov bx, ax
 	pop	ax
 	db	0x0B, 0xC0		; or ax, ax
-	jz	short L054_139C
-	or	bp, byte +0x1
-L054_139C:
+	jz	short .39
+	or	bp, 0x1
+.39:
 	pop	si
-	jmp	near L054_1570
-L054_13A0:
+	jmp	near F054_1431.21
+.40:
 	stc
 	db	0x1B, 0xC1		; sbb ax, cx
 	db	0x32, 0xF2		; xor dh, dl
@@ -2000,8 +2000,8 @@ L054_13A0:
 	push	dx
 	push	si
 	push	di
-	add	si, byte +0x6
-	add	di, byte +0x6
+	add	si, 0x6
+	add	di, 0x6
 	mov	cx, 0x4
 	std
 	repe	cmpsw
@@ -2026,14 +2026,14 @@ L054_13A0:
 	movsw
 	db	0x33, 0xFF		; xor di, di
 	popf
-	jc	short L054_13DF
+	jc	short .41
 	shr	dx, 1
 	rcr	ax, 1
 	rcr	bx, 1
 	rcr	cx, 1
 	rcr	di, 1
 	inc	bp
-L054_13DF:
+.41:
 	push	bp
 	mov	[0x1a], di
 	call	F054_1431
@@ -2049,41 +2049,41 @@ L054_13DF:
 	rcl	bx, 1
 	rcl	ax, 1
 	rcl	dx, 1
-	jc	short L054_1428
+	jc	short .43
 	mov	si, 0x98
 	cmp	dx, [si + 0x6]
-	jnz	short L054_141A
+	jnz	short .42
 	cmp	ax, [si + 0x4]
-	jnz	short L054_141A
+	jnz	short .42
 	cmp	bx, [si + 0x2]
-	jnz	short L054_141A
+	jnz	short .42
 	cmp	cx, [si]
-L054_141A:
-	jnc	short L054_1428
+.42:
+	jnc	short .43
 	db	0x0B, 0xC2		; or ax, dx
 	db	0x0B, 0xC1		; or ax, cx
 	db	0x0B, 0xC3		; or ax, bx
 	db	0x0A, 0xC4		; or al, ah
 	db	0x32, 0xE4		; xor ah, ah
 	db	0x8B, 0xE8		; mov bp, ax
-L054_1428:
+.43:
 	db	0x8B, 0xD7		; mov dx, di
 	pop	cx
 	pop	bx
 	pop	di
 	pop	si
-	jmp	near L054_1582
+	jmp	near F054_1431.22
 
 F054_1431:
 	mov	si, [0x9e]
 	db	0x33, 0xFF		; xor di, di
 	db	0x3B, 0xD6		; cmp dx, si
-	jnc	short L054_149D
+	jnc	short .8
 	db	0x0B, 0xD2		; or dx, dx
-	jnz	short L054_1443
+	jnz	short .1
 	db	0x3B, 0xF0		; cmp si, ax
-	ja	short L054_1484
-L054_1443:
+	ja	short .5
+.1:
 	div	si
 	push	dx
 	push	bx
@@ -2092,26 +2092,26 @@ L054_1443:
 	db	0x8B, 0xF5		; mov si, bp
 	mov	ax, [0x98]
 	db	0x0B, 0xC0		; or ax, ax
-	jz	short L054_1457
+	jz	short .2
 	mul	di
 	db	0x8B, 0xF2		; mov si, dx
-L054_1457:
+.2:
 	push	ax
 	mov	ax, [0x9a]
 	db	0x0B, 0xC0		; or ax, ax
-	jz	short L054_1465
+	jz	short .3
 	mul	di
 	db	0x03, 0xF0		; add si, ax
 	db	0x13, 0xEA		; adc bp, dx
-L054_1465:
+.3:
 	mov	ax, [0x9c]
 	db	0x0B, 0xC0		; or ax, ax
-	jz	short L054_1474
+	jz	short .4
 	mul	di
 	db	0x03, 0xE8		; add bp, ax
-	adc	dx, byte +0x0
+	adc	dx, 0x0
 	xchg	ax, dx
-L054_1474:
+.4:
 	mov	dx, [0x1a]
 	pop	bx
 	db	0x2B, 0xD3		; sub dx, bx
@@ -2121,21 +2121,21 @@ L054_1474:
 	pop	bp
 	db	0x1B, 0xE8		; sbb bp, ax
 	xchg	ax, bp
-L054_1484:
+.5:
 	xchg	ax, dx
 	xchg	ax, cx
 	xchg	ax, bx
-	jnc	short L054_149C
-L054_1489:
+	jnc	short .7
+.6:
 	dec	di
 	add	cx, [0x98]
 	adc	bx, [0x9a]
 	adc	ax, [0x9c]
 	adc	dx, [0x9e]
-	jnc	short L054_1489
-L054_149C:
+	jnc	short .6
+.7:
 	ret
-L054_149D:
+.8:
 	dec	di
 	sub	cx, [0x98]
 	sbb	bx, [0x9a]
@@ -2145,33 +2145,33 @@ L054_149D:
 	db	0x13, 0xC2		; adc ax, dx
 	mov	dx, [0x98]
 	cmc
-	jmp	short L054_1484
+	jmp	short .5
 	db	0x90
-L054_14BC:
+.9:
 	mov	al, 0x4
-L054_14BE:
+.10:
 	db	0x0B, 0xFF		; or di, di
-	jnz	short L054_14E2
-	sub	si, byte +0x10
+	jnz	short .12
+	sub	si, 0x10
 	dec	al
-	jz	short L054_14D5
+	jz	short .11
 	db	0x8B, 0xFB		; mov di, bx
 	db	0x8B, 0xD9		; mov bx, cx
 	db	0x8B, 0xCA		; mov cx, dx
 	db	0x8B, 0xD5		; mov dx, bp
 	db	0x33, 0xED		; xor bp, bp
-	jmp	short L054_14BE
-L054_14D5:
+	jmp	short .10
+.11:
 	mov	si, 0x9d0
 	mov	di, [0x96]
 	pop	ax
 	pop	bp
 	jmp	near F054_109E
 	db	0x90
-L054_14E2:
+.12:
 	test	di, 0xff00
-	jnz	short L054_1504
-	sub	si, byte +0x8
+	jnz	short .13
+	sub	si, 0x8
 	xchg	ax, di
 	db	0x8A, 0xE0		; mov ah, al
 	db	0x8A, 0xC7		; mov al, bh
@@ -2187,10 +2187,10 @@ L054_14E2:
 	db	0x32, 0xC0		; xor al, al
 	xchg	ax, bp
 	nop
-L054_1504:
+.13:
 	test	di, 0x8000
-	jnz	short L054_1582
-L054_150A:
+	jnz	short .22
+.14:
 	dec	si
 	shl	bp, 1
 	rcl	dx, 1
@@ -2198,57 +2198,57 @@ L054_150A:
 	rcl	bx, 1
 	rcl	di, 1
 	test	di, 0x8000
-	jz	short L054_150A
-	jmp	short L054_1582
-L054_151D:
+	jz	short .14
+	jmp	short .22
+.15:
 	db	0x0B, 0xD5		; or dx, bp
 	db	0x0B, 0xCA		; or cx, dx
 	db	0x0A, 0xCD		; or cl, ch
 	db	0x8A, 0xEB		; mov ch, bl
 	db	0x0B, 0xC9		; or cx, cx
-	jz	short L054_156D
-	or	word [0x16], byte +0x20
+	jz	short .20
+	or	word [0x16], 0x20
 	shr	al, 1
-	jc	short L054_154D
+	jc	short .17
 	shr	al, 1
-	jc	short L054_1545
+	jc	short .16
 	cmp	cx, 0x8000
-	ja	short L054_1559
-	jc	short L054_1565
+	ja	short .18
+	jc	short .19
 	test	bh, 0x1
-	jz	short L054_1565
-	jmp	short L054_1559
-L054_1545:
+	jz	short .19
+	jmp	short .18
+.16:
 	pop	ax
 	push	ax
 	shl	ah, 1
-	jc	short L054_1565
-	jmp	short L054_1559
-L054_154D:
+	jc	short .19
+	jmp	short .18
+.17:
 	shr	al, 1
-	jc	short L054_1565
+	jc	short .19
 	pop	ax
 	push	ax
 	shl	ah, 1
-	jc	short L054_1559
-	jmp	short L054_1565
-L054_1559:
+	jc	short .18
+	jmp	short .19
+.18:
 	add	bh, 0x1
-	adc	di, byte +0x0
-	jnc	short L054_1565
+	adc	di, 0x0
+	jnc	short .19
 	mov	di, 0x8000
 	inc	si
-L054_1565:
+.19:
 	db	0x33, 0xED		; xor bp, bp
 	db	0x8B, 0xD5		; mov dx, bp
 	db	0x8B, 0xCA		; mov cx, dx
 	db	0x8A, 0xD9		; mov bl, cl
-L054_156D:
-	jmp	short L054_15BA
+.20:
+	jmp	short .24
 	db	0x90
-L054_1570:
+.21:
 	test	di, 0x8000
-	jnz	short L054_1582
+	jnz	short .22
 	dec	si
 	shl	bp, 1
 	rcl	dx, 1
@@ -2256,33 +2256,33 @@ L054_1570:
 	rcl	bx, 1
 	rcl	di, 1
 	nop
-L054_1582:
+.22:
 	mov	al, [0xb]
 	shr	al, 1
-	jnc	short L054_15FF
+	jnc	short .29
 	shr	al, 1
 	db	0x0B, 0xED		; or bp, bp
-	jz	short L054_15BA
-	or	word [0x16], byte +0x20
+	jz	short .24
+	or	word [0x16], 0x20
 	shr	al, 1
-	jc	short L054_15F0
+	jc	short .27
 	shr	al, 1
-	jc	short L054_15E8
+	jc	short .26
 	cmp	bp, 0x8000
-	ja	short L054_15A9
-	jc	short L054_15BA
+	ja	short .23
+	jc	short .24
 	test	dl, 0x1
-	jz	short L054_15BA
-L054_15A9:
+	jz	short .24
+.23:
 	db	0x33, 0xED		; xor bp, bp
-	add	dx, byte +0x1
+	add	dx, 0x1
 	db	0x13, 0xCD		; adc cx, bp
 	db	0x13, 0xDD		; adc bx, bp
 	db	0x13, 0xFD		; adc di, bp
-	jnc	short L054_15BA
+	jnc	short .24
 	mov	di, 0x8000
 	inc	si
-L054_15BA:
+.24:
 	mov	ax, [0x96]
 	xchg	ax, di
 	mov	[di], dx
@@ -2294,33 +2294,33 @@ L054_15BA:
 	and	ah, 0x80
 	mov	[di + 0xa], ah
 	cmp	si, 0x4000
-	jnl	short L054_15E5
+	jnl	short .25
 	cmp	si, 0xc001
-	jng	short L054_1631
+	jng	short .30
 	mov	[di + 0x8], si
 	mov	byte [di + 0xb], 0x0
 	ret
-L054_15E5:
-	jmp	near L054_1667
-L054_15E8:
+.25:
+	jmp	near .35
+.26:
 	pop	ax
 	push	ax
 	shl	ah, 1
-	jc	short L054_15BA
-	jmp	short L054_15A9
-L054_15F0:
+	jc	short .24
+	jmp	short .23
+.27:
 	shr	al, 1
-	jc	short L054_15BA
+	jc	short .24
 	pop	ax
 	push	ax
 	shl	ah, 1
-	jc	short L054_15A9
-	jmp	short L054_15BA
-L054_15FC:
-	jmp	near L054_151D
-L054_15FF:
+	jc	short .23
+	jmp	short .24
+.28:
+	jmp	near .15
+.29:
 	shr	al, 1
-	jnc	short L054_15FC
+	jnc	short .28
 	xchg	ax, bp
 	db	0x0A, 0xC4		; or al, ah
 	db	0x0A, 0xC2		; or al, dl
@@ -2329,81 +2329,81 @@ L054_15FF:
 	and	dh, 0xf8
 	xchg	ax, bp
 	db	0x0B, 0xED		; or bp, bp
-	jz	short L054_15BA
-	or	word [0x16], byte +0x20
+	jz	short .24
+	or	word [0x16], 0x20
 	shr	al, 1
-	jc	short L054_1643
+	jc	short .32
 	shr	al, 1
-	jc	short L054_163B
+	jc	short .31
 	cmp	bp, 0x400
-	ja	short L054_164F
-	jc	short L054_1660
+	ja	short .33
+	jc	short .34
 	test	dh, 0x8
-	jz	short L054_1660
-	jmp	short L054_164F
-L054_1631:
+	jz	short .34
+	jmp	short .33
+.30:
 	mov	si, 0x9d0
 	call	F054_109E
 	mov	[di + 0xa], ah
 	ret
-L054_163B:
+.31:
 	pop	ax
 	push	ax
 	shl	ah, 1
-	jc	short L054_1660
-	jmp	short L054_164F
-L054_1643:
+	jc	short .34
+	jmp	short .33
+.32:
 	shr	al, 1
-	jc	short L054_1660
+	jc	short .34
 	pop	ax
 	push	ax
 	shl	ah, 1
-	jc	short L054_164F
-	jmp	short L054_1660
-L054_164F:
+	jc	short .33
+	jmp	short .34
+.33:
 	db	0x33, 0xED		; xor bp, bp
 	add	dh, 0x8
 	db	0x13, 0xCD		; adc cx, bp
 	db	0x13, 0xDD		; adc bx, bp
 	db	0x13, 0xFD		; adc di, bp
-	jnc	short L054_1660
+	jnc	short .34
 	mov	di, 0x8000
 	inc	si
-L054_1660:
+.34:
 	db	0x33, 0xED		; xor bp, bp
 	db	0x32, 0xD2		; xor dl, dl
-	jmp	near L054_15BA
-L054_1667:
-	or	word [0x16], byte +0x8
+	jmp	near .24
+.35:
+	or	word [0x16], 0x8
 	mov	al, [0xb]
 	shr	al, 1
 	shr	al, 1
 	shr	al, 1
-	jc	short L054_1685
+	jc	short .37
 	shr	al, 1
-	jc	short L054_169D
-L054_167B:
+	jc	short .39
+.36:
 	mov	si, 0x9dc
 	call	F054_109E
 	mov	[di + 0xa], ah
 	ret
-L054_1685:
+.37:
 	shr	al, 1
-	jc	short L054_1693
-	or	word [0x16], byte +0x20
+	jc	short .38
+	or	word [0x16], 0x20
 	test	ah, 0x80
-	jnz	short L054_167B
-L054_1693:
+	jnz	short .36
+.38:
 	mov	si, 0x9f4
 	call	F054_109E
 	mov	[di + 0xa], ah
 	ret
-L054_169D:
-	or	word [0x16], byte +0x20
+.39:
+	or	word [0x16], 0x20
 	test	ah, 0x80
-	jz	short L054_167B
-	jmp	short L054_1693
-L054_16A9:
+	jz	short .36
+	jmp	short .38
+.40:
 	es	lodsw
 	db	0x8B, 0xF8		; mov di, ax
 	es	lodsw
@@ -2414,21 +2414,21 @@ L054_16A9:
 	xchg	al, ah
 	mov	si, [0x10]
 	cmp	si, [0x12]
-	jnz	short L054_16C6
+	jnz	short .41
 	call	F054_029E
-L054_16C6:
-	add	si, byte +0xc
+.41:
+	add	si, 0xc
 	mov	[0x10], si
 	or	dl, 0x80
 	db	0x32, 0xF6		; xor dh, dh
 	cmp	al, 0xff
-	jz	short L054_16F7
+	jz	short .43
 	cmp	al, 0x0
-	jz	short L054_170D
+	jz	short .44
 	mov	[si + 0xa], ah
 	sub	al, 0x7f
 	cbw
-L054_16E0:
+.42:
 	mov	[si + 0x8], ax
 	mov	[si + 0xb], dh
 	mov	[si + 0x7], dl
@@ -2438,73 +2438,73 @@ L054_16E0:
 	mov	[si + 0x2], ax
 	mov	[si], ax
 	ret
-L054_16F7:
+.43:
 	mov	[si + 0xa], ah
 	mov	ax, 0x4000
 	mov	dh, 0x2
 	cmp	dl, 0x80
-	jnz	short L054_16E0
+	jnz	short .42
 	db	0x0B, 0xFF		; or di, di
-	jnz	short L054_16E0
+	jnz	short .42
 	or	dh, 0x1
-	jmp	short L054_16E0
-L054_170D:
+	jmp	short .42
+.44:
 	mov	[si + 0xa], ah
 	cmp	dl, 0x80
-	jnz	short L054_1721
+	jnz	short .45
 	db	0x0B, 0xFF		; or di, di
-	jnz	short L054_1721
+	jnz	short .45
 	mov	ax, 0xc001
 	or	dh, 0x1
-	jmp	short L054_16E0
-L054_1721:
-	or	word [0x16], byte +0x2
+	jmp	short .42
+.45:
+	or	word [0x16], 0x2
 	sub	al, 0x7f
 	cbw
 	inc	ax
-L054_172A:
+.46:
 	dec	ax
 	shl	di, 1
 	rcl	dl, 1
 	db	0x0A, 0xD2		; or dl, dl
-	jns	short L054_172A
-	jmp	short L054_16E0
-L054_1735:
+	jns	short .46
+	jmp	short .42
+.47:
 	test	cl, 0x2
-	jnz	short L054_1741
+	jnz	short .48
 	db	0x33, 0xC0		; xor ax, ax
 	db	0x8B, 0xD8		; mov bx, ax
-	jmp	near L054_17D9
-L054_1741:
+	jmp	near .55
+.48:
 	test	cl, 0x1
-	jnz	short L054_1758
+	jnz	short .49
 	mov	bx, [si + 0x5]
 	mov	al, [si + 0x7]
 	mov	ah, [si + 0xa]
 	shl	ax, 1
 	mov	ah, 0xff
 	rcr	ax, 1
-	jmp	near L054_17D9
-L054_1758:
+	jmp	near .55
+.49:
 	mov	ah, [si + 0xa]
-	jmp	near L054_1804
-L054_175E:
-	jmp	near L054_17EF
-L054_1761:
-	jmp	near L054_183C
-L054_1764:
+	jmp	near .60
+.50:
+	jmp	near .59
+.51:
+	jmp	near .64
+.52:
 	db	0x8B, 0xFE		; mov di, si
 	mov	si, [0x10]
 	mov	ax, [si + 0xa]
 	mov	cl, [si + 0xb]
 	db	0x0A, 0xC9		; or cl, cl
-	jnz	short L054_1735
+	jnz	short .47
 	mov	cl, [si + 0xa]
 	mov	ax, [si + 0x8]
 	cmp	ax, 0x80
-	jnl	short L054_175E
+	jnl	short .50
 	cmp	ax, strict word 0xff81
-	jng	short L054_1761
+	jng	short .51
 	add	al, 0x7f
 	mov	ah, [si + 0x7]
 	xchg	ah, al
@@ -2517,58 +2517,58 @@ L054_1764:
 	db	0x32, 0xF6		; xor dh, dh
 	mov	bx, [si + 0x5]
 	or	dx, [si + 0x3]
-	jz	short L054_17D9
-	or	word [0x16], byte +0x20
-L054_17A7:
+	jz	short .55
+	or	word [0x16], 0x20
+.53:
 	mov	cl, [0xb]
 	shr	cl, 1
 	shr	cl, 1
 	shr	cl, 1
-	jc	short L054_17DF
+	jc	short .57
 	shr	cl, 1
-	jc	short L054_17E9
+	jc	short .58
 	cmp	dx, 0x8000
-	jc	short L054_17D9
-	ja	short L054_17C4
+	jc	short .55
+	ja	short .54
 	test	bl, 0x1
-	jz	short L054_17D9
-L054_17C4:
+	jz	short .55
+.54:
 	db	0x8A, 0xD0		; mov dl, al
-	add	bx, byte +0x1
+	add	bx, 0x1
 	adc	ax, strict word 0x0
 	db	0x32, 0xD0		; xor dl, al
-	jns	short L054_17D9
+	jns	short .55
 	db	0x8B, 0xD0		; mov dx, ax
 	shl	dx, 1
 	cmp	dh, 0xff
-	jz	short L054_17EF
-L054_17D9:
+	jz	short .59
+.55:
 	xchg	ax, bx
 	stosw
 	db	0x8B, 0xC3		; mov ax, bx
 	stosw
-L054_17DE:
+.56:
 	ret
-L054_17DF:
+.57:
 	shr	cl, 1
-	jc	short L054_17D9
+	jc	short .55
 	db	0x0A, 0xE4		; or ah, ah
-	js	short L054_17C4
-	jmp	short L054_17D9
-L054_17E9:
+	js	short .54
+	jmp	short .55
+.58:
 	db	0x0A, 0xE4		; or ah, ah
-	js	short L054_17D9
-	jmp	short L054_17C4
-L054_17EF:
-	or	word [0x16], byte +0x28
+	js	short .55
+	jmp	short .54
+.59:
+	or	word [0x16], 0x28
 	mov	cl, [0xb]
 	shr	cl, 1
 	shr	cl, 1
 	shr	cl, 1
-	jc	short L054_1818
+	jc	short .61
 	shr	cl, 1
-	jc	short L054_1835
-L054_1804:
+	jc	short .63
+.60:
 	mov	bx, [cs:0xa02]
 	and	ah, 0x80
 	db	0x0A, 0xFC		; or bh, ah
@@ -2576,13 +2576,13 @@ L054_1804:
 	stosw
 	db	0x8B, 0xC3		; mov ax, bx
 	stosw
-	jmp	short L054_17DE
-L054_1818:
+	jmp	short .56
+.61:
 	shr	cl, 1
-	jc	short L054_1821
+	jc	short .62
 	test	ah, 0x80
-	jnz	short L054_1804
-L054_1821:
+	jnz	short .60
+.62:
 	mov	bx, [cs:0xa06]
 	and	ah, 0x80
 	db	0x0A, 0xE7		; or ah, bh
@@ -2590,17 +2590,17 @@ L054_1821:
 	stosw
 	mov	ax, [cs:0xa04]
 	stosw
-	jmp	short L054_17DE
-L054_1835:
+	jmp	short .56
+.63:
 	test	ah, 0x80
-	jz	short L054_1804
-	jmp	short L054_1821
-L054_183C:
-	or	word [0x16], byte +0x30
+	jz	short .60
+	jmp	short .62
+.64:
+	or	word [0x16], 0x30
 	neg	ax
 	add	ax, strict word 0xff82
 	cmp	ax, strict word 0x18
-	jnl	short L054_1882
+	jnl	short .67
 	xchg	ax, cx
 	mov	dx, [si]
 	or	dx, [si + 0x2]
@@ -2609,15 +2609,15 @@ L054_183C:
 	mov	dx, [si + 0x4]
 	mov	bx, [si + 0x6]
 	db	0x0A, 0xC0		; or al, al
-	jz	short L054_1862
+	jz	short .65
 	or	dl, 0x1
-L054_1862:
+.65:
 	shr	bx, 1
 	rcr	dx, 1
-	jnc	short L054_186B
+	jnc	short .66
 	or	dl, 0x1
-L054_186B:
-	loop	L054_1862
+.66:
+	loop	.65
 	xchg	ah, ch
 	mov	ah, [si + 0xa]
 	and	ah, 0x80
@@ -2626,22 +2626,22 @@ L054_186B:
 	db	0x8A, 0xDE		; mov bl, dh
 	db	0x8A, 0xF2		; mov dh, dl
 	db	0x32, 0xD2		; xor dl, dl
-	jmp	near L054_17A7
-L054_1882:
+	jmp	near .53
+.67:
 	db	0x33, 0xC0		; xor ax, ax
 	db	0x8B, 0xD8		; mov bx, ax
-	jmp	near L054_17D9
-L054_1889:
+	jmp	near .55
+.68:
 	xchg	di, si
 	call	F054_029E
 	xchg	di, si
-	jmp	short L054_189C
-L054_1892:
+	jmp	short .70
+.69:
 	mov	di, [0x10]
 	cmp	di, [0x12]
-	jnc	short L054_1889
-L054_189C:
-	add	di, byte +0xc
+	jnc	short .68
+.70:
+	add	di, 0xc
 	mov	[0x10], di
 	es	lodsw
 	db	0x8B, 0xE8		; mov bp, ax
@@ -2682,65 +2682,65 @@ L054_189C:
 	shr	ax, 1
 	shr	ax, 1
 	cmp	ax, 0x7ff
-	jz	short L054_190B
+	jz	short .72
 	cmp	ax, strict word 0x0
-	jz	short L054_191E
+	jz	short .73
 	sub	ax, 0x3ff
-L054_1904:
+.71:
 	mov	[si + 0x8], ax
 	mov	[si + 0xb], dh
 	ret
-L054_190B:
+.72:
 	mov	ax, 0x4000
 	mov	dh, 0x2
 	cmp	bl, 0x80
-	jnz	short L054_1904
+	jnz	short .71
 	db	0x0B, 0xC9		; or cx, cx
-	jnz	short L054_1904
+	jnz	short .71
 	or	dh, 0x1
-	jmp	short L054_1904
-L054_191E:
+	jmp	short .71
+.73:
 	cmp	bl, 0x80
-	jnz	short L054_192E
+	jnz	short .74
 	db	0x0B, 0xC9		; or cx, cx
-	jnz	short L054_192E
+	jnz	short .74
 	mov	ax, 0xc001
 	mov	dh, 0x1
-	jmp	short L054_1904
-L054_192E:
-	or	word [0x16], byte +0x2
+	jmp	short .71
+.74:
+	or	word [0x16], 0x2
 	sub	ax, 0x3ff
 	mov	bp, [si]
 	mov	dx, [si + 0x2]
 	mov	cx, [si + 0x4]
 	mov	bx, [si + 0x6]
 	inc	ax
-L054_1942:
+.75:
 	dec	ax
 	shl	bp, 1
 	rcl	dx, 1
 	rcl	cx, 1
 	rcl	bx, 1
 	db	0x0B, 0xDB		; or bx, bx
-	jns	short L054_1942
+	jns	short .75
 	mov	[si], bp
 	mov	[si + 0x2], dx
 	mov	[si + 0x4], cx
 	mov	[si + 0x6], bx
 	db	0x32, 0xF6		; xor dh, dh
-	jmp	short L054_1904
-L054_195E:
+	jmp	short .71
+.76:
 	test	cl, 0x2
-	jnz	short L054_196C
+	jnz	short .77
 	db	0x33, 0xC0		; xor ax, ax
 	stosw
 	stosw
 	stosw
 	stosw
-	jmp	near L054_1A86
-L054_196C:
+	jmp	near .89
+.77:
 	test	cl, 0x1
-	jnz	short L054_19AE
+	jnz	short .78
 	mov	dx, [si + 0x1]
 	mov	bx, [si + 0x3]
 	mov	ax, [si + 0x5]
@@ -2769,80 +2769,80 @@ L054_196C:
 	db	0x0A, 0xE7		; or ah, bh
 	db	0x0A, 0xC1		; or al, cl
 	stosw
-	jmp	near L054_1A86
-L054_19AE:
+	jmp	near .89
+.78:
 	mov	bl, [si + 0xa]
 	and	bl, 0x80
-	jmp	near L054_1AA5
-L054_19B7:
-	jmp	near L054_1A8A
-L054_19BA:
-	jmp	near L054_1AC8
-L054_19BD:
-	jmp	short L054_195E
+	jmp	near .92
+.79:
+	jmp	near .91
+.80:
+	jmp	near .97
+.81:
+	jmp	short .76
 	db	0x90
-L054_19C0:
+.82:
 	db	0x8B, 0xFE		; mov di, si
 	mov	si, [0x10]
 	mov	cl, [si + 0xb]
 	db	0x0A, 0xC9		; or cl, cl
-	jnz	short L054_19BD
+	jnz	short .81
 	mov	cl, [si + 0xa]
 	mov	bp, [si + 0x8]
 	cmp	bp, 0x400
-	jnl	short L054_19B7
+	jnl	short .79
 	cmp	bp, 0xfc01
-	jng	short L054_19BA
+	jng	short .80
 	mov	al, [si]
 	mov	dx, [si + 0x1]
 	db	0x0A, 0xC0		; or al, al
-	jz	short L054_19EB
+	jz	short .83
 	or	dl, 0x1
-L054_19EB:
+.83:
 	test	dl, 0x7
-	jz	short L054_1A42
-	or	word [0x16], byte +0x20
+	jz	short .87
+	or	word [0x16], 0x20
 	mov	al, [0xb]
 	shr	al, 1
 	shr	al, 1
 	shr	al, 1
-	jc	short L054_1A3A
+	jc	short .86
 	shr	al, 1
-	jc	short L054_1A34
+	jc	short .85
 	test	dl, 0x4
-	jz	short L054_1A42
+	jz	short .87
 	test	dl, 0xb
-	jz	short L054_1A42
-L054_1A0E:
+	jz	short .87
+.84:
 	mov	bx, [si + 0x3]
 	mov	ax, [si + 0x5]
 	mov	cl, [si + 0x7]
 	and	cl, 0x7f
-	add	dx, byte +0x8
-	adc	bx, byte +0x0
+	add	dx, 0x8
+	adc	bx, 0x0
 	adc	ax, strict word 0x0
 	adc	cl, 0x0
-	jns	short L054_1A4E
+	jns	short .88
 	and	cl, 0x7f
 	inc	bp
 	cmp	bp, 0x400
-	jl	short L054_1A4E
-	jmp	short L054_1A87
-L054_1A34:
+	jl	short .88
+	jmp	short .90
+.85:
 	shl	cl, 1
-	jnc	short L054_1A0E
-	jmp	short L054_1A42
-L054_1A3A:
+	jnc	short .84
+	jmp	short .87
+.86:
 	shr	al, 1
-	jc	short L054_1A42
+	jc	short .87
 	shl	cl, 1
-	jc	short L054_1A0E
-L054_1A42:
+	jc	short .84
+.87:
 	mov	bx, [si + 0x3]
 	mov	ax, [si + 0x5]
 	mov	cl, [si + 0x7]
 	and	cl, 0x7f
-L054_1A4E:
+.88:
 	shr	cl, 1
 	rcr	ax, 1
 	rcr	bx, 1
@@ -2872,61 +2872,61 @@ L054_1A4E:
 	and	cl, 0x80
 	db	0x0A, 0xE1		; or ah, cl
 	stosw
-L054_1A86:
+.89:
 	ret
-L054_1A87:
-	sub	di, byte +0x6
-L054_1A8A:
-	or	word [0x16], byte +0x28
+.90:
+	sub	di, 0x6
+.91:
+	or	word [0x16], 0x28
 	mov	bl, [si + 0xa]
 	and	bl, 0x80
 	mov	cl, [0xb]
 	shr	cl, 1
 	shr	cl, 1
 	shr	cl, 1
-	jc	short L054_1AB5
+	jc	short .94
 	shr	cl, 1
-	jc	short L054_1AC2
-L054_1AA5:
+	jc	short .96
+.92:
 	mov	si, 0xa08
-L054_1AA8:
+.93:
 	cs	movsw
 	cs	movsw
 	cs	movsw
 	cs	lodsw
 	db	0x0A, 0xE3		; or ah, bl
 	stosw
-	jmp	short L054_1A86
-L054_1AB5:
+	jmp	short .89
+.94:
 	shr	cl, 1
-	jc	short L054_1ABD
+	jc	short .95
 	db	0x0A, 0xDB		; or bl, bl
-	jnz	short L054_1AA5
-L054_1ABD:
+	jnz	short .92
+.95:
 	mov	si, 0xa10
-	jmp	short L054_1AA8
-L054_1AC2:
+	jmp	short .93
+.96:
 	db	0x0A, 0xDB		; or bl, bl
-	jz	short L054_1AA5
-	jmp	short L054_1ABD
-L054_1AC8:
-	or	word [0x16], byte +0x30
+	jz	short .92
+	jmp	short .95
+.97:
+	or	word [0x16], 0x30
 	add	bp, 0x3ff
 	neg	bp
 	db	0x8B, 0xCD		; mov cx, bp
-	add	cx, byte +0x4
+	add	cx, 0x4
 	mov	dh, [si + 0xa]
 	and	dh, 0x80
 	mov	dl, [si + 0x7]
 	mov	bx, [si + 0x5]
 	mov	bp, [si + 0x3]
 	mov	ax, [si + 0x1]
-L054_1AEA:
+.98:
 	shr	dl, 1
 	rcr	bx, 1
 	rcr	bp, 1
 	rcr	ax, 1
-	loop	L054_1AEA
+	loop	.98
 	stosw
 	db	0x8B, 0xC5		; mov ax, bp
 	stosw
@@ -2934,39 +2934,39 @@ L054_1AEA:
 	stosw
 	db	0x8B, 0xC2		; mov ax, dx
 	stosw
-	jmp	short L054_1A86
-L054_1B00:
+	jmp	short .89
+.99:
 	es	lodsw
 	db	0x8B, 0xF8		; mov di, ax
 	db	0x0B, 0xFF		; or di, di
-	jz	short L054_1B39
+	jz	short .102
 	db	0x33, 0xED		; xor bp, bp
 	db	0x8B, 0xDD		; mov bx, bp
 	db	0x8B, 0xD3		; mov dx, bx
 	mov	ax, 0xf
 	mov	si, [0x10]
 	cmp	si, [0x12]
-	jnz	short L054_1B1E
+	jnz	short .100
 	call	F054_029E
-L054_1B1E:
-	add	si, byte +0xc
+.100:
+	add	si, 0xc
 	mov	[0x10], si
 	db	0x32, 0xC9		; xor cl, cl
 	mov	[si + 0xb], cl
 	db	0x8B, 0xCF		; mov cx, di
 	and	ch, 0x80
-	jns	short L054_1B33
+	jns	short .101
 	neg	di
-L054_1B33:
+.101:
 	mov	[si + 0xa], ch
 	jmp	near F054_1D92
-L054_1B39:
+.102:
 	mov	si, [0x10]
 	cmp	si, [0x12]
-	jnz	short L054_1B46
+	jnz	short .103
 	call	F054_029E
-L054_1B46:
-	add	si, byte +0xc
+.103:
+	add	si, 0xc
 	mov	[0x10], si
 	db	0x33, 0xC0		; xor ax, ax
 	mov	[si], ax
@@ -2978,82 +2978,82 @@ L054_1B46:
 	mov	ah, 0x1
 	mov	[si + 0xb], ah
 	ret
-L054_1B68:
+.104:
 	push	si
 	mov	si, [0x10]
 	test	byte [si + 0xb], 0x2
-	jnz	short L054_1BAB
+	jnz	short .108
 	test	byte [si + 0xb], 0x1
-	jnz	short L054_1BA7
+	jnz	short .107
 	mov	cx, [si + 0x8]
-	cmp	cx, byte +0xf
-	jg	short L054_1BAB
+	cmp	cx, 0xf
+	jg	short .108
 	mov	bp, [si + 0x4]
 	mov	di, [si + 0x6]
 	mov	dx, [si]
 	mov	bx, [si + 0x2]
 	call	F054_1DB9
 	db	0x0B, 0xDB		; or bx, bx
-	jnz	short L054_1BAB
+	jnz	short .108
 	mov	ah, [si + 0xa]
 	db	0x0A, 0xE4		; or ah, ah
-	jns	short L054_1B9E
+	jns	short .105
 	neg	dx
-	jz	short L054_1BA2
-L054_1B9E:
+	jz	short .106
+.105:
 	db	0x33, 0xC2		; xor ax, dx
-	js	short L054_1BAB
-L054_1BA2:
+	js	short .108
+.106:
 	pop	di
 	db	0x8B, 0xC2		; mov ax, dx
 	stosw
 	ret
-L054_1BA7:
+.107:
 	db	0x33, 0xD2		; xor dx, dx
-	jmp	short L054_1BA2
-L054_1BAB:
-	or	word [0x16], byte +0x1
+	jmp	short .106
+.108:
+	or	word [0x16], 0x1
 	mov	dx, 0x8000
-	jmp	short L054_1BA2
-L054_1BB5:
+	jmp	short .106
+.109:
 	es	lodsw
 	db	0x8B, 0xE8		; mov bp, ax
 	es	lodsw
 	db	0x8B, 0xF8		; mov di, ax
 	db	0x0B, 0xC5		; or ax, bp
-	jz	short L054_1BFE
+	jz	short .112
 	db	0x33, 0xDB		; xor bx, bx
 	db	0x8B, 0xD3		; mov dx, bx
 	mov	ax, 0x1f
 	mov	si, [0x10]
 	cmp	si, [0x12]
-	jnz	short L054_1BD5
+	jnz	short .110
 	call	F054_029E
-L054_1BD5:
-	add	si, byte +0xc
+.110:
+	add	si, 0xc
 	mov	[0x10], si
 	db	0x32, 0xC9		; xor cl, cl
 	mov	[si + 0xb], cl
 	db	0x8B, 0xCF		; mov cx, di
 	and	ch, 0x80
-	jns	short L054_1BF4
-	xor	di, byte -0x1
-	xor	bp, byte -0x1
-	add	bp, byte +0x1
-	adc	di, byte +0x0
-L054_1BF4:
+	jns	short .111
+	xor	di, -0x1
+	xor	bp, -0x1
+	add	bp, 0x1
+	adc	di, 0x0
+.111:
 	mov	[si + 0xa], ch
 	db	0x0B, 0xFF		; or di, di
-	jz	short L054_1C01
+	jz	short .113
 	jmp	near F054_1D92
-L054_1BFE:
-	jmp	near L054_1B39
-L054_1C01:
+.112:
+	jmp	near .102
+.113:
 	db	0x8B, 0xFD		; mov di, bp
 	db	0x33, 0xED		; xor bp, bp
 	sub	ax, strict word 0x10
 	jmp	near F054_1D92
-L054_1C0B:
+.114:
 	push	si
 	call	F054_1C17
 	pop	di
@@ -3066,44 +3066,44 @@ L054_1C0B:
 F054_1C17:
 	mov	si, [0x10]
 	test	byte [si + 0xb], 0x2
-	jnz	short L054_1C62
+	jnz	short .5
 	test	byte [si + 0xb], 0x1
-	jnz	short L054_1C59
+	jnz	short .3
 	mov	cx, [si + 0x8]
-	cmp	cx, byte +0x1f
-	jg	short L054_1C62
+	cmp	cx, 0x1f
+	jg	short .5
 	mov	bp, [si + 0x4]
 	mov	di, [si + 0x6]
 	mov	dx, [si]
 	mov	bx, [si + 0x2]
 	call	F054_1DB9
 	db	0x0B, 0xED		; or bp, bp
-	jnz	short L054_1C62
+	jnz	short .5
 	mov	ah, [si + 0xa]
 	db	0x0A, 0xE4		; or ah, ah
-	jns	short L054_1C54
-	xor	bx, byte -0x1
-	xor	dx, byte -0x1
-	add	dx, byte +0x1
-	adc	bx, byte +0x0
-L054_1C54:
+	jns	short .1
+	xor	bx, -0x1
+	xor	dx, -0x1
+	add	dx, 0x1
+	adc	bx, 0x0
+.1:
 	db	0x33, 0xC3		; xor ax, bx
-	js	short L054_1C5E
-L054_1C58:
+	js	short .4
+.2:
 	ret
-L054_1C59:
+.3:
 	db	0x33, 0xD2		; xor dx, dx
 	db	0x8B, 0xDA		; mov bx, dx
 	ret
-L054_1C5E:
+.4:
 	db	0x0B, 0xDA		; or bx, dx
-	jz	short L054_1C58
-L054_1C62:
-	or	word [0x16], byte +0x1
+	jz	short .2
+.5:
+	or	word [0x16], 0x1
 	mov	bx, 0x8000
 	db	0x33, 0xD2		; xor dx, dx
 	ret
-L054_1C6D:
+.6:
 	es	lodsw
 	db	0x8B, 0xD0		; mov dx, ax
 	es	lodsw
@@ -3115,37 +3115,37 @@ L054_1C6D:
 	db	0x0B, 0xC5		; or ax, bp
 	db	0x0B, 0xC3		; or ax, bx
 	db	0x0B, 0xC2		; or ax, dx
-	jz	short L054_1CC4
+	jz	short .10
 	mov	ax, 0x3f
 	mov	si, [0x10]
 	cmp	si, [0x12]
-	jnz	short L054_1C95
+	jnz	short .7
 	call	F054_029E
-L054_1C95:
-	add	si, byte +0xc
+.7:
+	add	si, 0xc
 	mov	[0x10], si
 	db	0x32, 0xC9		; xor cl, cl
 	mov	[si + 0xb], cl
 	db	0x8B, 0xCF		; mov cx, di
 	and	ch, 0x80
-	jns	short L054_1CAB
+	jns	short .8
 	call	F054_1D3C
-L054_1CAB:
+.8:
 	mov	[si + 0xa], ch
 	db	0x0B, 0xFF		; or di, di
-	jnz	short L054_1CC1
+	jnz	short .9
 	db	0x0B, 0xED		; or bp, bp
-	jnz	short L054_1CC1
+	jnz	short .9
 	db	0x8B, 0xFB		; mov di, bx
 	db	0x8B, 0xEA		; mov bp, dx
 	db	0x33, 0xDB		; xor bx, bx
 	db	0x33, 0xD2		; xor dx, dx
 	sub	ax, strict word 0x20
-L054_1CC1:
+.9:
 	jmp	near F054_1D92
-L054_1CC4:
-	jmp	near L054_1B39
-L054_1CC7:
+.10:
+	jmp	near F054_1431.102
+.11:
 	push	si
 	call	F054_1CD9
 	xchg	ax, di
@@ -3163,12 +3163,12 @@ L054_1CC7:
 F054_1CD9:
 	mov	si, [0x10]
 	test	byte [si + 0xb], 0x2
-	jnz	short L054_1D32
+	jnz	short .7
 	test	byte [si + 0xb], 0x1
-	jnz	short L054_1D1E
+	jnz	short .4
 	mov	cx, [si + 0x8]
-	cmp	cx, byte +0x3f
-	jg	short L054_1D32
+	cmp	cx, 0x3f
+	jg	short .7
 	mov	bp, [si + 0x4]
 	mov	di, [si + 0x6]
 	mov	dx, [si]
@@ -3176,36 +3176,36 @@ F054_1CD9:
 	call	F054_1DB9
 	mov	ah, [si + 0xa]
 	db	0x0A, 0xE4		; or ah, ah
-	jns	short L054_1D09
+	jns	short .1
 	call	F054_1D3C
-L054_1D09:
+.1:
 	db	0x33, 0xC7		; xor ax, di
-	js	short L054_1D28
-L054_1D0D:
+	js	short .6
+.2:
 	cmp	si, [0xe]
-	jnz	short L054_1D16
+	jnz	short .3
 	call	F054_02AE
-L054_1D16:
-	sub	si, byte +0xc
+.3:
+	sub	si, 0xc
 	mov	[0x10], si
 	ret
-L054_1D1E:
+.4:
 	db	0x33, 0xFF		; xor di, di
-L054_1D20:
+.5:
 	db	0x33, 0xED		; xor bp, bp
 	db	0x8B, 0xDD		; mov bx, bp
 	db	0x8B, 0xD5		; mov dx, bp
-	jmp	short L054_1D0D
-L054_1D28:
+	jmp	short .2
+.6:
 	db	0x0B, 0xFD		; or di, bp
 	db	0x0B, 0xFB		; or di, bx
 	db	0x0B, 0xFA		; or di, dx
-	jnz	short L054_1D32
-	jmp	short L054_1D0D
-L054_1D32:
-	or	word [0x16], byte +0x1
+	jnz	short .7
+	jmp	short .2
+.7:
+	or	word [0x16], 0x1
 	mov	di, 0x8000
-	jmp	short L054_1D20
+	jmp	short .5
 
 F054_1D3C:
 	not	di
@@ -3213,16 +3213,16 @@ F054_1D3C:
 	not	bx
 	neg	dx
 	cmc
-	adc	bx, byte +0x0
-	adc	bp, byte +0x0
-	adc	di, byte +0x0
+	adc	bx, 0x0
+	adc	bp, 0x0
+	adc	di, 0x0
 	ret
 
 F054_1D4F:
 	mov	si, [0x10]
 	mov	cx, [si + 0x8]
-	cmp	cx, byte +0x3f
-	jnl	short L054_1D7B
+	cmp	cx, 0x3f
+	jnl	short .1
 	mov	bp, [si + 0x4]
 	mov	di, [si + 0x6]
 	mov	dx, [si]
@@ -3233,30 +3233,30 @@ F054_1D4F:
 	db	0x0B, 0xC5		; or ax, bp
 	db	0x0B, 0xC3		; or ax, bx
 	db	0x0B, 0xC2		; or ax, dx
-	jz	short L054_1D7C
+	jz	short .2
 	mov	ax, 0x3f
 	call	F054_1D92
-L054_1D7B:
+.1:
 	ret
-L054_1D7C:
+.2:
 	mov	word [si + 0x8], 0xc001
 	mov	[si], ax
 	mov	[si + 0x2], ax
 	mov	[si + 0x4], ax
 	mov	[si + 0x6], ax
 	mov	byte [si + 0xb], 0x1
-	jmp	short L054_1D7B
+	jmp	short .1
 
 F054_1D92:
 	db	0x33, 0xC9		; xor cx, cx
-L054_1D94:
+.1:
 	shl	dx, 1
 	rcl	bx, 1
 	rcl	bp, 1
 	rcl	di, 1
-	jc	short L054_1DA0
-	loop	L054_1D94
-L054_1DA0:
+	jc	short .2
+	loop	.1
+.2:
 	rcr	di, 1
 	rcr	bp, 1
 	rcr	bx, 1
@@ -3271,86 +3271,86 @@ L054_1DA0:
 
 F054_1DB9:
 	db	0x33, 0xC0		; xor ax, ax
-	sub	cx, byte +0x3f
+	sub	cx, 0x3f
 	neg	cx
 	dec	cx
-	jl	short L054_1E24
-	jz	short L054_1DF0
-	cmp	cx, byte +0x40
-	jnl	short L054_1E25
-	cmp	cx, byte +0x30
-	jng	short L054_1DE2
+	jl	short .7
+	jz	short .4
+	cmp	cx, 0x40
+	jnl	short .8
+	cmp	cx, 0x30
+	jng	short .2
 	db	0x0B, 0xD3		; or dx, bx
 	db	0x0B, 0xD5		; or dx, bp
-	jz	short L054_1DD7
+	jz	short .1
 	or	al, 0x1
-L054_1DD7:
+.1:
 	db	0x8B, 0xD7		; mov dx, di
 	db	0x33, 0xFF		; xor di, di
 	db	0x8B, 0xEF		; mov bp, di
 	db	0x8B, 0xDF		; mov bx, di
-	sub	cx, byte +0x30
-L054_1DE2:
+	sub	cx, 0x30
+.2:
 	shr	di, 1
 	rcr	bp, 1
 	rcr	bx, 1
 	rcr	dx, 1
-	jnc	short L054_1DEE
+	jnc	short .3
 	rcl	al, 1
-L054_1DEE:
-	loop	L054_1DE2
-L054_1DF0:
+.3:
+	loop	.2
+.4:
 	shr	di, 1
 	rcr	bp, 1
 	rcr	bx, 1
 	rcr	dx, 1
 	rcl	ah, 1
-L054_1DFA:
+.5:
 	db	0x0B, 0xC0		; or ax, ax
-	jz	short L054_1E24
-	or	word [0x16], byte +0x20
+	jz	short .7
+	or	word [0x16], 0x20
 	test	byte [0xb], 0x4
-	jnz	short L054_1E33
+	jnz	short .9
 	test	byte [0xb], 0x8
-	jnz	short L054_1E42
+	jnz	short .10
 	db	0x0A, 0xC2		; or al, dl
 	db	0x22, 0xE0		; and ah, al
 	shr	ah, 1
-	jnc	short L054_1E24
-L054_1E19:
+	jnc	short .7
+.6:
 	db	0x33, 0xC0		; xor ax, ax
-	add	dx, byte +0x1
+	add	dx, 0x1
 	db	0x13, 0xD8		; adc bx, ax
 	db	0x13, 0xE8		; adc bp, ax
 	db	0x13, 0xF8		; adc di, ax
-L054_1E24:
+.7:
 	ret
-L054_1E25:
+.8:
 	mov	al, 0x1
 	db	0x32, 0xE4		; xor ah, ah
 	db	0x33, 0xFF		; xor di, di
 	db	0x8B, 0xEF		; mov bp, di
 	db	0x8B, 0xDF		; mov bx, di
 	db	0x8B, 0xD7		; mov dx, di
-	jmp	short L054_1DFA
-L054_1E33:
+	jmp	short .5
+.9:
 	test	byte [0xb], 0x8
-	jnz	short L054_1E24
+	jnz	short .7
 	test	byte [si + 0xa], 0x80
-	jnz	short L054_1E19
-	jmp	short L054_1E24
-L054_1E42:
+	jnz	short .6
+	jmp	short .7
+.10:
 	test	byte [si + 0xa], 0x80
-	jnz	short L054_1E24
-	jmp	short L054_1E19
-L054_1E4A:
+	jnz	short .7
+	jmp	short .6
+.11:
 	db	0x8B, 0xFE		; mov di, si
 	mov	si, [0x10]
 	cmp	si, [0x12]
-	jnz	short L054_1E59
+	jnz	short .12
 	call	F054_029E
-L054_1E59:
-	add	si, byte +0xc
+.12:
+	add	si, 0xc
 	mov	[0x10], si
 	xchg	di, si
 	mov	ax, es
@@ -3366,7 +3366,7 @@ L054_1E59:
 	mov	es, dx
 	mov	ds, ax
 	es	lodsw
-	sub	di, byte +0x8
+	sub	di, 0x8
 	xchg	si, di
 	db	0x8A, 0xF4		; mov dh, ah
 	and	dh, 0x80
@@ -3374,46 +3374,46 @@ L054_1E59:
 	and	ah, 0x7f
 	db	0x32, 0xF6		; xor dh, dh
 	cmp	ax, 0x7fff
-	jz	short L054_1E9E
+	jz	short .14
 	cmp	ax, strict word 0x0
-	jz	short L054_1EB9
+	jz	short .15
 	sub	ax, 0x3fff
-L054_1E97:
+.13:
 	mov	[si + 0x8], ax
 	mov	[si + 0xb], dh
 	ret
-L054_1E9E:
+.14:
 	mov	ax, 0x4000
 	mov	dh, 0x2
 	cmp	word [si + 0x6], 0x8000
-	jnz	short L054_1E97
+	jnz	short .13
 	mov	bp, [si + 0x4]
 	or	bp, [si + 0x2]
 	or	bp, [si]
-	jnz	short L054_1E97
+	jnz	short .13
 	or	dh, 0x1
-	jmp	short L054_1E97
-L054_1EB9:
+	jmp	short .13
+.15:
 	mov	bp, [si + 0x6]
 	or	bp, [si + 0x4]
 	or	bp, [si + 0x2]
 	or	bp, [si]
-	jnz	short L054_1ECD
-L054_1EC6:
+	jnz	short .17
+.16:
 	mov	ax, 0xc001
 	mov	dh, 0x1
-	jmp	short L054_1E97
-L054_1ECD:
-	or	word [0x16], byte +0x30
+	jmp	short .13
+.17:
+	or	word [0x16], 0x30
 	db	0x33, 0xED		; xor bp, bp
 	mov	[si], bp
 	mov	[si + 0x2], bp
 	mov	[si + 0x4], bp
 	mov	[si + 0x6], bp
-	jmp	short L054_1EC6
-L054_1EE1:
+	jmp	short .16
+.18:
 	test	bh, 0x1
-	jnz	short L054_1F05
+	jnz	short .20
 	movsw
 	movsw
 	movsw
@@ -3423,13 +3423,13 @@ L054_1EE1:
 	stosw
 	mov	si, [0x10]
 	cmp	si, [0xe]
-	jnz	short L054_1EFD
+	jnz	short .19
 	call	F054_02AE
-L054_1EFD:
-	sub	si, byte +0xc
+.19:
+	sub	si, 0xc
 	mov	[0x10], si
 	ret
-L054_1F05:
+.20:
 	db	0x33, 0xC0		; xor ax, ax
 	stosw
 	stosw
@@ -3441,15 +3441,15 @@ L054_1F05:
 	stosw
 	mov	si, [0x10]
 	cmp	si, [0xe]
-	jnz	short L054_1F21
+	jnz	short .21
 	call	F054_02AE
-L054_1F21:
-	sub	si, byte +0xc
+.21:
+	sub	si, 0xc
 	mov	[0x10], si
 	ret
-L054_1F29:
+.22:
 	test	bh, 0x2
-	jnz	short L054_1EE1
+	jnz	short .18
 	db	0x33, 0xC0		; xor ax, ax
 	stosw
 	stosw
@@ -3458,13 +3458,13 @@ L054_1F29:
 	stosw
 	mov	si, [0x10]
 	cmp	si, [0xe]
-	jnz	short L054_1F42
+	jnz	short .23
 	call	F054_02AE
-L054_1F42:
-	sub	si, byte +0xc
+.23:
+	sub	si, 0xc
 	mov	[0x10], si
 	ret
-L054_1F4A:
+.24:
 	db	0x8B, 0xFE		; mov di, si
 	mov	si, [0x10]
 	mov	ax, [si + 0x8]
@@ -3474,47 +3474,47 @@ L054_1F4A:
 	db	0x0A, 0xE6		; or ah, dh
 	mov	bh, [si + 0xb]
 	db	0x0A, 0xFF		; or bh, bh
-	jnz	short L054_1F29
+	jnz	short .22
 	movsw
 	movsw
 	movsw
 	movsw
 	stosw
-	sub	si, byte +0x8
+	sub	si, 0x8
 	cmp	si, [0xe]
-	jnz	short L054_1F76
+	jnz	short .25
 	call	F054_02AE
-L054_1F76:
-	sub	si, byte +0xc
+.25:
+	sub	si, 0xc
 	mov	[0x10], si
 	ret
-L054_1F7E:
+.26:
 	mov	si, [0x10]
 	and	byte [si + 0xa], 0x7f
 	ret
-L054_1F87:
+.27:
 	mov	si, [0x10]
 	xor	byte [si + 0xa], 0x80
 	ret
-L054_1F90:
+.28:
 	es	lodsw
 	mov	[0xa], ax
 	mov	[0x6], ax
 	ret
-L054_1F99:
+.29:
 	mov	ax, [0x6]
 	db	0x8B, 0xFE		; mov di, si
 	stosw
 	ret
-L054_1FA0:
+.30:
 	mov	ax, [0xc]
 	db	0x8B, 0xFE		; mov di, si
 	stosw
 	ret
-L054_1FA7:
+.31:
 	mov	si, [0x10]
 	db	0x8B, 0xFE		; mov di, si
-	sub	di, byte +0xc
+	sub	di, 0xc
 	mov	cl, 0xf
 	mov	al, [di + 0x8]
 	and	al, 0xf
@@ -3523,38 +3523,38 @@ L054_1FA7:
 	shr	ax, cl
 	mov	cl, [di + 0xa]
 	db	0x0A, 0xC9		; or cl, cl
-	jns	short L054_1FC7
+	jns	short .32
 	neg	ax
-L054_1FC7:
+.32:
 	add	ax, [si + 0x8]
-	jo	short L054_1FDA
+	jo	short .34
 	cmp	ax, 0x4000
-	jnl	short L054_1FDC
+	jnl	short .35
 	cmp	ax, 0xc001
-	jng	short L054_1FE5
-L054_1FD6:
+	jng	short .36
+.33:
 	mov	[si + 0x8], ax
 	ret
-L054_1FDA:
-	jns	short L054_1FE5
-L054_1FDC:
+.34:
+	jns	short .36
+.35:
 	mov	ax, 0x4000
 	mov	byte [si + 0xb], 0x3
-	jmp	short L054_1FD6
-L054_1FE5:
+	jmp	short .33
+.36:
 	mov	ax, 0xc001
 	mov	byte [si + 0xb], 0x1
-	jmp	short L054_1FD6
-L054_1FEE:
+	jmp	short .33
+.37:
 	mov	dx, 0x1
-	jmp	short L054_1FF5
-L054_1FF3:
+	jmp	short .39
+.38:
 	db	0x33, 0xD2		; xor dx, dx
-L054_1FF5:
+.39:
 	test	word [0x16], 0x2000
-	jz	short L054_1FFF
+	jz	short .40
 	xchg	si, di
-L054_1FFF:
+.40:
 	mov	al, [si + 0xa]
 	mov	ah, [di + 0xa]
 	db	0x33, 0xDB		; xor bx, bx
@@ -3564,86 +3564,86 @@ L054_1FFF:
 	or	bl, [di + 0xb]
 	shl	bl, 1
 	jmp	[cs:bx + 0x940]
-L054_2018:
+.41:
 	db	0x32, 0xE0		; xor ah, al
-	js	short L054_2062
+	js	short .48
 	db	0x0A, 0xC0		; or al, al
-	jns	short L054_2024
+	jns	short .42
 	xchg	si, di
 	xchg	bl, bh
-L054_2024:
+.42:
 	mov	ax, [si + 0x8]
 	cmp	ax, [di + 0x8]
-	jl	short L054_2046
-	jg	short L054_204D
+	jl	short .44
+	jg	short .45
 	mov	cx, 0x4
-	add	si, byte +0x6
-	add	di, byte +0x6
+	add	si, 0x6
+	add	di, 0x6
 	std
 	repe	cmpsw
 	cld
-	jc	short L054_2046
-	ja	short L054_204D
-L054_203F:
+	jc	short .44
+	ja	short .45
+.43:
 	mov	byte [0xd], 0x40
-	jmp	short L054_2086
-L054_2046:
+	jmp	short .52
+.44:
 	mov	byte [0xd], 0x1
-	jmp	short L054_2086
-L054_204D:
+	jmp	short .52
+.45:
 	mov	byte [0xd], 0x0
-	jmp	short L054_2086
-L054_2054:
+	jmp	short .52
+.46:
 	mov	byte [0xd], 0x41
-	jmp	short L054_2086
-L054_205B:
+	jmp	short .52
+.47:
 	test	byte [0xb], 0x10
-	jz	short L054_2054
-L054_2062:
+	jz	short .46
+.48:
 	and	al, 0x80
-	js	short L054_2046
-	jmp	short L054_204D
-L054_2068:
+	js	short .44
+	jmp	short .45
+.49:
 	test	byte [0xb], 0x10
-	jz	short L054_2054
-L054_206F:
+	jz	short .46
+.50:
 	and	ah, 0x80
-	js	short L054_204D
-	jmp	short L054_2046
-L054_2076:
+	js	short .45
+	jmp	short .44
+.51:
 	test	byte [0xb], 0x10
-	jz	short L054_2054
+	jz	short .46
 	db	0x32, 0xE0		; xor ah, al
 	and	ah, 0x80
-	jz	short L054_203F
-	jmp	short L054_2062
-L054_2086:
+	jz	short .43
+	jmp	short .48
+.52:
 	db	0x0B, 0xD2		; or dx, dx
-	jz	short L054_209E
+	jz	short .54
 	mov	si, [0x10]
 	cmp	si, [0xe]
-	jnz	short L054_2097
+	jnz	short .53
 	call	F054_02AE
-L054_2097:
-	sub	si, byte +0xc
+.53:
+	sub	si, 0xc
 	mov	[0x10], si
-L054_209E:
+.54:
 	ret
-L054_209F:
+.55:
 	mov	si, [0x10]
 	mov	al, 0x41
 	cmp	si, [0xe]
-	jz	short L054_20B9
+	jz	short .56
 	mov	ax, [si + 0xa]
 	xchg	al, ah
 	rol	ax, 1
 	and	al, 0x7
 	mov	bx, 0x9c8
 	cs	xlatb
-L054_20B9:
+.56:
 	mov	[0xd], al
 	ret
-L054_20BD:
+.57:
 	mov	si, [0x10]
 	mov	al, [si + 0xa]
 	and	al, 0x80
@@ -3652,33 +3652,33 @@ L054_20BD:
 	mov	bl, [si + 0xb]
 	shl	bx, 1
 	jmp	[cs:bx + 0x960]
-L054_20D4:
+.58:
 	mov	bx, 0xa6c
-	jmp	short L054_20F5
-L054_20D9:
+	jmp	short .65
+.59:
 	mov	bx, 0xa78
-	jmp	short L054_20F5
-L054_20DE:
+	jmp	short .65
+.60:
 	mov	bx, 0xa84
-	jmp	short L054_20F5
-L054_20E3:
+	jmp	short .65
+.61:
 	mov	bx, 0xa90
-	jmp	short L054_20F5
-L054_20E8:
+	jmp	short .65
+.62:
 	mov	bx, 0xa9c
-	jmp	short L054_20F5
-L054_20ED:
+	jmp	short .65
+.63:
 	mov	bx, 0xa18
-	jmp	short L054_20F5
-L054_20F2:
+	jmp	short .65
+.64:
 	mov	bx, 0xa24
-L054_20F5:
+.65:
 	mov	si, [0x10]
 	cmp	si, [0x12]
-	jnz	short L054_2102
+	jnz	short .66
 	call	F054_029E
-L054_2102:
-	add	si, byte +0xc
+.66:
+	add	si, 0xc
 	mov	[0x10], si
 	db	0x8B, 0xF3		; mov si, bx
 	mov	di, [0x10]
@@ -3689,94 +3689,94 @@ L054_2102:
 	cs	movsw
 	cs	movsw
 	ret
-L054_211C:
+.67:
 	call	F054_0E35
-	jnc	short L054_2125
+	jnc	short .68
 	pop	dx
-	jmp	near L054_0E2B
-L054_2125:
+	jmp	near F054_0CC6.35
+.68:
 	db	0x8B, 0xF7		; mov si, di
-L054_2127:
-	add	si, byte +0xc
+.69:
+	add	si, 0xc
 	cmp	si, [0x10]
-	jg	short L054_2138
+	jg	short .70
 	call	F054_10B9
-	add	di, byte +0xc
-	jmp	short L054_2127
-L054_2138:
-	sub	di, byte +0xc
+	add	di, 0xc
+	jmp	short .69
+.70:
+	sub	di, 0xc
 	mov	[0x10], di
 	ret
-L054_2140:
+.71:
 	test	cx, 0x1c00
-	jz	short L054_2161
+	jz	short .74
 	mov	ax, ds
 	mov	es, ax
 	call	F054_0E35
-	jnc	short L054_2153
+	jnc	short .72
 	pop	dx
-	jmp	near L054_0E2B
-L054_2153:
+	jmp	near F054_0CC6.35
+.72:
 	mov	cx, 0x6
-L054_2156:
+.73:
 	mov	ax, [si]
 	mov	bx, [di]
 	stosw
 	mov	[si], bx
 	inc	si
 	inc	si
-	loop	L054_2156
-L054_2161:
+	loop	.73
+.74:
 	ret
-L054_2162:
+.75:
 	call	F054_0E35
-	jnc	short L054_216B
+	jnc	short .76
 	pop	dx
-	jmp	near L054_0E2B
-L054_216B:
+	jmp	near F054_0CC6.35
+.76:
 	mov	si, [0x10]
 	cmp	si, [0x12]
-	jnz	short L054_2178
+	jnz	short .77
 	call	F054_029E
-L054_2178:
-	add	si, byte +0xc
+.77:
+	add	si, 0xc
 	mov	[0x10], si
 	mov	ax, ds
 	mov	es, ax
 	xchg	si, di
 	call	F054_10B9
 	ret
-L054_2189:
+.78:
 	test	cx, 0x1c0
-	jz	short L054_219F
+	jz	short .80
 	call	F054_0E35
-	jnc	short L054_2198
+	jnc	short .79
 	pop	dx
-	jmp	near L054_0E2B
-L054_2198:
+	jmp	near F054_0CC6.35
+.79:
 	mov	dx, ds
 	mov	es, dx
 	call	F054_10B9
-L054_219F:
+.80:
 	db	0x0B, 0xC0		; or ax, ax
-	jz	short L054_21B7
+	jz	short .82
 	mov	si, [0x10]
 	cmp	si, [0xe]
-	jnz	short L054_21B0
+	jnz	short .81
 	call	F054_02AE
-L054_21B0:
-	sub	si, byte +0xc
+.81:
+	sub	si, 0xc
 	mov	[0x10], si
-L054_21B7:
+.82:
 	ret
-L054_21B8:
+.83:
 	push	bp
 	mov	di, [0x10]
 	mov	[0x96], di
 	db	0x33, 0xED		; xor bp, bp
 	mov	word [0xa2], 0x0
 	db	0x8B, 0xF7		; mov si, di
-	sub	si, byte +0xc
+	sub	si, 0xc
 	mov	ax, [di + 0x8]
 	sub	ax, [si + 0x8]
 	mov	[0xa0], ax
@@ -3784,103 +3784,103 @@ L054_21B8:
 	mov	cx, [di + 0x2]
 	mov	bx, [di + 0x4]
 	mov	ax, [di + 0x6]
-	jnl	short L054_21EA
+	jnl	short .84
 	mov	si, [di + 0x8]
-	jmp	short L054_222B
+	jmp	short .88
 	db	0x90
-L054_21EA:
+.84:
 	cmp	ax, [si + 0x6]
-	jc	short L054_2214
-	ja	short L054_2203
+	jc	short .86
+	ja	short .85
 	cmp	bx, [si + 0x4]
-	jc	short L054_2214
-	ja	short L054_2203
+	jc	short .86
+	ja	short .85
 	cmp	cx, [si + 0x2]
-	jc	short L054_2214
-	ja	short L054_2203
+	jc	short .86
+	ja	short .85
 	cmp	dx, [si]
-	jc	short L054_2214
-L054_2203:
+	jc	short .86
+.85:
 	call	F054_22C1
-	cmp	word [0xa0], byte +0x0
-	jz	short L054_2228
+	cmp	word [0xa0], 0x0
+	jz	short .87
 	call	F054_2297
-	jnz	short L054_21EA
-	jmp	short L054_2228
-L054_2214:
-	cmp	word [0xa0], byte +0x0
-	jz	short L054_2228
+	jnz	short .84
+	jmp	short .87
+.86:
+	cmp	word [0xa0], 0x0
+	jz	short .87
 	call	F054_22A9
 	call	F054_22C1
 	call	F054_2297
-	jnz	short L054_21EA
-	jmp	short L054_2228
-L054_2228:
+	jnz	short .84
+	jmp	short .87
+.87:
 	mov	si, [si + 0x8]
-L054_222B:
+.88:
 	mov	di, [di + 0xa]
 	xchg	ax, di
 	db	0x8A, 0xE0		; mov ah, al
 	push	ax
 	db	0x8B, 0xC5		; mov ax, bp
-	and	bp, byte -0x4
+	and	bp, -0x4
 	or	bp, [0xa2]
 	mov	ah, [0xd]
 	and	ah, 0xfb
 	test	al, 0x1
-	jnz	short L054_224B
+	jnz	short .89
 	and	ah, 0xfd
-	jmp	short L054_224E
-L054_224B:
+	jmp	short .90
+.89:
 	or	ah, 0x2
-L054_224E:
+.90:
 	test	al, 0x2
-	jnz	short L054_225B
+	jnz	short .91
 	db	0x0B, 0xED		; or bp, bp
-	jz	short L054_2277
+	jz	short .95
 	and	ah, 0xbf
-	jmp	short L054_225E
-L054_225B:
+	jmp	short .92
+.91:
 	or	ah, 0x40
-L054_225E:
+.92:
 	test	al, 0x4
-	jnz	short L054_226B
+	jnz	short .93
 	db	0x0B, 0xED		; or bp, bp
-	jz	short L054_2286
+	jz	short .97
 	and	ah, 0xfe
-	jmp	short L054_226E
-L054_226B:
+	jmp	short .94
+.93:
 	or	ah, 0x1
-L054_226E:
+.94:
 	mov	[0xd], ah
 	db	0x33, 0xED		; xor bp, bp
-	jmp	near L054_14BC
-L054_2277:
+	jmp	near F054_1431.9
+.95:
 	mov	al, [0xd]
 	test	al, 0x2
-	jnz	short L054_2283
+	jnz	short .96
 	and	ah, 0xbf
-	jmp	short L054_2286
-L054_2283:
+	jmp	short .97
+.96:
 	or	ah, 0x40
-L054_2286:
+.97:
 	mov	al, [0xd]
 	test	al, 0x40
-	jnz	short L054_2292
+	jnz	short .98
 	and	ah, 0xfe
-	jmp	short L054_226E
-L054_2292:
+	jmp	short .94
+.98:
 	or	ah, 0x1
-	jmp	short L054_226E
+	jmp	short .94
 
 F054_2297:
 	test	ah, 0x80
-	jnz	short L054_22A8
-	cmp	word [0xa0], byte +0x0
-	jz	short L054_22A8
+	jnz	short .1
+	cmp	word [0xa0], 0x0
+	jz	short .1
 	call	F054_22A9
 	jmp	short F054_2297
-L054_22A8:
+.1:
 	ret
 
 F054_22A9:
@@ -3890,9 +3890,9 @@ F054_22A9:
 	rcl	ax, 1
 	dec	word [0xa0]
 	shl	bp, 1
-	jc	short L054_22BA
+	jc	short .1
 	ret
-L054_22BA:
+.1:
 	mov	word [0xa2], 0x1
 	ret
 
@@ -3903,38 +3903,38 @@ F054_22C1:
 	sbb	ax, [si + 0x6]
 	inc	bp
 	ret
-L054_22CE:
+.1:
 	mov	si, [0x10]
 	call	F054_2301
 	ret
-L054_22D6:
+.2:
 	rcr	ah, 1
-	jnc	short L054_22FA
+	jnc	short .5
 	rcl	al, 1
-	jc	short L054_22F0
+	jc	short .4
 	mov	al, [0xb]
 	test	al, 0x10
-	jnz	short L054_2300
-	jmp	short L054_22F0
-L054_22E7:
+	jnz	short .6
+	jmp	short .4
+.3:
 	test	ah, 0x2
-	jnz	short L054_22D6
+	jnz	short .2
 	rcr	ah, 1
-	jc	short L054_2300
-L054_22F0:
+	jc	short .6
+.4:
 	db	0x8B, 0xFE		; mov di, si
 	mov	si, 0x9e8
 	call	F054_109E
 	db	0x8B, 0xF7		; mov si, di
-L054_22FA:
+.5:
 	or	word [0x16], 0x81
-L054_2300:
+.6:
 	ret
 
 F054_2301:
 	mov	ax, [si + 0xa]
 	test	ax, 0x380
-	jnz	short L054_22E7
+	jnz	short F054_22C1.3
 	push	si
 	mov	di, 0x4a
 	mov	word [di + 0xa], 0x0
@@ -3944,27 +3944,27 @@ F054_2301:
 	mov	cx, [si + 0x4]
 	mov	dx, [si + 0x2]
 	test	al, 0x1
-	jz	short L054_232A
+	jz	short .1
 	inc	ax
 	shr	bx, 1
 	rcr	cx, 1
 	rcr	dx, 1
-L054_232A:
+.1:
 	sar	ax, 1
 	mov	[di + 0x8], ax
-	cmp	bx, byte -0x2
-	jc	short L054_2337
+	cmp	bx, -0x2
+	jc	short .2
 	stc
-	jmp	short L054_2370
-L054_2337:
+	jmp	short .4
+.2:
 	push	dx
 	mov	ax, 0xb075
 	mul	bx
 	mov	bp, 0x57d8
 	db	0x03, 0xEA		; add bp, dx
-	jnc	short L054_2347
+	jnc	short .3
 	mov	bp, 0xffff
-L054_2347:
+.3:
 	db	0x8B, 0xD3		; mov dx, bx
 	db	0x33, 0xC0		; xor ax, ax
 	div	bp
@@ -3984,9 +3984,9 @@ L054_2347:
 	div	bp
 	db	0x8B, 0xDD		; mov bx, bp
 	db	0x8B, 0xC8		; mov cx, ax
-	add	cx, byte +0x1
+	add	cx, 0x1
 	db	0x13, 0xDE		; adc bx, si
-L054_2370:
+.4:
 	rcr	bx, 1
 	rcr	cx, 1
 	mov	[di + 0x6], bx
@@ -4015,9 +4015,9 @@ F054_2399:
 	mov	si, 0x8a
 	pop	di
 	ret
-L054_23AE:
+.1:
 	db	0x3A, 0xED		; cmp ch, ch
-	jmp	short L054_2408
+	jmp	short F054_23B2.2
 
 F054_23B2:
 	mov	cx, cs
@@ -4027,47 +4027,47 @@ F054_23B2:
 	mov	dx, [es:di + 0xa]
 	and	dl, 0x80
 	db	0x3A, 0xD1		; cmp dl, cl
-	jnz	short L054_240C
+	jnz	short .3
 	push	es
 	push	si
 	push	di
 	db	0x0A, 0xC9		; or cl, cl
-	jns	short L054_23D6
+	jns	short .1
 	push	ds
 	push	es
 	pop	ds
 	pop	es
 	xchg	si, di
 	xchg	cx, dx
-L054_23D6:
+.1:
 	and	ch, 0x1
 	and	dh, 0x1
 	db	0x3A, 0xF5		; cmp dh, ch
-	jnz	short L054_2408
+	jnz	short .2
 	db	0x0A, 0xED		; or ch, ch
-	ja	short L054_23AE
+	ja	short F054_2399.1
 	mov	cx, [si + 0x8]
 	add	cx, 0x3fff
 	mov	dx, [es:di + 0x8]
 	add	dx, 0x3fff
 	db	0x3B, 0xCA		; cmp cx, dx
-	jnz	short L054_2408
-	add	si, byte +0x6
-	add	di, byte +0x6
+	jnz	short .2
+	add	si, 0x6
+	add	di, 0x6
 	std
 	cmpsw
-	jnz	short L054_2408
+	jnz	short .2
 	cmpsw
-	jnz	short L054_2408
+	jnz	short .2
 	cmpsw
-	jnz	short L054_2408
+	jnz	short .2
 	cmpsw
-L054_2408:
+.2:
 	cld
 	pop	di
 	pop	si
 	pop	es
-L054_240C:
+.3:
 	mov	cx, es
 	mov	ds, cx
 	ret
@@ -4088,26 +4088,26 @@ F054_2411:
 	pop	di
 	call	F054_109E
 	mov	[0x96], di
-L054_2433:
+.1:
 	push	cx
 	push	si
 	mov	si, 0x72
 	call	F054_101C
 	pop	si
-	add	si, byte +0xc
+	add	si, 0xc
 	push	si
 	call	F054_2399
 	call	F054_1036
 	pop	si
 	pop	cx
-	loop	L054_2433
+	loop	.1
 	db	0x8B, 0xDE		; mov bx, si
 	pop	si
 	push	si
 	push	bx
 	call	F054_101C
 	pop	si
-	add	si, byte +0xc
+	add	si, 0xc
 	cs	lodsw
 	xchg	ax, cx
 	pop	bx
@@ -4121,9 +4121,9 @@ L054_2433:
 	call	F054_1036
 	pop	si
 	pop	cx
-L054_246E:
+.2:
 	push	cx
-	add	si, byte +0xc
+	add	si, 0xc
 	push	si
 	mov	si, 0x72
 	call	F054_101C
@@ -4133,20 +4133,20 @@ L054_246E:
 	call	F054_1036
 	pop	si
 	pop	cx
-	loop	L054_246E
+	loop	.2
 	db	0x8B, 0xF7		; mov si, di
 	pop	di
 	ret
-L054_2489:
+.3:
 	mov	si, [0x10]
 	call	F054_24AE
 	push	si
 	mov	si, [0x10]
 	cmp	si, [0x12]
-	jnz	short L054_249E
+	jnz	short .4
 	call	F054_029E
-L054_249E:
-	add	si, byte +0xc
+.4:
+	add	si, 0xc
 	mov	[0x10], si
 	mov	di, [0x10]
 	pop	si
@@ -4157,19 +4157,19 @@ F054_24AE:
 	mov	bx, 0xaa8
 	call	F054_2411
 	ret
-L054_24B5:
+.1:
 	mov	di, [0x10]
 	db	0x8B, 0xF7		; mov si, di
 	mov	ax, [si + 0xa]
-	sub	di, byte +0xc
+	sub	di, 0xc
 	call	F054_24DD
 	mov	si, [0x10]
 	mov	si, [0x10]
 	cmp	si, [0xe]
-	jnz	short L054_24D5
+	jnz	short .2
 	call	F054_02AE
-L054_24D5:
-	sub	si, byte +0xc
+.2:
+	sub	si, 0xc
 	mov	[0x10], si
 	ret
 
@@ -4179,7 +4179,7 @@ F054_24DD:
 	mov	al, 0x0
 	mov	si, 0xa30
 	call	F054_23B2
-	jnc	short L054_2524
+	jnc	short .1
 	db	0x8B, 0xF7		; mov si, di
 	mov	di, 0x4a
 	call	F054_10B9
@@ -4201,7 +4201,7 @@ F054_24DD:
 	pop	si
 	call	F054_102E
 	mov	al, 0x1
-L054_2524:
+.1:
 	push	ax
 	db	0x8B, 0xF7		; mov si, di
 	mov	bx, 0xb0c
@@ -4210,13 +4210,13 @@ L054_2524:
 	call	F054_1024
 	pop	ax
 	db	0x0A, 0xC0		; or al, al
-	jz	short L054_2542
+	jz	short .2
 	mov	si, 0xa48
 	call	F054_2399
 	call	F054_1036
-L054_2542:
+.2:
 	ret
-L054_2543:
+.3:
 	mov	si, [0x10]
 	call	F054_254B
 	ret
@@ -4235,19 +4235,19 @@ F054_254B:
 	inc	word [di + 0x8]
 	db	0x8B, 0xF7		; mov si, di
 	ret
-L054_256B:
+.1:
 	mov	di, [0x10]
 	db	0x8B, 0xF7		; mov si, di
 	mov	ax, [si + 0xa]
-	sub	di, byte +0xc
+	sub	di, 0xc
 	call	F054_2593
 	mov	si, [0x10]
 	mov	si, [0x10]
 	cmp	si, [0xe]
-	jnz	short L054_258B
+	jnz	short .2
 	call	F054_02AE
-L054_258B:
-	sub	si, byte +0xc
+.2:
+	sub	si, 0xc
 	mov	[0x10], si
 	ret
 
@@ -4265,10 +4265,10 @@ F054_2593:
 	mov	word [di + 0x8], 0x0
 	mov	si, 0xa54
 	call	F054_23B2
-	ja	short L054_25BA
+	ja	short .1
 	dec	word [di + 0x8]
 	inc	bx
-L054_25BA:
+.1:
 	push	bx
 	mov	si, 0xa24
 	call	F054_2399
@@ -4282,17 +4282,17 @@ L054_25BA:
 	pop	bx
 	db	0x33, 0xC0		; xor ax, ax
 	db	0x0B, 0xDB		; or bx, bx
-	jz	short L054_2610
+	jz	short .4
 	db	0x8B, 0xD0		; mov dx, ax
-	jns	short L054_25DF
+	jns	short .2
 	mov	dl, 0x80
 	neg	bx
-L054_25DF:
+.2:
 	mov	cx, 0x10
-L054_25E2:
+.3:
 	dec	cx
 	shl	bx, 1
-	jnc	short L054_25E2
+	jnc	short .3
 	push	di
 	rcr	bx, 1
 	mov	di, 0x66
@@ -4313,21 +4313,21 @@ L054_25E2:
 	pop	di
 	mov	[0x96], di
 	call	F054_1036
-L054_2610:
+.4:
 	ret
-L054_2611:
+.5:
 	mov	di, [0x10]
 	db	0x8B, 0xF7		; mov si, di
 	mov	ax, [si + 0xa]
-	sub	di, byte +0xc
+	sub	di, 0xc
 	call	F054_2639
 	mov	si, [0x10]
 	mov	si, [0x10]
 	cmp	si, [0xe]
-	jnz	short L054_2631
+	jnz	short .6
 	call	F054_02AE
-L054_2631:
-	sub	si, byte +0xc
+.6:
+	sub	si, 0xc
 	mov	[0x10], si
 	ret
 
@@ -4406,12 +4406,12 @@ F054_26D3:
 	fnstsw	[cs:0x2670]
 	push	cx
 	mov	cx, 0x3
-L054_26DC:
-	loop	L054_26DC
+.1:
+	loop	.1
 	pop	cx
 	test	byte [cs:0x2670], 0x80
-	jz	short L054_26EB
+	jz	short .2
 	call	F054_02DE
 	iret
-L054_26EB:
+.2:
 	jmp	far [cs:0x2672]

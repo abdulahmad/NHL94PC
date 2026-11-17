@@ -23,7 +23,7 @@ F052_0018:
 	push	word [bp + 0xa]
 	push	word [bp + 0x8]
 	call	0x03A3:EmsMapFrame
-	add	sp, byte +0x4
+	add	sp, 0x4
 	pop	ds
 	leave
 	retf
@@ -38,30 +38,30 @@ F052_0032:
 	mov	di, [bp + 0x8]
 	mov	ax, [bp + 0xa]
 	db	0x0B, 0xC7		; or ax, di
-	jz	short L052_004E
-	cmp	word [bp + 0x6], byte +0x0
-	jnz	short L052_0051
-L052_004E:
-	jmp	near L052_023A
-L052_0051:
-	push	byte +0x1
+	jz	short .1
+	cmp	word [bp + 0x6], 0x0
+	jnz	short .2
+.1:
+	jmp	near .12
+.2:
+	push	0x1
 	push	word [bp + 0xa]
 	push	di
 	call	0x18A9:F053_0002
-	add	sp, byte +0x6
+	add	sp, 0x6
 	cwd
 	push	dx
 	push	ax
 	push	word [bp + 0xa]
 	push	di
 	call	0x14DB:F034_0092
-	add	sp, byte +0x8
+	add	sp, 0x8
 	mov	word [bp - 0x2], 0x0
 	mov	bx, [bp - 0x2]
 	mov	cx, [bp + 0x8]
 	mov	di, [bp + 0x6]
-	jmp	short L052_0097
-L052_007E:
+	jmp	short .4
+.3:
 	db	0x8B, 0xC3		; mov ax, bx
 	shl	ax, byte 0x2
 	mov	es, [bp + 0xa]
@@ -70,12 +70,12 @@ L052_007E:
 	db	0x03, 0xF0		; add si, ax
 	mov	ax, [es:si + 0x2]
 	or	ax, [es:si]
-	jz	short L052_009C
+	jz	short .5
 	inc	bx
-L052_0097:
-	cmp	bx, byte +0x1e
-	jl	short L052_007E
-L052_009C:
+.4:
+	cmp	bx, 0x1e
+	jl	short .3
+.5:
 	mov	es, [bp + 0xa]
 	db	0x8B, 0xF1		; mov si, cx
 	les	si, [es:si]
@@ -167,8 +167,8 @@ L052_009C:
 	mov	dx, [es:si + 0x32]
 	mov	[di + 0x30], ax
 	mov	[di + 0x32], dx
-	cmp	bx, byte +0xd
-	jng	short L052_01D3
+	cmp	bx, 0xd
+	jng	short .6
 	mov	es, [bp + 0xa]
 	db	0x8B, 0xD9		; mov bx, cx
 	les	bx, [es:bx]
@@ -176,11 +176,11 @@ L052_009C:
 	mov	dx, [es:bx + 0x36]
 	mov	[di + 0x34], ax
 	mov	[di + 0x36], dx
-L052_01D3:
+.6:
 	db	0x33, 0xDB		; xor bx, bx
 	mov	ds, [bp + 0xa]
-	jmp	short L052_01F0
-L052_01DA:
+	jmp	short .8
+.7:
 	db	0x8B, 0xC3		; mov ax, bx
 	shl	ax, byte 0x2
 	db	0x8B, 0xF1		; mov si, cx
@@ -188,44 +188,44 @@ L052_01DA:
 	db	0x03, 0xF0		; add si, ax
 	mov	ax, [es:si + 0x2]
 	or	ax, [es:si]
-	jz	short L052_01F5
+	jz	short .9
 	inc	bx
-L052_01F0:
-	cmp	bx, byte +0x1e
-	jl	short L052_01DA
-L052_01F5:
+.8:
+	cmp	bx, 0x1e
+	jl	short .7
+.9:
 	db	0x8B, 0xF1		; mov si, cx
 	les	si, [si + 0x4]
 	mov	ax, [es:si + 0x2]
 	or	ax, [es:si]
-	jz	short L052_0235
-	cmp	bx, byte +0x8
-	jng	short L052_021C
+	jz	short .11
+	cmp	bx, 0x8
+	jng	short .10
 	db	0x8B, 0xF1		; mov si, cx
 	les	si, [si + 0x4]
 	les	si, [es:si + 0x20]
 	mov	word [es:si], 0x0
 	mov	word [es:si + 0x2], 0x1880
-L052_021C:
-	cmp	bx, byte +0x9
-	jng	short L052_0235
+.10:
+	cmp	bx, 0x9
+	jng	short .11
 	db	0x8B, 0xD9		; mov bx, cx
 	les	bx, [bx + 0x4]
 	les	bx, [es:bx + 0x24]
 	mov	word [es:bx], 0x18
 	mov	word [es:bx + 0x2], 0x1880
-L052_0235:
+.11:
 	mov	ax, 0x1
-	jmp	short L052_024B
-L052_023A:
-	cmp	word [bp + 0xc], byte +0x0
-	jz	short L052_0249
+	jmp	short .14
+.12:
+	cmp	word [bp + 0xc], 0x0
+	jz	short .13
 	push	word 0x84a8
 	call	0x0F4A:F022_03E4
 	pop	bx
-L052_0249:
+.13:
 	db	0x33, 0xC0		; xor ax, ax
-L052_024B:
+.14:
 	pop	ds
 	pop	si
 	pop	di
@@ -239,12 +239,12 @@ F052_0252:
 	push	ds
 	mov	ax, 0x45c9
 	mov	ds, ax
-	push	byte +0x0
+	push	0x0
 	push	word [bp + 0xa]
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	call	0x1880:F052_0032
-	add	sp, byte +0x8
+	add	sp, 0x8
 	pop	ds
 	leave
 	retf
@@ -256,11 +256,11 @@ F052_0272:
 	push	ds
 	mov	ax, 0x45c9
 	mov	ds, ax
-	push	byte +0x1
+	push	0x1
 	push	word [bp + 0xa]
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	call	0x1880:F052_0032
-	add	sp, byte +0x8
+	add	sp, 0x8
 	pop	ds
 	leave

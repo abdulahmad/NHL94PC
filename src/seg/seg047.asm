@@ -15,7 +15,7 @@ F047_0008:
 	mov	di, [bp + 0x6]
 	mov	es, [bp + 0x8]
 	db	0xEB, 0x0C		; jmp short 0x23
-L047_0017:
+.1:
 	db	0x8B, 0xDF		; mov bx, di
 	db	0x03, 0xDE		; add bx, si
 	mov	al, [es:bx]

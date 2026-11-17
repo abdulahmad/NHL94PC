@@ -186,14 +186,17 @@ def looks_text(b):
 def linear_gaps(flow, targets):
     # A gap that decodes cleanly up to a ret/jmp (or into known code) is taken as code.
     new = []
+    cov = set()
+    for a, (sz, _) in flow.ins.items():
+        cov.update(range(a, a + sz))
     for s in targets:
         lin = s['lin']
         while lin < s['end']:
-            if lin in flow.ins:
-                lin += flow.ins[lin][0]
+            if lin in cov:
+                lin += 1
                 continue
             g0 = lin
-            while lin < s['end'] and lin not in flow.ins:
+            while lin < s['end'] and lin not in cov:
                 lin += 1
             g1 = lin
             p = g0
@@ -215,7 +218,7 @@ def linear_gaps(flow, targets):
                 if ins.id in (x86.X86_INS_RET, x86.X86_INS_RETF, x86.X86_INS_IRET, x86.X86_INS_JMP, x86.X86_INS_LJMP):
                     term = True
                     break
-            if q == g1 and q in flow.ins:
+            if q == g1 and q in cov:
                 ok = True
             if term:
                 ok = True
@@ -395,6 +398,8 @@ def main(names):
 
 def lname(lin, flow, funcs, known, owner=None):
     s = seg_at(lin)
+    if GEN and s in GEN and lin not in funcs and (s['lin'] + 0) != -1 and TOK:
+        return f'@{lin}@'
     off = lin - s['lin']
     k = known.get(s['name'], {})
     if off in k:
@@ -410,6 +415,7 @@ def lname(lin, flow, funcs, known, owner=None):
 
 
 GEN = []
+TOK = [1]
 BR_SHORT = set(range(0x70, 0x80)) | {0xEB, 0xE0, 0xE1, 0xE2, 0xE3}
 
 
@@ -452,6 +458,56 @@ def fmt(text):
     # ndisasm writes "word [bp+0x6]"; keep it, add spaces around + and - inside brackets
     ops = re.sub(r'\[([^\]]*)\]', lambda m: '[' + re.sub(r'(?<=\w)([+-])(?=\w)', r' \1 ', m.group(1)) + ']', ops)
     return f'{p[0]}\t{ops}'
+
+
+def resolve(lines, flow):
+    # @lin@ tokens: local labels .N numbered inside the scope of the last global label; a jump table is
+    # <Scope>JumpTable. A reference from another scope is written Scope.N.
+    scope = None
+    defs = {}
+    count = {}
+    for i, l in enumerate(lines):
+        m = re.match(r'^@(\d+)@:$', l)
+        if m:
+            lin = int(m.group(1))
+            if flow.labels.get(lin) == 'tab' and scope:
+                n = count.get((scope, 'T'), 0) + 1
+                count[(scope, 'T')] = n
+                defs[lin] = (None, f'{scope}JumpTable' + ('' if n == 1 else str(n)))
+                scope = defs[lin][1]
+                continue
+            if scope is None:
+                defs[lin] = (None, f'SegStart_{lin:05X}')
+                scope = defs[lin][1]
+                continue
+            n = count.get(scope, 0) + 1
+            count[scope] = n
+            defs[lin] = (scope, f'.{n}')
+            continue
+        m = re.match(r'^([A-Za-z_][\w]*):$', l)
+        if m:
+            scope = m.group(1)
+    out = []
+    scope = None
+    for l in lines:
+        m = re.match(r'^@(\d+)@:$', l)
+        if m:
+            sc, nm = defs[int(m.group(1))]
+            if sc is None:
+                scope = nm
+            out.append(nm + ':')
+            continue
+        m = re.match(r'^([A-Za-z_][\w]*):$', l)
+        if m:
+            scope = m.group(1)
+
+        def rep(mm):
+            sc, nm = defs[int(mm.group(1))]
+            if sc is None or sc == scope:
+                return nm
+            return sc + nm
+        out.append(re.sub(r'@(\d+)@', rep, l))
+    return out
 
 
 def emit(s, flow, funcs, known):
@@ -556,13 +612,15 @@ def emit(s, flow, funcs, known):
                 it[2] = f'{mn}\t{h(sg, 4)}:{h(off)}'
             it[0] = 'far'
             continue
-        it[2] = fmt(it[2])
+        raw = fmt(it[2])
+        it[2] = re.sub(r'\bbyte ([+-])0x', lambda m: ('-' if m.group(1) == '-' else '') + '0x', raw)
+        it.append(raw)
         chk.append(it)
     got = nasm_bytes([it[2] for it in chk])
     retry = []
     for it, g in zip(chk, got):
         if g is None or bytes.fromhex(g) != it[3]:
-            alt = strict_variant(it[2])
+            alt = it[5] if len(it) > 5 and it[5] != it[2] else strict_variant(it[2])
             if alt:
                 retry.append((it, alt))
     got2 = nasm_bytes([a for _, a in retry])
@@ -598,6 +656,7 @@ def emit(s, flow, funcs, known):
                 out.append(f'\tdw\t{h(v, 4)}')
         else:
             out.append('\t' + dbtext(it[3]))
+    out = resolve(out, flow)
     path = os.path.join(ROOT, 'src', s['file'])
     open(path, 'w').write('\n'.join(out) + '\n')
     nins = sum(1 for it in items if it[0] in ('ins', 'br', 'far'))

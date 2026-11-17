@@ -10,13 +10,13 @@ F055_0000:
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x2], dx
 	db	0x0B, 0xD0		; or dx, ax
-	jz	short L055_0045
+	jz	short .1
 	mov	ax, [bp - 0x2]
 	push	ax
 	push	si
 	db	0x8B, 0xF8		; mov di, ax
 	call	0x06E1:RecSize
-	add	sp, byte +0x4
+	add	sp, 0x4
 	push	dx
 	push	ax
 	push	word [bp + 0xa]
@@ -24,13 +24,13 @@ F055_0000:
 	push	di
 	push	si
 	call	0x03A3:CopyFar
-	add	sp, byte +0xc
+	add	sp, 0xc
 	push	di
 	push	si
 	call	0x06E1:FindUnlink
-	add	sp, byte +0x4
-	jmp	short L055_0098
-L055_0045:
+	add	sp, 0x4
+	jmp	short .3
+.1:
 	mov	di, [bp + 0xc]
 	push	di
 	lea	ax, [bp - 0xa]
@@ -41,14 +41,14 @@ L055_0045:
 	push	cx
 	push	word [bp + 0x6]
 	call	0x03A3:FileOpenArg
-	add	sp, byte +0xa
+	add	sp, 0xa
 	mov	ax, [bp - 0x8]
 	or	ax, [bp - 0xa]
-	jnz	short L055_006D
+	jnz	short .2
 	db	0x33, 0xC0		; xor ax, ax
 	cwd
-	jmp	short L055_009C
-L055_006D:
+	jmp	short .4
+.2:
 	mov	si, [bp + 0x8]
 	push	di
 	mov	ax, [bp + 0xa]
@@ -61,14 +61,14 @@ L055_006D:
 	push	word [bp - 0x6]
 	db	0x8B, 0xF8		; mov di, ax
 	call	0x03A3:ReadAtArg
-	add	sp, byte +0x10
+	add	sp, 0x10
 	push	word [bp - 0x6]
 	call	0x03A3:FileClose
 	pop	bx
-L055_0098:
+.3:
 	db	0x8B, 0xC6		; mov ax, si
 	db	0x8B, 0xD7		; mov dx, di
-L055_009C:
+.4:
 	pop	si
 	pop	di
 	leave
@@ -77,7 +77,7 @@ L055_009C:
 F055_00A0:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
-	push	byte +0x1
+	push	0x1
 	push	word [bp + 0xa]
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
@@ -89,7 +89,7 @@ F055_00A0:
 F055_00B6:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
-	push	byte +0x0
+	push	0x0
 	push	word [bp + 0xa]
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]

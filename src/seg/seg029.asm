@@ -16,35 +16,35 @@ F029_0004:
 	inc	ax
 	mov	[bp - 0x2], ax
 	db	0x0B, 0xC0		; or ax, ax
-	jng	short L029_0048
+	jng	short .1
 	push	word [bp + 0xe]
-	push	byte +0x1
+	push	0x1
 	push	ax
 	push	si
 	push	word [bp + 0x6]
 	call	0x0FEF:F028_00DE
-	add	sp, byte +0xa
+	add	sp, 0xa
 	push	word [bp + 0xe]
-	push	byte +0x1
+	push	0x1
 	push	word [bp - 0x2]
 	push	word [bp + 0xc]
 	push	word [bp + 0x6]
 	call	0x0FEF:F028_00DE
-	add	sp, byte +0xa
-L029_0048:
+	add	sp, 0xa
+.1:
 	db	0x0B, 0xFF		; or di, di
 	db	0x7E, 0x24		; jng 0x70
 	push	word [bp + 0xe]
 	push	di
-	push	byte +0x1
+	push	0x1
 	push	si
 	push	word [bp + 0x6]
 	call	0x0FEF:F028_00DE
-	add	sp, byte +0xa
+	add	sp, 0xa
 	push	word [bp + 0xe]
 	push	di
-	push	byte +0x1
+	push	0x1
 	push	si
 	push	word [bp + 0xa]
 	call	0x0FEF:F028_00DE
-	add	sp, byte +0xa
+	add	sp, 0xa

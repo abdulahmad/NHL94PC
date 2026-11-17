@@ -3,19 +3,19 @@
 F024_0000:
 	mov	ax, [0x1b4]
 	db	0x0B, 0xC0		; or ax, ax
-	jz	short L024_000E
+	jz	short .1
 	dec	ax
-	jz	short L024_0016
+	jz	short .2
 	dec	ax
-	jz	short L024_001E
+	jz	short .3
 	retf
-L024_000E:
+.1:
 	push	word 0x3415
 	push	strict word 0x0
 	db	0xEB, 0x0E		; jmp short 0x24
-L024_0016:
+.2:
 	push	word 0x3415
 	push	strict word 0x62
 	db	0xEB, 0x06		; jmp short 0x24
-L024_001E:
+.3:
 	db	0x68, 0x15

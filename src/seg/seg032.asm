@@ -5,7 +5,7 @@
 F032_0002:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
-	push	byte +0x1
+	push	0x1
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	call	0x149D:F032_0026
@@ -15,7 +15,7 @@ F032_0002:
 F032_0014:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
-	push	byte +0x0
+	push	0x0
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	call	0x149D:F032_0026
@@ -29,18 +29,18 @@ F032_0026:
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	call	0x149D:F032_007C
-	add	sp, byte +0x6
+	add	sp, 0x6
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x2], dx
 	db	0x0B, 0xD0		; or dx, ax
-	jz	short L032_0052
+	jz	short .1
 	mov	es, [bp - 0x2]
 	mov	ax, [es:si]
 	mov	dx, [es:si + 0x2]
 	pop	si
 	leave
 	retf
-L032_0052:
+.1:
 	db	0x33, 0xC0		; xor ax, ax
 	cwd
 	pop	si
@@ -50,7 +50,7 @@ L032_0052:
 F032_0058:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
-	push	byte +0x1
+	push	0x1
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	call	0x149D:F032_007C
@@ -60,7 +60,7 @@ F032_0058:
 F032_006A:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
-	push	byte +0x0
+	push	0x0
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	call	0x149D:F032_007C
@@ -72,16 +72,16 @@ F032_007C:
 	push	di
 	push	si
 	test	byte [bp + 0x8], 0x80
-	jnz	short L032_009D
+	jnz	short .1
 	push	word [bp + 0x6]
 	call	0x06E1:CopyByName
 	pop	bx
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0xa], dx
 	db	0x0B, 0xD0		; or dx, ax
-	jz	short L032_009D
+	jz	short .1
 	db	0xE9, 0x13, 0x01		; jmp 0x1b0
-L032_009D:
+.1:
 	push	word [bp + 0xa]
 	lea	ax, [bp - 0x12]
 	push	ax
@@ -91,15 +91,15 @@ L032_009D:
 	push	cx
 	push	word [bp + 0x6]
 	call	0x03A3:FileOpenArg
-	add	sp, byte +0xa
+	add	sp, 0xa
 	mov	ax, [bp - 0x10]
 	or	ax, [bp - 0x12]
-	jnz	short L032_00C5
-L032_00BF:
+	jnz	short .3
+.2:
 	db	0x33, 0xC0		; xor ax, ax
 	cwd
 	db	0xE9, 0xEE, 0x00		; jmp 0x1b3
-L032_00C5:
+.3:
 	mov	si, [bp + 0xa]
 	push	si
 	push	word [bp + 0x8]
@@ -107,18 +107,18 @@ L032_00C5:
 	push	word [bp - 0x12]
 	push	word [bp + 0x6]
 	call	0x06E1:InsertRec
-	add	sp, byte +0xa
+	add	sp, 0xa
 	mov	[bp - 0xc], ax
 	mov	[bp - 0xa], dx
 	db	0x0B, 0xD0		; or dx, ax
-	jnz	short L032_00F2
+	jnz	short .4
 	push	word [bp - 0xe]
 	call	0x03A3:FileClose
 	pop	bx
-	jmp	short L032_00BF
-L032_00F2:
+	jmp	short .2
+.4:
 	test	byte [bp + 0x8], 0x80
-	jnz	short L032_011F
+	jnz	short .5
 	db	0x8B, 0xF8		; mov di, ax
 	push	si
 	mov	es, [bp - 0xa]
@@ -130,23 +130,23 @@ L032_00F2:
 	push	word [bp - 0x16]
 	push	word [bp - 0xe]
 	call	0x03A3:ReadAtArg
-	add	sp, byte +0x10
-	jmp	near L032_01A5
-L032_011F:
+	add	sp, 0x10
+	jmp	near .9
+.5:
 	db	0x8B, 0xF8		; mov di, ax
 	push	word [bp - 0xa]
 	push	di
 	call	0x06E1:RawBase
-	add	sp, byte +0x4
+	add	sp, 0x4
 	mov	[bp - 0x4], ax
 	mov	[bp - 0x2], dx
-L032_0133:
-	cmp	word [bp - 0x10], byte +0x0
-	jl	short L032_01A5
-	jg	short L032_0141
-	cmp	word [bp - 0x12], byte +0x0
-	jz	short L032_01A5
-L032_0141:
+.6:
+	cmp	word [bp - 0x10], 0x0
+	jl	short .9
+	jg	short .7
+	cmp	word [bp - 0x12], 0x0
+	jz	short .9
+.7:
 	mov	ax, 0xc000
 	db	0x33, 0xD2		; xor dx, dx
 	mov	[bp - 0x8], ax
@@ -154,19 +154,19 @@ L032_0141:
 	sub	[bp - 0x12], ax
 	sbb	[bp - 0x10], dx
 	cmp	[bp - 0x10], dx
-	jnl	short L032_0169
+	jnl	short .8
 	mov	ax, [bp - 0x12]
 	mov	dx, [bp - 0x10]
 	add	ah, 0xc0
-	adc	dx, byte +0x0
+	adc	dx, 0x0
 	mov	[bp - 0x8], ax
 	mov	[bp - 0x6], dx
-L032_0169:
+.8:
 	push	si
 	push	word [bp - 0x2]
 	push	word [bp - 0x4]
 	call	0x03A3:EmsMapFrame
-	add	sp, byte +0x4
+	add	sp, 0x4
 	push	dx
 	push	ax
 	push	word [bp - 0x6]
@@ -175,15 +175,15 @@ L032_0169:
 	push	word [bp - 0x16]
 	push	word [bp - 0xe]
 	call	0x03A3:ReadAtArg
-	add	sp, byte +0x10
+	add	sp, 0x10
 	mov	ax, [bp - 0x8]
 	mov	dx, [bp - 0x6]
 	add	[bp - 0x16], ax
 	adc	[bp - 0x14], dx
 	add	[bp - 0x4], ax
 	adc	[bp - 0x2], dx
-	jmp	short L032_0133
-L032_01A5:
+	jmp	short .6
+.9:
 	push	word [bp - 0xe]
 	call	0x03A3:FileClose
 	pop	bx
