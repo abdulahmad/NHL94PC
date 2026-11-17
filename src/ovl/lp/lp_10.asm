@@ -2,7 +2,7 @@
         leave
         retf
 
-Lp_23AD_0002:
+RandomMod:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         call 0x0000:_rand
@@ -14,7 +14,7 @@ Lp_23AD_0002:
         retf
         db 0x90
 
-Lp_23AD_0016:
+AddScorerPair:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -40,7 +40,7 @@ Lp_23AD_0016:
         retf
         db 0x90
 
-Lp_23AD_0046:
+SimulateGame:
         enter 0x200, 0x0
         push di
         push si
@@ -244,7 +244,7 @@ Lp_23AD_0046:
         push word [bp + di - 0x14a]
         push word [bp + di - 0x14c]
         push word [bp + 0x16]
-        call 0x20E6:Lp_20E6_0098
+        call 0x20E6:ReadDbRec4Ch
         add sp, 0x8
         mov [bp - 0x16c], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -480,7 +480,7 @@ Lp_23AD_0046:
         push word [bp - 0xaa]
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov [bp - 0x200], bx
-        call 0x20E6:Lp_20E6_00F4
+        call 0x20E6:ReadDbRec28h
         add sp, 0xa
         mov [bp - 0x16c], ax
         cmp word [bp + 0xe], 0x3f0
@@ -534,7 +534,7 @@ Lp_23AD_0046:
         push ax
         push word [bp - 0x48]
         db 0x8B, 0xF9                           ; insn: mov di, cx
-        call 0x20E6:Lp_20E6_001C
+        call 0x20E6:ReadGoalieSeasonRec
         add sp, 0xa
         mov [bp - 0x16c], ax
         cmp word [bp + 0xe], 0x3f0
@@ -619,7 +619,7 @@ Lp_23AD_0046:
         push word [bp - 0xaa]
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov [bp - 0x1fe], bx
-        call 0x20E6:Lp_20E6_0110
+        call 0x20E6:ReadDbRec2Ch
         add sp, 0xa
         mov [bp - 0x16c], ax
         cmp word [bp + 0xe], 0x3f0
@@ -907,7 +907,7 @@ Lp_23AD_0046:
         jnl short .80
         push 0xa
         push cs
-        call Lp_23AD_0002
+        call RandomMod
         add sp, 0x2
         mov [bp - 0x28], ax
         cmp ax, [bp - 0x1ac]
@@ -951,7 +951,7 @@ Lp_23AD_0046:
         jnl short .85
         push 0x3
         push cs
-        call Lp_23AD_0002
+        call RandomMod
         add sp, 0x2
         mov [bp - 0x28], ax
         cmp ax, [bp - 0x1ac]
@@ -1566,7 +1566,7 @@ Lp_23AD_0046:
 .118:
         push word 0x3e8
         push cs
-        call Lp_23AD_0002
+        call RandomMod
         add sp, 0x2
         mov [bp - 0x28], ax
         cmp word [bp + 0x18], 0x0
@@ -1769,7 +1769,7 @@ Lp_23AD_0046:
         mov [bp - 0x166], ah
         push word 0x3e8
         push cs
-        call Lp_23AD_0002
+        call RandomMod
         add sp, 0x2
         mov [bp - 0x28], ax
         cmp ax, 0x320
@@ -2023,7 +2023,7 @@ Lp_23AD_0046:
 .145:
         push word 0x3e8
         push cs
-        call Lp_23AD_0002
+        call RandomMod
         add sp, 0x2
         mov [bp - 0x28], ax
         mov si, [bp - 0x164]
@@ -2220,7 +2220,7 @@ Lp_23AD_0046:
 .155:
         push word 0x3e8
         push cs
-        call Lp_23AD_0002
+        call RandomMod
         add sp, 0x2
         mov [bp - 0x28], ax
         cmp ax, strict word 0x3c
@@ -2358,7 +2358,7 @@ Lp_23AD_0046:
         lea ax, [bp - 0x16a]
         push ax
         push cs
-        call Lp_23AD_0016
+        call AddScorerPair
         add sp, 0x8
 .170:
         les bx, [bp - 0x1dc]
@@ -2379,7 +2379,7 @@ Lp_23AD_0046:
         lea ax, [bp - 0x16a]
         push ax
         push cs
-        call Lp_23AD_0016
+        call AddScorerPair
         add sp, 0x8
 .171:
         mov word [bp - 0x164], 0x0
@@ -2465,7 +2465,7 @@ Lp_23AD_0046:
         lea ax, [bp - 0x16a]
         push ax
         push cs
-        call Lp_23AD_0016
+        call AddScorerPair
         add sp, 0x8
 .183:
         mov al, 0xff
@@ -2519,7 +2519,7 @@ Lp_23AD_0046:
         lea ax, [bp - 0x16a]
         push ax
         push cs
-        call Lp_23AD_0016
+        call AddScorerPair
         add sp, 0x8
 .190:
         mov al, 0xff
@@ -2573,7 +2573,7 @@ Lp_23AD_0046:
         lea ax, [bp - 0x16a]
         push ax
         push cs
-        call Lp_23AD_0016
+        call AddScorerPair
         add sp, 0x8
 .197:
         mov word [bp - 0x164], 0x0
@@ -2753,7 +2753,7 @@ Lp_23AD_0046:
         push dx
         push ax
         push word [bp - 0x48]
-        call 0x20E6:Lp_20E6_0038
+        call 0x20E6:WriteGoalieSeasonRec
         add sp, 0xa
         mov [bp - 0x16c], ax
         jmp short .209
@@ -2776,7 +2776,7 @@ Lp_23AD_0046:
         push word [bp + si - 0xfe]
         push word [bp + si - 0x100]
         push word [bp + 0x14]
-        call 0x20E6:Lp_20E6_007A
+        call 0x20E6:WriteTeamRec
         add sp, 0x8
         mov [bp - 0x16c], ax
         mov word [bp - 0x16e], 0x0
@@ -2813,7 +2813,7 @@ Lp_23AD_0046:
         push dx
         push ax
         push word [bp - 0x48]
-        call 0x20E6:Lp_20E6_0000
+        call 0x20E6:WriteSeasonRec
         add sp, 0xa
         mov [bp - 0x16c], ax
 .218:

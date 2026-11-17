@@ -7,7 +7,7 @@ SegStart_076D1:
         retf
         db 0x90
 
-Lp_25B2_000A:
+DrawCalendarDay:
         enter 0x48, 0x0
         push di
         push si
@@ -477,7 +477,7 @@ Lp_25B2_000A:
         leave
         retf
 
-Lp_25B2_04C4:
+CalNextMonth:
         mov ax, 0x3701
         mov es, ax
         mov word [es:f_3701_0F94], 0x200d
@@ -503,7 +503,7 @@ Lp_25B2_04C4:
         retf
         db 0x90
 
-Lp_25B2_051C:
+CalPrevMonth:
         mov ax, 0x3701
         mov es, ax
         mov word [es:f_3701_0F94], 0x200d
@@ -529,13 +529,13 @@ Lp_25B2_051C:
         retf
         db 0x90
 
-Lp_25B2_0574:
+CalReturn:
         mov ax, 0xffff
         mov [g_C26E], ax
         mov [g_C272], ax
         retf
 
-Lp_25B2_057E:
+ApplyShapePalette:
         enter 0x330, 0x0
         push di
         push si
@@ -631,7 +631,7 @@ Lp_25B2_057E:
         retf
         db 0x90
 
-Lp_25B2_0668:
+SetGameSides:
         enter 0x8, 0x0
         push di
         push si
@@ -678,7 +678,7 @@ Lp_25B2_0668:
         leave
         retf
 
-Lp_25B2_06D6:
+CalendarScreen:
         enter 0x48e, 0x0
         push di
         push si
@@ -990,7 +990,7 @@ Lp_25B2_06D6:
         push ax
         push word [bp + 0xe]
         push cs
-        call Lp_25B2_0668
+        call SetGameSides
         add sp, 0x6
         mov si, [bp - 0xec]
         db 0x8B, 0xC6                           ; insn: mov ax, si
@@ -1073,7 +1073,7 @@ Lp_25B2_06D6:
         push ax
         push word [g_C270]
         push cs
-        call Lp_25B2_000A
+        call DrawCalendarDay
         add sp, 0x12
         call 0x0FEF:CopyPlane
         les bx, [DialogData]
@@ -1320,7 +1320,7 @@ Lp_25B2_06D6:
         push ax
         push word [g_C270]
         push cs
-        call Lp_25B2_000A
+        call DrawCalendarDay
         add sp, 0x12
         call 0x0FEF:CopyPlane
 .36:
@@ -1347,10 +1347,10 @@ Lp_25B2_06D6:
         push ax
         push word [g_C270]
         push cs
-        call Lp_25B2_000A
+        call DrawCalendarDay
         add sp, 0x12
         push cs
-        call Lp_25B2_057E
+        call ApplyShapePalette
         mov word [g_C2A0], 0x0
 .37:
         mov ax, [g_C270]
@@ -1931,7 +1931,7 @@ Lp_25B2_06D6:
         push ax
         push word [bp + 0xe]
         push cs
-        call Lp_25B2_0668
+        call SetGameSides
         add sp, 0x6
 .81:
         call 0x0FEF:UseOtherPage
@@ -1955,7 +1955,7 @@ Lp_25B2_06D6:
         push ax
         push word [g_C270]
         push cs
-        call Lp_25B2_000A
+        call DrawCalendarDay
         add sp, 0x12
         call 0x0FEF:CopyPlane
 .82:
@@ -2039,7 +2039,7 @@ Lp_25B2_06D6:
         retf
         db 0x90
 
-Lp_25B2_1620:
+CheckLeagueDiskSync:
         enter 0xae, 0x0
         push di
         push si
@@ -2062,7 +2062,7 @@ Lp_25B2_1620:
         push ax
         push word [bp + 0x8]
         push word [bp + 0x6]
-        call 0x2305:Lp_2305_0450
+        call 0x2305:GetLeagueId
         add sp, 0x8
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov es, [bp - 0xc]
@@ -2095,7 +2095,7 @@ Lp_25B2_1620:
         lea ax, [bp - 0xaa]
         push ss
         push ax
-        call 0x2305:Lp_2305_0214
+        call 0x2305:FmtFromLeague
         add sp, 0xc
         lea ax, [bp - 0xaa]
         mov es, [g_8BE0]
@@ -2106,7 +2106,7 @@ Lp_25B2_1620:
         push di
         push word [bp + 0x8]
         push word [bp + 0x6]
-        call 0x20F8:Lp_20F8_0206
+        call 0x20F8:FindLeagueFloppy
         jmp short .7
         db 0x90
 .5:
@@ -2118,7 +2118,7 @@ Lp_25B2_1620:
         push di
         push word [bp + 0x8]
         push word [bp + 0x6]
-        call 0x20F8:Lp_20F8_0394
+        call 0x20F8:WaitLeagueFloppy
 .7:
         add sp, 0xa
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -2151,7 +2151,7 @@ Lp_25B2_1620:
         push ss
         push ax
         push word [bp - 0x4]
-        call 0x20E6:Lp_20E6_00B4
+        call 0x20E6:ReadLeagueTeamEntry
         add sp, 0x8
         db 0x8B, 0xF0                           ; insn: mov si, ax
 .9:
@@ -2272,7 +2272,7 @@ Lp_25B2_1620:
         retf
         db 0x90
 
-Lp_25B2_1876:
+MakeTeamDbFmt:
         enter 0x4, 0x0
         push di
         push si
@@ -2329,7 +2329,7 @@ Lp_25B2_1876:
         retf
         db 0x90
 
-Lp_25B2_18F4:
+PostGameToTeamDb:
         enter 0x3f4, 0x0
         push di
         push si
@@ -2537,7 +2537,7 @@ Lp_25B2_18F4:
         push ss
         push ax
         push word [bp - 0x1c]
-        call 0x20E6:Lp_20E6_0038
+        call 0x20E6:WriteGoalieSeasonRec
         jmp short .17
 .16:
         mov si, [bp - 0x3b0]
@@ -2549,7 +2549,7 @@ Lp_25B2_18F4:
         push ss
         push ax
         push word [bp - 0x1c]
-        call 0x20E6:Lp_20E6_0000
+        call 0x20E6:WriteSeasonRec
 .17:
         add sp, 0xa
         mov [bp - 0x3b8], ax
@@ -2590,7 +2590,7 @@ Lp_25B2_18F4:
         push ss
         push ax
         push word [bp - 0x1c]
-        call 0x20E6:Lp_20E6_001C
+        call 0x20E6:ReadGoalieSeasonRec
         jmp near .14
         db 0x90
 .22:
@@ -2705,7 +2705,7 @@ Lp_25B2_18F4:
         push ss
         push ax
         push word [bp - 0x1c]
-        call 0x20E6:Lp_20E6_0000
+        call 0x20E6:WriteSeasonRec
         add sp, 0xa
         mov [bp - 0x3b8], ax
 .33:
@@ -2905,7 +2905,7 @@ Lp_25B2_18F4:
         push ss
         push ax
         push word [bp - 0x1c]
-        call 0x20E6:Lp_20E6_0038
+        call 0x20E6:WriteGoalieSeasonRec
         add sp, 0xa
         mov [bp - 0x3b8], ax
 .62:
@@ -2943,7 +2943,7 @@ Lp_25B2_18F4:
         push ss
         push ax
         push word [bp - 0x1c]
-        call 0x20E6:Lp_20E6_001C
+        call 0x20E6:ReadGoalieSeasonRec
         add sp, 0xa
         mov [bp - 0x3b8], ax
 .67:
@@ -3003,7 +3003,7 @@ Lp_25B2_18F4:
         push ss
         push ax
         push word [bp - 0x3e]
-        call 0x20E6:Lp_20E6_007A
+        call 0x20E6:WriteTeamRec
         add sp, 0x8
         mov [bp - 0x3b8], ax
 .73:
@@ -3030,7 +3030,7 @@ Lp_25B2_18F4:
         retf
         db 0x90
 
-Lp_25B2_208A:
+PlayLeagueGame:
         enter 0x76, 0x0
         push si
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -3048,13 +3048,13 @@ Lp_25B2_208A:
         cmp word [bx], 0x0
         jl short .1
         push word [bx]
-        call 0x2E18:Lp_2E18_0206
+        call 0x2E18:LoadLeagueGameRef
         add sp, 0x2
 .1:
         push 0x3
         push word 0x3701
         push strict word f_3701_0E53
-        call 0x2305:Lp_2305_044C
+        call 0x2305:LeagueCheckStub
         add sp, 0x6
         mov [bp - 0x5c], ax
 .2:
@@ -3077,7 +3077,7 @@ Lp_25B2_208A:
         push strict word f_3A0B_AC62
         push word 0x3701
         push strict word f_3701_0E53
-        call 0x22D3:Lp_22D3_0000
+        call 0x22D3:ReadLeagueInfo
         add sp, 0x20
         mov [bp - 0x5c], ax
 .3:
@@ -3169,9 +3169,9 @@ Lp_25B2_208A:
         mov es, [g_8BE6]
         test byte [es:0xac5e], 0x8
         jz short .8
-        call 0x2CB7:Lp_2CB7_0C28
+        call 0x2CB7:MergeLeagueFiles
 .8:
-        call 0x2CB7:Lp_2CB7_09FA
+        call 0x2CB7:UpdateTeamDbs
         mov word [bp - 0x42], 0xffff
         jmp short .11
 .9:
@@ -3196,7 +3196,7 @@ Lp_25B2_208A:
         push strict word f_3A0B_AA38
         lea ax, [bp - 0x40]
         push ax
-        call 0x22D3:Lp_22D3_01E2
+        call 0x22D3:ReadTeamNames
         add sp, 0x8
         mov [bp - 0x5c], ax
 .11:
@@ -3224,7 +3224,7 @@ Lp_25B2_208A:
         push ax
         push word 0x3701
         push strict word f_3701_0E53
-        call 0x2305:Lp_2305_0450
+        call 0x2305:GetLeagueId
         add sp, 0x8
         mov [g_C2A6], ax
 .14:
@@ -3244,7 +3244,7 @@ Lp_25B2_208A:
         push strict word f_3A0B_AC5C
         push word 0x3701
         push strict word f_3701_0E53
-        call 0x1F31:Lp_1F31_0BAE
+        call 0x1F31:LeagueTeamSelect
         add sp, 0x18
         push strict word str_Pnt2_8
         push word [MemBlock1Seg]
@@ -3271,7 +3271,7 @@ Lp_25B2_208A:
         push word 0x3701
         push strict word f_3701_0E53
         push cs
-        call Lp_25B2_1620
+        call CheckLeagueDiskSync
         add sp, 0xe
         mov [bp - 0x5c], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -3324,7 +3324,7 @@ Lp_25B2_208A:
         push word 0x3a0b
         push strict word f_3A0B_AC62
         push word [g_C2A6]
-        call 0x28A8:Lp_28A8_000A
+        call 0x28A8:AskTeamPassword
         add sp, 0x6
         mov [bp - 0x5c], ax
 .23:
@@ -3349,7 +3349,7 @@ Lp_25B2_208A:
         push strict word f_3A0B_AA38
         lea ax, [bp - 0x40]
         push ax
-        call 0x22D3:Lp_22D3_01E2
+        call 0x22D3:ReadTeamNames
         add sp, 0x8
         jmp short .26
         db 0x90
@@ -3377,7 +3377,7 @@ Lp_25B2_208A:
         push word 0x3a0b
         push strict word f_3A0B_AC62
         push word [g_C2A6]
-        call 0x28A8:Lp_28A8_000A
+        call 0x28A8:AskTeamPassword
         add sp, 0x6
 .26:
         mov [bp - 0x5c], ax
@@ -3412,7 +3412,7 @@ Lp_25B2_208A:
         push ds
         push strict word g_C27E
         push cs
-        call Lp_25B2_06D6
+        call CalendarScreen
         add sp, 0xa
         mov [g_C2B0], ax
 .32:
@@ -3498,7 +3498,7 @@ Lp_25B2_208A:
         push word 0x3701
         push strict word f_3701_0E53
         push cs
-        call Lp_25B2_1620
+        call CheckLeagueDiskSync
         add sp, 0xe
         mov [bp - 0x5c], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -3594,7 +3594,7 @@ Lp_25B2_208A:
         push word 0x3a0b
         push strict word f_3A0B_AC62
         push word [g_C2A8]
-        call 0x28A8:Lp_28A8_000A
+        call 0x28A8:AskTeamPassword
         add sp, 0x6
         mov [bp - 0x5c], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -3647,7 +3647,7 @@ Lp_25B2_208A:
         push ds
         push strict word g_C000
         push cs
-        call Lp_25B2_1876
+        call MakeTeamDbFmt
         add sp, 0xe
         mov al, [g_C29D]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
@@ -3671,7 +3671,7 @@ Lp_25B2_208A:
         push ds
         push strict word g_C000
         push cs
-        call Lp_25B2_1876
+        call MakeTeamDbFmt
         add sp, 0xe
         mov al, [g_C29D]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
@@ -3684,7 +3684,7 @@ Lp_25B2_208A:
         push ds
         push strict word g_C020
         push cs
-        call Lp_25B2_1876
+        call MakeTeamDbFmt
         add sp, 0xe
         cmp byte [g_C020], 0x0
         jnz short .49
@@ -3904,7 +3904,7 @@ Lp_25B2_208A:
         push word 0x3701
         push strict word f_3701_0E53
         push cs
-        call Lp_25B2_1620
+        call CheckLeagueDiskSync
         add sp, 0xe
         mov [bp - 0x5c], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -4117,7 +4117,7 @@ Lp_25B2_208A:
         push ds
         push strict word g_C29A
         push word [bp - 0x4a]
-        call 0x20E6:Lp_20E6_0054
+        call 0x20E6:WriteSchedGame
         add sp, 0x8
         mov [bp - 0x5c], ax
 .75:
@@ -4129,7 +4129,7 @@ Lp_25B2_208A:
         push ds
         push strict word g_C29A
         push word [bp - 0x52]
-        call 0x20E6:Lp_20E6_0054
+        call 0x20E6:WriteSchedGame
         add sp, 0x8
         mov [bp - 0x5c], ax
 .76:
@@ -4165,7 +4165,7 @@ Lp_25B2_208A:
         push word [g_C2B0]
         push word [bp - 0x50]
         push word [bp - 0x4a]
-        call 0x28CD:Lp_28CD_1280
+        call 0x28CD:PostSeriesResult
         add sp, 0x6
         mov [bp - 0x5c], ax
 .79:
@@ -4205,7 +4205,7 @@ Lp_25B2_208A:
         push word [g_C2B0]
         push word [bp - 0x5a]
         push word [bp - 0x52]
-        call 0x28CD:Lp_28CD_1280
+        call 0x28CD:PostSeriesResult
         add sp, 0x6
         mov [bp - 0x5c], ax
 .82:
@@ -4261,7 +4261,7 @@ Lp_25B2_208A:
         push strict word str_Xx_2
         push ds
         push strict word g_C27E
-        call 0x28CD:Lp_28CD_10F6
+        call 0x28CD:UpdateSeasonSchedule
         add sp, 0x12
         mov [bp - 0x5c], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -4276,7 +4276,7 @@ Lp_25B2_208A:
         push ds
         push strict word g_C27E
         push cs
-        call Lp_25B2_18F4
+        call PostGameToTeamDb
         add sp, 0x12
         mov [bp - 0x5c], ax
 .87:
@@ -4293,7 +4293,7 @@ Lp_25B2_208A:
         push strict word str_Xx
         push ds
         push strict word g_C28C
-        call 0x28CD:Lp_28CD_10F6
+        call 0x28CD:UpdateSeasonSchedule
         add sp, 0x12
         mov [bp - 0x5c], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -4321,7 +4321,7 @@ Lp_25B2_208A:
         push strict word g_C27E
 .89:
         push cs
-        call Lp_25B2_18F4
+        call PostGameToTeamDb
         add sp, 0x12
         mov [bp - 0x5c], ax
 .90:

@@ -5,7 +5,7 @@
         retf
         db 0x90
 
-Lp_20F8_000C:
+SelectFloppyDrive:
         enter 0x4e, 0x0
         push di
         push si
@@ -208,7 +208,7 @@ Lp_20F8_000C:
         leave
         retf
 
-Lp_20F8_0206:
+FindLeagueFloppy:
         enter 0x8c, 0x0
         push di
         push si
@@ -327,7 +327,7 @@ Lp_20F8_0206:
         lea ax, [bp - 0x8c]
         push ss
         push ax
-        call 0x2305:Lp_2305_0214
+        call 0x2305:FmtFromLeague
         add sp, 0xc
         lea ax, [bp - 0x8c]
         mov es, [g_8B9E]
@@ -371,7 +371,7 @@ Lp_20F8_0206:
         leave
         retf
 
-Lp_20F8_0394:
+WaitLeagueFloppy:
         enter 0x46, 0x0
         push di
         push si
@@ -383,7 +383,7 @@ Lp_20F8_0394:
         lea ax, [bp - 0x46]
         push ss
         push ax
-        call 0x2305:Lp_2305_0214
+        call 0x2305:FmtFromLeague
         add sp, 0xc
         lea ax, [bp - 0x46]
         mov es, [g_8BA0]

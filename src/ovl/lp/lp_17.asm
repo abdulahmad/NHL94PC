@@ -6,7 +6,7 @@
         retf
         db 0x90
 
-Lp_2E18_000A:
+SaveLeagueGameRef:
         enter 0x34, 0x0
         push di
         push si
@@ -239,7 +239,7 @@ Lp_2E18_000A:
         retf
         db 0x90
 
-Lp_2E18_0206:
+LoadLeagueGameRef:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di

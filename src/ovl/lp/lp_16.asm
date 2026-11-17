@@ -5,7 +5,7 @@ SegStart_0E720:
         retf
         db 0x90
 
-Lp_2CB7_0004:
+MergeTeamRecDelta:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -97,7 +97,7 @@ Lp_2CB7_0004:
         retf
         db 0x90
 
-Lp_2CB7_00FA:
+MergeSeasonRecDelta:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -178,7 +178,7 @@ Lp_2CB7_00FA:
         retf
         db 0x90
 
-Lp_2CB7_01CE:
+MergeGoalieRecDelta:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -293,7 +293,7 @@ Lp_2CB7_01CE:
         retf
         db 0x90
 
-Lp_2CB7_02F6:
+MergeTeamDbs:
         enter 0xa5e, 0x0
         push di
         push si
@@ -511,14 +511,14 @@ Lp_2CB7_02F6:
         lea cx, [bp - 0x486]
         push cx
         push cs
-        call Lp_2CB7_0004
+        call MergeTeamRecDelta
         add sp, 0xa
         push di
         lea ax, [bp - 0xa56]
         push ss
         push ax
         push word [bp - 0x16]
-        call 0x20E6:Lp_20E6_007A
+        call 0x20E6:WriteTeamRec
         add sp, 0x8
         db 0x8B, 0xF0                           ; insn: mov si, ax
 .11:
@@ -601,7 +601,7 @@ Lp_2CB7_02F6:
         lea cx, [bp - 0x68]
         push cx
         push cs
-        call Lp_2CB7_00FA
+        call MergeSeasonRecDelta
         add sp, 0xa
         push word [bp - 0xce]
         push word [bp - 0xd0]
@@ -609,7 +609,7 @@ Lp_2CB7_02F6:
         push ss
         push ax
         push word [bp - 0xc]
-        call 0x20E6:Lp_20E6_0000
+        call 0x20E6:WriteSeasonRec
         add sp, 0xa
         db 0x8B, 0xF0                           ; insn: mov si, ax
 .19:
@@ -655,7 +655,7 @@ Lp_2CB7_02F6:
         push ss
         push ax
         push word [bp - 0xe]
-        call 0x20E6:Lp_20E6_001C
+        call 0x20E6:ReadGoalieSeasonRec
         add sp, 0xa
         db 0x8B, 0xF0                           ; insn: mov si, ax
 .25:
@@ -667,7 +667,7 @@ Lp_2CB7_02F6:
         push ss
         push ax
         push word [bp - 0x10]
-        call 0x20E6:Lp_20E6_001C
+        call 0x20E6:ReadGoalieSeasonRec
         add sp, 0xa
         db 0x8B, 0xF0                           ; insn: mov si, ax
 .26:
@@ -679,7 +679,7 @@ Lp_2CB7_02F6:
         push ss
         push ax
         push word [bp - 0xc]
-        call 0x20E6:Lp_20E6_001C
+        call 0x20E6:ReadGoalieSeasonRec
         add sp, 0xa
         db 0x8B, 0xF0                           ; insn: mov si, ax
 .27:
@@ -694,7 +694,7 @@ Lp_2CB7_02F6:
         lea cx, [bp - 0x132]
         push cx
         push cs
-        call Lp_2CB7_01CE
+        call MergeGoalieRecDelta
         add sp, 0xa
         push word [bp - 0xce]
         push word [bp - 0xd0]
@@ -702,7 +702,7 @@ Lp_2CB7_02F6:
         push ss
         push ax
         push word [bp - 0xc]
-        call 0x20E6:Lp_20E6_0038
+        call 0x20E6:WriteGoalieSeasonRec
         add sp, 0xa
         db 0x8B, 0xF0                           ; insn: mov si, ax
 .28:
@@ -755,7 +755,7 @@ Lp_2CB7_02F6:
         retf
         db 0x90
 
-Lp_2CB7_0778:
+MergeScheduleDb:
         enter 0x30, 0x0
         push di
         push si
@@ -884,7 +884,7 @@ Lp_2CB7_0778:
         push ss
         push ax
         push word [bp - 0x6]
-        call 0x20E6:Lp_20E6_0054
+        call 0x20E6:WriteSchedGame
         add sp, 0x8
         mov [bp - 0x2], ax
 .8:
@@ -907,7 +907,7 @@ Lp_2CB7_0778:
         retf
         db 0x90
 
-Lp_2CB7_08DE:
+LocateTeamDbCopy:
         enter 0x8, 0x0
         push di
         push si
@@ -939,14 +939,14 @@ Lp_2CB7_08DE:
         push cx
         push word [bp + 0xe]
         push word [bp + 0xc]
-        call 0x20F8:Lp_20F8_0394
+        call 0x20F8:WaitLeagueFloppy
         add sp, 0xa
         mov [bp - 0x2], ax
         push word [bp + 0x1c]
         push word [bp + 0x1a]
         push word [bp + 0x16]
         push word [bp + 0x14]
-        call 0x2305:Lp_2305_0450
+        call 0x2305:GetLeagueId
         add sp, 0x8
         cmp word [bp - 0x2], 0x4
         jnz short .3
@@ -1017,7 +1017,7 @@ Lp_2CB7_08DE:
         leave
         retf
 
-Lp_2CB7_09FA:
+UpdateTeamDbs:
         enter 0x3c, 0x0
         push di
         push si
@@ -1037,7 +1037,7 @@ Lp_2CB7_09FA:
         mov [bp - 0x3a], cx
         push cx
         push ax
-        call 0x2305:Lp_2305_044C
+        call 0x2305:LeagueCheckStub
         add sp, 0x6
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .1
@@ -1059,7 +1059,7 @@ Lp_2CB7_09FA:
         push strict word f_3A0B_AC62
         push word [bp - 0x3a]
         push word [bp - 0x3c]
-        call 0x22D3:Lp_22D3_0000
+        call 0x22D3:ReadLeagueInfo
         add sp, 0x20
         db 0x8B, 0xF0                           ; insn: mov si, ax
         push word [bp - 0x3a]
@@ -1164,7 +1164,7 @@ Lp_2CB7_09FA:
         push strict word f_3A0B_AC62
         push word [bp - 0x3a]
         push word [bp - 0x3c]
-        call 0x2305:Lp_2305_061C
+        call 0x2305:CopyHumanTeamDBs
         add sp, 0xa
         db 0x8B, 0xF0                           ; insn: mov si, ax
         jmp short .7
@@ -1238,7 +1238,7 @@ Lp_2CB7_09FA:
         leave
         retf
 
-Lp_2CB7_0C28:
+MergeLeagueFiles:
         enter 0x52, 0x0
         push si
         mov ax, 0xffff
@@ -1255,7 +1255,7 @@ Lp_2CB7_0C28:
         push 0x2
         push word 0x3701
         push strict word f_3701_0E53
-        call 0x2305:Lp_2305_044C
+        call 0x2305:LeagueCheckStub
         add sp, 0x6
         mov [bp - 0x52], ax
         mov byte [g_E36B], 0x0
@@ -1279,7 +1279,7 @@ Lp_2CB7_0C28:
         push strict word f_3A0B_AC62
         push word 0x3701
         push strict word f_3701_0E53
-        call 0x22D3:Lp_22D3_0000
+        call 0x22D3:ReadLeagueInfo
         add sp, 0x20
         mov [bp - 0x52], ax
         push word 0x3701
@@ -1463,7 +1463,7 @@ Lp_2CB7_0C28:
         push word 0x3a0b
         push strict word f_3A0B_AC62
         push cs
-        call Lp_2CB7_08DE
+        call LocateTeamDbCopy
         add sp, 0x18
         mov [bp - 0x52], ax
 .8:
@@ -1527,7 +1527,7 @@ Lp_2CB7_0C28:
         push word 0x3a0b
         push strict word f_3A0B_AC62
         push cs
-        call Lp_2CB7_08DE
+        call LocateTeamDbCopy
         add sp, 0x18
         mov [bp - 0x52], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -1586,7 +1586,7 @@ Lp_2CB7_0C28:
         push word 0x3701
         push strict word f_3701_0E53
         push cs
-        call Lp_2CB7_02F6
+        call MergeTeamDbs
         add sp, 0x16
         mov [bp - 0x52], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -1603,7 +1603,7 @@ Lp_2CB7_0C28:
         push word [bp - 0x34]
         push word [bp - 0x36]
         push cs
-        call Lp_2CB7_0778
+        call MergeScheduleDb
         add sp, 0x14
         mov [bp - 0x52], ax
 .16:
@@ -1621,7 +1621,7 @@ Lp_2CB7_0C28:
         push es
         push bx
         push word [bp - 0x3a]
-        call 0x20E6:Lp_20E6_00D4
+        call 0x20E6:WriteLeagueTeamEntry
         add sp, 0x8
         mov [bp - 0x52], ax
 .17:
@@ -1633,7 +1633,7 @@ Lp_2CB7_0C28:
         push word 0x3a0b
         push ax
         push word [bp - 0x50]
-        call 0x20E6:Lp_20E6_00D4
+        call 0x20E6:WriteLeagueTeamEntry
         add sp, 0x8
         mov [bp - 0x52], ax
 .18:
@@ -1796,7 +1796,7 @@ Lp_2CB7_0C28:
         push strict word str_Db_2
         push word 0x3701
         push strict word f_3701_0E53
-        call 0x28CD:Lp_28CD_10F6
+        call 0x28CD:UpdateSeasonSchedule
         add sp, 0x12
         mov [bp - 0x52], ax
 .28:
@@ -1908,11 +1908,11 @@ Lp_2CB7_0C28:
         retf
         db 0x90
 
-Lp_2CB7_134E:
+MergeUpdateDbs:
         enter 0x4, 0x0
         push si
         push cs
-        call Lp_2CB7_0C28
+        call MergeLeagueFiles
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov es, [g_8C22]
         cmp word [es:0xac60], 0x0
@@ -1970,7 +1970,7 @@ Lp_2CB7_134E:
         add sp, 0x8
 .4:
         push cs
-        call Lp_2CB7_09FA
+        call UpdateTeamDbs
         db 0x0B, 0xF6                           ; insn: or si, si
         jz short .5
         push 0x0
@@ -2007,7 +2007,7 @@ Lp_2CB7_134E:
         leave
         retf
 
-Lp_2CB7_1442:
+RebuildLeagueDbs:
         enter 0x36, 0x0
         push di
         push si
@@ -2027,7 +2027,7 @@ Lp_2CB7_1442:
         mov [bp - 0x30], cx
         push cx
         push ax
-        call 0x2305:Lp_2305_044C
+        call 0x2305:LeagueCheckStub
         add sp, 0x6
         db 0x8B, 0xF8                           ; insn: mov di, ax
         db 0x0B, 0xFF                           ; insn: or di, di
@@ -2054,7 +2054,7 @@ Lp_2CB7_1442:
         push ax
         push word [bp - 0x30]
         push word [bp - 0x32]
-        call 0x22D3:Lp_22D3_0000
+        call 0x22D3:ReadLeagueInfo
         add sp, 0x20
         db 0x8B, 0xF8                           ; insn: mov di, ax
         db 0x2B, 0xF6                           ; insn: sub si, si
@@ -2070,7 +2070,7 @@ Lp_2CB7_1442:
         push word [bp - 0x34]
         push word [bp - 0x36]
         push word [bp - 0x6]
-        call 0x28A8:Lp_28A8_000A
+        call 0x28A8:AskTeamPassword
         add sp, 0x6
         db 0x8B, 0xF0                           ; insn: mov si, ax
 .3:
@@ -2086,7 +2086,7 @@ Lp_2CB7_1442:
         push word [bp - 0x36]
         mov es, [g_8C28]
         push word [es:0xac5a]
-        call 0x28A8:Lp_28A8_0108
+        call 0x28A8:AskMasterPassword
         add sp, 0xa
         db 0x8B, 0xF0                           ; insn: mov si, ax
 .5:
@@ -2153,7 +2153,7 @@ Lp_2CB7_1442:
         push strict word f_3A0B_AC62
         push word [bp - 0x30]
         push word [bp - 0x32]
-        call 0x2305:Lp_2305_061C
+        call 0x2305:CopyHumanTeamDBs
         add sp, 0xa
         db 0x8B, 0xF0                           ; insn: mov si, ax
 .9:

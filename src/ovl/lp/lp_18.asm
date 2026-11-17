@@ -9,7 +9,7 @@ SegStart_10019:
         retf
         db 0x90
 
-Lp_2E46_000E:
+PickAwardWinners:
         enter 0x402, 0x0
         push di
         push si
@@ -34,7 +34,7 @@ Lp_2E46_000E:
         push strict word f_3A0B_AA38
         lea ax, [bp - 0x5a]
         push ax
-        call 0x22D3:Lp_22D3_01E2
+        call 0x22D3:ReadTeamNames
         add sp, 0x8
         mov [bp - 0x3c6], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -514,7 +514,7 @@ Lp_2E46_000E:
         push ss
         push ax
         push word [bp - 0x3a]
-        call 0x20E6:Lp_20E6_001C
+        call 0x20E6:ReadGoalieSeasonRec
         add sp, 0xa
         mov [bp - 0x3c6], ax
 .42:
@@ -640,7 +640,7 @@ Lp_2E46_000E:
         retf
         db 0x90
 
-Lp_2E46_06B4:
+ShowAwardScreens:
         enter 0x7a, 0x0
         push di
         push si
@@ -1540,7 +1540,7 @@ Lp_2E46_06B4:
         leave
         retf
 
-Lp_2E46_1068:
+DrawAwardsSummary:
         enter 0x5e, 0x0
         push di
         push si
@@ -1724,7 +1724,7 @@ Lp_2E46_1068:
         leave
         retf
 
-Lp_2E46_125A:
+AwardsCeremony:
         enter 0x358, 0x0
         push di
         push si
@@ -1921,7 +1921,7 @@ Lp_2E46_125A:
         call 0x0EDC:PlayJingle
         add sp, 0x8
         push cs
-        call Lp_2E46_000E
+        call PickAwardWinners
         mov [bp - 0x10], ax
         mov word [bp - 0x4], 0xc7a2
         mov word [bp - 0x2], 0x1c28
@@ -2086,13 +2086,13 @@ Lp_2E46_125A:
         call 0x0FEF:SetPaletteFar
         add sp, 0x8
         push cs
-        call Lp_2E46_06B4
+        call ShowAwardScreens
         push word [bp - 0x24]
         push word [bp - 0x26]
         lea ax, [bp - 0x354]
         push ax
         push cs
-        call Lp_2E46_1068
+        call DrawAwardsSummary
         add sp, 0x6
         push word [bp - 0x20]
         push word [bp - 0x22]

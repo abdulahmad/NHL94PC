@@ -8,7 +8,7 @@ SegStart_00EC9:
         retf
         db 0x90
 
-Lp_1F31_000E:
+TeamGridCellAt:
         enter 0xa, 0x0
         push di
         push si
@@ -62,7 +62,7 @@ Lp_1F31_000E:
         leave
         retf
 
-Lp_1F31_008E:
+DrawTeamGridCell:
         enter 0x8, 0x0
         push di
         push si
@@ -141,7 +141,7 @@ Lp_1F31_008E:
         leave
         retf
 
-Lp_1F31_0150:
+FrameTeamGridCell:
         enter 0xe, 0x0
         push di
         push si
@@ -195,7 +195,7 @@ Lp_1F31_0150:
         leave
         retf
 
-Lp_1F31_01D0:
+DrawTeamGrid:
         enter 0xc8, 0x0
         push di
         push si
@@ -328,7 +328,7 @@ Lp_1F31_01D0:
         push word [bp + 0x6]
         push si
         push cs
-        call Lp_1F31_008E
+        call DrawTeamGridCell
         add sp, 0xc
 .4:
         inc di
@@ -357,7 +357,7 @@ Lp_1F31_01D0:
         retf
         db 0x90
 
-Lp_1F31_03A6:
+ChooseLeagueController:
         enter 0xd8, 0x0
         push di
         push si
@@ -634,7 +634,7 @@ Lp_1F31_03A6:
         push word [bp - 0xd8]
         push word 0x3a0b
         push strict word f_3A0B_AF32
-        call 0x28A8:Lp_28A8_01E8
+        call 0x28A8:EncryptPassword
         add sp, 0x6
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov es, [g_8B8E]
@@ -657,7 +657,7 @@ Lp_1F31_03A6:
         retf
         db 0x90
 
-Lp_1F31_06A6:
+AskExportToFloppy:
         enter 0x10, 0x0
         push di
         push si
@@ -794,7 +794,7 @@ Lp_1F31_06A6:
         leave
         retf
 
-Lp_1F31_07FA:
+BuildStandingsGrid:
         enter 0x4da, 0x0
         push di
         push si
@@ -1154,17 +1154,17 @@ Lp_1F31_07FA:
         leave
         retf
 
-Lp_1F31_0B9E:
+TeamSelDone:
         mov word [g_C274], 0x1
         retf
         db 0x90
 
-Lp_1F31_0BA6:
+TeamSelCancel:
         mov word [g_C274], 0xffff
         retf
         db 0x90
 
-Lp_1F31_0BAE:
+LeagueTeamSelect:
         enter 0x11a, 0x0
         push di
         push si
@@ -1223,7 +1223,7 @@ Lp_1F31_0BAE:
         push ax
         push word [bp - 0x3a]
         push cs
-        call Lp_1F31_07FA
+        call BuildStandingsGrid
         add sp, 0x4
         mov [bp - 0xf0], ax
 .2:
@@ -1354,7 +1354,7 @@ Lp_1F31_0BAE:
         push word [bp - 0x10e]
         push word [bp - 0x110]
         push cs
-        call Lp_1F31_01D0
+        call DrawTeamGrid
         add sp, 0xe
         test byte [bp + 0x16], 0x1
         jz short .7
@@ -1413,7 +1413,7 @@ Lp_1F31_0BAE:
         push cx
         push ax
         push cs
-        call Lp_1F31_0150
+        call FrameTeamGridCell
         add sp, 0x6
         call 0x0FEF:CopyPlane
         cmp word [bp + 0x16], 0x1
@@ -1992,7 +1992,7 @@ Lp_1F31_0BAE:
         push word [bp - 0x1c]
         push word [bp - 0x16]
         push cs
-        call Lp_1F31_000E
+        call TeamGridCellAt
         add sp, 0x6
         mov [bp - 0xfc], ax
         cmp word [bp + 0x16], 0x10
@@ -2034,14 +2034,14 @@ Lp_1F31_0BAE:
         push ax
         push word [si]
         push cs
-        call Lp_1F31_0150
+        call FrameTeamGridCell
         add sp, 0x6
         push -0x1
         lea ax, [bp - 0x38]
         push ax
         push word [si]
         push cs
-        call Lp_1F31_0150
+        call FrameTeamGridCell
         add sp, 0x6
         inc word [bp - 0xfe]
         mov bx, [bp - 0xfe]
@@ -2104,7 +2104,7 @@ Lp_1F31_0BAE:
         push word [bp - 0x110]
         db 0x03, 0xF7                           ; insn: add si, di
         push word [si]
-        call 0x28A8:Lp_28A8_000A
+        call 0x28A8:AskTeamPassword
         add sp, 0x6
         mov [bp - 0xf0], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -2141,7 +2141,7 @@ Lp_1F31_0BAE:
         push word [bp - 0x110]
         push word [si]
         push cs
-        call Lp_1F31_008E
+        call DrawTeamGridCell
         add sp, 0xc
         jmp near .72
         db 0x90
@@ -2436,7 +2436,7 @@ Lp_1F31_0BAE:
         add ax, strict word 0xb
         push dx
         push ax
-        call 0x28A8:Lp_28A8_01E8
+        call 0x28A8:EncryptPassword
         add sp, 0x6
         lea ax, [bp - 0x38]
         push ax
@@ -2446,7 +2446,7 @@ Lp_1F31_0BAE:
         push word [bp - 0x110]
         push word [si]
         push cs
-        call Lp_1F31_008E
+        call DrawTeamGridCell
         add sp, 0xc
         jmp near .28
         db 0x90
@@ -2458,7 +2458,7 @@ Lp_1F31_0BAE:
         push ax
         push word [bp - 0x8]
         push cs
-        call Lp_1F31_0150
+        call FrameTeamGridCell
         add sp, 0x6
 .71:
         push -0x1
@@ -2469,7 +2469,7 @@ Lp_1F31_0BAE:
         mov si, [bp + 0x1c]
         push word [bx + si]
         push cs
-        call Lp_1F31_0150
+        call FrameTeamGridCell
         add sp, 0x6
 .72:
         push word [bp - 0xe6]
@@ -2534,7 +2534,7 @@ Lp_1F31_0BAE:
         push word [bp - 0x10e]
         push word [bp - 0x110]
         push cs
-        call Lp_1F31_03A6
+        call ChooseLeagueController
         add sp, 0xa
 .77:
         les bx, [bp + 0xa]
@@ -2545,7 +2545,7 @@ Lp_1F31_0BAE:
         push word [bp - 0x10e]
         push word [bp - 0x110]
         push cs
-        call Lp_1F31_06A6
+        call AskExportToFloppy
         add sp, 0xc
         mov word [bp - 0xf8], 0x2d0
         push word 0x2d0

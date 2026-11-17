@@ -6,7 +6,7 @@
         retf
         db 0x90
 
-Lp_1EAE_000A:
+ClearPlayerFromLines:
         enter 0x2, 0x0
         push di
         push si

@@ -1,0 +1,109 @@
+# LP.OVL routines (league play)
+Lp_1E45_0000 DrawEditCursor | new | medium | XOR caret at the edit position
+Lp_1E45_00C6 DrawEditText | new | medium | draws the edit field text, clipped
+Lp_1E45_025C EditTextField | 95 PC | high | keyboard line editor (arrows, Home/End, Ins/Del)
+Lp_1E9D_0008 LoadHomePals | 95 PC | high | HOMEPALS.BIN team colours into the palette
+Lp_1EAE_000A ClearPlayerFromLines | 95 PC | high | removes a player from every line slot
+Lp_1ECB_0008 AddHumanTeam | 95 PC | high | 'Select new human controlled team'
+Lp_1ECB_0332 RemoveHumanTeam | 95 PC | high | 'Select human controlled team to remove'
+Lp_1F31_000E TeamGridCellAt | new | medium | team grid cell under a point
+Lp_1F31_008E DrawTeamGridCell | new | medium | crest and name of one grid cell
+Lp_1F31_0150 FrameTeamGridCell | new | medium | frame / XOR frame round a grid cell
+Lp_1F31_01D0 DrawTeamGrid | new | medium | crests4 grid of all teams
+Lp_1F31_03A6 ChooseLeagueController | 95 PC | high | 'Who will control the league?' and master password
+Lp_1F31_06A6 AskExportToFloppy | 95 PC | high | export-to-floppy question
+Lp_1F31_07FA BuildStandingsGrid | 95 PC | medium | team list for the selection grid
+Lp_1F31_0B9E TeamSelDone | 95 PC | high | menu item: done
+Lp_1F31_0BA6 TeamSelCancel | 95 PC | high | menu item: cancel
+Lp_1F31_0BAE LeagueTeamSelect | 95 PC | high | 'Who will play', passwords
+Lp_20E6_0000 WriteSeasonRec | 95 PC | high | writes a 30h-byte skater season record
+Lp_20E6_001C ReadGoalieSeasonRec | 95 PC | high | reads a 36h-byte goalie season record
+Lp_20E6_0038 WriteGoalieSeasonRec | 95 PC | high | writes it
+Lp_20E6_0054 WriteSchedGame | 95 PC | high | writes one 6-byte schedule entry
+Lp_20E6_007A WriteTeamRec | 95 PC | high | writes a 2E8h-byte team record
+Lp_20E6_0098 ReadDbRec4Ch | 95 PC | high | reads a 4Ch-byte team stats record
+Lp_20E6_00B4 ReadLeagueTeamEntry | 95 PC | high | reads a 1Eh-byte PINFO team entry
+Lp_20E6_00D4 WriteLeagueTeamEntry | 95 PC | high | writes it
+Lp_20E6_00F4 ReadDbRec28h | 95 PC | high | reads a 28h-byte record
+Lp_20E6_0110 ReadDbRec2Ch | 95 PC | high | reads a 2Ch-byte record
+Lp_20F8_000C SelectFloppyDrive | 95 PC | high | picks the floppy with the league ('.ID')
+Lp_20F8_0206 FindLeagueFloppy | 95 PC | high | looks for the league disk
+Lp_20F8_0394 WaitLeagueFloppy | 95 PC | high | insert-disk prompt
+Lp_2139_000C ExportTeamToFloppy | 95 PC | high | writes a team's dbs to floppy
+Lp_2139_07F4 CopyLeagueFiles | 95 PC | high | copies the league db files ('.xx')
+Lp_2139_08C6 ImportMasterLeague | 95 PC | medium | imports the master league from floppy
+Lp_2139_0C2E ImportPlayerTeam | 95 PC | medium | imports a player's team from floppy
+Lp_2139_1430 ImportDbs | 95 PC | medium | import menu item
+Lp_2139_15EC ExportDbs | 95 PC | high | 'Select a team to export.'
+Lp_22D3_0000 ReadLeagueInfo | 95 PC | high | PINFO.DB of the league
+Lp_22D3_01E2 ReadTeamNames | 95 PC | medium | team names from TEAMS.DB
+Lp_22D3_0262 ReloadSoundConfig | new | medium | rereads the sound .CFG and restarts the sequencer
+Lp_2305_000C CheckMasterPassword | 95 PC | high | master password check
+Lp_2305_0214 FmtFromLeague | 95 PC | high | '<name> from the league <league>'
+Lp_2305_0282 BuildLeagueList | 95 PC | high | lists the *.LP leagues
+Lp_2305_044C LeagueCheckStub | 95 PC | high | empty check
+Lp_2305_0450 GetLeagueId | 95 PC | high | league id from PLAYER.ID
+Lp_2305_04DC WriteLeagueInfo | 95 PC | high | writes PINFO.DB
+Lp_2305_05E8 MsgCopyingDatabases | 95 PC | high | 'copying databases' message
+Lp_2305_061C CopyHumanTeamDBs | 95 PC | high | copies the human teams' dbs
+Lp_23AD_0002 RandomMod | new | high | positive rand() modulo the argument
+Lp_23AD_0016 AddScorerPair | new | medium | appends a (player, assist) pair, at most four
+Lp_23AD_0046 SimulateGame | 95 PC | high | simulates one league game and posts the stats
+Lp_25B2_000A DrawCalendarDay | 95 PC | high | one calendar day: Home/Away game
+Lp_25B2_04C4 CalNextMonth | 95 PC | high | menu item: next month
+Lp_25B2_051C CalPrevMonth | 95 PC | high | menu item: previous month
+Lp_25B2_0574 CalReturn | 95 PC | high | menu item: return
+Lp_25B2_057E ApplyShapePalette | 95 PC | high | lineditp palette and crests
+Lp_25B2_0668 SetGameSides | 95 PC | high | home / away of the human teams
+Lp_25B2_06D6 CalendarScreen | 95 PC | high | the league calendar
+Lp_25B2_1620 CheckLeagueDiskSync | 95 PC | high | league id on the floppy matches
+Lp_25B2_1876 MakeTeamDbFmt | 95 PC | high | dir\%s.NN for a human team
+Lp_25B2_18F4 PostGameToTeamDb | 95 PC | high | merges the game into the team's league db
+Lp_25B2_208A PlayLeagueGame | 95 PC | high | 'Select a team to play.'
+Lp_28A8_000A AskTeamPassword | 95 PC | high | 'Enter password for '
+Lp_28A8_0108 AskMasterPassword | 95 PC | high | ' enter master password.'
+Lp_28A8_01E8 EncryptPassword | 95 PC | high | scrambles with 'NHLHockey'
+Lp_28CD_0000 RandomizeSchedule | 95 PC | medium | shuffles the schedule
+Lp_28CD_03CC DateKey | 95 PC | high | (month, day) to a sortable day number
+Lp_28CD_03F0 NormalizeDate | 95 PC | high | carries days into months
+Lp_28CD_0416 SimScheduleDay | 95 PC | medium | simulates the games up to a date
+Lp_28CD_074A AdvancePlayoffs | 95 PC | medium | next playoff round, awards at the end
+Lp_28CD_0856 SeriesLength | 95 PC | medium | counts the games of a seven-slot series
+Lp_28CD_0A32 SeedPlayoffRound | new | medium | puts the series winners into the next round
+Lp_28CD_0D1E SimPlayoffRound | new | medium | simulates the unplayed games of a round
+Lp_28CD_0E10 UpdatePlayoffSeries | 95 PC | medium | after a playoff game
+Lp_28CD_10F6 UpdateSeasonSchedule | 95 PC | medium | after a league game
+Lp_28CD_1280 PostSeriesResult | new | medium | writes the series result into the team records
+Lp_2A1B_0004 CreateNewLeague | 95 PC | high | 'Enter New League Name'
+Lp_2A57_000A PaintJerseyDigit | new | medium | one 15-pixel digit from the glyph table
+Lp_2A57_0044 DrawJerseyNumber | new | medium | two-digit jersey number
+Lp_2A57_00C8 BuildTradeRoster | 95 PC | high | roster list of a trade team
+Lp_2A57_034C TradeShowStats | 95 PC | high | stats of the player under the cursor
+Lp_2A57_05C0 FixJerseyConflict | 95 PC | high | 'The jersey number %2d is already used'
+Lp_2A57_078E ExecuteTrade | 95 PC | high | swaps the players in the dbs
+Lp_2A57_0BE2 DrawTradeRow | 95 PC | high | '%c %2d %s'
+Lp_2A57_0C32 DrawTradeScreen | 95 PC | high | plaques and both rosters
+Lp_2A57_0EF8 TradeHitTest | 95 PC | high | row under the pointer
+Lp_2A57_0FDE TradeDone | 95 PC | high | menu item: done ('The trading deadline has passed!')
+Lp_2A57_1080 TradeCancel | 95 PC | high | menu item: cancel
+Lp_2A57_1088 FindTradeSlot | 95 PC | high | free slot in a roster
+Lp_2A57_10C0 TradeScreenLoop | 95 PC | high | trade screen input loop
+Lp_2A57_1F1C TradeRosterCmp | 95 PC | high | qsort comparator of roster rows
+Lp_2A57_1F96 TradeScreen | 95 PC | high | sets up and runs the trade screen
+Lp_2A57_2152 TradePlayers | 95 PC | high | 'Select two teams for trading players'
+Lp_2CB7_0004 MergeTeamRecDelta | 95 PC | high | adds a team record's changes
+Lp_2CB7_00FA MergeSeasonRecDelta | 95 PC | high | adds a skater record's changes
+Lp_2CB7_01CE MergeGoalieRecDelta | 95 PC | high | adds a goalie record's changes
+Lp_2CB7_02F6 MergeTeamDbs | 95 PC | high | merges a team db copy into the league
+Lp_2CB7_0778 MergeScheduleDb | 95 PC | high | merges the schedule
+Lp_2CB7_08DE LocateTeamDbCopy | 95 PC | medium | finds the team's db copy
+Lp_2CB7_09FA UpdateTeamDbs | 95 PC | medium | update after an import
+Lp_2CB7_0C28 MergeLeagueFiles | 95 PC | high | merges every returned team
+Lp_2CB7_134E MergeUpdateDbs | 95 PC | high | menu item: merge
+Lp_2CB7_1442 RebuildLeagueDbs | 95 PC | medium | rebuilds the league dbs
+Lp_2E18_000A SaveLeagueGameRef | 95 PC | high | writes the league game state
+Lp_2E18_0206 LoadLeagueGameRef | 95 PC | high | reads it back
+Lp_2E46_000E PickAwardWinners | 95 PC | high | trophy winners from the dbs
+Lp_2E46_06B4 ShowAwardScreens | 95 PC | high | one screen per award ('sparkle')
+Lp_2E46_1068 DrawAwardsSummary | 95 PC | high | 'Awards Summary'
+Lp_2E46_125A AwardsCeremony | 95 PC | high | 'Welcome to the NHL awards presentation.'

@@ -6,7 +6,7 @@
         leave
         retf
 
-Lp_2305_000C:
+CheckMasterPassword:
         enter 0x1c, 0x0
         push di
         push si
@@ -18,7 +18,7 @@ Lp_2305_000C:
         push cx
         push ax
         push cs
-        call Lp_2305_044C
+        call LeagueCheckStub
         add sp, 0x6
         db 0x8B, 0xF0                           ; insn: mov si, ax
 .1:
@@ -41,7 +41,7 @@ Lp_2305_000C:
         push strict word f_3A0B_AC62
         push word [bp - 0x1a]
         push word [bp - 0x1c]
-        call 0x22D3:Lp_22D3_0000
+        call 0x22D3:ReadLeagueInfo
         add sp, 0x20
         db 0x8B, 0xF0                           ; insn: mov si, ax
 .2:
@@ -106,7 +106,7 @@ Lp_2305_000C:
         mov [bp - 0x2], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .4
-        call 0x2CB7:Lp_2CB7_0C28
+        call 0x2CB7:MergeLeagueFiles
         mov di, 0xffff
         jmp short .5
 .4:
@@ -172,7 +172,7 @@ Lp_2305_000C:
         push strict word f_3A0B_AC62
         mov es, [g_8BC8]
         push word [es:0xac5a]
-        call 0x28A8:Lp_28A8_0108
+        call 0x28A8:AskMasterPassword
         add sp, 0xa
         db 0x8B, 0xF0                           ; insn: mov si, ax
         cmp byte [g_E36B], 0x0
@@ -213,7 +213,7 @@ Lp_2305_000C:
         retf
         db 0x90
 
-Lp_2305_0214:
+FmtFromLeague:
         enter 0xe, 0x0
         push di
         push si
@@ -261,7 +261,7 @@ Lp_2305_0214:
         retf
         db 0x90
 
-Lp_2305_0282:
+BuildLeagueList:
         enter 0x52, 0x0
         push di
         push si
@@ -390,7 +390,7 @@ Lp_2305_0282:
         push ss
         push ax
         push cs
-        call Lp_2305_0450
+        call GetLeagueId
         add sp, 0x8
         db 0x8B, 0xF8                           ; insn: mov di, ax
         db 0x0B, 0xFF                           ; insn: or di, di
@@ -465,12 +465,12 @@ Lp_2305_0282:
         retf
         db 0x90
 
-Lp_2305_044C:
+LeagueCheckStub:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         retf
         db 0x90
 
-Lp_2305_0450:
+GetLeagueId:
         enter 0x24, 0x0
         push si
         mov word [bp - 0x4], 0xffff
@@ -531,7 +531,7 @@ Lp_2305_0450:
         leave
         retf
 
-Lp_2305_04DC:
+WriteLeagueInfo:
         enter 0x22, 0x0
         push si
         mov word [bp - 0x2], 0xffff
@@ -650,7 +650,7 @@ Lp_2305_04DC:
         leave
         retf
 
-Lp_2305_05E8:
+MsgCopyingDatabases:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, [bp + 0x6]
@@ -674,7 +674,7 @@ Lp_2305_05E8:
         retf
         db 0x90
 
-Lp_2305_061C:
+CopyHumanTeamDBs:
         enter 0xa8, 0x0
         push si
         mov ax, 0xffff
@@ -695,7 +695,7 @@ Lp_2305_061C:
         push dx
         push ax
         push cs
-        call Lp_2305_05E8
+        call MsgCopyingDatabases
         add sp, 0x4
         mov word [bp - 0xa6], 0x0
 .3:
@@ -787,7 +787,7 @@ Lp_2305_061C:
         push cx
         push si
         push word [bp - 0x9e]
-        call 0x20E6:Lp_20E6_00D4
+        call 0x20E6:WriteLeagueTeamEntry
         add sp, 0x8
         mov [bp - 0xa4], ax
 .7:
@@ -891,7 +891,7 @@ Lp_2305_061C:
         push si
         push word [bp + 0x8]
         push word [bp + 0x6]
-        call 0x20F8:Lp_20F8_000C
+        call 0x20F8:SelectFloppyDrive
         add sp, 0x8
         mov [bp - 0x98], ax
 .15:
@@ -971,7 +971,7 @@ Lp_2305_061C:
         push ss
         push ax
         push cs
-        call Lp_2305_0214
+        call FmtFromLeague
         add sp, 0xc
         lea ax, [bp - 0x94]
         mov es, [g_8BCE]
@@ -1036,7 +1036,7 @@ Lp_2305_061C:
         push strict word str_Db_2
         push word [bp + 0x8]
         push word [bp + 0x6]
-        call 0x2139:Lp_2139_000C
+        call 0x2139:ExportTeamToFloppy
         add sp, 0x16
         mov [bp - 0xa4], ax
         jmp near .8

@@ -5,7 +5,7 @@
         leave
         retf
 
-Lp_1E9D_0008:
+LoadHomePals:
         enter 0x192, 0x0
         push di
         push si

@@ -5,7 +5,7 @@ SegStart_00864:
         leave
         retf
 
-Lp_1ECB_0008:
+AddHumanTeam:
         enter 0x46, 0x0
         push di
         push si
@@ -17,7 +17,7 @@ Lp_1ECB_0008:
         mov [bp - 0x3c], cx
         push cx
         push ax
-        call 0x2305:Lp_2305_044C
+        call 0x2305:LeagueCheckStub
         add sp, 0x6
         db 0x8B, 0xF8                           ; insn: mov di, ax
 .1:
@@ -40,7 +40,7 @@ Lp_1ECB_0008:
         push strict word f_3A0B_AC62
         push word [bp - 0x3c]
         push word [bp - 0x3e]
-        call 0x22D3:Lp_22D3_0000
+        call 0x22D3:ReadLeagueInfo
         add sp, 0x20
         db 0x8B, 0xF8                           ; insn: mov di, ax
 .2:
@@ -206,7 +206,7 @@ Lp_1ECB_0008:
         push strict word f_3A0B_AA38
         lea ax, [bp - 0x3a]
         push ax
-        call 0x22D3:Lp_22D3_01E2
+        call 0x22D3:ReadTeamNames
         add sp, 0x8
         lea ax, [bp - 0x8]
         push ax
@@ -221,7 +221,7 @@ Lp_1ECB_0008:
         push word [bp - 0x46]
         push word [bp - 0x3c]
         push word [bp - 0x3e]
-        call 0x1F31:Lp_1F31_0BAE
+        call 0x1F31:LeagueTeamSelect
         add sp, 0x18
         cmp word [bp - 0x8], 0x0
         jnl short .12
@@ -248,7 +248,7 @@ Lp_1ECB_0008:
         push strict word f_3A0B_AC62
         push word [bp - 0x3c]
         push word [bp - 0x3e]
-        call 0x2305:Lp_2305_04DC
+        call 0x2305:WriteLeagueInfo
         add sp, 0x18
         pop si
         pop di
@@ -285,7 +285,7 @@ Lp_1ECB_0008:
         jz short .16
         jmp near .5
 .16:
-        call 0x2CB7:Lp_2CB7_0C28
+        call 0x2CB7:MergeLeagueFiles
         mov si, 0xffff
         jmp near .6
 .17:
@@ -318,7 +318,7 @@ Lp_1ECB_0008:
         leave
         retf
 
-Lp_1ECB_0332:
+RemoveHumanTeam:
         enter 0x46, 0x0
         push di
         push si
@@ -330,7 +330,7 @@ Lp_1ECB_0332:
         mov [bp - 0x3c], cx
         push cx
         push ax
-        call 0x2305:Lp_2305_044C
+        call 0x2305:LeagueCheckStub
         add sp, 0x6
         db 0x8B, 0xF8                           ; insn: mov di, ax
 .1:
@@ -353,7 +353,7 @@ Lp_1ECB_0332:
         push strict word f_3A0B_AC62
         push word [bp - 0x3c]
         push word [bp - 0x3e]
-        call 0x22D3:Lp_22D3_0000
+        call 0x22D3:ReadLeagueInfo
         add sp, 0x20
         db 0x8B, 0xF8                           ; insn: mov di, ax
 .2:
@@ -519,7 +519,7 @@ Lp_1ECB_0332:
         push strict word f_3A0B_AA38
         lea ax, [bp - 0x3a]
         push ax
-        call 0x22D3:Lp_22D3_01E2
+        call 0x22D3:ReadTeamNames
         add sp, 0x8
         lea ax, [bp - 0x8]
         push ax
@@ -534,7 +534,7 @@ Lp_1ECB_0332:
         push word [bp - 0x46]
         push word [bp - 0x3c]
         push word [bp - 0x3e]
-        call 0x1F31:Lp_1F31_0BAE
+        call 0x1F31:LeagueTeamSelect
         add sp, 0x18
         cmp word [bp - 0x8], 0x0
         jnl short .12
@@ -561,7 +561,7 @@ Lp_1ECB_0332:
         push strict word f_3A0B_AC62
         push word [bp - 0x3c]
         push word [bp - 0x3e]
-        call 0x2305:Lp_2305_04DC
+        call 0x2305:WriteLeagueInfo
         add sp, 0x18
         pop si
         pop di
@@ -598,7 +598,7 @@ Lp_1ECB_0332:
         jz short .16
         jmp near .5
 .16:
-        call 0x2CB7:Lp_2CB7_0C28
+        call 0x2CB7:MergeLeagueFiles
         mov si, 0xffff
         jmp near .6
 .17:

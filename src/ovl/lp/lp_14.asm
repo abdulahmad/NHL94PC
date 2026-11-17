@@ -4,7 +4,7 @@
         retf
         db 0x90
 
-Lp_2A1B_0004:
+CreateNewLeague:
         enter 0x70, 0x0
         push di
         push si
@@ -195,7 +195,7 @@ Lp_2A1B_0004:
         push strict word f_3A0B_AA38
         lea ax, [bp - 0x3c]
         push ax
-        call 0x22D3:Lp_22D3_01E2
+        call 0x22D3:ReadTeamNames
         add sp, 0x8
         db 0x8B, 0xF0                           ; insn: mov si, ax
         db 0x0B, 0xF6                           ; insn: or si, si
@@ -219,7 +219,7 @@ Lp_2A1B_0004:
         push strict word f_3A0B_AC5C
         push word [bp - 0x6a]
         push word [bp - 0x6c]
-        call 0x1F31:Lp_1F31_0BAE
+        call 0x1F31:LeagueTeamSelect
         add sp, 0x18
         push strict word str_Pnt2_7
         push word [MemBlock1Seg]
@@ -261,7 +261,7 @@ Lp_2A1B_0004:
         push word [bp - 0x70]
         push word [bp - 0x6a]
         push word [bp - 0x6c]
-        call 0x2305:Lp_2305_04DC
+        call 0x2305:WriteLeagueInfo
         add sp, 0x18
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov word [bp - 0x8], 0x0
@@ -297,7 +297,7 @@ Lp_2A1B_0004:
         push word [bp - 0x4]
         push word [bp - 0x6a]
         push word [bp - 0x6c]
-        call 0x28CD:Lp_28CD_0000
+        call 0x28CD:RandomizeSchedule
         add sp, 0x6
         db 0x8B, 0xF0                           ; insn: mov si, ax
 .15:
@@ -309,7 +309,7 @@ Lp_2A1B_0004:
         push word [bp - 0x70]
         push word [bp - 0x6a]
         push word [bp - 0x6c]
-        call 0x2305:Lp_2305_061C
+        call 0x2305:CopyHumanTeamDBs
         add sp, 0xa
         db 0x8B, 0xF0                           ; insn: mov si, ax
 .16:

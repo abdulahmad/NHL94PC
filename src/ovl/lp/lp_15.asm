@@ -5,7 +5,7 @@
         leave
         retf
 
-Lp_2A57_000A:
+PaintJerseyDigit:
         enter 0x2, 0x0
         push di
         push si
@@ -35,7 +35,7 @@ Lp_2A57_000A:
         retf
         db 0x90
 
-Lp_2A57_0044:
+DrawJerseyNumber:
         enter 0x4, 0x0
         push di
         push si
@@ -78,7 +78,7 @@ Lp_2A57_0044:
         mov [bp - 0x4], di
         mov [bp - 0x2], ax
         push cs
-        call Lp_2A57_000A
+        call PaintJerseyDigit
         add sp, 0xa
         mov al, [bp + 0xe]
         push ax
@@ -96,14 +96,14 @@ Lp_2A57_0044:
 .3:
         push ax
         push cs
-        call Lp_2A57_000A
+        call PaintJerseyDigit
         add sp, 0xa
         pop si
         pop di
         leave
         retf
 
-Lp_2A57_00C8:
+BuildTradeRoster:
         enter 0x6e, 0x0
         push di
         push si
@@ -351,7 +351,7 @@ Lp_2A57_00C8:
         leave
         retf
 
-Lp_2A57_034C:
+TradeShowStats:
         enter 0x24, 0x0
         push di
         push si
@@ -537,7 +537,7 @@ Lp_2A57_034C:
         add sp, 0x8
         push word [si + 0x2]
         push word [si]
-        call 0x1E9D:Lp_1E9D_0008
+        call 0x1E9D:LoadHomePals
         add sp, 0x4
         push word [bp - 0x22]
         push word [bp - 0x24]
@@ -554,7 +554,7 @@ Lp_2A57_034C:
         push word [bp + 0xe]
         push word [bp + 0x6]
         push cs
-        call Lp_2A57_0C32
+        call DrawTradeScreen
         add sp, 0x14
         pop si
         pop di
@@ -562,7 +562,7 @@ Lp_2A57_034C:
         retf
         db 0x90
 
-Lp_2A57_05C0:
+FixJerseyConflict:
         enter 0x630, 0x0
         push di
         push si
@@ -757,7 +757,7 @@ Lp_2A57_05C0:
         leave
         retf
 
-Lp_2A57_078E:
+ExecuteTrade:
         enter 0x672, 0x0
         push di
         push si
@@ -950,7 +950,7 @@ Lp_2A57_078E:
         mov al, [bx]
         push ax
         mov [bp - 0x672], bx
-        call 0x1EAE:Lp_1EAE_000A
+        call 0x1EAE:ClearPlayerFromLines
         add sp, 0x6
         lea ax, [bp - 0x298]
         push ss
@@ -958,7 +958,7 @@ Lp_2A57_078E:
         mov bx, [bp - 0x672]
         mov al, [bx]
         push ax
-        call 0x1EAE:Lp_1EAE_000A
+        call 0x1EAE:ClearPlayerFromLines
         add sp, 0x6
         lea ax, [bp - 0x5b0]
         push ss
@@ -966,7 +966,7 @@ Lp_2A57_078E:
         mov bx, [bp - 0x672]
         mov al, [bx + 0x2]
         push ax
-        call 0x1EAE:Lp_1EAE_000A
+        call 0x1EAE:ClearPlayerFromLines
         add sp, 0x6
         lea ax, [bp - 0x580]
         push ss
@@ -974,7 +974,7 @@ Lp_2A57_078E:
         mov bx, [bp - 0x672]
         mov al, [bx + 0x2]
         push ax
-        call 0x1EAE:Lp_1EAE_000A
+        call 0x1EAE:ClearPlayerFromLines
         add sp, 0x6
         push word [bp - 0x4]
         push word [bp - 0x6]
@@ -1005,7 +1005,7 @@ Lp_2A57_078E:
         push ss
         push ax
         push word [bp - 0x14]
-        call 0x20E6:Lp_20E6_007A
+        call 0x20E6:WriteTeamRec
         add sp, 0x8
         mov [bp - 0xa], ax
 .12:
@@ -1017,7 +1017,7 @@ Lp_2A57_078E:
         push ss
         push ax
         push word [bp - 0x14]
-        call 0x20E6:Lp_20E6_007A
+        call 0x20E6:WriteTeamRec
         add sp, 0x8
         mov [bp - 0xa], ax
 .13:
@@ -1033,7 +1033,7 @@ Lp_2A57_078E:
         push ax
         push word [bp - 0x12]
         push cs
-        call Lp_2A57_05C0
+        call FixJerseyConflict
         add sp, 0x8
         mov [bp - 0xa], ax
 .14:
@@ -1049,7 +1049,7 @@ Lp_2A57_078E:
         push ax
         push word [bp - 0x12]
         push cs
-        call Lp_2A57_05C0
+        call FixJerseyConflict
         add sp, 0x8
         mov [bp - 0xa], ax
 .15:
@@ -1193,7 +1193,7 @@ Lp_2A57_078E:
         leave
         retf
 
-Lp_2A57_0BE2:
+DrawTradeRow:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push si
@@ -1230,7 +1230,7 @@ Lp_2A57_0BE2:
         retf
         db 0x90
 
-Lp_2A57_0C32:
+DrawTradeScreen:
         enter 0x28, 0x0
         push di
         push si
@@ -1383,7 +1383,7 @@ Lp_2A57_0C32:
         push word 0x3680
         push strict word f_3680_0000
         push cs
-        call Lp_2A57_0044
+        call DrawJerseyNumber
         add sp, 0xa
         jmp short .5
 .3:
@@ -1494,7 +1494,7 @@ Lp_2A57_0C32:
         leave
         retf
 
-Lp_2A57_0EF8:
+TradeHitTest:
         enter 0x2, 0x0
         push di
         push si
@@ -1592,7 +1592,7 @@ Lp_2A57_0EF8:
         retf
         db 0x90
 
-Lp_2A57_0FDE:
+TradeDone:
         enter 0x6, 0x0
         push si
         db 0x2B, 0xD2                           ; insn: sub dx, dx
@@ -1664,12 +1664,12 @@ Lp_2A57_0FDE:
         retf
         db 0x90
 
-Lp_2A57_1080:
+TradeCancel:
         mov word [g_C27C], 0xffff
         retf
         db 0x90
 
-Lp_2A57_1088:
+FindTradeSlot:
         enter 0x4, 0x0
         push di
         push si
@@ -1700,7 +1700,7 @@ Lp_2A57_1088:
         leave
         retf
 
-Lp_2A57_10C0:
+TradeScreenLoop:
         enter 0xda, 0x0
         push di
         push si
@@ -1731,7 +1731,7 @@ Lp_2A57_10C0:
         push word [bp + 0x6]
         push word [bp + 0xa]
         push cs
-        call Lp_2A57_0C32
+        call DrawTradeScreen
         add sp, 0x14
         push strict word str_Pntr_10
         push word [bp + 0x16]
@@ -2445,7 +2445,7 @@ Lp_2A57_10C0:
         push word [bp - 0x7a]
         push word [bp - 0x1e]
         push cs
-        call Lp_2A57_0EF8
+        call TradeHitTest
         add sp, 0xa
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .59
@@ -2543,7 +2543,7 @@ Lp_2A57_10C0:
         call 0x03A3:SetCharPtr.regs
         push word [g_C79A]
         push cs
-        call Lp_2A57_0BE2
+        call DrawTradeRow
         add sp, 0x2
 .66:
         mov bx, [bp - 0x7c]
@@ -2552,7 +2552,7 @@ Lp_2A57_10C0:
         push ax
         push word [g_C79A]
         push cs
-        call Lp_2A57_1088
+        call FindTradeSlot
         add sp, 0x4
         mov bx, [g_C79A]
         shl bx, 1
@@ -2562,7 +2562,7 @@ Lp_2A57_10C0:
         call 0x03A3:SetCharPtr.regs
         push word [g_C79A]
         push cs
-        call Lp_2A57_0BE2
+        call DrawTradeRow
         add sp, 0x2
         mov al, 0xff
         mov bx, [bp - 0x7c]
@@ -2704,7 +2704,7 @@ Lp_2A57_10C0:
         call 0x03A3:SetCharPtr.regs
         push word [g_C79A]
         push cs
-        call Lp_2A57_0BE2
+        call DrawTradeRow
         add sp, 0x2
         mov es, [g_8C0E]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -2788,7 +2788,7 @@ Lp_2A57_10C0:
         push word 0x3680
         push strict word f_3680_0000
         push cs
-        call Lp_2A57_0044
+        call DrawJerseyNumber
         add sp, 0xa
         jmp near .88
         db 0x90
@@ -2815,7 +2815,7 @@ Lp_2A57_10C0:
         call 0x03A3:SetCharPtr.regs
         push word [g_C79A]
         push cs
-        call Lp_2A57_0BE2
+        call DrawTradeRow
         add sp, 0x2
         mov ax, 0xffff
         mov bx, [g_C79A]
@@ -2838,7 +2838,7 @@ Lp_2A57_10C0:
         call 0x03A3:SetCharPtr.regs
         push word [g_C79A]
         push cs
-        call Lp_2A57_0BE2
+        call DrawTradeRow
         add sp, 0x2
 .96:
         mov bx, [g_C79A]
@@ -2850,7 +2850,7 @@ Lp_2A57_10C0:
         call 0x03A3:SetCharPtr.regs
         push word [g_C79A]
         push cs
-        call Lp_2A57_0BE2
+        call DrawTradeRow
         add sp, 0x2
 .97:
         push word [HeapSizeHi]
@@ -2949,7 +2949,7 @@ Lp_2A57_10C0:
         push word 0x3680
         push strict word f_3680_0000
         push cs
-        call Lp_2A57_0044
+        call DrawJerseyNumber
         add sp, 0xa
         push word 0x80
         mov bx, [g_C79A]
@@ -3009,7 +3009,7 @@ Lp_2A57_10C0:
         retf
         db 0x90
 
-Lp_2A57_1F1C:
+TradeRosterCmp:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -3080,7 +3080,7 @@ Lp_2A57_1F1C:
         leave
         retf
 
-Lp_2A57_1F96:
+TradeScreen:
         enter 0x610, 0x0
         push di
         push si
@@ -3153,7 +3153,7 @@ Lp_2A57_1F96:
         add sp, 0x8
         push word [si + 0x2]
         push word [si]
-        call 0x1E9D:Lp_1E9D_0008
+        call 0x1E9D:LoadHomePals
         add sp, 0x4
         mov word [g_C79C], 0xb1c4
         mov word [g_C79E], 0xb0c4
@@ -3172,7 +3172,7 @@ Lp_2A57_1F96:
         push word [bp + 0x8]
         push word [bp + 0x6]
         push cs
-        call Lp_2A57_00C8
+        call BuildTradeRoster
         add sp, 0xe
         mov [bp - 0x6], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -3186,21 +3186,21 @@ Lp_2A57_1F96:
         push word [bp + 0x8]
         push word [bp + 0x6]
         push cs
-        call Lp_2A57_00C8
+        call BuildTradeRoster
         add sp, 0xe
         mov [bp - 0x6], ax
 .2:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .3
         push word 0x2a57
-        push strict word Lp_2A57_1F1C
+        push strict word TradeRosterCmp
         push 0x16
         push 0x1c
         push word 0xc2c2
         call 0x0000:_qsort
         add sp, 0xa
         push word 0x2a57
-        push strict word Lp_2A57_1F1C
+        push strict word TradeRosterCmp
         push 0x16
         push 0x1c
         push word 0xc52a
@@ -3220,7 +3220,7 @@ Lp_2A57_1F96:
         push word [bp - 0x14]
         push word [bp - 0x16]
         push cs
-        call Lp_2A57_10C0
+        call TradeScreenLoop
         add sp, 0x18
         mov [bp - 0x6], ax
 .3:
@@ -3244,7 +3244,7 @@ Lp_2A57_1F96:
         retf
         db 0x90
 
-Lp_2A57_2152:
+TradePlayers:
         enter 0x5a, 0x0
         push si
         mov word [bp - 0x4], 0xffff
@@ -3256,7 +3256,7 @@ Lp_2A57_2152:
         push 0x2
         push word 0x3701
         push strict word f_3701_0E53
-        call 0x2305:Lp_2305_044C
+        call 0x2305:LeagueCheckStub
         add sp, 0x6
         mov [bp - 0x3e], ax
 .1:
@@ -3279,7 +3279,7 @@ Lp_2A57_2152:
         push strict word f_3A0B_AC62
         push word 0x3701
         push strict word f_3701_0E53
-        call 0x22D3:Lp_22D3_0000
+        call 0x22D3:ReadLeagueInfo
         add sp, 0x20
         mov [bp - 0x3e], ax
 .2:
@@ -3371,7 +3371,7 @@ Lp_2A57_2152:
         mov [bp - 0x4e], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .4
-        call 0x2CB7:Lp_2CB7_0C28
+        call 0x2CB7:MergeLeagueFiles
         mov word [bp - 0x26], 0xffff
         jmp short .7
         db 0x90
@@ -3393,7 +3393,7 @@ Lp_2A57_2152:
         push strict word f_3A0B_AA38
         lea ax, [bp - 0x24]
         push ax
-        call 0x22D3:Lp_22D3_01E2
+        call 0x22D3:ReadTeamNames
         add sp, 0x8
         mov [bp - 0x3e], ax
 .7:
@@ -3625,7 +3625,7 @@ Lp_2A57_2152:
         push strict word f_3A0B_AC5C
         push word 0x3701
         push strict word f_3701_0E53
-        call 0x1F31:Lp_1F31_0BAE
+        call 0x1F31:LeagueTeamSelect
         add sp, 0x18
         cmp word [bp - 0x3c], 0x0
         jl short .23
@@ -3634,7 +3634,7 @@ Lp_2A57_2152:
         push word 0x3a0b
         push strict word f_3A0B_AC62
         push word [bp - 0x3c]
-        call 0x28A8:Lp_28A8_000A
+        call 0x28A8:AskTeamPassword
         add sp, 0x6
         mov [bp - 0x2e], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -3642,7 +3642,7 @@ Lp_2A57_2152:
         push word 0x3a0b
         push strict word f_3A0B_AC62
         push word [bp - 0x3a]
-        call 0x28A8:Lp_28A8_000A
+        call 0x28A8:AskTeamPassword
         add sp, 0x6
         mov [bp - 0x2e], ax
 .21:
@@ -3658,7 +3658,7 @@ Lp_2A57_2152:
         push word 0x3701
         push strict word f_3701_0E53
         push cs
-        call Lp_2A57_1F96
+        call TradeScreen
         add sp, 0xe
         mov [bp - 0x2e], ax
 .22:
@@ -3671,7 +3671,7 @@ Lp_2A57_2152:
         push word 0x3701
         push strict word f_3701_0E53
         push cs
-        call Lp_2A57_078E
+        call ExecuteTrade
         add sp, 0x8
         mov [bp - 0x3e], ax
 .23:
