@@ -1,6 +1,8 @@
 ; DGROUP initialized data (near data of the medium model, paragraph 45C9h): the C runtime's data, strings,
 ; tables and the game's near variables, shared with the overlays. The BSS (no bytes in the file) is in
 ; dgroup_bss.asm.
+DgroupStart:                                    ; offset 0 of DGROUP; code splits a label across a segment end
+                                                ; with label - DgroupStart
         db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
         db 'MS Run-Time Library - Copyright (c) 1990, Microsoft Corp'
         db 0x18, 0x00
@@ -701,7 +703,9 @@ OldInt0Seg:                                     ; saved divide-error vector, seg
         dw 0x0000
 OldInt0Off:                                     ; saved divide-error vector, offset; used by HookDivideError,
                                                 ; UnhookDivideError
-        db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+        db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+DivideFault:                                    ; set to 1 by DivideHandler when a divide faults
+        db 0x00, 0x00
 str_HomepalsBin:                                ; string 'HOMEPALS.BIN'; not used in the EXE (overlays may use
                                                 ; it)
         db 'HOMEPALS.BIN', 0x00

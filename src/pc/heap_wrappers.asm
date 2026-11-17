@@ -199,4 +199,14 @@ InitHeapArgs:
         push word [bx + 0x6]
         push word [bx + 0x4]
         jmp short InitHeap.1
-        db 0x8B, 0xDC, 0x33, 0xC0, 0xBA, 0x0A, 0x00, 0xFF
+
+;-----------------------------------------------------------------------------
+; InitHeapVariant                                             14DB:0118  94 PC
+; InitHeap with the arguments at [bx + 4], [bx + 6] and [bx + 8] and a fixed 0Ah; it
+; continues in the next segment. Not called in the EXE.
+;-----------------------------------------------------------------------------
+InitHeapVariant:
+        db 0x8B, 0xDC                           ; insn: mov bx, sp
+        db 0x33, 0xC0                           ; insn: xor ax, ax
+        mov dx, 0xa
+        db 0xFF                                 ; insn: push word [bx + 8]: the rest is in the next segment

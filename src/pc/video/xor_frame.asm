@@ -4,12 +4,11 @@
 ; SortPairsTail                                               1500:0000  94 PC
 ; End of SortPairs.
 ;-----------------------------------------------------------------------------
-SortPairsTail:
-        jng short SortPairsTail
-.1:
+SortPairsTail:                                  ; end of SortPairs
+        db 0x7E, 0xFE                           ; the rest of mov di, [bp - 2] from the segment before
         db 0x0B, 0xFF                           ; insn: or di, di
         jng short .2
-        db 0xE9, 0x67, 0xFF                     ; insn: jmp 0xff70
+        db 0xE9, 0x67, 0xFF                     ; insn: jmp SortPairsPass (segment before)
 .2:
         pop si
         pop di

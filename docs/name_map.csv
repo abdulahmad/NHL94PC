@@ -4470,3 +4470,9 @@ g_8F86,MidiEvLength,g_8F86,new,high,"event length, added to the track pointer",s
 g_8F88,MidiNextEvent,g_8F88,new,high,"second ParseMidiEvent target, delta only",src/data/dgroup_bss.asm
 wbuf:B96E,SysexBuffer,wbuf:B96E,new,medium,push work_buffer:SysexBuffer with the event length - 4 in SeqStepTrack,src/data/far/work_buffer.asm
 wbuf:BB6F,ChannelSetup,wbuf:BB6F,new,medium,"[es:bx+ChannelSetup], bx = channel*7, sent as controller 7",src/data/far/work_buffer.asm
+g_0000,DgroupStart,g_0000,new,high,"offset 0 of DGROUP, for label arithmetic across a segment end",src/data/dgroup.asm
+g_09C4,DivideFault,g_09C4,new,high,"mov byte [DivideFault],1 in DivideHandler (split over the segment end)",src/data/dgroup.asm
+seg018:0008,DivideDgroup,seg018:0008,new,high,"mov [cs:DivideDgroup], ds in HookDivideError; DivideHandler loads ds from it",src/pc/divide_error.asm
+seg034:0118,InitHeapVariant,seg034:0118,new,high,"third InitHeap entry, left as data before",src/pc/heap_wrappers.asm
+pflags:0000,PaletteFlags,pflags:0000,new,high,MergeRemapTables writes [es:si+PaletteFlags] with es = PaletteFlagsSeg2,src/data/far/palette_flags.asm
+pflags:0100,PaletteFlags2,pflags:0100,new,high,MergeRemapTables writes [es:si+PaletteFlags2],src/data/far/palette_flags.asm

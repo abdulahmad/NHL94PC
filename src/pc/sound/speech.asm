@@ -5,8 +5,8 @@
 ; PadTimerTickTail                                            09B2:0000  94 PC
 ; The last instructions of PadTimerTick, in the next paragraph.
 ;-----------------------------------------------------------------------------
-PadTimerTickTail:
-        std
+PadTimerTickTail:                               ; end of PadTimerTick
+        db 0xFD                                 ; last byte of the call to ReadHotKey in the segment before
         add sp, 0x2
         inc word [PadRepeatDelay]
 .1:

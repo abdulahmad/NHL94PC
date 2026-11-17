@@ -5,9 +5,9 @@
 ; UseDbDescriptorTail                                         0F99:0000  94 PC
 ; The end of UseDbDescriptor in the next paragraph (the overlay call).
 ;-----------------------------------------------------------------------------
-UseDbDescriptorTail:
-        xor al, 0x68
-        les ax, [bx + si]
+UseDbDescriptorTail:                            ; end of UseDbDescriptor
+        db 0x34                                 ; last byte of push word 3415h from the segment before
+        push strict word lgstate
 .1:
         call 0x1B35:WriteModeStateThunk
         add sp, 0x4

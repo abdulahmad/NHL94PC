@@ -1,13 +1,13 @@
 ; EA sound library sequencer, the timer side: the tick that steps each track and sends its MIDI
 ; events (notes, controllers, voice changes). The first bytes finish MergeRemapTables.
-        db 0x00
 
 ;-----------------------------------------------------------------------------
-; MergeRemapTablesTail                                       1630:0001  EACLIB
+; MergeRemapTablesTail                                       1630:0000  EACLIB
 ; End of MergeRemapTables, which starts in the file before.
 ;-----------------------------------------------------------------------------
-MergeRemapTablesTail:
-        add [si - 0x2d], di
+MergeRemapTablesTail:                           ; end of MergeRemapTables
+        db 0x00, 0x01                           ; the rest of cmp si, 100h from the segment before
+        db 0x7C, 0xD3                           ; insn: jl MergeRemapTables.copy (segment before)
         pop si
         pop di
         leave

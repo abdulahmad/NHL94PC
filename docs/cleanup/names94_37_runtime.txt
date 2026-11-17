@@ -103,3 +103,9 @@ g_8F86 MidiEvLength | new | high | event length, added to the track pointer
 g_8F88 MidiNextEvent | new | high | second ParseMidiEvent target, delta only
 wbuf:B96E SysexBuffer | new | medium | push work_buffer:SysexBuffer with the event length - 4 in SeqStepTrack
 wbuf:BB6F ChannelSetup | new | medium | [es:bx+ChannelSetup], bx = channel*7, sent as controller 7
+g_0000 DgroupStart | new | high | offset 0 of DGROUP, for label arithmetic across a segment end
+g_09C4 DivideFault | new | high | mov byte [DivideFault],1 in DivideHandler (split over the segment end)
+seg018:0008 DivideDgroup | new | high | mov [cs:DivideDgroup], ds in HookDivideError; DivideHandler loads ds from it
+seg034:0118 InitHeapVariant | new | high | third InitHeap entry, left as data before
+pflags:0000 PaletteFlags | new | high | MergeRemapTables writes [es:si+PaletteFlags] with es = PaletteFlagsSeg2
+pflags:0100 PaletteFlags2 | new | high | MergeRemapTables writes [es:si+PaletteFlags2]

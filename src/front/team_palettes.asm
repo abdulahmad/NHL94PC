@@ -5,8 +5,9 @@
 ; DivideHandlerTail                                           0D74:0000  94 PC
 ; The end of DivideHandler (iret) in the next paragraph.
 ;-----------------------------------------------------------------------------
-DivideHandlerTail:
-        or [bx + di], ax
+DivideHandlerTail:                              ; end of DivideHandler
+; the rest of mov byte [DivideFault], 1 from the segment before
+        db (DivideFault - DgroupStart) >> 8, 0x01
         db 0x33, 0xC0                           ; insn: xor ax, ax
         pop cx
         pop dx

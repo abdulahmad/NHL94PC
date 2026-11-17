@@ -5,14 +5,13 @@
 ; InitHeapVariantTail                                         14ED:0000  94 PC
 ; Tail of a third InitHeap entry that starts in the file before.
 ;-----------------------------------------------------------------------------
-InitHeapVariantTail:
-        ja short .1
+InitHeapVariantTail:                            ; end of InitHeapVariant
+        db 0x77, 0x08                           ; the rest of push word [bx + 8] from the segment before
         push word [bx + 0x6]
         push dx
         push ax
         push word [bx + 0x4]
-.1:
-        db 0xEB, 0xBD                           ; insn: jmp short 0xffc9
+        db 0xEB, 0xBD                           ; insn: jmp short InitHeap.1 (segment before)
 
 ;-----------------------------------------------------------------------------
 ; FreeCanvas                                                  14ED:000C  94 PC
@@ -165,4 +164,4 @@ SortPairsPass:
 .6:
         mov [bp - 0x2], di
         sar word [bp - 0x2], 1
-        db 0x8B
+        db 0x8B                                 ; insn: mov di, [bp - 2]: the rest is in the next segment
