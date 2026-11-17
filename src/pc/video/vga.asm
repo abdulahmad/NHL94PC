@@ -8609,7 +8609,7 @@ FillSpanVga:
 
 ;-----------------------------------------------------------------------------
 ; RectSpanPlanes                                              0FEF:41D2  94 PC
-; Splits a span into planar edges using the mask table at 77BDh.
+; Splits a span into planar edges using the mask table RectRightMasks.
 ;-----------------------------------------------------------------------------
 RectSpanPlanes:
         db 0x0B, 0xC9                           ; insn: or cx, cx

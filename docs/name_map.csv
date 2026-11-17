@@ -1927,3 +1927,4 @@ JumpAhead,_atoi,JumpAhead,MSC,high,a near jump to _atol: atoi is atol in this mo
 RetOnly,_fstrlen,RetOnly,MSC,high,"repne scasb over a far string, returns the count without the null",src/lib/msc_runtime.asm
 RetOnly2,_fstrcmp,RetOnly2,MSC,high,"scans the second far string for its length, then repe cmpsb; returns -1, 0 or 1",src/lib/msc_runtime.asm
 seg000:1D8E,_stackavail,,MSC,high,"SP minus StackLimit, 0 when below it; was kept as bytes",src/lib/msc_runtime.asm
+g_6485,str_Locatesound44sSoundNot,,new,high,"label added: FindFarAlt's message, second string after str_Locateshape44sShapeNot",src/data/dgroup.asm

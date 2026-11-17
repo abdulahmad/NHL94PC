@@ -3189,10 +3189,13 @@ MouseRatioShift:                                ; shift applied to the mickey co
                                                 ; used by MouseRatio, MouseOpen
         db 0x00, 0x00, 'locateemmshape - ', 0x27, '%-4.4s', 0x27, ' SHAPE NOT FOUND'
         db 0x0D, 0x0A, 0x00
-str_Locateshape44sShapeNot:                     ; string 'locateshape - '%-4.4s' SHAPE NOT FOUND\r\n'; not
-                                                ; referenced in the root code
+str_Locateshape44sShapeNot:                     ; string 'locateshape - '%-4.4s' SHAPE NOT FOUND\r\n';
+                                                ; FindFarMsg passes it to FatalError
         db 'locateshape - ', 0x27, '%-4.4s', 0x27, ' SHAPE NOT FOUND'
-        db 0x0D, 0x0A, 0x00, 'locatesound - ', 0x27, '%-4.4s', 0x27, ' SOUND NOT FOUND'
+        db 0x0D, 0x0A, 0x00
+str_Locatesound44sSoundNot:                     ; string 'locatesound - '%-4.4s' SOUND NOT FOUND\r\n';
+                                                ; FindFarAlt passes it to FatalError
+        db 'locatesound - ', 0x27, '%-4.4s', 0x27, ' SOUND NOT FOUND'
         db 0x0D, 0x0A, 0x00
 str_ThisProgramRequiresAn80286:                 ; string 'This program requires an 80286\r'; used by InitHeap
         db 'This program requires an 80286'

@@ -47,6 +47,8 @@ MouseXShift		equ	0x6428
 MouseYShift		equ	0x642A
 MouseLevel		equ	0x642C
 MouseRatioShift		equ	0x642E
+str_Locateshape44sShapeNot		equ	0x645C
+str_Locatesound44sSoundNot		equ	0x6485
 FmtSave		equ	0x64CE
 FmtBuf		equ	0x64D6
 CharSeg		equ	0x6D50

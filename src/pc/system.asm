@@ -1350,26 +1350,26 @@ LookupBody:
 ; Look up the long at the near pointer [bp+8] in the far table at [bp+4]. Records start at offset 6 and are
 ; four bytes. A miss with BX nonzero calls FatalError.
 ;
-; A hit returns the far pointer stored after the keys, added to DS. FindFar passes no message. FindFarAlt uses
-; 0x6485. FindFarMsg uses 0x645c.
+; A hit returns the far pointer stored after the keys, added to DS. FindFar passes no message. FindFarAlt
+; passes the sound-not-found message, FindFarMsg the shape-not-found message.
 ;-----------------------------------------------------------------------------
 FindFar:
         db 0x33, 0xDB                           ; insn: xor bx, bx
         jmp short FindFarBody
 ;-----------------------------------------------------------------------------
 ; FindFarAlt                                                  03A3:0842  94 PC
-; Same lookup. On a miss calls FatalError with the pointer at 0x6485.
+; Same lookup. On a miss calls FatalError with the sound-not-found message.
 ;-----------------------------------------------------------------------------
 FindFarAlt:
-        mov bx, 0x6485
+        mov bx, str_Locatesound44sSoundNot
         jmp short FindFarBody
 ;-----------------------------------------------------------------------------
 ; FindFarMsg                                                  03A3:0847  94 PC
-; Same lookup. On a miss calls FatalError with the pointer at 0x645c. _main calls
+; Same lookup. On a miss calls FatalError with the shape-not-found message. _main calls
 ; this.
 ;-----------------------------------------------------------------------------
 FindFarMsg:
-        mov bx, 0x645c
+        mov bx, str_Locateshape44sShapeNot
 FindFarBody:
         db 0x8B, 0xC4                           ; insn: mov ax, sp
         push bp
@@ -2246,7 +2246,7 @@ UnhookInt8:
         out 0x40, al
 
 
-; Find a free pair in the eight pairs at 6DB4h and store the two arguments.
+; Find a free pair in the eight pairs of SlotTab and store the two arguments.
 ; Calls FatalError when every pair is in use. _main calls this.
 AllocSlot:
         push bp
@@ -2684,7 +2684,7 @@ InitJoy:
 
 ;-----------------------------------------------------------------------------
 ; JoyNibble                                                   03A3:10E1  94 PC
-; The low nibble of the argument indexes the 16 bytes at 701Fh.
+; The low nibble of the argument indexes the 16 bytes of JoyNibbleTable.
 ;-----------------------------------------------------------------------------
 JoyNibble:
         push bp
@@ -2734,7 +2734,7 @@ JoyScaleY:
 ;-----------------------------------------------------------------------------
 ; PollSticks                                                  03A3:1120  94 PC
 ; If JoyOn is 0, return 0. Otherwise time up to four axes on port 201h. The axis mask comes from the byte at
-; JoyOn in the table at 7074h. Bit 0 of JoyOn calibrates the first pair into Stick1Bits.
+; JoyOn in StickDirTable. Bit 0 of JoyOn calibrates the first pair into Stick1Bits.
 ;
 ; Bit 1 calibrates the second pair into Stick2Bits. AL is Stick1Bits and AH is Stick2Bits.
 ;-----------------------------------------------------------------------------
@@ -3919,7 +3919,7 @@ WriteCharAt:
 
 ;-----------------------------------------------------------------------------
 ; SaveTextState                                               03A3:19B2  94 PC
-; Copy 15 words from 74E2h and 15 words from the block selected by 74DCh
+; Copy 15 words from 74E2h and 15 words from the block selected by CurPage
 ; into the near buffer.
 ;-----------------------------------------------------------------------------
 SaveTextState:
@@ -4518,8 +4518,8 @@ MouseHide:
 
 ;-----------------------------------------------------------------------------
 ; ReadPots                                                    03A3:1D72  94 PC
-; Time four bits on port 201h. The mask is the byte at 75E0h. Store the four counts and the button nibble. On
-; a timeout, store the bits still set and retry. _main calls this.
+; Time four bits on port 201h. The mask is the PotButtons byte. Store the four counts and the button nibble.
+; On a timeout, store the bits still set and retry. _main calls this.
 ;-----------------------------------------------------------------------------
 ReadPots:
         push bp
@@ -4786,8 +4786,8 @@ FillFarBody:
         db 0x00
 
 ; Order two points into the record at [bp+0Eh]. LineOpen skips the box test. LineClip rejects a line when both
-; ends share an outcode against the box at 74F2h/74F4h and 74FCh/74FEh, and otherwise stores a direction byte.
-; The equal-Y path is LineFlat and the overflow path is LineOverflow.
+; ends share an outcode against the box at ClipTopY/ClipBottomY and ClipLeftX/ClipRightX, and otherwise stores
+; a direction byte. The equal-Y path is LineFlat and the overflow path is LineOverflow.
 ;
 ; A line with no clip bits returns 0 from LineOk.
 
