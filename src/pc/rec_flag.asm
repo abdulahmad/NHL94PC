@@ -1,4 +1,4 @@
-; Segment seg003. RecFlag returns the word at offset 18h of a far
+; RecFlag returns the word at offset 18h of a far
 ; record. NullFar is the retf _main calls. The last two bytes are
 ; another retf and a nop.
 

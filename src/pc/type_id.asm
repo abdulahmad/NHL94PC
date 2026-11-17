@@ -1,4 +1,4 @@
-; Segment seg004. NineCmp and TypeId look at a short header.
+; NineCmp and TypeId look at a short header.
 ; The first two bytes are retf and nop.
 
 ; DGROUP words this segment uses. The bytes live in the near data, not here.
@@ -89,9 +89,8 @@ ReadBe:
         retf
 ;-----------------------------------------------------------------------------
 ; TypeId                                                      0838:008E  94 PC
-; A second byte of FBh selects a type code from the first byte.
-; Otherwise the first four bytes are a big-endian dword, and 3F3h
-; is its own code.
+; A second byte of FBh selects a type code from the first byte. Otherwise the first four bytes are a big-
+; endian dword, and 3F3h is its own code.
 ;-----------------------------------------------------------------------------
 TypeId:
         enter 2, 0
@@ -126,7 +125,8 @@ TypeId:
         ja short TypeTab.4
         xchg bx, ax
         jmp word [cs:bx+TypeTab]
-TypeTab:
+TypeTab:                                        ; eight words. The low bits of the type byte select the case;
+                                                ; used by TypeId
         dw .10
         dw .12
         dw .10
@@ -354,12 +354,11 @@ TypeTab:
         leave
         retf
 
-; ReadHead runs NineCmp and TypeId. A type from 1 to 1Ch returns the
-; 3-byte value that follows the two type bytes. Otherwise the caller
-; dword is returned.
-; EmitByte writes one byte through OutPtr, or expands it through the
-; two maps when the low map marks it. GetBits pulls that many bits
-; from BitBuf, refilling from InPtr when fewer than 16 remain.
+; ReadHead runs NineCmp and TypeId. A type from 1 to 1Ch returns the 3-byte value that follows the two type
+; bytes. Otherwise the caller dword is returned. EmitByte writes one byte through OutPtr, or expands it
+; through the two maps when the low map marks it.
+;
+; GetBits pulls that many bits from BitBuf, refilling from InPtr when fewer than 16 remain.
 
 ;-----------------------------------------------------------------------------
 ; ReadHead                                                    0838:0292  94 PC
@@ -531,11 +530,10 @@ GetBits:
         leave
         retf
 
-; ReadVar reads a variable-length number from the bit stream.
-; Unpack checks for the word 31FBh, builds a decode table on the
-; stack, and writes the output through OutPtr. A following 32FBh
-; adds a running sum into each output byte. Expand checks for
-; 47FBh, fills the three maps on the stack, and emits the bytes.
+; ReadVar reads a variable-length number from the bit stream. Unpack checks for the word 31FBh, builds a
+; decode table on the stack, and writes the output through OutPtr. A following 32FBh adds a running sum into
+; each output byte. Expand checks for 47FBh, fills the three maps on the stack, and emits the bytes.
+;
 ; It returns with ret 8.
 
 ;-----------------------------------------------------------------------------
@@ -1046,13 +1044,12 @@ Expand:
         leave
         ret 8
 
-; AddCopy accepts 62FBh or 66FBh and writes each input byte plus a
-; running count. LoadBlock picks the unpacker from the type byte:
-; 30h and 32h call Unpack, 46h calls Expand, 60h 62h and 66h call
-; AddCopy, and 6Ah and 6Eh copy from five bytes into the header.
-; Anything else, when the flag word is set, calls seg022. A zero
-; result copies the header bytes themselves. LoadReport passes flag
-; 1. LoadQuiet passes flag 0. Its near call finishes in seg005.
+; AddCopy accepts 62FBh or 66FBh and writes each input byte plus a running count. LoadBlock picks the unpacker
+; from the type byte: 30h and 32h call Unpack, 46h calls Expand, 60h 62h and 66h call AddCopy, and 6Ah and 6Eh
+; copy from five bytes into the header. Anything else, when the flag word is set, calls FatalError.
+;
+; A zero result copies the header bytes themselves. LoadReport passes flag 1. LoadQuiet passes flag 0. Its
+; near call finishes in the start-up code.
 
 ;-----------------------------------------------------------------------------
 ; AddCopy                                                     0838:095C  94 PC
@@ -1251,7 +1248,7 @@ LoadBlock:
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push 0x40c
-        call 0xF4A:FatalError                   ; seg022
+        call 0xF4A:FatalError
         add sp, 4
         jmp short .10
         nop

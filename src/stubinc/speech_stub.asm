@@ -4,7 +4,6 @@
 	org	0x0
 InsertRecWrap		equ	0x13
 AllocRecData		equ	0x30
-str_Que		equ	0x80
 DrvShutdown		equ	0x178
 EmsMapFrame		equ	0x192
 EmsSaveMap		equ	0x1B9

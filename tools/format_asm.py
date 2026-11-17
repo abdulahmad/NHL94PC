@@ -50,6 +50,20 @@ def split(line):
     return line, None
 
 
+def detab(c):
+    """tabs outside strings become one space"""
+    out, q = [], None
+    for ch in c:
+        if q:
+            if ch == q: q = None
+        elif ch in "'\"`": q = ch
+        elif ch == '\t':
+            if out and out[-1] == ' ': continue
+            ch = ' '
+        out.append(ch)
+    return ''.join(out)
+
+
 def put(code, com):
     t = IND + code
     if com is None: return t
@@ -76,6 +90,7 @@ def fmt_line(l, prev_trailing):
         return lab if com is None else lab.ljust(COL) + com.rstrip() if len(lab) < COL else lab + ' ' + com.rstrip()
     m = re.match(r'^(\S+)\s+(.*)$', c)
     c = (m.group(1) + ' ' + m.group(2)) if m else c
+    c = detab(c)
     if com is not None:
         body = com[1:].strip()
         if re.match(r'^(db|dw)\b', c, re.I) and not body.startswith('insn:') and looks_like_insn(body) \

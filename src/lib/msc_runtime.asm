@@ -1,4 +1,4 @@
-; Segment seg000. VGA copies, the C startup, file and DOS calls,
+; VGA copies, the C startup, file and DOS calls,
 ; strings, runtime messages, formatted output, and the number
 ; helpers, and the floating-point emulator. __astart jumps to MscStartup.
 
@@ -49,10 +49,9 @@ _inp:
         retf
 
 ;-----------------------------------------------------------------------------
-; VgaCopyWrapped                                                0000:002B  MSC
-; latched VGA copy of one rectangle out of the circular
-; buffer. Write mode 1, all four planes. The source wraps inside the
-; buffer. Arguments: destination, column, row, width, height.
+; VgaCopyWrapped                                              0000:002B  94 PC
+; Latched VGA copy of one rectangle out of the circular buffer. Write mode 1, all four planes. The source
+; wraps inside the buffer. Arguments: destination, column, row, width, height.
 ;-----------------------------------------------------------------------------
 VgaCopyWrapped:
         push bp
@@ -136,10 +135,9 @@ VgaCopyWrapped:
         retf
 
 ;-----------------------------------------------------------------------------
-; VgaCopyToPitch                                                0000:00CB  MSC
-; latched copy of packed rows into a pitched destination.
-; Arguments: source, destination, width, height. The row stride is the
-; near word used by the other copies.
+; VgaCopyToPitch                                              0000:00CB  94 PC
+; Latched copy of packed rows into a pitched destination. Arguments: source, destination, width, height. The
+; row stride is the near word used by the other copies.
 ;-----------------------------------------------------------------------------
 VgaCopyToPitch:
         push bp
@@ -194,7 +192,7 @@ VgaCopyToPitch:
         retf
 
 ;-----------------------------------------------------------------------------
-; VgaCopyFromPitch                                              0000:0123  MSC
+; VgaCopyFromPitch                                            0000:0123  94 PC
 ; latched copy of pitched rows into a packed destination.
 ; Arguments: source, destination, width, height.
 ;-----------------------------------------------------------------------------
@@ -251,10 +249,9 @@ VgaCopyFromPitch:
         retf
 
 ;-----------------------------------------------------------------------------
-; VgaStamp8                                                     0000:017B  MSC
-; copy an 8-row, 2-byte VGA block. Bit 0x800 selects the
-; plane-by-plane path that swaps the two bytes. Bit 0x1000 walks the
-; rows backward. Arguments: source, destination, flags.
+; VgaStamp8                                                   0000:017B  94 PC
+; Copy an 8-row, 2-byte VGA block. Bit 0x800 selects the plane-by-plane path that swaps the two bytes. Bit
+; 0x1000 walks the rows backward. Arguments: source, destination, flags.
 ;-----------------------------------------------------------------------------
 VgaStamp8:
         push bp
@@ -388,7 +385,7 @@ VgaStamp8:
         retf
 
 ;-----------------------------------------------------------------------------
-; VgaPageFlip                                                   0000:025C  MSC
+; VgaPageFlip                                                 0000:025C  94 PC
 ; wait for the vertical retrace, then point the CRT at the
 ; other page and set the pel pan. No arguments. Toggles the page word.
 ;-----------------------------------------------------------------------------
@@ -462,10 +459,9 @@ VgaPageFlip:
         retf
 
 ;-----------------------------------------------------------------------------
-; VgaStorePlanes                                                0000:02D5  MSC
-; copy two bitmaps into VGA memory, one plane at a time.
-; Arguments: pointer to the two far sources, pointer to the two sizes.
-; Both images land at the same VGA offset, one after the other.
+; VgaStorePlanes                                              0000:02D5  94 PC
+; Copy two bitmaps into VGA memory, one plane at a time. Arguments: pointer to the two far sources, pointer to
+; the two sizes. Both images land at the same VGA offset, one after the other.
 ;-----------------------------------------------------------------------------
 VgaStorePlanes:
         push bp
@@ -551,7 +547,7 @@ VgaStorePlanes:
         retf
 
 ;-----------------------------------------------------------------------------
-; VgaCopyStrip                                                  0000:0360  MSC
+; VgaCopyStrip                                                0000:0360  94 PC
 ; latched copy of a fixed strip out of the circular buffer.
 ; Argument: destination offset.
 ;-----------------------------------------------------------------------------
@@ -623,7 +619,7 @@ VgaCopyStrip:
         retf
 
 ;-----------------------------------------------------------------------------
-; VgaCopyBlock                                                  0000:03D9  MSC
+; VgaCopyBlock                                                0000:03D9  94 PC
 ; latched copy of one fixed-size VGA block.
 ; Arguments: source, destination.
 ;-----------------------------------------------------------------------------
@@ -671,7 +667,7 @@ VgaCopyBlock:
         retf
 
 ;-----------------------------------------------------------------------------
-; VgaCopyBytes                                                  0000:041D  MSC
+; VgaCopyBytes                                                0000:041D  94 PC
 ; latched copy of a byte count inside VGA memory.
 ; Arguments: source, destination, count.
 ;-----------------------------------------------------------------------------
@@ -719,10 +715,9 @@ VgaCopyBytes:
         retf
 
 ;-----------------------------------------------------------------------------
-; VgaCopyRect                                                   0000:0461  MSC
-; latched copy of a pitched rectangle to another pitched
-; rectangle. Arguments: source base, destination base, column, row,
-; width, height.
+; VgaCopyRect                                                 0000:0461  94 PC
+; Latched copy of a pitched rectangle to another pitched rectangle. Arguments: source base, destination base,
+; column, row, width, height.
 ;-----------------------------------------------------------------------------
 VgaCopyRect:
         push bp
@@ -785,7 +780,7 @@ VgaCopyRect:
 
 
 
-; NullStartup4, NullStartup6 and _main are labels in seg005.
+; NullStartup4, NullStartup6 and _main are labels in the start-up code.
 
 ; Near data in DGROUP (past the load image, not this segment).
 DGROUP		equ	0x45C9
@@ -793,9 +788,9 @@ DGROUP		equ	0x45C9
 
 ;-----------------------------------------------------------------------------
 ; MscStartup                                                    0000:04CA  MSC
-; Microsoft C startup. __astart jumps here after the overlay preload.
-; DOS 2 or newer, then the DGROUP stack, the near heap, and a zeroed BSS.
-; Then two startup stubs in seg005, InitRuntime, _main, and _exit.
+; Microsoft C startup. __astart jumps here after the overlay preload. DOS 2 or newer, then the DGROUP stack,
+; the near heap, and a zeroed BSS. Then two startup stubs, InitRuntime, _main, and _exit.
+;
 ; Returns only when DOS is older than 2 (far return into the PSP).
 ;-----------------------------------------------------------------------------
 MscStartup:
@@ -876,8 +871,8 @@ MscStartup:
         call cx
 
 .afterhook:
-        call 0x08F9:NullStartup6                ; startup stub in seg005
-        call 0x08F9:NullStartup4                ; startup stub in seg005
+        call 0x08F9:NullStartup6                ; startup stub
+        call 0x08F9:NullStartup4                ; startup stub
         db 0x33, 0xED                           ; insn: xor bp, bp: end the stack frame chain before the runtime init
         call 0:InitRuntime
         push ss
@@ -919,15 +914,15 @@ AmsgExit:
         push cs
         call word [ExitRoutine]
 ; DGROUP, read by __cintDIV. The pad byte puts InitRuntime on the next instruction.
-CintdivDgroup:
+CintdivDgroup:                                  ; relocated DGROUP word read by __cintDIV before InitRuntime;
+                                                ; used by __cintDIV
         dw DGROUP
         db 0
 
 ;-----------------------------------------------------------------------------
 ; InitRuntime                                                   0000:05C2  MSC
-; install the divide handler, inherit _C_FILE_INFO into _osfile,
-; mark device handles, and run the initializer table through _initterm.
-; Far, no arguments. Returns to MscStartup.
+; Install the divide handler, inherit _C_FILE_INFO into _osfile, mark device handles, and run the initializer
+; table through _initterm. Far, no arguments. Returns to MscStartup.
 ;-----------------------------------------------------------------------------
 InitRuntime:
         mov ax, 0x3500                          ; remember the original interrupt 0 vector
@@ -1009,7 +1004,8 @@ InitRuntime:
         pop ds
 
 .noinfo:
-        mov bx, 4                               ; handles 4..0: clear the device bit, set it if IOCTL says device
+        mov bx, 4                               ; handles 4..0: clear the device bit, set it if IOCTL says
+                                                ; device
 
 .nexthandle:
         and byte [bx+_osfile], 0xbf
@@ -1099,7 +1095,8 @@ ExitCommon:
         mov si, 0x8b08
         mov di, 0x8b08
         call _initterm
-        call 0:__nullcheck                      ; null-pointer check. AX != 0 means the low bytes of DGROUP changed
+        call 0:__nullcheck                      ; null-pointer check. AX != 0 means the low bytes of DGROUP
+                                                ; changed
         db 0x0B, 0xC0                           ; insn: or ax, ax
         je .doclose
         pop ax
@@ -1174,9 +1171,8 @@ _initterm:
 
 ;-----------------------------------------------------------------------------
 ; __chkstk                                                      0000:074A  MSC
-; grow the stack by AX bytes. Far. On overflow, R6000 via
-; AmsgExit, or the alternate handler if one was stored.
-; The return address is popped and pushed again so SP moves under it.
+; Grow the stack by AX bytes. Far. On overflow, R6000 via AmsgExit, or the alternate handler if one was
+; stored. The return address is popped and pushed again so SP moves under it.
 ;-----------------------------------------------------------------------------
 __chkstk:
         pop cx                                  ; pop the far return, then drop SP by AX
@@ -1209,9 +1205,8 @@ __chkstk:
 
 ;-----------------------------------------------------------------------------
 ; _printf                                                       0000:076E  MSC
-; print to the standard output.
-; Prepares that FILE, formats, then flushes.
-; Argument: format, then the values. Result is the _output count.
+; Print to the standard output. Prepares that FILE, formats, then flushes. Argument: format, then the values.
+; Result is the _output count.
 ;-----------------------------------------------------------------------------
 _printf:
         push bp
@@ -2245,9 +2240,8 @@ atexit:
 
 ;-----------------------------------------------------------------------------
 ; CallArg                                                       0000:0EAA  MSC
-; Call the far routine in the last argument once for each element of a near array
-; (array, count, element size, routine); does nothing for a count of 0 or 1. Probably the
-; swap or compare step of a library sort.
+; Call the far routine in the last argument once for each element of a near array (array, count, element size,
+; routine); does nothing for a count of 0 or 1. Probably the swap or compare step of a library sort.
 ;-----------------------------------------------------------------------------
 CallArg:
         push bp

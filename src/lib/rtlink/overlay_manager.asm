@@ -1,106 +1,142 @@
-; Resident RTLink/Plus overlay manager, and the thunk that calls each overlaid
-; routine. DOS enters at __astart, which saves the PSP, sets this manager up,
-; and jumps to the Microsoft C startup. The file-name slots and the thunks
-; follow the manager in the same segment.
+; Resident RTLink/Plus overlay manager, and the thunk that calls each overlaid routine. DOS enters at
+; __astart, which saves the PSP, sets this manager up, and jumps to the Microsoft C startup. The file-name
+; slots and the thunks follow the manager in the same segment.
 
-; MscStartup is the label in seg000; the Rtl routines are labels in seg058.
+; MscStartup is in the C runtime; the Rtl routines are in the RTLink runtime.
 SectionStride	equ	18
 FileSlotSize	equ	0x80
 
 ; Overlay-manager messages. Each eov code is its own string and the
 ; sentence follows the terminating null. The print helper substitutes
 ; xxxx with the number it was given.
-Messages:
-MsgPtrClose:
+Messages:                                       ; not used in the EXE (overlays may use it)
+MsgPtrClose:                                    ; RTLink overlay-manager message (eovxxxx strings); used by
+                                                ; ReportFileError
         dw MsgCloseQuote
-MsgPtrCannot:
+MsgPtrCannot:                                   ; RTLink overlay-manager message (eovxxxx strings); used by
+                                                ; OpenOverlayFile
         dw MsgEov0001
-MsgPtrOpen:
+MsgPtrOpen:                                     ; RTLink overlay-manager message (eovxxxx strings); used by
+                                                ; OpenOverlayFile
         dw MsgEov0002
-MsgPtrRead:
+MsgPtrRead:                                     ; RTLink overlay-manager message (eovxxxx strings); used by
+                                                ; LoadSection
         dw MsgEov0003
-MsgPtrCommit:
+MsgPtrCommit:                                   ; RTLink overlay-manager message (eovxxxx strings); used by
+                                                ; LoadSection
         dw MsgEov0007
-MsgPtrIntersect:
+MsgPtrIntersect:                                ; RTLink overlay-manager message (eovxxxx strings); used by
+                                                ; LoadSection
         dw MsgIntersectLead
-MsgPtrIntersect2:
+MsgPtrIntersect2:                               ; RTLink overlay-manager message (eovxxxx strings); used by
+                                                ; LoadSection
         dw MsgIntersect2Lead
-MsgPtrCorrupt:
+MsgPtrCorrupt:                                  ; RTLink overlay-manager message (eovxxxx strings); used by
+                                                ; CheckThunkList
         dw MsgEov0009
-MsgPtrVector:
+MsgPtrVector:                                   ; RTLink overlay-manager message (eovxxxx strings); used by
+                                                ; CheckThunkList
         dw MsgVectorAt
-MsgPtrAfter:
+MsgPtrAfter:                                    ; RTLink overlay-manager message (eovxxxx strings); used by
+                                                ; LoadSection
         dw MsgEov0010
-MsgPtrAfterH:
+MsgPtrAfterH:                                   ; RTLink overlay-manager message (eovxxxx strings); used by
+                                                ; LoadSection
         dw MsgAfterLead
-MsgPtrOverflow:
+MsgPtrOverflow:                                 ; RTLink overlay-manager message (eovxxxx strings); used by
+                                                ; LoadFromThunk
         dw MsgEov0004
-MsgPtrUnderflow:
+MsgPtrUnderflow:                                ; RTLink overlay-manager message (eovxxxx strings); used by
+                                                ; PopReloadFrame
         dw MsgEov0005
-MsgCloseQuote:
+MsgCloseQuote:                                  ; RTLink overlay-manager message (eovxxxx strings); not
+                                                ; referenced in the root code
         db '"', 13, 10
         db 0
-MsgEov0001:
+MsgEov0001:                                     ; RTLink overlay-manager message (eovxxxx strings); not
+                                                ; referenced in the root code
         db 'eov0001: '
         db 0
-MsgCannotFind:
+MsgCannotFind:                                  ; RTLink overlay-manager message (eovxxxx strings); not
+                                                ; referenced in the root code
         db 'Cannot find overlay file "'
         db 0
-MsgEov0002:
+MsgEov0002:                                     ; RTLink overlay-manager message (eovxxxx strings); not
+                                                ; referenced in the root code
         db 'eov0002: '
         db 0
-MsgOpenError:
+MsgOpenError:                                   ; RTLink overlay-manager message (eovxxxx strings); not
+                                                ; referenced in the root code
         db 'Open error on overlay file "'
         db 0
-MsgEov0003:
+MsgEov0003:                                     ; RTLink overlay-manager message (eovxxxx strings); not
+                                                ; referenced in the root code
         db 'eov0003: '
         db 0
-MsgReadError:
+MsgReadError:                                   ; RTLink overlay-manager message (eovxxxx strings); not
+                                                ; referenced in the root code
         db 'Read error on overlay file "'
         db 0
-MsgEov0007:
+MsgEov0007:                                     ; RTLink overlay-manager message (eovxxxx strings); not
+                                                ; referenced in the root code
         db 'eov0007: '
         db 0
-MsgCommit:
+MsgCommit:                                      ; RTLink overlay-manager message (eovxxxx strings); not
+                                                ; referenced in the root code
         db 'Commit error - section '
-MsgIntersectLead:
+MsgIntersectLead:                               ; RTLink overlay-manager message (eovxxxx strings); not
+                                                ; referenced in the root code
         times 4 db 0
-MsgIntersect:
+MsgIntersect:                                   ; RTLink overlay-manager message (eovxxxx strings); not
+                                                ; referenced in the root code
         db 'H intersects committed section '
-MsgIntersect2Lead:
+MsgIntersect2Lead:                              ; RTLink overlay-manager message (eovxxxx strings); not
+                                                ; referenced in the root code
         times 4 db 0
-MsgIntersect2:
+MsgIntersect2:                                  ; RTLink overlay-manager message (eovxxxx strings); not
+                                                ; referenced in the root code
         db 'H', 13, 10
         db 0
-MsgEov0009:
+MsgEov0009:                                     ; RTLink overlay-manager message (eovxxxx strings); not
+                                                ; referenced in the root code
         db 'eov0009: '
         db 0
-MsgVector:
+MsgVector:                                      ; RTLink overlay-manager message (eovxxxx strings); not
+                                                ; referenced in the root code
         db 'Vector at '
-MsgVectorAt:
+MsgVectorAt:                                    ; RTLink overlay-manager message (eovxxxx strings); not
+                                                ; referenced in the root code
         db 'xxxx:xxxx is corrupted.', 13, 10
         db 0
-MsgEov0010:
+MsgEov0010:                                     ; RTLink overlay-manager message (eovxxxx strings); not
+                                                ; referenced in the root code
         db 'eov0010: '
         db 0
-MsgLoadAfter:
+MsgLoadAfter:                                   ; RTLink overlay-manager message (eovxxxx strings); not
+                                                ; referenced in the root code
         db 'Attempt to load section '
-MsgAfterLead:
+MsgAfterLead:                                   ; RTLink overlay-manager message (eovxxxx strings); not
+                                                ; referenced in the root code
         times 4 db 0
-MsgAfterH:
+MsgAfterH:                                      ; RTLink overlay-manager message (eovxxxx strings); not
+                                                ; referenced in the root code
         db 'H after $$RTL_TERMINATE.', 13, 10
         db 0
-MsgEov0004:
+MsgEov0004:                                     ; RTLink overlay-manager message (eovxxxx strings); not
+                                                ; referenced in the root code
         db 'eov0004: '
         db 0
-MsgOverflow:
+MsgOverflow:                                    ; RTLink overlay-manager message (eovxxxx strings); not
+                                                ; referenced in the root code
         db 'Overlay Manager Internal Reload Stack Overflow', 13, 10
         db '      -- use RELOAD to increase size', 13, 10
         db 0
-MsgEov0005:
+MsgEov0005:                                     ; RTLink overlay-manager message (eovxxxx strings); not
+                                                ; referenced in the root code
         db 'eov0005: '
         db 0
-MsgUnderflow:
+MsgUnderflow:                                   ; RTLink overlay-manager message (eovxxxx strings); not
+                                                ; referenced in the root code
         db 'Overlay Manager Internal Reload Stack Underflow.', 13, 10
         times 7 db 0
 
@@ -114,10 +150,10 @@ NotifySectionLoaded:
 
 ;-----------------------------------------------------------------------------
 ; ReleaseSection                                             1B35:01F2  RTLink
-; Far. SI is the section record and AX is preserved in CX.
-; Returns carry if the section is pinned. Otherwise clears the resident flag,
-; optionally calls RtlSectionHook, and if ManagerFlags asks for it fills the
-; section's memory with 8E8E. Carry clear means the section was released.
+; Far. SI is the section record and AX is preserved in CX. Returns carry if the section is pinned.
+;
+; Otherwise clears the resident flag, optionally calls RtlSectionHook, and if ManagerFlags asks for it fills
+; the section's memory with 8E8E. Carry clear means the section was released.
 ;-----------------------------------------------------------------------------
 ReleaseSection:
         test byte [si+7], 0x10
@@ -183,9 +219,8 @@ ReleaseSection:
 
 ;-----------------------------------------------------------------------------
 ; LoadSection                                                1B35:025C  RTLink
-; Far. AX is a section index, or -1 to do nothing.
-; Loads that section when it is not already resident, applies the overlay
-; relocations, and returns the record's chain value in AX.
+; Far. AX is a section index, or -1 to do nothing. Loads that section when it is not already resident, applies
+; the overlay relocations, and returns the record's chain value in AX.
 ;-----------------------------------------------------------------------------
 LoadSection:
         cmp ax, 0xFFFF
@@ -204,7 +239,7 @@ LoadSection:
         push es
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         cld
-        mov cx, 0x1B35                          ; seg056
+        mov cx, 0x1B35
         mov ds, cx
         call SectionRecord
         mov [CurrentSection], bx
@@ -220,10 +255,10 @@ LoadSection:
         mov ds, ax
         mov dx, [MsgPtrIntersect]
         mov cx, [bx+0xE]
-        call 0x1DE4:RtlWriteHex                 ; seg058
+        call 0x1DE4:RtlWriteHex
         mov dx, [MsgPtrIntersect2]
         mov cx, [si+0xE]
-        call 0x1DE4:RtlWriteHex                 ; seg058
+        call 0x1DE4:RtlWriteHex
         mov ax, 7
         mov cx, 3
         mov bx, [MsgPtrCommit]
@@ -234,7 +269,7 @@ LoadSection:
         mov ds, ax
         mov dx, [MsgPtrAfterH]
         mov cx, [bx+0xE]
-        call 0x1DE4:RtlWriteHex                 ; seg058
+        call 0x1DE4:RtlWriteHex
         mov ax, 0xA
         mov cx, 0
         mov bx, [MsgPtrAfter]
@@ -276,7 +311,7 @@ LoadSection:
         je .t10
         push es
         mov es, [bx]
-        call 0x1DE4:RtlSectionHook              ; seg058
+        call 0x1DE4:RtlSectionHook
         pop es
         jb .t10
         jmp .t28
@@ -565,7 +600,7 @@ OpenOverlayFile:
         jmp .t7
 .t5:
         db 0x8B, 0xF2                           ; insn: mov si, dx
-        mov ax, 0x1B35                          ; seg056
+        mov ax, 0x1B35
         mov es, ax
         mov di, [es:OpenFileName]
 .t6:
@@ -574,7 +609,7 @@ OpenOverlayFile:
         db 0x0A, 0xC0                           ; insn: or al, al
         jne .t6
 .t7:
-        mov ax, 0x1B35                          ; seg056
+        mov ax, 0x1B35
         mov ds, ax
         mov si, SearchOrder
         mov es, ax
@@ -602,7 +637,7 @@ OpenOverlayFile:
         db 0x33, 0xD2                           ; insn: xor dx, dx
 .t10:
         db 0x8B, 0xF2                           ; insn: mov si, dx
-        mov bx, 0x1B35                          ; seg056
+        mov bx, 0x1B35
         mov es, bx
         mov [es:FileHandle], ax
         mov di, [es:OpenFileName]
@@ -625,10 +660,11 @@ OpenOverlayFile:
 
 ;-----------------------------------------------------------------------------
 ; LoadFromThunk                                              1B35:05F8  RTLink
-; Near. Every overlay thunk calls here. The return address is the thunk's
-; far jump, and the word after that jump is the section index. Pushes a reload
-; frame, loads the section, and rewrites the caller's far return so it comes
-; back through OverlayReturnGate.
+; Near. Every overlay thunk calls here. The return address is the thunk's far jump, and the word after that
+; jump is the section index.
+;
+; Pushes a reload frame, loads the section, and rewrites the caller's far return so it comes back through
+; OverlayReturnGate.
 ;-----------------------------------------------------------------------------
 LoadFromThunk:
         push bp
@@ -641,7 +677,7 @@ LoadFromThunk:
         push si
         push ds
         pushf
-        mov dx, 0x1B35                          ; seg056
+        mov dx, 0x1B35
         mov ds, dx
         test word [ManagerFlags], 0x100         ; audit thunks on entry
         je .t1
@@ -667,11 +703,11 @@ LoadFromThunk:
         mov [si], cx
         test word [cs:ManagerFlags], 1          ; bit 0: keep the caller's CS on the frame
         jne .t3
-        mov ax, 0x1B35                          ; seg056
+        mov ax, 0x1B35
         jmp .t4
 .t3:
         mov ax, [bp+6]
-        mov word [bp+6], 0x1B35                 ; seg056
+        mov word [bp+6], 0x1B35
 .t4:
         mov [si+4], ax
         mov ax, [bp+4]
@@ -817,7 +853,7 @@ CheckThunkList:
         db 0x8B, 0xCE                           ; insn: mov cx, si
         mov dx, [MsgPtrVector]
         add dx, 5
-        call 0x1DE4:RtlWriteHex                 ; seg058
+        call 0x1DE4:RtlWriteHex
         mov ax, 0x12
         mov cx, 3
         mov bx, [MsgPtrCorrupt]
@@ -825,9 +861,8 @@ CheckThunkList:
 
 ;-----------------------------------------------------------------------------
 ; IsOverlayThunk                                             1B35:0740  RTLink
-; Near. SI points at a candidate thunk. Carry clear (and SI moved past it)
-; when it is a near call to LoadFromThunk, a far jump, and a section index
-; below SectionCount. Carry set leaves SI where it was.
+; Near. SI points at a candidate thunk. Carry clear (and SI moved past it) when it is a near call to
+; LoadFromThunk, a far jump, and a section index below SectionCount. Carry set leaves SI where it was.
 ;-----------------------------------------------------------------------------
 IsOverlayThunk:
         push ax
@@ -857,9 +892,11 @@ IsOverlayThunk:
         ret
 
 ; Filled in by MeasureThunkList when the audit flag is on.
-ThunkListStart:
+ThunkListStart:                                 ; RTLink overlay manager data; used by MeasureThunkList,
+                                                ; CheckThunkList
         dw 0
-ThunkListEnd:
+ThunkListEnd:                                   ; RTLink overlay manager data; used by MeasureThunkList,
+                                                ; CheckThunkList
         dw 0
 
 ;-----------------------------------------------------------------------------
@@ -873,9 +910,8 @@ LoadSectionAl:
 
 ;-----------------------------------------------------------------------------
 ; OverlayReturn                                              1B35:0772  RTLink
-; Far hook written over a vector the program returns through. If the return
-; frame belongs to a thunk, joins ReloadUnwind. Otherwise jumps through the
-; vector that was there before.
+; Far hook written over a vector the program returns through. If the return frame belongs to a thunk, joins
+; ReloadUnwind. Otherwise jumps through the vector that was there before.
 ;-----------------------------------------------------------------------------
 OverlayReturn:
         pushf
@@ -945,7 +981,7 @@ PopReloadFrame:
 
 ; Shared tail of OverlayReturn and PopReloadFrame.
 ReloadUnwind:
-        mov ax, 0x1B35                          ; seg056
+        mov ax, 0x1B35
         mov ds, ax
         mov si, [ReloadSp]
         sub si, 6
@@ -983,12 +1019,12 @@ ReloadUnwind:
 ;-----------------------------------------------------------------------------
 ; __astart                                                   1B35:082F  RTLink
 ; DOS enters here (e_ip). ES and DS are the PSP. Saves them, initialises the
-; overlay manager, and jumps to the Microsoft C startup in seg000.
+; overlay manager, and jumps to the Microsoft C startup.
 ;-----------------------------------------------------------------------------
 __astart:
         mov [cs:EntryEs], es
         mov [cs:EntryDs], ds
-        mov bx, 0x1B35                          ; seg056
+        mov bx, 0x1B35
         mov ds, bx
         push ds
         call InitOverlay
@@ -1021,7 +1057,7 @@ __astart:
 .t2:
         mov es, [EntryEs]
         mov ds, [EntryDs]
-        jmp 0:MscStartup                        ; Microsoft C startup in seg000
+        jmp 0:MscStartup                        ; Microsoft C startup
 
 ;-----------------------------------------------------------------------------
 ; InitOverlay                                                1B35:0878  RTLink
@@ -1060,7 +1096,7 @@ InitOverlay:
         db 0x8B, 0xD0                           ; insn: mov dx, ax
         mov ax, [cs:SectionCount]
         mov cx, [cs:EntryEs]
-        call 0x1DE4:RtlSectionHook              ; seg058
+        call 0x1DE4:RtlSectionHook
         pop ds
         jae .t1
         test word [ReloadPad], 0xFFFF
@@ -1073,9 +1109,8 @@ InitOverlay:
 
 ;-----------------------------------------------------------------------------
 ; PrepareSections                                            1B35:08E9  RTLink
-; Near, from __astart. Checks the DOS version, optionally audits thunks,
-; records the section memory span, preloads sections, and installs
-; OverlayReturn and LoadSectionAl.
+; Near, from __astart. Checks the DOS version, optionally audits thunks, records the section memory span,
+; preloads sections, and installs OverlayReturn and LoadSectionAl.
 ;-----------------------------------------------------------------------------
 PrepareSections:
         pushf
@@ -1195,7 +1230,7 @@ ReloadStateSize:
         push bx
         push cx
         push ds
-        mov ax, 0x1B35                          ; seg056
+        mov ax, 0x1B35
         mov ds, ax
         mov cx, [SectionCount]
         dec cx
@@ -1251,7 +1286,7 @@ SaveReloadBody:
         mov ax, ds
         mov es, ax
         db 0x8B, 0xFA                           ; insn: mov di, dx
-        mov ax, 0x1B35                          ; seg056
+        mov ax, 0x1B35
         mov ds, ax
         mov ax, [ReloadSp]
         stosw
@@ -1319,7 +1354,7 @@ RestoreReloadBody:
         cld
         db 0x8B, 0xF2                           ; insn: mov si, dx
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        mov ax, 0x1B35                          ; seg056
+        mov ax, 0x1B35
         mov es, ax
         lodsw
         sub cx, 2
@@ -1370,7 +1405,7 @@ EndOverlays:
         push es
         push cs
         call CloseOverlayFile
-        mov ax, 0x1B35                          ; seg056
+        mov ax, 0x1B35
         mov es, ax
         mov byte [es:OverlaysEnded], 1
         pop es
@@ -1385,7 +1420,7 @@ CloseOverlayFile:
         push bx
         push es
         call 0x1DE4:RtlBeforeClose              ; before the handle is closed
-        mov ax, 0x1B35                          ; seg056
+        mov ax, 0x1B35
         mov es, ax
         mov ax, 0
         cmp word [es:OpenFileName], 0
@@ -1418,17 +1453,17 @@ ReportFileError:
         jmp far [es:si]
 
 ; Arguments handed to the fatal-error routine.
-ErrorMsg:
+ErrorMsg:                                       ; RTLink overlay manager data; used by SetupErrorText
         dw 0
 ;-----------------------------------------------------------------------------
 ; ErrorText                                                  1B35:0B42  RTLink
 ; RTLink overlay manager data.
 ;-----------------------------------------------------------------------------
-ErrorText:
+ErrorText:                                      ; RTLink overlay manager data; used by SetupErrorText
         dw 0                                    ; first byte after the message's null
-ErrorFile:
+ErrorFile:                                      ; RTLink overlay manager data; used by ReportFileError
         dw 0                                    ; open file name, file errors only
-ErrorLead:
+ErrorLead:                                      ; RTLink overlay manager data; used by ReportFileError
         dw 0                                    ; the closing-quote message
         dw 0
 
@@ -1462,51 +1497,60 @@ SetupErrorText:
         ret
 
 ; Working storage for the manager. Paragraphs here are relocated.
-ErrorVector:
-        dw RtlErrorSlot                         ; seg058
-        dw 0x1DE4                               ; seg058, relocated
+ErrorVector:                                    ; RTLink overlay manager data; used by SetupErrorText
+        dw RtlErrorSlot
+        dw 0x1DE4                               ; segment of the RTLink runtime, relocated
         db 0x90                                 ; not read
-ReloadSp:
+ReloadSp:                                       ; RTLink overlay manager data; used by LoadFromThunk,
+                                                ; OverlayReturn, PopReloadFrame ...
         dw 0
-ReloadBase:
+ReloadBase:                                     ; RTLink overlay manager data; used by LoadFromThunk,
+                                                ; OverlayReturn, PopReloadFrame ...
         dw 0                                    ; offset of the reload stack
-ReloadSeg:
-        dw 0x1B35                               ; seg056, relocated
-ReloadLimit:
+ReloadSeg:                                      ; RTLink overlay manager data; used by LoadFromThunk,
+                                                ; OverlayReturn, PopReloadFrame
+        dw 0x1B35                               ; segment of this overlay manager, relocated
+ReloadLimit:                                    ; RTLink overlay manager data; used by LoadFromThunk,
+                                                ; InitOverlay
         dw 0
-ReturnHookPtr:
+ReturnHookPtr:                                  ; RTLink overlay manager data; used by PrepareSections
         dw 0xE35E                               ; offset in the relocated segment
         dw 0x45C9                               ; relocated
-LoadEntryPtr:
+LoadEntryPtr:                                   ; RTLink overlay manager data; used by PrepareSections
         dw 0xE362                               ; offset in the relocated segment
         dw 0x45C9                               ; relocated
-ReturnBytePtr:
+ReturnBytePtr:                                  ; RTLink overlay manager data; used by OverlayReturn
         dw 0xE36D                               ; offset in the relocated segment
         dw 0x45C9                               ; relocated
-SavedHook:
+SavedHook:                                      ; RTLink overlay manager data; used by OverlayReturn,
+                                                ; PrepareSections
         dd 0
-SearchOrder:
+SearchOrder:                                    ; RTLink overlay manager data; used by OpenOverlayFile
         db 'C,P,EPATH,A', 0                     ; where to look for an overlay
-ProbeOn:
+ProbeOn:                                        ; RTLink overlay manager data; used by ReleaseSection,
+                                                ; LoadSection, InitOverlay
         db 0
-OpenMode:
+OpenMode:                                       ; RTLink overlay manager data; used by OpenOverlayFile,
+                                                ; PrepareSections
         db 0                                    ; DOS open mode; 0A0h once DOS is 3 or newer
-EntryEs:
+EntryEs:                                        ; RTLink overlay manager data; used by LoadSection,
+                                                ; OpenOverlayFile, CheckThunkList ...
         dw 0                                    ; PSP, from ES at entry
-EntryDs:
+EntryDs:                                        ; RTLink overlay manager data; used by __astart
         dw 0                                    ; DS at entry, restored for the C startup
-CurrentSection:
+CurrentSection:                                 ; RTLink overlay manager data; used by LoadSection
         dw 0
-OpenFileName:
+OpenFileName:                                   ; RTLink overlay manager data; used by OpenOverlayFile,
+                                                ; PrepareSections, CloseOverlayFile ...
         dw 0
-FileHandle:
+FileHandle:                                     ; word; used by LoadSection, OpenOverlayFile, CloseOverlayFile
         dw 0
 ;-----------------------------------------------------------------------------
 ; SectionEnd                                                 1B35:0BA2  RTLink
 ; Not a routine: the word after the overlay section table, then the buffer overlay
 ; relocations are read into.
 ;-----------------------------------------------------------------------------
-SectionEnd:
+SectionEnd:                                     ; word; used by InitOverlay
         dw 0                                    ; first byte after the section table
 FixupBuffer:                                    ; overlay relocations are read into here
         times 0x15C db 0                        ; up to the parameter block
@@ -1514,47 +1558,53 @@ FixupBuffer:                                    ; overlay relocations are read i
 ; Parameters and the section table. The bytes from 0D10h through 0D20h
 ; are not read by this segment.
         dw 0, 0
-ChainLoads:
+ChainLoads:                                     ; RTLink overlay manager data; used by LoadSection,
+                                                ; RestoreReloadStateNear
         db 0xFF                                 ; nonzero: a loaded section may load another
-MemLow:
+MemLow:                                         ; RTLink overlay manager data; used by PrepareSections
         dw 0
-MemHigh:
+MemHigh:                                        ; RTLink overlay manager data; used by PrepareSections
         dw 0
 ;-----------------------------------------------------------------------------
 ; ExeFileName                                                1B35:0D09  RTLink
 ; RTLink overlay manager data.
 ;-----------------------------------------------------------------------------
-ExeFileName:
+ExeFileName:                                    ; RTLink overlay manager data; used by LoadSection,
+                                                ; OpenOverlayFile
         dw 0xFFFF                               ; file whose seek gets ExeDataOff added
-ExeDataOff:
-        dw RtlFileAdjust                        ; seg058
-        dw 0x1DE4                               ; seg058, relocated
-OverlaysEnded:
+ExeDataOff:                                     ; RTLink overlay manager data; used by LoadSection
+        dw RtlFileAdjust
+        dw 0x1DE4                               ; segment of the RTLink runtime, relocated
+OverlaysEnded:                                  ; RTLink overlay manager data; used by LoadSection,
+                                                ; EndOverlays
         db 0
         db 0x90, 0x2D, 0x0D, 0x33, 0x0D, 0x12, 0x00, 0x07, 0x01 ; unidentified
         db 0x08, 0x0C, 0x0C, 0x0E, 0x00, 0x00, 0x20, 0x90
-ManagerFlags:
+ManagerFlags:                                   ; RTLink overlay manager data; used by ReleaseSection,
+                                                ; OpenOverlayFile, LoadFromThunk ...
         dw 1                                    ; bit 0: keep the caller's CS
-InitStackSeg:
+InitStackSeg:                                   ; RTLink overlay manager data; used by __astart
         dw 0x5580                               ; stack used during init, relocated
-MemLowOut:
+MemLowOut:                                      ; RTLink overlay manager data; used by PrepareSections
         dd 0                                    ; far pointer that receives MemLow
-MemHighOut:
+MemHighOut:                                     ; RTLink overlay manager data; used by PrepareSections
         dd 0                                    ; far pointer that receives MemHigh
-SectionCount:
+SectionCount:                                   ; word; used by LoadSection, MeasureThunkList, IsOverlayThunk
+                                                ; ...
         dw (SectionEndMark - SectionTable) / SectionStride
-ReloadPad:
+ReloadPad:                                      ; RTLink overlay manager data; used by InitOverlay
         dw 0                                    ; times 32, bytes inserted before the stack
-ReloadStackBytes:
+ReloadStackBytes:                               ; RTLink overlay manager data; used by InitOverlay
         dw 0x6C0                                ; reload stack size
 
-; One record per overlay file, 18 bytes, then the EXE as the last record.
-; +0 load paragraph (relocated), +2 file slot, +4 file position in
-; paragraphs (24 bits, the high byte is +6), +7 flags, +8 memory size
-; in paragraphs, +0Ah relocation count, +0Ch section to load next
-; or -1, +0Eh number printed in errors, +10h paragraphs to read.
-SectionTable:
-SecMenus:
+; One record per overlay file, 18 bytes, then the EXE as the last record. +0 load paragraph (relocated), +2
+; file slot, +4 file position in paragraphs (24 bits, the high byte is +6), +7 flags, +8 memory size in
+; paragraphs, +0Ah relocation count, +0Ch section to load next or -1, +0Eh number printed in errors, +10h
+;
+; paragraphs to read.
+SectionTable:                                   ; used by LoadSection, SectionRecord, MeasureThunkList ...
+SecMenus:                                       ; 18-byte section record for MENUS.OVL; not referenced in the
+                                                ; root code
         dw 0x1E45                               ; load paragraph, relocated
         dw FileMenus                            ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1565,7 +1615,8 @@ SecMenus:
         dw 0xFFFF                               ; section to chain, or -1
         dw 2                                    ; number printed in errors
         dw 0x1249                               ; paragraphs to read
-SecLp:
+SecLp:                                          ; 18-byte section record for LP.OVL; not referenced in the
+                                                ; root code
         dw 0x1E45                               ; load paragraph, relocated
         dw FileLp                               ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1576,7 +1627,8 @@ SecLp:
         dw 0xFFFF                               ; section to chain, or -1
         dw 3                                    ; number printed in errors
         dw 0x116E                               ; paragraphs to read
-SecStats:
+SecStats:                                       ; 18-byte section record for STATS.OVL; not referenced in the
+                                                ; root code
         dw 0x1E45                               ; load paragraph, relocated
         dw FileStats                            ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1587,7 +1639,8 @@ SecStats:
         dw 0xFFFF                               ; section to chain, or -1
         dw 4                                    ; number printed in errors
         dw 0x9BF                                ; paragraphs to read
-SecGame:
+SecGame:                                        ; 18-byte section record for GAME.OVL; not referenced in the
+                                                ; root code
         dw 0x1E45                               ; load paragraph, relocated
         dw FileGame                             ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1598,7 +1651,8 @@ SecGame:
         dw 0xFFFF                               ; section to chain, or -1
         dw 5                                    ; number printed in errors
         dw 0x157                                ; paragraphs to read
-SecInit:
+SecInit:                                        ; 18-byte section record for INIT.OVL; not referenced in the
+                                                ; root code
         dw 0x1F9C                               ; load paragraph, relocated
         dw FileInit                             ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1609,7 +1663,8 @@ SecInit:
         dw 3                                    ; section to chain, or -1
         dw 6                                    ; number printed in errors
         dw 0x987                                ; paragraphs to read
-SecAi:
+SecAi:                                          ; 18-byte section record for AI.OVL; not referenced in the
+                                                ; root code
         dw 0x1F9C                               ; load paragraph, relocated
         dw FileAi                               ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1620,7 +1675,8 @@ SecAi:
         dw 3                                    ; section to chain, or -1
         dw 7                                    ; number printed in errors
         dw 0x13AD                               ; paragraphs to read
-SecMovie:
+SecMovie:                                       ; 18-byte section record for MOVIE.OVL; not referenced in the
+                                                ; root code
         dw 0x3349                               ; load paragraph, relocated
         dw FileMovie                            ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1631,7 +1687,8 @@ SecMovie:
         dw 0xFFFF                               ; section to chain, or -1
         dw 8                                    ; number printed in errors
         dw 0xCC                                 ; paragraphs to read
-SecFades:
+SecFades:                                       ; 18-byte section record for FADES.OVL; not referenced in the
+                                                ; root code
         dw 0x3349                               ; load paragraph, relocated
         dw FileFades                            ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1642,7 +1699,8 @@ SecFades:
         dw 0xFFFF                               ; section to chain, or -1
         dw 9                                    ; number printed in errors
         dw 0xF                                  ; paragraphs to read
-SecFades1:
+SecFades1:                                      ; 18-byte section record for FADES1.OVL; not referenced in the
+                                                ; root code
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades1                           ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1653,7 +1711,8 @@ SecFades1:
         dw 7                                    ; section to chain, or -1
         dw 0xA                                  ; number printed in errors
         dw 0x1C                                 ; paragraphs to read
-SecFades2:
+SecFades2:                                      ; 18-byte section record for FADES2.OVL; not referenced in the
+                                                ; root code
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades2                           ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1664,7 +1723,8 @@ SecFades2:
         dw 7                                    ; section to chain, or -1
         dw 0xB                                  ; number printed in errors
         dw 0x1E                                 ; paragraphs to read
-SecFades3:
+SecFades3:                                      ; 18-byte section record for FADES3.OVL; not referenced in the
+                                                ; root code
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades3                           ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1675,7 +1735,8 @@ SecFades3:
         dw 7                                    ; section to chain, or -1
         dw 0xC                                  ; number printed in errors
         dw 0x1D                                 ; paragraphs to read
-SecFades4:
+SecFades4:                                      ; 18-byte section record for FADES4.OVL; not referenced in the
+                                                ; root code
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades4                           ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1686,7 +1747,8 @@ SecFades4:
         dw 7                                    ; section to chain, or -1
         dw 0xD                                  ; number printed in errors
         dw 0xE                                  ; paragraphs to read
-SecFades5:
+SecFades5:                                      ; 18-byte section record for FADES5.OVL; not referenced in the
+                                                ; root code
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades5                           ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1697,7 +1759,8 @@ SecFades5:
         dw 7                                    ; section to chain, or -1
         dw 0xE                                  ; number printed in errors
         dw 0x1C                                 ; paragraphs to read
-SecFades6:
+SecFades6:                                      ; 18-byte section record for FADES6.OVL; not referenced in the
+                                                ; root code
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades6                           ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1708,7 +1771,8 @@ SecFades6:
         dw 7                                    ; section to chain, or -1
         dw 0xF                                  ; number printed in errors
         dw 0x17                                 ; paragraphs to read
-SecFades7:
+SecFades7:                                      ; 18-byte section record for FADES7.OVL; not referenced in the
+                                                ; root code
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades7                           ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1719,7 +1783,8 @@ SecFades7:
         dw 7                                    ; section to chain, or -1
         dw 0x10                                 ; number printed in errors
         dw 0x21                                 ; paragraphs to read
-SecFades8:
+SecFades8:                                      ; 18-byte section record for FADES8.OVL; not referenced in the
+                                                ; root code
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades8                           ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1730,7 +1795,8 @@ SecFades8:
         dw 7                                    ; section to chain, or -1
         dw 0x11                                 ; number printed in errors
         dw 0x20                                 ; paragraphs to read
-SecFades9:
+SecFades9:                                      ; 18-byte section record for FADES9.OVL; not referenced in the
+                                                ; root code
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades9                           ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1741,7 +1807,8 @@ SecFades9:
         dw 7                                    ; section to chain, or -1
         dw 0x12                                 ; number printed in errors
         dw 0x11                                 ; paragraphs to read
-SecFades10:
+SecFades10:                                     ; 18-byte section record for FADES10.OVL; not referenced in
+                                                ; the root code
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades10                          ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1752,7 +1819,8 @@ SecFades10:
         dw 7                                    ; section to chain, or -1
         dw 0x13                                 ; number printed in errors
         dw 0x23                                 ; paragraphs to read
-SecFades11:
+SecFades11:                                     ; 18-byte section record for FADES11.OVL; not referenced in
+                                                ; the root code
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades11                          ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1763,7 +1831,8 @@ SecFades11:
         dw 7                                    ; section to chain, or -1
         dw 0x14                                 ; number printed in errors
         dw 0x38                                 ; paragraphs to read
-SecFades12:
+SecFades12:                                     ; 18-byte section record for FADES12.OVL; not referenced in
+                                                ; the root code
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades12                          ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1774,7 +1843,8 @@ SecFades12:
         dw 7                                    ; section to chain, or -1
         dw 0x15                                 ; number printed in errors
         dw 0x1A                                 ; paragraphs to read
-SecHockey:
+SecHockey:                                      ; 18-byte section record for HOCKEY.EXE; not referenced in the
+                                                ; root code
         dw 0x3415                               ; load paragraph, relocated
         dw FileHockey                           ; file slot
         dw 0x2005                               ; file position, paragraphs
@@ -1785,75 +1855,76 @@ SecHockey:
         dw 0xFFFF                               ; section to chain, or -1
         dw 0x16                                 ; number printed in errors
         dw 0x1AA2                               ; paragraphs to read
-SectionEndMark:
+SectionEndMark:                                 ; used by ExeFileName
 
 ; Reload stack. The file slots begin immediately after it.
-ReloadStack:
+ReloadStack:                                    ; reload stack placed after the section table; not referenced
+                                                ; in the root code
         times 0x6C2 db 0                        ; up to FileMenus
 
 ; One 128-byte slot per overlay file, then the EXE. The byte in front of
 ; the name is a flag: bit 0 means the name has been opened.
-FileMenus:
+FileMenus:                                      ; file slot for MENUS.OVL; used by ExeFileName
         db 0, 'MENUS.OVL', 0
         times (FileSlotSize - ($ - FileMenus)) db 0
-FileLp:
+FileLp:                                         ; file slot for LP.OVL; used by ExeFileName
         db 0, 'LP.OVL', 0
         times (FileSlotSize - ($ - FileLp)) db 0
-FileStats:
+FileStats:                                      ; file slot for STATS.OVL; used by ExeFileName
         db 0, 'STATS.OVL', 0
         times (FileSlotSize - ($ - FileStats)) db 0
-FileGame:
+FileGame:                                       ; file slot for GAME.OVL; used by ExeFileName
         db 0, 'GAME.OVL', 0
         times (FileSlotSize - ($ - FileGame)) db 0
-FileInit:
+FileInit:                                       ; file slot for INIT.OVL; used by ExeFileName
         db 0, 'INIT.OVL', 0
         times (FileSlotSize - ($ - FileInit)) db 0
-FileAi:
+FileAi:                                         ; file slot for AI.OVL; used by ExeFileName
         db 0, 'AI.OVL', 0
         times (FileSlotSize - ($ - FileAi)) db 0
-FileMovie:
+FileMovie:                                      ; file slot for MOVIE.OVL; used by ExeFileName
         db 0, 'MOVIE.OVL', 0
         times (FileSlotSize - ($ - FileMovie)) db 0
-FileFades:
+FileFades:                                      ; file slot for FADES.OVL; used by ExeFileName
         db 0, 'FADES.OVL', 0
         times (FileSlotSize - ($ - FileFades)) db 0
-FileFades1:
+FileFades1:                                     ; file slot for FADES1.OVL; used by ExeFileName
         db 0, 'FADES1.OVL', 0
         times (FileSlotSize - ($ - FileFades1)) db 0
-FileFades2:
+FileFades2:                                     ; file slot for FADES2.OVL; used by ExeFileName
         db 0, 'FADES2.OVL', 0
         times (FileSlotSize - ($ - FileFades2)) db 0
-FileFades3:
+FileFades3:                                     ; file slot for FADES3.OVL; used by ExeFileName
         db 0, 'FADES3.OVL', 0
         times (FileSlotSize - ($ - FileFades3)) db 0
-FileFades4:
+FileFades4:                                     ; file slot for FADES4.OVL; used by ExeFileName
         db 0, 'FADES4.OVL', 0
         times (FileSlotSize - ($ - FileFades4)) db 0
-FileFades5:
+FileFades5:                                     ; file slot for FADES5.OVL; used by ExeFileName
         db 0, 'FADES5.OVL', 0
         times (FileSlotSize - ($ - FileFades5)) db 0
-FileFades6:
+FileFades6:                                     ; file slot for FADES6.OVL; used by ExeFileName
         db 0, 'FADES6.OVL', 0
         times (FileSlotSize - ($ - FileFades6)) db 0
-FileFades7:
+FileFades7:                                     ; file slot for FADES7.OVL; used by ExeFileName
         db 0, 'FADES7.OVL', 0
         times (FileSlotSize - ($ - FileFades7)) db 0
-FileFades8:
+FileFades8:                                     ; file slot for FADES8.OVL; used by ExeFileName
         db 0, 'FADES8.OVL', 0
         times (FileSlotSize - ($ - FileFades8)) db 0
-FileFades9:
+FileFades9:                                     ; file slot for FADES9.OVL; used by ExeFileName
         db 0, 'FADES9.OVL', 0
         times (FileSlotSize - ($ - FileFades9)) db 0
-FileFades10:
+FileFades10:                                    ; file slot for FADES10.OVL; used by ExeFileName
         db 0, 'FADES10.OVL', 0
         times (FileSlotSize - ($ - FileFades10)) db 0
-FileFades11:
+FileFades11:                                    ; file slot for FADES11.OVL; used by ExeFileName
         db 0, 'FADES11.OVL', 0
         times (FileSlotSize - ($ - FileFades11)) db 0
-FileFades12:
+FileFades12:                                    ; file slot for FADES12.OVL; used by ExeFileName
         db 0, 'FADES12.OVL', 0
         times (FileSlotSize - ($ - FileFades12)) db 0
-FileHockey:
+FileHockey:                                     ; file slot for HOCKEY.EXE; used by ExeFileName
         db 0, 'HOCKEY.EXE', 0
         times (FileSlotSize - ($ - FileHockey)) db 0
 
@@ -4109,9 +4180,9 @@ OvlThunk280:
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; OvlThunk281                                                1B35:2AE9  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section split across
-; seg058.
+; Overlay thunk: near call LoadFromThunk, far jump, section split across the end of
+; this file and the RTLink runtime.
 ;-----------------------------------------------------------------------------
 OvlThunk281:
         call LoadFromThunk
-        db 0xEA, 0x78, 0x04, 0x52               ; far jump continues in seg058
+        db 0xEA, 0x78, 0x04, 0x52               ; far jump continues in the RTLink runtime

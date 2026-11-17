@@ -3,7 +3,6 @@
 	bits	16
 	org	0x0
 InsertRecWrap		equ	0x13
-str_Que		equ	0x80
 ClearClipRect		equ	0xB4
 EmsMapFrame		equ	0x192
 UseCurrentPage		equ	0x1A6

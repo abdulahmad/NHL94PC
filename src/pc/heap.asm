@@ -1,7 +1,6 @@
-; Segment seg002. BlankBit reads port 3DAh. MakeChain allocates a DOS
-; block and links 24h-byte records in it. SetBuf stores the count and
-; the near buffer MakeChain checks.
-; seg001 ends on WaitBlank retf. These first bytes are their own function.
+; BlankBit reads port 3DAh. MakeChain allocates a DOS block and links 24h-byte records in it. SetBuf stores
+; the count and the near buffer MakeChain checks. The file before ends on the retf of WaitBlank; BlankBit, the
+; first routine here, is reached through that file's segment base too.
 
 ; DGROUP words this segment uses. The bytes live in the near data, not here.
 
@@ -17,11 +16,12 @@ BlankBit:
 
 ;-----------------------------------------------------------------------------
 ; MakeChain                                                   06E1:0008  94 PC
-; Cap LargestFree at the dword at [bp+8], align it down to 16, and
-; AllocBytes. The dword at [bp+0Ch], shifted down by 4, is subtracted
-; from BlockEnd. BufCount below CCh calls seg022. Four 24h-byte records
-; are named from near pointers, then [bp+6] more are linked through
-; offset 1Ch. The near call stores its far result at ChainPtr.
+; Cap LargestFree at the dword at [bp+8], align it down to 16, and AllocBytes. The dword at [bp+0Ch], shifted
+; down by 4, is subtracted from BlockEnd. BufCount below CCh calls FatalError.
+;
+; Four 24h-byte records are named from near pointers, then [bp+6] more are linked through offset 1Ch.
+;
+; The near call stores its far result at ChainPtr.
 ;-----------------------------------------------------------------------------
 MakeChain:
         enter 6, 0
@@ -59,7 +59,7 @@ MakeChain:
         cmp word [BufCount], 0xcc
         jge short .4
         push 0x26c
-        call 0xF4A:FatalError                   ; seg022
+        call 0xF4A:FatalError
         add sp, 2
 .4:
         mov ax, word [BufCount]
@@ -266,10 +266,9 @@ SetBuf:
         retf
         nop
 
-; Insert a 24h-byte record into the chain. PathTail keeps the name.
-; The dword at [bp+8] is rounded up to 16. Bits in [bp+0Ch] pick the
-; walk: 20h uses one chain, 80h another, and anything else above that
-; calls seg022. A gap that fits is linked in and returned in DX:AX.
+; Insert a 24h-byte record into the chain. PathTail keeps the name. The dword at [bp+8] is rounded up to 16.
+; Bits in [bp+0Ch] pick the walk: 20h uses one chain, 80h another, and anything else above that calls
+; FatalError. A gap that fits is linked in and returned in DX:AX.
 
 InsertRec:
         enter 0x1a, 0
@@ -768,21 +767,21 @@ InsertRec:
 .45:
         cmp word [bp + 0xe], ax
         je short .47
-        call 0x148B:LargestFreeBlock            ; seg030
+        call 0x148B:LargestFreeBlock
         push dx
         push ax
         push word [bp + 0xa]
         push word [bp + 8]
         push 0x334
 .46:
-        call 0xF4A:FatalError                   ; seg022
+        call 0xF4A:FatalError
         add sp, 0xa
 .47:
         cmp word [bp + 0xe], 0
         je short .48
         push word [bp + 0xc]
         push 0x36b
-        call 0xF4A:FatalError                   ; seg022
+        call 0xF4A:FatalError
         add sp, 4
 .48:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -792,12 +791,12 @@ InsertRec:
         retf
         nop
 
-; ResizeRec grows the record when the next one leaves room. A nonzero
-; word at [bp+0Eh] reports a short gap through seg022. FindRec walks the
-; chain for the far base that matches the argument. UnlinkRec splices a
-; record out. FindUnlink and FindTrim find first. TrimAfter drops the
-; following records whose flag byte lacks bit 20h. DropOldest unlinks
-; the oldest record of the requested class.
+; ResizeRec grows the record when the next one leaves room. A nonzero word at [bp+0Eh] reports a short gap
+; through FatalError. FindRec walks the chain for the far base that matches the argument. UnlinkRec splices a
+; record out. FindUnlink and FindTrim find first.
+;
+; TrimAfter drops the following records whose flag byte lacks bit 20h. DropOldest unlinks the oldest record of
+; the requested class.
 
 ResizeRec:
         enter 0xc, 0
@@ -869,7 +868,7 @@ ResizeRec:
         cmp word [bp + 0xe], 0
         je short .8
         push 0x393
-        call 0xF4A:FatalError                   ; seg022
+        call 0xF4A:FatalError
         add sp, 2
 .7:
         mov ax, word [bp + 0xa]
@@ -922,7 +921,7 @@ FindRec:
         push word [bp + 8]
         push cx
         push 0x3b7
-        call 0xF4A:FatalError                   ; seg022
+        call 0xF4A:FatalError
         add sp, 6
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         cwd
@@ -1095,11 +1094,9 @@ DropOldest:
         retf
         nop
 
-; MoveFound and MoveFlag find the record first. MovePtr passes the
-; caller's pointer. All three enter MoveRec. Flag 81h is the fixed
-; value. MoveRec copies the 12-byte name, asks InsertRec for a new
-; record, and copies the bytes across in pieces no larger than C000h.
-; A failed insert tries DropOldest and asks again.
+; MoveFound and MoveFlag find the record first. MovePtr passes the caller's pointer. All three enter MoveRec.
+; Flag 81h is the fixed value. MoveRec copies the 12-byte name, asks InsertRec for a new record, and copies
+; the bytes across in pieces no larger than C000h. A failed insert tries DropOldest and asks again.
 
 MoveFound:
         push bp
@@ -1764,12 +1761,11 @@ SlideDown:
         leave
         retf
 
-; SlideUp is the other direction: CopyParas moves a flag-10h record up
-; into a gap. NoteLow keeps the lowest free address at ChainPtr.
-; LargestGap is the biggest hole after a SlideDown. GapParas is that
-; size in paragraphs. SumUsed adds the sizes of records whose flag
-; byte lacks bit 10h. FreeRec and AllocRec are the free list.
-; RecSize, RecBase, RawBase, RecSpan, and NamePtr read one field.
+; SlideUp is the other direction: CopyParas moves a flag-10h record up into a gap. NoteLow keeps the lowest
+; free address at ChainPtr. LargestGap is the biggest hole after a SlideDown. GapParas is that size in
+; paragraphs. SumUsed adds the sizes of records whose flag byte lacks bit 10h.
+;
+; FreeRec and AllocRec are the free list. RecSize, RecBase, RawBase, RecSpan, and NamePtr read one field.
 
 ;-----------------------------------------------------------------------------
 ; SlideUp                                                     06E1:10EA  94 PC
@@ -2150,7 +2146,7 @@ FreeRec:
         retf
 ;-----------------------------------------------------------------------------
 ; AllocRec                                                    06E1:14A8  94 PC
-; Pops a record off the free list. An empty list calls seg022.
+; Pops a record off the free list. An empty list calls FatalError.
 ;-----------------------------------------------------------------------------
 AllocRec:
         enter 4, 0
@@ -2175,7 +2171,7 @@ AllocRec:
         nop
 .1:
         push 0x3dd
-        call 0xF4A:FatalError                   ; seg022
+        call 0xF4A:FatalError
         add sp, 2
         pop si
         leave

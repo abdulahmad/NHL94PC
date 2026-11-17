@@ -4,7 +4,6 @@
 	org	0x0
 CalibrateRetrace		equ	0xC
 AllocRecData		equ	0x30
-str_Que		equ	0x80
 LoadAssetMode		equ	0x134
 BufPtr		equ	0x2BC
 FatalError		equ	0x3E4

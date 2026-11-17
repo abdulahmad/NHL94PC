@@ -1,7 +1,7 @@
 ; Relocation table of the RTLink segment stored in HOCKEY.EXE (record 20, loaded at startup to paragraph
 ; 3415h): 1156 entries of offset, segment. The loader adds the program load segment to the word at each
 ; address. In front of it, 9 zero bytes finish the last paragraph of the load module.
-        times 9	db 0                            ; end of the last paragraph of the load module
+        times 9 db 0                            ; end of the last paragraph of the load module
         dw 0x0178, 0x342F
         dw 0x0174, 0x342F
         dw 0x0170, 0x342F

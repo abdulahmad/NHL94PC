@@ -10,7 +10,6 @@ SetTextColors		equ	0x24
 AllocRecData		equ	0x30
 InputShutdown		equ	0x4C
 FlushInputEvents		equ	0x66
-str_Philadelphia		equ	0x130
 FillRect		equ	0x136
 DrawShadowText		equ	0x166
 UseCurrentPage		equ	0x1A6

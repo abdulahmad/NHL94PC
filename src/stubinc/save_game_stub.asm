@@ -8,7 +8,6 @@ GetInputEvent		equ	0xE
 AllocRecData		equ	0x30
 BuildPathFar		equ	0x3E
 FlushInputEvents		equ	0x66
-str_Nyi		equ	0x6C
 UseCurrentPage		equ	0x1A6
 DbSaveMode		equ	0x1B4
 AnnouncerFlags		equ	0x1B7

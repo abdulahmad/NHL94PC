@@ -6,7 +6,6 @@ LoadRawHeader		equ	0x2
 AllocRecData		equ	0x30
 SeqService		equ	0x3C
 LoadRaw		equ	0x58
-str_Que		equ	0x80
 LoadFileCached		equ	0xA0
 DrvStub1		equ	0x110
 DrvShutdown		equ	0x178

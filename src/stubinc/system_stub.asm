@@ -3,6 +3,7 @@
 	bits	16
 	org	0x0
 LargestFreeBlock		equ	0x4
+AskExitToDos		equ	0x224
 EmsMapCache		equ	0x24C
 EmsWindowOff		equ	0x254
 EmsOutPtr		equ	0x25C

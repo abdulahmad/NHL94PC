@@ -1,7 +1,9 @@
-; NHL Hockey (NHL '94) for DOS, HOCKEY.EXE.
-; The whole file in order: the MZ header and relocation table, the load image one MZ segment (paragraph-aligned
-; section, offsets from 0) after another, then the RTLink/Plus overlay area. A segment starts as an incbin of its
-; bytes and becomes source as it is disassembled; build.sh checks every byte against the retail EXE.
+; NHL Hockey (NHL '94) for DOS, HOCKEY.EXE. The whole file in order: the MZ header and relocation table, the
+; load image one MZ segment (paragraph-aligned section, offsets from 0) after another, then the RTLink/Plus
+; overlay area.
+;
+; A segment starts as an incbin of its bytes and becomes source as it is disassembled; build.sh checks every
+; byte against the retail EXE.
 
 bits	16
 
