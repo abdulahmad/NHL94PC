@@ -85,7 +85,7 @@ _main:
 .5:
 	call	0x0FEF:0x39A		; seg028
 	call	0x03A3:HookInt8		; seg001
-	mov	word [0x524], 0
+	mov	word [g_0524], 0
 	push	0x969
 	push	0x3fe
 	call	0x03A3:AllocSlot		; seg001
@@ -94,7 +94,7 @@ _main:
 	call	0x0FEF:0x1320		; seg028
 	add	sp, 2
 	mov	bx, 0x7570
-	mov	es, word [0x8b08]
+	mov	es, word [g_8B08]
 	mov	word [bp-0x24], bx
 	mov	word [bp-0x22], es
 	mov	ax, word [es:bx+2]
@@ -121,40 +121,40 @@ _main:
 	push	0xc8
 	call	0x0FEF:0x1320		; seg028
 	add	sp, 2
-	or	byte [0xaece], 8
+	or	byte [g_AECE], 8
 	push	0xc8
 	push	0x140
 	call	0x03A3:MouseOpen		; seg001
 	add	sp, 4
 	db	0x0B, 0xC0			; or	ax, ax
 	je	short .7
-	or	byte [0xaece], 1
+	or	byte [g_AECE], 1
 .7:
 	call	0x03A3:ReadPots		; seg001
 	mov	word [bp-6], ax
-	test	byte [0x75e0], 3
+	test	byte [g_75E0], 3
 	je	short .9
-	cmp	word [0x75d6], 0
+	cmp	word [g_75D6], 0
 	jne	short .8
-	cmp	word [0x75d8], 0
+	cmp	word [g_75D8], 0
 	je	short .9
 .8:
-	or	byte [0xaece], 2
+	or	byte [g_AECE], 2
 	call	0x03A3:InitStick1	; seg001
 	call	0x1508:0x232		; seg037
-	mov	word [0x51e], 1
+	mov	word [g_051E], 1
 .9:
-	test	byte [0x75e0], 0xc
+	test	byte [g_75E0], 0xc
 	je	short .11
-	cmp	word [0x75da], 0
+	cmp	word [g_75DA], 0
 	jne	short .10
-	cmp	word [0x75dc], 0
+	cmp	word [g_75DC], 0
 	je	short .11
 .10:
-	or	byte [0xaece], 4
+	or	byte [g_AECE], 4
 	call	0x03A3:InitStick2	; seg001
 	call	0x1508:0x244		; seg037
-	mov	word [0x520], 1
+	mov	word [g_0520], 1
 .11:
 	call	0x0BFE:0xE		; seg009
 	lea	ax, [bp-6]
@@ -183,35 +183,35 @@ _main:
 	push	ax
 	call	0x14B8:0x8		; seg033
 	add	sp, 4
-	mov	word [0xaeb2], ax
-	mov	word [0xaeb4], dx
+	mov	word [g_AEB2], ax
+	mov	word [g_AEB4], dx
 	push	0x4c7
 	push	dx
 	push	ax
 	call	0x03A3:FindFarMsg		; seg001
 	add	sp, 6
-	mov	word [0xae98], ax
-	mov	word [0xae9a], dx
+	mov	word [g_AE98], ax
+	mov	word [g_AE9A], dx
 	push	0
 	push	0x4cc
 	call	0x149D:0x2		; seg032
 	add	sp, 4
-	mov	word [0xae90], ax
-	mov	word [0xae92], dx
+	mov	word [g_AE90], ax
+	mov	word [g_AE92], dx
 	push	0
 	push	0x4d9
 	call	0x149D:0x2		; seg032
 	add	sp, 4
-	mov	word [0xaeb6], ax
-	mov	word [0xaeb8], dx
+	mov	word [g_AEB6], ax
+	mov	word [g_AEB8], dx
 	push	0
 	push	0x4e4
 	call	0x149D:0x2		; seg032
 	add	sp, 4
-	mov	word [0xaeba], ax
-	mov	word [0xaebc], dx
-	push	word [0xae92]
-	push	word [0xae90]
+	mov	word [g_AEBA], ax
+	mov	word [g_AEBC], dx
+	push	word [g_AE92]
+	push	word [g_AE90]
 	call	0x03A3:0xCB8		; seg001
 	add	sp, 4
 	lea	ax, [bp-8]
@@ -248,7 +248,7 @@ _main:
 	add	sp, 2
 	jmp	near .22
 .14:
-	test	byte [0xaece], 2
+	test	byte [g_AECE], 2
 	je	short .15
 	mov	ax, 0x3415
 	mov	es, ax
@@ -256,7 +256,7 @@ _main:
 	jmp	short .19
 	nop
 .15:
-	test	byte [0xaece], 4
+	test	byte [g_AECE], 4
 	je	short .16
 	mov	ax, 0x3415
 	mov	es, ax
@@ -264,7 +264,7 @@ _main:
 	jmp	short .19
 	nop
 .16:
-	test	byte [0xaece], 8
+	test	byte [g_AECE], 8
 	je	short .17
 	mov	ax, 0x3415
 	mov	es, ax
@@ -272,7 +272,7 @@ _main:
 	jmp	short .19
 	nop
 .17:
-	test	byte [0xaece], 1
+	test	byte [g_AECE], 1
 	je	short .18
 	mov	ax, 0x3415
 	mov	es, ax

@@ -22,6 +22,9 @@ DG_SIZE = 8555 * 16 - (DGROUP - LOAD) * 16   # memory the record reserves from D
 HAND = ['seg000', 'seg001', 'seg002', 'seg004']
 NOT_DG = {'VgaGc', 'VgaGcData', 'VgaSeq', 'VgaSeqData', 'VgaAttr', 'VgaCrtc', 'VgaStatus', 'VgaMem', 'DGROUP', 'GamePort'}
 SKIP_SEGS = {'seg054', 'seg056', 'seg058'}
+# displacements that are not DGROUP variables: 3C0h is the distance between the two halves of a stack buffer in
+# the polygon fill; 3500h is an INT 21h function number
+NOT_DATA = {0x03C0, 0x3500}
 
 
 def existing_labels():
@@ -138,6 +141,8 @@ def collect(flow, funcs):
         for op in ins.operands:
             if op.type == x86.X86_OP_MEM and (op.mem.segment == x86.X86_REG_SS or dsok and op.mem.segment in (0, x86.X86_REG_DS)):
                 d = op.mem.disp & 0xFFFF
+                if d in NOT_DATA:
+                    continue
                 if op.mem.base == 0 and op.mem.index == 0 and d >= 0x40:
                     mem[d].add(op.size)
                 elif op.mem.base in (x86.X86_REG_BX, x86.X86_REG_SI, x86.X86_REG_DI) and d >= 0x100 and d < DG_SIZE:

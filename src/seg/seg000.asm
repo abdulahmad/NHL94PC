@@ -379,10 +379,10 @@ VgaPageFlip:
 	push	bx
 	push	cx
 	push	dx
-	mov	bx, word [0x74dc]
+	mov	bx, word [g_74DC]
 	and	bx, 1				; toggle the displayed page
 	xor	bx, 1
-	mov	word [0x74dc], bx
+	mov	word [g_74DC], bx
 	cmp	bx, 1
 	je	.page1
 	mov	di, 0xb00			; the two page bases
@@ -801,7 +801,7 @@ MscStartup:
 	mov	cl, 4
 	shl	ax, cl
 	dec	ax
-	mov	word [ss:0x851a], ax	; top offset of DGROUP
+	mov	word [ss:g_851A], ax	; top offset of DGROUP
 	mov	bx, 0x851c
 	mov	word [ss:bx], ss
 	and	sp, 0xfffe		; keep SP even
@@ -813,7 +813,7 @@ MscStartup:
 	push	ax
 	mov	word [ss:bx+6], sp
 	mov	word [ss:bx+8], sp
-	mov	word [ss:0x8516], sp
+	mov	word [ss:g_8516], sp
 	db	0x03, 0xF7			; add	si, di
 	mov	word [2], si
 	mov	bx, es
@@ -832,7 +832,7 @@ MscStartup:
 	rep stosb
 	push	ss
 	pop	ds
-	mov	cx, word [0x8ae2]	; optional near hook, skipped when the word is 0
+	mov	cx, word [g_8AE2]	; optional near hook, skipped when the word is 0
 	jcxz	.afterhook
 	call	cx
 
@@ -843,9 +843,9 @@ MscStartup:
 	call	0:InitRuntime
 	push	ss
 	pop	ds
-	push	word [0x8577]		; environ, argv, argc (medium model, near pointers)
-	push	word [0x8575]
-	push	word [0x8573]
+	push	word [g_8577]		; environ, argv, argc (medium model, near pointers)
+	push	word [g_8575]
+	push	word [g_8573]
 	call	0x08F9:_main		; _main
 	push	ax			; status from _main
 	push	cs
@@ -858,24 +858,24 @@ __cintDIV:
 	mov	ax, word [cs:CintdivDgroup]	; DGROUP word after this routine
 	mov	ds, ax
 	mov	ax, 3			; R6003 integer divide by 0
-	mov	word [ss:0x8518], _exit	; errors leave through _exit
+	mov	word [ss:g_8518], _exit	; errors leave through _exit
 AmsgExit:
 	push	ax			; message number is already in AX
 	push	cs
 	call	__FF_MSGBANNER
 	push	cs
 	call	__NMSG_WRITE
-	cmp	word [ss:0x8ae4], 0xd6d6; CodeView is present when this word is the signature
+	cmp	word [ss:g_8AE4], 0xd6d6; CodeView is present when this word is the signature
 	jne	.nodebug
 	pop	ax
 	push	ax
-	call	word [ss:0x8ae8]
+	call	word [ss:g_8AE8]
 
 .nodebug:
 	mov	ax, 0xff		; exit(255)
 	push	ax
 	push	cs
-	call	word [0x8518]
+	call	word [g_8518]
 ; DGROUP, read by __cintDIV. The pad byte puts InitRuntime on the next instruction.
 CintdivDgroup:
 	dw	DGROUP
@@ -887,8 +887,8 @@ CintdivDgroup:
 InitRuntime:
 	mov	ax, 0x3500		; remember the original interrupt 0 vector
 	int	0x21
-	mov	word [0x8542], bx
-	mov	word [0x8544], es
+	mov	word [g_8542], bx
+	mov	word [g_8544], es
 	push	cs
 	pop	ds
 	mov	ax, 0x2500		; interrupt 0 -> __cintDIV
@@ -896,24 +896,24 @@ InitRuntime:
 	int	0x21
 	push	ss
 	pop	ds
-	mov	cx, word [0x8af6]	; count of floating-point environment hooks; 0 skips them
+	mov	cx, word [g_8AF6]	; count of floating-point environment hooks; 0 skips them
 	jcxz	.nofp
 	mov	es, word [__psp]
 	mov	si, word [es:0x2c]	; environment segment from the PSP
-	lds	ax, [0x8af8]
+	lds	ax, [g_8AF8]
 	mov	dx, ds
 	db	0x33, 0xDB			; xor	bx, bx
-	call	far [ss:0x8af4]		; let the hook parse the environment
+	call	far [ss:g_8AF4]		; let the hook parse the environment
 	jae	.fpok
 	push	ss
 	pop	ds
 	jmp	FpFail			; hook failed: R6002 floating-point support not loaded
 
 .fpok:
-	lds	ax, [ss:0x8afc]
+	lds	ax, [ss:g_8AFC]
 	mov	dx, ds
 	mov	bx, 3
-	call	far [ss:0x8af4]
+	call	far [ss:g_8AF4]
 	push	ss
 	pop	ds
 
@@ -1031,9 +1031,9 @@ ExitCommon:
 	mov	si, 0x8b04
 	mov	di, 0x8b08
 	call	_initterm
-	cmp	word [0x8ae4], 0xd6d6	; debugger termination hook
+	cmp	word [g_8AE4], 0xd6d6	; debugger termination hook
 	jne	.after_atexit
-	call	word [0x8aea]
+	call	word [g_8AEA]
 
 .after_atexit:
 	mov	si, 0x8b08
@@ -1071,22 +1071,22 @@ ExitCommon:
 ; ExitRestore: put interrupt 0 back and drop the math error hook.
 ; Near, no arguments.
 ExitRestore:
-	mov	cx, word [0x8af6]	; put interrupt 0 back
+	mov	cx, word [g_8AF6]	; put interrupt 0 back
 	jcxz	.nomathexit
 	mov	bx, 2
-	call	far [0x8af4]
+	call	far [g_8AF4]
 
 .nomathexit:
 	push	ds
-	lds	dx, [0x8542]
+	lds	dx, [g_8542]
 	mov	ax, 0x2500
 	int	0x21
 	pop	ds
-	cmp	byte [0x8580], 0	; math error vector, if one was installed
+	cmp	byte [g_8580], 0	; math error vector, if one was installed
 	je	.restored
 	push	ds
-	mov	al, byte [0x8581]
-	lds	dx, [0x8582]
+	mov	al, byte [g_8581]
+	lds	dx, [g_8582]
 	mov	ah, 0x25
 	int	0x21
 	pop	ds
@@ -1118,7 +1118,7 @@ __chkstk:
 	db	0x8B, 0xDC			; mov	bx, sp
 	db	0x2B, 0xD8			; sub	bx, ax
 	jb	.overflow
-	cmp	bx, word [0x858a]	; below the stack limit
+	cmp	bx, word [g_858A]	; below the stack limit
 	jb	.overflow
 	db	0x8B, 0xE3			; mov	sp, bx
 	push	dx
@@ -1128,14 +1128,14 @@ __chkstk:
 .overflow:
 	push	dx
 	push	cx
-	mov	ax, word [0x8586]	; 0xFFFF means no alternate handler
+	mov	ax, word [g_8586]	; 0xFFFF means no alternate handler
 	inc	ax
 	jne	.altstack
 	db	0x33, 0xC0			; xor	ax, ax
 	jmp	AmsgExit		; AX = 0: R6000 stack overflow
 
 .altstack:
-	jmp	far [0x8586]		; jump to the alternate stack-overflow handler
+	jmp	far [g_8586]		; jump to the alternate stack-overflow handler
 
 
 ; Low-level C files, DOS calls, strings, and the runtime messages.
@@ -1257,7 +1257,7 @@ _sopen:
 	db	0x8B, 0xEC			; mov	bp, sp
 	sub	sp, 4
 	db	0x32, 0xFF			; xor	bh, bh
-	cmp	byte [0x8558], 3
+	cmp	byte [g_8558], 3
 	jb	short .noshare
 	mov	bh, byte [bp+0xa]
 .noshare:
@@ -1479,9 +1479,9 @@ _read:
 	jcxz	.8
 	test	byte [bx-0x7aa1], 2
 	jne	short .8
-	cmp	word [0x8ae4], 0xd6d6
+	cmp	word [g_8AE4], 0xd6d6
 	jne	short .1
-	call	word [0x8ae6]
+	call	word [g_8AE6]
 .1:
 	mov	cx, word [bp+0xa]
 	mov	dx, word [bp+8]
@@ -1592,9 +1592,9 @@ _write:
 .1:
 	jmp	near DosRetLong
 .go:
-	cmp	word [0x8ae4], 0xd6d6
+	cmp	word [g_8AE4], 0xd6d6
 	jne	short .2
-	call	word [0x8ae6]
+	call	word [g_8AE6]
 .2:
 	test	byte [bx-0x7aa1], 0x20
 	je	short .3
@@ -1950,12 +1950,12 @@ _sprintf:
 	sub	sp, 2
 	push	di
 	push	si
-	mov	byte [0x909c], 0x42
+	mov	byte [g_909C], 0x42
 	mov	ax, word [bp+6]
-	mov	word [0x909a], ax
+	mov	word [g_909A], ax
 	mov	si, 0x9096
 	mov	word [si], ax
-	mov	word [0x9098], 0x7fff
+	mov	word [g_9098], 0x7fff
 	lea	ax, [bp+0xa]
 	push	ax
 	push	word [bp+8]
@@ -1964,10 +1964,10 @@ _sprintf:
 	call	0:_output
 	add	sp, 6
 	db	0x8B, 0xF8			; mov	di, ax
-	dec	word [0x9098]
+	dec	word [g_9098]
 	js	short .1
-	mov	bx, word [0x9096]
-	inc	word [0x9096]
+	mov	bx, word [g_9096]
+	inc	word [g_9096]
 	mov	byte [bx], 0
 	jmp	short .2
 	db	144
@@ -2106,10 +2106,10 @@ atexit:
 .1:
 	db	0x8B, 0xC8			; mov	cx, ax
 	db	0x99			; cdq
-	mov	bx, word [0x8694]
+	mov	bx, word [g_8694]
 	cmp	bx, 0x9138
 	je	short .2
-	add	word [0x8694], 4
+	add	word [g_8694], 4
 	mov	dx, word [bp+8]
 	mov	word [bx+2], dx
 	mov	ax, word [bp+6]
@@ -2296,8 +2296,8 @@ _srand:
 	push	bp
 	db	0x8B, 0xEC			; mov	bp, sp
 	mov	ax, word [bp+6]
-	mov	word [0x8696], ax
-	mov	word [0x8698], 0
+	mov	word [g_8696], ax
+	mov	word [g_8698], 0
 	pop	bp
 	retf
 	db	144
@@ -2308,13 +2308,13 @@ _rand:
 	mov	dx, 3
 	push	dx
 	push	ax
-	push	word [0x8698]
-	push	word [0x8696]
+	push	word [g_8698]
+	push	word [g_8696]
 	db	0x9A, 0x26, 0x12, 0x00, 0x00			; call	0:__aFlmul
 	add	ax, strict word 0x9ec3
 	adc	dx, 0x26
-	mov	word [0x8696], ax
-	mov	word [0x8698], dx
+	mov	word [g_8696], ax
+	mov	word [g_8698], dx
 	db	0x8B, 0xC2			; mov	ax, dx
 	and	ah, 0x7f
 	retf
@@ -2500,9 +2500,9 @@ _dos_write:
 .1:
 	mov	bx, word [bp+6]
 	mov	cx, word [bp+0xc]
-	cmp	word [0x8ae4], 0xd6d6
+	cmp	word [g_8AE4], 0xd6d6
 	jne	short .write
-	call	word [0x8ae6]
+	call	word [g_8AE6]
 .write:
 	push	ds
 	lds	dx, [bp+8]
@@ -3255,9 +3255,9 @@ __FF_MSGBANNER:
 	push	ax
 	push	cs
 	call	__NMSG_WRITE
-	cmp	word [0x86b4], 0
+	cmp	word [g_86B4], 0
 	je	short .nobannerhook
-	call	far [0x86b2]
+	call	far [g_86B2]
 .nobannerhook:
 	mov	ax, 0xff
 	push	ax
@@ -3348,9 +3348,9 @@ __NMSG_WRITE:
 	not	cx
 	dec	cx
 	mov	bx, 2
-	cmp	word [0x8ae4], 0xd6d6
+	cmp	word [g_8AE4], 0xd6d6
 	jne	short .nodebug
-	call	word [0x8ae6]
+	call	word [g_8AE6]
 .nodebug:
 	mov	ah, 0x40
 	int	0x21
@@ -3407,7 +3407,7 @@ DosMapErr:
 	db	0xA2, 0x5B, 0x85			; mov	byte [_doserrno], al
 	db	0x0A, 0xE4			; or	ah, ah
 	jne	short .high
-	cmp	byte [0x8558], 3
+	cmp	byte [g_8558], 3
 	jb	short .low
 	cmp	al, 0x22
 	jae	short .1
@@ -3849,7 +3849,7 @@ _output:
 	push	ds
 	pop	es
 	mov	di, 0x886b
-	mov	cx, word [0x8871]
+	mov	cx, word [g_8871]
 	jmp	near .62
 .27:
 	push	di
@@ -3940,11 +3940,11 @@ _output:
 	push	word [bp+0xa]
 	test	byte [bp-3], 4
 	je	short .39
-	call	far [0x888a]
+	call	far [g_888A]
 	add	word [bp+0xa], 0xa
 	jmp	short .40
 .39:
-	call	far [0x8876]
+	call	far [g_8876]
 	add	word [bp+0xa], 8
 .40:
 	add	sp, 0xa
@@ -3953,7 +3953,7 @@ _output:
 	cmp	word [bp-0xc], 0
 	jne	short .41
 	push	di
-	call	far [0x8882]
+	call	far [g_8882]
 	add	sp, 2
 .41:
 	cmp	si, 0x67
@@ -3961,7 +3961,7 @@ _output:
 	test	word [bp-4], 0x80
 	jne	short .42
 	push	di
-	call	far [0x887a]
+	call	far [g_887A]
 	add	sp, 2
 .42:
 	push	ss
@@ -4521,9 +4521,9 @@ FloatBuf:
 	sub	sp, 4
 	push	di
 	push	si
-	cmp	byte [0x8a1c], 0
+	cmp	byte [g_8A1C], 0
 	je	short .5
-	mov	bx, word [0x909e]
+	mov	bx, word [g_909E]
 	mov	word [bp-2], bx
 	cmp	word [bx], 0x2d
 	jne	short .1
@@ -4597,7 +4597,7 @@ FloatBuf:
 .12:
 	mov	ax, 0x8a16
 	push	ax
-	cmp	byte [0x8a1c], 1
+	cmp	byte [g_8A1C], 1
 	db	0x1B, 0xC0			; sbb	ax, ax
 	neg	ax
 	add	ax, word [bp+0xa]
@@ -4666,14 +4666,14 @@ FloatToStr:
 	push	bp
 	db	0x8B, 0xEC			; mov	bp, sp
 	sub	sp, 2
-	mov	byte [0x8a1c], 1
+	mov	byte [g_8A1C], 1
 	push	word [bp+0xc]
 	push	word [bp+0xa]
 	push	word [bp+8]
 	push	word [bp+6]
 	push	cs
 	call	FloatBuf
-	mov	byte [0x8a1c], 0
+	mov	byte [g_8A1C], 0
 	db	0x8B, 0xE5			; mov	sp, bp
 	pop	bp
 	retf
@@ -4683,9 +4683,9 @@ FloatWidth:
 	db	0x8B, 0xEC			; mov	bp, sp
 	sub	sp, 6
 	push	si
-	cmp	byte [0x8a1c], 0
+	cmp	byte [g_8A1C], 0
 	je	short .3
-	mov	bx, word [0x909e]
+	mov	bx, word [g_909E]
 	mov	word [bp-2], bx
 	cmp	word [bx], 0x2d
 	jne	short .1
@@ -4696,7 +4696,7 @@ FloatWidth:
 	db	0x2B, 0xF6			; sub	si, si
 .2:
 	add	si, word [bp+8]
-	mov	ax, word [0x8a1e]
+	mov	ax, word [g_8A1E]
 	cmp	word [bp+0xa], ax
 	jne	short .6
 	db	0x8B, 0xD8			; mov	bx, ax
@@ -4763,7 +4763,7 @@ FloatWidth:
 	mov	bx, word [bp-2]
 	cmp	word [bx+2], 0
 	jge	short .12
-	cmp	byte [0x8a1c], 0
+	cmp	byte [g_8A1C], 0
 	je	short .10
 	mov	ax, word [bx+2]
 	neg	ax
@@ -4797,13 +4797,13 @@ FloatToSci:
 	push	bp
 	db	0x8B, 0xEC			; mov	bp, sp
 	sub	sp, 2
-	mov	byte [0x8a1c], 1
+	mov	byte [g_8A1C], 1
 	push	word [bp+0xa]
 	push	word [bp+8]
 	push	word [bp+6]
 	push	cs
 	call	FloatWidth
-	mov	byte [0x8a1c], 0
+	mov	byte [g_8A1C], 0
 	db	0x8B, 0xE5			; mov	sp, bp
 	pop	bp
 	retf
@@ -4820,11 +4820,11 @@ FormatOne:
 	push	word [bx]
 	db	0x9A, 0xD2, 0x2B, 0x00, 0x00			; call	0:PackArgs
 	add	sp, 8
-	mov	word [0x909e], ax
+	mov	word [g_909E], ax
 	db	0x8B, 0xD8			; mov	bx, ax
 	mov	ax, word [bx+2]
 	dec	ax
-	mov	word [0x8a1e], ax
+	mov	word [g_8A1E], ax
 	push	bx
 	push	word [bp+0xa]
 	cmp	word [bx], 0x2d
@@ -4839,20 +4839,20 @@ FormatOne:
 	push	ax
 	db	0x9A, 0x3E, 0x28, 0x00, 0x00			; call	0:WriteDigits
 	add	sp, 6
-	mov	bx, word [0x909e]
+	mov	bx, word [g_909E]
 	mov	ax, word [bx+2]
 	dec	ax
 	mov	word [bp-4], ax
-	cmp	ax, word [0x8a1e]
+	cmp	ax, word [g_8A1E]
 	jle	short .3
 	mov	al, 1
 	jmp	short .4
 .3:
 	db	0x2A, 0xC0			; sub	al, al
 .4:
-	mov	byte [0x8a20], al
+	mov	byte [g_8A20], al
 	mov	ax, word [bp-4]
-	mov	word [0x8a1e], ax
+	mov	word [g_8A1E], ax
 	db	0x3D, 0xFC, 0xFF			; cmp	ax, 0xfffc
 	jl	short .5
 	cmp	ax, word [bp+0xa]
@@ -4869,7 +4869,7 @@ FormatOne:
 	pop	bp
 	retf
 .6:
-	cmp	byte [0x8a20], 0
+	cmp	byte [g_8A20], 0
 	je	short .8
 .7:
 	mov	bx, word [bp-2]
@@ -5503,7 +5503,7 @@ FlushAll:
 .2:
 	add	si, 8
 .3:
-	cmp	word [0x880a], si
+	cmp	word [g_880A], si
 	jb	short .4
 	test	byte [si+6], 0x83
 	je	short .2
@@ -5793,9 +5793,9 @@ WriteCounted:
 	inc	bx
 	db	0x8B, 0xD3			; mov	dx, bx
 	mov	bx, 2
-	cmp	word [0x8ae4], 0xd6d6
+	cmp	word [g_8AE4], 0xd6d6
 	jne	short .1
-	call	word [0x8ae6]
+	call	word [g_8AE6]
 .1:
 	mov	ah, 0x40
 	int	0x21
@@ -6266,7 +6266,7 @@ FpExec:
 	db	0xD9, 0xCD			; fxch	st(5)
 	cmp	word [0x8ab9], di
 	int	0x3d
-	test	byte [0x8aba], 0x41
+	test	byte [g_8ABA], 0x41
 	je	short .8
 	inc	di
 	mov	bx, 0x2c8f
@@ -7030,19 +7030,19 @@ FpScale:
 	mov	word [bp-2], ax
 	mov	ax, word [bp-6]
 	sub	ax, word [bp+6]
-	mov	word [0x90aa], ax
-	mov	word [0x90a8], 0
+	mov	word [g_90AA], ax
+	mov	word [g_90A8], 0
 	test	byte [bp-2], 4
 	je	short .1
-	mov	word [0x90a8], 0x200
+	mov	word [g_90A8], 0x200
 .1:
 	test	byte [bp-2], 2
 	je	short .2
-	or	byte [0x90a8], 1
+	or	byte [g_90A8], 1
 .2:
 	test	byte [bp-2], 1
 	je	short .3
-	or	byte [0x90a9], 1
+	or	byte [g_90A9], 1
 .3:
 	mov	ax, 0x90a8
 	db	0x8B, 0xE5			; mov	sp, bp
@@ -7232,7 +7232,7 @@ FpPop:
 	test	byte [bx+2], 4
 	je	short .16
 	db	0x03, 0xC6			; add	ax, si
-	mov	bx, word [0x8556]
+	mov	bx, word [__psp]
 	db	0x2B, 0xC3			; sub	ax, bx
 	mov	es, bx
 .16:
