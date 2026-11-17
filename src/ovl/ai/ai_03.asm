@@ -62,7 +62,7 @@ PlayHilight:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word 0x3a0b
         push strict word f_3A0B_0A8E
@@ -78,12 +78,12 @@ PlayHilight:
         mov cx, [g_29CA]
 .3:
         push cx
-        call 0x1B35:OvlThunk246
+        call 0x1B35:LoadRinkTilesThunk
         add sp, 0x2
-        call 0x1B35:OvlThunk245
-        call 0x1B35:OvlThunk244
+        call 0x1B35:LoadArenaJinglesThunk
+        call 0x1B35:LoadGameGfxThunk
         push 0x0
-        call 0x1B35:OvlThunk145
+        call 0x1B35:InstantReplayThunk
         add sp, 0x2
         lea ax, [bp - 0x300]
         push ss
@@ -97,14 +97,14 @@ PlayHilight:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [HeapSizeHi]
         push word [HeapSizeLo]
         call 0x03A3:UseCharSeg
         add sp, 0x4
-        call 0x1B35:OvlThunk269
-        call 0x1B35:OvlThunk275
+        call 0x1B35:FreeArenaJinglesThunk
+        call 0x1B35:FreePlayerFramesThunk
         push word [g_C25E]
         push word [g_C25C]
         call 0x06E1:FindUnlink

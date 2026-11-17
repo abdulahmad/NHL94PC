@@ -187,7 +187,7 @@ PlayRandomHighlight:
         push ax
         mov al, [bx + g_B0B6]
         push ax
-        call 0x1B35:OvlThunk273
+        call 0x1B35:StartHL2Thunk
         add sp, 0xa
         db 0x8B, 0xF8                           ; insn: mov di, ax
         call 0x2137:FreeArenaJingles
@@ -232,8 +232,8 @@ EndGameScreens:
         push si
         cmp word [g_48BE], -0x1
         jz short .1
-        call 0x1B35:OvlThunk250
-        call 0x1B35:OvlThunk254
+        call 0x1B35:FlushGSumQueueThunk
+        call 0x1B35:PutGSumTailThunk
 .1:
         call 0x256C:FreePPVFiles
         push word [g_C25E]
@@ -310,7 +310,7 @@ EndGameScreens:
         push word [bp - 0x4]
         push word [bp - 0x6]
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [bp - 0x4]
         push word [bp - 0x6]
@@ -332,14 +332,14 @@ EndGameScreens:
         mov word [g_48BE], 0xffff
         call 0x2137:LoadArenaJingles
         push 0x1
-        call 0x1B35:OvlThunk139
+        call 0x1B35:SportsDeskThunk
         add sp, 0x2
         db 0x2A, 0xC0                           ; insn: sub al, al
         mov [g_01D6], al
         mov [g_01D7], al
         mov [g_01D8], al
         mov [g_01D9], al
-        call 0x1B35:OvlThunk272
+        call 0x1B35:WriteGSumHeaderThunk
         pop si
         pop di
         leave
@@ -349,9 +349,9 @@ EndGameScreens:
 IntermissionScreens:
         push di
         push si
-        call 0x1B35:OvlThunk250
-        call 0x1B35:OvlThunk254
-        call 0x1B35:OvlThunk274
+        call 0x1B35:FlushGSumQueueThunk
+        call 0x1B35:PutGSumTailThunk
+        call 0x1B35:PutGSumHeaderThunk
         call 0x256C:FreePPVFiles
         push word [g_C25E]
         push word [g_C25C]
@@ -380,7 +380,7 @@ IntermissionScreens:
         push di
         push si
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push di
         push si
@@ -425,7 +425,7 @@ IntermissionScreens:
         push di
         push si
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push di
         push si
@@ -444,7 +444,7 @@ IntermissionScreens:
 .1:
         call 0x2137:LoadArenaJingles
         push 0x2
-        call 0x1B35:OvlThunk139
+        call 0x1B35:SportsDeskThunk
         add sp, 0x2
         mov es, [g_8CB0]
         mov word [es:0x126], 0x1

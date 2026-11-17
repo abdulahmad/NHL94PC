@@ -95,7 +95,7 @@ StartHL2:
         mov ax, [bp + 0x8]
         mov [g_29CC], ax
         push 0x2
-        call 0x1B35:OvlThunk173
+        call 0x1B35:LoadGameTeamsThunk
         add sp, 0x2
         push word 0x3a0b
         push strict word f_3A0B_0A8E
@@ -111,11 +111,11 @@ StartHL2:
         mov ax, [g_29CA]
 .7:
         push ax
-        call 0x1B35:OvlThunk246
+        call 0x1B35:LoadRinkTilesThunk
         add sp, 0x2
-        call 0x1B35:OvlThunk142
-        call 0x1B35:OvlThunk143
-        call 0x1B35:OvlThunk144
+        call 0x1B35:LoadScoreboardArtThunk
+        call 0x1B35:LoadRinkEndArtThunk
+        call 0x1B35:LoadPPVFilesThunk
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [g_B45C], ax
         mov [g_B386], ax
@@ -626,7 +626,7 @@ StartHL2:
         mov cx, 0x18
         rep movsw
         push 0x4
-        call 0x1B35:OvlThunk173
+        call 0x1B35:LoadGameTeamsThunk
         add sp, 0x2
         call 0x2E42:Intermission
         mov byte [g_29BB], 0x0
@@ -653,7 +653,7 @@ StartHL2:
         push word [g_29CA]
         call 0x1E64:LoadTeamPalette
         add sp, 0x8
-        call 0x1B35:OvlThunk140
+        call 0x1B35:FreePPVFilesThunk
         push word [g_C25E]
         push word [g_C25C]
         call 0x06E1:FindUnlink
@@ -671,10 +671,10 @@ StartHL2:
         mov ax, [g_29CA]
 .38:
         push ax
-        call 0x1B35:OvlThunk246
+        call 0x1B35:LoadRinkTilesThunk
         add sp, 0x2
         call 0x0FEF:UseOffscreenCanvas
-        call 0x1B35:OvlThunk142
+        call 0x1B35:LoadScoreboardArtThunk
         push 0x1
         push word [g_BFFE]
         push word [g_29CC]

@@ -11,7 +11,7 @@ MainDeskLoop:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [bp - 0x4e], ax
         push ax
-        call 0x1B35:OvlThunk133
+        call 0x1B35:SetStatsMenuTextThunk
         add sp, 0x2
         mov ax, 0xd44
         mov cx, 0x3448
@@ -70,7 +70,7 @@ MainDeskLoop:
         call far [MousePosFn]
         call 0x2037:SetSideControls
         push 0x0
-        call 0x1B35:OvlThunk116
+        call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
         mov word [g_21C2], 0x24db
         mov word [g_21C4], 0x1b35
@@ -149,7 +149,7 @@ MainDeskLoop:
         push dx
         push ax
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [bp - 0x24]
         push word [bp - 0x26]
@@ -378,7 +378,7 @@ MainDeskLoop:
         push dx
         push ax
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [bp - 0x24]
         push word [bp - 0x26]
@@ -386,7 +386,7 @@ MainDeskLoop:
         add sp, 0x4
 .18:
         push 0x0
-        call 0x1B35:OvlThunk133
+        call 0x1B35:SetStatsMenuTextThunk
         add sp, 0x2
         lea ax, [bp - 0x6a]
         push ax
@@ -1454,16 +1454,16 @@ MenuNewExhibition:
         mov word [g_21D0], 0x1b35
         mov word [g_21D2], 0x232d
         mov word [g_21D4], 0x1b35
-        call 0x1B35:OvlThunk132
+        call 0x1B35:SetupControllersThunk
         cmp [di], si
         jnl short .1
         push si
         push si
-        call 0x1B35:OvlThunk135
+        call 0x1B35:CreateGSummaryDbThunk
         add sp, 0x4
         push word [g_29CC]
         push word [g_29CA]
-        call 0x1B35:OvlThunk134
+        call 0x1B35:ShowMatchupScreenThunk
         add sp, 0x4
         db 0x8B, 0xF0                           ; insn: mov si, ax
         call 0x0BFE:InputShutdown
@@ -1474,7 +1474,7 @@ MenuNewExhibition:
         jmp near .4
 .2:
         push 0x1
-        call 0x1B35:OvlThunk116
+        call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
         cmp word [di], 0x0
         jl short .3
@@ -1497,7 +1497,7 @@ MenuNewExhibition:
         push word [bp - 0x10]
         push word [bp - 0x12]
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [bp - 0x10]
         push word [bp - 0x12]
@@ -1505,10 +1505,10 @@ MenuNewExhibition:
         add sp, 0x4
 .3:
         push di
-        call 0x1B35:OvlThunk127
+        call 0x1B35:PlayGameThunk
         add sp, 0x2
         push 0x0
-        call 0x1B35:OvlThunk116
+        call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
         mov ax, 0xd
         mov dx, 0x3d4
@@ -1541,7 +1541,7 @@ MenuNewExhibition:
         push di
         push si
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push di
         push si
@@ -1653,7 +1653,7 @@ MenuNewExhibition:
         push dx
         push ax
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push di
         push si
@@ -1742,26 +1742,26 @@ MenuNewLeague:
         push 0x0
         call 0x2B26:SetLeagueSetImage
         add sp, 0x2
-        call 0x1B35:OvlThunk151
+        call 0x1B35:CreateNewLeagueThunk
         mov es, [g_8B78]
         cmp byte [es:0xc6], 0x0
         jz short .8
-        call 0x1B35:OvlThunk117
+        call 0x1B35:BuildSeasonTitleThunk
         push 0x0
-        call 0x1B35:OvlThunk116
+        call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
         mov es, [g_8B7A]
-        mov word [es:0xb6c], strict word OvlThunk9
+        mov word [es:0xb6c], strict word MenuExportDbsThunk
         mov word [es:0xb6e], 0x1b35
-        mov word [es:0xb82], strict word OvlThunk13
+        mov word [es:0xb82], strict word MenuNextLeagueGameThunk
         mov word [es:0xb84], 0x1b35
         mov word [es:0xb9c], 0xd86
         mov word [es:0xb9e], 0x3448
         jmp short .9
 .8:
-        call 0x1B35:OvlThunk117
+        call 0x1B35:BuildSeasonTitleThunk
         push 0x0
-        call 0x1B35:OvlThunk116
+        call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
         mov es, [g_8B7A]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -1795,7 +1795,7 @@ MenuNewLeague:
         push di
         push si
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push di
         push si
@@ -1886,11 +1886,11 @@ MenuAddTeam:
         call LoadModeState
         add sp, 0x4
         push 0x3
-        call 0x1B35:OvlThunk116
+        call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
-        call 0x1B35:OvlThunk150
+        call 0x1B35:AddHumanTeamThunk
         push 0x0
-        call 0x1B35:OvlThunk116
+        call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
         push word 0x3415
         push strict word f_3415_00C4
@@ -1920,7 +1920,7 @@ MenuAddTeam:
         push di
         push si
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push di
         push si
@@ -2012,11 +2012,11 @@ MenuRemoveTeam:
         call LoadModeState
         add sp, 0x4
         push 0x3
-        call 0x1B35:OvlThunk116
+        call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
-        call 0x1B35:OvlThunk155
+        call 0x1B35:RemoveHumanTeamThunk
         push 0x0
-        call 0x1B35:OvlThunk116
+        call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
         push word 0x3415
         push strict word f_3415_00C4
@@ -2046,7 +2046,7 @@ MenuRemoveTeam:
         push di
         push si
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push di
         push si
@@ -2138,7 +2138,7 @@ MenuLeagueSettings:
         push cs
         call LoadModeState
         add sp, 0x4
-        call 0x1B35:OvlThunk154
+        call 0x1B35:CheckMasterPasswordThunk
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .1
         mov si, 0xffff
@@ -2166,7 +2166,7 @@ MenuLeagueSettings:
         push word [bp - 0x1a]
         push word [bp - 0x1c]
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [bp - 0x1a]
         push word [bp - 0x1c]
@@ -2268,7 +2268,7 @@ MenuLeagueSettings:
         push dx
         push ax
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [bp - 0x22]
         push word [bp - 0x24]
@@ -2307,7 +2307,7 @@ MenuRebuildDbs:
         push cs
         call LoadModeState
         add sp, 0x4
-        call 0x1B35:OvlThunk153
+        call 0x1B35:RebuildLeagueDbsThunk
         push word 0x3415
         push strict word f_3415_00C4
         push cs
@@ -2335,7 +2335,7 @@ MenuMergeUpdateDbs:
         push cs
         call LoadModeState
         add sp, 0x4
-        call 0x1B35:OvlThunk152
+        call 0x1B35:MergeUpdateDbsThunk
         db 0x8B, 0xF0                           ; insn: mov si, ax
         push word 0x3415
         push strict word f_3415_00C4
@@ -2369,7 +2369,7 @@ MenuMergeUpdateDbs:
         push di
         push si
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push di
         push si
@@ -2465,7 +2465,7 @@ MenuMergeLeagueFiles:
         push cs
         call LoadModeState
         add sp, 0x4
-        call 0x1B35:OvlThunk158
+        call 0x1B35:MergeLeagueFilesThunk
         db 0x8B, 0xF0                           ; insn: mov si, ax
         push word 0x3415
         push strict word f_3415_00C4
@@ -2499,7 +2499,7 @@ MenuMergeLeagueFiles:
         push di
         push si
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push di
         push si
@@ -2592,7 +2592,7 @@ MenuUpdateTeamDbs:
         push cs
         call LoadModeState
         add sp, 0x4
-        call 0x1B35:OvlThunk157
+        call 0x1B35:UpdateTeamDbsThunk
         push word 0x3415
         push strict word f_3415_00C4
         push cs
@@ -2621,11 +2621,11 @@ MenuTradePlayers:
         call LoadModeState
         add sp, 0x4
         push 0x3
-        call 0x1B35:OvlThunk116
+        call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
-        call 0x1B35:OvlThunk156
+        call 0x1B35:TradePlayersThunk
         push 0x0
-        call 0x1B35:OvlThunk116
+        call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
         push word 0x3415
         push strict word f_3415_00C4
@@ -2655,7 +2655,7 @@ MenuTradePlayers:
         push di
         push si
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push di
         push si
@@ -2747,13 +2747,13 @@ MenuNextLeagueGame:
         call LoadModeState
         add sp, 0x4
         push 0x3
-        call 0x1B35:OvlThunk116
+        call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
         push 0x1
         call 0x2B26:SetLeagueSetImage
         add sp, 0x2
         push 0x2
-        call 0x1B35:OvlThunk133
+        call 0x1B35:SetStatsMenuTextThunk
         add sp, 0x2
         mov bx, [bp + 0x6]
         cmp word [bx], 0x0
@@ -2795,7 +2795,7 @@ MenuNextLeagueGame:
         mov word [bx], 0xffff
 .1:
         push word [bp + 0x6]
-        call 0x1B35:OvlThunk160
+        call 0x1B35:PlayLeagueGameThunk
         add sp, 0x2
         mov word [g_21C2], 0x24db
         mov word [g_21C4], 0x1b35
@@ -2808,7 +2808,7 @@ MenuNextLeagueGame:
         mov word [g_21D2], 0x219d
         mov word [g_21D4], 0x1b35
         push 0x0
-        call 0x1B35:OvlThunk116
+        call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
         push word 0x3415
         push strict word f_3415_00C4
@@ -2838,7 +2838,7 @@ MenuNextLeagueGame:
         push di
         push si
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push di
         push si
@@ -3020,7 +3020,7 @@ MenuLeagueHilights:
         push dx
         push ax
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push di
         push si
@@ -3067,7 +3067,7 @@ MenuImportDbs:
         push cs
         call LoadModeState
         add sp, 0x4
-        call 0x1B35:OvlThunk159
+        call 0x1B35:ImportDbsThunk
         push word 0x3415
         push strict word f_3415_00C4
         push cs
@@ -3096,11 +3096,11 @@ MenuExportDbs:
         call LoadModeState
         add sp, 0x4
         push 0x3
-        call 0x1B35:OvlThunk116
+        call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
-        call 0x1B35:OvlThunk161
+        call 0x1B35:ExportDbsThunk
         push 0x0
-        call 0x1B35:OvlThunk116
+        call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
         push word 0x3415
         push strict word f_3415_00C4
@@ -3130,7 +3130,7 @@ MenuExportDbs:
         push di
         push si
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push di
         push si

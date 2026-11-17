@@ -114,7 +114,7 @@ assdefo:
         add [g_D66C], ax
 .18:
         push word 0x1b35
-        push strict word OvlThunk18
+        push strict word EvadePCThunk
         push si
         call 0x2425:skateto
         add sp, 0x6
@@ -341,7 +341,7 @@ assdefd:
         mov ax, [di + 0x2c]
         mov [g_D672], ax
         push word 0x1b35
-        push strict word OvlThunk18
+        push strict word EvadePCThunk
         push di
         call 0x2425:skateto
         add sp, 0x6
@@ -650,7 +650,7 @@ asswingo:
         neg word [g_D672]
 .17:
         push word 0x1b35
-        push strict word OvlThunk18
+        push strict word EvadePCThunk
         push si
         call 0x2425:skateto
         add sp, 0x6
@@ -902,7 +902,7 @@ asscentero:
         neg word [g_D672]
 .16:
         push word 0x1b35
-        push strict word OvlThunk18
+        push strict word EvadePCThunk
         push si
         call 0x2425:skateto
         add sp, 0x6
@@ -1734,7 +1734,7 @@ assbench:
         jnz short .21
         cmp word [si + 0x1a], 0x0
         jz short .21
-        mov ax, strict word OvlThunk18
+        mov ax, strict word EvadePCThunk
         mov dx, 0x1b35
         jmp short .22
 .21:
@@ -1947,7 +1947,7 @@ assgoalie:
         mov word [g_D672], 0xff3c
 .7:
         push word 0x1b35
-        push strict word OvlThunk19
+        push strict word avdgoal_boxThunk
         push bx
         call 0x2425:skateto
         add sp, 0x6
@@ -2770,7 +2770,7 @@ asspuckc:
         mov [si + 0x2a], ax
 .13:
         push word 0x1b35
-        push strict word OvlThunk20
+        push strict word asspuckc_chkdirThunk
         push si
         call 0x2425:skateto
         add sp, 0x6
@@ -4512,7 +4512,7 @@ assreffollow:
         mov ax, [si + 0x2c]
         mov [g_D672], ax
         push word 0x1b35
-        push strict word OvlThunk21
+        push strict word EvadePlayersThunk
         push si
         call 0x2425:skateto
         add sp, 0x6

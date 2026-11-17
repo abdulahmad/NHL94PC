@@ -32,7 +32,7 @@ IntermissionPC:
         push word [HeapSizeLo]
         call 0x03A3:UseCharSeg
         add sp, 0x4
-        call 0x1B35:OvlThunk237
+        call 0x1B35:EndGameScreensThunk
         inc word [g_BFFE]
         retf
 
@@ -316,7 +316,7 @@ HandleHotKeyJumpTable:
         call 0x0EDC:StopJingle
         call 0x0BFE:InputInit
         push 0x1
-        call 0x1B35:OvlThunk145
+        call 0x1B35:InstantReplayThunk
         add sp, 0x2
         call 0x0F99:FlushInputEvents
         call 0x0BFE:InputShutdown
@@ -402,7 +402,7 @@ HandleHotKeyJumpTable:
 .21:
         push 0x1
 .22:
-        call 0x1B35:OvlThunk243
+        call 0x1B35:ShowGoalieBannerThunk
 .23:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         leave
@@ -433,7 +433,7 @@ RunGameFrames:
 .1:
         cmp word [g_4B00], 0x0
         jnz short .3
-        call 0x1B35:OvlThunk242
+        call 0x1B35:joyq_peekThunk
         mov [g_4B04], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .7
@@ -453,12 +453,12 @@ RunGameFrames:
         test byte [g_29BB], 0x1
         jnz short .4
         add word [g_D6D2], 0x64
-        call 0x1B35:OvlThunk241
+        call 0x1B35:ClockTickThunk
 .4:
-        call 0x1B35:OvlThunk240
+        call 0x1B35:DoGameFrameThunk
         dec word [g_4B00]
         jnz short .5
-        call 0x1B35:OvlThunk239
+        call 0x1B35:joyq_popThunk
 .5:
         cmp word [g_563A], 0x0
         jnz short .7
@@ -475,7 +475,7 @@ RunGameFrames:
         retf
         db 0x90
 .6:
-        call 0x1B35:OvlThunk238
+        call 0x1B35:joyq_flushThunk
 .7:
         pop si
         pop di
@@ -663,7 +663,7 @@ Gameloop:
         mov ax, [g_D6CC]
         sub ax, 0xc0
         push ax
-        call 0x1B35:OvlThunk256
+        call 0x1B35:DrawRinkOverlaysThunk
         add sp, 0x4
         cmp word [g_49F4], 0x0
         jz short .7
@@ -684,7 +684,7 @@ Gameloop:
         push cs
         call FadePalette
         add sp, 0x8
-        call 0x1B35:OvlThunk250
+        call 0x1B35:FlushGSumQueueThunk
         mov ax, [g_D46A]
         mov [PadRepeatOn], ax
 .7:
@@ -712,7 +712,7 @@ Gameloop:
         add ax, [g_5564]
         mov [g_D728], ax
 .8:
-        call 0x1B35:OvlThunk255
+        call 0x1B35:UpdateHudPanelThunk
         cmp word [g_49F4], 0x0
         jz short .9
         mov ax, [PadRepeatOn]
@@ -758,14 +758,14 @@ Gameloop:
 .14:
         call 0x0EDC:StopJingle
         call 0x09B2:StopSpeech
-        call 0x1B35:OvlThunk250
-        call 0x1B35:OvlThunk254
+        call 0x1B35:FlushGSumQueueThunk
+        call 0x1B35:PutGSumTailThunk
         push word [HeapSizeHi]
         push word [HeapSizeLo]
         call 0x03A3:UseCharSeg
         add sp, 0x4
         push 0x0
-        call 0x1B35:OvlThunk139
+        call 0x1B35:SportsDeskThunk
         add sp, 0x2
         mov es, [g_8C8A]
         cmp word [es:0x126], 0x2
@@ -786,25 +786,25 @@ Gameloop:
         mov word [g_4B02], 0x0
         mov ax, [g_D46A]
         mov [PadRepeatOn], ax
-        call 0x1B35:OvlThunk238
+        call 0x1B35:joyq_flushThunk
 .18:
         cmp word [g_563A], 0x0
         jz short .19
         mov ax, [PadRepeatOn]
         mov [g_D46A], ax
         mov word [PadRepeatOn], 0x0
-        call 0x1B35:OvlThunk253
+        call 0x1B35:RunDeferredCallsThunk
         mov word [g_563A], 0x0
         mov ax, [g_D46A]
         mov [PadRepeatOn], ax
-        call 0x1B35:OvlThunk238
+        call 0x1B35:joyq_flushThunk
 .19:
         cmp word [g_48BE], 0x0
         jnz short .20
         jmp near .2
 .20:
         mov word [PadRepeatOn], 0x0
-        call 0x1B35:OvlThunk252
+        call 0x1B35:PeriodOverThunk
         mov es, [g_8C8A]
         cmp word [es:0x126], 0x2
         jnz short .21
@@ -817,7 +817,7 @@ Gameloop:
         push word [g_BFFE]
         push word [g_29CC]
         push word [g_29CA]
-        call 0x1B35:OvlThunk251
+        call 0x1B35:DrawHudPanelThunk
         add sp, 0x8
         push 0x0
         call 0x0EDC:PlayArenaJingle
@@ -841,7 +841,7 @@ Gameloop:
         mov [g_48BE], ax
         mov [g_D6D0], ax
         mov [g_D6D2], ax
-        call 0x1B35:OvlThunk238
+        call 0x1B35:joyq_flushThunk
 .25:
         mov word [PadRepeatOn], 0x1
         cmp word [g_48C0], 0x0
@@ -849,13 +849,13 @@ Gameloop:
         jmp near .1
 .26:
         mov word [PadRepeatOn], 0x0
-        call 0x1B35:OvlThunk250
-        call 0x1B35:OvlThunk249
-        call 0x1B35:OvlThunk248
+        call 0x1B35:FlushGSumQueueThunk
+        call 0x1B35:StartThreeStarsThunk
+        call 0x1B35:IntermissionScreensThunk
         mov es, [g_8C8A]
         mov word [es:0x126], 0x1
 .27:
-        call 0x1B35:OvlThunk247
+        call 0x1B35:FreeGameMemoryThunk
         pop si
         retf
 
@@ -874,7 +874,7 @@ PlayGame:
         mov cx, [g_29CA]
 .2:
         push cx
-        call 0x1B35:OvlThunk246
+        call 0x1B35:LoadRinkTilesThunk
         add sp, 0x2
         push word 0x3a0b
         push strict word f_3A0B_0A8E
@@ -882,8 +882,8 @@ PlayGame:
         push word [g_29CA]
         call 0x1E64:LoadTeamPalette
         add sp, 0x8
-        call 0x1B35:OvlThunk245
-        call 0x1B35:OvlThunk244
+        call 0x1B35:LoadArenaJinglesThunk
+        call 0x1B35:LoadGameGfxThunk
 .3:
         cmp word [si], 0x0
         jnl short .4
@@ -894,7 +894,7 @@ PlayGame:
         call 0x1E45:LoadCupFinalSeries
 .5:
         push word [si]
-        call 0x1B35:OvlThunk264
+        call 0x1B35:LoadGameStateThunk
         add sp, 0x2
         push si
         call 0x0CD1:CloseHandlePtr
@@ -908,29 +908,29 @@ PlayGame:
         push word [bx + TeamNameClips]
         call 0x0EDC:LoadPlayByPlaySpeech
         add sp, 0x4
-        call 0x1B35:OvlThunk263
-        call 0x1B35:OvlThunk262
+        call 0x1B35:BuildDefaultLinesThunk
+        call 0x1B35:NormalizeDressFlagsThunk
         push 0x0
-        call 0x1B35:OvlThunk261
+        call 0x1B35:SetupTeamLinesThunk
         add sp, 0x2
         push 0x1
-        call 0x1B35:OvlThunk261
+        call 0x1B35:SetupTeamLinesThunk
         add sp, 0x2
-        call 0x1B35:OvlThunk260
+        call 0x1B35:GSummaryPathThunk
         call 0x0EDC:CrowdReset
-        call 0x1B35:OvlThunk258
+        call 0x1B35:SetTeamNameTextThunk
         cmp word [g_48BE], -0x1
         jz short .10
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov es, [g_8C8A]
         mov [es:0x126], ax
         push ax
-        call 0x1B35:OvlThunk139
+        call 0x1B35:SportsDeskThunk
         add sp, 0x2
         mov es, [g_8C8A]
         cmp word [es:0x126], 0x2
         jnz short .6
-        call 0x1B35:OvlThunk247
+        call 0x1B35:FreeGameMemoryThunk
         pop si
         pop di
         leave
@@ -947,28 +947,28 @@ PlayGame:
         add sp, 0x4
         jmp short .10
 .8:
-        call 0x1B35:OvlThunk259
+        call 0x1B35:SetupGameThunk
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnl short .9
         mov es, [g_8C8A]
         mov word [es:0x126], 0x2
-        call 0x1B35:OvlThunk247
+        call 0x1B35:FreeGameMemoryThunk
         mov ax, 0xffff
         pop si
         pop di
         leave
         retf
 .9:
-        call 0x1B35:OvlThunk258
+        call 0x1B35:SetTeamNameTextThunk
 .10:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [g_4A64], ax
         mov es, [g_8C8A]
         mov [es:0x126], ax
-        call 0x1B35:OvlThunk238
+        call 0x1B35:joyq_flushThunk
         push cs
         call Gameloop
-        call 0x1B35:OvlThunk257
+        call 0x1B35:ClearTeamNameTextThunk
         cmp word [DbSaveMode], 0x0
         jz short .11
         mov es, [g_8C8A]

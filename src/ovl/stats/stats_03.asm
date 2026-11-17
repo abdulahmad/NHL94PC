@@ -24,7 +24,7 @@ LoadCrestsPalette:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push 0x0
         push strict word str_Crests3Bin
@@ -97,7 +97,7 @@ LoadCrestsPalette:
         push ss
         push ax
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         pop si
         pop di

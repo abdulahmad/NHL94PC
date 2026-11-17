@@ -117,7 +117,7 @@ MenuPlayoffHilights:
         push dx
         push ax
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push di
         push si
@@ -252,7 +252,7 @@ CreatePlayoffs:
         push word [bp - 0x1a]
         push word [bp - 0x1c]
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         call 0x0FEF:CopyPlane
         call 0x0FEF:UseCurrentPage
@@ -297,7 +297,7 @@ CreatePlayoffs:
         push di
         push si
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         mov ax, 0x40
         mov dx, 0x41
@@ -576,7 +576,7 @@ CreatePlayoffs:
         push word [bp - 0x1a]
         push word [bp - 0x1c]
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word 0x3f00
         push word 0x3f00
@@ -598,7 +598,7 @@ CreatePlayoffs:
         push dx
         push ax
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [bp - 0x1e]
         push word [bp - 0x20]
@@ -701,16 +701,16 @@ CreatePlayoffs:
         push strict word f_3415_0062
         call 0x2E70:WriteModeState
         add sp, 0x4
-        call 0x1B35:OvlThunk117
+        call 0x1B35:BuildSeasonTitleThunk
         push 0x0
-        call 0x1B35:OvlThunk116
+        call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
         mov es, [g_8B4E]
-        mov word [es:0xbda], strict word OvlThunk8
+        mov word [es:0xbda], strict word PlayoffModeLoopThunk
         mov word [es:0xbdc], 0x1b35
-        mov word [es:0xbf0], strict word OvlThunk10
+        mov word [es:0xbf0], strict word EditPlayoffSettingsThunk
         mov word [es:0xbf2], 0x1b35
-        mov word [es:0xc06], strict word OvlThunk11
+        mov word [es:0xc06], strict word MenuPlayoffHilightsThunk
         mov word [es:0xc08], 0x1b35
         mov word [g_11D8], 0x0
 .25:
@@ -736,7 +736,7 @@ CreatePlayoffs:
         push di
         push si
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push di
         push si
@@ -2749,7 +2749,7 @@ POSimSeriesTeamWins:
         lea ax, [bp - 0x4]
         push ss
         push ax
-        call 0x1B35:OvlThunk121
+        call 0x1B35:SimulateGameThunk
         add sp, 0x14
         mov es, [bp + 0x8]
         mov al, [es:si + 0x2]
@@ -2883,7 +2883,7 @@ POSimSeries:
         lea ax, [bp - 0x6]
         push ss
         push ax
-        call 0x1B35:OvlThunk121
+        call 0x1B35:SimulateGameThunk
         add sp, 0x14
         mov es, [bp + 0x8]
         mov al, [es:si + 0x2]
@@ -3551,7 +3551,7 @@ POAfterGame:
         push strict word str_Db_4
         push word 0x3701
         push strict word f_3701_0E53
-        call 0x1B35:OvlThunk122
+        call 0x1B35:PostGameToTeamDbThunk
         add sp, 0x12
         push word 0x3701
         push strict word f_3701_0E53
@@ -3564,7 +3564,7 @@ POAfterGame:
         push strict word str_Db_3
         push word 0x3701
         push strict word f_3701_0E53
-        call 0x1B35:OvlThunk122
+        call 0x1B35:PostGameToTeamDbThunk
         add sp, 0x12
         mov ax, [bp - 0xc]
         db 0x8B, 0xC8                           ; insn: mov cx, ax
@@ -4500,7 +4500,7 @@ PlayoffModeLoop:
         call 0x2E70:LoadModeState
         add sp, 0x4
         push 0x2
-        call 0x1B35:OvlThunk116
+        call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
         push word 0x3f00
         push word 0xbd00
@@ -4508,7 +4508,7 @@ PlayoffModeLoop:
         call 0x0000:VgaCopyBytes
         add sp, 0x6
         push 0x1
-        call 0x1B35:OvlThunk133
+        call 0x1B35:SetStatsMenuTextThunk
         add sp, 0x2
         mov bx, [bp + 0x6]
         cmp word [bx], 0x0
@@ -4586,14 +4586,14 @@ PlayoffModeLoop:
         push word [bp - 0x32]
         push word [bp - 0x34]
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [bp - 0x32]
         push word [bp - 0x34]
         call 0x06E1:FindUnlink
         add sp, 0x4
         call 0x2037:SetSideControls
-        call 0x1B35:OvlThunk132
+        call 0x1B35:SetupControllersThunk
         mov word [g_21C2], 0x250d
         mov word [g_21C4], 0x1b35
         mov word [g_21C6], 0x2503
@@ -4605,7 +4605,7 @@ PlayoffModeLoop:
         mov word [g_21D2], 0x232d
         mov word [g_21D4], 0x1b35
         push word [bp + 0x6]
-        call 0x1B35:OvlThunk127
+        call 0x1B35:PlayGameThunk
         add sp, 0x2
         mov word [g_21C2], 0x24db
         mov word [g_21C4], 0x1b35
@@ -4699,7 +4699,7 @@ PlayoffModeLoop:
         push word [bp - 0x32]
         push word [bp - 0x34]
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [bp - 0x32]
         push word [bp - 0x34]
@@ -4854,7 +4854,7 @@ PlayoffModeLoop:
         push word [bp - 0x32]
         push word [bp - 0x34]
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [bp - 0x32]
         push word [bp - 0x34]
@@ -4890,7 +4890,7 @@ PlayoffModeLoop:
         cmp ax, strict word 0xf
         jnl short .13
         mov es, [g_8B52]
-        mov word [es:0x18d4], strict word OvlThunk12
+        mov word [es:0x18d4], strict word POMenuResult4Thunk
         mov word [es:0x18d6], 0x1b35
         jmp short .14
         db 0x90
@@ -5011,7 +5011,7 @@ PlayoffModeLoop:
         push word [bp - 0x24]
         push word [bp - 0x26]
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [bp - 0x32]
         push word [bp - 0x34]
@@ -5053,13 +5053,13 @@ PlayoffModeLoop:
         push word [bp - 0x32]
         push word [bp - 0x34]
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [bp - 0x32]
         push word [bp - 0x34]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        call 0x1B35:OvlThunk132
+        call 0x1B35:SetupControllersThunk
         push word 0x3415
         push strict word f_3415_0062
         call 0x2E70:WriteModeState
@@ -5116,11 +5116,11 @@ PlayoffModeLoop:
         push ax
         mov al, [es:bx]
         push ax
-        call 0x1B35:OvlThunk135
+        call 0x1B35:CreateGSummaryDbThunk
         add sp, 0x4
         push word [g_29CC]
         push word [g_29CA]
-        call 0x1B35:OvlThunk134
+        call 0x1B35:ShowMatchupScreenThunk
         add sp, 0x4
         mov [bp - 0x38], ax
         call 0x0BFE:InputShutdown
@@ -5147,7 +5147,7 @@ PlayoffModeLoop:
         mov word [g_21D2], 0x232d
         mov word [g_21D4], 0x1b35
         push word [bp + 0x6]
-        call 0x1B35:OvlThunk127
+        call 0x1B35:PlayGameThunk
         add sp, 0x2
         mov word [g_21C2], 0x24db
         mov word [g_21C4], 0x1b35
@@ -5239,7 +5239,7 @@ PlayoffModeLoop:
         push word [bp - 0x32]
         push word [bp - 0x34]
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [bp - 0x32]
         push word [bp - 0x34]
@@ -5311,7 +5311,7 @@ PlayoffModeLoop:
         push dx
         push ax
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [bp - 0x32]
         push word [bp - 0x34]
@@ -5391,7 +5391,7 @@ PlayoffModeLoop:
         push word [bp - 0x32]
         push word [bp - 0x34]
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [bp - 0x32]
         push word [bp - 0x34]
@@ -5462,7 +5462,7 @@ PlayoffModeLoop:
         call 0x0FEF:DrawRleTransAt
         add sp, 0x8
         push 0x0
-        call 0x1B35:OvlThunk116
+        call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
         push word 0x3415
         push strict word f_3415_0062
@@ -6167,7 +6167,7 @@ PlayoffTreeMenu:
         push word [bp - 0x82]
         push word [bp - 0x84]
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [bp - 0x68]
         push word [bp - 0x6a]

@@ -299,10 +299,10 @@ _main:
 .22:
         push 0x3415                             ; segment of the db files far data
         db 0x68, 0x00, 0x00                     ; insn: push 0
-        call 0x1B35:OvlThunk26
+        call 0x1B35:LoadModeStateThunk
         add sp, 4
-        call 0x1B35:OvlThunk25
-        call 0x1B35:OvlThunk24
+        call 0x1B35:ReloadSoundConfigThunk
+        call 0x1B35:TitleScreenThunk
         push 0
         push 0
         push 0x300
@@ -322,7 +322,7 @@ _main:
         push di
         push si
         push 1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 8
         push di
         push si
@@ -337,7 +337,7 @@ _main:
         push ax
         call 0x0000:_srand
         add sp, 2
-        call 0x1B35:OvlThunk22
+        call 0x1B35:MainDeskLoopThunk
         push 0
         push 0
         push 0x300
@@ -356,10 +356,10 @@ _main:
         push di
         push si
         push 1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 8
         call 0x0BFE:InputInit
-        call 0x1B35:OvlThunk27
+        call 0x1B35:GoodnightScreenThunk
         push di
         push si
         push 0x100
@@ -370,7 +370,7 @@ _main:
         push di
         push si
         push 1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 8
         call 0x0837:NullFar
 

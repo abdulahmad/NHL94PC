@@ -22,9 +22,9 @@ SportsDesk:
         mov ax, [bp + 0x6]
         add ax, strict word 0x3
         push ax
-        call 0x1B35:OvlThunk133
+        call 0x1B35:SetStatsMenuTextThunk
         add sp, 0x2
-        call 0x1B35:OvlThunk141
+        call 0x1B35:ReplayIsEmptyThunk
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .1
         mov es, [g_8B60]
@@ -51,7 +51,7 @@ SportsDesk:
         mov [PadRepeatOn], ax
         cmp [bp + 0x6], ax
         jnz short .3
-        call 0x1B35:OvlThunk140
+        call 0x1B35:FreePPVFilesThunk
         push word [g_C25E]
         push word [g_C25C]
         call 0x06E1:FindUnlink
@@ -72,7 +72,7 @@ SportsDesk:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
 .3:
         cmp word [CurPage], 0x0
@@ -229,7 +229,7 @@ SportsDesk:
         push ss
         push ax
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         call 0x0BFE:InputInit
         les bx, [bp - 0x62]
@@ -334,9 +334,9 @@ SportsDesk:
         js short .17
         jmp near .19
 .17:
-        call 0x1B35:OvlThunk144
-        call 0x1B35:OvlThunk143
-        call 0x1B35:OvlThunk142
+        call 0x1B35:LoadPPVFilesThunk
+        call 0x1B35:LoadRinkEndArtThunk
+        call 0x1B35:LoadScoreboardArtThunk
         mov ax, 0x1
         mov [g_4B22], ax
         mov [g_4B20], ax
@@ -373,7 +373,7 @@ SportsDesk:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         call 0x0000:VgaPageFlip
         push 0x0
@@ -382,7 +382,7 @@ SportsDesk:
         add sp, 0x4
 .18:
         push word [DbSaveMode]
-        call 0x1B35:OvlThunk133
+        call 0x1B35:SetStatsMenuTextThunk
         add sp, 0x2
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         pop si
@@ -608,7 +608,7 @@ SportsDesk:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         call 0x0000:VgaPageFlip
         push 0x0
@@ -640,7 +640,7 @@ SportsDesk:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         cmp word [CurPage], 0x0
         jnz short .39
@@ -725,7 +725,7 @@ SportsDesk:
         push ss
         push ax
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
 .42:
         call 0x0FEF:UseCurrentPage
@@ -1384,9 +1384,9 @@ DeskReloadGame:
         db 0x90
 
 DeskBackToGame:
-        call 0x1B35:OvlThunk144
-        call 0x1B35:OvlThunk143
-        call 0x1B35:OvlThunk142
+        call 0x1B35:LoadPPVFilesThunk
+        call 0x1B35:LoadRinkEndArtThunk
+        call 0x1B35:LoadScoreboardArtThunk
         mov ax, 0x1
         mov [g_4B22], ax
         mov [g_4B20], ax
@@ -1394,9 +1394,9 @@ DeskBackToGame:
         db 0x90
 
 DeskToSportsDesk:
-        call 0x1B35:OvlThunk144
-        call 0x1B35:OvlThunk143
-        call 0x1B35:OvlThunk142
+        call 0x1B35:LoadPPVFilesThunk
+        call 0x1B35:LoadRinkEndArtThunk
+        call 0x1B35:LoadScoreboardArtThunk
         mov ax, 0x1
         mov [g_4B22], ax
         mov [g_4B20], ax
@@ -1470,9 +1470,9 @@ DeskReturnConfirm:
         retf
         db 0x90
 .5:
-        call 0x1B35:OvlThunk144
-        call 0x1B35:OvlThunk143
-        call 0x1B35:OvlThunk142
+        call 0x1B35:LoadPPVFilesThunk
+        call 0x1B35:LoadRinkEndArtThunk
+        call 0x1B35:LoadScoreboardArtThunk
         mov ax, 0x1
         mov [g_4B22], ax
         mov [g_4B20], ax
@@ -1538,7 +1538,7 @@ DeskExitGame:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push 0x0
         call 0x0FEF:SetStartPage
@@ -1597,7 +1597,7 @@ DeskExitGame:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         call 0x0000:_exit
         leave
@@ -1606,9 +1606,9 @@ DeskExitGame:
 
 DeskGoToReplay:
         enter 0x2, 0x0
-        call 0x1B35:OvlThunk142
-        call 0x1B35:OvlThunk143
-        call 0x1B35:OvlThunk144
+        call 0x1B35:LoadScoreboardArtThunk
+        call 0x1B35:LoadRinkEndArtThunk
+        call 0x1B35:LoadPPVFilesThunk
         mov ax, 0xc
         mov dx, 0x3d4
         out dx, al
@@ -1622,13 +1622,13 @@ DeskGoToReplay:
         in al, dx
         mov [bp - 0x1], al
         push 0x0
-        call 0x1B35:OvlThunk145
+        call 0x1B35:InstantReplayThunk
         add sp, 0x2
         push word [HeapSizeHi]
         push word [HeapSizeLo]
         call 0x03A3:UseCharSeg
         add sp, 0x4
-        call 0x1B35:OvlThunk140
+        call 0x1B35:FreePPVFilesThunk
         push word [g_C25E]
         push word [g_C25C]
         call 0x06E1:FindUnlink
@@ -1685,7 +1685,7 @@ DeskHomeLines:
         push di
         push si
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push di
         push si
@@ -1727,7 +1727,7 @@ DeskHomeLines:
         push di
         push si
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push di
         push si
@@ -1771,7 +1771,7 @@ DeskVisitorLines:
         push di
         push si
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push di
         push si
@@ -1813,7 +1813,7 @@ DeskVisitorLines:
         push di
         push si
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push di
         push si
@@ -1857,7 +1857,7 @@ DeskGameStats:
         push di
         push si
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push di
         push si
@@ -1868,7 +1868,7 @@ DeskGameStats:
         call 0x0000:VgaCopyBlock
         add sp, 0x4
         call 0x0F4A:SaveVgaPlanes
-        call 0x1B35:OvlThunk147
+        call 0x1B35:ShowTeamStatsThunk
         call 0x0F4A:RestoreVgaPlanes
         push word 0x7c60
         push 0x0
@@ -1900,7 +1900,7 @@ DeskPenaltySummary:
         push di
         push si
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push di
         push si
@@ -1915,7 +1915,7 @@ DeskPenaltySummary:
         push word [g_BFFE]
         push 0x1
         push 0x2
-        call 0x1B35:OvlThunk146
+        call 0x1B35:ShowGameSummaryThunk
         add sp, 0x8
         call 0x0F4A:RestoreVgaPlanes
         push word 0x7c60
@@ -1949,7 +1949,7 @@ DeskScoringSummary:
         push di
         push si
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push di
         push si
@@ -1964,7 +1964,7 @@ DeskScoringSummary:
         push word [g_BFFE]
         push 0x1
         push 0x1
-        call 0x1B35:OvlThunk146
+        call 0x1B35:ShowGameSummaryThunk
         add sp, 0x8
         call 0x0F4A:RestoreVgaPlanes
         push word 0x7c60
@@ -1998,7 +1998,7 @@ DeskTeamScratches:
         push di
         push si
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push di
         push si
@@ -2013,7 +2013,7 @@ DeskTeamScratches:
         push 0x0
         push 0x0
         push 0x4
-        call 0x1B35:OvlThunk146
+        call 0x1B35:ShowGameSummaryThunk
         add sp, 0x8
         call 0x0F4A:RestoreVgaPlanes
         push word 0x7c60
@@ -2029,7 +2029,7 @@ DeskTeamScratches:
 DeskHomeGoalie1:
         push 0x0
         push 0x0
-        call 0x1B35:OvlThunk148
+        call 0x1B35:SetTeamGoalieThunk
         add sp, 0x4
         mov es, [g_8B6C]
         les bx, [es:0x12f8]
@@ -2046,7 +2046,7 @@ DeskHomeGoalie1:
 DeskHomeGoalie2:
         push 0x1
         push 0x0
-        call 0x1B35:OvlThunk148
+        call 0x1B35:SetTeamGoalieThunk
         add sp, 0x4
         mov es, [g_8B6C]
         les bx, [es:0x12f8]
@@ -2063,7 +2063,7 @@ DeskHomeGoalie2:
 DeskHomeGoalieNone:
         push -0x1
         push 0x0
-        call 0x1B35:OvlThunk148
+        call 0x1B35:SetTeamGoalieThunk
         add sp, 0x4
         mov es, [g_8B6C]
         les bx, [es:0x12f8]
@@ -2080,7 +2080,7 @@ DeskHomeGoalieNone:
 DeskAwayGoalie1:
         push 0x0
         push 0x1
-        call 0x1B35:OvlThunk148
+        call 0x1B35:SetTeamGoalieThunk
         add sp, 0x4
         mov es, [g_8B6E]
         les bx, [es:0x133a]
@@ -2097,7 +2097,7 @@ DeskAwayGoalie1:
 DeskAwayGoalie2:
         push 0x1
         push 0x1
-        call 0x1B35:OvlThunk148
+        call 0x1B35:SetTeamGoalieThunk
         add sp, 0x4
         mov es, [g_8B6E]
         les bx, [es:0x133a]
@@ -2114,7 +2114,7 @@ DeskAwayGoalie2:
 DeskAwayGoalieNone:
         push -0x1
         push 0x1
-        call 0x1B35:OvlThunk148
+        call 0x1B35:SetTeamGoalieThunk
         add sp, 0x4
         mov es, [g_8B6E]
         les bx, [es:0x133a]

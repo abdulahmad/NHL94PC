@@ -449,7 +449,7 @@ ExportTeamToFloppy:
         push ax
         lea ax, [bp - 0x34]
         push ax
-        call 0x1B35:OvlThunk149
+        call 0x1B35:CopyGameSettingsThunk
         add sp, 0x4
         mov [bp - 0xb6], ax
 .29:
@@ -2044,16 +2044,16 @@ ImportDbs:
 .8:
         push word 0x3415
         push strict word f_3415_00C4
-        call 0x1B35:OvlThunk26
+        call 0x1B35:LoadModeStateThunk
         add sp, 0x4
-        call 0x1B35:OvlThunk117
+        call 0x1B35:BuildSeasonTitleThunk
         push 0x0
-        call 0x1B35:OvlThunk116
+        call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
         mov es, [g_8BBC]
-        mov word [es:0xb6c], strict word OvlThunk9
+        mov word [es:0xb6c], strict word MenuExportDbsThunk
         mov word [es:0xb6e], 0x1b35
-        mov word [es:0xb82], strict word OvlThunk13
+        mov word [es:0xb82], strict word MenuNextLeagueGameThunk
         mov word [es:0xb84], 0x1b35
         mov word [es:0xb9c], 0xd86
         mov word [es:0xb9e], 0x3448
@@ -2061,9 +2061,9 @@ ImportDbs:
 .9:
         mov es, [g_8BBE]
         mov byte [es:0xc6], 0x0
-        call 0x1B35:OvlThunk117
+        call 0x1B35:BuildSeasonTitleThunk
         push 0x0
-        call 0x1B35:OvlThunk116
+        call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
         mov es, [g_8BBC]
         db 0x2B, 0xC0                           ; insn: sub ax, ax

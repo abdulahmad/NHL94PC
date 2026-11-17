@@ -64,7 +64,7 @@ EasnTeamStatsScreen:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push 0x0
         call 0x0FEF:SetStartPage
@@ -76,7 +76,7 @@ EasnTeamStatsScreen:
         push dx
         push ax
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [g_CFD2]
         push word [g_CFD0]
@@ -138,7 +138,7 @@ EasnTeamStatsScreen:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word 0xc8
         call 0x0FEF:SetStartPage
@@ -147,7 +147,7 @@ EasnTeamStatsScreen:
         push word [g_C2B4]
         push word [g_C2B2]
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [g_CFD2]
         push word [g_CFD0]
@@ -225,7 +225,7 @@ EasnSkaterStatsScreen:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push 0x0
         call 0x0FEF:SetStartPage
@@ -237,7 +237,7 @@ EasnSkaterStatsScreen:
         push dx
         push ax
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [g_CFD2]
         push word [g_CFD0]
@@ -299,7 +299,7 @@ EasnSkaterStatsScreen:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word 0xc8
         call 0x0FEF:SetStartPage
@@ -308,7 +308,7 @@ EasnSkaterStatsScreen:
         push word [g_C2B4]
         push word [g_C2B2]
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [g_CFD2]
         push word [g_CFD0]
@@ -386,7 +386,7 @@ EasnGoalieStatsScreen:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push 0x0
         call 0x0FEF:SetStartPage
@@ -398,7 +398,7 @@ EasnGoalieStatsScreen:
         push dx
         push ax
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [g_CFD2]
         push word [g_CFD0]
@@ -460,7 +460,7 @@ EasnGoalieStatsScreen:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word 0xc8
         call 0x0FEF:SetStartPage
@@ -469,7 +469,7 @@ EasnGoalieStatsScreen:
         push word [g_C2B4]
         push word [g_C2B2]
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [g_CFD2]
         push word [g_CFD0]
@@ -599,7 +599,7 @@ EasnStandingsMenu:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push 0x1
         call 0x2095:InitMenuRemap
@@ -679,7 +679,7 @@ EasnStandingsMenu:
         push dx
         push ax
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [g_CFD2]
         push word [g_CFD0]
@@ -862,7 +862,7 @@ EasnStandingsMenu:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word 0xc8
         call 0x0FEF:SetStartPage

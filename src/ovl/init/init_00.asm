@@ -353,7 +353,7 @@ PlacePlayersAtStart:
         jz short .1
         jmp near .16
 .1:
-        call 0x1B35:OvlThunk267
+        call 0x1B35:forceteamsThunk
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [g_29B4], ax
         mov [g_29B2], ax
@@ -483,12 +483,12 @@ PlacePlayersAtStart:
 
 SetupGame:
         push si
-        call 0x1B35:OvlThunk263
+        call 0x1B35:BuildDefaultLinesThunk
         push 0x0
-        call 0x1B35:OvlThunk261
+        call 0x1B35:SetupTeamLinesThunk
         add sp, 0x2
         push 0x1
-        call 0x1B35:OvlThunk261
+        call 0x1B35:SetupTeamLinesThunk
         add sp, 0x2
         mov word [g_29DA], 0xffff
         mov word [g_4A64], 0x0
@@ -498,14 +498,14 @@ SetupGame:
         push 0x1
         push word [g_29CC]
         push word [g_29CA]
-        call 0x1B35:OvlThunk251
+        call 0x1B35:DrawHudPanelThunk
         add sp, 0x8
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [CrowdSound], ax
         mov [Crowdlevel], ax
         push ax
         push ax
-        call 0x1B35:OvlThunk266
+        call 0x1B35:StartPreGameThunk
         add sp, 0x4
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnl short .1
@@ -647,7 +647,7 @@ ResetGameVars:
         mov [g_D012], ax
         mov [g_D010], ax
         mov word [g_D670], 0xffff
-        call 0x1B35:OvlThunk268
+        call 0x1B35:StartGameThunk
         mov word [g_BFFE], 0x1
         cmp byte [PadStates], 0x1
         jz short .3
@@ -668,4 +668,4 @@ ResetGameVars:
         mov [g_D6D0], ax
         mov [PadRepeatOn], ax
         mov [g_D46A], ax
-        call 0x1B35:OvlThunk238
+        call 0x1B35:joyq_flushThunk

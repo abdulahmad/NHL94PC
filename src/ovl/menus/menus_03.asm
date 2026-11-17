@@ -7,7 +7,7 @@ SetSideControls:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .1
         mov es, [g_8B28]
-        mov word [es:0x1170], strict word OvlThunk7
+        mov word [es:0x1170], strict word DeskHomeLinesThunk
         mov word [es:0x1172], 0x1b35
         mov [es:0x1188], ax
         mov [es:0x1186], ax
@@ -20,7 +20,7 @@ SetSideControls:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [es:0x1172], ax
         mov [es:0x1170], ax
-        mov word [es:0x1186], strict word OvlThunk17
+        mov word [es:0x1186], strict word DeskVisitorLinesThunk
         mov word [es:0x1188], 0x1b35
         mov es, [g_8B2A]
         mov [es:0x10b0], ax
@@ -36,7 +36,7 @@ SetSideControls:
         cmp word [g_01BA], -0x1
         jz short .4
         mov es, [g_8B28]
-        mov word [es:0x1170], strict word OvlThunk7
+        mov word [es:0x1170], strict word DeskHomeLinesThunk
         mov word [es:0x1172], 0x1b35
         mov es, [g_8B2A]
         mov word [es:0x10ae], strict word f_3448_12F0
@@ -56,7 +56,7 @@ SetSideControls:
         cmp word [g_01BA], -0x2
         jz short .6
         mov es, [g_8B28]
-        mov word [es:0x1186], strict word OvlThunk17
+        mov word [es:0x1186], strict word DeskVisitorLinesThunk
         mov word [es:0x1188], 0x1b35
         mov es, [g_8B2A]
         jmp near .2

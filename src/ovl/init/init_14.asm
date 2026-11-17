@@ -139,7 +139,7 @@ InstantReplay:
         mov [g_DB18], ax
         mov [g_DB26], ax
         mov [g_DAD6], ax
-        call 0x1B35:OvlThunk277
+        call 0x1B35:ReplayFirstFrameThunk
         mov [g_D018], ax
         mov [g_D01A], dx
         db 0x2B, 0xC0                           ; insn: sub ax, ax

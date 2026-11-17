@@ -253,7 +253,7 @@ ShowMatchupScreen:
         push word [bp - 0x652]
         push word [bp - 0x654]
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [bp - 0x652]
         push word [bp - 0x654]
@@ -597,7 +597,7 @@ ShowMatchupScreen:
         push word [bp - 0x6]
         push word [bp - 0x8]
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         mov es, [g_8C94]
         cmp word [es:0x78c], 0x3f0
@@ -739,7 +739,7 @@ ShowMatchupScreen:
         push strict word f_3448_14D4
         push word 0xae40
         push 0x1
-        call 0x1B35:OvlThunk112
+        call 0x1B35:GameLineEditorThunk
         add sp, 0xa
         push 0x0
         push 0x0
@@ -760,7 +760,7 @@ ShowMatchupScreen:
         push word [bp - 0x652]
         push word [bp - 0x654]
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [bp - 0x652]
         push word [bp - 0x654]
@@ -773,7 +773,7 @@ ShowMatchupScreen:
         push word [bp - 0x6]
         push word [bp - 0x8]
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push 0x0
         push word 0xf7
@@ -800,7 +800,7 @@ ShowMatchupScreen:
         push strict word f_3448_14D4
         push word 0xae10
         push 0x0
-        call 0x1B35:OvlThunk112
+        call 0x1B35:GameLineEditorThunk
         add sp, 0xa
         push 0x0
         push 0x0
@@ -851,7 +851,7 @@ ShowMatchupScreen:
         push word [bp - 0x6]
         push word [bp - 0x8]
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         lea ax, [bp - 0x22]
         push ax

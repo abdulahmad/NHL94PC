@@ -1443,7 +1443,7 @@ ShowAwardScreens:
         push 0x64
         push 0x64
         push 0x0
-        call 0x1B35:OvlThunk174
+        call 0x1B35:FadeZoomRectThunk
         add sp, 0xe
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [bp - 0x76], ax
@@ -1550,7 +1550,7 @@ DrawAwardsSummary:
         push ds
         push word [bp + 0x6]
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push 0x0
         call 0x0FEF:ClearClipRect
@@ -1699,7 +1699,7 @@ DrawAwardsSummary:
         push ds
         push si
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push 0x0
         push word 0x2710
@@ -1709,7 +1709,7 @@ DrawAwardsSummary:
         push ds
         push si
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         lea ax, [bp - 0x34]
         push ax
@@ -1858,14 +1858,14 @@ AwardsCeremony:
         push 0x0
         db 0x8B, 0xF0                           ; insn: mov si, ax
         db 0x8B, 0xF9                           ; insn: mov di, cx
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         call 0x0EDC:WaitJingle
         push 0x10
         push di
         push si
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         lea ax, [bp - 0x54]
         push ax

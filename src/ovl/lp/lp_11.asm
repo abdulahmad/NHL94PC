@@ -619,7 +619,7 @@ ApplyShapePalette:
         push ss
         push ax
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [bp - 0xa]
         push di
@@ -671,7 +671,7 @@ SetGameSides:
         push word [bp - 0x6]
         push word [bp - 0x2]
         push word [bp - 0x4]
-        call 0x1B35:OvlThunk103
+        call 0x1B35:SetCtlTeamsThunk
         add sp, 0x8
         pop si
         pop di
@@ -1020,7 +1020,7 @@ CalendarScreen:
         jmp short .20
 .19:
         mov es, [g_8BDC]
-        mov word [es:0xf94], strict word OvlThunk3
+        mov word [es:0xf94], strict word CalNextMonthThunk
         mov word [es:0xf96], 0x1b35
 .20:
         cmp word [g_C270], 0x9
@@ -1031,7 +1031,7 @@ CalendarScreen:
         jmp short .22
         db 0x90
 .21:
-        mov word [es:0xfaa], strict word OvlThunk4
+        mov word [es:0xfaa], strict word CalPrevMonthThunk
         mov word [es:0xfac], 0x1b35
 .22:
         mov ax, [g_C270]
@@ -3626,7 +3626,7 @@ PlayLeagueGame:
         push word [bp - 0x56]
         push word [bp - 0x58]
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [bp - 0x56]
         push word [bp - 0x58]
@@ -3728,7 +3728,7 @@ PlayLeagueGame:
         mov al, [g_C29D]
         mov [g_29CC], ax
 .53:
-        call 0x1B35:OvlThunk132
+        call 0x1B35:SetupControllersThunk
         mov bx, [bp + 0x6]
         cmp word [bx], 0x0
         jnl short .54
@@ -3736,7 +3736,7 @@ PlayLeagueGame:
         push ax
         mov al, [g_E366]
         push ax
-        call 0x1B35:OvlThunk135
+        call 0x1B35:CreateGSummaryDbThunk
         add sp, 0x4
 .54:
         mov word [bp - 0x5c], 0x0
@@ -3747,7 +3747,7 @@ PlayLeagueGame:
         push ax
         mov al, [g_29CA]
         push ax
-        call 0x1B35:OvlThunk134
+        call 0x1B35:ShowMatchupScreenThunk
         add sp, 0x4
         mov [bp - 0x5c], ax
 .55:
@@ -3767,7 +3767,7 @@ PlayLeagueGame:
         mov word [g_21D4], 0x1b35
         call 0x0BFE:InputShutdown
         push word [bp + 0x6]
-        call 0x1B35:OvlThunk127
+        call 0x1B35:PlayGameThunk
         add sp, 0x2
         call 0x0BFE:InputInit
         mov ax, 0x33
@@ -4390,7 +4390,7 @@ PlayLeagueGame:
         push word [bp - 0x56]
         push word [bp - 0x58]
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [bp - 0x56]
         push word [bp - 0x58]

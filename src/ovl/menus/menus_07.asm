@@ -34,9 +34,9 @@ MenuOpenSaved:
         push word 0xbd00
         call 0x0000:VgaCopyBytes
         add sp, 0x6
-        call 0x1B35:OvlThunk117
+        call 0x1B35:BuildSeasonTitleThunk
         push 0x0
-        call 0x1B35:OvlThunk116
+        call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
         db 0x0B, 0xF6                           ; insn: or si, si
         jnz short .1
@@ -57,7 +57,7 @@ MenuOpenSaved:
         db 0x90
 .4:
         push 0x1
-        call 0x1B35:OvlThunk116
+        call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
         mov bx, [g_C0DE]
         shl bx, byte 0x2
@@ -235,7 +235,7 @@ MenuOpenSaved:
         db 0x8B, 0xF0                           ; insn: mov si, ax
 .16:
         push 0x0
-        call 0x1B35:OvlThunk116
+        call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
         db 0x8B, 0xC6                           ; insn: mov ax, si
         pop si
@@ -262,7 +262,7 @@ MenuOpenSaved:
         add sp, 0x2
 .18:
         push 0x2
-        call 0x1B35:OvlThunk116
+        call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
         mov bx, [g_C166]
         shl bx, byte 0x2
@@ -308,7 +308,7 @@ MenuOpenSaved:
         and byte [es:0xb7], 0x7f
         lea ax, [bp - 0x4]
         push ax
-        call 0x1B35:OvlThunk8
+        call 0x1B35:PlayoffModeLoopThunk
         add sp, 0x2
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov es, [g_8B38]
@@ -347,7 +347,7 @@ MenuOpenSaved:
         add sp, 0x2
 .24:
         push 0x3
-        call 0x1B35:OvlThunk116
+        call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
         mov bx, [g_C056]
         shl bx, byte 0x2
@@ -393,7 +393,7 @@ MenuOpenSaved:
         and byte [es:0x119], 0x7f
         lea ax, [bp - 0x4]
         push ax
-        call 0x1B35:OvlThunk13
+        call 0x1B35:MenuNextLeagueGameThunk
         add sp, 0x2
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov es, [g_8B3C]
@@ -2336,11 +2336,11 @@ SelectSavedFile:
         add sp, 0x8
         mov [bp - 0x2], ax
         mov es, [g_8B40]
-        mov word [es:0xbda], strict word OvlThunk8
+        mov word [es:0xbda], strict word PlayoffModeLoopThunk
         mov word [es:0xbdc], 0x1b35
-        mov word [es:0xbf0], strict word OvlThunk10
+        mov word [es:0xbf0], strict word EditPlayoffSettingsThunk
         mov word [es:0xbf2], 0x1b35
-        mov word [es:0xc06], strict word OvlThunk11
+        mov word [es:0xc06], strict word MenuPlayoffHilightsThunk
         mov word [es:0xc08], 0x1b35
         lea ax, [bp - 0x14]
         push ss
@@ -2410,9 +2410,9 @@ SelectSavedFile:
         add sp, 0x8
         mov [bp - 0x2], ax
         mov es, [g_8B40]
-        mov word [es:0xb6c], strict word OvlThunk9
+        mov word [es:0xb6c], strict word MenuExportDbsThunk
         mov word [es:0xb6e], 0x1b35
-        mov word [es:0xb82], strict word OvlThunk13
+        mov word [es:0xb82], strict word MenuNextLeagueGameThunk
         mov word [es:0xb84], 0x1b35
         mov word [es:0xb9c], 0xd86
         mov word [es:0xb9e], 0x3448

@@ -47,10 +47,10 @@ WaitDeadlineNoEoi		equ	0x1A84
 MouseMove		equ	0x1B03
 MouseRead		equ	0x1B34
 DrawRleTransFastAt		equ	0x1C71
-OvlThunk99		equ	0x23CD
-OvlThunk100		equ	0x23D7
-OvlThunk101		equ	0x23E1
-OvlThunk102		equ	0x23EB
+SaveGameStateThunk		equ	0x23CD
+WriteModeStateThunk		equ	0x23D7
+SaveLeagueGameRefThunk		equ	0x23E1
+EditTextFieldThunk		equ	0x23EB
 DbFilesSeg		equ	0x8B14
 DbFilesSeg2		equ	0x8B16
 DbFilesSeg3		equ	0x8B18

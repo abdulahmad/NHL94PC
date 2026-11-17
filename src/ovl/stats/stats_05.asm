@@ -298,7 +298,7 @@ GameTeamStatsScreen:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push 0x0
         call 0x0FEF:SetStartPage
@@ -374,7 +374,7 @@ GameTeamStatsScreen:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push cs
         call RestoreBkgdPlanes
@@ -412,7 +412,7 @@ GameSkaterStatsScreen:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push 0x0
         call 0x0FEF:SetStartPage
@@ -488,7 +488,7 @@ GameSkaterStatsScreen:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push cs
         call RestoreBkgdPlanes
@@ -526,7 +526,7 @@ GameGoalieStatsScreen:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push 0x0
         call 0x0FEF:SetStartPage
@@ -602,7 +602,7 @@ GameGoalieStatsScreen:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push cs
         call RestoreBkgdPlanes
@@ -733,7 +733,7 @@ GameStandingsMenu:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word 0x80
         push 0x0
@@ -1170,7 +1170,7 @@ GameStandingsMenu:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         mov ax, 0x2
         mov dx, 0x3c4

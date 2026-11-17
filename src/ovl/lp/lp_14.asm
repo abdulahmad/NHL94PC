@@ -292,7 +292,7 @@ CreateNewLeague:
         jnz short .15
         push word 0x3415
         push strict word f_3415_00C4
-        call 0x1B35:OvlThunk100
+        call 0x1B35:WriteModeStateThunk
         add sp, 0x4
         push word [bp - 0x4]
         push word [bp - 0x6a]

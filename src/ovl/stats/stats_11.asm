@@ -1136,7 +1136,7 @@ ShowSeasonStandings:
         push strict word f_3A0B_AA38
         lea ax, [bp - 0x30]
         push ax
-        call 0x1B35:OvlThunk162
+        call 0x1B35:ReadTeamNamesThunk
         add sp, 0x8
         mov [bp - 0x4], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax

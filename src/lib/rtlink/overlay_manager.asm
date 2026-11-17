@@ -1934,2255 +1934,2254 @@ FileHockey:                                     ; file slot for HOCKEY.EXE; used
 ; to the routine once it is resident, and the word is the section index.
 ;-----------------------------------------------------------------------------
 OverlayThunks:
-OvlThunk0:
+StatsSelLeagueThunk:
         call LoadFromThunk
         jmp 0x2248:0x1B0                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk1                                                  1B35:1FF9  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; StatsSelLeaguePlayoffsThunk                                1B35:1FF9  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to StatsSelLeaguePlayoffs.
 ;-----------------------------------------------------------------------------
-OvlThunk1:
+StatsSelLeaguePlayoffsThunk:
         call LoadFromThunk
         jmp 0x2248:0x274                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk2                                                  1B35:2003  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; StatsSelPlayoffModeThunk                                   1B35:2003  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to StatsSelPlayoffMode.
 ;-----------------------------------------------------------------------------
-OvlThunk2:
+StatsSelPlayoffModeThunk:
         call LoadFromThunk
         jmp 0x2248:0x350                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk3                                                  1B35:200D  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL.
+; CalNextMonthThunk                                          1B35:200D  RTLink
+; Overlay thunk: loads LP.OVL (LoadFromThunk), then far-jumps to CalNextMonth.
 ;-----------------------------------------------------------------------------
-OvlThunk3:
+CalNextMonthThunk:
         call LoadFromThunk
         jmp 0x25B2:0x4C4                        ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk4                                                  1B35:2017  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL.
+; CalPrevMonthThunk                                          1B35:2017  RTLink
+; Overlay thunk: loads LP.OVL (LoadFromThunk), then far-jumps to CalPrevMonth.
 ;-----------------------------------------------------------------------------
-OvlThunk4:
+CalPrevMonthThunk:
         call LoadFromThunk
         jmp 0x25B2:0x51C                        ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk5                                                  1B35:2021  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL.
+; TradeShowStatsThunk                                        1B35:2021  RTLink
+; Overlay thunk: loads LP.OVL (LoadFromThunk), then far-jumps to TradeShowStats.
 ;-----------------------------------------------------------------------------
-OvlThunk5:
+TradeShowStatsThunk:
         call LoadFromThunk
         jmp 0x2A57:0x34C                        ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk6                                                  1B35:202B  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; GameDressPlayerThunk                                       1B35:202B  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to GameDressPlayer.
 ;-----------------------------------------------------------------------------
-OvlThunk6:
+GameDressPlayerThunk:
         call LoadFromThunk
         jmp 0x2047:0x30E6                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk7                                                  1B35:2035  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; DeskHomeLinesThunk                                         1B35:2035  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to DeskHomeLines.
 ;-----------------------------------------------------------------------------
-OvlThunk7:
+DeskHomeLinesThunk:
         call LoadFromThunk
         jmp 0x2CF8:0x12AA                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk8                                                  1B35:203F  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; PlayoffModeLoopThunk                                       1B35:203F  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to PlayoffModeLoop.
 ;-----------------------------------------------------------------------------
-OvlThunk8:
+PlayoffModeLoopThunk:
         call LoadFromThunk
         jmp 0x26D4:0x2A80                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk9                                                  1B35:2049  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuExportDbsThunk                                         1B35:2049  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuExportDbs.
 ;-----------------------------------------------------------------------------
-OvlThunk9:
+MenuExportDbsThunk:
         call LoadFromThunk
         jmp 0x2E70:0x2090                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk10                                                 1B35:2053  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; EditPlayoffSettingsThunk                                   1B35:2053  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to EditPlayoffSettings.
 ;-----------------------------------------------------------------------------
-OvlThunk10:
+EditPlayoffSettingsThunk:
         call LoadFromThunk
         jmp 0x2B26:0x112                        ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk11                                                 1B35:205D  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuPlayoffHilightsThunk                                   1B35:205D  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuPlayoffHilights.
 ;-----------------------------------------------------------------------------
-OvlThunk11:
+MenuPlayoffHilightsThunk:
         call LoadFromThunk
         jmp 0x26D4:0x16                         ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk12                                                 1B35:2067  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; POMenuResult4Thunk                                         1B35:2067  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to POMenuResult4.
 ;-----------------------------------------------------------------------------
-OvlThunk12:
+POMenuResult4Thunk:
         call LoadFromThunk
         jmp 0x26D4:0xE                          ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk13                                                 1B35:2071  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuNextLeagueGameThunk                                    1B35:2071  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuNextLeagueGame.
 ;-----------------------------------------------------------------------------
-OvlThunk13:
+MenuNextLeagueGameThunk:
         call LoadFromThunk
         jmp 0x2E70:0x1CF0                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk14                                                 1B35:207B  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; WriteTeamLinesThunk                                        1B35:207B  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to WriteTeamLines.
 ;-----------------------------------------------------------------------------
-OvlThunk14:
+WriteTeamLinesThunk:
         call LoadFromThunk
         jmp 0x2047:0x281A                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk15                                                 1B35:2085  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; GameScratchPlayerThunk                                     1B35:2085  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to GameScratchPlayer.
 ;-----------------------------------------------------------------------------
-OvlThunk15:
+GameScratchPlayerThunk:
         call LoadFromThunk
         jmp 0x2047:0x2FA4                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk16                                                 1B35:208F  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuUseTheseLinesThunk                                     1B35:208F  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuUseTheseLines.
 ;-----------------------------------------------------------------------------
-OvlThunk16:
+MenuUseTheseLinesThunk:
         call LoadFromThunk
         jmp 0x2047:0x252E                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk17                                                 1B35:2099  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; DeskVisitorLinesThunk                                      1B35:2099  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to DeskVisitorLines.
 ;-----------------------------------------------------------------------------
-OvlThunk17:
+DeskVisitorLinesThunk:
         call LoadFromThunk
         jmp 0x2CF8:0x1388                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk18                                                 1B35:20A3  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; EvadePCThunk                                               1B35:20A3  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to EvadePC.
 ;-----------------------------------------------------------------------------
-OvlThunk18:
+EvadePCThunk:
         call LoadFromThunk
         jmp 0x2425:0x4EA                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk19                                                 1B35:20AD  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; avdgoal_boxThunk                                           1B35:20AD  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to avdgoal_box.
 ;-----------------------------------------------------------------------------
-OvlThunk19:
+avdgoal_boxThunk:
         call LoadFromThunk
         jmp 0x2425:0xA20                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk20                                                 1B35:20B7  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; asspuckc_chkdirThunk                                       1B35:20B7  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to asspuckc_chkdir.
 ;-----------------------------------------------------------------------------
-OvlThunk20:
+asspuckc_chkdirThunk:
         call LoadFromThunk
         jmp 0x2519:0x1A7E                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk21                                                 1B35:20C1  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; EvadePlayersThunk                                          1B35:20C1  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to EvadePlayers.
 ;-----------------------------------------------------------------------------
-OvlThunk21:
+EvadePlayersThunk:
         call LoadFromThunk
         jmp 0x2425:0x2CE                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk22                                                 1B35:20CB  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MainDeskLoopThunk                                          1B35:20CB  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MainDeskLoop.
 ;-----------------------------------------------------------------------------
-OvlThunk22:
+MainDeskLoopThunk:
         call LoadFromThunk
         jmp 0x2E70:0xA                          ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk23                                                 1B35:20D5  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section FADES4.OVL.
+; FadePaletteInThunk                                         1B35:20D5  RTLink
+; Overlay thunk: loads FADES4.OVL (LoadFromThunk), then far-jumps to FadePaletteIn.
 ;-----------------------------------------------------------------------------
-OvlThunk23:
+FadePaletteInThunk:
         call LoadFromThunk
         jmp 0x3358:0                            ; load paragraph, relocated
         dw 11                                   ; FADES4.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk24                                                 1B35:20DF  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; TitleScreenThunk                                           1B35:20DF  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to TitleScreen.
 ;-----------------------------------------------------------------------------
-OvlThunk24:
+TitleScreenThunk:
         call LoadFromThunk
         jmp 0x1F9D:0xC                          ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk25                                                 1B35:20E9  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL.
+; ReloadSoundConfigThunk                                     1B35:20E9  RTLink
+; Overlay thunk: loads LP.OVL (LoadFromThunk), then far-jumps to ReloadSoundConfig.
 ;-----------------------------------------------------------------------------
-OvlThunk25:
+ReloadSoundConfigThunk:
         call LoadFromThunk
         jmp 0x22D3:0x262                        ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk26                                                 1B35:20F3  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; LoadModeStateThunk                                         1B35:20F3  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to LoadModeState.
 ;-----------------------------------------------------------------------------
-OvlThunk26:
+LoadModeStateThunk:
         call LoadFromThunk
         jmp 0x2E70:0x9FE                        ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk27                                                 1B35:20FD  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; GoodnightScreenThunk                                       1B35:20FD  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to GoodnightScreen.
 ;-----------------------------------------------------------------------------
-OvlThunk27:
+GoodnightScreenThunk:
         call LoadFromThunk
         jmp 0x1F9D:0x580                        ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk28                                                 1B35:2107  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuExitThunk                                              1B35:2107  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuExit.
 ;-----------------------------------------------------------------------------
-OvlThunk28:
+MenuExitThunk:
         call LoadFromThunk
         jmp 0x2E70:0x964                        ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk29                                                 1B35:2111  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; CreatePlayoffsThunk                                        1B35:2111  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to CreatePlayoffs.
 ;-----------------------------------------------------------------------------
-OvlThunk29:
+CreatePlayoffsThunk:
         call LoadFromThunk
         jmp 0x26D4:0x180                        ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk30                                                 1B35:211B  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuImportDbsThunk                                         1B35:211B  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuImportDbs.
 ;-----------------------------------------------------------------------------
-OvlThunk30:
+MenuImportDbsThunk:
         call LoadFromThunk
         jmp 0x2E70:0x2054                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk31                                                 1B35:2125  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuNewLeagueThunk                                         1B35:2125  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuNewLeague.
 ;-----------------------------------------------------------------------------
-OvlThunk31:
+MenuNewLeagueThunk:
         call LoadFromThunk
         jmp 0x2E70:0x11EC                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk32                                                 1B35:212F  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuNewExhibitionThunk                                     1B35:212F  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuNewExhibition.
 ;-----------------------------------------------------------------------------
-OvlThunk32:
+MenuNewExhibitionThunk:
         call LoadFromThunk
         jmp 0x2E70:0xF22                        ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk33                                                 1B35:2139  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuOpenSavedThunk                                         1B35:2139  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuOpenSaved.
 ;-----------------------------------------------------------------------------
-OvlThunk33:
+MenuOpenSavedThunk:
         call LoadFromThunk
         jmp 0x23A3:4                            ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk34                                                 1B35:2143  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuUpdateTeamDbsThunk                                     1B35:2143  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuUpdateTeamDbs.
 ;-----------------------------------------------------------------------------
-OvlThunk34:
+MenuUpdateTeamDbsThunk:
         call LoadFromThunk
         jmp 0x2E70:0x1B6A                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk35                                                 1B35:214D  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuLeagueHilightsThunk                                    1B35:214D  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuLeagueHilights.
 ;-----------------------------------------------------------------------------
-OvlThunk35:
+MenuLeagueHilightsThunk:
         call LoadFromThunk
         jmp 0x2E70:0x1EEC                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk36                                                 1B35:2157  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuLeagueSettingsThunk                                    1B35:2157  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuLeagueSettings.
 ;-----------------------------------------------------------------------------
-OvlThunk36:
+MenuLeagueSettingsThunk:
         call LoadFromThunk
         jmp 0x2E70:0x16DE                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk37                                                 1B35:2161  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuMergeUpdateDbsThunk                                    1B35:2161  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuMergeUpdateDbs.
 ;-----------------------------------------------------------------------------
-OvlThunk37:
+MenuMergeUpdateDbsThunk:
         call LoadFromThunk
         jmp 0x2E70:0x18E2                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk38                                                 1B35:216B  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuRebuildDbsThunk                                        1B35:216B  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuRebuildDbs.
 ;-----------------------------------------------------------------------------
-OvlThunk38:
+MenuRebuildDbsThunk:
         call LoadFromThunk
         jmp 0x2E70:0x18A6                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk39                                                 1B35:2175  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuTradePlayersThunk                                      1B35:2175  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuTradePlayers.
 ;-----------------------------------------------------------------------------
-OvlThunk39:
+MenuTradePlayersThunk:
         call LoadFromThunk
         jmp 0x2E70:0x1BA6                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk40                                                 1B35:217F  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuAddTeamThunk                                           1B35:217F  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuAddTeam.
 ;-----------------------------------------------------------------------------
-OvlThunk40:
+MenuAddTeamThunk:
         call LoadFromThunk
         jmp 0x2E70:0x144A                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk41                                                 1B35:2189  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuRemoveTeamThunk                                        1B35:2189  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuRemoveTeam.
 ;-----------------------------------------------------------------------------
-OvlThunk41:
+MenuRemoveTeamThunk:
         call LoadFromThunk
         jmp 0x2E70:0x1594                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk42                                                 1B35:2193  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuMergeLeagueFilesThunk                                  1B35:2193  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuMergeLeagueFiles.
 ;-----------------------------------------------------------------------------
-OvlThunk42:
+MenuMergeLeagueFilesThunk:
         call LoadFromThunk
         jmp 0x2E70:0x1A26                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk43                                                 1B35:219D  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; EasnStandingsMenuThunk                                     1B35:219D  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to EasnStandingsMenu.
 ;-----------------------------------------------------------------------------
-OvlThunk43:
+EasnStandingsMenuThunk:
         call LoadFromThunk
         jmp 0x22B3:0x62E                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk44                                                 1B35:21A7  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuSoundSettingsThunk                                     1B35:21A7  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuSoundSettings.
 ;-----------------------------------------------------------------------------
-OvlThunk44:
+MenuSoundSettingsThunk:
         call LoadFromThunk
         jmp 0x2528:4                            ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk45                                                 1B35:21B1  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuP2ControlsExhThunk                                     1B35:21B1  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuP2ControlsExh.
 ;-----------------------------------------------------------------------------
-OvlThunk45:
+MenuP2ControlsExhThunk:
         call LoadFromThunk
         jmp 0x1E45:0xA                          ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk46                                                 1B35:21BB  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuP1ControlsExhThunk                                     1B35:21BB  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuP1ControlsExh.
 ;-----------------------------------------------------------------------------
-OvlThunk46:
+MenuP1ControlsExhThunk:
         call LoadFromThunk
         jmp 0x1E45:0                            ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk47                                                 1B35:21C5  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuExhibitionSettingsThunk                                1B35:21C5  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuExhibitionSettings.
 ;-----------------------------------------------------------------------------
-OvlThunk47:
+MenuExhibitionSettingsThunk:
         call LoadFromThunk
         jmp 0x2CAA:8                            ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk48                                                 1B35:21CF  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; LockerRoomScreenThunk                                      1B35:21CF  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to LockerRoomScreen.
 ;-----------------------------------------------------------------------------
-OvlThunk48:
+LockerRoomScreenThunk:
         call LoadFromThunk
         jmp 0x25DD:6                            ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk49                                                 1B35:21D9  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; MenuSavePctLeadersThunk                                    1B35:21D9  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuSavePctLeaders.
 ;-----------------------------------------------------------------------------
-OvlThunk49:
+MenuSavePctLeadersThunk:
         call LoadFromThunk
         jmp 0x2248:0x62A                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk50                                                 1B35:21E3  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; MenuWinsLeadersThunk                                       1B35:21E3  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuWinsLeaders.
 ;-----------------------------------------------------------------------------
-OvlThunk50:
+MenuWinsLeadersThunk:
         call LoadFromThunk
         jmp 0x2248:0x608                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk51                                                 1B35:21ED  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; MenuGAALeadersThunk                                        1B35:21ED  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuGAALeaders.
 ;-----------------------------------------------------------------------------
-OvlThunk51:
+MenuGAALeadersThunk:
         call LoadFromThunk
         jmp 0x2248:0x5E6                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk52                                                 1B35:21F7  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; MenuShootPctLeadersThunk                                   1B35:21F7  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuShootPctLeaders.
 ;-----------------------------------------------------------------------------
-OvlThunk52:
+MenuShootPctLeadersThunk:
         call LoadFromThunk
         jmp 0x2248:0x5C4                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk53                                                 1B35:2201  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; MenuPIMLeadersThunk                                        1B35:2201  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuPIMLeaders.
 ;-----------------------------------------------------------------------------
-OvlThunk53:
+MenuPIMLeadersThunk:
         call LoadFromThunk
         jmp 0x2248:0x5A2                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk54                                                 1B35:220B  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; MenuPlusMinusLeadersThunk                                  1B35:220B  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuPlusMinusLeaders.
 ;-----------------------------------------------------------------------------
-OvlThunk54:
+MenuPlusMinusLeadersThunk:
         call LoadFromThunk
         jmp 0x2248:0x580                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk55                                                 1B35:2215  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; MenuSHGoalLeadersThunk                                     1B35:2215  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuSHGoalLeaders.
 ;-----------------------------------------------------------------------------
-OvlThunk55:
+MenuSHGoalLeadersThunk:
         call LoadFromThunk
         jmp 0x2248:0x55E                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk56                                                 1B35:221F  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; MenuPPGoalLeadersThunk                                     1B35:221F  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuPPGoalLeaders.
 ;-----------------------------------------------------------------------------
-OvlThunk56:
+MenuPPGoalLeadersThunk:
         call LoadFromThunk
         jmp 0x2248:0x53C                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk57                                                 1B35:2229  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; MenuAssistLeadersThunk                                     1B35:2229  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuAssistLeaders.
 ;-----------------------------------------------------------------------------
-OvlThunk57:
+MenuAssistLeadersThunk:
         call LoadFromThunk
         jmp 0x2248:0x51A                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk58                                                 1B35:2233  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; MenuGoalLeadersThunk                                       1B35:2233  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuGoalLeaders.
 ;-----------------------------------------------------------------------------
-OvlThunk58:
+MenuGoalLeadersThunk:
         call LoadFromThunk
         jmp 0x2248:0x4F8                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk59                                                 1B35:223D  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; MenuPointLeadersThunk                                      1B35:223D  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuPointLeaders.
 ;-----------------------------------------------------------------------------
-OvlThunk59:
+MenuPointLeadersThunk:
         call LoadFromThunk
         jmp 0x2248:0x4D6                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk60                                                 1B35:2247  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; MenuTeamPenaltiesThunk                                     1B35:2247  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuTeamPenalties.
 ;-----------------------------------------------------------------------------
-OvlThunk60:
+MenuTeamPenaltiesThunk:
         call LoadFromThunk
         jmp 0x2248:0x4B4                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk61                                                 1B35:2251  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; MenuTeamPKThunk                                            1B35:2251  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuTeamPK.
 ;-----------------------------------------------------------------------------
-OvlThunk61:
+MenuTeamPKThunk:
         call LoadFromThunk
         jmp 0x2248:0x492                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk62                                                 1B35:225B  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; MenuTeamPPThunk                                            1B35:225B  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuTeamPP.
 ;-----------------------------------------------------------------------------
-OvlThunk62:
+MenuTeamPPThunk:
         call LoadFromThunk
         jmp 0x2248:0x470                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk63                                                 1B35:2265  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; MenuTeamDefenseThunk                                       1B35:2265  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuTeamDefense.
 ;-----------------------------------------------------------------------------
-OvlThunk63:
+MenuTeamDefenseThunk:
         call LoadFromThunk
         jmp 0x2248:0x44E                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk64                                                 1B35:226F  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; MenuTeamScoringThunk                                       1B35:226F  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuTeamScoring.
 ;-----------------------------------------------------------------------------
-OvlThunk64:
+MenuTeamScoringThunk:
         call LoadFromThunk
         jmp 0x2248:0x42C                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk65                                                 1B35:2279  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; DeskExitGameThunk                                          1B35:2279  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to DeskExitGame.
 ;-----------------------------------------------------------------------------
-OvlThunk65:
+DeskExitGameThunk:
         call LoadFromThunk
         jmp 0x2CF8:0x10A4                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk66                                                 1B35:2283  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; DeskReturnConfirmThunk                                     1B35:2283  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to DeskReturnConfirm.
 ;-----------------------------------------------------------------------------
-OvlThunk66:
+DeskReturnConfirmThunk:
         call LoadFromThunk
         jmp 0x2CF8:0xFCE                        ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk67                                                 1B35:228D  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; DeskBackToGameThunk                                        1B35:228D  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to DeskBackToGame.
 ;-----------------------------------------------------------------------------
-OvlThunk67:
+DeskBackToGameThunk:
         call LoadFromThunk
         jmp 0x2CF8:0xF98                        ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk68                                                 1B35:2297  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; DeskToSportsDeskThunk                                      1B35:2297  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to DeskToSportsDesk.
 ;-----------------------------------------------------------------------------
-OvlThunk68:
+DeskToSportsDeskThunk:
         call LoadFromThunk
         jmp 0x2CF8:0xFB2                        ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk69                                                 1B35:22A1  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuModeSettingsThunk                                      1B35:22A1  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuModeSettings.
 ;-----------------------------------------------------------------------------
-OvlThunk69:
+MenuModeSettingsThunk:
         call LoadFromThunk
         jmp 0x2C1E:4                            ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk70                                                 1B35:22AB  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuP2ControlsInGameThunk                                  1B35:22AB  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuP2ControlsInGame.
 ;-----------------------------------------------------------------------------
-OvlThunk70:
+MenuP2ControlsInGameThunk:
         call LoadFromThunk
         jmp 0x1E45:0x108                        ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk71                                                 1B35:22B5  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuP1ControlsInGameThunk                                  1B35:22B5  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuP1ControlsInGame.
 ;-----------------------------------------------------------------------------
-OvlThunk71:
+MenuP1ControlsInGameThunk:
         call LoadFromThunk
         jmp 0x1E45:0xFE                         ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk72                                                 1B35:22BF  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; DeskAwayGoalieNoneThunk                                    1B35:22BF  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to DeskAwayGoalieNone.
 ;-----------------------------------------------------------------------------
-OvlThunk72:
+DeskAwayGoalieNoneThunk:
         call LoadFromThunk
         jmp 0x2CF8:0x1754                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk73                                                 1B35:22C9  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; DeskAwayGoalie2Thunk                                       1B35:22C9  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to DeskAwayGoalie2.
 ;-----------------------------------------------------------------------------
-OvlThunk73:
+DeskAwayGoalie2Thunk:
         call LoadFromThunk
         jmp 0x2CF8:0x171E                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk74                                                 1B35:22D3  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; DeskAwayGoalie1Thunk                                       1B35:22D3  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to DeskAwayGoalie1.
 ;-----------------------------------------------------------------------------
-OvlThunk74:
+DeskAwayGoalie1Thunk:
         call LoadFromThunk
         jmp 0x2CF8:0x16E8                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk75                                                 1B35:22DD  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; DeskHomeGoalieNoneThunk                                    1B35:22DD  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to DeskHomeGoalieNone.
 ;-----------------------------------------------------------------------------
-OvlThunk75:
+DeskHomeGoalieNoneThunk:
         call LoadFromThunk
         jmp 0x2CF8:0x16B2                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk76                                                 1B35:22E7  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; DeskHomeGoalie2Thunk                                       1B35:22E7  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to DeskHomeGoalie2.
 ;-----------------------------------------------------------------------------
-OvlThunk76:
+DeskHomeGoalie2Thunk:
         call LoadFromThunk
         jmp 0x2CF8:0x167C                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk77                                                 1B35:22F1  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; DeskHomeGoalie1Thunk                                       1B35:22F1  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to DeskHomeGoalie1.
 ;-----------------------------------------------------------------------------
-OvlThunk77:
+DeskHomeGoalie1Thunk:
         call LoadFromThunk
         jmp 0x2CF8:0x1646                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk78                                                 1B35:22FB  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; DeskGoToReplayThunk                                        1B35:22FB  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to DeskGoToReplay.
 ;-----------------------------------------------------------------------------
-OvlThunk78:
+DeskGoToReplayThunk:
         call LoadFromThunk
         jmp 0x2CF8:0x1206                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk79                                                 1B35:2305  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; DeskTeamScratchesThunk                                     1B35:2305  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to DeskTeamScratches.
 ;-----------------------------------------------------------------------------
-OvlThunk79:
+DeskTeamScratchesThunk:
         call LoadFromThunk
         jmp 0x2CF8:0x15CC                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk80                                                 1B35:230F  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; DeskScoringSummaryThunk                                    1B35:230F  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to DeskScoringSummary.
 ;-----------------------------------------------------------------------------
-OvlThunk80:
+DeskScoringSummaryThunk:
         call LoadFromThunk
         jmp 0x2CF8:0x1550                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk81                                                 1B35:2319  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; DeskPenaltySummaryThunk                                    1B35:2319  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to DeskPenaltySummary.
 ;-----------------------------------------------------------------------------
-OvlThunk81:
+DeskPenaltySummaryThunk:
         call LoadFromThunk
         jmp 0x2CF8:0x14D4                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk82                                                 1B35:2323  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; DeskGameStatsThunk                                         1B35:2323  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to DeskGameStats.
 ;-----------------------------------------------------------------------------
-OvlThunk82:
+DeskGameStatsThunk:
         call LoadFromThunk
         jmp 0x2CF8:0x1466                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk83                                                 1B35:232D  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; GameStandingsMenuThunk                                     1B35:232D  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to GameStandingsMenu.
 ;-----------------------------------------------------------------------------
-OvlThunk83:
+GameStandingsMenuThunk:
         call LoadFromThunk
         jmp 0x215A:0x79E                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk84                                                 1B35:2337  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuGameShowPlayerStatsThunk                               1B35:2337  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuGameShowPlayerStats.
 ;-----------------------------------------------------------------------------
-OvlThunk84:
+MenuGameShowPlayerStatsThunk:
         call LoadFromThunk
         jmp 0x2047:0x2C90                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk85                                                 1B35:2341  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuUseDefaultLinesThunk                                   1B35:2341  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuUseDefaultLines.
 ;-----------------------------------------------------------------------------
-OvlThunk85:
+MenuUseDefaultLinesThunk:
         call LoadFromThunk
         jmp 0x2047:0x2706                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk86                                                 1B35:234B  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuUseOriginalLinesThunk                                  1B35:234B  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuUseOriginalLines.
 ;-----------------------------------------------------------------------------
-OvlThunk86:
+MenuUseOriginalLinesThunk:
         call LoadFromThunk
         jmp 0x2047:0x25F2                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk87                                                 1B35:2355  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuLineEdCancelThunk                                      1B35:2355  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuLineEdCancel.
 ;-----------------------------------------------------------------------------
-OvlThunk87:
+MenuLineEdCancelThunk:
         call LoadFromThunk
         jmp 0x2047:0x25EE                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk88                                                 1B35:235F  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; WriteTeamLines2Thunk                                       1B35:235F  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to WriteTeamLines2.
 ;-----------------------------------------------------------------------------
-OvlThunk88:
+WriteTeamLines2Thunk:
         call LoadFromThunk
         jmp 0x2047:0x2A60                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk89                                                 1B35:2369  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuReturnToLineEditorThunk                                1B35:2369  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuReturnToLineEditor.
 ;-----------------------------------------------------------------------------
-OvlThunk89:
+MenuReturnToLineEditorThunk:
         call LoadFromThunk
         jmp 0x2047:0x2FA0                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk90                                                 1B35:2373  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; StandingsActExitThunk                                      1B35:2373  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to StandingsActExit.
 ;-----------------------------------------------------------------------------
-OvlThunk90:
+StandingsActExitThunk:
         call LoadFromThunk
         jmp 0x2248:0xC                          ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk91                                                 1B35:237D  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; StandingsActStandingsThunk                                 1B35:237D  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to StandingsActStandings.
 ;-----------------------------------------------------------------------------
-OvlThunk91:
+StandingsActStandingsThunk:
         call LoadFromThunk
         jmp 0x2248:0x14                         ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk92                                                 1B35:2387  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; StandingsActRosterThunk                                    1B35:2387  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to StandingsActRoster.
 ;-----------------------------------------------------------------------------
-OvlThunk92:
+StandingsActRosterThunk:
         call LoadFromThunk
         jmp 0x2248:0x1E                         ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk93                                                 1B35:2391  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; StandingsActRoster2Thunk                                   1B35:2391  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to StandingsActRoster2.
 ;-----------------------------------------------------------------------------
-OvlThunk93:
+StandingsActRoster2Thunk:
         call LoadFromThunk
         jmp 0x2248:0x64C                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk94                                                 1B35:239B  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; StandingsActPlayerThunk                                    1B35:239B  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to StandingsActPlayer.
 ;-----------------------------------------------------------------------------
-OvlThunk94:
+StandingsActPlayerThunk:
         call LoadFromThunk
         jmp 0x2248:0x656                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk95                                                 1B35:23A5  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuLeagueSettingsEditThunk                                1B35:23A5  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuLeagueSettingsEdit.
 ;-----------------------------------------------------------------------------
-OvlThunk95:
+MenuLeagueSettingsEditThunk:
         call LoadFromThunk
         jmp 0x2B26:0x52                         ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk96                                                 1B35:23AF  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuP2ControlsPlayoffThunk                                 1B35:23AF  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuP2ControlsPlayoff.
 ;-----------------------------------------------------------------------------
-OvlThunk96:
+MenuP2ControlsPlayoffThunk:
         call LoadFromThunk
         jmp 0x1E45:0x65E                        ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk97                                                 1B35:23B9  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuP1ControlsPlayoffThunk                                 1B35:23B9  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuP1ControlsPlayoff.
 ;-----------------------------------------------------------------------------
-OvlThunk97:
+MenuP1ControlsPlayoffThunk:
         call LoadFromThunk
         jmp 0x1E45:0x654                        ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk98                                                 1B35:23C3  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; POMenuResult1Thunk                                         1B35:23C3  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to POMenuResult1.
 ;-----------------------------------------------------------------------------
-OvlThunk98:
+POMenuResult1Thunk:
         call LoadFromThunk
         jmp 0x26D4:0x12                         ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk99                                                 1B35:23CD  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL.
+; SaveGameStateThunk                                         1B35:23CD  RTLink
+; Overlay thunk: loads INIT.OVL (LoadFromThunk), then far-jumps to SaveGameState.
 ;-----------------------------------------------------------------------------
-OvlThunk99:
+SaveGameStateThunk:
         call LoadFromThunk
         jmp 0x278C:6                            ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk100                                                1B35:23D7  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; WriteModeStateThunk                                        1B35:23D7  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to WriteModeState.
 ;-----------------------------------------------------------------------------
-OvlThunk100:
+WriteModeStateThunk:
         call LoadFromThunk
         jmp 0x2E70:0xD0A                        ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk101                                                1B35:23E1  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL.
+; SaveLeagueGameRefThunk                                     1B35:23E1  RTLink
+; Overlay thunk: loads LP.OVL (LoadFromThunk), then far-jumps to SaveLeagueGameRef.
 ;-----------------------------------------------------------------------------
-OvlThunk101:
+SaveLeagueGameRefThunk:
         call LoadFromThunk
         jmp 0x2E18:0xA                          ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk102                                                1B35:23EB  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL.
+; EditTextFieldThunk                                         1B35:23EB  RTLink
+; Overlay thunk: loads LP.OVL (LoadFromThunk), then far-jumps to EditTextField.
 ;-----------------------------------------------------------------------------
-OvlThunk102:
+EditTextFieldThunk:
         call LoadFromThunk
         jmp 0x1E45:0x25C                        ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk103                                                1B35:23F5  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; SetCtlTeamsThunk                                           1B35:23F5  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to SetCtlTeams.
 ;-----------------------------------------------------------------------------
-OvlThunk103:
+SetCtlTeamsThunk:
         call LoadFromThunk
         jmp 0x1E45:0xFD2                        ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk104                                                1B35:23FF  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; restoreplThunk                                             1B35:23FF  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to restorepl.
 ;-----------------------------------------------------------------------------
-OvlThunk104:
+restoreplThunk:
         call LoadFromThunk
         jmp 0x2E42:0x1DE                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk105                                                1B35:2409  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; setpersonelThunk                                           1B35:2409  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to setpersonel.
 ;-----------------------------------------------------------------------------
-OvlThunk105:
+setpersonelThunk:
         call LoadFromThunk
         jmp 0x2E42:0x1994                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk106                                                1B35:2413  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; PlayHilightThunk                                           1B35:2413  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to PlayHilight.
 ;-----------------------------------------------------------------------------
-OvlThunk106:
+PlayHilightThunk:
         call LoadFromThunk
         jmp 0x2062:0xE                          ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk107                                                1B35:241D  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MOVIE.OVL.
+; MviOpenThunk                                               1B35:241D  RTLink
+; Overlay thunk: loads MOVIE.OVL (LoadFromThunk), then far-jumps to MviOpen.
 ;-----------------------------------------------------------------------------
-OvlThunk107:
+MviOpenThunk:
         call LoadFromThunk
         jmp 0x3357:0x192                        ; load paragraph, relocated
         dw 6                                    ; MOVIE.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk108                                                1B35:2427  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MOVIE.OVL.
+; MviCloseThunk                                              1B35:2427  RTLink
+; Overlay thunk: loads MOVIE.OVL (LoadFromThunk), then far-jumps to MviClose.
 ;-----------------------------------------------------------------------------
-OvlThunk108:
+MviCloseThunk:
         call LoadFromThunk
         jmp 0x3357:0x30E                        ; load paragraph, relocated
         dw 6                                    ; MOVIE.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk109                                                1B35:2431  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MOVIE.OVL.
+; PlanarToLinearThunk                                        1B35:2431  RTLink
+; Overlay thunk: loads MOVIE.OVL (LoadFromThunk), then far-jumps to PlanarToLinear.
 ;-----------------------------------------------------------------------------
-OvlThunk109:
+PlanarToLinearThunk:
         call LoadFromThunk
         jmp 0x3349:0                            ; load paragraph, relocated
         dw 6                                    ; MOVIE.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk110                                                1B35:243B  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MOVIE.OVL.
+; MviNextFrameThunk                                          1B35:243B  RTLink
+; Overlay thunk: loads MOVIE.OVL (LoadFromThunk), then far-jumps to MviNextFrame.
 ;-----------------------------------------------------------------------------
-OvlThunk110:
+MviNextFrameThunk:
         call LoadFromThunk
         jmp 0x3357:0x6C8                        ; load paragraph, relocated
         dw 6                                    ; MOVIE.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk111                                                1B35:2445  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; DrawDlgFrameThunk                                          1B35:2445  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to DrawDlgFrame.
 ;-----------------------------------------------------------------------------
-OvlThunk111:
+DrawDlgFrameThunk:
         call LoadFromThunk
         jmp 0x2047:0x20E4                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk112                                                1B35:244F  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; GameLineEditorThunk                                        1B35:244F  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to GameLineEditor.
 ;-----------------------------------------------------------------------------
-OvlThunk112:
+GameLineEditorThunk:
         call LoadFromThunk
         jmp 0x2047:8                            ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk113                                                1B35:2459  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; RosterScreenThunk                                          1B35:2459  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to RosterScreen.
 ;-----------------------------------------------------------------------------
-OvlThunk113:
+RosterScreenThunk:
         call LoadFromThunk
         jmp 0x2446:0x6A                         ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk114                                                1B35:2463  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; InitMenuRemapThunk                                         1B35:2463  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to InitMenuRemap.
 ;-----------------------------------------------------------------------------
-OvlThunk114:
+InitMenuRemapThunk:
         call LoadFromThunk
         jmp 0x2095:8                            ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk115                                                1B35:246D  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; StatsMenuLoopThunk                                         1B35:246D  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to StatsMenuLoop.
 ;-----------------------------------------------------------------------------
-OvlThunk115:
+StatsMenuLoopThunk:
         call LoadFromThunk
         jmp 0x1EAE:0x44                         ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk116                                                1B35:2477  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; SetupStatsMenusThunk                                       1B35:2477  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to SetupStatsMenus.
 ;-----------------------------------------------------------------------------
-OvlThunk116:
+SetupStatsMenusThunk:
         call LoadFromThunk
         jmp 0x1E45:0                            ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk117                                                1B35:2481  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; BuildSeasonTitleThunk                                      1B35:2481  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to BuildSeasonTitle.
 ;-----------------------------------------------------------------------------
-OvlThunk117:
+BuildSeasonTitleThunk:
         call LoadFromThunk
         jmp 0x1E45:0x47C                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk118                                                1B35:248B  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; LoadScheduleDBThunk                                        1B35:248B  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to LoadScheduleDB.
 ;-----------------------------------------------------------------------------
-OvlThunk118:
+LoadScheduleDBThunk:
         call LoadFromThunk
         jmp 0x26D4:0x29F2                       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk119                                                1B35:2495  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; SetSoundDeviceThunk                                        1B35:2495  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to SetSoundDevice.
 ;-----------------------------------------------------------------------------
-OvlThunk119:
+SetSoundDeviceThunk:
         call LoadFromThunk
         jmp 0x2528:0x426                        ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk120                                                1B35:249F  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; SaveModeStateThunk                                         1B35:249F  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to SaveModeState.
 ;-----------------------------------------------------------------------------
-OvlThunk120:
+SaveModeStateThunk:
         call LoadFromThunk
         jmp 0x2E70:0x968                        ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk121                                                1B35:24A9  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL.
+; SimulateGameThunk                                          1B35:24A9  RTLink
+; Overlay thunk: loads LP.OVL (LoadFromThunk), then far-jumps to SimulateGame.
 ;-----------------------------------------------------------------------------
-OvlThunk121:
+SimulateGameThunk:
         call LoadFromThunk
         jmp 0x23AD:0x46                         ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk122                                                1B35:24B3  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL.
+; PostGameToTeamDbThunk                                      1B35:24B3  RTLink
+; Overlay thunk: loads LP.OVL (LoadFromThunk), then far-jumps to PostGameToTeamDb.
 ;-----------------------------------------------------------------------------
-OvlThunk122:
+PostGameToTeamDbThunk:
         call LoadFromThunk
         jmp 0x25B2:0x18F4                       ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk123                                                1B35:24BD  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; EasnStandingsScreenThunk                                   1B35:24BD  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to EasnStandingsScreen.
 ;-----------------------------------------------------------------------------
-OvlThunk123:
+EasnStandingsScreenThunk:
         call LoadFromThunk
         jmp 0x22B3:0x558                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk124                                                1B35:24C7  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; EasnGoalieStatsScreenThunk                                 1B35:24C7  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to EasnGoalieStatsScreen.
 ;-----------------------------------------------------------------------------
-OvlThunk124:
+EasnGoalieStatsScreenThunk:
         call LoadFromThunk
         jmp 0x22B3:0x390                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk125                                                1B35:24D1  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; EasnSkaterStatsScreenThunk                                 1B35:24D1  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to EasnSkaterStatsScreen.
 ;-----------------------------------------------------------------------------
-OvlThunk125:
+EasnSkaterStatsScreenThunk:
         call LoadFromThunk
         jmp 0x22B3:0x1C8                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk126                                                1B35:24DB  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; EasnTeamStatsScreenThunk                                   1B35:24DB  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to EasnTeamStatsScreen.
 ;-----------------------------------------------------------------------------
-OvlThunk126:
+EasnTeamStatsScreenThunk:
         call LoadFromThunk
         jmp 0x22B3:0                            ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk127                                                1B35:24E5  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section GAME.OVL.
+; PlayGameThunk                                              1B35:24E5  RTLink
+; Overlay thunk: loads GAME.OVL (LoadFromThunk), then far-jumps to PlayGame.
 ;-----------------------------------------------------------------------------
-OvlThunk127:
+PlayGameThunk:
         call LoadFromThunk
         jmp 0x1E7E:0x88A                        ; load paragraph, relocated
         dw 3                                    ; GAME.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk128                                                1B35:24EF  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; GameStandingsScreenThunk                                   1B35:24EF  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to GameStandingsScreen.
 ;-----------------------------------------------------------------------------
-OvlThunk128:
+GameStandingsScreenThunk:
         call LoadFromThunk
         jmp 0x215A:0x6AC                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk129                                                1B35:24F9  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; GameGoalieStatsScreenThunk                                 1B35:24F9  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to GameGoalieStatsScreen.
 ;-----------------------------------------------------------------------------
-OvlThunk129:
+GameGoalieStatsScreenThunk:
         call LoadFromThunk
         jmp 0x215A:0x56A                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk130                                                1B35:2503  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; GameSkaterStatsScreenThunk                                 1B35:2503  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to GameSkaterStatsScreen.
 ;-----------------------------------------------------------------------------
-OvlThunk130:
+GameSkaterStatsScreenThunk:
         call LoadFromThunk
         jmp 0x215A:0x428                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk131                                                1B35:250D  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; GameTeamStatsScreenThunk                                   1B35:250D  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to GameTeamStatsScreen.
 ;-----------------------------------------------------------------------------
-OvlThunk131:
+GameTeamStatsScreenThunk:
         call LoadFromThunk
         jmp 0x215A:0x2E6                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk132                                                1B35:2517  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; SetupControllersThunk                                      1B35:2517  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to SetupControllers.
 ;-----------------------------------------------------------------------------
-OvlThunk132:
+SetupControllersThunk:
         call LoadFromThunk
         jmp 0x1F9C:0                            ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk133                                                1B35:2521  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; SetStatsMenuTextThunk                                      1B35:2521  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to SetStatsMenuText.
 ;-----------------------------------------------------------------------------
-OvlThunk133:
+SetStatsMenuTextThunk:
         call LoadFromThunk
         jmp 0x1E45:0x598                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk134                                                1B35:252B  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL.
+; ShowMatchupScreenThunk                                     1B35:252B  RTLink
+; Overlay thunk: loads INIT.OVL (LoadFromThunk), then far-jumps to ShowMatchupScreen.
 ;-----------------------------------------------------------------------------
-OvlThunk134:
+ShowMatchupScreenThunk:
         call LoadFromThunk
         jmp 0x2007:0x1BC                        ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk135                                                1B35:2535  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL.
+; CreateGSummaryDbThunk                                      1B35:2535  RTLink
+; Overlay thunk: loads INIT.OVL (LoadFromThunk), then far-jumps to CreateGSummaryDb.
 ;-----------------------------------------------------------------------------
-OvlThunk135:
+CreateGSummaryDbThunk:
         call LoadFromThunk
         jmp 0x2425:0x374                        ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk136                                                1B35:253F  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; DrawLeagueSetDlgSelThunk                                   1B35:253F  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to DrawLeagueSetDlgSel.
 ;-----------------------------------------------------------------------------
-OvlThunk136:
+DrawLeagueSetDlgSelThunk:
         call LoadFromThunk
         jmp 0x2B26:0x3C4                        ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk137                                                1B35:2549  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuShowLeagueSettingsThunk                                1B35:2549  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuShowLeagueSettings.
 ;-----------------------------------------------------------------------------
-OvlThunk137:
+MenuShowLeagueSettingsThunk:
         call LoadFromThunk
         jmp 0x2B26:0x19C                        ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk138                                                1B35:2553  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; MenuShowLeagueSettings2Thunk                               1B35:2553  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to MenuShowLeagueSettings2.
 ;-----------------------------------------------------------------------------
-OvlThunk138:
+MenuShowLeagueSettings2Thunk:
         call LoadFromThunk
         jmp 0x2B26:0x2B0                        ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk139                                                1B35:255D  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; SportsDeskThunk                                            1B35:255D  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to SportsDesk.
 ;-----------------------------------------------------------------------------
-OvlThunk139:
+SportsDeskThunk:
         call LoadFromThunk
         jmp 0x2CF8:0xE                          ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk140                                                1B35:2567  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL.
+; FreePPVFilesThunk                                          1B35:2567  RTLink
+; Overlay thunk: loads INIT.OVL (LoadFromThunk), then far-jumps to FreePPVFiles.
 ;-----------------------------------------------------------------------------
-OvlThunk140:
+FreePPVFilesThunk:
         call LoadFromThunk
         jmp 0x256C:0xE8                         ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk141                                                1B35:2571  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section GAME.OVL.
+; ReplayIsEmptyThunk                                         1B35:2571  RTLink
+; Overlay thunk: loads GAME.OVL (LoadFromThunk), then far-jumps to ReplayIsEmpty.
 ;-----------------------------------------------------------------------------
-OvlThunk141:
+ReplayIsEmptyThunk:
         call LoadFromThunk
         jmp 0x1E7E:0xA94                        ; load paragraph, relocated
         dw 3                                    ; GAME.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk142                                                1B35:257B  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL.
+; LoadScoreboardArtThunk                                     1B35:257B  RTLink
+; Overlay thunk: loads INIT.OVL (LoadFromThunk), then far-jumps to LoadScoreboardArt.
 ;-----------------------------------------------------------------------------
-OvlThunk142:
+LoadScoreboardArtThunk:
         call LoadFromThunk
         jmp 0x251E:0x38                         ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk143                                                1B35:2585  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL.
+; LoadRinkEndArtThunk                                        1B35:2585  RTLink
+; Overlay thunk: loads INIT.OVL (LoadFromThunk), then far-jumps to LoadRinkEndArt.
 ;-----------------------------------------------------------------------------
-OvlThunk143:
+LoadRinkEndArtThunk:
         call LoadFromThunk
         jmp 0x1F9C:0x1B4                        ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk144                                                1B35:258F  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL.
+; LoadPPVFilesThunk                                          1B35:258F  RTLink
+; Overlay thunk: loads INIT.OVL (LoadFromThunk), then far-jumps to LoadPPVFiles.
 ;-----------------------------------------------------------------------------
-OvlThunk144:
+LoadPPVFilesThunk:
         call LoadFromThunk
         jmp 0x1F9C:0x72                         ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk145                                                1B35:2599  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL.
+; InstantReplayThunk                                         1B35:2599  RTLink
+; Overlay thunk: loads INIT.OVL (LoadFromThunk), then far-jumps to InstantReplay.
 ;-----------------------------------------------------------------------------
-OvlThunk145:
+InstantReplayThunk:
         call LoadFromThunk
         jmp 0x2581:0xE                          ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk146                                                1B35:25A3  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL.
+; ShowGameSummaryThunk                                       1B35:25A3  RTLink
+; Overlay thunk: loads INIT.OVL (LoadFromThunk), then far-jumps to ShowGameSummary.
 ;-----------------------------------------------------------------------------
-OvlThunk146:
+ShowGameSummaryThunk:
         call LoadFromThunk
         jmp 0x21A1:8                            ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk147                                                1B35:25AD  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL.
+; ShowTeamStatsThunk                                         1B35:25AD  RTLink
+; Overlay thunk: loads INIT.OVL (LoadFromThunk), then far-jumps to ShowTeamStats.
 ;-----------------------------------------------------------------------------
-OvlThunk147:
+ShowTeamStatsThunk:
         call LoadFromThunk
         jmp 0x2306:0x2B6                        ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk148                                                1B35:25B7  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; SetTeamGoalieThunk                                         1B35:25B7  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to SetTeamGoalie.
 ;-----------------------------------------------------------------------------
-OvlThunk148:
+SetTeamGoalieThunk:
         call LoadFromThunk
         jmp 0x226F:0xDAA                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk149                                                1B35:25C1  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section MENUS.OVL.
+; CopyGameSettingsThunk                                      1B35:25C1  RTLink
+; Overlay thunk: loads MENUS.OVL (LoadFromThunk), then far-jumps to CopyGameSettings.
 ;-----------------------------------------------------------------------------
-OvlThunk149:
+CopyGameSettingsThunk:
         call LoadFromThunk
         jmp 0x2E70:0xE36                        ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk150                                                1B35:25CB  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL.
+; AddHumanTeamThunk                                          1B35:25CB  RTLink
+; Overlay thunk: loads LP.OVL (LoadFromThunk), then far-jumps to AddHumanTeam.
 ;-----------------------------------------------------------------------------
-OvlThunk150:
+AddHumanTeamThunk:
         call LoadFromThunk
         jmp 0x1ECB:8                            ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk151                                                1B35:25D5  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL.
+; CreateNewLeagueThunk                                       1B35:25D5  RTLink
+; Overlay thunk: loads LP.OVL (LoadFromThunk), then far-jumps to CreateNewLeague.
 ;-----------------------------------------------------------------------------
-OvlThunk151:
+CreateNewLeagueThunk:
         call LoadFromThunk
         jmp 0x2A1B:4                            ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk152                                                1B35:25DF  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL.
+; MergeUpdateDbsThunk                                        1B35:25DF  RTLink
+; Overlay thunk: loads LP.OVL (LoadFromThunk), then far-jumps to MergeUpdateDbs.
 ;-----------------------------------------------------------------------------
-OvlThunk152:
+MergeUpdateDbsThunk:
         call LoadFromThunk
         jmp 0x2CB7:0x134E                       ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk153                                                1B35:25E9  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL.
+; RebuildLeagueDbsThunk                                      1B35:25E9  RTLink
+; Overlay thunk: loads LP.OVL (LoadFromThunk), then far-jumps to RebuildLeagueDbs.
 ;-----------------------------------------------------------------------------
-OvlThunk153:
+RebuildLeagueDbsThunk:
         call LoadFromThunk
         jmp 0x2CB7:0x1442                       ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk154                                                1B35:25F3  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL.
+; CheckMasterPasswordThunk                                   1B35:25F3  RTLink
+; Overlay thunk: loads LP.OVL (LoadFromThunk), then far-jumps to CheckMasterPassword.
 ;-----------------------------------------------------------------------------
-OvlThunk154:
+CheckMasterPasswordThunk:
         call LoadFromThunk
         jmp 0x2305:0xC                          ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk155                                                1B35:25FD  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL.
+; RemoveHumanTeamThunk                                       1B35:25FD  RTLink
+; Overlay thunk: loads LP.OVL (LoadFromThunk), then far-jumps to RemoveHumanTeam.
 ;-----------------------------------------------------------------------------
-OvlThunk155:
+RemoveHumanTeamThunk:
         call LoadFromThunk
         jmp 0x1ECB:0x332                        ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk156                                                1B35:2607  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL.
+; TradePlayersThunk                                          1B35:2607  RTLink
+; Overlay thunk: loads LP.OVL (LoadFromThunk), then far-jumps to TradePlayers.
 ;-----------------------------------------------------------------------------
-OvlThunk156:
+TradePlayersThunk:
         call LoadFromThunk
         jmp 0x2A57:0x2152                       ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk157                                                1B35:2611  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL.
+; UpdateTeamDbsThunk                                         1B35:2611  RTLink
+; Overlay thunk: loads LP.OVL (LoadFromThunk), then far-jumps to UpdateTeamDbs.
 ;-----------------------------------------------------------------------------
-OvlThunk157:
+UpdateTeamDbsThunk:
         call LoadFromThunk
         jmp 0x2CB7:0x9FA                        ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk158                                                1B35:261B  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL.
+; MergeLeagueFilesThunk                                      1B35:261B  RTLink
+; Overlay thunk: loads LP.OVL (LoadFromThunk), then far-jumps to MergeLeagueFiles.
 ;-----------------------------------------------------------------------------
-OvlThunk158:
+MergeLeagueFilesThunk:
         call LoadFromThunk
         jmp 0x2CB7:0xC28                        ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk159                                                1B35:2625  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL.
+; ImportDbsThunk                                             1B35:2625  RTLink
+; Overlay thunk: loads LP.OVL (LoadFromThunk), then far-jumps to ImportDbs.
 ;-----------------------------------------------------------------------------
-OvlThunk159:
+ImportDbsThunk:
         call LoadFromThunk
         jmp 0x2139:0x1430                       ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk160                                                1B35:262F  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL.
+; PlayLeagueGameThunk                                        1B35:262F  RTLink
+; Overlay thunk: loads LP.OVL (LoadFromThunk), then far-jumps to PlayLeagueGame.
 ;-----------------------------------------------------------------------------
-OvlThunk160:
+PlayLeagueGameThunk:
         call LoadFromThunk
         jmp 0x25B2:0x208A                       ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk161                                                1B35:2639  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL.
+; ExportDbsThunk                                             1B35:2639  RTLink
+; Overlay thunk: loads LP.OVL (LoadFromThunk), then far-jumps to ExportDbs.
 ;-----------------------------------------------------------------------------
-OvlThunk161:
+ExportDbsThunk:
         call LoadFromThunk
         jmp 0x2139:0x15EC                       ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk162                                                1B35:2643  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL.
+; ReadTeamNamesThunk                                         1B35:2643  RTLink
+; Overlay thunk: loads LP.OVL (LoadFromThunk), then far-jumps to ReadTeamNames.
 ;-----------------------------------------------------------------------------
-OvlThunk162:
+ReadTeamNamesThunk:
         call LoadFromThunk
         jmp 0x22D3:0x1E2                        ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk163                                                1B35:264D  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL.
+; TradeCancelThunk                                           1B35:264D  RTLink
+; Overlay thunk: loads LP.OVL (LoadFromThunk), then far-jumps to TradeCancel.
 ;-----------------------------------------------------------------------------
-OvlThunk163:
+TradeCancelThunk:
         call LoadFromThunk
         jmp 0x2A57:0x1080                       ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk164                                                1B35:2657  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL.
+; TradeDoneThunk                                             1B35:2657  RTLink
+; Overlay thunk: loads LP.OVL (LoadFromThunk), then far-jumps to TradeDone.
 ;-----------------------------------------------------------------------------
-OvlThunk164:
+TradeDoneThunk:
         call LoadFromThunk
         jmp 0x2A57:0xFDE                        ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk165                                                1B35:2661  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL.
+; TeamSelCancelThunk                                         1B35:2661  RTLink
+; Overlay thunk: loads LP.OVL (LoadFromThunk), then far-jumps to TeamSelCancel.
 ;-----------------------------------------------------------------------------
-OvlThunk165:
+TeamSelCancelThunk:
         call LoadFromThunk
         jmp 0x1F31:0xBA6                        ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk166                                                1B35:266B  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL.
+; TeamSelDoneThunk                                           1B35:266B  RTLink
+; Overlay thunk: loads LP.OVL (LoadFromThunk), then far-jumps to TeamSelDone.
 ;-----------------------------------------------------------------------------
-OvlThunk166:
+TeamSelDoneThunk:
         call LoadFromThunk
         jmp 0x1F31:0xB9E                        ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk167                                                1B35:2675  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section LP.OVL.
+; CalReturnThunk                                             1B35:2675  RTLink
+; Overlay thunk: loads LP.OVL (LoadFromThunk), then far-jumps to CalReturn.
 ;-----------------------------------------------------------------------------
-OvlThunk167:
+CalReturnThunk:
         call LoadFromThunk
         jmp 0x25B2:0x574                        ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk168                                                1B35:267F  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; CalStandingsMenuThunk                                      1B35:267F  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to CalStandingsMenu.
 ;-----------------------------------------------------------------------------
-OvlThunk168:
+CalStandingsMenuThunk:
         call LoadFromThunk
         jmp 0x2351:0x4A6                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk169                                                1B35:2689  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; CalStandingsScreenThunk                                    1B35:2689  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to CalStandingsScreen.
 ;-----------------------------------------------------------------------------
-OvlThunk169:
+CalStandingsScreenThunk:
         call LoadFromThunk
         jmp 0x2351:0x3D0                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk170                                                1B35:2693  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; CalGoalieStatsScreenThunk                                  1B35:2693  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to CalGoalieStatsScreen.
 ;-----------------------------------------------------------------------------
-OvlThunk170:
+CalGoalieStatsScreenThunk:
         call LoadFromThunk
         jmp 0x2351:0x28E                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk171                                                1B35:269D  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; CalSkaterStatsScreenThunk                                  1B35:269D  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to CalSkaterStatsScreen.
 ;-----------------------------------------------------------------------------
-OvlThunk171:
+CalSkaterStatsScreenThunk:
         call LoadFromThunk
         jmp 0x2351:0x14C                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk172                                                1B35:26A7  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; CalTeamStatsScreenThunk                                    1B35:26A7  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to CalTeamStatsScreen.
 ;-----------------------------------------------------------------------------
-OvlThunk172:
+CalTeamStatsScreenThunk:
         call LoadFromThunk
         jmp 0x2351:0xA                          ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk173                                                1B35:26B1  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL.
+; LoadGameTeamsThunk                                         1B35:26B1  RTLink
+; Overlay thunk: loads INIT.OVL (LoadFromThunk), then far-jumps to LoadGameTeams.
 ;-----------------------------------------------------------------------------
-OvlThunk173:
+LoadGameTeamsThunk:
         call LoadFromThunk
         jmp 0x2425:0                            ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk174                                                1B35:26BB  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section FADES12.OVL.
+; FadeZoomRectThunk                                          1B35:26BB  RTLink
+; Overlay thunk: loads FADES12.OVL (LoadFromThunk), then far-jumps to FadeZoomRect.
 ;-----------------------------------------------------------------------------
-OvlThunk174:
+FadeZoomRectThunk:
         call LoadFromThunk
         jmp 0x3358:0                            ; load paragraph, relocated
         dw 19                                   ; FADES12.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk175                                                1B35:26C5  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; StatsSelNhlPlayoffsThunk                                   1B35:26C5  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to StatsSelNhlPlayoffs.
 ;-----------------------------------------------------------------------------
-OvlThunk175:
+StatsSelNhlPlayoffsThunk:
         call LoadFromThunk
         jmp 0x2248:0xEC                         ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk176                                                1B35:26CF  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; StatsSelNhlSeasonThunk                                     1B35:26CF  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to StatsSelNhlSeason.
 ;-----------------------------------------------------------------------------
-OvlThunk176:
+StatsSelNhlSeasonThunk:
         call LoadFromThunk
         jmp 0x2248:0x28                         ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk177                                                1B35:26D9  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; CmpPointsThunk                                             1B35:26D9  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to CmpPoints.
 ;-----------------------------------------------------------------------------
-OvlThunk177:
+CmpPointsThunk:
         call LoadFromThunk
         jmp 0x2095:0xC0                         ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk178                                                1B35:26E3  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; CmpGAAThunk                                                1B35:26E3  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to CmpGAA.
 ;-----------------------------------------------------------------------------
-OvlThunk178:
+CmpGAAThunk:
         call LoadFromThunk
         jmp 0x2095:0x180                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk179                                                1B35:26ED  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; CmpTeamScoringThunk                                        1B35:26ED  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to CmpTeamScoring.
 ;-----------------------------------------------------------------------------
-OvlThunk179:
+CmpTeamScoringThunk:
         call LoadFromThunk
         jmp 0x25E5:2                            ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk180                                                1B35:26F7  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; CmpTeamDefenseThunk                                        1B35:26F7  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to CmpTeamDefense.
 ;-----------------------------------------------------------------------------
-OvlThunk180:
+CmpTeamDefenseThunk:
         call LoadFromThunk
         jmp 0x25E5:0x11A                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk181                                                1B35:2701  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; CmpTeamPKThunk                                             1B35:2701  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to CmpTeamPK.
 ;-----------------------------------------------------------------------------
-OvlThunk181:
+CmpTeamPKThunk:
         call LoadFromThunk
         jmp 0x25E5:0x3B6                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk182                                                1B35:270B  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; CmpTeamPPThunk                                             1B35:270B  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to CmpTeamPP.
 ;-----------------------------------------------------------------------------
-OvlThunk182:
+CmpTeamPPThunk:
         call LoadFromThunk
         jmp 0x25E5:0x232                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk183                                                1B35:2715  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; CmpTeamPenaltiesThunk                                      1B35:2715  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to CmpTeamPenalties.
 ;-----------------------------------------------------------------------------
-OvlThunk183:
+CmpTeamPenaltiesThunk:
         call LoadFromThunk
         jmp 0x25E5:0x52E                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk184                                                1B35:271F  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; CmpGoalsThunk                                              1B35:271F  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to CmpGoals.
 ;-----------------------------------------------------------------------------
-OvlThunk184:
+CmpGoalsThunk:
         call LoadFromThunk
         jmp 0x26BE:0xA                          ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk185                                                1B35:2729  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; CmpAssistsThunk                                            1B35:2729  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to CmpAssists.
 ;-----------------------------------------------------------------------------
-OvlThunk185:
+CmpAssistsThunk:
         call LoadFromThunk
         jmp 0x26BE:0xEC                         ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk186                                                1B35:2733  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; CmpPPGoalsThunk                                            1B35:2733  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to CmpPPGoals.
 ;-----------------------------------------------------------------------------
-OvlThunk186:
+CmpPPGoalsThunk:
         call LoadFromThunk
         jmp 0x26BE:0x1C6                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk187                                                1B35:273D  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; CmpSHGoalsThunk                                            1B35:273D  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to CmpSHGoals.
 ;-----------------------------------------------------------------------------
-OvlThunk187:
+CmpSHGoalsThunk:
         call LoadFromThunk
         jmp 0x26BE:0x2C0                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk188                                                1B35:2747  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; CmpPlusMinusThunk                                          1B35:2747  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to CmpPlusMinus.
 ;-----------------------------------------------------------------------------
-OvlThunk188:
+CmpPlusMinusThunk:
         call LoadFromThunk
         jmp 0x26BE:0x3BA                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk189                                                1B35:2751  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; CmpPIMThunk                                                1B35:2751  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to CmpPIM.
 ;-----------------------------------------------------------------------------
-OvlThunk189:
+CmpPIMThunk:
         call LoadFromThunk
         jmp 0x26BE:0x49E                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk190                                                1B35:275B  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; CmpShootPctThunk                                           1B35:275B  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to CmpShootPct.
 ;-----------------------------------------------------------------------------
-OvlThunk190:
+CmpShootPctThunk:
         call LoadFromThunk
         jmp 0x26BE:0x598                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk191                                                1B35:2765  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; CmpGoalieWinsThunk                                         1B35:2765  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to CmpGoalieWins.
 ;-----------------------------------------------------------------------------
-OvlThunk191:
+CmpGoalieWinsThunk:
         call LoadFromThunk
         jmp 0x26BE:0x67A                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk192                                                1B35:276F  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section STATS.OVL.
+; CmpSavePctThunk                                            1B35:276F  RTLink
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to CmpSavePct.
 ;-----------------------------------------------------------------------------
-OvlThunk192:
+CmpSavePctThunk:
         call LoadFromThunk
         jmp 0x26BE:0x7C2                        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk193                                                1B35:2779  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; assbenchsideThunk                                          1B35:2779  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to assbenchside.
 ;-----------------------------------------------------------------------------
-OvlThunk193:
+assbenchsideThunk:
         call LoadFromThunk
         jmp 0x2CD2:0x1640                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk194                                                1B35:2783  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; assboxenterThunk                                           1B35:2783  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to assboxenter.
 ;-----------------------------------------------------------------------------
-OvlThunk194:
+assboxenterThunk:
         call LoadFromThunk
         jmp 0x2CD2:0x14DC                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk195                                                1B35:278D  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; assbenchwaitThunk                                          1B35:278D  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to assbenchwait.
 ;-----------------------------------------------------------------------------
-OvlThunk195:
+assbenchwaitThunk:
         call LoadFromThunk
         jmp 0x2164:0xCB0                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk196                                                1B35:2797  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; assleaveboxThunk                                           1B35:2797  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to assleavebox.
 ;-----------------------------------------------------------------------------
-OvlThunk196:
+assleaveboxThunk:
         call LoadFromThunk
         jmp 0x2164:0x1D6                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk197                                                1B35:27A1  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; asstakepositionThunk                                       1B35:27A1  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to asstakeposition.
 ;-----------------------------------------------------------------------------
-OvlThunk197:
+asstakepositionThunk:
         call LoadFromThunk
         jmp 0x2164:0xCDC                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk198                                                1B35:27AB  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; assintrolineThunk                                          1B35:27AB  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to assintroline.
 ;-----------------------------------------------------------------------------
-OvlThunk198:
+assintrolineThunk:
         call LoadFromThunk
         jmp 0x2CD2:0x534                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk199                                                1B35:27B5  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; assintrostandThunk                                         1B35:27B5  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to assintrostand.
 ;-----------------------------------------------------------------------------
-OvlThunk199:
+assintrostandThunk:
         call LoadFromThunk
         jmp 0x2CD2:0x4BA                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk200                                                1B35:27BF  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; assrefwhistleThunk                                         1B35:27BF  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to assrefwhistle.
 ;-----------------------------------------------------------------------------
-OvlThunk200:
+assrefwhistleThunk:
         call LoadFromThunk
         jmp 0x2519:0x2EC2                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk201                                                1B35:27C9  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; assrefgoallineThunk                                        1B35:27C9  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to assrefgoalline.
 ;-----------------------------------------------------------------------------
-OvlThunk201:
+assrefgoallineThunk:
         call LoadFromThunk
         jmp 0x2519:0x38EC                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk202                                                1B35:27D3  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; assrefdropThunk                                            1B35:27D3  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to assrefdrop.
 ;-----------------------------------------------------------------------------
-OvlThunk202:
+assrefdropThunk:
         call LoadFromThunk
         jmp 0x2519:0x3762                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk203                                                1B35:27DD  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; assrefgoalpaThunk                                          1B35:27DD  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to assrefgoalpa.
 ;-----------------------------------------------------------------------------
-OvlThunk203:
+assrefgoalpaThunk:
         call LoadFromThunk
         jmp 0x2519:0x31E4                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk204                                                1B35:27E7  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; assrefsignalThunk                                          1B35:27E7  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to assrefsignal.
 ;-----------------------------------------------------------------------------
-OvlThunk204:
+assrefsignalThunk:
         call LoadFromThunk
         jmp 0x2519:0x303C                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk205                                                1B35:27F1  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; assreffollowThunk                                          1B35:27F1  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to assreffollow.
 ;-----------------------------------------------------------------------------
-OvlThunk205:
+assreffollowThunk:
         call LoadFromThunk
         jmp 0x2519:0x295E                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk206                                                1B35:27FB  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; assrefatdotThunk                                           1B35:27FB  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to assrefatdot.
 ;-----------------------------------------------------------------------------
-OvlThunk206:
+assrefatdotThunk:
         call LoadFromThunk
         jmp 0x2519:0x28DC                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk207                                                1B35:2805  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; assleaveiceThunk                                           1B35:2805  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to assleaveice.
 ;-----------------------------------------------------------------------------
-OvlThunk207:
+assleaveiceThunk:
         call LoadFromThunk
         jmp 0x2519:0xAF0                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk208                                                1B35:280F  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; puckfaceoff2Thunk                                          1B35:280F  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to puckfaceoff2.
 ;-----------------------------------------------------------------------------
-OvlThunk208:
+puckfaceoff2Thunk:
         call LoadFromThunk
         jmp 0x2164:0x650                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk209                                                1B35:2819  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; puckfaceoffThunk                                           1B35:2819  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to puckfaceoff.
 ;-----------------------------------------------------------------------------
-OvlThunk209:
+puckfaceoffThunk:
         call LoadFromThunk
         jmp 0x2164:0x3AA                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk210                                                1B35:2823  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; pucknothingThunk                                           1B35:2823  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to pucknothing.
 ;-----------------------------------------------------------------------------
-OvlThunk210:
+pucknothingThunk:
         call LoadFromThunk
         jmp 0x2519:0x2396                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk211                                                1B35:282D  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; puckshadowThunk                                            1B35:282D  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to puckshadow.
 ;-----------------------------------------------------------------------------
-OvlThunk211:
+puckshadowThunk:
         call LoadFromThunk
         jmp 0x28BB:0x1E08                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk212                                                1B35:2837  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; pucknormThunk                                              1B35:2837  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to pucknorm.
 ;-----------------------------------------------------------------------------
-OvlThunk212:
+pucknormThunk:
         call LoadFromThunk
         jmp 0x2519:0x2294                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk213                                                1B35:2841  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; assfaceoffplThunk                                          1B35:2841  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to assfaceoffpl.
 ;-----------------------------------------------------------------------------
-OvlThunk213:
+assfaceoffplThunk:
         call LoadFromThunk
         jmp 0x2519:0x2162                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk214                                                1B35:284B  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; assfaceoffThunk                                            1B35:284B  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to assfaceoff.
 ;-----------------------------------------------------------------------------
-OvlThunk214:
+assfaceoffThunk:
         call LoadFromThunk
         jmp 0x2519:0x2142                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk215                                                1B35:2855  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; assthreestarsThunk                                         1B35:2855  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to assthreestars.
 ;-----------------------------------------------------------------------------
-OvlThunk215:
+assthreestarsThunk:
         call LoadFromThunk
         jmp 0x2CD2:0x11D0                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk216                                                1B35:285F  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; assstarskateThunk                                          1B35:285F  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to assstarskate.
 ;-----------------------------------------------------------------------------
-OvlThunk216:
+assstarskateThunk:
         call LoadFromThunk
         jmp 0x2CD2:0x10B0                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk217                                                1B35:2869  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; asspassrecThunk                                            1B35:2869  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to asspassrec.
 ;-----------------------------------------------------------------------------
-OvlThunk217:
+asspassrecThunk:
         call LoadFromThunk
         jmp 0x2C24:0xA1C                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk218                                                1B35:2873  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; assshootThunk                                              1B35:2873  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to assshoot.
 ;-----------------------------------------------------------------------------
-OvlThunk218:
+assshootThunk:
         call LoadFromThunk
         jmp 0x2519:0x20F8                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk219                                                1B35:287D  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; assnearestThunk                                            1B35:287D  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to assnearest.
 ;-----------------------------------------------------------------------------
-OvlThunk219:
+assnearestThunk:
         call LoadFromThunk
         jmp 0x2519:0x1C22                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk220                                                1B35:2887  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; asspuckcThunk                                              1B35:2887  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to asspuckc.
 ;-----------------------------------------------------------------------------
-OvlThunk220:
+asspuckcThunk:
         call LoadFromThunk
         jmp 0x2519:0x1960                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk221                                                1B35:2891  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; assgoalietopuckThunk                                       1B35:2891  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to assgoalietopuck.
 ;-----------------------------------------------------------------------------
-OvlThunk221:
+assgoalietopuckThunk:
         call LoadFromThunk
         jmp 0x2519:0x111C                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk222                                                1B35:289B  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; assgoalieThunk                                             1B35:289B  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to assgoalie.
 ;-----------------------------------------------------------------------------
-OvlThunk222:
+assgoalieThunk:
         call LoadFromThunk
         jmp 0x2519:0x11BE                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk223                                                1B35:28A5  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; assdopenThunk                                              1B35:28A5  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to assdopen.
 ;-----------------------------------------------------------------------------
-OvlThunk223:
+assdopenThunk:
         call LoadFromThunk
         jmp 0x2519:0xE04                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk224                                                1B35:28AF  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; asspenaltyThunk                                            1B35:28AF  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to asspenalty.
 ;-----------------------------------------------------------------------------
-OvlThunk224:
+asspenaltyThunk:
         call LoadFromThunk
         jmp 0x2519:0xC76                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk225                                                1B35:28B9  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; assbenchThunk                                              1B35:28B9  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to assbench.
 ;-----------------------------------------------------------------------------
-OvlThunk225:
+assbenchThunk:
         call LoadFromThunk
         jmp 0x2519:0xEDC                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk226                                                1B35:28C3  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; assepenThunk                                               1B35:28C3  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to assepen.
 ;-----------------------------------------------------------------------------
-OvlThunk226:
+assepenThunk:
         call LoadFromThunk
         jmp 0x2519:0xE2C                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk227                                                1B35:28CD  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; assebenThunk                                               1B35:28CD  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to asseben.
 ;-----------------------------------------------------------------------------
-OvlThunk227:
+assebenThunk:
         call LoadFromThunk
         jmp 0x2519:0xA62                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk228                                                1B35:28D7  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; assstanleyThunk                                            1B35:28D7  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to assstanley.
 ;-----------------------------------------------------------------------------
-OvlThunk228:
+assstanleyThunk:
         call LoadFromThunk
         jmp 0x2519:0x888                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk229                                                1B35:28E1  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; assscoreThunk                                              1B35:28E1  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to assscore.
 ;-----------------------------------------------------------------------------
-OvlThunk229:
+assscoreThunk:
         call LoadFromThunk
         jmp 0x2519:0x92A                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk230                                                1B35:28EB  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; asscenteroThunk                                            1B35:28EB  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to asscentero.
 ;-----------------------------------------------------------------------------
-OvlThunk230:
+asscenteroThunk:
         call LoadFromThunk
         jmp 0x2519:0x716                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk231                                                1B35:28F5  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; asscenterdThunk                                            1B35:28F5  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to asscenterd.
 ;-----------------------------------------------------------------------------
-OvlThunk231:
+asscenterdThunk:
         call LoadFromThunk
         jmp 0x2519:0x630                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk232                                                1B35:28FF  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; asswingoThunk                                              1B35:28FF  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to asswingo.
 ;-----------------------------------------------------------------------------
-OvlThunk232:
+asswingoThunk:
         call LoadFromThunk
         jmp 0x2519:0x4B0                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk233                                                1B35:2909  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; asswingdThunk                                              1B35:2909  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to asswingd.
 ;-----------------------------------------------------------------------------
-OvlThunk233:
+asswingdThunk:
         call LoadFromThunk
         jmp 0x2519:0x35A                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk234                                                1B35:2913  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; assdefdThunk                                               1B35:2913  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to assdefd.
 ;-----------------------------------------------------------------------------
-OvlThunk234:
+assdefdThunk:
         call LoadFromThunk
         jmp 0x2519:0x114                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk235                                                1B35:291D  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; assdefoThunk                                               1B35:291D  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to assdefo.
 ;-----------------------------------------------------------------------------
-OvlThunk235:
+assdefoThunk:
         call LoadFromThunk
         jmp 0x2519:0                            ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk236                                                1B35:2927  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; rtssThunk                                                  1B35:2927  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to rtss.
 ;-----------------------------------------------------------------------------
-OvlThunk236:
+rtssThunk:
         call LoadFromThunk
         jmp 0x2519:0x3A1E                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk237                                                1B35:2931  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL.
+; EndGameScreensThunk                                        1B35:2931  RTLink
+; Overlay thunk: loads INIT.OVL (LoadFromThunk), then far-jumps to EndGameScreens.
 ;-----------------------------------------------------------------------------
-OvlThunk237:
+EndGameScreensThunk:
         call LoadFromThunk
         jmp 0x237D:0x23E                        ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk238                                                1B35:293B  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; joyq_flushThunk                                            1B35:293B  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to joyq_flush.
 ;-----------------------------------------------------------------------------
-OvlThunk238:
+joyq_flushThunk:
         call LoadFromThunk
         jmp 0x2C24:0x2E                         ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk239                                                1B35:2945  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; joyq_popThunk                                              1B35:2945  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to joyq_pop.
 ;-----------------------------------------------------------------------------
-OvlThunk239:
+joyq_popThunk:
         call LoadFromThunk
         jmp 0x2C24:2                            ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk240                                                1B35:294F  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; DoGameFrameThunk                                           1B35:294F  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to DoGameFrame.
 ;-----------------------------------------------------------------------------
-OvlThunk240:
+DoGameFrameThunk:
         call LoadFromThunk
         jmp 0x2E42:0x1B8E                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk241                                                1B35:2959  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; ClockTickThunk                                             1B35:2959  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to ClockTick.
 ;-----------------------------------------------------------------------------
-OvlThunk241:
+ClockTickThunk:
         call LoadFromThunk
         jmp 0x2E42:0x2C30                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk242                                                1B35:2963  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; joyq_peekThunk                                             1B35:2963  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to joyq_peek.
 ;-----------------------------------------------------------------------------
-OvlThunk242:
+joyq_peekThunk:
         call LoadFromThunk
         jmp 0x2C24:0x38                         ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk243                                                1B35:296D  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; ShowGoalieBannerThunk                                      1B35:296D  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to ShowGoalieBanner.
 ;-----------------------------------------------------------------------------
-OvlThunk243:
+ShowGoalieBannerThunk:
         call LoadFromThunk
         jmp 0x226F:0xCE6                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk244                                                1B35:2977  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL.
+; LoadGameGfxThunk                                           1B35:2977  RTLink
+; Overlay thunk: loads INIT.OVL (LoadFromThunk), then far-jumps to LoadGameGfx.
 ;-----------------------------------------------------------------------------
-OvlThunk244:
+LoadGameGfxThunk:
         call LoadFromThunk
         jmp 0x1F9C:0x1FC                        ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk245                                                1B35:2981  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL.
+; LoadArenaJinglesThunk                                      1B35:2981  RTLink
+; Overlay thunk: loads INIT.OVL (LoadFromThunk), then far-jumps to LoadArenaJingles.
 ;-----------------------------------------------------------------------------
-OvlThunk245:
+LoadArenaJinglesThunk:
         call LoadFromThunk
         jmp 0x2137:4                            ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk246                                                1B35:298B  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL.
+; LoadRinkTilesThunk                                         1B35:298B  RTLink
+; Overlay thunk: loads INIT.OVL (LoadFromThunk), then far-jumps to LoadRinkTiles.
 ;-----------------------------------------------------------------------------
-OvlThunk246:
+LoadRinkTilesThunk:
         call LoadFromThunk
         jmp 0x24DE:6                            ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk247                                                1B35:2995  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL.
+; FreeGameMemoryThunk                                        1B35:2995  RTLink
+; Overlay thunk: loads INIT.OVL (LoadFromThunk), then far-jumps to FreeGameMemory.
 ;-----------------------------------------------------------------------------
-OvlThunk247:
+FreeGameMemoryThunk:
         call LoadFromThunk
         jmp 0x256C:4                            ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk248                                                1B35:299F  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL.
+; IntermissionScreensThunk                                   1B35:299F  RTLink
+; Overlay thunk: loads INIT.OVL (LoadFromThunk), then far-jumps to IntermissionScreens.
 ;-----------------------------------------------------------------------------
-OvlThunk248:
+IntermissionScreensThunk:
         call LoadFromThunk
         jmp 0x237D:0x3A6                        ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk249                                                1B35:29A9  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; StartThreeStarsThunk                                       1B35:29A9  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to StartThreeStars.
 ;-----------------------------------------------------------------------------
-OvlThunk249:
+StartThreeStarsThunk:
         call LoadFromThunk
         jmp 0x2CD2:0xD46                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk250                                                1B35:29B3  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; FlushGSumQueueThunk                                        1B35:29B3  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to FlushGSumQueue.
 ;-----------------------------------------------------------------------------
-OvlThunk250:
+FlushGSumQueueThunk:
         call LoadFromThunk
         jmp 0x2352:0x174                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk251                                                1B35:29BD  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; DrawHudPanelThunk                                          1B35:29BD  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to DrawHudPanel.
 ;-----------------------------------------------------------------------------
-OvlThunk251:
+DrawHudPanelThunk:
         call LoadFromThunk
         jmp 0x2083:0x512                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk252                                                1B35:29C7  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; PeriodOverThunk                                            1B35:29C7  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to PeriodOver.
 ;-----------------------------------------------------------------------------
-OvlThunk252:
+PeriodOverThunk:
         call LoadFromThunk
         jmp 0x2E42:0x2DD6                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk253                                                1B35:29D1  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; RunDeferredCallsThunk                                      1B35:29D1  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to RunDeferredCalls.
 ;-----------------------------------------------------------------------------
-OvlThunk253:
+RunDeferredCallsThunk:
         call LoadFromThunk
         jmp 0x2352:0x5C                         ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk254                                                1B35:29DB  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; PutGSumTailThunk                                           1B35:29DB  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to PutGSumTail.
 ;-----------------------------------------------------------------------------
-OvlThunk254:
+PutGSumTailThunk:
         call LoadFromThunk
         jmp 0x2352:0x1EE                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk255                                                1B35:29E5  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; UpdateHudPanelThunk                                        1B35:29E5  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to UpdateHudPanel.
 ;-----------------------------------------------------------------------------
-OvlThunk255:
+UpdateHudPanelThunk:
         call LoadFromThunk
         jmp 0x2083:0x248                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk256                                                1B35:29EF  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; DrawRinkOverlaysThunk                                      1B35:29EF  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to DrawRinkOverlays.
 ;-----------------------------------------------------------------------------
-OvlThunk256:
+DrawRinkOverlaysThunk:
         call LoadFromThunk
         jmp 0x2E42:0x21E2                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk257                                                1B35:29F9  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL.
+; ClearTeamNameTextThunk                                     1B35:29F9  RTLink
+; Overlay thunk: loads INIT.OVL (LoadFromThunk), then far-jumps to ClearTeamNameText.
 ;-----------------------------------------------------------------------------
-OvlThunk257:
+ClearTeamNameTextThunk:
         call LoadFromThunk
         jmp 0x252F:0x348                        ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk258                                                1B35:2A03  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL.
+; SetTeamNameTextThunk                                       1B35:2A03  RTLink
+; Overlay thunk: loads INIT.OVL (LoadFromThunk), then far-jumps to SetTeamNameText.
 ;-----------------------------------------------------------------------------
-OvlThunk258:
+SetTeamNameTextThunk:
         call LoadFromThunk
         jmp 0x252F:0xE                          ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk259                                                1B35:2A0D  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL.
+; SetupGameThunk                                             1B35:2A0D  RTLink
+; Overlay thunk: loads INIT.OVL (LoadFromThunk), then far-jumps to SetupGame.
 ;-----------------------------------------------------------------------------
-OvlThunk259:
+SetupGameThunk:
         call LoadFromThunk
         jmp 0x1F9C:0x4A0                        ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk260                                                1B35:2A17  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL.
+; GSummaryPathThunk                                          1B35:2A17  RTLink
+; Overlay thunk: loads INIT.OVL (LoadFromThunk), then far-jumps to GSummaryPath.
 ;-----------------------------------------------------------------------------
-OvlThunk260:
+GSummaryPathThunk:
         call LoadFromThunk
         jmp 0x2425:0xB20                        ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk261                                                1B35:2A21  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; SetupTeamLinesThunk                                        1B35:2A21  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to SetupTeamLines.
 ;-----------------------------------------------------------------------------
-OvlThunk261:
+SetupTeamLinesThunk:
         call LoadFromThunk
         jmp 0x317A:0xD92                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk262                                                1B35:2A2B  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; NormalizeDressFlagsThunk                                   1B35:2A2B  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to NormalizeDressFlags.
 ;-----------------------------------------------------------------------------
-OvlThunk262:
+NormalizeDressFlagsThunk:
         call LoadFromThunk
         jmp 0x317A:0xF22                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk263                                                1B35:2A35  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; BuildDefaultLinesThunk                                     1B35:2A35  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to BuildDefaultLines.
 ;-----------------------------------------------------------------------------
-OvlThunk263:
+BuildDefaultLinesThunk:
         call LoadFromThunk
         jmp 0x317A:0x102                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk264                                                1B35:2A3F  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL.
+; LoadGameStateThunk                                         1B35:2A3F  RTLink
+; Overlay thunk: loads INIT.OVL (LoadFromThunk), then far-jumps to LoadGameState.
 ;-----------------------------------------------------------------------------
-OvlThunk264:
+LoadGameStateThunk:
         call LoadFromThunk
         jmp 0x278C:0x9C8                        ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk265                                                1B35:2A49  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section GAME.OVL.
+; NullGameHookThunk                                          1B35:2A49  RTLink
+; Overlay thunk: loads GAME.OVL (LoadFromThunk), then far-jumps to NullGameHook.
 ;-----------------------------------------------------------------------------
-OvlThunk265:
+NullGameHookThunk:
         call LoadFromThunk
         jmp 0x1F54:0x3FA                        ; load paragraph, relocated
         dw 3                                    ; GAME.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk266                                                1B35:2A53  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; StartPreGameThunk                                          1B35:2A53  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to StartPreGame.
 ;-----------------------------------------------------------------------------
-OvlThunk266:
+StartPreGameThunk:
         call LoadFromThunk
         jmp 0x2CD2:0x496                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk267                                                1B35:2A5D  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; forceteamsThunk                                            1B35:2A5D  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to forceteams.
 ;-----------------------------------------------------------------------------
-OvlThunk267:
+forceteamsThunk:
         call LoadFromThunk
         jmp 0x2E42:0x2F1E                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk268                                                1B35:2A67  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; StartGameThunk                                             1B35:2A67  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to StartGame.
 ;-----------------------------------------------------------------------------
-OvlThunk268:
+StartGameThunk:
         call LoadFromThunk
         jmp 0x2E42:0x2F00                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk269                                                1B35:2A71  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL.
+; FreeArenaJinglesThunk                                      1B35:2A71  RTLink
+; Overlay thunk: loads INIT.OVL (LoadFromThunk), then far-jumps to FreeArenaJingles.
 ;-----------------------------------------------------------------------------
-OvlThunk269:
+FreeArenaJinglesThunk:
         call LoadFromThunk
         jmp 0x2137:0x3D6                        ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk270                                                1B35:2A7B  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL.
+; ReturnZeroInitThunk                                        1B35:2A7B  RTLink
+; Overlay thunk: loads INIT.OVL (LoadFromThunk), then far-jumps to ReturnZeroInit.
 ;-----------------------------------------------------------------------------
-OvlThunk270:
+ReturnZeroInitThunk:
         call LoadFromThunk
         jmp 0x237D:0xF2                         ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk271                                                1B35:2A85  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL.
+; ReturnZeroInit2Thunk                                       1B35:2A85  RTLink
+; Overlay thunk: loads INIT.OVL (LoadFromThunk), then far-jumps to ReturnZeroInit2.
 ;-----------------------------------------------------------------------------
-OvlThunk271:
+ReturnZeroInit2Thunk:
         call LoadFromThunk
         jmp 0x237D:0xF6                         ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk272                                                1B35:2A8F  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; WriteGSumHeaderThunk                                       1B35:2A8F  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to WriteGSumHeader.
 ;-----------------------------------------------------------------------------
-OvlThunk272:
+WriteGSumHeaderThunk:
         call LoadFromThunk
         jmp 0x2352:0x260                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk273                                                1B35:2A99  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; StartHL2Thunk                                              1B35:2A99  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to StartHL2.
 ;-----------------------------------------------------------------------------
-OvlThunk273:
+StartHL2Thunk:
         call LoadFromThunk
         jmp 0x1FAA:0xE                          ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk274                                                1B35:2AA3  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; PutGSumHeaderThunk                                         1B35:2AA3  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to PutGSumHeader.
 ;-----------------------------------------------------------------------------
-OvlThunk274:
+PutGSumHeaderThunk:
         call LoadFromThunk
         jmp 0x2352:0x19C                        ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk275                                                1B35:2AAD  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section INIT.OVL.
+; FreePlayerFramesThunk                                      1B35:2AAD  RTLink
+; Overlay thunk: loads INIT.OVL (LoadFromThunk), then far-jumps to FreePlayerFrames.
 ;-----------------------------------------------------------------------------
-OvlThunk275:
+FreePlayerFramesThunk:
         call LoadFromThunk
         jmp 0x256C:0x12E                        ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk276                                                1B35:2AB7  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; GameOverThunk                                              1B35:2AB7  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to GameOver.
 ;-----------------------------------------------------------------------------
-OvlThunk276:
+GameOverThunk:
         call LoadFromThunk
         jmp 0x2E42:0x2D00                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk277                                                1B35:2AC1  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; ReplayFirstFrameThunk                                      1B35:2AC1  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to ReplayFirstFrame.
 ;-----------------------------------------------------------------------------
-OvlThunk277:
+ReplayFirstFrameThunk:
         call LoadFromThunk
         jmp 0x2038:0x16                         ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk278                                                1B35:2ACB  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; GetPeriodTimeThunk                                         1B35:2ACB  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to GetPeriodTime.
 ;-----------------------------------------------------------------------------
-OvlThunk278:
+GetPeriodTimeThunk:
         call LoadFromThunk
         jmp 0x2E42:0x15BC                       ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk279                                                1B35:2AD5  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; SprSortThunk                                               1B35:2AD5  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to SprSort.
 ;-----------------------------------------------------------------------------
-OvlThunk279:
+SprSortThunk:
         call LoadFromThunk
         jmp 0x2E42:0x26                         ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk280                                                1B35:2ADF  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section AI.OVL.
+; ReplayRecordResetThunk                                     1B35:2ADF  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to ReplayRecordReset.
 ;-----------------------------------------------------------------------------
-OvlThunk280:
+ReplayRecordResetThunk:
         call LoadFromThunk
         jmp 0x2038:8                            ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
-; OvlThunk281                                                1B35:2AE9  RTLink
-; Overlay thunk: near call LoadFromThunk, far jump, section split across the end of
-; this file and the RTLink runtime.
+; BuildEventLinesThunk                                       1B35:2AE9  RTLink
+; Overlay thunk: loads AI.OVL (LoadFromThunk), then far-jumps to BuildEventLines.
 ;-----------------------------------------------------------------------------
-OvlThunk281:
+BuildEventLinesThunk:
         call LoadFromThunk
         db 0xEA, 0x78, 0x04, 0x52               ; far jump continues in the RTLink runtime

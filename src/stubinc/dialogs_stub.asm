@@ -32,7 +32,7 @@ KeyDown		equ	0x16C1
 DrawRleTransAt		equ	0x1857
 MouseMove		equ	0x1B03
 MouseRead		equ	0x1B34
-OvlThunk102		equ	0x23EB
+EditTextFieldThunk		equ	0x23EB
 FontPtr		equ	0x6D4E
 CharTypes		equ	0x858D
 ListDialogDataSeg		equ	0x8B1A

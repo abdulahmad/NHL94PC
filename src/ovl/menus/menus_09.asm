@@ -37,7 +37,7 @@ LockerRoomScreen:
         push ss
         push ax
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
 .1:
         db 0x8B, 0xC6                           ; insn: mov ax, si
@@ -522,7 +522,7 @@ DrawLockerRoom:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         call 0x0FEF:CopyPlane
         push 0x10
@@ -530,7 +530,7 @@ DrawLockerRoom:
         push ss
         push ax
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word 0x3f00
         push word 0x3f00
@@ -1487,7 +1487,7 @@ LockerRoomLoop:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         leave
@@ -1526,7 +1526,7 @@ LockerRoomLoop:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         mov ax, 0x3
         leave

@@ -7,6 +7,6 @@ NullFar2		equ	0xE
 InputQueueCount		equ	0x508
 InputQueueHead		equ	0x50A
 EventPending		equ	0xA3E
-OvlThunk100		equ	0x23D7
+WriteModeStateThunk		equ	0x23D7
 InputEventDataSeg		equ	0x8B1E
 %include "pc/input/events.asm"

@@ -105,7 +105,7 @@ PlayTitleMovies:
         push 0x2
         lea ax, [bp - 0x20]
         push ax
-        call 0x1B35:OvlThunk107
+        call 0x1B35:MviOpenThunk
         add sp, 0x8
         mov [g_DA06], ax
         mov [g_DA08], dx
@@ -452,11 +452,11 @@ PlayMovie:
         push 0x5
         push word [g_DA08]
         push word [g_DA06]
-        call 0x1B35:OvlThunk110
+        call 0x1B35:MviNextFrameThunk
         add sp, 0xa
         push dx
         push ax
-        call 0x1B35:OvlThunk109
+        call 0x1B35:PlanarToLinearThunk
         add sp, 0x8
         push 0x22
         push 0xf
@@ -495,7 +495,7 @@ PlayMovie:
         call 0x03A3:WaitDeadlineNoEoi
         push word [g_DA08]
         push word [g_DA06]
-        call 0x1B35:OvlThunk108
+        call 0x1B35:MviCloseThunk
         add sp, 0x4
         push word [bp - 0x2]
         push word [bp - 0x4]

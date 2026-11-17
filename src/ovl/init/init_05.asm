@@ -448,7 +448,7 @@ ShowGameSummary:
         push word [bp - 0x74e]
         push word [bp - 0x750]
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
 .27:
         push 0x0
@@ -827,7 +827,7 @@ ShowGameSummary:
         push word [bp - 0x74e]
         push word [bp - 0x750]
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
 .51:
         push 0x0
@@ -1829,7 +1829,7 @@ ShowGameSummary:
         push word [bp - 0x74e]
         push word [bp - 0x750]
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         test byte [bp + 0x6], 0x1
         jz short .129
@@ -1949,7 +1949,7 @@ ShowGameSummary:
         push word [bp - 0x74e]
         push word [bp - 0x750]
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         call 0x0FEF:UseCurrentPage
         push 0x0

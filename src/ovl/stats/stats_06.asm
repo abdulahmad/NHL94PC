@@ -65,7 +65,7 @@ StatsSelNhlSeason:
         push word 0x3a0b
         push strict word f_3A0B_B052
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         mov es, [g_8C7C]
         mov word [es:0xb050], 0xffff
@@ -76,7 +76,7 @@ StatsSelNhlSeason:
         push word 0x3a0b
         push strict word f_3A0B_B052
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
 .3:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -127,7 +127,7 @@ StatsSelNhlPlayoffs:
         push word 0x3a0b
         push strict word f_3A0B_B052
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         mov es, [g_8C7C]
         mov word [es:0xb050], 0xffff
@@ -138,7 +138,7 @@ StatsSelNhlPlayoffs:
         push word 0x3a0b
         push strict word f_3A0B_B052
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
 .3:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -189,7 +189,7 @@ StatsSelLeague:
         push word 0x3a0b
         push strict word f_3A0B_B052
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         mov es, [g_8C7C]
         mov word [es:0xb050], 0xffff
@@ -200,7 +200,7 @@ StatsSelLeague:
         push word 0x3a0b
         push strict word f_3A0B_B052
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
 .3:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -259,7 +259,7 @@ StatsSelLeaguePlayoffs:
         push word 0x3a0b
         push strict word f_3A0B_B052
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         mov es, [g_8C7C]
         mov word [es:0xb050], 0xffff
@@ -270,7 +270,7 @@ StatsSelLeaguePlayoffs:
         push word 0x3a0b
         push strict word f_3A0B_B052
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
 .3:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -329,7 +329,7 @@ StatsSelPlayoffMode:
         push word 0x3a0b
         push strict word f_3A0B_B052
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         mov es, [g_8C7C]
         mov word [es:0xb050], 0xffff
@@ -340,7 +340,7 @@ StatsSelPlayoffMode:
         push word 0x3a0b
         push strict word f_3A0B_B052
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
 .3:
         db 0x2B, 0xC0                           ; insn: sub ax, ax

@@ -440,10 +440,10 @@ TradeShowStats:
         call 0x06E1:FindUnlink
         add sp, 0x4
         push 0x1
-        call 0x1B35:OvlThunk114
+        call 0x1B35:InitMenuRemapThunk
         add sp, 0x2
         push word [bp - 0x1c]
-        call 0x1B35:OvlThunk113
+        call 0x1B35:RosterScreenThunk
         add sp, 0x2
         push word [HeapSizeHi]
         push word [HeapSizeLo]
@@ -466,7 +466,7 @@ TradeShowStats:
         push 0x2
         push word 0x3701
         push strict word f_3701_11AB
-        call 0x1B35:OvlThunk115
+        call 0x1B35:StatsMenuLoopThunk
         add sp, 0xc
         push word 0xc8
         call 0x0FEF:SetStartPage
@@ -1118,7 +1118,7 @@ ExecuteTrade:
         db 0x13, 0xC9                           ; insn: adc cx, cx
         rep movsb
         push ax
-        call 0x1B35:OvlThunk173
+        call 0x1B35:LoadGameTeamsThunk
         add sp, 0x2
         mov word [g_BFFE], 0xfffe
         push 0x3
@@ -1126,7 +1126,7 @@ ExecuteTrade:
         push strict word f_3448_15F2
         push word 0xae10
         push 0x0
-        call 0x1B35:OvlThunk112
+        call 0x1B35:GameLineEditorThunk
         add sp, 0xa
         push 0x0
         push 0x0
@@ -1146,7 +1146,7 @@ ExecuteTrade:
         push word [bp - 0x6]
         push word [bp - 0x8]
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [bp - 0x6]
         push word [bp - 0x8]
@@ -1157,7 +1157,7 @@ ExecuteTrade:
         push strict word f_3448_15F2
         push word 0xae40
         push 0x1
-        call 0x1B35:OvlThunk112
+        call 0x1B35:GameLineEditorThunk
         add sp, 0xa
         push 0x0
         push 0x0
@@ -1177,7 +1177,7 @@ ExecuteTrade:
         push di
         push si
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push di
         push si
@@ -1287,14 +1287,14 @@ DrawTradeScreen:
         push word 0x13f
         push 0x1a
         push word 0xe0
-        call 0x1B35:OvlThunk111
+        call 0x1B35:DrawDlgFrameThunk
         add sp, 0xa
         push 0x1
         push word 0xc7
         push 0x5f
         push 0x1a
         push 0x0
-        call 0x1B35:OvlThunk111
+        call 0x1B35:DrawDlgFrameThunk
         add sp, 0xa
         push word 0x3701
         push strict word str_Qpp
@@ -1582,7 +1582,7 @@ TradeHitTest:
         mov [bx + si], ax
         mov word [bp - 0x2], 0x1
         mov es, [g_8C0E]
-        mov word [es:0x1109], strict word OvlThunk5
+        mov word [es:0x1109], strict word TradeShowStatsThunk
         mov word [es:0x110b], 0x1b35
 .8:
         mov ax, [bp - 0x2]
@@ -2571,7 +2571,7 @@ TradeScreenLoop:
         mov [bp + si - 0x75], al
         mov word [bp - 0x78], 0xffff
         mov es, [g_8C0E]
-        mov word [es:0x1109], strict word OvlThunk5
+        mov word [es:0x1109], strict word TradeShowStatsThunk
         mov word [es:0x110b], 0x1b35
         jmp near .84
 .67:

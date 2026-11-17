@@ -665,7 +665,7 @@ ShowTeamStats:
         push word [bp - 0x54]
         push word [bp - 0x56]
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word 0x83
         push word 0xd600
@@ -676,7 +676,7 @@ ShowTeamStats:
         push word [bp - 0x54]
         push word [bp - 0x56]
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [bp - 0x44]
         push word [bp - 0x46]

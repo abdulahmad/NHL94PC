@@ -392,7 +392,7 @@ ShowStartingLineups:
         push word [bp - 0xe2]
         push word [bp - 0xe4]
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         mov word [bp - 0x3a], 0xffff
 .20:
@@ -559,7 +559,7 @@ ShowStartingLineups:
         push word [bp - 0xe2]
         push word [bp - 0xe4]
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         mov word [bp - 0x3a], 0xffff
 .29:
@@ -716,7 +716,7 @@ ShowStartingLineups:
         push word [bp - 0xe2]
         push word [bp - 0xe4]
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         mov word [bp - 0x3a], 0xffff
 .37:
@@ -740,7 +740,7 @@ ShowStartingLineups:
         push word [bp - 0xe2]
         push word [bp - 0xe4]
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         call 0x0FEF:UseCurrentPage
         push 0x0

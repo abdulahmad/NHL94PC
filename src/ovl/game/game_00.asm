@@ -31,7 +31,7 @@ LoadCupFinalSeries:
         mov [g_CFFE], dx
         lea ax, [bp - 0x6]
         push ax
-        call 0x1B35:OvlThunk118
+        call 0x1B35:LoadScheduleDBThunk
         add sp, 0x2
         cmp word [DbSaveMode], 0x2
         jnz short .3

@@ -177,7 +177,7 @@ CtlSwapScoreFix:
         les bx, [bx + di + g_5662]
         mov byte [es:bx], 0x1
         push si
-        call 0x1B35:OvlThunk105
+        call 0x1B35:setpersonelThunk
         add sp, 0x2
 .7:
         pop si
@@ -255,7 +255,7 @@ ReassignCtlPlayer:
 .6:
         push word [g_29C2]
         push si
-        call 0x1B35:OvlThunk104
+        call 0x1B35:restoreplThunk
         add sp, 0x4
         mov [g_29C2], ax
         pop si
@@ -378,7 +378,7 @@ ReassignCtlPlayer:
         jz short .22
         push word [g_29C4]
         push si
-        call 0x1B35:OvlThunk104
+        call 0x1B35:restoreplThunk
         add sp, 0x4
         mov [g_29C4], ax
 .22:

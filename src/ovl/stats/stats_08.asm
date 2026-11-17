@@ -66,7 +66,7 @@ CalTeamStatsScreen:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push 0x0
         call 0x0FEF:SetStartPage
@@ -78,7 +78,7 @@ CalTeamStatsScreen:
         push dx
         push ax
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [g_CFD2]
         push word [g_CFD0]
@@ -104,7 +104,7 @@ CalTeamStatsScreen:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word 0xc8
         call 0x0FEF:SetStartPage
@@ -179,7 +179,7 @@ CalSkaterStatsScreen:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push 0x0
         call 0x0FEF:SetStartPage
@@ -191,7 +191,7 @@ CalSkaterStatsScreen:
         push dx
         push ax
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [g_CFD2]
         push word [g_CFD0]
@@ -217,7 +217,7 @@ CalSkaterStatsScreen:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word 0xc8
         call 0x0FEF:SetStartPage
@@ -292,7 +292,7 @@ CalGoalieStatsScreen:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push 0x0
         call 0x0FEF:SetStartPage
@@ -304,7 +304,7 @@ CalGoalieStatsScreen:
         push dx
         push ax
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [g_CFD2]
         push word [g_CFD0]
@@ -330,7 +330,7 @@ CalGoalieStatsScreen:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word 0xc8
         call 0x0FEF:SetStartPage
@@ -461,7 +461,7 @@ CalStandingsMenu:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push 0x1
         call 0x2095:InitMenuRemap
@@ -541,7 +541,7 @@ CalStandingsMenu:
         push dx
         push ax
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [g_CFD2]
         push word [g_CFD0]
@@ -735,7 +735,7 @@ CalStandingsMenu:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word 0xc8
         call 0x0FEF:SetStartPage

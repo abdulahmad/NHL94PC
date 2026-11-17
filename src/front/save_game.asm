@@ -44,7 +44,7 @@ SaveGame:
         or byte [AnnouncerFlags], 0x80
         push es
         push strict word 0x0
-        call 0x1B35:OvlThunk100
+        call 0x1B35:WriteModeStateThunk
         add sp, 0x4
         lea ax, [bp - 0x6]
         push ax
@@ -144,7 +144,7 @@ SaveGame:
         add sp, 0x2
 .8:
         push word [bp - 0x6]
-        call 0x1B35:OvlThunk99
+        call 0x1B35:SaveGameStateThunk
         add sp, 0x2
         lea ax, [bp - 0x6]
         push ax
@@ -245,10 +245,10 @@ SaveGame:
         or byte [AnnouncerFlags], 0x80
         push es
         push word 0xc4
-        call 0x1B35:OvlThunk100
+        call 0x1B35:WriteModeStateThunk
         add sp, 0x4
         push word [bp - 0x6]
-        call 0x1B35:OvlThunk101
+        call 0x1B35:SaveLeagueGameRefThunk
         add sp, 0x2
         jmp short .12
 .11:
@@ -270,11 +270,11 @@ SaveGame:
         or byte [AnnouncerFlags], 0x80
         push es
         push strict word 0x62
-        call 0x1B35:OvlThunk100
+        call 0x1B35:WriteModeStateThunk
         add sp, 0x4
 .12:
         push word [bp - 0x6]
-        call 0x1B35:OvlThunk99
+        call 0x1B35:SaveGameStateThunk
         add sp, 0x2
         lea ax, [bp - 0x6]
         push ax
@@ -462,7 +462,7 @@ SaveGameNameDialog:
         push 0x36
         push 0x8
         push bx
-        call 0x1B35:OvlThunk102
+        call 0x1B35:EditTextFieldThunk
         add sp, 0x14
         mov di, str_Nhl
         push ds
@@ -945,7 +945,7 @@ SaveGameNameDialog:
         push 0x36
         push 0x8
         push si
-        call 0x1B35:OvlThunk102
+        call 0x1B35:EditTextFieldThunk
         add sp, 0x14
         mov di, str_Nhl_3
         push ds

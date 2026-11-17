@@ -1302,7 +1302,7 @@ ChkScorerMilestone:
         push di
         push word [bp - 0x2]
         push word 0x1b35
-        push strict word OvlThunk271
+        push strict word ReturnZeroInit2Thunk
         push cs
         call QueueDeferredCall
         add sp, 0x12
@@ -1363,7 +1363,7 @@ QueueGoalieNote:
         push ax
         push word [bp - 0x2]
         push word 0x1b35
-        push strict word OvlThunk270
+        push strict word ReturnZeroInitThunk
         push cs
         call QueueDeferredCall
         add sp, 0x12

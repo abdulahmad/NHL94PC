@@ -49,9 +49,9 @@ SetupStatsMenus:
         mov es, [g_8C36]
         mov word [es:0xde], strict word OverlayThunks
         mov word [es:0xe0], 0x1b35
-        mov word [es:0xf4], strict word OvlThunk1
+        mov word [es:0xf4], strict word StatsSelLeaguePlayoffsThunk
         mov word [es:0xf6], 0x1b35
-        mov word [es:0x120], strict word OvlThunk2
+        mov word [es:0x120], strict word StatsSelPlayoffModeThunk
         mov word [es:0x122], 0x1b35
         mov ax, 0x29
         mov cx, 0x384b
@@ -176,7 +176,7 @@ SetupStatsMenus:
         db 0x90
 .19:
         mov es, [g_8C36]
-        mov word [es:0xde], strict word OvlThunk2
+        mov word [es:0xde], strict word StatsSelPlayoffModeThunk
         mov word [es:0xe0], 0x1b35
         mov ax, 0x5b
         mov cx, 0x384b
@@ -226,7 +226,7 @@ SetupStatsMenus:
         mov es, [g_8C36]
         mov word [es:0xde], strict word OverlayThunks
         mov word [es:0xe0], 0x1b35
-        mov word [es:0xf4], strict word OvlThunk1
+        mov word [es:0xf4], strict word StatsSelLeaguePlayoffsThunk
         mov word [es:0xf6], 0x1b35
         mov ax, 0x29
         mov cx, 0x384b

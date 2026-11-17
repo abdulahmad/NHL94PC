@@ -330,7 +330,7 @@ GameLineEditorLoop:
         mov es, [g_8B2E]
         mov word [es:0x15bc], strict word WriteTeamLines2
         mov word [es:0x15be], 0x2047
-        mov ax, strict word OvlThunk16
+        mov ax, strict word MenuUseTheseLinesThunk
         mov dx, 0x1b35
         mov es, [g_8B30]
         mov [es:0x1538], ax
@@ -338,7 +338,7 @@ GameLineEditorLoop:
         mov es, [g_8B32]
         mov [es:0x1404], ax
         mov [es:0x1406], dx
-        mov ax, strict word OvlThunk14
+        mov ax, strict word WriteTeamLinesThunk
         mov dx, 0x1b35
         mov es, [g_8B30]
         mov [es:0x157a], ax
@@ -440,7 +440,7 @@ GameLineEditorLoop:
         push word [bp - 0x9e]
         push word [bp - 0xa0]
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [bp - 0x9e]
         push word [bp - 0xa0]
@@ -476,7 +476,7 @@ GameLineEditorLoop:
         push word [bp - 0x9e]
         push word [bp - 0xa0]
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word [bp - 0x9e]
         push word [bp - 0xa0]
@@ -1379,7 +1379,7 @@ GameLineEditorLoop:
         mov es, [g_8B2E]
         mov word [es:0x15bc], strict word WriteTeamLines2
         mov word [es:0x15be], 0x2047
-        mov ax, strict word OvlThunk16
+        mov ax, strict word MenuUseTheseLinesThunk
         mov dx, 0x1b35
         mov es, [g_8B30]
         mov [es:0x1538], ax
@@ -1387,7 +1387,7 @@ GameLineEditorLoop:
         mov es, [g_8B32]
         mov [es:0x1404], ax
         mov [es:0x1406], dx
-        mov ax, strict word OvlThunk14
+        mov ax, strict word WriteTeamLinesThunk
         mov dx, 0x1b35
         mov es, [g_8B30]
         mov [es:0x157a], ax
@@ -1937,9 +1937,9 @@ GameLineEditorLoop:
         add sp, 0xc
 .152:
         mov es, [g_8B2C]
-        mov word [es:0x145c], strict word OvlThunk6
+        mov word [es:0x145c], strict word GameDressPlayerThunk
         mov word [es:0x145e], 0x1b35
-        mov word [es:0x1472], strict word OvlThunk15
+        mov word [es:0x1472], strict word GameScratchPlayerThunk
         mov word [es:0x1474], 0x1b35
         mov al, 0x1c
         mul byte [bp + 0xc]
@@ -3746,7 +3746,7 @@ MenuUseOriginalLines:
         mov es, [g_8B2E]
         mov word [es:0x15bc], strict word WriteTeamLines2
         mov word [es:0x15be], 0x2047
-        mov ax, strict word OvlThunk16
+        mov ax, strict word MenuUseTheseLinesThunk
         mov dx, 0x1b35
         mov es, [g_8B30]
         mov [es:0x1538], ax
@@ -3754,7 +3754,7 @@ MenuUseOriginalLines:
         mov es, [g_8B32]
         mov [es:0x1404], ax
         mov [es:0x1406], dx
-        mov ax, strict word OvlThunk14
+        mov ax, strict word WriteTeamLinesThunk
         mov dx, 0x1b35
         mov es, [g_8B30]
         mov [es:0x157a], ax
@@ -3840,7 +3840,7 @@ MenuUseDefaultLines:
         mov es, [g_8B2E]
         mov word [es:0x15bc], strict word WriteTeamLines2
         mov word [es:0x15be], 0x2047
-        mov ax, strict word OvlThunk16
+        mov ax, strict word MenuUseTheseLinesThunk
         mov dx, 0x1b35
         mov es, [g_8B30]
         mov [es:0x1538], ax
@@ -3848,7 +3848,7 @@ MenuUseDefaultLines:
         mov es, [g_8B32]
         mov [es:0x1404], ax
         mov [es:0x1406], dx
-        mov ax, strict word OvlThunk14
+        mov ax, strict word WriteTeamLinesThunk
         mov dx, 0x1b35
         mov es, [g_8B30]
         mov [es:0x157a], ax
@@ -4448,7 +4448,7 @@ MenuGameShowPlayerStats:
         mov [g_C040], ax
         mov [g_C042], dx
         push 0x1
-        call 0x1B35:OvlThunk114
+        call 0x1B35:InitMenuRemapThunk
         add sp, 0x2
         push word 0x3a0b
         push strict word f_3A0B_A3D8
@@ -4470,7 +4470,7 @@ MenuGameShowPlayerStats:
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         cmp byte [bp + 0xa], 0x0
         jz short .4
@@ -4481,7 +4481,7 @@ MenuGameShowPlayerStats:
         mov ax, [g_29CA]
 .5:
         push ax
-        call 0x1B35:OvlThunk113
+        call 0x1B35:RosterScreenThunk
         add sp, 0x2
         push word [HeapSizeHi]
         push word [HeapSizeLo]
@@ -4523,7 +4523,7 @@ MenuGameShowPlayerStats:
         push ss
         push ax
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push 0x7b
         push 0x5f
@@ -4531,14 +4531,14 @@ MenuGameShowPlayerStats:
         push 0x2
         push word 0x3448
         push strict word f_3448_164A
-        call 0x1B35:OvlThunk115
+        call 0x1B35:StatsMenuLoopThunk
         add sp, 0xc
         push 0x10
         lea ax, [bp - 0x300]
         push ss
         push ax
         push 0x1
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         db 0x2B, 0xF6                           ; insn: sub si, si
         mov ax, 0x3a0b
@@ -4662,7 +4662,7 @@ MenuGameShowPlayerStats:
         push ss
         push ax
         push 0x0
-        call 0x1B35:OvlThunk23
+        call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         pop si
@@ -4699,7 +4699,7 @@ GameScratchPlayer:
         mov es, [g_8B2E]
         mov word [es:0x15bc], strict word WriteTeamLines2
         mov word [es:0x15be], 0x2047
-        mov ax, strict word OvlThunk16
+        mov ax, strict word MenuUseTheseLinesThunk
         mov dx, 0x1b35
         mov es, [g_8B30]
         mov [es:0x1538], ax
@@ -4707,7 +4707,7 @@ GameScratchPlayer:
         mov es, [g_8B32]
         mov [es:0x1404], ax
         mov [es:0x1406], dx
-        mov ax, strict word OvlThunk14
+        mov ax, strict word WriteTeamLinesThunk
         mov dx, 0x1b35
         mov es, [g_8B30]
         mov [es:0x157a], ax

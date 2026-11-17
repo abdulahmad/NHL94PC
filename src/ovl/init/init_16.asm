@@ -2015,15 +2015,15 @@ LoadGameState:
 .39:
         push word 0x3415
         push strict word f_3415_0000
-        call 0x1B35:OvlThunk120
+        call 0x1B35:SaveModeStateThunk
         add sp, 0x4
         push word 0x3415
         push strict word f_3415_0000
 .40:
-        call 0x1B35:OvlThunk26
+        call 0x1B35:LoadModeStateThunk
         add sp, 0x4
 .41:
-        call 0x1B35:OvlThunk278
+        call 0x1B35:GetPeriodTimeThunk
         mov [g_D1AC], ax
         push 0x1
         call 0x2425:LoadGameTeams
@@ -2046,7 +2046,7 @@ LoadGameState:
 .42:
         push word 0x3415
         push strict word f_3415_0062
-        call 0x1B35:OvlThunk120
+        call 0x1B35:SaveModeStateThunk
         add sp, 0x4
         push word 0x3415
         push strict word f_3415_0062
@@ -2054,7 +2054,7 @@ LoadGameState:
 .43:
         push word 0x3415
         push strict word f_3415_00C4
-        call 0x1B35:OvlThunk120
+        call 0x1B35:SaveModeStateThunk
         add sp, 0x4
         push word 0x3415
         push strict word f_3415_00C4
@@ -2072,14 +2072,14 @@ LoadGameState:
         push word [g_BFFE]
         push word [g_29CC]
         push word [g_29CA]
-        call 0x1B35:OvlThunk251
+        call 0x1B35:DrawHudPanelThunk
         add sp, 0x8
-        call 0x1B35:OvlThunk281
+        call 0x1B35:BuildEventLinesThunk
         mov ax, [g_2986]
         mov dx, [g_2988]
         mov [g_D014], ax
         mov [g_D016], dx
-        call 0x1B35:OvlThunk280
+        call 0x1B35:ReplayRecordResetThunk
         and byte [g_29BC], 0xef
         mov word [g_49F4], 0x1
         mov word [g_B422], f_3A0B_0000
@@ -2162,7 +2162,7 @@ LoadGameState:
         mov word [bx + 0x60], 0xb438
         jmp near .47
 .52:
-        call 0x1B35:OvlThunk279
+        call 0x1B35:SprSortThunk
         mov word [bp - 0xaa], 0x0
 .53:
         mov bx, [bp - 0xaa]

@@ -4,7 +4,7 @@
 
 FreeGameMemory:
         call 0x0EDC:CrowdNoiseOff
-        call 0x1B35:OvlThunk276
+        call 0x1B35:GameOverThunk
         cmp word [g_49FC], -0x1
         jz short .1
         push word [g_D62E]
@@ -51,7 +51,7 @@ FreeGameMemory:
 .2:
         call 0x0D6B:UnhookDivideError
         mov word [PadRepeatOn], 0x0
-        call 0x1B35:OvlThunk238
+        call 0x1B35:joyq_flushThunk
         mov ax, 0xd
         mov dx, 0x3d4
         out dx, al
