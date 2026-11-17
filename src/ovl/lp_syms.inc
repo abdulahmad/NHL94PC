@@ -302,8 +302,10 @@ hmtmlines		equ	0xB420
 itemDressPlayer		equ	0x1450
 itemExportDatabases		equ	0xB60
 itemLeagueManager		equ	0xB8C
+itemLeagueSettings		equ	0x105C
 itemNextLeagueGame		equ	0xB76
 itemScratchPlayer		equ	0x1466
+itemShowLeagueSettings		equ	0x1036
 itemShowPlayerStatistics		equ	0x10FD
 leagueinfo		equ	0xAC5A
 leagueinfo_password		equ	0xAF32

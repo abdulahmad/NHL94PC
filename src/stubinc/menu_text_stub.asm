@@ -3,6 +3,7 @@
 	bits	16
 	org	0x0
 SaveGame		equ	0x6
+itemNhlSeason		equ	0x90
 GameDressPlayerThunk		equ	0x202B
 DeskHomeLinesThunk		equ	0x2035
 POMenuResult4Thunk		equ	0x2067

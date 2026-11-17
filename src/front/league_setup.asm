@@ -1424,7 +1424,7 @@ LeagueTeamSelect:
         test byte [bp + 0x16], 0x1
         jz short .7
         mov es, [segTeamChoiceText7]
-        mov word [es:SettingsSubmenuPtr], 0x105c
+        mov word [es:SettingsSubmenuPtr], itemLeagueSettings
         mov word [es:SettingsSubmenuPtr + 0x2], 0x3701
 .6:
         mov word [bp - 0x76], 0x2
@@ -1433,7 +1433,7 @@ LeagueTeamSelect:
         test byte [bp + 0x16], 0x8
         jz short .8
         mov es, [segTeamChoiceText7]
-        mov word [es:SettingsSubmenuPtr], 0x1036
+        mov word [es:SettingsSubmenuPtr], itemShowLeagueSettings
         mov word [es:SettingsSubmenuPtr + 0x2], 0x3701
         jmp short .6
 .8:

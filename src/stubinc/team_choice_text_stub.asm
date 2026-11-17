@@ -2,6 +2,7 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
+itemNhlSeason		equ	0x90
 str_StatisticsType		equ	0x4E8
 str_Standings_3		equ	0x4FA
 str_TeamsSortedBy		equ	0x508
@@ -9,6 +10,9 @@ str_PlayersSortedBy		equ	0x51A
 str_GoaliesSortedBy		equ	0x52E
 str_StatisticsType_9		equ	0x722
 str_ReturnTo		equ	0x8F6
+itemScoring		equ	0xEA4
+itemPoints		equ	0xF12
+itemGoalsAgainstAverage		equ	0xFC2
 TradeShowStatsThunk		equ	0x2021
 MenuP2ControlsExhThunk		equ	0x21B1
 MenuP1ControlsExhThunk		equ	0x21BB

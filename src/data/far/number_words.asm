@@ -1,4 +1,5 @@
 ; Far data, paragraph 342Fh, 400 bytes: numbers written as words for the announcer. Used by NumberSampleNames.
+str_NoNumber:                                   ; empty string
         db 0x00, 'zero', 0x00
 str_One:                                        ; string 'one'
         db 'one', 0x00
@@ -53,7 +54,9 @@ str_Seventy:                                    ; string 'seventy'
 str_Eighty:                                     ; string 'eighty'
         db 'eighty', 0x00
 str_Ninety:                                     ; string 'ninety'
-        db 'ninety', 0x00, 0x00, 0x00, '/4', 0x00, 0x00, 0x2F, 0x34
+        db 'ninety', 0x00
+        dw str_NoNumber, 0x342F
+        dw str_NoNumber, 0x342F
         dw str_Twenty, 0x342F
         dw str_Thirty, 0x342F
         dw str_Forty, 0x342F
@@ -62,7 +65,7 @@ str_Ninety:                                     ; string 'ninety'
         dw str_Seventy, 0x342F
         dw str_Eighty, 0x342F
         dw str_Ninety, 0x342F
-        db 0x00, 0x00, 0x2F, 0x34
+        dw str_NoNumber, 0x342F
         dw str_One, 0x342F
         dw str_Two, 0x342F
         dw str_Three, 0x342F
@@ -82,6 +85,7 @@ str_Ninety:                                     ; string 'ninety'
         dw str_Seventee, 0x342F
         dw str_Eighteen, 0x342F
         dw str_Nineteen, 0x342F
+str_NoPlace:                                    ; empty string
         db 0x00
 str_The1st:                                     ; string 'the1st'
         db 'the1st', 0x00
@@ -94,7 +98,8 @@ str_Star1:                                      ; string 'star1'
 str_Star2:                                      ; string 'star2'
         db 'star2', 0x00
 str_Star3:                                      ; string 'star3'
-        db 'star3', 0x00, 0x30, 0x01, 0x2F, 0x34
+        db 'star3', 0x00
+        dw str_NoPlace, 0x342F
         dw str_The1st, 0x342F
         dw str_The2nd, 0x342F
         dw str_The3rd, 0x342F

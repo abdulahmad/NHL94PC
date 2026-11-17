@@ -143,16 +143,22 @@ str_AssociationAndTheLogoOf:                    ; string 'Association and the lo
 str_TrademarksOfTheNhlpaAnd:                    ; string 'Trademarks of the NHLPA and are used,'
         db 'Trademarks of the NHLPA and are used,', 0x00
 str_UnderLicenseByElectronicArts:               ; string 'under license, by Electronic Arts Inc.'
-        db 'under license, by Electronic Arts Inc.', 0x00, 'NHL', 0xA8
+        db 'under license, by Electronic Arts Inc.', 0x00
+str_NhlIsARegisteredTrademarkOfThe:             ; string 'NHL¨ is a registered Trademark of the'
+        db 0x4E, 0x48, 0x4C, 0xA8
         db ' is a registered Trademark of the', 0x00
 str_NationalHockeyLeague_2:                     ; string 'National Hockey League.'
-        db 'National Hockey League.', 0x00, 'Stanley Cup', 0xA8, ' is a registered Trademark of', 0x00
+        db 'National Hockey League.', 0x00
+str_StanleyCupIsARegisteredTrademark:           ; string 'Stanley Cup¨ is a registered Trademark of'
+        db 'Stanley Cup', 0xA8, ' is a registered Trademark of', 0x00
 str_TheNationalHockeyLeague:                    ; string 'the National Hockey League.'
         db 'the National Hockey League.', 0x00
 str_TeamNamesAndLogosDepicted:                  ; string 'Team Names and logos depicted are Officially'
         db 'Team Names and logos depicted are Officially', 0x00
 str_LicensedTrademarksOfTheNational:            ; string 'Licensed Trademarks of the National Hockey'
-        db 'Licensed Trademarks of the National Hockey', 0x00, 'League ', 0xA9, ' NHL 1993.', 0x00
+        db 'Licensed Trademarks of the National Hockey', 0x00
+str_LeagueNhl1993:                              ; string 'League © NHL 1993.'
+        db 'League ', 0xA9, ' NHL 1993.', 0x00
 CreditLines:                                    ; far pointers to the credit lines, read by the title screen
         dw str_OfficiallyLicensedProductOfThe, 0x3608
         dw str_NationalHockeyLeague, 0x3608
@@ -162,13 +168,14 @@ CreditLines:                                    ; far pointers to the credit lin
         dw str_AssociationAndTheLogoOf, 0x3608
         dw str_TrademarksOfTheNhlpaAnd, 0x3608
         dw str_UnderLicenseByElectronicArts, 0x3608
-        db 0xDE, 0x04, 0x08, 0x36
+        dw str_NhlIsARegisteredTrademarkOfThe, 0x3608
         dw str_NationalHockeyLeague_2, 0x3608
-        db 0x1C, 0x05, 0x08, 0x36
+        dw str_StanleyCupIsARegisteredTrademark, 0x3608
         dw str_TheNationalHockeyLeague, 0x3608
         dw str_TeamNamesAndLogosDepicted, 0x3608
         dw str_LicensedTrademarksOfTheNational, 0x3608
-        db 0xBA, 0x05, 0x08, 0x36, 0x00, 0x00, 0x00, 0x00
+        dw str_LeagueNhl1993, 0x3608
+        db 0x00, 0x00, 0x00, 0x00
         dw str_OriginalGameConcept, 0x3608
         dw str_JimSimmons, 0x3608
         dw str_ScottOrr, 0x3608
