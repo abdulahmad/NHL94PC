@@ -6,7 +6,7 @@ SegStart_036A2:
         leave
         retf
 
-Init_2306_000A:
+PickOtherGames:
         enter 0x8, 0x0
         mov bl, [bp + 0x6]
         db 0x2A, 0xFF                           ; insn: sub bh, bh
@@ -124,7 +124,7 @@ Init_2306_000A:
         leave
         retf
 
-Init_2306_012E:
+UpdateOtherScores:
         enter 0x6, 0x0
         push si
         mov word [bp - 0x2], 0x0
@@ -237,7 +237,7 @@ Init_2306_012E:
         retf
         db 0x90
 
-Init_2306_024E:
+CenterShadowText:
         enter 0x2, 0x0
         push word [bp + 0xc]
         push word [bp + 0xa]
@@ -276,7 +276,7 @@ Init_2306_024E:
         leave
         retf
 
-Init_2306_02B6:
+ShowTeamStats:
         enter 0x56, 0x0
         push di
         push si
@@ -526,7 +526,7 @@ Init_2306_02B6:
         push 0x40
         push si
         push cs
-        call Init_2306_024E
+        call CenterShadowText
         add sp, 0x8
         push word [di + g_B362]
         push word 0x4e99
@@ -540,7 +540,7 @@ Init_2306_02B6:
         push 0x50
         push si
         push cs
-        call Init_2306_024E
+        call CenterShadowText
         add sp, 0x8
         push word [di + g_B366]
         push word [di + g_B364]
@@ -555,7 +555,7 @@ Init_2306_02B6:
         push 0x60
         push si
         push cs
-        call Init_2306_024E
+        call CenterShadowText
         add sp, 0x8
         push word [di + g_B36A]
         push word [di + g_B368]
@@ -570,7 +570,7 @@ Init_2306_02B6:
         push 0x70
         push si
         push cs
-        call Init_2306_024E
+        call CenterShadowText
         add sp, 0x8
         push word [di + g_B370]
         push word 0x4ea8
@@ -584,7 +584,7 @@ Init_2306_02B6:
         push word 0x80
         push si
         push cs
-        call Init_2306_024E
+        call CenterShadowText
         add sp, 0x8
         push word [di + g_B372]
         push word 0x4eab
@@ -598,7 +598,7 @@ Init_2306_02B6:
         push word 0x90
         push si
         push cs
-        call Init_2306_024E
+        call CenterShadowText
         add sp, 0x8
         mov ax, [di + g_B36C]
         mov cx, 0x3c
@@ -622,7 +622,7 @@ Init_2306_02B6:
         push word 0xa0
         push si
         push cs
-        call Init_2306_024E
+        call CenterShadowText
         add sp, 0x8
         mov word [bp - 0x4c], 0xb0
         mov word [bp - 0x1e], 0x0
@@ -654,7 +654,7 @@ Init_2306_02B6:
         push word [bp - 0x4c]
         push word [bp - 0x42]
         push cs
-        call Init_2306_024E
+        call CenterShadowText
         add sp, 0x8
         inc word [bp - 0x4e]
         cmp word [bp - 0x4e], 0x2

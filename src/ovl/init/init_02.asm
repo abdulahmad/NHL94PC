@@ -4,7 +4,7 @@
         leave
         retf
 
-Init_20A8_0004:
+ShowStartingLineups:
         enter 0xe4, 0x0
         push si
         mov ax, 0xffff
@@ -265,7 +265,7 @@ Init_20A8_0004:
         push word [bp - 0xe4]
         push 0x0
         push 0x8
-        call 0x2185:Init_2185_0000
+        call 0x2185:DrawPeriodTitle
         add sp, 0x10
         mov si, [bp - 0x3c]
         mov bl, [bp + si - 0xd0]
@@ -434,7 +434,7 @@ Init_20A8_0004:
         push word [bp - 0xe4]
         push 0x0
         push 0x10
-        call 0x2185:Init_2185_0000
+        call 0x2185:DrawPeriodTitle
         add sp, 0x10
         mov si, [bp - 0x3c]
         mov bl, [bp + si - 0xd0]
@@ -602,7 +602,7 @@ Init_20A8_0004:
         push word [bp - 0xe4]
         push 0x0
         push 0x4
-        call 0x2185:Init_2185_0000
+        call 0x2185:DrawPeriodTitle
         add sp, 0x10
         mov si, [bp - 0x3c]
         mov bl, [bp + si - 0xd0]

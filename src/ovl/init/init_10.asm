@@ -4,7 +4,7 @@
         pop di
         retf
 
-Init_24DE_0006:
+LoadRinkTiles:
         enter 0x22, 0x0
         push di
         push si
@@ -128,7 +128,7 @@ Init_24DE_0006:
         push bx
         db 0x8B, 0xF2                           ; insn: mov si, dx
         push cs
-        call Init_24DE_01E8
+        call PatchRinkMap
         add sp, 0xc
         push si
         push di
@@ -166,7 +166,7 @@ Init_24DE_0006:
         idiv cx
         mov [g_B094], dx
         push cs
-        call Init_24DE_033A
+        call DrawRinkBackground
         cmp word [CurPage], 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         and ax, 0x3900
@@ -187,7 +187,7 @@ Init_24DE_0006:
         leave
         retf
 
-Init_24DE_01E8:
+PatchRinkMap:
         enter 0x20, 0x0
         push di
         push si
@@ -338,7 +338,7 @@ Init_24DE_01E8:
         retf
         db 0x90
 
-Init_24DE_033A:
+DrawRinkBackground:
         enter 0xe, 0x0
         push di
         push si

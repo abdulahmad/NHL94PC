@@ -2,7 +2,7 @@
         pop si
         retf
 
-Init_2007_0002:
+DrawBevelBoxInit:
         enter 0xa, 0x0
         push di
         push si
@@ -161,7 +161,7 @@ Init_2007_0002:
         leave
         retf
 
-Init_2007_01BC:
+ShowMatchupScreen:
         enter 0x654, 0x0
         push di
         push si
@@ -521,7 +521,7 @@ Init_2007_01BC:
         push word 0xb4
         push 0x0
         push cs
-        call Init_2007_0002
+        call DrawBevelBoxInit
         add sp, 0xa
         push word [bp - 0x650]
         push word [bp - 0x64c]
@@ -880,7 +880,7 @@ Init_2007_01BC:
         push ax
         mov al, [bp + 0x6]
         push ax
-        call 0x20A8:Init_20A8_0004
+        call 0x20A8:ShowStartingLineups
         add sp, 0x4
         mov [bp - 0x64], ax
 .42:

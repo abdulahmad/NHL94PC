@@ -5,7 +5,7 @@
         retf
         db 0x90
 
-Init_252F_000E:
+SetTeamNameText:
         enter 0x30, 0x0
         push di
         push si
@@ -306,7 +306,7 @@ Init_252F_000E:
         leave
         retf
 
-Init_252F_0348:
+ClearTeamNameText:
         push word 0x3448
         push strict word f_3448_026B
         mov es, [g_8CC2]

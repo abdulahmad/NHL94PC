@@ -2247,3 +2247,59 @@ Game_1F54_0316,FlushDirtyRects,Game_1F54_0316,new,high,copies this page's dirty 
 Game_1F54_03FA,NullGameHook,Game_1F54_03FA,new,high,empty far routine (OvlThunk265),src/ovl/game/game_04.asm
 Game_1F54_03FC,NullGameHook2,Game_1F54_03FC,new,high,empty far routine,src/ovl/game/game_04.asm
 Game_1F54_03FE,AddDirtyRect,Game_1F54_03FE,new,high,appends a rectangle to this page's dirty list,src/ovl/game/game_04.asm
+Init_1F9C_0000,IndexPPVFrames,Init_1F9C_0000,new,medium,builds the frame pointer table at 0x91D0 from the loaded PPV files ('%04d' lookups),src/ovl/init/init_00.asm
+Init_1F9C_0072,LoadPPVFiles,Init_1F9C_0072,new,high,loads f00_49.PPV / f50_99.PPV and indexes their frames,src/ovl/init/init_00.asm
+Init_1F9C_0138,LoadPlayerFrames,Init_1F9C_0138,new,medium,loads the player pose files and builds both frame tables,src/ovl/init/init_00.asm
+Init_1F9C_01B4,LoadRinkEndArt,Init_1F9C_01B4,new,high,loads trinknd.QPP,src/ovl/init/init_00.asm
+Init_1F9C_01FC,LoadGameGfx,Init_1F9C_01FC,new,high,"canvases, numshp, gadgets, scoreboard, player frames, palette fade-in",src/ovl/init/init_00.asm
+Init_1F9C_0348,PlacePlayersAtStart,Init_1F9C_0348,95 PC,medium,puts both teams at their opening positions,src/ovl/init/init_00.asm
+Init_1F9C_04A0,SetupGame,Init_1F9C_04A0,95 PC,medium,"lines, crowd, faceoff setup before the opening faceoff",src/ovl/init/init_00.asm
+Init_1F9C_056A,ResetGameVars,Init_1F9C_056A,95 PC,medium,"clears clock, score and game state",src/ovl/init/init_00.asm
+Init_2007_0002,DrawBevelBoxInit,Init_2007_0002,new,high,box with DialogLight/Dark edges,src/ovl/init/init_01.asm
+Init_2007_01BC,ShowMatchupScreen,Init_2007_01BC,new,high,"pre-game ""%s at %s"" arena screen",src/ovl/init/init_01.asm
+Init_20A8_0004,ShowStartingLineups,Init_20A8_0004,new,high,"lineup screen with crests, AnnounceLineups, injured players",src/ovl/init/init_02.asm
+Init_2137_0004,LoadArenaJingles,Init_2137_0004,new,high,loads the arena organ .KMS/.CFG jingles,src/ovl/init/init_03.asm
+Init_2137_03D6,FreeArenaJingles,Init_2137_03D6,new,high,frees the four jingle buffers,src/ovl/init/init_03.asm
+Init_2185_0000,DrawPeriodTitle,Init_2185_0000,new,high,'First Period' .. 'Overtime Period %d' banner,src/ovl/init/init_04.asm
+Init_21A1_0008,ShowGameSummary,Init_21A1_0008,new,high,period / game summary screen from gsummary,src/ovl/init/init_05.asm
+Init_2306_000A,PickOtherGames,Init_2306_000A,new,high,picks six random matchups for the scores around the league,src/ovl/init/init_06.asm
+Init_2306_012E,UpdateOtherScores,Init_2306_012E,new,high,advances the other games' periods and scores at random,src/ovl/init/init_06.asm
+Init_2306_024E,CenterShadowText,Init_2306_024E,new,medium,centres a line of shadowed text on the 320-pixel screen,src/ovl/init/init_06.asm
+Init_2306_02B6,ShowTeamStats,Init_2306_02B6,new,high,"shots, power plays, faceoffs screen",src/ovl/init/init_06.asm
+Init_237D_0000,DrawDeskFrames,Init_237D_0000,95 PC,high,draws the studio desk frames,src/ovl/init/init_07.asm
+Init_237D_00F2,ReturnZeroInit,Init_237D_00F2,new,high,"sub ax, ax; retf (OvlThunk270)",src/ovl/init/init_07.asm
+Init_237D_00F6,ReturnZeroInit2,Init_237D_00F6,new,high,"sub ax, ax; retf (OvlThunk271)",src/ovl/init/init_07.asm
+Init_237D_00FA,PlayRandomHighlight,Init_237D_00FA,95 PC,medium,studio highlight of another game,src/ovl/init/init_07.asm
+Init_237D_023E,EndGameScreens,Init_237D_023E,new,high,"game summary, other scores, highlights after the game",src/ovl/init/init_07.asm
+Init_237D_03A6,IntermissionScreens,Init_237D_03A6,new,high,summary and highlights between periods,src/ovl/init/init_07.asm
+Init_23CB_0004,PlayTitleMovies,Init_23CB_0004,new,high,"P1.MVI, EASCRN.QPP, G1.MVI, logo",src/ovl/init/init_08.asm
+Init_23CB_042C,PlayMovie,Init_23CB_042C,new,high,plays an .MVI ('vidframe') at a fixed frame rate,src/ovl/init/init_08.asm
+Init_2425_0000,LoadGameTeams,Init_2425_0000,new,high,reads both teams from the 'teams' db into the team records,src/ovl/init/init_09.asm
+Init_2425_0374,CreateGSummaryDb,Init_2425_0374,new,high,"writes the gsummary.db header for a new game, then loads the teams",src/ovl/init/init_09.asm
+Init_2425_04E0,ReadDbBlock,Init_2425_04E0,new,medium,seeks and reads one block of a db file,src/ovl/init/init_09.asm
+Init_2425_068A,OpenPlayerDbs,Init_2425_068A,new,high,"opens the key, att, season and career dbs",src/ovl/init/init_09.asm
+Init_2425_07EA,BuildTeamRoster,Init_2425_07EA,new,medium,fills the player records of one team from the dbs,src/ovl/init/init_09.asm
+Init_2425_0B20,GSummaryPath,Init_2425_0B20,new,high,builds the gsummary.db path,src/ovl/init/init_09.asm
+Init_24DE_0006,LoadRinkTiles,Init_24DE_0006,new,high,"rink.til and rink.map, then draws the first screen",src/ovl/init/init_10.asm
+Init_24DE_01E8,PatchRinkMap,Init_24DE_01E8,new,medium,copies a sub-map into the rink map,src/ovl/init/init_10.asm
+Init_24DE_033A,DrawRinkBackground,Init_24DE_033A,new,high,VGA latch stamps of the visible rink tiles,src/ovl/init/init_10.asm
+Init_251E_0004,InitScoreboard,Init_251E_0004,new,medium,"resets the scoreboard state, loads its art",src/ovl/init/init_11.asm
+Init_251E_0038,LoadScoreboardArt,Init_251E_0038,new,high,scrbrd1.QPP digits and labels,src/ovl/init/init_11.asm
+Init_252F_000E,SetTeamNameText,Init_252F_000E,new,high,team names into the menu text,src/ovl/init/init_12.asm
+Init_252F_0348,ClearTeamNameText,Init_252F_0348,new,high,blanks the team name strings,src/ovl/init/init_12.asm
+Init_256C_0004,FreeGameMemory,Init_256C_0004,95 PC,high,frees everything the game loaded,src/ovl/init/init_13.asm
+Init_256C_00E8,FreePPVFiles,Init_256C_00E8,new,high,frees the three PPV files,src/ovl/init/init_13.asm
+Init_256C_012E,FreePlayerFrames,Init_256C_012E,new,high,frees PPV files and the frame table,src/ovl/init/init_13.asm
+Init_2581_000E,InstantReplay,Init_2581_000E,95 PC,high,replay screen,src/ovl/init/init_14.asm
+Init_2581_0510,GadgetHitTest,Init_2581_0510,95 PC,medium,which replay button is under the mouse,src/ovl/init/init_14.asm
+Init_2581_0550,PickNearestPlayer,Init_2581_0550,95 PC,medium,nearest player to the pointer,src/ovl/init/init_14.asm
+Init_2581_05E4,ReplayControlLoop,Init_2581_05E4,95 PC,high,replay input loop,src/ovl/init/init_14.asm
+Init_2581_0C14,ReplaySaveHilight,Init_2581_0C14,95 PC,high,save-highlight dialog,src/ovl/init/init_14.asm
+Init_2581_105A,HilightSaveToDlg,Init_2581_105A,95 PC,high,'Save To' 'Hilights Reel' panel,src/ovl/init/init_14.asm
+Init_2581_1304,SaveHilightFile,Init_2581_1304,new,high,writes the .HI file,src/ovl/init/init_14.asm
+Init_2581_14FC,ShowCurrentPage,Init_2581_14FC,new,high,SetStartPage of the current page,src/ovl/init/init_14.asm
+Init_26D2_000A,ReplayStep,Init_26D2_000A,95 PC,high,steps the replay one frame,src/ovl/init/init_15.asm
+Init_26D2_03F2,DrawReplayFrame,Init_26D2_03F2,new,medium,"draws the sorted sprites, numbers and rink end art of a replay frame",src/ovl/init/init_15.asm
+Init_278C_0006,SaveGameState,Init_278C_0006,95 PC,high,'Error Saving Game',src/ovl/init/init_16.asm
+Init_278C_09C8,LoadGameState,Init_278C_09C8,95 PC,high,'Error Loading Game',src/ovl/init/init_16.asm
+Init_28FA_0004,LoadReplayGadgets,Init_28FA_0004,new,high,"gad1, gadget5, gg%02d, HILIGHT.FNT",src/ovl/init/init_17.asm

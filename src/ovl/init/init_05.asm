@@ -6,7 +6,7 @@ SegStart_02054:
         leave
         retf
 
-Init_21A1_0008:
+ShowGameSummary:
         enter 0x78a, 0x0
         push di
         push si
@@ -228,7 +228,7 @@ Init_21A1_0008:
         mov al, [bp + 0x8]
         push ax
         push word [bp + 0x6]
-        call 0x2185:Init_2185_0000
+        call 0x2185:DrawPeriodTitle
         add sp, 0x10
 .11:
         push word 0x3701
@@ -569,7 +569,7 @@ Init_21A1_0008:
         mov al, [bp + 0x8]
         push ax
         push word [bp + 0x6]
-        call 0x2185:Init_2185_0000
+        call 0x2185:DrawPeriodTitle
         add sp, 0x10
         lea ax, [bp - 0x432]
         push ss
@@ -701,7 +701,7 @@ Init_21A1_0008:
         mov al, [bp + 0x8]
         push ax
         push word [bp + 0x6]
-        call 0x2185:Init_2185_0000
+        call 0x2185:DrawPeriodTitle
         add sp, 0x10
         mov si, [bp - 0x73a]
         mov bl, [bp + si - 0x164]
@@ -1006,7 +1006,7 @@ Init_21A1_0008:
         mov al, [bp + 0x8]
         push ax
         push word [bp + 0x6]
-        call 0x2185:Init_2185_0000
+        call 0x2185:DrawPeriodTitle
         add sp, 0x10
         test byte [bp + 0x6], 0x1
         jz short .73
@@ -1889,7 +1889,7 @@ Init_21A1_0008:
         mov al, [bp - 0x46]
         push ax
         push word [bp + 0x6]
-        call 0x2185:Init_2185_0000
+        call 0x2185:DrawPeriodTitle
         add sp, 0x10
         test byte [bp + 0x6], 0x1
         jz short .138

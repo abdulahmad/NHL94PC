@@ -4,7 +4,7 @@
         retf
         db 0x90
 
-Init_26D2_000A:
+ReplayStep:
         enter 0x2a, 0x0
         push si
         mov ax, [bp + 0x6]
@@ -372,7 +372,7 @@ Init_26D2_000A:
         retf
         db 0x90
 
-Init_26D2_03F2:
+DrawReplayFrame:
         enter 0x28, 0x0
         push si
         cmp word [g_2998], -0x10

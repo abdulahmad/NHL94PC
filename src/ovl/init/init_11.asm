@@ -4,7 +4,7 @@
         retf
         db 0x90
 
-Init_251E_0004:
+InitScoreboard:
         db 0x2B, 0xDB                           ; insn: sub bx, bx
 .1:
         mov ax, 0xffff
@@ -21,10 +21,10 @@ Init_251E_0004:
         cmp bx, 0x40
         jl short .1
         push cs
-        call Init_251E_0038
+        call LoadScoreboardArt
         retf
 
-Init_251E_0038:
+LoadScoreboardArt:
         enter 0xe, 0x0
         push word 0x3701
         push strict word str_Qpp

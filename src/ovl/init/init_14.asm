@@ -9,7 +9,7 @@ SegStart_05E55:
         pop di
         retf
 
-Init_2581_000E:
+InstantReplay:
         enter 0xc, 0x0
         cmp word [DbSaveMode], 0x0
         jz short .1
@@ -146,7 +146,7 @@ Init_2581_000E:
         mov [bp - 0xc], ax
         push ax
         push ax
-        call 0x26D2:Init_26D2_000A
+        call 0x26D2:ReplayStep
         add sp, 0x4
         mov ax, [CrowdSound]
         mov [Crowdlevel], ax
@@ -183,7 +183,7 @@ Init_2581_000E:
         mov ax, [g_D6CC]
         sub ax, 0xc0
         push ax
-        call 0x26D2:Init_26D2_03F2
+        call 0x26D2:DrawReplayFrame
         add sp, 0x4
         call 0x0000:VgaPageFlip
         push 0x10
@@ -225,7 +225,7 @@ Init_2581_000E:
 .12:
         push ax
         push word [bp - 0xc]
-        call 0x26D2:Init_26D2_000A
+        call 0x26D2:ReplayStep
         add sp, 0x4
         mov [bp - 0xc], ax
         cmp word [g_DB18], 0x0
@@ -321,7 +321,7 @@ Init_2581_000E:
         mov ax, [g_D6CC]
         sub ax, 0xc0
         push ax
-        call 0x26D2:Init_26D2_03F2
+        call 0x26D2:DrawReplayFrame
         add sp, 0x4
         cmp word [g_DAD4], 0xa8
         jl short .26
@@ -393,7 +393,7 @@ Init_2581_000E:
         lea ax, [bp - 0xc]
         push ax
         push cs
-        call Init_2581_05E4
+        call ReplayControlLoop
         add sp, 0x2
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .31
@@ -436,7 +436,7 @@ Init_2581_000E:
         leave
         retf
 
-Init_2581_0510:
+GadgetHitTest:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -474,7 +474,7 @@ Init_2581_0510:
         retf
         db 0x90
 
-Init_2581_0550:
+PickNearestPlayer:
         enter 0xe, 0x0
         push di
         push si
@@ -538,7 +538,7 @@ Init_2581_0550:
         retf
         db 0x90
 
-Init_2581_05E4:
+ReplayControlLoop:
         enter 0x14, 0x0
         push si
         mov ax, [g_DB28]
@@ -580,7 +580,7 @@ Init_2581_05E4:
         push word [g_DAD4]
         push word [g_DAD2]
         push cs
-        call Init_2581_0510
+        call GadgetHitTest
         add sp, 0x6
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .5
@@ -877,7 +877,7 @@ Init_2581_05E4:
         push word [g_DB20]
         push word [g_DB1E]
         push cs
-        call Init_2581_0550
+        call PickNearestPlayer
         add sp, 0x4
         mov [g_DB22], ax
         test byte [bp - 0x14], 0x2
@@ -1063,7 +1063,7 @@ Init_2581_05E4:
         push word [bp - 0xe]
         push word 0xaa0
         push cs
-        call Init_2581_0C14
+        call ReplaySaveHilight
         add sp, 0x6
         call 0x0F99:FlushInputEvents
         mov word [g_DB28], 0x4
@@ -1127,7 +1127,7 @@ Init_2581_05E4:
         retf
         db 0x90
 
-Init_2581_0C14:
+ReplaySaveHilight:
         enter 0xc, 0x0
         push di
         push si
@@ -1196,7 +1196,7 @@ Init_2581_0C14:
         call 0x0000:VgaCopyToPitch
         add sp, 0x8
         push cs
-        call Init_2581_105A
+        call HilightSaveToDlg
         mov word [g_DB2C], 0x3
         mov word [g_DAD2], 0xa0
         mov word [g_DAD4], 0x64
@@ -1395,7 +1395,7 @@ Init_2581_0C14:
         push 0x0
 .12:
         push cs
-        call Init_2581_1304
+        call SaveHilightFile
         add sp, 0x2
         db 0x8B, 0xF0                           ; insn: mov si, ax
         jmp short .16
@@ -1403,7 +1403,7 @@ Init_2581_0C14:
 .13:
         push 0x0
         push cs
-        call Init_2581_1304
+        call SaveHilightFile
         add sp, 0x2
         db 0x8B, 0xF0                           ; insn: mov si, ax
         db 0x0B, 0xF6                           ; insn: or si, si
@@ -1418,7 +1418,7 @@ Init_2581_0C14:
         mov di, [bp + 0xa]
         call 0x03A3:WaitDeadlineNoEoi
         push cs
-        call Init_2581_14FC
+        call ShowCurrentPage
         mov ax, [bp + 0x8]
         mov [g_DAD2], ax
         mov [g_DAD4], di
@@ -1495,7 +1495,7 @@ Init_2581_0C14:
         push 0x1
 .22:
         push cs
-        call Init_2581_1304
+        call SaveHilightFile
         add sp, 0x2
         db 0x8B, 0xF0                           ; insn: mov si, ax
         db 0x0B, 0xF6                           ; insn: or si, si
@@ -1532,7 +1532,7 @@ Init_2581_0C14:
         leave
         retf
 
-Init_2581_105A:
+HilightSaveToDlg:
         enter 0x1e, 0x0
         push di
         push si
@@ -1777,7 +1777,7 @@ Init_2581_105A:
         retf
         db 0x90
 
-Init_2581_1304:
+SaveHilightFile:
         enter 0x56, 0x0
         push di
         push si
@@ -1977,7 +1977,7 @@ Init_2581_1304:
         leave
         retf
 
-Init_2581_14FC:
+ShowCurrentPage:
         push word 0xa8
         call 0x0FEF:SetStartPage
         add sp, 0x2

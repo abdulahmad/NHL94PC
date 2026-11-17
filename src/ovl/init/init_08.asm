@@ -4,7 +4,7 @@
         retf
         db 0x90
 
-Init_23CB_0004:
+PlayTitleMovies:
         enter 0x30, 0x0
         push si
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -387,7 +387,7 @@ Init_23CB_0004:
         retf
         db 0x90
 
-Init_23CB_042C:
+PlayMovie:
         enter 0x4, 0x0
         push di
         push si

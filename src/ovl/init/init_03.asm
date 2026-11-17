@@ -3,7 +3,7 @@
         leave
         retf
 
-Init_2137_0004:
+LoadArenaJingles:
         enter 0x26, 0x0
         push di
         push si
@@ -383,7 +383,7 @@ Init_2137_0004:
         leave
         retf
 
-Init_2137_03D6:
+FreeArenaJingles:
         enter 0x2, 0x0
         push di
         push si

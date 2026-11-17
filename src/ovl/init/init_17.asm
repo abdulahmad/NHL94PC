@@ -4,7 +4,7 @@
         leave
         retf
 
-Init_28FA_0004:
+LoadReplayGadgets:
         enter 0x96, 0x0
         push di
         push si

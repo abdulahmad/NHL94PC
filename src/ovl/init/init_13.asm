@@ -2,7 +2,7 @@
         retf
         db 0x90
 
-Init_256C_0004:
+FreeGameMemory:
         call 0x0EDC:CrowdNoiseOff
         call 0x1B35:OvlThunk276
         cmp word [g_49FC], -0x1
@@ -12,9 +12,9 @@ Init_256C_0004:
         call 0x06E1:FindUnlink
         add sp, 0x4
 .1:
-        call 0x2137:Init_2137_03D6
+        call 0x2137:FreeArenaJingles
         push cs
-        call Init_256C_012E
+        call FreePlayerFrames
         push word [g_C25E]
         push word [g_C25C]
         call 0x06E1:FindUnlink
@@ -72,7 +72,7 @@ Init_256C_0004:
         retf
         db 0x90
 
-Init_256C_00E8:
+FreePPVFiles:
         push word [g_4A58]
         push word [g_4A56]
         call 0x06E1:FindUnlink
@@ -95,11 +95,11 @@ Init_256C_00E8:
         retf
         db 0x90
 
-Init_256C_012E:
+FreePlayerFrames:
         push di
         push si
         push cs
-        call Init_256C_00E8
+        call FreePPVFiles
         mov di, 0x11
         mov si, 0x9184
 .1:

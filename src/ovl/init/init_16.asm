@@ -5,7 +5,7 @@ SegStart_07F02:
         retf
         db 0x90
 
-Init_278C_0006:
+SaveGameState:
         enter 0xee, 0x0
         push di
         push si
@@ -976,7 +976,7 @@ Init_278C_0006:
         leave
         retf
 
-Init_278C_09C8:
+LoadGameState:
         enter 0x198, 0x0
         push di
         push si
@@ -2026,7 +2026,7 @@ Init_278C_09C8:
         call 0x1B35:OvlThunk278
         mov [g_D1AC], ax
         push 0x1
-        call 0x2425:Init_2425_0000
+        call 0x2425:LoadGameTeams
         add sp, 0x2
         push word 0x3a0b
         push strict word f_3A0B_0A8E
@@ -2063,10 +2063,10 @@ Init_278C_09C8:
         mov ax, [g_29CA]
 .45:
         push ax
-        call 0x24DE:Init_24DE_0006
+        call 0x24DE:LoadRinkTiles
         add sp, 0x2
-        call 0x2137:Init_2137_0004
-        call 0x1F9C:Init_1F9C_01FC
+        call 0x2137:LoadArenaJingles
+        call 0x1F9C:LoadGameGfx
         call 0x0FEF:UseOffscreenCanvas
         push 0x0
         push word [g_BFFE]
