@@ -3,7 +3,7 @@
 	bits	16
 	org	0x0
 F053_0002		equ	0x2
-F034_0092		equ	0x92
+ResizeRecByName		equ	0x92
 EmsMapFrame		equ	0x192
 FatalError		equ	0x3E4
 LinearToFarRegs		equ	0x959

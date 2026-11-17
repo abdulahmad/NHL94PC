@@ -2,7 +2,7 @@
 	retf
 	db	0x90
 
-F031_0002:
+DrawThickLine:
 	enter	0x10, 0x0
 	push	di
 	push	si

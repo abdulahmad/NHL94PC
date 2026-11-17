@@ -7,7 +7,7 @@ DrawLine		equ	0xC
 GetInputEvent		equ	0xE
 InputInit		equ	0xE
 SetTextColors		equ	0x24
-F034_0030		equ	0x30
+AllocRecData		equ	0x30
 InputShutdown		equ	0x4C
 FlushInputEvents		equ	0x66
 FillRect		equ	0x136

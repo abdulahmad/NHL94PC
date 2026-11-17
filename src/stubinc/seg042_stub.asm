@@ -2,13 +2,13 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
-F046_0006		equ	0x6
-F047_0008		equ	0x8
-F045_000C		equ	0xC
-F043_000E		equ	0xE
-F034_0038		equ	0x38
-F032_007C		equ	0x7C
-F033_0082		equ	0x82
+ShapeBankSize		equ	0x6
+CopyBytesFar		equ	0x8
+LargestShapeSize		equ	0xC
+FileCanOpen		equ	0xE
+AllocRecData0		equ	0x38
+LoadRawMode		equ	0x7C
+LoadPackedMode		equ	0x82
 CopyFar		equ	0x276
 InsertRec		equ	0x2EC
 FatalError		equ	0x3E4

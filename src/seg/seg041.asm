@@ -2,7 +2,7 @@
 	retf
 	db	0x90
 
-F041_0002:
+SaveBoxUnder:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	call	0x0FEF:UseCurrentPage
@@ -16,7 +16,7 @@ F041_0002:
 	ret	0x8
 	db	0x90
 
-F041_0024:
+RestoreBoxUnder:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	call	0x0FEF:UseCurrentPage
@@ -30,7 +30,7 @@ F041_0024:
 	ret	0x8
 	db	0x90
 
-F041_0046:
+AskYesNoBox:
 	enter	0x5e, 0x0
 	push	di
 	push	si
@@ -41,7 +41,7 @@ F041_0046:
 	mov	ax, [bp + 0x8]
 	mov	dx, [bp + 0x6]
 	db	0x33, 0xDB		; xor bx, bx
-	call	0x152D:F038_019C
+	call	0x152D:AllocCanvas
 	mov	[bp - 0x6], ax
 	mov	[bp - 0x4], dx
 	lea	ax, [bp - 0x5a]
@@ -82,11 +82,11 @@ F041_0046:
 	push	word [bp - 0x6]
 	push	di
 	push	si
-	call	F041_0002
+	call	SaveBoxUnder
 	call	0x0FEF:UseCurrentPage
 	db	0x33, 0xC0		; xor ax, ax
 	cwd
-	call	0x15F1:F044_0002
+	call	0x15F1:FindNearestColor
 	push	ax
 	push	word [bp + 0x6]
 	push	word [bp + 0x8]
@@ -96,7 +96,7 @@ F041_0046:
 	add	sp, 0xa
 	db	0x33, 0xC0		; xor ax, ax
 	mov	dx, 0x2a
-	call	0x15F1:F044_0002
+	call	0x15F1:FindNearestColor
 	push	ax
 	mov	ax, [bp - 0x5c]
 	sub	ax, strict word 0x4
@@ -108,11 +108,11 @@ F041_0046:
 	push	ax
 	lea	ax, [di + 0x4]
 	push	ax
-	call	0x1484:F029_0004
+	call	0x1484:DrawFrame
 	add	sp, 0xa
 	mov	ax, 0x3f3f
 	mov	dx, 0x3f
-	call	0x15F1:F044_0002
+	call	0x15F1:FindNearestColor
 	db	0x33, 0xD2		; xor dx, dx
 	call	0x03A3:0xC56
 	lea	ax, [si + 0x9]
@@ -176,7 +176,7 @@ F041_0046:
 	push	word [bp - 0x6]
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
-	call	F041_0024
+	call	RestoreBoxUnder
 	call	far [g_6414]
 	lea	ax, [bp - 0x1e]
 	push	ax
@@ -188,7 +188,7 @@ F041_0046:
 	pop	bx
 	push	word [bp - 0x4]
 	push	word [bp - 0x6]
-	call	0x14ED:F035_000C
+	call	0x14ED:FreeCanvas
 	add	sp, 0x4
 	call	far [g_7646]
 	mov	word [TickSkip], 0x0
@@ -198,14 +198,14 @@ F041_0046:
 	leave
 	ret	0xc
 
-F041_0224:
+AskExitToDos:
 	push	str_ExitToDosYN
 	push	0x50
 	push	0x58
 	push	word 0xa0
 	push	0x18
 	push	0x7
-	call	F041_0046
+	call	AskYesNoBox
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .1
 	call	0x0F4A:NullFar5
@@ -213,7 +213,7 @@ F041_0224:
 	retf
 	db	0x90
 
-F041_0240:
+PauseBox:
 	enter	0x58, 0x0
 	push	di
 	push	si
@@ -221,7 +221,7 @@ F041_0240:
 	mov	ax, 0x140
 	mov	dx, 0xa
 	db	0x33, 0xDB		; xor bx, bx
-	call	0x152D:F038_019C
+	call	0x152D:AllocCanvas
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x2], dx
 	lea	ax, [bp - 0x58]
@@ -258,11 +258,11 @@ F041_0240:
 	push	si
 	push	0x0
 	push	word 0xbe
-	call	F041_0002
+	call	SaveBoxUnder
 	call	0x0FEF:UseCurrentPage
 	db	0x33, 0xC0		; xor ax, ax
 	cwd
-	call	0x15F1:F044_0002
+	call	0x15F1:FindNearestColor
 	push	ax
 	push	0xa
 	push	word 0x140
@@ -272,7 +272,7 @@ F041_0240:
 	add	sp, 0xa
 	mov	ax, 0x3f3f
 	mov	dx, 0x3f
-	call	0x15F1:F044_0002
+	call	0x15F1:FindNearestColor
 	db	0x33, 0xD2		; xor dx, dx
 	call	0x03A3:0xC56
 	push	word 0xbf
@@ -289,7 +289,7 @@ F041_0240:
 	push	si
 	push	0x0
 	push	word 0xbe
-	call	F041_0024
+	call	RestoreBoxUnder
 	call	far [g_6414]
 	lea	ax, [bp - 0x1c]
 	push	ax
@@ -301,7 +301,7 @@ F041_0240:
 	pop	bx
 	push	di
 	push	si
-	call	0x14ED:F035_000C
+	call	0x14ED:FreeCanvas
 	add	sp, 0x4
 	mov	word [TickSkip], 0x0
 	pop	si
@@ -310,7 +310,7 @@ F041_0240:
 	retf
 	db	0x90
 
-F041_0352:
+ShowPausedBox:
 	push	str_PausePressAnyKeyTo
 	push	0x10
 	push	0x58

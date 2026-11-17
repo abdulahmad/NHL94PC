@@ -5,7 +5,7 @@
 	leave
 	retf
 
-F046_0006:
+ShapeBankSize:
 	enter	0xa, 0x0
 	push	di
 	push	si

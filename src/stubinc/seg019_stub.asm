@@ -2,8 +2,8 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
-F032_0002		equ	0x2
-F033_0008		equ	0x8
+LoadRawHeader		equ	0x2
+LoadPackedHeader		equ	0x8
 BuildPathFar		equ	0x3E
 FindFarMsg		equ	0x847
 FindUnlink		equ	0x99A

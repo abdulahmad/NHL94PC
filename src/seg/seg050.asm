@@ -283,7 +283,7 @@ F050_0280:
 	push	0x0
 	push	word 0x840
 	push	word 0x846e
-	call	0x14DB:F034_0030
+	call	0x14DB:AllocRecData
 	add	sp, 0x8
 	mov	[0x84c8], ax
 	mov	[0x84ca], dx
@@ -291,7 +291,7 @@ F050_0280:
 	push	0x0
 	push	word 0x180
 	push	word 0x8474
-	call	0x14DB:F034_0030
+	call	0x14DB:AllocRecData
 	add	sp, 0x8
 	mov	[0x84cc], ax
 	mov	[0x84ce], dx
@@ -299,7 +299,7 @@ F050_0280:
 	push	0x0
 	push	word 0x240
 	push	word 0x847a
-	call	0x14DB:F034_0030
+	call	0x14DB:AllocRecData
 	add	sp, 0x8
 	mov	[0xe080], ax
 	mov	[0xe082], dx
@@ -409,7 +409,7 @@ F050_03A8:
 	mov	ds, ax
 	push	0x0
 	push	word [bp + 0x6]
-	call	0x149D:F032_0002
+	call	0x149D:LoadRawHeader
 	add	sp, 0x4
 	mov	[0xdff4], ax
 	mov	[0xdff6], dx
@@ -597,7 +597,7 @@ F050_0522:
 	jnz	short .3
 	push	0x0
 	push	word 0x8fac
-	call	0x149D:F032_0002
+	call	0x149D:LoadRawHeader
 	add	sp, 0x4
 	jmp	short .4
 .3:
@@ -658,7 +658,7 @@ F050_0522:
 	mov	byte [si - 0x7054], 0x0
 	push	word 0x80
 	push	word 0x8fac
-	call	0x149D:F032_0058
+	call	0x149D:LoadRaw
 	add	sp, 0x4
 	mov	[bp - 0x4], ax
 	mov	[bp - 0x2], dx

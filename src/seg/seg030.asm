@@ -5,7 +5,7 @@ SegStart_148B0:
 	leave
 	retf
 
-F030_0004:
+LargestFreeBlock:
 	enter	0xc, 0x0
 	push	di
 	les	bx, [ss:0xaea2]

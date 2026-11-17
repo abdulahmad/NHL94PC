@@ -53,7 +53,7 @@ DrawShadowTextBuffered:
 	mov	dx, [es:bx + 0xe]
 	inc	dx
 	db	0x2B, 0xDB		; sub bx, bx
-	call	0x152D:F038_019C
+	call	0x152D:AllocCanvas
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x2], dx
 	lea	ax, [bp - 0x40]
@@ -89,7 +89,7 @@ DrawShadowTextBuffered:
 	add	sp, 0x8
 	push	di
 	push	si
-	call	0x14ED:F035_000C
+	call	0x14ED:FreeCanvas
 	add	sp, 0x4
 	pop	si
 	pop	di

@@ -11,7 +11,7 @@ SaveVgaPlanes:
 	push	0x0
 	push	word 0xb00
 	push	word 0xa1e
-	call	0x14DB:F034_0013
+	call	0x14DB:InsertRecWrap
 	add	sp, 0x8
 	mov	[g_B34E], ax
 	mov	[g_B350], dx
@@ -19,7 +19,7 @@ SaveVgaPlanes:
 	push	0x0
 	push	word 0xb00
 	push	word 0xa26
-	call	0x14DB:F034_0013
+	call	0x14DB:InsertRecWrap
 	add	sp, 0x8
 	mov	[g_B352], ax
 	mov	[g_B354], dx
@@ -27,7 +27,7 @@ SaveVgaPlanes:
 	push	0x0
 	push	word 0xb00
 	push	word 0xa2e
-	call	0x14DB:F034_0013
+	call	0x14DB:InsertRecWrap
 	add	sp, 0x8
 	mov	[g_B356], ax
 	mov	[g_B358], dx
@@ -35,7 +35,7 @@ SaveVgaPlanes:
 	push	0x0
 	push	word 0xb00
 	push	word 0xa36
-	call	0x14DB:F034_0013
+	call	0x14DB:InsertRecWrap
 	add	sp, 0x8
 	mov	[g_B35A], ax
 	mov	[g_B35C], dx

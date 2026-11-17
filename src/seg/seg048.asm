@@ -9,7 +9,7 @@ SegStart_160E3:
 	leave
 	retf
 
-F048_000C:
+ShadeColor:
 	enter	0xa, 0x0
 	push	di
 	push	si
@@ -159,7 +159,7 @@ F048_000C:
 	ret	0x6
 	db	0x90, 0x90
 
-F048_0180:
+BuildShadeTable:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	di
@@ -181,7 +181,7 @@ F048_0180:
 	push	si
 	push	word [bp + 0xe]
 	push	word [bp + 0xc]
-	call	F048_000C
+	call	ShadeColor
 	db	0x8B, 0xDE		; mov bx, si
 	db	0x03, 0xDF		; add bx, di
 	mov	[bx], al
@@ -197,7 +197,7 @@ F048_0180:
 	retf
 	db	0x90
 
-F048_01CC:
+BuildShadeTableEven:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	word [bp + 0xc]
@@ -206,11 +206,11 @@ F048_01CC:
 	push	word [bp + 0x6]
 	push	word [bp + 0x6]
 	push	word [bp + 0x6]
-	call	0x160E:F048_0180
+	call	0x160E:BuildShadeTable
 	leave
 	retf
 
-F048_01E8:
+MergeRemapTables:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	di

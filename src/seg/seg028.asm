@@ -477,13 +477,13 @@ InitGraphics:
 	retf
 	db	0x00
 
-OpenResource:
+LoadAsset0:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	db	0x33, 0xC0		; xor ax, ax
-	jmp	short LoadResource.1
+	jmp	short LoadAsset.1
 
-LoadResource:
+LoadAsset:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, 0x1
@@ -491,24 +491,24 @@ LoadResource:
 	push	ax
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
-	call	0x15A6:F042_0134
+	call	0x15A6:LoadAssetMode
 	add	sp, 0x6
 	leave
 	retf
 
-LoadResourceHeader:
+LoadAssetHeader:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, 0x1
-	jmp	short ResourceHeaderMode.1
+	jmp	short LoadAssetHeaderMode.1
 
-OpenResourceHeader:
+LoadAssetHeader0:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	db	0x33, 0xC0		; xor ax, ax
-	jmp	short ResourceHeaderMode.1
+	jmp	short LoadAssetHeaderMode.1
 
-ResourceHeaderMode:
+LoadAssetHeaderMode:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, [bp + 0xa]
@@ -516,7 +516,7 @@ ResourceHeaderMode:
 	push	ax
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
-	call	0x15A6:F042_0134
+	call	0x15A6:LoadAssetMode
 	add	sp, 0x6
 	db	0x0B, 0xD2		; or dx, dx
 	jz	short .2
@@ -6596,7 +6596,7 @@ WaitRetraceFar:
 WaitTimerRetrace:
 	cmp	word [g_6406], 0x0
 	jnz	short WaitRetraceFar
-	call	0x156A:F040_000C
+	call	0x156A:CalibrateRetrace
 	mov	bx, [g_7670]
 	db	0x0B, 0xDB		; or bx, bx
 	jz	short WaitTimerRetrace
@@ -7164,7 +7164,7 @@ AllocCanvases:
 	push	ax
 	mov	ax, 0x759b
 	push	ax
-	call	0x14DB:F034_0030
+	call	0x14DB:AllocRecData
 	add	sp, 0x6
 	mov	es, dx
 	mov	[bp - 0x2], ax

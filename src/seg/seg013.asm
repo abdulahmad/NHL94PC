@@ -64,7 +64,7 @@ SaveGame:
 .4:
 	push	0x0
 	push	word 0x908
-	call	0x149D:F032_0002
+	call	0x149D:LoadRawHeader
 	add	sp, 0x4
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x2], dx
@@ -313,7 +313,7 @@ SaveGameNameDialog:
 	push	dx
 	push	ax
 	push	word 0x94f
-	call	0x14DB:F034_0030
+	call	0x14DB:AllocRecData
 	add	sp, 0x8
 	mov	[bp - 0xc], ax
 	mov	[bp - 0xa], dx
@@ -367,7 +367,7 @@ SaveGameNameDialog:
 	push	0x0
 	lea	ax, [bp - 0x1c]
 	push	ax
-	call	0x14B8:F033_0008
+	call	0x14B8:LoadPackedHeader
 	add	sp, 0x4
 	mov	[bp - 0x60], ax
 	mov	[bp - 0x5e], dx
@@ -390,7 +390,7 @@ SaveGameNameDialog:
 	push	dx
 	push	ax
 	push	word 0x965
-	call	0x14DB:F034_0030
+	call	0x14DB:AllocRecData
 	add	sp, 0x8
 	mov	[bp - 0x6], ax
 	mov	[bp - 0x4], dx
@@ -534,7 +534,7 @@ SaveGameNameDialog:
 	push	dx
 	push	ax
 	push	word 0x976
-	call	0x14DB:F034_0030
+	call	0x14DB:AllocRecData
 	add	sp, 0x8
 	mov	[bp - 0x6], ax
 	mov	[bp - 0x4], dx
@@ -848,7 +848,7 @@ SaveGameNameDialog:
 	push	dx
 	push	ax
 	push	word 0x987
-	call	0x14DB:F034_0030
+	call	0x14DB:AllocRecData
 	add	sp, 0x8
 	mov	[bp - 0x6], ax
 	mov	[bp - 0x4], dx

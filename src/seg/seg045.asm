@@ -8,7 +8,7 @@ SegStart_15FF4:
 	retf
 	db	0x90, 0x90
 
-F045_000C:
+LargestShapeSize:
 	enter	0xe, 0x0
 	push	di
 	push	si

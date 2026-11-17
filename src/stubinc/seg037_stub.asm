@@ -2,12 +2,12 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
-F039_0002		equ	0x2
-F035_000C		equ	0xC
+DrawTextCenteredClip		equ	0x2
+FreeCanvas		equ	0xC
 SetCanvas		equ	0x48
 ClearClipRectColor		equ	0xB9
 FillRect		equ	0x136
-F038_019C		equ	0x19C
+AllocCanvas		equ	0x19C
 UseCurrentPage		equ	0x1A6
 DrawRawBody		equ	0x75A
 SaveCharTab		equ	0xC7A

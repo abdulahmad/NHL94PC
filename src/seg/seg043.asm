@@ -11,7 +11,7 @@ SegStart_15ED2:
 	retf
 	db	0x90, 0x90, 0x90
 
-F043_000E:
+FileCanOpen:
 	enter	0xa, 0x0
 	lea	ax, [bp - 0x6]
 	push	ax

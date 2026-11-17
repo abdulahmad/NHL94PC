@@ -3,7 +3,7 @@
 	add	sp, 0x8
 	retf
 
-F038_0006:
+AllocLinearCanvas:
 	enter	0x18, 0x0
 	push	bx
 	push	dx
@@ -26,7 +26,7 @@ F038_0006:
 	push	ax
 	push	word 0x740a
 	mov	[bp - 0x10], ax
-	call	0x14DB:F034_0013
+	call	0x14DB:InsertRecWrap
 	add	sp, 0x8
 	mov	es, dx
 	db	0x8B, 0xD8		; mov bx, ax
@@ -175,7 +175,7 @@ F038_0006:
 	retf
 	db	0x90
 
-F038_019C:
+AllocCanvas:
 	enter	0x1c, 0x0
 	push	ax
 	push	di
@@ -207,7 +207,7 @@ F038_019C:
 	push	dx
 	push	ax
 	push	word 0x754e
-	call	0x14DB:F034_0030
+	call	0x14DB:AllocRecData
 	add	sp, 0x8
 	mov	cl, 0x2
 	db	0x8B, 0xD8		; mov bx, ax

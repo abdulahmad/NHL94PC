@@ -20,7 +20,7 @@ F051_000E:
 	mov	ds, ax
 	push	0x0
 	push	word [bp + 0x6]
-	call	0x14B8:F033_001A
+	call	0x14B8:LoadPackedHeader0
 	add	sp, 0x4
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x6], dx
@@ -33,7 +33,7 @@ F051_000E:
 	add	sp, 0x6
 	push	0x0
 	push	word 0x9046
-	call	0x14B8:F033_001A
+	call	0x14B8:LoadPackedHeader0
 	add	sp, 0x4
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x6], dx

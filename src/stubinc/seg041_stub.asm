@@ -3,12 +3,12 @@
 	bits	16
 	org	0x0
 DrawTextCenteredInWindow		equ	0x2
-F044_0002		equ	0x2
-F029_0004		equ	0x4
-F035_000C		equ	0xC
+FindNearestColor		equ	0x2
+DrawFrame		equ	0x4
+FreeCanvas		equ	0xC
 SetCanvas		equ	0x48
 FillRect		equ	0x136
-F038_019C		equ	0x19C
+AllocCanvas		equ	0x19C
 UseCurrentPage		equ	0x1A6
 WaitAdd		equ	0x250
 NullFar5		equ	0x3E2

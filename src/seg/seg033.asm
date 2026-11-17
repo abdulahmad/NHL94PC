@@ -8,33 +8,33 @@ SegStart_14B80:
 	retf
 	db	0x90
 
-F033_0008:
+LoadPackedHeader:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	0x1
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
-	call	0x14B8:F033_002C
+	call	0x14B8:LoadPackedHeaderMode
 	leave
 	retf
 
-F033_001A:
+LoadPackedHeader0:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	0x0
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
-	call	0x14B8:F033_002C
+	call	0x14B8:LoadPackedHeaderMode
 	leave
 	retf
 
-F033_002C:
+LoadPackedHeaderMode:
 	enter	0x4, 0x0
 	push	si
 	push	word [bp + 0xa]
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
-	call	0x14B8:F033_0082
+	call	0x14B8:LoadPackedMode
 	add	sp, 0x6
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x2], dx
@@ -53,27 +53,27 @@ F033_002C:
 	leave
 	retf
 
-F033_005E:
+LoadPacked:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	0x1
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
-	call	0x14B8:F033_0082
+	call	0x14B8:LoadPackedMode
 	leave
 	retf
 
-F033_0070:
+LoadPacked0:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	0x0
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
-	call	0x14B8:F033_0082
+	call	0x14B8:LoadPackedMode
 	leave
 	retf
 
-F033_0082:
+LoadPackedMode:
 	enter	0x1a, 0x0
 	push	di
 	push	si
@@ -111,7 +111,7 @@ F033_0082:
 	push	word [bp - 0x14]
 	push	word [bp - 0x16]
 	push	word [bp - 0xe]
-	call	0x14B8:F033_01E0
+	call	0x14B8:ReadPackedSize
 	add	sp, 0x8
 	mov	[bp - 0x8], ax
 	mov	[bp - 0x6], dx
@@ -213,7 +213,7 @@ F033_0082:
 	leave
 	retf
 
-F033_01E0:
+ReadPackedSize:
 	enter	0xc, 0x0
 	push	word [bp + 0xc]
 	lea	ax, [bp - 0xc]

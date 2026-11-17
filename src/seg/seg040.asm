@@ -6,7 +6,7 @@
 	leave
 	retf
 
-F040_000C:
+CalibrateRetrace:
 	enter	0x2, 0x0
 	push	di
 	push	si

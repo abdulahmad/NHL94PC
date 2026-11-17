@@ -22,7 +22,7 @@ LoadTeamPalettes:
 	mov	[bp - 0x8], cx
 	push	0x0
 	push	word 0x9c6
-	call	0x149D:F032_0002
+	call	0x149D:LoadRawHeader
 	add	sp, 0x4
 	mov	[bp - 0x28], ax
 	mov	[bp - 0x26], dx
@@ -63,7 +63,7 @@ LoadTeamPalettes:
 	add	sp, 0x4
 	push	0x0
 	push	word 0x9d3
-	call	0x149D:F032_0002
+	call	0x149D:LoadRawHeader
 	add	sp, 0x4
 	mov	[bp - 0x28], ax
 	mov	[bp - 0x26], dx
@@ -127,7 +127,7 @@ LoadTeamPalettes:
 	push	0x0
 	lea	ax, [bp - 0x24]
 	push	ax
-	call	0x14B8:F033_0008
+	call	0x14B8:LoadPackedHeader
 	add	sp, 0x4
 	mov	[bp - 0x28], ax
 	mov	[bp - 0x26], dx

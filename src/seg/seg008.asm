@@ -202,7 +202,7 @@ InitSpeechBank:
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	push	word 0x76e
-	call	0x14DB:F034_0013
+	call	0x14DB:InsertRecWrap
 	add	sp, 0x8
 	les	bx, [g_8EF6]
 	mov	[es:bx + 0x1200], ax
@@ -289,7 +289,7 @@ SpeechInit:
 	push	0x0
 	push	0x34
 	push	word 0x778
-	call	0x14DB:F034_0030
+	call	0x14DB:AllocRecData
 	db	0x8B, 0xE5		; mov sp, bp
 	mov	[g_8EEA], ax
 	mov	[g_8EEC], dx
@@ -299,7 +299,7 @@ SpeechInit:
 	push	0x0
 	push	word 0x122c
 	push	word 0x781
-	call	0x14DB:F034_0030
+	call	0x14DB:AllocRecData
 	db	0x8B, 0xE5		; mov sp, bp
 	mov	[g_8EF6], ax
 	mov	[g_8EF8], dx
@@ -312,7 +312,7 @@ SpeechInit:
 	push	0x0
 	push	word 0x10c
 	push	word 0x78d
-	call	0x14DB:F034_0030
+	call	0x14DB:AllocRecData
 	db	0x8B, 0xE5		; mov sp, bp
 	mov	[g_8EF2], ax
 	mov	[g_8EF4], dx
@@ -440,7 +440,7 @@ MakePauseSample:
 	push	0x0
 	push	word 0x100
 	push	word 0x79c
-	call	0x14DB:F034_0013
+	call	0x14DB:InsertRecWrap
 	add	sp, 0x8
 	mov	[bp - 0x10], ax
 	mov	[bp - 0xe], dx

@@ -7,13 +7,13 @@ SegStart_14DB4:
 	leave
 	retf
 
-F034_000C:
+InsertRecWrap0:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	db	0x33, 0xC0		; xor ax, ax
-	jmp	short F034_0013.1
+	jmp	short InsertRecWrap.1
 
-F034_0013:
+InsertRecWrap:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, 0x1
@@ -28,19 +28,19 @@ F034_0013:
 	pop	bp
 	retf
 
-F034_0030:
+AllocRecData:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, 0x1
-	jmp	short F034_003F.1
+	jmp	short AllocRecDataMode.1
 
-F034_0038:
+AllocRecData0:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	db	0x33, 0xC0		; xor ax, ax
-	jmp	short F034_003F.1
+	jmp	short AllocRecDataMode.1
 
-F034_003F:
+AllocRecDataMode:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, [bp + 0xe]
@@ -62,13 +62,13 @@ F034_003F:
 	pop	bp
 	retf
 
-F034_006B:
+ResizeRec0:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	db	0x33, 0xC0		; xor ax, ax
-	jmp	short F034_0072.1
+	jmp	short ResizeRec1.1
 
-F034_0072:
+ResizeRec1:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, 0x1
@@ -84,21 +84,21 @@ F034_0072:
 	pop	bp
 	retf
 
-F034_0092:
+ResizeRecByName:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	add	sp, -0x2
 	mov	ax, 0x1
-	jmp	short F034_00A7.1
+	jmp	short ResizeRecByNameMode.1
 
-F034_009D:
+ResizeRecByName0:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	add	sp, -0x2
 	db	0x33, 0xC0		; xor ax, ax
-	jmp	short F034_00A7.1
+	jmp	short ResizeRecByNameMode.1
 
-F034_00A7:
+ResizeRecByNameMode:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	add	sp, -0x2
@@ -121,7 +121,7 @@ F034_00A7:
 	pop	bp
 	retf
 
-F034_00DB:
+InitHeap:
 	db	0x8B, 0xDC		; mov bx, sp
 	db	0x33, 0xC0		; xor ax, ax
 	mov	dx, 0xa
@@ -142,7 +142,7 @@ F034_00DB:
 	add	sp, 0xa
 	retf
 
-F034_0107:
+InitHeapArgs:
 	db	0x8B, 0xDC		; mov bx, sp
 	db	0x33, 0xC0		; xor ax, ax
 	push	ax
@@ -150,5 +150,5 @@ F034_0107:
 	push	word [bx + 0x8]
 	push	word [bx + 0x6]
 	push	word [bx + 0x4]
-	jmp	short F034_00DB.1
+	jmp	short InitHeap.1
 	db	0x8B, 0xDC, 0x33, 0xC0, 0xBA, 0x0A, 0x00, 0xFF

@@ -2,7 +2,7 @@
 	leave
 	retf
 
-F044_0002:
+FindNearestColor:
 	enter	0x30e, 0x0
 	push	dx
 	push	ax

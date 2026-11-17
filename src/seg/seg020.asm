@@ -762,7 +762,7 @@ ListDialog:
 	push	dx
 	push	ax
 	push	word 0x9fe
-	call	0x14DB:F034_0030
+	call	0x14DB:AllocRecData
 	add	sp, 0x8
 	mov	[bp - 0xc], ax
 	mov	[bp - 0xa], dx
@@ -1506,7 +1506,7 @@ SaveUnderBox:
 	push	dx
 	push	ax
 	push	word 0xa06
-	call	0x14DB:F034_0030
+	call	0x14DB:AllocRecData
 	add	sp, 0x8
 	mov	[0x9fa], ax
 	mov	[0x9fc], dx
@@ -1918,7 +1918,7 @@ MessageBoxLoop:
 	push	dx
 	push	ax
 	push	word 0xa0b
-	call	0x14DB:F034_0030
+	call	0x14DB:AllocRecData
 	add	sp, 0x8
 	mov	[bp - 0x18], ax
 	mov	[bp - 0x16], dx

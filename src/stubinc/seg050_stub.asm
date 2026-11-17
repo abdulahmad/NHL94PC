@@ -2,10 +2,10 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
-F032_0002		equ	0x2
-F034_0030		equ	0x30
+LoadRawHeader		equ	0x2
+AllocRecData		equ	0x30
 F049_003C		equ	0x3C
-F032_0058		equ	0x58
+LoadRaw		equ	0x58
 F055_00A0		equ	0xA0
 F051_0110		equ	0x110
 F051_0178		equ	0x178

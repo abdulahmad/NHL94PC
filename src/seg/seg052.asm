@@ -54,7 +54,7 @@ F052_0032:
 	push	ax
 	push	word [bp + 0xa]
 	push	di
-	call	0x14DB:F034_0092
+	call	0x14DB:ResizeRecByName
 	add	sp, 0x8
 	mov	word [bp - 0x2], 0x0
 	mov	bx, [bp - 0x2]

@@ -6,7 +6,7 @@
 	retf
 	db	0x90
 
-F047_0008:
+CopyBytesFar:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	di

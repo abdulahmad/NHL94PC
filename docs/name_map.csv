@@ -1210,3 +1210,70 @@ seg028:46A8,SetCanvasClip,F028_46A8,new,medium,sets a canvas record's clip recta
 seg028:472A,RemapShapeBank,F028_472A,new,low,remaps every shape in a bank through a table,src/seg/seg028.asm
 seg028:4782,ConvertShapeBank,F028_4782,new,low,converts the shapes of a bank in place,src/seg/seg028.asm
 seg028:48D2,FillPolySpans,F028_48D2,new,medium,fills a list of spans,src/seg/seg028.asm
+seg029:0000,NullFar8,F029_0000,new,high,a lone retf,src/seg/seg029.asm
+seg029:0004,DrawFrame,F029_0004,new,medium,draws a rectangle outline with four FillRectClip calls,src/seg/seg029.asm
+seg030:0004,LargestFreeBlock,F030_0004,new,low,walks the far heap list and returns the largest gap,src/seg/seg030.asm
+seg031:0002,DrawThickLine,F031_0002,new,low,builds a quad around a line from Atan2 and AngleTab,src/seg/seg031.asm
+seg032:0000,NullFar9,F032_0000,new,high,a lone retf,src/seg/seg032.asm
+seg032:0002,LoadRawHeader,F032_0002,new,low,LoadRawHeaderMode with mode 1,src/seg/seg032.asm
+seg032:0014,LoadRawHeader0,F032_0014,new,low,LoadRawHeaderMode with mode 0,src/seg/seg032.asm
+seg032:0026,LoadRawHeaderMode,F032_0026,new,medium,"LoadRawMode, then returns the first dword of the data",src/seg/seg032.asm
+seg032:0058,LoadRaw,F032_0058,new,low,LoadRawMode with mode 1,src/seg/seg032.asm
+seg032:006A,LoadRaw0,F032_006A,new,low,LoadRawMode with mode 0,src/seg/seg032.asm
+seg032:007C,LoadRawMode,F032_007C,new,medium,"reads an unpacked file (.esh, .vsh and others) into a heap record, EMS aware",src/seg/seg032.asm
+seg033:0008,LoadPackedHeader,F033_0008,new,low,LoadPackedHeaderMode with mode 1,src/seg/seg033.asm
+seg033:001A,LoadPackedHeader0,F033_001A,new,low,LoadPackedHeaderMode with mode 0,src/seg/seg033.asm
+seg033:002C,LoadPackedHeaderMode,F033_002C,new,medium,"LoadPackedMode, then returns the first dword of the data",src/seg/seg033.asm
+seg033:005E,LoadPacked,F033_005E,new,low,LoadPackedMode with mode 1,src/seg/seg033.asm
+seg033:0070,LoadPacked0,F033_0070,new,low,LoadPackedMode with mode 0,src/seg/seg033.asm
+seg033:0082,LoadPackedMode,F033_0082,new,medium,"reads and unpacks a packed file (.qns, .pns, .qvs, .pvs, .qes, .pes)",src/seg/seg033.asm
+seg033:01E0,ReadPackedSize,F033_01E0,new,medium,reads the 8-byte header and builds the 24-bit unpacked size,src/seg/seg033.asm
+seg034:000C,InsertRecWrap0,F034_000C,new,low,InsertRec with mode 0,src/seg/seg034.asm
+seg034:0013,InsertRecWrap,F034_0013,new,low,InsertRec with mode 1,src/seg/seg034.asm
+seg034:0030,AllocRecData,F034_0030,new,low,"InsertRec mode 1, returns the record's data pointer",src/seg/seg034.asm
+seg034:0038,AllocRecData0,F034_0038,new,low,"InsertRec mode 0, returns the record's data pointer",src/seg/seg034.asm
+seg034:003F,AllocRecDataMode,F034_003F,new,low,"InsertRec with explicit mode, returns the data pointer",src/seg/seg034.asm
+seg034:006B,ResizeRec0,F034_006B,new,low,ResizeRec with mode 0,src/seg/seg034.asm
+seg034:0072,ResizeRec1,F034_0072,new,low,ResizeRec with mode 1,src/seg/seg034.asm
+seg034:0092,ResizeRecByName,F034_0092,new,low,"FindRec then ResizeRec, mode 1",src/seg/seg034.asm
+seg034:009D,ResizeRecByName0,F034_009D,new,low,"FindRec then ResizeRec, mode 0",src/seg/seg034.asm
+seg034:00A7,ResizeRecByNameMode,F034_00A7,new,low,"FindRec then ResizeRec, explicit mode",src/seg/seg034.asm
+seg034:00DB,InitHeap,F034_00DB,new,medium,checks for a 286 (fatal error otherwise) then MakeChain,src/seg/seg034.asm
+seg034:0107,InitHeapArgs,F034_0107,new,low,InitHeap with caller arguments,src/seg/seg034.asm
+seg035:0000,InitHeapVariantTail,F035_0000,new,low,tail of a third InitHeap entry that starts in seg034,src/seg/seg035.asm
+seg035:000C,FreeCanvas,F035_000C,new,medium,"drops a canvas buffer's reference count, merges free neighbours, unlinks the record",src/seg/seg035.asm
+seg035:0092,SortPairs,F035_0092,new,medium,shell sort of a key array with a parallel value array,src/seg/seg035.asm
+seg035:00A0,SortPairsPass,F035_00A0,new,medium,SortPairs inner passes,src/seg/seg035.asm
+seg036:0000,SortPairsTail,F036_0000,new,medium,end of SortPairs,src/seg/seg036.asm
+seg036:000E,XorFrame,F036_000E,new,medium,XORs a rectangle outline with four XorRect calls,src/seg/seg036.asm
+seg037:0000,NullFar10,F037_0000,new,high,a lone retf,src/seg/seg037.asm
+seg037:0004,CalibrateStick,F037_0004,new,medium,"joystick calibration screen (needs a 64 KB gap, draws the target grid, waits for buttons)",src/seg/seg037.asm
+seg037:0232,CalibrateLeftStick,F037_0232,new,high,"CalibrateStick with the ""Left Joystick"" title",src/seg/seg037.asm
+seg037:0244,CalibrateRightStick,F037_0244,new,high,"CalibrateStick with the ""Right Joystick"" title",src/seg/seg037.asm
+seg038:0006,AllocLinearCanvas,F038_0006,new,medium,allocates w*h+30h bytes and fills a linear canvas record,src/seg/seg038.asm
+seg038:019C,AllocCanvas,F038_019C,new,medium,allocates a planar canvas (width/4 per plane) and fills its record,src/seg/seg038.asm
+seg039:0002,DrawTextCenteredClip,F039_0002,new,medium,centres a string between the clip left and right,src/seg/seg039.asm
+seg040:000C,CalibrateRetrace,F040_000C,new,medium,times vertical retraces and sets the retrace wait count g_7670,src/seg/seg040.asm
+seg041:0002,SaveBoxUnder,F041_0002,new,medium,GetBlockAt from the shown page,src/seg/seg041.asm
+seg041:0024,RestoreBoxUnder,F041_0024,new,medium,DrawRawAt back to the shown page,src/seg/seg041.asm
+seg041:0046,AskYesNoBox,F041_0046,new,medium,"centred box with a message, waits for Y or N",src/seg/seg041.asm
+seg041:0224,AskExitToDos,F041_0224,new,high,"AskYesNoBox with ""Exit to DOS (Y/N)""",src/seg/seg041.asm
+seg041:0240,PauseBox,F041_0240,new,medium,centred box with a message until a key or time-out,src/seg/seg041.asm
+seg041:0352,ShowPausedBox,F041_0352,new,high,"PauseBox with ""Pause: press any key to""",src/seg/seg041.asm
+seg042:0000,ShowPausedBoxTail,F042_0000,new,low,end of ShowPausedBox,src/seg/seg042.asm
+seg042:0004,BuildShapeBank,F042_0004,new,low,"sizes a shape table (LargestShapeSize, ShapeBankSize) and copies it to one block",src/seg/seg042.asm
+seg042:0134,LoadAssetMode,F042_0134,new,medium,"finds the file by trying the extension list, then loads it packed or raw by extension",src/seg/seg042.asm
+seg043:000E,FileCanOpen,F043_000E,new,medium,"opens and closes a file, returns 1 if it opened",src/seg/seg043.asm
+seg044:0002,FindNearestColor,F044_0002,new,medium,searches the palette for the smallest squared RGB distance,src/seg/seg044.asm
+seg045:000C,LargestShapeSize,F045_000C,new,medium,largest width*height+10h in a shape table,src/seg/seg045.asm
+seg046:0006,ShapeBankSize,F046_0006,new,medium,total size of a shape table's shapes and index,src/seg/seg046.asm
+seg047:0008,CopyBytesFar,F047_0008,new,low,byte copy loop,src/seg/seg047.asm
+seg048:000C,ShadeColor,F048_000C,new,medium,"scales one palette entry by the RGB factors, clamps to 3Fh, optional grey",src/seg/seg048.asm
+seg048:0180,BuildShadeTable,F048_0180,new,medium,"ShadeColor for every used colour, writes a 256-byte remap table",src/seg/seg048.asm
+seg048:01CC,BuildShadeTableEven,F048_01CC,new,medium,BuildShadeTable with one factor for all three channels,src/seg/seg048.asm
+seg048:01E8,MergeRemapTables,F048_01E8,new,low,combines two remap tables into the global one,src/seg/seg048.asm
+OpenResource,LoadAsset0,OpenResource,new,medium,LoadAssetMode with mode 0,src/seg/seg028.asm
+LoadResource,LoadAsset,LoadResource,new,medium,LoadAssetMode with mode 1,src/seg/seg028.asm
+LoadResourceHeader,LoadAssetHeader,LoadResourceHeader,new,medium,"LoadAssetMode mode 1, returns the first dword",src/seg/seg028.asm
+OpenResourceHeader,LoadAssetHeader0,OpenResourceHeader,new,medium,"LoadAssetMode mode 0, returns the first dword",src/seg/seg028.asm
+ResourceHeaderMode,LoadAssetHeaderMode,ResourceHeaderMode,new,medium,"LoadAssetMode with explicit mode, returns the first dword",src/seg/seg028.asm
