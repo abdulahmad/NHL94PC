@@ -1758,7 +1758,7 @@ g_8AE6,DebugWriteHook,g_8AE6,new,medium,debugger write hook,src/data/dgroup.asm
 g_8AE8,DebugExitHook,g_8AE8,new,medium,debugger exit hook,src/data/dgroup.asm
 g_8AEA,DebugTermHook,g_8AEA,new,medium,debugger termination hook,src/data/dgroup.asm
 g_8AF4,FpHook,g_8AF4,new,medium,floating-point hook,src/data/dgroup.asm
-g_8AF6,FpHookCount,g_8AF6,new,medium,number of floating-point hooks (0 skips),src/data/dgroup.asm
+g_8AF6,FpHookSeg,g_8AF6,new,high,"segment half of the FpHook far pointer (FpMath:18B9h), tested for 0",src/data/dgroup.asm
 g_8AF8,FpEnvArg1,g_8AF8,new,medium,first floating-point hook argument,src/data/dgroup.asm
 g_8AFC,FpEnvArg2,g_8AFC,new,medium,second floating-point hook argument,src/data/dgroup.asm
 g_8B08,DgroupSegA,g_8B08,new,medium,DGROUP paragraph (relocated),src/data/dgroup.asm

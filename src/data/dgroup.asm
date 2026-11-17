@@ -3056,9 +3056,9 @@ str_Uflag:                                      ; string 'uflag'
 str_Cflag:                                      ; string 'cflag'
         db 'cflag', 0x00
 replayptr:                                      ; replay record pointer (offset); used by AI, GAME, INIT
-        db 0xD8, 0x0D
+        dw hilightrec_frames + 2
 replayseg:                                      ; replay record pointer (segment); used by AI, GAME, INIT
-        db 0x0B, 0x3A
+        dw 0x3A0B
 puckx:                                          ; puck x position; used by AI, INIT, MENUS
         db 0x10, 0xBC
 puckvx:                                         ; puck x velocity; used by AI, MENUS
@@ -6100,7 +6100,8 @@ StackOverflowFn:                                ; alternate stack-overflow handl
                                                 ; __chkstk
         dd 0xFFFFFFFF
 StackLimit:                                     ; lowest allowed stack pointer; used by __chkstk, _stackavail
-        db 0x70, 0xE4, 0x00
+        dw StackBottom + 0x100
+        db 0x00
 CharTypes:                                      ; character type table (bit 4: digit); used by
                                                 ; NumberEntryDialog
         db '         (((((                  H', 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10
@@ -6130,8 +6131,12 @@ RandSeedHigh:                                   ; rand seed, high word; used by 
         db 0x00, 0x00
 FltCvtInit:                                     ; twelve words copied over FltCvtFn when floating point is
                                                 ; linked in (near pointers of the float format helpers)
-        db 0x98, 0x22, 0x00, 0x00, 0x8A, 0x1E, 0x00, 0x00, 0x26, 0x1F, 0x00, 0x00, 0x22, 0x1E, 0x00, 0x00
-        db 0xF8, 0x1E, 0x00, 0x00, 0x90, 0x26, 0x00, 0x00
+        dw FormatExp, 0x0000
+        dw ScanPoint, 0x0000
+        dw FormatFloat, 0x0000
+        dw ScanFloat, 0x0000
+        dw FloatLoad, 0x0000
+        dw FormatExp2, 0x0000
 MsgBannerHook:                                  ; far routine called before a runtime message; used by
                                                 ; __FF_MSGBANNER
         db 0x00, 0x00
@@ -6143,7 +6148,8 @@ DosErrnoTable:                                  ; errno value for each DOS error
         db 0x0D, 0x12, 0x02, 0xFF
 _iob:                                           ; stream table (8 bytes each: ptr, count, base, flag, file),
                                                 ; stdin first; used by FlushAll
-        db 0x5E, 0xE1, 0x00, 0x00, 0x5E, 0xE1, 0x01, 0x00
+        dw StdinBuf, 0x0000, StdinBuf
+        db 0x01, 0x00
 _iob_stdout:                                    ; stdout entry of _iob; used by printf, _flsbuf, _stbuf
         db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x01
 _iob_stderr:                                    ; stderr entry of _iob; used by _flsbuf, _stbuf
@@ -6391,18 +6397,19 @@ DebugTermHook:                                  ; debugger termination hook; use
         dw SortPairsTail, 0x1500
         db 0x34, 0x00, 0x00
 FpHook:                                         ; floating-point hook; used by InitRuntime, ExitRestore
-        db 0x3A, 0x00
-FpHookCount:                                    ; number of floating-point hooks (0 skips); used by
-                                                ; InitRuntime, ExitRestore
+        dw FpMath
+FpHookSeg:                                      ; segment of FpHook (the emulator), 0 when floating point is
+                                                ; not linked in (the hooks are skipped); used by InitRuntime,
+                                                ; ExitRestore
         dw 0x18B9
 FpEnvArg1:                                      ; first floating-point hook argument; used by InitRuntime
-        db 0x69, 0x01, 0x96, 0x39
+        dw FpStack + 0xC0, 0x3996
 FpEnvArg2:                                      ; second floating-point hook argument; used by InitRuntime
-        db 0x12, 0x23, 0x00, 0x00
+        dw FpError, 0x0000
 InitTable:                                      ; C initializer table (one far pointer), run by InitRuntime
-        db 0xF8, 0x15, 0x00, 0x00
+        dw CopyTemplate, 0x0000
 PreTermTable:                                   ; C pre-terminator table (one far pointer), run by ExitCommon
-        db 0x9E, 0x27, 0x00, 0x00
+        dw _flushall, 0x0000
 TermTable:                                      ; C terminator table (empty: it ends where it starts); run by
                                                 ; ExitCommon
 DgroupSegA:                                     ; DGROUP paragraph (relocated); main loads it into es

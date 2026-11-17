@@ -1644,8 +1644,11 @@ VoiceListEnd:                                   ; end of the voice lists; used b
 VoiceListEndSeg:                                ; end of the voice lists, segment; used by InitVoiceLists,
                                                 ; PrepareSong
         resb 2
-VoiceListFlags:                                 ; voice list flags; used by InitVoiceLists, PrepareSong
-        resb 582
+VoiceListFlags:                                 ; voice list flags (50 bytes, the last 12 unused); used by
+                                                ; InitVoiceLists, PrepareSong
+        resb 0x3E
+StdinBuf:                                       ; stdin buffer of _iob (512 bytes, then 8 unused bytes)
+        resb 0x208
 savedteam1:                                     ; saved team byte; used by AI, INIT, LP
         resb 1
 savedteam2:                                     ; saved team byte; used by AI, INIT, LP

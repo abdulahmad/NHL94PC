@@ -10,11 +10,13 @@ str_Penalties_2		equ	0x17
 str_FaceoffsWon		equ	0x21
 str_BodyChecks		equ	0x2E
 str_AttackZone		equ	0x3A
+FpMath		equ	0x3A
 str_Passing_2		equ	0x46
 str_YourTeamHasBeenEliminated		equ	0x63
 str_ConfirmDeletionOfThe		equ	0x80
 str_FromThePlayOffsDo		equ	0x81
 str_WishToSeeTheFinal		equ	0x9C
+FpStack		equ	0xA9
 str_OfThePlayOffs		equ	0xBA
 str_The		equ	0xCC
 str_HaveBeenEliminatedFrom		equ	0xE6
@@ -35,12 +37,21 @@ str_AwayGoalie1Text		equ	0x232
 str_AwayGoalie2Text		equ	0x24B
 str_AwayGoalieNone		equ	0x264
 RetZero		equ	0x734
+hilightrec_frames		equ	0xDD6
+CopyTemplate		equ	0x15F8
 DrawRleFlipAt		equ	0x1637
 ReadKey		equ	0x16D3
 DrawRleTransAt		equ	0x1857
 DrawRleTransFastAt		equ	0x1C71
+ScanFloat		equ	0x1E22
+ScanPoint		equ	0x1E8A
+FloatLoad		equ	0x1EF8
+FormatFloat		equ	0x1F26
 DrawRleTransRemapAt		equ	0x2183
+FormatExp		equ	0x2298
+FpError		equ	0x2312
 DrawRleFlipTransAt		equ	0x2481
+FormatExp2		equ	0x2690
 CmpGAAThunk		equ	0x26E3
 CmpTeamDefenseThunk		equ	0x26F7
 CmpTeamPKThunk		equ	0x2701
@@ -59,6 +70,7 @@ assbenchsideThunk		equ	0x2779
 assboxenterThunk		equ	0x2783
 assbenchwaitThunk		equ	0x278D
 assleaveboxThunk		equ	0x2797
+_flushall		equ	0x279E
 asstakepositionThunk		equ	0x27A1
 assintrolineThunk		equ	0x27AB
 assintrostandThunk		equ	0x27B5
@@ -105,4 +117,6 @@ NullGameHookThunk		equ	0x2A49
 DrawRleFlipRemapAt		equ	0x2D5F
 DrawRleTransRemapFastAt		equ	0x2FBB
 AwardScores		equ	0xC806
+StdinBuf		equ	0xE15E
+StackBottom		equ	0xE370
 %include "data/dgroup.asm"

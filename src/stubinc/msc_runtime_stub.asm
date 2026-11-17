@@ -4,8 +4,8 @@
 	org	0x0
 NullStartup4		equ	0x4
 NullStartup6		equ	0x6
-_main		equ	0x8
 SpillRet		equ	0x8
+_main		equ	0x8
 ScreenRowStride		equ	0x8FC
 CurPage		equ	0x74DC
 TopOfStack		equ	0x8516
@@ -91,7 +91,7 @@ DebugWriteHook		equ	0x8AE6
 DebugExitHook		equ	0x8AE8
 DebugTermHook		equ	0x8AEA
 FpHook		equ	0x8AF4
-FpHookCount		equ	0x8AF6
+FpHookSeg		equ	0x8AF6
 FpEnvArg1		equ	0x8AF8
 FpEnvArg2		equ	0x8AFC
 InitTable		equ	0x8B00

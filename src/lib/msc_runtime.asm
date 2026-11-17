@@ -944,7 +944,7 @@ InitRuntime:
         int 0x21
         push ss
         pop ds
-        mov cx, word [FpHookCount]              ; count of floating-point environment hooks; 0 skips them
+        mov cx, word [FpHookSeg]                ; segment of the floating-point hook; 0 skips it
         jcxz .nofp
         mov es, word [__psp]
         mov si, word [es:PspEnvSeg]             ; environment segment from the PSP
@@ -1136,7 +1136,7 @@ ExitCommon:
 ; Near, no arguments.
 ;-----------------------------------------------------------------------------
 ExitRestore:
-        mov cx, word [FpHookCount]              ; put interrupt 0 back
+        mov cx, word [FpHookSeg]                ; put interrupt 0 back
         jcxz .nomathexit
         mov bx, 2
         call far [FpHook]
