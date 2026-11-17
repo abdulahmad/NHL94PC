@@ -714,6 +714,7 @@ str_Lineditp_5		equ	0xBA2
 str_Lockrm		equ	0x1166
 str_LpGameSav		equ	0xECC
 str_Lp_2		equ	0xF39
+str_Lp_4		equ	0xEE2
 str_Menubuff_10		equ	0xBC1
 str_Menubuff_7		equ	0x1573
 str_Menubuff_8		equ	0x1506

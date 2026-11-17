@@ -2,15 +2,15 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
-SortPairsTail		equ	0x0
 str_Score		equ	0x0
+SortPairsTail		equ	0x0
 str_Shots_5		equ	0x6
 str_PowerPlay_3		equ	0xC
 str_Penalties_2		equ	0x17
 str_FaceoffsWon		equ	0x21
 str_BodyChecks		equ	0x2E
-FpMath		equ	0x3A
 str_AttackZone		equ	0x3A
+FpMath		equ	0x3A
 str_Passing_2		equ	0x46
 str_YourTeamHasBeenEliminated		equ	0x63
 str_ConfirmDeletionOfThe		equ	0x80
