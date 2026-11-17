@@ -218,7 +218,7 @@ DrawText:
 	push	ds
 	push	si
 	push	di
-	mov	ds, [0x6d50]
+	mov	ds, [CharSeg]
 	mov	ax, [bp + 0x8]
 	mov	[0x8], ax
 	mov	ax, [bp + 0xa]
@@ -232,10 +232,10 @@ DrawTextAt:
 	push	ds
 	push	si
 	push	di
-	mov	ds, [0x6d50]
+	mov	ds, [CharSeg]
 .1:
 	cld
-	mov	es, [ss:0x74e4]
+	mov	es, [ss:g_74E4]
 .2:
 	mov	si, [bp + 0x6]
 	mov	bl, [ss:si]
@@ -307,7 +307,7 @@ DrawTextAt:
 	mov	[bp - 0x4], cx
 	mov	bx, [0xa]
 	db	0x03, 0xDB		; add bx, bx
-	add	bx, [ss:0x74ec]
+	add	bx, [ss:g_74EC]
 .9:
 	mov	di, [ss:bx]
 	add	di, [bp - 0x6]
@@ -364,7 +364,7 @@ DrawTextAt:
 	mov	[bp - 0x4], cx
 	mov	bx, [0xa]
 	db	0x03, 0xDB		; add bx, bx
-	add	bx, [ss:0x74ec]
+	add	bx, [ss:g_74EC]
 .19:
 	mov	di, [ss:bx]
 	add	di, [bp - 0x6]
@@ -557,7 +557,7 @@ GetRemapTable:
 	les	di, [bp + 0x6]
 	mov	si, 0x730a
 	cld
-	mov	cx, 0x80
+	mov	cx, str_Que
 	rep	movsw
 	pop	di
 	pop	si
@@ -636,10 +636,10 @@ PutBlockBody:
 	mov	cx, [si + 0x2]
 	lea	di, [si + 0x10]
 	db	0x8B, 0xC3		; mov ax, bx
-	cmp	ax, [ss:0x74f2]
+	cmp	ax, [ss:g_74F2]
 	jl	short .3
 	db	0x03, 0xC1		; add ax, cx
-	sub	ax, [ss:0x74f4]
+	sub	ax, [ss:g_74F4]
 	jng	short .4
 	inc	byte [bp - 0x25]
 	db	0x2B, 0xC8		; sub cx, ax
@@ -651,7 +651,7 @@ PutBlockBody:
 	leave
 	retf
 .3:
-	mov	bx, [ss:0x74f2]
+	mov	bx, [ss:g_74F2]
 	db	0x03, 0xC1		; add ax, cx
 	db	0x2B, 0xC3		; sub ax, bx
 	jng	short .2
@@ -662,7 +662,7 @@ PutBlockBody:
 	db	0x03, 0xF8		; add di, ax
 	db	0x8B, 0xC3		; mov ax, bx
 	db	0x03, 0xC1		; add ax, cx
-	sub	ax, [ss:0x74f4]
+	sub	ax, [ss:g_74F4]
 	jng	short .4
 	db	0x2B, 0xC8		; sub cx, ax
 	jng	short .2
@@ -678,10 +678,10 @@ PutBlockBody:
 	mov	[bp - 0x22], dx
 	mov	bx, [bp - 0x2]
 	db	0x8B, 0xC3		; mov ax, bx
-	cmp	ax, [ss:0x74fc]
+	cmp	ax, [ss:g_74FC]
 	jl	short .5
 	db	0x03, 0xC1		; add ax, cx
-	sub	ax, [ss:0x74fe]
+	sub	ax, [ss:g_74FE]
 	jng	short .8
 	inc	byte [bp - 0x25]
 	db	0x2B, 0xC8		; sub cx, ax
@@ -689,7 +689,7 @@ PutBlockBody:
 	db	0x8B, 0xD0		; mov dx, ax
 	jmp	short .8
 .5:
-	mov	bx, [ss:0x74fc]
+	mov	bx, [ss:g_74FC]
 	db	0x03, 0xC1		; add ax, cx
 	db	0x2B, 0xC3		; sub ax, bx
 .6:
@@ -701,7 +701,7 @@ PutBlockBody:
 	shr	di, 1
 	shr	di, 1
 	add	[bp - 0x18], di
-	mov	di, [ss:0x74fe]
+	mov	di, [ss:g_74FE]
 	db	0x2B, 0xFB		; sub di, bx
 	jng	short .6
 	db	0x3B, 0xC7		; cmp ax, di
@@ -715,7 +715,7 @@ PutBlockBody:
 	db	0x0B, 0xC9		; or cx, cx
 	jng	short .6
 	mov	[bp - 0x8], dx
-	mov	ax, [ss:0x74f6]
+	mov	ax, [ss:g_74F6]
 	db	0x2B, 0xC1		; sub ax, cx
 	mov	[bp - 0x12], ax
 	cmp	byte [bp - 0x25], 0x0
@@ -739,7 +739,7 @@ PutBlockBody:
 	mov	[bp - 0x20], ax
 	mov	di, [bp - 0xa]
 	shl	di, 1
-	add	di, [ss:0x74ec]
+	add	di, [ss:g_74EC]
 	mov	di, [ss:di]
 	db	0x8B, 0xC3		; mov ax, bx
 	shr	ax, 1
@@ -751,7 +751,7 @@ PutBlockBody:
 	add	bx, [bp - 0x20]
 	and	bx, 0x3
 	mov	word [bp - 0x1a], 0x4
-	mov	ax, [ss:0x74e4]
+	mov	ax, [ss:g_74E4]
 	cmp	ax, 0xa000
 	jz	short .10
 	jmp	near .14
@@ -785,7 +785,7 @@ PutBlockBody:
 	db	0x2B, 0xCA		; sub cx, dx
 	jng	short .13
 	mov	[bp - 0x4], cx
-	mov	bx, [ss:0x74f6]
+	mov	bx, [ss:g_74F6]
 	db	0x2B, 0xD9		; sub bx, cx
 	add	ax, [bp - 0x22]
 	shr	ax, 1
@@ -838,7 +838,7 @@ PutBlockBody:
 	db	0x2B, 0xCA		; sub cx, dx
 	jng	short .17
 	mov	[bp - 0x4], cx
-	mov	bx, [ss:0x74f6]
+	mov	bx, [ss:g_74F6]
 	db	0x2B, 0xD9		; sub bx, cx
 	add	ax, [bp - 0x22]
 	shr	ax, 1
@@ -931,7 +931,7 @@ DrawRawBody:
 	mov	[bp - 0x10], ax
 	mov	ax, [si]
 	mov	[bp - 0x4], ax
-	mov	bx, [ss:0x74f6]
+	mov	bx, [ss:g_74F6]
 	db	0x2B, 0xD8		; sub bx, ax
 	mov	[bp - 0x12], bx
 	mov	bx, [bp - 0x2]
@@ -940,7 +940,7 @@ DrawRawBody:
 	shr	ax, 1
 	mov	[bp - 0x2], ax
 	and	bx, 0x3
-	mov	ax, [ss:0x74e4]
+	mov	ax, [ss:g_74E4]
 	cmp	ax, 0xa000
 	jnz	short .5
 	mov	es, ax
@@ -959,7 +959,7 @@ DrawRawBody:
 	out	dx, ax
 	mov	bx, [bp - 0xa]
 	shl	bx, 1
-	add	bx, [ss:0x74ec]
+	add	bx, [ss:g_74EC]
 	mov	di, [ss:bx]
 	add	di, [bp - 0x2]
 	mov	dx, [bp - 0x10]
@@ -993,7 +993,7 @@ DrawRawBody:
 	mov	es, [ss:bx + 0x74e4]
 	mov	di, [bp - 0xa]
 	shl	di, 1
-	add	di, [ss:0x74ec]
+	add	di, [ss:g_74EC]
 	mov	di, [ss:di]
 	add	di, [bp - 0x2]
 	mov	ax, [bp - 0x10]
@@ -1075,10 +1075,10 @@ DrawRleBody:
 	mov	bx, [bp - 0x4]
 	mov	cx, [si + 0x2]
 	db	0x8B, 0xC3		; mov ax, bx
-	cmp	ax, [ss:0x74f2]
+	cmp	ax, [ss:g_74F2]
 	jl	short .3
 	db	0x03, 0xC1		; add ax, cx
-	sub	ax, [ss:0x74f4]
+	sub	ax, [ss:g_74F4]
 	jng	short .4
 	inc	di
 	db	0x2B, 0xC8		; sub cx, ax
@@ -1091,7 +1091,7 @@ DrawRleBody:
 	retf
 .3:
 	inc	di
-	mov	bx, [ss:0x74f2]
+	mov	bx, [ss:g_74F2]
 	db	0x03, 0xC1		; add ax, cx
 	db	0x2B, 0xC3		; sub ax, bx
 	jng	short .2
@@ -1101,7 +1101,7 @@ DrawRleBody:
 	db	0x8B, 0xD0		; mov dx, ax
 	db	0x8B, 0xC3		; mov ax, bx
 	db	0x03, 0xC1		; add ax, cx
-	sub	ax, [ss:0x74f4]
+	sub	ax, [ss:g_74F4]
 	jng	short .4
 	db	0x2B, 0xC8		; sub cx, ax
 	jng	short .2
@@ -1117,10 +1117,10 @@ DrawRleBody:
 	mov	cx, [bp - 0x6]
 	db	0x03, 0xC9		; add cx, cx
 	db	0x03, 0xC9		; add cx, cx
-	cmp	ax, [ss:0x74fc]
+	cmp	ax, [ss:g_74FC]
 	jl	short .5
 	db	0x03, 0xC1		; add ax, cx
-	sub	ax, [ss:0x74fe]
+	sub	ax, [ss:g_74FE]
 	jng	short .7
 	db	0x2B, 0xC8		; sub cx, ax
 	jng	short .2
@@ -1129,14 +1129,14 @@ DrawRleBody:
 	jmp	short .7
 .5:
 	inc	di
-	mov	bx, [ss:0x74fc]
+	mov	bx, [ss:g_74FC]
 	db	0x03, 0xC1		; add ax, cx
 	db	0x2B, 0xC3		; sub ax, bx
 	jng	short .2
 	db	0x8B, 0xF1		; mov si, cx
 	db	0x2B, 0xF0		; sub si, ax
 	add	[bp - 0x16], si
-	mov	si, [ss:0x74fe]
+	mov	si, [ss:g_74FE]
 	db	0x2B, 0xF3		; sub si, bx
 	db	0x3B, 0xC6		; cmp ax, si
 	jl	short .6
@@ -1154,7 +1154,7 @@ DrawRleBody:
 .8:
 	mov	di, [bp - 0x4]
 	shl	di, 1
-	add	di, [ss:0x74ec]
+	add	di, [ss:g_74EC]
 	mov	ax, [bp - 0x2]
 	db	0x8B, 0xD8		; mov bx, ax
 	shr	ax, 1
@@ -1169,7 +1169,7 @@ DrawRleBody:
 	db	0x03, 0xD8		; add bx, ax
 	and	bx, 0x3
 	mov	word [bp - 0x10], 0x4
-	mov	ax, [ss:0x74e4]
+	mov	ax, [ss:g_74E4]
 	cmp	ax, 0xa000
 	jnz	short .9
 	jmp	near .32
@@ -1197,7 +1197,7 @@ DrawRleBody:
 	db	0x2B, 0xD8		; sub bx, ax
 	jng	short .12
 	mov	[bp - 0x1a], bx
-	mov	ax, [ss:0x74f6]
+	mov	ax, [ss:g_74F6]
 	db	0x2B, 0xC3		; sub ax, bx
 	mov	[bp - 0xc], ax
 	mov	ax, [bp - 0x1c]
@@ -1363,7 +1363,7 @@ DrawRleBody:
 	db	0x2B, 0xD8		; sub bx, ax
 	jng	short .35
 	mov	[bp - 0x1a], bx
-	mov	ax, [ss:0x74f6]
+	mov	ax, [ss:g_74F6]
 	db	0x2B, 0xC3		; sub ax, bx
 	mov	[bp - 0xc], ax
 	mov	ax, [bp - 0x1c]
@@ -1559,7 +1559,7 @@ DrawRleFastHere:
 
 DrawRleFastBody:
 	mov	ax, [bp - 0x6]
-	mov	dx, [ss:0x74f6]
+	mov	dx, [ss:g_74F6]
 	db	0x2B, 0xD0		; sub dx, ax
 	mov	[bp - 0xc], dx
 	mov	bx, [bp - 0x2]
@@ -1570,11 +1570,11 @@ DrawRleFastBody:
 	and	bx, 0x3
 	mov	di, [bp - 0x4]
 	shl	di, 1
-	add	di, [ss:0x74ec]
+	add	di, [ss:g_74EC]
 	mov	ax, [bp - 0x2]
 	add	ax, [ss:di]
 	mov	[bp - 0xe], ax
-	mov	ax, [ss:0x74e4]
+	mov	ax, [ss:g_74E4]
 	cmp	ax, 0xa000
 	jz	short .1
 	cmp	word [bp - 0xc], 0x0
@@ -1687,7 +1687,7 @@ DrawRleFastBody:
 	jmp	short .10
 .16:
 	mov	si, [bp - 0xa]
-	mov	es, [ss:0x74e4]
+	mov	es, [ss:g_74E4]
 	mov	dx, 0x3c4
 	mov	byte [bp - 0x17], 0x1
 .17:
@@ -1723,7 +1723,7 @@ DrawRleFastBody:
 	jmp	short .18
 .22:
 	mov	si, [bp - 0xa]
-	mov	es, [ss:0x74e4]
+	mov	es, [ss:g_74E4]
 	mov	ah, [ss:bx + 0x7434]
 	mov	[bp - 0x17], ah
 .23:
@@ -1796,10 +1796,10 @@ DrawText2:
 	push	si
 	push	di
 	mov	ax, [bp + 0x6]
-	mov	[0x7438], al
+	mov	[g_7438], al
 	mov	ax, 0x7438
 	mov	[bp + 0x6], ax
-	mov	ds, [0x6d50]
+	mov	ds, [CharSeg]
 	mov	ax, [bp + 0x8]
 	mov	[0x8], ax
 	mov	ax, [bp + 0xa]
@@ -1813,7 +1813,7 @@ DrawChar:
 	push	ds
 	push	si
 	push	di
-	mov	ds, [0x6d50]
+	mov	ds, [CharSeg]
 	mov	ax, [bp + 0x8]
 	mov	[0x8], ax
 	mov	ax, [bp + 0xa]
@@ -1823,7 +1823,7 @@ DrawChar:
 	db	0x8E, 0x1E, 0x50, 0x6D
 .1:
 	cld
-	mov	es, [ss:0x74e4]
+	mov	es, [ss:g_74E4]
 .2:
 	mov	si, [bp + 0x6]
 	mov	bl, [ss:si]
@@ -1895,7 +1895,7 @@ DrawChar:
 	mov	[bp - 0x4], cx
 	mov	bx, [0xa]
 	db	0x03, 0xDB		; add bx, bx
-	add	bx, [ss:0x74ec]
+	add	bx, [ss:g_74EC]
 .9:
 	mov	di, [ss:bx]
 	add	di, [bp - 0x6]
@@ -1976,7 +1976,7 @@ DrawChar:
 	mov	[bp - 0x4], cx
 	mov	bx, [0xa]
 	db	0x03, 0xDB		; add bx, bx
-	add	bx, [ss:0x74ec]
+	add	bx, [ss:g_74EC]
 .22:
 	mov	di, [ss:bx]
 	add	di, [bp - 0x6]
@@ -2253,9 +2253,9 @@ GetBlockBody:
 	mov	[bp - 0xc], ax
 	mov	bx, [bp - 0x4]
 	shl	bx, 1
-	add	bx, [ss:0x74ec]
+	add	bx, [ss:g_74EC]
 	mov	[bp - 0x6], bx
-	mov	ax, [ss:0x74e4]
+	mov	ax, [ss:g_74E4]
 	cmp	ax, 0xa000
 	jnz	short .4
 	mov	ds, ax
@@ -2471,10 +2471,10 @@ DrawRawTransBody:
 	mov	cx, [si + 0x2]
 	lea	di, [si + 0x10]
 	db	0x8B, 0xC3		; mov ax, bx
-	cmp	ax, [ss:0x74f2]
+	cmp	ax, [ss:g_74F2]
 	jl	short .3
 	db	0x03, 0xC1		; add ax, cx
-	sub	ax, [ss:0x74f4]
+	sub	ax, [ss:g_74F4]
 	jng	short .4
 	inc	byte [bp - 0x23]
 	db	0x2B, 0xC8		; sub cx, ax
@@ -2486,7 +2486,7 @@ DrawRawTransBody:
 	leave
 	retf
 .3:
-	mov	bx, [ss:0x74f2]
+	mov	bx, [ss:g_74F2]
 	db	0x03, 0xC1		; add ax, cx
 	db	0x2B, 0xC3		; sub ax, bx
 	jng	short .2
@@ -2497,7 +2497,7 @@ DrawRawTransBody:
 	db	0x03, 0xF8		; add di, ax
 	db	0x8B, 0xC3		; mov ax, bx
 	db	0x03, 0xC1		; add ax, cx
-	sub	ax, [ss:0x74f4]
+	sub	ax, [ss:g_74F4]
 	jng	short .4
 	db	0x2B, 0xC8		; sub cx, ax
 	jng	short .2
@@ -2513,10 +2513,10 @@ DrawRawTransBody:
 	mov	[bp - 0x1e], dx
 	mov	bx, [bp - 0x2]
 	db	0x8B, 0xC3		; mov ax, bx
-	cmp	ax, [ss:0x74fc]
+	cmp	ax, [ss:g_74FC]
 	jl	short .5
 	db	0x03, 0xC1		; add ax, cx
-	sub	ax, [ss:0x74fe]
+	sub	ax, [ss:g_74FE]
 	jng	short .8
 	inc	byte [bp - 0x23]
 	db	0x2B, 0xC8		; sub cx, ax
@@ -2524,7 +2524,7 @@ DrawRawTransBody:
 	db	0x8B, 0xD0		; mov dx, ax
 	jmp	short .8
 .5:
-	mov	bx, [ss:0x74fc]
+	mov	bx, [ss:g_74FC]
 	db	0x03, 0xC1		; add ax, cx
 	db	0x2B, 0xC3		; sub ax, bx
 .6:
@@ -2536,7 +2536,7 @@ DrawRawTransBody:
 	shr	di, 1
 	shr	di, 1
 	add	[bp - 0x14], di
-	mov	di, [ss:0x74fe]
+	mov	di, [ss:g_74FE]
 	db	0x2B, 0xFB		; sub di, bx
 	jng	short .6
 	db	0x3B, 0xC7		; cmp ax, di
@@ -2550,7 +2550,7 @@ DrawRawTransBody:
 	db	0x0B, 0xC9		; or cx, cx
 	jng	short .6
 	mov	[bp - 0x8], dx
-	mov	ax, [ss:0x74f6]
+	mov	ax, [ss:g_74F6]
 	db	0x2B, 0xC1		; sub ax, cx
 	mov	[bp - 0x10], ax
 	cmp	byte [bp - 0x23], 0x0
@@ -2576,7 +2576,7 @@ DrawRawTransBody:
 	mov	[bp - 0x1c], ax
 	mov	di, [bp - 0xa]
 	shl	di, 1
-	add	di, [ss:0x74ec]
+	add	di, [ss:g_74EC]
 	mov	di, [ss:di]
 	db	0x8B, 0xC3		; mov ax, bx
 	shr	ax, 1
@@ -2588,7 +2588,7 @@ DrawRawTransBody:
 	add	bx, [bp - 0x1c]
 	and	bx, 0x3
 	mov	word [bp - 0x16], 0x4
-	mov	ax, [ss:0x74e4]
+	mov	ax, [ss:g_74E4]
 	cmp	ax, 0xa000
 	jz	short .10
 	jmp	near .17
@@ -2617,7 +2617,7 @@ DrawRawTransBody:
 	db	0x2B, 0xCA		; sub cx, dx
 	jng	short .15
 	mov	[bp - 0x4], cx
-	mov	bx, [ss:0x74f6]
+	mov	bx, [ss:g_74F6]
 	db	0x2B, 0xD9		; sub bx, cx
 	add	ax, [bp - 0x1e]
 	shr	ax, 1
@@ -2676,7 +2676,7 @@ DrawRawTransBody:
 	db	0x2B, 0xCA		; sub cx, dx
 	jng	short .22
 	mov	[bp - 0x4], cx
-	mov	bx, [ss:0x74f6]
+	mov	bx, [ss:g_74F6]
 	db	0x2B, 0xD9		; sub bx, cx
 	add	ax, [bp - 0x1e]
 	shr	ax, 1
@@ -2778,7 +2778,7 @@ DrawRleFlipHere:
 DrawRleFlipBody:
 	std
 	mov	word [bp - 0x10], 0x4
-	mov	dx, [ss:0x74f6]
+	mov	dx, [ss:g_74F6]
 	mov	bx, [bp - 0x6]
 	db	0x03, 0xD3		; add dx, bx
 	mov	[bp - 0xc], dx
@@ -2793,11 +2793,11 @@ DrawRleFlipBody:
 	and	bx, 0x3
 	mov	di, [bp - 0x4]
 	shl	di, 1
-	add	di, [ss:0x74ec]
+	add	di, [ss:g_74EC]
 	mov	ax, [bp - 0x2]
 	add	ax, [ss:di]
 	mov	[bp - 0xe], ax
-	mov	ax, [ss:0x74e4]
+	mov	ax, [ss:g_74E4]
 	cmp	ax, 0xa000
 	jnz	short .1
 	jmp	near .15
@@ -2903,7 +2903,7 @@ DrawRleFlipBody:
 	jmp	near .3
 .15:
 	mov	si, [bp - 0xa]
-	mov	es, [ss:0x74e4]
+	mov	es, [ss:g_74E4]
 	mov	ah, [ss:bx + 0x752a]
 	mov	[bp - 0x17], ah
 .16:
@@ -3060,10 +3060,10 @@ DrawRleTransBody:
 	mov	bx, [bp - 0x4]
 	mov	cx, [si + 0x2]
 	db	0x8B, 0xC3		; mov ax, bx
-	cmp	ax, [ss:0x74f2]
+	cmp	ax, [ss:g_74F2]
 	jl	short .3
 	db	0x03, 0xC1		; add ax, cx
-	sub	ax, [ss:0x74f4]
+	sub	ax, [ss:g_74F4]
 	jng	short .4
 	inc	di
 	db	0x2B, 0xC8		; sub cx, ax
@@ -3076,7 +3076,7 @@ DrawRleTransBody:
 	retf
 .3:
 	inc	di
-	mov	bx, [ss:0x74f2]
+	mov	bx, [ss:g_74F2]
 	db	0x03, 0xC1		; add ax, cx
 	db	0x2B, 0xC3		; sub ax, bx
 	jng	short .2
@@ -3086,7 +3086,7 @@ DrawRleTransBody:
 	db	0x8B, 0xD0		; mov dx, ax
 	db	0x8B, 0xC3		; mov ax, bx
 	db	0x03, 0xC1		; add ax, cx
-	sub	ax, [ss:0x74f4]
+	sub	ax, [ss:g_74F4]
 	jng	short .4
 	db	0x2B, 0xC8		; sub cx, ax
 	jng	short .2
@@ -3102,10 +3102,10 @@ DrawRleTransBody:
 	mov	cx, [bp - 0x6]
 	db	0x03, 0xC9		; add cx, cx
 	db	0x03, 0xC9		; add cx, cx
-	cmp	ax, [ss:0x74fc]
+	cmp	ax, [ss:g_74FC]
 	jl	short .5
 	db	0x03, 0xC1		; add ax, cx
-	sub	ax, [ss:0x74fe]
+	sub	ax, [ss:g_74FE]
 	jng	short .7
 	db	0x2B, 0xC8		; sub cx, ax
 	jng	short .2
@@ -3114,14 +3114,14 @@ DrawRleTransBody:
 	jmp	short .7
 .5:
 	inc	di
-	mov	bx, [ss:0x74fc]
+	mov	bx, [ss:g_74FC]
 	db	0x03, 0xC1		; add ax, cx
 	db	0x2B, 0xC3		; sub ax, bx
 	jng	short .2
 	db	0x8B, 0xF1		; mov si, cx
 	db	0x2B, 0xF0		; sub si, ax
 	add	[bp - 0x16], si
-	mov	si, [ss:0x74fe]
+	mov	si, [ss:g_74FE]
 	db	0x2B, 0xF3		; sub si, bx
 	db	0x3B, 0xC6		; cmp ax, si
 	jl	short .6
@@ -3139,7 +3139,7 @@ DrawRleTransBody:
 .8:
 	mov	di, [bp - 0x4]
 	shl	di, 1
-	add	di, [ss:0x74ec]
+	add	di, [ss:g_74EC]
 	mov	ax, [bp - 0x2]
 	db	0x8B, 0xD8		; mov bx, ax
 	shr	ax, 1
@@ -3154,7 +3154,7 @@ DrawRleTransBody:
 	db	0x03, 0xD8		; add bx, ax
 	and	bx, 0x3
 	mov	word [bp - 0x10], 0x4
-	mov	ax, [ss:0x74e4]
+	mov	ax, [ss:g_74E4]
 	cmp	ax, 0xa000
 	jnz	short .9
 	jmp	near .35
@@ -3182,7 +3182,7 @@ DrawRleTransBody:
 	db	0x2B, 0xD8		; sub bx, ax
 	jng	short .14
 	mov	[bp - 0x1a], bx
-	mov	ax, [ss:0x74f6]
+	mov	ax, [ss:g_74F6]
 	db	0x2B, 0xC3		; sub ax, bx
 	mov	[bp - 0xc], ax
 	mov	ax, [bp - 0x1c]
@@ -3371,7 +3371,7 @@ DrawRleTransBody:
 	db	0x2B, 0xD8		; sub bx, ax
 	jng	short .38
 	mov	[bp - 0x1a], bx
-	mov	ax, [ss:0x74f6]
+	mov	ax, [ss:g_74F6]
 	db	0x2B, 0xC3		; sub ax, bx
 	mov	[bp - 0xc], ax
 	mov	ax, [bp - 0x1c]
@@ -3586,7 +3586,7 @@ DrawRleTransFastHere:
 	mov	[bp - 0x6], ax
 
 DrawRleTransFastBody:
-	mov	dx, [ss:0x74f6]
+	mov	dx, [ss:g_74F6]
 	sub	dx, [bp - 0x6]
 	mov	[bp - 0xc], dx
 	mov	word [bp - 0x10], 0x4
@@ -3598,11 +3598,11 @@ DrawRleTransFastBody:
 	and	bx, 0x3
 	mov	di, [bp - 0x4]
 	shl	di, 1
-	add	di, [ss:0x74ec]
+	add	di, [ss:g_74EC]
 	mov	ax, [bp - 0x2]
 	add	ax, [ss:di]
 	mov	[bp - 0xe], ax
-	mov	ax, [ss:0x74e4]
+	mov	ax, [ss:g_74E4]
 	cmp	ax, 0xa000
 	jz	short .1
 	cmp	word [bp - 0xc], 0x0
@@ -3907,10 +3907,10 @@ DrawRawTransRemapBody:
 	mov	cx, [si + 0x2]
 	lea	di, [si + 0x10]
 	db	0x8B, 0xC3		; mov ax, bx
-	cmp	ax, [ss:0x74f2]
+	cmp	ax, [ss:g_74F2]
 	jl	short .3
 	db	0x03, 0xC1		; add ax, cx
-	sub	ax, [ss:0x74f4]
+	sub	ax, [ss:g_74F4]
 	jng	short .4
 	inc	byte [bp - 0x23]
 	db	0x2B, 0xC8		; sub cx, ax
@@ -3922,7 +3922,7 @@ DrawRawTransRemapBody:
 	leave
 	retf
 .3:
-	mov	bx, [ss:0x74f2]
+	mov	bx, [ss:g_74F2]
 	db	0x03, 0xC1		; add ax, cx
 	db	0x2B, 0xC3		; sub ax, bx
 	jng	short .2
@@ -3933,7 +3933,7 @@ DrawRawTransRemapBody:
 	db	0x03, 0xF8		; add di, ax
 	db	0x8B, 0xC3		; mov ax, bx
 	db	0x03, 0xC1		; add ax, cx
-	sub	ax, [ss:0x74f4]
+	sub	ax, [ss:g_74F4]
 	jng	short .4
 	db	0x2B, 0xC8		; sub cx, ax
 	jng	short .2
@@ -3949,10 +3949,10 @@ DrawRawTransRemapBody:
 	mov	[bp - 0x1e], dx
 	mov	bx, [bp - 0x2]
 	db	0x8B, 0xC3		; mov ax, bx
-	cmp	ax, [ss:0x74fc]
+	cmp	ax, [ss:g_74FC]
 	jl	short .5
 	db	0x03, 0xC1		; add ax, cx
-	sub	ax, [ss:0x74fe]
+	sub	ax, [ss:g_74FE]
 	jng	short .8
 	inc	byte [bp - 0x23]
 	db	0x2B, 0xC8		; sub cx, ax
@@ -3960,7 +3960,7 @@ DrawRawTransRemapBody:
 	db	0x8B, 0xD0		; mov dx, ax
 	jmp	short .8
 .5:
-	mov	bx, [ss:0x74fc]
+	mov	bx, [ss:g_74FC]
 	db	0x03, 0xC1		; add ax, cx
 	db	0x2B, 0xC3		; sub ax, bx
 .6:
@@ -3972,7 +3972,7 @@ DrawRawTransRemapBody:
 	shr	di, 1
 	shr	di, 1
 	add	[bp - 0x14], di
-	mov	di, [ss:0x74fe]
+	mov	di, [ss:g_74FE]
 	db	0x2B, 0xFB		; sub di, bx
 	jng	short .6
 	db	0x3B, 0xC7		; cmp ax, di
@@ -4007,7 +4007,7 @@ DrawRawTransRemapBody:
 	mov	[bp - 0x1c], ax
 	mov	di, [bp - 0xa]
 	shl	di, 1
-	add	di, [ss:0x74ec]
+	add	di, [ss:g_74EC]
 	mov	di, [ss:di]
 	db	0x8B, 0xC3		; mov ax, bx
 	shr	ax, 1
@@ -4019,7 +4019,7 @@ DrawRawTransRemapBody:
 	add	bx, [bp - 0x1c]
 	and	bx, 0x3
 	mov	word [bp - 0x16], 0x4
-	mov	ax, [ss:0x74e4]
+	mov	ax, [ss:g_74E4]
 	cmp	ax, 0xa000
 	jz	short .10
 	jmp	near .17
@@ -4048,7 +4048,7 @@ DrawRawTransRemapBody:
 	db	0x2B, 0xCA		; sub cx, dx
 	jng	short .15
 	mov	[bp - 0x4], cx
-	mov	bx, [ss:0x74f6]
+	mov	bx, [ss:g_74F6]
 	db	0x2B, 0xD9		; sub bx, cx
 	mov	[bp - 0x10], bx
 	add	ax, [bp - 0x1e]
@@ -4111,7 +4111,7 @@ DrawRawTransRemapBody:
 	db	0x2B, 0xCA		; sub cx, dx
 	jng	short .22
 	mov	[bp - 0x4], cx
-	mov	bx, [ss:0x74f6]
+	mov	bx, [ss:g_74F6]
 	db	0x2B, 0xD9		; sub bx, cx
 	mov	[bp - 0x10], bx
 	add	ax, [bp - 0x1e]
@@ -4213,7 +4213,7 @@ DrawRleTransRemapHere:
 	mov	[bp - 0x6], ax
 
 DrawRleTransRemapBody:
-	mov	dx, [ss:0x74f6]
+	mov	dx, [ss:g_74F6]
 	sub	dx, [bp - 0x6]
 	mov	[bp - 0xc], dx
 	mov	word [bp - 0x10], 0x4
@@ -4225,11 +4225,11 @@ DrawRleTransRemapBody:
 	and	bx, 0x3
 	mov	di, [bp - 0x4]
 	shl	di, 1
-	add	di, [ss:0x74ec]
+	add	di, [ss:g_74EC]
 	mov	ax, [bp - 0x2]
 	add	ax, [ss:di]
 	mov	[bp - 0xe], ax
-	mov	ax, [ss:0x74e4]
+	mov	ax, [ss:g_74E4]
 	cmp	ax, 0xa000
 	jz	short .1
 	cmp	word [bp - 0xc], 0x0
@@ -4604,10 +4604,10 @@ DrawRleFlipTransBody:
 	mov	bx, [bp - 0x4]
 	mov	cx, [si + 0x2]
 	db	0x8B, 0xC3		; mov ax, bx
-	cmp	ax, [ss:0x74f2]
+	cmp	ax, [ss:g_74F2]
 	jl	short .3
 	db	0x03, 0xC1		; add ax, cx
-	sub	ax, [ss:0x74f4]
+	sub	ax, [ss:g_74F4]
 	jng	short .4
 	inc	di
 	db	0x2B, 0xC8		; sub cx, ax
@@ -4620,7 +4620,7 @@ DrawRleFlipTransBody:
 	retf
 .3:
 	inc	di
-	mov	bx, [ss:0x74f2]
+	mov	bx, [ss:g_74F2]
 	db	0x03, 0xC1		; add ax, cx
 	db	0x2B, 0xC3		; sub ax, bx
 	jng	short .2
@@ -4630,7 +4630,7 @@ DrawRleFlipTransBody:
 	db	0x8B, 0xD0		; mov dx, ax
 	db	0x8B, 0xC3		; mov ax, bx
 	db	0x03, 0xC1		; add ax, cx
-	sub	ax, [ss:0x74f4]
+	sub	ax, [ss:g_74F4]
 	jng	short .4
 	db	0x2B, 0xC8		; sub cx, ax
 	jng	short .2
@@ -4646,10 +4646,10 @@ DrawRleFlipTransBody:
 	mov	cx, [bp - 0x6]
 	db	0x03, 0xC9		; add cx, cx
 	db	0x03, 0xC9		; add cx, cx
-	cmp	ax, [ss:0x74fc]
+	cmp	ax, [ss:g_74FC]
 	jl	short .5
 	db	0x03, 0xC1		; add ax, cx
-	sub	ax, [ss:0x74fe]
+	sub	ax, [ss:g_74FE]
 	jng	short .7
 	add	[bp - 0x16], ax
 	db	0x2B, 0xC8		; sub cx, ax
@@ -4659,13 +4659,13 @@ DrawRleFlipTransBody:
 	jmp	short .7
 .5:
 	inc	di
-	mov	bx, [ss:0x74fc]
+	mov	bx, [ss:g_74FC]
 	db	0x03, 0xC1		; add ax, cx
 	db	0x2B, 0xC3		; sub ax, bx
 	jng	short .2
 	db	0x8B, 0xF1		; mov si, cx
 	db	0x2B, 0xF0		; sub si, ax
-	mov	si, [ss:0x74fe]
+	mov	si, [ss:g_74FE]
 	db	0x2B, 0xF3		; sub si, bx
 	db	0x3B, 0xC6		; cmp ax, si
 	jl	short .6
@@ -4686,7 +4686,7 @@ DrawRleFlipTransBody:
 	mov	[bp - 0x2], bx
 	mov	di, [bp - 0x4]
 	shl	di, 1
-	add	di, [ss:0x74ec]
+	add	di, [ss:g_74EC]
 	db	0x8B, 0xC3		; mov ax, bx
 	shr	ax, 1
 	shr	ax, 1
@@ -4700,7 +4700,7 @@ DrawRleFlipTransBody:
 	db	0x2B, 0xD8		; sub bx, ax
 	and	bx, 0x3
 	mov	word [bp - 0x10], 0x4
-	mov	ax, [ss:0x74e4]
+	mov	ax, [ss:g_74E4]
 	cmp	ax, 0xa000
 	jnz	short .9
 	jmp	near .38
@@ -4728,7 +4728,7 @@ DrawRleFlipTransBody:
 	db	0x2B, 0xD8		; sub bx, ax
 	jng	short .14
 	mov	[bp - 0x1a], bx
-	mov	ax, [ss:0x74f6]
+	mov	ax, [ss:g_74F6]
 	db	0x03, 0xC3		; add ax, bx
 	mov	[bp - 0xc], ax
 	mov	ax, [bp - 0x1c]
@@ -4935,7 +4935,7 @@ DrawRleFlipTransBody:
 	db	0x2B, 0xD8		; sub bx, ax
 	jng	short .41
 	mov	[bp - 0x1a], bx
-	mov	ax, [ss:0x74f6]
+	mov	ax, [ss:g_74F6]
 	db	0x03, 0xC3		; add ax, bx
 	mov	[bp - 0xc], ax
 	mov	ax, [bp - 0x1c]
@@ -5172,10 +5172,10 @@ DrawRleFlipTransRemapBody:
 	mov	bx, [bp - 0x4]
 	mov	cx, [si + 0x2]
 	db	0x8B, 0xC3		; mov ax, bx
-	cmp	ax, [ss:0x74f2]
+	cmp	ax, [ss:g_74F2]
 	jl	short .3
 	db	0x03, 0xC1		; add ax, cx
-	sub	ax, [ss:0x74f4]
+	sub	ax, [ss:g_74F4]
 	jng	short .4
 	inc	di
 	db	0x2B, 0xC8		; sub cx, ax
@@ -5188,7 +5188,7 @@ DrawRleFlipTransRemapBody:
 	retf
 .3:
 	inc	di
-	mov	bx, [ss:0x74f2]
+	mov	bx, [ss:g_74F2]
 	db	0x03, 0xC1		; add ax, cx
 	db	0x2B, 0xC3		; sub ax, bx
 	jng	short .2
@@ -5198,7 +5198,7 @@ DrawRleFlipTransRemapBody:
 	db	0x8B, 0xD0		; mov dx, ax
 	db	0x8B, 0xC3		; mov ax, bx
 	db	0x03, 0xC1		; add ax, cx
-	sub	ax, [ss:0x74f4]
+	sub	ax, [ss:g_74F4]
 	jng	short .4
 	db	0x2B, 0xC8		; sub cx, ax
 	jng	short .2
@@ -5214,10 +5214,10 @@ DrawRleFlipTransRemapBody:
 	mov	cx, [bp - 0x6]
 	db	0x03, 0xC9		; add cx, cx
 	db	0x03, 0xC9		; add cx, cx
-	cmp	ax, [ss:0x74fc]
+	cmp	ax, [ss:g_74FC]
 	jl	short .5
 	db	0x03, 0xC1		; add ax, cx
-	sub	ax, [ss:0x74fe]
+	sub	ax, [ss:g_74FE]
 	jng	short .7
 	add	[bp - 0x16], ax
 	db	0x2B, 0xC8		; sub cx, ax
@@ -5227,13 +5227,13 @@ DrawRleFlipTransRemapBody:
 	jmp	short .7
 .5:
 	inc	di
-	mov	bx, [ss:0x74fc]
+	mov	bx, [ss:g_74FC]
 	db	0x03, 0xC1		; add ax, cx
 	db	0x2B, 0xC3		; sub ax, bx
 	jng	short .2
 	db	0x8B, 0xF1		; mov si, cx
 	db	0x2B, 0xF0		; sub si, ax
-	mov	si, [ss:0x74fe]
+	mov	si, [ss:g_74FE]
 	db	0x2B, 0xF3		; sub si, bx
 	db	0x3B, 0xC6		; cmp ax, si
 	jl	short .6
@@ -5254,7 +5254,7 @@ DrawRleFlipTransRemapBody:
 	mov	[bp - 0x2], bx
 	mov	di, [bp - 0x4]
 	shl	di, 1
-	add	di, [ss:0x74ec]
+	add	di, [ss:g_74EC]
 	db	0x8B, 0xC3		; mov ax, bx
 	shr	ax, 1
 	shr	ax, 1
@@ -5268,7 +5268,7 @@ DrawRleFlipTransRemapBody:
 	db	0x2B, 0xD8		; sub bx, ax
 	and	bx, 0x3
 	mov	word [bp - 0x10], 0x4
-	mov	ax, [ss:0x74e4]
+	mov	ax, [ss:g_74E4]
 	cmp	ax, 0xa000
 	jnz	short .9
 	jmp	near .38
@@ -5296,7 +5296,7 @@ DrawRleFlipTransRemapBody:
 	db	0x2B, 0xD8		; sub bx, ax
 	jng	short .14
 	mov	[bp - 0x1a], bx
-	mov	ax, [ss:0x74f6]
+	mov	ax, [ss:g_74F6]
 	db	0x03, 0xC3		; add ax, bx
 	mov	[bp - 0xc], ax
 	mov	ax, [bp - 0x1c]
@@ -5511,7 +5511,7 @@ DrawRleFlipTransRemapBody:
 	db	0x2B, 0xD8		; sub bx, ax
 	jng	short .43
 	mov	[bp - 0x1a], bx
-	mov	ax, [ss:0x74f6]
+	mov	ax, [ss:g_74F6]
 	db	0x03, 0xC3		; add ax, bx
 	mov	[bp - 0xc], ax
 	mov	ax, [bp - 0x1c]
@@ -5760,7 +5760,7 @@ DrawRleFlipRemapHere:
 DrawRleFlipRemapBody:
 	std
 	mov	word [bp - 0x10], 0x4
-	mov	dx, [ss:0x74f6]
+	mov	dx, [ss:g_74F6]
 	mov	bx, [bp - 0x6]
 	db	0x03, 0xD3		; add dx, bx
 	mov	[bp - 0xc], dx
@@ -5775,11 +5775,11 @@ DrawRleFlipRemapBody:
 	and	bx, 0x3
 	mov	di, [bp - 0x4]
 	shl	di, 1
-	add	di, [ss:0x74ec]
+	add	di, [ss:g_74EC]
 	mov	ax, [bp - 0x2]
 	add	ax, [ss:di]
 	mov	[bp - 0xe], ax
-	mov	ax, [ss:0x74e4]
+	mov	ax, [ss:g_74E4]
 	cmp	ax, 0xa000
 	jnz	short .1
 	jmp	near .15
@@ -5893,7 +5893,7 @@ DrawRleFlipRemapBody:
 	jmp	near .3
 .15:
 	mov	si, [bp - 0xa]
-	mov	es, [ss:0x74e4]
+	mov	es, [ss:g_74E4]
 	mov	ah, [ss:bx + 0x7546]
 	mov	[bp - 0x17], ah
 .16:
@@ -6058,10 +6058,10 @@ DrawRleTransRemapFastBody:
 	mov	bx, [bp - 0x4]
 	mov	cx, [si + 0x2]
 	db	0x8B, 0xC3		; mov ax, bx
-	cmp	ax, [ss:0x74f2]
+	cmp	ax, [ss:g_74F2]
 	jl	short .3
 	db	0x03, 0xC1		; add ax, cx
-	sub	ax, [ss:0x74f4]
+	sub	ax, [ss:g_74F4]
 	jng	short .4
 	inc	di
 	db	0x2B, 0xC8		; sub cx, ax
@@ -6074,7 +6074,7 @@ DrawRleTransRemapFastBody:
 	retf
 .3:
 	inc	di
-	mov	bx, [ss:0x74f2]
+	mov	bx, [ss:g_74F2]
 	db	0x03, 0xC1		; add ax, cx
 	db	0x2B, 0xC3		; sub ax, bx
 	jng	short .2
@@ -6084,7 +6084,7 @@ DrawRleTransRemapFastBody:
 	db	0x8B, 0xD0		; mov dx, ax
 	db	0x8B, 0xC3		; mov ax, bx
 	db	0x03, 0xC1		; add ax, cx
-	sub	ax, [ss:0x74f4]
+	sub	ax, [ss:g_74F4]
 	jng	short .4
 	db	0x2B, 0xC8		; sub cx, ax
 	jng	short .2
@@ -6100,10 +6100,10 @@ DrawRleTransRemapFastBody:
 	mov	cx, [bp - 0x6]
 	db	0x03, 0xC9		; add cx, cx
 	db	0x03, 0xC9		; add cx, cx
-	cmp	ax, [ss:0x74fc]
+	cmp	ax, [ss:g_74FC]
 	jl	short .5
 	db	0x03, 0xC1		; add ax, cx
-	sub	ax, [ss:0x74fe]
+	sub	ax, [ss:g_74FE]
 	jng	short .7
 	db	0x2B, 0xC8		; sub cx, ax
 	jng	short .2
@@ -6112,14 +6112,14 @@ DrawRleTransRemapFastBody:
 	jmp	short .7
 .5:
 	inc	di
-	mov	bx, [ss:0x74fc]
+	mov	bx, [ss:g_74FC]
 	db	0x03, 0xC1		; add ax, cx
 	db	0x2B, 0xC3		; sub ax, bx
 	jng	short .2
 	db	0x8B, 0xF1		; mov si, cx
 	db	0x2B, 0xF0		; sub si, ax
 	add	[bp - 0x16], si
-	mov	si, [ss:0x74fe]
+	mov	si, [ss:g_74FE]
 	db	0x2B, 0xF3		; sub si, bx
 	db	0x3B, 0xC6		; cmp ax, si
 	jl	short .6
@@ -6137,7 +6137,7 @@ DrawRleTransRemapFastBody:
 .8:
 	mov	di, [bp - 0x4]
 	shl	di, 1
-	add	di, [ss:0x74ec]
+	add	di, [ss:g_74EC]
 	mov	ax, [bp - 0x2]
 	db	0x8B, 0xD8		; mov bx, ax
 	shr	ax, 1
@@ -6152,7 +6152,7 @@ DrawRleTransRemapFastBody:
 	db	0x03, 0xD8		; add bx, ax
 	and	bx, 0x3
 	mov	word [bp - 0x10], 0x4
-	mov	ax, [ss:0x74e4]
+	mov	ax, [ss:g_74E4]
 	cmp	ax, 0xa000
 	jnz	short .9
 	jmp	near .38
@@ -6180,7 +6180,7 @@ DrawRleTransRemapFastBody:
 	db	0x2B, 0xD8		; sub bx, ax
 	jng	short .14
 	mov	[bp - 0x1a], bx
-	mov	ax, [ss:0x74f6]
+	mov	ax, [ss:g_74F6]
 	db	0x2B, 0xC3		; sub ax, bx
 	mov	[bp - 0xc], ax
 	mov	ax, [bp - 0x1c]
@@ -6390,7 +6390,7 @@ DrawRleTransRemapFastBody:
 	db	0x2B, 0xD8		; sub bx, ax
 	jng	short .43
 	mov	[bp - 0x1a], bx
-	mov	ax, [ss:0x74f6]
+	mov	ax, [ss:g_74F6]
 	db	0x2B, 0xC3		; sub ax, bx
 	mov	[bp - 0xc], ax
 	mov	ax, [bp - 0x1c]
@@ -6624,7 +6624,7 @@ SetPaletteFar:
 	mov	cx, [bx + 0x6]
 	lds	si, [bx + 0x8]
 	inc	dx
-	cmp	word [ss:0x6404], 0x2
+	cmp	word [ss:g_6404], 0x2
 	jz	short .2
 	db	0x8B, 0xD9		; mov bx, cx
 .1:
@@ -6861,7 +6861,7 @@ CopyPageToPage:
 	mov	[bp - 0x4], ax
 	mov	bx, [bp + 0x8]
 	db	0x03, 0xDB		; add bx, bx
-	add	bx, [0x74ec]
+	add	bx, [g_74EC]
 	mov	di, [bx]
 	add	di, [bp - 0x2]
 	mov	ax, [bp + 0xe]
@@ -6870,15 +6870,15 @@ CopyPageToPage:
 	db	0x03, 0xF8		; add di, ax
 	mov	bx, [bp + 0x8]
 	db	0x03, 0xDB		; add bx, bx
-	mov	si, [0x74dc]
+	mov	si, [g_74DC]
 	db	0x03, 0xF6		; add si, si
 	db	0x03, 0xF6		; add si, si
-	mov	es, [si + 0x7572]
-	mov	si, [si + 0x7570]
+	mov	es, [si + g_7572]
+	mov	si, [si + g_7570]
 	add	bx, [es:si + 0xa]
 	mov	si, [bx]
 	add	si, [bp - 0x2]
-	mov	ax, [0x74f6]
+	mov	ax, [g_74F6]
 	sub	ax, [bp - 0x4]
 	mov	[bp - 0x6], ax
 	mov	ax, 0xa000
@@ -6986,7 +6986,7 @@ CopyPageRect:
 	mov	[bp - 0x4], ax
 	mov	bx, [bp + 0xa]
 	db	0x03, 0xDB		; add bx, bx
-	add	bx, [0x74ec]
+	add	bx, [g_74EC]
 	mov	di, [bx]
 	add	di, [bp - 0x2]
 	mov	ax, [bp + 0x10]
@@ -6998,12 +6998,12 @@ CopyPageRect:
 	mov	si, [bp + 0x6]
 	db	0x03, 0xF6		; add si, si
 	db	0x03, 0xF6		; add si, si
-	mov	es, [si + 0x7572]
-	mov	si, [si + 0x7570]
+	mov	es, [si + g_7572]
+	mov	si, [si + g_7570]
 	add	bx, [es:si + 0xa]
 	mov	si, [bx]
 	add	si, [bp - 0x2]
-	mov	ax, [0x74f6]
+	mov	ax, [g_74F6]
 	sub	ax, [bp - 0x4]
 	mov	[bp - 0x6], ax
 	mov	ax, 0xa000
@@ -7097,7 +7097,7 @@ AllocCanvases:
 	db	0x8B, 0xEC		; mov bp, sp
 	add	sp, -0xe
 	mov	ax, [bp + 0xc]
-	sub	ax, [0x7584]
+	sub	ax, [g_7584]
 	mov	[bp - 0xc], ax
 	mul	word [bp + 0x6]
 	shr	ax, 1
@@ -7114,7 +7114,7 @@ AllocCanvases:
 	jmp	near .15
 .2:
 	mov	word [bp - 0x6], 0x0
-	mov	bx, [0x2bc]
+	mov	bx, [BufPtr]
 	cmp	word [bp - 0xc], 0x0
 	jz	short .4
 	mov	ax, [bp + 0x8]
@@ -7129,7 +7129,7 @@ AllocCanvases:
 	db	0x03, 0xC0		; add ax, ax
 	add	ax, 0x4
 	mul	word [bp + 0x10]
-	mov	dx, [0xae9c]
+	mov	dx, [ChainIdx]
 	db	0x2B, 0xD3		; sub dx, bx
 	db	0x2B, 0xD0		; sub dx, ax
 	jl	short .5
@@ -7162,7 +7162,7 @@ AllocCanvases:
 	mul	dx
 	push	dx
 	push	ax
-	mov	ax, 0x759b
+	mov	ax, str_VideoWindowoutOfRowTable
 	push	ax
 	call	0x14DB:AllocRecData
 	add	sp, 0x6
@@ -7175,8 +7175,8 @@ AllocCanvases:
 	db	0x03, 0xDB		; add bx, bx
 	db	0x03, 0xDB		; add bx, bx
 	mov	ax, [bp - 0x2]
-	mov	[bx + 0x7570], ax
-	mov	[bx + 0x7572], es
+	mov	[bx + g_7570], ax
+	mov	[bx + g_7572], es
 	db	0x8B, 0xD8		; mov bx, ax
 	add	ax, 0x1e
 	mov	[bp - 0x2], ax
@@ -7204,7 +7204,7 @@ AllocCanvases:
 	shr	ax, 1
 	mov	[es:bx + 0xe], ax
 	mov	[es:bx + 0x14], ax
-	mov	[0x74e0], ax
+	mov	[g_74E0], ax
 	mov	word [es:bx + 0x10], 0x0
 	mov	ax, [bp + 0x8]
 	mov	[es:bx + 0x12], ax
@@ -7255,7 +7255,7 @@ AllocCanvases:
 	mov	al, 0x13
 	mov	dx, [es:0x63]
 	out	dx, ax
-	mov	byte [0x7440], 0x1
+	mov	byte [g_7440], 0x1
 	db	0x33, 0xC0		; xor ax, ax
 	push	ax
 	call	0x0FEF:CopyPlaneB
@@ -7264,7 +7264,7 @@ AllocCanvases:
 	leave
 	retf
 .15:
-	mov	ax, 0x7586
+	mov	ax, str_TooManyVideoPages
 	push	ax
 	call	0x0F4A:FatalError
 .16:
@@ -7278,28 +7278,28 @@ AllocCanvases:
 	mov	ds, [bp + 0x8]
 	mov	si, [bp + 0x6]
 	mov	ax, [si + 0x2]
-	cmp	[ss:0x74e4], ax
+	cmp	[ss:g_74E4], ax
 	jnz	short .17
 	mov	ax, [bp + 0xa]
 	mov	[si + 0xc], ax
-	mov	[ss:0x74ee], ax
+	mov	[ss:g_74EE], ax
 	db	0x03, 0xC0		; add ax, ax
 	db	0x03, 0xC0		; add ax, ax
 	mov	[si + 0x1a], ax
-	mov	[ss:0x74fc], ax
+	mov	[ss:g_74FC], ax
 	mov	ax, [bp + 0xc]
 	mov	[si + 0xe], ax
-	mov	[ss:0x74f0], ax
+	mov	[ss:g_74F0], ax
 	db	0x03, 0xC0		; add ax, ax
 	db	0x03, 0xC0		; add ax, ax
 	mov	[si + 0x1c], ax
-	mov	[ss:0x74fe], ax
+	mov	[ss:g_74FE], ax
 	mov	ax, [bp + 0xe]
 	mov	[si + 0x10], ax
-	mov	[ss:0x74f2], ax
+	mov	[ss:g_74F2], ax
 	mov	ax, [bp + 0x10]
 	mov	[si + 0x12], ax
-	mov	[ss:0x74f4], ax
+	mov	[ss:g_74F4], ax
 	pop	si
 	pop	ds
 	leave
@@ -8309,11 +8309,11 @@ CopyPlanesRect:
 	mov	[bp + 0xa], ax
 	mov	bx, [bp + 0x8]
 	shl	bx, 1
-	mov	si, [0x74dc]
+	mov	si, [g_74DC]
 	db	0x03, 0xF6		; add si, si
 	db	0x03, 0xF6		; add si, si
-	mov	es, [si + 0x7572]
-	mov	si, [si + 0x7570]
+	mov	es, [si + g_7572]
+	mov	si, [si + g_7570]
 	add	bx, [es:si + 0xa]
 	mov	ax, [bx]
 	add	ax, [bp + 0x6]
@@ -8323,17 +8323,17 @@ CopyPlanesRect:
 	mov	[bp - 0x6], ax
 	mov	bx, [bp + 0xc]
 	shl	bx, 1
-	add	bx, [0x74ec]
+	add	bx, [g_74EC]
 	mov	ax, [bx]
 	add	ax, [bp + 0xa]
 	mov	[bp - 0x4], ax
-	mov	ax, [0x74f6]
+	mov	ax, [g_74F6]
 	sub	ax, [bp - 0xa]
 	mov	[bp - 0x8], ax
 	mov	ax, 0xa000
 	mov	ds, ax
 	cld
-	mov	ax, [ss:0x74e4]
+	mov	ax, [ss:g_74E4]
 	cmp	ax, 0xa000
 	jnz	short .2
 	mov	es, ax
@@ -8445,7 +8445,7 @@ DrawRawFastBody:
 	mov	[bp - 0xe], ax
 	mov	ax, [si]
 	mov	[bp - 0x4], ax
-	mov	bx, [ss:0x74f6]
+	mov	bx, [ss:g_74F6]
 	db	0x2B, 0xD8		; sub bx, ax
 	mov	[bp - 0x10], bx
 	mov	bx, [bp - 0x2]
@@ -8454,7 +8454,7 @@ DrawRawFastBody:
 	shr	ax, 1
 	mov	[bp - 0x2], ax
 	and	bx, 0x3
-	mov	ax, [ss:0x74e4]
+	mov	ax, [ss:g_74E4]
 	cmp	ax, 0xa000
 	jnz	short .8
 	mov	es, ax
@@ -8468,7 +8468,7 @@ DrawRawFastBody:
 	out	dx, ax
 	mov	bx, [bp - 0xa]
 	shl	bx, 1
-	add	bx, [ss:0x74ec]
+	add	bx, [ss:g_74EC]
 	mov	di, [ss:bx]
 	add	di, [bp - 0x2]
 	mov	dx, [bp - 0xe]
@@ -8510,7 +8510,7 @@ DrawRawFastBody:
 	mov	es, [ss:bx + 0x74e4]
 	mov	di, [bp - 0xa]
 	shl	di, 1
-	add	di, [ss:0x74ec]
+	add	di, [ss:g_74EC]
 	mov	di, [ss:di]
 	add	di, [bp - 0x2]
 	mov	ax, [bp - 0xe]
@@ -8605,7 +8605,7 @@ DrawRawTransFastBody:
 	mov	[bp - 0xe], ax
 	mov	ax, [si]
 	mov	[bp - 0x4], ax
-	mov	bx, [ss:0x74f6]
+	mov	bx, [ss:g_74F6]
 	db	0x2B, 0xD8		; sub bx, ax
 	mov	[bp - 0x10], bx
 	mov	bx, [bp - 0x2]
@@ -8614,7 +8614,7 @@ DrawRawTransFastBody:
 	shr	ax, 1
 	mov	[bp - 0x2], ax
 	and	bx, 0x3
-	mov	ax, [ss:0x74e4]
+	mov	ax, [ss:g_74E4]
 	cmp	ax, 0xa000
 	jnz	short .8
 	mov	es, ax
@@ -8628,7 +8628,7 @@ DrawRawTransFastBody:
 	out	dx, ax
 	mov	bx, [bp - 0xa]
 	shl	bx, 1
-	add	bx, [ss:0x74ec]
+	add	bx, [ss:g_74EC]
 	mov	di, [ss:bx]
 	add	di, [bp - 0x2]
 	mov	dx, [bp - 0xe]
@@ -8673,7 +8673,7 @@ DrawRawTransFastBody:
 	mov	es, [ss:bx + 0x74e4]
 	mov	di, [bp - 0xa]
 	shl	di, 1
-	add	di, [ss:0x74ec]
+	add	di, [ss:g_74EC]
 	mov	di, [ss:di]
 	add	di, [bp - 0x2]
 	mov	ax, [bp - 0xe]
@@ -8847,28 +8847,28 @@ SetCanvasClip:
 	mov	ds, [bp + 0x8]
 	mov	si, [bp + 0x6]
 	mov	ax, [si + 0x2]
-	cmp	[ss:0x74e4], ax
+	cmp	[ss:g_74E4], ax
 	jnz	short .1
 	mov	ax, [bp + 0xa]
 	mov	[si + 0x1a], ax
-	mov	[ss:0x74fc], ax
+	mov	[ss:g_74FC], ax
 	shr	ax, 1
 	shr	ax, 1
 	mov	[si + 0xc], ax
-	mov	[ss:0x74ee], ax
+	mov	[ss:g_74EE], ax
 	mov	ax, [bp + 0xc]
 	mov	[si + 0x1c], ax
-	mov	[ss:0x74fe], ax
+	mov	[ss:g_74FE], ax
 	shr	ax, 1
 	shr	ax, 1
 	mov	[si + 0xe], ax
-	mov	[ss:0x74f0], ax
+	mov	[ss:g_74F0], ax
 	mov	ax, [bp + 0xe]
 	mov	[si + 0x10], ax
-	mov	[ss:0x74f2], ax
+	mov	[ss:g_74F2], ax
 	mov	ax, [bp + 0x10]
 	mov	[si + 0x12], ax
-	mov	[ss:0x74f4], ax
+	mov	[ss:g_74F4], ax
 	pop	si
 	pop	ds
 	leave

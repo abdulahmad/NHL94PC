@@ -1391,7 +1391,7 @@ MoveClip:
 	push	di
 	push	si
 	imul	si, [bp + 0x8], 0x24
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	mov	ax, [es:bx + si + 0xe]
 	mov	dx, [es:bx + si + 0x10]
 	mov	[bp - 0x2c], ax
@@ -1404,7 +1404,7 @@ MoveClip:
 	db	0x90
 .1:
 	imul	bx, [bp + 0x6], 0x24
-	add	bx, [0x8ef6]
+	add	bx, [g_8EF6]
 	mov	ax, [es:bx - 0x16]
 	mov	dx, [es:bx - 0x14]
 	add	ax, [es:bx - 0xe]
@@ -1413,7 +1413,7 @@ MoveClip:
 	mov	[bp - 0x30], ax
 	mov	[bp - 0x2e], dx
 	imul	si, [bp + 0x8], 0x24
-	mov	bx, [0x8ef6]
+	mov	bx, [g_8EF6]
 	mov	ax, [es:bx + si + 0x16]
 	mov	dx, [es:bx + si + 0x18]
 	mov	[bp - 0x4], ax
@@ -1429,8 +1429,8 @@ MoveClip:
 	add	sp, 0xc
 	imul	ax, [bp + 0x6], 0x24
 	db	0x8B, 0xC8		; mov cx, ax
-	add	ax, [0x8ef6]
-	mov	dx, [0x8ef8]
+	add	ax, [g_8EF6]
+	mov	dx, [g_8EF8]
 	push	cx
 	push	si
 	push	ds
@@ -1445,10 +1445,10 @@ MoveClip:
 	pop	si
 	pop	cx
 	db	0x8B, 0xC6		; mov ax, si
-	add	si, [0x8ef6]
-	mov	dx, [0x8ef8]
+	add	si, [g_8EF6]
+	mov	dx, [g_8EF8]
 	db	0x8B, 0xD9		; mov bx, cx
-	les	di, [0x8ef6]
+	les	di, [g_8EF6]
 	push	cx
 	push	di
 	push	es
@@ -1462,20 +1462,20 @@ MoveClip:
 	pop	di
 	pop	cx
 	db	0x8B, 0xD8		; mov bx, ax
-	les	si, [0x8ef6]
+	les	si, [g_8EF6]
 	push	cx
 	lea	di, [bx + si]
 	lea	si, [bp - 0x28]
 	mov	cx, 0x12
 	rep	movsw
 	pop	cx
-	mov	bx, [0x8ef6]
+	mov	bx, [g_8EF6]
 	db	0x8B, 0xF1		; mov si, cx
 	mov	cx, [bp - 0x30]
 	mov	dx, [bp - 0x2e]
 	mov	[es:bx + si + 0xe], cx
 	mov	[es:bx + si + 0x10], dx
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	db	0x8B, 0xF0		; mov si, ax
 	mov	word [es:bx + si + 0x22], 0x0
 	pop	si
@@ -1779,7 +1779,7 @@ QueueClip:
 	call	0x0000:__chkstk
 	push	di
 	push	si
-	les	bx, [0x8eea]
+	les	bx, [g_8EEA]
 	mov	ax, [es:bx + 0x2c]
 	inc	word [es:bx + 0x2c]
 	mov	[bp - 0x4], ax
@@ -1791,7 +1791,7 @@ QueueClip:
 	inc	ax
 	jnz	short .2
 .1:
-	les	bx, [0x8eea]
+	les	bx, [g_8EEA]
 	dec	word [es:bx + 0x2c]
 	db	0x2B, 0xC0		; sub ax, ax
 	pop	si
@@ -1809,7 +1809,7 @@ QueueClip:
 .3:
 	mov	bx, [bp - 0x4]
 	shl	bx, 1
-	les	si, [0x8eea]
+	les	si, [g_8EEA]
 	mov	[es:bx + si], ax
 	mov	ax, 0x1
 	pop	si
@@ -1826,8 +1826,8 @@ QueueClip:
 	jz	short .1
 	imul	ax, [bp - 0x2], 0x24
 	db	0x8B, 0xC8		; mov cx, ax
-	add	ax, [0x8ef6]
-	mov	dx, [0x8ef8]
+	add	ax, [g_8EF6]
+	mov	dx, [g_8EF8]
 	push	cx
 	push	ds
 	lea	di, [bp - 0x28]
@@ -1840,11 +1840,11 @@ QueueClip:
 	pop	ds
 	pop	cx
 	db	0x8B, 0xD9		; mov bx, cx
-	les	si, [0x8ef6]
+	les	si, [g_8EF6]
 	imul	ax, [bp - 0x2a], 0x24
 	db	0x03, 0xF0		; add si, ax
 	mov	dx, es
-	mov	di, [0x8ef6]
+	mov	di, [g_8EF6]
 	push	cx
 	push	ds
 	lea	di, [bx + di]
@@ -1854,14 +1854,14 @@ QueueClip:
 	pop	ds
 	pop	cx
 	db	0x8B, 0xD8		; mov bx, ax
-	mov	si, [0x8ef6]
+	mov	si, [g_8EF6]
 	push	cx
 	lea	di, [bx + si]
 	lea	si, [bp - 0x28]
 	mov	cx, 0x12
 	rep	movsw
 	pop	cx
-	mov	bx, [0x8ef6]
+	mov	bx, [g_8EF6]
 	db	0x8B, 0xF1		; mov si, cx
 	mov	ax, [es:bx + si + 0x16]
 	mov	dx, [es:bx + si + 0x18]

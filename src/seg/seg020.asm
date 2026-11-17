@@ -608,7 +608,7 @@ ListDialog:
 	call	0x0D39:TextWidthFar
 	add	sp, 0x4
 	mov	[bp - 0x10], ax
-	les	bx, [0x6d4e]
+	les	bx, [g_6D4E]
 	mov	ax, [es:bx + 0xe]
 	inc	ax
 	inc	ax
@@ -616,7 +616,7 @@ ListDialog:
 	add	ax, strict word 0x4
 	mov	[bp - 0x1e], ax
 	db	0x8B, 0xC8		; mov cx, ax
-	mov	ax, 0x130
+	mov	ax, str_Philadelphia
 	sub	ax, [bp - 0x18]
 	cwd
 	db	0x2B, 0xC2		; sub ax, dx
@@ -650,7 +650,7 @@ ListDialog:
 	mov	[bp - 0x2a], cx
 	mov	word [bp - 0x6], 0xffff
 	db	0x03, 0xD1		; add dx, cx
-	mov	es, [0x8b1a]
+	mov	es, [g_8B1A]
 	mov	[es:0x0], dx
 	mov	dx, [bp - 0x2e]
 	mov	[es:0x2], dx
@@ -665,7 +665,7 @@ ListDialog:
 	push	cs
 	call	ScrollBarInit
 	add	sp, 0x8
-	mov	es, [0x8b1a]
+	mov	es, [g_8B1A]
 	mov	word [es:0x10], 0x0
 	db	0x2B, 0xC0		; sub ax, ax
 	db	0x2B, 0xD2		; sub dx, dx
@@ -695,9 +695,9 @@ ListDialog:
 	call	SaveUnderBox
 	add	sp, 0x8
 .10:
-	push	word [0x9f2]
-	push	word [0x9f0]
-	push	word [0x9ee]
+	push	word [g_09F2]
+	push	word [g_09F0]
+	push	word [g_09EE]
 	push	word [bp - 0x28]
 	push	word [bp - 0x24]
 	push	word [bp - 0x2e]
@@ -705,8 +705,8 @@ ListDialog:
 	push	cs
 	call	DrawBevelBox
 	add	sp, 0xe
-	push	word [0x9f6]
-	push	word [0x9f4]
+	push	word [g_09F6]
+	push	word [g_09F4]
 	call	0x0D39:SetTextColors
 	add	sp, 0x4
 	push	word [bp + 0xe]
@@ -723,9 +723,9 @@ ListDialog:
 	push	ax
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
-	push	word [0x9f0]
-	push	word [0x9f2]
-	push	word [0x9f6]
+	push	word [g_09F0]
+	push	word [g_09F2]
+	push	word [g_09F6]
 	push	word [bp - 0x1e]
 	push	word [bp - 0x18]
 	push	word [bp - 0x26]
@@ -748,7 +748,7 @@ ListDialog:
 	push	cs
 	call	DrawListRows
 	add	sp, 0x18
-	les	bx, [0xae98]
+	les	bx, [g_AE98]
 	mov	ax, [es:bx + 0x2]
 	inc	ax
 	mov	cx, [es:bx]
@@ -766,8 +766,8 @@ ListDialog:
 	add	sp, 0x8
 	mov	[bp - 0xc], ax
 	mov	[bp - 0xa], dx
-	mov	ax, [0xae98]
-	mov	dx, [0xae9a]
+	mov	ax, [g_AE98]
+	mov	dx, [g_AE9A]
 	push	ds
 	db	0x8B, 0xF0		; mov si, ax
 	mov	ds, dx
@@ -775,12 +775,12 @@ ListDialog:
 	mov	cx, 0x9
 	rep	movsw
 	pop	ds
-	les	bx, [0xae98]
+	les	bx, [g_AE98]
 	mov	ax, [es:bx]
 	inc	ax
 	les	bx, [bp - 0xc]
 	mov	[es:bx], ax
-	les	si, [0xae98]
+	les	si, [g_AE98]
 	mov	ax, [es:si + 0x2]
 	inc	ax
 	les	bx, [bp - 0xc]
@@ -805,8 +805,8 @@ ListDialog:
 	add	sp, 0x8
 	push	word [bp - 0x1a]
 	push	word [bp - 0x16]
-	push	word [0xae9a]
-	push	word [0xae98]
+	push	word [g_AE9A]
+	push	word [g_AE98]
 	call	0x0FEF:DrawRleTransAt
 	add	sp, 0x8
 	call	0x0F99:FlushInputEvents
@@ -823,7 +823,7 @@ ListDialog:
 	lea	cx, [bp - 0x8]
 	push	cx
 	push	ax
-	call	far [0xb08e]
+	call	far [g_B08E]
 	add	sp, 0x6
 	mov	[bp - 0x32], ax
 .13:
@@ -965,7 +965,7 @@ ListDialog:
 	db	0x0B, 0xC0		; or ax, ax
 	jl	short .25
 	mov	ax, [bp - 0x4]
-	mov	es, [0x8b1a]
+	mov	es, [g_8B1A]
 	cmp	[es:0x10], ax
 	jz	short .25
 	mov	ax, [es:0x10]
@@ -994,8 +994,8 @@ ListDialog:
 	add	sp, 0x8
 	push	word [bp - 0xe]
 	push	word [bp - 0x8]
-	push	word [0xae9a]
-	push	word [0xae98]
+	push	word [g_AE9A]
+	push	word [g_AE98]
 	call	0x0FEF:DrawRleTransAt
 	add	sp, 0x8
 	mov	ax, [bp - 0x8]
@@ -1508,14 +1508,14 @@ SaveUnderBox:
 	push	word 0xa06
 	call	0x14DB:AllocRecData
 	add	sp, 0x8
-	mov	[0x9fa], ax
-	mov	[0x9fc], dx
+	mov	[g_09FA], ax
+	mov	[g_09FC], dx
 	db	0x8B, 0xC2		; mov ax, dx
-	or	ax, [0x9fa]
+	or	ax, [g_09FA]
 	jz	short .1
-	mov	ax, [0x9fa]
-	mov	cx, [0xae98]
-	mov	bx, [0xae9a]
+	mov	ax, [g_09FA]
+	mov	cx, [g_AE98]
+	mov	bx, [g_AE9A]
 	push	ds
 	db	0x8B, 0xF8		; mov di, ax
 	db	0x8B, 0xF1		; mov si, cx
@@ -1533,14 +1533,14 @@ SaveUnderBox:
 	db	0x2B, 0xC2		; sub ax, dx
 	inc	ax
 	inc	ax
-	mov	bx, [0x9fa]
+	mov	bx, [g_09FA]
 	mov	[es:bx], ax
 	mov	ax, [bp + 0xc]
 	add	ax, strict word 0x4
-	les	bx, [0x9fa]
+	les	bx, [g_09FA]
 	mov	[es:bx + 0x2], ax
 	mov	ax, [bp + 0x8]
-	mov	[0xb2ce], ax
+	mov	[g_B2CE], ax
 	push	ax
 	mov	ax, [bp + 0x6]
 	cwd
@@ -1550,10 +1550,10 @@ SaveUnderBox:
 	db	0x33, 0xC2		; xor ax, dx
 	db	0x2B, 0xC2		; sub ax, dx
 	shl	ax, byte 0x2
-	mov	[0xb2cc], ax
+	mov	[g_B2CC], ax
 	push	ax
-	push	word [0x9fc]
-	push	word [0x9fa]
+	push	word [g_09FC]
+	push	word [g_09FA]
 	call	0x0FEF:GetBlockAt
 	add	sp, 0x8
 .1:
@@ -1906,7 +1906,7 @@ MessageBoxLoop:
 	push	di
 	push	si
 	push	0x0
-	les	bx, [0xae98]
+	les	bx, [g_AE98]
 	mov	cx, [es:bx]
 	inc	cx
 	mov	ax, [es:bx + 0x2]
@@ -1922,8 +1922,8 @@ MessageBoxLoop:
 	add	sp, 0x8
 	mov	[bp - 0x18], ax
 	mov	[bp - 0x16], dx
-	mov	ax, [0xae98]
-	mov	dx, [0xae9a]
+	mov	ax, [g_AE98]
+	mov	dx, [g_AE9A]
 	push	ds
 	db	0x8B, 0xF0		; mov si, ax
 	mov	ds, dx
@@ -1931,12 +1931,12 @@ MessageBoxLoop:
 	mov	cx, 0x9
 	rep	movsw
 	pop	ds
-	les	bx, [0xae98]
+	les	bx, [g_AE98]
 	mov	ax, [es:bx]
 	inc	ax
 	les	bx, [bp - 0x18]
 	mov	[es:bx], ax
-	les	si, [0xae98]
+	les	si, [g_AE98]
 	mov	ax, [es:si + 0x2]
 	inc	ax
 	les	bx, [bp - 0x18]
@@ -1962,8 +1962,8 @@ MessageBoxLoop:
 	add	sp, 0x8
 	push	word [bp - 0xe]
 	push	word [bp - 0xc]
-	push	word [0xae9a]
-	push	word [0xae98]
+	push	word [g_AE9A]
+	push	word [g_AE98]
 	call	0x0FEF:DrawRleTransAt
 	add	sp, 0x8
 .1:
@@ -1993,7 +1993,7 @@ MessageBoxLoop:
 	lea	ax, [bp - 0x8]
 	push	ax
 	push	word [bp - 0x2]
-	call	far [0xb08e]
+	call	far [g_B08E]
 	add	sp, 0x6
 	mov	[bp - 0x4], ax
 	test	al, 0x2f
@@ -2050,8 +2050,8 @@ MessageBoxLoop:
 	add	sp, 0x8
 	push	di
 	push	si
-	push	word [0xae9a]
-	push	word [0xae98]
+	push	word [g_AE9A]
+	push	word [g_AE98]
 	call	0x0FEF:DrawRleTransAt
 	add	sp, 0x8
 .10:
@@ -2074,8 +2074,8 @@ MessageBoxLoop:
 	add	sp, 0x8
 	push	word [bp - 0xa]
 	push	word [bp - 0x8]
-	push	word [0xae9a]
-	push	word [0xae98]
+	push	word [g_AE9A]
+	push	word [g_AE98]
 	call	0x0FEF:DrawRleTransAt
 	add	sp, 0x8
 	mov	si, [bp - 0x8]

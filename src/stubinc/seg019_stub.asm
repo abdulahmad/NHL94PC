@@ -7,6 +7,10 @@ LoadPackedHeader		equ	0x8
 BuildPathFar		equ	0x3E
 FindFarMsg		equ	0x847
 FindUnlink		equ	0x99A
+str_Rinkpal		equ	0x9E0
+str_Pal		equ	0x9E8
 SetPaletteFar		equ	0x344C
 DGROUP		equ	0x45C9
+g_B0C4		equ	0xB0C4
+g_B1C4		equ	0xB1C4
 %include "seg/seg019.asm"

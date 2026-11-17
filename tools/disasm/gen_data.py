@@ -124,25 +124,25 @@ def string_name(o, used):
 
 def collect(flow, funcs):
     starts, bad = unsafe_routines(flow, funcs)
+    okset = g.ds_states(flow, funcs)
     mem = collections.defaultdict(set)   # offset -> sizes
     strs = set()
     for lin, (sz, cs) in flow.ins.items():
         s = g.seg_at(lin)
         if s is None or s['name'] in SKIP_SEGS:
             continue
-        if routine_of(starts, lin) in bad:
-            continue
+        dsok = lin in okset
         ins = g.decode(lin, cs)
         if ins is None:
             continue
         for op in ins.operands:
-            if op.type == x86.X86_OP_MEM and op.mem.segment in (0, x86.X86_REG_DS, x86.X86_REG_SS):
+            if op.type == x86.X86_OP_MEM and (op.mem.segment == x86.X86_REG_SS or dsok and op.mem.segment in (0, x86.X86_REG_DS)):
                 d = op.mem.disp & 0xFFFF
                 if op.mem.base == 0 and op.mem.index == 0 and d >= 0x40:
                     mem[d].add(op.size)
                 elif op.mem.base in (x86.X86_REG_BX, x86.X86_REG_SI, x86.X86_REG_DI) and d >= 0x100 and d < DG_SIZE:
                     mem[d].add(0)
-            if op.type == x86.X86_OP_IMM and ins.id in (x86.X86_INS_PUSH, x86.X86_INS_MOV) and ins.size >= 3:
+            if dsok and op.type == x86.X86_OP_IMM and ins.id in (x86.X86_INS_PUSH, x86.X86_INS_MOV) and ins.size >= 3:
                 v = op.imm & 0xFFFF
                 if is_string_start(v):
                     strs.add(v)

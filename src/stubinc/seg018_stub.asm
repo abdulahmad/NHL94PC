@@ -4,4 +4,6 @@
 	org	0x0
 OnexitThunk		equ	0x4AE
 g_09AC		equ	0x9AC
+g_09BC		equ	0x9BC
+g_09BE		equ	0x9BE
 %include "seg/seg018.asm"

@@ -8,15 +8,15 @@ VectorToDir8Tail:
 	db	0x00, 0x00
 
 HookDivideError:
-	cmp	word [0x9bc], 0x0
+	cmp	word [g_09BC], 0x0
 	jnz	short .1
-	cmp	word [0x9be], 0x0
+	cmp	word [g_09BE], 0x0
 	jnz	short .1
 	mov	ah, 0x35
 	mov	al, 0x0
 	int	0x21
-	mov	[0x9bc], es
-	mov	[0x9be], bx
+	mov	[g_09BC], es
+	mov	[g_09BE], bx
 .1:
 	mov	dx, cs
 	mov	ds, dx
@@ -37,8 +37,8 @@ HookDivideError:
 
 UnhookDivideError:
 	push	ds
-	mov	dx, [0x9be]
-	mov	ds, [0x9bc]
+	mov	dx, [g_09BE]
+	mov	ds, [g_09BC]
 	mov	ah, 0x25
 	mov	al, 0x0
 	int	0x21

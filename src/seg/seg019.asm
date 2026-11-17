@@ -53,7 +53,7 @@ LoadTeamPalettes:
 	db	0x8B, 0xDF		; mov bx, di
 	db	0x03, 0xDE		; add bx, si
 	mov	al, [es:bx]
-	mov	[si - 0x4e3c], al
+	mov	[si + g_B1C4], al
 	inc	si
 	cmp	si, 0x100
 	jl	short .2
@@ -94,7 +94,7 @@ LoadTeamPalettes:
 	db	0x8B, 0xDF		; mov bx, di
 	db	0x03, 0xDE		; add bx, si
 	mov	al, [es:bx]
-	mov	[si - 0x4f3c], al
+	mov	[si + g_B0C4], al
 	inc	si
 	cmp	si, 0x90
 	jl	short .4
@@ -104,7 +104,7 @@ LoadTeamPalettes:
 	db	0x03, 0xDE		; add bx, si
 	mov	al, [es:bx]
 	add	al, 0x40
-	mov	[si - 0x4f3c], al
+	mov	[si + g_B0C4], al
 	inc	si
 	cmp	si, 0x100
 	jl	short .5
@@ -115,7 +115,7 @@ LoadTeamPalettes:
 	push	word 0x3701
 	push	word 0xbd0
 	push	ds
-	push	word 0x9e0
+	push	str_Rinkpal
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x24]
@@ -123,7 +123,7 @@ LoadTeamPalettes:
 	push	ax
 	call	0x0CD1:BuildPathFar
 	add	sp, 0x10
-	push	word 0x9e8
+	push	str_Pal
 	push	0x0
 	lea	ax, [bp - 0x24]
 	push	ax

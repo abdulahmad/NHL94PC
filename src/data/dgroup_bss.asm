@@ -57,7 +57,71 @@ g_8F62:
 g_8F64:
 	resb	2
 g_8F66:
-	resb	304
+	resb	2
+g_8F68:
+	resb	1
+g_8F69:
+	resb	1
+g_8F6A:
+	resb	22
+g_8F80:
+	resb	1
+g_8F81:
+	resb	1
+g_8F82:
+	resb	2
+g_8F84:
+	resb	2
+g_8F86:
+	resb	2
+g_8F88:
+	resb	2
+g_8F8A:
+	resb	30
+g_8FA8:
+	resb	1
+g_8FA9:
+	resb	1
+g_8FAA:
+	resb	1
+g_8FAB:
+	resb	1
+g_8FAC:
+	resb	20
+g_8FC0:
+	resb	2
+g_8FC2:
+	resb	4
+g_8FC6:
+	resb	1
+g_8FC7:
+	resb	1
+g_8FC8:
+	resb	6
+g_8FCE:
+	resb	2
+g_8FD0:
+	resb	6
+g_8FD6:
+	resb	4
+g_8FDA:
+	resb	4
+g_8FDE:
+	resb	4
+g_8FE2:
+	resb	4
+g_8FE6:
+	resb	4
+g_8FEA:
+	resb	4
+g_8FEE:
+	resb	4
+g_8FF2:
+	resb	16
+g_9002:
+	resb	8
+g_900A:
+	resb	140
 g_9096:
 	resb	2
 g_9098:
@@ -129,7 +193,11 @@ g_B06A:
 g_B08E:
 	resb	2
 g_B090:
-	resb	570
+	resb	52
+g_B0C4:
+	resb	256
+g_B1C4:
+	resb	262
 g_B2CA:
 	resb	2
 g_B2CC:
@@ -195,4 +263,54 @@ g_B35A:
 g_B35C:
 	resb	11286
 g_DF72:
-	resb	7166
+	resb	2
+g_DF74:
+	resb	1
+g_DF75:
+	resb	127
+g_DFF4:
+	resb	2
+g_DFF6:
+	resb	2
+g_DFF8:
+	resb	16
+g_E008:
+	resb	2
+g_E00A:
+	resb	38
+g_E030:
+	resb	2
+g_E032:
+	resb	38
+g_E058:
+	resb	2
+g_E05A:
+	resb	38
+g_E080:
+	resb	2
+g_E082:
+	resb	2
+g_E084:
+	resb	2
+g_E086:
+	resb	6
+g_E08C:
+	resb	2
+g_E08E:
+	resb	2
+g_E090:
+	resb	2
+g_E092:
+	resb	2
+g_E094:
+	resb	2
+g_E096:
+	resb	7
+g_E09D:
+	resb	127
+g_E11C:
+	resb	2
+g_E11E:
+	resb	2
+g_E120:
+	resb	6736

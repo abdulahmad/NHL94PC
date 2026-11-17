@@ -4,12 +4,13 @@
 	org	0x0
 TextWidthFar		equ	0x2
 DrawLine		equ	0xC
-GetInputEvent		equ	0xE
 InputInit		equ	0xE
+GetInputEvent		equ	0xE
 SetTextColors		equ	0x24
 AllocRecData		equ	0x30
 InputShutdown		equ	0x4C
 FlushInputEvents		equ	0x66
+str_Philadelphia		equ	0x130
 FillRect		equ	0x136
 DrawShadowText		equ	0x166
 UseCurrentPage		equ	0x1A6
@@ -34,6 +35,10 @@ MouseRead		equ	0x1B34
 OvlThunk102		equ	0x23EB
 g_6D4E		equ	0x6D4E
 g_858D		equ	0x858D
+g_8B1A		equ	0x8B1A
+g_AE98		equ	0xAE98
+g_AE9A		equ	0xAE9A
+g_B08E		equ	0xB08E
 g_B2CC		equ	0xB2CC
 g_B2CE		equ	0xB2CE
 g_B2D0		equ	0xB2D0

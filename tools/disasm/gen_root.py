@@ -279,13 +279,17 @@ def read_map():
     d = tempfile.mkdtemp()
     src = os.path.join(d, 'src')
     shutil.copytree(os.path.join(ROOT, 'src'), src)
-    for t in GEN:
-        open(os.path.join(src, t['file']), 'w').write(f'\tincbin\t"Extracted/segments/{t["name"]}.bin"\n')
     w = os.path.join(d, 'wrap.asm')
     mp = os.path.join(d, 'map.txt')
     open(w, 'w').write(f'[map symbols {mp}]\n%include "hockey94pc.asm"\n')
+    # the current sources first; if they do not assemble, the generated segments as raw bytes
     r = subprocess.run(['nasm', '-f', 'bin', '-I', src + '/', '-o', os.path.join(d, 'o.bin'), w],
                        capture_output=True, text=True, cwd=ROOT)
+    if r.returncode:
+        for t in GEN:
+            open(os.path.join(src, t['file']), 'w').write(f'\tincbin\t"Extracted/segments/{t["name"]}.bin"\n')
+        r = subprocess.run(['nasm', '-f', 'bin', '-I', src + '/', '-o', os.path.join(d, 'o.bin'), w],
+                           capture_output=True, text=True, cwd=ROOT)
     if r.returncode:
         sys.exit(r.stderr)
     out, sec = {}, None
@@ -397,9 +401,42 @@ def dbline(bs):
 def main(names):
     load_data()
     flow, funcs, targets = analyze(names)
+    DSOK.update(ds_states(flow, funcs))
     known = read_map()
     for s in targets:
         emit(s, flow, funcs, known)
+
+
+def ds_states(flow, funcs):
+    # Instruction addresses where DS holds DGROUP. Every routine starts with DS = DGROUP (medium model). Scanning a
+    # routine in address order: mov ds,ax after mov ax,DGROUP, push ss / pop ds and a plain pop ds (restoring the
+    # caller's DS) keep it; any other load of DS (mov ds,reg/mem, lds, push es / pop ds) loses it until the next.
+    import bisect
+    starts = sorted(funcs)
+    ok, state, cur = set(), True, None
+    prev = b''
+    for lin in sorted(flow.ins):
+        i = bisect.bisect_right(starts, lin) - 1
+        r = starts[i] if i >= 0 else None
+        if r != cur:
+            cur, state, prev = r, True, b''
+        sz, cs = flow.ins[lin]
+        b = IMG[lin:lin + sz]
+        if state:
+            ok.add(lin)
+        if b[:1] == b'\x1f':                                  # pop ds
+            state = not (prev[:1] in (b'\x06', b'\x0e') or (len(prev) == 1 and 0x50 <= prev[0] <= 0x57))
+        elif b[:2] == b'\x8e\xd8':                            # mov ds, ax
+            state = prev == b'\xb8\xc9\x45' or prev[:1] == b'\x8c' and prev[1:2] == b'\xd0'
+        elif b[:1] == b'\x8e' and len(b) > 1 and (b[1] >> 3) & 7 == 3:   # mov ds, other
+            state = False
+        elif b[:1] == b'\xc5':                                # lds
+            state = False
+        prev = b
+    return ok
+
+
+DSOK = set()
 
 
 def analyze(names):
@@ -541,22 +578,20 @@ def subst_data(items, s, funcs):
         if (lin + 1) in RELOC and re.search(r'\b0x45c9\b', t):
             it[2] = re.sub(r'\b0x45c9\b', 'DGROUP', t)
             continue
-        i = bisect.bisect_right(starts, lin) - 1
-        if i >= 0 and starts[i] in DATA['unsafe']:
-            continue
+        dsok = lin in DSOK
         if re.search(r'\b(es|cs):', t):
             continue
 
         def mem(m):
             inner = m.group(1)
             mm = re.fullmatch(r'(?:(ds|ss):)?0x([0-9a-f]+)', inner)
-            if mm:
+            if mm and (dsok or mm.group(1) == 'ss'):
                 v = int(mm.group(2), 16)
                 if v >= 0x40 and v in dg:
                     return '[' + (mm.group(1) + ':' if mm.group(1) else '') + dg[v] + ']'
                 return m.group(0)
             mm = re.fullmatch(r'((?:bx|si|di)(?: \+ (?:si|di))?) ([+-]) 0x([0-9a-f]+)', inner)
-            if mm:
+            if mm and dsok:
                 v = int(mm.group(3), 16)
                 if mm.group(2) == '-':
                     v = (-v) & 0xFFFF
@@ -564,7 +599,7 @@ def subst_data(items, s, funcs):
                     return f'[{mm.group(1)} + {dg[v]}]'
             return m.group(0)
         t2 = re.sub(r'\[([^\]]+)\]', mem, t)
-        mm = re.fullmatch(r'(push|mov)\t((?:[abcd]x|si|di|word \[[^\]]+\]), )?(?:word )?0x([0-9a-f]+)', t2)
+        mm = re.fullmatch(r'(push|mov)\t((?:[abcd]x|si|di|word \[[^\]]+\]), )?(?:word )?0x([0-9a-f]+)', t2) if dsok else None
         near_reloc = has_reloc(idx) or has_reloc(idx - 1) or has_reloc(idx + 1) or \
             (idx > 0 and items[idx - 1][3] == b'\x0e')
         if mm and len(it[3]) >= 3 and not near_reloc:

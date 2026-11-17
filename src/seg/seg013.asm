@@ -301,7 +301,7 @@ SaveGameNameDialog:
 	push	di
 	push	si
 	push	0x0
-	les	bx, [0xae98]
+	les	bx, [g_AE98]
 	mov	ax, [es:bx]
 	inc	ax
 	inc	ax
@@ -317,8 +317,8 @@ SaveGameNameDialog:
 	add	sp, 0x8
 	mov	[bp - 0xc], ax
 	mov	[bp - 0xa], dx
-	mov	ax, [0xae98]
-	mov	dx, [0xae9a]
+	mov	ax, [g_AE98]
+	mov	dx, [g_AE9A]
 	push	ds
 	db	0x8B, 0xF0		; mov si, ax
 	mov	ds, dx
@@ -348,14 +348,14 @@ SaveGameNameDialog:
 	add	sp, 0x8
 	push	word [bp - 0x24]
 	push	word [bp - 0x22]
-	push	word [0xae9a]
-	push	word [0xae98]
+	push	word [g_AE9A]
+	push	word [g_AE98]
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 	push	word 0x3701
 	push	word 0xbd0
 	push	ds
-	push	word 0x957
+	push	str_Savegame
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x1c]
@@ -363,7 +363,7 @@ SaveGameNameDialog:
 	push	ax
 	call	0x0CD1:BuildPathFar
 	add	sp, 0x10
-	push	word 0x960
+	push	str_Prmt
 	push	0x0
 	lea	ax, [bp - 0x1c]
 	push	ax
@@ -450,7 +450,7 @@ SaveGameNameDialog:
 	push	bx
 	call	0x1B35:OvlThunk102
 	add	sp, 0x14
-	mov	di, 0x96c
+	mov	di, str_Nhl
 	push	ds
 	pop	es
 	mov	si, [bp + 0x6]
@@ -514,7 +514,7 @@ SaveGameNameDialog:
 	push	word [bp - 0x6]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	push	word 0x971
+	push	str_Err1
 	push	word [bp - 0x5e]
 	push	word [bp - 0x60]
 	call	0x03A3:FindFarMsg
@@ -608,14 +608,14 @@ SaveGameNameDialog:
 	add	sp, 0x8
 	push	0x6c
 	push	word 0xc0
-	push	word [0xae9a]
-	push	word [0xae98]
+	push	word [g_AE9A]
+	push	word [g_AE98]
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 	mov	ax, 0xc0
 	mov	[bp - 0x8], ax
 	mov	[bp - 0x22], ax
-	mov	ax, 0x6c
+	mov	ax, str_Nyi
 	mov	[bp - 0xe], ax
 	mov	[bp - 0x24], ax
 	mov	word [bp - 0x62], 0x0
@@ -631,7 +631,7 @@ SaveGameNameDialog:
 	lea	cx, [bp - 0x8]
 	push	cx
 	push	ax
-	call	far [0xb08e]
+	call	far [g_B08E]
 	add	sp, 0x6
 	mov	[bp - 0x62], ax
 	test	al, 0x2
@@ -660,8 +660,8 @@ SaveGameNameDialog:
 	add	sp, 0x8
 	push	word [bp - 0xe]
 	push	word [bp - 0x8]
-	push	word [0xae9a]
-	push	word [0xae98]
+	push	word [g_AE9A]
+	push	word [g_AE98]
 	call	0x0FEF:DrawRleTransAt
 	add	sp, 0x8
 	mov	ax, [bp - 0x8]
@@ -720,7 +720,7 @@ SaveGameNameDialog:
 	push	word [bp - 0x60]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	mov	di, 0x97d
+	mov	di, str_Nhl_2
 	push	ds
 	pop	es
 	mov	si, [bp + 0x6]
@@ -828,7 +828,7 @@ SaveGameNameDialog:
 	push	word [bp - 0x6]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	push	word 0x982
+	push	str_Prmt_2
 	push	word [bp - 0x5e]
 	push	word [bp - 0x60]
 	call	0x03A3:FindFarMsg
@@ -933,7 +933,7 @@ SaveGameNameDialog:
 	push	si
 	call	0x1B35:OvlThunk102
 	add	sp, 0x14
-	mov	di, 0x992
+	mov	di, str_Nhl_3
 	push	ds
 	pop	es
 	mov	cx, 0xffff

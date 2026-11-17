@@ -15,15 +15,15 @@ SeqTimerTick:
 	call	0x03A3:SsIsDs
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .1
-	cmp	word [0x846c], 0x0
+	cmp	word [g_846C], 0x0
 	jnz	short .1
-	cmp	word [0x84f4], 0x0
+	cmp	word [g_84F4], 0x0
 	jnz	short .1
-	cmp	word [0x84c6], 0x0
+	cmp	word [g_84C6], 0x0
 	jz	short .1
-	inc	word [0x846c]
+	inc	word [g_846C]
 	call	0x1630:SeqService
-	dec	word [0x846c]
+	dec	word [g_846C]
 .1:
 	pop	ds
 	retf
@@ -36,11 +36,11 @@ SeqService:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
-	inc	byte [0x846a]
-	cmp	byte [0x8502], 0xff
+	inc	byte [g_846A]
+	cmp	byte [g_8502], 0xff
 	jz	short .1
 	push	0x8
-	mov	al, [0x8502]
+	mov	al, [g_8502]
 	push	ax
 	call	0x1844:DrvNeedsService
 	add	sp, 0x4
@@ -49,7 +49,7 @@ SeqService:
 	push	word 0x8f74
 	call	0x03A3:EmsSaveMap
 	pop	bx
-	mov	al, [0x8502]
+	mov	al, [g_8502]
 	push	ax
 	call	0x1844:DrvService
 	pop	bx
@@ -61,7 +61,7 @@ SeqService:
 	jmp	short .4
 .2:
 	db	0x8B, 0xC6		; mov ax, si
-	cmp	al, [0x8502]
+	cmp	al, [g_8502]
 	jz	short .3
 	push	ax
 	call	0x1844:DrvService
@@ -69,15 +69,15 @@ SeqService:
 .3:
 	inc	si
 .4:
-	cmp	[0x84c6], si
+	cmp	[g_84C6], si
 	ja	short .2
 	call	0x1630:FlushMidiQueue
-	cmp	word [0x84fa], 0x0
+	cmp	word [g_84FA], 0x0
 	jz	short .5
 	jmp	near .13
 .5:
-	mov	ax, [0x84c8]
-	mov	dx, [0x84ca]
+	mov	ax, [g_84C8]
+	mov	dx, [g_84CA]
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x4], dx
 	db	0x33, 0xFF		; xor di, di
@@ -89,7 +89,7 @@ SeqService:
 .7:
 	test	byte [es:si + 0x56], 0x8
 	jz	short .8
-	mov	al, [0x846a]
+	mov	al, [g_846A]
 	les	bx, [es:si + 0x4]
 	cmp	[es:bx + 0x15], al
 	jz	short .8
@@ -138,8 +138,8 @@ SeqService:
 	jnc	short .10
 	jmp	near .6
 .10:
-	mov	ax, [0x84cc]
-	mov	dx, [0x84ce]
+	mov	ax, [g_84CC]
+	mov	dx, [g_84CE]
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x2], dx
 	db	0x33, 0xFF		; xor di, di
@@ -163,10 +163,10 @@ SeqService:
 	inc	di
 	jmp	short .11
 .13:
-	cmp	byte [0x8502], 0xff
+	cmp	byte [g_8502], 0xff
 	jz	short .14
 	push	0x8
-	mov	al, [0x8502]
+	mov	al, [g_8502]
 	push	ax
 	call	0x1844:DrvNeedsService
 	add	sp, 0x4
@@ -175,7 +175,7 @@ SeqService:
 	push	word 0x8f74
 	call	0x03A3:EmsSaveMap
 	pop	bx
-	mov	al, [0x8502]
+	mov	al, [g_8502]
 	push	ax
 	call	0x1844:DrvService
 	pop	bx
@@ -204,7 +204,7 @@ SeqStepTrack:
 	jnz	short .1
 	jmp	near SeqTrackEvents.31
 .1:
-	mov	byte [0x8f68], 0x80
+	mov	byte [g_8F68], 0x80
 	test	byte [es:si + 0x56], 0x8
 	jnz	short .2
 	jmp	near .8
@@ -212,8 +212,8 @@ SeqStepTrack:
 	les	bx, [es:si + 0x4]
 	cmp	word [es:bx + 0xe], 0x0
 	jnz	short .6
-	mov	ax, [0x84cc]
-	mov	dx, [0x84ce]
+	mov	ax, [g_84CC]
+	mov	dx, [g_84CE]
 	db	0x8B, 0xF8		; mov di, ax
 	mov	[bp - 0x4], dx
 	db	0x33, 0xC9		; xor cx, cx
@@ -400,11 +400,11 @@ SeqTrackEvents:
 	push	es
 	rep	add al, 0x83
 	push	es
-	add	word [0x511], 0x43
+	add	word [g_0511], 0x43
 	add	ax, 0x585
 	xchg	ax, dx
 	add	ax, 0x5a2
-	add	word [0x5cf], -0x7d
+	add	word [g_05CF], -0x7d
 	push	es
 	db	0xE1, 0x05		; loope 0x428
 .1:
@@ -446,8 +446,8 @@ SeqTrackEvents:
 	mov	[es:si + 0x4b], al
 	mov	cl, [es:si + 0x4c]
 	or	cl, 0xc0
-	mov	[0x8f68], cl
-	mov	[0x8f69], al
+	mov	[g_8F68], cl
+	mov	[g_8F69], al
 	push	ax
 	call	0x16F2:GetPatch
 	mov	es, dx
@@ -490,7 +490,7 @@ SeqTrackEvents:
 	jz	short .14
 	jmp	near .29
 .14:
-	mov	al, [0x8f82]
+	mov	al, [g_8F82]
 	push	ax
 	mov	al, [bp - 0x5]
 	push	ax
@@ -543,7 +543,7 @@ SeqTrackEvents:
 	mov	[es:si + 0x57], al
 	jmp	near .29
 .20:
-	push	word [0x8f82]
+	push	word [g_8F82]
 	push	word [bp + 0x8]
 	push	si
 	call	0x1630:SendPitchBend
@@ -558,14 +558,14 @@ SeqTrackEvents:
 	shl	bx, byte 0x2
 	mov	[es:bx + si + 0x32], ax
 	mov	[es:bx + si + 0x34], dx
-	mov	ax, [0x8f82]
-	mov	dx, [0x8f84]
+	mov	ax, [g_8F82]
+	mov	dx, [g_8F84]
 	add	ax, strict word 0x4
 	jmp	near .5
 .22:
 	push	word 0x3a0b
 	push	word 0xb96e
-	mov	al, [0x8f86]
+	mov	al, [g_8F86]
 	db	0x2A, 0xE4		; sub ah, ah
 	sub	ax, strict word 0x4
 	push	ax
@@ -576,21 +576,21 @@ SeqTrackEvents:
 	mov	[es:si + 0x4a], al
 	jmp	near .29
 .24:
-	cmp	byte [0x8f80], 0x80
+	cmp	byte [g_8F80], 0x80
 	jnc	short .25
 	mov	es, [bp + 0x8]
 	mov	al, [es:si + 0x57]
-	mov	[0x8f81], al
+	mov	[g_8F81], al
 .25:
-	and	byte [0x8f80], 0x7f
+	and	byte [g_8F80], 0x7f
 	mov	es, [bp + 0x8]
 	cmp	byte [es:si + 0x4c], 0x9
 	jz	short .26
 	les	bx, [es:si + 0x4]
 	mov	al, [es:bx + 0x13]
-	add	[0x8f80], al
+	add	[g_8F80], al
 .26:
-	cmp	word [0x84fe], 0x0
+	cmp	word [g_84FE], 0x0
 	jz	short .29
 	mov	es, [bp + 0x8]
 	cmp	byte [es:si + 0x4c], 0x9
@@ -603,7 +603,7 @@ SeqTrackEvents:
 	push	ax
 	jmp	short .28
 .27:
-	mov	al, [0x8f80]
+	mov	al, [g_8F80]
 	add	al, 0x5c
 	push	ax
 	call	0x16F2:GetPatch
@@ -621,11 +621,11 @@ SeqTrackEvents:
 .28:
 	mov	al, [es:si + 0x4c]
 	push	ax
-	push	word [0x8f84]
-	push	word [0x8f82]
-	mov	al, [0x8f81]
+	push	word [g_8F84]
+	push	word [g_8F82]
+	mov	al, [g_8F81]
 	push	ax
-	mov	al, [0x8f80]
+	mov	al, [g_8F80]
 	push	ax
 	call	0x1630:AllocVoice
 	add	sp, 0x12
@@ -641,8 +641,8 @@ SeqTrackEvents:
 	push	word 0x8f88
 	call	0x1630:ParseMidiEvent
 	add	sp, 0x6
-	mov	ax, [0x8f88]
-	mov	dx, [0x8f8a]
+	mov	ax, [g_8F88]
+	mov	dx, [g_8F8A]
 	mov	es, [bp + 0x8]
 	mov	[es:si + 0xe], ax
 	mov	[es:si + 0x10], dx
@@ -666,9 +666,9 @@ SendController:
 	mov	es, [bp + 0x8]
 	mov	al, [es:si + 0x4c]
 	or	al, 0xb0
-	mov	[0x8f68], al
+	mov	[g_8F68], al
 	mov	al, [bp + 0xa]
-	mov	[0x8f69], al
+	mov	[g_8F69], al
 	db	0x2A, 0xE4		; sub ah, ah
 	sub	ax, strict word 0x7
 	jz	short .1
@@ -680,7 +680,7 @@ SendController:
 	mov	cl, [es:si + 0x4c]
 	db	0x2A, 0xED		; sub ch, ch
 	imul	bx, cx, 0x7
-	mov	es, [0x8d10]
+	mov	es, [g_8D10]
 	mov	[es:bx - 0x4491], al
 	mov	es, [bp + 0x8]
 	les	bx, [es:si + 0x4]
@@ -698,7 +698,7 @@ SendController:
 	mov	cl, [es:si + 0x4c]
 	db	0x2A, 0xED		; sub ch, ch
 	imul	bx, cx, 0x7
-	mov	es, [0x8d10]
+	mov	es, [g_8D10]
 	mov	[es:bx - 0x4490], al
 	mov	es, [bp + 0x8]
 	les	bx, [es:si + 0x4]
@@ -725,7 +725,7 @@ SendController:
 	add	[bp + 0xc], al
 .5:
 	mov	al, [bp + 0xc]
-	mov	[0x8f6a], al
+	mov	[g_8F6A], al
 	push	ds
 	push	word 0x8f68
 	push	0x3
@@ -752,10 +752,10 @@ SendVoiceNoteOff:
 	mov	es, [bp + 0x8]
 	mov	al, [es:si + 0x6]
 	or	al, 0x80
-	mov	[0x8f68], al
+	mov	[g_8F68], al
 	mov	al, [es:si + 0x4]
-	mov	[0x8f69], al
-	mov	byte [0x8f6a], 0x0
+	mov	[g_8F69], al
+	mov	byte [g_8F6A], 0x0
 	push	ds
 	push	word 0x8f68
 	push	0x3
@@ -782,8 +782,8 @@ SetSongTempo:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
-	mov	ax, [0x84c8]
-	mov	dx, [0x84ca]
+	mov	ax, [g_84C8]
+	mov	dx, [g_84CA]
 	db	0x8B, 0xF0		; mov si, ax
 	db	0x33, 0xFF		; xor di, di
 	mov	ds, dx
@@ -825,11 +825,11 @@ SendPitchBend:
 	mov	es, [bp + 0x8]
 	mov	al, [es:si + 0x4c]
 	or	al, 0xe0
-	mov	[0x8f68], al
-	mov	byte [0x8f69], 0x0
+	mov	[g_8F68], al
+	mov	byte [g_8F69], 0x0
 	mov	al, [bp + 0xb]
 	and	al, 0x7f
-	mov	[0x8f6a], al
+	mov	[g_8F6A], al
 	push	ds
 	push	word 0x8f68
 	push	0x3
@@ -849,8 +849,8 @@ AllocVoice:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
-	mov	ax, [0x84cc]
-	mov	dx, [0x84ce]
+	mov	ax, [g_84CC]
+	mov	dx, [g_84CE]
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x2], dx
 	mov	byte [bp - 0x5], 0x0
@@ -896,10 +896,10 @@ AllocVoice:
 	mov	al, [bp + 0x10]
 	mov	[es:bx + 0x7], al
 	sub	dl, 0x70
-	mov	[0x8f68], dl
-	mov	[0x8f69], cl
+	mov	[g_8F68], dl
+	mov	[g_8F69], cl
 	mov	al, [bp + 0x8]
-	mov	[0x8f6a], al
+	mov	[g_8F6A], al
 	cmp	byte [bp + 0x12], 0xff
 	jz	short .7
 	push	ds
@@ -936,33 +936,33 @@ QueueMidiBytes:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
-	cmp	word [0x84f8], 0x0
+	cmp	word [g_84F8], 0x0
 	jnz	short .3
 	mov	cx, [bp + 0xa]
-	mov	ax, [0x84f6]
+	mov	ax, [g_84F6]
 	db	0x03, 0xC1		; add ax, cx
 	cmp	ax, 0x80
 	jnl	short .3
-	inc	word [0x84f4]
-	inc	word [0x84f8]
+	inc	word [g_84F4]
+	inc	word [g_84F8]
 	mov	al, [bp + 0x6]
-	mov	bx, [0x84f6]
-	mov	[bx - 0x208c], al
-	inc	word [0x84f6]
+	mov	bx, [g_84F6]
+	mov	[bx + g_DF74], al
+	inc	word [g_84F6]
 	mov	si, [bp + 0x8]
 	jmp	short .2
 .1:
 	mov	al, [si]
-	mov	bx, [0x84f6]
-	mov	[bx - 0x208c], al
+	mov	bx, [g_84F6]
+	mov	[bx + g_DF74], al
 	inc	si
-	inc	word [0x84f6]
+	inc	word [g_84F6]
 	dec	cx
 .2:
 	db	0x0B, 0xC9		; or cx, cx
 	jnz	short .1
-	dec	word [0x84f8]
-	dec	word [0x84f4]
+	dec	word [g_84F8]
+	dec	word [g_84F4]
 .3:
 	pop	ds
 	pop	si
@@ -976,13 +976,13 @@ FlushMidiQueue:
 	mov	ax, DGROUP
 	mov	ds, ax
 	db	0x33, 0xF6		; xor si, si
-	cmp	[0x84f6], si
+	cmp	[g_84F6], si
 	jz	short .4
-	cmp	[0x84f8], si
+	cmp	[g_84F8], si
 	jnz	short .4
-	inc	word [0x84f8]
+	inc	word [g_84F8]
 .1:
-	mov	al, [si - 0x208b]
+	mov	al, [si + g_DF75]
 	and	al, 0xf0
 	cmp	al, 0xc0
 	jnz	short .2
@@ -993,7 +993,7 @@ FlushMidiQueue:
 	push	ds
 	push	ax
 	push	0x2
-	mov	al, [di - 0x208c]
+	mov	al, [di + g_DF74]
 	push	ax
 	call	0x1844:DrvSendMidi
 	add	sp, 0x8
@@ -1008,16 +1008,16 @@ FlushMidiQueue:
 	push	ds
 	push	ax
 	push	0x3
-	mov	al, [di - 0x208c]
+	mov	al, [di + g_DF74]
 	push	ax
 	call	0x1844:DrvSendMidi
 	add	sp, 0x8
 	add	si, 0x3
 .3:
-	cmp	[0x84f6], si
+	cmp	[g_84F6], si
 	jg	short .1
-	dec	word [0x84f8]
-	mov	word [0x84f6], 0x0
+	dec	word [g_84F8]
+	mov	word [g_84F6], 0x0
 .4:
 	pop	ds
 	pop	si
@@ -1033,9 +1033,9 @@ SendProgramChange:
 	mov	ds, ax
 	mov	al, [bp + 0x8]
 	or	al, 0xc0
-	mov	[0x8f68], al
+	mov	[g_8F68], al
 	mov	al, [bp + 0xa]
-	mov	[0x8f69], al
+	mov	[g_8F69], al
 	push	ds
 	push	word 0x8f68
 	push	0x2
@@ -1055,10 +1055,10 @@ SendPan:
 	mov	ds, ax
 	mov	al, [bp + 0x8]
 	or	al, 0xb0
-	mov	[0x8f68], al
-	mov	byte [0x8f69], 0xa
+	mov	[g_8F68], al
+	mov	byte [g_8F69], 0xa
 	mov	al, [bp + 0xa]
-	mov	[0x8f6a], al
+	mov	[g_8F6A], al
 	push	ds
 	push	word 0x8f68
 	push	0x3
@@ -1079,10 +1079,10 @@ SendVolume:
 	mov	ds, ax
 	mov	al, [bp + 0x8]
 	or	al, 0xb0
-	mov	[0x8f68], al
-	mov	byte [0x8f69], 0x7
+	mov	[g_8F68], al
+	mov	byte [g_8F69], 0x7
 	mov	al, [bp + 0xa]
-	mov	[0x8f6a], al
+	mov	[g_8F6A], al
 	push	ds
 	push	word 0x8f68
 	push	0x3
@@ -1218,7 +1218,7 @@ ParseMidiEventJumpTable:
 	jmp	short .8
 .7:
 	mov	al, [es:bx + si + 0x1]
-	mov	es, [0x8d12]
+	mov	es, [g_8D12]
 	mov	[es:si - 0x4692], al
 	inc	si
 .8:

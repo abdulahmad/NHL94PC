@@ -27,7 +27,7 @@ LoadSoundDriver:
 	db	0x0B, 0xD0		; or dx, ax
 	jnz	short .2
 	push	word [bp + 0x6]
-	push	word 0x849a
+	push	str_CEaclibS
 	push	word 0x9046
 	call	0x0000:_sprintf
 	add	sp, 0x6
@@ -46,19 +46,19 @@ LoadSoundDriver:
 .2:
 	push	word [bp - 0x6]
 	push	si
-	imul	ax, [0x84c6], 0x38
+	imul	ax, [g_84C6], 0x38
 	add	ax, 0x8fd6
 	push	ax
 	call	0x1880:LinkDriver
 	add	sp, 0x6
-	imul	bx, [0x84c6], 0x38
-	call	far [bx - 0x702a]
+	imul	bx, [g_84C6], 0x38
+	call	far [bx + g_8FD6]
 	mov	[bp - 0x4], ax
 	mov	[bp - 0x2], dx
 	push	dx
 	push	ax
-	imul	bx, [0x84c6], 0x38
-	call	far [bx - 0x7026]
+	imul	bx, [g_84C6], 0x38
+	call	far [bx + g_8FDA]
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .3
 	push	word [bp - 0x6]
@@ -73,31 +73,31 @@ LoadSoundDriver:
 	push	word 0x8be
 	push	word 0x16f2
 	push	word 0x87c
-	imul	bx, [0x84c6], 0x38
-	call	far [bx - 0x7022]
-	mov	bx, [0x84c6]
+	imul	bx, [g_84C6], 0x38
+	call	far [bx + g_8FDE]
+	mov	bx, [g_84C6]
 	shl	bx, byte 0x2
 	mov	ax, [bp - 0x6]
-	mov	[bx - 0x7032], si
-	mov	[bx - 0x7030], ax
+	mov	[bx + g_8FCE], si
+	mov	[bx + g_8FD0], ax
 	push	0x3
-	imul	bx, [0x84c6], 0x38
-	call	far [bx - 0x7012]
-	mov	bx, [0x84c6]
+	imul	bx, [g_84C6], 0x38
+	call	far [bx + g_8FEE]
+	mov	bx, [g_84C6]
 	shl	bx, byte 0x2
-	mov	[bx - 0x1f7c], ax
-	mov	[bx - 0x1f7a], dx
+	mov	[bx + g_E084], ax
+	mov	[bx + g_E086], dx
 	push	0x7
-	imul	bx, [0x84c6], 0x38
-	call	far [bx - 0x7012]
+	imul	bx, [g_84C6], 0x38
+	call	far [bx + g_8FEE]
 	db	0x8B, 0xF8		; mov di, ax
 	cmp	di, 0x64
 	jnc	short .4
-	mov	al, [0x84c6]
-	mov	[0x8502], al
-	mov	[0x8500], di
+	mov	al, [g_84C6]
+	mov	[g_8502], al
+	mov	[g_8500], di
 .4:
-	inc	word [0x84c6]
+	inc	word [g_84C6]
 	db	0x8B, 0xC6		; mov ax, si
 	mov	dx, [bp - 0x6]
 .5:
@@ -124,7 +124,7 @@ DrvInit:
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
 	imul	bx, ax, 0x38
-	call	far [bx - 0x702a]
+	call	far [bx + g_8FD6]
 	pop	ds
 	leave
 	retf
@@ -140,7 +140,7 @@ DrvCall04:
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
 	imul	bx, ax, 0x38
-	call	far [bx - 0x7026]
+	call	far [bx + g_8FDA]
 	pop	ds
 	leave
 	retf
@@ -160,7 +160,7 @@ DrvCall08:
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
 	imul	bx, ax, 0x38
-	call	far [bx - 0x7022]
+	call	far [bx + g_8FDE]
 	pop	ds
 	leave
 	retf
@@ -174,7 +174,7 @@ DrvShutdown:
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
 	imul	bx, ax, 0x38
-	call	far [bx - 0x701e]
+	call	far [bx + g_8FE2]
 	pop	ds
 	leave
 	retf
@@ -188,7 +188,7 @@ DrvCall10:
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
 	imul	bx, ax, 0x38
-	call	far [bx - 0x701a]
+	call	far [bx + g_8FE6]
 	pop	ds
 	leave
 	retf
@@ -202,7 +202,7 @@ DrvService:
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
 	imul	bx, ax, 0x38
-	call	far [bx - 0x7016]
+	call	far [bx + g_8FEA]
 	pop	ds
 	leave
 	retf
@@ -217,7 +217,7 @@ DrvNeedsService:
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
 	imul	bx, ax, 0x38
-	call	far [bx - 0x7012]
+	call	far [bx + g_8FEE]
 	pop	ds
 	leave
 	retf
@@ -235,7 +235,7 @@ DrvLoadBank:
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
 	imul	bx, ax, 0x38
-	call	far [bx - 0x700e]
+	call	far [bx + g_8FF2]
 	pop	ds
 	leave
 	retf
@@ -290,7 +290,7 @@ DrvSendMidi:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
-	mov	al, [0x84c6]
+	mov	al, [g_84C6]
 	cmp	[bp + 0x6], al
 	ja	short .3
 	mov	si, [bp + 0xa]
@@ -312,7 +312,7 @@ DrvSendMidi:
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
 	imul	bx, ax, 0x38
-	call	far [bx - 0x6ffe]
+	call	far [bx + g_9002]
 .3:
 	pop	ds
 	pop	si
@@ -394,7 +394,7 @@ DrvPlaySample:
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
 	imul	bx, ax, 0x38
-	call	far [bx - 0x6ff6]
+	call	far [bx + g_900A]
 	pop	ds
 	leave
 	retf
@@ -457,7 +457,7 @@ DrvPlayRecSample:
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
 	imul	bx, ax, 0x38
-	call	far [bx - 0x6ff6]
+	call	far [bx + g_900A]
 	pop	ds
 	leave
 	retf
