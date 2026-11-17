@@ -26,6 +26,8 @@ OVERRIDES = {
     'seg054': {'data': [(0x0000, 0x003B), (0x0055, 0x005C), (0x09CA, 0x0C20)],
                'code': [0x003B, 0x005C, 0x0C28, 0x0C45],
                'tables': {0x0C20: 4, 0x0C3D: 4}},
+    'seg058': {'data': [(0x0035, 0x0039), (0x004A, 0x0054)],
+               'code': [0x0054]},
 }
 DATA_LIN, CODE_LIN, TABLE_LIN = set(), [], {}
 for _s in SEGS:
@@ -418,6 +420,11 @@ def analyze(names):
         entries.append((lin, segv))
         funcs.add(lin)
     flow.run(entries)
+    for _s in SEGS:
+        for a, _ in OVERRIDES.get(_s['name'], {}).get('data', []):
+            if a:
+                flow.labels.setdefault(_s['lin'] + a, 'data')
+                funcs.add(_s['lin'] + a)
     targets = [s for s in SEGS if s['name'] in names]
     GEN[:] = targets
     # gaps: a gap whose first byte (after padding) is a prologue, or that decodes cleanly to a ret/jmp, is code

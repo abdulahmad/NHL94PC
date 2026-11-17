@@ -3,37 +3,7 @@
 ; and jumps to the Microsoft C startup. The file-name slots and the thunks
 ; follow the manager in the same segment.
 
-; MscStartup is the label in seg000. The standalone stub still equates it.
-%ifndef RtlSectionHook
-RtlSectionHook	equ	3		; seg058
-%endif
-%ifndef RtlWriteText
-RtlWriteText	equ	5		; seg058
-%endif
-%ifndef RtlSaveVectors
-RtlSaveVectors	equ	0xCF		; seg058
-%endif
-%ifndef RtlSetHandler
-RtlSetHandler	equ	0xF4		; seg058
-%endif
-%ifndef RtlAfterFiles
-RtlAfterFiles	equ	0x1C9		; seg058
-%endif
-%ifndef RtlBeforeClose
-RtlBeforeClose	equ	0x224		; seg058
-%endif
-%ifndef RtlFindFile
-RtlFindFile	equ	0x2FD		; seg058
-%endif
-%ifndef RtlExePath
-RtlExePath	equ	0x443		; seg058
-%endif
-%ifndef RtlFileAdjust
-RtlFileAdjust	equ	0x35		; seg058
-%endif
-%ifndef RtlErrorSlot
-RtlErrorSlot	equ	0x4A		; seg058
-%endif
+; MscStartup is the label in seg000; the Rtl routines are labels in seg058.
 SectionStride	equ	18
 FileSlotSize	equ	0x80
 
@@ -228,10 +198,10 @@ LoadSection:
 	mov	ds, ax
 	mov	dx, [MsgPtrIntersect]
 	mov	cx, [bx+0xE]
-	call	0x1DE4:RtlWriteText  ; seg058
+	call	0x1DE4:RtlWriteHex  ; seg058
 	mov	dx, [MsgPtrIntersect2]
 	mov	cx, [si+0xE]
-	call	0x1DE4:RtlWriteText  ; seg058
+	call	0x1DE4:RtlWriteHex  ; seg058
 	mov	ax, 7
 	mov	cx, 3
 	mov	bx, [MsgPtrCommit]
@@ -242,7 +212,7 @@ LoadSection:
 	mov	ds, ax
 	mov	dx, [MsgPtrAfterH]
 	mov	cx, [bx+0xE]
-	call	0x1DE4:RtlWriteText  ; seg058
+	call	0x1DE4:RtlWriteHex  ; seg058
 	mov	ax, 0xA
 	mov	cx, 0
 	mov	bx, [MsgPtrAfter]
@@ -803,11 +773,11 @@ CheckThunkList:
 	db	0x2B, 0xC8		; sub cx, ax
 	sub	cx, 0x10
 	mov	dx, [MsgPtrVector]
-	call	0x1DE4:RtlWriteText  ; eov0009, vector corrupted
+	call	0x1DE4:RtlWriteHex  ; eov0009, vector corrupted
 	db	0x8B, 0xCE		; mov cx, si
 	mov	dx, [MsgPtrVector]
 	add	dx, 5
-	call	0x1DE4:RtlWriteText  ; seg058
+	call	0x1DE4:RtlWriteHex  ; seg058
 	mov	ax, 0x12
 	mov	cx, 3
 	mov	bx, [MsgPtrCorrupt]

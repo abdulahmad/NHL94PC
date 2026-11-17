@@ -1454,3 +1454,30 @@ seg054:267A,FpHookNmi,F054_267A,new,high,hooks INT 2 (coprocessor NMI) and INT 2
 seg054:26A9,FpUnhookNmi,F054_26A9,new,high,restores INT 2,src/seg/seg054.asm
 seg054:26BA,FpCtrlBreak,F054_26BA,new,high,INT 23h handler: restores INT 2 and chains to the old handler,src/seg/seg054.asm
 seg054:26D3,FpNmiHandler,F054_26D3,new,high,"INT 2 handler: an 8087 exception goes to FpException, anything else chains",src/seg/seg054.asm
+seg058:0003,RtlSectionHook,F058_0003,rtlink,medium,default section hook: sets carry and returns,src/seg/seg058.asm
+seg058:0005,RtlWriteHex,F058_0005,rtlink,medium,writes CX as four hex digits at DS:DX (error codes in the eov messages),src/seg/seg058.asm
+seg058:0017,RtlHexWord,F058_0017,rtlink,medium,writes AX as four hex digits at ES:DI,src/seg/seg058.asm
+seg058:001E,RtlHexByte,F058_001E,rtlink,medium,writes AL as two hex digits,src/seg/seg058.asm
+seg058:002B,RtlHexDigit,F058_002B,rtlink,high,writes the low nibble of AL as a hex digit (daa trick),src/seg/seg058.asm
+seg058:0035,RtlFileAdjust,F058_0035,rtlink,low,a far pointer target in seg058 used by the overlay file code,src/seg/seg058.asm
+seg058:0039,RtlSwapErrorSlot,F058_0039,rtlink,medium,exchanges SI and DS with the saved error handler pointer,src/seg/seg058.asm
+seg058:004A,RtlErrorSlot,F058_004A,rtlink,medium,"far pointer to the fatal error routine, swapped by RtlSwapErrorSlot",src/seg/seg058.asm
+seg058:0054,RtlFatalError,F058_0054,rtlink,medium,"prints ""Fatal Error"" and the message to stderr, waits for a key in text mode, exits with 1",src/seg/seg058.asm
+seg058:00CF,RtlSaveVectors,F058_00CF,rtlink,medium,saves the PSP terminate vector once,src/seg/seg058.asm
+seg058:00F4,RtlSetHandler,F058_00F4,rtlink,medium,registers a far callback with a flag mask (up to 12) and hooks the terminate vector,src/seg/seg058.asm
+seg058:0198,RtlInternalError,F058_0198,rtlink,medium,"""Internal error in .RTLink(R)/Plus run-time code"" through the error slot",src/seg/seg058.asm
+seg058:01C9,RtlAfterFiles,F058_01C9,rtlink,medium,runs the callbacks with flag 4,src/seg/seg058.asm
+seg058:01D3,RtlCallHandlersFar,F058_01D3,rtlink,medium,far entry to RtlCallHandlers,src/seg/seg058.asm
+seg058:01D7,RtlTerminate,F058_01D7,rtlink,medium,"terminate hook: runs flag 2 callbacks, restores the vector and chains",src/seg/seg058.asm
+seg058:0203,RtlCallHandlers,F058_0203,rtlink,medium,calls every registered callback whose mask matches AL,src/seg/seg058.asm
+seg058:0224,RtlBeforeClose,F058_0224,rtlink,medium,stub returning -1,src/seg/seg058.asm
+seg058:0228,RtlStubCx,F058_0228,rtlink,high,returns CX = -1,src/seg/seg058.asm
+seg058:022C,RtlStubZero,F058_022C,rtlink,high,returns 0 in DX:AX,src/seg/seg058.asm
+seg058:02A1,RtlGetEnv,F058_02A1,rtlink,medium,finds a variable in the environment block,src/seg/seg058.asm
+seg058:02FD,RtlFindFile,F058_02FD,rtlink,medium,"tries a file by a search spec of letters C, E, P and A (current dir, EXE dir, PATH, as given)",src/seg/seg058.asm
+seg058:0332,RtlFindFileStep,F058_0332,rtlink,medium,one RtlFindFile try,src/seg/seg058.asm
+seg058:0405,RtlCurrentDir,F058_0405,rtlink,high,"builds ""D:\path\"" for the current drive and directory",src/seg/seg058.asm
+seg058:0443,RtlExePath,F058_0443,rtlink,high,the full path of the running EXE from the environment (DOS 3 or later),src/seg/seg058.asm
+seg058:04AC,RtlOpenCandidate,F058_04AC,rtlink,medium,builds the candidate path and opens it,src/seg/seg058.asm
+seg058:04C0,RtlAppendName,F058_04C0,rtlink,medium,appends the file name and notes a .exe extension,src/seg/seg058.asm
+seg058:04FD,RtlShowMessage,F058_04FD,rtlink,medium,duplicates stdout/stderr handles and prints a $-terminated message,src/seg/seg058.asm
