@@ -1,6 +1,12 @@
 ; Far data, paragraph 35E8h, 64 bytes: save progress messages. Used by SaveGame.
+str_SavingCurrent:                              ; string 'Saving Current'
         db 'Saving Current', 0x00
+str_LeagueGame:                                 ; string 'League Game.'
         db 'League Game.', 0x00
-        db 'Play-Off Game.', 0x00, 0x00
-        db 0x00, 0xE8, 0x35, 0x0F, 0x00, 0xE8, 0x35, 0x00, 0x00, 0xE8, 0x35, 0x1C, 0x00, 0xE8, 0x35, 0x00
-        db 0x00, 0x00, 0x00, 0x00
+str_PlayOffGame:                                ; string 'Play-Off Game.'
+        db 'Play-Off Game.', 0x00
+        dw str_SavingCurrent, 0x35E8
+        dw str_LeagueGame, 0x35E8
+        dw str_SavingCurrent, 0x35E8
+        dw str_PlayOffGame, 0x35E8
+        db 0x00, 0x00, 0x00, 0x00, 0x00
