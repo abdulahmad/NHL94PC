@@ -4,7 +4,7 @@
 	db	0xF0, 0x01, 0xEE, 0x06, 0x07, 0x07, 0x29, 0x07, 0x6E, 0x07, 0x0B, 0x07, 0xDE, 0x01, 0x56, 0x02
 	db	0x95, 0x02, 0x9A, 0x02, 0x83
 
-F054_003B:
+FpMath:
 	sti
 	or	al, 0x77
 	psrlw	mm4, mm3
@@ -15,13 +15,13 @@ F054_003B:
 .1:
 	retf
 
-F054_004E:
+FpMathBadIndex:
 	or	ax, strict word 0xffff
 	db	0x8B, 0xD0		; mov dx, ax
-	jmp	short F054_003B.1
+	jmp	short FpMath.1
 	db	'NO87=', 0x0D, 0x0A
 
-F054_005C:
+FpInit:
 	push	ss
 	push	ds
 	mov	ax, 0x56
@@ -140,7 +140,7 @@ F054_005C:
 	jz	short .13
 	cmp	word [0x14], 0x0
 	jnz	short .12
-	call	F054_267A
+	call	FpHookNmi
 	jnc	short .13
 	mov	ax, 0xfffe
 	stc
@@ -155,7 +155,7 @@ F054_005C:
 .13:
 	cmp	word [0x14], 0x0
 	jnz	short .14
-	call	F054_01F8
+	call	FpHookVectors
 	jmp	short .15
 .14:
 	cmp	byte [0x4], 0x0
@@ -167,9 +167,9 @@ F054_005C:
 	push	strict word 0x1e
 	call	0x0000:RetPop10
 .15:
-	call	F054_01CF
+	call	FpReset
 	mov	ax, 0x1332
-	call	F054_06EE
+	call	FpLoadCw
 	db	0x33, 0xC0		; xor ax, ax
 	mov	[0x0], ax
 	mov	[0x2], ax
@@ -183,14 +183,14 @@ F054_005C:
 	cbw
 	ret
 
-F054_01AE:
+FpTerm:
 	cmp	word [0x14], 0x0
 	jnz	short .2
-	call	F054_0240
+	call	FpUnhookVectors
 	cmp	byte [0x4], 0x0
 	jz	short .1
 	fninit
-	call	F054_26A9
+	call	FpUnhookNmi
 .1:
 	ret
 .2:
@@ -198,7 +198,7 @@ F054_01AE:
 	call	0x0000:RetPop2
 	ret
 
-F054_01CF:
+FpReset:
 	cmp	byte [0x4], 0x0
 	jz	short .1
 	fninit
@@ -215,12 +215,12 @@ F054_01CF:
 	mov	[0x8], ax
 	ret
 
-F054_01F0:
+FpSetHandler:
 	mov	[0x0], ax
 	mov	[0x2], dx
 	ret
 
-F054_01F8:
+FpHookVectors:
 	mov	cx, 0xb
 	mov	ax, 0x3534
 	mov	di, 0x1e
@@ -257,7 +257,7 @@ F054_01F8:
 	pop	ds
 	ret
 
-F054_0240:
+FpUnhookVectors:
 	mov	cx, 0xb
 	mov	ax, 0x2534
 	mov	di, 0x1e
@@ -271,7 +271,7 @@ F054_0240:
 	loop	.1
 	ret
 
-F054_0256:
+FpStackDepth:
 	db	0x33, 0xD2		; xor dx, dx
 	cmp	byte [0x4], 0x0
 	jz	short .3
@@ -302,16 +302,16 @@ F054_0256:
 	db	0x03, 0xC2		; add ax, dx
 	ret
 
-F054_0295:
+FpHave87:
 	mov	al, [0x4]
 	cbw
 	ret
 
-F054_029A:
+FpSetMode:
 	mov	[0xa4], ax
 	ret
 
-F054_029E:
+FpSetC1:
 	or	byte [0x17], 0x2
 	cmp	byte [0x4], 0x0
 	jz	short .1
@@ -319,18 +319,18 @@ F054_029E:
 .1:
 	ret
 
-F054_02AE:
+FpSetC2:
 	or	byte [0x17], 0x4
 	ret
 
-F054_02B4:
+FpIret:
 	iret
 
-F054_02B5:
+Fp87ExceptionNext:
 	inc	bx
-	jmp	short F054_02B8.1
+	jmp	short Fp87Exception.1
 
-F054_02B8:
+Fp87Exception:
 	push	ax
 	push	bp
 	sub	sp, 0x1c
@@ -346,12 +346,12 @@ F054_02B8:
 .1:
 	mov	ax, [bx]
 	add	al, 0x28
-	jnc	short F054_02B5
+	jnc	short Fp87ExceptionNext
 	xchg	al, ah
 	mov	[bp + 0x8], ax
-	jmp	short F054_02DE.1
+	jmp	short FpException.1
 
-F054_02DE:
+FpException:
 	push	ax
 	push	bp
 	sub	sp, 0x1c
@@ -380,14 +380,14 @@ F054_02DE:
 .3:
 	test	al, 0x2
 	jz	short .4
-	jmp	near F054_04EA.3
+	jmp	near FpSkipEmptyRegs.3
 .4:
 	test	bh, 0x4
 	jnz	short .5
 	test	al, 0x4
 	jz	short .5
 	or	bh, 0x4
-	call	F054_062F
+	call	FpSignalOnce
 	jmp	short .2
 .5:
 	test	bh, 0x8
@@ -395,7 +395,7 @@ F054_02DE:
 	test	al, 0x8
 	jz	short .6
 	or	bh, 0x8
-	jmp	near F054_0619
+	jmp	near FpCheckPrecision
 .6:
 	mov	bl, [0x6]
 	or	bl, 0xc0
@@ -443,7 +443,7 @@ F054_02DE:
 	pop	bx
 	pop	ax
 	add	sp, 0x2
-	jmp	near F054_0637.4
+	jmp	near FpSignal.4
 .11:
 	push	si
 	push	bx
@@ -487,7 +487,7 @@ F054_02DE:
 	mov	si, [0x10]
 	cmp	si, [0x12]
 	jnz	short .15
-	call	F054_029E
+	call	FpSetC1
 .15:
 	add	si, 0xc
 	mov	[0x10], si
@@ -495,7 +495,7 @@ F054_02DE:
 	fdecstp
 	wait
 	fstp	tword [si]
-	jmp	near F054_04EA.2
+	jmp	near FpSkipEmptyRegs.2
 .16:
 	test	bl, 0x3
 	jz	short .17
@@ -513,14 +513,14 @@ F054_02DE:
 .18:
 	db	0x0B, 0xDB		; or bx, bx
 	jz	short .19
-	call	F054_04EA
+	call	FpSkipEmptyRegs
 	jmp	short .22
 	db	0x90
 .19:
 	mov	si, [0x10]
 	cmp	si, [0xe]
 	jnz	short .20
-	jmp	near F054_04EA.1
+	jmp	near FpSkipEmptyRegs.1
 .20:
 	or	bl, 0x3
 	wait
@@ -530,7 +530,7 @@ F054_02DE:
 	mov	si, [0x10]
 	cmp	si, [0xe]
 	jnz	short .21
-	call	F054_02AE
+	call	FpSetC2
 .21:
 	sub	si, 0xc
 	mov	[0x10], si
@@ -545,7 +545,7 @@ F054_02DE:
 	fstp	tword [0x4a]
 	shr	bx, 1
 	shr	bx, 1
-	call	F054_04EA
+	call	FpSkipEmptyRegs
 	wait
 	fld	tword [0x4a]
 	shl	bx, 1
@@ -568,7 +568,7 @@ F054_02DE:
 	mov	si, [0x10]
 	cmp	si, [0xe]
 	jnz	short .24
-	call	F054_02AE
+	call	FpSetC2
 .24:
 	sub	si, 0xc
 	mov	[0x10], si
@@ -582,7 +582,7 @@ F054_02DE:
 	test	dl, 0x10
 	jnz	short .27
 .26:
-	jmp	short F054_04EA.2
+	jmp	short FpSkipEmptyRegs.2
 	db	0x90
 .27:
 	db	0x8A, 0xCA		; mov cl, dl
@@ -599,17 +599,17 @@ F054_02DE:
 	db	0x8B, 0xD3		; mov dx, bx
 	ror	dx, cl
 	test	dl, 0x3
-	jnz	short F054_04EA.2
-	jmp	short F054_04EA.1
+	jnz	short FpSkipEmptyRegs.2
+	jmp	short FpSkipEmptyRegs.1
 	db	0x90
 
-F054_04EA:
+FpSkipEmptyRegs:
 	ror	bx, 1
 	ror	bx, 1
 	wait
 	fincstp
 	test	bx, 0x3
-	jz	short F054_04EA
+	jz	short FpSkipEmptyRegs
 	ret
 .1:
 	or	ah, 0x4
@@ -621,16 +621,16 @@ F054_04EA:
 	pop	cx
 	pop	bx
 	pop	si
-	jmp	near F054_02DE.9
+	jmp	near FpException.9
 .2:
 	and	al, 0xfe
-	call	F054_062F
+	call	FpSignalOnce
 	pop	di
 	pop	dx
 	pop	cx
 	pop	bx
 	pop	si
-	jmp	near F054_02DE.2
+	jmp	near FpException.2
 .3:
 	or	byte [0x8], 0x2
 	push	cx
@@ -654,7 +654,7 @@ F054_04EA:
 	mov	si, [0x10]
 	cmp	si, [0x12]
 	jnz	short .5
-	call	F054_029E
+	call	FpSetC1
 .5:
 	add	si, 0xc
 	mov	[0x10], si
@@ -668,8 +668,8 @@ F054_04EA:
 	and	cx, 0x400
 	add	cx, 0x104
 	mov	[bp + 0x8], cx
-	call	F054_0637
-	call	F054_05D7
+	call	FpSignal
+	call	FpFixDenormal
 	pop	cx
 	and	cx, 0x38
 	cmp	cl, 0x8
@@ -680,7 +680,7 @@ F054_04EA:
 .7:
 	or	cx, 0x6c1
 	mov	[bp + 0x8], cx
-	call	F054_062F
+	call	FpSignalOnce
 	jmp	short .11
 .8:
 	mov	cx, [bp + 0x8]
@@ -690,9 +690,9 @@ F054_04EA:
 	and	cx, 0x138
 	cmp	cx, 0x100
 	jz	short .9
-	call	F054_062F
+	call	FpSignalOnce
 .9:
-	call	F054_05D7
+	call	FpFixDenormal
 	jmp	short .11
 .10:
 	or	ah, 0x40
@@ -713,9 +713,9 @@ F054_04EA:
 .11:
 	pop	cx
 	and	al, 0xfd
-	jmp	near F054_02DE.2
+	jmp	near FpException.2
 
-F054_05D7:
+FpFixDenormal:
 	wait
 	fstp	tword [bp + 0x12]
 	wait
@@ -747,7 +747,7 @@ F054_05D7:
 	mov	[bp + 0x1a], cx
 	jmp	short .1
 
-F054_0619:
+FpCheckPrecision:
 	push	ax
 	mov	ax, [bp + 0x8]
 	and	ax, 0x1c0
@@ -755,16 +755,16 @@ F054_0619:
 	cmp	ax, 0xc0
 	pop	ax
 	jnc	short .1
-	call	F054_062F
+	call	FpSignalOnce
 .1:
-	jmp	near F054_02DE.2
+	jmp	near FpException.2
 
-F054_062F:
+FpSignalOnce:
 	test	ah, 0x40
-	jnz	short F054_0637.3
+	jnz	short FpSignal.3
 	or	ah, 0x40
 
-F054_0637:
+FpSignal:
 	push	ds
 	push	di
 	push	si
@@ -856,7 +856,7 @@ F054_0637:
 	pop	ax
 	iret
 
-F054_06EE:
+FpLoadCw:
 	mov	[0x6], ax
 	and	ax, 0xff3c
 	cmp	byte [0x4], 0x0
@@ -868,11 +868,11 @@ F054_06EE:
 	mov	[0xa], ax
 	ret
 
-F054_0707:
+FpGetCw:
 	mov	ax, [0x6]
 	ret
 
-F054_070B:
+FpGetStatus:
 	db	0x33, 0xC0		; xor ax, ax
 	cmp	al, [0x4]
 	jz	short .1
@@ -887,7 +887,7 @@ F054_070B:
 	mov	[0x8], ax
 	ret
 
-F054_0729:
+FpRoundInt:
 	and	ax, 0xc00
 	cmp	byte [0x4], 0x0
 	jz	short .1
@@ -912,13 +912,13 @@ F054_0729:
 	db	0x0A, 0xE5		; or ah, ch
 	mov	[0xb], ah
 	push	bp
-	call	F054_1D4F
+	call	FpRndint
 	pop	bp
 	pop	word [0xa]
-	call	F054_07D4
+	call	FpCheckPending
 	ret
 
-F054_076E:
+FpToLong:
 	and	ax, 0xc00
 	cmp	byte [0x4], 0x0
 	jz	short .1
@@ -945,15 +945,15 @@ F054_076E:
 	db	0x0A, 0xE5		; or ah, ch
 	mov	[0xb], ah
 	push	bp
-	call	F054_1C17
+	call	FpToInt32
 	pop	bp
 	db	0x8B, 0xC2		; mov ax, dx
 	db	0x8B, 0xD3		; mov dx, bx
-	call	F054_07D4
+	call	FpCheckPending
 	mov	si, [0x10]
 	cmp	si, [0xe]
 	jnz	short .2
-	call	F054_02AE
+	call	FpSetC2
 .2:
 	sub	si, 0xc
 	mov	[0x10], si
@@ -961,7 +961,7 @@ F054_076E:
 .3:
 	ret
 
-F054_07D4:
+FpCheckPending:
 	mov	cx, [0x16]
 	or	[0x8], cx
 	or	[0xc], cl
@@ -973,11 +973,11 @@ F054_07D4:
 	not	cl
 	mov	ch, [0x17]
 	test	cx, 0xdfff
-	jz	short F054_076E.3
+	jz	short FpToLong.3
 	xchg	ax, cx
-	jmp	near F054_0637.4
+	jmp	near FpSignal.4
 
-F054_07FE:
+FpPatchSegInt:
 	sti
 	wait
 	push	ax
@@ -1002,16 +1002,16 @@ F054_07FE:
 	mov	[si], ax
 	push	bx
 	mov	bx, 0x1
-	jmp	short F054_0833.2
+	jmp	short FpPatchInt.2
 
-F054_082B:
+FpPatchWaitInt:
 	sti
 	wait
 	push	ax
 	mov	ax, 0xa23d
-	jmp	short F054_0833.1
+	jmp	short FpPatchInt.1
 
-F054_0833:
+FpPatchInt:
 	sti
 	wait
 	push	ax
@@ -1057,183 +1057,183 @@ F054_0833:
 	pop	ax
 	iret
 	db	0x90
-F054_0833JumpTable:
-	dw	F054_0CBC.23
-	dw	F054_0CBC.7
-	dw	F054_0CBC.15
-	dw	F054_0CBC.27
-	dw	F054_0CBC.22
-	dw	F054_0CBC.8
-	dw	F054_0CBC.16
-	dw	F054_0CBC.27
-	dw	F054_0CBC.21
-	dw	F054_0CBC.6
-	dw	F054_0CBC.14
-	dw	F054_0CBC.27
-	dw	F054_0CBC.20
-	dw	F054_0CBC.5
-	dw	F054_0CBC.13
-	dw	F054_0CBC.27
-	dw	F054_0CBC.25
-	dw	F054_0CBC.11
-	dw	F054_0CBC.19
-	dw	F054_0CBC.27
-	dw	F054_0CBC.3
-	dw	F054_0CBC.10
-	dw	F054_0CBC.18
-	dw	F054_0CBC.27
-	dw	F054_0CBC.24
-	dw	F054_0CBC.4
-	dw	F054_0CBC.12
-	dw	F054_0CBC.27
-	dw	F054_0CBC.2
-	dw	F054_0CBC.9
-	dw	F054_0CBC.17
-	dw	F054_0CBC.27
-F054_0833JumpTable2:
-	dw	F054_1036
-	dw	F054_101C
-	dw	F054_1DB9.38
-	dw	F054_1DB9.37
-	dw	F054_1016
-	dw	F054_1009.1
-	dw	F054_1024
-	dw	F054_102E
-F054_0833JumpTable3:
-	dw	F054_0ED1.4
-	dw	F054_1009
-	dw	F054_0ED1.5
-	dw	F054_0ED1.6
-	dw	F054_1009
-	dw	F054_0ED1.9
-	dw	F054_1009
-	dw	F054_0ED1.10
-	dw	F054_0ED1.11
-	dw	F054_0ED1.23
-	dw	F054_0ED1.25
-	dw	F054_0ED1.24
-	dw	F054_0ED1.13
-	dw	F054_0ED1.20
-	dw	F054_0ED1.21
-	dw	F054_0ED1.22
-F054_0833JumpTable4:
-	dw	F054_1431.40
-	dw	F054_1431.109
-	dw	F054_1431.69
-	dw	F054_1431.99
-F054_0833JumpTable5:
-	dw	F054_1431.52
-	dw	F054_1431.114
-	dw	F054_1431.82
-	dw	F054_1431.104
-F054_0833JumpTable6:
-	dw	F054_1DB9.28
-	dw	F054_1DB9.11
-	dw	F054_1009
-	dw	F054_1C17.6
-F054_0833JumpTable7:
-	dw	F054_1DB9.29
-	dw	F054_1DB9.24
-	dw	F054_1DB9.30
-	dw	F054_1C17.11
-F054_0833JumpTable8:
-	dw	F054_1DB9.64
-	dw	F054_1DB9.59
-	dw	F054_1DB9.60
-	dw	F054_1DB9.58
-	dw	F054_1DB9.61
-	dw	F054_1DB9.62
-	dw	F054_1DB9.63
-	dw	F054_1009
-F054_0833JumpTable9:
-	dw	F054_24DD.3
-	dw	F054_254B.1
-	dw	F054_2411.3
-	dw	F054_24AE.1
-	dw	F054_1009
-	dw	F054_1009
-	dw	F054_1009
-	dw	F054_1009
-F054_0833JumpTable10:
-	dw	F054_1DB9.83
-	dw	F054_2593.5
-	dw	F054_22C1.1
-	dw	F054_1009
-	dw	F054_1D4F
-	dw	F054_1DB9.31
-	dw	F054_1009
-	dw	F054_1009
-F054_0833JumpTable11:
-	dw	F054_1DB9.41
-	dw	F054_1DB9.48
-	dw	F054_1DB9.46
-	dw	F054_1DB9.49
-	dw	F054_1DB9.50
-	dw	F054_1DB9.43
-	dw	F054_1DB9.46
-	dw	F054_1DB9.49
-	dw	F054_1DB9.46
-	dw	F054_1DB9.46
-	dw	F054_1DB9.46
-	dw	F054_1DB9.46
-	dw	F054_1DB9.47
-	dw	F054_1DB9.47
-	dw	F054_1DB9.46
-	dw	F054_1DB9.51
-F054_0833JumpTable12:
-	dw	F054_1DB9.48
-	dw	F054_1DB9.43
-	dw	F054_1DB9.46
-	dw	F054_1DB9.47
-	dw	F054_10B9.5
-	dw	F054_1036.3
-	dw	F054_1036.7
-	dw	F054_1036.4
-	dw	F054_1036.4
-	dw	F054_1036.3
-	dw	F054_1036.7
-	dw	F054_1036.4
-	dw	F054_1036.6
-	dw	F054_1036.6
-	dw	F054_10B9.3
-	dw	F054_1036.6
-	dw	F054_1036.3
-	dw	F054_1036.3
-	dw	F054_1036.7
-	dw	F054_10B9.2
-	dw	F054_10B9.23
-	dw	F054_1036.8
-	dw	F054_1036.7
-	dw	F054_1036.11
-	dw	F054_1036.8
-	dw	F054_1036.8
-	dw	F054_1036.7
-	dw	F054_1036.13
-	dw	F054_1036.6
-	dw	F054_1036.6
-	dw	F054_10B9.3
-	dw	F054_1036.6
-	dw	F054_1036.11
-	dw	F054_1036.13
-	dw	F054_1036.7
-	dw	F054_1036.11
-	dw	F054_10B9.40
-	dw	F054_1036.8
-	dw	F054_1036.7
-	dw	F054_1036.11
-	dw	F054_1036.10
-	dw	F054_1036.12
-	dw	F054_1036.5
-	dw	F054_1036.10
-	dw	F054_1036.6
-	dw	F054_1036.6
-	dw	F054_10B9.3
-	dw	F054_1036.6
-	dw	F054_1036.8
-	dw	F054_1036.8
-	dw	F054_1036.7
-	dw	F054_1036.13
-	dw	F054_05D7.2
+FpPatchIntJumpTable:
+	dw	FpEmulate.23
+	dw	FpEmulate.7
+	dw	FpEmulate.15
+	dw	FpEmulate.27
+	dw	FpEmulate.22
+	dw	FpEmulate.8
+	dw	FpEmulate.16
+	dw	FpEmulate.27
+	dw	FpEmulate.21
+	dw	FpEmulate.6
+	dw	FpEmulate.14
+	dw	FpEmulate.27
+	dw	FpEmulate.20
+	dw	FpEmulate.5
+	dw	FpEmulate.13
+	dw	FpEmulate.27
+	dw	FpEmulate.25
+	dw	FpEmulate.11
+	dw	FpEmulate.19
+	dw	FpEmulate.27
+	dw	FpEmulate.3
+	dw	FpEmulate.10
+	dw	FpEmulate.18
+	dw	FpEmulate.27
+	dw	FpEmulate.24
+	dw	FpEmulate.4
+	dw	FpEmulate.12
+	dw	FpEmulate.27
+	dw	FpEmulate.2
+	dw	FpEmulate.9
+	dw	FpEmulate.17
+	dw	FpEmulate.27
+FpPatchIntJumpTable2:
+	dw	FpAdd
+	dw	FpMul
+	dw	FpShiftRight.38
+	dw	FpShiftRight.37
+	dw	FpSub
+	dw	FpSetStackFault.1
+	dw	FpDivRev
+	dw	FpDiv
+FpPatchIntJumpTable3:
+	dw	FpEmuChainEsc.4
+	dw	FpSetStackFault
+	dw	FpEmuChainEsc.5
+	dw	FpEmuChainEsc.6
+	dw	FpSetStackFault
+	dw	FpEmuChainEsc.9
+	dw	FpSetStackFault
+	dw	FpEmuChainEsc.10
+	dw	FpEmuChainEsc.11
+	dw	FpEmuChainEsc.23
+	dw	FpEmuChainEsc.25
+	dw	FpEmuChainEsc.24
+	dw	FpEmuChainEsc.13
+	dw	FpEmuChainEsc.20
+	dw	FpEmuChainEsc.21
+	dw	FpEmuChainEsc.22
+FpPatchIntJumpTable4:
+	dw	FpDivMantissa.40
+	dw	FpDivMantissa.109
+	dw	FpDivMantissa.69
+	dw	FpDivMantissa.99
+FpPatchIntJumpTable5:
+	dw	FpDivMantissa.52
+	dw	FpDivMantissa.114
+	dw	FpDivMantissa.82
+	dw	FpDivMantissa.104
+FpPatchIntJumpTable6:
+	dw	FpShiftRight.28
+	dw	FpShiftRight.11
+	dw	FpSetStackFault
+	dw	FpToInt32.6
+FpPatchIntJumpTable7:
+	dw	FpShiftRight.29
+	dw	FpShiftRight.24
+	dw	FpShiftRight.30
+	dw	FpToInt32.11
+FpPatchIntJumpTable8:
+	dw	FpShiftRight.64
+	dw	FpShiftRight.59
+	dw	FpShiftRight.60
+	dw	FpShiftRight.58
+	dw	FpShiftRight.61
+	dw	FpShiftRight.62
+	dw	FpShiftRight.63
+	dw	FpSetStackFault
+FpPatchIntJumpTable9:
+	dw	FpAtanCore.3
+	dw	FpSeriesB.1
+	dw	FpPolyRatio.3
+	dw	FpSeriesA.1
+	dw	FpSetStackFault
+	dw	FpSetStackFault
+	dw	FpSetStackFault
+	dw	FpSetStackFault
+FpPatchIntJumpTable10:
+	dw	FpShiftRight.83
+	dw	FpLog2Core.5
+	dw	FpSubMantissa.1
+	dw	FpSetStackFault
+	dw	FpRndint
+	dw	FpShiftRight.31
+	dw	FpSetStackFault
+	dw	FpSetStackFault
+FpPatchIntJumpTable11:
+	dw	FpShiftRight.41
+	dw	FpShiftRight.48
+	dw	FpShiftRight.46
+	dw	FpShiftRight.49
+	dw	FpShiftRight.50
+	dw	FpShiftRight.43
+	dw	FpShiftRight.46
+	dw	FpShiftRight.49
+	dw	FpShiftRight.46
+	dw	FpShiftRight.46
+	dw	FpShiftRight.46
+	dw	FpShiftRight.46
+	dw	FpShiftRight.47
+	dw	FpShiftRight.47
+	dw	FpShiftRight.46
+	dw	FpShiftRight.51
+FpPatchIntJumpTable12:
+	dw	FpShiftRight.48
+	dw	FpShiftRight.43
+	dw	FpShiftRight.46
+	dw	FpShiftRight.47
+	dw	FpCopyReg.5
+	dw	FpAdd.3
+	dw	FpAdd.7
+	dw	FpAdd.4
+	dw	FpAdd.4
+	dw	FpAdd.3
+	dw	FpAdd.7
+	dw	FpAdd.4
+	dw	FpAdd.6
+	dw	FpAdd.6
+	dw	FpCopyReg.3
+	dw	FpAdd.6
+	dw	FpAdd.3
+	dw	FpAdd.3
+	dw	FpAdd.7
+	dw	FpCopyReg.2
+	dw	FpCopyReg.23
+	dw	FpAdd.8
+	dw	FpAdd.7
+	dw	FpAdd.11
+	dw	FpAdd.8
+	dw	FpAdd.8
+	dw	FpAdd.7
+	dw	FpAdd.13
+	dw	FpAdd.6
+	dw	FpAdd.6
+	dw	FpCopyReg.3
+	dw	FpAdd.6
+	dw	FpAdd.11
+	dw	FpAdd.13
+	dw	FpAdd.7
+	dw	FpAdd.11
+	dw	FpCopyReg.40
+	dw	FpAdd.8
+	dw	FpAdd.7
+	dw	FpAdd.11
+	dw	FpAdd.10
+	dw	FpAdd.12
+	dw	FpAdd.5
+	dw	FpAdd.10
+	dw	FpAdd.6
+	dw	FpAdd.6
+	dw	FpCopyReg.3
+	dw	FpAdd.6
+	dw	FpAdd.8
+	dw	FpAdd.8
+	dw	FpAdd.7
+	dw	FpAdd.13
+	dw	FpFixDenormal.2
 	db	0x40, 0x42, 0x01, 0x03, 0x05, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xC0
 	db	0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x00, 0x03, 0x00, 0x00
 	db	0x00, 0x00, 0x00, 0x00, 0x00, 0xC0, 0x00, 0x40, 0x80, 0x02, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
@@ -1272,13 +1272,13 @@ F054_0833JumpTable12:
 	db	0xBB, 'vp>[', 0x02, 0xAC, 0x8E, 0x05, 0x00, 0x80, 0x00, 0x60, 0xEF, 0x33, 0xA9
 	db	0xD0, 0x1F, 0x04, 0x9C, 0x08, 0x00, 0x00, 0x00, 0x96, 0xBB, 0x83, 0x6C, 0xE0, 0xF4, 0x5F, 0xC0
 	db	0x09, 0x00, 0x80, 0x00
-F054_0833JumpTable13:
-	dw	F054_0C45.1
-	dw	F054_0C45.4
-	dw	F054_0C45.2
-	dw	F054_0C45.3
+FpPatchIntJumpTable13:
+	dw	FpEmuSegInt.1
+	dw	FpEmuSegInt.4
+	dw	FpEmuSegInt.2
+	dw	FpEmuSegInt.3
 
-F054_0C28:
+FpEmuWaitInt:
 	push	bp
 	push	ds
 	push	si
@@ -1292,13 +1292,13 @@ F054_0C28:
 	pop	ds
 	pop	bp
 	iret
-F054_0C28JumpTable:
-	dw	F054_0C45.1
-	dw	F054_0C45.3
-	dw	F054_0C45.2
-	dw	F054_0C45.4
+FpEmuWaitIntJumpTable:
+	dw	FpEmuSegInt.1
+	dw	FpEmuSegInt.3
+	dw	FpEmuSegInt.2
+	dw	FpEmuSegInt.4
 
-F054_0C45:
+FpEmuSegInt:
 	sti
 	push	ax
 	push	es
@@ -1336,9 +1336,9 @@ F054_0C45:
 	mov	es, bx
 .4:
 	mov	[bp + 0x2], es
-	jmp	short F054_0CBC.1
+	jmp	short FpEmulate.1
 
-F054_0C85:
+FpEmuSegDecode:
 	db	0x8B, 0xD3		; mov dx, bx
 	db	0x8A, 0xD9		; mov bl, cl
 	shr	bl, byte 0x2
@@ -1347,7 +1347,7 @@ F054_0C85:
 	mov	cx, [di - 0x2]
 	jmp	[cs:bx + 0xc20]
 
-F054_0C98:
+FpEmuSegIntAlt:
 	cld
 	push	ax
 	push	es
@@ -1366,12 +1366,12 @@ F054_0C98:
 	mov	cx, [di]
 	add	di, 0x2
 	add	cl, 0x28
-	jnc	short F054_0C85
+	jnc	short FpEmuSegDecode
 	mov	es, dx
 	db	0x8B, 0xD3		; mov dx, bx
-	jmp	short F054_0CBC.1
+	jmp	short FpEmulate.1
 
-F054_0CBC:
+FpEmulate:
 	sti
 	push	ax
 	push	es
@@ -1532,10 +1532,10 @@ F054_0CBC:
 	test	cl, 0x1
 	jz	short .28
 	call	[cs:bx + 0x8e0]
-	jmp	near F054_0E67.1
+	jmp	near FpEmuExit.1
 	db	0x90
 .28:
-	call	F054_0E35
+	call	FpStackRoom
 	jc	short .35
 	mov	[0x96], si
 	test	cl, 0x4
@@ -1556,20 +1556,20 @@ F054_0CBC:
 .32:
 	sub	si, 0xc
 	mov	[0x10], si
-	jmp	short F054_0E67.1
+	jmp	short FpEmuExit.1
 .33:
-	call	F054_02AE
+	call	FpSetC2
 	jmp	short .32
 .34:
 	mov	ax, 0xe74
 	push	ax
 	jmp	[cs:bx + 0x8c0]
 .35:
-	call	F054_02AE
+	call	FpSetC2
 	or	word [0x16], 0x1
-	jmp	short F054_0E67.1
+	jmp	short FpEmuExit.1
 
-F054_0E35:
+FpStackRoom:
 	mov	si, [0x10]
 	db	0x8B, 0xFE		; mov di, si
 	db	0x8A, 0xD5		; mov dl, ch
@@ -1586,9 +1586,9 @@ F054_0E35:
 .1:
 	ret
 
-F054_0E53:
-	call	F054_1009
-	jmp	short F054_0E67.1
+FpEmuSignal:
+	call	FpSetStackFault
+	jmp	short FpEmuExit.1
 	db	0x90
 .1:
 	pop	bp
@@ -1600,9 +1600,9 @@ F054_0E53:
 	pop	di
 	pop	ds
 	pop	es
-	jmp	near F054_0637.4
+	jmp	near FpSignal.4
 
-F054_0E67:
+FpEmuExit:
 	pop	bp
 	add	sp, 0x2
 	pop	bx
@@ -1625,19 +1625,19 @@ F054_0E67:
 	db	0x0A, 0xC7		; or al, bh
 	not	al
 	test	ax, 0xdfff
-	jnz	short F054_0E53.1
+	jnz	short FpEmuSignal.1
 	jmp	[0xa7]
 
-F054_0E98:
+FpEmuChain:
 	cmp	byte [0xa6], 0xcd
-	jnz	short F054_0E67
+	jnz	short FpEmuExit
 	db	0x8B, 0xEC		; mov bp, sp
 	lds	di, [bp + 0x14]
 	add	di, 0x3
 	mov	cx, [di - 0x2]
 	sub	cl, 0x34
 	cmp	cl, 0x7
-	ja	short F054_0E67
+	ja	short FpEmuExit
 	mov	ax, [bp + 0xc]
 	mov	dx, [bp + 0x4]
 	mov	si, [bp + 0xa]
@@ -1650,7 +1650,7 @@ F054_0E98:
 	shl	bx, 1
 	jmp	[cs:bx + 0x880]
 
-F054_0ED1:
+FpEmuChainEsc:
 	mov	cl, [0xa6]
 	cmp	cl, 0x9b
 	jz	short .2
@@ -1659,7 +1659,7 @@ F054_0ED1:
 	xor	cl, 0x20
 	cmp	cl, 0xf8
 .1:
-	jc	short F054_0E67
+	jc	short FpEmuExit
 	db	0x8B, 0xEC		; mov bp, sp
 	lds	di, [bp + 0x14]
 	jmp	short .3
@@ -1706,7 +1706,7 @@ F054_0ED1:
 	mov	[0x10], si
 	ret
 .8:
-	call	F054_02AE
+	call	FpSetC2
 	jmp	short .7
 .9:
 	db	0x8B, 0xD9		; mov bx, cx
@@ -1719,9 +1719,9 @@ F054_0ED1:
 .11:
 	test	cx, 0x6
 	jnz	short .12
-	jmp	near F054_1DB9.75
+	jmp	near FpShiftRight.75
 .12:
-	jmp	near F054_1DB9.67
+	jmp	near FpShiftRight.67
 .13:
 	test	cx, 0x806
 	jz	short .16
@@ -1737,7 +1737,7 @@ F054_0ED1:
 	pop	ax
 	db	0x3B, 0xC4		; cmp ax, sp
 .15:
-	jnz	short F054_1009
+	jnz	short FpSetStackFault
 	mov	ax, [0xc]
 	mov	[bp + 0x12], ax
 	ret
@@ -1746,15 +1746,15 @@ F054_0ED1:
 	jz	short .18
 	test	cx, 0x400
 	jnz	short .17
-	jmp	near F054_1DB9.57
+	jmp	near FpShiftRight.57
 .17:
-	jmp	near F054_1DB9.55
+	jmp	near FpShiftRight.55
 .18:
 	test	cx, 0x400
 	jnz	short .19
-	jmp	near F054_1DB9.27
+	jmp	near FpShiftRight.27
 .19:
-	jmp	near F054_1DB9.26
+	jmp	near FpShiftRight.26
 .20:
 	db	0x8A, 0xDD		; mov bl, ch
 	shr	bl, 1
@@ -1772,54 +1772,54 @@ F054_0ED1:
 	jmp	[cs:bx + 0x930]
 .23:
 	test	cx, 0x6
-	jnz	short F054_1009
-	jmp	near F054_1DB9.71
+	jnz	short FpSetStackFault
+	jmp	near FpShiftRight.71
 .24:
 	xor	cl, 0x4
 	test	cx, 0x6
-	jnz	short F054_1009
+	jnz	short FpSetStackFault
 	mov	ax, 0x1
-	jmp	near F054_1DB9.78
+	jmp	near FpShiftRight.78
 .25:
 	test	cl, 0x6
-	jz	short F054_1009
+	jz	short FpSetStackFault
 	db	0x33, 0xC0		; xor ax, ax
-	jmp	near F054_1DB9.78
+	jmp	near FpShiftRight.78
 
-F054_1009:
+FpSetStackFault:
 	or	word [0x16], 0x40
 	ret
 	db	0x90
 .1:
 	mov	dx, 0x8000
-	jmp	short F054_1036.1
+	jmp	short FpAdd.1
 	db	0x90
 
-F054_1016:
+FpSub:
 	mov	dx, 0x80
-	jmp	short F054_1036.1
+	jmp	short FpAdd.1
 	db	0x90
 
-F054_101C:
+FpMul:
 	db	0x33, 0xD2		; xor dx, dx
 	mov	bx, 0x988
-	jmp	short F054_1036.2
+	jmp	short FpAdd.2
 	db	0x90
 
-F054_1024:
+FpDivRev:
 	db	0x33, 0xD2		; xor dx, dx
 	xchg	si, di
 	mov	bx, 0x9a8
-	jmp	short F054_1036.2
+	jmp	short FpAdd.2
 	db	0x90
 
-F054_102E:
+FpDiv:
 	db	0x33, 0xD2		; xor dx, dx
 	mov	bx, 0x9a8
-	jmp	short F054_1036.2
+	jmp	short FpAdd.2
 	db	0x90
 
-F054_1036:
+FpAdd:
 	db	0x33, 0xD2		; xor dx, dx
 .1:
 	mov	bx, 0x968
@@ -1840,7 +1840,7 @@ F054_1036:
 	db	0x8B, 0xF7		; mov si, di
 	db	0x8A, 0xD6		; mov dl, dh
 .4:
-	call	F054_10B1
+	call	FpCopyToTemp
 	mov	[di + 0xa], dl
 	ret
 .5:
@@ -1850,13 +1850,13 @@ F054_1036:
 	db	0x8B, 0xF7		; mov si, di
 .7:
 	or	word [0x16], 0x1
-	jmp	short F054_10B1
+	jmp	short FpCopyToTemp
 .8:
 	mov	si, 0x9d0
 .9:
 	db	0x32, 0xF2		; xor dh, dl
 	and	dh, 0x80
-	call	F054_109A
+	call	FpCopyConstToTemp
 	or	[di + 0xa], dh
 	ret
 .10:
@@ -1870,10 +1870,10 @@ F054_1036:
 	mov	si, 0x9e8
 	or	word [0x16], 0x1
 
-F054_109A:
+FpCopyConstToTemp:
 	mov	di, [0x96]
 
-F054_109E:
+FpCopyConst:
 	cs	movsw
 	cs	movsw
 	cs	movsw
@@ -1884,12 +1884,12 @@ F054_109E:
 	sub	si, 0xc
 	ret
 
-F054_10B1:
+FpCopyToTemp:
 	mov	di, [0x96]
 	db	0x3B, 0xF7		; cmp si, di
-	jz	short F054_10B9.1
+	jz	short FpCopyReg.1
 
-F054_10B9:
+FpCopyReg:
 	movsw
 	movsw
 	movsw
@@ -1902,10 +1902,10 @@ F054_10B9:
 	ret
 .2:
 	test	byte [0xb], 0x10
-	jz	short F054_1036.13
+	jz	short FpAdd.13
 	db	0x32, 0xD6		; xor dl, dh
-	js	short F054_1036.13
-	jmp	short F054_1036.3
+	js	short FpAdd.13
+	jmp	short FpAdd.3
 .3:
 	db	0x8B, 0xC6		; mov ax, si
 	db	0x8B, 0xDF		; mov bx, di
@@ -1917,10 +1917,10 @@ F054_10B9:
 	cld
 	jc	short .4
 	db	0x8B, 0xF0		; mov si, ax
-	jmp	short F054_1036.7
+	jmp	short FpAdd.7
 .4:
 	db	0x8B, 0xF3		; mov si, bx
-	jmp	near F054_1036.7
+	jmp	near FpAdd.7
 .5:
 	db	0x2B, 0xC1		; sub ax, cx
 	jl	short .6
@@ -1946,13 +1946,13 @@ F054_10B9:
 	mov	di, [di + 0x6]
 	db	0x0B, 0xED		; or bp, bp
 	js	short .8
-	jmp	near F054_1431.22
+	jmp	near FpDivMantissa.22
 .8:
 	sub	dx, 0x1
 	sbb	cx, 0x0
 	sbb	bx, 0x0
 	sbb	di, 0x0
-	jmp	near F054_1431.9
+	jmp	near FpDivMantissa.9
 .9:
 	push	bp
 	push	dx
@@ -2057,7 +2057,7 @@ F054_10B9:
 	inc	ax
 .20:
 	db	0x8B, 0xF0		; mov si, ax
-	jmp	near F054_1431.22
+	jmp	near FpDivMantissa.22
 .21:
 	sub	dx, [si]
 	sbb	cx, [si + 0x2]
@@ -2076,13 +2076,13 @@ F054_10B9:
 	db	0x13, 0xDE		; adc bx, si
 	db	0x13, 0xFE		; adc di, si
 	db	0x8B, 0xF0		; mov si, ax
-	jmp	near F054_1431.9
+	jmp	near FpDivMantissa.9
 .22:
 	db	0x8B, 0xF0		; mov si, ax
 	pop	ax
 	xor	ah, 0x80
 	push	ax
-	jmp	near F054_1431.9
+	jmp	near FpDivMantissa.9
 .23:
 	push	bp
 	db	0x8A, 0xFE		; mov bh, dh
@@ -2279,7 +2279,7 @@ F054_10B9:
 	or	bp, 0x1
 .39:
 	pop	si
-	jmp	near F054_1431.21
+	jmp	near FpDivMantissa.21
 .40:
 	stc
 	db	0x1B, 0xC1		; sbb ax, cx
@@ -2324,14 +2324,14 @@ F054_10B9:
 .41:
 	push	bp
 	mov	[0x1a], di
-	call	F054_1431
+	call	FpDivMantissa
 	push	di
 	mov	word [0x1a], 0x0
-	call	F054_1431
+	call	FpDivMantissa
 	push	di
-	call	F054_1431
+	call	FpDivMantissa
 	push	di
-	call	F054_1431
+	call	FpDivMantissa
 	mov	bp, 0x8001
 	shl	cx, 1
 	rcl	bx, 1
@@ -2360,9 +2360,9 @@ F054_10B9:
 	pop	bx
 	pop	di
 	pop	si
-	jmp	near F054_1431.22
+	jmp	near FpDivMantissa.22
 
-F054_1431:
+FpDivMantissa:
 	mov	si, [0x9e]
 	db	0x33, 0xFF		; xor di, di
 	db	0x3B, 0xD6		; cmp dx, si
@@ -2454,7 +2454,7 @@ F054_1431:
 	mov	di, [0x96]
 	pop	ax
 	pop	bp
-	jmp	near F054_109E
+	jmp	near FpCopyConst
 	db	0x90
 .12:
 	test	di, 0xff00
@@ -2631,7 +2631,7 @@ F054_1431:
 	jmp	short .33
 .30:
 	mov	si, 0x9d0
-	call	F054_109E
+	call	FpCopyConst
 	mov	[di + 0xa], ah
 	ret
 .31:
@@ -2672,7 +2672,7 @@ F054_1431:
 	jc	short .39
 .36:
 	mov	si, 0x9dc
-	call	F054_109E
+	call	FpCopyConst
 	mov	[di + 0xa], ah
 	ret
 .37:
@@ -2683,7 +2683,7 @@ F054_1431:
 	jnz	short .36
 .38:
 	mov	si, 0x9f4
-	call	F054_109E
+	call	FpCopyConst
 	mov	[di + 0xa], ah
 	ret
 .39:
@@ -2703,7 +2703,7 @@ F054_1431:
 	mov	si, [0x10]
 	cmp	si, [0x12]
 	jnz	short .41
-	call	F054_029E
+	call	FpSetC1
 .41:
 	add	si, 0xc
 	mov	[0x10], si
@@ -2921,7 +2921,7 @@ F054_1431:
 	jmp	near .55
 .68:
 	xchg	di, si
-	call	F054_029E
+	call	FpSetC1
 	xchg	di, si
 	jmp	short .70
 .69:
@@ -3235,7 +3235,7 @@ F054_1431:
 	mov	si, [0x10]
 	cmp	si, [0x12]
 	jnz	short .100
-	call	F054_029E
+	call	FpSetC1
 .100:
 	add	si, 0xc
 	mov	[0x10], si
@@ -3247,12 +3247,12 @@ F054_1431:
 	neg	di
 .101:
 	mov	[si + 0xa], ch
-	jmp	near F054_1D92
+	jmp	near FpNormalize
 .102:
 	mov	si, [0x10]
 	cmp	si, [0x12]
 	jnz	short .103
-	call	F054_029E
+	call	FpSetC1
 .103:
 	add	si, 0xc
 	mov	[0x10], si
@@ -3280,7 +3280,7 @@ F054_1431:
 	mov	di, [si + 0x6]
 	mov	dx, [si]
 	mov	bx, [si + 0x2]
-	call	F054_1DB9
+	call	FpShiftRight
 	db	0x0B, 0xDB		; or bx, bx
 	jnz	short .108
 	mov	ah, [si + 0xa]
@@ -3316,7 +3316,7 @@ F054_1431:
 	mov	si, [0x10]
 	cmp	si, [0x12]
 	jnz	short .110
-	call	F054_029E
+	call	FpSetC1
 .110:
 	add	si, 0xc
 	mov	[0x10], si
@@ -3333,17 +3333,17 @@ F054_1431:
 	mov	[si + 0xa], ch
 	db	0x0B, 0xFF		; or di, di
 	jz	short .113
-	jmp	near F054_1D92
+	jmp	near FpNormalize
 .112:
 	jmp	near .102
 .113:
 	db	0x8B, 0xFD		; mov di, bp
 	db	0x33, 0xED		; xor bp, bp
 	sub	ax, strict word 0x10
-	jmp	near F054_1D92
+	jmp	near FpNormalize
 .114:
 	push	si
-	call	F054_1C17
+	call	FpToInt32
 	pop	di
 	db	0x8B, 0xC2		; mov ax, dx
 	stosw
@@ -3351,7 +3351,7 @@ F054_1431:
 	stosw
 	ret
 
-F054_1C17:
+FpToInt32:
 	mov	si, [0x10]
 	test	byte [si + 0xb], 0x2
 	jnz	short .5
@@ -3364,7 +3364,7 @@ F054_1C17:
 	mov	di, [si + 0x6]
 	mov	dx, [si]
 	mov	bx, [si + 0x2]
-	call	F054_1DB9
+	call	FpShiftRight
 	db	0x0B, 0xED		; or bp, bp
 	jnz	short .5
 	mov	ah, [si + 0xa]
@@ -3408,7 +3408,7 @@ F054_1C17:
 	mov	si, [0x10]
 	cmp	si, [0x12]
 	jnz	short .7
-	call	F054_029E
+	call	FpSetC1
 .7:
 	add	si, 0xc
 	mov	[0x10], si
@@ -3417,7 +3417,7 @@ F054_1C17:
 	db	0x8B, 0xCF		; mov cx, di
 	and	ch, 0x80
 	jns	short .8
-	call	F054_1D3C
+	call	FpNegate64
 .8:
 	mov	[si + 0xa], ch
 	db	0x0B, 0xFF		; or di, di
@@ -3430,12 +3430,12 @@ F054_1C17:
 	db	0x33, 0xD2		; xor dx, dx
 	sub	ax, strict word 0x20
 .9:
-	jmp	near F054_1D92
+	jmp	near FpNormalize
 .10:
-	jmp	near F054_1431.102
+	jmp	near FpDivMantissa.102
 .11:
 	push	si
-	call	F054_1CD9
+	call	FpToInt64
 	xchg	ax, di
 	xchg	ax, dx
 	pop	di
@@ -3448,7 +3448,7 @@ F054_1C17:
 	stosw
 	ret
 
-F054_1CD9:
+FpToInt64:
 	mov	si, [0x10]
 	test	byte [si + 0xb], 0x2
 	jnz	short .7
@@ -3461,18 +3461,18 @@ F054_1CD9:
 	mov	di, [si + 0x6]
 	mov	dx, [si]
 	mov	bx, [si + 0x2]
-	call	F054_1DB9
+	call	FpShiftRight
 	mov	ah, [si + 0xa]
 	db	0x0A, 0xE4		; or ah, ah
 	jns	short .1
-	call	F054_1D3C
+	call	FpNegate64
 .1:
 	db	0x33, 0xC7		; xor ax, di
 	js	short .6
 .2:
 	cmp	si, [0xe]
 	jnz	short .3
-	call	F054_02AE
+	call	FpSetC2
 .3:
 	sub	si, 0xc
 	mov	[0x10], si
@@ -3495,7 +3495,7 @@ F054_1CD9:
 	mov	di, 0x8000
 	jmp	short .5
 
-F054_1D3C:
+FpNegate64:
 	not	di
 	not	bp
 	not	bx
@@ -3506,7 +3506,7 @@ F054_1D3C:
 	adc	di, 0x0
 	ret
 
-F054_1D4F:
+FpRndint:
 	mov	si, [0x10]
 	mov	cx, [si + 0x8]
 	cmp	cx, 0x3f
@@ -3515,7 +3515,7 @@ F054_1D4F:
 	mov	di, [si + 0x6]
 	mov	dx, [si]
 	mov	bx, [si + 0x2]
-	call	F054_1DB9
+	call	FpShiftRight
 	db	0x33, 0xC0		; xor ax, ax
 	db	0x0B, 0xC7		; or ax, di
 	db	0x0B, 0xC5		; or ax, bp
@@ -3523,7 +3523,7 @@ F054_1D4F:
 	db	0x0B, 0xC2		; or ax, dx
 	jz	short .2
 	mov	ax, 0x3f
-	call	F054_1D92
+	call	FpNormalize
 .1:
 	ret
 .2:
@@ -3535,7 +3535,7 @@ F054_1D4F:
 	mov	byte [si + 0xb], 0x1
 	jmp	short .1
 
-F054_1D92:
+FpNormalize:
 	db	0x33, 0xC9		; xor cx, cx
 .1:
 	shl	dx, 1
@@ -3557,7 +3557,7 @@ F054_1D92:
 	mov	[si + 0x6], di
 	ret
 
-F054_1DB9:
+FpShiftRight:
 	db	0x33, 0xC0		; xor ax, ax
 	sub	cx, 0x3f
 	neg	cx
@@ -3636,7 +3636,7 @@ F054_1DB9:
 	mov	si, [0x10]
 	cmp	si, [0x12]
 	jnz	short .12
-	call	F054_029E
+	call	FpSetC1
 .12:
 	add	si, 0xc
 	mov	[0x10], si
@@ -3712,7 +3712,7 @@ F054_1DB9:
 	mov	si, [0x10]
 	cmp	si, [0xe]
 	jnz	short .19
-	call	F054_02AE
+	call	FpSetC2
 .19:
 	sub	si, 0xc
 	mov	[0x10], si
@@ -3730,7 +3730,7 @@ F054_1DB9:
 	mov	si, [0x10]
 	cmp	si, [0xe]
 	jnz	short .21
-	call	F054_02AE
+	call	FpSetC2
 .21:
 	sub	si, 0xc
 	mov	[0x10], si
@@ -3747,7 +3747,7 @@ F054_1DB9:
 	mov	si, [0x10]
 	cmp	si, [0xe]
 	jnz	short .23
-	call	F054_02AE
+	call	FpSetC2
 .23:
 	sub	si, 0xc
 	mov	[0x10], si
@@ -3771,7 +3771,7 @@ F054_1DB9:
 	sub	si, 0x8
 	cmp	si, [0xe]
 	jnz	short .25
-	call	F054_02AE
+	call	FpSetC2
 .25:
 	sub	si, 0xc
 	mov	[0x10], si
@@ -3911,7 +3911,7 @@ F054_1DB9:
 	mov	si, [0x10]
 	cmp	si, [0xe]
 	jnz	short .53
-	call	F054_02AE
+	call	FpSetC2
 .53:
 	sub	si, 0xc
 	mov	[0x10], si
@@ -3964,7 +3964,7 @@ F054_1DB9:
 	mov	si, [0x10]
 	cmp	si, [0x12]
 	jnz	short .66
-	call	F054_029E
+	call	FpSetC1
 .66:
 	add	si, 0xc
 	mov	[0x10], si
@@ -3978,17 +3978,17 @@ F054_1DB9:
 	cs	movsw
 	ret
 .67:
-	call	F054_0E35
+	call	FpStackRoom
 	jnc	short .68
 	pop	dx
-	jmp	near F054_0CBC.35
+	jmp	near FpEmulate.35
 .68:
 	db	0x8B, 0xF7		; mov si, di
 .69:
 	add	si, 0xc
 	cmp	si, [0x10]
 	jg	short .70
-	call	F054_10B9
+	call	FpCopyReg
 	add	di, 0xc
 	jmp	short .69
 .70:
@@ -4000,10 +4000,10 @@ F054_1DB9:
 	jz	short .74
 	mov	ax, ds
 	mov	es, ax
-	call	F054_0E35
+	call	FpStackRoom
 	jnc	short .72
 	pop	dx
-	jmp	near F054_0CBC.35
+	jmp	near FpEmulate.35
 .72:
 	mov	cx, 0x6
 .73:
@@ -4017,41 +4017,41 @@ F054_1DB9:
 .74:
 	ret
 .75:
-	call	F054_0E35
+	call	FpStackRoom
 	jnc	short .76
 	pop	dx
-	jmp	near F054_0CBC.35
+	jmp	near FpEmulate.35
 .76:
 	mov	si, [0x10]
 	cmp	si, [0x12]
 	jnz	short .77
-	call	F054_029E
+	call	FpSetC1
 .77:
 	add	si, 0xc
 	mov	[0x10], si
 	mov	ax, ds
 	mov	es, ax
 	xchg	si, di
-	call	F054_10B9
+	call	FpCopyReg
 	ret
 .78:
 	test	cx, 0x1c0
 	jz	short .80
-	call	F054_0E35
+	call	FpStackRoom
 	jnc	short .79
 	pop	dx
-	jmp	near F054_0CBC.35
+	jmp	near FpEmulate.35
 .79:
 	mov	dx, ds
 	mov	es, dx
-	call	F054_10B9
+	call	FpCopyReg
 .80:
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .82
 	mov	si, [0x10]
 	cmp	si, [0xe]
 	jnz	short .81
-	call	F054_02AE
+	call	FpSetC2
 .81:
 	sub	si, 0xc
 	mov	[0x10], si
@@ -4089,18 +4089,18 @@ F054_1DB9:
 	cmp	dx, [si]
 	jc	short .86
 .85:
-	call	F054_22C1
+	call	FpSubMantissa
 	cmp	word [0xa0], 0x0
 	jz	short .87
-	call	F054_2297
+	call	FpNormLoop
 	jnz	short .84
 	jmp	short .87
 .86:
 	cmp	word [0xa0], 0x0
 	jz	short .87
-	call	F054_22A9
-	call	F054_22C1
-	call	F054_2297
+	call	FpShiftLeft1
+	call	FpSubMantissa
+	call	FpNormLoop
 	jnz	short .84
 	jmp	short .87
 .87:
@@ -4142,7 +4142,7 @@ F054_1DB9:
 .94:
 	mov	[0xd], ah
 	db	0x33, 0xED		; xor bp, bp
-	jmp	near F054_1431.9
+	jmp	near FpDivMantissa.9
 .95:
 	mov	al, [0xd]
 	test	al, 0x2
@@ -4161,17 +4161,17 @@ F054_1DB9:
 	or	ah, 0x1
 	jmp	short .94
 
-F054_2297:
+FpNormLoop:
 	test	ah, 0x80
 	jnz	short .1
 	cmp	word [0xa0], 0x0
 	jz	short .1
-	call	F054_22A9
-	jmp	short F054_2297
+	call	FpShiftLeft1
+	jmp	short FpNormLoop
 .1:
 	ret
 
-F054_22A9:
+FpShiftLeft1:
 	shl	dx, 1
 	rcl	cx, 1
 	rcl	bx, 1
@@ -4184,7 +4184,7 @@ F054_22A9:
 	mov	word [0xa2], 0x1
 	ret
 
-F054_22C1:
+FpSubMantissa:
 	sub	dx, [si]
 	sbb	cx, [si + 0x2]
 	sbb	bx, [si + 0x4]
@@ -4193,7 +4193,7 @@ F054_22C1:
 	ret
 .1:
 	mov	si, [0x10]
-	call	F054_2301
+	call	FpSqrtCore
 	ret
 .2:
 	rcr	ah, 1
@@ -4212,17 +4212,17 @@ F054_22C1:
 .4:
 	db	0x8B, 0xFE		; mov di, si
 	mov	si, 0x9e8
-	call	F054_109E
+	call	FpCopyConst
 	db	0x8B, 0xF7		; mov si, di
 .5:
 	or	word [0x16], 0x81
 .6:
 	ret
 
-F054_2301:
+FpSqrtCore:
 	mov	ax, [si + 0xa]
 	test	ax, 0x380
-	jnz	short F054_22C1.3
+	jnz	short FpSubMantissa.3
 	push	si
 	mov	di, 0x4a
 	mov	word [di + 0xa], 0x0
@@ -4284,14 +4284,14 @@ F054_2301:
 	db	0x8B, 0xF7		; mov si, di
 	pop	di
 	mov	[0x96], di
-	call	F054_1024
+	call	FpDivRev
 	mov	si, 0x4a
-	call	F054_1036
+	call	FpAdd
 	dec	word [di + 0x8]
 	db	0x8B, 0xF7		; mov si, di
 	ret
 
-F054_2399:
+FpLoadConst:
 	push	di
 	mov	di, 0x8a
 	cs	movsw
@@ -4305,9 +4305,9 @@ F054_2399:
 	ret
 .1:
 	db	0x3A, 0xED		; cmp ch, ch
-	jmp	short F054_23B2.2
+	jmp	short FpCompare.2
 
-F054_23B2:
+FpCompare:
 	mov	cx, cs
 	mov	ds, cx
 	mov	cx, [si + 0xa]
@@ -4333,7 +4333,7 @@ F054_23B2:
 	db	0x3A, 0xF5		; cmp dh, ch
 	jnz	short .2
 	db	0x0A, 0xED		; or ch, ch
-	ja	short F054_2399.1
+	ja	short FpLoadConst.1
 	mov	cx, [si + 0x8]
 	add	cx, 0x3fff
 	mov	dx, [es:di + 0x8]
@@ -4360,32 +4360,32 @@ F054_23B2:
 	mov	ds, cx
 	ret
 
-F054_2411:
+FpPolyRatio:
 	mov	di, 0x7e
-	call	F054_10B9
+	call	FpCopyReg
 	push	di
 	push	si
 	push	bx
 	mov	di, 0x72
-	call	F054_10B9
+	call	FpCopyReg
 	mov	[0x96], di
-	call	F054_101C
+	call	FpMul
 	pop	si
 	cs	lodsw
 	xchg	ax, cx
 	pop	di
-	call	F054_109E
+	call	FpCopyConst
 	mov	[0x96], di
 .1:
 	push	cx
 	push	si
 	mov	si, 0x72
-	call	F054_101C
+	call	FpMul
 	pop	si
 	add	si, 0xc
 	push	si
-	call	F054_2399
-	call	F054_1036
+	call	FpLoadConst
+	call	FpAdd
 	pop	si
 	pop	cx
 	loop	.1
@@ -4393,7 +4393,7 @@ F054_2411:
 	pop	si
 	push	si
 	push	bx
-	call	F054_101C
+	call	FpMul
 	pop	si
 	add	si, 0xc
 	cs	lodsw
@@ -4401,12 +4401,12 @@ F054_2411:
 	pop	bx
 	push	di
 	db	0x8B, 0xFB		; mov di, bx
-	call	F054_109E
+	call	FpCopyConst
 	push	cx
 	push	si
 	mov	si, 0x72
 	mov	[0x96], di
-	call	F054_1036
+	call	FpAdd
 	pop	si
 	pop	cx
 .2:
@@ -4414,11 +4414,11 @@ F054_2411:
 	add	si, 0xc
 	push	si
 	mov	si, 0x72
-	call	F054_101C
+	call	FpMul
 	pop	si
 	push	si
-	call	F054_2399
-	call	F054_1036
+	call	FpLoadConst
+	call	FpAdd
 	pop	si
 	pop	cx
 	loop	.2
@@ -4427,99 +4427,99 @@ F054_2411:
 	ret
 .3:
 	mov	si, [0x10]
-	call	F054_24AE
+	call	FpSeriesA
 	push	si
 	mov	si, [0x10]
 	cmp	si, [0x12]
 	jnz	short .4
-	call	F054_029E
+	call	FpSetC1
 .4:
 	add	si, 0xc
 	mov	[0x10], si
 	mov	di, [0x10]
 	pop	si
-	call	F054_10B9
+	call	FpCopyReg
 	ret
 
-F054_24AE:
+FpSeriesA:
 	mov	bx, 0xaa8
-	call	F054_2411
+	call	FpPolyRatio
 	ret
 .1:
 	mov	di, [0x10]
 	db	0x8B, 0xF7		; mov si, di
 	mov	ax, [si + 0xa]
 	sub	di, 0xc
-	call	F054_24DD
+	call	FpAtanCore
 	mov	si, [0x10]
 	mov	si, [0x10]
 	cmp	si, [0xe]
 	jnz	short .2
-	call	F054_02AE
+	call	FpSetC2
 .2:
 	sub	si, 0xc
 	mov	[0x10], si
 	ret
 
-F054_24DD:
+FpAtanCore:
 	mov	[0x96], di
-	call	F054_1024
+	call	FpDivRev
 	mov	al, 0x0
 	mov	si, 0xa30
-	call	F054_23B2
+	call	FpCompare
 	jnc	short .1
 	db	0x8B, 0xF7		; mov si, di
 	mov	di, 0x4a
-	call	F054_10B9
+	call	FpCopyReg
 	push	si
 	mov	si, 0xa3c
-	call	F054_2399
+	call	FpLoadConst
 	mov	[0x96], di
-	call	F054_101C
+	call	FpMul
 	mov	si, 0xa24
-	call	F054_2399
-	call	F054_1016
+	call	FpLoadConst
+	call	FpSub
 	pop	si
 	push	di
 	db	0x8B, 0xFE		; mov di, si
 	mov	si, 0xa3c
-	call	F054_2399
+	call	FpLoadConst
 	mov	[0x96], di
-	call	F054_1036
+	call	FpAdd
 	pop	si
-	call	F054_102E
+	call	FpDiv
 	mov	al, 0x1
 .1:
 	push	ax
 	db	0x8B, 0xF7		; mov si, di
 	mov	bx, 0xb0c
-	call	F054_2411
+	call	FpPolyRatio
 	mov	[0x96], di
-	call	F054_1024
+	call	FpDivRev
 	pop	ax
 	db	0x0A, 0xC0		; or al, al
 	jz	short .2
 	mov	si, 0xa48
-	call	F054_2399
-	call	F054_1036
+	call	FpLoadConst
+	call	FpAdd
 .2:
 	ret
 .3:
 	mov	si, [0x10]
-	call	F054_254B
+	call	FpSeriesB
 	ret
 
-F054_254B:
+FpSeriesB:
 	mov	bx, 0xb7c
-	call	F054_2411
+	call	FpPolyRatio
 	push	di
 	xchg	si, di
 	mov	[0x96], di
-	call	F054_1016
+	call	FpSub
 	db	0x8B, 0xF7		; mov si, di
 	pop	di
 	mov	[0x96], di
-	call	F054_1024
+	call	FpDivRev
 	inc	word [di + 0x8]
 	db	0x8B, 0xF7		; mov si, di
 	ret
@@ -4528,45 +4528,45 @@ F054_254B:
 	db	0x8B, 0xF7		; mov si, di
 	mov	ax, [si + 0xa]
 	sub	di, 0xc
-	call	F054_2593
+	call	FpLog2Core
 	mov	si, [0x10]
 	mov	si, [0x10]
 	cmp	si, [0xe]
 	jnz	short .2
-	call	F054_02AE
+	call	FpSetC2
 .2:
 	sub	si, 0xc
 	mov	[0x10], si
 	ret
 
-F054_2593:
+FpLog2Core:
 	push	si
 	db	0x8B, 0xF7		; mov si, di
 	mov	di, 0x5a
-	call	F054_10B9
+	call	FpCopyReg
 	db	0x8B, 0xFE		; mov di, si
 	pop	si
 	push	di
 	mov	di, 0x66
-	call	F054_10B9
+	call	FpCopyReg
 	mov	bx, [di + 0x8]
 	mov	word [di + 0x8], 0x0
 	mov	si, 0xa54
-	call	F054_23B2
+	call	FpCompare
 	ja	short .1
 	dec	word [di + 0x8]
 	inc	bx
 .1:
 	push	bx
 	mov	si, 0xa24
-	call	F054_2399
+	call	FpLoadConst
 	mov	[0x96], di
-	call	F054_1016
+	call	FpSub
 	db	0x8B, 0xF7		; mov si, di
 	pop	bx
 	pop	di
 	push	bx
-	call	F054_2639
+	call	FpLogSeries
 	pop	bx
 	db	0x33, 0xC0		; xor ax, ax
 	db	0x0B, 0xDB		; or bx, bx
@@ -4596,11 +4596,11 @@ F054_2593:
 	mov	di, 0x5a
 	mov	si, 0x66
 	mov	[0x96], di
-	call	F054_101C
+	call	FpMul
 	db	0x8B, 0xF7		; mov si, di
 	pop	di
 	mov	[0x96], di
-	call	F054_1036
+	call	FpAdd
 .4:
 	ret
 .5:
@@ -4608,42 +4608,42 @@ F054_2593:
 	db	0x8B, 0xF7		; mov si, di
 	mov	ax, [si + 0xa]
 	sub	di, 0xc
-	call	F054_2639
+	call	FpLogSeries
 	mov	si, [0x10]
 	mov	si, [0x10]
 	cmp	si, [0xe]
 	jnz	short .6
-	call	F054_02AE
+	call	FpSetC2
 .6:
 	sub	si, 0xc
 	mov	[0x10], si
 	ret
 
-F054_2639:
+FpLogSeries:
 	push	di
 	mov	di, 0x4a
-	call	F054_10B9
+	call	FpCopyReg
 	push	si
 	mov	si, 0xa60
-	call	F054_2399
+	call	FpLoadConst
 	mov	[0x96], di
-	call	F054_1036
+	call	FpAdd
 	pop	si
-	call	F054_102E
+	call	FpDiv
 	inc	word [di + 0x8]
 	db	0x8B, 0xF7		; mov si, di
 	mov	bx, 0xbc8
-	call	F054_2411
+	call	FpPolyRatio
 	mov	[0x96], di
-	call	F054_1024
+	call	FpDivRev
 	db	0x8B, 0xF7		; mov si, di
 	pop	di
 	mov	[0x96], di
-	call	F054_101C
+	call	FpMul
 	ret
 	db	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 
-F054_267A:
+FpHookNmi:
 	push	ds
 	push	cs
 	pop	ds
@@ -4664,7 +4664,7 @@ F054_267A:
 	pop	ds
 	ret
 
-F054_26A9:
+FpUnhookNmi:
 	push	ds
 	push	ax
 	push	dx
@@ -4676,11 +4676,11 @@ F054_26A9:
 	pop	ds
 	ret
 
-F054_26BA:
+FpCtrlBreak:
 	push	ax
 	push	dx
 	push	ds
-	call	F054_26A9
+	call	FpUnhookNmi
 	lds	dx, [cs:0x2676]
 	mov	ax, 0x2523
 	int	0x21
@@ -4690,7 +4690,7 @@ F054_26BA:
 	jmp	far [cs:0x2676]
 	db	0x90
 
-F054_26D3:
+FpNmiHandler:
 	fnstsw	[cs:0x2670]
 	push	cx
 	mov	cx, 0x3
@@ -4699,7 +4699,7 @@ F054_26D3:
 	pop	cx
 	test	byte [cs:0x2670], 0x80
 	jz	short .2
-	call	F054_02DE
+	call	FpException
 	iret
 .2:
 	jmp	far [cs:0x2672]
