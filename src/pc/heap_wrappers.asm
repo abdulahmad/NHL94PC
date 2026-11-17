@@ -1,0 +1,202 @@
+; Thin wrappers over the record allocator: insert, allocate, resize and free records by mode.
+        db 0xFC
+        mov [bp - 0x2], dx
+ReadPackedSizeTail:
+        mov ax, [bp - 0x4]
+        mov dx, [bp - 0x2]
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; InsertRecWrap0                                              14DB:000C  94 PC
+; InsertRec with mode 0.
+;-----------------------------------------------------------------------------
+InsertRecWrap0:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        db 0x33, 0xC0                           ; insn: xor ax, ax
+        jmp short InsertRecWrap.1
+
+;-----------------------------------------------------------------------------
+; InsertRecWrap                                               14DB:0013  94 PC
+; InsertRec with mode 1.
+;-----------------------------------------------------------------------------
+InsertRecWrap:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        mov ax, 0x1
+.1:
+        push ax
+        push word [bp + 0xc]
+        push word [bp + 0xa]
+        push word [bp + 0x8]
+        push word [bp + 0x6]
+        call 0x06E1:InsertRec
+        add sp, 0xa
+        pop bp
+        retf
+
+;-----------------------------------------------------------------------------
+; AllocRecData                                                14DB:0030  94 PC
+; InsertRec mode 1, returns the record's data pointer.
+;-----------------------------------------------------------------------------
+AllocRecData:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        mov ax, 0x1
+        jmp short AllocRecDataMode.1
+
+;-----------------------------------------------------------------------------
+; AllocRecData0                                               14DB:0038  94 PC
+; InsertRec mode 0, returns the record's data pointer.
+;-----------------------------------------------------------------------------
+AllocRecData0:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        db 0x33, 0xC0                           ; insn: xor ax, ax
+        jmp short AllocRecDataMode.1
+
+;-----------------------------------------------------------------------------
+; AllocRecDataMode                                            14DB:003F  94 PC
+; InsertRec with explicit mode, returns the data pointer.
+;-----------------------------------------------------------------------------
+AllocRecDataMode:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        mov ax, [bp + 0xe]
+.1:
+        push ax
+        push word [bp + 0xc]
+        push word [bp + 0xa]
+        push word [bp + 0x8]
+        push word [bp + 0x6]
+        call 0x06E1:InsertRec
+        add sp, 0xa
+        mov es, dx
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        db 0x0B, 0xC2                           ; insn: or ax, dx
+        jz short .2
+        mov ax, [es:bx]
+        mov dx, [es:bx + 0x2]
+.2:
+        pop bp
+        retf
+
+;-----------------------------------------------------------------------------
+; ResizeRec0                                                  14DB:006B  94 PC
+; ResizeRec with mode 0.
+;-----------------------------------------------------------------------------
+ResizeRec0:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        db 0x33, 0xC0                           ; insn: xor ax, ax
+        jmp short ResizeRec1.1
+
+;-----------------------------------------------------------------------------
+; ResizeRec1                                                  14DB:0072  94 PC
+; ResizeRec with mode 1.
+;-----------------------------------------------------------------------------
+ResizeRec1:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        mov ax, 0x1
+.1:
+        push ax
+        push word [bp + 0xe]
+        push word [bp + 0xc]
+        push word [bp + 0xa]
+        push word [bp + 0x8]
+        push word [bp + 0x6]
+        call 0x06E1:ResizeRec
+        add sp, 0xc
+        pop bp
+        retf
+
+;-----------------------------------------------------------------------------
+; ResizeRecByName                                             14DB:0092  94 PC
+; FindRec then ResizeRec, mode 1.
+;-----------------------------------------------------------------------------
+ResizeRecByName:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        add sp, -0x2
+        mov ax, 0x1
+        jmp short ResizeRecByNameMode.1
+
+;-----------------------------------------------------------------------------
+; ResizeRecByName0                                            14DB:009D  94 PC
+; FindRec then ResizeRec, mode 0.
+;-----------------------------------------------------------------------------
+ResizeRecByName0:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        add sp, -0x2
+        db 0x33, 0xC0                           ; insn: xor ax, ax
+        jmp short ResizeRecByNameMode.1
+
+;-----------------------------------------------------------------------------
+; ResizeRecByNameMode                                         14DB:00A7  94 PC
+; FindRec then ResizeRec, explicit mode.
+;-----------------------------------------------------------------------------
+ResizeRecByNameMode:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        add sp, -0x2
+        mov ax, [bp + 0x10]
+.1:
+        mov [bp - 0x2], ax
+        push word [bp + 0x8]
+        push word [bp + 0x6]
+        call 0x06E1:FindRec
+        add sp, 0x4
+        push word [bp - 0x2]
+        push word [bp + 0xe]
+        push word [bp + 0xc]
+        push word [bp + 0xa]
+        push dx
+        push ax
+        call 0x06E1:ResizeRec
+        add sp, 0xc
+        db 0x8B, 0xE5                           ; insn: mov sp, bp
+        pop bp
+        retf
+
+;-----------------------------------------------------------------------------
+; InitHeap                                                    14DB:00DB  94 PC
+; Checks for a 286 (fatal error otherwise) then MakeChain.
+;-----------------------------------------------------------------------------
+InitHeap:
+        db 0x8B, 0xDC                           ; insn: mov bx, sp
+        db 0x33, 0xC0                           ; insn: xor ax, ax
+        mov dx, 0xa
+        push ax
+        push ax
+        push dx
+        push ax
+        push word [bx + 0x4]
+.1:
+        call 0x03A3:CpuProbe
+        cmp word [Cpu286], 0x0
+        jnz short .2
+        mov ax, str_ThisProgramRequiresAn80286
+        push ax
+        call 0x0F4A:FatalError
+.2:
+        call 0x06E1:MakeChain
+        add sp, 0xa
+        retf
+
+;-----------------------------------------------------------------------------
+; InitHeapArgs                                                14DB:0107  94 PC
+; InitHeap with caller arguments.
+;-----------------------------------------------------------------------------
+InitHeapArgs:
+        db 0x8B, 0xDC                           ; insn: mov bx, sp
+        db 0x33, 0xC0                           ; insn: xor ax, ax
+        push ax
+        push ax
+        push word [bx + 0x8]
+        push word [bx + 0x6]
+        push word [bx + 0x4]
+        jmp short InitHeap.1
+        db 0x8B, 0xDC, 0x33, 0xC0, 0xBA, 0x0A, 0x00, 0xFF

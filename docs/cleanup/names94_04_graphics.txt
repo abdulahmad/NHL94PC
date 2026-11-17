@@ -1,0 +1,123 @@
+# Batch 4: VGA graphics library (seg028). Shape draws come in families: Name (at hotspot), NameAt (at x,y), NameHere (at the shape's stored position), NameBody (shared body entered by jump).
+F028_000C DrawLine | new | medium | Bresenham steps over the row table of the current canvas
+F028_0048 SetCanvas | new | high | copies a 0x1E-byte canvas record into CurCanvas
+F028_0064 SetClipRect | new | high | stores left/right/top/bottom into the CurCanvas clip fields
+F028_008F SetClipRectRegs | new | medium | same as SetClipRect, arguments in registers
+F028_00B4 ClearClipRect | new | medium | fills the clip rectangle with colour 0
+F028_00B9 ClearClipRectColor | new | medium | fills the clip rectangle with the given colour
+F028_00DE FillRectClip | new | medium | fills a rectangle clipped to the canvas
+F028_0136 FillRect | new | medium | fills a rectangle without clipping
+F028_01A6 UseCurrentPage | new | medium | points CurCanvas at the page in g_74DC
+F028_01C6 DrawText | new | medium | draws a string with the 1-bpp font
+F028_01E1 DrawTextAt | new | medium | DrawText entry taking x,y
+F028_0366 GetPaletteFar | new | high | reads DAC registers through port 3C7h/3C9h into a far buffer
+F028_039A InitGraphics | new | medium | sets mode 13h and unchains it
+F028_03EE OpenResource | new | low | calls the file loader F042_0134 with mode 0
+F028_03F5 LoadResource | new | low | calls the file loader F042_0134 with mode 1
+F028_040C LoadResourceHeader | new | low | loader mode 1, returns the first dword of the data
+F028_0414 OpenResourceHeader | new | low | loader mode 0, returns the first dword of the data
+F028_041B ResourceHeaderMode | new | low | loader with explicit mode, returns the first dword of the data
+F028_0442 SetRemapTable | new | high | copies 256 bytes into the remap table
+F028_045D GetRemapTable | new | high | copies the remap table out
+F028_0474 SetRemapRange | new | medium | writes a range of remap entries
+F028_0492 PutBlock | new | medium | raw block copy to the canvas, hotspot entry
+F028_04B5 PutBlockAt | new | medium | PutBlock at x,y
+F028_04D2 PutBlockBody | new | medium | PutBlock body
+F028_071A DrawRaw | new | medium | raw planar shape, hotspot entry
+F028_073D DrawRawAt | new | medium | DrawRaw at x,y
+F028_075A DrawRawBody | new | medium | DrawRaw body
+F028_085C DrawRle | new | medium | RLE shape (runs, literals, 0 ends plane), clipped
+F028_087F DrawRleAt | new | medium | DrawRle at x,y
+F028_089C DrawRleBody | new | medium | DrawRle body
+F028_0C22 DrawRleFast | new | medium | RLE shape without clipping
+F028_0C45 DrawRleFastAt | new | medium | DrawRleFast at x,y
+F028_0C62 DrawRleFastHere | new | medium | DrawRleFast at the shape's own +8/+0A position
+F028_0C9A DrawRleFastBody | new | medium | DrawRleFast body
+F028_0E5E DrawText2 | new | low | second font text routine
+F028_0E85 DrawChar | new | low | single character for DrawText2
+F028_1096 CopyPlaneA | new | low | CopyPlane entry
+F028_109F CopyPlaneB | new | low | CopyPlane entry
+F028_10A7 CopyPlane | new | medium | copies one VGA plane between buffers
+F028_118C UseOtherPage | new | medium | points CurCanvas at the page not shown
+F028_11B1 GetPage | new | medium | returns g_74DC
+F028_11B5 GetOtherPage | new | medium | returns the other page index
+F028_11BA GetBlock | new | medium | reads a block from the canvas, hotspot entry
+F028_11DD GetBlockAt | new | medium | GetBlock at x,y
+F028_1200 GetBlockBody | new | medium | GetBlock body
+F028_12DA GetPixel | new | medium | reads one pixel through the read map register
+F028_1320 SetStartPage | new | medium | writes the CRTC start address for a page
+F028_137E UseOffscreenCanvas | new | medium | points CurCanvas at the off-screen buffer
+F028_1390 DrawRawTrans | new | medium | raw shape, colour FF transparent, hotspot entry
+F028_13B0 DrawRawTransAt | new | medium | DrawRawTrans at x,y
+F028_13CA DrawRawTransBody | new | medium | DrawRawTrans body
+F028_1612 DrawRleFlip | new | medium | mirrored RLE shape
+F028_1637 DrawRleFlipAt | new | medium | DrawRleFlip at x,y
+F028_1654 DrawRleFlipHere | new | medium | DrawRleFlip at the shape's own position
+F028_1686 DrawRleFlipBody | new | medium | DrawRleFlip body
+F028_1834 DrawRleTrans | new | medium | RLE shape, run byte FF transparent, clipped
+F028_1857 DrawRleTransAt | new | medium | DrawRleTrans at x,y
+F028_1874 DrawRleTransBody | new | medium | DrawRleTrans body
+F028_1C4E DrawRleTransFast | new | medium | transparent RLE without clipping
+F028_1C71 DrawRleTransFastAt | new | medium | DrawRleTransFast at x,y
+F028_1C8E DrawRleTransFastHere | new | medium | DrawRleTransFast at the shape's own position
+F028_1CBB DrawRleTransFastBody | new | medium | DrawRleTransFast body
+F028_1EC6 DrawRawTransRemap | new | medium | transparent raw shape through the remap table
+F028_1EE9 DrawRawTransRemapAt | new | medium | DrawRawTransRemap at x,y
+F028_1F06 DrawRawTransRemapBody | new | medium | DrawRawTransRemap body
+F028_2160 DrawRleTransRemap | new | medium | transparent RLE through the remap table, clipped
+F028_2183 DrawRleTransRemapAt | new | medium | DrawRleTransRemap at x,y
+F028_21A0 DrawRleTransRemapHere | new | medium | DrawRleTransRemap at the shape's own position
+F028_21CD DrawRleTransRemapBody | new | medium | DrawRleTransRemap body
+F028_245C DrawRleFlipTrans | new | medium | mirrored transparent RLE
+F028_2481 DrawRleFlipTransAt | new | medium | DrawRleFlipTrans at x,y
+F028_249E DrawRleFlipTransBody | new | medium | DrawRleFlipTrans body
+F028_28A8 DrawRleFlipTransRemap | new | medium | mirrored transparent RLE through the remap table
+F028_28D3 DrawRleFlipTransRemapAt | new | medium | DrawRleFlipTransRemap at x,y
+F028_28F0 DrawRleFlipTransRemapBody | new | medium | DrawRleFlipTransRemap body
+F028_2D34 DrawRleFlipRemap | new | medium | mirrored RLE through the remap table
+F028_2D5F DrawRleFlipRemapAt | new | medium | DrawRleFlipRemap at x,y
+F028_2D7C DrawRleFlipRemapHere | new | medium | DrawRleFlipRemap at the shape's own position
+F028_2DAE DrawRleFlipRemapBody | new | medium | DrawRleFlipRemap body
+F028_2F98 DrawRleTransRemapFast | new | medium | transparent remapped RLE without clipping
+F028_2FBB DrawRleTransRemapFastAt | new | medium | DrawRleTransRemapFast at x,y
+F028_2FD8 DrawRleTransRemapFastBody | new | medium | DrawRleTransRemapFast body
+F028_3406 WaitRetraceCount | new | medium | waits for N vertical retraces
+F028_340B WaitRetraceCountRegs | new | medium | WaitRetraceCount, count in a register
+F028_341E WaitRetraceFar | new | medium | far jump to WaitRetrace
+F028_3423 WaitTimerRetrace | new | medium | waits on the timer tick or the retrace bit of 3DAh
+F028_344C SetPaletteFar | new | high | writes DAC registers from a far buffer
+F028_3482 WaitRetraceEnd | new | medium | polls 3DAh bit 3 until clear
+F028_3499 WaitRetraceStart | new | medium | polls 3DAh bit 3 until set
+F028_34A7 WaitRetrace | new | medium | waits for the end then the start of a vertical retrace
+F028_34B5 InRetrace | new | medium | returns 3DAh bit 3
+F028_34BE PutPixel | new | medium | writes one pixel through the map mask
+F028_34CB PutPixelAt | new | medium | PutPixel entry
+F028_352C XorRect | new | medium | XORs a rectangle via RectSpanPlanes
+F028_3584 XorRectRegs | new | medium | XorRect entry
+F028_3602 CopyPageToPage | new | low | page copy using a plane jump table
+F028_3704 CopyPageRect | new | low | rectangle page copy using a plane jump table
+F028_3804 AllocCanvases | new | medium | allocates the page and off-screen buffers and fills the canvas records
+F028_3A59 SetClipRectPlanes | new | medium | sets the clip rectangle in plane units
+F028_3A84 ClearScreenColor | new | medium | fills video memory with a colour
+F028_3AA8 DrawScaledColor | new | low | sets g_7664/g_7666 then enters DrawScaled
+F028_3ABB DrawScaled | new | low | pattern or scaled draw
+F028_3C9A DrawLineClipped | new | medium | line clipped to the canvas
+F028_4130 FillSpanLinear | new | medium | fills a span in linear mode 13h
+F028_4156 FillSpanVga | new | medium | fills a span in unchained mode with edge masks
+F028_41D2 RectSpanPlanes | new | low | splits a span into planar edges using the mask table at 77BDh
+F028_4262 CopyPlanesRect | new | low | copies a rectangle plane by plane with the read map
+F028_4346 DrawRawFast | new | low | fast raw shape, hotspot entry
+F028_4366 DrawRawFastAt | new | low | DrawRawFast at x,y
+F028_4380 DrawRawFastBody | new | low | DrawRawFast body
+F028_4488 DrawRawTransFast | new | low | fast transparent raw shape, hotspot entry
+F028_44AB DrawRawTransFastAt | new | low | DrawRawTransFast at x,y
+F028_44C8 DrawRawTransFastBody | new | low | DrawRawTransFast body
+F028_45E8 UnchainVga | new | high | clears chain-4 in the sequencer and CRTC
+F028_4634 SetMaxScanLine | new | medium | writes CRTC register 9
+F028_4647 SetMode13Linear | new | medium | sets mode 13h, chained
+F028_4665 SetModeX | new | medium | sets the unchained mode
+F028_4682 XorSpan | new | medium | XORs one span
+F028_46A8 SetCanvasClip | new | medium | sets a canvas record's clip rectangle
+F028_472A RemapShapeBank | new | low | remaps every shape in a bank through a table
+F028_4782 ConvertShapeBank | new | low | converts the shapes of a bank in place
+F028_48D2 FillPolySpans | new | medium | fills a list of spans

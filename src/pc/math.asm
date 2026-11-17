@@ -1,0 +1,125 @@
+; Integer maths: square root of a long, and a vector turned into one of 8 directions.
+
+;-----------------------------------------------------------------------------
+; NullFar4                                                    0D5F:0000  94 PC
+; A lone retf.
+;-----------------------------------------------------------------------------
+NullFar4:
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; SqrtLong                                                    0D5F:0002  94 PC
+; Newton iteration on a long with __aFldiv.
+;-----------------------------------------------------------------------------
+SqrtLong:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        push di
+        push si
+        push es
+        db 0x8B, 0xDA                           ; insn: mov bx, dx
+        db 0x0B, 0xD0                           ; insn: or dx, ax
+        jnz short .1
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        jmp short .8
+        db 0x90
+.1:
+        cmp bx, 0x3fff
+        jc short .3
+        ja short .2
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jz short .3
+.2:
+        mov ax, 0x7fff
+        jmp short .8
+        db 0x90
+.3:
+        db 0x8B, 0xC8                           ; insn: mov cx, ax
+        cmp bx, 0x0
+        ja short .5
+        cmp cx, 0x640
+        jnc short .5
+        mov ax, 0xffff
+.4:
+        add ax, strict word 0x2
+        db 0x2B, 0xC8                           ; insn: sub cx, ax
+        jns short .4
+        sar ax, 1
+        jmp short .8
+        db 0x90
+.5:
+        mov es, bx
+        db 0x8B, 0xF1                           ; insn: mov si, cx
+        mov di, 0xa
+        mov ax, 0x8000
+        mov dx, 0x0
+        cmp bx, 0xf0
+        jnc short .6
+        db 0x8A, 0xC5                           ; insn: mov al, ch
+        db 0x8A, 0xE3                           ; insn: mov ah, bl
+        db 0x8A, 0xD7                           ; insn: mov dl, bh
+        db 0x2A, 0xF6                           ; insn: sub dh, dh
+        add ax, strict word 0x2
+        adc dx, 0x0
+.6:
+        db 0x8B, 0xC8                           ; insn: mov cx, ax
+        db 0x8B, 0xDA                           ; insn: mov bx, dx
+        push dx
+        push ax
+        push es
+        push si
+        call 0x0000:__aFldiv
+        db 0x03, 0xC1                           ; insn: add ax, cx
+        db 0x13, 0xD3                           ; insn: adc dx, bx
+        sar dx, 1
+        rcr ax, 1
+        db 0x3B, 0xC8                           ; insn: cmp cx, ax
+        jnz short .7
+        db 0x3B, 0xDA                           ; insn: cmp bx, dx
+        jz short .8
+.7:
+        sub di, 0x1
+        jnz short .6
+.8:
+        pop es
+        pop si
+        pop di
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; VectorToDir8                                                0D5F:0089  94 PC
+; Direction 0..7 from the signs and the ratio of dx, dy; 8 for no vector.
+;-----------------------------------------------------------------------------
+VectorToDir8:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        db 0x8B, 0xC8                           ; insn: mov cx, ax
+        db 0x0B, 0xC2                           ; insn: or ax, dx
+        jnz short .1
+        mov ax, 0x8
+        leave
+        retf
+.1:
+        mov bx, 0x0
+        cmp cx, 0x0
+        jnl short .2
+        neg cx
+        or bx, 0x1
+.2:
+        db 0x0B, 0xD2                           ; insn: or dx, dx
+        jnl short .3
+        neg dx
+        or bx, 0x2
+.3:
+        db 0x8B, 0xC2                           ; insn: mov ax, dx
+        shl dx, 1
+        db 0x3B, 0xD1                           ; insn: cmp dx, cx
+        jc short .4
+        or bx, 0x4
+.4:
+        shl cx, 1
+        db 0x3B, 0xC8                           ; insn: cmp cx, ax
+        db 0x72, 0x03                           ; insn: jc 0xc1
+        db 0x83, 0xCB

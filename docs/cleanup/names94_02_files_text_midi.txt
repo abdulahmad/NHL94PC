@@ -1,0 +1,47 @@
+# Batch 2: input setup, random numbers, MIDI messages, file helpers, text drawing (seg009-seg018, seg026 text calls).
+F009_000E InputInit | new | high | HookKbd, timer slot for PollInputEvents, cursor handler = EventToCursor; once
+F009_004C InputShutdown | new | high | frees the PollInputEvents timer slot
+F009_0070 EventToCursor | new | high | mouse event sets the cursor; key and stick events move it, faster with the repeat count; clamps to 320x200
+F010_0000 InputTail | new | low | sub ah, ah / retf at the start of the paragraph (end of the routine before)
+F010_0006 RandomRange | new | high | 32-bit linear congruential step (multiplier BB40E62Dh, +1) on RandSeed, result scaled to the range
+F011_000E NullFar2 | new | high | a lone retf
+F012_0000 WaitButtonTimed | new | medium | reads events through CursorHandler until a click, a double click or the time runs out
+F014_000A MidiControl | new | high | B0h|channel, controller 7 (volume), value: MidiSend
+F014_0032 MidiPitchBend | new | high | E0h|channel, 0, value: MidiSend
+F014_005A MidiProgramNoteOn | new | high | C0h|channel program, then 90h|channel note, velocity 40h
+F014_00B4 MidiNoteOff | new | high | 80h|channel note, 0
+F015_000C FileExists | new | high | open for reading succeeds
+F015_003E BuildPathFar | new | high | directory, backslash, name and extension into a far buffer
+F015_00C2 DeleteMatching | new | high | finds every file of a pattern in a directory and unlinks it
+F015_0258 RemoveDirTree | new | high | unlinks every file in a directory, then rmdir
+F015_03D6 OpenReadShared | new | high | _dos_open mode 40h (read, deny none)
+F015_03E8 OpenWriteShared | new | high | _dos_open mode 41h
+F015_03FA OpenReadWriteShared | new | high | _dos_open mode 42h
+F015_040C CreateFileNormal | new | high | _dos_creat attribute 0
+F015_041E CloseHandlePtr | new | high | closes the handle a pointer holds and stores -1
+F015_0442 ReadAtOffset | new | high | seek to a long offset then read; returns 0 or an error
+F015_0496 WriteAtOffset | new | high | seek to a long offset then write; returns 0 or an error
+F015_04EA ReadRecord52 | new | medium | ReadAtOffset of 34h bytes
+F015_0504 WriteRecord52 | new | medium | WriteAtOffset of 34h bytes
+F015_051E CopyFileByName | new | high | opens the source, creates the target, copies in 1 KB pieces
+F015_0602 ReadRecord48 | new | medium | ReadAtOffset of 30h bytes
+F015_061C ReadEntry6 | new | medium | 6-byte entry n at 2 + 6n
+F015_0640 ReadEntry744 | new | medium | 2E8h-byte entry n
+F015_065E ReadEntry12 | new | medium | 12-byte entry n
+F016_0000 NullFar3 | new | high | a lone retf
+F016_0002 TextWidthFar | new | high | copies a far string and returns TextWidthAll of it
+F016_0024 SetTextColors | new | high | text colour and shadow colour
+F016_0036 DrawShadowTextBuffered | new | medium | draws a shadowed string into an off-screen block 64-pixel aligned, then blits it
+F016_00E4 DrawShadowTextCentered | new | high | x = (320 - width) / 2; shadow at +1,+1 then the text
+F016_0166 DrawShadowText | new | high | shadow at +1,+1 in the shadow colour, then the text
+F016_01B8 DrawOutlineText | new | high | the string at the four outline offsets in the shadow colour, then the text
+F016_0210 DrawShadowTextF | new | high | _sprintf with one argument, then DrawShadowText
+F016_0238 DrawShadowTextF2 | new | high | _sprintf with two arguments, then DrawShadowText
+F017_0000 NullFar4 | new | high | a lone retf
+F017_0002 SqrtLong | new | high | Newton iteration on a long with __aFldiv
+F017_0089 VectorToDir8 | new | high | direction 0..7 from the signs and the ratio of dx, dy; 8 for no vector
+F018_000A HookDivideError | new | high | saves INT 0, points it at DivideHandler, registers UnhookDivideError
+F018_004B UnhookDivideError | new | high | restores INT 0
+F018_005C DivideHandler | new | high | INT 0 handler: steps the return address over the faulting divide
+F026_0246 DrawTextFar | new | high | copies a far string to the stack and calls DrawText
+F026_028E DrawTextFar2 | new | medium | the same with the second text routine

@@ -1,0 +1,40 @@
+; FileCanOpen: tells whether a file opens. The first bytes finish LoadAssetMode.
+        db 0x56, 0xFA
+;-----------------------------------------------------------------------------
+; LoadAssetModeTail                                           15ED:0002  94 PC
+; End of LoadAssetMode, which starts in the file before.
+;-----------------------------------------------------------------------------
+LoadAssetModeTail:
+        db 0x8B, 0xC6                           ; insn: mov ax, si
+.1:
+        mov dx, [bp - 0x6]
+.2:
+        pop si
+        pop di
+        leave
+        retf
+        db 0x90, 0x90, 0x90
+
+;-----------------------------------------------------------------------------
+; FileCanOpen                                                 15ED:000E  94 PC
+; Opens and closes a file, returns 1 if it opened.
+;-----------------------------------------------------------------------------
+FileCanOpen:
+        enter 0xa, 0x0
+        lea ax, [bp - 0x6]
+        push ax
+        lea ax, [bp - 0xa]
+        push ax
+        lea ax, [bp - 0x2]
+        push ax
+        push word [bp + 0x6]
+        call 0x03A3:FileOpen
+        add sp, 0x8
+        push word [bp - 0x2]
+        call 0x03A3:FileClose
+        pop bx
+        cmp word [bp - 0x2], 0x0
+        jz short .1
+        mov word [bp - 0x2], 0x1
+.1:
+        mov ax, [bp - 0x2]

@@ -1,0 +1,70 @@
+# Batch 3: save game, palettes, dialogs, crowd and announcer calls, menus (seg013, seg019-seg027).
+F013_0006 SaveGame | new | high | writes game.sav (the database record, sizes, three 12-byte records) or copies the .db files to .sav
+F013_02E2 SaveGameNameDialog | new | medium | asks for the save name (file list, text entry) before SaveGame
+F019_0000 DivideHandlerTail | new | low | the end of DivideHandler (iret) in the next paragraph
+F019_000C LoadTeamPalettes | new | high | home and away palette parts (1C0h bytes a team) and the arena palette, then SetPaletteFar
+F020_0000 AskYesNo | new | medium | two-button message box at the mouse; keeps the answer string
+F020_0060 DrawBevelBox | new | high | filled rectangle and four edge lines in a light and a dark colour
+F020_00E6 NumberEntryDialog | new | medium | text entry box read back with atol
+F020_032A ItemColors | new | medium | picks the normal or highlight colour pair for a list row
+F020_0354 ListHitTest | new | medium | list row under the cursor
+F020_03D6 DrawListRow | new | medium | one list row with its colours
+F020_049A DrawListRows | new | medium | the visible rows
+F020_04FA ListDialog | new | medium | scrolling list with a scroll bar, mouse and keys
+F020_0A12 GrowToTextWidth | new | high | widens a box to a string's width and adds a line height
+F020_0A3C SetDialogColors | new | high | the five dialog colours
+F020_0A60 HiliteButton | new | medium | redraws the old and the new button
+F020_0B16 DrawButtons | new | medium | every button of a message box
+F020_0B4C DrawButton | new | medium | one button: bevel box and centred label
+F020_0C14 ScrollBarInit | new | high | scroll bar position, size and thumb length from the item counts
+F020_0C76 DrawScrollBar | new | medium | bar and thumb
+F020_0D28 ScrollBarDrag | new | medium | moves the thumb with the mouse and updates the first item
+F020_0E7A SaveUnderBox | new | high | allocates a block and saves the screen under a box (GetBlock)
+F020_0F22 RestoreUnderBox | new | high | puts the saved screen back and frees the block
+F020_0F5C GrowToItemBox | new | medium | widens and heightens a box to fit an item rectangle
+F020_0FC8 MessageBox | new | high | box with text lines and buttons; returns the button chosen
+F020_1260 MessageBoxLoop | new | medium | input loop of MessageBox (mouse, keys, highlight)
+F020_14B8 MessageBoxReset | new | low | sets the last button to -1
+F021_0000 NullFar6 | new | high | a lone retf
+F021_0002 CrowdNoiseUpdate | new | high | eases the crowd level toward CrowdTarget and drives the MIDI crowd notes (volume, pitch)
+F021_01DC CrowdNoiseOff | new | high | note off and volume 0 on the two crowd channels
+F021_024E CrowdFadeOut | new | high | lowers CrowdTarget step by step to silence
+F021_029A CrowdReset | new | high | crowd level and both note states to 0
+F021_02A6 AnnounceOneMinute | new | high | digital sound with speech on: pause, SayOneMinuteLeft
+F021_02C0 AnnouncerBusy | new | high | digital sound with speech on and SpeechBusy
+F021_02E0 PlaySoundEffect | new | high | sound effect by number; 7Dh raises the crowd; skipped while the announcer talks
+F021_0394 AnnounceGoal | new | high | pause, SayGoal
+F021_03C0 AnnouncePlayerFrom | new | high | pause, SayPlayerFrom
+F021_03E6 AnnouncePenalty | new | high | pause, SayPenalty
+F021_0418 AnnounceTonightsGame | new | high | team names from TeamAbbrevs, SayTonightsGame
+F021_046E AnnouncePeriodSummary | new | high | SayPeriodSummary
+F021_0490 AnnounceIntro | new | high | SayEaNhlIntro
+F021_04A4 AnnounceGoodnight | new | high | SayGoodnight
+F021_04B8 AnnounceLineups | new | high | SayLineups
+F021_04CC AnnounceElseAroundNhl | new | high | SayElseAroundNhl
+F021_04E0 AnnounceHighlightMatchup | new | high | SayHighlightMatchup
+F021_0514 AnnouncePlayoffResult | new | high | SayPlayoffResult
+F021_0542 AnnounceTonightsPlayoffGame | new | high | SayTonightsPlayoffGame
+F021_057E LoadStudioSpeech | new | high | OpenStudioSpeech until it succeeds
+F021_0594 LoadPlayByPlaySpeech | new | high | OpenPlayByPlaySpeech until it succeeds
+F021_05B8 StopJingle | new | high | stops the digital sample playing in JingleHandle
+F021_05F8 PlayJingle | new | high | plays a digital sample (pointer, length) and keeps its handle
+F021_0640 WaitJingle | new | high | waits until the jingle sample has finished
+F021_0656 PlayArenaJingle | new | medium | the loaded clip for the event, else a random one of three, through PlayJingle
+F022_0004 SaveVgaPlanes | new | high | copies the four VGA planes (plane0..plane3 blocks) through the read map
+F022_0224 RestoreVgaPlanes | new | high | writes the four planes back through the map mask
+F022_03E2 NullFar5 | new | high | a lone retf
+F022_03E4 FatalError | new | high | prints the message with ConPrint and exits
+F023_0008 FitNameToWidth | new | high | "first last", else "F. last", then cut until it fits the width
+F024_0000 UseDbDescriptor | new | low | pushes the far descriptor of the database set (0, 1 or 2) for the overlay call that follows
+F025_0000 UseDbDescriptorTail | new | low | the end of UseDbDescriptor in the next paragraph (the overlay call)
+F025_000E GetInputEvent | new | high | runs pending hooks, then pops the next 8-byte event from the queue, or 0
+F025_0066 FlushInputEvents | new | high | empties the event queue
+F026_000E DrawMenuBar | new | high | menu titles in boxes across the top line
+F026_00A4 DrawMenuPanel | new | medium | an open menu's items
+F026_01BA DrawFrameBox | new | high | filled rectangle with a light and a dark edge
+F026_02D6 DrawMenuItem | new | medium | one item in the normal colour
+F026_036A DrawMenuItemHilite | new | medium | one item in the highlight colour
+F026_03FE MenuHitTest | new | high | menu and item under a point
+F027_0000 NullFar7 | new | high | a lone retf
+F027_0002 DrawTextCenteredInWindow | new | medium | x centred between the window's left and right edges

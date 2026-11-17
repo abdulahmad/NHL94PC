@@ -1,0 +1,12 @@
+# Batch 9: the end of a routine that runs past a segment boundary (the EXE's segments split at paragraphs, not at routines).
+F013_0000 WaitButtonTimedTail | new | high | end of WaitButtonTimed in seg012
+SegStart_0D6B1 VectorToDir8Tail | new | high | end of VectorToDir8 in seg017
+F022_0000 PlayArenaJingleTail | new | high | end of PlayArenaJingle in seg021
+SegStart_148B0 DrawFrameTail | new | high | end of DrawFrame in seg029
+SegStart_14B80 LoadRawModeTail | new | high | end of LoadRawMode in seg032
+SegStart_14DB4 ReadPackedSizeTail | new | high | end of ReadPackedSize in seg033
+SegStart_15ED2 LoadAssetModeTail | new | high | end of LoadAssetMode in seg042
+SegStart_15FF4 FindNearestColorTail | new | high | end of FindNearestColor in seg044
+SegStart_160E3 CopyBytesFarTail | new | high | end of CopyBytesFar in seg047
+F054_0055 FpNo87Env | new | high | "NO87=" and CR LF, the environment variable that turns the coprocessor off
+F054_09CA FpConstants | new | medium | emulator constants (temporary reals, coefficient tables)

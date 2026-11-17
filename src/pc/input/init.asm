@@ -1,0 +1,141 @@
+; Input start-up and shutdown, and turning an input event into a cursor move.
+        db 0xC4, 0x02
+        push str_SecondsMsc
+        push cs
+        db 0xE8, 0xC5, 0xEC                     ; insn: call 0xecce
+        mov ax, 0x1
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; InputInit                                                   0BFE:000E  94 PC
+; HookKbd, timer slot for PollInputEvents, cursor handler = EventToCursor;
+; once.
+;-----------------------------------------------------------------------------
+InputInit:
+        cmp word [InputInstalled], 0x0
+        jz short .1
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        retf
+.1:
+        call 0x03A3:HookKbd
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [MouseRangeY], ax
+        mov [MouseRangeX], ax
+        mov word [InputInstalled], 0x1
+        push word 0x93a
+        push strict word 0x8
+        call 0x03A3:AllocSlot
+        add sp, 0x4
+        call 0x0F99:FlushInputEvents
+        mov word [HotKeyFn], 0x70
+        mov word [HotKeyFnSeg], 0xbfe
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; InputShutdown                                               0BFE:004C  94 PC
+; Frees the PollInputEvents timer slot.
+;-----------------------------------------------------------------------------
+InputShutdown:
+        cmp word [InputInstalled], 0x0
+        jz short .1
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [MouseRangeY], ax
+        mov [MouseRangeX], ax
+        push word 0x93a
+        push strict word 0x8
+        call 0x03A3:FreeSlot
+        add sp, 0x4
+        mov word [InputInstalled], 0x0
+.1:
+        retf
+
+;-----------------------------------------------------------------------------
+; EventToCursor                                               0BFE:0070  94 PC
+; Mouse event sets the cursor; key and stick events move it, faster with the
+; repeat count; clamps to 320x200.
+;-----------------------------------------------------------------------------
+EventToCursor:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        push di
+        push si
+        mov bx, [bp + 0x6]
+        cmp word [bx], 0x1
+        jnz short .1
+        mov ax, [bx + 0x4]
+        mov si, [bp + 0x8]
+        mov [si], ax
+        mov ax, [bx + 0x6]
+        mov si, [bp + 0xa]
+        mov [si], ax
+        jmp near .11
+.1:
+        cmp word [CursorY], 0x1e
+        jl short .2
+        mov word [CursorY], 0x1d
+.2:
+        mov ax, [CursorY]
+        mov cx, 0xa
+        cwd
+        idiv cx
+        db 0x8B, 0xC8                           ; insn: mov cx, ax
+        mov ax, 0x4
+        shl ax, cl
+        mov [MouseRangeX], ax
+        mov si, [bp + 0x8]
+        test byte [bx + 0x3], 0x8
+        jz short .3
+        sub [si], ax
+.3:
+        mov bx, [bp + 0x6]
+        test byte [bx + 0x3], 0x4
+        jz short .4
+        mov ax, [MouseRangeX]
+        add [si], ax
+.4:
+        mov di, [bp + 0xa]
+        mov bx, [bp + 0x6]
+        test byte [bx + 0x3], 0x1
+        jz short .5
+        mov ax, [MouseRangeX]
+        sub [di], ax
+.5:
+        mov bx, [bp + 0x6]
+        test byte [bx + 0x3], 0x2
+        jz short .6
+        mov ax, [MouseRangeX]
+        add [di], ax
+.6:
+        cmp word [si], 0x0
+        jnl short .7
+        mov word [si], 0x0
+        jmp short .8
+        db 0x90
+.7:
+        cmp word [si], 0x13f
+        jng short .8
+        mov word [si], 0x13f
+.8:
+        cmp word [di], 0x0
+        jnl short .9
+        mov word [di], 0x0
+        jmp short .10
+        db 0x90
+.9:
+        cmp word [di], 0xc7
+        jng short .10
+        mov word [di], 0xc7
+.10:
+        push word [di]
+        push word [si]
+        call 0x03A3:MouseMove
+        add sp, 0x4
+        mov ax, [si]
+        mov [MousePosX], ax
+        mov ax, [di]
+        mov [MousePosY], ax
+        mov bx, [bp + 0x6]
+.11:
+        mov al, [bx + 0x2]

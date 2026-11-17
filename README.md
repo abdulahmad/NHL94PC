@@ -8,9 +8,11 @@
 
 ## 🚧 Current Status
 
-- Bootstrapped: the EXE is split into its MZ header, its 59 MZ load-image segments (one per segment base found in the relocations) and the data appended after the load module, each an `incbin`, and the NASM build is byte-identical to the retail EXE.
-- Every segment also builds on its own from its stub (`src/stubinc/<segment>_stub.asm`).
-- Trial: the MZ header fields are source (`src/header/mz_header.asm`) with the relocation table and the entry point (`__astart`) as labels. Nothing else is disassembled yet.
+- `HOCKEY.EXE` is fully disassembled: the MZ header, the 58 load-image segments, DGROUP and the far data segments are
+  labelled source, and the NASM build is byte-identical to the retail EXE. Every routine and variable has a name and a
+  comment, and every file is named by topic (`src/pc`, `src/front`, `src/lib`, `src/data`).
+- Every file also builds on its own from its stub (`src/stubinc/<name>_stub.asm`).
+- The game logic is in the external `.OVL` overlay files, which are not part of this build and are not disassembled yet.
 - This is a **disassembly only**: labelled 16-bit x86 assembly that reassembles byte-identical. There is no C decompilation.
 
 **AI agent or new contributor: start with [START_HERE.md](START_HERE.md).**
@@ -25,11 +27,12 @@
 
 ## Lineage
 
-NHL '94 PC is based on [NHLPA93SNES](https://github.com/abdulahmad/NHLPA93SNES) and [NHL94Genesis](https://github.com/abdulahmad/NHL94Genesis). Names come from those repos, matched by purpose, not by identical code, and the earlier game's name wins: 93S (and through it 93G, 92G) first, then 94G for what is new in 94. See SEGMENT_AGENT.md. [NHL94PCDemo](https://github.com/abdulahmad/NHL94PCDemo) is the same code base before release and follows the same rules.
+NHL '94 PC is based on [NHLPA93SNES](https://github.com/abdulahmad/NHLPA93SNES) and [NHL94Genesis](https://github.com/abdulahmad/NHL94Genesis). Names come from those repos, matched by purpose: the 94 Genesis (or 94 SNES) name when a routine does the same job, then the earlier lineage, then the Microsoft C, EACLIB and RTLink library names. See CONTRIBUTING.md and docs/RULES.md. [NHL94PCDemo](https://github.com/abdulahmad/NHL94PCDemo) is the same code base before release and follows the same rules.
 
 ## Layout
 
-- `src/hockey94pc.asm` includes the whole file in order: `section header` (MZ header), one `section segNNN align=16 vstart=0` per MZ segment (labels are offsets inside the segment, as the 16-bit code uses them), then `section overlay` (bytes after the load module).
+- `src/hockey94pc.asm` includes the whole file in order: `section header` (MZ header), one `section <name> align=16 vstart=0` per MZ segment, named after its file (labels are offsets inside the segment, as the 16-bit code uses them), then `section overlay` (bytes after the load module).
+- `src/pc/` DOS-only code, `src/front/` the front end, `src/lib/` the Microsoft C, EACLIB and RTLink libraries, `src/data/` DGROUP and the far data. `docs/cleanup/files_94pc.txt` maps the old segment numbers to files.
 - `segmap.json` lists every segment: name, file offset, size, source file, and the paragraph of the MZ segment.
 - `src/stubinc/<segment>_stub.asm` builds one segment on its own: `bits 16`, `org`, outside labels as equates, then the segment file.
 - `tools/prebuild.py` checks the EXE (SHA-1, CRC32, size) and runs `tools/extract.py` (cuts it into `Extracted/segments/`, gitignored).

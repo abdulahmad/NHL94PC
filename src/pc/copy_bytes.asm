@@ -1,0 +1,26 @@
+; CopyBytesFar: copies a count of bytes between far pointers.
+        mov dx, [bp - 0x8]
+        pop si
+        pop di
+        leave
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; CopyBytesFar                                                160C:0008  94 PC
+; Byte copy loop.
+;-----------------------------------------------------------------------------
+CopyBytesFar:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        push di
+        push si
+        db 0x33, 0xF6                           ; insn: xor si, si
+        mov di, [bp + 0x6]
+        mov es, [bp + 0x8]
+        db 0xEB, 0x0C                           ; insn: jmp short 0x23
+.1:
+        db 0x8B, 0xDF                           ; insn: mov bx, di
+        db 0x03, 0xDE                           ; insn: add bx, si
+        mov al, [es:bx]
+        db 0x88, 0x84

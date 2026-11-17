@@ -1,0 +1,8 @@
+;	Segment build for pc/input/wait_button.asm: sets its origin and the outside labels it uses (their values in the
+;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
+	bits	16
+	org	0x0
+GetInputEvent		equ	0xE
+ReadCallCount		equ	0x1A0E
+HotKeyFn		equ	0xB08E
+%include "pc/input/wait_button.asm"

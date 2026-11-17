@@ -1,0 +1,111 @@
+; Loads a file through the in-memory file cache.
+
+;-----------------------------------------------------------------------------
+; LoadFileCachedMode                                          1B28:0000  94 PC
+; Copies a file from a heap record of that name, or reads it from disk.
+;-----------------------------------------------------------------------------
+LoadFileCachedMode:
+        enter 0xe, 0x0
+        push di
+        push si
+        push word [bp + 0x6]
+        call 0x06E1:NameBase
+        pop bx
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        mov [bp - 0x2], dx
+        db 0x0B, 0xD0                           ; insn: or dx, ax
+        jz short .1
+        mov ax, [bp - 0x2]
+        push ax
+        push si
+        db 0x8B, 0xF8                           ; insn: mov di, ax
+        call 0x06E1:RecSize
+        add sp, 0x4
+        push dx
+        push ax
+        push word [bp + 0xa]
+        push word [bp + 0x8]
+        push di
+        push si
+        call 0x03A3:CopyFar
+        add sp, 0xc
+        push di
+        push si
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        jmp short .3
+.1:
+        mov di, [bp + 0xc]
+        push di
+        lea ax, [bp - 0xa]
+        push ax
+        lea cx, [bp - 0xe]
+        push cx
+        lea cx, [bp - 0x6]
+        push cx
+        push word [bp + 0x6]
+        call 0x03A3:FileOpenArg
+        add sp, 0xa
+        mov ax, [bp - 0x8]
+        or ax, [bp - 0xa]
+        jnz short .2
+        db 0x33, 0xC0                           ; insn: xor ax, ax
+        cwd
+        jmp short .4
+.2:
+        mov si, [bp + 0x8]
+        push di
+        mov ax, [bp + 0xa]
+        push ax
+        push si
+        push word [bp - 0x8]
+        push word [bp - 0xa]
+        push word [bp - 0xc]
+        push word [bp - 0xe]
+        push word [bp - 0x6]
+        db 0x8B, 0xF8                           ; insn: mov di, ax
+        call 0x03A3:ReadAtArg
+        add sp, 0x10
+        push word [bp - 0x6]
+        call 0x03A3:FileClose
+        pop bx
+.3:
+        db 0x8B, 0xC6                           ; insn: mov ax, si
+        db 0x8B, 0xD7                           ; insn: mov dx, di
+.4:
+        pop si
+        pop di
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; LoadFileCached                                              1B28:00A0  94 PC
+; LoadFileCachedMode with mode 1.
+;-----------------------------------------------------------------------------
+LoadFileCached:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        push 0x1
+        push word [bp + 0xa]
+        push word [bp + 0x8]
+        push word [bp + 0x6]
+        call 0x1B28:LoadFileCachedMode
+        leave
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; LoadFileCached0                                             1B28:00B6  94 PC
+; LoadFileCachedMode with mode 0.
+;-----------------------------------------------------------------------------
+LoadFileCached0:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        push 0x0
+        push word [bp + 0xa]
+        push word [bp + 0x8]
+        push word [bp + 0x6]
+        call 0x1B28:LoadFileCachedMode
+        leave
+        retf
+        db 0x90, 0x00, 0x00, 0x00, 0x00

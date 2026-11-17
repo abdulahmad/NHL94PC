@@ -1,0 +1,344 @@
+; The pause box and the exit-to-DOS question: save and restore the screen under a box, ask yes or no.
+; The first bytes finish the routine at the end of the file before.
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; SaveBoxUnder                                                1570:0002  94 PC
+; GetBlockAt from the shown page.
+;-----------------------------------------------------------------------------
+SaveBoxUnder:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        call 0x0FEF:UseCurrentPage
+        push word [bp + 0x4]
+        push word [bp + 0x6]
+        les bx, [bp + 0x8]
+        push word [es:bx + 0x2]
+        push word [es:bx]
+        call 0x0FEF:GetBlockAt
+        leave
+        ret 0x8
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; RestoreBoxUnder                                             1570:0024  94 PC
+; DrawRawAt back to the shown page.
+;-----------------------------------------------------------------------------
+RestoreBoxUnder:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        call 0x0FEF:UseCurrentPage
+        push word [bp + 0x4]
+        push word [bp + 0x6]
+        les bx, [bp + 0x8]
+        push word [es:bx + 0x2]
+        push word [es:bx]
+        call 0x0FEF:DrawRawAt
+        leave
+        ret 0x8
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; AskYesNoBox                                                 1570:0046  94 PC
+; Centred box with a message, waits for Y or N.
+;-----------------------------------------------------------------------------
+AskYesNoBox:
+        enter 0x5e, 0x0
+        push di
+        push si
+        mov di, [bp + 0xc]
+        mov si, [bp + 0xa]
+        mov word [TickSkip], 0x1
+        call far [BeforeDialogFn]
+        mov ax, [bp + 0x8]
+        mov dx, [bp + 0x6]
+        db 0x33, 0xDB                           ; insn: xor bx, bx
+        call 0x152D:AllocCanvas
+        mov [bp - 0x6], ax
+        mov [bp - 0x4], dx
+        lea ax, [bp - 0x5a]
+        push ax
+        call 0x03A3:SaveTextState
+        pop bx
+        lea ax, [bp - 0x1e]
+        push ax
+        call 0x03A3:SaveCharTab
+        pop bx
+        push word 0x39ad                        ; segment of the font table far data
+        push strict word 0x0
+        call 0x03A3:UseCharSeg
+        add sp, 0x4
+        mov ax, [bp + 0x6]
+        db 0x03, 0xC6                           ; insn: add ax, si
+        push ax
+        push si
+        mov cx, [bp + 0x8]
+        db 0x03, 0xCF                           ; insn: add cx, di
+        push cx
+        push di
+        mov es, [DgroupSegF]
+        mov bx, [CurPage]
+        shl bx, byte 0x2
+        push word [es:bx + 0x7572]
+        push word [es:bx + 0x7570]
+        mov [bp - 0x5c], ax
+        mov [bp - 0x5e], cx
+        call 0x0FEF:SetCanvasClip
+        add sp, 0xc
+        call far [MouseHideFn]
+        push word [bp - 0x4]
+        push word [bp - 0x6]
+        call 0x0FEF:SetCanvas
+        add sp, 0x4
+        push word [bp - 0x4]
+        push word [bp - 0x6]
+        push di
+        push si
+        call SaveBoxUnder
+        call 0x0FEF:UseCurrentPage
+        db 0x33, 0xC0                           ; insn: xor ax, ax
+        cwd
+        call 0x15F1:FindNearestColor
+        push ax
+        push word [bp + 0x6]
+        push word [bp + 0x8]
+        push si
+        push di
+        call 0x0FEF:FillRect
+        add sp, 0xa
+        db 0x33, 0xC0                           ; insn: xor ax, ax
+        mov dx, 0x2a
+        call 0x15F1:FindNearestColor
+        push ax
+        mov ax, [bp - 0x5c]
+        sub ax, strict word 0x4
+        push ax
+        mov ax, [bp - 0x5e]
+        sub ax, strict word 0x5
+        push ax
+        lea ax, [si + 0x4]
+        push ax
+        lea ax, [di + 0x4]
+        push ax
+        call 0x1484:DrawFrame
+        add sp, 0xa
+        mov ax, 0x3f3f
+        mov dx, 0x3f
+        call 0x15F1:FindNearestColor
+        db 0x33, 0xD2                           ; insn: xor dx, dx
+        call 0x03A3:SetCharPtr.regs
+        lea ax, [si + 0x9]
+        push ax
+        push word [bp + 0xe]
+        call 0x0FEC:DrawTextCenteredInWindow
+        add sp, 0x4
+        call far [MouseReadFn]
+        push word 0xc8
+        push 0x0
+        push word 0x140
+        push 0x0
+        mov es, [DgroupSegF]
+        mov bx, [CurPage]
+        shl bx, byte 0x2
+        push word [es:bx + 0x7572]
+        push word [es:bx + 0x7570]
+        call 0x0FEF:SetCanvasClip
+        add sp, 0xc
+        mov si, [bp + 0x4]
+.1:
+        call far [MousePosFn]
+        test si, ax
+        jnz short .1
+.2:
+        call 0x03A3:ReadKey
+        db 0x8B, 0xF8                           ; insn: mov di, ax
+        call far [MousePosFn]
+        and ax, [bp + 0x4]
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        db 0x0B, 0xFF                           ; insn: or di, di
+        jnz short .3
+        db 0x0B, 0xF6                           ; insn: or si, si
+        jz short .2
+.3:
+        mov [bp - 0x2], di
+        and si, 0x1
+        db 0x8B, 0xD7                           ; insn: mov dx, di
+        or dl, 0x20
+        cmp dx, 0x79
+        jnz short .4
+        mov si, 0x1
+.4:
+        mov ax, [bp + 0x6]
+        add ax, [bp + 0xa]
+        push ax
+        push word [bp + 0xa]
+        mov ax, [bp + 0x8]
+        add ax, [bp + 0xc]
+        push ax
+        push word [bp + 0xc]
+        mov es, [DgroupSegF]
+        mov bx, [CurPage]
+        shl bx, byte 0x2
+        push word [es:bx + 0x7572]
+        push word [es:bx + 0x7570]
+        call 0x0FEF:SetCanvasClip
+        add sp, 0xc
+        call far [MouseShowFn]
+        push word [bp - 0x4]
+        push word [bp - 0x6]
+        push word [bp + 0xc]
+        push word [bp + 0xa]
+        call RestoreBoxUnder
+        call far [MouseReadFn]
+        lea ax, [bp - 0x1e]
+        push ax
+        call 0x03A3:LoadCharTab
+        pop bx
+        lea ax, [bp - 0x5a]
+        push ax
+        call 0x03A3:LoadTextState
+        pop bx
+        push word [bp - 0x4]
+        push word [bp - 0x6]
+        call 0x14ED:FreeCanvas
+        add sp, 0x4
+        call far [AfterDialogFn]
+        mov word [TickSkip], 0x0
+        db 0x8B, 0xC6                           ; insn: mov ax, si
+        pop si
+        pop di
+        leave
+        ret 0xc
+
+;-----------------------------------------------------------------------------
+; AskExitToDos                                                1570:0224  94 PC
+; AskYesNoBox with "Exit to DOS (Y/N)".
+;-----------------------------------------------------------------------------
+AskExitToDos:
+        push str_ExitToDosYN
+        push 0x50
+        push 0x58
+        push word 0xa0
+        push 0x18
+        push 0x7
+        call AskYesNoBox
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jz short .1
+        call 0x0F4A:NullFar5
+.1:
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; PauseBox                                                    1570:0240  94 PC
+; Centred box with a message until a key or time-out.
+;-----------------------------------------------------------------------------
+PauseBox:
+        enter 0x58, 0x0
+        push di
+        push si
+        mov word [TickSkip], 0x1
+        mov ax, 0x140
+        mov dx, 0xa
+        db 0x33, 0xDB                           ; insn: xor bx, bx
+        call 0x152D:AllocCanvas
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        mov [bp - 0x2], dx
+        lea ax, [bp - 0x58]
+        push ax
+        call 0x03A3:SaveTextState
+        pop bx
+        lea ax, [bp - 0x1c]
+        push ax
+        call 0x03A3:SaveCharTab
+        pop bx
+        push word 0x39ad                        ; segment of the font table far data
+        push strict word 0x0
+        call 0x03A3:UseCharSeg
+        add sp, 0x4
+        mov ax, [bp - 0x2]
+        push ax
+        push si
+        db 0x8B, 0xF8                           ; insn: mov di, ax
+        call 0x0FEF:SetCanvas
+        add sp, 0x4
+        push word 0xc8
+        push word 0xbe
+        push word 0x140
+        push 0x0
+        mov es, [DgroupSegF]
+        mov bx, [CurPage]
+        shl bx, byte 0x2
+        push word [es:bx + 0x7572]
+        push word [es:bx + 0x7570]
+        call 0x0FEF:SetCanvasClip
+        add sp, 0xc
+        call far [MouseHideFn]
+        push di
+        push si
+        push 0x0
+        push word 0xbe
+        call SaveBoxUnder
+        call 0x0FEF:UseCurrentPage
+        db 0x33, 0xC0                           ; insn: xor ax, ax
+        cwd
+        call 0x15F1:FindNearestColor
+        push ax
+        push 0xa
+        push word 0x140
+        push word 0xbe
+        push 0x0
+        call 0x0FEF:FillRect
+        add sp, 0xa
+        mov ax, 0x3f3f
+        mov dx, 0x3f
+        call 0x15F1:FindNearestColor
+        db 0x33, 0xD2                           ; insn: xor dx, dx
+        call 0x03A3:SetCharPtr.regs
+        push word 0xbf
+        push word [bp + 0x6]
+        call 0x0FEC:DrawTextCenteredInWindow
+        add sp, 0x4
+        call far [MouseReadFn]
+        push word [bp + 0xa]
+        push word [bp + 0x8]
+        call 0x03A3:WaitAdd
+        add sp, 0x4
+        call far [MouseShowFn]
+        push di
+        push si
+        push 0x0
+        push word 0xbe
+        call RestoreBoxUnder
+        call far [MouseReadFn]
+        lea ax, [bp - 0x1c]
+        push ax
+        call 0x03A3:LoadCharTab
+        pop bx
+        lea ax, [bp - 0x58]
+        push ax
+        call 0x03A3:LoadTextState
+        pop bx
+        push di
+        push si
+        call 0x14ED:FreeCanvas
+        add sp, 0x4
+        mov word [TickSkip], 0x0
+        pop si
+        pop di
+        leave
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; ShowPausedBox                                               1570:0352  94 PC
+; PauseBox with "Pause: press any key to".
+;-----------------------------------------------------------------------------
+ShowPausedBox:
+        push str_PausePressAnyKeyTo
+        push 0x10
+        push 0x58
+        push word 0x120
+        push 0x18
+        push 0x1

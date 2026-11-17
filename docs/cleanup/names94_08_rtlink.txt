@@ -1,0 +1,28 @@
+# Batch 8: RTLink/Plus run-time support routines (seg058), called by the overlay manager in seg056.
+F058_0003 RtlSectionHook | rtlink | medium | default section hook: sets carry and returns
+F058_0005 RtlWriteHex | rtlink | medium | writes CX as four hex digits at DS:DX (error codes in the eov messages)
+F058_0017 RtlHexWord | rtlink | medium | writes AX as four hex digits at ES:DI
+F058_001E RtlHexByte | rtlink | medium | writes AL as two hex digits
+F058_002B RtlHexDigit | rtlink | high | writes the low nibble of AL as a hex digit (daa trick)
+F058_0035 RtlFileAdjust | rtlink | low | a far pointer target in seg058 used by the overlay file code
+F058_0039 RtlSwapErrorSlot | rtlink | medium | exchanges SI and DS with the saved error handler pointer
+F058_004A RtlErrorSlot | rtlink | medium | far pointer to the fatal error routine, swapped by RtlSwapErrorSlot
+F058_0054 RtlFatalError | rtlink | medium | prints "Fatal Error" and the message to stderr, waits for a key in text mode, exits with 1
+F058_00CF RtlSaveVectors | rtlink | medium | saves the PSP terminate vector once
+F058_00F4 RtlSetHandler | rtlink | medium | registers a far callback with a flag mask (up to 12) and hooks the terminate vector
+F058_0198 RtlInternalError | rtlink | medium | "Internal error in .RTLink(R)/Plus run-time code" through the error slot
+F058_01C9 RtlAfterFiles | rtlink | medium | runs the callbacks with flag 4
+F058_01D3 RtlCallHandlersFar | rtlink | medium | far entry to RtlCallHandlers
+F058_01D7 RtlTerminate | rtlink | medium | terminate hook: runs flag 2 callbacks, restores the vector and chains
+F058_0203 RtlCallHandlers | rtlink | medium | calls every registered callback whose mask matches AL
+F058_0224 RtlBeforeClose | rtlink | medium | stub returning -1
+F058_0228 RtlStubCx | rtlink | high | returns CX = -1
+F058_022C RtlStubZero | rtlink | high | returns 0 in DX:AX
+F058_02A1 RtlGetEnv | rtlink | medium | finds a variable in the environment block
+F058_02FD RtlFindFile | rtlink | medium | tries a file by a search spec of letters C, E, P and A (current dir, EXE dir, PATH, as given)
+F058_0332 RtlFindFileStep | rtlink | medium | one RtlFindFile try
+F058_0405 RtlCurrentDir | rtlink | high | builds "D:\path\" for the current drive and directory
+F058_0443 RtlExePath | rtlink | high | the full path of the running EXE from the environment (DOS 3 or later)
+F058_04AC RtlOpenCandidate | rtlink | medium | builds the candidate path and opens it
+F058_04C0 RtlAppendName | rtlink | medium | appends the file name and notes a .exe extension
+F058_04FD RtlShowMessage | rtlink | medium | duplicates stdout/stderr handles and prints a $-terminated message

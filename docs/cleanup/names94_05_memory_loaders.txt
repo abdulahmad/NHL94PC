@@ -1,0 +1,68 @@
+# Batch 5: frames, heap helpers, asset loaders, canvases, joystick calibration, pause and exit boxes, colour tools (seg029-seg048).
+F029_0000 NullFar8 | new | high | a lone retf
+F029_0004 DrawFrame | new | medium | draws a rectangle outline with four FillRectClip calls
+F030_0004 LargestFreeBlock | new | low | walks the far heap list and returns the largest gap
+F031_0002 DrawThickLine | new | low | builds a quad around a line from Atan2 and AngleTab
+F032_0000 NullFar9 | new | high | a lone retf
+F032_0002 LoadRawHeader | new | low | LoadRawHeaderMode with mode 1
+F032_0014 LoadRawHeader0 | new | low | LoadRawHeaderMode with mode 0
+F032_0026 LoadRawHeaderMode | new | medium | LoadRawMode, then returns the first dword of the data
+F032_0058 LoadRaw | new | low | LoadRawMode with mode 1
+F032_006A LoadRaw0 | new | low | LoadRawMode with mode 0
+F032_007C LoadRawMode | new | medium | reads an unpacked file (.esh, .vsh and others) into a heap record, EMS aware
+F033_0008 LoadPackedHeader | new | low | LoadPackedHeaderMode with mode 1
+F033_001A LoadPackedHeader0 | new | low | LoadPackedHeaderMode with mode 0
+F033_002C LoadPackedHeaderMode | new | medium | LoadPackedMode, then returns the first dword of the data
+F033_005E LoadPacked | new | low | LoadPackedMode with mode 1
+F033_0070 LoadPacked0 | new | low | LoadPackedMode with mode 0
+F033_0082 LoadPackedMode | new | medium | reads and unpacks a packed file (.qns, .pns, .qvs, .pvs, .qes, .pes)
+F033_01E0 ReadPackedSize | new | medium | reads the 8-byte header and builds the 24-bit unpacked size
+F034_000C InsertRecWrap0 | new | low | InsertRec with mode 0
+F034_0013 InsertRecWrap | new | low | InsertRec with mode 1
+F034_0030 AllocRecData | new | low | InsertRec mode 1, returns the record's data pointer
+F034_0038 AllocRecData0 | new | low | InsertRec mode 0, returns the record's data pointer
+F034_003F AllocRecDataMode | new | low | InsertRec with explicit mode, returns the data pointer
+F034_006B ResizeRec0 | new | low | ResizeRec with mode 0
+F034_0072 ResizeRec1 | new | low | ResizeRec with mode 1
+F034_0092 ResizeRecByName | new | low | FindRec then ResizeRec, mode 1
+F034_009D ResizeRecByName0 | new | low | FindRec then ResizeRec, mode 0
+F034_00A7 ResizeRecByNameMode | new | low | FindRec then ResizeRec, explicit mode
+F034_00DB InitHeap | new | medium | checks for a 286 (fatal error otherwise) then MakeChain
+F034_0107 InitHeapArgs | new | low | InitHeap with caller arguments
+F035_0000 InitHeapVariantTail | new | low | tail of a third InitHeap entry that starts in seg034
+F035_000C FreeCanvas | new | medium | drops a canvas buffer's reference count, merges free neighbours, unlinks the record
+F035_0092 SortPairs | new | medium | shell sort of a key array with a parallel value array
+F035_00A0 SortPairsPass | new | medium | SortPairs inner passes
+F036_0000 SortPairsTail | new | medium | end of SortPairs
+F036_000E XorFrame | new | medium | XORs a rectangle outline with four XorRect calls
+F037_0000 NullFar10 | new | high | a lone retf
+F037_0004 CalibrateStick | new | medium | joystick calibration screen (needs a 64 KB gap, draws the target grid, waits for buttons)
+F037_0232 CalibrateLeftStick | new | high | CalibrateStick with the "Left Joystick" title
+F037_0244 CalibrateRightStick | new | high | CalibrateStick with the "Right Joystick" title
+F038_0006 AllocLinearCanvas | new | medium | allocates w*h+30h bytes and fills a linear canvas record
+F038_019C AllocCanvas | new | medium | allocates a planar canvas (width/4 per plane) and fills its record
+F039_0002 DrawTextCenteredClip | new | medium | centres a string between the clip left and right
+F040_000C CalibrateRetrace | new | medium | times vertical retraces and sets the retrace wait count g_7670
+F041_0002 SaveBoxUnder | new | medium | GetBlockAt from the shown page
+F041_0024 RestoreBoxUnder | new | medium | DrawRawAt back to the shown page
+F041_0046 AskYesNoBox | new | medium | centred box with a message, waits for Y or N
+F041_0224 AskExitToDos | new | high | AskYesNoBox with "Exit to DOS (Y/N)"
+F041_0240 PauseBox | new | medium | centred box with a message until a key or time-out
+F041_0352 ShowPausedBox | new | high | PauseBox with "Pause: press any key to"
+F042_0000 ShowPausedBoxTail | new | low | end of ShowPausedBox
+F042_0004 BuildShapeBank | new | low | sizes a shape table (LargestShapeSize, ShapeBankSize) and copies it to one block
+F042_0134 LoadAssetMode | new | medium | finds the file by trying the extension list, then loads it packed or raw by extension
+F043_000E FileCanOpen | new | medium | opens and closes a file, returns 1 if it opened
+F044_0002 FindNearestColor | new | medium | searches the palette for the smallest squared RGB distance
+F045_000C LargestShapeSize | new | medium | largest width*height+10h in a shape table
+F046_0006 ShapeBankSize | new | medium | total size of a shape table's shapes and index
+F047_0008 CopyBytesFar | new | low | byte copy loop
+F048_000C ShadeColor | new | medium | scales one palette entry by the RGB factors, clamps to 3Fh, optional grey
+F048_0180 BuildShadeTable | new | medium | ShadeColor for every used colour, writes a 256-byte remap table
+F048_01CC BuildShadeTableEven | new | medium | BuildShadeTable with one factor for all three channels
+F048_01E8 MergeRemapTables | new | low | combines two remap tables into the global one
+OpenResource LoadAsset0 | new | medium | LoadAssetMode with mode 0
+LoadResource LoadAsset | new | medium | LoadAssetMode with mode 1
+LoadResourceHeader LoadAssetHeader | new | medium | LoadAssetMode mode 1, returns the first dword
+OpenResourceHeader LoadAssetHeader0 | new | medium | LoadAssetMode mode 0, returns the first dword
+ResourceHeaderMode LoadAssetHeaderMode | new | medium | LoadAssetMode with explicit mode, returns the first dword

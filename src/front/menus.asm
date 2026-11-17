@@ -1,0 +1,564 @@
+; The menu bar and pull-down panels: frames, menu items and the far text drawing they use.
+        db 0x05
+        mov [InputQueueTail], ax
+        mov [MouseEnabled], ax
+        mov [StickEnabled], ax
+        mov [KeysEnabled], ax
+        retf
+
+;-----------------------------------------------------------------------------
+; DrawMenuBar                                                 0FA0:000E  94 PC
+; Menu titles in boxes across the top line.
+;-----------------------------------------------------------------------------
+DrawMenuBar:
+        enter 0x8, 0x0
+        push di
+        push si
+        mov di, [bp + 0xa]
+        mov ax, [bp + 0xc]
+        mov dx, 0xff
+        call 0x03A3:SetCharPtr.regs
+        db 0x0B, 0xFF                           ; insn: or di, di
+        jng short .2
+        mov ax, [bp + 0x6]
+        mov dx, [bp + 0x8]
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        mov [bp - 0x2], dx
+.1:
+        push word [bp + 0x10]
+        push word [bp + 0xe]
+        push word [bp + 0xc]
+        mov es, [bp - 0x2]
+        push word [es:si + 0x6]
+        push word [es:si + 0x4]
+        push 0x0
+        push word [es:si]
+        push cs
+        call DrawFrameBox
+        add sp, 0xe
+        mov es, [bp - 0x2]
+        push word [es:si + 0xa]
+        push word [es:si + 0x8]
+        push 0x2
+        mov ax, [es:si]
+        add ax, strict word 0x3
+        push ax
+        push cs
+        call DrawTextFar
+        add sp, 0x8
+        add si, 0x16
+        mov ax, [bp - 0x2]
+        dec di
+        jnz short .1
+        mov di, [bp + 0xa]
+.2:
+        push word [bp + 0x10]
+        push word [bp + 0xe]
+        push word [bp + 0xc]
+        imul bx, di, 0x16
+        add bx, [bp + 0x6]
+        mov es, [bp + 0x8]
+        push word [es:bx - 0x10]
+        push word 0x13f
+        push 0x0
+        mov ax, [es:bx - 0x12]
+        inc ax
+        push ax
+        push cs
+        call DrawFrameBox
+        add sp, 0xe
+        pop si
+        pop di
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; DrawMenuPanel                                               0FA0:00A4  94 PC
+; An open menu's items.
+;-----------------------------------------------------------------------------
+DrawMenuPanel:
+        enter 0x10, 0x0
+        push di
+        push si
+        mov si, [bp + 0xa]
+        mov di, [bp + 0x6]
+        push word [bp + 0x14]
+        push word [bp + 0x12]
+        push word [bp + 0x10]
+        db 0x8B, 0xDF                           ; insn: mov bx, di
+        mov es, [bp + 0x8]
+        imul ax, si, 0x16
+        mov [bp - 0x10], bx
+        mov [bp - 0xe], es
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        mov ax, [es:bx - 0x10]
+        add ax, [bp + 0xe]
+        push ax
+        mov ax, [es:bx - 0x12]
+        add ax, [bp + 0xc]
+        push ax
+        mov bx, [bp - 0x10]
+        mov ax, [es:bx + 0x2]
+        add ax, [bp + 0xe]
+        push ax
+        mov ax, [es:bx]
+        add ax, [bp + 0xc]
+        push ax
+        push cs
+        call DrawFrameBox
+        add sp, 0xe
+        les bx, [bp - 0x10]
+        mov ax, [es:bx + 0xe]
+        or ax, [es:bx + 0xc]
+        jnz short .1
+        mov es, [bp + 0x8]
+        mov ax, [es:di + 0x12]
+        or ax, [es:di + 0x10]
+        jnz short .1
+        mov ax, [bp + 0x14]
+        jmp short .2
+        db 0x90
+.1:
+        mov ax, [bp + 0x10]
+.2:
+        mov dx, 0xff
+        call 0x03A3:SetCharPtr.regs
+        mov es, [bp + 0x8]
+        push word [es:di + 0xa]
+        push word [es:di + 0x8]
+        mov ax, [es:di + 0x2]
+        add ax, [bp + 0xe]
+        inc ax
+        inc ax
+        push ax
+        mov ax, [es:di]
+        add ax, [bp + 0xc]
+        add ax, strict word 0x3
+        push ax
+        push cs
+        call DrawTextFar
+        add sp, 0x8
+        cmp si, 0x1
+        jng short .6
+        lea ax, [di + 0x22]
+        mov dx, [bp + 0x8]
+        db 0x8B, 0xC8                           ; insn: mov cx, ax
+        mov [bp - 0xa], dx
+        lea ax, [si - 0x1]
+        db 0x8B, 0xF1                           ; insn: mov si, cx
+        db 0x8B, 0xF8                           ; insn: mov di, ax
+.3:
+        mov es, [bp - 0xa]
+        mov ax, [es:si + 0x2]
+        or ax, [es:si]
+        jnz short .4
+        mov ax, [es:si + 0x6]
+        or ax, [es:si + 0x4]
+        jnz short .4
+        mov ax, [bp + 0x14]
+        jmp short .5
+        db 0x90
+.4:
+        mov ax, [bp + 0x10]
+.5:
+        mov dx, 0xff
+        call 0x03A3:SetCharPtr.regs
+        mov es, [bp - 0xa]
+        lea bx, [si - 0x4]
+        push word [es:bx + 0x2]
+        push word [es:bx]
+        lea bx, [si - 0xa]
+        mov ax, [es:bx]
+        add ax, [bp + 0xe]
+        inc ax
+        push ax
+        lea bx, [si - 0xc]
+        mov ax, [es:bx]
+        add ax, [bp + 0xc]
+        add ax, strict word 0x3
+        push ax
+        push cs
+        call DrawTextFar
+        add sp, 0x8
+        add si, 0x16
+        mov ax, [bp - 0xa]
+        dec di
+        jnz short .3
+.6:
+        pop si
+        pop di
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; DrawFrameBox                                                0FA0:01BA  94 PC
+; Filled rectangle with a light and a dark edge.
+;-----------------------------------------------------------------------------
+DrawFrameBox:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        push di
+        push si
+        mov di, [bp + 0x6]
+        mov si, [bp + 0x8]
+        push word [bp + 0x10]
+        db 0x8B, 0xC6                           ; insn: mov ax, si
+        sub si, [bp + 0xc]
+        neg si
+        lea cx, [si + 0x1]
+        push cx
+        db 0x8B, 0xCF                           ; insn: mov cx, di
+        sub di, [bp + 0xa]
+        neg di
+        lea dx, [di + 0x1]
+        push dx
+        push ax
+        push cx
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        db 0x8B, 0xF9                           ; insn: mov di, cx
+        call 0x0FEF:FillRect
+        add sp, 0xa
+        push word [bp + 0xe]
+        push si
+        mov ax, [bp + 0xa]
+        dec ax
+        push ax
+        push si
+        push di
+        call 0x0FEF:DrawLine
+        add sp, 0xa
+        push word [bp + 0xe]
+        mov ax, [bp + 0xc]
+        dec ax
+        push ax
+        push di
+        push si
+        push di
+        call 0x0FEF:DrawLine
+        add sp, 0xa
+        push word [bp + 0x12]
+        push word [bp + 0xc]
+        push word [bp + 0xa]
+        lea ax, [si + 0x1]
+        push ax
+        push word [bp + 0xa]
+        call 0x0FEF:DrawLine
+        add sp, 0xa
+        push word [bp + 0x12]
+        push word [bp + 0xc]
+        push word [bp + 0xa]
+        push word [bp + 0xc]
+        lea ax, [di + 0x1]
+        push ax
+        call 0x0FEF:DrawLine
+        add sp, 0xa
+        pop si
+        pop di
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; DrawTextFar                                                 0FA0:0246  94 PC
+; Copies a far string to the stack and calls DrawText.
+;-----------------------------------------------------------------------------
+DrawTextFar:
+        enter 0x50, 0x0
+        push di
+        push si
+        lds di, [bp + 0xa]
+        db 0x2B, 0xF6                           ; insn: sub si, si
+        cmp byte [di], 0x0
+        jz short .2
+.1:
+        cmp si, 0x4f
+        jnl short .2
+        db 0x8B, 0xDF                           ; insn: mov bx, di
+        mov al, [bx + si]
+        mov [bp + si - 0x50], al
+        inc si
+        cmp byte [bx + si], 0x0
+        jnz short .1
+.2:
+        mov ax, DGROUP
+        mov ds, ax
+        db 0x8B, 0xDF                           ; insn: mov bx, di
+        mov es, [bp + 0xc]
+        mov al, [es:bx + si]
+        mov [bp + si - 0x50], al
+        push word [bp + 0x8]
+        push word [bp + 0x6]
+        lea ax, [bp - 0x50]
+        push ax
+        call 0x0FEF:DrawText
+        add sp, 0x6
+        pop si
+        pop di
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; DrawTextFar2                                                0FA0:028E  94 PC
+; The same with the second text routine.
+;-----------------------------------------------------------------------------
+DrawTextFar2:
+        enter 0x50, 0x0
+        push di
+        push si
+        lds di, [bp + 0xa]
+        db 0x2B, 0xF6                           ; insn: sub si, si
+        cmp byte [di], 0x0
+        jz short .2
+.1:
+        cmp si, 0x4f
+        jnl short .2
+        db 0x8B, 0xDF                           ; insn: mov bx, di
+        mov al, [bx + si]
+        mov [bp + si - 0x50], al
+        inc si
+        cmp byte [bx + si], 0x0
+        jnz short .1
+.2:
+        mov ax, DGROUP
+        mov ds, ax
+        db 0x8B, 0xDF                           ; insn: mov bx, di
+        mov es, [bp + 0xc]
+        mov al, [es:bx + si]
+        mov [bp + si - 0x50], al
+        push word [bp + 0x8]
+        push word [bp + 0x6]
+        lea ax, [bp - 0x50]
+        push ax
+        call 0x0FEF:DrawChar
+        add sp, 0x6
+        pop si
+        pop di
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; DrawMenuItem                                                0FA0:02D6  94 PC
+; One item in the normal colour.
+;-----------------------------------------------------------------------------
+DrawMenuItem:
+        enter 0x4, 0x0
+        push di
+        push si
+        les si, [bp + 0x6]
+        mov ax, [es:si + 0xe]
+        or ax, [es:si + 0xc]
+        jnz short .1
+        mov ax, [es:si + 0x12]
+        or ax, [es:si + 0x10]
+        jnz short .1
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        pop si
+        pop di
+        leave
+        retf
+        db 0x90
+.1:
+        mov di, [bp + 0xa]
+        mov ax, [es:si]
+        db 0x8B, 0xC8                           ; insn: mov cx, ax
+        inc ax
+        db 0x03, 0xF8                           ; insn: add di, ax
+        cmp word [es:si + 0x2], 0x1
+        db 0x1B, 0xC0                           ; insn: sbb ax, ax
+        neg ax
+        db 0x8B, 0xD0                           ; insn: mov dx, ax
+        add ax, [es:si + 0x2]
+        add [bp + 0xc], ax
+        push word [bp + 0x10]
+        sub dx, [es:si + 0x6]
+        neg dx
+        sub dx, [es:si + 0x2]
+        push dx
+        sub cx, [es:si + 0x4]
+        neg cx
+        dec cx
+        dec cx
+        push cx
+        push word [bp + 0xc]
+        push di
+        mov [bp - 0x4], si
+        mov [bp - 0x2], es
+        call 0x0FEF:FillRect
+        add sp, 0xa
+        mov ax, [bp + 0xe]
+        mov dx, 0xff
+        call 0x03A3:SetCharPtr.regs
+        les bx, [bp - 0x4]
+        push word [es:bx + 0xa]
+        push word [es:bx + 0x8]
+        mov ax, [bp + 0xc]
+        inc ax
+        push ax
+        lea ax, [di + 0x2]
+        push ax
+        push cs
+        call DrawTextFar
+        add sp, 0x8
+        pop si
+        pop di
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; DrawMenuItemHilite                                          0FA0:036A  94 PC
+; One item in the highlight colour.
+;-----------------------------------------------------------------------------
+DrawMenuItemHilite:
+        enter 0x4, 0x0
+        push di
+        push si
+        les si, [bp + 0x6]
+        mov ax, [es:si + 0xe]
+        or ax, [es:si + 0xc]
+        jnz short .1
+        mov ax, [es:si + 0x12]
+        or ax, [es:si + 0x10]
+        jnz short .1
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        pop si
+        pop di
+        leave
+        retf
+        db 0x90
+.1:
+        mov di, [bp + 0xa]
+        mov ax, [es:si]
+        db 0x8B, 0xC8                           ; insn: mov cx, ax
+        inc ax
+        db 0x03, 0xF8                           ; insn: add di, ax
+        cmp word [es:si + 0x2], 0x1
+        db 0x1B, 0xC0                           ; insn: sbb ax, ax
+        neg ax
+        db 0x8B, 0xD0                           ; insn: mov dx, ax
+        add ax, [es:si + 0x2]
+        add [bp + 0xc], ax
+        push word [bp + 0x12]
+        sub dx, [es:si + 0x6]
+        neg dx
+        sub dx, [es:si + 0x2]
+        push dx
+        sub cx, [es:si + 0x4]
+        neg cx
+        dec cx
+        dec cx
+        push cx
+        push word [bp + 0xc]
+        push di
+        mov [bp - 0x4], si
+        mov [bp - 0x2], es
+        call 0x0FEF:FillRect
+        add sp, 0xa
+        mov ax, [bp + 0xe]
+        mov dx, 0xff
+        call 0x03A3:SetCharPtr.regs
+        les bx, [bp - 0x4]
+        push word [es:bx + 0xa]
+        push word [es:bx + 0x8]
+        mov ax, [bp + 0xc]
+        inc ax
+        push ax
+        lea ax, [di + 0x2]
+        push ax
+        push cs
+        call DrawTextFar
+        add sp, 0x8
+        pop si
+        pop di
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; MenuHitTest                                                 0FA0:03FE  94 PC
+; Menu and item under a point.
+;-----------------------------------------------------------------------------
+MenuHitTest:
+        enter 0x10, 0x0
+        push di
+        push si
+        mov si, [bp + 0xc]
+        db 0x0B, 0xF6                           ; insn: or si, si
+        jnl short .1
+        jmp near .7
+.1:
+        db 0x8B, 0xFE                           ; insn: mov di, si
+        shl di, byte 0x2
+        db 0x8B, 0xC7                           ; insn: mov ax, di
+        add di, [bp + 0x10]
+        db 0x8B, 0xCE                           ; insn: mov cx, si
+        shl cx, 1
+        add cx, [bp + 0xe]
+        mov [bp - 0xa], cx
+        db 0x8B, 0xD0                           ; insn: mov dx, ax
+        add dx, [bp + 0xa]
+        mov [bp - 0xc], dx
+        mov [bp - 0xe], si
+        db 0x8B, 0xF2                           ; insn: mov si, dx
+        mov cx, [bp - 0xe]
+.2:
+        mov ax, [si + 0x2]
+        or ax, [si]
+        jz short .5
+        mov word [bp - 0x8], 0x0
+        mov bx, [bp - 0xa]
+        mov ax, [bx]
+        mov [bp - 0x10], ax
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jng short .5
+        mov [bp - 0xe], cx
+        mov ax, [si]
+        mov dx, [si + 0x2]
+        mov es, dx
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        mov cx, [bp - 0x8]
+        mov [bp - 0xc], si
+.3:
+        mov ax, [es:bx]
+        add ax, [di]
+        cmp ax, [bp + 0x6]
+        jg short .4
+        mov ax, [es:bx + 0x4]
+        add ax, [di]
+        cmp ax, [bp + 0x6]
+        jl short .4
+        mov ax, [es:bx + 0x2]
+        add ax, [di + 0x2]
+        cmp ax, [bp + 0x8]
+        jg short .4
+        mov ax, [es:bx + 0x6]
+        add ax, [di + 0x2]
+        cmp ax, [bp + 0x8]
+        jnl short .6
+.4:
+        add bx, 0x16
+        inc cx
+        cmp [bp - 0x10], cx
+        jg short .3
+        mov si, [bp - 0xc]
+        mov cx, [bp - 0xe]
+.5:
+        sub di, 0x4
+        sub word [bp - 0xa], 0x2
+        sub si, 0x4
+        dec cx
+        jns short .2
+        jmp short .7
+        db 0x90
+.6:
+        mov ax, [bp - 0xe]
+        mov bx, [bp + 0x12]
+        mov [bx], ax
+        mov bx, [bp + 0x14]
+        mov [bx], cx
+        mov ax, 0x1
+        pop si
+        pop di
+        leave
+        retf
+.7:
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        pop si
+        pop di

@@ -1,0 +1,76 @@
+# Batch 7: Microsoft C floating-point emulator (seg054, signature "MSEM87"). It emulates the 8087 for the INT 34h-3Dh
+# sequences the compiler emits, or patches them into real coprocessor instructions when an 8087 is present.
+F054_003B FpMath | new | high | far entry: calls the function whose index is in BX through the word table at offset 20h
+F054_004E FpMathBadIndex | new | high | FpMath with an index above 12 returns -1
+F054_005C FpInit | new | high | function 0: reads NO87= from the environment, detects an 8087, hooks the vectors
+F054_01AE FpTerm | new | high | function 2: restores the interrupt vectors
+F054_01CF FpReset | new | high | function 1: resets the emulated stack and clears exceptions
+F054_01F0 FpSetHandler | new | high | function 3: stores the far error handler
+F054_01F8 FpHookVectors | new | high | saves INT 34h-3Eh and points them at the emulator or the patch handlers
+F054_0240 FpUnhookVectors | new | high | restores the saved INT 34h-3Eh vectors
+F054_0256 FpStackDepth | new | medium | function 10: number of used stack registers
+F054_0295 FpHave87 | new | high | function 11: 1 when an 8087 is present
+F054_029A FpSetMode | new | low | function 12: stores a mode word
+F054_029E FpSetC1 | new | medium | sets status bit C1
+F054_02AE FpSetC2 | new | medium | sets status bit C2
+F054_02B4 FpIret | new | high | a lone iret
+F054_02B5 Fp87ExceptionNext | new | low | Fp87Exception for the following instruction
+F054_02B8 Fp87Exception | new | medium | coprocessor exception entry: saves the environment and enters FpException
+F054_02DE FpException | new | medium | classifies a pending exception, fixes the result or calls the error handler
+F054_04EA FpSkipEmptyRegs | new | low | steps past empty stack registers
+F054_05D7 FpFixDenormal | new | low | renormalises a temporary real on the stack frame
+F054_0619 FpCheckPrecision | new | low | precision exception check before FpException continues
+F054_062F FpSignalOnce | new | low | marks the exception and calls FpSignal once
+F054_0637 FpSignal | new | medium | rebuilds the faulting instruction and calls the far error handler
+F054_06EE FpLoadCw | new | high | function 4: sets the control word
+F054_0707 FpGetCw | new | high | function 5: returns the control word
+F054_070B FpGetStatus | new | high | function 8: returns and accumulates the status word
+F054_0729 FpRoundInt | new | high | function 6: rounds ST to an integer value (frndint)
+F054_076E FpToLong | new | high | function 7: converts ST to a long (fistp)
+F054_07D4 FpCheckPending | new | medium | raises unmasked exceptions after a conversion
+F054_07FE FpPatchSegInt | new | medium | INT 3Ch with an 8087: patches a segment-override sequence into real code
+F054_082B FpPatchWaitInt | new | medium | INT 3Dh with an 8087: patches into nop, fwait
+F054_0833 FpPatchInt | new | medium | INT 34h-3Bh with an 8087: patches the INT into fwait plus the ESC opcode and reruns it
+F054_0C28 FpEmuWaitInt | new | medium | INT 3Dh without an 8087: patches into mov ax,ax
+F054_0C45 FpEmuSegInt | new | medium | INT 3Ch without an 8087: emulates an instruction with a segment override
+F054_0C85 FpEmuSegDecode | new | low | operand segment decode for FpEmuSegInt
+F054_0C98 FpEmuSegIntAlt | new | low | second segment-override emulation entry
+F054_0CBC FpEmulate | new | medium | INT 34h-3Bh without an 8087: decodes and emulates one coprocessor instruction
+F054_0E35 FpStackRoom | new | medium | checks room on the emulated register stack
+F054_0E53 FpEmuSignal | new | low | leaves the emulator through FpSignal
+F054_0E67 FpEmuExit | new | medium | restores registers and returns from the emulator interrupt
+F054_0E98 FpEmuChain | new | medium | emulates the next instruction too when it is another INT 34h-3Bh
+F054_0ED1 FpEmuChainEsc | new | low | emulates the next instruction when it is a real ESC opcode
+F054_1009 FpSetStackFault | new | medium | sets status bit 40h (stack fault)
+F054_1016 FpSub | new | low | FpAdd with the sign of the source flipped
+F054_101C FpMul | new | low | arithmetic dispatch through the multiply table by operand types
+F054_1024 FpDivRev | new | low | FpDiv with the operands swapped
+F054_102E FpDiv | new | low | arithmetic dispatch through the divide table by operand types
+F054_1036 FpAdd | new | low | arithmetic dispatch through the add table by operand types
+F054_109A FpCopyConstToTemp | new | low | FpCopyConst into the temporary at [96h]
+F054_109E FpCopyConst | new | medium | copies a 12-byte temporary real from the code segment
+F054_10B1 FpCopyToTemp | new | low | FpCopyReg into the temporary at [96h]
+F054_10B9 FpCopyReg | new | medium | copies a 12-byte temporary real
+F054_1431 FpDivMantissa | new | low | long division of two mantissas
+F054_1C17 FpToInt32 | new | low | converts ST to a 32-bit integer
+F054_1CD9 FpToInt64 | new | low | converts ST to a 64-bit integer
+F054_1D3C FpNegate64 | new | medium | negates a 64-bit value in DI:BP:BX:DX
+F054_1D4F FpRndint | new | medium | frndint
+F054_1D92 FpNormalize | new | medium | shifts the mantissa left until the top bit is set and adjusts the exponent
+F054_1DB9 FpShiftRight | new | low | shifts a mantissa right for a given exponent
+F054_2297 FpNormLoop | new | low | repeats FpShiftLeft1 while needed
+F054_22A9 FpShiftLeft1 | new | low | shifts a mantissa left one bit
+F054_22C1 FpSubMantissa | new | low | subtracts mantissas; also the fsqrt entry
+F054_2301 FpSqrtCore | new | medium | square root of ST (halves the exponent)
+F054_2399 FpLoadConst | new | low | copies a constant into the work temporary at 8Ah
+F054_23B2 FpCompare | new | low | compares two temporary reals
+F054_2411 FpPolyRatio | new | low | evaluates a polynomial ratio from a coefficient table in BX; also the fptan entry
+F054_24AE FpSeriesA | new | low | FpPolyRatio with the first table; also the fpatan entry
+F054_24DD FpAtanCore | new | low | arctangent work for fpatan; also the f2xm1 entry
+F054_254B FpSeriesB | new | low | FpPolyRatio with the second table; also the fyl2x entry
+F054_2593 FpLog2Core | new | low | base-2 logarithm work; also the fyl2xp1 entry
+F054_2639 FpLogSeries | new | low | logarithm series step
+F054_267A FpHookNmi | new | high | hooks INT 2 (coprocessor NMI) and INT 23h
+F054_26A9 FpUnhookNmi | new | high | restores INT 2
+F054_26BA FpCtrlBreak | new | high | INT 23h handler: restores INT 2 and chains to the old handler
+F054_26D3 FpNmiHandler | new | high | INT 2 handler: an 8087 exception goes to FpException, anything else chains

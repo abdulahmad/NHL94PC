@@ -1,0 +1,11 @@
+;	Segment build for lib/fp_emulator.asm: sets its origin and the outside labels it uses (their values in the
+;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
+	bits	16
+	org	0x0
+StoreOne		equ	0x28AE
+StoreZero		equ	0x28C5
+RetPop10		equ	0x28DA
+StoreWord		equ	0x28E3
+RetPop2		equ	0x28F9
+WriteFar		equ	0x2902
+%include "lib/fp_emulator.asm"

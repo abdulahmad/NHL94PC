@@ -1,0 +1,67 @@
+# Batch 1: input polling (seg006, seg007) and the announcer speech player (seg008). OLD NEW | source | confidence | evidence
+F006_0008 PollInputEvents | new | high | every 5th call reads mouse, sticks and keys per the device bits and queues an 8-byte event (32 entries)
+F006_00E6 ReadMouseEvent | new | high | MouseRead, compares with the last buttons and position, fills the event, MouseMove
+F006_0174 ReadStickEvent | new | high | PollSticks bits to an event (fire edge and direction)
+F006_01DE ReadKeyEvent | new | high | keypad/arrow scan codes to direction bits, Space/Esc/Enter to buttons, KeyJump
+F007_0000 ReadKeyEventHit | new | medium | tail of ReadKeyEvent in the next paragraph: return 1
+F007_0006 KeysToPad | new | high | arrow and keypad scan codes through DirBitsToPad, Ins/Enter/Alt/Space to pad buttons
+F007_0120 StickToPad | new | high | stick bits (low or high byte of StickPollBits) to pad direction and buttons
+F007_018A MouseToPad | new | high | mouse offset from the centre (160,100) to a direction when far enough, buttons to pad buttons
+F007_0224 ReadPadDevice | new | high | pad of one player from the device in PadDevice (8 keys, 2 stick 1, 4 stick 2, 1 mouse)
+F007_026E ReadHotKey | new | high | Esc, Ctrl+S, Ctrl+M, F1-F10, Tab and R with a repeat guard; bit 7 set on a new key
+F007_03FE PadTimerTick | new | high | timer slot: every 4th tick records both players' pads into the 50-entry pad ring
+F008_0000 PadTimerTickTail | new | medium | the last instructions of PadTimerTick, in the next paragraph
+F008_000A SpeechTimerTick | new | high | timer slot: when the wait runs out, plays the next clip of the sentence on the other buffer
+F008_013A ClearSpeechClip | new | high | zeroes one 24h-byte clip entry
+F008_0174 ResetSentence | new | high | 20 empty clip slots, count, position, wait and playing cleared
+F008_01D8 InitSpeechBank | new | high | clears the 128 clips and reserves the speechbuf memory block
+F008_0292 ResetWantedSamples | new | high | clears the 20 wanted sample names and their total size
+F008_02F0 SpeechInit | new | high | allocates Sentence, SpeechBank and SampleMemMan, the pause sample, the timer slot
+F008_039E SpeechShutdown | new | high | frees the timer slot, the sound channel and the three blocks
+F008_0414 SpeechIsReady | new | high | returns SpeechOn
+F008_042A SpeechBusy | new | high | playing flag, else the wait count
+F008_0452 SpeechIdle | new | high | ready, not playing and no wait
+F008_047A StopSpeech | new | medium | clears playing and sets the wait from the bank
+F008_04AE MakePauseSample | new | high | 256-byte silent sample in a memory block
+F008_0532 PlayPauseSample | new | high | queues the pause sample on both sound buffers
+F008_05B6 SwapWordBytes | new | high | swaps the two bytes of a word (big-endian file fields)
+F008_05DE ReadBe24 | new | high | reads 3 bytes, big-endian, into a long
+F008_0634 ReadCString | new | high | reads bytes from a handle until a zero
+F008_0664 OpenSpeechFile | new | high | opens a speech file, reads its clip count and each clip's offset, size and name
+F008_0942 ClipLength | new | high | size of a clip, 0 for -1
+F008_096E LoadClipData | new | high | reads one clip from the file into memory and undoes its delta coding
+F008_0A84 LoadClipToBank | new | high | puts a clip after the previous one in the bank and marks it loaded
+F008_0B0E StrSameNoCaseFar | new | high | compares two far strings ignoring case (xor and DFh)
+F008_0B4C FindFreeClip | new | high | first clip slot from the index that is not loaded
+F008_0B86 FindLoadedClip | new | high | first loaded clip slot from the index
+F008_0BC0 FindClipByName | new | high | clip index of a name, or -1
+F008_0C04 ClipIsLoaded | new | high | clip state is 1
+F008_0C2A SampleIsWanted | new | high | name is in the wanted list
+F008_0C76 WantSample | new | high | adds a name to the wanted list and its size to the total
+F008_0D00 DropUnwantedClip | new | high | from the last slot, unloads a loaded clip nobody wants
+F008_0D6C MoveMemBlock | new | high | copies between two mapped memory addresses through the copy buffer
+F008_0E04 MoveClip | new | high | moves a clip into a lower free slot and its bytes after the previous clip
+F008_0EFC CompactSpeechBank | new | high | moves loaded clips down into the free slots
+F008_0F4A MakeRoomForWanted | new | high | drops unwanted clips until the wanted total fits
+F008_0FDC PrepareSpeechBank | new | high | MakeRoomForWanted then CompactSpeechBank
+F008_0FEC NumberSampleNames | new | high | names of the tens and ones clips of a number (zero..ninety-nine)
+F008_109C GameLengthSampleName | new | high | sample for the period length (game mis., 2, 5 or 10 minutes, off)
+F008_10EC DivisionSampleName | new | high | sample for a division or conference (Adams, Patrick, Norris, Smythe, Campbell, Wales, Stanley)
+F008_118E QueueClip | new | high | appends a clip to the sentence, loading it into the bank when needed
+F008_128A SayEaNhlIntro | new | high | ea_nhl.int
+F008_12EC SayGoodnight | new | high | goodnite.int, imrbarr.int
+F008_1362 SayLineups | new | high | lineups.int
+F008_13C4 SayElseAroundNhl | new | medium | elsenhl.int
+F008_1426 SayHighlightMatchup | new | high | takeynow, highlite, gamebtwn, home and away teams
+F008_1546 SayPlayoffResult | new | high | havewon, division/conf/semi/final, game number, overtime
+F008_16E2 SayPeriodSummary | new | high | period, ot, scoring, thegame, theot
+F008_17FA SayTonightsGame | new | high | easports, tonight, gamebtwn, the two teams
+F008_191A SayTonightsPlayoffGame | new | high | easports, tonight, between, division/conf/final, game number
+F008_1B3C SayPenalty | new | high | penalty.msc, number, at minute/second, off
+F008_1E44 SayPlayerFrom | new | medium | number, from/fromthe, team city, tonight.msc
+F008_2032 SayGoal | new | high | goals.msc, by, number, assisted, and
+F008_22C0 SayOneMinuteLeft | new | high | onemin.msc
+F008_2322 OpenStudioSpeech | new | medium | opens xrbarr2.viv
+F008_2354 OpenPlayByPlaySpeech | new | medium | opens xbruce2.viv and wants its penalty and goal clips
+_fstrcpy _fstrcspn | MSC | high | builds a 256-bit set of the second string and returns the index of the first character of the first string in it (it was named _fstrcpy)
+_fstrlen _fstrcpy | MSC | high | copies the far string at [bp+0Ah] to [bp+6] and returns the destination (it was named _fstrlen)

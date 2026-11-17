@@ -1,0 +1,5 @@
+# 94 Genesis names for routines and variables that do the same job (names from 94G take precedence).
+RandomRange randomd0 | 94G middle94.asm | high | same generator: seed*BB40E62Dh+1, result scaled to the range
+RandSeedLo seed | 94G ram94.asm | high | the seed randomd0 steps; the high word is seed+2
+CrowdLevel Crowdlevel | 94G ram94.asm | medium | crowd noise level the crowd update ramps
+LastSfx lastsfx | 94G ram94.asm | medium | last sound effect played

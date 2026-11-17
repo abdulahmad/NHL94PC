@@ -1,0 +1,4 @@
+# Microsoft C library names for routines found in the runtime during the comment pass.
+JumpAhead _atoi | MSC | high | a near jump to _atol: atoi is atol in this model
+RetOnly _fstrlen | MSC | high | repne scasb over a far string, returns the count without the null
+RetOnly2 _fstrcmp | MSC | high | scans the second far string for its length, then repe cmpsb; returns -1, 0 or 1

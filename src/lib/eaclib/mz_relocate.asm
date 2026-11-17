@@ -1,0 +1,110 @@
+; EA sound library: RelocateMzImage applies an MZ relocation table to an image loaded by hand.
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; RelocateMzImage                                            18A9:0002  EACLIB
+; Applies an MZ header's relocations to an image in memory.
+;-----------------------------------------------------------------------------
+RelocateMzImage:
+        enter 0x16, 0x0
+        push di
+        push si
+        push ds
+        mov ax, DGROUP
+        mov ds, ax
+        les bx, [bp + 0x6]
+        mov [bp - 0x16], bx
+        mov [bp - 0x14], es
+        cmp word [es:bx], 0x5a4d
+        jz short .1
+        db 0x33, 0xC0                           ; insn: xor ax, ax
+        jmp near .8
+.1:
+        les bx, [bp - 0x16]
+        mov bx, [es:bx + 0x8]
+        shl bx, byte 0x4
+        mov si, [bp - 0x16]
+        cmp word [es:si + 0x2], 0x0
+        jz short .2
+        mov cx, [es:si + 0x2]
+        jmp short .3
+.2:
+        mov cx, 0x200
+.3:
+        mov ax, [es:si + 0x4]
+        dec ax
+        shl ax, byte 0x9
+        db 0x03, 0xC1                           ; insn: add ax, cx
+        db 0x2B, 0xC3                           ; insn: sub ax, bx
+        mov [bp - 0x10], ax
+        mov cx, [es:si + 0xa]
+        shl cx, byte 0x4
+        mov [bp - 0x12], cx
+        db 0x03, 0xC1                           ; insn: add ax, cx
+        mov [bp - 0xe], ax
+        cmp word [bp + 0xa], 0x0
+        jnz short .4
+        jmp near .7
+.4:
+        db 0x8B, 0xC6                           ; insn: mov ax, si
+        mov dx, es
+        db 0x03, 0xC3                           ; insn: add ax, bx
+        db 0x8B, 0xF8                           ; insn: mov di, ax
+        mov [bp - 0x8], dx
+        db 0x8B, 0xDE                           ; insn: mov bx, si
+        add bx, [es:bx + 0x18]
+        mov [bp - 0x4], bx
+        mov [bp - 0x2], es
+        mov ax, es
+        mov [bp - 0x6], ax
+        db 0x33, 0xF6                           ; insn: xor si, si
+        mov [bp - 0xa], di
+        jmp short .6
+.5:
+        db 0x8B, 0xDE                           ; insn: mov bx, si
+        shl bx, byte 0x2
+        add bx, [bp - 0x4]
+        mov es, [bp - 0x2]
+        push word [es:bx + 0x2]
+        push word [es:bx]
+        call 0x03A3:FarToLinear
+        add sp, 0x4
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        db 0x03, 0xDF                           ; insn: add bx, di
+        mov es, [bp - 0x8]
+        mov ax, [bp - 0x6]
+        add [es:bx], ax
+        inc si
+.6:
+        les bx, [bp - 0x16]
+        cmp [es:bx + 0x6], si
+        ja short .5
+        mov si, [bp - 0x10]
+        push 0x0
+        push si
+        push es
+        push bx
+        push word [bp - 0x8]
+        push word [bp - 0xa]
+        call 0x03A3:CopyFar
+        add sp, 0xc
+        push 0x0
+        push 0x0
+        push word [bp - 0x12]
+        mov ax, [bp - 0x16]
+        mov dx, [bp - 0x14]
+        db 0x03, 0xC6                           ; insn: add ax, si
+        push dx
+        push ax
+        call 0x03A3:FillFar
+        add sp, 0xa
+.7:
+        mov ax, [bp - 0xe]
+.8:
+        pop ds
+        pop si
+        pop di
+        leave
+        retf
+        db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00

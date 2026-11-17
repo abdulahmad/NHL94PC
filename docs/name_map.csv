@@ -907,3 +907,1024 @@ seg004:095C,AddCopy,,new,high,"Words 62FBh and 66FBh. Writes each input byte plu
 seg004:0AAA,LoadBlock,,new,high,"Picks Unpack, Expand, AddCopy, or CopyFar from the type byte. An unknown type can call seg022",src/seg/seg004.asm
 seg004:0BD8,LoadReport,,new,high,"LoadBlock with the report flag set",src/seg/seg004.asm
 seg004:0BF6,LoadQuiet,,new,high,"LoadBlock with the report flag clear. The near call finishes in seg005",src/seg/seg004.asm
+seg006:0008,PollInputEvents,F006_0008,new,high,"every 5th call reads mouse, sticks and keys per the device bits and queues an 8-byte event (32 entries)",src/seg/seg006.asm
+seg006:00E6,ReadMouseEvent,F006_00E6,new,high,"MouseRead, compares with the last buttons and position, fills the event, MouseMove",src/seg/seg006.asm
+seg006:0174,ReadStickEvent,F006_0174,new,high,PollSticks bits to an event (fire edge and direction),src/seg/seg006.asm
+seg006:01DE,ReadKeyEvent,F006_01DE,new,high,"keypad/arrow scan codes to direction bits, Space/Esc/Enter to buttons, KeyJump",src/seg/seg006.asm
+seg007:0000,ReadKeyEventHit,F007_0000,new,medium,tail of ReadKeyEvent in the next paragraph: return 1,src/seg/seg007.asm
+seg007:0006,KeysToPad,F007_0006,new,high,"arrow and keypad scan codes through DirBitsToPad, Ins/Enter/Alt/Space to pad buttons",src/seg/seg007.asm
+seg007:0120,StickToPad,F007_0120,new,high,stick bits (low or high byte of StickPollBits) to pad direction and buttons,src/seg/seg007.asm
+seg007:018A,MouseToPad,F007_018A,new,high,"mouse offset from the centre (160,100) to a direction when far enough, buttons to pad buttons",src/seg/seg007.asm
+seg007:0224,ReadPadDevice,F007_0224,new,high,"pad of one player from the device in PadDevice (8 keys, 2 stick 1, 4 stick 2, 1 mouse)",src/seg/seg007.asm
+seg007:026E,ReadHotKey,F007_026E,new,high,"Esc, Ctrl+S, Ctrl+M, F1-F10, Tab and R with a repeat guard; bit 7 set on a new key",src/seg/seg007.asm
+seg007:03FE,PadTimerTick,F007_03FE,new,high,timer slot: every 4th tick records both players' pads into the 50-entry pad ring,src/seg/seg007.asm
+seg008:0000,PadTimerTickTail,F008_0000,new,medium,"the last instructions of PadTimerTick, in the next paragraph",src/seg/seg008.asm
+seg008:000A,SpeechTimerTick,F008_000A,new,high,"timer slot: when the wait runs out, plays the next clip of the sentence on the other buffer",src/seg/seg008.asm
+seg008:013A,ClearSpeechClip,F008_013A,new,high,zeroes one 24h-byte clip entry,src/seg/seg008.asm
+seg008:0174,ResetSentence,F008_0174,new,high,"20 empty clip slots, count, position, wait and playing cleared",src/seg/seg008.asm
+seg008:01D8,InitSpeechBank,F008_01D8,new,high,clears the 128 clips and reserves the speechbuf memory block,src/seg/seg008.asm
+seg008:0292,ResetWantedSamples,F008_0292,new,high,clears the 20 wanted sample names and their total size,src/seg/seg008.asm
+seg008:02F0,SpeechInit,F008_02F0,new,high,"allocates Sentence, SpeechBank and SampleMemMan, the pause sample, the timer slot",src/seg/seg008.asm
+seg008:039E,SpeechShutdown,F008_039E,new,high,"frees the timer slot, the sound channel and the three blocks",src/seg/seg008.asm
+seg008:0414,SpeechIsReady,F008_0414,new,high,returns SpeechOn,src/seg/seg008.asm
+seg008:042A,SpeechBusy,F008_042A,new,high,"playing flag, else the wait count",src/seg/seg008.asm
+seg008:0452,SpeechIdle,F008_0452,new,high,"ready, not playing and no wait",src/seg/seg008.asm
+seg008:047A,StopSpeech,F008_047A,new,medium,clears playing and sets the wait from the bank,src/seg/seg008.asm
+seg008:04AE,MakePauseSample,F008_04AE,new,high,256-byte silent sample in a memory block,src/seg/seg008.asm
+seg008:0532,PlayPauseSample,F008_0532,new,high,queues the pause sample on both sound buffers,src/seg/seg008.asm
+seg008:05B6,SwapWordBytes,F008_05B6,new,high,swaps the two bytes of a word (big-endian file fields),src/seg/seg008.asm
+seg008:05DE,ReadBe24,F008_05DE,new,high,"reads 3 bytes, big-endian, into a long",src/seg/seg008.asm
+seg008:0634,ReadCString,F008_0634,new,high,reads bytes from a handle until a zero,src/seg/seg008.asm
+seg008:0664,OpenSpeechFile,F008_0664,new,high,"opens a speech file, reads its clip count and each clip's offset, size and name",src/seg/seg008.asm
+seg008:0942,ClipLength,F008_0942,new,high,"size of a clip, 0 for -1",src/seg/seg008.asm
+seg008:096E,LoadClipData,F008_096E,new,high,reads one clip from the file into memory and undoes its delta coding,src/seg/seg008.asm
+seg008:0A84,LoadClipToBank,F008_0A84,new,high,puts a clip after the previous one in the bank and marks it loaded,src/seg/seg008.asm
+seg008:0B0E,StrSameNoCaseFar,F008_0B0E,new,high,compares two far strings ignoring case (xor and DFh),src/seg/seg008.asm
+seg008:0B4C,FindFreeClip,F008_0B4C,new,high,first clip slot from the index that is not loaded,src/seg/seg008.asm
+seg008:0B86,FindLoadedClip,F008_0B86,new,high,first loaded clip slot from the index,src/seg/seg008.asm
+seg008:0BC0,FindClipByName,F008_0BC0,new,high,"clip index of a name, or -1",src/seg/seg008.asm
+seg008:0C04,ClipIsLoaded,F008_0C04,new,high,clip state is 1,src/seg/seg008.asm
+seg008:0C2A,SampleIsWanted,F008_0C2A,new,high,name is in the wanted list,src/seg/seg008.asm
+seg008:0C76,WantSample,F008_0C76,new,high,adds a name to the wanted list and its size to the total,src/seg/seg008.asm
+seg008:0D00,DropUnwantedClip,F008_0D00,new,high,"from the last slot, unloads a loaded clip nobody wants",src/seg/seg008.asm
+seg008:0D6C,MoveMemBlock,F008_0D6C,new,high,copies between two mapped memory addresses through the copy buffer,src/seg/seg008.asm
+seg008:0E04,MoveClip,F008_0E04,new,high,moves a clip into a lower free slot and its bytes after the previous clip,src/seg/seg008.asm
+seg008:0EFC,CompactSpeechBank,F008_0EFC,new,high,moves loaded clips down into the free slots,src/seg/seg008.asm
+seg008:0F4A,MakeRoomForWanted,F008_0F4A,new,high,drops unwanted clips until the wanted total fits,src/seg/seg008.asm
+seg008:0FDC,PrepareSpeechBank,F008_0FDC,new,high,MakeRoomForWanted then CompactSpeechBank,src/seg/seg008.asm
+seg008:0FEC,NumberSampleNames,F008_0FEC,new,high,names of the tens and ones clips of a number (zero..ninety-nine),src/seg/seg008.asm
+seg008:109C,GameLengthSampleName,F008_109C,new,high,"sample for the period length (game mis., 2, 5 or 10 minutes, off)",src/seg/seg008.asm
+seg008:10EC,DivisionSampleName,F008_10EC,new,high,"sample for a division or conference (Adams, Patrick, Norris, Smythe, Campbell, Wales, Stanley)",src/seg/seg008.asm
+seg008:118E,QueueClip,F008_118E,new,high,"appends a clip to the sentence, loading it into the bank when needed",src/seg/seg008.asm
+seg008:128A,SayEaNhlIntro,F008_128A,new,high,ea_nhl.int,src/seg/seg008.asm
+seg008:12EC,SayGoodnight,F008_12EC,new,high,"goodnite.int, imrbarr.int",src/seg/seg008.asm
+seg008:1362,SayLineups,F008_1362,new,high,lineups.int,src/seg/seg008.asm
+seg008:13C4,SayElseAroundNhl,F008_13C4,new,medium,elsenhl.int,src/seg/seg008.asm
+seg008:1426,SayHighlightMatchup,F008_1426,new,high,"takeynow, highlite, gamebtwn, home and away teams",src/seg/seg008.asm
+seg008:1546,SayPlayoffResult,F008_1546,new,high,"havewon, division/conf/semi/final, game number, overtime",src/seg/seg008.asm
+seg008:16E2,SayPeriodSummary,F008_16E2,new,high,"period, ot, scoring, thegame, theot",src/seg/seg008.asm
+seg008:17FA,SayTonightsGame,F008_17FA,new,high,"easports, tonight, gamebtwn, the two teams",src/seg/seg008.asm
+seg008:191A,SayTonightsPlayoffGame,F008_191A,new,high,"easports, tonight, between, division/conf/final, game number",src/seg/seg008.asm
+seg008:1B3C,SayPenalty,F008_1B3C,new,high,"penalty.msc, number, at minute/second, off",src/seg/seg008.asm
+seg008:1E44,SayPlayerFrom,F008_1E44,new,medium,"number, from/fromthe, team city, tonight.msc",src/seg/seg008.asm
+seg008:2032,SayGoal,F008_2032,new,high,"goals.msc, by, number, assisted, and",src/seg/seg008.asm
+seg008:22C0,SayOneMinuteLeft,F008_22C0,new,high,onemin.msc,src/seg/seg008.asm
+seg008:2322,OpenStudioSpeech,F008_2322,new,medium,opens xrbarr2.viv,src/seg/seg008.asm
+seg008:2354,OpenPlayByPlaySpeech,F008_2354,new,medium,opens xbruce2.viv and wants its penalty and goal clips,src/seg/seg008.asm
+_fstrcpy,_fstrcspn,_fstrcpy,MSC,high,builds a 256-bit set of the second string and returns the index of the first character of the first string in it (it was named _fstrcpy),src/seg/seg000.asm
+_fstrlen,_fstrcpy,_fstrlen,MSC,high,copies the far string at [bp+0Ah] to [bp+6] and returns the destination (it was named _fstrlen),src/seg/seg000.asm
+seg009:000E,InputInit,F009_000E,new,high,"HookKbd, timer slot for PollInputEvents, cursor handler = EventToCursor; once",src/seg/seg009.asm
+seg009:004C,InputShutdown,F009_004C,new,high,frees the PollInputEvents timer slot,src/seg/seg009.asm
+seg009:0070,EventToCursor,F009_0070,new,high,"mouse event sets the cursor; key and stick events move it, faster with the repeat count; clamps to 320x200",src/seg/seg009.asm
+seg010:0000,InputTail,F010_0000,new,low,"sub ah, ah / retf at the start of the paragraph (end of the routine before)",src/seg/seg010.asm
+seg010:0006,RandomRange,F010_0006,new,high,"32-bit linear congruential step (multiplier BB40E62Dh, +1) on RandSeed, result scaled to the range",src/seg/seg010.asm
+seg011:000E,NullFar2,F011_000E,new,high,a lone retf,src/seg/seg011.asm
+seg012:0000,WaitButtonTimed,F012_0000,new,medium,"reads events through CursorHandler until a click, a double click or the time runs out",src/seg/seg012.asm
+seg014:000A,MidiControl,F014_000A,new,high,B0h,src/seg/seg014.asm
+seg014:0032,MidiPitchBend,F014_0032,new,high,E0h,src/seg/seg014.asm
+seg014:005A,MidiProgramNoteOn,F014_005A,new,high,C0h,src/seg/seg014.asm
+seg014:00B4,MidiNoteOff,F014_00B4,new,high,80h,src/seg/seg014.asm
+seg015:000C,FileExists,F015_000C,new,high,open for reading succeeds,src/seg/seg015.asm
+seg015:003E,BuildPathFar,F015_003E,new,high,"directory, backslash, name and extension into a far buffer",src/seg/seg015.asm
+seg015:00C2,DeleteMatching,F015_00C2,new,high,finds every file of a pattern in a directory and unlinks it,src/seg/seg015.asm
+seg015:0258,RemoveDirTree,F015_0258,new,high,"unlinks every file in a directory, then rmdir",src/seg/seg015.asm
+seg015:03D6,OpenReadShared,F015_03D6,new,high,"_dos_open mode 40h (read, deny none)",src/seg/seg015.asm
+seg015:03E8,OpenWriteShared,F015_03E8,new,high,_dos_open mode 41h,src/seg/seg015.asm
+seg015:03FA,OpenReadWriteShared,F015_03FA,new,high,_dos_open mode 42h,src/seg/seg015.asm
+seg015:040C,CreateFileNormal,F015_040C,new,high,_dos_creat attribute 0,src/seg/seg015.asm
+seg015:041E,CloseHandlePtr,F015_041E,new,high,closes the handle a pointer holds and stores -1,src/seg/seg015.asm
+seg015:0442,ReadAtOffset,F015_0442,new,high,seek to a long offset then read; returns 0 or an error,src/seg/seg015.asm
+seg015:0496,WriteAtOffset,F015_0496,new,high,seek to a long offset then write; returns 0 or an error,src/seg/seg015.asm
+seg015:04EA,ReadRecord52,F015_04EA,new,medium,ReadAtOffset of 34h bytes,src/seg/seg015.asm
+seg015:0504,WriteRecord52,F015_0504,new,medium,WriteAtOffset of 34h bytes,src/seg/seg015.asm
+seg015:051E,CopyFileByName,F015_051E,new,high,"opens the source, creates the target, copies in 1 KB pieces",src/seg/seg015.asm
+seg015:0602,ReadRecord48,F015_0602,new,medium,ReadAtOffset of 30h bytes,src/seg/seg015.asm
+seg015:061C,ReadEntry6,F015_061C,new,medium,6-byte entry n at 2 + 6n,src/seg/seg015.asm
+seg015:0640,ReadEntry744,F015_0640,new,medium,2E8h-byte entry n,src/seg/seg015.asm
+seg015:065E,ReadEntry12,F015_065E,new,medium,12-byte entry n,src/seg/seg015.asm
+seg016:0000,NullFar3,F016_0000,new,high,a lone retf,src/seg/seg016.asm
+seg016:0002,TextWidthFar,F016_0002,new,high,copies a far string and returns TextWidthAll of it,src/seg/seg016.asm
+seg016:0024,SetTextColors,F016_0024,new,high,text colour and shadow colour,src/seg/seg016.asm
+seg016:0036,DrawShadowTextBuffered,F016_0036,new,medium,"draws a shadowed string into an off-screen block 64-pixel aligned, then blits it",src/seg/seg016.asm
+seg016:00E4,DrawShadowTextCentered,F016_00E4,new,high,"x = (320 - width) / 2; shadow at +1,+1 then the text",src/seg/seg016.asm
+seg016:0166,DrawShadowText,F016_0166,new,high,"shadow at +1,+1 in the shadow colour, then the text",src/seg/seg016.asm
+seg016:01B8,DrawOutlineText,F016_01B8,new,high,"the string at the four outline offsets in the shadow colour, then the text",src/seg/seg016.asm
+seg016:0210,DrawShadowTextF,F016_0210,new,high,"_sprintf with one argument, then DrawShadowText",src/seg/seg016.asm
+seg016:0238,DrawShadowTextF2,F016_0238,new,high,"_sprintf with two arguments, then DrawShadowText",src/seg/seg016.asm
+seg017:0000,NullFar4,F017_0000,new,high,a lone retf,src/seg/seg017.asm
+seg017:0002,SqrtLong,F017_0002,new,high,Newton iteration on a long with __aFldiv,src/seg/seg017.asm
+seg017:0089,VectorToDir8,F017_0089,new,high,"direction 0..7 from the signs and the ratio of dx, dy; 8 for no vector",src/seg/seg017.asm
+seg018:000A,HookDivideError,F018_000A,new,high,"saves INT 0, points it at DivideHandler, registers UnhookDivideError",src/seg/seg018.asm
+seg018:004B,UnhookDivideError,F018_004B,new,high,restores INT 0,src/seg/seg018.asm
+seg018:005C,DivideHandler,F018_005C,new,high,INT 0 handler: steps the return address over the faulting divide,src/seg/seg018.asm
+seg026:0246,DrawTextFar,F026_0246,new,high,copies a far string to the stack and calls DrawText,src/seg/seg026.asm
+seg026:028E,DrawTextFar2,F026_028E,new,medium,the same with the second text routine,src/seg/seg026.asm
+seg013:0006,SaveGame,F013_0006,new,high,"writes game.sav (the database record, sizes, three 12-byte records) or copies the .db files to .sav",src/seg/seg013.asm
+seg013:02E2,SaveGameNameDialog,F013_02E2,new,medium,"asks for the save name (file list, text entry) before SaveGame",src/seg/seg013.asm
+seg019:0000,DivideHandlerTail,F019_0000,new,low,the end of DivideHandler (iret) in the next paragraph,src/seg/seg019.asm
+seg019:000C,LoadTeamPalettes,F019_000C,new,high,"home and away palette parts (1C0h bytes a team) and the arena palette, then SetPaletteFar",src/seg/seg019.asm
+seg020:0000,AskYesNo,F020_0000,new,medium,two-button message box at the mouse; keeps the answer string,src/seg/seg020.asm
+seg020:0060,DrawBevelBox,F020_0060,new,high,filled rectangle and four edge lines in a light and a dark colour,src/seg/seg020.asm
+seg020:00E6,NumberEntryDialog,F020_00E6,new,medium,text entry box read back with atol,src/seg/seg020.asm
+seg020:032A,ItemColors,F020_032A,new,medium,picks the normal or highlight colour pair for a list row,src/seg/seg020.asm
+seg020:0354,ListHitTest,F020_0354,new,medium,list row under the cursor,src/seg/seg020.asm
+seg020:03D6,DrawListRow,F020_03D6,new,medium,one list row with its colours,src/seg/seg020.asm
+seg020:049A,DrawListRows,F020_049A,new,medium,the visible rows,src/seg/seg020.asm
+seg020:04FA,ListDialog,F020_04FA,new,medium,"scrolling list with a scroll bar, mouse and keys",src/seg/seg020.asm
+seg020:0A12,GrowToTextWidth,F020_0A12,new,high,widens a box to a string's width and adds a line height,src/seg/seg020.asm
+seg020:0A3C,SetDialogColors,F020_0A3C,new,high,the five dialog colours,src/seg/seg020.asm
+seg020:0A60,HiliteButton,F020_0A60,new,medium,redraws the old and the new button,src/seg/seg020.asm
+seg020:0B16,DrawButtons,F020_0B16,new,medium,every button of a message box,src/seg/seg020.asm
+seg020:0B4C,DrawButton,F020_0B4C,new,medium,one button: bevel box and centred label,src/seg/seg020.asm
+seg020:0C14,ScrollBarInit,F020_0C14,new,high,"scroll bar position, size and thumb length from the item counts",src/seg/seg020.asm
+seg020:0C76,DrawScrollBar,F020_0C76,new,medium,bar and thumb,src/seg/seg020.asm
+seg020:0D28,ScrollBarDrag,F020_0D28,new,medium,moves the thumb with the mouse and updates the first item,src/seg/seg020.asm
+seg020:0E7A,SaveUnderBox,F020_0E7A,new,high,allocates a block and saves the screen under a box (GetBlock),src/seg/seg020.asm
+seg020:0F22,RestoreUnderBox,F020_0F22,new,high,puts the saved screen back and frees the block,src/seg/seg020.asm
+seg020:0F5C,GrowToItemBox,F020_0F5C,new,medium,widens and heightens a box to fit an item rectangle,src/seg/seg020.asm
+seg020:0FC8,MessageBox,F020_0FC8,new,high,box with text lines and buttons; returns the button chosen,src/seg/seg020.asm
+seg020:1260,MessageBoxLoop,F020_1260,new,medium,"input loop of MessageBox (mouse, keys, highlight)",src/seg/seg020.asm
+seg020:14B8,MessageBoxReset,F020_14B8,new,low,sets the last button to -1,src/seg/seg020.asm
+seg021:0000,NullFar6,F021_0000,new,high,a lone retf,src/seg/seg021.asm
+seg021:0002,CrowdNoiseUpdate,F021_0002,new,high,"eases the crowd level toward CrowdTarget and drives the MIDI crowd notes (volume, pitch)",src/seg/seg021.asm
+seg021:01DC,CrowdNoiseOff,F021_01DC,new,high,note off and volume 0 on the two crowd channels,src/seg/seg021.asm
+seg021:024E,CrowdFadeOut,F021_024E,new,high,lowers CrowdTarget step by step to silence,src/seg/seg021.asm
+seg021:029A,CrowdReset,F021_029A,new,high,crowd level and both note states to 0,src/seg/seg021.asm
+seg021:02A6,AnnounceOneMinute,F021_02A6,new,high,"digital sound with speech on: pause, SayOneMinuteLeft",src/seg/seg021.asm
+seg021:02C0,AnnouncerBusy,F021_02C0,new,high,digital sound with speech on and SpeechBusy,src/seg/seg021.asm
+seg021:02E0,PlaySoundEffect,F021_02E0,new,high,sound effect by number; 7Dh raises the crowd; skipped while the announcer talks,src/seg/seg021.asm
+seg021:0394,AnnounceGoal,F021_0394,new,high,"pause, SayGoal",src/seg/seg021.asm
+seg021:03C0,AnnouncePlayerFrom,F021_03C0,new,high,"pause, SayPlayerFrom",src/seg/seg021.asm
+seg021:03E6,AnnouncePenalty,F021_03E6,new,high,"pause, SayPenalty",src/seg/seg021.asm
+seg021:0418,AnnounceTonightsGame,F021_0418,new,high,"team names from TeamAbbrevs, SayTonightsGame",src/seg/seg021.asm
+seg021:046E,AnnouncePeriodSummary,F021_046E,new,high,SayPeriodSummary,src/seg/seg021.asm
+seg021:0490,AnnounceIntro,F021_0490,new,high,SayEaNhlIntro,src/seg/seg021.asm
+seg021:04A4,AnnounceGoodnight,F021_04A4,new,high,SayGoodnight,src/seg/seg021.asm
+seg021:04B8,AnnounceLineups,F021_04B8,new,high,SayLineups,src/seg/seg021.asm
+seg021:04CC,AnnounceElseAroundNhl,F021_04CC,new,high,SayElseAroundNhl,src/seg/seg021.asm
+seg021:04E0,AnnounceHighlightMatchup,F021_04E0,new,high,SayHighlightMatchup,src/seg/seg021.asm
+seg021:0514,AnnouncePlayoffResult,F021_0514,new,high,SayPlayoffResult,src/seg/seg021.asm
+seg021:0542,AnnounceTonightsPlayoffGame,F021_0542,new,high,SayTonightsPlayoffGame,src/seg/seg021.asm
+seg021:057E,LoadStudioSpeech,F021_057E,new,high,OpenStudioSpeech until it succeeds,src/seg/seg021.asm
+seg021:0594,LoadPlayByPlaySpeech,F021_0594,new,high,OpenPlayByPlaySpeech until it succeeds,src/seg/seg021.asm
+seg021:05B8,StopJingle,F021_05B8,new,high,stops the digital sample playing in JingleHandle,src/seg/seg021.asm
+seg021:05F8,PlayJingle,F021_05F8,new,high,"plays a digital sample (pointer, length) and keeps its handle",src/seg/seg021.asm
+seg021:0640,WaitJingle,F021_0640,new,high,waits until the jingle sample has finished,src/seg/seg021.asm
+seg021:0656,PlayArenaJingle,F021_0656,new,medium,"the loaded clip for the event, else a random one of three, through PlayJingle",src/seg/seg021.asm
+seg022:0004,SaveVgaPlanes,F022_0004,new,high,copies the four VGA planes (plane0..plane3 blocks) through the read map,src/seg/seg022.asm
+seg022:0224,RestoreVgaPlanes,F022_0224,new,high,writes the four planes back through the map mask,src/seg/seg022.asm
+seg022:03E2,NullFar5,F022_03E2,new,high,a lone retf,src/seg/seg022.asm
+seg022:03E4,FatalError,F022_03E4,new,high,prints the message with ConPrint and exits,src/seg/seg022.asm
+seg023:0008,FitNameToWidth,F023_0008,new,high,"""first last"", else ""F. last"", then cut until it fits the width",src/seg/seg023.asm
+seg024:0000,UseDbDescriptor,F024_0000,new,low,"pushes the far descriptor of the database set (0, 1 or 2) for the overlay call that follows",src/seg/seg024.asm
+seg025:0000,UseDbDescriptorTail,F025_0000,new,low,the end of UseDbDescriptor in the next paragraph (the overlay call),src/seg/seg025.asm
+seg025:000E,GetInputEvent,F025_000E,new,high,"runs pending hooks, then pops the next 8-byte event from the queue, or 0",src/seg/seg025.asm
+seg025:0066,FlushInputEvents,F025_0066,new,high,empties the event queue,src/seg/seg025.asm
+seg026:000E,DrawMenuBar,F026_000E,new,high,menu titles in boxes across the top line,src/seg/seg026.asm
+seg026:00A4,DrawMenuPanel,F026_00A4,new,medium,an open menu's items,src/seg/seg026.asm
+seg026:01BA,DrawFrameBox,F026_01BA,new,high,filled rectangle with a light and a dark edge,src/seg/seg026.asm
+seg026:02D6,DrawMenuItem,F026_02D6,new,medium,one item in the normal colour,src/seg/seg026.asm
+seg026:036A,DrawMenuItemHilite,F026_036A,new,medium,one item in the highlight colour,src/seg/seg026.asm
+seg026:03FE,MenuHitTest,F026_03FE,new,high,menu and item under a point,src/seg/seg026.asm
+seg027:0000,NullFar7,F027_0000,new,high,a lone retf,src/seg/seg027.asm
+seg027:0002,DrawTextCenteredInWindow,F027_0002,new,medium,x centred between the window's left and right edges,src/seg/seg027.asm
+seg028:000C,DrawLine,F028_000C,new,medium,Bresenham steps over the row table of the current canvas,src/seg/seg028.asm
+seg028:0048,SetCanvas,F028_0048,new,high,copies a 0x1E-byte canvas record into CurCanvas,src/seg/seg028.asm
+seg028:0064,SetClipRect,F028_0064,new,high,stores left/right/top/bottom into the CurCanvas clip fields,src/seg/seg028.asm
+seg028:008F,SetClipRectRegs,F028_008F,new,medium,"same as SetClipRect, arguments in registers",src/seg/seg028.asm
+seg028:00B4,ClearClipRect,F028_00B4,new,medium,fills the clip rectangle with colour 0,src/seg/seg028.asm
+seg028:00B9,ClearClipRectColor,F028_00B9,new,medium,fills the clip rectangle with the given colour,src/seg/seg028.asm
+seg028:00DE,FillRectClip,F028_00DE,new,medium,fills a rectangle clipped to the canvas,src/seg/seg028.asm
+seg028:0136,FillRect,F028_0136,new,medium,fills a rectangle without clipping,src/seg/seg028.asm
+seg028:01A6,UseCurrentPage,F028_01A6,new,medium,points CurCanvas at the page in g_74DC,src/seg/seg028.asm
+seg028:01C6,DrawText,F028_01C6,new,medium,draws a string with the 1-bpp font,src/seg/seg028.asm
+seg028:01E1,DrawTextAt,F028_01E1,new,medium,"DrawText entry taking x,y",src/seg/seg028.asm
+seg028:0366,GetPaletteFar,F028_0366,new,high,reads DAC registers through port 3C7h/3C9h into a far buffer,src/seg/seg028.asm
+seg028:039A,InitGraphics,F028_039A,new,medium,sets mode 13h and unchains it,src/seg/seg028.asm
+seg028:03EE,OpenResource,F028_03EE,new,low,calls the file loader F042_0134 with mode 0,src/seg/seg028.asm
+seg028:03F5,LoadResource,F028_03F5,new,low,calls the file loader F042_0134 with mode 1,src/seg/seg028.asm
+seg028:040C,LoadResourceHeader,F028_040C,new,low,"loader mode 1, returns the first dword of the data",src/seg/seg028.asm
+seg028:0414,OpenResourceHeader,F028_0414,new,low,"loader mode 0, returns the first dword of the data",src/seg/seg028.asm
+seg028:041B,ResourceHeaderMode,F028_041B,new,low,"loader with explicit mode, returns the first dword of the data",src/seg/seg028.asm
+seg028:0442,SetRemapTable,F028_0442,new,high,copies 256 bytes into the remap table,src/seg/seg028.asm
+seg028:045D,GetRemapTable,F028_045D,new,high,copies the remap table out,src/seg/seg028.asm
+seg028:0474,SetRemapRange,F028_0474,new,medium,writes a range of remap entries,src/seg/seg028.asm
+seg028:0492,PutBlock,F028_0492,new,medium,"raw block copy to the canvas, hotspot entry",src/seg/seg028.asm
+seg028:04B5,PutBlockAt,F028_04B5,new,medium,"PutBlock at x,y",src/seg/seg028.asm
+seg028:04D2,PutBlockBody,F028_04D2,new,medium,PutBlock body,src/seg/seg028.asm
+seg028:071A,DrawRaw,F028_071A,new,medium,"raw planar shape, hotspot entry",src/seg/seg028.asm
+seg028:073D,DrawRawAt,F028_073D,new,medium,"DrawRaw at x,y",src/seg/seg028.asm
+seg028:075A,DrawRawBody,F028_075A,new,medium,DrawRaw body,src/seg/seg028.asm
+seg028:085C,DrawRle,F028_085C,new,medium,"RLE shape (runs, literals, 0 ends plane), clipped",src/seg/seg028.asm
+seg028:087F,DrawRleAt,F028_087F,new,medium,"DrawRle at x,y",src/seg/seg028.asm
+seg028:089C,DrawRleBody,F028_089C,new,medium,DrawRle body,src/seg/seg028.asm
+seg028:0C22,DrawRleFast,F028_0C22,new,medium,RLE shape without clipping,src/seg/seg028.asm
+seg028:0C45,DrawRleFastAt,F028_0C45,new,medium,"DrawRleFast at x,y",src/seg/seg028.asm
+seg028:0C62,DrawRleFastHere,F028_0C62,new,medium,DrawRleFast at the shape's own +8/+0A position,src/seg/seg028.asm
+seg028:0C9A,DrawRleFastBody,F028_0C9A,new,medium,DrawRleFast body,src/seg/seg028.asm
+seg028:0E5E,DrawText2,F028_0E5E,new,low,second font text routine,src/seg/seg028.asm
+seg028:0E85,DrawChar,F028_0E85,new,low,single character for DrawText2,src/seg/seg028.asm
+seg028:1096,CopyPlaneA,F028_1096,new,low,CopyPlane entry,src/seg/seg028.asm
+seg028:109F,CopyPlaneB,F028_109F,new,low,CopyPlane entry,src/seg/seg028.asm
+seg028:10A7,CopyPlane,F028_10A7,new,medium,copies one VGA plane between buffers,src/seg/seg028.asm
+seg028:118C,UseOtherPage,F028_118C,new,medium,points CurCanvas at the page not shown,src/seg/seg028.asm
+seg028:11B1,GetPage,F028_11B1,new,medium,returns g_74DC,src/seg/seg028.asm
+seg028:11B5,GetOtherPage,F028_11B5,new,medium,returns the other page index,src/seg/seg028.asm
+seg028:11BA,GetBlock,F028_11BA,new,medium,"reads a block from the canvas, hotspot entry",src/seg/seg028.asm
+seg028:11DD,GetBlockAt,F028_11DD,new,medium,"GetBlock at x,y",src/seg/seg028.asm
+seg028:1200,GetBlockBody,F028_1200,new,medium,GetBlock body,src/seg/seg028.asm
+seg028:12DA,GetPixel,F028_12DA,new,medium,reads one pixel through the read map register,src/seg/seg028.asm
+seg028:1320,SetStartPage,F028_1320,new,medium,writes the CRTC start address for a page,src/seg/seg028.asm
+seg028:137E,UseOffscreenCanvas,F028_137E,new,medium,points CurCanvas at the off-screen buffer,src/seg/seg028.asm
+seg028:1390,DrawRawTrans,F028_1390,new,medium,"raw shape, colour FF transparent, hotspot entry",src/seg/seg028.asm
+seg028:13B0,DrawRawTransAt,F028_13B0,new,medium,"DrawRawTrans at x,y",src/seg/seg028.asm
+seg028:13CA,DrawRawTransBody,F028_13CA,new,medium,DrawRawTrans body,src/seg/seg028.asm
+seg028:1612,DrawRleFlip,F028_1612,new,medium,mirrored RLE shape,src/seg/seg028.asm
+seg028:1637,DrawRleFlipAt,F028_1637,new,medium,"DrawRleFlip at x,y",src/seg/seg028.asm
+seg028:1654,DrawRleFlipHere,F028_1654,new,medium,DrawRleFlip at the shape's own position,src/seg/seg028.asm
+seg028:1686,DrawRleFlipBody,F028_1686,new,medium,DrawRleFlip body,src/seg/seg028.asm
+seg028:1834,DrawRleTrans,F028_1834,new,medium,"RLE shape, run byte FF transparent, clipped",src/seg/seg028.asm
+seg028:1857,DrawRleTransAt,F028_1857,new,medium,"DrawRleTrans at x,y",src/seg/seg028.asm
+seg028:1874,DrawRleTransBody,F028_1874,new,medium,DrawRleTrans body,src/seg/seg028.asm
+seg028:1C4E,DrawRleTransFast,F028_1C4E,new,medium,transparent RLE without clipping,src/seg/seg028.asm
+seg028:1C71,DrawRleTransFastAt,F028_1C71,new,medium,"DrawRleTransFast at x,y",src/seg/seg028.asm
+seg028:1C8E,DrawRleTransFastHere,F028_1C8E,new,medium,DrawRleTransFast at the shape's own position,src/seg/seg028.asm
+seg028:1CBB,DrawRleTransFastBody,F028_1CBB,new,medium,DrawRleTransFast body,src/seg/seg028.asm
+seg028:1EC6,DrawRawTransRemap,F028_1EC6,new,medium,transparent raw shape through the remap table,src/seg/seg028.asm
+seg028:1EE9,DrawRawTransRemapAt,F028_1EE9,new,medium,"DrawRawTransRemap at x,y",src/seg/seg028.asm
+seg028:1F06,DrawRawTransRemapBody,F028_1F06,new,medium,DrawRawTransRemap body,src/seg/seg028.asm
+seg028:2160,DrawRleTransRemap,F028_2160,new,medium,"transparent RLE through the remap table, clipped",src/seg/seg028.asm
+seg028:2183,DrawRleTransRemapAt,F028_2183,new,medium,"DrawRleTransRemap at x,y",src/seg/seg028.asm
+seg028:21A0,DrawRleTransRemapHere,F028_21A0,new,medium,DrawRleTransRemap at the shape's own position,src/seg/seg028.asm
+seg028:21CD,DrawRleTransRemapBody,F028_21CD,new,medium,DrawRleTransRemap body,src/seg/seg028.asm
+seg028:245C,DrawRleFlipTrans,F028_245C,new,medium,mirrored transparent RLE,src/seg/seg028.asm
+seg028:2481,DrawRleFlipTransAt,F028_2481,new,medium,"DrawRleFlipTrans at x,y",src/seg/seg028.asm
+seg028:249E,DrawRleFlipTransBody,F028_249E,new,medium,DrawRleFlipTrans body,src/seg/seg028.asm
+seg028:28A8,DrawRleFlipTransRemap,F028_28A8,new,medium,mirrored transparent RLE through the remap table,src/seg/seg028.asm
+seg028:28D3,DrawRleFlipTransRemapAt,F028_28D3,new,medium,"DrawRleFlipTransRemap at x,y",src/seg/seg028.asm
+seg028:28F0,DrawRleFlipTransRemapBody,F028_28F0,new,medium,DrawRleFlipTransRemap body,src/seg/seg028.asm
+seg028:2D34,DrawRleFlipRemap,F028_2D34,new,medium,mirrored RLE through the remap table,src/seg/seg028.asm
+seg028:2D5F,DrawRleFlipRemapAt,F028_2D5F,new,medium,"DrawRleFlipRemap at x,y",src/seg/seg028.asm
+seg028:2D7C,DrawRleFlipRemapHere,F028_2D7C,new,medium,DrawRleFlipRemap at the shape's own position,src/seg/seg028.asm
+seg028:2DAE,DrawRleFlipRemapBody,F028_2DAE,new,medium,DrawRleFlipRemap body,src/seg/seg028.asm
+seg028:2F98,DrawRleTransRemapFast,F028_2F98,new,medium,transparent remapped RLE without clipping,src/seg/seg028.asm
+seg028:2FBB,DrawRleTransRemapFastAt,F028_2FBB,new,medium,"DrawRleTransRemapFast at x,y",src/seg/seg028.asm
+seg028:2FD8,DrawRleTransRemapFastBody,F028_2FD8,new,medium,DrawRleTransRemapFast body,src/seg/seg028.asm
+seg028:3406,WaitRetraceCount,F028_3406,new,medium,waits for N vertical retraces,src/seg/seg028.asm
+seg028:340B,WaitRetraceCountRegs,F028_340B,new,medium,"WaitRetraceCount, count in a register",src/seg/seg028.asm
+seg028:341E,WaitRetraceFar,F028_341E,new,medium,far jump to WaitRetrace,src/seg/seg028.asm
+seg028:3423,WaitTimerRetrace,F028_3423,new,medium,waits on the timer tick or the retrace bit of 3DAh,src/seg/seg028.asm
+seg028:344C,SetPaletteFar,F028_344C,new,high,writes DAC registers from a far buffer,src/seg/seg028.asm
+seg028:3482,WaitRetraceEnd,F028_3482,new,medium,polls 3DAh bit 3 until clear,src/seg/seg028.asm
+seg028:3499,WaitRetraceStart,F028_3499,new,medium,polls 3DAh bit 3 until set,src/seg/seg028.asm
+seg028:34A7,WaitRetrace,F028_34A7,new,medium,waits for the end then the start of a vertical retrace,src/seg/seg028.asm
+seg028:34B5,InRetrace,F028_34B5,new,medium,returns 3DAh bit 3,src/seg/seg028.asm
+seg028:34BE,PutPixel,F028_34BE,new,medium,writes one pixel through the map mask,src/seg/seg028.asm
+seg028:34CB,PutPixelAt,F028_34CB,new,medium,PutPixel entry,src/seg/seg028.asm
+seg028:352C,XorRect,F028_352C,new,medium,XORs a rectangle via RectSpanPlanes,src/seg/seg028.asm
+seg028:3584,XorRectRegs,F028_3584,new,medium,XorRect entry,src/seg/seg028.asm
+seg028:3602,CopyPageToPage,F028_3602,new,low,page copy using a plane jump table,src/seg/seg028.asm
+seg028:3704,CopyPageRect,F028_3704,new,low,rectangle page copy using a plane jump table,src/seg/seg028.asm
+seg028:3804,AllocCanvases,F028_3804,new,medium,allocates the page and off-screen buffers and fills the canvas records,src/seg/seg028.asm
+seg028:3A59,SetClipRectPlanes,F028_3A59,new,medium,sets the clip rectangle in plane units,src/seg/seg028.asm
+seg028:3A84,ClearScreenColor,F028_3A84,new,medium,fills video memory with a colour,src/seg/seg028.asm
+seg028:3AA8,DrawScaledColor,F028_3AA8,new,low,sets g_7664/g_7666 then enters DrawScaled,src/seg/seg028.asm
+seg028:3ABB,DrawScaled,F028_3ABB,new,low,pattern or scaled draw,src/seg/seg028.asm
+seg028:3C9A,DrawLineClipped,F028_3C9A,new,medium,line clipped to the canvas,src/seg/seg028.asm
+seg028:4130,FillSpanLinear,F028_4130,new,medium,fills a span in linear mode 13h,src/seg/seg028.asm
+seg028:4156,FillSpanVga,F028_4156,new,medium,fills a span in unchained mode with edge masks,src/seg/seg028.asm
+seg028:41D2,RectSpanPlanes,F028_41D2,new,low,splits a span into planar edges using the mask table at 77BDh,src/seg/seg028.asm
+seg028:4262,CopyPlanesRect,F028_4262,new,low,copies a rectangle plane by plane with the read map,src/seg/seg028.asm
+seg028:4346,DrawRawFast,F028_4346,new,low,"fast raw shape, hotspot entry",src/seg/seg028.asm
+seg028:4366,DrawRawFastAt,F028_4366,new,low,"DrawRawFast at x,y",src/seg/seg028.asm
+seg028:4380,DrawRawFastBody,F028_4380,new,low,DrawRawFast body,src/seg/seg028.asm
+seg028:4488,DrawRawTransFast,F028_4488,new,low,"fast transparent raw shape, hotspot entry",src/seg/seg028.asm
+seg028:44AB,DrawRawTransFastAt,F028_44AB,new,low,"DrawRawTransFast at x,y",src/seg/seg028.asm
+seg028:44C8,DrawRawTransFastBody,F028_44C8,new,low,DrawRawTransFast body,src/seg/seg028.asm
+seg028:45E8,UnchainVga,F028_45E8,new,high,clears chain-4 in the sequencer and CRTC,src/seg/seg028.asm
+seg028:4634,SetMaxScanLine,F028_4634,new,medium,writes CRTC register 9,src/seg/seg028.asm
+seg028:4647,SetMode13Linear,F028_4647,new,medium,"sets mode 13h, chained",src/seg/seg028.asm
+seg028:4665,SetModeX,F028_4665,new,medium,sets the unchained mode,src/seg/seg028.asm
+seg028:4682,XorSpan,F028_4682,new,medium,XORs one span,src/seg/seg028.asm
+seg028:46A8,SetCanvasClip,F028_46A8,new,medium,sets a canvas record's clip rectangle,src/seg/seg028.asm
+seg028:472A,RemapShapeBank,F028_472A,new,low,remaps every shape in a bank through a table,src/seg/seg028.asm
+seg028:4782,ConvertShapeBank,F028_4782,new,low,converts the shapes of a bank in place,src/seg/seg028.asm
+seg028:48D2,FillPolySpans,F028_48D2,new,medium,fills a list of spans,src/seg/seg028.asm
+seg029:0000,NullFar8,F029_0000,new,high,a lone retf,src/seg/seg029.asm
+seg029:0004,DrawFrame,F029_0004,new,medium,draws a rectangle outline with four FillRectClip calls,src/seg/seg029.asm
+seg030:0004,LargestFreeBlock,F030_0004,new,low,walks the far heap list and returns the largest gap,src/seg/seg030.asm
+seg031:0002,DrawThickLine,F031_0002,new,low,builds a quad around a line from Atan2 and AngleTab,src/seg/seg031.asm
+seg032:0000,NullFar9,F032_0000,new,high,a lone retf,src/seg/seg032.asm
+seg032:0002,LoadRawHeader,F032_0002,new,low,LoadRawHeaderMode with mode 1,src/seg/seg032.asm
+seg032:0014,LoadRawHeader0,F032_0014,new,low,LoadRawHeaderMode with mode 0,src/seg/seg032.asm
+seg032:0026,LoadRawHeaderMode,F032_0026,new,medium,"LoadRawMode, then returns the first dword of the data",src/seg/seg032.asm
+seg032:0058,LoadRaw,F032_0058,new,low,LoadRawMode with mode 1,src/seg/seg032.asm
+seg032:006A,LoadRaw0,F032_006A,new,low,LoadRawMode with mode 0,src/seg/seg032.asm
+seg032:007C,LoadRawMode,F032_007C,new,medium,"reads an unpacked file (.esh, .vsh and others) into a heap record, EMS aware",src/seg/seg032.asm
+seg033:0008,LoadPackedHeader,F033_0008,new,low,LoadPackedHeaderMode with mode 1,src/seg/seg033.asm
+seg033:001A,LoadPackedHeader0,F033_001A,new,low,LoadPackedHeaderMode with mode 0,src/seg/seg033.asm
+seg033:002C,LoadPackedHeaderMode,F033_002C,new,medium,"LoadPackedMode, then returns the first dword of the data",src/seg/seg033.asm
+seg033:005E,LoadPacked,F033_005E,new,low,LoadPackedMode with mode 1,src/seg/seg033.asm
+seg033:0070,LoadPacked0,F033_0070,new,low,LoadPackedMode with mode 0,src/seg/seg033.asm
+seg033:0082,LoadPackedMode,F033_0082,new,medium,"reads and unpacks a packed file (.qns, .pns, .qvs, .pvs, .qes, .pes)",src/seg/seg033.asm
+seg033:01E0,ReadPackedSize,F033_01E0,new,medium,reads the 8-byte header and builds the 24-bit unpacked size,src/seg/seg033.asm
+seg034:000C,InsertRecWrap0,F034_000C,new,low,InsertRec with mode 0,src/seg/seg034.asm
+seg034:0013,InsertRecWrap,F034_0013,new,low,InsertRec with mode 1,src/seg/seg034.asm
+seg034:0030,AllocRecData,F034_0030,new,low,"InsertRec mode 1, returns the record's data pointer",src/seg/seg034.asm
+seg034:0038,AllocRecData0,F034_0038,new,low,"InsertRec mode 0, returns the record's data pointer",src/seg/seg034.asm
+seg034:003F,AllocRecDataMode,F034_003F,new,low,"InsertRec with explicit mode, returns the data pointer",src/seg/seg034.asm
+seg034:006B,ResizeRec0,F034_006B,new,low,ResizeRec with mode 0,src/seg/seg034.asm
+seg034:0072,ResizeRec1,F034_0072,new,low,ResizeRec with mode 1,src/seg/seg034.asm
+seg034:0092,ResizeRecByName,F034_0092,new,low,"FindRec then ResizeRec, mode 1",src/seg/seg034.asm
+seg034:009D,ResizeRecByName0,F034_009D,new,low,"FindRec then ResizeRec, mode 0",src/seg/seg034.asm
+seg034:00A7,ResizeRecByNameMode,F034_00A7,new,low,"FindRec then ResizeRec, explicit mode",src/seg/seg034.asm
+seg034:00DB,InitHeap,F034_00DB,new,medium,checks for a 286 (fatal error otherwise) then MakeChain,src/seg/seg034.asm
+seg034:0107,InitHeapArgs,F034_0107,new,low,InitHeap with caller arguments,src/seg/seg034.asm
+seg035:0000,InitHeapVariantTail,F035_0000,new,low,tail of a third InitHeap entry that starts in seg034,src/seg/seg035.asm
+seg035:000C,FreeCanvas,F035_000C,new,medium,"drops a canvas buffer's reference count, merges free neighbours, unlinks the record",src/seg/seg035.asm
+seg035:0092,SortPairs,F035_0092,new,medium,shell sort of a key array with a parallel value array,src/seg/seg035.asm
+seg035:00A0,SortPairsPass,F035_00A0,new,medium,SortPairs inner passes,src/seg/seg035.asm
+seg036:0000,SortPairsTail,F036_0000,new,medium,end of SortPairs,src/seg/seg036.asm
+seg036:000E,XorFrame,F036_000E,new,medium,XORs a rectangle outline with four XorRect calls,src/seg/seg036.asm
+seg037:0000,NullFar10,F037_0000,new,high,a lone retf,src/seg/seg037.asm
+seg037:0004,CalibrateStick,F037_0004,new,medium,"joystick calibration screen (needs a 64 KB gap, draws the target grid, waits for buttons)",src/seg/seg037.asm
+seg037:0232,CalibrateLeftStick,F037_0232,new,high,"CalibrateStick with the ""Left Joystick"" title",src/seg/seg037.asm
+seg037:0244,CalibrateRightStick,F037_0244,new,high,"CalibrateStick with the ""Right Joystick"" title",src/seg/seg037.asm
+seg038:0006,AllocLinearCanvas,F038_0006,new,medium,allocates w*h+30h bytes and fills a linear canvas record,src/seg/seg038.asm
+seg038:019C,AllocCanvas,F038_019C,new,medium,allocates a planar canvas (width/4 per plane) and fills its record,src/seg/seg038.asm
+seg039:0002,DrawTextCenteredClip,F039_0002,new,medium,centres a string between the clip left and right,src/seg/seg039.asm
+seg040:000C,CalibrateRetrace,F040_000C,new,medium,times vertical retraces and sets the retrace wait count g_7670,src/seg/seg040.asm
+seg041:0002,SaveBoxUnder,F041_0002,new,medium,GetBlockAt from the shown page,src/seg/seg041.asm
+seg041:0024,RestoreBoxUnder,F041_0024,new,medium,DrawRawAt back to the shown page,src/seg/seg041.asm
+seg041:0046,AskYesNoBox,F041_0046,new,medium,"centred box with a message, waits for Y or N",src/seg/seg041.asm
+seg041:0224,AskExitToDos,F041_0224,new,high,"AskYesNoBox with ""Exit to DOS (Y/N)""",src/seg/seg041.asm
+seg041:0240,PauseBox,F041_0240,new,medium,centred box with a message until a key or time-out,src/seg/seg041.asm
+seg041:0352,ShowPausedBox,F041_0352,new,high,"PauseBox with ""Pause: press any key to""",src/seg/seg041.asm
+seg042:0000,ShowPausedBoxTail,F042_0000,new,low,end of ShowPausedBox,src/seg/seg042.asm
+seg042:0004,BuildShapeBank,F042_0004,new,low,"sizes a shape table (LargestShapeSize, ShapeBankSize) and copies it to one block",src/seg/seg042.asm
+seg042:0134,LoadAssetMode,F042_0134,new,medium,"finds the file by trying the extension list, then loads it packed or raw by extension",src/seg/seg042.asm
+seg043:000E,FileCanOpen,F043_000E,new,medium,"opens and closes a file, returns 1 if it opened",src/seg/seg043.asm
+seg044:0002,FindNearestColor,F044_0002,new,medium,searches the palette for the smallest squared RGB distance,src/seg/seg044.asm
+seg045:000C,LargestShapeSize,F045_000C,new,medium,largest width*height+10h in a shape table,src/seg/seg045.asm
+seg046:0006,ShapeBankSize,F046_0006,new,medium,total size of a shape table's shapes and index,src/seg/seg046.asm
+seg047:0008,CopyBytesFar,F047_0008,new,low,byte copy loop,src/seg/seg047.asm
+seg048:000C,ShadeColor,F048_000C,new,medium,"scales one palette entry by the RGB factors, clamps to 3Fh, optional grey",src/seg/seg048.asm
+seg048:0180,BuildShadeTable,F048_0180,new,medium,"ShadeColor for every used colour, writes a 256-byte remap table",src/seg/seg048.asm
+seg048:01CC,BuildShadeTableEven,F048_01CC,new,medium,BuildShadeTable with one factor for all three channels,src/seg/seg048.asm
+seg048:01E8,MergeRemapTables,F048_01E8,new,low,combines two remap tables into the global one,src/seg/seg048.asm
+OpenResource,LoadAsset0,OpenResource,new,medium,LoadAssetMode with mode 0,src/seg/seg028.asm
+LoadResource,LoadAsset,LoadResource,new,medium,LoadAssetMode with mode 1,src/seg/seg028.asm
+LoadResourceHeader,LoadAssetHeader,LoadResourceHeader,new,medium,"LoadAssetMode mode 1, returns the first dword",src/seg/seg028.asm
+OpenResourceHeader,LoadAssetHeader0,OpenResourceHeader,new,medium,"LoadAssetMode mode 0, returns the first dword",src/seg/seg028.asm
+ResourceHeaderMode,LoadAssetHeaderMode,ResourceHeaderMode,new,medium,"LoadAssetMode with explicit mode, returns the first dword",src/seg/seg028.asm
+seg049:0001,SeqPad,F049_0001,new,low,stray bytes before the sequencer timer entry,src/seg/seg049.asm
+seg049:0008,SeqTimerTick,F049_0008,new,medium,"timer hook: runs SeqService unless busy, re-entered or no driver is loaded",src/seg/seg049.asm
+seg049:003C,SeqService,F049_003C,new,medium,services the driver (EMS map saved) and steps every playing track,src/seg/seg049.asm
+seg049:01D2,SeqStepTrack,F049_01D2,new,medium,advances one track slot and handles its pending events,src/seg/seg049.asm
+seg049:06C2,SendController,F049_06C2,new,medium,"sends controller 7 or 0Ah (volume, pan) scaled for the track",src/seg/seg049.asm
+seg049:0792,SendVoiceNoteOff,F049_0792,new,medium,sends a note-off for a voice record,src/seg/seg049.asm
+seg049:07DE,SetSongTempo,F049_07DE,new,medium,sets the tick rate (7D00h / tempo) for every slot of a song,src/seg/seg049.asm
+seg049:0826,SendPitchBend,F049_0826,new,medium,sends an E0h pitch bend message,src/seg/seg049.asm
+seg049:0864,AllocVoice,F049_0864,new,medium,takes a free entry from the 32 voice records,src/seg/seg049.asm
+seg049:0934,QueueMidiBytes,F049_0934,new,medium,appends a message to the 128-byte MIDI queue,src/seg/seg049.asm
+seg049:098E,FlushMidiQueue,F049_098E,new,medium,sends every queued message to the driver,src/seg/seg049.asm
+seg049:0A00,SendProgramChange,F049_0A00,new,medium,sends a C0h program change,src/seg/seg049.asm
+seg049:0A2C,SendPan,F049_0A2C,new,medium,sends controller 0Ah,src/seg/seg049.asm
+seg049:0A5E,SendVolume,F049_0A5E,new,medium,sends controller 7,src/seg/seg049.asm
+seg049:0A90,ParseMidiEvent,F049_0A90,new,medium,reads a variable-length delta and dispatches the event type through a jump table,src/seg/seg049.asm
+seg050:0008,SetupSongTracks,F050_0008,new,low,walks a song's track table and fills the slot pointers,src/seg/seg050.asm
+seg050:00EC,SetupSongTracksEms,F050_00EC,new,low,SetupSongTracks for a song held in EMS,src/seg/seg050.asm
+seg050:01DE,ResetSequencer,F050_01DE,new,medium,clears the 24 track slots and 32 voice records,src/seg/seg050.asm
+seg050:0280,InitSequencer,F050_0280,new,medium,"allocates the slot, voice and queue tables and hooks the timer",src/seg/seg050.asm
+seg050:0308,ShutdownSequencer,F050_0308,new,medium,"frees the timer slot, shuts every driver down and frees the tables",src/seg/seg050.asm
+seg050:036C,SeqStubLong0,F050_036C,new,high,returns 0 in DX:AX,src/seg/seg050.asm
+seg050:0378,SeqStubWord0,F050_0378,new,high,returns 0,src/seg/seg050.asm
+seg050:0382,LoadBankNumber,F050_0382,new,medium,"formats ""bank%d.pat"" and loads it",src/seg/seg050.asm
+seg050:03A8,LoadPatchBank,F050_03A8,new,medium,loads a patch bank file and keeps its pointer,src/seg/seg050.asm
+seg050:03C8,FreeSongData,F050_03C8,new,medium,"unlinks a song record, returns 0",src/seg/seg050.asm
+seg050:03E4,SendPatches,F050_03E4,new,low,sends every patch of the bank to the driver,src/seg/seg050.asm
+seg050:04EA,AddLoadedSong,F050_04EA,new,medium,stores a song pointer in the first free of 10 entries,src/seg/seg050.asm
+seg050:0522,LoadSongMode,F050_0522,new,medium,"loads a song file (track, parts, seqdat) with its bank and timbres",src/seg/seg050.asm
+seg050:071C,LoadSongDrvBuf,F050_071C,new,low,"driver bank call, then LoadSongMode with a buffer",src/seg/seg050.asm
+seg050:074E,LoadSongDrv,F050_074E,new,low,"driver bank call, then LoadSongMode",src/seg/seg050.asm
+seg050:077E,LoadSong,F050_077E,new,low,LoadSongMode by number,src/seg/seg050.asm
+seg050:079C,LoadSongBuf,F050_079C,new,low,LoadSongMode by number into a buffer,src/seg/seg050.asm
+seg050:07BC,RemoveLoadedSong,F050_07BC,new,medium,clears a song pointer from the 10 entries,src/seg/seg050.asm
+seg050:07FE,UnloadSong,F050_07FE,new,medium,removes and frees a song and its parts,src/seg/seg050.asm
+seg050:0866,SeqStubLong1,F050_0866,new,high,returns 0 in DX:AX,src/seg/seg050.asm
+seg050:0872,SeqStubWord1,F050_0872,new,high,returns 0,src/seg/seg050.asm
+seg050:087C,GetPatch,F050_087C,new,medium,address of a 20-byte patch record in the bank,src/seg/seg050.asm
+seg050:08BE,GetPatchData,F050_08BE,new,medium,the data pointer of a patch record,src/seg/seg050.asm
+seg050:08F0,InitVoiceLists,F050_08F0,new,low,links the voice records into lists,src/seg/seg050.asm
+seg050:0976,ScanSongParts,F050_0976,new,low,scans the parts tables of the loaded songs,src/seg/seg050.asm
+seg050:09E6,ScanSongSeqs,F050_09E6,new,low,scans the sequence tables of the loaded songs,src/seg/seg050.asm
+seg050:0A4E,PrepareSong,F050_0A4E,new,low,resolves a song's parts and sequences before it starts,src/seg/seg050.asm
+seg050:0B58,FindFreeChannel,F050_0B58,new,medium,first of 16 MIDI channels allowed by the mask and unused,src/seg/seg050.asm
+seg050:0B8C,FindFreeTrackSlot,F050_0B8C,new,medium,first unused of the 24 track slots,src/seg/seg050.asm
+seg050:0BC6,StartSong,F050_0BC6,new,medium,"starts a song in free slots, returns a new handle",src/seg/seg050.asm
+seg050:0DD6,RestartSong,F050_0DD6,new,low,StartSong and copies settings to its slots,src/seg/seg050.asm
+seg050:0E58,SeqStubLong2,F050_0E58,new,high,returns 0 in DX:AX,src/seg/seg050.asm
+seg050:0E64,PlayPatchNote,F050_0E64,new,medium,plays a sound effect patch (id below 100h) on a free voice,src/seg/seg050.asm
+seg050:0FB8,PlayPatch,F050_0FB8,new,medium,PlayPatchNote with default note,src/seg/seg050.asm
+seg050:0FD4,PlaySound,F050_0FD4,new,medium,"id below 100h plays a patch, otherwise prepares and starts a song",src/seg/seg050.asm
+seg050:1028,ReleaseAllVoices,F050_1028,new,medium,marks every active voice for release,src/seg/seg050.asm
+seg050:1070,StopSound,F050_1070,new,medium,stops a sound by handle and silences its voices,src/seg/seg050.asm
+seg050:11BA,StopSong,F050_11BA,new,medium,flags the song's slots to stop,src/seg/seg050.asm
+seg050:1226,SongFinished,F050_1226,new,medium,1 when no slot plays the song,src/seg/seg050.asm
+seg050:1268,SongStopped,F050_1268,new,medium,1 when no slot of the song is still stopping,src/seg/seg050.asm
+seg050:12AA,SongChannelValue,F050_12AA,new,low,a per-channel value of a playing song,src/seg/seg050.asm
+seg050:12F4,MuteAllTracks,F050_12F4,new,medium,sends volume 0 on every active track,src/seg/seg050.asm
+seg050:1350,RestoreTrackVolumes,F050_1350,new,medium,sends each active track's volume again,src/seg/seg050.asm
+seg050:13A8,SfxOn,F050_13A8,new,medium,sets the effects flag,src/seg/seg050.asm
+seg050:13B6,SfxOff,F050_13B6,new,medium,clears the effects flag,src/seg/seg050.asm
+seg050:13C4,ToggleSfx,F050_13C4,new,medium,flips the effects flag and returns it,src/seg/seg050.asm
+seg050:13E2,GetSfx,F050_13E2,new,medium,returns the effects flag,src/seg/seg050.asm
+seg050:13EE,MusicOn,F050_13EE,new,low,sets the second sound flag,src/seg/seg050.asm
+seg050:13FC,MusicOff,F050_13FC,new,low,clears the second sound flag,src/seg/seg050.asm
+seg050:140A,ToggleMusic,F050_140A,new,low,flips the second sound flag and returns it,src/seg/seg050.asm
+seg050:1428,GetMusic,F050_1428,new,low,returns the second sound flag,src/seg/seg050.asm
+seg050:1434,ReadFarDword,F050_1434,new,high,returns the dword at a far pointer,src/seg/seg050.asm
+seg050:144A,ReadFarWord,F050_144A,new,high,returns the word at a far pointer,src/seg/seg050.asm
+seg050:145C,StoreDwordBE,F050_145C,new,medium,writes a dword high byte first,src/seg/seg050.asm
+seg050:1496,ReadDwordBE,F050_1496,new,medium,reads a dword stored high byte first,src/seg/seg050.asm
+seg050:14E8,CopyEventBytes,F050_14E8,new,low,copies bytes of an event record,src/seg/seg050.asm
+seg051:0000,CopyEventBytesTail,F051_0000,new,low,end of CopyEventBytes,src/seg/seg051.asm
+seg051:000E,LoadSoundDriver,F051_000E,new,high,"loads a driver from the game folder or c:\eaclib, ""Couldn't resolve sound driver""",src/seg/seg051.asm
+seg051:0110,DrvStub1,F051_0110,new,high,empty driver call,src/seg/seg051.asm
+seg051:0118,DrvInit,F051_0118,new,medium,driver table entry +0,src/seg/seg051.asm
+seg051:0130,DrvCall04,F051_0130,new,low,driver table entry +4,src/seg/seg051.asm
+seg051:014E,DrvCall08,F051_014E,new,low,driver table entry +8,src/seg/seg051.asm
+seg051:0178,DrvShutdown,F051_0178,new,medium,"driver table entry +0Ch, used at shutdown",src/seg/seg051.asm
+seg051:0190,DrvCall10,F051_0190,new,low,driver table entry +10h,src/seg/seg051.asm
+seg051:01A8,DrvService,F051_01A8,new,medium,"driver table entry +14h, called from SeqService",src/seg/seg051.asm
+seg051:01C0,DrvNeedsService,F051_01C0,new,medium,"driver table entry +18h, asked before DrvService",src/seg/seg051.asm
+seg051:01DC,DrvLoadBank,F051_01DC,new,low,"driver table entry +1Ch, called before loading a song",src/seg/seg051.asm
+seg051:01FE,DrvStub2,F051_01FE,new,high,empty driver call,src/seg/seg051.asm
+seg051:0206,DrvStub3,F051_0206,new,high,empty driver call,src/seg/seg051.asm
+seg051:020E,DrvStub4,F051_020E,new,high,empty driver call,src/seg/seg051.asm
+seg051:0216,DrvStub5,F051_0216,new,high,empty driver call,src/seg/seg051.asm
+seg051:021E,DrvStub6,F051_021E,new,high,empty driver call,src/seg/seg051.asm
+seg051:0226,DrvStub7,F051_0226,new,high,empty driver call,src/seg/seg051.asm
+seg051:022E,DrvSendMidi,F051_022E,new,medium,"driver table entry +2Ch, note messages get a transpose of 18h",src/seg/seg051.asm
+seg051:0274,DrvLinearToFar,F051_0274,new,medium,callback for drivers: LinearToFarRegs,src/seg/seg051.asm
+seg051:028C,DrvEmsMap,F051_028C,new,medium,callback for drivers: EmsMapFrame,src/seg/seg051.asm
+seg051:02A6,DrvPlaySample,F051_02A6,new,medium,starts a digital sample (EMS or conventional) through the driver,src/seg/seg051.asm
+seg051:0324,DrvPlayRecSample,F051_0324,new,medium,DrvPlaySample for a heap record,src/seg/seg051.asm
+seg052:0000,DrvLinearToFar2,F052_0000,new,medium,second copy of DrvLinearToFar,src/seg/seg052.asm
+seg052:0018,DrvEmsMap2,F052_0018,new,medium,second copy of DrvEmsMap,src/seg/seg052.asm
+seg052:0032,LinkDriverMode,F052_0032,new,medium,relocates a loaded driver image and fills the driver table,src/seg/seg052.asm
+seg052:0252,LinkDriver0,F052_0252,new,low,LinkDriverMode with mode 0,src/seg/seg052.asm
+seg052:0272,LinkDriver,F052_0272,new,low,LinkDriverMode with mode 1,src/seg/seg052.asm
+seg053:0002,RelocateMzImage,F053_0002,new,medium,applies an MZ header's relocations to an image in memory,src/seg/seg053.asm
+seg055:0000,LoadFileCachedMode,F055_0000,new,medium,"copies a file from a heap record of that name, or reads it from disk",src/seg/seg055.asm
+seg055:00A0,LoadFileCached,F055_00A0,new,low,LoadFileCachedMode with mode 1,src/seg/seg055.asm
+seg055:00B6,LoadFileCached0,F055_00B6,new,low,LoadFileCachedMode with mode 0,src/seg/seg055.asm
+seg054:003B,FpMath,F054_003B,new,high,far entry: calls the function whose index is in BX through the word table at offset 20h,src/seg/seg054.asm
+seg054:004E,FpMathBadIndex,F054_004E,new,high,FpMath with an index above 12 returns -1,src/seg/seg054.asm
+seg054:005C,FpInit,F054_005C,new,high,"function 0: reads NO87= from the environment, detects an 8087, hooks the vectors",src/seg/seg054.asm
+seg054:01AE,FpTerm,F054_01AE,new,high,function 2: restores the interrupt vectors,src/seg/seg054.asm
+seg054:01CF,FpReset,F054_01CF,new,high,function 1: resets the emulated stack and clears exceptions,src/seg/seg054.asm
+seg054:01F0,FpSetHandler,F054_01F0,new,high,function 3: stores the far error handler,src/seg/seg054.asm
+seg054:01F8,FpHookVectors,F054_01F8,new,high,saves INT 34h-3Eh and points them at the emulator or the patch handlers,src/seg/seg054.asm
+seg054:0240,FpUnhookVectors,F054_0240,new,high,restores the saved INT 34h-3Eh vectors,src/seg/seg054.asm
+seg054:0256,FpStackDepth,F054_0256,new,medium,function 10: number of used stack registers,src/seg/seg054.asm
+seg054:0295,FpHave87,F054_0295,new,high,function 11: 1 when an 8087 is present,src/seg/seg054.asm
+seg054:029A,FpSetMode,F054_029A,new,low,function 12: stores a mode word,src/seg/seg054.asm
+seg054:029E,FpSetC1,F054_029E,new,medium,sets status bit C1,src/seg/seg054.asm
+seg054:02AE,FpSetC2,F054_02AE,new,medium,sets status bit C2,src/seg/seg054.asm
+seg054:02B4,FpIret,F054_02B4,new,high,a lone iret,src/seg/seg054.asm
+seg054:02B5,Fp87ExceptionNext,F054_02B5,new,low,Fp87Exception for the following instruction,src/seg/seg054.asm
+seg054:02B8,Fp87Exception,F054_02B8,new,medium,coprocessor exception entry: saves the environment and enters FpException,src/seg/seg054.asm
+seg054:02DE,FpException,F054_02DE,new,medium,"classifies a pending exception, fixes the result or calls the error handler",src/seg/seg054.asm
+seg054:04EA,FpSkipEmptyRegs,F054_04EA,new,low,steps past empty stack registers,src/seg/seg054.asm
+seg054:05D7,FpFixDenormal,F054_05D7,new,low,renormalises a temporary real on the stack frame,src/seg/seg054.asm
+seg054:0619,FpCheckPrecision,F054_0619,new,low,precision exception check before FpException continues,src/seg/seg054.asm
+seg054:062F,FpSignalOnce,F054_062F,new,low,marks the exception and calls FpSignal once,src/seg/seg054.asm
+seg054:0637,FpSignal,F054_0637,new,medium,rebuilds the faulting instruction and calls the far error handler,src/seg/seg054.asm
+seg054:06EE,FpLoadCw,F054_06EE,new,high,function 4: sets the control word,src/seg/seg054.asm
+seg054:0707,FpGetCw,F054_0707,new,high,function 5: returns the control word,src/seg/seg054.asm
+seg054:070B,FpGetStatus,F054_070B,new,high,function 8: returns and accumulates the status word,src/seg/seg054.asm
+seg054:0729,FpRoundInt,F054_0729,new,high,function 6: rounds ST to an integer value (frndint),src/seg/seg054.asm
+seg054:076E,FpToLong,F054_076E,new,high,function 7: converts ST to a long (fistp),src/seg/seg054.asm
+seg054:07D4,FpCheckPending,F054_07D4,new,medium,raises unmasked exceptions after a conversion,src/seg/seg054.asm
+seg054:07FE,FpPatchSegInt,F054_07FE,new,medium,INT 3Ch with an 8087: patches a segment-override sequence into real code,src/seg/seg054.asm
+seg054:082B,FpPatchWaitInt,F054_082B,new,medium,"INT 3Dh with an 8087: patches into nop, fwait",src/seg/seg054.asm
+seg054:0833,FpPatchInt,F054_0833,new,medium,INT 34h-3Bh with an 8087: patches the INT into fwait plus the ESC opcode and reruns it,src/seg/seg054.asm
+seg054:0C28,FpEmuWaitInt,F054_0C28,new,medium,"INT 3Dh without an 8087: patches into mov ax,ax",src/seg/seg054.asm
+seg054:0C45,FpEmuSegInt,F054_0C45,new,medium,INT 3Ch without an 8087: emulates an instruction with a segment override,src/seg/seg054.asm
+seg054:0C85,FpEmuSegDecode,F054_0C85,new,low,operand segment decode for FpEmuSegInt,src/seg/seg054.asm
+seg054:0C98,FpEmuSegIntAlt,F054_0C98,new,low,second segment-override emulation entry,src/seg/seg054.asm
+seg054:0CBC,FpEmulate,F054_0CBC,new,medium,INT 34h-3Bh without an 8087: decodes and emulates one coprocessor instruction,src/seg/seg054.asm
+seg054:0E35,FpStackRoom,F054_0E35,new,medium,checks room on the emulated register stack,src/seg/seg054.asm
+seg054:0E53,FpEmuSignal,F054_0E53,new,low,leaves the emulator through FpSignal,src/seg/seg054.asm
+seg054:0E67,FpEmuExit,F054_0E67,new,medium,restores registers and returns from the emulator interrupt,src/seg/seg054.asm
+seg054:0E98,FpEmuChain,F054_0E98,new,medium,emulates the next instruction too when it is another INT 34h-3Bh,src/seg/seg054.asm
+seg054:0ED1,FpEmuChainEsc,F054_0ED1,new,low,emulates the next instruction when it is a real ESC opcode,src/seg/seg054.asm
+seg054:1009,FpSetStackFault,F054_1009,new,medium,sets status bit 40h (stack fault),src/seg/seg054.asm
+seg054:1016,FpSub,F054_1016,new,low,FpAdd with the sign of the source flipped,src/seg/seg054.asm
+seg054:101C,FpMul,F054_101C,new,low,arithmetic dispatch through the multiply table by operand types,src/seg/seg054.asm
+seg054:1024,FpDivRev,F054_1024,new,low,FpDiv with the operands swapped,src/seg/seg054.asm
+seg054:102E,FpDiv,F054_102E,new,low,arithmetic dispatch through the divide table by operand types,src/seg/seg054.asm
+seg054:1036,FpAdd,F054_1036,new,low,arithmetic dispatch through the add table by operand types,src/seg/seg054.asm
+seg054:109A,FpCopyConstToTemp,F054_109A,new,low,FpCopyConst into the temporary at [96h],src/seg/seg054.asm
+seg054:109E,FpCopyConst,F054_109E,new,medium,copies a 12-byte temporary real from the code segment,src/seg/seg054.asm
+seg054:10B1,FpCopyToTemp,F054_10B1,new,low,FpCopyReg into the temporary at [96h],src/seg/seg054.asm
+seg054:10B9,FpCopyReg,F054_10B9,new,medium,copies a 12-byte temporary real,src/seg/seg054.asm
+seg054:1431,FpDivMantissa,F054_1431,new,low,long division of two mantissas,src/seg/seg054.asm
+seg054:1C17,FpToInt32,F054_1C17,new,low,converts ST to a 32-bit integer,src/seg/seg054.asm
+seg054:1CD9,FpToInt64,F054_1CD9,new,low,converts ST to a 64-bit integer,src/seg/seg054.asm
+seg054:1D3C,FpNegate64,F054_1D3C,new,medium,negates a 64-bit value in DI:BP:BX:DX,src/seg/seg054.asm
+seg054:1D4F,FpRndint,F054_1D4F,new,medium,frndint,src/seg/seg054.asm
+seg054:1D92,FpNormalize,F054_1D92,new,medium,shifts the mantissa left until the top bit is set and adjusts the exponent,src/seg/seg054.asm
+seg054:1DB9,FpShiftRight,F054_1DB9,new,low,shifts a mantissa right for a given exponent,src/seg/seg054.asm
+seg054:2297,FpNormLoop,F054_2297,new,low,repeats FpShiftLeft1 while needed,src/seg/seg054.asm
+seg054:22A9,FpShiftLeft1,F054_22A9,new,low,shifts a mantissa left one bit,src/seg/seg054.asm
+seg054:22C1,FpSubMantissa,F054_22C1,new,low,subtracts mantissas; also the fsqrt entry,src/seg/seg054.asm
+seg054:2301,FpSqrtCore,F054_2301,new,medium,square root of ST (halves the exponent),src/seg/seg054.asm
+seg054:2399,FpLoadConst,F054_2399,new,low,copies a constant into the work temporary at 8Ah,src/seg/seg054.asm
+seg054:23B2,FpCompare,F054_23B2,new,low,compares two temporary reals,src/seg/seg054.asm
+seg054:2411,FpPolyRatio,F054_2411,new,low,evaluates a polynomial ratio from a coefficient table in BX; also the fptan entry,src/seg/seg054.asm
+seg054:24AE,FpSeriesA,F054_24AE,new,low,FpPolyRatio with the first table; also the fpatan entry,src/seg/seg054.asm
+seg054:24DD,FpAtanCore,F054_24DD,new,low,arctangent work for fpatan; also the f2xm1 entry,src/seg/seg054.asm
+seg054:254B,FpSeriesB,F054_254B,new,low,FpPolyRatio with the second table; also the fyl2x entry,src/seg/seg054.asm
+seg054:2593,FpLog2Core,F054_2593,new,low,base-2 logarithm work; also the fyl2xp1 entry,src/seg/seg054.asm
+seg054:2639,FpLogSeries,F054_2639,new,low,logarithm series step,src/seg/seg054.asm
+seg054:267A,FpHookNmi,F054_267A,new,high,hooks INT 2 (coprocessor NMI) and INT 23h,src/seg/seg054.asm
+seg054:26A9,FpUnhookNmi,F054_26A9,new,high,restores INT 2,src/seg/seg054.asm
+seg054:26BA,FpCtrlBreak,F054_26BA,new,high,INT 23h handler: restores INT 2 and chains to the old handler,src/seg/seg054.asm
+seg054:26D3,FpNmiHandler,F054_26D3,new,high,"INT 2 handler: an 8087 exception goes to FpException, anything else chains",src/seg/seg054.asm
+seg058:0003,RtlSectionHook,F058_0003,rtlink,medium,default section hook: sets carry and returns,src/seg/seg058.asm
+seg058:0005,RtlWriteHex,F058_0005,rtlink,medium,writes CX as four hex digits at DS:DX (error codes in the eov messages),src/seg/seg058.asm
+seg058:0017,RtlHexWord,F058_0017,rtlink,medium,writes AX as four hex digits at ES:DI,src/seg/seg058.asm
+seg058:001E,RtlHexByte,F058_001E,rtlink,medium,writes AL as two hex digits,src/seg/seg058.asm
+seg058:002B,RtlHexDigit,F058_002B,rtlink,high,writes the low nibble of AL as a hex digit (daa trick),src/seg/seg058.asm
+seg058:0035,RtlFileAdjust,F058_0035,rtlink,low,a far pointer target in seg058 used by the overlay file code,src/seg/seg058.asm
+seg058:0039,RtlSwapErrorSlot,F058_0039,rtlink,medium,exchanges SI and DS with the saved error handler pointer,src/seg/seg058.asm
+seg058:004A,RtlErrorSlot,F058_004A,rtlink,medium,"far pointer to the fatal error routine, swapped by RtlSwapErrorSlot",src/seg/seg058.asm
+seg058:0054,RtlFatalError,F058_0054,rtlink,medium,"prints ""Fatal Error"" and the message to stderr, waits for a key in text mode, exits with 1",src/seg/seg058.asm
+seg058:00CF,RtlSaveVectors,F058_00CF,rtlink,medium,saves the PSP terminate vector once,src/seg/seg058.asm
+seg058:00F4,RtlSetHandler,F058_00F4,rtlink,medium,registers a far callback with a flag mask (up to 12) and hooks the terminate vector,src/seg/seg058.asm
+seg058:0198,RtlInternalError,F058_0198,rtlink,medium,"""Internal error in .RTLink(R)/Plus run-time code"" through the error slot",src/seg/seg058.asm
+seg058:01C9,RtlAfterFiles,F058_01C9,rtlink,medium,runs the callbacks with flag 4,src/seg/seg058.asm
+seg058:01D3,RtlCallHandlersFar,F058_01D3,rtlink,medium,far entry to RtlCallHandlers,src/seg/seg058.asm
+seg058:01D7,RtlTerminate,F058_01D7,rtlink,medium,"terminate hook: runs flag 2 callbacks, restores the vector and chains",src/seg/seg058.asm
+seg058:0203,RtlCallHandlers,F058_0203,rtlink,medium,calls every registered callback whose mask matches AL,src/seg/seg058.asm
+seg058:0224,RtlBeforeClose,F058_0224,rtlink,medium,stub returning -1,src/seg/seg058.asm
+seg058:0228,RtlStubCx,F058_0228,rtlink,high,returns CX = -1,src/seg/seg058.asm
+seg058:022C,RtlStubZero,F058_022C,rtlink,high,returns 0 in DX:AX,src/seg/seg058.asm
+seg058:02A1,RtlGetEnv,F058_02A1,rtlink,medium,finds a variable in the environment block,src/seg/seg058.asm
+seg058:02FD,RtlFindFile,F058_02FD,rtlink,medium,"tries a file by a search spec of letters C, E, P and A (current dir, EXE dir, PATH, as given)",src/seg/seg058.asm
+seg058:0332,RtlFindFileStep,F058_0332,rtlink,medium,one RtlFindFile try,src/seg/seg058.asm
+seg058:0405,RtlCurrentDir,F058_0405,rtlink,high,"builds ""D:\path\"" for the current drive and directory",src/seg/seg058.asm
+seg058:0443,RtlExePath,F058_0443,rtlink,high,the full path of the running EXE from the environment (DOS 3 or later),src/seg/seg058.asm
+seg058:04AC,RtlOpenCandidate,F058_04AC,rtlink,medium,builds the candidate path and opens it,src/seg/seg058.asm
+seg058:04C0,RtlAppendName,F058_04C0,rtlink,medium,appends the file name and notes a .exe extension,src/seg/seg058.asm
+seg058:04FD,RtlShowMessage,F058_04FD,rtlink,medium,duplicates stdout/stderr handles and prints a $-terminated message,src/seg/seg058.asm
+seg013:0000,WaitButtonTimedTail,F013_0000,new,high,end of WaitButtonTimed in seg012,src/seg/seg013.asm
+SegStart_0D6B1,VectorToDir8Tail,SegStart_0D6B1,new,high,end of VectorToDir8 in seg017,src/seg/seg018.asm
+seg022:0000,PlayArenaJingleTail,F022_0000,new,high,end of PlayArenaJingle in seg021,src/seg/seg022.asm
+SegStart_148B0,DrawFrameTail,SegStart_148B0,new,high,end of DrawFrame in seg029,src/seg/seg030.asm
+SegStart_14B80,LoadRawModeTail,SegStart_14B80,new,high,end of LoadRawMode in seg032,src/seg/seg033.asm
+SegStart_14DB4,ReadPackedSizeTail,SegStart_14DB4,new,high,end of ReadPackedSize in seg033,src/seg/seg034.asm
+SegStart_15ED2,LoadAssetModeTail,SegStart_15ED2,new,high,end of LoadAssetMode in seg042,src/seg/seg043.asm
+SegStart_15FF4,FindNearestColorTail,SegStart_15FF4,new,high,end of FindNearestColor in seg044,src/seg/seg045.asm
+SegStart_160E3,CopyBytesFarTail,SegStart_160E3,new,high,end of CopyBytesFar in seg047,src/seg/seg048.asm
+seg054:0055,FpNo87Env,F054_0055,new,high,"""NO87="" and CR LF, the environment variable that turns the coprocessor off",src/seg/seg054.asm
+seg054:09CA,FpConstants,F054_09CA,new,medium,"emulator constants (temporary reals, coefficient tables)",src/seg/seg054.asm
+SeqPad,MergeRemapTablesTail,SeqPad,new,medium,end of MergeRemapTables in seg048,src/seg/seg049.asm
+seg001:1A84,WaitDeadlineNoEoi,L1A84,new,high,"WaitDeadline entry after its end-of-interrupt write; called from seg013 and seg021",src/seg/seg001.asm
+g_01B4,DbSaveMode,g_01B4,new,medium,0/2 mode checked by SaveGame and UseDbDescriptor,src/data/dgroup.asm
+g_01B6,CrowdState,g_01B6,new,medium,bit 80h tested by the crowd routines,src/data/dgroup.asm
+g_01B7,AnnouncerFlags,g_01B7,new,medium,bit 80h set while the announcer talks,src/data/dgroup.asm
+g_01C6,SoundOptions,g_01C6,new,medium,bits 2 and 8 gate crowd and effects,src/data/dgroup.asm
+g_01E0,TeamNameClips,g_01E0,new,medium,"speech clip per team, indexed by team",src/data/dgroup.asm
+g_024E,EmsMapCache2,g_024E,new,medium,second EMS map cache word,src/data/dgroup.asm
+g_0250,EmsMapCache3,g_0250,new,medium,third EMS map cache word,src/data/dgroup.asm
+g_0252,EmsMapCache4,g_0252,new,medium,fourth EMS map cache word,src/data/dgroup.asm
+g_025E,EmsFramePrev,g_025E,new,medium,word before EmsFrame,src/data/dgroup.asm
+g_0508,InputQueueCount,g_0508,new,medium,events waiting (at most 32),src/data/dgroup.asm
+g_050A,InputQueueHead,g_050A,new,medium,next event to read,src/data/dgroup.asm
+g_050C,InputQueueTail,g_050C,new,medium,next free event slot,src/data/dgroup.asm
+g_050E,PollCountdown,g_050E,new,medium,polls until the next device read (reset to 5),src/data/dgroup.asm
+g_0510,MouseEnabled,g_0510,new,medium,mouse read when non-zero,src/data/dgroup.asm
+g_0512,StickEnabled,g_0512,new,medium,joysticks read when non-zero,src/data/dgroup.asm
+g_0514,KeysEnabled,g_0514,new,medium,keyboard read when non-zero,src/data/dgroup.asm
+g_0516,MousePosX,g_0516,new,medium,last mouse x,src/data/dgroup.asm
+g_0518,MousePosY,g_0518,new,medium,last mouse y,src/data/dgroup.asm
+g_051E,StickPresent,g_051E,new,medium,joystick 1 present,src/data/dgroup.asm
+g_0520,StickPresent2,g_0520,new,medium,joystick 2 present,src/data/dgroup.asm
+g_0522,PadTickCount,g_0522,new,medium,timer ticks counted by PadTimerTick (wraps at 1000),src/data/dgroup.asm
+g_0524,PadRepeatOn,g_0524,new,medium,key repeat active,src/data/dgroup.asm
+g_0526,PadRepeatStep,g_0526,new,medium,repeat interval,src/data/dgroup.asm
+g_0528,PadRepeatDelay,g_0528,new,medium,first repeat delay,src/data/dgroup.asm
+g_052A,PadRepeatTimer,g_052A,new,medium,ticks left before the next repeat,src/data/dgroup.asm
+g_052C,PadStates,g_052C,new,medium,state byte per pad,src/data/dgroup.asm
+g_052D,PadStates2,g_052D,new,medium,second pad's state byte,src/data/dgroup.asm
+g_052E,HotKeyPending,g_052E,new,medium,hot key waiting to be read,src/data/dgroup.asm
+g_0530,KeyPadMap,g_0530,new,medium,keys to pad bits,src/data/dgroup.asm
+g_0764,SpeechTickCount,g_0764,new,medium,speech timer ticks,src/data/dgroup.asm
+g_0766,SpeechSampleBusy,g_0766,new,medium,a sample is playing,src/data/dgroup.asm
+g_0768,SpeechMemOff,g_0768,new,medium,"speech memory block, offset",src/data/dgroup.asm
+g_076A,SpeechMemSeg,g_076A,new,medium,"speech memory block, segment",src/data/dgroup.asm
+g_076C,SpeechOn,g_076C,new,medium,speech system initialised,src/data/dgroup.asm
+g_08F6,InputInstalled,g_08F6,new,medium,input hooks installed,src/data/dgroup.asm
+g_08F8,MouseRangeX,g_08F8,new,medium,mouse range in x,src/data/dgroup.asm
+g_08FA,MouseRangeY,g_08FA,new,medium,mouse range in y,src/data/dgroup.asm
+g_0998,TextColor,g_0998,new,medium,text colour for the shadow and outline text,src/data/dgroup.asm
+g_099A,ShadowColor,g_099A,new,medium,shadow colour,src/data/dgroup.asm
+g_099C,OutlineDx,g_099C,new,medium,x offsets of the outline passes,src/data/dgroup.asm
+g_09A4,OutlineDy,g_09A4,new,medium,y offsets of the outline passes,src/data/dgroup.asm
+g_09AC,Dir8Table,g_09AC,new,medium,direction for each octant,src/data/dgroup.asm
+g_09BC,OldInt0Seg,g_09BC,new,medium,"saved divide-error vector, segment",src/data/dgroup.asm
+g_09BE,OldInt0Off,g_09BE,new,medium,"saved divide-error vector, offset",src/data/dgroup.asm
+g_09EE,DialogBackColor,g_09EE,new,medium,dialog background colour,src/data/dgroup.asm
+g_09F0,DialogLightColor,g_09F0,new,medium,dialog bevel light colour,src/data/dgroup.asm
+g_09F2,DialogDarkColor,g_09F2,new,medium,dialog bevel dark colour,src/data/dgroup.asm
+g_09F4,ItemTextColor,g_09F4,new,medium,list item text colour,src/data/dgroup.asm
+g_09F6,ItemSelectColor,g_09F6,new,medium,selected list item colour,src/data/dgroup.asm
+g_09FA,SaveUnderOff,g_09FA,new,medium,"saved screen under a box, offset",src/data/dgroup.asm
+g_09FC,SaveUnderSeg,g_09FC,new,medium,"saved screen under a box, segment",src/data/dgroup.asm
+g_0A14,JingleHandle,g_0A14,new,medium,"playing jingle, low word (-1 for none)",src/data/dgroup.asm
+g_0A16,JingleHandleHi,g_0A16,new,medium,"playing jingle, high word",src/data/dgroup.asm
+g_0A18,CrowdLevel,g_0A18,new,medium,crowd noise level,src/data/dgroup.asm
+g_0A1A,CrowdTarget,g_0A1A,new,medium,crowd level being faded to,src/data/dgroup.asm
+g_0A1C,CrowdFade,g_0A1C,new,medium,crowd fade step,src/data/dgroup.asm
+g_0A3E,EventPending,g_0A3E,new,medium,an event is held back,src/data/dgroup.asm
+g_0FB2,SfxBankOff,g_0FB2,new,medium,"effects bank, offset",src/data/dgroup.asm
+g_0FB4,SfxBankSeg,g_0FB4,new,medium,"effects bank, segment",src/data/dgroup.asm
+g_0FB6,SfxBank2Off,g_0FB6,new,medium,"second effects bank, offset",src/data/dgroup.asm
+g_0FB8,SfxBank2Seg,g_0FB8,new,medium,"second effects bank, segment",src/data/dgroup.asm
+g_106E,CrowdChannel,g_106E,new,medium,crowd noise channel,src/data/dgroup.asm
+g_1218,SpeechFileNames,g_1218,new,medium,speech file names,src/data/dgroup.asm
+g_2A00,RandSeedLo,g_2A00,new,medium,"RandomRange seed, low word",src/data/dgroup.asm
+g_2A02,RandSeedHi,g_2A02,new,medium,"RandomRange seed, high word",src/data/dgroup.asm
+g_4A52,LastSfx,g_4A52,new,medium,last effect played,src/data/dgroup.asm
+g_4A54,CrowdSound,g_4A54,new,medium,crowd sound handle,src/data/dgroup.asm
+g_62FC,CritSpare1,g_62FC,new,medium,word before CritRoutine,src/data/dgroup.asm
+g_6300,CritSpare2,g_6300,new,medium,word after CritRoutine,src/data/dgroup.asm
+g_63F6,BlockSpare1,g_63F6,new,medium,word before BlockEnd,src/data/dgroup.asm
+g_63FA,BlockSpare2,g_63FA,new,medium,word before BlockSeg,src/data/dgroup.asm
+g_6404,PaletteMode,g_6404,new,medium,DAC write mode (2 for the slow path),src/data/dgroup.asm
+g_6406,MouseActive,g_6406,new,medium,mouse driver found,src/data/dgroup.asm
+g_640C,MouseShowFn,g_640C,new,medium,far routine: show the cursor,src/data/dgroup.asm
+g_640E,MouseShowFnSeg,g_640E,new,medium,segment of MouseShowFn,src/data/dgroup.asm
+g_6410,MouseHideFn,g_6410,new,medium,far routine: hide the cursor,src/data/dgroup.asm
+g_6412,MouseHideFnSeg,g_6412,new,medium,segment of MouseHideFn,src/data/dgroup.asm
+g_6414,MouseReadFn,g_6414,new,medium,far routine: read the mouse,src/data/dgroup.asm
+g_6416,MouseReadFnSeg,g_6416,new,medium,segment of MouseReadFn,src/data/dgroup.asm
+g_6418,MousePosFn,g_6418,new,medium,far routine: mouse position,src/data/dgroup.asm
+g_641A,MousePosFnSeg,g_641A,new,medium,segment of MousePosFn,src/data/dgroup.asm
+g_6D4E,FontPtr,g_6D4E,new,medium,current 1-bpp font,src/data/dgroup.asm
+g_6D52,FontBits,g_6D52,new,medium,bit masks for the font,src/data/dgroup.asm
+g_6D98,OldInt8Off,g_6D98,new,medium,"saved INT 8 vector, offset",src/data/dgroup.asm
+g_6D9A,OldInt8Seg,g_6D9A,new,medium,"saved INT 8 vector, segment",src/data/dgroup.asm
+g_6D9C,TickHookOff,g_6D9C,new,medium,"routine the INT 8 handler calls, offset",src/data/dgroup.asm
+g_6D9E,TickHookSeg,g_6D9E,new,medium,"routine the INT 8 handler calls, segment",src/data/dgroup.asm
+g_6DA6,TickCountAll,g_6DA6,new,medium,every INT 8 tick,src/data/dgroup.asm
+g_6DB6,TickSkipCount,g_6DB6,new,medium,ticks skipped,src/data/dgroup.asm
+g_6F10,CalibTargetX,g_6F10,new,medium,x of each calibration target,src/data/dgroup.asm
+g_6F22,CalibTargetY,g_6F22,new,medium,y of each calibration target,src/data/dgroup.asm
+g_701F,JoyNibbleTable,g_701F,new,medium,joystick nibble to direction,src/data/dgroup.asm
+g_7034,Stick2XMin,g_7034,new,medium,joystick 2 x minimum,src/data/dgroup.asm
+g_7036,Stick2XMax,g_7036,new,medium,joystick 2 x maximum,src/data/dgroup.asm
+g_7038,Stick2XLast,g_7038,new,medium,joystick 2 x last reading,src/data/dgroup.asm
+g_703A,Stick2XSettle,g_703A,new,medium,joystick 2 x settle count (8),src/data/dgroup.asm
+g_703C,Stick2XLow,g_703C,new,medium,joystick 2 x low threshold,src/data/dgroup.asm
+g_703E,Stick2XHigh,g_703E,new,medium,joystick 2 x high threshold,src/data/dgroup.asm
+g_7040,Stick2YMin,g_7040,new,medium,joystick 2 y minimum,src/data/dgroup.asm
+g_7042,Stick2YMax,g_7042,new,medium,joystick 2 y maximum,src/data/dgroup.asm
+g_7044,Stick2YLast,g_7044,new,medium,joystick 2 y last reading,src/data/dgroup.asm
+g_7046,Stick2YSettle,g_7046,new,medium,joystick 2 y settle count (8),src/data/dgroup.asm
+g_7048,Stick2YLow,g_7048,new,medium,joystick 2 y low threshold,src/data/dgroup.asm
+g_704A,Stick2YHigh,g_704A,new,medium,joystick 2 y high threshold,src/data/dgroup.asm
+g_704C,Stick2XScale,g_704C,new,medium,joystick 2 x scale,src/data/dgroup.asm
+g_704E,Stick2YScale,g_704E,new,medium,joystick 2 y scale,src/data/dgroup.asm
+g_7058,Stick1XMin,g_7058,new,medium,joystick 1 x minimum,src/data/dgroup.asm
+g_705A,Stick1XMax,g_705A,new,medium,joystick 1 x maximum,src/data/dgroup.asm
+g_705C,Stick1XLast,g_705C,new,medium,joystick 1 x last reading,src/data/dgroup.asm
+g_705E,Stick1XSettle,g_705E,new,medium,joystick 1 x settle count (8),src/data/dgroup.asm
+g_7060,Stick1XLow,g_7060,new,medium,joystick 1 x low threshold,src/data/dgroup.asm
+g_7062,Stick1XHigh,g_7062,new,medium,joystick 1 x high threshold,src/data/dgroup.asm
+g_7064,Stick1YMin,g_7064,new,medium,joystick 1 y minimum,src/data/dgroup.asm
+g_7066,Stick1YMax,g_7066,new,medium,joystick 1 y maximum,src/data/dgroup.asm
+g_7068,Stick1YLast,g_7068,new,medium,joystick 1 y last reading,src/data/dgroup.asm
+g_706A,Stick1YSettle,g_706A,new,medium,joystick 1 y settle count (8),src/data/dgroup.asm
+g_706C,Stick1YLow,g_706C,new,medium,joystick 1 y low threshold,src/data/dgroup.asm
+g_706E,Stick1YHigh,g_706E,new,medium,joystick 1 y high threshold,src/data/dgroup.asm
+g_7070,Stick1XScale,g_7070,new,medium,joystick 1 x scale,src/data/dgroup.asm
+g_7072,Stick1YScale,g_7072,new,medium,joystick 1 y scale,src/data/dgroup.asm
+g_7074,StickDirTable,g_7074,new,medium,stick bits to direction,src/data/dgroup.asm
+g_712E,OldInt9Off,g_712E,new,medium,"saved INT 9 vector, offset",src/data/dgroup.asm
+g_7130,OldInt9Seg,g_7130,new,medium,"saved INT 9 vector, segment",src/data/dgroup.asm
+g_7132,OldInt16Off,g_7132,new,medium,"saved INT 16h vector, offset",src/data/dgroup.asm
+g_7134,OldInt16Seg,g_7134,new,medium,"saved INT 16h vector, segment",src/data/dgroup.asm
+g_7136,OldInt23Off,g_7136,new,medium,"saved INT 23h vector, offset",src/data/dgroup.asm
+g_7138,OldInt23Seg,g_7138,new,medium,"saved INT 23h vector, segment",src/data/dgroup.asm
+g_730A,RemapTable,g_730A,new,medium,256-byte colour remap table,src/data/dgroup.asm
+g_7428,PutBlockMasks,g_7428,new,medium,plane masks for PutBlock,src/data/dgroup.asm
+g_742C,DrawRawMasks,g_742C,new,medium,plane masks for DrawRaw,src/data/dgroup.asm
+g_7430,DrawRleMasks,g_7430,new,medium,plane masks for DrawRle,src/data/dgroup.asm
+g_7434,DrawRleFastMasks,g_7434,new,medium,plane masks for DrawRleFast,src/data/dgroup.asm
+g_7438,Text2Color,g_7438,new,medium,DrawText2 colour,src/data/dgroup.asm
+g_743A,DrawCharMasks,g_743A,new,medium,plane masks for DrawChar,src/data/dgroup.asm
+g_743E,CopySrcPage,g_743E,new,medium,CopyPlane source page,src/data/dgroup.asm
+g_743F,CopyDstPage,g_743F,new,medium,CopyPlane destination page,src/data/dgroup.asm
+g_7440,CopyActive,g_7440,new,medium,CopyPlane in progress,src/data/dgroup.asm
+g_7441,CopyMask,g_7441,new,medium,CopyPlane plane mask,src/data/dgroup.asm
+g_7442,CopyCount,g_7442,new,medium,CopyPlane byte count,src/data/dgroup.asm
+g_7444,CopyOffset,g_7444,new,medium,CopyPlane offset,src/data/dgroup.asm
+g_744C,ConCursorX,g_744C,new,medium,console cursor column,src/data/dgroup.asm
+g_744E,ConCursorY,g_744E,new,medium,console cursor row,src/data/dgroup.asm
+g_74DC,CurPage,g_74DC,new,medium,page shown,src/data/dgroup.asm
+g_74DE,DrawPage,g_74DE,new,medium,page drawn on,src/data/dgroup.asm
+g_74E0,CanvasCount,g_74E0,new,medium,canvases allocated,src/data/dgroup.asm
+g_74E4,CanvasSeg,g_74E4,new,medium,current canvas: segment (A000h for the screen),src/data/dgroup.asm
+g_74EC,CanvasRows,g_74EC,new,medium,current canvas: row address table,src/data/dgroup.asm
+g_74EE,ClipLeftPlane,g_74EE,new,medium,clip left in plane units,src/data/dgroup.asm
+g_74F0,ClipRightPlane,g_74F0,new,medium,clip right in plane units,src/data/dgroup.asm
+g_74F2,ClipTopY,g_74F2,new,medium,clip top,src/data/dgroup.asm
+g_74F4,ClipBottomY,g_74F4,new,medium,clip bottom,src/data/dgroup.asm
+g_74F6,CanvasRowBytes,g_74F6,new,medium,current canvas: bytes per row,src/data/dgroup.asm
+g_74FC,ClipLeftX,g_74FC,new,medium,clip left,src/data/dgroup.asm
+g_74FE,ClipRightX,g_74FE,new,medium,clip right,src/data/dgroup.asm
+g_7520,DeadlineHi,g_7520,new,medium,"deadline, high word",src/data/dgroup.asm
+g_7526,DrawRawTransMasks,g_7526,new,medium,plane masks for DrawRawTrans,src/data/dgroup.asm
+g_752A,DrawRleFlipMasks,g_752A,new,medium,plane masks for DrawRleFlip,src/data/dgroup.asm
+g_752E,DrawRleTransMasks,g_752E,new,medium,plane masks for DrawRleTrans,src/data/dgroup.asm
+g_7532,DrawRleTransFastMasks,g_7532,new,medium,plane masks for DrawRleTransFast,src/data/dgroup.asm
+g_7536,DrawRawTransRemapMasks,g_7536,new,medium,plane masks for DrawRawTransRemap,src/data/dgroup.asm
+g_753A,DrawRleTransRemapMasks,g_753A,new,medium,plane masks for DrawRleTransRemap,src/data/dgroup.asm
+g_753E,DrawRleFlipTransMasks,g_753E,new,medium,plane masks for DrawRleFlipTrans,src/data/dgroup.asm
+g_7542,DrawRleFlipTransRemapMasks,g_7542,new,medium,plane masks for DrawRleFlipTransRemap,src/data/dgroup.asm
+g_7546,DrawRleFlipRemapMasks,g_7546,new,medium,plane masks for DrawRleFlipRemap,src/data/dgroup.asm
+g_754A,DrawRleTransRemapFastMasks,g_754A,new,medium,plane masks for DrawRleTransRemapFast,src/data/dgroup.asm
+g_756C,PixelMasks,g_756C,new,medium,plane mask per pixel column,src/data/dgroup.asm
+g_7570,PageTable,g_7570,new,medium,"page table, offsets",src/data/dgroup.asm
+g_7572,PageTableSeg,g_7572,new,medium,"page table, segments",src/data/dgroup.asm
+g_7580,OffscreenOff,g_7580,new,medium,"off-screen canvas, offset",src/data/dgroup.asm
+g_7582,OffscreenSeg,g_7582,new,medium,"off-screen canvas, segment",src/data/dgroup.asm
+g_7584,PageBase,g_7584,new,medium,start address of page 0,src/data/dgroup.asm
+g_75D6,Pot1X,g_75D6,new,medium,game port pot 1 x count,src/data/dgroup.asm
+g_75D8,Pot1Y,g_75D8,new,medium,game port pot 1 y count,src/data/dgroup.asm
+g_75DA,Pot2X,g_75DA,new,medium,game port pot 2 x count,src/data/dgroup.asm
+g_75DC,Pot2Y,g_75DC,new,medium,game port pot 2 y count,src/data/dgroup.asm
+g_75DE,PotBits,g_75DE,new,medium,game port bits read last,src/data/dgroup.asm
+g_75E0,PotButtons,g_75E0,new,medium,game port buttons,src/data/dgroup.asm
+g_7631,AltCallPrev,g_7631,new,medium,word before AltCall,src/data/dgroup.asm
+g_7642,BeforeDialogFn,g_7642,new,medium,far routine called before a dialog,src/data/dgroup.asm
+g_7646,AfterDialogFn,g_7646,new,medium,far routine called after a dialog,src/data/dgroup.asm
+g_7664,ScaleColor,g_7664,new,medium,DrawScaled colour,src/data/dgroup.asm
+g_7665,ScaleColorHi,g_7665,new,medium,"DrawScaled colour, high byte",src/data/dgroup.asm
+g_7666,ScaleMode,g_7666,new,medium,DrawScaled mode,src/data/dgroup.asm
+g_7670,RetraceWait,g_7670,new,medium,retrace wait count from CalibrateRetrace,src/data/dgroup.asm
+g_7674,ScaleMasks,g_7674,new,medium,plane masks for DrawScaled,src/data/dgroup.asm
+g_7678,ScaleMasks2,g_7678,new,medium,second plane mask table for DrawScaled,src/data/dgroup.asm
+g_7679,ScaleEdgeMasks,g_7679,new,medium,edge masks for DrawScaled,src/data/dgroup.asm
+g_767D,ScaleRightMasks,g_767D,new,medium,right edge masks for DrawScaled,src/data/dgroup.asm
+g_7681,ScaleLeftMasks,g_7681,new,medium,left edge masks for DrawScaled,src/data/dgroup.asm
+g_7692,LineMasks,g_7692,new,medium,plane masks for DrawLineClipped,src/data/dgroup.asm
+g_7696,SpanMasks,g_7696,new,medium,plane masks for FillSpanVga,src/data/dgroup.asm
+g_769A,SpanLeftMasks,g_769A,new,medium,left edge masks for FillSpanVga,src/data/dgroup.asm
+g_769B,SpanLeftMasks2,g_769B,new,medium,"left edge masks for FillSpanVga, second table",src/data/dgroup.asm
+g_769F,SpanRightMasks,g_769F,new,medium,right edge masks for FillSpanVga,src/data/dgroup.asm
+g_76DE,AssetExtList,g_76DE,new,medium,extensions LoadAssetMode tries,src/data/dgroup.asm
+g_76F2,IdentityRemap,g_76F2,new,medium,remap table that changes nothing,src/data/dgroup.asm
+g_77B4,RectMasks,g_77B4,new,medium,plane masks for RectSpanPlanes,src/data/dgroup.asm
+g_77B8,RectLeftMasks,g_77B8,new,medium,left edge masks for RectSpanPlanes,src/data/dgroup.asm
+g_77B9,RectLeftMasks2,g_77B9,new,medium,"left edge masks for RectSpanPlanes, second table",src/data/dgroup.asm
+g_77BD,RectRightMasks,g_77BD,new,medium,right edge masks for RectSpanPlanes,src/data/dgroup.asm
+g_77C8,DrawRawFastMasks,g_77C8,new,medium,plane masks for DrawRawFast,src/data/dgroup.asm
+g_77CC,DrawRawTransFastMasks,g_77CC,new,medium,plane masks for DrawRawTransFast,src/data/dgroup.asm
+g_78D2,LineStepLimit,g_78D2,new,medium,line step limit,src/data/dgroup.asm
+g_78D4,LineStepTable,g_78D4,new,medium,line step table,src/data/dgroup.asm
+g_846A,SeqTickCount,g_846A,new,medium,sequencer ticks,src/data/dgroup.asm
+g_846C,SeqBusy,g_846C,new,medium,SeqService running,src/data/dgroup.asm
+g_8498,SfxChannel,g_8498,new,medium,effects channel,src/data/dgroup.asm
+g_84C6,DriverCount,g_84C6,new,medium,sound drivers loaded,src/data/dgroup.asm
+g_84C8,TrackSlots,g_84C8,new,medium,"24 track slots of 58h bytes, offset",src/data/dgroup.asm
+g_84CA,TrackSlotsSeg,g_84CA,new,medium,"track slots, segment",src/data/dgroup.asm
+g_84CC,Voices,g_84CC,new,medium,"32 voice records of 0Ch bytes, offset",src/data/dgroup.asm
+g_84CE,VoicesSeg,g_84CE,new,medium,"voice records, segment",src/data/dgroup.asm
+g_84D0,ChannelMasks,g_84D0,new,medium,channel bit per MIDI channel,src/data/dgroup.asm
+g_84F0,SongHandleLo,g_84F0,new,medium,"last song handle, low word",src/data/dgroup.asm
+g_84F2,SongHandleHi,g_84F2,new,medium,"last song handle, high word",src/data/dgroup.asm
+g_84F4,SeqLock,g_84F4,new,medium,sequencer locked while non-zero,src/data/dgroup.asm
+g_84F6,MidiQueueLen,g_84F6,new,medium,bytes in the MIDI queue,src/data/dgroup.asm
+g_84F8,MidiQueueBusy,g_84F8,new,medium,MIDI queue in use,src/data/dgroup.asm
+g_84FA,TracksMuted,g_84FA,new,medium,tracks muted,src/data/dgroup.asm
+g_84FC,SfxEnabled,g_84FC,new,medium,effects on,src/data/dgroup.asm
+g_84FE,MusicEnabled,g_84FE,new,medium,second sound flag (music),src/data/dgroup.asm
+g_8500,DriverName,g_8500,new,medium,driver file name being loaded,src/data/dgroup.asm
+g_8502,DriverServiceIdx,g_8502,new,medium,driver that needs service (FFh for none),src/data/dgroup.asm
+g_8504,SongCount,g_8504,new,medium,songs loaded,src/data/dgroup.asm
+g_8506,SongPtrs,g_8506,new,medium,"song pointers, offsets",src/data/dgroup.asm
+g_8508,SongPtrsSeg,g_8508,new,medium,"song pointers, segments",src/data/dgroup.asm
+g_8516,TopOfStack,g_8516,new,medium,stack pointer at startup,src/data/dgroup.asm
+g_8518,ExitRoutine,g_8518,new,medium,near routine errors leave through (_exit),src/data/dgroup.asm
+g_851A,DgroupTop,g_851A,new,medium,top offset of DGROUP,src/data/dgroup.asm
+g_8542,OldInt0Vec,g_8542,new,medium,saved INT 0 vector,src/data/dgroup.asm
+g_8544,OldInt0VecSeg,g_8544,new,medium,"saved INT 0 vector, segment",src/data/dgroup.asm
+g_8558,DosMajor,g_8558,new,medium,DOS major version,src/data/dgroup.asm
+g_8573,ArgCount,g_8573,new,medium,argc,src/data/dgroup.asm
+g_8575,ArgVector,g_8575,new,medium,argv,src/data/dgroup.asm
+g_8577,EnvVector,g_8577,new,medium,environ,src/data/dgroup.asm
+g_8580,MathVecSet,g_8580,new,medium,a math error vector was installed,src/data/dgroup.asm
+g_8581,MathVecNum,g_8581,new,medium,its interrupt number,src/data/dgroup.asm
+g_8582,MathVecOld,g_8582,new,medium,its saved vector,src/data/dgroup.asm
+g_8586,StackOverflowFn,g_8586,new,medium,alternate stack-overflow handler (FFFFh for none),src/data/dgroup.asm
+g_858A,StackLimit,g_858A,new,medium,lowest allowed stack pointer,src/data/dgroup.asm
+g_858D,CharTypes,g_858D,new,medium,character type table (bit 4: digit),src/data/dgroup.asm
+g_8694,AtexitPtr,g_8694,new,medium,next free atexit slot,src/data/dgroup.asm
+g_8696,RandSeed,g_8696,new,medium,"rand seed, low word",src/data/dgroup.asm
+g_8698,RandSeedHigh,g_8698,new,medium,"rand seed, high word",src/data/dgroup.asm
+g_86B2,MsgBannerHook,g_86B2,new,medium,far routine called before a runtime message,src/data/dgroup.asm
+g_86B4,MsgBannerHookSeg,g_86B4,new,medium,its segment,src/data/dgroup.asm
+g_876A,StreamExtra,g_876A,new,medium,extra stream records for the standard buffers,src/data/dgroup.asm
+g_880A,LastStream,g_880A,new,medium,last stream record,src/data/dgroup.asm
+g_8871,CflushCount,g_8871,new,medium,stream flush count,src/data/dgroup.asm
+g_8876,FltCvtFn,g_8876,new,medium,float conversion routine,src/data/dgroup.asm
+g_887A,CropZerosFn,g_887A,new,medium,drops trailing zeros,src/data/dgroup.asm
+g_8882,ForceDecPtFn,g_8882,new,medium,forces a decimal point,src/data/dgroup.asm
+g_888A,PositiveFn,g_888A,new,medium,checks the sign,src/data/dgroup.asm
+g_8A1C,FloatMode,g_8A1C,new,medium,float format mode,src/data/dgroup.asm
+g_8A1E,FloatPrecision,g_8A1E,new,medium,float precision,src/data/dgroup.asm
+g_8A20,FloatFlag,g_8A20,new,medium,float format flag,src/data/dgroup.asm
+g_8ABA,FpStatusByte,g_8ABA,new,medium,floating-point status byte,src/data/dgroup.asm
+g_8ABB,FpStatusPad,g_8ABB,new,medium,byte after FpStatusByte,src/data/dgroup.asm
+g_8ABD,FpConstTable,g_8ABD,new,medium,floating-point constants,src/data/dgroup.asm
+g_8AE2,InitHook,g_8AE2,new,medium,near startup hook (0 skips),src/data/dgroup.asm
+g_8AE4,DebugSignature,g_8AE4,new,medium,D6D6h when a debugger hook is present,src/data/dgroup.asm
+g_8AE6,DebugWriteHook,g_8AE6,new,medium,debugger write hook,src/data/dgroup.asm
+g_8AE8,DebugExitHook,g_8AE8,new,medium,debugger exit hook,src/data/dgroup.asm
+g_8AEA,DebugTermHook,g_8AEA,new,medium,debugger termination hook,src/data/dgroup.asm
+g_8AF4,FpHook,g_8AF4,new,medium,floating-point hook,src/data/dgroup.asm
+g_8AF6,FpHookCount,g_8AF6,new,medium,number of floating-point hooks (0 skips),src/data/dgroup.asm
+g_8AF8,FpEnvArg1,g_8AF8,new,medium,first floating-point hook argument,src/data/dgroup.asm
+g_8AFC,FpEnvArg2,g_8AFC,new,medium,second floating-point hook argument,src/data/dgroup.asm
+g_8B08,DgroupSegA,g_8B08,new,medium,DGROUP paragraph (relocated),src/data/dgroup.asm
+g_8B12,NumberWordsSeg,g_8B12,new,medium,paragraph of number_words,src/data/dgroup.asm
+g_8B14,DbFilesSeg,g_8B14,new,medium,paragraph of db_files,src/data/dgroup.asm
+g_8B16,DbFilesSeg2,g_8B16,new,medium,paragraph of db_files,src/data/dgroup.asm
+g_8B18,DbFilesSeg3,g_8B18,new,medium,paragraph of db_files,src/data/dgroup.asm
+g_8B1A,ListDialogDataSeg,g_8B1A,new,medium,paragraph of the list dialog data,src/data/dgroup.asm
+g_8B1C,DgroupSegB,g_8B1C,new,medium,DGROUP paragraph (relocated),src/data/dgroup.asm
+g_8B1E,InputEventDataSeg,g_8B1E,new,medium,paragraph of the input event data,src/data/dgroup.asm
+g_8D04,DgroupSegC,g_8D04,new,medium,DGROUP paragraph (relocated),src/data/dgroup.asm
+g_8D06,DgroupSegD,g_8D06,new,medium,DGROUP paragraph (relocated),src/data/dgroup.asm
+g_8D08,DgroupSegE,g_8D08,new,medium,DGROUP paragraph (relocated),src/data/dgroup.asm
+g_8D0A,DgroupSegF,g_8D0A,new,medium,DGROUP paragraph (relocated),src/data/dgroup.asm
+g_8D0C,PaletteFlagsSeg,g_8D0C,new,medium,paragraph of palette_flags,src/data/dgroup.asm
+g_8D0E,PaletteFlagsSeg2,g_8D0E,new,medium,paragraph of palette_flags,src/data/dgroup.asm
+g_8D10,WorkBufferSeg,g_8D10,new,medium,paragraph of work_buffer,src/data/dgroup.asm
+g_8D12,WorkBufferSeg2,g_8D12,new,medium,paragraph of work_buffer,src/data/dgroup.asm
+g_8D14,WorkBufferSeg3,g_8D14,new,medium,paragraph of work_buffer,src/data/dgroup.asm
+g_8EDC,UnpackSpare1,g_8EDC,new,medium,word before InPtr,src/data/dgroup_bss.asm
+g_8EE0,UnpackSpare2,g_8EE0,new,medium,word before MapPair,src/data/dgroup_bss.asm
+g_8EE6,UnpackSpare3,g_8EE6,new,medium,word before BitCount,src/data/dgroup_bss.asm
+g_8EEA,SentencePtr,g_8EEA,new,medium,current speech sentence,src/data/dgroup_bss.asm
+g_8EEC,SentenceSeg,g_8EEC,new,medium,its segment,src/data/dgroup_bss.asm
+g_8EEE,PauseSampleOff,g_8EEE,new,medium,"silent sample, offset",src/data/dgroup_bss.asm
+g_8EF0,PauseSampleSeg,g_8EF0,new,medium,"silent sample, segment",src/data/dgroup_bss.asm
+g_8EF2,WantedList,g_8EF2,new,medium,"samples wanted, offset",src/data/dgroup_bss.asm
+g_8EF4,WantedListSeg,g_8EF4,new,medium,"samples wanted, segment",src/data/dgroup_bss.asm
+g_8EF6,SpeechBank,g_8EF6,new,medium,"speech bank, offset",src/data/dgroup_bss.asm
+g_8EF8,SpeechBankSeg,g_8EF8,new,medium,"speech bank, segment",src/data/dgroup_bss.asm
+g_8EFA,MoveBlockOff,g_8EFA,new,medium,"MoveMemBlock target, offset",src/data/dgroup_bss.asm
+g_8EFC,MoveBlockSeg,g_8EFC,new,medium,"MoveMemBlock target, segment",src/data/dgroup_bss.asm
+g_8F56,ShadeTableOff,g_8F56,new,medium,"shade table being built, offset",src/data/dgroup_bss.asm
+g_8F58,ShadeTableSeg,g_8F58,new,medium,"shade table being built, segment",src/data/dgroup_bss.asm
+g_8F5A,ShadeFactorR,g_8F5A,new,medium,red factor,src/data/dgroup_bss.asm
+g_8F5C,ShadeFactorG,g_8F5C,new,medium,green factor,src/data/dgroup_bss.asm
+g_8F5E,ShadeFactorB,g_8F5E,new,medium,blue factor,src/data/dgroup_bss.asm
+g_8F60,ShadeR,g_8F60,new,medium,red result,src/data/dgroup_bss.asm
+g_8F62,ShadeG,g_8F62,new,medium,green result,src/data/dgroup_bss.asm
+g_8F64,ShadeB,g_8F64,new,medium,blue result,src/data/dgroup_bss.asm
+g_8F66,ShadeGrey,g_8F66,new,medium,grey the result,src/data/dgroup_bss.asm
+g_8F68,MidiMsg,g_8F68,new,medium,MIDI message being sent: status byte,src/data/dgroup_bss.asm
+g_8F69,MidiMsg1,g_8F69,new,medium,first data byte,src/data/dgroup_bss.asm
+g_8F6A,MidiMsg2,g_8F6A,new,medium,second data byte,src/data/dgroup_bss.asm
+g_8FA8,PatchMsg,g_8FA8,new,medium,patch message: status byte,src/data/dgroup_bss.asm
+g_8FA9,PatchMsg1,g_8FA9,new,medium,patch message byte 1,src/data/dgroup_bss.asm
+g_8FAA,PatchMsg2,g_8FAA,new,medium,patch message byte 2,src/data/dgroup_bss.asm
+g_8FAB,PatchMsg3,g_8FAB,new,medium,patch message byte 3,src/data/dgroup_bss.asm
+g_8FAC,SongFileName,g_8FAC,new,medium,song file name,src/data/dgroup_bss.asm
+g_8FC0,SongFileNameEnd,g_8FC0,new,medium,end of the song file name,src/data/dgroup_bss.asm
+g_8FC2,SongBankNum,g_8FC2,new,medium,song bank number,src/data/dgroup_bss.asm
+g_8FC6,SfxMsg,g_8FC6,new,medium,effect message: status byte,src/data/dgroup_bss.asm
+g_8FC7,SfxMsg1,g_8FC7,new,medium,effect message byte 1,src/data/dgroup_bss.asm
+g_8FC8,SfxMsg2,g_8FC8,new,medium,effect message byte 2,src/data/dgroup_bss.asm
+g_8FCE,DrvTableName,g_8FCE,new,medium,"driver table: name, entry -8",src/data/dgroup_bss.asm
+g_8FD0,DrvTableSeg,g_8FD0,new,medium,"driver table: segment, entry -6",src/data/dgroup_bss.asm
+g_8FD6,DrvTableInit,g_8FD6,new,medium,driver table: init routine (38h-byte entries),src/data/dgroup_bss.asm
+g_8FDA,DrvTableCall04,g_8FDA,new,medium,driver table: routine +4,src/data/dgroup_bss.asm
+g_8FDE,DrvTableCall08,g_8FDE,new,medium,driver table: routine +8,src/data/dgroup_bss.asm
+g_8FE2,DrvTableShutdown,g_8FE2,new,medium,driver table: shutdown routine,src/data/dgroup_bss.asm
+g_8FE6,DrvTableCall10,g_8FE6,new,medium,driver table: routine +10h,src/data/dgroup_bss.asm
+g_8FEA,DrvTableService,g_8FEA,new,medium,driver table: service routine,src/data/dgroup_bss.asm
+g_8FEE,DrvTableNeedsService,g_8FEE,new,medium,driver table: needs-service routine,src/data/dgroup_bss.asm
+g_8FF2,DrvTableLoadBank,g_8FF2,new,medium,driver table: load bank routine,src/data/dgroup_bss.asm
+g_9002,DrvTableSendMidi,g_9002,new,medium,driver table: send MIDI routine,src/data/dgroup_bss.asm
+g_900A,DrvTablePlaySample,g_900A,new,medium,driver table: play sample routine,src/data/dgroup_bss.asm
+g_9096,StrBufPtr,g_9096,new,medium,sprintf string stream: pointer,src/data/dgroup_bss.asm
+g_9098,StrBufCnt,g_9098,new,medium,sprintf string stream: space left,src/data/dgroup_bss.asm
+g_909A,StrBufBase,g_909A,new,medium,sprintf string stream: base,src/data/dgroup_bss.asm
+g_909C,StrBufFlag,g_909C,new,medium,sprintf string stream: flags,src/data/dgroup_bss.asm
+g_909E,FloatArgPtr,g_909E,new,medium,float argument being formatted,src/data/dgroup_bss.asm
+g_90A8,FltOutFlags,g_90A8,new,medium,float output flags,src/data/dgroup_bss.asm
+g_90A9,FltOutFlags1,g_90A9,new,medium,"float output flags, high byte",src/data/dgroup_bss.asm
+g_90AA,FltOutExp,g_90AA,new,medium,float output exponent,src/data/dgroup_bss.asm
+g_AE90,HeapSizeLo,g_AE90,new,medium,"heap size, low word",src/data/dgroup_bss.asm
+g_AE92,HeapSizeHi,g_AE92,new,medium,"heap size, high word",src/data/dgroup_bss.asm
+g_AE98,DialogData,g_AE98,new,medium,"dialog data, offset",src/data/dgroup_bss.asm
+g_AE9A,DialogDataSeg,g_AE9A,new,medium,"dialog data, segment",src/data/dgroup_bss.asm
+g_AEA0,HeapVar0,g_AEA0,new,medium,heap variable,src/data/dgroup_bss.asm
+g_AEA2,HeapList,g_AEA2,new,medium,far heap list,src/data/dgroup_bss.asm
+g_AEA4,HeapVar1,g_AEA4,new,medium,heap variable,src/data/dgroup_bss.asm
+g_AEA6,HeapVar2,g_AEA6,new,medium,heap variable,src/data/dgroup_bss.asm
+g_AEA8,HeapVar3,g_AEA8,new,medium,heap variable,src/data/dgroup_bss.asm
+g_AEAA,HeapVar4,g_AEAA,new,medium,heap variable,src/data/dgroup_bss.asm
+g_AEAC,HeapVar5,g_AEAC,new,medium,heap variable,src/data/dgroup_bss.asm
+g_AEAE,HeapVar6,g_AEAE,new,medium,heap variable,src/data/dgroup_bss.asm
+g_AEB0,HeapVar7,g_AEB0,new,medium,heap variable,src/data/dgroup_bss.asm
+g_AEB2,MemBlock1Off,g_AEB2,new,medium,"memory block 1, offset",src/data/dgroup_bss.asm
+g_AEB4,MemBlock1Seg,g_AEB4,new,medium,"memory block 1, segment",src/data/dgroup_bss.asm
+g_AEB6,MemBlock2Off,g_AEB6,new,medium,"memory block 2, offset",src/data/dgroup_bss.asm
+g_AEB8,MemBlock2Seg,g_AEB8,new,medium,"memory block 2, segment",src/data/dgroup_bss.asm
+g_AEBA,MemBlock3Off,g_AEBA,new,medium,"memory block 3, offset",src/data/dgroup_bss.asm
+g_AEBC,MemBlock3Seg,g_AEBC,new,medium,"memory block 3, segment",src/data/dgroup_bss.asm
+g_AECE,InputFlags,g_AECE,new,medium,input device flags,src/data/dgroup_bss.asm
+g_AED0,InputQueue,g_AED0,new,medium,input event queue,src/data/dgroup_bss.asm
+g_AFD0,CursorX,g_AFD0,new,medium,cursor x,src/data/dgroup_bss.asm
+g_AFD2,CursorY,g_AFD2,new,medium,cursor y,src/data/dgroup_bss.asm
+g_B06A,PadStatePtr,g_B06A,new,medium,pad state being updated,src/data/dgroup_bss.asm
+g_B08E,HotKeyFn,g_B08E,new,medium,far routine for hot keys,src/data/dgroup_bss.asm
+g_B090,HotKeyFnSeg,g_B090,new,medium,its segment,src/data/dgroup_bss.asm
+g_B0C4,TeamPalette1,g_B0C4,new,medium,first team palette,src/data/dgroup_bss.asm
+g_B1C4,TeamPalette2,g_B1C4,new,medium,second team palette,src/data/dgroup_bss.asm
+g_B2CA,ArenaJingleSet,g_B2CA,new,medium,arena jingle per team,src/data/dgroup_bss.asm
+g_B2CC,BoxSaveX,g_B2CC,new,medium,box save x,src/data/dgroup_bss.asm
+g_B2CE,BoxSaveY,g_B2CE,new,medium,box save y,src/data/dgroup_bss.asm
+g_B2D0,YesNoText,g_B2D0,new,medium,"AskYesNo text, offset",src/data/dgroup_bss.asm
+g_B2D2,YesNoTextSeg,g_B2D2,new,medium,"AskYesNo text, segment",src/data/dgroup_bss.asm
+g_B2D4,MessageBoxSel,g_B2D4,new,medium,message box selection (FFFFh for none),src/data/dgroup_bss.asm
+g_B2D6,ArenaJingleArg1,g_B2D6,new,medium,arena jingle argument,src/data/dgroup_bss.asm
+g_B2D8,ArenaJingleArg2,g_B2D8,new,medium,arena jingle argument,src/data/dgroup_bss.asm
+g_B2DA,JingleSongOff,g_B2DA,new,medium,"jingle song, offset",src/data/dgroup_bss.asm
+g_B2DC,JingleSongSeg,g_B2DC,new,medium,"jingle song, segment",src/data/dgroup_bss.asm
+g_B2DE,JingleBufOff,g_B2DE,new,medium,"jingle buffer, offset",src/data/dgroup_bss.asm
+g_B2E0,JingleBufSeg,g_B2E0,new,medium,"jingle buffer, segment",src/data/dgroup_bss.asm
+g_B2E2,JingleTempo,g_B2E2,new,medium,jingle tempo (14h),src/data/dgroup_bss.asm
+g_B2E7,JingleChannel,g_B2E7,new,medium,jingle channel (FFh),src/data/dgroup_bss.asm
+g_B2E8,JingleVolume,g_B2E8,new,medium,jingle volume (3Fh),src/data/dgroup_bss.asm
+g_B2E9,JinglePan,g_B2E9,new,medium,jingle pan,src/data/dgroup_bss.asm
+g_B2EE,ArenaJingleA,g_B2EE,new,medium,arena jingle table,src/data/dgroup_bss.asm
+g_B2F0,ArenaJingleASeg,g_B2F0,new,medium,"arena jingle table, segment",src/data/dgroup_bss.asm
+g_B2FA,ArenaJingleB,g_B2FA,new,medium,arena jingle table,src/data/dgroup_bss.asm
+g_B2FC,ArenaJingleBSeg,g_B2FC,new,medium,"arena jingle table, segment",src/data/dgroup_bss.asm
+g_B31E,ArenaJingleC,g_B31E,new,medium,arena jingle table,src/data/dgroup_bss.asm
+g_B320,ArenaJingleCSeg,g_B320,new,medium,"arena jingle table, segment",src/data/dgroup_bss.asm
+g_B336,ArenaJingleD,g_B336,new,medium,arena jingle table,src/data/dgroup_bss.asm
+g_B338,ArenaJingleDSeg,g_B338,new,medium,"arena jingle table, segment",src/data/dgroup_bss.asm
+g_B34E,VgaSave0Off,g_B34E,new,medium,"saved plane 0, offset",src/data/dgroup_bss.asm
+g_B350,VgaSave0Seg,g_B350,new,medium,"saved plane 0, segment",src/data/dgroup_bss.asm
+g_B352,VgaSave1Off,g_B352,new,medium,"saved plane 1, offset",src/data/dgroup_bss.asm
+g_B354,VgaSave1Seg,g_B354,new,medium,"saved plane 1, segment",src/data/dgroup_bss.asm
+g_B356,VgaSave2Off,g_B356,new,medium,"saved plane 2, offset",src/data/dgroup_bss.asm
+g_B358,VgaSave2Seg,g_B358,new,medium,"saved plane 2, segment",src/data/dgroup_bss.asm
+g_B35A,VgaSave3Off,g_B35A,new,medium,"saved plane 3, offset",src/data/dgroup_bss.asm
+g_B35C,VgaSave3Seg,g_B35C,new,medium,"saved plane 3, segment",src/data/dgroup_bss.asm
+g_DF72,RetraceCount,g_DF72,new,medium,retrace count measured by CalibrateRetrace,src/data/dgroup_bss.asm
+g_DF74,MidiQueue,g_DF74,new,medium,128-byte MIDI queue,src/data/dgroup_bss.asm
+g_DF75,MidiQueue1,g_DF75,new,medium,"MIDI queue, second byte",src/data/dgroup_bss.asm
+g_DFF4,PatchBank,g_DFF4,new,medium,"patch bank, offset",src/data/dgroup_bss.asm
+g_DFF6,PatchBankSeg,g_DFF6,new,medium,"patch bank, segment",src/data/dgroup_bss.asm
+g_DFF8,ChannelUsed,g_DFF8,new,medium,"channel in use, per MIDI channel",src/data/dgroup_bss.asm
+g_E008,LoadedSongs,g_E008,new,medium,"10 loaded songs, offsets",src/data/dgroup_bss.asm
+g_E00A,LoadedSongsSeg,g_E00A,new,medium,"loaded songs, segments",src/data/dgroup_bss.asm
+g_E030,SongParts,g_E030,new,medium,parts tables of the loaded songs,src/data/dgroup_bss.asm
+g_E032,SongPartsSeg,g_E032,new,medium,"parts tables, segments",src/data/dgroup_bss.asm
+g_E058,SongSeqs,g_E058,new,medium,sequence tables of the loaded songs,src/data/dgroup_bss.asm
+g_E05A,SongSeqsSeg,g_E05A,new,medium,"sequence tables, segments",src/data/dgroup_bss.asm
+g_E080,SeqTimerSlot,g_E080,new,medium,timer slot of the sequencer,src/data/dgroup_bss.asm
+g_E082,SeqTimerSlotSeg,g_E082,new,medium,"timer slot, segment",src/data/dgroup_bss.asm
+g_E084,DriverTypes,g_E084,new,medium,driver type per driver,src/data/dgroup_bss.asm
+g_E086,DriverEntrySeg,g_E086,new,medium,driver entry segment,src/data/dgroup_bss.asm
+g_E08C,VoiceFreeList,g_E08C,new,medium,free voice list,src/data/dgroup_bss.asm
+g_E08E,VoiceFreeListSeg,g_E08E,new,medium,"free voice list, segment",src/data/dgroup_bss.asm
+g_E090,VoiceListNext,g_E090,new,medium,voice list links,src/data/dgroup_bss.asm
+g_E092,VoiceListNextSeg,g_E092,new,medium,"voice list links, segment",src/data/dgroup_bss.asm
+g_E094,VoiceListPrev,g_E094,new,medium,voice list back links,src/data/dgroup_bss.asm
+g_E096,VoiceListPrevSeg,g_E096,new,medium,"voice list back links, segment",src/data/dgroup_bss.asm
+g_E09D,VoiceListId,g_E09D,new,medium,voice list id byte,src/data/dgroup_bss.asm
+g_E11C,VoiceListEnd,g_E11C,new,medium,end of the voice lists,src/data/dgroup_bss.asm
+g_E11E,VoiceListEndSeg,g_E11E,new,medium,"end of the voice lists, segment",src/data/dgroup_bss.asm
+g_E120,VoiceListFlags,g_E120,new,medium,voice list flags,src/data/dgroup_bss.asm
+RandomRange,randomd0,RandomRange,94G middle94.asm,high,"same generator: seed*BB40E62Dh+1, result scaled to the range",src/pc/random.asm
+RandSeedLo,seed,RandSeedLo,94G ram94.asm,high,the seed randomd0 steps; the high word is seed+2,src/data/dgroup.asm
+CrowdLevel,Crowdlevel,CrowdLevel,94G ram94.asm,medium,crowd noise level the crowd update ramps,src/data/dgroup.asm
+LastSfx,lastsfx,LastSfx,94G ram94.asm,medium,last sound effect played,src/data/dgroup.asm
+JumpAhead,_atoi,JumpAhead,MSC,high,a near jump to _atol: atoi is atol in this model,src/lib/msc_runtime.asm
+RetOnly,_fstrlen,RetOnly,MSC,high,"repne scasb over a far string, returns the count without the null",src/lib/msc_runtime.asm
+RetOnly2,_fstrcmp,RetOnly2,MSC,high,"scans the second far string for its length, then repe cmpsb; returns -1, 0 or 1",src/lib/msc_runtime.asm
+seg000:1D8E,_stackavail,,MSC,high,"SP minus StackLimit, 0 when below it; was kept as bytes",src/lib/msc_runtime.asm
+g_6485,str_Locatesound44sSoundNot,,new,high,"label added: FindFarAlt's message, second string after str_Locateshape44sShapeNot",src/data/dgroup.asm

@@ -1,0 +1,49 @@
+; ShapeBankSize: bytes needed for a bank of shapes.
+        db 0x56, 0xF6
+        pop si
+        pop di
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; ShapeBankSize                                               1606:0006  94 PC
+; Total size of a shape table's shapes and index.
+;-----------------------------------------------------------------------------
+ShapeBankSize:
+        enter 0xa, 0x0
+        push di
+        push si
+        push word [bp + 0x8]
+        push word [bp + 0x6]
+        call 0x03A3:TableCount
+        add sp, 0x4
+        mov [bp - 0x6], ax
+        inc ax
+        inc ax
+        shl ax, byte 0x3
+        cwd
+        mov [bp - 0xa], ax
+        mov [bp - 0x8], dx
+        db 0x33, 0xF6                           ; insn: xor si, si
+        jmp short .2
+.1:
+        push si
+        push word [bp + 0x8]
+        push word [bp + 0x6]
+        call 0x03A3:TableAt
+        add sp, 0x6
+        db 0x8B, 0xF8                           ; insn: mov di, ax
+        mov es, dx
+        mov ax, [es:di + 0x2]
+        imul word [es:di]
+        shl ax, byte 0x3
+        db 0x2B, 0xD2                           ; insn: sub dx, dx
+        add ax, strict word 0x10
+        db 0x13, 0xD2                           ; insn: adc dx, dx
+        add [bp - 0xa], ax
+        adc [bp - 0x8], dx
+        inc si
+.2:
+        cmp [bp - 0x6], si
+        jg short .1
+        mov ax, [bp - 0xa]

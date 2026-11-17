@@ -1,6 +1,6 @@
 # START HERE (instructions for the agent)
 
-Read this file, then `SEGMENT_AGENT.md` (rules, queue and history), `CONTRIBUTING.md` and `docs/HANDOFF.md`.
+Read this file, then `CONTRIBUTING.md` (gates, names, folders, comment rules), `docs/RULES.md` and `docs/HANDOFF.md`.
 
 This repo is a disassembly only: labelled 16-bit x86 assembly (NASM) that reassembles to the byte-identical `HOCKEY.EXE`. No C, no compiler.
 
@@ -21,8 +21,12 @@ NASM 2.15+ (`apt install nasm` / `brew install nasm`) and Python 3. If the EXE i
 
 ## 3. Work loop
 
-Run `PROMPT.md` once per segment, in file order. After each: MATCH, `sh tools/verify_segment.sh <segment>`, commit, push, update `docs/HANDOFF.md`.
-Stop after one segment group (about 8 segments or 32 KB) and report.
+Every byte of `HOCKEY.EXE` is source: every routine and variable is named and commented, in the folders described in
+`CONTRIBUTING.md`. The files are kept by hand (the generator that first wrote them is in `tools/archive/`).
+For a change: edit, `./build.sh` (MATCH), `python3 tools/make_stubs.py` when a label used across files changed,
+`sh tools/verify_all.sh`, `python3 tools/format_asm.py --check`, `python3 tools/check_comments.py`, commit, push,
+open a PR to `main`, update `docs/HANDOFF.md`. The game logic lives in the external `.OVL` files, which this repo does
+not disassemble yet.
 
 ## 4. When stuck
 

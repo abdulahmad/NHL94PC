@@ -1,7 +1,6 @@
-;	Segment build for header/mz_header.asm: sets its origin and the outside labels it uses, then includes the file on its own
-;	for checking against the EXE (tools/verify_segment.py mz_header).
+;	Segment build for header/mz_header.asm: sets its origin and the outside labels it uses (their values in the
+;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
-; Outside addresses, read from the retail EXE. Equates only (the full build has the labels).
-__astart	equ	0x82F
+__astart		equ	0x82F
 %include "header/mz_header.asm"

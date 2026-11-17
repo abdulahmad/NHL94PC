@@ -1,0 +1,286 @@
+; EA sound library: links a loaded driver into memory, through EMS when it is there.
+
+;-----------------------------------------------------------------------------
+; DrvLinearToFar2                                            1880:0000  EACLIB
+; Second copy of DrvLinearToFar.
+;-----------------------------------------------------------------------------
+DrvLinearToFar2:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        push ds
+        mov ax, DGROUP
+        mov ds, ax
+        mov ax, [bp + 0x8]
+        mov dx, [bp + 0xa]
+        call 0x03A3:LinearToFarRegs
+        pop ds
+        leave
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; DrvEmsMap2                                                 1880:0018  EACLIB
+; Second copy of DrvEmsMap.
+;-----------------------------------------------------------------------------
+DrvEmsMap2:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        push ds
+        mov ax, DGROUP
+        mov ds, ax
+        push word [bp + 0xa]
+        push word [bp + 0x8]
+        call 0x03A3:EmsMapFrame
+        add sp, 0x4
+        pop ds
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; LinkDriverMode                                             1880:0032  EACLIB
+; Relocates a loaded driver image and fills the driver table.
+;-----------------------------------------------------------------------------
+LinkDriverMode:
+        enter 0x2, 0x0
+        push di
+        push si
+        push ds
+        mov ax, DGROUP
+        mov ds, ax
+        mov di, [bp + 0x8]
+        mov ax, [bp + 0xa]
+        db 0x0B, 0xC7                           ; insn: or ax, di
+        jz short .1
+        cmp word [bp + 0x6], 0x0
+        jnz short .2
+.1:
+        jmp near .12
+.2:
+        push 0x1
+        push word [bp + 0xa]
+        push di
+        call 0x18A9:RelocateMzImage
+        add sp, 0x6
+        cwd
+        push dx
+        push ax
+        push word [bp + 0xa]
+        push di
+        call 0x14DB:ResizeRecByName
+        add sp, 0x8
+        mov word [bp - 0x2], 0x0
+        mov bx, [bp - 0x2]
+        mov cx, [bp + 0x8]
+        mov di, [bp + 0x6]
+        jmp short .4
+.3:
+        db 0x8B, 0xC3                           ; insn: mov ax, bx
+        shl ax, byte 0x2
+        mov es, [bp + 0xa]
+        db 0x8B, 0xF1                           ; insn: mov si, cx
+        les si, [es:si]
+        db 0x03, 0xF0                           ; insn: add si, ax
+        mov ax, [es:si + 0x2]
+        or ax, [es:si]
+        jz short .5
+        inc bx
+.4:
+        cmp bx, 0x1e
+        jl short .3
+.5:
+        mov es, [bp + 0xa]
+        db 0x8B, 0xF1                           ; insn: mov si, cx
+        les si, [es:si]
+        mov ax, [es:si]
+        mov dx, [es:si + 0x2]
+        mov [di], ax
+        mov [di + 0x2], dx
+        mov es, [bp + 0xa]
+        db 0x8B, 0xF1                           ; insn: mov si, cx
+        les si, [es:si]
+        mov ax, [es:si + 0x4]
+        mov dx, [es:si + 0x6]
+        mov [di + 0x4], ax
+        mov [di + 0x6], dx
+        mov es, [bp + 0xa]
+        db 0x8B, 0xF1                           ; insn: mov si, cx
+        les si, [es:si]
+        mov ax, [es:si + 0x8]
+        mov dx, [es:si + 0xa]
+        mov [di + 0x8], ax
+        mov [di + 0xa], dx
+        mov es, [bp + 0xa]
+        db 0x8B, 0xF1                           ; insn: mov si, cx
+        les si, [es:si]
+        mov ax, [es:si + 0xc]
+        mov dx, [es:si + 0xe]
+        mov [di + 0xc], ax
+        mov [di + 0xe], dx
+        mov es, [bp + 0xa]
+        db 0x8B, 0xF1                           ; insn: mov si, cx
+        les si, [es:si]
+        mov ax, [es:si + 0x10]
+        mov dx, [es:si + 0x12]
+        mov [di + 0x10], ax
+        mov [di + 0x12], dx
+        mov es, [bp + 0xa]
+        db 0x8B, 0xF1                           ; insn: mov si, cx
+        les si, [es:si]
+        mov ax, [es:si + 0x14]
+        mov dx, [es:si + 0x16]
+        mov [di + 0x14], ax
+        mov [di + 0x16], dx
+        mov es, [bp + 0xa]
+        db 0x8B, 0xF1                           ; insn: mov si, cx
+        les si, [es:si]
+        mov ax, [es:si + 0x18]
+        mov dx, [es:si + 0x1a]
+        mov [di + 0x18], ax
+        mov [di + 0x1a], dx
+        mov es, [bp + 0xa]
+        db 0x8B, 0xF1                           ; insn: mov si, cx
+        les si, [es:si]
+        mov ax, [es:si + 0x1c]
+        mov dx, [es:si + 0x1e]
+        mov [di + 0x1c], ax
+        mov [di + 0x1e], dx
+        mov es, [bp + 0xa]
+        db 0x8B, 0xF1                           ; insn: mov si, cx
+        les si, [es:si]
+        mov ax, [es:si + 0x20]
+        mov dx, [es:si + 0x22]
+        mov [di + 0x20], ax
+        mov [di + 0x22], dx
+        mov es, [bp + 0xa]
+        db 0x8B, 0xF1                           ; insn: mov si, cx
+        les si, [es:si]
+        mov ax, [es:si + 0x24]
+        mov dx, [es:si + 0x26]
+        mov [di + 0x24], ax
+        mov [di + 0x26], dx
+        mov es, [bp + 0xa]
+        db 0x8B, 0xF1                           ; insn: mov si, cx
+        les si, [es:si]
+        mov ax, [es:si + 0x28]
+        mov dx, [es:si + 0x2a]
+        mov [di + 0x28], ax
+        mov [di + 0x2a], dx
+        mov es, [bp + 0xa]
+        db 0x8B, 0xF1                           ; insn: mov si, cx
+        les si, [es:si]
+        mov ax, [es:si + 0x2c]
+        mov dx, [es:si + 0x2e]
+        mov [di + 0x2c], ax
+        mov [di + 0x2e], dx
+        mov es, [bp + 0xa]
+        db 0x8B, 0xF1                           ; insn: mov si, cx
+        les si, [es:si]
+        mov ax, [es:si + 0x30]
+        mov dx, [es:si + 0x32]
+        mov [di + 0x30], ax
+        mov [di + 0x32], dx
+        cmp bx, 0xd
+        jng short .6
+        mov es, [bp + 0xa]
+        db 0x8B, 0xD9                           ; insn: mov bx, cx
+        les bx, [es:bx]
+        mov ax, [es:bx + 0x34]
+        mov dx, [es:bx + 0x36]
+        mov [di + 0x34], ax
+        mov [di + 0x36], dx
+.6:
+        db 0x33, 0xDB                           ; insn: xor bx, bx
+        mov ds, [bp + 0xa]
+        jmp short .8
+.7:
+        db 0x8B, 0xC3                           ; insn: mov ax, bx
+        shl ax, byte 0x2
+        db 0x8B, 0xF1                           ; insn: mov si, cx
+        les si, [si + 0x4]
+        db 0x03, 0xF0                           ; insn: add si, ax
+        mov ax, [es:si + 0x2]
+        or ax, [es:si]
+        jz short .9
+        inc bx
+.8:
+        cmp bx, 0x1e
+        jl short .7
+.9:
+        db 0x8B, 0xF1                           ; insn: mov si, cx
+        les si, [si + 0x4]
+        mov ax, [es:si + 0x2]
+        or ax, [es:si]
+        jz short .11
+        cmp bx, 0x8
+        jng short .10
+        db 0x8B, 0xF1                           ; insn: mov si, cx
+        les si, [si + 0x4]
+        les si, [es:si + 0x20]
+        mov word [es:si], 0x0
+        mov word [es:si + 0x2], 0x1880
+.10:
+        cmp bx, 0x9
+        jng short .11
+        db 0x8B, 0xD9                           ; insn: mov bx, cx
+        les bx, [bx + 0x4]
+        les bx, [es:bx + 0x24]
+        mov word [es:bx], 0x18
+        mov word [es:bx + 0x2], 0x1880
+.11:
+        mov ax, 0x1
+        jmp short .14
+.12:
+        cmp word [bp + 0xc], 0x0
+        jz short .13
+        push word 0x84a8
+        call 0x0F4A:FatalError
+        pop bx
+.13:
+        db 0x33, 0xC0                           ; insn: xor ax, ax
+.14:
+        pop ds
+        pop si
+        pop di
+        leave
+        retf
+        db 0x90, 0x90
+
+;-----------------------------------------------------------------------------
+; LinkDriver0                                                1880:0252  EACLIB
+; LinkDriverMode with mode 0.
+;-----------------------------------------------------------------------------
+LinkDriver0:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        push ds
+        mov ax, DGROUP
+        mov ds, ax
+        push 0x0
+        push word [bp + 0xa]
+        push word [bp + 0x8]
+        push word [bp + 0x6]
+        call 0x1880:LinkDriverMode
+        add sp, 0x8
+        pop ds
+        leave
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; LinkDriver                                                 1880:0272  EACLIB
+; LinkDriverMode with mode 1.
+;-----------------------------------------------------------------------------
+LinkDriver:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        push ds
+        mov ax, DGROUP
+        mov ds, ax
+        push 0x1
+        push word [bp + 0xa]
+        push word [bp + 0x8]
+        push word [bp + 0x6]
+        call 0x1880:LinkDriverMode
+        add sp, 0x8
+        pop ds
+        leave
