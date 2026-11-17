@@ -554,7 +554,7 @@ ScanSavedGames:
         lea ax, [bp - 0x2c]
         push ax
         push 0x10
-        push word 0xee2
+        push word str_Lp_4
         call 0x0000:_dos_findfirst
         add sp, 0x6
         db 0x0B, 0xC0                           ; insn: or ax, ax

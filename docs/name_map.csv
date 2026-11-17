@@ -3458,9 +3458,9 @@ g_01D9,gsumtail_shots2,g_01D9,new,medium,game summary tail: shots of the second 
 g_08FC,ScreenRowStride,g_08FC,new,medium,bytes per row of the planar screen (50h or 52h),src/data/dgroup.asm
 g_08FE,RinkTilesPtr,g_08FE,new,medium,far pointer (offset) to the loaded rink tiles,src/data/dgroup.asm
 g_0900,RinkTilesSeg,g_0900,new,medium,its segment,src/data/dgroup.asm
-g_0EDC,FileDlgSpecs,g_0EDC,new,medium,file dialog table: pointers to the file patterns per dialog,src/data/dgroup.asm
-g_0EDE,FileDlgSpec2,g_0EDE,new,medium,second file pattern pointer,src/data/dgroup.asm
-g_0EE0,FileDlgSpec3,g_0EE0,new,medium,third file pattern pointer,src/data/dgroup.asm
+g_0EDC,FileDlgSpecs,g_0EDC,new,high,"file dialog table: pointer to each dialog's saved list state (savedcount2, savedcount3, savedcount1)",src/data/dgroup.asm
+g_0EDE,FileDlgSpec2,g_0EDE,new,high,list state pointer of the second dialog,src/data/dgroup.asm
+g_0EE0,FileDlgSpec3,g_0EE0,new,high,list state pointer of the third dialog,src/data/dgroup.asm
 g_0F10,str_AllFiles,g_0F10,new,medium,string '*.*',src/data/dgroup.asm
 g_0F28,DelFileName,g_0F28,new,medium,far pointer (offset) to the saved game DeleteSavedGame removes,src/data/dgroup.asm
 g_0F2A,DelFileNameSeg,g_0F2A,new,medium,its segment,src/data/dgroup.asm

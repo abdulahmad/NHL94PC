@@ -1014,13 +1014,15 @@ str_Gsummary_4:                                 ; string 'gsummary'; used by MEN
 str_LpGameSav:                                  ; string '.lp\game.sav'; used by MENUS
         db '.lp\game.sav', 0x00
         db 0x6C, 0x32, 0x00
-FileDlgSpecs:                                   ; file dialog table: pointers to the file patterns per dialog;
-                                                ; used by MENUS
-        db 0xDC, 0xC0
-FileDlgSpec2:                                   ; second file pattern pointer; used by MENUS
-        db 0x64, 0xC1
-FileDlgSpec3:                                   ; third file pattern pointer; used by MENUS
-        db 0x54, 0xC0, '*.lp', 0x00
+FileDlgSpecs:                                   ; file dialog table: pointer to the saved game list state
+                                                ; (count, selection, top, rows) of each dialog; used by MENUS
+        dw savedcount2
+FileDlgSpec2:                                   ; list state of the second dialog; used by MENUS
+        dw savedcount3
+FileDlgSpec3:                                   ; list state of the third dialog; used by MENUS
+        dw savedcount1
+str_Lp_4:                                       ; string '*.lp'; used by ScanSavedGames
+        db '*.lp', 0x00
 str_Po_3:                                       ; string '*.po'; used by MENUS
         db '*.po', 0x00
 str_Nhl_6:                                      ; string '*.nhl'; used by MENUS

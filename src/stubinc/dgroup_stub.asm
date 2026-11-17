@@ -9,8 +9,8 @@ str_PowerPlay_3		equ	0xC
 str_Penalties_2		equ	0x17
 str_FaceoffsWon		equ	0x21
 str_BodyChecks		equ	0x2E
-str_AttackZone		equ	0x3A
 FpMath		equ	0x3A
+str_AttackZone		equ	0x3A
 str_Passing_2		equ	0x46
 str_YourTeamHasBeenEliminated		equ	0x63
 str_ConfirmDeletionOfThe		equ	0x80
@@ -116,6 +116,9 @@ FarZero		equ	0x2976
 NullGameHookThunk		equ	0x2A49
 DrawRleFlipRemapAt		equ	0x2D5F
 DrawRleTransRemapFastAt		equ	0x2FBB
+savedcount1		equ	0xC054
+savedcount2		equ	0xC0DC
+savedcount3		equ	0xC164
 AwardScores		equ	0xC806
 StdinBuf		equ	0xE15E
 StackBottom		equ	0xE370
