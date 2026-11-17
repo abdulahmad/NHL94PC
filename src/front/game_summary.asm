@@ -286,8 +286,8 @@ ShowGameSummary:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText52]
-        push word [es:0xb7e]
-        push word [es:0xb7c]
+        push word [es:msgThereAreNoHilights + 0xB67]
+        push word [es:msgThereAreNoHilights + 0xB65]
         push word 0x3701
         push strict word CurLeagueName
         lea ax, [bp - 0xf2]
@@ -339,8 +339,8 @@ ShowGameSummary:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText52]
-        push word [es:0xb6e]
-        push word [es:0xb6c]
+        push word [es:msgThereAreNoHilights + 0xB57]
+        push word [es:msgThereAreNoHilights + 0xB55]
         push word 0x3701
         push strict word CurLeagueName
         lea ax, [bp - 0xf2]
@@ -359,8 +359,8 @@ ShowGameSummary:
         cmp word [bp - 0x738], 0x0
         jnz short .19
         mov es, [segTeamChoiceText52]
-        push word [es:0xb82]
-        push word [es:0xb80]
+        push word [es:msgThereAreNoHilights + 0xB6B]
+        push word [es:msgThereAreNoHilights + 0xB69]
         lea ax, [bp - 0x12]
         push ss
         push ax
@@ -384,8 +384,8 @@ ShowGameSummary:
         cmp word [bp - 0x738], 0x0
         jnz short .20
         mov es, [segTeamChoiceText52]
-        push word [es:0xb82]
-        push word [es:0xb80]
+        push word [es:msgThereAreNoHilights + 0xB6B]
+        push word [es:msgThereAreNoHilights + 0xB69]
         lea ax, [bp - 0x12]
         push ss
         push ax
@@ -496,8 +496,8 @@ ShowGameSummary:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText52]
-        push word [es:0xb7e]
-        push word [es:0xb7c]
+        push word [es:msgThereAreNoHilights + 0xB67]
+        push word [es:msgThereAreNoHilights + 0xB65]
         push word 0x3701
         push strict word CurLeagueName
         lea ax, [bp - 0xf2]
@@ -738,7 +738,7 @@ ShowGameSummary:
         call 0x0000:_fmemcpy
         add sp, 0xa
         mov es, [segWorkBuffer48]
-        mov byte [es:0xaf8f], 0xd9
+        mov byte [es:hilightrec_frames + 0xA1B9], 0xd9
         push word 0x3a0b
         push strict word MenuRemap
         call 0x0FEF:SetRemapTable
@@ -1046,7 +1046,7 @@ ShowGameSummary:
         cmp [bp - 0x740], al
         jnz short .70
         mov es, [segWorkBuffer49]
-        cmp word [es:0x78c], 0x3f0
+        cmp word [es:AwayGlStats + 0x12], 0x3f0
         jl short .70
         push 0x0
         push -0x1
@@ -1931,7 +1931,7 @@ ShowGameSummary:
         cmp [bp - 0x740], al
         jnz short .136
         mov es, [segWorkBuffer49]
-        cmp word [es:0x78c], 0x3f0
+        cmp word [es:AwayGlStats + 0x12], 0x3f0
         jl short .136
         push 0x0
         push -0x1

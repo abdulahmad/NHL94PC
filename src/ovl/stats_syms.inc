@@ -70,6 +70,7 @@ RawBase		equ	0x1532
 ReadAtOffset		equ	0x442
 ReadEntry6		equ	0x61C
 ReadTeamNamesThunk		equ	0x2643
+RtlShowMessage		equ	0x4FD
 SaveCharTab		equ	0xC7A
 SeasonTitlePtr		equ	0x94
 SeasonTitleSegs		equ	0x8C36
@@ -145,8 +146,10 @@ cddriveptr		equ	0xCFD2
 exhstate_name		equ	0x2
 fileoncd		equ	0xCFD0
 goaliestatscb		equ	0x21C6
+hilightrec_frames		equ	0xDD6
 leaguestatsmode		equ	0xC052
 lgstate_name		equ	0xC6
+msgThereAreNoHilights		equ	0x17
 playofftree		equ	0xC204
 postate_name		equ	0x64
 rosterfilter		equ	0xCF1D

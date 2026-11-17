@@ -2059,12 +2059,12 @@ DeleteSavedGame:
         mov es, [segDbFiles4]
         mov byte [es:0xc6], 0x0
         mov es, [segMenuText7]
-        mov [es:0xb6e], ax
-        mov [es:0xb6c], ax
-        mov [es:0xb84], ax
-        mov [es:0xb82], ax
-        mov [es:0xb9e], ax
-        mov [es:0xb9c], ax
+        mov [es:RtlShowMessage + 0x671], ax
+        mov [es:RtlShowMessage + 0x66F], ax
+        mov [es:RtlShowMessage + 0x687], ax
+        mov [es:RtlShowMessage + 0x685], ax
+        mov [es:RtlShowMessage + 0x6A1], ax
+        mov [es:RtlShowMessage + 0x69F], ax
         jmp short .8
 .7:
         push word 0x3415
@@ -2079,12 +2079,12 @@ DeleteSavedGame:
         mov es, [segDbFiles2]
         mov byte [es:0x64], 0x0
         mov es, [segMenuText7]
-        mov [es:0xbdc], ax
-        mov [es:0xbda], ax
-        mov [es:0xbf2], ax
-        mov [es:0xbf0], ax
-        mov [es:0xc08], ax
-        mov [es:0xc06], ax
+        mov [es:RtlShowMessage + 0x6DF], ax
+        mov [es:RtlShowMessage + 0x6DD], ax
+        mov [es:RtlShowMessage + 0x6F5], ax
+        mov [es:RtlShowMessage + 0x6F3], ax
+        mov [es:RtlShowMessage + 0x70B], ax
+        mov [es:RtlShowMessage + 0x709], ax
 .8:
         lea ax, [bp - 0x28]
         push ax
@@ -2409,12 +2409,12 @@ SelectSavedFile:
         add sp, 0x8
         mov [bp - 0x2], ax
         mov es, [segMenuText7]
-        mov word [es:0xbda], strict word PlayoffModeLoopThunk
-        mov word [es:0xbdc], 0x1b35
-        mov word [es:0xbf0], strict word EditPlayoffSettingsThunk
-        mov word [es:0xbf2], 0x1b35
-        mov word [es:0xc06], strict word MenuPlayoffHilightsThunk
-        mov word [es:0xc08], 0x1b35
+        mov word [es:RtlShowMessage + 0x6DD], strict word PlayoffModeLoopThunk
+        mov word [es:RtlShowMessage + 0x6DF], 0x1b35
+        mov word [es:RtlShowMessage + 0x6F3], strict word EditPlayoffSettingsThunk
+        mov word [es:RtlShowMessage + 0x6F5], 0x1b35
+        mov word [es:RtlShowMessage + 0x709], strict word MenuPlayoffHilightsThunk
+        mov word [es:RtlShowMessage + 0x70B], 0x1b35
         lea ax, [bp - 0x14]
         push ss
         push ax
@@ -2483,12 +2483,12 @@ SelectSavedFile:
         add sp, 0x8
         mov [bp - 0x2], ax
         mov es, [segMenuText7]
-        mov word [es:0xb6c], strict word MenuExportDbsThunk
-        mov word [es:0xb6e], 0x1b35
-        mov word [es:0xb82], strict word MenuNextLeagueGameThunk
-        mov word [es:0xb84], 0x1b35
-        mov word [es:0xb9c], 0xd86
-        mov word [es:0xb9e], 0x3448
+        mov word [es:RtlShowMessage + 0x66F], strict word MenuExportDbsThunk
+        mov word [es:RtlShowMessage + 0x671], 0x1b35
+        mov word [es:RtlShowMessage + 0x685], strict word MenuNextLeagueGameThunk
+        mov word [es:RtlShowMessage + 0x687], 0x1b35
+        mov word [es:RtlShowMessage + 0x69F], 0xd86
+        mov word [es:RtlShowMessage + 0x6A1], 0x3448
 .10:
         mov ax, [bp - 0x2]
         pop si

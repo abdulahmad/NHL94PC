@@ -73,11 +73,11 @@ FadeVenetian:
         retf
 .6:
         mov es, [segDgroup12]
-        mov ax, [es:0x74f2]
+        mov ax, [es:ClipTopY]
         mov [bp - 0x28], ax
-        mov ax, [es:0x74f4]
+        mov ax, [es:ClipBottomY]
         mov [bp - 0x1e], ax
-        mov cx, [es:0x74f6]
+        mov cx, [es:CanvasRowBytes]
         mov [bp - 0x4], cx
         mov es, [segDgroup13]
         cmp word [CurPage], 0x1

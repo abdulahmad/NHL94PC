@@ -1,4 +1,6 @@
+CanvasRowBytes		equ	0x74F6
 ClipBottomY		equ	0x74F4
+ClipTopY		equ	0x74F2
 CopyPageRect		equ	0x3704
 CurPage		equ	0x74DC
 DGROUP		equ	0x45C9

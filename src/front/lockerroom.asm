@@ -1433,7 +1433,7 @@ LockerRoomLoop:
         call 0x03A3:CopyStrNFar
         add sp, 0xa
         mov es, [segMenuText8]
-        mov byte [es:0x119], 0x20
+        mov byte [es:RtlSetHandler + 0x25], 0x20
         jmp short .39
         db 0x90
 .37:
@@ -1470,7 +1470,7 @@ LockerRoomLoop:
         call 0x03A3:CopyStrNFar
         add sp, 0xa
         mov es, [segMenuText8]
-        mov byte [es:0x112], 0x20
+        mov byte [es:RtlSetHandler + 0x1E], 0x20
         jmp short .43
         db 0x90
 .41:

@@ -13,13 +13,13 @@ FadeSlideStrips:
         push si
         call 0x0FEF:UseCurrentPage
         mov es, [segDgroup19]
-        mov ax, [es:0x74fc]
+        mov ax, [es:ClipLeftX]
         mov [fadex], ax
-        mov ax, [es:0x74fe]
+        mov ax, [es:ClipRightX]
         mov [fadey], ax
-        mov ax, [es:0x74f2]
+        mov ax, [es:ClipTopY]
         mov [fadew], ax
-        mov ax, [es:0x74f4]
+        mov ax, [es:ClipBottomY]
         mov [fadeh], ax
         cmp word [bp + 0x6], 0x0
         jz short .1

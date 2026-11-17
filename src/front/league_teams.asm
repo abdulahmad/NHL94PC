@@ -96,14 +96,14 @@ AddHumanTeam:
         call 0x0D90:SetDialogColors
         add sp, 0xa
         mov es, [segWorkBuffer3]
-        cmp word [es:0xac60], 0x0
+        cmp word [es:hilightrec_frames + 0x9E8A], 0x0
         jnz short .4
         jmp near .14
 .4:
         lea ax, [bp - 0x1a]
         mov es, [segTeamChoiceText2]
-        mov [es:0xb36], ax
-        mov [es:0xb38], ss
+        mov [es:msgThereAreNoHilights + 0xB1F], ax
+        mov [es:msgThereAreNoHilights + 0xB21], ss
         push -0x1
         lea ax, [bp - 0x2]
         push ax
@@ -206,8 +206,8 @@ AddHumanTeam:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText4]
-        push word [es:0xb7e]
-        push word [es:0xb7c]
+        push word [es:msgThereAreNoHilights + 0xB67]
+        push word [es:msgThereAreNoHilights + 0xB65]
         push word [bp - 0x3c]
         push word [bp - 0x3e]
         lea ax, [bp - 0x3a]
@@ -249,13 +249,13 @@ AddHumanTeam:
         push word 0x3a0b
         push strict word leagueinfo_tail
         mov es, [segWorkBuffer3]
-        push word [es:0xac60]
+        push word [es:hilightrec_frames + 0x9E8A]
         mov es, [segWorkBuffer4]
-        push word [es:0xac5e]
+        push word [es:hilightrec_frames + 0x9E88]
         mov es, [bp - 0x44]
         push word [es:bx]
         mov es, [segWorkBuffer6]
-        push word [es:0xac5a]
+        push word [es:hilightrec_frames + 0x9E84]
         push word 0x3a0b
         push strict word leagueinfo_password
         push word 0x3a0b
@@ -271,14 +271,14 @@ AddHumanTeam:
         db 0x90
 .14:
         mov es, [segWorkBuffer4]
-        test byte [es:0xac5e], 0x4
+        test byte [es:hilightrec_frames + 0x9E88], 0x4
         jz short .15
         jmp near .6
 .15:
         lea ax, [bp - 0x1a]
         mov es, [segTeamChoiceText3]
-        mov [es:0x8b3], ax
-        mov [es:0x8b5], ss
+        mov [es:msgThereAreNoHilights + 0x89C], ax
+        mov [es:msgThereAreNoHilights + 0x89E], ss
         push -0x1
         lea ax, [bp - 0x2]
         push ax
@@ -416,14 +416,14 @@ RemoveHumanTeam:
         call 0x0D90:SetDialogColors
         add sp, 0xa
         mov es, [segWorkBuffer3]
-        cmp word [es:0xac60], 0x0
+        cmp word [es:hilightrec_frames + 0x9E8A], 0x0
         jnz short .4
         jmp near .14
 .4:
         lea ax, [bp - 0x1a]
         mov es, [segTeamChoiceText2]
-        mov [es:0xb36], ax
-        mov [es:0xb38], ss
+        mov [es:msgThereAreNoHilights + 0xB1F], ax
+        mov [es:msgThereAreNoHilights + 0xB21], ss
         push -0x1
         lea ax, [bp - 0x2]
         push ax
@@ -526,8 +526,8 @@ RemoveHumanTeam:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText4]
-        push word [es:0xb7e]
-        push word [es:0xb7c]
+        push word [es:msgThereAreNoHilights + 0xB67]
+        push word [es:msgThereAreNoHilights + 0xB65]
         push word [bp - 0x3c]
         push word [bp - 0x3e]
         lea ax, [bp - 0x3a]
@@ -569,13 +569,13 @@ RemoveHumanTeam:
         push word 0x3a0b
         push strict word leagueinfo_tail
         mov es, [segWorkBuffer3]
-        push word [es:0xac60]
+        push word [es:hilightrec_frames + 0x9E8A]
         mov es, [segWorkBuffer4]
-        push word [es:0xac5e]
+        push word [es:hilightrec_frames + 0x9E88]
         mov es, [bp - 0x44]
         push word [es:bx]
         mov es, [segWorkBuffer6]
-        push word [es:0xac5a]
+        push word [es:hilightrec_frames + 0x9E84]
         push word 0x3a0b
         push strict word leagueinfo_password
         push word 0x3a0b
@@ -591,14 +591,14 @@ RemoveHumanTeam:
         db 0x90
 .14:
         mov es, [segWorkBuffer4]
-        test byte [es:0xac5e], 0x4
+        test byte [es:hilightrec_frames + 0x9E88], 0x4
         jz short .15
         jmp near .6
 .15:
         lea ax, [bp - 0x1a]
         mov es, [segTeamChoiceText3]
-        mov [es:0x8b3], ax
-        mov [es:0x8b5], ss
+        mov [es:msgThereAreNoHilights + 0x89C], ax
+        mov [es:msgThereAreNoHilights + 0x89E], ss
         push -0x1
         lea ax, [bp - 0x2]
         push ax

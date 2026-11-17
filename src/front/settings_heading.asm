@@ -156,10 +156,10 @@ SetModeMenuLabels:
         mov cx, 0x3448
 .4:
         mov es, [segMenuText12]
-        mov [es:0x1038], ax
-        mov [es:0x103a], cx
+        mov [es:RtlShowMessage + 0xB3B], ax
+        mov [es:RtlShowMessage + 0xB3D], cx
         mov es, [segMenuText13]
-        mov [es:0x128a], ax
-        mov [es:0x128c], cx
+        mov [es:RtlShowMessage + 0xD8D], ax
+        mov [es:RtlShowMessage + 0xD8F], cx
         leave
         retf

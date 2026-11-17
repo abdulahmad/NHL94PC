@@ -450,14 +450,14 @@ CreateGSummaryDb:
         add sp, 0x2
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov es, [segWorkBuffer54]
-        mov [es:0x456], ax
-        mov [es:0x454], ax
-        mov [es:0x452], ax
-        mov [es:0x450], ax
-        mov [es:0x44e], ax
-        mov [es:0x44c], ax
-        mov [es:0x44a], ax
-        mov [es:0x448], ax
+        mov [es:HomePlStats_w2 + 0xC], ax
+        mov [es:HomePlStats_w2 + 0xA], ax
+        mov [es:HomePlStats_w2 + 0x8], ax
+        mov [es:HomePlStats_w2 + 0x6], ax
+        mov [es:HomePlStats_w2 + 0x4], ax
+        mov [es:HomePlStats_w2 + 0x2], ax
+        mov [es:HomePlStats_w2], ax
+        mov [es:HomePlStats], ax
         mov word [bp - 0x4], 0x448
         mov word [bp - 0x6], 0x2
 .5:
@@ -1192,7 +1192,7 @@ GSummaryPath:
         push si
         mov byte [gsummarypath], 0x0
         mov es, [segTeamChoiceText53]
-        cmp byte [es:0xe53], 0x0
+        cmp byte [es:msgThereAreNoHilights + 0xE3C], 0x0
         jz short .1
         push word 0x3701
         push strict word CurLeagueName

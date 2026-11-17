@@ -1,3 +1,7 @@
+ClipBottomY		equ	0x74F4
+ClipLeftX		equ	0x74FC
+ClipRightX		equ	0x74FE
+ClipTopY		equ	0x74F2
 CopyFadeRect		equ	0x5E
 SetDeadline.regs		equ	0x1A6E
 UseCurrentPage		equ	0x1A6

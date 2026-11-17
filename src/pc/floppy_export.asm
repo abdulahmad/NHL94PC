@@ -165,8 +165,8 @@ ExportTeamToFloppy:
         add sp, 0xc
         lea ax, [bp - 0x74]
         mov es, [segTeamChoiceText12]
-        mov [es:0x1f4], ax
-        mov [es:0x1f6], ss
+        mov [es:msgThereAreNoHilights + 0x1DD], ax
+        mov [es:msgThereAreNoHilights + 0x1DF], ss
         lea ax, [bp - 0xb2]
         push ax
         lea cx, [bp - 0xaa]
@@ -308,8 +308,8 @@ ExportTeamToFloppy:
         mov es, [segTeamChoiceText13]
         mov bx, [bp - 0xb4]
         shl bx, byte 0x2
-        push word [es:bx + 0xb6e]
-        push word [es:bx + 0xb6c]
+        push word [es:bx + msgThereAreNoHilights + 0xB57]
+        push word [es:bx + msgThereAreNoHilights + 0xB55]
         lea ax, [bp - 0x94]
         push ss
         push ax
@@ -385,8 +385,8 @@ ExportTeamToFloppy:
         mov es, [segTeamChoiceText13]
         mov bx, [bp - 0xb4]
         shl bx, byte 0x2
-        push word [es:bx + 0xb6e]
-        push word [es:bx + 0xb6c]
+        push word [es:bx + msgThereAreNoHilights + 0xB57]
+        push word [es:bx + msgThereAreNoHilights + 0xB55]
         call 0x0CD1:CopyFileByName
         add sp, 0x14
         mov [bp - 0xb6], ax
@@ -403,8 +403,8 @@ ExportTeamToFloppy:
         mov es, [segTeamChoiceText13]
         mov bx, [bp - 0xb4]
         shl bx, byte 0x2
-        push word [es:bx + 0xb6e]
-        push word [es:bx + 0xb6c]
+        push word [es:bx + msgThereAreNoHilights + 0xB57]
+        push word [es:bx + msgThereAreNoHilights + 0xB55]
         call 0x0CD1:CopyFileByName
         add sp, 0x14
         mov [bp - 0xb6], ax
@@ -682,12 +682,12 @@ ExportTeamToFloppy:
         mov byte [bp + si - 0x12], 0x0
         lea ax, [bp - 0x12]
         mov es, [segTeamChoiceText14]
-        mov [es:0x4e5], ax
-        mov [es:0x4e7], ss
+        mov [es:msgThereAreNoHilights + 0x4CE], ax
+        mov [es:msgThereAreNoHilights + 0x4D0], ss
         mov ax, [bp - 0xae]
         mov dx, [bp - 0xac]
-        mov [es:0x4ed], ax
-        mov [es:0x4ef], dx
+        mov [es:msgThereAreNoHilights + 0x4D6], ax
+        mov [es:msgThereAreNoHilights + 0x4D8], dx
         lea ax, [bp - 0xb2]
         push ax
         lea cx, [bp - 0xaa]
@@ -916,7 +916,7 @@ ImportMasterLeague:
         push word 0x3a0b
         push strict word leagueinfo_teams
         mov es, [segWorkBuffer12]
-        push word [es:0xac5a]
+        push word [es:hilightrec_frames + 0x9E84]
         call 0x28A8:AskMasterPassword
         add sp, 0xa
         mov [bp - 0xc], ax
@@ -961,8 +961,8 @@ ImportMasterLeague:
         mov es, [segTeamChoiceText13]
         mov bx, [bp - 0x6]
         shl bx, byte 0x2
-        push word [es:bx + 0xb6e]
-        push word [es:bx + 0xb6c]
+        push word [es:bx + msgThereAreNoHilights + 0xB57]
+        push word [es:bx + msgThereAreNoHilights + 0xB55]
         call 0x0CD1:CopyFileByName
         add sp, 0x14
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -1364,11 +1364,11 @@ ImportPlayerTeam:
         add sp, 0xa
         lea ax, [bp - 0x84]
         mov es, [segTeamChoiceText15]
-        mov [es:0x69c], ax
-        mov [es:0x69e], ss
+        mov [es:msgThereAreNoHilights + 0x685], ax
+        mov [es:msgThereAreNoHilights + 0x687], ss
         lea ax, [bp - 0x78]
-        mov [es:0x6a4], ax
-        mov [es:0x6a6], ss
+        mov [es:msgThereAreNoHilights + 0x68D], ax
+        mov [es:msgThereAreNoHilights + 0x68F], ss
         lea ax, [bp - 0x62]
         push ax
         lea cx, [bp - 0x5e]
@@ -1465,12 +1465,12 @@ ImportPlayerTeam:
         call 0x03A3:MouseRead
         add sp, 0x6
         mov es, [segWorkBuffer13]
-        test byte [es:0xac5e], 0xc
+        test byte [es:hilightrec_frames + 0x9E88], 0xc
         jz short .13
         lea ax, [bp - 0x78]
         mov es, [segTeamChoiceText16]
-        mov [es:0x907], ax
-        mov [es:0x909], ss
+        mov [es:msgThereAreNoHilights + 0x8F0], ax
+        mov [es:msgThereAreNoHilights + 0x8F2], ss
         push -0x1
         lea ax, [bp - 0x62]
         push ax
@@ -1495,12 +1495,12 @@ ImportPlayerTeam:
         db 0x90
 .13:
         mov es, [segWorkBuffer14]
-        cmp word [es:0xac60], 0x0
+        cmp word [es:hilightrec_frames + 0x9E8A], 0x0
         jz short .15
         lea ax, [bp - 0x78]
         mov es, [segTeamChoiceText17]
-        mov [es:0xb36], ax
-        mov [es:0xb38], ss
+        mov [es:msgThereAreNoHilights + 0xB1F], ax
+        mov [es:msgThereAreNoHilights + 0xB21], ss
         push -0x1
         lea ax, [bp - 0x62]
         push ax
@@ -1575,11 +1575,11 @@ ImportPlayerTeam:
         add sp, 0xa
         lea ax, [bp - 0x84]
         mov es, [segTeamChoiceText18]
-        mov [es:0x63c], ax
-        mov [es:0x63e], ss
+        mov [es:msgThereAreNoHilights + 0x625], ax
+        mov [es:msgThereAreNoHilights + 0x627], ss
         lea ax, [bp - 0x78]
-        mov [es:0x644], ax
-        mov [es:0x646], ss
+        mov [es:msgThereAreNoHilights + 0x62D], ax
+        mov [es:msgThereAreNoHilights + 0x62F], ss
         lea ax, [bp - 0x62]
         push ax
         lea cx, [bp - 0x5e]
@@ -1619,8 +1619,8 @@ ImportPlayerTeam:
 .23:
         lea ax, [bp - 0x78]
         mov es, [segTeamChoiceText19]
-        mov [es:0x71a], ax
-        mov [es:0x71c], ss
+        mov [es:msgThereAreNoHilights + 0x703], ax
+        mov [es:msgThereAreNoHilights + 0x705], ss
         lea ax, [bp - 0x62]
         push ax
         lea cx, [bp - 0x5e]
@@ -1652,12 +1652,12 @@ ImportPlayerTeam:
         jz short .27
         lea ax, [bp - 0x78]
         mov es, [segTeamChoiceText20]
-        mov [es:0x60b], ax
-        mov [es:0x60d], ss
+        mov [es:msgThereAreNoHilights + 0x5F4], ax
+        mov [es:msgThereAreNoHilights + 0x5F6], ss
         imul ax, [bp - 0x8c], 0x1e
         add ax, 0xac62
-        mov [es:0x613], ax
-        mov word [es:0x615], 0x3a0b
+        mov [es:msgThereAreNoHilights + 0x5FC], ax
+        mov word [es:msgThereAreNoHilights + 0x5FE], 0x3a0b
         lea ax, [bp - 0x62]
         push ax
         lea cx, [bp - 0x5e]
@@ -1725,8 +1725,8 @@ ImportPlayerTeam:
         mov es, [segTeamChoiceText13]
         mov bx, [bp - 0x64]
         shl bx, byte 0x2
-        push word [es:bx + 0xb6e]
-        push word [es:bx + 0xb6c]
+        push word [es:bx + msgThereAreNoHilights + 0xB57]
+        push word [es:bx + msgThereAreNoHilights + 0xB55]
         call 0x0CD1:CopyFileByName
         add sp, 0x14
         mov [bp - 0x6a], ax
@@ -2087,12 +2087,12 @@ ImportDbs:
         call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
         mov es, [segMenuText20]
-        mov word [es:0xb6c], strict word MenuExportDbsThunk
-        mov word [es:0xb6e], 0x1b35
-        mov word [es:0xb82], strict word MenuNextLeagueGameThunk
-        mov word [es:0xb84], 0x1b35
-        mov word [es:0xb9c], 0xd86
-        mov word [es:0xb9e], 0x3448
+        mov word [es:RtlShowMessage + 0x66F], strict word MenuExportDbsThunk
+        mov word [es:RtlShowMessage + 0x671], 0x1b35
+        mov word [es:RtlShowMessage + 0x685], strict word MenuNextLeagueGameThunk
+        mov word [es:RtlShowMessage + 0x687], 0x1b35
+        mov word [es:RtlShowMessage + 0x69F], 0xd86
+        mov word [es:RtlShowMessage + 0x6A1], 0x3448
         jmp short .10
 .9:
         mov es, [segDbFiles12]
@@ -2103,12 +2103,12 @@ ImportDbs:
         add sp, 0x2
         mov es, [segMenuText20]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0xb6e], ax
-        mov [es:0xb6c], ax
-        mov [es:0xb84], ax
-        mov [es:0xb82], ax
-        mov [es:0xb9e], ax
-        mov [es:0xb9c], ax
+        mov [es:RtlShowMessage + 0x671], ax
+        mov [es:RtlShowMessage + 0x66F], ax
+        mov [es:RtlShowMessage + 0x687], ax
+        mov [es:RtlShowMessage + 0x685], ax
+        mov [es:RtlShowMessage + 0x6A1], ax
+        mov [es:RtlShowMessage + 0x69F], ax
 .10:
         push 0x0
         push 0x3f
@@ -2201,12 +2201,12 @@ ExportDbs:
         call 0x03A3:MouseRead
         add sp, 0x6
         mov es, [segWorkBuffer13]
-        test byte [es:0xac5e], 0xc
+        test byte [es:hilightrec_frames + 0x9E88], 0xc
         jz short .3
         lea ax, [bp - 0x2e]
         mov es, [segTeamChoiceText16]
-        mov [es:0x907], ax
-        mov [es:0x909], ss
+        mov [es:msgThereAreNoHilights + 0x8F0], ax
+        mov [es:msgThereAreNoHilights + 0x8F2], ss
         push -0x1
         lea ax, [bp - 0x16]
         push ax
@@ -2230,12 +2230,12 @@ ExportDbs:
         jmp short .5
 .3:
         mov es, [segWorkBuffer14]
-        cmp word [es:0xac60], 0x0
+        cmp word [es:hilightrec_frames + 0x9E8A], 0x0
         jz short .5
         lea ax, [bp - 0x2e]
         mov es, [segTeamChoiceText17]
-        mov [es:0xb36], ax
-        mov [es:0xb38], ss
+        mov [es:msgThereAreNoHilights + 0xB1F], ax
+        mov [es:msgThereAreNoHilights + 0xB21], ss
         push -0x1
         lea ax, [bp - 0x16]
         push ax
@@ -2265,8 +2265,8 @@ ExportDbs:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText13]
-        push word [es:0xb7e]
-        push word [es:0xb7c]
+        push word [es:msgThereAreNoHilights + 0xB67]
+        push word [es:msgThereAreNoHilights + 0xB65]
         push word [bp - 0x50]
         push word [bp - 0x52]
         lea ax, [bp - 0x4e]
@@ -2313,7 +2313,7 @@ ExportDbs:
         call 0x1F31:LeagueTeamSelect
         add sp, 0x18
         mov es, [segWorkBuffer16]
-        cmp word [es:0xac5c], 0x1
+        cmp word [es:hilightrec_frames + 0x9E86], 0x1
         jnz short .10
         push 0x0
         push 0x11
@@ -2340,12 +2340,12 @@ ExportDbs:
 .12:
         lea ax, [bp - 0x2e]
         mov es, [segTeamChoiceText14]
-        mov [es:0x4e5], ax
-        mov [es:0x4e7], ss
+        mov [es:msgThereAreNoHilights + 0x4CE], ax
+        mov [es:msgThereAreNoHilights + 0x4D0], ss
         mov ax, [bp - 0x54]
         add ax, 0xac62
-        mov [es:0x4ed], ax
-        mov word [es:0x4ef], 0x3a0b
+        mov [es:msgThereAreNoHilights + 0x4D6], ax
+        mov word [es:msgThereAreNoHilights + 0x4D8], 0x3a0b
         lea ax, [bp - 0x16]
         push ax
         lea cx, [bp - 0x18]
@@ -2378,7 +2378,7 @@ ExportDbs:
         push word 0x3a0b
         push strict word leagueinfo_teams
         mov es, [segWorkBuffer12]
-        push word [es:0xac5a]
+        push word [es:hilightrec_frames + 0x9E84]
         call 0x28A8:AskMasterPassword
         add sp, 0xa
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -2400,7 +2400,7 @@ ExportDbs:
         jmp near .21
 .16:
         mov es, [segWorkBuffer16]
-        cmp word [es:0xac5c], 0x1
+        cmp word [es:hilightrec_frames + 0x9E86], 0x1
         jz short .17
         cmp word [bp - 0x2], 0x0
         jnz short .18

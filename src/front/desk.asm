@@ -44,14 +44,14 @@ SportsDesk:
         jz short .1
         mov es, [segMenuText14]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0x119e], ax
-        mov [es:0x119c], ax
+        mov [es:RtlShowMessage + 0xCA1], ax
+        mov [es:RtlShowMessage + 0xC9F], ax
         jmp short .2
         db 0x90
 .1:
         mov es, [segMenuText14]
-        mov word [es:0x119c], strict word DeskGoToReplay
-        mov word [es:0x119e], 0x2cf8
+        mov word [es:RtlShowMessage + 0xC9F], strict word DeskGoToReplay
+        mov word [es:RtlShowMessage + 0xCA1], 0x2cf8
 .2:
         lea ax, [bp - 0x76]
         push ax
@@ -295,7 +295,7 @@ SportsDesk:
         jmp near .15
 .10:
         mov es, [segWorkBuffer2]
-        cmp word [es:0x78c], 0x3f0
+        cmp word [es:AwayGlStats + 0x12], 0x3f0
         jl short .15
         mov ax, [hmscore]
         cmp [awscore], ax
@@ -322,7 +322,7 @@ SportsDesk:
         mov [bp - 0x44], ax
         mov word [bp - 0x6c], 0x1
         mov es, [segWorkBuffer2]
-        cmp word [es:0x78c], 0x428
+        cmp word [es:AwayGlStats + 0x12], 0x428
         jl short .14
         mov word [bp - 0x6c], 0x2
 .14:

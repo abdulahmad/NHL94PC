@@ -189,8 +189,8 @@ CreateNewLeague:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText36]
-        push word [es:0xb7e]
-        push word [es:0xb7c]
+        push word [es:msgThereAreNoHilights + 0xB67]
+        push word [es:msgThereAreNoHilights + 0xB65]
         push si
         push si
         lea ax, [bp - 0x3c]
@@ -256,13 +256,13 @@ CreateNewLeague:
         push word 0x3a0b
         push strict word leagueinfo_tail
         mov es, [segWorkBuffer27]
-        push word [es:0xac60]
+        push word [es:hilightrec_frames + 0x9E8A]
         mov es, [segWorkBuffer28]
-        push word [es:0xac5e]
+        push word [es:hilightrec_frames + 0x9E88]
         mov es, [segWorkBuffer29]
-        push word [es:0xac5c]
+        push word [es:hilightrec_frames + 0x9E86]
         mov es, [segWorkBuffer30]
-        push word [es:0xac5a]
+        push word [es:hilightrec_frames + 0x9E84]
         push word 0x3a0b
         push strict word leagueinfo_password
         push word [bp - 0x6e]
@@ -287,8 +287,8 @@ CreateNewLeague:
         mov es, [segTeamChoiceText36]
         mov bx, [bp - 0x8]
         shl bx, byte 0x2
-        push word [es:bx + 0xb6e]
-        push word [es:bx + 0xb6c]
+        push word [es:bx + msgThereAreNoHilights + 0xB57]
+        push word [es:bx + msgThereAreNoHilights + 0xB55]
         call 0x0CD1:CopyFileByName
         add sp, 0x14
         db 0x8B, 0xF0                           ; insn: mov si, ax

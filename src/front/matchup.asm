@@ -207,8 +207,8 @@ ShowMatchupScreen:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText50]
-        push word [es:0xb7e]
-        push word [es:0xb7c]
+        push word [es:msgThereAreNoHilights + 0xB67]
+        push word [es:msgThereAreNoHilights + 0xB65]
         push word 0x3701
         push strict word CurLeagueName
         lea ax, [bp - 0x58]
@@ -498,11 +498,11 @@ ShowMatchupScreen:
         call 0x03A3:UseCharSeg
         add sp, 0x4
         mov es, [segMenuText37]
-        mov ax, [es:0x1172]
-        or ax, [es:0x1170]
+        mov ax, [es:RtlShowMessage + 0xC75]
+        or ax, [es:RtlShowMessage + 0xC73]
         jnz short .10
-        mov ax, [es:0x1188]
-        or ax, [es:0x1186]
+        mov ax, [es:RtlShowMessage + 0xC8B]
+        or ax, [es:RtlShowMessage + 0xC89]
         jnz short .10
         mov word [bp - 0x650], 0x2
 .9:
@@ -614,7 +614,7 @@ ShowMatchupScreen:
         call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         mov es, [segWorkBuffer45]
-        cmp word [es:0x78c], 0x3f0
+        cmp word [es:AwayGlStats + 0x12], 0x3f0
         jnl short .15
         mov al, [bp + 0x8]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
@@ -637,7 +637,7 @@ ShowMatchupScreen:
         mov [bp - 0x32], ax
         mov word [bp - 0x63a], 0x1
         mov es, [segWorkBuffer45]
-        cmp word [es:0x78c], 0x428
+        cmp word [es:AwayGlStats + 0x12], 0x428
         jl short .16
         mov word [bp - 0x63a], 0x2
 .16:
@@ -732,8 +732,8 @@ ShowMatchupScreen:
         jmp near .37
 .25:
         mov es, [segMenuText37]
-        mov cx, [es:0x1188]
-        or cx, [es:0x1186]
+        mov cx, [es:RtlShowMessage + 0xC8B]
+        or cx, [es:RtlShowMessage + 0xC89]
         jz short .26
         jmp near .34
 .26:

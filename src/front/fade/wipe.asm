@@ -31,15 +31,15 @@ FadeWipe:
 .2:
         call 0x0FEF:UseCurrentPage
         mov es, [segDgroup14]
-        mov di, [es:0x74fc]
-        mov ax, [es:0x74fe]
+        mov di, [es:ClipLeftX]
+        mov ax, [es:ClipRightX]
         mov [bp - 0x16], ax
-        mov ax, [es:0x74f2]
+        mov ax, [es:ClipTopY]
         mov [bp - 0x1c], ax
-        mov cx, [es:0x74f4]
+        mov cx, [es:ClipBottomY]
         mov [bp - 0x1e], cx
         db 0x2B, 0xC8                           ; insn: sub cx, ax
-        add cx, [es:0x74fa]
+        add cx, [es:VenetianRowBytes]
         dec cx
         mov [bp - 0x2a], cx
         db 0x0B, 0xF6                           ; insn: or si, si
@@ -96,7 +96,7 @@ FadeWipe:
         mov [bp - 0x34], dx
         call 0x0FEF:UseCurrentPage
         mov es, [segDgroup14]
-        mov ax, [es:0x74f6]
+        mov ax, [es:CanvasRowBytes]
         mov [bp - 0x18], ax
         mov word [bp - 0x28], 0x0
         cmp word [bp - 0x2a], 0x0

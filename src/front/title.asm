@@ -713,12 +713,12 @@ GoodnightScreen:
         mov es, [segCredits1]
         mov si, [bp - 0x66]
         shl si, byte 0x2
-        mov ax, [es:si + 0x5cf]
-        or ax, [es:si + 0x5cd]
+        mov ax, [es:si + TeamNameTemplate + 0x364]
+        or ax, [es:si + TeamNameTemplate + 0x362]
         jz short .8
         mov [bp - 0x64], bx
-        push word [es:si + 0x5cf]
-        push word [es:si + 0x5cd]
+        push word [es:si + TeamNameTemplate + 0x364]
+        push word [es:si + TeamNameTemplate + 0x362]
         call 0x0D39:TextWidthFar
         add sp, 0x4
         sub ax, 0x140
@@ -728,8 +728,8 @@ GoodnightScreen:
         sar ax, 1
         mov [bp - 0x50], ax
         mov es, [segCredits1]
-        push word [es:si + 0x5cf]
-        push word [es:si + 0x5cd]
+        push word [es:si + TeamNameTemplate + 0x364]
+        push word [es:si + TeamNameTemplate + 0x362]
         push word [bp - 0x64]
         push ax
         call 0x0D39:DrawShadowTextBuffered

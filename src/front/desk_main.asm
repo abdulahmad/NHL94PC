@@ -45,14 +45,14 @@ MainDeskLoop:
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         mov ax, [es:bx]
         mov es, [segMenuText17]
-        add ax, [es:0xd48]
+        add ax, [es:RtlShowMessage + 0x84B]
         cwd
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         sar ax, 1
         mov [bp - 0x58], ax
         mov [bp - 0x38], ax
-        mov ax, [es:0xd46]
-        add ax, [es:0xd4a]
+        mov ax, [es:RtlShowMessage + 0x849]
+        add ax, [es:RtlShowMessage + 0x84D]
         cwd
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         sar ax, 1
@@ -1176,7 +1176,7 @@ LoadModeState:
         call 0x03A3:CopyStrNFar
         add sp, 0xa
         mov es, [segMenuText18]
-        mov byte [es:0x119], 0x20
+        mov byte [es:RtlSetHandler + 0x25], 0x20
         jmp short .36
 .34:
         push 0x3
@@ -1212,7 +1212,7 @@ LoadModeState:
         call 0x03A3:CopyStrNFar
         add sp, 0xa
         mov es, [segMenuText18]
-        mov byte [es:0x112], 0x20
+        mov byte [es:RtlSetHandler + 0x1E], 0x20
         pop si
         pop di
         leave
@@ -1675,14 +1675,14 @@ MenuNewExhibition:
         call 0x0000:VgaCopyBytes
         add sp, 0x6
         mov es, [segMenuText17]
-        mov ax, [es:0xd46]
-        add ax, [es:0xd4a]
+        mov ax, [es:RtlShowMessage + 0x849]
+        add ax, [es:RtlShowMessage + 0x84D]
         cwd
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         sar ax, 1
         push ax
-        mov ax, [es:0xd48]
-        add ax, [es:0xd44]
+        mov ax, [es:RtlShowMessage + 0x84B]
+        add ax, [es:RtlShowMessage + 0x847]
         cwd
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         sar ax, 1
@@ -1807,12 +1807,12 @@ MenuNewLeague:
         call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
         mov es, [segMenuText19]
-        mov word [es:0xb6c], strict word MenuExportDbsThunk
-        mov word [es:0xb6e], 0x1b35
-        mov word [es:0xb82], strict word MenuNextLeagueGameThunk
-        mov word [es:0xb84], 0x1b35
-        mov word [es:0xb9c], 0xd86
-        mov word [es:0xb9e], 0x3448
+        mov word [es:RtlShowMessage + 0x66F], strict word MenuExportDbsThunk
+        mov word [es:RtlShowMessage + 0x671], 0x1b35
+        mov word [es:RtlShowMessage + 0x685], strict word MenuNextLeagueGameThunk
+        mov word [es:RtlShowMessage + 0x687], 0x1b35
+        mov word [es:RtlShowMessage + 0x69F], 0xd86
+        mov word [es:RtlShowMessage + 0x6A1], 0x3448
         jmp short .9
 .8:
         call 0x1B35:BuildSeasonTitleThunk
@@ -1821,12 +1821,12 @@ MenuNewLeague:
         add sp, 0x2
         mov es, [segMenuText19]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0xb6e], ax
-        mov [es:0xb6c], ax
-        mov [es:0xb84], ax
-        mov [es:0xb82], ax
-        mov [es:0xb9e], ax
-        mov [es:0xb9c], ax
+        mov [es:RtlShowMessage + 0x671], ax
+        mov [es:RtlShowMessage + 0x66F], ax
+        mov [es:RtlShowMessage + 0x687], ax
+        mov [es:RtlShowMessage + 0x685], ax
+        mov [es:RtlShowMessage + 0x6A1], ax
+        mov [es:RtlShowMessage + 0x69F], ax
 .9:
         push word 0x3415
         push strict word exhstate
@@ -3118,14 +3118,14 @@ MenuLeagueHilights:
         call 0x0000:VgaCopyBytes
         add sp, 0x6
         mov es, [segMenuText17]
-        mov ax, [es:0xd46]
-        add ax, [es:0xd4a]
+        mov ax, [es:RtlShowMessage + 0x849]
+        add ax, [es:RtlShowMessage + 0x84D]
         cwd
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         sar ax, 1
         push ax
-        mov ax, [es:0xd48]
-        add ax, [es:0xd44]
+        mov ax, [es:RtlShowMessage + 0x84B]
+        add ax, [es:RtlShowMessage + 0x847]
         cwd
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         sar ax, 1
@@ -3159,14 +3159,14 @@ MenuLeagueHilights:
         db 0x90
 .3:
         mov es, [segMenuText17]
-        mov ax, [es:0xd46]
-        add ax, [es:0xd4a]
+        mov ax, [es:RtlShowMessage + 0x849]
+        add ax, [es:RtlShowMessage + 0x84D]
         cwd
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         sar ax, 1
         push ax
-        mov ax, [es:0xd48]
-        add ax, [es:0xd44]
+        mov ax, [es:RtlShowMessage + 0x84B]
+        add ax, [es:RtlShowMessage + 0x847]
         cwd
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         sar ax, 1

@@ -508,7 +508,7 @@ ShowTeamStats:
         call 0x0000:_fmemcpy
         add sp, 0xa
         mov es, [segWorkBuffer50]
-        mov byte [es:0xaf8f], 0xd9
+        mov byte [es:hilightrec_frames + 0xA1B9], 0xd9
         push word 0x3a0b
         push strict word MenuRemap
         call 0x0FEF:SetRemapTable

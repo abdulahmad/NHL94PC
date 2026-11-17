@@ -76,11 +76,11 @@ CheckMasterPassword:
         db 0x03, 0xD8                           ; insn: add bx, ax
         mov byte [bx], 0x0
         mov es, [segWorkBuffer17]
-        test byte [es:0xac5e], 0x4
+        test byte [es:hilightrec_frames + 0x9E88], 0x4
         jnz short .5
         mov es, [segTeamChoiceText22]
-        mov [es:0x8b3], ax
-        mov [es:0x8b5], ss
+        mov [es:msgThereAreNoHilights + 0x89C], ax
+        mov [es:msgThereAreNoHilights + 0x89E], ss
         push 0x0
         push 0x11
         push 0x5
@@ -179,7 +179,7 @@ CheckMasterPassword:
         push word 0x3a0b
         push strict word leagueinfo_teams
         mov es, [segWorkBuffer18]
-        push word [es:0xac5a]
+        push word [es:hilightrec_frames + 0x9E84]
         call 0x28A8:AskMasterPassword
         add sp, 0xa
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -703,8 +703,8 @@ MsgCopyingDatabases:
         mov ax, [bp + 0x6]
         mov dx, [bp + 0x8]
         mov es, [segTeamChoiceText23]
-        mov [es:0x6ca], ax
-        mov [es:0x6cc], dx
+        mov [es:msgThereAreNoHilights + 0x6B3], ax
+        mov [es:msgThereAreNoHilights + 0x6B5], dx
         push 0x0
         push 0x0
         push 0x0
@@ -767,8 +767,8 @@ CopyHumanTeamDBs:
         mov es, [segTeamChoiceText26]
         mov bx, [bp - 0xa6]
         shl bx, byte 0x2
-        push word [es:bx + 0xb6e]
-        push word [es:bx + 0xb6c]
+        push word [es:bx + msgThereAreNoHilights + 0xB57]
+        push word [es:bx + msgThereAreNoHilights + 0xB55]
         lea ax, [bp - 0x54]
         push ss
         push ax
@@ -799,8 +799,8 @@ CopyHumanTeamDBs:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText26]
-        push word [es:si + 0xb6e]
-        push word [es:si + 0xb6c]
+        push word [es:si + msgThereAreNoHilights + 0xB57]
+        push word [es:si + msgThereAreNoHilights + 0xB55]
         call 0x0CD1:CopyFileByName
         add sp, 0x14
         mov [bp - 0xa4], ax
@@ -909,8 +909,8 @@ CopyHumanTeamDBs:
         add sp, 0x8
         lea ax, [bp - 0xe]
         mov es, [segTeamChoiceText24]
-        mov [es:0x19e], ax
-        mov [es:0x1a0], ss
+        mov [es:msgThereAreNoHilights + 0x187], ax
+        mov [es:msgThereAreNoHilights + 0x189], ss
         lea ax, [bp - 0xa0]
         push ax
         lea cx, [bp - 0x9a]
@@ -1029,8 +1029,8 @@ CopyHumanTeamDBs:
         add sp, 0xc
         lea ax, [bp - 0x94]
         mov es, [segTeamChoiceText25]
-        mov [es:0x1f4], ax
-        mov [es:0x1f6], ss
+        mov [es:msgThereAreNoHilights + 0x1DD], ax
+        mov [es:msgThereAreNoHilights + 0x1DF], ss
         lea ax, [bp - 0xa0]
         push ax
         lea cx, [bp - 0x9a]

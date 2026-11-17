@@ -1,9 +1,14 @@
 BlockSweepDX		equ	0x62EA
 BlockSweepDY		equ	0x62EE
 BlockSweepOrder		equ	0x62F2
+ClipBottomY		equ	0x74F4
+ClipLeftX		equ	0x74FC
+ClipRightX		equ	0x74FE
+ClipTopY		equ	0x74F2
 CopyFadeRect		equ	0x5E
 SetDeadline.regs		equ	0x1A6E
 UseCurrentPage		equ	0x1A6
+VenetianRowBytes		equ	0x74FA
 WaitDeadlineNoEoi		equ	0x1A84
 fadeh		equ	0xDF70
 fadew		equ	0xDF6E

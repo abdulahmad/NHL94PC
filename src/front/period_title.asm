@@ -134,7 +134,7 @@ DrawPeriodTitle:
         cmp [si + 0x1], al
         jnz short .9
         mov es, [segWorkBuffer47]
-        cmp word [es:0x78c], 0x3f0
+        cmp word [es:AwayGlStats + 0x12], 0x3f0
         jnl short .10
 .9:
         cmp cx, 0x5

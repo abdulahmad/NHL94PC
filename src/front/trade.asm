@@ -150,8 +150,8 @@ BuildTradeRoster:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText37]
-        push word [es:0xb7e]
-        push word [es:0xb7c]
+        push word [es:msgThereAreNoHilights + 0xB67]
+        push word [es:msgThereAreNoHilights + 0xB65]
         push word [bp + 0x8]
         push di
         lea ax, [bp - 0x3a]
@@ -185,8 +185,8 @@ BuildTradeRoster:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText37]
-        push word [es:0xb6e]
-        push word [es:0xb6c]
+        push word [es:msgThereAreNoHilights + 0xB57]
+        push word [es:msgThereAreNoHilights + 0xB55]
         mov ax, [bp + 0x8]
         push ax
         push di
@@ -258,11 +258,11 @@ BuildTradeRoster:
         mov es, [bp - 0x10]
         mov [es:si + 0x3], al
         mov es, [segTeamChoiceText38]
-        mov al, [es:0xbf4]
+        mov al, [es:msgThereAreNoHilights + 0xBDD]
         mov es, [bp - 0x10]
         mov [es:si + 0x4], al
         mov es, [segTeamChoiceText39]
-        mov al, [es:0xba6]
+        mov al, [es:msgThereAreNoHilights + 0xB8F]
         mov es, [bp - 0x10]
         mov [es:si + 0x5], al
         mov es, [bp - 0x10]
@@ -335,11 +335,11 @@ BuildTradeRoster:
         mov es, [bp - 0x10]
         mov [es:si + 0x3], al
         mov es, [segTeamChoiceText38]
-        mov al, [es:0xbf4]
+        mov al, [es:msgThereAreNoHilights + 0xBDD]
         mov es, [bp - 0x10]
         mov [es:si + 0x4], al
         mov es, [segTeamChoiceText39]
-        mov al, [es:0xba6]
+        mov al, [es:msgThereAreNoHilights + 0xB8F]
         mov es, [bp - 0x10]
         mov [es:si + 0x5], al
         mov es, [bp - 0x10]
@@ -717,8 +717,8 @@ FixJerseyConflict:
         add sp, 0xa
         lea ax, [bp - 0x80]
         mov es, [segWorkBuffer31]
-        mov [es:0xb04c], ax
-        mov [es:0xb04e], ss
+        mov [es:hilightrec_frames + 0xA276], ax
+        mov [es:hilightrec_frames + 0xA278], ss
         lea cx, [bp - 0x8]
         push cx
         lea dx, [bp - 0xa]
@@ -822,8 +822,8 @@ ExecuteTrade:
         push cx
         push ax
         mov es, [segTeamChoiceText37]
-        push word [es:0xb7e]
-        push word [es:0xb7c]
+        push word [es:msgThereAreNoHilights + 0xB67]
+        push word [es:msgThereAreNoHilights + 0xB65]
         push word [bp + 0x8]
         push word [bp + 0x6]
         lea ax, [bp - 0x34]
@@ -867,8 +867,8 @@ ExecuteTrade:
         push word [bp - 0x66e]
         push word [bp - 0x670]
         mov es, [segTeamChoiceText37]
-        push word [es:0xb6e]
-        push word [es:0xb6c]
+        push word [es:msgThereAreNoHilights + 0xB57]
+        push word [es:msgThereAreNoHilights + 0xB55]
         push word [bp + 0x8]
         push word [bp + 0x6]
         lea ax, [bp - 0x34]
@@ -1643,8 +1643,8 @@ TradeHitTest:
         mov [bx + si], ax
         mov word [bp - 0x2], 0x1
         mov es, [segTeamChoiceText40]
-        mov word [es:0x1109], strict word TradeShowStatsThunk
-        mov word [es:0x110b], 0x1b35
+        mov word [es:msgThereAreNoHilights + 0x10F2], strict word TradeShowStatsThunk
+        mov word [es:msgThereAreNoHilights + 0x10F4], 0x1b35
 .8:
         mov ax, [bp - 0x2]
         pop si
@@ -1849,10 +1849,10 @@ TradeScreenLoop:
         mov [bp - 0x8a], ax
         mov [bp - 0x8c], ax
         mov es, [segMenuText21]
-        mov [es:0x1474], ax
-        mov [es:0x1472], ax
-        mov [es:0x145e], ax
-        mov [es:0x145c], ax
+        mov [es:RtlShowMessage + 0xF77], ax
+        mov [es:RtlShowMessage + 0xF75], ax
+        mov [es:RtlShowMessage + 0xF61], ax
+        mov [es:RtlShowMessage + 0xF5F], ax
         les bx, [bp - 0xb6]
         mov ax, [es:bx + 0x2]
         inc ax
@@ -1946,8 +1946,8 @@ TradeScreenLoop:
         mov word [tradestate], 0x0
         mov es, [segTeamChoiceText40]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0x110b], ax
-        mov [es:0x1109], ax
+        mov [es:msgThereAreNoHilights + 0x10F4], ax
+        mov [es:msgThereAreNoHilights + 0x10F2], ax
 .7:
         mov word [bp - 0xce], 0x0
 .8:
@@ -2658,8 +2658,8 @@ TradeScreenLoop:
         mov [bp + si - 0x75], al
         mov word [bp - 0x78], 0xffff
         mov es, [segTeamChoiceText40]
-        mov word [es:0x1109], strict word TradeShowStatsThunk
-        mov word [es:0x110b], 0x1b35
+        mov word [es:msgThereAreNoHilights + 0x10F2], strict word TradeShowStatsThunk
+        mov word [es:msgThereAreNoHilights + 0x10F4], 0x1b35
         jmp near .84
 .67:
         mov word [tradecursor], 0xffff
@@ -2795,8 +2795,8 @@ TradeScreenLoop:
         add sp, 0x2
         mov es, [segTeamChoiceText40]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0x110b], ax
-        mov [es:0x1109], ax
+        mov [es:msgThereAreNoHilights + 0x10F4], ax
+        mov [es:msgThereAreNoHilights + 0x10F2], ax
         mov ax, 0xffff
         mov bx, [tradecursor]
         shl bx, 1
@@ -2911,8 +2911,8 @@ TradeScreenLoop:
         mov [tradecursor], ax
         mov es, [segTeamChoiceText40]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0x110b], ax
-        mov [es:0x1109], ax
+        mov [es:msgThereAreNoHilights + 0x10F4], ax
+        mov [es:msgThereAreNoHilights + 0x10F2], ax
         jmp short .97
         db 0x90, 0x90
 .95:
@@ -3427,12 +3427,12 @@ TradePlayers:
         mov [bp - 0x2], si
         mov byte [bp + si - 0x4c], 0x0
         mov es, [segWorkBuffer32]
-        cmp word [es:0xac60], 0x0
+        cmp word [es:hilightrec_frames + 0x9E8A], 0x0
         jz short .5
         lea ax, [bp - 0x4c]
         mov es, [segTeamChoiceText41]
-        mov [es:0xb36], ax
-        mov [es:0xb38], ss
+        mov [es:msgThereAreNoHilights + 0xB1F], ax
+        mov [es:msgThereAreNoHilights + 0xB21], ss
         push -0x1
         lea ax, [bp - 0x32]
         push ax
@@ -3454,12 +3454,12 @@ TradePlayers:
         db 0x90
 .5:
         mov es, [segWorkBuffer33]
-        test byte [es:0xac5e], 0x4
+        test byte [es:hilightrec_frames + 0x9E88], 0x4
         jnz short .6
         lea ax, [bp - 0x4c]
         mov es, [segTeamChoiceText42]
-        mov [es:0x8b3], ax
-        mov [es:0x8b5], ss
+        mov [es:msgThereAreNoHilights + 0x89C], ax
+        mov [es:msgThereAreNoHilights + 0x89E], ss
         push -0x1
         lea ax, [bp - 0x32]
         push ax
@@ -3486,8 +3486,8 @@ TradePlayers:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText37]
-        push word [es:0xb7e]
-        push word [es:0xb7c]
+        push word [es:msgThereAreNoHilights + 0xB67]
+        push word [es:msgThereAreNoHilights + 0xB65]
         push word 0x3701
         push strict word CurLeagueName
         lea ax, [bp - 0x24]
@@ -3580,8 +3580,8 @@ TradePlayers:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText37]
-        push word [es:0xb86]
-        push word [es:0xb84]
+        push word [es:msgThereAreNoHilights + 0xB6F]
+        push word [es:msgThereAreNoHilights + 0xB6D]
         push word 0x3701
         push strict word CurLeagueName
         lea ax, [bp - 0x24]
@@ -3688,7 +3688,7 @@ TradePlayers:
         jmp near TradePlayersTail + 0x2600
 .19:
         mov es, [segWorkBuffer34]
-        cmp word [es:0xac5c], 0x1
+        cmp word [es:hilightrec_frames + 0x9E86], 0x1
         jnz short .20
         push 0x0
         push 0x11

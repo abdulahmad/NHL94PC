@@ -1,5 +1,11 @@
+CanvasRowBytes		equ	0x74F6
+ClipBottomY		equ	0x74F4
+ClipLeftX		equ	0x74FC
+ClipRightX		equ	0x74FE
+ClipTopY		equ	0x74F2
 CurPage		equ	0x74DC
 UseCurrentPage		equ	0x1A6
+VenetianRowBytes		equ	0x74FA
 WipeDirX		equ	0x62A0
 WipeDirX2		equ	0x62B0
 WipeDirY		equ	0x62A8

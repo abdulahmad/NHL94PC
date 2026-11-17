@@ -3393,7 +3393,7 @@ f_3A0B_05D8,AwayPlStats,f_3A0B_05D8,new,medium,"away player stats (400 bytes), p
 f_3A0B_0768,HomeGlStats,f_3A0B_0768,new,medium,"home goalie stats, pointed to by hmtmglstats",src/data/far/work_buffer.asm
 f_3A0B_076A,HomeGlStats_w2,f_3A0B_076A,new,medium,"home goalie stats word +2, written by CreateGSummaryDb",src/data/far/work_buffer.asm
 f_3A0B_076C,HomeGlStats_w4,f_3A0B_076C,new,medium,"home goalie stats from +4, written by CreateGSummaryDb",src/data/far/work_buffer.asm
-f_3A0B_077A,AwayGlStats,f_3A0B_077A,new,medium,"away goalie stats, pointed to by g_B504",src/data/far/work_buffer.asm
+f_3A0B_077A,AwayGlStats,f_3A0B_077A,new,medium,"away goalie stats, pointed to by awtmglstatsptr",src/data/far/work_buffer.asm
 f_3A0B_0A8E,TeamPalette768,f_3A0B_0A8E,new,medium,"768-byte palette (256 RGB triples) loaded with the team colours and faded in (StartHL2, ThreeStarsLoop)",src/data/far/work_buffer.asm
 f_3A0B_0D8E,hilightrec,f_3A0B_0D8E,new,medium,"saved highlight record: first byte, read and written with the .HI file",src/data/far/work_buffer.asm
 f_3A0B_0D8F,hilightrec_b1,f_3A0B_0D8F,new,medium,highlight record byte +1,src/data/far/work_buffer.asm
@@ -4380,3 +4380,4 @@ g_E369,savedbyte4,g_E369,new,medium,saved game byte,src/data/dgroup_bss.asm
 g_E36A,savedbyte5,g_E36A,new,medium,saved game byte,src/data/dgroup_bss.asm
 g_E36B,lgflags,g_E36B,new,medium,league flags and buffers,src/data/dgroup_bss.asm
 g_D4F4,OOlist,g_D4F4,95 PC,medium,sorted object order list,src/data/dgroup_bss.asm
+g_D4F4,OOlist,g_D4F4,95 PC,medium,sorted object order list; OOlist_m1 and OOlist_b1 are its neighbours,src/data/dgroup_bss.asm

@@ -93,7 +93,7 @@ StatsSelNhlSeason:
         call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         mov es, [segWorkBuffer41]
-        mov word [es:0xb050], 0xffff
+        mov word [es:hilightrec_frames + 0xA27A], 0xffff
         push word [statscategory]
         call far [statsredrawcb]
         add sp, 0x2
@@ -161,7 +161,7 @@ StatsSelNhlPlayoffs:
         call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         mov es, [segWorkBuffer41]
-        mov word [es:0xb050], 0xffff
+        mov word [es:hilightrec_frames + 0xA27A], 0xffff
         push word [statscategory]
         call far [statsredrawcb]
         add sp, 0x2
@@ -229,7 +229,7 @@ StatsSelLeague:
         call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         mov es, [segWorkBuffer41]
-        mov word [es:0xb050], 0xffff
+        mov word [es:hilightrec_frames + 0xA27A], 0xffff
         push word [statscategory]
         call far [statsredrawcb]
         add sp, 0x2
@@ -305,7 +305,7 @@ StatsSelLeaguePlayoffs:
         call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         mov es, [segWorkBuffer41]
-        mov word [es:0xb050], 0xffff
+        mov word [es:hilightrec_frames + 0xA27A], 0xffff
         push word [statscategory]
         call far [statsredrawcb]
         add sp, 0x2
@@ -381,7 +381,7 @@ StatsSelPlayoffMode:
         call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         mov es, [segWorkBuffer41]
-        mov word [es:0xb050], 0xffff
+        mov word [es:hilightrec_frames + 0xA27A], 0xffff
         push word [statscategory]
         call far [statsredrawcb]
         add sp, 0x2

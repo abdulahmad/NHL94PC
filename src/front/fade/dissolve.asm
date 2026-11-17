@@ -12,9 +12,9 @@ FadeDissolve:
         mov word [bp - 0x6], 0xffff
         mov byte [bp - 0x4], 0x0
         mov es, [segDgroup22]
-        mov ax, [es:0x74f4]
-        sub ax, [es:0x74f2]
-        imul word [es:0x74fa]
+        mov ax, [es:ClipBottomY]
+        sub ax, [es:ClipTopY]
+        imul word [es:VenetianRowBytes]
         mov [bp - 0x12], ax
         mov es, [segDgroup23]
         cmp word [CurPage], 0x1

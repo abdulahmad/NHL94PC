@@ -33,6 +33,7 @@ AwardWinner7		equ	0x1CFC
 AwardWinner8		equ	0x1D00
 AwardWinner9		equ	0x1D02
 AwardsPending		equ	0x1CEF
+AwayGlStats		equ	0x77A
 AwayTeamDbName		equ	0xC020
 BuildPathFar		equ	0x3E
 BuildSeasonTitleThunk		equ	0x2481
@@ -104,6 +105,9 @@ GetPage		equ	0x11B1
 GetPaletteFar		equ	0x366
 HeapSizeHi		equ	0xAE92
 HeapSizeLo		equ	0xAE90
+HomeGlStats		equ	0x768
+HomePlStats		equ	0x448
+HomePlStats_w2		equ	0x44A
 HomeTeam		equ	0x21D0
 HomeTeamDbName		equ	0xC000
 HomeTeamNum		equ	0x29CA
@@ -149,6 +153,8 @@ POSeedOrder1		equ	0x1710
 POSeedOrder2		equ	0x1718
 POSeriesLenArg		equ	0x1724
 POSeriesLenArg2		equ	0x172C
+PageTable		equ	0x7570
+PageTableSeg		equ	0x7572
 PasswordKey		equ	0xDC2
 PlayGameThunk		equ	0x24E5
 PlayJingle		equ	0x5F8
@@ -165,6 +171,7 @@ ReadRecord52		equ	0x4EA
 RemoveDirTree		equ	0x258
 RestoreUnderBox		equ	0xF22
 RosterScreenThunk		equ	0x2459
+RtlShowMessage		equ	0x4FD
 SaveCharTab		equ	0xC7A
 SaveUnderOff		equ	0x9FA
 SaveUnderSeg		equ	0x9FC
@@ -274,6 +281,7 @@ floppydrive		equ	0xC276
 floppyok		equ	0xC278
 gameopts		equ	0x21CC
 goaliestatscb		equ	0x21C6
+hilightrec_frames		equ	0xDD6
 hmpenmins		equ	0xB36A
 hmppchances		equ	0xB366
 hmppgoals		equ	0xB364
@@ -338,6 +346,7 @@ msgTheLeague3		equ	0x862
 msgTheMasterControllerForThe		equ	0x8B
 msgThePasswordWasEnteredDifferently		equ	0xAEA
 msgTheTradingDeadlineHasPassed		equ	0x9A
+msgThereAreNoHilights		equ	0x17
 msgThereIsASavedGame		equ	0xB32
 msgThereIsAlreadyALeague		equ	0x298
 msgThereIsOnlyOneHuman		equ	0xD4

@@ -328,7 +328,7 @@ DrawTeamGrid:
         call 0x0000:_fmemcpy
         add sp, 0xa
         mov es, [segWorkBuffer7]
-        mov byte [es:0xaf8f], 0x7f
+        mov byte [es:hilightrec_frames + 0xA1B9], 0x7f
         push word 0x3a0b
         push strict word MenuRemap
         call 0x0FEF:SetRemapTable
@@ -560,7 +560,7 @@ ChooseLeagueController:
         mov [es:bx + 0x18], al
         mov [es:bx + 0x19], al
         mov es, [segWorkBuffer8]
-        mov [es:0xac5a], cx
+        mov [es:hilightrec_frames + 0x9E84], cx
 .7:
         push word 0x3701
         push strict word str_EnterMasterControllerPassword
@@ -672,11 +672,11 @@ ChooseLeagueController:
         add sp, 0x6
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov es, [segWorkBuffer9]
-        mov [es:0xac5e], ax
+        mov [es:hilightrec_frames + 0x9E88], ax
         mov es, [segWorkBuffer10]
-        mov [es:0xac60], ax
+        mov [es:hilightrec_frames + 0x9E8A], ax
         mov es, [segWorkBuffer11]
-        mov byte [es:0xaf3e], 0x0
+        mov byte [es:hilightrec_frames + 0xA168], 0x0
         push word [bp - 0x3e]
         push word [bp - 0x40]
         call 0x06E1:FindUnlink
@@ -755,8 +755,8 @@ AskExportToFloppy:
         mov dx, [bp + 0x8]
         add ax, [bp - 0x8]
         mov es, [segTeamChoiceText5]
-        mov [es:0x541], ax
-        mov [es:0x543], dx
+        mov [es:msgThereAreNoHilights + 0x52A], ax
+        mov [es:msgThereAreNoHilights + 0x52C], dx
         push -0x1
         lea ax, [bp - 0x4]
         push ax
@@ -1266,8 +1266,8 @@ LeagueTeamSelect:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText6]
-        push word [es:0xb7e]
-        push word [es:0xb7c]
+        push word [es:msgThereAreNoHilights + 0xB67]
+        push word [es:msgThereAreNoHilights + 0xB65]
         push word [bp + 0x8]
         push word [bp + 0x6]
         lea ax, [bp - 0x5a]
@@ -1424,8 +1424,8 @@ LeagueTeamSelect:
         test byte [bp + 0x16], 0x1
         jz short .7
         mov es, [segTeamChoiceText7]
-        mov word [es:0x10e0], 0x105c
-        mov word [es:0x10e2], 0x3701
+        mov word [es:msgThereAreNoHilights + 0x10C9], 0x105c
+        mov word [es:msgThereAreNoHilights + 0x10CB], 0x3701
 .6:
         mov word [bp - 0x76], 0x2
         jmp short .9
@@ -1433,14 +1433,14 @@ LeagueTeamSelect:
         test byte [bp + 0x16], 0x8
         jz short .8
         mov es, [segTeamChoiceText7]
-        mov word [es:0x10e0], 0x1036
-        mov word [es:0x10e2], 0x3701
+        mov word [es:msgThereAreNoHilights + 0x10C9], 0x1036
+        mov word [es:msgThereAreNoHilights + 0x10CB], 0x3701
         jmp short .6
 .8:
         mov es, [segTeamChoiceText7]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0x10e2], ax
-        mov [es:0x10e0], ax
+        mov [es:msgThereAreNoHilights + 0x10CB], ax
+        mov [es:msgThereAreNoHilights + 0x10C9], ax
         mov word [bp - 0x76], 0x1
 .9:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -2142,8 +2142,8 @@ LeagueTeamSelect:
 .51:
         mov ax, es
         mov es, [segTeamChoiceText8]
-        mov [es:0x3a9], di
-        mov [es:0x3ab], ax
+        mov [es:msgThereAreNoHilights + 0x392], di
+        mov [es:msgThereAreNoHilights + 0x394], ax
         push -0x1
         lea ax, [bp - 0xe6]
         push ax

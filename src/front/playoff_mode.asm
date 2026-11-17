@@ -114,14 +114,14 @@ MenuPlayoffHilights:
         call 0x0000:VgaCopyBytes
         add sp, 0x6
         mov es, [segMenuText9]
-        mov ax, [es:0xd46]
-        add ax, [es:0xd4a]
+        mov ax, [es:RtlShowMessage + 0x849]
+        add ax, [es:RtlShowMessage + 0x84D]
         cwd
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         sar ax, 1
         push ax
-        mov ax, [es:0xd48]
-        add ax, [es:0xd44]
+        mov ax, [es:RtlShowMessage + 0x84B]
+        add ax, [es:RtlShowMessage + 0x847]
         cwd
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         sar ax, 1
@@ -154,14 +154,14 @@ MenuPlayoffHilights:
         retf
 .3:
         mov es, [segMenuText9]
-        mov ax, [es:0xd46]
-        add ax, [es:0xd4a]
+        mov ax, [es:RtlShowMessage + 0x849]
+        add ax, [es:RtlShowMessage + 0x84D]
         cwd
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         sar ax, 1
         push ax
-        mov ax, [es:0xd48]
-        add ax, [es:0xd44]
+        mov ax, [es:RtlShowMessage + 0x84B]
+        add ax, [es:RtlShowMessage + 0x847]
         cwd
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         sar ax, 1
@@ -737,12 +737,12 @@ CreatePlayoffs:
         call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
         mov es, [segMenuText10]
-        mov word [es:0xbda], strict word PlayoffModeLoopThunk
-        mov word [es:0xbdc], 0x1b35
-        mov word [es:0xbf0], strict word EditPlayoffSettingsThunk
-        mov word [es:0xbf2], 0x1b35
-        mov word [es:0xc06], strict word MenuPlayoffHilightsThunk
-        mov word [es:0xc08], 0x1b35
+        mov word [es:RtlShowMessage + 0x6DD], strict word PlayoffModeLoopThunk
+        mov word [es:RtlShowMessage + 0x6DF], 0x1b35
+        mov word [es:RtlShowMessage + 0x6F3], strict word EditPlayoffSettingsThunk
+        mov word [es:RtlShowMessage + 0x6F5], 0x1b35
+        mov word [es:RtlShowMessage + 0x709], strict word MenuPlayoffHilightsThunk
+        mov word [es:RtlShowMessage + 0x70B], 0x1b35
         mov word [LeagueSetChoice], 0x0
 .25:
         push word [bp - 0x3e]
@@ -2774,8 +2774,8 @@ POSimSeriesTeamWins:
         push cx
         push ax
         mov es, [segTeamChoiceText1]
-        push word [es:0xb7e]
-        push word [es:0xb7c]
+        push word [es:msgThereAreNoHilights + 0xB67]
+        push word [es:msgThereAreNoHilights + 0xB65]
         push 0x0
         push 0x0
         lea ax, [bp - 0x28]
@@ -2798,8 +2798,8 @@ POSimSeriesTeamWins:
         push word [bp - 0x2a]
         push word [bp - 0x2c]
         mov es, [segTeamChoiceText1]
-        push word [es:0xb7a]
-        push word [es:0xb78]
+        push word [es:msgThereAreNoHilights + 0xB63]
+        push word [es:msgThereAreNoHilights + 0xB61]
         push 0x0
         push 0x0
         lea ax, [bp - 0x28]
@@ -2924,8 +2924,8 @@ POSimSeries:
         push cx
         push ax
         mov es, [segTeamChoiceText1]
-        push word [es:0xb7e]
-        push word [es:0xb7c]
+        push word [es:msgThereAreNoHilights + 0xB67]
+        push word [es:msgThereAreNoHilights + 0xB65]
         push 0x0
         push 0x0
         lea ax, [bp - 0x2a]
@@ -2948,8 +2948,8 @@ POSimSeries:
         push word [bp - 0x2c]
         push word [bp - 0x2e]
         mov es, [segTeamChoiceText1]
-        push word [es:0xb7a]
-        push word [es:0xb78]
+        push word [es:msgThereAreNoHilights + 0xB63]
+        push word [es:msgThereAreNoHilights + 0xB61]
         push 0x0
         push 0x0
         lea ax, [bp - 0x2a]
@@ -4217,8 +4217,8 @@ POAfterGame:
         mov word [bp - 0xc], 0xf
         mov es, [segMenuText11]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0x18d6], ax
-        mov [es:0x18d4], ax
+        mov [es:RtlShowMessage + 0x13D9], ax
+        mov [es:RtlShowMessage + 0x13D7], ax
         les bx, [bp + 0x6]
         mov word [es:bx + 0x20], 0x69
         push word [bp + 0x8]
@@ -4410,8 +4410,8 @@ POAfterGameJumpTable:                           ; jump table of POAfterGame: 15 
         mov word [es:bx + 0x20], 0x69
         mov es, [segMenuText11]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0x18d6], ax
-        mov [es:0x18d4], ax
+        mov [es:RtlShowMessage + 0x13D9], ax
+        mov [es:RtlShowMessage + 0x13D7], ax
         push word [bp + 0x8]
         push word [bp + 0x6]
         push cs
@@ -4722,7 +4722,7 @@ PlayoffModeLoop:
         mov ax, [es:bx + 0x20]
         add ax, 0x3f0
         mov es, [segWorkBuffer1]
-        mov [es:0x78c], ax
+        mov [es:AwayGlStats + 0x12], ax
         push word [bp - 0x3a]
         push bx
         call 0x06E1:FindUnlink
@@ -4868,17 +4868,17 @@ PlayoffModeLoop:
         call 0x0FEF:SetStartPage
         add sp, 0x2
         mov es, [segDgroup3]
-        mov ax, [es:0x7572]
-        or ax, [es:0x7570]
+        mov ax, [es:PageTableSeg]
+        or ax, [es:PageTable]
         jz short .6
-        push word [es:0x7572]
-        push word [es:0x7570]
+        push word [es:PageTableSeg]
+        push word [es:PageTable]
         call 0x06E1:FindUnlink
         add sp, 0x4
         mov es, [segDgroup3]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0x7572], ax
-        mov [es:0x7570], ax
+        mov [es:PageTableSeg], ax
+        mov [es:PageTable], ax
 .6:
         push 0x0
         push 0x2
@@ -5049,15 +5049,15 @@ PlayoffModeLoop:
         cmp ax, strict word 0xf
         jnl short .13
         mov es, [segMenuText11]
-        mov word [es:0x18d4], strict word POMenuResult4Thunk
-        mov word [es:0x18d6], 0x1b35
+        mov word [es:RtlShowMessage + 0x13D7], strict word POMenuResult4Thunk
+        mov word [es:RtlShowMessage + 0x13D9], 0x1b35
         jmp short .14
         db 0x90
 .13:
         mov es, [segMenuText11]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0x18d6], ax
-        mov [es:0x18d4], ax
+        mov [es:RtlShowMessage + 0x13D9], ax
+        mov [es:RtlShowMessage + 0x13D7], ax
 .14:
         cmp word [bp - 0x2a], 0xf
         jl short .15
@@ -5232,7 +5232,7 @@ PlayoffModeLoop:
         mov ax, [es:bx + 0x20]
         add ax, 0x3f0
         mov es, [segWorkBuffer1]
-        mov [es:0x78c], ax
+        mov [es:AwayGlStats + 0x12], ax
         call 0x2037:SetSideControls
         push word 0x3701
         push strict word CurLeagueName
@@ -5408,17 +5408,17 @@ PlayoffModeLoop:
         call 0x0FEF:SetStartPage
         add sp, 0x2
         mov es, [segDgroup3]
-        mov ax, [es:0x7572]
-        or ax, [es:0x7570]
+        mov ax, [es:PageTableSeg]
+        or ax, [es:PageTable]
         jz short .28
-        push word [es:0x7572]
-        push word [es:0x7570]
+        push word [es:PageTableSeg]
+        push word [es:PageTable]
         call 0x06E1:FindUnlink
         add sp, 0x4
         mov es, [segDgroup3]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0x7572], ax
-        mov [es:0x7570], ax
+        mov [es:PageTableSeg], ax
+        mov [es:PageTable], ax
 .28:
         push 0x0
         push 0x2

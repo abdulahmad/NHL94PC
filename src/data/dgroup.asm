@@ -6510,27 +6510,27 @@ segWorkBuffer40:                                ; segment constant 3A0Bh (work_b
         db 0x0B, 0x3A
 segSeasonTitles6:                               ; segment constant 384Bh (season_titles) loaded into es by
                                                 ; StatsSelLeague, StatsSelLeaguePlayoffs, StatsSelNhlPlayoffs
-                                                ; ; used by STATS
+                                                ; used by STATS
         db 0x4B, 0x38
 segSeasonTitles7:                               ; segment constant 384Bh (season_titles) loaded into es by
                                                 ; StatsSelLeague, StatsSelLeaguePlayoffs, StatsSelNhlPlayoffs
-                                                ; ; used by STATS
+                                                ; used by STATS
         db 0x4B, 0x38
 segSeasonTitles8:                               ; segment constant 384Bh (season_titles) loaded into es by
                                                 ; StatsSelLeague, StatsSelLeaguePlayoffs, StatsSelNhlPlayoffs
-                                                ; ; used by STATS
+                                                ; used by STATS
         db 0x4B, 0x38
 segSeasonTitles9:                               ; segment constant 384Bh (season_titles) loaded into es by
                                                 ; StatsSelLeague, StatsSelLeaguePlayoffs, StatsSelNhlPlayoffs
-                                                ; ; used by STATS
+                                                ; used by STATS
         db 0x4B, 0x38
 segSeasonTitles10:                              ; segment constant 384Bh (season_titles) loaded into es by
                                                 ; StatsSelLeague, StatsSelLeaguePlayoffs, StatsSelNhlPlayoffs
-                                                ; ; used by STATS
+                                                ; used by STATS
         db 0x4B, 0x38
 segWorkBuffer41:                                ; segment constant 3A0Bh (work_buffer) loaded into es by
                                                 ; StatsSelLeague, StatsSelLeaguePlayoffs, StatsSelNhlPlayoffs
-                                                ; ; used by STATS
+                                                ; used by STATS
         db 0x0B, 0x3A
 segWorkBuffer42:                                ; segment constant 3A0Bh (work_buffer) loaded into es by
                                                 ; EasnStandingsMenu; used by STATS

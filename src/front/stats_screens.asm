@@ -1166,14 +1166,14 @@ GameStandingsMenu:
         db 0x90
 .12:
         mov es, [segWorkBuffer40]
-        mov word [es:0xb050], 0x0
+        mov word [es:hilightrec_frames + 0xA27A], 0x0
         push word 0xcf1a
         mov ax, strict word GoalieStatsCard
         mov dx, 0x20f4
         jmp short .14
 .13:
         mov es, [segWorkBuffer40]
-        mov word [es:0xb050], 0x0
+        mov word [es:hilightrec_frames + 0xA27A], 0x0
         push word 0xcf1a
         mov ax, strict word SkaterStatsCard
         mov dx, 0x23d5

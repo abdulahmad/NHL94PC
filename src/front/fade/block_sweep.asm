@@ -13,15 +13,15 @@ FadeBlockSweep:
         push si
         call 0x0FEF:UseCurrentPage
         mov es, [segDgroup18]
-        mov ax, [es:0x74fc]
+        mov ax, [es:ClipLeftX]
         mov [fadex], ax
-        mov ax, [es:0x74fe]
+        mov ax, [es:ClipRightX]
         mov [fadey], ax
-        mov ax, [es:0x74f2]
+        mov ax, [es:ClipTopY]
         mov [fadew], ax
-        mov cx, [es:0x74f4]
+        mov cx, [es:ClipBottomY]
         mov [fadeh], cx
-        mov ax, [es:0x74fa]
+        mov ax, [es:VenetianRowBytes]
         add ax, strict word 0x27
         mov bx, 0x28
         cwd

@@ -13,24 +13,24 @@ SetSideControls:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .1
         mov es, [segMenuText1]
-        mov word [es:0x1170], strict word DeskHomeLinesThunk
-        mov word [es:0x1172], 0x1b35
-        mov [es:0x1188], ax
-        mov [es:0x1186], ax
+        mov word [es:RtlShowMessage + 0xC73], strict word DeskHomeLinesThunk
+        mov word [es:RtlShowMessage + 0xC75], 0x1b35
+        mov [es:RtlShowMessage + 0xC8B], ax
+        mov [es:RtlShowMessage + 0xC89], ax
         mov es, [segMenuText2]
-        mov word [es:0x10ae], strict word HomeTeamMenuText
-        mov word [es:0x10b0], 0x3448
+        mov word [es:RtlShowMessage + 0xBB1], strict word HomeTeamMenuText
+        mov word [es:RtlShowMessage + 0xBB3], 0x3448
         jmp near .7
 .1:
         mov es, [segMenuText1]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0x1172], ax
-        mov [es:0x1170], ax
-        mov word [es:0x1186], strict word DeskVisitorLinesThunk
-        mov word [es:0x1188], 0x1b35
+        mov [es:RtlShowMessage + 0xC75], ax
+        mov [es:RtlShowMessage + 0xC73], ax
+        mov word [es:RtlShowMessage + 0xC89], strict word DeskVisitorLinesThunk
+        mov word [es:RtlShowMessage + 0xC8B], 0x1b35
         mov es, [segMenuText2]
-        mov [es:0x10b0], ax
-        mov [es:0x10ae], ax
+        mov [es:RtlShowMessage + 0xBB3], ax
+        mov [es:RtlShowMessage + 0xBB1], ax
 .2:
         mov word [es:0x10c4], strict word VisitorTeamMenuText
         mov word [es:0x10c6], 0x3448
@@ -42,36 +42,36 @@ SetSideControls:
         cmp word [ctl2team], -0x1
         jz short .4
         mov es, [segMenuText1]
-        mov word [es:0x1170], strict word DeskHomeLinesThunk
-        mov word [es:0x1172], 0x1b35
+        mov word [es:RtlShowMessage + 0xC73], strict word DeskHomeLinesThunk
+        mov word [es:RtlShowMessage + 0xC75], 0x1b35
         mov es, [segMenuText2]
-        mov word [es:0x10ae], strict word HomeTeamMenuText
-        mov word [es:0x10b0], 0x3448
+        mov word [es:RtlShowMessage + 0xBB1], strict word HomeTeamMenuText
+        mov word [es:RtlShowMessage + 0xBB3], 0x3448
         jmp short .5
 .4:
         mov es, [segMenuText1]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0x1172], ax
-        mov [es:0x1170], ax
+        mov [es:RtlShowMessage + 0xC75], ax
+        mov [es:RtlShowMessage + 0xC73], ax
         mov es, [segMenuText2]
-        mov [es:0x10b0], ax
-        mov [es:0x10ae], ax
+        mov [es:RtlShowMessage + 0xBB3], ax
+        mov [es:RtlShowMessage + 0xBB1], ax
 .5:
         cmp word [ctl1team], -0x2
         jz short .6
         cmp word [ctl2team], -0x2
         jz short .6
         mov es, [segMenuText1]
-        mov word [es:0x1186], strict word DeskVisitorLinesThunk
-        mov word [es:0x1188], 0x1b35
+        mov word [es:RtlShowMessage + 0xC89], strict word DeskVisitorLinesThunk
+        mov word [es:RtlShowMessage + 0xC8B], 0x1b35
         mov es, [segMenuText2]
         jmp near .2
         db 0x90
 .6:
         mov es, [segMenuText1]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0x1188], ax
-        mov [es:0x1186], ax
+        mov [es:RtlShowMessage + 0xC8B], ax
+        mov [es:RtlShowMessage + 0xC89], ax
         mov es, [segMenuText2]
 .7:
         db 0x2B, 0xC0                           ; insn: sub ax, ax

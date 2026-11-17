@@ -1,8 +1,13 @@
+ClipBottomY		equ	0x74F4
+ClipLeftX		equ	0x74FC
+ClipRightX		equ	0x74FE
+ClipTopY		equ	0x74F2
 CopyFadeRect		equ	0x5E
 RandLfsrByte		equ	0x36
 RandomBlockDone		equ	0x8EFE
 SetDeadline.regs		equ	0x1A6E
 UseCurrentPage		equ	0x1A6
+VenetianRowBytes		equ	0x74FA
 WaitDeadlineNoEoi		equ	0x1A84
 _rand		equ	0x1012
 fadeh		equ	0xDF70

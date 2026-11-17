@@ -342,27 +342,27 @@ SetupStatsMenus:
         inc word [es:bx + 0x80]
         db 0x8B, 0xC6                           ; insn: mov ax, si
         mov es, [segTeamChoiceText48]
-        mov [es:0x11d5], al
+        mov [es:msgThereAreNoHilights + 0x11BE], al
         mov es, [segMenuText22]
-        mov [es:0x1960], al
+        mov [es:RtlShowMessage + 0x1463], al
         mov es, [segMenuText23]
-        mov [es:0x18b0], al
+        mov [es:RtlShowMessage + 0x13B3], al
         mov es, [segMenuText24]
-        mov [es:0x186e], al
+        mov [es:RtlShowMessage + 0x1371], al
         mov es, [segMenuText25]
-        mov [es:0x182c], al
+        mov [es:RtlShowMessage + 0x132F], al
         mov es, [segMenuText26]
-        mov [es:0x1800], al
+        mov [es:RtlShowMessage + 0x1303], al
         mov es, [segMenuText27]
-        mov [es:0x17d4], al
+        mov [es:RtlShowMessage + 0x12D7], al
         mov es, [segMenuText28]
-        mov [es:0x170e], al
+        mov [es:RtlShowMessage + 0x1211], al
         mov es, [segMenuText29]
-        mov [es:0x1674], al
+        mov [es:RtlShowMessage + 0x1177], al
         mov es, [segMenuText30]
-        mov [es:0x110a], al
+        mov [es:RtlShowMessage + 0xC0D], al
         mov es, [segMenuText31]
-        mov [es:0xcea], al
+        mov [es:RtlShowMessage + 0x7ED], al
         pop si
         pop di
         leave
@@ -558,29 +558,29 @@ SetStatsMenuTextJumpTable:                      ; jump table of SetStatsMenuText
 .8:
         mov ax, [bp - 0x8]
         mov es, [segMenuText32]
-        mov [es:0x1770], cx
-        mov [es:0x1772], ax
+        mov [es:RtlShowMessage + 0x1273], cx
+        mov [es:RtlShowMessage + 0x1275], ax
         mov es, [segMenuText33]
-        mov [es:0x172e], cx
-        mov [es:0x1730], ax
+        mov [es:RtlShowMessage + 0x1231], cx
+        mov [es:RtlShowMessage + 0x1233], ax
         mov es, [segMenuText34]
-        mov [es:0x16aa], cx
-        mov [es:0x16ac], ax
+        mov [es:RtlShowMessage + 0x11AD], cx
+        mov [es:RtlShowMessage + 0x11AF], ax
         mov es, [segMenuText35]
-        mov [es:0x167e], cx
-        mov [es:0x1680], ax
+        mov [es:RtlShowMessage + 0x1181], cx
+        mov [es:RtlShowMessage + 0x1183], ax
         mov es, [segMenuText34]
-        mov [es:0x16a6], bx
+        mov [es:RtlShowMessage + 0x11A9], bx
         mov es, [segMenuText35]
-        mov [es:0x167a], bx
+        mov [es:RtlShowMessage + 0x117D], bx
         cmp bx, 0x4f
         jnl short .9
         mov bx, 0x4f
 .9:
         mov es, [segMenuText32]
-        mov [es:0x176c], bx
-        mov [es:0x1756], bx
-        mov [es:0x1740], bx
+        mov [es:RtlShowMessage + 0x126F], bx
+        mov [es:RtlShowMessage + 0x1259], bx
+        mov [es:RtlShowMessage + 0x1243], bx
         mov es, [segMenuText33]
-        mov [es:0x172a], bx
-        mov [es:0x1714], bx
+        mov [es:RtlShowMessage + 0x122D], bx
+        mov [es:RtlShowMessage + 0x1217], bx

@@ -377,18 +377,18 @@ PlayTitleMovies:
         add sp, 0x4
         mov al, 0x3f
         mov es, [segWorkBuffer53]
-        mov [es:0xb6d7], al
-        mov [es:0xb6d1], al
-        mov [es:0xb6cf], al
-        mov [es:0xb6ce], al
+        mov [es:hilightrec_frames + 0xA901], al
+        mov [es:hilightrec_frames + 0xA8FB], al
+        mov [es:hilightrec_frames + 0xA8F9], al
+        mov [es:hilightrec_frames + 0xA8F8], al
         mov al, 0x39
-        mov [es:0xb6d4], al
-        mov [es:0xb6d2], al
-        mov byte [es:0xb6d5], 0x2e
+        mov [es:hilightrec_frames + 0xA8FE], al
+        mov [es:hilightrec_frames + 0xA8FC], al
+        mov byte [es:hilightrec_frames + 0xA8FF], 0x2e
         mov al, 0x3c
-        mov [es:0xb6dc], al
-        mov [es:0xb6db], al
-        mov [es:0xb6da], al
+        mov [es:hilightrec_frames + 0xA906], al
+        mov [es:hilightrec_frames + 0xA905], al
+        mov [es:hilightrec_frames + 0xA904], al
         mov ax, [bp - 0x26]
         pop si
         leave

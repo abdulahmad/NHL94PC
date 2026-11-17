@@ -73,13 +73,13 @@ FadeBoxGrow:
         push si
         call 0x0FEF:UseCurrentPage
         mov es, [segDgroup24]
-        mov ax, [es:0x74fe]
+        mov ax, [es:ClipRightX]
         mov [fadey], ax
-        mov cx, [es:0x74f2]
+        mov cx, [es:ClipTopY]
         mov [fadew], cx
-        mov dx, [es:0x74f4]
+        mov dx, [es:ClipBottomY]
         mov [fadeh], dx
-        mov bx, [es:0x74fc]
+        mov bx, [es:ClipLeftX]
         mov [fadex], bx
         db 0x03, 0xC3                           ; insn: add ax, bx
         inc ax
@@ -94,7 +94,7 @@ FadeBoxGrow:
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         sar ax, 1
         mov [bp - 0x1a], ax
-        mov ax, [es:0x74fa]
+        mov ax, [es:VenetianRowBytes]
         inc ax
         cwd
         db 0x2B, 0xC2                           ; insn: sub ax, dx
@@ -239,7 +239,7 @@ FadeBoxGrow:
         sub ax, [fadew]
         push ax
         mov es, [segDgroup24]
-        push word [es:0x74fa]
+        push word [es:VenetianRowBytes]
         push word [fadew]
         push word [fadex]
         cmp word [CurPage], 0x1

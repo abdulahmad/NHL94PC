@@ -223,8 +223,8 @@ StandingsScreen:
         push di
         push si
         mov es, [segMenuText36]
-        mov word [es:0x16c4], strict word StandingsActRoster2
-        mov word [es:0x16c6], 0x2248
+        mov word [es:RtlShowMessage + 0x11C7], strict word StandingsActRoster2
+        mov word [es:RtlShowMessage + 0x11C9], 0x2248
         push 0x0
         push strict word str_EasnFnt
         call 0x149D:LoadRawHeader
@@ -1174,8 +1174,8 @@ ShowSeasonStandings:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText49]
-        push word [es:0xb7e]
-        push word [es:0xb7c]
+        push word [es:msgThereAreNoHilights + 0xB67]
+        push word [es:msgThereAreNoHilights + 0xB65]
         push word 0x3861
         push strict word 0x0
         lea ax, [bp - 0x30]
@@ -1576,8 +1576,8 @@ LoadLeagueSchedule:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText49]
-        push word [es:0xb86]
-        push word [es:0xb84]
+        push word [es:msgThereAreNoHilights + 0xB6F]
+        push word [es:msgThereAreNoHilights + 0xB6D]
         jmp short .2
 .1:
         push word 0x3701
@@ -1726,8 +1726,8 @@ ShowPlayoffStandings:
         mov dx, 0x2248
 .10:
         mov es, [segMenuText36]
-        mov [es:0x16c4], ax
-        mov [es:0x16c6], dx
+        mov [es:RtlShowMessage + 0x11C7], ax
+        mov [es:RtlShowMessage + 0x11C9], dx
         push cs
         call DrawStandingsPage
         pop si

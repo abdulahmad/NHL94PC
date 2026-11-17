@@ -684,16 +684,16 @@ DrawReplayFrame:
         cmp word [camy], 0xff50
         jnl short .33
         mov es, [segDgroup9]
-        mov ax, [es:0x74f4]
+        mov ax, [es:ClipBottomY]
         mov [bp - 0x22], ax
         mov ax, [viewcelly]
         shl ax, byte 0x3
         sub ax, 0x244
         neg ax
         push ax
-        mov ax, [es:0x74fc]
-        mov bx, [es:0x74f2]
-        mov dx, [es:0x74fe]
+        mov ax, [es:ClipLeftX]
+        mov bx, [es:ClipTopY]
+        mov dx, [es:ClipRightX]
         call 0x0FEF:SetClipRectRegs
 .33:
         mov word [bp - 0x1e], 0x0
@@ -1112,9 +1112,9 @@ DrawReplayFrame:
         jnl short .81
         push word [bp - 0x22]
         mov es, [segDgroup9]
-        mov ax, [es:0x74fc]
-        mov bx, [es:0x74f2]
-        mov dx, [es:0x74fe]
+        mov ax, [es:ClipLeftX]
+        mov bx, [es:ClipTopY]
+        mov dx, [es:ClipRightX]
         call 0x0FEF:SetClipRectRegs
 .81:
         cmp word [camy], 0xff70

@@ -4123,7 +4123,7 @@ Endfaceoff:
         mov al, [si + sortobj0_47]
         cbw
         imul si, ax, 0x14
-        mov al, [es:si + 0x207]
+        mov al, [es:si + AwaySortObjs + 0x13]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         db 0x26, 0x8A, 0x8F, 0x13, 0x00         ; insn: mov cl, [es:bx + 0x13]
         db 0x2A, 0xED                           ; insn: sub ch, ch

@@ -6,6 +6,7 @@ AnnounceIntro		equ	0x490
 AnnouncePlayoffResult		equ	0x514
 AnnouncerFlags		equ	0x1B7
 AskYesNo		equ	0x0
+AwayGlStats		equ	0x77A
 AwayTeamDbName		equ	0xC020
 BuildPathFar		equ	0x3E
 BuildSeasonTitleThunk		equ	0x2481
@@ -174,6 +175,8 @@ POTreeRows		equ	0xC224
 POTreeSlots		equ	0xC206
 PadRepeatOn		equ	0x524
 PadStates		equ	0x52C
+PageTable		equ	0x7570
+PageTableSeg		equ	0x7572
 PanelText		equ	0xB107
 PanelText2		equ	0xB207
 PlanarToLinearThunk		equ	0x2431
@@ -200,6 +203,8 @@ RestoreVgaPlanes		equ	0x224
 RinkEndArt		equ	0xC25C
 RinkEndArtSeg		equ	0xC25E
 RosterScreenThunk		equ	0x2459
+RtlSetHandler		equ	0xF4
+RtlShowMessage		equ	0x4FD
 SaveCharTab		equ	0xC7A
 SaveVgaPlanes		equ	0x4
 SavedGameNames		equ	0xA6D8
@@ -261,6 +266,7 @@ StopSpeech		equ	0x47A
 StrIndexInSet		equ	0xE10
 TeamLinesRecs		equ	0xA06C
 TeamNameClips		equ	0x1E0
+TeamNameTemplate		equ	0x26B
 TeamPalette1		equ	0xB0C4
 TeamPalette2		equ	0xB1C4
 TextOverlayPtr		equ	0xB092

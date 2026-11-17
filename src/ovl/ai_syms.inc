@@ -82,6 +82,8 @@ HeapSizeHi		equ	0xAE92
 HeapSizeLo		equ	0xAE90
 HomeGlAttr		equ	0x3E8
 HomeGlStats		equ	0x768
+HomeGlStats_w2		equ	0x76A
+HomeGlStats_w4		equ	0x76C
 HomePlStats		equ	0x448
 HomePlStats_w2		equ	0x44A
 HomeSortObjs		equ	0x0
@@ -125,6 +127,7 @@ NumberFrames		equ	0xD446
 NumberFrames2		equ	0xD456
 NumberFrames2Seg		equ	0xD458
 NumberFramesSeg		equ	0xD448
+OOlist		equ	0xD4F4
 OOlist_b1		equ	0xD4F5
 OOlist_m1		equ	0xD4F3
 OneTimerDirs		equ	0x5B66
@@ -373,7 +376,6 @@ fox		equ	0x29B2
 foy		equ	0x29B4
 frameaccum		equ	0xD6D0
 framesync		equ	0x4B02
-OOlist		equ	0xD4F4
 gameclock		equ	0x29DC
 gameclock2		equ	0xD1AC
 gameframe		equ	0xD46A

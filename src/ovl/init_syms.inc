@@ -28,6 +28,10 @@ BuildEventLinesThunk		equ	0x2AE9
 BuildPathFar		equ	0x3E
 CallCountStep		equ	0x1A2C
 ClearClipRect		equ	0xB4
+ClipBottomY		equ	0x74F4
+ClipLeftX		equ	0x74FC
+ClipRightX		equ	0x74FE
+ClipTopY		equ	0x74F2
 CloseHandlePtr		equ	0x41E
 CopyPlane		equ	0x10A7
 CreateFileNormal		equ	0x40C
@@ -113,6 +117,7 @@ HomeGlStats		equ	0x768
 HomeGlStats_w2		equ	0x76A
 HomeGlStats_w4		equ	0x76C
 HomePlStats		equ	0x448
+HomePlStats_w2		equ	0x44A
 HomeSortObjs		equ	0x0
 HomeTeamAbbr		equ	0xAE34
 HomeTeamAbbr_b1		equ	0xAE35
@@ -172,6 +177,7 @@ NumberFrames		equ	0xD446
 NumberFrames2		equ	0xD456
 NumberFrames2Seg		equ	0xD458
 NumberFramesSeg		equ	0xD448
+OOlist		equ	0xD4F4
 OpenReadShared		equ	0x3D6
 OpenReadWriteShared		equ	0x3FA
 OpenWriteShared		equ	0x3E8
@@ -241,6 +247,12 @@ RinkOverlayFrames2		equ	0x4A2C
 RinkRowBytes		equ	0xB09C
 RinkTilesPtr		equ	0x8FE
 RinkTilesSeg		equ	0x900
+RtlHexByte		equ	0x1E
+RtlHexDigit		equ	0x2B
+RtlHexWord		equ	0x17
+RtlSectionHook		equ	0x3
+RtlShowMessage		equ	0x4FD
+RtlWriteHex		equ	0x5
 SaveCharTab		equ	0xC7A
 SaveModeStateThunk		equ	0x249F
 SaveVgaPlanes		equ	0x4
@@ -372,7 +384,6 @@ forceteamsThunk		equ	0x2A5D
 fox		equ	0x29B2
 foy		equ	0x29B4
 frameaccum		equ	0xD6D0
-OOlist		equ	0xD4F4
 gameclock		equ	0x29DC
 gameclock2		equ	0xD1AC
 gameframe		equ	0xD46A
@@ -491,6 +502,7 @@ lty		equ	0xD628
 mousex		equ	0xD60E
 mousey		equ	0xD610
 msgInsufficientDiskSpaceToSave		equ	0x45
+msgThereAreNoHilights		equ	0x17
 objylist		equ	0xD496
 onetimerflag		equ	0x4A66
 otherscoreaway		equ	0xB0B6

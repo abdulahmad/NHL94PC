@@ -580,7 +580,7 @@ BuildEventLines:
         mov cx, [bx + plstatsoff3]
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, byte 0x4
-        add cx, [es:bx + 0x448]
+        add cx, [es:bx + HomePlStats]
         push cx
         push strict word str_D_2
         mov ax, [bp - 0x6]

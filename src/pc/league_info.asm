@@ -50,8 +50,8 @@ ReadLeagueInfo:
         mov byte [bp + di - 0x16], 0x0
         lea ax, [bp - 0x16]
         mov es, [segTeamChoiceText21]
-        mov [es:0x105], ax
-        mov [es:0x107], ss
+        mov [es:msgThereAreNoHilights + 0xEE], ax
+        mov [es:msgThereAreNoHilights + 0xF0], ss
         push 0x0
         push 0x11
         push 0x5

@@ -28,7 +28,7 @@ HomeGlStats_w2:                                 ; home goalie stats word +2, wri
 HomeGlStats_w4:                                 ; home goalie stats from +4, written by CreateGSummaryDb; used
                                                 ; by INIT
         times 14 db 0
-AwayGlStats:                                    ; away goalie stats, pointed to by g_B504; used by AI, INIT
+AwayGlStats:                                    ; away goalie stats, pointed to by awtmglstatsptr; used by AI, INIT
         times 788 db 0
 TeamPalette768:                                 ; 768-byte palette (256 RGB triples) loaded with the team
                                                 ; colours and faded in (StartHL2, ThreeStarsLoop); used by AI,

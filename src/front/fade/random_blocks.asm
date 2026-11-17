@@ -18,16 +18,16 @@ FadeRandomBlocks:
         mov [bp - 0x3], al
         call 0x0FEF:UseCurrentPage
         mov es, [segDgroup21]
-        mov ax, [es:0x74fc]
+        mov ax, [es:ClipLeftX]
         mov [fadex], ax
-        mov ax, [es:0x74fe]
+        mov ax, [es:ClipRightX]
         mov [fadey], ax
-        mov ax, [es:0x74f2]
+        mov ax, [es:ClipTopY]
         mov [fadew], ax
-        mov cx, [es:0x74f4]
+        mov cx, [es:ClipBottomY]
         mov [fadeh], cx
         db 0x8B, 0xD0                           ; insn: mov dx, ax
-        mov ax, [es:0x74fa]
+        mov ax, [es:VenetianRowBytes]
         db 0x03, 0xC7                           ; insn: add ax, di
         dec ax
         db 0x8B, 0xDA                           ; insn: mov bx, dx
@@ -105,15 +105,15 @@ FadeRandomBlocks2:
         push si
         call 0x0FEF:UseCurrentPage
         mov es, [segDgroup21]
-        mov ax, [es:0x74fc]
+        mov ax, [es:ClipLeftX]
         mov [fadex], ax
-        mov ax, [es:0x74fe]
+        mov ax, [es:ClipRightX]
         mov [fadey], ax
-        mov ax, [es:0x74f2]
+        mov ax, [es:ClipTopY]
         mov [fadew], ax
-        mov cx, [es:0x74f4]
+        mov cx, [es:ClipBottomY]
         mov [fadeh], cx
-        mov ax, [es:0x74fa]
+        mov ax, [es:VenetianRowBytes]
         add ax, strict word 0x1f
         cwd
         db 0x33, 0xC2                           ; insn: xor ax, dx

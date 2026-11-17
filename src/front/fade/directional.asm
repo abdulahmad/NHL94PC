@@ -21,15 +21,15 @@ FadeDirectional:
 .2:
         call 0x0FEF:UseCurrentPage
         mov es, [segDgroup25]
-        mov ax, [es:0x74fc]
+        mov ax, [es:ClipLeftX]
         mov [fadex], ax
-        mov ax, [es:0x74fe]
+        mov ax, [es:ClipRightX]
         mov [fadey], ax
-        mov ax, [es:0x74f2]
+        mov ax, [es:ClipTopY]
         mov [fadew], ax
-        mov cx, [es:0x74f4]
+        mov cx, [es:ClipBottomY]
         mov [fadeh], cx
-        mov dx, [es:0x74fa]
+        mov dx, [es:VenetianRowBytes]
         mov [bp - 0x1e], dx
         db 0x8B, 0xF9                           ; insn: mov di, cx
         db 0x2B, 0xF8                           ; insn: sub di, ax

@@ -250,10 +250,10 @@ GameLineEditorLoop:
         mov [bp - 0x30], ax
         mov [bp - 0x32], ax
         mov es, [segMenuText3]
-        mov [es:0x1474], ax
-        mov [es:0x1472], ax
-        mov [es:0x145e], ax
-        mov [es:0x145c], ax
+        mov [es:RtlShowMessage + 0xF77], ax
+        mov [es:RtlShowMessage + 0xF75], ax
+        mov [es:RtlShowMessage + 0xF61], ax
+        mov [es:RtlShowMessage + 0xF5F], ax
         les bx, [bp - 0x22]
         mov ax, [es:bx + 0x2]
         inc ax
@@ -350,24 +350,24 @@ GameLineEditorLoop:
         add al, 0x60
         mov [bp - 0x3a], al
         mov es, [segMenuText4]
-        mov word [es:0x15bc], strict word WriteTeamLines2
-        mov word [es:0x15be], 0x2047
+        mov word [es:RtlShowMessage + 0x10BF], strict word WriteTeamLines2
+        mov word [es:RtlShowMessage + 0x10C1], 0x2047
         mov ax, strict word MenuUseTheseLinesThunk
         mov dx, 0x1b35
         mov es, [segMenuText5]
-        mov [es:0x1538], ax
-        mov [es:0x153a], dx
+        mov [es:RtlShowMessage + 0x103B], ax
+        mov [es:RtlShowMessage + 0x103D], dx
         mov es, [segMenuText6]
-        mov [es:0x1404], ax
-        mov [es:0x1406], dx
+        mov [es:RtlShowMessage + 0xF07], ax
+        mov [es:RtlShowMessage + 0xF09], dx
         mov ax, strict word WriteTeamLinesThunk
         mov dx, 0x1b35
         mov es, [segMenuText5]
-        mov [es:0x157a], ax
-        mov [es:0x157c], dx
+        mov [es:RtlShowMessage + 0x107D], ax
+        mov [es:RtlShowMessage + 0x107F], dx
         mov es, [segMenuText6]
-        mov [es:0x1446], ax
-        mov [es:0x1448], dx
+        mov [es:RtlShowMessage + 0xF49], ax
+        mov [es:RtlShowMessage + 0xF4B], dx
         mov word [bp - 0x8a], 0x0
         jmp short .8
 .7:
@@ -381,20 +381,20 @@ GameLineEditorLoop:
         jnz short .7
         mov es, [segMenuText4]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0x15be], ax
-        mov [es:0x15bc], ax
+        mov [es:RtlShowMessage + 0x10C1], ax
+        mov [es:RtlShowMessage + 0x10BF], ax
         mov es, [segMenuText5]
-        mov [es:0x153a], ax
-        mov [es:0x1538], ax
+        mov [es:RtlShowMessage + 0x103D], ax
+        mov [es:RtlShowMessage + 0x103B], ax
         mov es, [segMenuText6]
-        mov [es:0x1406], ax
-        mov [es:0x1404], ax
+        mov [es:RtlShowMessage + 0xF09], ax
+        mov [es:RtlShowMessage + 0xF07], ax
         mov es, [segMenuText5]
-        mov [es:0x157c], ax
-        mov [es:0x157a], ax
+        mov [es:RtlShowMessage + 0x107F], ax
+        mov [es:RtlShowMessage + 0x107D], ax
         mov es, [segMenuText6]
-        mov [es:0x1448], ax
-        mov [es:0x1446], ax
+        mov [es:RtlShowMessage + 0xF4B], ax
+        mov [es:RtlShowMessage + 0xF49], ax
 .9:
         mov word [bp - 0x8a], 0x0
         jmp short .12
@@ -1399,24 +1399,24 @@ GameLineEditorLoop:
         jmp short .90
 .92:
         mov es, [segMenuText4]
-        mov word [es:0x15bc], strict word WriteTeamLines2
-        mov word [es:0x15be], 0x2047
+        mov word [es:RtlShowMessage + 0x10BF], strict word WriteTeamLines2
+        mov word [es:RtlShowMessage + 0x10C1], 0x2047
         mov ax, strict word MenuUseTheseLinesThunk
         mov dx, 0x1b35
         mov es, [segMenuText5]
-        mov [es:0x1538], ax
-        mov [es:0x153a], dx
+        mov [es:RtlShowMessage + 0x103B], ax
+        mov [es:RtlShowMessage + 0x103D], dx
         mov es, [segMenuText6]
-        mov [es:0x1404], ax
-        mov [es:0x1406], dx
+        mov [es:RtlShowMessage + 0xF07], ax
+        mov [es:RtlShowMessage + 0xF09], dx
         mov ax, strict word WriteTeamLinesThunk
         mov dx, 0x1b35
         mov es, [segMenuText5]
-        mov [es:0x157a], ax
-        mov [es:0x157c], dx
+        mov [es:RtlShowMessage + 0x107D], ax
+        mov [es:RtlShowMessage + 0x107F], dx
         mov es, [segMenuText6]
-        mov [es:0x1446], ax
-        mov [es:0x1448], dx
+        mov [es:RtlShowMessage + 0xF49], ax
+        mov [es:RtlShowMessage + 0xF4B], dx
         mov word [bp - 0x8a], 0x0
         jmp near .143
         db 0x90
@@ -1873,20 +1873,20 @@ GameLineEditorLoop:
         jnz short .142
         mov es, [segMenuText4]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0x15be], ax
-        mov [es:0x15bc], ax
+        mov [es:RtlShowMessage + 0x10C1], ax
+        mov [es:RtlShowMessage + 0x10BF], ax
         mov es, [segMenuText5]
-        mov [es:0x153a], ax
-        mov [es:0x1538], ax
+        mov [es:RtlShowMessage + 0x103D], ax
+        mov [es:RtlShowMessage + 0x103B], ax
         mov es, [segMenuText6]
-        mov [es:0x1406], ax
-        mov [es:0x1404], ax
+        mov [es:RtlShowMessage + 0xF09], ax
+        mov [es:RtlShowMessage + 0xF07], ax
         mov es, [segMenuText5]
-        mov [es:0x157c], ax
-        mov [es:0x157a], ax
+        mov [es:RtlShowMessage + 0x107F], ax
+        mov [es:RtlShowMessage + 0x107D], ax
         mov es, [segMenuText6]
-        mov [es:0x1448], ax
-        mov [es:0x1446], ax
+        mov [es:RtlShowMessage + 0xF4B], ax
+        mov [es:RtlShowMessage + 0xF49], ax
         jmp near .155
 .145:
         cmp word [bp - 0x6], 0x64
@@ -1959,10 +1959,10 @@ GameLineEditorLoop:
         add sp, 0xc
 .152:
         mov es, [segMenuText3]
-        mov word [es:0x145c], strict word GameDressPlayerThunk
-        mov word [es:0x145e], 0x1b35
-        mov word [es:0x1472], strict word GameScratchPlayerThunk
-        mov word [es:0x1474], 0x1b35
+        mov word [es:RtlShowMessage + 0xF5F], strict word GameDressPlayerThunk
+        mov word [es:RtlShowMessage + 0xF61], 0x1b35
+        mov word [es:RtlShowMessage + 0xF75], strict word GameScratchPlayerThunk
+        mov word [es:RtlShowMessage + 0xF77], 0x1b35
         mov al, 0x1c
         mul byte [bp + 0xc]
         mov cx, [bp - 0x6]
@@ -3842,24 +3842,24 @@ MenuUseOriginalLines:
         call PruneGameLines
         add sp, 0x4
         mov es, [segMenuText4]
-        mov word [es:0x15bc], strict word WriteTeamLines2
-        mov word [es:0x15be], 0x2047
+        mov word [es:RtlShowMessage + 0x10BF], strict word WriteTeamLines2
+        mov word [es:RtlShowMessage + 0x10C1], 0x2047
         mov ax, strict word MenuUseTheseLinesThunk
         mov dx, 0x1b35
         mov es, [segMenuText5]
-        mov [es:0x1538], ax
-        mov [es:0x153a], dx
+        mov [es:RtlShowMessage + 0x103B], ax
+        mov [es:RtlShowMessage + 0x103D], dx
         mov es, [segMenuText6]
-        mov [es:0x1404], ax
-        mov [es:0x1406], dx
+        mov [es:RtlShowMessage + 0xF07], ax
+        mov [es:RtlShowMessage + 0xF09], dx
         mov ax, strict word WriteTeamLinesThunk
         mov dx, 0x1b35
         mov es, [segMenuText5]
-        mov [es:0x157a], ax
-        mov [es:0x157c], dx
+        mov [es:RtlShowMessage + 0x107D], ax
+        mov [es:RtlShowMessage + 0x107F], dx
         mov es, [segMenuText6]
-        mov [es:0x1446], ax
-        mov [es:0x1448], dx
+        mov [es:RtlShowMessage + 0xF49], ax
+        mov [es:RtlShowMessage + 0xF4B], dx
         db 0x2B, 0xF6                           ; insn: sub si, si
 .1:
         db 0x8B, 0xDF                           ; insn: mov bx, di
@@ -3882,20 +3882,20 @@ MenuUseOriginalLines:
         mov byte [bx + si], 0x64
         mov es, [segMenuText4]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0x15be], ax
-        mov [es:0x15bc], ax
+        mov [es:RtlShowMessage + 0x10C1], ax
+        mov [es:RtlShowMessage + 0x10BF], ax
         mov es, [segMenuText5]
-        mov [es:0x153a], ax
-        mov [es:0x1538], ax
+        mov [es:RtlShowMessage + 0x103D], ax
+        mov [es:RtlShowMessage + 0x103B], ax
         mov es, [segMenuText6]
-        mov [es:0x1406], ax
-        mov [es:0x1404], ax
+        mov [es:RtlShowMessage + 0xF09], ax
+        mov [es:RtlShowMessage + 0xF07], ax
         mov es, [segMenuText5]
-        mov [es:0x157c], ax
-        mov [es:0x157a], ax
+        mov [es:RtlShowMessage + 0x107F], ax
+        mov [es:RtlShowMessage + 0x107D], ax
         mov es, [segMenuText6]
-        mov [es:0x1448], ax
-        mov [es:0x1446], ax
+        mov [es:RtlShowMessage + 0xF4B], ax
+        mov [es:RtlShowMessage + 0xF49], ax
 .3:
         inc si
         cmp si, 0x28
@@ -3912,10 +3912,10 @@ MenuUseOriginalLines:
         mov word [bx], 0xffff
         mov es, [segMenuText3]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0x1474], ax
-        mov [es:0x1472], ax
-        mov [es:0x145e], ax
-        mov [es:0x145c], ax
+        mov [es:RtlShowMessage + 0xF77], ax
+        mov [es:RtlShowMessage + 0xF75], ax
+        mov [es:RtlShowMessage + 0xF61], ax
+        mov [es:RtlShowMessage + 0xF5F], ax
         pop si
         pop di
         leave
@@ -3942,24 +3942,24 @@ MenuUseDefaultLines:
         call PruneGameLines
         add sp, 0x4
         mov es, [segMenuText4]
-        mov word [es:0x15bc], strict word WriteTeamLines2
-        mov word [es:0x15be], 0x2047
+        mov word [es:RtlShowMessage + 0x10BF], strict word WriteTeamLines2
+        mov word [es:RtlShowMessage + 0x10C1], 0x2047
         mov ax, strict word MenuUseTheseLinesThunk
         mov dx, 0x1b35
         mov es, [segMenuText5]
-        mov [es:0x1538], ax
-        mov [es:0x153a], dx
+        mov [es:RtlShowMessage + 0x103B], ax
+        mov [es:RtlShowMessage + 0x103D], dx
         mov es, [segMenuText6]
-        mov [es:0x1404], ax
-        mov [es:0x1406], dx
+        mov [es:RtlShowMessage + 0xF07], ax
+        mov [es:RtlShowMessage + 0xF09], dx
         mov ax, strict word WriteTeamLinesThunk
         mov dx, 0x1b35
         mov es, [segMenuText5]
-        mov [es:0x157a], ax
-        mov [es:0x157c], dx
+        mov [es:RtlShowMessage + 0x107D], ax
+        mov [es:RtlShowMessage + 0x107F], dx
         mov es, [segMenuText6]
-        mov [es:0x1446], ax
-        mov [es:0x1448], dx
+        mov [es:RtlShowMessage + 0xF49], ax
+        mov [es:RtlShowMessage + 0xF4B], dx
         db 0x2B, 0xF6                           ; insn: sub si, si
 .1:
         db 0x8B, 0xDF                           ; insn: mov bx, di
@@ -3982,20 +3982,20 @@ MenuUseDefaultLines:
         mov byte [bx + si], 0x64
         mov es, [segMenuText4]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0x15be], ax
-        mov [es:0x15bc], ax
+        mov [es:RtlShowMessage + 0x10C1], ax
+        mov [es:RtlShowMessage + 0x10BF], ax
         mov es, [segMenuText5]
-        mov [es:0x153a], ax
-        mov [es:0x1538], ax
+        mov [es:RtlShowMessage + 0x103D], ax
+        mov [es:RtlShowMessage + 0x103B], ax
         mov es, [segMenuText6]
-        mov [es:0x1406], ax
-        mov [es:0x1404], ax
+        mov [es:RtlShowMessage + 0xF09], ax
+        mov [es:RtlShowMessage + 0xF07], ax
         mov es, [segMenuText5]
-        mov [es:0x157c], ax
-        mov [es:0x157a], ax
+        mov [es:RtlShowMessage + 0x107F], ax
+        mov [es:RtlShowMessage + 0x107D], ax
         mov es, [segMenuText6]
-        mov [es:0x1448], ax
-        mov [es:0x1446], ax
+        mov [es:RtlShowMessage + 0xF4B], ax
+        mov [es:RtlShowMessage + 0xF49], ax
 .3:
         inc si
         cmp si, 0x28
@@ -4012,10 +4012,10 @@ MenuUseDefaultLines:
         mov word [bx], 0xffff
         mov es, [segMenuText3]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0x1474], ax
-        mov [es:0x1472], ax
-        mov [es:0x145e], ax
-        mov [es:0x145c], ax
+        mov [es:RtlShowMessage + 0xF77], ax
+        mov [es:RtlShowMessage + 0xF75], ax
+        mov [es:RtlShowMessage + 0xF61], ax
+        mov [es:RtlShowMessage + 0xF5F], ax
         pop si
         pop di
         leave
@@ -4835,24 +4835,24 @@ GameScratchPlayer:
         cmp si, 0x28
         jl short .1
         mov es, [segMenuText4]
-        mov word [es:0x15bc], strict word WriteTeamLines2
-        mov word [es:0x15be], 0x2047
+        mov word [es:RtlShowMessage + 0x10BF], strict word WriteTeamLines2
+        mov word [es:RtlShowMessage + 0x10C1], 0x2047
         mov ax, strict word MenuUseTheseLinesThunk
         mov dx, 0x1b35
         mov es, [segMenuText5]
-        mov [es:0x1538], ax
-        mov [es:0x153a], dx
+        mov [es:RtlShowMessage + 0x103B], ax
+        mov [es:RtlShowMessage + 0x103D], dx
         mov es, [segMenuText6]
-        mov [es:0x1404], ax
-        mov [es:0x1406], dx
+        mov [es:RtlShowMessage + 0xF07], ax
+        mov [es:RtlShowMessage + 0xF09], dx
         mov ax, strict word WriteTeamLinesThunk
         mov dx, 0x1b35
         mov es, [segMenuText5]
-        mov [es:0x157a], ax
-        mov [es:0x157c], dx
+        mov [es:RtlShowMessage + 0x107D], ax
+        mov [es:RtlShowMessage + 0x107F], dx
         mov es, [segMenuText6]
-        mov [es:0x1446], ax
-        mov [es:0x1448], dx
+        mov [es:RtlShowMessage + 0xF49], ax
+        mov [es:RtlShowMessage + 0xF4B], dx
         db 0x2B, 0xDB                           ; insn: sub bx, bx
         mov ax, 0x3448
         mov es, ax
@@ -4867,20 +4867,20 @@ GameScratchPlayer:
 .4:
         mov es, [segMenuText4]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0x15be], ax
-        mov [es:0x15bc], ax
+        mov [es:RtlShowMessage + 0x10C1], ax
+        mov [es:RtlShowMessage + 0x10BF], ax
         mov es, [segMenuText5]
-        mov [es:0x153a], ax
-        mov [es:0x1538], ax
+        mov [es:RtlShowMessage + 0x103D], ax
+        mov [es:RtlShowMessage + 0x103B], ax
         mov es, [segMenuText6]
-        mov [es:0x1406], ax
-        mov [es:0x1404], ax
+        mov [es:RtlShowMessage + 0xF09], ax
+        mov [es:RtlShowMessage + 0xF07], ax
         mov es, [segMenuText5]
-        mov [es:0x157c], ax
-        mov [es:0x157a], ax
+        mov [es:RtlShowMessage + 0x107F], ax
+        mov [es:RtlShowMessage + 0x107D], ax
         mov es, [segMenuText6]
-        mov [es:0x1448], ax
-        mov [es:0x1446], ax
+        mov [es:RtlShowMessage + 0xF4B], ax
+        mov [es:RtlShowMessage + 0xF49], ax
 .5:
         mov di, [bp + 0xc]
         mov al, 0x1c

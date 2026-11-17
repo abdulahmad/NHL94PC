@@ -63,7 +63,7 @@ SelectFloppyDrive:
         mov al, [bp - 0x6]
         add al, 0x41
         mov es, [segTeamChoiceText9]
-        mov [es:0xbfa], al
+        mov [es:msgThereAreNoHilights + 0xBE3], al
         push word 0x3701
         push strict word str_Id
         push word 0x3701
@@ -208,7 +208,7 @@ SelectFloppyDrive:
 .13:
         add al, 0x41
         mov es, [segTeamChoiceText9]
-        mov [es:0xbfa], al
+        mov [es:msgThereAreNoHilights + 0xBE3], al
 .14:
         mov ax, [bp - 0x4]
         pop si
@@ -257,7 +257,7 @@ FindLeagueFloppy:
         mov al, [bp - 0x2]
         add al, 0x41
         mov es, [segTeamChoiceText9]
-        mov [es:0xbfa], al
+        mov [es:msgThereAreNoHilights + 0xBE3], al
         push word 0x3701
         push strict word str_Id
         push word 0x3701
@@ -346,8 +346,8 @@ FindLeagueFloppy:
         add sp, 0xc
         lea ax, [bp - 0x8c]
         mov es, [segTeamChoiceText10]
-        mov [es:0x196], ax
-        mov [es:0x198], ss
+        mov [es:msgThereAreNoHilights + 0x17F], ax
+        mov [es:msgThereAreNoHilights + 0x181], ss
         lea ax, [bp - 0x6]
         push ax
         lea cx, [bp - 0x8]
@@ -408,8 +408,8 @@ WaitLeagueFloppy:
         add sp, 0xc
         lea ax, [bp - 0x46]
         mov es, [segTeamChoiceText11]
-        mov [es:0x19e], ax
-        mov [es:0x1a0], ss
+        mov [es:msgThereAreNoHilights + 0x187], ax
+        mov [es:msgThereAreNoHilights + 0x189], ss
         lea ax, [bp - 0x2]
         push ax
         lea cx, [bp - 0x4]

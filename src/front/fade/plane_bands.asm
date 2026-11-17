@@ -12,9 +12,9 @@ FadePlaneBands:
         push si
         call 0x0FEF:UseCurrentPage
         mov es, [segDgroup16]
-        mov ax, [es:0x74f4]
+        mov ax, [es:ClipBottomY]
         mov [bp - 0x3c], ax
-        mov di, [es:0x74f6]
+        mov di, [es:CanvasRowBytes]
         mov es, [segDgroup17]
         cmp word [CurPage], 0x1
         db 0x1B, 0xDB                           ; insn: sbb bx, bx

@@ -1142,8 +1142,8 @@ PickThreeStars:
         mov word [bp - 0x6], 0x0
         mov es, [segWorkBuffer60]
         imul bx, [bp - 0x4], 0x12
-        mov ax, [es:bx + 0x770]
-        cmp [es:bx + 0x76a], ax
+        mov ax, [es:bx + HomeGlStats_w4 + 0x4]
+        cmp [es:bx + HomeGlStats_w2], ax
         jnl short .10
         mov word [bp - 0x6], 0x1
 .10:
@@ -1287,8 +1287,8 @@ PickThreeStars:
         db 0x03, 0xF3                           ; insn: add si, bx
         shl si, byte 0x4
         mov es, [segWorkBuffer61]
-        mov dx, [es:si + 0x44a]
-        add dx, [es:si + 0x448]
+        mov dx, [es:si + HomePlStats_w2]
+        add dx, [es:si + HomePlStats]
         cmp dx, 0x1
         jng short .23
         push bx
@@ -1340,16 +1340,16 @@ PickThreeStars:
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov al, [bx + StarPoints2]
         cbw
-        cmp [es:si + 0x76a], ax
+        cmp [es:si + HomeGlStats_w2], ax
         jl short .24
-        mov ax, [es:si + 0x76a]
+        mov ax, [es:si + HomeGlStats_w2]
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         db 0x8B, 0xCA                           ; insn: mov cx, dx
         cwd
         push dx
         push ax
         mov ax, 0x3e8
-        imul word [es:si + 0x76c]
+        imul word [es:si + HomeGlStats_w4]
         db 0x8B, 0xF0                           ; insn: mov si, ax
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         db 0x8B, 0xDA                           ; insn: mov bx, dx
