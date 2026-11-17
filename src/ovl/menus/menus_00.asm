@@ -924,9 +924,9 @@ Menus_1E45_07E2:
 	add	sp, 0x2
 	call	0x0FEF:UseOtherPage
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0xa62
+	push	strict word str_Player_3
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x16]

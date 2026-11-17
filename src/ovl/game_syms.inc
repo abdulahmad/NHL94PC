@@ -2,6 +2,10 @@ AllocRecData		equ	0x30
 AnnouncerFlags		equ	0x1B7
 BuildPathFar		equ	0x3E
 CallCountStep		equ	0x1A2C
+ClipBottomY		equ	0x74F4
+ClipLeftX		equ	0x74FC
+ClipRightX		equ	0x74FE
+ClipTopY		equ	0x74F2
 CloseHandlePtr		equ	0x41E
 CrowdFadeOut		equ	0x24E
 CrowdNoiseOff		equ	0x1DC
@@ -89,6 +93,10 @@ VgaStamp8		equ	0x17B
 WaitRetrace		equ	0x34A7
 _fstrcpy		equ	0x13DA
 _unlink		equ	0x1076
+f_3415_0128		equ	0x128
+f_3701_0E53		equ	0xE53
+f_3A0B_0A8E		equ	0xA8E
+f_3A0B_B352		equ	0xB352
 g_08FE		equ	0x8FE
 g_0900		equ	0x900
 g_2986		equ	0x2986
@@ -154,3 +162,5 @@ g_D71C		equ	0xD71C
 g_D71E		equ	0xD71E
 g_D728		equ	0xD728
 g_D9D6		equ	0xD9D6
+str_Qpp		equ	0xBD0
+str_Rinkpal_2		equ	0x4A82

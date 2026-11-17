@@ -325,7 +325,7 @@ Ai_2CD2_02DA:
 	mov	[g_D46A], ax
 	push	0x10
 	push	word 0x3a0b
-	push	word 0xa8e
+	push	strict word f_3A0B_0A8E
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[PadRepeatOn], ax
 	push	ax
@@ -369,14 +369,14 @@ Ai_2CD2_02DA:
 	cmp	word [g_4B02], 0x0
 	jz	short .12
 	push	word 0x3a0b
-	push	word 0xb352
+	push	strict word f_3A0B_B352
 	push	word 0x100
 	push	0x0
 	call	0x0FEF:GetPaletteFar
 	add	sp, 0x8
 	push	0x10
 	push	word 0x3a0b
-	push	word 0xb352
+	push	strict word f_3A0B_B352
 	push	0x1
 	call	0x1E7E:Game_1E7E_04C0
 	add	sp, 0x8
@@ -1362,14 +1362,14 @@ Ai_2CD2_0D46:
 	mov	word [PadRepeatOn], 0x0
 	call	0x2C24:Ai_2C24_002E
 	push	word 0x3a0b
-	push	word 0xb352
+	push	strict word f_3A0B_B352
 	push	word 0x100
 	push	0x0
 	call	0x0FEF:GetPaletteFar
 	add	sp, 0x8
 	push	0x10
 	push	word 0x3a0b
-	push	word 0xb352
+	push	strict word f_3A0B_B352
 	push	0x1
 	call	0x1E7E:Game_1E7E_04C0
 	add	sp, 0x8

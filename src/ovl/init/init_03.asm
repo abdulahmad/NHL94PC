@@ -34,7 +34,7 @@ Init_2137_0004:
 	jmp	near .4
 .3:
 	push	word 0x3701
-	push	word 0xbda
+	push	strict word str_Kms
 	mov	al, [es:bx]
 	cbw
 	db	0x8B, 0xD8		; mov bx, ax
@@ -56,7 +56,7 @@ Init_2137_0004:
 	mov	[si + ArenaJingleC], ax
 	mov	[si + ArenaJingleCSeg], dx
 	push	word 0x3701
-	push	word 0xbdf
+	push	strict word str_Cfg
 	les	bx, [bp - 0x26]
 	mov	al, [es:bx]
 	cbw
@@ -120,13 +120,13 @@ Init_2137_0004:
 	db	0x03, 0xD8		; add bx, ax
 	shl	bx, 1
 	db	0x03, 0xDE		; add bx, si
-	mov	al, [bx + 0x1f3]
+	mov	al, [bx + f_38BD_01F3]
 	cbw
 	mov	cx, 0x38bd
 	mov	es, cx
 	mov	bx, [bp - 0x4]
 	shl	bx, 1
-	cmp	ax, [es:bx + 0x28f]
+	cmp	ax, [es:bx + f_38BD_028F]
 	jnz	short .10
 	db	0x2B, 0xFF		; sub di, di
 .10:
@@ -166,7 +166,7 @@ Init_2137_0004:
 	mov	di, [bp - 0x8]
 	mov	si, [bp - 0xc]
 	push	word 0x3701
-	push	word 0xbda
+	push	strict word str_Kms
 	mov	es, [g_8C9C]
 	mov	bx, [bp - 0x4]
 	shl	bx, 1
@@ -190,7 +190,7 @@ Init_2137_0004:
 	mov	[si + g_B306], ax
 	mov	[si + g_B308], dx
 	push	word 0x3701
-	push	word 0xbdf
+	push	strict word str_Cfg
 	mov	es, [g_8C9C]
 	mov	bx, [di]
 	shl	bx, byte 0x2
@@ -224,24 +224,24 @@ Init_2137_0004:
 	cmp	word [SoundOptions], 0x8
 	jnz	short .18
 	push	word 0x3701
-	push	word 0xbda
+	push	strict word str_Kms
 	push	ds
-	push	word 0x4c84
+	push	strict word str_Mtrocku_2
 	jmp	short .20
 .18:
 	cmp	word [SoundOptions], 0x2
 	jnz	short .19
 	push	word 0x3701
-	push	word 0xbda
+	push	strict word str_Kms
 	push	ds
-	push	word 0x4c8c
+	push	strict word str_Sbrocku_2
 	jmp	short .20
 	db	0x90
 .19:
 	push	word 0x3701
-	push	word 0xbda
+	push	strict word str_Kms
 	push	ds
-	push	word 0x4c94
+	push	strict word str_Adrocku_2
 .20:
 	push	0x0
 	push	0x0
@@ -260,25 +260,25 @@ Init_2137_0004:
 	cmp	word [SoundOptions], 0x8
 	jnz	short .21
 	push	word 0x3701
-	push	word 0xbdf
+	push	strict word str_Cfg
 	push	ds
-	push	word 0x4c9c
+	push	strict word str_Mtrocku
 	jmp	short .23
 	db	0x90
 .21:
 	cmp	word [SoundOptions], 0x2
 	jnz	short .22
 	push	word 0x3701
-	push	word 0xbdf
+	push	strict word str_Cfg
 	push	ds
-	push	word 0x4ca4
+	push	strict word str_Sbrocku
 	jmp	short .23
 	db	0x90
 .22:
 	push	word 0x3701
-	push	word 0xbdf
+	push	strict word str_Cfg
 	push	ds
-	push	word 0x4cac
+	push	strict word str_Adrocku
 .23:
 	push	0x0
 	push	0x0
@@ -295,7 +295,7 @@ Init_2137_0004:
 	mov	[ArenaJingleB], ax
 	mov	[ArenaJingleBSeg], dx
 	push	word 0x3701
-	push	word 0xbda
+	push	strict word str_Kms
 	mov	bx, [g_29CA]
 	mov	al, [bx + g_5B76]
 	cbw
@@ -319,7 +319,7 @@ Init_2137_0004:
 	mov	[g_B2F2], ax
 	mov	[g_B2F4], dx
 	push	word 0x3701
-	push	word 0xbdf
+	push	strict word str_Cfg
 	mov	bx, [g_29CA]
 	mov	al, [bx + g_5B76]
 	cbw
@@ -343,9 +343,9 @@ Init_2137_0004:
 	mov	[g_B2FE], ax
 	mov	[g_B300], dx
 	push	word 0x3701
-	push	word 0xbda
+	push	strict word str_Kms
 	push	ds
-	push	word 0x4cb4
+	push	strict word str_Rockditi_2
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x20]
@@ -361,9 +361,9 @@ Init_2137_0004:
 	mov	[g_B2F6], ax
 	mov	[g_B2F8], dx
 	push	word 0x3701
-	push	word 0xbdf
+	push	strict word str_Cfg
 	push	ds
-	push	word 0x4cbd
+	push	strict word str_Rockditi
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x20]

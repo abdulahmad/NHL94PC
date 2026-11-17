@@ -1933,7 +1933,7 @@ Stats_1EAE_12F6:
 	push	dx
 	push	ax
 	push	ds
-	push	word 0xcf1d
+	push	strict word g_CF1D
 	push	cs
 	call	Stats_1EAE_0002
 	add	sp, 0x8
@@ -1946,7 +1946,7 @@ Stats_1EAE_12F6:
 	push	dx
 	push	ax
 	push	ds
-	push	word 0xcf2d
+	push	strict word g_CF2D
 	push	cs
 	call	Stats_1EAE_0002
 	add	sp, 0x8
@@ -1979,7 +1979,7 @@ Stats_1EAE_12F6:
 	push	dx
 	push	ax
 	push	ds
-	push	word 0xcf1d
+	push	strict word g_CF1D
 	push	cs
 	call	Stats_1EAE_0002
 	add	sp, 0x8
@@ -1992,7 +1992,7 @@ Stats_1EAE_12F6:
 	push	dx
 	push	ax
 	push	ds
-	push	word 0xcf2d
+	push	strict word g_CF2D
 	push	cs
 	call	Stats_1EAE_0002
 	add	sp, 0x8
@@ -2285,7 +2285,7 @@ Stats_1EAE_12F6:
 	push	dx
 	push	ax
 	push	ds
-	push	word 0xcf1d
+	push	strict word g_CF1D
 	push	cs
 	call	Stats_1EAE_0002
 	add	sp, 0x8
@@ -2298,7 +2298,7 @@ Stats_1EAE_12F6:
 	push	dx
 	push	ax
 	push	ds
-	push	word 0xcf2d
+	push	strict word g_CF2D
 	push	cs
 	call	Stats_1EAE_0002
 	add	sp, 0x8
@@ -2331,7 +2331,7 @@ Stats_1EAE_12F6:
 	push	dx
 	push	ax
 	push	ds
-	push	word 0xcf1d
+	push	strict word g_CF1D
 	push	cs
 	call	Stats_1EAE_0002
 	add	sp, 0x8
@@ -2344,7 +2344,7 @@ Stats_1EAE_12F6:
 	push	dx
 	push	ax
 	push	ds
-	push	word 0xcf2d
+	push	strict word g_CF2D
 	push	cs
 	call	Stats_1EAE_0002
 	add	sp, 0x8

@@ -33,11 +33,11 @@ Lp_2139_000C:
 	mov	[bp - 0x4], ax
 	mov	[bp - 0xa8], ax
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	word 0x3701
-	push	word 0xb88
+	push	strict word str_Pinfo
 	push	word 0x3701
-	push	word 0xbfa
+	push	strict word f_3701_0BFA
 	lea	ax, [bp - 0x34]
 	push	ss
 	push	ax
@@ -65,11 +65,11 @@ Lp_2139_000C:
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .4
 	push	word 0x3701
-	push	word 0xbf6
+	push	strict word str_Id
 	push	word 0x3701
-	push	word 0xb8e
+	push	strict word str_Player
 	push	word 0x3701
-	push	word 0xbfa
+	push	strict word f_3701_0BFA
 	lea	ax, [bp - 0x34]
 	push	ss
 	push	ax
@@ -173,10 +173,10 @@ Lp_2139_000C:
 	push	ax
 	push	0x2
 	push	word 0x3701
-	push	word 0x1fc
+	push	strict word f_3701_01FC
 	push	0x3
 	push	word 0x3701
-	push	word 0x1f0
+	push	strict word f_3701_01F0
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -229,10 +229,10 @@ Lp_2139_000C:
 	push	ax
 	push	0x2
 	push	word 0x3701
-	push	word 0x756
+	push	strict word f_3701_0756
 	push	0x2
 	push	word 0x3701
-	push	word 0x74e
+	push	strict word f_3701_074E
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -290,7 +290,7 @@ Lp_2139_000C:
 	cmp	word [bp - 0xb6], 0x0
 	jnz	short .23
 	push	word 0x3701
-	push	word 0xbfa
+	push	strict word f_3701_0BFA
 	lea	ax, [bp - 0x34]
 	push	ss
 	push	ax
@@ -318,14 +318,14 @@ Lp_2139_000C:
 	jl	short .22
 .23:
 	push	word 0x3701
-	push	word 0xbfa
+	push	strict word f_3701_0BFA
 	lea	ax, [bp - 0x34]
 	push	ss
 	push	ax
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	push	word 0x3701
-	push	word 0xb88
+	push	strict word str_Pinfo
 	lea	ax, [bp - 0x94]
 	push	ss
 	push	ax
@@ -339,14 +339,14 @@ Lp_2139_000C:
 	call	0x0CD1:DeleteMatching
 	add	sp, 0x6
 	push	word 0x3701
-	push	word 0xbfa
+	push	strict word f_3701_0BFA
 	lea	ax, [bp - 0x34]
 	push	ss
 	push	ax
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	push	word 0x3701
-	push	word 0xb8e
+	push	strict word str_Player
 	lea	ax, [bp - 0x94]
 	push	ss
 	push	ax
@@ -366,7 +366,7 @@ Lp_2139_000C:
 	jmp	near .27
 .25:
 	push	word 0x3701
-	push	word 0xbfa
+	push	strict word f_3701_0BFA
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	push	word [bp + 0x10]
@@ -384,13 +384,13 @@ Lp_2139_000C:
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .26
 	push	word 0x3701
-	push	word 0xbfa
+	push	strict word f_3701_0BFA
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	mov	es, [g_8BA4]
 	mov	bx, [bp - 0xb4]
 	shl	bx, byte 0x2
@@ -408,15 +408,15 @@ Lp_2139_000C:
 	cmp	word [bp - 0xb6], 0x0
 	jnz	short .28
 	push	word 0x3701
-	push	word 0xbfa
+	push	strict word f_3701_0BFA
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	word 0x3701
-	push	word 0xb88
+	push	strict word str_Pinfo
 	call	0x0CD1:CopyFileByName
 	add	sp, 0x14
 	mov	[bp - 0xb6], ax
@@ -424,9 +424,9 @@ Lp_2139_000C:
 	cmp	word [bp - 0xb6], 0x0
 	jnz	short .29
 	push	word 0x3701
-	push	word 0xbc6
+	push	strict word str_Set
 	push	word 0x3701
-	push	word 0xba1
+	push	strict word str_Game
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	lea	ax, [bp - 0x34]
@@ -435,11 +435,11 @@ Lp_2139_000C:
 	call	0x0CD1:BuildPathFar
 	add	sp, 0x10
 	push	word 0x3701
-	push	word 0xbc6
+	push	strict word str_Set
 	push	word 0x3701
-	push	word 0xba1
+	push	strict word str_Game
 	push	word 0x3701
-	push	word 0xbfa
+	push	strict word f_3701_0BFA
 	lea	ax, [bp - 0x94]
 	push	ss
 	push	ax
@@ -462,11 +462,11 @@ Lp_2139_000C:
 	cmp	word [bp - 0xb6], 0x0
 	jnz	short .30
 	push	word 0x3701
-	push	word 0xbf6
+	push	strict word str_Id
 	push	word 0x3701
-	push	word 0xb8e
+	push	strict word str_Player
 	push	word 0x3701
-	push	word 0xbfa
+	push	strict word f_3701_0BFA
 	lea	ax, [bp - 0x34]
 	push	ss
 	push	ax
@@ -541,11 +541,11 @@ Lp_2139_000C:
 	cmp	word [bp - 0xb6], 0x0
 	jnz	short .35
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	word 0x3701
-	push	word 0xb88
+	push	strict word str_Pinfo
 	push	word 0x3701
-	push	word 0xbfa
+	push	strict word f_3701_0BFA
 	lea	ax, [bp - 0x34]
 	push	ss
 	push	ax
@@ -590,9 +590,9 @@ Lp_2139_000C:
 	cmp	word [bp - 0xb6], 0x0
 	jnz	short .38
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	word 0x3701
-	push	word 0xb88
+	push	strict word str_Pinfo
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	lea	ax, [bp - 0x34]
@@ -650,7 +650,7 @@ Lp_2139_000C:
 	push	0x0
 	push	0x2
 	push	word 0x3821
-	push	strict word 0x53
+	push	strict word f_3821_0053
 	jmp	near .42
 	db	0x90
 .41:
@@ -662,7 +662,7 @@ Lp_2139_000C:
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	push	word 0x3701
-	push	word 0xbf4
+	push	strict word f_3701_0BF4
 	lea	ax, [bp - 0x12]
 	push	ss
 	push	ax
@@ -697,7 +697,7 @@ Lp_2139_000C:
 	push	0x0
 	push	0x3
 	push	word 0x3701
-	push	word 0x4e5
+	push	strict word f_3701_04E5
 .42:
 	push	-0x1
 	push	-0x1
@@ -729,9 +729,9 @@ Lp_2139_07F4:
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	mov	es, [g_8BA4]
 	push	word [es:si + 0x2]
 	push	word [es:si]
@@ -744,9 +744,9 @@ Lp_2139_07F4:
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	push	word 0x3701
-	push	word 0xbe4
+	push	strict word str_Xx_2
 	push	word 0x3701
-	push	word 0xbe4
+	push	strict word str_Xx_2
 	mov	es, [g_8BA4]
 	push	word [es:si + 0x2]
 	push	word [es:si]
@@ -769,11 +769,11 @@ Lp_2139_07F4:
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	word 0x3701
-	push	word 0xb88
+	push	strict word str_Pinfo
 	call	0x0CD1:CopyFileByName
 	add	sp, 0x14
 	db	0x8B, 0xF0		; mov si, ax
@@ -785,11 +785,11 @@ Lp_2139_07F4:
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	push	word 0x3701
-	push	word 0xbf6
+	push	strict word str_Id
 	push	word 0x3701
-	push	word 0xbf6
+	push	strict word str_Id
 	push	word 0x3701
-	push	word 0xb8e
+	push	strict word str_Player
 	call	0x0CD1:CopyFileByName
 	add	sp, 0x14
 	db	0x8B, 0xF0		; mov si, ax
@@ -807,9 +807,9 @@ Lp_2139_08C6:
 	mov	[bp - 0xa], ax
 	mov	[bp - 0x8], ax
 	push	word 0x3701
-	push	word 0xbf6
+	push	strict word str_Id
 	push	word 0x3701
-	push	word 0xb8e
+	push	strict word str_Player
 	mov	ax, 0xbfa
 	mov	cx, 0x3701
 	mov	[bp - 0x6c], ax
@@ -834,7 +834,7 @@ Lp_2139_08C6:
 	push	si
 	push	0xc
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	push	word [bp - 0xa]
 	call	0x0CD1:ReadAtOffset
 	add	sp, 0xc
@@ -849,19 +849,19 @@ Lp_2139_08C6:
 	jmp	near .13
 .2:
 	push	word 0x3a0b
-	push	word 0xaf3e
+	push	strict word f_3A0B_AF3E
 	push	word 0x3a0b
-	push	word 0xac60
+	push	strict word f_3A0B_AC60
 	push	word 0x3a0b
-	push	word 0xac5e
+	push	strict word f_3A0B_AC5E
 	push	word 0x3a0b
-	push	word 0xac5c
+	push	strict word f_3A0B_AC5C
 	push	word 0x3a0b
-	push	word 0xac5a
+	push	strict word f_3A0B_AC5A
 	push	word 0x3a0b
-	push	word 0xaf32
+	push	strict word f_3A0B_AF32
 	push	word 0x3a0b
-	push	word 0xac62
+	push	strict word f_3A0B_AC62
 	push	word [bp - 0x6a]
 	push	word [bp - 0x6c]
 	call	0x22D3:Lp_22D3_0000
@@ -890,9 +890,9 @@ Lp_2139_08C6:
 	jmp	near .12
 .3:
 	push	word 0x3a0b
-	push	word 0xaf32
+	push	strict word f_3A0B_AF32
 	push	word 0x3a0b
-	push	word 0xac62
+	push	strict word f_3A0B_AC62
 	mov	es, [g_8BA8]
 	push	word [es:0xac5a]
 	call	0x28A8:Lp_28A8_0108
@@ -912,7 +912,7 @@ Lp_2139_08C6:
 	push	0x0
 	push	0x1
 	push	word 0x3821
-	push	strict word 0x1c
+	push	strict word f_3821_001C
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -933,9 +933,9 @@ Lp_2139_08C6:
 	push	word [bp - 0x6a]
 	push	word [bp - 0x6c]
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	mov	es, [g_8BA4]
 	mov	bx, [bp - 0x6]
 	shl	bx, byte 0x2
@@ -955,11 +955,11 @@ Lp_2139_08C6:
 	push	word [bp - 0x6a]
 	push	word [bp - 0x6c]
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	word 0x3701
-	push	word 0xb88
+	push	strict word str_Pinfo
 	call	0x0CD1:CopyFileByName
 	add	sp, 0x14
 	db	0x8B, 0xF0		; mov si, ax
@@ -971,11 +971,11 @@ Lp_2139_08C6:
 	push	word [bp - 0x6a]
 	push	word [bp - 0x6c]
 	push	ds
-	push	word 0x17dd
+	push	strict word str_Set_4
 	push	ds
-	push	word 0x17e2
+	push	strict word str_Set_3
 	push	ds
-	push	word 0x17e7
+	push	strict word str_Game_5
 	call	0x0CD1:CopyFileByName
 	add	sp, 0x14
 .8:
@@ -994,9 +994,9 @@ Lp_2139_08C6:
 	call	0x0CD1:DeleteMatching
 	add	sp, 0x6
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	word 0x3701
-	push	word 0xb88
+	push	strict word str_Pinfo
 	push	word [bp - 0x6e]
 	push	word [bp - 0x70]
 	lea	ax, [bp - 0x3c]
@@ -1032,7 +1032,7 @@ Lp_2139_08C6:
 	jnz	short .10
 	push	-0x1
 	push	word 0x3a0b
-	push	word 0xac62
+	push	strict word f_3A0B_AC62
 	push	word [bp - 0x6e]
 	push	word [bp - 0x70]
 	call	0x2305:Lp_2305_061C
@@ -1059,7 +1059,7 @@ Lp_2139_08C6:
 	push	0x0
 	push	0x2
 	push	word 0x3836
-	push	word 0x11d
+	push	strict word f_3836_011D
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -1098,7 +1098,7 @@ Lp_2139_08C6:
 	push	0x0
 	push	0x2
 	push	word 0x3701
-	push	word 0x827
+	push	strict word f_3701_0827
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -1131,7 +1131,7 @@ Lp_2139_08C6:
 	push	0x0
 	push	0x1
 	push	word 0x3701
-	push	word 0x450
+	push	strict word f_3701_0450
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -1163,11 +1163,11 @@ Lp_2139_0C2E:
 	call	0x0D90:SetDialogColors
 	add	sp, 0xa
 	push	word 0x3701
-	push	word 0xbf6
+	push	strict word str_Id
 	push	word 0x3701
-	push	word 0xb8e
+	push	strict word str_Player
 	push	word 0x3701
-	push	word 0xbfa
+	push	strict word f_3701_0BFA
 	lea	ax, [bp - 0x50]
 	push	ss
 	push	ax
@@ -1212,7 +1212,7 @@ Lp_2139_0C2E:
 	push	ax
 	push	0xc
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	push	word [bp - 0x8a]
 	call	0x0CD1:ReadAtOffset
 	add	sp, 0xc
@@ -1249,15 +1249,15 @@ Lp_2139_0C2E:
 	push	ss
 	push	ax
 	push	word 0x3701
-	push	word 0xbe4
+	push	strict word str_Xx_2
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	word 0x3701
-	push	word 0xb88
+	push	strict word str_Pinfo
 	push	word 0x3701
-	push	word 0xbfa
+	push	strict word f_3701_0BFA
 	lea	ax, [bp - 0x50]
 	push	ss
 	push	ax
@@ -1310,14 +1310,14 @@ Lp_2139_0C2E:
 	jmp	near .10
 .9:
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	lea	ax, [bp - 0x78]
 	push	ss
 	push	ax
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	push	word 0x3701
-	push	word 0xbf4
+	push	strict word f_3701_0BF4
 	lea	ax, [bp - 0x78]
 	push	ss
 	push	ax
@@ -1358,7 +1358,7 @@ Lp_2139_0C2E:
 	push	0x0
 	push	0x5
 	push	word 0x3701
-	push	word 0x69c
+	push	strict word f_3701_069C
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -1371,7 +1371,7 @@ Lp_2139_0C2E:
 	jmp	near .42
 .11:
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	lea	ax, [bp - 0x78]
 	push	ss
 	push	ax
@@ -1386,7 +1386,7 @@ Lp_2139_0C2E:
 	add	sp, 0x6
 	mov	[bp - 0x88], ax
 	push	word 0x3701
-	push	word 0xbf4
+	push	strict word f_3701_0BF4
 	lea	ax, [bp - 0x78]
 	push	ss
 	push	ax
@@ -1400,21 +1400,21 @@ Lp_2139_0C2E:
 	jmp	near .16
 .12:
 	push	word 0x3a0b
-	push	word 0xaf3e
+	push	strict word f_3A0B_AF3E
 	push	word 0x3a0b
-	push	word 0xac60
+	push	strict word f_3A0B_AC60
 	push	word 0x3a0b
-	push	word 0xac5e
+	push	strict word f_3A0B_AC5E
 	push	word 0x3a0b
-	push	word 0xac5c
+	push	strict word f_3A0B_AC5C
 	push	word 0x3a0b
-	push	word 0xac5a
+	push	strict word f_3A0B_AC5A
 	push	word 0x3a0b
-	push	word 0xaf32
+	push	strict word f_3A0B_AF32
 	push	word 0x3a0b
-	push	word 0xac62
+	push	strict word f_3A0B_AC62
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	call	0x22D3:Lp_22D3_0000
 	add	sp, 0x20
 	mov	[bp - 0x6a], ax
@@ -1449,7 +1449,7 @@ Lp_2139_0C2E:
 	push	ax
 	push	0x2
 	push	word 0x3701
-	push	word 0x913
+	push	strict word f_3701_0913
 	push	0x4
 	push	es
 	push	word 0x903
@@ -1513,7 +1513,7 @@ Lp_2139_0C2E:
 	push	ss
 	push	ax
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	call	0x2305:Lp_2305_0450
 	add	sp, 0x8
 	mov	[bp - 0x8c], ax
@@ -1569,7 +1569,7 @@ Lp_2139_0C2E:
 	push	0x0
 	push	0x3
 	push	word 0x3701
-	push	word 0x63c
+	push	strict word f_3701_063C
 	jmp	near .26
 .21:
 	cmp	word [bp - 0x88], 0x0
@@ -1610,7 +1610,7 @@ Lp_2139_0C2E:
 	push	0x0
 	push	0x3
 	push	word 0x3701
-	push	word 0x712
+	push	strict word f_3701_0712
 	jmp	short .26
 .24:
 	cmp	word [bp - 0x8c], 0x0
@@ -1647,7 +1647,7 @@ Lp_2139_0C2E:
 	push	0x0
 	push	0x4
 	push	word 0x3701
-	push	word 0x607
+	push	strict word f_3701_0607
 .26:
 	push	-0x1
 	push	-0x1
@@ -1665,9 +1665,9 @@ Lp_2139_0C2E:
 	cmp	word [bp - 0x6a], 0x0
 	jnz	short .30
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	push	word 0x3701
-	push	word 0xbfa
+	push	strict word f_3701_0BFA
 	push	cs
 	call	Lp_2139_07F4
 	add	sp, 0x8
@@ -1686,13 +1686,13 @@ Lp_2139_0C2E:
 	cmp	word [bp - 0x6a], 0x0
 	jnz	short .30
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	push	word 0x3701
-	push	word 0xbfa
+	push	strict word f_3701_0BFA
 	push	word 0x3701
-	push	word 0xbe4
+	push	strict word str_Xx_2
 	push	word 0x3701
-	push	word 0xbe4
+	push	strict word str_Xx_2
 	mov	es, [g_8BA4]
 	mov	bx, [bp - 0x64]
 	shl	bx, byte 0x2
@@ -1708,15 +1708,15 @@ Lp_2139_0C2E:
 	cmp	word [bp - 0x6a], 0x0
 	jnz	short .31
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	push	word 0x3701
-	push	word 0xbfa
+	push	strict word f_3701_0BFA
 	push	word 0x3701
-	push	word 0xbc6
+	push	strict word str_Set
 	push	word 0x3701
-	push	word 0xbc6
+	push	strict word str_Set
 	push	word 0x3701
-	push	word 0xba1
+	push	strict word str_Game
 	call	0x0CD1:CopyFileByName
 	add	sp, 0x14
 	mov	[bp - 0x6a], ax
@@ -1724,11 +1724,11 @@ Lp_2139_0C2E:
 	cmp	word [bp - 0x6a], 0x0
 	jnz	short .32
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	word 0x3701
-	push	word 0xb88
+	push	strict word str_Pinfo
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	lea	ax, [bp - 0x50]
 	push	ss
 	push	ax
@@ -1751,7 +1751,7 @@ Lp_2139_0C2E:
 	call	0x2305:Lp_2305_05E8
 	add	sp, 0x4
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	lea	ax, [bp - 0x78]
 	push	ss
 	push	ax
@@ -1766,9 +1766,9 @@ Lp_2139_0C2E:
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .34
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	push	word 0x3701
-	push	word 0xbfa
+	push	strict word f_3701_0BFA
 	push	cs
 	call	Lp_2139_07F4
 	add	sp, 0x8
@@ -1777,15 +1777,15 @@ Lp_2139_0C2E:
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .35
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	push	word 0x3701
-	push	word 0xbfa
+	push	strict word f_3701_0BFA
 	push	word 0x3701
-	push	word 0xbc6
+	push	strict word str_Set
 	push	word 0x3701
-	push	word 0xbc6
+	push	strict word str_Set
 	push	word 0x3701
-	push	word 0xba1
+	push	strict word str_Game
 	call	0x0CD1:CopyFileByName
 	add	sp, 0x14
 	mov	[bp - 0x6a], ax
@@ -1793,11 +1793,11 @@ Lp_2139_0C2E:
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .36
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	word 0x3701
-	push	word 0xb88
+	push	strict word str_Pinfo
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	lea	ax, [bp - 0x50]
 	push	ss
 	push	ax
@@ -1832,11 +1832,11 @@ Lp_2139_0C2E:
 	cmp	word [bp - 0x6a], 0x0
 	jnz	short .39
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	word 0x3701
-	push	word 0xb88
+	push	strict word str_Pinfo
 	push	word 0x3701
-	push	word 0xbfa
+	push	strict word f_3701_0BFA
 	lea	ax, [bp - 0x50]
 	push	ss
 	push	ax
@@ -1872,7 +1872,7 @@ Lp_2139_0C2E:
 	cmp	word [bp - 0x88], 0x0
 	jz	short .42
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	lea	ax, [bp - 0x78]
 	push	ss
 	push	ax
@@ -1904,7 +1904,7 @@ Lp_2139_0C2E:
 	push	0x0
 	push	0x1
 	push	word 0x3701
-	push	word 0x450
+	push	strict word f_3701_0450
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -1941,10 +1941,10 @@ Lp_2139_1430:
 	push	ax
 	push	0x2
 	push	word 0x3701
-	push	word 0x7ce
+	push	strict word f_3701_07CE
 	push	0x2
 	push	word 0x3701
-	push	word 0x7c6
+	push	strict word f_3701_07C6
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -1964,7 +1964,7 @@ Lp_2139_1430:
 	push	0x0
 	push	0x2
 	push	word 0x3701
-	push	word 0x42a
+	push	strict word f_3701_042A
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -2000,11 +2000,11 @@ Lp_2139_1430:
 	jmp	near .9
 .6:
 	push	ds
-	push	word 0x17fb
+	push	strict word str_Set_2
 	push	ds
-	push	word 0x1800
+	push	strict word str_Game_4
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	lea	ax, [bp - 0x28]
 	push	ss
 	push	ax
@@ -2022,7 +2022,7 @@ Lp_2139_1430:
 	push	-0x1
 	push	-0x1
 	push	word 0x3415
-	push	word 0xc4
+	push	strict word f_3415_00C4
 	push	word [bp - 0x8]
 	call	0x0CD1:ReadAtOffset
 	add	sp, 0xc
@@ -2043,7 +2043,7 @@ Lp_2139_1430:
 	add	sp, 0x2
 .8:
 	push	word 0x3415
-	push	word 0xc4
+	push	strict word f_3415_00C4
 	call	0x1B35:OvlThunk26
 	add	sp, 0x4
 	call	0x1B35:OvlThunk117
@@ -2106,19 +2106,19 @@ Lp_2139_15EC:
 	jmp	near .5
 .2:
 	push	word 0x3a0b
-	push	word 0xaf3e
+	push	strict word f_3A0B_AF3E
 	push	word 0x3a0b
-	push	word 0xac60
+	push	strict word f_3A0B_AC60
 	push	word 0x3a0b
-	push	word 0xac5e
+	push	strict word f_3A0B_AC5E
 	push	word 0x3a0b
-	push	word 0xac5c
+	push	strict word f_3A0B_AC5C
 	push	word 0x3a0b
-	push	word 0xac5a
+	push	strict word f_3A0B_AC5A
 	push	word 0x3a0b
-	push	word 0xaf32
+	push	strict word f_3A0B_AF32
 	push	word 0x3a0b
-	push	word 0xac62
+	push	strict word f_3A0B_AC62
 	push	word [bp - 0x50]
 	push	word [bp - 0x52]
 	call	0x22D3:Lp_22D3_0000
@@ -2132,7 +2132,7 @@ Lp_2139_15EC:
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	push	word 0x3701
-	push	word 0xbf4
+	push	strict word f_3701_0BF4
 	lea	ax, [bp - 0x2e]
 	push	ss
 	push	ax
@@ -2171,7 +2171,7 @@ Lp_2139_15EC:
 	push	ax
 	push	0x2
 	push	word 0x3701
-	push	word 0x913
+	push	strict word f_3701_0913
 	push	0x4
 	push	es
 	push	word 0x903
@@ -2220,7 +2220,7 @@ Lp_2139_15EC:
 	jmp	near .21
 .7:
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	mov	es, [g_8BA4]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
@@ -2233,7 +2233,7 @@ Lp_2139_15EC:
 	add	sp, 0x10
 	push	0x1
 	push	word 0x3a0b
-	push	word 0xaa38
+	push	strict word f_3A0B_AA38
 	lea	ax, [bp - 0x4e]
 	push	ax
 	call	0x22D3:Lp_22D3_01E2
@@ -2257,14 +2257,14 @@ Lp_2139_15EC:
 	lea	ax, [bp - 0x12]
 	push	ax
 	push	word 0x3701
-	push	word 0x3e4
+	push	strict word str_SelectATeamToExport
 	push	0x8
 	push	word 0x3a0b
-	push	word 0xac62
+	push	strict word f_3A0B_AC62
 	push	word 0x3a0b
-	push	word 0xaa38
+	push	strict word f_3A0B_AA38
 	push	word 0x3a0b
-	push	word 0xac5c
+	push	strict word f_3A0B_AC5C
 	push	word [bp - 0x50]
 	push	word [bp - 0x52]
 	call	0x1F31:Lp_1F31_0BAE
@@ -2318,10 +2318,10 @@ Lp_2139_15EC:
 	push	ax
 	push	0x2
 	push	word 0x3701
-	push	word 0x4f5
+	push	strict word f_3701_04F5
 	push	0x4
 	push	word 0x3701
-	push	word 0x4e5
+	push	strict word f_3701_04E5
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -2331,9 +2331,9 @@ Lp_2139_15EC:
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .13
 	push	word 0x3a0b
-	push	word 0xaf32
+	push	strict word f_3A0B_AF32
 	push	word 0x3a0b
-	push	word 0xac62
+	push	strict word f_3A0B_AC62
 	mov	es, [g_8BA8]
 	push	word [es:0xac5a]
 	call	0x28A8:Lp_28A8_0108
@@ -2417,10 +2417,10 @@ Lp_2139_15EC:
 	push	-0x1
 	push	word [bp - 0x4]
 	push	word 0x3a0b
-	push	word 0xac62
+	push	strict word f_3A0B_AC62
 	push	word [bp - 0x12]
 	push	word 0x3701
-	push	word 0xbe4
+	push	strict word str_Xx_2
 	push	word [bp - 0xe]
 	push	si
 	push	word [bp - 0x50]

@@ -57,9 +57,9 @@ Lp_20F8_000C:
 	mov	es, [g_8B9C]
 	mov	[es:0xbfa], al
 	push	word 0x3701
-	push	word 0xbf6
+	push	strict word str_Id
 	push	word 0x3701
-	push	word 0xb8e
+	push	strict word str_Player
 	push	es
 	push	word 0xbfa
 	lea	ax, [bp - 0x4e]
@@ -145,7 +145,7 @@ Lp_20F8_000C:
 	push	0x0
 	push	0x1
 	push	word 0x3701
-	push	word 0xa4e
+	push	strict word f_3701_0A4E
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -187,7 +187,7 @@ Lp_20F8_000C:
 	push	strict word 0x0
 	push	0x1
 	push	word 0x3701
-	push	word 0xa6b
+	push	strict word f_3701_0A6B
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -244,9 +244,9 @@ Lp_20F8_0206:
 	mov	es, [g_8B9C]
 	mov	[es:0xbfa], al
 	push	word 0x3701
-	push	word 0xbf6
+	push	strict word str_Id
 	push	word 0x3701
-	push	word 0xb8e
+	push	strict word str_Player
 	push	es
 	push	word 0xbfa
 	lea	ax, [bp - 0x4c]
@@ -351,7 +351,7 @@ Lp_20F8_0206:
 	push	0x0
 	push	0x5
 	push	word 0x3701
-	push	word 0x192
+	push	strict word f_3701_0192
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -407,7 +407,7 @@ Lp_20F8_0394:
 	push	0x0
 	push	0x3
 	push	word 0x3701
-	push	word 0x19a
+	push	strict word f_3701_019A
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox

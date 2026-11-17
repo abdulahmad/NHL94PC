@@ -459,7 +459,7 @@ Ai_226F_046A:
 	mov	[g_D46A], ax
 	mov	word [PadRepeatOn], 0x0
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	db	0x8B, 0xDE		; mov bx, si
 	shl	bx, 1
 	push	ds
@@ -586,13 +586,13 @@ Ai_226F_054A:
 	mov	[bp - 0x4], ax
 	mov	ax, DGROUP
 	mov	es, ax
-	mov	ax, [es:0x74fc]
+	mov	ax, [es:ClipLeftX]
 	mov	[bp - 0xc], ax
-	mov	ax, [es:0x74fe]
+	mov	ax, [es:ClipRightX]
 	mov	[bp - 0xe], ax
-	mov	ax, [es:0x74f2]
+	mov	ax, [es:ClipTopY]
 	mov	[bp - 0x10], ax
-	mov	ax, [es:0x74f4]
+	mov	ax, [es:ClipBottomY]
 	mov	[bp - 0x12], ax
 	lea	ax, [di + 0x10]
 	imul	ax, ax, 0x42

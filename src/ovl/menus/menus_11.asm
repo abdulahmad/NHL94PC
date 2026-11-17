@@ -96,15 +96,15 @@ Menus_2B11_00A8:
 	retf
 .1:
 	push	ds
-	push	word 0x1448
+	push	strict word str_Exhibition
 	push	word 0x3448
-	push	word 0x177
+	push	strict word str_XxxxxxxxxxxSettings
 	call	0x0000:_fstrcpy
 	db	0x8B, 0xE5		; mov sp, bp
 	push	ds
-	push	word 0x1470
+	push	strict word str_Settings_2
 	push	word 0x3448
-	push	word 0x181
+	push	strict word str_XSettings
 	call	0x0000:_fstrcpy
 	db	0x8B, 0xE5		; mov sp, bp
 	mov	ax, 0x2ea
@@ -112,15 +112,15 @@ Menus_2B11_00A8:
 	jmp	short .4
 .2:
 	push	ds
-	push	word 0x1454
+	push	strict word str_Playoff
 	push	word 0x3448
-	push	word 0x177
+	push	strict word str_XxxxxxxxxxxSettings
 	call	0x0000:_fstrcpy
 	db	0x8B, 0xE5		; mov sp, bp
 	push	ds
-	push	word 0x1470
+	push	strict word str_Settings_2
 	push	word 0x3448
-	push	word 0x17e
+	push	strict word str_XxxxSettings
 	call	0x0000:_fstrcpy
 	db	0x8B, 0xE5		; mov sp, bp
 	mov	ax, 0x2f9
@@ -128,15 +128,15 @@ Menus_2B11_00A8:
 	jmp	short .4
 .3:
 	push	ds
-	push	word 0x1464
+	push	strict word str_ShowLeague
 	push	word 0x3448
-	push	word 0x177
+	push	strict word str_XxxxxxxxxxxSettings
 	call	0x0000:_fstrcpy
 	db	0x8B, 0xE5		; mov sp, bp
 	push	ds
-	push	word 0x1470
+	push	strict word str_Settings_2
 	push	word 0x3448
-	push	word 0x182
+	push	strict word str_Settings
 	call	0x0000:_fstrcpy
 	mov	ax, 0x306
 	mov	cx, 0x3448

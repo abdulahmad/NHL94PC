@@ -25,19 +25,19 @@ Lp_1ECB_0008:
 	db	0x0B, 0xFF		; or di, di
 	jnz	short .2
 	push	word 0x3a0b
-	push	word 0xaf3e
+	push	strict word f_3A0B_AF3E
 	push	word 0x3a0b
-	push	word 0xac60
+	push	strict word f_3A0B_AC60
 	push	word 0x3a0b
-	push	word 0xac5e
+	push	strict word f_3A0B_AC5E
 	push	word 0x3a0b
-	push	word 0xac5c
+	push	strict word f_3A0B_AC5C
 	push	word 0x3a0b
-	push	word 0xac5a
+	push	strict word f_3A0B_AC5A
 	push	word 0x3a0b
-	push	word 0xaf32
+	push	strict word f_3A0B_AF32
 	push	word 0x3a0b
-	push	word 0xac62
+	push	strict word f_3A0B_AC62
 	push	word [bp - 0x3c]
 	push	word [bp - 0x3e]
 	call	0x22D3:Lp_22D3_0000
@@ -56,7 +56,7 @@ Lp_1ECB_0008:
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	push	word 0x3701
-	push	word 0xbf4
+	push	strict word f_3701_0BF4
 	lea	ax, [bp - 0x1a]
 	push	ss
 	push	ax
@@ -190,7 +190,7 @@ Lp_1ECB_0008:
 .11:
 	mov	si, [es:bx]
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	mov	es, [g_8B86]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
@@ -203,7 +203,7 @@ Lp_1ECB_0008:
 	add	sp, 0x10
 	push	0x1
 	push	word 0x3a0b
-	push	word 0xaa38
+	push	strict word f_3A0B_AA38
 	lea	ax, [bp - 0x3a]
 	push	ax
 	call	0x22D3:Lp_22D3_01E2
@@ -211,12 +211,12 @@ Lp_1ECB_0008:
 	lea	ax, [bp - 0x8]
 	push	ax
 	push	word 0x3701
-	push	word 0xc1b
+	push	strict word str_SelectNewHumanControlled
 	push	0x2
 	push	word 0x3a0b
-	push	word 0xac62
+	push	strict word f_3A0B_AC62
 	push	word 0x3a0b
-	push	word 0xaa38
+	push	strict word f_3A0B_AA38
 	push	word [bp - 0x44]
 	push	word [bp - 0x46]
 	push	word [bp - 0x3c]
@@ -233,7 +233,7 @@ Lp_1ECB_0008:
 	jmp	near .18
 .13:
 	push	word 0x3a0b
-	push	word 0xaf3e
+	push	strict word f_3A0B_AF3E
 	mov	es, [g_8B7C]
 	push	word [es:0xac60]
 	mov	es, [g_8B80]
@@ -243,9 +243,9 @@ Lp_1ECB_0008:
 	mov	es, [g_8B88]
 	push	word [es:0xac5a]
 	push	word 0x3a0b
-	push	word 0xaf32
+	push	strict word f_3A0B_AF32
 	push	word 0x3a0b
-	push	word 0xac62
+	push	strict word f_3A0B_AC62
 	push	word [bp - 0x3c]
 	push	word [bp - 0x3e]
 	call	0x2305:Lp_2305_04DC
@@ -272,7 +272,7 @@ Lp_1ECB_0008:
 	push	ax
 	push	0x2
 	push	word 0x3701
-	push	word 0x913
+	push	strict word f_3701_0913
 	push	0x4
 	push	es
 	push	word 0x8af
@@ -307,7 +307,7 @@ Lp_1ECB_0008:
 	push	0x0
 	push	0x1
 	push	word 0x3701
-	push	word 0xa7
+	push	strict word f_3701_00A7
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -338,19 +338,19 @@ Lp_1ECB_0332:
 	db	0x0B, 0xFF		; or di, di
 	jnz	short .2
 	push	word 0x3a0b
-	push	word 0xaf3e
+	push	strict word f_3A0B_AF3E
 	push	word 0x3a0b
-	push	word 0xac60
+	push	strict word f_3A0B_AC60
 	push	word 0x3a0b
-	push	word 0xac5e
+	push	strict word f_3A0B_AC5E
 	push	word 0x3a0b
-	push	word 0xac5c
+	push	strict word f_3A0B_AC5C
 	push	word 0x3a0b
-	push	word 0xac5a
+	push	strict word f_3A0B_AC5A
 	push	word 0x3a0b
-	push	word 0xaf32
+	push	strict word f_3A0B_AF32
 	push	word 0x3a0b
-	push	word 0xac62
+	push	strict word f_3A0B_AC62
 	push	word [bp - 0x3c]
 	push	word [bp - 0x3e]
 	call	0x22D3:Lp_22D3_0000
@@ -369,7 +369,7 @@ Lp_1ECB_0332:
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	push	word 0x3701
-	push	word 0xbf4
+	push	strict word f_3701_0BF4
 	lea	ax, [bp - 0x1a]
 	push	ss
 	push	ax
@@ -503,7 +503,7 @@ Lp_1ECB_0332:
 .11:
 	mov	si, [es:bx]
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	mov	es, [g_8B86]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
@@ -516,7 +516,7 @@ Lp_1ECB_0332:
 	add	sp, 0x10
 	push	0x1
 	push	word 0x3a0b
-	push	word 0xaa38
+	push	strict word f_3A0B_AA38
 	lea	ax, [bp - 0x3a]
 	push	ax
 	call	0x22D3:Lp_22D3_01E2
@@ -524,12 +524,12 @@ Lp_1ECB_0332:
 	lea	ax, [bp - 0x8]
 	push	ax
 	push	word 0x3701
-	push	word 0xc3c
+	push	strict word str_SelectHumanControlledTeam
 	push	0x4
 	push	word 0x3a0b
-	push	word 0xac62
+	push	strict word f_3A0B_AC62
 	push	word 0x3a0b
-	push	word 0xaa38
+	push	strict word f_3A0B_AA38
 	push	word [bp - 0x44]
 	push	word [bp - 0x46]
 	push	word [bp - 0x3c]
@@ -546,7 +546,7 @@ Lp_1ECB_0332:
 	db	0xE9, 0xE7, 0x00		; jmp 0x665
 .13:
 	push	word 0x3a0b
-	push	word 0xaf3e
+	push	strict word f_3A0B_AF3E
 	mov	es, [g_8B7C]
 	push	word [es:0xac60]
 	mov	es, [g_8B80]
@@ -556,9 +556,9 @@ Lp_1ECB_0332:
 	mov	es, [g_8B88]
 	push	word [es:0xac5a]
 	push	word 0x3a0b
-	push	word 0xaf32
+	push	strict word f_3A0B_AF32
 	push	word 0x3a0b
-	push	word 0xac62
+	push	strict word f_3A0B_AC62
 	push	word [bp - 0x3c]
 	push	word [bp - 0x3e]
 	call	0x2305:Lp_2305_04DC
@@ -585,7 +585,7 @@ Lp_1ECB_0332:
 	push	ax
 	push	0x2
 	push	word 0x3701
-	push	word 0x913
+	push	strict word f_3701_0913
 	push	0x4
 	push	es
 	push	word 0x8af
@@ -627,6 +627,6 @@ Lp_1ECB_0332:
 	push	0x0
 	push	0x2
 	push	word 0x3701
-	push	word 0xd4
+	push	strict word f_3701_00D4
 	push	-0x1
 	push	-0x1

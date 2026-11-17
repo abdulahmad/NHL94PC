@@ -594,9 +594,9 @@ Ai_2083_0512:
 	mov	[g_5648], ax
 	call	0x0FEF:UseOffscreenCanvas
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x564c
+	push	strict word str_Scrbrd2
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x12]
@@ -688,9 +688,9 @@ Ai_2083_0512:
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x5659
+	push	strict word str_Crests4
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x12]
@@ -709,7 +709,7 @@ Ai_2083_0512:
 	mov	[g_B207], al
 	mov	[g_B107], al
 	push	ds
-	push	word 0xb1c4
+	push	strict word TeamPalette2
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
 	push	0x4
@@ -728,7 +728,7 @@ Ai_2083_0512:
 	call	0x0FEF:DrawRleTransRemapAt
 	add	sp, 0x8
 	push	ds
-	push	word 0xb0c4
+	push	strict word TeamPalette1
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
 	push	0x4

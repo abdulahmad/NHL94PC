@@ -748,7 +748,7 @@ Stats_25E5_064A:
 	mov	[bp - 0x15a], ax
 	mov	[bp - 0x158], dx
 	push	word 0x3415
-	push	strict word 0x64
+	push	strict word f_3415_0064
 	push	word 0x3861
 	push	strict word 0x0
 	call	0x0000:_fstrcmp
@@ -980,7 +980,7 @@ Stats_25E5_064A:
 	add	sp, 0x4
 	call	0x0FEF:UseOffscreenCanvas
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	mov	bx, [g_200E]
 	shl	bx, 1
 	push	ds
@@ -1044,7 +1044,7 @@ Stats_25E5_064A:
 	call	0x0D39:DrawShadowTextCentered
 	add	sp, 0x6
 	push	ds
-	push	word 0x266b
+	push	strict word str_Gp_2
 	mov	ax, 0x14
 	mov	[bp - 0xd2], ax
 	push	ax
@@ -1095,7 +1095,7 @@ Stats_25E5_064A:
 	cmp	word [bp - 0xd0], 0x0
 	jnz	short .28
 	push	ds
-	push	word 0x266e
+	push	strict word str_StatsUnavailable_2
 	push	0x5f
 	call	0x0D39:DrawShadowTextCentered
 	add	sp, 0x6

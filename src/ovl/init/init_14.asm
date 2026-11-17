@@ -39,14 +39,14 @@ Init_2581_000E:
 	call	0x03A3:MouseMove
 	add	sp, 0x4
 	push	word 0x3a0b
-	push	word 0xb352
+	push	strict word f_3A0B_B352
 	push	word 0x100
 	push	0x0
 	call	0x0FEF:GetPaletteFar
 	add	sp, 0x8
 	push	0x10
 	push	word 0x3a0b
-	push	word 0xb352
+	push	strict word f_3A0B_B352
 	push	0x1
 	call	0x1E7E:Game_1E7E_04C0
 	add	sp, 0x8
@@ -188,7 +188,7 @@ Init_2581_000E:
 	call	0x0000:VgaPageFlip
 	push	0x10
 	push	word 0x3a0b
-	push	word 0xa8e
+	push	strict word f_3A0B_0A8E
 	push	0x0
 	call	0x1E7E:Game_1E7E_04C0
 	add	sp, 0x8
@@ -418,14 +418,14 @@ Init_2581_000E:
 	mov	[g_4B22], ax
 	mov	[g_4B20], ax
 	push	word 0x3a0b
-	push	word 0xb352
+	push	strict word f_3A0B_B352
 	push	word 0x100
 	push	0x0
 	call	0x0FEF:GetPaletteFar
 	add	sp, 0x8
 	push	0x10
 	push	word 0x3a0b
-	push	word 0xb352
+	push	strict word f_3A0B_B352
 	push	0x1
 	call	0x1E7E:Game_1E7E_04C0
 	add	sp, 0x8
@@ -1446,7 +1446,7 @@ Init_2581_0C14:
 	push	0x0
 	push	0x3
 	push	word 0x38f0
-	push	strict word 0x45
+	push	strict word f_38F0_0045
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -1518,7 +1518,7 @@ Init_2581_0C14:
 	push	0x0
 	push	0x3
 	push	word 0x38f0
-	push	strict word 0x45
+	push	strict word f_38F0_0045
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -1810,42 +1810,42 @@ Init_2581_1304:
 	mov	ax, 0x3a0b
 	mov	es, ax
 	mov	al, [g_E366]
-	mov	[es:0xd8e], al
+	mov	[es:f_3A0B_0D8E], al
 	mov	al, [g_E367]
-	mov	[es:0xd8f], al
+	mov	[es:f_3A0B_0D8F], al
 	mov	al, [g_29CA]
-	mov	[es:0xd90], al
+	mov	[es:f_3A0B_0D90], al
 	mov	al, [g_29CC]
-	mov	[es:0xdad], al
+	mov	[es:f_3A0B_0DAD], al
 	mov	ax, [g_BFFE]
-	mov	[es:0xdca], ax
+	mov	[es:f_3A0B_0DCA], ax
 	mov	ax, [g_5560]
-	mov	[es:0xdcc], ax
+	mov	[es:f_3A0B_0DCC], ax
 	mov	ax, [g_5562]
-	mov	[es:0xdce], ax
+	mov	[es:f_3A0B_0DCE], ax
 	mov	ax, [g_5564]
-	mov	[es:0xdd0], ax
+	mov	[es:f_3A0B_0DD0], ax
 	mov	ax, [g_29BC]
-	mov	[es:0xdd2], ax
+	mov	[es:f_3A0B_0DD2], ax
 	mov	ax, [g_D014]
 	mov	dx, [g_D016]
 	sub	ax, [g_2986]
 	sbb	dx, [g_2988]
-	mov	[es:0xdd4], ax
-	mov	[es:0xdd6], dx
+	mov	[es:f_3A0B_0DD4], ax
+	mov	[es:f_3A0B_0DD6], dx
 	db	0x2B, 0xFF		; sub di, di
 	mov	si, 0xa556
 .3:
 	mov	al, [si]
-	mov	[es:di + 0xd91], al
+	mov	[es:di + f_3A0B_0D91], al
 	mov	al, [si + 0x460]
-	mov	[es:di + 0xdae], al
+	mov	[es:di + f_3A0B_0DAE], al
 	inc	di
 	add	si, 0x28
 	cmp	si, 0xa9b6
 	jc	short .3
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	lea	ax, [bp - 0x2a]
 	push	ss
 	push	ax
@@ -1951,7 +1951,7 @@ Init_2581_1304:
 	push	-0x1
 	push	-0x1
 	push	word 0x3a0b
-	push	word 0xd8e
+	push	strict word f_3A0B_0D8E
 	push	word [bp - 0x2]
 	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc

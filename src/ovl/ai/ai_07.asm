@@ -92,7 +92,7 @@ Ai_2352_0096:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0x1c8
+	push	strict word g_01C8
 	push	word [bp - 0x2]
 	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
@@ -132,7 +132,7 @@ Ai_2352_0096:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0x1d4
+	push	strict word g_01D4
 	push	word [bp - 0x2]
 	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
@@ -188,7 +188,7 @@ Ai_2352_019C:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0x1c8
+	push	strict word g_01C8
 	push	word [bp - 0x2]
 	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
@@ -234,7 +234,7 @@ Ai_2352_01EE:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0x1d4
+	push	strict word g_01D4
 	push	word [bp - 0x2]
 	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
@@ -281,7 +281,7 @@ Ai_2352_0260:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0x1c8
+	push	strict word g_01C8
 	push	word [bp - 0x2]
 	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
@@ -307,7 +307,7 @@ Ai_2352_0260:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0x1d4
+	push	strict word g_01D4
 	push	word [bp - 0x2]
 	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
@@ -1049,11 +1049,11 @@ Ai_2352_099A:
 	db	0x03, 0xF7		; add si, di
 	mov	[bp - 0xa], si
 	shl	si, byte 0x4
-	mov	bx, [es:si + 0x448]
-	mov	ax, [es:si + 0x44a]
+	mov	bx, [es:si + f_3A0B_0448]
+	mov	ax, [es:si + f_3A0B_044A]
 	db	0x03, 0xC3		; add ax, bx
 	mov	[bp - 0x4], ax
-	cmp	word [es:si + 0x448], 0x3
+	cmp	word [es:si + f_3A0B_0448], 0x3
 	jnz	short .8
 	mov	word [bp - 0x6], 0x1
 .6:
@@ -1185,8 +1185,8 @@ Ai_2352_099A:
 	db	0x03, 0xDF		; add bx, di
 	mov	[bp - 0xa], bx
 	shl	bx, byte 0x4
-	mov	si, [es:bx + 0x44a]
-	add	si, [es:bx + 0x448]
+	mov	si, [es:bx + f_3A0B_044A]
+	add	si, [es:bx + f_3A0B_0448]
 	mov	al, [AnnouncerFlags]
 	and	al, 0x2
 	jz	short .22
@@ -1246,8 +1246,8 @@ Ai_2352_099A:
 	db	0x03, 0xDF		; add bx, di
 	mov	[bp - 0xa], bx
 	shl	bx, byte 0x4
-	mov	si, [es:bx + 0x44a]
-	add	si, [es:bx + 0x448]
+	mov	si, [es:bx + f_3A0B_044A]
+	add	si, [es:bx + f_3A0B_0448]
 	mov	al, [AnnouncerFlags]
 	and	al, 0x2
 	jz	short .27

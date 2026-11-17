@@ -92,11 +92,11 @@ Menus_2B26_0052:
 
 Menus_2B26_0112:
 	push	word 0x3415
-	push	strict word 0x0
+	push	strict word f_3415_0000
 	call	0x2E70:Menus_2E70_0968
 	add	sp, 0x4
 	push	word 0x3415
-	push	strict word 0x62
+	push	strict word f_3415_0062
 	call	0x2E70:Menus_2E70_09FE
 	add	sp, 0x4
 	push	word 0x3f00
@@ -125,11 +125,11 @@ Menus_2B26_0112:
 	call	0x0000:VgaCopyBytes
 	add	sp, 0x6
 	push	word 0x3415
-	push	strict word 0x62
+	push	strict word f_3415_0062
 	call	0x2E70:Menus_2E70_0D0A
 	add	sp, 0x4
 	push	word 0x3415
-	push	strict word 0x0
+	push	strict word f_3415_0000
 	call	0x2E70:Menus_2E70_09FE
 	add	sp, 0x4
 	db	0x2B, 0xC0		; sub ax, ax
@@ -408,9 +408,9 @@ Menus_2B26_03C4:
 	add	sp, 0x4
 	call	0x0FEF:UseOtherPage
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x147e
+	push	strict word str_Setting5_2
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0xe]
@@ -531,7 +531,7 @@ Menus_2B26_0530:
 	push	cx
 	push	ax
 	push	ds
-	push	word 0x148c
+	push	strict word str_Embnhl_4
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0xe]
@@ -565,14 +565,14 @@ Menus_2B26_0530:
 	push	word [bp - 0x110]
 	push	word [bp - 0x112]
 	push	ds
-	push	word 0x1498
+	push	strict word str_Setting5
 	jmp	short .8
 	db	0x90
 .7:
 	push	word [bp - 0x110]
 	push	word [bp - 0x112]
 	push	ds
-	push	word 0x14a1
+	push	strict word str_Setting3_2
 .8:
 	push	0x0
 	push	0x0
@@ -688,9 +688,9 @@ Menus_2B26_0696:
 	add	sp, 0x4
 	call	0x0FEF:UseOtherPage
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x14af
+	push	strict word str_Setting3
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0xe]

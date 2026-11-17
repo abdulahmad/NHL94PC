@@ -46,13 +46,13 @@ Lp_25B2_000A:
 	push	dx
 	push	ax
 	push	word 0x3a0b
-	push	word 0xaf4c
+	push	strict word f_3A0B_AF4C
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
 	mov	es, [g_8BD4]
 	mov	byte [es:0xaf8f], 0x79
 	push	word 0x3a0b
-	push	word 0xaf4c
+	push	strict word f_3A0B_AF4C
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
 	push	0xf
@@ -266,13 +266,13 @@ Lp_25B2_000A:
 	push	dx
 	push	ax
 	push	word 0x3a0b
-	push	word 0xaf4c
+	push	strict word f_3A0B_AF4C
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
 	mov	es, [g_8BD4]
 	mov	byte [es:0xaf8f], 0x79
 	push	word 0x3a0b
-	push	word 0xaf4c
+	push	strict word f_3A0B_AF4C
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
 	push	word [bp - 0x4]
@@ -480,10 +480,10 @@ Lp_25B2_000A:
 Lp_25B2_04C4:
 	mov	ax, 0x3701
 	mov	es, ax
-	mov	word [es:0xf94], 0x200d
-	mov	word [es:0xf96], 0x1b35
-	mov	word [es:0xfaa], 0x2017
-	mov	word [es:0xfac], 0x1b35
+	mov	word [es:f_3701_0F94], 0x200d
+	mov	word [es:f_3701_0F96], 0x1b35
+	mov	word [es:f_3701_0FAA], 0x2017
+	mov	word [es:f_3701_0FAC], 0x1b35
 	inc	word [g_C270]
 	cmp	word [g_C270], 0xc
 	jnz	short .1
@@ -496,8 +496,8 @@ Lp_25B2_04C4:
 	cmp	word [g_C270], 0x5
 	jnz	short .3
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[es:0xf96], ax
-	mov	[es:0xf94], ax
+	mov	[es:f_3701_0F96], ax
+	mov	[es:f_3701_0F94], ax
 .3:
 	mov	word [g_C272], 0xffff
 	retf
@@ -506,10 +506,10 @@ Lp_25B2_04C4:
 Lp_25B2_051C:
 	mov	ax, 0x3701
 	mov	es, ax
-	mov	word [es:0xf94], 0x200d
-	mov	word [es:0xf96], 0x1b35
-	mov	word [es:0xfaa], 0x2017
-	mov	word [es:0xfac], 0x1b35
+	mov	word [es:f_3701_0F94], 0x200d
+	mov	word [es:f_3701_0F96], 0x1b35
+	mov	word [es:f_3701_0FAA], 0x2017
+	mov	word [es:f_3701_0FAC], 0x1b35
 	dec	word [g_C270]
 	cmp	word [g_C270], -0x1
 	jnz	short .1
@@ -522,8 +522,8 @@ Lp_25B2_051C:
 	cmp	word [g_C270], 0x9
 	jnz	short .3
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[es:0xfac], ax
-	mov	[es:0xfaa], ax
+	mov	[es:f_3701_0FAC], ax
+	mov	[es:f_3701_0FAA], ax
 .3:
 	mov	word [g_C272], 0xffff
 	retf
@@ -540,9 +540,9 @@ Lp_25B2_057E:
 	push	di
 	push	si
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x18d2
+	push	strict word str_Lineditp_4
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x30]
@@ -725,9 +725,9 @@ Lp_25B2_06D6:
 	mov	[g_C26E], ax
 	mov	[g_C2A0], ax
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x18f9
+	push	strict word str_Lineditp_3
 	push	ax
 	push	ax
 	lea	ax, [bp - 0x4c]
@@ -791,9 +791,9 @@ Lp_25B2_06D6:
 	cmp	word [bp - 0xde], 0xa
 	jl	short .1
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x1913
+	push	strict word str_Crests4_5
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x4c]
@@ -1305,7 +1305,7 @@ Lp_25B2_06D6:
 	push	word [bp - 0x6]
 	push	0x3
 	push	word 0x3701
-	push	word 0xfdf
+	push	strict word f_3701_0FDF
 	call	0x0FA0:DrawMenuBar
 	add	sp, 0xc
 	push	word [bp - 0x8]
@@ -1332,7 +1332,7 @@ Lp_25B2_06D6:
 	push	word [bp - 0x6]
 	push	0x3
 	push	word 0x3701
-	push	word 0xfdf
+	push	strict word f_3701_0FDF
 	call	0x0FA0:DrawMenuBar
 	add	sp, 0xc
 	push	word [bp - 0x8]
@@ -1940,7 +1940,7 @@ Lp_25B2_06D6:
 	push	word [bp - 0x6]
 	push	0x3
 	push	word 0x3701
-	push	word 0xfdf
+	push	strict word f_3701_0FDF
 	call	0x0FA0:DrawMenuBar
 	add	sp, 0xc
 	push	word [bp - 0x8]
@@ -2127,11 +2127,11 @@ Lp_25B2_1620:
 	jmp	near .13
 .8:
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	word 0x3701
-	push	word 0xb88
+	push	strict word str_Pinfo
 	push	word 0x3701
-	push	word 0xbfa
+	push	strict word f_3701_0BFA
 	lea	ax, [bp - 0x6a]
 	push	ss
 	push	ax
@@ -2186,7 +2186,7 @@ Lp_25B2_1620:
 	push	0x0
 	push	0x2
 	push	word 0x3701
-	push	word 0xaa1
+	push	strict word f_3701_0AA1
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -2216,7 +2216,7 @@ Lp_25B2_1620:
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	push	word 0x3701
-	push	word 0xbf4
+	push	strict word f_3701_0BF4
 	lea	ax, [bp - 0x2c]
 	push	ss
 	push	ax
@@ -2259,7 +2259,7 @@ Lp_25B2_1620:
 	push	0x0
 	push	0x5
 	push	word 0x3701
-	push	word 0x5d5
+	push	strict word f_3701_05D5
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -2297,13 +2297,13 @@ Lp_25B2_1876:
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	push	word 0x3701
-	push	word 0xbaa
+	push	strict word f_3701_0BAA
 	push	di
 	push	si
 	call	0x0000:_fstrcat
 	add	sp, 0x8
 	push	word 0x3701
-	push	word 0xbac
+	push	strict word str_S
 	push	di
 	push	si
 	call	0x0000:_fstrcat
@@ -2422,9 +2422,9 @@ Lp_25B2_18F4:
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .5
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	ds
-	push	word 0x1932
+	push	strict word str_Gsummary_3
 	push	word [bp + 0x16]
 	push	word [bp + 0x14]
 	lea	ax, [bp - 0x3c]
@@ -3053,7 +3053,7 @@ Lp_25B2_208A:
 .1:
 	push	0x3
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	call	0x2305:Lp_2305_044C
 	add	sp, 0x6
 	mov	[bp - 0x5c], ax
@@ -3062,21 +3062,21 @@ Lp_25B2_208A:
 	cmp	word [bp - 0x5c], 0x0
 	jnz	short .3
 	push	word 0x3a0b
-	push	word 0xaf3e
+	push	strict word f_3A0B_AF3E
 	push	word 0x3a0b
-	push	word 0xac60
+	push	strict word f_3A0B_AC60
 	push	word 0x3a0b
-	push	word 0xac5e
+	push	strict word f_3A0B_AC5E
 	push	word 0x3a0b
-	push	word 0xac5c
+	push	strict word f_3A0B_AC5C
 	push	word 0x3a0b
-	push	word 0xac5a
+	push	strict word f_3A0B_AC5A
 	push	word 0x3a0b
-	push	word 0xaf32
+	push	strict word f_3A0B_AF32
 	push	word 0x3a0b
-	push	word 0xac62
+	push	strict word f_3A0B_AC62
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	call	0x22D3:Lp_22D3_0000
 	add	sp, 0x20
 	mov	[bp - 0x5c], ax
@@ -3086,14 +3086,14 @@ Lp_25B2_208A:
 	jmp	near .11
 .4:
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	lea	ax, [bp - 0x6a]
 	push	ss
 	push	ax
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	push	word 0x3701
-	push	word 0xbf4
+	push	strict word f_3701_0BF4
 	lea	ax, [bp - 0x6a]
 	push	ss
 	push	ax
@@ -3136,7 +3136,7 @@ Lp_25B2_208A:
 	push	ax
 	push	0x2
 	push	word 0x3701
-	push	word 0x9c8
+	push	strict word f_3701_09C8
 	push	0x5
 	push	es
 	push	word 0x9b4
@@ -3154,7 +3154,7 @@ Lp_25B2_208A:
 	push	ax
 	push	0x2
 	push	word 0x3701
-	push	word 0x913
+	push	strict word f_3701_0913
 	push	0x4
 	push	es
 	push	word 0x903
@@ -3180,12 +3180,12 @@ Lp_25B2_208A:
 	db	0x90
 .10:
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	mov	es, [g_8BDA]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	lea	ax, [bp - 0x40]
 	push	ss
 	push	ax
@@ -3193,7 +3193,7 @@ Lp_25B2_208A:
 	add	sp, 0x10
 	push	0x1
 	push	word 0x3a0b
-	push	word 0xaa38
+	push	strict word f_3A0B_AA38
 	lea	ax, [bp - 0x40]
 	push	ax
 	call	0x22D3:Lp_22D3_01E2
@@ -3223,7 +3223,7 @@ Lp_25B2_208A:
 	push	ss
 	push	ax
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	call	0x2305:Lp_2305_0450
 	add	sp, 0x8
 	mov	[g_C2A6], ax
@@ -3234,16 +3234,16 @@ Lp_25B2_208A:
 	jnl	short .15
 	push	word 0xc2a6
 	push	word 0x3701
-	push	word 0x3cd
+	push	strict word str_SelectATeamToPlay
 	push	0x8
 	push	word 0x3a0b
-	push	word 0xac62
+	push	strict word f_3A0B_AC62
 	push	word 0x3a0b
-	push	word 0xaa38
+	push	strict word f_3A0B_AA38
 	push	word 0x3a0b
-	push	word 0xac5c
+	push	strict word f_3A0B_AC5C
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	call	0x1F31:Lp_1F31_0BAE
 	add	sp, 0x18
 	push	word 0x193b
@@ -3267,9 +3267,9 @@ Lp_25B2_208A:
 	push	0x0
 	push	word [g_C2A6]
 	push	word 0x3a0b
-	push	word 0xac62
+	push	strict word f_3A0B_AC62
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	push	cs
 	call	Lp_25B2_1620
 	add	sp, 0xe
@@ -3288,7 +3288,7 @@ Lp_25B2_208A:
 	push	ss
 	push	ax
 	push	word 0x3701
-	push	word 0xbe4
+	push	strict word str_Xx_2
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	mov	es, [g_8BD8]
@@ -3296,15 +3296,15 @@ Lp_25B2_208A:
 	test	byte [es:bx - 0x5388], 0x1
 	jz	short .19
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	jmp	short .20
 	db	0x90
 .19:
 	push	word 0x3701
-	push	word 0xbfa
+	push	strict word f_3701_0BFA
 .20:
 	push	ds
-	push	word 0xc27e
+	push	strict word g_C27E
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	mov	es, [g_8BEC]
@@ -3322,7 +3322,7 @@ Lp_25B2_208A:
 	add	sp, 0xa
 .22:
 	push	word 0x3a0b
-	push	word 0xac62
+	push	strict word f_3A0B_AC62
 	push	word [g_C2A6]
 	call	0x28A8:Lp_28A8_000A
 	add	sp, 0x6
@@ -3333,12 +3333,12 @@ Lp_25B2_208A:
 	jmp	near .27
 .24:
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	mov	es, [g_8BDA]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	lea	ax, [bp - 0x40]
 	push	ss
 	push	ax
@@ -3346,7 +3346,7 @@ Lp_25B2_208A:
 	add	sp, 0x10
 	push	0x0
 	push	word 0x3a0b
-	push	word 0xaa38
+	push	strict word f_3A0B_AA38
 	lea	ax, [bp - 0x40]
 	push	ax
 	call	0x22D3:Lp_22D3_01E2
@@ -3371,11 +3371,11 @@ Lp_25B2_208A:
 	push	ss
 	push	ax
 	push	word 0x3701
-	push	word 0xbe4
+	push	strict word str_Xx_2
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	push	word 0x3a0b
-	push	word 0xac62
+	push	strict word f_3A0B_AC62
 	push	word [g_C2A6]
 	call	0x28A8:Lp_28A8_000A
 	add	sp, 0x6
@@ -3408,9 +3408,9 @@ Lp_25B2_208A:
 .31:
 	push	word [g_C2A6]
 	push	word 0x3701
-	push	word 0xbe4
+	push	strict word str_Xx_2
 	push	ds
-	push	word 0xc27e
+	push	strict word g_C27E
 	push	cs
 	call	Lp_25B2_06D6
 	add	sp, 0xa
@@ -3421,12 +3421,12 @@ Lp_25B2_208A:
 	jmp	near .94
 .33:
 	push	word 0x3701
-	push	word 0xbe4
+	push	strict word str_Xx_2
 	mov	es, [g_8BDA]
 	push	word [es:0xb86]
 	push	word [es:0xb84]
 	push	ds
-	push	word 0xc27e
+	push	strict word g_C27E
 	lea	ax, [bp - 0x40]
 	push	ss
 	push	ax
@@ -3448,7 +3448,7 @@ Lp_25B2_208A:
 	push	ax
 	push	ax
 	push	ds
-	push	word 0xc2ac
+	push	strict word g_C2AC
 	push	word [bp - 0x4a]
 	call	0x0CD1:ReadAtOffset
 	add	sp, 0xc
@@ -3458,7 +3458,7 @@ Lp_25B2_208A:
 	jnz	short .35
 	push	word [g_C2B0]
 	push	ds
-	push	word 0xc29a
+	push	strict word g_C29A
 	push	word [bp - 0x4a]
 	call	0x0CD1:ReadEntry6
 	add	sp, 0x8
@@ -3494,9 +3494,9 @@ Lp_25B2_208A:
 	push	-0x1
 	push	word [g_C2A8]
 	push	word 0x3a0b
-	push	word 0xac62
+	push	strict word f_3A0B_AC62
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	push	cs
 	call	Lp_25B2_1620
 	add	sp, 0xe
@@ -3513,7 +3513,7 @@ Lp_25B2_208A:
 	push	ss
 	push	ax
 	push	word 0x3701
-	push	word 0xbe8
+	push	strict word str_Xx
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	mov	es, [g_8BD8]
@@ -3523,27 +3523,27 @@ Lp_25B2_208A:
 	cmp	word [bp - 0x48], 0x0
 	jz	short .39
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	jmp	short .40
 	db	0x90
 .39:
 	push	word 0x3701
-	push	word 0xbfa
+	push	strict word f_3701_0BFA
 .40:
 	push	ds
-	push	word 0xc28c
+	push	strict word g_C28C
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 .41:
 	cmp	word [bp - 0x5c], 0x0
 	jnz	short .42
 	push	word 0x3701
-	push	word 0xbe8
+	push	strict word str_Xx
 	mov	es, [g_8BDA]
 	push	word [es:0xb86]
 	push	word [es:0xb84]
 	push	ds
-	push	word 0xc28c
+	push	strict word g_C28C
 	lea	ax, [bp - 0x40]
 	push	ss
 	push	ax
@@ -3566,7 +3566,7 @@ Lp_25B2_208A:
 	push	0x0
 	push	0x0
 	push	ds
-	push	word 0xc2ae
+	push	strict word g_C2AE
 	push	word [bp - 0x52]
 	call	0x0CD1:ReadAtOffset
 	add	sp, 0xc
@@ -3588,11 +3588,11 @@ Lp_25B2_208A:
 	push	ss
 	push	ax
 	push	word 0x3701
-	push	word 0xbe8
+	push	strict word str_Xx
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	push	word 0x3a0b
-	push	word 0xac62
+	push	strict word f_3A0B_AC62
 	push	word [g_C2A8]
 	call	0x28A8:Lp_28A8_000A
 	add	sp, 0x6
@@ -3641,11 +3641,11 @@ Lp_25B2_208A:
 	mov	word [bp - 0x20], 0x1
 	push	ax
 	push	word 0x3a0b
-	push	word 0xac62
+	push	strict word f_3A0B_AC62
 	push	ds
-	push	word 0xc27e
+	push	strict word g_C27E
 	push	ds
-	push	word 0xc000
+	push	strict word g_C000
 	push	cs
 	call	Lp_25B2_1876
 	add	sp, 0xe
@@ -3653,9 +3653,9 @@ Lp_25B2_208A:
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	push	word 0x3a0b
-	push	word 0xac62
+	push	strict word f_3A0B_AC62
 	push	ds
-	push	word 0xc28c
+	push	strict word g_C28C
 	jmp	short .48
 	db	0x90
 .47:
@@ -3665,11 +3665,11 @@ Lp_25B2_208A:
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	push	word 0x3a0b
-	push	word 0xac62
+	push	strict word f_3A0B_AC62
 	push	ds
-	push	word 0xc28c
+	push	strict word g_C28C
 	push	ds
-	push	word 0xc000
+	push	strict word g_C000
 	push	cs
 	call	Lp_25B2_1876
 	add	sp, 0xe
@@ -3677,30 +3677,30 @@ Lp_25B2_208A:
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	push	word 0x3a0b
-	push	word 0xac62
+	push	strict word f_3A0B_AC62
 	push	ds
-	push	word 0xc27e
+	push	strict word g_C27E
 .48:
 	push	ds
-	push	word 0xc020
+	push	strict word g_C020
 	push	cs
 	call	Lp_25B2_1876
 	add	sp, 0xe
 	cmp	byte [g_C020], 0x0
 	jnz	short .49
 	push	ds
-	push	word 0xc000
+	push	strict word g_C000
 	push	ds
-	push	word 0xc020
+	push	strict word g_C020
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 .49:
 	cmp	byte [g_C000], 0x0
 	jnz	short .50
 	push	ds
-	push	word 0xc020
+	push	strict word g_C020
 	push	ds
-	push	word 0xc000
+	push	strict word g_C000
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 .50:
@@ -3900,9 +3900,9 @@ Lp_25B2_208A:
 	push	-0x1
 	push	word [g_C2A8]
 	push	word 0x3a0b
-	push	word 0xac62
+	push	strict word f_3A0B_AC62
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	push	cs
 	call	Lp_25B2_1620
 	add	sp, 0xe
@@ -3919,7 +3919,7 @@ Lp_25B2_208A:
 	push	ss
 	push	ax
 	push	word 0x3701
-	push	word 0xbe8
+	push	strict word str_Xx
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	mov	es, [g_8BD8]
@@ -3929,27 +3929,27 @@ Lp_25B2_208A:
 	cmp	word [bp - 0x48], 0x0
 	jz	short .62
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	jmp	short .63
 	db	0x90
 .62:
 	push	word 0x3701
-	push	word 0xbfa
+	push	strict word f_3701_0BFA
 .63:
 	push	ds
-	push	word 0xc28c
+	push	strict word g_C28C
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 .64:
 	cmp	word [bp - 0x5c], 0x0
 	jnz	short .65
 	push	word 0x3701
-	push	word 0xbe4
+	push	strict word str_Xx_2
 	mov	es, [g_8BDA]
 	push	word [es:0xb86]
 	push	word [es:0xb84]
 	push	ds
-	push	word 0xc27e
+	push	strict word g_C27E
 	lea	ax, [bp - 0x40]
 	push	ss
 	push	ax
@@ -3967,12 +3967,12 @@ Lp_25B2_208A:
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .65
 	push	word 0x3701
-	push	word 0xbe8
+	push	strict word str_Xx
 	mov	es, [g_8BDA]
 	push	word [es:0xb86]
 	push	word [es:0xb84]
 	push	ds
-	push	word 0xc28c
+	push	strict word g_C28C
 	lea	ax, [bp - 0x40]
 	push	ss
 	push	ax
@@ -3996,7 +3996,7 @@ Lp_25B2_208A:
 	push	0x0
 	push	0x1
 	push	word 0x3701
-	push	word 0xa23
+	push	strict word f_3701_0A23
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -4007,11 +4007,11 @@ Lp_25B2_208A:
 	cmp	word [bp - 0x5c], 0x0
 	jnz	short .67
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	word 0x3701
-	push	word 0xb88
+	push	strict word str_Pinfo
 	push	ds
-	push	word 0xc27e
+	push	strict word g_C27E
 	lea	ax, [bp - 0x40]
 	push	ss
 	push	ax
@@ -4062,11 +4062,11 @@ Lp_25B2_208A:
 	cmp	word [bp - 0x5c], 0x0
 	jnz	short .71
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	word 0x3701
-	push	word 0xb88
+	push	strict word str_Pinfo
 	push	ds
-	push	word 0xc28c
+	push	strict word g_C28C
 	lea	ax, [bp - 0x40]
 	push	ss
 	push	ax
@@ -4115,7 +4115,7 @@ Lp_25B2_208A:
 	jnz	short .75
 	push	word [g_C2B0]
 	push	ds
-	push	word 0xc29a
+	push	strict word g_C29A
 	push	word [bp - 0x4a]
 	call	0x20E6:Lp_20E6_0054
 	add	sp, 0x8
@@ -4127,7 +4127,7 @@ Lp_25B2_208A:
 	jz	short .76
 	push	word [g_C2B0]
 	push	ds
-	push	word 0xc29a
+	push	strict word g_C29A
 	push	word [bp - 0x52]
 	call	0x20E6:Lp_20E6_0054
 	add	sp, 0x8
@@ -4142,12 +4142,12 @@ Lp_25B2_208A:
 	jmp	near .83
 .78:
 	push	word 0x3701
-	push	word 0xbe4
+	push	strict word str_Xx_2
 	mov	es, [g_8BDA]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
 	push	ds
-	push	word 0xc27e
+	push	strict word g_C27E
 	lea	ax, [bp - 0x40]
 	push	ss
 	push	ax
@@ -4182,12 +4182,12 @@ Lp_25B2_208A:
 	jmp	near .85
 .81:
 	push	word 0x3701
-	push	word 0xbe8
+	push	strict word str_Xx
 	mov	es, [g_8BDA]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
 	push	ds
-	push	word 0xc28c
+	push	strict word g_C28C
 	lea	ax, [bp - 0x40]
 	push	ss
 	push	ax
@@ -4223,7 +4223,7 @@ Lp_25B2_208A:
 	push	0x0
 	push	0x0
 	push	ds
-	push	word 0xc2b0
+	push	strict word g_C2B0
 	push	word [bp - 0x4a]
 	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
@@ -4240,7 +4240,7 @@ Lp_25B2_208A:
 	push	0x0
 	push	0x0
 	push	ds
-	push	word 0xc2b0
+	push	strict word g_C2B0
 	push	word [bp - 0x52]
 	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
@@ -4253,28 +4253,28 @@ Lp_25B2_208A:
 	push	0x2
 	push	word [g_C2A6]
 	push	word 0x3a0b
-	push	word 0xac62
+	push	strict word f_3A0B_AC62
 	mov	ax, [g_C2B0]
 	dec	ax
 	push	ax
 	push	word 0x3701
-	push	word 0xbe4
+	push	strict word str_Xx_2
 	push	ds
-	push	word 0xc27e
+	push	strict word g_C27E
 	call	0x28CD:Lp_28CD_10F6
 	add	sp, 0x12
 	mov	[bp - 0x5c], ax
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .87
 	push	ds
-	push	word 0xc27e
+	push	strict word g_C27E
 	push	word [bp - 0x4e]
 	push	word [bp - 0x1e]
 	push	word [g_C2A6]
 	push	word 0x3701
-	push	word 0xbe4
+	push	strict word str_Xx_2
 	push	ds
-	push	word 0xc27e
+	push	strict word g_C27E
 	push	cs
 	call	Lp_25B2_18F4
 	add	sp, 0x12
@@ -4287,38 +4287,38 @@ Lp_25B2_208A:
 	push	0x2
 	push	word [g_C2A8]
 	push	word 0x3a0b
-	push	word 0xac62
+	push	strict word f_3A0B_AC62
 	push	word [g_C2B0]
 	push	word 0x3701
-	push	word 0xbe8
+	push	strict word str_Xx
 	push	ds
-	push	word 0xc28c
+	push	strict word g_C28C
 	call	0x28CD:Lp_28CD_10F6
 	add	sp, 0x12
 	mov	[bp - 0x5c], ax
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .90
 	push	ds
-	push	word 0xc27e
+	push	strict word g_C27E
 	push	word [bp - 0x4e]
 	push	word [bp - 0x20]
 	push	word [g_C2A8]
 	push	word 0x3701
-	push	word 0xbe8
+	push	strict word str_Xx
 	push	ds
-	push	word 0xc28c
+	push	strict word g_C28C
 	jmp	short .89
 	db	0x90
 .88:
 	push	ds
-	push	word 0xc27e
+	push	strict word g_C27E
 	push	word [bp - 0x4e]
 	push	word [bp - 0x20]
 	push	word [g_C2A8]
 	push	word 0x3701
-	push	word 0xbe4
+	push	strict word str_Xx_2
 	push	ds
-	push	word 0xc27e
+	push	strict word g_C27E
 .89:
 	push	cs
 	call	Lp_25B2_18F4
@@ -4354,7 +4354,7 @@ Lp_25B2_208A:
 	push	0x0
 	push	0x1
 	push	word 0x3701
-	push	word 0x342
+	push	strict word f_3701_0342
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -4403,11 +4403,11 @@ Lp_25B2_208A:
 	mov	word [bp - 0x5c], 0x0
 .95:
 	push	ds
-	push	word 0x197f
+	push	strict word str_Sav_2
 	push	ds
-	push	word 0x1984
+	push	strict word str_Game_2
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	lea	ax, [bp - 0x40]
 	push	ss
 	push	ax

@@ -158,7 +158,9 @@ g_9FCE:                                         ; used by INIT (to name)
 g_A03C:                                         ; used by MENUS (to name)
         resb 48
 g_A06C:                                         ; used by MENUS (to name)
-        resb 1252
+        resb 508
+g_A268:                                         ; used by INIT (to name)
+        resb 744
 g_A550:                                         ; used by AI, INIT, MENUS (to name)
         resb 6
 g_A556:                                         ; used by AI, INIT, MENUS (to name)
@@ -166,13 +168,17 @@ g_A556:                                         ; used by AI, INIT, MENUS (to na
 g_A557:                                         ; used by AI (to name)
         resb 1113
 g_A9B0:                                         ; used by INIT (to name)
-        resb 1156
+        resb 1120
+g_AE10:                                         ; used by INIT (to name)
+        resb 36
 g_AE34:                                         ; used by INIT (to name)
         resb 1
 g_AE35:                                         ; used by INIT (to name)
         resb 3
 g_AE38:                                         ; used by INIT (to name)
-        resb 44
+        resb 8
+g_AE40:                                         ; used by INIT (to name)
+        resb 36
 g_AE64:                                         ; used by INIT (to name)
         resb 1
 g_AE65:                                         ; used by INIT (to name)
@@ -807,7 +813,9 @@ g_C1EF:                                         ; used by MENUS (to name)
 g_C1F0:                                         ; used by MENUS (to name)
         resb 2
 g_C1F2:                                         ; used by MENUS (to name)
-        resb 18
+        resb 2
+g_C1F4:                                         ; used by MENUS (to name)
+        resb 16
 g_C204:                                         ; used by MENUS, STATS (to name)
         resb 2
 g_C206:                                         ; used by MENUS (to name)
@@ -823,7 +831,9 @@ g_C23C:                                         ; used by STATS (to name)
 g_C23E:                                         ; used by STATS (to name)
         resb 2
 g_C240:                                         ; used by STATS (to name)
-        resb 24
+        resb 2
+g_C242:                                         ; used by MENUS (to name)
+        resb 22
 g_C258:                                         ; used by AI, INIT, MENUS (to name)
         resb 2
 g_C25A:                                         ; used by AI, INIT, MENUS (to name)
@@ -861,7 +871,11 @@ g_C278:                                         ; used by LP (to name)
 g_C27A:                                         ; used by LP (to name)
         resb 2
 g_C27C:                                         ; used by LP (to name)
-        resb 30
+        resb 2
+g_C27E:                                         ; used by LP (to name)
+        resb 14
+g_C28C:                                         ; used by LP (to name)
+        resb 14
 g_C29A:                                         ; used by LP (to name)
         resb 1
 g_C29B:                                         ; used by LP (to name)
@@ -905,7 +919,9 @@ g_C2C2:                                         ; used by LP (to name)
 g_C2C3:                                         ; used by LP (to name)
         resb 1
 g_C2C4:                                         ; used by LP (to name)
-        resb 1230
+        resb 614
+g_C52A:                                         ; used by LP (to name)
+        resb 616
 g_C792:                                         ; used by LP (to name)
         resb 2
 g_C794:                                         ; used by LP (to name)
@@ -943,7 +959,9 @@ g_C7FA:                                         ; used by LP (to name)
 g_C7FC:                                         ; used by LP (to name)
         resb 10
 g_C806:                                         ; used by LP (to name)
-        resb 1059
+        resb 1023
+g_CC05:                                         ; used by LP (to name)
+        resb 36
 g_CC29:                                         ; used by LP (to name)
         resb 703
 g_CEE8:                                         ; used by STATS (to name)
@@ -955,7 +973,11 @@ g_CF1A:                                         ; used by STATS (to name)
 g_CF1B:                                         ; used by STATS (to name)
         resb 1
 g_CF1C:                                         ; used by STATS (to name)
-        resb 34
+        resb 1
+g_CF1D:                                         ; used by STATS (to name)
+        resb 16
+g_CF2D:                                         ; used by STATS (to name)
+        resb 17
 g_CF3E:                                         ; used by STATS (to name)
         resb 2
 g_CF40:                                         ; used by STATS (to name)
@@ -993,7 +1015,9 @@ g_CFCE:                                         ; used by STATS (to name)
 g_CFD0:                                         ; used by STATS (to name)
         resb 2
 g_CFD2:                                         ; used by STATS (to name)
-        resb 42
+        resb 2
+g_CFD4:                                         ; used by STATS (to name)
+        resb 40
 g_CFFC:                                         ; used by GAME, INIT (to name)
         resb 2
 g_CFFE:                                         ; used by GAME, INIT (to name)

@@ -67,9 +67,9 @@ Menus_2CAA_0056:
 	add	sp, 0x4
 	call	0x0FEF:UseOtherPage
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x14da
+	push	strict word str_Setting6
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0xe]

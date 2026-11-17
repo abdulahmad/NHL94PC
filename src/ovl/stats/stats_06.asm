@@ -48,7 +48,7 @@ Stats_2248_0028:
 	mov	word [g_200E], 0x0
 	push	0x1f
 	push	word 0x3415
-	push	strict word 0x2
+	push	strict word f_3415_0002
 	push	word 0x3861
 	push	strict word 0x0
 	call	0x03A3:CopyStrNFar
@@ -56,14 +56,14 @@ Stats_2248_0028:
 	cmp	word [g_C052], 0x0
 	jz	short .3
 	push	word 0x3a0b
-	push	word 0xb052
+	push	strict word f_3A0B_B052
 	push	word 0x100
 	push	0x0
 	call	0x0FEF:GetPaletteFar
 	add	sp, 0x8
 	push	0x10
 	push	word 0x3a0b
-	push	word 0xb052
+	push	strict word f_3A0B_B052
 	push	0x1
 	call	0x1B35:OvlThunk23
 	add	sp, 0x8
@@ -74,7 +74,7 @@ Stats_2248_0028:
 	add	sp, 0x2
 	push	0x10
 	push	word 0x3a0b
-	push	word 0xb052
+	push	strict word f_3A0B_B052
 	push	0x0
 	call	0x1B35:OvlThunk23
 	add	sp, 0x8
@@ -110,7 +110,7 @@ Stats_2248_00EC:
 	mov	word [g_200E], 0x1
 	push	0x1f
 	push	word 0x3415
-	push	strict word 0x2
+	push	strict word f_3415_0002
 	push	word 0x3861
 	push	strict word 0x0
 	call	0x03A3:CopyStrNFar
@@ -118,14 +118,14 @@ Stats_2248_00EC:
 	cmp	word [g_C052], 0x0
 	jz	short .3
 	push	word 0x3a0b
-	push	word 0xb052
+	push	strict word f_3A0B_B052
 	push	word 0x100
 	push	0x0
 	call	0x0FEF:GetPaletteFar
 	add	sp, 0x8
 	push	0x10
 	push	word 0x3a0b
-	push	word 0xb052
+	push	strict word f_3A0B_B052
 	push	0x1
 	call	0x1B35:OvlThunk23
 	add	sp, 0x8
@@ -136,7 +136,7 @@ Stats_2248_00EC:
 	add	sp, 0x2
 	push	0x10
 	push	word 0x3a0b
-	push	word 0xb052
+	push	strict word f_3A0B_B052
 	push	0x0
 	call	0x1B35:OvlThunk23
 	add	sp, 0x8
@@ -172,7 +172,7 @@ Stats_2248_01B0:
 	mov	word [g_200E], 0x0
 	push	0x1f
 	push	word 0x3415
-	push	word 0xc6
+	push	strict word f_3415_00C6
 	push	word 0x3861
 	push	strict word 0x0
 	call	0x03A3:CopyStrNFar
@@ -180,14 +180,14 @@ Stats_2248_01B0:
 	cmp	word [g_C052], 0x0
 	jz	short .3
 	push	word 0x3a0b
-	push	word 0xb052
+	push	strict word f_3A0B_B052
 	push	word 0x100
 	push	0x0
 	call	0x0FEF:GetPaletteFar
 	add	sp, 0x8
 	push	0x10
 	push	word 0x3a0b
-	push	word 0xb052
+	push	strict word f_3A0B_B052
 	push	0x1
 	call	0x1B35:OvlThunk23
 	add	sp, 0x8
@@ -198,7 +198,7 @@ Stats_2248_01B0:
 	add	sp, 0x2
 	push	0x10
 	push	word 0x3a0b
-	push	word 0xb052
+	push	strict word f_3A0B_B052
 	push	0x0
 	call	0x1B35:OvlThunk23
 	add	sp, 0x8
@@ -214,7 +214,7 @@ Stats_2248_0274:
 	cmp	word [g_200E], 0x1
 	jnz	short .1
 	push	word 0x3415
-	push	word 0xc6
+	push	strict word f_3415_00C6
 	push	word 0x3861
 	push	strict word 0x0
 	call	0x0000:_fstrcmp
@@ -242,7 +242,7 @@ Stats_2248_0274:
 	mov	word [g_200E], 0x1
 	push	0x1f
 	push	word 0x3415
-	push	word 0xc6
+	push	strict word f_3415_00C6
 	push	word 0x3861
 	push	strict word 0x0
 	call	0x03A3:CopyStrNFar
@@ -250,14 +250,14 @@ Stats_2248_0274:
 	cmp	word [g_C052], 0x0
 	jz	short .3
 	push	word 0x3a0b
-	push	word 0xb052
+	push	strict word f_3A0B_B052
 	push	word 0x100
 	push	0x0
 	call	0x0FEF:GetPaletteFar
 	add	sp, 0x8
 	push	0x10
 	push	word 0x3a0b
-	push	word 0xb052
+	push	strict word f_3A0B_B052
 	push	0x1
 	call	0x1B35:OvlThunk23
 	add	sp, 0x8
@@ -268,7 +268,7 @@ Stats_2248_0274:
 	add	sp, 0x2
 	push	0x10
 	push	word 0x3a0b
-	push	word 0xb052
+	push	strict word f_3A0B_B052
 	push	0x0
 	call	0x1B35:OvlThunk23
 	add	sp, 0x8
@@ -284,7 +284,7 @@ Stats_2248_0350:
 	cmp	word [g_200E], 0x1
 	jnz	short .1
 	push	word 0x3415
-	push	strict word 0x64
+	push	strict word f_3415_0064
 	push	word 0x3861
 	push	strict word 0x0
 	call	0x0000:_fstrcmp
@@ -312,7 +312,7 @@ Stats_2248_0350:
 	mov	word [g_200E], 0x1
 	push	0x1f
 	push	word 0x3415
-	push	strict word 0x64
+	push	strict word f_3415_0064
 	push	word 0x3861
 	push	strict word 0x0
 	call	0x03A3:CopyStrNFar
@@ -320,14 +320,14 @@ Stats_2248_0350:
 	cmp	word [g_C052], 0x0
 	jz	short .3
 	push	word 0x3a0b
-	push	word 0xb052
+	push	strict word f_3A0B_B052
 	push	word 0x100
 	push	0x0
 	call	0x0FEF:GetPaletteFar
 	add	sp, 0x8
 	push	0x10
 	push	word 0x3a0b
-	push	word 0xb052
+	push	strict word f_3A0B_B052
 	push	0x1
 	call	0x1B35:OvlThunk23
 	add	sp, 0x8
@@ -338,7 +338,7 @@ Stats_2248_0350:
 	add	sp, 0x2
 	push	0x10
 	push	word 0x3a0b
-	push	word 0xb052
+	push	strict word f_3A0B_B052
 	push	0x0
 	call	0x1B35:OvlThunk23
 	add	sp, 0x8

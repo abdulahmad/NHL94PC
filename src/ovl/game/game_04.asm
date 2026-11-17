@@ -45,38 +45,38 @@ Game_1F54_0002:
 	mov	ax, DGROUP
 	mov	es, ax
 	mov	ax, [bp - 0x6]
-	cmp	[es:0x74fe], ax
+	cmp	[es:ClipRightX], ax
 	jg	short .4
 	jmp	near .34
 .4:
 	mov	[bp + 0x6], si
 	db	0x8B, 0xC1		; mov ax, cx
-	cmp	[es:0x74fc], ax
+	cmp	[es:ClipLeftX], ax
 	jng	short .5
 	jmp	near .34
 .5:
 	mov	ax, [bp - 0x8]
-	cmp	[es:0x74f4], ax
+	cmp	[es:ClipBottomY], ax
 	jg	short .6
 	jmp	near .34
 .6:
 	mov	ax, [bp - 0xe]
-	cmp	[es:0x74f2], ax
+	cmp	[es:ClipTopY], ax
 	jl	short .7
 	jmp	near .34
 .7:
 	mov	ax, [bp - 0x6]
-	cmp	[es:0x74fc], ax
+	cmp	[es:ClipLeftX], ax
 	jg	short .8
 	db	0x8B, 0xC1		; mov ax, cx
-	cmp	[es:0x74fe], ax
+	cmp	[es:ClipRightX], ax
 	jng	short .8
 	mov	ax, [bp - 0x8]
-	cmp	[es:0x74f2], ax
+	cmp	[es:ClipTopY], ax
 	jg	short .8
 	mov	di, [bp - 0xc]
 	mov	ax, [bp - 0xe]
-	cmp	[es:0x74f4], ax
+	cmp	[es:ClipBottomY], ax
 	jg	short .9
 .8:
 	mov	di, 0x1
@@ -143,13 +143,13 @@ Game_1F54_0002:
 	inc	di
 	inc	di
 	push	ds
-	push	word 0xb0c4
+	push	strict word TeamPalette1
 	jmp	short .18
 .17:
 	inc	di
 	inc	di
 	push	ds
-	push	word 0xb1c4
+	push	strict word TeamPalette2
 .18:
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
@@ -222,22 +222,22 @@ Game_1F54_0002:
 	mov	di, [bp - 0x6]
 	mov	ax, DGROUP
 	mov	es, ax
-	cmp	[es:0x74fc], di
+	cmp	[es:ClipLeftX], di
 	jng	short .26
 	mov	ax, [bp - 0xa]
 	shr	ax, byte 0x2
 	inc	ax
 	mov	bx, [ss:bx + g_D9D6]
 	mov	[ss:bx + 0x4], ax
-	mov	ax, [es:0x74fc]
+	mov	ax, [es:ClipLeftX]
 	db	0x8B, 0xF8		; mov di, ax
 	jmp	short .29
 	db	0x90
 .26:
 	mov	ax, [bp - 0xa]
-	cmp	[es:0x74fe], ax
+	cmp	[es:ClipRightX], ax
 	jg	short .27
-	mov	ax, [es:0x74fe]
+	mov	ax, [es:ClipRightX]
 	db	0x2B, 0xC7		; sub ax, di
 	add	ax, strict word 0x3
 	shr	ax, byte 0x2
@@ -253,7 +253,7 @@ Game_1F54_0002:
 	mov	[ss:bx + 0x4], ax
 .29:
 	mov	bx, [bp - 0x8]
-	cmp	[es:0x74f2], bx
+	cmp	[es:ClipTopY], bx
 	jng	short .30
 	lds	si, [bp + 0x6]
 	mov	ax, [si + 0x2]
@@ -264,13 +264,13 @@ Game_1F54_0002:
 	shl	si, 1
 	mov	si, [ss:si + g_D9D6]
 	mov	[ss:si + 0x6], ax
-	mov	bx, [es:0x74f2]
+	mov	bx, [es:ClipTopY]
 	jmp	short .33
 .30:
 	mov	ax, [bp - 0xe]
-	cmp	[es:0x74f4], ax
+	cmp	[es:ClipBottomY], ax
 	jg	short .31
-	mov	ax, [es:0x74f4]
+	mov	ax, [es:ClipBottomY]
 	db	0x2B, 0xC3		; sub ax, bx
 	jmp	short .32
 .31:

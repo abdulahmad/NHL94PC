@@ -188,7 +188,7 @@ Menus_23A3_0004:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xb0b6
+	push	strict word g_B0B6
 	push	word [bp - 0x4]
 	call	0x0CD1:ReadAtOffset
 	add	sp, 0xc
@@ -202,7 +202,7 @@ Menus_23A3_0004:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xb0aa
+	push	strict word g_B0AA
 	push	word [bp - 0x4]
 	call	0x0CD1:ReadAtOffset
 	add	sp, 0xc
@@ -216,7 +216,7 @@ Menus_23A3_0004:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xb09e
+	push	strict word g_B09E
 	push	word [bp - 0x4]
 	call	0x0CD1:ReadAtOffset
 	add	sp, 0xc
@@ -244,15 +244,15 @@ Menus_23A3_0004:
 	retf
 .17:
 	push	word 0x3415
-	push	strict word 0x64
+	push	strict word f_3415_0064
 	push	word 0x3415
-	push	strict word 0x64
+	push	strict word f_3415_0064
 	push	ds
-	push	word 0xe92
+	push	strict word str_Db_6
 	push	ds
-	push	word 0xe96
+	push	strict word str_Sav_5
 	push	ds
-	push	word 0xe9b
+	push	strict word str_Gsummary_5
 	call	0x0CD1:CopyFileByName
 	add	sp, 0x14
 	db	0x0B, 0xC0		; or ax, ax
@@ -329,15 +329,15 @@ Menus_23A3_0004:
 	jmp	near .16
 .23:
 	push	word 0x3415
-	push	word 0xc6
+	push	strict word f_3415_00C6
 	push	word 0x3415
-	push	word 0xc6
+	push	strict word f_3415_00C6
 	push	ds
-	push	word 0xeb7
+	push	strict word str_Db_5
 	push	ds
-	push	word 0xebb
+	push	strict word str_Sav_4
 	push	ds
-	push	word 0xec0
+	push	strict word str_Gsummary_4
 	call	0x0CD1:CopyFileByName
 	add	sp, 0x14
 	db	0x0B, 0xC0		; or ax, ax
@@ -550,13 +550,13 @@ Menus_23A3_0516:
 	cmp	byte [bp + si - 0xe], 0x2e
 	jz	short .3
 	mov	al, [bp + si - 0xe]
-	mov	[es:di - 0x5928], al
+	mov	[es:di + f_3A0B_A6D8], al
 	inc	di
 	inc	si
 	cmp	si, 0x8
 	jl	short .2
 .3:
-	mov	byte [es:di - 0x5928], 0x0
+	mov	byte [es:di + f_3A0B_A6D8], 0x0
 	inc	di
 	inc	word [g_C054]
 	cmp	word [g_C054], 0x20
@@ -613,13 +613,13 @@ Menus_23A3_0516:
 	cmp	byte [bp + si - 0xe], 0x2e
 	jz	short .9
 	mov	al, [bp + si - 0xe]
-	mov	[es:di - 0x5928], al
+	mov	[es:di + f_3A0B_A6D8], al
 	inc	di
 	inc	si
 	cmp	si, 0x8
 	jl	short .8
 .9:
-	mov	byte [es:di - 0x5928], 0x0
+	mov	byte [es:di + f_3A0B_A6D8], 0x0
 	inc	di
 	inc	word [g_C164]
 	cmp	word [g_C164], 0x20
@@ -677,13 +677,13 @@ Menus_23A3_0516:
 	cmp	byte [bp + si - 0xe], 0x2e
 	jz	short .15
 	mov	al, [bp + si - 0xe]
-	mov	[es:di - 0x5928], al
+	mov	[es:di + f_3A0B_A6D8], al
 	inc	di
 	inc	si
 	cmp	si, 0x8
 	jl	short .14
 .15:
-	mov	byte [es:di - 0x5928], 0x0
+	mov	byte [es:di + f_3A0B_A6D8], 0x0
 	inc	di
 	inc	word [g_C0DC]
 	cmp	word [g_C0DC], 0x20
@@ -760,9 +760,9 @@ Menus_23A3_0766:
 	push	si
 	call	0x0FEF:UseOtherPage
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0xef2
+	push	strict word str_Dialogbx
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x18]
@@ -1917,10 +1917,10 @@ Menus_23A3_121A:
 	push	ax
 	push	0x2
 	push	word 0x36b8
-	push	word 0x170
+	push	strict word f_36B8_0170
 	push	0x3
 	push	ds
-	push	word 0xf24
+	push	strict word g_0F24
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -1982,7 +1982,7 @@ Menus_23A3_121A:
 	jmp	near .14
 .6:
 	push	word 0x3415
-	push	word 0xc6
+	push	strict word f_3415_00C6
 	lea	ax, [bp - 0x1a]
 	push	ss
 	push	ax
@@ -2002,7 +2002,7 @@ Menus_23A3_121A:
 	jmp	short .8
 .7:
 	push	word 0x3415
-	push	strict word 0x64
+	push	strict word f_3415_0064
 	lea	ax, [bp - 0x1a]
 	push	ss
 	push	ax
@@ -2237,12 +2237,12 @@ Menus_23A3_1518:
 	lea	ax, [bp - 0x14]
 	push	ax
 	push	word 0x3415
-	push	strict word 0x0
+	push	strict word f_3415_0000
 	push	cs
 	call	Menus_23A3_1778
 	add	sp, 0x8
 	push	word 0x3415
-	push	strict word 0x0
+	push	strict word f_3415_0000
 	call	0x2E70:Menus_2E70_09FE
 	add	sp, 0x4
 	mov	es, [g_8B36]
@@ -2265,7 +2265,7 @@ Menus_23A3_1518:
 	push	word [bx + 0x1e4]
 .5:
 	push	word 0x3448
-	push	word 0x110
+	push	strict word str_LaAtMtl
 	call	0x03A3:CopyStrNFar
 	add	sp, 0xa
 	mov	es, [g_8B36]
@@ -2288,7 +2288,7 @@ Menus_23A3_1518:
 	push	word [bx + 0x1e4]
 .7:
 	push	word 0x3448
-	push	word 0x117
+	push	strict word str_Mtl_2
 	call	0x03A3:CopyStrNFar
 	add	sp, 0xa
 	mov	ax, 0x1
@@ -2330,7 +2330,7 @@ Menus_23A3_1518:
 	lea	ax, [bp - 0x14]
 	push	ax
 	push	word 0x3415
-	push	strict word 0x62
+	push	strict word f_3415_0062
 	push	cs
 	call	Menus_23A3_1778
 	add	sp, 0x8
@@ -2346,7 +2346,7 @@ Menus_23A3_1518:
 	push	ss
 	push	ax
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	lea	ax, [bp - 0x6]
@@ -2354,9 +2354,9 @@ Menus_23A3_1518:
 	call	0x26D4:Menus_26D4_29F2
 	add	sp, 0x2
 	push	word 0x3415
-	push	strict word 0x2
+	push	strict word f_3415_0002
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	les	bx, [bp - 0x6]
@@ -2404,7 +2404,7 @@ Menus_23A3_1518:
 	lea	ax, [bp - 0x14]
 	push	ax
 	push	word 0x3415
-	push	word 0xc4
+	push	strict word f_3415_00C4
 	push	cs
 	call	Menus_23A3_1778
 	add	sp, 0x8

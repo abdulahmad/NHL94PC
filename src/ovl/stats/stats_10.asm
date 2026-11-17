@@ -107,7 +107,7 @@ Stats_2446_006A:
 	push	0x0
 	push	0x0
 	push	ds
-	push	word 0x23f8
+	push	strict word str_KeyDb_2
 	push	word 0x3861
 	push	strict word 0x0
 	lea	ax, [bp - 0x35e]
@@ -320,9 +320,9 @@ Stats_2446_006A:
 	call	0x0000:_sprintf
 	add	sp, 0x6
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0xcfd4
+	push	strict word g_CFD4
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x35e]
@@ -389,66 +389,66 @@ Stats_2446_006A:
 	call	0x0000:_sprintf
 	add	sp, 0x6
 	push	ds
-	push	word 0xcfd4
+	push	strict word g_CFD4
 	push	0xb
 	call	0x0D39:DrawShadowTextCentered
 	add	sp, 0x6
 	push	ds
-	push	word 0x240a
+	push	strict word str_Pos_3
 	push	0x11
 	push	0xa
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x240e
+	push	strict word str_No_3
 	push	0x11
 	push	0x21
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x2411
+	push	strict word str_Name_2
 	push	0x11
 	push	0x30
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x2416
+	push	strict word str_Gp_5
 	push	0x11
 	push	word 0x87
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x2419
+	push	strict word str_G
 	push	0x11
 	push	word 0x9b
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x241d
+	push	strict word str_A
 	push	0x11
 	push	word 0xaf
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x2421
+	push	strict word str_Pt
 	push	0x11
 	push	word 0xc3
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x2425
+	push	strict word str_Shots
 	push	0x11
 	push	word 0xd7
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x242b
+	push	strict word str_Pim
 	push	0x11
 	push	word 0xf4
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x242f
+	push	strict word g_242F
 	push	0x11
 	push	word 0x108
 	call	0x0D39:DrawShadowText
@@ -547,7 +547,7 @@ Stats_2446_006A:
 	call	0x0000:_sprintf
 	add	sp, 0x6
 	push	ds
-	push	word 0xcfd4
+	push	strict word g_CFD4
 	push	word [bp - 0x370]
 	push	0xa
 	call	0x0D39:DrawShadowText
@@ -571,11 +571,11 @@ Stats_2446_006A:
 	push	ss
 	push	ax
 	push	ds
-	push	word 0xcfd4
+	push	strict word g_CFD4
 	call	0x0F89:FitNameToWidth
 	add	sp, 0xe
 	push	ds
-	push	word 0xcfd4
+	push	strict word g_CFD4
 	push	word [bp - 0x370]
 	push	0x30
 	call	0x0D39:DrawShadowText
@@ -590,7 +590,7 @@ Stats_2446_006A:
 	jmp	near .18
 .23:
 	push	ds
-	push	word 0x2437
+	push	strict word str_Pos_2
 	inc	word [bp - 0x370]
 	mov	ax, [bp - 0x370]
 	push	ax
@@ -598,43 +598,43 @@ Stats_2446_006A:
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x243b
+	push	strict word str_No_2
 	push	word [bp - 0x370]
 	push	0x21
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x243e
+	push	strict word str_Name
 	push	word [bp - 0x370]
 	push	0x30
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x2443
+	push	strict word str_Gp_4
 	push	word [bp - 0x370]
 	push	word 0x87
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x2446
+	push	strict word str_Min
 	push	word [bp - 0x370]
 	push	word 0x9b
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x244b
+	push	strict word str_Gaa
 	push	word [bp - 0x370]
 	push	word 0xaf
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x2451
+	push	strict word str_W_2
 	push	word [bp - 0x370]
 	push	word 0xc8
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x2454
+	push	strict word str_L_2
 	push	word [bp - 0x370]
 	push	word 0xd7
 	call	0x0D39:DrawShadowText
@@ -642,26 +642,26 @@ Stats_2446_006A:
 	cmp	word [g_200E], 0x0
 	jnz	short .24
 	push	ds
-	push	word 0x2457
+	push	strict word str_T_2
 	push	word [bp - 0x370]
 	push	word 0xe6
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 .24:
 	push	ds
-	push	word 0x245a
+	push	strict word str_Ga_2
 	push	word [bp - 0x370]
 	push	word 0xf5
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x245e
+	push	strict word str_Sa
 	push	word [bp - 0x370]
 	push	word 0x107
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x2463
+	push	strict word str_Pct_2
 	push	word [bp - 0x370]
 	push	word 0x120
 	call	0x0D39:DrawShadowText
@@ -811,7 +811,7 @@ Stats_2446_006A:
 	call	0x0000:_sprintf
 	add	sp, 0x6
 	push	ds
-	push	word 0xcfd4
+	push	strict word g_CFD4
 	push	word [bp - 0x370]
 	push	0xa
 	call	0x0D39:DrawShadowText
@@ -835,11 +835,11 @@ Stats_2446_006A:
 	push	ss
 	push	ax
 	push	ds
-	push	word 0xcfd4
+	push	strict word g_CFD4
 	call	0x0F89:FitNameToWidth
 	add	sp, 0xe
 	push	ds
-	push	word 0xcfd4
+	push	strict word g_CFD4
 	push	word [bp - 0x370]
 	push	0x30
 	call	0x0D39:DrawShadowText

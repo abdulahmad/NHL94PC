@@ -58,7 +58,7 @@ Menus_25DD_006E:
 	push	cx
 	push	ax
 	push	ds
-	push	word 0x1166
+	push	strict word str_Lockrm
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x20]
@@ -110,7 +110,7 @@ Menus_25DD_006E:
 	push	word [bp - 0x622]
 	push	word [bp - 0x624]
 	push	ds
-	push	word 0x1177
+	push	strict word str_Exhgame2
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x20]
@@ -563,7 +563,7 @@ Menus_25DD_006E:
 	mov	byte [g_B2C1], 0x70
 	mov	byte [g_B2C2], 0x58
 	push	ds
-	push	word 0xb1c4
+	push	strict word TeamPalette2
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
 	pop	si
@@ -650,7 +650,7 @@ Menus_25DD_063E:
 	call	0x0000:_sprintf
 	add	sp, 0x6
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	lea	ax, [bp - 0x1e]
 	push	ss
 	push	ax
@@ -1394,7 +1394,7 @@ Menus_25DD_0AC8:
 	push	ds
 	push	word [bx + TeamNameClips]
 	push	word 0x3448
-	push	word 0x117
+	push	strict word str_Mtl_2
 	call	0x03A3:CopyStrNFar
 	add	sp, 0xa
 	mov	es, [g_8B46]
@@ -1409,7 +1409,7 @@ Menus_25DD_0AC8:
 	push	word [bx + 0x1e4]
 .38:
 	push	word 0x3448
-	push	word 0x117
+	push	strict word str_Mtl_2
 	call	0x03A3:CopyStrNFar
 	add	sp, 0xa
 .39:
@@ -1431,7 +1431,7 @@ Menus_25DD_0AC8:
 	push	ds
 	push	word [bx + TeamNameClips]
 	push	word 0x3448
-	push	word 0x110
+	push	strict word str_LaAtMtl
 	call	0x03A3:CopyStrNFar
 	add	sp, 0xa
 	mov	es, [g_8B46]
@@ -1446,7 +1446,7 @@ Menus_25DD_0AC8:
 	push	word [bx + 0x1e4]
 .42:
 	push	word 0x3448
-	push	word 0x110
+	push	strict word str_LaAtMtl
 	call	0x03A3:CopyStrNFar
 	add	sp, 0xa
 .43:

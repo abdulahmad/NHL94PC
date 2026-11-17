@@ -26,19 +26,19 @@ Lp_2305_000C:
 	db	0x0B, 0xF6		; or si, si
 	jnz	short .2
 	push	word 0x3a0b
-	push	word 0xaf3e
+	push	strict word f_3A0B_AF3E
 	push	word 0x3a0b
-	push	word 0xac60
+	push	strict word f_3A0B_AC60
 	push	word 0x3a0b
-	push	word 0xac5e
+	push	strict word f_3A0B_AC5E
 	push	word 0x3a0b
-	push	word 0xac5c
+	push	strict word f_3A0B_AC5C
 	push	word 0x3a0b
-	push	word 0xac5a
+	push	strict word f_3A0B_AC5A
 	push	word 0x3a0b
-	push	word 0xaf32
+	push	strict word f_3A0B_AF32
 	push	word 0x3a0b
-	push	word 0xac62
+	push	strict word f_3A0B_AC62
 	push	word [bp - 0x1a]
 	push	word [bp - 0x1c]
 	call	0x22D3:Lp_22D3_0000
@@ -57,7 +57,7 @@ Lp_2305_000C:
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	push	word 0x3701
-	push	word 0xbf4
+	push	strict word f_3701_0BF4
 	lea	ax, [bp - 0x18]
 	push	ss
 	push	ax
@@ -95,10 +95,10 @@ Lp_2305_000C:
 	push	ax
 	push	0x2
 	push	word 0x3701
-	push	word 0x913
+	push	strict word f_3701_0913
 	push	0x4
 	push	word 0x3701
-	push	word 0x8af
+	push	strict word f_3701_08AF
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -167,9 +167,9 @@ Lp_2305_000C:
 	call	0x0D90:SetDialogColors
 	add	sp, 0xa
 	push	word 0x3a0b
-	push	word 0xaf32
+	push	strict word f_3A0B_AF32
 	push	word 0x3a0b
-	push	word 0xac62
+	push	strict word f_3A0B_AC62
 	mov	es, [g_8BC8]
 	push	word [es:0xac5a]
 	call	0x28A8:Lp_28A8_0108
@@ -226,7 +226,7 @@ Lp_2305_0214:
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	push	word 0x3701
-	push	word 0xbf4
+	push	strict word f_3701_0BF4
 	lea	ax, [bp - 0xe]
 	push	ss
 	push	ax
@@ -243,7 +243,7 @@ Lp_2305_0214:
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	push	word 0x3701
-	push	word 0x1b7
+	push	strict word str_FromTheLeague
 	push	di
 	push	si
 	call	0x0000:_fstrcat
@@ -266,14 +266,14 @@ Lp_2305_0282:
 	push	di
 	push	si
 	push	word 0x3701
-	push	word 0xba8
+	push	strict word f_3701_0BA8
 	lea	ax, [bp - 0x1e]
 	push	ss
 	push	ax
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	push	word 0x3701
-	push	word 0xbec
+	push	strict word str_Lp
 	lea	ax, [bp - 0x1e]
 	push	ss
 	push	ax
@@ -404,7 +404,7 @@ Lp_2305_0282:
 	jz	short .11
 .10:
 	push	word 0x3701
-	push	word 0xbf4
+	push	strict word f_3701_0BF4
 	lea	ax, [bp - 0x2c]
 	push	ss
 	push	ax
@@ -475,9 +475,9 @@ Lp_2305_0450:
 	push	si
 	mov	word [bp - 0x4], 0xffff
 	push	word 0x3701
-	push	word 0xbf6
+	push	strict word str_Id
 	push	word 0x3701
-	push	word 0xb8e
+	push	strict word str_Player
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	lea	ax, [bp - 0x24]
@@ -536,9 +536,9 @@ Lp_2305_04DC:
 	push	si
 	mov	word [bp - 0x2], 0xffff
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	word 0x3701
-	push	word 0xb88
+	push	strict word str_Pinfo
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	lea	ax, [bp - 0x22]
@@ -722,7 +722,7 @@ Lp_2305_061C:
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	push	word 0x3701
-	push	word 0xbe4
+	push	strict word str_Xx_2
 	lea	ax, [bp - 0x34]
 	push	ss
 	push	ax
@@ -741,9 +741,9 @@ Lp_2305_061C:
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	push	word 0x3701
-	push	word 0xbe4
+	push	strict word str_Xx_2
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	mov	es, [g_8BD0]
 	push	word [es:si + 0xb6e]
 	push	word [es:si + 0xb6c]
@@ -758,9 +758,9 @@ Lp_2305_061C:
 	cmp	word [bp - 0xa4], 0x0
 	jnz	short .6
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	word 0x3701
-	push	word 0xb88
+	push	strict word str_Pinfo
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	lea	ax, [bp - 0x54]
@@ -827,7 +827,7 @@ Lp_2305_061C:
 	push	ss
 	push	ax
 	push	word 0x3701
-	push	word 0xbe4
+	push	strict word str_Xx_2
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	imul	bx, [bp - 0xa2], 0x1e
@@ -877,7 +877,7 @@ Lp_2305_061C:
 	push	ax
 	push	0x3
 	push	word 0x3701
-	push	word 0x19a
+	push	strict word f_3701_019A
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -900,11 +900,11 @@ Lp_2305_061C:
 	jmp	near .21
 .16:
 	push	word 0x3701
-	push	word 0xbf6
+	push	strict word str_Id
 	push	word 0x3701
-	push	word 0xb8e
+	push	strict word str_Player
 	push	word 0x3701
-	push	word 0xbfa
+	push	strict word f_3701_0BFA
 	lea	ax, [bp - 0x54]
 	push	ss
 	push	ax
@@ -992,10 +992,10 @@ Lp_2305_061C:
 	push	ax
 	push	0x2
 	push	word 0x3701
-	push	word 0x1fc
+	push	strict word f_3701_01FC
 	push	0x3
 	push	word 0x3701
-	push	word 0x1f0
+	push	strict word f_3701_01F0
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -1031,9 +1031,9 @@ Lp_2305_061C:
 	push	word [bp + 0xa]
 	push	word [bp - 0xa2]
 	push	word 0x3701
-	push	word 0xbe4
+	push	strict word str_Xx_2
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	call	0x2139:Lp_2139_000C
@@ -1045,9 +1045,9 @@ Lp_2305_061C:
 	cmp	word [bp - 0xa4], 0x0
 	jnz	short .25
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	word 0x3701
-	push	word 0xb88
+	push	strict word str_Pinfo
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	lea	ax, [bp - 0x54]

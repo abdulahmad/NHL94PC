@@ -213,9 +213,9 @@ Lp_1F31_01D0:
 	call	0x0D39:DrawShadowTextCentered
 	add	sp, 0x6
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x1766
+	push	strict word str_Crests4_6
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x68]
@@ -297,13 +297,13 @@ Lp_1F31_01D0:
 	push	dx
 	push	ax
 	push	word 0x3a0b
-	push	word 0xaf4c
+	push	strict word f_3A0B_AF4C
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
 	mov	es, [g_8B8A]
 	mov	byte [es:0xaf8f], 0x7f
 	push	word 0x3a0b
-	push	word 0xaf4c
+	push	strict word f_3A0B_AF4C
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
 	push	word [bp - 0x6]
@@ -482,7 +482,7 @@ Lp_1F31_03A6:
 	push	0x0
 	push	0x0
 	push	word 0x3701
-	push	word 0x48e
+	push	strict word str_WhoWillControlTheLeague
 	push	si
 	push	word [bp - 0x3e]
 	push	word [bp - 0x40]
@@ -529,7 +529,7 @@ Lp_1F31_03A6:
 	mov	[es:0xac5a], cx
 .7:
 	push	word 0x3701
-	push	word 0xd76
+	push	strict word str_EnterMasterControllerPassword
 	lea	ax, [bp - 0xc6]
 	push	ss
 	push	ax
@@ -559,7 +559,7 @@ Lp_1F31_03A6:
 	call	0x0D90:NumberEntryDialog
 	add	sp, 0x14
 	push	word 0x3701
-	push	word 0xd9c
+	push	strict word str_VerifyMasterControllerPassword
 	lea	ax, [bp - 0xc6]
 	push	ss
 	push	ax
@@ -613,7 +613,7 @@ Lp_1F31_03A6:
 	push	0x0
 	push	0x2
 	push	word 0x3701
-	push	word 0xaea
+	push	strict word f_3701_0AEA
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -628,12 +628,12 @@ Lp_1F31_03A6:
 	push	ss
 	push	ax
 	push	word 0x3a0b
-	push	word 0xaf32
+	push	strict word f_3A0B_AF32
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	push	word [bp - 0xd8]
 	push	word 0x3a0b
-	push	word 0xaf32
+	push	strict word f_3A0B_AF32
 	call	0x28A8:Lp_28A8_01E8
 	add	sp, 0x6
 	db	0x2B, 0xC0		; sub ax, ax
@@ -724,7 +724,7 @@ Lp_1F31_06A6:
 	push	ax
 	push	0x2
 	push	word 0x3701
-	push	word 0x549
+	push	strict word f_3701_0549
 	push	0x4
 	push	es
 	push	word 0x53d
@@ -1189,7 +1189,7 @@ Lp_1F31_0BAE:
 	mov	word [bp - 0xf0], 0x0
 	push	0x18
 	push	ds
-	push	word 0x16c8
+	push	strict word g_16C8
 	lea	ax, [bp - 0x38]
 	push	ss
 	push	ax
@@ -1199,7 +1199,7 @@ Lp_1F31_0BAE:
 	db	0x90
 .1:
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	mov	es, [g_8B96]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
@@ -1267,9 +1267,9 @@ Lp_1F31_0BAE:
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x178c
+	push	strict word str_Embnhl_3
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x5a]
@@ -1304,9 +1304,9 @@ Lp_1F31_0BAE:
 	call	0x0D39:SetTextColors
 	add	sp, 0x4
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x1798
+	push	strict word str_Tspal
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x5a]
@@ -2086,7 +2086,7 @@ Lp_1F31_0BAE:
 	push	ax
 	push	0x2
 	push	word 0x3701
-	push	word 0x3ad
+	push	strict word f_3701_03AD
 	push	0x2
 	push	es
 	push	word 0x3a5
@@ -2267,7 +2267,7 @@ Lp_1F31_0BAE:
 	push	0x0
 	push	0x1
 	push	word 0x3701
-	push	word 0x12a
+	push	strict word f_3701_012A
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -2290,7 +2290,7 @@ Lp_1F31_0BAE:
 	jmp	near .68
 .64:
 	push	word 0x3701
-	push	word 0xd35
+	push	strict word str_EnterPasswordFor
 	lea	ax, [bp - 0xd0]
 	push	ss
 	push	ax
@@ -2328,7 +2328,7 @@ Lp_1F31_0BAE:
 	cmp	ax, strict word 0x1b
 	jz	short .65
 	push	word 0x3701
-	push	word 0xd49
+	push	strict word str_VerifyPasswordFor
 	lea	ax, [bp - 0xd0]
 	push	ss
 	push	ax
@@ -2390,7 +2390,7 @@ Lp_1F31_0BAE:
 	push	0x0
 	push	0x2
 	push	word 0x3701
-	push	word 0xaea
+	push	strict word f_3701_0AEA
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox

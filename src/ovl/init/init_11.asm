@@ -27,9 +27,9 @@ Init_251E_0004:
 Init_251E_0038:
 	enter	0xe, 0x0
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x524c
+	push	strict word str_Scrbrd1
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0xe]

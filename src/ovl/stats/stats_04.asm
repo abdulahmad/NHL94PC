@@ -62,7 +62,7 @@ Stats_20F4_0000:
 	push	0x0
 	push	0x0
 	push	ds
-	push	word 0x1fae
+	push	strict word str_AttDb
 	push	word [bp - 0x1a2]
 	push	word [bp - 0x1a4]
 	lea	ax, [bp - 0x6a]
@@ -135,9 +135,9 @@ Stats_20F4_0000:
 	call	0x0000:_sprintf
 	add	sp, 0x6
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0xcfd4
+	push	strict word g_CFD4
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x6a]
@@ -182,9 +182,9 @@ Stats_20F4_0000:
 	jmp	near .9
 .3:
 	push	word 0x3701
-	push	word 0xbb8
+	push	strict word str_Nsh
 	push	ds
-	push	word 0x20a6
+	push	strict word str_Portrait_2
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x6a]
@@ -229,7 +229,7 @@ Stats_20F4_0000:
 	push	word [bp - 0x10]
 	push	di
 	push	word 0x3a0b
-	push	word 0xb11e
+	push	strict word f_3A0B_B11E
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
 	push	word 0xb4
@@ -239,7 +239,7 @@ Stats_20F4_0000:
 	push	dx
 	push	ax
 	push	word 0x3a0b
-	push	word 0xb29e
+	push	strict word f_3A0B_B29E
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
 	jmp	short .7
@@ -327,7 +327,7 @@ Stats_20F4_0000:
 	call	0x0000:_sprintf
 	add	sp, 0x8
 	push	ds
-	push	word 0xcfd4
+	push	strict word g_CFD4
 	push	0x28
 	call	0x0D39:DrawShadowTextCentered
 	add	sp, 0x6
@@ -339,66 +339,66 @@ Stats_20F4_0000:
 	call	0x0000:_sprintf
 	add	sp, 0x6
 	push	ds
-	push	word 0xcfd4
+	push	strict word g_CFD4
 	push	0x30
 	call	0x0D39:DrawShadowTextCentered
 	add	sp, 0x6
 	push	ds
-	push	word 0x20c4
+	push	strict word str_Gp_7
 	push	0x50
 	push	0x3c
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x20c7
+	push	strict word str_Min_2
 	push	0x50
 	push	0x50
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x20cc
+	push	strict word str_Gaa_2
 	push	0x50
 	push	0x64
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x20d2
+	push	strict word str_W_3
 	push	0x50
 	push	word 0x82
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x20d5
+	push	strict word str_L_5
 	push	0x50
 	push	word 0x96
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x20d8
+	push	strict word str_T_3
 	push	0x50
 	push	word 0xaa
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x20db
+	push	strict word str_So
 	push	0x50
 	push	word 0xbe
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x20de
+	push	strict word str_En
 	push	0x50
 	push	word 0xd2
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x20e1
+	push	strict word str_Sa_2
 	push	0x50
 	push	word 0xe6
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x20e7
+	push	strict word str_Pct_4
 	push	0x50
 	push	word 0x104
 	call	0x0D39:DrawShadowText
@@ -520,13 +520,13 @@ Stats_20F4_0000:
 	jmp	near .10
 .14:
 	push	ds
-	push	word 0x20ed
+	push	strict word str_Ratings_2
 	add	di, 0x19
 	push	di
 	call	0x0D39:DrawShadowTextCentered
 	add	sp, 0x6
 	push	ds
-	push	word 0x20f6
+	push	strict word str_GloveHand
 	lea	di, [di + 0xa]
 	push	di
 	push	0xa
@@ -537,12 +537,12 @@ Stats_20F4_0000:
 	cmp	byte [bx], 0x0
 	jz	short .15
 	push	ds
-	push	word 0x2101
+	push	strict word str_L_4
 	jmp	short .16
 	db	0x90
 .15:
 	push	ds
-	push	word 0x2105
+	push	strict word str_R_2
 .16:
 	push	di
 	push	word 0x82

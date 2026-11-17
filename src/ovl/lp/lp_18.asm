@@ -18,12 +18,12 @@ Lp_2E46_000E:
 	mov	[bp - 0x3ca], ax
 	mov	[bp - 0x3a], ax
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	mov	es, [g_8C30]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	lea	ax, [bp - 0x5a]
 	push	ss
 	push	ax
@@ -31,7 +31,7 @@ Lp_2E46_000E:
 	add	sp, 0x10
 	push	0x1
 	push	word 0x3a0b
-	push	word 0xaa38
+	push	strict word f_3A0B_AA38
 	lea	ax, [bp - 0x5a]
 	push	ax
 	call	0x22D3:Lp_22D3_01E2
@@ -40,12 +40,12 @@ Lp_2E46_000E:
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .1
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	mov	es, [g_8C30]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	lea	ax, [bp - 0x5a]
 	push	ss
 	push	ax
@@ -62,12 +62,12 @@ Lp_2E46_000E:
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .2
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	mov	es, [g_8C30]
 	push	word [es:0xb6e]
 	push	word [es:0xb6c]
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	lea	ax, [bp - 0x5a]
 	push	ss
 	push	ax
@@ -84,12 +84,12 @@ Lp_2E46_000E:
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .3
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	mov	es, [g_8C30]
 	push	word [es:0xb82]
 	push	word [es:0xb80]
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	lea	ax, [bp - 0x5a]
 	push	ss
 	push	ax
@@ -796,7 +796,7 @@ Lp_2E46_06B4:
 	jmp	near .7
 .2:
 	push	ds
-	push	word 0x1d3c
+	push	strict word str_Gp_9
 	mov	ax, [bp - 0x64]
 	add	ax, strict word 0x8
 	push	ax
@@ -804,7 +804,7 @@ Lp_2E46_06B4:
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x1d3f
+	push	strict word str_Min_3
 	mov	ax, [bp - 0x64]
 	add	ax, strict word 0x10
 	push	ax
@@ -812,7 +812,7 @@ Lp_2E46_06B4:
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x1d43
+	push	strict word str_Gaa_3
 	mov	ax, [bp - 0x64]
 	add	ax, strict word 0x18
 	push	ax
@@ -820,7 +820,7 @@ Lp_2E46_06B4:
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x1d47
+	push	strict word g_1D47
 	mov	ax, [bp - 0x64]
 	add	ax, strict word 0x20
 	push	ax
@@ -828,7 +828,7 @@ Lp_2E46_06B4:
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x1d49
+	push	strict word g_1D49
 	mov	ax, [bp - 0x64]
 	add	ax, strict word 0x28
 	push	ax
@@ -836,7 +836,7 @@ Lp_2E46_06B4:
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x1d4b
+	push	strict word g_1D4B
 	mov	ax, [bp - 0x64]
 	add	ax, strict word 0x30
 	push	ax
@@ -844,7 +844,7 @@ Lp_2E46_06B4:
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x1d4d
+	push	strict word str_So_2
 	mov	ax, [bp - 0x64]
 	add	ax, strict word 0x38
 	push	ax
@@ -852,7 +852,7 @@ Lp_2E46_06B4:
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x1d50
+	push	strict word str_En_2
 	mov	ax, [bp - 0x64]
 	add	ax, strict word 0x40
 	push	ax
@@ -860,7 +860,7 @@ Lp_2E46_06B4:
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x1d53
+	push	strict word str_Shots_4
 	mov	ax, [bp - 0x64]
 	add	ax, strict word 0x48
 	push	ax
@@ -868,7 +868,7 @@ Lp_2E46_06B4:
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x1d59
+	push	strict word str_Pct_6
 	mov	ax, [bp - 0x64]
 	add	ax, strict word 0x50
 	push	ax
@@ -1022,7 +1022,7 @@ Lp_2E46_06B4:
 	jmp	near .21
 .8:
 	push	ds
-	push	word 0x1d5d
+	push	strict word str_Gp_8
 	mov	ax, [bp - 0x64]
 	add	ax, strict word 0x8
 	push	ax
@@ -1030,7 +1030,7 @@ Lp_2E46_06B4:
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x1d60
+	push	strict word g_1D60
 	mov	ax, [bp - 0x64]
 	add	ax, strict word 0x10
 	push	ax
@@ -1038,7 +1038,7 @@ Lp_2E46_06B4:
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x1d62
+	push	strict word g_1D62
 	mov	ax, [bp - 0x64]
 	add	ax, strict word 0x18
 	push	ax
@@ -1046,7 +1046,7 @@ Lp_2E46_06B4:
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x1d64
+	push	strict word str_Pt_3
 	mov	ax, [bp - 0x64]
 	add	ax, strict word 0x20
 	push	ax
@@ -1054,7 +1054,7 @@ Lp_2E46_06B4:
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x1d67
+	push	strict word str_Pim_3
 	mov	ax, [bp - 0x64]
 	add	ax, strict word 0x28
 	push	ax
@@ -1062,7 +1062,7 @@ Lp_2E46_06B4:
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x1d6b
+	push	strict word g_1D6B
 	mov	ax, [bp - 0x64]
 	add	ax, strict word 0x30
 	push	ax
@@ -1070,7 +1070,7 @@ Lp_2E46_06B4:
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x1d6f
+	push	strict word str_Ppg_2
 	mov	ax, [bp - 0x64]
 	add	ax, strict word 0x38
 	push	ax
@@ -1078,7 +1078,7 @@ Lp_2E46_06B4:
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x1d73
+	push	strict word str_Shg_2
 	mov	ax, [bp - 0x64]
 	add	ax, strict word 0x40
 	push	ax
@@ -1086,7 +1086,7 @@ Lp_2E46_06B4:
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x1d77
+	push	strict word str_Shots_3
 	mov	ax, [bp - 0x64]
 	add	ax, strict word 0x48
 	push	ax
@@ -1094,7 +1094,7 @@ Lp_2E46_06B4:
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x1d7d
+	push	strict word str_Pct_5
 	mov	ax, [bp - 0x64]
 	add	ax, strict word 0x50
 	push	ax
@@ -1429,7 +1429,7 @@ Lp_2E46_06B4:
 	sar	ax, 1
 	mov	[bp - 0x62], ax
 	push	ds
-	push	word 0xcc05
+	push	strict word g_CC05
 	push	word [bp - 0x64]
 	add	ax, 0xc4
 	push	ax
@@ -1574,9 +1574,9 @@ Lp_2E46_1068:
 	call	0x03A3:UseCharSeg
 	add	sp, 0x4
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x1d8e
+	push	strict word str_Embpal_16
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x5e]
@@ -1633,7 +1633,7 @@ Lp_2E46_1068:
 	call	0x0FEF:DrawRleAt
 	add	sp, 0x8
 	push	ds
-	push	word 0x1d9a
+	push	strict word str_AwardsSummary
 	push	0xa
 	call	0x0D39:DrawShadowTextCentered
 	add	sp, 0x6
@@ -1656,7 +1656,7 @@ Lp_2E46_1068:
 	cmp	byte [bx + g_1CE6], 0x2
 	jnz	short .3
 	push	ds
-	push	word 0xcc05
+	push	strict word g_CC05
 	jmp	short .4
 .3:
 	push	0x6e
@@ -1779,9 +1779,9 @@ Lp_2E46_125A:
 	cmp	si, 0x100
 	jl	short .3
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x1dd5
+	push	strict word str_Awards
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x3c]
@@ -1835,12 +1835,12 @@ Lp_2E46_125A:
 	call	0x0D39:SetTextColors
 	add	sp, 0x4
 	push	ds
-	push	word 0x1ded
+	push	strict word str_WelcomeToTheNhl
 	push	0x1e
 	call	0x0D39:DrawShadowTextCentered
 	add	sp, 0x6
 	push	ds
-	push	word 0x1e00
+	push	strict word str_AwardsPresentation
 	push	0x2a
 	call	0x0D39:DrawShadowTextCentered
 	add	sp, 0x6
@@ -1933,7 +1933,7 @@ Lp_2E46_125A:
 	cmp	word [bp - 0x10], 0x0
 	jnz	short .7
 	push	word 0x3701
-	push	word 0xbcb
+	push	strict word str_Ppv
 	push	ds
 	push	word [si]
 	push	0x0
@@ -2022,9 +2022,9 @@ Lp_2E46_125A:
 	jmp	near .16
 .12:
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x1e49
+	push	strict word str_Embnhl
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x3c]

@@ -19,7 +19,7 @@ Lp_28CD_0000:
 	push	0x0
 	push	0x2
 	push	word 0x3827
-	push	strict word 0x29
+	push	strict word f_3827_0029
 	push	ax
 	push	ax
 	call	0x0D90:MessageBox
@@ -91,7 +91,7 @@ Lp_28CD_0000:
 	jmp	near .4
 .8:
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	mov	es, [g_8BF4]
 	push	word [es:0xb86]
 	push	word [es:0xb84]
@@ -112,7 +112,7 @@ Lp_28CD_0000:
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .9
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	mov	es, [g_8BF4]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]

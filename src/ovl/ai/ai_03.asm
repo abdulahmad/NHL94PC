@@ -14,27 +14,27 @@ Ai_2062_000E:
 	push	si
 	mov	ax, 0x3a0b
 	mov	es, ax
-	mov	al, [es:0xd8e]
+	mov	al, [es:f_3A0B_0D8E]
 	mov	[g_E366], al
-	mov	al, [es:0xd8f]
+	mov	al, [es:f_3A0B_0D8F]
 	mov	[g_E367], al
-	mov	al, [es:0xd90]
+	mov	al, [es:f_3A0B_0D90]
 	db	0x2A, 0xE4		; sub ah, ah
 	mov	[g_29CA], ax
-	mov	al, [es:0xdad]
+	mov	al, [es:f_3A0B_0DAD]
 	mov	[g_29CC], ax
-	mov	ax, [es:0xdca]
+	mov	ax, [es:f_3A0B_0DCA]
 	mov	[g_BFFE], ax
-	mov	ax, [es:0xdcc]
+	mov	ax, [es:f_3A0B_0DCC]
 	mov	[g_5560], ax
-	mov	ax, [es:0xdce]
+	mov	ax, [es:f_3A0B_0DCE]
 	mov	[g_5562], ax
-	mov	ax, [es:0xdd0]
+	mov	ax, [es:f_3A0B_0DD0]
 	mov	[g_5564], ax
-	mov	ax, [es:0xdd2]
+	mov	ax, [es:f_3A0B_0DD2]
 	mov	[g_29BC], ax
-	mov	ax, [es:0xdd4]
-	mov	dx, [es:0xdd6]
+	mov	ax, [es:f_3A0B_0DD4]
+	mov	dx, [es:f_3A0B_0DD6]
 	add	ax, [g_2986]
 	adc	dx, [g_2988]
 	mov	[g_D014], ax
@@ -42,9 +42,9 @@ Ai_2062_000E:
 	db	0x2B, 0xFF		; sub di, di
 	mov	si, 0xa556
 .1:
-	mov	al, [es:di + 0xd91]
+	mov	al, [es:di + f_3A0B_0D91]
 	mov	[si], al
-	mov	al, [es:di + 0xdae]
+	mov	al, [es:di + f_3A0B_0DAE]
 	mov	[si + 0x460], al
 	inc	di
 	add	si, 0x28
@@ -65,7 +65,7 @@ Ai_2062_000E:
 	call	0x1B35:OvlThunk23
 	add	sp, 0x8
 	push	word 0x3a0b
-	push	word 0xa8e
+	push	strict word f_3A0B_0A8E
 	push	word [g_29CC]
 	push	word [g_29CA]
 	call	0x1E64:Game_1E64_0002

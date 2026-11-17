@@ -38,9 +38,9 @@ Menus_2047_0008:
 	call	0x03A3:UseCharSeg
 	add	sp, 0x4
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0xba2
+	push	strict word str_Lineditp_5
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x12]
@@ -660,11 +660,11 @@ Menus_2047_01B2:
 	mov	al, [bx + g_BD97]
 	push	ax
 	push	word 0x3680
-	push	strict word 0x0
+	push	strict word f_3680_0000
 	call	0x2397:Menus_2397_0040
 	add	sp, 0xa
 	push	word 0x3680
-	push	strict word 0x0
+	push	strict word f_3680_0000
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
 	mov	ax, [bp - 0x1e]
@@ -1336,7 +1336,7 @@ Menus_2047_01B2:
 	jl	short .89
 .90:
 	push	word 0x3680
-	push	strict word 0x0
+	push	strict word f_3680_0000
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
 	mov	es, [g_8B34]
@@ -1371,7 +1371,7 @@ Menus_2047_01B2:
 	mov	al, [bp + si - 0x88]
 	push	ax
 	push	word 0x3680
-	push	strict word 0x0
+	push	strict word f_3680_0000
 	call	0x2397:Menus_2397_0040
 	add	sp, 0xa
 	jmp	short .90
@@ -1453,7 +1453,7 @@ Menus_2047_01B2:
 	jl	short .98
 .99:
 	push	word 0x3680
-	push	strict word 0x0
+	push	strict word f_3680_0000
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
 	mov	es, [g_8B34]
@@ -1486,7 +1486,7 @@ Menus_2047_01B2:
 	mov	al, [bp + si - 0x7c]
 	push	ax
 	push	word 0x3680
-	push	strict word 0x0
+	push	strict word f_3680_0000
 	call	0x2397:Menus_2397_0040
 	add	sp, 0xa
 	jmp	short .99
@@ -1552,7 +1552,7 @@ Menus_2047_01B2:
 	jl	short .108
 .109:
 	push	word 0x3680
-	push	strict word 0x0
+	push	strict word f_3680_0000
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
 	mov	es, [g_8B34]
@@ -1591,7 +1591,7 @@ Menus_2047_01B2:
 	mov	al, [bp + si - 0x76]
 	push	ax
 	push	word 0x3680
-	push	strict word 0x0
+	push	strict word f_3680_0000
 	call	0x2397:Menus_2397_0040
 	add	sp, 0xa
 	jmp	near .109
@@ -1656,7 +1656,7 @@ Menus_2047_01B2:
 	jl	short .119
 .120:
 	push	word 0x3680
-	push	strict word 0x0
+	push	strict word f_3680_0000
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
 	mov	es, [g_8B34]
@@ -1689,7 +1689,7 @@ Menus_2047_01B2:
 	mov	al, [bp + si - 0x6c]
 	push	ax
 	push	word 0x3680
-	push	strict word 0x0
+	push	strict word f_3680_0000
 	call	0x2397:Menus_2397_0040
 	add	sp, 0xa
 	jmp	short .120
@@ -1735,7 +1735,7 @@ Menus_2047_01B2:
 	jl	short .129
 .130:
 	push	word 0x3680
-	push	strict word 0x0
+	push	strict word f_3680_0000
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
 	mov	es, [g_8B34]
@@ -1764,7 +1764,7 @@ Menus_2047_01B2:
 	mov	al, [bp + si - 0x64]
 	push	ax
 	push	word 0x3680
-	push	strict word 0x0
+	push	strict word f_3680_0000
 	call	0x2397:Menus_2397_0040
 	add	sp, 0xa
 	jmp	short .130
@@ -1805,7 +1805,7 @@ Menus_2047_01B2:
 	jl	short .138
 .139:
 	push	word 0x3680
-	push	strict word 0x0
+	push	strict word f_3680_0000
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
 	mov	es, [g_8B34]
@@ -1834,7 +1834,7 @@ Menus_2047_01B2:
 	mov	al, [bp + si - 0x62]
 	push	ax
 	push	word 0x3680
-	push	strict word 0x0
+	push	strict word f_3680_0000
 	call	0x2397:Menus_2397_0040
 	add	sp, 0xa
 	jmp	short .139
@@ -2335,7 +2335,7 @@ Menus_2047_186A:
 	mov	al, [bx]
 	push	ax
 	push	word 0x3680
-	push	strict word 0x0
+	push	strict word f_3680_0000
 	call	0x2397:Menus_2397_0040
 	add	sp, 0xa
 	jmp	short .10
@@ -2357,7 +2357,7 @@ Menus_2047_186A:
 	mov	ds, ax
 .10:
 	push	word 0x3680
-	push	strict word 0x0
+	push	strict word f_3680_0000
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
 	mov	es, [g_8B34]
@@ -2458,7 +2458,7 @@ Menus_2047_19E0:
 	call	0x0000:_sprintf
 	add	sp, 0x6
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	lea	ax, [bp - 0x32]
 	push	ss
 	push	ax
@@ -2581,9 +2581,9 @@ Menus_2047_19E0:
 	call	Menus_2047_20E4
 	add	sp, 0xa
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0xc1c
+	push	strict word str_Plaque_2
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x32]
@@ -3107,7 +3107,7 @@ Menus_2047_1F76:
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	push	word 0x3680
-	push	strict word 0x0
+	push	strict word f_3680_0000
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
 	pop	si
@@ -4451,7 +4451,7 @@ Menus_2047_2C90:
 	call	0x1B35:OvlThunk114
 	add	sp, 0x2
 	push	word 0x3a0b
-	push	word 0xa3d8
+	push	strict word f_3A0B_A3D8
 	push	word 0x100
 	push	0x0
 	call	0x0FEF:GetPaletteFar
@@ -4460,7 +4460,7 @@ Menus_2047_2C90:
 	mov	ax, 0x3a0b
 	mov	es, ax
 .3:
-	mov	al, [es:si - 0x5c28]
+	mov	al, [es:si + f_3A0B_A3D8]
 	mov	[bp + si - 0x300], al
 	inc	si
 	cmp	si, 0x300
@@ -4492,14 +4492,14 @@ Menus_2047_2C90:
 	push	0x7d
 	push	0x2
 	push	word 0x3448
-	push	word 0x164a
+	push	strict word f_3448_164A
 	call	0x0FA0:DrawMenuBar
 	add	sp, 0xc
 	db	0x2B, 0xF6		; sub si, si
 	mov	ax, 0x3a0b
 	mov	es, ax
 .6:
-	mov	al, [es:si - 0x5c28]
+	mov	al, [es:si + f_3A0B_A3D8]
 	mov	[bp + si - 0x300], al
 	inc	si
 	cmp	si, 0x300
@@ -4530,7 +4530,7 @@ Menus_2047_2C90:
 	push	0x7d
 	push	0x2
 	push	word 0x3448
-	push	word 0x164a
+	push	strict word f_3448_164A
 	call	0x1B35:OvlThunk115
 	add	sp, 0xc
 	push	0x10
@@ -4544,7 +4544,7 @@ Menus_2047_2C90:
 	mov	ax, 0x3a0b
 	mov	es, ax
 .7:
-	mov	al, [es:si - 0x5c28]
+	mov	al, [es:si + f_3A0B_A3D8]
 	mov	[bp + si - 0x300], al
 	inc	si
 	cmp	si, 0x300

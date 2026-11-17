@@ -37,9 +37,9 @@ Menus_2528_0050:
 	push	si
 	call	0x0FEF:UseOtherPage
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x1015
+	push	strict word str_Sound
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0xe]
@@ -896,9 +896,9 @@ Menus_2528_0426:
 	cmp	word [bp + 0x6], 0x4
 	jnz	short .24
 	push	ds
-	push	word 0x1021
+	push	strict word str_Kms_3
 	push	ds
-	push	word 0x1026
+	push	strict word str_Slapshot_2
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x44]
@@ -914,9 +914,9 @@ Menus_2528_0426:
 	mov	[SfxBankOff], ax
 	mov	[SfxBankSeg], dx
 	push	ds
-	push	word 0x102f
+	push	strict word str_Cfg_5
 	push	ds
-	push	word 0x1034
+	push	strict word str_Slapshot
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x44]
@@ -950,15 +950,15 @@ Menus_2528_0426:
 	push	0x0
 	push	0x2
 	push	word 0x36a8
-	push	word 0xac
+	push	strict word f_36A8_00AC
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
 	add	sp, 0x16
 	push	ds
-	push	word 0x103d
+	push	strict word str_Kms_2
 	push	ds
-	push	word 0x1042
+	push	strict word str_Mt32hock_2
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x44]
@@ -974,9 +974,9 @@ Menus_2528_0426:
 	mov	[bp - 0x66], ax
 	mov	[bp - 0x64], dx
 	push	ds
-	push	word 0x104b
+	push	strict word str_Cfg_4
 	push	ds
-	push	word 0x1050
+	push	strict word str_Mt32hock
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x44]
@@ -1013,9 +1013,9 @@ Menus_2528_0426:
 	mov	[SoundOptions], ax
 	mov	[g_B35E], ax
 	push	ds
-	push	word 0x1059
+	push	strict word str_Cfg_3
 	push	ds
-	push	word 0x105e
+	push	strict word str_Snd_2
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x44]
@@ -1108,7 +1108,7 @@ Menus_2528_0426:
 	push	0x0
 	push	0x3
 	push	word 0x36a8
-	push	strict word 0x77
+	push	strict word f_36A8_0077
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox

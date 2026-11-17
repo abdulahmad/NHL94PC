@@ -113,7 +113,7 @@ Stats_1E45_0000:
 .11:
 	push	0x1f
 	push	word 0x3415
-	push	word 0xc6
+	push	strict word f_3415_00C6
 	jmp	short .14
 .12:
 	les	bx, [bp - 0x14]
@@ -136,7 +136,7 @@ Stats_1E45_0000:
 	mov	word [g_200E], 0x1
 	push	0x1f
 	push	word 0x3415
-	push	strict word 0x64
+	push	strict word f_3415_0064
 .14:
 	push	word 0x3861
 	push	strict word 0x0
@@ -165,7 +165,7 @@ Stats_1E45_0000:
 	mov	word [g_200E], 0x0
 	push	0x1f
 	push	word 0x3415
-	push	strict word 0x2
+	push	strict word f_3415_0002
 	push	word 0x3861
 	push	strict word 0x0
 	call	0x03A3:CopyStrNFar
@@ -213,7 +213,7 @@ Stats_1E45_0000:
 	mov	word [g_200E], 0x1
 	push	0x1f
 	push	word 0x3415
-	push	strict word 0x64
+	push	strict word f_3415_0064
 	push	word 0x3861
 	push	strict word 0x0
 	call	0x03A3:CopyStrNFar
@@ -290,7 +290,7 @@ Stats_1E45_0000:
 .28:
 	push	0x1f
 	push	word 0x3415
-	push	word 0xc6
+	push	strict word f_3415_00C6
 	push	word 0x3861
 	push	strict word 0x0
 	call	0x03A3:CopyStrNFar
@@ -320,7 +320,7 @@ Stats_1E45_0000:
 	mov	ds, ax
 .33:
 	mov	[bx], cx
-	mov	ax, [0x94]
+	mov	ax, [f_384B_0094]
 	lea	di, [bx - 0x2]
 	mov	[di], ax
 	add	bx, 0x16
@@ -382,12 +382,12 @@ Stats_1E45_047C:
 	push	word [bp - 0x2]
 	push	word [bp - 0x4]
 	push	word 0x384b
-	push	strict word 0x5e
+	push	strict word str_WwwwwwwwPlayOffs
 	db	0x8B, 0xF3		; mov si, bx
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	push	word 0x384b
-	push	word 0x146
+	push	strict word str_PlayOffs
 	db	0x8B, 0xC6		; mov ax, si
 	add	si, strict word 0x5e
 	push	word 0x384b
@@ -415,18 +415,18 @@ Stats_1E45_047C:
 	push	word [bp - 0x6]
 	push	word [bp - 0x8]
 	push	word 0x384b
-	push	strict word 0x2c
+	push	strict word str_WwwwwwwwSeason
 	db	0x8B, 0xF3		; mov si, bx
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	push	word [bp - 0x6]
 	push	word [bp - 0x8]
 	push	word 0x384b
-	push	strict word 0x40
+	push	strict word str_WwwwwwwwSeasonPlayOffs
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	push	word 0x384b
-	push	word 0x12a
+	push	strict word str_Season
 	db	0x8B, 0xC6		; mov ax, si
 	add	si, strict word 0x2c
 	push	word 0x384b
@@ -435,7 +435,7 @@ Stats_1E45_047C:
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	push	word 0x384b
-	push	word 0x133
+	push	strict word str_SeasonPlayOffs
 	db	0x8B, 0xC6		; mov ax, si
 	add	si, strict word 0x40
 	push	word 0x384b

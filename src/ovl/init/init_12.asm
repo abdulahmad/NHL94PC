@@ -9,7 +9,7 @@ Init_252F_000E:
 	enter	0x30, 0x0
 	push	di
 	push	si
-	mov	word [bp - 0x8], 0x12f0
+	mov	word [bp - 0x8], f_3448_12F0
 	mov	word [bp - 0x6], 0x3448
 	mov	al, [g_AE34]
 	db	0x2A, 0xE4		; sub ah, ah
@@ -155,7 +155,7 @@ Init_252F_000E:
 	les	bx, [es:bx + 0x12f8]
 .8:
 	mov	byte [es:bx], 0x1
-	mov	word [bp - 0x8], 0x1332
+	mov	word [bp - 0x8], f_3448_1332
 	mov	word [bp - 0x6], 0x3448
 	mov	al, [g_AE64]
 	db	0x2A, 0xE4		; sub ah, ah
@@ -308,14 +308,14 @@ Init_252F_000E:
 
 Init_252F_0348:
 	push	word 0x3448
-	push	word 0x26b
+	push	strict word f_3448_026B
 	mov	es, [g_8CC2]
 	push	word [es:0x12fa]
 	push	word [es:0x12f8]
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	push	word 0x3448
-	push	word 0x26b
+	push	strict word f_3448_026B
 	mov	es, [g_8CC2]
 	push	word [es:0x1310]
 	push	word [es:0x130e]
@@ -325,14 +325,14 @@ Init_252F_0348:
 	les	bx, [es:0x1324]
 	mov	byte [es:bx], 0x2
 	push	word 0x3448
-	push	word 0x26b
+	push	strict word f_3448_026B
 	mov	es, [g_8CC4]
 	push	word [es:0x133c]
 	push	word [es:0x133a]
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	push	word 0x3448
-	push	word 0x26b
+	push	strict word f_3448_026B
 	mov	es, [g_8CC4]
 	push	word [es:0x1352]
 	push	word [es:0x1350]

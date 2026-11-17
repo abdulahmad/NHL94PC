@@ -68,14 +68,14 @@ Init_23CB_0004:
 	call	0x0000:VgaCopyBlock
 	add	sp, 0x4
 	push	word 0x3a0b
-	push	word 0xb352
+	push	strict word f_3A0B_B352
 	push	word 0x100
 	push	0x0
 	call	0x0FEF:GetPaletteFar
 	add	sp, 0x8
 	push	0x8
 	push	word 0x3a0b
-	push	word 0xb352
+	push	strict word f_3A0B_B352
 	push	0x1
 	call	0x1E7E:Game_1E7E_04C0
 	add	sp, 0x8
@@ -101,7 +101,7 @@ Init_23CB_0004:
 	jmp	near .18
 .7:
 	push	word 0x3a0b
-	push	word 0xb6e6
+	push	strict word f_3A0B_B6E6
 	push	0x2
 	lea	ax, [bp - 0x20]
 	push	ax
@@ -396,7 +396,7 @@ Init_23CB_042C:
 	add	sp, 0x2
 	push	0x8
 	push	word 0x3a0b
-	push	word 0xb66e
+	push	strict word f_3A0B_B66E
 	push	0x0
 	call	0x1E7E:Game_1E7E_04C0
 	add	sp, 0x8
@@ -510,7 +510,7 @@ Init_23CB_042C:
 .4:
 	push	0x8
 	push	word 0x3a0b
-	push	word 0xb66e
+	push	strict word f_3A0B_B66E
 	push	0x1
 	call	0x1E7E:Game_1E7E_04C0
 	add	sp, 0x8

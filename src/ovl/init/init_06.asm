@@ -337,9 +337,9 @@ Init_2306_02B6:
 	cmp	word [bp - 0x4e], 0x100
 	jl	short .3
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x4e6e
+	push	strict word str_Summary
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x3c]
@@ -355,9 +355,9 @@ Init_2306_02B6:
 	mov	[bp - 0x4a], ax
 	mov	[bp - 0x48], dx
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x4e76
+	push	strict word str_Crests4_2
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x3c]
@@ -403,11 +403,11 @@ Init_2306_02B6:
 	push	dx
 	push	ax
 	push	word 0x3a0b
-	push	word 0xaf4c
+	push	strict word f_3A0B_AF4C
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
 	push	word 0x3a0b
-	push	word 0xaf4c
+	push	strict word f_3A0B_AF4C
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
 	push	word 0x4e91
@@ -472,13 +472,13 @@ Init_2306_02B6:
 	push	dx
 	push	ax
 	push	word 0x3a0b
-	push	word 0xaf4c
+	push	strict word f_3A0B_AF4C
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
 	mov	es, [g_8CAE]
 	mov	byte [es:0xaf8f], 0xd9
 	push	word 0x3a0b
-	push	word 0xaf4c
+	push	strict word f_3A0B_AF4C
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
 	push	0x8

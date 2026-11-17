@@ -16,7 +16,7 @@ Lp_2E18_000A:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xc2a6
+	push	strict word g_C2A6
 	push	di
 	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
@@ -27,7 +27,7 @@ Lp_2E18_000A:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xc2a8
+	push	strict word g_C2A8
 	push	di
 	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
@@ -39,7 +39,7 @@ Lp_2E18_000A:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xc2aa
+	push	strict word g_C2AA
 	push	di
 	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
@@ -51,7 +51,7 @@ Lp_2E18_000A:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xc2ac
+	push	strict word g_C2AC
 	push	di
 	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
@@ -63,7 +63,7 @@ Lp_2E18_000A:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xc2ae
+	push	strict word g_C2AE
 	push	di
 	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
@@ -75,7 +75,7 @@ Lp_2E18_000A:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xc2b0
+	push	strict word g_C2B0
 	push	di
 	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
@@ -87,7 +87,7 @@ Lp_2E18_000A:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xc27e
+	push	strict word g_C27E
 	push	di
 	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
@@ -99,7 +99,7 @@ Lp_2E18_000A:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xc28c
+	push	strict word g_C28C
 	push	di
 	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
@@ -112,7 +112,7 @@ Lp_2E18_000A:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xc29a
+	push	strict word g_C29A
 	push	di
 	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
@@ -132,11 +132,11 @@ Lp_2E18_000A:
 	jmp	short .10
 .9:
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	word 0x3701
-	push	word 0xb88
+	push	strict word str_Pinfo
 	push	ds
-	push	word 0xc27e
+	push	strict word g_C27E
 	lea	ax, [bp - 0x34]
 	push	ss
 	push	ax
@@ -185,11 +185,11 @@ Lp_2E18_000A:
 	db	0x0B, 0xF6		; or si, si
 	jnz	short .13
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	word 0x3701
-	push	word 0xb88
+	push	strict word str_Pinfo
 	push	ds
-	push	word 0xc28c
+	push	strict word g_C28C
 	lea	ax, [bp - 0x34]
 	push	ss
 	push	ax
@@ -249,7 +249,7 @@ Lp_2E18_0206:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xc2a6
+	push	strict word g_C2A6
 	push	di
 	call	0x0CD1:ReadAtOffset
 	add	sp, 0xc
@@ -260,7 +260,7 @@ Lp_2E18_0206:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xc2a8
+	push	strict word g_C2A8
 	push	di
 	call	0x0CD1:ReadAtOffset
 	add	sp, 0xc
@@ -272,7 +272,7 @@ Lp_2E18_0206:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xc2aa
+	push	strict word g_C2AA
 	push	di
 	call	0x0CD1:ReadAtOffset
 	add	sp, 0xc
@@ -284,7 +284,7 @@ Lp_2E18_0206:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xc2ac
+	push	strict word g_C2AC
 	push	di
 	call	0x0CD1:ReadAtOffset
 	add	sp, 0xc
@@ -296,7 +296,7 @@ Lp_2E18_0206:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xc2ae
+	push	strict word g_C2AE
 	push	di
 	call	0x0CD1:ReadAtOffset
 	add	sp, 0xc
@@ -308,7 +308,7 @@ Lp_2E18_0206:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xc2b0
+	push	strict word g_C2B0
 	push	di
 	call	0x0CD1:ReadAtOffset
 	add	sp, 0xc
@@ -320,7 +320,7 @@ Lp_2E18_0206:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xc27e
+	push	strict word g_C27E
 	push	di
 	call	0x0CD1:ReadAtOffset
 	add	sp, 0xc
@@ -332,7 +332,7 @@ Lp_2E18_0206:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xc28c
+	push	strict word g_C28C
 	push	di
 	call	0x0CD1:ReadAtOffset
 	add	sp, 0xc
@@ -344,4 +344,4 @@ Lp_2E18_0206:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xc29a
+	push	strict word g_C29A

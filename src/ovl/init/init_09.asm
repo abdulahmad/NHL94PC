@@ -12,14 +12,14 @@ Init_2425_0000:
 	mov	ax, 0x3a0b
 	mov	ds, ax
 	mov	ax, 0xffff
-	mov	[0xb66c], ax
-	mov	[0xb66a], ax
-	mov	[0xb668], ax
-	mov	[0xb666], ax
-	mov	[0xb664], ax
-	mov	[0xb662], ax
-	mov	[0xb660], ax
-	mov	[0xb65e], ax
+	mov	[f_3A0B_B66C], ax
+	mov	[f_3A0B_B66A], ax
+	mov	[f_3A0B_B668], ax
+	mov	[f_3A0B_B666], ax
+	mov	[f_3A0B_B664], ax
+	mov	[f_3A0B_B662], ax
+	mov	[f_3A0B_B660], ax
+	mov	[f_3A0B_B65E], ax
 .2:
 	mov	ax, DGROUP
 	mov	ds, ax
@@ -84,7 +84,7 @@ Init_2425_0000:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0x9f80
+	push	strict word g_9F80
 	push	word [bp - 0x4]
 	call	0x0CD1:ReadAtOffset
 	add	sp, 0xc
@@ -159,7 +159,7 @@ Init_2425_0000:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xa268
+	push	strict word g_A268
 	push	word [bp - 0x4]
 	call	0x0CD1:ReadAtOffset
 	add	sp, 0xc
@@ -334,7 +334,7 @@ Init_2425_0000:
 .26:
 	jnz	short .27
 	mov	ax, [si]
-	mov	[0xb652], ax
+	mov	[f_3A0B_B652], ax
 .27:
 	mov	ax, [ss:g_29CC]
 	sub	ax, strict word 0x4
@@ -345,7 +345,7 @@ Init_2425_0000:
 	cmp	word [si + 0x6], 0x20
 	jnz	short .29
 	mov	ax, [si + 0x6]
-	mov	[0xb658], ax
+	mov	[f_3A0B_B658], ax
 .29:
 	inc	si
 	inc	si
@@ -402,7 +402,7 @@ Init_2425_0374:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0x1c8
+	push	strict word g_01C8
 	push	word [bp - 0x8]
 	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
@@ -416,7 +416,7 @@ Init_2425_0374:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0x1d4
+	push	strict word g_01D4
 	push	word [bp - 0x8]
 	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
@@ -467,9 +467,9 @@ Init_2425_0374:
 	mov	ax, 0x3a0b
 	mov	es, ax
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[es:0x76c], ax
-	mov	[es:0x76a], ax
-	mov	[es:0x768], ax
+	mov	[es:f_3A0B_076C], ax
+	mov	[es:f_3A0B_076A], ax
+	mov	[es:f_3A0B_0768], ax
 	mov	word [bp - 0x4], 0x768
 	mov	word [bp - 0x6], 0x2
 .7:
@@ -1156,9 +1156,9 @@ Init_2425_0B20:
 	cmp	byte [es:0xe53], 0x0
 	jz	short .1
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	push	ds
-	push	word 0xae70
+	push	strict word g_AE70
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	mov	di, 0x50b8

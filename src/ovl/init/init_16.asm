@@ -13,7 +13,7 @@ Init_278C_0006:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0x1c0
+	push	strict word g_01C0
 	push	word [bp + 0x6]
 	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
@@ -70,7 +70,7 @@ Init_278C_0006:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xae10
+	push	strict word g_AE10
 	push	word [bp + 0x6]
 	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
@@ -84,7 +84,7 @@ Init_278C_0006:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xae40
+	push	strict word g_AE40
 	push	word [bp + 0x6]
 	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
@@ -727,7 +727,7 @@ Init_278C_0006:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xd676
+	push	strict word g_D676
 	push	word [bp + 0x6]
 	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
@@ -741,7 +741,7 @@ Init_278C_0006:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xb06c
+	push	strict word g_B06C
 	push	word [bp + 0x6]
 	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
@@ -755,7 +755,7 @@ Init_278C_0006:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xb078
+	push	strict word g_B078
 	push	word [bp + 0x6]
 	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
@@ -769,7 +769,7 @@ Init_278C_0006:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0x1c8
+	push	strict word g_01C8
 	push	word [bp + 0x6]
 	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
@@ -783,7 +783,7 @@ Init_278C_0006:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0x1d4
+	push	strict word g_01D4
 	push	word [bp + 0x6]
 	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
@@ -797,7 +797,7 @@ Init_278C_0006:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0x556c
+	push	strict word g_556C
 	push	word [bp + 0x6]
 	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
@@ -811,7 +811,7 @@ Init_278C_0006:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0x55ac
+	push	strict word g_55AC
 	push	word [bp + 0x6]
 	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
@@ -984,7 +984,7 @@ Init_278C_09C8:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0x1c0
+	push	strict word g_01C0
 	push	word [bp + 0x6]
 	call	0x0CD1:ReadAtOffset
 	add	sp, 0xc
@@ -1041,7 +1041,7 @@ Init_278C_09C8:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xae10
+	push	strict word g_AE10
 	push	word [bp + 0x6]
 	call	0x0CD1:ReadAtOffset
 	add	sp, 0xc
@@ -1055,7 +1055,7 @@ Init_278C_09C8:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xae40
+	push	strict word g_AE40
 	push	word [bp + 0x6]
 	call	0x0CD1:ReadAtOffset
 	add	sp, 0xc
@@ -1755,7 +1755,7 @@ Init_278C_09C8:
 	jmp	near .22
 .19:
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	mov	bx, [g_49FC]
 	shl	bx, 1
 	push	ds
@@ -1806,7 +1806,7 @@ Init_278C_09C8:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xd676
+	push	strict word g_D676
 	push	word [bp + 0x6]
 	call	0x0CD1:ReadAtOffset
 	add	sp, 0xc
@@ -1820,7 +1820,7 @@ Init_278C_09C8:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xb06c
+	push	strict word g_B06C
 	push	word [bp + 0x6]
 	call	0x0CD1:ReadAtOffset
 	add	sp, 0xc
@@ -1834,7 +1834,7 @@ Init_278C_09C8:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0xb078
+	push	strict word g_B078
 	push	word [bp + 0x6]
 	call	0x0CD1:ReadAtOffset
 	add	sp, 0xc
@@ -1848,7 +1848,7 @@ Init_278C_09C8:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0x1c8
+	push	strict word g_01C8
 	push	word [bp + 0x6]
 	call	0x0CD1:ReadAtOffset
 	add	sp, 0xc
@@ -1862,7 +1862,7 @@ Init_278C_09C8:
 	push	-0x1
 	push	-0x1
 	push	ds
-	push	word 0x1d4
+	push	strict word g_01D4
 	push	word [bp + 0x6]
 	call	0x0CD1:ReadAtOffset
 	add	sp, 0xc
@@ -2014,11 +2014,11 @@ Init_278C_09C8:
 	db	0x90
 .39:
 	push	word 0x3415
-	push	strict word 0x0
+	push	strict word f_3415_0000
 	call	0x1B35:OvlThunk120
 	add	sp, 0x4
 	push	word 0x3415
-	push	strict word 0x0
+	push	strict word f_3415_0000
 .40:
 	call	0x1B35:OvlThunk26
 	add	sp, 0x4
@@ -2029,7 +2029,7 @@ Init_278C_09C8:
 	call	0x2425:Init_2425_0000
 	add	sp, 0x2
 	push	word 0x3a0b
-	push	word 0xa8e
+	push	strict word f_3A0B_0A8E
 	push	word [g_29CC]
 	push	word [g_29CA]
 	call	0x1E64:Game_1E64_0002
@@ -2045,19 +2045,19 @@ Init_278C_09C8:
 	db	0x90
 .42:
 	push	word 0x3415
-	push	strict word 0x62
+	push	strict word f_3415_0062
 	call	0x1B35:OvlThunk120
 	add	sp, 0x4
 	push	word 0x3415
-	push	strict word 0x62
+	push	strict word f_3415_0062
 	jmp	short .40
 .43:
 	push	word 0x3415
-	push	word 0xc4
+	push	strict word f_3415_00C4
 	call	0x1B35:OvlThunk120
 	add	sp, 0x4
 	push	word 0x3415
-	push	word 0xc4
+	push	strict word f_3415_00C4
 	jmp	short .40
 .44:
 	mov	ax, [g_29CA]
@@ -2082,26 +2082,26 @@ Init_278C_09C8:
 	call	0x1B35:OvlThunk280
 	and	byte [g_29BC], 0xef
 	mov	word [g_49F4], 0x1
-	mov	word [g_B422], 0x0
+	mov	word [g_B422], f_3A0B_0000
 	mov	word [g_B424], 0x3a0b
-	mov	word [g_B426], 0x3e8
+	mov	word [g_B426], f_3A0B_03E8
 	mov	word [g_B428], 0x3a0b
 	mov	word [g_B420], 0xae10
-	mov	word [g_B42A], 0x448
+	mov	word [g_B42A], f_3A0B_0448
 	mov	word [g_B42C], 0x3a0b
-	mov	word [g_B42E], 0x768
+	mov	word [g_B42E], f_3A0B_0768
 	mov	word [g_B430], 0x3a0b
 	mov	word [g_B432], 0xa550
 	mov	word [g_B434], 0x9f80
 	mov	word [g_B50C], 0xb80e
-	mov	word [g_B4F8], 0x1f4
+	mov	word [g_B4F8], f_3A0B_01F4
 	mov	word [g_B4FA], 0x3a0b
-	mov	word [g_B4FC], 0x418
+	mov	word [g_B4FC], f_3A0B_0418
 	mov	word [g_B4FE], 0x3a0b
 	mov	word [g_B4F6], 0xae40
-	mov	word [g_B500], 0x5d8
+	mov	word [g_B500], f_3A0B_05D8
 	mov	word [g_B502], 0x3a0b
-	mov	word [g_B504], 0x77a
+	mov	word [g_B504], f_3A0B_077A
 	mov	word [g_B506], 0x3a0b
 	mov	word [g_B508], 0xa9b0
 	mov	word [g_B50A], 0xa268

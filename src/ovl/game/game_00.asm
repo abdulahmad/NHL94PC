@@ -8,10 +8,10 @@ Game_1E45_0000:
 	mov	es, ax
 	mov	si, [g_29CA]
 	shl	si, 1
-	mov	ax, [es:si + 0x128]
+	mov	ax, [es:si + f_3415_0128]
 	mov	si, [g_29CC]
 	shl	si, 1
-	or	ax, [es:si + 0x128]
+	or	ax, [es:si + f_3415_0128]
 	db	0x8B, 0xD8		; mov bx, ax
 	test	al, 0xc
 	jnz	short .1

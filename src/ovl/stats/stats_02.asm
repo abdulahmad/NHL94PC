@@ -12,20 +12,20 @@ Stats_2095_0008:
 	mov	ax, 0x3a0b
 	mov	ds, ax
 .1:
-	mov	byte [bx - 0x50b4], 0x0
+	mov	byte [bx + f_3A0B_AF4C], 0x0
 	inc	bx
 	cmp	bx, 0x15
 	jl	short .1
 	mov	bx, 0x15
 .2:
 	lea	ax, [bx - 0x15]
-	mov	[bx - 0x50b4], al
+	mov	[bx + f_3A0B_AF4C], al
 	inc	bx
 	cmp	bx, 0x40
 	jl	short .2
 	mov	bx, 0x40
 .3:
-	mov	[bx - 0x50b4], bl
+	mov	[bx + f_3A0B_AF4C], bl
 	inc	bx
 	cmp	bx, 0x100
 	jl	short .3
@@ -40,15 +40,15 @@ Stats_2095_0008:
 	mov	ds, ax
 .6:
 	db	0x8B, 0xC6		; mov ax, si
-	mov	[si - 0x50b4], al
-	mov	[si - 0x5034], al
+	mov	[si + f_3A0B_AF4C], al
+	mov	[si + f_3A0B_AFCC], al
 	inc	si
 	cmp	si, 0x80
 	jl	short .6
 	jmp	short .4
 .7:
 	push	word 0x3a0b
-	push	word 0xaf4c
+	push	strict word f_3A0B_AF4C
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
 	pop	si

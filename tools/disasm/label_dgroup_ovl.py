@@ -8,8 +8,26 @@
 import json, os, re, subprocess, sys, tempfile
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-FILES = (('dgroup', 'src/data/dgroup.asm', 193), ('dgroup_bss', 'src/data/dgroup_bss.asm', 196))
 COL = 48
+DG = 0x45C9
+
+
+def data_files():
+    """(section, file, line of its %include in hockey94pc.asm, paragraph) for DGROUP and the far data"""
+    seg = {x['name']: x for x in json.load(open(os.path.join(ROOT, 'segmap.json')))['segments']}
+    out, sec = [], None
+    for no, line in enumerate(open(os.path.join(ROOT, 'src', 'hockey94pc.asm')), 1):
+        m = re.match(r'section (\S+)', line)
+        if m:
+            sec = m.group(1)
+        m = re.match(r'%include "(data/[^"]+)"', line)
+        if m and sec and m.group(1) != 'data/rtl_relocs.asm':
+            para = DG if sec.startswith('dgroup') else seg[sec]['para']
+            out.append((sec, 'src/' + m.group(1), no, para))
+    return out
+
+
+FILES = data_files()
 
 
 def listing():
@@ -29,7 +47,7 @@ def listing():
         if m and sec:
             lens[sec] = int(m.group(1), 16)
     # per file: line number -> [address, bytes]
-    out = {f: {} for _, f, _ in FILES}
+    out = {f: {} for _, f, _, _ in FILES}
     cur = None
     last = None
     for line in open(lst):
@@ -40,7 +58,7 @@ def listing():
         inc = '<2>' in rest                # the wrapper includes hockey94pc.asm (<1>), which includes the data (<2>)
         if not inc:
             if '<1>' in rest:
-                cur = next((f for _, f, ln in FILES if ln == no), None) if '%include' in rest else None
+                cur = next((f for _, f, ln, _ in FILES if ln == no), None) if '%include' in rest else None
             continue
         if cur is None:
             continue
@@ -110,27 +128,78 @@ def label_line(name, comment):
     return f'{name}:' + ' ' * pad + f'; {comment}'
 
 
+def camel(text):
+    words = re.findall(r'[A-Za-z0-9]+', text)
+    out = ''
+    for w in words:
+        if len(out) >= 24:
+            break
+        out += w[:1].upper() + w[1:].lower()
+    return out
+
+
+def string_at(data, off):
+    """the NUL-terminated printable text starting at off, or None"""
+    j = off
+    while j < len(data) and (32 <= data[j] < 127 or data[j] in (9, 10, 13)):
+        j += 1
+    if j < len(data) and data[j] == 0 and j - off >= 2 and camel(data[off:j].decode()):
+        return data[off:j].decode()
+    return None
+
+
 def main():
-    miss = {int(k, 16): v for k, v in json.load(open(sys.argv[1])).items()}
+    miss = {}
+    for k, v in json.load(open(sys.argv[1])).items():
+        sg, off = (k.split(':') + [None])[:2] if ':' in k else ('45C9', k)
+        miss[(int(sg, 16), int(off, 16))] = v
     lst, lens = listing()
     end = lens['dgroup'] + lens['dgroup_bss']
-    want = {}
-    for v, who in miss.items():
-        idx = all(w.endswith(':indexed') for w in who)
-        if v >= end or (idx and v < 0x1000):     # a small displacement on a pointer register is a field offset
-            continue
-        want[v] = sorted({w.split(':')[0] for w in who})
+    used = set()
+    for sec, path, _, _ in FILES:
+        used |= {n for n in re.findall(r'^([A-Za-z_]\w*):', open(os.path.join(ROOT, path)).read(), re.M)}
     done = 0
-    for sec, path, _ in FILES:
-        base = 0 if sec == 'dgroup' else lens['dgroup']
+    for sec, path, _, para in FILES:
+        base = lens['dgroup'] if sec == 'dgroup_bss' else 0
+        size = end if para == DG else lens.get(sec, 0)
+        want = {}
+        for (sg, v), who in miss.items():
+            if sg != para:
+                continue
+            idx = all(w.endswith(':indexed') for w in who)
+            if v >= size or (idx and para == DG and v < 0x1000):     # a small displacement is a field offset
+                continue
+            want[v] = sorted({w.split(':')[0] for w in who})
+        if not want:
+            continue
         lines = open(os.path.join(ROOT, path)).read().split('\n')
         ent = lst[path]
+        mem = bytearray(size + 16)
+        for no, (a, bs, sz) in ent.items():
+            mem[a + base:a + base + len(bs)] = bs
         starts = sorted((a + base, no, bs, sz) for no, (a, bs, sz) in ent.items() if sz)
         cuts = {}
         for addr, no, bs, sz in starts:
             for v in want:
                 if addr <= v < addr + sz:
                     cuts.setdefault(no, set()).add(v - addr)
+
+        def label(v):
+            who = ', '.join(want[v])
+            st = string_at(mem, v) if (sec != 'dgroup_bss') else None
+            if st is not None:
+                nm = 'str_' + camel(st)
+                k = 2
+                while nm in used:
+                    nm = f'str_{camel(st)}_{k}'
+                    k += 1
+                shown = st.replace('\n', '\\n').replace('\r', '\\r').replace('\t', '\\t')
+                com = f"string '{shown}'; used by {who}"
+            else:
+                nm = f'g_{v:04X}' if para == DG else f'f_{para:04X}_{v:04X}'
+                com = f'used by {who} (to name)'
+            used.add(nm)
+            return label_line(nm, com)
         for no in sorted(cuts, reverse=True):
             a, bs, sz = ent[no]
             src = lines[no - 1]
@@ -139,21 +208,19 @@ def main():
             if kind == 'db' and len(bs) != sz:
                 sys.exit(f'{path}:{no}: no bytes in the listing')
             offs = sorted(cuts[no])
+            if offs == [0]:
+                lines[no - 1:no] = [label(a + base), src]      # label in front, line unchanged
+                done += 1
+                continue
             new = []
             prev = 0
             for o in offs + [sz]:
                 if o > prev:
-                    if prev == 0 and o == sz and kind == 'db' and not offs[0]:
-                        new.append(src)               # whole line kept as written
-                    else:
-                        new += piece(kind, src, bs[prev:o], o - prev)
+                    new += piece(kind, src, bs[prev:o], o - prev)
                 if o < sz:
-                    v = a + base + o
-                    new.append(label_line(f'g_{v:04X}', 'used by ' + ', '.join(want[v]) + ' (to name)'))
+                    new.append(label(a + base + o))
                     done += 1
                 prev = o
-            if offs == [0]:
-                new = [new[0], src]                    # label in front, line unchanged
             lines[no - 1:no] = new
         open(os.path.join(ROOT, path), 'w').write('\n'.join(lines))
     print(f'{done} labels added')

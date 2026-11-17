@@ -74,14 +74,14 @@ Ai_1FAA_000E:
 	mov	cx, 0x18
 	rep	movsw
 	push	word 0x3a0b
-	push	word 0xb352
+	push	strict word f_3A0B_B352
 	push	word 0x100
 	push	0x0
 	call	0x0FEF:GetPaletteFar
 	add	sp, 0x8
 	push	0x10
 	push	word 0x3a0b
-	push	word 0xb352
+	push	strict word f_3A0B_B352
 	push	0x1
 	call	0x1E7E:Game_1E7E_04C0
 	add	sp, 0x8
@@ -98,7 +98,7 @@ Ai_1FAA_000E:
 	call	0x1B35:OvlThunk173
 	add	sp, 0x2
 	push	word 0x3a0b
-	push	word 0xa8e
+	push	strict word f_3A0B_0A8E
 	push	word [g_29CC]
 	push	word [g_29CA]
 	call	0x1E64:Game_1E64_0002
@@ -441,7 +441,7 @@ Ai_1FAA_000E:
 	mov	ax, [PadRepeatOn]
 	mov	[g_D46A], ax
 	push	word 0x3a0b
-	push	word 0xb352
+	push	strict word f_3A0B_B352
 	push	word 0x100
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[PadRepeatOn], ax
@@ -450,7 +450,7 @@ Ai_1FAA_000E:
 	add	sp, 0x8
 	push	0x10
 	push	word 0x3a0b
-	push	word 0xb352
+	push	strict word f_3A0B_B352
 	push	0x1
 	call	0x1E7E:Game_1E7E_04C0
 	add	sp, 0x8
@@ -488,7 +488,7 @@ Ai_1FAA_000E:
 	mov	[g_D46A], ax
 	push	0x10
 	push	word 0x3a0b
-	push	word 0xa8e
+	push	strict word f_3A0B_0A8E
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[PadRepeatOn], ax
 	push	ax
@@ -514,14 +514,14 @@ Ai_1FAA_000E:
 	mov	[g_49FE], ax
 	mov	[g_49FC], ax
 	push	word 0x3a0b
-	push	word 0xb352
+	push	strict word f_3A0B_B352
 	push	word 0x100
 	push	0x0
 	call	0x0FEF:GetPaletteFar
 	add	sp, 0x8
 	push	0x10
 	push	word 0x3a0b
-	push	word 0xb352
+	push	strict word f_3A0B_B352
 	push	0x1
 	call	0x1E7E:Game_1E7E_04C0
 	add	sp, 0x8
@@ -648,7 +648,7 @@ Ai_1FAA_000E:
 	mov	[g_2998], ax
 	mov	[g_299A], ax
 	push	word 0x3a0b
-	push	word 0xa8e
+	push	strict word f_3A0B_0A8E
 	push	word [g_29CC]
 	push	word [g_29CA]
 	call	0x1E64:Game_1E64_0002

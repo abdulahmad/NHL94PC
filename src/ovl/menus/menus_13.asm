@@ -165,16 +165,16 @@ Menus_2C1E_015C:
 	cmp	word [DbSaveMode], 0x2
 	jnz	short .6
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x14c3
+	push	strict word str_Setting7
 	jmp	short .7
 	db	0x90
 .6:
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x14cc
+	push	strict word str_Setting4
 .7:
 	push	0x0
 	push	0x0

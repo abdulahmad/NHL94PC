@@ -191,12 +191,12 @@ Init_2007_01BC:
 	mov	al, [bp + 0x8]
 	mov	[bp - 0x637], al
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	mov	es, [g_8C8E]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	lea	ax, [bp - 0x58]
 	push	ss
 	push	ax
@@ -280,9 +280,9 @@ Init_2007_01BC:
 	call	0x03A3:UseCharSeg
 	add	sp, 0x4
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x4bf4
+	push	strict word str_Arena
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x58]
@@ -512,7 +512,7 @@ Init_2007_01BC:
 .12:
 	mov	word [bp - 0x650], 0x4
 .13:
-	mov	word [bp - 0x64e], 0x22
+	mov	word [bp - 0x64e], f_38AF_0022
 .14:
 	mov	word [bp - 0x64c], 0x38af
 	push	0x1
@@ -736,7 +736,7 @@ Init_2007_01BC:
 .28:
 	push	0x3
 	push	word 0x3448
-	push	word 0x14d4
+	push	strict word f_3448_14D4
 	push	word 0xae40
 	push	0x1
 	call	0x1B35:OvlThunk112
@@ -797,7 +797,7 @@ Init_2007_01BC:
 .33:
 	push	0x3
 	push	word 0x3448
-	push	word 0x14d4
+	push	strict word f_3448_14D4
 	push	word 0xae10
 	push	0x0
 	call	0x1B35:OvlThunk112

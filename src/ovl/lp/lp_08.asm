@@ -6,9 +6,9 @@ Lp_22D3_0000:
 	push	si
 	mov	word [bp - 0x2], 0xffff
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	word 0x3701
-	push	word 0xb88
+	push	strict word str_Pinfo
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	lea	ax, [bp - 0x36]
@@ -26,14 +26,14 @@ Lp_22D3_0000:
 .1:
 	mov	si, 0x1
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	lea	ax, [bp - 0x16]
 	push	ss
 	push	ax
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	push	word 0x3701
-	push	word 0xbf4
+	push	strict word f_3701_0BF4
 	lea	ax, [bp - 0x16]
 	push	ss
 	push	ax
@@ -70,7 +70,7 @@ Lp_22D3_0000:
 	push	0x0
 	push	0x2
 	push	word 0x3701
-	push	word 0x101
+	push	strict word f_3701_0101
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -177,9 +177,9 @@ Lp_22D3_0000:
 	call	0x0CD1:CloseHandlePtr
 	add	sp, 0x2
 	push	ds
-	push	word 0x1812
+	push	strict word str_Sav_3
 	push	ds
-	push	word 0x1817
+	push	strict word str_Game_3
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	lea	ax, [bp - 0x36]
@@ -262,9 +262,9 @@ Lp_22D3_0262:
 	push	si
 	mov	word [bp - 0x6], 0xffff
 	push	ds
-	push	word 0x181c
+	push	strict word str_Cfg_2
 	push	ds
-	push	word 0x1821
+	push	strict word str_Snd
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x14]

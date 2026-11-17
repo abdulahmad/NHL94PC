@@ -12,11 +12,11 @@ Init_2185_0000:
 	push	dx
 	push	ax
 	push	word 0x3a0b
-	push	word 0xaf4c
+	push	strict word f_3A0B_AF4C
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
 	push	word 0x3a0b
-	push	word 0xaf4c
+	push	strict word f_3A0B_AF4C
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
 	db	0x8B, 0xC7		; mov ax, di
@@ -157,15 +157,15 @@ Init_2185_0000:
 	db	0x90
 .12:
 	push	ds
-	push	word 0x4cc6
+	push	strict word str_FirstPeriod
 	jmp	short .15
 .13:
 	push	ds
-	push	word 0x4cd3
+	push	strict word str_SecondPeriod
 	jmp	short .15
 .14:
 	push	ds
-	push	word 0x4ce1
+	push	strict word str_ThirdPeriod
 .15:
 	push	0x3c
 	call	0x0D39:DrawShadowTextCentered

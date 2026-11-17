@@ -20,11 +20,11 @@ Menus_26D4_0016:
 	push	di
 	push	si
 	push	word 0x3415
-	push	strict word 0x0
+	push	strict word f_3415_0000
 	call	0x2E70:Menus_2E70_0968
 	add	sp, 0x4
 	push	word 0x3415
-	push	strict word 0x62
+	push	strict word f_3415_0062
 	call	0x2E70:Menus_2E70_09FE
 	add	sp, 0x4
 	mov	word [DbSaveMode], 0x0
@@ -40,7 +40,7 @@ Menus_26D4_0016:
 	and	ax, 0xf0
 	out	dx, al
 	push	word 0x3415
-	push	strict word 0x0
+	push	strict word f_3415_0000
 	call	0x2E70:Menus_2E70_09FE
 	add	sp, 0x4
 	call	0x0FEF:GetPage
@@ -50,9 +50,9 @@ Menus_26D4_0016:
 .2:
 	call	0x0FEF:UseCurrentPage
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x11da
+	push	strict word str_Easndesk_20
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x10]
@@ -81,7 +81,7 @@ Menus_26D4_0016:
 	push	0x11
 	push	0x3
 	push	word 0x3448
-	push	word 0xd44
+	push	strict word f_3448_0D44
 	call	0x0FA0:DrawMenuBar
 	add	sp, 0xc
 	push	word 0x3f00
@@ -164,7 +164,7 @@ Menus_26D4_0180:
 	pop	es
 	rep	stosb
 	push	word 0x3415
-	push	strict word 0x0
+	push	strict word f_3415_0000
 	call	0x2E70:Menus_2E70_0968
 	add	sp, 0x4
 	call	0x0FEF:UseOtherPage
@@ -175,7 +175,7 @@ Menus_26D4_0180:
 	push	cx
 	push	ax
 	push	ds
-	push	word 0x11ed
+	push	strict word str_Embscup_4
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x3c]
@@ -219,7 +219,7 @@ Menus_26D4_0180:
 	push	word [bp - 0x8e]
 	push	word [bp - 0x90]
 	push	ds
-	push	word 0x11fa
+	push	strict word str_Playoffs
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x3c]
@@ -259,7 +259,7 @@ Menus_26D4_0180:
 	push	word [bp - 0x8e]
 	push	word [bp - 0x90]
 	push	ds
-	push	word 0x120b
+	push	strict word str_Embpal_21
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x3c]
@@ -319,7 +319,7 @@ Menus_26D4_0180:
 	lea	ax, [bp - 0x2e]
 	push	ax
 	push	ds
-	push	word 0x1217
+	push	strict word str_PleaseEnterNewPlayOffName
 	call	0x0D90:NumberEntryDialog
 	add	sp, 0x14
 	db	0x8B, 0xF8		; mov di, ax
@@ -341,37 +341,37 @@ Menus_26D4_0180:
 .4:
 	mov	ax, 0x3415
 	mov	es, ax
-	mov	word [es:0x62], 0x1
-	mov	word [es:0xb2], 0x9
-	mov	word [es:0xb4], 0x7
-	or	word [es:0xb6], 0x1ff
-	and	byte [es:0xb7], 0xfd
-	mov	ax, [es:0xb6]
+	mov	word [es:f_3415_0062], 0x1
+	mov	word [es:f_3415_00B2], 0x9
+	mov	word [es:f_3415_00B4], 0x7
+	or	word [es:f_3415_00B6], 0x1ff
+	and	byte [es:f_3415_00B7], 0xfd
+	mov	ax, [es:f_3415_00B6]
 	and	ah, 0xfb
 	or	ah, 0x8
-	mov	[es:0xb6], ax
-	or	byte [es:0xb7], 0x70
+	mov	[es:f_3415_00B6], ax
+	or	byte [es:f_3415_00B7], 0x70
 	test	byte [InputFlags], 0x2
 	jz	short .5
-	mov	word [es:0xbc], 0x2
+	mov	word [es:f_3415_00BC], 0x2
 	jmp	short .9
 .5:
 	test	byte [InputFlags], 0x4
 	jz	short .6
-	mov	word [es:0xbc], 0x4
+	mov	word [es:f_3415_00BC], 0x4
 	jmp	short .9
 .6:
 	test	byte [InputFlags], 0x8
 	jz	short .7
-	mov	word [es:0xbc], 0x8
+	mov	word [es:f_3415_00BC], 0x8
 	jmp	short .9
 .7:
 	test	byte [InputFlags], 0x1
 	jz	short .8
-	mov	word [es:0xbc], 0x1
+	mov	word [es:f_3415_00BC], 0x1
 	jmp	short .9
 .8:
-	mov	word [es:0xbc], 0x10
+	mov	word [es:f_3415_00BC], 0x10
 .9:
 	mov	es, [g_8B4A]
 	cmp	word [es:0xbc], 0x10
@@ -426,10 +426,10 @@ Menus_26D4_0180:
 	push	ax
 	push	0x2
 	push	word 0x3701
-	push	word 0x2a0
+	push	strict word f_3701_02A0
 	push	0x2
 	push	word 0x36b8
-	push	strict word 0x5b
+	push	strict word f_36B8_005B
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -462,7 +462,7 @@ Menus_26D4_0180:
 	push	ss
 	push	ax
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	lea	di, [bp - 0x2e]
@@ -626,11 +626,11 @@ Menus_26D4_0180:
 	mov	di, [bp - 0x2]
 .20:
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	push	word 0x3701
-	push	word 0xbf4
+	push	strict word f_3701_0BF4
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	word [YesNoTextSeg]
 	push	word [YesNoText]
 	mov	es, [g_8B4C]
@@ -698,7 +698,7 @@ Menus_26D4_0180:
 	call	0x03A3:WaitDeadlineNoEoi
 .24:
 	push	word 0x3415
-	push	strict word 0x62
+	push	strict word f_3415_0062
 	call	0x2E70:Menus_2E70_0D0A
 	add	sp, 0x4
 	call	0x1B35:OvlThunk117
@@ -751,7 +751,7 @@ Menus_26D4_0180:
 	push	word [bp - 0x8e]
 	push	word [bp - 0x90]
 	push	ds
-	push	word 0x125f
+	push	strict word str_Easndesk_19
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x3c]
@@ -784,7 +784,7 @@ Menus_26D4_0180:
 	push	0x11
 	push	0x3
 	push	word 0x3448
-	push	word 0xd44
+	push	strict word f_3448_0D44
 	call	0x0FA0:DrawMenuBar
 	add	sp, 0xc
 	push	word 0x3f00
@@ -799,7 +799,7 @@ Menus_26D4_0180:
 	call	0x0FEF:DrawRleTransAt
 	add	sp, 0x8
 	push	word 0x3415
-	push	strict word 0x0
+	push	strict word f_3415_0000
 	call	0x2E70:Menus_2E70_09FE
 	add	sp, 0x4
 	call	0x0837:NullFar11 + 0x10
@@ -920,9 +920,9 @@ Menus_26D4_08CC:
 	shl	bx, 1
 	mov	si, [g_29CA]
 	shl	si, 1
-	mov	ax, [es:si + 0x128]
+	mov	ax, [es:si + f_3415_0128]
 	mov	[bp - 0xc], ax
-	cmp	ax, [es:bx + 0x128]
+	cmp	ax, [es:bx + f_3415_0128]
 	jnz	short .16
 	mov	word [bp - 0x8], 0x0
 	add	ax, [di]
@@ -947,7 +947,7 @@ Menus_26D4_08CC:
 	mov	si, 0xf
 	mov	bx, [g_29CC]
 	shl	bx, 1
-	mov	ax, [es:bx + 0x128]
+	mov	ax, [es:bx + f_3415_0128]
 	mov	[bp - 0xe], ax
 	add	ax, [di + 0x1e]
 	jz	short .15
@@ -986,7 +986,7 @@ Menus_26D4_08CC:
 	mov	es, ax
 	mov	bx, [g_29CA]
 	shl	bx, 1
-	mov	ax, [es:bx + 0x128]
+	mov	ax, [es:bx + f_3415_0128]
 	mov	[bp - 0xc], ax
 	mov	bx, [bp - 0x2]
 .17:
@@ -1024,7 +1024,7 @@ Menus_26D4_08CC:
 	mov	es, ax
 	mov	bx, [g_29CC]
 	shl	bx, 1
-	mov	ax, [es:bx + 0x128]
+	mov	ax, [es:bx + f_3415_0128]
 	mov	[bp - 0xe], ax
 	mov	bx, [bp - 0x2]
 	mov	di, [bp - 0x4]
@@ -1071,19 +1071,19 @@ Menus_26D4_08CC:
 .23:
 	mov	si, [g_29CA]
 	shl	si, 1
-	mov	ax, [es:si + 0x128]
+	mov	ax, [es:si + f_3415_0128]
 	mov	[bp - 0xc], ax
 	add	ax, [bx]
 	jnz	short .24
 	mov	si, [g_29CC]
 	shl	si, 1
-	mov	ax, [es:si + 0x128]
+	mov	ax, [es:si + f_3415_0128]
 	jmp	short .25
 	db	0x90
 .24:
 	mov	si, [g_29CC]
 	shl	si, 1
-	mov	ax, [es:si + 0x128]
+	mov	ax, [es:si + f_3415_0128]
 	add	ax, [bx]
 	jnz	short .26
 	mov	ax, [bp - 0xc]
@@ -1297,7 +1297,7 @@ Menus_26D4_0B92:
 	mov	si, [di - 0x2]
 	add	si, [bp + 0xa]
 	shl	si, 1
-	mov	ax, [es:si + 0x158]
+	mov	ax, [es:si + f_3415_0158]
 	mov	[bx], ax
 .17:
 	inc	bx
@@ -3121,10 +3121,10 @@ Menus_26D4_1D02:
 	push	ax
 	push	0x2
 	push	word 0x36b8
-	push	word 0x170
+	push	strict word f_36B8_0170
 	push	0x4
 	push	ds
-	push	word 0x12ac
+	push	strict word g_12AC
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -3143,13 +3143,13 @@ Menus_26D4_1D02:
 	push	0x0
 	push	0x1
 	push	ds
-	push	word 0x12d4
+	push	strict word g_12D4
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
 	add	sp, 0x16
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	lea	ax, [bp - 0x2e]
 	push	ss
 	push	ax
@@ -3506,7 +3506,7 @@ Menus_26D4_1D02:
 	push	0x0
 	push	0x6
 	push	ds
-	push	word 0x12bc
+	push	strict word g_12BC
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -3522,7 +3522,7 @@ Menus_26D4_1D02:
 	push	0x40
 	push	0x3
 	push	word 0x3448
-	push	word 0x19ba
+	push	strict word f_3448_19BA
 	call	0x0FA0:DrawMenuBar
 	add	sp, 0xc
 .34:
@@ -3540,7 +3540,7 @@ Menus_26D4_2112:
 	mov	ax, [es:bx + 0x20]
 	mov	[bp - 0xc], ax
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	add	ax, 0x3f0
 	push	ax
 	db	0x2B, 0xC0		; sub ax, ax
@@ -3548,22 +3548,22 @@ Menus_26D4_2112:
 	push	ax
 	push	word [g_29CA]
 	push	ds
-	push	word 0x12d8
+	push	strict word str_Db_4
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	call	0x1B35:OvlThunk122
 	add	sp, 0x12
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	mov	ax, [bp - 0xc]
 	add	ax, 0x3f0
 	push	ax
 	push	0x1
 	push	word [g_29CC]
 	push	ds
-	push	word 0x12dc
+	push	strict word str_Db_3
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	call	0x1B35:OvlThunk122
 	add	sp, 0x12
 	mov	ax, [bp - 0xc]
@@ -3615,7 +3615,7 @@ Menus_26D4_2112:
 	mov	word [bp - 0x6], 0x0
 .3:
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	lea	ax, [bp - 0x24]
 	push	ss
 	push	ax
@@ -4123,7 +4123,7 @@ Menus_26D4_2112JumpTable:
 	les	bx, [bp + 0x6]
 	mov	[es:bx + 0x20], ax
 	push	word 0x3415
-	push	strict word 0x62
+	push	strict word f_3415_0062
 	call	0x2E70:Menus_2E70_0D0A
 	add	sp, 0x4
 	push	0x0
@@ -4134,9 +4134,9 @@ Menus_26D4_2112JumpTable:
 	call	0x0000:_sprintf
 	add	sp, 0xa
 	push	ds
-	push	word 0xc1f4
+	push	strict word g_C1F4
 	push	word 0x3a0b
-	push	word 0xac45
+	push	strict word f_3A0B_AC45
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	cmp	word [bp - 0xc], 0xf
@@ -4209,9 +4209,9 @@ Menus_26D4_2112JumpTable:
 	call	0x0000:_sprintf
 	add	sp, 0xa
 	push	ds
-	push	word 0xc1f4
+	push	strict word g_C1F4
 	push	word 0x3a0b
-	push	word 0xac45
+	push	strict word f_3A0B_AC45
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 .8:
@@ -4293,7 +4293,7 @@ Menus_26D4_2112JumpTable:
 	push	ds
 	push	ax
 	push	word 0x36b8
-	push	word 0xd0
+	push	strict word f_36B8_00D0
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	cmp	word [bp - 0x6], 0x1
@@ -4304,7 +4304,7 @@ Menus_26D4_2112JumpTable:
 	push	ds
 	push	ax
 	push	word 0x36b8
-	push	word 0x113
+	push	strict word f_36B8_0113
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	mov	ax, [bp - 0x8]
@@ -4432,7 +4432,7 @@ Menus_26D4_2112JumpTable:
 Menus_26D4_29F2:
 	enter	0xe, 0x0
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	lea	ax, [bp - 0xe]
 	push	ss
 	push	ax
@@ -4457,7 +4457,7 @@ Menus_26D4_29F2:
 Menus_26D4_2A34:
 	enter	0xe, 0x0
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	lea	ax, [bp - 0xe]
 	push	ss
 	push	ax
@@ -4492,11 +4492,11 @@ Menus_26D4_2A80:
 	mov	[bp - 0x3a], ax
 	mov	[bp - 0x3c], ax
 	push	word 0x3415
-	push	strict word 0x0
+	push	strict word f_3415_0000
 	call	0x2E70:Menus_2E70_0968
 	add	sp, 0x4
 	push	word 0x3415
-	push	strict word 0x62
+	push	strict word f_3415_0062
 	call	0x2E70:Menus_2E70_09FE
 	add	sp, 0x4
 	push	0x2
@@ -4514,7 +4514,7 @@ Menus_26D4_2A80:
 	cmp	word [bx], 0x0
 	jnl	short .1
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	lea	ax, [bp - 0x20]
 	push	ss
 	push	ax
@@ -4629,7 +4629,7 @@ Menus_26D4_2A80:
 	jmp	near .5
 .3:
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	lea	ax, [bp - 0x20]
 	push	ss
 	push	ax
@@ -4807,9 +4807,9 @@ Menus_26D4_2A80:
 	cmp	word [bp - 0x28], 0x18
 	jl	short .12
 	push	ds
-	push	word 0x133f
+	push	strict word g_133F
 	push	word 0x3a0b
-	push	word 0xac30
+	push	strict word f_3A0B_AC30
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	push	0x0
@@ -4819,9 +4819,9 @@ Menus_26D4_2A80:
 	mov	[g_21B0], ax
 	mov	[g_21B2], dx
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x134d
+	push	strict word str_Embscup_3
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x20]
@@ -4952,9 +4952,9 @@ Menus_26D4_2A80:
 	call	0x0000:_sprintf
 	add	sp, 0xa
 	push	ds
-	push	word 0xc1f4
+	push	strict word g_C1F4
 	push	word 0x3a0b
-	push	word 0xac45
+	push	strict word f_3A0B_AC45
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	mov	bx, [bp - 0x2a]
@@ -4968,13 +4968,13 @@ Menus_26D4_2A80:
 	push	0x40
 	push	0x3
 	push	word 0x3448
-	push	word 0x19ba
+	push	strict word f_3448_19BA
 	call	0x0FA0:DrawMenuBar
 	add	sp, 0xc
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x1362
+	push	strict word str_Embpal_20
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x20]
@@ -5061,7 +5061,7 @@ Menus_26D4_2A80:
 	add	sp, 0x4
 	call	0x1B35:OvlThunk132
 	push	word 0x3415
-	push	strict word 0x62
+	push	strict word f_3415_0062
 	call	0x2E70:Menus_2E70_0D0A
 	add	sp, 0x4
 	push	word [bp - 0x3a]
@@ -5076,7 +5076,7 @@ Menus_26D4_2A80:
 	mov	[es:0x78c], ax
 	call	0x2037:Menus_2037_0000
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	lea	ax, [bp - 0x20]
 	push	ss
 	push	ax
@@ -5204,9 +5204,9 @@ Menus_26D4_2A80:
 	mov	[g_21B0], ax
 	mov	[g_21B2], dx
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x138c
+	push	strict word str_Embscup_2
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x20]
@@ -5280,13 +5280,13 @@ Menus_26D4_2A80:
 	push	0x40
 	push	0x3
 	push	word 0x3448
-	push	word 0x19ba
+	push	strict word f_3448_19BA
 	call	0x0FA0:DrawMenuBar
 	add	sp, 0xc
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x139c
+	push	strict word str_Embpal_19
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x20]
@@ -5346,7 +5346,7 @@ Menus_26D4_2A80:
 	push	0x40
 	push	0x3
 	push	word 0x3448
-	push	word 0x19ba
+	push	strict word f_3448_19BA
 	push	cs
 	call	Menus_26D4_373C
 	add	sp, 0xe
@@ -5404,9 +5404,9 @@ Menus_26D4_2A80:
 .31:
 	call	0x0FEF:UseCurrentPage
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x13b0
+	push	strict word str_Easndesk_18
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x20]
@@ -5439,7 +5439,7 @@ Menus_26D4_2A80:
 	push	0x11
 	push	0x3
 	push	word 0x3448
-	push	word 0xd44
+	push	strict word f_3448_0D44
 	call	0x0FA0:DrawMenuBar
 	add	sp, 0xc
 	push	word 0x3f00
@@ -5465,11 +5465,11 @@ Menus_26D4_2A80:
 	call	0x1B35:OvlThunk116
 	add	sp, 0x2
 	push	word 0x3415
-	push	strict word 0x62
+	push	strict word f_3415_0062
 	call	0x2E70:Menus_2E70_0D0A
 	add	sp, 0x4
 	push	word 0x3415
-	push	strict word 0x0
+	push	strict word f_3415_0000
 	call	0x2E70:Menus_2E70_09FE
 	add	sp, 0x4
 	mov	ax, 0x2
@@ -6110,9 +6110,9 @@ Menus_26D4_373C:
 	mov	[g_21B0], ax
 	mov	[g_21B2], dx
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x13f3
+	push	strict word str_Embscup
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x2a]
@@ -6128,9 +6128,9 @@ Menus_26D4_373C:
 	mov	[g_21B4], ax
 	mov	[g_21B6], dx
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x13fb
+	push	strict word str_Embpal_18
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x2a]
@@ -6600,7 +6600,7 @@ Menus_26D4_4146:
 	call	0x0D39:SetTextColors
 	add	sp, 0x4
 	push	ds
-	push	word 0x1410
+	push	strict word str_PlayoffStandings
 	push	0xf
 	call	0x0D39:DrawShadowTextCentered
 	add	sp, 0x6
@@ -6609,7 +6609,7 @@ Menus_26D4_4146:
 	call	0x0D39:SetTextColors
 	add	sp, 0x4
 	push	ds
-	push	word 0x1422
+	push	strict word str_CampbellConference_3
 	push	0x19
 	mov	ax, [g_2486]
 	add	ax, strict word 0x50
@@ -6617,7 +6617,7 @@ Menus_26D4_4146:
 	call	0x0D39:DrawShadowTextBuffered
 	add	sp, 0x8
 	push	ds
-	push	word 0x1436
+	push	strict word str_WalesConference_3
 	push	0x19
 	mov	ax, [g_2486]
 	add	ax, 0x13b

@@ -94,7 +94,9 @@ g_01C4:                                         ; used by MENUS (to name)
         db 0x7F, 0x00
 SoundOptions:                                   ; bits 2 and 8 gate crowd and effects; used by
                                                 ; CrowdNoiseUpdate, CrowdNoiseOff, CrowdFadeOut ...
-        db 0x10, 0x00, 0x00, 0x00
+        db 0x10, 0x00
+g_01C8:                                         ; used by AI, INIT (to name)
+        db 0x00, 0x00
 g_01CA:                                         ; used by INIT (to name)
         db 0x00
 g_01CB:                                         ; used by INIT (to name)
@@ -104,7 +106,9 @@ g_01CC:                                         ; used by INIT (to name)
 g_01CD:                                         ; used by INIT (to name)
         db 0x00
 g_01CE:                                         ; used by AI, INIT (to name)
-        db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00
+        db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+g_01D4:                                         ; used by AI, INIT (to name)
+        db 0x04, 0x00
 g_01D6:                                         ; used by AI, INIT (to name)
         db 0x00
 g_01D7:                                         ; used by AI, INIT (to name)
@@ -663,7 +667,9 @@ EventPending:                                   ; an event is held back; used by
         db 'teams.db', 0x00
         db 'C1', 0x00, 'C2', 0x00
         db 'C3', 0x00, 'C5', 0x00
-        db 'C6', 0x00, 'player', 0x00
+        db 0x43, 0x36, 0x00
+str_Player_3:                                   ; string 'player'; used by MENUS
+        db 'player', 0x00
         db 'dbox', 0x00
         db 'dbox', 0x00, 0x00
         db '%d %d, %s vs %s, Period %d, Time %02d:%02d.'
@@ -674,21 +680,26 @@ EventPending:                                   ; an event is held back; used by
         db 'mttitle.cfg', 0x00
         db 'adtitle.kms', 0x00
         db 'adtitle.cfg', 0x00
+str_Eaopen:                                     ; string 'eaopen'; used by MENUS
         db 'eaopen', 0x00
         db '!pal', 0x00
         db 'scrn', 0x00
+str_Eascrn:                                     ; string 'eascrn'; used by MENUS
         db 'eascrn', 0x00
         db '!pal', 0x00
         db 'scrn', 0x00
+str_Title2:                                     ; string 'title2'; used by MENUS
         db 'title2', 0x00
         db '!pal', 0x00
         db '1111', 0x00
         db '2222', 0x00
         db 'hock', 0x00
         db 'copy', 0x00
+str_Alls03:                                     ; string 'alls03'; used by MENUS
         db 'alls03', 0x00
         db 'ividframe', 0x00
         db 's1.fnt', 0x00
+str_Summary_4:                                  ; string 'summary'; used by MENUS
         db 'summary', 0x00
         db 'city', 0x00
         db '!pal', 0x00
@@ -699,6 +710,7 @@ EventPending:                                   ; an event is held back; used by
         db 'rockditi.kms', 0x00
         db 'rockditi.cfg', 0x00
         db 'linedit.fnt', 0x00
+str_Lineditp_5:                                 ; string 'lineditp'; used by MENUS
         db 'lineditp', 0x00
         db 'shrt', 0x00
         db 'pntr', 0x00
@@ -716,6 +728,7 @@ EventPending:                                   ; an event is held back; used by
         db 'emb%s', 0x00
         db 'HOMEPALS.BIN', 0x00
         db 'bkgd', 0x00
+str_Plaque_2:                                   ; string 'plaque'; used by MENUS
         db 'plaque', 0x00
         db '%s   ', 0x00
         db 'forward', 0x00
@@ -789,12 +802,19 @@ EventPending:                                   ; an event is held back; used by
         db 'k4', 0x00, 'k5', 0x00
         db 'k6', 0x00, 'k7', 0x00
         db 'k8', 0x00, 'h7', 0x00
+str_Db_6:                                       ; string '.db'; used by MENUS
         db '.db', 0x00
+str_Sav_5:                                      ; string '.sav'; used by MENUS
         db '.sav', 0x00
+str_Gsummary_5:                                 ; string 'gsummary'; used by MENUS
         db 'gsummary', 0x00
         db 'A1', 0x00, 0x2E, 0x70, 0x6F, 0x5C, 'game.sav', 0x00
-        db 'l1', 0x00, '.db', 0x00
+        db 0x6C, 0x31, 0x00
+str_Db_5:                                       ; string '.db'; used by MENUS
+        db '.db', 0x00
+str_Sav_4:                                      ; string '.sav'; used by MENUS
         db '.sav', 0x00
+str_Gsummary_4:                                 ; string 'gsummary'; used by MENUS
         db 'gsummary', 0x00
         db 'A2', 0x00, 0x2E, 0x6C, 0x70, 0x5C, 'game.sav', 0x00
         db 0x6C, 0x32, 0x00
@@ -806,6 +826,7 @@ g_0EE0:                                         ; used by MENUS (to name)
         db 0x54, 0xC0, '*.lp', 0x00
         db '*.po', 0x00
         db '*.nhl', 0x00
+str_Dialogbx:                                   ; string 'dialogbx'; used by MENUS
         db 'dialogbx', 0x00
         db 'dbox', 0x00
 str_Nhl_4:                                      ; string '.NHL'; not used in the EXE (overlays may use it)
@@ -815,7 +836,9 @@ str_Nhl_4:                                      ; string '.NHL'; not used in the
         db 'c2', 0x00, '*.*', 0x00
         db 'c3', 0x00, '..', 0x00
         db 'c4', 0x00, 'c5', 0x00
-        db 0x63, 0x36, 0x00, 0x00, 0x80, 0x00, 0x9A, 0x36
+        db 0x63, 0x36, 0x00, 0x00
+g_0F24:                                         ; used by MENUS (to name)
+        db 0x80, 0x00, 0x9A, 0x36
 g_0F28:                                         ; used by MENUS (to name)
         db 0x00, 0x00
 g_0F2A:                                         ; used by MENUS (to name)
@@ -870,17 +893,28 @@ g_0FBA:                                         ; used by MENUS (to name)
         db 'MT32', 0x00, 0x00
         db 'NL', 0x00, 0x00
         db 'PCBEEP', 0x00
+str_Sound:                                      ; string 'sound'; used by MENUS
         db 'sound', 0x00
         db 'dbox', 0x00, 0x00
+str_Kms_3:                                      ; string '.KMS'; used by MENUS
         db '.KMS', 0x00
+str_Slapshot_2:                                 ; string 'SLAPSHOT'; used by MENUS
         db 'SLAPSHOT', 0x00
+str_Cfg_5:                                      ; string '.CFG'; used by MENUS
         db '.CFG', 0x00
+str_Slapshot:                                   ; string 'SLAPSHOT'; used by MENUS
         db 'SLAPSHOT', 0x00
+str_Kms_2:                                      ; string '.KMS'; used by MENUS
         db '.KMS', 0x00
+str_Mt32hock_2:                                 ; string 'MT32HOCK'; used by MENUS
         db 'MT32HOCK', 0x00
+str_Cfg_4:                                      ; string '.CFG'; used by MENUS
         db '.CFG', 0x00
+str_Mt32hock:                                   ; string 'MT32HOCK'; used by MENUS
         db 'MT32HOCK', 0x00
+str_Cfg_3:                                      ; string '.CFG'; used by MENUS
         db '.CFG', 0x00
+str_Snd_2:                                      ; string 'SND'; used by MENUS
         db 'SND', 0x00
         db 'emmcopybuf', 0x00
 g_106D:                                         ; used by MENUS (to name)
@@ -904,9 +938,13 @@ g_1138:                                         ; used by MENUS (to name)
 g_1146:                                         ; used by MENUS (to name)
         db 0xFF
         db 0xFF, 0x00, 0x00, 0x01, 0x00, 0x04, 0x00, 0x03, 0x00, 0x06, 0x00, 0x06, 0x00, 0xFF, 0xFF, 0x02
-        db 0x00, 0x06, 0x00, 0x06, 0x00, 0xFF, 0xFF, 0x05, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 'lockrm'
+        db 0x00, 0x06, 0x00, 0x06, 0x00, 0xFF, 0xFF, 0x05
+        db 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
+str_Lockrm:                                     ; string 'lockrm'; used by MENUS
+        db 'lockrm'
         db 0x00, '!p01', 0x00
         db '0000', 0x00
+str_Exhgame2:                                   ; string 'exhgame2'; used by MENUS
         db 'exhgame2', 0x00
         db 'botm', 0x00
         db 'top ', 0x00
@@ -925,15 +963,21 @@ g_1146:                                         ; used by MENUS (to name)
 g_11D6:                                         ; used by MENUS (to name)
         db 0xCA, 0x11
 g_11D8:                                         ; used by MENUS (to name)
-        db 0xFF, 0xFF, 'easndesk'
+        db 0xFF, 0xFF
+str_Easndesk_20:                                ; string 'easndesk'; used by MENUS
+        db 'easndesk'
         db 0x00, 'desk', 0x00
         db '!pal', 0x00
+str_Embscup_4:                                  ; string 'embscup'; used by MENUS
         db 'embscup', 0x00
         db 'bkgd', 0x00
+str_Playoffs:                                   ; string 'playoffs'; used by MENUS
         db 'playoffs', 0x00
         db 'palette', 0x00
+str_Embpal_21:                                  ; string 'embpal'; used by MENUS
         db 'embpal', 0x00
         db '!pal', 0x00
+str_PleaseEnterNewPlayOffName:                  ; string 'Please Enter New Play-Off Name'; used by MENUS
         db 0x50
 SpeechFileNames:                                ; speech file names; used by OpenSpeechFile
         db 'lease Enter New Play-Off Name'
@@ -945,6 +989,7 @@ SpeechFileNames:                                ; speech file names; used by Ope
         db 'err3', 0x00
         db 'err3', 0x00
         db 'temp', 0x00
+str_Easndesk_19:                                ; string 'easndesk'; used by MENUS
         db 'easndesk', 0x00
         db 'desk', 0x00
         db 'schedule.db', 0x00
@@ -954,10 +999,23 @@ SpeechFileNames:                                ; speech file names; used by Ope
         db 'e1', 0x00, 'e2', 0x00, 0x00
         db 'f1', 0x00, 'f2', 0x00
         db 'xx1', 0x00
-        db '..', 0x00, 0x63, 0x00, 0xB8, 0x36, 0x81, 0x00, 0xB8, 0x36, 0x9C, 0x00, 0xB8, 0x36, 0xBA
-        db 0x00, 0xB8, 0x36, 0xCC, 0x00, 0xB8, 0x36, 0xE6, 0x00, 0xB8, 0x36, 0x00, 0x01, 0xB8, 0x36, 0x0F
-        db 0x01, 0xB8, 0x36, 0x29, 0x01, 0xB8, 0x36, 0x43, 0x01, 0xB8, 0x36, 0x52, 0x01, 0xB8, '6.db'
-        db 0x00, '.db', 0x00
+        db 0x2E, 0x2E, 0x00
+g_12AC:                                         ; used by MENUS (to name)
+        db 0x63, 0x00, 0xB8, 0x36, 0x81, 0x00, 0xB8, 0x36
+        db 0x9C, 0x00, 0xB8, 0x36, 0xBA
+        db 0x00, 0xB8, 0x36
+g_12BC:                                         ; used by MENUS (to name)
+        db 0xCC, 0x00, 0xB8, 0x36, 0xE6, 0x00, 0xB8, 0x36
+        db 0x00, 0x01, 0xB8, 0x36, 0x0F
+        db 0x01, 0xB8, 0x36, 0x29, 0x01, 0xB8, 0x36, 0x43
+        db 0x01, 0xB8, 0x36
+g_12D4:                                         ; used by MENUS (to name)
+        db 0x52, 0x01, 0xB8, 0x36
+str_Db_4:                                       ; string '.db'; used by MENUS
+        db '.db'
+        db 0x00
+str_Db_3:                                       ; string '.db'; used by MENUS
+        db '.db', 0x00
         db 'xx1', 0x00
         db '..', 0x00, 'tied', 0x00
         db 'tied', 0x00
@@ -968,20 +1026,26 @@ SpeechFileNames:                                ; speech file names; used by Ope
         db 'palette', 0x00
         db 0x5C, 'game.sav', 0x00
         db 'palette', 0x00
+g_133F:                                         ; used by MENUS (to name)
         db 0x20, 0x00, 'teeny05.fnt', 0x00
+str_Embscup_3:                                  ; string 'embscup'; used by MENUS
         db 'embscup', 0x00
         db 'palette', 0x00
         db 'tied', 0x00
+str_Embpal_20:                                  ; string 'embpal'; used by MENUS
         db 'embpal', 0x00
         db '!pal', 0x00
         db 'palette', 0x00
         db 0x5C, 'game.sav', 0x00
         db 'teeny05.fnt', 0x00
+str_Embscup_2:                                  ; string 'embscup'; used by MENUS
         db 'embscup', 0x00
         db 'palette', 0x00
+str_Embpal_19:                                  ; string 'embpal'; used by MENUS
         db 'embpal', 0x00
         db '!pal', 0x00
         db 'palette', 0x00
+str_Easndesk_18:                                ; string 'easndesk'; used by MENUS
         db 'easndesk', 0x00
         db 'desk', 0x00
         db 'pnt2', 0x00
@@ -992,32 +1056,52 @@ SpeechFileNames:                                ; speech file names; used by Ope
         db 'pntr', 0x00
         db 'pntr', 0x00
         db 'teeny05.fnt', 0x00
+str_Embscup:                                    ; string 'embscup'; used by MENUS
         db 'embscup', 0x00
+str_Embpal_18:                                  ; string 'embpal'; used by MENUS
         db 'embpal', 0x00
         db '!pal', 0x00
         db 'menubuff', 0x00
+str_PlayoffStandings:                           ; string 'Playoff standings'; used by MENUS
         db 'Playoff standings'
-        db 0x00, 'Campbell Conference'
-        db 0x00, 'Wales Conference'
-        db 0x00, 0x00, 'Exhibition', 0x00, 0x00
+        db 0x00
+str_CampbellConference_3:                       ; string 'Campbell Conference'; used by MENUS
+        db 'Campbell Conference'
+        db 0x00
+str_WalesConference_3:                          ; string 'Wales Conference'; used by MENUS
+        db 'Wales Conference'
+        db 0x00, 0x00
+str_Exhibition:                                 ; string 'Exhibition'; used by MENUS
+        db 'Exhibition', 0x00, 0x00
+str_Playoff:                                    ; string 'Playoff'; used by MENUS
         db 'Playoff', 0x00
         db 'League', 0x00, 0x00
+str_ShowLeague:                                 ; string 'Show League'; used by MENUS
         db 'Show League', 0x00
+str_Settings_2:                                 ; string ' Settings ...'; used by MENUS
         db ' Settings ...', 0x00
+str_Setting5_2:                                 ; string 'setting5'; used by MENUS
         db 'setting5', 0x00
         db 'dbox', 0x00
+str_Embnhl_4:                                   ; string 'embnhl'; used by MENUS
         db 'embnhl', 0x00
         db 'bkgd', 0x00
+str_Setting5:                                   ; string 'setting5'; used by MENUS
         db 'setting5', 0x00
+str_Setting3_2:                                 ; string 'setting3'; used by MENUS
         db 'setting3', 0x00
         db 'dbox', 0x00
+str_Setting3:                                   ; string 'setting3'; used by MENUS
         db 'setting3', 0x00
 str_Dbox_2:                                     ; string 'dbox'; not used in the EXE (overlays may use it)
         db 'dbox', 0x00, 0x00
         db 'BKGD', 0x00
+str_Setting7:                                   ; string 'setting7'; used by MENUS
         db 'setting7', 0x00
+str_Setting4:                                   ; string 'setting4'; used by MENUS
         db 'setting4', 0x00
         db 'dbox', 0x00
+str_Setting6:                                   ; string 'setting6'; used by MENUS
         db 'setting6', 0x00
         db 'dbox', 0x00
         db 'eadesk%1d', 0x00
@@ -1026,6 +1110,7 @@ str_Dbox_2:                                     ; string 'dbox'; not used in the
         db 'desk', 0x00
         db '!pal', 0x00
         db 'menubuff', 0x00
+str_Crests4_7:                                  ; string 'crests4'; used by MENUS
         db 'crests4', 0x00
         db 'HOMEPALS.BIN', 0x00
         db 'AWAYPALS.BIN', 0x00
@@ -1037,52 +1122,68 @@ str_Dbox_2:                                     ; string 'dbox'; not used in the
         db 'Pal', 0x00
         db 'Pal', 0x00
         db 'Pal', 0x00, 0x00
+str_Easndesk_17:                                ; string 'easndesk'; used by MENUS
         db 'easndesk', 0x00
         db 'desk', 0x00
         db '!pal', 0x00
+str_Easndesk_16:                                ; string 'easndesk'; used by MENUS
         db 'easndesk', 0x00
         db '!pal', 0x00
         db 'menubuff', 0x00
         db 'game.set', 0x00
+str_Set_5:                                      ; string '.set'; used by MENUS
         db '.set', 0x00
+str_Game_6:                                     ; string 'game'; used by MENUS
         db 'game', 0x00
         db 'e2', 0x00, 'e3', 0x00
         db 'e4', 0x00, 'palette', 0x00
         db 'temp', 0x00
+str_Easndesk_15:                                ; string 'easndesk'; used by MENUS
         db 'easndesk', 0x00
         db 'desk', 0x00
         db '!pal', 0x00
         db 'temp', 0x00
+str_Easndesk_14:                                ; string 'easndesk'; used by MENUS
         db 'easndesk', 0x00
         db 'desk', 0x00
         db 'temp', 0x00
+str_Easndesk_13:                                ; string 'easndesk'; used by MENUS
         db 'easndesk', 0x00
         db 'desk', 0x00
         db 'temp', 0x00
+str_Easndesk_12:                                ; string 'easndesk'; used by MENUS
         db 'easndesk', 0x00
         db 'desk', 0x00
         db 'temp', 0x00
+str_Easndesk_11:                                ; string 'easndesk'; used by MENUS
         db 'easndesk', 0x00
         db 'desk', 0x00
+str_Easndesk_10:                                ; string 'easndesk'; used by MENUS
         db 'easndesk', 0x00
         db '!pal', 0x00
         db 'temp', 0x00
+str_Easndesk_9:                                 ; string 'easndesk'; used by MENUS
         db 'easndesk', 0x00
         db 'desk', 0x00
         db 'temp', 0x00
+str_Easndesk_8:                                 ; string 'easndesk'; used by MENUS
         db 'easndesk', 0x00
         db 'desk', 0x00
         db 'temp', 0x00
+str_Easndesk_7:                                 ; string 'easndesk'; used by MENUS
         db 'easndesk', 0x00
         db 'desk', 0x00
         db 0x5C, 'game.sav', 0x00
         db 'temp', 0x00
+str_Easndesk_6:                                 ; string 'easndesk'; used by MENUS
         db 'easndesk', 0x00
         db 'desk', 0x00
+str_Easndesk_5:                                 ; string 'easndesk'; used by MENUS
         db 'easndesk', 0x00
         db 'desk', 0x00
         db '!pal', 0x00
         db 'temp', 0x00
+str_Easndesk_4:                                 ; string 'easndesk'; used by MENUS
         db 'easndesk', 0x00
         db 'desk', 0x00
         db 0x2E, 0x00, 0x20, 0x00
@@ -1134,14 +1235,18 @@ g_1740:                                         ; used by LP (to name)
 g_174C:                                         ; used by INIT (to name)
         db 0x00, 0x00, 0x02, 0x01, 0x00, 0x02, 0x00
         db 0x03, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x03, 0x00, 0x00, 0x03, 0x00
-        db 0x01, 0x00, 0x00, 'crests4', 0x00
+        db 0x01, 0x00, 0x00
+str_Crests4_6:                                  ; string 'crests4'; used by LP
+        db 'crests4', 0x00
         db 'crests.bin', 0x00
         db 'PLST', 0x00
         db 'PTLS', 0x00
         db 'pnt2', 0x00
         db 'TPI', 0x00
+str_Embnhl_3:                                   ; string 'embnhl'; used by LP
         db 'embnhl', 0x00
         db 'bkgd', 0x00
+str_Tspal:                                      ; string 'tspal'; used by LP
         db 'tspal', 0x00
         db '!pal', 0x00
         db 'Pointer', 0x00
@@ -1152,19 +1257,29 @@ g_174C:                                         ; used by INIT (to name)
         db 'pntr', 0x00
         db 0x41, 0x00, 0x42, 0x00
         db 0x2A, 0x00, 0x2A, 0x00
-        db 'ID', 0x00, '.SET', 0x00
+        db 0x49, 0x44, 0x00
+str_Set_4:                                      ; string '.SET'; used by LP
         db '.SET', 0x00
+str_Set_3:                                      ; string '.SET'; used by LP
+        db '.SET', 0x00
+str_Game_5:                                     ; string 'GAME'; used by LP
         db 'GAME', 0x00
         db 'SAV', 0x00
         db 'GAME', 0x00
         db '.%02d', 0x00
+str_Set_2:                                      ; string '.SET'; used by LP
         db '.SET', 0x00
+str_Game_4:                                     ; string 'GAME'; used by LP
         db 'GAME', 0x00
         db 'l1', 0x00, 'l2', 0x00
         db '.%02d', 0x00, 0x00
+str_Sav_3:                                      ; string '.sav'; used by LP
         db '.sav', 0x00
+str_Game_3:                                     ; string 'game'; used by LP
         db 'game', 0x00
+str_Cfg_2:                                      ; string '.CFG'; used by LP
         db '.CFG', 0x00
+str_Snd:                                        ; string 'SND'; used by LP
         db 'SND', 0x00, 0x00
 g_1826:                                         ; used by LP (to name)
         db 0x00, 0x17, '*?LLST', 0x00
@@ -1199,17 +1314,22 @@ g_18B4:                                         ; used by LP (to name)
         db '???', 0x00
         db 0x32, 0x00, '?4', 0x00, 0x18, 0x00, 0x00
         db 0x2A, 0x00, 0x00, 0x3B, 0x00, 0x00
-        db ';;;lineditp', 0x00
-        db '!pal', 0x00
-        db 'crests4.bin', 0x00
-        db 'ftimes24.fnt', 0x00
+        db ';;;'
+str_Lineditp_4:                                 ; string 'lineditp'; used by LP
         db 'lineditp', 0x00
         db '!pal', 0x00
         db 'crests4.bin', 0x00
+        db 'ftimes24.fnt', 0x00
+str_Lineditp_3:                                 ; string 'lineditp'; used by LP
+        db 'lineditp', 0x00
+        db '!pal', 0x00
+        db 'crests4.bin', 0x00
+str_Crests4_5:                                  ; string 'crests4'; used by LP
         db 'crests4', 0x00
         db 'Pointer', 0x00
         db 'menubuff', 0x00
         db '.%02d', 0x00
+str_Gsummary_3:                                 ; string 'GSUMMARY'; used by LP
         db 'GSUMMARY', 0x00
         db 'pnt2', 0x00
         db '.%02d', 0x00
@@ -1222,7 +1342,9 @@ g_18B4:                                         ; used by LP (to name)
         db '!pal', 0x00
         db '.%02d', 0x00
         db 'temp', 0x00
+str_Sav_2:                                      ; string '.SAV'; used by LP
         db '.SAV', 0x00
+str_Game_2:                                     ; string 'GAME'; used by LP
         db 'GAME', 0x00, 0x00
         db 'pnt2', 0x00
         db 'pntr', 0x00
@@ -1241,8 +1363,10 @@ g_1994:                                         ; used by LP (to name)
         db 0x00, 'keys', 0x00
         db 'pstat', 0x00
         db 'gstat', 0x00
+str_Embpal_17:                                  ; string 'embpal'; used by LP
         db 'embpal', 0x00
         db '!pal', 0x00
+str_Lineditp_2:                                 ; string 'lineditp'; used by LP
         db 'lineditp', 0x00
         db '!pal', 0x00
         db 'The jersey number %2d is already used on %Fs!'
@@ -1250,8 +1374,10 @@ g_1994:                                         ; used by LP (to name)
         db 0x00, 'Pal', 0x00
         db 'Pal', 0x00
         db '%c %2d %s', 0x00
+str_Embnhl_2:                                   ; string 'embnhl'; used by LP
         db 'embnhl', 0x00
         db 'bkgd', 0x00
+str_Plaque:                                     ; string 'plaque'; used by LP
         db 'plaque', 0x00
         db '%s   ', 0x00
         db '%c %2d %s', 0x00
@@ -1259,6 +1385,7 @@ g_1994:                                         ; used by LP (to name)
         db 'Pointer', 0x00
         db 'menubuff', 0x00
         db 'linedit.fnt', 0x00
+str_Lineditp:                                   ; string 'lineditp'; used by LP
         db 'lineditp', 0x00
         db 'shrt', 0x00
         db '!pal', 0x00
@@ -1386,38 +1513,71 @@ g_1D04:                                         ; used by LP (to name)
         db 'wittle06.fnt', 0x00
         db 'scrn', 0x00
         db '%s %s', 0x00
-        db 'GP', 0x00, 'Min', 0x00
+str_Gp_9:                                       ; string 'GP'; used by LP
+        db 0x47, 0x50, 0x00
+str_Min_3:                                      ; string 'Min'; used by LP
+        db 'Min', 0x00
+str_Gaa_3:                                      ; string 'GAA'; used by LP
         db 'GAA', 0x00
-        db 0x57, 0x00, 0x4C, 0x00
-        db 0x54, 0x00, 'SO', 0x00
-        db 'EN', 0x00, 'Shots', 0x00
-        db 'Pct', 0x00
-        db 'GP', 0x00, 0x47, 0x00
-        db 0x41, 0x00, 'Pt', 0x00
-        db 'PIM', 0x00
-        db '+/-', 0x00
-        db 'PPG', 0x00
-        db 'SHG', 0x00
+g_1D47:                                         ; used by LP (to name)
+        db 0x57, 0x00
+g_1D49:                                         ; used by LP (to name)
+        db 0x4C, 0x00
+g_1D4B:                                         ; used by LP (to name)
+        db 0x54, 0x00
+str_So_2:                                       ; string 'SO'; used by LP
+        db 0x53, 0x4F, 0x00
+str_En_2:                                       ; string 'EN'; used by LP
+        db 0x45, 0x4E, 0x00
+str_Shots_4:                                    ; string 'Shots'; used by LP
         db 'Shots', 0x00
+str_Pct_6:                                      ; string 'Pct'; used by LP
+        db 'Pct', 0x00
+str_Gp_8:                                       ; string 'GP'; used by LP
+        db 0x47, 0x50, 0x00
+g_1D60:                                         ; used by LP (to name)
+        db 0x47, 0x00
+g_1D62:                                         ; used by LP (to name)
+        db 0x41, 0x00
+str_Pt_3:                                       ; string 'Pt'; used by LP
+        db 0x50, 0x74, 0x00
+str_Pim_3:                                      ; string 'PIM'; used by LP
+        db 'PIM', 0x00
+g_1D6B:                                         ; used by LP (to name)
+        db '+/-', 0x00
+str_Ppg_2:                                      ; string 'PPG'; used by LP
+        db 'PPG', 0x00
+str_Shg_2:                                      ; string 'SHG'; used by LP
+        db 'SHG', 0x00
+str_Shots_3:                                    ; string 'Shots'; used by LP
+        db 'Shots', 0x00
+str_Pct_5:                                      ; string 'Pct'; used by LP
         db 'Pct', 0x00
         db 'wittle06.fnt', 0x00
+str_Embpal_16:                                  ; string 'embpal'; used by LP
         db 'embpal', 0x00
         db '!pal', 0x00
+str_AwardsSummary:                              ; string 'Awards Summary'; used by LP
         db 'Awards Summary', 0x00
         db 'mtafan.kms', 0x00
         db 'mtafan.cfg', 0x00
         db 'adafan.kms', 0x00
         db 'adafan.cfg', 0x00
+str_Awards:                                     ; string 'awards'; used by LP
         db 'awards', 0x00
         db 's1.fnt', 0x00
         db 'hong', 0x00
         db '!pal', 0x00
+str_WelcomeToTheNhl:                            ; string 'Welcome to the NHL'; used by LP
         db 'Welcome to the NHL'
-        db 0x00, 'awards presentation.'
+        db 0x00
+str_AwardsPresentation:                         ; string 'awards presentation.'; used by LP
+        db 'awards presentation.'
         db 0x00, 'mtawards.kms', 0x00
         db 'mtawards.cfg', 0x00
         db 'adawards.kms', 0x00
         db 'adawards.cfg', 0x00
+str_Embnhl:                                     ; string 'embnhl'; used by LP
         db 'embnhl', 0x00
         db 'bkgd', 0x00
         db '!pal', 0x00
@@ -1469,7 +1629,9 @@ g_1FA6:                                         ; used by STATS (to name)
 g_1FAA:                                         ; used by STATS (to name)
         db 0x78, 0x1F
 g_1FAC:                                         ; used by STATS (to name)
-        db 0x84, 0x1F, 'att.db', 0x00
+        db 0x84, 0x1F
+str_AttDb:                                      ; string 'att.db'; used by STATS
+        db 'att.db', 0x00
         db 0x00, '%2d', 0x00
         db '%3d', 0x00
         db '%4d', 0x00
@@ -1501,19 +1663,39 @@ g_2010:                                         ; used by STATS (to name)
         db 'Weight', 0x00
         db 'Offensive Awareness'
         db 0x00, 'Defensive Awareness'
-        db 0x00, 'portrait', 0x00
+        db 0x00
+str_Portrait_2:                                 ; string 'portrait'; used by STATS
+        db 'portrait', 0x00
         db '!pal', 0x00
         db '%s %s', 0x00
         db '%d Goalie', 0x00
-        db 'GP', 0x00, ' Min', 0x00
+str_Gp_7:                                       ; string 'GP'; used by STATS
+        db 0x47, 0x50, 0x00
+str_Min_2:                                      ; string ' Min'; used by STATS
+        db ' Min', 0x00
+str_Gaa_2:                                      ; string '  GAA'; used by STATS
         db '  GAA', 0x00
-        db ' W', 0x00, ' L', 0x00
-        db ' T', 0x00, 'SO', 0x00
-        db 'EN', 0x00, '   SA', 0x00
+str_W_3:                                        ; string ' W'; used by STATS
+        db 0x20, 0x57, 0x00
+str_L_5:                                        ; string ' L'; used by STATS
+        db 0x20, 0x4C, 0x00
+str_T_3:                                        ; string ' T'; used by STATS
+        db 0x20, 0x54, 0x00
+str_So:                                         ; string 'SO'; used by STATS
+        db 0x53, 0x4F, 0x00
+str_En:                                         ; string 'EN'; used by STATS
+        db 0x45, 0x4E, 0x00
+str_Sa_2:                                       ; string '   SA'; used by STATS
+        db '   SA', 0x00
+str_Pct_4:                                      ; string '  Pct'; used by STATS
         db '  Pct', 0x00
+str_Ratings_2:                                  ; string 'Ratings:'; used by STATS
         db 'Ratings:', 0x00
+str_GloveHand:                                  ; string 'Glove_Hand'; used by STATS
         db 'Glove_Hand', 0x00
+str_L_4:                                        ; string '  L'; used by STATS
         db '  L', 0x00
+str_R_2:                                        ; string '  R'; used by STATS
         db '  R', 0x00, 0x00
         db '. 9 E P ', 0x5C, ' i o w ~ '
         db 0x92, 0x20
@@ -1523,10 +1705,13 @@ g_211E:                                         ; used by STATS (to name)
         db 0x00, 'Plane 1', 0x00
         db 'Plane 2', 0x00
         db 'Plane 3', 0x00
+str_Embpal_15:                                  ; string 'embpal'; used by STATS
         db 'embpal', 0x00
         db '!pal', 0x00
+str_Embpal_14:                                  ; string 'embpal'; used by STATS
         db 'embpal', 0x00
         db '!pal', 0x00
+str_Embpal_13:                                  ; string 'embpal'; used by STATS
         db 'embpal', 0x00
         db '!pal', 0x00
         db 'Plane 0', 0x00
@@ -1537,6 +1722,7 @@ g_211E:                                         ; used by STATS (to name)
         db 'keys', 0x00
         db 'pstat', 0x00
         db 'gstat', 0x00
+str_Embpal_12:                                  ; string 'embpal'; used by STATS
         db 'embpal', 0x00
         db '!pal', 0x00, 0x00
 g_21B0:                                         ; used by MENUS, STATS (to name)
@@ -1577,37 +1763,51 @@ g_21D2:                                         ; used by LP, MENUS (to name)
         times 2 db 0
 g_21D4:                                         ; used by LP, MENUS (to name)
         times 2 db 0
+str_Embpal_11:                                  ; string 'embpal'; used by STATS
         db 'embpal', 0x00
         db '!pal', 0x00
+str_Easndesk_3:                                 ; string 'easndesk'; used by STATS
         db 'easndesk', 0x00
+str_Embpal_10:                                  ; string 'embpal'; used by STATS
         db 'embpal', 0x00
         db '!pal', 0x00
+str_Embpal_9:                                   ; string 'embpal'; used by STATS
         db 'embpal', 0x00
         db '!pal', 0x00
+str_Easndesk_2:                                 ; string 'easndesk'; used by STATS
         db 'easndesk', 0x00
+str_Embpal_8:                                   ; string 'embpal'; used by STATS
         db 'embpal', 0x00
         db '!pal', 0x00
+str_Embpal_7:                                   ; string 'embpal'; used by STATS
         db 'embpal', 0x00
         db '!pal', 0x00
+str_Easndesk:                                   ; string 'easndesk'; used by STATS
         db 'easndesk', 0x00
+str_Embpal_6:                                   ; string 'embpal'; used by STATS
         db 'embpal', 0x00
         db '!pal', 0x00
         db 'tstat', 0x00
         db 'keys', 0x00
         db 'pstat', 0x00
         db 'gstat', 0x00
+str_Embpal_5:                                   ; string 'embpal'; used by STATS
         db 'embpal', 0x00
         db '!pal', 0x00
+str_Embpal_4:                                   ; string 'embpal'; used by STATS
         db 'embpal', 0x00
         db '!pal', 0x00
+str_Embpal_3:                                   ; string 'embpal'; used by STATS
         db 'embpal', 0x00
         db '!pal', 0x00
+str_Embpal_2:                                   ; string 'embpal'; used by STATS
         db 'embpal', 0x00
         db '!pal', 0x00
         db 'tstat', 0x00
         db 'keys', 0x00
         db 'pstat', 0x00
         db 'gstat', 0x00
+str_Embpal:                                     ; string 'embpal'; used by STATS
         db 'embpal', 0x00
         db '!pal', 0x00, 0x00
         db 'Speed', 0x00
@@ -1624,6 +1824,7 @@ g_21D4:                                         ; used by LP, MENUS (to name)
         db 'Endurance', 0x00
         db 'Shoot/Pass Bias', 0x00
         db 'Faceoffs', 0x00
+str_Portrait:                                   ; string 'portrait'; used by STATS
         db 'portrait', 0x00
         db '!pal', 0x00
         db '%s %s', 0x00
@@ -1632,41 +1833,88 @@ g_21D4:                                         ; used by LP, MENUS (to name)
         db 'Defense', 0x00
         db 'Left Wing', 0x00
         db 'Right Wing', 0x00
-        db 'GP', 0x00, '  G', 0x00
+str_Gp_6:                                       ; string 'GP'; used by STATS
+        db 0x47, 0x50, 0x00
+str_G_2:                                        ; string '  G'; used by STATS
+        db '  G', 0x00
+str_A_2:                                        ; string '  A'; used by STATS
         db '  A', 0x00
+str_Pt_2:                                       ; string ' Pt'; used by STATS
         db ' Pt', 0x00
+str_Pim_2:                                      ; string 'PIM'; used by STATS
         db 'PIM', 0x00
+g_2395:                                         ; used by STATS (to name)
         db ' +/-', 0x00
+str_Ppg:                                        ; string 'PPG'; used by STATS
         db 'PPG', 0x00
+str_Shg:                                        ; string 'SHG'; used by STATS
         db 'SHG', 0x00
+str_Shots_2:                                    ; string 'Shots'; used by STATS
         db 'Shots', 0x00
+str_Pct_3:                                      ; string '  Pct'; used by STATS
         db '  Pct', 0x00
+str_Career:                                     ; string 'Career:'; used by STATS
         db 'Career:', 0x00
+str_Ratings:                                    ; string 'Ratings:'; used by STATS
         db 'Ratings:', 0x00
+str_Shoots:                                     ; string 'Shoots'; used by STATS
         db 'Shoots', 0x00
+str_L_3:                                        ; string '  L'; used by STATS
         db '  L', 0x00
+str_R:                                          ; string '  R'; used by STATS
         db '  R', 0x00, 0xA4, 0x22, 0xAA, 0x22, 0xB2, 0x22, 0xB9, 0x22, 0xC4, 0x22, 0xCD, 0x22
         db 0xDB, 0x22, 0xE4, 0x22, 0xEC, 0x22, 0x00
         db 0x23, 0x14, '###-#=#'
 g_23EA:                                         ; used by STATS (to name)
         db 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07
-        db 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x13, 'key.db', 0x00
+        db 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x13
+str_KeyDb_2:                                    ; string 'key.db'; used by STATS
+        db 'key.db', 0x00
         db '%s Roster:', 0x00
+str_Pos_3:                                      ; string 'Pos'; used by STATS
         db 'Pos', 0x00
-        db 'No', 0x00, 'Name', 0x00
-        db 'GP', 0x00, '  G', 0x00
+str_No_3:                                       ; string 'No'; used by STATS
+        db 0x4E, 0x6F, 0x00
+str_Name_2:                                     ; string 'Name'; used by STATS
+        db 'Name', 0x00
+str_Gp_5:                                       ; string 'GP'; used by STATS
+        db 0x47, 0x50, 0x00
+str_G:                                          ; string '  G'; used by STATS
+        db '  G', 0x00
+str_A:                                          ; string '  A'; used by STATS
         db '  A', 0x00
+str_Pt:                                         ; string ' PT'; used by STATS
         db ' PT', 0x00
+str_Shots:                                      ; string 'Shots'; used by STATS
         db 'Shots', 0x00
+str_Pim:                                        ; string 'PIM'; used by STATS
         db 'PIM', 0x00
+g_242F:                                         ; used by STATS (to name)
         db ' +/-', 0x00
-        db '%c', 0x00, 'Pos', 0x00
-        db 'No', 0x00, 'Name', 0x00
-        db 'GP', 0x00, ' Min', 0x00
+        db 0x25, 0x63, 0x00
+str_Pos_2:                                      ; string 'Pos'; used by STATS
+        db 'Pos', 0x00
+str_No_2:                                       ; string 'No'; used by STATS
+        db 0x4E, 0x6F, 0x00
+str_Name:                                       ; string 'Name'; used by STATS
+        db 'Name', 0x00
+str_Gp_4:                                       ; string 'GP'; used by STATS
+        db 0x47, 0x50, 0x00
+str_Min:                                        ; string ' Min'; used by STATS
+        db ' Min', 0x00
+str_Gaa:                                        ; string '  GAA'; used by STATS
         db '  GAA', 0x00
-        db ' W', 0x00, ' L', 0x00
-        db ' T', 0x00, ' GA', 0x00
+str_W_2:                                        ; string ' W'; used by STATS
+        db 0x20, 0x57, 0x00
+str_L_2:                                        ; string ' L'; used by STATS
+        db 0x20, 0x4C, 0x00
+str_T_2:                                        ; string ' T'; used by STATS
+        db 0x20, 0x54, 0x00
+str_Ga_2:                                       ; string ' GA'; used by STATS
+        db ' GA', 0x00
+str_Sa:                                         ; string '  SA'; used by STATS
         db '  SA', 0x00
+str_Pct_2:                                      ; string '  PCT'; used by STATS
         db '  PCT', 0x00
         db '%c', 0x00, 'LSSCED.DB', 0x00
         db 'SCHEDULE.DB', 0x00
@@ -1695,20 +1943,41 @@ g_2518:                                         ; used by STATS (to name)
 g_2520:                                         ; used by STATS (to name)
         db 0x23, 0x00, 0x64, 0x00
         db 0x23, 0x00, 0x64, 0x00
+str_Standings_2:                                ; string ' Standings'; used by STATS
         db ' Standings', 0x00
+str_CampbellConference_2:                       ; string 'Campbell Conference'; used by STATS
         db 'Campbell Conference'
-        db 0x00, 'Wales Conference'
-        db 0x00, 'Team', 0x00
-        db 'GP', 0x00, ' W', 0x00
-        db ' L', 0x00, ' T', 0x00
+        db 0x00
+str_WalesConference_2:                          ; string 'Wales Conference'; used by STATS
+        db 'Wales Conference'
+        db 0x00
+str_Team_2:                                     ; string 'Team'; used by STATS
+        db 'Team', 0x00
+str_Gp_3:                                       ; string 'GP'; used by STATS
+        db 0x47, 0x50, 0x00
+str_W:                                          ; string ' W'; used by STATS
+        db 0x20, 0x57, 0x00
+str_L:                                          ; string ' L'; used by STATS
+        db 0x20, 0x4C, 0x00
+str_T:                                          ; string ' T'; used by STATS
+        db 0x20, 0x54, 0x00
+str_Gf:                                         ; string ' GF'; used by STATS
         db ' GF', 0x00
+str_Ga:                                         ; string ' GA'; used by STATS
         db ' GA', 0x00
+str_P:                                          ; string '  P'; used by STATS
         db '  P', 0x00
+str_Pct:                                        ; string '  Pct'; used by STATS
         db '  Pct', 0x00
+str_Standings:                                  ; string ' Standings'; used by STATS
         db ' Standings', 0x00
+str_CampbellConference:                         ; string 'Campbell Conference'; used by STATS
         db 'Campbell Conference'
-        db 0x00, 'Wales Conference'
+        db 0x00
+str_WalesConference:                            ; string 'Wales Conference'; used by STATS
+        db 'Wales Conference'
         db 0x00, '..', 0x00
+g_25AE:                                         ; used by STATS (to name)
         db 0x20, 0x00
 g_25B0:                                         ; used by STATS (to name)
         db 0xED, 0x26
@@ -1735,7 +2004,10 @@ g_25B2:                                         ; used by STATS (to name)
         db '  AVG', 0x00, 0x00, 0x00
         db 'teams', 0x00
         db 'addsort', 0x00
-        db 'GP', 0x00, 'Stats Unavailable'
+str_Gp_2:                                       ; string 'GP'; used by STATS
+        db 0x47, 0x50, 0x00
+str_StatsUnavailable_2:                         ; string 'Stats Unavailable'; used by STATS
+        db 'Stats Unavailable'
         db 0x00
 g_2680:                                         ; used by STATS (to name)
         db 0xC4, 0x25, 0xD2, 0x25, 0xE0, 0x25, 0xF6, 0x25
@@ -1811,11 +2083,20 @@ g_26B4:                                         ; used by STATS (to name)
         db 'pstat', 0x00
         db 'gstat', 0x00
         db 'addsort', 0x00
+str_KeyDb:                                      ; string 'key.db'; used by STATS
         db 'key.db', 0x00
+str_Pos:                                        ; string 'POS'; used by STATS
         db 'POS', 0x00
-        db 'NO', 0x00, 'PLAYER', 0x00
+str_No:                                         ; string 'NO'; used by STATS
+        db 0x4E, 0x4F, 0x00
+str_Player_2:                                   ; string 'PLAYER'; used by STATS
+        db 'PLAYER', 0x00
+str_Team:                                       ; string 'TEAM'; used by STATS
         db 'TEAM', 0x00
-        db 'GP', 0x00, 'Stats Unavailable'
+str_Gp:                                         ; string 'GP'; used by STATS
+        db 0x47, 0x50, 0x00
+str_StatsUnavailable:                           ; string 'Stats Unavailable'; used by STATS
+        db 'Stats Unavailable'
         db 0x00, 0x25, 0x63, 0x00, 0x00
 g_28DE:                                         ; used by STATS (to name)
         db 0xDE, 0x26, 0xED, 0x26, 0xFB, 0x26, 0x0B, 0x27
@@ -3019,6 +3300,7 @@ g_4A66:                                         ; used by AI, INIT (to name)
         times 2 db 0
         db 'HOMEPALS.BIN', 0x00
         db 'AWAYPALS.BIN', 0x00
+str_Rinkpal_2:                                  ; string 'rinkpal'; used by GAME
         db 'rinkpal', 0x00
         db '!pal', 0x00, 0x00, 0xDC, 0x7B, 0xCF, 0xBD, 0xF7, 0x00, 0xC0, 0x08, 0x62, 0x04
         db 0x00, 0x00, 0xDF, 0xFF, 0xFF, 0xDF, 0xFF, 0xFF, 0x00, 0x00, 0xFE, 0xEF, 0xFF, 0xFF, 0xFF, 0xFF
@@ -3065,8 +3347,10 @@ g_4B24:                                         ; used by GAME (to name)
         db '%04d', 0x00
         db '%d50_%d99', 0x00
         db '%d00_%d49', 0x00
+str_Trinknd:                                    ; string 'trinknd'; used by INIT
         db 'trinknd', 0x00
         db '0000', 0x00
+str_Numshp:                                     ; string 'numshp'; used by INIT
         db 'numshp', 0x00
         db '%04d', 0x00
         db '000G000D000D000L000C000R000X'
@@ -3077,6 +3361,7 @@ g_4BCE:                                         ; used by INIT (to name)
         db 'Pal', 0x00
         db 's1.fnt', 0x00
         db 'wittle06.fnt', 0x00
+str_Arena:                                      ; string 'arena'; used by INIT
         db 'arena', 0x00
         db '!pal', 0x00
         db 'rink', 0x00
@@ -3085,25 +3370,40 @@ g_4BCE:                                         ; used by INIT (to name)
         db 'Pointer', 0x00
         db 'Pal', 0x00
         db 'Pal', 0x00, 0x00
+str_Crests4_4:                                  ; string 'crests4'; used by INIT
         db 'crests4', 0x00
+str_Summary_3:                                  ; string 'summary'; used by INIT
         db 'summary', 0x00
         db 'city', 0x00
+str_Summary2_2:                                 ; string 'summary2'; used by INIT
         db 'summary2', 0x00
         db 'defnforwlineootspairscrasummtoni'
         db 0x00, 'crests2.bin', 0x00
         db 's1.fnt', 0x00
         db 'GIPK', 0x00
+str_Injured_2:                                  ; string 'Injured'; used by INIT
         db 'Injured', 0x00, 0x00
+str_Mtrocku_2:                                  ; string 'MTROCKU'; used by INIT
         db 'MTROCKU', 0x00
+str_Sbrocku_2:                                  ; string 'SBROCKU'; used by INIT
         db 'SBROCKU', 0x00
+str_Adrocku_2:                                  ; string 'ADROCKU'; used by INIT
         db 'ADROCKU', 0x00
+str_Mtrocku:                                    ; string 'MTROCKU'; used by INIT
         db 'MTROCKU', 0x00
+str_Sbrocku:                                    ; string 'SBROCKU'; used by INIT
         db 'SBROCKU', 0x00
+str_Adrocku:                                    ; string 'ADROCKU'; used by INIT
         db 'ADROCKU', 0x00
+str_Rockditi_2:                                 ; string 'ROCKDITI'; used by INIT
         db 'ROCKDITI', 0x00
+str_Rockditi:                                   ; string 'ROCKDITI'; used by INIT
         db 'ROCKDITI', 0x00
+str_FirstPeriod:                                ; string 'First Period'; used by INIT
         db 'First Period', 0x00
+str_SecondPeriod:                               ; string 'Second Period'; used by INIT
         db 'Second Period', 0x00
+str_ThirdPeriod:                                ; string 'Third Period'; used by INIT
         db 'Third Period', 0x00
         db 'Overtime Period %d'
         db 0x00, 'Overtime', 0x00
@@ -3111,13 +3411,17 @@ g_4BCE:                                         ; used by INIT (to name)
         db 'mtsum.cfg', 0x00
         db 'adsum.kms', 0x00
         db 'adsum.cfg', 0x00
+str_Crests4_3:                                  ; string 'crests4'; used by INIT
         db 'crests4', 0x00
+str_Summary_2:                                  ; string 'summary'; used by INIT
         db 'summary', 0x00
         db 'city', 0x00
+str_Summary2:                                   ; string 'summary2'; used by INIT
         db 'summary2', 0x00
         db 'defnforwlineootspairscrasummtoni'
         db 0x00, 'crests2.bin', 0x00
         db 's1.fnt', 0x00
+str_Gsummary_2:                                 ; string 'gsummary'; used by INIT
         db 'gsummary', 0x00
         db '%d', 0x00, '%d', 0x00
         db '1st', 0x00
@@ -3126,6 +3430,7 @@ g_4BCE:                                         ; used by INIT (to name)
         db 'OT', 0x00, 'Final (OT)', 0x00
         db 'Final', 0x00
         db ' period', 0x00
+str_Injured:                                    ; string 'Injured'; used by INIT
         db 'Injured', 0x00
         db 'EVNT', 0x00
         db 'PRDS', 0x00
@@ -3142,6 +3447,7 @@ g_4BCE:                                         ; used by INIT (to name)
         db '%s', 0x00, '%s    %s', 0x00
         db '%s %d min.: %s', 0x00
         db '%02d:%02d', 0x00
+str_ShotsOnGoal:                                ; string 'Shots on goal'; used by INIT
         db 'Shots on goal', 0x00
         db '%s %d/%d', 0x00
         db '%s %d/%d', 0x00, 0x00
@@ -3149,7 +3455,9 @@ g_4BCE:                                         ; used by INIT (to name)
         db 'mtsum.cfg', 0x00
         db 'adsum.kms', 0x00
         db 'adsum.cfg', 0x00
+str_Summary:                                    ; string 'summary'; used by INIT
         db 'summary', 0x00
+str_Crests4_2:                                  ; string 'crests4'; used by INIT
         db 'crests4', 0x00
         db 'crests2.bin', 0x00
         db 's1.fnt', 0x00
@@ -3275,7 +3583,9 @@ g_4FD4:                                         ; used by INIT (to name)
         db 0x26, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x56, 0x41, 0x4E, 0x00, 0x15, 0x00
         db 0x25, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x57, 0x53, 0x48, 0x00, 0x16, 0x00
         db 0x25, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x57, 0x50, 0x47, 0x00, 0x15, 0x00
-        db 0x26, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 'scrbrd1', 0x00
+        db 0x26, 0x00, 0xFF, 0xFF, 0xFF, 0xFF
+str_Scrbrd1:                                    ; string 'scrbrd1'; used by INIT
+        db 'scrbrd1', 0x00
         db '0000000100020003000400050006000700080009000 '
         db 0x00, '1000100110021003100410051006100710081009100 '
         db 0x00, '2000200120022003200420052006200720082009200 '
@@ -3447,8 +3757,10 @@ g_5648:                                         ; used by AI (to name)
         times 2 db 0
 g_564A:                                         ; used by AI (to name)
         times 2 db 0
+str_Scrbrd2:                                    ; string 'scrbrd2'; used by AI
         db 'scrbrd2', 0x00
         db 'srb3', 0x00
+str_Crests4:                                    ; string 'crests4'; used by AI
         db 'crests4', 0x00, 0x00
 g_5662:                                         ; used by AI, MENUS (to name)
         db 0xE2, 0x01, 0x48, 0x34, 0xFB, 0x01, 0x48, 0x34
@@ -4303,6 +4615,7 @@ ClipBottomY:                                    ; clip bottom; used by LineClip,
 CanvasRowBytes:                                 ; current canvas: bytes per row; used by PutBlockBody,
                                                 ; DrawRawBody, DrawRleBody ...
         db 0x50, 0x00, 0x00, 0x00
+g_74FA:                                         ; used by FADES1 (to name)
         db 0x40, 0x01
 ClipLeftX:                                      ; clip left; used by LineClip, ClipLeft, AfterBottom ...
         dw 0x0000

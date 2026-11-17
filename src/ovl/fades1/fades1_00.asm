@@ -11,9 +11,9 @@ Fades1_3358_0000:
 .1:
 	mov	ax, DGROUP
 	mov	es, ax
-	mov	ax, [es:0x74fa]
+	mov	ax, [es:g_74FA]
 	mov	[bp - 0xa], ax
-	mov	bx, [es:0x74f4]
+	mov	bx, [es:ClipBottomY]
 	lea	ax, [bx + 0x7]
 	cwd
 	db	0x33, 0xC2		; xor ax, dx

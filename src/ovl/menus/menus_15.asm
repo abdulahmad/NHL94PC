@@ -95,9 +95,9 @@ Menus_2CF8_000E:
 	call	0x0000:_sprintf
 	add	sp, 0x6
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0xc242
+	push	strict word g_C242
 	call	0x0000:_fstrcat
 	add	sp, 0x8
 	push	word 0x14f2
@@ -168,13 +168,13 @@ Menus_2CF8_000E:
 	cmp	word [bp + 0x6], 0x2
 	jnz	short .7
 	call	0x0EDC:LoadStudioSpeech
-	mov	word [bp - 0x62], 0x12ae
+	mov	word [bp - 0x62], f_3448_12AE
 	mov	word [bp - 0x60], 0x3448
 	mov	word [bp - 0x50], 0x3
 	jmp	short .8
 	db	0x90
 .7:
-	mov	word [bp - 0x62], 0x11fe
+	mov	word [bp - 0x62], f_3448_11FE
 	mov	word [bp - 0x60], 0x3448
 	mov	word [bp - 0x50], 0x6
 .8:
@@ -1251,9 +1251,9 @@ Menus_2CF8_0E04:
 	add	sp, 0x2
 	call	0x0FEF:UseOffscreenCanvas
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x150f
+	push	strict word str_Crests4_7
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x20]
@@ -1272,7 +1272,7 @@ Menus_2CF8_0E04:
 	mov	[g_B207], al
 	mov	[g_B107], al
 	push	ds
-	push	word 0xb1c4
+	push	strict word TeamPalette2
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
 	push	0x4
@@ -1289,7 +1289,7 @@ Menus_2CF8_0E04:
 	call	0x0FEF:DrawRleTransRemapAt
 	add	sp, 0x8
 	push	ds
-	push	word 0xb0c4
+	push	strict word TeamPalette1
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
 	push	0x4
@@ -1454,10 +1454,10 @@ Menus_2CF8_0FCE:
 	push	ax
 	push	0x2
 	push	word 0x36b8
-	push	word 0x170
+	push	strict word f_36B8_0170
 	push	0x3
 	push	word 0x36f5
-	push	word 0xb3
+	push	strict word f_36F5_00B3
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -1510,10 +1510,10 @@ Menus_2CF8_10A4:
 	push	ax
 	push	0x2
 	push	word 0x36b8
-	push	word 0x170
+	push	strict word f_36B8_0170
 	push	0x3
 	push	word 0x36f5
-	push	word 0xb3
+	push	strict word f_36F5_00B3
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -1704,7 +1704,7 @@ Menus_2CF8_12AA:
 	add	sp, 0x6
 	push	0x2
 	push	word 0x3448
-	push	word 0x1584
+	push	strict word f_3448_1584
 	push	word 0xae10
 	push	0x0
 	call	0x2047:Menus_2047_0008
@@ -1790,7 +1790,7 @@ Menus_2CF8_1388:
 	add	sp, 0x6
 	push	0x2
 	push	word 0x3448
-	push	word 0x1584
+	push	strict word f_3448_1584
 	push	word 0xae40
 	push	0x1
 	call	0x2047:Menus_2047_0008

@@ -102,9 +102,9 @@ Game_1E64_0002:
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x4a82
+	push	strict word str_Rinkpal_2
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x1c]

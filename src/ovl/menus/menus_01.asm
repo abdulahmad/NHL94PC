@@ -107,9 +107,9 @@ Menus_1F4F_00D0:
 	mov	word [bp - 0x14], 0xffff
 	db	0x2B, 0xF6		; sub si, si
 	push	word 0x3701
-	push	word 0xbc2
+	push	strict word str_Hi
 	push	word 0x3701
-	push	word 0xba8
+	push	strict word f_3701_0BA8
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
 	lea	ax, [bp - 0x12a]
@@ -197,7 +197,7 @@ Menus_1F4F_00D0:
 	push	0x0
 	push	0x2
 	push	word 0x3701
-	push	word 0xc98
+	push	strict word str_SelectATeam
 	push	si
 	lea	ax, [bp - 0x18a]
 	push	ss
@@ -211,7 +211,7 @@ Menus_1F4F_00D0:
 .7:
 	mov	si, [bp + 0x6]
 	push	word 0x3701
-	push	word 0xbc2
+	push	strict word str_Hi
 	shl	di, 1
 	mov	bx, [bp + di - 0x94]
 	shl	bx, 1
@@ -389,7 +389,7 @@ Menus_1F4F_00D0:
 	push	word [bp + 0xe]
 	push	0x2
 	push	word 0x3701
-	push	word 0xca6
+	push	strict word str_SelectAHilight
 	push	word [bp - 0x6]
 	push	word [bp - 0x1a]
 	push	word [bp - 0x1c]
@@ -448,7 +448,7 @@ Menus_1F4F_00D0:
 	push	0x0
 	push	0x1
 	push	word 0x35f3
-	push	strict word 0x17
+	push	strict word f_35F3_0017
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -476,7 +476,7 @@ Menus_1F4F_0440:
 	push	0x0
 	push	0x0
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	lea	ax, [bp - 0x4]
 	push	ax
 	lea	ax, [bp - 0x12]
@@ -493,7 +493,7 @@ Menus_1F4F_0440:
 	push	ss
 	push	ax
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	lea	ax, [bp - 0x32]
 	push	ss
 	push	ax
@@ -520,7 +520,7 @@ Menus_1F4F_0440:
 	push	dx
 	push	ax
 	push	word 0x3a0b
-	push	word 0xd8e
+	push	strict word f_3A0B_0D8E
 	push	word [bp - 0x2]
 	call	0x0CD1:ReadAtOffset
 	add	sp, 0xc

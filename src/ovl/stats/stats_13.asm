@@ -999,7 +999,7 @@ Stats_26BE_08DA:
 	push	0x0
 	push	0x0
 	push	ds
-	push	word 0x28ab
+	push	strict word str_KeyDb
 	push	word 0x3861
 	push	strict word 0x0
 	lea	ax, [bp - 0xc6]
@@ -1373,7 +1373,7 @@ Stats_26BE_08DA:
 	add	sp, 0x4
 	call	0x0FEF:UseOffscreenCanvas
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	mov	bx, [g_200E]
 	shl	bx, 1
 	push	ds
@@ -1437,7 +1437,7 @@ Stats_26BE_08DA:
 	call	0x0D39:DrawShadowTextCentered
 	add	sp, 0x6
 	push	ds
-	push	word 0x28b2
+	push	strict word str_Pos
 	mov	ax, 0x14
 	mov	[bp - 0x17a], ax
 	push	ax
@@ -1445,25 +1445,25 @@ Stats_26BE_08DA:
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x28b6
+	push	strict word str_No
 	push	0x14
 	push	0x19
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x28b9
+	push	strict word str_Player_2
 	push	0x14
 	push	0x28
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x28c0
+	push	strict word str_Team
 	push	0x14
 	push	0x7d
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x28c5
+	push	strict word str_Gp
 	push	0x14
 	push	word 0xb9
 	call	0x0D39:DrawShadowText
@@ -1524,7 +1524,7 @@ Stats_26BE_08DA:
 	cmp	word [bp - 0x1e4], 0x0
 	jnz	short .55
 	push	ds
-	push	word 0x28c8
+	push	strict word str_StatsUnavailable
 	push	word [bp - 0x17a]
 	call	0x0D39:DrawShadowTextCentered
 	add	sp, 0x6
@@ -1821,7 +1821,7 @@ Stats_26BE_12CA:
 	call	0x0000:_sprintf
 	add	sp, 0x6
 	push	ds
-	push	word 0xcfd4
+	push	strict word g_CFD4
 	push	word [bp - 0x17a]
 	push	0x5
 	call	0x0D39:DrawShadowText
@@ -1845,11 +1845,11 @@ Stats_26BE_12CA:
 	push	ss
 	push	ax
 	push	ds
-	push	word 0xcfd4
+	push	strict word g_CFD4
 	call	0x0F89:FitNameToWidth
 	add	sp, 0xe
 	push	ds
-	push	word 0xcfd4
+	push	strict word g_CFD4
 	push	word [bp - 0x17a]
 	push	0x28
 	call	0x0D39:DrawShadowText

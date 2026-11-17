@@ -58,7 +58,7 @@ Lp_2A1B_0004:
 	lea	ax, [bp - 0x1c]
 	push	ax
 	push	word 0x3701
-	push	word 0xcb7
+	push	strict word str_EnterNewLeagueName
 	call	0x0D90:NumberEntryDialog
 	add	sp, 0x14
 	mov	[bp - 0x8], ax
@@ -79,7 +79,7 @@ Lp_2A1B_0004:
 	call	0x03A3:MouseRead
 	add	sp, 0x6
 	push	word 0x3701
-	push	word 0xbec
+	push	strict word str_Lp
 	lea	ax, [bp - 0x1c]
 	push	ss
 	push	ax
@@ -112,10 +112,10 @@ Lp_2A1B_0004:
 	push	ax
 	push	0x2
 	push	word 0x3701
-	push	word 0x2a0
+	push	strict word f_3701_02A0
 	push	0x2
 	push	word 0x3701
-	push	word 0x298
+	push	strict word f_3701_0298
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -141,10 +141,10 @@ Lp_2A1B_0004:
 	push	ax
 	push	0x2
 	push	word 0x3701
-	push	word 0x303
+	push	strict word f_3701_0303
 	push	0x1
 	push	word 0x3701
-	push	word 0x2ff
+	push	strict word f_3701_02FF
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -179,7 +179,7 @@ Lp_2A1B_0004:
 	jmp	near .16
 .10:
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	mov	es, [g_8BF8]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
@@ -192,7 +192,7 @@ Lp_2A1B_0004:
 	add	sp, 0x10
 	push	0x1
 	push	word 0x3a0b
-	push	word 0xaa38
+	push	strict word f_3A0B_AA38
 	lea	ax, [bp - 0x3c]
 	push	ax
 	call	0x22D3:Lp_22D3_01E2
@@ -205,7 +205,7 @@ Lp_2A1B_0004:
 	lea	ax, [bp - 0xe]
 	push	ax
 	push	word 0x3701
-	push	word 0xbfd
+	push	strict word str_SelectHumanControlledTeams
 	push	0x1
 	mov	cx, 0xac62
 	mov	dx, 0x3a0b
@@ -214,9 +214,9 @@ Lp_2A1B_0004:
 	push	dx
 	push	cx
 	push	word 0x3a0b
-	push	word 0xaa38
+	push	strict word f_3A0B_AA38
 	push	word 0x3a0b
-	push	word 0xac5c
+	push	strict word f_3A0B_AC5C
 	push	word [bp - 0x6a]
 	push	word [bp - 0x6c]
 	call	0x1F31:Lp_1F31_0BAE
@@ -240,13 +240,13 @@ Lp_2A1B_0004:
 	push	0x0
 	push	0x1
 	push	word 0x3701
-	push	word 0x6df
+	push	strict word f_3701_06DF
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
 	add	sp, 0x16
 	push	word 0x3a0b
-	push	word 0xaf3e
+	push	strict word f_3A0B_AF3E
 	mov	es, [g_8BFA]
 	push	word [es:0xac60]
 	mov	es, [g_8BFC]
@@ -256,7 +256,7 @@ Lp_2A1B_0004:
 	mov	es, [g_8C00]
 	push	word [es:0xac5a]
 	push	word 0x3a0b
-	push	word 0xaf32
+	push	strict word f_3A0B_AF32
 	push	word [bp - 0x6e]
 	push	word [bp - 0x70]
 	push	word [bp - 0x6a]
@@ -273,7 +273,7 @@ Lp_2A1B_0004:
 	push	si
 	push	si
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	word [YesNoTextSeg]
 	push	word [YesNoText]
 	mov	es, [g_8BF8]
@@ -291,7 +291,7 @@ Lp_2A1B_0004:
 	db	0x0B, 0xF6		; or si, si
 	jnz	short .15
 	push	word 0x3415
-	push	word 0xc4
+	push	strict word f_3415_00C4
 	call	0x1B35:OvlThunk100
 	add	sp, 0x4
 	push	word [bp - 0x4]
@@ -338,7 +338,7 @@ Lp_2A1B_0004:
 	push	0x0
 	push	0x1
 	push	word 0x3701
-	push	word 0x363
+	push	strict word f_3701_0363
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox

@@ -89,7 +89,7 @@ Init_1F9C_0072:
 	call	0x0000:_sprintf
 	add	sp, 0x8
 	push	word 0x3701
-	push	word 0xbcb
+	push	strict word str_Ppv
 	lea	ax, [bp - 0xe]
 	push	ss
 	push	ax
@@ -176,7 +176,7 @@ Init_1F9C_0138:
 	call	0x0000:_sprintf
 	add	sp, 0x8
 	push	word 0x3701
-	push	word 0xbcb
+	push	strict word str_Ppv
 	lea	ax, [bp - 0xe]
 	push	ss
 	push	ax
@@ -205,9 +205,9 @@ Init_1F9C_0138:
 Init_1F9C_01B4:
 	enter	0x10, 0x0
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x4b98
+	push	strict word str_Trinknd
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x10]
@@ -272,9 +272,9 @@ Init_1F9C_01FC:
 	mov	word [g_08FC], 0x52
 	call	0x28FA:Init_28FA_0004
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x4ba5
+	push	strict word str_Numshp
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x18]
@@ -326,14 +326,14 @@ Init_1F9C_01FC:
 	call	Init_1F9C_0138
 	call	0x0D6B:HookDivideError
 	push	word 0x3a0b
-	push	word 0xb352
+	push	strict word f_3A0B_B352
 	push	word 0x100
 	push	0x0
 	call	0x0FEF:GetPaletteFar
 	add	sp, 0x8
 	push	0x10
 	push	word 0x3a0b
-	push	word 0xb352
+	push	strict word f_3A0B_B352
 	push	0x1
 	call	0x1E7E:Game_1E7E_04C0
 	add	sp, 0x8
@@ -526,14 +526,14 @@ Init_1F9C_04A0:
 	db	0x0B, 0xF6		; or si, si
 	jz	short .3
 	push	word 0x3a0b
-	push	word 0xb352
+	push	strict word f_3A0B_B352
 	push	word 0x100
 	push	0x0
 	call	0x0FEF:GetPaletteFar
 	add	sp, 0x8
 	push	0x10
 	push	word 0x3a0b
-	push	word 0xb352
+	push	strict word f_3A0B_B352
 	push	0x1
 	call	0x1E7E:Game_1E7E_04C0
 	add	sp, 0x8

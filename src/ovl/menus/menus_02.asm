@@ -66,9 +66,9 @@ Menus_1F9D_000C:
 	call	0x0EDC:PlayJingle
 	add	sp, 0x8
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0xae0
+	push	strict word str_Eaopen
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x5a]
@@ -132,9 +132,9 @@ Menus_1F9D_000C:
 	call	0x0FEF:ClearClipRect
 	add	sp, 0x2
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0xaf1
+	push	strict word str_Eascrn
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x5a]
@@ -183,9 +183,9 @@ Menus_1F9D_000C:
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0xb02
+	push	strict word str_Title2
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x5a]
@@ -266,9 +266,9 @@ Menus_1F9D_000C:
 	call	0x0FEF:UseCurrentPage
 	call	0x0FEF:CopyPlane
 	push	word 0x3701
-	push	word 0xbbd
+	push	strict word str_Mvi
 	push	ds
-	push	word 0xb22
+	push	strict word str_Alls03
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x5a]
@@ -531,9 +531,9 @@ Menus_1F9D_0580:
 	call	0x0D39:SetTextColors
 	add	sp, 0x4
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0xb3a
+	push	strict word str_Summary_4
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x3c]

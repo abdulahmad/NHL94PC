@@ -6,14 +6,14 @@
 
 Game_1E7E_0004:
 	push	word 0x3a0b
-	push	word 0xb352
+	push	strict word f_3A0B_B352
 	push	word 0x100
 	push	0x0
 	call	0x0FEF:GetPaletteFar
 	add	sp, 0x8
 	push	0x10
 	push	word 0x3a0b
-	push	word 0xb352
+	push	strict word f_3A0B_B352
 	push	0x1
 	push	cs
 	call	Game_1E7E_04C0
@@ -291,14 +291,14 @@ Game_1E7E_01DCJumpTable:
 	mov	[g_D610], ax
 .7:
 	push	word 0x3a0b
-	push	word 0xb352
+	push	strict word f_3A0B_B352
 	push	word 0x100
 	push	0x0
 	call	0x0FEF:GetPaletteFar
 	add	sp, 0x8
 	push	0x10
 	push	word 0x3a0b
-	push	word 0xb352
+	push	strict word f_3A0B_B352
 	push	0x1
 	push	cs
 	call	Game_1E7E_04C0
@@ -670,7 +670,7 @@ Game_1E7E_057E:
 	mov	ax, [PadRepeatOn]
 	mov	[g_D46A], ax
 	push	word 0x3a0b
-	push	word 0xb352
+	push	strict word f_3A0B_B352
 	push	word 0x100
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[PadRepeatOn], ax
@@ -679,7 +679,7 @@ Game_1E7E_057E:
 	add	sp, 0x8
 	push	0x10
 	push	word 0x3a0b
-	push	word 0xb352
+	push	strict word f_3A0B_B352
 	push	0x1
 	push	cs
 	call	Game_1E7E_04C0
@@ -719,7 +719,7 @@ Game_1E7E_057E:
 	mov	[g_D46A], ax
 	push	0x10
 	push	word 0x3a0b
-	push	word 0xa8e
+	push	strict word f_3A0B_0A8E
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[PadRepeatOn], ax
 	push	ax
@@ -877,7 +877,7 @@ Game_1E7E_088A:
 	call	0x1B35:OvlThunk246
 	add	sp, 0x2
 	push	word 0x3a0b
-	push	word 0xa8e
+	push	strict word f_3A0B_0A8E
 	push	word [g_29CC]
 	push	word [g_29CA]
 	call	0x1E64:Game_1E64_0002
@@ -976,7 +976,7 @@ Game_1E7E_088A:
 	jnz	short .11
 	and	byte [AnnouncerFlags], 0x7f
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	lea	ax, [bp - 0x20]
 	push	ss
 	push	ax

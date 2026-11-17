@@ -27,7 +27,7 @@ Stats_22B3_0000:
 	push	0x40
 	push	0x3
 	push	word 0x3448
-	push	word 0x1802
+	push	strict word f_3448_1802
 	call	0x0FA0:DrawMenuBar
 	add	sp, 0xc
 	mov	ax, 0xbd0
@@ -37,7 +37,7 @@ Stats_22B3_0000:
 	push	cx
 	push	ax
 	push	ds
-	push	word 0x21d6
+	push	strict word str_Embpal_11
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0xe]
@@ -87,7 +87,7 @@ Stats_22B3_0000:
 	push	0x40
 	push	0x3
 	push	word 0x3448
-	push	word 0x1802
+	push	strict word f_3448_1802
 	call	0x1EAE:Stats_1EAE_0044
 	add	sp, 0xc
 	lea	ax, [bp - 0x30e]
@@ -102,14 +102,14 @@ Stats_22B3_0000:
 	push	word [bp - 0x310]
 	push	word [bp - 0x312]
 	push	ds
-	push	word 0x21e2
+	push	strict word str_Easndesk_3
 	jmp	short .2
 	db	0x90
 .1:
 	push	word [bp - 0x310]
 	push	word [bp - 0x312]
 	push	ds
-	push	word 0x21eb
+	push	strict word str_Embpal_10
 .2:
 	push	0x0
 	push	0x0
@@ -188,7 +188,7 @@ Stats_22B3_01C8:
 	push	0x40
 	push	0x3
 	push	word 0x3448
-	push	word 0x1844
+	push	strict word f_3448_1844
 	call	0x0FA0:DrawMenuBar
 	add	sp, 0xc
 	mov	ax, 0xbd0
@@ -198,7 +198,7 @@ Stats_22B3_01C8:
 	push	cx
 	push	ax
 	push	ds
-	push	word 0x21f7
+	push	strict word str_Embpal_9
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0xe]
@@ -248,7 +248,7 @@ Stats_22B3_01C8:
 	push	0x40
 	push	0x3
 	push	word 0x3448
-	push	word 0x1844
+	push	strict word f_3448_1844
 	call	0x1EAE:Stats_1EAE_0044
 	add	sp, 0xc
 	lea	ax, [bp - 0x30e]
@@ -263,14 +263,14 @@ Stats_22B3_01C8:
 	push	word [bp - 0x310]
 	push	word [bp - 0x312]
 	push	ds
-	push	word 0x2203
+	push	strict word str_Easndesk_2
 	jmp	short .2
 	db	0x90
 .1:
 	push	word [bp - 0x310]
 	push	word [bp - 0x312]
 	push	ds
-	push	word 0x220c
+	push	strict word str_Embpal_8
 .2:
 	push	0x0
 	push	0x0
@@ -349,7 +349,7 @@ Stats_22B3_0390:
 	push	0x40
 	push	0x3
 	push	word 0x3448
-	push	word 0x1886
+	push	strict word f_3448_1886
 	call	0x0FA0:DrawMenuBar
 	add	sp, 0xc
 	mov	ax, 0xbd0
@@ -359,7 +359,7 @@ Stats_22B3_0390:
 	push	cx
 	push	ax
 	push	ds
-	push	word 0x2218
+	push	strict word str_Embpal_7
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0xe]
@@ -409,7 +409,7 @@ Stats_22B3_0390:
 	push	0x40
 	push	0x3
 	push	word 0x3448
-	push	word 0x1886
+	push	strict word f_3448_1886
 	call	0x1EAE:Stats_1EAE_0044
 	add	sp, 0xc
 	lea	ax, [bp - 0x30e]
@@ -424,14 +424,14 @@ Stats_22B3_0390:
 	push	word [bp - 0x310]
 	push	word [bp - 0x312]
 	push	ds
-	push	word 0x2224
+	push	strict word str_Easndesk
 	jmp	short .2
 	db	0x90
 .1:
 	push	word [bp - 0x310]
 	push	word [bp - 0x312]
 	push	ds
-	push	word 0x222d
+	push	strict word str_Embpal_6
 .2:
 	push	0x0
 	push	0x0
@@ -503,7 +503,7 @@ Stats_22B3_0558:
 	or	ax, [g_21B4]
 	jnz	short .3
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	mov	bx, [g_200E]
 	shl	bx, 1
 	push	ds
@@ -533,7 +533,7 @@ Stats_22B3_0558:
 	push	0x40
 	push	0x3
 	push	word 0x3448
-	push	word 0x16ce
+	push	strict word f_3448_16CE
 	call	0x0FA0:DrawMenuBar
 	add	sp, 0xc
 	push	word 0xc8
@@ -547,7 +547,7 @@ Stats_22B3_0558:
 	push	0x40
 	push	0x3
 	push	word 0x3448
-	push	word 0x16ce
+	push	strict word f_3448_16CE
 	call	0x0FA0:DrawMenuBar
 	add	sp, 0xc
 	push	word 0xcee8
@@ -644,15 +644,15 @@ Stats_22B3_062E:
 	push	0x40
 	push	0x3
 	push	word 0x3448
-	push	word 0x16ce
+	push	strict word f_3448_16CE
 	call	0x0FA0:DrawMenuBar
 	add	sp, 0xc
 	mov	ax, [g_CEE8]
 	mov	[g_21BA], ax
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x2250
+	push	strict word str_Embpal_5
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0xe]
@@ -690,7 +690,7 @@ Stats_22B3_062E:
 	push	0x40
 	push	0x3
 	push	word 0x3448
-	push	word 0x16ce
+	push	strict word f_3448_16CE
 	call	0x1EAE:Stats_1EAE_07B6
 	add	sp, 0xc
 	call	0x2248:Stats_2248_066C
@@ -730,7 +730,7 @@ Stats_22B3_062E:
 	push	0x40
 	push	0x3
 	push	word 0x3448
-	push	word 0x16ce
+	push	strict word f_3448_16CE
 	call	0x0FA0:DrawMenuBar
 	add	sp, 0xc
 	push	0x42
@@ -738,7 +738,7 @@ Stats_22B3_062E:
 	push	0x40
 	push	0x3
 	push	word 0x3448
-	push	word 0x16ce
+	push	strict word f_3448_16CE
 	call	0x1EAE:Stats_1EAE_07B6
 	add	sp, 0xc
 	cmp	word [g_200E], 0x0
@@ -764,7 +764,7 @@ Stats_22B3_062E:
 	push	0x40
 	push	0x3
 	push	word 0x3448
-	push	word 0x1794
+	push	strict word f_3448_1794
 	call	0x0FA0:DrawMenuBar
 	add	sp, 0xc
 	push	0x0
@@ -775,7 +775,7 @@ Stats_22B3_062E:
 	push	0x40
 	push	0x3
 	push	word 0x3448
-	push	word 0x1794
+	push	strict word f_3448_1794
 	call	0x1EAE:Stats_1EAE_12F6
 	jmp	short .11
 	db	0x90
@@ -804,7 +804,7 @@ Stats_22B3_062E:
 	push	0x40
 	push	0x2
 	push	word 0x3448
-	push	word 0x17d6
+	push	strict word f_3448_17D6
 	call	0x0FA0:DrawMenuBar
 	add	sp, 0xc
 	push	0x0
@@ -815,7 +815,7 @@ Stats_22B3_062E:
 	push	0x40
 	push	0x2
 	push	word 0x3448
-	push	word 0x17d6
+	push	strict word f_3448_17D6
 	call	0x1EAE:Stats_1EAE_0044
 .11:
 	add	sp, 0xc

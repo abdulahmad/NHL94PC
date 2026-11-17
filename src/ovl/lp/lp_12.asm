@@ -24,7 +24,7 @@ Lp_28A8_000A:
 	mov	word [bp - 0x4], 0x3
 .1:
 	push	word 0x3701
-	push	word 0xd35
+	push	strict word str_EnterPasswordFor
 	lea	ax, [bp - 0x68]
 	push	ss
 	push	ax
@@ -91,7 +91,7 @@ Lp_28A8_000A:
 	push	0x0
 	push	0x1
 	push	word 0x3701
-	push	word 0x48a
+	push	strict word f_3701_048A
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -136,7 +136,7 @@ Lp_28A8_0108:
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	push	word 0x3701
-	push	word 0xd5e
+	push	strict word str_EnterMasterPassword
 	lea	ax, [bp - 0x66]
 	push	ss
 	push	ax
@@ -167,7 +167,7 @@ Lp_28A8_0108:
 	push	ss
 	push	ax
 	push	word 0x3a0b
-	push	word 0xaf32
+	push	strict word f_3A0B_AF32
 	call	0x0000:_fstrcmp
 	add	sp, 0x8
 	db	0x0B, 0xC0		; or ax, ax
@@ -190,7 +190,7 @@ Lp_28A8_0108:
 	push	0x0
 	push	0x1
 	push	word 0x3701
-	push	word 0x48a
+	push	strict word f_3701_048A
 	push	-0x1
 	push	-0x1
 	call	0x0D90:MessageBox
@@ -220,7 +220,7 @@ Lp_28A8_01E8:
 	push	di
 	push	si
 	push	word 0x3701
-	push	word 0xdc3
+	push	strict word str_Nhlhockey
 	call	0x0000:_fstrlen
 	add	sp, 0x4
 	db	0x8B, 0xC8		; mov cx, ax
@@ -235,14 +235,14 @@ Lp_28A8_01E8:
 	mov	ds, ax
 	mov	es, [bp + 0x8]
 .1:
-	mov	al, [di + 0xdc3]
+	mov	al, [di + str_Nhlhockey]
 	mov	bx, [bp + 0x6]
 	db	0x03, 0xD9		; add bx, cx
 	xor	[es:bx], al
 	db	0x8B, 0xC3		; mov ax, bx
 	mov	bx, [bp - 0x4]
 	db	0x2B, 0xDE		; sub bx, si
-	mov	dl, [bx + 0xdc2]
+	mov	dl, [bx + f_3701_0DC2]
 	db	0x8B, 0xD8		; mov bx, ax
 	xor	[es:bx], dl
 	inc	si

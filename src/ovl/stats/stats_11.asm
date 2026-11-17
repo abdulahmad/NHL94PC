@@ -324,7 +324,7 @@ Stats_24E6_01BE:
 	add	sp, 0xa
 	call	0x0FEF:UseOffscreenCanvas
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	mov	bx, [g_200E]
 	shl	bx, 1
 	push	ds
@@ -381,7 +381,7 @@ Stats_24E6_01BE:
 	call	0x0D39:SetTextColors
 	add	sp, 0x4
 	push	ds
-	push	word 0x2528
+	push	strict word str_Standings_2
 	lea	ax, [bp - 0xd8]
 	push	ss
 	push	ax
@@ -394,13 +394,13 @@ Stats_24E6_01BE:
 	call	0x0D39:DrawShadowTextCentered
 	add	sp, 0x6
 	push	ds
-	push	word 0x2533
+	push	strict word str_CampbellConference_2
 	push	0x19
 	push	0x5
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x2547
+	push	strict word str_WalesConference_2
 	push	0x19
 	push	word 0xa5
 	call	0x0D39:DrawShadowText
@@ -440,7 +440,7 @@ Stats_24E6_01BE:
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x2558
+	push	strict word str_Team_2
 	add	word [bp - 0x10], 0xa
 	mov	ax, [bp - 0x10]
 	push	ax
@@ -448,7 +448,7 @@ Stats_24E6_01BE:
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x255d
+	push	strict word str_Gp_3
 	push	word [bp - 0x10]
 	mov	ax, [bp - 0x16]
 	add	ax, strict word 0x32
@@ -456,7 +456,7 @@ Stats_24E6_01BE:
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x2560
+	push	strict word str_W
 	push	word [bp - 0x10]
 	mov	ax, [bp - 0x16]
 	add	ax, strict word 0x3c
@@ -464,7 +464,7 @@ Stats_24E6_01BE:
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x2563
+	push	strict word str_L
 	push	word [bp - 0x10]
 	mov	ax, [bp - 0x16]
 	add	ax, strict word 0x46
@@ -472,7 +472,7 @@ Stats_24E6_01BE:
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x2566
+	push	strict word str_T
 	push	word [bp - 0x10]
 	mov	ax, [bp - 0x16]
 	add	ax, strict word 0x50
@@ -480,7 +480,7 @@ Stats_24E6_01BE:
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x2569
+	push	strict word str_Gf
 	push	word [bp - 0x10]
 	mov	ax, [bp - 0x16]
 	add	ax, strict word 0x5a
@@ -488,7 +488,7 @@ Stats_24E6_01BE:
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x256d
+	push	strict word str_Ga
 	push	word [bp - 0x10]
 	mov	ax, [bp - 0x16]
 	add	ax, strict word 0x69
@@ -496,7 +496,7 @@ Stats_24E6_01BE:
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x2571
+	push	strict word str_P
 	push	word [bp - 0x10]
 	mov	ax, [bp - 0x16]
 	add	ax, strict word 0x78
@@ -504,7 +504,7 @@ Stats_24E6_01BE:
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word 0x2575
+	push	strict word str_Pct
 	push	word [bp - 0x10]
 	mov	ax, [bp - 0x16]
 	add	ax, 0x87
@@ -827,7 +827,7 @@ Stats_24E6_07A0:
 	call	0x0D39:SetTextColors
 	add	sp, 0x4
 	push	ds
-	push	word 0x257b
+	push	strict word str_Standings
 	lea	ax, [bp - 0x7c]
 	push	ss
 	push	ax
@@ -844,7 +844,7 @@ Stats_24E6_07A0:
 	call	0x0D39:SetTextColors
 	add	sp, 0x4
 	push	ds
-	push	word 0x2586
+	push	strict word str_CampbellConference
 	push	0x19
 	mov	ax, [g_2486]
 	add	ax, strict word 0x50
@@ -852,7 +852,7 @@ Stats_24E6_07A0:
 	call	0x0D39:DrawShadowTextBuffered
 	add	sp, 0x8
 	push	ds
-	push	word 0x259a
+	push	strict word str_WalesConference
 	push	0x19
 	mov	ax, [g_2486]
 	add	ax, 0x13b
@@ -1120,7 +1120,7 @@ Stats_24E6_0B08:
 	push	si
 	mov	word [bp - 0x6], 0xffff
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	mov	es, [g_8C88]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
@@ -1133,7 +1133,7 @@ Stats_24E6_0B08:
 	add	sp, 0x10
 	push	0x0
 	push	word 0x3a0b
-	push	word 0xaa38
+	push	strict word f_3A0B_AA38
 	lea	ax, [bp - 0x30]
 	push	ax
 	call	0x1B35:OvlThunk162
@@ -1142,9 +1142,9 @@ Stats_24E6_0B08:
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .1
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	word 0x3701
-	push	word 0xb95
+	push	strict word str_Lssched
 	push	ax
 	push	ax
 	lea	ax, [bp - 0x30]
@@ -1509,16 +1509,16 @@ Stats_24E6_0E3E:
 	call	0x0000:_chdir
 	add	sp, 0x2
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	mov	es, [g_8C88]
 	push	word [es:0xb86]
 	push	word [es:0xb84]
 	jmp	short .2
 .1:
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	push	word 0x3701
-	push	word 0xb95
+	push	strict word str_Lssched
 .2:
 	push	0x0
 	push	0x0
@@ -1548,7 +1548,7 @@ Stats_24E6_0EC2:
 	push	di
 	push	si
 	push	word 0x3415
-	push	word 0xc6
+	push	strict word f_3415_00C6
 	push	word 0x3861
 	push	strict word 0x0
 	call	0x0000:_fstrcmp
@@ -1569,9 +1569,9 @@ Stats_24E6_0EC2:
 	cmp	si, 0x248
 	jc	short .1
 	push	ds
-	push	word 0x25ae
+	push	strict word g_25AE
 	push	word 0x3a0b
-	push	word 0xac30
+	push	strict word f_3A0B_AC30
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	lea	ax, [bp - 0xc]

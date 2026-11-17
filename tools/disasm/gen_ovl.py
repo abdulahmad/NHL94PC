@@ -14,6 +14,7 @@ from capstone import x86
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 OVLMAP = json.load(open(os.path.join(ROOT, 'ovlmap.json')))
 SEGMAP = json.load(open(os.path.join(ROOT, 'segmap.json')))
+SEGMAP_FILE = {x['name']: x.get('file', '') for x in SEGMAP['segments']}
 ROOTSEGS = {s['para']: s['name'] for s in SEGMAP['segments'] if 'para' in s}
 DGROUP_PARA = 0x45C9
 
@@ -431,46 +432,126 @@ def main(names):
         setup(n)
         load_data()
         flow, funcs, targets = analyze()
-        DSOK.clear()
-        DSOK.update(ds_states(flow, funcs))
+        SEGST.clear()
+        SEGST.update(seg_states(flow, funcs))
         known = read_map()
         for s in targets:
             emit(s, flow, funcs, known)
         write_top()
     if os.environ.get('GEN_OVL_MISS'):
-        json.dump({f'{k:04X}': sorted(v) for k, v in sorted(MISS.items())}, open(os.environ['GEN_OVL_MISS'], 'w'), indent=0)
+        json.dump({f'{sg:04X}:{k:04X}': sorted(v) for (sg, k), v in sorted(MISS.items())},
+                  open(os.environ['GEN_OVL_MISS'], 'w'), indent=0)
 
 
-def ds_states(flow, funcs):
-    # Instruction addresses where DS holds DGROUP. Every routine starts with DS = DGROUP (medium model). Scanning a
-    # routine in address order: mov ds,ax after mov ax,DGROUP, push ss / pop ds and a plain pop ds (restoring the
-    # caller's DS) keep it; any other load of DS (mov ds,reg/mem, lds, push es / pop ds) loses it until the next.
+DG = 0x45C9
+REG16 = {'ax': ('ax', 'al', 'ah', 'eax'), 'bx': ('bx', 'bl', 'bh', 'ebx'), 'cx': ('cx', 'cl', 'ch', 'ecx'),
+         'dx': ('dx', 'dl', 'dh', 'edx'), 'si': ('si', 'esi'), 'di': ('di', 'edi')}
+
+
+def seg_states(flow, funcs):
+    """lin -> (ds, es) for each instruction: the paragraph each register is known to hold, or None. Every routine
+    starts with DS = DGROUP (medium model) and ES unknown. Forward data flow over each routine's branches; a
+    constant reaches DS or ES through mov reg,imm then mov sreg,reg, or push imm / pop sreg. Calls leave ES unknown."""
     import bisect
     starts = sorted(funcs)
-    ok, state, cur = set(), True, None
-    prev = b''
-    for lin in sorted(flow.ins):
-        i = bisect.bisect_right(starts, lin) - 1
-        r = starts[i] if i >= 0 else None
-        if r != cur:
-            cur, state, prev = r, True, b''
-        sz, cs = flow.ins[lin]
-        b = IMG[lin:lin + sz]
-        if state:
-            ok.add(lin)
-        if b[:1] == b'\x1f':                                  # pop ds
-            state = not (prev[:1] in (b'\x06', b'\x0e') or (len(prev) == 1 and 0x50 <= prev[0] <= 0x57))
-        elif b[:2] == b'\x8e\xd8':                            # mov ds, ax
-            state = prev == b'\xb8\xc9\x45' or prev[:1] == b'\x8c' and prev[1:2] == b'\xd0'
-        elif b[:1] == b'\x8e' and len(b) > 1 and (b[1] >> 3) & 7 == 3:   # mov ds, other
-            state = False
-        elif b[:1] == b'\xc5':                                # lds
-            state = False
-        prev = b
-    return ok
+    states = {}
+    work = [(f, (DG, None, (), ())) for f in starts if f in flow.ins]
+    seen = {}
+    while work:
+        lin, st = work.pop()
+        while lin in flow.ins:
+            old = seen.get(lin)
+            if old is not None:
+                merged = tuple(a if a == b else None for a, b in zip(old[:2], st[:2])) + \
+                    (tuple(x for x in old[2] if x in st[2]), ())
+                if merged == old:
+                    break
+                st = merged
+            seen[lin] = st
+            ds, es, regs, stack = st
+            regs = dict(regs)
+            sz, cs = flow.ins[lin]
+            b = IMG[lin:lin + sz]
+            ins = decode(lin, cs)
+            if ins is None:
+                break
+            mn, ops = ins.mnemonic, ins.op_str
+            dst = ops.split(',')[0].strip()
+            stack = list(stack)
+            if mn == 'mov' and dst in ('ds', 'es'):
+                src = ops.split(',')[1].strip()
+                v = regs.get(src) if src in REG16 else (ds if src == 'ds' else es if src == 'es' else
+                                                        DG if src == 'ss' else None)
+                if dst == 'ds':
+                    ds = v
+                else:
+                    es = v
+            elif mn == 'mov' and dst in REG16 and re.fullmatch(r'0x[0-9a-f]+|\d+', ops.split(',')[1].strip()):
+                regs[dst] = int(ops.split(',')[1].strip(), 0)
+            elif mn == 'mov' and dst in REG16 and ops.split(',')[1].strip() in ('ds', 'es', 'ss'):
+                src = ops.split(',')[1].strip()
+                regs[dst] = ds if src == 'ds' else es if src == 'es' else DG
+            elif mn == 'push':
+                v = None
+                if re.fullmatch(r'0x[0-9a-f]+|\d+', dst):
+                    v = int(dst, 0)
+                elif dst in ('ds', 'ss', 'es'):
+                    v = ds if dst == 'ds' else DG if dst == 'ss' else es
+                elif dst in REG16:
+                    v = regs.get(dst)
+                stack = (stack + [v])[-4:]
+            elif mn == 'pop':
+                v = stack.pop() if stack else None
+                if dst == 'ds':
+                    ds = v if v is not None or b'\x1f' != b[:1] else DG     # a lone pop ds restores the caller's DS
+                    if v is None and not stack:
+                        ds = DG
+                elif dst == 'es':
+                    es = v
+                elif dst in REG16:
+                    regs.pop(dst, None)
+            elif mn in ('les', 'lds'):
+                if mn == 'les':
+                    es = None
+                else:
+                    ds = None
+                regs.pop(dst, None)
+            elif mn in ('call', 'lcall'):
+                es = None
+                regs = {}
+                stack = []
+            else:
+                for r, al in REG16.items():
+                    if dst in al:
+                        regs.pop(r, None)
+                if mn in ('xchg',) and ',' in ops:
+                    s2 = ops.split(',')[1].strip()
+                    for r, al in REG16.items():
+                        if s2 in al:
+                            regs.pop(r, None)
+            if mn in ('enter', 'leave') or dst in ('sp',):
+                pass
+            states[lin] = (seen[lin][0], seen[lin][1])
+            nst = (ds, es, tuple(sorted(regs.items())), tuple(stack))
+            nxt = lin + sz
+            g = set(ins.groups)
+            if ins.id in (x86.X86_INS_RET, x86.X86_INS_RETF, x86.X86_INS_IRET, x86.X86_INS_LJMP):
+                break
+            if ins.id == x86.X86_INS_JMP:
+                if ins.operands and ins.operands[0].type == x86.X86_OP_IMM:
+                    work.append((CSB(cs) + (ins.operands[0].imm & 0xFFFF), nst))
+                break
+            if (capstone.CS_GRP_JUMP in g or b[0] in (0xE0, 0xE1, 0xE2, 0xE3)) and ins.operands and \
+                    ins.operands[0].type == x86.X86_OP_IMM:
+                work.append((CSB(cs) + (ins.operands[0].imm & 0xFFFF), nst))
+            lin, st = nxt, nst
+    # jump table targets and anything else reached only indirectly keep the routine-start assumption
+    for lin in flow.ins:
+        states.setdefault(lin, (DG, None))
+    return states
 
 
-DSOK = set()
+SEGST = {}       # lin -> (DS, ES) paragraphs known at that instruction
 MISS = {}        # DGROUP offsets the overlays use that have no label yet (offset -> overlays)
 
 
@@ -617,7 +698,69 @@ def load_data():
         for off, nm in m.get(sec, {}).items():
             dg.setdefault(off, nm)
     DATA['dg'] = dg
+    names = {x['name']: x['para'] for x in SEGMAP['segments'] if 'para' in x}
+    DATA['far'] = {p: dict(m.get(sec, {})) for sec, p in names.items() if SEGMAP_FILE.get(sec, '').startswith('data/far/')}
     DATA['strings'] = {o for o, n in dg.items() if n.startswith('str_')}
+
+
+def farptr_pairs(items, has_reloc):
+    """A far pointer into a far data segment built from immediates: push SEG / push OFF, or mov word [m + 2], SEG
+    next to mov word [m], OFF. The offset is written by its label in that segment."""
+    def imm16(it):
+        bs = it[3]
+        if it[0] != 'ins':
+            return None
+        if bs[0] == 0x68 and len(bs) == 3:
+            return 'push', None, bs[1] | bs[2] << 8
+        m = re.fullmatch(r'mov\s+word \[([^\]]+)\], (?:strict word )?0x([0-9a-f]+)', it[2])
+        if m and bs[0] == 0xC7:
+            return 'mov', m.group(1), int(m.group(2), 16)
+        return None
+
+    def name(segv, off, it):
+        t = DATA['far'][segv]
+        if off in t:
+            return t[off]
+        MISS.setdefault((segv, off), set()).add(OV['name'] + ':ptr')
+        return None
+
+    def addr(text):
+        m = re.fullmatch(r'(?:(bp) ([+-]) )?0x([0-9a-f]+)', text)
+        if not m:
+            return None
+        v = int(m.group(3), 16) * (-1 if m.group(2) == '-' else 1)
+        return (m.group(1), v)
+    for k, it in enumerate(items):
+        if it[0] == 'ins' and it[3] == b'\x1e' and SEGST.get(it[1], (DG, None))[0] == DG and k + 1 < len(items):
+            b = imm16(items[k + 1])                     # push ds / push OFF: a far pointer into DGROUP
+            if b and b[0] == 'push' and not has_reloc(k + 1) and b[2] >= 0x40:
+                if b[2] in DATA['dg']:
+                    items[k + 1][2] = f'push\tstrict word {DATA["dg"][b[2]]}'
+                else:
+                    MISS.setdefault((DG, b[2]), set()).add(OV['name'] + ':ptr')
+            continue
+        a = imm16(it)
+        if not a or a[2] not in DATA['far'] or not has_reloc(k):
+            continue
+        segv = a[2]
+        if a[0] == 'push':
+            if k + 1 < len(items):
+                b = imm16(items[k + 1])
+                if b and b[0] == 'push' and not has_reloc(k + 1):
+                    nm = name(segv, b[2], items[k + 1])
+                    if nm:
+                        items[k + 1][2] = f'push\tstrict word {nm}'
+            continue
+        hi = addr(a[1])
+        if hi is None:
+            continue
+        for j in range(max(0, k - 3), min(len(items), k + 4)):
+            b = imm16(items[j]) if j != k else None
+            if b and b[0] == 'mov' and not has_reloc(j) and addr(b[1]) == (hi[0], hi[1] - 2):
+                nm = name(segv, b[2], items[j])
+                if nm:
+                    items[j][2] = re.sub(r', (?:strict word )?0x[0-9a-f]+$', f', {nm}', items[j][2])
+                break
 
 
 def subst_data(items, s, funcs):
@@ -633,6 +776,7 @@ def subst_data(items, s, funcs):
             return False
         a = items[k][1]
         return any((a + j) in RELOC for j in range(len(items[k][3])))
+    farptr_pairs(items, has_reloc)
     for idx, it in enumerate(items):
         if it[0] not in ('ins',):
             continue
@@ -641,29 +785,34 @@ def subst_data(items, s, funcs):
         if (lin + 1) in RELOC and re.search(r'\b0x45c9\b', t):
             it[2] = re.sub(r'\b0x45c9\b', 'DGROUP', t)
             continue
-        dsok = lin in DSOK
-        if re.search(r'\b(es|cs):', t):
+        dsv, esv = SEGST.get(lin, (DG, None))
+        if re.search(r'\bcs:', t):
             continue
+
+        def table(segv):
+            return dg if segv == DG else DATA['far'].get(segv)
 
         def mem(m):
             inner = m.group(1)
-            mm = re.fullmatch(r'(?:(ds|ss):)?0x([0-9a-f]+)', inner)
-            if mm and (dsok or mm.group(1) == 'ss'):
-                v = int(mm.group(2), 16)
-                if v >= 0x40 and v in dg:
-                    return '[' + (mm.group(1) + ':' if mm.group(1) else '') + dg[v] + ']'
-                if v >= 0x40:
-                    MISS.setdefault(v, set()).add(OV['name'])
+            mm = re.fullmatch(r'(?:(ds|ss|es):)?((?:(?:bx|si|di|bp)(?: \+ (?:si|di))?) [+-] )?0x([0-9a-f]+)', inner)
+            if not mm:
                 return m.group(0)
-            mm = re.fullmatch(r'(ss:)?((?:bx|si|di)(?: \+ (?:si|di))?) ([+-]) 0x([0-9a-f]+)', inner)
-            if mm and (dsok or mm.group(1)):
-                v = int(mm.group(4), 16)
-                if mm.group(3) == '-':
-                    v = (-v) & 0xFFFF
-                if v >= 0x100 and v in dg:
-                    return f'[{mm.group(1) or ""}{mm.group(2)} + {dg[v]}]'
-                if v >= 0x100:
-                    MISS.setdefault(v, set()).add(OV['name'] + ':indexed')
+            ov, base = mm.group(1), mm.group(2)
+            if base and 'bp' in base and ov is None:
+                return m.group(0)                       # [bp + n] is the stack frame
+            segv = DG if ov == 'ss' else esv if ov == 'es' else dsv
+            v = int(mm.group(3), 16)
+            if base and base.endswith('- '):
+                v = (-v) & 0xFFFF
+            t = table(segv) if segv is not None else None
+            if t is None:
+                return m.group(0)
+            lo = 0x40 if not base else (0x100 if segv == DG else 0x40)
+            pre = (ov + ':') if ov else ''
+            if v >= lo and v in t:
+                return f'[{pre}{base[:-2] + "+ " if base else ""}{t[v]}]'
+            if v >= lo:
+                MISS.setdefault((segv, v), set()).add(OV['name'] + (':indexed' if base else ''))
             return m.group(0)
         t2 = re.sub(r'\[([^\]]+)\]', mem, t)
         mm = None       # immediates stay numbers: a value equal to a DGROUP address is often a constant

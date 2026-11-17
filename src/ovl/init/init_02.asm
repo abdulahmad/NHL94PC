@@ -38,9 +38,9 @@ Init_20A8_0004:
 	cmp	word [bp - 0xca], 0x100
 	jl	short .1
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x4c24
+	push	strict word str_Crests4_4
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x12]
@@ -56,9 +56,9 @@ Init_20A8_0004:
 	mov	[bp - 0x32], ax
 	mov	[bp - 0x30], dx
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x4c2c
+	push	strict word str_Summary_3
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x12]
@@ -81,9 +81,9 @@ Init_20A8_0004:
 	mov	[bp - 0xce], ax
 	mov	[bp - 0xcc], dx
 	push	word 0x3701
-	push	word 0xbd0
+	push	strict word str_Qpp
 	push	ds
-	push	word 0x4c39
+	push	strict word str_Summary2_2
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x12]
@@ -132,12 +132,12 @@ Init_20A8_0004:
 	cmp	word [bp - 0xd2], 0x0
 	jnz	short .2
 	push	word 0x3701
-	push	word 0xbaf
+	push	strict word str_Db_2
 	mov	es, [g_8C98]
 	push	word [es:0xb6e]
 	push	word [es:0xb6c]
 	push	word 0x3701
-	push	word 0xe53
+	push	strict word f_3701_0E53
 	lea	ax, [bp - 0x96]
 	push	ss
 	push	ax
@@ -244,11 +244,11 @@ Init_20A8_0004:
 	push	dx
 	push	ax
 	push	word 0x3a0b
-	push	word 0xaf4c
+	push	strict word f_3A0B_AF4C
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
 	push	word 0x3a0b
-	push	word 0xaf4c
+	push	strict word f_3A0B_AF4C
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
 	push	word [bp - 0xcc]
@@ -290,13 +290,13 @@ Init_20A8_0004:
 	push	dx
 	push	ax
 	push	word 0x3a0b
-	push	word 0xaf4c
+	push	strict word f_3A0B_AF4C
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
 	mov	es, [g_8C9A]
 	mov	byte [es:0xaf8f], 0xd9
 	push	word 0x3a0b
-	push	word 0xaf4c
+	push	strict word f_3A0B_AF4C
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
 	push	0x1c
@@ -413,11 +413,11 @@ Init_20A8_0004:
 	push	dx
 	push	ax
 	push	word 0x3a0b
-	push	word 0xaf4c
+	push	strict word f_3A0B_AF4C
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
 	push	word 0x3a0b
-	push	word 0xaf4c
+	push	strict word f_3A0B_AF4C
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
 	push	word [bp - 0xcc]
@@ -459,13 +459,13 @@ Init_20A8_0004:
 	push	dx
 	push	ax
 	push	word 0x3a0b
-	push	word 0xaf4c
+	push	strict word f_3A0B_AF4C
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
 	mov	es, [g_8C9A]
 	mov	byte [es:0xaf8f], 0xd9
 	push	word 0x3a0b
-	push	word 0xaf4c
+	push	strict word f_3A0B_AF4C
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
 	push	0x1c
@@ -581,11 +581,11 @@ Init_20A8_0004:
 	push	dx
 	push	ax
 	push	word 0x3a0b
-	push	word 0xaf4c
+	push	strict word f_3A0B_AF4C
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
 	push	word 0x3a0b
-	push	word 0xaf4c
+	push	strict word f_3A0B_AF4C
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
 	push	word [bp - 0xcc]
@@ -627,13 +627,13 @@ Init_20A8_0004:
 	push	dx
 	push	ax
 	push	word 0x3a0b
-	push	word 0xaf4c
+	push	strict word f_3A0B_AF4C
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
 	mov	es, [g_8C9A]
 	mov	byte [es:0xaf8f], 0xd9
 	push	word 0x3a0b
-	push	word 0xaf4c
+	push	strict word f_3A0B_AF4C
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
 	push	0x1c
@@ -694,7 +694,7 @@ Init_20A8_0004:
 	cmp	byte [bx + g_A550], 0x1
 	jnz	short .34
 	push	ds
-	push	word 0x4c7b
+	push	strict word str_Injured_2
 	push	word [bp - 0xc8]
 	push	word 0xc8
 	call	0x0D39:DrawShadowText

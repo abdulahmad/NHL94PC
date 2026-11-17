@@ -2253,26 +2253,26 @@ Ai_2E42_14B4:
 	mov	[g_B3FE], al
 	mov	[g_B4D4], al
 	mov	word [g_B436], 0xb50e
-	mov	word [g_B422], 0x0
+	mov	word [g_B422], f_3A0B_0000
 	mov	word [g_B424], 0x3a0b
-	mov	word [g_B426], 0x3e8
+	mov	word [g_B426], f_3A0B_03E8
 	mov	word [g_B428], 0x3a0b
 	mov	word [g_B420], 0xae10
-	mov	word [g_B42A], 0x448
+	mov	word [g_B42A], f_3A0B_0448
 	mov	word [g_B42C], 0x3a0b
-	mov	word [g_B42E], 0x768
+	mov	word [g_B42E], f_3A0B_0768
 	mov	word [g_B430], 0x3a0b
 	mov	word [g_B432], 0xa550
 	mov	word [g_B434], 0x9f80
 	mov	word [g_B50C], 0xb80e
-	mov	word [g_B4F8], 0x1f4
+	mov	word [g_B4F8], f_3A0B_01F4
 	mov	word [g_B4FA], 0x3a0b
-	mov	word [g_B4FC], 0x418
+	mov	word [g_B4FC], f_3A0B_0418
 	mov	word [g_B4FE], 0x3a0b
 	mov	word [g_B4F6], 0xae40
-	mov	word [g_B500], 0x5d8
+	mov	word [g_B500], f_3A0B_05D8
 	mov	word [g_B502], 0x3a0b
-	mov	word [g_B504], 0x77a
+	mov	word [g_B504], f_3A0B_077A
 	mov	word [g_B506], 0x3a0b
 	mov	word [g_B508], 0xa9b0
 	mov	word [g_B50A], 0xa268
