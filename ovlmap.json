@@ -1,0 +1,2124 @@
+{
+ "overlays": [
+  {
+   "name": "MENUS",
+   "file": "lst/game/MENUS.OVL",
+   "index": 0,
+   "para": 7749,
+   "mem": 4681,
+   "relocs": 2425,
+   "image": 9712,
+   "size": 84602,
+   "sha1": "7a321f9253615e3263243fdbddd9fce6b130100a",
+   "segments": [
+    {
+     "name": "menus_00",
+     "para": 7749,
+     "size": 4256,
+     "file": "ovl/menus/menus_00.asm"
+    },
+    {
+     "name": "menus_01",
+     "para": 8015,
+     "size": 1248,
+     "file": "ovl/menus/menus_01.asm"
+    },
+    {
+     "name": "menus_02",
+     "para": 8093,
+     "size": 2464,
+     "file": "ovl/menus/menus_02.asm"
+    },
+    {
+     "name": "menus_03",
+     "para": 8247,
+     "size": 256,
+     "file": "ovl/menus/menus_03.asm"
+    },
+    {
+     "name": "menus_04",
+     "para": 8263,
+     "size": 12624,
+     "file": "ovl/menus/menus_04.asm"
+    },
+    {
+     "name": "menus_05",
+     "para": 9052,
+     "size": 944,
+     "file": "ovl/menus/menus_05.asm"
+    },
+    {
+     "name": "menus_06",
+     "para": 9111,
+     "size": 192,
+     "file": "ovl/menus/menus_06.asm"
+    },
+    {
+     "name": "menus_07",
+     "para": 9123,
+     "size": 6224,
+     "file": "ovl/menus/menus_07.asm"
+    },
+    {
+     "name": "menus_08",
+     "para": 9512,
+     "size": 2896,
+     "file": "ovl/menus/menus_08.asm"
+    },
+    {
+     "name": "menus_09",
+     "para": 9693,
+     "size": 3952,
+     "file": "ovl/menus/menus_09.asm"
+    },
+    {
+     "name": "menus_10",
+     "para": 9940,
+     "size": 17360,
+     "file": "ovl/menus/menus_10.asm"
+    },
+    {
+     "name": "menus_11",
+     "para": 11025,
+     "size": 336,
+     "file": "ovl/menus/menus_11.asm"
+    },
+    {
+     "name": "menus_12",
+     "para": 11046,
+     "size": 3968,
+     "file": "ovl/menus/menus_12.asm"
+    },
+    {
+     "name": "menus_13",
+     "para": 11294,
+     "size": 2240,
+     "file": "ovl/menus/menus_13.asm"
+    },
+    {
+     "name": "menus_14",
+     "para": 11434,
+     "size": 1248,
+     "file": "ovl/menus/menus_14.asm"
+    },
+    {
+     "name": "menus_15",
+     "para": 11512,
+     "size": 6016,
+     "file": "ovl/menus/menus_15.asm"
+    },
+    {
+     "name": "menus_16",
+     "para": 11888,
+     "size": 8666,
+     "file": "ovl/menus/menus_16.asm"
+    }
+   ],
+   "entries": [
+    [
+     7749,
+     0
+    ],
+    [
+     7749,
+     10
+    ],
+    [
+     7749,
+     254
+    ],
+    [
+     7749,
+     264
+    ],
+    [
+     7749,
+     1620
+    ],
+    [
+     7749,
+     1630
+    ],
+    [
+     7749,
+     4050
+    ],
+    [
+     8093,
+     12
+    ],
+    [
+     8093,
+     1408
+    ],
+    [
+     8263,
+     8
+    ],
+    [
+     8263,
+     8420
+    ],
+    [
+     8263,
+     9518
+    ],
+    [
+     8263,
+     9710
+    ],
+    [
+     8263,
+     9714
+    ],
+    [
+     8263,
+     9990
+    ],
+    [
+     8263,
+     10266
+    ],
+    [
+     8263,
+     10848
+    ],
+    [
+     8263,
+     11408
+    ],
+    [
+     8263,
+     12192
+    ],
+    [
+     8263,
+     12196
+    ],
+    [
+     8263,
+     12518
+    ],
+    [
+     9123,
+     4
+    ],
+    [
+     9512,
+     4
+    ],
+    [
+     9512,
+     1062
+    ],
+    [
+     9693,
+     6
+    ],
+    [
+     9940,
+     14
+    ],
+    [
+     9940,
+     18
+    ],
+    [
+     9940,
+     22
+    ],
+    [
+     9940,
+     384
+    ],
+    [
+     9940,
+     10738
+    ],
+    [
+     9940,
+     10880
+    ],
+    [
+     11046,
+     82
+    ],
+    [
+     11046,
+     274
+    ],
+    [
+     11046,
+     412
+    ],
+    [
+     11046,
+     688
+    ],
+    [
+     11046,
+     964
+    ],
+    [
+     11294,
+     4
+    ],
+    [
+     11434,
+     8
+    ],
+    [
+     11512,
+     14
+    ],
+    [
+     11512,
+     3992
+    ],
+    [
+     11512,
+     4018
+    ],
+    [
+     11512,
+     4046
+    ],
+    [
+     11512,
+     4260
+    ],
+    [
+     11512,
+     4614
+    ],
+    [
+     11512,
+     4778
+    ],
+    [
+     11512,
+     5000
+    ],
+    [
+     11512,
+     5222
+    ],
+    [
+     11512,
+     5332
+    ],
+    [
+     11512,
+     5456
+    ],
+    [
+     11512,
+     5580
+    ],
+    [
+     11512,
+     5702
+    ],
+    [
+     11512,
+     5756
+    ],
+    [
+     11512,
+     5810
+    ],
+    [
+     11512,
+     5864
+    ],
+    [
+     11512,
+     5918
+    ],
+    [
+     11512,
+     5972
+    ],
+    [
+     11888,
+     10
+    ],
+    [
+     11888,
+     2404
+    ],
+    [
+     11888,
+     2408
+    ],
+    [
+     11888,
+     2558
+    ],
+    [
+     11888,
+     3338
+    ],
+    [
+     11888,
+     3638
+    ],
+    [
+     11888,
+     3874
+    ],
+    [
+     11888,
+     4588
+    ],
+    [
+     11888,
+     5194
+    ],
+    [
+     11888,
+     5524
+    ],
+    [
+     11888,
+     5854
+    ],
+    [
+     11888,
+     6310
+    ],
+    [
+     11888,
+     6370
+    ],
+    [
+     11888,
+     6694
+    ],
+    [
+     11888,
+     7018
+    ],
+    [
+     11888,
+     7078
+    ],
+    [
+     11888,
+     7408
+    ],
+    [
+     11888,
+     7916
+    ],
+    [
+     11888,
+     8276
+    ],
+    [
+     11888,
+     8336
+    ]
+   ]
+  },
+  {
+   "name": "LP",
+   "file": "lst/game/LP.OVL",
+   "index": 1,
+   "para": 7749,
+   "mem": 4462,
+   "relocs": 2166,
+   "image": 8672,
+   "size": 80060,
+   "sha1": "565bb6a3a46a19559f824f00e03a4908e77f76fd",
+   "segments": [
+    {
+     "name": "lp_00",
+     "para": 7749,
+     "size": 1408,
+     "file": "ovl/lp/lp_00.asm"
+    },
+    {
+     "name": "lp_01",
+     "para": 7837,
+     "size": 272,
+     "file": "ovl/lp/lp_01.asm"
+    },
+    {
+     "name": "lp_02",
+     "para": 7854,
+     "size": 464,
+     "file": "ovl/lp/lp_02.asm"
+    },
+    {
+     "name": "lp_03",
+     "para": 7883,
+     "size": 1632,
+     "file": "ovl/lp/lp_03.asm"
+    },
+    {
+     "name": "lp_04",
+     "para": 7985,
+     "size": 6992,
+     "file": "ovl/lp/lp_04.asm"
+    },
+    {
+     "name": "lp_05",
+     "para": 8422,
+     "size": 288,
+     "file": "ovl/lp/lp_05.asm"
+    },
+    {
+     "name": "lp_06",
+     "para": 8440,
+     "size": 1040,
+     "file": "ovl/lp/lp_06.asm"
+    },
+    {
+     "name": "lp_07",
+     "para": 8505,
+     "size": 6560,
+     "file": "ovl/lp/lp_07.asm"
+    },
+    {
+     "name": "lp_08",
+     "para": 8915,
+     "size": 800,
+     "file": "ovl/lp/lp_08.asm"
+    },
+    {
+     "name": "lp_09",
+     "para": 8965,
+     "size": 2688,
+     "file": "ovl/lp/lp_09.asm"
+    },
+    {
+     "name": "lp_10",
+     "para": 9133,
+     "size": 8272,
+     "file": "ovl/lp/lp_10.asm"
+    },
+    {
+     "name": "lp_11",
+     "para": 9650,
+     "size": 12128,
+     "file": "ovl/lp/lp_11.asm"
+    },
+    {
+     "name": "lp_12",
+     "para": 10408,
+     "size": 592,
+     "file": "ovl/lp/lp_12.asm"
+    },
+    {
+     "name": "lp_13",
+     "para": 10445,
+     "size": 5344,
+     "file": "ovl/lp/lp_13.asm"
+    },
+    {
+     "name": "lp_14",
+     "para": 10779,
+     "size": 960,
+     "file": "ovl/lp/lp_14.asm"
+    },
+    {
+     "name": "lp_15",
+     "para": 10839,
+     "size": 9728,
+     "file": "ovl/lp/lp_15.asm"
+    },
+    {
+     "name": "lp_16",
+     "para": 11447,
+     "size": 5648,
+     "file": "ovl/lp/lp_16.asm"
+    },
+    {
+     "name": "lp_17",
+     "para": 11800,
+     "size": 736,
+     "file": "ovl/lp/lp_17.asm"
+    },
+    {
+     "name": "lp_18",
+     "para": 11846,
+     "size": 5836,
+     "file": "ovl/lp/lp_18.asm"
+    }
+   ],
+   "entries": [
+    [
+     7749,
+     604
+    ],
+    [
+     7883,
+     8
+    ],
+    [
+     7883,
+     818
+    ],
+    [
+     7985,
+     2974
+    ],
+    [
+     7985,
+     2982
+    ],
+    [
+     8505,
+     5168
+    ],
+    [
+     8505,
+     5612
+    ],
+    [
+     8915,
+     482
+    ],
+    [
+     8915,
+     610
+    ],
+    [
+     8965,
+     12
+    ],
+    [
+     9133,
+     70
+    ],
+    [
+     9650,
+     1220
+    ],
+    [
+     9650,
+     1308
+    ],
+    [
+     9650,
+     1396
+    ],
+    [
+     9650,
+     6388
+    ],
+    [
+     9650,
+     8330
+    ],
+    [
+     10779,
+     4
+    ],
+    [
+     10839,
+     844
+    ],
+    [
+     10839,
+     4062
+    ],
+    [
+     10839,
+     4224
+    ],
+    [
+     10839,
+     8530
+    ],
+    [
+     11447,
+     2554
+    ],
+    [
+     11447,
+     3112
+    ],
+    [
+     11447,
+     4942
+    ],
+    [
+     11447,
+     5186
+    ],
+    [
+     11800,
+     10
+    ]
+   ]
+  },
+  {
+   "name": "STATS",
+   "file": "lst/game/STATS.OVL",
+   "index": 2,
+   "para": 7749,
+   "mem": 2495,
+   "relocs": 1283,
+   "image": 5136,
+   "size": 45048,
+   "sha1": "3ca7d67f3ad3da24bf71fd972aabb2aa6bcfc920",
+   "segments": [
+    {
+     "name": "stats_00",
+     "para": 7749,
+     "size": 1680,
+     "file": "ovl/stats/stats_00.asm"
+    },
+    {
+     "name": "stats_01",
+     "para": 7854,
+     "size": 7792,
+     "file": "ovl/stats/stats_01.asm"
+    },
+    {
+     "name": "stats_02",
+     "para": 8341,
+     "size": 1264,
+     "file": "ovl/stats/stats_02.asm"
+    },
+    {
+     "name": "stats_03",
+     "para": 8420,
+     "size": 256,
+     "file": "ovl/stats/stats_03.asm"
+    },
+    {
+     "name": "stats_04",
+     "para": 8436,
+     "size": 1632,
+     "file": "ovl/stats/stats_04.asm"
+    },
+    {
+     "name": "stats_05",
+     "para": 8538,
+     "size": 3808,
+     "file": "ovl/stats/stats_05.asm"
+    },
+    {
+     "name": "stats_06",
+     "para": 8776,
+     "size": 1712,
+     "file": "ovl/stats/stats_06.asm"
+    },
+    {
+     "name": "stats_07",
+     "para": 8883,
+     "size": 2528,
+     "file": "ovl/stats/stats_07.asm"
+    },
+    {
+     "name": "stats_08",
+     "para": 9041,
+     "size": 2112,
+     "file": "ovl/stats/stats_08.asm"
+    },
+    {
+     "name": "stats_09",
+     "para": 9173,
+     "size": 1808,
+     "file": "ovl/stats/stats_09.asm"
+    },
+    {
+     "name": "stats_10",
+     "para": 9286,
+     "size": 2560,
+     "file": "ovl/stats/stats_10.asm"
+    },
+    {
+     "name": "stats_11",
+     "para": 9446,
+     "size": 4080,
+     "file": "ovl/stats/stats_11.asm"
+    },
+    {
+     "name": "stats_12",
+     "para": 9701,
+     "size": 3472,
+     "file": "ovl/stats/stats_12.asm"
+    },
+    {
+     "name": "stats_13",
+     "para": 9918,
+     "size": 5208,
+     "file": "ovl/stats/stats_13.asm"
+    }
+   ],
+   "entries": [
+    [
+     7749,
+     0
+    ],
+    [
+     7749,
+     1148
+    ],
+    [
+     7749,
+     1432
+    ],
+    [
+     7854,
+     68
+    ],
+    [
+     8341,
+     8
+    ],
+    [
+     8341,
+     192
+    ],
+    [
+     8341,
+     384
+    ],
+    [
+     8538,
+     742
+    ],
+    [
+     8538,
+     1064
+    ],
+    [
+     8538,
+     1386
+    ],
+    [
+     8538,
+     1708
+    ],
+    [
+     8538,
+     1950
+    ],
+    [
+     8776,
+     12
+    ],
+    [
+     8776,
+     20
+    ],
+    [
+     8776,
+     30
+    ],
+    [
+     8776,
+     40
+    ],
+    [
+     8776,
+     236
+    ],
+    [
+     8776,
+     432
+    ],
+    [
+     8776,
+     628
+    ],
+    [
+     8776,
+     848
+    ],
+    [
+     8776,
+     1068
+    ],
+    [
+     8776,
+     1102
+    ],
+    [
+     8776,
+     1136
+    ],
+    [
+     8776,
+     1170
+    ],
+    [
+     8776,
+     1204
+    ],
+    [
+     8776,
+     1238
+    ],
+    [
+     8776,
+     1272
+    ],
+    [
+     8776,
+     1306
+    ],
+    [
+     8776,
+     1340
+    ],
+    [
+     8776,
+     1374
+    ],
+    [
+     8776,
+     1408
+    ],
+    [
+     8776,
+     1442
+    ],
+    [
+     8776,
+     1476
+    ],
+    [
+     8776,
+     1510
+    ],
+    [
+     8776,
+     1544
+    ],
+    [
+     8776,
+     1578
+    ],
+    [
+     8776,
+     1612
+    ],
+    [
+     8776,
+     1622
+    ],
+    [
+     8883,
+     0
+    ],
+    [
+     8883,
+     456
+    ],
+    [
+     8883,
+     912
+    ],
+    [
+     8883,
+     1368
+    ],
+    [
+     8883,
+     1582
+    ],
+    [
+     9041,
+     10
+    ],
+    [
+     9041,
+     332
+    ],
+    [
+     9041,
+     654
+    ],
+    [
+     9041,
+     976
+    ],
+    [
+     9041,
+     1190
+    ],
+    [
+     9286,
+     106
+    ],
+    [
+     9701,
+     2
+    ],
+    [
+     9701,
+     282
+    ],
+    [
+     9701,
+     562
+    ],
+    [
+     9701,
+     950
+    ],
+    [
+     9701,
+     1326
+    ],
+    [
+     9918,
+     10
+    ],
+    [
+     9918,
+     236
+    ],
+    [
+     9918,
+     454
+    ],
+    [
+     9918,
+     704
+    ],
+    [
+     9918,
+     954
+    ],
+    [
+     9918,
+     1182
+    ],
+    [
+     9918,
+     1432
+    ],
+    [
+     9918,
+     1658
+    ],
+    [
+     9918,
+     1986
+    ]
+   ]
+  },
+  {
+   "name": "GAME",
+   "file": "lst/game/GAME.OVL",
+   "index": 3,
+   "para": 7749,
+   "mem": 343,
+   "relocs": 147,
+   "image": 592,
+   "size": 6072,
+   "sha1": "2dedac88571abea058512e1fd1d0e85847eaaee2",
+   "segments": [
+    {
+     "name": "game_00",
+     "para": 7749,
+     "size": 496,
+     "file": "ovl/game/game_00.asm"
+    },
+    {
+     "name": "game_01",
+     "para": 7780,
+     "size": 416,
+     "file": "ovl/game/game_01.asm"
+    },
+    {
+     "name": "game_02",
+     "para": 7806,
+     "size": 2736,
+     "file": "ovl/game/game_02.asm"
+    },
+    {
+     "name": "game_03",
+     "para": 7977,
+     "size": 688,
+     "file": "ovl/game/game_03.asm"
+    },
+    {
+     "name": "game_04",
+     "para": 8020,
+     "size": 1144,
+     "file": "ovl/game/game_04.asm"
+    }
+   ],
+   "entries": [
+    [
+     7749,
+     0
+    ],
+    [
+     7749,
+     194
+    ],
+    [
+     7780,
+     2
+    ],
+    [
+     7806,
+     4
+    ],
+    [
+     7806,
+     96
+    ],
+    [
+     7806,
+     288
+    ],
+    [
+     7806,
+     382
+    ],
+    [
+     7806,
+     1000
+    ],
+    [
+     7806,
+     1028
+    ],
+    [
+     7806,
+     1216
+    ],
+    [
+     7806,
+     2186
+    ],
+    [
+     7806,
+     2652
+    ],
+    [
+     7806,
+     2676
+    ],
+    [
+     7806,
+     2708
+    ],
+    [
+     8020,
+     2
+    ],
+    [
+     8020,
+     790
+    ],
+    [
+     8020,
+     1018
+    ],
+    [
+     8020,
+     1022
+    ]
+   ]
+  },
+  {
+   "name": "INIT",
+   "file": "lst/game/INIT.OVL",
+   "index": 4,
+   "para": 8092,
+   "mem": 2439,
+   "relocs": 1164,
+   "image": 4656,
+   "size": 43672,
+   "sha1": "580d8ac3f8d3a74f1f4fff7e2042b00bbb65d6b5",
+   "segments": [
+    {
+     "name": "init_00",
+     "para": 8092,
+     "size": 1712,
+     "file": "ovl/init/init_00.asm"
+    },
+    {
+     "name": "init_01",
+     "para": 8199,
+     "size": 2576,
+     "file": "ovl/init/init_01.asm"
+    },
+    {
+     "name": "init_02",
+     "para": 8360,
+     "size": 2288,
+     "file": "ovl/init/init_02.asm"
+    },
+    {
+     "name": "init_03",
+     "para": 8503,
+     "size": 1248,
+     "file": "ovl/init/init_03.asm"
+    },
+    {
+     "name": "init_04",
+     "para": 8581,
+     "size": 448,
+     "file": "ovl/init/init_04.asm"
+    },
+    {
+     "name": "init_05",
+     "para": 8609,
+     "size": 5712,
+     "file": "ovl/init/init_05.asm"
+    },
+    {
+     "name": "init_06",
+     "para": 8966,
+     "size": 1904,
+     "file": "ovl/init/init_06.asm"
+    },
+    {
+     "name": "init_07",
+     "para": 9085,
+     "size": 1248,
+     "file": "ovl/init/init_07.asm"
+    },
+    {
+     "name": "init_08",
+     "para": 9163,
+     "size": 1440,
+     "file": "ovl/init/init_08.asm"
+    },
+    {
+     "name": "init_09",
+     "para": 9253,
+     "size": 2960,
+     "file": "ovl/init/init_09.asm"
+    },
+    {
+     "name": "init_10",
+     "para": 9438,
+     "size": 1024,
+     "file": "ovl/init/init_10.asm"
+    },
+    {
+     "name": "init_11",
+     "para": 9502,
+     "size": 272,
+     "file": "ovl/init/init_11.asm"
+    },
+    {
+     "name": "init_12",
+     "para": 9519,
+     "size": 976,
+     "file": "ovl/init/init_12.asm"
+    },
+    {
+     "name": "init_13",
+     "para": 9580,
+     "size": 336,
+     "file": "ovl/init/init_13.asm"
+    },
+    {
+     "name": "init_14",
+     "para": 9601,
+     "size": 5392,
+     "file": "ovl/init/init_14.asm"
+    },
+    {
+     "name": "init_15",
+     "para": 9938,
+     "size": 2976,
+     "file": "ovl/init/init_15.asm"
+    },
+    {
+     "name": "init_16",
+     "para": 10124,
+     "size": 5856,
+     "file": "ovl/init/init_16.asm"
+    },
+    {
+     "name": "init_17",
+     "para": 10490,
+     "size": 648,
+     "file": "ovl/init/init_17.asm"
+    }
+   ],
+   "entries": [
+    [
+     8092,
+     114
+    ],
+    [
+     8092,
+     436
+    ],
+    [
+     8092,
+     508
+    ],
+    [
+     8092,
+     1184
+    ],
+    [
+     8199,
+     444
+    ],
+    [
+     8503,
+     4
+    ],
+    [
+     8503,
+     982
+    ],
+    [
+     8609,
+     8
+    ],
+    [
+     8966,
+     694
+    ],
+    [
+     9085,
+     242
+    ],
+    [
+     9085,
+     246
+    ],
+    [
+     9085,
+     574
+    ],
+    [
+     9085,
+     934
+    ],
+    [
+     9253,
+     0
+    ],
+    [
+     9253,
+     884
+    ],
+    [
+     9253,
+     2848
+    ],
+    [
+     9438,
+     6
+    ],
+    [
+     9502,
+     56
+    ],
+    [
+     9519,
+     14
+    ],
+    [
+     9519,
+     840
+    ],
+    [
+     9580,
+     4
+    ],
+    [
+     9580,
+     232
+    ],
+    [
+     9580,
+     302
+    ],
+    [
+     9601,
+     14
+    ],
+    [
+     10124,
+     6
+    ],
+    [
+     10124,
+     2504
+    ]
+   ]
+  },
+  {
+   "name": "AI",
+   "file": "lst/game/AI.OVL",
+   "index": 5,
+   "para": 8092,
+   "mem": 5037,
+   "relocs": 1195,
+   "image": 4784,
+   "size": 85370,
+   "sha1": "81897f14b1709fc4f36ae52fe17e5a6db9c128e0",
+   "segments": [
+    {
+     "name": "ai_00",
+     "para": 8092,
+     "size": 224,
+     "file": "ovl/ai/ai_00.asm"
+    },
+    {
+     "name": "ai_01",
+     "para": 8106,
+     "size": 2272,
+     "file": "ovl/ai/ai_01.asm"
+    },
+    {
+     "name": "ai_02",
+     "para": 8248,
+     "size": 672,
+     "file": "ovl/ai/ai_02.asm"
+    },
+    {
+     "name": "ai_03",
+     "para": 8290,
+     "size": 528,
+     "file": "ovl/ai/ai_03.asm"
+    },
+    {
+     "name": "ai_04",
+     "para": 8323,
+     "size": 3600,
+     "file": "ovl/ai/ai_04.asm"
+    },
+    {
+     "name": "ai_05",
+     "para": 8548,
+     "size": 4272,
+     "file": "ovl/ai/ai_05.asm"
+    },
+    {
+     "name": "ai_06",
+     "para": 8815,
+     "size": 3632,
+     "file": "ovl/ai/ai_06.asm"
+    },
+    {
+     "name": "ai_07",
+     "para": 9042,
+     "size": 3376,
+     "file": "ovl/ai/ai_07.asm"
+    },
+    {
+     "name": "ai_08",
+     "para": 9253,
+     "size": 3904,
+     "file": "ovl/ai/ai_08.asm"
+    },
+    {
+     "name": "ai_09",
+     "para": 9497,
+     "size": 14880,
+     "file": "ovl/ai/ai_09.asm"
+    },
+    {
+     "name": "ai_10",
+     "para": 10427,
+     "size": 13968,
+     "file": "ovl/ai/ai_10.asm"
+    },
+    {
+     "name": "ai_11",
+     "para": 11300,
+     "size": 2784,
+     "file": "ovl/ai/ai_11.asm"
+    },
+    {
+     "name": "ai_12",
+     "para": 11474,
+     "size": 5888,
+     "file": "ovl/ai/ai_12.asm"
+    },
+    {
+     "name": "ai_13",
+     "para": 11842,
+     "size": 12096,
+     "file": "ovl/ai/ai_13.asm"
+    },
+    {
+     "name": "ai_14",
+     "para": 12598,
+     "size": 1088,
+     "file": "ovl/ai/ai_14.asm"
+    },
+    {
+     "name": "ai_15",
+     "para": 12666,
+     "size": 4112,
+     "file": "ovl/ai/ai_15.asm"
+    },
+    {
+     "name": "ai_16",
+     "para": 12923,
+     "size": 3290,
+     "file": "ovl/ai/ai_16.asm"
+    }
+   ],
+   "entries": [
+    [
+     8092,
+     0
+    ],
+    [
+     8106,
+     14
+    ],
+    [
+     8248,
+     8
+    ],
+    [
+     8248,
+     22
+    ],
+    [
+     8290,
+     14
+    ],
+    [
+     8323,
+     584
+    ],
+    [
+     8323,
+     1298
+    ],
+    [
+     8548,
+     470
+    ],
+    [
+     8548,
+     938
+    ],
+    [
+     8548,
+     1616
+    ],
+    [
+     8548,
+     3248
+    ],
+    [
+     8548,
+     3292
+    ],
+    [
+     8815,
+     3302
+    ],
+    [
+     8815,
+     3498
+    ],
+    [
+     9042,
+     92
+    ],
+    [
+     9042,
+     372
+    ],
+    [
+     9042,
+     412
+    ],
+    [
+     9042,
+     494
+    ],
+    [
+     9042,
+     608
+    ],
+    [
+     9042,
+     1144
+    ],
+    [
+     9253,
+     718
+    ],
+    [
+     9253,
+     1258
+    ],
+    [
+     9253,
+     2592
+    ],
+    [
+     9497,
+     0
+    ],
+    [
+     9497,
+     276
+    ],
+    [
+     9497,
+     858
+    ],
+    [
+     9497,
+     1200
+    ],
+    [
+     9497,
+     1584
+    ],
+    [
+     9497,
+     1814
+    ],
+    [
+     9497,
+     2184
+    ],
+    [
+     9497,
+     2346
+    ],
+    [
+     9497,
+     2658
+    ],
+    [
+     9497,
+     2800
+    ],
+    [
+     9497,
+     3190
+    ],
+    [
+     9497,
+     3588
+    ],
+    [
+     9497,
+     3628
+    ],
+    [
+     9497,
+     3804
+    ],
+    [
+     9497,
+     4380
+    ],
+    [
+     9497,
+     4542
+    ],
+    [
+     9497,
+     6496
+    ],
+    [
+     9497,
+     6782
+    ],
+    [
+     9497,
+     7202
+    ],
+    [
+     9497,
+     8440
+    ],
+    [
+     9497,
+     8514
+    ],
+    [
+     9497,
+     8546
+    ],
+    [
+     9497,
+     8852
+    ],
+    [
+     9497,
+     9110
+    ],
+    [
+     9497,
+     10460
+    ],
+    [
+     9497,
+     10590
+    ],
+    [
+     9497,
+     11970
+    ],
+    [
+     9497,
+     12348
+    ],
+    [
+     9497,
+     12772
+    ],
+    [
+     9497,
+     14178
+    ],
+    [
+     9497,
+     14572
+    ],
+    [
+     9497,
+     14878
+    ],
+    [
+     10427,
+     7688
+    ],
+    [
+     11300,
+     2
+    ],
+    [
+     11300,
+     46
+    ],
+    [
+     11300,
+     56
+    ],
+    [
+     11300,
+     2588
+    ],
+    [
+     11474,
+     1174
+    ],
+    [
+     11474,
+     1210
+    ],
+    [
+     11474,
+     1332
+    ],
+    [
+     11474,
+     3398
+    ],
+    [
+     11474,
+     4272
+    ],
+    [
+     11474,
+     4560
+    ],
+    [
+     11474,
+     5340
+    ],
+    [
+     11474,
+     5696
+    ],
+    [
+     11842,
+     38
+    ],
+    [
+     11842,
+     478
+    ],
+    [
+     11842,
+     5564
+    ],
+    [
+     11842,
+     6548
+    ],
+    [
+     11842,
+     7054
+    ],
+    [
+     11842,
+     8674
+    ],
+    [
+     11842,
+     11312
+    ],
+    [
+     11842,
+     11520
+    ],
+    [
+     11842,
+     11734
+    ],
+    [
+     11842,
+     12032
+    ],
+    [
+     11842,
+     12062
+    ],
+    [
+     12666,
+     258
+    ],
+    [
+     12666,
+     3474
+    ],
+    [
+     12666,
+     3874
+    ]
+   ]
+  },
+  {
+   "name": "MOVIE",
+   "file": "lst/game/MOVIE.OVL",
+   "index": 6,
+   "para": 13129,
+   "mem": 204,
+   "relocs": 33,
+   "image": 144,
+   "size": 3400,
+   "sha1": "d005d0266b62df7b85a514bc4940d16f282c15ae",
+   "segments": [
+    {
+     "name": "movie_00",
+     "para": 13129,
+     "size": 224,
+     "file": "ovl/movie/movie_00.asm"
+    },
+    {
+     "name": "movie_01",
+     "para": 13143,
+     "size": 3032,
+     "file": "ovl/movie/movie_01.asm"
+    }
+   ],
+   "entries": [
+    [
+     13129,
+     0
+    ],
+    [
+     13143,
+     402
+    ],
+    [
+     13143,
+     782
+    ],
+    [
+     13143,
+     1736
+    ]
+   ]
+  },
+  {
+   "name": "FADES",
+   "file": "lst/game/FADES.OVL",
+   "index": 7,
+   "para": 13129,
+   "mem": 15,
+   "relocs": 4,
+   "image": 16,
+   "size": 248,
+   "sha1": "12f79899ffbd0eadcc8ee21d632da6bce65cbb67",
+   "segments": [
+    {
+     "name": "fades_00",
+     "para": 13129,
+     "size": 232,
+     "file": "ovl/fades/fades_00.asm"
+    }
+   ],
+   "entries": [
+    [
+     13129,
+     0
+    ],
+    [
+     13129,
+     54
+    ],
+    [
+     13129,
+     94
+    ]
+   ]
+  },
+  {
+   "name": "FADES1",
+   "file": "lst/game/FADES1.OVL",
+   "index": 8,
+   "para": 13144,
+   "mem": 28,
+   "relocs": 8,
+   "image": 32,
+   "size": 468,
+   "sha1": "e32b43866555ea3f34cffdec763c9dc2f30d80dc",
+   "segments": [
+    {
+     "name": "fades1_00",
+     "para": 13144,
+     "size": 436,
+     "file": "ovl/fades1/fades1_00.asm"
+    }
+   ],
+   "entries": []
+  },
+  {
+   "name": "FADES2",
+   "file": "lst/game/FADES2.OVL",
+   "index": 9,
+   "para": 13144,
+   "mem": 30,
+   "relocs": 2,
+   "image": 16,
+   "size": 490,
+   "sha1": "0682e62a9373c0d793bd61ce66726d8d7389fb05",
+   "segments": [
+    {
+     "name": "fades2_00",
+     "para": 13144,
+     "size": 474,
+     "file": "ovl/fades2/fades2_00.asm"
+    }
+   ],
+   "entries": []
+  },
+  {
+   "name": "FADES3",
+   "file": "lst/game/FADES3.OVL",
+   "index": 10,
+   "para": 13144,
+   "mem": 29,
+   "relocs": 3,
+   "image": 16,
+   "size": 476,
+   "sha1": "d30cd2c43d1ba3f8a1ab616a24147ca2461182d2",
+   "segments": [
+    {
+     "name": "fades3_00",
+     "para": 13144,
+     "size": 460,
+     "file": "ovl/fades3/fades3_00.asm"
+    }
+   ],
+   "entries": []
+  },
+  {
+   "name": "FADES4",
+   "file": "lst/game/FADES4.OVL",
+   "index": 11,
+   "para": 13144,
+   "mem": 14,
+   "relocs": 10,
+   "image": 48,
+   "size": 258,
+   "sha1": "d8cc4471b8d3682b26992459987057c9e70fc8ea",
+   "segments": [
+    {
+     "name": "fades4_00",
+     "para": 13144,
+     "size": 210,
+     "file": "ovl/fades4/fades4_00.asm"
+    }
+   ],
+   "entries": [
+    [
+     13144,
+     0
+    ]
+   ]
+  },
+  {
+   "name": "FADES5",
+   "file": "lst/game/FADES5.OVL",
+   "index": 12,
+   "para": 13144,
+   "mem": 28,
+   "relocs": 7,
+   "image": 32,
+   "size": 468,
+   "sha1": "4e0ef663fcce8e88234d46e11e043e5f19800803",
+   "segments": [
+    {
+     "name": "fades5_00",
+     "para": 13144,
+     "size": 436,
+     "file": "ovl/fades5/fades5_00.asm"
+    }
+   ],
+   "entries": []
+  },
+  {
+   "name": "FADES6",
+   "file": "lst/game/FADES6.OVL",
+   "index": 13,
+   "para": 13144,
+   "mem": 23,
+   "relocs": 7,
+   "image": 32,
+   "size": 388,
+   "sha1": "6960763cc01e52259c00bd11c7437b1d5dc9e4f8",
+   "segments": [
+    {
+     "name": "fades6_00",
+     "para": 13144,
+     "size": 356,
+     "file": "ovl/fades6/fades6_00.asm"
+    }
+   ],
+   "entries": []
+  },
+  {
+   "name": "FADES7",
+   "file": "lst/game/FADES7.OVL",
+   "index": 14,
+   "para": 13144,
+   "mem": 33,
+   "relocs": 3,
+   "image": 16,
+   "size": 544,
+   "sha1": "6b52f8a19409088156ad6a253fddef43c74d1a7f",
+   "segments": [
+    {
+     "name": "fades7_00",
+     "para": 13144,
+     "size": 528,
+     "file": "ovl/fades7/fades7_00.asm"
+    }
+   ],
+   "entries": []
+  },
+  {
+   "name": "FADES8",
+   "file": "lst/game/FADES8.OVL",
+   "index": 15,
+   "para": 13144,
+   "mem": 32,
+   "relocs": 10,
+   "image": 48,
+   "size": 556,
+   "sha1": "1353af353556da0caa2d01d6df4940ad7ba5db3f",
+   "segments": [
+    {
+     "name": "fades8_00",
+     "para": 13144,
+     "size": 508,
+     "file": "ovl/fades8/fades8_00.asm"
+    }
+   ],
+   "entries": []
+  },
+  {
+   "name": "FADES9",
+   "file": "lst/game/FADES9.OVL",
+   "index": 16,
+   "para": 13144,
+   "mem": 17,
+   "relocs": 2,
+   "image": 16,
+   "size": 278,
+   "sha1": "3caa49cfb36ef244125c77cfe27f9275ccfb82d3",
+   "segments": [
+    {
+     "name": "fades9_00",
+     "para": 13144,
+     "size": 262,
+     "file": "ovl/fades9/fades9_00.asm"
+    }
+   ],
+   "entries": []
+  },
+  {
+   "name": "FADES10",
+   "file": "lst/game/FADES10.OVL",
+   "index": 17,
+   "para": 13144,
+   "mem": 35,
+   "relocs": 8,
+   "image": 32,
+   "size": 584,
+   "sha1": "038631952320f9a27029e19e6a6971d7d4744ebb",
+   "segments": [
+    {
+     "name": "fades10_00",
+     "para": 13144,
+     "size": 552,
+     "file": "ovl/fades10/fades10_00.asm"
+    }
+   ],
+   "entries": []
+  },
+  {
+   "name": "FADES11",
+   "file": "lst/game/FADES11.OVL",
+   "index": 18,
+   "para": 13144,
+   "mem": 56,
+   "relocs": 7,
+   "image": 32,
+   "size": 926,
+   "sha1": "fa82bb72c64f426eb300b87055436e69a59442d0",
+   "segments": [
+    {
+     "name": "fades11_00",
+     "para": 13144,
+     "size": 894,
+     "file": "ovl/fades11/fades11_00.asm"
+    }
+   ],
+   "entries": []
+  },
+  {
+   "name": "FADES12",
+   "file": "lst/game/FADES12.OVL",
+   "index": 19,
+   "para": 13144,
+   "mem": 26,
+   "relocs": 7,
+   "image": 32,
+   "size": 440,
+   "sha1": "d74e24d43e282ec0914a5e017f70a3b24b423fb6",
+   "segments": [
+    {
+     "name": "fades12_00",
+     "para": 13144,
+     "size": 408,
+     "file": "ovl/fades12/fades12_00.asm"
+    }
+   ],
+   "entries": [
+    [
+     13144,
+     0
+    ]
+   ]
+  }
+ ]
+}
