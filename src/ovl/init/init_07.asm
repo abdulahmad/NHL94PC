@@ -105,22 +105,22 @@ Init_237D_00FA:
 	db	0x2B, 0xDB		; sub bx, bx
 	db	0x8B, 0xD3		; mov dx, bx
 .1:
-	cmp	word [bx - 0x4f62], 0x5
+	cmp	word [bx + g_B09E], 0x5
 	jl	short .2
-	mov	ax, [bx - 0x4f62]
-	cmp	[bx - 0x2606], ax
+	mov	ax, [bx + g_B09E]
+	cmp	[bx + g_D9FA], ax
 	jz	short .2
 	db	0x8B, 0xCA		; mov cx, dx
 	mov	ax, 0x1
 	shl	ax, cl
-	or	[0x4fd4], ax
+	or	[g_4FD4], ax
 .2:
 	inc	dx
 	inc	bx
 	inc	bx
 	cmp	bx, 0xc
 	jl	short .1
-	cmp	word [0x4fd4], 0x3f
+	cmp	word [g_4FD4], 0x3f
 	jnz	short .3
 	db	0x2B, 0xC0		; sub ax, ax
 	pop	si
@@ -135,7 +135,7 @@ Init_237D_00FA:
 	db	0x8B, 0xCE		; mov cx, si
 	mov	ax, 0x1
 	shl	ax, cl
-	test	[0x4fd4], ax
+	test	[g_4FD4], ax
 	jz	short .5
 .4:
 	mov	ax, 0x6
@@ -144,22 +144,22 @@ Init_237D_00FA:
 	db	0x8B, 0xCE		; mov cx, si
 	mov	ax, 0x1
 	shl	ax, cl
-	test	[0x4fd4], ax
+	test	[g_4FD4], ax
 	jnz	short .4
 .5:
 	db	0x8B, 0xCE		; mov cx, si
 	mov	ax, 0x1
 	shl	ax, cl
-	or	[0x4fd4], ax
+	or	[g_4FD4], ax
 	db	0x8B, 0xDE		; mov bx, si
 	shl	bx, 1
 	mov	[bp - 0x8], bx
-	mov	al, [bx - 0x4f56]
+	mov	al, [bx + g_B0AA]
 	db	0x2A, 0xE4		; sub ah, ah
 	mov	[bp - 0x4], ax
-	mov	al, [bx - 0x4f55]
+	mov	al, [bx + g_B0AB]
 	mov	[bp - 0x6], ax
-	mov	di, [bx - 0x4f62]
+	mov	di, [bx + g_B09E]
 	cmp	di, 0x5
 	jl	short .6
 	dec	word [bp - 0x4]
@@ -169,10 +169,10 @@ Init_237D_00FA:
 	call	0x2137:Init_2137_0004
 	call	0x0EDC:LoadStudioSpeech
 	mov	bx, [bp - 0x8]
-	mov	al, [bx - 0x4f49]
+	mov	al, [bx + g_B0B7]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
-	mov	al, [bx - 0x4f4a]
+	mov	al, [bx + g_B0B6]
 	push	ax
 	call	0x0EDC:AnnounceHighlightMatchup
 	add	sp, 0x4
@@ -182,40 +182,40 @@ Init_237D_00FA:
 	lea	ax, [bp - 0x4]
 	push	ax
 	mov	bx, [bp - 0x8]
-	mov	al, [bx - 0x4f49]
+	mov	al, [bx + g_B0B7]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
-	mov	al, [bx - 0x4f4a]
+	mov	al, [bx + g_B0B6]
 	push	ax
 	call	0x1B35:OvlThunk273
 	add	sp, 0xa
 	db	0x8B, 0xF8		; mov di, ax
 	call	0x2137:Init_2137_03D6
-	mov	bx, [0x29cc]
+	mov	bx, [g_29CC]
 	shl	bx, 1
 	push	word [bx + TeamNameClips]
-	mov	bx, [0x29ca]
+	mov	bx, [g_29CA]
 	shl	bx, 1
 	push	word [bx + TeamNameClips]
 	call	0x0EDC:LoadPlayByPlaySpeech
 	add	sp, 0x4
 	mov	bx, [bp - 0x8]
-	cmp	word [bx - 0x4f62], 0x4
+	cmp	word [bx + g_B09E], 0x4
 	jg	short .7
 	mov	al, [bp - 0x4]
-	mov	[bx - 0x4f56], al
+	mov	[bx + g_B0AA], al
 	mov	al, [bp - 0x6]
-	mov	[bx - 0x4f55], al
-	cmp	word [bx - 0x4f62], 0x4
+	mov	[bx + g_B0AB], al
+	cmp	word [bx + g_B09E], 0x4
 	jnz	short .7
 	mov	bx, [bp - 0x8]
-	mov	word [bx - 0x4f62], 0x5
+	mov	word [bx + g_B09E], 0x5
 .7:
 	db	0x2B, 0xDB		; sub bx, bx
 	mov	[bp - 0x2], di
 .8:
-	mov	ax, [bx - 0x4f62]
-	mov	[bx - 0x2606], ax
+	mov	ax, [bx + g_B09E]
+	mov	[bx + g_D9FA], ax
 	inc	bx
 	inc	bx
 	cmp	bx, 0xc
@@ -230,30 +230,30 @@ Init_237D_023E:
 	enter	0x6, 0x0
 	push	di
 	push	si
-	cmp	word [0x48be], -0x1
+	cmp	word [g_48BE], -0x1
 	jz	short .1
 	call	0x1B35:OvlThunk250
 	call	0x1B35:OvlThunk254
 .1:
 	call	0x256C:Init_256C_00E8
-	push	word [0xc25e]
-	push	word [0xc25c]
+	push	word [g_C25E]
+	push	word [g_C25C]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	push	word [0xc25a]
-	push	word [0xc258]
+	push	word [g_C25A]
+	push	word [g_C258]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	call	0x2137:Init_2137_03D6
-	cmp	word [0x48be], -0x1
+	cmp	word [g_48BE], -0x1
 	jnz	short .2
 	jmp	near .7
 .2:
 	call	0x0F4A:SaveVgaPlanes
 	call	0x0BFE:InputInit
 	push	0x0
-	push	word [0xbffe]
-	push	word [0xbffe]
+	push	word [g_BFFE]
+	push	word [g_BFFE]
 	push	0x1
 	call	0x21A1:Init_21A1_0008
 	add	sp, 0x8
@@ -264,17 +264,17 @@ Init_237D_023E:
 	jz	short .3
 	jmp	near .7
 .3:
-	cmp	word [0xbffe], 0x1
+	cmp	word [g_BFFE], 0x1
 	jnz	short .5
-	mov	word [0x4fd4], 0x0
-	push	word [0x29cc]
-	push	word [0x29ca]
+	mov	word [g_4FD4], 0x0
+	push	word [g_29CC]
+	push	word [g_29CA]
 	call	0x2306:Init_2306_000A
 	add	sp, 0x4
 	db	0x2B, 0xF6		; sub si, si
 .4:
-	mov	ax, [si - 0x4f62]
-	mov	[si - 0x2606], ax
+	mov	ax, [si + g_B09E]
+	mov	[si + g_D9FA], ax
 	inc	si
 	inc	si
 	cmp	si, 0xc
@@ -285,7 +285,7 @@ Init_237D_023E:
 	jz	short .6
 	jmp	near .7
 .6:
-	push	word [0xbffe]
+	push	word [g_BFFE]
 	call	0x2306:Init_2306_012E
 	add	sp, 0x2
 	push	cs
@@ -322,23 +322,23 @@ Init_237D_023E:
 	call	0x0BFE:InputInit
 	push	0x0
 	push	0x0
-	push	word [0xbffe]
+	push	word [g_BFFE]
 	push	0x20
 	call	0x21A1:Init_21A1_0008
 	add	sp, 0x8
 	call	0x0BFE:InputShutdown
 	call	0x0F4A:RestoreVgaPlanes
 .7:
-	mov	word [0x48be], 0xffff
+	mov	word [g_48BE], 0xffff
 	call	0x2137:Init_2137_0004
 	push	0x1
 	call	0x1B35:OvlThunk139
 	add	sp, 0x2
 	db	0x2A, 0xC0		; sub al, al
-	mov	[0x1d6], al
-	mov	[0x1d7], al
-	mov	[0x1d8], al
-	mov	[0x1d9], al
+	mov	[g_01D6], al
+	mov	[g_01D7], al
+	mov	[g_01D8], al
+	mov	[g_01D9], al
 	call	0x1B35:OvlThunk272
 	pop	si
 	pop	di
@@ -353,12 +353,12 @@ Init_237D_03A6:
 	call	0x1B35:OvlThunk254
 	call	0x1B35:OvlThunk274
 	call	0x256C:Init_256C_00E8
-	push	word [0xc25e]
-	push	word [0xc25c]
+	push	word [g_C25E]
+	push	word [g_C25C]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	push	word [0xc25a]
-	push	word [0xc258]
+	push	word [g_C25A]
+	push	word [g_C258]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	call	0x2137:Init_2137_03D6
@@ -389,7 +389,7 @@ Init_237D_03A6:
 	call	0x0F4A:SaveVgaPlanes
 	call	0x0BFE:InputInit
 	push	0x0
-	push	word [0xbffe]
+	push	word [g_BFFE]
 	push	0x1
 	push	0x1
 	call	0x21A1:Init_21A1_0008
@@ -402,7 +402,7 @@ Init_237D_03A6:
 	db	0x8B, 0xC6		; mov ax, si
 	test	al, 0x4
 	jnz	short .1
-	push	word [0xbffe]
+	push	word [g_BFFE]
 	call	0x2306:Init_2306_012E
 	add	sp, 0x2
 	push	cs
@@ -435,7 +435,7 @@ Init_237D_03A6:
 	call	0x0BFE:InputInit
 	push	0x0
 	push	0x0
-	push	word [0xbffe]
+	push	word [g_BFFE]
 	push	0x20
 	call	0x21A1:Init_21A1_0008
 	add	sp, 0x8
@@ -446,5 +446,5 @@ Init_237D_03A6:
 	push	0x2
 	call	0x1B35:OvlThunk139
 	add	sp, 0x2
-	mov	es, [0x8cb0]
+	mov	es, [g_8CB0]
 	mov	word [es:0x126], 0x1

@@ -155,7 +155,7 @@ Lp_2139_000C:
 	call	0x2305:Lp_2305_0214
 	add	sp, 0xc
 	lea	ax, [bp - 0x74]
-	mov	es, [0x8ba2]
+	mov	es, [g_8BA2]
 	mov	[es:0x1f4], ax
 	mov	[es:0x1f6], ss
 	lea	ax, [bp - 0xb2]
@@ -296,7 +296,7 @@ Lp_2139_000C:
 	push	ax
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
-	mov	es, [0x8ba4]
+	mov	es, [g_8BA4]
 	mov	bx, [bp - 0xb4]
 	shl	bx, byte 0x2
 	push	word [es:bx + 0xb6e]
@@ -373,7 +373,7 @@ Lp_2139_000C:
 	push	word [bp + 0xe]
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
-	mov	es, [0x8ba4]
+	mov	es, [g_8BA4]
 	mov	bx, [bp - 0xb4]
 	shl	bx, byte 0x2
 	push	word [es:bx + 0xb6e]
@@ -391,7 +391,7 @@ Lp_2139_000C:
 	push	word 0xbaf
 	push	word 0x3701
 	push	word 0xbaf
-	mov	es, [0x8ba4]
+	mov	es, [g_8BA4]
 	mov	bx, [bp - 0xb4]
 	shl	bx, byte 0x2
 	push	word [es:bx + 0xb6e]
@@ -672,7 +672,7 @@ Lp_2139_000C:
 	mov	[bp - 0x14], si
 	mov	byte [bp + si - 0x12], 0x0
 	lea	ax, [bp - 0x12]
-	mov	es, [0x8ba6]
+	mov	es, [g_8BA6]
 	mov	[es:0x4e5], ax
 	mov	[es:0x4e7], ss
 	mov	ax, [bp - 0xae]
@@ -732,7 +732,7 @@ Lp_2139_07F4:
 	push	word 0xbaf
 	push	word 0x3701
 	push	word 0xbaf
-	mov	es, [0x8ba4]
+	mov	es, [g_8BA4]
 	push	word [es:si + 0x2]
 	push	word [es:si]
 	call	0x0CD1:CopyFileByName
@@ -747,7 +747,7 @@ Lp_2139_07F4:
 	push	word 0xbe4
 	push	word 0x3701
 	push	word 0xbe4
-	mov	es, [0x8ba4]
+	mov	es, [g_8BA4]
 	push	word [es:si + 0x2]
 	push	word [es:si]
 	call	0x0CD1:CopyFileByName
@@ -893,7 +893,7 @@ Lp_2139_08C6:
 	push	word 0xaf32
 	push	word 0x3a0b
 	push	word 0xac62
-	mov	es, [0x8ba8]
+	mov	es, [g_8BA8]
 	push	word [es:0xac5a]
 	call	0x28A8:Lp_28A8_0108
 	add	sp, 0xa
@@ -936,7 +936,7 @@ Lp_2139_08C6:
 	push	word 0xbaf
 	push	word 0x3701
 	push	word 0xbaf
-	mov	es, [0x8ba4]
+	mov	es, [g_8BA4]
 	mov	bx, [bp - 0x6]
 	shl	bx, byte 0x2
 	push	word [es:bx + 0xb6e]
@@ -1334,7 +1334,7 @@ Lp_2139_0C2E:
 	call	0x0D90:SetDialogColors
 	add	sp, 0xa
 	lea	ax, [bp - 0x84]
-	mov	es, [0x8baa]
+	mov	es, [g_8BAA]
 	mov	[es:0x69c], ax
 	mov	[es:0x69e], ss
 	lea	ax, [bp - 0x78]
@@ -1435,11 +1435,11 @@ Lp_2139_0C2E:
 	push	dx
 	call	0x03A3:MouseRead
 	add	sp, 0x6
-	mov	es, [0x8bac]
+	mov	es, [g_8BAC]
 	test	byte [es:0xac5e], 0xc
 	jz	short .13
 	lea	ax, [bp - 0x78]
-	mov	es, [0x8bae]
+	mov	es, [g_8BAE]
 	mov	[es:0x907], ax
 	mov	[es:0x909], ss
 	push	-0x1
@@ -1465,11 +1465,11 @@ Lp_2139_0C2E:
 	jmp	short .15
 	db	0x90
 .13:
-	mov	es, [0x8bb0]
+	mov	es, [g_8BB0]
 	cmp	word [es:0xac60], 0x0
 	jz	short .15
 	lea	ax, [bp - 0x78]
-	mov	es, [0x8bb2]
+	mov	es, [g_8BB2]
 	mov	[es:0xb36], ax
 	mov	[es:0xb38], ss
 	push	-0x1
@@ -1526,7 +1526,7 @@ Lp_2139_0C2E:
 	mov	al, [bp - 0x8e]
 	cbw
 	imul	bx, ax, 0x1e
-	mov	es, [0x8bb4]
+	mov	es, [g_8BB4]
 	cmp	byte [es:bx - 0x5388], 0x2
 	jz	short .21
 	mov	ax, [bp - 0x94]
@@ -1545,7 +1545,7 @@ Lp_2139_0C2E:
 	call	0x0D90:SetDialogColors
 	add	sp, 0xa
 	lea	ax, [bp - 0x84]
-	mov	es, [0x8bb6]
+	mov	es, [g_8BB6]
 	mov	[es:0x63c], ax
 	mov	[es:0x63e], ss
 	lea	ax, [bp - 0x78]
@@ -1579,7 +1579,7 @@ Lp_2139_0C2E:
 	mov	al, [bp - 0x8e]
 	cbw
 	imul	bx, ax, 0x1e
-	mov	es, [0x8bb4]
+	mov	es, [g_8BB4]
 	mov	ax, [bp - 0x94]
 	mov	dx, [bp - 0x92]
 	cmp	[es:bx - 0x5382], dx
@@ -1589,7 +1589,7 @@ Lp_2139_0C2E:
 	jna	short .24
 .23:
 	lea	ax, [bp - 0x78]
-	mov	es, [0x8bb8]
+	mov	es, [g_8BB8]
 	mov	[es:0x71a], ax
 	mov	[es:0x71c], ss
 	lea	ax, [bp - 0x62]
@@ -1622,7 +1622,7 @@ Lp_2139_0C2E:
 	cmp	ax, [bp - 0x8c]
 	jz	short .27
 	lea	ax, [bp - 0x78]
-	mov	es, [0x8bba]
+	mov	es, [g_8BBA]
 	mov	[es:0x60b], ax
 	mov	[es:0x60d], ss
 	imul	ax, [bp - 0x8c], 0x1e
@@ -1693,7 +1693,7 @@ Lp_2139_0C2E:
 	push	word 0xbe4
 	push	word 0x3701
 	push	word 0xbe4
-	mov	es, [0x8ba4]
+	mov	es, [g_8BA4]
 	mov	bx, [bp - 0x64]
 	shl	bx, byte 0x2
 	push	word [es:bx + 0xb6e]
@@ -2050,7 +2050,7 @@ Lp_2139_1430:
 	push	0x0
 	call	0x1B35:OvlThunk116
 	add	sp, 0x2
-	mov	es, [0x8bbc]
+	mov	es, [g_8BBC]
 	mov	word [es:0xb6c], 0x2049
 	mov	word [es:0xb6e], 0x1b35
 	mov	word [es:0xb82], 0x2071
@@ -2059,13 +2059,13 @@ Lp_2139_1430:
 	mov	word [es:0xb9e], 0x3448
 	jmp	short .10
 .9:
-	mov	es, [0x8bbe]
+	mov	es, [g_8BBE]
 	mov	byte [es:0xc6], 0x0
 	call	0x1B35:OvlThunk117
 	push	0x0
 	call	0x1B35:OvlThunk116
 	add	sp, 0x2
-	mov	es, [0x8bbc]
+	mov	es, [g_8BBC]
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[es:0xb6e], ax
 	mov	[es:0xb6c], ax
@@ -2157,11 +2157,11 @@ Lp_2139_15EC:
 	push	ax
 	call	0x03A3:MouseRead
 	add	sp, 0x6
-	mov	es, [0x8bac]
+	mov	es, [g_8BAC]
 	test	byte [es:0xac5e], 0xc
 	jz	short .3
 	lea	ax, [bp - 0x2e]
-	mov	es, [0x8bae]
+	mov	es, [g_8BAE]
 	mov	[es:0x907], ax
 	mov	[es:0x909], ss
 	push	-0x1
@@ -2186,11 +2186,11 @@ Lp_2139_15EC:
 	mov	di, 0xffff
 	jmp	short .5
 .3:
-	mov	es, [0x8bb0]
+	mov	es, [g_8BB0]
 	cmp	word [es:0xac60], 0x0
 	jz	short .5
 	lea	ax, [bp - 0x2e]
-	mov	es, [0x8bb2]
+	mov	es, [g_8BB2]
 	mov	[es:0xb36], ax
 	mov	[es:0xb38], ss
 	push	-0x1
@@ -2221,7 +2221,7 @@ Lp_2139_15EC:
 .7:
 	push	word 0x3701
 	push	word 0xbaf
-	mov	es, [0x8ba4]
+	mov	es, [g_8BA4]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
 	push	word [bp - 0x50]
@@ -2269,7 +2269,7 @@ Lp_2139_15EC:
 	push	word [bp - 0x52]
 	call	0x1F31:Lp_1F31_0BAE
 	add	sp, 0x18
-	mov	es, [0x8bc0]
+	mov	es, [g_8BC0]
 	cmp	word [es:0xac5c], 0x1
 	jnz	short .10
 	push	0x0
@@ -2288,7 +2288,7 @@ Lp_2139_15EC:
 	jnl	short .11
 	jmp	near .15
 .11:
-	mov	es, [0x8bb4]
+	mov	es, [g_8BB4]
 	imul	bx, [bp - 0x12], 0x1e
 	mov	[bp - 0x54], bx
 	cmp	byte [es:bx - 0x5388], 0x2
@@ -2296,7 +2296,7 @@ Lp_2139_15EC:
 	jmp	near .15
 .12:
 	lea	ax, [bp - 0x2e]
-	mov	es, [0x8ba6]
+	mov	es, [g_8BA6]
 	mov	[es:0x4e5], ax
 	mov	[es:0x4e7], ss
 	mov	ax, [bp - 0x54]
@@ -2334,7 +2334,7 @@ Lp_2139_15EC:
 	push	word 0xaf32
 	push	word 0x3a0b
 	push	word 0xac62
-	mov	es, [0x8ba8]
+	mov	es, [g_8BA8]
 	push	word [es:0xac5a]
 	call	0x28A8:Lp_28A8_0108
 	add	sp, 0xa
@@ -2343,7 +2343,7 @@ Lp_2139_15EC:
 	db	0x0B, 0xF6		; or si, si
 	jnz	short .14
 	mov	word [bp - 0x4], 0xffff
-	mov	es, [0x8bb4]
+	mov	es, [g_8BB4]
 	imul	bx, [bp - 0x12], 0x1e
 	add	word [es:bx - 0x5384], 0x0
 	adc	word [es:bx - 0x5382], 0x1
@@ -2356,7 +2356,7 @@ Lp_2139_15EC:
 	jnl	short .16
 	jmp	near .21
 .16:
-	mov	es, [0x8bc0]
+	mov	es, [g_8BC0]
 	cmp	word [es:0xac5c], 0x1
 	jz	short .17
 	cmp	word [bp - 0x2], 0x0

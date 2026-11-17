@@ -277,7 +277,7 @@ Init_21A1_0008:
 	mov	[bp - 0x163], al
 	push	word 0x3701
 	push	word 0xbaf
-	mov	es, [0x8ca6]
+	mov	es, [g_8CA6]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
 	push	word 0x3701
@@ -330,7 +330,7 @@ Init_21A1_0008:
 	jnz	short .18
 	push	word 0x3701
 	push	word 0xbaf
-	mov	es, [0x8ca6]
+	mov	es, [g_8CA6]
 	push	word [es:0xb6e]
 	push	word [es:0xb6c]
 	push	word 0x3701
@@ -350,7 +350,7 @@ Init_21A1_0008:
 .18:
 	cmp	word [bp - 0x738], 0x0
 	jnz	short .19
-	mov	es, [0x8ca6]
+	mov	es, [g_8CA6]
 	push	word [es:0xb82]
 	push	word [es:0xb80]
 	lea	ax, [bp - 0x12]
@@ -375,7 +375,7 @@ Init_21A1_0008:
 .19:
 	cmp	word [bp - 0x738], 0x0
 	jnz	short .20
-	mov	es, [0x8ca6]
+	mov	es, [g_8CA6]
 	push	word [es:0xb82]
 	push	word [es:0xb80]
 	lea	ax, [bp - 0x12]
@@ -400,9 +400,9 @@ Init_21A1_0008:
 .20:
 	test	byte [bp + 0x6], 0x1c
 	jz	short .21
-	mov	al, [0x29ca]
+	mov	al, [g_29CA]
 	mov	[bp - 0x164], al
-	mov	al, [0x29cc]
+	mov	al, [g_29CC]
 	mov	[bp - 0x163], al
 .21:
 	mov	word [bp - 0x15c], 0x50
@@ -473,21 +473,21 @@ Init_21A1_0008:
 .32:
 	mov	bx, [bp - 0x15e]
 	shl	bx, 1
-	mov	al, [bx - 0x4f4a]
+	mov	al, [bx + g_B0B6]
 	mov	[bp - 0x164], al
-	mov	al, [bx - 0x4f49]
+	mov	al, [bx + g_B0B7]
 	mov	[bp - 0x163], al
-	mov	al, [bx - 0x4f62]
+	mov	al, [bx + g_B09E]
 	mov	[bp - 0x46], al
-	mov	al, [bx - 0x4f56]
+	mov	al, [bx + g_B0AA]
 	mov	[bp - 0x9e], al
-	mov	al, [bx - 0x4f55]
+	mov	al, [bx + g_B0AB]
 	mov	[bp - 0x9d], al
 	cmp	word [bp - 0x738], 0x0
 	jnz	short .33
 	push	word 0x3701
 	push	word 0xbaf
-	mov	es, [0x8ca6]
+	mov	es, [g_8CA6]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
 	push	word 0x3701
@@ -708,7 +708,7 @@ Init_21A1_0008:
 	db	0x2A, 0xFF		; sub bh, bh
 	db	0x8B, 0xC3		; mov ax, bx
 	shl	bx, 1
-	push	word [bx + 0x5604]
+	push	word [bx + g_5604]
 	push	word [bp - 0x42]
 	push	word [bp - 0x44]
 	db	0x8B, 0xF0		; mov si, ax
@@ -729,7 +729,7 @@ Init_21A1_0008:
 	push	word 0xaf4c
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
-	mov	es, [0x8ca8]
+	mov	es, [g_8CA8]
 	mov	byte [es:0xaf8f], 0xd9
 	push	word 0x3a0b
 	push	word 0xaf4c
@@ -766,8 +766,8 @@ Init_21A1_0008:
 	imul	ax, [bp - 0x73a], word 0xba
 	db	0x03, 0xD8		; add bx, ax
 	shl	bx, byte 0x2
-	mov	ax, [bx - 0x6034]
-	mov	dx, [bx - 0x6032]
+	mov	ax, [bx + g_9FCC]
+	mov	dx, [bx + g_9FCE]
 	mov	[bp - 0x744], ax
 	mov	[bp - 0x742], dx
 	push	dx
@@ -802,7 +802,7 @@ Init_21A1_0008:
 	imul	ax, [bp - 0x73a], 0x1c
 	add	ax, [bp - 0x2]
 	imul	bx, ax, 0x28
-	cmp	byte [bx - 0x5ab0], 0x1
+	cmp	byte [bx + g_A550], 0x1
 	jnz	short .48
 	push	ds
 	push	word 0x4dbb
@@ -1011,7 +1011,7 @@ Init_21A1_0008:
 	test	byte [bp + 0x6], 0x1
 	jz	short .73
 	mov	word [bp - 0x73c], 0x0
-	mov	es, [0x8caa]
+	mov	es, [g_8CAA]
 	cmp	word [es:0x126], 0x1
 	jz	short .66
 	mov	al, [bp + 0x8]
@@ -1037,7 +1037,7 @@ Init_21A1_0008:
 	mov	al, [bp - 0x73f]
 	cmp	[bp - 0x740], al
 	jnz	short .70
-	mov	es, [0x8cac]
+	mov	es, [g_8CAC]
 	cmp	word [es:0x78c], 0x3f0
 	jl	short .70
 	push	0x0
@@ -1533,7 +1533,7 @@ Init_21A1_0008:
 	mov	bl, [es:bx + 0x2]
 	db	0x2A, 0xFF		; sub bh, bh
 	shl	bx, 1
-	push	word [bx + 0x575a]
+	push	word [bx + g_575A]
 	lea	ax, [bp - 0x12]
 	push	ax
 	push	word 0x4e03
@@ -1547,7 +1547,7 @@ Init_21A1_0008:
 	mov	bl, [es:bx + 0x2]
 	db	0x2A, 0xFF		; sub bh, bh
 	shl	bx, 1
-	push	word [bx + 0x575a]
+	push	word [bx + g_575A]
 	mov	bx, [bp - 0x74c]
 	mov	al, [es:bx + 0x3]
 	db	0x2A, 0xE4		; sub ah, ah
@@ -1896,7 +1896,7 @@ Init_21A1_0008:
 	cmp	word [bp - 0x73c], 0x0
 	jz	short .138
 	mov	word [bp - 0x73c], 0x0
-	mov	es, [0x8caa]
+	mov	es, [g_8CAA]
 	cmp	word [es:0x126], 0x1
 	jz	short .138
 	mov	al, [bp + 0x8]
@@ -1922,7 +1922,7 @@ Init_21A1_0008:
 	mov	al, [bp - 0x73f]
 	cmp	[bp - 0x740], al
 	jnz	short .136
-	mov	es, [0x8cac]
+	mov	es, [g_8CAC]
 	cmp	word [es:0x78c], 0x3f0
 	jl	short .136
 	push	0x0
@@ -2019,10 +2019,10 @@ Init_21A1_0008:
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 .141:
-	mov	bx, [0x29cc]
+	mov	bx, [g_29CC]
 	shl	bx, 1
 	push	word [bx + TeamNameClips]
-	mov	bx, [0x29ca]
+	mov	bx, [g_29CA]
 	shl	bx, 1
 	push	word [bx + TeamNameClips]
 	call	0x0EDC:LoadPlayByPlaySpeech

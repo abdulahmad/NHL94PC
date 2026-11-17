@@ -36,7 +36,7 @@ Lp_2A1B_0004:
 	push	ax
 	call	0x0000:_fmemset
 	add	sp, 0x8
-	mov	es, [0x8bf6]
+	mov	es, [g_8BF6]
 	imul	bx, [bp - 0x8], 0x1e
 	mov	byte [es:bx - 0x5388], 0x1
 	mov	byte [es:bx - 0x5387], 0x0
@@ -180,7 +180,7 @@ Lp_2A1B_0004:
 .10:
 	push	word 0x3701
 	push	word 0xbaf
-	mov	es, [0x8bf8]
+	mov	es, [g_8BF8]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
 	push	si
@@ -247,13 +247,13 @@ Lp_2A1B_0004:
 	add	sp, 0x16
 	push	word 0x3a0b
 	push	word 0xaf3e
-	mov	es, [0x8bfa]
+	mov	es, [g_8BFA]
 	push	word [es:0xac60]
-	mov	es, [0x8bfc]
+	mov	es, [g_8BFC]
 	push	word [es:0xac5e]
-	mov	es, [0x8bfe]
+	mov	es, [g_8BFE]
 	push	word [es:0xac5c]
-	mov	es, [0x8c00]
+	mov	es, [g_8C00]
 	push	word [es:0xac5a]
 	push	word 0x3a0b
 	push	word 0xaf32
@@ -276,7 +276,7 @@ Lp_2A1B_0004:
 	push	word 0xbaf
 	push	word [YesNoTextSeg]
 	push	word [YesNoText]
-	mov	es, [0x8bf8]
+	mov	es, [g_8BF8]
 	mov	bx, [bp - 0x8]
 	shl	bx, byte 0x2
 	push	word [es:bx + 0xb6e]
@@ -344,7 +344,7 @@ Lp_2A1B_0004:
 	call	0x0D90:MessageBox
 	add	sp, 0x16
 .18:
-	mov	es, [0x8c02]
+	mov	es, [g_8C02]
 	mov	byte [es:0xc6], 0x0
 	lea	ax, [bp - 0x1c]
 	push	ax

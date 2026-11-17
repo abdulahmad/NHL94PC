@@ -277,7 +277,7 @@ Lp_23AD_0046:
 	jnz	short .16
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
-	mov	es, [0x8bd2]
+	mov	es, [g_8BD2]
 	push	word [es:0xb6e]
 	push	word [es:0xb6c]
 	push	word [bp + 0x8]
@@ -299,7 +299,7 @@ Lp_23AD_0046:
 	jnz	short .17
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
-	mov	es, [0x8bd2]
+	mov	es, [g_8BD2]
 	push	word [es:0xb72]
 	push	word [es:0xb70]
 	push	word [bp + 0x8]
@@ -321,7 +321,7 @@ Lp_23AD_0046:
 	jnz	short .18
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
-	mov	es, [0x8bd2]
+	mov	es, [g_8BD2]
 	push	word [es:0xb82]
 	push	word [es:0xb80]
 	push	word [bp + 0x8]
@@ -923,12 +923,12 @@ Lp_23AD_0046:
 	add	si, [bp - 0x1ac]
 	shl	si, 1
 	shl	bx, 1
-	mov	ax, [bx + 0x183a]
-	xor	[si + 0x183a], ax
-	mov	ax, [si + 0x183a]
-	xor	[bx + 0x183a], ax
-	mov	ax, [bx + 0x183a]
-	xor	[si + 0x183a], ax
+	mov	ax, [bx + g_183A]
+	xor	[si + g_183A], ax
+	mov	ax, [si + g_183A]
+	xor	[bx + g_183A], ax
+	mov	ax, [bx + g_183A]
+	xor	[si + g_183A], ax
 	jmp	short .78
 .80:
 	inc	word [bp - 0x164]
@@ -966,12 +966,12 @@ Lp_23AD_0046:
 	add	si, [bp - 0x1ac]
 	shl	si, 1
 	shl	bx, 1
-	mov	ax, [bx + 0x1862]
-	xor	[si + 0x1862], ax
-	mov	ax, [si + 0x1862]
-	xor	[bx + 0x1862], ax
-	mov	ax, [bx + 0x1862]
-	xor	[si + 0x1862], ax
+	mov	ax, [bx + g_1862]
+	xor	[si + g_1862], ax
+	mov	ax, [si + g_1862]
+	xor	[bx + g_1862], ax
+	mov	ax, [bx + g_1862]
+	xor	[si + g_1862], ax
 	jmp	short .83
 	db	0x90
 .85:
@@ -1152,7 +1152,7 @@ Lp_23AD_0046:
 	shl	ax, 1
 	db	0x03, 0xD8		; add bx, ax
 	shl	bx, 1
-	mov	bx, [bx + 0x183a]
+	mov	bx, [bx + g_183A]
 	db	0x8B, 0xC3		; mov ax, bx
 	shl	bx, 1
 	db	0x03, 0xD8		; add bx, ax
@@ -1194,7 +1194,7 @@ Lp_23AD_0046:
 	db	0x2A, 0xE4		; sub ah, ah
 	db	0x03, 0xD8		; add bx, ax
 	shl	bx, 1
-	mov	bx, [bx + 0x1862]
+	mov	bx, [bx + g_1862]
 	shl	bx, 1
 	add	bx, [bp + si - 0x100]
 	mov	es, [bp + si - 0xfe]
@@ -1241,7 +1241,7 @@ Lp_23AD_0046:
 	shl	cx, 1
 	db	0x03, 0xD9		; add bx, cx
 	shl	bx, 1
-	add	si, [bx + 0x183a]
+	add	si, [bx + g_183A]
 	mov	cl, [bp + si - 0x1c6]
 	db	0x2A, 0xED		; sub ch, ch
 	db	0x8B, 0xD8		; mov bx, ax
@@ -1275,7 +1275,7 @@ Lp_23AD_0046:
 	shl	ax, 1
 	db	0x03, 0xD8		; add bx, ax
 	shl	bx, 1
-	mov	bx, [bx + 0x183a]
+	mov	bx, [bx + g_183A]
 	db	0x8B, 0xC3		; mov ax, bx
 	shl	bx, 1
 	db	0x03, 0xD8		; add bx, ax
@@ -1368,7 +1368,7 @@ Lp_23AD_0046:
 	db	0x2A, 0xE4		; sub ah, ah
 	db	0x03, 0xD8		; add bx, ax
 	shl	bx, 1
-	mov	bx, [bx + 0x1862]
+	mov	bx, [bx + g_1862]
 	shl	bx, 1
 	add	bx, [bp + si - 0x100]
 	mov	es, [bp + si - 0xfe]
@@ -1455,7 +1455,7 @@ Lp_23AD_0046:
 	shl	ax, 1
 	db	0x03, 0xD8		; add bx, ax
 	shl	bx, 1
-	add	si, [bx + 0x183a]
+	add	si, [bx + g_183A]
 	inc	byte [bp + si - 0x1c6]
 	imul	si, [bp - 0x164], 0x19
 	mov	al, [bp - 0x26]
@@ -1668,7 +1668,7 @@ Lp_23AD_0046:
 	db	0x8B, 0xCB		; mov cx, bx
 	db	0x03, 0xD8		; add bx, ax
 	shl	bx, 1
-	mov	bx, [bx + 0x183a]
+	mov	bx, [bx + g_183A]
 	db	0x8B, 0xC3		; mov ax, bx
 	shl	bx, 1
 	db	0x03, 0xD8		; add bx, ax
@@ -1693,7 +1693,7 @@ Lp_23AD_0046:
 	shl	bx, 1
 	db	0x03, 0xD9		; add bx, cx
 	shl	bx, 1
-	mov	bx, [bx + 0x183a]
+	mov	bx, [bx + g_183A]
 	db	0x8B, 0xC3		; mov ax, bx
 	shl	bx, 1
 	db	0x03, 0xD8		; add bx, ax
@@ -1726,7 +1726,7 @@ Lp_23AD_0046:
 	db	0x2A, 0xE4		; sub ah, ah
 	db	0x03, 0xD8		; add bx, ax
 	shl	bx, 1
-	mov	bx, [bx + 0x1862]
+	mov	bx, [bx + g_1862]
 	shl	bx, 1
 	mov	cx, es
 	add	bx, [bp + si - 0x100]
@@ -1748,7 +1748,7 @@ Lp_23AD_0046:
 	db	0x03, 0xD9		; add bx, cx
 	db	0x03, 0xD8		; add bx, ax
 	shl	bx, 1
-	mov	bx, [bx + 0x1862]
+	mov	bx, [bx + g_1862]
 	shl	bx, 1
 	add	bx, [bp + di - 0x100]
 	mov	es, [bp + di - 0xfe]
@@ -1806,7 +1806,7 @@ Lp_23AD_0046:
 	shl	ax, 1
 	db	0x03, 0xD8		; add bx, ax
 	shl	bx, 1
-	mov	bx, [bx + 0x183a]
+	mov	bx, [bx + g_183A]
 	db	0x8B, 0xC3		; mov ax, bx
 	shl	bx, 1
 	db	0x03, 0xD8		; add bx, ax
@@ -1903,7 +1903,7 @@ Lp_23AD_0046:
 	db	0x2A, 0xE4		; sub ah, ah
 	db	0x03, 0xD8		; add bx, ax
 	shl	bx, 1
-	mov	bx, [bx + 0x1862]
+	mov	bx, [bx + g_1862]
 	shl	bx, 1
 	add	bx, [bp + si - 0x100]
 	mov	es, [bp + si - 0xfe]
@@ -2053,7 +2053,7 @@ Lp_23AD_0046:
 	shl	ax, 1
 	db	0x03, 0xD8		; add bx, ax
 	shl	bx, 1
-	mov	bx, [bx + 0x183a]
+	mov	bx, [bx + g_183A]
 	db	0x8B, 0xC3		; mov ax, bx
 	shl	bx, 1
 	db	0x03, 0xD8		; add bx, ax
@@ -2139,7 +2139,7 @@ Lp_23AD_0046:
 	db	0x2A, 0xE4		; sub ah, ah
 	db	0x03, 0xD8		; add bx, ax
 	shl	bx, 1
-	mov	bx, [bx + 0x1862]
+	mov	bx, [bx + g_1862]
 	shl	bx, 1
 	add	bx, [bp + si - 0x100]
 	mov	es, [bp + si - 0xfe]

@@ -36,7 +36,7 @@ Menus_2E70_000A:
 	mov	es, cx
 	db	0x8B, 0xD8		; mov bx, ax
 	mov	ax, [es:bx]
-	mov	es, [0x8b70]
+	mov	es, [g_8B70]
 	add	ax, [es:0xd48]
 	cwd
 	db	0x2B, 0xC2		; sub ax, dx
@@ -72,16 +72,16 @@ Menus_2E70_000A:
 	push	0x0
 	call	0x1B35:OvlThunk116
 	add	sp, 0x2
-	mov	word [0x21c2], 0x24db
-	mov	word [0x21c4], 0x1b35
-	mov	word [0x21c6], 0x24d1
-	mov	word [0x21c8], 0x1b35
-	mov	word [0x21ca], 0x24c7
-	mov	word [0x21cc], 0x1b35
-	mov	word [0x21ce], 0x24bd
-	mov	word [0x21d0], 0x1b35
-	mov	word [0x21d2], 0x219d
-	mov	word [0x21d4], 0x1b35
+	mov	word [g_21C2], 0x24db
+	mov	word [g_21C4], 0x1b35
+	mov	word [g_21C6], 0x24d1
+	mov	word [g_21C8], 0x1b35
+	mov	word [g_21CA], 0x24c7
+	mov	word [g_21CC], 0x1b35
+	mov	word [g_21CE], 0x24bd
+	mov	word [g_21D0], 0x1b35
+	mov	word [g_21D2], 0x219d
+	mov	word [g_21D4], 0x1b35
 	call	0x0FEF:GetPage
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .1
@@ -136,7 +136,7 @@ Menus_2E70_000A:
 	push	word [DialogData]
 	call	0x0FEF:DrawRleTransAt
 	add	sp, 0x8
-	mov	word [0x8fc], 0x50
+	mov	word [g_08FC], 0x50
 	push	word 0x1560
 	push	word [bp - 0x24]
 	push	word [bp - 0x26]
@@ -875,24 +875,24 @@ Menus_2E70_0968:
 	push	ax
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
-	mov	ax, [0x29ca]
+	mov	ax, [g_29CA]
 	les	bx, [bp - 0x4]
 	mov	[es:bx + 0x50], ax
-	mov	ax, [0x29cc]
+	mov	ax, [g_29CC]
 	mov	[es:bx + 0x52], ax
 	mov	ax, [CrowdState]
 	mov	[es:bx + 0x54], ax
-	mov	ax, [0x1b8]
+	mov	ax, [g_01B8]
 	mov	[es:bx + 0x56], ax
-	mov	ax, [0x1ba]
+	mov	ax, [g_01BA]
 	mov	[es:bx + 0x58], ax
-	mov	ax, [0x1bc]
+	mov	ax, [g_01BC]
 	mov	[es:bx + 0x5a], ax
-	mov	ax, [0x1be]
+	mov	ax, [g_01BE]
 	mov	[es:bx + 0x5c], ax
-	mov	ax, [0x1c0]
+	mov	ax, [g_01C0]
 	mov	[es:bx + 0x5e], ax
-	mov	ax, [0x1c2]
+	mov	ax, [g_01C2]
 	mov	[es:bx + 0x60], ax
 	pop	si
 	leave
@@ -936,24 +936,24 @@ Menus_2E70_09FE:
 	mov	ax, [es:bx]
 	mov	[DbSaveMode], ax
 	mov	ax, [es:bx + 0x50]
-	mov	[0x29ca], ax
+	mov	[g_29CA], ax
 	mov	ax, [es:bx + 0x52]
-	mov	[0x29cc], ax
+	mov	[g_29CC], ax
 	mov	ax, [es:bx + 0x54]
 	mov	[CrowdState], ax
 	mov	ax, [es:bx + 0x56]
-	mov	[0x1b8], ax
+	mov	[g_01B8], ax
 	mov	ax, [es:bx + 0x58]
-	mov	[0x1ba], ax
+	mov	[g_01BA], ax
 	mov	ax, [es:bx + 0x5a]
-	mov	[0x1bc], ax
+	mov	[g_01BC], ax
 	mov	ax, [es:bx + 0x5c]
-	mov	[0x1be], ax
+	mov	[g_01BE], ax
 	mov	ax, [es:bx + 0x5e]
-	mov	[0x1c0], ax
+	mov	[g_01C0], ax
 	mov	ax, [es:bx + 0x60]
-	mov	[0x1c2], ax
-	mov	ax, [0x1bc]
+	mov	[g_01C2], ax
+	mov	ax, [g_01BC]
 	dec	ax
 	jz	short .1
 	dec	ax
@@ -975,9 +975,9 @@ Menus_2E70_09FE:
 	test	byte [InputFlags], 0x4
 .4:
 	jnz	short .5
-	mov	word [0x1bc], 0x0
+	mov	word [g_01BC], 0x0
 .5:
-	mov	ax, [0x1be]
+	mov	ax, [g_01BE]
 	dec	ax
 	jz	short .6
 	dec	ax
@@ -998,74 +998,74 @@ Menus_2E70_09FE:
 	test	byte [InputFlags], 0x4
 .9:
 	jnz	short .10
-	mov	word [0x1be], 0x0
+	mov	word [g_01BE], 0x0
 .10:
-	cmp	word [0x1bc], 0x0
+	cmp	word [g_01BC], 0x0
 	jnz	short .15
 	test	byte [InputFlags], 0x2
 	jz	short .11
-	cmp	word [0x1be], 0x2
+	cmp	word [g_01BE], 0x2
 	jz	short .11
-	mov	word [0x1bc], 0x2
+	mov	word [g_01BC], 0x2
 	jmp	short .15
 .11:
 	test	byte [InputFlags], 0x4
 	jz	short .12
-	cmp	word [0x1be], 0x4
+	cmp	word [g_01BE], 0x4
 	jz	short .12
-	mov	word [0x1bc], 0x4
+	mov	word [g_01BC], 0x4
 	jmp	short .15
 .12:
 	test	byte [InputFlags], 0x8
 	jz	short .13
-	cmp	word [0x1be], 0x8
+	cmp	word [g_01BE], 0x8
 	jz	short .13
-	mov	word [0x1bc], 0x8
+	mov	word [g_01BC], 0x8
 	jmp	short .15
 .13:
 	test	byte [InputFlags], 0x1
 	jz	short .14
-	cmp	word [0x1be], 0x1
+	cmp	word [g_01BE], 0x1
 	jz	short .14
-	mov	word [0x1bc], 0x1
+	mov	word [g_01BC], 0x1
 	jmp	short .15
 .14:
-	mov	word [0x1bc], 0x10
+	mov	word [g_01BC], 0x10
 .15:
-	cmp	word [0x1be], 0x0
+	cmp	word [g_01BE], 0x0
 	jnz	short .20
 	test	byte [InputFlags], 0x2
 	jz	short .16
-	cmp	word [0x1bc], 0x2
+	cmp	word [g_01BC], 0x2
 	jz	short .16
-	mov	word [0x1be], 0x2
+	mov	word [g_01BE], 0x2
 	jmp	short .20
 	db	0x90
 .16:
 	test	byte [InputFlags], 0x4
 	jz	short .17
-	cmp	word [0x1bc], 0x4
+	cmp	word [g_01BC], 0x4
 	jz	short .17
-	mov	word [0x1be], 0x4
+	mov	word [g_01BE], 0x4
 	jmp	short .20
 .17:
 	test	byte [InputFlags], 0x8
 	jz	short .18
-	cmp	word [0x1bc], 0x8
+	cmp	word [g_01BC], 0x8
 	jz	short .18
-	mov	word [0x1be], 0x8
+	mov	word [g_01BE], 0x8
 	jmp	short .20
 .18:
 	test	byte [InputFlags], 0x1
 	jz	short .19
-	cmp	word [0x1bc], 0x1
+	cmp	word [g_01BC], 0x1
 	jz	short .19
-	mov	word [0x1be], 0x1
+	mov	word [g_01BE], 0x1
 	jmp	short .20
 .19:
-	mov	word [0x1be], 0x10
+	mov	word [g_01BE], 0x10
 .20:
-	cmp	word [0x1bc], 0x10
+	cmp	word [g_01BC], 0x10
 	jnz	short .21
 	mov	ax, 0x1
 	jmp	short .22
@@ -1073,7 +1073,7 @@ Menus_2E70_09FE:
 	db	0x2B, 0xC0		; sub ax, ax
 .22:
 	mov	[bp - 0x6], ax
-	cmp	word [0x1be], 0x10
+	cmp	word [g_01BE], 0x10
 	jnz	short .23
 	mov	ax, 0x1
 	jmp	short .24
@@ -1083,7 +1083,7 @@ Menus_2E70_09FE:
 .24:
 	xor	ax, [bp - 0x6]
 	jz	short .27
-	cmp	word [0x1bc], 0x10
+	cmp	word [g_01BC], 0x10
 	jnz	short .25
 	db	0x2B, 0xDB		; sub bx, bx
 	mov	di, 0x1
@@ -1095,17 +1095,17 @@ Menus_2E70_09FE:
 .26:
 	db	0x8B, 0xF7		; mov si, di
 	shl	si, 1
-	cmp	word [si + 0x1c0], 0x1
+	cmp	word [si + g_01C0], 0x1
 	db	0x1B, 0xC0		; sbb ax, ax
 	neg	ax
 	db	0x8B, 0xF3		; mov si, bx
 	shl	si, 1
-	mov	[si + 0x1c0], ax
+	mov	[si + g_01C0], ax
 	cmp	ax, strict word 0x1
 	db	0x1B, 0xC0		; sbb ax, ax
 	and	ax, strict word 0x1
 	add	ax, strict word 0xfffe
-	mov	[si + 0x1b8], ax
+	mov	[si + g_01B8], ax
 .27:
 	test	byte [CrowdState], 0x40
 	jz	short .28
@@ -1128,9 +1128,9 @@ Menus_2E70_09FE:
 	jz	short .32
 	jmp	near .40
 .32:
-	cmp	word [0x29ca], 0x18
+	cmp	word [g_29CA], 0x18
 	jnl	short .34
-	mov	bx, [0x29ca]
+	mov	bx, [g_29CA]
 	shl	bx, 1
 	mov	bx, [bx + TeamNameClips]
 	mov	[bp - 0x8], bx
@@ -1148,12 +1148,12 @@ Menus_2E70_09FE:
 	push	word 0x117
 	call	0x03A3:CopyStrNFar
 	add	sp, 0xa
-	mov	es, [0x8b72]
+	mov	es, [g_8B72]
 	mov	byte [es:0x119], 0x20
 	jmp	short .36
 .34:
 	push	0x3
-	mov	bx, [0x29ca]
+	mov	bx, [g_29CA]
 	shl	bx, 1
 	push	ds
 	push	word [bx + 0x1e4]
@@ -1163,9 +1163,9 @@ Menus_2E70_09FE:
 	call	0x03A3:CopyStrNFar
 	add	sp, 0xa
 .36:
-	cmp	word [0x29cc], 0x18
+	cmp	word [g_29CC], 0x18
 	jnl	short .38
-	mov	bx, [0x29cc]
+	mov	bx, [g_29CC]
 	shl	bx, 1
 	mov	bx, [bx + TeamNameClips]
 	mov	[bp - 0xa], bx
@@ -1184,7 +1184,7 @@ Menus_2E70_09FE:
 	push	word 0x110
 	call	0x03A3:CopyStrNFar
 	add	sp, 0xa
-	mov	es, [0x8b72]
+	mov	es, [g_8B72]
 	mov	byte [es:0x112], 0x20
 	pop	si
 	pop	di
@@ -1192,7 +1192,7 @@ Menus_2E70_09FE:
 	retf
 .38:
 	push	0x3
-	mov	bx, [0x29cc]
+	mov	bx, [g_29CC]
 	shl	bx, 1
 	push	ds
 	push	word [bx + 0x1e4]
@@ -1243,23 +1243,23 @@ Menus_2E70_0D0A:
 	mov	ax, [DbSaveMode]
 	les	bx, [bp + 0x6]
 	mov	[es:bx], ax
-	mov	ax, [0x29ca]
+	mov	ax, [g_29CA]
 	mov	[es:bx + 0x50], ax
-	mov	ax, [0x29cc]
+	mov	ax, [g_29CC]
 	mov	[es:bx + 0x52], ax
 	mov	ax, [CrowdState]
 	mov	[es:bx + 0x54], ax
-	mov	ax, [0x1b8]
+	mov	ax, [g_01B8]
 	mov	[es:bx + 0x56], ax
-	mov	ax, [0x1ba]
+	mov	ax, [g_01BA]
 	mov	[es:bx + 0x58], ax
-	mov	ax, [0x1bc]
+	mov	ax, [g_01BC]
 	mov	[es:bx + 0x5a], ax
-	mov	ax, [0x1be]
+	mov	ax, [g_01BE]
 	mov	[es:bx + 0x5c], ax
-	mov	ax, [0x1c0]
+	mov	ax, [g_01C0]
 	mov	[es:bx + 0x5e], ax
-	mov	ax, [0x1c2]
+	mov	ax, [g_01C2]
 	mov	[es:bx + 0x60], ax
 	cmp	word [DbSaveMode], 0x0
 	jnz	short .1
@@ -1442,18 +1442,18 @@ Menus_2E70_0F22:
 	push	si
 	mov	di, [bp + 0x6]
 	db	0x2B, 0xF6		; sub si, si
-	mov	es, [0x8b74]
+	mov	es, [g_8B74]
 	mov	[es:0x78c], si
-	mov	word [0x21c2], 0x250d
-	mov	word [0x21c4], 0x1b35
-	mov	word [0x21c6], 0x2503
-	mov	word [0x21c8], 0x1b35
-	mov	word [0x21ca], 0x24f9
-	mov	word [0x21cc], 0x1b35
-	mov	word [0x21ce], 0x24ef
-	mov	word [0x21d0], 0x1b35
-	mov	word [0x21d2], 0x232d
-	mov	word [0x21d4], 0x1b35
+	mov	word [g_21C2], 0x250d
+	mov	word [g_21C4], 0x1b35
+	mov	word [g_21C6], 0x2503
+	mov	word [g_21C8], 0x1b35
+	mov	word [g_21CA], 0x24f9
+	mov	word [g_21CC], 0x1b35
+	mov	word [g_21CE], 0x24ef
+	mov	word [g_21D0], 0x1b35
+	mov	word [g_21D2], 0x232d
+	mov	word [g_21D4], 0x1b35
 	call	0x1B35:OvlThunk132
 	cmp	[di], si
 	jnl	short .1
@@ -1461,8 +1461,8 @@ Menus_2E70_0F22:
 	push	si
 	call	0x1B35:OvlThunk135
 	add	sp, 0x4
-	push	word [0x29cc]
-	push	word [0x29ca]
+	push	word [g_29CC]
+	push	word [g_29CA]
 	call	0x1B35:OvlThunk134
 	add	sp, 0x4
 	db	0x8B, 0xF0		; mov si, ax
@@ -1552,7 +1552,7 @@ Menus_2E70_0F22:
 	call	0x0FEF:SetStartPage
 	add	sp, 0x2
 	mov	bx, 0x7570
-	mov	es, [0x8b76]
+	mov	es, [g_8B76]
 	mov	[bp - 0x16], bx
 	mov	[bp - 0x14], es
 	mov	ax, [es:bx + 0x2]
@@ -1625,7 +1625,7 @@ Menus_2E70_0F22:
 	push	word 0x3f00
 	call	0x0000:VgaCopyBytes
 	add	sp, 0x6
-	mov	es, [0x8b70]
+	mov	es, [g_8B70]
 	mov	ax, [es:0xd46]
 	add	ax, [es:0xd4a]
 	cwd
@@ -1642,7 +1642,7 @@ Menus_2E70_0F22:
 	push	word [DialogData]
 	call	0x0FEF:DrawRleTransAt
 	add	sp, 0x8
-	mov	word [0x8fc], 0x50
+	mov	word [g_08FC], 0x50
 	push	0x10
 	push	word 0x15b3
 	push	di
@@ -1659,16 +1659,16 @@ Menus_2E70_0F22:
 	push	si
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	mov	word [0x21c2], 0x24db
-	mov	word [0x21c4], 0x1b35
-	mov	word [0x21c6], 0x24d1
-	mov	word [0x21c8], 0x1b35
-	mov	word [0x21ca], 0x24c7
-	mov	word [0x21cc], 0x1b35
-	mov	word [0x21ce], 0x24bd
-	mov	word [0x21d0], 0x1b35
-	mov	word [0x21d2], 0x219d
-	mov	word [0x21d4], 0x1b35
+	mov	word [g_21C2], 0x24db
+	mov	word [g_21C4], 0x1b35
+	mov	word [g_21C6], 0x24d1
+	mov	word [g_21C8], 0x1b35
+	mov	word [g_21CA], 0x24c7
+	mov	word [g_21CC], 0x1b35
+	mov	word [g_21CE], 0x24bd
+	mov	word [g_21D0], 0x1b35
+	mov	word [g_21D2], 0x219d
+	mov	word [g_21D4], 0x1b35
 	db	0x2B, 0xC0		; sub ax, ax
 	pop	si
 	pop	di
@@ -1685,7 +1685,7 @@ Menus_2E70_11EC:
 	push	cs
 	call	Menus_2E70_0968
 	add	sp, 0x4
-	mov	es, [0x8b78]
+	mov	es, [g_8B78]
 	mov	word [es:0xc4], 0x2
 	mov	word [es:0x114], 0x9
 	mov	word [es:0x116], 0x7
@@ -1721,7 +1721,7 @@ Menus_2E70_11EC:
 .4:
 	mov	word [es:0x11e], 0x10
 .5:
-	mov	es, [0x8b78]
+	mov	es, [g_8B78]
 	cmp	word [es:0x11e], 0x10
 	jz	short .6
 	mov	ax, 0x9
@@ -1743,14 +1743,14 @@ Menus_2E70_11EC:
 	call	0x2B26:Menus_2B26_0530
 	add	sp, 0x2
 	call	0x1B35:OvlThunk151
-	mov	es, [0x8b78]
+	mov	es, [g_8B78]
 	cmp	byte [es:0xc6], 0x0
 	jz	short .8
 	call	0x1B35:OvlThunk117
 	push	0x0
 	call	0x1B35:OvlThunk116
 	add	sp, 0x2
-	mov	es, [0x8b7a]
+	mov	es, [g_8B7A]
 	mov	word [es:0xb6c], 0x2049
 	mov	word [es:0xb6e], 0x1b35
 	mov	word [es:0xb82], 0x2071
@@ -1763,7 +1763,7 @@ Menus_2E70_11EC:
 	push	0x0
 	call	0x1B35:OvlThunk116
 	add	sp, 0x2
-	mov	es, [0x8b7a]
+	mov	es, [g_8B7A]
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[es:0xb6e], ax
 	mov	[es:0xb6c], ax
@@ -2143,7 +2143,7 @@ Menus_2E70_16DE:
 	jnz	short .1
 	mov	si, 0xffff
 .1:
-	cmp	byte [0xe36b], 0x0
+	cmp	byte [g_E36B], 0x0
 	jnz	short .2
 	jmp	near .4
 .2:
@@ -2797,16 +2797,16 @@ Menus_2E70_1CF0:
 	push	word [bp + 0x6]
 	call	0x1B35:OvlThunk160
 	add	sp, 0x2
-	mov	word [0x21c2], 0x24db
-	mov	word [0x21c4], 0x1b35
-	mov	word [0x21c6], 0x24d1
-	mov	word [0x21c8], 0x1b35
-	mov	word [0x21ca], 0x24c7
-	mov	word [0x21cc], 0x1b35
-	mov	word [0x21ce], 0x24bd
-	mov	word [0x21d0], 0x1b35
-	mov	word [0x21d2], 0x219d
-	mov	word [0x21d4], 0x1b35
+	mov	word [g_21C2], 0x24db
+	mov	word [g_21C4], 0x1b35
+	mov	word [g_21C6], 0x24d1
+	mov	word [g_21C8], 0x1b35
+	mov	word [g_21CA], 0x24c7
+	mov	word [g_21CC], 0x1b35
+	mov	word [g_21CE], 0x24bd
+	mov	word [g_21D0], 0x1b35
+	mov	word [g_21D2], 0x219d
+	mov	word [g_21D4], 0x1b35
 	push	0x0
 	call	0x1B35:OvlThunk116
 	add	sp, 0x2
@@ -2992,7 +2992,7 @@ Menus_2E70_1EEC:
 	push	word 0x3f00
 	call	0x0000:VgaCopyBytes
 	add	sp, 0x6
-	mov	es, [0x8b70]
+	mov	es, [g_8B70]
 	mov	ax, [es:0xd46]
 	add	ax, [es:0xd4a]
 	cwd
@@ -3009,7 +3009,7 @@ Menus_2E70_1EEC:
 	push	word [DialogData]
 	call	0x0FEF:DrawRleTransAt
 	add	sp, 0x8
-	mov	word [0x8fc], 0x50
+	mov	word [g_08FC], 0x50
 	push	0x10
 	push	word 0x1676
 	push	di
@@ -3033,7 +3033,7 @@ Menus_2E70_1EEC:
 	retf
 	db	0x90
 .3:
-	mov	es, [0x8b70]
+	mov	es, [g_8B70]
 	mov	ax, [es:0xd46]
 	add	ax, [es:0xd4a]
 	cwd

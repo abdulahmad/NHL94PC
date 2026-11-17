@@ -5,11 +5,11 @@ Fades3_3358_0000:
 	push	di
 	push	si
 	call	0x0FEF:UseCurrentPage
-	mov	es, [0x8cf0]
+	mov	es, [g_8CF0]
 	mov	ax, [es:0x74f4]
 	mov	[bp - 0x3c], ax
 	mov	di, [es:0x74f6]
-	mov	es, [0x8cf2]
+	mov	es, [g_8CF2]
 	cmp	word [CurPage], 0x1
 	db	0x1B, 0xDB		; sbb bx, bx
 	neg	bx
@@ -19,7 +19,7 @@ Fades3_3358_0000:
 	mov	dx, [es:bx + 0x2]
 	mov	[bp - 0x40], ax
 	mov	[bp - 0x3e], dx
-	mov	es, [0x8cf2]
+	mov	es, [g_8CF2]
 	mov	bx, [CurPage]
 	shl	bx, byte 0x2
 	les	bx, [es:bx + 0x7570]
@@ -57,7 +57,7 @@ Fades3_3358_0000:
 	mov	word [bp - 0x22], 0xb
 .5:
 	mov	bx, [bp - 0x22]
-	mov	al, [bx + 0x62c0]
+	mov	al, [bx + g_62C0]
 	cbw
 	mov	[bp - 0x28], ax
 	imul	word [bp - 0x20]

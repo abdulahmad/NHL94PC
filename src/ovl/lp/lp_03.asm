@@ -9,7 +9,7 @@ Lp_1ECB_0008:
 	enter	0x46, 0x0
 	push	di
 	push	si
-	mov	byte [0xe36b], 0x0
+	mov	byte [g_E36B], 0x0
 	push	0x2
 	mov	ax, 0xe53
 	mov	cx, 0x3701
@@ -81,13 +81,13 @@ Lp_1ECB_0008:
 	push	0xb
 	call	0x0D90:SetDialogColors
 	add	sp, 0xa
-	mov	es, [0x8b7c]
+	mov	es, [g_8B7C]
 	cmp	word [es:0xac60], 0x0
 	jnz	short .4
 	jmp	near .14
 .4:
 	lea	ax, [bp - 0x1a]
-	mov	es, [0x8b7e]
+	mov	es, [g_8B7E]
 	mov	[es:0xb36], ax
 	mov	[es:0xb38], ss
 	push	-0x1
@@ -112,7 +112,7 @@ Lp_1ECB_0008:
 	jz	short .7
 	jmp	near .1
 .7:
-	cmp	byte [0xe36b], 0x0
+	cmp	byte [g_E36B], 0x0
 	jnz	short .8
 	jmp	near .9
 .8:
@@ -181,7 +181,7 @@ Lp_1ECB_0008:
 	jmp	near .18
 .10:
 	mov	bx, 0xac5c
-	mov	es, [0x8b84]
+	mov	es, [g_8B84]
 	mov	[bp - 0x46], bx
 	mov	[bp - 0x44], es
 	cmp	word [es:bx], 0x18
@@ -191,7 +191,7 @@ Lp_1ECB_0008:
 	mov	si, [es:bx]
 	push	word 0x3701
 	push	word 0xbaf
-	mov	es, [0x8b86]
+	mov	es, [g_8B86]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
 	push	word [bp - 0x3c]
@@ -234,13 +234,13 @@ Lp_1ECB_0008:
 .13:
 	push	word 0x3a0b
 	push	word 0xaf3e
-	mov	es, [0x8b7c]
+	mov	es, [g_8B7C]
 	push	word [es:0xac60]
-	mov	es, [0x8b80]
+	mov	es, [g_8B80]
 	push	word [es:0xac5e]
 	mov	es, [bp - 0x44]
 	push	word [es:bx]
-	mov	es, [0x8b88]
+	mov	es, [g_8B88]
 	push	word [es:0xac5a]
 	push	word 0x3a0b
 	push	word 0xaf32
@@ -256,13 +256,13 @@ Lp_1ECB_0008:
 	retf
 	db	0x90
 .14:
-	mov	es, [0x8b80]
+	mov	es, [g_8B80]
 	test	byte [es:0xac5e], 0x4
 	jz	short .15
 	jmp	near .6
 .15:
 	lea	ax, [bp - 0x1a]
-	mov	es, [0x8b82]
+	mov	es, [g_8B82]
 	mov	[es:0x8b3], ax
 	mov	[es:0x8b5], ss
 	push	-0x1
@@ -322,7 +322,7 @@ Lp_1ECB_0332:
 	enter	0x46, 0x0
 	push	di
 	push	si
-	mov	byte [0xe36b], 0x0
+	mov	byte [g_E36B], 0x0
 	push	0x2
 	mov	ax, 0xe53
 	mov	cx, 0x3701
@@ -394,13 +394,13 @@ Lp_1ECB_0332:
 	push	0xb
 	call	0x0D90:SetDialogColors
 	add	sp, 0xa
-	mov	es, [0x8b7c]
+	mov	es, [g_8B7C]
 	cmp	word [es:0xac60], 0x0
 	jnz	short .4
 	jmp	near .14
 .4:
 	lea	ax, [bp - 0x1a]
-	mov	es, [0x8b7e]
+	mov	es, [g_8B7E]
 	mov	[es:0xb36], ax
 	mov	[es:0xb38], ss
 	push	-0x1
@@ -425,7 +425,7 @@ Lp_1ECB_0332:
 	jz	short .7
 	jmp	near .1
 .7:
-	cmp	byte [0xe36b], 0x0
+	cmp	byte [g_E36B], 0x0
 	jnz	short .8
 	jmp	near .9
 .8:
@@ -494,7 +494,7 @@ Lp_1ECB_0332:
 	db	0xE9, 0x7B, 0x01		; jmp 0x665
 .10:
 	mov	bx, 0xac5c
-	mov	es, [0x8b84]
+	mov	es, [g_8B84]
 	mov	[bp - 0x46], bx
 	mov	[bp - 0x44], es
 	cmp	word [es:bx], 0x1
@@ -504,7 +504,7 @@ Lp_1ECB_0332:
 	mov	si, [es:bx]
 	push	word 0x3701
 	push	word 0xbaf
-	mov	es, [0x8b86]
+	mov	es, [g_8B86]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
 	push	word [bp - 0x3c]
@@ -547,13 +547,13 @@ Lp_1ECB_0332:
 .13:
 	push	word 0x3a0b
 	push	word 0xaf3e
-	mov	es, [0x8b7c]
+	mov	es, [g_8B7C]
 	push	word [es:0xac60]
-	mov	es, [0x8b80]
+	mov	es, [g_8B80]
 	push	word [es:0xac5e]
 	mov	es, [bp - 0x44]
 	push	word [es:bx]
-	mov	es, [0x8b88]
+	mov	es, [g_8B88]
 	push	word [es:0xac5a]
 	push	word 0x3a0b
 	push	word 0xaf32
@@ -569,13 +569,13 @@ Lp_1ECB_0332:
 	retf
 	db	0x90
 .14:
-	mov	es, [0x8b80]
+	mov	es, [g_8B80]
 	test	byte [es:0xac5e], 0x4
 	jz	short .15
 	jmp	near .6
 .15:
 	lea	ax, [bp - 0x1a]
-	mov	es, [0x8b82]
+	mov	es, [g_8B82]
 	mov	[es:0x8b3], ax
 	mov	[es:0x8b5], ss
 	push	-0x1

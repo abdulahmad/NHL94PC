@@ -43,14 +43,14 @@ Fades4_3358_0000:
 	db	0x8B, 0xC7		; mov ax, di
 	db	0x8B, 0xCF		; mov cx, di
 	dec	al
-	mov	[0x62e5], al
+	mov	[g_62E5], al
 	inc	cl
-	mov	[0x62e8], cl
+	mov	[g_62E8], cl
 	mov	si, [bp + 0x6]
-	mov	al, [si + 0x62e4]
+	mov	al, [si + g_62E4]
 	cbw
 	db	0x8B, 0xD0		; mov dx, ax
-	mov	al, [si + 0x62e8]
+	mov	al, [si + g_62E8]
 	cbw
 	db	0x3B, 0xD0		; cmp dx, ax
 	jz	short .6
@@ -80,10 +80,10 @@ Fades4_3358_0000:
 	push	strict word 0x0
 	call	0x3349:Fades_3349_0000
 	add	sp, 0x4
-	mov	al, [si + 0x62e6]
+	mov	al, [si + g_62E6]
 	cbw
 	add	[bp - 0x2], ax
-	mov	al, [si + 0x62e8]
+	mov	al, [si + g_62E8]
 	cbw
 	cmp	[bp - 0x2], ax
 	jnz	short .4

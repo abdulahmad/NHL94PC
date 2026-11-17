@@ -437,6 +437,8 @@ def main(names):
         for s in targets:
             emit(s, flow, funcs, known)
         write_top()
+    if os.environ.get('GEN_OVL_MISS'):
+        json.dump({f'{k:04X}': sorted(v) for k, v in sorted(MISS.items())}, open(os.environ['GEN_OVL_MISS'], 'w'), indent=0)
 
 
 def ds_states(flow, funcs):
@@ -469,6 +471,7 @@ def ds_states(flow, funcs):
 
 
 DSOK = set()
+MISS = {}        # DGROUP offsets the overlays use that have no label yet (offset -> overlays)
 
 
 def analyze():
@@ -649,6 +652,8 @@ def subst_data(items, s, funcs):
                 v = int(mm.group(2), 16)
                 if v >= 0x40 and v in dg:
                     return '[' + (mm.group(1) + ':' if mm.group(1) else '') + dg[v] + ']'
+                if v >= 0x40:
+                    MISS.setdefault(v, set()).add(OV['name'])
                 return m.group(0)
             mm = re.fullmatch(r'(ss:)?((?:bx|si|di)(?: \+ (?:si|di))?) ([+-]) 0x([0-9a-f]+)', inner)
             if mm and (dsok or mm.group(1)):
@@ -657,6 +662,8 @@ def subst_data(items, s, funcs):
                     v = (-v) & 0xFFFF
                 if v >= 0x100 and v in dg:
                     return f'[{mm.group(1) or ""}{mm.group(2)} + {dg[v]}]'
+                if v >= 0x100:
+                    MISS.setdefault(v, set()).add(OV['name'] + ':indexed')
             return m.group(0)
         t2 = re.sub(r'\[([^\]]+)\]', mem, t)
         mm = None       # immediates stay numbers: a value equal to a DGROUP address is often a constant

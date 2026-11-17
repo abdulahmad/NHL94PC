@@ -8,8 +8,8 @@ Init_23CB_0004:
 	enter	0x30, 0x0
 	push	si
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0xda08], ax
-	mov	[0xda06], ax
+	mov	[g_DA08], ax
+	mov	[g_DA06], ax
 	mov	[bp - 0x22], ax
 	mov	[bp - 0x24], ax
 	cmp	[bp + 0xa], ax
@@ -18,7 +18,7 @@ Init_23CB_0004:
 .1:
 	cmp	[bp + 0x6], ax
 	jz	short .2
-	mov	bx, [0x29cc]
+	mov	bx, [g_29CC]
 	shl	bx, 1
 	push	word [bx + TeamNameClips]
 	lea	ax, [bp - 0x20]
@@ -29,7 +29,7 @@ Init_23CB_0004:
 	jmp	short .3
 	db	0x90
 .2:
-	mov	bx, [0x29ca]
+	mov	bx, [g_29CA]
 	shl	bx, 1
 	push	word [bx + TeamNameClips]
 	lea	ax, [bp - 0x20]
@@ -48,7 +48,7 @@ Init_23CB_0004:
 	call	0x0000:_strcat
 	add	sp, 0x4
 	mov	ax, 0x1
-	mov	es, [0x8cb2]
+	mov	es, [g_8CB2]
 	mov	bx, [bp + 0x6]
 	shl	bx, byte 0x3
 	mov	[es:bx - 0x499c], ax
@@ -89,7 +89,7 @@ Init_23CB_0004:
 	db	0x2B, 0xDB		; sub bx, bx
 	call	0x0FEF:SetClipRectRegs
 	mov	word [bp - 0x28], 0x0
-	mov	es, [0x8cb6]
+	mov	es, [g_8CB6]
 .6:
 	mov	bx, [bp - 0x28]
 	mov	byte [es:bx - 0x4992], 0x0
@@ -107,10 +107,10 @@ Init_23CB_0004:
 	push	ax
 	call	0x1B35:OvlThunk107
 	add	sp, 0x8
-	mov	[0xda06], ax
-	mov	[0xda08], dx
+	mov	[g_DA06], ax
+	mov	[g_DA08], dx
 	db	0x8B, 0xC2		; mov ax, dx
-	or	ax, [0xda06]
+	or	ax, [g_DA06]
 	jz	short .8
 	jmp	near .21
 .8:
@@ -146,7 +146,7 @@ Init_23CB_0004:
 	les	bx, [bp - 0x30]
 	mov	si, [bp - 0x28]
 	mov	al, [es:bx + si]
-	mov	es, [0x8cb6]
+	mov	es, [g_8CB6]
 	mov	[es:si - 0x4992], al
 	inc	word [bp - 0x28]
 	cmp	word [bp - 0x28], 0x30
@@ -180,9 +180,9 @@ Init_23CB_0004:
 	imul	ax, [bp + 0x6], 0x1c
 	add	ax, [bp + 0x8]
 	imul	bx, ax, 0x28
-	mov	al, [bx - 0x5aaa]
+	mov	al, [bx + g_A556]
 	db	0x2A, 0xE4		; sub ah, ah
-	mov	es, [0x8cb4]
+	mov	es, [g_8CB4]
 	mov	bx, [bp + 0x6]
 	db	0x8B, 0xCB		; mov cx, bx
 	shl	bx, 1
@@ -192,7 +192,7 @@ Init_23CB_0004:
 	jz	short .13
 	jmp	near .17
 .13:
-	mov	es, [0x8cb2]
+	mov	es, [g_8CB2]
 	db	0x8B, 0xD9		; mov bx, cx
 	shl	bx, byte 0x3
 	cmp	word [es:bx - 0x49a2], 0x0
@@ -205,7 +205,7 @@ Init_23CB_0004:
 .14:
 	db	0x0B, 0xC9		; or cx, cx
 	jz	short .15
-	mov	bx, [0x29cc]
+	mov	bx, [g_29CC]
 	shl	bx, 1
 	push	word [bx + TeamNameClips]
 	lea	ax, [bp - 0x20]
@@ -216,7 +216,7 @@ Init_23CB_0004:
 	jmp	short .16
 	db	0x90
 .15:
-	mov	bx, [0x29ca]
+	mov	bx, [g_29CA]
 	shl	bx, 1
 	push	word [bx + TeamNameClips]
 	lea	ax, [bp - 0x20]
@@ -235,7 +235,7 @@ Init_23CB_0004:
 	call	0x0000:_strcat
 	add	sp, 0x4
 	mov	ax, 0x1
-	mov	es, [0x8cb2]
+	mov	es, [g_8CB2]
 	mov	bx, [bp + 0x6]
 	shl	bx, byte 0x3
 	mov	[es:bx - 0x49a2], ax
@@ -271,7 +271,7 @@ Init_23CB_0004:
 	les	bx, [bp - 0x30]
 	mov	si, [bp - 0x28]
 	mov	al, [es:bx + si]
-	mov	es, [0x8cb6]
+	mov	es, [g_8CB6]
 	mov	[es:si - 0x4992], al
 	inc	word [bp - 0x28]
 	cmp	word [bp - 0x28], 0x300
@@ -295,25 +295,25 @@ Init_23CB_0004:
 	add	sp, 0x4
 	cmp	word [bp + 0x6], 0x0
 	jz	short .26
-	cmp	word [0x29cc], 0x18
+	cmp	word [g_29CC], 0x18
 	jnl	short .25
-	mov	bx, [0x29cc]
+	mov	bx, [g_29CC]
 .24:
 	shl	bx, 1
 	push	word [bx + TeamNameClips]
 	jmp	short .29
 	db	0x90
 .25:
-	mov	bx, [0x29cc]
+	mov	bx, [g_29CC]
 	jmp	short .28
 .26:
-	cmp	word [0x29ca], 0x18
+	cmp	word [g_29CA], 0x18
 	jnl	short .27
-	mov	bx, [0x29ca]
+	mov	bx, [g_29CA]
 	jmp	short .24
 	db	0x90
 .27:
-	mov	bx, [0x29ca]
+	mov	bx, [g_29CA]
 .28:
 	shl	bx, 1
 	push	word [bx + 0x1e4]
@@ -358,7 +358,7 @@ Init_23CB_0004:
 	les	bx, [bp - 0x30]
 	mov	si, [bp - 0x28]
 	mov	al, [es:bx + si]
-	mov	es, [0x8cb6]
+	mov	es, [g_8CB6]
 	mov	[es:si - 0x4992], al
 	inc	word [bp - 0x28]
 	cmp	word [bp - 0x28], 0x60
@@ -368,7 +368,7 @@ Init_23CB_0004:
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	mov	al, 0x3f
-	mov	es, [0x8cb6]
+	mov	es, [g_8CB6]
 	mov	[es:0xb6d7], al
 	mov	[es:0xb6d1], al
 	mov	[es:0xb6cf], al
@@ -401,15 +401,15 @@ Init_23CB_042C:
 	call	0x1E7E:Game_1E7E_04C0
 	add	sp, 0x8
 	mov	ax, 0x1
-	mov	[0x4b22], ax
-	mov	[0x4b20], ax
-	mov	ax, [0xda08]
-	or	ax, [0xda06]
+	mov	[g_4B22], ax
+	mov	[g_4B20], ax
+	mov	ax, [g_DA08]
+	or	ax, [g_DA06]
 	jnz	short .1
 	jmp	near .3
 .1:
 	push	0x0
-	les	bx, [0xda06]
+	les	bx, [g_DA06]
 	mov	ax, [es:bx + 0x18]
 	imul	word [es:bx + 0x1a]
 	add	ax, strict word 0x12
@@ -430,7 +430,7 @@ Init_23CB_042C:
 	mov	cx, 0x9
 	rep	movsw
 	pop	ds
-	les	bx, [0xda06]
+	les	bx, [g_DA06]
 	mov	ax, [es:bx + 0x18]
 	cwd
 	db	0x33, 0xC2		; xor ax, dx
@@ -440,7 +440,7 @@ Init_23CB_042C:
 	db	0x2B, 0xC2		; sub ax, dx
 	les	bx, [bp - 0x4]
 	mov	[es:bx], ax
-	les	si, [0xda06]
+	les	si, [g_DA06]
 	mov	ax, [es:si + 0x1a]
 	les	bx, [bp - 0x4]
 	mov	[es:bx + 0x2], ax
@@ -450,8 +450,8 @@ Init_23CB_042C:
 	push	0x0
 	push	0x32
 	push	0x5
-	push	word [0xda08]
-	push	word [0xda06]
+	push	word [g_DA08]
+	push	word [g_DA06]
 	call	0x1B35:OvlThunk110
 	add	sp, 0xa
 	push	dx
@@ -464,7 +464,7 @@ Init_23CB_042C:
 	push	word [bp - 0x4]
 	call	0x0FEF:PutBlockAt
 	add	sp, 0x8
-	les	bx, [0xda06]
+	les	bx, [g_DA06]
 	mov	ax, [es:bx + 0x12]
 	cwd
 	push	dx
@@ -474,7 +474,7 @@ Init_23CB_042C:
 	call	0x0000:__aFldiv
 	call	0x03A3:SetDeadline.regs
 	call	0x03A3:WaitDeadlineNoEoi
-	les	bx, [0xda06]
+	les	bx, [g_DA06]
 	cmp	word [es:bx + 0x20], 0x0
 	jnz	short .2
 	mov	ax, [es:bx + 0x12]
@@ -493,8 +493,8 @@ Init_23CB_042C:
 	adc	dx, 0x0
 	call	0x03A3:SetDeadline.regs
 	call	0x03A3:WaitDeadlineNoEoi
-	push	word [0xda08]
-	push	word [0xda06]
+	push	word [g_DA08]
+	push	word [g_DA06]
 	call	0x1B35:OvlThunk108
 	add	sp, 0x4
 	push	word [bp - 0x2]

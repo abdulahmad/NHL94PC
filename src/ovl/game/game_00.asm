@@ -6,10 +6,10 @@ Game_1E45_0000:
 	push	si
 	mov	ax, 0x3415
 	mov	es, ax
-	mov	si, [0x29ca]
+	mov	si, [g_29CA]
 	shl	si, 1
 	mov	ax, [es:si + 0x128]
-	mov	si, [0x29cc]
+	mov	si, [g_29CC]
 	shl	si, 1
 	or	ax, [es:si + 0x128]
 	db	0x8B, 0xD8		; mov bx, ax
@@ -27,8 +27,8 @@ Game_1E45_0000:
 	push	word 0x2962
 	call	0x14DB:AllocRecData
 	add	sp, 0x8
-	mov	[0xcffc], ax
-	mov	[0xcffe], dx
+	mov	[g_CFFC], ax
+	mov	[g_CFFE], dx
 	lea	ax, [bp - 0x6]
 	push	ax
 	call	0x1B35:OvlThunk118
@@ -41,9 +41,9 @@ Game_1E45_0000:
 	mov	[bp - 0x6], ax
 .3:
 	mov	word [bp - 0x2], 0x0
-	mov	es, [0xcffe]
+	mov	es, [g_CFFE]
 .4:
-	mov	bx, [0xcffc]
+	mov	bx, [g_CFFC]
 	mov	si, [bp - 0x2]
 	mov	ax, [bp - 0x6]
 	mov	dx, [bp - 0x4]
@@ -77,8 +77,8 @@ Game_1E45_0000:
 	retf
 .6:
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0xcffe], ax
-	mov	[0xcffc], ax
+	mov	[g_CFFE], ax
+	mov	[g_CFFC], ax
 	pop	si
 	pop	di
 	leave
@@ -88,8 +88,8 @@ Game_1E45_00C2:
 	enter	0x4, 0x0
 	push	di
 	push	si
-	mov	ax, [0xcffe]
-	or	ax, [0xcffc]
+	mov	ax, [g_CFFE]
+	or	ax, [g_CFFC]
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
@@ -100,7 +100,7 @@ Game_1E45_00C2:
 	db	0x90
 .2:
 	db	0x2B, 0xFF		; sub di, di
-	les	bx, [0xcffc]
+	les	bx, [g_CFFC]
 	cmp	byte [es:bx + 0x4], 0xff
 	jz	short .4
 	db	0x8B, 0xC3		; mov ax, bx
@@ -120,25 +120,25 @@ Game_1E45_00C2:
 	shl	di, 1
 	db	0x03, 0xF9		; add di, cx
 	shl	di, 1
-	les	bx, [0xcffc]
+	les	bx, [g_CFFC]
 	mov	[es:bx + di + 0x4], al
 	mov	al, [bp + 0x8]
-	les	bx, [0xcffc]
+	les	bx, [g_CFFC]
 	mov	[es:bx + di + 0x5], al
 	mov	al, [AnnouncerFlags]
 	and	ax, strict word 0x70
 	shr	al, byte 0x4
 	push	ax
-	push	word [0xcffe]
-	push	word [0xcffc]
+	push	word [g_CFFE]
+	push	word [g_CFFC]
 	push	cs
 	call	Game_1E45_015E
 	add	sp, 0x6
 	db	0x8B, 0xF0		; mov si, ax
-	les	bx, [0xcffc]
+	les	bx, [g_CFFC]
 	mov	byte [es:bx + di + 0x5], 0xff
-	add	di, [0xcffc]
-	mov	es, [0xcffe]
+	add	di, [g_CFFC]
+	mov	es, [g_CFFE]
 	mov	al, [es:di + 0x5]
 	mov	[es:di + 0x4], al
 	db	0x0B, 0xF6		; or si, si

@@ -227,7 +227,7 @@ Menus_2047_01B2:
 	mov	[bp - 0x2e], ax
 	mov	[bp - 0x30], ax
 	mov	[bp - 0x32], ax
-	mov	es, [0x8b2c]
+	mov	es, [g_8B2C]
 	mov	[es:0x1474], ax
 	mov	[es:0x1472], ax
 	mov	[es:0x145e], ax
@@ -299,51 +299,51 @@ Menus_2047_01B2:
 	add	sp, 0x4
 	cmp	byte [bp + 0xc], 0x0
 	jz	short .1
-	cmp	word [0x29cc], 0x19
+	cmp	word [g_29CC], 0x19
 	jnz	short .2
-	mov	word [0x29cc], 0x18
+	mov	word [g_29CC], 0x18
 	jmp	short .2
 	db	0x90
 .1:
-	cmp	word [0x29ca], 0x18
+	cmp	word [g_29CA], 0x18
 	jnz	short .2
-	mov	word [0x29cc], 0x19
+	mov	word [g_29CC], 0x19
 .2:
 	cmp	byte [bp + 0xc], 0x0
 	jz	short .3
-	mov	al, [0x29cc]
+	mov	al, [g_29CC]
 	jmp	short .4
 .3:
-	mov	al, [0x29ca]
+	mov	al, [g_29CA]
 .4:
 	add	al, 0x40
 	mov	[bp - 0x8c], al
 	cmp	byte [bp + 0xc], 0x0
 	jz	short .5
-	mov	al, [0x29cc]
+	mov	al, [g_29CC]
 	jmp	short .6
 .5:
-	mov	al, [0x29ca]
+	mov	al, [g_29CA]
 .6:
 	add	al, 0x60
 	mov	[bp - 0x3a], al
-	mov	es, [0x8b2e]
+	mov	es, [g_8B2E]
 	mov	word [es:0x15bc], 0x2a60
 	mov	word [es:0x15be], 0x2047
 	mov	ax, 0x208f
 	mov	dx, 0x1b35
-	mov	es, [0x8b30]
+	mov	es, [g_8B30]
 	mov	[es:0x1538], ax
 	mov	[es:0x153a], dx
-	mov	es, [0x8b32]
+	mov	es, [g_8B32]
 	mov	[es:0x1404], ax
 	mov	[es:0x1406], dx
 	mov	ax, 0x207b
 	mov	dx, 0x1b35
-	mov	es, [0x8b30]
+	mov	es, [g_8B30]
 	mov	[es:0x157a], ax
 	mov	[es:0x157c], dx
-	mov	es, [0x8b32]
+	mov	es, [g_8B32]
 	mov	[es:0x1446], ax
 	mov	[es:0x1448], dx
 	mov	word [bp - 0x8a], 0x0
@@ -357,20 +357,20 @@ Menus_2047_01B2:
 	mov	si, [bp + 0x6]
 	cmp	byte [bx + si], 0x64
 	jnz	short .7
-	mov	es, [0x8b2e]
+	mov	es, [g_8B2E]
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[es:0x15be], ax
 	mov	[es:0x15bc], ax
-	mov	es, [0x8b30]
+	mov	es, [g_8B30]
 	mov	[es:0x153a], ax
 	mov	[es:0x1538], ax
-	mov	es, [0x8b32]
+	mov	es, [g_8B32]
 	mov	[es:0x1406], ax
 	mov	[es:0x1404], ax
-	mov	es, [0x8b30]
+	mov	es, [g_8B30]
 	mov	[es:0x157c], ax
 	mov	[es:0x157a], ax
-	mov	es, [0x8b32]
+	mov	es, [g_8B32]
 	mov	[es:0x1448], ax
 	mov	[es:0x1446], ax
 .9:
@@ -395,12 +395,12 @@ Menus_2047_01B2:
 	db	0x2A, 0xED		; sub ch, ch
 	db	0x03, 0xC1		; add ax, cx
 	imul	si, ax, 0x28
-	mov	al, [si - 0x5aaa]
+	mov	al, [si + g_A556]
 	db	0x8B, 0xF3		; mov si, bx
 	mov	[bp + si - 0x88], al
 	jmp	short .11
 .13:
-	cmp	word [0xbffe], 0x0
+	cmp	word [g_BFFE], 0x0
 	jnl	short .16
 	mov	word [bp - 0x8a], 0x0
 .14:
@@ -414,9 +414,9 @@ Menus_2047_01B2:
 	db	0x2A, 0xED		; sub ch, ch
 	db	0x03, 0xC8		; add cx, ax
 	imul	bx, cx, 0x28
-	cmp	byte [bx - 0x5ab0], 0x3
+	cmp	byte [bx + g_A550], 0x3
 	jnz	short .15
-	mov	byte [bx - 0x5ab0], 0x2
+	mov	byte [bx + g_A550], 0x2
 .15:
 	inc	word [bp - 0x8a]
 	cmp	word [bp - 0x8a], 0x8
@@ -646,18 +646,18 @@ Menus_2047_01B2:
 	mov	al, 0x1c
 	mul	byte [bp + 0xc]
 	imul	bx, [bp - 0x92], 0x16
-	mov	cl, [bx - 0x4268]
+	mov	cl, [bx + g_BD98]
 	db	0x2A, 0xED		; sub ch, ch
 	db	0x03, 0xC8		; add cx, ax
 	imul	si, cx, 0x28
-	cmp	byte [si - 0x5ab0], 0x2
+	cmp	byte [si + g_A550], 0x2
 	jz	short .38
 	mov	al, [bp - 0x3a]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	mov	al, [bp - 0x8c]
 	push	ax
-	mov	al, [bx - 0x4269]
+	mov	al, [bx + g_BD97]
 	push	ax
 	push	word 0x3680
 	push	strict word 0x0
@@ -1264,11 +1264,11 @@ Menus_2047_01B2:
 	mov	al, 0x1c
 	mul	byte [bp + 0xc]
 	imul	bx, [bp - 0x92], 0x16
-	mov	cl, [bx - 0x4268]
+	mov	cl, [bx + g_BD98]
 	db	0x2A, 0xED		; sub ch, ch
 	db	0x03, 0xC8		; add cx, ax
 	imul	bx, cx, 0x28
-	cmp	byte [bx - 0x5ab0], 0x2
+	cmp	byte [bx + g_A550], 0x2
 	jnz	short .83
 	jmp	near .145
 .83:
@@ -1280,11 +1280,11 @@ Menus_2047_01B2:
 	jmp	near .93
 .84:
 	imul	bx, [bp - 0x92], 0x16
-	cmp	byte [bx - 0x426a], 0x43
+	cmp	byte [bx + g_BD96], 0x43
 	jz	short .85
-	cmp	byte [bx - 0x426a], 0x4c
+	cmp	byte [bx + g_BD96], 0x4c
 	jz	short .85
-	cmp	byte [bx - 0x426a], 0x52
+	cmp	byte [bx + g_BD96], 0x52
 	jz	short .85
 	jmp	near .92
 .85:
@@ -1296,7 +1296,7 @@ Menus_2047_01B2:
 	mov	word [bp - 0xac], 0x0
 .86:
 	imul	bx, [bp - 0x92], 0x16
-	mov	al, [bx - 0x4269]
+	mov	al, [bx + g_BD97]
 	mov	si, [bp - 0x8a]
 	db	0x8B, 0xCE		; mov cx, si
 	shl	si, 1
@@ -1314,7 +1314,7 @@ Menus_2047_01B2:
 	cwd
 	idiv	cx
 	imul	bx, [bp - 0x92], 0x16
-	mov	al, [bx - 0x4269]
+	mov	al, [bx + g_BD97]
 	db	0x8B, 0xF2		; mov si, dx
 	mov	dx, [bp - 0x8a]
 	db	0x8B, 0xDA		; mov bx, dx
@@ -1326,7 +1326,7 @@ Menus_2047_01B2:
 	jmp	short .91
 .88:
 	mov	word [bp - 0xa8], 0x0
-	mov	es, [0x8b34]
+	mov	es, [g_8B34]
 .89:
 	mov	al, [bp - 0x3a]
 	mov	bx, [bp - 0xa8]
@@ -1339,7 +1339,7 @@ Menus_2047_01B2:
 	push	strict word 0x0
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
-	mov	es, [0x8b34]
+	mov	es, [g_8B34]
 	mov	bx, [bp - 0x8a]
 	db	0x8B, 0xC3		; mov ax, bx
 	shl	bx, 1
@@ -1376,23 +1376,23 @@ Menus_2047_01B2:
 	add	sp, 0xa
 	jmp	short .90
 .92:
-	mov	es, [0x8b2e]
+	mov	es, [g_8B2E]
 	mov	word [es:0x15bc], 0x2a60
 	mov	word [es:0x15be], 0x2047
 	mov	ax, 0x208f
 	mov	dx, 0x1b35
-	mov	es, [0x8b30]
+	mov	es, [g_8B30]
 	mov	[es:0x1538], ax
 	mov	[es:0x153a], dx
-	mov	es, [0x8b32]
+	mov	es, [g_8B32]
 	mov	[es:0x1404], ax
 	mov	[es:0x1406], dx
 	mov	ax, 0x207b
 	mov	dx, 0x1b35
-	mov	es, [0x8b30]
+	mov	es, [g_8B30]
 	mov	[es:0x157a], ax
 	mov	[es:0x157c], dx
-	mov	es, [0x8b32]
+	mov	es, [g_8B32]
 	mov	[es:0x1446], ax
 	mov	[es:0x1448], dx
 	mov	word [bp - 0x8a], 0x0
@@ -1404,7 +1404,7 @@ Menus_2047_01B2:
 	jmp	near .102
 .94:
 	imul	bx, [bp - 0x92], 0x16
-	cmp	byte [bx - 0x426a], 0x44
+	cmp	byte [bx + g_BD96], 0x44
 	jnz	short .92
 	mov	ax, [bp - 0x6]
 	sub	ax, strict word 0xc
@@ -1415,7 +1415,7 @@ Menus_2047_01B2:
 	mov	word [bp - 0xac], 0x0
 .95:
 	imul	bx, [bp - 0x92], 0x16
-	mov	al, [bx - 0x4269]
+	mov	al, [bx + g_BD97]
 	mov	si, [bp - 0x8a]
 	shl	si, 1
 	add	si, [bp - 0xac]
@@ -1436,14 +1436,14 @@ Menus_2047_01B2:
 	shl	ax, 1
 	db	0x03, 0xF0		; add si, ax
 	imul	bx, [bp - 0x92], 0x16
-	mov	al, [bx - 0x4269]
+	mov	al, [bx + g_BD97]
 	mov	[bp + si - 0x7c], al
 	mov	word [bp - 0xac], 0x0
 	jmp	short .100
 	db	0x90
 .97:
 	mov	word [bp - 0xa8], 0x0
-	mov	es, [0x8b34]
+	mov	es, [g_8B34]
 .98:
 	mov	al, [bp - 0x3a]
 	mov	bx, [bp - 0xa8]
@@ -1456,7 +1456,7 @@ Menus_2047_01B2:
 	push	strict word 0x0
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
-	mov	es, [0x8b34]
+	mov	es, [g_8B34]
 	mov	bx, [bp - 0x8a]
 	shl	bx, 1
 	add	bx, [bp - 0xac]
@@ -1497,7 +1497,7 @@ Menus_2047_01B2:
 	jmp	near .113
 .103:
 	imul	bx, [bp - 0x92], 0x16
-	cmp	byte [bx - 0x426a], 0x47
+	cmp	byte [bx + g_BD96], 0x47
 	jnz	short .104
 	jmp	near .92
 .104:
@@ -1510,7 +1510,7 @@ Menus_2047_01B2:
 	mov	word [bp - 0xac], 0x0
 .105:
 	imul	bx, [bp - 0x92], 0x16
-	mov	al, [bx - 0x4269]
+	mov	al, [bx + g_BD97]
 	mov	si, [bp - 0x8a]
 	db	0x8B, 0xCE		; mov cx, si
 	shl	si, byte 0x2
@@ -1529,7 +1529,7 @@ Menus_2047_01B2:
 	cwd
 	idiv	cx
 	imul	bx, [bp - 0x92], 0x16
-	mov	al, [bx - 0x4269]
+	mov	al, [bx + g_BD97]
 	db	0x8B, 0xF2		; mov si, dx
 	mov	dx, [bp - 0x8a]
 	db	0x8B, 0xDA		; mov bx, dx
@@ -1542,7 +1542,7 @@ Menus_2047_01B2:
 	db	0x90
 .107:
 	mov	word [bp - 0xa8], 0x0
-	mov	es, [0x8b34]
+	mov	es, [g_8B34]
 .108:
 	mov	al, [bp - 0x3a]
 	mov	bx, [bp - 0xa8]
@@ -1555,7 +1555,7 @@ Menus_2047_01B2:
 	push	strict word 0x0
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
-	mov	es, [0x8b34]
+	mov	es, [g_8B34]
 	mov	bx, [bp - 0x8a]
 	db	0x8B, 0xC3		; mov ax, bx
 	shl	bx, byte 0x2
@@ -1602,7 +1602,7 @@ Menus_2047_01B2:
 	jmp	near .123
 .114:
 	imul	bx, [bp - 0x92], 0x16
-	cmp	byte [bx - 0x426a], 0x47
+	cmp	byte [bx + g_BD96], 0x47
 	jnz	short .115
 	jmp	near .92
 .115:
@@ -1618,7 +1618,7 @@ Menus_2047_01B2:
 	mov	word [bp - 0xac], 0x0
 .116:
 	imul	bx, [bp - 0x92], 0x16
-	mov	al, [bx - 0x4269]
+	mov	al, [bx + g_BD97]
 	mov	si, [bp - 0x8a]
 	shl	si, byte 0x2
 	add	si, [bp - 0xac]
@@ -1639,14 +1639,14 @@ Menus_2047_01B2:
 	shl	ax, byte 0x2
 	db	0x03, 0xF0		; add si, ax
 	imul	bx, [bp - 0x92], 0x16
-	mov	al, [bx - 0x4269]
+	mov	al, [bx + g_BD97]
 	mov	[bp + si - 0x6c], al
 	mov	word [bp - 0xac], 0x0
 	jmp	short .121
 	db	0x90
 .118:
 	mov	word [bp - 0xa8], 0x0
-	mov	es, [0x8b34]
+	mov	es, [g_8B34]
 .119:
 	mov	al, [bp - 0x3a]
 	mov	bx, [bp - 0xa8]
@@ -1659,7 +1659,7 @@ Menus_2047_01B2:
 	push	strict word 0x0
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
-	mov	es, [0x8b34]
+	mov	es, [g_8B34]
 	mov	bx, [bp - 0x8a]
 	shl	bx, byte 0x2
 	add	bx, [bp - 0xac]
@@ -1700,7 +1700,7 @@ Menus_2047_01B2:
 	jmp	near .133
 .124:
 	imul	bx, [bp - 0x92], 0x16
-	cmp	byte [bx - 0x426a], 0x47
+	cmp	byte [bx + g_BD96], 0x47
 	jz	short .125
 	jmp	near .92
 .125:
@@ -1709,7 +1709,7 @@ Menus_2047_01B2:
 	mov	si, [bp - 0xac]
 	mov	al, [bp + si - 0x64]
 	imul	bx, [bp - 0x92], 0x16
-	cmp	[bx - 0x4269], al
+	cmp	[bx + g_BD97], al
 	jnz	short .127
 	mov	byte [bp + si - 0x64], 0x64
 .127:
@@ -1717,7 +1717,7 @@ Menus_2047_01B2:
 	cmp	word [bp - 0xac], 0x2
 	jl	short .126
 	imul	bx, [bp - 0x92], 0x16
-	mov	al, [bx - 0x4269]
+	mov	al, [bx + g_BD97]
 	mov	si, [bp - 0x6]
 	mov	[bp + si - 0x88], al
 	mov	word [bp - 0xac], 0x0
@@ -1725,7 +1725,7 @@ Menus_2047_01B2:
 	db	0x90
 .128:
 	mov	word [bp - 0xa8], 0x0
-	mov	es, [0x8b34]
+	mov	es, [g_8B34]
 .129:
 	mov	al, [bp - 0x3a]
 	mov	bx, [bp - 0xa8]
@@ -1738,7 +1738,7 @@ Menus_2047_01B2:
 	push	strict word 0x0
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
-	mov	es, [0x8b34]
+	mov	es, [g_8B34]
 	mov	bx, [bp - 0xac]
 	shl	bx, byte 0x2
 	push	word [es:bx + 0x192]
@@ -1771,7 +1771,7 @@ Menus_2047_01B2:
 	db	0x90
 .133:
 	imul	bx, [bp - 0x92], 0x16
-	cmp	byte [bx - 0x426a], 0x47
+	cmp	byte [bx + g_BD96], 0x47
 	jnz	short .134
 	jmp	near .92
 .134:
@@ -1780,7 +1780,7 @@ Menus_2047_01B2:
 	mov	si, [bp - 0xac]
 	mov	al, [bp + si - 0x62]
 	imul	bx, [bp - 0x92], 0x16
-	cmp	[bx - 0x4269], al
+	cmp	[bx + g_BD97], al
 	jnz	short .136
 	mov	byte [bp + si - 0x62], 0x64
 .136:
@@ -1788,14 +1788,14 @@ Menus_2047_01B2:
 	cmp	word [bp - 0xac], 0x2
 	jl	short .135
 	imul	bx, [bp - 0x92], 0x16
-	mov	al, [bx - 0x4269]
+	mov	al, [bx + g_BD97]
 	mov	si, [bp - 0x6]
 	mov	[bp + si - 0x88], al
 	mov	word [bp - 0xac], 0x0
 	jmp	short .140
 .137:
 	mov	word [bp - 0xa8], 0x0
-	mov	es, [0x8b34]
+	mov	es, [g_8B34]
 .138:
 	mov	al, [bp - 0x3a]
 	mov	bx, [bp - 0xa8]
@@ -1808,7 +1808,7 @@ Menus_2047_01B2:
 	push	strict word 0x0
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
-	mov	es, [0x8b34]
+	mov	es, [g_8B34]
 	mov	bx, [bp - 0xac]
 	shl	bx, byte 0x2
 	push	word [es:bx + 0x19a]
@@ -1849,20 +1849,20 @@ Menus_2047_01B2:
 	mov	si, [bp - 0x8a]
 	cmp	byte [bp + si - 0x88], 0x64
 	jnz	short .142
-	mov	es, [0x8b2e]
+	mov	es, [g_8B2E]
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[es:0x15be], ax
 	mov	[es:0x15bc], ax
-	mov	es, [0x8b30]
+	mov	es, [g_8B30]
 	mov	[es:0x153a], ax
 	mov	[es:0x1538], ax
-	mov	es, [0x8b32]
+	mov	es, [g_8B32]
 	mov	[es:0x1406], ax
 	mov	[es:0x1404], ax
-	mov	es, [0x8b30]
+	mov	es, [g_8B30]
 	mov	[es:0x157c], ax
 	mov	[es:0x157a], ax
-	mov	es, [0x8b32]
+	mov	es, [g_8B32]
 	mov	[es:0x1448], ax
 	mov	[es:0x1446], ax
 	jmp	near .155
@@ -1875,23 +1875,23 @@ Menus_2047_01B2:
 	mul	byte [bp + 0xc]
 	sub	word [bp - 0x6], 0x64
 	imul	bx, [bp - 0x6], 0x16
-	mov	cl, [bx - 0x4268]
+	mov	cl, [bx + g_BD98]
 	db	0x2A, 0xED		; sub ch, ch
 	db	0x03, 0xC8		; add cx, ax
 	imul	bx, cx, 0x28
-	cmp	byte [bx - 0x5ab0], 0x0
+	cmp	byte [bx + g_A550], 0x0
 	jnz	short .147
 	jmp	near .155
 .147:
-	cmp	byte [bx - 0x5ab0], 0x4
+	cmp	byte [bx + g_A550], 0x4
 	jz	short .149
-	cmp	byte [bx - 0x5ab0], 0x3
+	cmp	byte [bx + g_A550], 0x3
 	jz	short .149
-	cmp	byte [bx - 0x5ab0], 0x2
+	cmp	byte [bx + g_A550], 0x2
 	jz	short .148
 	jmp	near .155
 .148:
-	cmp	word [0xbffe], 0x0
+	cmp	word [g_BFFE], 0x0
 	jl	short .149
 	jmp	near .155
 .149:
@@ -1900,11 +1900,11 @@ Menus_2047_01B2:
 	mov	al, 0x1c
 	mul	byte [bp + 0xc]
 	imul	bx, [bp - 0x92], 0x16
-	mov	cl, [bx - 0x4268]
+	mov	cl, [bx + g_BD98]
 	db	0x2A, 0xED		; sub ch, ch
 	db	0x03, 0xC8		; add cx, ax
 	imul	bx, cx, 0x28
-	cmp	byte [bx - 0x5ab0], 0x2
+	cmp	byte [bx + g_A550], 0x2
 	jnz	short .150
 	mov	ax, 0x7f
 	jmp	short .151
@@ -1919,10 +1919,10 @@ Menus_2047_01B2:
 	add	ax, 0xbd99
 	push	ax
 	db	0x8B, 0xD9		; mov bx, cx
-	mov	al, [bx - 0x4269]
+	mov	al, [bx + g_BD97]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
-	mov	al, [bx - 0x426a]
+	mov	al, [bx + g_BD96]
 	push	ax
 	push	word 0xbca
 	mov	ax, [bp - 0x92]
@@ -1936,7 +1936,7 @@ Menus_2047_01B2:
 	call	0x03A3:FormatCall
 	add	sp, 0xc
 .152:
-	mov	es, [0x8b2c]
+	mov	es, [g_8B2C]
 	mov	word [es:0x145c], 0x202b
 	mov	word [es:0x145e], 0x1b35
 	mov	word [es:0x1472], 0x2085
@@ -1946,11 +1946,11 @@ Menus_2047_01B2:
 	mov	cx, [bp - 0x6]
 	mov	[bp - 0x92], cx
 	imul	bx, cx, 0x16
-	mov	cl, [bx - 0x4268]
+	mov	cl, [bx + g_BD98]
 	db	0x2A, 0xED		; sub ch, ch
 	db	0x03, 0xC8		; add cx, ax
 	imul	bx, cx, 0x28
-	cmp	byte [bx - 0x5ab0], 0x2
+	cmp	byte [bx + g_A550], 0x2
 	jnz	short .153
 	mov	ax, 0x7e
 	jmp	short .154
@@ -1965,10 +1965,10 @@ Menus_2047_01B2:
 	add	ax, 0xbd99
 	push	ax
 	db	0x8B, 0xD9		; mov bx, cx
-	mov	al, [bx - 0x4269]
+	mov	al, [bx + g_BD97]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
-	mov	al, [bx - 0x426a]
+	mov	al, [bx + g_BD96]
 	push	ax
 	push	word 0xbd4
 	mov	ax, [bp - 0x92]
@@ -2117,7 +2117,7 @@ Menus_2047_1640:
 	mov	bx, [bp - 0x8]
 	cmp	word [bx + 0x2], 0x0
 	jnl	short .5
-	mov	byte [di - 0x426a], 0x0
+	mov	byte [di + g_BD96], 0x0
 	jmp	near .11
 	db	0x90
 .5:
@@ -2164,13 +2164,13 @@ Menus_2047_1640:
 	add	sp, 0x2
 .9:
 	mov	al, [bp - 0x8a]
-	mov	[di - 0x426a], al
+	mov	[di + g_BD96], al
 	mov	al, [bp - 0x8b]
-	mov	[di - 0x4269], al
+	mov	[di + g_BD97], al
 	mov	al, [bp - 0x89]
-	mov	[di - 0x4267], al
-	mov	byte [di - 0x4266], 0x2e
-	mov	byte [di - 0x4265], 0x20
+	mov	[di + g_BD99], al
+	mov	byte [di + g_BD9A], 0x2e
+	mov	byte [di + g_BD9B], 0x20
 	db	0x2B, 0xD2		; sub dx, dx
 	mov	[bp - 0x2], dx
 	mov	[bp - 0x4], di
@@ -2179,7 +2179,7 @@ Menus_2047_1640:
 	mov	al, [bp + si - 0x79]
 	db	0x8B, 0xDF		; mov bx, di
 	db	0x03, 0xDE		; add bx, si
-	mov	[bx - 0x4264], al
+	mov	[bx + g_BD9C], al
 	inc	si
 	cmp	si, 0x10
 	jl	short .10
@@ -2200,7 +2200,7 @@ Menus_2047_1640:
 	mov	bx, [bp - 0x8]
 	cmp	word [bx + 0x2], 0x0
 	jnl	short .14
-	mov	byte [di - 0x4044], 0x0
+	mov	byte [di + g_BFBC], 0x0
 	jmp	near .20
 	db	0x90
 .14:
@@ -2246,13 +2246,13 @@ Menus_2047_1640:
 	add	sp, 0x2
 .18:
 	mov	al, [bp - 0x8a]
-	mov	[di - 0x4044], al
+	mov	[di + g_BFBC], al
 	mov	al, [bp - 0x8b]
-	mov	[di - 0x4043], al
+	mov	[di + g_BFBD], al
 	mov	al, [bp - 0x89]
-	mov	[di - 0x4041], al
-	mov	byte [di - 0x4040], 0x2e
-	mov	byte [di - 0x403f], 0x20
+	mov	[di + g_BFBF], al
+	mov	byte [di + g_BFC0], 0x2e
+	mov	byte [di + g_BFC1], 0x20
 	db	0x2B, 0xD2		; sub dx, dx
 	mov	[bp - 0x2], dx
 	mov	[bp - 0x4], di
@@ -2261,7 +2261,7 @@ Menus_2047_1640:
 	mov	al, [bp + si - 0x79]
 	db	0x8B, 0xDF		; mov bx, di
 	db	0x03, 0xDE		; add bx, si
-	mov	[bx - 0x403e], al
+	mov	[bx + g_BFC2], al
 	inc	si
 	cmp	si, 0x10
 	jl	short .19
@@ -2288,32 +2288,32 @@ Menus_2047_186A:
 	push	si
 	cmp	byte [bp + 0xc], 0x0
 	jz	short .1
-	cmp	word [0x29cc], 0x19
+	cmp	word [g_29CC], 0x19
 	jnz	short .2
-	mov	word [0x29cc], 0x18
+	mov	word [g_29CC], 0x18
 	jmp	short .2
 	db	0x90
 .1:
-	cmp	word [0x29ca], 0x18
+	cmp	word [g_29CA], 0x18
 	jnz	short .2
-	mov	word [0x29cc], 0x19
+	mov	word [g_29CC], 0x19
 .2:
 	cmp	byte [bp + 0xc], 0x0
 	jz	short .3
-	mov	al, [0x29cc]
+	mov	al, [g_29CC]
 	jmp	short .4
 .3:
-	mov	al, [0x29ca]
+	mov	al, [g_29CA]
 .4:
 	add	al, 0x40
 	mov	[bp - 0x4], al
 	cmp	byte [bp + 0xc], 0x0
 	jz	short .5
-	mov	al, [0x29cc]
+	mov	al, [g_29CC]
 	jmp	short .6
 	db	0x90
 .5:
-	mov	al, [0x29ca]
+	mov	al, [g_29CA]
 .6:
 	add	al, 0x60
 	mov	[bp - 0x3], al
@@ -2360,7 +2360,7 @@ Menus_2047_186A:
 	push	strict word 0x0
 	call	0x0FEF:SetRemapTable
 	add	sp, 0x4
-	mov	es, [0x8b34]
+	mov	es, [g_8B34]
 	mov	bx, [bp - 0x8]
 	push	word [es:bx]
 	dec	bx
@@ -2387,7 +2387,7 @@ Menus_2047_186A:
 	db	0x2A, 0xE4		; sub ah, ah
 	add	ax, [bp - 0xa]
 	imul	bx, ax, 0x28
-	mov	al, [bx - 0x5ab0]
+	mov	al, [bx + g_A550]
 	db	0x0A, 0xC0		; or al, al
 	jz	short Menus_2047_186AJumpTable.5
 	db	0x2A, 0xE4		; sub ah, ah
@@ -2408,7 +2408,7 @@ Menus_2047_186AJumpTable:
 	dw	.4
 	dw	.3
 .1:
-	cmp	word [0xbffe], 0x0
+	cmp	word [g_BFFE], 0x0
 	jnl	short .3
 	mov	di, 0x7f
 	jmp	short .4
@@ -2487,11 +2487,11 @@ Menus_2047_19E0:
 	mov	[bp - 0x14], dx
 	cmp	word [bp + 0x6], 0x0
 	jz	short .2
-	mov	ax, [0x29cc]
+	mov	ax, [g_29CC]
 	jmp	short .3
 	db	0x90
 .2:
-	mov	ax, [0x29ca]
+	mov	ax, [g_29CA]
 .3:
 	imul	ax, ax, word 0x1c0
 	db	0x8B, 0xCA		; mov cx, dx
@@ -3024,11 +3024,11 @@ Menus_2047_1F76:
 	mov	[bp - 0x10], dx
 	cmp	word [bp + 0x6], 0x0
 	jz	short .2
-	mov	ax, [0x29cc]
+	mov	ax, [g_29CC]
 	jmp	short .3
 	db	0x90
 .2:
-	mov	ax, [0x29ca]
+	mov	ax, [g_29CA]
 .3:
 	imul	ax, ax, word 0x1c0
 	db	0x03, 0xC7		; add ax, di
@@ -3097,7 +3097,7 @@ Menus_2047_1F76:
 	jl	short .6
 	mov	ax, DGROUP
 	mov	ds, ax
-	mov	es, [0x8b34]
+	mov	es, [g_8B34]
 	mov	byte [es:0xfb], 0xcc
 	mov	byte [es:0xfc], 0xcd
 	mov	byte [es:0xfd], 0xce
@@ -3379,7 +3379,7 @@ Menus_2047_22F2:
 	movsw
 	movsb
 	mov	word [bp - 0x6], 0xd2f
-	cmp	word [0xbffe], 0x0
+	cmp	word [g_BFFE], 0x0
 	jl	short .1
 	jmp	near .24
 .1:
@@ -3393,7 +3393,7 @@ Menus_2047_22F2:
 	db	0x2A, 0xE4		; sub ah, ah
 	add	ax, [bp - 0x7c]
 	imul	bx, ax, 0x28
-	cmp	byte [bx - 0x5ab0], 0x3
+	cmp	byte [bx + g_A550], 0x3
 	jnz	short .4
 	cmp	byte [si - 0x2], 0x47
 	jz	short .3
@@ -3553,7 +3553,7 @@ Menus_2047_248A:
 	enter	0x6, 0x0
 	push	di
 	push	si
-	cmp	word [0xbffe], 0x0
+	cmp	word [g_BFFE], 0x0
 	jl	short .3
 	db	0x2B, 0xF6		; sub si, si
 	mov	di, [bp + 0x8]
@@ -3570,7 +3570,7 @@ Menus_2047_248A:
 	db	0x2A, 0xED		; sub ch, ch
 	db	0x03, 0xC8		; add cx, ax
 	imul	bx, cx, 0x28
-	mov	al, [bx - 0x5ab0]
+	mov	al, [bx + g_A550]
 	cmp	al, 0x4
 	jz	short .2
 	cmp	al, 0x3
@@ -3685,7 +3685,7 @@ Menus_2047_252E:
 	mov	[bp - 0x6], cx
 	cmp	cx, 0x28
 	jl	short .2
-	cmp	word [0xbffe], 0x0
+	cmp	word [g_BFFE], 0x0
 	jnl	short .10
 	db	0x2B, 0xDB		; sub bx, bx
 	mov	di, [bp + 0x8]
@@ -3743,23 +3743,23 @@ Menus_2047_25F2:
 	push	cs
 	call	Menus_2047_248A
 	add	sp, 0x4
-	mov	es, [0x8b2e]
+	mov	es, [g_8B2E]
 	mov	word [es:0x15bc], 0x2a60
 	mov	word [es:0x15be], 0x2047
 	mov	ax, 0x208f
 	mov	dx, 0x1b35
-	mov	es, [0x8b30]
+	mov	es, [g_8B30]
 	mov	[es:0x1538], ax
 	mov	[es:0x153a], dx
-	mov	es, [0x8b32]
+	mov	es, [g_8B32]
 	mov	[es:0x1404], ax
 	mov	[es:0x1406], dx
 	mov	ax, 0x207b
 	mov	dx, 0x1b35
-	mov	es, [0x8b30]
+	mov	es, [g_8B30]
 	mov	[es:0x157a], ax
 	mov	[es:0x157c], dx
-	mov	es, [0x8b32]
+	mov	es, [g_8B32]
 	mov	[es:0x1446], ax
 	mov	[es:0x1448], dx
 	db	0x2B, 0xF6		; sub si, si
@@ -3775,27 +3775,27 @@ Menus_2047_25F2:
 	db	0x2A, 0xED		; sub ch, ch
 	db	0x03, 0xC1		; add ax, cx
 	imul	bx, ax, 0x28
-	mov	al, [bx - 0x5aaa]
+	mov	al, [bx + g_A556]
 	mov	bx, [bp + 0x6]
 	mov	[bx + si], al
 	jmp	short .3
 .2:
 	mov	bx, [bp + 0x6]
 	mov	byte [bx + si], 0x64
-	mov	es, [0x8b2e]
+	mov	es, [g_8B2E]
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[es:0x15be], ax
 	mov	[es:0x15bc], ax
-	mov	es, [0x8b30]
+	mov	es, [g_8B30]
 	mov	[es:0x153a], ax
 	mov	[es:0x1538], ax
-	mov	es, [0x8b32]
+	mov	es, [g_8B32]
 	mov	[es:0x1406], ax
 	mov	[es:0x1404], ax
-	mov	es, [0x8b30]
+	mov	es, [g_8B30]
 	mov	[es:0x157c], ax
 	mov	[es:0x157a], ax
-	mov	es, [0x8b32]
+	mov	es, [g_8B32]
 	mov	[es:0x1448], ax
 	mov	[es:0x1446], ax
 .3:
@@ -3812,7 +3812,7 @@ Menus_2047_25F2:
 	add	sp, 0x8
 	mov	bx, [bp + 0xc]
 	mov	word [bx], 0xffff
-	mov	es, [0x8b2c]
+	mov	es, [g_8B2C]
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[es:0x1474], ax
 	mov	[es:0x1472], ax
@@ -3837,23 +3837,23 @@ Menus_2047_2706:
 	push	cs
 	call	Menus_2047_248A
 	add	sp, 0x4
-	mov	es, [0x8b2e]
+	mov	es, [g_8B2E]
 	mov	word [es:0x15bc], 0x2a60
 	mov	word [es:0x15be], 0x2047
 	mov	ax, 0x208f
 	mov	dx, 0x1b35
-	mov	es, [0x8b30]
+	mov	es, [g_8B30]
 	mov	[es:0x1538], ax
 	mov	[es:0x153a], dx
-	mov	es, [0x8b32]
+	mov	es, [g_8B32]
 	mov	[es:0x1404], ax
 	mov	[es:0x1406], dx
 	mov	ax, 0x207b
 	mov	dx, 0x1b35
-	mov	es, [0x8b30]
+	mov	es, [g_8B30]
 	mov	[es:0x157a], ax
 	mov	[es:0x157c], dx
-	mov	es, [0x8b32]
+	mov	es, [g_8B32]
 	mov	[es:0x1446], ax
 	mov	[es:0x1448], dx
 	db	0x2B, 0xF6		; sub si, si
@@ -3869,27 +3869,27 @@ Menus_2047_2706:
 	db	0x2A, 0xED		; sub ch, ch
 	db	0x03, 0xC1		; add ax, cx
 	imul	bx, ax, 0x28
-	mov	al, [bx - 0x5aaa]
+	mov	al, [bx + g_A556]
 	mov	bx, [bp + 0x6]
 	mov	[bx + si], al
 	jmp	short .3
 .2:
 	mov	bx, [bp + 0x6]
 	mov	byte [bx + si], 0x64
-	mov	es, [0x8b2e]
+	mov	es, [g_8B2E]
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[es:0x15be], ax
 	mov	[es:0x15bc], ax
-	mov	es, [0x8b30]
+	mov	es, [g_8B30]
 	mov	[es:0x153a], ax
 	mov	[es:0x1538], ax
-	mov	es, [0x8b32]
+	mov	es, [g_8B32]
 	mov	[es:0x1406], ax
 	mov	[es:0x1404], ax
-	mov	es, [0x8b30]
+	mov	es, [g_8B30]
 	mov	[es:0x157c], ax
 	mov	[es:0x157a], ax
-	mov	es, [0x8b32]
+	mov	es, [g_8B32]
 	mov	[es:0x1448], ax
 	mov	[es:0x1446], ax
 .3:
@@ -3906,7 +3906,7 @@ Menus_2047_2706:
 	add	sp, 0x8
 	mov	bx, [bp + 0xc]
 	mov	word [bx], 0xffff
-	mov	es, [0x8b2c]
+	mov	es, [g_8B2C]
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[es:0x1474], ax
 	mov	[es:0x1472], ax
@@ -3979,13 +3979,13 @@ Menus_2047_281A:
 	jz	short .6
 	push	0x0
 	mov	ax, 0x2e8
-	imul	word [0x29cc]
+	imul	word [g_29CC]
 	jmp	short .7
 	db	0x90
 .6:
 	push	0x0
 	mov	ax, 0x2e8
-	imul	word [0x29ca]
+	imul	word [g_29CA]
 .7:
 	push	dx
 	push	ax
@@ -4028,7 +4028,7 @@ Menus_2047_281A:
 	db	0x0B, 0xD2		; or dx, dx
 	jnl	short .15
 	mov	ax, 0x2e8
-	imul	word [0x29ca]
+	imul	word [g_29CA]
 	cmp	ax, [bp - 0x4]
 	jnz	short .11
 	cmp	dx, [bp - 0x2]
@@ -4038,7 +4038,7 @@ Menus_2047_281A:
 	jz	short .14
 .12:
 	mov	ax, 0x2e8
-	imul	word [0x29cc]
+	imul	word [g_29CC]
 	cmp	ax, [bp - 0x4]
 	jnz	short .13
 	cmp	dx, [bp - 0x2]
@@ -4086,7 +4086,7 @@ Menus_2047_281A:
 	mov	[bp - 0x6], dx
 	cmp	dx, 0x28
 	jl	short .16
-	cmp	word [0xbffe], 0x0
+	cmp	word [g_BFFE], 0x0
 	jnl	short .24
 	db	0x2B, 0xDB		; sub bx, bx
 .21:
@@ -4139,13 +4139,13 @@ Menus_2047_281A:
 	mov	al, [bp + 0xa]
 	db	0x2A, 0xE4		; sub ah, ah
 	imul	bx, ax, word 0x2e8
-	lea	di, [bx - 0x5fc4]
+	lea	di, [bx + g_A03C]
 	lea	si, [bp - 0x254]
 	mov	ax, ds
 	mov	es, ax
 	mov	cx, 0x18
 	rep	movsw
-	lea	di, [bx - 0x5f94]
+	lea	di, [bx + g_A06C]
 	lea	si, [bp - 0x224]
 	mov	cx, 0x18
 	rep	movsw
@@ -4221,13 +4221,13 @@ Menus_2047_2A60:
 	jz	short .6
 	push	0x0
 	mov	ax, 0x2e8
-	imul	word [0x29cc]
+	imul	word [g_29CC]
 	jmp	short .7
 	db	0x90
 .6:
 	push	0x0
 	mov	ax, 0x2e8
-	imul	word [0x29ca]
+	imul	word [g_29CA]
 .7:
 	push	dx
 	push	ax
@@ -4270,7 +4270,7 @@ Menus_2047_2A60:
 	db	0x0B, 0xD2		; or dx, dx
 	jnl	short .15
 	mov	ax, 0x2e8
-	imul	word [0x29ca]
+	imul	word [g_29CA]
 	cmp	ax, [bp - 0x4]
 	jnz	short .11
 	cmp	dx, [bp - 0x2]
@@ -4280,7 +4280,7 @@ Menus_2047_2A60:
 	jz	short .14
 .12:
 	mov	ax, 0x2e8
-	imul	word [0x29cc]
+	imul	word [g_29CC]
 	cmp	ax, [bp - 0x4]
 	jnz	short .13
 	cmp	dx, [bp - 0x2]
@@ -4378,13 +4378,13 @@ Menus_2047_2A60:
 	mov	al, [bp + 0xa]
 	db	0x2A, 0xE4		; sub ah, ah
 	imul	bx, ax, word 0x2e8
-	lea	di, [bx - 0x5fc4]
+	lea	di, [bx + g_A03C]
 	lea	si, [bp - 0x254]
 	mov	ax, ds
 	mov	es, ax
 	mov	cx, 0x18
 	rep	movsw
-	lea	di, [bx - 0x5f94]
+	lea	di, [bx + g_A06C]
 	lea	si, [bp - 0x224]
 	mov	cx, 0x18
 	rep	movsw
@@ -4403,50 +4403,50 @@ Menus_2047_2C90:
 	push	di
 	push	si
 	mov	ax, 0x1
-	mov	[0xc052], ax
-	mov	[0xc050], ax
-	mov	word [0x21bc], 0x2459
-	mov	word [0x21be], 0x1b35
+	mov	[g_C052], ax
+	mov	[g_C050], ax
+	mov	word [g_21BC], 0x2459
+	mov	word [g_21BE], 0x1b35
 	cmp	byte [bp + 0xa], 0x0
 	jz	short .1
-	mov	ax, [0x29cc]
+	mov	ax, [g_29CC]
 	jmp	short .2
 .1:
-	mov	ax, [0x29ca]
+	mov	ax, [g_29CA]
 .2:
-	mov	[0x21b8], ax
+	mov	[g_21B8], ax
 	push	0x0
 	push	0x0
 	push	word 0x270
 	push	word 0xd8c
 	call	0x14DB:AllocRecData
 	add	sp, 0x8
-	mov	[0xc04c], ax
-	mov	[0xc04e], dx
+	mov	[g_C04C], ax
+	mov	[g_C04E], dx
 	push	0x0
 	push	0x0
 	push	word 0x5b0
 	push	word 0xd92
 	call	0x14DB:AllocRecData
 	add	sp, 0x8
-	mov	[0xc048], ax
-	mov	[0xc04a], dx
+	mov	[g_C048], ax
+	mov	[g_C04A], dx
 	push	0x0
 	push	0x0
 	push	word 0x4b0
 	push	word 0xd97
 	call	0x14DB:AllocRecData
 	add	sp, 0x8
-	mov	[0xc044], ax
-	mov	[0xc046], dx
+	mov	[g_C044], ax
+	mov	[g_C046], dx
 	push	0x0
 	push	0x0
 	push	word 0x10e
 	push	word 0xd9d
 	call	0x14DB:AllocRecData
 	add	sp, 0x8
-	mov	[0xc040], ax
-	mov	[0xc042], dx
+	mov	[g_C040], ax
+	mov	[g_C042], dx
 	push	0x1
 	call	0x1B35:OvlThunk114
 	add	sp, 0x2
@@ -4474,11 +4474,11 @@ Menus_2047_2C90:
 	add	sp, 0x8
 	cmp	byte [bp + 0xa], 0x0
 	jz	short .4
-	mov	ax, [0x29cc]
+	mov	ax, [g_29CC]
 	jmp	short .5
 	db	0x90
 .4:
-	mov	ax, [0x29ca]
+	mov	ax, [g_29CA]
 .5:
 	push	ax
 	call	0x1B35:OvlThunk113
@@ -4564,35 +4564,35 @@ Menus_2047_2C90:
 	mov	[bp - 0x2d2], al
 	mov	[bp - 0x2d3], al
 	mov	byte [bp - 0x2d1], 0xf
-	mov	word [0xc052], 0x0
+	mov	word [g_C052], 0x0
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0x21be], ax
-	mov	[0x21bc], ax
-	push	word [0xc04e]
-	push	word [0xc04c]
+	mov	[g_21BE], ax
+	mov	[g_21BC], ax
+	push	word [g_C04E]
+	push	word [g_C04C]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	push	word [0xc042]
-	push	word [0xc040]
+	push	word [g_C042]
+	push	word [g_C040]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	push	word [0xc046]
-	push	word [0xc044]
+	push	word [g_C046]
+	push	word [g_C044]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	push	word [0xc04a]
-	push	word [0xc048]
+	push	word [g_C04A]
+	push	word [g_C048]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0xc04a], ax
-	mov	[0xc048], ax
-	mov	[0xc04e], ax
-	mov	[0xc04c], ax
-	mov	[0xc042], ax
-	mov	[0xc040], ax
-	mov	[0xc046], ax
-	mov	[0xc044], ax
+	mov	[g_C04A], ax
+	mov	[g_C048], ax
+	mov	[g_C04E], ax
+	mov	[g_C04C], ax
+	mov	[g_C042], ax
+	mov	[g_C040], ax
+	mov	[g_C046], ax
+	mov	[g_C044], ax
 	push	word [bp + 0x1a]
 	push	word [bp + 0x18]
 	push	word [bp + 0x16]
@@ -4622,11 +4622,11 @@ Menus_2047_2C90:
 	mov	al, 0x1c
 	mul	byte [bp + 0xa]
 	imul	bx, [si], 0x16
-	mov	cl, [bx - 0x4268]
+	mov	cl, [bx + g_BD98]
 	db	0x2A, 0xED		; sub ch, ch
 	db	0x03, 0xC8		; add cx, ax
 	imul	bx, cx, 0x28
-	cmp	byte [bx - 0x5ab0], 0x2
+	cmp	byte [bx + g_A550], 0x2
 	jnz	short .8
 	mov	ax, 0x7e
 	jmp	short .9
@@ -4640,10 +4640,10 @@ Menus_2047_2C90:
 	add	ax, 0xbd99
 	push	ax
 	db	0x8B, 0xD9		; mov bx, cx
-	mov	al, [bx - 0x4269]
+	mov	al, [bx + g_BD97]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
-	mov	al, [bx - 0x426a]
+	mov	al, [bx + g_BD96]
 	push	ax
 	push	word 0xda3
 	mov	ax, [si]
@@ -4687,7 +4687,7 @@ Menus_2047_2FA4:
 	mov	al, [bx]
 	mov	bx, [bp + 0xc]
 	imul	bx, [bx], 0x16
-	cmp	[bx - 0x4269], al
+	cmp	[bx + g_BD97], al
 	jnz	short .2
 	db	0x8B, 0xDE		; mov bx, si
 	db	0x03, 0xDF		; add bx, di
@@ -4696,23 +4696,23 @@ Menus_2047_2FA4:
 	inc	si
 	cmp	si, 0x28
 	jl	short .1
-	mov	es, [0x8b2e]
+	mov	es, [g_8B2E]
 	mov	word [es:0x15bc], 0x2a60
 	mov	word [es:0x15be], 0x2047
 	mov	ax, 0x208f
 	mov	dx, 0x1b35
-	mov	es, [0x8b30]
+	mov	es, [g_8B30]
 	mov	[es:0x1538], ax
 	mov	[es:0x153a], dx
-	mov	es, [0x8b32]
+	mov	es, [g_8B32]
 	mov	[es:0x1404], ax
 	mov	[es:0x1406], dx
 	mov	ax, 0x207b
 	mov	dx, 0x1b35
-	mov	es, [0x8b30]
+	mov	es, [g_8B30]
 	mov	[es:0x157a], ax
 	mov	[es:0x157c], dx
-	mov	es, [0x8b32]
+	mov	es, [g_8B32]
 	mov	[es:0x1446], ax
 	mov	[es:0x1448], dx
 	db	0x2B, 0xDB		; sub bx, bx
@@ -4727,20 +4727,20 @@ Menus_2047_2FA4:
 	jmp	short .5
 	db	0x90
 .4:
-	mov	es, [0x8b2e]
+	mov	es, [g_8B2E]
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[es:0x15be], ax
 	mov	[es:0x15bc], ax
-	mov	es, [0x8b30]
+	mov	es, [g_8B30]
 	mov	[es:0x153a], ax
 	mov	[es:0x1538], ax
-	mov	es, [0x8b32]
+	mov	es, [g_8B32]
 	mov	[es:0x1406], ax
 	mov	[es:0x1404], ax
-	mov	es, [0x8b30]
+	mov	es, [g_8B30]
 	mov	[es:0x157c], ax
 	mov	[es:0x157a], ax
-	mov	es, [0x8b32]
+	mov	es, [g_8B32]
 	mov	[es:0x1448], ax
 	mov	[es:0x1446], ax
 .5:
@@ -4748,11 +4748,11 @@ Menus_2047_2FA4:
 	mov	al, 0x1c
 	mul	byte [bp + 0xa]
 	imul	bx, [di], 0x16
-	mov	cl, [bx - 0x4268]
+	mov	cl, [bx + g_BD98]
 	db	0x2A, 0xED		; sub ch, ch
 	db	0x03, 0xC8		; add cx, ax
 	imul	bx, cx, 0x28
-	mov	byte [bx - 0x5ab0], 0x2
+	mov	byte [bx + g_A550], 0x2
 	mov	al, [bp + 0xa]
 	push	ax
 	push	word [bp + 0x10]
@@ -4769,10 +4769,10 @@ Menus_2047_2FA4:
 	add	ax, 0xbd99
 	push	ax
 	db	0x8B, 0xD9		; mov bx, cx
-	mov	al, [bx - 0x4269]
+	mov	al, [bx + g_BD97]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
-	mov	al, [bx - 0x426a]
+	mov	al, [bx + g_BD96]
 	push	ax
 	push	word 0xdad
 	mov	ax, [di]
@@ -4800,11 +4800,11 @@ Menus_2047_30E6:
 	mov	al, 0x1c
 	mul	byte [bp + 0xa]
 	imul	bx, [si], 0x16
-	mov	cl, [bx - 0x4268]
+	mov	cl, [bx + g_BD98]
 	db	0x2A, 0xED		; sub ch, ch
 	db	0x03, 0xC8		; add cx, ax
 	imul	bx, cx, 0x28
-	mov	byte [bx - 0x5ab0], 0x3
+	mov	byte [bx + g_A550], 0x3
 	mov	al, [bp + 0xa]
 	push	ax
 	push	word [bp + 0x10]
@@ -4821,10 +4821,10 @@ Menus_2047_30E6:
 	add	ax, 0xbd99
 	push	ax
 	db	0x8B, 0xD9		; mov bx, cx
-	mov	al, [bx - 0x4269]
+	mov	al, [bx + g_BD97]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
-	mov	al, [bx - 0x426a]
+	mov	al, [bx + g_BD96]
 	push	ax
 	push	word 0xdb7
 	mov	ax, [si]

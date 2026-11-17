@@ -13,25 +13,25 @@ Fades11_3358_0000:
 	jmp	near .26
 .2:
 	call	0x0FEF:UseCurrentPage
-	mov	es, [0x8d02]
+	mov	es, [g_8D02]
 	mov	ax, [es:0x74fc]
-	mov	[0xdf6a], ax
+	mov	[g_DF6A], ax
 	mov	ax, [es:0x74fe]
-	mov	[0xdf6c], ax
+	mov	[g_DF6C], ax
 	mov	ax, [es:0x74f2]
-	mov	[0xdf6e], ax
+	mov	[g_DF6E], ax
 	mov	cx, [es:0x74f4]
-	mov	[0xdf70], cx
+	mov	[g_DF70], cx
 	mov	dx, [es:0x74fa]
 	mov	[bp - 0x1e], dx
 	db	0x8B, 0xF9		; mov di, cx
 	db	0x2B, 0xF8		; sub di, ax
 	cmp	word [bp + 0x6], 0x0
 	jnz	short .3
-	mov	ax, [0xdf6a]
+	mov	ax, [g_DF6A]
 	mov	[bp - 0xc], ax
 	mov	[bp - 0x4], ax
-	mov	ax, [0xdf6c]
+	mov	ax, [g_DF6C]
 	mov	[bp - 0xe], ax
 	mov	[bp - 0x8], ax
 	db	0x8B, 0xC1		; mov ax, cx
@@ -47,13 +47,13 @@ Fades11_3358_0000:
 .3:
 	cmp	word [bp + 0x6], 0x1
 	jnz	short .5
-	mov	ax, [0xdf6a]
+	mov	ax, [g_DF6A]
 	mov	[bp - 0xc], ax
 	mov	[bp - 0x4], ax
-	mov	ax, [0xdf6c]
+	mov	ax, [g_DF6C]
 	mov	[bp - 0xe], ax
 	mov	[bp - 0x8], ax
-	mov	ax, [0xdf6e]
+	mov	ax, [g_DF6E]
 	mov	[bp - 0x16], ax
 	mov	[bp - 0xa], ax
 	mov	[bp - 0x10], ax
@@ -70,14 +70,14 @@ Fades11_3358_0000:
 .5:
 	cmp	word [bp + 0x6], 0x2
 	jnz	short .7
-	mov	bx, [0xdf6c]
+	mov	bx, [g_DF6C]
 	mov	[bp - 0x8], bx
 	mov	[bp - 0xc], bx
 	mov	[bp - 0x4], bx
-	mov	ax, [0xdf6e]
+	mov	ax, [g_DF6E]
 	mov	[bp - 0x10], ax
 	mov	[bp - 0x6], ax
-	mov	ax, [0xdf70]
+	mov	ax, [g_DF70]
 	mov	[bp - 0x16], ax
 	mov	[bp - 0xa], ax
 	mov	word [bp - 0x1a], 0xfff8
@@ -100,14 +100,14 @@ Fades11_3358_0000:
 .7:
 	cmp	word [bp + 0x6], 0x3
 	jnz	short .8
-	mov	bx, [0xdf6a]
+	mov	bx, [g_DF6A]
 	mov	[bp - 0x8], bx
 	mov	[bp - 0xc], bx
 	mov	[bp - 0x4], bx
-	mov	ax, [0xdf6e]
+	mov	ax, [g_DF6E]
 	mov	[bp - 0x10], ax
 	mov	[bp - 0x6], ax
-	mov	ax, [0xdf70]
+	mov	ax, [g_DF70]
 	mov	[bp - 0x16], ax
 	mov	[bp - 0xa], ax
 	mov	word [bp - 0x18], 0x8
@@ -120,8 +120,8 @@ Fades11_3358_0000:
 .8:
 	cmp	word [bp + 0x6], 0x4
 	jnz	short .9
-	mov	ax, [0xdf6c]
-	add	ax, [0xdf6a]
+	mov	ax, [g_DF6C]
+	add	ax, [g_DF6A]
 	cwd
 	db	0x2B, 0xC2		; sub ax, dx
 	sar	ax, 1
@@ -130,10 +130,10 @@ Fades11_3358_0000:
 	mov	[bp - 0x4], bx
 	mov	[bp - 0xe], bx
 	mov	[bp - 0x8], bx
-	mov	ax, [0xdf6e]
+	mov	ax, [g_DF6E]
 	mov	[bp - 0x10], ax
 	mov	[bp - 0x6], ax
-	mov	ax, [0xdf70]
+	mov	ax, [g_DF70]
 	mov	[bp - 0x16], ax
 	mov	[bp - 0xa], ax
 	mov	word [bp - 0x1a], 0xfff8
@@ -158,16 +158,16 @@ Fades11_3358_0000:
 .9:
 	cmp	word [bp + 0x6], 0x5
 	jnz	short .10
-	mov	ax, [0xdf6c]
+	mov	ax, [g_DF6C]
 	mov	[bp - 0xc], ax
 	mov	[bp - 0x4], ax
-	mov	ax, [0xdf6a]
+	mov	ax, [g_DF6A]
 	mov	[bp - 0xe], ax
 	mov	[bp - 0x8], ax
-	mov	ax, [0xdf6e]
+	mov	ax, [g_DF6E]
 	mov	[bp - 0x10], ax
 	mov	[bp - 0x6], ax
-	mov	ax, [0xdf70]
+	mov	ax, [g_DF70]
 	mov	[bp - 0x16], ax
 	mov	[bp - 0xa], ax
 	mov	word [bp - 0x1a], 0xfff8
@@ -191,14 +191,14 @@ Fades11_3358_0000:
 .10:
 	cmp	word [bp + 0x6], 0x6
 	jnz	short .11
-	mov	ax, [0xdf6a]
+	mov	ax, [g_DF6A]
 	mov	[bp - 0xc], ax
 	mov	[bp - 0x4], ax
-	mov	ax, [0xdf6c]
+	mov	ax, [g_DF6C]
 	mov	[bp - 0xe], ax
 	mov	[bp - 0x8], ax
-	mov	ax, [0xdf70]
-	add	ax, [0xdf6e]
+	mov	ax, [g_DF70]
+	add	ax, [g_DF6E]
 	cwd
 	db	0x2B, 0xC2		; sub ax, dx
 	sar	ax, 1
@@ -210,16 +210,16 @@ Fades11_3358_0000:
 .11:
 	cmp	word [bp + 0x6], 0x7
 	jnz	short .15
-	mov	ax, [0xdf6a]
+	mov	ax, [g_DF6A]
 	mov	[bp - 0xc], ax
 	mov	[bp - 0x4], ax
-	mov	ax, [0xdf6c]
+	mov	ax, [g_DF6C]
 	mov	[bp - 0xe], ax
 	mov	[bp - 0x8], ax
-	mov	ax, [0xdf70]
+	mov	ax, [g_DF70]
 	mov	[bp - 0x10], ax
 	mov	[bp - 0x6], ax
-	mov	ax, [0xdf6e]
+	mov	ax, [g_DF6E]
 	mov	[bp - 0x16], ax
 	mov	[bp - 0xa], ax
 .12:

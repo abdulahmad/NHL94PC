@@ -94,13 +94,13 @@ Init_278C_0006:
 	call	0x0F4A:FatalError
 	add	sp, 0x2
 .7:
-	mov	ax, [0x29ca]
+	mov	ax, [g_29CA]
 	mov	[bp - 0x8a], ax
-	mov	ax, [0x29cc]
+	mov	ax, [g_29CC]
 	mov	[bp - 0x88], ax
-	mov	ax, [0x2998]
+	mov	ax, [g_2998]
 	mov	[bp - 0x86], ax
-	mov	ax, [0x299a]
+	mov	ax, [g_299A]
 	mov	[bp - 0x84], ax
 	lea	ax, [bp - 0x82]
 	mov	[bp - 0x2], ax
@@ -108,34 +108,34 @@ Init_278C_0006:
 .8:
 	mov	bx, [bp - 0x8]
 	shl	bx, 1
-	mov	ax, [bx - 0x29fe]
+	mov	ax, [bx + g_D602]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
 	inc	word [bp - 0x8]
 	cmp	word [bp - 0x8], 0x6
 	jl	short .8
-	mov	ax, [0x29a0]
+	mov	ax, [g_29A0]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x29a2]
+	mov	ax, [g_29A2]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x29a4]
+	mov	ax, [g_29A4]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x29a6]
+	mov	ax, [g_29A6]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x29a8]
+	mov	ax, [g_29A8]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x29aa]
+	mov	ax, [g_29AA]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
@@ -143,184 +143,184 @@ Init_278C_0006:
 .9:
 	mov	bx, [bp - 0x8]
 	shl	bx, 1
-	mov	ax, [bx - 0x29ea]
+	mov	ax, [bx + g_D616]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
 	inc	word [bp - 0x8]
 	cmp	word [bp - 0x8], 0x4
 	jl	short .9
-	mov	ax, [0xd620]
+	mov	ax, [g_D620]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0xd622]
+	mov	ax, [g_D622]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0xd624]
+	mov	ax, [g_D624]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0xd626]
+	mov	ax, [g_D626]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0xd628]
+	mov	ax, [g_D628]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x29ac]
+	mov	ax, [g_29AC]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x29ae]
+	mov	ax, [g_29AE]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x29b0]
+	mov	ax, [g_29B0]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x29b2]
+	mov	ax, [g_29B2]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x29b4]
+	mov	ax, [g_29B4]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x29b6]
+	mov	ax, [g_29B6]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x29b8]
+	mov	ax, [g_29B8]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x29bc]
+	mov	ax, [g_29BC]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x29be]
+	mov	ax, [g_29BE]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x29c0]
+	mov	ax, [g_29C0]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x29c2]
+	mov	ax, [g_29C2]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x29c4]
+	mov	ax, [g_29C4]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x29c6]
+	mov	ax, [g_29C6]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x29c8]
+	mov	ax, [g_29C8]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x29ce]
+	mov	ax, [g_29CE]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x29d0]
+	mov	ax, [g_29D0]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x29d2]
+	mov	ax, [g_29D2]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x29d4]
+	mov	ax, [g_29D4]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x29d6]
+	mov	ax, [g_29D6]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x29d8]
+	mov	ax, [g_29D8]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x29da]
+	mov	ax, [g_29DA]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x29dc]
+	mov	ax, [g_29DC]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x29de]
+	mov	ax, [g_29DE]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x48b8]
+	mov	ax, [g_48B8]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x48bc]
+	mov	ax, [g_48BC]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x48be]
+	mov	ax, [g_48BE]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x48c0]
+	mov	ax, [g_48C0]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x49f0]
+	mov	ax, [g_49F0]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x49f2]
+	mov	ax, [g_49F2]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x49f4]
+	mov	ax, [g_49F4]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x563a]
+	mov	ax, [g_563A]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x49f6]
+	mov	ax, [g_49F6]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0xd61e]
+	mov	ax, [g_D61E]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x49f8]
+	mov	ax, [g_49F8]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x49fa]
+	mov	ax, [g_49FA]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
 	mov	ax, [seed]
-	mov	dx, [0x2a02]
+	mov	dx, [g_2A02]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x4
 	mov	[bx], ax
 	mov	[bx + 0x2], dx
-	mov	ax, [0xd6c6]
+	mov	ax, [g_D6C6]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0xd62a]
+	mov	ax, [g_D62A]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
@@ -345,7 +345,7 @@ Init_278C_0006:
 .11:
 	mov	bx, [bp - 0x8]
 	shl	bx, 1
-	mov	ax, [bx - 0x2a0a]
+	mov	ax, [bx + g_D5F6]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
@@ -357,153 +357,153 @@ Init_278C_0006:
 	mov	[bx], al
 	mov	al, [PadStates2]
 	mov	[bx + 0x1], al
-	mov	al, [0x29ba]
+	mov	al, [g_29BA]
 	add	word [bp - 0x2], 0x2
 	mov	bx, [bp - 0x2]
 	mov	[bx], al
-	mov	al, [0x29bb]
+	mov	al, [g_29BB]
 	mov	[bx + 0x1], al
-	mov	ax, [0x48ca]
+	mov	ax, [g_48CA]
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	[bx], ax
-	mov	ax, [0x48cc]
+	mov	ax, [g_48CC]
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	[bx], ax
-	mov	ax, [0x48ce]
+	mov	ax, [g_48CE]
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	[bx], ax
-	mov	ax, [0x48d0]
+	mov	ax, [g_48D0]
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	[bx], ax
-	mov	ax, [0x48d2]
+	mov	ax, [g_48D2]
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	[bx], ax
-	mov	ax, [0x48d4]
-	inc	bx
-	inc	bx
-	mov	[bp - 0x2], bx
-	mov	[bx], ax
-	lea	ax, [bx + 0x2]
-	mov	[bp - 0x2], ax
-	mov	ax, [0x48d6]
-	mov	bx, [bp - 0x2]
-	mov	[bx], ax
-	mov	ax, [0x48d8]
-	inc	bx
-	inc	bx
-	mov	[bp - 0x2], bx
-	mov	[bx], ax
-	mov	ax, [0x48da]
-	inc	bx
-	inc	bx
-	mov	[bp - 0x2], bx
-	mov	[bx], ax
-	mov	ax, [0x48dc]
-	inc	bx
-	inc	bx
-	mov	[bp - 0x2], bx
-	mov	[bx], ax
-	mov	ax, [0x48de]
-	inc	bx
-	inc	bx
-	mov	[bp - 0x2], bx
-	mov	[bx], ax
-	mov	ax, [0x48e0]
-	inc	bx
-	inc	bx
-	mov	[bp - 0x2], bx
-	mov	[bx], ax
-	mov	ax, [0x48e2]
+	mov	ax, [g_48D4]
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	[bx], ax
 	lea	ax, [bx + 0x2]
 	mov	[bp - 0x2], ax
-	mov	ax, [0x48e4]
+	mov	ax, [g_48D6]
 	mov	bx, [bp - 0x2]
 	mov	[bx], ax
-	mov	ax, [0xd46c]
+	mov	ax, [g_48D8]
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	[bx], ax
-	mov	ax, [0xd46e]
+	mov	ax, [g_48DA]
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	[bx], ax
-	mov	ax, [0xd470]
+	mov	ax, [g_48DC]
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	[bx], ax
-	mov	ax, [0xd472]
+	mov	ax, [g_48DE]
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	[bx], ax
-	mov	ax, [0xd60e]
+	mov	ax, [g_48E0]
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	[bx], ax
-	mov	ax, [0xd610]
+	mov	ax, [g_48E2]
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	[bx], ax
 	lea	ax, [bx + 0x2]
 	mov	[bp - 0x2], ax
-	mov	ax, [0xd612]
+	mov	ax, [g_48E4]
 	mov	bx, [bp - 0x2]
 	mov	[bx], ax
-	mov	ax, [0xd614]
+	mov	ax, [g_D46C]
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	[bx], ax
-	mov	ax, [0xbffe]
+	mov	ax, [g_D46E]
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	[bx], ax
-	mov	ax, [0x4a4e]
+	mov	ax, [g_D470]
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	[bx], ax
-	mov	ax, [0xd664]
+	mov	ax, [g_D472]
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	[bx], ax
-	mov	ax, [0xd666]
+	mov	ax, [g_D60E]
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	[bx], ax
-	mov	ax, [0xd668]
+	mov	ax, [g_D610]
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	[bx], ax
 	lea	ax, [bx + 0x2]
 	mov	[bp - 0x2], ax
-	mov	ax, [0xd66a]
+	mov	ax, [g_D612]
 	mov	bx, [bp - 0x2]
 	mov	[bx], ax
-	mov	ax, [0x4a50]
+	mov	ax, [g_D614]
+	inc	bx
+	inc	bx
+	mov	[bp - 0x2], bx
+	mov	[bx], ax
+	mov	ax, [g_BFFE]
+	inc	bx
+	inc	bx
+	mov	[bp - 0x2], bx
+	mov	[bx], ax
+	mov	ax, [g_4A4E]
+	inc	bx
+	inc	bx
+	mov	[bp - 0x2], bx
+	mov	[bx], ax
+	mov	ax, [g_D664]
+	inc	bx
+	inc	bx
+	mov	[bp - 0x2], bx
+	mov	[bx], ax
+	mov	ax, [g_D666]
+	inc	bx
+	inc	bx
+	mov	[bp - 0x2], bx
+	mov	[bx], ax
+	mov	ax, [g_D668]
+	inc	bx
+	inc	bx
+	mov	[bp - 0x2], bx
+	mov	[bx], ax
+	lea	ax, [bx + 0x2]
+	mov	[bp - 0x2], ax
+	mov	ax, [g_D66A]
+	mov	bx, [bp - 0x2]
+	mov	[bx], ax
+	mov	ax, [g_4A50]
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
@@ -513,7 +513,7 @@ Init_278C_0006:
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	[bx], ax
-	mov	ax, [0xd670]
+	mov	ax, [g_D670]
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
@@ -523,96 +523,96 @@ Init_278C_0006:
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	[bx], ax
-	mov	ax, [0xd6bc]
+	mov	ax, [g_D6BC]
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	[bx], ax
-	mov	ax, [0xd6be]
-	inc	bx
-	inc	bx
-	mov	[bp - 0x2], bx
-	mov	[bx], ax
-	lea	ax, [bx + 0x2]
-	mov	[bp - 0x2], ax
-	mov	ax, [0xd6c4]
-	mov	bx, [bp - 0x2]
-	mov	[bx], ax
-	mov	ax, [0xd004]
-	inc	bx
-	inc	bx
-	mov	[bp - 0x2], bx
-	mov	[bx], ax
-	mov	ax, [0xd00a]
-	inc	bx
-	inc	bx
-	mov	[bp - 0x2], bx
-	mov	[bx], ax
-	mov	ax, [0xd010]
-	inc	bx
-	inc	bx
-	mov	[bp - 0x2], bx
-	mov	[bx], ax
-	mov	ax, [0x1b8]
-	inc	bx
-	inc	bx
-	mov	[bp - 0x2], bx
-	mov	[bx], ax
-	mov	ax, [0x1ba]
-	inc	bx
-	inc	bx
-	mov	[bp - 0x2], bx
-	mov	[bx], ax
-	mov	ax, [0x1bc]
+	mov	ax, [g_D6BE]
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	[bx], ax
 	lea	ax, [bx + 0x2]
 	mov	[bp - 0x2], ax
-	mov	ax, [0x1be]
+	mov	ax, [g_D6C4]
 	mov	bx, [bp - 0x2]
 	mov	[bx], ax
-	mov	ax, [0x5560]
+	mov	ax, [g_D004]
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	[bx], ax
-	mov	ax, [0x5562]
+	mov	ax, [g_D00A]
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	[bx], ax
-	mov	ax, [0x5564]
+	mov	ax, [g_D010]
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	[bx], ax
-	mov	ax, [0x4a26]
+	mov	ax, [g_01B8]
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	[bx], ax
-	mov	ax, [0xd6d2]
+	mov	ax, [g_01BA]
+	inc	bx
+	inc	bx
+	mov	[bp - 0x2], bx
+	mov	[bx], ax
+	mov	ax, [g_01BC]
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	[bx], ax
 	lea	ax, [bx + 0x2]
 	mov	[bp - 0x2], ax
-	mov	ax, [0xd6d0]
+	mov	ax, [g_01BE]
+	mov	bx, [bp - 0x2]
+	mov	[bx], ax
+	mov	ax, [g_5560]
+	inc	bx
+	inc	bx
+	mov	[bp - 0x2], bx
+	mov	[bx], ax
+	mov	ax, [g_5562]
+	inc	bx
+	inc	bx
+	mov	[bp - 0x2], bx
+	mov	[bx], ax
+	mov	ax, [g_5564]
+	inc	bx
+	inc	bx
+	mov	[bp - 0x2], bx
+	mov	[bx], ax
+	mov	ax, [g_4A26]
+	inc	bx
+	inc	bx
+	mov	[bp - 0x2], bx
+	mov	[bx], ax
+	mov	ax, [g_D6D2]
+	inc	bx
+	inc	bx
+	mov	[bp - 0x2], bx
+	mov	[bx], ax
+	lea	ax, [bx + 0x2]
+	mov	[bp - 0x2], ax
+	mov	ax, [g_D6D0]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x4a24]
+	mov	ax, [g_4A24]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0xd660]
+	mov	ax, [g_D660]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0xd662]
+	mov	ax, [g_D662]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
@@ -620,23 +620,23 @@ Init_278C_0006:
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	al, [0xe366]
+	mov	al, [g_E366]
 	mov	bx, [bp - 0x2]
 	mov	[bx], al
-	mov	al, [0xe367]
+	mov	al, [g_E367]
 	mov	[bx + 0x1], al
-	mov	al, [0xe368]
+	mov	al, [g_E368]
 	add	word [bp - 0x2], 0x2
 	mov	bx, [bp - 0x2]
 	mov	[bx], al
-	mov	al, [0xe369]
+	mov	al, [g_E369]
 	mov	[bx + 0x1], al
-	mov	al, [0xe36a]
+	mov	al, [g_E36A]
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	[bx], al
-	mov	al, [0x4a66]
+	mov	al, [g_4A66]
 	mov	[bx + 0x1], al
 	lea	ax, [bx + 0x2]
 	mov	[bp - 0x2], ax
@@ -655,19 +655,19 @@ Init_278C_0006:
 	call	0x0F4A:FatalError
 	add	sp, 0x2
 .12:
-	mov	ax, [0x1b8]
+	mov	ax, [g_01B8]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x1ba]
+	mov	ax, [g_01BA]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x1bc]
+	mov	ax, [g_01BC]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x1be]
+	mov	ax, [g_01BE]
 	mov	bx, [bp - 0x2]
 	mov	[bx], ax
 	lea	ax, [bp - 0x8a]
@@ -681,30 +681,30 @@ Init_278C_0006:
 	shl	bx, 1
 	db	0x03, 0xD8		; add bx, ax
 	shl	bx, 1
-	mov	ax, [bx - 0x2e52]
+	mov	ax, [bx + g_D1AE]
 	mov	si, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[si], ax
-	mov	ax, [bx - 0x2e50]
+	mov	ax, [bx + g_D1B0]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
 	inc	word [bp - 0x8]
 	cmp	word [bp - 0x8], 0x14
 	jl	short .13
-	mov	ax, [0x49fc]
+	mov	ax, [g_49FC]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0x49fe]
+	mov	ax, [g_49FE]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0xd658]
+	mov	ax, [g_D658]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
-	mov	ax, [0xd65a]
+	mov	ax, [g_D65A]
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	[bx], ax
@@ -1081,13 +1081,13 @@ Init_278C_09C8:
 	add	sp, 0x2
 .8:
 	mov	ax, [bp - 0x12c]
-	mov	[0x29ca], ax
+	mov	[g_29CA], ax
 	mov	ax, [bp - 0x12a]
-	mov	[0x29cc], ax
+	mov	[g_29CC], ax
 	mov	ax, [bp - 0x128]
-	mov	[0x2998], ax
+	mov	[g_2998], ax
 	mov	ax, [bp - 0x126]
-	mov	[0x299a], ax
+	mov	[g_299A], ax
 	lea	ax, [bp - 0x124]
 	mov	[bp - 0x2], ax
 	mov	word [bp - 0xaa], 0x0
@@ -1097,34 +1097,34 @@ Init_278C_09C8:
 	mov	ax, [bx]
 	mov	bx, [bp - 0xaa]
 	shl	bx, 1
-	mov	[bx - 0x29fe], ax
+	mov	[bx + g_D602], ax
 	inc	word [bp - 0xaa]
 	cmp	word [bp - 0xaa], 0x6
 	jl	short .9
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x29a0], ax
+	mov	[g_29A0], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x29a2], ax
+	mov	[g_29A2], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x29a4], ax
+	mov	[g_29A4], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x29a6], ax
+	mov	[g_29A6], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x29a8], ax
+	mov	[g_29A8], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x29aa], ax
+	mov	[g_29AA], ax
 	mov	word [bp - 0xaa], 0x0
 .10:
 	mov	bx, [bp - 0x2]
@@ -1132,184 +1132,184 @@ Init_278C_09C8:
 	mov	ax, [bx]
 	mov	bx, [bp - 0xaa]
 	shl	bx, 1
-	mov	[bx - 0x29ea], ax
+	mov	[bx + g_D616], ax
 	inc	word [bp - 0xaa]
 	cmp	word [bp - 0xaa], 0x4
 	jl	short .10
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0xd620], ax
+	mov	[g_D620], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0xd622], ax
+	mov	[g_D622], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0xd624], ax
+	mov	[g_D624], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0xd626], ax
+	mov	[g_D626], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0xd628], ax
+	mov	[g_D628], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x29ac], ax
+	mov	[g_29AC], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x29ae], ax
+	mov	[g_29AE], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x29b0], ax
+	mov	[g_29B0], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x29b2], ax
+	mov	[g_29B2], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x29b4], ax
+	mov	[g_29B4], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x29b6], ax
+	mov	[g_29B6], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x29b8], ax
+	mov	[g_29B8], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x29bc], ax
+	mov	[g_29BC], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x29be], ax
+	mov	[g_29BE], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x29c0], ax
+	mov	[g_29C0], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x29c2], ax
+	mov	[g_29C2], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x29c4], ax
+	mov	[g_29C4], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x29c6], ax
+	mov	[g_29C6], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x29c8], ax
+	mov	[g_29C8], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x29ce], ax
+	mov	[g_29CE], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x29d0], ax
+	mov	[g_29D0], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x29d2], ax
+	mov	[g_29D2], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x29d4], ax
+	mov	[g_29D4], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x29d6], ax
+	mov	[g_29D6], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x29d8], ax
+	mov	[g_29D8], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x29da], ax
+	mov	[g_29DA], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x29dc], ax
+	mov	[g_29DC], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x29de], ax
+	mov	[g_29DE], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x48b8], ax
+	mov	[g_48B8], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x48bc], ax
+	mov	[g_48BC], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x48be], ax
+	mov	[g_48BE], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x48c0], ax
+	mov	[g_48C0], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x49f0], ax
+	mov	[g_49F0], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x49f2], ax
+	mov	[g_49F2], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x49f4], ax
+	mov	[g_49F4], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x563a], ax
+	mov	[g_563A], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x49f6], ax
+	mov	[g_49F6], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0xd61e], ax
+	mov	[g_D61E], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x49f8], ax
+	mov	[g_49F8], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x49fa], ax
+	mov	[g_49FA], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x4
 	mov	ax, [bx]
 	mov	dx, [bx + 0x2]
 	mov	[seed], ax
-	mov	[0x2a02], dx
+	mov	[g_2A02], dx
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0xd6c6], ax
+	mov	[g_D6C6], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0xd62a], ax
+	mov	[g_D62A], ax
 	push	word 0x80
 	push	-0x1
 	push	-0x1
@@ -1334,7 +1334,7 @@ Init_278C_09C8:
 	mov	ax, [bx]
 	mov	bx, [bp - 0xaa]
 	shl	bx, 1
-	mov	[bx - 0x2a0a], ax
+	mov	[bx + g_D5F6], ax
 	inc	word [bp - 0xaa]
 	cmp	word [bp - 0xaa], 0x6
 	jl	short .12
@@ -1346,154 +1346,154 @@ Init_278C_09C8:
 	add	word [bp - 0x2], 0x2
 	mov	bx, [bp - 0x2]
 	mov	al, [bx]
-	mov	[0x29ba], al
+	mov	[g_29BA], al
 	mov	al, [bx + 0x1]
-	mov	[0x29bb], al
+	mov	[g_29BB], al
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0x48ca], ax
+	mov	[g_48CA], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0x48cc], ax
+	mov	[g_48CC], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0x48ce], ax
+	mov	[g_48CE], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0x48d0], ax
+	mov	[g_48D0], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0x48d2], ax
+	mov	[g_48D2], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0x48d4], ax
+	mov	[g_48D4], ax
 	lea	ax, [bx + 0x2]
 	mov	[bp - 0x2], ax
 	db	0x8B, 0xD8		; mov bx, ax
 	mov	ax, [bx]
-	mov	[0x48d6], ax
+	mov	[g_48D6], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0x48d8], ax
+	mov	[g_48D8], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0x48da], ax
+	mov	[g_48DA], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0x48dc], ax
+	mov	[g_48DC], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0x48de], ax
+	mov	[g_48DE], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0x48e0], ax
+	mov	[g_48E0], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0x48e2], ax
+	mov	[g_48E2], ax
 	lea	ax, [bx + 0x2]
 	mov	[bp - 0x2], ax
 	db	0x8B, 0xD8		; mov bx, ax
 	mov	ax, [bx]
-	mov	[0x48e4], ax
+	mov	[g_48E4], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0xd46c], ax
+	mov	[g_D46C], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0xd46e], ax
+	mov	[g_D46E], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0xd470], ax
+	mov	[g_D470], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0xd472], ax
+	mov	[g_D472], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0xd60e], ax
+	mov	[g_D60E], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0xd610], ax
+	mov	[g_D610], ax
 	lea	ax, [bx + 0x2]
 	mov	[bp - 0x2], ax
 	db	0x8B, 0xD8		; mov bx, ax
 	mov	ax, [bx]
-	mov	[0xd612], ax
+	mov	[g_D612], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0xd614], ax
+	mov	[g_D614], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0xbffe], ax
+	mov	[g_BFFE], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0x4a4e], ax
+	mov	[g_4A4E], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0xd664], ax
+	mov	[g_D664], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0xd666], ax
+	mov	[g_D666], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0xd668], ax
+	mov	[g_D668], ax
 	lea	ax, [bx + 0x2]
 	mov	[bp - 0x2], ax
 	db	0x8B, 0xD8		; mov bx, ax
 	mov	ax, [bx]
-	mov	[0xd66a], ax
+	mov	[g_D66A], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0x4a50], ax
+	mov	[g_4A50], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
@@ -1503,7 +1503,7 @@ Init_278C_09C8:
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0xd670], ax
+	mov	[g_D670], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
@@ -1514,120 +1514,120 @@ Init_278C_09C8:
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0xd6bc], ax
+	mov	[g_D6BC], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0xd6be], ax
+	mov	[g_D6BE], ax
 	lea	ax, [bx + 0x2]
 	mov	[bp - 0x2], ax
 	db	0x8B, 0xD8		; mov bx, ax
 	mov	ax, [bx]
-	mov	[0xd6c4], ax
+	mov	[g_D6C4], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0xd004], ax
+	mov	[g_D004], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0xd00a], ax
+	mov	[g_D00A], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
 	cwd
-	mov	[0xd010], ax
-	mov	[0xd012], dx
+	mov	[g_D010], ax
+	mov	[g_D012], dx
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0x1b8], ax
+	mov	[g_01B8], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0x1ba], ax
+	mov	[g_01BA], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0x1bc], ax
+	mov	[g_01BC], ax
 	lea	ax, [bx + 0x2]
 	mov	[bp - 0x2], ax
 	db	0x8B, 0xD8		; mov bx, ax
 	mov	ax, [bx]
-	mov	[0x1be], ax
+	mov	[g_01BE], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0x5560], ax
+	mov	[g_5560], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0x5562], ax
+	mov	[g_5562], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0x5564], ax
+	mov	[g_5564], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0x4a26], ax
+	mov	[g_4A26], ax
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	ax, [bx]
-	mov	[0xd6d2], ax
+	mov	[g_D6D2], ax
 	lea	ax, [bx + 0x2]
 	mov	[bp - 0x2], ax
 	db	0x8B, 0xD8		; mov bx, ax
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0xd6d0], ax
+	mov	[g_D6D0], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x4a24], ax
+	mov	[g_4A24], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0xd660], ax
+	mov	[g_D660], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0xd662], ax
+	mov	[g_D662], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
 	mov	[DbSaveMode], ax
 	mov	bx, [bp - 0x2]
 	mov	al, [bx]
-	mov	[0xe366], al
+	mov	[g_E366], al
 	mov	al, [bx + 0x1]
-	mov	[0xe367], al
+	mov	[g_E367], al
 	add	word [bp - 0x2], 0x2
 	mov	bx, [bp - 0x2]
 	mov	al, [bx]
-	mov	[0xe368], al
+	mov	[g_E368], al
 	mov	al, [bx + 0x1]
-	mov	[0xe369], al
+	mov	[g_E369], al
 	inc	bx
 	inc	bx
 	mov	[bp - 0x2], bx
 	mov	al, [bx]
-	mov	[0xe36a], al
+	mov	[g_E36A], al
 	mov	al, [bx + 0x1]
 	cbw
-	mov	[0x4a66], ax
+	mov	[g_4A66], ax
 	lea	ax, [bx + 0x2]
 	mov	[bp - 0x2], ax
 	push	0x58
@@ -1651,7 +1651,7 @@ Init_278C_09C8:
 .14:
 	mov	bx, [bp - 0xaa]
 	shl	bx, 1
-	mov	word [bx - 0x2626], 0x0
+	mov	word [bx + g_D9DA], 0x0
 	inc	word [bp - 0xaa]
 	cmp	word [bp - 0xaa], 0x10
 	jl	short .14
@@ -1688,7 +1688,7 @@ Init_278C_09C8:
 	db	0x8B, 0xCE		; mov cx, si
 	mov	ax, 0x1
 	shl	ax, cl
-	or	[di - 0x2626], ax
+	or	[di + g_D9DA], ax
 	mov	si, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [si]
@@ -1700,7 +1700,7 @@ Init_278C_09C8:
 	mov	[bp - 0x12e], ax
 	db	0x8B, 0xF0		; mov si, ax
 	shl	si, 1
-	mov	es, [0x8ccc]
+	mov	es, [g_8CCC]
 	mov	cx, [es:si + 0xf8]
 	mov	[bx + 0x6], cx
 	db	0x8B, 0xF0		; mov si, ax
@@ -1715,7 +1715,7 @@ Init_278C_09C8:
 	shl	si, 1
 	mov	si, [es:si + 0xf8]
 	mov	[bx + 0xa], si
-	mov	es, [0x8cce]
+	mov	es, [g_8CCE]
 	db	0x26, 0x8A, 0x84, 0x00, 0x00		; mov al, [es:si + 0x0]
 	mov	[bx + 0xc], al
 	mov	al, [bx + 0x3]
@@ -1733,33 +1733,33 @@ Init_278C_09C8:
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x49fc], ax
+	mov	[g_49FC], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0x49fe], ax
+	mov	[g_49FE], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0xd658], ax
+	mov	[g_D658], ax
 	mov	bx, [bp - 0x2]
 	add	word [bp - 0x2], 0x2
 	mov	ax, [bx]
-	mov	[0xd65a], ax
-	cmp	word [0x49fc], -0x1
+	mov	[g_D65A], ax
+	cmp	word [g_49FC], -0x1
 	jnz	short .18
 	jmp	near .22
 .18:
-	cmp	word [0x49fe], -0x1
+	cmp	word [g_49FE], -0x1
 	jnz	short .19
 	jmp	near .22
 .19:
 	push	word 0x3701
 	push	word 0xbd0
-	mov	bx, [0x49fc]
+	mov	bx, [g_49FC]
 	shl	bx, 1
 	push	ds
-	push	word [bx + 0x4a00]
+	push	word [bx + g_4A00]
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x94]
@@ -1772,35 +1772,35 @@ Init_278C_09C8:
 	push	ax
 	call	0x14B8:LoadPackedHeader
 	add	sp, 0x4
-	mov	[0xd62c], ax
-	mov	[0xd62e], dx
+	mov	[g_D62C], ax
+	mov	[g_D62E], dx
 	mov	word [bp - 0xaa], 0x0
 	jmp	short .21
 	db	0x90
 .20:
 	push	word [bp - 0xaa]
-	push	word [0xd62e]
-	push	word [0xd62c]
+	push	word [g_D62E]
+	push	word [g_D62C]
 	call	0x03A3:TableAt
 	add	sp, 0x6
 	mov	bx, [bp - 0xaa]
 	shl	bx, byte 0x2
-	mov	[bx - 0x29d0], ax
-	mov	[bx - 0x29ce], dx
+	mov	[bx + g_D630], ax
+	mov	[bx + g_D632], dx
 	inc	word [bp - 0xaa]
 .21:
-	push	word [0xd62e]
-	push	word [0xd62c]
+	push	word [g_D62E]
+	push	word [g_D62C]
 	call	0x03A3:TableCount
 	add	sp, 0x4
 	cmp	ax, [bp - 0xaa]
 	jg	short .20
-	mov	bx, [0x49fc]
+	mov	bx, [g_49FC]
 	shl	bx, byte 0x2
-	mov	ax, [bx + 0x4a0a]
-	mov	dx, [bx + 0x4a0c]
-	mov	[0xd65c], ax
-	mov	[0xd65e], dx
+	mov	ax, [bx + g_4A0A]
+	mov	dx, [bx + g_4A0C]
+	mov	[g_D65C], ax
+	mov	[g_D65E], dx
 .22:
 	push	0x42
 	push	-0x1
@@ -1947,7 +1947,7 @@ Init_278C_09C8:
 	imul	ax, ax, 0x19
 	db	0x03, 0xF0		; add si, ax
 	shl	si, byte 0x4
-	mov	es, [0x8cd0]
+	mov	es, [g_8CD0]
 	lea	di, [si + 0x448]
 	db	0x8B, 0xF1		; mov si, cx
 	mov	cx, 0x8
@@ -1963,7 +1963,7 @@ Init_278C_09C8:
 	mov	ax, [bp - 0xac]
 	mov	[bp - 0x46], ax
 	mov	word [bp - 0xaa], 0x0
-	mov	es, [0x8cd2]
+	mov	es, [g_8CD2]
 .36:
 	mov	ax, [bp - 0x46]
 	db	0x8B, 0xC8		; mov cx, ax
@@ -2024,21 +2024,21 @@ Init_278C_09C8:
 	add	sp, 0x4
 .41:
 	call	0x1B35:OvlThunk278
-	mov	[0xd1ac], ax
+	mov	[g_D1AC], ax
 	push	0x1
 	call	0x2425:Init_2425_0000
 	add	sp, 0x2
 	push	word 0x3a0b
 	push	word 0xa8e
-	push	word [0x29cc]
-	push	word [0x29ca]
+	push	word [g_29CC]
+	push	word [g_29CA]
 	call	0x1E64:Game_1E64_0002
 	add	sp, 0x8
 	mov	ax, 0x1
-	mov	[0x4b22], ax
-	mov	[0x4b20], ax
-	mov	word [0xd728], 0x0
-	cmp	word [0x29ca], 0x18
+	mov	[g_4B22], ax
+	mov	[g_4B20], ax
+	mov	word [g_D728], 0x0
+	cmp	word [g_29CA], 0x18
 	jl	short .44
 	mov	ax, 0x9
 	jmp	short .45
@@ -2060,7 +2060,7 @@ Init_278C_09C8:
 	push	word 0xc4
 	jmp	short .40
 .44:
-	mov	ax, [0x29ca]
+	mov	ax, [g_29CA]
 .45:
 	push	ax
 	call	0x24DE:Init_24DE_0006
@@ -2069,44 +2069,44 @@ Init_278C_09C8:
 	call	0x1F9C:Init_1F9C_01FC
 	call	0x0FEF:UseOffscreenCanvas
 	push	0x0
-	push	word [0xbffe]
-	push	word [0x29cc]
-	push	word [0x29ca]
+	push	word [g_BFFE]
+	push	word [g_29CC]
+	push	word [g_29CA]
 	call	0x1B35:OvlThunk251
 	add	sp, 0x8
 	call	0x1B35:OvlThunk281
-	mov	ax, [0x2986]
-	mov	dx, [0x2988]
-	mov	[0xd014], ax
-	mov	[0xd016], dx
+	mov	ax, [g_2986]
+	mov	dx, [g_2988]
+	mov	[g_D014], ax
+	mov	[g_D016], dx
 	call	0x1B35:OvlThunk280
-	and	byte [0x29bc], 0xef
-	mov	word [0x49f4], 0x1
-	mov	word [0xb422], 0x0
-	mov	word [0xb424], 0x3a0b
-	mov	word [0xb426], 0x3e8
-	mov	word [0xb428], 0x3a0b
-	mov	word [0xb420], 0xae10
-	mov	word [0xb42a], 0x448
-	mov	word [0xb42c], 0x3a0b
-	mov	word [0xb42e], 0x768
-	mov	word [0xb430], 0x3a0b
-	mov	word [0xb432], 0xa550
-	mov	word [0xb434], 0x9f80
-	mov	word [0xb50c], 0xb80e
-	mov	word [0xb4f8], 0x1f4
-	mov	word [0xb4fa], 0x3a0b
-	mov	word [0xb4fc], 0x418
-	mov	word [0xb4fe], 0x3a0b
-	mov	word [0xb4f6], 0xae40
-	mov	word [0xb500], 0x5d8
-	mov	word [0xb502], 0x3a0b
-	mov	word [0xb504], 0x77a
-	mov	word [0xb506], 0x3a0b
-	mov	word [0xb508], 0xa9b0
-	mov	word [0xb50a], 0xa268
+	and	byte [g_29BC], 0xef
+	mov	word [g_49F4], 0x1
+	mov	word [g_B422], 0x0
+	mov	word [g_B424], 0x3a0b
+	mov	word [g_B426], 0x3e8
+	mov	word [g_B428], 0x3a0b
+	mov	word [g_B420], 0xae10
+	mov	word [g_B42A], 0x448
+	mov	word [g_B42C], 0x3a0b
+	mov	word [g_B42E], 0x768
+	mov	word [g_B430], 0x3a0b
+	mov	word [g_B432], 0xa550
+	mov	word [g_B434], 0x9f80
+	mov	word [g_B50C], 0xb80e
+	mov	word [g_B4F8], 0x1f4
+	mov	word [g_B4FA], 0x3a0b
+	mov	word [g_B4FC], 0x418
+	mov	word [g_B4FE], 0x3a0b
+	mov	word [g_B4F6], 0xae40
+	mov	word [g_B500], 0x5d8
+	mov	word [g_B502], 0x3a0b
+	mov	word [g_B504], 0x77a
+	mov	word [g_B506], 0x3a0b
+	mov	word [g_B508], 0xa9b0
+	mov	word [g_B50A], 0xa268
 	mov	ax, 0xb50e
-	mov	[0xb436], ax
+	mov	[g_B436], ax
 	mov	[bp - 0x130], ax
 	mov	word [bp - 0xaa], 0x0
 	jmp	short .50
@@ -2137,10 +2137,10 @@ Init_278C_09C8:
 	mov	[bx + 0x6e], dx
 	mov	al, [bp - 0xaa]
 	mov	bx, [bp - 0xaa]
-	mov	[bx - 0x2b0c], al
+	mov	[bx + g_D4F4], al
 	shl	bx, 1
 	mov	ax, [bp - 0xaa]
-	mov	[bx - 0x2b6a], ax
+	mov	[bx + g_D496], ax
 	inc	word [bp - 0xaa]
 	add	word [bp - 0x130], 0x80
 .50:
@@ -2150,7 +2150,7 @@ Init_278C_09C8:
 	mov	bx, [bp - 0x130]
 	mov	[bx + 0x5e], ax
 	imul	si, ax, 0x12
-	mov	es, [0x8cd4]
+	mov	es, [g_8CD4]
 	db	0x26, 0x8B, 0x84, 0x0A, 0x00		; mov ax, [es:si + 0xa]
 	mov	[bx + 0x5a], ax
 	db	0x26, 0x8B, 0x84, 0x0C, 0x00		; mov ax, [es:si + 0xc]
@@ -2169,7 +2169,7 @@ Init_278C_09C8:
 	shl	bx, byte 0x3
 	db	0x8B, 0xF3		; mov si, bx
 	push	si
-	lea	di, [bx + 0x556c]
+	lea	di, [bx + g_556C]
 	lea	si, [bp + si - 0x86]
 	mov	ax, ds
 	mov	es, ax
@@ -2178,7 +2178,7 @@ Init_278C_09C8:
 	movsw
 	movsw
 	pop	si
-	lea	di, [bx + 0x55ac]
+	lea	di, [bx + g_55AC]
 	lea	si, [bp + si - 0x44]
 	mov	ax, ds
 	movsw

@@ -4,3 +4,5 @@ DGROUP		equ	0x45C9
 SetDeadline.regs		equ	0x1A6E
 UseCurrentPage		equ	0x1A6
 WaitDeadlineNoEoi		equ	0x1A84
+g_8CE8		equ	0x8CE8
+g_8CEA		equ	0x8CEA

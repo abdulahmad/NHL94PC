@@ -86,7 +86,7 @@ Menus_2528_00B2:
 	call	0x0FEF:GetPaletteFar
 	add	sp, 0x8
 	mov	ax, [SoundOptions]
-	mov	[0xb35e], ax
+	mov	[g_B35E], ax
 	db	0x2B, 0xF6		; sub si, si
 .1:
 	mov	al, 0x3f
@@ -109,7 +109,7 @@ Menus_2528_00B2:
 	db	0x8B, 0xCE		; mov cx, si
 	mov	ax, 0x1
 	shl	ax, cl
-	test	[0xb35e], ax
+	test	[g_B35E], ax
 	jnz	short .3
 	inc	si
 	cmp	si, 0x7
@@ -134,7 +134,7 @@ Menus_2528_00B2:
 	db	0x8B, 0xCA		; mov cx, dx
 	mov	ax, 0x1
 	shl	ax, cl
-	test	[0x1c4], ax
+	test	[g_01C4], ax
 	jnz	short .6
 	mov	al, 0x17
 	mov	[si], al
@@ -222,7 +222,7 @@ Menus_2528_01C6:
 	db	0x8B, 0xCF		; mov cx, di
 	mov	ax, 0x1
 	shl	ax, cl
-	test	[0xb35e], ax
+	test	[g_B35E], ax
 	jz	short .2
 	mov	al, 0x17
 	mov	[si], al
@@ -242,7 +242,7 @@ Menus_2528_01C6:
 	mov	[si + 0x16], al
 	mov	ax, 0x1
 	shl	ax, cl
-	test	[0x1c4], ax
+	test	[g_01C4], ax
 	jnz	short .4
 	mov	al, 0x17
 	mov	[si + 0x30], al
@@ -395,9 +395,9 @@ Menus_2528_0250:
 	mov	ax, 0x1
 	shl	ax, cl
 	mov	[bp - 0xc], ax
-	test	[0xb35e], ax
+	test	[g_B35E], ax
 	jnz	short .13
-	test	[0x1c4], ax
+	test	[g_01C4], ax
 	jz	short .13
 	cmp	ax, strict word 0x40
 	jz	short .17
@@ -431,17 +431,17 @@ Menus_2528_0250:
 	push	0xb
 	call	0x0D90:SetDialogColors
 	add	sp, 0xa
-	push	word [0xb35e]
+	push	word [g_B35E]
 	push	cs
 	call	Menus_2528_0426
 	add	sp, 0x2
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .16
-	mov	ax, [0xb35e]
-	xor	[0x1c4], ax
+	mov	ax, [g_B35E]
+	xor	[g_01C4], ax
 	mov	ax, [SoundOptions]
 .11:
-	mov	[0xb35e], ax
+	mov	[g_B35E], ax
 .12:
 	push	cs
 	call	Menus_2528_01C6
@@ -458,7 +458,7 @@ Menus_2528_0250:
 	leave
 	retf
 .16:
-	mov	ax, [0xb35e]
+	mov	ax, [g_B35E]
 	mov	[SoundOptions], ax
 .17:
 	db	0x2B, 0xC0		; sub ax, ax
@@ -472,54 +472,54 @@ Menus_2528_0426:
 	push	di
 	push	si
 	mov	word [bp - 0x22], 0xffff
-	mov	ax, [0xf68]
-	or	ax, [0xf66]
+	mov	ax, [g_0F68]
+	or	ax, [g_0F66]
 	jz	short .2
 	cmp	word [SoundOptions], 0x2
 	jnz	short .1
 	call	0x09B2:SpeechShutdown
-	push	word [0xc1f2]
-	push	word [0xc1f0]
+	push	word [g_C1F2]
+	push	word [g_C1F0]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0xc1f2], ax
-	mov	[0xc1f0], ax
+	mov	[g_C1F2], ax
+	mov	[g_C1F0], ax
 .1:
 	call	0x16F2:ShutdownSequencer
 	mov	ax, 0x64
 	cwd
 	call	0x03A3:SetDeadline.regs
 	call	0x03A3:WaitDeadlineNoEoi
-	push	word [0xf68]
-	push	word [0xf66]
+	push	word [g_0F68]
+	push	word [g_0F66]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0xf68], ax
-	mov	[0xf66], ax
+	mov	[g_0F68], ax
+	mov	[g_0F66], ax
 .2:
-	mov	ax, [0xf6c]
-	or	ax, [0xf6a]
+	mov	ax, [g_0F6C]
+	or	ax, [g_0F6A]
 	jz	short .3
-	push	word [0xf6c]
-	push	word [0xf6a]
+	push	word [g_0F6C]
+	push	word [g_0F6A]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0xf6c], ax
-	mov	[0xf6a], ax
+	mov	[g_0F6C], ax
+	mov	[g_0F6A], ax
 .3:
-	mov	ax, [0xf70]
-	or	ax, [0xf6e]
+	mov	ax, [g_0F70]
+	or	ax, [g_0F6E]
 	jz	short .4
-	push	word [0xf70]
-	push	word [0xf6e]
+	push	word [g_0F70]
+	push	word [g_0F6E]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0xf70], ax
-	mov	[0xf6e], ax
+	mov	[g_0F70], ax
+	mov	[g_0F6E], ax
 .4:
 	mov	word [bp - 0x26], 0x0
 .5:
@@ -667,16 +667,16 @@ Menus_2528_0426:
 	rep	movsw
 	db	0x13, 0xC9		; adc cx, cx
 	rep	movsb
-	mov	[0xf6c], ax
-	mov	[0xf6a], ax
+	mov	[g_0F6C], ax
+	mov	[g_0F6A], ax
 	lea	ax, [bp - 0x44]
 	push	ax
 	call	0x1844:LoadSoundDriver
 	add	sp, 0x2
-	mov	[0xf66], ax
-	mov	[0xf68], dx
+	mov	[g_0F66], ax
+	mov	[g_0F68], dx
 	db	0x8B, 0xC2		; mov ax, dx
-	or	ax, [0xf66]
+	or	ax, [g_0F66]
 	jz	short .17
 	cmp	byte [bp - 0x54], 0x0
 	jz	short .16
@@ -703,10 +703,10 @@ Menus_2528_0426:
 	push	ax
 	call	0x1844:LoadSoundDriver
 	add	sp, 0x2
-	mov	[0xf6a], ax
-	mov	[0xf6c], dx
+	mov	[g_0F6A], ax
+	mov	[g_0F6C], dx
 	db	0x8B, 0xC2		; mov ax, dx
-	or	ax, [0xf6a]
+	or	ax, [g_0F6A]
 	jz	short .17
 .16:
 	mov	word [bp - 0x2a], 0xffff
@@ -755,8 +755,8 @@ Menus_2528_0426:
 	push	ax
 	call	0x16F2:LoadPatchBank
 	add	sp, 0x2
-	mov	[0xf6e], ax
-	mov	[0xf70], dx
+	mov	[g_0F6E], ax
+	mov	[g_0F70], dx
 	mov	word [bp - 0x26], 0x0
 	jmp	near .23
 	db	0x90
@@ -800,7 +800,7 @@ Menus_2528_0426:
 	db	0x13, 0xC9		; adc cx, cx
 	rep	movsb
 	mov	al, 0x1
-	mov	[0x106d], al
+	mov	[g_106D], al
 	mov	[CrowdChannel], al
 	jmp	near .15
 .20:
@@ -936,7 +936,7 @@ Menus_2528_0426:
 	jz	short .25
 	jmp	near .27
 .25:
-	cmp	word [0xfba], 0x0
+	cmp	word [g_0FBA], 0x0
 	jz	short .26
 	jmp	near .27
 .26:
@@ -991,7 +991,7 @@ Menus_2528_0426:
 	add	sp, 0x4
 	mov	[bp - 0x36], ax
 	mov	[bp - 0x34], dx
-	mov	word [0xfba], 0xffff
+	mov	word [g_0FBA], 0xffff
 	push	dx
 	push	ax
 	push	word [bp - 0x64]
@@ -1011,7 +1011,7 @@ Menus_2528_0426:
 .27:
 	mov	ax, [bp + 0x6]
 	mov	[SoundOptions], ax
-	mov	[0xb35e], ax
+	mov	[g_B35E], ax
 	push	ds
 	push	word 0x1059
 	push	ds
@@ -1042,7 +1042,7 @@ Menus_2528_0426:
 	mov	bl, [bp - 0x2c]
 	db	0x2A, 0xFF		; sub bh, bh
 	shl	bx, 1
-	cmp	[bx + 0x1070], ax
+	cmp	[bx + g_1070], ax
 	jnz	short .28
 	push	0x1
 	push	0x0
@@ -1084,7 +1084,7 @@ Menus_2528_0426:
 .35:
 	jmp	short .37
 .36:
-	mov	es, [0x8b42]
+	mov	es, [g_8B42]
 	mov	word [es:0x7b], 0x5f
 	mov	word [es:0x7d], 0x36a8
 .37:
@@ -1134,13 +1134,13 @@ Menus_2528_0426:
 	jmp	short .43
 	db	0x90
 .40:
-	mov	es, [0x8b42]
+	mov	es, [g_8B42]
 	mov	word [es:0x7b], 0x6c
 	mov	word [es:0x7d], 0x36a8
 	jmp	near .37
 	db	0x90
 .41:
-	mov	es, [0x8b42]
+	mov	es, [g_8B42]
 	mov	word [es:0x7b], 0x72
 	mov	word [es:0x7d], 0x36a8
 	jmp	near .37
@@ -1153,27 +1153,27 @@ Menus_2528_0426:
 	cwd
 	call	0x03A3:SetDeadline.regs
 	call	0x03A3:WaitDeadlineNoEoi
-	mov	ax, [0xf68]
-	or	ax, [0xf66]
+	mov	ax, [g_0F68]
+	or	ax, [g_0F66]
 	jz	short .44
-	push	word [0xf68]
-	push	word [0xf66]
+	push	word [g_0F68]
+	push	word [g_0F66]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0xf68], ax
-	mov	[0xf66], ax
+	mov	[g_0F68], ax
+	mov	[g_0F66], ax
 .44:
-	mov	ax, [0xf6c]
-	or	ax, [0xf6a]
+	mov	ax, [g_0F6C]
+	or	ax, [g_0F6A]
 	jz	short .45
-	push	word [0xf6c]
-	push	word [0xf6a]
+	push	word [g_0F6C]
+	push	word [g_0F6A]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0xf6c], ax
-	mov	[0xf6a], ax
+	mov	[g_0F6C], ax
+	mov	[g_0F6A], ax
 .45:
 	cmp	word [bp - 0x2a], 0x0
 	jnz	short .46
@@ -1187,15 +1187,15 @@ Menus_2528_0426:
 	push	word 0x1062
 	call	0x14DB:AllocRecData
 	add	sp, 0x8
-	mov	[0xc1f0], ax
-	mov	[0xc1f2], dx
+	mov	[g_C1F0], ax
+	mov	[g_C1F2], dx
 	push	0x0
 	push	word 0x400
 	push	dx
 	push	ax
 	push	0xc
 	push	word 0x3500
-	mov	al, [0x106d]
+	mov	al, [g_106D]
 	push	ax
 	call	0x09B2:SpeechInit
 	add	sp, 0xe

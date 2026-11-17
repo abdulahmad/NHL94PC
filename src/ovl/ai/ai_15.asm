@@ -20,7 +20,7 @@ Ai_317A_0008:
 	db	0x8B, 0xD6		; mov dx, si
 	mov	cx, [bp - 0x8]
 .1:
-	mov	[si - 0x20ce], dx
+	mov	[si + g_DF32], dx
 	mov	al, [di]
 	cmp	[bp + 0xc], al
 	jz	short .2
@@ -31,7 +31,7 @@ Ai_317A_0008:
 	db	0x8B, 0xD9		; mov bx, cx
 	mov	ax, [bx]
 .3:
-	mov	[si - 0x2100], ax
+	mov	[si + g_DF00], ax
 	inc	cx
 	inc	cx
 	add	di, 0x28
@@ -49,9 +49,9 @@ Ai_317A_0008:
 	db	0x8B, 0xF7		; mov si, di
 	mov	dx, [bp + 0x8]
 .4:
-	cmp	word [di - 0x2100], 0x0
+	cmp	word [di + g_DF00], 0x0
 	jl	short .5
-	mov	al, [di - 0x20ce]
+	mov	al, [di + g_DF32]
 	db	0x8B, 0xDA		; mov bx, dx
 	mov	[bx + si], al
 	jmp	short .6
@@ -84,7 +84,7 @@ Ai_317A_0086:
 	db	0x8B, 0xD6		; mov dx, si
 	mov	cx, [bp - 0x8]
 .1:
-	mov	[si - 0x20ce], dx
+	mov	[si + g_DF32], dx
 	cmp	byte [di], 0x44
 	jnz	short .2
 	mov	ax, 0xffff
@@ -94,7 +94,7 @@ Ai_317A_0086:
 	db	0x8B, 0xD9		; mov bx, cx
 	mov	ax, [bx]
 .3:
-	mov	[si - 0x2100], ax
+	mov	[si + g_DF00], ax
 	inc	cx
 	inc	cx
 	add	di, 0x28
@@ -112,9 +112,9 @@ Ai_317A_0086:
 	db	0x8B, 0xF7		; mov si, di
 	mov	dx, [bp + 0x8]
 .4:
-	cmp	word [di - 0x2100], 0x0
+	cmp	word [di + g_DF00], 0x0
 	jl	short .5
-	mov	al, [di - 0x20ce]
+	mov	al, [di + g_DF32]
 	db	0x8B, 0xDA		; mov bx, dx
 	mov	[bx + si], al
 	jmp	short .6
@@ -368,10 +368,10 @@ Ai_317A_0102:
 	add	dx, 0x28
 	mov	bl, [bx]
 	db	0x2A, 0xFF		; sub bh, bh
-	mov	al, [bx + 0x61ce]
+	mov	al, [bx + g_61CE]
 	db	0x8B, 0xDE		; mov bx, si
 	db	0x03, 0xDF		; add bx, di
-	mov	[bx - 0x2132], al
+	mov	[bx + g_DECE], al
 	inc	di
 	cmp	di, 0x19
 	jl	short .8
@@ -388,7 +388,7 @@ Ai_317A_0102:
 	mov	al, [di]
 	cbw
 	db	0x8B, 0xD8		; mov bx, ax
-	mov	byte [bx + si - 0x2132], 0x0
+	mov	byte [bx + si + g_DECE], 0x0
 	inc	di
 	dec	dx
 	jnz	short .11
@@ -427,9 +427,9 @@ Ai_317A_03D6:
 	add	ax, [bp + 0xa]
 	imul	bx, ax, 0x28
 	mov	[bp - 0x8], bx
-	mov	bl, [bx - 0x5ab0]
+	mov	bl, [bx + g_A550]
 	db	0x2A, 0xFF		; sub bh, bh
-	mov	al, [bx + 0x61ce]
+	mov	al, [bx + g_61CE]
 	cbw
 	db	0x8B, 0xF0		; mov si, ax
 	db	0x0B, 0xF6		; or si, si
@@ -446,11 +446,11 @@ Ai_317A_03D6:
 	jnz	short .5
 	imul	si, di, 0x19
 	mov	bx, [bp + 0xa]
-	cmp	byte [bx + si - 0x2132], 0x2
+	cmp	byte [bx + si + g_DECE], 0x2
 	jnz	short .3
 .5:
 	mov	bx, [bp - 0x8]
-	mov	bl, [bx - 0x5aa9]
+	mov	bl, [bx + g_A557]
 	db	0x2A, 0xFF		; sub bh, bh
 	cmp	word [bp + 0x8], 0xc
 	jnl	short .10
@@ -483,7 +483,7 @@ Ai_317A_03D6:
 	jl	short .6
 	cmp	word [bp - 0x4], 0x2
 	jl	short .9
-	cmp	word [0xdf66], 0x6
+	cmp	word [g_DF66], 0x6
 	jg	short .3
 .9:
 	db	0x8B, 0xC7		; mov ax, di
@@ -501,7 +501,7 @@ Ai_317A_03D6:
 	mov	di, [bp + 0x8]
 	cmp	di, 0x12
 	jnl	short .15
-	cmp	word [0xdf64], 0x3
+	cmp	word [g_DF64], 0x3
 	jl	short .14
 	mov	word [bp - 0x4], 0x0
 	mov	si, 0xc
@@ -543,12 +543,12 @@ Ai_317A_03D6:
 	jnl	short .21
 	cmp	bx, 0x44
 	jnz	short .16
-	cmp	word [0xdf64], 0x4
+	cmp	word [g_DF64], 0x4
 	jl	short .17
 .16:
 	cmp	bx, 0x44
 	jz	short .20
-	cmp	word [0xdf66], 0x6
+	cmp	word [g_DF66], 0x6
 	jnl	short .20
 .17:
 	cmp	di, 0x17
@@ -568,7 +568,7 @@ Ai_317A_03D6:
 .21:
 	cmp	bx, 0x44
 	jnz	short .24
-	cmp	word [0xdf64], 0x4
+	cmp	word [g_DF64], 0x4
 	jnl	short .24
 	cmp	di, 0x20
 	jl	short .22
@@ -660,14 +660,14 @@ Ai_317A_0588:
 	jz	short .3
 	jmp	near .11
 .3:
-	cmp	word [0xdf68], 0x12
+	cmp	word [g_DF68], 0x12
 	jnl	short .4
 	imul	ax, si, 0x1c
 	db	0x03, 0xC7		; add ax, di
 	imul	bx, ax, 0x28
-	cmp	byte [bx - 0x5aa9], 0x44
+	cmp	byte [bx + g_A557], 0x44
 	jz	short .5
-	cmp	word [0xdf66], 0xc
+	cmp	word [g_DF66], 0xc
 	jl	short .5
 .4:
 	inc	word [bp - 0x4]
@@ -679,7 +679,7 @@ Ai_317A_0588:
 	db	0x03, 0xC7		; add ax, di
 	imul	bx, ax, 0x28
 	mov	[bp - 0xa], bx
-	mov	byte [bx - 0x5ab0], 0x3
+	mov	byte [bx + g_A550], 0x3
 	db	0x0B, 0xF6		; or si, si
 	jz	short .6
 	mov	ax, 0xae40
@@ -704,15 +704,15 @@ Ai_317A_0588:
 	jl	short .8
 	mov	si, [bp + 0x8]
 	imul	bx, si, 0x19
-	mov	byte [bx + di - 0x2132], 0x1
-	inc	word [0xdf68]
+	mov	byte [bx + di + g_DECE], 0x1
+	inc	word [g_DF68]
 	mov	bx, [bp - 0xa]
-	cmp	byte [bx - 0x5aa9], 0x44
+	cmp	byte [bx + g_A557], 0x44
 	jnz	short .10
-	inc	word [0xdf64]
+	inc	word [g_DF64]
 	jmp	short .11
 .10:
-	inc	word [0xdf66]
+	inc	word [g_DF66]
 .11:
 	db	0x8B, 0xC7		; mov ax, di
 	pop	si
@@ -739,7 +739,7 @@ Ai_317A_0666:
 .2:
 	mov	[bp - 0xc], ax
 	mov	bx, [bp + 0x8]
-	mov	al, [bx + 0x622a]
+	mov	al, [bx + g_622A]
 	cbw
 	mov	[bp - 0x4], ax
 	mov	[bp - 0xa], ax
@@ -748,16 +748,16 @@ Ai_317A_0666:
 	inc	word [bp - 0xa]
 .4:
 	mov	bx, [bp - 0xa]
-	mov	al, [bx + 0x61d8]
+	mov	al, [bx + g_61D8]
 	cbw
 	cmp	ax, [bp + 0x8]
 	jnz	short .3
 .5:
 	inc	word [bp - 0xa]
 	mov	bx, [bp - 0xa]
-	cmp	byte [bx + 0x61d8], 0x0
+	cmp	byte [bx + g_61D8], 0x0
 	jl	short .7
-	mov	al, [bx + 0x61d8]
+	mov	al, [bx + g_61D8]
 	cbw
 	db	0x8B, 0xD8		; mov bx, ax
 	mov	si, [bp - 0xc]
@@ -786,7 +786,7 @@ Ai_317A_0666:
 	imul	cx, [bp + 0x6], 0x1c
 	db	0x03, 0xC1		; add ax, cx
 	imul	bx, ax, 0x28
-	mov	al, [bx - 0x5aa9]
+	mov	al, [bx + g_A557]
 	db	0x2A, 0xE4		; sub ah, ah
 	mov	[bp - 0x2], ax
 	cmp	ax, strict word 0x44
@@ -1016,7 +1016,7 @@ Ai_317A_0666:
 	inc	word [bp - 0xa]
 .42:
 	mov	bx, [bp - 0xa]
-	mov	al, [bx + 0x61d8]
+	mov	al, [bx + g_61D8]
 	cbw
 	cmp	ax, [bp + 0x8]
 	jnz	short .40
@@ -1167,7 +1167,7 @@ Ai_317A_09CE:
 	mov	cl, [si]
 	db	0x2A, 0xED		; sub ch, ch
 	db	0x8B, 0xD9		; mov bx, cx
-	cmp	byte [bx + 0x61ce], 0x1
+	cmp	byte [bx + g_61CE], 0x1
 	jz	short .9
 	cmp	cx, 0x2
 	jnz	short .5
@@ -1183,7 +1183,7 @@ Ai_317A_09CE:
 	imul	ax, [bp + 0x6], 0x1c
 	db	0x03, 0xC7		; add ax, di
 	imul	bx, ax, 0x28
-	mov	byte [bx - 0x5ab0], 0x3
+	mov	byte [bx + g_A550], 0x3
 	mov	word [bp - 0x2], 0x28
 	mov	si, [bp - 0x2]
 	mov	dx, [bp - 0x6]
@@ -1240,9 +1240,9 @@ Ai_317A_0A7C:
 	mov	[bp - 0x8], ax
 	db	0x03, 0xC6		; add ax, si
 	imul	bx, ax, 0x28
-	mov	bl, [bx - 0x5ab0]
+	mov	bl, [bx + g_A550]
 	db	0x2A, 0xFF		; sub bh, bh
-	cmp	byte [bx + 0x61ce], 0x1
+	cmp	byte [bx + g_61CE], 0x1
 	jnz	short .3
 	db	0x8B, 0xC6		; mov ax, si
 	jmp	short .6
@@ -1259,9 +1259,9 @@ Ai_317A_0A7C:
 	mov	ax, [bp - 0x8]
 	db	0x03, 0xC7		; add ax, di
 	imul	bx, ax, 0x28
-	mov	bl, [bx - 0x5ab0]
+	mov	bl, [bx + g_A550]
 	db	0x2A, 0xFF		; sub bh, bh
-	cmp	byte [bx + 0x61ce], 0x1
+	cmp	byte [bx + g_61CE], 0x1
 	jz	short .5
 	inc	si
 	cmp	si, 0x19
@@ -1287,9 +1287,9 @@ Ai_317A_0A7C:
 	imul	ax, [bp + 0x6], 0x1c
 	db	0x03, 0xC6		; add ax, si
 	imul	bx, ax, 0x28
-	mov	bl, [bx - 0x5ab0]
+	mov	bl, [bx + g_A550]
 	db	0x2A, 0xFF		; sub bh, bh
-	cmp	byte [bx + 0x61ce], 0x1
+	cmp	byte [bx + g_61CE], 0x1
 	jnz	short .9
 	mov	bx, [bp - 0x4]
 	mov	al, [bx + 0x26]
@@ -1337,7 +1337,7 @@ Ai_317A_0B4C:
 	imul	ax, [bp + 0x6], 0x19
 	mov	[bp - 0x6], ax
 	db	0x03, 0xD8		; add bx, ax
-	mov	byte [bx - 0x2132], 0x0
+	mov	byte [bx + g_DECE], 0x0
 	db	0x3B, 0xFE		; cmp di, si
 	jng	short .5
 	db	0x8B, 0xC7		; mov ax, di
@@ -1360,7 +1360,7 @@ Ai_317A_0B4C:
 	cbw
 	db	0x8B, 0xD8		; mov bx, ax
 	add	bx, [bp - 0x6]
-	mov	byte [bx - 0x2132], 0x0
+	mov	byte [bx + g_DECE], 0x0
 .4:
 	add	si, [bp + 0xe]
 	dec	word [bp - 0x4]
@@ -1390,19 +1390,19 @@ Ai_317A_0BC0:
 	mov	[bp - 0xa], ax
 	db	0x03, 0xC6		; add ax, si
 	imul	bx, ax, 0x28
-	mov	al, [bx - 0x5aa9]
+	mov	al, [bx + g_A557]
 	mov	[bp - 0x8], al
 	cmp	al, 0x44
 	jnz	short .5
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0xdf64], ax
+	mov	[g_DF64], ax
 	mov	[bp - 0x4], ax
 	imul	ax, di, 0x19
 	mov	[bp - 0xc], ax
 	mov	si, [bp - 0x4]
 .3:
 	mov	bx, [bp - 0xc]
-	mov	al, [bx + si - 0x22c2]
+	mov	al, [bx + si + g_DD3E]
 	cbw
 	mov	[bp - 0x2], ax
 	db	0x0B, 0xC0		; or ax, ax
@@ -1410,11 +1410,11 @@ Ai_317A_0BC0:
 	mov	ax, [bp - 0xa]
 	add	ax, [bp - 0x2]
 	imul	bx, ax, 0x28
-	mov	bl, [bx - 0x5ab0]
+	mov	bl, [bx + g_A550]
 	db	0x2A, 0xFF		; sub bh, bh
-	cmp	byte [bx + 0x61ce], 0x1
+	cmp	byte [bx + g_61CE], 0x1
 	jnz	short .4
-	inc	word [0xdf64]
+	inc	word [g_DF64]
 .4:
 	inc	si
 	cmp	si, 0x19
@@ -1424,14 +1424,14 @@ Ai_317A_0BC0:
 	cmp	byte [bp - 0x8], 0x47
 	jz	short .8
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0xdf66], ax
+	mov	[g_DF66], ax
 	mov	[bp - 0x4], ax
 	imul	ax, di, 0x19
 	mov	[bp - 0xc], ax
 	mov	si, [bp - 0x4]
 .6:
 	mov	bx, [bp - 0xc]
-	mov	al, [bx + si - 0x22f4]
+	mov	al, [bx + si + g_DD0C]
 	cbw
 	mov	[bp - 0x2], ax
 	db	0x0B, 0xC0		; or ax, ax
@@ -1439,11 +1439,11 @@ Ai_317A_0BC0:
 	mov	ax, [bp - 0xa]
 	add	ax, [bp - 0x2]
 	imul	bx, ax, 0x28
-	mov	bl, [bx - 0x5ab0]
+	mov	bl, [bx + g_A550]
 	db	0x2A, 0xFF		; sub bh, bh
-	cmp	byte [bx + 0x61ce], 0x1
+	cmp	byte [bx + g_61CE], 0x1
 	jnz	short .7
-	inc	word [0xdf66]
+	inc	word [g_DF66]
 .7:
 	inc	si
 	cmp	si, 0x19
@@ -1600,12 +1600,12 @@ Ai_317A_0D92:
 .2:
 	mov	[bp - 0xc], ax
 	db	0x2B, 0xF6		; sub si, si
-	mov	[0xdf64], si
+	mov	[g_DF64], si
 	imul	ax, di, 0x19
 	mov	[bp - 0xe], ax
 .3:
 	mov	bx, [bp - 0xe]
-	mov	al, [bx + si - 0x22c2]
+	mov	al, [bx + si + g_DD3E]
 	cbw
 	mov	[bp - 0x2], ax
 	db	0x0B, 0xC0		; or ax, ax
@@ -1613,23 +1613,23 @@ Ai_317A_0D92:
 	imul	ax, di, 0x1c
 	add	ax, [bp - 0x2]
 	imul	bx, ax, 0x28
-	mov	bl, [bx - 0x5ab0]
+	mov	bl, [bx + g_A550]
 	db	0x2A, 0xFF		; sub bh, bh
-	cmp	byte [bx + 0x61ce], 0x1
+	cmp	byte [bx + g_61CE], 0x1
 	jnz	short .4
-	inc	word [0xdf64]
+	inc	word [g_DF64]
 .4:
 	inc	si
 	cmp	si, 0x19
 	jl	short .3
 .5:
 	db	0x2B, 0xF6		; sub si, si
-	mov	[0xdf66], si
+	mov	[g_DF66], si
 	imul	ax, di, 0x19
 	mov	[bp - 0xe], ax
 .6:
 	mov	bx, [bp - 0xe]
-	mov	al, [bx + si - 0x22f4]
+	mov	al, [bx + si + g_DD0C]
 	cbw
 	mov	[bp - 0x2], ax
 	db	0x0B, 0xC0		; or ax, ax
@@ -1637,19 +1637,19 @@ Ai_317A_0D92:
 	imul	ax, di, 0x1c
 	add	ax, [bp - 0x2]
 	imul	bx, ax, 0x28
-	mov	bl, [bx - 0x5ab0]
+	mov	bl, [bx + g_A550]
 	db	0x2A, 0xFF		; sub bh, bh
-	cmp	byte [bx + 0x61ce], 0x1
+	cmp	byte [bx + g_61CE], 0x1
 	jnz	short .7
-	inc	word [0xdf66]
+	inc	word [g_DF66]
 .7:
 	inc	si
 	cmp	si, 0x19
 	jl	short .6
 .8:
-	mov	ax, [0xdf66]
-	add	ax, [0xdf64]
-	mov	[0xdf68], ax
+	mov	ax, [g_DF66]
+	add	ax, [g_DF64]
+	mov	[g_DF68], ax
 	mov	bx, 0xdf00
 .9:
 	inc	bx
@@ -1666,7 +1666,7 @@ Ai_317A_0D92:
 	cbw
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, 1
-	mov	word [bx - 0x2100], 0x1
+	mov	word [bx + g_DF00], 0x1
 	inc	si
 	cmp	si, 0x24
 	jl	short .10
@@ -1674,18 +1674,18 @@ Ai_317A_0D92:
 	cbw
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, 1
-	mov	word [bx - 0x2100], 0x1
+	mov	word [bx + g_DF00], 0x1
 	mov	al, [di + 0x27]
 	cbw
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, 1
-	mov	ax, [bx - 0x2100]
+	mov	ax, [bx + g_DF00]
 	db	0x8B, 0xC8		; mov cx, ax
 	mov	al, [di + 0x26]
 	cbw
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, 1
-	mov	[bx - 0x2100], cx
+	mov	[bx + g_DF00], cx
 	mov	word [bp - 0x4], 0x0
 	mov	word [bp - 0xa], 0xdf00
 	imul	ax, [bp + 0x6], word 0x460
@@ -1726,7 +1726,7 @@ Ai_317A_0D92:
 	cbw
 	add	ax, [bp - 0x10]
 	imul	bx, ax, 0x28
-	mov	al, [bx - 0x5ab0]
+	mov	al, [bx + g_A550]
 	db	0x2A, 0xE4		; sub ah, ah
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .15
@@ -1748,14 +1748,14 @@ Ai_317A_0D92:
 	mov	[bp - 0xe], ax
 .17:
 	mov	bx, [bp - 0xe]
-	cmp	byte [bx + si - 0x2132], 0x1
+	cmp	byte [bx + si + g_DECE], 0x1
 	jnz	short .18
 	mov	al, 0x1
 	jmp	short .19
 .18:
 	db	0x2A, 0xC0		; sub al, al
 .19:
-	mov	[bx + si - 0x2132], al
+	mov	[bx + si + g_DECE], al
 	inc	si
 	cmp	si, 0x19
 	jl	short .17
@@ -1768,15 +1768,15 @@ Ai_317A_0F22:
 	push	si
 	db	0x2B, 0xF6		; sub si, si
 .1:
-	cmp	byte [si - 0x2132], 0x1
+	cmp	byte [si + g_DECE], 0x1
 	jnz	short .2
 	mov	al, 0x1
 	jmp	short .3
 .2:
 	db	0x2A, 0xC0		; sub al, al
 .3:
-	mov	[si - 0x2132], al
-	cmp	byte [si - 0x2119], 0x1
+	mov	[si + g_DECE], al
+	cmp	byte [si + g_DEE7], 0x1
 	jnz	short .4
 	mov	al, 0x1
 	jmp	short .5
@@ -1784,7 +1784,7 @@ Ai_317A_0F22:
 .4:
 	db	0x2A, 0xC0		; sub al, al
 .5:
-	mov	[si - 0x2119], al
+	mov	[si + g_DEE7], al
 	inc	si
 	cmp	si, 0x19
 	jl	short .1
@@ -1809,7 +1809,7 @@ Ai_317A_0F50:
 	mov	[bp - 0xa], ax
 .1:
 	mov	bx, [bp - 0xa]
-	mov	al, [bx + di - 0x22c2]
+	mov	al, [bx + di + g_DD3E]
 	cbw
 	db	0x8B, 0xF0		; mov si, ax
 	db	0x0B, 0xF6		; or si, si
@@ -1824,7 +1824,7 @@ Ai_317A_0F50:
 	imul	ax, [bp - 0x6], 0x1c
 	db	0x03, 0xC6		; add ax, si
 	imul	bx, ax, 0x28
-	mov	al, [bx - 0x5ab0]
+	mov	al, [bx + g_A550]
 	db	0x2A, 0xE4		; sub ah, ah
 	cmp	ax, strict word 0x4
 	jz	short .3
@@ -1855,7 +1855,7 @@ Ai_317A_0F50:
 	mov	[bp - 0xa], ax
 .8:
 	mov	bx, [bp - 0xa]
-	mov	al, [bx + si - 0x22f4]
+	mov	al, [bx + si + g_DD0C]
 	cbw
 	db	0x8B, 0xF8		; mov di, ax
 	db	0x0B, 0xFF		; or di, di
@@ -1863,7 +1863,7 @@ Ai_317A_0F50:
 	imul	ax, [bp - 0x6], 0x1c
 	db	0x03, 0xC7		; add ax, di
 	imul	bx, ax, 0x28
-	mov	al, [bx - 0x5ab0]
+	mov	al, [bx + g_A550]
 	db	0x2A, 0xE4		; sub ah, ah
 	cmp	ax, strict word 0x4
 	jz	short .9

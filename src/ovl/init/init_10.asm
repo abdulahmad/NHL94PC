@@ -87,11 +87,11 @@ Init_24DE_0006:
 	db	0x33, 0xC2		; xor ax, dx
 	db	0x2B, 0xC2		; sub ax, dx
 	mov	[bp - 0x2], ax
-	mov	ax, [0x900]
-	or	ax, [0x8fe]
+	mov	ax, [g_0900]
+	or	ax, [g_08FE]
 	jz	short .3
-	push	word [0x900]
-	push	word [0x8fe]
+	push	word [g_0900]
+	push	word [g_08FE]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 .3:
@@ -99,8 +99,8 @@ Init_24DE_0006:
 	push	word 0x511b
 	call	0x149D:LoadRawHeader
 	add	sp, 0x4
-	mov	[0x8fe], ax
-	mov	[0x900], dx
+	mov	[g_08FE], ax
+	mov	[g_0900], dx
 	push	word [bp - 0x22]
 	push	word 0x5124
 	lea	ax, [bp - 0x20]
@@ -114,11 +114,11 @@ Init_24DE_0006:
 	add	sp, 0x4
 	db	0x8B, 0xF8		; mov di, ax
 	mov	[bp - 0x4], dx
-	les	bx, [0x8fe]
+	les	bx, [g_08FE]
 	mov	ax, [es:bx + 0x2]
-	mov	[0xb09a], ax
+	mov	[g_B09A], ax
 	mov	ax, [es:bx]
-	mov	[0xb09c], ax
+	mov	[g_B09C], ax
 	push	word [bp - 0x22]
 	push	word [bp - 0x2]
 	db	0x8B, 0xC2		; mov ax, dx
@@ -134,7 +134,7 @@ Init_24DE_0006:
 	push	di
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	mov	ax, [0xb09a]
+	mov	ax, [g_B09A]
 	sub	ax, strict word 0xf
 	shl	ax, byte 0x2
 	db	0x8B, 0xC8		; mov cx, ax
@@ -144,13 +144,13 @@ Init_24DE_0006:
 	sar	ax, byte 0x3
 	db	0x33, 0xC2		; xor ax, dx
 	db	0x2B, 0xC2		; sub ax, dx
-	mov	[0xb098], ax
+	mov	[g_B098], ax
 	db	0x8B, 0xC1		; mov ax, cx
 	mov	cx, 0x8
 	cwd
 	idiv	cx
-	mov	[0xb092], dx
-	mov	ax, [0xb09c]
+	mov	[g_B092], dx
+	mov	ax, [g_B09C]
 	shl	ax, byte 0x2
 	db	0x8B, 0xD8		; mov bx, ax
 	cwd
@@ -160,11 +160,11 @@ Init_24DE_0006:
 	db	0x33, 0xC2		; xor ax, dx
 	db	0x2B, 0xC2		; sub ax, dx
 	sub	ax, strict word 0x14
-	mov	[0xb096], ax
+	mov	[g_B096], ax
 	db	0x8B, 0xC3		; mov ax, bx
 	cwd
 	idiv	cx
-	mov	[0xb094], dx
+	mov	[g_B094], dx
 	push	cs
 	call	Init_24DE_033A
 	cmp	word [CurPage], 0x1
@@ -342,12 +342,12 @@ Init_24DE_033A:
 	enter	0xe, 0x0
 	push	di
 	push	si
-	mov	ax, [0xb09c]
-	imul	word [0xb098]
+	mov	ax, [g_B09C]
+	imul	word [g_B098]
 	db	0x8B, 0xF0		; mov si, ax
 	add	si, 0x3
 	mov	word [bp - 0x6], 0x86a0
-	mov	word [0xb0c2], 0x0
+	mov	word [g_B0C2], 0x0
 	mov	ax, 0x5
 	mov	dx, 0x3ce
 	out	dx, al
@@ -376,7 +376,7 @@ Init_24DE_033A:
 	db	0x8B, 0xF7		; mov si, di
 	mov	di, [bp - 0x6]
 .2:
-	les	bx, [0x8fe]
+	les	bx, [g_08FE]
 	push	word [es:bx + si]
 	push	di
 	mov	ax, [es:bx + si]

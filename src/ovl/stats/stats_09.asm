@@ -15,10 +15,10 @@ Stats_23D5_0002:
 	mov	[bp - 0x4c], dx
 	push	0x0
 	push	0x0
-	mov	bx, [0x2010]
+	mov	bx, [g_2010]
 	shl	bx, 1
 	push	ds
-	push	word [bx + 0x1fa6]
+	push	word [bx + g_1FA6]
 	mov	ax, 0x0
 	mov	cx, 0x3861
 	mov	[bp - 0x19a], ax
@@ -37,15 +37,15 @@ Stats_23D5_0002:
 	add	sp, 0x4
 	db	0x8B, 0xF0		; mov si, ax
 	push	0x0
-	cmp	word [0x2010], 0x0
+	cmp	word [g_2010], 0x0
 	jnz	short .1
-	mov	ax, [0xcf42]
-	mov	dx, [0xcf44]
+	mov	ax, [g_CF42]
+	mov	dx, [g_CF44]
 	jmp	short .2
 	db	0x90
 .1:
-	mov	ax, [0xcf46]
-	mov	dx, [0xcf48]
+	mov	ax, [g_CF46]
+	mov	dx, [g_CF48]
 .2:
 	push	dx
 	push	ax
@@ -79,8 +79,8 @@ Stats_23D5_0002:
 	add	sp, 0x4
 	db	0x8B, 0xF0		; mov si, ax
 	push	0x0
-	push	word [0xcf40]
-	push	word [0xcf3e]
+	push	word [g_CF40]
+	push	word [g_CF3E]
 	push	si
 	call	0x0000:_lseek
 	add	sp, 0x8
@@ -96,7 +96,7 @@ Stats_23D5_0002:
 	push	0x0
 	push	0x0
 	push	ds
-	push	word [0x1faa]
+	push	word [g_1FAA]
 	push	word [bp - 0x198]
 	push	word [bp - 0x19a]
 	lea	ax, [bp - 0x6e]
@@ -111,7 +111,7 @@ Stats_23D5_0002:
 	add	sp, 0x4
 	db	0x8B, 0xF0		; mov si, ax
 	push	0x0
-	mov	al, [0xcf1a]
+	mov	al, [g_CF1A]
 	db	0x2A, 0xE4		; sub ah, ah
 	mov	cx, 0x4c
 	mul	cx
@@ -152,22 +152,22 @@ Stats_23D5_0002:
 	push	ax
 	call	0x14B8:LoadPackedHeader
 	add	sp, 0x4
-	mov	[0xcfd0], ax
-	mov	[0xcfd2], dx
+	mov	[g_CFD0], ax
+	mov	[g_CFD2], dx
 	push	word 0x1ff0
 	push	dx
 	push	ax
 	call	0x03A3:FindFarMsg
 	add	sp, 0x6
-	mov	[0xc2b2], ax
-	mov	[0xc2b4], dx
+	mov	[g_C2B2], ax
+	mov	[g_C2B4], dx
 	push	word 0xc8
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	dx, 0x140
 	mov	bx, 0xa
 	call	0x0FEF:SetClipRectRegs
-	push	word [0xc2b4]
-	push	word [0xc2b2]
+	push	word [g_C2B4]
+	push	word [g_C2B2]
 	call	0x0FEF:DrawRleTransBody
 	add	sp, 0x4
 	push	word 0xc8
@@ -175,11 +175,11 @@ Stats_23D5_0002:
 	mov	dx, 0x140
 	db	0x2B, 0xDB		; sub bx, bx
 	call	0x0FEF:SetClipRectRegs
-	push	word [0xcfd2]
-	push	word [0xcfd0]
+	push	word [g_CFD2]
+	push	word [g_CFD0]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	cmp	byte [0xcf4a], 0x0
+	cmp	byte [g_CF4A], 0x0
 	jnz	short .3
 	jmp	near .9
 .3:
@@ -205,14 +205,14 @@ Stats_23D5_0002:
 	push	ax
 	call	0x2095:Stats_2095_026E
 	add	sp, 0x4
-	mov	[0xc2b2], ax
-	mov	[0xc2b4], dx
+	mov	[g_C2B2], ax
+	mov	[g_C2B4], dx
 	db	0x8B, 0xC2		; mov ax, dx
-	or	ax, [0xc2b2]
+	or	ax, [g_C2B2]
 	jnz	short .4
 	jmp	near .9
 .4:
-	mov	ax, [0xc2b2]
+	mov	ax, [g_C2B2]
 	add	ax, strict word 0x10
 	db	0x8B, 0xF8		; mov di, ax
 	mov	[bp - 0x10], dx
@@ -224,7 +224,7 @@ Stats_23D5_0002:
 	inc	bx
 	cmp	bx, 0x100
 	jl	short .5
-	mov	es, [0x8c82]
+	mov	es, [g_8C82]
 	cmp	word [es:0xb050], 0x0
 	jz	short .6
 	push	word 0xb4
@@ -274,12 +274,12 @@ Stats_23D5_0002:
 	inc	si
 	cmp	si, 0x3c
 	jl	short .8
-	push	word [0xc2b4]
-	push	word [0xc2b2]
+	push	word [g_C2B4]
+	push	word [g_C2B2]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	mov	ax, [0xcf4a]
-	mov	dx, [0xcf4c]
+	mov	ax, [g_CF4A]
+	mov	dx, [g_CF4C]
 	mov	[bp - 0x18], ax
 	mov	[bp - 0x16], dx
 	mov	byte [bp - 0x13], 0x0
@@ -289,10 +289,10 @@ Stats_23D5_0002:
 	push	ax
 	call	0x2095:Stats_2095_026E
 	add	sp, 0x4
-	mov	[0xc2b2], ax
-	mov	[0xc2b4], dx
+	mov	[g_C2B2], ax
+	mov	[g_C2B4], dx
 	db	0x8B, 0xC2		; mov ax, dx
-	or	ax, [0xc2b2]
+	or	ax, [g_C2B2]
 	jz	short .9
 	lea	ax, [bp - 0x196]
 	push	ss
@@ -301,12 +301,12 @@ Stats_23D5_0002:
 	add	sp, 0x4
 	push	0x14
 	push	0x24
-	push	word [0xc2b4]
-	push	word [0xc2b2]
+	push	word [g_C2B4]
+	push	word [g_C2B2]
 	call	0x0FEF:DrawRawTransRemapAt
 	add	sp, 0x8
-	push	word [0xc2b4]
-	push	word [0xc2b2]
+	push	word [g_C2B4]
+	push	word [g_C2B2]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 .9:
@@ -333,14 +333,14 @@ Stats_23D5_0002:
 	push	0x28
 	call	0x0D39:DrawShadowTextCentered
 	add	sp, 0x6
-	mov	al, [0xcf1b]
+	mov	al, [g_CF1B]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	push	word 0x235a
 	push	word 0xcfd4
 	call	0x0000:_sprintf
 	add	sp, 0x6
-	mov	al, [0xcf1c]
+	mov	al, [g_CF1C]
 	cbw
 	cmp	ax, strict word 0x52
 	jz	short .13
@@ -559,7 +559,7 @@ Stats_23D5_0002:
 	jnc	short .19
 	jmp	near .16
 .19:
-	cmp	word [0x2010], 0x0
+	cmp	word [g_2010], 0x0
 	jnz	short .20
 	push	ds
 	push	word 0x23ae
@@ -646,7 +646,7 @@ Stats_23D5_0002:
 	push	ax
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
-	mov	al, [si + 0x23ea]
+	mov	al, [si + g_23EA]
 	cbw
 	db	0x8B, 0xD8		; mov bx, ax
 	lea	ax, [bp - 0x32]

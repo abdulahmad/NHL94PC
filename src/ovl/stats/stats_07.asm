@@ -11,10 +11,10 @@ Stats_22B3_0000:
 	push	0x0
 	call	0x0FEF:GetPaletteFar
 	add	sp, 0x8
-	mov	word [0xc052], 0x1
-	mov	[0x21b8], si
-	mov	word [0x21bc], 0x64a
-	mov	word [0x21be], 0x25e5
+	mov	word [g_C052], 0x1
+	mov	[g_21B8], si
+	mov	word [g_21BC], 0x64a
+	mov	word [g_21BE], 0x25e5
 	call	0x0FEF:UseOffscreenCanvas
 	push	0x1
 	call	0x2095:Stats_2095_0008
@@ -50,15 +50,15 @@ Stats_22B3_0000:
 	push	ax
 	call	0x14B8:LoadPackedHeader
 	add	sp, 0x4
-	mov	[0xcfd0], ax
-	mov	[0xcfd2], dx
+	mov	[g_CFD0], ax
+	mov	[g_CFD2], dx
 	push	word 0x21dd
 	push	dx
 	push	ax
 	call	0x03A3:FindFarMsg
 	add	sp, 0x6
-	mov	[0xc2b2], ax
-	mov	[0xc2b4], dx
+	mov	[g_C2B2], ax
+	mov	[g_C2B4], dx
 	push	0x10
 	lea	ax, [bp - 0x30e]
 	push	ss
@@ -70,16 +70,16 @@ Stats_22B3_0000:
 	call	0x0FEF:SetStartPage
 	add	sp, 0x2
 	push	0x10
-	mov	ax, [0xc2b2]
-	mov	dx, [0xc2b4]
+	mov	ax, [g_C2B2]
+	mov	dx, [g_C2B4]
 	add	ax, strict word 0x10
 	push	dx
 	push	ax
 	push	0x0
 	call	0x1B35:OvlThunk23
 	add	sp, 0x8
-	push	word [0xcfd2]
-	push	word [0xcfd0]
+	push	word [g_CFD2]
+	push	word [g_CFD0]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	push	0x42
@@ -123,16 +123,16 @@ Stats_22B3_0000:
 	push	ax
 	call	0x14B8:LoadPackedHeader
 	add	sp, 0x4
-	mov	[0xcfd0], ax
-	mov	[0xcfd2], dx
+	mov	[g_CFD0], ax
+	mov	[g_CFD2], dx
 	push	word 0x21f2
 	push	dx
 	push	ax
 	call	0x03A3:FindFarMsg
 	add	sp, 0x6
 	add	ax, strict word 0x10
-	mov	[0xc2b2], ax
-	mov	[0xc2b4], dx
+	mov	[g_C2B2], ax
+	mov	[g_C2B4], dx
 	push	0x10
 	lea	ax, [bp - 0x30e]
 	push	ss
@@ -144,19 +144,19 @@ Stats_22B3_0000:
 	call	0x0FEF:SetStartPage
 	add	sp, 0x2
 	push	0x10
-	push	word [0xc2b4]
-	push	word [0xc2b2]
+	push	word [g_C2B4]
+	push	word [g_C2B2]
 	push	0x0
 	call	0x1B35:OvlThunk23
 	add	sp, 0x8
-	push	word [0xcfd2]
-	push	word [0xcfd0]
+	push	word [g_CFD2]
+	push	word [g_CFD0]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0x21be], ax
-	mov	[0x21bc], ax
-	mov	[0xc052], ax
+	mov	[g_21BE], ax
+	mov	[g_21BC], ax
+	mov	[g_C052], ax
 	pop	si
 	leave
 	retf
@@ -172,10 +172,10 @@ Stats_22B3_01C8:
 	push	0x0
 	call	0x0FEF:GetPaletteFar
 	add	sp, 0x8
-	mov	word [0xc052], 0x1
-	mov	[0x21b8], si
-	mov	word [0x21bc], 0x8da
-	mov	word [0x21be], 0x26be
+	mov	word [g_C052], 0x1
+	mov	[g_21B8], si
+	mov	word [g_21BC], 0x8da
+	mov	word [g_21BE], 0x26be
 	call	0x0FEF:UseOffscreenCanvas
 	push	0x1
 	call	0x2095:Stats_2095_0008
@@ -211,15 +211,15 @@ Stats_22B3_01C8:
 	push	ax
 	call	0x14B8:LoadPackedHeader
 	add	sp, 0x4
-	mov	[0xcfd0], ax
-	mov	[0xcfd2], dx
+	mov	[g_CFD0], ax
+	mov	[g_CFD2], dx
 	push	word 0x21fe
 	push	dx
 	push	ax
 	call	0x03A3:FindFarMsg
 	add	sp, 0x6
-	mov	[0xc2b2], ax
-	mov	[0xc2b4], dx
+	mov	[g_C2B2], ax
+	mov	[g_C2B4], dx
 	push	0x10
 	lea	ax, [bp - 0x30e]
 	push	ss
@@ -231,16 +231,16 @@ Stats_22B3_01C8:
 	call	0x0FEF:SetStartPage
 	add	sp, 0x2
 	push	0x10
-	mov	ax, [0xc2b2]
-	mov	dx, [0xc2b4]
+	mov	ax, [g_C2B2]
+	mov	dx, [g_C2B4]
 	add	ax, strict word 0x10
 	push	dx
 	push	ax
 	push	0x0
 	call	0x1B35:OvlThunk23
 	add	sp, 0x8
-	push	word [0xcfd2]
-	push	word [0xcfd0]
+	push	word [g_CFD2]
+	push	word [g_CFD0]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	push	0x42
@@ -284,16 +284,16 @@ Stats_22B3_01C8:
 	push	ax
 	call	0x14B8:LoadPackedHeader
 	add	sp, 0x4
-	mov	[0xcfd0], ax
-	mov	[0xcfd2], dx
+	mov	[g_CFD0], ax
+	mov	[g_CFD2], dx
 	push	word 0x2213
 	push	dx
 	push	ax
 	call	0x03A3:FindFarMsg
 	add	sp, 0x6
 	add	ax, strict word 0x10
-	mov	[0xc2b2], ax
-	mov	[0xc2b4], dx
+	mov	[g_C2B2], ax
+	mov	[g_C2B4], dx
 	push	0x10
 	lea	ax, [bp - 0x30e]
 	push	ss
@@ -305,19 +305,19 @@ Stats_22B3_01C8:
 	call	0x0FEF:SetStartPage
 	add	sp, 0x2
 	push	0x10
-	push	word [0xc2b4]
-	push	word [0xc2b2]
+	push	word [g_C2B4]
+	push	word [g_C2B2]
 	push	0x0
 	call	0x1B35:OvlThunk23
 	add	sp, 0x8
-	push	word [0xcfd2]
-	push	word [0xcfd0]
+	push	word [g_CFD2]
+	push	word [g_CFD0]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0x21be], ax
-	mov	[0x21bc], ax
-	mov	[0xc052], ax
+	mov	[g_21BE], ax
+	mov	[g_21BC], ax
+	mov	[g_C052], ax
 	pop	si
 	leave
 	retf
@@ -333,10 +333,10 @@ Stats_22B3_0390:
 	push	0x0
 	call	0x0FEF:GetPaletteFar
 	add	sp, 0x8
-	mov	word [0xc052], 0x1
-	mov	[0x21b8], si
-	mov	word [0x21bc], 0x8da
-	mov	word [0x21be], 0x26be
+	mov	word [g_C052], 0x1
+	mov	[g_21B8], si
+	mov	word [g_21BC], 0x8da
+	mov	word [g_21BE], 0x26be
 	call	0x0FEF:UseOffscreenCanvas
 	push	0x1
 	call	0x2095:Stats_2095_0008
@@ -372,15 +372,15 @@ Stats_22B3_0390:
 	push	ax
 	call	0x14B8:LoadPackedHeader
 	add	sp, 0x4
-	mov	[0xcfd0], ax
-	mov	[0xcfd2], dx
+	mov	[g_CFD0], ax
+	mov	[g_CFD2], dx
 	push	word 0x221f
 	push	dx
 	push	ax
 	call	0x03A3:FindFarMsg
 	add	sp, 0x6
-	mov	[0xc2b2], ax
-	mov	[0xc2b4], dx
+	mov	[g_C2B2], ax
+	mov	[g_C2B4], dx
 	push	0x10
 	lea	ax, [bp - 0x30e]
 	push	ss
@@ -392,16 +392,16 @@ Stats_22B3_0390:
 	call	0x0FEF:SetStartPage
 	add	sp, 0x2
 	push	0x10
-	mov	ax, [0xc2b2]
-	mov	dx, [0xc2b4]
+	mov	ax, [g_C2B2]
+	mov	dx, [g_C2B4]
 	add	ax, strict word 0x10
 	push	dx
 	push	ax
 	push	0x0
 	call	0x1B35:OvlThunk23
 	add	sp, 0x8
-	push	word [0xcfd2]
-	push	word [0xcfd0]
+	push	word [g_CFD2]
+	push	word [g_CFD0]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	push	0x42
@@ -445,16 +445,16 @@ Stats_22B3_0390:
 	push	ax
 	call	0x14B8:LoadPackedHeader
 	add	sp, 0x4
-	mov	[0xcfd0], ax
-	mov	[0xcfd2], dx
+	mov	[g_CFD0], ax
+	mov	[g_CFD2], dx
 	push	word 0x2234
 	push	dx
 	push	ax
 	call	0x03A3:FindFarMsg
 	add	sp, 0x6
 	add	ax, strict word 0x10
-	mov	[0xc2b2], ax
-	mov	[0xc2b4], dx
+	mov	[g_C2B2], ax
+	mov	[g_C2B4], dx
 	push	0x10
 	lea	ax, [bp - 0x30e]
 	push	ss
@@ -466,48 +466,48 @@ Stats_22B3_0390:
 	call	0x0FEF:SetStartPage
 	add	sp, 0x2
 	push	0x10
-	push	word [0xc2b4]
-	push	word [0xc2b2]
+	push	word [g_C2B4]
+	push	word [g_C2B2]
 	push	0x0
 	call	0x1B35:OvlThunk23
 	add	sp, 0x8
-	push	word [0xcfd2]
-	push	word [0xcfd0]
+	push	word [g_CFD2]
+	push	word [g_CFD0]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0x21be], ax
-	mov	[0x21bc], ax
-	mov	[0xc052], ax
+	mov	[g_21BE], ax
+	mov	[g_21BC], ax
+	mov	[g_C052], ax
 	pop	si
 	leave
 	retf
 
 Stats_22B3_0558:
 	enter	0xe, 0x0
-	cmp	word [0x200e], 0x0
+	cmp	word [g_200E], 0x0
 	jnz	short .1
 	jmp	near .4
 .1:
-	mov	ax, [0x21b2]
-	or	ax, [0x21b0]
+	mov	ax, [g_21B2]
+	or	ax, [g_21B0]
 	jnz	short .2
 	push	0x0
 	push	word 0x1ff6
 	call	0x149D:LoadRawHeader
 	add	sp, 0x4
-	mov	[0x21b0], ax
-	mov	[0x21b2], dx
+	mov	[g_21B0], ax
+	mov	[g_21B2], dx
 .2:
-	mov	ax, [0x21b6]
-	or	ax, [0x21b4]
+	mov	ax, [g_21B6]
+	or	ax, [g_21B4]
 	jnz	short .3
 	push	word 0x3701
 	push	word 0xbd0
-	mov	bx, [0x200e]
+	mov	bx, [g_200E]
 	shl	bx, 1
 	push	ds
-	push	word [bx + 0x1fa2]
+	push	word [bx + g_1FA2]
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0xe]
@@ -520,12 +520,12 @@ Stats_22B3_0558:
 	push	ax
 	call	0x14B8:LoadPackedHeader
 	add	sp, 0x4
-	mov	[0x21b4], ax
-	mov	[0x21b6], dx
+	mov	[g_21B4], ax
+	mov	[g_21B6], dx
 .3:
 	push	word 0xcee8
-	push	word [0xc04e]
-	push	word [0xc04c]
+	push	word [g_C04E]
+	push	word [g_C04C]
 	call	0x24E6:Stats_24E6_0ADE
 	add	sp, 0x6
 	push	0x42
@@ -551,8 +551,8 @@ Stats_22B3_0558:
 	call	0x0FA0:DrawMenuBar
 	add	sp, 0xc
 	push	word 0xcee8
-	push	word [0xc04e]
-	push	word [0xc04c]
+	push	word [g_C04E]
+	push	word [g_C04C]
 	call	0x24E6:Stats_24E6_01BE
 	add	sp, 0x6
 	push	0x0
@@ -566,22 +566,22 @@ Stats_22B3_062E:
 	push	si
 	db	0x2B, 0xDB		; sub bx, bx
 .1:
-	mov	ax, [bx - 0x3dfc]
+	mov	ax, [bx + g_C204]
 	db	0x8B, 0xF3		; mov si, bx
 	mov	[bp + si - 0x4c], ax
 	inc	bx
 	inc	bx
 	cmp	bx, 0x3e
 	jl	short .1
-	mov	word [0xc052], 0x1
-	mov	ax, [0x21ce]
-	mov	dx, [0x21d0]
-	mov	[0x21bc], ax
-	mov	[0x21be], dx
+	mov	word [g_C052], 0x1
+	mov	ax, [g_21CE]
+	mov	dx, [g_21D0]
+	mov	[g_21BC], ax
+	mov	[g_21BE], dx
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0x21ba], ax
-	mov	[0x21b8], ax
-	mov	byte [0xcf1c], 0x0
+	mov	[g_21BA], ax
+	mov	[g_21B8], ax
+	mov	byte [g_CF1C], 0x0
 	push	word 0x3f00
 	push	word 0xbd00
 	push	word 0x7e00
@@ -610,34 +610,34 @@ Stats_22B3_062E:
 	push	word 0x2239
 	call	0x14DB:AllocRecData
 	add	sp, 0x8
-	mov	[0xc04c], ax
-	mov	[0xc04e], dx
+	mov	[g_C04C], ax
+	mov	[g_C04E], dx
 	push	0x0
 	push	0x0
 	push	word 0x5b0
 	push	word 0x223f
 	call	0x14DB:AllocRecData
 	add	sp, 0x8
-	mov	[0xc048], ax
-	mov	[0xc04a], dx
+	mov	[g_C048], ax
+	mov	[g_C04A], dx
 	push	0x0
 	push	0x0
 	push	word 0x4b0
 	push	word 0x2244
 	call	0x14DB:AllocRecData
 	add	sp, 0x8
-	mov	[0xc044], ax
-	mov	[0xc046], dx
+	mov	[g_C044], ax
+	mov	[g_C046], dx
 	push	0x0
 	push	0x0
 	push	word 0x10e
 	push	word 0x224a
 	call	0x14DB:AllocRecData
 	add	sp, 0x8
-	mov	[0xc040], ax
-	mov	[0xc042], dx
+	mov	[g_C040], ax
+	mov	[g_C042], dx
 	push	0x0
-	call	far [0x21ce]
+	call	far [g_21CE]
 	add	sp, 0x2
 	push	0x42
 	push	0x41
@@ -647,8 +647,8 @@ Stats_22B3_062E:
 	push	word 0x16ce
 	call	0x0FA0:DrawMenuBar
 	add	sp, 0xc
-	mov	ax, [0xcee8]
-	mov	[0x21ba], ax
+	mov	ax, [g_CEE8]
+	mov	[g_21BA], ax
 	push	word 0x3701
 	push	word 0xbd0
 	push	ds
@@ -665,15 +665,15 @@ Stats_22B3_062E:
 	push	ax
 	call	0x14B8:LoadPackedHeader
 	add	sp, 0x4
-	mov	[0xcfd0], ax
-	mov	[0xcfd2], dx
+	mov	[g_CFD0], ax
+	mov	[g_CFD2], dx
 	push	word 0x2257
 	push	dx
 	push	ax
 	call	0x03A3:FindFarMsg
 	add	sp, 0x6
-	mov	[0xc2b2], ax
-	mov	[0xc2b4], dx
+	mov	[g_C2B2], ax
+	mov	[g_C2B4], dx
 	push	0x10
 	add	ax, strict word 0x10
 	push	dx
@@ -681,8 +681,8 @@ Stats_22B3_062E:
 	push	0x0
 	call	0x1B35:OvlThunk23
 	add	sp, 0x8
-	push	word [0xcfd2]
-	push	word [0xcfd0]
+	push	word [g_CFD2]
+	push	word [g_CFD0]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	push	0x42
@@ -695,11 +695,11 @@ Stats_22B3_062E:
 	add	sp, 0xc
 	call	0x2248:Stats_2248_066C
 	call	0x0FEF:UseOffscreenCanvas
-	cmp	word [0x21c0], 0x1
+	cmp	word [g_21C0], 0x1
 	jnz	short .2
 	jmp	near .13
 .2:
-	mov	ax, [0x21c0]
+	mov	ax, [g_21C0]
 	dec	ax
 	dec	ax
 	jz	short .5
@@ -717,10 +717,10 @@ Stats_22B3_062E:
 	db	0x90
 .5:
 	push	0x0
-	mov	ax, [0x21ce]
-	mov	dx, [0x21d0]
-	mov	[0x21bc], ax
-	mov	[0x21be], dx
+	mov	ax, [g_21CE]
+	mov	dx, [g_21D0]
+	mov	[g_21BC], ax
+	mov	[g_21BE], dx
 	mov	[bp - 0x34e], dx
 	mov	[bp - 0x350], ax
 	call	far [bp - 0x350]
@@ -741,7 +741,7 @@ Stats_22B3_062E:
 	push	word 0x16ce
 	call	0x1EAE:Stats_1EAE_07B6
 	add	sp, 0xc
-	cmp	word [0x200e], 0x0
+	cmp	word [g_200E], 0x0
 	jnz	short .6
 	jmp	near .12
 .6:
@@ -749,12 +749,12 @@ Stats_22B3_062E:
 	call	0x0FEF:UseOffscreenCanvas
 	jmp	near .12
 .7:
-	mov	word [0xc050], 0x0
-	push	word [0x21b8]
+	mov	word [g_C050], 0x0
+	push	word [g_21B8]
 	mov	ax, 0x6a
 	mov	dx, 0x2446
-	mov	[0x21bc], ax
-	mov	[0x21be], dx
+	mov	[g_21BC], ax
+	mov	[g_21BE], dx
 	mov	[bp - 0x34e], dx
 	mov	[bp - 0x350], ax
 	call	far [bp - 0x350]
@@ -780,21 +780,21 @@ Stats_22B3_062E:
 	jmp	short .11
 	db	0x90
 .8:
-	mov	es, [0x8c7e]
+	mov	es, [g_8C7E]
 	mov	word [es:0xb050], 0x0
 	push	word 0xcf1a
 	mov	ax, 0x0
 	mov	dx, 0x20f4
 	jmp	short .10
 .9:
-	mov	es, [0x8c7e]
+	mov	es, [g_8C7E]
 	mov	word [es:0xb050], 0x0
 	push	word 0xcf1a
 	mov	ax, 0x2
 	mov	dx, 0x23d5
 .10:
-	mov	[0x21bc], ax
-	mov	[0x21be], dx
+	mov	[g_21BC], ax
+	mov	[g_21BE], dx
 	mov	[bp - 0x34e], dx
 	mov	[bp - 0x350], ax
 	call	far [bp - 0x350]
@@ -820,36 +820,36 @@ Stats_22B3_062E:
 .11:
 	add	sp, 0xc
 .12:
-	cmp	word [0x21c0], 0x1
+	cmp	word [g_21C0], 0x1
 	jz	short .13
 	jmp	near .2
 .13:
 	call	0x2248:Stats_2248_066C
-	push	word [0xc04e]
-	push	word [0xc04c]
+	push	word [g_C04E]
+	push	word [g_C04C]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	push	word [0xc042]
-	push	word [0xc040]
+	push	word [g_C042]
+	push	word [g_C040]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	push	word [0xc046]
-	push	word [0xc044]
+	push	word [g_C046]
+	push	word [g_C044]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	push	word [0xc04a]
-	push	word [0xc048]
+	push	word [g_C04A]
+	push	word [g_C048]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0xc04a], ax
-	mov	[0xc048], ax
-	mov	[0xc04e], ax
-	mov	[0xc04c], ax
-	mov	[0xc042], ax
-	mov	[0xc040], ax
-	mov	[0xc046], ax
-	mov	[0xc044], ax
+	mov	[g_C04A], ax
+	mov	[g_C048], ax
+	mov	[g_C04E], ax
+	mov	[g_C04C], ax
+	mov	[g_C042], ax
+	mov	[g_C040], ax
+	mov	[g_C046], ax
+	mov	[g_C044], ax
 	lea	ax, [bp - 0x34c]
 	push	ss
 	push	ax
@@ -878,13 +878,13 @@ Stats_22B3_062E:
 	call	0x0000:VgaCopyBytes
 	add	sp, 0x6
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0x21be], ax
-	mov	[0x21bc], ax
+	mov	[g_21BE], ax
+	mov	[g_21BC], ax
 	db	0x2B, 0xF6		; sub si, si
-	mov	[0xc052], si
+	mov	[g_C052], si
 .14:
 	mov	ax, [bp + si - 0x4c]
-	mov	[si - 0x3dfc], ax
+	mov	[si + g_C204], ax
 	inc	si
 	inc	si
 	cmp	si, 0x3e

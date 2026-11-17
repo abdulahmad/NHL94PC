@@ -15,7 +15,7 @@ Lp_25B2_000A:
 	mov	byte [bp - 0x44], 0x21
 	db	0x8B, 0xDF		; mov bx, di
 	shl	bx, 1
-	mov	bx, [bx + 0x5604]
+	mov	bx, [bx + g_5604]
 	mov	al, [bx]
 	mov	[bp - 0x43], al
 	mov	al, [bx + 0x1]
@@ -49,7 +49,7 @@ Lp_25B2_000A:
 	push	word 0xaf4c
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
-	mov	es, [0x8bd4]
+	mov	es, [g_8BD4]
 	mov	byte [es:0xaf8f], 0x79
 	push	word 0x3a0b
 	push	word 0xaf4c
@@ -90,7 +90,7 @@ Lp_25B2_000A:
 	cmp	si, 0x16a
 	jl	short .2
 	mov	bx, [bp + 0x6]
-	cmp	byte [bx + 0x1740], 0x0
+	cmp	byte [bx + g_1740], 0x0
 	jz	short .3
 	mov	word [bp - 0x2], 0x4
 	mov	word [bp - 0x4], 0x29
@@ -125,7 +125,7 @@ Lp_25B2_000A:
 	add	sp, 0x4
 	les	bx, [FontPtr]
 	mov	word [es:bx], 0x7d
-	mov	es, [0x8bd6]
+	mov	es, [g_8BD6]
 	mov	bx, [bp + 0x6]
 	shl	bx, byte 0x2
 	push	word [es:bx + 0xe25]
@@ -215,7 +215,7 @@ Lp_25B2_000A:
 	jmp	near .19
 .9:
 	mov	bx, [bp + 0x6]
-	mov	al, [bx + 0x1740]
+	mov	al, [bx + g_1740]
 	db	0x2A, 0xE4		; sub ah, ah
 	mov	cl, [si - 0x1]
 	db	0x2A, 0xED		; sub ch, ch
@@ -269,7 +269,7 @@ Lp_25B2_000A:
 	push	word 0xaf4c
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
-	mov	es, [0x8bd4]
+	mov	es, [g_8BD4]
 	mov	byte [es:0xaf8f], 0x79
 	push	word 0x3a0b
 	push	word 0xaf4c
@@ -339,10 +339,10 @@ Lp_25B2_000A:
 .18:
 	mov	al, [si - 0x2]
 	db	0x2A, 0xE4		; sub ah, ah
-	cmp	ax, [0xc2a2]
+	cmp	ax, [g_C2A2]
 	jnz	short .19
 	mov	al, [si - 0x1]
-	cmp	ax, [0xc2a4]
+	cmp	ax, [g_C2A4]
 	jnz	short .19
 	mov	ax, [bp - 0xa]
 	mov	[bp - 0xc], ax
@@ -356,11 +356,11 @@ Lp_25B2_000A:
 .20:
 	db	0x2B, 0xF6		; sub si, si
 	mov	bx, [bp + 0x6]
-	cmp	byte [bx + 0x1734], 0x0
+	cmp	byte [bx + g_1734], 0x0
 	jz	short .22
 	db	0x8B, 0xFB		; mov di, bx
 .21:
-	mov	al, [di + 0x1740]
+	mov	al, [di + g_1740]
 	db	0x2A, 0xE4		; sub ah, ah
 	db	0x03, 0xC6		; add ax, si
 	mov	cx, 0x7
@@ -391,7 +391,7 @@ Lp_25B2_000A:
 	push	ax
 	call	0x0FEF:DrawText
 	add	sp, 0x6
-	mov	al, [di + 0x1734]
+	mov	al, [di + g_1734]
 	db	0x2A, 0xE4		; sub ah, ah
 	lea	cx, [si + 0x1]
 	db	0x8B, 0xF1		; mov si, cx
@@ -411,7 +411,7 @@ Lp_25B2_000A:
 	mov	bx, [bp + 0xe]
 	mov	al, [bx + di + 0x1]
 	db	0x2A, 0xE4		; sub ah, ah
-	mov	cl, [si + 0x1740]
+	mov	cl, [si + g_1740]
 	db	0x2A, 0xED		; sub ch, ch
 	db	0x03, 0xC1		; add ax, cx
 	dec	ax
@@ -484,22 +484,22 @@ Lp_25B2_04C4:
 	mov	word [es:0xf96], 0x1b35
 	mov	word [es:0xfaa], 0x2017
 	mov	word [es:0xfac], 0x1b35
-	inc	word [0xc270]
-	cmp	word [0xc270], 0xc
+	inc	word [g_C270]
+	cmp	word [g_C270], 0xc
 	jnz	short .1
-	mov	word [0xc270], 0x0
+	mov	word [g_C270], 0x0
 .1:
-	cmp	word [0xc270], 0x6
+	cmp	word [g_C270], 0x6
 	jnz	short .2
-	mov	word [0xc270], 0x5
+	mov	word [g_C270], 0x5
 .2:
-	cmp	word [0xc270], 0x5
+	cmp	word [g_C270], 0x5
 	jnz	short .3
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[es:0xf96], ax
 	mov	[es:0xf94], ax
 .3:
-	mov	word [0xc272], 0xffff
+	mov	word [g_C272], 0xffff
 	retf
 	db	0x90
 
@@ -510,29 +510,29 @@ Lp_25B2_051C:
 	mov	word [es:0xf96], 0x1b35
 	mov	word [es:0xfaa], 0x2017
 	mov	word [es:0xfac], 0x1b35
-	dec	word [0xc270]
-	cmp	word [0xc270], -0x1
+	dec	word [g_C270]
+	cmp	word [g_C270], -0x1
 	jnz	short .1
-	mov	word [0xc270], 0xb
+	mov	word [g_C270], 0xb
 .1:
-	cmp	word [0xc270], 0x8
+	cmp	word [g_C270], 0x8
 	jnz	short .2
-	mov	word [0xc270], 0x9
+	mov	word [g_C270], 0x9
 .2:
-	cmp	word [0xc270], 0x9
+	cmp	word [g_C270], 0x9
 	jnz	short .3
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[es:0xfac], ax
 	mov	[es:0xfaa], ax
 .3:
-	mov	word [0xc272], 0xffff
+	mov	word [g_C272], 0xffff
 	retf
 	db	0x90
 
 Lp_25B2_0574:
 	mov	ax, 0xffff
-	mov	[0xc26e], ax
-	mov	[0xc272], ax
+	mov	[g_C26E], ax
+	mov	[g_C272], ax
 	retf
 
 Lp_25B2_057E:
@@ -562,12 +562,12 @@ Lp_25B2_057E:
 	push	ax
 	call	0x03A3:FindFarMsg
 	add	sp, 0x6
-	mov	[0xc2b2], ax
-	mov	[0xc2b4], dx
+	mov	[g_C2B2], ax
+	mov	[g_C2B4], dx
 	db	0x2B, 0xF6		; sub si, si
-	mov	es, [0xc2b4]
+	mov	es, [g_C2B4]
 .1:
-	mov	bx, [0xc2b2]
+	mov	bx, [g_C2B2]
 	add	bx, 0x10
 	mov	al, [es:bx + si]
 	mov	[bp + si - 0x330], al
@@ -603,7 +603,7 @@ Lp_25B2_057E:
 .4:
 	db	0x8B, 0xDF		; mov bx, di
 	db	0x03, 0xDE		; add bx, si
-	mov	al, [bx + 0x18b4]
+	mov	al, [bx + g_18B4]
 	lea	dx, [bp - 0x51]
 	db	0x03, 0xDA		; add bx, dx
 	mov	[bx], al
@@ -658,7 +658,7 @@ Lp_25B2_0668:
 	mov	ax, [bp - 0x6]
 .2:
 	mov	[bp - 0x2], ax
-	mov	es, [0x8bd8]
+	mov	es, [g_8BD8]
 	imul	bx, ax, 0x1e
 	cmp	byte [es:bx - 0x5387], 0x1
 	jz	short .3
@@ -689,16 +689,16 @@ Lp_25B2_06D6:
 	push	ax
 	call	0x0FEF:ClearClipRect
 	add	sp, 0x2
-	mov	word [0x21c2], 0x26a7
-	mov	word [0x21c4], 0x1b35
-	mov	word [0x21c6], 0x269d
-	mov	word [0x21c8], 0x1b35
-	mov	word [0x21ca], 0x2693
-	mov	word [0x21cc], 0x1b35
-	mov	word [0x21ce], 0x2689
-	mov	word [0x21d0], 0x1b35
-	mov	word [0x21d2], 0x267f
-	mov	word [0x21d4], 0x1b35
+	mov	word [g_21C2], 0x26a7
+	mov	word [g_21C4], 0x1b35
+	mov	word [g_21C6], 0x269d
+	mov	word [g_21C8], 0x1b35
+	mov	word [g_21CA], 0x2693
+	mov	word [g_21CC], 0x1b35
+	mov	word [g_21CE], 0x2689
+	mov	word [g_21D0], 0x1b35
+	mov	word [g_21D2], 0x267f
+	mov	word [g_21D4], 0x1b35
 	push	0x0
 	mov	ax, 0x7d
 	mov	[bp - 0x6], ax
@@ -718,12 +718,12 @@ Lp_25B2_06D6:
 	add	sp, 0x4
 	mov	[bp - 0xa], ax
 	mov	[bp - 0x8], dx
-	mov	word [0xc272], 0xffff
+	mov	word [g_C272], 0xffff
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[bp - 0xe4], ax
 	mov	[bp - 0x26], ax
-	mov	[0xc26e], ax
-	mov	[0xc2a0], ax
+	mov	[g_C26E], ax
+	mov	[g_C2A0], ax
 	push	word 0x3701
 	push	word 0xbd0
 	push	ds
@@ -812,7 +812,7 @@ Lp_25B2_06D6:
 .2:
 	mov	bx, [bp - 0xde]
 	shl	bx, 1
-	push	word [bx + 0x5604]
+	push	word [bx + g_5604]
 	push	word [bp - 0x22]
 	push	word [bp - 0x24]
 	call	0x03A3:FindFarMsg
@@ -826,7 +826,7 @@ Lp_25B2_06D6:
 	jl	short .2
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
-	mov	es, [0x8bda]
+	mov	es, [g_8BDA]
 	push	word [es:0xb86]
 	push	word [es:0xb84]
 	push	word [bp + 0x8]
@@ -862,7 +862,7 @@ Lp_25B2_06D6:
 .4:
 	mov	word [bp - 0x484], 0x5
 	mov	ax, 0xffff
-	mov	[0xc270], ax
+	mov	[g_C270], ax
 	mov	[bp - 0x1e], ax
 	mov	[bp - 0xec], ax
 	mov	word [bp - 0xde], 0x0
@@ -879,11 +879,11 @@ Lp_25B2_06D6:
 	mov	[bp - 0x484], ax
 	mov	al, [bp + si - 0x478]
 	db	0x2A, 0xE4		; sub ah, ah
-	mov	[0xc2a2], ax
+	mov	[g_C2A2], ax
 .6:
 	mov	al, [bp + si - 0x477]
 	db	0x2A, 0xE4		; sub ah, ah
-	mov	[0xc2a4], ax
+	mov	[g_C2A4], ax
 .7:
 	mov	si, [bp - 0x26]
 	db	0x8B, 0xC6		; mov ax, si
@@ -911,12 +911,12 @@ Lp_25B2_06D6:
 	jnz	short .9
 	cmp	byte [bp + si - 0x473], 0xff
 	jnz	short .9
-	cmp	word [0xc270], 0x0
+	cmp	word [g_C270], 0x0
 	jnl	short .9
 	mov	al, [bp + si - 0x478]
 	db	0x2A, 0xE4		; sub ah, ah
 	dec	ax
-	mov	[0xc270], ax
+	mov	[g_C270], ax
 	mov	ax, [bp - 0xde]
 	mov	[bp - 0x1e], ax
 	mov	ax, [bp - 0x26]
@@ -968,14 +968,14 @@ Lp_25B2_06D6:
 	db	0x8B, 0xC8		; mov cx, ax
 	dec	ax
 	mov	[bp - 0x484], ax
-	mov	[0xc2a2], cx
+	mov	[g_C2A2], cx
 	jmp	near .6
 	db	0x90
 .15:
-	cmp	word [0xc270], 0x0
+	cmp	word [g_C270], 0x0
 	jnl	short .16
 	mov	ax, [bp - 0x484]
-	mov	[0xc270], ax
+	mov	[g_C270], ax
 .16:
 	lea	ax, [bp - 0x28]
 	push	ax
@@ -999,31 +999,31 @@ Lp_25B2_06D6:
 	shl	si, 1
 	mov	al, [bp + si - 0x478]
 	db	0x2A, 0xE4		; sub ah, ah
-	mov	[0xc2a2], ax
+	mov	[g_C2A2], ax
 	mov	al, [bp + si - 0x477]
-	mov	[0xc2a4], ax
+	mov	[g_C2A4], ax
 	mov	si, [bp - 0xec]
 	shl	si, 1
 	mov	ax, [bp + si - 0x1d2]
-	mov	[0xc272], ax
+	mov	[g_C272], ax
 .17:
 	cmp	word [bp - 0xe4], 0x0
 	jz	short .18
 	jmp	near .89
 .18:
-	cmp	word [0xc270], 0x5
+	cmp	word [g_C270], 0x5
 	jnz	short .19
-	mov	es, [0x8bdc]
+	mov	es, [g_8BDC]
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[es:0xf96], ax
 	mov	[es:0xf94], ax
 	jmp	short .20
 .19:
-	mov	es, [0x8bdc]
+	mov	es, [g_8BDC]
 	mov	word [es:0xf94], 0x200d
 	mov	word [es:0xf96], 0x1b35
 .20:
-	cmp	word [0xc270], 0x9
+	cmp	word [g_C270], 0x9
 	jnz	short .21
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[es:0xfac], ax
@@ -1034,7 +1034,7 @@ Lp_25B2_06D6:
 	mov	word [es:0xfaa], 0x2017
 	mov	word [es:0xfac], 0x1b35
 .22:
-	mov	ax, [0xc270]
+	mov	ax, [g_C270]
 	mov	[bp - 0x5e], ax
 	call	0x0FEF:UseCurrentPage
 	mov	ax, 0xfdf
@@ -1071,7 +1071,7 @@ Lp_25B2_06D6:
 	push	word [bp - 0x2c]
 	lea	ax, [bp - 0xca]
 	push	ax
-	push	word [0xc270]
+	push	word [g_C270]
 	push	cs
 	call	Lp_25B2_000A
 	add	sp, 0x12
@@ -1296,7 +1296,7 @@ Lp_25B2_06D6:
 	mov	ax, [bp - 0xd8]
 	mov	[bp - 0x20], ax
 	call	0x0F99:FlushInputEvents
-	mov	ax, [0xc270]
+	mov	ax, [g_C270]
 	cmp	[bp - 0x5e], ax
 	jz	short .36
 	call	0x0FEF:UseOtherPage
@@ -1318,13 +1318,13 @@ Lp_25B2_06D6:
 	push	word [bp - 0x2c]
 	lea	ax, [bp - 0xca]
 	push	ax
-	push	word [0xc270]
+	push	word [g_C270]
 	push	cs
 	call	Lp_25B2_000A
 	add	sp, 0x12
 	call	0x0FEF:CopyPlane
 .36:
-	cmp	word [0xc2a0], 0x0
+	cmp	word [g_C2A0], 0x0
 	jz	short .37
 	call	0x0FEF:UseCurrentPage
 	push	word [bp - 0x60]
@@ -1345,15 +1345,15 @@ Lp_25B2_06D6:
 	push	word [bp - 0x2c]
 	lea	ax, [bp - 0xca]
 	push	ax
-	push	word [0xc270]
+	push	word [g_C270]
 	push	cs
 	call	Lp_25B2_000A
 	add	sp, 0x12
 	push	cs
 	call	Lp_25B2_057E
-	mov	word [0xc2a0], 0x0
+	mov	word [g_C2A0], 0x0
 .37:
-	mov	ax, [0xc270]
+	mov	ax, [g_C270]
 	mov	[bp - 0x5e], ax
 	jmp	near .85
 .38:
@@ -1833,9 +1833,9 @@ Lp_25B2_06D6:
 	db	0x03, 0xC1		; add ax, cx
 	shl	ax, 1
 	db	0x03, 0xC1		; add ax, cx
-	mov	bx, [0xc270]
+	mov	bx, [g_C270]
 	db	0x8B, 0xC8		; mov cx, ax
-	mov	al, [bx + 0x1740]
+	mov	al, [bx + g_1740]
 	mov	dl, 0x7
 	db	0x2A, 0xE4		; sub ah, ah
 	div	dl
@@ -1854,7 +1854,7 @@ Lp_25B2_06D6:
 	jnl	short .71
 	jmp	near .84
 .71:
-	mov	al, [bx + 0x1734]
+	mov	al, [bx + g_1734]
 	db	0x2A, 0xE4		; sub ah, ah
 	db	0x3B, 0xC8		; cmp cx, ax
 	jl	short .72
@@ -1870,7 +1870,7 @@ Lp_25B2_06D6:
 	shl	si, 1
 	mov	al, [bp + si - 0x478]
 	db	0x2A, 0xE4		; sub ah, ah
-	sub	ax, [0xc270]
+	sub	ax, [g_C270]
 	dec	ax
 	jz	short .74
 	jmp	near .82
@@ -1890,12 +1890,12 @@ Lp_25B2_06D6:
 	jz	short .77
 	jmp	near .82
 .77:
-	mov	ax, [0xc272]
+	mov	ax, [g_C272]
 	mov	si, [bp - 0xde]
 	shl	si, 1
 	cmp	[bp + si - 0x1d2], ax
 	jnz	short .78
-	mov	word [0xc26e], 0xffff
+	mov	word [g_C26E], 0xffff
 .78:
 	cmp	word [bp - 0xdc], 0x3f0
 	jl	short .79
@@ -1921,10 +1921,10 @@ Lp_25B2_06D6:
 	shl	si, 1
 	mov	al, [bp + si - 0x478]
 	db	0x2A, 0xE4		; sub ah, ah
-	mov	[0xc2a2], ax
+	mov	[g_C2A2], ax
 	mov	al, [bp + si - 0x477]
-	mov	[0xc2a4], ax
-	cmp	word [0xc26e], 0x0
+	mov	[g_C2A4], ax
+	cmp	word [g_C26E], 0x0
 	jnz	short .81
 	push	word [bp - 0xec]
 	lea	ax, [bp - 0x478]
@@ -1953,7 +1953,7 @@ Lp_25B2_06D6:
 	push	word [bp - 0x2c]
 	lea	ax, [bp - 0xca]
 	push	ax
-	push	word [0xc270]
+	push	word [g_C270]
 	push	cs
 	call	Lp_25B2_000A
 	add	sp, 0x12
@@ -1967,7 +1967,7 @@ Lp_25B2_06D6:
 	jmp	near .73
 .84:
 	mov	ax, [bp - 0xe2]
-	mov	[0xc272], ax
+	mov	[g_C272], ax
 .85:
 	push	word [bp - 0xd8]
 	push	word [bp - 0x6a]
@@ -1987,7 +1987,7 @@ Lp_25B2_06D6:
 	push	word [bp - 0x1a]
 	call	0x0FEF:GetBlockAt
 	add	sp, 0x8
-	cmp	word [0xc26e], 0x0
+	cmp	word [g_C26E], 0x0
 	jnz	short .87
 .86:
 	push	word [bp - 0x20]
@@ -2002,7 +2002,7 @@ Lp_25B2_06D6:
 	mov	ax, [bp - 0x20]
 	mov	[bp - 0xd8], ax
 .88:
-	cmp	word [0xc26e], 0x0
+	cmp	word [g_C26E], 0x0
 	jnz	short .89
 	jmp	near .23
 .89:
@@ -2022,17 +2022,17 @@ Lp_25B2_06D6:
 	push	word [bp - 0xa]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	mov	word [0x21c2], 0x250d
-	mov	word [0x21c4], 0x1b35
-	mov	word [0x21c6], 0x2503
-	mov	word [0x21c8], 0x1b35
-	mov	word [0x21ca], 0x24f9
-	mov	word [0x21cc], 0x1b35
-	mov	word [0x21ce], 0x24ef
-	mov	word [0x21d0], 0x1b35
-	mov	word [0x21d2], 0x232d
-	mov	word [0x21d4], 0x1b35
-	mov	ax, [0xc272]
+	mov	word [g_21C2], 0x250d
+	mov	word [g_21C4], 0x1b35
+	mov	word [g_21C6], 0x2503
+	mov	word [g_21C8], 0x1b35
+	mov	word [g_21CA], 0x24f9
+	mov	word [g_21CC], 0x1b35
+	mov	word [g_21CE], 0x24ef
+	mov	word [g_21D0], 0x1b35
+	mov	word [g_21D2], 0x232d
+	mov	word [g_21D4], 0x1b35
+	mov	ax, [g_C272]
 	pop	si
 	pop	di
 	leave
@@ -2051,7 +2051,7 @@ Lp_25B2_1620:
 	db	0x8B, 0xF8		; mov di, ax
 	mov	[bp - 0xc], dx
 	mov	bx, 0x5dd
-	mov	es, [0x8bde]
+	mov	es, [g_8BDE]
 	mov	[bp - 0xae], bx
 	mov	[bp - 0xac], es
 	db	0x2B, 0xC0		; sub ax, ax
@@ -2098,7 +2098,7 @@ Lp_25B2_1620:
 	call	0x2305:Lp_2305_0214
 	add	sp, 0xc
 	lea	ax, [bp - 0xaa]
-	mov	es, [0x8be0]
+	mov	es, [g_8BE0]
 	mov	[es:0x19e], ax
 	mov	[es:0x1a0], ss
 	push	-0x1
@@ -2226,7 +2226,7 @@ Lp_25B2_1620:
 	lea	ax, [bp - 0x2c]
 	db	0x03, 0xD8		; add bx, ax
 	mov	byte [bx], 0x0
-	mov	es, [0x8bde]
+	mov	es, [g_8BDE]
 	mov	[es:0x5d9], ax
 	mov	[es:0x5db], ss
 	mov	ax, [bp - 0xc]
@@ -2238,7 +2238,7 @@ Lp_25B2_1620:
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	lea	ax, [bp - 0x1e]
-	mov	es, [0x8bde]
+	mov	es, [g_8BDE]
 	mov	[es:0x5e1], ax
 	mov	[es:0x5e3], ss
 	lea	ax, [bp - 0x6]
@@ -2358,7 +2358,7 @@ Lp_25B2_18F4:
 	mov	[bp - 0x1a], ax
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
-	mov	es, [0x8bda]
+	mov	es, [g_8BDA]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
 	push	word [bp + 0x8]
@@ -2379,7 +2379,7 @@ Lp_25B2_18F4:
 	jnz	short .3
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
-	mov	es, [0x8bda]
+	mov	es, [g_8BDA]
 	push	word [es:0xb6e]
 	push	word [es:0xb6c]
 	push	word [bp + 0x8]
@@ -2401,7 +2401,7 @@ Lp_25B2_18F4:
 	jnz	short .4
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
-	mov	es, [0x8bda]
+	mov	es, [g_8BDA]
 	push	word [es:0xb82]
 	push	word [es:0xb80]
 	push	word [bp + 0x8]
@@ -2457,10 +2457,10 @@ Lp_25B2_18F4:
 .7:
 	mov	bx, [bp - 0x2]
 	inc	byte [bx]
-	mov	ax, [0xb36e]
-	cmp	[0xb444], ax
+	mov	ax, [g_B36E]
+	cmp	[g_B444], ax
 	jnl	short .10
-	mov	ax, [0xb444]
+	mov	ax, [g_B444]
 	inc	ax
 	mov	[bp - 0x3c2], ax
 	mov	word [bp - 0x8], 0x0
@@ -2474,7 +2474,7 @@ Lp_25B2_18F4:
 	inc	byte [bx + 0x2]
 	jmp	short .12
 .10:
-	cmp	[0xb444], ax
+	cmp	[g_B444], ax
 	jng	short .11
 	inc	ax
 	mov	[bp - 0x3c2], ax
@@ -2488,27 +2488,27 @@ Lp_25B2_18F4:
 	mov	bx, [bp - 0x2]
 	inc	byte [bx + 0x3]
 	mov	word [bp - 0x8], 0xffff
-	mov	ax, [0xb36e]
+	mov	ax, [g_B36E]
 	mov	[bp - 0x3c2], ax
 .12:
 	imul	bx, [bp + 0x10], word 0xd6
-	mov	ax, [bx - 0x4c92]
+	mov	ax, [bx + g_B36E]
 	mov	si, [bp - 0x2]
 	add	[si + 0x4], ax
 	mov	ax, [bp + 0x10]
 	xor	al, 0x1
 	imul	di, ax, word 0xd6
-	mov	ax, [di - 0x4c92]
+	mov	ax, [di + g_B36E]
 	add	[si + 0x6], ax
-	mov	ax, [bx - 0x4c9a]
+	mov	ax, [bx + g_B366]
 	add	[si + 0xa], ax
-	mov	ax, [bx - 0x4c9c]
+	mov	ax, [bx + g_B364]
 	add	[si + 0x8], ax
-	mov	ax, [di - 0x4c9a]
+	mov	ax, [di + g_B366]
 	add	[si + 0xe], ax
-	mov	ax, [di - 0x4c9c]
+	mov	ax, [di + g_B364]
 	add	[si + 0xc], ax
-	mov	ax, [di - 0x4c96]
+	mov	ax, [di + g_B36A]
 	add	[si + 0x10], ax
 	mov	word [bp - 0x3b0], 0x0
 	jmp	short .19
@@ -2563,9 +2563,9 @@ Lp_25B2_18F4:
 	mov	ax, [bp + 0x10]
 	mov	bx, [bp - 0x3b0]
 	shl	bx, byte 0x2
-	cmp	[bx - 0x3d4a], ax
+	cmp	[bx + g_C2B6], ax
 	jnz	short .18
-	mov	si, [bx - 0x3d48]
+	mov	si, [bx + g_C2B8]
 	shl	si, byte 0x2
 	push	word [bp + si - 0x310]
 	push	word [bp + si - 0x312]
@@ -2598,14 +2598,14 @@ Lp_25B2_18F4:
 	jl	short .23
 	jmp	near .38
 .23:
-	mov	si, [0xb386]
+	mov	si, [g_B386]
 	and	si, 0x1
-	mov	bx, [0xb420]
+	mov	bx, [g_B420]
 	mov	al, [bx + si + 0x24]
 	mov	[bp - 0x6], al
-	mov	si, [0xb45c]
+	mov	si, [g_B45C]
 	and	si, 0x1
-	mov	bx, [0xb4f6]
+	mov	bx, [g_B4F6]
 	mov	al, [bx + si + 0x24]
 	mov	[bp - 0x5], al
 .24:
@@ -2677,7 +2677,7 @@ Lp_25B2_18F4:
 	jz	short .33
 	mov	bx, [bp - 0x3c0]
 	inc	word [bx]
-	mov	es, [0x8be2]
+	mov	es, [g_8BE2]
 	imul	ax, [bp + 0x10], 0x19
 	db	0x03, 0xF0		; add si, ax
 	shl	si, byte 0x4
@@ -2832,7 +2832,7 @@ Lp_25B2_18F4:
 	inc	word [bx + 0x4]
 	jmp	short .54
 .51:
-	cmp	[0xb444], ax
+	cmp	[g_B444], ax
 	jng	short .53
 	db	0x0B, 0xF6		; or si, si
 	jz	short .50
@@ -2844,12 +2844,12 @@ Lp_25B2_18F4:
 	mov	bx, [bp - 0x1a]
 	inc	word [bx + 0x6]
 .54:
-	cmp	word [0xb444], 0x0
+	cmp	word [g_B444], 0x0
 	jnz	short .55
 	cmp	word [bp + 0x10], 0x0
 	jz	short .56
 .55:
-	cmp	word [0xb36e], 0x0
+	cmp	word [g_B36E], 0x0
 	jnz	short .57
 	cmp	word [bp + 0x10], 0x1
 	jnz	short .57
@@ -2952,7 +2952,7 @@ Lp_25B2_18F4:
 	mov	si, [bp - 0x3b0]
 	cmp	byte [bp + si - 0x395], 0x0
 	jz	short .62
-	mov	es, [0x8be4]
+	mov	es, [g_8BE4]
 	mov	ax, [bp + 0x10]
 	db	0x8B, 0xC8		; mov cx, ax
 	shl	ax, 1
@@ -2984,8 +2984,8 @@ Lp_25B2_18F4:
 	jz	short .69
 	jmp	near .57
 .69:
-	mov	ax, [0xb36e]
-	cmp	[0xb444], ax
+	mov	ax, [g_B36E]
+	cmp	[g_B444], ax
 	jl	short .70
 	jmp	near .51
 .70:
@@ -3043,7 +3043,7 @@ Lp_25B2_208A:
 	mov	[bp - 0x50], ax
 	mov	[bp - 0x5a], ax
 	mov	[bp - 0x2], ax
-	mov	[0xc2b0], ax
+	mov	[g_C2B0], ax
 	mov	bx, [bp + 0x6]
 	cmp	word [bx], 0x0
 	jl	short .1
@@ -3102,7 +3102,7 @@ Lp_25B2_208A:
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x1a], si
 	mov	byte [bp + si - 0x6a], 0x0
-	mov	es, [0x8be6]
+	mov	es, [g_8BE6]
 	test	byte [es:0xac5e], 0xc
 	jnz	short .5
 	jmp	near .10
@@ -3122,11 +3122,11 @@ Lp_25B2_208A:
 	push	0xb
 	call	0x0D90:SetDialogColors
 	add	sp, 0xa
-	mov	es, [0x8be6]
+	mov	es, [g_8BE6]
 	test	byte [es:0xac5e], 0x8
 	jz	short .6
 	lea	ax, [bp - 0x6a]
-	mov	es, [0x8be8]
+	mov	es, [g_8BE8]
 	mov	[es:0x9b8], ax
 	mov	[es:0x9ba], ss
 	push	-0x1
@@ -3144,7 +3144,7 @@ Lp_25B2_208A:
 	db	0x90
 .6:
 	lea	ax, [bp - 0x6a]
-	mov	es, [0x8bea]
+	mov	es, [g_8BEA]
 	mov	[es:0x907], ax
 	mov	[es:0x909], ss
 	push	-0x1
@@ -3166,7 +3166,7 @@ Lp_25B2_208A:
 	mov	[bp - 0x6e], ax
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .9
-	mov	es, [0x8be6]
+	mov	es, [g_8BE6]
 	test	byte [es:0xac5e], 0x8
 	jz	short .8
 	call	0x2CB7:Lp_2CB7_0C28
@@ -3181,7 +3181,7 @@ Lp_25B2_208A:
 .10:
 	push	word 0x3701
 	push	word 0xbaf
-	mov	es, [0x8bda]
+	mov	es, [g_8BDA]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
 	push	word 0x3701
@@ -3226,11 +3226,11 @@ Lp_25B2_208A:
 	push	word 0xe53
 	call	0x2305:Lp_2305_0450
 	add	sp, 0x8
-	mov	[0xc2a6], ax
+	mov	[g_C2A6], ax
 .14:
 	cmp	word [bp - 0x5c], 0x0
 	jnz	short .15
-	cmp	word [0xc2a6], 0x0
+	cmp	word [g_C2A6], 0x0
 	jnl	short .15
 	push	word 0xc2a6
 	push	word 0x3701
@@ -3259,13 +3259,13 @@ Lp_25B2_208A:
 	jz	short .16
 	jmp	near .28
 .16:
-	cmp	word [0xc2a6], 0x0
+	cmp	word [g_C2A6], 0x0
 	jnl	short .17
 	jmp	near .28
 .17:
 	push	0x0
 	push	0x0
-	push	word [0xc2a6]
+	push	word [g_C2A6]
 	push	word 0x3a0b
 	push	word 0xac62
 	push	word 0x3701
@@ -3278,7 +3278,7 @@ Lp_25B2_208A:
 	jz	short .18
 	jmp	near .23
 .18:
-	push	word [0xc2a6]
+	push	word [g_C2A6]
 	push	word 0x1940
 	lea	ax, [bp - 0x46]
 	push	ax
@@ -3291,8 +3291,8 @@ Lp_25B2_208A:
 	push	word 0xbe4
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
-	mov	es, [0x8bd8]
-	imul	bx, [0xc2a6], 0x1e
+	mov	es, [g_8BD8]
+	imul	bx, [g_C2A6], 0x1e
 	test	byte [es:bx - 0x5388], 0x1
 	jz	short .19
 	push	word 0x3701
@@ -3307,7 +3307,7 @@ Lp_25B2_208A:
 	push	word 0xc27e
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
-	mov	es, [0x8bec]
+	mov	es, [g_8BEC]
 	cmp	word [es:0xac5c], 0x1
 	jz	short .21
 	cmp	word [bp - 0x48], 0x0
@@ -3323,7 +3323,7 @@ Lp_25B2_208A:
 .22:
 	push	word 0x3a0b
 	push	word 0xac62
-	push	word [0xc2a6]
+	push	word [g_C2A6]
 	call	0x28A8:Lp_28A8_000A
 	add	sp, 0x6
 	mov	[bp - 0x5c], ax
@@ -3334,7 +3334,7 @@ Lp_25B2_208A:
 .24:
 	push	word 0x3701
 	push	word 0xbaf
-	mov	es, [0x8bda]
+	mov	es, [g_8BDA]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
 	push	word 0x3701
@@ -3361,7 +3361,7 @@ Lp_25B2_208A:
 	push	0xb
 	call	0x0D90:SetDialogColors
 	add	sp, 0xa
-	push	word [0xc2a6]
+	push	word [g_C2A6]
 	push	word 0x1946
 	lea	ax, [bp - 0x46]
 	push	ax
@@ -3376,7 +3376,7 @@ Lp_25B2_208A:
 	add	sp, 0x8
 	push	word 0x3a0b
 	push	word 0xac62
-	push	word [0xc2a6]
+	push	word [g_C2A6]
 	call	0x28A8:Lp_28A8_000A
 	add	sp, 0x6
 .26:
@@ -3397,7 +3397,7 @@ Lp_25B2_208A:
 	jnz	short .29
 	db	0xE9, 0xEC, 0x0A		; jmp 0x2f66
 .29:
-	cmp	word [0xc2b0], -0x1
+	cmp	word [g_C2B0], -0x1
 	jnz	short .30
 	mov	bx, [bp + 0x6]
 	cmp	word [bx], 0x0
@@ -3406,7 +3406,7 @@ Lp_25B2_208A:
 	cmp	word [bp - 0x6c], 0x0
 	jz	short .32
 .31:
-	push	word [0xc2a6]
+	push	word [g_C2A6]
 	push	word 0x3701
 	push	word 0xbe4
 	push	ds
@@ -3414,15 +3414,15 @@ Lp_25B2_208A:
 	push	cs
 	call	Lp_25B2_06D6
 	add	sp, 0xa
-	mov	[0xc2b0], ax
+	mov	[g_C2B0], ax
 .32:
-	cmp	word [0xc2b0], 0x0
+	cmp	word [g_C2B0], 0x0
 	jnl	short .33
 	jmp	near .94
 .33:
 	push	word 0x3701
 	push	word 0xbe4
-	mov	es, [0x8bda]
+	mov	es, [g_8BDA]
 	push	word [es:0xb86]
 	push	word [es:0xb84]
 	push	ds
@@ -3456,7 +3456,7 @@ Lp_25B2_208A:
 .34:
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .35
-	push	word [0xc2b0]
+	push	word [g_C2B0]
 	push	ds
 	push	word 0xc29a
 	push	word [bp - 0x4a]
@@ -3466,25 +3466,25 @@ Lp_25B2_208A:
 .35:
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .37
-	mov	al, [0xc29c]
+	mov	al, [g_C29C]
 	db	0x2A, 0xE4		; sub ah, ah
-	cmp	ax, [0xc2a6]
+	cmp	ax, [g_C2A6]
 	jnz	short .36
-	mov	al, [0xc29d]
+	mov	al, [g_C29D]
 .36:
-	mov	[0xc2a8], ax
-	mov	word [0xc2aa], 0xffff
-	mov	es, [0x8bd8]
+	mov	[g_C2A8], ax
+	mov	word [g_C2AA], 0xffff
+	mov	es, [g_8BD8]
 	imul	bx, ax, 0x1e
 	cmp	byte [es:bx - 0x5387], 0x0
 	jnz	short .37
-	mov	word [0xc2aa], 0x0
+	mov	word [g_C2AA], 0x0
 .37:
 	lea	ax, [bp - 0x4a]
 	push	ax
 	call	0x0CD1:CloseHandlePtr
 	add	sp, 0x2
-	cmp	word [0xc2aa], 0x0
+	cmp	word [g_C2AA], 0x0
 	jnz	short .38
 	jmp	near .44
 .38:
@@ -3492,7 +3492,7 @@ Lp_25B2_208A:
 	jnz	short .41
 	push	0x0
 	push	-0x1
-	push	word [0xc2a8]
+	push	word [g_C2A8]
 	push	word 0x3a0b
 	push	word 0xac62
 	push	word 0x3701
@@ -3503,7 +3503,7 @@ Lp_25B2_208A:
 	mov	[bp - 0x5c], ax
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .41
-	push	word [0xc2a8]
+	push	word [g_C2A8]
 	push	word 0x1951
 	lea	ax, [bp - 0x46]
 	push	ax
@@ -3516,8 +3516,8 @@ Lp_25B2_208A:
 	push	word 0xbe8
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
-	mov	es, [0x8bd8]
-	imul	bx, [0xc2a8], 0x1e
+	mov	es, [g_8BD8]
+	imul	bx, [g_C2A8], 0x1e
 	test	byte [es:bx - 0x5388], 0x1
 	jz	short .39
 	cmp	word [bp - 0x48], 0x0
@@ -3539,7 +3539,7 @@ Lp_25B2_208A:
 	jnz	short .42
 	push	word 0x3701
 	push	word 0xbe8
-	mov	es, [0x8bda]
+	mov	es, [g_8BDA]
 	push	word [es:0xb86]
 	push	word [es:0xb84]
 	push	ds
@@ -3578,7 +3578,7 @@ Lp_25B2_208A:
 	add	sp, 0x2
 	cmp	word [bp - 0x5c], 0x0
 	jnz	short .44
-	push	word [0xc2a8]
+	push	word [g_C2A8]
 	push	word 0x1957
 	lea	ax, [bp - 0x46]
 	push	ax
@@ -3593,7 +3593,7 @@ Lp_25B2_208A:
 	add	sp, 0x8
 	push	word 0x3a0b
 	push	word 0xac62
-	push	word [0xc2a8]
+	push	word [g_C2A8]
 	call	0x28A8:Lp_28A8_000A
 	add	sp, 0x6
 	mov	[bp - 0x5c], ax
@@ -3633,9 +3633,9 @@ Lp_25B2_208A:
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 .46:
-	mov	al, [0xc29c]
+	mov	al, [g_C29C]
 	db	0x2A, 0xE4		; sub ah, ah
-	cmp	ax, [0xc2a6]
+	cmp	ax, [g_C2A6]
 	jnz	short .47
 	mov	word [bp - 0x1e], 0x0
 	mov	word [bp - 0x20], 0x1
@@ -3649,7 +3649,7 @@ Lp_25B2_208A:
 	push	cs
 	call	Lp_25B2_1876
 	add	sp, 0xe
-	mov	al, [0xc29d]
+	mov	al, [g_C29D]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	push	word 0x3a0b
@@ -3661,7 +3661,7 @@ Lp_25B2_208A:
 .47:
 	mov	word [bp - 0x1e], 0x1
 	mov	word [bp - 0x20], 0x0
-	mov	al, [0xc29c]
+	mov	al, [g_C29C]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	push	word 0x3a0b
@@ -3673,7 +3673,7 @@ Lp_25B2_208A:
 	push	cs
 	call	Lp_25B2_1876
 	add	sp, 0xe
-	mov	al, [0xc29d]
+	mov	al, [g_C29D]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	push	word 0x3a0b
@@ -3686,7 +3686,7 @@ Lp_25B2_208A:
 	push	cs
 	call	Lp_25B2_1876
 	add	sp, 0xe
-	cmp	byte [0xc020], 0x0
+	cmp	byte [g_C020], 0x0
 	jnz	short .49
 	push	ds
 	push	word 0xc000
@@ -3695,7 +3695,7 @@ Lp_25B2_208A:
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 .49:
-	cmp	byte [0xc000], 0x0
+	cmp	byte [g_C000], 0x0
 	jnz	short .50
 	push	ds
 	push	word 0xc020
@@ -3704,8 +3704,8 @@ Lp_25B2_208A:
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 .50:
-	mov	ax, [0xc2b0]
-	mov	es, [0x8bee]
+	mov	ax, [g_C2B0]
+	mov	es, [g_8BEE]
 	mov	[es:0x78c], ax
 	cmp	ax, 0x3f0
 	jnl	short .51
@@ -3718,23 +3718,23 @@ Lp_25B2_208A:
 	mov	bx, [bp + 0x6]
 	cmp	word [bx], 0x0
 	jnl	short .53
-	mov	al, [0xc29a]
-	mov	[0xe366], al
-	mov	al, [0xc29b]
-	mov	[0xe367], al
-	mov	al, [0xc29c]
+	mov	al, [g_C29A]
+	mov	[g_E366], al
+	mov	al, [g_C29B]
+	mov	[g_E367], al
+	mov	al, [g_C29C]
 	db	0x2A, 0xE4		; sub ah, ah
-	mov	[0x29ca], ax
-	mov	al, [0xc29d]
-	mov	[0x29cc], ax
+	mov	[g_29CA], ax
+	mov	al, [g_C29D]
+	mov	[g_29CC], ax
 .53:
 	call	0x1B35:OvlThunk132
 	mov	bx, [bp + 0x6]
 	cmp	word [bx], 0x0
 	jnl	short .54
-	mov	al, [0xe367]
+	mov	al, [g_E367]
 	push	ax
-	mov	al, [0xe366]
+	mov	al, [g_E366]
 	push	ax
 	call	0x1B35:OvlThunk135
 	add	sp, 0x4
@@ -3743,9 +3743,9 @@ Lp_25B2_208A:
 	mov	bx, [bp + 0x6]
 	cmp	word [bx], 0x0
 	jnl	short .55
-	mov	al, [0x29cc]
+	mov	al, [g_29CC]
 	push	ax
-	mov	al, [0x29ca]
+	mov	al, [g_29CA]
 	push	ax
 	call	0x1B35:OvlThunk134
 	add	sp, 0x4
@@ -3755,16 +3755,16 @@ Lp_25B2_208A:
 	jnz	short .56
 	jmp	near .58
 .56:
-	mov	word [0x21c2], 0x250d
-	mov	word [0x21c4], 0x1b35
-	mov	word [0x21c6], 0x2503
-	mov	word [0x21c8], 0x1b35
-	mov	word [0x21ca], 0x24f9
-	mov	word [0x21cc], 0x1b35
-	mov	word [0x21ce], 0x24ef
-	mov	word [0x21d0], 0x1b35
-	mov	word [0x21d2], 0x232d
-	mov	word [0x21d4], 0x1b35
+	mov	word [g_21C2], 0x250d
+	mov	word [g_21C4], 0x1b35
+	mov	word [g_21C6], 0x2503
+	mov	word [g_21C8], 0x1b35
+	mov	word [g_21CA], 0x24f9
+	mov	word [g_21CC], 0x1b35
+	mov	word [g_21CE], 0x24ef
+	mov	word [g_21D0], 0x1b35
+	mov	word [g_21D2], 0x232d
+	mov	word [g_21D4], 0x1b35
 	call	0x0BFE:InputShutdown
 	push	word [bp + 0x6]
 	call	0x1B35:OvlThunk127
@@ -3779,7 +3779,7 @@ Lp_25B2_208A:
 	push	0x0
 	call	0x0FEF:SetStartPage
 	add	sp, 0x2
-	mov	es, [0x8bf0]
+	mov	es, [g_8BF0]
 	mov	ax, [es:0x7572]
 	or	ax, [es:0x7570]
 	jz	short .57
@@ -3787,7 +3787,7 @@ Lp_25B2_208A:
 	push	word [es:0x7570]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	mov	es, [0x8bf0]
+	mov	es, [g_8BF0]
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[es:0x7572], ax
 	mov	[es:0x7570], ax
@@ -3804,28 +3804,28 @@ Lp_25B2_208A:
 	push	word 0xc8
 	call	0x0FEF:SetStartPage
 	add	sp, 0x2
-	mov	es, [0x8bf2]
+	mov	es, [g_8BF2]
 	cmp	word [es:0x126], 0x1
 	jnz	short .59
-	mov	al, [0xb36e]
-	mov	[0xc29e], al
-	mov	al, [0xb444]
-	mov	[0xc29f], al
+	mov	al, [g_B36E]
+	mov	[g_C29E], al
+	mov	al, [g_B444]
+	mov	[g_C29F], al
 	jmp	short .59
 .58:
-	mov	es, [0x8bf2]
+	mov	es, [g_8BF2]
 	mov	word [es:0x126], 0x2
 .59:
 	cmp	word [bp - 0x5c], 0x0
 	jz	short .60
 	jmp	near .91
 .60:
-	mov	es, [0x8bf2]
+	mov	es, [g_8BF2]
 	cmp	word [es:0x126], 0x1
 	jz	short .61
 	jmp	near .91
 .61:
-	mov	ax, [0xc2b0]
+	mov	ax, [g_C2B0]
 	mov	[bp - 0x4e], ax
 	push	0x0
 	call	0x0FEF:ClearClipRect
@@ -3894,11 +3894,11 @@ Lp_25B2_208A:
 	push	0xb
 	call	0x0D90:SetDialogColors
 	add	sp, 0xa
-	cmp	word [0xc2aa], 0x0
+	cmp	word [g_C2AA], 0x0
 	jz	short .64
 	push	-0x1
 	push	-0x1
-	push	word [0xc2a8]
+	push	word [g_C2A8]
 	push	word 0x3a0b
 	push	word 0xac62
 	push	word 0x3701
@@ -3909,7 +3909,7 @@ Lp_25B2_208A:
 	mov	[bp - 0x5c], ax
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .64
-	push	word [0xc2a8]
+	push	word [g_C2A8]
 	push	word 0x1974
 	lea	ax, [bp - 0x46]
 	push	ax
@@ -3922,8 +3922,8 @@ Lp_25B2_208A:
 	push	word 0xbe8
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
-	mov	es, [0x8bd8]
-	imul	bx, [0xc2a8], 0x1e
+	mov	es, [g_8BD8]
+	imul	bx, [g_C2A8], 0x1e
 	test	byte [es:bx - 0x5388], 0x1
 	jz	short .62
 	cmp	word [bp - 0x48], 0x0
@@ -3945,7 +3945,7 @@ Lp_25B2_208A:
 	jnz	short .65
 	push	word 0x3701
 	push	word 0xbe4
-	mov	es, [0x8bda]
+	mov	es, [g_8BDA]
 	push	word [es:0xb86]
 	push	word [es:0xb84]
 	push	ds
@@ -3962,13 +3962,13 @@ Lp_25B2_208A:
 	call	0x0CD1:OpenReadWriteShared
 	add	sp, 0x4
 	mov	[bp - 0x5c], ax
-	cmp	word [0xc2aa], 0x0
+	cmp	word [g_C2AA], 0x0
 	jz	short .65
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .65
 	push	word 0x3701
 	push	word 0xbe8
-	mov	es, [0x8bda]
+	mov	es, [g_8BDA]
 	push	word [es:0xb86]
 	push	word [es:0xb84]
 	push	ds
@@ -4055,7 +4055,7 @@ Lp_25B2_208A:
 	push	ax
 	call	0x0CD1:CloseHandlePtr
 	add	sp, 0x2
-	cmp	word [0xc2aa], 0x0
+	cmp	word [g_C2AA], 0x0
 	jnz	short .70
 	jmp	near .74
 .70:
@@ -4113,7 +4113,7 @@ Lp_25B2_208A:
 .74:
 	cmp	word [bp - 0x5c], 0x0
 	jnz	short .75
-	push	word [0xc2b0]
+	push	word [g_C2B0]
 	push	ds
 	push	word 0xc29a
 	push	word [bp - 0x4a]
@@ -4123,9 +4123,9 @@ Lp_25B2_208A:
 .75:
 	cmp	word [bp - 0x5c], 0x0
 	jnz	short .76
-	cmp	word [0xc2aa], 0x0
+	cmp	word [g_C2AA], 0x0
 	jz	short .76
-	push	word [0xc2b0]
+	push	word [g_C2B0]
 	push	ds
 	push	word 0xc29a
 	push	word [bp - 0x52]
@@ -4137,13 +4137,13 @@ Lp_25B2_208A:
 	jz	short .77
 	jmp	near .85
 .77:
-	cmp	word [0xc2b0], 0x3f0
+	cmp	word [g_C2B0], 0x3f0
 	jnl	short .78
 	jmp	near .83
 .78:
 	push	word 0x3701
 	push	word 0xbe4
-	mov	es, [0x8bda]
+	mov	es, [g_8BDA]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
 	push	ds
@@ -4162,7 +4162,7 @@ Lp_25B2_208A:
 	mov	[bp - 0x5c], ax
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .79
-	push	word [0xc2b0]
+	push	word [g_C2B0]
 	push	word [bp - 0x50]
 	push	word [bp - 0x4a]
 	call	0x28CD:Lp_28CD_1280
@@ -4177,13 +4177,13 @@ Lp_25B2_208A:
 	jz	short .80
 	jmp	near .85
 .80:
-	cmp	word [0xc2aa], 0x0
+	cmp	word [g_C2AA], 0x0
 	jnz	short .81
 	jmp	near .85
 .81:
 	push	word 0x3701
 	push	word 0xbe8
-	mov	es, [0x8bda]
+	mov	es, [g_8BDA]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
 	push	ds
@@ -4202,7 +4202,7 @@ Lp_25B2_208A:
 	mov	[bp - 0x5c], ax
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .82
-	push	word [0xc2b0]
+	push	word [g_C2B0]
 	push	word [bp - 0x5a]
 	push	word [bp - 0x52]
 	call	0x28CD:Lp_28CD_1280
@@ -4215,9 +4215,9 @@ Lp_25B2_208A:
 	add	sp, 0x2
 	jmp	short .85
 .83:
-	mov	ax, [0xc2ac]
-	inc	word [0xc2b0]
-	cmp	[0xc2b0], ax
+	mov	ax, [g_C2AC]
+	inc	word [g_C2B0]
+	cmp	[g_C2B0], ax
 	jng	short .84
 	push	0x2
 	push	0x0
@@ -4231,10 +4231,10 @@ Lp_25B2_208A:
 .84:
 	cmp	word [bp - 0x5c], 0x0
 	jnz	short .85
-	cmp	word [0xc2aa], 0x0
+	cmp	word [g_C2AA], 0x0
 	jz	short .85
-	mov	ax, [0xc2ae]
-	cmp	[0xc2b0], ax
+	mov	ax, [g_C2AE]
+	cmp	[g_C2B0], ax
 	jng	short .85
 	push	0x2
 	push	0x0
@@ -4251,10 +4251,10 @@ Lp_25B2_208A:
 	jmp	near .90
 .86:
 	push	0x2
-	push	word [0xc2a6]
+	push	word [g_C2A6]
 	push	word 0x3a0b
 	push	word 0xac62
-	mov	ax, [0xc2b0]
+	mov	ax, [g_C2B0]
 	dec	ax
 	push	ax
 	push	word 0x3701
@@ -4270,7 +4270,7 @@ Lp_25B2_208A:
 	push	word 0xc27e
 	push	word [bp - 0x4e]
 	push	word [bp - 0x1e]
-	push	word [0xc2a6]
+	push	word [g_C2A6]
 	push	word 0x3701
 	push	word 0xbe4
 	push	ds
@@ -4282,13 +4282,13 @@ Lp_25B2_208A:
 .87:
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .90
-	cmp	[0xc2aa], ax
+	cmp	[g_C2AA], ax
 	jz	short .88
 	push	0x2
-	push	word [0xc2a8]
+	push	word [g_C2A8]
 	push	word 0x3a0b
 	push	word 0xac62
-	push	word [0xc2b0]
+	push	word [g_C2B0]
 	push	word 0x3701
 	push	word 0xbe8
 	push	ds
@@ -4302,7 +4302,7 @@ Lp_25B2_208A:
 	push	word 0xc27e
 	push	word [bp - 0x4e]
 	push	word [bp - 0x20]
-	push	word [0xc2a8]
+	push	word [g_C2A8]
 	push	word 0x3701
 	push	word 0xbe8
 	push	ds
@@ -4314,7 +4314,7 @@ Lp_25B2_208A:
 	push	word 0xc27e
 	push	word [bp - 0x4e]
 	push	word [bp - 0x20]
-	push	word [0xc2a8]
+	push	word [g_C2A8]
 	push	word 0x3701
 	push	word 0xbe4
 	push	ds
@@ -4360,7 +4360,7 @@ Lp_25B2_208A:
 	call	0x0D90:MessageBox
 	add	sp, 0x16
 .92:
-	cmp	word [0xc2aa], 0x0
+	cmp	word [g_C2AA], 0x0
 	jz	short .93
 	lea	ax, [bp - 0x52]
 	push	ax
@@ -4413,7 +4413,7 @@ Lp_25B2_208A:
 	push	ax
 	call	0x0CD1:BuildPathFar
 	add	sp, 0x10
-	cmp	word [0xc2b0], 0x0
+	cmp	word [g_C2B0], 0x0
 	db	0x7C, 0x19		; jl 0x2f66
 	cmp	word [bp - 0x5c], 0x0
 	db	0x75, 0x13		; jnz 0x2f66

@@ -81,7 +81,7 @@ Lp_28CD_0000:
 	db	0x03, 0xD8		; add bx, ax
 	shl	bx, 1
 	add	bx, [bp - 0x360]
-	mov	al, [bx + 0x16c8]
+	mov	al, [bx + g_16C8]
 	db	0x8B, 0xF3		; mov si, bx
 	mov	[bp + si - 0x18], al
 	inc	word [bp - 0x360]
@@ -92,7 +92,7 @@ Lp_28CD_0000:
 .8:
 	push	word 0x3701
 	push	word 0xbaf
-	mov	es, [0x8bf4]
+	mov	es, [g_8BF4]
 	push	word [es:0xb86]
 	push	word [es:0xb84]
 	push	word [bp + 0x8]
@@ -113,7 +113,7 @@ Lp_28CD_0000:
 	jnz	short .9
 	push	word 0x3701
 	push	word 0xbaf
-	mov	es, [0x8bf4]
+	mov	es, [g_8BF4]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
 	push	word [bp + 0x8]
@@ -165,9 +165,9 @@ Lp_28CD_0000:
 	mov	word [bp - 0x360], 0x0
 .15:
 	mov	bx, [bp - 0x6e]
-	mov	al, [bx + 0x16e0]
+	mov	al, [bx + g_16E0]
 	mov	[bp - 0x36e], al
-	mov	cl, [bx + 0x16f8]
+	mov	cl, [bx + g_16F8]
 	mov	[bp - 0x36c], cl
 	db	0x0B, 0xDB		; or bx, bx
 	jl	short .16
@@ -179,7 +179,7 @@ Lp_28CD_0000:
 	shl	bx, 1
 	db	0x2A, 0xED		; sub ch, ch
 	db	0x03, 0xD9		; add bx, cx
-	mov	al, [bx + 0x16c8]
+	mov	al, [bx + g_16C8]
 	db	0x2A, 0xE4		; sub ah, ah
 	cmp	ax, [bp - 0x6e]
 	jnz	short .16
@@ -189,9 +189,9 @@ Lp_28CD_0000:
 	mov	word [bp - 0x6e], 0xffff
 .16:
 	mov	bx, [bp - 0x70]
-	mov	al, [bx + 0x16e0]
+	mov	al, [bx + g_16E0]
 	mov	[bp - 0x36e], al
-	mov	cl, [bx + 0x16f8]
+	mov	cl, [bx + g_16F8]
 	mov	[bp - 0x36c], cl
 	db	0x0B, 0xDB		; or bx, bx
 	jl	short .17
@@ -203,7 +203,7 @@ Lp_28CD_0000:
 	shl	bx, 1
 	db	0x2A, 0xED		; sub ch, ch
 	db	0x03, 0xD9		; add bx, cx
-	mov	al, [bx + 0x16c8]
+	mov	al, [bx + g_16C8]
 	db	0x2A, 0xE4		; sub ah, ah
 	cmp	ax, [bp - 0x70]
 	jnz	short .17
@@ -383,7 +383,7 @@ Lp_28CD_03F0:
 	push	si
 	jmp	short .2
 .1:
-	mov	al, [bx + 0x1733]
+	mov	al, [bx + g_1733]
 	mov	bx, [bp + 0x8]
 	sub	[bx], al
 	inc	byte [si]
@@ -393,7 +393,7 @@ Lp_28CD_03F0:
 	mov	si, [bp + 0x6]
 	mov	bl, [si]
 	db	0x2A, 0xFF		; sub bh, bh
-	cmp	[bx + 0x1733], al
+	cmp	[bx + g_1733], al
 	jc	short .1
 	pop	si
 	leave
@@ -670,7 +670,7 @@ Lp_28CD_0416:
 	cmp	word [bp - 0x28], 0x4
 	jnl	short .32
 	mov	bx, [bp - 0x28]
-	mov	al, [bx + 0x1720]
+	mov	al, [bx + g_1720]
 	db	0x2A, 0xE4		; sub ah, ah
 	db	0x8B, 0xF0		; mov si, ax
 	mov	ax, [bp - 0xe]
@@ -773,7 +773,7 @@ Lp_28CD_074A:
 	jnz	short .6
 	mov	bx, [bp - 0x6]
 	shl	bx, 1
-	mov	ax, [bx + 0x1726]
+	mov	ax, [bx + g_1726]
 	mov	[bp - 0x2], ax
 	lea	ax, [bp - 0x1a]
 	push	ax
@@ -783,8 +783,8 @@ Lp_28CD_074A:
 	push	ax
 	lea	ax, [bp - 0x4]
 	push	ax
-	push	word [bx + 0x172c]
-	push	word [bx + 0x1724]
+	push	word [bx + g_172C]
+	push	word [bx + g_1724]
 	lea	ax, [bp - 0x16]
 	push	ax
 	push	word [bp + 0x6]
@@ -804,7 +804,7 @@ Lp_28CD_074A:
 	push	word [bp - 0x2]
 	mov	bx, [bp - 0x6]
 	shl	bx, 1
-	push	word [bx + 0x172e]
+	push	word [bx + g_172E]
 	lea	ax, [bp - 0x16]
 	push	ax
 	push	word [bp + 0x8]
@@ -834,7 +834,7 @@ Lp_28CD_074A:
 	add	sp, 0xc
 	mov	[bp - 0x18], ax
 	call	0x2E46:Lp_2E46_125A
-	mov	byte [0xe36b], 0xff
+	mov	byte [g_E36B], 0xff
 	mov	ax, [bp - 0x18]
 	leave
 	retf
@@ -1096,7 +1096,7 @@ Lp_28CD_0A32:
 	jmp	near .15
 .5:
 	mov	bx, [bp - 0x1c]
-	mov	bl, [bx + 0x1710]
+	mov	bl, [bx + g_1710]
 	db	0x2A, 0xFF		; sub bh, bh
 	mov	ax, [bp - 0xa]
 	shl	ax, 1
@@ -1106,7 +1106,7 @@ Lp_28CD_0A32:
 	db	0x2A, 0xED		; sub ch, ch
 	mov	[bp - 0x24], cx
 	mov	bx, [bp - 0x1c]
-	mov	bl, [bx + 0x1718]
+	mov	bl, [bx + g_1718]
 	db	0x2A, 0xFF		; sub bh, bh
 	db	0x03, 0xD8		; add bx, ax
 .6:
@@ -1755,7 +1755,7 @@ Lp_28CD_0E10:
 	add	sp, 0x12
 	mov	[bp - 0x16], ax
 	call	0x2E46:Lp_2E46_125A
-	mov	byte [0xe36b], 0xff
+	mov	byte [g_E36B], 0xff
 .26:
 	cmp	word [bp - 0x16], 0x0
 	jnz	short .27
@@ -1782,10 +1782,10 @@ Lp_28CD_10F6:
 	mov	[bp - 0x2], ax
 	mov	[bp - 0x4], ax
 	mov	[bp - 0x26], ax
-	mov	byte [0xe36b], 0x0
+	mov	byte [g_E36B], 0x0
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
-	mov	es, [0x8bf4]
+	mov	es, [g_8BF4]
 	push	word [es:0xb86]
 	push	word [es:0xb84]
 	push	word [bp + 0x8]
@@ -1806,7 +1806,7 @@ Lp_28CD_10F6:
 	jnz	short .1
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
-	mov	es, [0x8bf4]
+	mov	es, [g_8BF4]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
 	push	word [bp + 0x8]
@@ -1828,7 +1828,7 @@ Lp_28CD_10F6:
 	jnz	short .2
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
-	mov	es, [0x8bf4]
+	mov	es, [g_8BF4]
 	push	word [es:0xb7a]
 	push	word [es:0xb78]
 	push	word [bp + 0x8]

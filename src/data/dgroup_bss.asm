@@ -51,7 +51,9 @@ MoveBlockOff:                                   ; moveMemBlock target, offset; u
         resb 2
 MoveBlockSeg:                                   ; moveMemBlock target, segment; used by SpeechInit,
                                                 ; MoveMemBlock
-        resb 90
+        resb 2
+g_8EFE:                                         ; used by FADES8 (to name)
+        resb 88
 ShadeTableOff:                                  ; shade table being built, offset; used by ShadeColor
         resb 2
 ShadeTableSeg:                                  ; shade table being built, segment; used by ShadeColor
@@ -142,13 +144,53 @@ FltOutFlags:                                    ; float output flags; used by Fp
 FltOutFlags1:                                   ; float output flags, high byte; used by FpScale
         resb 1
 FltOutExp:                                      ; float output exponent; used by FpScale
-        resb 7654
+        resb 294
+g_91D0:                                         ; used by GAME (to name)
+        resb 2
+g_91D2:                                         ; used by GAME (to name)
+        resb 3502
+g_9F80:                                         ; used by INIT (to name)
+        resb 76
+g_9FCC:                                         ; used by INIT (to name)
+        resb 2
+g_9FCE:                                         ; used by INIT (to name)
+        resb 110
+g_A03C:                                         ; used by MENUS (to name)
+        resb 48
+g_A06C:                                         ; used by MENUS (to name)
+        resb 1252
+g_A550:                                         ; used by AI, INIT, MENUS (to name)
+        resb 6
+g_A556:                                         ; used by AI, INIT, MENUS (to name)
+        resb 1
+g_A557:                                         ; used by AI (to name)
+        resb 1113
+g_A9B0:                                         ; used by INIT (to name)
+        resb 1156
+g_AE34:                                         ; used by INIT (to name)
+        resb 1
+g_AE35:                                         ; used by INIT (to name)
+        resb 3
+g_AE38:                                         ; used by INIT (to name)
+        resb 44
+g_AE64:                                         ; used by INIT (to name)
+        resb 1
+g_AE65:                                         ; used by INIT (to name)
+        resb 3
+g_AE68:                                         ; used by INIT (to name)
+        resb 8
+g_AE70:                                         ; used by INIT (to name)
+        resb 32
 HeapSizeLo:                                     ; heap size, low word; not used in the EXE (overlays may use
                                                 ; it)
         resb 2
 HeapSizeHi:                                     ; heap size, high word; not used in the EXE (overlays may use
                                                 ; it)
-        resb 6
+        resb 2
+g_AE94:                                         ; used by MENUS (to name)
+        resb 2
+g_AE96:                                         ; used by MENUS (to name)
+        resb 2
 DialogData:                                     ; dialog data, offset; used by ListDialog, SaveUnderBox,
                                                 ; MessageBoxLoop ...
         resb 2
@@ -204,16 +246,106 @@ CursorX:                                        ; cursor x; used by PollInputEve
 CursorY:                                        ; cursor y; used by EventToCursor, PollInputEvents
         resb 152
 PadStatePtr:                                    ; pad state being updated; used by StickToPad, PadTimerTick
-        resb 36
+        resb 2
+g_B06C:                                         ; used by AI, INIT (to name)
+        resb 2
+g_B06E:                                         ; used by AI (to name)
+        resb 1
+g_B06F:                                         ; used by AI (to name)
+        resb 1
+g_B070:                                         ; used by AI (to name)
+        resb 1
+g_B071:                                         ; used by AI (to name)
+        resb 1
+g_B072:                                         ; used by AI (to name)
+        resb 1
+g_B073:                                         ; used by AI (to name)
+        resb 1
+g_B074:                                         ; used by AI (to name)
+        resb 1
+g_B075:                                         ; used by AI (to name)
+        resb 1
+g_B076:                                         ; used by AI (to name)
+        resb 1
+g_B077:                                         ; used by AI (to name)
+        resb 1
+g_B078:                                         ; used by AI, INIT (to name)
+        resb 2
+g_B07A:                                         ; used by AI (to name)
+        resb 1
+g_B07B:                                         ; used by AI (to name)
+        resb 1
+g_B07C:                                         ; used by AI (to name)
+        resb 1
+g_B07D:                                         ; used by AI (to name)
+        resb 17
 HotKeyFn:                                       ; far routine for hot keys; used by ListDialog,
                                                 ; MessageBoxLoop, SaveGameNameDialog ...
         resb 2
 HotKeyFnSeg:                                    ; its segment; used by InputInit
-        resb 52
+        resb 2
+g_B092:                                         ; used by AI, GAME, INIT, MENUS (to name)
+        resb 2
+g_B094:                                         ; used by AI, GAME, INIT, MENUS (to name)
+        resb 2
+g_B096:                                         ; used by AI, GAME, INIT (to name)
+        resb 2
+g_B098:                                         ; used by AI, GAME, INIT (to name)
+        resb 2
+g_B09A:                                         ; used by INIT (to name)
+        resb 2
+g_B09C:                                         ; used by GAME, INIT (to name)
+        resb 2
+g_B09E:                                         ; used by INIT (to name)
+        resb 12
+g_B0AA:                                         ; used by INIT (to name)
+        resb 1
+g_B0AB:                                         ; used by INIT (to name)
+        resb 11
+g_B0B6:                                         ; used by INIT (to name)
+        resb 1
+g_B0B7:                                         ; used by INIT (to name)
+        resb 11
+g_B0C2:                                         ; used by GAME, INIT (to name)
+        resb 2
 TeamPalette1:                                   ; first team palette; used by LoadTeamPalettes
-        resb 256
+        resb 67
+g_B107:                                         ; used by AI, MENUS (to name)
+        resb 189
 TeamPalette2:                                   ; second team palette; used by LoadTeamPalettes
-        resb 262
+        resb 5
+g_B1C9:                                         ; used by MENUS (to name)
+        resb 2
+g_B1CB:                                         ; used by MENUS (to name)
+        resb 9
+g_B1D4:                                         ; used by MENUS (to name)
+        resb 1
+g_B1D5:                                         ; used by MENUS (to name)
+        resb 2
+g_B1D7:                                         ; used by MENUS (to name)
+        resb 1
+g_B1D8:                                         ; used by MENUS (to name)
+        resb 2
+g_B1DA:                                         ; used by MENUS (to name)
+        resb 45
+g_B207:                                         ; used by AI, MENUS (to name)
+        resb 6
+g_B20D:                                         ; used by MENUS (to name)
+        resb 7
+g_B214:                                         ; used by MENUS (to name)
+        resb 1
+g_B215:                                         ; used by MENUS (to name)
+        resb 15
+g_B224:                                         ; used by MENUS (to name)
+        resb 155
+g_B2BF:                                         ; used by MENUS (to name)
+        resb 1
+g_B2C0:                                         ; used by MENUS (to name)
+        resb 1
+g_B2C1:                                         ; used by MENUS (to name)
+        resb 1
+g_B2C2:                                         ; used by MENUS (to name)
+        resb 8
 ArenaJingleSet:                                 ; arena jingle per team; used by PlayArenaJingle
         resb 2
 BoxSaveX:                                       ; box save x; used by PlayArenaJingle, SaveUnderBox,
@@ -251,11 +383,35 @@ JinglePan:                                      ; jingle pan; used by PlayJingle
 ArenaJingleA:                                   ; arena jingle table; used by PlayArenaJingle
         resb 2
 ArenaJingleASeg:                                ; arena jingle table, segment; used by PlayArenaJingle
-        resb 10
+        resb 2
+g_B2F2:                                         ; used by INIT (to name)
+        resb 2
+g_B2F4:                                         ; used by INIT (to name)
+        resb 2
+g_B2F6:                                         ; used by INIT (to name)
+        resb 2
+g_B2F8:                                         ; used by INIT (to name)
+        resb 2
 ArenaJingleB:                                   ; arena jingle table; used by PlayArenaJingle
         resb 2
 ArenaJingleBSeg:                                ; arena jingle table, segment; used by PlayArenaJingle
-        resb 34
+        resb 2
+g_B2FE:                                         ; used by INIT (to name)
+        resb 2
+g_B300:                                         ; used by INIT (to name)
+        resb 2
+g_B302:                                         ; used by INIT (to name)
+        resb 2
+g_B304:                                         ; used by INIT (to name)
+        resb 2
+g_B306:                                         ; used by INIT (to name)
+        resb 2
+g_B308:                                         ; used by INIT (to name)
+        resb 10
+g_B312:                                         ; used by INIT (to name)
+        resb 2
+g_B314:                                         ; used by INIT (to name)
+        resb 10
 ArenaJingleC:                                   ; arena jingle table; used by PlayArenaJingle
         resb 2
 ArenaJingleCSeg:                                ; arena jingle table, segment; used by PlayArenaJingle
@@ -287,7 +443,1005 @@ VgaSave3Off:                                    ; saved plane 3, offset; used by
         resb 2
 VgaSave3Seg:                                    ; saved plane 3, segment; used by SaveVgaPlanes,
                                                 ; RestoreVgaPlanes
-        resb 11286
+        resb 2
+g_B35E:                                         ; used by MENUS (to name)
+        resb 1
+g_B35F:                                         ; used by MENUS (to name)
+        resb 1
+g_B360:                                         ; used by MENUS (to name)
+        resb 2
+g_B362:                                         ; used by INIT (to name)
+        resb 2
+g_B364:                                         ; used by INIT, LP (to name)
+        resb 2
+g_B366:                                         ; used by INIT, LP (to name)
+        resb 2
+g_B368:                                         ; used by INIT (to name)
+        resb 2
+g_B36A:                                         ; used by INIT, LP (to name)
+        resb 2
+g_B36C:                                         ; used by INIT (to name)
+        resb 2
+g_B36E:                                         ; used by AI, INIT, LP, MENUS (to name)
+        resb 2
+g_B370:                                         ; used by INIT (to name)
+        resb 2
+g_B372:                                         ; used by INIT (to name)
+        resb 2
+g_B374:                                         ; used by INIT (to name)
+        resb 2
+g_B376:                                         ; used by INIT (to name)
+        resb 2
+g_B378:                                         ; used by AI (to name)
+        resb 2
+g_B37A:                                         ; used by AI (to name)
+        resb 2
+g_B37C:                                         ; used by AI (to name)
+        resb 2
+g_B37E:                                         ; used by AI (to name)
+        resb 2
+g_B380:                                         ; used by AI (to name)
+        resb 2
+g_B382:                                         ; used by AI (to name)
+        resb 2
+g_B384:                                         ; used by AI, INIT, MENUS (to name)
+        resb 2
+g_B386:                                         ; used by AI, INIT, LP (to name)
+        resb 1
+g_B387:                                         ; used by AI (to name)
+        resb 5
+g_B38C:                                         ; used by AI, MENUS (to name)
+        resb 2
+g_B38E:                                         ; used by AI (to name)
+        resb 56
+g_B3C6:                                         ; used by AI (to name)
+        resb 56
+g_B3FE:                                         ; used by AI (to name)
+        resb 28
+g_B41A:                                         ; used by AI (to name)
+        resb 1
+g_B41B:                                         ; used by AI (to name)
+        resb 1
+g_B41C:                                         ; used by AI (to name)
+        resb 1
+g_B41D:                                         ; used by AI (to name)
+        resb 1
+g_B41E:                                         ; used by AI (to name)
+        resb 2
+g_B420:                                         ; used by AI, INIT, LP (to name)
+        resb 2
+g_B422:                                         ; used by AI, INIT (to name)
+        resb 2
+g_B424:                                         ; used by AI, INIT (to name)
+        resb 2
+g_B426:                                         ; used by AI, INIT (to name)
+        resb 2
+g_B428:                                         ; used by AI, INIT (to name)
+        resb 2
+g_B42A:                                         ; used by AI, INIT (to name)
+        resb 2
+g_B42C:                                         ; used by AI, INIT (to name)
+        resb 2
+g_B42E:                                         ; used by AI, INIT (to name)
+        resb 2
+g_B430:                                         ; used by AI, INIT (to name)
+        resb 2
+g_B432:                                         ; used by AI, INIT (to name)
+        resb 2
+g_B434:                                         ; used by AI, INIT (to name)
+        resb 2
+g_B436:                                         ; used by AI, INIT (to name)
+        resb 14
+g_B444:                                         ; used by AI, LP, MENUS (to name)
+        resb 10
+g_B44E:                                         ; used by AI (to name)
+        resb 2
+g_B450:                                         ; used by AI (to name)
+        resb 2
+g_B452:                                         ; used by AI (to name)
+        resb 2
+g_B454:                                         ; used by AI (to name)
+        resb 2
+g_B456:                                         ; used by AI (to name)
+        resb 2
+g_B458:                                         ; used by AI (to name)
+        resb 2
+g_B45A:                                         ; used by AI, INIT (to name)
+        resb 2
+g_B45C:                                         ; used by AI, INIT, LP (to name)
+        resb 6
+g_B462:                                         ; used by AI, MENUS (to name)
+        resb 114
+g_B4D4:                                         ; used by AI (to name)
+        resb 28
+g_B4F0:                                         ; used by AI (to name)
+        resb 1
+g_B4F1:                                         ; used by AI (to name)
+        resb 1
+g_B4F2:                                         ; used by AI (to name)
+        resb 1
+g_B4F3:                                         ; used by AI (to name)
+        resb 1
+g_B4F4:                                         ; used by AI (to name)
+        resb 2
+g_B4F6:                                         ; used by AI, INIT, LP (to name)
+        resb 2
+g_B4F8:                                         ; used by AI, INIT (to name)
+        resb 2
+g_B4FA:                                         ; used by AI, INIT (to name)
+        resb 2
+g_B4FC:                                         ; used by AI, INIT (to name)
+        resb 2
+g_B4FE:                                         ; used by AI, INIT (to name)
+        resb 2
+g_B500:                                         ; used by AI, INIT (to name)
+        resb 2
+g_B502:                                         ; used by AI, INIT (to name)
+        resb 2
+g_B504:                                         ; used by AI, INIT (to name)
+        resb 2
+g_B506:                                         ; used by AI, INIT (to name)
+        resb 2
+g_B508:                                         ; used by AI, INIT (to name)
+        resb 2
+g_B50A:                                         ; used by AI, INIT (to name)
+        resb 2
+g_B50C:                                         ; used by AI, INIT (to name)
+        resb 4
+g_B510:                                         ; used by AI (to name)
+        resb 4
+g_B514:                                         ; used by AI (to name)
+        resb 20
+g_B528:                                         ; used by AI (to name)
+        resb 42
+g_B552:                                         ; used by AI (to name)
+        resb 1
+g_B553:                                         ; used by AI (to name)
+        resb 2
+g_B555:                                         ; used by AI (to name)
+        resb 1467
+g_BB10:                                         ; used by AI (to name)
+        resb 4
+g_BB14:                                         ; used by AI (to name)
+        resb 6
+g_BB1A:                                         ; used by AI (to name)
+        resb 2
+g_BB1C:                                         ; used by AI (to name)
+        resb 116
+g_BB90:                                         ; used by AI (to name)
+        resb 4
+g_BB94:                                         ; used by AI (to name)
+        resb 6
+g_BB9A:                                         ; used by AI (to name)
+        resb 2
+g_BB9C:                                         ; used by AI (to name)
+        resb 116
+g_BC10:                                         ; used by AI (to name)
+        resb 4
+g_BC14:                                         ; used by AI (to name)
+        resb 4
+g_BC18:                                         ; used by AI (to name)
+        resb 2
+g_BC1A:                                         ; used by AI (to name)
+        resb 2
+g_BC1C:                                         ; used by AI (to name)
+        resb 4
+g_BC20:                                         ; used by AI (to name)
+        resb 10
+g_BC2A:                                         ; used by AI (to name)
+        resb 2
+g_BC2C:                                         ; used by AI (to name)
+        resb 8
+g_BC34:                                         ; used by AI (to name)
+        resb 2
+g_BC36:                                         ; used by AI (to name)
+        resb 22
+g_BC4C:                                         ; used by AI (to name)
+        resb 7
+g_BC53:                                         ; used by AI (to name)
+        resb 3
+g_BC56:                                         ; used by AI (to name)
+        resb 56
+g_BC8E:                                         ; used by AI (to name)
+        resb 2
+g_BC90:                                         ; used by AI (to name)
+        resb 4
+g_BC94:                                         ; used by AI (to name)
+        resb 4
+g_BC98:                                         ; used by AI (to name)
+        resb 2
+g_BC9A:                                         ; used by AI (to name)
+        resb 2
+g_BC9C:                                         ; used by AI (to name)
+        resb 4
+g_BCA0:                                         ; used by AI (to name)
+        resb 20
+g_BCB4:                                         ; used by AI (to name)
+        resb 2
+g_BCB6:                                         ; used by AI (to name)
+        resb 16
+g_BCC6:                                         ; used by AI (to name)
+        resb 12
+g_BCD2:                                         ; used by AI (to name)
+        resb 2
+g_BCD4:                                         ; used by AI (to name)
+        resb 2
+g_BCD6:                                         ; used by AI (to name)
+        resb 56
+g_BD0E:                                         ; used by AI (to name)
+        resb 2
+g_BD10:                                         ; used by AI (to name)
+        resb 4
+g_BD14:                                         ; used by AI (to name)
+        resb 6
+g_BD1A:                                         ; used by AI (to name)
+        resb 2
+g_BD1C:                                         ; used by AI (to name)
+        resb 4
+g_BD20:                                         ; used by AI (to name)
+        resb 8
+g_BD28:                                         ; used by AI (to name)
+        resb 2
+g_BD2A:                                         ; used by AI (to name)
+        resb 2
+g_BD2C:                                         ; used by AI (to name)
+        resb 8
+g_BD34:                                         ; used by AI (to name)
+        resb 4
+g_BD38:                                         ; used by AI (to name)
+        resb 2
+g_BD3A:                                         ; used by AI (to name)
+        resb 2
+g_BD3C:                                         ; used by AI (to name)
+        resb 8
+g_BD44:                                         ; used by AI (to name)
+        resb 20
+g_BD58:                                         ; used by AI (to name)
+        resb 1
+g_BD59:                                         ; used by AI (to name)
+        resb 1
+g_BD5A:                                         ; used by AI (to name)
+        resb 52
+g_BD8E:                                         ; used by MENUS (to name)
+        resb 2
+g_BD90:                                         ; used by MENUS (to name)
+        resb 2
+g_BD92:                                         ; used by MENUS (to name)
+        resb 2
+g_BD94:                                         ; used by MENUS (to name)
+        resb 2
+g_BD96:                                         ; used by MENUS (to name)
+        resb 1
+g_BD97:                                         ; used by MENUS (to name)
+        resb 1
+g_BD98:                                         ; used by MENUS (to name)
+        resb 1
+g_BD99:                                         ; used by MENUS (to name)
+        resb 1
+g_BD9A:                                         ; used by MENUS (to name)
+        resb 1
+g_BD9B:                                         ; used by MENUS (to name)
+        resb 1
+g_BD9C:                                         ; used by MENUS (to name)
+        resb 544
+g_BFBC:                                         ; used by MENUS (to name)
+        resb 1
+g_BFBD:                                         ; used by MENUS (to name)
+        resb 2
+g_BFBF:                                         ; used by MENUS (to name)
+        resb 1
+g_BFC0:                                         ; used by MENUS (to name)
+        resb 1
+g_BFC1:                                         ; used by MENUS (to name)
+        resb 1
+g_BFC2:                                         ; used by MENUS (to name)
+        resb 60
+g_BFFE:                                         ; used by AI, GAME, INIT, LP, MENUS (to name)
+        resb 2
+g_C000:                                         ; used by LP (to name)
+        resb 32
+g_C020:                                         ; used by LP (to name)
+        resb 32
+g_C040:                                         ; used by LP, MENUS, STATS (to name)
+        resb 2
+g_C042:                                         ; used by LP, MENUS, STATS (to name)
+        resb 2
+g_C044:                                         ; used by LP, MENUS, STATS (to name)
+        resb 2
+g_C046:                                         ; used by LP, MENUS, STATS (to name)
+        resb 2
+g_C048:                                         ; used by LP, MENUS, STATS (to name)
+        resb 2
+g_C04A:                                         ; used by LP, MENUS, STATS (to name)
+        resb 2
+g_C04C:                                         ; used by LP, MENUS, STATS (to name)
+        resb 2
+g_C04E:                                         ; used by LP, MENUS, STATS (to name)
+        resb 2
+g_C050:                                         ; used by MENUS, STATS (to name)
+        resb 2
+g_C052:                                         ; used by LP, MENUS, STATS (to name)
+        resb 2
+g_C054:                                         ; used by MENUS (to name)
+        resb 2
+g_C056:                                         ; used by MENUS (to name)
+        resb 2
+g_C058:                                         ; used by MENUS (to name)
+        resb 2
+g_C05A:                                         ; used by MENUS (to name)
+        resb 2
+g_C05C:                                         ; used by MENUS (to name)
+        resb 2
+g_C05E:                                         ; used by MENUS (to name)
+        resb 126
+g_C0DC:                                         ; used by MENUS (to name)
+        resb 2
+g_C0DE:                                         ; used by MENUS (to name)
+        resb 2
+g_C0E0:                                         ; used by MENUS (to name)
+        resb 2
+g_C0E2:                                         ; used by MENUS (to name)
+        resb 2
+g_C0E4:                                         ; used by MENUS (to name)
+        resb 2
+g_C0E6:                                         ; used by MENUS (to name)
+        resb 126
+g_C164:                                         ; used by MENUS (to name)
+        resb 2
+g_C166:                                         ; used by MENUS (to name)
+        resb 2
+g_C168:                                         ; used by MENUS (to name)
+        resb 2
+g_C16A:                                         ; used by MENUS (to name)
+        resb 2
+g_C16C:                                         ; used by MENUS (to name)
+        resb 2
+g_C16E:                                         ; used by MENUS (to name)
+        resb 126
+g_C1EC:                                         ; used by MENUS (to name)
+        resb 2
+g_C1EE:                                         ; used by MENUS (to name)
+        resb 1
+g_C1EF:                                         ; used by MENUS (to name)
+        resb 1
+g_C1F0:                                         ; used by MENUS (to name)
+        resb 2
+g_C1F2:                                         ; used by MENUS (to name)
+        resb 18
+g_C204:                                         ; used by MENUS, STATS (to name)
+        resb 2
+g_C206:                                         ; used by MENUS (to name)
+        resb 30
+g_C224:                                         ; used by MENUS (to name)
+        resb 20
+g_C238:                                         ; used by STATS (to name)
+        resb 2
+g_C23A:                                         ; used by STATS (to name)
+        resb 2
+g_C23C:                                         ; used by STATS (to name)
+        resb 2
+g_C23E:                                         ; used by STATS (to name)
+        resb 2
+g_C240:                                         ; used by STATS (to name)
+        resb 24
+g_C258:                                         ; used by AI, INIT, MENUS (to name)
+        resb 2
+g_C25A:                                         ; used by AI, INIT, MENUS (to name)
+        resb 2
+g_C25C:                                         ; used by AI, INIT, MENUS (to name)
+        resb 2
+g_C25E:                                         ; used by AI, INIT, MENUS (to name)
+        resb 2
+g_C260:                                         ; used by LP (to name)
+        resb 2
+g_C262:                                         ; used by LP (to name)
+        resb 2
+g_C264:                                         ; used by LP (to name)
+        resb 2
+g_C266:                                         ; used by LP (to name)
+        resb 2
+g_C268:                                         ; used by LP (to name)
+        resb 2
+g_C26A:                                         ; used by LP (to name)
+        resb 2
+g_C26C:                                         ; used by LP (to name)
+        resb 2
+g_C26E:                                         ; used by LP (to name)
+        resb 2
+g_C270:                                         ; used by LP (to name)
+        resb 2
+g_C272:                                         ; used by LP (to name)
+        resb 2
+g_C274:                                         ; used by LP (to name)
+        resb 2
+g_C276:                                         ; used by LP (to name)
+        resb 2
+g_C278:                                         ; used by LP (to name)
+        resb 2
+g_C27A:                                         ; used by LP (to name)
+        resb 2
+g_C27C:                                         ; used by LP (to name)
+        resb 30
+g_C29A:                                         ; used by LP (to name)
+        resb 1
+g_C29B:                                         ; used by LP (to name)
+        resb 1
+g_C29C:                                         ; used by LP (to name)
+        resb 1
+g_C29D:                                         ; used by LP (to name)
+        resb 1
+g_C29E:                                         ; used by LP (to name)
+        resb 1
+g_C29F:                                         ; used by LP (to name)
+        resb 1
+g_C2A0:                                         ; used by LP, STATS (to name)
+        resb 2
+g_C2A2:                                         ; used by LP (to name)
+        resb 2
+g_C2A4:                                         ; used by LP (to name)
+        resb 2
+g_C2A6:                                         ; used by LP (to name)
+        resb 2
+g_C2A8:                                         ; used by LP (to name)
+        resb 2
+g_C2AA:                                         ; used by LP (to name)
+        resb 2
+g_C2AC:                                         ; used by LP (to name)
+        resb 2
+g_C2AE:                                         ; used by LP (to name)
+        resb 2
+g_C2B0:                                         ; used by LP (to name)
+        resb 2
+g_C2B2:                                         ; used by LP, STATS (to name)
+        resb 2
+g_C2B4:                                         ; used by LP, STATS (to name)
+        resb 2
+g_C2B6:                                         ; used by AI, LP (to name)
+        resb 2
+g_C2B8:                                         ; used by AI, LP (to name)
+        resb 10
+g_C2C2:                                         ; used by LP (to name)
+        resb 1
+g_C2C3:                                         ; used by LP (to name)
+        resb 1
+g_C2C4:                                         ; used by LP (to name)
+        resb 1230
+g_C792:                                         ; used by LP (to name)
+        resb 2
+g_C794:                                         ; used by LP (to name)
+        resb 2
+g_C796:                                         ; used by LP (to name)
+        resb 2
+g_C798:                                         ; used by LP (to name)
+        resb 2
+g_C79A:                                         ; used by LP (to name)
+        resb 2
+g_C79C:                                         ; used by LP (to name)
+        resb 2
+g_C79E:                                         ; used by LP (to name)
+        resb 2
+g_C7A0:                                         ; used by LP (to name)
+        resb 2
+g_C7A2:                                         ; used by LP (to name)
+        resb 2
+g_C7A4:                                         ; used by LP (to name)
+        resb 2
+g_C7A6:                                         ; used by LP (to name)
+        resb 2
+g_C7A8:                                         ; used by LP (to name)
+        resb 2
+g_C7AA:                                         ; used by LP (to name)
+        resb 2
+g_C7AC:                                         ; used by LP (to name)
+        resb 38
+g_C7D2:                                         ; used by LP (to name)
+        resb 2
+g_C7D4:                                         ; used by LP (to name)
+        resb 38
+g_C7FA:                                         ; used by LP (to name)
+        resb 2
+g_C7FC:                                         ; used by LP (to name)
+        resb 10
+g_C806:                                         ; used by LP (to name)
+        resb 1059
+g_CC29:                                         ; used by LP (to name)
+        resb 703
+g_CEE8:                                         ; used by STATS (to name)
+        resb 48
+g_CF18:                                         ; used by STATS (to name)
+        resb 2
+g_CF1A:                                         ; used by STATS (to name)
+        resb 1
+g_CF1B:                                         ; used by STATS (to name)
+        resb 1
+g_CF1C:                                         ; used by STATS (to name)
+        resb 34
+g_CF3E:                                         ; used by STATS (to name)
+        resb 2
+g_CF40:                                         ; used by STATS (to name)
+        resb 2
+g_CF42:                                         ; used by STATS (to name)
+        resb 2
+g_CF44:                                         ; used by STATS (to name)
+        resb 2
+g_CF46:                                         ; used by STATS (to name)
+        resb 2
+g_CF48:                                         ; used by STATS (to name)
+        resb 2
+g_CF4A:                                         ; used by STATS (to name)
+        resb 2
+g_CF4C:                                         ; used by STATS (to name)
+        resb 2
+g_CF4E:                                         ; used by STATS (to name)
+        resb 50
+g_CF80:                                         ; used by STATS (to name)
+        resb 50
+g_CFB2:                                         ; used by STATS (to name)
+        resb 10
+g_CFBC:                                         ; used by STATS (to name)
+        resb 10
+g_CFC6:                                         ; used by STATS (to name)
+        resb 2
+g_CFC8:                                         ; used by STATS (to name)
+        resb 2
+g_CFCA:                                         ; used by STATS (to name)
+        resb 2
+g_CFCC:                                         ; used by STATS (to name)
+        resb 2
+g_CFCE:                                         ; used by STATS (to name)
+        resb 2
+g_CFD0:                                         ; used by STATS (to name)
+        resb 2
+g_CFD2:                                         ; used by STATS (to name)
+        resb 42
+g_CFFC:                                         ; used by GAME, INIT (to name)
+        resb 2
+g_CFFE:                                         ; used by GAME, INIT (to name)
+        resb 2
+g_D000:                                         ; used by AI (to name)
+        resb 2
+g_D002:                                         ; used by AI (to name)
+        resb 2
+g_D004:                                         ; used by AI, INIT (to name)
+        resb 2
+g_D006:                                         ; used by AI (to name)
+        resb 2
+g_D008:                                         ; used by AI (to name)
+        resb 2
+g_D00A:                                         ; used by AI, INIT (to name)
+        resb 2
+g_D00C:                                         ; used by AI (to name)
+        resb 2
+g_D00E:                                         ; used by AI (to name)
+        resb 2
+g_D010:                                         ; used by AI, INIT (to name)
+        resb 2
+g_D012:                                         ; used by AI, INIT (to name)
+        resb 2
+g_D014:                                         ; used by AI, GAME, INIT (to name)
+        resb 2
+g_D016:                                         ; used by AI, GAME, INIT (to name)
+        resb 2
+g_D018:                                         ; used by INIT (to name)
+        resb 2
+g_D01A:                                         ; used by INIT (to name)
+        resb 2
+g_D01C:                                         ; used by AI (to name)
+        resb 2
+g_D01E:                                         ; used by AI (to name)
+        resb 2
+g_D020:                                         ; used by AI (to name)
+        resb 2
+g_D022:                                         ; used by AI (to name)
+        resb 394
+g_D1AC:                                         ; used by AI, INIT (to name)
+        resb 2
+g_D1AE:                                         ; used by AI, INIT (to name)
+        resb 2
+g_D1B0:                                         ; used by INIT (to name)
+        resb 278
+g_D2C6:                                         ; used by AI, INIT (to name)
+        resb 2
+g_D2C8:                                         ; used by AI, INIT (to name)
+        resb 382
+g_D446:                                         ; used by AI, INIT (to name)
+        resb 2
+g_D448:                                         ; used by AI, INIT (to name)
+        resb 14
+g_D456:                                         ; used by AI, INIT (to name)
+        resb 2
+g_D458:                                         ; used by AI, INIT (to name)
+        resb 18
+g_D46A:                                         ; used by AI, GAME, INIT (to name)
+        resb 2
+g_D46C:                                         ; used by AI, GAME, INIT (to name)
+        resb 2
+g_D46E:                                         ; used by AI, GAME, INIT (to name)
+        resb 2
+g_D470:                                         ; used by AI, GAME, INIT (to name)
+        resb 2
+g_D472:                                         ; used by GAME, INIT (to name)
+        resb 2
+g_D474:                                         ; used by AI (to name)
+        resb 34
+g_D496:                                         ; used by AI, INIT (to name)
+        resb 34
+g_D4B8:                                         ; used by AI, INIT (to name)
+        resb 59
+g_D4F3:                                         ; used by AI (to name)
+        resb 1
+g_D4F4:                                         ; used by AI, INIT (to name)
+        resb 1
+g_D4F5:                                         ; used by AI (to name)
+        resb 17
+g_D506:                                         ; used by AI, INIT (to name)
+        resb 60
+g_D542:                                         ; used by AI, INIT (to name)
+        resb 60
+g_D57E:                                         ; used by AI, INIT (to name)
+        resb 60
+g_D5BA:                                         ; used by AI, INIT (to name)
+        resb 60
+g_D5F6:                                         ; used by AI, INIT (to name)
+        resb 6
+g_D5FC:                                         ; used by AI (to name)
+        resb 6
+g_D602:                                         ; used by AI, INIT (to name)
+        resb 2
+g_D604:                                         ; used by AI (to name)
+        resb 2
+g_D606:                                         ; used by AI (to name)
+        resb 2
+g_D608:                                         ; used by AI (to name)
+        resb 2
+g_D60A:                                         ; used by AI (to name)
+        resb 2
+g_D60C:                                         ; used by AI (to name)
+        resb 2
+g_D60E:                                         ; used by GAME, INIT (to name)
+        resb 2
+g_D610:                                         ; used by GAME, INIT (to name)
+        resb 2
+g_D612:                                         ; used by INIT (to name)
+        resb 2
+g_D614:                                         ; used by INIT (to name)
+        resb 2
+g_D616:                                         ; used by INIT (to name)
+        resb 2
+g_D618:                                         ; used by AI (to name)
+        resb 1
+g_D619:                                         ; used by AI (to name)
+        resb 3
+g_D61C:                                         ; used by AI (to name)
+        resb 1
+g_D61D:                                         ; used by AI (to name)
+        resb 1
+g_D61E:                                         ; used by AI, INIT (to name)
+        resb 2
+g_D620:                                         ; used by AI, INIT (to name)
+        resb 2
+g_D622:                                         ; used by AI, INIT (to name)
+        resb 2
+g_D624:                                         ; used by AI, INIT (to name)
+        resb 2
+g_D626:                                         ; used by AI, INIT (to name)
+        resb 2
+g_D628:                                         ; used by AI, INIT (to name)
+        resb 2
+g_D62A:                                         ; used by AI, INIT (to name)
+        resb 1
+g_D62B:                                         ; used by AI (to name)
+        resb 1
+g_D62C:                                         ; used by AI, INIT (to name)
+        resb 2
+g_D62E:                                         ; used by AI, INIT (to name)
+        resb 2
+g_D630:                                         ; used by AI, INIT (to name)
+        resb 2
+g_D632:                                         ; used by AI, INIT (to name)
+        resb 38
+g_D658:                                         ; used by AI, INIT (to name)
+        resb 2
+g_D65A:                                         ; used by AI, INIT (to name)
+        resb 2
+g_D65C:                                         ; used by AI, INIT (to name)
+        resb 2
+g_D65E:                                         ; used by AI, INIT (to name)
+        resb 2
+g_D660:                                         ; used by AI, INIT (to name)
+        resb 1
+g_D661:                                         ; used by AI, INIT (to name)
+        resb 1
+g_D662:                                         ; used by INIT (to name)
+        resb 1
+g_D663:                                         ; used by INIT (to name)
+        resb 1
+g_D664:                                         ; used by INIT (to name)
+        resb 2
+g_D666:                                         ; used by INIT (to name)
+        resb 2
+g_D668:                                         ; used by AI, INIT (to name)
+        resb 2
+g_D66A:                                         ; used by INIT (to name)
+        resb 2
+g_D66C:                                         ; used by AI, INIT (to name)
+        resb 1
+g_D66D:                                         ; used by INIT (to name)
+        resb 1
+g_D66E:                                         ; used by AI, INIT (to name)
+        resb 2
+g_D670:                                         ; used by INIT (to name)
+        resb 2
+g_D672:                                         ; used by AI, INIT (to name)
+        resb 1
+g_D673:                                         ; used by AI (to name)
+        resb 1
+g_D674:                                         ; used by AI (to name)
+        resb 2
+g_D676:                                         ; used by AI (to name)
+        resb 1
+g_D677:                                         ; used by AI (to name)
+        resb 1
+g_D678:                                         ; used by AI (to name)
+        resb 64
+g_D6B8:                                         ; used by AI, INIT (to name)
+        resb 2
+g_D6BA:                                         ; used by AI (to name)
+        resb 2
+g_D6BC:                                         ; used by INIT (to name)
+        resb 2
+g_D6BE:                                         ; used by INIT (to name)
+        resb 2
+g_D6C0:                                         ; used by AI (to name)
+        resb 2
+g_D6C2:                                         ; used by AI (to name)
+        resb 2
+g_D6C4:                                         ; used by AI, INIT (to name)
+        resb 2
+g_D6C6:                                         ; used by AI, INIT (to name)
+        resb 1
+g_D6C7:                                         ; used by AI (to name)
+        resb 1
+g_D6C8:                                         ; used by AI, INIT (to name)
+        resb 2
+g_D6CA:                                         ; used by AI (to name)
+        resb 2
+g_D6CC:                                         ; used by AI, GAME, INIT (to name)
+        resb 2
+g_D6CE:                                         ; used by AI, GAME, INIT (to name)
+        resb 2
+g_D6D0:                                         ; used by AI, GAME, INIT (to name)
+        resb 2
+g_D6D2:                                         ; used by AI, GAME, INIT (to name)
+        resb 2
+g_D6D4:                                         ; used by AI, INIT (to name)
+        resb 2
+g_D6D6:                                         ; used by AI, INIT (to name)
+        resb 2
+g_D6D8:                                         ; used by GAME (to name)
+        resb 2
+g_D6DA:                                         ; used by GAME (to name)
+        resb 38
+g_D700:                                         ; used by GAME (to name)
+        resb 2
+g_D702:                                         ; used by GAME (to name)
+        resb 26
+g_D71C:                                         ; used by GAME, INIT (to name)
+        resb 2
+g_D71E:                                         ; used by GAME, INIT (to name)
+        resb 10
+g_D728:                                         ; used by AI, GAME, INIT (to name)
+        resb 686
+g_D9D6:                                         ; used by GAME (to name)
+        resb 4
+g_D9DA:                                         ; used by AI, INIT (to name)
+        resb 32
+g_D9FA:                                         ; used by INIT (to name)
+        resb 12
+g_DA06:                                         ; used by INIT (to name)
+        resb 2
+g_DA08:                                         ; used by INIT (to name)
+        resb 2
+g_DA0A:                                         ; used by AI (to name)
+        resb 2
+g_DA0C:                                         ; used by AI (to name)
+        resb 1
+g_DA0D:                                         ; used by MENUS (to name)
+        resb 29
+g_DA2A:                                         ; used by AI, INIT (to name)
+        resb 2
+g_DA2C:                                         ; used by AI, INIT (to name)
+        resb 2
+g_DA2E:                                         ; used by AI, INIT (to name)
+        resb 2
+g_DA30:                                         ; used by AI, INIT (to name)
+        resb 26
+g_DA4A:                                         ; used by AI (to name)
+        resb 2
+g_DA4C:                                         ; used by AI (to name)
+        resb 38
+g_DA72:                                         ; used by AI (to name)
+        resb 2
+g_DA74:                                         ; used by AI (to name)
+        resb 2
+g_DA76:                                         ; used by AI (to name)
+        resb 2
+g_DA78:                                         ; used by AI (to name)
+        resb 38
+g_DA9E:                                         ; used by AI (to name)
+        resb 2
+g_DAA0:                                         ; used by AI (to name)
+        resb 2
+g_DAA2:                                         ; used by AI (to name)
+        resb 2
+g_DAA4:                                         ; used by AI (to name)
+        resb 42
+g_DACE:                                         ; used by AI, INIT (to name)
+        resb 2
+g_DAD0:                                         ; used by AI, INIT (to name)
+        resb 2
+g_DAD2:                                         ; used by INIT (to name)
+        resb 2
+g_DAD4:                                         ; used by INIT (to name)
+        resb 2
+g_DAD6:                                         ; used by INIT (to name)
+        resb 2
+g_DAD8:                                         ; used by INIT (to name)
+        resb 2
+g_DADA:                                         ; used by INIT (to name)
+        resb 2
+g_DADC:                                         ; used by INIT (to name)
+        resb 2
+g_DADE:                                         ; used by INIT (to name)
+        resb 8
+g_DAE6:                                         ; used by INIT (to name)
+        resb 2
+g_DAE8:                                         ; used by INIT (to name)
+        resb 2
+g_DAEA:                                         ; used by INIT (to name)
+        resb 20
+g_DAFE:                                         ; used by INIT (to name)
+        resb 2
+g_DB00:                                         ; used by INIT (to name)
+        resb 2
+g_DB02:                                         ; used by INIT (to name)
+        resb 14
+g_DB10:                                         ; used by INIT (to name)
+        resb 2
+g_DB12:                                         ; used by INIT (to name)
+        resb 2
+g_DB14:                                         ; used by INIT (to name)
+        resb 2
+g_DB16:                                         ; used by INIT (to name)
+        resb 2
+g_DB18:                                         ; used by INIT (to name)
+        resb 2
+g_DB1A:                                         ; used by INIT (to name)
+        resb 2
+g_DB1C:                                         ; used by INIT (to name)
+        resb 2
+g_DB1E:                                         ; used by INIT (to name)
+        resb 2
+g_DB20:                                         ; used by INIT (to name)
+        resb 2
+g_DB22:                                         ; used by INIT (to name)
+        resb 2
+g_DB24:                                         ; used by INIT (to name)
+        resb 2
+g_DB26:                                         ; used by INIT (to name)
+        resb 2
+g_DB28:                                         ; used by INIT (to name)
+        resb 2
+g_DB2A:                                         ; used by INIT (to name)
+        resb 2
+g_DB2C:                                         ; used by INIT (to name)
+        resb 2
+g_DB2E:                                         ; used by INIT (to name)
+        resb 28
+g_DB4A:                                         ; used by INIT (to name)
+        resb 2
+g_DB4C:                                         ; used by INIT (to name)
+        resb 4
+g_DB50:                                         ; used by INIT (to name)
+        resb 28
+g_DB6C:                                         ; used by INIT (to name)
+        resb 2
+g_DB6E:                                         ; used by INIT (to name)
+        resb 4
+g_DB72:                                         ; used by INIT (to name)
+        resb 28
+g_DB8E:                                         ; used by INIT (to name)
+        resb 2
+g_DB90:                                         ; used by INIT (to name)
+        resb 4
+g_DB94:                                         ; used by INIT (to name)
+        resb 17
+g_DBA5:                                         ; used by INIT (to name)
+        resb 12
+g_DBB1:                                         ; used by INIT (to name)
+        resb 1
+g_DBB2:                                         ; used by INIT (to name)
+        resb 12
+g_DBBE:                                         ; used by INIT (to name)
+        resb 2
+g_DBC0:                                         ; used by INIT (to name)
+        resb 2
+g_DBC2:                                         ; used by INIT (to name)
+        resb 1
+g_DBC3:                                         ; used by INIT (to name)
+        resb 1
+g_DBC4:                                         ; used by INIT (to name)
+        resb 1
+g_DBC5:                                         ; used by INIT (to name)
+        resb 1
+g_DBC6:                                         ; used by INIT (to name)
+        resb 2
+g_DBC8:                                         ; used by INIT (to name)
+        resb 2
+g_DBCA:                                         ; used by INIT (to name)
+        resb 2
+g_DBCC:                                         ; used by INIT (to name)
+        resb 40
+g_DBF4:                                         ; used by INIT (to name)
+        resb 1
+g_DBF5:                                         ; used by INIT (to name)
+        resb 19
+g_DC08:                                         ; used by INIT (to name)
+        resb 34
+g_DC2A:                                         ; used by AI (to name)
+        resb 2
+g_DC2C:                                         ; used by AI (to name)
+        resb 2
+g_DC2E:                                         ; used by AI (to name)
+        resb 2
+g_DC30:                                         ; used by AI (to name)
+        resb 2
+g_DC32:                                         ; used by AI (to name)
+        resb 2
+g_DC34:                                         ; used by AI (to name)
+        resb 2
+g_DC36:                                         ; used by AI (to name)
+        resb 2
+g_DC38:                                         ; used by AI (to name)
+        resb 2
+g_DC3A:                                         ; used by AI (to name)
+        resb 56
+g_DC72:                                         ; used by AI (to name)
+        resb 96
+g_DCD2:                                         ; used by AI (to name)
+        resb 2
+g_DCD4:                                         ; used by AI (to name)
+        resb 2
+g_DCD6:                                         ; used by AI (to name)
+        resb 2
+g_DCD8:                                         ; used by AI (to name)
+        resb 52
+g_DD0C:                                         ; used by AI (to name)
+        resb 50
+g_DD3E:                                         ; used by AI (to name)
+        resb 400
+g_DECE:                                         ; used by AI (to name)
+        resb 25
+g_DEE7:                                         ; used by AI (to name)
+        resb 25
+g_DF00:                                         ; used by AI (to name)
+        resb 50
+g_DF32:                                         ; used by AI (to name)
+        resb 50
+g_DF64:                                         ; used by AI (to name)
+        resb 2
+g_DF66:                                         ; used by AI (to name)
+        resb 2
+g_DF68:                                         ; used by AI (to name)
+        resb 2
+g_DF6A:                                         ; used by FADES, FADES10, FADES11, FADES12, FADES5, FADES6, FADES8 (to name)
+        resb 2
+g_DF6C:                                         ; used by FADES, FADES10, FADES11, FADES12, FADES5, FADES6, FADES8 (to name)
+        resb 2
+g_DF6E:                                         ; used by FADES, FADES10, FADES11, FADES12, FADES5, FADES6, FADES8 (to name)
+        resb 2
+g_DF70:                                         ; used by FADES, FADES10, FADES11, FADES12, FADES5, FADES6, FADES8 (to name)
+        resb 2
 RetraceCount:                                   ; retrace count measured by CalibrateRetrace; used by
                                                 ; CalibrateRetrace
         resb 2
@@ -351,4 +1505,16 @@ VoiceListEndSeg:                                ; end of the voice lists, segmen
                                                 ; PrepareSong
         resb 2
 VoiceListFlags:                                 ; voice list flags; used by InitVoiceLists, PrepareSong
-        resb 6736
+        resb 582
+g_E366:                                         ; used by AI, INIT, LP (to name)
+        resb 1
+g_E367:                                         ; used by AI, INIT, LP (to name)
+        resb 1
+g_E368:                                         ; used by INIT (to name)
+        resb 1
+g_E369:                                         ; used by INIT (to name)
+        resb 1
+g_E36A:                                         ; used by INIT (to name)
+        resb 1
+g_E36B:                                         ; used by LP, MENUS (to name)
+        resb 6149

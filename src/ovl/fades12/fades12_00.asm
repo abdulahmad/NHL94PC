@@ -6,14 +6,14 @@ Fades12_3358_0000:
 	push	si
 	mov	ax, [bp + 0xc]
 	and	al, 0xf8
-	mov	[0xdf6a], ax
+	mov	[g_DF6A], ax
 	mov	ax, [bp + 0x10]
 	and	al, 0xf8
-	mov	[0xdf6c], ax
+	mov	[g_DF6C], ax
 	mov	ax, [bp + 0xe]
-	mov	[0xdf6e], ax
+	mov	[g_DF6E], ax
 	mov	ax, [bp + 0x12]
-	mov	[0xdf70], ax
+	mov	[g_DF70], ax
 	call	0x0FEF:UseCurrentPage
 	and	byte [bp + 0x8], 0xf8
 	mov	ax, [bp + 0x8]

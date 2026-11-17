@@ -5,49 +5,49 @@
 Init_256C_0004:
 	call	0x0EDC:CrowdNoiseOff
 	call	0x1B35:OvlThunk276
-	cmp	word [0x49fc], -0x1
+	cmp	word [g_49FC], -0x1
 	jz	short .1
-	push	word [0xd62e]
-	push	word [0xd62c]
+	push	word [g_D62E]
+	push	word [g_D62C]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 .1:
 	call	0x2137:Init_2137_03D6
 	push	cs
 	call	Init_256C_012E
-	push	word [0xc25e]
-	push	word [0xc25c]
+	push	word [g_C25E]
+	push	word [g_C25C]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	push	word [0xd6d6]
-	push	word [0xd6d4]
+	push	word [g_D6D6]
+	push	word [g_D6D4]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	push	word [0x900]
-	push	word [0x8fe]
+	push	word [g_0900]
+	push	word [g_08FE]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0x900], ax
-	mov	[0x8fe], ax
-	push	word [0xc25a]
-	push	word [0xc258]
+	mov	[g_0900], ax
+	mov	[g_08FE], ax
+	push	word [g_C25A]
+	push	word [g_C258]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	push	word [0xdad0]
-	push	word [0xdace]
+	push	word [g_DAD0]
+	push	word [g_DACE]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	mov	ax, [0xcffe]
-	or	ax, [0xcffc]
+	mov	ax, [g_CFFE]
+	or	ax, [g_CFFC]
 	jz	short .2
-	push	word [0xcffe]
-	push	word [0xcffc]
+	push	word [g_CFFE]
+	push	word [g_CFFC]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0xcffe], ax
-	mov	[0xcffc], ax
+	mov	[g_CFFE], ax
+	mov	[g_CFFC], ax
 .2:
 	call	0x0D6B:UnhookDivideError
 	mov	word [PadRepeatOn], 0x0
@@ -68,30 +68,30 @@ Init_256C_0004:
 	push	word [HeapSizeLo]
 	call	0x03A3:UseCharSeg
 	add	sp, 0x4
-	mov	word [0x8fc], 0x50
+	mov	word [g_08FC], 0x50
 	retf
 	db	0x90
 
 Init_256C_00E8:
-	push	word [0x4a58]
-	push	word [0x4a56]
+	push	word [g_4A58]
+	push	word [g_4A56]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	push	word [0x4a5c]
-	push	word [0x4a5a]
+	push	word [g_4A5C]
+	push	word [g_4A5A]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	push	word [0x4a60]
-	push	word [0x4a5e]
+	push	word [g_4A60]
+	push	word [g_4A5E]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0x4a60], ax
-	mov	[0x4a5e], ax
-	mov	[0x4a5c], ax
-	mov	[0x4a5a], ax
-	mov	[0x4a58], ax
-	mov	[0x4a56], ax
+	mov	[g_4A60], ax
+	mov	[g_4A5E], ax
+	mov	[g_4A5C], ax
+	mov	[g_4A5A], ax
+	mov	[g_4A58], ax
+	mov	[g_4A56], ax
 	retf
 	db	0x90
 

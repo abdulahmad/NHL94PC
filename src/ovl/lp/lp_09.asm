@@ -67,10 +67,10 @@ Lp_2305_000C:
 	lea	ax, [bp - 0x18]
 	db	0x03, 0xD8		; add bx, ax
 	mov	byte [bx], 0x0
-	mov	es, [0x8bc4]
+	mov	es, [g_8BC4]
 	test	byte [es:0xac5e], 0x4
 	jnz	short .5
-	mov	es, [0x8bc6]
+	mov	es, [g_8BC6]
 	mov	[es:0x8b3], ax
 	mov	[es:0x8b5], ss
 	push	0x0
@@ -120,7 +120,7 @@ Lp_2305_000C:
 	jz	short .7
 	jmp	near .9
 .7:
-	cmp	byte [0xe36b], 0x0
+	cmp	byte [g_E36B], 0x0
 	jz	short .8
 	push	si
 	call	0x0FEF:ClearClipRect
@@ -170,12 +170,12 @@ Lp_2305_000C:
 	push	word 0xaf32
 	push	word 0x3a0b
 	push	word 0xac62
-	mov	es, [0x8bc8]
+	mov	es, [g_8BC8]
 	push	word [es:0xac5a]
 	call	0x28A8:Lp_28A8_0108
 	add	sp, 0xa
 	db	0x8B, 0xF0		; mov si, ax
-	cmp	byte [0xe36b], 0x0
+	cmp	byte [g_E36B], 0x0
 	jz	short .9
 	push	0x0
 	call	0x0FEF:ClearClipRect
@@ -655,7 +655,7 @@ Lp_2305_05E8:
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, [bp + 0x6]
 	mov	dx, [bp + 0x8]
-	mov	es, [0x8bca]
+	mov	es, [g_8BCA]
 	mov	[es:0x6ca], ax
 	mov	[es:0x6cc], dx
 	push	0x0
@@ -710,7 +710,7 @@ Lp_2305_061C:
 	push	ax
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
-	mov	es, [0x8bd0]
+	mov	es, [g_8BD0]
 	mov	bx, [bp - 0xa6]
 	shl	bx, byte 0x2
 	push	word [es:bx + 0xb6e]
@@ -744,7 +744,7 @@ Lp_2305_061C:
 	push	word 0xbe4
 	push	word 0x3701
 	push	word 0xbaf
-	mov	es, [0x8bd0]
+	mov	es, [g_8BD0]
 	push	word [es:si + 0xb6e]
 	push	word [es:si + 0xb6c]
 	call	0x0CD1:CopyFileByName
@@ -854,7 +854,7 @@ Lp_2305_061C:
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	lea	ax, [bp - 0xe]
-	mov	es, [0x8bcc]
+	mov	es, [g_8BCC]
 	mov	[es:0x19e], ax
 	mov	[es:0x1a0], ss
 	lea	ax, [bp - 0xa0]
@@ -974,7 +974,7 @@ Lp_2305_061C:
 	call	Lp_2305_0214
 	add	sp, 0xc
 	lea	ax, [bp - 0x94]
-	mov	es, [0x8bce]
+	mov	es, [g_8BCE]
 	mov	[es:0x1f4], ax
 	mov	[es:0x1f6], ss
 	lea	ax, [bp - 0xa0]

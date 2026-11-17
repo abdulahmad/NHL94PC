@@ -42,7 +42,7 @@ Lp_22D3_0000:
 	db	0x8B, 0xF8		; mov di, ax
 	mov	byte [bp + di - 0x16], 0x0
 	lea	ax, [bp - 0x16]
-	mov	es, [0x8bc2]
+	mov	es, [g_8BC2]
 	mov	[es:0x105], ax
 	mov	[es:0x107], ss
 	push	0x0
@@ -292,7 +292,7 @@ Lp_22D3_0262:
 	mov	bl, [bp - 0x1]
 	db	0x2A, 0xFF		; sub bh, bh
 	shl	bx, 1
-	mov	di, [bx + 0x1070]
+	mov	di, [bx + g_1070]
 	jmp	short .2
 	db	0x90
 .1:
@@ -305,7 +305,7 @@ Lp_22D3_0262:
 	db	0x2B, 0xF6		; sub si, si
 	mov	[bp - 0x4], di
 .3:
-	mov	al, [si + 0x1826]
+	mov	al, [si + g_1826]
 	mov	[bp - 0x14], al
 	mov	[bp - 0x13], al
 	mov	[bp - 0x12], al

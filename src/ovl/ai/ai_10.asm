@@ -25,35 +25,35 @@ Ai_28BB_0018:
 	shl	di, 1
 	mov	bx, [si + 0x60]
 	mov	ax, [bx + di + 0x2c]
-	mov	[0xd66c], ax
+	mov	[g_D66C], ax
 	test	byte [CrowdState], 0x4
 	jz	short .2
-	sub	word [0xd66c], 0xcc
+	sub	word [g_D66C], 0xcc
 	mov	al, [si + 0x47]
 	cbw
 	db	0x8B, 0xF8		; mov di, ax
 	shl	di, 1
 	mov	bx, [si + 0x60]
-	mov	ax, [0xd66c]
+	mov	ax, [g_D66C]
 	db	0x0B, 0xC0		; or ax, ax
 	jnl	short .1
 	db	0x2B, 0xC0		; sub ax, ax
 .1:
 	mov	[bx + di + 0x2c], ax
-	cmp	word [0xd66c], 0x0
+	cmp	word [g_D66C], 0x0
 	jnl	short .2
-	mov	word [0xd66c], 0x0
+	mov	word [g_D66C], 0x0
 .2:
-	sar	word [0xd66c], byte 0x7
+	sar	word [g_D66C], byte 0x7
 	mov	bx, [si + 0x36]
 	shl	bx, byte 0x2
-	mov	ax, [bx + 0x29e0]
-	imul	word [0xd66c]
+	mov	ax, [bx + g_29E0]
+	imul	word [g_D66C]
 	add	[si + 0xc], ax
 	mov	bx, [si + 0x36]
 	shl	bx, byte 0x2
-	mov	ax, [bx + 0x29e2]
-	imul	word [0xd66c]
+	mov	ax, [bx + g_29E2]
+	imul	word [g_D66C]
 	add	[si + 0xe], ax
 	or	byte [si + 0x44], 0x20
 	db	0x8B, 0xDE		; mov bx, si
@@ -75,13 +75,13 @@ Ai_28BB_009C:
 	db	0x2A, 0xE4		; sub ah, ah
 	sub	ax, strict word 0x14
 	neg	ax
-	mov	[0xd66c], ax
+	mov	[g_D66C], ax
 	test	byte [CrowdState], 0x1
 	jz	short .1
 	sar	ax, 1
-	add	[0xd66c], ax
+	add	[g_D66C], ax
 .1:
-	mov	ax, [0xd66c]
+	mov	ax, [g_D66C]
 	shl	ax, 1
 	call	0x0C11:randomd0
 	cmp	ax, strict word 0x8
@@ -97,7 +97,7 @@ Ai_28BB_009C:
 .4:
 	shl	si, byte 0x7
 	add	si, 0xb50e
-	mov	word [0xd6b8], 0x6
+	mov	word [g_D6B8], 0x6
 .5:
 	cmp	word [si + 0x1a], 0x0
 	jz	short .6
@@ -107,7 +107,7 @@ Ai_28BB_009C:
 	jnz	short .6
 	mov	ax, [si + 0x2]
 	sub	ax, [di + 0x2]
-	mov	[0xd66c], ax
+	mov	[g_D66C], ax
 	cwd
 	db	0x33, 0xC2		; xor ax, dx
 	db	0x2B, 0xC2		; sub ax, dx
@@ -115,20 +115,20 @@ Ai_28BB_009C:
 	jg	short .6
 	mov	ax, [si + 0x6]
 	sub	ax, [di + 0x6]
-	mov	[0xd672], ax
+	mov	[g_D672], ax
 	cwd
 	db	0x33, 0xC2		; xor ax, dx
 	db	0x2B, 0xC2		; sub ax, dx
 	cmp	ax, strict word 0x1e
 	jg	short .6
-	mov	ax, [0xd66c]
-	mov	dx, [0xd672]
+	mov	ax, [g_D66C]
+	mov	dx, [g_D672]
 	call	0x0D5F:VectorToDir8
 	cmp	ax, [di + 0x36]
 	jz	short .7
 .6:
 	add	si, 0x80
-	dec	word [0xd6b8]
+	dec	word [g_D6B8]
 	jnz	short .5
 	pop	si
 	pop	di
@@ -174,7 +174,7 @@ Ai_28BB_0168:
 	shl	si, 1
 .1:
 	mov	ax, [di + 0x2]
-	mov	bx, [0x298a]
+	mov	bx, [g_298A]
 	sub	ax, [bx]
 	cwd
 	db	0x33, 0xC2		; xor ax, dx
@@ -182,7 +182,7 @@ Ai_28BB_0168:
 	cmp	ax, strict word 0x28
 	jg	short .2
 	mov	ax, [di + 0x6]
-	mov	bx, [0x298e]
+	mov	bx, [g_298E]
 	sub	ax, [bx]
 	cwd
 	db	0x33, 0xC2		; xor ax, dx
@@ -191,7 +191,7 @@ Ai_28BB_0168:
 	jg	short .2
 	sar	si, 1
 .2:
-	cmp	word [0x29da], 0x2
+	cmp	word [g_29DA], 0x2
 	jng	short .3
 	shl	si, byte 0x2
 .3:
@@ -207,9 +207,9 @@ Ai_28BB_0168:
 	jl	short .5
 	shl	si, byte 0x2
 .5:
-	test	byte [0x29bb], 0x8
+	test	byte [g_29BB], 0x8
 	jz	short .10
-	mov	bx, [0x2996]
+	mov	bx, [g_2996]
 	mov	al, [bx]
 	db	0x0A, 0xC0		; or al, al
 	jl	short .10
@@ -326,7 +326,7 @@ Ai_28BB_0284:
 	jz	short .5
 	jmp	near .24
 .5:
-	test	byte [0x29bb], 0x1
+	test	byte [g_29BB], 0x1
 	jz	short .6
 	mov	ax, 0x100
 	mov	[si + 0x18], ax
@@ -351,7 +351,7 @@ Ai_28BB_0284:
 	or	byte [si + 0x44], 0x20
 	mov	bx, [bp - 0x2]
 	shl	bx, 1
-	mov	ax, [bx + 0x5a2c]
+	mov	ax, [bx + g_5A2C]
 	db	0x8B, 0xDE		; mov bx, si
 	call	0x2E42:Ai_2E42_0012
 	cmp	word [di + 0x1a], 0x0
@@ -415,7 +415,7 @@ Ai_28BB_0284:
 	jng	short .14
 	jmp	near .24
 .14:
-	test	byte [0x29bb], 0x10
+	test	byte [g_29BB], 0x10
 	jz	short .15
 	jmp	near .24
 .15:
@@ -436,15 +436,15 @@ Ai_28BB_0284:
 	jnz	short .17
 	jmp	near .24
 .17:
-	inc	word [0x49f2]
-	cmp	word [0x49f2], 0x3
+	inc	word [g_49F2]
+	cmp	word [g_49F2], 0x3
 	jl	short .21
-	mov	word [0x49f2], 0x0
+	mov	word [g_49F2], 0x0
 	push	0x13
 	jmp	short .20
 	db	0x90, 0x90
 .18:
-	test	byte [0x29bb], 0x10
+	test	byte [g_29BB], 0x10
 	jnz	short .21
 	cmp	word [di + 0x18], 0x23
 	jng	short .19
@@ -541,9 +541,9 @@ Ai_28BB_047E:
 	sub	[bp + 0xa], ax
 	db	0x8B, 0xC6		; mov ax, si
 	neg	ax
-	mov	[0xd66c], ax
+	mov	[g_D66C], ax
 	mov	ax, [bp + 0xa]
-	mov	[0xd672], ax
+	mov	[g_D672], ax
 	db	0x8B, 0xD0		; mov dx, ax
 	shl	dx, byte 0x4
 	db	0x8B, 0xC2		; mov ax, dx
@@ -572,13 +572,13 @@ Ai_28BB_047E:
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .4
 .3:
-	push	word [0xd672]
-	push	word [0xd66c]
+	push	word [g_D672]
+	push	word [g_D66C]
 	call	0x03A3:FoldScale
 	add	sp, 0x4
 	db	0x8B, 0xF0		; mov si, ax
 	inc	si
-	mov	ax, [0xd66c]
+	mov	ax, [g_D66C]
 	cwd
 	db	0x8A, 0xF2		; mov dh, dl
 	db	0x8A, 0xD4		; mov dl, ah
@@ -586,8 +586,8 @@ Ai_28BB_047E:
 	db	0x2A, 0xC0		; sub al, al
 	db	0x8B, 0xDE		; mov bx, si
 	call	0x03A3:IdivWords.regs
-	mov	[0xd66c], ax
-	mov	ax, [0xd672]
+	mov	[g_D66C], ax
+	mov	ax, [g_D672]
 	cwd
 	db	0x8A, 0xF2		; mov dh, dl
 	db	0x8A, 0xD4		; mov dl, ah
@@ -595,8 +595,8 @@ Ai_28BB_047E:
 	db	0x2A, 0xC0		; sub al, al
 	db	0x8B, 0xDE		; mov bx, si
 	call	0x03A3:IdivWords.regs
-	mov	[0xd672], ax
-	mov	word [0x5a2a], 0x1
+	mov	[g_D672], ax
+	mov	word [g_5A2A], 0x1
 	push	di
 	push	cs
 	call	Ai_28BB_2E12
@@ -620,11 +620,11 @@ Ai_28BB_055A:
 	jz	short .2
 	jmp	near .6
 .2:
-	test	byte [0x29bb], 0x1
+	test	byte [g_29BB], 0x1
 	jz	short .3
 	jmp	near .6
 .3:
-	mov	bx, [0x2996]
+	mov	bx, [g_2996]
 	mov	al, [bx]
 	cbw
 	cmp	ax, [si + 0x5e]
@@ -639,14 +639,14 @@ Ai_28BB_055A:
 	push	cs
 	call	Ai_28BB_1848
 	add	sp, 0x4
-	cmp	word [0xdcd2], 0x8
+	cmp	word [g_DCD2], 0x8
 	jl	short .6
-	mov	bx, [0x2996]
+	mov	bx, [g_2996]
 	mov	al, [bx]
 	cbw
 	cmp	ax, [si + 0x5e]
 	jnz	short .5
-	cmp	word [0xdcd2], 0xa
+	cmp	word [g_DCD2], 0xa
 	jl	short .6
 .5:
 	mov	ax, [di + 0x6]
@@ -675,7 +675,7 @@ Ai_28BB_055A:
 	call	0x0C11:randomd0
 	cmp	ax, strict word 0x2
 	jg	short .6
-	test	byte [0x29bb], 0x10
+	test	byte [g_29BB], 0x10
 	jnz	short .6
 	push	0x11
 	push	si
@@ -719,7 +719,7 @@ Ai_28BB_0622:
 	mov	bx, [bp - 0x6]
 	test	byte [bx + 0x44], 0x80
 	jnz	short .8
-	mov	bx, [0x298e]
+	mov	bx, [g_298E]
 	cmp	word [bx], -0x52
 	jl	short .7
 	mov	byte [bp - 0x1], 0x0
@@ -739,19 +739,19 @@ Ai_28BB_0622:
 .7:
 	db	0x0B, 0xD2		; or dx, dx
 	jz	short .11
-	test	byte [0x29be], 0x80
+	test	byte [g_29BE], 0x80
 	jnz	short .12
-	or	byte [0x29be], 0x80
-	cmp	word [0x49f8], 0x4
+	or	byte [g_29BE], 0x80
+	cmp	word [g_49F8], 0x4
 	jnl	short .12
-	mov	word [0x49f8], 0x4
-	mov	word [0x49fa], 0x0
+	mov	word [g_49F8], 0x4
+	mov	word [g_49FA], 0x0
 	pop	si
 	pop	di
 	leave
 	retf
 .8:
-	mov	bx, [0x298e]
+	mov	bx, [g_298E]
 	cmp	word [bx], 0x52
 	jg	short .7
 	mov	byte [bp - 0x1], 0x0
@@ -767,14 +767,14 @@ Ai_28BB_0622:
 	jl	short .9
 	jmp	short .7
 .11:
-	test	byte [0x29be], 0x80
+	test	byte [g_29BE], 0x80
 	jz	short .12
-	and	byte [0x29be], 0x7f
-	cmp	word [0x49f8], 0x4
+	and	byte [g_29BE], 0x7f
+	cmp	word [g_49F8], 0x4
 	jnz	short .12
-	cmp	word [0x49fa], 0x0
+	cmp	word [g_49FA], 0x0
 	jnz	short .12
-	mov	word [0x49f8], 0xffff
+	mov	word [g_49F8], 0xffff
 .12:
 	pop	si
 	pop	di
@@ -786,7 +786,7 @@ Ai_28BB_06F6:
 	push	di
 	push	si
 	mov	si, [bp + 0x8]
-	mov	bx, [0x2996]
+	mov	bx, [g_2996]
 	mov	al, [bx]
 	cbw
 	db	0x3B, 0xC6		; cmp ax, si
@@ -832,8 +832,8 @@ Ai_28BB_06F6:
 	add	sp, 0x2
 	mov	ax, [di + 0x2]
 	sub	ax, [si + 0x2]
-	add	[0xd66c], ax
-	mov	ax, [0xd66c]
+	add	[g_D66C], ax
+	mov	ax, [g_D66C]
 	cwd
 	db	0x33, 0xC2		; xor ax, dx
 	db	0x2B, 0xC2		; sub ax, dx
@@ -843,39 +843,39 @@ Ai_28BB_06F6:
 .9:
 	mov	ax, [di + 0x6]
 	sub	ax, [si + 0x6]
-	add	[0xd672], ax
-	mov	ax, [0xd672]
+	add	[g_D672], ax
+	mov	ax, [g_D672]
 	cwd
 	db	0x33, 0xC2		; xor ax, dx
 	db	0x2B, 0xC2		; sub ax, dx
 	cmp	ax, strict word 0xe
 	jg	short .13
-	mov	ax, [0xd672]
+	mov	ax, [g_D672]
 	db	0x8B, 0xD0		; mov dx, ax
 	call	0x03A3:ImulRegs
-	mov	[0xd672], ax
-	mov	[0xd674], dx
-	mov	ax, [0xd66c]
+	mov	[g_D672], ax
+	mov	[g_D674], dx
+	mov	ax, [g_D66C]
 	db	0x8B, 0xD0		; mov dx, ax
 	call	0x03A3:ImulRegs
-	mov	[0xd66c], ax
-	mov	[0xd66e], dx
-	mov	ax, [0xd672]
-	mov	dx, [0xd674]
-	add	[0xd66c], ax
-	adc	[0xd66e], dx
-	mov	word [0xd672], 0xc4
-	mov	word [0xd674], 0x0
+	mov	[g_D66C], ax
+	mov	[g_D66E], dx
+	mov	ax, [g_D672]
+	mov	dx, [g_D674]
+	add	[g_D66C], ax
+	adc	[g_D66E], dx
+	mov	word [g_D672], 0xc4
+	mov	word [g_D674], 0x0
 	cmp	word [si + 0x3e], 0x0
 	jng	short .10
-	sar	word [0xd672], byte 0x2
+	sar	word [g_D672], byte 0x2
 .10:
-	mov	ax, [0xd66c]
-	mov	dx, [0xd66e]
-	cmp	[0xd674], dx
+	mov	ax, [g_D66C]
+	mov	dx, [g_D66E]
+	cmp	[g_D674], dx
 	jc	short .13
 	ja	short .11
-	cmp	[0xd672], ax
+	cmp	[g_D672], ax
 	jc	short .13
 .11:
 	push	di
@@ -890,7 +890,7 @@ Ai_28BB_06F6:
 	jnz	short .16
 	mov	ax, [di + 0x2]
 	sub	ax, [si + 0x2]
-	mov	[0xd66c], ax
+	mov	[g_D66C], ax
 	cwd
 	db	0x33, 0xC2		; xor ax, dx
 	db	0x2B, 0xC2		; sub ax, dx
@@ -900,7 +900,7 @@ Ai_28BB_06F6:
 .14:
 	mov	ax, [di + 0x6]
 	sub	ax, [si + 0x6]
-	mov	[0xd672], ax
+	mov	[g_D672], ax
 	cwd
 	db	0x33, 0xC2		; xor ax, dx
 	db	0x2B, 0xC2		; sub ax, dx
@@ -908,12 +908,12 @@ Ai_28BB_06F6:
 	jng	short .15
 	jmp	near .18
 .15:
-	mov	ax, [0xd66c]
+	mov	ax, [g_D66C]
 	db	0x8B, 0xD0		; mov dx, ax
 	call	0x03A3:ImulRegs
 	mov	[bp - 0x4], ax
 	mov	[bp - 0x2], dx
-	mov	ax, [0xd672]
+	mov	ax, [g_D672]
 	db	0x8B, 0xD0		; mov dx, ax
 	call	0x03A3:ImulRegs
 	add	ax, [bp - 0x4]
@@ -930,7 +930,7 @@ Ai_28BB_06F6:
 .16:
 	mov	ax, [di + 0x2]
 	sub	ax, [si + 0x2]
-	mov	[0xd66c], ax
+	mov	[g_D66C], ax
 	cwd
 	db	0x33, 0xC2		; xor ax, dx
 	db	0x2B, 0xC2		; sub ax, dx
@@ -938,24 +938,24 @@ Ai_28BB_06F6:
 	jg	short .18
 	mov	ax, [di + 0x6]
 	sub	ax, [si + 0x6]
-	mov	[0xd672], ax
+	mov	[g_D672], ax
 	cwd
 	db	0x33, 0xC2		; xor ax, dx
 	db	0x2B, 0xC2		; sub ax, dx
 	cmp	ax, strict word 0x8
 	jg	short .18
-	mov	ax, [0xd66c]
+	mov	ax, [g_D66C]
 	db	0x8B, 0xD0		; mov dx, ax
 	call	0x03A3:ImulRegs
 	mov	[bp - 0x8], ax
 	mov	[bp - 0x6], dx
-	mov	ax, [0xd672]
+	mov	ax, [g_D672]
 	db	0x8B, 0xD0		; mov dx, ax
 	call	0x03A3:ImulRegs
 	add	ax, [bp - 0x8]
 	adc	dx, [bp - 0x6]
-	mov	[0xd66c], ax
-	mov	[0xd66e], dx
+	mov	[g_D66C], ax
+	mov	[g_D66E], dx
 	db	0x0B, 0xD2		; or dx, dx
 	jnz	short .18
 	cmp	ax, strict word 0x40
@@ -992,16 +992,16 @@ Ai_28BB_08C6:
 	jg	short .5
 	mov	bx, [di + 0x5e]
 	shl	bx, 1
-	mov	si, [bx - 0x2b6a]
+	mov	si, [bx + g_D496]
 	cmp	si, 0x10
 	jz	short .3
 .2:
-	mov	al, [si - 0x2b0b]
+	mov	al, [si + g_D4F5]
 	cbw
 	mov	[bp - 0x2], ax
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, 1
-	mov	ax, [bx - 0x2b8c]
+	mov	ax, [bx + g_D474]
 	sub	ax, [di + 0x6]
 	cmp	ax, strict word 0x16
 	jg	short .3
@@ -1016,17 +1016,17 @@ Ai_28BB_08C6:
 .3:
 	mov	bx, [di + 0x5e]
 	shl	bx, 1
-	mov	si, [bx - 0x2b6a]
+	mov	si, [bx + g_D496]
 	db	0x0B, 0xF6		; or si, si
 	jz	short .5
 .4:
-	mov	al, [si - 0x2b0d]
+	mov	al, [si + g_D4F3]
 	cbw
 	mov	[bp - 0x2], ax
 	mov	cx, [di + 0x6]
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, 1
-	sub	cx, [bx - 0x2b8c]
+	sub	cx, [bx + g_D474]
 	cmp	cx, 0x16
 	jg	short .5
 	push	ax
@@ -1057,7 +1057,7 @@ Ai_28BB_0956:
 	leave
 	retf
 .2:
-	mov	bx, [0x298e]
+	mov	bx, [g_298E]
 	mov	ax, [bx]
 	mov	bx, [bp + 0x8]
 	sub	ax, [bx + 0x6]
@@ -1092,8 +1092,8 @@ Ai_28BB_0956:
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[si + 0xc], ax
 	mov	[si + 0xe], ax
-	or	byte [0x29bc], 0x40
-	test	byte [0x29bb], 0x1
+	or	byte [g_29BC], 0x40
+	test	byte [g_29BB], 0x1
 	jnz	short .4
 	push	0x18
 	push	si
@@ -1111,8 +1111,8 @@ Ai_28BB_09E2:
 	enter	0xa, 0x0
 	push	di
 	push	si
-	mov	dx, [0xb384]
-	sub	dx, [0xb45a]
+	mov	dx, [g_B384]
+	sub	dx, [g_B45A]
 	db	0x0B, 0xD2		; or dx, dx
 	jng	short .1
 	mov	dx, 0xb362
@@ -1218,18 +1218,18 @@ Ai_28BB_0AA0:
 	jmp	near .12
 .1:
 	mov	si, [bp + 0x6]
-	mov	bx, [0x298e]
+	mov	bx, [g_298E]
 	mov	ax, [bx]
-	mov	[0xd66c], ax
+	mov	[g_D66C], ax
 	test	byte [si + 0x44], 0x80
 	jnz	short .2
-	neg	word [0xd66c]
+	neg	word [g_D66C]
 .2:
-	cmp	word [0xd66c], 0x0
+	cmp	word [g_D66C], 0x0
 	jnl	short .3
 	jmp	near .12
 .3:
-	cmp	word [0xd66c], 0x4e
+	cmp	word [g_D66C], 0x4e
 	jng	short .4
 	jmp	near .12
 .4:
@@ -1253,7 +1253,7 @@ Ai_28BB_0AA0:
 	mov	bx, [si + 0x60]
 	test	byte [bx + 0xba], 0x40
 	jz	short .7
-	cmp	word [0x29dc], 0xf
+	cmp	word [g_29DC], 0xf
 	jl	short .12
 	db	0x0B, 0xD2		; or dx, dx
 	jz	short .11
@@ -1268,11 +1268,11 @@ Ai_28BB_0AA0:
 	push	di
 	call	0x2E42:Ai_2E42_022A
 	add	sp, 0x2
-	cmp	word [0x29dc], 0xf
+	cmp	word [g_29DC], 0xf
 	jl	short .12
-	cmp	word [0x29dc], 0x1e
+	cmp	word [g_29DC], 0x1e
 	jnl	short .8
-	cmp	word [0xd66c], 0x800
+	cmp	word [g_D66C], 0x800
 	ja	short .12
 .8:
 	db	0x0B, 0xF6		; or si, si
@@ -1282,7 +1282,7 @@ Ai_28BB_0AA0:
 .9:
 	mov	dx, [di + 0xbc]
 .10:
-	cmp	dx, [0xd66c]
+	cmp	dx, [g_D66C]
 	jc	short .12
 	db	0x0B, 0xF6		; or si, si
 	jz	short .11
@@ -1320,13 +1320,13 @@ Ai_28BB_0B96:
 	push	di
 	push	si
 	mov	si, [bp + 0x6]
-	mov	word [0x4a66], 0x0
-	and	byte [0x29bc], 0xfb
-	mov	bx, [0x2996]
+	mov	word [g_4A66], 0x0
+	and	byte [g_29BC], 0xfb
+	mov	bx, [g_2996]
 	mov	byte [bx], 0xff
 	mov	word [si + 0x3e], 0x10
 	mov	ax, [si + 0x5e]
-	mov	[0x29a2], ax
+	mov	[g_29A2], ax
 	cmp	word [si + 0x1a], 0x0
 	jnz	short .1
 	mov	bx, 0x8
@@ -1338,7 +1338,7 @@ Ai_28BB_0B96:
 .2:
 	lea	ax, [bx + 0x28]
 	shl	ax, byte 0x2
-	mov	[0x29a6], ax
+	mov	[g_29A6], ax
 	cmp	word [si + 0x5e], 0x6
 	jl	short .3
 	mov	ax, 0x6
@@ -1368,17 +1368,17 @@ Ai_28BB_0B96:
 	jmp	near .13
 .8:
 	mov	ax, [si + 0x2]
-	mov	bx, [0x298a]
+	mov	bx, [g_298A]
 	sub	ax, [bx]
 	mov	[bp - 0x8], ax
 	mov	cx, [si + 0x6]
-	mov	bx, [0x298e]
+	mov	bx, [g_298E]
 	sub	cx, [bx]
 	mov	[bp - 0xa], cx
 	db	0x8B, 0xD1		; mov dx, cx
 	call	0x0D5F:VectorToDir8
 	db	0x8B, 0xF8		; mov di, ax
-	sub	di, [0x29a4]
+	sub	di, [g_29A4]
 	and	di, 0x7
 	cmp	di, 0x1
 	jng	short .9
@@ -1435,10 +1435,10 @@ Ai_28BB_0B96:
 	db	0x90
 .15:
 	mov	si, [bp + 0x6]
-	mov	bx, [0x29a4]
+	mov	bx, [g_29A4]
 	shl	bx, byte 0x2
-	mov	dx, [bx + 0x29e2]
-	mov	ax, [0x29a6]
+	mov	dx, [bx + g_29E2]
+	mov	ax, [g_29A6]
 	call	0x03A3:ImulRegs
 	db	0x8A, 0xF2		; mov dh, dl
 	db	0x8A, 0xD4		; mov dl, ah
@@ -1451,12 +1451,12 @@ Ai_28BB_0B96:
 	mov	bx, 0xbb8
 	call	0x03A3:IdivWords.regs
 	add	ax, [si + 0xe]
-	mov	bx, [0x2990]
+	mov	bx, [g_2990]
 	mov	[bx], ax
-	mov	bx, [0x29a4]
+	mov	bx, [g_29A4]
 	shl	bx, byte 0x2
-	mov	dx, [bx + 0x29e0]
-	mov	ax, [0x29a6]
+	mov	dx, [bx + g_29E0]
+	mov	ax, [g_29A6]
 	call	0x03A3:ImulRegs
 	db	0x8A, 0xF2		; mov dh, dl
 	db	0x8A, 0xD4		; mov dl, ah
@@ -1469,16 +1469,16 @@ Ai_28BB_0B96:
 	mov	bx, 0xbb8
 	call	0x03A3:IdivWords.regs
 	add	ax, [si + 0xc]
-	mov	bx, [0x298c]
+	mov	bx, [g_298C]
 	mov	[bx], ax
 	mov	ax, 0x1000
 	call	0x0C11:randomd0
-	mov	bx, [0x2994]
+	mov	bx, [g_2994]
 	mov	[bx], ax
 .16:
 	cmp	word [si + 0x1a], 0x0
 	jnz	short .20
-	mov	bx, [0x2990]
+	mov	bx, [g_2990]
 	cmp	word [bx], 0x0
 	jnl	short .17
 	mov	ax, 0x1
@@ -1499,9 +1499,9 @@ Ai_28BB_0B96:
 	mov	di, 0x1b9
 	jmp	short .21
 .20:
-	mov	bx, [0x298c]
+	mov	bx, [g_298C]
 	mov	ax, [bx]
-	mov	bx, [0x2990]
+	mov	bx, [g_2990]
 	mov	dx, [bx]
 	call	0x0D5F:VectorToDir8
 	push	ax
@@ -1518,7 +1518,7 @@ Ai_28BB_0B96:
 	db	0x8B, 0xDE		; mov bx, si
 	call	0x2E42:Ai_2E42_0012
 	or	byte [si + 0x44], 0x20
-	mov	bx, [0x2994]
+	mov	bx, [g_2994]
 	cmp	byte [bx + 0x1], 0x6
 	jl	short .22
 	mov	ax, 0x99
@@ -1538,21 +1538,21 @@ Ai_28BB_0DB4:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	si
-	test	byte [0xd6b8], 0x10
+	test	byte [g_D6B8], 0x10
 	jz	short .1
 	push	word [bp + 0x6]
 	jmp	short .5
 .1:
-	test	byte [0xd66c], 0x8
+	test	byte [g_D66C], 0x8
 	jnz	short .6
-	mov	al, [0xd66c]
+	mov	al, [g_D66C]
 	and	ax, strict word 0x7
-	mov	[0x29a4], ax
-	or	byte [0xd66c], 0x8
+	mov	[g_29A4], ax
+	or	byte [g_D66C], 0x8
 	mov	si, [bp + 0x6]
 	test	byte [si + 0x44], 0x8
 	jz	short .4
-	mov	ax, [0x29c2]
+	mov	ax, [g_29C2]
 	cmp	[si + 0x5e], ax
 	jnz	short .2
 	db	0x2B, 0xDB		; sub bx, bx
@@ -1580,8 +1580,8 @@ Ai_28BB_0E04:
 	mov	bx, [bp + 0x6]
 	mov	al, [bx + 0x36]
 	and	ax, strict word 0x7
-	mov	[0x29a4], ax
-	or	byte [0x29bc], 0x4
+	mov	[g_29A4], ax
+	or	byte [g_29BC], 0x4
 	leave
 	retf
 
@@ -1590,13 +1590,13 @@ Ai_28BB_0E1A:
 	push	di
 	push	si
 	mov	si, [bp + 0x6]
-	test	byte [0x29bb], 0x10
+	test	byte [g_29BB], 0x10
 	jnz	short .1
 	mov	bx, [si + 0x60]
 	inc	word [bx + 0x12]
 .1:
 	mov	ax, [si + 0x5e]
-	mov	[0x29a8], ax
+	mov	[g_29A8], ax
 	push	0x13
 	push	si
 	call	0x1E7E:Game_1E7E_0A74
@@ -1605,16 +1605,16 @@ Ai_28BB_0E1A:
 	call	0x2E42:Ai_2E42_065C
 	add	sp, 0x2
 	mov	ax, [si + 0x2]
-	mov	bx, [0x298a]
+	mov	bx, [g_298A]
 	sub	ax, [bx]
-	add	ax, [0xd66c]
+	add	ax, [g_D66C]
 	mov	[bp - 0x1a], ax
 	sar	ax, byte 0x2
 	mov	[bp - 0x8], ax
 	mov	ax, [si + 0x6]
-	mov	bx, [0x298e]
+	mov	bx, [g_298E]
 	sub	ax, [bx]
-	add	ax, [0xd672]
+	add	ax, [g_D672]
 	mov	[bp - 0x1c], ax
 	sar	ax, byte 0x2
 	mov	[bp - 0xa], ax
@@ -1640,7 +1640,7 @@ Ai_28BB_0E1A:
 	db	0x8B, 0xD0		; mov dx, ax
 	call	0x03A3:ImulRegs
 	db	0x8B, 0xC8		; mov cx, ax
-	mov	ax, [0x29a6]
+	mov	ax, [g_29A6]
 	db	0x8B, 0xDA		; mov bx, dx
 	db	0x8B, 0xD0		; mov dx, ax
 	sar	dx, byte 0x2
@@ -1734,7 +1734,7 @@ Ai_28BB_0E1A:
 	db	0x8B, 0xF9		; mov di, cx
 .8:
 	db	0x8B, 0xC7		; mov ax, di
-	mov	bx, [0x2994]
+	mov	bx, [g_2994]
 	mov	[bx + 0x1], al
 	db	0x8B, 0xC6		; mov ax, si
 	shl	al, byte 0x3
@@ -1743,7 +1743,7 @@ Ai_28BB_0E1A:
 	mov	[bx + 0x27], al
 	cbw
 	sub	ax, strict word 0x6
-	mov	[0xbc4c], ax
+	mov	[g_BC4C], ax
 	db	0x8B, 0xC6		; mov ax, si
 	mov	dx, [bp - 0x18]
 	call	0x03A3:ImulRegs
@@ -1755,11 +1755,11 @@ Ai_28BB_0E1A:
 	cwd
 	db	0x03, 0xC1		; add ax, cx
 	db	0x13, 0xD3		; adc dx, bx
-	mov	[0xd66c], ax
-	mov	[0xd66e], dx
-	mov	bx, [0x298a]
+	mov	[g_D66C], ax
+	mov	[g_D66E], dx
+	mov	bx, [g_298A]
 	mov	ax, [bx]
-	add	ax, [0xd66c]
+	add	ax, [g_D66C]
 	mov	bx, [bp + 0x6]
 	mov	[bx + 0x2a], ax
 	db	0x8B, 0xC6		; mov ax, si
@@ -1773,27 +1773,27 @@ Ai_28BB_0E1A:
 	cwd
 	db	0x03, 0xC1		; add ax, cx
 	db	0x13, 0xD3		; adc dx, bx
-	mov	[0xd672], ax
-	mov	[0xd674], dx
-	mov	bx, [0x298e]
+	mov	[g_D672], ax
+	mov	[g_D674], dx
+	mov	bx, [g_298E]
 	mov	ax, [bx]
-	add	ax, [0xd66c]
+	add	ax, [g_D66C]
 	mov	bx, [bp + 0x6]
 	mov	[bx + 0x2c], ax
-	mov	ax, [0xd66c]
-	mov	dx, [0xd66e]
+	mov	ax, [g_D66C]
+	mov	dx, [g_D66E]
 	call	0x2E42:Ai_2E42_000A
 	imul	bx, si, 0x78
 	db	0x8B, 0xF3		; mov si, bx
 	call	0x03A3:IdivWords.regs
-	mov	bx, [0x298c]
+	mov	bx, [g_298C]
 	mov	[bx], ax
-	mov	ax, [0xd672]
-	mov	dx, [0xd674]
+	mov	ax, [g_D672]
+	mov	dx, [g_D674]
 	call	0x2E42:Ai_2E42_000A
 	db	0x8B, 0xDE		; mov bx, si
 	call	0x03A3:IdivWords.regs
-	mov	bx, [0x2990]
+	mov	bx, [g_2990]
 	mov	[bx], ax
 	pop	si
 	pop	di
@@ -1805,7 +1805,7 @@ Ai_28BB_105A:
 	push	di
 	push	si
 	mov	di, [bp + 0x6]
-	cmp	word [0x29aa], 0x0
+	cmp	word [g_29AA], 0x0
 	jnz	short .1
 	mov	al, [di + 0x53]
 	db	0x2A, 0xE4		; sub ah, ah
@@ -1817,21 +1817,21 @@ Ai_28BB_105A:
 .1:
 	mov	ax, 0x6
 	call	0x0C11:randomd0
-	mov	[0xd66c], ax
+	mov	[g_D66C], ax
 	cmp	word [di + 0x5e], 0x6
 	jl	short .2
-	add	word [0xd66c], 0x6
+	add	word [g_D66C], 0x6
 .2:
 	cmp	word [di + 0x1a], 0x0
 	jz	short .3
-	mov	bx, [0x298a]
+	mov	bx, [g_298A]
 	mov	ax, [bx]
 	cwd
 	db	0x33, 0xC2		; xor ax, dx
 	db	0x2B, 0xC2		; sub ax, dx
 	cmp	ax, strict word 0x32
 	jg	short .3
-	mov	bx, [0x298e]
+	mov	bx, [g_298E]
 	mov	ax, [bx]
 	cwd
 	db	0x33, 0xC2		; xor ax, dx
@@ -1840,7 +1840,7 @@ Ai_28BB_105A:
 	jng	short .3
 	jmp	near .20
 .3:
-	mov	ax, [0xd66c]
+	mov	ax, [g_D66C]
 	cmp	[di + 0x5e], ax
 	jnz	short .4
 	jmp	near .20
@@ -1861,19 +1861,19 @@ Ai_28BB_105A:
 	jmp	near .20
 .7:
 	mov	ax, [si + 0x6]
-	mov	[0xd66c], ax
+	mov	[g_D66C], ax
 	mov	ax, [di + 0x6]
-	mov	[0xd672], ax
+	mov	[g_D672], ax
 	test	byte [di + 0x44], 0x80
 	jnz	short .8
-	neg	word [0xd66c]
-	neg	word [0xd672]
+	neg	word [g_D66C]
+	neg	word [g_D672]
 .8:
 	test	byte [CrowdState], 0x2
 	jz	short .9
-	mov	ax, [0xd672]
+	mov	ax, [g_D672]
 	sub	ax, strict word 0x4e
-	mov	cx, [0xd66c]
+	mov	cx, [g_D66C]
 	sub	cx, 0x4e
 	db	0x33, 0xC1		; xor ax, cx
 	jnl	short .9
@@ -1883,44 +1883,44 @@ Ai_28BB_105A:
 	jz	short .10
 	test	byte [si + 0x45], 0x80
 	jz	short .10
-	cmp	word [0xd672], -0x4e
+	cmp	word [g_D672], -0x4e
 	jnl	short .10
-	cmp	word [0xd66c], 0x0
+	cmp	word [g_D66C], 0x0
 	jng	short .10
 	jmp	near .20
 .10:
-	cmp	word [0xd66c], 0x4e
+	cmp	word [g_D66C], 0x4e
 	jg	short .11
-	mov	ax, [0xd672]
-	sub	[0xd66c], ax
-	cmp	word [0xd66c], -0xf
+	mov	ax, [g_D672]
+	sub	[g_D66C], ax
+	cmp	word [g_D66C], -0xf
 	jnl	short .11
 	jmp	near .20
 .11:
 	mov	ax, [si + 0x2]
-	mov	bx, [0x298a]
+	mov	bx, [g_298A]
 	sub	ax, [bx]
-	mov	[0xd672], ax
+	mov	[g_D672], ax
 	mov	ax, [si + 0x6]
-	mov	bx, [0x298e]
+	mov	bx, [g_298E]
 	sub	ax, [bx]
-	mov	[0xd6b8], ax
-	mov	ax, [0xd672]
-	mov	dx, [0xd6b8]
+	mov	[g_D6B8], ax
+	mov	ax, [g_D672]
+	mov	dx, [g_D6B8]
 	call	0x0D5F:VectorToDir8
-	mov	[0x29a4], ax
-	mov	ax, [0xd6b8]
+	mov	[g_29A4], ax
+	mov	ax, [g_D6B8]
 	db	0x8B, 0xD0		; mov dx, ax
 	call	0x03A3:ImulRegs
 	db	0x8B, 0xF0		; mov si, ax
-	mov	ax, [0xd672]
+	mov	ax, [g_D672]
 	db	0x8B, 0xFA		; mov di, dx
 	db	0x8B, 0xD0		; mov dx, ax
 	call	0x03A3:ImulRegs
 	db	0x03, 0xF0		; add si, ax
 	db	0x13, 0xFA		; adc di, dx
-	mov	[0xd6b8], si
-	mov	[0xd6ba], di
+	mov	[g_D6B8], si
+	mov	[g_D6BA], di
 	mov	bx, [bp + 0x6]
 	cmp	word [bx + 0x5e], 0x6
 	jl	short .12
@@ -1931,21 +1931,21 @@ Ai_28BB_105A:
 .13:
 	shl	di, byte 0x7
 	add	di, 0xb50e
-	mov	word [0xd6c0], 0x6
+	mov	word [g_D6C0], 0x6
 .14:
 	mov	ax, [di + 0x2]
-	mov	bx, [0x298a]
+	mov	bx, [g_298A]
 	sub	ax, [bx]
-	mov	[0xd66c], ax
+	mov	[g_D66C], ax
 	mov	ax, [di + 0x6]
-	mov	bx, [0x298e]
+	mov	bx, [g_298E]
 	sub	ax, [bx]
-	mov	[0xd672], ax
-	mov	ax, [0xd66c]
+	mov	[g_D672], ax
+	mov	ax, [g_D66C]
 	db	0x8B, 0xD0		; mov dx, ax
 	call	0x03A3:ImulRegs
 	db	0x8B, 0xF0		; mov si, ax
-	mov	ax, [0xd672]
+	mov	ax, [g_D672]
 	mov	[bp - 0x8], si
 	mov	[bp - 0x6], dx
 	db	0x8B, 0xD0		; mov dx, ax
@@ -1954,18 +1954,18 @@ Ai_28BB_105A:
 	adc	dx, [bp - 0x6]
 	mov	[bp - 0x4], ax
 	mov	[bp - 0x2], dx
-	mov	ax, [0xd6b8]
-	mov	dx, [0xd6ba]
+	mov	ax, [g_D6B8]
+	mov	dx, [g_D6BA]
 	cmp	[bp - 0x2], dx
 	jg	short .18
 	jl	short .15
 	cmp	[bp - 0x4], ax
 	ja	short .18
 .15:
-	mov	ax, [0xd66c]
-	mov	dx, [0xd672]
+	mov	ax, [g_D66C]
+	mov	dx, [g_D672]
 	call	0x0D5F:VectorToDir8
-	mov	si, [0x29a4]
+	mov	si, [g_29A4]
 	db	0x2B, 0xF0		; sub si, ax
 	inc	si
 	and	si, 0x7
@@ -1994,7 +1994,7 @@ Ai_28BB_105A:
 	jc	short .20
 .18:
 	add	di, 0x80
-	dec	word [0xd6c0]
+	dec	word [g_D6C0]
 	jz	short .19
 	jmp	near .14
 .19:
@@ -2026,13 +2026,13 @@ Ai_28BB_129A:
 	push	di
 	push	si
 	mov	di, [bp + 0x6]
-	test	byte [0x29be], 0x20
+	test	byte [g_29BE], 0x20
 	jz	short .1
 	mov	al, [di + 0x44]
-	xor	al, [0x29be]
+	xor	al, [g_29BE]
 	test	al, 0x40
 	jz	short .1
-	cmp	word [0x29aa], 0x0
+	cmp	word [g_29AA], 0x0
 	jz	short .1
 	mov	ax, 0x4
 	call	0x0C11:randomd0
@@ -2040,7 +2040,7 @@ Ai_28BB_129A:
 	jnz	short .1
 	jmp	near .17
 .1:
-	cmp	word [0x29dc], 0x4
+	cmp	word [g_29DC], 0x4
 	jnl	short .2
 	mov	bx, [di + 0x62]
 	mov	ax, [bx + 0xc]
@@ -2053,25 +2053,25 @@ Ai_28BB_129A:
 	db	0x2A, 0xE4		; sub ah, ah
 	sub	ax, strict word 0x20
 	neg	ax
-	mov	[0xd6c8], ax
+	mov	[g_D6C8], ax
 	mov	al, [di + 0x44]
 	and	al, 0x80
 	cmp	al, 0x1
 	db	0x1B, 0xC0		; sbb ax, ax
 	and	ax, 0xfe30
 	add	ax, 0xe8
-	mov	[0xd672], ax
-	mov	bx, [0x298e]
+	mov	[g_D672], ax
+	mov	bx, [g_298E]
 	mov	ax, [bx]
-	sub	[0xd672], ax
-	mov	bx, [0x298a]
+	sub	[g_D672], ax
+	mov	bx, [g_298A]
 	mov	ax, [bx]
 	neg	ax
-	mov	[0xd66c], ax
+	mov	[g_D66C], ax
 	db	0x8B, 0xD0		; mov dx, ax
 	call	0x03A3:ImulRegs
 	db	0x8B, 0xF0		; mov si, ax
-	mov	ax, [0xd672]
+	mov	ax, [g_D672]
 	mov	[bp - 0x4], si
 	mov	[bp - 0x2], dx
 	db	0x8B, 0xD0		; mov dx, ax
@@ -2090,14 +2090,14 @@ Ai_28BB_129A:
 	cmp	[bx + 0x24], dx
 	jnl	short .6
 .5:
-	mov	word [0xd6c8], 0x1
+	mov	word [g_D6C8], 0x1
 	jmp	short .13
 	db	0x90
 .6:
-	mov	ax, [0xd66c]
-	mov	dx, [0xd672]
+	mov	ax, [g_D66C]
+	mov	dx, [g_D672]
 	call	0x0D5F:VectorToDir8
-	mov	[0xd000], ax
+	mov	[g_D000], ax
 	cmp	word [di + 0x5e], 0x6
 	jl	short .7
 	db	0x2B, 0xF6		; sub si, si
@@ -2108,7 +2108,7 @@ Ai_28BB_129A:
 .8:
 	shl	si, byte 0x7
 	add	si, 0xb50e
-	mov	word [0xd6c0], 0x6
+	mov	word [g_D6C0], 0x6
 .9:
 	cmp	word [si + 0x1a], 0x0
 	jnz	short .10
@@ -2117,28 +2117,28 @@ Ai_28BB_129A:
 	jmp	short .5
 .10:
 	mov	ax, [si + 0x2]
-	mov	bx, [0x298a]
+	mov	bx, [g_298A]
 	sub	ax, [bx]
-	mov	[0xd66c], ax
+	mov	[g_D66C], ax
 	mov	ax, [si + 0x6]
-	mov	bx, [0x298e]
+	mov	bx, [g_298E]
 	sub	ax, [bx]
-	mov	[0xd672], ax
-	mov	ax, [0xd66c]
-	mov	dx, [0xd672]
+	mov	[g_D672], ax
+	mov	ax, [g_D66C]
+	mov	dx, [g_D672]
 	call	0x0D5F:VectorToDir8
-	cmp	ax, [0xd000]
+	cmp	ax, [g_D000]
 	jnz	short .11
-	shl	word [0xd6c8], 1
+	shl	word [g_D6C8], 1
 .11:
 	add	si, 0x80
-	dec	word [0xd6c0]
+	dec	word [g_D6C0]
 	jnz	short .9
 	jmp	short .13
 .12:
-	shl	word [0xd6c8], byte 0x4
+	shl	word [g_D6C8], byte 0x4
 .13:
-	mov	ax, [0xd6c8]
+	mov	ax, [g_D6C8]
 	call	0x0C11:randomd0
 	cmp	ax, strict word 0x8
 	jng	short .15
@@ -2149,21 +2149,21 @@ Ai_28BB_129A:
 	leave
 	retf
 .15:
-	mov	bx, [0x298e]
+	mov	bx, [g_298E]
 	mov	ax, [bx]
-	mov	[0xd66c], ax
+	mov	[g_D66C], ax
 	test	byte [di + 0x44], 0x80
 	jnz	short .16
-	neg	word [0xd66c]
+	neg	word [g_D66C]
 .16:
-	cmp	word [0xd66c], 0x0
+	cmp	word [g_D66C], 0x0
 	jl	short .14
 	mov	ax, 0xe8
-	sub	ax, [0xd66c]
-	mov	[0xd672], ax
+	sub	ax, [g_D66C]
+	mov	[g_D672], ax
 	db	0x0B, 0xC0		; or ax, ax
 	jl	short .14
-	test	byte [0x29be], 0x80
+	test	byte [g_29BE], 0x80
 	jnz	short .14
 .17:
 	push	di
@@ -2181,17 +2181,17 @@ Ai_28BB_141E:
 	db	0x8B, 0xEC		; mov bp, sp
 	push	si
 	mov	si, [bp + 0x6]
-	mov	bx, [0x298e]
+	mov	bx, [g_298E]
 	mov	ax, [bx]
-	mov	[0xd66c], ax
+	mov	[g_D66C], ax
 	test	byte [si + 0x44], 0x80
 	jnz	short .1
-	neg	word [0xd66c]
+	neg	word [g_D66C]
 .1:
 	mov	ax, 0xe8
-	sub	ax, [0xd66c]
+	sub	ax, [g_D66C]
 	shr	ax, byte 0x3
-	mov	[0xd672], ax
+	mov	[g_D672], ax
 	cmp	ax, strict word 0x14
 	jng	short .2
 	mov	ax, 0x14
@@ -2224,12 +2224,12 @@ Ai_28BB_145E:
 	cmp	word [bx + 0x1a], 0x0
 	jl	short .5
 	mov	ax, [bx + 0x6]
-	mov	[0xd66c], ax
+	mov	[g_D66C], ax
 	test	byte [bx + 0x44], 0x80
 	jnz	short .4
-	neg	word [0xd66c]
+	neg	word [g_D66C]
 .4:
-	cmp	word [0xd66c], 0x4e
+	cmp	word [g_D66C], 0x4e
 	jg	short .6
 .5:
 	add	bx, 0x80
@@ -2243,7 +2243,7 @@ Ai_28BB_145E:
 .7:
 	mov	di, 0xb438
 	loop	.2
-	mov	word [0xd66c], 0x4a
+	mov	word [g_D66C], 0x4a
 	mov	bx, [bp + 0x6]
 	cmp	word [bx + 0x6], 0x4a
 	jl	short .18
@@ -2251,13 +2251,13 @@ Ai_28BB_145E:
 	jl	short .8
 	jmp	near .27
 .8:
-	mov	word [0xd66c], 0x54
-	test	byte [0x29bb], 0x2
+	mov	word [g_D66C], 0x54
+	test	byte [g_29BB], 0x2
 	jnz	short .9
 	mov	di, 0xb362
 .9:
 	mov	si, [di + 0xd4]
-	cmp	word [0xd624], 0x6
+	cmp	word [g_D624], 0x6
 	jnl	short .10
 	mov	ax, 0x1
 	jmp	short .11
@@ -2288,7 +2288,7 @@ Ai_28BB_145E:
 .16:
 	cmp	word [si + 0x1a], 0x0
 	jl	short .17
-	mov	ax, [0xd66c]
+	mov	ax, [g_D66C]
 	cmp	[si + 0x6], ax
 	jng	short .17
 	or	byte [di + 0x2a], 0x10
@@ -2301,14 +2301,14 @@ Ai_28BB_145E:
 	leave
 	retf
 .18:
-	mov	word [0xd66c], 0xffb6
-	mov	ax, [0xd66c]
+	mov	word [g_D66C], 0xffb6
+	mov	ax, [g_D66C]
 	cmp	[bx + 0x6], ax
 	jg	short .27
 	cmp	[bx + 0x6a], ax
 	jng	short .27
-	sub	word [0xd66c], 0xa
-	test	byte [0x29bb], 0x2
+	sub	word [g_D66C], 0xa
+	test	byte [g_29BB], 0x2
 	jnz	short .19
 	mov	di, 0xb438
 	jmp	short .20
@@ -2316,7 +2316,7 @@ Ai_28BB_145E:
 	mov	di, 0xb362
 .20:
 	mov	si, [di + 0xd4]
-	cmp	word [0xd624], 0x6
+	cmp	word [g_D624], 0x6
 	jnl	short .21
 	mov	ax, 0x1
 	jmp	short .22
@@ -2339,7 +2339,7 @@ Ai_28BB_145E:
 .25:
 	cmp	word [si + 0x1a], 0x0
 	jl	short .26
-	mov	ax, [0xd66c]
+	mov	ax, [g_D66C]
 	cmp	[si + 0x6], ax
 	jnl	short .26
 	or	byte [di + 0x2a], 0x10
@@ -2363,7 +2363,7 @@ Ai_28BB_15A2:
 	jnz	short .1
 	jmp	near .11
 .1:
-	test	byte [0x29bb], 0x2
+	test	byte [g_29BB], 0x2
 	jz	short .2
 	mov	di, 0xb80e
 	mov	bx, 0xb50e
@@ -2430,20 +2430,20 @@ Ai_28BB_1638:
 	enter	0x4, 0x0
 	push	di
 	push	si
-	test	byte [0x29be], 0x10
+	test	byte [g_29BE], 0x10
 	jnz	short .1
 	jmp	near .10
 .1:
-	and	byte [0x29be], 0xef
-	test	byte [0x29bb], 0x1
+	and	byte [g_29BE], 0xef
+	test	byte [g_29BB], 0x1
 	jz	short .2
 	jmp	near .10
 .2:
-	mov	ax, [0x29a0]
+	mov	ax, [g_29A0]
 	shl	ax, byte 0x7
 	add	ax, 0xb50e
 	db	0x8B, 0xF0		; mov si, ax
-	mov	bx, [0x298e]
+	mov	bx, [g_298E]
 	mov	[bp - 0x4], ax
 	cmp	word [bx], 0x0
 	jng	short .3
@@ -2470,8 +2470,8 @@ Ai_28BB_1638:
 	jng	short .6
 	mov	word [CrowdSound], 0x3e8
 .6:
-	add	word [0xd6c4], 0xa
-	test	byte [0x29bb], 0x10
+	add	word [g_D6C4], 0xa
+	test	byte [g_29BB], 0x10
 	jnz	short .10
 	mov	ax, [si + 0x60]
 	mov	[bp - 0x2], ax
@@ -2480,10 +2480,10 @@ Ai_28BB_1638:
 	inc	word [bx]
 	test	byte [si + 0x44], 0x40
 	jnz	short .7
-	inc	byte [0x1d7]
+	inc	byte [g_01D7]
 	jmp	short .8
 .7:
-	inc	byte [0x1d9]
+	inc	byte [g_01D9]
 .8:
 	cmp	byte [si + 0x47], 0x19
 	jnl	short .9
@@ -2532,20 +2532,20 @@ Ai_28BB_171E:
 	jng	short .1
 	mov	word [CrowdSound], 0x3e8
 .1:
-	add	word [0xd6c4], 0x1e
+	add	word [g_D6C4], 0x1e
 	push	word 0xa1
 	call	0x0EDC:PlaySoundEffect
 	add	sp, 0x2
 	mov	ax, [si + 0x2]
-	mov	[0x29ac], ax
+	mov	[g_29AC], ax
 	mov	ax, [si + 0x6]
-	mov	[0x29ae], ax
-	mov	ax, [0x2998]
+	mov	[g_29AE], ax
+	mov	ax, [g_2998]
 	cmp	[si + 0x2], ax
 	jnl	short .2
-	add	word [0x29ae], 0x32
+	add	word [g_29AE], 0x32
 .2:
-	or	byte [0x29bc], 0x40
+	or	byte [g_29BC], 0x40
 	mov	di, [si + 0x60]
 	db	0x8B, 0xDF		; mov bx, di
 	mov	al, [si + 0x47]
@@ -2570,7 +2570,7 @@ Ai_28BB_171E:
 	mov	[bp - 0x2], ax
 	db	0x0B, 0xC0		; or ax, ax
 	jng	short .5
-	cmp	word [0xdcd2], 0x2d
+	cmp	word [g_DCD2], 0x2d
 	jng	short .5
 	mov	al, [si + 0x47]
 	cbw
@@ -2597,9 +2597,9 @@ Ai_28BB_171E:
 	mov	byte [bx + di], 0x6
 	mov	word [bp - 0x2], 0xffff
 .6:
-	mov	word [0x49f6], 0x1
-	mov	ax, [0xd1ac]
-	sub	ax, [0x29dc]
+	mov	word [g_49F6], 0x1
+	mov	ax, [g_D1AC]
+	sub	ax, [g_29DC]
 	mov	cx, 0x3c
 	db	0x8B, 0xD8		; mov bx, ax
 	cwd
@@ -2691,7 +2691,7 @@ Ai_28BB_1848:
 	jng	short .9
 	mov	word [CrowdSound], 0x3e8
 .9:
-	add	word [0xd6c4], 0xf
+	add	word [g_D6C4], 0xf
 	push	0x1
 	push	cs
 	call	Ai_28BB_28E8
@@ -2715,7 +2715,7 @@ Ai_28BB_1848:
 	cmp	word [di + 0x1a], 0x0
 	jz	short .12
 	mov	dx, [di + 0x60]
-	test	byte [0x29bb], 0x11
+	test	byte [g_29BB], 0x11
 	jnz	short .12
 	db	0x8B, 0xDA		; mov bx, dx
 	inc	word [bx + 0x10]
@@ -2784,8 +2784,8 @@ Ai_28BB_1848:
 	jng	short .18
 	mov	word [CrowdSound], 0x3e8
 .18:
-	add	word [0xd6c4], 0xf
-	mov	bx, [0x2996]
+	add	word [g_D6C4], 0xf
+	mov	bx, [g_2996]
 	cmp	byte [bx], 0x0
 	jnl	short .19
 	jmp	near .40
@@ -2797,7 +2797,7 @@ Ai_28BB_1848:
 	jmp	near .40
 .20:
 	mov	byte [bx], 0xff
-	test	byte [0x29bb], 0x10
+	test	byte [g_29BB], 0x10
 	jz	short .21
 	jmp	near .36
 .21:
@@ -2830,7 +2830,7 @@ Ai_28BB_1848:
 	jng	short .26
 	jmp	near .36
 .26:
-	test	byte [0x29bb], 0x1
+	test	byte [g_29BB], 0x1
 	jz	short .27
 	jmp	near .36
 .27:
@@ -2861,7 +2861,7 @@ Ai_28BB_1848:
 	cmp	al, 0x1
 	db	0x1B, 0xDB		; sbb bx, bx
 	inc	bx
-	cmp	byte [bx - 0x293a], 0x8
+	cmp	byte [bx + g_D6C6], 0x8
 	jnl	short .35
 	push	di
 	call	0x317A:Ai_317A_0F50
@@ -2997,7 +2997,7 @@ Ai_28BB_1B2C:
 	call	0x327B:Ai_327B_0012
 	add	sp, 0x4
 .2:
-	mov	byte [0x29ba], 0xff
+	mov	byte [g_29BA], 0xff
 .3:
 	pop	si
 	pop	di
@@ -3039,12 +3039,12 @@ Ai_28BB_1BBC:
 	jng	short .5
 	jmp	near .12
 .5:
-	mov	bx, [0x2996]
+	mov	bx, [g_2996]
 	mov	al, [bx]
 	cbw
 	cmp	ax, [si + 0x5e]
 	jnz	short .6
-	and	byte [0x29bc], 0xf7
+	and	byte [g_29BC], 0xf7
 .6:
 	mov	ax, [si + 0xc]
 	add	ax, [di + 0xc]
@@ -3093,7 +3093,7 @@ Ai_28BB_1BBC:
 	call	0x327B:Ai_327B_0012
 	add	sp, 0x4
 .11:
-	mov	byte [0x29ba], 0xff
+	mov	byte [g_29BA], 0xff
 .12:
 	pop	si
 	pop	di
@@ -3107,9 +3107,9 @@ Ai_28BB_1C9C:
 	mov	si, [bp + 0x6]
 	cmp	word [si + 0xa], 0x8
 	jg	short .1
-	mov	al, [0xd66c]
+	mov	al, [g_D66C]
 	and	ax, strict word 0xf
-	mov	[0xd672], ax
+	mov	[g_D672], ax
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .1
 	jmp	near .9
@@ -3125,10 +3125,10 @@ Ai_28BB_1C9C:
 	mov	word [di + 0x3e], 0x8
 	mov	ax, [si + 0x2]
 	sub	ax, [di + 0x2]
-	mov	[0xd66c], ax
+	mov	[g_D66C], ax
 	mov	ax, [si + 0x6]
 	sub	ax, [di + 0x6]
-	mov	[0xd672], ax
+	mov	[g_D672], ax
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .3
 	push	di
@@ -3139,9 +3139,9 @@ Ai_28BB_1C9C:
 	mov	[bp - 0x6], ax
 	mov	ax, [si + 0xe]
 	mov	[bp - 0x4], ax
-	mov	al, [0xd66c]
+	mov	al, [g_D66C]
 	mov	[si + 0xd], al
-	mov	al, [0xd672]
+	mov	al, [g_D672]
 	mov	[si + 0xf], al
 	push	si
 	call	0x2519:Ai_2519_289A
@@ -3213,36 +3213,36 @@ Ai_28BB_1C9C:
 	db	0x90
 
 Ai_28BB_1DB8:
-	test	byte [0xd62a], 0x4
+	test	byte [g_D62A], 0x4
 	jz	short .4
-	test	byte [0xd62a], 0x1
+	test	byte [g_D62A], 0x1
 	jnz	short .4
-	mov	bx, [0x2996]
+	mov	bx, [g_2996]
 	cmp	byte [bx], 0x0
 	jnl	short .4
-	test	byte [0xd62a], 0x2
+	test	byte [g_D62A], 0x2
 	jnz	short .1
-	mov	bx, [0x298e]
+	mov	bx, [g_298E]
 	cmp	word [bx], 0xff18
 	jl	short .2
 	retf
 	db	0x90
 .1:
-	mov	bx, [0x298e]
+	mov	bx, [g_298E]
 	cmp	word [bx], 0xe8
 	jl	short .4
 .2:
-	mov	bx, [0x298a]
+	mov	bx, [g_298A]
 	mov	ax, [bx]
 	cwd
 	db	0x33, 0xC2		; xor ax, dx
 	db	0x2B, 0xC2		; sub ax, dx
 	cmp	ax, strict word 0x2c
 	jg	short .3
-	and	byte [0xd62a], 0xfb
+	and	byte [g_D62A], 0xfb
 	retf
 .3:
-	or	byte [0xd62a], 0x1
+	or	byte [g_D62A], 0x1
 .4:
 	retf
 
@@ -3253,14 +3253,14 @@ Ai_28BB_1E08:
 	mov	bx, [bp + 0x6]
 	cmp	word [bx + 0x12], 0x189
 	jnz	short .2
-	mov	si, [0x298a]
+	mov	si, [g_298A]
 	mov	ax, [si]
 	mov	[bx + 0x2], ax
-	mov	si, [0x298e]
+	mov	si, [g_298E]
 	mov	ax, [si]
 	mov	[bx + 0x6], ax
 	mov	word [bx + 0xa], 0x0
-	test	byte [0x29bc], 0x80
+	test	byte [g_29BC], 0x80
 	jz	short .1
 	inc	word [bx + 0x2]
 	pop	si
@@ -3279,7 +3279,7 @@ Ai_28BB_1E08:
 	mov	word [bx + 0x2], 0x0
 	mov	word [bx + 0x6], 0x122
 	mov	word [bx + 0xa], 0xe
-	mov	si, [0x298e]
+	mov	si, [g_298E]
 	cmp	word [si], 0x0
 	jnl	short .3
 	mov	word [bx + 0x48], 0x8000
@@ -3298,9 +3298,9 @@ Ai_28BB_1E76:
 	push	si
 	mov	si, [bp + 0x6]
 	mov	ax, [si + 0x5e]
-	mov	[0xd66c], ax
-	mov	al, [0xd66c]
-	mov	bx, [0x2996]
+	mov	[g_D66C], ax
+	mov	al, [g_D66C]
+	mov	bx, [g_2996]
 	mov	[bx], al
 	mov	dx, [si + 0x60]
 	mov	di, [si + 0x62]
@@ -3308,10 +3308,10 @@ Ai_28BB_1E76:
 	mov	byte [bx + 0x1f], 0xff
 	mov	byte [di + 0x21], 0xff
 	or	byte [di + 0x2a], 0x8
-	test	byte [0x29c0], 0x10
+	test	byte [g_29C0], 0x10
 	jz	short .3
-	and	byte [0x29c0], 0xef
-	test	byte [0x29bb], 0x10
+	and	byte [g_29C0], 0xef
+	test	byte [g_29BB], 0x10
 	jnz	short .1
 	db	0x8B, 0xDA		; mov bx, dx
 	inc	word [bx + 0xe]
@@ -3325,7 +3325,7 @@ Ai_28BB_1E76:
 .2:
 	test	byte [si + 0x44], 0x40
 	jnz	short .4
-	add	word [0xd6c4], 0xa
+	add	word [g_D6C4], 0xa
 	jmp	short .4
 .3:
 	push	word 0x9b
@@ -3335,7 +3335,7 @@ Ai_28BB_1E76:
 	push	si
 	call	0x2C24:Ai_2C24_0700
 	add	sp, 0x2
-	and	byte [0x29bc], 0xf3
+	and	byte [g_29BC], 0xf3
 	cmp	word [si + 0x1a], 0x0
 	jnz	short .6
 	push	cs
@@ -3348,7 +3348,7 @@ Ai_28BB_1E76:
 .5:
 	mov	word [si + 0x2e], 0x8c
 .6:
-	push	word [0xd66c]
+	push	word [g_D66C]
 	call	0x2E42:Ai_2E42_0FB6
 	add	sp, 0x2
 	pop	si
@@ -3361,36 +3361,36 @@ Ai_28BB_1F2A:
 	enter	0x4, 0x0
 	push	di
 	push	si
-	test	byte [0x29bb], 0x10
+	test	byte [g_29BB], 0x10
 	jz	short .1
 	jmp	near .19
 .1:
 	mov	di, [bp + 0x6]
-	mov	word [0xd6b8], 0x0
+	mov	word [g_D6B8], 0x0
 	cmp	word [di + 0xa], 0x8
 	jg	short .2
-	mov	word [0xd6b8], 0x2
+	mov	word [g_D6B8], 0x2
 .2:
 	mov	si, [bp + 0x8]
-	mov	ax, [0xd66c]
+	mov	ax, [g_D66C]
 	neg	ax
-	mov	dx, [0xd672]
+	mov	dx, [g_D672]
 	neg	dx
 	call	0x0D5F:VectorToDir8
 	sub	al, [si + 0x36]
 	and	ax, strict word 0x7
-	mov	[0xd66c], ax
-	test	byte [0xd66c], 0x3
+	mov	[g_D66C], ax
+	test	byte [g_D66C], 0x3
 	jnz	short .3
 	mov	ax, 0x100
 	call	0x0C11:randomd0
-	mov	[0xd66c], ax
+	mov	[g_D66C], ax
 .3:
 	sar	ax, byte 0x2
 	not	ax
 	and	ax, strict word 0x1
-	add	[0xd6b8], ax
-	test	byte [0xd6b8], 0x1
+	add	[g_D6B8], ax
+	test	byte [g_D6B8], 0x1
 	jz	short .4
 	mov	al, [si + 0x55]
 	jmp	short .5
@@ -3401,21 +3401,21 @@ Ai_28BB_1F2A:
 	db	0x2A, 0xE4		; sub ah, ah
 	add	ax, strict word 0xf
 	mov	[bp - 0x4], ax
-	shl	word [0xd6b8], 1
+	shl	word [g_D6B8], 1
 	test	byte [si + 0x49], 0x8
 	jz	short .6
-	xor	byte [0xd6b8], 0x2
+	xor	byte [g_D6B8], 0x2
 .6:
-	mov	cl, [0xd6b8]
+	mov	cl, [g_D6B8]
 	mov	bx, [si + 0x12]
-	mov	al, [bx + 0x58a6]
+	mov	al, [bx + g_58A6]
 	shr	al, cl
 	db	0x8A, 0xD0		; mov dl, al
 	and	dx, 0x3
 	mov	ax, [bp - 0x4]
 	call	0x03A3:MulRegs
-	mov	[0xd66c], ax
-	mov	[0xd66e], dx
+	mov	[g_D66C], ax
+	mov	[g_D66E], dx
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .7
 	jmp	near .19
@@ -3430,9 +3430,9 @@ Ai_28BB_1F2A:
 	push	si
 	call	0x2519:Ai_2519_272A
 	add	sp, 0x2
-	test	byte [0x29bb], 0x1
+	test	byte [g_29BB], 0x1
 	jnz	short .11
-	mov	bx, [0x2990]
+	mov	bx, [g_2990]
 	mov	ax, [bx]
 	cwd
 	db	0x33, 0xC2		; xor ax, dx
@@ -3450,7 +3450,7 @@ Ai_28BB_1F2A:
 	call	0x0EDC:PlaySoundEffect
 	add	sp, 0x2
 .11:
-	mov	bx, [0x2990]
+	mov	bx, [g_2990]
 	mov	ax, [bx]
 	cwd
 	db	0x33, 0xC2		; xor ax, dx
@@ -3464,7 +3464,7 @@ Ai_28BB_1F2A:
 .13:
 	call	0x0EDC:PlaySoundEffect
 	add	sp, 0x2
-	mov	bx, [0x2996]
+	mov	bx, [g_2996]
 	cmp	byte [bx], 0x0
 	jnl	short .15
 	cmp	word [si + 0x38], 0x181
@@ -3488,20 +3488,20 @@ Ai_28BB_1F2A:
 	db	0x2A, 0xC0		; sub al, al
 	call	0x0C11:randomd0
 	add	ah, 0xc
-	mov	[0xd66c], ax
-	mov	bx, [0x298c]
+	mov	[g_D66C], ax
+	mov	bx, [g_298C]
 	mov	ax, [bx]
 	cwd
 	db	0x33, 0xC2		; xor ax, dx
 	db	0x2B, 0xC2		; sub ax, dx
-	cmp	ax, [0xd66c]
+	cmp	ax, [g_D66C]
 	jg	short .16
-	mov	bx, [0x2990]
+	mov	bx, [g_2990]
 	mov	ax, [bx]
 	cwd
 	db	0x33, 0xC2		; xor ax, dx
 	db	0x2B, 0xC2		; sub ax, dx
-	cmp	ax, [0xd66c]
+	cmp	ax, [g_D66C]
 	jg	short .16
 	test	byte [si + 0x45], 0x4
 	jnz	short .16
@@ -3520,27 +3520,27 @@ Ai_28BB_1F2A:
 	db	0x8B, 0xDA		; mov bx, dx
 	mov	word [bx + 0x3e], 0x14
 	mov	ax, [bx + 0x5e]
-	mov	[0x29a2], ax
-	and	byte [0x29bc], 0xf3
+	mov	[g_29A2], ax
+	and	byte [g_29BC], 0xf3
 .16:
 	mov	word [di + 0x10], 0x0
 	mov	word [si + 0x3e], 0xa
 	mov	word [si + 0x2c], 0x4
 	mov	ax, [di + 0x2]
 	sub	ax, [si + 0x2]
-	mov	[0xd66c], ax
+	mov	[g_D66C], ax
 	mov	ax, [di + 0x6]
 	sub	ax, [si + 0x6]
-	mov	[0xd672], ax
+	mov	[g_D672], ax
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .17
 	push	si
 	call	0x2E42:Ai_2E42_065C
 	add	sp, 0x2
 .17:
-	mov	al, [0xd66c]
+	mov	al, [g_D66C]
 	mov	[di + 0xd], al
-	mov	al, [0xd672]
+	mov	al, [g_D672]
 	mov	[di + 0xf], al
 	push	di
 	call	0x2519:Ai_2519_289A
@@ -3559,7 +3559,7 @@ Ai_28BB_211A:
 	mov	si, [bp + 0x8]
 	cmp	word [si + 0x1a], 0x0
 	jnz	short .2
-	test	byte [0x29bb], 0x10
+	test	byte [g_29BB], 0x10
 	jz	short .1
 	jmp	near .20
 .1:
@@ -3567,7 +3567,7 @@ Ai_28BB_211A:
 	call	Ai_28BB_1638
 .2:
 	and	byte [si + 0x44], 0xfe
-	mov	bx, [0x2996]
+	mov	bx, [g_2996]
 	mov	al, [bx]
 	db	0x0A, 0xC0		; or al, al
 	jnl	short .3
@@ -3584,11 +3584,11 @@ Ai_28BB_211A:
 	jnz	short .4
 	jmp	near .20
 .4:
-	cmp	word [0xd66e], 0x0
+	cmp	word [g_D66E], 0x0
 	jz	short .5
 	jmp	near .20
 .5:
-	cmp	word [0xd66c], 0x24
+	cmp	word [g_D66C], 0x24
 	jna	short .6
 	jmp	near .20
 .6:
@@ -3648,7 +3648,7 @@ Ai_28BB_211A:
 	rcr	ax, 1
 	sub	ax, [bp - 0x4]
 	add	ax, strict word 0x20
-	mov	[0xd66c], ax
+	mov	[g_D66C], ax
 	test	byte [di + 0x44], 0x8
 	jz	short .9
 	test	byte [si + 0x44], 0x8
@@ -3659,9 +3659,9 @@ Ai_28BB_211A:
 	sar	ax, byte 0x3
 	db	0x33, 0xC2		; xor ax, dx
 	db	0x2B, 0xC2		; sub ax, dx
-	add	[0xd66c], ax
+	add	[g_D66C], ax
 .9:
-	mov	ax, [0xd66c]
+	mov	ax, [g_D66C]
 	call	0x0C11:randomd0
 	cmp	ax, strict word 0x2
 	jng	short .10
@@ -3721,62 +3721,62 @@ Ai_28BB_211A:
 	add	ax, strict word 0x14
 	mov	[si + 0x3e], ax
 	mov	ax, [di + 0x5e]
-	mov	[0x29a2], ax
-	and	byte [0x29bc], 0xf3
+	mov	[g_29A2], ax
+	and	byte [g_29BC], 0xf3
 	jmp	near .17
 .11:
 	cmp	word [si + 0x1a], 0x0
 	jnz	short .13
-	cmp	word [0xd66e], 0x0
+	cmp	word [g_D66E], 0x0
 	jz	short .12
 	jmp	near .20
 .12:
-	cmp	word [0xd66c], 0x40
+	cmp	word [g_D66C], 0x40
 	jna	short .13
 	jmp	near .20
 .13:
-	mov	bx, [0x298c]
+	mov	bx, [g_298C]
 	mov	ax, [bx]
-	mov	[0xd66c], ax
-	mov	bx, [0x2990]
+	mov	[g_D66C], ax
+	mov	bx, [g_2990]
 	mov	ax, [bx]
-	mov	[0xd672], ax
-	mov	ax, [0xd66c]
+	mov	[g_D672], ax
+	mov	ax, [g_D66C]
 	db	0x8B, 0xD0		; mov dx, ax
 	call	0x03A3:ImulRegs
 	db	0x8B, 0xF8		; mov di, ax
-	mov	ax, [0xd672]
+	mov	ax, [g_D672]
 	mov	[bp - 0x8], di
 	mov	[bp - 0x6], dx
 	db	0x8B, 0xD0		; mov dx, ax
 	call	0x03A3:ImulRegs
 	add	ax, [bp - 0x8]
 	adc	dx, [bp - 0x6]
-	mov	[0xd66c], ax
-	mov	[0xd66e], dx
-	mov	word [0xd672], 0x0
-	test	byte [0x29be], 0x10
+	mov	[g_D66C], ax
+	mov	[g_D66E], dx
+	mov	word [g_D672], 0x0
+	test	byte [g_29BE], 0x10
 	jnz	short .14
 	mov	al, [si + 0x54]
 	db	0x2A, 0xE4		; sub ah, ah
 	imul	ax, ax, word 0x2bc
-	mov	[0xd672], ax
+	mov	[g_D672], ax
 .14:
-	add	word [0xd672], 0x32c8
-	mov	ax, [0xd672]
+	add	word [g_D672], 0x32c8
+	mov	ax, [g_D672]
 	db	0x8B, 0xD0		; mov dx, ax
 	call	0x03A3:MulRegs
-	mov	[0xd672], ax
-	mov	[0xd674], dx
-	mov	ax, [0xd66c]
-	mov	dx, [0xd66e]
-	cmp	[0xd674], dx
+	mov	[g_D672], ax
+	mov	[g_D674], dx
+	mov	ax, [g_D66C]
+	mov	dx, [g_D66E]
+	cmp	[g_D674], dx
 	ja	short .18
 	jc	short .15
-	cmp	[0xd672], ax
+	cmp	[g_D672], ax
 	jnc	short .18
 .15:
-	mov	ax, [0x29a8]
+	mov	ax, [g_29A8]
 	cmp	[si + 0x5e], ax
 	jnz	short .16
 	mov	ax, 0x2
@@ -3814,23 +3814,23 @@ Ai_28BB_2388:
 	push	si
 	mov	si, [bp + 0x6]
 	mov	ax, 0x8
-	mov	[0x29a4], ax
-	or	[0x29bc], ax
-	mov	word [0xd66c], 0x0
+	mov	[g_29A4], ax
+	or	[g_29BC], ax
+	mov	word [g_D66C], 0x0
 	mov	al, [si + 0x44]
 	and	al, 0x80
 	cmp	al, 0x1
 	db	0x1B, 0xC0		; sbb ax, ax
 	and	ax, 0xfe20
 	add	ax, 0xf0
-	mov	[0xd672], ax
+	mov	[g_D672], ax
 	mov	ax, [si + 0x2]
 	neg	ax
-	mov	dx, [0xd672]
+	mov	dx, [g_D672]
 	sub	dx, [si + 0x6]
 	call	0x0D5F:VectorToDir8
-	mov	[0xd66c], ax
-	mov	word [0x29a6], 0xf
+	mov	[g_D66C], ax
+	mov	word [g_29A6], 0xf
 	push	ax
 	push	si
 	push	cs
@@ -3867,21 +3867,21 @@ Ai_28BB_23EE:
 	leave
 	retf
 .1:
-	test	byte [0xd66c], 0x8
+	test	byte [g_D66C], 0x8
 	jnz	short .2
-	and	word [0xd66c], 0x7
-	mov	ax, [0xd66c]
-	mov	[0x29a4], ax
+	and	word [g_D66C], 0x7
+	mov	ax, [g_D66C]
+	mov	[g_29A4], ax
 .2:
 	cmp	word [si + 0x3a], 0x8
 	jnl	short .5
-	inc	word [0x29a6]
+	inc	word [g_29A6]
 	cmp	byte [si + 0x4f], 0xa
 	jnc	short .3
 	cmp	word [si + 0x3a], 0x4
 	jg	short .4
 .3:
-	test	byte [0xd6b8], 0x20
+	test	byte [g_D6B8], 0x20
 	jz	short .5
 .4:
 	mov	ax, 0xe
@@ -3927,7 +3927,7 @@ Ai_28BB_247A:
 	db	0x8B, 0xEC		; mov bp, sp
 	push	si
 	mov	si, [bp + 0x6]
-	mov	bx, [0x2996]
+	mov	bx, [g_2996]
 	mov	byte [bx], 0xff
 	mov	ax, 0x2000
 	call	0x0C11:randomd0
@@ -3940,7 +3940,7 @@ Ai_28BB_247A:
 	mov	ax, 0x1000
 	call	0x0C11:randomd0
 	mov	[si + 0x10], ax
-	mov	[0xd66c], ax
+	mov	[g_D66C], ax
 	push	si
 	call	0x2519:Ai_2519_289A
 	add	sp, 0x2
@@ -3977,7 +3977,7 @@ Ai_28BB_24BE:
 .5:
 	cmp	dx, 0x6
 	jnz	short .6
-	mov	word [0x29a4], 0x8
+	mov	word [g_29A4], 0x8
 	pop	si
 	pop	di
 	leave
@@ -3988,7 +3988,7 @@ Ai_28BB_24BE:
 	cbw
 	sar	ax, 1
 	add	ax, [si + 0x2]
-	mov	bx, [0x298a]
+	mov	bx, [g_298A]
 	sub	ax, [bx]
 	db	0x8B, 0xC8		; mov cx, ax
 	cwd
@@ -3998,7 +3998,7 @@ Ai_28BB_24BE:
 	cbw
 	sar	ax, 1
 	add	ax, [si + 0x6]
-	mov	bx, [0x298e]
+	mov	bx, [g_298E]
 	sub	ax, [bx]
 	db	0x8B, 0xD0		; mov dx, ax
 	db	0x8B, 0xD8		; mov bx, ax
@@ -4022,7 +4022,7 @@ Ai_28BB_24BE:
 	mov	di, 0xff18
 .8:
 	db	0x8B, 0xC7		; mov ax, di
-	mov	bx, [0x298e]
+	mov	bx, [g_298E]
 	sub	ax, [bx]
 	cwd
 	mov	[bp - 0xe], ax
@@ -4031,7 +4031,7 @@ Ai_28BB_24BE:
 	push	word [bp - 0xa]
 	db	0x8B, 0xC8		; mov cx, ax
 	mov	ax, 0x12
-	mov	bx, [0x298a]
+	mov	bx, [g_298A]
 	sub	ax, [bx]
 	db	0x8B, 0xDA		; mov bx, dx
 	cwd
@@ -4057,7 +4057,7 @@ Ai_28BB_24BE:
 	push	word [bp - 0x8]
 	push	word [bp - 0xa]
 	mov	ax, 0xffee
-	mov	bx, [0x298a]
+	mov	bx, [g_298A]
 	sub	ax, [bx]
 	cwd
 	push	dx
@@ -4082,7 +4082,7 @@ Ai_28BB_24BE:
 	db	0x2B, 0xC2		; sub ax, dx
 	cmp	ax, strict word 0x2c
 	jng	short .9
-	mov	word [0x29a4], 0x0
+	mov	word [g_29A4], 0x0
 	pop	si
 	pop	di
 	leave
@@ -4101,7 +4101,7 @@ Ai_28BB_24BE:
 .11:
 	mov	ax, 0x6
 .12:
-	mov	[0x29a4], ax
+	mov	[g_29A4], ax
 .13:
 	pop	si
 	pop	di
@@ -4118,10 +4118,10 @@ Ai_28BB_2630:
 	call	Ai_28BB_24BE
 	add	sp, 0x2
 	mov	ax, [si + 0x5e]
-	mov	[0x29a0], ax
-	and	byte [0x29bc], 0xf7
+	mov	[g_29A0], ax
+	and	byte [g_29BC], 0xf7
 	or	byte [si + 0x44], 0x20
-	mov	bx, [0x2996]
+	mov	bx, [g_2996]
 	mov	al, [bx]
 	cbw
 	cmp	ax, [si + 0x5e]
@@ -4133,7 +4133,7 @@ Ai_28BB_2630:
 	push	word 0x99
 	jmp	near .27
 .1:
-	or	byte [0x29be], 0x10
+	or	byte [g_29BE], 0x10
 	cmp	word [si + 0x38], 0x491
 	jz	short .2
 	cmp	word [si + 0x38], 0xe2b
@@ -4142,9 +4142,9 @@ Ai_28BB_2630:
 	jmp	short .3
 .2:
 	mov	word [bp - 0x8], 0xaa
-	mov	ax, [0x29a6]
+	mov	ax, [g_29A6]
 	sar	ax, byte 0x2
-	sub	[0x29a6], ax
+	sub	[g_29A6], ax
 .3:
 	mov	al, [si + 0x4f]
 	db	0x2A, 0xE4		; sub ah, ah
@@ -4200,11 +4200,11 @@ Ai_28BB_2630:
 	sar	dx, 1
 	rcr	ax, 1
 	add	ax, strict word 0x14
-	imul	word [0x29a6]
-	mov	[0x29a6], ax
+	imul	word [g_29A6]
+	mov	[g_29A6], ax
 	mov	dx, 0x5249
 	call	0x03A3:MulRegs
-	mov	[0x29a6], dx
+	mov	[g_29A6], dx
 	db	0x8B, 0xC2		; mov ax, dx
 	sar	ax, byte 0x4
 	sub	ax, strict word 0x3
@@ -4213,28 +4213,28 @@ Ai_28BB_2630:
 	jng	short .8
 	mov	word [bp - 0x8], 0x9a
 .8:
-	mov	bx, [0x2996]
+	mov	bx, [g_2996]
 	mov	byte [bx], 0xff
 	mov	word [si + 0x3e], 0x10
 	mov	ax, [si + 0x5e]
-	mov	[0x29a2], ax
+	mov	[g_29A2], ax
 	mov	di, 0xe8
 	test	byte [si + 0x44], 0x80
 	jnz	short .9
 	mov	di, 0xff18
 .9:
-	mov	bx, [0x29a4]
+	mov	bx, [g_29A4]
 	shl	bx, byte 0x2
-	mov	ax, [bx + 0x5ad0]
+	mov	ax, [bx + g_5AD0]
 	db	0x8B, 0xCB		; mov cx, bx
-	mov	bx, [0x298a]
+	mov	bx, [g_298A]
 	sub	ax, [bx]
 	mov	[bp - 0xe], ax
-	mov	bx, [0x298e]
+	mov	bx, [g_298E]
 	sub	di, [bx]
 	mov	[bp - 0xc], di
 	db	0x8B, 0xD9		; mov bx, cx
-	mov	cx, [bx + 0x5ad2]
+	mov	cx, [bx + g_5AD2]
 	mov	[bp - 0x6], cx
 	push	di
 	push	ax
@@ -4245,7 +4245,7 @@ Ai_28BB_2630:
 	jnz	short .10
 	inc	word [bp - 0x4]
 .10:
-	test	byte [0x29bb], 0x10
+	test	byte [g_29BB], 0x10
 	jz	short .11
 	jmp	near .23
 .11:
@@ -4270,7 +4270,7 @@ Ai_28BB_2630:
 	jng	short .14
 	jmp	near .23
 .14:
-	mov	ax, [0x29a6]
+	mov	ax, [g_29A6]
 	sar	ax, byte 0x4
 	db	0x2B, 0xC7		; sub ax, di
 	add	ax, strict word 0x10
@@ -4332,19 +4332,19 @@ Ai_28BB_2630:
 	call	0x0C11:randomd0
 	add	[bp - 0x6], ax
 .23:
-	imul	ax, [0x29a6], 0x3b
+	imul	ax, [g_29A6], 0x3b
 	mov	dx, [bp - 0xe]
 	call	0x03A3:ImulRegs
 	mov	bx, [bp - 0x4]
 	call	0x03A3:IdivWords.regs
-	mov	bx, [0x298c]
+	mov	bx, [g_298C]
 	mov	[bx], ax
-	imul	ax, [0x29a6], 0x3b
+	imul	ax, [g_29A6], 0x3b
 	mov	dx, [bp - 0xc]
 	call	0x03A3:ImulRegs
 	mov	bx, [bp - 0x4]
 	call	0x03A3:IdivWords.regs
-	mov	bx, [0x2990]
+	mov	bx, [g_2990]
 	mov	[bx], ax
 	cmp	word [bp - 0x6], 0x0
 	jz	short .26
@@ -4352,7 +4352,7 @@ Ai_28BB_2630:
 	mov	dx, 0x44
 	call	0x03A3:MulRegs
 	db	0x8B, 0xD0		; mov dx, ax
-	mov	ax, [0x29a6]
+	mov	ax, [g_29A6]
 	call	0x03A3:MulRegs
 	mov	bx, [bp - 0x4]
 	db	0x8B, 0xF3		; mov si, bx
@@ -4361,7 +4361,7 @@ Ai_28BB_2630:
 	db	0x8B, 0xC6		; mov ax, si
 	mov	dx, 0xb33
 	call	0x03A3:MulRegs
-	mov	bx, [0x29a6]
+	mov	bx, [g_29A6]
 	call	0x03A3:DivWords.regs
 	add	[bp - 0x6], ax
 	cmp	word [bp - 0x6], 0x1800
@@ -4372,7 +4372,7 @@ Ai_28BB_2630:
 .24:
 	mov	dx, 0x1800
 .25:
-	mov	bx, [0x2994]
+	mov	bx, [g_2994]
 	mov	[bx], dx
 .26:
 	push	word [bp - 0x8]
@@ -4389,7 +4389,7 @@ Ai_28BB_28E8:
 	db	0x8B, 0xEC		; mov bp, sp
 	cmp	word [bp + 0x6], 0x0
 	jz	short .1
-	cmp	word [0xdcd2], 0x20
+	cmp	word [g_DCD2], 0x20
 	jng	short .1
 	mov	ax, 0x2
 	call	0x0C11:randomd0
@@ -4399,10 +4399,10 @@ Ai_28BB_28E8:
 	jmp	short .2
 	db	0x90
 .1:
-	cmp	word [0x4a50], 0x1
+	cmp	word [g_4A50], 0x1
 	db	0x1B, 0xC0		; sbb ax, ax
 	neg	ax
-	mov	[0x4a50], ax
+	mov	[g_4A50], ax
 	cmp	ax, strict word 0x1
 	db	0x1B, 0xC9		; sbb cx, cx
 	and	cx, 0x2
@@ -4417,9 +4417,9 @@ Ai_28BB_292A:
 	enter	0x4, 0x0
 	push	di
 	push	si
-	mov	byte [0x29ba], 0x0
+	mov	byte [g_29BA], 0x0
 	mov	si, [bp + 0x8]
-	test	byte [0x29bc], 0x80
+	test	byte [g_29BC], 0x80
 	jz	short .1
 	db	0x8B, 0xD6		; mov dx, si
 	mov	si, [bp + 0xa]
@@ -4429,9 +4429,9 @@ Ai_28BB_292A:
 	test	byte [di + 0x44], 0x4
 	jnz	short .3
 	mov	ax, [di + 0x5a]
-	mov	[0x299c], ax
+	mov	[g_299C], ax
 	mov	ax, [di + 0x5c]
-	mov	[0x299e], ax
+	mov	[g_299E], ax
 	push	word [di + 0x6]
 	push	word [di + 0x2]
 	push	di
@@ -4447,13 +4447,13 @@ Ai_28BB_292A:
 	call	0x2E42:Ai_2E42_065C
 	add	sp, 0x2
 	mov	ax, 0x1
-	mov	[0x299c], ax
-	mov	[0x299e], ax
+	mov	[g_299C], ax
+	mov	[g_299E], ax
 	mov	ax, [di + 0x6]
-	add	ax, [0xd672]
+	add	ax, [g_D672]
 	push	ax
 	mov	ax, [di + 0x2]
-	add	ax, [0xd66c]
+	add	ax, [g_D66C]
 	push	ax
 	push	di
 	push	cs
@@ -4467,7 +4467,7 @@ Ai_28BB_292A:
 	call	Ai_28BB_3106
 	add	sp, 0x6
 .3:
-	cmp	byte [0x29ba], 0x0
+	cmp	byte [g_29BA], 0x0
 	jz	short .4
 	mov	ax, [di + 0x66]
 	mov	[di + 0x2], ax
@@ -4482,26 +4482,26 @@ Ai_28BB_292A:
 	mov	dx, [di + 0x5e]
 	db	0x8B, 0xDA		; mov bx, dx
 	shl	bx, 1
-	mov	si, [bx - 0x2b6a]
+	mov	si, [bx + g_D496]
 	cmp	si, 0x10
 	jz	short .6
 .5:
-	mov	al, [si - 0x2b0b]
+	mov	al, [si + g_D4F5]
 	cbw
 	db	0x8B, 0xF8		; mov di, ax
 	db	0x8B, 0xDF		; mov bx, di
 	shl	bx, 1
 	mov	ax, [bp + 0xa]
-	cmp	[bx - 0x2b8c], ax
+	cmp	[bx + g_D474], ax
 	jnl	short .6
 	db	0x8B, 0xDA		; mov bx, dx
 	shl	bx, 1
-	inc	word [bx - 0x2b6a]
+	inc	word [bx + g_D496]
 	db	0x8B, 0xC7		; mov ax, di
 	shl	di, 1
-	dec	word [di - 0x2b6a]
-	mov	[si - 0x2b0c], al
-	mov	[si - 0x2b0b], dl
+	dec	word [di + g_D496]
+	mov	[si + g_D4F4], al
+	mov	[si + g_D4F5], dl
 	inc	si
 	cmp	si, 0x10
 	jnz	short .5
@@ -4509,31 +4509,31 @@ Ai_28BB_292A:
 	db	0x8B, 0xDA		; mov bx, dx
 	shl	bx, 1
 	mov	[bp - 0x4], bx
-	mov	si, [bx - 0x2b6a]
+	mov	si, [bx + g_D496]
 	db	0x0B, 0xF6		; or si, si
 	jz	short .8
 .7:
-	mov	al, [si - 0x2b0d]
+	mov	al, [si + g_D4F3]
 	cbw
 	db	0x8B, 0xF8		; mov di, ax
 	db	0x8B, 0xDF		; mov bx, di
 	shl	bx, 1
 	mov	ax, [bp + 0xa]
-	cmp	[bx - 0x2b8c], ax
+	cmp	[bx + g_D474], ax
 	jng	short .8
 	mov	bx, [bp - 0x4]
-	dec	word [bx - 0x2b6a]
+	dec	word [bx + g_D496]
 	db	0x8B, 0xC7		; mov ax, di
 	shl	di, 1
-	inc	word [di - 0x2b6a]
-	mov	[si - 0x2b0c], al
-	mov	[si - 0x2b0d], dl
+	inc	word [di + g_D496]
+	mov	[si + g_D4F4], al
+	mov	[si + g_D4F3], dl
 	dec	si
 	jnz	short .7
 .8:
 	mov	ax, [bp + 0xa]
 	mov	bx, [bp - 0x4]
-	mov	[bx - 0x2b8c], ax
+	mov	[bx + g_D474], ax
 	pop	si
 	pop	di
 	leave
@@ -4546,23 +4546,23 @@ Ai_28BB_2A54:
 	push	si
 	mov	si, [bp + 0xa]
 	mov	ax, 0x108
-	sub	ax, [0x299e]
+	sub	ax, [g_299E]
 	mov	[bp - 0x2], ax
 	mov	cx, 0xa0
-	sub	cx, [0x299c]
+	sub	cx, [g_299C]
 	mov	[bp - 0x6], cx
 	sub	cx, 0x40
 	neg	cx
-	mov	[0xd6c8], cx
+	mov	[g_D6C8], cx
 	sub	ax, strict word 0x40
 	neg	ax
-	mov	[0xd000], ax
+	mov	[g_D000], ax
 	mov	[bp - 0x4], ax
 	db	0x3B, 0xC6		; cmp ax, si
 	jnl	short .1
 	mov	di, [bp + 0x8]
 	neg	ax
-	mov	[0xd000], ax
+	mov	[g_D000], ax
 	db	0x3B, 0xC6		; cmp ax, si
 	jng	short .1
 	jmp	near .5
@@ -4572,12 +4572,12 @@ Ai_28BB_2A54:
 	jg	short .4
 	db	0x8B, 0xC1		; mov ax, cx
 	neg	ax
-	mov	[0xd6c8], ax
+	mov	[g_D6C8], ax
 	db	0x3B, 0xC7		; cmp ax, di
 	jl	short .4
 	push	si
 	push	di
-	mov	ax, [0xd000]
+	mov	ax, [g_D000]
 	cmp	[bp - 0x4], ax
 	jnz	short .2
 	mov	ax, 0xd
@@ -4596,37 +4596,37 @@ Ai_28BB_2A54:
 	jmp	short .5
 .4:
 	db	0x8B, 0xC6		; mov ax, si
-	sub	ax, [0xd000]
-	mov	[0xd66c], ax
+	sub	ax, [g_D000]
+	mov	[g_D66C], ax
 	db	0x8B, 0xCF		; mov cx, di
-	sub	cx, [0xd6c8]
-	mov	[0xd672], cx
+	sub	cx, [g_D6C8]
+	mov	[g_D672], cx
 	push	cx
 	push	ax
 	call	0x03A3:FoldScale
 	add	sp, 0x4
-	mov	[0xd6c0], ax
-	neg	word [0xd672]
+	mov	[g_D6C0], ax
+	neg	word [g_D672]
 	cmp	ax, strict word 0x40
 	jl	short .5
-	mov	ax, [0xd66c]
+	mov	ax, [g_D66C]
 	cwd
 	db	0x8A, 0xF2		; mov dh, dl
 	db	0x8A, 0xD4		; mov dl, ah
 	db	0x8A, 0xE0		; mov ah, al
 	db	0x2A, 0xC0		; sub al, al
-	mov	bx, [0xd6c0]
+	mov	bx, [g_D6C0]
 	call	0x03A3:IdivWords.regs
-	mov	[0xd66c], ax
-	mov	ax, [0xd672]
+	mov	[g_D66C], ax
+	mov	ax, [g_D672]
 	cwd
 	db	0x8A, 0xF2		; mov dh, dl
 	db	0x8A, 0xD4		; mov dl, ah
 	db	0x8A, 0xE0		; mov ah, al
 	db	0x2A, 0xC0		; sub al, al
-	mov	bx, [0xd6c0]
+	mov	bx, [g_D6C0]
 	call	0x03A3:IdivWords.regs
-	mov	[0xd672], ax
+	mov	[g_D672], ax
 	push	word [bp + 0x6]
 	push	cs
 	call	Ai_28BB_3024
@@ -4635,25 +4635,25 @@ Ai_28BB_2A54:
 	mov	bx, [bp + 0x6]
 	mov	ax, [bx + 0x30]
 	or	ax, [bx + 0x32]
-	mov	[0xd66c], ax
+	mov	[g_D66C], ax
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .7
-	mov	word [0xd66c], 0x100
-	mov	[0xd672], ax
+	mov	word [g_D66C], 0x100
+	mov	[g_D672], ax
 	cmp	[bp - 0x2], si
 	jng	short .6
-	mov	word [0xd66c], 0xff00
+	mov	word [g_D66C], 0xff00
 	mov	dx, [bp - 0x2]
 	neg	dx
 	db	0x3B, 0xD6		; cmp dx, si
 	jnl	short .6
-	mov	bx, [0xd66c]
-	mov	[0xd66c], ax
-	mov	[0xd672], bx
+	mov	bx, [g_D66C]
+	mov	[g_D66C], ax
+	mov	[g_D672], bx
 	mov	dx, [bp - 0x6]
 	db	0x3B, 0xD7		; cmp dx, di
 	jng	short .6
-	neg	word [0xd672]
+	neg	word [g_D672]
 	neg	dx
 	db	0x3B, 0xD7		; cmp dx, di
 	jl	short .7
@@ -4696,15 +4696,15 @@ Ai_28BB_2B8A:
 	mov	cx, [bp + 0x8]
 	db	0x8B, 0xD9		; mov bx, cx
 	sub	dx, [bx + 0x2]
-	mov	ax, [0x299c]
+	mov	ax, [g_299C]
 	add	ax, strict word 0x10
-	mov	[0xd6c8], ax
+	mov	[g_D6C8], ax
 	db	0x3B, 0xC2		; cmp ax, dx
 	jnl	short .3
 	jmp	near .27
 .3:
 	neg	ax
-	mov	[0xd6c8], ax
+	mov	[g_D6C8], ax
 	db	0x3B, 0xC2		; cmp ax, dx
 	jng	short .4
 	jmp	near .27
@@ -4712,16 +4712,16 @@ Ai_28BB_2B8A:
 	mov	bx, [bp + 0xc]
 	db	0x8B, 0xF9		; mov di, cx
 	sub	bx, [di + 0x6]
-	mov	ax, [0x299e]
+	mov	ax, [g_299E]
 	inc	ax
 	inc	ax
-	mov	[0xd000], ax
+	mov	[g_D000], ax
 	db	0x3B, 0xC3		; cmp ax, bx
 	jnl	short .5
 	jmp	near .27
 .5:
 	neg	ax
-	mov	[0xd000], ax
+	mov	[g_D000], ax
 	db	0x3B, 0xC3		; cmp ax, bx
 	jng	short .6
 	jmp	near .27
@@ -4744,9 +4744,9 @@ Ai_28BB_2B8A:
 .8:
 	mov	[bp + 0xa], dx
 	db	0x8B, 0xFA		; mov di, dx
-	mov	byte [0x29ba], 0xff
+	mov	byte [g_29BA], 0xff
 	and	byte [si + 0x44], 0x7f
-	mov	bx, [0x2996]
+	mov	bx, [g_2996]
 	cmp	byte [bx], 0x0
 	jl	short .10
 	mov	al, [bx]
@@ -4758,19 +4758,19 @@ Ai_28BB_2B8A:
 	db	0x8B, 0xDA		; mov bx, dx
 	mov	word [bx + 0x3e], 0x8
 	db	0x8B, 0xC2		; mov ax, dx
-	mov	bx, [0x298e]
+	mov	bx, [g_298E]
 	mov	cx, [bx]
-	mov	[0xd672], cx
+	mov	[g_D672], cx
 	db	0x8B, 0xD8		; mov bx, ax
 	test	byte [bx + 0x44], 0x80
 	jnz	short .9
-	neg	word [0xd672]
+	neg	word [g_D672]
 .9:
-	cmp	word [0xd672], 0x0
+	cmp	word [g_D672], 0x0
 	jnl	short .10
 	or	byte [si + 0x44], 0x80
 .10:
-	mov	word [0xd66c], 0xff00
+	mov	word [g_D66C], 0xff00
 	mov	ax, [si + 0x4]
 	mov	dx, [si + 0x6]
 	sub	ax, [si + 0x68]
@@ -4780,23 +4780,23 @@ Ai_28BB_2B8A:
 	db	0x8A, 0xD6		; mov dl, dh
 	shl	dh, 1
 	db	0x1A, 0xF6		; sbb dh, dh
-	mov	[0xd672], ax
-	mov	[0xd674], dx
+	mov	[g_D672], ax
+	mov	[g_D674], dx
 	db	0x0B, 0xD0		; or dx, ax
 	jnz	short .11
 	jmp	near .24
 .11:
-	cmp	word [0xd674], 0x0
+	cmp	word [g_D674], 0x0
 	jl	short .13
 	jg	short .12
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .13
 .12:
-	mov	word [0xd66c], 0x100
-	neg	word [0xd000]
+	mov	word [g_D66C], 0x100
+	neg	word [g_D000]
 .13:
 	mov	ax, [bp + 0xc]
-	add	[0xd000], ax
+	add	[g_D000], ax
 	mov	ax, [si]
 	mov	dx, [si + 0x2]
 	sub	ax, [si + 0x64]
@@ -4806,20 +4806,20 @@ Ai_28BB_2B8A:
 	db	0x8A, 0xD6		; mov dl, dh
 	shl	dh, 1
 	db	0x1A, 0xF6		; sbb dh, dh
-	mov	[0xd6c0], ax
-	mov	[0xd6c2], dx
-	mov	ax, [0xd672]
+	mov	[g_D6C0], ax
+	mov	[g_D6C2], dx
+	mov	ax, [g_D672]
 	cwd
 	push	dx
 	push	ax
-	mov	ax, [0xd000]
-	mov	dx, [0xd6c0]
+	mov	ax, [g_D000]
+	mov	dx, [g_D6C0]
 	call	0x03A3:ImulRegs
 	push	dx
 	push	ax
 	call	0x0000:__aFldiv
-	mov	[0xd000], ax
-	mov	[0xd002], dx
+	mov	[g_D000], ax
+	mov	[g_D002], dx
 	cmp	dx, 0x1
 	jna	short .14
 	jmp	near .24
@@ -4828,26 +4828,26 @@ Ai_28BB_2B8A:
 	jmp	near .24
 .15:
 	db	0x2B, 0xF8		; sub di, ax
-	cmp	di, [0xd6c8]
+	cmp	di, [g_D6C8]
 	jnl	short .16
 	jmp	near .24
 .16:
-	mov	ax, [0xd6c8]
+	mov	ax, [g_D6C8]
 	neg	ax
-	mov	[0xd6c8], ax
+	mov	[g_D6C8], ax
 	db	0x3B, 0xC7		; cmp ax, di
 	jnl	short .17
 	jmp	near .24
 .17:
-	mov	word [0xd672], 0x0
+	mov	word [g_D672], 0x0
 	mov	ax, [si + 0x6]
-	xor	ax, [0xd66c]
-	mov	[0xd6c0], ax
+	xor	ax, [g_D66C]
+	mov	[g_D6C0], ax
 	db	0x0B, 0xC0		; or ax, ax
 	jnl	short .18
 	jmp	near .25
 .18:
-	neg	word [0xd66c]
+	neg	word [g_D66C]
 	test	byte [si + 0x44], 0x80
 	jz	short .19
 	jmp	near .25
@@ -4856,12 +4856,12 @@ Ai_28BB_2B8A:
 	db	0x8B, 0xD7		; mov dx, di
 	cmp	word [si + 0xa], 0xd
 	jz	short .20
-	dec	word [0xd6c8]
-	cmp	[0xd6c8], dx
+	dec	word [g_D6C8]
+	cmp	[g_D6C8], dx
 	jl	short .20
-	mov	ax, [0xd6c8]
+	mov	ax, [g_D6C8]
 	neg	ax
-	mov	[0xd6c8], ax
+	mov	[g_D6C8], ax
 	db	0x3B, 0xC2		; cmp ax, dx
 	jg	short .20
 	push	word [bp + 0x8]
@@ -4869,8 +4869,8 @@ Ai_28BB_2B8A:
 	jmp	near .26
 	db	0x90
 .20:
-	and	byte [0x29be], 0xef
-	test	byte [0x29bb], 0x1
+	and	byte [g_29BE], 0xef
+	test	byte [g_29BB], 0x1
 	jnz	short .22
 	cmp	word [CrowdSound], 0x4b0
 	jg	short .21
@@ -4879,19 +4879,19 @@ Ai_28BB_2B8A:
 	jng	short .21
 	mov	word [CrowdSound], 0x4b0
 .21:
-	add	word [0xd6c4], 0x28
+	add	word [g_D6C4], 0x28
 .22:
 	push	word 0xac
 	call	0x0EDC:PlaySoundEffect
 	add	sp, 0x2
 	mov	ax, 0x1000
 	call	0x0C11:randomd0
-	mov	[0xd66c], ax
+	mov	[g_D66C], ax
 	cmp	word [si + 0x6], 0x0
 	jl	short .23
-	neg	word [0xd66c]
+	neg	word [g_D66C]
 .23:
-	mov	ax, [0xd66c]
+	mov	ax, [g_D66C]
 	mov	[si + 0xe], ax
 	mov	ax, 0x2000
 	call	0x0C11:randomd0
@@ -4906,14 +4906,14 @@ Ai_28BB_2B8A:
 	jmp	short .26
 	db	0x90
 .24:
-	mov	word [0xd66c], 0x0
-	mov	word [0xd672], 0x100
+	mov	word [g_D66C], 0x0
+	mov	word [g_D672], 0x100
 	mov	ax, [si + 0x2]
 	sub	ax, [si + 0x66]
 	js	short .25
-	mov	word [0xd672], 0xff00
+	mov	word [g_D672], 0xff00
 .25:
-	mov	word [0x5a2a], 0x1
+	mov	word [g_5A2A], 0x1
 	push	si
 	push	cs
 	call	Ai_28BB_2E12
@@ -4930,17 +4930,17 @@ Ai_28BB_2E12:
 	push	di
 	push	si
 	mov	si, [bp + 0x6]
-	mov	ax, [0xd66c]
+	mov	ax, [g_D66C]
 	mov	[si + 0x30], ax
-	mov	ax, [0xd672]
+	mov	ax, [g_D672]
 	mov	[si + 0x32], ax
 	mov	dx, [si + 0xc]
-	mov	ax, [0xd672]
+	mov	ax, [g_D672]
 	call	0x03A3:ImulRegs
 	db	0x8B, 0xCA		; mov cx, dx
 	mov	dx, [si + 0xe]
 	db	0x8B, 0xF8		; mov di, ax
-	mov	ax, [0xd66c]
+	mov	ax, [g_D66C]
 	mov	[bp - 0x4], di
 	mov	[bp - 0x2], cx
 	call	0x03A3:ImulRegs
@@ -4951,14 +4951,14 @@ Ai_28BB_2E12:
 	db	0x8A, 0xD6		; mov dl, dh
 	shl	dh, 1
 	db	0x1A, 0xF6		; sbb dh, dh
-	mov	[0xd6b8], ax
+	mov	[g_D6B8], ax
 	mov	dx, [si + 0xc]
-	mov	ax, [0xd66c]
+	mov	ax, [g_D66C]
 	call	0x03A3:ImulRegs
 	db	0x8B, 0xCA		; mov cx, dx
 	mov	dx, [si + 0xe]
 	db	0x8B, 0xF8		; mov di, ax
-	mov	ax, [0xd672]
+	mov	ax, [g_D672]
 	mov	[bp - 0x8], di
 	mov	[bp - 0x6], cx
 	call	0x03A3:ImulRegs
@@ -4969,25 +4969,25 @@ Ai_28BB_2E12:
 	db	0x8A, 0xD6		; mov dl, dh
 	shl	dh, 1
 	db	0x1A, 0xF6		; sbb dh, dh
-	mov	[0xd6c0], ax
-	neg	word [0xd6b8]
+	mov	[g_D6C0], ax
+	neg	word [g_D6B8]
 	cmp	word [si + 0x5e], 0xe
 	jz	short .1
 	jmp	near .13
 .1:
-	and	byte [0x29be], 0xef
-	mov	word [0x29a8], 0xffff
-	cmp	word [0xd6b8], 0x0
+	and	byte [g_29BE], 0xef
+	mov	word [g_29A8], 0xffff
+	cmp	word [g_D6B8], 0x0
 	jl	short .3
 .2:
-	mov	word [0x5a2a], 0x0
+	mov	word [g_5A2A], 0x0
 	pop	si
 	pop	di
 	leave
 	retf
 .3:
-	sar	word [0xd6b8], byte 0x2
-	cmp	word [0xd6b8], 0xfc00
+	sar	word [g_D6B8], byte 0x2
+	cmp	word [g_D6B8], 0xfc00
 	jng	short .4
 	jmp	near .12
 .4:
@@ -4998,10 +4998,10 @@ Ai_28BB_2E12:
 	push	si
 	call	0x2519:Ai_2519_289A
 	add	sp, 0x2
-	cmp	word [0x5a2a], 0x0
+	cmp	word [g_5A2A], 0x0
 	jnz	short .12
 	mov	cl, 0x8
-	mov	di, [0xd6b8]
+	mov	di, [g_D6B8]
 	sar	di, cl
 	sar	di, byte 0x2
 	add	di, 0x4
@@ -5010,7 +5010,7 @@ Ai_28BB_2E12:
 .5:
 	cmp	word [si + 0xa], 0xa
 	ja	short .8
-	mov	bx, [0x2996]
+	mov	bx, [g_2996]
 	cmp	byte [bx], 0x0
 	jnl	short .12
 	mov	cx, 0x3
@@ -5054,42 +5054,42 @@ Ai_28BB_2E12:
 	call	0x0EDC:PlaySoundEffect
 	add	sp, 0x2
 .12:
-	mov	dx, [0xd6c0]
+	mov	dx, [g_D6C0]
 	sar	dx, byte 0x6
-	sub	[0xd6c0], dx
+	sub	[g_D6C0], dx
 	sar	dx, 1
-	sub	[0xd6c0], dx
+	sub	[g_D6C0], dx
 	jmp	short .16
 	db	0x90
 .13:
-	cmp	word [0xd6b8], 0x3e8
+	cmp	word [g_D6B8], 0x3e8
 	jng	short .14
 	jmp	near .2
 .14:
-	cmp	word [0xd6b8], 0xf000
+	cmp	word [g_D6B8], 0xf000
 	jg	short .15
 	cmp	word [si + 0x18], 0xa
 	jl	short .15
-	cmp	word [0x5a2a], 0x0
+	cmp	word [g_5A2A], 0x0
 	jnz	short .15
 	push	word 0xb1
 	call	0x0EDC:PlaySoundEffect
 	add	sp, 0x2
 .15:
-	sar	word [0xd6b8], byte 0x2
-	cmp	word [0xd6b8], 0xfc7c
+	sar	word [g_D6B8], byte 0x2
+	cmp	word [g_D6B8], 0xfc7c
 	jl	short .16
-	mov	word [0xd6b8], 0xfc18
+	mov	word [g_D6B8], 0xfc18
 .16:
-	mov	word [0x5a2a], 0x0
-	mov	ax, [0xd672]
-	mov	dx, [0xd6b8]
+	mov	word [g_5A2A], 0x0
+	mov	ax, [g_D672]
+	mov	dx, [g_D6B8]
 	call	0x03A3:ImulRegs
 	db	0x8B, 0xF8		; mov di, ax
-	mov	ax, [0xd66c]
+	mov	ax, [g_D66C]
 	mov	[bp - 0xc], di
 	mov	[bp - 0xa], dx
-	mov	dx, [0xd6c0]
+	mov	dx, [g_D6C0]
 	call	0x03A3:ImulRegs
 	sub	ax, [bp - 0xc]
 	sbb	dx, [bp - 0xa]
@@ -5099,14 +5099,14 @@ Ai_28BB_2E12:
 	shl	dh, 1
 	db	0x1A, 0xF6		; sbb dh, dh
 	mov	[si + 0xc], ax
-	mov	ax, [0xd6b8]
-	mov	dx, [0xd66c]
+	mov	ax, [g_D6B8]
+	mov	dx, [g_D66C]
 	call	0x03A3:ImulRegs
 	db	0x8B, 0xF8		; mov di, ax
-	mov	ax, [0xd6c0]
+	mov	ax, [g_D6C0]
 	mov	[bp - 0x10], di
 	mov	[bp - 0xe], dx
-	mov	dx, [0xd672]
+	mov	dx, [g_D672]
 	call	0x03A3:ImulRegs
 	add	ax, [bp - 0x10]
 	adc	dx, [bp - 0xe]
@@ -5164,7 +5164,7 @@ Ai_28BB_3024:
 	jg	short .1
 	cmp	word [si + 0xe], 0xfa0
 	jl	short .1
-	cmp	word [0xd628], 0x26
+	cmp	word [g_D628], 0x26
 	jl	short .1
 	sar	word [si + 0xe], 1
 	lea	bx, [si + 0x80]
@@ -5190,19 +5190,19 @@ Ai_28BB_3024:
 	jng	short .6
 	mov	word [CrowdSound], 0x5dc
 .6:
-	add	word [0xd6c4], 0xf
+	add	word [g_D6C4], 0xf
 .7:
-	or	byte [0x29bc], 0x40
+	or	byte [g_29BC], 0x40
 	or	byte [si + 0x44], 0x4
 	cmp	word [si + 0x6], 0x0
 	jnl	short .8
 	or	byte [si + 0x49], 0x80
 .8:
 	mov	word [si + 0x92], 0xffff
-	test	byte [0x29bb], 0x1
+	test	byte [g_29BB], 0x1
 	jnz	short .9
 	push	0x3
-	mov	ax, [0xd624]
+	mov	ax, [g_D624]
 	shl	ax, byte 0x7
 	add	ax, 0xb50e
 	push	ax
@@ -5227,16 +5227,16 @@ Ai_28BB_3106:
 .1:
 	mov	si, [bx + 0x5e]
 	shl	si, 1
-	mov	di, [si - 0x2b6a]
+	mov	di, [si + g_D496]
 	cmp	di, 0x10
 	jz	short .3
 .2:
-	mov	al, [di - 0x2b0b]
+	mov	al, [di + g_D4F5]
 	cbw
 	db	0x8B, 0xF0		; mov si, ax
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, 1
-	mov	ax, [bx - 0x2b8c]
+	mov	ax, [bx + g_D474]
 	sub	ax, [bp + 0xa]
 	cmp	ax, strict word 0x10
 	jg	short .3
@@ -5254,17 +5254,17 @@ Ai_28BB_3106:
 	mov	bx, [bp + 0x6]
 	mov	bx, [bx + 0x5e]
 	shl	bx, 1
-	mov	di, [bx - 0x2b6a]
+	mov	di, [bx + g_D496]
 	db	0x0B, 0xFF		; or di, di
 	jz	short .5
 .4:
-	mov	al, [di - 0x2b0d]
+	mov	al, [di + g_D4F3]
 	cbw
 	db	0x8B, 0xF0		; mov si, ax
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, 1
 	mov	ax, [bp + 0xa]
-	sub	ax, [bx - 0x2b8c]
+	sub	ax, [bx + g_D474]
 	cmp	ax, strict word 0x10
 	jg	short .5
 	push	si
@@ -5305,7 +5305,7 @@ Ai_28BB_319A:
 	jmp	near .19
 .3:
 	mov	si, [di + 0x2]
-	test	byte [0x29bc], 0x80
+	test	byte [g_29BC], 0x80
 	jz	short .4
 	mov	si, [di + 0x6]
 .4:
@@ -5331,8 +5331,8 @@ Ai_28BB_319A:
 	call	0x03A3:ImulRegs
 	add	ax, [bp - 0xa]
 	adc	dx, [bp - 0x8]
-	mov	[0xd66c], ax
-	mov	[0xd66e], dx
+	mov	[g_D66C], ax
+	mov	[g_D66E], dx
 	db	0x0B, 0xD2		; or dx, dx
 	jng	short .6
 	jmp	near .19
@@ -5368,8 +5368,8 @@ Ai_28BB_319A:
 	call	0x03A3:ImulRegs
 	add	ax, [bp - 0x12]
 	adc	dx, [bp - 0x10]
-	mov	[0xd672], ax
-	mov	[0xd674], dx
+	mov	[g_D672], ax
+	mov	[g_D674], dx
 	db	0x0B, 0xD2		; or dx, dx
 	jnl	short .8
 	jmp	near .19
@@ -5386,18 +5386,18 @@ Ai_28BB_319A:
 	test	al, 0x40
 	jz	short .15
 .9:
-	mov	al, [0xd673]
+	mov	al, [g_D673]
 	cbw
-	mov	[0xd6c8], ax
+	mov	[g_D6C8], ax
 	cmp	ax, strict word 0x5
 	jg	short .10
-	mov	word [0xd6c8], 0x5
-	mov	word [0xd6ca], 0x0
+	mov	word [g_D6C8], 0x5
+	mov	word [g_D6CA], 0x0
 .10:
-	mov	ax, [0xd6c8]
-	mov	[0xdcd2], ax
+	mov	ax, [g_D6C8]
+	mov	[g_DCD2], ax
 	add	[si + 0x18], ax
-	mov	ax, [0xd6c8]
+	mov	ax, [g_D6C8]
 	add	[di + 0x18], ax
 	test	byte [di + 0x45], 0x1
 	jnz	short .11
@@ -5409,9 +5409,9 @@ Ai_28BB_319A:
 	mov	ax, [di + 0x5e]
 	mov	[si + 0x14], ax
 .12:
-	cmp	word [0xd6c8], 0x14
+	cmp	word [g_D6C8], 0x14
 	jl	short .14
-	mov	bx, [0x2996]
+	mov	bx, [g_2996]
 	mov	al, [bx]
 	cbw
 	mov	[bp - 0x14], ax
@@ -5431,16 +5431,16 @@ Ai_28BB_319A:
 	push	cs
 	call	Ai_28BB_055A
 	add	sp, 0x4
-	push	word [0xd6c8]
+	push	word [g_D6C8]
 	push	di
 	push	si
 	push	cs
 	call	Ai_28BB_0284
 	add	sp, 0x6
 .15:
-	mov	ax, [0xd672]
-	mov	[0xd6c8], ax
-	cmp	byte [0x29ba], 0x0
+	mov	ax, [g_D672]
+	mov	[g_D6C8], ax
+	cmp	byte [g_29BA], 0x0
 	jnl	short .16
 	jmp	near .19
 .16:
@@ -5454,8 +5454,8 @@ Ai_28BB_319A:
 	call	0x03A3:ImulRegs
 	sub	ax, [bp - 0x18]
 	sbb	dx, [bp - 0x16]
-	mov	[0xd66c], ax
-	mov	[0xd66e], dx
+	mov	[g_D66C], ax
+	mov	[g_D66E], dx
 	sar	dx, 1
 	rcr	ax, 1
 	sar	dx, 1
@@ -5464,30 +5464,30 @@ Ai_28BB_319A:
 	rcr	ax, 1
 	sar	dx, 1
 	rcr	ax, 1
-	mov	[0xd000], ax
+	mov	[g_D000], ax
 	mov	al, [si + 0x4a]
 	db	0x2A, 0xE4		; sub ah, ah
 	add	ax, 0x8c
-	mov	[0xd66c], ax
+	mov	[g_D66C], ax
 	mov	al, [di + 0x4a]
 	db	0x2A, 0xE4		; sub ah, ah
 	add	ax, 0x8c
-	mov	[0xd672], ax
-	mov	word [0xd006], 0x0
-	mov	ax, [0xd66c]
-	add	[0xd672], ax
+	mov	[g_D672], ax
+	mov	word [g_D006], 0x0
+	mov	ax, [g_D66C]
+	add	[g_D672], ax
 	db	0x8B, 0xD0		; mov dx, ax
-	mov	ax, [0xd6c8]
+	mov	ax, [g_D6C8]
 	call	0x03A3:ImulRegs
-	mov	bx, [0xd672]
+	mov	bx, [g_D672]
 	call	0x03A3:IdivWords.regs
-	mov	[0xd66c], ax
-	mov	[0xd672], ax
+	mov	[g_D66C], ax
+	mov	[g_D672], ax
 	mov	dx, [bp - 0x2]
 	call	0x03A3:ImulRegs
 	mov	[bp - 0x1c], ax
 	mov	[bp - 0x1a], dx
-	mov	ax, [0xd000]
+	mov	ax, [g_D000]
 	mov	dx, [bp + 0xa]
 	call	0x03A3:ImulRegs
 	add	ax, [bp - 0x1c]
@@ -5502,12 +5502,12 @@ Ai_28BB_319A:
 	rcr	ax, 1
 	add	ax, [di + 0xc]
 	mov	[si + 0xc], ax
-	mov	ax, [0xd000]
+	mov	ax, [g_D000]
 	mov	dx, [bp - 0x2]
 	call	0x03A3:ImulRegs
 	mov	[bp - 0x20], ax
 	mov	[bp - 0x1e], dx
-	mov	ax, [0xd66c]
+	mov	ax, [g_D66C]
 	mov	dx, [bp + 0xa]
 	call	0x03A3:ImulRegs
 	sub	ax, [bp - 0x20]
@@ -5522,7 +5522,7 @@ Ai_28BB_319A:
 	rcr	ax, 1
 	add	ax, [di + 0xe]
 	mov	[si + 0xe], ax
-	mov	ax, [0xd672]
+	mov	ax, [g_D672]
 	mov	dx, [bp - 0x2]
 	call	0x03A3:ImulRegs
 	sar	dx, 1
@@ -5534,7 +5534,7 @@ Ai_28BB_319A:
 	sar	dx, 1
 	rcr	ax, 1
 	add	[di + 0xc], ax
-	mov	ax, [0xd672]
+	mov	ax, [g_D672]
 	mov	dx, [bp + 0xa]
 	call	0x03A3:ImulRegs
 	sar	dx, 1
@@ -5546,8 +5546,8 @@ Ai_28BB_319A:
 	sar	dx, 1
 	rcr	ax, 1
 	add	[di + 0xe], ax
-	mov	byte [0x29ba], 0xff
-	test	byte [0x29bb], 0x1
+	mov	byte [g_29BA], 0xff
+	test	byte [g_29BB], 0x1
 	jz	short .17
 	jmp	near .19
 .17:
@@ -5609,7 +5609,7 @@ Ai_28BB_34EA:
 	enter	0x2, 0x0
 	push	di
 	push	si
-	cmp	word [0x29da], 0x2
+	cmp	word [g_29DA], 0x2
 	jnz	short .4
 	mov	si, [bp + 0x6]
 	mov	bx, [bp + 0x8]
@@ -5620,7 +5620,7 @@ Ai_28BB_34EA:
 	jng	short .4
 	cmp	dx, 0x2
 	jg	short .4
-	cmp	word [0x29dc], 0x3c
+	cmp	word [g_29DC], 0x3c
 	jg	short .4
 	mov	dx, [bp + 0xa]
 	mov	bx, [si + 0xd4]
@@ -5646,9 +5646,9 @@ Ai_28BB_34EA:
 	mov	di, [si + 0x24]
 	and	di, 0xf
 	shl	di, byte 0x2
-	les	di, [bx + di + 0x5662]
+	les	di, [bx + di + g_5662]
 	mov	byte [es:di], 0x2
-	les	bx, [bx + 0x566a]
+	les	bx, [bx + g_566A]
 	mov	byte [es:bx], 0x1
 	push	si
 	call	0x2E42:Ai_2E42_1994
@@ -5664,7 +5664,7 @@ Ai_28BB_356A:
 	enter	0x4, 0x0
 	push	di
 	push	si
-	test	byte [0x29bb], 0x1
+	test	byte [g_29BB], 0x1
 	jz	short .1
 	jmp	near .7
 .1:
@@ -5675,7 +5675,7 @@ Ai_28BB_356A:
 .2:
 	cmp	word [si + 0x24], 0x0
 	jl	short .6
-	mov	bx, [0x2996]
+	mov	bx, [g_2996]
 	mov	al, [bx]
 	mov	[bp - 0x4], al
 	db	0x0A, 0xC0		; or al, al
@@ -5693,17 +5693,17 @@ Ai_28BB_356A:
 	neg	dx
 	db	0x33, 0xC2		; xor ax, dx
 	jnz	short .6
-	test	byte [0x29bb], 0x8
+	test	byte [g_29BB], 0x8
 	jz	short .5
 	mov	byte [si + 0x25], 0xff
 	mov	bl, [si + 0x24]
 	and	bx, 0xf
 	shl	bx, byte 0x2
 	add	bx, [bp - 0x2]
-	les	bx, [bx + 0x5662]
+	les	bx, [bx + g_5662]
 	mov	byte [es:bx], 0x2
 	mov	bx, [bp - 0x2]
-	les	bx, [bx + 0x566a]
+	les	bx, [bx + g_566A]
 	mov	byte [es:bx], 0x1
 	push	si
 	call	0x2E42:Ai_2E42_1994
@@ -5711,14 +5711,14 @@ Ai_28BB_356A:
 	jmp	short .6
 .5:
 	db	0x8B, 0xC7		; mov ax, di
-	sub	ax, [0x29c6]
+	sub	ax, [g_29C6]
 	inc	ax
 	jz	short .6
 	db	0x8B, 0xC7		; mov ax, di
-	sub	ax, [0x29c8]
+	sub	ax, [g_29C8]
 	inc	ax
 	jz	short .6
-	mov	bx, [0x298e]
+	mov	bx, [g_298E]
 	push	word [bx]
 	push	cx
 	push	si
@@ -5753,23 +5753,23 @@ Ai_28BB_361E:
 	jnz	short .2
 	mov	byte [si + 0x25], 0x0
 	mov	bx, [bp - 0x2]
-	les	bx, [bx + 0x566a]
+	les	bx, [bx + g_566A]
 	mov	byte [es:bx], 0x2
 	mov	bl, [si + 0x24]
 	and	bx, 0xf
 	shl	bx, byte 0x2
 	add	bx, [bp - 0x2]
-	les	bx, [bx + 0x5662]
+	les	bx, [bx + g_5662]
 	mov	byte [es:bx], 0x1
 	db	0x8B, 0xC7		; mov ax, di
-	sub	ax, [0x29c6]
+	sub	ax, [g_29C6]
 	inc	ax
 	jz	short .2
 	db	0x8B, 0xC7		; mov ax, di
-	sub	ax, [0x29c8]
+	sub	ax, [g_29C8]
 	inc	ax
 	jz	short .2
-	push	word [0x29b4]
+	push	word [g_29B4]
 	push	word [bp - 0x4]
 	push	si
 	push	cs

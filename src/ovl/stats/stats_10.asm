@@ -13,7 +13,7 @@ Stats_2446_0006:
 	mov	word [di], 0x0
 	cmp	bx, 0x17
 	jl	short .3
-	mov	ax, [0xcf18]
+	mov	ax, [g_CF18]
 	db	0x8B, 0xC8		; mov cx, ax
 	shl	ax, 1
 	db	0x03, 0xC1		; add ax, cx
@@ -37,7 +37,7 @@ Stats_2446_0006:
 	add	ax, strict word 0x1f
 	db	0x3B, 0xC3		; cmp ax, bx
 	jg	short .3
-	mov	ax, [0xcfc6]
+	mov	ax, [g_CFC6]
 	db	0x03, 0xC1		; add ax, cx
 	db	0x8B, 0xC8		; mov cx, ax
 	shl	ax, 1
@@ -60,9 +60,9 @@ Stats_2446_006A:
 	enter	0x3e8, 0x0
 	push	di
 	push	si
-	mov	ax, [0x2010]
+	mov	ax, [g_2010]
 	mov	[bp - 0x304], ax
-	mov	ax, [0x200e]
+	mov	ax, [g_200E]
 	mov	[bp - 0x36e], ax
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[bp - 0x3e0], ax
@@ -76,7 +76,7 @@ Stats_2446_006A:
 	push	0x0
 	push	0x0
 	push	ds
-	push	word [0x1fac]
+	push	word [g_1FAC]
 	push	word 0x3861
 	push	strict word 0x0
 	lea	ax, [bp - 0x35e]
@@ -123,10 +123,10 @@ Stats_2446_006A:
 	mov	[bp - 0x3a8], ax
 	push	0x0
 	push	0x0
-	mov	bx, [0x2010]
+	mov	bx, [g_2010]
 	shl	bx, 1
 	push	ds
-	push	word [bx + 0x1fa6]
+	push	word [bx + g_1FA6]
 	push	word 0x3861
 	push	strict word 0x0
 	lea	ax, [bp - 0x35e]
@@ -161,7 +161,7 @@ Stats_2446_006A:
 	call	0x0000:_read
 	add	sp, 0x6
 	imul	bx, [bp - 0x3e2], 0x30
-	les	si, [0xc044]
+	les	si, [g_C044]
 	lea	di, [bx + si]
 	lea	si, [bp - 0x3de]
 	mov	cx, 0x18
@@ -169,9 +169,9 @@ Stats_2446_006A:
 	mov	ax, [bp - 0x372]
 	mov	bx, [bp - 0x3e2]
 	shl	bx, 1
-	mov	[bx - 0x30b2], ax
+	mov	[bx + g_CF4E], ax
 	mov	ax, [bp - 0x3e2]
-	mov	[bx - 0x3080], ax
+	mov	[bx + g_CF80], ax
 	inc	word [bp - 0x3e2]
 .3:
 	inc	word [bp - 0x372]
@@ -200,13 +200,13 @@ Stats_2446_006A:
 	call	0x0000:_read
 	add	sp, 0x6
 	imul	bx, [bp - 0x372], 0x34
-	les	si, [0xc048]
+	les	si, [g_C048]
 	lea	di, [bx + si]
 	lea	si, [bp - 0x3a6]
 	mov	cx, 0x1a
 	rep	movsw
 	push	0x0
-	cmp	word [0x2010], 0x0
+	cmp	word [g_2010], 0x0
 	jz	short .6
 	jmp	near .1
 .6:
@@ -234,7 +234,7 @@ Stats_2446_006A:
 	call	0x0000:_read
 	add	sp, 0x6
 	imul	bx, [bp - 0x360], 0x36
-	les	si, [0xc040]
+	les	si, [g_C040]
 	lea	di, [bx + si]
 	lea	si, [bp - 0x33a]
 	mov	cx, 0x1b
@@ -243,9 +243,9 @@ Stats_2446_006A:
 	add	ax, strict word 0x19
 	mov	bx, [bp - 0x360]
 	shl	bx, 1
-	mov	[bx - 0x304e], ax
+	mov	[bx + g_CFB2], ax
 	mov	ax, [bp - 0x360]
-	mov	[bx - 0x3044], ax
+	mov	[bx + g_CFBC], ax
 	inc	word [bp - 0x360]
 .10:
 	inc	word [bp - 0x372]
@@ -274,13 +274,13 @@ Stats_2446_006A:
 	call	0x0000:_read
 	add	sp, 0x6
 	imul	si, [bp - 0x372], 0x34
-	les	bx, [0xc048]
+	les	bx, [g_C048]
 	lea	di, [bx + si + KeysEnabled]
 	lea	si, [bp - 0x3a6]
 	mov	cx, 0x1a
 	rep	movsw
 	push	0x0
-	cmp	word [0x2010], 0x0
+	cmp	word [g_2010], 0x0
 	jz	short .13
 	jmp	near .8
 .13:
@@ -335,22 +335,22 @@ Stats_2446_006A:
 	push	ax
 	call	0x14B8:LoadPackedHeader
 	add	sp, 0x4
-	mov	[0xcfd0], ax
-	mov	[0xcfd2], dx
+	mov	[g_CFD0], ax
+	mov	[g_CFD2], dx
 	push	word 0x1ff0
 	push	dx
 	push	ax
 	call	0x03A3:FindFarMsg
 	add	sp, 0x6
-	mov	[0xc2b2], ax
-	mov	[0xc2b4], dx
+	mov	[g_C2B2], ax
+	mov	[g_C2B4], dx
 	push	word 0xc8
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	dx, 0x140
 	mov	bx, 0xa
 	call	0x0FEF:SetClipRectRegs
-	push	word [0xc2b4]
-	push	word [0xc2b2]
+	push	word [g_C2B4]
+	push	word [g_C2B2]
 	call	0x0FEF:DrawRleTransBody
 	add	sp, 0x4
 	push	word 0xc8
@@ -358,8 +358,8 @@ Stats_2446_006A:
 	mov	dx, 0x140
 	db	0x2B, 0xDB		; sub bx, bx
 	call	0x0FEF:SetClipRectRegs
-	push	word [0xcfd2]
-	push	word [0xcfd0]
+	push	word [g_CFD2]
+	push	word [g_CFD0]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	lea	ax, [bp - 0x302]
@@ -370,7 +370,7 @@ Stats_2446_006A:
 	push	word [bp - 0x36c]
 	call	0x03A3:UseCharSeg
 	add	sp, 0x4
-	cmp	word [0xc050], 0x0
+	cmp	word [g_C050], 0x0
 	jz	short .15
 	push	0x0
 	push	0x7d
@@ -459,8 +459,8 @@ Stats_2446_006A:
 	db	0x90
 .17:
 	imul	bx, [bp - 0x3aa], 0x30
-	add	bx, [0xc044]
-	mov	es, [0xc046]
+	add	bx, [g_C044]
+	mov	es, [g_C046]
 	add	bx, 0x12
 .18:
 	mov	[bp - 0x33e], bx
@@ -523,13 +523,13 @@ Stats_2446_006A:
 .20:
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, 1
-	mov	ax, [bx - 0x3080]
+	mov	ax, [bx + g_CF80]
 	mov	[bp - 0x3aa], ax
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, 1
-	imul	ax, [bx - 0x30b2], 0x34
-	add	ax, [0xc048]
-	mov	dx, [0xc04a]
+	imul	ax, [bx + g_CF4E], 0x34
+	add	ax, [g_C048]
+	mov	dx, [g_C04A]
 	push	ds
 	lea	di, [bp - 0x3a6]
 	db	0x8B, 0xF0		; mov si, ax
@@ -580,13 +580,13 @@ Stats_2446_006A:
 	push	0x30
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
-	cmp	word [0x200e], 0x0
+	cmp	word [g_200E], 0x0
 	jz	short .22
 	jmp	near .17
 .22:
 	imul	bx, [bp - 0x3aa], 0x30
-	add	bx, [0xc044]
-	mov	es, [0xc046]
+	add	bx, [g_C044]
+	mov	es, [g_C046]
 	jmp	near .18
 .23:
 	push	ds
@@ -639,7 +639,7 @@ Stats_2446_006A:
 	push	word 0xd7
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
-	cmp	word [0x200e], 0x0
+	cmp	word [g_200E], 0x0
 	jnz	short .24
 	push	ds
 	push	word 0x2457
@@ -672,8 +672,8 @@ Stats_2446_006A:
 	db	0x90
 .25:
 	imul	bx, [bp - 0x3aa], 0x36
-	add	bx, [0xc040]
-	mov	es, [0xc042]
+	add	bx, [g_C040]
+	mov	es, [g_C042]
 	add	bx, 0x16
 .26:
 	mov	[bp - 0x3ae], bx
@@ -721,7 +721,7 @@ Stats_2446_006A:
 	push	word 0xd7
 	call	0x0D39:DrawShadowTextF
 	add	sp, 0x8
-	cmp	word [0x200e], 0x0
+	cmp	word [g_200E], 0x0
 	jnz	short .27
 	les	bx, [bp - 0x3ae]
 	push	word [es:bx + 0x6]
@@ -787,13 +787,13 @@ Stats_2446_006A:
 .31:
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, 1
-	mov	ax, [bx - 0x3044]
+	mov	ax, [bx + g_CFBC]
 	mov	[bp - 0x3aa], ax
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, 1
-	imul	ax, [bx - 0x304e], 0x34
-	add	ax, [0xc048]
-	mov	dx, [0xc04a]
+	imul	ax, [bx + g_CFB2], 0x34
+	add	ax, [g_C048]
+	mov	dx, [g_C04A]
 	push	ds
 	lea	di, [bp - 0x3a6]
 	db	0x8B, 0xF0		; mov si, ax
@@ -844,13 +844,13 @@ Stats_2446_006A:
 	push	0x30
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
-	cmp	word [0x200e], 0x0
+	cmp	word [g_200E], 0x0
 	jz	short .33
 	jmp	near .25
 .33:
 	imul	bx, [bp - 0x3aa], 0x36
-	add	bx, [0xc040]
-	mov	es, [0xc042]
+	add	bx, [g_C040]
+	mov	es, [g_C042]
 	jmp	near .26
 .34:
 	lea	ax, [bp - 0x302]
@@ -862,9 +862,9 @@ Stats_2446_006A:
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	mov	ax, [bp - 0x3e2]
-	mov	[0xcf18], ax
+	mov	[g_CF18], ax
 	mov	ax, [bp - 0x360]
-	mov	[0xcfc6], ax
+	mov	[g_CFC6], ax
 	db	0x2B, 0xC0		; sub ax, ax
 	pop	si
 	pop	di

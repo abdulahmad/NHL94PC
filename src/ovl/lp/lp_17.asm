@@ -180,7 +180,7 @@ Lp_2E18_000A:
 	push	ax
 	call	0x0CD1:CloseHandlePtr
 	add	sp, 0x2
-	cmp	word [0xc2aa], 0x0
+	cmp	word [g_C2AA], 0x0
 	jz	short .16
 	db	0x0B, 0xF6		; or si, si
 	jnz	short .13

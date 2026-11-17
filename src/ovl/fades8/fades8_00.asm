@@ -10,15 +10,15 @@ Fades8_3358_0000:
 	mov	[bp - 0x4], al
 	mov	[bp - 0x3], al
 	call	0x0FEF:UseCurrentPage
-	mov	es, [0x8cfa]
+	mov	es, [g_8CFA]
 	mov	ax, [es:0x74fc]
-	mov	[0xdf6a], ax
+	mov	[g_DF6A], ax
 	mov	ax, [es:0x74fe]
-	mov	[0xdf6c], ax
+	mov	[g_DF6C], ax
 	mov	ax, [es:0x74f2]
-	mov	[0xdf6e], ax
+	mov	[g_DF6E], ax
 	mov	cx, [es:0x74f4]
-	mov	[0xdf70], cx
+	mov	[g_DF70], cx
 	db	0x8B, 0xD0		; mov dx, ax
 	mov	ax, [es:0x74fa]
 	db	0x03, 0xC7		; add ax, di
@@ -91,15 +91,15 @@ Fades8_3358_00D4:
 	push	di
 	push	si
 	call	0x0FEF:UseCurrentPage
-	mov	es, [0x8cfa]
+	mov	es, [g_8CFA]
 	mov	ax, [es:0x74fc]
-	mov	[0xdf6a], ax
+	mov	[g_DF6A], ax
 	mov	ax, [es:0x74fe]
-	mov	[0xdf6c], ax
+	mov	[g_DF6C], ax
 	mov	ax, [es:0x74f2]
-	mov	[0xdf6e], ax
+	mov	[g_DF6E], ax
 	mov	cx, [es:0x74f4]
-	mov	[0xdf70], cx
+	mov	[g_DF70], cx
 	mov	ax, [es:0x74fa]
 	add	ax, strict word 0x1f
 	cwd
@@ -110,7 +110,7 @@ Fades8_3358_00D4:
 	db	0x2B, 0xC2		; sub ax, dx
 	mov	[bp - 0x8], ax
 	db	0x8B, 0xC1		; mov ax, cx
-	sub	ax, [0xdf6e]
+	sub	ax, [g_DF6E]
 	add	ax, strict word 0x1b
 	mov	cx, 0x1c
 	cwd
@@ -166,7 +166,7 @@ Fades8_3358_00D4:
 .7:
 	db	0x8B, 0xDE		; mov bx, si
 	shl	bx, byte 0x3
-	cmp	byte [bx + di - 0x7102], 0x0
+	cmp	byte [bx + di + g_8EFE], 0x0
 	jz	short .9
 	inc	si
 	cmp	[bp - 0x8], si
@@ -195,7 +195,7 @@ Fades8_3358_00D4:
 	add	sp, 0x8
 	shl	si, byte 0x3
 	mov	bx, [bp - 0x4]
-	mov	byte [bx + si - 0x7102], 0x1
+	mov	byte [bx + si + g_8EFE], 0x1
 .10:
 	call	0x03A3:WaitDeadlineNoEoi
 	dec	word [bp - 0xe]

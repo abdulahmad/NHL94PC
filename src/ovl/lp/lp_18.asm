@@ -19,7 +19,7 @@ Lp_2E46_000E:
 	mov	[bp - 0x3a], ax
 	push	word 0x3701
 	push	word 0xbaf
-	mov	es, [0x8c30]
+	mov	es, [g_8C30]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
 	push	word 0x3701
@@ -41,7 +41,7 @@ Lp_2E46_000E:
 	jnz	short .1
 	push	word 0x3701
 	push	word 0xbaf
-	mov	es, [0x8c30]
+	mov	es, [g_8C30]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
 	push	word 0x3701
@@ -63,7 +63,7 @@ Lp_2E46_000E:
 	jnz	short .2
 	push	word 0x3701
 	push	word 0xbaf
-	mov	es, [0x8c30]
+	mov	es, [g_8C30]
 	push	word [es:0xb6e]
 	push	word [es:0xb6c]
 	push	word 0x3701
@@ -85,7 +85,7 @@ Lp_2E46_000E:
 	jnz	short .3
 	push	word 0x3701
 	push	word 0xbaf
-	mov	es, [0x8c30]
+	mov	es, [g_8C30]
 	push	word [es:0xb82]
 	push	word [es:0xb80]
 	push	word 0x3701
@@ -142,7 +142,7 @@ Lp_2E46_000E:
 	cmp	[bp - 0x3c2], ax
 	jnz	short .9
 	mov	al, [bp - 0x357]
-	cmp	[0xcc29], al
+	cmp	[g_CC29], al
 	jnc	short .9
 .8:
 	mov	ax, 0xcc00
@@ -162,7 +162,7 @@ Lp_2E46_000E:
 	jmp	short .14
 	db	0x90
 .10:
-	mov	ax, [0x1d02]
+	mov	ax, [g_1D02]
 	mov	[bp - 0x3d0], ax
 	db	0x8B, 0xD8		; mov bx, ax
 	db	0x8B, 0xF0		; mov si, ax
@@ -199,8 +199,8 @@ Lp_2E46_000E:
 	lea	si, [bp - 0x402]
 	mov	cx, 0x18
 	rep	movsw
-	mov	[0x1d02], ax
-	mov	byte [0x1cef], 0x1
+	mov	[g_1D02], ax
+	mov	byte [g_1CEF], 0x1
 	mov	byte [bp - 0x381], 0xff
 .13:
 	inc	word [bp - 0x3c8]
@@ -249,7 +249,7 @@ Lp_2E46_000E:
 	jnz	short .13
 	cmp	[bp - 0x402], ax
 	jz	short .13
-	mov	ax, [0x1cf0]
+	mov	ax, [g_1CF0]
 	mov	[bp - 0x98], ax
 	cmp	byte [bp - 0x38a], 0x0
 	jz	short .19
@@ -275,7 +275,7 @@ Lp_2E46_000E:
 	rep	movsw
 	mov	byte [bp - 0x38a], 0xff
 .20:
-	mov	ax, [0x1cf2]
+	mov	ax, [g_1CF2]
 	mov	[bp - 0x98], ax
 	cmp	byte [bp - 0x389], 0x0
 	jz	short .21
@@ -303,7 +303,7 @@ Lp_2E46_000E:
 .22:
 	cmp	byte [bp - 0x3be], 0x44
 	jnz	short .24
-	mov	ax, [0x1cf4]
+	mov	ax, [g_1CF4]
 	mov	[bp - 0x98], ax
 	cmp	byte [bp - 0x388], 0x0
 	jz	short .23
@@ -336,7 +336,7 @@ Lp_2E46_000E:
 	cmp	byte [bp - 0x3be], 0x43
 	jnz	short .27
 .25:
-	mov	ax, [0x1cf6]
+	mov	ax, [g_1CF6]
 	mov	[bp - 0x98], ax
 	cmp	byte [bp - 0x387], 0x0
 	jz	short .26
@@ -366,7 +366,7 @@ Lp_2E46_000E:
 	jz	short .29
 	cmp	byte [bp - 0x3d4], 0x0
 	jz	short .29
-	mov	ax, [0x1cfc]
+	mov	ax, [g_1CFC]
 	mov	[bp - 0x98], ax
 	cmp	byte [bp - 0x384], 0x0
 	jz	short .28
@@ -392,7 +392,7 @@ Lp_2E46_000E:
 	rep	movsw
 	mov	byte [bp - 0x384], 0xff
 .29:
-	mov	ax, [0x1d00]
+	mov	ax, [g_1D00]
 	mov	[bp - 0x98], ax
 	cmp	byte [bp - 0x382], 0x0
 	jz	short .30
@@ -418,11 +418,11 @@ Lp_2E46_000E:
 	rep	movsw
 	mov	byte [bp - 0x382], 0xff
 .31:
-	cmp	byte [0x1cef], 0x1
+	cmp	byte [g_1CEF], 0x1
 	jz	short .32
 	jmp	near .10
 .32:
-	mov	ax, [0x1d02]
+	mov	ax, [g_1D02]
 	mov	[bp - 0x98], ax
 	db	0x8B, 0xD8		; mov bx, ax
 	db	0x8B, 0xF0		; mov si, ax
@@ -435,7 +435,7 @@ Lp_2E46_000E:
 	mov	word [bp - 0x3c8], 0x0
 	jmp	short .38
 .34:
-	mov	ax, [0x1d02]
+	mov	ax, [g_1D02]
 	mov	[bp - 0x3d0], ax
 	db	0x8B, 0xD8		; mov bx, ax
 	db	0x8B, 0xF0		; mov si, ax
@@ -472,8 +472,8 @@ Lp_2E46_000E:
 	lea	si, [bp - 0x96]
 	mov	cx, 0x1b
 	rep	movsw
-	mov	[0x1d02], ax
-	mov	byte [0x1cef], 0x0
+	mov	[g_1D02], ax
+	mov	byte [g_1CEF], 0x0
 	mov	byte [bp - 0x381], 0xff
 .37:
 	inc	word [bp - 0x3c8]
@@ -522,7 +522,7 @@ Lp_2E46_000E:
 	jnz	short .37
 	cmp	[bp - 0x96], ax
 	jz	short .37
-	mov	ax, [0x1cf8]
+	mov	ax, [g_1CF8]
 	mov	[bp - 0x3d0], ax
 	cmp	byte [bp - 0x386], 0x0
 	jz	short .43
@@ -548,7 +548,7 @@ Lp_2E46_000E:
 	rep	movsw
 	mov	byte [bp - 0x386], 0xff
 .44:
-	mov	ax, [0x1cfa]
+	mov	ax, [g_1CFA]
 	mov	[bp - 0x3d0], ax
 	cmp	byte [bp - 0x385], 0x0
 	jz	short .45
@@ -574,11 +574,11 @@ Lp_2E46_000E:
 	rep	movsw
 	mov	byte [bp - 0x385], 0xff
 .46:
-	cmp	byte [0x1cef], 0x1
+	cmp	byte [g_1CEF], 0x1
 	jz	short .47
 	jmp	near .34
 .47:
-	mov	ax, [0x1d02]
+	mov	ax, [g_1D02]
 	mov	[bp - 0x98], ax
 	db	0x8B, 0xD8		; mov bx, ax
 	db	0x8B, 0xF0		; mov si, ax
@@ -645,13 +645,13 @@ Lp_2E46_06B4:
 	push	di
 	push	si
 	call	0x0F99:FlushInputEvents
-	push	word [0xc7a4]
-	push	word [0xc7a2]
+	push	word [g_C7A4]
+	push	word [g_C7A2]
 	call	0x06E1:RawBase
 	add	sp, 0x4
 	mov	[bp - 0x30], ax
 	mov	[bp - 0x2e], dx
-	push	word [0x1c58]
+	push	word [g_1C58]
 	push	dx
 	push	ax
 	call	0x03A3:LookupMsg
@@ -759,7 +759,7 @@ Lp_2E46_06B4:
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	mov	al, 0x15
-	mul	byte [si - 0x37fa]
+	mul	byte [si + g_C806]
 	add	ax, 0xaa38
 	push	word 0x3a0b
 	push	ax
@@ -791,7 +791,7 @@ Lp_2E46_06B4:
 	mov	word [bp - 0x62], 0xcc
 	add	word [bp - 0x64], 0x14
 	mov	bx, [bp - 0x66]
-	cmp	byte [bx + 0x1ce6], 0x0
+	cmp	byte [bx + g_1CE6], 0x0
 	jz	short .2
 	jmp	near .7
 .2:
@@ -877,7 +877,7 @@ Lp_2E46_06B4:
 	add	sp, 0x8
 	mov	bx, [bp - 0x66]
 	shl	bx, 1
-	mov	ax, [bx + 0x1cf0]
+	mov	ax, [bx + g_1CF0]
 	mov	[bp - 0x74], ax
 	mov	[bp - 0x26], ax
 	mov	word [bp - 0x68], 0x0
@@ -892,7 +892,7 @@ Lp_2E46_06B4:
 	mov	bx, [bp - 0x68]
 	shl	bx, 1
 	push	ds
-	push	word [bx + 0x1d04]
+	push	word [bx + g_1D04]
 	push	word [bp - 0x64]
 	add	word [bp - 0x62], 0x28
 	mov	ax, [bp - 0x62]
@@ -1017,7 +1017,7 @@ Lp_2E46_06B4:
 	jmp	near .3
 	db	0x90
 .7:
-	cmp	byte [bx + 0x1ce6], 0x1
+	cmp	byte [bx + g_1CE6], 0x1
 	jz	short .8
 	jmp	near .21
 .8:
@@ -1103,7 +1103,7 @@ Lp_2E46_06B4:
 	add	sp, 0x8
 	mov	bx, [bp - 0x66]
 	shl	bx, 1
-	mov	ax, [bx + 0x1cf0]
+	mov	ax, [bx + g_1CF0]
 	mov	[bp - 0x2c], ax
 	mov	[bp - 0x70], ax
 	mov	word [bp - 0x68], 0x0
@@ -1139,7 +1139,7 @@ Lp_2E46_06B4:
 	mov	bx, [bp - 0x68]
 	shl	bx, 1
 	push	ds
-	push	word [bx + 0x1d04]
+	push	word [bx + g_1D04]
 	push	word [bp - 0x64]
 	add	word [bp - 0x62], 0x28
 	mov	ax, [bp - 0x62]
@@ -1265,8 +1265,8 @@ Lp_2E46_06B4:
 	push	word [bp - 0x6e]
 	mov	bx, [bp - 0x2a]
 	shl	bx, byte 0x2
-	push	word [bx - 0x3804]
-	push	word [bx - 0x3806]
+	push	word [bx + g_C7FC]
+	push	word [bx + g_C7FA]
 	call	0x03A3:EmsMapFrame
 	add	sp, 0x4
 	mov	[bp - 0x1e], ax
@@ -1346,8 +1346,8 @@ Lp_2E46_06B4:
 	call	0x0FEF:ClearClipRect
 	add	sp, 0x2
 	push	word 0x1d31
-	push	word [0xc7a4]
-	push	word [0xc7a2]
+	push	word [g_C7A4]
+	push	word [g_C7A2]
 	call	0x06E1:RawBase
 	add	sp, 0x4
 	mov	[bp - 0x30], ax
@@ -1370,8 +1370,8 @@ Lp_2E46_06B4:
 	add	sp, 0x4
 	mov	bx, [bp - 0x66]
 	shl	bx, byte 0x2
-	push	word [bx - 0x382c]
-	push	word [bx - 0x382e]
+	push	word [bx + g_C7D4]
+	push	word [bx + g_C7D2]
 	db	0x8B, 0xF3		; mov si, bx
 	call	0x03A3:EmsMapFrame
 	add	sp, 0x4
@@ -1381,8 +1381,8 @@ Lp_2E46_06B4:
 	push	ax
 	call	0x0FEF:DrawRleTransBody
 	add	sp, 0x4
-	push	word [si - 0x3854]
-	push	word [si - 0x3856]
+	push	word [si + g_C7AC]
+	push	word [si + g_C7AA]
 	call	0x03A3:EmsMapFrame
 	add	sp, 0x4
 	mov	[bp - 0x1e], ax
@@ -1393,7 +1393,7 @@ Lp_2E46_06B4:
 	add	sp, 0x4
 	mov	bx, [bp - 0x66]
 	shl	bx, 1
-	push	word [bx + 0x1cd2]
+	push	word [bx + g_1CD2]
 	db	0x8B, 0xF3		; mov si, bx
 	call	0x03A3:TextWidthAll
 	add	sp, 0x2
@@ -1404,7 +1404,7 @@ Lp_2E46_06B4:
 	sar	ax, 1
 	mov	[bp - 0x62], ax
 	push	ds
-	push	word [si + 0x1cd2]
+	push	word [si + g_1CD2]
 	mov	ax, 0x1e
 	mov	[bp - 0x64], ax
 	push	ax
@@ -1415,7 +1415,7 @@ Lp_2E46_06B4:
 	add	sp, 0x8
 	add	word [bp - 0x64], 0xa
 	mov	bx, [bp - 0x66]
-	cmp	byte [bx + 0x1ce6], 0x2
+	cmp	byte [bx + g_1CE6], 0x2
 	jz	short .20
 	jmp	near .1
 .20:
@@ -1506,9 +1506,9 @@ Lp_2E46_06B4:
 	db	0x03, 0xC2		; add ax, dx
 	db	0x03, 0xD8		; add bx, ax
 	shl	bx, byte 0x2
-	mov	ax, [bx + 0x1c5a]
+	mov	ax, [bx + g_1C5A]
 	mov	[bp - 0x6e], ax
-	mov	ax, [bx + 0x1c5c]
+	mov	ax, [bx + g_1C5C]
 	mov	[bp - 0x72], ax
 	call	0x0FEF:UseCurrentPage
 	push	word [bp - 0x72]
@@ -1653,7 +1653,7 @@ Lp_2E46_1068:
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	mov	bx, [bp - 0x4]
-	cmp	byte [bx + 0x1ce6], 0x2
+	cmp	byte [bx + g_1CE6], 0x2
 	jnz	short .3
 	push	ds
 	push	word 0xcc05
@@ -1961,32 +1961,32 @@ Lp_2E46_125A:
 .8:
 	cmp	word [bp - 0x10], 0x0
 	jnz	short .9
-	push	word [0xc7a4]
-	push	word [0xc7a2]
+	push	word [g_C7A4]
+	push	word [g_C7A2]
 	call	0x06E1:RawBase
 	add	sp, 0x4
 	mov	[bp - 0x4], ax
 	mov	[bp - 0x2], dx
-	push	word [si + 0x1c40]
+	push	word [si + g_1C40]
 	push	dx
 	push	ax
 	call	0x03A3:LookupMsg
 	add	sp, 0x6
-	mov	[di - 0x382e], ax
-	mov	[di - 0x382c], dx
-	push	word [0xc7a8]
-	push	word [0xc7a6]
+	mov	[di + g_C7D2], ax
+	mov	[di + g_C7D4], dx
+	push	word [g_C7A8]
+	push	word [g_C7A6]
 	call	0x06E1:RawBase
 	add	sp, 0x4
 	mov	[bp - 0x4], ax
 	mov	[bp - 0x2], dx
-	push	word [si + 0x1c2c]
+	push	word [si + g_1C2C]
 	push	dx
 	push	ax
 	call	0x03A3:LookupMsg
 	add	sp, 0x6
-	mov	[di - 0x3856], ax
-	mov	[di - 0x3854], dx
+	mov	[di + g_C7AA], ax
+	mov	[di + g_C7AC], dx
 	inc	si
 	inc	si
 	add	di, 0x4
@@ -1998,8 +1998,8 @@ Lp_2E46_125A:
 .10:
 	cmp	word [bp - 0x10], 0x0
 	jnz	short .11
-	push	word [0xc7a4]
-	push	word [0xc7a2]
+	push	word [g_C7A4]
+	push	word [g_C7A2]
 	call	0x06E1:RawBase
 	add	sp, 0x4
 	mov	[bp - 0x4], ax
@@ -2051,8 +2051,8 @@ Lp_2E46_125A:
 	call	0x0FEF:ClearClipRect
 	add	sp, 0x2
 	push	word 0x1e55
-	push	word [0xc7a4]
-	push	word [0xc7a2]
+	push	word [g_C7A4]
+	push	word [g_C7A2]
 	call	0x06E1:RawBase
 	add	sp, 0x4
 	push	dx

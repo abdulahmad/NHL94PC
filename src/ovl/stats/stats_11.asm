@@ -6,15 +6,15 @@ Stats_24E6_0000:
 	push	si
 	mov	di, [bp + 0x6]
 	imul	ax, [di], 0x1a
-	add	ax, [0xc04c]
-	mov	dx, [0xc04e]
+	add	ax, [g_C04C]
+	mov	dx, [g_C04E]
 	db	0x8B, 0xC8		; mov cx, ax
 	db	0x8B, 0xF1		; mov si, cx
 	mov	[bp - 0xa], dx
 	db	0x8B, 0xC2		; mov ax, dx
 	mov	bx, [bp + 0x8]
 	imul	dx, [bx], 0x1a
-	add	dx, [0xc04c]
+	add	dx, [g_C04C]
 	db	0x8B, 0xD8		; mov bx, ax
 	mov	[bp - 0x8], dx
 	mov	[bp - 0x6], bx
@@ -89,7 +89,7 @@ Stats_24E6_00C6:
 	enter	0xe, 0x0
 	push	di
 	push	si
-	cmp	word [0x200e], 0x0
+	cmp	word [g_200E], 0x0
 	jnz	short .8
 	mov	di, [bp + 0xa]
 	mov	word [di], 0x0
@@ -136,7 +136,7 @@ Stats_24E6_00C6:
 	db	0x2B, 0xD2		; sub dx, dx
 	mov	bx, [bp + 0xa]
 	mov	[bx], dx
-	mov	ax, [0x2486]
+	mov	ax, [g_2486]
 	add	ax, strict word 0x36
 	mov	[bp - 0xa], ax
 	mov	[bp - 0x8], dx
@@ -148,7 +148,7 @@ Stats_24E6_00C6:
 .10:
 	db	0x8B, 0xDF		; mov bx, di
 	db	0x03, 0xDE		; add bx, si
-	mov	al, [bx + 0x2488]
+	mov	al, [bx + g_2488]
 	cmp	al, 0xff
 	jz	short .11
 	db	0x2A, 0xE4		; sub ah, ah
@@ -187,7 +187,7 @@ Stats_24E6_00C6:
 .12:
 	mov	bx, [bp - 0xc]
 	shl	bx, byte 0x3
-	mov	al, [bx + si + 0x24d0]
+	mov	al, [bx + si + g_24D0]
 	db	0x2A, 0xE4		; sub ah, ah
 	mov	bx, [bp + 0xa]
 	mov	[bx], ax
@@ -203,7 +203,7 @@ Stats_24E6_01BE:
 	enter	0xd8, 0x0
 	push	di
 	push	si
-	mov	es, [0x8c84]
+	mov	es, [g_8C84]
 	mov	word [es:0x16c4], 0x64c
 	mov	word [es:0x16c6], 0x2248
 	push	0x0
@@ -214,10 +214,10 @@ Stats_24E6_01BE:
 	mov	[bp - 0x18], dx
 	push	0x0
 	push	0x0
-	mov	bx, [0x2010]
+	mov	bx, [g_2010]
 	shl	bx, 1
 	push	ds
-	push	word [bx + 0x1faa]
+	push	word [bx + g_1FAA]
 	push	word 0x3861
 	push	strict word 0x0
 	lea	ax, [bp - 0x52]
@@ -231,7 +231,7 @@ Stats_24E6_01BE:
 	call	0x0000:_open
 	add	sp, 0x4
 	mov	[bp - 0xe], ax
-	cmp	word [0x2010], 0x1
+	cmp	word [g_2010], 0x1
 	db	0x1B, 0xC0		; sbb ax, ax
 	and	ax, 0xfd64
 	add	ax, 0x2e8
@@ -325,10 +325,10 @@ Stats_24E6_01BE:
 	call	0x0FEF:UseOffscreenCanvas
 	push	word 0x3701
 	push	word 0xbd0
-	mov	bx, [0x200e]
+	mov	bx, [g_200E]
 	shl	bx, 1
 	push	ds
-	push	word [bx + 0x1fa2]
+	push	word [bx + g_1FA2]
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0x52]
@@ -341,22 +341,22 @@ Stats_24E6_01BE:
 	push	ax
 	call	0x14B8:LoadPackedHeader
 	add	sp, 0x4
-	mov	[0xcfd0], ax
-	mov	[0xcfd2], dx
+	mov	[g_CFD0], ax
+	mov	[g_CFD2], dx
 	push	word 0x1ff0
 	push	dx
 	push	ax
 	call	0x03A3:FindFarMsg
 	add	sp, 0x6
-	mov	[0xc2b2], ax
-	mov	[0xc2b4], dx
+	mov	[g_C2B2], ax
+	mov	[g_C2B4], dx
 	push	word 0xc8
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	dx, 0x140
 	mov	bx, 0xa
 	call	0x0FEF:SetClipRectRegs
-	push	word [0xc2b4]
-	push	word [0xc2b2]
+	push	word [g_C2B4]
+	push	word [g_C2B2]
 	call	0x0FEF:DrawRleTransBody
 	add	sp, 0x4
 	push	word 0xc8
@@ -364,8 +364,8 @@ Stats_24E6_01BE:
 	mov	dx, 0x140
 	db	0x2B, 0xDB		; sub bx, bx
 	call	0x0FEF:SetClipRectRegs
-	push	word [0xcfd2]
-	push	word [0xcfd0]
+	push	word [g_CFD2]
+	push	word [g_CFD0]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	lea	ax, [bp - 0x32]
@@ -429,12 +429,12 @@ Stats_24E6_01BE:
 	and	bx, 0x3
 	mov	[bp - 0x2], bx
 	shl	bx, 1
-	mov	ax, [bx + 0x2518]
+	mov	ax, [bx + g_2518]
 	mov	[bp - 0x16], ax
-	mov	cx, [bx + 0x2520]
+	mov	cx, [bx + g_2520]
 	mov	[bp - 0x10], cx
 	push	ds
-	push	word [bx + 0x1f8e]
+	push	word [bx + g_1F8E]
 	push	cx
 	push	ax
 	call	0x0D39:DrawShadowText
@@ -515,7 +515,7 @@ Stats_24E6_01BE:
 	add	ax, strict word 0x7
 	mov	[bp - 0x10], ax
 .7:
-	cmp	word [0x2010], 0x0
+	cmp	word [g_2010], 0x0
 	jnz	short .8
 	mov	es, [bp - 0xa]
 	cmp	byte [es:si + 0xe], 0x0
@@ -668,7 +668,7 @@ Stats_24E6_069E:
 	db	0x8B, 0xDA		; mov bx, dx
 	mov	bx, [bx]
 	shl	bx, 1
-	cmp	word [bx - 0x3dfc], 0x18
+	cmp	word [bx + g_C204], 0x18
 	jl	short .2
 	jmp	near .9
 .2:
@@ -681,7 +681,7 @@ Stats_24E6_069E:
 .4:
 	db	0x8B, 0xDF		; mov bx, di
 	db	0x03, 0xDE		; add bx, si
-	mov	al, [bx + 0x24d0]
+	mov	al, [bx + g_24D0]
 	db	0x2A, 0xE4		; sub ah, ah
 	mov	bx, [bp + 0x6]
 	cmp	ax, [bx]
@@ -691,13 +691,13 @@ Stats_24E6_069E:
 	push	0x32
 	db	0x8B, 0xDF		; mov bx, di
 	db	0x03, 0xDE		; add bx, si
-	mov	al, [bx + 0x2488]
+	mov	al, [bx + g_2488]
 	db	0x8B, 0xC8		; mov cx, ax
 	shl	ax, byte 0x3
 	db	0x03, 0xC1		; add ax, cx
 	add	ax, strict word 0x1f
 	push	ax
-	mov	ax, [0x2486]
+	mov	ax, [g_2486]
 	add	ax, [bp - 0x4]
 	add	ax, strict word 0x4
 	push	ax
@@ -718,7 +718,7 @@ Stats_24E6_069E:
 	jz	short .9
 	mov	si, [bx]
 	shl	si, 1
-	cmp	word [si - 0x3dfc], 0x18
+	cmp	word [si + g_C204], 0x18
 	jnl	short .9
 	db	0x2B, 0xF6		; sub si, si
 	db	0x8B, 0xD6		; mov dx, si
@@ -730,7 +730,7 @@ Stats_24E6_069E:
 .7:
 	db	0x8B, 0xDF		; mov bx, di
 	db	0x03, 0xDE		; add bx, si
-	mov	al, [bx + 0x24d0]
+	mov	al, [bx + g_24D0]
 	db	0x2A, 0xE4		; sub ah, ah
 	mov	bx, [bp + 0x8]
 	cmp	ax, [bx]
@@ -740,13 +740,13 @@ Stats_24E6_069E:
 	push	0x32
 	db	0x8B, 0xDF		; mov bx, di
 	db	0x03, 0xDE		; add bx, si
-	mov	al, [bx + 0x2488]
+	mov	al, [bx + g_2488]
 	db	0x8B, 0xC8		; mov cx, ax
 	shl	ax, byte 0x3
 	db	0x03, 0xC1		; add ax, cx
 	add	ax, strict word 0x1f
 	push	ax
-	mov	ax, [0x2486]
+	mov	ax, [g_2486]
 	add	ax, [bp - 0x4]
 	add	ax, strict word 0x4
 	push	ax
@@ -778,7 +778,7 @@ Stats_24E6_07A0:
 	push	di
 	push	si
 	push	word 0xd00
-	mov	es, [0x8c86]
+	mov	es, [g_8C86]
 	cmp	word [CurPage], 0x1
 	db	0x1B, 0xDB		; sbb bx, bx
 	neg	bx
@@ -787,26 +787,26 @@ Stats_24E6_07A0:
 	push	word [es:bx]
 	mov	bx, [CurPage]
 	shl	bx, byte 0x2
-	mov	es, [0x8c86]
+	mov	es, [g_8C86]
 	les	bx, [es:bx + 0x7570]
 	push	word [es:bx]
 	call	0x0000:VgaCopyBytes
 	add	sp, 0x6
 	call	0x0FEF:UseOtherPage
 	push	word 0x1ff0
-	push	word [0x21b6]
-	push	word [0x21b4]
+	push	word [g_21B6]
+	push	word [g_21B4]
 	call	0x03A3:FindFarMsg
 	add	sp, 0x6
-	mov	[0xc2b2], ax
-	mov	[0xc2b4], dx
+	mov	[g_C2B2], ax
+	mov	[g_C2B4], dx
 	push	word 0xc8
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	dx, 0x140
 	mov	bx, 0xa
 	call	0x0FEF:SetClipRectRegs
-	push	word [0xc2b4]
-	push	word [0xc2b2]
+	push	word [g_C2B4]
+	push	word [g_C2B2]
 	call	0x0FEF:DrawRleTransBody
 	add	sp, 0x4
 	push	word 0xc8
@@ -818,8 +818,8 @@ Stats_24E6_07A0:
 	push	ax
 	call	0x03A3:SaveCharTab
 	add	sp, 0x2
-	push	word [0x21b2]
-	push	word [0x21b0]
+	push	word [g_21B2]
+	push	word [g_21B0]
 	call	0x03A3:UseCharSeg
 	add	sp, 0x4
 	push	0x43
@@ -846,7 +846,7 @@ Stats_24E6_07A0:
 	push	ds
 	push	word 0x2586
 	push	0x19
-	mov	ax, [0x2486]
+	mov	ax, [g_2486]
 	add	ax, strict word 0x50
 	push	ax
 	call	0x0D39:DrawShadowTextBuffered
@@ -854,7 +854,7 @@ Stats_24E6_07A0:
 	push	ds
 	push	word 0x259a
 	push	0x19
-	mov	ax, [0x2486]
+	mov	ax, [g_2486]
 	add	ax, 0x13b
 	push	ax
 	call	0x0D39:DrawShadowTextBuffered
@@ -885,18 +885,18 @@ Stats_24E6_07A0:
 	db	0x8B, 0xDE		; mov bx, si
 	db	0x03, 0xDF		; add bx, di
 	mov	[bp - 0x7e], bx
-	cmp	byte [bx + 0x2488], 0xff
+	cmp	byte [bx + g_2488], 0xff
 	jnz	short .6
 	jmp	near .11
 .6:
-	mov	al, [bx + 0x2488]
+	mov	al, [bx + g_2488]
 	db	0x2A, 0xE4		; sub ah, ah
 	db	0x8B, 0xC8		; mov cx, ax
 	shl	ax, byte 0x3
 	db	0x03, 0xC1		; add ax, cx
 	add	ax, strict word 0x28
 	mov	[bp - 0x2], ax
-	mov	cx, [0x2486]
+	mov	cx, [g_2486]
 	add	cx, [bp - 0xa]
 	inc	cx
 	inc	cx
@@ -922,10 +922,10 @@ Stats_24E6_07A0:
 	cmp	word [bp - 0xc], 0x0
 	jnz	short .8
 	mov	bx, [bp - 0x7e]
-	mov	bl, [bx + 0x24d0]
+	mov	bl, [bx + g_24D0]
 	db	0x2A, 0xFF		; sub bh, bh
 	shl	bx, 1
-	imul	ax, [bx - 0x3dfc], 0x15
+	imul	ax, [bx + g_C204], 0x15
 	add	ax, 0xaa38
 	push	word 0x3a0b
 	push	ax
@@ -954,7 +954,7 @@ Stats_24E6_07A0:
 	jnl	short .10
 	push	word [bp - 0x12]
 	mov	bx, [bp - 0x7e]
-	mov	al, [bx + 0x2487]
+	mov	al, [bx + g_2487]
 	db	0x2A, 0xE4		; sub ah, ah
 	db	0x8B, 0xC8		; mov cx, ax
 	shl	ax, byte 0x3
@@ -962,12 +962,12 @@ Stats_24E6_07A0:
 	add	ax, [bp - 0x10]
 	add	ax, strict word 0x28
 	push	ax
-	mov	ax, [0x2486]
+	mov	ax, [g_2486]
 	add	ax, [bp - 0xa]
 	add	ax, [bp - 0x10]
 	add	ax, strict word 0x36
 	push	ax
-	mov	cl, [bx + 0x2488]
+	mov	cl, [bx + g_2488]
 	db	0x2A, 0xED		; sub ch, ch
 	db	0x8B, 0xD1		; mov dx, cx
 	shl	cx, byte 0x3
@@ -983,7 +983,7 @@ Stats_24E6_07A0:
 	jng	short .11
 	push	word [bp - 0x12]
 	mov	bx, [bp - 0x7e]
-	mov	al, [bx + 0x2487]
+	mov	al, [bx + g_2487]
 	db	0x2A, 0xE4		; sub ah, ah
 	db	0x8B, 0xC8		; mov cx, ax
 	shl	ax, byte 0x3
@@ -991,13 +991,13 @@ Stats_24E6_07A0:
 	add	ax, [bp - 0x10]
 	add	ax, strict word 0x28
 	push	ax
-	mov	ax, [0x2486]
+	mov	ax, [g_2486]
 	add	ax, [bp - 0xa]
 	add	ax, [bp - 0x10]
 	inc	ax
 	inc	ax
 	push	ax
-	mov	cl, [bx + 0x2488]
+	mov	cl, [bx + g_2488]
 	db	0x2A, 0xED		; sub ch, ch
 	db	0x8B, 0xD1		; mov dx, cx
 	shl	cx, byte 0x3
@@ -1045,7 +1045,7 @@ Stats_24E6_0A52:
 	db	0x2B, 0xD2		; sub dx, dx
 	cmp	bx, 0x4
 	jg	short .1
-	cmp	[0x2486], dx
+	cmp	[g_2486], dx
 	jnl	short .3
 	push	word [bp + 0x10]
 	push	word [bp + 0xe]
@@ -1058,16 +1058,16 @@ Stats_24E6_0A52:
 	push	cs
 	call	Stats_24E6_069E
 	db	0x8B, 0xE5		; mov sp, bp
-	add	word [0x2486], 0x8
-	cmp	word [0x2486], 0x0
+	add	word [g_2486], 0x8
+	cmp	word [g_2486], 0x0
 	jng	short .2
-	mov	word [0x2486], 0x0
+	mov	word [g_2486], 0x0
 	jmp	short .2
 	db	0x90
 .1:
 	cmp	bx, 0x13c
 	jl	short .3
-	cmp	word [0x2486], 0xff65
+	cmp	word [g_2486], 0xff65
 	jng	short .3
 	push	word [bp + 0x10]
 	push	word [bp + 0xe]
@@ -1080,10 +1080,10 @@ Stats_24E6_0A52:
 	push	cs
 	call	Stats_24E6_069E
 	db	0x8B, 0xE5		; mov sp, bp
-	sub	word [0x2486], 0x8
-	cmp	word [0x2486], 0xff65
+	sub	word [g_2486], 0x8
+	cmp	word [g_2486], 0xff65
 	jnl	short .2
-	mov	word [0x2486], 0xff65
+	mov	word [g_2486], 0xff65
 .2:
 	mov	dx, 0xffff
 .3:
@@ -1094,7 +1094,7 @@ Stats_24E6_0A52:
 Stats_24E6_0ADE:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
-	cmp	word [0x2010], 0x0
+	cmp	word [g_2010], 0x0
 	jnz	short .1
 	push	word [bp + 0xa]
 	push	word [bp + 0x8]
@@ -1121,7 +1121,7 @@ Stats_24E6_0B08:
 	mov	word [bp - 0x6], 0xffff
 	push	word 0x3701
 	push	word 0xbaf
-	mov	es, [0x8c88]
+	mov	es, [g_8C88]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
 	push	word 0x3861
@@ -1178,12 +1178,12 @@ Stats_24E6_0B08:
 	db	0x2A, 0xE4		; sub ah, ah
 	db	0x8B, 0xDE		; mov bx, si
 	shl	bx, 1
-	mov	[bx - 0x3dfc], ax
+	mov	[bx + g_C204], ax
 	mov	al, [bp - 0xd]
 	inc	si
 	db	0x8B, 0xDE		; mov bx, si
 	shl	bx, 1
-	mov	[bx - 0x3dfc], ax
+	mov	[bx + g_C204], ax
 	inc	si
 	add	di, 0x7
 	cmp	di, 0x69
@@ -1253,7 +1253,7 @@ Stats_24E6_0B08:
 .12:
 	mov	al, [bp - 0xe]
 	db	0x2A, 0xE4		; sub ah, ah
-	mov	[0xc240], ax
+	mov	[g_C240], ax
 	mov	word [bp - 0x2], 0x7
 .13:
 	cmp	di, 0x4
@@ -1281,7 +1281,7 @@ Stats_24E6_0B08:
 .17:
 	mov	al, [bp - 0xd]
 	db	0x2A, 0xE4		; sub ah, ah
-	mov	[0xc240], ax
+	mov	[g_C240], ax
 	mov	word [bp - 0x2], 0x7
 .18:
 	inc	word [bp - 0x2]
@@ -1331,19 +1331,19 @@ Stats_24E6_0B08:
 	add	di, 0x8
 	cmp	di, 0xc238
 	jc	short .23
-	mov	ax, [0xc238]
-	cmp	[0xc23c], ax
+	mov	ax, [g_C238]
+	cmp	[g_C23C], ax
 	jz	short .26
-	mov	ax, [0xc23c]
-	cmp	[0xc23a], ax
+	mov	ax, [g_C23C]
+	cmp	[g_C23A], ax
 	jnz	short .27
 .26:
-	mov	ax, [0xc23e]
-	xor	[0xc23c], ax
-	mov	ax, [0xc23c]
-	xor	[0xc23e], ax
-	xor	ax, [0xc23e]
-	mov	[0xc23c], ax
+	mov	ax, [g_C23E]
+	xor	[g_C23C], ax
+	mov	ax, [g_C23C]
+	xor	[g_C23E], ax
+	xor	ax, [g_C23E]
+	mov	[g_C23C], ax
 .27:
 	cmp	word [bp - 0x4], 0x0
 	jnz	short .28
@@ -1495,7 +1495,7 @@ Stats_24E6_0D3E:
 
 Stats_24E6_0E3E:
 	enter	0x1c, 0x0
-	cmp	word [0x2010], 0x0
+	cmp	word [g_2010], 0x0
 	jz	short .1
 	push	word 0x3861
 	push	strict word 0x0
@@ -1510,7 +1510,7 @@ Stats_24E6_0E3E:
 	add	sp, 0x2
 	push	word 0x3701
 	push	word 0xbaf
-	mov	es, [0x8c88]
+	mov	es, [g_8C88]
 	push	word [es:0xb86]
 	push	word [es:0xb84]
 	jmp	short .2
@@ -1535,7 +1535,7 @@ Stats_24E6_0E3E:
 	mov	bx, [bp + 0x6]
 	mov	[bx], ax
 	mov	[bx + 0x2], dx
-	cmp	word [0x2010], 0x0
+	cmp	word [g_2010], 0x0
 	jz	short .3
 	push	word 0x25ab
 	call	0x0000:_chdir
@@ -1630,10 +1630,10 @@ Stats_24E6_0EC2:
 	push	cs
 	call	Stats_24E6_0D3E
 	add	sp, 0x8
-	mov	[si - 0x3dfc], ax
+	mov	[si + g_C204], ax
 	cmp	ax, strict word 0xffff
 	jnz	short .8
-	mov	word [si - 0x3dfc], 0x18
+	mov	word [si + g_C204], 0x18
 .8:
 	add	di, 0x2a
 	mov	ax, [bp - 0x6]
@@ -1645,7 +1645,7 @@ Stats_24E6_0EC2:
 	push	word [bp - 0xc]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	cmp	word [0xc204], 0x18
+	cmp	word [g_C204], 0x18
 	jnz	short .9
 	db	0x2B, 0xC0		; sub ax, ax
 	cwd
@@ -1654,7 +1654,7 @@ Stats_24E6_0EC2:
 	mov	ax, 0x64c
 	mov	dx, 0x2248
 .10:
-	mov	es, [0x8c84]
+	mov	es, [g_8C84]
 	mov	[es:0x16c4], ax
 	mov	[es:0x16c6], dx
 	push	cs

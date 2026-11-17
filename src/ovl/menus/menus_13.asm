@@ -81,18 +81,18 @@ Menus_2C1E_0004:
 	test	byte [CrowdState], 0x4
 	jnz	short .7
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0x48d0], ax
-	mov	[0x48ce], ax
-	mov	[0x48e4], ax
-	mov	[0x48e2], ax
+	mov	[g_48D0], ax
+	mov	[g_48CE], ax
+	mov	[g_48E4], ax
+	mov	[g_48E2], ax
 	mov	bx, 0xb553
 .5:
 	and	byte [bx], 0xf7
 	add	bx, 0x80
 	cmp	bx, 0xbb53
 	jc	short .5
-	and	byte [0xb38c], 0xfd
-	and	byte [0xb462], 0xfd
+	and	byte [g_B38C], 0xfd
+	and	byte [g_B462], 0xfd
 	mov	bx, 0xb464
 .6:
 	mov	ax, 0x1000
@@ -279,7 +279,7 @@ Menus_2C1E_0222:
 	db	0x0B, 0xC6		; or ax, si
 	db	0x0B, 0xC7		; or ax, di
 	or	ax, [bp - 0x2]
-	mov	[0xb35e], ax
+	mov	[g_B35E], ax
 	push	cs
 	call	Menus_2C1E_03C4
 	lea	ax, [bp - 0x12]
@@ -418,7 +418,7 @@ Menus_2C1E_03C4:
 	db	0x8B, 0xCF		; mov cx, di
 	mov	ax, 0x1
 	shl	ax, cl
-	test	[0xb35e], ax
+	test	[g_B35E], ax
 	jz	short .2
 	mov	al, 0x17
 	mov	[si], al
@@ -441,7 +441,7 @@ Menus_2C1E_03C4:
 	lea	ax, [bp - 0x46]
 	db	0x3B, 0xF0		; cmp si, ax
 	jc	short .1
-	test	byte [0xb35f], 0x1
+	test	byte [g_B35F], 0x1
 	jz	short .4
 	mov	al, 0x17
 	mov	[bp - 0x19], al
@@ -743,7 +743,7 @@ Menus_2C1E_0570:
 	mov	ax, 0x1
 	shl	ax, cl
 	not	ax
-	and	[0xb35e], ax
+	and	[g_B35E], ax
 	jmp	short .15
 	db	0x90
 .14:
@@ -754,7 +754,7 @@ Menus_2C1E_0570:
 	db	0x8A, 0xC8		; mov cl, al
 	mov	ax, 0x1
 	shl	ax, cl
-	or	[0xb35e], ax
+	or	[g_B35E], ax
 .15:
 	push	cs
 	call	Menus_2C1E_03C4
@@ -775,7 +775,7 @@ Menus_2C1E_0570:
 	jz	short .20
 	db	0xE9, 0x7D, 0x01		; jmp 0x8c2
 .20:
-	mov	al, [0xb35e]
+	mov	al, [g_B35E]
 	and	ax, strict word 0x1
 	cmp	ax, strict word 0x1
 	db	0x1B, 0xC0		; sbb ax, ax
@@ -784,7 +784,7 @@ Menus_2C1E_0570:
 	and	ax, strict word 0x1
 	xor	[CrowdState], ax
 	mov	al, [CrowdState]
-	mov	cl, [0xb35e]
+	mov	cl, [g_B35E]
 	and	cx, 0x2
 	cmp	cx, 0x1
 	db	0x1B, 0xC9		; sbb cx, cx
@@ -794,7 +794,7 @@ Menus_2C1E_0570:
 	and	ax, strict word 0x2
 	xor	[CrowdState], ax
 	mov	al, [CrowdState]
-	mov	cl, [0xb35e]
+	mov	cl, [g_B35E]
 	and	cx, 0x4
 	cmp	cx, 0x1
 	db	0x1B, 0xC9		; sbb cx, cx
@@ -804,7 +804,7 @@ Menus_2C1E_0570:
 	and	ax, strict word 0x4
 	xor	[CrowdState], ax
 	mov	al, [CrowdState]
-	mov	cl, [0xb35e]
+	mov	cl, [g_B35E]
 	and	cx, 0x8
 	cmp	cx, 0x1
 	db	0x1B, 0xC9		; sbb cx, cx
@@ -814,7 +814,7 @@ Menus_2C1E_0570:
 	and	ax, strict word 0x8
 	xor	[CrowdState], ax
 	mov	al, [CrowdState]
-	mov	cl, [0xb35e]
+	mov	cl, [g_B35E]
 	and	cx, 0x10
 	cmp	cx, 0x1
 	db	0x1B, 0xC9		; sbb cx, cx
@@ -824,7 +824,7 @@ Menus_2C1E_0570:
 	and	ax, strict word 0x10
 	xor	[CrowdState], ax
 	mov	al, [CrowdState]
-	mov	cl, [0xb35e]
+	mov	cl, [g_B35E]
 	and	cx, 0x20
 	cmp	cx, 0x1
 	db	0x1B, 0xC9		; sbb cx, cx
@@ -835,7 +835,7 @@ Menus_2C1E_0570:
 	xor	[CrowdState], ax
 	cmp	word [SoundOptions], 0x10
 	jz	short .21
-	mov	al, [0xb35e]
+	mov	al, [g_B35E]
 	and	ax, strict word 0x40
 	cmp	ax, strict word 0x1
 	db	0x1B, 0xC0		; sbb ax, ax
@@ -845,7 +845,7 @@ Menus_2C1E_0570:
 	and	ax, strict word 0x40
 	xor	[CrowdState], ax
 	mov	al, [CrowdState]
-	mov	cl, [0xb35e]
+	mov	cl, [g_B35E]
 	and	cx, 0x80
 	cmp	cx, 0x1
 	db	0x1B, 0xC9		; sbb cx, cx
@@ -855,7 +855,7 @@ Menus_2C1E_0570:
 	and	ax, 0x80
 	xor	[CrowdState], ax
 .21:
-	mov	al, [0xb35e]
+	mov	al, [g_B35E]
 	and	ax, 0x80
 	cmp	ax, strict word 0x1
 	db	0x1B, 0xF6		; sbb si, si
@@ -887,7 +887,7 @@ Menus_2C1E_0570:
 .24:
 	test	byte [SoundOptions], 0x2
 	jz	short .25
-	mov	ah, [0xb35f]
+	mov	ah, [g_B35F]
 	and	ax, 0x100
 	cmp	ax, strict word 0x1
 	db	0x1B, 0xC0		; sbb ax, ax

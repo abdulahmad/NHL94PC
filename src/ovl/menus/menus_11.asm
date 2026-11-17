@@ -141,10 +141,10 @@ Menus_2B11_00A8:
 	mov	ax, 0x306
 	mov	cx, 0x3448
 .4:
-	mov	es, [0x8b5a]
+	mov	es, [g_8B5A]
 	mov	[es:0x1038], ax
 	mov	[es:0x103a], cx
-	mov	es, [0x8b5c]
+	mov	es, [g_8B5C]
 	mov	[es:0x128a], ax
 	mov	[es:0x128c], cx
 	leave

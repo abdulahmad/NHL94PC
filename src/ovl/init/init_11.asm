@@ -8,15 +8,15 @@ Init_251E_0004:
 	db	0x2B, 0xDB		; sub bx, bx
 .1:
 	mov	ax, 0xffff
-	mov	[bx + 0x55ac], ax
-	mov	[bx + 0x556c], ax
+	mov	[bx + g_55AC], ax
+	mov	[bx + g_556C], ax
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[bx + 0x55b2], ax
-	mov	[bx + 0x5572], ax
-	mov	[bx + 0x55b0], ax
-	mov	[bx + 0x5570], ax
-	mov	[bx + 0x55ae], ax
-	mov	[bx + 0x556e], ax
+	mov	[bx + g_55B2], ax
+	mov	[bx + g_5572], ax
+	mov	[bx + g_55B0], ax
+	mov	[bx + g_5570], ax
+	mov	[bx + g_55AE], ax
+	mov	[bx + g_556E], ax
 	add	bx, 0x8
 	cmp	bx, 0x40
 	jl	short .1
@@ -42,8 +42,8 @@ Init_251E_0038:
 	push	ax
 	call	0x14B8:LoadPackedHeader
 	add	sp, 0x4
-	mov	[0xc258], ax
-	mov	[0xc25a], dx
+	mov	[g_C258], ax
+	mov	[g_C25A], dx
 	push	word 0xdaa2
 	push	word 0x5254
 	push	dx
@@ -52,42 +52,42 @@ Init_251E_0038:
 	add	sp, 0x8
 	push	word 0xda76
 	push	word 0x5281
-	push	word [0xc25a]
-	push	word [0xc258]
+	push	word [g_C25A]
+	push	word [g_C258]
 	call	0x03A3:FindFarList
 	add	sp, 0x8
 	push	word 0xda4a
 	push	word 0x52ae
-	push	word [0xc25a]
-	push	word [0xc258]
+	push	word [g_C25A]
+	push	word [g_C258]
 	call	0x03A3:FindFarList
 	add	sp, 0x8
 	push	word 0xda3e
 	push	word 0x52db
-	push	word [0xc25a]
-	push	word [0xc258]
+	push	word [g_C25A]
+	push	word [g_C258]
 	call	0x03A3:FindFarList
 	add	sp, 0x8
 	push	word 0xda32
 	push	word 0x52e8
-	push	word [0xc25a]
-	push	word [0xc258]
+	push	word [g_C25A]
+	push	word [g_C258]
 	call	0x03A3:FindFarList
 	add	sp, 0x8
 	push	word 0x52f5
-	push	word [0xc25a]
-	push	word [0xc258]
+	push	word [g_C25A]
+	push	word [g_C258]
 	call	0x03A3:FindFarMsg
 	add	sp, 0x6
-	mov	[0xda2e], ax
-	mov	[0xda30], dx
+	mov	[g_DA2E], ax
+	mov	[g_DA30], dx
 	push	word 0x52fa
-	push	word [0xc25a]
-	push	word [0xc258]
+	push	word [g_C25A]
+	push	word [g_C258]
 	call	0x03A3:FindFarMsg
 	add	sp, 0x6
-	mov	[0xda2a], ax
-	mov	[0xda2c], dx
+	mov	[g_DA2A], ax
+	mov	[g_DA2C], dx
 	push	word 0xda0a
 	push	word 0x52ff
-	push	word [0xc25a]
+	push	word [g_C25A]

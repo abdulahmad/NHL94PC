@@ -37,8 +37,8 @@ Ai_2083_0006:
 	push	0x4
 	push	word 0xff
 	shl	di, byte 0x2
-	push	word [di - 0x255c]
-	push	word [di - 0x255e]
+	push	word [di + g_DAA4]
+	push	word [di + g_DAA2]
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 	push	0x4
@@ -60,8 +60,8 @@ Ai_2083_0006:
 	push	0x4
 	push	0x2e
 	shl	di, byte 0x2
-	push	word [di - 0x255c]
-	push	word [di - 0x255e]
+	push	word [di + g_DAA4]
+	push	word [di + g_DAA2]
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 	push	0x4
@@ -73,8 +73,8 @@ Ai_2083_0006:
 	idiv	cx
 	db	0x8B, 0xDA		; mov bx, dx
 	shl	bx, byte 0x2
-	push	word [bx - 0x255c]
-	push	word [bx - 0x255e]
+	push	word [bx + g_DAA4]
+	push	word [bx + g_DAA2]
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 	call	0x0FEF:UseOtherPage
@@ -99,7 +99,7 @@ Ai_2083_00B2:
 	db	0x2B, 0xC0		; sub ax, ax
 .2:
 	mov	[bp - 0x2], ax
-	cmp	word [0x5642], 0x4
+	cmp	word [g_5642], 0x4
 	jnl	short .3
 	mov	ax, 0x1
 	jmp	short .4
@@ -118,7 +118,7 @@ Ai_2083_00B2:
 	db	0x2B, 0xC0		; sub ax, ax
 .6:
 	mov	[bp - 0x4], ax
-	cmp	word [0x5642], 0x6
+	cmp	word [g_5642], 0x6
 	jnl	short .7
 	mov	ax, 0x1
 	jmp	short .8
@@ -129,9 +129,9 @@ Ai_2083_00B2:
 	xor	ax, [bp - 0x4]
 	jz	short .10
 .9:
-	mov	word [0x564a], 0x0
+	mov	word [g_564A], 0x0
 .10:
-	mov	[0x5642], si
+	mov	[g_5642], si
 	push	0x14
 	push	word 0xfb
 	jmp	short .22
@@ -146,7 +146,7 @@ Ai_2083_00B2:
 	db	0x2B, 0xC0		; sub ax, ax
 .13:
 	mov	[bp - 0x6], ax
-	cmp	word [0x5640], 0x4
+	cmp	word [g_5640], 0x4
 	jnl	short .14
 	mov	ax, 0x1
 	jmp	short .15
@@ -165,7 +165,7 @@ Ai_2083_00B2:
 	db	0x2B, 0xC0		; sub ax, ax
 .17:
 	mov	[bp - 0x8], ax
-	cmp	word [0x5640], 0x6
+	cmp	word [g_5640], 0x6
 	jnl	short .18
 	mov	ax, 0x1
 	jmp	short .19
@@ -176,15 +176,15 @@ Ai_2083_00B2:
 	xor	ax, [bp - 0x8]
 	jz	short .21
 .20:
-	mov	word [0x5648], 0x0
+	mov	word [g_5648], 0x0
 .21:
-	mov	[0x5640], si
+	mov	[g_5640], si
 	push	0x14
 	push	0x2a
 .22:
 	shl	si, byte 0x2
-	push	word [si - 0x25f4]
-	push	word [si - 0x25f6]
+	push	word [si + g_DA0C]
+	push	word [si + g_DA0A]
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 	call	0x0FEF:UseOtherPage
@@ -221,8 +221,8 @@ Ai_2083_01BA:
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	cx, [bp + 0x6]
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0x5648], ax
-	mov	[0x564a], ax
+	mov	[g_5648], ax
+	mov	[g_564A], ax
 	db	0x0B, 0xC9		; or cx, cx
 	jz	short .1
 	mov	bx, 0x55ac
@@ -252,11 +252,11 @@ Ai_2083_01BA:
 	mov	[bx + 0x4], ax
 	db	0x0B, 0xC9		; or cx, cx
 	jz	short .5
-	mov	[0x563e], ax
+	mov	[g_563E], ax
 	leave
 	retf
 .5:
-	mov	[0x563c], ax
+	mov	[g_563C], ax
 	leave
 	retf
 	db	0x90
@@ -299,27 +299,27 @@ Ai_2083_020A:
 
 Ai_2083_0248:
 	call	0x0FEF:UseOffscreenCanvas
-	cmp	word [0x5560], 0x0
+	cmp	word [g_5560], 0x0
 	jnl	short .1
 	jmp	near .11
 .1:
-	mov	ax, [0xd728]
-	mov	[0x5638], ax
-	mov	word [0xd728], 0x0
+	mov	ax, [g_D728]
+	mov	[g_5638], ax
+	mov	word [g_D728], 0x0
 	push	ax
 	push	cs
 	call	Ai_2083_0738
 	add	sp, 0x2
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .2
-	test	byte [0x29bb], 0x10
+	test	byte [g_29BB], 0x10
 	jnz	short .2
-	push	word [0x5638]
+	push	word [g_5638]
 	push	word 0x556c
 	push	cs
 	call	Ai_2083_0968
 	add	sp, 0x4
-	push	word [0x5638]
+	push	word [g_5638]
 	push	word 0x55ac
 	push	cs
 	call	Ai_2083_0968
@@ -338,9 +338,9 @@ Ai_2083_0248:
 	push	cs
 	call	Ai_2083_0780
 	push	0x2b
-	mov	bx, [0x5640]
+	mov	bx, [g_5640]
 	shl	bx, 1
-	mov	ax, [bx + 0x5550]
+	mov	ax, [bx + g_5550]
 	mov	cx, 0x1f4
 	cwd
 	idiv	cx
@@ -349,9 +349,9 @@ Ai_2083_0248:
 	call	Ai_2083_0A1C
 	add	sp, 0x4
 	push	word 0xfc
-	mov	bx, [0x5642]
+	mov	bx, [g_5642]
 	shl	bx, 1
-	mov	ax, [bx + 0x5540]
+	mov	ax, [bx + g_5540]
 	mov	cx, 0x1f4
 	cwd
 	idiv	cx
@@ -359,134 +359,134 @@ Ai_2083_0248:
 	push	cs
 	call	Ai_2083_0A1C
 	add	sp, 0x4
-	cmp	word [0x48e2], 0x0
+	cmp	word [g_48E2], 0x0
 	jnz	short .3
-	cmp	word [0x563c], 0x0
+	cmp	word [g_563C], 0x0
 	jnz	short .3
-	test	byte [0x29bb], 0x10
+	test	byte [g_29BB], 0x10
 	jnz	short .3
-	cmp	word [0x556c], 0x0
+	cmp	word [g_556C], 0x0
 	jnl	short .6
-	mov	word [0x563c], 0x1
+	mov	word [g_563C], 0x1
 .3:
 	push	0x4a
 	push	word 0x5550
-	push	word [0x5640]
+	push	word [g_5640]
 	push	word 0xda32
 	push	word 0x5648
 	push	cs
 	call	Ai_2083_0ABE
 	add	sp, 0xa
-	mov	word [0x5644], 0x0
+	mov	word [g_5644], 0x0
 .4:
-	cmp	word [0x48e4], 0x0
+	cmp	word [g_48E4], 0x0
 	jz	short .5
 	jmp	near .10
 .5:
-	cmp	word [0x563e], 0x0
+	cmp	word [g_563E], 0x0
 	jnz	short .10
-	test	byte [0x29bb], 0x10
+	test	byte [g_29BB], 0x10
 	jnz	short .10
-	cmp	word [0x55ac], 0x0
+	cmp	word [g_55AC], 0x0
 	jnl	short .8
-	mov	word [0x563e], 0x1
+	mov	word [g_563E], 0x1
 	jmp	short .10
 	db	0x90, 0x90
 .6:
-	cmp	word [0x5644], 0x0
+	cmp	word [g_5644], 0x0
 	jnz	short .7
-	push	word [0xda2c]
-	push	word [0xda2a]
+	push	word [g_DA2C]
+	push	word [g_DA2A]
 	call	0x0FEF:DrawRleTransFastHere
 	add	sp, 0x4
-	mov	word [0x5644], 0x1
+	mov	word [g_5644], 0x1
 .7:
 	push	0x48
 	push	word 0x556c
 	push	cs
 	call	Ai_2083_0C56
 	add	sp, 0x4
-	mov	word [0x5648], 0x0
+	mov	word [g_5648], 0x0
 	jmp	short .4
 	db	0x90
 .8:
-	cmp	word [0x5646], 0x0
+	cmp	word [g_5646], 0x0
 	jnz	short .9
-	push	word [0xda30]
-	push	word [0xda2e]
+	push	word [g_DA30]
+	push	word [g_DA2E]
 	call	0x0FEF:DrawRleTransFastHere
 	add	sp, 0x4
-	mov	word [0x5646], 0x1
+	mov	word [g_5646], 0x1
 .9:
 	push	word 0xbf
 	push	word 0x55ac
 	push	cs
 	call	Ai_2083_0C56
 	add	sp, 0x4
-	mov	word [0x564a], 0x0
+	mov	word [g_564A], 0x0
 	retf
 	db	0x90
 .10:
 	push	word 0xc1
 	push	word 0x5540
-	push	word [0x5642]
+	push	word [g_5642]
 	push	word 0xda3e
 	push	word 0x564a
 	push	cs
 	call	Ai_2083_0ABE
 	add	sp, 0xa
-	mov	word [0x5646], 0x0
+	mov	word [g_5646], 0x0
 .11:
 	retf
 
 Ai_2083_03CC:
-	cmp	word [0x5560], 0x0
+	cmp	word [g_5560], 0x0
 	jz	short .1
 	jmp	near .4
 .1:
 	push	0x3
 	push	word 0xaa
-	push	word [0xdaa0]
-	push	word [0xda9e]
+	push	word [g_DAA0]
+	push	word [g_DA9E]
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
-	cmp	word [0x5562], 0xa
+	cmp	word [g_5562], 0xa
 	jnl	short .2
 	push	0x3
 	push	word 0x8c
-	push	word [0xdaa0]
-	push	word [0xda9e]
+	push	word [g_DAA0]
+	push	word [g_DA9E]
 	jmp	short .3
 	db	0x90
 .2:
 	push	0x3
 	push	word 0x8c
-	mov	ax, [0x5562]
+	mov	ax, [g_5562]
 	mov	cx, 0xa
 	cwd
 	idiv	cx
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, byte 0x2
-	push	word [bx - 0x2588]
-	push	word [bx - 0x258a]
+	push	word [bx + g_DA78]
+	push	word [bx + g_DA76]
 .3:
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 	push	0x3
 	push	word 0x95
-	mov	ax, [0x5562]
+	mov	ax, [g_5562]
 	mov	cx, 0xa
 	cwd
 	idiv	cx
 	db	0x8B, 0xDA		; mov bx, dx
 	shl	bx, byte 0x2
-	push	word [bx - 0x2588]
-	push	word [bx - 0x258a]
+	push	word [bx + g_DA78]
+	push	word [bx + g_DA76]
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 	push	0x3
 	push	word 0xa1
-	mov	ax, [0x5564]
+	mov	ax, [g_5564]
 	mov	cx, 0xa
 	cwd
 	idiv	cx
@@ -494,70 +494,70 @@ Ai_2083_03CC:
 	jmp	near .7
 	db	0x90
 .4:
-	cmp	word [0x5560], 0xa
+	cmp	word [g_5560], 0xa
 	jnl	short .5
 	push	0x3
 	push	word 0x8c
-	push	word [0xdaa0]
-	push	word [0xda9e]
+	push	word [g_DAA0]
+	push	word [g_DA9E]
 	jmp	short .6
 .5:
 	push	0x3
 	push	word 0x8c
-	mov	ax, [0x5560]
+	mov	ax, [g_5560]
 	mov	cx, 0xa
 	cwd
 	idiv	cx
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, byte 0x2
-	push	word [bx - 0x2588]
-	push	word [bx - 0x258a]
+	push	word [bx + g_DA78]
+	push	word [bx + g_DA76]
 .6:
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 	push	0x3
 	push	word 0x95
-	mov	ax, [0x5560]
+	mov	ax, [g_5560]
 	mov	cx, 0xa
 	cwd
 	idiv	cx
 	db	0x8B, 0xDA		; mov bx, dx
 	shl	bx, byte 0x2
-	push	word [bx - 0x2588]
-	push	word [bx - 0x258a]
+	push	word [bx + g_DA78]
+	push	word [bx + g_DA76]
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 	push	0x3
 	push	word 0xa1
-	mov	ax, [0x5562]
+	mov	ax, [g_5562]
 	mov	cx, 0xa
 	cwd
 	idiv	cx
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, byte 0x2
-	push	word [bx - 0x2588]
-	push	word [bx - 0x258a]
+	push	word [bx + g_DA78]
+	push	word [bx + g_DA76]
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 	push	0x3
 	push	word 0xaa
-	mov	ax, [0x5562]
+	mov	ax, [g_5562]
 	mov	cx, 0xa
 	cwd
 	idiv	cx
 	db	0x8B, 0xDA		; mov bx, dx
 .7:
 	shl	bx, byte 0x2
-	push	word [bx - 0x2588]
-	push	word [bx - 0x258a]
+	push	word [bx + g_DA78]
+	push	word [bx + g_DA76]
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
-	mov	ax, [0x5560]
-	mov	[0x5566], ax
-	mov	ax, [0x5562]
-	mov	[0x5568], ax
-	mov	ax, [0x5564]
-	mov	[0x556a], ax
+	mov	ax, [g_5560]
+	mov	[g_5566], ax
+	mov	ax, [g_5562]
+	mov	[g_5568], ax
+	mov	ax, [g_5564]
+	mov	[g_556A], ax
 	retf
 	db	0x90
 
@@ -568,30 +568,30 @@ Ai_2083_0512:
 	cmp	word [bp + 0xc], 0x0
 	jz	short .1
 	call	0x2E42:Ai_2E42_15BC
-	mov	[0x5562], ax
-	mov	[0x5560], ax
+	mov	[g_5562], ax
+	mov	[g_5560], ax
 	mov	cx, 0x3c
 	cwd
 	idiv	cx
-	mov	[0x5560], ax
-	mov	ax, [0x5562]
+	mov	[g_5560], ax
+	mov	ax, [g_5562]
 	cwd
 	idiv	cx
-	mov	[0x5562], dx
-	mov	word [0x5564], 0x0
+	mov	[g_5562], dx
+	mov	word [g_5564], 0x0
 .1:
-	mov	ax, [0xb378]
-	mov	[0x5640], ax
-	mov	ax, [0xb44e]
-	mov	[0x5642], ax
+	mov	ax, [g_B378]
+	mov	[g_5640], ax
+	mov	ax, [g_B44E]
+	mov	[g_5642], ax
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0x5638], ax
-	mov	[0x563e], ax
-	mov	[0x563c], ax
-	mov	[0x5646], ax
-	mov	[0x5644], ax
-	mov	[0x564a], ax
-	mov	[0x5648], ax
+	mov	[g_5638], ax
+	mov	[g_563E], ax
+	mov	[g_563C], ax
+	mov	[g_5646], ax
+	mov	[g_5644], ax
+	mov	[g_564A], ax
+	mov	[g_5648], ax
 	call	0x0FEF:UseOffscreenCanvas
 	push	word 0x3701
 	push	word 0xbd0
@@ -620,12 +620,12 @@ Ai_2083_0512:
 	push	ax
 	call	0x0FEF:DrawRleFastHere
 	add	sp, 0x4
-	push	word [0xb36e]
+	push	word [g_B36E]
 	push	0x0
 	push	cs
 	call	Ai_2083_0006
 	add	sp, 0x4
-	push	word [0xb444]
+	push	word [g_B444]
 	push	0x1
 	push	cs
 	call	Ai_2083_0006
@@ -637,7 +637,7 @@ Ai_2083_0512:
 	jnz	short .2
 	push	0x16
 	push	word 0x98
-	push	word [0x5602]
+	push	word [g_5602]
 	jmp	short .3
 	db	0x90
 .2:
@@ -655,7 +655,7 @@ Ai_2083_0512:
 	idiv	cx
 	db	0x8B, 0xF8		; mov di, ax
 	shl	di, 1
-	push	word [di + 0x55ec]
+	push	word [di + g_55EC]
 	push	word [bp - 0x2]
 	push	si
 	db	0x8B, 0xFB		; mov di, bx
@@ -673,7 +673,7 @@ Ai_2083_0512:
 	idiv	cx
 	db	0x8B, 0xDA		; mov bx, dx
 	shl	bx, 1
-	push	word [bx + 0x55ec]
+	push	word [bx + g_55EC]
 .3:
 	push	word [bp - 0x2]
 	push	si
@@ -706,8 +706,8 @@ Ai_2083_0512:
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x2], dx
 	mov	al, 0x67
-	mov	[0xb207], al
-	mov	[0xb107], al
+	mov	[g_B207], al
+	mov	[g_B107], al
 	push	ds
 	push	word 0xb1c4
 	call	0x0FEF:SetRemapTable
@@ -716,7 +716,7 @@ Ai_2083_0512:
 	push	0x4
 	mov	bx, [bp + 0x6]
 	shl	bx, 1
-	push	word [bx + 0x5604]
+	push	word [bx + g_5604]
 	mov	ax, [bp - 0x2]
 	push	ax
 	push	si
@@ -735,7 +735,7 @@ Ai_2083_0512:
 	push	word 0x11c
 	mov	bx, [bp + 0x8]
 	shl	bx, 1
-	push	word [bx + 0x5604]
+	push	word [bx + g_5604]
 	push	di
 	push	si
 	call	0x03A3:FindFarMsg
@@ -745,26 +745,26 @@ Ai_2083_0512:
 	call	0x0FEF:DrawRleTransRemapAt
 	add	sp, 0x8
 	mov	al, 0x43
-	mov	[0xb207], al
-	mov	[0xb107], al
+	mov	[g_B207], al
+	mov	[g_B107], al
 	push	di
 	push	si
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	push	0x14
 	push	0x2a
-	mov	bx, [0x5640]
+	mov	bx, [g_5640]
 	shl	bx, byte 0x2
-	push	word [bx - 0x25f4]
-	push	word [bx - 0x25f6]
+	push	word [bx + g_DA0C]
+	push	word [bx + g_DA0A]
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 	push	0x14
 	push	word 0xfb
-	mov	bx, [0x5642]
+	mov	bx, [g_5642]
 	shl	bx, byte 0x2
-	push	word [bx - 0x25f4]
-	push	word [bx - 0x25f6]
+	push	word [bx + g_DA0C]
+	push	word [bx + g_DA0A]
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 	pop	si
@@ -775,25 +775,25 @@ Ai_2083_0512:
 Ai_2083_0738:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
-	mov	ax, [0x5560]
-	mov	[0x5566], ax
-	mov	ax, [0x5562]
-	mov	[0x5568], ax
-	mov	ax, [0x5564]
-	mov	[0x556a], ax
+	mov	ax, [g_5560]
+	mov	[g_5566], ax
+	mov	ax, [g_5562]
+	mov	[g_5568], ax
+	mov	ax, [g_5564]
+	mov	[g_556A], ax
 	mov	ax, [bp + 0x6]
-	sub	[0x5564], ax
+	sub	[g_5564], ax
 	jns	short .1
-	add	word [0x5564], 0x64
-	dec	word [0x5562]
+	add	word [g_5564], 0x64
+	dec	word [g_5562]
 	jns	short .1
-	mov	word [0x5562], 0x3b
-	dec	word [0x5560]
+	mov	word [g_5562], 0x3b
+	dec	word [g_5560]
 	jns	short .1
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0x5564], ax
-	mov	[0x5562], ax
-	mov	[0x5560], ax
+	mov	[g_5564], ax
+	mov	[g_5562], ax
+	mov	[g_5560], ax
 	leave
 	retf
 .1:
@@ -803,22 +803,22 @@ Ai_2083_0738:
 	db	0x90
 
 Ai_2083_0780:
-	cmp	word [0x5560], 0x0
+	cmp	word [g_5560], 0x0
 	jz	short .1
 	jmp	near .9
 .1:
-	mov	ax, [0x5560]
-	cmp	[0x5566], ax
+	mov	ax, [g_5560]
+	cmp	[g_5566], ax
 	jz	short .2
 	push	0x3
 	push	word 0xaa
-	push	word [0xdaa0]
-	push	word [0xda9e]
+	push	word [g_DAA0]
+	push	word [g_DA9E]
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 .2:
-	mov	ax, [0x5562]
-	cmp	[0x5568], ax
+	mov	ax, [g_5562]
+	cmp	[g_5568], ax
 	jnz	short .3
 	jmp	near .7
 .3:
@@ -826,39 +826,39 @@ Ai_2083_0780:
 	cwd
 	idiv	cx
 	db	0x8B, 0xD0		; mov dx, ax
-	mov	ax, [0x5568]
+	mov	ax, [g_5568]
 	db	0x8B, 0xDA		; mov bx, dx
 	cwd
 	idiv	cx
 	db	0x3B, 0xC3		; cmp ax, bx
 	jz	short .6
-	cmp	word [0x5562], 0xa
+	cmp	word [g_5562], 0xa
 	jnl	short .4
 	push	0x3
 	push	word 0x8c
-	push	word [0xdaa0]
-	push	word [0xda9e]
+	push	word [g_DAA0]
+	push	word [g_DA9E]
 	jmp	short .5
 .4:
 	push	0x3
 	push	word 0x8c
-	mov	ax, [0x5562]
+	mov	ax, [g_5562]
 	mov	cx, 0xa
 	cwd
 	idiv	cx
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, byte 0x2
-	push	word [bx - 0x2588]
-	push	word [bx - 0x258a]
+	push	word [bx + g_DA78]
+	push	word [bx + g_DA76]
 .5:
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 .6:
-	mov	ax, [0x5562]
+	mov	ax, [g_5562]
 	mov	cx, 0xa
 	cwd
 	idiv	cx
-	mov	ax, [0x5568]
+	mov	ax, [g_5568]
 	db	0x8B, 0xDA		; mov bx, dx
 	cwd
 	idiv	cx
@@ -866,22 +866,22 @@ Ai_2083_0780:
 	jz	short .7
 	push	0x3
 	push	word 0x95
-	mov	ax, [0x5562]
+	mov	ax, [g_5562]
 	cwd
 	idiv	cx
 	db	0x8B, 0xDA		; mov bx, dx
 	shl	bx, byte 0x2
-	push	word [bx - 0x2588]
-	push	word [bx - 0x258a]
+	push	word [bx + g_DA78]
+	push	word [bx + g_DA76]
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 .7:
-	mov	ax, [0x5564]
+	mov	ax, [g_5564]
 	mov	cx, 0xfff6
 	cwd
 	idiv	cx
 	db	0x8B, 0xD0		; mov dx, ax
-	mov	ax, [0x556a]
+	mov	ax, [g_556A]
 	db	0x8B, 0xDA		; mov bx, dx
 	cwd
 	idiv	cx
@@ -891,7 +891,7 @@ Ai_2083_0780:
 .8:
 	push	0x3
 	push	word 0xa1
-	mov	ax, [0x5564]
+	mov	ax, [g_5564]
 	mov	cx, 0xa
 	cwd
 	idiv	cx
@@ -899,8 +899,8 @@ Ai_2083_0780:
 	jmp	near .16
 	db	0x90
 .9:
-	mov	ax, [0x5560]
-	cmp	[0x5566], ax
+	mov	ax, [g_5560]
+	cmp	[g_5566], ax
 	jnz	short .10
 	jmp	near .14
 .10:
@@ -908,39 +908,39 @@ Ai_2083_0780:
 	cwd
 	idiv	cx
 	db	0x8B, 0xD0		; mov dx, ax
-	mov	ax, [0x5566]
+	mov	ax, [g_5566]
 	db	0x8B, 0xDA		; mov bx, dx
 	cwd
 	idiv	cx
 	db	0x3B, 0xC3		; cmp ax, bx
 	jz	short .13
-	cmp	word [0x5560], 0xa
+	cmp	word [g_5560], 0xa
 	jnl	short .11
 	push	0x3
 	push	word 0x8c
-	push	word [0xdaa0]
-	push	word [0xda9e]
+	push	word [g_DAA0]
+	push	word [g_DA9E]
 	jmp	short .12
 .11:
 	push	0x3
 	push	word 0x8c
-	mov	ax, [0x5560]
+	mov	ax, [g_5560]
 	mov	cx, 0xa
 	cwd
 	idiv	cx
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, byte 0x2
-	push	word [bx - 0x2588]
-	push	word [bx - 0x258a]
+	push	word [bx + g_DA78]
+	push	word [bx + g_DA76]
 .12:
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 .13:
-	mov	ax, [0x5560]
+	mov	ax, [g_5560]
 	mov	cx, 0xa
 	cwd
 	idiv	cx
-	mov	ax, [0x5566]
+	mov	ax, [g_5566]
 	db	0x8B, 0xDA		; mov bx, dx
 	cwd
 	idiv	cx
@@ -948,24 +948,24 @@ Ai_2083_0780:
 	jz	short .14
 	push	0x3
 	push	word 0x95
-	mov	ax, [0x5560]
+	mov	ax, [g_5560]
 	cwd
 	idiv	cx
 	db	0x8B, 0xDA		; mov bx, dx
 	shl	bx, byte 0x2
-	push	word [bx - 0x2588]
-	push	word [bx - 0x258a]
+	push	word [bx + g_DA78]
+	push	word [bx + g_DA76]
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 .14:
-	mov	ax, [0x5562]
-	cmp	[0x5568], ax
+	mov	ax, [g_5562]
+	cmp	[g_5568], ax
 	jz	short .17
 	mov	cx, 0xfff6
 	cwd
 	idiv	cx
 	db	0x8B, 0xD0		; mov dx, ax
-	mov	ax, [0x5568]
+	mov	ax, [g_5568]
 	db	0x8B, 0xDA		; mov bx, dx
 	cwd
 	idiv	cx
@@ -973,22 +973,22 @@ Ai_2083_0780:
 	jz	short .15
 	push	0x3
 	push	word 0xa1
-	mov	ax, [0x5562]
+	mov	ax, [g_5562]
 	mov	cx, 0xa
 	cwd
 	idiv	cx
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, byte 0x2
-	push	word [bx - 0x2588]
-	push	word [bx - 0x258a]
+	push	word [bx + g_DA78]
+	push	word [bx + g_DA76]
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 .15:
-	mov	ax, [0x5562]
+	mov	ax, [g_5562]
 	mov	cx, 0xa
 	cwd
 	idiv	cx
-	mov	ax, [0x5568]
+	mov	ax, [g_5568]
 	db	0x8B, 0xDA		; mov bx, dx
 	cwd
 	idiv	cx
@@ -996,14 +996,14 @@ Ai_2083_0780:
 	jz	short .17
 	push	0x3
 	push	word 0xaa
-	mov	ax, [0x5562]
+	mov	ax, [g_5562]
 	cwd
 	idiv	cx
 	db	0x8B, 0xDA		; mov bx, dx
 .16:
 	shl	bx, byte 0x2
-	push	word [bx - 0x2588]
-	push	word [bx - 0x258a]
+	push	word [bx + g_DA78]
+	push	word [bx + g_DA76]
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 .17:
@@ -1105,7 +1105,7 @@ Ai_2083_0A1C:
 	db	0x2B, 0xDB		; sub bx, bx
 .2:
 	shl	bx, 1
-	cmp	word [bx + 0x48ca], 0x0
+	cmp	word [bx + g_48CA], 0x0
 	jz	short .3
 	mov	si, [bp + 0x6]
 	push	0x0
@@ -1181,11 +1181,11 @@ Ai_2083_0ABE:
 .2:
 	mov	[bp - 0xa], bx
 	shl	bx, 1
-	cmp	word [bx + 0x48e2], 0x0
+	cmp	word [bx + g_48E2], 0x0
 	jz	short .3
 	mov	bx, [bp - 0xa]
 	shl	bx, 1
-	mov	ax, [bx + 0x48da]
+	mov	ax, [bx + g_48DA]
 	jmp	short .4
 	db	0x90
 .3:
@@ -1271,7 +1271,7 @@ Ai_2083_0ABE:
 	jnz	short .15
 	mov	bx, [bp - 0xa]
 	shl	bx, 1
-	cmp	word [bx + 0x48ce], 0x0
+	cmp	word [bx + g_48CE], 0x0
 	jz	short .15
 	mov	word [bp - 0x4], 0x61
 	jmp	short .18
@@ -1367,8 +1367,8 @@ Ai_2083_0C56:
 	mov	ax, [bp + 0x8]
 	add	ax, strict word 0xa
 	push	ax
-	push	word [0xda74]
-	push	word [0xda72]
+	push	word [g_DA74]
+	push	word [g_DA72]
 	jmp	short .4
 .3:
 	push	si
@@ -1381,8 +1381,8 @@ Ai_2083_0C56:
 	idiv	cx
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, byte 0x2
-	push	word [bx - 0x25b4]
-	push	word [bx - 0x25b6]
+	push	word [bx + g_DA4C]
+	push	word [bx + g_DA4A]
 .4:
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
@@ -1396,8 +1396,8 @@ Ai_2083_0C56:
 	idiv	cx
 	db	0x8B, 0xDA		; mov bx, dx
 	shl	bx, byte 0x2
-	push	word [bx - 0x25b4]
-	push	word [bx - 0x25b6]
+	push	word [bx + g_DA4C]
+	push	word [bx + g_DA4A]
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 	cmp	word [di + 0x2], 0xa
@@ -1406,8 +1406,8 @@ Ai_2083_0C56:
 	mov	ax, [bp + 0x8]
 	add	ax, strict word 0x1b
 	push	ax
-	push	word [0xda74]
-	push	word [0xda72]
+	push	word [g_DA74]
+	push	word [g_DA72]
 	jmp	short .6
 .5:
 	push	si
@@ -1420,8 +1420,8 @@ Ai_2083_0C56:
 	idiv	cx
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, byte 0x2
-	push	word [bx - 0x25b4]
-	push	word [bx - 0x25b6]
+	push	word [bx + g_DA4C]
+	push	word [bx + g_DA4A]
 .6:
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
@@ -1435,8 +1435,8 @@ Ai_2083_0C56:
 	idiv	cx
 	db	0x8B, 0xDA		; mov bx, dx
 	shl	bx, byte 0x2
-	push	word [bx - 0x25b4]
-	push	word [bx - 0x25b6]
+	push	word [bx + g_DA4C]
+	push	word [bx + g_DA4A]
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 	push	si
@@ -1449,8 +1449,8 @@ Ai_2083_0C56:
 	idiv	cx
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, byte 0x2
-	push	word [bx - 0x25b4]
-	push	word [bx - 0x25b6]
+	push	word [bx + g_DA4C]
+	push	word [bx + g_DA4A]
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 	push	si
@@ -1463,8 +1463,8 @@ Ai_2083_0C56:
 	idiv	cx
 	db	0x8B, 0xDA		; mov bx, dx
 	shl	bx, byte 0x2
-	push	word [bx - 0x25b4]
-	push	word [bx - 0x25b6]
+	push	word [bx + g_DA4C]
+	push	word [bx + g_DA4A]
 	jmp	near .8
 	db	0x90
 .7:
@@ -1472,48 +1472,48 @@ Ai_2083_0C56:
 	mov	ax, [bp + 0x8]
 	add	ax, strict word 0xa
 	push	ax
-	push	word [0xda74]
-	push	word [0xda72]
+	push	word [g_DA74]
+	push	word [g_DA72]
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 	push	si
 	mov	ax, [bp + 0x8]
 	add	ax, strict word 0x10
 	push	ax
-	push	word [0xda74]
-	push	word [0xda72]
+	push	word [g_DA74]
+	push	word [g_DA72]
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 	push	si
 	mov	ax, [bp + 0x8]
 	add	ax, strict word 0x1b
 	push	ax
-	push	word [0xda74]
-	push	word [0xda72]
+	push	word [g_DA74]
+	push	word [g_DA72]
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 	push	si
 	mov	ax, [bp + 0x8]
 	add	ax, strict word 0x21
 	push	ax
-	push	word [0xda74]
-	push	word [0xda72]
+	push	word [g_DA74]
+	push	word [g_DA72]
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 	push	si
 	mov	ax, [bp + 0x8]
 	add	ax, strict word 0x2a
 	push	ax
-	push	word [0xda74]
-	push	word [0xda72]
+	push	word [g_DA74]
+	push	word [g_DA72]
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 	push	si
 	mov	ax, [bp + 0x8]
 	add	ax, strict word 0x30
 	push	ax
-	push	word [0xda74]
-	push	word [0xda72]
+	push	word [g_DA74]
+	push	word [g_DA72]
 .8:
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8

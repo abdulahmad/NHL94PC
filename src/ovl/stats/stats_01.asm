@@ -837,16 +837,16 @@ Stats_1EAE_07B6:
 	sar	ax, 1
 	mov	[bp - 0x4e], ax
 	mov	[bp - 0x1a], ax
-	cmp	word [0x200e], 0x0
+	cmp	word [g_200E], 0x0
 	jz	short .1
 	jmp	near .6
 .1:
 	mov	word [bp - 0x50], 0x0
 .2:
-	mov	ax, [0x21ba]
+	mov	ax, [g_21BA]
 	mov	bx, [bp - 0x50]
 	shl	bx, 1
-	cmp	[bx - 0x3118], ax
+	cmp	[bx + g_CEE8], ax
 	jnz	short .3
 	mov	ax, [bp - 0x50]
 	mov	[bp - 0x3a], ax
@@ -856,8 +856,8 @@ Stats_1EAE_07B6:
 	jl	short .2
 	mov	bx, [bp - 0x3a]
 	shl	bx, 1
-	imul	si, [bx - 0x3118], 0x1a
-	les	bx, [0xc04c]
+	imul	si, [bx + g_CEE8], 0x1a
+	les	bx, [g_C04C]
 	mov	al, [es:bx + si + 0xd]
 	db	0x8B, 0xC8		; mov cx, ax
 	and	al, 0x1
@@ -897,10 +897,10 @@ Stats_1EAE_07B6:
 	jmp	short .7
 	db	0x90
 .6:
-	mov	bx, [0x21ba]
+	mov	bx, [g_21BA]
 	mov	[bp - 0x3a], bx
 	shl	bx, 1
-	cmp	word [bx - 0x3dfc], 0x18
+	cmp	word [bx + g_C204], 0x18
 	jz	short .7
 	push	0x0
 	push	0x0
@@ -956,7 +956,7 @@ Stats_1EAE_07B6:
 	jmp	near .22
 .11:
 	mov	word [bp - 0x56], 0x0
-	cmp	word [0x200e], 0x1
+	cmp	word [g_200E], 0x1
 	jz	short .12
 	jmp	near .19
 .12:
@@ -1016,7 +1016,7 @@ Stats_1EAE_07B6:
 	call	0x24E6:Stats_24E6_07A0
 	mov	bx, [bp - 0x3a]
 	shl	bx, 1
-	cmp	word [bx - 0x3dfc], 0x18
+	cmp	word [bx + g_C204], 0x18
 	jz	short .18
 	push	0x0
 	push	0x0
@@ -1133,23 +1133,23 @@ Stats_1EAE_07B6:
 	dec	word [bp - 0x50]
 	jns	short .26
 	mov	word [bp - 0x2e], 0x0
-	cmp	word [0x200e], 0x0
+	cmp	word [g_200E], 0x0
 	jnz	short .28
 	mov	bx, [bp - 0x3a]
 	shl	bx, 1
-	mov	ax, [bx - 0x3118]
+	mov	ax, [bx + g_CEE8]
 	mov	[bp - 0x30], ax
-	mov	[0x21b8], ax
+	mov	[g_21B8], ax
 	jmp	short .29
 	db	0x90
 .28:
 	mov	bx, [bp - 0x3a]
 	shl	bx, 1
-	mov	ax, [bx - 0x3dfc]
-	mov	[0x21b8], ax
+	mov	ax, [bx + g_C204]
+	mov	[g_21B8], ax
 	mov	ax, [bp - 0x3a]
 .29:
-	mov	[0x21ba], ax
+	mov	[g_21BA], ax
 	push	word 0x1e8c
 	push	word [MemBlock1Seg]
 	push	word [MemBlock1Off]
@@ -1208,7 +1208,7 @@ Stats_1EAE_07B6:
 	leave
 	retf
 .30:
-	cmp	[0x200e], ax
+	cmp	[g_200E], ax
 	jz	short .31
 	jmp	near .36
 .31:
@@ -1217,7 +1217,7 @@ Stats_1EAE_07B6:
 	mov	ax, [bp - 0x30]
 	mov	bx, [bp - 0x50]
 	shl	bx, 1
-	cmp	[bx - 0x3118], ax
+	cmp	[bx + g_CEE8], ax
 	jnz	short .33
 	mov	ax, [bp - 0x50]
 	mov	[bp - 0x3a], ax
@@ -1227,8 +1227,8 @@ Stats_1EAE_07B6:
 	jl	short .32
 	mov	bx, [bp - 0x3a]
 	shl	bx, 1
-	imul	si, [bx - 0x3118], 0x1a
-	les	bx, [0xc04c]
+	imul	si, [bx + g_CEE8], 0x1a
+	les	bx, [g_C04C]
 	mov	al, [es:bx + si + 0xd]
 	db	0x8B, 0xC8		; mov cx, ax
 	and	al, 0x1
@@ -1268,10 +1268,10 @@ Stats_1EAE_07B6:
 	jmp	short .37
 	db	0x90
 .36:
-	mov	bx, [0x21ba]
+	mov	bx, [g_21BA]
 	mov	[bp - 0x3a], bx
 	shl	bx, 1
-	cmp	word [bx - 0x3dfc], 0x18
+	cmp	word [bx + g_C204], 0x18
 	jz	short .37
 	push	ax
 	push	ax
@@ -1569,7 +1569,7 @@ Stats_1EAE_07B6:
 	jnz	short .50
 	jmp	near .59
 .50:
-	cmp	word [0x200e], 0x0
+	cmp	word [g_200E], 0x0
 	jz	short .51
 	jmp	near .56
 .51:
@@ -1581,8 +1581,8 @@ Stats_1EAE_07B6:
 	idiv	cx
 	mov	bx, [bp - 0x3a]
 	shl	bx, 1
-	imul	si, [bx - 0x3118], 0x1a
-	les	bx, [0xc04c]
+	imul	si, [bx + g_CEE8], 0x1a
+	les	bx, [g_C04C]
 	mov	al, [es:bx + si + 0xd]
 	db	0x8B, 0xD8		; mov bx, ax
 	and	al, 0x1
@@ -1610,8 +1610,8 @@ Stats_1EAE_07B6:
 	mov	bx, [bp - 0x30]
 	mov	[bp - 0x3a], bx
 	shl	bx, 1
-	imul	si, [bx - 0x3118], 0x1a
-	les	bx, [0xc04c]
+	imul	si, [bx + g_CEE8], 0x1a
+	les	bx, [g_C04C]
 	mov	al, [es:bx + si + 0xd]
 	db	0x8B, 0xC8		; mov cx, ax
 	and	al, 0x1
@@ -1653,13 +1653,13 @@ Stats_1EAE_07B6:
 .56:
 	mov	bx, [bp - 0x30]
 	shl	bx, 1
-	cmp	word [bx - 0x3dfc], 0x18
+	cmp	word [bx + g_C204], 0x18
 	jnz	short .57
 	jmp	near .21
 .57:
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, 1
-	cmp	word [bx - 0x3dfc], 0x18
+	cmp	word [bx + g_C204], 0x18
 	jnz	short .58
 	jmp	near .21
 .58:
@@ -1671,11 +1671,11 @@ Stats_1EAE_07B6:
 	add	sp, 0x4
 	jmp	near .21
 .59:
-	cmp	word [0x200e], 0x0
+	cmp	word [g_200E], 0x0
 	jz	short .60
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, 1
-	cmp	word [bx - 0x3dfc], 0x18
+	cmp	word [bx + g_C204], 0x18
 	jnz	short .60
 	jmp	near .21
 .60:
@@ -1703,22 +1703,22 @@ Stats_1EAE_07B6:
 	dec	word [bp - 0x50]
 	jns	short .61
 	mov	word [bp - 0x2e], 0x0
-	cmp	word [0x200e], 0x0
+	cmp	word [g_200E], 0x0
 	jnz	short .63
 	mov	bx, [bp - 0x3a]
 	shl	bx, 1
-	mov	ax, [bx - 0x3118]
+	mov	ax, [bx + g_CEE8]
 	mov	[bp - 0x30], ax
-	mov	[0x21b8], ax
+	mov	[g_21B8], ax
 	jmp	short .64
 .63:
 	mov	bx, [bp - 0x3a]
 	shl	bx, 1
-	mov	ax, [bx - 0x3dfc]
-	mov	[0x21b8], ax
+	mov	ax, [bx + g_C204]
+	mov	[g_21B8], ax
 	mov	ax, [bp - 0x3a]
 .64:
-	mov	[0x21ba], ax
+	mov	[g_21BA], ax
 	call	0x2248:Stats_2248_064C
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[bp - 0x3e], ax
@@ -1905,9 +1905,9 @@ Stats_1EAE_12F6:
 	sar	ax, 1
 	mov	[bp - 0x4a], ax
 	mov	[bp - 0x1a], ax
-	cmp	byte [0xcf1c], 0x47
+	cmp	byte [g_CF1C], 0x47
 	jz	short .1
-	cmp	byte [0xcf1c], 0x67
+	cmp	byte [g_CF1C], 0x67
 	jnz	short .5
 .1:
 	mov	word [bp - 0x4c], 0x0
@@ -1915,20 +1915,20 @@ Stats_1EAE_12F6:
 .2:
 	inc	word [bp - 0x4c]
 .3:
-	mov	ax, [0xcfc6]
+	mov	ax, [g_CFC6]
 	cmp	[bp - 0x4c], ax
 	jl	short .4
 	jmp	near .9
 .4:
 	mov	bx, [bp - 0x4c]
 	shl	bx, 1
-	mov	bx, [bx - 0x3044]
+	mov	bx, [bx + g_CFBC]
 	shl	bx, 1
-	mov	ax, [bx - 0x304e]
+	mov	ax, [bx + g_CFB2]
 	mov	[bp - 0x50], ax
 	imul	ax, ax, 0x34
-	add	ax, [0xc048]
-	mov	dx, [0xc04a]
+	add	ax, [g_C048]
+	mov	dx, [g_C04A]
 	add	ax, strict word 0x3
 	push	dx
 	push	ax
@@ -1940,8 +1940,8 @@ Stats_1EAE_12F6:
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .2
 	imul	ax, [bp - 0x50], 0x34
-	add	ax, [0xc048]
-	mov	dx, [0xc04a]
+	add	ax, [g_C048]
+	mov	dx, [g_C04A]
 	add	ax, strict word 0x13
 	push	dx
 	push	ax
@@ -1953,28 +1953,28 @@ Stats_1EAE_12F6:
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .2
 	mov	ax, [bp - 0x4c]
-	add	ax, [0xcf18]
+	add	ax, [g_CF18]
 	jmp	short .8
 .5:
-	cmp	byte [0xcf1c], 0x0
+	cmp	byte [g_CF1C], 0x0
 	jz	short .9
 	mov	word [bp - 0x4c], 0x0
 	jmp	short .7
 .6:
 	inc	word [bp - 0x4c]
 .7:
-	mov	ax, [0xcf18]
+	mov	ax, [g_CF18]
 	cmp	[bp - 0x4c], ax
 	jnl	short .9
 	mov	bx, [bp - 0x4c]
 	shl	bx, 1
-	mov	bx, [bx - 0x3080]
+	mov	bx, [bx + g_CF80]
 	shl	bx, 1
-	mov	ax, [bx - 0x30b2]
+	mov	ax, [bx + g_CF4E]
 	mov	[bp - 0x50], ax
 	imul	ax, ax, 0x34
-	add	ax, [0xc048]
-	mov	dx, [0xc04a]
+	add	ax, [g_C048]
+	mov	dx, [g_C04A]
 	add	ax, strict word 0x3
 	push	dx
 	push	ax
@@ -1986,8 +1986,8 @@ Stats_1EAE_12F6:
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .6
 	imul	ax, [bp - 0x50], 0x34
-	add	ax, [0xc048]
-	mov	dx, [0xc04a]
+	add	ax, [g_C048]
+	mov	dx, [g_C04A]
 	add	ax, strict word 0x13
 	push	dx
 	push	ax
@@ -2005,7 +2005,7 @@ Stats_1EAE_12F6:
 	push	word 0x80
 	push	0x7
 	push	word 0x140
-	mov	ax, [0xcf18]
+	mov	ax, [g_CF18]
 	cmp	[bp - 0x54], ax
 	jl	short .10
 	mov	ax, 0x1f
@@ -2167,30 +2167,30 @@ Stats_1EAE_12F6:
 	jns	short .21
 	mov	word [bp - 0x2e], 0x0
 	mov	ax, [bp - 0x52]
-	cmp	[0xcf18], ax
+	cmp	[g_CF18], ax
 	jng	short .23
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, 1
-	mov	bx, [bx - 0x3080]
+	mov	bx, [bx + g_CF80]
 	mov	[bp - 0x4c], bx
 	shl	bx, 1
-	mov	ax, [bx - 0x30b2]
+	mov	ax, [bx + g_CF4E]
 	jmp	short .24
 	db	0x90
 .23:
 	db	0x8B, 0xD8		; mov bx, ax
-	sub	bx, [0xcf18]
+	sub	bx, [g_CF18]
 	shl	bx, 1
-	mov	bx, [bx - 0x3044]
+	mov	bx, [bx + g_CFBC]
 	mov	[bp - 0x4c], bx
 	shl	bx, 1
-	mov	ax, [bx - 0x304e]
+	mov	ax, [bx + g_CFB2]
 .24:
 	mov	[bp - 0x50], ax
 	mov	ax, 0xcf1a
 	imul	cx, [bp - 0x50], 0x34
-	add	cx, [0xc048]
-	mov	dx, [0xc04a]
+	add	cx, [g_C048]
+	mov	dx, [g_C04A]
 	push	ds
 	db	0x8B, 0xF8		; mov di, ax
 	db	0x8B, 0xF1		; mov si, cx
@@ -2260,27 +2260,27 @@ Stats_1EAE_12F6:
 	leave
 	retf
 .25:
-	cmp	byte [0xcf1c], 0x47
+	cmp	byte [g_CF1C], 0x47
 	jnz	short .29
 	mov	[bp - 0x4c], ax
 	jmp	short .27
 .26:
 	inc	word [bp - 0x4c]
 .27:
-	mov	ax, [0xcfc6]
+	mov	ax, [g_CFC6]
 	cmp	[bp - 0x4c], ax
 	jl	short .28
 	jmp	near .33
 .28:
 	mov	bx, [bp - 0x4c]
 	shl	bx, 1
-	mov	bx, [bx - 0x3044]
+	mov	bx, [bx + g_CFBC]
 	shl	bx, 1
-	mov	ax, [bx - 0x304e]
+	mov	ax, [bx + g_CFB2]
 	mov	[bp - 0x50], ax
 	imul	ax, ax, 0x34
-	add	ax, [0xc048]
-	mov	dx, [0xc04a]
+	add	ax, [g_C048]
+	mov	dx, [g_C04A]
 	add	ax, strict word 0x3
 	push	dx
 	push	ax
@@ -2292,8 +2292,8 @@ Stats_1EAE_12F6:
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .26
 	imul	ax, [bp - 0x50], 0x34
-	add	ax, [0xc048]
-	mov	dx, [0xc04a]
+	add	ax, [g_C048]
+	mov	dx, [g_C04A]
 	add	ax, strict word 0x13
 	push	dx
 	push	ax
@@ -2305,28 +2305,28 @@ Stats_1EAE_12F6:
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .26
 	mov	ax, [bp - 0x4c]
-	add	ax, [0xcf18]
+	add	ax, [g_CF18]
 	jmp	short .32
 .29:
-	cmp	byte [0xcf1c], 0x0
+	cmp	byte [g_CF1C], 0x0
 	jz	short .33
 	mov	[bp - 0x4c], ax
 	jmp	short .31
 .30:
 	inc	word [bp - 0x4c]
 .31:
-	mov	ax, [0xcf18]
+	mov	ax, [g_CF18]
 	cmp	[bp - 0x4c], ax
 	jnl	short .33
 	mov	bx, [bp - 0x4c]
 	shl	bx, 1
-	mov	bx, [bx - 0x3080]
+	mov	bx, [bx + g_CF80]
 	shl	bx, 1
-	mov	ax, [bx - 0x30b2]
+	mov	ax, [bx + g_CF4E]
 	mov	[bp - 0x50], ax
 	imul	ax, ax, 0x34
-	add	ax, [0xc048]
-	mov	dx, [0xc04a]
+	add	ax, [g_C048]
+	mov	dx, [g_C04A]
 	add	ax, strict word 0x3
 	push	dx
 	push	ax
@@ -2338,8 +2338,8 @@ Stats_1EAE_12F6:
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .30
 	imul	ax, [bp - 0x50], 0x34
-	add	ax, [0xc048]
-	mov	dx, [0xc04a]
+	add	ax, [g_C048]
+	mov	dx, [g_C04A]
 	add	ax, strict word 0x13
 	push	dx
 	push	ax
@@ -2357,7 +2357,7 @@ Stats_1EAE_12F6:
 	push	word 0x80
 	push	0x7
 	push	word 0x140
-	mov	ax, [0xcf18]
+	mov	ax, [g_CF18]
 	cmp	[bp - 0x54], ax
 	jl	short .34
 	mov	ax, 0x1f
@@ -2713,7 +2713,7 @@ Stats_1EAE_12F6:
 	push	word 0x80
 	push	0x7
 	push	word 0x140
-	mov	ax, [0xcf18]
+	mov	ax, [g_CF18]
 	cmp	[bp - 0x54], ax
 	jl	short .50
 	mov	ax, 0x1f
@@ -2734,7 +2734,7 @@ Stats_1EAE_12F6:
 	add	sp, 0xa
 	mov	ax, [bp - 0x52]
 	mov	[bp - 0x54], ax
-	cmp	ax, [0xcf18]
+	cmp	ax, [g_CF18]
 	jl	short .52
 	mov	ax, 0x1f
 	jmp	short .53
@@ -2783,30 +2783,30 @@ Stats_1EAE_12F6:
 	jns	short .55
 	mov	word [bp - 0x2e], 0x0
 	mov	ax, [bp - 0x52]
-	cmp	[0xcf18], ax
+	cmp	[g_CF18], ax
 	jng	short .57
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, 1
-	mov	bx, [bx - 0x3080]
+	mov	bx, [bx + g_CF80]
 	mov	[bp - 0x4c], bx
 	shl	bx, 1
-	mov	ax, [bx - 0x30b2]
+	mov	ax, [bx + g_CF4E]
 	jmp	short .58
 	db	0x90
 .57:
 	db	0x8B, 0xD8		; mov bx, ax
-	sub	bx, [0xcf18]
+	sub	bx, [g_CF18]
 	shl	bx, 1
-	mov	bx, [bx - 0x3044]
+	mov	bx, [bx + g_CFBC]
 	mov	[bp - 0x4c], bx
 	shl	bx, 1
-	mov	ax, [bx - 0x304e]
+	mov	ax, [bx + g_CFB2]
 .58:
 	mov	[bp - 0x50], ax
 	mov	ax, 0xcf1a
 	imul	cx, [bp - 0x50], 0x34
-	add	cx, [0xc048]
-	mov	dx, [0xc04a]
+	add	cx, [g_C048]
+	mov	dx, [g_C04A]
 	push	ds
 	db	0x8B, 0xF8		; mov di, ax
 	db	0x8B, 0xF1		; mov si, cx

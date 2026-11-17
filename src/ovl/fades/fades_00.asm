@@ -59,32 +59,32 @@ Fades_3349_005E:
 	db	0x03, 0xCA		; add cx, dx
 	mov	si, [bp + 0xc]
 	db	0x03, 0xF7		; add si, di
-	cmp	[0xdf6c], dx
+	cmp	[g_DF6C], dx
 	jng	short .5
-	cmp	[0xdf70], di
+	cmp	[g_DF70], di
 	jng	short .5
-	cmp	[0xdf6a], cx
+	cmp	[g_DF6A], cx
 	jg	short .5
-	cmp	[0xdf6e], si
+	cmp	[g_DF6E], si
 	jg	short .5
-	cmp	[0xdf6a], dx
+	cmp	[g_DF6A], dx
 	jng	short .1
-	mov	ax, [0xdf6a]
+	mov	ax, [g_DF6A]
 	mov	[bp + 0x6], ax
 .1:
-	cmp	[0xdf6e], di
+	cmp	[g_DF6E], di
 	jng	short .2
-	mov	di, [0xdf6e]
+	mov	di, [g_DF6E]
 .2:
 	mov	[bp - 0x2], cx
-	cmp	[0xdf6c], cx
+	cmp	[g_DF6C], cx
 	jnl	short .3
-	mov	ax, [0xdf6c]
+	mov	ax, [g_DF6C]
 	mov	[bp - 0x2], ax
 .3:
-	cmp	[0xdf70], si
+	cmp	[g_DF70], si
 	jnl	short .4
-	mov	si, [0xdf70]
+	mov	si, [g_DF70]
 .4:
 	call	0x0FEF:UseCurrentPage
 	push	0x0

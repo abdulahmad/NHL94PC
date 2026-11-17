@@ -126,7 +126,7 @@ Init_2185_0000:
 	mov	al, [si]
 	cmp	[si + 0x1], al
 	jnz	short .9
-	mov	es, [0x8ca4]
+	mov	es, [g_8CA4]
 	cmp	word [es:0x78c], 0x3f0
 	jnl	short .10
 .9:

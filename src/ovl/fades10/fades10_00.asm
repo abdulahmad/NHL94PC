@@ -12,25 +12,25 @@ Fades10_3358_0000:
 	mov	di, [bp + 0xc]
 	db	0x03, 0xFE		; add di, si
 	dec	di
-	cmp	[0xdf6a], cx
+	cmp	[g_DF6A], cx
 	jng	short .1
-	mov	ax, [0xdf6a]
+	mov	ax, [g_DF6A]
 	mov	[bp + 0x6], ax
 .1:
-	cmp	[0xdf6e], si
+	cmp	[g_DF6E], si
 	jng	short .2
-	mov	si, [0xdf6e]
+	mov	si, [g_DF6E]
 .2:
 	mov	[bp - 0x2], dx
-	cmp	[0xdf6c], dx
+	cmp	[g_DF6C], dx
 	jg	short .3
-	mov	ax, [0xdf6c]
+	mov	ax, [g_DF6C]
 	dec	ax
 	mov	[bp - 0x2], ax
 .3:
-	cmp	[0xdf70], di
+	cmp	[g_DF70], di
 	jg	short .4
-	mov	di, [0xdf70]
+	mov	di, [g_DF70]
 	dec	di
 .4:
 	db	0x8B, 0xC7		; mov ax, di
@@ -59,15 +59,15 @@ Fades10_3358_0070:
 	push	di
 	push	si
 	call	0x0FEF:UseCurrentPage
-	mov	es, [0x8d00]
+	mov	es, [g_8D00]
 	mov	ax, [es:0x74fe]
-	mov	[0xdf6c], ax
+	mov	[g_DF6C], ax
 	mov	cx, [es:0x74f2]
-	mov	[0xdf6e], cx
+	mov	[g_DF6E], cx
 	mov	dx, [es:0x74f4]
-	mov	[0xdf70], dx
+	mov	[g_DF70], dx
 	mov	bx, [es:0x74fc]
-	mov	[0xdf6a], bx
+	mov	[g_DF6A], bx
 	db	0x03, 0xC3		; add ax, bx
 	inc	ax
 	cwd
@@ -75,7 +75,7 @@ Fades10_3358_0070:
 	sar	ax, 1
 	mov	[bp - 0x18], ax
 	db	0x8B, 0xC1		; mov ax, cx
-	add	ax, [0xdf70]
+	add	ax, [g_DF70]
 	inc	ax
 	cwd
 	db	0x2B, 0xC2		; sub ax, dx
@@ -87,7 +87,7 @@ Fades10_3358_0070:
 	db	0x2B, 0xC2		; sub ax, dx
 	sar	ax, 1
 	mov	[bp - 0x1c], ax
-	mov	ax, [0xdf70]
+	mov	ax, [g_DF70]
 	db	0x2B, 0xC1		; sub ax, cx
 	inc	ax
 	cwd
@@ -222,13 +222,13 @@ Fades10_3358_0070:
 	cmp	word [bp + 0x6], 0x1
 	jnz	short .12
 	push	0x0
-	mov	ax, [0xdf70]
-	sub	ax, [0xdf6e]
+	mov	ax, [g_DF70]
+	sub	ax, [g_DF6E]
 	push	ax
-	mov	es, [0x8d00]
+	mov	es, [g_8D00]
 	push	word [es:0x74fa]
-	push	word [0xdf6e]
-	push	word [0xdf6a]
+	push	word [g_DF6E]
+	push	word [g_DF6A]
 	cmp	word [CurPage], 0x1
 	db	0x1B, 0xC0		; sbb ax, ax
 	neg	ax

@@ -339,7 +339,7 @@ Menus_2CAA_018C:
 	mov	ax, 0x1
 	shl	ax, cl
 	not	ax
-	and	[0xb35e], ax
+	and	[g_B35E], ax
 	jmp	short .16
 	db	0x90
 .14:
@@ -350,7 +350,7 @@ Menus_2CAA_018C:
 	db	0x8A, 0xC8		; mov cl, al
 	mov	ax, 0x1
 	shl	ax, cl
-	or	[0xb35e], ax
+	or	[g_B35E], ax
 	jmp	short .16
 .15:
 	cmp	word [bp - 0xa], 0x15
@@ -359,10 +359,10 @@ Menus_2CAA_018C:
 	mov	cl, [bp - 0xa]
 	mov	ax, 0x1
 	shl	ax, cl
-	mov	cx, [0xb35e]
+	mov	cx, [g_B35E]
 	and	ch, 0xf1
 	db	0x0B, 0xC1		; or ax, cx
-	mov	[0xb35e], ax
+	mov	[g_B35E], ax
 .16:
 	call	0x2B26:Menus_2B26_09D8
 .17:
@@ -383,7 +383,7 @@ Menus_2CAA_018C:
 	jz	short .21
 	db	0xE9, 0x65, 0x01		; jmp 0x4e6
 .21:
-	mov	al, [0xb35e]
+	mov	al, [g_B35E]
 	and	ax, strict word 0x1
 	cmp	ax, strict word 0x1
 	db	0x1B, 0xC0		; sbb ax, ax
@@ -392,7 +392,7 @@ Menus_2CAA_018C:
 	and	ax, strict word 0x1
 	xor	[CrowdState], ax
 	mov	al, [CrowdState]
-	mov	cl, [0xb35e]
+	mov	cl, [g_B35E]
 	and	cx, 0x2
 	cmp	cx, 0x1
 	db	0x1B, 0xC9		; sbb cx, cx
@@ -402,7 +402,7 @@ Menus_2CAA_018C:
 	and	ax, strict word 0x2
 	xor	[CrowdState], ax
 	mov	al, [CrowdState]
-	mov	cl, [0xb35e]
+	mov	cl, [g_B35E]
 	and	cx, 0x4
 	cmp	cx, 0x1
 	db	0x1B, 0xC9		; sbb cx, cx
@@ -412,7 +412,7 @@ Menus_2CAA_018C:
 	and	ax, strict word 0x4
 	xor	[CrowdState], ax
 	mov	al, [CrowdState]
-	mov	cl, [0xb35e]
+	mov	cl, [g_B35E]
 	and	cx, 0x8
 	cmp	cx, 0x1
 	db	0x1B, 0xC9		; sbb cx, cx
@@ -422,7 +422,7 @@ Menus_2CAA_018C:
 	and	ax, strict word 0x8
 	xor	[CrowdState], ax
 	mov	al, [CrowdState]
-	mov	cl, [0xb35e]
+	mov	cl, [g_B35E]
 	and	cx, 0x10
 	cmp	cx, 0x1
 	db	0x1B, 0xC9		; sbb cx, cx
@@ -432,7 +432,7 @@ Menus_2CAA_018C:
 	and	ax, strict word 0x10
 	xor	[CrowdState], ax
 	mov	al, [CrowdState]
-	mov	cl, [0xb35e]
+	mov	cl, [g_B35E]
 	and	cx, 0x20
 	cmp	cx, 0x1
 	db	0x1B, 0xC9		; sbb cx, cx
@@ -443,7 +443,7 @@ Menus_2CAA_018C:
 	xor	[CrowdState], ax
 	cmp	word [SoundOptions], 0x10
 	jz	short .22
-	mov	al, [0xb35e]
+	mov	al, [g_B35E]
 	and	ax, strict word 0x40
 	cmp	ax, strict word 0x1
 	db	0x1B, 0xC0		; sbb ax, ax
@@ -453,7 +453,7 @@ Menus_2CAA_018C:
 	and	ax, strict word 0x40
 	xor	[CrowdState], ax
 	mov	al, [CrowdState]
-	mov	cl, [0xb35e]
+	mov	cl, [g_B35E]
 	and	cx, 0x80
 	cmp	cx, 0x1
 	db	0x1B, 0xC9		; sbb cx, cx
@@ -465,7 +465,7 @@ Menus_2CAA_018C:
 .22:
 	test	byte [SoundOptions], 0x2
 	jz	short .23
-	mov	ah, [0xb35f]
+	mov	ah, [g_B35F]
 	and	ax, 0x100
 	cmp	ax, strict word 0x1
 	db	0x1B, 0xC0		; sbb ax, ax
@@ -475,7 +475,7 @@ Menus_2CAA_018C:
 	and	ax, 0x100
 	xor	[CrowdState], ax
 .23:
-	mov	ah, [0xb35f]
+	mov	ah, [g_B35F]
 	and	ax, 0xe00
 	sub	ax, 0x200
 	jz	short .24

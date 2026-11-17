@@ -19,7 +19,7 @@ Ai_3136_000E:
 	shl	di, 1
 	db	0x03, 0xF8		; add di, ax
 	shl	di, 1
-	mov	[di - 0x2e52], si
+	mov	[di + g_D1AE], si
 	db	0x8B, 0xC6		; mov ax, si
 	mov	cx, 0x10
 	cwd
@@ -38,12 +38,12 @@ Ai_3136_000E:
 	db	0x8B, 0xCA		; mov cx, dx
 	mov	ax, 0x1
 	shl	ax, cl
-	or	[bx - 0x2626], ax
+	or	[bx + g_D9DA], ax
 	mov	ax, 0x3
 	imul	si
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, 1
-	mov	es, [0x8ce2]
+	mov	es, [g_8CE2]
 	mov	cx, [es:bx + 0xf8]
 	add	di, 0xd1ae
 	mov	[di + 0x6], cx
@@ -144,7 +144,7 @@ Ai_3136_00C2:
 .8:
 	cmp	word [bp - 0x4], 0xd29c
 	jnz	short .9
-	test	byte [0x29bb], 0x1
+	test	byte [g_29BB], 0x1
 	jz	short .9
 	mov	ax, 0x4
 	call	0x0C11:randomd0
@@ -174,7 +174,7 @@ Ai_3136_00C2:
 	db	0x8B, 0xCB		; mov cx, bx
 	mov	ax, 0x1
 	shl	ax, cl
-	test	[di - 0x2626], ax
+	test	[di + g_D9DA], ax
 	jz	short .12
 .10:
 	inc	si
@@ -199,7 +199,7 @@ Ai_3136_00C2:
 	db	0x8B, 0xCB		; mov cx, bx
 	mov	ax, 0x1
 	shl	ax, cl
-	test	[di - 0x2626], ax
+	test	[di + g_D9DA], ax
 	jnz	short .10
 .12:
 	push	si
@@ -230,7 +230,7 @@ Ai_3136_00C2:
 	cbw
 	db	0x8B, 0xD8		; mov bx, ax
 	add	bx, [si + 0xa]
-	mov	es, [0x8ce2]
+	mov	es, [g_8CE2]
 	db	0x26, 0x8A, 0x87, 0x00, 0x00		; mov al, [es:bx + 0x0]
 	mov	[si + 0x4], al
 	jmp	near .21
@@ -241,7 +241,7 @@ Ai_3136_00C2:
 	call	0x0C11:randomd0
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .16
-	mov	es, [0x8ce2]
+	mov	es, [g_8CE2]
 	mov	bx, [si + 0xa]
 	db	0x26, 0x8A, 0x87, 0x01, 0x00		; mov al, [es:bx + 0x1]
 	mov	[si + 0x4], al
@@ -268,7 +268,7 @@ Ai_3136_00C2:
 	mov	ax, 0x1
 	shl	ax, cl
 	not	ax
-	and	[di - 0x2626], ax
+	and	[di + g_D9DA], ax
 	mov	word [si], 0xffff
 	mov	ax, 0x3e8
 	sub	ax, [CrowdSound]
@@ -291,7 +291,7 @@ Ai_3136_00C2:
 .18:
 	cmp	word [bp - 0x4], 0xd29c
 	jnz	short .19
-	test	byte [0x29bb], 0x1
+	test	byte [g_29BB], 0x1
 	jz	short .19
 	mov	di, 0x78
 	jmp	short .20
@@ -335,12 +335,12 @@ Ai_3136_02E2:
 	db	0x2B, 0xC0		; sub ax, ax
 .3:
 	push	ax
-	mov	ax, [0xb098]
+	mov	ax, [g_B098]
 	shl	ax, byte 0x3
 	sub	ax, [si + 0x8]
 	neg	ax
 	push	ax
-	mov	ax, [0xb096]
+	mov	ax, [g_B096]
 	shl	ax, byte 0x3
 	sub	ax, [si + 0x6]
 	neg	ax
@@ -349,8 +349,8 @@ Ai_3136_02E2:
 	cbw
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, byte 0x2
-	push	word [bx - 0x2d38]
-	push	word [bx - 0x2d3a]
+	push	word [bx + g_D2C8]
+	push	word [bx + g_D2C6]
 	call	0x1F54:Game_1F54_0002
 	add	sp, 0xe
 .4:
@@ -369,12 +369,12 @@ Ai_3136_02E2:
 	cbw
 	mov	[bp - 0x2], ax
 .7:
-	mov	ax, [0xb096]
+	mov	ax, [g_B096]
 	shl	ax, byte 0x3
 	sub	ax, [si + 0x6]
 	neg	ax
 	mov	[bp - 0x4], ax
-	mov	ax, [0xb098]
+	mov	ax, [g_B098]
 	shl	ax, byte 0x3
 	sub	ax, [si + 0x8]
 	neg	ax
@@ -387,20 +387,20 @@ Ai_3136_02E2:
 	push	0x0
 	push	di
 	push	0x0
-	mov	ax, [0xb098]
+	mov	ax, [g_B098]
 	shl	ax, byte 0x3
 	db	0x8B, 0xDF		; mov bx, di
 	shl	bx, 1
-	sub	ax, [bx + 0x61ca]
+	sub	ax, [bx + g_61CA]
 	neg	ax
 	push	ax
-	mov	ax, [0xb096]
+	mov	ax, [g_B096]
 	shl	ax, byte 0x3
 	sub	ax, strict word 0x4
 	neg	ax
 	push	ax
-	push	word [0xd448]
-	push	word [0xd446]
+	push	word [g_D448]
+	push	word [g_D446]
 	call	0x1F54:Game_1F54_0002
 	add	sp, 0xe
 .9:
@@ -413,8 +413,8 @@ Ai_3136_02E2:
 	push	word [bp - 0x4]
 	mov	bx, [bp - 0x2]
 	shl	bx, byte 0x2
-	push	word [bx - 0x2d38]
-	push	word [bx - 0x2d3a]
+	push	word [bx + g_D2C8]
+	push	word [bx + g_D2C6]
 	call	0x1F54:Game_1F54_0002
 	add	sp, 0xe
 .10:
@@ -423,34 +423,34 @@ Ai_3136_02E2:
 	push	di
 	push	-0x1
 	push	di
-	mov	ax, [0xb098]
+	mov	ax, [g_B098]
 	shl	ax, byte 0x3
 	db	0x8B, 0xDF		; mov bx, di
 	shl	bx, 1
-	sub	ax, [bx + 0x61ca]
+	sub	ax, [bx + g_61CA]
 	neg	ax
 	push	ax
-	mov	ax, [0xb096]
+	mov	ax, [g_B096]
 	shl	ax, byte 0x3
 	sub	ax, strict word 0x4
 	neg	ax
 	push	ax
-	push	word [0xd458]
-	push	word [0xd456]
+	push	word [g_D458]
+	push	word [g_D456]
 	call	0x1F54:Game_1F54_0002
 	add	sp, 0xe
 	jmp	short .12
 .11:
-	test	byte [0x29bb], 0x80
+	test	byte [g_29BB], 0x80
 	jz	short .12
 	mov	word [bp - 0x2], 0xbc8e
-	cmp	word [0xbca0], 0x362
+	cmp	word [g_BCA0], 0x362
 	jl	short .12
 	push	0x0
 	push	0x0
-	push	word [0xbc94]
-	push	word [0xbc90]
-	push	word [0xbca0]
+	push	word [g_BC94]
+	push	word [g_BC90]
+	push	word [g_BCA0]
 	call	0x1E7E:Game_1E7E_0120
 	add	sp, 0xa
 .12:

@@ -19,7 +19,7 @@ Game_1F29_0006:
 	db	0x33, 0xC2		; xor ax, dx
 	db	0x2B, 0xC2		; sub ax, dx
 	db	0x8B, 0xD0		; mov dx, ax
-	sub	ax, [0xb096]
+	sub	ax, [g_B096]
 	mov	[bp - 0x4], ax
 	mov	ax, [bp + 0x8]
 	db	0x8B, 0xDA		; mov bx, dx
@@ -30,18 +30,18 @@ Game_1F29_0006:
 	db	0x33, 0xC2		; xor ax, dx
 	db	0x2B, 0xC2		; sub ax, dx
 	db	0x8B, 0xF8		; mov di, ax
-	sub	di, [0xb098]
-	mov	[0xb096], bx
-	mov	[0xb098], ax
+	sub	di, [g_B098]
+	mov	[g_B096], bx
+	mov	[g_B098], ax
 	db	0x8B, 0xC1		; mov ax, cx
 	mov	cx, 0x8
 	cwd
 	idiv	cx
-	mov	[0xb094], dx
+	mov	[g_B094], dx
 	mov	ax, [bp + 0x8]
 	cwd
 	idiv	cx
-	mov	[0xb092], dx
+	mov	[g_B092], dx
 	cmp	di, 0x16
 	jl	short .1
 	jmp	near .8
@@ -56,18 +56,18 @@ Game_1F29_0006:
 	db	0x2B, 0xF7		; sub si, di
 	js	short .9
 .3:
-	cmp	word [0xb0c2], 0x0
+	cmp	word [g_B0C2], 0x0
 	jz	short .4
-	dec	word [0xb0c2]
+	dec	word [g_B0C2]
 	jmp	short .5
 	db	0x90, 0x90
 .4:
-	mov	word [0xb0c2], 0x15
+	mov	word [g_B0C2], 0x15
 .5:
-	imul	ax, [0xb0c2], word 0x300
+	imul	ax, [g_B0C2], word 0x300
 	sub	ax, 0x7960
 	push	ax
-	mov	ax, [0xb098]
+	mov	ax, [g_B098]
 	db	0x03, 0xC6		; add ax, si
 	push	ax
 	push	0x16
@@ -80,17 +80,17 @@ Game_1F29_0006:
 .6:
 	db	0x0B, 0xFF		; or di, di
 	jng	short .9
-	mov	ax, [0xb0c2]
+	mov	ax, [g_B0C2]
 	db	0x03, 0xC7		; add ax, di
 	mov	cx, 0x16
 	cwd
 	idiv	cx
-	mov	[0xb0c2], dx
+	mov	[g_B0C2], dx
 	db	0x2B, 0xF6		; sub si, si
 	db	0x0B, 0xFF		; or di, di
 	jng	short .9
 .7:
-	mov	ax, [0xb0c2]
+	mov	ax, [g_B0C2]
 	db	0x2B, 0xC6		; sub ax, si
 	add	ax, strict word 0x15
 	mov	cx, 0x16
@@ -99,7 +99,7 @@ Game_1F29_0006:
 	imul	ax, dx, word 0x300
 	sub	ax, 0x7960
 	push	ax
-	mov	ax, [0xb098]
+	mov	ax, [g_B098]
 	db	0x2B, 0xC6		; sub ax, si
 	add	ax, strict word 0x15
 	push	ax
@@ -139,19 +139,19 @@ Game_1F29_010E:
 	mov	di, [bp + 0x8]
 	db	0x8B, 0xC7		; mov ax, di
 	db	0x8B, 0xCF		; mov cx, di
-	imul	word [0xb09c]
+	imul	word [g_B09C]
 	shl	ax, 1
-	add	ax, [0x8fe]
-	mov	dx, [0x900]
+	add	ax, [g_08FE]
+	mov	dx, [g_0900]
 	add	ax, strict word 0x6
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x8], dx
 	db	0x8B, 0xC7		; mov ax, di
 	add	ax, [bp + 0x6]
-	imul	word [0xb09c]
+	imul	word [g_B09C]
 	shl	ax, 1
-	add	ax, [0x8fe]
-	mov	dx, [0x900]
+	add	ax, [g_08FE]
+	mov	dx, [g_0900]
 	add	ax, strict word 0x6
 	mov	[bp - 0xe], ax
 	mov	[bp - 0xc], dx
@@ -230,12 +230,12 @@ Game_1F29_01E8:
 	enter	0xe, 0x0
 	push	di
 	push	si
-	mov	ax, [0xb09c]
-	imul	word [0xb098]
+	mov	ax, [g_B09C]
+	imul	word [g_B098]
 	db	0x8B, 0xF0		; mov si, ax
 	add	si, 0x3
 	mov	word [bp - 0x6], 0x86a0
-	mov	word [0xb0c2], 0x0
+	mov	word [g_B0C2], 0x0
 	mov	ax, 0x5
 	mov	dx, 0x3ce
 	out	dx, al
@@ -264,7 +264,7 @@ Game_1F29_01E8:
 	db	0x8B, 0xF7		; mov si, di
 	mov	di, [bp - 0x6]
 .2:
-	les	bx, [0x8fe]
+	les	bx, [g_08FE]
 	push	word [es:bx + si]
 	push	di
 	mov	ax, [es:bx + si]

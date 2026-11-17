@@ -313,7 +313,7 @@ Lp_2CB7_02F6:
 	push	cx
 	push	ax
 	mov	bx, 0xb7c
-	mov	es, [0x8c1e]
+	mov	es, [g_8C1E]
 	mov	[bp - 0xa5e], bx
 	mov	[bp - 0xa5c], es
 	push	word [es:bx + 0x2]
@@ -380,7 +380,7 @@ Lp_2CB7_02F6:
 	jnz	short .3
 	push	word [bp - 0xa58]
 	push	word [bp - 0xa5a]
-	mov	es, [0x8c1e]
+	mov	es, [g_8C1E]
 	push	word [es:0xb6e]
 	push	word [es:0xb6c]
 	push	word [bp + 0x8]
@@ -402,7 +402,7 @@ Lp_2CB7_02F6:
 	jnz	short .4
 	push	word [bp - 0xa58]
 	push	word [bp - 0xa5a]
-	mov	es, [0x8c1e]
+	mov	es, [g_8C1E]
 	push	word [es:0xb82]
 	push	word [es:0xb80]
 	mov	ax, [bp + 0x8]
@@ -425,7 +425,7 @@ Lp_2CB7_02F6:
 	jnz	short .5
 	push	word [bp + 0x14]
 	push	word [bp + 0x12]
-	mov	es, [0x8c1e]
+	mov	es, [g_8C1E]
 	push	word [es:0xb82]
 	push	word [es:0xb80]
 	push	word [bp + 0xc]
@@ -447,7 +447,7 @@ Lp_2CB7_02F6:
 	jnz	short .6
 	push	word [bp + 0x18]
 	push	word [bp + 0x16]
-	mov	es, [0x8c1e]
+	mov	es, [g_8C1E]
 	push	word [es:0xb82]
 	push	word [es:0xb80]
 	push	word [bp + 0x10]
@@ -764,7 +764,7 @@ Lp_2CB7_0778:
 	mov	[bp - 0x8], ax
 	push	word [bp + 0x10]
 	push	word [bp + 0xe]
-	mov	es, [0x8c1e]
+	mov	es, [g_8C1E]
 	push	word [es:0xb86]
 	push	word [es:0xb84]
 	push	word [bp + 0x8]
@@ -785,7 +785,7 @@ Lp_2CB7_0778:
 	jnz	short .1
 	push	word [bp + 0x14]
 	push	word [bp + 0x12]
-	mov	es, [0x8c1e]
+	mov	es, [g_8C1E]
 	push	word [es:0xb86]
 	push	word [es:0xb84]
 	push	word [bp + 0xc]
@@ -968,7 +968,7 @@ Lp_2CB7_08DE:
 .5:
 	mov	ax, [bp + 0xc]
 	mov	dx, [bp + 0xe]
-	mov	es, [0x8c20]
+	mov	es, [g_8C20]
 	mov	[es:0x71a], ax
 	mov	[es:0x71c], dx
 	lea	ax, [bp - 0x4]
@@ -1082,10 +1082,10 @@ Lp_2CB7_09FA:
 	mov	byte [bx], 0x0
 	db	0x0B, 0xF6		; or si, si
 	jnz	short .2
-	mov	es, [0x8c22]
+	mov	es, [g_8C22]
 	cmp	[es:0xac60], si
 	jz	short .2
-	mov	es, [0x8c24]
+	mov	es, [g_8C24]
 	mov	[es:0xb36], ax
 	mov	[es:0xb38], ss
 	lea	ax, [bp - 0x2]
@@ -1171,7 +1171,7 @@ Lp_2CB7_09FA:
 	db	0x90
 .6:
 	lea	ax, [bp - 0x18]
-	mov	es, [0x8c26]
+	mov	es, [g_8C26]
 	mov	[es:0x866], ax
 	mov	[es:0x868], ss
 	mov	word [es:0x86a], 0x84d
@@ -1258,7 +1258,7 @@ Lp_2CB7_0C28:
 	call	0x2305:Lp_2305_044C
 	add	sp, 0x6
 	mov	[bp - 0x52], ax
-	mov	byte [0xe36b], 0x0
+	mov	byte [g_E36B], 0x0
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .1
 	jmp	near .34
@@ -1297,7 +1297,7 @@ Lp_2CB7_0C28:
 	push	ax
 	call	0x0CD1:FileExists
 	add	sp, 0x2
-	mov	[0xc7a0], ax
+	mov	[g_C7A0], ax
 	cmp	word [bp - 0x52], 0x0
 	jz	short .2
 	jmp	near .34
@@ -1319,11 +1319,11 @@ Lp_2CB7_0C28:
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x6], si
 	mov	byte [bp + si - 0x4e], 0x0
-	mov	es, [0x8c22]
+	mov	es, [g_8C22]
 	cmp	word [es:0xac60], 0x0
 	jz	short .3
 	lea	ax, [bp - 0x4e]
-	mov	es, [0x8c24]
+	mov	es, [g_8C24]
 	mov	[es:0xb36], ax
 	mov	[es:0xb38], ss
 	lea	ax, [bp - 0x3e]
@@ -1347,13 +1347,13 @@ Lp_2CB7_0C28:
 	push	word 0xb32
 	jmp	near .33
 .3:
-	mov	es, [0x8c28]
+	mov	es, [g_8C28]
 	imul	bx, [es:0xac5a], 0x1e
-	mov	es, [0x8c2a]
+	mov	es, [g_8C2A]
 	cmp	byte [es:bx - 0x5388], 0x2
 	jnz	short .4
 	lea	ax, [bp - 0x4e]
-	mov	es, [0x8c2c]
+	mov	es, [g_8C2C]
 	mov	[es:0x8f], ax
 	mov	[es:0x91], ss
 	lea	ax, [bp - 0x3e]
@@ -1378,10 +1378,10 @@ Lp_2CB7_0C28:
 	jmp	near .33
 	db	0x90
 .4:
-	cmp	word [0xc7a0], 0x0
+	cmp	word [g_C7A0], 0x0
 	jz	short .5
 	lea	ax, [bp - 0x4e]
-	mov	es, [0x8c2c]
+	mov	es, [g_8C2C]
 	mov	[es:0x4a], ax
 	mov	[es:0x4c], ss
 	lea	ax, [bp - 0x3e]
@@ -1405,7 +1405,7 @@ Lp_2CB7_0C28:
 	push	strict word 0x42
 	jmp	near .33
 .5:
-	mov	es, [0x8c2e]
+	mov	es, [g_8C2E]
 	test	byte [es:0xac5e], 0x4
 	jz	short .6
 	jmp	near .32
@@ -1433,7 +1433,7 @@ Lp_2CB7_0C28:
 .7:
 	cmp	word [bp - 0x52], 0x0
 	jnz	short .8
-	mov	es, [0x8c28]
+	mov	es, [g_8C28]
 	push	word [es:0xac5a]
 	push	word 0x1b20
 	lea	ax, [bp - 0x2e]
@@ -1458,7 +1458,7 @@ Lp_2CB7_0C28:
 	push	word 0xe53
 	push	word 0x3701
 	push	word 0xe53
-	mov	es, [0x8c28]
+	mov	es, [g_8C28]
 	push	word [es:0xac5a]
 	push	word 0x3a0b
 	push	word 0xac62
@@ -1489,7 +1489,7 @@ Lp_2CB7_0C28:
 	jz	short .11
 	jmp	near .22
 .11:
-	mov	es, [0x8c2a]
+	mov	es, [g_8C2A]
 	imul	bx, [bp - 0x40], 0x1e
 	cmp	byte [es:bx - 0x5387], 0x1
 	jz	short .12
@@ -1571,7 +1571,7 @@ Lp_2CB7_0C28:
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .16
 	mov	ax, [bp - 0x40]
-	mov	es, [0x8c28]
+	mov	es, [g_8C28]
 	cmp	[es:0xac5a], ax
 	jz	short .16
 	push	ax
@@ -1611,7 +1611,7 @@ Lp_2CB7_0C28:
 	jnz	short .17
 	mov	ax, [bp - 0x32]
 	mov	dx, [bp - 0x30]
-	mov	es, [0x8c2a]
+	mov	es, [g_8C2A]
 	imul	bx, [bp - 0x40], 0x1e
 	mov	[es:bx - 0x5384], ax
 	mov	[es:bx - 0x5382], dx
@@ -1646,7 +1646,7 @@ Lp_2CB7_0C28:
 	cmp	cx, [bp - 0x34]
 	jz	short .20
 .19:
-	mov	es, [0x8c2e]
+	mov	es, [g_8C2E]
 	mov	word [es:0xac5e], 0x4
 	push	0x2
 	push	0x0
@@ -1664,7 +1664,7 @@ Lp_2CB7_0C28:
 	add	sp, 0x2
 	cmp	word [bp - 0x52], 0x0
 	jnz	short .21
-	mov	es, [0x8c2e]
+	mov	es, [g_8C2E]
 	mov	word [es:0xac5e], 0x8
 	push	0x2
 	push	0x0
@@ -1691,7 +1691,7 @@ Lp_2CB7_0C28:
 	push	word 0xbaf
 	push	word 0x3701
 	push	word 0xbe8
-	mov	es, [0x8c1e]
+	mov	es, [g_8C1E]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
 	call	0x0CD1:CopyFileByName
@@ -1708,7 +1708,7 @@ Lp_2CB7_0C28:
 	push	word 0xbaf
 	push	word 0x3701
 	push	word 0xbe8
-	mov	es, [0x8c1e]
+	mov	es, [g_8C1E]
 	push	word [es:0xb82]
 	push	word [es:0xb80]
 	call	0x0CD1:CopyFileByName
@@ -1725,7 +1725,7 @@ Lp_2CB7_0C28:
 	push	word 0xbaf
 	push	word 0x3701
 	push	word 0xbe8
-	mov	es, [0x8c1e]
+	mov	es, [g_8C1E]
 	push	word [es:0xb86]
 	push	word [es:0xb84]
 	call	0x0CD1:CopyFileByName
@@ -1737,7 +1737,7 @@ Lp_2CB7_0C28:
 	jnz	short .26
 	push	word 0x3701
 	push	word 0xbaf
-	mov	es, [0x8c1e]
+	mov	es, [g_8C1E]
 	push	word [es:0xb86]
 	push	word [es:0xb84]
 	push	word 0x3701
@@ -1802,7 +1802,7 @@ Lp_2CB7_0C28:
 .28:
 	cmp	word [bp - 0x52], 0x0
 	jnz	short .29
-	mov	es, [0x8c2e]
+	mov	es, [g_8C2E]
 	mov	word [es:0xac5e], 0x4
 	push	0x2
 	push	0x0
@@ -1829,7 +1829,7 @@ Lp_2CB7_0C28:
 	add	sp, 0x6
 	cmp	word [bp - 0x52], 0x4
 	jnz	short .31
-	mov	es, [0x8c2e]
+	mov	es, [g_8C2E]
 	cmp	word [es:0xac5e], 0x8
 	jz	short .30
 	jmp	near .34
@@ -1864,7 +1864,7 @@ Lp_2CB7_0C28:
 	jmp	short .33
 .32:
 	lea	ax, [bp - 0x4e]
-	mov	es, [0x8c26]
+	mov	es, [g_8C26]
 	mov	[es:0x866], ax
 	mov	[es:0x868], ss
 	mov	word [es:0x86a], 0x83a
@@ -1901,7 +1901,7 @@ Lp_2CB7_0C28:
 	push	0x2a
 	call	0x0D90:SetDialogColors
 	add	sp, 0xa
-	mov	al, [0xe36b]
+	mov	al, [g_E36B]
 	cbw
 	pop	si
 	leave
@@ -1914,19 +1914,19 @@ Lp_2CB7_134E:
 	push	cs
 	call	Lp_2CB7_0C28
 	db	0x8B, 0xF0		; mov si, ax
-	mov	es, [0x8c22]
+	mov	es, [g_8C22]
 	cmp	word [es:0xac60], 0x0
 	jz	short .1
 	jmp	near .5
 .1:
-	mov	es, [0x8c28]
+	mov	es, [g_8C28]
 	imul	bx, [es:0xac5a], 0x1e
-	mov	es, [0x8c2a]
+	mov	es, [g_8C2A]
 	cmp	byte [es:bx - 0x5388], 0x2
 	jnz	short .2
 	jmp	near .5
 .2:
-	cmp	word [0xc7a0], 0x0
+	cmp	word [g_C7A0], 0x0
 	jz	short .3
 	jmp	near .5
 .3:
@@ -2063,7 +2063,7 @@ Lp_2CB7_1442:
 .2:
 	db	0x0B, 0xF6		; or si, si
 	jnz	short .4
-	mov	es, [0x8c2a]
+	mov	es, [g_8C2A]
 	imul	bx, [bp - 0x6], 0x1e
 	cmp	byte [es:bx - 0x5387], 0x1
 	jnz	short .3
@@ -2084,7 +2084,7 @@ Lp_2CB7_1442:
 	push	word 0xaf32
 	push	word [bp - 0x34]
 	push	word [bp - 0x36]
-	mov	es, [0x8c28]
+	mov	es, [g_8C28]
 	push	word [es:0xac5a]
 	call	0x28A8:Lp_28A8_0108
 	add	sp, 0xa

@@ -135,20 +135,20 @@ Menus_1E45_0112:
 	db	0x1B, 0xC0		; sbb ax, ax
 	neg	ax
 	imul	bx, ax, word 0xd6
-	mov	ax, [bx - 0x4c92]
+	mov	ax, [bx + g_B36E]
 	sub	ax, [si + 0xc]
 	db	0x0B, 0xC0		; or ax, ax
 	jng	short .3
 	cmp	ax, strict word 0x2
 	jg	short .3
-	cmp	word [0x29da], 0x2
+	cmp	word [g_29DA], 0x2
 	jnz	short .3
-	cmp	word [0x29dc], 0x3c
+	cmp	word [g_29DC], 0x3c
 	jng	short .7
 .3:
-	test	byte [0x29bb], 0x1
+	test	byte [g_29BB], 0x1
 	jnz	short .6
-	mov	bx, [0x2996]
+	mov	bx, [g_2996]
 	mov	al, [bx]
 	db	0x0A, 0xC0		; or al, al
 	jl	short .6
@@ -161,7 +161,7 @@ Menus_1E45_0112:
 .5:
 	db	0x33, 0xC7		; xor ax, di
 	jz	short .6
-	test	byte [0x29bb], 0x8
+	test	byte [g_29BB], 0x8
 	jnz	short .7
 .6:
 	mov	byte [si + 0x25], 0x0
@@ -169,12 +169,12 @@ Menus_1E45_0112:
 	shl	di, 1
 	db	0x03, 0xF8		; add di, ax
 	shl	di, byte 0x2
-	les	bx, [di + 0x566a]
+	les	bx, [di + g_566A]
 	mov	byte [es:bx], 0x2
 	mov	bl, [si + 0x24]
 	and	bx, 0xf
 	shl	bx, byte 0x2
-	les	bx, [bx + di + 0x5662]
+	les	bx, [bx + di + g_5662]
 	mov	byte [es:bx], 0x1
 	push	si
 	call	0x1B35:OvlThunk105
@@ -196,9 +196,9 @@ Menus_1E45_01BC:
 	jnl	short .4
 	test	byte [si + 0x24], 0xf0
 	jnz	short .4
-	test	byte [0x29bb], 0x1
+	test	byte [g_29BB], 0x1
 	jnz	short .3
-	mov	bx, [0x2996]
+	mov	bx, [g_2996]
 	mov	al, [bx]
 	db	0x0A, 0xC0		; or al, al
 	jl	short .3
@@ -212,7 +212,7 @@ Menus_1E45_01BC:
 .2:
 	db	0x33, 0xC7		; xor ax, di
 	jz	short .3
-	test	byte [0x29bb], 0x8
+	test	byte [g_29BB], 0x8
 	jnz	short .4
 .3:
 	or	word [si + 0x24], -0x10
@@ -249,15 +249,15 @@ Menus_1E45_020A:
 	jz	short .5
 	jmp	near .21
 .5:
-	cmp	[0x29c2], si
+	cmp	[g_29C2], si
 	jnz	short .6
 	jmp	near .22
 .6:
-	push	word [0x29c2]
+	push	word [g_29C2]
 	push	si
 	call	0x1B35:OvlThunk104
 	add	sp, 0x4
-	mov	[0x29c2], ax
+	mov	[g_29C2], ax
 	pop	si
 	pop	di
 	leave
@@ -282,15 +282,15 @@ Menus_1E45_020A:
 	jmp	near .22
 .9:
 	mov	cl, 0x8
-	mov	si, [0x298c]
+	mov	si, [g_298C]
 	mov	di, [si]
 	sar	di, cl
-	mov	si, [0x298a]
+	mov	si, [g_298A]
 	add	di, [si]
-	mov	si, [0x2990]
+	mov	si, [g_2990]
 	mov	ax, [si]
 	sar	ax, cl
-	mov	si, [0x298e]
+	mov	si, [g_298E]
 	add	ax, [si]
 	mov	[bp - 0xc], ax
 	mov	word [bp - 0xa], 0x0
@@ -333,7 +333,7 @@ Menus_1E45_020A:
 	adc	dx, [bp - 0x14]
 	mov	[bp - 0x6], ax
 	mov	[bp - 0x4], dx
-	mov	bx, [0x2996]
+	mov	bx, [g_2996]
 	mov	al, [bx]
 	cbw
 	cmp	[si + 0x5e], ax
@@ -352,11 +352,11 @@ Menus_1E45_020A:
 	mov	cx, [si + 0x5e]
 	cmp	word [bp + 0x6], 0x0
 	jz	short .17
-	mov	ax, [0x29c2]
+	mov	ax, [g_29C2]
 	jmp	short .18
 	db	0x90
 .17:
-	mov	ax, [0x29c4]
+	mov	ax, [g_29C4]
 .18:
 	db	0x3B, 0xC1		; cmp ax, cx
 	jz	short .19
@@ -374,13 +374,13 @@ Menus_1E45_020A:
 	jmp	near .4
 	db	0x90
 .21:
-	cmp	[0x29c4], si
+	cmp	[g_29C4], si
 	jz	short .22
-	push	word [0x29c4]
+	push	word [g_29C4]
 	push	si
 	call	0x1B35:OvlThunk104
 	add	sp, 0x4
-	mov	[0x29c4], ax
+	mov	[g_29C4], ax
 .22:
 	pop	si
 	pop	di
@@ -399,15 +399,15 @@ Menus_1E45_0384:
 	db	0x1B, 0xDB		; sbb bx, bx
 	inc	bx
 	inc	bx
-	cmp	bx, [0x29c6]
+	cmp	bx, [g_29C6]
 	jz	short .3
-	cmp	bx, [0x29c8]
+	cmp	bx, [g_29C8]
 	jz	short .3
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	bx, [bp - 0x4]
-	mov	[bx + 0x48ce], ax
+	mov	[bx + g_48CE], ax
 	mov	bx, [bp - 0x4]
-	mov	[bx + 0x48e2], ax
+	mov	[bx + g_48E2], ax
 	cmp	[bp - 0x4], ax
 	jz	short .4
 	mov	bx, 0xb853
@@ -436,7 +436,7 @@ Menus_1E45_0384:
 	db	0x1B, 0xC0		; sbb ax, ax
 	neg	ax
 	imul	si, ax, word 0xd6
-	mov	ax, [si - 0x4c7c]
+	mov	ax, [si + g_B384]
 	sub	ax, [bx + 0xc]
 	mov	[bp - 0x2], ax
 	mov	si, [bx]
@@ -550,41 +550,41 @@ Menus_1E45_0452:
 .2:
 	mov	bx, [bp + 0x6]
 	shl	bx, 1
-	cmp	word [bx + 0x1b8], 0x0
+	cmp	word [bx + g_01B8], 0x0
 	jnl	short .3
 	db	0x2B, 0xD2		; sub dx, dx
 	jmp	short .4
 .3:
-	cmp	word [bx + 0x1c0], 0x1
+	cmp	word [bx + g_01C0], 0x1
 	db	0x1B, 0xD2		; sbb dx, dx
 	inc	dx
 	inc	dx
 .4:
-	mov	di, [0x29c6]
-	mov	ax, [0x29c8]
+	mov	di, [g_29C6]
+	mov	ax, [g_29C8]
 	mov	[bp - 0x4], ax
 	cmp	word [bp + 0x6], 0x0
 	jz	short .5
-	mov	[0x29c8], dx
+	mov	[g_29C8], dx
 	jmp	short .6
 	db	0x90
 .5:
-	mov	[0x29c6], dx
+	mov	[g_29C6], dx
 .6:
-	cmp	word [0x1b8], 0x0
+	cmp	word [g_01B8], 0x0
 	jl	short .7
-	cmp	word [0x1ba], 0x0
+	cmp	word [g_01BA], 0x0
 	jl	short .7
-	mov	ax, [0x1c0]
-	cmp	[0x1c2], ax
+	mov	ax, [g_01C0]
+	cmp	[g_01C2], ax
 	jnz	short .7
-	mov	word [0x4afe], 0x1
+	mov	word [g_4AFE], 0x1
 	jmp	short .8
 	db	0x90
 .7:
-	mov	word [0x4afe], 0x0
+	mov	word [g_4AFE], 0x0
 .8:
-	mov	ax, [bx + 0x1bc]
+	mov	ax, [bx + g_01BC]
 	cmp	ax, strict word 0x10
 	jz	short .13
 	ja	short .14
@@ -631,9 +631,9 @@ Menus_1E45_0452:
 	cmp	[bp - 0x4], si
 	jnz	short .19
 .16:
-	cmp	[0x29c6], si
+	cmp	[g_29C6], si
 	jz	short .19
-	cmp	[0x29c8], si
+	cmp	[g_29C8], si
 	jz	short .19
 	cmp	si, 0x2
 	jnz	short .17
@@ -652,9 +652,9 @@ Menus_1E45_0452:
 	jz	short .24
 	cmp	[bp - 0x4], si
 	jz	short .24
-	cmp	[0x29c6], si
+	cmp	[g_29C6], si
 	jz	short .20
-	cmp	[0x29c8], si
+	cmp	[g_29C8], si
 	jnz	short .24
 .20:
 	cmp	si, 0x2
@@ -702,10 +702,10 @@ Menus_1E45_0668:
 	enter	0x4, 0x0
 	push	di
 	push	si
-	mov	es, [0x8b20]
+	mov	es, [g_8B20]
 	les	bx, [es:0x7570]
 	mov	di, [es:bx]
-	mov	es, [0x8b20]
+	mov	es, [g_8B20]
 	les	bx, [es:0x7574]
 	mov	si, [es:bx]
 	call	0x0FEF:GetPage
@@ -793,7 +793,7 @@ Menus_1E45_0668:
 .3:
 	mov	bx, [bp + 0x6]
 	shl	bx, 1
-	cmp	word [bx + 0x1b8], 0x0
+	cmp	word [bx + g_01B8], 0x0
 	jnl	short .4
 	db	0x2B, 0xD2		; sub dx, dx
 	jmp	short .5
@@ -801,30 +801,30 @@ Menus_1E45_0668:
 .4:
 	mov	bx, [bp + 0x6]
 	shl	bx, 1
-	cmp	word [bx + 0x1c0], 0x1
+	cmp	word [bx + g_01C0], 0x1
 	db	0x1B, 0xD2		; sbb dx, dx
 	inc	dx
 	inc	dx
 .5:
 	cmp	word [bp + 0x6], 0x0
 	jz	short .6
-	mov	[0x29c8], dx
+	mov	[g_29C8], dx
 	jmp	short .7
 .6:
-	mov	[0x29c6], dx
+	mov	[g_29C6], dx
 .7:
-	cmp	word [0x1b8], 0x0
+	cmp	word [g_01B8], 0x0
 	jl	short .8
-	cmp	word [0x1ba], 0x0
+	cmp	word [g_01BA], 0x0
 	jl	short .8
-	mov	ax, [0x1c0]
-	cmp	[0x1c2], ax
+	mov	ax, [g_01C0]
+	cmp	[g_01C2], ax
 	jnz	short .8
-	mov	word [0x4afe], 0x1
+	mov	word [g_4AFE], 0x1
 	jmp	short .9
 	db	0x90
 .8:
-	mov	word [0x4afe], 0x0
+	mov	word [g_4AFE], 0x0
 .9:
 	push	word [bp - 0x2]
 	push	word [bp - 0x4]
@@ -871,7 +871,7 @@ Menus_1E45_07E2:
 .3:
 	push	0x0
 	mov	ax, 0x2e8
-	imul	word [0x29ca]
+	imul	word [g_29CA]
 	push	dx
 	push	ax
 	push	si
@@ -896,7 +896,7 @@ Menus_1E45_07E2:
 .5:
 	push	0x0
 	mov	ax, 0x2e8
-	imul	word [0x29cc]
+	imul	word [g_29CC]
 	push	dx
 	push	ax
 	push	si
@@ -977,7 +977,7 @@ Menus_1E45_07E2:
 	add	ax, strict word 0x7d
 	mov	dx, 0xff
 	call	0x03A3:SetCharPtr.regs
-	mov	es, [0x8b22]
+	mov	es, [g_8B22]
 	mov	ax, [es:0x2]
 	add	ax, strict word 0xb
 	db	0x8B, 0xF8		; mov di, ax
@@ -1004,7 +1004,7 @@ Menus_1E45_07E2:
 	push	word 0x9f9a
 	call	0x0FEF:DrawText
 	add	sp, 0x6
-	mov	es, [0x8b22]
+	mov	es, [g_8B22]
 	mov	ax, [es:0xa]
 	add	ax, strict word 0xb
 	db	0x8B, 0xF8		; mov di, ax
@@ -1066,7 +1066,7 @@ Menus_1E45_09F2:
 	mov	[bp - 0xa], al
 	mov	[bp - 0xb], al
 	mov	[bp - 0xc], al
-	mov	word [0xb35e], 0x0
+	mov	word [g_B35E], 0x0
 	mov	al, [InputFlags]
 	and	ax, strict word 0x8
 	shr	al, byte 0x3
@@ -1086,48 +1086,48 @@ Menus_1E45_09F2:
 	db	0x0B, 0xC1		; or ax, cx
 	shl	ax, byte 0x2
 	or	ax, 0x1c3
-	mov	[0xb360], ax
+	mov	[g_B360], ax
 	cmp	si, 0x1
 	db	0x1B, 0xDB		; sbb bx, bx
 	neg	bx
 	shl	bx, 1
-	mov	ax, [bx + 0x1bc]
+	mov	ax, [bx + g_01BC]
 	mov	[bp - 0x62], ax
 	cmp	ax, strict word 0x10
 	jz	short .3
 	shl	ax, byte 0x2
 	not	ax
-	and	[0xb360], ax
+	and	[g_B360], ax
 .3:
 	db	0x8B, 0xDE		; mov bx, si
 	shl	bx, 1
 	mov	[bp - 0x64], bx
-	cmp	word [bx + 0x1b8], 0x0
+	cmp	word [bx + g_01B8], 0x0
 	jnl	short .5
-	cmp	word [bx + 0x1b8], -0x1
+	cmp	word [bx + g_01B8], -0x1
 	jnz	short .4
-	mov	word [0xb35e], 0x41
+	mov	word [g_B35E], 0x41
 	jmp	short .6
 	db	0x90
 .4:
-	cmp	word [bx + 0x1b8], -0x2
+	cmp	word [bx + g_01B8], -0x2
 	jnz	short .6
-	mov	word [0xb35e], 0x42
+	mov	word [g_B35E], 0x42
 	jmp	short .6
 	db	0x90
 .5:
-	cmp	word [bx + 0x1c0], 0x1
+	cmp	word [bx + g_01C0], 0x1
 	db	0x1B, 0xC0		; sbb ax, ax
 	inc	ax
 	inc	ax
-	mov	[0xb35e], ax
-	mov	ax, [bx + 0x1bc]
+	mov	[g_B35E], ax
+	mov	ax, [bx + g_01BC]
 	shl	ax, byte 0x2
-	test	[0xb360], ax
+	test	[g_B360], ax
 	jz	short .6
-	mov	ax, [bx + 0x1bc]
+	mov	ax, [bx + g_01BC]
 	shl	ax, byte 0x2
-	or	[0xb35e], ax
+	or	[g_B35E], ax
 .6:
 	db	0x2B, 0xF6		; sub si, si
 .7:
@@ -1159,7 +1159,7 @@ Menus_1E45_09F2:
 	db	0x8B, 0xCA		; mov cx, dx
 	mov	ax, 0x1
 	shl	ax, cl
-	test	[0xb35e], ax
+	test	[g_B35E], ax
 	jz	short .9
 	mov	al, 0x17
 	mov	[si], al
@@ -1181,7 +1181,7 @@ Menus_1E45_09F2:
 	db	0x8B, 0xCA		; mov cx, dx
 	mov	ax, 0x1
 	shl	ax, cl
-	test	[0xb360], ax
+	test	[g_B360], ax
 	jnz	short .11
 	mov	al, 0x17
 	mov	[si], al
@@ -1269,7 +1269,7 @@ Menus_1E45_0BF0:
 	db	0x8B, 0xCF		; mov cx, di
 	mov	ax, 0x1
 	shl	ax, cl
-	test	[0xb35e], ax
+	test	[g_B35E], ax
 	jz	short .2
 	mov	al, 0x17
 	mov	[si], al
@@ -1310,14 +1310,14 @@ Menus_1E45_0C64:
 	enter	0x16, 0x0
 	push	di
 	push	si
-	mov	es, [0x8b20]
+	mov	es, [g_8B20]
 	les	bx, [es:0x7570]
 	mov	si, [es:bx]
-	mov	es, [0x8b20]
+	mov	es, [g_8B20]
 	les	bx, [es:0x7574]
 	mov	ax, [es:bx]
 	mov	[bp - 0x4], ax
-	cmp	word [0x8fc], 0x50
+	cmp	word [g_08FC], 0x50
 	jnz	short .1
 	mov	ax, 0xc8
 	jmp	short .2
@@ -1486,11 +1486,11 @@ Menus_1E45_0C64:
 	mov	ax, 0x1
 	shl	ax, cl
 	mov	[bp - 0x10], ax
-	test	[0xb35e], ax
+	test	[g_B35E], ax
 	jz	short .18
 	jmp	near .31
 .18:
-	mov	ax, [0xb360]
+	mov	ax, [g_B360]
 	test	[bp - 0x10], ax
 	jnz	short .19
 	jmp	near .31
@@ -1524,47 +1524,47 @@ Menus_1E45_0C64:
 	jmp	short .30
 	db	0x90
 .22:
-	mov	ax, [0xb35e]
+	mov	ax, [g_B35E]
 	and	al, 0xfd
 	or	al, 0x1
 	jmp	short .29
 	db	0x90
 .23:
-	mov	ax, [0xb35e]
+	mov	ax, [g_B35E]
 	and	al, 0xfe
 	or	al, 0x2
 	jmp	short .29
 	db	0x90
 .24:
-	mov	ax, [0xb35e]
+	mov	ax, [g_B35E]
 	and	al, 0x87
 	or	al, 0x4
 	jmp	short .29
 	db	0x90
 .25:
-	mov	ax, [0xb35e]
+	mov	ax, [g_B35E]
 	and	al, 0x8b
 	or	al, 0x8
 	jmp	short .29
 	db	0x90
 .26:
-	mov	ax, [0xb35e]
+	mov	ax, [g_B35E]
 	and	al, 0x93
 	or	al, 0x10
 	jmp	short .29
 	db	0x90
 .27:
-	mov	ax, [0xb35e]
+	mov	ax, [g_B35E]
 	and	al, 0xa3
 	or	al, 0x20
 	jmp	short .29
 	db	0x90
 .28:
-	mov	ax, [0xb35e]
+	mov	ax, [g_B35E]
 	and	al, 0xc3
 	or	al, 0x40
 .29:
-	mov	[0xb35e], ax
+	mov	[g_B35E], ax
 .30:
 	push	cs
 	call	Menus_1E45_0BF0
@@ -1584,89 +1584,89 @@ Menus_1E45_0C64:
 	db	0x90
 .34:
 	mov	bx, [bp + 0x6]
-	mov	ax, [0xb35e]
+	mov	ax, [g_B35E]
 	sar	ax, byte 0x2
 	db	0x8B, 0xF3		; mov si, bx
 	shl	si, 1
 	mov	[bp - 0x14], si
-	mov	[si + 0x1bc], ax
-	cmp	word [0xb35e], 0x41
+	mov	[si + g_01BC], ax
+	cmp	word [g_B35E], 0x41
 	jnz	short .39
 	mov	si, [bp - 0x14]
-	mov	word [si + 0x1b8], 0xffff
-	mov	word [si + 0x1c0], 0x0
+	mov	word [si + g_01B8], 0xffff
+	mov	word [si + g_01C0], 0x0
 	cmp	bx, 0x1
 	db	0x1B, 0xF6		; sbb si, si
 	neg	si
 	shl	si, 1
 	mov	[bp - 0x16], si
-	cmp	word [si + 0x1b8], -0x1
+	cmp	word [si + g_01B8], -0x1
 	jnz	short .37
 .35:
-	mov	word [si + 0x1b8], 0xfffe
+	mov	word [si + g_01B8], 0xfffe
 .36:
-	mov	word [si + 0x1c0], 0x1
+	mov	word [si + g_01C0], 0x1
 	jmp	near .44
 .37:
-	cmp	word [si + 0x1c0], 0x0
+	cmp	word [si + g_01C0], 0x0
 	jz	short .38
 	jmp	near .44
 .38:
-	mov	ax, [0x29cc]
-	mov	[si + 0x1b8], ax
+	mov	ax, [g_29CC]
+	mov	[si + g_01B8], ax
 	jmp	short .36
 	db	0x90
 .39:
-	cmp	word [0xb35e], 0x42
+	cmp	word [g_B35E], 0x42
 	jnz	short .40
 	mov	si, [bp - 0x14]
-	mov	word [si + 0x1b8], 0xfffe
-	mov	word [si + 0x1c0], 0x1
+	mov	word [si + g_01B8], 0xfffe
+	mov	word [si + g_01C0], 0x1
 	cmp	bx, 0x1
 	db	0x1B, 0xF6		; sbb si, si
 	neg	si
 	shl	si, 1
 	mov	[bp - 0x16], si
-	cmp	word [si + 0x1b8], -0x2
+	cmp	word [si + g_01B8], -0x2
 	jz	short .42
-	cmp	word [si + 0x1c0], 0x1
+	cmp	word [si + g_01C0], 0x1
 	jnz	short .44
-	mov	ax, [0x29ca]
-	mov	[si + 0x1b8], ax
+	mov	ax, [g_29CA]
+	mov	[si + g_01B8], ax
 	jmp	short .43
 	db	0x90
 .40:
-	test	byte [0xb35e], 0x1
+	test	byte [g_B35E], 0x1
 	jz	short .41
-	mov	ax, [0x29ca]
+	mov	ax, [g_29CA]
 	mov	si, [bp - 0x14]
-	mov	[si + 0x1b8], ax
-	mov	word [si + 0x1c0], 0x0
+	mov	[si + g_01B8], ax
+	mov	word [si + g_01C0], 0x0
 	cmp	bx, 0x1
 	db	0x1B, 0xF6		; sbb si, si
 	neg	si
 	shl	si, 1
 	mov	[bp - 0x16], si
-	cmp	word [si + 0x1b8], -0x1
+	cmp	word [si + g_01B8], -0x1
 	jnz	short .44
 	jmp	near .35
 	db	0x90
 .41:
-	mov	ax, [0x29cc]
+	mov	ax, [g_29CC]
 	mov	si, [bp - 0x14]
-	mov	[si + 0x1b8], ax
-	mov	word [si + 0x1c0], 0x1
+	mov	[si + g_01B8], ax
+	mov	word [si + g_01C0], 0x1
 	cmp	bx, 0x1
 	db	0x1B, 0xF6		; sbb si, si
 	neg	si
 	shl	si, 1
 	mov	[bp - 0x16], si
-	cmp	word [si + 0x1b8], -0x2
+	cmp	word [si + g_01B8], -0x2
 	jnz	short .44
 .42:
-	mov	word [si + 0x1b8], 0xffff
+	mov	word [si + g_01B8], 0xffff
 .43:
-	mov	word [si + 0x1c0], 0x0
+	mov	word [si + g_01C0], 0x0
 .44:
 	call	0x2037:Menus_2037_0000
 	call	0x0F97:UseDbDescriptor
@@ -1684,30 +1684,30 @@ Menus_1E45_0FD2:
 	mov	dx, [bp + 0x6]
 	mov	bx, [bp + 0xa]
 	mov	ax, [bp + 0xc]
-	mov	[0x29cc], ax
-	mov	[0x1b8], dx
-	mov	[0x29ca], bx
+	mov	[g_29CC], ax
+	mov	[g_01B8], dx
+	mov	[g_29CA], bx
 	db	0x3B, 0xD3		; cmp dx, bx
 	jnz	short .2
-	cmp	word [0x1bc], 0x10
+	cmp	word [g_01BC], 0x10
 	jnz	short .1
-	mov	word [0x1b8], 0xffff
+	mov	word [g_01B8], 0xffff
 .1:
-	mov	word [0x1c0], 0x0
+	mov	word [g_01C0], 0x0
 	jmp	short .4
 .2:
-	cmp	word [0x1bc], 0x10
+	cmp	word [g_01BC], 0x10
 	jnz	short .3
-	mov	word [0x1b8], 0xfffe
+	mov	word [g_01B8], 0xfffe
 .3:
-	mov	word [0x1c0], 0x1
+	mov	word [g_01C0], 0x1
 .4:
 	cmp	word [bp + 0x8], 0x0
 	jnl	short .7
-	cmp	word [0x1c0], 0x1
+	cmp	word [g_01C0], 0x1
 	db	0x1B, 0xC0		; sbb ax, ax
 	neg	ax
-	mov	[0x1c2], ax
+	mov	[g_01C2], ax
 	db	0x3B, 0xDA		; cmp bx, dx
 	jnz	short .5
 	mov	ax, 0xfffe
@@ -1715,13 +1715,13 @@ Menus_1E45_0FD2:
 .5:
 	mov	ax, 0xffff
 .6:
-	mov	[0x1ba], ax
-	mov	word [0x1be], 0x10
+	mov	[g_01BA], ax
+	mov	word [g_01BE], 0x10
 	db	0xEB, 0x68		; jmp short 0x10a6
 	db	0x90, 0x90
 .7:
 	mov	dx, [bp + 0x8]
-	mov	[0x1ba], dx
+	mov	[g_01BA], dx
 	db	0x3B, 0xDA		; cmp bx, dx
 	jnz	short .8
 	db	0x2B, 0xC0		; sub ax, ax
@@ -1730,27 +1730,27 @@ Menus_1E45_0FD2:
 .8:
 	mov	ax, 0x1
 .9:
-	mov	[0x1c2], ax
-	cmp	word [0x1be], 0x10
+	mov	[g_01C2], ax
+	cmp	word [g_01BE], 0x10
 	db	0x75, 0x49		; jnz 0x10a6
 	test	byte [InputFlags], 0x2
 	jz	short .10
-	cmp	word [0x1bc], 0x2
+	cmp	word [g_01BC], 0x2
 	jz	short .10
-	mov	word [0x1be], 0x2
+	mov	word [g_01BE], 0x2
 	db	0xEB, 0x33		; jmp short 0x10a6
 	db	0x90
 .10:
 	test	byte [InputFlags], 0x4
 	jz	short .11
-	cmp	word [0x1bc], 0x4
+	cmp	word [g_01BC], 0x4
 	jz	short .11
-	mov	word [0x1be], 0x4
+	mov	word [g_01BE], 0x4
 	db	0xEB, 0x1C		; jmp short 0x10a6
 .11:
 	test	byte [InputFlags], 0x8
 	db	0x74, 0x0F		; jz 0x10a0
-	cmp	word [0x1bc], 0x8
+	cmp	word [g_01BC], 0x8
 	db	0x74, 0x08		; jz 0x10a0
-	mov	word [0x1be], 0x8
+	mov	word [g_01BE], 0x8
 	db	0xEB, 0x06		; jmp short 0x10a6

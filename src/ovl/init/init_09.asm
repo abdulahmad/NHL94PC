@@ -68,7 +68,7 @@ Init_2425_0000:
 .5:
 	push	0x0
 	mov	ax, 0x2e8
-	imul	word [0x29ca]
+	imul	word [g_29CA]
 	push	dx
 	push	ax
 	push	word [bp - 0x4]
@@ -143,7 +143,7 @@ Init_2425_0000:
 .10:
 	push	0x0
 	mov	ax, 0x2e8
-	imul	word [0x29cc]
+	imul	word [g_29CC]
 	push	dx
 	push	ax
 	push	word [bp - 0x4]
@@ -281,19 +281,19 @@ Init_2425_0000:
 .16:
 	db	0x2B, 0xF6		; sub si, si
 .17:
-	cmp	byte [si - 0x51c8], 0x64
+	cmp	byte [si + g_AE38], 0x64
 	jz	short .18
-	mov	al, [si - 0x51c8]
+	mov	al, [si + g_AE38]
 	db	0x2A, 0xE4		; sub ah, ah
 	imul	bx, ax, 0x28
-	mov	byte [bx - 0x5ab0], 0x2
+	mov	byte [bx + g_A550], 0x2
 .18:
-	cmp	byte [si - 0x5198], 0x64
+	cmp	byte [si + g_AE68], 0x64
 	jz	short .19
-	mov	al, [si - 0x5198]
+	mov	al, [si + g_AE68]
 	db	0x2A, 0xE4		; sub ah, ah
 	imul	bx, ax, 0x28
-	mov	byte [bx - 0x5650], 0x2
+	mov	byte [bx + g_A9B0], 0x2
 .19:
 	inc	si
 	cmp	si, 0x8
@@ -309,7 +309,7 @@ Init_2425_0000:
 	mov	ax, 0x3a0b
 	mov	ds, ax
 .21:
-	mov	ax, [ss:0x29ca]
+	mov	ax, [ss:g_29CA]
 	cmp	ax, strict word 0x15
 	jz	short .25
 	ja	short .22
@@ -336,7 +336,7 @@ Init_2425_0000:
 	mov	ax, [si]
 	mov	[0xb652], ax
 .27:
-	mov	ax, [ss:0x29cc]
+	mov	ax, [ss:g_29CC]
 	sub	ax, strict word 0x4
 	jz	short .28
 	mov	word [si + 0x6], 0xffff
@@ -365,22 +365,22 @@ Init_2425_0374:
 	push	di
 	push	si
 	mov	al, [bp + 0x8]
-	mov	[0xe367], al
-	mov	word [0xbffe], 0xffff
+	mov	[g_E367], al
+	mov	word [g_BFFE], 0xffff
 	mov	cl, [bp + 0x6]
-	mov	[0xe366], cl
-	mov	[0x1ca], cl
-	mov	[0x1cb], al
-	mov	al, [0x29ca]
-	mov	[0x1cc], al
-	mov	al, [0x29cc]
-	mov	[0x1cd], al
-	mov	word [0x1ce], 0x1
+	mov	[g_E366], cl
+	mov	[g_01CA], cl
+	mov	[g_01CB], al
+	mov	al, [g_29CA]
+	mov	[g_01CC], al
+	mov	al, [g_29CC]
+	mov	[g_01CD], al
+	mov	word [g_01CE], 0x1
 	db	0x2A, 0xC0		; sub al, al
-	mov	[0x1d6], al
-	mov	[0x1d7], al
-	mov	[0x1d8], al
-	mov	[0x1d9], al
+	mov	[g_01D6], al
+	mov	[g_01D7], al
+	mov	[g_01D8], al
+	mov	[g_01D9], al
 	test	byte [AnnouncerFlags], 0x2
 	jnz	short .1
 	call	0x1E45:Game_1E45_0000
@@ -435,7 +435,7 @@ Init_2425_0374:
 	call	Init_2425_0000
 	add	sp, 0x2
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	es, [0x8cb8]
+	mov	es, [g_8CB8]
 	mov	[es:0x456], ax
 	mov	[es:0x454], ax
 	mov	[es:0x452], ax
@@ -917,17 +917,17 @@ Init_2425_07EA:
 	mov	[si], al
 	jmp	short .10
 .5:
-	mov	al, [0xe366]
+	mov	al, [g_E366]
 	cmp	[bp - 0x66], al
 	jna	short .7
 .6:
 	mov	al, 0x1
 	jmp	short .9
 .7:
-	mov	al, [0xe366]
+	mov	al, [g_E366]
 	cmp	[bp - 0x66], al
 	jc	short .8
-	mov	al, [0xe367]
+	mov	al, [g_E367]
 	cmp	[bp - 0x65], al
 	ja	short .6
 .8:
@@ -939,7 +939,7 @@ Init_2425_07EA:
 	imul	ax, [bp + 0x12], 0x19
 	add	ax, [bp - 0x8]
 	mov	bx, [bp - 0xa]
-	mov	es, [0x8cba]
+	mov	es, [g_8CBA]
 	db	0x8B, 0xFB		; mov di, bx
 	lea	si, [bp - 0x34]
 	mov	cx, 0xa
@@ -1078,7 +1078,7 @@ Init_2425_07EA:
 .18:
 	mov	al, [bp - 0xbf]
 	db	0x2A, 0xE4		; sub ah, ah
-	mov	es, [0x8cbc]
+	mov	es, [g_8CBC]
 	mov	bx, [bp - 0xe]
 	mov	[es:bx], ax
 .19:
@@ -1103,7 +1103,7 @@ Init_2425_07EA:
 	mov	[si], al
 	jmp	short .27
 .22:
-	mov	al, [0xe366]
+	mov	al, [g_E366]
 	cmp	[bp - 0xc8], al
 	jna	short .24
 .23:
@@ -1111,10 +1111,10 @@ Init_2425_07EA:
 	jmp	short .26
 	db	0x90
 .24:
-	mov	al, [0xe366]
+	mov	al, [g_E366]
 	cmp	[bp - 0xc8], al
 	jc	short .25
-	mov	al, [0xe367]
+	mov	al, [g_E367]
 	cmp	[bp - 0xc7], al
 	ja	short .23
 .25:
@@ -1124,7 +1124,7 @@ Init_2425_07EA:
 	mov	[bx], al
 .27:
 	mov	bx, [bp - 0xa]
-	mov	es, [0x8cbe]
+	mov	es, [g_8CBE]
 	db	0x8B, 0xFB		; mov di, bx
 	lea	si, [bp - 0x20]
 	mov	cx, 0x8
@@ -1151,8 +1151,8 @@ Init_2425_07EA:
 Init_2425_0B20:
 	push	di
 	push	si
-	mov	byte [0xae70], 0x0
-	mov	es, [0x8cc0]
+	mov	byte [g_AE70], 0x0
+	mov	es, [g_8CC0]
 	cmp	byte [es:0xe53], 0x0
 	jz	short .1
 	push	word 0x3701

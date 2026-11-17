@@ -192,7 +192,7 @@ Init_2007_01BC:
 	mov	[bp - 0x637], al
 	push	word 0x3701
 	push	word 0xbaf
-	mov	es, [0x8c8e]
+	mov	es, [g_8C8E]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
 	push	word 0x3701
@@ -357,7 +357,7 @@ Init_2007_01BC:
 	add	sp, 0x8
 	mov	word [bp - 0x66], 0x0
 .3:
-	mov	es, [0x8c90]
+	mov	es, [g_8C90]
 	mov	bx, [bp - 0x66]
 	shl	bx, byte 0x2
 	push	word [es:bx + 0xbe]
@@ -367,7 +367,7 @@ Init_2007_01BC:
 	imul	word [bp - 0x66]
 	add	ax, strict word 0x1e
 	push	ax
-	mov	es, [0x8c90]
+	mov	es, [g_8C90]
 	push	word [es:bx + 0xbe]
 	push	word [es:bx + 0xbc]
 	call	0x0D39:TextWidthFar
@@ -391,7 +391,7 @@ Init_2007_01BC:
 	jmp	near .6
 .4:
 	mov	bx, [bp - 0x66]
-	mov	bl, [bx + 0x4bce]
+	mov	bl, [bx + g_4BCE]
 	db	0x2A, 0xFF		; sub bh, bh
 	mov	si, [bp - 0x2]
 	mov	al, [bx + si]
@@ -405,7 +405,7 @@ Init_2007_01BC:
 	call	0x0D39:SetTextColors
 	add	sp, 0x4
 	mov	bx, [bp - 0x66]
-	mov	bl, [bx + 0x4bce]
+	mov	bl, [bx + g_4BCE]
 	db	0x2A, 0xFF		; sub bh, bh
 	mov	si, [bp - 0x2]
 	mov	al, [bx + si]
@@ -432,7 +432,7 @@ Init_2007_01BC:
 	call	0x0D39:SetTextColors
 	add	sp, 0x4
 	mov	bx, [bp - 0x66]
-	mov	bl, [bx + 0x4bce]
+	mov	bl, [bx + g_4BCE]
 	db	0x2A, 0xFF		; sub bh, bh
 	mov	si, [bp - 0xa]
 	mov	al, [bx + si]
@@ -462,7 +462,7 @@ Init_2007_01BC:
 	mov	[bp - 0x2e], ax
 	mov	[bp - 0x34], ax
 	mov	bx, [bp - 0x66]
-	mov	bl, [bx + 0x4bce]
+	mov	bl, [bx + g_4BCE]
 	db	0x2A, 0xFF		; sub bh, bh
 	mov	si, [bp - 0x2]
 	mov	al, [bx + si]
@@ -483,7 +483,7 @@ Init_2007_01BC:
 	push	word [bp - 0x62]
 	call	0x03A3:UseCharSeg
 	add	sp, 0x4
-	mov	es, [0x8c92]
+	mov	es, [g_8C92]
 	mov	ax, [es:0x1172]
 	or	ax, [es:0x1170]
 	jnz	short .10
@@ -599,7 +599,7 @@ Init_2007_01BC:
 	push	0x0
 	call	0x1B35:OvlThunk23
 	add	sp, 0x8
-	mov	es, [0x8c94]
+	mov	es, [g_8C94]
 	cmp	word [es:0x78c], 0x3f0
 	jnl	short .15
 	mov	al, [bp + 0x8]
@@ -611,7 +611,7 @@ Init_2007_01BC:
 	add	sp, 0x4
 	jmp	short .17
 .15:
-	mov	es, [0x8c96]
+	mov	es, [g_8C96]
 	mov	bl, [bp + 0x8]
 	db	0x2A, 0xFF		; sub bh, bh
 	shl	bx, 1
@@ -622,7 +622,7 @@ Init_2007_01BC:
 	or	ax, [es:bx + 0x128]
 	mov	[bp - 0x32], ax
 	mov	word [bp - 0x63a], 0x1
-	mov	es, [0x8c94]
+	mov	es, [g_8C94]
 	cmp	word [es:0x78c], 0x428
 	jl	short .16
 	mov	word [bp - 0x63a], 0x2
@@ -717,7 +717,7 @@ Init_2007_01BC:
 	jnl	short .25
 	jmp	near .37
 .25:
-	mov	es, [0x8c92]
+	mov	es, [g_8C92]
 	mov	cx, [es:0x1188]
 	or	cx, [es:0x1186]
 	jz	short .26
@@ -727,10 +727,10 @@ Init_2007_01BC:
 	mov	[bp - 0x648], ax
 	jmp	near .34
 .27:
-	mov	ax, [0x29cc]
-	cmp	[0x1b8], ax
+	mov	ax, [g_29CC]
+	cmp	[g_01B8], ax
 	jz	short .28
-	cmp	[0x1ba], ax
+	cmp	[g_01BA], ax
 	jz	short .28
 	jmp	near .36
 .28:
@@ -789,10 +789,10 @@ Init_2007_01BC:
 	mov	word [bp - 0x64], 0x3
 	jmp	short .36
 .32:
-	mov	ax, [0x29ca]
-	cmp	[0x1b8], ax
+	mov	ax, [g_29CA]
+	cmp	[g_01B8], ax
 	jz	short .33
-	cmp	[0x1ba], ax
+	cmp	[g_01BA], ax
 	jnz	short .36
 .33:
 	push	0x3

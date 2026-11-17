@@ -39,8 +39,8 @@ Menus_1F9D_000C:
 	push	word 0xab0
 	call	0x149D:LoadRawHeader
 	add	sp, 0x4
-	mov	[0xbd8e], ax
-	mov	[0xbd90], dx
+	mov	[g_BD8E], ax
+	mov	[g_BD90], dx
 	push	0x0
 	push	word 0xabc
 	jmp	short .3
@@ -50,19 +50,19 @@ Menus_1F9D_000C:
 	push	word 0xac8
 	call	0x149D:LoadRawHeader
 	add	sp, 0x4
-	mov	[0xbd8e], ax
-	mov	[0xbd90], dx
+	mov	[g_BD8E], ax
+	mov	[g_BD90], dx
 	push	0x0
 	push	word 0xad4
 .3:
 	call	0x149D:LoadRawHeader
 	add	sp, 0x4
-	mov	[0xbd92], ax
-	mov	[0xbd94], dx
+	mov	[g_BD92], ax
+	mov	[g_BD94], dx
 	push	dx
 	push	ax
-	push	word [0xbd90]
-	push	word [0xbd8e]
+	push	word [g_BD90]
+	push	word [g_BD8E]
 	call	0x0EDC:PlayJingle
 	add	sp, 0x8
 	push	word 0x3701
@@ -319,7 +319,7 @@ Menus_1F9D_000C:
 	mov	[bp - 0x20], ax
 	mov	[bp - 0x22], ax
 	push	word 0x3f00
-	mov	es, [0x8b24]
+	mov	es, [g_8B24]
 	les	bx, [es:0x7570]
 	push	word [es:bx]
 	db	0x2B, 0xC0		; sub ax, ax
@@ -328,7 +328,7 @@ Menus_1F9D_000C:
 	call	0x0000:VgaCopyBytes
 	add	sp, 0x6
 	push	word 0x3f00
-	mov	es, [0x8b24]
+	mov	es, [g_8B24]
 	les	bx, [es:0x7574]
 	push	word [es:bx]
 	push	0x0
@@ -354,7 +354,7 @@ Menus_1F9D_000C:
 	push	word [bp - 0x20]
 	push	0x5a
 	push	0x14
-	mov	es, [0x8b24]
+	mov	es, [g_8B24]
 	cmp	word [CurPage], 0x1
 	db	0x1B, 0xDB		; sbb bx, bx
 	neg	bx
@@ -462,10 +462,10 @@ Menus_1F9D_000C:
 	add	sp, 0x4
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .10
-	push	word [0xbd94]
-	push	word [0xbd92]
-	push	word [0xbd90]
-	push	word [0xbd8e]
+	push	word [g_BD94]
+	push	word [g_BD92]
+	push	word [g_BD90]
+	push	word [g_BD8E]
 	call	0x0EDC:PlayJingle
 	add	sp, 0x8
 .10:
@@ -490,12 +490,12 @@ Menus_1F9D_000C:
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	call	0x0EDC:StopJingle
-	push	word [0xbd94]
-	push	word [0xbd92]
+	push	word [g_BD94]
+	push	word [g_BD92]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	push	word [0xbd90]
-	push	word [0xbd8e]
+	push	word [g_BD90]
+	push	word [g_BD8E]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	call	0x0FEF:UseCurrentPage
@@ -695,7 +695,7 @@ Menus_1F9D_0580:
 	cmp	bx, 0xc8
 	ja	short .8
 .7:
-	mov	es, [0x8b26]
+	mov	es, [g_8B26]
 	mov	si, [bp - 0x66]
 	shl	si, byte 0x2
 	mov	ax, [es:si + 0x5cf]
@@ -712,7 +712,7 @@ Menus_1F9D_0580:
 	db	0x2B, 0xC2		; sub ax, dx
 	sar	ax, 1
 	mov	[bp - 0x50], ax
-	mov	es, [0x8b26]
+	mov	es, [g_8B26]
 	push	word [es:si + 0x5cf]
 	push	word [es:si + 0x5cd]
 	push	word [bp - 0x64]

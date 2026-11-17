@@ -7,13 +7,13 @@ Fades2_3358_0000:
 	mov	si, [bp + 0x6]
 	db	0x8B, 0xDE		; mov bx, si
 	shl	bx, 1
-	mov	ax, [bx + 0x62a0]
+	mov	ax, [bx + g_62A0]
 	mov	[bp - 0x10], ax
-	mov	ax, [bx + 0x62a8]
+	mov	ax, [bx + g_62A8]
 	mov	[bp - 0x12], ax
-	mov	ax, [bx + 0x62b0]
+	mov	ax, [bx + g_62B0]
 	mov	[bp - 0x2e], ax
-	mov	ax, [bx + 0x62b8]
+	mov	ax, [bx + g_62B8]
 	mov	[bp - 0x2c], ax
 	cmp	si, 0x3
 	jng	short .1
@@ -24,7 +24,7 @@ Fades2_3358_0000:
 	jmp	near .19
 .2:
 	call	0x0FEF:UseCurrentPage
-	mov	es, [0x8cec]
+	mov	es, [g_8CEC]
 	mov	di, [es:0x74fc]
 	mov	ax, [es:0x74fe]
 	mov	[bp - 0x16], ax
@@ -70,7 +70,7 @@ Fades2_3358_0000:
 .9:
 	mov	[bp - 0xa], ax
 .10:
-	mov	es, [0x8cee]
+	mov	es, [g_8CEE]
 	cmp	word [CurPage], 0x1
 	db	0x1B, 0xDB		; sbb bx, bx
 	neg	bx
@@ -80,7 +80,7 @@ Fades2_3358_0000:
 	mov	dx, [es:bx + 0x2]
 	mov	[bp - 0x32], ax
 	mov	[bp - 0x30], dx
-	mov	es, [0x8cee]
+	mov	es, [g_8CEE]
 	mov	bx, [CurPage]
 	shl	bx, byte 0x2
 	les	bx, [es:bx + 0x7570]
@@ -89,7 +89,7 @@ Fades2_3358_0000:
 	mov	[bp - 0x36], ax
 	mov	[bp - 0x34], dx
 	call	0x0FEF:UseCurrentPage
-	mov	es, [0x8cec]
+	mov	es, [g_8CEC]
 	mov	ax, [es:0x74f6]
 	mov	[bp - 0x18], ax
 	mov	word [bp - 0x28], 0x0

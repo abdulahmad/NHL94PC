@@ -300,7 +300,7 @@ Lp_1F31_01D0:
 	push	word 0xaf4c
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
-	mov	es, [0x8b8a]
+	mov	es, [g_8B8A]
 	mov	byte [es:0xaf8f], 0x7f
 	push	word 0x3a0b
 	push	word 0xaf4c
@@ -525,7 +525,7 @@ Lp_1F31_03A6:
 	mov	[bp - 0xd4], es
 	mov	[es:bx + 0x18], al
 	mov	[es:bx + 0x19], al
-	mov	es, [0x8b8c]
+	mov	es, [g_8B8C]
 	mov	[es:0xac5a], cx
 .7:
 	push	word 0x3701
@@ -637,11 +637,11 @@ Lp_1F31_03A6:
 	call	0x28A8:Lp_28A8_01E8
 	add	sp, 0x6
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	es, [0x8b8e]
+	mov	es, [g_8B8E]
 	mov	[es:0xac5e], ax
-	mov	es, [0x8b90]
+	mov	es, [g_8B90]
 	mov	[es:0xac60], ax
-	mov	es, [0x8b92]
+	mov	es, [g_8B92]
 	mov	byte [es:0xaf3e], 0x0
 	push	word [bp - 0x3e]
 	push	word [bp - 0x40]
@@ -714,7 +714,7 @@ Lp_1F31_06A6:
 	db	0x8B, 0xC6		; mov ax, si
 	mov	dx, [bp + 0x8]
 	add	ax, [bp - 0x8]
-	mov	es, [0x8b94]
+	mov	es, [g_8B94]
 	mov	[es:0x541], ax
 	mov	[es:0x543], dx
 	push	-0x1
@@ -834,7 +834,7 @@ Lp_1F31_07FA:
 	db	0x8B, 0xDA		; mov bx, dx
 	db	0x03, 0xDF		; add bx, di
 	db	0x8B, 0xC3		; mov ax, bx
-	mov	bl, [bx + 0x16c8]
+	mov	bl, [bx + g_16C8]
 	db	0x8B, 0xCB		; mov cx, bx
 	db	0x2A, 0xFF		; sub bh, bh
 	shl	bx, 1
@@ -1155,12 +1155,12 @@ Lp_1F31_07FA:
 	retf
 
 Lp_1F31_0B9E:
-	mov	word [0xc274], 0x1
+	mov	word [g_C274], 0x1
 	retf
 	db	0x90
 
 Lp_1F31_0BA6:
-	mov	word [0xc274], 0xffff
+	mov	word [g_C274], 0xffff
 	retf
 	db	0x90
 
@@ -1200,7 +1200,7 @@ Lp_1F31_0BAE:
 .1:
 	push	word 0x3701
 	push	word 0xbaf
-	mov	es, [0x8b96]
+	mov	es, [g_8B96]
 	push	word [es:0xb7e]
 	push	word [es:0xb7c]
 	push	word [bp + 0x8]
@@ -1358,7 +1358,7 @@ Lp_1F31_0BAE:
 	add	sp, 0xe
 	test	byte [bp + 0x16], 0x1
 	jz	short .7
-	mov	es, [0x8b98]
+	mov	es, [g_8B98]
 	mov	word [es:0x10e0], 0x105c
 	mov	word [es:0x10e2], 0x3701
 .6:
@@ -1367,12 +1367,12 @@ Lp_1F31_0BAE:
 .7:
 	test	byte [bp + 0x16], 0x8
 	jz	short .8
-	mov	es, [0x8b98]
+	mov	es, [g_8B98]
 	mov	word [es:0x10e0], 0x1036
 	mov	word [es:0x10e2], 0x3701
 	jmp	short .6
 .8:
-	mov	es, [0x8b98]
+	mov	es, [g_8B98]
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[es:0x10e2], ax
 	mov	[es:0x10e0], ax
@@ -1490,7 +1490,7 @@ Lp_1F31_0BAE:
 	call	0x0F99:FlushInputEvents
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[bp - 0x7a], ax
-	mov	[0xc274], ax
+	mov	[g_C274], ax
 .12:
 	mov	word [bp - 0x10c], 0x0
 .13:
@@ -1622,7 +1622,7 @@ Lp_1F31_0BAE:
 	add	sp, 0x6
 	mov	[DialogData], ax
 	mov	[DialogDataSeg], dx
-	cmp	word [0xc274], -0x1
+	cmp	word [g_C274], -0x1
 	jnz	short .23
 	mov	ax, 0xffff
 	mov	bx, [bp - 0xfe]
@@ -1632,7 +1632,7 @@ Lp_1F31_0BAE:
 	mov	[bp - 0x7a], ax
 	jmp	short .27
 .23:
-	cmp	word [0xc274], 0x1
+	cmp	word [g_C274], 0x1
 	jnz	short .27
 	test	byte [bp + 0x16], 0x7
 	jz	short .24
@@ -2076,7 +2076,7 @@ Lp_1F31_0BAE:
 	jmp	near .54
 .51:
 	mov	ax, es
-	mov	es, [0x8b9a]
+	mov	es, [g_8B9A]
 	mov	[es:0x3a9], di
 	mov	[es:0x3ab], ax
 	push	-0x1

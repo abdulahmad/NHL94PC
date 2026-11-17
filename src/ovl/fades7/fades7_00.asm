@@ -12,7 +12,7 @@ Fades7_3358_0000:
 	jmp	near .25
 .1:
 	call	0x0FEF:UseCurrentPage
-	mov	es, [0x8cf8]
+	mov	es, [g_8CF8]
 	mov	ax, [es:0x74fe]
 	mov	[bp - 0x16], ax
 	mov	ax, [es:0x74f4]

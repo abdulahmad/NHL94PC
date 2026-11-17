@@ -93,33 +93,33 @@ Stats_2095_00C0:
 	db	0x8B, 0xEC		; mov bp, sp
 	push	di
 	push	si
-	cmp	word [ss:0x200e], 0x0
+	cmp	word [ss:g_200E], 0x0
 	jnz	short .1
 	mov	bx, [bp + 0x6]
 	imul	ax, [ss:bx], 0x30
-	add	ax, [ss:0xc044]
-	mov	dx, [ss:0xc046]
+	add	ax, [ss:g_C044]
+	mov	dx, [ss:g_C046]
 	jmp	short .2
 .1:
 	mov	bx, [bp + 0x6]
 	imul	ax, [ss:bx], 0x30
-	add	ax, [ss:0xc044]
-	mov	dx, [ss:0xc046]
+	add	ax, [ss:g_C044]
+	mov	dx, [ss:g_C046]
 	add	ax, strict word 0x12
 .2:
 	db	0x8B, 0xF8		; mov di, ax
 	mov	ds, dx
-	cmp	word [ss:0x200e], 0x0
+	cmp	word [ss:g_200E], 0x0
 	jnz	short .3
 	mov	si, [bp + 0x8]
 	imul	ax, [ss:si], 0x30
-	add	ax, [ss:0xc044]
+	add	ax, [ss:g_C044]
 	jmp	short .4
 .3:
 	mov	si, [bp + 0x8]
 	imul	ax, [ss:si], 0x30
-	add	ax, [ss:0xc044]
-	mov	dx, [ss:0xc046]
+	add	ax, [ss:g_C044]
+	mov	dx, [ss:g_C046]
 	add	ax, strict word 0x12
 .4:
 	db	0x8B, 0xD8		; mov bx, ax
@@ -171,33 +171,33 @@ Stats_2095_0180:
 	db	0x8B, 0xEC		; mov bp, sp
 	push	di
 	push	si
-	cmp	word [ss:0x200e], 0x0
+	cmp	word [ss:g_200E], 0x0
 	jnz	short .1
 	mov	bx, [bp + 0x6]
 	imul	ax, [ss:bx], 0x36
-	add	ax, [ss:0xc040]
-	mov	dx, [ss:0xc042]
+	add	ax, [ss:g_C040]
+	mov	dx, [ss:g_C042]
 	jmp	short .2
 .1:
 	mov	bx, [bp + 0x6]
 	imul	ax, [ss:bx], 0x36
-	add	ax, [ss:0xc040]
-	mov	dx, [ss:0xc042]
+	add	ax, [ss:g_C040]
+	mov	dx, [ss:g_C042]
 	add	ax, strict word 0x16
 .2:
 	db	0x8B, 0xF8		; mov di, ax
 	mov	ds, dx
-	cmp	word [ss:0x200e], 0x0
+	cmp	word [ss:g_200E], 0x0
 	jnz	short .3
 	mov	si, [bp + 0x8]
 	imul	ax, [ss:si], 0x36
-	add	ax, [ss:0xc040]
+	add	ax, [ss:g_C040]
 	jmp	short .4
 .3:
 	mov	si, [bp + 0x8]
 	imul	ax, [ss:si], 0x36
-	add	ax, [ss:0xc040]
-	mov	dx, [ss:0xc042]
+	add	ax, [ss:g_C040]
+	mov	dx, [ss:g_C042]
 	add	ax, strict word 0x16
 .4:
 	db	0x8B, 0xD8		; mov bx, ax
@@ -467,7 +467,7 @@ Stats_2095_0438:
 	enter	0xe, 0x0
 	push	di
 	push	si
-	mov	es, [0x8c62]
+	mov	es, [g_8C62]
 	cmp	byte [es:0x0], 0x1
 	jnz	short .2
 	mov	ax, 0x2
@@ -479,21 +479,21 @@ Stats_2095_0438:
 	jmp	short .7
 	db	0x90
 .2:
-	mov	es, [0x8c64]
+	mov	es, [g_8C64]
 	cmp	byte [es:0x13], 0x1
 	jnz	short .3
 	mov	ax, 0x15
 	mov	cx, 0x384b
 	jmp	short .6
 .3:
-	mov	es, [0x8c66]
+	mov	es, [g_8C66]
 	cmp	byte [es:0x29], 0x1
 	jnz	short .4
 	mov	ax, 0x2b
 	mov	cx, 0x384b
 	jmp	short .1
 .4:
-	mov	es, [0x8c68]
+	mov	es, [g_8C68]
 	cmp	byte [es:0x3d], 0x1
 	jnz	short .5
 	mov	ax, 0x3f
@@ -502,7 +502,7 @@ Stats_2095_0438:
 .5:
 	mov	si, [bp - 0xa]
 	mov	di, [bp - 0x6]
-	mov	es, [0x8c6a]
+	mov	es, [g_8C6A]
 	cmp	byte [es:0x5b], 0x1
 	jnz	short .7
 	mov	ax, 0x5d

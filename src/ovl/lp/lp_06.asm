@@ -11,7 +11,7 @@ Lp_20F8_000C:
 	push	si
 	mov	ax, 0xffff
 	mov	[bp - 0x8], ax
-	mov	[0xc276], ax
+	mov	[g_C276], ax
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[bp - 0x4], ax
@@ -27,7 +27,7 @@ Lp_20F8_000C:
 	mov	word [MessageBoxSel], 0x0
 	mov	bx, [bp - 0x6]
 	shl	bx, 1
-	mov	word [bx - 0x3d88], 0xffff
+	mov	word [bx + g_C278], 0xffff
 	lea	ax, [bp - 0x14]
 	push	ax
 	mov	ax, [bp - 0x6]
@@ -39,7 +39,7 @@ Lp_20F8_000C:
 	jz	short .4
 	mov	bx, [bp - 0x6]
 	shl	bx, 1
-	mov	word [bx - 0x3d88], 0x0
+	mov	word [bx + g_C278], 0x0
 	jmp	near .8
 .4:
 	mov	ax, [bp + 0x8]
@@ -54,7 +54,7 @@ Lp_20F8_000C:
 .6:
 	mov	al, [bp - 0x6]
 	add	al, 0x41
-	mov	es, [0x8b9c]
+	mov	es, [g_8B9C]
 	mov	[es:0xbfa], al
 	push	word 0x3701
 	push	word 0xbf6
@@ -123,9 +123,9 @@ Lp_20F8_000C:
 	jnl	short .9
 	jmp	near .2
 .9:
-	cmp	word [0xc278], 0x0
+	cmp	word [g_C278], 0x0
 	jnz	short .10
-	cmp	word [0xc27a], 0x0
+	cmp	word [g_C27A], 0x0
 	jnz	short .10
 	lea	ax, [bp - 0xa]
 	push	ax
@@ -152,22 +152,22 @@ Lp_20F8_000C:
 	add	sp, 0x16
 	mov	[bp - 0x4], ax
 .10:
-	cmp	word [0xc278], 0x0
+	cmp	word [g_C278], 0x0
 	jnz	short .11
-	cmp	word [0xc27a], 0x0
+	cmp	word [g_C27A], 0x0
 	jnz	short .11
 	cmp	word [bp - 0x4], 0x4
 	jz	short .11
 	jmp	near .1
 .11:
-	mov	word [0xc276], 0x0
+	mov	word [g_C276], 0x0
 	cmp	word [bp - 0x2], 0x0
 	jnz	short .14
 	cmp	word [bp - 0x4], 0x4
 	jz	short .14
-	cmp	word [0xc278], 0x0
+	cmp	word [g_C278], 0x0
 	jz	short .12
-	cmp	word [0xc27a], 0x0
+	cmp	word [g_C27A], 0x0
 	jz	short .12
 	lea	ax, [bp - 0xa]
 	push	ax
@@ -194,12 +194,12 @@ Lp_20F8_000C:
 	add	sp, 0x16
 	jmp	short .13
 .12:
-	cmp	word [0xc278], 0x1
+	cmp	word [g_C278], 0x1
 	db	0x1A, 0xC0		; sbb al, al
 	and	al, 0x1
 .13:
 	add	al, 0x41
-	mov	es, [0x8b9c]
+	mov	es, [g_8B9C]
 	mov	[es:0xbfa], al
 .14:
 	mov	ax, [bp - 0x4]
@@ -215,7 +215,7 @@ Lp_20F8_0206:
 	mov	word [bp - 0x4], 0xffff
 .1:
 	mov	si, 0xffff
-	mov	[0xc276], si
+	mov	[g_C276], si
 	mov	word [bp - 0x2], 0x0
 	mov	di, [bp - 0xa]
 .2:
@@ -227,7 +227,7 @@ Lp_20F8_0206:
 	mov	[MessageBoxSel], si
 	mov	bx, [bp - 0x2]
 	shl	bx, 1
-	mov	word [bx - 0x3d88], 0xffff
+	mov	word [bx + g_C278], 0xffff
 	lea	ax, [bp - 0x12]
 	push	ax
 	mov	ax, [bp - 0x2]
@@ -241,7 +241,7 @@ Lp_20F8_0206:
 .4:
 	mov	al, [bp - 0x2]
 	add	al, 0x41
-	mov	es, [0x8b9c]
+	mov	es, [g_8B9C]
 	mov	[es:0xbfa], al
 	push	word 0x3701
 	push	word 0xbf6
@@ -317,7 +317,7 @@ Lp_20F8_0206:
 	jmp	near .2
 .9:
 	mov	[bp - 0xa], di
-	mov	word [0xc276], 0x0
+	mov	word [g_C276], 0x0
 	db	0x0B, 0xF6		; or si, si
 	jz	short .10
 	push	word [bp + 0x8]
@@ -330,7 +330,7 @@ Lp_20F8_0206:
 	call	0x2305:Lp_2305_0214
 	add	sp, 0xc
 	lea	ax, [bp - 0x8c]
-	mov	es, [0x8b9e]
+	mov	es, [g_8B9E]
 	mov	[es:0x196], ax
 	mov	[es:0x198], ss
 	lea	ax, [bp - 0x6]
@@ -386,7 +386,7 @@ Lp_20F8_0394:
 	call	0x2305:Lp_2305_0214
 	add	sp, 0xc
 	lea	ax, [bp - 0x46]
-	mov	es, [0x8ba0]
+	mov	es, [g_8BA0]
 	mov	[es:0x19e], ax
 	mov	[es:0x1a0], ss
 	lea	ax, [bp - 0x2]

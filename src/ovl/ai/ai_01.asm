@@ -7,31 +7,31 @@ Ai_1FAA_000E:
 	enter	0xfc, 0x0
 	push	di
 	push	si
-	mov	ax, [0x48c0]
+	mov	ax, [g_48C0]
 	mov	[bp - 0x66], ax
-	mov	ax, [0x29ca]
+	mov	ax, [g_29CA]
 	mov	[bp - 0xee], ax
-	mov	ax, [0x29cc]
+	mov	ax, [g_29CC]
 	mov	[bp - 0xec], ax
-	mov	ax, [0xb386]
+	mov	ax, [g_B386]
 	mov	[bp - 0xea], ax
-	mov	ax, [0xb45c]
+	mov	ax, [g_B45C]
 	mov	[bp - 0xe8], ax
-	mov	ax, [0x29c6]
+	mov	ax, [g_29C6]
 	mov	[bp - 0xe6], ax
-	mov	ax, [0x29c8]
+	mov	ax, [g_29C8]
 	mov	[bp - 0xe4], ax
-	mov	ax, [0xbffe]
+	mov	ax, [g_BFFE]
 	mov	[bp - 0xe2], ax
-	mov	ax, [0x29da]
+	mov	ax, [g_29DA]
 	mov	[bp - 0xe0], ax
-	mov	ax, [0xb384]
+	mov	ax, [g_B384]
 	mov	[bp - 0xde], ax
-	mov	ax, [0xb45a]
+	mov	ax, [g_B45A]
 	mov	[bp - 0xdc], ax
-	mov	ax, [0xb36e]
+	mov	ax, [g_B36E]
 	mov	[bp - 0xda], ax
-	mov	ax, [0xb444]
+	mov	ax, [g_B444]
 	mov	[bp - 0xd8], ax
 	lea	ax, [bp - 0xd6]
 	mov	[bp - 0xfa], ax
@@ -88,27 +88,27 @@ Ai_1FAA_000E:
 	call	0x2352:Ai_2352_0174
 	and	byte [CrowdState], 0xe4
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0x48c0], ax
-	mov	[0xd6c4], ax
+	mov	[g_48C0], ax
+	mov	[g_D6C4], ax
 	mov	ax, [bp + 0x6]
-	mov	[0x29ca], ax
+	mov	[g_29CA], ax
 	mov	ax, [bp + 0x8]
-	mov	[0x29cc], ax
+	mov	[g_29CC], ax
 	push	0x2
 	call	0x1B35:OvlThunk173
 	add	sp, 0x2
 	push	word 0x3a0b
 	push	word 0xa8e
-	push	word [0x29cc]
-	push	word [0x29ca]
+	push	word [g_29CC]
+	push	word [g_29CA]
 	call	0x1E64:Game_1E64_0002
 	add	sp, 0x8
-	cmp	word [0x29ca], 0x18
+	cmp	word [g_29CA], 0x18
 	jl	short .6
 	mov	ax, 0xe
 	jmp	short .7
 .6:
-	mov	ax, [0x29ca]
+	mov	ax, [g_29CA]
 .7:
 	push	ax
 	call	0x1B35:OvlThunk246
@@ -117,115 +117,115 @@ Ai_1FAA_000E:
 	call	0x1B35:OvlThunk143
 	call	0x1B35:OvlThunk144
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0xb45c], ax
-	mov	[0xb386], ax
+	mov	[g_B45C], ax
+	mov	[g_B386], ax
 	call	0x2E42:Ai_2E42_1574
 	mov	ax, 0xffff
-	mov	[0x29c4], ax
-	mov	[0x29c2], ax
+	mov	[g_29C4], ax
+	mov	[g_29C2], ax
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0x29c8], ax
-	mov	[0x29c6], ax
+	mov	[g_29C8], ax
+	mov	[g_29C6], ax
 	mov	ax, 0x78
 	call	0x0C11:randomd0
 	add	ax, strict word 0x3c
-	mov	[0x29dc], ax
+	mov	[g_29DC], ax
 	mov	cx, 0x3c
 	cwd
 	idiv	cx
-	mov	[0x5560], ax
-	mov	ax, [0x29dc]
+	mov	[g_5560], ax
+	mov	ax, [g_29DC]
 	cwd
 	idiv	cx
-	mov	[0x5562], dx
+	mov	[g_5562], dx
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0x29de], ax
-	mov	[0x5564], ax
+	mov	[g_29DE], ax
+	mov	[g_5564], ax
 	mov	ax, [bp + 0xe]
-	mov	[0xbffe], ax
+	mov	[g_BFFE], ax
 	dec	ax
-	mov	[0x29da], ax
+	mov	[g_29DA], ax
 	mov	bx, [bp + 0xa]
 	mov	ax, [bx]
-	mov	[0xb36e], ax
+	mov	[g_B36E], ax
 	mov	bx, [bp + 0xc]
 	mov	ax, [bx]
-	mov	[0xb444], ax
+	mov	[g_B444], ax
 	mov	ax, 0x7
 	call	0x0C11:randomd0
 	mov	cx, 0x4
 	cwd
 	idiv	cx
-	mov	[0xb378], dx
+	mov	[g_B378], dx
 	mov	ax, 0x7
 	call	0x0C11:randomd0
 	mov	cx, 0x4
 	cwd
 	idiv	cx
-	mov	[0xb44e], dx
+	mov	[g_B44E], dx
 	call	0x0FEF:UseOffscreenCanvas
 	push	0x0
-	push	word [0xbffe]
-	push	word [0x29cc]
-	push	word [0x29ca]
+	push	word [g_BFFE]
+	push	word [g_29CC]
+	push	word [g_29CA]
 	call	0x2083:Ai_2083_0512
 	add	sp, 0x8
-	mov	byte [0x29bb], 0x0
-	mov	byte [0x29bb], 0x10
-	test	byte [0x29da], 0x1
+	mov	byte [g_29BB], 0x0
+	mov	byte [g_29BB], 0x10
+	test	byte [g_29DA], 0x1
 	jz	short .8
-	mov	byte [0x29bb], 0x12
+	mov	byte [g_29BB], 0x12
 .8:
-	mov	ax, [0x29be]
+	mov	ax, [g_29BE]
 	mov	[bp - 0x32], ax
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0x29c0], ax
-	mov	[0x29be], ax
-	mov	[0x29bc], ax
-	mov	word [0x29be], 0x4
+	mov	[g_29C0], ax
+	mov	[g_29BE], ax
+	mov	[g_29BC], ax
+	mov	word [g_29BE], 0x4
 	db	0x2A, 0xC0		; sub al, al
-	mov	[0xd62b], al
-	mov	[0xd62a], al
+	mov	[g_D62B], al
+	mov	[g_D62A], al
 	mov	ax, 0xffff
-	mov	[0x29a8], ax
-	mov	[0x29d4], ax
-	mov	[0x29ce], ax
-	mov	[0x29d8], ax
-	mov	[0x49f0], ax
+	mov	[g_29A8], ax
+	mov	[g_29D4], ax
+	mov	[g_29CE], ax
+	mov	[g_29D8], ax
+	mov	[g_49F0], ax
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0x29d2], ax
-	mov	[0x29d6], ax
-	mov	[0x48bc], ax
-	cmp	word [0x49fc], -0x1
+	mov	[g_29D2], ax
+	mov	[g_29D6], ax
+	mov	[g_48BC], ax
+	cmp	word [g_49FC], -0x1
 	jz	short .9
-	push	word [0xd62e]
-	push	word [0xd62c]
+	push	word [g_D62E]
+	push	word [g_D62C]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 .9:
 	mov	ax, 0xffff
-	mov	[0x49f8], ax
-	mov	[0x49fe], ax
-	mov	[0x49fc], ax
+	mov	[g_49F8], ax
+	mov	[g_49FE], ax
+	mov	[g_49FC], ax
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0x49fa], ax
-	mov	[0x49f6], ax
+	mov	[g_49FA], ax
+	mov	[g_49F6], ax
 	mov	ax, 0xc8
 	call	0x0C11:randomd0
 	add	ax, strict word 0x64
 	mov	[CrowdSound], ax
 	mov	[Crowdlevel], ax
 	mov	ax, 0xffff
-	mov	[0xd61c], ax
-	mov	[0xd618], ax
+	mov	[g_D61C], ax
+	mov	[g_D618], ax
 	call	0x2E42:Ai_2E42_290C
 	call	0x2E42:Ai_2E42_2CEE
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0x299a], ax
-	mov	[0x2998], ax
-	mov	[0x29b0], ax
-	mov	[0x29ae], ax
-	mov	[0x29ac], ax
+	mov	[g_299A], ax
+	mov	[g_2998], ax
+	mov	[g_29B0], ax
+	mov	[g_29AE], ax
+	mov	[g_29AC], ax
 	call	0x2E42:Ai_2E42_2E40
 	push	word 0xb362
 	call	0x2E42:Ai_2E42_146C
@@ -237,9 +237,9 @@ Ai_1FAA_000E:
 	call	0x2E42:Ai_2E42_05E2
 	add	sp, 0x2
 	mov	ax, 0xffff
-	mov	[0xb382], ax
-	mov	[0xb380], ax
-	mov	[0xb37e], ax
+	mov	[g_B382], ax
+	mov	[g_B380], ax
+	mov	[g_B37E], ax
 	push	word 0xb438
 	call	0x2E42:Ai_2E42_146C
 	add	sp, 0x2
@@ -250,9 +250,9 @@ Ai_1FAA_000E:
 	call	0x2E42:Ai_2E42_05E2
 	add	sp, 0x2
 	mov	ax, 0xffff
-	mov	[0xb458], ax
-	mov	[0xb456], ax
-	mov	[0xb454], ax
+	mov	[g_B458], ax
+	mov	[g_B456], ax
+	mov	[g_B454], ax
 	call	0x2E42:Ai_2E42_2EAC
 	mov	word [bp - 0xf6], 0xb50e
 	mov	word [bp - 0xf0], 0x0
@@ -263,16 +263,16 @@ Ai_1FAA_000E:
 .11:
 	mov	bx, [bp - 0xf2]
 	shl	bx, 1
-	add	ax, [bx + 0x544e]
+	add	ax, [bx + g_544E]
 	mov	bx, [bp - 0xf6]
 	mov	[bx + 0x6], ax
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[bx + 0xe], ax
 	mov	[bx + 0xc], ax
-	mov	si, [0x298a]
+	mov	si, [g_298A]
 	mov	ax, [si]
 	sub	ax, [bx + 0x2]
-	mov	si, [0x298e]
+	mov	si, [g_298E]
 	mov	dx, [si]
 	sub	dx, [bx + 0x6]
 	call	0x0D5F:VectorToDir8
@@ -296,7 +296,7 @@ Ai_1FAA_000E:
 	mov	ax, 0x14
 	call	0x0C11:randomd0
 	shl	si, 1
-	add	ax, [si + 0x544c]
+	add	ax, [si + g_544C]
 	sub	ax, strict word 0xa
 	mov	bx, [bp - 0xf6]
 	mov	[bx + 0x2], ax
@@ -317,42 +317,42 @@ Ai_1FAA_000E:
 	jmp	near .11
 	db	0x90
 .14:
-	mov	word [0xbc36], 0x78
+	mov	word [g_BC36], 0x78
 	mov	ax, 0x14
 	call	0x0C11:randomd0
 	sub	ax, strict word 0xa
-	mov	[0xbc10], ax
+	mov	[g_BC10], ax
 	mov	ax, 0x14
 	call	0x0C11:randomd0
 	sub	ax, strict word 0xa
-	mov	[0xbc14], ax
-	mov	word [0xbc18], 0x0
+	mov	[g_BC14], ax
+	mov	word [g_BC18], 0x0
 	mov	ax, 0x7d0
 	call	0x0C11:randomd0
 	sub	ax, 0x3e8
-	mov	[0xbc1a], ax
+	mov	[g_BC1A], ax
 	mov	ax, 0x7d0
 	call	0x0C11:randomd0
 	sub	ax, 0x3e8
-	mov	[0xbc1c], ax
-	mov	word [0xbc20], 0x18a
-	mov	word [0xbc56], 0x0
+	mov	[g_BC1C], ax
+	mov	word [g_BC20], 0x18a
+	mov	word [g_BC56], 0x0
 	push	0x18
 	push	word 0xbc0e
 	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
-	mov	word [0xbca0], 0x189
-	mov	word [0xbcd6], 0x0
+	mov	word [g_BCA0], 0x189
+	mov	word [g_BCD6], 0x0
 	push	0x19
 	push	word 0xbc8e
 	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
-	mov	word [0xbd10], 0xff88
-	mov	word [0xbd14], 0x0
-	mov	word [0xbd44], 0x2
+	mov	word [g_BD10], 0xff88
+	mov	word [g_BD14], 0x0
+	mov	word [g_BD44], 0x2
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0xbd1c], ax
-	mov	[0xbd1a], ax
+	mov	[g_BD1C], ax
+	mov	[g_BD1A], ax
 	push	0x1f
 	mov	ax, 0xbd0e
 	mov	[bp - 0xf6], ax
@@ -364,21 +364,21 @@ Ai_1FAA_000E:
 	call	0x2E42:Ai_2E42_0026
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[bp - 0x64], ax
-	mov	[0xd6d2], ax
-	mov	[0x4b00], ax
-	mov	bx, [0x2996]
+	mov	[g_D6D2], ax
+	mov	[g_4B00], ax
+	mov	bx, [g_2996]
 	mov	byte [bx], 0xff
 	mov	[PadRepeatOn], ax
 	call	0x2C24:Ai_2C24_002E
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0x48be], ax
-	mov	[0x48c0], ax
-	mov	word [0x49f4], 0x1
+	mov	[g_48BE], ax
+	mov	[g_48C0], ax
+	mov	word [g_49F4], 0x1
 	call	0x03A3:CallCountStep
 	mov	word [PadRepeatOn], 0x1
-	mov	word [0x4b02], 0x0
+	mov	word [g_4B02], 0x0
 .15:
-	cmp	word [0x48be], 0x0
+	cmp	word [g_48BE], 0x0
 	jz	short .16
 	jmp	near .24
 .16:
@@ -401,45 +401,45 @@ Ai_1FAA_000E:
 	push	word [bp - 0xf2]
 	call	0x1E7E:Game_1E7E_0404
 	add	sp, 0x2
-	mov	ax, [0x2998]
+	mov	ax, [g_2998]
 	add	ax, strict word 0x20
-	mov	[0xd6cc], ax
+	mov	[g_D6CC], ax
 	cmp	ax, strict word 0x40
 	jng	short .17
-	mov	word [0xd6cc], 0x40
+	mov	word [g_D6CC], 0x40
 .17:
-	cmp	word [0xd6cc], 0x0
+	cmp	word [g_D6CC], 0x0
 	jnl	short .18
-	mov	word [0xd6cc], 0x0
+	mov	word [g_D6CC], 0x0
 .18:
 	mov	ax, 0xec
-	sub	ax, [0x299a]
-	mov	[0xd6ce], ax
+	sub	ax, [g_299A]
+	mov	[g_D6CE], ax
 	cmp	ax, 0x1a8
 	jng	short .19
-	mov	word [0xd6ce], 0x1a8
+	mov	word [g_D6CE], 0x1a8
 .19:
-	cmp	word [0xd6ce], 0x0
+	cmp	word [g_D6CE], 0x0
 	jnl	short .20
-	mov	word [0xd6ce], 0x0
+	mov	word [g_D6CE], 0x0
 .20:
-	push	word [0xd6ce]
-	push	word [0xd6cc]
+	push	word [g_D6CE]
+	push	word [g_D6CC]
 	call	0x1F54:Game_1F54_0316
 	add	sp, 0x4
 	call	0x0FEF:UseOtherPage
 	mov	ax, 0x140
-	sub	ax, [0xd6ce]
+	sub	ax, [g_D6CE]
 	push	ax
-	mov	ax, [0xd6cc]
+	mov	ax, [g_D6CC]
 	sub	ax, 0xc0
 	push	ax
 	call	0x2E42:Ai_2E42_21E2
 	add	sp, 0x4
-	cmp	word [0x49f4], 0x0
+	cmp	word [g_49F4], 0x0
 	jz	short .21
 	mov	ax, [PadRepeatOn]
-	mov	[0xd46a], ax
+	mov	[g_D46A], ax
 	push	word 0x3a0b
 	push	word 0xb352
 	push	word 0x100
@@ -454,38 +454,38 @@ Ai_1FAA_000E:
 	push	0x1
 	call	0x1E7E:Game_1E7E_04C0
 	add	sp, 0x8
-	mov	ax, [0xd46a]
+	mov	ax, [g_D46A]
 	mov	[PadRepeatOn], ax
 .21:
 	push	word [bp - 0xf2]
 	call	0x0EDC:CrowdNoiseUpdate
 	add	sp, 0x2
 	call	0x0000:VgaPageFlip
-	mov	ax, [0xd6d2]
+	mov	ax, [g_D6D2]
 	mov	cx, 0x18
 	cwd
 	idiv	cx
-	mov	[0xd728], ax
-	mov	ax, [0xd6d2]
+	mov	[g_D728], ax
+	mov	ax, [g_D6D2]
 	cwd
 	idiv	cx
-	mov	[0xd6d2], dx
-	cmp	word [0x48be], 0x0
+	mov	[g_D6D2], dx
+	cmp	word [g_48BE], 0x0
 	jz	short .22
-	mov	ax, [0x29de]
-	or	ax, [0x29dc]
+	mov	ax, [g_29DE]
+	or	ax, [g_29DC]
 	jnz	short .22
-	imul	ax, [0x5560], 0x3c
-	add	ax, [0x5562]
+	imul	ax, [g_5560], 0x3c
+	add	ax, [g_5562]
 	imul	ax, ax, 0x64
-	add	ax, [0x5564]
-	mov	[0xd728], ax
+	add	ax, [g_5564]
+	mov	[g_D728], ax
 .22:
 	call	0x2083:Ai_2083_0248
-	cmp	word [0x49f4], 0x0
+	cmp	word [g_49F4], 0x0
 	jz	short .23
 	mov	ax, [PadRepeatOn]
-	mov	[0xd46a], ax
+	mov	[g_D46A], ax
 	push	0x10
 	push	word 0x3a0b
 	push	word 0xa8e
@@ -494,25 +494,25 @@ Ai_1FAA_000E:
 	push	ax
 	call	0x1E7E:Game_1E7E_04C0
 	add	sp, 0x8
-	mov	word [0x49f4], 0x0
-	mov	ax, [0xd46a]
+	mov	word [g_49F4], 0x0
+	mov	ax, [g_D46A]
 	mov	[PadRepeatOn], ax
 .23:
-	cmp	word [0x4b02], 0x0
+	cmp	word [g_4B02], 0x0
 	jz	short .26
 .24:
 	mov	word [PadRepeatOn], 0x0
-	cmp	word [0x49fc], -0x1
+	cmp	word [g_49FC], -0x1
 	jz	short .25
-	push	word [0xd62e]
-	push	word [0xd62c]
+	push	word [g_D62E]
+	push	word [g_D62C]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 .25:
 	mov	ax, 0xffff
-	mov	[0x49f8], ax
-	mov	[0x49fe], ax
-	mov	[0x49fc], ax
+	mov	[g_49F8], ax
+	mov	[g_49FE], ax
+	mov	[g_49FC], ax
 	push	word 0x3a0b
 	push	word 0xb352
 	push	word 0x100
@@ -534,14 +534,14 @@ Ai_1FAA_000E:
 	db	0x90
 .26:
 	call	0x2C24:Ai_2C24_0678
-	test	byte [0xd672], 0x30
+	test	byte [g_D672], 0x30
 	jnz	short .24
 	call	0x2C24:Ai_2C24_06B4
-	test	byte [0xd672], 0x10
+	test	byte [g_D672], 0x10
 	jz	short .27
 	jmp	near .24
 .27:
-	test	byte [0xd672], 0x20
+	test	byte [g_D672], 0x20
 	jnz	short .28
 	jmp	near .15
 .28:
@@ -550,39 +550,39 @@ Ai_1FAA_000E:
 	call	0x16F2:ReleaseAllVoices
 .30:
 	call	0x0EDC:StopJingle
-	mov	word [0x48be], 0xffff
+	mov	word [g_48BE], 0xffff
 	mov	ax, [bp - 0x66]
-	mov	[0x48c0], ax
+	mov	[g_48C0], ax
 	mov	ax, [bp - 0xee]
-	mov	[0x29ca], ax
+	mov	[g_29CA], ax
 	mov	ax, [bp - 0xec]
-	mov	[0x29cc], ax
+	mov	[g_29CC], ax
 	mov	ax, [bp - 0xea]
-	mov	[0xb386], ax
+	mov	[g_B386], ax
 	mov	ax, [bp - 0xe8]
-	mov	[0xb45c], ax
+	mov	[g_B45C], ax
 	mov	ax, [bp - 0xe6]
-	mov	[0x29c6], ax
+	mov	[g_29C6], ax
 	mov	ax, [bp - 0xe4]
-	mov	[0x29c8], ax
+	mov	[g_29C8], ax
 	mov	ax, [bp - 0xe2]
-	mov	[0xbffe], ax
+	mov	[g_BFFE], ax
 	mov	ax, [bp - 0xe0]
-	mov	[0x29da], ax
+	mov	[g_29DA], ax
 	mov	ax, [bp - 0xde]
-	mov	[0xb384], ax
+	mov	[g_B384], ax
 	mov	ax, [bp - 0xdc]
-	mov	[0xb45a], ax
-	mov	ax, [0xb36e]
+	mov	[g_B45A], ax
+	mov	ax, [g_B36E]
 	mov	bx, [bp + 0xa]
 	mov	[bx], ax
-	mov	ax, [0xb444]
+	mov	ax, [g_B444]
 	mov	bx, [bp + 0xc]
 	mov	[bx], ax
 	mov	ax, [bp - 0xda]
-	mov	[0xb36e], ax
+	mov	[g_B36E], ax
 	mov	ax, [bp - 0xd8]
-	mov	[0xb444], ax
+	mov	[g_B444], ax
 	lea	ax, [bp - 0xd6]
 	mov	[bp - 0xfa], ax
 	mov	word [bp - 0xf0], 0x0
@@ -629,46 +629,46 @@ Ai_1FAA_000E:
 	call	0x1B35:OvlThunk173
 	add	sp, 0x2
 	call	0x2E42:Ai_2E42_2D88
-	mov	byte [0x29bb], 0x0
-	mov	byte [0x29bb], 0x1
-	test	byte [0x29da], 0x1
+	mov	byte [g_29BB], 0x0
+	mov	byte [g_29BB], 0x1
+	test	byte [g_29DA], 0x1
 	jz	short .36
-	mov	byte [0x29bb], 0x3
+	mov	byte [g_29BB], 0x3
 .36:
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0x29c0], ax
-	mov	[0x29be], ax
-	mov	[0x29bc], ax
+	mov	[g_29C0], ax
+	mov	[g_29BE], ax
+	mov	[g_29BC], ax
 	mov	ax, [bp - 0x32]
-	mov	[0x29be], ax
-	mov	bx, [0x2996]
+	mov	[g_29BE], ax
+	mov	bx, [g_2996]
 	mov	byte [bx], 0xff
-	mov	word [0x49f0], 0xffff
+	mov	word [g_49F0], 0xffff
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0x2998], ax
-	mov	[0x299a], ax
+	mov	[g_2998], ax
+	mov	[g_299A], ax
 	push	word 0x3a0b
 	push	word 0xa8e
-	push	word [0x29cc]
-	push	word [0x29ca]
+	push	word [g_29CC]
+	push	word [g_29CA]
 	call	0x1E64:Game_1E64_0002
 	add	sp, 0x8
 	call	0x1B35:OvlThunk140
-	push	word [0xc25e]
-	push	word [0xc25c]
+	push	word [g_C25E]
+	push	word [g_C25C]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	push	word [0xc25a]
-	push	word [0xc258]
+	push	word [g_C25A]
+	push	word [g_C258]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	cmp	word [0x29ca], 0x18
+	cmp	word [g_29CA], 0x18
 	jl	short .37
 	mov	ax, 0x9
 	jmp	short .38
 	db	0x90
 .37:
-	mov	ax, [0x29ca]
+	mov	ax, [g_29CA]
 .38:
 	push	ax
 	call	0x1B35:OvlThunk246
@@ -676,39 +676,39 @@ Ai_1FAA_000E:
 	call	0x0FEF:UseOffscreenCanvas
 	call	0x1B35:OvlThunk142
 	push	0x1
-	push	word [0xbffe]
-	push	word [0x29cc]
-	push	word [0x29ca]
+	push	word [g_BFFE]
+	push	word [g_29CC]
+	push	word [g_29CA]
 	call	0x2083:Ai_2083_0512
 	add	sp, 0x8
-	push	word [0xc25a]
-	push	word [0xc258]
+	push	word [g_C25A]
+	push	word [g_C258]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	mov	word [0x49f4], 0x1
+	mov	word [g_49F4], 0x1
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0x48cc], ax
-	mov	[0x48ca], ax
-	mov	[0x48d0], ax
-	mov	[0x48ce], ax
-	mov	[0x48e4], ax
-	mov	[0x48e2], ax
-	mov	[0xd6d2], ax
-	mov	[0x29d2], ax
+	mov	[g_48CC], ax
+	mov	[g_48CA], ax
+	mov	[g_48D0], ax
+	mov	[g_48CE], ax
+	mov	[g_48E4], ax
+	mov	[g_48E2], ax
+	mov	[g_D6D2], ax
+	mov	[g_29D2], ax
 	mov	ax, 0xffff
-	mov	[0x48dc], ax
-	mov	[0x48da], ax
-	mov	[0x29d4], ax
+	mov	[g_48DC], ax
+	mov	[g_48DA], ax
+	mov	[g_29D4], ax
 	push	0x1e
 	push	word 0xbd0e
 	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 	call	0x327B:Ai_327B_0B2C
-	mov	word [0x29ce], 0xffff
+	mov	word [g_29CE], 0xffff
 	call	0x2C24:Ai_2C24_002E
-	cmp	word [0x4b02], 0x0
+	cmp	word [g_4B02], 0x0
 	db	0x74, 0x0E		; jz 0x8e0
-	mov	word [0x4b02], 0x0
+	mov	word [g_4B02], 0x0
 	mov	ax, 0xffff
 	pop	si
 	pop	di

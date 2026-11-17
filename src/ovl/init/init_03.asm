@@ -7,7 +7,7 @@ Init_2137_0004:
 	enter	0x26, 0x0
 	push	di
 	push	si
-	mov	bx, [0x29ca]
+	mov	bx, [g_29CA]
 	cmp	bx, 0x18
 	jl	short .1
 	mov	bx, 0xd
@@ -26,7 +26,7 @@ Init_2137_0004:
 	mov	bx, [bp - 0x22]
 	db	0x03, 0xDF		; add bx, di
 	add	bx, 0x1f3
-	mov	es, [0x8c9c]
+	mov	es, [g_8C9C]
 	mov	[bp - 0x26], bx
 	mov	[bp - 0x24], es
 	cmp	byte [es:bx], 0x0
@@ -62,7 +62,7 @@ Init_2137_0004:
 	cbw
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, byte 0x2
-	mov	es, [0x8c9c]
+	mov	es, [g_8C9C]
 	push	word [es:bx + 0x11d]
 	push	word [es:bx + 0x11b]
 	push	0x0
@@ -146,7 +146,7 @@ Init_2137_0004:
 	cmp	word [bp - 0x2], 0x0
 	jz	short .14
 	mov	ax, [di]
-	mov	es, [0x8c9c]
+	mov	es, [g_8C9C]
 	mov	si, [bp - 0x4]
 	shl	si, 1
 	cmp	[es:si + 0x28f], ax
@@ -167,7 +167,7 @@ Init_2137_0004:
 	mov	si, [bp - 0xc]
 	push	word 0x3701
 	push	word 0xbda
-	mov	es, [0x8c9c]
+	mov	es, [g_8C9C]
 	mov	bx, [bp - 0x4]
 	shl	bx, 1
 	mov	bx, [es:bx + 0x28f]
@@ -187,11 +187,11 @@ Init_2137_0004:
 	push	ax
 	call	0x149D:LoadRawHeader
 	add	sp, 0x4
-	mov	[si - 0x4cfa], ax
-	mov	[si - 0x4cf8], dx
+	mov	[si + g_B306], ax
+	mov	[si + g_B308], dx
 	push	word 0x3701
 	push	word 0xbdf
-	mov	es, [0x8c9c]
+	mov	es, [g_8C9C]
 	mov	bx, [di]
 	shl	bx, byte 0x2
 	push	word [es:bx + 0x11d]
@@ -208,8 +208,8 @@ Init_2137_0004:
 	push	ax
 	call	0x149D:LoadRawHeader
 	add	sp, 0x4
-	mov	[si - 0x4cee], ax
-	mov	[si - 0x4cec], dx
+	mov	[si + g_B312], ax
+	mov	[si + g_B314], dx
 	add	si, 0x4
 	inc	di
 	inc	di
@@ -296,12 +296,12 @@ Init_2137_0004:
 	mov	[ArenaJingleBSeg], dx
 	push	word 0x3701
 	push	word 0xbda
-	mov	bx, [0x29ca]
-	mov	al, [bx + 0x5b76]
+	mov	bx, [g_29CA]
+	mov	al, [bx + g_5B76]
 	cbw
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, byte 0x2
-	mov	es, [0x8c9c]
+	mov	es, [g_8C9C]
 	push	word [es:bx + 0x2ae]
 	push	word [es:bx + 0x2ac]
 	push	0x0
@@ -316,16 +316,16 @@ Init_2137_0004:
 	push	ax
 	call	0x149D:LoadRawHeader
 	add	sp, 0x4
-	mov	[0xb2f2], ax
-	mov	[0xb2f4], dx
+	mov	[g_B2F2], ax
+	mov	[g_B2F4], dx
 	push	word 0x3701
 	push	word 0xbdf
-	mov	bx, [0x29ca]
-	mov	al, [bx + 0x5b76]
+	mov	bx, [g_29CA]
+	mov	al, [bx + g_5B76]
 	cbw
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, byte 0x2
-	mov	es, [0x8c9c]
+	mov	es, [g_8C9C]
 	push	word [es:bx + 0x2ae]
 	push	word [es:bx + 0x2ac]
 	push	0x0
@@ -340,8 +340,8 @@ Init_2137_0004:
 	push	ax
 	call	0x149D:LoadRawHeader
 	add	sp, 0x4
-	mov	[0xb2fe], ax
-	mov	[0xb300], dx
+	mov	[g_B2FE], ax
+	mov	[g_B300], dx
 	push	word 0x3701
 	push	word 0xbda
 	push	ds
@@ -358,8 +358,8 @@ Init_2137_0004:
 	push	ax
 	call	0x149D:LoadRawHeader
 	add	sp, 0x4
-	mov	[0xb2f6], ax
-	mov	[0xb2f8], dx
+	mov	[g_B2F6], ax
+	mov	[g_B2F8], dx
 	push	word 0x3701
 	push	word 0xbdf
 	push	ds
@@ -376,8 +376,8 @@ Init_2137_0004:
 	push	ax
 	call	0x149D:LoadRawHeader
 	add	sp, 0x4
-	mov	[0xb302], ax
-	mov	[0xb304], dx
+	mov	[g_B302], ax
+	mov	[g_B304], dx
 	pop	si
 	pop	di
 	leave
@@ -418,27 +418,27 @@ Init_2137_03D6:
 	db	0x2B, 0xF6		; sub si, si
 	mov	di, [bp - 0x2]
 .4:
-	mov	ax, [si - 0x4cf8]
-	or	ax, [si - 0x4cfa]
+	mov	ax, [si + g_B308]
+	or	ax, [si + g_B306]
 	jz	short .5
-	push	word [si - 0x4cf8]
-	push	word [si - 0x4cfa]
+	push	word [si + g_B308]
+	push	word [si + g_B306]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[si - 0x4cf8], ax
-	mov	[si - 0x4cfa], ax
+	mov	[si + g_B308], ax
+	mov	[si + g_B306], ax
 .5:
-	mov	ax, [si - 0x4cec]
-	or	ax, [si - 0x4cee]
+	mov	ax, [si + g_B314]
+	or	ax, [si + g_B312]
 	jz	short .6
-	push	word [si - 0x4cec]
-	push	word [si - 0x4cee]
+	push	word [si + g_B314]
+	push	word [si + g_B312]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[si - 0x4cec], ax
-	mov	[si - 0x4cee], ax
+	mov	[si + g_B314], ax
+	mov	[si + g_B312], ax
 .6:
 	add	si, 0x4
 	cmp	si, 0xc

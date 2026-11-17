@@ -65,14 +65,14 @@ Fades1_3358_0000:
 	leave
 	retf
 .6:
-	mov	es, [0x8ce8]
+	mov	es, [g_8CE8]
 	mov	ax, [es:0x74f2]
 	mov	[bp - 0x28], ax
 	mov	ax, [es:0x74f4]
 	mov	[bp - 0x1e], ax
 	mov	cx, [es:0x74f6]
 	mov	[bp - 0x4], cx
-	mov	es, [0x8cea]
+	mov	es, [g_8CEA]
 	cmp	word [CurPage], 0x1
 	db	0x1B, 0xDB		; sbb bx, bx
 	neg	bx
@@ -82,7 +82,7 @@ Fades1_3358_0000:
 	mov	dx, [es:bx + 0x2]
 	mov	[bp - 0x2c], cx
 	mov	[bp - 0x2a], dx
-	mov	es, [0x8cea]
+	mov	es, [g_8CEA]
 	mov	bx, [CurPage]
 	shl	bx, byte 0x2
 	les	bx, [es:bx + 0x7570]

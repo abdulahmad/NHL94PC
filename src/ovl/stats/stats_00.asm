@@ -7,12 +7,12 @@ Stats_1E45_0000:
 	mov	cx, [bp + 0x6]
 	db	0x0B, 0xC9		; or cx, cx
 	jnz	short .3
-	mov	es, [0x8c32]
+	mov	es, [g_8C32]
 	mov	al, [es:0x64]
 	mov	[bp - 0x8], al
 	db	0x0A, 0xC0		; or al, al
 	jz	short .1
-	mov	es, [0x8c34]
+	mov	es, [g_8C34]
 	cmp	byte [es:0xc6], 0x0
 	jnz	short .3
 .1:
@@ -22,7 +22,7 @@ Stats_1E45_0000:
 	jmp	short .3
 	db	0x90
 .2:
-	mov	es, [0x8c34]
+	mov	es, [g_8C34]
 	cmp	byte [es:0xc6], 0x1
 	db	0x1B, 0xC9		; sbb cx, cx
 	and	cl, 0xfe
@@ -46,7 +46,7 @@ Stats_1E45_0000:
 	mov	si, [bp - 0x4]
 	jmp	near .30
 .7:
-	mov	es, [0x8c36]
+	mov	es, [g_8C36]
 	mov	word [es:0xde], 0x1fef
 	mov	word [es:0xe0], 0x1b35
 	mov	word [es:0xf4], 0x1ff9
@@ -81,15 +81,15 @@ Stats_1E45_0000:
 	mov	[es:bx], al
 	les	bx, [bp - 0x10]
 	mov	[es:bx], al
-	mov	es, [0x8c36]
+	mov	es, [g_8C36]
 	mov	[es:0x13], al
 	mov	[es:0x0], al
-	mov	word [0x2010], 0x1
-	cmp	word [0x200e], 0x0
+	mov	word [g_2010], 0x1
+	cmp	word [g_200E], 0x0
 	jz	short .8
-	mov	word [0x21ba], 0x0
+	mov	word [g_21BA], 0x0
 .8:
-	mov	word [0x200e], 0x0
+	mov	word [g_200E], 0x0
 	jmp	short .11
 .9:
 	les	bx, [bp - 0x10]
@@ -101,15 +101,15 @@ Stats_1E45_0000:
 	mov	[es:bx], al
 	les	bx, [bp - 0xc]
 	mov	[es:bx], al
-	mov	es, [0x8c36]
+	mov	es, [g_8C36]
 	mov	[es:0x13], al
 	mov	[es:0x0], al
-	mov	word [0x2010], 0x1
-	cmp	word [0x200e], 0x0
+	mov	word [g_2010], 0x1
+	cmp	word [g_200E], 0x0
 	jnz	short .10
-	mov	word [0x21ba], 0x0
+	mov	word [g_21BA], 0x0
 .10:
-	mov	word [0x200e], 0x1
+	mov	word [g_200E], 0x1
 .11:
 	push	0x1f
 	push	word 0x3415
@@ -125,15 +125,15 @@ Stats_1E45_0000:
 	mov	[es:bx], al
 	les	bx, [bp - 0xc]
 	mov	[es:bx], al
-	mov	es, [0x8c36]
+	mov	es, [g_8C36]
 	mov	[es:0x13], al
 	mov	[es:0x0], al
-	mov	word [0x2010], 0x1
-	cmp	word [0x200e], 0x0
+	mov	word [g_2010], 0x1
+	cmp	word [g_200E], 0x0
 	jnz	short .13
-	mov	word [0x21ba], 0x0
+	mov	word [g_21BA], 0x0
 .13:
-	mov	word [0x200e], 0x1
+	mov	word [g_200E], 0x1
 	push	0x1f
 	push	word 0x3415
 	push	strict word 0x64
@@ -146,7 +146,7 @@ Stats_1E45_0000:
 	mov	si, 0x7
 	jmp	near .30
 .16:
-	mov	es, [0x8c36]
+	mov	es, [g_8C36]
 	cmp	byte [es:0x0], 0x2
 	jnz	short .18
 	cmp	byte [es:0x13], 0x2
@@ -157,12 +157,12 @@ Stats_1E45_0000:
 	mov	[es:0x3d], al
 	mov	[es:0x29], al
 	mov	[es:0x13], al
-	mov	word [0x2010], 0x0
-	cmp	word [0x200e], 0x0
+	mov	word [g_2010], 0x0
+	cmp	word [g_200E], 0x0
 	jz	short .17
-	mov	word [0x21ba], 0x0
+	mov	word [g_21BA], 0x0
 .17:
-	mov	word [0x200e], 0x0
+	mov	word [g_200E], 0x0
 	push	0x1f
 	push	word 0x3415
 	push	strict word 0x2
@@ -175,7 +175,7 @@ Stats_1E45_0000:
 	jmp	near .30
 	db	0x90
 .19:
-	mov	es, [0x8c36]
+	mov	es, [g_8C36]
 	mov	word [es:0xde], 0x2003
 	mov	word [es:0xe0], 0x1b35
 	mov	ax, 0x5b
@@ -198,19 +198,19 @@ Stats_1E45_0000:
 	les	bx, [bp - 0x14]
 	mov	byte [es:bx], 0x1
 	mov	al, 0x2
-	mov	es, [0x8c36]
+	mov	es, [g_8C36]
 	mov	[es:0x3d], al
 	les	bx, [bp - 0xc]
 	mov	[es:bx], al
-	mov	es, [0x8c36]
+	mov	es, [g_8C36]
 	mov	[es:0x13], al
 	mov	[es:0x0], al
-	mov	word [0x2010], 0x1
-	cmp	word [0x200e], 0x0
+	mov	word [g_2010], 0x1
+	cmp	word [g_200E], 0x0
 	jnz	short .21
-	mov	word [0x21ba], 0x0
+	mov	word [g_21BA], 0x0
 .21:
-	mov	word [0x200e], 0x1
+	mov	word [g_200E], 0x1
 	push	0x1f
 	push	word 0x3415
 	push	strict word 0x64
@@ -223,7 +223,7 @@ Stats_1E45_0000:
 	jmp	near .30
 	db	0x90
 .23:
-	mov	es, [0x8c36]
+	mov	es, [g_8C36]
 	mov	word [es:0xde], 0x1fef
 	mov	word [es:0xe0], 0x1b35
 	mov	word [es:0xf4], 0x1ff9
@@ -259,15 +259,15 @@ Stats_1E45_0000:
 	mov	[es:bx], al
 	les	bx, [bp - 0xc]
 	mov	[es:bx], al
-	mov	es, [0x8c36]
+	mov	es, [g_8C36]
 	mov	[es:0x13], al
 	mov	[es:0x0], al
-	mov	word [0x2010], 0x1
-	cmp	word [0x200e], 0x0
+	mov	word [g_2010], 0x1
+	cmp	word [g_200E], 0x0
 	jnz	short .25
-	mov	word [0x21ba], 0x0
+	mov	word [g_21BA], 0x0
 .25:
-	mov	word [0x200e], 0x1
+	mov	word [g_200E], 0x1
 	jmp	short .28
 	db	0x90
 .26:
@@ -278,15 +278,15 @@ Stats_1E45_0000:
 	mov	[es:bx], al
 	les	bx, [bp - 0x10]
 	mov	[es:bx], al
-	mov	es, [0x8c36]
+	mov	es, [g_8C36]
 	mov	[es:0x13], al
 	mov	[es:0x0], al
-	mov	word [0x2010], 0x1
-	cmp	word [0x200e], 0x0
+	mov	word [g_2010], 0x1
+	cmp	word [g_200E], 0x0
 	jz	short .27
-	mov	word [0x21ba], 0x0
+	mov	word [g_21BA], 0x0
 .27:
-	mov	word [0x200e], 0x0
+	mov	word [g_200E], 0x0
 .28:
 	push	0x1f
 	push	word 0x3415
@@ -300,13 +300,13 @@ Stats_1E45_0000:
 .30:
 	cmp	si, 0x4
 	jnz	short .31
-	mov	es, [0x8c36]
+	mov	es, [g_8C36]
 	mov	word [es:0x94], 0x78
 	mov	byte [es:0x88], 0x0
 	jmp	short .32
 	db	0x90
 .31:
-	mov	es, [0x8c36]
+	mov	es, [g_8C36]
 	mov	word [es:0x94], 0x9b
 	mov	byte [es:0x88], 0x2d
 .32:
@@ -331,31 +331,31 @@ Stats_1E45_0000:
 	mov	ax, DGROUP
 	mov	ds, ax
 .34:
-	mov	es, [0x8c36]
+	mov	es, [g_8C36]
 	imul	bx, si, 0x16
 	inc	word [es:bx + 0x80]
 	db	0x8B, 0xC6		; mov ax, si
-	mov	es, [0x8c44]
+	mov	es, [g_8C44]
 	mov	[es:0x11d5], al
-	mov	es, [0x8c46]
+	mov	es, [g_8C46]
 	mov	[es:0x1960], al
-	mov	es, [0x8c48]
+	mov	es, [g_8C48]
 	mov	[es:0x18b0], al
-	mov	es, [0x8c4a]
+	mov	es, [g_8C4A]
 	mov	[es:0x186e], al
-	mov	es, [0x8c4c]
+	mov	es, [g_8C4C]
 	mov	[es:0x182c], al
-	mov	es, [0x8c4e]
+	mov	es, [g_8C4E]
 	mov	[es:0x1800], al
-	mov	es, [0x8c50]
+	mov	es, [g_8C50]
 	mov	[es:0x17d4], al
-	mov	es, [0x8c52]
+	mov	es, [g_8C52]
 	mov	[es:0x170e], al
-	mov	es, [0x8c54]
+	mov	es, [g_8C54]
 	mov	[es:0x1674], al
-	mov	es, [0x8c56]
+	mov	es, [g_8C56]
 	mov	[es:0x110a], al
-	mov	es, [0x8c58]
+	mov	es, [g_8C58]
 	mov	[es:0xcea], al
 	pop	si
 	pop	di
@@ -366,7 +366,7 @@ Stats_1E45_047C:
 	enter	0x8, 0x0
 	push	si
 	mov	bx, 0x64
-	mov	es, [0x8c32]
+	mov	es, [g_8C32]
 	mov	[bp - 0x4], bx
 	mov	[bp - 0x2], es
 	cmp	byte [es:bx], 0x0
@@ -377,7 +377,7 @@ Stats_1E45_047C:
 	call	Stats_1E45_0576
 	add	sp, 0x4
 	db	0x8B, 0xD8		; mov bx, ax
-	mov	es, [0x8c32]
+	mov	es, [g_8C32]
 	db	0x26, 0xC6, 0x87, 0x64, 0x00, 0x00		; mov byte [es:bx + 0x64], 0x0
 	push	word [bp - 0x2]
 	push	word [bp - 0x4]
@@ -395,11 +395,11 @@ Stats_1E45_047C:
 	db	0x8B, 0xF0		; mov si, ax
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
-	mov	es, [0x8c32]
+	mov	es, [g_8C32]
 	db	0x26, 0xC6, 0x84, 0x64, 0x00, 0x2E		; mov byte [es:si + 0x64], 0x2e
 .1:
 	mov	bx, 0xc6
-	mov	es, [0x8c34]
+	mov	es, [g_8C34]
 	mov	[bp - 0x8], bx
 	mov	[bp - 0x6], es
 	cmp	byte [es:bx], 0x0
@@ -410,7 +410,7 @@ Stats_1E45_047C:
 	call	Stats_1E45_0576
 	add	sp, 0x4
 	db	0x8B, 0xD8		; mov bx, ax
-	mov	es, [0x8c34]
+	mov	es, [g_8C34]
 	mov	byte [es:bx + 0xc6], 0x0
 	push	word [bp - 0x6]
 	push	word [bp - 0x8]
@@ -443,7 +443,7 @@ Stats_1E45_047C:
 	db	0x8B, 0xF0		; mov si, ax
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
-	mov	es, [0x8c34]
+	mov	es, [g_8C34]
 	mov	byte [es:si + 0xc6], 0x2e
 .2:
 	pop	si
@@ -533,30 +533,30 @@ Stats_1E45_0598JumpTable:
 	mov	bx, 0x6b
 .8:
 	mov	ax, [bp - 0x8]
-	mov	es, [0x8c5a]
+	mov	es, [g_8C5A]
 	mov	[es:0x1770], cx
 	mov	[es:0x1772], ax
-	mov	es, [0x8c5c]
+	mov	es, [g_8C5C]
 	mov	[es:0x172e], cx
 	mov	[es:0x1730], ax
-	mov	es, [0x8c5e]
+	mov	es, [g_8C5E]
 	mov	[es:0x16aa], cx
 	mov	[es:0x16ac], ax
-	mov	es, [0x8c60]
+	mov	es, [g_8C60]
 	mov	[es:0x167e], cx
 	mov	[es:0x1680], ax
-	mov	es, [0x8c5e]
+	mov	es, [g_8C5E]
 	mov	[es:0x16a6], bx
-	mov	es, [0x8c60]
+	mov	es, [g_8C60]
 	mov	[es:0x167a], bx
 	cmp	bx, 0x4f
 	jnl	short .9
 	mov	bx, 0x4f
 .9:
-	mov	es, [0x8c5a]
+	mov	es, [g_8C5A]
 	mov	[es:0x176c], bx
 	mov	[es:0x1756], bx
 	mov	[es:0x1740], bx
-	mov	es, [0x8c5c]
+	mov	es, [g_8C5C]
 	mov	[es:0x172a], bx
 	mov	[es:0x1714], bx

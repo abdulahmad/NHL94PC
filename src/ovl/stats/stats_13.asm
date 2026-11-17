@@ -9,28 +9,28 @@ Stats_26BE_000A:
 	enter	0x8, 0x0
 	push	di
 	push	si
-	cmp	word [ss:0x200e], 0x0
+	cmp	word [ss:g_200E], 0x0
 	jnz	short .1
 	mov	bx, [bp + 0x6]
 	imul	ax, [ss:bx], 0x30
-	add	ax, [ss:0xc044]
-	mov	dx, [ss:0xc046]
+	add	ax, [ss:g_C044]
+	mov	dx, [ss:g_C046]
 	jmp	short .2
 	db	0x90
 .1:
 	mov	bx, [bp + 0x6]
 	imul	ax, [ss:bx], 0x30
-	add	ax, [ss:0xc044]
-	mov	dx, [ss:0xc046]
+	add	ax, [ss:g_C044]
+	mov	dx, [ss:g_C046]
 	add	ax, strict word 0x12
 .2:
 	db	0x8B, 0xF8		; mov di, ax
 	mov	[bp - 0x6], dx
-	cmp	word [ss:0x200e], 0x0
+	cmp	word [ss:g_200E], 0x0
 	jnz	short .3
 	mov	si, [bp + 0x8]
 	imul	ax, [ss:si], 0x30
-	add	ax, [ss:0xc044]
+	add	ax, [ss:g_C044]
 	db	0x8B, 0xD8		; mov bx, ax
 	mov	ds, dx
 	mov	[bp - 0x2], ds
@@ -38,8 +38,8 @@ Stats_26BE_000A:
 .3:
 	mov	si, [bp + 0x8]
 	imul	ax, [ss:si], 0x30
-	add	ax, [ss:0xc044]
-	mov	dx, [ss:0xc046]
+	add	ax, [ss:g_C044]
+	mov	dx, [ss:g_C046]
 	add	ax, strict word 0x12
 	db	0x8B, 0xD8		; mov bx, ax
 	mov	[bp - 0x2], dx
@@ -95,28 +95,28 @@ Stats_26BE_00EC:
 	enter	0x8, 0x0
 	push	di
 	push	si
-	cmp	word [ss:0x200e], 0x0
+	cmp	word [ss:g_200E], 0x0
 	jnz	short .1
 	mov	bx, [bp + 0x6]
 	imul	ax, [ss:bx], 0x30
-	add	ax, [ss:0xc044]
-	mov	dx, [ss:0xc046]
+	add	ax, [ss:g_C044]
+	mov	dx, [ss:g_C046]
 	jmp	short .2
 	db	0x90
 .1:
 	mov	bx, [bp + 0x6]
 	imul	ax, [ss:bx], 0x30
-	add	ax, [ss:0xc044]
-	mov	dx, [ss:0xc046]
+	add	ax, [ss:g_C044]
+	mov	dx, [ss:g_C046]
 	add	ax, strict word 0x12
 .2:
 	db	0x8B, 0xF8		; mov di, ax
 	mov	[bp - 0x6], dx
-	cmp	word [ss:0x200e], 0x0
+	cmp	word [ss:g_200E], 0x0
 	jnz	short .3
 	mov	si, [bp + 0x8]
 	imul	ax, [ss:si], 0x30
-	add	ax, [ss:0xc044]
+	add	ax, [ss:g_C044]
 	db	0x8B, 0xD8		; mov bx, ax
 	mov	ds, dx
 	mov	[bp - 0x2], ds
@@ -124,8 +124,8 @@ Stats_26BE_00EC:
 .3:
 	mov	si, [bp + 0x8]
 	imul	ax, [ss:si], 0x30
-	add	ax, [ss:0xc044]
-	mov	dx, [ss:0xc046]
+	add	ax, [ss:g_C044]
+	mov	dx, [ss:g_C046]
 	add	ax, strict word 0x12
 	db	0x8B, 0xD8		; mov bx, ax
 	mov	[bp - 0x2], dx
@@ -177,28 +177,28 @@ Stats_26BE_01C6:
 	enter	0x8, 0x0
 	push	di
 	push	si
-	cmp	word [ss:0x200e], 0x0
+	cmp	word [ss:g_200E], 0x0
 	jnz	short .1
 	mov	bx, [bp + 0x6]
 	imul	ax, [ss:bx], 0x30
-	add	ax, [ss:0xc044]
-	mov	dx, [ss:0xc046]
+	add	ax, [ss:g_C044]
+	mov	dx, [ss:g_C046]
 	jmp	short .2
 	db	0x90
 .1:
 	mov	bx, [bp + 0x6]
 	imul	ax, [ss:bx], 0x30
-	add	ax, [ss:0xc044]
-	mov	dx, [ss:0xc046]
+	add	ax, [ss:g_C044]
+	mov	dx, [ss:g_C046]
 	add	ax, strict word 0x12
 .2:
 	db	0x8B, 0xF8		; mov di, ax
 	mov	[bp - 0x6], dx
-	cmp	word [ss:0x200e], 0x0
+	cmp	word [ss:g_200E], 0x0
 	jnz	short .3
 	mov	si, [bp + 0x8]
 	imul	ax, [ss:si], 0x30
-	add	ax, [ss:0xc044]
+	add	ax, [ss:g_C044]
 	db	0x8B, 0xD8		; mov bx, ax
 	mov	ds, dx
 	mov	[bp - 0x2], ds
@@ -206,8 +206,8 @@ Stats_26BE_01C6:
 .3:
 	mov	si, [bp + 0x8]
 	imul	ax, [ss:si], 0x30
-	add	ax, [ss:0xc044]
-	mov	dx, [ss:0xc046]
+	add	ax, [ss:g_C044]
+	mov	dx, [ss:g_C046]
 	add	ax, strict word 0x12
 	db	0x8B, 0xD8		; mov bx, ax
 	mov	[bp - 0x2], dx
@@ -270,28 +270,28 @@ Stats_26BE_02C0:
 	enter	0x8, 0x0
 	push	di
 	push	si
-	cmp	word [ss:0x200e], 0x0
+	cmp	word [ss:g_200E], 0x0
 	jnz	short .1
 	mov	bx, [bp + 0x6]
 	imul	ax, [ss:bx], 0x30
-	add	ax, [ss:0xc044]
-	mov	dx, [ss:0xc046]
+	add	ax, [ss:g_C044]
+	mov	dx, [ss:g_C046]
 	jmp	short .2
 	db	0x90
 .1:
 	mov	bx, [bp + 0x6]
 	imul	ax, [ss:bx], 0x30
-	add	ax, [ss:0xc044]
-	mov	dx, [ss:0xc046]
+	add	ax, [ss:g_C044]
+	mov	dx, [ss:g_C046]
 	add	ax, strict word 0x12
 .2:
 	db	0x8B, 0xF8		; mov di, ax
 	mov	[bp - 0x6], dx
-	cmp	word [ss:0x200e], 0x0
+	cmp	word [ss:g_200E], 0x0
 	jnz	short .3
 	mov	si, [bp + 0x8]
 	imul	ax, [ss:si], 0x30
-	add	ax, [ss:0xc044]
+	add	ax, [ss:g_C044]
 	db	0x8B, 0xD8		; mov bx, ax
 	mov	ds, dx
 	mov	[bp - 0x2], ds
@@ -299,8 +299,8 @@ Stats_26BE_02C0:
 .3:
 	mov	si, [bp + 0x8]
 	imul	ax, [ss:si], 0x30
-	add	ax, [ss:0xc044]
-	mov	dx, [ss:0xc046]
+	add	ax, [ss:g_C044]
+	mov	dx, [ss:g_C046]
 	add	ax, strict word 0x12
 	db	0x8B, 0xD8		; mov bx, ax
 	mov	[bp - 0x2], dx
@@ -363,28 +363,28 @@ Stats_26BE_03BA:
 	enter	0x8, 0x0
 	push	di
 	push	si
-	cmp	word [ss:0x200e], 0x0
+	cmp	word [ss:g_200E], 0x0
 	jnz	short .1
 	mov	bx, [bp + 0x6]
 	imul	ax, [ss:bx], 0x30
-	add	ax, [ss:0xc044]
-	mov	dx, [ss:0xc046]
+	add	ax, [ss:g_C044]
+	mov	dx, [ss:g_C046]
 	jmp	short .2
 	db	0x90
 .1:
 	mov	bx, [bp + 0x6]
 	imul	ax, [ss:bx], 0x30
-	add	ax, [ss:0xc044]
-	mov	dx, [ss:0xc046]
+	add	ax, [ss:g_C044]
+	mov	dx, [ss:g_C046]
 	add	ax, strict word 0x12
 .2:
 	db	0x8B, 0xF8		; mov di, ax
 	mov	[bp - 0x6], dx
-	cmp	word [ss:0x200e], 0x0
+	cmp	word [ss:g_200E], 0x0
 	jnz	short .3
 	mov	si, [bp + 0x8]
 	imul	ax, [ss:si], 0x30
-	add	ax, [ss:0xc044]
+	add	ax, [ss:g_C044]
 	db	0x8B, 0xD8		; mov bx, ax
 	mov	ds, dx
 	mov	[bp - 0x2], ds
@@ -392,8 +392,8 @@ Stats_26BE_03BA:
 .3:
 	mov	si, [bp + 0x8]
 	imul	ax, [ss:si], 0x30
-	add	ax, [ss:0xc044]
-	mov	dx, [ss:0xc046]
+	add	ax, [ss:g_C044]
+	mov	dx, [ss:g_C046]
 	add	ax, strict word 0x12
 	db	0x8B, 0xD8		; mov bx, ax
 	mov	[bp - 0x2], dx
@@ -449,28 +449,28 @@ Stats_26BE_049E:
 	enter	0x8, 0x0
 	push	di
 	push	si
-	cmp	word [ss:0x200e], 0x0
+	cmp	word [ss:g_200E], 0x0
 	jnz	short .1
 	mov	bx, [bp + 0x6]
 	imul	ax, [ss:bx], 0x30
-	add	ax, [ss:0xc044]
-	mov	dx, [ss:0xc046]
+	add	ax, [ss:g_C044]
+	mov	dx, [ss:g_C046]
 	jmp	short .2
 	db	0x90
 .1:
 	mov	bx, [bp + 0x6]
 	imul	ax, [ss:bx], 0x30
-	add	ax, [ss:0xc044]
-	mov	dx, [ss:0xc046]
+	add	ax, [ss:g_C044]
+	mov	dx, [ss:g_C046]
 	add	ax, strict word 0x12
 .2:
 	db	0x8B, 0xF8		; mov di, ax
 	mov	[bp - 0x6], dx
-	cmp	word [ss:0x200e], 0x0
+	cmp	word [ss:g_200E], 0x0
 	jnz	short .3
 	mov	si, [bp + 0x8]
 	imul	ax, [ss:si], 0x30
-	add	ax, [ss:0xc044]
+	add	ax, [ss:g_C044]
 	db	0x8B, 0xD8		; mov bx, ax
 	mov	ds, dx
 	mov	[bp - 0x2], ds
@@ -478,8 +478,8 @@ Stats_26BE_049E:
 .3:
 	mov	si, [bp + 0x8]
 	imul	ax, [ss:si], 0x30
-	add	ax, [ss:0xc044]
-	mov	dx, [ss:0xc046]
+	add	ax, [ss:g_C044]
+	mov	dx, [ss:g_C046]
 	add	ax, strict word 0x12
 	db	0x8B, 0xD8		; mov bx, ax
 	mov	[bp - 0x2], dx
@@ -547,12 +547,12 @@ Stats_26BE_0598:
 	mov	si, [si]
 	mov	[bp - 0xc], si
 	shl	si, 1
-	add	si, [0xcfc8]
-	mov	es, [0xcfca]
+	add	si, [g_CFC8]
+	mov	es, [g_CFCA]
 	mov	ax, [es:si]
 	mov	si, [bx]
 	shl	si, 1
-	add	si, [0xcfc8]
+	add	si, [g_CFC8]
 	mov	cx, [es:si]
 	db	0x3B, 0xC1		; cmp ax, cx
 	jz	short .1
@@ -563,29 +563,29 @@ Stats_26BE_0598:
 	retf
 	db	0x90
 .1:
-	cmp	word [0x200e], 0x0
+	cmp	word [g_200E], 0x0
 	jnz	short .2
 	imul	ax, [bx], 0x30
-	add	ax, [0xc044]
-	mov	dx, [0xc046]
+	add	ax, [g_C044]
+	mov	dx, [g_C046]
 	jmp	short .3
 .2:
 	imul	ax, [bx], 0x30
-	add	ax, [0xc044]
-	mov	dx, [0xc046]
+	add	ax, [g_C044]
+	mov	dx, [g_C046]
 	add	ax, strict word 0x12
 .3:
 	db	0x8B, 0xF8		; mov di, ax
 	mov	[bp - 0x6], dx
-	cmp	word [0x200e], 0x0
+	cmp	word [g_200E], 0x0
 	jnz	short .4
 	imul	ax, [bp - 0xc], 0x30
-	add	ax, [0xc044]
+	add	ax, [g_C044]
 	jmp	short .5
 .4:
 	imul	ax, [bp - 0xc], 0x30
-	add	ax, [0xc044]
-	mov	dx, [0xc046]
+	add	ax, [g_C044]
+	mov	dx, [g_C046]
 	add	ax, strict word 0x12
 .5:
 	db	0x8B, 0xD8		; mov bx, ax
@@ -642,28 +642,28 @@ Stats_26BE_067A:
 	enter	0x8, 0x0
 	push	di
 	push	si
-	cmp	word [ss:0x200e], 0x0
+	cmp	word [ss:g_200E], 0x0
 	jnz	short .1
 	mov	bx, [bp + 0x6]
 	imul	ax, [ss:bx], 0x36
-	add	ax, [ss:0xc040]
-	mov	dx, [ss:0xc042]
+	add	ax, [ss:g_C040]
+	mov	dx, [ss:g_C042]
 	jmp	short .2
 	db	0x90
 .1:
 	mov	bx, [bp + 0x6]
 	imul	ax, [ss:bx], 0x36
-	add	ax, [ss:0xc040]
-	mov	dx, [ss:0xc042]
+	add	ax, [ss:g_C040]
+	mov	dx, [ss:g_C042]
 	add	ax, strict word 0x16
 .2:
 	db	0x8B, 0xF8		; mov di, ax
 	mov	[bp - 0x6], dx
-	cmp	word [ss:0x200e], 0x0
+	cmp	word [ss:g_200E], 0x0
 	jnz	short .3
 	mov	si, [bp + 0x8]
 	imul	ax, [ss:si], 0x36
-	add	ax, [ss:0xc040]
+	add	ax, [ss:g_C040]
 	db	0x8B, 0xD8		; mov bx, ax
 	mov	ds, dx
 	mov	[bp - 0x2], ds
@@ -671,8 +671,8 @@ Stats_26BE_067A:
 .3:
 	mov	si, [bp + 0x8]
 	imul	ax, [ss:si], 0x36
-	add	ax, [ss:0xc040]
-	mov	dx, [ss:0xc042]
+	add	ax, [ss:g_C040]
+	mov	dx, [ss:g_C042]
 	add	ax, strict word 0x16
 	db	0x8B, 0xD8		; mov bx, ax
 	mov	[bp - 0x2], dx
@@ -688,7 +688,7 @@ Stats_26BE_067A:
 	sub	ax, [es:di + 0x2]
 	jmp	near .11
 .5:
-	cmp	word [ss:0x200e], 0x0
+	cmp	word [ss:g_200E], 0x0
 	jnz	short .6
 	mov	es, [bp - 0x2]
 	mov	ax, [es:bx + 0x6]
@@ -763,28 +763,28 @@ Stats_26BE_07C2:
 	enter	0x8, 0x0
 	push	di
 	push	si
-	cmp	word [ss:0x200e], 0x0
+	cmp	word [ss:g_200E], 0x0
 	jnz	short .1
 	mov	bx, [bp + 0x6]
 	imul	ax, [ss:bx], 0x36
-	add	ax, [ss:0xc040]
-	mov	dx, [ss:0xc042]
+	add	ax, [ss:g_C040]
+	mov	dx, [ss:g_C042]
 	jmp	short .2
 	db	0x90
 .1:
 	mov	bx, [bp + 0x6]
 	imul	ax, [ss:bx], 0x36
-	add	ax, [ss:0xc040]
-	mov	dx, [ss:0xc042]
+	add	ax, [ss:g_C040]
+	mov	dx, [ss:g_C042]
 	add	ax, strict word 0x16
 .2:
 	db	0x8B, 0xF8		; mov di, ax
 	mov	[bp - 0x6], dx
-	cmp	word [ss:0x200e], 0x0
+	cmp	word [ss:g_200E], 0x0
 	jnz	short .3
 	mov	si, [bp + 0x8]
 	imul	ax, [ss:si], 0x36
-	add	ax, [ss:0xc040]
+	add	ax, [ss:g_C040]
 	db	0x8B, 0xD8		; mov bx, ax
 	mov	ds, dx
 	mov	[bp - 0x2], ds
@@ -792,8 +792,8 @@ Stats_26BE_07C2:
 .3:
 	mov	si, [bp + 0x8]
 	imul	ax, [ss:si], 0x36
-	add	ax, [ss:0xc040]
-	mov	dx, [ss:0xc042]
+	add	ax, [ss:g_C040]
+	mov	dx, [ss:g_C042]
 	add	ax, strict word 0x16
 	db	0x8B, 0xD8		; mov bx, ax
 	mov	[bp - 0x2], dx
@@ -875,8 +875,8 @@ Stats_26BE_08DA:
 	push	word 0x2892
 	call	0x14DB:AllocRecData
 	add	sp, 0x8
-	mov	[0xc048], ax
-	mov	[0xc04a], dx
+	mov	[g_C048], ax
+	mov	[g_C04A], dx
 	cmp	word [bp + 0x6], 0x8
 	jnl	short .1
 	push	0x0
@@ -885,8 +885,8 @@ Stats_26BE_08DA:
 	push	word 0x2897
 	call	0x14DB:AllocRecData
 	add	sp, 0x8
-	mov	[0xc044], ax
-	mov	[0xc046], dx
+	mov	[g_C044], ax
+	mov	[g_C046], dx
 	jmp	short .2
 .1:
 	push	0x0
@@ -895,8 +895,8 @@ Stats_26BE_08DA:
 	push	word 0x289d
 	call	0x14DB:AllocRecData
 	add	sp, 0x8
-	mov	[0xc040], ax
-	mov	[0xc042], dx
+	mov	[g_C040], ax
+	mov	[g_C042], dx
 .2:
 	cmp	word [bp + 0x6], 0x7
 	jnz	short .3
@@ -906,8 +906,8 @@ Stats_26BE_08DA:
 	push	word 0x28a3
 	call	0x14DB:AllocRecData
 	add	sp, 0x8
-	mov	[0xcfc8], ax
-	mov	[0xcfca], dx
+	mov	[g_CFC8], ax
+	mov	[g_CFCA], dx
 .3:
 	cmp	word [bp + 0x6], 0x8
 	jz	short .4
@@ -921,10 +921,10 @@ Stats_26BE_08DA:
 .4:
 	push	0x0
 	push	0x0
-	mov	bx, [0x2010]
+	mov	bx, [g_2010]
 	shl	bx, 1
 	push	ds
-	push	word [bx + 0x1faa]
+	push	word [bx + g_1FAA]
 	push	word 0x3861
 	push	strict word 0x0
 	lea	ax, [bp - 0xc6]
@@ -938,7 +938,7 @@ Stats_26BE_08DA:
 	call	0x0000:_open
 	add	sp, 0x4
 	mov	[bp - 0x174], ax
-	cmp	word [0x2010], 0x1
+	cmp	word [g_2010], 0x1
 	db	0x1B, 0xC0		; sbb ax, ax
 	and	ax, 0xfd64
 	add	ax, 0x2e8
@@ -953,9 +953,9 @@ Stats_26BE_08DA:
 	mov	si, [bp - 0x17c]
 	shl	si, 1
 	mov	[bp + si - 0xf6], ax
-	cmp	word [0x2010], 0x0
+	cmp	word [g_2010], 0x0
 	jnz	short .7
-	cmp	word [0x200e], 0x0
+	cmp	word [g_200E], 0x0
 	jnz	short .7
 	mov	si, [bp - 0x17c]
 	shl	si, 1
@@ -986,7 +986,7 @@ Stats_26BE_08DA:
 	push	word [bp - 0x174]
 	call	0x0000:_read
 	add	sp, 0x6
-	cmp	word [0x200e], 0x0
+	cmp	word [g_200E], 0x0
 	jnz	short .5
 	mov	al, [bp - 0x3e]
 	jmp	short .6
@@ -1015,10 +1015,10 @@ Stats_26BE_08DA:
 	mov	[bp - 0x17e], ax
 	push	0x0
 	push	0x0
-	mov	bx, [0x2010]
+	mov	bx, [g_2010]
 	shl	bx, 1
 	push	ds
-	push	word [bx + 0x1fa6]
+	push	word [bx + g_1FA6]
 	push	word 0x3861
 	push	strict word 0x0
 	lea	ax, [bp - 0xc6]
@@ -1048,7 +1048,7 @@ Stats_26BE_08DA:
 	jmp	near .48
 .14:
 	push	0x0
-	cmp	word [0x2010], 0x0
+	cmp	word [g_2010], 0x0
 	jnz	short .15
 	mov	ax, [bp - 0x18a]
 	mov	dx, [bp - 0x188]
@@ -1068,7 +1068,7 @@ Stats_26BE_08DA:
 	push	word [bp - 0x2]
 	call	0x0000:_read
 	add	sp, 0x6
-	cmp	word [0x200e], 0x0
+	cmp	word [g_200E], 0x0
 	jnz	short .17
 	mov	ax, [bp - 0xa6]
 	jmp	short .18
@@ -1103,7 +1103,7 @@ Stats_26BE_08DA:
 .22:
 	cmp	word [bp + 0x6], 0x9
 	jnz	short .25
-	cmp	word [0x200e], 0x0
+	cmp	word [g_200E], 0x0
 	jnz	short .23
 	mov	ax, [bp - 0xa4]
 	jmp	short .24
@@ -1116,7 +1116,7 @@ Stats_26BE_08DA:
 	jmp	near .48
 .25:
 	imul	bx, [bp - 0x1e4], 0x36
-	les	si, [0xc040]
+	les	si, [g_C040]
 	lea	di, [bx + si]
 	lea	si, [bp - 0xa6]
 	mov	cx, 0x1b
@@ -1131,7 +1131,7 @@ Stats_26BE_08DA:
 	push	ax
 	mov	bx, [bp + 0x6]
 	shl	bx, byte 0x2
-	call	far [bx + 0x26b2]
+	call	far [bx + g_26B2]
 	add	sp, 0x4
 	db	0x0B, 0xC0		; or ax, ax
 	jl	short .26
@@ -1141,7 +1141,7 @@ Stats_26BE_08DA:
 	jnl	short .28
 .27:
 	imul	bx, [bp - 0x1e4], 0x34
-	les	si, [0xc048]
+	les	si, [g_C048]
 	lea	di, [bx + si]
 	lea	si, [bp - 0x1b2]
 	mov	cx, 0x1a
@@ -1158,13 +1158,13 @@ Stats_26BE_08DA:
 	mov	ax, [bp + si - 0x1e4]
 	mov	[bp - 0x1b6], ax
 	imul	bx, ax, 0x34
-	les	si, [0xc048]
+	les	si, [g_C048]
 	lea	di, [bx + si]
 	lea	si, [bp - 0x1b2]
 	mov	cx, 0x1a
 	rep	movsw
 	imul	bx, [bp - 0x1b6], 0x36
-	les	si, [0xc040]
+	les	si, [g_C040]
 	lea	di, [bx + si]
 	lea	si, [bp - 0xa6]
 	mov	cx, 0x1b
@@ -1177,7 +1177,7 @@ Stats_26BE_08DA:
 	jmp	near .48
 .30:
 	push	0x0
-	cmp	word [0x2010], 0x0
+	cmp	word [g_2010], 0x0
 	jnz	short .31
 	mov	ax, [bp - 0x18a]
 	mov	dx, [bp - 0x188]
@@ -1197,7 +1197,7 @@ Stats_26BE_08DA:
 	push	word [bp - 0x2]
 	call	0x0000:_read
 	add	sp, 0x6
-	cmp	word [0x200e], 0x0
+	cmp	word [g_200E], 0x0
 	jnz	short .33
 	mov	ax, [bp - 0x214]
 	jmp	short .34
@@ -1230,14 +1230,14 @@ Stats_26BE_08DA:
 	jmp	near .48
 .38:
 	imul	bx, [bp - 0x1e4], 0x30
-	les	si, [0xc044]
+	les	si, [g_C044]
 	lea	di, [bx + si]
 	lea	si, [bp - 0x214]
 	mov	cx, 0x18
 	rep	movsw
 	cmp	word [bp + 0x6], 0x7
 	jnz	short .44
-	cmp	word [0x200e], 0x0
+	cmp	word [g_200E], 0x0
 	jnz	short .39
 	mov	ax, [bp - 0x206]
 	jmp	short .40
@@ -1250,7 +1250,7 @@ Stats_26BE_08DA:
 	cwd
 	push	dx
 	push	ax
-	cmp	word [0x200e], 0x0
+	cmp	word [g_200E], 0x0
 	jnz	short .41
 	mov	ax, [bp - 0x212]
 	jmp	short .42
@@ -1274,14 +1274,14 @@ Stats_26BE_08DA:
 	call	0x0000:__aFldiv
 	mov	bx, [bp - 0x1e4]
 	shl	bx, 1
-	les	si, [0xcfc8]
+	les	si, [g_CFC8]
 	mov	[es:bx + si], ax
 	jmp	short .44
 	db	0x90
 .43:
 	mov	bx, [bp - 0x1e4]
 	shl	bx, 1
-	les	si, [0xcfc8]
+	les	si, [g_CFC8]
 	mov	word [es:bx + si], 0x0
 .44:
 	cmp	word [bp - 0x1e4], 0x14
@@ -1294,7 +1294,7 @@ Stats_26BE_08DA:
 	push	ax
 	mov	bx, [bp + 0x6]
 	shl	bx, byte 0x2
-	call	far [bx + 0x26b2]
+	call	far [bx + g_26B2]
 	add	sp, 0x4
 	db	0x0B, 0xC0		; or ax, ax
 	jnl	short .48
@@ -1308,13 +1308,13 @@ Stats_26BE_08DA:
 	mov	ax, [bp + si - 0x1e4]
 	mov	[bp - 0x1b6], ax
 	imul	bx, ax, 0x34
-	les	si, [0xc048]
+	les	si, [g_C048]
 	lea	di, [bx + si]
 	lea	si, [bp - 0x1b2]
 	mov	cx, 0x1a
 	rep	movsw
 	imul	bx, [bp - 0x1b6], 0x30
-	les	si, [0xc044]
+	les	si, [g_C044]
 	lea	di, [bx + si]
 	lea	si, [bp - 0x214]
 	mov	cx, 0x18
@@ -1323,7 +1323,7 @@ Stats_26BE_08DA:
 	jnz	short .47
 	mov	bx, [bp - 0x1e4]
 	shl	bx, 1
-	les	si, [0xcfc8]
+	les	si, [g_CFC8]
 	mov	ax, [es:bx + si]
 	mov	bx, [bp - 0x1b6]
 	shl	bx, 1
@@ -1331,8 +1331,8 @@ Stats_26BE_08DA:
 .47:
 	mov	bx, [bp + 0x6]
 	shl	bx, byte 0x2
-	push	word [bx + 0x26b4]
-	push	word [bx + 0x26b2]
+	push	word [bx + g_26B4]
+	push	word [bx + g_26B2]
 	push	0x2
 	push	word [bp - 0x1e4]
 	lea	ax, [bp - 0x1e2]
@@ -1374,10 +1374,10 @@ Stats_26BE_08DA:
 	call	0x0FEF:UseOffscreenCanvas
 	push	word 0x3701
 	push	word 0xbd0
-	mov	bx, [0x200e]
+	mov	bx, [g_200E]
 	shl	bx, 1
 	push	ds
-	push	word [bx + 0x1fa2]
+	push	word [bx + g_1FA2]
 	push	0x0
 	push	0x0
 	lea	ax, [bp - 0xc6]
@@ -1390,22 +1390,22 @@ Stats_26BE_08DA:
 	push	ax
 	call	0x14B8:LoadPackedHeader
 	add	sp, 0x4
-	mov	[0xcfd0], ax
-	mov	[0xcfd2], dx
+	mov	[g_CFD0], ax
+	mov	[g_CFD2], dx
 	push	word 0x1ff0
 	push	dx
 	push	ax
 	call	0x03A3:FindFarMsg
 	add	sp, 0x6
-	mov	[0xc2b2], ax
-	mov	[0xc2b4], dx
+	mov	[g_C2B2], ax
+	mov	[g_C2B4], dx
 	push	word 0xc8
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	dx, 0x140
 	mov	bx, 0xa
 	call	0x0FEF:SetClipRectRegs
-	push	word [0xc2b4]
-	push	word [0xc2b2]
+	push	word [g_C2B4]
+	push	word [g_C2B2]
 	call	0x0FEF:DrawRleTransBody
 	add	sp, 0x4
 	push	word 0xc8
@@ -1413,8 +1413,8 @@ Stats_26BE_08DA:
 	mov	dx, 0x140
 	db	0x2B, 0xDB		; sub bx, bx
 	call	0x0FEF:SetClipRectRegs
-	push	word [0xcfd2]
-	push	word [0xcfd0]
+	push	word [g_CFD2]
+	push	word [g_CFD0]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	push	0x43
@@ -1424,7 +1424,7 @@ Stats_26BE_08DA:
 	mov	bx, [bp + 0x6]
 	shl	bx, 1
 	push	ds
-	push	word [bx + 0x28de]
+	push	word [bx + g_28DE]
 	lea	ax, [bp - 0x172]
 	push	ss
 	push	ax
@@ -1474,27 +1474,27 @@ Stats_26BE_08DA:
 	db	0x03, 0xD8		; add bx, ax
 	shl	bx, 1
 	push	ds
-	push	word [bx + 0x28f4]
+	push	word [bx + g_28F4]
 	push	0x14
 	push	word 0xcd
 	db	0x8B, 0xF3		; mov si, bx
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word [si + 0x28f6]
+	push	word [si + g_28F6]
 	push	0x14
 	push	word 0xe6
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	ds
-	push	word [si + 0x28f8]
+	push	word [si + g_28F8]
 	push	0x14
 	push	word 0xfa
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	cmp	word [bp + 0x6], 0x9
 	jnz	short .50
-	cmp	word [0x200e], 0x1
+	cmp	word [g_200E], 0x1
 	jz	short .51
 .50:
 	mov	bx, [bp + 0x6]
@@ -1503,7 +1503,7 @@ Stats_26BE_08DA:
 	db	0x03, 0xD8		; add bx, ax
 	shl	bx, 1
 	push	ds
-	push	word [bx + 0x28fa]
+	push	word [bx + g_28FA]
 	push	word [bp - 0x17a]
 	push	word 0x10e
 	call	0x0D39:DrawShadowText
@@ -1515,7 +1515,7 @@ Stats_26BE_08DA:
 	db	0x03, 0xD8		; add bx, ax
 	shl	bx, 1
 	push	ds
-	push	word [bx + 0x28fc]
+	push	word [bx + g_28FC]
 	push	word [bp - 0x17a]
 	push	word 0x127
 	call	0x0D39:DrawShadowText
@@ -1539,8 +1539,8 @@ Stats_26BE_08DA:
 	add	sp, 0x4
 	cmp	word [bp + 0x6], 0x7
 	jnz	short .53
-	push	word [0xcfca]
-	push	word [0xcfc8]
+	push	word [g_CFCA]
+	push	word [g_CFC8]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 .53:
@@ -1548,8 +1548,8 @@ Stats_26BE_08DA:
 	jl	short .54
 	jmp	near Stats_26BE_12CA.7
 .54:
-	push	word [0xc046]
-	push	word [0xc044]
+	push	word [g_C046]
+	push	word [g_C044]
 	jmp	near Stats_26BE_12CA.8
 	db	0x90
 .55:
@@ -1558,8 +1558,8 @@ Stats_26BE_08DA:
 	db	0x90
 .56:
 	imul	bx, [bp - 0x1b6], 0x30
-	add	bx, [0xc044]
-	mov	es, [0xc046]
+	add	bx, [g_C044]
+	mov	es, [g_C046]
 	add	bx, 0x12
 .57:
 	mov	[bp - 0x70], bx
@@ -1591,16 +1591,16 @@ Stats_26BE_08DA:
 	push	word 0xfa
 	jmp	short .61
 .58:
-	cmp	word [0x200e], 0x0
+	cmp	word [g_200E], 0x0
 	jnz	short .59
 	imul	bx, [bp - 0x1b6], 0x36
-	add	bx, [0xc040]
-	mov	es, [0xc042]
+	add	bx, [g_C040]
+	mov	es, [g_C042]
 	jmp	short .60
 .59:
 	imul	bx, [bp - 0x1b6], 0x36
-	add	bx, [0xc040]
-	mov	es, [0xc042]
+	add	bx, [g_C040]
+	mov	es, [g_C042]
 	add	bx, 0x16
 .60:
 	mov	[bp - 0x1ba], bx
@@ -1654,7 +1654,7 @@ Stats_26BE_08DA:
 	add	sp, 0x8
 	mov	bx, [bp - 0x1b6]
 	shl	bx, 1
-	les	si, [0xcfc8]
+	les	si, [g_CFC8]
 	mov	ax, [es:bx + si]
 	mov	cx, 0xa
 	db	0x8B, 0xD8		; mov bx, ax
@@ -1711,7 +1711,7 @@ Stats_26BE_08DA:
 	push	word 0xfa
 	call	0x0D39:DrawShadowTextF
 	add	sp, 0x8
-	cmp	word [0x200e], 0x0
+	cmp	word [g_200E], 0x0
 	jz	short .71
 	jmp	near Stats_26BE_12CA.1
 .71:
@@ -1802,8 +1802,8 @@ Stats_26BE_12CA:
 	mov	ax, [bp + si - 0x1e2]
 	mov	[bp - 0x1b6], ax
 	imul	ax, ax, 0x34
-	add	ax, [0xc048]
-	mov	dx, [0xc04a]
+	add	ax, [g_C048]
+	mov	dx, [g_C04A]
 	push	ds
 	lea	di, [bp - 0x1b2]
 	db	0x8B, 0xF0		; mov si, ax
@@ -1857,7 +1857,7 @@ Stats_26BE_12CA:
 	push	0x0
 	push	0x0
 	push	ds
-	push	word [0x1faa]
+	push	word [g_1FAA]
 	push	word 0x3861
 	push	strict word 0x0
 	lea	ax, [bp - 0xc6]
@@ -1901,23 +1901,23 @@ Stats_26BE_12CA:
 	jl	short .5
 	jmp	near Stats_26BE_08DA.58
 .5:
-	cmp	word [0x200e], 0x0
+	cmp	word [g_200E], 0x0
 	jz	short .6
 	jmp	near Stats_26BE_08DA.56
 .6:
 	imul	bx, [bp - 0x1b6], 0x30
-	add	bx, [0xc044]
-	mov	es, [0xc046]
+	add	bx, [g_C044]
+	mov	es, [g_C046]
 	jmp	near Stats_26BE_08DA.57
 	db	0x90
 .7:
-	push	word [0xc042]
-	push	word [0xc040]
+	push	word [g_C042]
+	push	word [g_C040]
 .8:
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	push	word [0xc04a]
-	push	word [0xc048]
+	push	word [g_C04A]
+	push	word [g_C048]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	pop	si

@@ -5,20 +5,20 @@ Fades6_3358_0000:
 	push	di
 	push	si
 	call	0x0FEF:UseCurrentPage
-	mov	es, [0x8cf6]
+	mov	es, [g_8CF6]
 	mov	ax, [es:0x74fc]
-	mov	[0xdf6a], ax
+	mov	[g_DF6A], ax
 	mov	ax, [es:0x74fe]
-	mov	[0xdf6c], ax
+	mov	[g_DF6C], ax
 	mov	ax, [es:0x74f2]
-	mov	[0xdf6e], ax
+	mov	[g_DF6E], ax
 	mov	ax, [es:0x74f4]
-	mov	[0xdf70], ax
+	mov	[g_DF70], ax
 	cmp	word [bp + 0x6], 0x0
 	jz	short .1
 	jmp	near .8
 .1:
-	sub	ax, [0xdf6e]
+	sub	ax, [g_DF6E]
 	add	ax, strict word 0x4
 	mov	cx, 0x5
 	cwd
@@ -34,7 +34,7 @@ Fades6_3358_0000:
 	db	0x2B, 0xC2		; sub ax, dx
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	ax, byte 0x3
-	add	ax, [0xdf6a]
+	add	ax, [g_DF6A]
 	db	0x0B, 0xDB		; or bx, bx
 	jg	short .2
 	jmp	near .14
@@ -96,8 +96,8 @@ Fades6_3358_0000:
 	db	0x33, 0xC2		; xor ax, dx
 	db	0x2B, 0xC2		; sub ax, dx
 	db	0x8B, 0xF0		; mov si, ax
-	mov	ax, [0xdf70]
-	sub	ax, [0xdf6e]
+	mov	ax, [g_DF70]
+	sub	ax, [g_DF6E]
 	add	ax, strict word 0x4
 	mov	cx, 0x5
 	cwd
@@ -105,7 +105,7 @@ Fades6_3358_0000:
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	ax, byte 0x2
 	db	0x03, 0xC3		; add ax, bx
-	add	ax, [0xdf6e]
+	add	ax, [g_DF6E]
 	db	0x0B, 0xDB		; or bx, bx
 	jng	short .14
 	mov	word [bp - 0x4], 0x0

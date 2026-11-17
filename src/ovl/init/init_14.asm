@@ -13,29 +13,29 @@ Init_2581_000E:
 	enter	0xc, 0x0
 	cmp	word [DbSaveMode], 0x0
 	jz	short .1
-	cmp	word [0x1b8], 0x0
+	cmp	word [g_01B8], 0x0
 	jnl	short .2
-	cmp	word [0x1ba], 0x0
+	cmp	word [g_01BA], 0x0
 	jnl	short .2
 .1:
-	mov	word [0xdb16], 0x1
+	mov	word [g_DB16], 0x1
 	jmp	short .3
 	db	0x90
 .2:
-	mov	word [0xdb16], 0x0
+	mov	word [g_DB16], 0x0
 .3:
-	mov	word [0xdb28], 0x44
-	mov	word [0xdb2a], 0x8
-	mov	word [0xdad2], 0x118
-	mov	word [0xdad4], 0xb6
+	mov	word [g_DB28], 0x44
+	mov	word [g_DB2A], 0x8
+	mov	word [g_DAD2], 0x118
+	mov	word [g_DAD4], 0xb6
 	push	word 0xbb
 	push	word 0x140
 	push	0x0
 	push	0x0
 	call	0x03A3:MouseRange
 	add	sp, 0x8
-	push	word [0xdad4]
-	push	word [0xdad2]
+	push	word [g_DAD4]
+	push	word [g_DAD2]
 	call	0x03A3:MouseMove
 	add	sp, 0x4
 	push	word 0x3a0b
@@ -83,24 +83,24 @@ Init_2581_000E:
 	push	word 0x470
 	call	0x0000:VgaCopyFromPitch
 	add	sp, 0x8
-	push	word [0xdaea]
-	push	word [0xdae8]
-	push	word [0x533c]
-	push	word [0xdae6]
+	push	word [g_DAEA]
+	push	word [g_DAE8]
+	push	word [g_533C]
+	push	word [g_DAE6]
 	call	0x0000:VgaCopyToPitch
 	add	sp, 0x8
-	push	word [0xdb02]
-	push	word [0xdb00]
-	push	word [0x5364]
-	push	word [0xdafe]
+	push	word [g_DB02]
+	push	word [g_DB00]
+	push	word [g_5364]
+	push	word [g_DAFE]
 	call	0x0000:VgaCopyToPitch
 	add	sp, 0x8
-	cmp	word [0xdb16], 0x0
+	cmp	word [g_DB16], 0x0
 	jz	short .5
-	push	word [0xdb14]
-	push	word [0xdb12]
-	push	word [0x5382]
-	push	word [0xdb10]
+	push	word [g_DB14]
+	push	word [g_DB12]
+	push	word [g_5382]
+	push	word [g_DB10]
 	call	0x0000:VgaCopyToPitch
 	add	sp, 0x8
 .5:
@@ -110,38 +110,38 @@ Init_2581_000E:
 	mov	dx, 0x140
 	db	0x2B, 0xDB		; sub bx, bx
 	call	0x0FEF:SetClipRectRegs
-	mov	ax, [0xdad4]
+	mov	ax, [g_DAD4]
 	sub	ax, 0xa8
 	push	ax
-	push	word [0xdad2]
+	push	word [g_DAD2]
 	push	word [DialogDataSeg]
 	push	word [DialogData]
 	call	0x0FEF:DrawRleTransAt
 	add	sp, 0x8
 	mov	ax, 0x1
-	mov	[0x4b22], ax
-	mov	[0x4b20], ax
-	mov	ax, [0x2998]
+	mov	[g_4B22], ax
+	mov	[g_4B20], ax
+	mov	ax, [g_2998]
 	mov	[bp - 0x8], ax
-	mov	ax, [0x299a]
+	mov	ax, [g_299A]
 	mov	[bp - 0x6], ax
-	mov	ax, [0xd6cc]
+	mov	ax, [g_D6CC]
 	mov	[bp - 0x2], ax
-	mov	ax, [0xd6ce]
+	mov	ax, [g_D6CE]
 	mov	[bp - 0x4], ax
 	mov	ax, [CrowdSound]
 	mov	[bp - 0xa], ax
 	mov	ax, 0xffff
-	mov	[0x547c], ax
-	mov	[0xdb22], ax
-	mov	[0xdb24], ax
+	mov	[g_547C], ax
+	mov	[g_DB22], ax
+	mov	[g_DB24], ax
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0xdb18], ax
-	mov	[0xdb26], ax
-	mov	[0xdad6], ax
+	mov	[g_DB18], ax
+	mov	[g_DB26], ax
+	mov	[g_DAD6], ax
 	call	0x1B35:OvlThunk277
-	mov	[0xd018], ax
-	mov	[0xd01a], dx
+	mov	[g_D018], ax
+	mov	[g_D01A], dx
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[bp - 0xc], ax
 	push	ax
@@ -150,37 +150,37 @@ Init_2581_000E:
 	add	sp, 0x4
 	mov	ax, [CrowdSound]
 	mov	[Crowdlevel], ax
-	mov	ax, [0x2998]
+	mov	ax, [g_2998]
 	add	ax, strict word 0x20
-	mov	[0xd6cc], ax
+	mov	[g_D6CC], ax
 	cmp	ax, strict word 0x40
 	jng	short .6
-	mov	word [0xd6cc], 0x40
+	mov	word [g_D6CC], 0x40
 .6:
-	cmp	word [0xd6cc], 0x0
+	cmp	word [g_D6CC], 0x0
 	jnl	short .7
-	mov	word [0xd6cc], 0x0
+	mov	word [g_D6CC], 0x0
 .7:
 	mov	ax, 0xec
-	sub	ax, [0x299a]
-	mov	[0xd6ce], ax
+	sub	ax, [g_299A]
+	mov	[g_D6CE], ax
 	cmp	ax, 0x1a8
 	jng	short .8
-	mov	word [0xd6ce], 0x1a8
+	mov	word [g_D6CE], 0x1a8
 .8:
-	cmp	word [0xd6ce], 0x0
+	cmp	word [g_D6CE], 0x0
 	jnl	short .9
-	mov	word [0xd6ce], 0x0
+	mov	word [g_D6CE], 0x0
 .9:
-	push	word [0xd6ce]
-	push	word [0xd6cc]
+	push	word [g_D6CE]
+	push	word [g_D6CC]
 	call	0x1F54:Game_1F54_0316
 	add	sp, 0x4
 	call	0x0FEF:UseOtherPage
 	mov	ax, 0x140
-	sub	ax, [0xd6ce]
+	sub	ax, [g_D6CE]
 	push	ax
-	mov	ax, [0xd6cc]
+	mov	ax, [g_D6CC]
 	sub	ax, 0xc0
 	push	ax
 	call	0x26D2:Init_26D2_03F2
@@ -203,17 +203,17 @@ Init_2581_000E:
 	shl	ax, 1
 	db	0x03, 0xC1		; add ax, cx
 	shl	ax, 1
-	add	[0xdad6], ax
-	mov	ax, [0xdad6]
+	add	[g_DAD6], ax
+	mov	ax, [g_DAD6]
 	mov	cx, 0x14
 	cwd
 	idiv	cx
 	mov	[bp - 0xc], ax
-	mov	ax, [0xdad6]
+	mov	ax, [g_DAD6]
 	cwd
 	idiv	cx
-	mov	[0xdad6], dx
-	mov	al, [0xdb28]
+	mov	[g_DAD6], dx
+	mov	al, [g_DB28]
 	and	al, 0x3f
 	cmp	al, 0x10
 	jnz	short .11
@@ -228,116 +228,116 @@ Init_2581_000E:
 	call	0x26D2:Init_26D2_000A
 	add	sp, 0x4
 	mov	[bp - 0xc], ax
-	cmp	word [0xdb18], 0x0
+	cmp	word [g_DB18], 0x0
 	jz	short .17
-	mov	ax, [0xdb1c]
-	mov	[0x299a], ax
-	mov	ax, [0xdb1a]
-	mov	[0x2998], ax
+	mov	ax, [g_DB1C]
+	mov	[g_299A], ax
+	mov	ax, [g_DB1A]
+	mov	[g_2998], ax
 	cmp	ax, strict word 0x20
 	jng	short .13
-	mov	word [0x2998], 0x20
+	mov	word [g_2998], 0x20
 	jmp	short .14
 	db	0x90
 .13:
-	cmp	word [0x2998], -0x20
+	cmp	word [g_2998], -0x20
 	jnl	short .14
-	mov	word [0x2998], 0xffe0
+	mov	word [g_2998], 0xffe0
 .14:
-	cmp	word [0x299a], 0xec
+	cmp	word [g_299A], 0xec
 	jng	short .15
-	mov	word [0x299a], 0xec
+	mov	word [g_299A], 0xec
 	jmp	short .16
 	db	0x90
 .15:
-	cmp	word [0x299a], 0xff44
+	cmp	word [g_299A], 0xff44
 	jnl	short .16
-	mov	word [0x299a], 0xff44
+	mov	word [g_299A], 0xff44
 .16:
-	mov	ax, [0x2998]
-	mov	[0xdb1a], ax
-	mov	ax, [0x299a]
-	mov	[0xdb1c], ax
+	mov	ax, [g_2998]
+	mov	[g_DB1A], ax
+	mov	ax, [g_299A]
+	mov	[g_DB1C], ax
 	jmp	short .21
 .17:
-	cmp	word [0x547c], 0x0
+	cmp	word [g_547C], 0x0
 	jl	short .21
-	mov	bx, [0x547c]
+	mov	bx, [g_547C]
 	shl	bx, 1
-	mov	ax, [bx - 0x24d2]
-	mov	[0x2998], ax
-	mov	cx, [bx - 0x24b0]
-	mov	[0x299a], cx
+	mov	ax, [bx + g_DB2E]
+	mov	[g_2998], ax
+	mov	cx, [bx + g_DB50]
+	mov	[g_299A], cx
 	cmp	ax, strict word 0x20
 	jng	short .18
-	mov	word [0x2998], 0x20
+	mov	word [g_2998], 0x20
 	jmp	short .19
 	db	0x90
 .18:
 	cmp	ax, strict word 0xffe0
 	jnl	short .19
-	mov	word [0x2998], 0xffe0
+	mov	word [g_2998], 0xffe0
 .19:
-	cmp	word [0x299a], 0xec
+	cmp	word [g_299A], 0xec
 	jng	short .20
-	mov	word [0x299a], 0xec
+	mov	word [g_299A], 0xec
 	jmp	short .21
 	db	0x90
 .20:
-	cmp	word [0x299a], 0xff44
+	cmp	word [g_299A], 0xff44
 	jnl	short .21
-	mov	word [0x299a], 0xff44
+	mov	word [g_299A], 0xff44
 .21:
-	mov	ax, [0x2998]
+	mov	ax, [g_2998]
 	add	ax, strict word 0x20
-	mov	[0xd6cc], ax
+	mov	[g_D6CC], ax
 	cmp	ax, strict word 0x40
 	jng	short .22
-	mov	word [0xd6cc], 0x40
+	mov	word [g_D6CC], 0x40
 .22:
-	cmp	word [0xd6cc], 0x0
+	cmp	word [g_D6CC], 0x0
 	jnl	short .23
-	mov	word [0xd6cc], 0x0
+	mov	word [g_D6CC], 0x0
 .23:
 	mov	ax, 0xec
-	sub	ax, [0x299a]
-	mov	[0xd6ce], ax
+	sub	ax, [g_299A]
+	mov	[g_D6CE], ax
 	cmp	ax, 0x1a8
 	jng	short .24
-	mov	word [0xd6ce], 0x1a8
+	mov	word [g_D6CE], 0x1a8
 .24:
-	cmp	word [0xd6ce], 0x0
+	cmp	word [g_D6CE], 0x0
 	jnl	short .25
-	mov	word [0xd6ce], 0x0
+	mov	word [g_D6CE], 0x0
 .25:
-	push	word [0xd6ce]
-	push	word [0xd6cc]
+	push	word [g_D6CE]
+	push	word [g_D6CC]
 	call	0x1F54:Game_1F54_0316
 	add	sp, 0x4
 	call	0x0FEF:UseOtherPage
 	mov	ax, 0x140
-	sub	ax, [0xd6ce]
+	sub	ax, [g_D6CE]
 	push	ax
-	mov	ax, [0xd6cc]
+	mov	ax, [g_D6CC]
 	sub	ax, 0xc0
 	push	ax
 	call	0x26D2:Init_26D2_03F2
 	add	sp, 0x4
-	cmp	word [0xdad4], 0xa8
+	cmp	word [g_DAD4], 0xa8
 	jl	short .26
 	jmp	near .29
 .26:
-	cmp	word [0xdb22], -0x1
+	cmp	word [g_DB22], -0x1
 	jnz	short .27
-	mov	word [0xdb24], 0xffff
-	mov	ax, [0xdad2]
-	add	ax, [0x2998]
+	mov	word [g_DB24], 0xffff
+	mov	ax, [g_DAD2]
+	add	ax, [g_2998]
 	sub	ax, 0xa0
-	mov	[0xdb1e], ax
-	mov	cx, [0x299a]
-	sub	cx, [0xdad4]
+	mov	[g_DB1E], ax
+	mov	cx, [g_299A]
+	sub	cx, [g_DAD4]
 	add	cx, 0x54
-	mov	[0xdb20], cx
+	mov	[g_DB20], cx
 	push	0x0
 	push	0x0
 	inc	cx
@@ -351,40 +351,40 @@ Init_2581_000E:
 .27:
 	push	0x1
 	push	0x0
-	mov	bx, [0xdb22]
+	mov	bx, [g_DB22]
 	shl	bx, 1
-	mov	ax, [bx - 0x24b0]
+	mov	ax, [bx + g_DB50]
 	inc	ax
 	push	ax
-	mov	ax, [bx - 0x24d2]
+	mov	ax, [bx + g_DB2E]
 	inc	ax
 	push	ax
 	push	word 0x188
 	call	0x1E7E:Game_1E7E_0120
 	add	sp, 0xa
-	mov	ax, [0xdb22]
-	cmp	[0xdb24], ax
+	mov	ax, [g_DB22]
+	cmp	[g_DB24], ax
 	jz	short .29
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, 1
-	mov	ax, [bx - 0x24d2]
-	sub	ax, [0x2998]
+	mov	ax, [bx + g_DB2E]
+	sub	ax, [g_2998]
 	add	ax, 0xa0
-	mov	[0xdad2], ax
-	mov	ax, [0x299a]
-	sub	ax, [bx - 0x24b0]
+	mov	[g_DAD2], ax
+	mov	ax, [g_299A]
+	sub	ax, [bx + g_DB50]
 	add	ax, strict word 0x54
-	mov	[0xdad4], ax
+	mov	[g_DAD4], ax
 	cmp	ax, 0xa7
 	jng	short .28
-	mov	word [0xdad4], 0xa7
+	mov	word [g_DAD4], 0xa7
 .28:
-	push	word [0xdad4]
-	push	word [0xdad2]
+	push	word [g_DAD4]
+	push	word [g_DAD2]
 	call	0x03A3:MouseMove
 	add	sp, 0x4
-	mov	ax, [0xdb22]
-	mov	[0xdb24], ax
+	mov	ax, [g_DB22]
+	mov	[g_DB24], ax
 .29:
 	call	0x0000:VgaPageFlip
 	call	0x03A3:CallCountStep
@@ -402,21 +402,21 @@ Init_2581_000E:
 	call	0x0EDC:CrowdNoiseOff
 	mov	ax, 0xffff
 	mov	[lastsfx], ax
-	mov	[0x5480], ax
+	mov	[g_5480], ax
 	mov	ax, [bp - 0x8]
-	mov	[0x2998], ax
+	mov	[g_2998], ax
 	mov	ax, [bp - 0x6]
-	mov	[0x299a], ax
+	mov	[g_299A], ax
 	mov	ax, [bp - 0x2]
-	mov	[0xd6cc], ax
+	mov	[g_D6CC], ax
 	mov	ax, [bp - 0x4]
-	mov	[0xd6ce], ax
+	mov	[g_D6CE], ax
 	mov	ax, [bp - 0xa]
 	mov	[CrowdSound], ax
 	mov	[Crowdlevel], ax
 	mov	ax, 0x1
-	mov	[0x4b22], ax
-	mov	[0x4b20], ax
+	mov	[g_4B22], ax
+	mov	[g_4B20], ax
 	push	word 0x3a0b
 	push	word 0xb352
 	push	word 0x100
@@ -432,7 +432,7 @@ Init_2581_000E:
 	push	0x0
 	push	word 0x7c60
 	call	0x0000:VgaCopyBlock
-	mov	word [0x49f4], 0x1
+	mov	word [g_49F4], 0x1
 	leave
 	retf
 
@@ -541,11 +541,11 @@ Init_2581_0550:
 Init_2581_05E4:
 	enter	0x14, 0x0
 	push	si
-	mov	ax, [0xdb28]
+	mov	ax, [g_DB28]
 	mov	[bp - 0x4], ax
-	mov	ax, [0xdad2]
+	mov	ax, [g_DAD2]
 	mov	[bp - 0xe], ax
-	mov	ax, [0xdad4]
+	mov	ax, [g_DAD4]
 	mov	[bp - 0x10], ax
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[bp - 0x12], ax
@@ -566,41 +566,41 @@ Init_2581_05E4:
 .2:
 	test	byte [bp - 0x14], 0x1
 	jz	short .3
-	mov	word [0xdb26], 0x1
+	mov	word [g_DB26], 0x1
 	jmp	short .4
 .3:
 	test	byte [bp - 0x14], 0x2
 	jz	short .4
-	mov	word [0xdb26], 0x0
+	mov	word [g_DB26], 0x0
 .4:
-	cmp	word [0xdb26], 0x0
+	cmp	word [g_DB26], 0x0
 	jz	short .5
 	lea	ax, [bp - 0x8]
 	push	ax
-	push	word [0xdad4]
-	push	word [0xdad2]
+	push	word [g_DAD4]
+	push	word [g_DAD2]
 	push	cs
 	call	Init_2581_0510
 	add	sp, 0x6
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .5
-	cmp	word [0xdb16], 0x0
+	cmp	word [g_DB16], 0x0
 	jz	short .12
 	cmp	word [bp - 0x8], 0x7
 	jnz	short .12
 .5:
 	mov	word [bp - 0x8], 0x0
 .6:
-	cmp	word [0xdad4], 0xa8
+	cmp	word [g_DAD4], 0xa8
 	jnl	short .7
-	mov	ax, [0xdad2]
-	add	ax, [0x2998]
+	mov	ax, [g_DAD2]
+	add	ax, [g_2998]
 	sub	ax, 0xa0
-	mov	[0xdb1e], ax
-	mov	ax, [0x299a]
-	sub	ax, [0xdad4]
+	mov	[g_DB1E], ax
+	mov	ax, [g_299A]
+	sub	ax, [g_DAD4]
 	add	ax, strict word 0x54
-	mov	[0xdb20], ax
+	mov	[g_DB20], ax
 .7:
 	mov	ax, [bp - 0x8]
 	cmp	ax, strict word 0x10
@@ -632,22 +632,22 @@ Init_2581_05E4:
 	jmp	short .6
 	db	0x90
 .13:
-	mov	al, [0xdb28]
+	mov	al, [g_DB28]
 	and	ax, strict word 0x40
 	or	al, 0x4
-	mov	[0xdb28], ax
+	mov	[g_DB28], ax
 .14:
 	mov	word [bp - 0x12], 0x0
 .15:
-	mov	ax, [0xdb28]
+	mov	ax, [g_DB28]
 	cmp	[bp - 0x4], ax
 	jz	short .16
 	jmp	near .62
 .16:
 	mov	ax, [bp - 0xe]
-	cmp	[0xdad2], ax
+	cmp	[g_DAD2], ax
 	jnz	short .17
-	mov	ax, [0xdad4]
+	mov	ax, [g_DAD4]
 	cmp	[bp - 0x10], ax
 	jnz	short .17
 	jmp	near .66
@@ -660,99 +660,99 @@ Init_2581_05E4:
 	jmp	near .58
 	db	0x90
 .19:
-	mov	al, [0xdb28]
+	mov	al, [g_DB28]
 	and	al, 0x3f
 	cmp	al, 0x10
 	jz	short .20
-	mov	word [0xdad6], 0x0
+	mov	word [g_DAD6], 0x0
 .20:
-	mov	al, [0xdb28]
+	mov	al, [g_DB28]
 	and	ax, strict word 0x40
 	or	al, 0x10
-	mov	[0xdb28], ax
+	mov	[g_DB28], ax
 	jmp	near .48
 	db	0x90
 .21:
-	mov	al, [0xdb28]
+	mov	al, [g_DB28]
 	and	ax, strict word 0x54
 	or	al, 0x1
-	mov	[0xdb28], ax
+	mov	[g_DB28], ax
 	mov	bx, [bp + 0x6]
 	mov	ax, [bx]
 	shl	ax, byte 0x2
 	neg	ax
 	jmp	near .49
 .22:
-	mov	al, [0xdb28]
+	mov	al, [g_DB28]
 	and	ax, strict word 0x54
 	or	al, 0x20
-	mov	[0xdb28], ax
+	mov	[g_DB28], ax
 	mov	bx, [bp + 0x6]
 	mov	ax, [bx]
 	shl	ax, byte 0x2
 	jmp	near .49
 .23:
-	test	byte [0xdb28], 0x2
+	test	byte [g_DB28], 0x2
 	jz	short .25
 	mov	bx, [bp + 0x6]
 	mov	ax, [bx]
-	add	[0xdad8], ax
-	cmp	word [0xdad8], 0x5
+	add	[g_DAD8], ax
+	cmp	word [g_DAD8], 0x5
 	jnl	short .24
 	mov	word [bp - 0x12], 0x0
 	jmp	short .26
 .24:
-	sub	word [0xdad8], 0x5
+	sub	word [g_DAD8], 0x5
 	mov	word [bp - 0x12], 0xffff
 	jmp	short .26
 .25:
-	mov	word [0xdad8], 0x0
+	mov	word [g_DAD8], 0x0
 	mov	word [bp - 0x12], 0xffff
-	mov	word [0xdad6], 0xfff2
+	mov	word [g_DAD6], 0xfff2
 .26:
-	mov	al, [0xdb28]
+	mov	al, [g_DB28]
 	and	ax, strict word 0x40
 	or	al, 0x6
 .27:
-	mov	[0xdb28], ax
+	mov	[g_DB28], ax
 	jmp	near .15
 	db	0x90
 .28:
-	test	byte [0xdb28], 0x8
+	test	byte [g_DB28], 0x8
 	jz	short .30
 	mov	bx, [bp + 0x6]
 	mov	ax, [bx]
-	add	[0xdad8], ax
-	cmp	word [0xdad8], 0x5
+	add	[g_DAD8], ax
+	cmp	word [g_DAD8], 0x5
 	jnl	short .29
 	mov	word [bp - 0x12], 0x0
 	jmp	short .31
 .29:
-	sub	word [0xdad8], 0x5
+	sub	word [g_DAD8], 0x5
 	mov	word [bp - 0x12], 0x1
 	jmp	short .31
 .30:
-	mov	word [0xdad8], 0x0
+	mov	word [g_DAD8], 0x0
 	mov	word [bp - 0x12], 0x1
-	mov	word [0xdad6], 0xe
+	mov	word [g_DAD6], 0xe
 .31:
-	mov	al, [0xdb28]
+	mov	al, [g_DB28]
 	and	ax, strict word 0x40
 	or	al, 0xc
 	jmp	short .27
 	db	0x90
 .32:
-	or	byte [0xdb28], 0x40
+	or	byte [g_DB28], 0x40
 	mov	ax, 0xffff
-	mov	[0xdb22], ax
-	mov	[0xdb24], ax
-	mov	[0x547c], ax
+	mov	[g_DB22], ax
+	mov	[g_DB24], ax
+	mov	[g_547C], ax
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0xdb18], ax
+	mov	[g_DB18], ax
 	jmp	near .49
 	db	0x90
 .33:
-	mov	al, [0xdb28]
+	mov	al, [g_DB28]
 	and	ax, strict word 0x40
 	or	al, 0x84
 	jmp	short .27
@@ -763,90 +763,90 @@ Init_2581_05E4:
 	retf
 	db	0x90
 .35:
-	cmp	word [0xdad2], -0x20
+	cmp	word [g_DAD2], -0x20
 	jnl	short .36
-	mov	word [0xdad2], 0xffe0
+	mov	word [g_DAD2], 0xffe0
 .36:
-	cmp	word [0xdad4], 0xec
+	cmp	word [g_DAD4], 0xec
 	jng	short .37
-	mov	word [0xdad4], 0xec
+	mov	word [g_DAD4], 0xec
 	jmp	short .38
 	db	0x90
 .37:
-	cmp	word [0xdad4], 0xff44
+	cmp	word [g_DAD4], 0xff44
 	jnl	short .38
-	mov	word [0xdad4], 0xff44
+	mov	word [g_DAD4], 0xff44
 .38:
-	mov	ax, [0xdb1a]
-	sub	ax, [0xdad2]
+	mov	ax, [g_DB1A]
+	sub	ax, [g_DAD2]
 	add	ax, 0xa0
-	mov	[0xdad2], ax
+	mov	[g_DAD2], ax
 	mov	ax, 0x54
-	sub	ax, [0xdb1c]
-	add	[0xdad4], ax
-	cmp	word [0xdad4], 0xa7
+	sub	ax, [g_DB1C]
+	add	[g_DAD4], ax
+	cmp	word [g_DAD4], 0xa7
 	jng	short .39
-	mov	word [0xdad4], 0xa7
+	mov	word [g_DAD4], 0xa7
 .39:
-	push	word [0xdad4]
-	push	word [0xdad2]
+	push	word [g_DAD4]
+	push	word [g_DAD2]
 	call	0x03A3:MouseMove
 	add	sp, 0x4
 	jmp	near .46
 	db	0x90
 .40:
-	mov	word [0xdb18], 0x0
-	mov	[0x547c], ax
+	mov	word [g_DB18], 0x0
+	mov	[g_547C], ax
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, 1
-	mov	ax, [bx - 0x24d2]
-	mov	[0xdad2], ax
-	mov	cx, [bx - 0x24b0]
-	mov	[0xdad4], cx
+	mov	ax, [bx + g_DB2E]
+	mov	[g_DAD2], ax
+	mov	cx, [bx + g_DB50]
+	mov	[g_DAD4], cx
 	cmp	ax, strict word 0x20
 	jng	short .41
-	mov	word [0xdad2], 0x20
+	mov	word [g_DAD2], 0x20
 	jmp	short .42
 	db	0x90
 .41:
 	cmp	ax, strict word 0xffe0
 	jnl	short .42
-	mov	word [0xdad2], 0xffe0
+	mov	word [g_DAD2], 0xffe0
 .42:
-	cmp	word [0xdad4], 0xec
+	cmp	word [g_DAD4], 0xec
 	jng	short .43
-	mov	word [0xdad4], 0xec
+	mov	word [g_DAD4], 0xec
 	jmp	short .44
 	db	0x90
 .43:
-	cmp	word [0xdad4], 0xff44
+	cmp	word [g_DAD4], 0xff44
 	jnl	short .44
-	mov	word [0xdad4], 0xff44
+	mov	word [g_DAD4], 0xff44
 .44:
-	mov	bx, [0xdb22]
+	mov	bx, [g_DB22]
 	shl	bx, 1
-	mov	ax, [bx - 0x24d2]
-	sub	ax, [0xdad2]
+	mov	ax, [bx + g_DB2E]
+	sub	ax, [g_DAD2]
 	add	ax, 0xa0
-	mov	[0xdad2], ax
+	mov	[g_DAD2], ax
 	mov	ax, 0x54
-	sub	ax, [bx - 0x24b0]
-	add	[0xdad4], ax
-	cmp	word [0xdad4], 0xa7
+	sub	ax, [bx + g_DB50]
+	add	[g_DAD4], ax
+	cmp	word [g_DAD4], 0xa7
 	jng	short .45
-	mov	word [0xdad4], 0xa7
+	mov	word [g_DAD4], 0xa7
 .45:
-	push	word [0xdad4]
-	push	word [0xdad2]
+	push	word [g_DAD4]
+	push	word [g_DAD2]
 	call	0x03A3:MouseMove
 	add	sp, 0x4
-	mov	ax, [0xdb22]
-	mov	[0xdb24], ax
+	mov	ax, [g_DB22]
+	mov	[g_DB24], ax
 .46:
-	and	word [0xdb28], 0x14
+	and	word [g_DB28], 0x14
 .47:
-	and	word [0xdb28], 0x54
-	test	byte [0xdb28], 0x10
+	and	word [g_DB28], 0x54
+	test	byte [g_DB28], 0x10
 	jnz	short .48
 	jmp	near .14
 .48:
@@ -872,34 +872,34 @@ Init_2581_05E4:
 	jnz	short .54
 	jmp	near .34
 .54:
-	cmp	word [0xdad4], 0xa8
+	cmp	word [g_DAD4], 0xa8
 	jnl	short .47
-	push	word [0xdb20]
-	push	word [0xdb1e]
+	push	word [g_DB20]
+	push	word [g_DB1E]
 	push	cs
 	call	Init_2581_0550
 	add	sp, 0x4
-	mov	[0xdb22], ax
+	mov	[g_DB22], ax
 	test	byte [bp - 0x14], 0x2
 	jz	short .47
 	cmp	ax, strict word 0xffff
 	jz	short .55
 	jmp	near .40
 .55:
-	mov	word [0xdb18], 0x1
-	mov	[0xdb24], ax
-	mov	[0x547c], ax
-	mov	ax, [0xdb1e]
-	mov	[0xdb1a], ax
-	mov	cx, [0xdb20]
-	mov	[0xdb1c], cx
-	mov	[0xdad2], ax
-	mov	[0xdad4], cx
+	mov	word [g_DB18], 0x1
+	mov	[g_DB24], ax
+	mov	[g_547C], ax
+	mov	ax, [g_DB1E]
+	mov	[g_DB1A], ax
+	mov	cx, [g_DB20]
+	mov	[g_DB1C], cx
+	mov	[g_DAD2], ax
+	mov	[g_DAD4], cx
 	cmp	ax, strict word 0x20
 	jg	short .56
 	jmp	near .35
 .56:
-	mov	word [0xdad2], 0x20
+	mov	word [g_DAD2], 0x20
 	jmp	near .36
 .57:
 	cmp	word [bp - 0xe], 0x0
@@ -946,74 +946,74 @@ Init_2581_05E4:
 	mov	cl, [bp - 0x8]
 	mov	ax, 0x1
 	shl	ax, cl
-	test	[0xdb28], ax
+	test	[g_DB28], ax
 	jz	short .64
 	mov	bx, [bp - 0x8]
 	db	0x8B, 0xC3		; mov ax, bx
 	shl	bx, 1
 	db	0x03, 0xD8		; add bx, ax
 	shl	bx, 1
-	push	word [bx - 0x2522]
-	push	word [bx - 0x2524]
+	push	word [bx + g_DADE]
+	push	word [bx + g_DADC]
 	db	0x8B, 0xF0		; mov si, ax
 	shl	si, byte 0x2
 	db	0x03, 0xF0		; add si, ax
 	shl	si, 1
-	push	word [si + 0x5328]
-	push	word [bx - 0x2526]
+	push	word [si + g_5328]
+	push	word [bx + g_DADA]
 	call	0x0000:VgaCopyToPitch
 	add	sp, 0x8
 .64:
 	inc	word [bp - 0x8]
 	cmp	word [bp - 0x8], 0x9
 	jl	short .63
-	cmp	word [0xdb16], 0x0
+	cmp	word [g_DB16], 0x0
 	jz	short .66
-	push	word [0xdb14]
-	push	word [0xdb12]
-	push	word [0x5382]
-	push	word [0xdb10]
+	push	word [g_DB14]
+	push	word [g_DB12]
+	push	word [g_5382]
+	push	word [g_DB10]
 .65:
 	call	0x0000:VgaCopyToPitch
 	add	sp, 0x8
 .66:
 	mov	ax, [bp - 0xe]
-	cmp	[0xdad2], ax
+	cmp	[g_DAD2], ax
 	jnz	short .67
-	mov	ax, [0xdad4]
+	mov	ax, [g_DAD4]
 	cmp	[bp - 0x10], ax
 	jnz	short .67
-	mov	ax, [0xdb28]
+	mov	ax, [g_DB28]
 	cmp	[bp - 0x4], ax
 	jnz	short .67
 	jmp	near .74
 .67:
-	cmp	word [0xdad2], 0x12c
+	cmp	word [g_DAD2], 0x12c
 	jng	short .68
 	mov	word [bp - 0xe], 0x12c
 	jmp	short .70
 	db	0x90
 .68:
-	cmp	word [0xdad2], 0x0
+	cmp	word [g_DAD2], 0x0
 	jnl	short .69
 	mov	word [bp - 0xe], 0x0
 	jmp	short .70
 .69:
-	mov	ax, [0xdad2]
+	mov	ax, [g_DAD2]
 	mov	[bp - 0xe], ax
 .70:
-	cmp	word [0xdad4], 0x0
+	cmp	word [g_DAD4], 0x0
 	jnl	short .71
 	mov	word [bp - 0x10], 0x0
 	jmp	short .73
 .71:
-	cmp	word [0xdad4], 0xb5
+	cmp	word [g_DAD4], 0xb5
 	jng	short .72
 	mov	word [bp - 0x10], 0xb5
 	jmp	short .73
 	db	0x90
 .72:
-	mov	ax, [0xdad4]
+	mov	ax, [g_DAD4]
 	mov	[bp - 0x10], ax
 .73:
 	cmp	word [bp - 0x10], 0xa8
@@ -1041,16 +1041,16 @@ Init_2581_05E4:
 	mov	dx, 0x140
 	db	0x2B, 0xDB		; sub bx, bx
 	call	0x0FEF:SetClipRectRegs
-	mov	ax, [0xdad4]
+	mov	ax, [g_DAD4]
 	sub	ax, 0xa8
 	push	ax
-	push	word [0xdad2]
+	push	word [g_DAD2]
 	push	word [DialogDataSeg]
 	push	word [DialogData]
 	call	0x0FEF:DrawRleTransAt
 	add	sp, 0x8
 .74:
-	test	byte [0xdb28], 0x80
+	test	byte [g_DB28], 0x80
 	jnz	short .75
 	jmp	near .77
 .75:
@@ -1058,7 +1058,7 @@ Init_2581_05E4:
 	push	word 0xc8a0
 	call	0x0000:VgaCopyBlock
 	add	sp, 0x4
-	mov	word [0xdb26], 0x0
+	mov	word [g_DB26], 0x0
 	push	word [bp - 0x10]
 	push	word [bp - 0xe]
 	push	word 0xaa0
@@ -1066,7 +1066,7 @@ Init_2581_05E4:
 	call	Init_2581_0C14
 	add	sp, 0x6
 	call	0x0F99:FlushInputEvents
-	mov	word [0xdb28], 0x4
+	mov	word [g_DB28], 0x4
 	call	0x0FEF:UseOffscreenCanvas
 	push	0x1e
 	db	0x2B, 0xC0		; sub ax, ax
@@ -1077,10 +1077,10 @@ Init_2581_05E4:
 	push	word 0xc8a0
 	call	0x0000:VgaCopyBlock
 	add	sp, 0x4
-	push	word [0xdaea]
-	push	word [0xdae8]
-	push	word [0x533c]
-	push	word [0xdae6]
+	push	word [g_DAEA]
+	push	word [g_DAE8]
+	push	word [g_533C]
+	push	word [g_DAE6]
 	call	0x0000:VgaCopyToPitch
 	add	sp, 0x8
 	push	0x12
@@ -1100,19 +1100,19 @@ Init_2581_05E4:
 	push	cx
 	call	0x0000:VgaCopyFromPitch
 	add	sp, 0x8
-	cmp	word [0xdb16], 0x0
+	cmp	word [g_DB16], 0x0
 	jz	short .76
-	push	word [0xdb14]
-	push	word [0xdb12]
-	push	word [0x5382]
-	push	word [0xdb10]
+	push	word [g_DB14]
+	push	word [g_DB12]
+	push	word [g_5382]
+	push	word [g_DB10]
 	call	0x0000:VgaCopyToPitch
 	add	sp, 0x8
 .76:
-	mov	ax, [0xdad4]
+	mov	ax, [g_DAD4]
 	sub	ax, 0xa8
 	push	ax
-	push	word [0xdad2]
+	push	word [g_DAD2]
 	push	word [DialogDataSeg]
 	push	word [DialogData]
 	call	0x0FEF:DrawRleTransAt
@@ -1131,16 +1131,16 @@ Init_2581_0C14:
 	enter	0xc, 0x0
 	push	di
 	push	si
-	cmp	word [0x1b8], 0x0
+	cmp	word [g_01B8], 0x0
 	jnl	short .1
 	jmp	near .18
 .1:
-	cmp	word [0x1ba], 0x0
+	cmp	word [g_01BA], 0x0
 	jnl	short .2
 	jmp	near .18
 .2:
-	mov	ax, [0x1b8]
-	cmp	[0x1ba], ax
+	mov	ax, [g_01B8]
+	cmp	[g_01BA], ax
 	jnz	short .3
 	jmp	near .18
 .3:
@@ -1197,9 +1197,9 @@ Init_2581_0C14:
 	add	sp, 0x8
 	push	cs
 	call	Init_2581_105A
-	mov	word [0xdb2c], 0x3
-	mov	word [0xdad2], 0xa0
-	mov	word [0xdad4], 0x64
+	mov	word [g_DB2C], 0x3
+	mov	word [g_DAD2], 0xa0
+	mov	word [g_DAD4], 0x64
 	call	0x0FEF:UseOffscreenCanvas
 	push	0x6a
 	db	0x2B, 0xC0		; sub ax, ax
@@ -1237,8 +1237,8 @@ Init_2581_0C14:
 	db	0x0B, 0xF6		; or si, si
 	jz	short .4
 	mov	[bp - 0x2], si
-	mov	di, [0xdad2]
-	mov	si, [0xdad4]
+	mov	di, [g_DAD2]
+	mov	si, [g_DAD4]
 	mov	cx, [bp - 0x2]
 	push	word 0xdad4
 	push	word 0xdad2
@@ -1248,37 +1248,37 @@ Init_2581_0C14:
 	mov	[bp - 0x4], ax
 	test	al, 0x2
 	jz	short .9
-	cmp	word [0xdad2], 0x4e
+	cmp	word [g_DAD2], 0x4e
 	jl	short .8
-	cmp	word [0xdad2], 0xd8
+	cmp	word [g_DAD2], 0xd8
 	jg	short .8
-	cmp	word [0xdad4], 0x23
+	cmp	word [g_DAD4], 0x23
 	jl	short .5
-	cmp	word [0xdad4], 0x31
+	cmp	word [g_DAD4], 0x31
 	jg	short .5
-	mov	word [0xdb2c], 0x0
+	mov	word [g_DB2C], 0x0
 	jmp	short .9
 	db	0x90, 0x90
 .5:
-	cmp	word [0xdad4], 0x34
+	cmp	word [g_DAD4], 0x34
 	jl	short .6
-	cmp	word [0xdad4], 0x42
+	cmp	word [g_DAD4], 0x42
 	jg	short .6
-	mov	word [0xdb2c], 0x1
+	mov	word [g_DB2C], 0x1
 	jmp	short .9
 .6:
-	cmp	word [0xdad4], 0x45
+	cmp	word [g_DAD4], 0x45
 	jl	short .7
-	cmp	word [0xdad4], 0x53
+	cmp	word [g_DAD4], 0x53
 	jg	short .7
-	mov	word [0xdb2c], 0x2
+	mov	word [g_DB2C], 0x2
 	jmp	short .9
 .7:
-	cmp	word [0xdad4], 0x56
+	cmp	word [g_DAD4], 0x56
 	jl	short .8
-	cmp	word [0xdad4], 0x64
+	cmp	word [g_DAD4], 0x64
 	jg	short .8
-	mov	word [0xdb2c], 0x3
+	mov	word [g_DB2C], 0x3
 	jmp	short .9
 .8:
 	mov	word [bp - 0x4], 0x0
@@ -1289,14 +1289,14 @@ Init_2581_0C14:
 	push	word [bp - 0xc]
 	call	0x0FEF:PutBlockAt
 	add	sp, 0x8
-	push	word [0xdad4]
-	push	word [0xdad2]
+	push	word [g_DAD4]
+	push	word [g_DAD2]
 	push	word [bp - 0xa]
 	push	word [bp - 0xc]
 	call	0x0FEF:GetBlockAt
 	add	sp, 0x8
-	push	word [0xdad4]
-	push	word [0xdad2]
+	push	word [g_DAD4]
+	push	word [g_DAD2]
 	push	word [DialogDataSeg]
 	push	word [DialogData]
 	call	0x0FEF:DrawRleTransAt
@@ -1320,7 +1320,7 @@ Init_2581_0C14:
 	db	0x2B, 0xDB		; sub bx, bx
 	call	0x0FEF:SetClipRectRegs
 	push	0x10
-	imul	ax, [0xdb2c], 0x11
+	imul	ax, [g_DB2C], 0x11
 	db	0x8B, 0xC8		; mov cx, ax
 	add	ax, strict word 0x31
 	push	ax
@@ -1331,7 +1331,7 @@ Init_2581_0C14:
 	call	0x0FEF:DrawLine
 	add	sp, 0xa
 	push	0x10
-	imul	ax, [0xdb2c], 0x11
+	imul	ax, [g_DB2C], 0x11
 	add	ax, strict word 0x23
 	push	ax
 	push	word 0xd8
@@ -1340,7 +1340,7 @@ Init_2581_0C14:
 	call	0x0FEF:DrawLine
 	add	sp, 0xa
 	push	0x16
-	imul	ax, [0xdb2c], 0x11
+	imul	ax, [g_DB2C], 0x11
 	add	ax, strict word 0x31
 	push	ax
 	push	word 0xd8
@@ -1349,7 +1349,7 @@ Init_2581_0C14:
 	call	0x0FEF:DrawLine
 	add	sp, 0xa
 	push	0x16
-	imul	ax, [0xdb2c], 0x11
+	imul	ax, [g_DB2C], 0x11
 	db	0x8B, 0xC8		; mov cx, ax
 	add	ax, strict word 0x31
 	push	ax
@@ -1360,26 +1360,26 @@ Init_2581_0C14:
 	call	0x0FEF:DrawLine
 	add	sp, 0xa
 	push	0x13
-	imul	ax, [0xdb2c], 0x11
+	imul	ax, [g_DB2C], 0x11
 	add	ax, strict word 0x23
 	push	ax
 	push	word 0xd8
 	call	0x0FEF:PutPixel
 	add	sp, 0x6
 	push	0x13
-	imul	ax, [0xdb2c], 0x11
+	imul	ax, [g_DB2C], 0x11
 	add	ax, strict word 0x31
 	push	ax
 	push	0x4e
 	call	0x0FEF:PutPixel
 	add	sp, 0x6
-	push	word [0xdad4]
-	push	word [0xdad2]
+	push	word [g_DAD4]
+	push	word [g_DAD2]
 	push	word [DialogDataSeg]
 	push	word [DialogData]
 	call	0x0FEF:DrawRleTransAt
 	add	sp, 0x8
-	mov	ax, [0xdb2c]
+	mov	ax, [g_DB2C]
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .11
 	dec	ax
@@ -1420,8 +1420,8 @@ Init_2581_0C14:
 	push	cs
 	call	Init_2581_14FC
 	mov	ax, [bp + 0x8]
-	mov	[0xdad2], ax
-	mov	[0xdad4], di
+	mov	[g_DAD2], ax
+	mov	[g_DAD4], di
 	push	di
 	push	ax
 	call	0x03A3:MouseMove
@@ -1478,18 +1478,18 @@ Init_2581_0C14:
 	mov	ax, 0x64
 	cwd
 	call	0x03A3:SetDeadline.regs
-	cmp	word [0x1b8], 0x0
+	cmp	word [g_01B8], 0x0
 	jl	short .20
-	mov	ax, [0x1b8]
-	cmp	[0x29ca], ax
+	mov	ax, [g_01B8]
+	cmp	[g_29CA], ax
 	jnz	short .21
 .19:
 	push	0x0
 	jmp	short .22
 	db	0x90
 .20:
-	mov	ax, [0x1ba]
-	cmp	[0x29ca], ax
+	mov	ax, [g_01BA]
+	cmp	[g_29CA], ax
 	jz	short .19
 .21:
 	push	0x1
@@ -1542,8 +1542,8 @@ Init_2581_105A:
 	push	ax
 	call	0x03A3:SaveCharTab
 	add	sp, 0x2
-	push	word [0xdad0]
-	push	word [0xdace]
+	push	word [g_DAD0]
+	push	word [g_DACE]
 	call	0x03A3:UseCharSeg
 	add	sp, 0x4
 	cmp	word [CurPage], 0x0
@@ -1800,7 +1800,7 @@ Init_2581_1304:
 	cmp	ax, [bp - 0x8]
 	jna	short .2
 	mov	ax, 0x1
-	mov	[0xdb16], ax
+	mov	[g_DB16], ax
 	pop	si
 	pop	di
 	leave
@@ -1809,28 +1809,28 @@ Init_2581_1304:
 .2:
 	mov	ax, 0x3a0b
 	mov	es, ax
-	mov	al, [0xe366]
+	mov	al, [g_E366]
 	mov	[es:0xd8e], al
-	mov	al, [0xe367]
+	mov	al, [g_E367]
 	mov	[es:0xd8f], al
-	mov	al, [0x29ca]
+	mov	al, [g_29CA]
 	mov	[es:0xd90], al
-	mov	al, [0x29cc]
+	mov	al, [g_29CC]
 	mov	[es:0xdad], al
-	mov	ax, [0xbffe]
+	mov	ax, [g_BFFE]
 	mov	[es:0xdca], ax
-	mov	ax, [0x5560]
+	mov	ax, [g_5560]
 	mov	[es:0xdcc], ax
-	mov	ax, [0x5562]
+	mov	ax, [g_5562]
 	mov	[es:0xdce], ax
-	mov	ax, [0x5564]
+	mov	ax, [g_5564]
 	mov	[es:0xdd0], ax
-	mov	ax, [0x29bc]
+	mov	ax, [g_29BC]
 	mov	[es:0xdd2], ax
-	mov	ax, [0xd014]
-	mov	dx, [0xd016]
-	sub	ax, [0x2986]
-	sbb	dx, [0x2988]
+	mov	ax, [g_D014]
+	mov	dx, [g_D016]
+	sub	ax, [g_2986]
+	sbb	dx, [g_2988]
 	mov	[es:0xdd4], ax
 	mov	[es:0xdd6], dx
 	db	0x2B, 0xFF		; sub di, di
@@ -1871,7 +1871,7 @@ Init_2581_1304:
 	db	0x13, 0xC9		; adc cx, cx
 	rep	movsb
 	imul	bx, [bp + 0x6], word 0x2e8
-	lea	di, [bx - 0x6080]
+	lea	di, [bx + g_9F80]
 	lea	si, [bp - 0x2a]
 	mov	cx, 0xffff
 	db	0x33, 0xC0		; xor ax, ax

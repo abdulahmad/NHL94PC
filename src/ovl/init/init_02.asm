@@ -133,7 +133,7 @@ Init_20A8_0004:
 	jnz	short .2
 	push	word 0x3701
 	push	word 0xbaf
-	mov	es, [0x8c98]
+	mov	es, [g_8C98]
 	push	word [es:0xb6e]
 	push	word [es:0xb6c]
 	push	word 0x3701
@@ -180,8 +180,8 @@ Init_20A8_0004:
 	imul	bx, [bp - 0xca], word 0xba
 	add	bx, [bp - 0xd4]
 	shl	bx, byte 0x2
-	mov	ax, [bx - 0x6034]
-	mov	dx, [bx - 0x6032]
+	mov	ax, [bx + g_9FCC]
+	mov	dx, [bx + g_9FCE]
 	mov	[bp - 0xe0], ax
 	mov	[bp - 0xde], dx
 	cmp	ax, strict word 0xffff
@@ -272,7 +272,7 @@ Init_20A8_0004:
 	db	0x2A, 0xFF		; sub bh, bh
 	db	0x8B, 0xC3		; mov ax, bx
 	shl	bx, 1
-	push	word [bx + 0x5604]
+	push	word [bx + g_5604]
 	push	word [bp - 0x30]
 	push	word [bp - 0x32]
 	db	0x8B, 0xF0		; mov si, ax
@@ -293,7 +293,7 @@ Init_20A8_0004:
 	push	word 0xaf4c
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
-	mov	es, [0x8c9a]
+	mov	es, [g_8C9A]
 	mov	byte [es:0xaf8f], 0xd9
 	push	word 0x3a0b
 	push	word 0xaf4c
@@ -441,7 +441,7 @@ Init_20A8_0004:
 	db	0x2A, 0xFF		; sub bh, bh
 	db	0x8B, 0xC3		; mov ax, bx
 	shl	bx, 1
-	push	word [bx + 0x5604]
+	push	word [bx + g_5604]
 	push	word [bp - 0x30]
 	push	word [bp - 0x32]
 	db	0x8B, 0xF0		; mov si, ax
@@ -462,7 +462,7 @@ Init_20A8_0004:
 	push	word 0xaf4c
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
-	mov	es, [0x8c9a]
+	mov	es, [g_8C9A]
 	mov	byte [es:0xaf8f], 0xd9
 	push	word 0x3a0b
 	push	word 0xaf4c
@@ -609,7 +609,7 @@ Init_20A8_0004:
 	db	0x2A, 0xFF		; sub bh, bh
 	db	0x8B, 0xC3		; mov ax, bx
 	shl	bx, 1
-	push	word [bx + 0x5604]
+	push	word [bx + g_5604]
 	push	word [bp - 0x30]
 	push	word [bp - 0x32]
 	db	0x8B, 0xF0		; mov si, ax
@@ -630,7 +630,7 @@ Init_20A8_0004:
 	push	word 0xaf4c
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
-	mov	es, [0x8c9a]
+	mov	es, [g_8C9A]
 	mov	byte [es:0xaf8f], 0xd9
 	push	word 0x3a0b
 	push	word 0xaf4c
@@ -691,7 +691,7 @@ Init_20A8_0004:
 	add	sp, 0x8
 	add	si, [bp - 0x2]
 	imul	bx, si, 0x28
-	cmp	byte [bx - 0x5ab0], 0x1
+	cmp	byte [bx + g_A550], 0x1
 	jnz	short .34
 	push	ds
 	push	word 0x4c7b

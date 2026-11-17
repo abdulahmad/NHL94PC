@@ -5,15 +5,15 @@ Fades5_3358_0000:
 	push	di
 	push	si
 	call	0x0FEF:UseCurrentPage
-	mov	es, [0x8cf4]
+	mov	es, [g_8CF4]
 	mov	ax, [es:0x74fc]
-	mov	[0xdf6a], ax
+	mov	[g_DF6A], ax
 	mov	ax, [es:0x74fe]
-	mov	[0xdf6c], ax
+	mov	[g_DF6C], ax
 	mov	ax, [es:0x74f2]
-	mov	[0xdf6e], ax
+	mov	[g_DF6E], ax
 	mov	cx, [es:0x74f4]
-	mov	[0xdf70], cx
+	mov	[g_DF70], cx
 	mov	ax, [es:0x74fa]
 	add	ax, strict word 0x27
 	mov	bx, 0x28
@@ -21,17 +21,17 @@ Fades5_3358_0000:
 	idiv	bx
 	mov	[bp - 0xe], ax
 	db	0x8B, 0xC1		; mov ax, cx
-	sub	ax, [0xdf6e]
+	sub	ax, [g_DF6E]
 	add	ax, strict word 0x22
 	mov	cx, 0x23
 	cwd
 	idiv	cx
 	db	0x8B, 0xF8		; mov di, ax
 	mov	bx, [bp + 0x6]
-	mov	al, [bx + 0x62ea]
+	mov	al, [bx + g_62EA]
 	cbw
 	db	0x8B, 0xF0		; mov si, ax
-	mov	al, [bx + 0x62f2]
+	mov	al, [bx + g_62F2]
 	cbw
 	db	0x3B, 0xF0		; cmp si, ax
 	jnz	short .1
@@ -173,10 +173,10 @@ Fades5_3358_0000:
 .17:
 	call	0x03A3:WaitDeadlineNoEoi
 	mov	bx, [bp + 0x6]
-	mov	al, [bx + 0x62ee]
+	mov	al, [bx + g_62EE]
 	cbw
 	db	0x03, 0xF0		; add si, ax
-	mov	al, [bx + 0x62f2]
+	mov	al, [bx + g_62F2]
 	cbw
 	db	0x3B, 0xF0		; cmp si, ax
 	jz	short .18

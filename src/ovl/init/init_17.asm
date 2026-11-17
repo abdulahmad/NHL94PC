@@ -97,7 +97,7 @@ Init_28FA_0004:
 	inc	di
 	cmp	di, 0x4
 	jl	short .1
-	mov	word [0xdada], 0xd2e0
+	mov	word [g_DADA], 0xd2e0
 	mov	word [bp - 0x8], 0x0
 	mov	si, 0xdadc
 	lea	di, [bp - 0x90]
@@ -149,9 +149,9 @@ Init_28FA_0004:
 	mov	[bp - 0x6c], bx
 	mov	[bp - 0x6a], es
 	mov	ax, [es:bx]
-	mov	[0xdb12], ax
+	mov	[g_DB12], ax
 	mov	ax, [es:bx + 0x2]
-	mov	[0xdb14], ax
+	mov	[g_DB14], ax
 	mov	word [bp - 0x12], 0xdada
 	lea	di, [bp - 0x90]
 	mov	al, [bp - 0xf]
@@ -243,8 +243,8 @@ Init_28FA_0004:
 	push	word 0x543f
 	call	0x149D:LoadRawHeader
 	add	sp, 0x4
-	mov	[0xdace], ax
-	mov	[0xdad0], dx
+	mov	[g_DACE], ax
+	mov	[g_DAD0], dx
 	pop	si
 	pop	di
 	leave

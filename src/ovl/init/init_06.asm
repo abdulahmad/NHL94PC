@@ -10,7 +10,7 @@ Init_2306_000A:
 	enter	0x8, 0x0
 	mov	bl, [bp + 0x6]
 	db	0x2A, 0xFF		; sub bh, bh
-	mov	al, [bx + 0x174c]
+	mov	al, [bx + g_174C]
 	mov	[bp - 0x6], al
 	mov	word [bp - 0x2], 0x0
 	jmp	near .14
@@ -19,12 +19,12 @@ Init_2306_000A:
 	jnz	short .5
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, 1
-	mov	al, [bx - 0x4f4a]
+	mov	al, [bx + g_B0B6]
 	mov	bx, [bp - 0x4]
 	shl	bx, 1
-	cmp	[bx - 0x4f4a], al
+	cmp	[bx + g_B0B6], al
 	jz	short .2
-	cmp	[bx - 0x4f49], al
+	cmp	[bx + g_B0B7], al
 	jnz	short .3
 .2:
 	mov	word [bp - 0x8], 0xffff
@@ -46,8 +46,8 @@ Init_2306_000A:
 	idiv	cx
 	mov	bx, [bp - 0x2]
 	shl	bx, 1
-	mov	[bx - 0x4f49], dl
-	mov	al, [bx - 0x4f4a]
+	mov	[bx + g_B0B7], dl
+	mov	al, [bx + g_B0B6]
 	db	0x3A, 0xD0		; cmp dl, al
 	jz	short .7
 	mov	al, [bp + 0x6]
@@ -67,12 +67,12 @@ Init_2306_000A:
 	jnz	short .13
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, 1
-	mov	al, [bx - 0x4f49]
+	mov	al, [bx + g_B0B7]
 	mov	bx, [bp - 0x4]
 	shl	bx, 1
-	cmp	[bx - 0x4f4a], al
+	cmp	[bx + g_B0B6], al
 	jz	short .10
-	cmp	[bx - 0x4f49], al
+	cmp	[bx + g_B0B7], al
 	jnz	short .11
 .10:
 	mov	word [bp - 0x8], 0xffff
@@ -91,10 +91,10 @@ Init_2306_000A:
 	jnl	short .18
 	mov	bx, [bp - 0x2]
 	shl	bx, 1
-	mov	word [bx - 0x4f62], 0x0
+	mov	word [bx + g_B09E], 0x0
 	db	0x2A, 0xC0		; sub al, al
-	mov	[bx - 0x4f56], al
-	mov	[bx - 0x4f55], al
+	mov	[bx + g_B0AA], al
+	mov	[bx + g_B0AB], al
 .15:
 	mov	word [bp - 0x8], 0x0
 	call	0x0000:_rand
@@ -103,7 +103,7 @@ Init_2306_000A:
 	idiv	cx
 	mov	bx, [bp - 0x2]
 	shl	bx, 1
-	mov	[bx - 0x4f4a], dl
+	mov	[bx + g_B0B6], dl
 	mov	al, [bp + 0x6]
 	db	0x3A, 0xD0		; cmp dl, al
 	jz	short .16
@@ -111,9 +111,9 @@ Init_2306_000A:
 	db	0x3A, 0xD0		; cmp dl, al
 	jz	short .16
 	mov	al, [bp - 0x6]
-	mov	bl, [bx - 0x4f4a]
+	mov	bl, [bx + g_B0B6]
 	db	0x2A, 0xFF		; sub bh, bh
-	cmp	[bx + 0x174c], al
+	cmp	[bx + g_174C], al
 	jna	short .17
 .16:
 	mov	word [bp - 0x8], 0xffff
@@ -140,14 +140,14 @@ Init_2306_012E:
 	jng	short .6
 	mov	bx, [bp - 0x2]
 	shl	bx, 1
-	inc	byte [bx - 0x4f55]
+	inc	byte [bx + g_B0AB]
 .2:
-	mov	word [bx - 0x4f62], 0x5
+	mov	word [bx + g_B09E], 0x5
 	jmp	short .6
 .3:
 	mov	bx, [bp - 0x2]
 	shl	bx, 1
-	mov	word [bx - 0x4f62], 0x6
+	mov	word [bx + g_B09E], 0x6
 	jmp	short .6
 	db	0x90
 .4:
@@ -155,30 +155,30 @@ Init_2306_012E:
 	jnz	short .5
 	mov	bx, [bp - 0x2]
 	shl	bx, 1
-	cmp	word [bx - 0x4f62], 0x4
+	cmp	word [bx + g_B09E], 0x4
 	jz	short .2
 .5:
 	mov	bx, [bp - 0x2]
 	shl	bx, 1
-	cmp	word [bx - 0x4f62], 0x3
+	cmp	word [bx + g_B09E], 0x3
 	jnl	short .6
 	mov	ax, [bp - 0x6]
-	cmp	[bx - 0x4f62], ax
+	cmp	[bx + g_B09E], ax
 	jz	short .6
-	mov	[bx - 0x4f62], ax
+	mov	[bx + g_B09E], ax
 	db	0x8B, 0xF3		; mov si, bx
 	call	0x0000:_rand
 	and	ah, 0x7f
 	mov	cx, 0x3
 	cwd
 	idiv	cx
-	add	[si - 0x4f56], dl
+	add	[si + g_B0AA], dl
 	call	0x0000:_rand
 	and	ah, 0x7f
 	mov	cx, 0x3
 	cwd
 	idiv	cx
-	add	[si - 0x4f55], dl
+	add	[si + g_B0AB], dl
 .6:
 	inc	word [bp - 0x6]
 .7:
@@ -189,10 +189,10 @@ Init_2306_012E:
 	jnz	short .4
 	mov	bx, [bp - 0x2]
 	shl	bx, 1
-	mov	al, [bx - 0x4f55]
-	cmp	[bx - 0x4f56], al
+	mov	al, [bx + g_B0AB]
+	cmp	[bx + g_B0AA], al
 	jnz	short .3
-	mov	word [bx - 0x4f62], 0x4
+	mov	word [bx + g_B09E], 0x4
 	db	0x8B, 0xF3		; mov si, bx
 	call	0x0000:_rand
 	and	ah, 0x7f
@@ -203,8 +203,8 @@ Init_2306_012E:
 	jg	short .8
 	jmp	near .1
 .8:
-	inc	byte [si - 0x4f56]
-	mov	word [si - 0x4f62], 0x5
+	inc	byte [si + g_B0AA]
+	mov	word [si + g_B09E], 0x5
 	jmp	short .6
 	db	0x90
 .9:
@@ -212,23 +212,23 @@ Init_2306_012E:
 .10:
 	cmp	word [bp - 0x2], 0x6
 	jnl	short .11
-	mov	bx, [0x29ca]
-	mov	al, [bx + 0x174c]
+	mov	bx, [g_29CA]
+	mov	al, [bx + g_174C]
 	db	0x2A, 0xE4		; sub ah, ah
 	mov	bx, [bp - 0x2]
 	shl	bx, 1
 	db	0x8B, 0xCB		; mov cx, bx
-	mov	bl, [bx - 0x4f4a]
+	mov	bl, [bx + g_B0B6]
 	db	0x2A, 0xFF		; sub bh, bh
-	mov	dl, [bx + 0x174c]
+	mov	dl, [bx + g_174C]
 	db	0x2A, 0xF6		; sub dh, dh
 	db	0x2B, 0xC2		; sub ax, dx
 	add	ax, [bp + 0x6]
 	mov	[bp - 0x4], ax
 	db	0x8B, 0xD9		; mov bx, cx
-	cmp	ax, [bx - 0x4f62]
+	cmp	ax, [bx + g_B09E]
 	jl	short .9
-	mov	ax, [bx - 0x4f62]
+	mov	ax, [bx + g_B09E]
 	mov	[bp - 0x6], ax
 	jmp	near .7
 .11:
@@ -280,9 +280,9 @@ Init_2306_02B6:
 	enter	0x56, 0x0
 	push	di
 	push	si
-	mov	ax, [0x29ca]
+	mov	ax, [g_29CA]
 	mov	[bp - 0x52], ax
-	mov	ax, [0x29cc]
+	mov	ax, [g_29CC]
 	mov	[bp - 0x50], ax
 	call	0x0F99:FlushInputEvents
 	cmp	word [SoundOptions], 0x8
@@ -426,8 +426,8 @@ Init_2306_02B6:
 .4:
 	mov	bx, [bp - 0x4e]
 	shl	bx, byte 0x2
-	push	word [bx + 0x4ec6]
-	push	word [bx + 0x4ec4]
+	push	word [bx + g_4EC6]
+	push	word [bx + g_4EC4]
 	db	0x8B, 0xF3		; mov si, bx
 	call	0x0D39:TextWidthFar
 	add	sp, 0x4
@@ -437,8 +437,8 @@ Init_2306_02B6:
 	db	0x2B, 0xC2		; sub ax, dx
 	sar	ax, 1
 	mov	[bp - 0x42], ax
-	push	word [si + 0x4ec6]
-	push	word [si + 0x4ec4]
+	push	word [si + g_4EC6]
+	push	word [si + g_4EC4]
 	push	word [bp - 0x4c]
 	push	ax
 	call	0x0D39:DrawShadowText
@@ -454,7 +454,7 @@ Init_2306_02B6:
 	mov	bx, [bp + si - 0x52]
 	db	0x8B, 0xC3		; mov ax, bx
 	shl	bx, 1
-	push	word [bx + 0x5604]
+	push	word [bx + g_5604]
 	push	word [bp - 0x22]
 	push	word [bp - 0x24]
 	db	0x8B, 0xF0		; mov si, ax
@@ -475,7 +475,7 @@ Init_2306_02B6:
 	push	word 0xaf4c
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
-	mov	es, [0x8cae]
+	mov	es, [g_8CAE]
 	mov	byte [es:0xaf8f], 0xd9
 	push	word 0x3a0b
 	push	word 0xaf4c
@@ -513,7 +513,7 @@ Init_2306_02B6:
 	add	sp, 0x8
 	mov	[bp - 0x42], si
 	imul	bx, [bp - 0x4e], word 0xd6
-	push	word [bx - 0x4c92]
+	push	word [bx + g_B36E]
 	push	word 0x4e96
 	lea	ax, [bp - 0x3c]
 	push	ax
@@ -528,7 +528,7 @@ Init_2306_02B6:
 	push	cs
 	call	Init_2306_024E
 	add	sp, 0x8
-	push	word [di - 0x4c9e]
+	push	word [di + g_B362]
 	push	word 0x4e99
 	lea	ax, [bp - 0x3c]
 	push	ax
@@ -542,8 +542,8 @@ Init_2306_02B6:
 	push	cs
 	call	Init_2306_024E
 	add	sp, 0x8
-	push	word [di - 0x4c9a]
-	push	word [di - 0x4c9c]
+	push	word [di + g_B366]
+	push	word [di + g_B364]
 	push	word 0x4e9c
 	lea	ax, [bp - 0x3c]
 	push	ax
@@ -557,8 +557,8 @@ Init_2306_02B6:
 	push	cs
 	call	Init_2306_024E
 	add	sp, 0x8
-	push	word [di - 0x4c96]
-	push	word [di - 0x4c98]
+	push	word [di + g_B36A]
+	push	word [di + g_B368]
 	push	word 0x4ea2
 	lea	ax, [bp - 0x3c]
 	push	ax
@@ -572,7 +572,7 @@ Init_2306_02B6:
 	push	cs
 	call	Init_2306_024E
 	add	sp, 0x8
-	push	word [di - 0x4c90]
+	push	word [di + g_B370]
 	push	word 0x4ea8
 	lea	ax, [bp - 0x3c]
 	push	ax
@@ -586,7 +586,7 @@ Init_2306_02B6:
 	push	cs
 	call	Init_2306_024E
 	add	sp, 0x8
-	push	word [di - 0x4c8e]
+	push	word [di + g_B372]
 	push	word 0x4eab
 	lea	ax, [bp - 0x3c]
 	push	ax
@@ -600,7 +600,7 @@ Init_2306_02B6:
 	push	cs
 	call	Init_2306_024E
 	add	sp, 0x8
-	mov	ax, [di - 0x4c94]
+	mov	ax, [di + g_B36C]
 	mov	cx, 0x3c
 	db	0x8B, 0xD8		; mov bx, ax
 	cwd
@@ -626,14 +626,14 @@ Init_2306_02B6:
 	add	sp, 0x8
 	mov	word [bp - 0x4c], 0xb0
 	mov	word [bp - 0x1e], 0x0
-	cmp	word [di - 0x4c8c], 0x0
+	cmp	word [di + g_B374], 0x0
 	jz	short .6
-	mov	ax, [di - 0x4c8c]
+	mov	ax, [di + g_B374]
 	cwd
 	push	dx
 	push	ax
 	mov	ax, 0x64
-	imul	word [di - 0x4c8a]
+	imul	word [di + g_B376]
 	push	dx
 	push	ax
 	call	0x0000:__aFldiv
@@ -641,8 +641,8 @@ Init_2306_02B6:
 .6:
 	push	word [bp - 0x1e]
 	imul	bx, [bp - 0x4e], word 0xd6
-	push	word [bx - 0x4c8c]
-	push	word [bx - 0x4c8a]
+	push	word [bx + g_B374]
+	push	word [bx + g_B376]
 	push	word 0x4eb6
 	lea	ax, [bp - 0x3c]
 	push	ax
