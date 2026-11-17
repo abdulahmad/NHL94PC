@@ -80,16 +80,17 @@ F035_0092:
 	mov	di, [bp + 0x6]
 	sar	di, 1
 	db	0xE9, 0x92, 0x00		; jmp 0x132
-.1:
+
+F035_00A0:
 	mov	[bp - 0x4], di
-	jmp	short .6
-.2:
+	jmp	short .5
+.1:
 	mov	bx, [bp - 0x4]
 	db	0x2B, 0xDF		; sub bx, di
 	mov	dx, [bp + 0x8]
 	mov	[bp - 0x2], di
-	jmp	short .4
-.3:
+	jmp	short .3
+.2:
 	db	0x8B, 0xF3		; mov si, bx
 	shl	si, 1
 	db	0x03, 0xF2		; add si, dx
@@ -99,7 +100,7 @@ F035_0092:
 	shl	si, 1
 	db	0x03, 0xF2		; add si, dx
 	cmp	[si], ax
-	jng	short .5
+	jng	short .4
 	db	0x8B, 0xF3		; mov si, bx
 	shl	si, 1
 	db	0x8B, 0xC6		; mov ax, si
@@ -132,18 +133,18 @@ F035_0092:
 	mov	si, [bp - 0x10]
 	mov	[si], cx
 	db	0x2B, 0xDF		; sub bx, di
-.4:
+.3:
 	db	0x0B, 0xDB		; or bx, bx
-	jnl	short .3
-.5:
+	jnl	short .2
+.4:
 	inc	word [bp - 0x4]
 	mov	di, [bp - 0x2]
-.6:
+.5:
 	mov	ax, [bp + 0x6]
 	cmp	[bp - 0x4], ax
-	jnl	short .7
-	jmp	near .2
-.7:
+	jnl	short .6
+	jmp	near .1
+.6:
 	mov	[bp - 0x2], di
 	sar	word [bp - 0x2], 1
 	db	0x8B

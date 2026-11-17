@@ -1,0 +1,53 @@
+#!/usr/bin/env python3
+# rename.py: apply a name list to src/ and record each rename in docs/name_map.csv.
+#   python3 tools/rename.py docs/cleanup/names94_<batch>.txt
+# Each line: OLD NEW | source | confidence | evidence   (source: 94G <file>, 94S <file>, 95 PC, MSC, EACLIB, RTLink, new)
+# A rename also renames OLD.N locals' scope (OLD.N -> NEW.N), OLDJumpTable and OLD_xx labels. Lines starting with # are
+# skipped. The build must still MATCH afterwards (labels only).
+import csv, glob, os, re, sys
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+
+
+def main(path):
+    pairs = []
+    for line in open(path):
+        line = line.rstrip('\n')
+        if not line.strip() or line.lstrip().startswith('#'):
+            continue
+        parts = [p.strip() for p in line.split('|')]
+        old, new = parts[0].split()
+        pairs.append((old, new, parts[1] if len(parts) > 1 else 'new', parts[2] if len(parts) > 2 else 'high',
+                      parts[3] if len(parts) > 3 else ''))
+    files = glob.glob(os.path.join(ROOT, 'src', '**', '*.asm'), recursive=True) + \
+        glob.glob(os.path.join(ROOT, 'src', '**', '*.inc'), recursive=True)
+    text = {f: open(f).read() for f in files}
+    defs = {}
+    for f, t in text.items():
+        for m in re.finditer(r'^([A-Za-z_]\w*):', t, re.M):
+            defs.setdefault(m.group(1), f)
+    newnames = set()
+    for old, new, *_ in pairs:
+        if new in defs and new != old:
+            sys.exit(f'{new} already exists ({defs[new]})')
+        if new in newnames:
+            sys.exit(f'{new} given twice')
+        newnames.add(new)
+    rx = {old: re.compile(r'(?<![\w.])' + re.escape(old) + r'(?=$|[^\w]|JumpTable|_[0-9A-F]+\b)') for old, *_ in pairs}
+    m = {old: new for old, new, *_ in pairs}
+    big = re.compile(r'(?<![\w.])(' + '|'.join(re.escape(o) for o in sorted(m, key=len, reverse=True)) + r')(?=$|[^\w]|JumpTable|_[0-9A-F]+\b)')
+    for f, t in text.items():
+        t2 = big.sub(lambda mm: m[mm.group(1)], t)
+        if t2 != t:
+            open(f, 'w').write(t2)
+    nm = os.path.join(ROOT, 'docs', 'name_map.csv')
+    with open(nm, 'a', newline='') as fh:
+        w = csv.writer(fh)
+        for old, new, src, conf, ev in pairs:
+            f = defs.get(old, '')
+            mm = re.match(r'^[FD](\d{3})_([0-9A-F]{4})$', old)
+            addr = f'seg{mm.group(1)}:{mm.group(2)}' if mm else old
+            w.writerow([addr, new, old, src, conf, ev, os.path.relpath(f, ROOT) if f else ''])
+    print(f'{len(pairs)} renamed')
+
+
+main(sys.argv[1])

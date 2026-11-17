@@ -183,6 +183,28 @@ def looks_text(b):
     return len(b) >= 6 and pr >= 0.9 * len(b)
 
 
+def try_gap(flow, s, p, g1, cov):
+    if p >= g1 or p in flow.bad or (looks_text(IMG[p:min(g1, p + 24)]) and not prologue_at(p)):
+        return False
+    if prologue_at(p):
+        return True
+    q, sus, term = p, 0, False
+    while q < g1:
+        ins = decode(q, s['para'])
+        if ins is None or ins.mnemonic in ('db', '(bad)'):
+            break
+        if IMG[q:q + 2] == b'\x00\x00' or ins.mnemonic in ('hlt', 'into', 'aaa', 'aas', 'daa', 'das', 'lock', 'arpl', 'bound', 'les', 'lds') and q != p:
+            sus += 1
+        if ins.mnemonic in ('in', 'out', 'insb', 'outsb', 'insw', 'outsw') and IMG[q] not in (0xE4, 0xE5, 0xE6, 0xE7, 0xEC, 0xED, 0xEE, 0xEF):
+            sus += 1
+        q += ins.size
+        if ins.id in (x86.X86_INS_RET, x86.X86_INS_RETF, x86.X86_INS_IRET, x86.X86_INS_JMP, x86.X86_INS_LJMP):
+            term = True
+            break
+    ok = term or (q == g1 and q in cov)
+    return ok and sus <= 1 and q > p
+
+
 def linear_gaps(flow, targets):
     # A gap that decodes cleanly up to a ret/jmp (or into known code) is taken as code.
     new = []
@@ -203,27 +225,12 @@ def linear_gaps(flow, targets):
             # skip padding nops/zeros at the start
             while p < g1 and IMG[p] in (0x90, 0x00, 0xCC):
                 p += 1
-            if p >= g1 or p in flow.bad or looks_text(IMG[p:min(g1, p + 24)]):
-                continue
-            q, sus, term, ok = p, 0, False, False
-            while q < g1:
-                ins = decode(q, s['para'])
-                if ins is None or ins.mnemonic in ('db', '(bad)'):
+            cands = [p] + [k for k in range(p + 1, g1) if IMG[k - 1] in (0xC3, 0xCB, 0xCF, 0x90) or
+                           (k >= 3 and IMG[k - 3] in (0xC2, 0xCA))]
+            for c in cands:
+                if try_gap(flow, s, c, g1, cov):
+                    new.append((c, s['para']))
                     break
-                if IMG[q:q + 2] == b'\x00\x00' or ins.mnemonic in ('hlt', 'into', 'aaa', 'aas', 'daa', 'das', 'lock', 'arpl', 'bound', 'les', 'lds') and q != p:
-                    sus += 1
-                if ins.mnemonic in ('in', 'out', 'insb', 'outsb', 'insw', 'outsw') and IMG[q] not in (0xE4, 0xE5, 0xE6, 0xE7, 0xEC, 0xED, 0xEE, 0xEF):
-                    sus += 1
-                q += ins.size
-                if ins.id in (x86.X86_INS_RET, x86.X86_INS_RETF, x86.X86_INS_IRET, x86.X86_INS_JMP, x86.X86_INS_LJMP):
-                    term = True
-                    break
-            if q == g1 and q in cov:
-                ok = True
-            if term:
-                ok = True
-            if ok and sus <= 1 and q > p:
-                new.append((p, s['para']))
     return new
 
 
@@ -373,24 +380,11 @@ def analyze(names):
     flow.run(entries)
     targets = [s for s in SEGS if s['name'] in names]
     GEN[:] = targets
-    # prologue scan of the gaps, until nothing new
+    # gaps: a gap whose first byte (after padding) is a prologue, or that decodes cleanly to a ret/jmp, is code
     while True:
-        new = []
-        for s in targets:
-            lin = s['lin']
-            while lin < s['end']:
-                if lin in flow.ins:
-                    lin += flow.ins[lin][0]
-                    continue
-                if prologue_at(lin) and lin not in flow.bad:
-                    new.append((lin, s['para']))
-                    funcs.add(lin)
-                    break
-                lin += 1
-        if not new:
-            new = linear_gaps(flow, targets)
-            for l, _ in new:
-                funcs.add(l)
+        new = linear_gaps(flow, targets)
+        for l, _ in new:
+            funcs.add(l)
         if not new:
             break
         flow.run(new)
