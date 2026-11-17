@@ -1481,3 +1481,14 @@ seg058:0443,RtlExePath,F058_0443,rtlink,high,the full path of the running EXE fr
 seg058:04AC,RtlOpenCandidate,F058_04AC,rtlink,medium,builds the candidate path and opens it,src/seg/seg058.asm
 seg058:04C0,RtlAppendName,F058_04C0,rtlink,medium,appends the file name and notes a .exe extension,src/seg/seg058.asm
 seg058:04FD,RtlShowMessage,F058_04FD,rtlink,medium,duplicates stdout/stderr handles and prints a $-terminated message,src/seg/seg058.asm
+seg013:0000,WaitButtonTimedTail,F013_0000,new,high,end of WaitButtonTimed in seg012,src/seg/seg013.asm
+SegStart_0D6B1,VectorToDir8Tail,SegStart_0D6B1,new,high,end of VectorToDir8 in seg017,src/seg/seg018.asm
+seg022:0000,PlayArenaJingleTail,F022_0000,new,high,end of PlayArenaJingle in seg021,src/seg/seg022.asm
+SegStart_148B0,DrawFrameTail,SegStart_148B0,new,high,end of DrawFrame in seg029,src/seg/seg030.asm
+SegStart_14B80,LoadRawModeTail,SegStart_14B80,new,high,end of LoadRawMode in seg032,src/seg/seg033.asm
+SegStart_14DB4,ReadPackedSizeTail,SegStart_14DB4,new,high,end of ReadPackedSize in seg033,src/seg/seg034.asm
+SegStart_15ED2,LoadAssetModeTail,SegStart_15ED2,new,high,end of LoadAssetMode in seg042,src/seg/seg043.asm
+SegStart_15FF4,FindNearestColorTail,SegStart_15FF4,new,high,end of FindNearestColor in seg044,src/seg/seg045.asm
+SegStart_160E3,CopyBytesFarTail,SegStart_160E3,new,high,end of CopyBytesFar in seg047,src/seg/seg048.asm
+seg054:0055,FpNo87Env,F054_0055,new,high,"""NO87="" and CR LF, the environment variable that turns the coprocessor off",src/seg/seg054.asm
+seg054:09CA,FpConstants,F054_09CA,new,medium,"emulator constants (temporary reals, coefficient tables)",src/seg/seg054.asm
