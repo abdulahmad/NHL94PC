@@ -6,6 +6,10 @@
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; FileExists                                                  0CD1:000C  94 PC
+; Open for reading succeeds.
+;-----------------------------------------------------------------------------
 FileExists:
         enter 0x2, 0x0
         push si
@@ -32,6 +36,10 @@ FileExists:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; BuildPathFar                                                0CD1:003E  94 PC
+; Directory, backslash, name and extension into a far buffer.
+;-----------------------------------------------------------------------------
 BuildPathFar:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -92,6 +100,10 @@ BuildPathFar:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; DeleteMatching                                              0CD1:00C2  94 PC
+; Finds every file of a pattern in a directory and unlinks it.
+;-----------------------------------------------------------------------------
 DeleteMatching:
         enter 0x52, 0x0
         push di
@@ -278,6 +290,10 @@ DeleteMatching:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; RemoveDirTree                                               0CD1:0258  94 PC
+; Unlinks every file in a directory, then rmdir.
+;-----------------------------------------------------------------------------
 RemoveDirTree:
         enter 0x52, 0x0
         push di
@@ -447,6 +463,10 @@ RemoveDirTree:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; OpenReadShared                                              0CD1:03D6  94 PC
+; _dos_open mode 40h (read, deny none).
+;-----------------------------------------------------------------------------
 OpenReadShared:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -457,6 +477,10 @@ OpenReadShared:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; OpenWriteShared                                             0CD1:03E8  94 PC
+; _dos_open mode 41h.
+;-----------------------------------------------------------------------------
 OpenWriteShared:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -467,6 +491,10 @@ OpenWriteShared:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; OpenReadWriteShared                                         0CD1:03FA  94 PC
+; _dos_open mode 42h.
+;-----------------------------------------------------------------------------
 OpenReadWriteShared:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -477,6 +505,10 @@ OpenReadWriteShared:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; CreateFileNormal                                            0CD1:040C  94 PC
+; _dos_creat attribute 0.
+;-----------------------------------------------------------------------------
 CreateFileNormal:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -487,6 +519,10 @@ CreateFileNormal:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; CloseHandlePtr                                              0CD1:041E  94 PC
+; Closes the handle a pointer holds and stores -1.
+;-----------------------------------------------------------------------------
 CloseHandlePtr:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -508,6 +544,10 @@ CloseHandlePtr:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; ReadAtOffset                                                0CD1:0442  94 PC
+; Seek to a long offset then read; returns 0 or an error.
+;-----------------------------------------------------------------------------
 ReadAtOffset:
         enter 0x2, 0x0
         push si
@@ -547,6 +587,10 @@ ReadAtOffset:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; WriteAtOffset                                               0CD1:0496  94 PC
+; Seek to a long offset then write; returns 0 or an error.
+;-----------------------------------------------------------------------------
 WriteAtOffset:
         enter 0x2, 0x0
         push si
@@ -586,6 +630,10 @@ WriteAtOffset:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ReadRecord52                                                0CD1:04EA  94 PC
+; ReadAtOffset of 34h bytes.
+;-----------------------------------------------------------------------------
 ReadRecord52:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -600,6 +648,10 @@ ReadRecord52:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; WriteRecord52                                               0CD1:0504  94 PC
+; WriteAtOffset of 34h bytes.
+;-----------------------------------------------------------------------------
 WriteRecord52:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -614,6 +666,10 @@ WriteRecord52:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; CopyFileByName                                              0CD1:051E  94 PC
+; Opens the source, creates the target, copies in 1 KB pieces.
+;-----------------------------------------------------------------------------
 CopyFileByName:
         enter 0x448, 0x0
         push di
@@ -720,6 +776,10 @@ CopyFileByName:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ReadRecord48                                                0CD1:0602  94 PC
+; ReadAtOffset of 30h bytes.
+;-----------------------------------------------------------------------------
 ReadRecord48:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -734,6 +794,10 @@ ReadRecord48:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; ReadEntry6                                                  0CD1:061C  94 PC
+; 6-byte entry n at 2 + 6n.
+;-----------------------------------------------------------------------------
 ReadEntry6:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -756,6 +820,10 @@ ReadEntry6:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; ReadEntry744                                                0CD1:0640  94 PC
+; 2E8h-byte entry n.
+;-----------------------------------------------------------------------------
 ReadEntry744:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -772,6 +840,10 @@ ReadEntry744:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ReadEntry12                                                 0CD1:065E  94 PC
+; 12-byte entry n.
+;-----------------------------------------------------------------------------
 ReadEntry12:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp

@@ -19,9 +19,12 @@ SpillRet:
         ret 0xe
 
 
-; EmsMap: map CX logical pages starting at BX onto physical pages starting at AL.
+;-----------------------------------------------------------------------------
+; EmsMap                                                      03A3:000E  94 PC
+; map CX logical pages starting at BX onto physical pages starting at AL.
 ; INT 67h AH=44h, handle at EmsHandle. Skips the call when the cache already matches.
 ; Carry set on failure. Near.
+;-----------------------------------------------------------------------------
 EmsMap:
         db 0x32, 0xE4                           ; insn: xor ah, ah
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -52,8 +55,11 @@ EmsMap:
         stc
         ret
 
-; EmsMapRange: map the byte range (long at [bp+6], length at [bp+0Ah]) into a
+;-----------------------------------------------------------------------------
+; EmsMapRange                                                 03A3:004D  94 PC
+; map the byte range (long at [bp+6], length at [bp+0Ah]) into a
 ; free physical window and return DX:AX inside the page frame. Zero if none fit.
+;-----------------------------------------------------------------------------
 EmsMapRange:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -117,7 +123,10 @@ EmsMapRange:
         leave
         retf
 
-; EmsMarkStale: set the high bit of the four cached logical pages so the next map misses.
+;-----------------------------------------------------------------------------
+; EmsMarkStale                                                03A3:00D3  94 PC
+; set the high bit of the four cached logical pages so the next map misses.
+;-----------------------------------------------------------------------------
 EmsMarkStale:
         mov ax, 0x8000
         or word [EmsMapCache], ax
@@ -126,11 +135,14 @@ EmsMarkStale:
         or word [EmsMapCache+6], ax
         retf
 
-; EmsInit: if no handle yet, check the INT 67h device name against EmmName,
+;-----------------------------------------------------------------------------
+; EmsInit                                                     03A3:00E7  94 PC
+; if no handle yet, check the INT 67h device name against EmmName,
 ; read the page frame, and allocate the smaller of the free page count and
 ; four times the long argument. The allocated count divided by 4 is stored
 ; through the far pointer at EmsOutPtr. EmsFree is registered with _onexit.
 ; Then calls seg030. Returns that call, or zero.
+;-----------------------------------------------------------------------------
 EmsInit:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -202,7 +214,10 @@ EmsInit:
         leave
         retf
 
-; EmsFree: deallocate the EMS handle (INT 67h AH=45h) and store -1. _onexit calls this.
+;-----------------------------------------------------------------------------
+; EmsFree                                                     03A3:017C  94 PC
+; deallocate the EMS handle (INT 67h AH=45h) and store -1. _onexit calls this.
+;-----------------------------------------------------------------------------
 EmsFree:
         cmp word [EmsHandle], -1
         je short .1
@@ -213,8 +228,11 @@ EmsFree:
 .1:
         retf
 
-; EmsMapFrame: map four physical pages at the 16K page of the long argument and
+;-----------------------------------------------------------------------------
+; EmsMapFrame                                                 03A3:0192  94 PC
+; map four physical pages at the 16K page of the long argument and
 ; return DX:AX (page frame, offset within the page).
+;-----------------------------------------------------------------------------
 EmsMapFrame:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -235,7 +253,10 @@ EmsMapFrame:
         leave
         retf
 
-; EmsSaveMap: copy the four cached logical-page words to the near buffer in [bp+6].
+;-----------------------------------------------------------------------------
+; EmsSaveMap                                                  03A3:01B9  94 PC
+; copy the four cached logical-page words to the near buffer in [bp+6].
+;-----------------------------------------------------------------------------
 EmsSaveMap:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -252,7 +273,10 @@ EmsSaveMap:
         leave
         retf
 
-; EmsRestoreMap: map the four logical pages in the near buffer back onto physical pages 0-3.
+;-----------------------------------------------------------------------------
+; EmsRestoreMap                                               03A3:01D1  94 PC
+; map the four logical pages in the near buffer back onto physical pages 0-3.
+;-----------------------------------------------------------------------------
 EmsRestoreMap:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -280,13 +304,19 @@ EmsRestoreMap:
         leave
         retf
 
-; ReadEndPtr: return the far pointer at TickTotal in DX:AX.
+;-----------------------------------------------------------------------------
+; ReadEndPtr                                                  03A3:0208  94 PC
+; return the far pointer at TickTotal in DX:AX.
+;-----------------------------------------------------------------------------
 ReadEndPtr:
         les ax, [TickTotal]
         mov dx, es
         retf
 
-; SetEndMark: store TickTotal plus the long argument at EndMark.
+;-----------------------------------------------------------------------------
+; SetEndMark                                                  03A3:020F  94 PC
+; store TickTotal plus the long argument at EndMark.
+;-----------------------------------------------------------------------------
 SetEndMark:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -299,7 +329,10 @@ SetEndMark:
         leave
         retf
 
-; WaitEnd: spin until TickTotal is at or past EndMark.
+;-----------------------------------------------------------------------------
+; WaitEnd                                                     03A3:0227  94 PC
+; spin until TickTotal is at or past EndMark.
+;-----------------------------------------------------------------------------
 WaitEnd:
         les ax, [TickTotal]
         mov dx, es
@@ -309,7 +342,10 @@ WaitEnd:
         jb short WaitEnd
         retf
 
-; EndReached: AX is 1 when TickTotal is at or past EndMark, else 0.
+;-----------------------------------------------------------------------------
+; EndReached                                                  03A3:023A  94 PC
+; AX is 1 when TickTotal is at or past EndMark, else 0.
+;-----------------------------------------------------------------------------
 EndReached:
         push cs
         call ReadEndPtr
@@ -323,7 +359,10 @@ EndReached:
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         retf
 
-; WaitAdd: add the long argument to TickTotal, then spin until TickTotal reaches that sum.
+;-----------------------------------------------------------------------------
+; WaitAdd                                                     03A3:0250  94 PC
+; add the long argument to TickTotal, then spin until TickTotal reaches that sum.
+;-----------------------------------------------------------------------------
 WaitAdd:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -344,9 +383,12 @@ WaitAdd:
         leave
         retf
 
-; CopyFar: copy the long byte count at [bp+0Eh] from the far pointer at [bp+6]
+;-----------------------------------------------------------------------------
+; CopyFar                                                     03A3:0276  94 PC
+; copy the long byte count at [bp+0Eh] from the far pointer at [bp+6]
 ; to the far pointer at [bp+0Ah]. Offsets are kept under 16, then the copy moves
 ; 32K at a time. Word moves, or dword moves when Cpu386 is not zero.
+;-----------------------------------------------------------------------------
 CopyFar:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -437,7 +479,10 @@ CopyFar:
         retf
         db 0x00
 
-; CopyParas: copy BX paragraphs from the segment at [bp+6] to the segment at [bp+8].
+;-----------------------------------------------------------------------------
+; CopyParas                                                   03A3:032C  94 PC
+; copy BX paragraphs from the segment at [bp+6] to the segment at [bp+8].
+;-----------------------------------------------------------------------------
 CopyParas:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -479,7 +524,10 @@ CopyParas:
         leave
         retf
 
-; CopyParasDown: the same copy, starting at the top so an overlap moves down safely.
+;-----------------------------------------------------------------------------
+; CopyParasDown                                               03A3:0374  94 PC
+; the same copy, starting at the top so an overlap moves down safely.
+;-----------------------------------------------------------------------------
 CopyParasDown:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -531,7 +579,10 @@ CopyParasDown:
         retf
         db 0x00
 
-; CritHandler: INT 24h. Far-calls the routine whose address HookCrit stored.
+;-----------------------------------------------------------------------------
+; CritHandler                                                 03A3:03C8  94 PC
+; INT 24h. Far-calls the routine whose address HookCrit stored.
+;-----------------------------------------------------------------------------
 CritHandler:
         push bx
         push dx
@@ -557,8 +608,11 @@ CritHandler:
         pop bx
         iret
 
-; HookCrit: register CritRestore with _onexit, store the caller's far routine,
+;-----------------------------------------------------------------------------
+; HookCrit                                                    03A3:03E4  94 PC
+; register CritRestore with _onexit, store the caller's far routine,
 ; save the old INT 24h vector, and point INT 24h at CritHandler.
+;-----------------------------------------------------------------------------
 HookCrit:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -589,8 +643,11 @@ HookCrit:
         leave
         retf
 
-; CritRestore: point INT 24h back at the saved vector, unless that vector's
+;-----------------------------------------------------------------------------
+; CritRestore                                                 03A3:0425  94 PC
+; point INT 24h back at the saved vector, unless that vector's
 ; segment word equals its offset word.
+;-----------------------------------------------------------------------------
 CritRestore:
         push ds
         mov ax, word [CritOld+2]
@@ -607,10 +664,13 @@ CritRestore:
         db 0x00
 
 
+;-----------------------------------------------------------------------------
+; PassFlag1                                                   03A3:0440  94 PC
 ; These four set SI and one flag byte, then ArgSetup stores the arguments
 ; and jumps to FillPoly. Nothing in the EXE far-calls them.
 ; PassFlag1 and PassFlag0 take the word at [bp+0Eh]. AddrFlag0 and AddrFlag1
 ; take its address. The flag is the byte at [bp-9]. ScanFn is set to 3ABBh.
+;-----------------------------------------------------------------------------
 PassFlag1:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -621,6 +681,10 @@ PassFlag1:
         mov byte [bp-9], 1
         jmp short ArgSetup
 
+;-----------------------------------------------------------------------------
+; PassFlag0                                                   03A3:0452  94 PC
+; Sets SI from [bp+0Eh] and the flag byte to 0, then falls into ArgSetup.
+;-----------------------------------------------------------------------------
 PassFlag0:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -645,6 +709,11 @@ ArgSetup:
         mov word [LineFn], ax
         jmp near FillPoly
 
+;-----------------------------------------------------------------------------
+; AddrFlag0                                                   03A3:0489  94 PC
+; Sets SI to the address of [bp+0Eh] and the flag byte to 0, then jumps to
+; ArgSetup.
+;-----------------------------------------------------------------------------
 AddrFlag0:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -655,6 +724,11 @@ AddrFlag0:
         mov byte [bp-9], 0
         jmp short ArgSetup
 
+;-----------------------------------------------------------------------------
+; AddrFlag1                                                   03A3:049B  94 PC
+; Sets SI to the address of [bp+0Eh] and the flag byte to 1, then jumps to
+; ArgSetup.
+;-----------------------------------------------------------------------------
 AddrFlag1:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -667,11 +741,17 @@ AddrFlag1:
 
         db 0
 
+;-----------------------------------------------------------------------------
+; OnexitThunk                                                 03A3:04AE  94 PC
 ; Tail call. The far return from _onexit goes to this caller's caller.
+;-----------------------------------------------------------------------------
 OnexitThunk:
         jmp 0:_onexit                           ; seg000
 
+;-----------------------------------------------------------------------------
+; ExitSavedSp                                                 03A3:04B3  94 PC
 ; If SavedSp is nonzero, SS becomes DGROUP and SP becomes that word. Then _exit(0).
+;-----------------------------------------------------------------------------
 ExitSavedSp:
         mov ax, DGROUP
         mov ds, ax
@@ -686,11 +766,14 @@ ExitSavedSp:
 
         db 0
 
+;-----------------------------------------------------------------------------
+; FileSizeArg                                                 03A3:04CE  94 PC
 ; File length. Opens the path at [bp+6] for reading, seeks to the end, closes,
 ; and returns the length in DX:AX. The word at [bp-4] is nonzero to report a
 ; failed open through seg022; zero returns AX 0 instead.
 ; FileSizeArg takes that word from the caller. FileSize forces zero.
 ; FileSizeMsg forces one.
+;-----------------------------------------------------------------------------
 FileSizeArg:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -702,6 +785,10 @@ FileSizeArg:
         mov word [bp-4], ax
         jmp short FileSizeBody
 
+;-----------------------------------------------------------------------------
+; FileSize                                                    03A3:04DF  94 PC
+; File length. A failed open returns 0.
+;-----------------------------------------------------------------------------
 FileSize:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -712,6 +799,10 @@ FileSize:
         mov word [bp-4], 0
         jmp short FileSizeBody
 
+;-----------------------------------------------------------------------------
+; FileSizeMsg                                                 03A3:04EF  94 PC
+; File length. A failed open calls seg022. This is the far entry.
+;-----------------------------------------------------------------------------
 FileSizeMsg:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -763,12 +854,15 @@ FileSizeBody:
         retf
 
 
+;-----------------------------------------------------------------------------
+; FileHeadArg                                                 03A3:0543  94 PC
 ; Open the path at [bp+6] and read four bytes. Bytes 1, 2 and 3 are a
 ; 24-bit count; byte 0 is unused. The result is that count divided by 16,
 ; plus 1 when the low nibble was set. The word at [bp-8] selects the failure
 ; path, same as FileSize. FileHeadArg takes it from the caller. FileHead
 ; forces 0 (return AX 0). FileHeadMsg forces 1 (call seg022). That call is
 ; not followed by a return here: the next instruction is FindPath.
+;-----------------------------------------------------------------------------
 FileHeadArg:
         push bp
         db 0x8B, 0xEC
@@ -779,6 +873,10 @@ FileHeadArg:
         mov ax, word [bp+8]
         mov word [bp-8], ax
         jmp short FileHeadBody
+;-----------------------------------------------------------------------------
+; FileHead                                                    03A3:0554  94 PC
+; Same as FileHeadArg with the failure flag forced to 0.
+;-----------------------------------------------------------------------------
 FileHead:
         push bp
         db 0x8B, 0xEC
@@ -788,6 +886,11 @@ FileHead:
         push di
         mov word [bp-8], 0
         jmp short FileHeadBody
+;-----------------------------------------------------------------------------
+; FileHeadMsg                                                 03A3:0564  94 PC
+; Same as FileHeadArg with the failure flag forced to 1. The seg022 call
+; returns into FindPath.
+;-----------------------------------------------------------------------------
 FileHeadMsg:
         push bp
         db 0x8B, 0xEC
@@ -916,7 +1019,10 @@ FindNone:
         jmp short FindExit
 
 
+;-----------------------------------------------------------------------------
+; FindNextPath                                                03A3:0644  94 PC
 ; Find next file and append that DTA name at the same cut. Returns PathBuf, or 0.
+;-----------------------------------------------------------------------------
 FindNextPath:
         push bp
         db 0x8B, 0xEC
@@ -933,8 +1039,11 @@ FindNextPath:
         db 0
 
 
+;-----------------------------------------------------------------------------
+; LargestFree                                                 03A3:065A  94 PC
 ; INT 21h AH=48h with BX=FFFFh. That fails and leaves the largest free
 ; block in BX. Returns that size in bytes (paragraphs shifted up by 4).
+;-----------------------------------------------------------------------------
 LargestFree:
         push si
         push di
@@ -956,10 +1065,13 @@ LargestFree:
         retf
 
 
+;-----------------------------------------------------------------------------
+; AllocBytes                                                  03A3:067A  94 PC
 ; DX:AX is a byte size, not a stack argument. Rounds it up to paragraphs
 ; and allocates that. If the alloc fails, the second AH=48h uses the largest
 ; block DOS reported in BX. Stores CS, DS, SP, the block segment and the
 ; paragraph past the block. Returns the allocated size in bytes.
+;-----------------------------------------------------------------------------
 AllocBytes:
         push si
         push di
@@ -1002,11 +1114,14 @@ AllocBytes:
 
         db 0
 
+;-----------------------------------------------------------------------------
+; FoldScale                                                   03A3:06CA  94 PC
 ; Call Atan2 with the two words, take the absolute value, and fold it:
 ; at or above 100h it becomes 200h minus the value. Above 80h the result
 ; comes from SinLookup and the first word; otherwise from CosLookup
 ; and the second word. The dividend is the absolute word shifted left 14,
 ; then divided by that result.
+;-----------------------------------------------------------------------------
 FoldScale:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1061,13 +1176,20 @@ FoldScale:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; RetZero                                                     03A3:0734  94 PC
+; Xor ax, ax / retf.
+;-----------------------------------------------------------------------------
 RetZero:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         retf
 
         db 0
 
+;-----------------------------------------------------------------------------
+; MapEsBx                                                     03A3:0738  94 PC
 ; Near. Mark the EMS map stale, map the long at [bp+4], and return it in ES:BX.
+;-----------------------------------------------------------------------------
 MapEsBx:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1083,7 +1205,10 @@ MapEsBx:
         leave
         ret
 
+;-----------------------------------------------------------------------------
+; PadSpace4                                                   03A3:0756  94 PC
 ; Near. Walk at most four bytes at SI. After a 0, fill the rest of the four with spaces.
+;-----------------------------------------------------------------------------
 PadSpace4:
         cld
         mov cx, 4
@@ -1099,10 +1224,13 @@ PadSpace4:
         loop .2
         ret
 
+;-----------------------------------------------------------------------------
+; LookupArg                                                   03A3:076A  94 PC
 ; Look up a 4-byte key at [bp+0Ah] in the block addressed by the long at [bp+6].
 ; The word at [bp-2] is the failure flag: LookupArg takes it from the caller,
 ; Lookup forces 0, LookupMsg forces 1. A hit returns a long. A miss returns 0,
 ; or calls seg022 when the flag is 1.
+;-----------------------------------------------------------------------------
 LookupArg:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1112,6 +1240,10 @@ LookupArg:
         mov ax, word [bp+0xc]
         mov word [bp-2], ax
         jmp short LookupBody
+;-----------------------------------------------------------------------------
+; Lookup                                                      03A3:077A  94 PC
+; Same lookup with the failure flag forced to 0.
+;-----------------------------------------------------------------------------
 Lookup:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1120,6 +1252,10 @@ Lookup:
         push di
         mov word [bp-2], 0
         jmp short LookupBody
+;-----------------------------------------------------------------------------
+; LookupMsg                                                   03A3:0789  94 PC
+; Same lookup with the failure flag forced to 1, which calls seg022.
+;-----------------------------------------------------------------------------
 LookupMsg:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1206,16 +1342,28 @@ LookupBody:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; FindFar                                                     03A3:083E  94 PC
 ; Look up the long at the near pointer [bp+8] in the far table at [bp+4].
 ; Records start at offset 6 and are four bytes. A miss with BX nonzero calls
 ; seg022. A hit returns the far pointer stored after the keys, added to DS.
 ; FindFar passes no message. FindFarAlt uses 0x6485. FindFarMsg uses 0x645c.
+;-----------------------------------------------------------------------------
 FindFar:
         db 0x33, 0xDB                           ; insn: xor bx, bx
         jmp short FindFarBody
+;-----------------------------------------------------------------------------
+; FindFarAlt                                                  03A3:0842  94 PC
+; Same lookup. On a miss calls seg022 with the pointer at 0x6485.
+;-----------------------------------------------------------------------------
 FindFarAlt:
         mov bx, 0x6485
         jmp short FindFarBody
+;-----------------------------------------------------------------------------
+; FindFarMsg                                                  03A3:0847  94 PC
+; Same lookup. On a miss calls seg022 with the pointer at 0x645c. _main calls
+; this.
+;-----------------------------------------------------------------------------
 FindFarMsg:
         mov bx, 0x645c
 FindFarBody:
@@ -1283,7 +1431,10 @@ FindFarBody:
         pop bp
         retf
 
+;-----------------------------------------------------------------------------
+; FindFarList                                                 03A3:08C4  94 PC
 ; Walk keys at [bp+8] until a 0 byte. Each call of FindFarMsg stores DX:AX at DI.
+;-----------------------------------------------------------------------------
 FindFarList:
         db 0x8B, 0xC4                           ; insn: mov ax, sp
         push si
@@ -1312,7 +1463,10 @@ FindFarList:
         pop si
         retf
 
+;-----------------------------------------------------------------------------
+; FindFarQuiet                                                03A3:08F9  94 PC
 ; The same walk, calling FindFar so a miss stays quiet.
+;-----------------------------------------------------------------------------
 FindFarQuiet:
         db 0x8B, 0xC4                           ; insn: mov ax, sp
         push si
@@ -1341,7 +1495,10 @@ FindFarQuiet:
         pop si
         retf
 
+;-----------------------------------------------------------------------------
+; FarToLinear                                                 03A3:092E  94 PC
 ; Far pointer on the stack to a 20-bit address in DX:AX.
+;-----------------------------------------------------------------------------
 FarToLinear:
         db 0x8B, 0xDC                           ; insn: mov bx, sp
         mov ax, word [bx+6]
@@ -1353,7 +1510,10 @@ FarToLinear:
         adc dx, 0
         retf
 
+;-----------------------------------------------------------------------------
+; LinearToFar                                                 03A3:0945  94 PC
 ; 20-bit address on the stack back to a far pointer with offset under 16.
+;-----------------------------------------------------------------------------
 LinearToFar:
         db 0x8B, 0xDC                           ; insn: mov bx, sp
         mov ax, word [bx+4]
@@ -1364,7 +1524,10 @@ LinearToFar:
         ror dx, 4
         retf
 
+;-----------------------------------------------------------------------------
+; LinearToFarRegs                                             03A3:0959  94 PC
 ; Same conversion with the low word in AX and the high word in DX.
+;-----------------------------------------------------------------------------
 LinearToFarRegs:
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         and ax, 0xf
@@ -1375,8 +1538,11 @@ LinearToFarRegs:
 
         db 0
 
+;-----------------------------------------------------------------------------
+; CopyBytes                                                   03A3:0968  94 PC
 ; Copy the word count at [bp+0Eh] from the far pointer at [bp+0Ah]
 ; to the far pointer at [bp+6]. The high half of the count is zero.
+;-----------------------------------------------------------------------------
 CopyBytes:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1394,9 +1560,12 @@ CopyBytes:
 
         db 0
 
+;-----------------------------------------------------------------------------
+; FormatCall                                                  03A3:0988  94 PC
 ; Pops the far return address and two words. Calls _sprintf with FmtBuf,
 ; then calls seg028 with those two words and FmtBuf, then far-returns
 ; through the saved address. No far call in the EXE lands on this entry.
+;-----------------------------------------------------------------------------
 FormatCall:
         pop ax
         mov word [FmtSave], ax
@@ -1422,7 +1591,10 @@ FormatCall:
 
         db 0
 
+;-----------------------------------------------------------------------------
+; ImulWords                                                   03A3:09C2  94 PC
 ; Signed product of the two stack words, in DX:AX.
+;-----------------------------------------------------------------------------
 ImulWords:
         db 0x8B, 0xDC                           ; insn: mov bx, sp
         mov ax, word [bx+4]
@@ -1431,7 +1603,10 @@ ImulRegs:
         imul dx
         retf
 
+;-----------------------------------------------------------------------------
+; MulWords                                                    03A3:09CD  94 PC
 ; Unsigned product of the two stack words, in DX:AX.
+;-----------------------------------------------------------------------------
 MulWords:
         db 0x8B, 0xDC                           ; insn: mov bx, sp
         mov ax, word [bx+4]
@@ -1440,7 +1615,10 @@ MulRegs:
         mul dx
         retf
 
+;-----------------------------------------------------------------------------
+; IdivWords                                                   03A3:09D8  94 PC
 ; Signed DX:AX divided by the third stack word.
+;-----------------------------------------------------------------------------
 IdivWords:
         db 0x8B, 0xDC                           ; insn: mov bx, sp
         mov ax, word [bx+4]
@@ -1449,7 +1627,10 @@ IdivWords:
         idiv bx
         retf
 
+;-----------------------------------------------------------------------------
+; DivWords                                                    03A3:09E6  94 PC
 ; Unsigned DX:AX divided by the third stack word.
+;-----------------------------------------------------------------------------
 DivWords:
         db 0x8B, 0xDC                           ; insn: mov bx, sp
         mov ax, word [bx+4]
@@ -1458,7 +1639,10 @@ DivWords:
         div bx
         retf
 
+;-----------------------------------------------------------------------------
+; Idiv32                                                      03A3:09F4  94 PC
 ; Signed DX:AX divided by BX. Quotient comes back in DX:AX.
+;-----------------------------------------------------------------------------
 Idiv32:
         shl edx, 0x10
         db 0x8B, 0xD0                           ; insn: mov dx, ax
@@ -1470,8 +1654,11 @@ Idiv32:
         shr edx, 0x10
         retf
 
+;-----------------------------------------------------------------------------
+; IdivDword                                                   03A3:0A0F  94 PC
 ; Stack dword divided by the stack word. The high half is cleared first.
 ; Quotient comes back in DX:AX.
+;-----------------------------------------------------------------------------
 IdivDword:
         db 0x8B, 0xDC                           ; insn: mov bx, sp
         db 0x66, 0x33, 0xD2                     ; insn: xor edx, edx
@@ -1482,9 +1669,12 @@ IdivDword:
         shr edx, 0x10
         retf
 
+;-----------------------------------------------------------------------------
+; WriteFile                                                   03A3:0A28  94 PC
 ; Create the path at [bp+6] and write the far buffer at [bp+8]. The long
 ; at [bp+0Ch] is the byte count, moved 16K at a time. A short write or a DOS
 ; error deletes the file. This entry then calls seg022 and returns 0.
+;-----------------------------------------------------------------------------
 WriteFile:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1496,7 +1686,10 @@ WriteFile:
         jmp short WriteFileBody
 
 
+;-----------------------------------------------------------------------------
+; WriteFileCode                                               03A3:0A38  94 PC
 ; The same write. Returns the DOS error, or 1 when a write was short.
+;-----------------------------------------------------------------------------
 WriteFileCode:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1574,7 +1767,10 @@ WriteFileBody:
         db 0x00
 
 
+;-----------------------------------------------------------------------------
+; RoundSeg                                                    03A3:0ADA  94 PC
 ; Add (offset+15)/16 to the segment. AX is 0.
+;-----------------------------------------------------------------------------
 RoundSeg:
         db 0x8B, 0xDC                           ; insn: mov bx, sp
         mov dx, word [bx + 4]
@@ -1586,7 +1782,10 @@ RoundSeg:
         db 0x00
 
 
+;-----------------------------------------------------------------------------
+; TableCount                                                  03A3:0AEC  94 PC
 ; Return the word at offset 4 of the far structure.
+;-----------------------------------------------------------------------------
 TableCount:
         db 0x8B, 0xDC                           ; insn: mov bx, sp
         les bx, [bx + 4]
@@ -1594,8 +1793,11 @@ TableCount:
         retf
 
 
+;-----------------------------------------------------------------------------
+; TableAt                                                     03A3:0AF6  94 PC
 ; Far pointer for the entry index, or 0 when the index is past the count.
 ; The pointer is normalized the same way FindFar normalizes a hit.
+;-----------------------------------------------------------------------------
 TableAt:
         db 0x8B, 0xDC                           ; insn: mov bx, sp
         mov dx, word [bx + 8]
@@ -1634,7 +1836,10 @@ TableAt:
         retf
 
 
+;-----------------------------------------------------------------------------
+; TableStore                                                  03A3:0B44  94 PC
 ; Store that entry's dword through the near pointer, or store 0.
+;-----------------------------------------------------------------------------
 TableStore:
         db 0x8B, 0xDC                           ; insn: mov bx, sp
         mov ax, word [bx + 8]
@@ -1659,8 +1864,11 @@ TableStore:
         db 0x00
 
 
+;-----------------------------------------------------------------------------
+; PathTail                                                    03A3:0B78  94 PC
 ; DX:AX points just past the last colon, at-sign, slash, or backslash.
 ; PathTail reads a near string. PathTailFar reads a far string.
+;-----------------------------------------------------------------------------
 PathTail:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1669,6 +1877,10 @@ PathTail:
         mov si, word [bp + 6]
         jmp short PathTailBody
 
+;-----------------------------------------------------------------------------
+; PathTailFar                                                 03A3:0B82  94 PC
+; Same scan of a far string.
+;-----------------------------------------------------------------------------
 PathTailFar:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1703,8 +1915,11 @@ PathTailBody:
         retf
 
 
+;-----------------------------------------------------------------------------
+; CopyStrN                                                    03A3:0BAE  94 PC
 ; Copy bytes, including the null, and stop at the null or at the count.
 ; CopyStrN reads a near string. CopyStrNFar reads a far string. The destination is far.
+;-----------------------------------------------------------------------------
 CopyStrN:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1715,6 +1930,10 @@ CopyStrN:
         mov cx, word [bp + 0xc]
         jmp short CopyStrNBody
 
+;-----------------------------------------------------------------------------
+; CopyStrNFar                                                 03A3:0BBC  94 PC
+; Same copy from a far string.
+;-----------------------------------------------------------------------------
 CopyStrNFar:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1739,7 +1958,10 @@ CopyStrNBody:
         retf
 
 
+;-----------------------------------------------------------------------------
+; StrnDiff                                                    03A3:0BD7  94 PC
 ; Compare up to the count. AX is 0 when the bytes match through a null, else 1.
+;-----------------------------------------------------------------------------
 StrnDiff:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1765,9 +1987,12 @@ StrnDiff:
         retf
         db 0x00
 
+;-----------------------------------------------------------------------------
+; TextWidth                                                   03A3:0BFA  94 PC
 ; Sum per-character values from the table in CharSeg. [bp+8] is how many
 ; characters to read; zero returns 0. The word at ES:10h is the value used
 ; when the flag byte at ES:14h is set. Otherwise the word at ES:(char*2+16h).
+;-----------------------------------------------------------------------------
 TextWidth:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1780,7 +2005,10 @@ TextWidth:
         jmp short TextWidthBody.3
 
 
+;-----------------------------------------------------------------------------
+; TextWidthAll                                                03A3:0C0A  94 PC
 ; The same sum through the terminating 0.
+;-----------------------------------------------------------------------------
 TextWidthAll:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1822,7 +2050,10 @@ TextWidthBody:
         db 0x00
 
 
+;-----------------------------------------------------------------------------
+; SetCharPtr                                                  03A3:0C4E  94 PC
 ; Store the far pointer at the start of the CharSeg block.
+;-----------------------------------------------------------------------------
 SetCharPtr:
         db 0x8B, 0xDC                           ; insn: mov bx, sp
         mov ax, word [bx + 4]
@@ -1834,7 +2065,10 @@ SetCharPtr:
         retf
 
 
+;-----------------------------------------------------------------------------
+; SetCharPtr2                                                 03A3:0C64  94 PC
 ; Store the far pointer at offset 8 of the CharSeg block.
+;-----------------------------------------------------------------------------
 SetCharPtr2:
         db 0x8B, 0xDC                           ; insn: mov bx, sp
         mov ax, word [bx + 4]
@@ -1845,8 +2079,11 @@ SetCharPtr2:
         retf
 
 
+;-----------------------------------------------------------------------------
+; SaveCharTab                                                 03A3:0C7A  94 PC
 ; Copy 11 words from the start of CharSeg into the near buffer, and
 ; store CharSeg at offset 16h of that buffer.
+;-----------------------------------------------------------------------------
 SaveCharTab:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1869,7 +2106,10 @@ SaveCharTab:
         retf
 
 
+;-----------------------------------------------------------------------------
+; LoadCharTab                                                 03A3:0C9C  94 PC
 ; The reverse. The segment word at offset 16h of the buffer becomes CharSeg.
+;-----------------------------------------------------------------------------
 LoadCharTab:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1889,7 +2129,10 @@ LoadCharTab:
         retf
 
 
+;-----------------------------------------------------------------------------
+; UseCharSeg                                                  03A3:0CB8  94 PC
 ; Normalize the far pointer and store its segment as CharSeg.
+;-----------------------------------------------------------------------------
 UseCharSeg:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1903,9 +2146,12 @@ UseCharSeg:
         db 0x00
 
 
+;-----------------------------------------------------------------------------
+; HookInt8                                                    03A3:0CCA  94 PC
 ; Write 0B6h to port 43h, mask IRQ 0 and IRQ 1, point INT 8 at seg001:0E20h
 ; if that is not already the vector, unmask, and write 2E9Ch to port 40h.
 ; Registers UnhookInt8 with _onexit. _main calls this.
+;-----------------------------------------------------------------------------
 HookInt8:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1958,8 +2204,11 @@ HookInt8:
         retf
 
 
+;-----------------------------------------------------------------------------
+; UnhookInt8                                                  03A3:0D51  94 PC
 ; If INT 8 still points at seg001:0E20h, mask IRQ 0 and IRQ 1, restore the
 ; saved vector, unmask, and write 0 to port 40h twice.
+;-----------------------------------------------------------------------------
 UnhookInt8:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         mov es, ax
@@ -2016,8 +2265,11 @@ AllocSlot:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; FreeSlot                                                    03A3:0DC0  94 PC
 ; Remove the pair at SlotTab that matches the two arguments, and slide the
 ; later pairs down. The last pair is cleared.
+;-----------------------------------------------------------------------------
 FreeSlot:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2054,7 +2306,10 @@ FreeSlot:
         retf
 
 
+;-----------------------------------------------------------------------------
+; CountSlots                                                  03A3:0DFF  94 PC
 ; AX is how many SlotTab pairs have a nonzero second word.
+;-----------------------------------------------------------------------------
 CountSlots:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         mov bx, SlotTab
@@ -2068,7 +2323,10 @@ CountSlots:
         retf
 
 
+;-----------------------------------------------------------------------------
+; SsIsDs                                                      03A3:0E11  94 PC
 ; AX is 1 when SS equals DS, else 0.
+;-----------------------------------------------------------------------------
 SsIsDs:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         mov bx, ss
@@ -2080,19 +2338,25 @@ SsIsDs:
         retf
 
 
+;-----------------------------------------------------------------------------
+; EmptyRet                                                    03A3:0E1D  94 PC
 ; A far return. HookInt8 stores this address next to the old INT 8 vector.
+;-----------------------------------------------------------------------------
 EmptyRet:
         retf
 Int8Ds:
         dw 0
 
 
+;-----------------------------------------------------------------------------
+; Int8Handler                                                 03A3:0E20  94 PC
 ; INT 8. Loads DS from Int8Ds. Sends EOI unless SkipEoi is set. When
 ; TickGate drops to 0 and TickSkip is clear, switches to the stack at Int8Sp
 ; and far-calls every SlotTab pair whose second word is nonzero. Adds TickStep
 ; into TickFrac. On carry, bumps TickTotal and the BIOS tick at 0:046Ch, rolls
 ; that tick over at midnight, and turns the floppy motors off when the BIOS
 ; motor count reaches 0.
+;-----------------------------------------------------------------------------
 Int8Handler:
         push ds
         push ax
@@ -2176,8 +2440,11 @@ Int8Handler:
         iret
 
 
+;-----------------------------------------------------------------------------
+; ResetText                                                   03A3:0ECE  94 PC
 ; If WantText is nonzero, clears it, calls seg028, forces the BIOS equipment
 ; word to 80-column color, and sets video mode 3 with background 0.
+;-----------------------------------------------------------------------------
 ResetText:
         cmp word [WantText], 0
         je short .1
@@ -2204,10 +2471,13 @@ ResetText:
         db 0x00
 
 
+;-----------------------------------------------------------------------------
+; PollJoy                                                     03A3:0F08  94 PC
 ; If bit 0 of JoyOn is clear, return JoyBits. Otherwise read port 201h.
 ; Bits 4 and 5 are the buttons. Bits 0 and 1 are timed until they drop, or
 ; until the count reaches 0FA0h. The counts are kept against running limits,
 ; and JoyBits gains a bit when a count falls outside the inner range.
+;-----------------------------------------------------------------------------
 PollJoy:
         mov byte [JoyBits], 0
         test byte [JoyOn], 1
@@ -2390,7 +2660,10 @@ PollJoy:
         jmp short .23
 
 
+;-----------------------------------------------------------------------------
+; InitJoy                                                     03A3:10C3  94 PC
 ; Set bit 0 of JoyOn and the initial axis limits.
+;-----------------------------------------------------------------------------
 InitJoy:
         mov byte [JoyOn], 1
         mov word [0x6fff], 0x50
@@ -2400,7 +2673,10 @@ InitJoy:
         retf
 
 
+;-----------------------------------------------------------------------------
+; JoyNibble                                                   03A3:10E1  94 PC
 ; The low nibble of the argument indexes the 16 bytes at 701Fh.
+;-----------------------------------------------------------------------------
 JoyNibble:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2412,9 +2688,12 @@ JoyNibble:
         retf
 
 
+;-----------------------------------------------------------------------------
+; JoyScaleX                                                   03A3:10F2  94 PC
 ; (JoyX minus the low limit) times the X scale. The high word of that
 ; product, minus 1Fh, is the result. A reading under the limit returns the
 ; scale of zero, then the same subtract.
+;-----------------------------------------------------------------------------
 JoyScaleX:
         mov ax, word [JoyX]
         sub ax, word [0x6fff]
@@ -2428,7 +2707,10 @@ JoyScaleX:
         retf
 
 
+;-----------------------------------------------------------------------------
+; JoyScaleY                                                   03A3:1109  94 PC
 ; The same scale for JoyY.
+;-----------------------------------------------------------------------------
 JoyScaleY:
         mov ax, word [JoyY]
         sub ax, word [0x700d]
@@ -2441,10 +2723,13 @@ JoyScaleY:
         sub ax, 0x1f
         retf
 
+;-----------------------------------------------------------------------------
+; PollSticks                                                  03A3:1120  94 PC
 ; If JoyOn is 0, return 0. Otherwise time up to four axes on port 201h.
 ; The axis mask comes from the byte at JoyOn in the table at 7074h. Bit 0 of
 ; JoyOn calibrates the first pair into Stick1Bits. Bit 1 calibrates the second
 ; pair into Stick2Bits. AL is Stick1Bits and AH is Stick2Bits.
+;-----------------------------------------------------------------------------
 PollSticks:
         mov bl, byte [JoyOn]
         db 0x0A, 0xDB                           ; insn: or bl, bl
@@ -2746,7 +3031,10 @@ PollSticks:
         jmp short .44
 
 
+;-----------------------------------------------------------------------------
+; InitStick1                                                  03A3:1405  94 PC
 ; Set JoyOn bit 0 and the initial limits for the first pair. _main calls this.
+;-----------------------------------------------------------------------------
 InitStick1:
         or byte [JoyOn], 1
         mov word [Stick1XMin], 0x50
@@ -2756,7 +3044,10 @@ InitStick1:
         retf
 
 
+;-----------------------------------------------------------------------------
+; InitStick2                                                  03A3:1423  94 PC
 ; Set JoyOn bit 1 and the initial limits for the second pair. _main calls this.
+;-----------------------------------------------------------------------------
 InitStick2:
         or byte [JoyOn], 2
         mov word [Stick2XMin], 0x50
@@ -2766,7 +3057,10 @@ InitStick2:
         retf
 
 
+;-----------------------------------------------------------------------------
+; ScaleStick1X                                                03A3:1441  94 PC
 ; (Stick1X minus its low limit) times the X scale. High word of the product minus 1Fh.
+;-----------------------------------------------------------------------------
 ScaleStick1X:
         mov ax, word [Stick1X]
         sub ax, word [Stick1XMin]
@@ -2780,7 +3074,10 @@ ScaleStick1X:
         retf
 
 
+;-----------------------------------------------------------------------------
+; ScaleStick1Y                                                03A3:1458  94 PC
 ; The same scale for Stick1Y.
+;-----------------------------------------------------------------------------
 ScaleStick1Y:
         mov ax, word [Stick1Y]
         sub ax, word [Stick1YMin]
@@ -2794,7 +3091,10 @@ ScaleStick1Y:
         retf
 
 
+;-----------------------------------------------------------------------------
+; ScaleStick2X                                                03A3:146F  94 PC
 ; The same scale for Stick2X.
+;-----------------------------------------------------------------------------
 ScaleStick2X:
         mov ax, word [Stick2X]
         sub ax, word [Stick2XMin]
@@ -2808,7 +3108,10 @@ ScaleStick2X:
         retf
 
 
+;-----------------------------------------------------------------------------
+; ScaleStick2Y                                                03A3:1486  94 PC
 ; The same scale for Stick2Y.
+;-----------------------------------------------------------------------------
 ScaleStick2Y:
         mov ax, word [Stick2Y]
         sub ax, word [Stick2YMin]
@@ -2824,9 +3127,12 @@ ScaleStick2Y:
         db 0x00
 
 
+;-----------------------------------------------------------------------------
+; HookKbd                                                     03A3:149E  94 PC
 ; Save DS at KbdDs. If INT 9 is not already KbdIrq, save INT 9, INT 16h,
 ; and INT 23h, and point them at KbdIrq, Int16Hook, and BreakIrq. Point KeyPtr
 ; at KeyService, clear the key-state bytes, and register UnhookKbd.
+;-----------------------------------------------------------------------------
 HookKbd:
         push di
         mov word [cs:KbdDs], ds
@@ -2876,8 +3182,11 @@ HookKbd:
         retf
 
 
+;-----------------------------------------------------------------------------
+; UnhookKbd                                                   03A3:1538  94 PC
 ; Restore those three vectors when a previous INT 9 offset was saved.
 ; Point KeyPtr at BiosKey and clear the BIOS shift flags.
+;-----------------------------------------------------------------------------
 UnhookKbd:
         in al, 0x21
         db 0x8A, 0xE0                           ; insn: mov ah, al
@@ -2913,10 +3222,13 @@ KbdDs:
         dw 0
 
 
+;-----------------------------------------------------------------------------
+; KbdIrq                                                      03A3:1596  94 PC
 ; INT 9. Acknowledges the keyboard, reads the scan code, and sends EOI.
 ; A break code clears the key-state byte. A make code sets it and, unless a
 ; translation flag sends it elsewhere, queues the byte from the table at 713Ah.
 ; One flag path stores 1234h at 0:0472h and jumps to FFFF:0000h.
+;-----------------------------------------------------------------------------
 KbdIrq:
         sti
         push ax
@@ -3004,7 +3316,10 @@ KbdIrq:
         jmp 0xFFFF:0x0
 
 
+;-----------------------------------------------------------------------------
+; BreakIrq                                                    03A3:165B  94 PC
 ; INT 23h. Saves the registers, calls seg041, and returns from the interrupt.
+;-----------------------------------------------------------------------------
 BreakIrq:
         push bp
         push ax
@@ -3028,7 +3343,10 @@ BreakIrq:
         iret
 
 
+;-----------------------------------------------------------------------------
+; Int16Hook                                                   03A3:1673  94 PC
 ; INT 16h. Loads DS from KbdDs, calls KeyService, and returns with retf 2.
+;-----------------------------------------------------------------------------
 Int16Hook:
         push bx
         push ds
@@ -3039,8 +3357,11 @@ Int16Hook:
         retf 0x2
 
 
+;-----------------------------------------------------------------------------
+; KeyService                                                  03A3:1682  94 PC
 ; AH 0 reads a queued key. AH 1 reports one without removing it.
 ; Any other AH returns the two flag bytes ORed together.
+;-----------------------------------------------------------------------------
 KeyService:
         cmp ah, 1
         jb short .1
@@ -3070,7 +3391,10 @@ KeyService:
         ret
 
 
+;-----------------------------------------------------------------------------
+; KeyDown                                                     03A3:16C1  94 PC
 ; The key-state byte for the scan code argument.
+;-----------------------------------------------------------------------------
 KeyDown:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3082,13 +3406,19 @@ KeyDown:
         db 0x00
 
 
+;-----------------------------------------------------------------------------
+; BiosKey                                                     03A3:16D0  94 PC
 ; INT 16h, then a near return. KeyPtr points here while the hook is removed.
+;-----------------------------------------------------------------------------
 BiosKey:
         int 0x16
         ret
 
 
+;-----------------------------------------------------------------------------
+; ReadKey                                                     03A3:16D3  94 PC
 ; Ask KeyPtr whether a key is waiting, then read it.
+;-----------------------------------------------------------------------------
 ReadKey:
         mov ah, 1
         call word [KeyPtr]
@@ -3105,12 +3435,18 @@ ReadKey:
         retf
 
 
+;-----------------------------------------------------------------------------
+; KeyJump                                                     03A3:16EB  94 PC
 ; Far jump through KeyHook.
+;-----------------------------------------------------------------------------
 KeyJump:
         jmp far [KeyHook]
 
 
+;-----------------------------------------------------------------------------
+; ReadKeyNz                                                   03A3:16EF  94 PC
 ; Like ReadKey, but a zero low byte stays zero instead of being read again.
+;-----------------------------------------------------------------------------
 ReadKeyNz:
         mov ah, 1
         call word [KeyPtr]
@@ -3125,7 +3461,10 @@ ReadKeyNz:
         retf
 
 
+;-----------------------------------------------------------------------------
+; SetKeyHook                                                  03A3:1701  94 PC
 ; Store the far pointer argument at KeyHook.
+;-----------------------------------------------------------------------------
 SetKeyHook:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3137,14 +3476,20 @@ SetKeyHook:
         retf
 
 
+;-----------------------------------------------------------------------------
+; GetKeyHook                                                  03A3:1712  94 PC
 ; Return that far pointer.
+;-----------------------------------------------------------------------------
 GetKeyHook:
         mov ax, word [KeyHook]
         mov dx, word [0x7304]
         retf
 
 
+;-----------------------------------------------------------------------------
+; WaitKey                                                     03A3:171A  94 PC
 ; Call KeyJump until it returns nonzero.
+;-----------------------------------------------------------------------------
 WaitKey:
         push cs
         call KeyJump
@@ -3153,7 +3498,10 @@ WaitKey:
         retf
 
 
+;-----------------------------------------------------------------------------
+; FlushKeys                                                   03A3:1724  94 PC
 ; Call ReadKey until it returns zero.
+;-----------------------------------------------------------------------------
 FlushKeys:
         push cs
         call ReadKey
@@ -3162,7 +3510,10 @@ FlushKeys:
         retf
 
 
+;-----------------------------------------------------------------------------
+; WaitKeyUntil                                                03A3:172D  94 PC
 ; Call KeyJump until it returns nonzero or ReadCallCount passes Deadline.
+;-----------------------------------------------------------------------------
 WaitKeyUntil:
         push cs
         call KeyJump
@@ -3179,8 +3530,11 @@ WaitKeyUntil:
 .2:
         retf
 
+;-----------------------------------------------------------------------------
+; WaitKeyAdd                                                  03A3:174C  94 PC
 ; Add the long argument to ReadCallCount, then wait for a key or until
 ; that sum is reached. A key returns in AX. The time path returns 0.
+;-----------------------------------------------------------------------------
 WaitKeyAdd:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3209,7 +3563,10 @@ WaitKeyAdd:
         db 0x00
 
 
+;-----------------------------------------------------------------------------
+; ClearMono                                                   03A3:1782  94 PC
 ; Fill the monochrome text buffer at B000h with zeros.
+;-----------------------------------------------------------------------------
 ClearMono:
         push di
         push es
@@ -3225,12 +3582,18 @@ ClearMono:
         retf
 
 
+;-----------------------------------------------------------------------------
+; RetFar                                                      03A3:1796  94 PC
 ; A single retf.
+;-----------------------------------------------------------------------------
 RetFar:
         retf
 
 
+;-----------------------------------------------------------------------------
+; ScrollMono                                                  03A3:1797  94 PC
 ; Scroll the monochrome buffer up one row from TextRow and clear the last row.
+;-----------------------------------------------------------------------------
 ScrollMono:
         push si
         push di
@@ -3259,10 +3622,17 @@ ScrollMono:
         retf
 
 
+;-----------------------------------------------------------------------------
+; ConFlush                                                    03A3:17C8  94 PC
 ; Write the string already at ConBuf. ConPrint formats into that buffer first.
+;-----------------------------------------------------------------------------
 ConFlush:
         jmp short ConOut
 
+;-----------------------------------------------------------------------------
+; ConPrint                                                    03A3:17CA  94 PC
+; Formats through _sprintf into ConBuf, then writes it to B000h.
+;-----------------------------------------------------------------------------
 ConPrint:
         pop ax
         mov word [ConCursorX], ax
@@ -3360,7 +3730,10 @@ ConOut:
         jmp near .1
 
 
+;-----------------------------------------------------------------------------
+; ConPrintAt                                                  03A3:18AB  94 PC
 ; Set the cursor from a row and column, format into ConBuf, and write it.
+;-----------------------------------------------------------------------------
 ConPrintAt:
         pop ax
         mov word [ConCursorX], ax
@@ -3382,7 +3755,10 @@ ConPrintAt:
         jmp near ConPrint.1
 
 
+;-----------------------------------------------------------------------------
+; SetTextRow                                                  03A3:18D7  94 PC
 ; Clamp the argument into 0..24 and store it as TextRow.
+;-----------------------------------------------------------------------------
 SetTextRow:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3400,7 +3776,10 @@ SetTextRow:
         retf
 
 
+;-----------------------------------------------------------------------------
+; SetTextAttr                                                 03A3:18F1  94 PC
 ; Store the low byte as the attribute used with each character.
+;-----------------------------------------------------------------------------
 SetTextAttr:
         db 0x8B, 0xDC                           ; insn: mov bx, sp
         mov ax, word [bx + 4]
@@ -3408,7 +3787,10 @@ SetTextAttr:
         retf
 
 
+;-----------------------------------------------------------------------------
+; WriteHex                                                    03A3:18FA  94 PC
 ; Write the argument as two hex digits at the remembered cursor.
+;-----------------------------------------------------------------------------
 WriteHex:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3424,7 +3806,10 @@ WriteHex:
         jmp short WriteHexAt.1
 
 
+;-----------------------------------------------------------------------------
+; WriteHexAt                                                  03A3:1912  94 PC
 ; Write two hex digits at the row and column arguments.
+;-----------------------------------------------------------------------------
 WriteHexAt:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3467,7 +3852,10 @@ WriteHexAt:
         retf
 
 
+;-----------------------------------------------------------------------------
+; WriteChar                                                   03A3:1964  94 PC
 ; Write the low byte at the remembered cursor.
+;-----------------------------------------------------------------------------
 WriteChar:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3483,7 +3871,10 @@ WriteChar:
         jmp short WriteCharAt.1
 
 
+;-----------------------------------------------------------------------------
+; WriteCharAt                                                 03A3:197C  94 PC
 ; Write the low byte at the row and column arguments.
+;-----------------------------------------------------------------------------
 WriteCharAt:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3515,8 +3906,11 @@ WriteCharAt:
         retf
 
 
+;-----------------------------------------------------------------------------
+; SaveTextState                                               03A3:19B2  94 PC
 ; Copy 15 words from 74E2h and 15 words from the block selected by 74DCh
 ; into the near buffer.
+;-----------------------------------------------------------------------------
 SaveTextState:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3542,7 +3936,10 @@ SaveTextState:
         retf
 
 
+;-----------------------------------------------------------------------------
+; LoadTextState                                               03A3:19E1  94 PC
 ; Copy those words back from the near buffer.
+;-----------------------------------------------------------------------------
 LoadTextState:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3567,14 +3964,20 @@ LoadTextState:
         retf
 
 
+;-----------------------------------------------------------------------------
+; ReadCallCount                                               03A3:1A0E  94 PC
 ; Return CallCount in DX:AX. Int8Handler increments that dword.
+;-----------------------------------------------------------------------------
 ReadCallCount:
         les ax, [CallCount]
         mov dx, es
         retf
 
 
+;-----------------------------------------------------------------------------
+; CallCountDiff                                               03A3:1A15  94 PC
 ; Return CallCount minus the long argument.
+;-----------------------------------------------------------------------------
 CallCountDiff:
         db 0x8B, 0xDC                           ; insn: mov bx, sp
         mov ax, word [bx + 4]
@@ -3588,7 +3991,10 @@ CallCountDiff:
         retf
 
 
+;-----------------------------------------------------------------------------
+; CallCountStep                                               03A3:1A2C  94 PC
 ; Return CallCount minus the previous sample, and store the new sample.
+;-----------------------------------------------------------------------------
 CallCountStep:
         mov bx, word [LastCount]
         mov cx, word [0x7524]
@@ -3601,7 +4007,10 @@ CallCountStep:
         retf
 
 
+;-----------------------------------------------------------------------------
+; ClearCallCount                                              03A3:1A46  94 PC
 ; Zero CallCount.
+;-----------------------------------------------------------------------------
 ClearCallCount:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         mov word [CallCount], ax
@@ -3609,7 +4018,10 @@ ClearCallCount:
         retf
 
 
+;-----------------------------------------------------------------------------
+; HaltSpin                                                    03A3:1A4F  94 PC
 ; Store FBEAh just under SP and hlt until that word changes or the count expires.
+;-----------------------------------------------------------------------------
 HaltSpin:
         db 0x8B, 0xDC                           ; insn: mov bx, sp
         sub bx, 2
@@ -3624,7 +4036,10 @@ HaltSpin:
         retf
 
 
+;-----------------------------------------------------------------------------
+; SetDeadline                                                 03A3:1A66  94 PC
 ; Store CallCount plus the long argument at Deadline. WaitKeyUntil compares it.
+;-----------------------------------------------------------------------------
 SetDeadline:
         db 0x8B, 0xDC                           ; insn: mov bx, sp
         mov ax, word [bx + 4]
@@ -3638,8 +4053,11 @@ SetDeadline:
         mov word [DeadlineHi], dx
         retf
 
+;-----------------------------------------------------------------------------
+; WaitDeadline                                                03A3:1A80  94 PC
 ; Specific EOI for IRQ 0, then hlt until CallCount reaches Deadline.
 ; If the low word of CallCount does not change, start over.
+;-----------------------------------------------------------------------------
 WaitDeadline:
         mov al, 0x60
         out 0x20, al
@@ -3663,7 +4081,10 @@ WaitDeadlineNoEoi:
         retf
 
 
+;-----------------------------------------------------------------------------
+; DeadlineReached                                             03A3:1AA8  94 PC
 ; AX is 1 when CallCount is at or past Deadline.
+;-----------------------------------------------------------------------------
 DeadlineReached:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         les bx, [CallCount]
@@ -3675,7 +4096,10 @@ DeadlineReached:
         retf
 
 
+;-----------------------------------------------------------------------------
+; WaitCount                                                   03A3:1ABE  94 PC
 ; Spin until CallCount reaches its current value plus the long argument.
+;-----------------------------------------------------------------------------
 WaitCount:
         db 0x8B, 0xDC                           ; insn: mov bx, sp
         mov ax, word [bx + 4]
@@ -3693,8 +4117,11 @@ WaitCount:
         retf
         db 0x00
 
+;-----------------------------------------------------------------------------
+; MouseRatio                                                  03A3:1ADE  94 PC
 ; If a mouse is present, INT 33h AX=0Fh. The two arguments are shifted
 ; right by MouseRatioShift and become the mickey counts.
+;-----------------------------------------------------------------------------
 MouseRatio:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3717,8 +4144,11 @@ MouseRatio:
         retf
 
 
+;-----------------------------------------------------------------------------
+; MouseMove                                                   03A3:1B03  94 PC
 ; If a mouse is present, store the arguments and INT 33h AX=4.
 ; X is shifted by MouseXShift and Y by MouseYShift.
+;-----------------------------------------------------------------------------
 MouseMove:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3744,8 +4174,11 @@ MouseMove:
         retf
 
 
+;-----------------------------------------------------------------------------
+; MouseRead                                                   03A3:1B34  94 PC
 ; INT 33h AX=3. Store buttons, X, and Y through the three near pointers.
 ; X and Y are shifted back down. _main calls this. Nothing is stored when MouseOn is 0.
+;-----------------------------------------------------------------------------
 MouseRead:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3784,7 +4217,10 @@ MouseRead:
         retf
 
 
+;-----------------------------------------------------------------------------
+; MouseXRange                                                 03A3:1B7B  94 PC
 ; INT 33h AX=7, or AX=10h when MouseOn is above 1. The limits are shifted up.
+;-----------------------------------------------------------------------------
 MouseXRange:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3810,7 +4246,10 @@ MouseXRange:
         retf
 
 
+;-----------------------------------------------------------------------------
+; MouseYRange                                                 03A3:1BA5  94 PC
 ; INT 33h AX=8, or AX=11h when MouseOn is not 1. The limits are shifted up.
+;-----------------------------------------------------------------------------
 MouseYRange:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3834,7 +4273,10 @@ MouseYRange:
         retf
 
 
+;-----------------------------------------------------------------------------
+; MouseRange                                                  03A3:1BCD  94 PC
 ; Set both ranges. X limits are the first and third words, Y the second and fourth.
+;-----------------------------------------------------------------------------
 MouseRange:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3872,7 +4314,10 @@ MouseRange:
         retf
 
 
+;-----------------------------------------------------------------------------
+; MouseButtons                                                03A3:1C16  94 PC
 ; INT 33h AX=3. Return the button word, with bits masked when MouseOn is above 1.
+;-----------------------------------------------------------------------------
 MouseButtons:
         push si
         push di
@@ -3898,7 +4343,10 @@ MouseButtons:
         retf
 
 
+;-----------------------------------------------------------------------------
+; MouseSample                                                 03A3:1C3D  94 PC
 ; INT 33h AX=3. Store the scaled position and the buttons.
+;-----------------------------------------------------------------------------
 MouseSample:
         push si
         push di
@@ -3931,10 +4379,13 @@ MouseSample:
         retf
 
 
+;-----------------------------------------------------------------------------
+; MouseOpen                                                   03A3:1C7B  94 PC
 ; Reset the mouse with INT 33h AX=0. Return 0 when no driver answers.
 ; Width at most 320 sets MouseXShift. The box is the size minus one, the pointer
 ; starts at one quarter of the size, and the mickey count is 16. _main calls this.
 ; Registers MouseHide with _onexit.
+;-----------------------------------------------------------------------------
 MouseOpen:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -4013,7 +4464,10 @@ MouseOpen:
         retf
 
 
+;-----------------------------------------------------------------------------
+; MouseShow                                                   03A3:1D37  94 PC
 ; Increment the show count. INT 33h AX=1 once it becomes positive.
+;-----------------------------------------------------------------------------
 MouseShow:
         push si
         push di
@@ -4031,7 +4485,10 @@ MouseShow:
         retf
 
 
+;-----------------------------------------------------------------------------
+; MouseHide                                                   03A3:1D56  94 PC
 ; Decrement the show count. INT 33h AX=2 when it reaches 0.
+;-----------------------------------------------------------------------------
 MouseHide:
         push si
         push di
@@ -4048,9 +4505,12 @@ MouseHide:
         retf
 
 
+;-----------------------------------------------------------------------------
+; ReadPots                                                    03A3:1D72  94 PC
 ; Time four bits on port 201h. The mask is the byte at 75E0h. Store the
 ; four counts and the button nibble. On a timeout, store the bits still set and retry.
 ; _main calls this.
+;-----------------------------------------------------------------------------
 ReadPots:
         push bp
         push si
@@ -4104,11 +4564,14 @@ ReadPots:
 
 
 
+;-----------------------------------------------------------------------------
+; Atan2                                                       03A3:1DD4  94 PC
 ; Two signed words. The byte table at AtanByte is indexed by the
 ; ratio of the smaller absolute value to the larger. The flags in DI
 ; record the signs and which value was larger. The word table then
 ; negates the result and adds or subtracts 100h or 200h, so a full
 ; turn is 100h. FoldScale calls this.
+;-----------------------------------------------------------------------------
 Atan2:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -4155,6 +4618,10 @@ AtanTab:
         dw AtanDecTwo
         dw AtanIncNeg
 
+;-----------------------------------------------------------------------------
+; AtanNegInc                                                  03A3:1E2D  94 PC
+; Neg ax, then add 100h.
+;-----------------------------------------------------------------------------
 AtanNegInc:
         neg ax
         add ah, 1
@@ -4162,23 +4629,47 @@ AtanDone:
         pop di
         leave
         retf
+;-----------------------------------------------------------------------------
+; AtanInc                                                     03A3:1E35  94 PC
+; Add 100h.
+;-----------------------------------------------------------------------------
 AtanInc:
         add ah, 1
         jmp short AtanDone
+;-----------------------------------------------------------------------------
+; AtanNegTwo                                                  03A3:1E3A  94 PC
+; Neg ax, then add 200h.
+;-----------------------------------------------------------------------------
 AtanNegTwo:
         neg ax
         add ah, 2
         jmp short AtanDone
+;-----------------------------------------------------------------------------
+; AtanNeg                                                     03A3:1E41  94 PC
+; Neg ax.
+;-----------------------------------------------------------------------------
 AtanNeg:
         neg ax
         jmp short AtanDone
+;-----------------------------------------------------------------------------
+; AtanDec                                                     03A3:1E45  94 PC
+; Subtract 100h.
+;-----------------------------------------------------------------------------
 AtanDec:
         sub ah, 1
         jmp short AtanDone
+;-----------------------------------------------------------------------------
+; AtanIncNeg                                                  03A3:1E4A  94 PC
+; Add 100h, then neg ax.
+;-----------------------------------------------------------------------------
 AtanIncNeg:
         add ah, 1
         neg ax
         jmp short AtanDone
+;-----------------------------------------------------------------------------
+; AtanDecTwo                                                  03A3:1E51  94 PC
+; Subtract 200h.
+;-----------------------------------------------------------------------------
 AtanDecTwo:
         sub ah, 2
         jmp short AtanDone
@@ -4187,6 +4678,11 @@ AtanDecTwo:
 ; Offsets stay under 16, then the fill moves 32K at a time. Word stores, or dword
 ; stores when Cpu386 is nonzero. FillFarZero uses a zero byte.
 
+;-----------------------------------------------------------------------------
+; FillFar                                                     03A3:1E56  94 PC
+; Fills a far buffer with the byte argument. Long count. Same 32K window as
+; CopyFar.
+;-----------------------------------------------------------------------------
 FillFar:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -4194,6 +4690,10 @@ FillFar:
         mov ax, word [bp + 0xe]
         jmp short FillFarBody
 
+;-----------------------------------------------------------------------------
+; FillFarZero                                                 03A3:1E5F  94 PC
+; Same fill with a zero byte.
+;-----------------------------------------------------------------------------
 FillFarZero:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -4280,6 +4780,11 @@ FillFarBody:
 ; equal-Y path is LineFlat and the overflow path is LineOverflow.
 ; A line with no clip bits returns 0 from LineOk.
 
+;-----------------------------------------------------------------------------
+; LineOpen                                                    03A3:1F00  94 PC
+; Orders two points into the record at bp+0Eh and stores a direction byte.
+; Skips the box test.
+;-----------------------------------------------------------------------------
 LineOpen:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -4289,6 +4794,10 @@ LineOpen:
         mov byte [bp - 3], 1
         jmp short LineBody
 
+;-----------------------------------------------------------------------------
+; LineClip                                                    03A3:1F0E  94 PC
+; Same setup after a box test. Both ends outside one edge is a reject.
+;-----------------------------------------------------------------------------
 LineClip:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -4470,6 +4979,10 @@ LineTab:
         dw ClipTop
         dw ClipTop
 
+;-----------------------------------------------------------------------------
+; LineOk                                                      03A3:2085  94 PC
+; Xor ax, ax and the epilogue. Taken when the outcode is 0.
+;-----------------------------------------------------------------------------
 LineOk:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         pop di
@@ -4483,6 +4996,11 @@ LineOk:
 ; AfterTop, AfterBottom, or AfterLeft. ClipRet returns with AH 0.
 
 
+;-----------------------------------------------------------------------------
+; ClipTop                                                     03A3:208B  94 PC
+; Pulls the line onto the top of the box. The direction byte selects how X
+; moves.
+;-----------------------------------------------------------------------------
 ClipTop:
         mov ax, word [si + 6]
         mov cx, word [ClipTopY]
@@ -4566,6 +5084,10 @@ TopTab:
         adc word [si + 6], dx
         jmp near AfterTop
 
+;-----------------------------------------------------------------------------
+; ClipBottom                                                  03A3:214D  94 PC
+; Pulls the line onto the bottom of the box.
+;-----------------------------------------------------------------------------
 ClipBottom:
         mov cx, word [si + 0xa]
         mov dx, word [ClipBottomY]
@@ -4661,6 +5183,10 @@ BotTab:
         mov word [si + 0xe], ax
         jmp near AfterBottom
 
+;-----------------------------------------------------------------------------
+; ClipLeft                                                    03A3:221F  94 PC
+; Pulls the line onto the left of the box.
+;-----------------------------------------------------------------------------
 ClipLeft:
         mov bl, byte [si + 0x12]
         db 0x03, 0xDB                           ; insn: add bx, bx
@@ -4843,6 +5369,10 @@ ClipRet:
 ; the right outcode is still set. LineFlat is the equal-Y path.
 ; LineOverflow shifts an endpoint that sits far outside the box.
 
+;-----------------------------------------------------------------------------
+; ClipRight                                                   03A3:23B4  94 PC
+; Pulls the line onto the right of the box. LineTab outcode 1.
+;-----------------------------------------------------------------------------
 ClipRight:
         mov bl, byte [si + 0x12]
         db 0x32, 0xFF                           ; insn: xor bh, bh
@@ -4960,10 +5490,18 @@ RightTab:
         mov word [si + 0xa], dx
         add word [si + 0x1a], ax
         jmp near LineOk
+;-----------------------------------------------------------------------------
+; AfterTop                                                    03A3:24CD  94 PC
+; After a top clip, runs ClipBottom when that outcode is still set.
+;-----------------------------------------------------------------------------
 AfterTop:
         test word [bp - 2], 8
         je short AfterBottom
         jmp near ClipBottom
+;-----------------------------------------------------------------------------
+; AfterBottom                                                 03A3:24D7  94 PC
+; Rebuilds the left and right outcodes. A shared side bit rejects the line.
+;-----------------------------------------------------------------------------
 AfterBottom:
         db 0x33, 0xD2                           ; insn: xor dx, dx
         mov ax, word [si + 2]
@@ -4997,12 +5535,21 @@ AfterBottom:
         db 0x32, 0xF6                           ; insn: xor dh, dh
         mov word [bp - 2], dx
         jmp near LineBody.26
+;-----------------------------------------------------------------------------
+; AfterLeft                                                   03A3:2521  94 PC
+; After a left clip, runs ClipRight when that outcode is still set.
+;-----------------------------------------------------------------------------
 AfterLeft:
         test word [bp - 2], 1
         je short .1
         jmp near ClipRight
 .1:
         jmp near LineOk
+;-----------------------------------------------------------------------------
+; LineFlat                                                    03A3:252E  94 PC
+; Equal-Y path. Clamps the horizontal line to the box unless the open flag is
+; set.
+;-----------------------------------------------------------------------------
 LineFlat:
         mov byte [si + 0x12], 1
         db 0x3B, 0xCA                           ; insn: cmp cx, dx
@@ -5079,6 +5626,10 @@ LineFlat:
         mov word [si + 8], bx
 .10:
         jmp near LineOk
+;-----------------------------------------------------------------------------
+; LineOverflow                                                03A3:25D6  94 PC
+; Arithmetic-shifts an endpoint far outside the box, then clips again.
+;-----------------------------------------------------------------------------
 LineOverflow:
         mov cx, word [si + 0xa]
         sar cx, 1
@@ -5176,6 +5727,11 @@ LineOverflow:
 ; read and then closes the handle. Both return that far pointer, or zero
 ; when the flag is 0. A flag of 1 reports the handle through seg022.
 
+;-----------------------------------------------------------------------------
+; FileOpenArg                                                 03A3:2690  94 PC
+; Opens a path and writes the handle, length, and start position. Failure
+; word from the caller.
+;-----------------------------------------------------------------------------
 FileOpenArg:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5183,12 +5739,20 @@ FileOpenArg:
         mov ax, word [bp + 0xe]
         mov word [bp - 2], ax
         jmp short FileOpenBody
+;-----------------------------------------------------------------------------
+; FileOpen                                                    03A3:269E  94 PC
+; Same open with the failure word forced to 0.
+;-----------------------------------------------------------------------------
 FileOpen:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         add sp, -2
         mov word [bp - 2], 0
         jmp short FileOpenBody
+;-----------------------------------------------------------------------------
+; FileOpenMsg                                                 03A3:26AB  94 PC
+; Same open with the failure word forced to 1.
+;-----------------------------------------------------------------------------
 FileOpenMsg:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5223,6 +5787,11 @@ FileOpenBody:
         mov word [bx + 2], ax                   ; both words from AX
         leave
         retf
+;-----------------------------------------------------------------------------
+; FileOpenAlt                                                 03A3:26F5  94 PC
+; Second try of a failed open: open AltPath when one is set and read its first 400h
+; bytes into AltBuf. Falls into FileOpenFail when there is none or it fails too.
+;-----------------------------------------------------------------------------
 FileOpenAlt:
         cmp byte [AltPath], 0
         je short FileOpenFail
@@ -5268,6 +5837,11 @@ FileOpenAlt:
         jb short FileOpenFail
         leave
         retf
+;-----------------------------------------------------------------------------
+; FileOpenFail                                                03A3:2762  94 PC
+; Clean-up after a failed open: close the handle stored through the argument pointer
+; and clear the caller's result words; a fatal error when the caller asked for one.
+;-----------------------------------------------------------------------------
 FileOpenFail:
         mov bx, word [bp + 8]
         mov ax, word [bx]
@@ -5305,6 +5879,10 @@ FileClose:
 .1:
         leave
         retf
+;-----------------------------------------------------------------------------
+; ReadAtArg                                                   03A3:27AE  94 PC
+; Seeks, then reads a count in 4000h chunks into a far buffer.
+;-----------------------------------------------------------------------------
 ReadAtArg:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5313,6 +5891,10 @@ ReadAtArg:
         mov ax, word [bp + 0x14]
         mov word [bp - 6], ax
         jmp short ReadAtBody
+;-----------------------------------------------------------------------------
+; ReadAt                                                      03A3:27BD  94 PC
+; Same read with the failure word forced to 0.
+;-----------------------------------------------------------------------------
 ReadAt:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5320,6 +5902,10 @@ ReadAt:
         push ds
         mov word [bp - 6], 0
         jmp short ReadAtBody
+;-----------------------------------------------------------------------------
+; ReadAtMsg                                                   03A3:27CB  94 PC
+; Same read with the failure word forced to 1.
+;-----------------------------------------------------------------------------
 ReadAtMsg:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5359,6 +5945,11 @@ ReadAtBody:
         pop ds
         leave
         retf
+;-----------------------------------------------------------------------------
+; ReadAtFail                                                  03A3:2823  94 PC
+; Error exit of the read-at routine above: return DX:AX 0, or a fatal error with the
+; file name when the caller asked for one.
+;-----------------------------------------------------------------------------
 ReadAtFail:
         cmp word [bp - 6], 0
         jne short .1
@@ -5382,6 +5973,10 @@ ReadCloseArg:
         mov ax, word [bp + 0xc]
         mov word [bp - 6], ax
         jmp short ReadCloseBody
+;-----------------------------------------------------------------------------
+; ReadClose                                                   03A3:284F  94 PC
+; Same read with the failure word forced to 0.
+;-----------------------------------------------------------------------------
 ReadClose:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5389,6 +5984,10 @@ ReadClose:
         push ds
         mov word [bp - 6], 0
         jmp short ReadCloseBody
+;-----------------------------------------------------------------------------
+; ReadCloseMsg                                                03A3:285D  94 PC
+; Same read with the failure word forced to 1.
+;-----------------------------------------------------------------------------
 ReadCloseMsg:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5419,6 +6018,11 @@ ReadCloseBody:
         pop ds
         leave
         retf
+;-----------------------------------------------------------------------------
+; ReadCloseFail                                               03A3:28A1  94 PC
+; Error exit of the read-and-close routine above: return DX:AX 0, or a fatal error with
+; the file name when the caller asked for one.
+;-----------------------------------------------------------------------------
 ReadCloseFail:
         cmp word [bp - 6], 0
         jne short .1
@@ -5461,6 +6065,10 @@ Mul16k:
         db 0x8B, 0xC2                           ; insn: mov ax, dx
         retf
         db 0
+;-----------------------------------------------------------------------------
+; CpuProbe                                                    03A3:28DA  94 PC
+; Sets Cpu286, Cpu386, Cpu486, and CpuPe. Cpu386 selects dword moves.
+;-----------------------------------------------------------------------------
 CpuProbe:
         pushf
         push sp
@@ -5502,6 +6110,10 @@ CpuProbeDone:
         popf
         retf
         db 0
+;-----------------------------------------------------------------------------
+; NormFar                                                     03A3:2940  94 PC
+; Returns the caller's far pointer with the offset under 16.
+;-----------------------------------------------------------------------------
 NormFar:
         db 0x8B, 0xDC                           ; insn: mov bx, sp
         mov ax, word [bx + 4]
@@ -5511,6 +6123,10 @@ NormFar:
         shr bx, 4
         db 0x03, 0xD3                           ; insn: add dx, bx
         retf
+;-----------------------------------------------------------------------------
+; NormDsSi                                                    03A3:2953  94 PC
+; Folds DS:SI so SI is under 16. CopyFar calls this.
+;-----------------------------------------------------------------------------
 NormDsSi:
         push ax
         push si
@@ -5522,6 +6138,10 @@ NormDsSi:
         and si, 0xf
         pop ax
         ret
+;-----------------------------------------------------------------------------
+; NormEsDi                                                    03A3:2964  94 PC
+; Folds ES:DI so DI is under 16. CopyFar and FillFar call this.
+;-----------------------------------------------------------------------------
 NormEsDi:
         push ax
         push di
@@ -5534,6 +6154,10 @@ NormEsDi:
         pop ax
         ret
         db 0
+;-----------------------------------------------------------------------------
+; FarZero                                                     03A3:2976  94 PC
+; Xor ax, ax and retf.
+;-----------------------------------------------------------------------------
 FarZero:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         retf
@@ -5547,6 +6171,10 @@ FarZero:
 ; through LineClip or LineOpen, and ScanFn is called once per scanline
 ; with the two edge tables built on the stack.
 
+;-----------------------------------------------------------------------------
+; FillFlag1                                                   03A3:297A  94 PC
+; Enters FillPoly with SI from [bp+0Ah] and the flag byte 1. ScanFn is 48D2h.
+;-----------------------------------------------------------------------------
 FillFlag1:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5555,6 +6183,10 @@ FillFlag1:
         push di
         mov byte [bp - 9], 1
         jmp short FillArg
+;-----------------------------------------------------------------------------
+; FillFlag0                                                   03A3:2989  94 PC
+; Same entry with the flag byte 0.
+;-----------------------------------------------------------------------------
 FillFlag0:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5569,6 +6201,10 @@ FillArg:
         mov word [LineFn], ax
         mov si, word [bp + 0xa]
         jmp short FillPoly
+;-----------------------------------------------------------------------------
+; FillAddr1                                                   03A3:29A7  94 PC
+; Enters FillPoly with SI the address of [bp+0Ah] and the flag byte 1.
+;-----------------------------------------------------------------------------
 FillAddr1:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5577,6 +6213,10 @@ FillAddr1:
         push di
         mov byte [bp - 9], 1
         jmp short FillAddr
+;-----------------------------------------------------------------------------
+; FillAddr0                                                   03A3:29B6  94 PC
+; Same entry with the flag byte 0.
+;-----------------------------------------------------------------------------
 FillAddr0:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5799,6 +6439,10 @@ FillPoly:
 ; SpanTab3 when the byte at [bp-9] is 0, and SpanTab2 otherwise.
 ; Directions 0, 1, and 9 return.
 
+;-----------------------------------------------------------------------------
+; SpanMargin                                                  03A3:2B83  94 PC
+; Fills the clipped-off scanline rows with the left or right side of the box.
+;-----------------------------------------------------------------------------
 SpanMargin:
         mov cx, word [si + 0x14]
         db 0x0B, 0xC9                           ; insn: or cx, cx
@@ -5999,6 +6643,10 @@ SpanTab:
         dec ax
         mov word [di + 0x3c0], ax
         ret
+;-----------------------------------------------------------------------------
+; SpanBack                                                    03A3:2D10  94 PC
+; Same edge walk. The flag byte at bp-9 selects SpanTab2 or SpanTab3.
+;-----------------------------------------------------------------------------
 SpanBack:
         mov cx, word [si + 0xe]
         db 0x0B, 0xC9                           ; insn: or cx, cx
@@ -6493,6 +7141,11 @@ SpanTab3:
 ; columns, and rows, and registers RestoreMode. WaitBlank waits through
 ; one pulse of status port 3DAh bit 0.
 
+;-----------------------------------------------------------------------------
+; FillRec1                                                    03A3:30DE  94 PC
+; Walks a list of pointers to line records. The flag byte is 1. LineFn is
+; 3C9Ah.
+;-----------------------------------------------------------------------------
 FillRec1:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -6505,6 +7158,10 @@ FillRec1:
         mov ax, 0x3c9a
         mov word [LineFn], ax
         jmp short FillRec
+;-----------------------------------------------------------------------------
+; FillRec0                                                    03A3:30F9  94 PC
+; Same walk with the flag byte 0.
+;-----------------------------------------------------------------------------
 FillRec0:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -6728,10 +7385,19 @@ FillRec:
         pop si
         leave
         retf
+;-----------------------------------------------------------------------------
+; SinLookup                                                   03A3:32EA  94 PC
+; Word from one of four tables, selected by the high byte of the angle.
+; FoldScale uses this above 80h.
+;-----------------------------------------------------------------------------
 SinLookup:
         db 0x8B, 0xDC                           ; insn: mov bx, sp
         mov ax, word [bx + 4]
         jmp short AngleTab
+;-----------------------------------------------------------------------------
+; CosLookup                                                   03A3:32F1  94 PC
+; Same lookup after incrementing AH. FoldScale uses this at 80h and below.
+;-----------------------------------------------------------------------------
 CosLookup:
         db 0x8B, 0xDC                           ; insn: mov bx, sp
         mov ax, word [bx + 4]
@@ -6767,10 +7433,19 @@ AngleTab:
         neg ax
         retf
         db 0
+;-----------------------------------------------------------------------------
+; ClearHold                                                   03A3:3330  94 PC
+; Stores 0 at HoldWord and returns.
+;-----------------------------------------------------------------------------
 ClearHold:
         mov word [HoldWord], 0
         retf
         db 0
+;-----------------------------------------------------------------------------
+; SaveMode                                                    03A3:3338  94 PC
+; Records the BIOS video mode, equipment byte, columns, and rows, and
+; registers RestoreMode.
+;-----------------------------------------------------------------------------
 SaveMode:
         cmp byte [VidMode], 0
         jne short .1
@@ -6792,6 +7467,11 @@ SaveMode:
         add sp, 4
 .1:
         retf
+;-----------------------------------------------------------------------------
+; RestoreMode                                                 03A3:336D  94 PC
+; Restores that mode. An 80-column mode 3 with a tall row count selects the
+; 8x8 font.
+;-----------------------------------------------------------------------------
 RestoreMode:
         cmp byte [VidMode], 0
         je short .3
@@ -6832,6 +7512,10 @@ RestoreMode:
         mov byte [VidMode], 0
 .3:
         retf
+;-----------------------------------------------------------------------------
+; WaitBlank                                                   03A3:33D2  94 PC
+; Waits through one pulse of status port 3DAh bit 0.
+;-----------------------------------------------------------------------------
 WaitBlank:
         mov dx, 0x3da
 .1:

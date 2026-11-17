@@ -22,7 +22,21 @@ COL0 = re.compile(r'^(bits|section|segment|org|cpu|default|global|extern)\b|^[A-
 MNEM = re.compile(r'^(mov|movs[bw]?|movzx|movsx|add|adc|sub|sbb|xor|or|and|cmp|test|not|neg|inc|dec|mul|imul|div|idiv|'
                   r'shl|shr|sal|sar|rol|ror|rcl|rcr|call|lcall|jmp|j[a-z]{1,4}|loop\w*|ret[fn]?|xchg|cbw|cwd|cdq|cwde|'
                   r'les|lds|lea|push\w*|pop\w*|rep\w*|lods[bw]|stos[bw]|cmps[bw]|scas[bw]|in|out|int|iret|cli|sti|'
-                  r'cld|std|clc|stc|cmc|nop|hlt|enter|leave|f[a-z0-9]+|wait|lahf|sahf|xlat\w*|aam|aad|daa|das)\b', re.I)
+                  r'cld|std|clc|stc|cmc|nop|hlt|enter|leave|wait|lahf|sahf|xlat\w*|aam|aad|daa|das|'
+                  r'f(ld[z1]?|ild|st|stp|ist|istp|xch|add|addp|sub|subp|subr|mul|mulp|div|divp|divr|com|comp|compp|chs|abs|'
+                  r'sqrt|rndint|n?stsw|n?init|wait|n?clex|ldcw|n?stcw|tst|xam|scale|prem|ptan|patan|2xm1|yl2x))(\s|$)')
+
+
+REG = re.compile(r'\b([abcd][xlh]|[sd]i|[bs]p|[cdefgs]s|e[abcd]x|e[sd]i|st\d?|word|byte|dword|ptr|short|near|far)\b|[\d\[,]')
+
+
+def looks_like_insn(text):
+    """the text of an instruction: a mnemonic, then nothing or operands (a register, number, memory operand or
+    comma), not an English phrase that starts with a word such as 'not' or 'in'"""
+    m = MNEM.match(text)
+    if not m: return False
+    rest = text[m.end():].strip()
+    return not rest or REG.search(rest.split(',')[0]) is not None or rest.split()[0].endswith(',')
 
 
 def split(line):
@@ -64,7 +78,7 @@ def fmt_line(l, prev_trailing):
     c = (m.group(1) + ' ' + m.group(2)) if m else c
     if com is not None:
         body = com[1:].strip()
-        if re.match(r'^(db|dw)\b', c, re.I) and not body.startswith('insn:') and MNEM.match(body) \
+        if re.match(r'^(db|dw)\b', c, re.I) and not body.startswith('insn:') and looks_like_insn(body) \
                 and re.match(r'^d[bw]\s+(0x[0-9A-Fa-f]+|\d+)(\s*,\s*(0x[0-9A-Fa-f]+|\d+))*\s*$', c):
             body = 'insn: ' + re.sub(r'\s+', ' ', body.replace('\t', ' '))
         com = '; ' + body if body else ';'

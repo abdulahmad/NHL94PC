@@ -7,6 +7,11 @@
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; InputInit                                                   0BFE:000E  94 PC
+; HookKbd, timer slot for PollInputEvents, cursor handler = EventToCursor;
+; once.
+;-----------------------------------------------------------------------------
 InputInit:
         cmp word [InputInstalled], 0x0
         jz short .1
@@ -28,6 +33,10 @@ InputInit:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; InputShutdown                                               0BFE:004C  94 PC
+; Frees the PollInputEvents timer slot.
+;-----------------------------------------------------------------------------
 InputShutdown:
         cmp word [InputInstalled], 0x0
         jz short .1
@@ -42,6 +51,11 @@ InputShutdown:
 .1:
         retf
 
+;-----------------------------------------------------------------------------
+; EventToCursor                                               0BFE:0070  94 PC
+; Mouse event sets the cursor; key and stick events move it, faster with the
+; repeat count; clamps to 320x200.
+;-----------------------------------------------------------------------------
 EventToCursor:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp

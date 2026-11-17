@@ -5,6 +5,10 @@
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; ShapeBankSize                                               1606:0006  94 PC
+; Total size of a shape table's shapes and index.
+;-----------------------------------------------------------------------------
 ShapeBankSize:
         enter 0xa, 0x0
         push di

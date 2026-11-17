@@ -9,6 +9,10 @@ CopyBytesFarTail:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; ShadeColor                                                  160E:000C  94 PC
+; Scales one palette entry by the RGB factors, clamps to 3Fh, optional grey.
+;-----------------------------------------------------------------------------
 ShadeColor:
         enter 0xa, 0x0
         push di
@@ -159,6 +163,10 @@ ShadeColor:
         ret 0x6
         db 0x90, 0x90
 
+;-----------------------------------------------------------------------------
+; BuildShadeTable                                             160E:0180  94 PC
+; ShadeColor for every used colour, writes a 256-byte remap table.
+;-----------------------------------------------------------------------------
 BuildShadeTable:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -197,6 +205,10 @@ BuildShadeTable:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; BuildShadeTableEven                                         160E:01CC  94 PC
+; BuildShadeTable with one factor for all three channels.
+;-----------------------------------------------------------------------------
 BuildShadeTableEven:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -210,6 +222,10 @@ BuildShadeTableEven:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; MergeRemapTables                                            160E:01E8  94 PC
+; Combines two remap tables into the global one.
+;-----------------------------------------------------------------------------
 MergeRemapTables:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp

@@ -4,7 +4,7 @@
 	org	0x0
 TextWidthFar		equ	0x2
 _exit		equ	0x687
-RetOnly		equ	0x1398
+_fstrlen		equ	0x1398
 _fstrcpy		equ	0x13DA
 _fstrcat		equ	0x1410
 %include "front/fit_name.asm"

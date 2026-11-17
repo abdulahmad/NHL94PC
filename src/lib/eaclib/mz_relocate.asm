@@ -2,6 +2,10 @@
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; RelocateMzImage                                            18A9:0002  EACLIB
+; Applies an MZ header's relocations to an image in memory.
+;-----------------------------------------------------------------------------
 RelocateMzImage:
         enter 0x16, 0x0
         push di

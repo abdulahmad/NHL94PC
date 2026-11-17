@@ -3,6 +3,10 @@
         add sp, 0x8
         retf
 
+;-----------------------------------------------------------------------------
+; AllocLinearCanvas                                           152D:0006  94 PC
+; Allocates w*h+30h bytes and fills a linear canvas record.
+;-----------------------------------------------------------------------------
 AllocLinearCanvas:
         enter 0x18, 0x0
         push bx
@@ -175,6 +179,10 @@ AllocLinearCanvas:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; AllocCanvas                                                 152D:019C  94 PC
+; Allocates a planar canvas (width/4 per plane) and fills its record.
+;-----------------------------------------------------------------------------
 AllocCanvas:
         enter 0x1c, 0x0
         push ax

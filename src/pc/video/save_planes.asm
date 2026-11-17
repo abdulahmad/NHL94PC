@@ -4,6 +4,10 @@ PlayArenaJingleTail:
         db 0x08, 0x5E, 0xC9                     ; db 0x08
         retf
 
+;-----------------------------------------------------------------------------
+; SaveVgaPlanes                                               0F4A:0004  94 PC
+; Copies the four VGA planes (plane0..plane3 blocks) through the read map.
+;-----------------------------------------------------------------------------
 SaveVgaPlanes:
         enter 0x6, 0x0
         push si
@@ -201,6 +205,10 @@ SaveVgaPlanes:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; RestoreVgaPlanes                                            0F4A:0224  94 PC
+; Writes the four planes back through the map mask.
+;-----------------------------------------------------------------------------
 RestoreVgaPlanes:
         enter 0x6, 0x0
         push si
@@ -362,10 +370,18 @@ RestoreVgaPlanes:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; NullFar5                                                    0F4A:03E2  94 PC
+; A lone retf.
+;-----------------------------------------------------------------------------
 NullFar5:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; FatalError                                                  0F4A:03E4  94 PC
+; Prints the message with ConPrint and exits.
+;-----------------------------------------------------------------------------
 FatalError:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp

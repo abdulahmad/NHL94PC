@@ -2,6 +2,10 @@
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; DrawThickLine                                               1491:0002  94 PC
+; Builds a quad around a line from Atan2 and AngleTab.
+;-----------------------------------------------------------------------------
 DrawThickLine:
         enter 0x10, 0x0
         push di

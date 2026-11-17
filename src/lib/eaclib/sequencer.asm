@@ -7,6 +7,10 @@
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; SetupSongTracks                                            16F2:0008  EACLIB
+; Walks a song's track table and fills the slot pointers.
+;-----------------------------------------------------------------------------
 SetupSongTracks:
         enter 0x10, 0x0
         push si
@@ -103,6 +107,10 @@ SetupSongTracks:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; SetupSongTracksEms                                         16F2:00EC  EACLIB
+; SetupSongTracks for a song held in EMS.
+;-----------------------------------------------------------------------------
 SetupSongTracksEms:
         enter 0x10, 0x0
         push di
@@ -207,6 +215,10 @@ SetupSongTracksEms:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ResetSequencer                                             16F2:01DE  EACLIB
+; Clears the 24 track slots and 32 voice records.
+;-----------------------------------------------------------------------------
 ResetSequencer:
         push di
         push si
@@ -275,6 +287,10 @@ ResetSequencer:
         pop di
         retf
 
+;-----------------------------------------------------------------------------
+; InitSequencer                                              16F2:0280  EACLIB
+; Allocates the slot, voice and queue tables and hooks the timer.
+;-----------------------------------------------------------------------------
 InitSequencer:
         push ds
         mov ax, DGROUP
@@ -326,6 +342,10 @@ InitSequencer:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ShutdownSequencer                                          16F2:0308  EACLIB
+; Frees the timer slot, shuts every driver down and frees the tables.
+;-----------------------------------------------------------------------------
 ShutdownSequencer:
         push si
         push ds
@@ -365,6 +385,10 @@ ShutdownSequencer:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; SeqStubLong0                                               16F2:036C  EACLIB
+; Returns 0 in DX:AX.
+;-----------------------------------------------------------------------------
 SeqStubLong0:
         push ds
         mov ax, DGROUP
@@ -375,6 +399,10 @@ SeqStubLong0:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; SeqStubWord0                                               16F2:0378  EACLIB
+; Returns 0.
+;-----------------------------------------------------------------------------
 SeqStubWord0:
         push ds
         mov ax, DGROUP
@@ -383,6 +411,10 @@ SeqStubWord0:
         pop ds
         retf
 
+;-----------------------------------------------------------------------------
+; LoadBankNumber                                             16F2:0382  EACLIB
+; Formats "bank%d.pat" and loads it.
+;-----------------------------------------------------------------------------
 LoadBankNumber:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -401,6 +433,10 @@ LoadBankNumber:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; LoadPatchBank                                              16F2:03A8  EACLIB
+; Loads a patch bank file and keeps its pointer.
+;-----------------------------------------------------------------------------
 LoadPatchBank:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -417,6 +453,10 @@ LoadPatchBank:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; FreeSongData                                               16F2:03C8  EACLIB
+; Unlinks a song record, returns 0.
+;-----------------------------------------------------------------------------
 FreeSongData:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -432,6 +472,10 @@ FreeSongData:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; SendPatches                                                16F2:03E4  EACLIB
+; Sends every patch of the bank to the driver.
+;-----------------------------------------------------------------------------
 SendPatches:
         enter 0x6, 0x0
         push di
@@ -540,6 +584,10 @@ SendPatches:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; AddLoadedSong                                              16F2:04EA  EACLIB
+; Stores a song pointer in the first free of 10 entries.
+;-----------------------------------------------------------------------------
 AddLoadedSong:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -570,6 +618,10 @@ AddLoadedSong:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; LoadSongMode                                               16F2:0522  EACLIB
+; Loads a song file (track, parts, seqdat) with its bank and timbres.
+;-----------------------------------------------------------------------------
 LoadSongMode:
         enter 0x18, 0x0
         push di
@@ -765,6 +817,10 @@ LoadSongMode:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; LoadSongDrvBuf                                             16F2:071C  EACLIB
+; Driver bank call, then LoadSongMode with a buffer.
+;-----------------------------------------------------------------------------
 LoadSongDrvBuf:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -787,6 +843,10 @@ LoadSongDrvBuf:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; LoadSongDrv                                                16F2:074E  EACLIB
+; Driver bank call, then LoadSongMode.
+;-----------------------------------------------------------------------------
 LoadSongDrv:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -809,6 +869,10 @@ LoadSongDrv:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; LoadSong                                                   16F2:077E  EACLIB
+; LoadSongMode by number.
+;-----------------------------------------------------------------------------
 LoadSong:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -826,6 +890,10 @@ LoadSong:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; LoadSongBuf                                                16F2:079C  EACLIB
+; LoadSongMode by number into a buffer.
+;-----------------------------------------------------------------------------
 LoadSongBuf:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -843,6 +911,10 @@ LoadSongBuf:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; RemoveLoadedSong                                           16F2:07BC  EACLIB
+; Clears a song pointer from the 10 entries.
+;-----------------------------------------------------------------------------
 RemoveLoadedSong:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -880,6 +952,10 @@ RemoveLoadedSong:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; UnloadSong                                                 16F2:07FE  EACLIB
+; Removes and frees a song and its parts.
+;-----------------------------------------------------------------------------
 UnloadSong:
         enter 0x6, 0x0
         push di
@@ -928,6 +1004,10 @@ UnloadSong:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; SeqStubLong1                                               16F2:0866  EACLIB
+; Returns 0 in DX:AX.
+;-----------------------------------------------------------------------------
 SeqStubLong1:
         push ds
         mov ax, DGROUP
@@ -938,6 +1018,10 @@ SeqStubLong1:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; SeqStubWord1                                               16F2:0872  EACLIB
+; Returns 0.
+;-----------------------------------------------------------------------------
 SeqStubWord1:
         push ds
         mov ax, DGROUP
@@ -946,6 +1030,10 @@ SeqStubWord1:
         pop ds
         retf
 
+;-----------------------------------------------------------------------------
+; GetPatch                                                   16F2:087C  EACLIB
+; Address of a 20-byte patch record in the bank.
+;-----------------------------------------------------------------------------
 GetPatch:
         enter 0x4, 0x0
         push di
@@ -980,6 +1068,10 @@ GetPatch:
         retf 0x2
         db 0x90
 
+;-----------------------------------------------------------------------------
+; GetPatchData                                               16F2:08BE  EACLIB
+; The data pointer of a patch record.
+;-----------------------------------------------------------------------------
 GetPatchData:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1006,6 +1098,10 @@ GetPatchData:
         retf 0x2
         db 0x90
 
+;-----------------------------------------------------------------------------
+; InitVoiceLists                                             16F2:08F0  EACLIB
+; Links the voice records into lists.
+;-----------------------------------------------------------------------------
 InitVoiceLists:
         push si
         push ds
@@ -1063,6 +1159,10 @@ InitVoiceLists:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ScanSongParts                                              16F2:0976  EACLIB
+; Scans the parts tables of the loaded songs.
+;-----------------------------------------------------------------------------
 ScanSongParts:
         enter 0xc, 0x0
         push di
@@ -1121,6 +1221,10 @@ ScanSongParts:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ScanSongSeqs                                               16F2:09E6  EACLIB
+; Scans the sequence tables of the loaded songs.
+;-----------------------------------------------------------------------------
 ScanSongSeqs:
         enter 0xa, 0x0
         push di
@@ -1177,6 +1281,10 @@ ScanSongSeqs:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; PrepareSong                                                16F2:0A4E  EACLIB
+; Resolves a song's parts and sequences before it starts.
+;-----------------------------------------------------------------------------
 PrepareSong:
         enter 0x4, 0x0
         push di
@@ -1274,6 +1382,10 @@ PrepareSong:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; FindFreeChannel                                            16F2:0B58  EACLIB
+; First of 16 MIDI channels allowed by the mask and unused.
+;-----------------------------------------------------------------------------
 FindFreeChannel:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1307,6 +1419,10 @@ FindFreeChannel:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; FindFreeTrackSlot                                          16F2:0B8C  EACLIB
+; First unused of the 24 track slots.
+;-----------------------------------------------------------------------------
 FindFreeTrackSlot:
         enter 0x4, 0x0
         push si
@@ -1340,6 +1456,10 @@ FindFreeTrackSlot:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; StartSong                                                  16F2:0BC6  EACLIB
+; Starts a song in free slots, returns a new handle.
+;-----------------------------------------------------------------------------
 StartSong:
         enter 0x1c, 0x0
         push di
@@ -1527,6 +1647,10 @@ StartSong:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; RestartSong                                                16F2:0DD6  EACLIB
+; StartSong and copies settings to its slots.
+;-----------------------------------------------------------------------------
 RestartSong:
         enter 0xa, 0x0
         push si
@@ -1576,6 +1700,10 @@ RestartSong:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; SeqStubLong2                                               16F2:0E58  EACLIB
+; Returns 0 in DX:AX.
+;-----------------------------------------------------------------------------
 SeqStubLong2:
         push ds
         mov ax, DGROUP
@@ -1586,6 +1714,10 @@ SeqStubLong2:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; PlayPatchNote                                              16F2:0E64  EACLIB
+; Plays a sound effect patch (id below 100h) on a free voice.
+;-----------------------------------------------------------------------------
 PlayPatchNote:
         enter 0x6, 0x0
         push di
@@ -1720,6 +1852,10 @@ PlayPatchNote:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; PlayPatch                                                  16F2:0FB8  EACLIB
+; PlayPatchNote with default note.
+;-----------------------------------------------------------------------------
 PlayPatch:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1736,6 +1872,10 @@ PlayPatch:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; PlaySound                                                  16F2:0FD4  EACLIB
+; Id below 100h plays a patch, otherwise prepares and starts a song.
+;-----------------------------------------------------------------------------
 PlaySound:
         enter 0x4, 0x0
         push di
@@ -1781,6 +1921,10 @@ PlaySound:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ReleaseAllVoices                                           16F2:1028  EACLIB
+; Marks every active voice for release.
+;-----------------------------------------------------------------------------
 ReleaseAllVoices:
         push si
         push ds
@@ -1811,6 +1955,10 @@ ReleaseAllVoices:
         pop si
         retf
 
+;-----------------------------------------------------------------------------
+; StopSound                                                  16F2:1070  EACLIB
+; Stops a sound by handle and silences its voices.
+;-----------------------------------------------------------------------------
 StopSound:
         enter 0xc, 0x0
         push di
@@ -1941,6 +2089,10 @@ StopSound:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; StopSong                                                   16F2:11BA  EACLIB
+; Flags the song's slots to stop.
+;-----------------------------------------------------------------------------
 StopSong:
         enter 0x4, 0x0
         push si
@@ -1984,6 +2136,10 @@ StopSong:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; SongFinished                                               16F2:1226  EACLIB
+; 1 when no slot plays the song.
+;-----------------------------------------------------------------------------
 SongFinished:
         enter 0x4, 0x0
         push ds
@@ -2020,6 +2176,10 @@ SongFinished:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; SongStopped                                                16F2:1268  EACLIB
+; 1 when no slot of the song is still stopping.
+;-----------------------------------------------------------------------------
 SongStopped:
         enter 0x4, 0x0
         push ds
@@ -2056,6 +2216,10 @@ SongStopped:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; SongChannelValue                                           16F2:12AA  EACLIB
+; A per-channel value of a playing song.
+;-----------------------------------------------------------------------------
 SongChannelValue:
         enter 0x4, 0x0
         push si
@@ -2096,6 +2260,10 @@ SongChannelValue:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; MuteAllTracks                                              16F2:12F4  EACLIB
+; Sends volume 0 on every active track.
+;-----------------------------------------------------------------------------
 MuteAllTracks:
         enter 0x8, 0x0
         push di
@@ -2139,6 +2307,10 @@ MuteAllTracks:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; RestoreTrackVolumes                                        16F2:1350  EACLIB
+; Sends each active track's volume again.
+;-----------------------------------------------------------------------------
 RestoreTrackVolumes:
         enter 0x4, 0x0
         push di
@@ -2179,6 +2351,10 @@ RestoreTrackVolumes:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; SfxOn                                                      16F2:13A8  EACLIB
+; Sets the effects flag.
+;-----------------------------------------------------------------------------
 SfxOn:
         push ds
         mov ax, DGROUP
@@ -2187,6 +2363,10 @@ SfxOn:
         pop ds
         retf
 
+;-----------------------------------------------------------------------------
+; SfxOff                                                     16F2:13B6  EACLIB
+; Clears the effects flag.
+;-----------------------------------------------------------------------------
 SfxOff:
         push ds
         mov ax, DGROUP
@@ -2195,6 +2375,10 @@ SfxOff:
         pop ds
         retf
 
+;-----------------------------------------------------------------------------
+; ToggleSfx                                                  16F2:13C4  EACLIB
+; Flips the effects flag and returns it.
+;-----------------------------------------------------------------------------
 ToggleSfx:
         push ds
         mov ax, DGROUP
@@ -2210,6 +2394,10 @@ ToggleSfx:
         pop ds
         retf
 
+;-----------------------------------------------------------------------------
+; GetSfx                                                     16F2:13E2  EACLIB
+; Returns the effects flag.
+;-----------------------------------------------------------------------------
 GetSfx:
         push ds
         mov ax, DGROUP
@@ -2219,6 +2407,10 @@ GetSfx:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; MusicOn                                                    16F2:13EE  EACLIB
+; Sets the second sound flag.
+;-----------------------------------------------------------------------------
 MusicOn:
         push ds
         mov ax, DGROUP
@@ -2227,6 +2419,10 @@ MusicOn:
         pop ds
         retf
 
+;-----------------------------------------------------------------------------
+; MusicOff                                                   16F2:13FC  EACLIB
+; Clears the second sound flag.
+;-----------------------------------------------------------------------------
 MusicOff:
         push ds
         mov ax, DGROUP
@@ -2235,6 +2431,10 @@ MusicOff:
         pop ds
         retf
 
+;-----------------------------------------------------------------------------
+; ToggleMusic                                                16F2:140A  EACLIB
+; Flips the second sound flag and returns it.
+;-----------------------------------------------------------------------------
 ToggleMusic:
         push ds
         mov ax, DGROUP
@@ -2250,6 +2450,10 @@ ToggleMusic:
         pop ds
         retf
 
+;-----------------------------------------------------------------------------
+; GetMusic                                                   16F2:1428  EACLIB
+; Returns the second sound flag.
+;-----------------------------------------------------------------------------
 GetMusic:
         push ds
         mov ax, DGROUP
@@ -2259,6 +2463,10 @@ GetMusic:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ReadFarDword                                               16F2:1434  EACLIB
+; Returns the dword at a far pointer.
+;-----------------------------------------------------------------------------
 ReadFarDword:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2272,6 +2480,10 @@ ReadFarDword:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; ReadFarWord                                                16F2:144A  EACLIB
+; Returns the word at a far pointer.
+;-----------------------------------------------------------------------------
 ReadFarWord:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2284,6 +2496,10 @@ ReadFarWord:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; StoreDwordBE                                               16F2:145C  EACLIB
+; Writes a dword high byte first.
+;-----------------------------------------------------------------------------
 StoreDwordBE:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2318,6 +2534,10 @@ StoreDwordBE:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ReadDwordBE                                                16F2:1496  EACLIB
+; Reads a dword stored high byte first.
+;-----------------------------------------------------------------------------
 ReadDwordBE:
         enter 0x4, 0x0
         push si
@@ -2360,6 +2580,10 @@ ReadDwordBE:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; CopyEventBytes                                             16F2:14E8  EACLIB
+; Copies bytes of an event record.
+;-----------------------------------------------------------------------------
 CopyEventBytes:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp

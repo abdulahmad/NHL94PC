@@ -6,6 +6,10 @@
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; DrawLine                                                    0FEF:000C  94 PC
+; Bresenham steps over the row table of the current canvas.
+;-----------------------------------------------------------------------------
 DrawLine:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -32,6 +36,10 @@ DrawLine:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; SetCanvas                                                   0FEF:0048  94 PC
+; Copies a 0x1E-byte canvas record into CurCanvas.
+;-----------------------------------------------------------------------------
 SetCanvas:
         db 0x8B, 0xD7                           ; insn: mov dx, di
         db 0x8B, 0xC6                           ; insn: mov ax, si
@@ -47,6 +55,10 @@ SetCanvas:
         mov ds, bx
         retf
 
+;-----------------------------------------------------------------------------
+; SetClipRect                                                 0FEF:0064  94 PC
+; Stores left/right/top/bottom into the CurCanvas clip fields.
+;-----------------------------------------------------------------------------
 SetClipRect:
         db 0x8B, 0xDC                           ; insn: mov bx, sp
         mov ax, [bx + 0x4]
@@ -63,6 +75,10 @@ SetClipRect:
         mov [ClipRightPlane], dx
         retf
 
+;-----------------------------------------------------------------------------
+; SetClipRectRegs                                             0FEF:008F  94 PC
+; Same as SetClipRect, arguments in registers.
+;-----------------------------------------------------------------------------
 SetClipRectRegs:
         mov [ClipTopY], bx
         db 0x8B, 0xDC                           ; insn: mov bx, sp
@@ -77,6 +93,10 @@ SetClipRectRegs:
         retf 0x2
         db 0x00
 
+;-----------------------------------------------------------------------------
+; ClearClipRect                                               0FEF:00B4  94 PC
+; Fills the clip rectangle with colour 0.
+;-----------------------------------------------------------------------------
 ClearClipRect:
         db 0x8B, 0xDC                           ; insn: mov bx, sp
         mov ax, [bx + 0x4]
@@ -100,6 +120,10 @@ ClearClipRectColor:
 .1:
         retf
 
+;-----------------------------------------------------------------------------
+; FillRectClip                                                0FEF:00DE  94 PC
+; Fills a rectangle clipped to the canvas.
+;-----------------------------------------------------------------------------
 FillRectClip:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -143,6 +167,10 @@ FillRectClip:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; FillRect                                                    0FEF:0136  94 PC
+; Fills a rectangle without clipping.
+;-----------------------------------------------------------------------------
 FillRect:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -197,6 +225,10 @@ FillRect:
         retf
         db 0x00
 
+;-----------------------------------------------------------------------------
+; UseCurrentPage                                              0FEF:01A6  94 PC
+; Points CurCanvas at the page in g_74DC.
+;-----------------------------------------------------------------------------
 UseCurrentPage:
         mov bx, [CurPage]
         mov [DrawPage], bx
@@ -211,6 +243,10 @@ UseCurrentPage:
         retf
         db 0x00
 
+;-----------------------------------------------------------------------------
+; DrawText                                                    0FEF:01C6  94 PC
+; Draws a string with the 1-bpp font.
+;-----------------------------------------------------------------------------
 DrawText:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -225,6 +261,10 @@ DrawText:
         mov [0xa], ax
         jmp short DrawTextAt.1
 
+;-----------------------------------------------------------------------------
+; DrawTextAt                                                  0FEF:01E1  94 PC
+; DrawText entry taking x,y.
+;-----------------------------------------------------------------------------
 DrawTextAt:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -409,6 +449,10 @@ DrawTextAt:
         loop .20
         jmp short .22
 
+;-----------------------------------------------------------------------------
+; GetPaletteFar                                               0FEF:0366  94 PC
+; Reads DAC registers through port 3C7h/3C9h into a far buffer.
+;-----------------------------------------------------------------------------
 GetPaletteFar:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -441,6 +485,10 @@ GetPaletteFar:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; InitGraphics                                                0FEF:039A  94 PC
+; Sets mode 13h and unchains it.
+;-----------------------------------------------------------------------------
 InitGraphics:
         push di
         push bp
@@ -477,12 +525,20 @@ InitGraphics:
         retf
         db 0x00
 
+;-----------------------------------------------------------------------------
+; LoadAsset0                                                  0FEF:03EE  94 PC
+; LoadAssetMode with mode 0.
+;-----------------------------------------------------------------------------
 LoadAsset0:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         db 0x33, 0xC0                           ; insn: xor ax, ax
         jmp short LoadAsset.1
 
+;-----------------------------------------------------------------------------
+; LoadAsset                                                   0FEF:03F5  94 PC
+; LoadAssetMode with mode 1.
+;-----------------------------------------------------------------------------
 LoadAsset:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -496,18 +552,30 @@ LoadAsset:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; LoadAssetHeader                                             0FEF:040C  94 PC
+; LoadAssetMode mode 1, returns the first dword.
+;-----------------------------------------------------------------------------
 LoadAssetHeader:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, 0x1
         jmp short LoadAssetHeaderMode.1
 
+;-----------------------------------------------------------------------------
+; LoadAssetHeader0                                            0FEF:0414  94 PC
+; LoadAssetMode mode 0, returns the first dword.
+;-----------------------------------------------------------------------------
 LoadAssetHeader0:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         db 0x33, 0xC0                           ; insn: xor ax, ax
         jmp short LoadAssetHeaderMode.1
 
+;-----------------------------------------------------------------------------
+; LoadAssetHeaderMode                                         0FEF:041B  94 PC
+; LoadAssetMode with explicit mode, returns the first dword.
+;-----------------------------------------------------------------------------
 LoadAssetHeaderMode:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -529,6 +597,10 @@ LoadAssetHeaderMode:
         retf
         db 0x00
 
+;-----------------------------------------------------------------------------
+; SetRemapTable                                               0FEF:0442  94 PC
+; Copies 256 bytes into the remap table.
+;-----------------------------------------------------------------------------
 SetRemapTable:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -548,6 +620,10 @@ SetRemapTable:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; GetRemapTable                                               0FEF:045D  94 PC
+; Copies the remap table out.
+;-----------------------------------------------------------------------------
 GetRemapTable:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -565,6 +641,10 @@ GetRemapTable:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; SetRemapRange                                               0FEF:0474  94 PC
+; Writes a range of remap entries.
+;-----------------------------------------------------------------------------
 SetRemapRange:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -585,6 +665,10 @@ SetRemapRange:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; PutBlock                                                    0FEF:0492  94 PC
+; Raw block copy to the canvas, hotspot entry.
+;-----------------------------------------------------------------------------
 PutBlock:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -602,6 +686,10 @@ PutBlock:
         mov [bp - 0xa], ax
         jmp short PutBlockBody.1
 
+;-----------------------------------------------------------------------------
+; PutBlockAt                                                  0FEF:04B5  94 PC
+; PutBlock at x,y.
+;-----------------------------------------------------------------------------
 PutBlockAt:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -617,6 +705,10 @@ PutBlockAt:
         mov [bp - 0xa], ax
         jmp short PutBlockBody.1
 
+;-----------------------------------------------------------------------------
+; PutBlockBody                                                0FEF:04D2  94 PC
+; PutBlock body.
+;-----------------------------------------------------------------------------
 PutBlockBody:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -873,6 +965,10 @@ PutBlockBody:
         retf
         db 0x00
 
+;-----------------------------------------------------------------------------
+; DrawRaw                                                     0FEF:071A  94 PC
+; Raw planar shape, hotspot entry.
+;-----------------------------------------------------------------------------
 DrawRaw:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -890,6 +986,10 @@ DrawRaw:
         mov [bp - 0xa], ax
         jmp short DrawRawBody.1
 
+;-----------------------------------------------------------------------------
+; DrawRawAt                                                   0FEF:073D  94 PC
+; DrawRaw at x,y.
+;-----------------------------------------------------------------------------
 DrawRawAt:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -905,6 +1005,10 @@ DrawRawAt:
         mov [bp - 0xa], ax
         jmp short DrawRawBody.1
 
+;-----------------------------------------------------------------------------
+; DrawRawBody                                                 0FEF:075A  94 PC
+; DrawRaw body.
+;-----------------------------------------------------------------------------
 DrawRawBody:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1018,6 +1122,10 @@ DrawRawBody:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; DrawRle                                                     0FEF:085C  94 PC
+; RLE shape (runs, literals, 0 ends plane), clipped.
+;-----------------------------------------------------------------------------
 DrawRle:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1035,6 +1143,10 @@ DrawRle:
         mov [bp - 0x4], ax
         jmp short DrawRleBody.1
 
+;-----------------------------------------------------------------------------
+; DrawRleAt                                                   0FEF:087F  94 PC
+; DrawRle at x,y.
+;-----------------------------------------------------------------------------
 DrawRleAt:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1050,6 +1162,10 @@ DrawRleAt:
         mov [bp - 0x4], ax
         jmp short DrawRleBody.1
 
+;-----------------------------------------------------------------------------
+; DrawRleBody                                                 0FEF:089C  94 PC
+; DrawRle body.
+;-----------------------------------------------------------------------------
 DrawRleBody:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1500,6 +1616,10 @@ DrawRleBody:
         db 0x03, 0xF0                           ; insn: add si, ax
         jmp short .52
 
+;-----------------------------------------------------------------------------
+; DrawRleFast                                                 0FEF:0C22  94 PC
+; RLE shape without clipping.
+;-----------------------------------------------------------------------------
 DrawRleFast:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1517,6 +1637,10 @@ DrawRleFast:
         mov [bp - 0x4], ax
         jmp short DrawRleFastHere.1
 
+;-----------------------------------------------------------------------------
+; DrawRleFastAt                                               0FEF:0C45  94 PC
+; DrawRleFast at x,y.
+;-----------------------------------------------------------------------------
 DrawRleFastAt:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1532,6 +1656,10 @@ DrawRleFastAt:
         mov [bp - 0x4], ax
         jmp short DrawRleFastHere.1
 
+;-----------------------------------------------------------------------------
+; DrawRleFastHere                                             0FEF:0C62  94 PC
+; DrawRleFast at the shape's own +8/+0A position.
+;-----------------------------------------------------------------------------
 DrawRleFastHere:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1788,6 +1916,10 @@ DrawRleFastBody:
         rep movsb
         jmp short .24
 
+;-----------------------------------------------------------------------------
+; DrawText2                                                   0FEF:0E5E  94 PC
+; Second font text routine.
+;-----------------------------------------------------------------------------
 DrawText2:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1806,6 +1938,10 @@ DrawText2:
         mov [0xa], ax
         jmp short DrawChar.1
 
+;-----------------------------------------------------------------------------
+; DrawChar                                                    0FEF:0E85  94 PC
+; Single character for DrawText2.
+;-----------------------------------------------------------------------------
 DrawChar:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2045,18 +2181,30 @@ DrawChar:
         loop .23
         jmp short .26
 
+;-----------------------------------------------------------------------------
+; CopyPlaneA                                                  0FEF:1096  94 PC
+; CopyPlane entry.
+;-----------------------------------------------------------------------------
 CopyPlaneA:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov bx, [CurPage]
         jmp short CopyPlane.2
 
+;-----------------------------------------------------------------------------
+; CopyPlaneB                                                  0FEF:109F  94 PC
+; CopyPlane entry.
+;-----------------------------------------------------------------------------
 CopyPlaneB:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov bx, [bp + 0x6]
         jmp short CopyPlane.1
 
+;-----------------------------------------------------------------------------
+; CopyPlane                                                   0FEF:10A7  94 PC
+; Copies one VGA plane between buffers.
+;-----------------------------------------------------------------------------
 CopyPlane:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2168,6 +2316,10 @@ CopyPlane:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; UseOtherPage                                                0FEF:118C  94 PC
+; Points CurCanvas at the page not shown.
+;-----------------------------------------------------------------------------
 UseOtherPage:
         mov bx, [CurPage]
         and bx, 0x1
@@ -2183,15 +2335,27 @@ UseOtherPage:
         add sp, 0x4
         retf
 
+;-----------------------------------------------------------------------------
+; GetPage                                                     0FEF:11B1  94 PC
+; Returns g_74DC.
+;-----------------------------------------------------------------------------
 GetPage:
         mov ax, [CurPage]
         retf
 
+;-----------------------------------------------------------------------------
+; GetOtherPage                                                0FEF:11B5  94 PC
+; Returns the other page index.
+;-----------------------------------------------------------------------------
 GetOtherPage:
         mov ax, [DrawPage]
         retf
         db 0x00
 
+;-----------------------------------------------------------------------------
+; GetBlock                                                    0FEF:11BA  94 PC
+; Reads a block from the canvas, hotspot entry.
+;-----------------------------------------------------------------------------
 GetBlock:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2209,6 +2373,10 @@ GetBlock:
         mov [bp - 0x4], ax
         jmp short GetBlockBody.1
 
+;-----------------------------------------------------------------------------
+; GetBlockAt                                                  0FEF:11DD  94 PC
+; GetBlock at x,y.
+;-----------------------------------------------------------------------------
 GetBlockAt:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2226,6 +2394,10 @@ GetBlockAt:
         mov [di + 0xa], ax
         jmp short GetBlockBody.1
 
+;-----------------------------------------------------------------------------
+; GetBlockBody                                                0FEF:1200  94 PC
+; GetBlock body.
+;-----------------------------------------------------------------------------
 GetBlockBody:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2326,6 +2498,10 @@ GetBlockBody:
         retf
         db 0x00
 
+;-----------------------------------------------------------------------------
+; GetPixel                                                    0FEF:12DA  94 PC
+; Reads one pixel through the read map register.
+;-----------------------------------------------------------------------------
 GetPixel:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2363,6 +2539,10 @@ GetPixel:
         jmp short .1
         db 0x00
 
+;-----------------------------------------------------------------------------
+; SetStartPage                                                0FEF:1320  94 PC
+; Writes the CRTC start address for a page.
+;-----------------------------------------------------------------------------
 SetStartPage:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2414,6 +2594,10 @@ SetStartPage:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; UseOffscreenCanvas                                          0FEF:137E  94 PC
+; Points CurCanvas at the off-screen buffer.
+;-----------------------------------------------------------------------------
 UseOffscreenCanvas:
         mov ax, [OffscreenOff]
         mov dx, [OffscreenSeg]
@@ -2423,6 +2607,10 @@ UseOffscreenCanvas:
         add sp, 0x4
         retf
 
+;-----------------------------------------------------------------------------
+; DrawRawTrans                                                0FEF:1390  94 PC
+; Raw shape, colour FF transparent, hotspot entry.
+;-----------------------------------------------------------------------------
 DrawRawTrans:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2439,6 +2627,10 @@ DrawRawTrans:
         mov [bp - 0xa], ax
         jmp short DrawRawTransBody.1
 
+;-----------------------------------------------------------------------------
+; DrawRawTransAt                                              0FEF:13B0  94 PC
+; DrawRawTrans at x,y.
+;-----------------------------------------------------------------------------
 DrawRawTransAt:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2453,6 +2645,10 @@ DrawRawTransAt:
         mov [bp - 0xa], ax
         jmp short DrawRawTransBody.1
 
+;-----------------------------------------------------------------------------
+; DrawRawTransBody                                            0FEF:13CA  94 PC
+; DrawRawTrans body.
+;-----------------------------------------------------------------------------
 DrawRawTransBody:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2719,6 +2915,10 @@ DrawRawTransBody:
         jmp short .21
         db 0x00
 
+;-----------------------------------------------------------------------------
+; DrawRleFlip                                                 0FEF:1612  94 PC
+; Mirrored RLE shape.
+;-----------------------------------------------------------------------------
 DrawRleFlip:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2737,6 +2937,10 @@ DrawRleFlip:
         mov [bp - 0x4], ax
         jmp short DrawRleFlipHere.1
 
+;-----------------------------------------------------------------------------
+; DrawRleFlipAt                                               0FEF:1637  94 PC
+; DrawRleFlip at x,y.
+;-----------------------------------------------------------------------------
 DrawRleFlipAt:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2752,6 +2956,10 @@ DrawRleFlipAt:
         mov [bp - 0x4], ax
         jmp short DrawRleFlipHere.1
 
+;-----------------------------------------------------------------------------
+; DrawRleFlipHere                                             0FEF:1654  94 PC
+; DrawRleFlip at the shape's own position.
+;-----------------------------------------------------------------------------
 DrawRleFlipHere:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3004,6 +3212,10 @@ DrawRleFlipBody:
         loop .28
         jmp near .17
 
+;-----------------------------------------------------------------------------
+; DrawRleTrans                                                0FEF:1834  94 PC
+; RLE shape, run byte FF transparent, clipped.
+;-----------------------------------------------------------------------------
 DrawRleTrans:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3021,6 +3233,10 @@ DrawRleTrans:
         mov [bp - 0x4], ax
         jmp short DrawRleTransBody.1
 
+;-----------------------------------------------------------------------------
+; DrawRleTransAt                                              0FEF:1857  94 PC
+; DrawRleTrans at x,y.
+;-----------------------------------------------------------------------------
 DrawRleTransAt:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3036,6 +3252,10 @@ DrawRleTransAt:
         mov [bp - 0x4], ax
         jmp short DrawRleTransBody.1
 
+;-----------------------------------------------------------------------------
+; DrawRleTransBody                                            0FEF:1874  94 PC
+; DrawRleTrans body.
+;-----------------------------------------------------------------------------
 DrawRleTransBody:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3531,6 +3751,10 @@ DrawRleTransBody:
         db 0x03, 0xF0                           ; insn: add si, ax
         jmp short .58
 
+;-----------------------------------------------------------------------------
+; DrawRleTransFast                                            0FEF:1C4E  94 PC
+; Transparent RLE without clipping.
+;-----------------------------------------------------------------------------
 DrawRleTransFast:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3548,6 +3772,10 @@ DrawRleTransFast:
         mov [bp - 0x4], ax
         jmp short DrawRleTransFastHere.1
 
+;-----------------------------------------------------------------------------
+; DrawRleTransFastAt                                          0FEF:1C71  94 PC
+; DrawRleTransFast at x,y.
+;-----------------------------------------------------------------------------
 DrawRleTransFastAt:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3563,6 +3791,10 @@ DrawRleTransFastAt:
         mov [bp - 0x4], ax
         jmp short DrawRleTransFastHere.1
 
+;-----------------------------------------------------------------------------
+; DrawRleTransFastHere                                        0FEF:1C8E  94 PC
+; DrawRleTransFast at the shape's own position.
+;-----------------------------------------------------------------------------
 DrawRleTransFastHere:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3856,6 +4088,10 @@ DrawRleTransFastBody:
         rep movsb
         jmp near .28
 
+;-----------------------------------------------------------------------------
+; DrawRawTransRemap                                           0FEF:1EC6  94 PC
+; Transparent raw shape through the remap table.
+;-----------------------------------------------------------------------------
 DrawRawTransRemap:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3873,6 +4109,10 @@ DrawRawTransRemap:
         mov [bp - 0xa], ax
         jmp short DrawRawTransRemapBody.1
 
+;-----------------------------------------------------------------------------
+; DrawRawTransRemapAt                                         0FEF:1EE9  94 PC
+; DrawRawTransRemap at x,y.
+;-----------------------------------------------------------------------------
 DrawRawTransRemapAt:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3888,6 +4128,10 @@ DrawRawTransRemapAt:
         mov [bp - 0xa], ax
         jmp short DrawRawTransRemapBody.1
 
+;-----------------------------------------------------------------------------
+; DrawRawTransRemapBody                                       0FEF:1F06  94 PC
+; DrawRawTransRemap body.
+;-----------------------------------------------------------------------------
 DrawRawTransRemapBody:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -4158,6 +4402,10 @@ DrawRawTransRemapBody:
         jmp short .21
         db 0x00
 
+;-----------------------------------------------------------------------------
+; DrawRleTransRemap                                           0FEF:2160  94 PC
+; Transparent RLE through the remap table, clipped.
+;-----------------------------------------------------------------------------
 DrawRleTransRemap:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -4175,6 +4423,10 @@ DrawRleTransRemap:
         mov [bp - 0x4], ax
         jmp short DrawRleTransRemapHere.1
 
+;-----------------------------------------------------------------------------
+; DrawRleTransRemapAt                                         0FEF:2183  94 PC
+; DrawRleTransRemap at x,y.
+;-----------------------------------------------------------------------------
 DrawRleTransRemapAt:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -4190,6 +4442,10 @@ DrawRleTransRemapAt:
         mov [bp - 0x4], ax
         jmp short DrawRleTransRemapHere.1
 
+;-----------------------------------------------------------------------------
+; DrawRleTransRemapHere                                       0FEF:21A0  94 PC
+; DrawRleTransRemap at the shape's own position.
+;-----------------------------------------------------------------------------
 DrawRleTransRemapHere:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -4548,6 +4804,10 @@ DrawRleTransRemapBody:
         jmp near .34
         db 0x00
 
+;-----------------------------------------------------------------------------
+; DrawRleFlipTrans                                            0FEF:245C  94 PC
+; Mirrored transparent RLE.
+;-----------------------------------------------------------------------------
 DrawRleFlipTrans:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -4566,6 +4826,10 @@ DrawRleFlipTrans:
         mov [bp - 0x4], ax
         jmp short DrawRleFlipTransBody.1
 
+;-----------------------------------------------------------------------------
+; DrawRleFlipTransAt                                          0FEF:2481  94 PC
+; DrawRleFlipTrans at x,y.
+;-----------------------------------------------------------------------------
 DrawRleFlipTransAt:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -4581,6 +4845,10 @@ DrawRleFlipTransAt:
         mov [bp - 0x4], ax
         jmp short DrawRleFlipTransBody.1
 
+;-----------------------------------------------------------------------------
+; DrawRleFlipTransBody                                        0FEF:249E  94 PC
+; DrawRleFlipTrans body.
+;-----------------------------------------------------------------------------
 DrawRleFlipTransBody:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5113,6 +5381,10 @@ DrawRleFlipTransBody:
         db 0x03, 0xF0                           ; insn: add si, ax
         jmp short .64
 
+;-----------------------------------------------------------------------------
+; DrawRleFlipTransRemap                                       0FEF:28A8  94 PC
+; Mirrored transparent RLE through the remap table.
+;-----------------------------------------------------------------------------
 DrawRleFlipTransRemap:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5134,6 +5406,10 @@ DrawRleFlipTransRemap:
         mov [bp - 0x4], ax
         jmp short DrawRleFlipTransRemapBody.1
 
+;-----------------------------------------------------------------------------
+; DrawRleFlipTransRemapAt                                     0FEF:28D3  94 PC
+; DrawRleFlipTransRemap at x,y.
+;-----------------------------------------------------------------------------
 DrawRleFlipTransRemapAt:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5149,6 +5425,10 @@ DrawRleFlipTransRemapAt:
         mov [bp - 0x4], ax
         jmp short DrawRleFlipTransRemapBody.1
 
+;-----------------------------------------------------------------------------
+; DrawRleFlipTransRemapBody                                   0FEF:28F0  94 PC
+; DrawRleFlipTransRemap body.
+;-----------------------------------------------------------------------------
 DrawRleFlipTransRemapBody:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5698,6 +5978,10 @@ DrawRleFlipTransRemapBody:
         jmp short .64
         db 0x00
 
+;-----------------------------------------------------------------------------
+; DrawRleFlipRemap                                            0FEF:2D34  94 PC
+; Mirrored RLE through the remap table.
+;-----------------------------------------------------------------------------
 DrawRleFlipRemap:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5719,6 +6003,10 @@ DrawRleFlipRemap:
         mov [bp - 0x4], ax
         jmp short DrawRleFlipRemapHere.1
 
+;-----------------------------------------------------------------------------
+; DrawRleFlipRemapAt                                          0FEF:2D5F  94 PC
+; DrawRleFlipRemap at x,y.
+;-----------------------------------------------------------------------------
 DrawRleFlipRemapAt:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5734,6 +6022,10 @@ DrawRleFlipRemapAt:
         mov [bp - 0x4], ax
         jmp short DrawRleFlipRemapHere.1
 
+;-----------------------------------------------------------------------------
+; DrawRleFlipRemapHere                                        0FEF:2D7C  94 PC
+; DrawRleFlipRemap at the shape's own position.
+;-----------------------------------------------------------------------------
 DrawRleFlipRemapHere:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -6002,6 +6294,10 @@ DrawRleFlipRemapBody:
         loop .28
         jmp near .17
 
+;-----------------------------------------------------------------------------
+; DrawRleTransRemapFast                                       0FEF:2F98  94 PC
+; Transparent remapped RLE without clipping.
+;-----------------------------------------------------------------------------
 DrawRleTransRemapFast:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -6019,6 +6315,10 @@ DrawRleTransRemapFast:
         mov [bp - 0x4], ax
         jmp short DrawRleTransRemapFastBody.1
 
+;-----------------------------------------------------------------------------
+; DrawRleTransRemapFastAt                                     0FEF:2FBB  94 PC
+; DrawRleTransRemapFast at x,y.
+;-----------------------------------------------------------------------------
 DrawRleTransRemapFastAt:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -6034,6 +6334,10 @@ DrawRleTransRemapFastAt:
         mov [bp - 0x4], ax
         jmp short DrawRleTransRemapFastBody.1
 
+;-----------------------------------------------------------------------------
+; DrawRleTransRemapFastBody                                   0FEF:2FD8  94 PC
+; DrawRleTransRemapFast body.
+;-----------------------------------------------------------------------------
 DrawRleTransRemapFastBody:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -6572,6 +6876,10 @@ DrawRleTransRemapFastBody:
         jmp short .64
         db 0x00
 
+;-----------------------------------------------------------------------------
+; WaitRetraceCount                                            0FEF:3406  94 PC
+; Waits for N vertical retraces.
+;-----------------------------------------------------------------------------
 WaitRetraceCount:
         db 0x8B, 0xDC                           ; insn: mov bx, sp
         mov ax, [bx + 0x4]
@@ -6590,9 +6898,17 @@ WaitRetraceCountRegs:
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         retf
 
+;-----------------------------------------------------------------------------
+; WaitRetraceFar                                              0FEF:341E  94 PC
+; Far jump to WaitRetrace.
+;-----------------------------------------------------------------------------
 WaitRetraceFar:
         jmp 0x0FEF:WaitRetrace
 
+;-----------------------------------------------------------------------------
+; WaitTimerRetrace                                            0FEF:3423  94 PC
+; Waits on the timer tick or the retrace bit of 3DAh.
+;-----------------------------------------------------------------------------
 WaitTimerRetrace:
         cmp word [MouseActive], 0x0
         jnz short WaitRetraceFar
@@ -6614,6 +6930,10 @@ WaitTimerRetrace:
         retf
         db 0x00
 
+;-----------------------------------------------------------------------------
+; SetPaletteFar                                               0FEF:344C  94 PC
+; Writes DAC registers from a far buffer.
+;-----------------------------------------------------------------------------
 SetPaletteFar:
         db 0x8B, 0xDC                           ; insn: mov bx, sp
         push ds
@@ -6645,6 +6965,10 @@ SetPaletteFar:
         retf
         db 0x00
 
+;-----------------------------------------------------------------------------
+; WaitRetraceEnd                                              0FEF:3482  94 PC
+; Polls 3DAh bit 3 until clear.
+;-----------------------------------------------------------------------------
 WaitRetraceEnd:
         mov dx, 0x3da
         cmp word [HoldWord], 0x1
@@ -6661,6 +6985,10 @@ WaitRetraceEnd:
 .3:
         retf
 
+;-----------------------------------------------------------------------------
+; WaitRetraceStart                                            0FEF:3499  94 PC
+; Polls 3DAh bit 3 until set.
+;-----------------------------------------------------------------------------
 WaitRetraceStart:
         mov dx, 0x3da
 .1:
@@ -6673,6 +7001,10 @@ WaitRetraceStart:
         jz short .2
         retf
 
+;-----------------------------------------------------------------------------
+; WaitRetrace                                                 0FEF:34A7  94 PC
+; Waits for the end then the start of a vertical retrace.
+;-----------------------------------------------------------------------------
 WaitRetrace:
         mov dx, 0x3da
 .1:
@@ -6685,6 +7017,10 @@ WaitRetrace:
         jnz short .2
         retf
 
+;-----------------------------------------------------------------------------
+; InRetrace                                                   0FEF:34B5  94 PC
+; Returns 3DAh bit 3.
+;-----------------------------------------------------------------------------
 InRetrace:
         mov dx, 0x3da
         in al, dx
@@ -6692,6 +7028,10 @@ InRetrace:
         retf
         db 0x00
 
+;-----------------------------------------------------------------------------
+; PutPixel                                                    0FEF:34BE  94 PC
+; Writes one pixel through the map mask.
+;-----------------------------------------------------------------------------
 PutPixel:
         db 0x8B, 0xDC                           ; insn: mov bx, sp
         mov ax, [bx + 0x4]
@@ -6699,6 +7039,10 @@ PutPixel:
         mov bx, [bx + 0x8]
         jmp short PutPixelAt.1
 
+;-----------------------------------------------------------------------------
+; PutPixelAt                                                  0FEF:34CB  94 PC
+; PutPixel entry.
+;-----------------------------------------------------------------------------
 PutPixelAt:
         db 0x8B, 0xDC                           ; insn: mov bx, sp
         mov ax, [bx + 0x4]
@@ -6740,6 +7084,10 @@ PutPixelAt:
 .3:
         retf
 
+;-----------------------------------------------------------------------------
+; XorRect                                                     0FEF:352C  94 PC
+; XORs a rectangle via RectSpanPlanes.
+;-----------------------------------------------------------------------------
 XorRect:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -6783,6 +7131,10 @@ XorRect:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; XorRectRegs                                                 0FEF:3584  94 PC
+; XorRect entry.
+;-----------------------------------------------------------------------------
 XorRectRegs:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -6843,6 +7195,10 @@ XorRectRegs:
         retf
         db 0x00
 
+;-----------------------------------------------------------------------------
+; CopyPageToPage                                              0FEF:3602  94 PC
+; Page copy using a plane jump table.
+;-----------------------------------------------------------------------------
 CopyPageToPage:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -6968,6 +7324,10 @@ CopyPageToPageJumpTable:
         jmp short .4
         db 0x00
 
+;-----------------------------------------------------------------------------
+; CopyPageRect                                                0FEF:3704  94 PC
+; Rectangle page copy using a plane jump table.
+;-----------------------------------------------------------------------------
 CopyPageRect:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -7092,6 +7452,10 @@ CopyPageRectJumpTable:
         mov bx, 0x8800
         jmp short .4
 
+;-----------------------------------------------------------------------------
+; AllocCanvases                                               0FEF:3804  94 PC
+; Allocates the page and off-screen buffers and fills the canvas records.
+;-----------------------------------------------------------------------------
 AllocCanvases:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -7324,6 +7688,10 @@ AllocCanvases:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; SetClipRectPlanes                                           0FEF:3A59  94 PC
+; Sets the clip rectangle in plane units.
+;-----------------------------------------------------------------------------
 SetClipRectPlanes:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -7344,6 +7712,10 @@ SetClipRectPlanes:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; ClearScreenColor                                            0FEF:3A84  94 PC
+; Fills video memory with a colour.
+;-----------------------------------------------------------------------------
 ClearScreenColor:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -7364,6 +7736,10 @@ ClearScreenColor:
         retf
         db 0x00
 
+;-----------------------------------------------------------------------------
+; DrawScaledColor                                             0FEF:3AA8  94 PC
+; Sets g_7664/g_7666 then enters DrawScaled.
+;-----------------------------------------------------------------------------
 DrawScaledColor:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -7375,6 +7751,10 @@ DrawScaledColor:
         mov [ScaleMode], al
         jmp short DrawScaled.1
 
+;-----------------------------------------------------------------------------
+; DrawScaled                                                  0FEF:3ABB  94 PC
+; Pattern or scaled draw.
+;-----------------------------------------------------------------------------
 DrawScaled:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -7596,6 +7976,10 @@ DrawScaledJumpTable:
         mov [es:di], ah
         jmp short .5
 
+;-----------------------------------------------------------------------------
+; DrawLineClipped                                             0FEF:3C9A  94 PC
+; Line clipped to the canvas.
+;-----------------------------------------------------------------------------
 DrawLineClipped:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -8127,6 +8511,10 @@ DrawLineClippedJumpTable2:
         jg short .26
         jmp near .2
 
+;-----------------------------------------------------------------------------
+; FillSpanLinear                                              0FEF:4130  94 PC
+; Fills a span in linear mode 13h.
+;-----------------------------------------------------------------------------
 FillSpanLinear:
         db 0x0B, 0xC9                           ; insn: or cx, cx
         jg short .1
@@ -8149,6 +8537,10 @@ FillSpanLinear:
         loop .2
         ret
 
+;-----------------------------------------------------------------------------
+; FillSpanVga                                                 0FEF:4156  94 PC
+; Fills a span in unchained mode with edge masks.
+;-----------------------------------------------------------------------------
 FillSpanVga:
         db 0x0B, 0xC9                           ; insn: or cx, cx
         jg short .1
@@ -8214,6 +8606,10 @@ FillSpanVga:
         pop ax
         ret
 
+;-----------------------------------------------------------------------------
+; RectSpanPlanes                                              0FEF:41D2  94 PC
+; Splits a span into planar edges using the mask table at 77BDh.
+;-----------------------------------------------------------------------------
 RectSpanPlanes:
         db 0x0B, 0xC9                           ; insn: or cx, cx
         jg short .1
@@ -8288,6 +8684,10 @@ RectSpanPlanes:
         ret
         db 0x00
 
+;-----------------------------------------------------------------------------
+; CopyPlanesRect                                              0FEF:4262  94 PC
+; Copies a rectangle plane by plane with the read map.
+;-----------------------------------------------------------------------------
 CopyPlanesRect:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -8390,6 +8790,10 @@ CopyPlanesRect:
         retf
         db 0x00
 
+;-----------------------------------------------------------------------------
+; DrawRawFast                                                 0FEF:4346  94 PC
+; Fast raw shape, hotspot entry.
+;-----------------------------------------------------------------------------
 DrawRawFast:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -8406,6 +8810,10 @@ DrawRawFast:
         mov [bp - 0xa], ax
         jmp short DrawRawFastBody.1
 
+;-----------------------------------------------------------------------------
+; DrawRawFastAt                                               0FEF:4366  94 PC
+; DrawRawFast at x,y.
+;-----------------------------------------------------------------------------
 DrawRawFastAt:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -8420,6 +8828,10 @@ DrawRawFastAt:
         mov [bp - 0xa], ax
         jmp short DrawRawFastBody.1
 
+;-----------------------------------------------------------------------------
+; DrawRawFastBody                                             0FEF:4380  94 PC
+; DrawRawFast body.
+;-----------------------------------------------------------------------------
 DrawRawFastBody:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -8547,6 +8959,10 @@ DrawRawFastBody:
         jmp short .12
         db 0x00
 
+;-----------------------------------------------------------------------------
+; DrawRawTransFast                                            0FEF:4488  94 PC
+; Fast transparent raw shape, hotspot entry.
+;-----------------------------------------------------------------------------
 DrawRawTransFast:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -8564,6 +8980,10 @@ DrawRawTransFast:
         mov [bp - 0xa], ax
         jmp short DrawRawTransFastBody.1
 
+;-----------------------------------------------------------------------------
+; DrawRawTransFastAt                                          0FEF:44AB  94 PC
+; DrawRawTransFast at x,y.
+;-----------------------------------------------------------------------------
 DrawRawTransFastAt:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -8579,6 +8999,10 @@ DrawRawTransFastAt:
         mov [bp - 0xa], ax
         jmp short DrawRawTransFastBody.1
 
+;-----------------------------------------------------------------------------
+; DrawRawTransFastBody                                        0FEF:44C8  94 PC
+; DrawRawTransFast body.
+;-----------------------------------------------------------------------------
 DrawRawTransFastBody:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -8713,6 +9137,10 @@ DrawRawTransFastBody:
         loop .11
         jmp short .12
 
+;-----------------------------------------------------------------------------
+; UnchainVga                                                  0FEF:45E8  94 PC
+; Clears chain-4 in the sequencer and CRTC.
+;-----------------------------------------------------------------------------
 UnchainVga:
         mov dx, 0x3c4
         mov al, 0x4
@@ -8762,6 +9190,10 @@ UnchainVga:
         out dx, al
         retf
 
+;-----------------------------------------------------------------------------
+; SetMaxScanLine                                              0FEF:4634  94 PC
+; Writes CRTC register 9.
+;-----------------------------------------------------------------------------
 SetMaxScanLine:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -8776,6 +9208,10 @@ SetMaxScanLine:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; SetMode13Linear                                             0FEF:4647  94 PC
+; Sets mode 13h, chained.
+;-----------------------------------------------------------------------------
 SetMode13Linear:
         mov ax, 0xd
         int 0x10
@@ -8796,6 +9232,10 @@ SetMode13Linear:
         out dx, al
         retf
 
+;-----------------------------------------------------------------------------
+; SetModeX                                                    0FEF:4665  94 PC
+; Sets the unchained mode.
+;-----------------------------------------------------------------------------
 SetModeX:
         mov dx, 0x3c4
         mov al, 0x4
@@ -8817,6 +9257,10 @@ SetModeX:
         out dx, al
         retf
 
+;-----------------------------------------------------------------------------
+; XorSpan                                                     0FEF:4682  94 PC
+; XORs one span.
+;-----------------------------------------------------------------------------
 XorSpan:
         db 0x0B, 0xC9                           ; insn: or cx, cx
         jg short .1
@@ -8839,6 +9283,10 @@ XorSpan:
         loop .2
         ret
 
+;-----------------------------------------------------------------------------
+; SetCanvasClip                                               0FEF:46A8  94 PC
+; Sets a canvas record's clip rectangle.
+;-----------------------------------------------------------------------------
 SetCanvasClip:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -8894,6 +9342,10 @@ SetCanvasClip:
         retf
         db 0x00
 
+;-----------------------------------------------------------------------------
+; RemapShapeBank                                              0FEF:472A  94 PC
+; Remaps every shape in a bank through a table.
+;-----------------------------------------------------------------------------
 RemapShapeBank:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -8937,6 +9389,10 @@ RemapShapeBank:
         jmp short .1
         db 0x00
 
+;-----------------------------------------------------------------------------
+; ConvertShapeBank                                            0FEF:4782  94 PC
+; Converts the shapes of a bank in place.
+;-----------------------------------------------------------------------------
 ConvertShapeBank:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -9083,6 +9539,10 @@ ConvertShapeBank:
         inc word [bp - 0x4]
         jmp near .1
 
+;-----------------------------------------------------------------------------
+; FillPolySpans                                               0FEF:48D2  94 PC
+; Fills a list of spans.
+;-----------------------------------------------------------------------------
 FillPolySpans:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp

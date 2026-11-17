@@ -6,6 +6,10 @@
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; CalibrateRetrace                                            156A:000C  94 PC
+; Times vertical retraces and sets the retrace wait count g_7670.
+;-----------------------------------------------------------------------------
 CalibrateRetrace:
         enter 0x2, 0x0
         push di

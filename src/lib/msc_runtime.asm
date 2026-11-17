@@ -16,8 +16,11 @@ VgaStatus	equ	0x3DA
 VgaMem		equ	0xA000
 
 
-; _outp: write one byte to an I/O port.
+;-----------------------------------------------------------------------------
+; _outp                                                         0000:0010  MSC
+; write one byte to an I/O port.
 ; Arguments: port, value. No result.
+;-----------------------------------------------------------------------------
 _outp:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -29,8 +32,11 @@ _outp:
         pop bp
         retf
 
-; _inp: read one byte from an I/O port.
+;-----------------------------------------------------------------------------
+; _inp                                                          0000:001E  MSC
+; read one byte from an I/O port.
 ; Argument: port. Result in AX, high byte cleared.
+;-----------------------------------------------------------------------------
 _inp:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -42,9 +48,12 @@ _inp:
         pop bp
         retf
 
-; VgaCopyWrapped: latched VGA copy of one rectangle out of the circular
+;-----------------------------------------------------------------------------
+; VgaCopyWrapped                                                0000:002B  MSC
+; latched VGA copy of one rectangle out of the circular
 ; buffer. Write mode 1, all four planes. The source wraps inside the
 ; buffer. Arguments: destination, column, row, width, height.
+;-----------------------------------------------------------------------------
 VgaCopyWrapped:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -126,9 +135,12 @@ VgaCopyWrapped:
         pop bp
         retf
 
-; VgaCopyToPitch: latched copy of packed rows into a pitched destination.
+;-----------------------------------------------------------------------------
+; VgaCopyToPitch                                                0000:00CB  MSC
+; latched copy of packed rows into a pitched destination.
 ; Arguments: source, destination, width, height. The row stride is the
 ; near word used by the other copies.
+;-----------------------------------------------------------------------------
 VgaCopyToPitch:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -181,8 +193,11 @@ VgaCopyToPitch:
         pop bp
         retf
 
-; VgaCopyFromPitch: latched copy of pitched rows into a packed destination.
+;-----------------------------------------------------------------------------
+; VgaCopyFromPitch                                              0000:0123  MSC
+; latched copy of pitched rows into a packed destination.
 ; Arguments: source, destination, width, height.
+;-----------------------------------------------------------------------------
 VgaCopyFromPitch:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -235,9 +250,12 @@ VgaCopyFromPitch:
         pop bp
         retf
 
-; VgaStamp8: copy an 8-row, 2-byte VGA block. Bit 0x800 selects the
+;-----------------------------------------------------------------------------
+; VgaStamp8                                                     0000:017B  MSC
+; copy an 8-row, 2-byte VGA block. Bit 0x800 selects the
 ; plane-by-plane path that swaps the two bytes. Bit 0x1000 walks the
 ; rows backward. Arguments: source, destination, flags.
+;-----------------------------------------------------------------------------
 VgaStamp8:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -369,8 +387,11 @@ VgaStamp8:
         pop bp
         retf
 
-; VgaPageFlip: wait for the vertical retrace, then point the CRT at the
+;-----------------------------------------------------------------------------
+; VgaPageFlip                                                   0000:025C  MSC
+; wait for the vertical retrace, then point the CRT at the
 ; other page and set the pel pan. No arguments. Toggles the page word.
+;-----------------------------------------------------------------------------
 VgaPageFlip:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -440,9 +461,12 @@ VgaPageFlip:
         pop bp
         retf
 
-; VgaStorePlanes: copy two bitmaps into VGA memory, one plane at a time.
+;-----------------------------------------------------------------------------
+; VgaStorePlanes                                                0000:02D5  MSC
+; copy two bitmaps into VGA memory, one plane at a time.
 ; Arguments: pointer to the two far sources, pointer to the two sizes.
 ; Both images land at the same VGA offset, one after the other.
+;-----------------------------------------------------------------------------
 VgaStorePlanes:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -526,8 +550,11 @@ VgaStorePlanes:
         pop bp
         retf
 
-; VgaCopyStrip: latched copy of a fixed strip out of the circular buffer.
+;-----------------------------------------------------------------------------
+; VgaCopyStrip                                                  0000:0360  MSC
+; latched copy of a fixed strip out of the circular buffer.
 ; Argument: destination offset.
+;-----------------------------------------------------------------------------
 VgaCopyStrip:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -595,8 +622,11 @@ VgaCopyStrip:
         pop bp
         retf
 
-; VgaCopyBlock: latched copy of one fixed-size VGA block.
+;-----------------------------------------------------------------------------
+; VgaCopyBlock                                                  0000:03D9  MSC
+; latched copy of one fixed-size VGA block.
 ; Arguments: source, destination.
+;-----------------------------------------------------------------------------
 VgaCopyBlock:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -640,8 +670,11 @@ VgaCopyBlock:
         pop bp
         retf
 
-; VgaCopyBytes: latched copy of a byte count inside VGA memory.
+;-----------------------------------------------------------------------------
+; VgaCopyBytes                                                  0000:041D  MSC
+; latched copy of a byte count inside VGA memory.
 ; Arguments: source, destination, count.
+;-----------------------------------------------------------------------------
 VgaCopyBytes:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -685,9 +718,12 @@ VgaCopyBytes:
         pop bp
         retf
 
-; VgaCopyRect: latched copy of a pitched rectangle to another pitched
+;-----------------------------------------------------------------------------
+; VgaCopyRect                                                   0000:0461  MSC
+; latched copy of a pitched rectangle to another pitched
 ; rectangle. Arguments: source base, destination base, column, row,
 ; width, height.
+;-----------------------------------------------------------------------------
 VgaCopyRect:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -755,10 +791,13 @@ VgaCopyRect:
 DGROUP		equ	0x45C9
 
 
-; MscStartup: Microsoft C startup. __astart jumps here after the overlay preload.
+;-----------------------------------------------------------------------------
+; MscStartup                                                    0000:04CA  MSC
+; Microsoft C startup. __astart jumps here after the overlay preload.
 ; DOS 2 or newer, then the DGROUP stack, the near heap, and a zeroed BSS.
 ; Then two startup stubs in seg005, InitRuntime, _main, and _exit.
 ; Returns only when DOS is older than 2 (far return into the PSP).
+;-----------------------------------------------------------------------------
 MscStartup:
         mov ah, 0x30                            ; DOS version: need 2 or newer
         int 0x21
@@ -852,8 +891,11 @@ MscStartup:
         call _exit                              ; _exit(status)
         ret
 
-; __cintDIV: integer divide-by-zero (interrupt 0). DS is set from the
+;-----------------------------------------------------------------------------
+; __cintDIV                                                     0000:058D  MSC
+; integer divide-by-zero (interrupt 0). DS is set from the
 ; DGROUP word below, then AmsgExit prints R6003 and aborts.
+;-----------------------------------------------------------------------------
 __cintDIV:
         mov ax, word [cs:CintdivDgroup]         ; DGROUP word after this routine
         mov ds, ax
@@ -881,9 +923,12 @@ CintdivDgroup:
         dw DGROUP
         db 0
 
-; InitRuntime: install the divide handler, inherit _C_FILE_INFO into _osfile,
+;-----------------------------------------------------------------------------
+; InitRuntime                                                   0000:05C2  MSC
+; install the divide handler, inherit _C_FILE_INFO into _osfile,
 ; mark device handles, and run the initializer table through _initterm.
 ; Far, no arguments. Returns to MscStartup.
+;-----------------------------------------------------------------------------
 InitRuntime:
         mov ax, 0x3500                          ; remember the original interrupt 0 vector
         int 0x21
@@ -986,24 +1031,33 @@ InitRuntime:
         call _initterm
         retf
 
-; _exit: C exit. Run atexit terminators, flush files, return to DOS.
+;-----------------------------------------------------------------------------
+; _exit                                                         0000:0687  MSC
+; C exit. Run atexit terminators, flush files, return to DOS.
 ; Argument: status. Does not return.
+;-----------------------------------------------------------------------------
 _exit:
         push bp                                 ; cx = 0: terminators, then DOS
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         db 0x33, 0xC9                           ; insn: xor cx, cx
         jmp ExitCommon
 
-; __exit: C _exit. Skip atexit, still flush and return to DOS.
+;-----------------------------------------------------------------------------
+; __exit                                                        0000:068E  MSC
+; C _exit. Skip atexit, still flush and return to DOS.
 ; Argument: status. Does not return.
+;-----------------------------------------------------------------------------
 __exit:
         push bp                                 ; cx = 1: no terminators, then DOS
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov cx, 1
         jmp ExitCommon
 
-; _cexit: C _cexit. Run atexit and flush, then return to the caller.
+;-----------------------------------------------------------------------------
+; _cexit                                                        0000:0696  MSC
+; C _cexit. Run atexit and flush, then return to the caller.
 ; Argument: status (ignored). Returns.
+;-----------------------------------------------------------------------------
 _cexit:
         push bp                                 ; cx = 0x100: terminators, then return
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1012,8 +1066,11 @@ _cexit:
         mov cx, 0x100
         jmp ExitCommon
 
-; __cexit: C _c_exit. Flush only, then return to the caller.
+;-----------------------------------------------------------------------------
+; __cexit                                                       0000:06A0  MSC
+; C _c_exit. Flush only, then return to the caller.
 ; Argument: status (ignored). Returns.
+;-----------------------------------------------------------------------------
 __cexit:
         push bp                                 ; cx = 0x101: no terminators, then return
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1068,8 +1125,11 @@ ExitCommon:
         pop bp
         retf
 
-; ExitRestore: put interrupt 0 back and drop the math error hook.
+;-----------------------------------------------------------------------------
+; ExitRestore                                                   0000:070A  MSC
+; put interrupt 0 back and drop the math error hook.
 ; Near, no arguments.
+;-----------------------------------------------------------------------------
 ExitRestore:
         mov cx, word [FpHookCount]              ; put interrupt 0 back
         jcxz .nomathexit
@@ -1094,8 +1154,11 @@ ExitRestore:
 .restored:
         ret
 
-; _initterm: call each far pointer in [si, di), from the top down.
+;-----------------------------------------------------------------------------
+; _initterm                                                     0000:0737  MSC
+; call each far pointer in [si, di), from the top down.
 ; A null pointer is skipped. Near. si = start, di = end.
+;-----------------------------------------------------------------------------
 _initterm:
         db 0x3B, 0xF7                           ; insn: cmp si, di: stop once di has walked down to si
         jae .none
@@ -1109,9 +1172,12 @@ _initterm:
 .none:
         ret
 
-; __chkstk: grow the stack by AX bytes. Far. On overflow, R6000 via
+;-----------------------------------------------------------------------------
+; __chkstk                                                      0000:074A  MSC
+; grow the stack by AX bytes. Far. On overflow, R6000 via
 ; AmsgExit, or the alternate handler if one was stored.
 ; The return address is popped and pushed again so SP moves under it.
+;-----------------------------------------------------------------------------
 __chkstk:
         pop cx                                  ; pop the far return, then drop SP by AX
         pop dx
@@ -1141,9 +1207,12 @@ __chkstk:
 ; Low-level C files, DOS calls, strings, and the runtime messages.
 
 
-; _printf: print to the standard output.
+;-----------------------------------------------------------------------------
+; _printf                                                       0000:076E  MSC
+; print to the standard output.
 ; Prepares that FILE, formats, then flushes.
 ; Argument: format, then the values. Result is the _output count.
+;-----------------------------------------------------------------------------
 _printf:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1175,8 +1244,11 @@ _printf:
         pop bp
         retf
 
-; _close: close a C file handle and clear its _osfile byte.
+;-----------------------------------------------------------------------------
+; _close                                                        0000:07AC  MSC
+; close a C file handle and clear its _osfile byte.
 ; Argument: handle. Returns 0, or an error through DosRet.
+;-----------------------------------------------------------------------------
 _close:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1194,8 +1266,11 @@ _close:
 .join:
         jmp near DosRet
 
-; _lseek: move a file position.
+;-----------------------------------------------------------------------------
+; _lseek                                                        0000:07CC  MSC
+; move a file position.
 ; Arguments: handle, offset low, offset high, origin. Result is the new position.
+;-----------------------------------------------------------------------------
 _lseek:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1250,8 +1325,11 @@ _lseek:
 .2:
         jmp near DosRetLong
 
-; _sopen: open a file with a sharing mode, then the same path as _open.
+;-----------------------------------------------------------------------------
+; _sopen                                                        0000:0846  MSC
+; open a file with a sharing mode, then the same path as _open.
 ; Arguments: path, access, share.
+;-----------------------------------------------------------------------------
 _sopen:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1265,8 +1343,11 @@ _sopen:
         mov word [bp+0xa], ax
         jmp short OpenBody
 
-; _open: open a file and record text or binary in _osfile.
+;-----------------------------------------------------------------------------
+; _open                                                         0000:0860  MSC
+; open a file and record text or binary in _osfile.
 ; Arguments: path, access flags.
+;-----------------------------------------------------------------------------
 _open:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1461,8 +1542,11 @@ OpenBody:
 .21:
         ret
 
-; _read: read bytes from a C file handle.
+;-----------------------------------------------------------------------------
+; _read                                                         0000:0A02  MSC
+; read bytes from a C file handle.
 ; Arguments: handle, buffer, count.
+;-----------------------------------------------------------------------------
 _read:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1578,8 +1662,11 @@ _read:
         jmp short .11
         db 0
 
-; _write: write bytes, expanding newlines when the handle is text.
+;-----------------------------------------------------------------------------
+; _write                                                        0000:0AEC  MSC
+; write bytes, expanding newlines when the handle is text.
 ; Arguments: handle, buffer, count.
+;-----------------------------------------------------------------------------
 _write:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1623,7 +1710,7 @@ _write:
         mov al, 0xa
         repne scasb
         jne short .12
-        call 0:0x1D8E
+        call 0:_stackavail
         cmp ax, 0xa8
         jbe short .14
         sub sp, 2
@@ -1788,8 +1875,11 @@ _write:
         retf
         db 0
 
-; _strcpy: copy a string, a word at a time once the destination is even.
+;-----------------------------------------------------------------------------
+; _strcpy                                                       0000:0C6C  MSC
+; copy a string, a word at a time once the destination is even.
 ; Arguments: destination, source. Preserves SI and DI.
+;-----------------------------------------------------------------------------
 _strcpy:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1819,8 +1909,11 @@ _strcpy:
         pop bp
         retf
 
-; _strlen: length of a string, not counting the zero.
+;-----------------------------------------------------------------------------
+; _strlen                                                       0000:0C9E  MSC
+; length of a string, not counting the zero.
 ; Argument: string. Result in AX.
+;-----------------------------------------------------------------------------
 _strlen:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1839,8 +1932,11 @@ _strlen:
         retf
         db 0
 
-; _strncpy: copy at most a count of bytes, then pad with zeros.
+;-----------------------------------------------------------------------------
+; _strncpy                                                      0000:0CBA  MSC
+; copy at most a count of bytes, then pad with zeros.
 ; Arguments: destination, source, count. Result is the destination.
+;-----------------------------------------------------------------------------
 _strncpy:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1870,12 +1966,19 @@ _strncpy:
         pop bp
         retf
 
-JumpAhead:
+;-----------------------------------------------------------------------------
+; _atoi                                                     0000:0CE2  MSC
+; Convert a decimal string to an int: jumps to _atol and keeps AX.
+;-----------------------------------------------------------------------------
+_atoi:
         jmp near _atol
         db 0
 
-; WriteStderr: write a C string to handle 2.
+;-----------------------------------------------------------------------------
+; WriteStderr                                                   0000:0CE6  MSC
+; write a C string to handle 2.
 ; Argument: string.
+;-----------------------------------------------------------------------------
 WriteStderr:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1944,6 +2047,10 @@ WriteStderr:
         retf
         db 144
 
+;-----------------------------------------------------------------------------
+; _sprintf                                                      0000:0D74  MSC
+; Builds a stand-in FILE and calls _output. Same shape as sprintf.
+;-----------------------------------------------------------------------------
 _sprintf:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1975,7 +2082,7 @@ _sprintf:
         push si
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         push ax
-        call 0:0x1710
+        call 0:_flsbuf
         add sp, 4
 .2:
         db 0x8B, 0xC7                           ; insn: mov ax, di
@@ -1985,8 +2092,11 @@ _sprintf:
         pop bp
         retf
 
-; _stricmp: compare two strings without regard to case.
+;-----------------------------------------------------------------------------
+; _stricmp                                                      0000:0DCE  MSC
+; compare two strings without regard to case.
 ; Arguments: two strings. Result is negative, zero, or positive.
+;-----------------------------------------------------------------------------
 _stricmp:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2025,8 +2135,11 @@ _stricmp:
         pop bp
         retf
 
-; StrIndexInSet: index in the first string of the first character that
+;-----------------------------------------------------------------------------
+; StrIndexInSet                                                 0000:0E10  MSC
+; index in the first string of the first character that
 ; also occurs in the second. Result in AX, or -1.
+;-----------------------------------------------------------------------------
 StrIndexInSet:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2078,8 +2191,11 @@ StrIndexInSet:
         pop bp
         retf
 
-; _abs: absolute value of a signed int.
+;-----------------------------------------------------------------------------
+; _abs                                                          0000:0E6A  MSC
+; absolute value of a signed int.
 ; Argument: value. Result in AX.
+;-----------------------------------------------------------------------------
 _abs:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2091,14 +2207,20 @@ _abs:
         retf
         db 144
 
-; _onexit: register a function and return its pointer.
+;-----------------------------------------------------------------------------
+; _onexit                                                       0000:0E78  MSC
+; register a function and return its pointer.
+;-----------------------------------------------------------------------------
 _onexit:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, 0xffff
         jmp short atexit.1
 
-; atexit: register a function. Returns 0, or nothing useful if the table is full.
+;-----------------------------------------------------------------------------
+; atexit                                                        0000:0E80  MSC
+; register a function. Returns 0, or nothing useful if the table is full.
+;-----------------------------------------------------------------------------
 atexit:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2121,6 +2243,12 @@ atexit:
         pop bp
         retf
 
+;-----------------------------------------------------------------------------
+; CallArg                                                       0000:0EAA  MSC
+; Call the far routine in the last argument once for each element of a near array
+; (array, count, element size, routine); does nothing for a count of 0 or 1. Probably the
+; swap or compare step of a library sort.
+;-----------------------------------------------------------------------------
 CallArg:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2162,7 +2290,7 @@ CallArg:
         mul cx
         jb short .6
         db 0x8B, 0xF0                           ; insn: mov si, ax
-        call 0:0x1D8E
+        call 0:_stackavail
         db 0x3B, 0xC6                           ; insn: cmp ax, si
         jb short .6
         push bp
@@ -2290,8 +2418,11 @@ CallArg:
         ret
         db 0
 
-; _srand: set the rand seed.
+;-----------------------------------------------------------------------------
+; _srand                                                        0000:1000  MSC
+; set the rand seed.
 ; Argument: seed.
+;-----------------------------------------------------------------------------
 _srand:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2302,7 +2433,10 @@ _srand:
         retf
         db 144
 
-; _rand: advance the Microsoft C seed and return the high 15 bits.
+;-----------------------------------------------------------------------------
+; _rand                                                         0000:1012  MSC
+; advance the Microsoft C seed and return the high 15 bits.
+;-----------------------------------------------------------------------------
 _rand:
         mov ax, 0x43fd
         mov dx, 3
@@ -2319,16 +2453,22 @@ _rand:
         and ah, 0x7f
         retf
 
-; _mkdir: create a directory. Shares the path call with _chdir.
+;-----------------------------------------------------------------------------
+; _mkdir                                                        0000:103A  MSC
+; create a directory. Shares the path call with _chdir.
 ; Argument: path.
+;-----------------------------------------------------------------------------
 _mkdir:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ah, 0x39
         jmp short ChdirPath
 
-; _chdir: change directory.
+;-----------------------------------------------------------------------------
+; _chdir                                                        0000:1041  MSC
+; change directory.
 ; Argument: path.
+;-----------------------------------------------------------------------------
 _chdir:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2341,8 +2481,11 @@ ChdirPath:
 ChdirErr:
         jmp near DosRet
 
-; _rmdir: remove a directory. A wildcard in the name becomes a distinct error.
+;-----------------------------------------------------------------------------
+; _rmdir                                                        0000:104E  MSC
+; remove a directory. A wildcard in the name becomes a distinct error.
 ; Argument: path.
+;-----------------------------------------------------------------------------
 _rmdir:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2370,8 +2513,11 @@ _rmdir:
         stc
         jmp short ChdirErr
 
-; _unlink: delete a file.
+;-----------------------------------------------------------------------------
+; _unlink                                                       0000:1076  MSC
+; delete a file.
 ; Argument: path.
+;-----------------------------------------------------------------------------
 _unlink:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2381,8 +2527,11 @@ _unlink:
         jmp near DosRet
         db 0
 
-; _dos_close: close a DOS handle.
+;-----------------------------------------------------------------------------
+; _dos_close                                                    0000:1084  MSC
+; close a DOS handle.
 ; Argument: handle.
+;-----------------------------------------------------------------------------
 _dos_close:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2392,16 +2541,22 @@ _dos_close:
         jmp near DosRetCode
         db 0
 
-; _dos_creatnew: create a file only if it does not exist.
+;-----------------------------------------------------------------------------
+; _dos_creatnew                                                 0000:1092  MSC
+; create a file only if it does not exist.
 ; Arguments: path, attribute, pointer that receives the handle.
+;-----------------------------------------------------------------------------
 _dos_creatnew:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov bh, 0x5b
         jmp short DosCreate
 
-; _dos_creat: create or truncate a file.
+;-----------------------------------------------------------------------------
+; _dos_creat                                                    0000:1099  MSC
+; create or truncate a file.
 ; Arguments: path, attribute, pointer that receives the handle.
+;-----------------------------------------------------------------------------
 _dos_creat:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2424,8 +2579,11 @@ DosCreate:
 .join:
         jmp near DosRetCode
 
-; _dos_findnext: continue a find.
+;-----------------------------------------------------------------------------
+; _dos_findnext                                                 0000:10BC  MSC
+; continue a find.
 ; Argument: the find buffer.
+;-----------------------------------------------------------------------------
 _dos_findnext:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2434,8 +2592,11 @@ _dos_findnext:
         mov dx, word [bp+6]
         jmp short FindCommon
 
-; _dos_findfirst: start a find.
+;-----------------------------------------------------------------------------
+; _dos_findfirst                                                0000:10C7  MSC
+; start a find.
 ; Arguments: name, attribute, find buffer.
+;-----------------------------------------------------------------------------
 _dos_findfirst:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2469,8 +2630,11 @@ FindCommon:
         pop ds
         jmp near DosRetCode
 
-; _dos_open: open a file and store the handle.
+;-----------------------------------------------------------------------------
+; _dos_open                                                     0000:10FA  MSC
+; open a file and store the handle.
 ; Arguments: path, access, pointer that receives the handle.
+;-----------------------------------------------------------------------------
 _dos_open:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2485,14 +2649,22 @@ _dos_open:
         jmp near DosRetCode
         db 0
 
+;-----------------------------------------------------------------------------
+; _dos_read                                                     0000:1112  MSC
+; Read into a far buffer: DOS function 3Fh through the body of _dos_write.
+; Arguments: handle, far buffer, count, far pointer to the bytes-read word.
+;-----------------------------------------------------------------------------
 _dos_read:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ah, 0x3f
         jmp short _dos_write.1
 
-; _dos_write: write from a far buffer.
+;-----------------------------------------------------------------------------
+; _dos_write                                                    0000:1119  MSC
+; write from a far buffer.
 ; Arguments: handle, far buffer, count.
+;-----------------------------------------------------------------------------
 _dos_write:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2514,12 +2686,19 @@ _dos_write:
 .2:
         jmp near DosRetCode
         db 0
+;-----------------------------------------------------------------------------
+; _disable                                                      0000:1142  MSC
+; Clear the interrupt flag (cli) and return.
+;-----------------------------------------------------------------------------
 _disable:
         cli
         retf
 
-; _dos_getdiskfree: free space on a drive.
+;-----------------------------------------------------------------------------
+; _dos_getdiskfree                                              0000:1144  MSC
+; free space on a drive.
 ; Arguments: drive, pointer to the result.
+;-----------------------------------------------------------------------------
 _dos_getdiskfree:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2543,12 +2722,19 @@ _dos_getdiskfree:
         pop bp
         retf
         db 0
+;-----------------------------------------------------------------------------
+; _enable                                                       0000:1170  MSC
+; Set the interrupt flag (sti) and return.
+;-----------------------------------------------------------------------------
 _enable:
         sti
         retf
 
-; _dos_gettime: time of day into hour, minute, second, and hundredths.
+;-----------------------------------------------------------------------------
+; _dos_gettime                                                  0000:1172  MSC
+; time of day into hour, minute, second, and hundredths.
 ; Argument: pointer to four bytes.
+;-----------------------------------------------------------------------------
 _dos_gettime:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2564,7 +2750,10 @@ _dos_gettime:
         retf
         db 0
 
-; __aFldiv: signed divide of two longs. Result in DX:AX. Pops 8 bytes.
+;-----------------------------------------------------------------------------
+; __aFldiv                                                      0000:118C  MSC
+; signed divide of two longs. Result in DX:AX. Pops 8 bytes.
+;-----------------------------------------------------------------------------
 __aFldiv:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2648,8 +2837,11 @@ __aFldiv:
         pop bp
         retf 8
 
-; __aFlmul: multiply two longs. DX:AX is the product.
+;-----------------------------------------------------------------------------
+; __aFlmul                                                      0000:1226  MSC
+; multiply two longs. DX:AX is the product.
 ; Arguments: low and high of each long. Pops 8 bytes.
+;-----------------------------------------------------------------------------
 __aFlmul:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2676,8 +2868,11 @@ __aFlmul:
         pop bp
         retf 8
 
-; __aFlshl: shift DX:AX left by CX.
+;-----------------------------------------------------------------------------
+; __aFlshl                                                      0000:1258  MSC
+; shift DX:AX left by CX.
 ; No frame. Result in DX:AX.
+;-----------------------------------------------------------------------------
 __aFlshl:
         db 0x32, 0xED                           ; insn: xor ch, ch
         jcxz .done
@@ -2689,7 +2884,10 @@ __aFlshl:
         retf
         db 0
 
-; __aFlsar: arithmetic shift of DX:AX right by CX.
+;-----------------------------------------------------------------------------
+; __aFlsar                                                      0000:1264  MSC
+; arithmetic shift of DX:AX right by CX.
+;-----------------------------------------------------------------------------
 __aFlsar:
         db 0x32, 0xED                           ; insn: xor ch, ch
         jcxz .done
@@ -2701,6 +2899,11 @@ __aFlsar:
         retf
         db 0
 
+;-----------------------------------------------------------------------------
+; LongShlAt                                                     0000:1270  MSC
+; Shift the long at a near pointer left by a count, in place (__aFlshl).
+; Arguments: pointer, count.
+;-----------------------------------------------------------------------------
 LongShlAt:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2718,6 +2921,11 @@ LongShlAt:
         retf 4
         db 0
 
+;-----------------------------------------------------------------------------
+; LongSarAt                                                     0000:128E  MSC
+; Shift the signed long at a near pointer right by a count, in place (__aFlsar).
+; Arguments: pointer, count.
+;-----------------------------------------------------------------------------
 LongSarAt:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2735,7 +2943,10 @@ LongSarAt:
         retf 4
         db 0
 
-; __aFlshr: logical shift of DX:AX right by CX.
+;-----------------------------------------------------------------------------
+; __aFlshr                                                      0000:12AC  MSC
+; logical shift of DX:AX right by CX.
+;-----------------------------------------------------------------------------
 __aFlshr:
         db 0x32, 0xED                           ; insn: xor ch, ch
         jcxz .done
@@ -2747,8 +2958,11 @@ __aFlshr:
         retf
         db 0
 
-; _fmemcpy: copy a count of bytes through far pointers.
+;-----------------------------------------------------------------------------
+; _fmemcpy                                                      0000:12B8  MSC
+; copy a count of bytes through far pointers.
 ; Arguments: destination, source, count.
+;-----------------------------------------------------------------------------
 _fmemcpy:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2804,6 +3018,10 @@ _fmemcpy:
         pop bp
         retf
 
+;-----------------------------------------------------------------------------
+; _fmemcmp                                                      0000:1316  MSC
+; Far compare. Name from the call shape.
+;-----------------------------------------------------------------------------
 _fmemcmp:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2845,6 +3063,10 @@ _fmemcmp:
         retf
         db 0
 
+;-----------------------------------------------------------------------------
+; _fmemchr                                                      0000:135C  MSC
+; Far scan for a byte.
+;-----------------------------------------------------------------------------
 _fmemchr:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2882,7 +3104,11 @@ _fmemchr:
         retf
         db 0
 
-RetOnly:
+;-----------------------------------------------------------------------------
+; _fstrlen                                                       0000:1398  MSC
+; Length of a far string, not counting the null. Argument: far string. Result in AX.
+;-----------------------------------------------------------------------------
+_fstrlen:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         db 0x8B, 0xD7                           ; insn: mov dx, di
@@ -2898,7 +3124,12 @@ RetOnly:
         retf
         db 0
 
-RetOnly2:
+;-----------------------------------------------------------------------------
+; _fstrcmp                                                      0000:13B0  MSC
+; Compare two far strings byte by byte. Arguments: far string 1, far string 2.
+; Result in AX: 0 when equal, else -1 or 1 by the first differing byte.
+;-----------------------------------------------------------------------------
+_fstrcmp:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         db 0x8B, 0xD7                           ; insn: mov dx, di
@@ -2923,7 +3154,11 @@ RetOnly2:
         retf
         db 0
 
-; _fstrcpy: length of a far string.
+;-----------------------------------------------------------------------------
+; _fstrcpy                                                      0000:13DA  MSC
+; Copy a far string, null included, a word at a time. Arguments: far destination,
+; far source. Result in DX:AX: the destination.
+;-----------------------------------------------------------------------------
 _fstrcpy:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2956,7 +3191,10 @@ _fstrcpy:
         pop bp
         retf
 
-; _fstrcat: append one far string to another.
+;-----------------------------------------------------------------------------
+; _fstrcat                                                      0000:1410  MSC
+; append one far string to another.
+;-----------------------------------------------------------------------------
 _fstrcat:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2994,8 +3232,11 @@ _fstrcat:
         pop bp
         retf
 
-; _fmemset: fill a far buffer.
+;-----------------------------------------------------------------------------
+; _fmemset                                                      0000:1456  MSC
+; fill a far buffer.
 ; Arguments: destination, byte, count.
+;-----------------------------------------------------------------------------
 _fmemset:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3036,6 +3277,11 @@ _fmemset:
         pop bp
         retf
 
+;-----------------------------------------------------------------------------
+; _fstrcspn                                                     0000:149E  MSC
+; Builds a 256-bit set of the second string and returns the index of the
+; first character of the first string in it (it was named _fstrcpy).
+;-----------------------------------------------------------------------------
 _fstrcspn:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3089,7 +3335,10 @@ _fstrcspn:
         pop bp
         retf
 
-; _fmemmove: copy far bytes, including when the ranges overlap.
+;-----------------------------------------------------------------------------
+; _fmemmove                                                     0000:14FA  MSC
+; copy far bytes, including when the ranges overlap.
+;-----------------------------------------------------------------------------
 _fmemmove:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3107,7 +3356,7 @@ _fmemmove:
         push si
         push es
         push di
-        call 0:0x1DF6
+        call 0:Mul16Diff
         mov cx, word [bp+0xe]
         db 0x0B, 0xD2                           ; insn: or dx, dx
         js short .5
@@ -3204,7 +3453,10 @@ _fmemmove:
         pop bp
         retf
 
-; EmulatedFloat: floating-point work done with the emulator interrupts.
+;-----------------------------------------------------------------------------
+; EmulatedFloat                                                 0000:15C4  MSC
+; floating-point work done with the emulator interrupts.
+;-----------------------------------------------------------------------------
 EmulatedFloat:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3238,7 +3490,10 @@ EmulatedFloat:
         retf
         db 0
 
-; CopyTemplate: copy twelve words from one near buffer to another.
+;-----------------------------------------------------------------------------
+; CopyTemplate                                                  0000:15F8  MSC
+; copy twelve words from one near buffer to another.
+;-----------------------------------------------------------------------------
 CopyTemplate:
         push si
         push di
@@ -3252,8 +3507,11 @@ CopyTemplate:
         pop si
         retf
 
-; __FF_MSGBANNER: print the runtime banner lines.
+;-----------------------------------------------------------------------------
+; __FF_MSGBANNER                                                0000:160C  MSC
+; print the runtime banner lines.
 ; No arguments.
+;-----------------------------------------------------------------------------
 __FF_MSGBANNER:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3273,13 +3531,19 @@ __FF_MSGBANNER:
         pop bp
         retf
 
-; FpFail: report R6002, floating-point support not loaded, and abort.
+;-----------------------------------------------------------------------------
+; FpFail                                                        0000:162E  MSC
+; report R6002, floating-point support not loaded, and abort.
+;-----------------------------------------------------------------------------
 FpFail:
         mov ax, 2
         jmp near AmsgExit
 
-; __nullcheck: checksum the first bytes of DGROUP.
+;-----------------------------------------------------------------------------
+; __nullcheck                                                   0000:1634  MSC
+; checksum the first bytes of DGROUP.
 ; If it does not match, report the null-pointer assignment.
+;-----------------------------------------------------------------------------
 __nullcheck:
         push si
         db 0x33, 0xF6                           ; insn: xor si, si
@@ -3303,8 +3567,11 @@ __nullcheck:
         pop si
         retf
 
-; __NMSG_TEXT: find the text for a runtime message number.
+;-----------------------------------------------------------------------------
+; __NMSG_TEXT                                                   0000:1658  MSC
+; find the text for a runtime message number.
 ; Argument: number. Result is the string, or 0.
+;-----------------------------------------------------------------------------
 __NMSG_TEXT:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3335,8 +3602,11 @@ __NMSG_TEXT:
         pop bp
         retf 2
 
-; __NMSG_WRITE: write one runtime message to handle 2.
+;-----------------------------------------------------------------------------
+; __NMSG_WRITE                                                  0000:1683  MSC
+; write one runtime message to handle 2.
 ; Argument: message number.
+;-----------------------------------------------------------------------------
 __NMSG_WRITE:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3367,7 +3637,10 @@ __NMSG_WRITE:
         retf 2
         db 0
 
-; DosRet: success returns 0. A carry returns -1 after mapping the DOS error.
+;-----------------------------------------------------------------------------
+; DosRet                                                        0000:16BA  MSC
+; success returns 0. A carry returns -1 after mapping the DOS error.
+;-----------------------------------------------------------------------------
 DosRet:
         jb short DosRetBad
 
@@ -3377,7 +3650,10 @@ DosRetZero:
         pop bp
         retf
 
-; DosRetCode: success returns 0. A carry maps the error and returns its low byte.
+;-----------------------------------------------------------------------------
+; DosRetCode                                                    0000:16C2  MSC
+; success returns 0. A carry maps the error and returns its low byte.
+;-----------------------------------------------------------------------------
 DosRetCode:
         jae short DosRetZero
         push ax
@@ -3388,7 +3664,10 @@ DosRetCode:
         pop bp
         retf
 
-; DosRetLong: success keeps DX:AX. A carry maps the error and returns -1.
+;-----------------------------------------------------------------------------
+; DosRetLong                                                    0000:16CF  MSC
+; success keeps DX:AX. A carry maps the error and returns -1.
+;-----------------------------------------------------------------------------
 DosRetLong:
         jae short DosRetLeave
 
@@ -3402,13 +3681,19 @@ DosRetLeave:
         pop bp
         retf
 
-; DosRetErrno: map the DOS error in AX and return.
+;-----------------------------------------------------------------------------
+; DosRetErrno                                                   0000:16DC  MSC
+; map the DOS error in AX and return.
+;-----------------------------------------------------------------------------
 DosRetErrno:
         db 0x32, 0xE4                           ; insn: xor ah, ah
         call DosMapErr
         retf
 
-; DosMapErr: store the DOS error in _doserrno and the C errno.
+;-----------------------------------------------------------------------------
+; DosMapErr                                                     0000:16E2  MSC
+; store the DOS error in _doserrno and the C errno.
+;-----------------------------------------------------------------------------
 DosMapErr:
         db 0xA2, 0x5B, 0x85                     ; insn: mov byte [_doserrno], al
         db 0x0A, 0xE4                           ; insn: or ah, ah
@@ -3441,7 +3726,10 @@ DosMapErr:
 ; Formatted output: flush, buffer, and _output.
 
 
-; _flsbuf: flush one FILE buffer. The FILE is the second argument.
+;-----------------------------------------------------------------------------
+; _flsbuf                                                       0000:1710  MSC
+; flush one FILE buffer. The FILE is the second argument.
+;-----------------------------------------------------------------------------
 _flsbuf:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3558,6 +3846,10 @@ _flsbuf:
         retf
         db 0
 
+;-----------------------------------------------------------------------------
+; _stbuf                                                        0000:17F4  MSC
+; Gives stdout or stderr a buffer when formatted output starts.
+;-----------------------------------------------------------------------------
 _stbuf:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3612,6 +3904,10 @@ _stbuf:
         pop bp
         ret
 
+;-----------------------------------------------------------------------------
+; _ftbuf                                                        0000:1867  MSC
+; Drops that temporary buffer after formatted output.
+;-----------------------------------------------------------------------------
 _ftbuf:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3645,6 +3941,11 @@ _ftbuf:
         ret
         db 13,25,24,25,44,25,96,25,140,25,148,25,189,25,239,25
 
+;-----------------------------------------------------------------------------
+; _output                                                       0000:18B6  MSC
+; Formats into a FILE. The switch before it handles flags, width, precision,
+; size, and the conversion.
+;-----------------------------------------------------------------------------
 _output:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -4265,14 +4566,37 @@ _output:
         db 0x8B, 0xE5                           ; insn: mov sp, bp
         pop bp
         retf
-        db 0,89,90,161,138,133,59,196,115,7,43,196,247,216,82,81
-        db 203,51,192,235,249
+        db 0
+
+;-----------------------------------------------------------------------------
+; _stackavail                                                   0000:1D8E  MSC
+; Bytes of stack left: SP minus StackLimit, or 0 when SP is already below it.
+; No arguments. Result in AX.
+;-----------------------------------------------------------------------------
+_stackavail:
+        pop cx                                  ; far return address
+        pop dx
+        mov ax, [StackLimit]
+        db 0x3B, 0xC4                           ; insn: cmp ax, sp
+        jae short .1                            ; at or past the limit: none left
+        db 0x2B, 0xC4                           ; insn: sub ax, sp
+        neg ax
+.2:
+        push dx
+        push cx
+        retf
+.1:
+        db 0x33, 0xC0                           ; insn: xor ax, ax
+        jmp short .2
 
 ; Number conversion, fflush, and memory moves.
 
 
-; _atol: read an optional sign and decimal digits into a long.
+;-----------------------------------------------------------------------------
+; _atol                                                         0000:1DA2  MSC
+; read an optional sign and decimal digits into a long.
 ; Argument: string. Result in DX:AX.
+;-----------------------------------------------------------------------------
 _atol:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -4327,6 +4651,10 @@ _atol:
         pop bp
         retf
 
+;-----------------------------------------------------------------------------
+; Mul16Diff                                                     0000:1DF6  MSC
+; (a-b) shifted left 4, plus c, minus d. Four arguments, result in DX:AX.
+;-----------------------------------------------------------------------------
 Mul16Diff:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -4349,6 +4677,10 @@ Mul16Diff:
         retf 8
         db 0
 
+;-----------------------------------------------------------------------------
+; ScanFloat                                                     0000:1E22  MSC
+; Classifies a character and looks for an exponent marker.
+;-----------------------------------------------------------------------------
 ScanFloat:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -4399,6 +4731,10 @@ ScanFloat:
         retf
         db 144
 
+;-----------------------------------------------------------------------------
+; ScanPoint                                                     0000:1E8A  MSC
+; Scans for a decimal point.
+;-----------------------------------------------------------------------------
 ScanPoint:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -4457,6 +4793,11 @@ ScanPoint:
         retf
         db 144
 
+;-----------------------------------------------------------------------------
+; FloatLoad                                                     0000:1EF8  MSC
+; Load a double through the floating-point emulator interrupts and test it; returns AX 1
+; or 0 from the compare. Most of the body is emulator escape bytes.
+;-----------------------------------------------------------------------------
 FloatLoad:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -4470,6 +4811,11 @@ FloatLoad:
         db 141,205,57,216,205,57,126,254,205,61,138,102,255,158,114,8
         db 184,1,0,139,229,93,203,144,43,192,139,229,93,203
 
+;-----------------------------------------------------------------------------
+; FormatFloat                                                   0000:1F26  MSC
+; Floating-point conversion for printf and scanf: the first argument picks the job
+; (1, 2 or a string to read with SkipSpace), then the value goes through the emulator.
+;-----------------------------------------------------------------------------
 FormatFloat:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -4521,6 +4867,11 @@ FormatFloat:
         pop bp
         retf
 
+;-----------------------------------------------------------------------------
+; FloatBuf                                                      0000:1F82  MSC
+; Write a value in %f style into the output buffer: sign, digits before and after the
+; point (precision from the argument), using PackArgs and WriteDigits.
+;-----------------------------------------------------------------------------
 FloatBuf:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -4609,7 +4960,7 @@ FloatBuf:
         add ax, word [bp+0xa]
         db 0x03, 0xC6                           ; insn: add ax, si
         push ax
-        call 0:0xC6C
+        call 0:_strcpy
         add sp, 4
         db 0x8B, 0xF0                           ; insn: mov si, ax
         cmp word [bp+0xc], 0
@@ -4668,6 +5019,11 @@ FloatBuf:
         retf
         db 144
 
+;-----------------------------------------------------------------------------
+; FloatToStr                                                    0000:20AC  MSC
+; %f conversion into the caller's buffer: FloatBuf with FloatMode set, so it reads the
+; digits already converted.
+;-----------------------------------------------------------------------------
 FloatToStr:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -4684,6 +5040,11 @@ FloatToStr:
         pop bp
         retf
 
+;-----------------------------------------------------------------------------
+; FloatWidth                                                    0000:20D0  MSC
+; Write a value in %e style into the output buffer: sign, one digit, the point, the
+; precision digits from FloatPrecision, then the exponent.
+;-----------------------------------------------------------------------------
 FloatWidth:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -4799,6 +5160,11 @@ FloatWidth:
         retf
         db 144
 
+;-----------------------------------------------------------------------------
+; FloatToSci                                                    0000:21C4  MSC
+; %e conversion into the caller's buffer: FloatWidth with FloatMode set, so it reads
+; the digits already converted.
+;-----------------------------------------------------------------------------
 FloatToSci:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -4815,6 +5181,11 @@ FloatToSci:
         retf
         db 144
 
+;-----------------------------------------------------------------------------
+; FormatOne                                                     0000:21E6  MSC
+; Format one floating-point argument for printf (%g): pack the double, then pick %e or
+; %f style from the exponent and FloatPrecision.
+;-----------------------------------------------------------------------------
 FormatOne:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -4894,6 +5265,11 @@ FormatOne:
         pop bp
         retf
 
+;-----------------------------------------------------------------------------
+; FormatExp                                                     0000:2298  MSC
+; Pick the floating-point style for a printf letter: e or E goes to the %e layout, f to
+; %f, anything else to %g.
+;-----------------------------------------------------------------------------
 FormatExp:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -4935,13 +5311,18 @@ FormatExp:
         pop bp
         retf
 
+;-----------------------------------------------------------------------------
+; FormatLen                                                     0000:22E8  MSC
+; Make room for a sign: when the flag argument is set, move the string up one byte
+; (_strlen, _memmove). Shares its tail with the floating-point error exit.
+;-----------------------------------------------------------------------------
 FormatLen:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         cmp word [bp+4], 0
         je short .1
         push word [bp+6]
-        call 0:0xC9E
+        call 0:_strlen
         db 0x8B, 0xE5                           ; insn: mov sp, bp
         inc ax
         push ax
@@ -4955,8 +5336,11 @@ FormatLen:
         pop bp
         ret 4
 
-; FpError: print a floating-point error and exit.
+;-----------------------------------------------------------------------------
+; FpError                                                       0000:2312  MSC
+; print a floating-point error and exit.
 ; The code in AX is adjusted and used as a runtime message.
+;-----------------------------------------------------------------------------
 FpError:
         pop dx
         pop dx
@@ -4966,7 +5350,7 @@ FpError:
         push ax
         sub ax, 0x81
         mov word [0x8a40], ax
-        call 0:0x160C
+        call 0:__FF_MSGBANNER
         mov bx, word [0x8a40]
         shl bx, 1
         mov cx, word [bx-0x75de]
@@ -4975,12 +5359,12 @@ FpError:
         db 0x9A, 0x92, 0x29, 0x00, 0x00         ; insn: call 0:WriteCounted
         mov ax, 0xfd
         push ax
-        call 0:0x1683
+        call 0:__NMSG_WRITE
         mov ax, word [0x8a40]
         add ax, strict word 0x65
         push ax
-        call 0:0x1683
-        call 0:0x687
+        call 0:__NMSG_WRITE
+        call 0:_exit
 
 FormatFixed:
         push bp
@@ -5016,6 +5400,11 @@ FormatFixed:
         retf
         db 144
 
+;-----------------------------------------------------------------------------
+; FormatPad                                                     0000:239A  MSC
+; Lay out %e digits in a buffer: sign, leading digit, point, the requested digits and the
+; exponent with its sign.
+;-----------------------------------------------------------------------------
 FormatPad:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5163,6 +5552,10 @@ FormatPad:
         pop bp
         retf
 
+;-----------------------------------------------------------------------------
+; FormatG                                                       0000:24E4  MSC
+; Convert a double to digits (HexConvert) and lay them out %f style (FormatCopy).
+;-----------------------------------------------------------------------------
 FormatG:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5194,6 +5587,11 @@ FormatG:
         pop bp
         retf
 
+;-----------------------------------------------------------------------------
+; FormatCopy                                                    0000:2522  MSC
+; Lay out %f digits in a buffer: sign, the digits before the point (or 0), the point and
+; the requested digits, padding with zeros.
+;-----------------------------------------------------------------------------
 FormatCopy:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5309,6 +5707,11 @@ FormatCopy:
         pop bp
         retf
 
+;-----------------------------------------------------------------------------
+; FormatDigits                                                  0000:2622  MSC
+; Convert a double to digits (HexConvert) with at least one digit of precision, then lay
+; them out %e style (FormatPad).
+;-----------------------------------------------------------------------------
 FormatDigits:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5362,6 +5765,10 @@ FormatDigits:
         pop bp
         retf
 
+;-----------------------------------------------------------------------------
+; FormatExp2                                                    0000:2690  MSC
+; The same choice as FormatExp for the second set of layout routines: e or E, f, else g.
+;-----------------------------------------------------------------------------
 FormatExp2:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5406,6 +5813,11 @@ FormatExp2:
         pop bp
         retf
 
+;-----------------------------------------------------------------------------
+; ConvertFloat                                                  0000:26E6  MSC
+; Probably the stream flush: write out the buffered bytes of the FILE at SI (_write), mark an error
+; in its flags when fewer were written, and reset the buffer.
+;-----------------------------------------------------------------------------
 ConvertFloat:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5436,7 +5848,10 @@ ConvertFloat:
         ret
         db 0
 
-; fflush: flush one FILE, or every open FILE when the argument is null.
+;-----------------------------------------------------------------------------
+; fflush                                                        0000:272A  MSC
+; flush one FILE, or every open FILE when the argument is null.
+;-----------------------------------------------------------------------------
 fflush:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5475,7 +5890,7 @@ fflush:
         mov cl, byte [si+7]
         db 0x2A, 0xED                           ; insn: sub ch, ch
         push cx
-        call 0:0xAEC
+        call 0:_write
         add sp, 6
         cmp word [bp-2], ax
         je short .2
@@ -5494,6 +5909,10 @@ fflush:
         retf
         db 184,1,0,80,232,1,0,203
 
+;-----------------------------------------------------------------------------
+; FlushAll                                                      0000:27A6  MSC
+; Walks the FILE table and fflushs each open one.
+;-----------------------------------------------------------------------------
 FlushAll:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5536,10 +5955,20 @@ FlushAll:
         ret 2
         db 144
 
+;-----------------------------------------------------------------------------
+; JmpFpConvert                                                  0000:27F2  MSC
+; Far jump to the floating-point convert routine that is still ahead in this
+; segment.
+;-----------------------------------------------------------------------------
 JmpFpConvert:
         jmp 0:FpConvert
         db 0
 
+;-----------------------------------------------------------------------------
+; SkipSpace                                                     0000:27F8  MSC
+; Skip blanks, tabs and newlines at the start of a string. Argument: string.
+; Result in AX: the first other character.
+;-----------------------------------------------------------------------------
 SkipSpace:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5559,11 +5988,11 @@ SkipSpace:
         push ax
         push ax
         push si
-        call 0:0xC9E
+        call 0:_strlen
         add sp, 2
         push ax
         push si
-        call 0:0x3592
+        call 0:FpScale
         add sp, 8
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         mov ax, 0x90a0
@@ -5583,6 +6012,11 @@ SkipSpace:
         pop bp
         retf
 
+;-----------------------------------------------------------------------------
+; WriteDigits                                                   0000:283E  MSC
+; Copy the digits of a converted number into a buffer behind a leading 0, rounding at
+; the requested precision and carrying into the 0 when it overflows.
+;-----------------------------------------------------------------------------
 WriteDigits:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5636,7 +6070,7 @@ WriteDigits:
         inc ax
         push ax
         push bx
-        call 0:0xC6C
+        call 0:_strcpy
         add sp, 4
 .9:
         pop si
@@ -5646,6 +6080,10 @@ WriteDigits:
         retf
         db 144
 
+;-----------------------------------------------------------------------------
+; StoreOne                                                      0000:28AE  MSC
+; Stores 1 through a far pointer and returns 0.
+;-----------------------------------------------------------------------------
 StoreOne:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5660,6 +6098,10 @@ StoreOne:
         pop bp
         retf 8
 
+;-----------------------------------------------------------------------------
+; StoreZero                                                     0000:28C5  MSC
+; Stores 0 through a far pointer.
+;-----------------------------------------------------------------------------
 StoreZero:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5674,6 +6116,10 @@ StoreZero:
         pop bp
         retf 4
 
+;-----------------------------------------------------------------------------
+; RetPop10                                                      0000:28DA  MSC
+; An empty Pascal-style routine: returns and drops 10 bytes of arguments.
+;-----------------------------------------------------------------------------
 RetPop10:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5681,6 +6127,10 @@ RetPop10:
         pop bp
         retf 0xa
 
+;-----------------------------------------------------------------------------
+; StoreWord                                                     0000:28E3  MSC
+; Stores a word through a far pointer.
+;-----------------------------------------------------------------------------
 StoreWord:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5695,6 +6145,10 @@ StoreWord:
         pop bp
         retf 6
 
+;-----------------------------------------------------------------------------
+; RetPop2                                                       0000:28F9  MSC
+; An empty Pascal-style routine: returns and drops 2 bytes of arguments.
+;-----------------------------------------------------------------------------
 RetPop2:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5702,6 +6156,11 @@ RetPop2:
         pop bp
         retf 2
 
+;-----------------------------------------------------------------------------
+; WriteFar                                                      0000:2902  MSC
+; Write a far buffer to a handle (DOS 40h) for the emulator's error output; Pascal style,
+; drops 12 bytes of arguments. Result: AX 0.
+;-----------------------------------------------------------------------------
 WriteFar:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5717,8 +6176,11 @@ WriteFar:
         pop bp
         retf 0xc
 
-; _memmove: copy bytes, including when the ranges overlap.
+;-----------------------------------------------------------------------------
+; _memmove                                                      0000:291C  MSC
+; copy bytes, including when the ranges overlap.
 ; Arguments: destination, source, count.
+;-----------------------------------------------------------------------------
 _memmove:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5763,8 +6225,11 @@ _memmove:
         pop bp
         retf
 
-; _memset: fill a count of bytes with one value.
+;-----------------------------------------------------------------------------
+; _memset                                                       0000:2964  MSC
+; fill a count of bytes with one value.
 ; Arguments: destination, byte, count.
+;-----------------------------------------------------------------------------
 _memset:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -5793,6 +6258,10 @@ _memset:
         retf
         db 0
 
+;-----------------------------------------------------------------------------
+; WriteCounted                                                  0000:2992  MSC
+; First byte is a count. Writes that many following bytes to handle 2.
+;-----------------------------------------------------------------------------
 WriteCounted:
         mov cl, byte [bx]
         db 0x2A, 0xED                           ; insn: sub ch, ch
@@ -5809,6 +6278,11 @@ WriteCounted:
         db 0,205,204,204,204,204,204,204,204,251,63,205,204,204,204,204
         db 204,204,204,204,204,251,63
 
+;-----------------------------------------------------------------------------
+; HexConvert                                                    0000:29C4  MSC
+; Split a double into sign, decimal exponent and digit string (the decimal conversion
+; behind %e, %f and %g), into a near result block.
+;-----------------------------------------------------------------------------
 HexConvert:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -6049,6 +6523,11 @@ HexConvert:
         pop bp
         ret 0x10
 
+;-----------------------------------------------------------------------------
+; PackArgs                                                      0000:2BD2  MSC
+; Copy the double on the stack into the emulator's conversion area, run the conversion
+; and copy its digit string and exponent into the result block.
+;-----------------------------------------------------------------------------
 PackArgs:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -6088,6 +6567,11 @@ PackArgs:
         pop bp
         retf
 
+;-----------------------------------------------------------------------------
+; FloatStatus                                                   0000:2C18  MSC
+; Pack a double through FpPack and test it with the emulator; probably returns its
+; class (zero, normal or infinite) for the conversion code.
+;-----------------------------------------------------------------------------
 FloatStatus:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -6131,7 +6615,10 @@ AdjustStack:
 ; Floating-point convert and the emulator helpers.
 
 
-; FpConvert: turn a floating value into an integer, or zero when it is out of range.
+;-----------------------------------------------------------------------------
+; FpConvert                                                     0000:2C5D  MSC
+; turn a floating value into an integer, or zero when it is out of range.
+;-----------------------------------------------------------------------------
 FpConvert:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -6435,6 +6922,10 @@ FpExec:
         db 80,131,34,24,78,75,101,98,253,131,143,175,6,148,125,17
         db 228,45,222,159,206,210,200,4,221,166,216,10
 
+;-----------------------------------------------------------------------------
+; FpDecode                                                      0000:30D0  MSC
+; Emulator helper reached after the first constant table.
+;-----------------------------------------------------------------------------
 FpDecode:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -6538,6 +7029,10 @@ FpDecode:
 .9:
         jmp near FpRound.13
 
+;-----------------------------------------------------------------------------
+; FpRound                                                       0000:31A5  MSC
+; Emulator helper.
+;-----------------------------------------------------------------------------
 FpRound:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -6706,6 +7201,10 @@ FpRound:
         jmp short .10
         db 0
 
+;-----------------------------------------------------------------------------
+; FpPack                                                        0000:332A  MSC
+; Emulator helper called while formatting a float.
+;-----------------------------------------------------------------------------
 FpPack:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -7018,6 +7517,10 @@ FpPack:
         mov word [si], ax
         jmp short .41
 
+;-----------------------------------------------------------------------------
+; FpScale                                                       0000:3592  MSC
+; Emulator helper that scales a value.
+;-----------------------------------------------------------------------------
 FpScale:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -7132,6 +7635,10 @@ FpPush:
 .10:
         ret
 
+;-----------------------------------------------------------------------------
+; FpPop                                                         0000:3664  MSC
+; Called by FpConvert when the first push does not fit.
+;-----------------------------------------------------------------------------
 FpPop:
         push cx
         push di
@@ -7308,6 +7815,10 @@ FpPop:
         db 83,208,224,138,224,208,224,208,224,2,196,50,228,3,216,205
         db 60,155,47,205,58,201,91,235,208,195,0
 
+;-----------------------------------------------------------------------------
+; FpFormat                                                      0000:391C  MSC
+; Walks a far digit string at the end of the emulator.
+;-----------------------------------------------------------------------------
 FpFormat:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -7396,6 +7907,10 @@ FpFormat:
         ret
         db 0
 
+;-----------------------------------------------------------------------------
+; FpCall                                                        0000:39D6  MSC
+; Called from FpScale.
+;-----------------------------------------------------------------------------
 FpCall:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp

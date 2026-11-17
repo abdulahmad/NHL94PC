@@ -5,18 +5,24 @@
 
 ; DGROUP words this segment uses. The bytes live in the near data, not here.
 
+;-----------------------------------------------------------------------------
+; BlankBit                                                    06E1:0000  94 PC
 ; Bit 0 of the video status port. AX is 0 or 1.
+;-----------------------------------------------------------------------------
 BlankBit:
         mov dx, 0x3da
         in al, dx
         and ax, 1
         retf
 
+;-----------------------------------------------------------------------------
+; MakeChain                                                   06E1:0008  94 PC
 ; Cap LargestFree at the dword at [bp+8], align it down to 16, and
 ; AllocBytes. The dword at [bp+0Ch], shifted down by 4, is subtracted
 ; from BlockEnd. BufCount below CCh calls seg022. Four 24h-byte records
 ; are named from near pointers, then [bp+6] more are linked through
 ; offset 1Ch. The near call stores its far result at ChainPtr.
+;-----------------------------------------------------------------------------
 MakeChain:
         enter 6, 0
         push di
@@ -970,6 +976,10 @@ UnlinkRec:
         pop di
         leave
         retf
+;-----------------------------------------------------------------------------
+; FindTrim                                                    06E1:09FC  94 PC
+; FindRec, then TrimAfter.
+;-----------------------------------------------------------------------------
 FindTrim:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1016,6 +1026,10 @@ TrimAfter:
         pop di
         leave
         retf
+;-----------------------------------------------------------------------------
+; DropOldest                                                  06E1:0A5E  94 PC
+; Unlinks the oldest record of the requested class and returns 1, or 0.
+;-----------------------------------------------------------------------------
 DropOldest:
         enter 0x12, 0
         push si
@@ -1113,6 +1127,10 @@ MovePtr:
         call MoveRec
         leave
         retf
+;-----------------------------------------------------------------------------
+; MoveFlag                                                    06E1:0B22  94 PC
+; FindRec, then MoveRec with the caller's flag word.
+;-----------------------------------------------------------------------------
 MoveFlag:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1301,6 +1319,11 @@ MoveRec:
 ; ChainPtr+4. A 12-byte name match returns that record. A miss returns
 ; AX 0. AxClear is the retf that returns AX 0.
 
+;-----------------------------------------------------------------------------
+; FindName                                                    06E1:0CBC  94 PC
+; Walks the chain for a 12-byte name. The far string is reduced to its tail
+; first.
+;-----------------------------------------------------------------------------
 FindName:
         enter 0xc, 0
         push di
@@ -1387,6 +1410,11 @@ NameBase:
         pop si
         leave
         retf
+;-----------------------------------------------------------------------------
+; CopyByName                                                  06E1:0D58  94 PC
+; Finds a named record, inserts another of the same size, and copies the
+; bytes.
+;-----------------------------------------------------------------------------
 CopyByName:
         enter 0x1c, 0
         push di
@@ -1743,6 +1771,10 @@ SlideDown:
 ; byte lacks bit 10h. FreeRec and AllocRec are the free list.
 ; RecSize, RecBase, RawBase, RecSpan, and NamePtr read one field.
 
+;-----------------------------------------------------------------------------
+; SlideUp                                                     06E1:10EA  94 PC
+; Slides a record with flag word 10h up into a gap. The move is CopyParas.
+;-----------------------------------------------------------------------------
 SlideUp:
         enter 0x2c, 0
         push di
@@ -1973,6 +2005,10 @@ SlideUp:
         pop di
         leave
         retf
+;-----------------------------------------------------------------------------
+; NoteLow                                                     06E1:1366  94 PC
+; If the largest gap starts below ChainPtr, store that address there.
+;-----------------------------------------------------------------------------
 NoteLow:
         enter 4, 0
         push cs
@@ -1994,6 +2030,10 @@ NoteLow:
 .2:
         leave
         ret
+;-----------------------------------------------------------------------------
+; LargestGap                                                  06E1:1396  94 PC
+; After SlideDown, the biggest hole between a record and the next one.
+;-----------------------------------------------------------------------------
 LargestGap:
         enter 0x14, 0
         push di
@@ -2108,6 +2148,10 @@ FreeRec:
         mov word [ChainPtr+0x12], es
         leave
         retf
+;-----------------------------------------------------------------------------
+; AllocRec                                                    06E1:14A8  94 PC
+; Pops a record off the free list. An empty list calls seg022.
+;-----------------------------------------------------------------------------
 AllocRec:
         enter 4, 0
         push si
@@ -2136,6 +2180,10 @@ AllocRec:
         pop si
         leave
         retf
+;-----------------------------------------------------------------------------
+; RecSize                                                     06E1:14EC  94 PC
+; FindRec, then the size dword at offset 10h.
+;-----------------------------------------------------------------------------
 RecSize:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2170,6 +2218,10 @@ RecBase:
         pop si
         leave
         retf
+;-----------------------------------------------------------------------------
+; RawBase                                                     06E1:1532  94 PC
+; The far pointer stored at the start of the record.
+;-----------------------------------------------------------------------------
 RawBase:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2187,6 +2239,10 @@ RecSpan:
         mov dx, word es:[bx + 0x16]
         leave
         retf
+;-----------------------------------------------------------------------------
+; NamePtr                                                     06E1:1552  94 PC
+; The caller's far pointer plus 4, the name field.
+;-----------------------------------------------------------------------------
 NamePtr:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp

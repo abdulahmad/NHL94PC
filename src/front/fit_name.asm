@@ -4,6 +4,10 @@
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; FitNameToWidth                                              0F89:0008  94 PC
+; "first last", else "F. last", then cut until it fits the width.
+;-----------------------------------------------------------------------------
 FitNameToWidth:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -72,7 +76,7 @@ FitNameToWidth:
 .4:
         push word [bp + 0x8]
         push si
-        call 0x0000:RetOnly
+        call 0x0000:_fstrlen
         add sp, 0x4
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         mov ax, [bp + 0x8]

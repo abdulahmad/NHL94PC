@@ -2,6 +2,10 @@
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; FindNearestColor                                            15F1:0002  94 PC
+; Searches the palette for the smallest squared RGB distance.
+;-----------------------------------------------------------------------------
 FindNearestColor:
         enter 0x30e, 0x0
         push dx

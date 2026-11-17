@@ -6,7 +6,7 @@
         retf
         nop
 ; Compare 9 bytes of the far string with the bytes at 402h.
-; A difference returns that pointer. A match calls RetOnly and
+; A difference returns that pointer. A match calls _fstrlen and
 ; returns one past its result.
 NineCmp:
         push bp
@@ -35,7 +35,7 @@ NineCmp:
         push ax
         push si
         db 0x8B, 0xF8                           ; insn: mov di, ax
-        call 0:RetOnly
+        call 0:_fstrlen
         add sp, 4
         db 0x03, 0xC6                           ; insn: add ax, si
         db 0x8B, 0xD7                           ; insn: mov dx, di
@@ -44,8 +44,11 @@ NineCmp:
         pop di
         leave
         retf
+;-----------------------------------------------------------------------------
+; ReadBe                                                      0838:0042  94 PC
 ; Fold the counted far bytes into a dword. Each new byte is
 ; added after the previous value has moved up 8 bits.
+;-----------------------------------------------------------------------------
 ReadBe:
         enter 4, 0
         push di
@@ -84,9 +87,12 @@ ReadBe:
         pop di
         leave
         retf
+;-----------------------------------------------------------------------------
+; TypeId                                                      0838:008E  94 PC
 ; A second byte of FBh selects a type code from the first byte.
 ; Otherwise the first four bytes are a big-endian dword, and 3F3h
 ; is its own code.
+;-----------------------------------------------------------------------------
 TypeId:
         enter 2, 0
         push di
@@ -355,6 +361,11 @@ TypeTab:
 ; two maps when the low map marks it. GetBits pulls that many bits
 ; from BitBuf, refilling from InPtr when fewer than 16 remain.
 
+;-----------------------------------------------------------------------------
+; ReadHead                                                    0838:0292  94 PC
+; NineCmp then TypeId. A type from 1 to 1Ch returns the following 3-byte
+; value.
+;-----------------------------------------------------------------------------
 ReadHead:
         enter 4, 0
         push di
@@ -409,6 +420,10 @@ ReadHead:
         pop di
         leave
         retf
+;-----------------------------------------------------------------------------
+; EmitByte                                                    0838:02FA  94 PC
+; Writes one byte through OutPtr, or expands it through MapHi and MapPair.
+;-----------------------------------------------------------------------------
 EmitByte:
         enter 2, 0
         push si
@@ -523,6 +538,10 @@ GetBits:
 ; 47FBh, fills the three maps on the stack, and emits the bytes.
 ; It returns with ret 8.
 
+;-----------------------------------------------------------------------------
+; ReadVar                                                     0838:03F2  94 PC
+; Reads a variable-length number from the bit stream.
+;-----------------------------------------------------------------------------
 ReadVar:
         enter 4, 0
         push si
@@ -819,6 +838,10 @@ Unpack:
         pop di
         leave
         retf
+;-----------------------------------------------------------------------------
+; Expand                                                      0838:072E  94 PC
+; Word 47FBh fills the three maps on the stack and emits the bytes. ret 8.
+;-----------------------------------------------------------------------------
 Expand:
         enter 0x30a, 0
         push di
@@ -1031,6 +1054,10 @@ Expand:
 ; result copies the header bytes themselves. LoadReport passes flag
 ; 1. LoadQuiet passes flag 0. Its near call finishes in seg005.
 
+;-----------------------------------------------------------------------------
+; AddCopy                                                     0838:095C  94 PC
+; Words 62FBh and 66FBh. Writes each input byte plus a running count. ret 8.
+;-----------------------------------------------------------------------------
 AddCopy:
         enter 0x10, 0
         push si

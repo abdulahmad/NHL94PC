@@ -1919,3 +1919,11 @@ g_E09D,VoiceListId,g_E09D,new,medium,voice list id byte,src/data/dgroup_bss.asm
 g_E11C,VoiceListEnd,g_E11C,new,medium,end of the voice lists,src/data/dgroup_bss.asm
 g_E11E,VoiceListEndSeg,g_E11E,new,medium,"end of the voice lists, segment",src/data/dgroup_bss.asm
 g_E120,VoiceListFlags,g_E120,new,medium,voice list flags,src/data/dgroup_bss.asm
+RandomRange,randomd0,RandomRange,94G middle94.asm,high,"same generator: seed*BB40E62Dh+1, result scaled to the range",src/pc/random.asm
+RandSeedLo,seed,RandSeedLo,94G ram94.asm,high,the seed randomd0 steps; the high word is seed+2,src/data/dgroup.asm
+CrowdLevel,Crowdlevel,CrowdLevel,94G ram94.asm,medium,crowd noise level the crowd update ramps,src/data/dgroup.asm
+LastSfx,lastsfx,LastSfx,94G ram94.asm,medium,last sound effect played,src/data/dgroup.asm
+JumpAhead,_atoi,JumpAhead,MSC,high,a near jump to _atol: atoi is atol in this model,src/lib/msc_runtime.asm
+RetOnly,_fstrlen,RetOnly,MSC,high,"repne scasb over a far string, returns the count without the null",src/lib/msc_runtime.asm
+RetOnly2,_fstrcmp,RetOnly2,MSC,high,"scans the second far string for its length, then repe cmpsb; returns -1, 0 or 1",src/lib/msc_runtime.asm
+seg000:1D8E,_stackavail,,MSC,high,"SP minus StackLimit, 0 when below it; was kept as bytes",src/lib/msc_runtime.asm

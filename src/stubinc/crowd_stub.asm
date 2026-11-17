@@ -2,7 +2,7 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
-RandomRange		equ	0x6
+randomd0		equ	0x6
 MidiControl		equ	0xA
 MidiPitchBend		equ	0x32
 MidiProgramNoteOn		equ	0x5A
@@ -15,7 +15,7 @@ SpeechBusy		equ	0x42A
 PlayPauseSample		equ	0x532
 JingleHandle		equ	0xA14
 JingleHandleHi		equ	0xA16
-CrowdLevel		equ	0xA18
+Crowdlevel		equ	0xA18
 CrowdTarget		equ	0xA1A
 CrowdFade		equ	0xA1C
 StartSong		equ	0xBC6
@@ -45,7 +45,7 @@ SayGoal		equ	0x2032
 SayOneMinuteLeft		equ	0x22C0
 OpenStudioSpeech		equ	0x2322
 OpenPlayByPlaySpeech		equ	0x2354
-LastSfx		equ	0x4A52
+lastsfx		equ	0x4A52
 CrowdSound		equ	0x4A54
 ArenaJingleSet		equ	0xB2CA
 BoxSaveX		equ	0xB2CC

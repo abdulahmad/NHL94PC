@@ -4,6 +4,11 @@
         db 0xF0, 0x01, 0xEE, 0x06, 0x07, 0x07, 0x29, 0x07, 0x6E, 0x07, 0x0B, 0x07, 0xDE, 0x01, 0x56, 0x02
         db 0x95, 0x02, 0x9A, 0x02, 0x83
 
+;-----------------------------------------------------------------------------
+; FpMath                                                        18B9:003B  MSC
+; Far entry: calls the function whose index is in BX through the word table
+; at offset 20h.
+;-----------------------------------------------------------------------------
 FpMath:
         sti
         or al, 0x77
@@ -15,6 +20,10 @@ FpMath:
 .1:
         retf
 
+;-----------------------------------------------------------------------------
+; FpMathBadIndex                                                18B9:004E  MSC
+; FpMath with an index above 12 returns -1.
+;-----------------------------------------------------------------------------
 FpMathBadIndex:
         or ax, strict word 0xffff
         db 0x8B, 0xD0                           ; insn: mov dx, ax
@@ -23,6 +32,11 @@ FpMathBadIndex:
 FpNo87Env:
         db 'NO87=', 0x0D, 0x0A
 
+;-----------------------------------------------------------------------------
+; FpInit                                                        18B9:005C  MSC
+; Function 0: reads NO87= from the environment, detects an 8087, hooks the
+; vectors.
+;-----------------------------------------------------------------------------
 FpInit:
         push ss
         push ds
@@ -185,6 +199,10 @@ FpInit:
         cbw
         ret
 
+;-----------------------------------------------------------------------------
+; FpTerm                                                        18B9:01AE  MSC
+; Function 2: restores the interrupt vectors.
+;-----------------------------------------------------------------------------
 FpTerm:
         cmp word [0x14], 0x0
         jnz short .2
@@ -200,6 +218,10 @@ FpTerm:
         call 0x0000:RetPop2
         ret
 
+;-----------------------------------------------------------------------------
+; FpReset                                                       18B9:01CF  MSC
+; Function 1: resets the emulated stack and clears exceptions.
+;-----------------------------------------------------------------------------
 FpReset:
         cmp byte [0x4], 0x0
         jz short .1
@@ -217,11 +239,19 @@ FpReset:
         mov [0x8], ax
         ret
 
+;-----------------------------------------------------------------------------
+; FpSetHandler                                                  18B9:01F0  MSC
+; Function 3: stores the far error handler.
+;-----------------------------------------------------------------------------
 FpSetHandler:
         mov [0x0], ax
         mov [0x2], dx
         ret
 
+;-----------------------------------------------------------------------------
+; FpHookVectors                                                 18B9:01F8  MSC
+; Saves INT 34h-3Eh and points them at the emulator or the patch handlers.
+;-----------------------------------------------------------------------------
 FpHookVectors:
         mov cx, 0xb
         mov ax, 0x3534
@@ -259,6 +289,10 @@ FpHookVectors:
         pop ds
         ret
 
+;-----------------------------------------------------------------------------
+; FpUnhookVectors                                               18B9:0240  MSC
+; Restores the saved INT 34h-3Eh vectors.
+;-----------------------------------------------------------------------------
 FpUnhookVectors:
         mov cx, 0xb
         mov ax, 0x2534
@@ -273,6 +307,10 @@ FpUnhookVectors:
         loop .1
         ret
 
+;-----------------------------------------------------------------------------
+; FpStackDepth                                                  18B9:0256  MSC
+; Function 10: number of used stack registers.
+;-----------------------------------------------------------------------------
 FpStackDepth:
         db 0x33, 0xD2                           ; insn: xor dx, dx
         cmp byte [0x4], 0x0
@@ -304,15 +342,27 @@ FpStackDepth:
         db 0x03, 0xC2                           ; insn: add ax, dx
         ret
 
+;-----------------------------------------------------------------------------
+; FpHave87                                                      18B9:0295  MSC
+; Function 11: 1 when an 8087 is present.
+;-----------------------------------------------------------------------------
 FpHave87:
         mov al, [0x4]
         cbw
         ret
 
+;-----------------------------------------------------------------------------
+; FpSetMode                                                     18B9:029A  MSC
+; Function 12: stores a mode word.
+;-----------------------------------------------------------------------------
 FpSetMode:
         mov [0xa4], ax
         ret
 
+;-----------------------------------------------------------------------------
+; FpSetC1                                                       18B9:029E  MSC
+; Sets status bit C1.
+;-----------------------------------------------------------------------------
 FpSetC1:
         or byte [0x17], 0x2
         cmp byte [0x4], 0x0
@@ -321,17 +371,33 @@ FpSetC1:
 .1:
         ret
 
+;-----------------------------------------------------------------------------
+; FpSetC2                                                       18B9:02AE  MSC
+; Sets status bit C2.
+;-----------------------------------------------------------------------------
 FpSetC2:
         or byte [0x17], 0x4
         ret
 
+;-----------------------------------------------------------------------------
+; FpIret                                                        18B9:02B4  MSC
+; A lone iret.
+;-----------------------------------------------------------------------------
 FpIret:
         iret
 
+;-----------------------------------------------------------------------------
+; Fp87ExceptionNext                                             18B9:02B5  MSC
+; Fp87Exception for the following instruction.
+;-----------------------------------------------------------------------------
 Fp87ExceptionNext:
         inc bx
         jmp short Fp87Exception.1
 
+;-----------------------------------------------------------------------------
+; Fp87Exception                                                 18B9:02B8  MSC
+; Coprocessor exception entry: saves the environment and enters FpException.
+;-----------------------------------------------------------------------------
 Fp87Exception:
         push ax
         push bp
@@ -353,6 +419,11 @@ Fp87Exception:
         mov [bp + 0x8], ax
         jmp short FpException.1
 
+;-----------------------------------------------------------------------------
+; FpException                                                   18B9:02DE  MSC
+; Classifies a pending exception, fixes the result or calls the error
+; handler.
+;-----------------------------------------------------------------------------
 FpException:
         push ax
         push bp
@@ -605,6 +676,10 @@ FpException:
         jmp short FpSkipEmptyRegs.1
         db 0x90
 
+;-----------------------------------------------------------------------------
+; FpSkipEmptyRegs                                               18B9:04EA  MSC
+; Steps past empty stack registers.
+;-----------------------------------------------------------------------------
 FpSkipEmptyRegs:
         ror bx, 1
         ror bx, 1
@@ -717,6 +792,10 @@ FpSkipEmptyRegs:
         and al, 0xfd
         jmp near FpException.2
 
+;-----------------------------------------------------------------------------
+; FpFixDenormal                                                 18B9:05D7  MSC
+; Renormalises a temporary real on the stack frame.
+;-----------------------------------------------------------------------------
 FpFixDenormal:
         wait
         fstp tword [bp + 0x12]
@@ -749,6 +828,10 @@ FpFixDenormal:
         mov [bp + 0x1a], cx
         jmp short .1
 
+;-----------------------------------------------------------------------------
+; FpCheckPrecision                                              18B9:0619  MSC
+; Precision exception check before FpException continues.
+;-----------------------------------------------------------------------------
 FpCheckPrecision:
         push ax
         mov ax, [bp + 0x8]
@@ -761,6 +844,10 @@ FpCheckPrecision:
 .1:
         jmp near FpException.2
 
+;-----------------------------------------------------------------------------
+; FpSignalOnce                                                  18B9:062F  MSC
+; Marks the exception and calls FpSignal once.
+;-----------------------------------------------------------------------------
 FpSignalOnce:
         test ah, 0x40
         jnz short FpSignal.3
@@ -858,6 +945,10 @@ FpSignal:
         pop ax
         iret
 
+;-----------------------------------------------------------------------------
+; FpLoadCw                                                      18B9:06EE  MSC
+; Function 4: sets the control word.
+;-----------------------------------------------------------------------------
 FpLoadCw:
         mov [0x6], ax
         and ax, 0xff3c
@@ -870,10 +961,18 @@ FpLoadCw:
         mov [0xa], ax
         ret
 
+;-----------------------------------------------------------------------------
+; FpGetCw                                                       18B9:0707  MSC
+; Function 5: returns the control word.
+;-----------------------------------------------------------------------------
 FpGetCw:
         mov ax, [0x6]
         ret
 
+;-----------------------------------------------------------------------------
+; FpGetStatus                                                   18B9:070B  MSC
+; Function 8: returns and accumulates the status word.
+;-----------------------------------------------------------------------------
 FpGetStatus:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         cmp al, [0x4]
@@ -889,6 +988,10 @@ FpGetStatus:
         mov [0x8], ax
         ret
 
+;-----------------------------------------------------------------------------
+; FpRoundInt                                                    18B9:0729  MSC
+; Function 6: rounds ST to an integer value (frndint).
+;-----------------------------------------------------------------------------
 FpRoundInt:
         and ax, 0xc00
         cmp byte [0x4], 0x0
@@ -920,6 +1023,10 @@ FpRoundInt:
         call FpCheckPending
         ret
 
+;-----------------------------------------------------------------------------
+; FpToLong                                                      18B9:076E  MSC
+; Function 7: converts ST to a long (fistp).
+;-----------------------------------------------------------------------------
 FpToLong:
         and ax, 0xc00
         cmp byte [0x4], 0x0
@@ -963,6 +1070,10 @@ FpToLong:
 .3:
         ret
 
+;-----------------------------------------------------------------------------
+; FpCheckPending                                                18B9:07D4  MSC
+; Raises unmasked exceptions after a conversion.
+;-----------------------------------------------------------------------------
 FpCheckPending:
         mov cx, [0x16]
         or [0x8], cx
@@ -979,6 +1090,10 @@ FpCheckPending:
         xchg ax, cx
         jmp near FpSignal.4
 
+;-----------------------------------------------------------------------------
+; FpPatchSegInt                                                 18B9:07FE  MSC
+; INT 3Ch with an 8087: patches a segment-override sequence into real code.
+;-----------------------------------------------------------------------------
 FpPatchSegInt:
         sti
         wait
@@ -1006,6 +1121,10 @@ FpPatchSegInt:
         mov bx, 0x1
         jmp short FpPatchInt.2
 
+;-----------------------------------------------------------------------------
+; FpPatchWaitInt                                                18B9:082B  MSC
+; INT 3Dh with an 8087: patches into nop, fwait.
+;-----------------------------------------------------------------------------
 FpPatchWaitInt:
         sti
         wait
@@ -1013,6 +1132,11 @@ FpPatchWaitInt:
         mov ax, 0xa23d
         jmp short FpPatchInt.1
 
+;-----------------------------------------------------------------------------
+; FpPatchInt                                                    18B9:0833  MSC
+; INT 34h-3Bh with an 8087: patches the INT into fwait plus the ESC opcode
+; and reruns it.
+;-----------------------------------------------------------------------------
 FpPatchInt:
         sti
         wait
@@ -1282,6 +1406,10 @@ FpConstantsJumpTable:
         dw FpEmuSegInt.2
         dw FpEmuSegInt.3
 
+;-----------------------------------------------------------------------------
+; FpEmuWaitInt                                                  18B9:0C28  MSC
+; INT 3Dh without an 8087: patches into mov ax,ax.
+;-----------------------------------------------------------------------------
 FpEmuWaitInt:
         push bp
         push ds
@@ -1302,6 +1430,10 @@ FpEmuWaitIntJumpTable:
         dw FpEmuSegInt.2
         dw FpEmuSegInt.4
 
+;-----------------------------------------------------------------------------
+; FpEmuSegInt                                                   18B9:0C45  MSC
+; INT 3Ch without an 8087: emulates an instruction with a segment override.
+;-----------------------------------------------------------------------------
 FpEmuSegInt:
         sti
         push ax
@@ -1342,6 +1474,10 @@ FpEmuSegInt:
         mov [bp + 0x2], es
         jmp short FpEmulate.1
 
+;-----------------------------------------------------------------------------
+; FpEmuSegDecode                                                18B9:0C85  MSC
+; Operand segment decode for FpEmuSegInt.
+;-----------------------------------------------------------------------------
 FpEmuSegDecode:
         db 0x8B, 0xD3                           ; insn: mov dx, bx
         db 0x8A, 0xD9                           ; insn: mov bl, cl
@@ -1351,6 +1487,10 @@ FpEmuSegDecode:
         mov cx, [di - 0x2]
         jmp [cs:bx + 0xc20]
 
+;-----------------------------------------------------------------------------
+; FpEmuSegIntAlt                                                18B9:0C98  MSC
+; Second segment-override emulation entry.
+;-----------------------------------------------------------------------------
 FpEmuSegIntAlt:
         cld
         push ax
@@ -1375,6 +1515,11 @@ FpEmuSegIntAlt:
         db 0x8B, 0xD3                           ; insn: mov dx, bx
         jmp short FpEmulate.1
 
+;-----------------------------------------------------------------------------
+; FpEmulate                                                     18B9:0CBC  MSC
+; INT 34h-3Bh without an 8087: decodes and emulates one coprocessor
+; instruction.
+;-----------------------------------------------------------------------------
 FpEmulate:
         sti
         push ax
@@ -1573,6 +1718,10 @@ FpEmulate:
         or word [0x16], 0x1
         jmp short FpEmuExit.1
 
+;-----------------------------------------------------------------------------
+; FpStackRoom                                                   18B9:0E35  MSC
+; Checks room on the emulated register stack.
+;-----------------------------------------------------------------------------
 FpStackRoom:
         mov si, [0x10]
         db 0x8B, 0xFE                           ; insn: mov di, si
@@ -1590,6 +1739,10 @@ FpStackRoom:
 .1:
         ret
 
+;-----------------------------------------------------------------------------
+; FpEmuSignal                                                   18B9:0E53  MSC
+; Leaves the emulator through FpSignal.
+;-----------------------------------------------------------------------------
 FpEmuSignal:
         call FpSetStackFault
         jmp short FpEmuExit.1
@@ -1606,6 +1759,10 @@ FpEmuSignal:
         pop es
         jmp near FpSignal.4
 
+;-----------------------------------------------------------------------------
+; FpEmuExit                                                     18B9:0E67  MSC
+; Restores registers and returns from the emulator interrupt.
+;-----------------------------------------------------------------------------
 FpEmuExit:
         pop bp
         add sp, 0x2
@@ -1632,6 +1789,10 @@ FpEmuExit:
         jnz short FpEmuSignal.1
         jmp [0xa7]
 
+;-----------------------------------------------------------------------------
+; FpEmuChain                                                    18B9:0E98  MSC
+; Emulates the next instruction too when it is another INT 34h-3Bh.
+;-----------------------------------------------------------------------------
 FpEmuChain:
         cmp byte [0xa6], 0xcd
         jnz short FpEmuExit
@@ -1654,6 +1815,10 @@ FpEmuChain:
         shl bx, 1
         jmp [cs:bx + 0x880]
 
+;-----------------------------------------------------------------------------
+; FpEmuChainEsc                                                 18B9:0ED1  MSC
+; Emulates the next instruction when it is a real ESC opcode.
+;-----------------------------------------------------------------------------
 FpEmuChainEsc:
         mov cl, [0xa6]
         cmp cl, 0x9b
@@ -1790,6 +1955,10 @@ FpEmuChainEsc:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         jmp near FpShiftRight.78
 
+;-----------------------------------------------------------------------------
+; FpSetStackFault                                               18B9:1009  MSC
+; Sets status bit 40h (stack fault).
+;-----------------------------------------------------------------------------
 FpSetStackFault:
         or word [0x16], 0x40
         ret
@@ -1799,17 +1968,29 @@ FpSetStackFault:
         jmp short FpAdd.1
         db 0x90
 
+;-----------------------------------------------------------------------------
+; FpSub                                                         18B9:1016  MSC
+; FpAdd with the sign of the source flipped.
+;-----------------------------------------------------------------------------
 FpSub:
         mov dx, 0x80
         jmp short FpAdd.1
         db 0x90
 
+;-----------------------------------------------------------------------------
+; FpMul                                                         18B9:101C  MSC
+; Arithmetic dispatch through the multiply table by operand types.
+;-----------------------------------------------------------------------------
 FpMul:
         db 0x33, 0xD2                           ; insn: xor dx, dx
         mov bx, 0x988
         jmp short FpAdd.2
         db 0x90
 
+;-----------------------------------------------------------------------------
+; FpDivRev                                                      18B9:1024  MSC
+; FpDiv with the operands swapped.
+;-----------------------------------------------------------------------------
 FpDivRev:
         db 0x33, 0xD2                           ; insn: xor dx, dx
         xchg si, di
@@ -1817,12 +1998,20 @@ FpDivRev:
         jmp short FpAdd.2
         db 0x90
 
+;-----------------------------------------------------------------------------
+; FpDiv                                                         18B9:102E  MSC
+; Arithmetic dispatch through the divide table by operand types.
+;-----------------------------------------------------------------------------
 FpDiv:
         db 0x33, 0xD2                           ; insn: xor dx, dx
         mov bx, 0x9a8
         jmp short FpAdd.2
         db 0x90
 
+;-----------------------------------------------------------------------------
+; FpAdd                                                         18B9:1036  MSC
+; Arithmetic dispatch through the add table by operand types.
+;-----------------------------------------------------------------------------
 FpAdd:
         db 0x33, 0xD2                           ; insn: xor dx, dx
 .1:
@@ -1888,6 +2077,10 @@ FpCopyConst:
         sub si, 0xc
         ret
 
+;-----------------------------------------------------------------------------
+; FpCopyToTemp                                                  18B9:10B1  MSC
+; FpCopyReg into the temporary at [96h].
+;-----------------------------------------------------------------------------
 FpCopyToTemp:
         mov di, [0x96]
         db 0x3B, 0xF7                           ; insn: cmp si, di
@@ -2366,6 +2559,10 @@ FpCopyReg:
         pop si
         jmp near FpDivMantissa.22
 
+;-----------------------------------------------------------------------------
+; FpDivMantissa                                                 18B9:1431  MSC
+; Long division of two mantissas.
+;-----------------------------------------------------------------------------
 FpDivMantissa:
         mov si, [0x9e]
         db 0x33, 0xFF                           ; insn: xor di, di
@@ -3355,6 +3552,10 @@ FpDivMantissa:
         stosw
         ret
 
+;-----------------------------------------------------------------------------
+; FpToInt32                                                     18B9:1C17  MSC
+; Converts ST to a 32-bit integer.
+;-----------------------------------------------------------------------------
 FpToInt32:
         mov si, [0x10]
         test byte [si + 0xb], 0x2
@@ -3452,6 +3653,10 @@ FpToInt32:
         stosw
         ret
 
+;-----------------------------------------------------------------------------
+; FpToInt64                                                     18B9:1CD9  MSC
+; Converts ST to a 64-bit integer.
+;-----------------------------------------------------------------------------
 FpToInt64:
         mov si, [0x10]
         test byte [si + 0xb], 0x2
@@ -3499,6 +3704,10 @@ FpToInt64:
         mov di, 0x8000
         jmp short .5
 
+;-----------------------------------------------------------------------------
+; FpNegate64                                                    18B9:1D3C  MSC
+; Negates a 64-bit value in DI:BP:BX:DX.
+;-----------------------------------------------------------------------------
 FpNegate64:
         not di
         not bp
@@ -3510,6 +3719,10 @@ FpNegate64:
         adc di, 0x0
         ret
 
+;-----------------------------------------------------------------------------
+; FpRndint                                                      18B9:1D4F  MSC
+; Frndint.
+;-----------------------------------------------------------------------------
 FpRndint:
         mov si, [0x10]
         mov cx, [si + 0x8]
@@ -3539,6 +3752,10 @@ FpRndint:
         mov byte [si + 0xb], 0x1
         jmp short .1
 
+;-----------------------------------------------------------------------------
+; FpNormalize                                                   18B9:1D92  MSC
+; Shifts the mantissa left until the top bit is set and adjusts the exponent.
+;-----------------------------------------------------------------------------
 FpNormalize:
         db 0x33, 0xC9                           ; insn: xor cx, cx
 .1:
@@ -3561,6 +3778,10 @@ FpNormalize:
         mov [si + 0x6], di
         ret
 
+;-----------------------------------------------------------------------------
+; FpShiftRight                                                  18B9:1DB9  MSC
+; Shifts a mantissa right for a given exponent.
+;-----------------------------------------------------------------------------
 FpShiftRight:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         sub cx, 0x3f
@@ -4165,6 +4386,10 @@ FpShiftRight:
         or ah, 0x1
         jmp short .94
 
+;-----------------------------------------------------------------------------
+; FpNormLoop                                                    18B9:2297  MSC
+; Repeats FpShiftLeft1 while needed.
+;-----------------------------------------------------------------------------
 FpNormLoop:
         test ah, 0x80
         jnz short .1
@@ -4175,6 +4400,10 @@ FpNormLoop:
 .1:
         ret
 
+;-----------------------------------------------------------------------------
+; FpShiftLeft1                                                  18B9:22A9  MSC
+; Shifts a mantissa left one bit.
+;-----------------------------------------------------------------------------
 FpShiftLeft1:
         shl dx, 1
         rcl cx, 1
@@ -4188,6 +4417,10 @@ FpShiftLeft1:
         mov word [0xa2], 0x1
         ret
 
+;-----------------------------------------------------------------------------
+; FpSubMantissa                                                 18B9:22C1  MSC
+; Subtracts mantissas; also the fsqrt entry.
+;-----------------------------------------------------------------------------
 FpSubMantissa:
         sub dx, [si]
         sbb cx, [si + 0x2]
@@ -4223,6 +4456,10 @@ FpSubMantissa:
 .6:
         ret
 
+;-----------------------------------------------------------------------------
+; FpSqrtCore                                                    18B9:2301  MSC
+; Square root of ST (halves the exponent).
+;-----------------------------------------------------------------------------
 FpSqrtCore:
         mov ax, [si + 0xa]
         test ax, 0x380
@@ -4295,6 +4532,10 @@ FpSqrtCore:
         db 0x8B, 0xF7                           ; insn: mov si, di
         ret
 
+;-----------------------------------------------------------------------------
+; FpLoadConst                                                   18B9:2399  MSC
+; Copies a constant into the work temporary at 8Ah.
+;-----------------------------------------------------------------------------
 FpLoadConst:
         push di
         mov di, 0x8a
@@ -4311,6 +4552,10 @@ FpLoadConst:
         db 0x3A, 0xED                           ; insn: cmp ch, ch
         jmp short FpCompare.2
 
+;-----------------------------------------------------------------------------
+; FpCompare                                                     18B9:23B2  MSC
+; Compares two temporary reals.
+;-----------------------------------------------------------------------------
 FpCompare:
         mov cx, cs
         mov ds, cx
@@ -4364,6 +4609,11 @@ FpCompare:
         mov ds, cx
         ret
 
+;-----------------------------------------------------------------------------
+; FpPolyRatio                                                   18B9:2411  MSC
+; Evaluates a polynomial ratio from a coefficient table in BX; also the fptan
+; entry.
+;-----------------------------------------------------------------------------
 FpPolyRatio:
         mov di, 0x7e
         call FpCopyReg
@@ -4445,6 +4695,10 @@ FpPolyRatio:
         call FpCopyReg
         ret
 
+;-----------------------------------------------------------------------------
+; FpSeriesA                                                     18B9:24AE  MSC
+; FpPolyRatio with the first table; also the fpatan entry.
+;-----------------------------------------------------------------------------
 FpSeriesA:
         mov bx, 0xaa8
         call FpPolyRatio
@@ -4465,6 +4719,10 @@ FpSeriesA:
         mov [0x10], si
         ret
 
+;-----------------------------------------------------------------------------
+; FpAtanCore                                                    18B9:24DD  MSC
+; Arctangent work for fpatan; also the f2xm1 entry.
+;-----------------------------------------------------------------------------
 FpAtanCore:
         mov [0x96], di
         call FpDivRev
@@ -4513,6 +4771,10 @@ FpAtanCore:
         call FpSeriesB
         ret
 
+;-----------------------------------------------------------------------------
+; FpSeriesB                                                     18B9:254B  MSC
+; FpPolyRatio with the second table; also the fyl2x entry.
+;-----------------------------------------------------------------------------
 FpSeriesB:
         mov bx, 0xb7c
         call FpPolyRatio
@@ -4543,6 +4805,10 @@ FpSeriesB:
         mov [0x10], si
         ret
 
+;-----------------------------------------------------------------------------
+; FpLog2Core                                                    18B9:2593  MSC
+; Base-2 logarithm work; also the fyl2xp1 entry.
+;-----------------------------------------------------------------------------
 FpLog2Core:
         push si
         db 0x8B, 0xF7                           ; insn: mov si, di
@@ -4623,6 +4889,10 @@ FpLog2Core:
         mov [0x10], si
         ret
 
+;-----------------------------------------------------------------------------
+; FpLogSeries                                                   18B9:2639  MSC
+; Logarithm series step.
+;-----------------------------------------------------------------------------
 FpLogSeries:
         push di
         mov di, 0x4a
@@ -4647,6 +4917,10 @@ FpLogSeries:
         ret
         db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 
+;-----------------------------------------------------------------------------
+; FpHookNmi                                                     18B9:267A  MSC
+; Hooks INT 2 (coprocessor NMI) and INT 23h.
+;-----------------------------------------------------------------------------
 FpHookNmi:
         push ds
         push cs
@@ -4668,6 +4942,10 @@ FpHookNmi:
         pop ds
         ret
 
+;-----------------------------------------------------------------------------
+; FpUnhookNmi                                                   18B9:26A9  MSC
+; Restores INT 2.
+;-----------------------------------------------------------------------------
 FpUnhookNmi:
         push ds
         push ax
@@ -4680,6 +4958,10 @@ FpUnhookNmi:
         pop ds
         ret
 
+;-----------------------------------------------------------------------------
+; FpCtrlBreak                                                   18B9:26BA  MSC
+; INT 23h handler: restores INT 2 and chains to the old handler.
+;-----------------------------------------------------------------------------
 FpCtrlBreak:
         push ax
         push dx
@@ -4694,6 +4976,10 @@ FpCtrlBreak:
         jmp far [cs:0x2676]
         db 0x90
 
+;-----------------------------------------------------------------------------
+; FpNmiHandler                                                  18B9:26D3  MSC
+; INT 2 handler: an 8087 exception goes to FpException, anything else chains.
+;-----------------------------------------------------------------------------
 FpNmiHandler:
         fnstsw [cs:0x2670]
         push cx

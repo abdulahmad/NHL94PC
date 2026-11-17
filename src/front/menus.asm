@@ -6,6 +6,10 @@
         mov [KeysEnabled], ax
         retf
 
+;-----------------------------------------------------------------------------
+; DrawMenuBar                                                 0FA0:000E  94 PC
+; Menu titles in boxes across the top line.
+;-----------------------------------------------------------------------------
 DrawMenuBar:
         enter 0x8, 0x0
         push di
@@ -68,6 +72,10 @@ DrawMenuBar:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; DrawMenuPanel                                               0FA0:00A4  94 PC
+; An open menu's items.
+;-----------------------------------------------------------------------------
 DrawMenuPanel:
         enter 0x10, 0x0
         push di
@@ -182,6 +190,10 @@ DrawMenuPanel:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; DrawFrameBox                                                0FA0:01BA  94 PC
+; Filled rectangle with a light and a dark edge.
+;-----------------------------------------------------------------------------
 DrawFrameBox:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -245,6 +257,10 @@ DrawFrameBox:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; DrawTextFar                                                 0FA0:0246  94 PC
+; Copies a far string to the stack and calls DrawText.
+;-----------------------------------------------------------------------------
 DrawTextFar:
         enter 0x50, 0x0
         push di
@@ -280,6 +296,10 @@ DrawTextFar:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; DrawTextFar2                                                0FA0:028E  94 PC
+; The same with the second text routine.
+;-----------------------------------------------------------------------------
 DrawTextFar2:
         enter 0x50, 0x0
         push di
@@ -315,6 +335,10 @@ DrawTextFar2:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; DrawMenuItem                                                0FA0:02D6  94 PC
+; One item in the normal colour.
+;-----------------------------------------------------------------------------
 DrawMenuItem:
         enter 0x4, 0x0
         push di
@@ -379,6 +403,10 @@ DrawMenuItem:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; DrawMenuItemHilite                                          0FA0:036A  94 PC
+; One item in the highlight colour.
+;-----------------------------------------------------------------------------
 DrawMenuItemHilite:
         enter 0x4, 0x0
         push di
@@ -443,6 +471,10 @@ DrawMenuItemHilite:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; MenuHitTest                                                 0FA0:03FE  94 PC
+; Menu and item under a point.
+;-----------------------------------------------------------------------------
 MenuHitTest:
         enter 0x10, 0x0
         push di

@@ -6,6 +6,11 @@
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; PollInputEvents                                             093A:0008  94 PC
+; Every 5th call reads mouse, sticks and keys per the device bits and queues
+; an 8-byte event (32 entries).
+;-----------------------------------------------------------------------------
 PollInputEvents:
         enter 0x8, 0x0
         push di
@@ -108,6 +113,11 @@ PollInputEvents:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; ReadMouseEvent                                              093A:00E6  94 PC
+; MouseRead, compares with the last buttons and position, fills the event,
+; MouseMove.
+;-----------------------------------------------------------------------------
 ReadMouseEvent:
         enter 0x6, 0x0
         lea ax, [bp - 0x2]
@@ -166,6 +176,10 @@ ReadMouseEvent:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; ReadStickEvent                                              093A:0174  94 PC
+; PollSticks bits to an event (fire edge and direction).
+;-----------------------------------------------------------------------------
 ReadStickEvent:
         enter 0x2, 0x0
         push si
@@ -210,6 +224,11 @@ ReadStickEvent:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ReadKeyEvent                                                093A:01DE  94 PC
+; Keypad/arrow scan codes to direction bits, Space/Esc/Enter to buttons,
+; KeyJump.
+;-----------------------------------------------------------------------------
 ReadKeyEvent:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp

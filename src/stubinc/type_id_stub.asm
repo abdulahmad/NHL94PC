@@ -6,7 +6,7 @@ CopyFar		equ	0x276
 FatalError		equ	0x3E4
 LongShlAt		equ	0x1270
 _fmemchr		equ	0x135C
-RetOnly		equ	0x1398
+_fstrlen		equ	0x1398
 MapLo		equ	0x8ED6
 MapHi		equ	0x8ED8
 OutPtr		equ	0x8EDA

@@ -7,12 +7,20 @@ ReadPackedSizeTail:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; InsertRecWrap0                                              14DB:000C  94 PC
+; InsertRec with mode 0.
+;-----------------------------------------------------------------------------
 InsertRecWrap0:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         db 0x33, 0xC0                           ; insn: xor ax, ax
         jmp short InsertRecWrap.1
 
+;-----------------------------------------------------------------------------
+; InsertRecWrap                                               14DB:0013  94 PC
+; InsertRec with mode 1.
+;-----------------------------------------------------------------------------
 InsertRecWrap:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -28,18 +36,30 @@ InsertRecWrap:
         pop bp
         retf
 
+;-----------------------------------------------------------------------------
+; AllocRecData                                                14DB:0030  94 PC
+; InsertRec mode 1, returns the record's data pointer.
+;-----------------------------------------------------------------------------
 AllocRecData:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, 0x1
         jmp short AllocRecDataMode.1
 
+;-----------------------------------------------------------------------------
+; AllocRecData0                                               14DB:0038  94 PC
+; InsertRec mode 0, returns the record's data pointer.
+;-----------------------------------------------------------------------------
 AllocRecData0:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         db 0x33, 0xC0                           ; insn: xor ax, ax
         jmp short AllocRecDataMode.1
 
+;-----------------------------------------------------------------------------
+; AllocRecDataMode                                            14DB:003F  94 PC
+; InsertRec with explicit mode, returns the data pointer.
+;-----------------------------------------------------------------------------
 AllocRecDataMode:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -62,12 +82,20 @@ AllocRecDataMode:
         pop bp
         retf
 
+;-----------------------------------------------------------------------------
+; ResizeRec0                                                  14DB:006B  94 PC
+; ResizeRec with mode 0.
+;-----------------------------------------------------------------------------
 ResizeRec0:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         db 0x33, 0xC0                           ; insn: xor ax, ax
         jmp short ResizeRec1.1
 
+;-----------------------------------------------------------------------------
+; ResizeRec1                                                  14DB:0072  94 PC
+; ResizeRec with mode 1.
+;-----------------------------------------------------------------------------
 ResizeRec1:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -84,6 +112,10 @@ ResizeRec1:
         pop bp
         retf
 
+;-----------------------------------------------------------------------------
+; ResizeRecByName                                             14DB:0092  94 PC
+; FindRec then ResizeRec, mode 1.
+;-----------------------------------------------------------------------------
 ResizeRecByName:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -91,6 +123,10 @@ ResizeRecByName:
         mov ax, 0x1
         jmp short ResizeRecByNameMode.1
 
+;-----------------------------------------------------------------------------
+; ResizeRecByName0                                            14DB:009D  94 PC
+; FindRec then ResizeRec, mode 0.
+;-----------------------------------------------------------------------------
 ResizeRecByName0:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -98,6 +134,10 @@ ResizeRecByName0:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         jmp short ResizeRecByNameMode.1
 
+;-----------------------------------------------------------------------------
+; ResizeRecByNameMode                                         14DB:00A7  94 PC
+; FindRec then ResizeRec, explicit mode.
+;-----------------------------------------------------------------------------
 ResizeRecByNameMode:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -121,6 +161,10 @@ ResizeRecByNameMode:
         pop bp
         retf
 
+;-----------------------------------------------------------------------------
+; InitHeap                                                    14DB:00DB  94 PC
+; Checks for a 286 (fatal error otherwise) then MakeChain.
+;-----------------------------------------------------------------------------
 InitHeap:
         db 0x8B, 0xDC                           ; insn: mov bx, sp
         db 0x33, 0xC0                           ; insn: xor ax, ax
@@ -142,6 +186,10 @@ InitHeap:
         add sp, 0xa
         retf
 
+;-----------------------------------------------------------------------------
+; InitHeapArgs                                                14DB:0107  94 PC
+; InitHeap with caller arguments.
+;-----------------------------------------------------------------------------
 InitHeapArgs:
         db 0x8B, 0xDC                           ; insn: mov bx, sp
         db 0x33, 0xC0                           ; insn: xor ax, ax

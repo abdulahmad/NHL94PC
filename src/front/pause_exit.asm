@@ -2,6 +2,10 @@
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; SaveBoxUnder                                                1570:0002  94 PC
+; GetBlockAt from the shown page.
+;-----------------------------------------------------------------------------
 SaveBoxUnder:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -16,6 +20,10 @@ SaveBoxUnder:
         ret 0x8
         db 0x90
 
+;-----------------------------------------------------------------------------
+; RestoreBoxUnder                                             1570:0024  94 PC
+; DrawRawAt back to the shown page.
+;-----------------------------------------------------------------------------
 RestoreBoxUnder:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -30,6 +38,10 @@ RestoreBoxUnder:
         ret 0x8
         db 0x90
 
+;-----------------------------------------------------------------------------
+; AskYesNoBox                                                 1570:0046  94 PC
+; Centred box with a message, waits for Y or N.
+;-----------------------------------------------------------------------------
 AskYesNoBox:
         enter 0x5e, 0x0
         push di
@@ -198,6 +210,10 @@ AskYesNoBox:
         leave
         ret 0xc
 
+;-----------------------------------------------------------------------------
+; AskExitToDos                                                1570:0224  94 PC
+; AskYesNoBox with "Exit to DOS (Y/N)".
+;-----------------------------------------------------------------------------
 AskExitToDos:
         push str_ExitToDosYN
         push 0x50
@@ -213,6 +229,10 @@ AskExitToDos:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; PauseBox                                                    1570:0240  94 PC
+; Centred box with a message until a key or time-out.
+;-----------------------------------------------------------------------------
 PauseBox:
         enter 0x58, 0x0
         push di
@@ -310,6 +330,10 @@ PauseBox:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ShowPausedBox                                               1570:0352  94 PC
+; PauseBox with "Pause: press any key to".
+;-----------------------------------------------------------------------------
 ShowPausedBox:
         push str_PausePressAnyKeyTo
         push 0x10
