@@ -65,7 +65,7 @@ KeysToPad:
 	jz	short .8
 	or	si, 0xa
 .8:
-	mov	al, [si + g_0530]
+	mov	al, [si + KeyPadMap]
 	cbw
 	db	0x8B, 0xF0		; mov si, ax
 	push	0x52
@@ -138,7 +138,7 @@ StickToPad:
 	mov	di, [bp + 0x6]
 	db	0x8B, 0xDF		; mov bx, di
 	shl	bx, 1
-	cmp	word [bx + g_051E], 0x0
+	cmp	word [bx + StickPresent], 0x0
 	jnz	short .1
 	mov	ax, 0x8
 	pop	si
@@ -149,16 +149,16 @@ StickToPad:
 	db	0x0B, 0xFF		; or di, di
 	jz	short .2
 	mov	cl, 0x8
-	mov	si, [g_B06A]
+	mov	si, [PadStatePtr]
 	sar	si, cl
 	jmp	short .3
 .2:
-	mov	si, [g_B06A]
+	mov	si, [PadStatePtr]
 	and	si, 0xff
 .3:
 	db	0x8B, 0xDE		; mov bx, si
 	and	bx, 0xf
-	mov	al, [bx + g_0530]
+	mov	al, [bx + KeyPadMap]
 	cbw
 	db	0x8B, 0xD0		; mov dx, ax
 	db	0x8B, 0xC6		; mov ax, si
@@ -192,7 +192,7 @@ StickToPad:
 MouseToPad:
 	push	di
 	push	si
-	call	far [g_6418]
+	call	far [MousePosFn]
 	mov	ax, [MouseX]
 	sub	ax, 0xa0
 	mov	dx, [MouseX]
@@ -263,13 +263,13 @@ ReadPadDevice:
 	db	0x8B, 0xEC		; mov bp, sp
 	push	si
 	mov	si, [bp + 0x6]
-	cmp	byte [si + g_052C], 0x8
+	cmp	byte [si + PadStates], 0x8
 	jnz	short .1
 	push	cs
 	call	KeysToPad
 	jmp	short .6
 .1:
-	cmp	byte [si + g_052C], 0x2
+	cmp	byte [si + PadStates], 0x2
 	jnz	short .3
 	push	0x0
 .2:
@@ -278,13 +278,13 @@ ReadPadDevice:
 	add	sp, 0x2
 	jmp	short .6
 .3:
-	cmp	byte [si + g_052C], 0x4
+	cmp	byte [si + PadStates], 0x4
 	jnz	short .4
 	push	0x1
 	jmp	short .2
 	db	0x90
 .4:
-	cmp	byte [si + g_052C], 0x1
+	cmp	byte [si + PadStates], 0x1
 	jnz	short .5
 	push	cs
 	call	MouseToPad
@@ -436,23 +436,23 @@ ReadHotKey:
 	jz	short .16
 	mov	byte [bp - 0x1], 0x13
 .16:
-	cmp	byte [g_052E], 0x0
+	cmp	byte [HotKeyPending], 0x0
 	jz	short .18
 	mov	al, [bp - 0x1]
 	cbw
-	mov	cl, [g_052E]
+	mov	cl, [HotKeyPending]
 	db	0x2A, 0xED		; sub ch, ch
 	db	0x3B, 0xC1		; cmp ax, cx
 	jnz	short .17
 	mov	[bp - 0x1], ch
 	jmp	short .19
 .17:
-	mov	byte [g_052E], 0x0
+	mov	byte [HotKeyPending], 0x0
 	jmp	short .19
 	db	0x90
 .18:
 	mov	al, [bp - 0x1]
-	mov	[g_052E], al
+	mov	[HotKeyPending], al
 .19:
 	cmp	byte [bp - 0x1], 0x0
 	jz	short .20
@@ -471,34 +471,34 @@ PadTimerTick:
 	jnz	short .1
 	db	0xE9, 0x8D, 0x00		; jmp 0x498
 .1:
-	cmp	word [g_0524], 0x0
+	cmp	word [PadRepeatOn], 0x0
 	jnz	short .2
 	db	0xE9, 0x83, 0x00		; jmp 0x498
 .2:
-	cmp	word [g_0522], 0x3e8
+	cmp	word [PadTickCount], 0x3e8
 	jnl	short .3
-	inc	word [g_0522]
+	inc	word [PadTickCount]
 .3:
-	mov	ax, [g_052A]
-	dec	word [g_052A]
+	mov	ax, [PadRepeatTimer]
+	dec	word [PadRepeatTimer]
 	db	0x0B, 0xC0		; or ax, ax
 	db	0x75, 0x6C		; jnz 0x498
-	mov	word [g_052A], 0x4
-	cmp	word [g_0528], 0x32
+	mov	word [PadRepeatTimer], 0x4
+	cmp	word [PadRepeatDelay], 0x32
 	db	0x7D, 0x5F		; jnl 0x498
-	mov	ax, [g_0528]
-	add	ax, [g_0526]
+	mov	ax, [PadRepeatDelay]
+	add	ax, [PadRepeatStep]
 	mov	cx, 0x32
 	cwd
 	idiv	cx
 	db	0x8B, 0xF2		; mov si, dx
-	test	byte [g_052C], 0x6
+	test	byte [PadStates], 0x6
 	jnz	short .4
-	test	byte [g_052D], 0x6
+	test	byte [PadStates2], 0x6
 	jz	short .5
 .4:
 	call	0x03A3:PollSticks
-	mov	[g_B06A], ax
+	mov	[PadStatePtr], ax
 .5:
 	db	0x8B, 0xC6		; mov ax, si
 	shl	si, 1

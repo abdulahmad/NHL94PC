@@ -8,16 +8,16 @@ CrowdNoiseUpdate:
 	enter	0x2, 0x0
 	push	di
 	push	si
-	test	byte [g_01B6], 0x80
+	test	byte [CrowdState], 0x80
 	jnz	short .1
 	jmp	near .23
 .1:
-	test	byte [g_01C6], 0xa
+	test	byte [SoundOptions], 0xa
 	jnz	short .2
 	jmp	near .23
 .2:
-	mov	di, [g_4A54]
-	sub	di, [g_0A18]
+	mov	di, [CrowdSound]
+	sub	di, [CrowdLevel]
 	imul	bx, [bp + 0x6], 0x1e
 	db	0x8B, 0xC7		; mov ax, di
 	cwd
@@ -27,24 +27,24 @@ CrowdNoiseUpdate:
 	jng	short .4
 	db	0x0B, 0xFF		; or di, di
 	jl	short .3
-	add	[g_0A18], bx
+	add	[CrowdLevel], bx
 	jmp	short .5
 	db	0x90
 .3:
-	sub	[g_0A18], bx
+	sub	[CrowdLevel], bx
 	jmp	short .5
 .4:
-	mov	ax, [g_4A54]
-	mov	[g_0A18], ax
+	mov	ax, [CrowdSound]
+	mov	[CrowdLevel], ax
 .5:
-	cmp	word [g_0A18], 0x200
+	cmp	word [CrowdLevel], 0x200
 	jnl	short .6
 	db	0x2B, 0xF6		; sub si, si
 	jmp	short .9
 .6:
-	cmp	word [g_0A18], 0x390
+	cmp	word [CrowdLevel], 0x390
 	jnl	short .7
-	mov	ax, [g_0A18]
+	mov	ax, [CrowdLevel]
 	sub	ax, 0x200
 	mov	cx, 0xa
 	cwd
@@ -52,12 +52,12 @@ CrowdNoiseUpdate:
 	db	0x8B, 0xF0		; mov si, ax
 	jmp	short .8
 .7:
-	mov	si, [g_0A18]
+	mov	si, [CrowdLevel]
 	sub	si, 0x390
 	sar	si, byte 0x2
 	add	si, 0x28
 .8:
-	test	byte [g_01C6], 0x8
+	test	byte [SoundOptions], 0x8
 	jz	short .9
 	add	si, 0x20
 .9:
@@ -65,13 +65,13 @@ CrowdNoiseUpdate:
 	jng	short .10
 	mov	si, 0x7f
 .10:
-	mov	ax, [g_0A18]
+	mov	ax, [CrowdLevel]
 	mov	cx, 0xc
 	cwd
 	idiv	cx
 	db	0x8B, 0xF8		; mov di, ax
 	add	di, 0xa
-	test	byte [g_01C6], 0x8
+	test	byte [SoundOptions], 0x8
 	jz	short .11
 	add	di, 0x32
 .11:
@@ -83,41 +83,41 @@ CrowdNoiseUpdate:
 	jnl	short .13
 	mov	di, 0xa
 .13:
-	cmp	word [g_0A1A], 0x0
+	cmp	word [CrowdTarget], 0x0
 	jng	short .14
 	db	0x0B, 0xF6		; or si, si
 	jnz	short .14
 	push	si
 	push	0x8
-	mov	al, [g_106E]
+	mov	al, [CrowdChannel]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	call	0x0CC4:MidiControl
 	add	sp, 0x6
 	push	0x24
 	push	0x8
-	mov	al, [g_106E]
+	mov	al, [CrowdChannel]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	call	0x0CC4:MidiNoteOff
 	jmp	short .15
 	db	0x90
 .14:
-	cmp	word [g_0A1A], 0x0
+	cmp	word [CrowdTarget], 0x0
 	jnz	short .16
 	db	0x0B, 0xF6		; or si, si
 	jng	short .16
 	push	0x7d
 	push	0x24
 	push	0x8
-	mov	al, [g_106E]
+	mov	al, [CrowdChannel]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	call	0x0CC4:MidiProgramNoteOn
 	add	sp, 0x8
 	push	0x40
 	push	0x8
-	mov	al, [g_106E]
+	mov	al, [CrowdChannel]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	call	0x0CC4:MidiPitchBend
@@ -128,14 +128,14 @@ CrowdNoiseUpdate:
 	jng	short .20
 	push	si
 	push	0x8
-	mov	al, [g_106E]
+	mov	al, [CrowdChannel]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	call	0x0CC4:MidiControl
 	add	sp, 0x6
 	cmp	si, 0x7f
 	jnl	short .17
-	cmp	word [g_0A1A], 0x7f
+	cmp	word [CrowdTarget], 0x7f
 	jl	short .20
 .17:
 	cmp	si, 0x7f
@@ -152,21 +152,21 @@ CrowdNoiseUpdate:
 	sub	ax, [bp - 0x2]
 	push	ax
 	push	0x8
-	mov	al, [g_106E]
+	mov	al, [CrowdChannel]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	call	0x0CC4:MidiPitchBend
 	add	sp, 0x6
 .20:
-	mov	[g_0A1A], si
-	cmp	word [g_0A1C], 0x0
+	mov	[CrowdTarget], si
+	cmp	word [CrowdFade], 0x0
 	jnz	short .21
 	db	0x0B, 0xFF		; or di, di
 	jng	short .21
 	push	0x7e
 	push	0x24
 	push	0x7
-	mov	al, [g_106E]
+	mov	al, [CrowdChannel]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	call	0x0CC4:MidiProgramNoteOn
@@ -174,7 +174,7 @@ CrowdNoiseUpdate:
 .21:
 	push	di
 	push	0x7
-	mov	al, [g_106E]
+	mov	al, [CrowdChannel]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	call	0x0CC4:MidiControl
@@ -185,7 +185,7 @@ CrowdNoiseUpdate:
 	idiv	cx
 	db	0x8B, 0xF0		; mov si, ax
 	add	si, 0x20
-	mov	al, [g_01C6]
+	mov	al, [SoundOptions]
 	and	ax, strict word 0x8
 	cmp	ax, strict word 0x1
 	cmc
@@ -200,12 +200,12 @@ CrowdNoiseUpdate:
 .22:
 	push	si
 	push	0x7
-	mov	al, [g_106E]
+	mov	al, [CrowdChannel]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	call	0x0CC4:MidiPitchBend
 	add	sp, 0x6
-	mov	[g_0A1C], di
+	mov	[CrowdFade], di
 .23:
 	pop	si
 	pop	di
@@ -213,55 +213,55 @@ CrowdNoiseUpdate:
 	retf
 
 CrowdNoiseOff:
-	test	byte [g_01B6], 0x80
+	test	byte [CrowdState], 0x80
 	jz	short .2
-	test	byte [g_01C6], 0xa
+	test	byte [SoundOptions], 0xa
 	jz	short .2
-	cmp	word [g_0A1A], 0x0
+	cmp	word [CrowdTarget], 0x0
 	jng	short .1
 	push	0x0
 	push	0x8
-	mov	al, [g_106E]
+	mov	al, [CrowdChannel]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	call	0x0CC4:MidiControl
 	add	sp, 0x6
 	push	0x24
 	push	0x8
-	mov	al, [g_106E]
+	mov	al, [CrowdChannel]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	call	0x0CC4:MidiNoteOff
 	add	sp, 0x6
-	mov	word [g_0A1A], 0x0
+	mov	word [CrowdTarget], 0x0
 .1:
-	cmp	word [g_0A1C], 0x0
+	cmp	word [CrowdFade], 0x0
 	jng	short .2
 	push	0x0
 	push	0x7
-	mov	al, [g_106E]
+	mov	al, [CrowdChannel]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	call	0x0CC4:MidiControl
 	add	sp, 0x6
 	push	0x24
 	push	0x7
-	mov	al, [g_106E]
+	mov	al, [CrowdChannel]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	call	0x0CC4:MidiNoteOff
 	add	sp, 0x6
-	mov	word [g_0A1C], 0x0
+	mov	word [CrowdFade], 0x0
 .2:
 	retf
 	db	0x90
 
 CrowdFadeOut:
 	push	si
-	mov	si, [g_4A54]
-	test	byte [g_01B6], 0x80
+	mov	si, [CrowdSound]
+	test	byte [CrowdState], 0x80
 	jz	short .4
-	test	byte [g_01C6], 0xa
+	test	byte [SoundOptions], 0xa
 	jz	short .4
 	db	0x0B, 0xF6		; or si, si
 	jng	short .3
@@ -269,36 +269,36 @@ CrowdFadeOut:
 	mov	ax, 0x1
 	cwd
 	call	0x03A3:0x1A6E
-	sub	word [g_4A54], 0x32
+	sub	word [CrowdSound], 0x32
 	jns	short .2
-	mov	word [g_4A54], 0x0
+	mov	word [CrowdSound], 0x0
 .2:
 	push	0x2
 	push	cs
 	call	CrowdNoiseUpdate
 	add	sp, 0x2
 	call	0x03A3:WaitDeadlineNoEoi
-	cmp	word [g_4A54], 0x0
+	cmp	word [CrowdSound], 0x0
 	jg	short .1
 .3:
 	push	cs
 	call	CrowdNoiseOff
-	mov	[g_4A54], si
+	mov	[CrowdSound], si
 .4:
 	pop	si
 	retf
 
 CrowdReset:
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[g_0A18], ax
-	mov	[g_0A1A], ax
-	mov	[g_0A1C], ax
+	mov	[CrowdLevel], ax
+	mov	[CrowdTarget], ax
+	mov	[CrowdFade], ax
 	retf
 
 AnnounceOneMinute:
-	cmp	word [g_01C6], 0x2
+	cmp	word [SoundOptions], 0x2
 	jnz	short .1
-	test	byte [g_01B7], 0x1
+	test	byte [AnnouncerFlags], 0x1
 	jz	short .1
 	call	0x09B2:PlayPauseSample
 	call	0x09B2:SayOneMinuteLeft
@@ -307,9 +307,9 @@ AnnounceOneMinute:
 	db	0x90
 
 AnnouncerBusy:
-	cmp	word [g_01C6], 0x2
+	cmp	word [SoundOptions], 0x2
 	jnz	short .1
-	test	byte [g_01B7], 0x1
+	test	byte [AnnouncerFlags], 0x1
 	jz	short .1
 	call	0x09B2:SpeechBusy
 	db	0x0B, 0xC0		; or ax, ax
@@ -326,7 +326,7 @@ PlaySoundEffect:
 	enter	0x18, 0x0
 	push	si
 	mov	si, [bp + 0x6]
-	mov	[g_4A52], si
+	mov	[LastSfx], si
 	push	cs
 	call	AnnouncerBusy
 	db	0x0B, 0xC0		; or ax, ax
@@ -335,9 +335,9 @@ PlaySoundEffect:
 	jz	short .1
 	jmp	near .8
 .1:
-	cmp	word [g_01C6], 0x8
+	cmp	word [SoundOptions], 0x8
 	jz	short .2
-	cmp	word [g_01C6], 0x4
+	cmp	word [SoundOptions], 0x4
 	jnz	short .3
 .2:
 	cmp	si, 0xa0
@@ -347,22 +347,22 @@ PlaySoundEffect:
 .3:
 	cmp	si, 0x7d
 	jnz	short .4
-	add	word [g_4A54], 0x1f4
+	add	word [CrowdSound], 0x1f4
 	pop	si
 	leave
 	retf
 	db	0x90, 0x90, 0x90
 .4:
-	cmp	word [g_01C6], 0x4
+	cmp	word [SoundOptions], 0x4
 	jnz	short .5
 	cmp	si, 0xaa
 	jnz	short .5
-	mov	ax, [g_0FB2]
-	mov	dx, [g_0FB4]
+	mov	ax, [SfxBankOff]
+	mov	dx, [SfxBankSeg]
 	mov	[bp - 0x14], ax
 	mov	[bp - 0x12], dx
-	mov	ax, [g_0FB6]
-	mov	dx, [g_0FB8]
+	mov	ax, [SfxBank2Off]
+	mov	dx, [SfxBank2Seg]
 	mov	[bp - 0x10], ax
 	mov	[bp - 0xe], dx
 	mov	byte [bp - 0x7], 0xff
@@ -380,7 +380,7 @@ PlaySoundEffect:
 .5:
 	cmp	si, 0x90
 	jnz	short .7
-	cmp	word [g_01C6], 0x4
+	cmp	word [SoundOptions], 0x4
 	jnz	short .6
 	push	si
 	call	0x16F2:PlaySound
@@ -400,9 +400,9 @@ PlaySoundEffect:
 AnnounceGoal:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
-	cmp	word [g_01C6], 0x2
+	cmp	word [SoundOptions], 0x2
 	jnz	short .1
-	test	byte [g_01B7], 0x1
+	test	byte [AnnouncerFlags], 0x1
 	jz	short .1
 	call	0x09B2:PlayPauseSample
 	push	word [bp + 0xe]
@@ -418,9 +418,9 @@ AnnounceGoal:
 AnnouncePlayerFrom:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
-	cmp	word [g_01C6], 0x2
+	cmp	word [SoundOptions], 0x2
 	jnz	short .1
-	test	byte [g_01B7], 0x1
+	test	byte [AnnouncerFlags], 0x1
 	jz	short .1
 	call	0x09B2:PlayPauseSample
 	push	word [bp + 0xa]
@@ -434,9 +434,9 @@ AnnouncePlayerFrom:
 AnnouncePenalty:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
-	cmp	word [g_01C6], 0x2
+	cmp	word [SoundOptions], 0x2
 	jnz	short .1
-	test	byte [g_01B7], 0x1
+	test	byte [AnnouncerFlags], 0x1
 	jz	short .1
 	call	0x09B2:PlayPauseSample
 	push	word [bp + 0x12]
@@ -472,17 +472,17 @@ AnnounceTonightsGame:
 	inc	si
 	inc	si
 .3:
-	cmp	word [g_01C6], 0x2
+	cmp	word [SoundOptions], 0x2
 	jnz	short .4
-	test	byte [g_01B7], 0x1
+	test	byte [AnnouncerFlags], 0x1
 	jz	short .4
 	shl	di, 1
-	push	word [di + g_01E0]
+	push	word [di + TeamNameClips]
 	shl	si, 1
-	push	word [si + g_01E0]
+	push	word [si + TeamNameClips]
 	mov	bx, [bp - 0x2]
 	shl	bx, 1
-	push	word [bx + g_01E0]
+	push	word [bx + TeamNameClips]
 	call	0x09B2:SayTonightsGame
 	add	sp, 0x6
 .4:
@@ -494,9 +494,9 @@ AnnounceTonightsGame:
 AnnouncePeriodSummary:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
-	cmp	word [g_01C6], 0x2
+	cmp	word [SoundOptions], 0x2
 	jnz	short .1
-	test	byte [g_01B7], 0x1
+	test	byte [AnnouncerFlags], 0x1
 	jz	short .1
 	push	word [bp + 0xa]
 	push	word [bp + 0x8]
@@ -508,36 +508,36 @@ AnnouncePeriodSummary:
 	db	0x90
 
 AnnounceIntro:
-	cmp	word [g_01C6], 0x2
+	cmp	word [SoundOptions], 0x2
 	jnz	short .1
-	test	byte [g_01B7], 0x1
+	test	byte [AnnouncerFlags], 0x1
 	jz	short .1
 	call	0x09B2:SayEaNhlIntro
 .1:
 	retf
 
 AnnounceGoodnight:
-	cmp	word [g_01C6], 0x2
+	cmp	word [SoundOptions], 0x2
 	jnz	short .1
-	test	byte [g_01B7], 0x1
+	test	byte [AnnouncerFlags], 0x1
 	jz	short .1
 	call	0x09B2:SayGoodnight
 .1:
 	retf
 
 AnnounceLineups:
-	cmp	word [g_01C6], 0x2
+	cmp	word [SoundOptions], 0x2
 	jnz	short .1
-	test	byte [g_01B7], 0x1
+	test	byte [AnnouncerFlags], 0x1
 	jz	short .1
 	call	0x09B2:SayLineups
 .1:
 	retf
 
 AnnounceElseAroundNhl:
-	cmp	word [g_01C6], 0x2
+	cmp	word [SoundOptions], 0x2
 	jnz	short .1
-	test	byte [g_01B7], 0x1
+	test	byte [AnnouncerFlags], 0x1
 	jz	short .1
 	call	0x09B2:SayElseAroundNhl
 .1:
@@ -547,17 +547,17 @@ AnnounceHighlightMatchup:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	si
-	cmp	word [g_01C6], 0x2
+	cmp	word [SoundOptions], 0x2
 	jnz	short .1
-	test	byte [g_01B7], 0x1
+	test	byte [AnnouncerFlags], 0x1
 	jz	short .1
 	mov	si, [bp + 0x6]
 	shl	si, 1
-	push	word [si + g_01E0]
+	push	word [si + TeamNameClips]
 	mov	bx, [bp + 0x8]
 	shl	bx, 1
-	push	word [bx + g_01E0]
-	push	word [si + g_01E0]
+	push	word [bx + TeamNameClips]
+	push	word [si + TeamNameClips]
 	call	0x09B2:SayHighlightMatchup
 	add	sp, 0x6
 .1:
@@ -569,9 +569,9 @@ AnnounceHighlightMatchup:
 AnnouncePlayoffResult:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
-	cmp	word [g_01C6], 0x2
+	cmp	word [SoundOptions], 0x2
 	jnz	short .1
-	test	byte [g_01B7], 0x1
+	test	byte [AnnouncerFlags], 0x1
 	jz	short .1
 	push	word [bp + 0xe]
 	push	word [bp + 0xc]
@@ -579,7 +579,7 @@ AnnouncePlayoffResult:
 	push	word [bp + 0x8]
 	mov	bx, [bp + 0x6]
 	shl	bx, 1
-	push	word [bx + g_01E0]
+	push	word [bx + TeamNameClips]
 	call	0x09B2:SayPlayoffResult
 .1:
 	leave
@@ -590,20 +590,20 @@ AnnounceTonightsPlayoffGame:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	si
-	cmp	word [g_01C6], 0x2
+	cmp	word [SoundOptions], 0x2
 	jnz	short .1
-	test	byte [g_01B7], 0x1
+	test	byte [AnnouncerFlags], 0x1
 	jz	short .1
 	mov	si, [bp + 0x6]
 	push	word [bp + 0xe]
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
 	shl	si, 1
-	push	word [si + g_01E0]
+	push	word [si + TeamNameClips]
 	mov	bx, [bp + 0x8]
 	shl	bx, 1
-	push	word [bx + g_01E0]
-	push	word [si + g_01E0]
+	push	word [bx + TeamNameClips]
+	push	word [si + TeamNameClips]
 	call	0x09B2:SayTonightsPlayoffGame
 	add	sp, 0xc
 .1:
@@ -614,7 +614,7 @@ AnnounceTonightsPlayoffGame:
 LoadStudioSpeech:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
-	cmp	word [g_01C6], 0x2
+	cmp	word [SoundOptions], 0x2
 	jnz	short .2
 .1:
 	call	0x09B2:OpenStudioSpeech
@@ -630,7 +630,7 @@ LoadPlayByPlaySpeech:
 	db	0x8B, 0xEC		; mov bp, sp
 	push	di
 	push	si
-	cmp	word [g_01C6], 0x2
+	cmp	word [SoundOptions], 0x2
 	jnz	short .2
 	mov	si, [bp + 0x6]
 	mov	di, [bp + 0x8]
@@ -648,23 +648,23 @@ LoadPlayByPlaySpeech:
 	retf
 
 StopJingle:
-	cmp	word [g_0A14], -0x1
+	cmp	word [JingleHandle], -0x1
 	jnz	short .1
-	cmp	word [g_0A16], -0x1
+	cmp	word [JingleHandleHi], -0x1
 	jz	short .2
 .1:
-	push	word [g_0A16]
-	push	word [g_0A14]
+	push	word [JingleHandleHi]
+	push	word [JingleHandle]
 	call	0x16F2:SongFinished
 	add	sp, 0x4
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .2
-	push	word [g_0A16]
-	push	word [g_0A14]
+	push	word [JingleHandleHi]
+	push	word [JingleHandle]
 	call	0x16F2:StopSong
 	add	sp, 0x4
-	mov	word [g_0A14], 0xffff
-	mov	word [g_0A16], 0xffff
+	mov	word [JingleHandle], 0xffff
+	mov	word [JingleHandleHi], 0xffff
 .2:
 	retf
 	db	0x90
@@ -676,27 +676,27 @@ PlayJingle:
 	call	StopJingle
 	mov	ax, [bp + 0x6]
 	mov	dx, [bp + 0x8]
-	mov	[g_B2DA], ax
-	mov	[g_B2DC], dx
+	mov	[JingleSongOff], ax
+	mov	[JingleSongSeg], dx
 	mov	ax, [bp + 0xa]
 	mov	dx, [bp + 0xc]
-	mov	[g_B2DE], ax
-	mov	[g_B2E0], dx
-	mov	byte [g_B2E7], 0xff
-	mov	byte [g_B2E8], 0x3f
-	mov	word [g_B2E2], 0x14
-	mov	byte [g_B2E9], 0x0
+	mov	[JingleBufOff], ax
+	mov	[JingleBufSeg], dx
+	mov	byte [JingleChannel], 0xff
+	mov	byte [JingleVolume], 0x3f
+	mov	word [JingleTempo], 0x14
+	mov	byte [JinglePan], 0x0
 	push	ds
 	push	word 0xb2d6
 	call	0x16F2:StartSong
-	mov	[g_0A14], ax
-	mov	[g_0A16], dx
+	mov	[JingleHandle], ax
+	mov	[JingleHandleHi], dx
 	leave
 	retf
 
 WaitJingle:
-	push	word [g_0A16]
-	push	word [g_0A14]
+	push	word [JingleHandleHi]
+	push	word [JingleHandle]
 	call	0x16F2:SongFinished
 	add	sp, 0x4
 	db	0x0B, 0xC0		; or ax, ax
@@ -713,13 +713,13 @@ PlayArenaJingle:
 	db	0x8B, 0xDE		; mov bx, si
 	shl	bx, byte 0x2
 	mov	[bp - 0x2], bx
-	mov	ax, [bx + g_B320]
-	or	ax, [bx + g_B31E]
+	mov	ax, [bx + ArenaJingleCSeg]
+	or	ax, [bx + ArenaJingleC]
 	jz	short .1
-	push	word [bx + g_B338]
-	push	word [bx + g_B336]
-	push	word [bx + g_B320]
-	push	word [bx + g_B31E]
+	push	word [bx + ArenaJingleDSeg]
+	push	word [bx + ArenaJingleD]
+	push	word [bx + ArenaJingleCSeg]
+	push	word [bx + ArenaJingleC]
 	push	cs
 	call	PlayJingle
 	add	sp, 0x8
@@ -739,20 +739,20 @@ PlayArenaJingle:
 	jnl	short .3
 	db	0x8B, 0xDE		; mov bx, si
 	shl	bx, byte 0x2
-	push	word [bx + g_B2FC]
-	push	word [bx + g_B2FA]
-	push	word [bx + g_B2F0]
-	push	word [bx + g_B2EE]
+	push	word [bx + ArenaJingleBSeg]
+	push	word [bx + ArenaJingleB]
+	push	word [bx + ArenaJingleASeg]
+	push	word [bx + ArenaJingleA]
 	jmp	short .4
 	db	0x90
 .3:
 	cmp	si, 0xc
 	db	0x7D, 0x1A		; jnl 0x6e1
 	shl	si, byte 0x2
-	push	word [si + g_B2D8]
-	push	word [si + g_B2D6]
-	push	word [si + g_B2CC]
-	push	word [si + g_B2CA]
+	push	word [si + ArenaJingleArg2]
+	push	word [si + ArenaJingleArg1]
+	push	word [si + BoxSaveX]
+	push	word [si + ArenaJingleSet]
 .4:
 	push	cs
 	call	PlayJingle

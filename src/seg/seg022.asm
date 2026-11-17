@@ -13,32 +13,32 @@ SaveVgaPlanes:
 	push	word 0xa1e
 	call	0x14DB:InsertRecWrap
 	add	sp, 0x8
-	mov	[g_B34E], ax
-	mov	[g_B350], dx
+	mov	[VgaSave0Off], ax
+	mov	[VgaSave0Seg], dx
 	push	str_Que
 	push	0x0
 	push	word 0xb00
 	push	word 0xa26
 	call	0x14DB:InsertRecWrap
 	add	sp, 0x8
-	mov	[g_B352], ax
-	mov	[g_B354], dx
+	mov	[VgaSave1Off], ax
+	mov	[VgaSave1Seg], dx
 	push	str_Que
 	push	0x0
 	push	word 0xb00
 	push	word 0xa2e
 	call	0x14DB:InsertRecWrap
 	add	sp, 0x8
-	mov	[g_B356], ax
-	mov	[g_B358], dx
+	mov	[VgaSave2Off], ax
+	mov	[VgaSave2Seg], dx
 	push	str_Que
 	push	0x0
 	push	word 0xb00
 	push	word 0xa36
 	call	0x14DB:InsertRecWrap
 	add	sp, 0x8
-	mov	[g_B35A], ax
-	mov	[g_B35C], dx
+	mov	[VgaSave3Off], ax
+	mov	[VgaSave3Seg], dx
 	mov	ax, 0x2
 	mov	dx, 0x3c4
 	out	dx, al
@@ -58,8 +58,8 @@ SaveVgaPlanes:
 	push	word 0xb00
 	push	word 0xa000
 	push	0x0
-	push	word [g_B350]
-	push	word [g_B34E]
+	push	word [VgaSave0Seg]
+	push	word [VgaSave0Off]
 	db	0x8B, 0xF0		; mov si, ax
 	call	0x06E1:RawBase
 	add	sp, 0x4
@@ -78,8 +78,8 @@ SaveVgaPlanes:
 	push	word 0xb00
 	push	word 0xa000
 	push	0x0
-	push	word [g_B354]
-	push	word [g_B352]
+	push	word [VgaSave1Seg]
+	push	word [VgaSave1Off]
 	call	0x06E1:RawBase
 	add	sp, 0x4
 	push	dx
@@ -96,8 +96,8 @@ SaveVgaPlanes:
 	push	word 0xb00
 	push	word 0xa000
 	push	0x0
-	push	word [g_B358]
-	push	word [g_B356]
+	push	word [VgaSave2Seg]
+	push	word [VgaSave2Off]
 	call	0x06E1:RawBase
 	add	sp, 0x4
 	push	dx
@@ -114,8 +114,8 @@ SaveVgaPlanes:
 	push	word 0xb00
 	push	word 0xa000
 	push	0x0
-	push	word [g_B35C]
-	push	word [g_B35A]
+	push	word [VgaSave3Seg]
+	push	word [VgaSave3Off]
 	call	0x06E1:RawBase
 	add	sp, 0x4
 	push	dx
@@ -156,7 +156,7 @@ SaveVgaPlanes:
 	call	0x0FEF:SetStartPage
 	add	sp, 0x2
 	mov	bx, 0x7570
-	mov	es, [g_8B1C]
+	mov	es, [DgroupSegB]
 	mov	[bp - 0x6], bx
 	mov	[bp - 0x4], es
 	mov	ax, [es:bx + 0x2]
@@ -226,8 +226,8 @@ RestoreVgaPlanes:
 	mov	dx, 0x3c5
 	out	dx, al
 	push	word 0xb00
-	push	word [g_B350]
-	push	word [g_B34E]
+	push	word [VgaSave0Seg]
+	push	word [VgaSave0Off]
 	db	0x8B, 0xF1		; mov si, cx
 	call	0x06E1:RawBase
 	add	sp, 0x4
@@ -241,16 +241,16 @@ RestoreVgaPlanes:
 	push	0x0
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
-	push	word [g_B350]
-	push	word [g_B34E]
+	push	word [VgaSave0Seg]
+	push	word [VgaSave0Off]
 	call	0x06E1:UnlinkRec
 	add	sp, 0x4
 	lea	ax, [si + 0x2]
 	mov	dx, 0x3c5
 	out	dx, al
 	push	word 0xb00
-	push	word [g_B354]
-	push	word [g_B352]
+	push	word [VgaSave1Seg]
+	push	word [VgaSave1Off]
 	call	0x06E1:RawBase
 	add	sp, 0x4
 	push	dx
@@ -263,16 +263,16 @@ RestoreVgaPlanes:
 	push	0x0
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
-	push	word [g_B354]
-	push	word [g_B352]
+	push	word [VgaSave1Seg]
+	push	word [VgaSave1Off]
 	call	0x06E1:UnlinkRec
 	add	sp, 0x4
 	lea	ax, [si + 0x4]
 	mov	dx, 0x3c5
 	out	dx, al
 	push	word 0xb00
-	push	word [g_B358]
-	push	word [g_B356]
+	push	word [VgaSave2Seg]
+	push	word [VgaSave2Off]
 	call	0x06E1:RawBase
 	add	sp, 0x4
 	push	dx
@@ -285,16 +285,16 @@ RestoreVgaPlanes:
 	push	0x0
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
-	push	word [g_B358]
-	push	word [g_B356]
+	push	word [VgaSave2Seg]
+	push	word [VgaSave2Off]
 	call	0x06E1:UnlinkRec
 	add	sp, 0x4
 	lea	ax, [si + 0x8]
 	mov	dx, 0x3c5
 	out	dx, al
 	push	word 0xb00
-	push	word [g_B35C]
-	push	word [g_B35A]
+	push	word [VgaSave3Seg]
+	push	word [VgaSave3Off]
 	call	0x06E1:RawBase
 	add	sp, 0x4
 	push	dx
@@ -307,8 +307,8 @@ RestoreVgaPlanes:
 	push	0x0
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
-	push	word [g_B35C]
-	push	word [g_B35A]
+	push	word [VgaSave3Seg]
+	push	word [VgaSave3Off]
 	call	0x06E1:UnlinkRec
 	add	sp, 0x4
 	mov	ax, 0x2
@@ -329,7 +329,7 @@ RestoreVgaPlanes:
 	call	0x0FEF:SetStartPage
 	add	sp, 0x2
 	mov	bx, 0x7570
-	mov	es, [g_8B1C]
+	mov	es, [DgroupSegB]
 	mov	[bp - 0x6], bx
 	mov	[bp - 0x4], es
 	mov	ax, [es:bx + 0x2]

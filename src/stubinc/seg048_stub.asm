@@ -2,15 +2,15 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
-g_8D0C		equ	0x8D0C
-g_8D0E		equ	0x8D0E
-g_8F56		equ	0x8F56
-g_8F58		equ	0x8F58
-g_8F5A		equ	0x8F5A
-g_8F5C		equ	0x8F5C
-g_8F5E		equ	0x8F5E
-g_8F60		equ	0x8F60
-g_8F62		equ	0x8F62
-g_8F64		equ	0x8F64
-g_8F66		equ	0x8F66
+PaletteFlagsSeg		equ	0x8D0C
+PaletteFlagsSeg2		equ	0x8D0E
+ShadeTableOff		equ	0x8F56
+ShadeTableSeg		equ	0x8F58
+ShadeFactorR		equ	0x8F5A
+ShadeFactorG		equ	0x8F5C
+ShadeFactorB		equ	0x8F5E
+ShadeR		equ	0x8F60
+ShadeG		equ	0x8F62
+ShadeB		equ	0x8F64
+ShadeGrey		equ	0x8F66
 %include "seg/seg048.asm"

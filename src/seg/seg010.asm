@@ -11,11 +11,11 @@ RandomRange:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ax
-	mov	ax, [g_2A02]
+	mov	ax, [RandSeedHi]
 	mov	dx, 0xe62d
 	call	0x03A3:MulRegs
 	db	0x8B, 0xD8		; mov bx, ax
-	mov	ax, [g_2A00]
+	mov	ax, [RandSeedLo]
 	db	0x8B, 0xC8		; mov cx, ax
 	mov	dx, 0xbb40
 	call	0x03A3:MulRegs
@@ -26,6 +26,6 @@ RandomRange:
 	db	0x03, 0xD3		; add dx, bx
 	add	ax, strict word 0x1
 	adc	dx, 0x0
-	mov	[g_2A00], ax
-	mov	[g_2A02], dx
+	mov	[RandSeedLo], ax
+	mov	[RandSeedHi], dx
 	db	0x8A

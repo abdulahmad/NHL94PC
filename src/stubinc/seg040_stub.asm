@@ -5,6 +5,6 @@
 DrawChar		equ	0xE85
 WaitRetraceCount		equ	0x3406
 WaitRetraceStart		equ	0x3499
-g_7670		equ	0x7670
-g_DF72		equ	0xDF72
+RetraceWait		equ	0x7670
+RetraceCount		equ	0xDF72
 %include "seg/seg040.asm"

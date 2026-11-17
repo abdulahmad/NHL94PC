@@ -6,297 +6,297 @@ MapHi:
 	resb	2
 OutPtr:
 	resb	2
-g_8EDC:
+UnpackSpare1:
 	resb	2
 InPtr:
 	resb	2
-g_8EE0:
+UnpackSpare2:
 	resb	2
 MapPair:
 	resb	2
 BitBuf:
 	resb	2
-g_8EE6:
+UnpackSpare3:
 	resb	2
 BitCount:
 	resb	2
-g_8EEA:
+SentencePtr:
 	resb	2
-g_8EEC:
+SentenceSeg:
 	resb	2
-g_8EEE:
+PauseSampleOff:
 	resb	2
-g_8EF0:
+PauseSampleSeg:
 	resb	2
-g_8EF2:
+WantedList:
 	resb	2
-g_8EF4:
+WantedListSeg:
 	resb	2
-g_8EF6:
+SpeechBank:
 	resb	2
-g_8EF8:
+SpeechBankSeg:
 	resb	2
-g_8EFA:
+MoveBlockOff:
 	resb	2
-g_8EFC:
+MoveBlockSeg:
 	resb	90
-g_8F56:
+ShadeTableOff:
 	resb	2
-g_8F58:
+ShadeTableSeg:
 	resb	2
-g_8F5A:
+ShadeFactorR:
 	resb	2
-g_8F5C:
+ShadeFactorG:
 	resb	2
-g_8F5E:
+ShadeFactorB:
 	resb	2
-g_8F60:
+ShadeR:
 	resb	2
-g_8F62:
+ShadeG:
 	resb	2
-g_8F64:
+ShadeB:
 	resb	2
-g_8F66:
+ShadeGrey:
 	resb	2
-g_8F68:
+MidiMsg:
 	resb	1
-g_8F69:
+MidiMsg1:
 	resb	1
-g_8F6A:
+MidiMsg2:
 	resb	62
-g_8FA8:
+PatchMsg:
 	resb	1
-g_8FA9:
+PatchMsg1:
 	resb	1
-g_8FAA:
+PatchMsg2:
 	resb	1
-g_8FAB:
+PatchMsg3:
 	resb	1
-g_8FAC:
+SongFileName:
 	resb	20
-g_8FC0:
+SongFileNameEnd:
 	resb	2
-g_8FC2:
+SongBankNum:
 	resb	4
-g_8FC6:
+SfxMsg:
 	resb	1
-g_8FC7:
+SfxMsg1:
 	resb	1
-g_8FC8:
+SfxMsg2:
 	resb	6
-g_8FCE:
+DrvTableName:
 	resb	2
-g_8FD0:
+DrvTableSeg:
 	resb	6
-g_8FD6:
+DrvTableInit:
 	resb	4
-g_8FDA:
+DrvTableCall04:
 	resb	4
-g_8FDE:
+DrvTableCall08:
 	resb	4
-g_8FE2:
+DrvTableShutdown:
 	resb	4
-g_8FE6:
+DrvTableCall10:
 	resb	4
-g_8FEA:
+DrvTableService:
 	resb	4
-g_8FEE:
+DrvTableNeedsService:
 	resb	4
-g_8FF2:
+DrvTableLoadBank:
 	resb	16
-g_9002:
+DrvTableSendMidi:
 	resb	8
-g_900A:
+DrvTablePlaySample:
 	resb	140
-g_9096:
+StrBufPtr:
 	resb	2
-g_9098:
+StrBufCnt:
 	resb	2
-g_909A:
+StrBufBase:
 	resb	2
-g_909C:
+StrBufFlag:
 	resb	2
-g_909E:
+FloatArgPtr:
 	resb	10
-g_90A8:
+FltOutFlags:
 	resb	1
-g_90A9:
+FltOutFlags1:
 	resb	1
-g_90AA:
+FltOutExp:
 	resb	7654
-g_AE90:
+HeapSizeLo:
 	resb	2
-g_AE92:
+HeapSizeHi:
 	resb	6
-g_AE98:
+DialogData:
 	resb	2
-g_AE9A:
+DialogDataSeg:
 	resb	2
 ChainIdx:
 	resb	2
 ChainPtr:
 	resb	2
-g_AEA0:
+HeapVar0:
 	resb	2
-g_AEA2:
+HeapList:
 	resb	2
-g_AEA4:
+HeapVar1:
 	resb	2
-g_AEA6:
+HeapVar2:
 	resb	2
-g_AEA8:
+HeapVar3:
 	resb	2
-g_AEAA:
+HeapVar4:
 	resb	2
-g_AEAC:
+HeapVar5:
 	resb	2
-g_AEAE:
+HeapVar6:
 	resb	2
-g_AEB0:
+HeapVar7:
 	resb	2
-g_AEB2:
+MemBlock1Off:
 	resb	2
-g_AEB4:
+MemBlock1Seg:
 	resb	2
-g_AEB6:
+MemBlock2Off:
 	resb	2
-g_AEB8:
+MemBlock2Seg:
 	resb	2
-g_AEBA:
+MemBlock3Off:
 	resb	2
-g_AEBC:
+MemBlock3Seg:
 	resb	18
-g_AECE:
+InputFlags:
 	resb	2
-g_AED0:
+InputQueue:
 	resb	256
-g_AFD0:
+CursorX:
 	resb	2
-g_AFD2:
+CursorY:
 	resb	152
-g_B06A:
+PadStatePtr:
 	resb	36
-g_B08E:
+HotKeyFn:
 	resb	2
-g_B090:
+HotKeyFnSeg:
 	resb	52
-g_B0C4:
+TeamPalette1:
 	resb	256
-g_B1C4:
+TeamPalette2:
 	resb	262
-g_B2CA:
+ArenaJingleSet:
 	resb	2
-g_B2CC:
+BoxSaveX:
 	resb	2
-g_B2CE:
+BoxSaveY:
 	resb	2
-g_B2D0:
+YesNoText:
 	resb	2
-g_B2D2:
+YesNoTextSeg:
 	resb	2
-g_B2D4:
+MessageBoxSel:
 	resb	2
-g_B2D6:
+ArenaJingleArg1:
 	resb	2
-g_B2D8:
+ArenaJingleArg2:
 	resb	2
-g_B2DA:
+JingleSongOff:
 	resb	2
-g_B2DC:
+JingleSongSeg:
 	resb	2
-g_B2DE:
+JingleBufOff:
 	resb	2
-g_B2E0:
+JingleBufSeg:
 	resb	2
-g_B2E2:
+JingleTempo:
 	resb	5
-g_B2E7:
+JingleChannel:
 	resb	1
-g_B2E8:
+JingleVolume:
 	resb	1
-g_B2E9:
+JinglePan:
 	resb	5
-g_B2EE:
+ArenaJingleA:
 	resb	2
-g_B2F0:
+ArenaJingleASeg:
 	resb	10
-g_B2FA:
+ArenaJingleB:
 	resb	2
-g_B2FC:
+ArenaJingleBSeg:
 	resb	34
-g_B31E:
+ArenaJingleC:
 	resb	2
-g_B320:
+ArenaJingleCSeg:
 	resb	22
-g_B336:
+ArenaJingleD:
 	resb	2
-g_B338:
+ArenaJingleDSeg:
 	resb	22
-g_B34E:
+VgaSave0Off:
 	resb	2
-g_B350:
+VgaSave0Seg:
 	resb	2
-g_B352:
+VgaSave1Off:
 	resb	2
-g_B354:
+VgaSave1Seg:
 	resb	2
-g_B356:
+VgaSave2Off:
 	resb	2
-g_B358:
+VgaSave2Seg:
 	resb	2
-g_B35A:
+VgaSave3Off:
 	resb	2
-g_B35C:
+VgaSave3Seg:
 	resb	11286
-g_DF72:
+RetraceCount:
 	resb	2
-g_DF74:
+MidiQueue:
 	resb	1
-g_DF75:
+MidiQueue1:
 	resb	127
-g_DFF4:
+PatchBank:
 	resb	2
-g_DFF6:
+PatchBankSeg:
 	resb	2
-g_DFF8:
+ChannelUsed:
 	resb	16
-g_E008:
+LoadedSongs:
 	resb	2
-g_E00A:
+LoadedSongsSeg:
 	resb	38
-g_E030:
+SongParts:
 	resb	2
-g_E032:
+SongPartsSeg:
 	resb	38
-g_E058:
+SongSeqs:
 	resb	2
-g_E05A:
+SongSeqsSeg:
 	resb	38
-g_E080:
+SeqTimerSlot:
 	resb	2
-g_E082:
+SeqTimerSlotSeg:
 	resb	2
-g_E084:
+DriverTypes:
 	resb	2
-g_E086:
+DriverEntrySeg:
 	resb	6
-g_E08C:
+VoiceFreeList:
 	resb	2
-g_E08E:
+VoiceFreeListSeg:
 	resb	2
-g_E090:
+VoiceListNext:
 	resb	2
-g_E092:
+VoiceListNextSeg:
 	resb	2
-g_E094:
+VoiceListPrev:
 	resb	2
-g_E096:
+VoiceListPrevSeg:
 	resb	7
-g_E09D:
+VoiceListId:
 	resb	127
-g_E11C:
+VoiceListEnd:
 	resb	2
-g_E11E:
+VoiceListEndSeg:
 	resb	2
-g_E120:
+VoiceListFlags:
 	resb	6736

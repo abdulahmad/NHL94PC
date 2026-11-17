@@ -1,0 +1,427 @@
+# Batch 10: DGROUP variables. Names from the routines that use them; comments go on the declarations.
+g_01B4 DbSaveMode | new | medium | 0/2 mode checked by SaveGame and UseDbDescriptor
+g_01B6 CrowdState | new | medium | bit 80h tested by the crowd routines
+g_01B7 AnnouncerFlags | new | medium | bit 80h set while the announcer talks
+g_01C6 SoundOptions | new | medium | bits 2 and 8 gate crowd and effects
+g_01E0 TeamNameClips | new | medium | speech clip per team, indexed by team
+g_024E EmsMapCache2 | new | medium | second EMS map cache word
+g_0250 EmsMapCache3 | new | medium | third EMS map cache word
+g_0252 EmsMapCache4 | new | medium | fourth EMS map cache word
+g_025E EmsFramePrev | new | medium | word before EmsFrame
+g_0508 InputQueueCount | new | medium | events waiting (at most 32)
+g_050A InputQueueHead | new | medium | next event to read
+g_050C InputQueueTail | new | medium | next free event slot
+g_050E PollCountdown | new | medium | polls until the next device read (reset to 5)
+g_0510 MouseEnabled | new | medium | mouse read when non-zero
+g_0512 StickEnabled | new | medium | joysticks read when non-zero
+g_0514 KeysEnabled | new | medium | keyboard read when non-zero
+g_0516 MousePosX | new | medium | last mouse x
+g_0518 MousePosY | new | medium | last mouse y
+g_051E StickPresent | new | medium | joystick 1 present
+g_0520 StickPresent2 | new | medium | joystick 2 present
+g_0522 PadTickCount | new | medium | timer ticks counted by PadTimerTick (wraps at 1000)
+g_0524 PadRepeatOn | new | medium | key repeat active
+g_0526 PadRepeatStep | new | medium | repeat interval
+g_0528 PadRepeatDelay | new | medium | first repeat delay
+g_052A PadRepeatTimer | new | medium | ticks left before the next repeat
+g_052C PadStates | new | medium | state byte per pad
+g_052D PadStates2 | new | medium | second pad's state byte
+g_052E HotKeyPending | new | medium | hot key waiting to be read
+g_0530 KeyPadMap | new | medium | keys to pad bits
+g_0764 SpeechTickCount | new | medium | speech timer ticks
+g_0766 SpeechSampleBusy | new | medium | a sample is playing
+g_0768 SpeechMemOff | new | medium | speech memory block, offset
+g_076A SpeechMemSeg | new | medium | speech memory block, segment
+g_076C SpeechOn | new | medium | speech system initialised
+g_08F6 InputInstalled | new | medium | input hooks installed
+g_08F8 MouseRangeX | new | medium | mouse range in x
+g_08FA MouseRangeY | new | medium | mouse range in y
+g_0998 TextColor | new | medium | text colour for the shadow and outline text
+g_099A ShadowColor | new | medium | shadow colour
+g_099C OutlineDx | new | medium | x offsets of the outline passes
+g_09A4 OutlineDy | new | medium | y offsets of the outline passes
+g_09AC Dir8Table | new | medium | direction for each octant
+g_09BC OldInt0Seg | new | medium | saved divide-error vector, segment
+g_09BE OldInt0Off | new | medium | saved divide-error vector, offset
+g_09EE DialogBackColor | new | medium | dialog background colour
+g_09F0 DialogLightColor | new | medium | dialog bevel light colour
+g_09F2 DialogDarkColor | new | medium | dialog bevel dark colour
+g_09F4 ItemTextColor | new | medium | list item text colour
+g_09F6 ItemSelectColor | new | medium | selected list item colour
+g_09FA SaveUnderOff | new | medium | saved screen under a box, offset
+g_09FC SaveUnderSeg | new | medium | saved screen under a box, segment
+g_0A14 JingleHandle | new | medium | playing jingle, low word (-1 for none)
+g_0A16 JingleHandleHi | new | medium | playing jingle, high word
+g_0A18 CrowdLevel | new | medium | crowd noise level
+g_0A1A CrowdTarget | new | medium | crowd level being faded to
+g_0A1C CrowdFade | new | medium | crowd fade step
+g_0A3E EventPending | new | medium | an event is held back
+g_0FB2 SfxBankOff | new | medium | effects bank, offset
+g_0FB4 SfxBankSeg | new | medium | effects bank, segment
+g_0FB6 SfxBank2Off | new | medium | second effects bank, offset
+g_0FB8 SfxBank2Seg | new | medium | second effects bank, segment
+g_106E CrowdChannel | new | medium | crowd noise channel
+g_1218 SpeechFileNames | new | medium | speech file names
+g_2A00 RandSeedLo | new | medium | RandomRange seed, low word
+g_2A02 RandSeedHi | new | medium | RandomRange seed, high word
+g_4A52 LastSfx | new | medium | last effect played
+g_4A54 CrowdSound | new | medium | crowd sound handle
+g_62FC CritSpare1 | new | medium | word before CritRoutine
+g_6300 CritSpare2 | new | medium | word after CritRoutine
+g_63F6 BlockSpare1 | new | medium | word before BlockEnd
+g_63FA BlockSpare2 | new | medium | word before BlockSeg
+g_6404 PaletteMode | new | medium | DAC write mode (2 for the slow path)
+g_6406 MouseActive | new | medium | mouse driver found
+g_640C MouseShowFn | new | medium | far routine: show the cursor
+g_640E MouseShowFnSeg | new | medium | segment of MouseShowFn
+g_6410 MouseHideFn | new | medium | far routine: hide the cursor
+g_6412 MouseHideFnSeg | new | medium | segment of MouseHideFn
+g_6414 MouseReadFn | new | medium | far routine: read the mouse
+g_6416 MouseReadFnSeg | new | medium | segment of MouseReadFn
+g_6418 MousePosFn | new | medium | far routine: mouse position
+g_641A MousePosFnSeg | new | medium | segment of MousePosFn
+g_6D4E FontPtr | new | medium | current 1-bpp font
+g_6D52 FontBits | new | medium | bit masks for the font
+g_6D98 OldInt8Off | new | medium | saved INT 8 vector, offset
+g_6D9A OldInt8Seg | new | medium | saved INT 8 vector, segment
+g_6D9C TickHookOff | new | medium | routine the INT 8 handler calls, offset
+g_6D9E TickHookSeg | new | medium | routine the INT 8 handler calls, segment
+g_6DA6 TickCountAll | new | medium | every INT 8 tick
+g_6DB6 TickSkipCount | new | medium | ticks skipped
+g_6F10 CalibTargetX | new | medium | x of each calibration target
+g_6F22 CalibTargetY | new | medium | y of each calibration target
+g_701F JoyNibbleTable | new | medium | joystick nibble to direction
+g_7034 Stick2XMin | new | medium | joystick 2 x minimum
+g_7036 Stick2XMax | new | medium | joystick 2 x maximum
+g_7038 Stick2XLast | new | medium | joystick 2 x last reading
+g_703A Stick2XSettle | new | medium | joystick 2 x settle count (8)
+g_703C Stick2XLow | new | medium | joystick 2 x low threshold
+g_703E Stick2XHigh | new | medium | joystick 2 x high threshold
+g_7040 Stick2YMin | new | medium | joystick 2 y minimum
+g_7042 Stick2YMax | new | medium | joystick 2 y maximum
+g_7044 Stick2YLast | new | medium | joystick 2 y last reading
+g_7046 Stick2YSettle | new | medium | joystick 2 y settle count (8)
+g_7048 Stick2YLow | new | medium | joystick 2 y low threshold
+g_704A Stick2YHigh | new | medium | joystick 2 y high threshold
+g_704C Stick2XScale | new | medium | joystick 2 x scale
+g_704E Stick2YScale | new | medium | joystick 2 y scale
+g_7058 Stick1XMin | new | medium | joystick 1 x minimum
+g_705A Stick1XMax | new | medium | joystick 1 x maximum
+g_705C Stick1XLast | new | medium | joystick 1 x last reading
+g_705E Stick1XSettle | new | medium | joystick 1 x settle count (8)
+g_7060 Stick1XLow | new | medium | joystick 1 x low threshold
+g_7062 Stick1XHigh | new | medium | joystick 1 x high threshold
+g_7064 Stick1YMin | new | medium | joystick 1 y minimum
+g_7066 Stick1YMax | new | medium | joystick 1 y maximum
+g_7068 Stick1YLast | new | medium | joystick 1 y last reading
+g_706A Stick1YSettle | new | medium | joystick 1 y settle count (8)
+g_706C Stick1YLow | new | medium | joystick 1 y low threshold
+g_706E Stick1YHigh | new | medium | joystick 1 y high threshold
+g_7070 Stick1XScale | new | medium | joystick 1 x scale
+g_7072 Stick1YScale | new | medium | joystick 1 y scale
+g_7074 StickDirTable | new | medium | stick bits to direction
+g_712E OldInt9Off | new | medium | saved INT 9 vector, offset
+g_7130 OldInt9Seg | new | medium | saved INT 9 vector, segment
+g_7132 OldInt16Off | new | medium | saved INT 16h vector, offset
+g_7134 OldInt16Seg | new | medium | saved INT 16h vector, segment
+g_7136 OldInt23Off | new | medium | saved INT 23h vector, offset
+g_7138 OldInt23Seg | new | medium | saved INT 23h vector, segment
+g_730A RemapTable | new | medium | 256-byte colour remap table
+g_7428 PutBlockMasks | new | medium | plane masks for PutBlock
+g_742C DrawRawMasks | new | medium | plane masks for DrawRaw
+g_7430 DrawRleMasks | new | medium | plane masks for DrawRle
+g_7434 DrawRleFastMasks | new | medium | plane masks for DrawRleFast
+g_7438 Text2Color | new | medium | DrawText2 colour
+g_743A DrawCharMasks | new | medium | plane masks for DrawChar
+g_743E CopySrcPage | new | medium | CopyPlane source page
+g_743F CopyDstPage | new | medium | CopyPlane destination page
+g_7440 CopyActive | new | medium | CopyPlane in progress
+g_7441 CopyMask | new | medium | CopyPlane plane mask
+g_7442 CopyCount | new | medium | CopyPlane byte count
+g_7444 CopyOffset | new | medium | CopyPlane offset
+g_744C ConCursorX | new | medium | console cursor column
+g_744E ConCursorY | new | medium | console cursor row
+g_74DC CurPage | new | medium | page shown
+g_74DE DrawPage | new | medium | page drawn on
+g_74E0 CanvasCount | new | medium | canvases allocated
+g_74E4 CanvasSeg | new | medium | current canvas: segment (A000h for the screen)
+g_74EC CanvasRows | new | medium | current canvas: row address table
+g_74EE ClipLeftPlane | new | medium | clip left in plane units
+g_74F0 ClipRightPlane | new | medium | clip right in plane units
+g_74F2 ClipTopY | new | medium | clip top
+g_74F4 ClipBottomY | new | medium | clip bottom
+g_74F6 CanvasRowBytes | new | medium | current canvas: bytes per row
+g_74FC ClipLeftX | new | medium | clip left
+g_74FE ClipRightX | new | medium | clip right
+g_7520 DeadlineHi | new | medium | deadline, high word
+g_7526 DrawRawTransMasks | new | medium | plane masks for DrawRawTrans
+g_752A DrawRleFlipMasks | new | medium | plane masks for DrawRleFlip
+g_752E DrawRleTransMasks | new | medium | plane masks for DrawRleTrans
+g_7532 DrawRleTransFastMasks | new | medium | plane masks for DrawRleTransFast
+g_7536 DrawRawTransRemapMasks | new | medium | plane masks for DrawRawTransRemap
+g_753A DrawRleTransRemapMasks | new | medium | plane masks for DrawRleTransRemap
+g_753E DrawRleFlipTransMasks | new | medium | plane masks for DrawRleFlipTrans
+g_7542 DrawRleFlipTransRemapMasks | new | medium | plane masks for DrawRleFlipTransRemap
+g_7546 DrawRleFlipRemapMasks | new | medium | plane masks for DrawRleFlipRemap
+g_754A DrawRleTransRemapFastMasks | new | medium | plane masks for DrawRleTransRemapFast
+g_756C PixelMasks | new | medium | plane mask per pixel column
+g_7570 PageTable | new | medium | page table, offsets
+g_7572 PageTableSeg | new | medium | page table, segments
+g_7580 OffscreenOff | new | medium | off-screen canvas, offset
+g_7582 OffscreenSeg | new | medium | off-screen canvas, segment
+g_7584 PageBase | new | medium | start address of page 0
+g_75D6 Pot1X | new | medium | game port pot 1 x count
+g_75D8 Pot1Y | new | medium | game port pot 1 y count
+g_75DA Pot2X | new | medium | game port pot 2 x count
+g_75DC Pot2Y | new | medium | game port pot 2 y count
+g_75DE PotBits | new | medium | game port bits read last
+g_75E0 PotButtons | new | medium | game port buttons
+g_7631 AltCallPrev | new | medium | word before AltCall
+g_7642 BeforeDialogFn | new | medium | far routine called before a dialog
+g_7646 AfterDialogFn | new | medium | far routine called after a dialog
+g_7664 ScaleColor | new | medium | DrawScaled colour
+g_7665 ScaleColorHi | new | medium | DrawScaled colour, high byte
+g_7666 ScaleMode | new | medium | DrawScaled mode
+g_7670 RetraceWait | new | medium | retrace wait count from CalibrateRetrace
+g_7674 ScaleMasks | new | medium | plane masks for DrawScaled
+g_7678 ScaleMasks2 | new | medium | second plane mask table for DrawScaled
+g_7679 ScaleEdgeMasks | new | medium | edge masks for DrawScaled
+g_767D ScaleRightMasks | new | medium | right edge masks for DrawScaled
+g_7681 ScaleLeftMasks | new | medium | left edge masks for DrawScaled
+g_7692 LineMasks | new | medium | plane masks for DrawLineClipped
+g_7696 SpanMasks | new | medium | plane masks for FillSpanVga
+g_769A SpanLeftMasks | new | medium | left edge masks for FillSpanVga
+g_769B SpanLeftMasks2 | new | medium | left edge masks for FillSpanVga, second table
+g_769F SpanRightMasks | new | medium | right edge masks for FillSpanVga
+g_76DE AssetExtList | new | medium | extensions LoadAssetMode tries
+g_76F2 IdentityRemap | new | medium | remap table that changes nothing
+g_77B4 RectMasks | new | medium | plane masks for RectSpanPlanes
+g_77B8 RectLeftMasks | new | medium | left edge masks for RectSpanPlanes
+g_77B9 RectLeftMasks2 | new | medium | left edge masks for RectSpanPlanes, second table
+g_77BD RectRightMasks | new | medium | right edge masks for RectSpanPlanes
+g_77C8 DrawRawFastMasks | new | medium | plane masks for DrawRawFast
+g_77CC DrawRawTransFastMasks | new | medium | plane masks for DrawRawTransFast
+g_78D2 LineStepLimit | new | medium | line step limit
+g_78D4 LineStepTable | new | medium | line step table
+g_846A SeqTickCount | new | medium | sequencer ticks
+g_846C SeqBusy | new | medium | SeqService running
+g_8498 SfxChannel | new | medium | effects channel
+g_84C6 DriverCount | new | medium | sound drivers loaded
+g_84C8 TrackSlots | new | medium | 24 track slots of 58h bytes, offset
+g_84CA TrackSlotsSeg | new | medium | track slots, segment
+g_84CC Voices | new | medium | 32 voice records of 0Ch bytes, offset
+g_84CE VoicesSeg | new | medium | voice records, segment
+g_84D0 ChannelMasks | new | medium | channel bit per MIDI channel
+g_84F0 SongHandleLo | new | medium | last song handle, low word
+g_84F2 SongHandleHi | new | medium | last song handle, high word
+g_84F4 SeqLock | new | medium | sequencer locked while non-zero
+g_84F6 MidiQueueLen | new | medium | bytes in the MIDI queue
+g_84F8 MidiQueueBusy | new | medium | MIDI queue in use
+g_84FA TracksMuted | new | medium | tracks muted
+g_84FC SfxEnabled | new | medium | effects on
+g_84FE MusicEnabled | new | medium | second sound flag (music)
+g_8500 DriverName | new | medium | driver file name being loaded
+g_8502 DriverServiceIdx | new | medium | driver that needs service (FFh for none)
+g_8504 SongCount | new | medium | songs loaded
+g_8506 SongPtrs | new | medium | song pointers, offsets
+g_8508 SongPtrsSeg | new | medium | song pointers, segments
+g_8516 TopOfStack | new | medium | stack pointer at startup
+g_8518 ExitRoutine | new | medium | near routine errors leave through (_exit)
+g_851A DgroupTop | new | medium | top offset of DGROUP
+g_8542 OldInt0Vec | new | medium | saved INT 0 vector
+g_8544 OldInt0VecSeg | new | medium | saved INT 0 vector, segment
+g_8558 DosMajor | new | medium | DOS major version
+g_8573 ArgCount | new | medium | argc
+g_8575 ArgVector | new | medium | argv
+g_8577 EnvVector | new | medium | environ
+g_8580 MathVecSet | new | medium | a math error vector was installed
+g_8581 MathVecNum | new | medium | its interrupt number
+g_8582 MathVecOld | new | medium | its saved vector
+g_8586 StackOverflowFn | new | medium | alternate stack-overflow handler (FFFFh for none)
+g_858A StackLimit | new | medium | lowest allowed stack pointer
+g_858D CharTypes | new | medium | character type table (bit 4: digit)
+g_8694 AtexitPtr | new | medium | next free atexit slot
+g_8696 RandSeed | new | medium | rand seed, low word
+g_8698 RandSeedHigh | new | medium | rand seed, high word
+g_86B2 MsgBannerHook | new | medium | far routine called before a runtime message
+g_86B4 MsgBannerHookSeg | new | medium | its segment
+g_876A StreamExtra | new | medium | extra stream records for the standard buffers
+g_880A LastStream | new | medium | last stream record
+g_8871 CflushCount | new | medium | stream flush count
+g_8876 FltCvtFn | new | medium | float conversion routine
+g_887A CropZerosFn | new | medium | drops trailing zeros
+g_8882 ForceDecPtFn | new | medium | forces a decimal point
+g_888A PositiveFn | new | medium | checks the sign
+g_8A1C FloatMode | new | medium | float format mode
+g_8A1E FloatPrecision | new | medium | float precision
+g_8A20 FloatFlag | new | medium | float format flag
+g_8ABA FpStatusByte | new | medium | floating-point status byte
+g_8ABB FpStatusPad | new | medium | byte after FpStatusByte
+g_8ABD FpConstTable | new | medium | floating-point constants
+g_8AE2 InitHook | new | medium | near startup hook (0 skips)
+g_8AE4 DebugSignature | new | medium | D6D6h when a debugger hook is present
+g_8AE6 DebugWriteHook | new | medium | debugger write hook
+g_8AE8 DebugExitHook | new | medium | debugger exit hook
+g_8AEA DebugTermHook | new | medium | debugger termination hook
+g_8AF4 FpHook | new | medium | floating-point hook
+g_8AF6 FpHookCount | new | medium | number of floating-point hooks (0 skips)
+g_8AF8 FpEnvArg1 | new | medium | first floating-point hook argument
+g_8AFC FpEnvArg2 | new | medium | second floating-point hook argument
+g_8B08 DgroupSegA | new | medium | DGROUP paragraph (relocated)
+g_8B12 NumberWordsSeg | new | medium | paragraph of number_words
+g_8B14 DbFilesSeg | new | medium | paragraph of db_files
+g_8B16 DbFilesSeg2 | new | medium | paragraph of db_files
+g_8B18 DbFilesSeg3 | new | medium | paragraph of db_files
+g_8B1A ListDialogDataSeg | new | medium | paragraph of the list dialog data
+g_8B1C DgroupSegB | new | medium | DGROUP paragraph (relocated)
+g_8B1E InputEventDataSeg | new | medium | paragraph of the input event data
+g_8D04 DgroupSegC | new | medium | DGROUP paragraph (relocated)
+g_8D06 DgroupSegD | new | medium | DGROUP paragraph (relocated)
+g_8D08 DgroupSegE | new | medium | DGROUP paragraph (relocated)
+g_8D0A DgroupSegF | new | medium | DGROUP paragraph (relocated)
+g_8D0C PaletteFlagsSeg | new | medium | paragraph of palette_flags
+g_8D0E PaletteFlagsSeg2 | new | medium | paragraph of palette_flags
+g_8D10 WorkBufferSeg | new | medium | paragraph of work_buffer
+g_8D12 WorkBufferSeg2 | new | medium | paragraph of work_buffer
+g_8D14 WorkBufferSeg3 | new | medium | paragraph of work_buffer
+g_8EDC UnpackSpare1 | new | medium | word before InPtr
+g_8EE0 UnpackSpare2 | new | medium | word before MapPair
+g_8EE6 UnpackSpare3 | new | medium | word before BitCount
+g_8EEA SentencePtr | new | medium | current speech sentence
+g_8EEC SentenceSeg | new | medium | its segment
+g_8EEE PauseSampleOff | new | medium | silent sample, offset
+g_8EF0 PauseSampleSeg | new | medium | silent sample, segment
+g_8EF2 WantedList | new | medium | samples wanted, offset
+g_8EF4 WantedListSeg | new | medium | samples wanted, segment
+g_8EF6 SpeechBank | new | medium | speech bank, offset
+g_8EF8 SpeechBankSeg | new | medium | speech bank, segment
+g_8EFA MoveBlockOff | new | medium | MoveMemBlock target, offset
+g_8EFC MoveBlockSeg | new | medium | MoveMemBlock target, segment
+g_8F56 ShadeTableOff | new | medium | shade table being built, offset
+g_8F58 ShadeTableSeg | new | medium | shade table being built, segment
+g_8F5A ShadeFactorR | new | medium | red factor
+g_8F5C ShadeFactorG | new | medium | green factor
+g_8F5E ShadeFactorB | new | medium | blue factor
+g_8F60 ShadeR | new | medium | red result
+g_8F62 ShadeG | new | medium | green result
+g_8F64 ShadeB | new | medium | blue result
+g_8F66 ShadeGrey | new | medium | grey the result
+g_8F68 MidiMsg | new | medium | MIDI message being sent: status byte
+g_8F69 MidiMsg1 | new | medium | first data byte
+g_8F6A MidiMsg2 | new | medium | second data byte
+g_8FA8 PatchMsg | new | medium | patch message: status byte
+g_8FA9 PatchMsg1 | new | medium | patch message byte 1
+g_8FAA PatchMsg2 | new | medium | patch message byte 2
+g_8FAB PatchMsg3 | new | medium | patch message byte 3
+g_8FAC SongFileName | new | medium | song file name
+g_8FC0 SongFileNameEnd | new | medium | end of the song file name
+g_8FC2 SongBankNum | new | medium | song bank number
+g_8FC6 SfxMsg | new | medium | effect message: status byte
+g_8FC7 SfxMsg1 | new | medium | effect message byte 1
+g_8FC8 SfxMsg2 | new | medium | effect message byte 2
+g_8FCE DrvTableName | new | medium | driver table: name, entry -8
+g_8FD0 DrvTableSeg | new | medium | driver table: segment, entry -6
+g_8FD6 DrvTableInit | new | medium | driver table: init routine (38h-byte entries)
+g_8FDA DrvTableCall04 | new | medium | driver table: routine +4
+g_8FDE DrvTableCall08 | new | medium | driver table: routine +8
+g_8FE2 DrvTableShutdown | new | medium | driver table: shutdown routine
+g_8FE6 DrvTableCall10 | new | medium | driver table: routine +10h
+g_8FEA DrvTableService | new | medium | driver table: service routine
+g_8FEE DrvTableNeedsService | new | medium | driver table: needs-service routine
+g_8FF2 DrvTableLoadBank | new | medium | driver table: load bank routine
+g_9002 DrvTableSendMidi | new | medium | driver table: send MIDI routine
+g_900A DrvTablePlaySample | new | medium | driver table: play sample routine
+g_9096 StrBufPtr | new | medium | sprintf string stream: pointer
+g_9098 StrBufCnt | new | medium | sprintf string stream: space left
+g_909A StrBufBase | new | medium | sprintf string stream: base
+g_909C StrBufFlag | new | medium | sprintf string stream: flags
+g_909E FloatArgPtr | new | medium | float argument being formatted
+g_90A8 FltOutFlags | new | medium | float output flags
+g_90A9 FltOutFlags1 | new | medium | float output flags, high byte
+g_90AA FltOutExp | new | medium | float output exponent
+g_AE90 HeapSizeLo | new | medium | heap size, low word
+g_AE92 HeapSizeHi | new | medium | heap size, high word
+g_AE98 DialogData | new | medium | dialog data, offset
+g_AE9A DialogDataSeg | new | medium | dialog data, segment
+g_AEA0 HeapVar0 | new | medium | heap variable
+g_AEA2 HeapList | new | medium | far heap list
+g_AEA4 HeapVar1 | new | medium | heap variable
+g_AEA6 HeapVar2 | new | medium | heap variable
+g_AEA8 HeapVar3 | new | medium | heap variable
+g_AEAA HeapVar4 | new | medium | heap variable
+g_AEAC HeapVar5 | new | medium | heap variable
+g_AEAE HeapVar6 | new | medium | heap variable
+g_AEB0 HeapVar7 | new | medium | heap variable
+g_AEB2 MemBlock1Off | new | medium | memory block 1, offset
+g_AEB4 MemBlock1Seg | new | medium | memory block 1, segment
+g_AEB6 MemBlock2Off | new | medium | memory block 2, offset
+g_AEB8 MemBlock2Seg | new | medium | memory block 2, segment
+g_AEBA MemBlock3Off | new | medium | memory block 3, offset
+g_AEBC MemBlock3Seg | new | medium | memory block 3, segment
+g_AECE InputFlags | new | medium | input device flags
+g_AED0 InputQueue | new | medium | input event queue
+g_AFD0 CursorX | new | medium | cursor x
+g_AFD2 CursorY | new | medium | cursor y
+g_B06A PadStatePtr | new | medium | pad state being updated
+g_B08E HotKeyFn | new | medium | far routine for hot keys
+g_B090 HotKeyFnSeg | new | medium | its segment
+g_B0C4 TeamPalette1 | new | medium | first team palette
+g_B1C4 TeamPalette2 | new | medium | second team palette
+g_B2CA ArenaJingleSet | new | medium | arena jingle per team
+g_B2CC BoxSaveX | new | medium | box save x
+g_B2CE BoxSaveY | new | medium | box save y
+g_B2D0 YesNoText | new | medium | AskYesNo text, offset
+g_B2D2 YesNoTextSeg | new | medium | AskYesNo text, segment
+g_B2D4 MessageBoxSel | new | medium | message box selection (FFFFh for none)
+g_B2D6 ArenaJingleArg1 | new | medium | arena jingle argument
+g_B2D8 ArenaJingleArg2 | new | medium | arena jingle argument
+g_B2DA JingleSongOff | new | medium | jingle song, offset
+g_B2DC JingleSongSeg | new | medium | jingle song, segment
+g_B2DE JingleBufOff | new | medium | jingle buffer, offset
+g_B2E0 JingleBufSeg | new | medium | jingle buffer, segment
+g_B2E2 JingleTempo | new | medium | jingle tempo (14h)
+g_B2E7 JingleChannel | new | medium | jingle channel (FFh)
+g_B2E8 JingleVolume | new | medium | jingle volume (3Fh)
+g_B2E9 JinglePan | new | medium | jingle pan
+g_B2EE ArenaJingleA | new | medium | arena jingle table
+g_B2F0 ArenaJingleASeg | new | medium | arena jingle table, segment
+g_B2FA ArenaJingleB | new | medium | arena jingle table
+g_B2FC ArenaJingleBSeg | new | medium | arena jingle table, segment
+g_B31E ArenaJingleC | new | medium | arena jingle table
+g_B320 ArenaJingleCSeg | new | medium | arena jingle table, segment
+g_B336 ArenaJingleD | new | medium | arena jingle table
+g_B338 ArenaJingleDSeg | new | medium | arena jingle table, segment
+g_B34E VgaSave0Off | new | medium | saved plane 0, offset
+g_B350 VgaSave0Seg | new | medium | saved plane 0, segment
+g_B352 VgaSave1Off | new | medium | saved plane 1, offset
+g_B354 VgaSave1Seg | new | medium | saved plane 1, segment
+g_B356 VgaSave2Off | new | medium | saved plane 2, offset
+g_B358 VgaSave2Seg | new | medium | saved plane 2, segment
+g_B35A VgaSave3Off | new | medium | saved plane 3, offset
+g_B35C VgaSave3Seg | new | medium | saved plane 3, segment
+g_DF72 RetraceCount | new | medium | retrace count measured by CalibrateRetrace
+g_DF74 MidiQueue | new | medium | 128-byte MIDI queue
+g_DF75 MidiQueue1 | new | medium | MIDI queue, second byte
+g_DFF4 PatchBank | new | medium | patch bank, offset
+g_DFF6 PatchBankSeg | new | medium | patch bank, segment
+g_DFF8 ChannelUsed | new | medium | channel in use, per MIDI channel
+g_E008 LoadedSongs | new | medium | 10 loaded songs, offsets
+g_E00A LoadedSongsSeg | new | medium | loaded songs, segments
+g_E030 SongParts | new | medium | parts tables of the loaded songs
+g_E032 SongPartsSeg | new | medium | parts tables, segments
+g_E058 SongSeqs | new | medium | sequence tables of the loaded songs
+g_E05A SongSeqsSeg | new | medium | sequence tables, segments
+g_E080 SeqTimerSlot | new | medium | timer slot of the sequencer
+g_E082 SeqTimerSlotSeg | new | medium | timer slot, segment
+g_E084 DriverTypes | new | medium | driver type per driver
+g_E086 DriverEntrySeg | new | medium | driver entry segment
+g_E08C VoiceFreeList | new | medium | free voice list
+g_E08E VoiceFreeListSeg | new | medium | free voice list, segment
+g_E090 VoiceListNext | new | medium | voice list links
+g_E092 VoiceListNextSeg | new | medium | voice list links, segment
+g_E094 VoiceListPrev | new | medium | voice list back links
+g_E096 VoiceListPrevSeg | new | medium | voice list back links, segment
+g_E09D VoiceListId | new | medium | voice list id byte
+g_E11C VoiceListEnd | new | medium | end of the voice lists
+g_E11E VoiceListEndSeg | new | medium | end of the voice lists, segment
+g_E120 VoiceListFlags | new | medium | voice list flags

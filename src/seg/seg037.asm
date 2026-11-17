@@ -11,7 +11,7 @@ CalibrateStick:
 	push	di
 	push	si
 	mov	word [TickSkip], 0x1
-	call	far [g_7642]
+	call	far [BeforeDialogFn]
 	call	0x06E1:LargestGap
 	and	al, 0xf0
 	db	0x0B, 0xD2		; or dx, dx
@@ -72,7 +72,7 @@ CalibrateStick:
 	call	0x0FEF:ClearClipRectColor
 	push	word 0xc8
 	push	0x0
-	mov	es, [g_8D06]
+	mov	es, [DgroupSegD]
 	push	word [es:0x74f6]
 	push	0x0
 	call	0x0FEF:SetClipRectPlanes
@@ -156,8 +156,8 @@ CalibrateStick:
 	push	0x20
 	db	0x8B, 0xDE		; mov bx, si
 	shl	bx, 1
-	push	word [bx + g_6F22]
-	push	word [bx + g_6F10]
+	push	word [bx + CalibTargetY]
+	push	word [bx + CalibTargetX]
 	call	0x0FEF:FillRect
 	add	sp, 0xa
 	inc	si
@@ -169,8 +169,8 @@ CalibrateStick:
 	push	0x20
 	db	0x8B, 0xC7		; mov ax, di
 	shl	di, 1
-	push	word [di + g_6F22]
-	push	word [di + g_6F10]
+	push	word [di + CalibTargetY]
+	push	word [di + CalibTargetX]
 	db	0x8B, 0xF0		; mov si, ax
 	call	0x0FEF:FillRect
 	add	sp, 0xa
@@ -205,7 +205,7 @@ CalibrateStick:
 	not	ax
 	and	[JoyOn], ax
 .12:
-	call	far [g_7646]
+	call	far [AfterDialogFn]
 	mov	word [TickSkip], 0x0
 	pop	si
 	pop	di

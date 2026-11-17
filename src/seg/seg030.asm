@@ -8,7 +8,7 @@ DrawFrameTail:
 LargestFreeBlock:
 	enter	0xc, 0x0
 	push	di
-	les	bx, [ss:g_AEA2]
+	les	bx, [ss:HeapList]
 	mov	ax, [es:bx + 0x1c]
 	mov	dx, [es:bx + 0x1e]
 	db	0x8B, 0xF8		; mov di, ax

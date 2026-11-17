@@ -26,7 +26,7 @@ __aFlshl		equ	0x1258
 ConPrint		equ	0x17CA
 RemapShapeBank		equ	0x472A
 ConvertShapeBank		equ	0x4782
-g_76DE		equ	0x76DE
+AssetExtList		equ	0x76DE
 str_Qns		equ	0x7730
 str_Pns		equ	0x7735
 str_Qvs		equ	0x773A

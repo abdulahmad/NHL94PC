@@ -24,12 +24,12 @@ LoadTextState		equ	0x19E1
 SetClipRectPlanes		equ	0x3A59
 CopyPlanesRect		equ	0x4262
 TickSkip		equ	0x6DB2
-g_6F10		equ	0x6F10
-g_6F22		equ	0x6F22
+CalibTargetX		equ	0x6F10
+CalibTargetY		equ	0x6F22
 str_LeftJoystick		equ	0x6FDB
 str_RightJoystick		equ	0x6FE9
 JoyOn		equ	0x7308
-g_7642		equ	0x7642
-g_7646		equ	0x7646
-g_8D06		equ	0x8D06
+BeforeDialogFn		equ	0x7642
+AfterDialogFn		equ	0x7646
+DgroupSegD		equ	0x8D06
 %include "seg/seg037.asm"

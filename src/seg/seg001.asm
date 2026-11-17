@@ -632,9 +632,9 @@ PassFlag0:
 
 ArgSetup:
 	mov	ax, word [bp+6]
-	mov	word [g_7664], ax
+	mov	word [ScaleColor], ax
 	mov	ax, word [bp+0xa]
-	mov	word [g_7666], ax
+	mov	word [ScaleMode], ax
 	mov	ax, word [bp+8]
 	mov	word [bp+6], ax
 	mov	ax, word [bp+0xc]
@@ -1914,7 +1914,7 @@ HookInt8:
 	mov	word [TickFrac], 0
 	mov	word [TickGate], 1
 	mov	word [SlotTab], 0
-	mov	word [g_6DB6], 0
+	mov	word [TickSkipCount], 0
 	mov	word [cs:Int8Ds], ds
 	sti
 	mov	al, 0xb6
@@ -1928,17 +1928,17 @@ HookInt8:
 	mov	ax, word es:[0x20]
 	cmp	ax, Int8Handler
 	je	short .1
-	mov	word [g_6D98], ax
+	mov	word [OldInt8Off], ax
 .1:
 	mov	ax, word es:[0x22]
 	mov	bx, cs
 	db	0x3B, 0xC3			; cmp ax, bx
 	je	short .2
-	mov	word [g_6D9A], ax
+	mov	word [OldInt8Seg], ax
 	mov	word [es:0x20], Int8Handler
 	mov	word es:[0x22], cs
-	mov	word [g_6D9C], EmptyRet
-	mov	word [g_6D9E], cs
+	mov	word [TickHookOff], EmptyRet
+	mov	word [TickHookSeg], cs
 .2:
 	in	al, 0x21
 	and	al, 0xfc
@@ -1977,9 +1977,9 @@ UnhookInt8:
 	or	al, 3
 	out	0x21, al
 	cli
-	mov	ax, word [g_6D98]
+	mov	ax, word [OldInt8Off]
 	mov	word es:[0x20], ax
-	mov	ax, word [g_6D9A]
+	mov	ax, word [OldInt8Seg]
 	mov	word es:[0x22], ax
 	in	al, 0x21
 	and	al, 0xfc
@@ -2143,7 +2143,7 @@ Int8Handler:
 	jae	short .8
 	inc	word [TickTotal]
 	jne	short .5
-	inc	word [g_6DA6]
+	inc	word [TickCountAll]
 .5:
 	db	0x33, 0xC0			; xor ax, ax
 	mov	ds, ax
@@ -2405,7 +2405,7 @@ JoyNibble:
 	db	0x8B, 0xEC			; mov bp, sp
 	mov	bx, word [bp + 6]
 	and	bx, 0xf
-	mov	al, byte [bx + g_701F]
+	mov	al, byte [bx + JoyNibbleTable]
 	db	0x32, 0xE4			; xor ah, ah
 	leave
 	retf
@@ -2457,7 +2457,7 @@ PollSticks:
 	in	al, dx
 	mov	byte [StickRaw], al
 	db	0x32, 0xFF			; xor bh, bh
-	mov	bl, byte [bx + g_7074]
+	mov	bl, byte [bx + StickDirTable]
 	mov	ax, 0x50
 	mov	word [Stick1X], ax
 	mov	word [Stick1Y], ax
@@ -2514,103 +2514,103 @@ PollSticks:
 	jmp	near .28
 .11:
 	mov	bx, word [Stick1X]
-	cmp	bx, word [g_7058]
+	cmp	bx, word [Stick1XMin]
 	jge	short .14
-	mov	word [g_7058], bx
-	mov	bx, word [g_705A]
+	mov	word [Stick1XMin], bx
+	mov	bx, word [Stick1XMax]
 .12:
-	sub	bx, word [g_7058]
+	sub	bx, word [Stick1XMin]
 	jle	short .13
 	db	0x33, 0xD2			; xor dx, dx
 	mov	ax, 0x4000
 	div	bx
-	mov	word [g_7070], ax
+	mov	word [Stick1XScale], ax
 .13:
 	db	0x8B, 0xC3			; mov ax, bx
 	mov	dx, GamePort
 	shr	ax, 1
 	db	0x8B, 0xD8			; mov bx, ax
 	shr	bx, 1
-	add	ax, word [g_7058]
+	add	ax, word [Stick1XMin]
 	db	0x03, 0xC3			; add ax, bx
-	mov	word [g_7062], ax
+	mov	word [Stick1XHigh], ax
 	db	0x2B, 0xC3			; sub ax, bx
 	db	0x2B, 0xC3			; sub ax, bx
-	mov	word [g_7060], ax
+	mov	word [Stick1XLow], ax
 	mov	bx, word [Stick1X]
 	jmp	short .16
 .14:
-	cmp	bx, word [g_705A]
+	cmp	bx, word [Stick1XMax]
 	jle	short .16
-	dec	word [g_705E]
+	dec	word [Stick1XSettle]
 	je	short .15
-	cmp	bx, word [g_705C]
+	cmp	bx, word [Stick1XLast]
 	jge	short .17
-	mov	word [g_705C], bx
+	mov	word [Stick1XLast], bx
 	jmp	short .17
 .15:
-	mov	bx, word [g_705C]
-	mov	word [g_705A], bx
+	mov	bx, word [Stick1XLast]
+	mov	word [Stick1XMax], bx
 	jmp	short .12
 .16:
-	mov	word [g_705E], 8
-	mov	word [g_705C], 0x4e20
+	mov	word [Stick1XSettle], 8
+	mov	word [Stick1XLast], 0x4e20
 .17:
-	cmp	bx, word [g_7060]
+	cmp	bx, word [Stick1XLow]
 	jl	short .21
-	cmp	bx, word [g_7062]
+	cmp	bx, word [Stick1XHigh]
 	jl	short .18
 	or	byte [Stick1Bits], 4
 .18:
 	mov	bx, word [Stick1Y]
-	cmp	bx, word [g_7064]
+	cmp	bx, word [Stick1YMin]
 	jae	short .22
-	mov	word [g_7064], bx
-	mov	bx, word [g_7066]
+	mov	word [Stick1YMin], bx
+	mov	bx, word [Stick1YMax]
 .19:
-	sub	bx, word [g_7064]
+	sub	bx, word [Stick1YMin]
 	jle	short .20
 	db	0x33, 0xD2			; xor dx, dx
 	mov	ax, 0x4000
 	div	bx
-	mov	word [g_7072], ax
+	mov	word [Stick1YScale], ax
 .20:
 	db	0x8B, 0xC3			; mov ax, bx
 	mov	dx, GamePort
 	shr	ax, 1
 	db	0x8B, 0xD8			; mov bx, ax
 	shr	bx, 1
-	add	ax, word [g_7064]
+	add	ax, word [Stick1YMin]
 	db	0x03, 0xC3			; add ax, bx
-	mov	word [g_706E], ax
+	mov	word [Stick1YHigh], ax
 	db	0x2B, 0xC3			; sub ax, bx
 	db	0x2B, 0xC3			; sub ax, bx
-	mov	word [g_706C], ax
+	mov	word [Stick1YLow], ax
 	mov	bx, word [Stick1Y]
 	jmp	short .24
 .21:
 	or	byte [Stick1Bits], 8
 	jmp	short .18
 .22:
-	cmp	bx, word [g_7066]
+	cmp	bx, word [Stick1YMax]
 	jle	short .24
-	dec	word [g_706A]
+	dec	word [Stick1YSettle]
 	je	short .23
-	cmp	bx, word [g_7068]
+	cmp	bx, word [Stick1YLast]
 	jge	short .25
-	mov	word [g_7068], bx
+	mov	word [Stick1YLast], bx
 	jmp	short .25
 .23:
-	mov	bx, word [g_7068]
-	mov	word [g_7066], bx
+	mov	bx, word [Stick1YLast]
+	mov	word [Stick1YMax], bx
 	jmp	short .19
 .24:
-	mov	word [g_706A], 8
-	mov	word [g_7068], 0x4e20
+	mov	word [Stick1YSettle], 8
+	mov	word [Stick1YLast], 0x4e20
 .25:
-	cmp	bx, word [g_706C]
+	cmp	bx, word [Stick1YLow]
 	jb	short .27
-	cmp	bx, word [g_706E]
+	cmp	bx, word [Stick1YHigh]
 	jb	short .26
 	or	byte [Stick1Bits], 2
 .26:
@@ -2629,103 +2629,103 @@ PollSticks:
 	jmp	near .45
 .29:
 	mov	bx, word [Stick2X]
-	cmp	bx, word [g_7034]
+	cmp	bx, word [Stick2XMin]
 	jge	short .32
-	mov	word [g_7034], bx
-	mov	bx, word [g_7036]
+	mov	word [Stick2XMin], bx
+	mov	bx, word [Stick2XMax]
 .30:
-	sub	bx, word [g_7034]
+	sub	bx, word [Stick2XMin]
 	jle	short .31
 	db	0x33, 0xD2			; xor dx, dx
 	mov	ax, 0x4000
 	div	bx
-	mov	word [g_704C], ax
+	mov	word [Stick2XScale], ax
 .31:
 	db	0x8B, 0xC3			; mov ax, bx
 	mov	dx, GamePort
 	shr	ax, 1
 	db	0x8B, 0xD8			; mov bx, ax
 	shr	bx, 1
-	add	ax, word [g_7034]
+	add	ax, word [Stick2XMin]
 	db	0x03, 0xC3			; add ax, bx
-	mov	word [g_703E], ax
+	mov	word [Stick2XHigh], ax
 	db	0x2B, 0xC3			; sub ax, bx
 	db	0x2B, 0xC3			; sub ax, bx
-	mov	word [g_703C], ax
+	mov	word [Stick2XLow], ax
 	mov	bx, word [Stick2X]
 	jmp	short .34
 .32:
-	cmp	bx, word [g_7036]
+	cmp	bx, word [Stick2XMax]
 	jle	short .34
-	dec	word [g_703A]
+	dec	word [Stick2XSettle]
 	je	short .33
-	cmp	bx, word [g_7038]
+	cmp	bx, word [Stick2XLast]
 	jge	short .35
-	mov	word [g_7038], bx
+	mov	word [Stick2XLast], bx
 	jmp	short .35
 .33:
-	mov	bx, word [g_7038]
-	mov	word [g_7036], bx
+	mov	bx, word [Stick2XLast]
+	mov	word [Stick2XMax], bx
 	jmp	short .30
 .34:
-	mov	word [g_703A], 8
-	mov	word [g_7038], 0x4e20
+	mov	word [Stick2XSettle], 8
+	mov	word [Stick2XLast], 0x4e20
 .35:
-	cmp	bx, word [g_703C]
+	cmp	bx, word [Stick2XLow]
 	jl	short .39
-	cmp	bx, word [g_703E]
+	cmp	bx, word [Stick2XHigh]
 	jl	short .36
 	or	byte [Stick2Bits], 4
 .36:
 	mov	bx, word [Stick2Y]
-	cmp	bx, word [g_7040]
+	cmp	bx, word [Stick2YMin]
 	jae	short .40
-	mov	word [g_7040], bx
-	mov	bx, word [g_7042]
+	mov	word [Stick2YMin], bx
+	mov	bx, word [Stick2YMax]
 .37:
-	sub	bx, word [g_7040]
+	sub	bx, word [Stick2YMin]
 	jle	short .38
 	db	0x33, 0xD2			; xor dx, dx
 	mov	ax, 0x4000
 	div	bx
-	mov	word [g_704E], ax
+	mov	word [Stick2YScale], ax
 .38:
 	db	0x8B, 0xC3			; mov ax, bx
 	mov	dx, GamePort
 	shr	ax, 1
 	db	0x8B, 0xD8			; mov bx, ax
 	shr	bx, 1
-	add	ax, word [g_7040]
+	add	ax, word [Stick2YMin]
 	db	0x03, 0xC3			; add ax, bx
-	mov	word [g_704A], ax
+	mov	word [Stick2YHigh], ax
 	db	0x2B, 0xC3			; sub ax, bx
 	db	0x2B, 0xC3			; sub ax, bx
-	mov	word [g_7048], ax
+	mov	word [Stick2YLow], ax
 	mov	bx, word [Stick2Y]
 	jmp	short .42
 .39:
 	or	byte [Stick2Bits], 8
 	jmp	short .36
 .40:
-	cmp	bx, word [g_7042]
+	cmp	bx, word [Stick2YMax]
 	jle	short .42
-	dec	word [g_7046]
+	dec	word [Stick2YSettle]
 	je	short .41
-	cmp	bx, word [g_7044]
+	cmp	bx, word [Stick2YLast]
 	jge	short .43
-	mov	word [g_7044], bx
+	mov	word [Stick2YLast], bx
 	jmp	short .43
 .41:
-	mov	bx, word [g_7044]
-	mov	word [g_7042], bx
+	mov	bx, word [Stick2YLast]
+	mov	word [Stick2YMax], bx
 	jmp	short .37
 .42:
-	mov	word [g_7046], 8
-	mov	word [g_7044], 0x4e20
+	mov	word [Stick2YSettle], 8
+	mov	word [Stick2YLast], 0x4e20
 .43:
-	cmp	bx, word [g_7048]
+	cmp	bx, word [Stick2YLow]
 	jb	short .46
-	cmp	bx, word [g_704A]
+	cmp	bx, word [Stick2YHigh]
 	jb	short .44
 	or	byte [Stick2Bits], 2
 .44:
@@ -2748,31 +2748,31 @@ PollSticks:
 ; Set JoyOn bit 0 and the initial limits for the first pair. _main calls this.
 InitStick1:
 	or	byte [JoyOn], 1
-	mov	word [g_7058], 0x50
-	mov	word [g_705A], 0
-	mov	word [g_7064], 0x50
-	mov	word [g_7066], 0
+	mov	word [Stick1XMin], 0x50
+	mov	word [Stick1XMax], 0
+	mov	word [Stick1YMin], 0x50
+	mov	word [Stick1YMax], 0
 	retf
 
 
 ; Set JoyOn bit 1 and the initial limits for the second pair. _main calls this.
 InitStick2:
 	or	byte [JoyOn], 2
-	mov	word [g_7034], 0x50
-	mov	word [g_7036], 0
-	mov	word [g_7040], 0x50
-	mov	word [g_7042], 0
+	mov	word [Stick2XMin], 0x50
+	mov	word [Stick2XMax], 0
+	mov	word [Stick2YMin], 0x50
+	mov	word [Stick2YMax], 0
 	retf
 
 
 ; (Stick1X minus its low limit) times the X scale. High word of the product minus 1Fh.
 ScaleStick1X:
 	mov	ax, word [Stick1X]
-	sub	ax, word [g_7058]
+	sub	ax, word [Stick1XMin]
 	jge	short .1
 	db	0x33, 0xC0			; xor ax, ax
 .1:
-	mul	word [g_7070]
+	mul	word [Stick1XScale]
 	db	0x8A, 0xC4			; mov al, ah
 	db	0x8A, 0xE2			; mov ah, dl
 	sub	ax, 0x1f
@@ -2782,11 +2782,11 @@ ScaleStick1X:
 ; The same scale for Stick1Y.
 ScaleStick1Y:
 	mov	ax, word [Stick1Y]
-	sub	ax, word [g_7064]
+	sub	ax, word [Stick1YMin]
 	jge	short .1
 	db	0x33, 0xC0			; xor ax, ax
 .1:
-	mul	word [g_7072]
+	mul	word [Stick1YScale]
 	db	0x8A, 0xC4			; mov al, ah
 	db	0x8A, 0xE2			; mov ah, dl
 	sub	ax, 0x1f
@@ -2796,11 +2796,11 @@ ScaleStick1Y:
 ; The same scale for Stick2X.
 ScaleStick2X:
 	mov	ax, word [Stick2X]
-	sub	ax, word [g_7034]
+	sub	ax, word [Stick2XMin]
 	jge	short .1
 	db	0x33, 0xC0			; xor ax, ax
 .1:
-	mul	word [g_704C]
+	mul	word [Stick2XScale]
 	db	0x8A, 0xC4			; mov al, ah
 	db	0x8A, 0xE2			; mov ah, dl
 	sub	ax, 0x1f
@@ -2810,11 +2810,11 @@ ScaleStick2X:
 ; The same scale for Stick2Y.
 ScaleStick2Y:
 	mov	ax, word [Stick2Y]
-	sub	ax, word [g_7040]
+	sub	ax, word [Stick2YMin]
 	jge	short .1
 	db	0x33, 0xC0			; xor ax, ax
 .1:
-	mul	word [g_704E]
+	mul	word [Stick2YScale]
 	db	0x8A, 0xC4			; mov al, ah
 	db	0x8A, 0xE2			; mov ah, dl
 	sub	ax, 0x1f
@@ -2838,21 +2838,21 @@ HookKbd:
 	mov	bx, word es:[0x24]
 	cmp	bx, KbdIrq
 	je	short .1
-	mov	word [g_712E], bx
+	mov	word [OldInt9Off], bx
 	mov	bx, word es:[0x26]
-	mov	word [g_7130], bx
+	mov	word [OldInt9Seg], bx
 	mov	word [es:0x24], KbdIrq
 	mov	word es:[0x26], cs
 	mov	bx, word es:[0x58]
-	mov	word [g_7132], bx
+	mov	word [OldInt16Off], bx
 	mov	bx, word es:[0x5a]
-	mov	word [g_7134], bx
+	mov	word [OldInt16Seg], bx
 	mov	word [es:0x58], Int16Hook
 	mov	word es:[0x5a], cs
 	mov	bx, word es:[0x8c]
-	mov	word [g_7136], bx
+	mov	word [OldInt23Off], bx
 	mov	bx, word es:[0x8e]
-	mov	word [g_7138], bx
+	mov	word [OldInt23Seg], bx
 	mov	word [es:0x8c], BreakIrq
 	mov	word es:[0x8e], cs
 	mov	bx, KeyService
@@ -2884,20 +2884,20 @@ UnhookKbd:
 	out	0x21, al
 	db	0x33, 0xDB			; xor bx, bx
 	mov	es, bx
-	mov	bx, word [g_712E]
+	mov	bx, word [OldInt9Off]
 	db	0x0B, 0xDB			; or bx, bx
 	je	short .2
 	mov	word es:[0x24], bx
-	mov	bx, word [g_7130]
+	mov	bx, word [OldInt9Seg]
 	mov	word es:[0x26], bx
-	mov	bx, word [g_7132]
+	mov	bx, word [OldInt16Off]
 	mov	word es:[0x58], bx
-	mov	bx, word [g_7134]
+	mov	bx, word [OldInt16Seg]
 	mov	word es:[0x5a], bx
-	mov	bx, word [g_7136]
+	mov	bx, word [OldInt23Off]
 .1:
 	mov	word es:[0x8c], bx
-	mov	bx, word [g_7138]
+	mov	bx, word [OldInt23Seg]
 	mov	word es:[0x8e], bx
 	mov	bx, BiosKey
 	mov	word [KeyPtr], bx
@@ -3168,7 +3168,7 @@ WaitKeyUntil:
 	cmp	ax, 0
 	jne	short .2
 	call	CopyParasDown.4:ReadCallCount	; seg001
-	cmp	dx, word [g_7520]
+	cmp	dx, word [DeadlineHi]
 	jb	short WaitKeyUntil
 	ja	short .1
 	cmp	ax, word [Deadline]
@@ -3264,9 +3264,9 @@ ConFlush:
 
 ConPrint:
 	pop	ax
-	mov	word [g_744C], ax
+	mov	word [ConCursorX], ax
 	pop	ax
-	mov	word [g_744E], ax
+	mov	word [ConCursorY], ax
 	mov	ax, ConBuf
 	push	ax
 	call	0:_sprintf			; seg000
@@ -3275,9 +3275,9 @@ ConPrint:
 	mov	ax, word [TextMark]
 	mov	word [TextPos], ax
 .1:
-	mov	ax, word [g_744E]
+	mov	ax, word [ConCursorY]
 	push	ax
-	mov	ax, word [g_744C]
+	mov	ax, word [ConCursorX]
 	push	ax
 
 ConOut:
@@ -3362,9 +3362,9 @@ ConOut:
 ; Set the cursor from a row and column, format into ConBuf, and write it.
 ConPrintAt:
 	pop	ax
-	mov	word [g_744C], ax
+	mov	word [ConCursorX], ax
 	pop	ax
-	mov	word [g_744E], ax
+	mov	word [ConCursorY], ax
 	pop	bx
 	pop	ax
 	mov	dl, 0xa0
@@ -3527,11 +3527,11 @@ SaveTextState:
 	mov	es, ax
 	mov	cx, 0xf
 	rep movsw
-	mov	bx, word [g_74DC]
+	mov	bx, word [CurPage]
 	db	0x03, 0xDB			; add bx, bx
 	db	0x03, 0xDB			; add bx, bx
-	mov	si, word [bx + g_7570]
-	mov	ds, word [bx + g_7572]
+	mov	si, word [bx + PageTable]
+	mov	ds, word [bx + PageTableSeg]
 	mov	cx, 0xf
 	rep movsw
 	mov	ds, ax
@@ -3553,11 +3553,11 @@ LoadTextState:
 	mov	di, 0x74e2
 	mov	cx, 0xf
 	rep movsw
-	mov	bx, word [g_74DC]
+	mov	bx, word [CurPage]
 	db	0x03, 0xDB			; add bx, bx
 	db	0x03, 0xDB			; add bx, bx
-	mov	di, word [bx + g_7570]
-	mov	es, word [bx + g_7572]
+	mov	di, word [bx + PageTable]
+	mov	es, word [bx + PageTableSeg]
 	mov	cx, 0xf
 	rep movsw
 	pop	si
@@ -3633,7 +3633,7 @@ SetDeadline:
 	db	0x03, 0xC3			; add ax, bx
 	db	0x13, 0xD1			; adc dx, cx
 	mov	word [Deadline], ax
-	mov	word [g_7520], dx
+	mov	word [DeadlineHi], dx
 	retf
 
 ; Specific EOI for IRQ 0, then hlt until CallCount reaches Deadline.
@@ -3651,7 +3651,7 @@ WaitDeadlineNoEoi:
 	les	ax, [CallCount]
 	mov	dx, es
 	sub	ax, word [Deadline]
-	sbb	dx, word [g_7520]
+	sbb	dx, word [DeadlineHi]
 	jns	short .3
 	loop	.1
 	cmp	word [CallCount], bx
@@ -3667,7 +3667,7 @@ DeadlineReached:
 	les	bx, [CallCount]
 	mov	dx, es
 	sub	bx, word [Deadline]
-	sbb	dx, word [g_7520]
+	sbb	dx, word [DeadlineHi]
 	adc	ax, -2
 	not	ax
 	retf
@@ -3948,7 +3948,7 @@ MouseOpen:
 .1:
 	inc	word [MouseOn]
 	mov	word [MouseYShift], 0
-	cmp	word [g_6406], 0
+	cmp	word [MouseActive], 0
 	je	short .2
 	mov	word [MouseRatioShift], 2
 	inc	word [MouseYShift]
@@ -3991,16 +3991,16 @@ MouseOpen:
 	push	cs
 	call	MouseRatio
 	mov	ax, cs
-	mov	word [g_640C], 0x1d56
-	mov	word [g_640E], ax
-	mov	word [g_6410], 0x1d56
-	mov	word [g_6412], ax
-	mov	word [g_6414], 0x1d37
-	mov	word [g_6416], ax
-	mov	word [g_6418], 0x1c3d
-	mov	word [g_641A], ax
+	mov	word [MouseShowFn], 0x1d56
+	mov	word [MouseShowFnSeg], ax
+	mov	word [MouseHideFn], 0x1d56
+	mov	word [MouseHideFnSeg], ax
+	mov	word [MouseReadFn], 0x1d37
+	mov	word [MouseReadFnSeg], ax
+	mov	word [MousePosFn], 0x1c3d
+	mov	word [MousePosFnSeg], ax
 	push	ax
-	push	word [g_6410]
+	push	word [MouseHideFn]
 	call	CopyParasDown.4:OnexitThunk
 	add	sp, 0x14
 .4:
@@ -4053,7 +4053,7 @@ ReadPots:
 	push	bp
 	push	si
 	push	di
-	mov	ah, byte [g_75E0]
+	mov	ah, byte [PotButtons]
 	mov	cx, 0x2710
 	mov	dx, GamePort
 	db	0x33, 0xDB			; xor bx, bx
@@ -4083,11 +4083,11 @@ ReadPots:
 	shr	al, 1
 	shr	al, 1
 	shr	al, 1
-	mov	byte [g_75DE], al
-	mov	word [g_75D6], bp
-	mov	word [g_75D8], si
-	mov	word [g_75DA], di
-	mov	word [g_75DC], bx
+	mov	byte [PotBits], al
+	mov	word [Pot1X], bp
+	mov	word [Pot1Y], si
+	mov	word [Pot2X], di
+	mov	word [Pot2Y], bx
 	pop	di
 	pop	si
 	pop	bp
@@ -4096,7 +4096,7 @@ ReadPots:
 	db	0x8A, 0xE0			; mov ah, al
 	not	ah
 	and	ah, 0xf
-	mov	byte [g_75E0], ah
+	mov	byte [PotButtons], ah
 	jmp	short .3
 	db	0x00
 
@@ -4329,8 +4329,8 @@ LineBody:
 	cmp	byte [bp - 3], 0
 	jne	short .12
 	mov	ax, word [si + 6]
-	mov	bx, word [g_74F2]
-	mov	cx, word [g_74F4]
+	mov	bx, word [ClipTopY]
+	mov	cx, word [ClipBottomY]
 	db	0x3B, 0xC1			; cmp ax, cx
 	jl	short .4
 	mov	dl, 8
@@ -4350,8 +4350,8 @@ LineBody:
 	jl	short .7
 	or	dl, 8
 .7:
-	mov	bx, word [g_74FC]
-	mov	cx, word [g_74FE]
+	mov	bx, word [ClipLeftX]
+	mov	cx, word [ClipRightX]
 	mov	ax, word [si + 2]
 	db	0x3B, 0xC3			; cmp ax, bx
 	jge	short .8
@@ -4401,11 +4401,11 @@ LineBody:
 .16:
 	db	0x87, 0xCA			; xchg dx, cx
 .17:
-	cmp	cx, word [g_78D2]
+	cmp	cx, word [LineStepLimit]
 	jge	short .18
 	db	0x8B, 0xD9			; mov bx, cx
 	db	0x03, 0xDB			; add bx, bx
-	mov	bx, word [bx + g_78D4]
+	mov	bx, word [bx + LineStepTable]
 	db	0x03, 0xDA			; add bx, dx
 	db	0x03, 0xDA			; add bx, dx
 	mov	ax, word [bx]
@@ -4483,7 +4483,7 @@ LineOk:
 
 ClipTop:
 	mov	ax, word [si + 6]
-	mov	cx, word [g_74F2]
+	mov	cx, word [ClipTopY]
 	mov	word [si + 6], cx
 	db	0x2B, 0xC8			; sub cx, ax
 	mov	bl, byte [si + 0x12]
@@ -4542,7 +4542,7 @@ TopTab:
 	jmp	near AfterTop
 .7:
 	mov	word [si + 0xe], 1
-	mov	ax, word [g_74F2]
+	mov	ax, word [ClipTopY]
 	mov	word [si + 6], ax
 	mov	ax, word [si + 8]
 	mov	word [si + 2], ax
@@ -4566,7 +4566,7 @@ TopTab:
 
 ClipBottom:
 	mov	cx, word [si + 0xa]
-	mov	dx, word [g_74F4]
+	mov	dx, word [ClipBottomY]
 	dec	dx
 	mov	word [si + 0xa], dx
 	db	0x2B, 0xCA			; sub cx, dx
@@ -4674,7 +4674,7 @@ LeftTab:
 	dw	.8
 	dw	.9
 .1:
-	mov	cx, word [g_74FC]
+	mov	cx, word [ClipLeftX]
 	mov	ax, word [si + 8]
 	mov	word [si + 8], cx
 	db	0x2B, 0xC8			; sub cx, ax
@@ -4684,7 +4684,7 @@ LeftTab:
 	jmp	near AfterLeft
 .2:
 	mov	ax, word [si + 2]
-	mov	cx, word [g_74FC]
+	mov	cx, word [ClipLeftX]
 	mov	word [si + 2], cx
 	db	0x2B, 0xC8			; sub cx, ax
 	add	word [si + 0x14], cx
@@ -4694,7 +4694,7 @@ LeftTab:
 .3:
 	mov	ax, word [si]
 	mov	dx, word [si + 2]
-	mov	cx, word [g_74FC]
+	mov	cx, word [ClipLeftX]
 	mov	word [si + 8], cx
 	db	0x2B, 0xD1			; sub dx, cx
 	jl	short .5
@@ -4717,7 +4717,7 @@ LeftTab:
 	mov	ax, 1
 	jmp	short .4
 .6:
-	mov	dx, word [g_74FC]
+	mov	dx, word [ClipLeftX]
 	db	0x33, 0xC0			; xor ax, ax
 	sub	ax, word [si]
 	sbb	dx, word [si + 2]
@@ -4739,7 +4739,7 @@ LeftTab:
 	jmp	short .10
 .8:
 	mov	ax, word [si + 2]
-	mov	dx, word [g_74FC]
+	mov	dx, word [ClipLeftX]
 	mov	word [si + 8], dx
 	db	0x2B, 0xC2			; sub ax, dx
 	db	0x8B, 0xC8			; mov cx, ax
@@ -4757,7 +4757,7 @@ LeftTab:
 	jmp	near AfterLeft
 .9:
 	mov	cx, word [si + 2]
-	mov	ax, word [g_74FC]
+	mov	ax, word [ClipLeftX]
 	mov	word [si + 2], ax
 	db	0x2B, 0xC1			; sub ax, cx
 	sub	word [si + 0xe], ax
@@ -4783,7 +4783,7 @@ LineReject:
 	mov	al, byte [si + 0x13]
 	test	al, 4
 	je	short .1
-	mov	bx, word [g_74F2]
+	mov	bx, word [ClipTopY]
 	mov	word [si + 6], bx
 	mov	word [si + 4], 0
 	dec	bx
@@ -4792,24 +4792,24 @@ LineReject:
 .1:
 	test	al, 8
 	je	short .2
-	mov	bx, word [g_74F4]
+	mov	bx, word [ClipBottomY]
 	mov	word [si + 6], bx
 	mov	word [si + 4], 0
 	jmp	short ClipRet
 .2:
 	mov	cx, word [si + 0xa]
-	cmp	cx, word [g_74F4]
+	cmp	cx, word [ClipBottomY]
 	jl	short .3
-	mov	cx, word [g_74F4]
+	mov	cx, word [ClipBottomY]
 	dec	cx
 .3:
 	mov	dx, word [si + 6]
 	mov	bx, word [si + 4]
 	add	bx, 0x8000
 	adc	dx, 0
-	cmp	dx, word [g_74F2]
+	cmp	dx, word [ClipTopY]
 	jge	short .4
-	mov	dx, word [g_74F2]
+	mov	dx, word [ClipTopY]
 .4:
 	mov	word [si + 6], dx
 	mov	word [si + 4], 0
@@ -4861,7 +4861,7 @@ RightTab:
 	jmp	near LineReject
 .2:
 	mov	cx, word [si + 2]
-	mov	ax, word [g_74FE]
+	mov	ax, word [ClipRightX]
 	dec	ax
 	mov	word [si + 2], ax
 	db	0x2B, 0xC8			; sub cx, ax
@@ -4870,7 +4870,7 @@ RightTab:
 	add	word [si + 0x18], cx
 	jmp	near LineOk
 .3:
-	mov	cx, word [g_74FE]
+	mov	cx, word [ClipRightX]
 	dec	cx
 	mov	ax, word [si + 8]
 	mov	word [si + 8], cx
@@ -4882,7 +4882,7 @@ RightTab:
 .4:
 	mov	ax, word [si]
 	mov	dx, word [si + 2]
-	sub	dx, word [g_74FE]
+	sub	dx, word [ClipRightX]
 	inc	dx
 	mov	cx, word [si + 0xc]
 	div	cx
@@ -4898,7 +4898,7 @@ RightTab:
 	sbb	word [si + 2], dx
 	jmp	near LineOk
 .5:
-	mov	dx, word [g_74FE]
+	mov	dx, word [ClipRightX]
 	dec	dx
 	mov	word [si + 8], dx
 	db	0x33, 0xC0			; xor ax, ax
@@ -4921,7 +4921,7 @@ RightTab:
 	jmp	near LineOk
 .6:
 	mov	ax, word [si + 2]
-	mov	cx, word [g_74FE]
+	mov	cx, word [ClipRightX]
 	dec	cx
 	db	0x2B, 0xC1			; sub ax, cx
 	mov	word [si + 2], cx
@@ -4941,7 +4941,7 @@ RightTab:
 	add	word [si + 0x18], dx
 	jmp	near LineOk
 .7:
-	mov	ax, word [g_74FE]
+	mov	ax, word [ClipRightX]
 	db	0x8B, 0xC8			; mov cx, ax
 	dec	cx
 	mov	word [si + 8], cx
@@ -4965,23 +4965,23 @@ AfterTop:
 AfterBottom:
 	db	0x33, 0xD2			; xor dx, dx
 	mov	ax, word [si + 2]
-	cmp	ax, word [g_74FC]
+	cmp	ax, word [ClipLeftX]
 	jge	short .1
 	or	dh, 2
 .1:
 	mov	bx, word [si]
 	add	bx, 0x8000
 	adc	ax, 0
-	cmp	ax, word [g_74FE]
+	cmp	ax, word [ClipRightX]
 	jl	short .2
 	or	dh, 1
 .2:
 	mov	ax, word [si + 8]
-	cmp	ax, word [g_74FC]
+	cmp	ax, word [ClipLeftX]
 	jge	short .3
 	or	dl, 2
 .3:
-	cmp	ax, word [g_74FE]
+	cmp	ax, word [ClipRightX]
 	jl	short .4
 	or	dl, 1
 .4:
@@ -5015,7 +5015,7 @@ LineFlat:
 .2:
 	cmp	byte [bp - 3], 0
 	jne	short .4
-	mov	bx, word [g_74F2]
+	mov	bx, word [ClipTopY]
 	db	0x3B, 0xC3			; cmp ax, bx
 	jge	short .5
 	mov	al, 4
@@ -5035,7 +5035,7 @@ LineFlat:
 	mov	word [si + 0xe], dx
 	jmp	near LineOk
 .5:
-	mov	bx, word [g_74F4]
+	mov	bx, word [ClipBottomY]
 	db	0x3B, 0xC3			; cmp ax, bx
 	jl	short .6
 	mov	al, 8
@@ -5047,21 +5047,21 @@ LineFlat:
 	db	0x2B, 0xC1			; sub ax, cx
 	inc	ax
 	mov	word [si + 0xe], ax
-	cmp	dx, word [g_74FC]
+	cmp	dx, word [ClipLeftX]
 	jge	short .7
 	dec	word [si + 0xa]
 	mov	word [si + 0x16], 1
 	mov	al, 2
 	jmp	short .3
 .7:
-	cmp	cx, word [g_74FE]
+	cmp	cx, word [ClipRightX]
 	jl	short .8
 	dec	word [si + 0xa]
 	mov	word [si + 0x1a], 1
 	mov	al, 1
 	jmp	short .3
 .8:
-	mov	ax, word [g_74FC]
+	mov	ax, word [ClipLeftX]
 	db	0x8B, 0xD8			; mov bx, ax
 	db	0x2B, 0xC1			; sub ax, cx
 	jle	short .9
@@ -5069,7 +5069,7 @@ LineFlat:
 	sub	word [si + 0xe], ax
 .9:
 	db	0x8B, 0xC2			; mov ax, dx
-	mov	bx, word [g_74FE]
+	mov	bx, word [ClipRightX]
 	dec	bx
 	db	0x2B, 0xC3			; sub ax, bx
 	jle	short .10
@@ -5098,19 +5098,19 @@ LineOverflow:
 	db	0x03, 0xC1			; add ax, cx
 	mov	word [si + 6], ax
 	db	0x8B, 0xD8			; mov bx, ax
-	sub	ax, word [g_74F2]
+	sub	ax, word [ClipTopY]
 	jle	short .6
 	db	0x3B, 0xC1			; cmp ax, cx
 	jle	short .3
 	db	0x8B, 0xC1			; mov ax, cx
 .3:
-	sub	bx, word [g_74F4]
+	sub	bx, word [ClipBottomY]
 	jle	short .4
 	db	0x2B, 0xC3			; sub ax, bx
 	jle	short .6
 .4:
 	mov	bx, word [si + 2]
-	cmp	bx, word [g_74FC]
+	cmp	bx, word [ClipLeftX]
 	jge	short .5
 	add	word [si + 0x14], ax
 	jmp	short .6
@@ -5136,7 +5136,7 @@ LineOverflow:
 	db	0x2B, 0xC1			; sub ax, cx
 	mov	word [si + 0xa], ax
 	db	0x8B, 0xD8			; mov bx, ax
-	sub	ax, word [g_74F4]
+	sub	ax, word [ClipBottomY]
 	inc	ax
 	jge	short .12
 	neg	ax
@@ -5144,14 +5144,14 @@ LineOverflow:
 	jle	short .9
 	db	0x8B, 0xC1			; mov ax, cx
 .9:
-	sub	bx, word [g_74F2]
+	sub	bx, word [ClipTopY]
 	inc	bx
 	jge	short .10
 	db	0x03, 0xC3			; add ax, bx
 	jle	short .12
 .10:
 	mov	bx, word [si + 8]
-	cmp	bx, word [g_74FC]
+	cmp	bx, word [ClipLeftX]
 	jge	short .11
 	add	word [si + 0x16], ax
 	jmp	short .12
@@ -5601,9 +5601,9 @@ FillPoly:
 	mov	es, ax
 	lea	ax, [bp - 0x796]
 	mov	word [bp - 0x16], ax
-	mov	ax, word [g_74FC]
+	mov	ax, word [ClipLeftX]
 	mov	word [bp - 2], ax
-	mov	ax, word [g_74FE]
+	mov	ax, word [ClipRightX]
 	dec	ax
 	mov	word [bp - 4], ax
 	mov	ax, word [si + 2]
@@ -5656,19 +5656,19 @@ FillPoly:
 	cmp	bx, word [bp - 4]
 	jge	short .9
 	mov	ax, word [bp - 0x10]
-	cmp	ax, word [g_74F2]
+	cmp	ax, word [ClipTopY]
 	jl	short .9
 	mov	cx, word [bp - 0xc]
-	cmp	cx, word [g_74F4]
+	cmp	cx, word [ClipBottomY]
 	jge	short .9
 	mov	byte [bp - 0xa], 0
 	cmp	dx, word [bp - 4]
 	jg	short .6
 	cmp	bx, word [bp - 2]
 	jl	short .6
-	cmp	ax, word [g_74F4]
+	cmp	ax, word [ClipBottomY]
 	jge	short .6
-	cmp	cx, word [g_74F2]
+	cmp	cx, word [ClipTopY]
 	jge	short .7
 .6:
 	mov	byte [bp - 0xa], 1
@@ -5758,15 +5758,15 @@ FillPoly:
 	cmp	di, word [bp - 0x12]
 	jne	short .16
 	mov	ax, word [bp - 0x10]
-	cmp	ax, word [g_74F4]
+	cmp	ax, word [ClipBottomY]
 	jl	short .21
-	mov	ax, word [g_74F4]
+	mov	ax, word [ClipBottomY]
 	dec	ax
 .21:
 	mov	bx, word [bp - 0xc]
-	cmp	bx, word [g_74F2]
+	cmp	bx, word [ClipTopY]
 	jge	short .22
-	mov	bx, word [g_74F2]
+	mov	bx, word [ClipTopY]
 .22:
 	db	0x2B, 0xC3			; sub ax, bx
 	jle	short .23
@@ -5807,7 +5807,7 @@ SpanMargin:
 	db	0x2B, 0xF9			; sub di, cx
 	db	0x03, 0xFF			; add di, di
 	add	di, word [bp - 0x16]
-	mov	ax, word [g_74FC]
+	mov	ax, word [ClipLeftX]
 	push	cx
 	push	di
 	rep stosw
@@ -5827,7 +5827,7 @@ SpanMargin:
 	db	0x2B, 0xF9			; sub di, cx
 	db	0x03, 0xFF			; add di, di
 	add	di, word [bp - 0x16]
-	mov	ax, word [g_74FE]
+	mov	ax, word [ClipRightX]
 	push	cx
 	push	di
 	rep stosw
@@ -5844,7 +5844,7 @@ SpanMargin:
 	inc	di
 	db	0x03, 0xFF			; add di, di
 	add	di, word [bp - 0x16]
-	mov	ax, word [g_74FC]
+	mov	ax, word [ClipLeftX]
 	push	cx
 	push	di
 	rep stosw
@@ -5861,7 +5861,7 @@ SpanMargin:
 	inc	di
 	db	0x03, 0xFF			; add di, di
 	add	di, word [bp - 0x16]
-	mov	ax, word [g_74FE]
+	mov	ax, word [ClipRightX]
 	push	cx
 	push	di
 	rep stosw
@@ -6441,7 +6441,7 @@ SpanTab3:
 	db	0x2B, 0xF9			; sub di, cx
 	db	0x03, 0xFF			; add di, di
 	add	di, word [bp - 0x16]
-	mov	ax, word [g_74FC]
+	mov	ax, word [ClipLeftX]
 	rep stosw
 .47:
 	mov	cx, word [si + 0x18]
@@ -6455,7 +6455,7 @@ SpanTab3:
 	db	0x03, 0xFF			; add di, di
 	add	di, word [bp - 0x16]
 	add	di, 0x3c0
-	mov	ax, word [g_74FE]
+	mov	ax, word [ClipRightX]
 	dec	ax
 	rep stosw
 .48:
@@ -6466,7 +6466,7 @@ SpanTab3:
 	inc	di
 	db	0x03, 0xFF			; add di, di
 	add	di, word [bp - 0x16]
-	mov	ax, word [g_74FC]
+	mov	ax, word [ClipLeftX]
 	rep stosw
 .49:
 	mov	cx, word [si + 0x1a]
@@ -6477,7 +6477,7 @@ SpanTab3:
 	db	0x03, 0xFF			; add di, di
 	add	di, word [bp - 0x16]
 	add	di, 0x3c0
-	mov	ax, word [g_74FE]
+	mov	ax, word [ClipRightX]
 	dec	ax
 	rep stosw
 .50:
@@ -6527,9 +6527,9 @@ FillRec:
 	mov	es, ax
 	lea	ax, [bp - 0x796]
 	mov	word [bp - 0x16], ax
-	mov	ax, word [g_74FC]
+	mov	ax, word [ClipLeftX]
 	mov	word [bp - 2], ax
-	mov	ax, word [g_74FE]
+	mov	ax, word [ClipRightX]
 	dec	ax
 	mov	word [bp - 4], ax
 	mov	di, word [si]
@@ -6621,19 +6621,19 @@ FillRec:
 	cmp	bx, word [bp - 4]
 	jge	short .16
 	mov	ax, word [bp - 0x10]
-	cmp	ax, word [g_74F2]
+	cmp	ax, word [ClipTopY]
 	jl	short .16
 	mov	cx, word [bp - 0xc]
-	cmp	cx, word [g_74F4]
+	cmp	cx, word [ClipBottomY]
 	jge	short .16
 	mov	byte [bp - 0xa], 0
 	cmp	dx, word [bp - 4]
 	jg	short .13
 	cmp	bx, word [bp - 2]
 	jl	short .13
-	cmp	ax, word [g_74F4]
+	cmp	ax, word [ClipBottomY]
 	jge	short .13
-	cmp	cx, word [g_74F2]
+	cmp	cx, word [ClipTopY]
 	jge	short .14
 .13:
 	mov	byte [bp - 0xa], 1
@@ -6695,15 +6695,15 @@ FillRec:
 	jmp	short .23
 .25:
 	mov	ax, word [bp - 0x10]
-	cmp	ax, word [g_74F4]
+	cmp	ax, word [ClipBottomY]
 	jl	short .26
-	mov	ax, word [g_74F4]
+	mov	ax, word [ClipBottomY]
 	dec	ax
 .26:
 	mov	bx, word [bp - 0xc]
-	cmp	bx, word [g_74F2]
+	cmp	bx, word [ClipTopY]
 	jge	short .27
-	mov	bx, word [g_74F2]
+	mov	bx, word [ClipTopY]
 .27:
 	db	0x2B, 0xC3			; sub ax, bx
 	jle	short .28

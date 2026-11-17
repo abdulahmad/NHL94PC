@@ -2,8 +2,8 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
-FindNearestColor		equ	0x2
 DrawTextCenteredInWindow		equ	0x2
+FindNearestColor		equ	0x2
 DrawFrame		equ	0x4
 FreeCanvas		equ	0xC
 SetCanvas		equ	0x48
@@ -21,15 +21,15 @@ ReadKey		equ	0x16D3
 SaveTextState		equ	0x19B2
 LoadTextState		equ	0x19E1
 SetCanvasClip		equ	0x46A8
-g_640C		equ	0x640C
-g_6410		equ	0x6410
-g_6414		equ	0x6414
-g_6418		equ	0x6418
+MouseShowFn		equ	0x640C
+MouseHideFn		equ	0x6410
+MouseReadFn		equ	0x6414
+MousePosFn		equ	0x6418
 TickSkip		equ	0x6DB2
-g_74DC		equ	0x74DC
-g_7642		equ	0x7642
-g_7646		equ	0x7646
+CurPage		equ	0x74DC
+BeforeDialogFn		equ	0x7642
+AfterDialogFn		equ	0x7646
 str_ExitToDosYN		equ	0x76A4
 str_PausePressAnyKeyTo		equ	0x76B6
-g_8D0A		equ	0x8D0A
+DgroupSegF		equ	0x8D0A
 %include "seg/seg041.asm"

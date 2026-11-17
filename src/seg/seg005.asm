@@ -85,7 +85,7 @@ _main:
 .5:
 	call	0x0FEF:0x39A		; seg028
 	call	0x03A3:HookInt8		; seg001
-	mov	word [g_0524], 0
+	mov	word [PadRepeatOn], 0
 	push	0x969
 	push	0x3fe
 	call	0x03A3:AllocSlot		; seg001
@@ -94,7 +94,7 @@ _main:
 	call	0x0FEF:0x1320		; seg028
 	add	sp, 2
 	mov	bx, 0x7570
-	mov	es, word [g_8B08]
+	mov	es, word [DgroupSegA]
 	mov	word [bp-0x24], bx
 	mov	word [bp-0x22], es
 	mov	ax, word [es:bx+2]
@@ -121,40 +121,40 @@ _main:
 	push	0xc8
 	call	0x0FEF:0x1320		; seg028
 	add	sp, 2
-	or	byte [g_AECE], 8
+	or	byte [InputFlags], 8
 	push	0xc8
 	push	0x140
 	call	0x03A3:MouseOpen		; seg001
 	add	sp, 4
 	db	0x0B, 0xC0			; or	ax, ax
 	je	short .7
-	or	byte [g_AECE], 1
+	or	byte [InputFlags], 1
 .7:
 	call	0x03A3:ReadPots		; seg001
 	mov	word [bp-6], ax
-	test	byte [g_75E0], 3
+	test	byte [PotButtons], 3
 	je	short .9
-	cmp	word [g_75D6], 0
+	cmp	word [Pot1X], 0
 	jne	short .8
-	cmp	word [g_75D8], 0
+	cmp	word [Pot1Y], 0
 	je	short .9
 .8:
-	or	byte [g_AECE], 2
+	or	byte [InputFlags], 2
 	call	0x03A3:InitStick1	; seg001
 	call	0x1508:0x232		; seg037
-	mov	word [g_051E], 1
+	mov	word [StickPresent], 1
 .9:
-	test	byte [g_75E0], 0xc
+	test	byte [PotButtons], 0xc
 	je	short .11
-	cmp	word [g_75DA], 0
+	cmp	word [Pot2X], 0
 	jne	short .10
-	cmp	word [g_75DC], 0
+	cmp	word [Pot2Y], 0
 	je	short .11
 .10:
-	or	byte [g_AECE], 4
+	or	byte [InputFlags], 4
 	call	0x03A3:InitStick2	; seg001
 	call	0x1508:0x244		; seg037
-	mov	word [g_0520], 1
+	mov	word [StickPresent2], 1
 .11:
 	call	0x0BFE:0xE		; seg009
 	lea	ax, [bp-6]
@@ -183,35 +183,35 @@ _main:
 	push	ax
 	call	0x14B8:0x8		; seg033
 	add	sp, 4
-	mov	word [g_AEB2], ax
-	mov	word [g_AEB4], dx
+	mov	word [MemBlock1Off], ax
+	mov	word [MemBlock1Seg], dx
 	push	0x4c7
 	push	dx
 	push	ax
 	call	0x03A3:FindFarMsg		; seg001
 	add	sp, 6
-	mov	word [g_AE98], ax
-	mov	word [g_AE9A], dx
+	mov	word [DialogData], ax
+	mov	word [DialogDataSeg], dx
 	push	0
 	push	0x4cc
 	call	0x149D:0x2		; seg032
 	add	sp, 4
-	mov	word [g_AE90], ax
-	mov	word [g_AE92], dx
+	mov	word [HeapSizeLo], ax
+	mov	word [HeapSizeHi], dx
 	push	0
 	push	0x4d9
 	call	0x149D:0x2		; seg032
 	add	sp, 4
-	mov	word [g_AEB6], ax
-	mov	word [g_AEB8], dx
+	mov	word [MemBlock2Off], ax
+	mov	word [MemBlock2Seg], dx
 	push	0
 	push	0x4e4
 	call	0x149D:0x2		; seg032
 	add	sp, 4
-	mov	word [g_AEBA], ax
-	mov	word [g_AEBC], dx
-	push	word [g_AE92]
-	push	word [g_AE90]
+	mov	word [MemBlock3Off], ax
+	mov	word [MemBlock3Seg], dx
+	push	word [HeapSizeHi]
+	push	word [HeapSizeLo]
 	call	0x03A3:0xCB8		; seg001
 	add	sp, 4
 	lea	ax, [bp-8]
@@ -248,7 +248,7 @@ _main:
 	add	sp, 2
 	jmp	near .22
 .14:
-	test	byte [g_AECE], 2
+	test	byte [InputFlags], 2
 	je	short .15
 	mov	ax, 0x3415
 	mov	es, ax
@@ -256,7 +256,7 @@ _main:
 	jmp	short .19
 	nop
 .15:
-	test	byte [g_AECE], 4
+	test	byte [InputFlags], 4
 	je	short .16
 	mov	ax, 0x3415
 	mov	es, ax
@@ -264,7 +264,7 @@ _main:
 	jmp	short .19
 	nop
 .16:
-	test	byte [g_AECE], 8
+	test	byte [InputFlags], 8
 	je	short .17
 	mov	ax, 0x3415
 	mov	es, ax
@@ -272,7 +272,7 @@ _main:
 	jmp	short .19
 	nop
 .17:
-	test	byte [g_AECE], 1
+	test	byte [InputFlags], 1
 	je	short .18
 	mov	ax, 0x3415
 	mov	es, ax

@@ -22,7 +22,7 @@ WaitButtonTimed:
 	lea	ax, [bp - 0x14]
 	push	ax
 	push	di
-	call	far [g_B08E]
+	call	far [HotKeyFn]
 	add	sp, 0x6
 	mov	[bp - 0x2], ax
 	test	al, 0x2

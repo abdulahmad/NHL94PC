@@ -17,13 +17,13 @@ SetStartPage		equ	0x1320
 RawBase		equ	0x1532
 ConPrint		equ	0x17CA
 AllocCanvases		equ	0x3804
-g_8B1C		equ	0x8B1C
-g_B34E		equ	0xB34E
-g_B350		equ	0xB350
-g_B352		equ	0xB352
-g_B354		equ	0xB354
-g_B356		equ	0xB356
-g_B358		equ	0xB358
-g_B35A		equ	0xB35A
-g_B35C		equ	0xB35C
+DgroupSegB		equ	0x8B1C
+VgaSave0Off		equ	0xB34E
+VgaSave0Seg		equ	0xB350
+VgaSave1Off		equ	0xB352
+VgaSave1Seg		equ	0xB354
+VgaSave2Off		equ	0xB356
+VgaSave2Seg		equ	0xB358
+VgaSave3Off		equ	0xB35A
+VgaSave3Seg		equ	0xB35C
 %include "seg/seg022.asm"

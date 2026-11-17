@@ -4,9 +4,9 @@
 	org	0x0
 NullFar		equ	0xC
 NullFar2		equ	0xE
-g_0508		equ	0x508
-g_050A		equ	0x50A
-g_0A3E		equ	0xA3E
+InputQueueCount		equ	0x508
+InputQueueHead		equ	0x50A
+EventPending		equ	0xA3E
 OvlThunk100		equ	0x23D7
-g_8B1E		equ	0x8B1E
+InputEventDataSeg		equ	0x8B1E
 %include "seg/seg025.asm"

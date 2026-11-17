@@ -37,8 +37,8 @@ AskYesNo:
 	mov	ax, 0xbaf
 	mov	dx, 0x3701
 .2:
-	mov	[g_B2D0], ax
-	mov	[g_B2D2], dx
+	mov	[YesNoText], ax
+	mov	[YesNoTextSeg], dx
 	mov	ax, [bp - 0x2]
 	leave
 	retf
@@ -118,7 +118,7 @@ NumberEntryDialog:
 	jnl	short .1
 	lea	si, [di + 0x10]
 .1:
-	les	bx, [g_6D4E]
+	les	bx, [FontPtr]
 	mov	ax, [es:bx + 0xe]
 	add	ax, strict word 0x9
 	shl	ax, 1
@@ -143,13 +143,13 @@ NumberEntryDialog:
 	push	cs
 	call	SaveUnderBox
 	add	sp, 0x8
-	push	word [g_09F6]
-	push	word [g_09F4]
+	push	word [ItemSelectColor]
+	push	word [ItemTextColor]
 	call	0x0D39:SetTextColors
 	add	sp, 0x4
-	push	word [g_09F2]
-	push	word [g_09F0]
-	push	word [g_09EE]
+	push	word [DialogDarkColor]
+	push	word [DialogLightColor]
+	push	word [DialogBackColor]
 	push	word [bp - 0x2]
 	push	si
 	push	word [bp - 0x6]
@@ -157,8 +157,8 @@ NumberEntryDialog:
 	push	cs
 	call	DrawBevelBox
 	add	sp, 0xe
-	mov	ax, [g_09F4]
-	mov	dx, [g_09F6]
+	mov	ax, [ItemTextColor]
+	mov	dx, [ItemSelectColor]
 	call	0x03A3:0xC56
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
@@ -179,9 +179,9 @@ NumberEntryDialog:
 	push	ax
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
-	push	word [g_09F0]
-	push	word [g_09F2]
-	push	word [g_09F6]
+	push	word [DialogLightColor]
+	push	word [DialogDarkColor]
+	push	word [ItemSelectColor]
 	push	0x9
 	push	di
 	mov	ax, [bp - 0x6]
@@ -198,8 +198,8 @@ NumberEntryDialog:
 	push	cs
 	call	DrawBevelBox
 	add	sp, 0xe
-	mov	ax, [g_09F4]
-	mov	dx, [g_09F6]
+	mov	ax, [ItemTextColor]
+	mov	dx, [ItemSelectColor]
 	call	0x03A3:0xC56
 	mov	[bp - 0xa], di
 .2:
@@ -287,7 +287,7 @@ NumberEntryDialog:
 	mov	al, [bx]
 	cbw
 	db	0x8B, 0xD8		; mov bx, ax
-	test	byte [bx + g_858D], 0x4
+	test	byte [bx + CharTypes], 0x4
 	jnz	short .8
 	cmp	byte [si], 0x20
 	jz	short .8
@@ -341,12 +341,12 @@ ItemColors:
 	mov	ax, [bp + 0x6]
 	cmp	[bp + 0x8], ax
 	jnz	short .1
-	mov	si, [g_09F6]
-	mov	cx, [g_09F4]
+	mov	si, [ItemSelectColor]
+	mov	cx, [ItemTextColor]
 	jmp	short .2
 .1:
-	mov	si, [g_09F4]
-	mov	cx, [g_09F6]
+	mov	si, [ItemTextColor]
+	mov	cx, [ItemSelectColor]
 .2:
 	db	0x8B, 0xC6		; mov ax, si
 	db	0x8B, 0xD1		; mov dx, cx
@@ -373,7 +373,7 @@ ListHitTest:
 	cmp	word [bp + 0x10], 0x0
 	jng	short .3
 	mov	[bp - 0x10], dx
-	les	si, [g_6D4E]
+	les	si, [FontPtr]
 	mov	cx, [es:si + 0xe]
 	db	0x8B, 0xC1		; mov ax, cx
 	db	0x03, 0xCB		; add cx, bx
@@ -420,7 +420,7 @@ DrawListRow:
 	push	si
 	mov	di, [bp + 0x12]
 	mov	si, [bp + 0xa]
-	les	bx, [g_6D4E]
+	les	bx, [FontPtr]
 	mov	ax, [es:bx + 0xe]
 	inc	ax
 	inc	ax
@@ -439,16 +439,16 @@ DrawListRow:
 	les	bx, [bp + 0x1a]
 	cmp	byte [es:bx + di], 0x0
 	jz	short .1
-	mov	cx, [g_09EE]
+	mov	cx, [DialogBackColor]
 	jmp	short .3
 .1:
 	cmp	[bp + 0x14], di
 	jnz	short .2
-	mov	cx, [g_09F4]
+	mov	cx, [ItemTextColor]
 	jmp	short .3
 	db	0x90
 .2:
-	mov	cx, [g_09F6]
+	mov	cx, [ItemSelectColor]
 .3:
 	push	cx
 	push	word [bp - 0x2]
@@ -608,7 +608,7 @@ ListDialog:
 	call	0x0D39:TextWidthFar
 	add	sp, 0x4
 	mov	[bp - 0x10], ax
-	les	bx, [g_6D4E]
+	les	bx, [FontPtr]
 	mov	ax, [es:bx + 0xe]
 	inc	ax
 	inc	ax
@@ -650,7 +650,7 @@ ListDialog:
 	mov	[bp - 0x2a], cx
 	mov	word [bp - 0x6], 0xffff
 	db	0x03, 0xD1		; add dx, cx
-	mov	es, [g_8B1A]
+	mov	es, [ListDialogDataSeg]
 	mov	[es:0x0], dx
 	mov	dx, [bp - 0x2e]
 	mov	[es:0x2], dx
@@ -665,7 +665,7 @@ ListDialog:
 	push	cs
 	call	ScrollBarInit
 	add	sp, 0x8
-	mov	es, [g_8B1A]
+	mov	es, [ListDialogDataSeg]
 	mov	word [es:0x10], 0x0
 	db	0x2B, 0xC0		; sub ax, ax
 	db	0x2B, 0xD2		; sub dx, dx
@@ -695,9 +695,9 @@ ListDialog:
 	call	SaveUnderBox
 	add	sp, 0x8
 .10:
-	push	word [g_09F2]
-	push	word [g_09F0]
-	push	word [g_09EE]
+	push	word [DialogDarkColor]
+	push	word [DialogLightColor]
+	push	word [DialogBackColor]
 	push	word [bp - 0x28]
 	push	word [bp - 0x24]
 	push	word [bp - 0x2e]
@@ -705,8 +705,8 @@ ListDialog:
 	push	cs
 	call	DrawBevelBox
 	add	sp, 0xe
-	push	word [g_09F6]
-	push	word [g_09F4]
+	push	word [ItemSelectColor]
+	push	word [ItemTextColor]
 	call	0x0D39:SetTextColors
 	add	sp, 0x4
 	push	word [bp + 0xe]
@@ -723,9 +723,9 @@ ListDialog:
 	push	ax
 	call	0x0D39:DrawShadowText
 	add	sp, 0x8
-	push	word [g_09F0]
-	push	word [g_09F2]
-	push	word [g_09F6]
+	push	word [DialogLightColor]
+	push	word [DialogDarkColor]
+	push	word [ItemSelectColor]
 	push	word [bp - 0x1e]
 	push	word [bp - 0x18]
 	push	word [bp - 0x26]
@@ -748,7 +748,7 @@ ListDialog:
 	push	cs
 	call	DrawListRows
 	add	sp, 0x18
-	les	bx, [g_AE98]
+	les	bx, [DialogData]
 	mov	ax, [es:bx + 0x2]
 	inc	ax
 	mov	cx, [es:bx]
@@ -766,8 +766,8 @@ ListDialog:
 	add	sp, 0x8
 	mov	[bp - 0xc], ax
 	mov	[bp - 0xa], dx
-	mov	ax, [g_AE98]
-	mov	dx, [g_AE9A]
+	mov	ax, [DialogData]
+	mov	dx, [DialogDataSeg]
 	push	ds
 	db	0x8B, 0xF0		; mov si, ax
 	mov	ds, dx
@@ -775,12 +775,12 @@ ListDialog:
 	mov	cx, 0x9
 	rep	movsw
 	pop	ds
-	les	bx, [g_AE98]
+	les	bx, [DialogData]
 	mov	ax, [es:bx]
 	inc	ax
 	les	bx, [bp - 0xc]
 	mov	[es:bx], ax
-	les	si, [g_AE98]
+	les	si, [DialogData]
 	mov	ax, [es:si + 0x2]
 	inc	ax
 	les	bx, [bp - 0xc]
@@ -805,8 +805,8 @@ ListDialog:
 	add	sp, 0x8
 	push	word [bp - 0x1a]
 	push	word [bp - 0x16]
-	push	word [g_AE9A]
-	push	word [g_AE98]
+	push	word [DialogDataSeg]
+	push	word [DialogData]
 	call	0x0FEF:DrawRleTransAt
 	add	sp, 0x8
 	call	0x0F99:FlushInputEvents
@@ -823,7 +823,7 @@ ListDialog:
 	lea	cx, [bp - 0x8]
 	push	cx
 	push	ax
-	call	far [g_B08E]
+	call	far [HotKeyFn]
 	add	sp, 0x6
 	mov	[bp - 0x32], ax
 .13:
@@ -965,7 +965,7 @@ ListDialog:
 	db	0x0B, 0xC0		; or ax, ax
 	jl	short .25
 	mov	ax, [bp - 0x4]
-	mov	es, [g_8B1A]
+	mov	es, [ListDialogDataSeg]
 	cmp	[es:0x10], ax
 	jz	short .25
 	mov	ax, [es:0x10]
@@ -994,8 +994,8 @@ ListDialog:
 	add	sp, 0x8
 	push	word [bp - 0xe]
 	push	word [bp - 0x8]
-	push	word [g_AE9A]
-	push	word [g_AE98]
+	push	word [DialogDataSeg]
+	push	word [DialogData]
 	call	0x0FEF:DrawRleTransAt
 	add	sp, 0x8
 	mov	ax, [bp - 0x8]
@@ -1052,15 +1052,15 @@ SetDialogColors:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, [bp + 0x6]
-	mov	[g_09EE], ax
+	mov	[DialogBackColor], ax
 	mov	ax, [bp + 0x8]
-	mov	[g_09F0], ax
+	mov	[DialogLightColor], ax
 	mov	ax, [bp + 0xa]
-	mov	[g_09F2], ax
+	mov	[DialogDarkColor], ax
 	mov	ax, [bp + 0xc]
-	mov	[g_09F4], ax
+	mov	[ItemTextColor], ax
 	mov	ax, [bp + 0xe]
-	mov	[g_09F6], ax
+	mov	[ItemSelectColor], ax
 	leave
 	retf
 	db	0x90
@@ -1181,16 +1181,16 @@ DrawButton:
 	mov	es, [bp + 0x8]
 	cmp	word [es:si + 0x8], 0x0
 	jz	short .1
-	mov	ax, [g_09F2]
-	xor	[g_09F0], ax
-	mov	ax, [g_09F0]
-	xor	[g_09F2], ax
-	xor	ax, [g_09F2]
-	mov	[g_09F0], ax
+	mov	ax, [DialogDarkColor]
+	xor	[DialogLightColor], ax
+	mov	ax, [DialogLightColor]
+	xor	[DialogDarkColor], ax
+	xor	ax, [DialogDarkColor]
+	mov	[DialogLightColor], ax
 .1:
-	push	word [g_09F2]
-	push	word [g_09F0]
-	push	word [g_09EE]
+	push	word [DialogDarkColor]
+	push	word [DialogLightColor]
+	push	word [DialogBackColor]
 	push	word [es:si + 0x6]
 	push	word [es:si + 0x4]
 	push	word [es:si + 0x2]
@@ -1202,12 +1202,12 @@ DrawButton:
 	mov	es, di
 	cmp	word [es:si + 0x8], 0x0
 	jz	short .2
-	mov	ax, [g_09F2]
-	xor	[g_09F0], ax
-	mov	ax, [g_09F0]
-	xor	[g_09F2], ax
-	xor	ax, [g_09F2]
-	mov	[g_09F0], ax
+	mov	ax, [DialogDarkColor]
+	xor	[DialogLightColor], ax
+	mov	ax, [DialogLightColor]
+	xor	[DialogDarkColor], ax
+	xor	ax, [DialogDarkColor]
+	mov	[DialogLightColor], ax
 .2:
 	mov	es, [bp + 0x8]
 	mov	ax, [es:si + 0xe]
@@ -1217,7 +1217,7 @@ DrawButton:
 	push	word [es:si + 0xc]
 	mov	ax, [es:si + 0x6]
 	mov	cx, es
-	les	bx, [g_6D4E]
+	les	bx, [FontPtr]
 	sub	ax, [es:bx + 0xe]
 	cwd
 	db	0x2B, 0xC2		; sub ax, dx
@@ -1295,9 +1295,9 @@ DrawScrollBar:
 	mov	di, [es:si]
 	mov	ax, [es:si + 0x2]
 	mov	[bp - 0x2], ax
-	push	word [g_09F2]
-	push	word [g_09F0]
-	push	word [g_09EE]
+	push	word [DialogDarkColor]
+	push	word [DialogLightColor]
+	push	word [DialogBackColor]
 	push	word [es:si + 0x6]
 	push	word [es:si + 0x4]
 	push	ax
@@ -1310,12 +1310,12 @@ DrawScrollBar:
 	les	bx, [bp - 0x6]
 	cmp	word [es:bx + 0x16], 0x0
 	jz	short .1
-	mov	ax, [g_09F2]
-	xor	[g_09F0], ax
-	mov	ax, [g_09F0]
-	xor	[g_09F2], ax
-	xor	ax, [g_09F2]
-	mov	[g_09F0], ax
+	mov	ax, [DialogDarkColor]
+	xor	[DialogLightColor], ax
+	mov	ax, [DialogLightColor]
+	xor	[DialogDarkColor], ax
+	xor	ax, [DialogDarkColor]
+	mov	[DialogLightColor], ax
 .1:
 	mov	es, [bp + 0x8]
 	mov	ax, [es:si + 0x8]
@@ -1326,9 +1326,9 @@ DrawScrollBar:
 	inc	ax
 	inc	ax
 	add	[bp - 0x2], ax
-	push	word [g_09F2]
-	push	word [g_09F0]
-	push	word [g_09EE]
+	push	word [DialogDarkColor]
+	push	word [DialogLightColor]
+	push	word [DialogBackColor]
 	push	word [es:si + 0xe]
 	push	word [es:si + 0xc]
 	push	word [bp - 0x2]
@@ -1340,12 +1340,12 @@ DrawScrollBar:
 	mov	es, di
 	cmp	word [es:si + 0x16], 0x0
 	jz	short .2
-	mov	ax, [g_09F2]
-	xor	[g_09F0], ax
-	mov	ax, [g_09F0]
-	xor	[g_09F2], ax
-	xor	ax, [g_09F2]
-	mov	[g_09F0], ax
+	mov	ax, [DialogDarkColor]
+	xor	[DialogLightColor], ax
+	mov	ax, [DialogLightColor]
+	xor	[DialogDarkColor], ax
+	xor	ax, [DialogDarkColor]
+	mov	[DialogLightColor], ax
 .2:
 	pop	si
 	pop	di
@@ -1508,14 +1508,14 @@ SaveUnderBox:
 	push	word 0xa06
 	call	0x14DB:AllocRecData
 	add	sp, 0x8
-	mov	[g_09FA], ax
-	mov	[g_09FC], dx
+	mov	[SaveUnderOff], ax
+	mov	[SaveUnderSeg], dx
 	db	0x8B, 0xC2		; mov ax, dx
-	or	ax, [g_09FA]
+	or	ax, [SaveUnderOff]
 	jz	short .1
-	mov	ax, [g_09FA]
-	mov	cx, [g_AE98]
-	mov	bx, [g_AE9A]
+	mov	ax, [SaveUnderOff]
+	mov	cx, [DialogData]
+	mov	bx, [DialogDataSeg]
 	push	ds
 	db	0x8B, 0xF8		; mov di, ax
 	db	0x8B, 0xF1		; mov si, cx
@@ -1533,14 +1533,14 @@ SaveUnderBox:
 	db	0x2B, 0xC2		; sub ax, dx
 	inc	ax
 	inc	ax
-	mov	bx, [g_09FA]
+	mov	bx, [SaveUnderOff]
 	mov	[es:bx], ax
 	mov	ax, [bp + 0xc]
 	add	ax, strict word 0x4
-	les	bx, [g_09FA]
+	les	bx, [SaveUnderOff]
 	mov	[es:bx + 0x2], ax
 	mov	ax, [bp + 0x8]
-	mov	[g_B2CE], ax
+	mov	[BoxSaveY], ax
 	push	ax
 	mov	ax, [bp + 0x6]
 	cwd
@@ -1550,10 +1550,10 @@ SaveUnderBox:
 	db	0x33, 0xC2		; xor ax, dx
 	db	0x2B, 0xC2		; sub ax, dx
 	shl	ax, byte 0x2
-	mov	[g_B2CC], ax
+	mov	[BoxSaveX], ax
 	push	ax
-	push	word [g_09FC]
-	push	word [g_09FA]
+	push	word [SaveUnderSeg]
+	push	word [SaveUnderOff]
 	call	0x0FEF:GetBlockAt
 	add	sp, 0x8
 .1:
@@ -1563,22 +1563,22 @@ SaveUnderBox:
 	retf
 
 RestoreUnderBox:
-	mov	ax, [g_09FC]
-	or	ax, [g_09FA]
+	mov	ax, [SaveUnderSeg]
+	or	ax, [SaveUnderOff]
 	jz	short .1
-	push	word [g_B2CE]
-	push	word [g_B2CC]
-	push	word [g_09FC]
-	push	word [g_09FA]
+	push	word [BoxSaveY]
+	push	word [BoxSaveX]
+	push	word [SaveUnderSeg]
+	push	word [SaveUnderOff]
 	call	0x0FEF:PutBlockAt
 	add	sp, 0x8
-	push	word [g_09FC]
-	push	word [g_09FA]
+	push	word [SaveUnderSeg]
+	push	word [SaveUnderOff]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[g_09FC], ax
-	mov	[g_09FA], ax
+	mov	[SaveUnderSeg], ax
+	mov	[SaveUnderOff], ax
 .1:
 	retf
 
@@ -1640,7 +1640,7 @@ MessageBox:
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[bp - 0x1a], ax
 	mov	[bp - 0x18], ax
-	les	bx, [g_6D4E]
+	les	bx, [FontPtr]
 	mov	ax, [es:bx + 0xe]
 	inc	ax
 	inc	ax
@@ -1728,9 +1728,9 @@ MessageBox:
 	push	cs
 	call	SaveUnderBox
 	add	sp, 0x8
-	push	word [g_09F2]
-	push	word [g_09F0]
-	push	word [g_09EE]
+	push	word [DialogDarkColor]
+	push	word [DialogLightColor]
+	push	word [DialogBackColor]
 	push	word [bp - 0x18]
 	push	word [bp - 0x1a]
 	push	si
@@ -1740,8 +1740,8 @@ MessageBox:
 	add	sp, 0xe
 	lea	ax, [si + 0x8]
 	mov	[bp - 0x8], ax
-	push	word [g_09F6]
-	push	word [g_09F4]
+	push	word [ItemSelectColor]
+	push	word [ItemTextColor]
 	call	0x0D39:SetTextColors
 	add	sp, 0x4
 	mov	word [bp - 0x10], 0x0
@@ -1906,7 +1906,7 @@ MessageBoxLoop:
 	push	di
 	push	si
 	push	0x0
-	les	bx, [g_AE98]
+	les	bx, [DialogData]
 	mov	cx, [es:bx]
 	inc	cx
 	mov	ax, [es:bx + 0x2]
@@ -1922,8 +1922,8 @@ MessageBoxLoop:
 	add	sp, 0x8
 	mov	[bp - 0x18], ax
 	mov	[bp - 0x16], dx
-	mov	ax, [g_AE98]
-	mov	dx, [g_AE9A]
+	mov	ax, [DialogData]
+	mov	dx, [DialogDataSeg]
 	push	ds
 	db	0x8B, 0xF0		; mov si, ax
 	mov	ds, dx
@@ -1931,12 +1931,12 @@ MessageBoxLoop:
 	mov	cx, 0x9
 	rep	movsw
 	pop	ds
-	les	bx, [g_AE98]
+	les	bx, [DialogData]
 	mov	ax, [es:bx]
 	inc	ax
 	les	bx, [bp - 0x18]
 	mov	[es:bx], ax
-	les	si, [g_AE98]
+	les	si, [DialogData]
 	mov	ax, [es:si + 0x2]
 	inc	ax
 	les	bx, [bp - 0x18]
@@ -1962,8 +1962,8 @@ MessageBoxLoop:
 	add	sp, 0x8
 	push	word [bp - 0xe]
 	push	word [bp - 0xc]
-	push	word [g_AE9A]
-	push	word [g_AE98]
+	push	word [DialogDataSeg]
+	push	word [DialogData]
 	call	0x0FEF:DrawRleTransAt
 	add	sp, 0x8
 .1:
@@ -1993,7 +1993,7 @@ MessageBoxLoop:
 	lea	ax, [bp - 0x8]
 	push	ax
 	push	word [bp - 0x2]
-	call	far [g_B08E]
+	call	far [HotKeyFn]
 	add	sp, 0x6
 	mov	[bp - 0x4], ax
 	test	al, 0x2f
@@ -2050,8 +2050,8 @@ MessageBoxLoop:
 	add	sp, 0x8
 	push	di
 	push	si
-	push	word [g_AE9A]
-	push	word [g_AE98]
+	push	word [DialogDataSeg]
+	push	word [DialogData]
 	call	0x0FEF:DrawRleTransAt
 	add	sp, 0x8
 .10:
@@ -2074,8 +2074,8 @@ MessageBoxLoop:
 	add	sp, 0x8
 	push	word [bp - 0xa]
 	push	word [bp - 0x8]
-	push	word [g_AE9A]
-	push	word [g_AE98]
+	push	word [DialogDataSeg]
+	push	word [DialogData]
 	call	0x0FEF:DrawRleTransAt
 	add	sp, 0x8
 	mov	si, [bp - 0x8]
@@ -2130,5 +2130,5 @@ MessageBoxLoop:
 	retf
 
 MessageBoxReset:
-	mov	word [g_B2D4], 0xffff
+	mov	word [MessageBoxSel], 0xffff
 	db	0x2B, 0xC0		; sub ax, ax

@@ -23,9 +23,9 @@ SetTextColors:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, [bp + 0x6]
-	mov	[g_0998], ax
+	mov	[TextColor], ax
 	mov	ax, [bp + 0x8]
-	mov	[g_099A], ax
+	mov	[ShadowColor], ax
 	leave
 	retf
 	db	0x90
@@ -49,7 +49,7 @@ DrawShadowTextBuffered:
 	and	di, -0x40
 	add	di, 0x40
 	db	0x8B, 0xC7		; mov ax, di
-	les	bx, [g_6D4E]
+	les	bx, [FontPtr]
 	mov	dx, [es:bx + 0xe]
 	inc	dx
 	db	0x2B, 0xDB		; sub bx, bx
@@ -125,8 +125,8 @@ DrawShadowTextCentered:
 	sar	ax, 1
 	db	0x8B, 0xCE		; mov cx, si
 	db	0x8B, 0xF0		; mov si, ax
-	mov	ax, [g_099A]
-	les	bx, [g_6D4E]
+	mov	ax, [ShadowColor]
+	les	bx, [FontPtr]
 	mov	[es:bx], ax
 	push	di
 	push	cx
@@ -139,8 +139,8 @@ DrawShadowTextCentered:
 	mov	[bp - 0x54], di
 	call	0x0FA0:DrawTextFar
 	add	sp, 0x8
-	mov	ax, [g_0998]
-	les	bx, [g_6D4E]
+	mov	ax, [TextColor]
+	les	bx, [FontPtr]
 	mov	[es:bx], ax
 	push	word [bp - 0x54]
 	push	word [bp - 0x56]
@@ -159,8 +159,8 @@ DrawShadowText:
 	push	si
 	mov	di, [bp + 0x8]
 	mov	si, [bp + 0xa]
-	mov	ax, [g_099A]
-	les	bx, [g_6D4E]
+	mov	ax, [ShadowColor]
+	les	bx, [FontPtr]
 	mov	[es:bx], ax
 	mov	ax, [bp + 0xc]
 	push	ax
@@ -174,8 +174,8 @@ DrawShadowText:
 	mov	[bp - 0x2], ax
 	call	0x0FA0:DrawTextFar
 	add	sp, 0x8
-	mov	ax, [g_0998]
-	les	bx, [g_6D4E]
+	mov	ax, [TextColor]
+	les	bx, [FontPtr]
 	mov	[es:bx], ax
 	push	word [bp - 0x2]
 	push	word [bp - 0x4]
@@ -193,18 +193,18 @@ DrawOutlineText:
 	db	0x8B, 0xEC		; mov bp, sp
 	push	di
 	push	si
-	mov	ax, [g_099A]
-	les	bx, [g_6D4E]
+	mov	ax, [ShadowColor]
+	les	bx, [FontPtr]
 	mov	[es:bx], ax
 	db	0x2B, 0xF6		; sub si, si
 	mov	di, [bp + 0xa]
 .1:
 	push	word [bp + 0xc]
 	push	di
-	mov	ax, [si + g_09A4]
+	mov	ax, [si + OutlineDy]
 	add	ax, [bp + 0x8]
 	push	ax
-	mov	ax, [si + g_099C]
+	mov	ax, [si + OutlineDx]
 	add	ax, [bp + 0x6]
 	push	ax
 	call	0x0FA0:DrawTextFar
@@ -213,8 +213,8 @@ DrawOutlineText:
 	inc	si
 	cmp	si, 0x8
 	jl	short .1
-	mov	ax, [g_0998]
-	les	bx, [g_6D4E]
+	mov	ax, [TextColor]
+	les	bx, [FontPtr]
 	mov	[es:bx], ax
 	push	word [bp + 0xc]
 	push	di

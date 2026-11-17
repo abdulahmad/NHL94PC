@@ -18,45 +18,45 @@ ShadeColor:
 	les	si, [bp + 0x4]
 	mov	al, [es:bx + si]
 	db	0x2A, 0xE4		; sub ah, ah
-	mov	dx, [g_8F5A]
+	mov	dx, [ShadeFactorR]
 	db	0x8B, 0xFB		; mov di, bx
 	call	0x03A3:0x28C6
-	mov	[g_8F60], ax
+	mov	[ShadeR], ax
 	mov	es, [bp + 0x6]
 	db	0x03, 0xFE		; add di, si
 	mov	al, [es:di + 0x1]
 	db	0x2A, 0xE4		; sub ah, ah
-	mov	dx, [g_8F5C]
+	mov	dx, [ShadeFactorG]
 	mov	si, es
 	call	0x03A3:0x28C6
-	mov	[g_8F62], ax
+	mov	[ShadeG], ax
 	mov	es, si
 	lea	bx, [di + 0x1]
 	mov	al, [es:bx + 0x1]
 	db	0x2A, 0xE4		; sub ah, ah
-	mov	dx, [g_8F5E]
+	mov	dx, [ShadeFactorB]
 	call	0x03A3:0x28C6
-	mov	[g_8F64], ax
+	mov	[ShadeB], ax
 	db	0x8B, 0xD8		; mov bx, ax
-	cmp	word [g_8F66], 0x0
+	cmp	word [ShadeGrey], 0x0
 	jz	short .1
-	mov	ax, [g_8F62]
-	add	ax, [g_8F60]
+	mov	ax, [ShadeG]
+	add	ax, [ShadeR]
 	db	0x03, 0xC3		; add ax, bx
 	mov	cx, 0x3
 	cwd
 	idiv	cx
 	db	0x8B, 0xD8		; mov bx, ax
-	mov	[g_8F62], bx
-	mov	[g_8F60], bx
+	mov	[ShadeG], bx
+	mov	[ShadeR], bx
 .1:
-	cmp	word [g_8F62], 0x3f
+	cmp	word [ShadeG], 0x3f
 	jng	short .2
-	mov	word [g_8F62], 0x3f
+	mov	word [ShadeG], 0x3f
 .2:
-	cmp	word [g_8F60], 0x3f
+	cmp	word [ShadeR], 0x3f
 	jg	short .3
-	mov	di, [g_8F60]
+	mov	di, [ShadeR]
 	jmp	short .4
 .3:
 	mov	di, 0x3f
@@ -65,43 +65,43 @@ ShadeColor:
 	jng	short .5
 	mov	bx, 0x3f
 .5:
-	cmp	word [g_8F66], 0x0
+	cmp	word [ShadeGrey], 0x0
 	jz	short .6
-	mov	ax, [g_8F62]
+	mov	ax, [ShadeG]
 	db	0x03, 0xC3		; add ax, bx
 	db	0x03, 0xC7		; add ax, di
 	mov	cx, 0x3
 	cwd
 	idiv	cx
 	db	0x8B, 0xD8		; mov bx, ax
-	mov	[g_8F62], bx
+	mov	[ShadeG], bx
 	db	0x8B, 0xFB		; mov di, bx
 .6:
-	mov	[g_8F60], di
-	mov	[g_8F64], bx
+	mov	[ShadeR], di
+	mov	[ShadeB], bx
 	mov	word [bp - 0x8], 0x270f
 	mov	ax, [bp + 0x4]
 	db	0x8B, 0xD6		; mov dx, si
 	db	0x8B, 0xC8		; mov cx, ax
-	mov	[g_8F58], dx
+	mov	[ShadeTableSeg], dx
 	mov	word [bp - 0x6], 0x0
-	mov	[g_8F56], cx
+	mov	[ShadeTableOff], cx
 	db	0x8B, 0xF0		; mov si, ax
 	mov	bx, [bp - 0x6]
 	jmp	short .12
 .7:
-	mov	es, [g_8D0C]
+	mov	es, [PaletteFlagsSeg]
 	cmp	byte [es:bx + 0x100], 0x0
 	jnz	short .8
 	add	si, 0x3
 	jmp	short .11
 .8:
-	mov	es, [g_8F58]
+	mov	es, [ShadeTableSeg]
 	db	0x8B, 0xFE		; mov di, si
 	inc	si
 	mov	al, [es:di]
 	db	0x2A, 0xE4		; sub ah, ah
-	sub	ax, [g_8F60]
+	sub	ax, [ShadeR]
 	neg	ax
 	db	0x8B, 0xC8		; mov cx, ax
 	imul	cx
@@ -117,7 +117,7 @@ ShadeColor:
 	inc	si
 	mov	al, [es:di]
 	db	0x2A, 0xE4		; sub ah, ah
-	sub	ax, [g_8F62]
+	sub	ax, [ShadeG]
 	neg	ax
 	db	0x8B, 0xC8		; mov cx, ax
 	imul	cx
@@ -133,7 +133,7 @@ ShadeColor:
 	inc	si
 	mov	al, [es:di]
 	db	0x2A, 0xE4		; sub ah, ah
-	sub	ax, [g_8F64]
+	sub	ax, [ShadeB]
 	neg	ax
 	db	0x8B, 0xC8		; mov cx, ax
 	imul	cx
@@ -151,7 +151,7 @@ ShadeColor:
 	jnl	short .13
 	jmp	near .7
 .13:
-	mov	[g_8F56], si
+	mov	[ShadeTableOff], si
 	mov	al, [bp - 0x9]
 	pop	si
 	pop	di
@@ -165,17 +165,17 @@ BuildShadeTable:
 	push	di
 	push	si
 	mov	ax, [bp + 0x6]
-	mov	[g_8F5A], ax
+	mov	[ShadeFactorR], ax
 	mov	ax, [bp + 0x8]
-	mov	[g_8F5C], ax
+	mov	[ShadeFactorG], ax
 	mov	ax, [bp + 0xa]
-	mov	[g_8F5E], ax
+	mov	[ShadeFactorB], ax
 	db	0x33, 0xF6		; xor si, si
-	mov	[g_8F66], si
+	mov	[ShadeGrey], si
 	mov	di, [bp + 0x10]
 	jmp	short .3
 .1:
-	mov	es, [g_8D0E]
+	mov	es, [PaletteFlagsSeg2]
 	db	0x26, 0x80, 0xBC, 0x00, 0x00, 0x00		; cmp byte [es:si + 0x0], 0x0
 	jz	short .2
 	push	si

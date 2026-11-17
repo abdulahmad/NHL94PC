@@ -216,23 +216,23 @@ ResetSequencer:
 	db	0x33, 0xF6		; xor si, si
 .1:
 	imul	di, si, 0x58
-	les	bx, [g_84C8]
+	les	bx, [TrackSlots]
 	mov	byte [es:bx + di + 0x56], 0x0
-	les	bx, [g_84C8]
+	les	bx, [TrackSlots]
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[es:bx + di + 0x2], ax
 	mov	[es:bx + di], ax
-	les	bx, [g_84C8]
+	les	bx, [TrackSlots]
 	db	0x8B, 0xC6		; mov ax, si
 	mov	[es:bx + di + 0x8], al
 	inc	si
 	cmp	si, 0x18
 	jl	short .1
 	db	0x33, 0xDB		; xor bx, bx
-	mov	es, [g_84CE]
+	mov	es, [VoicesSeg]
 .2:
 	imul	si, bx, 0xc
-	add	si, [g_84CC]
+	add	si, [Voices]
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[es:si + 0x2], ax
 	mov	[es:si], ax
@@ -243,10 +243,10 @@ ResetSequencer:
 .3:
 	db	0x8B, 0xF3		; mov si, bx
 	shl	si, byte 0x2
-	mov	[si + g_E05A], ax
-	mov	[si + g_E058], ax
-	mov	[si + g_E032], ax
-	mov	[si + g_E030], ax
+	mov	[si + SongSeqsSeg], ax
+	mov	[si + SongSeqs], ax
+	mov	[si + SongPartsSeg], ax
+	mov	[si + SongParts], ax
 	inc	bx
 	cmp	bx, 0xa
 	jl	short .3
@@ -254,22 +254,22 @@ ResetSequencer:
 .4:
 	db	0x8B, 0xF3		; mov si, bx
 	shl	si, byte 0x2
-	mov	[si + g_E00A], ax
-	mov	[si + g_E008], ax
+	mov	[si + LoadedSongsSeg], ax
+	mov	[si + LoadedSongs], ax
 	inc	bx
 	cmp	bx, 0xa
 	jl	short .4
 	db	0x33, 0xDB		; xor bx, bx
 .5:
-	mov	byte [bx + g_DFF8], 0x0
+	mov	byte [bx + ChannelUsed], 0x0
 	inc	bx
 	cmp	bx, 0x10
 	jl	short .5
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[g_DFF6], ax
-	mov	[g_DFF4], ax
-	mov	[g_84C6], ax
-	mov	byte [g_8502], 0xff
+	mov	[PatchBankSeg], ax
+	mov	[PatchBank], ax
+	mov	[DriverCount], ax
+	mov	byte [DriverServiceIdx], 0xff
 	pop	ds
 	pop	si
 	pop	di
@@ -285,32 +285,32 @@ InitSequencer:
 	push	word 0x846e
 	call	0x14DB:AllocRecData
 	add	sp, 0x8
-	mov	[g_84C8], ax
-	mov	[g_84CA], dx
+	mov	[TrackSlots], ax
+	mov	[TrackSlotsSeg], dx
 	push	0x0
 	push	0x0
 	push	word 0x180
 	push	word 0x8474
 	call	0x14DB:AllocRecData
 	add	sp, 0x8
-	mov	[g_84CC], ax
-	mov	[g_84CE], dx
+	mov	[Voices], ax
+	mov	[VoicesSeg], dx
 	push	0x0
 	push	0x0
 	push	word 0x240
 	push	word 0x847a
 	call	0x14DB:AllocRecData
 	add	sp, 0x8
-	mov	[g_E080], ax
-	mov	[g_E082], dx
-	mov	ax, [g_84CA]
-	or	ax, [g_84C8]
+	mov	[SeqTimerSlot], ax
+	mov	[SeqTimerSlotSeg], dx
+	mov	ax, [TrackSlotsSeg]
+	or	ax, [TrackSlots]
 	jz	short .1
-	mov	ax, [g_84CE]
-	or	ax, [g_84CC]
+	mov	ax, [VoicesSeg]
+	or	ax, [Voices]
 	jz	short .1
 	db	0x8B, 0xC2		; mov ax, dx
-	or	ax, [g_E080]
+	or	ax, [SeqTimerSlot]
 	jz	short .1
 	call	0x16F2:ResetSequencer
 	push	word 0x1630
@@ -344,19 +344,19 @@ ShutdownSequencer:
 	pop	bx
 	inc	si
 .2:
-	cmp	[g_84C6], si
+	cmp	[DriverCount], si
 	ja	short .1
 	call	0x16F2:ResetSequencer
-	push	word [g_84CA]
-	push	word [g_84C8]
+	push	word [TrackSlotsSeg]
+	push	word [TrackSlots]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	push	word [g_84CE]
-	push	word [g_84CC]
+	push	word [VoicesSeg]
+	push	word [Voices]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	push	word [g_E082]
-	push	word [g_E080]
+	push	word [SeqTimerSlotSeg]
+	push	word [SeqTimerSlot]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	db	0x33, 0xC0		; xor ax, ax
@@ -411,8 +411,8 @@ LoadPatchBank:
 	push	word [bp + 0x6]
 	call	0x149D:LoadRawHeader
 	add	sp, 0x4
-	mov	[g_DFF4], ax
-	mov	[g_DFF6], dx
+	mov	[PatchBank], ax
+	mov	[PatchBankSeg], dx
 	pop	ds
 	leave
 	retf
@@ -439,12 +439,12 @@ SendPatches:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
-	mov	ax, [g_DFF6]
-	or	ax, [g_DFF4]
+	mov	ax, [PatchBankSeg]
+	or	ax, [PatchBank]
 	jnz	short .1
 	jmp	near .14
 .1:
-	inc	word [g_84F4]
+	inc	word [SeqLock]
 	mov	word [bp - 0x6], 0x0
 .2:
 	mov	al, [bp - 0x6]
@@ -452,24 +452,24 @@ SendPatches:
 	call	0x16F2:GetPatch
 	db	0x8B, 0xF8		; mov di, ax
 	mov	[bp - 0x2], dx
-	mov	byte [g_8FA8], 0x80
+	mov	byte [PatchMsg], 0x80
 	mov	es, dx
 	mov	al, [es:di]
-	mov	[g_8FA9], al
-	mov	byte [g_8FAA], 0x0
+	mov	[PatchMsg1], al
+	mov	byte [PatchMsg2], 0x0
 	mov	al, [es:di + 0x1]
-	mov	[g_8FAB], al
+	mov	[PatchMsg3], al
 	test	byte [es:di + 0xf], 0x80
 	jnz	short .5
 	cmp	byte [es:di + 0xf], 0x3
 	jnz	short .5
 	db	0x33, 0xDB		; xor bx, bx
 .3:
-	cmp	[g_84C6], bx
+	cmp	[DriverCount], bx
 	jng	short .5
 	db	0x8B, 0xF3		; mov si, bx
 	shl	si, byte 0x2
-	cmp	byte [si + g_E084], 0x3
+	cmp	byte [si + DriverTypes], 0x3
 	jz	short .4
 	inc	bx
 	jmp	short .3
@@ -484,15 +484,15 @@ SendPatches:
 	jnl	short .12
 	db	0x8B, 0xDE		; mov bx, si
 	shl	bx, byte 0x2
-	mov	ax, [bx + g_E00A]
-	or	ax, [bx + g_E008]
+	mov	ax, [bx + LoadedSongsSeg]
+	or	ax, [bx + LoadedSongs]
 	jz	short .7
-	push	word [g_8FAA]
-	push	word [g_8FA8]
+	push	word [PatchMsg2]
+	push	word [PatchMsg]
 	db	0x8B, 0xDE		; mov bx, si
 	shl	bx, byte 0x2
-	push	word [bx + g_E00A]
-	push	word [bx + g_E008]
+	push	word [bx + LoadedSongsSeg]
+	push	word [bx + LoadedSongs]
 	call	0x16F2:SetupSongTracks
 	add	sp, 0x8
 	mov	es, [bp - 0x2]
@@ -510,11 +510,11 @@ SendPatches:
 	jnz	short .12
 	db	0x33, 0xF6		; xor si, si
 .9:
-	cmp	[g_84C6], si
+	cmp	[DriverCount], si
 	jng	short .11
 	db	0x8B, 0xDE		; mov bx, si
 	shl	bx, byte 0x2
-	mov	al, [bx + g_E084]
+	mov	al, [bx + DriverTypes]
 	cmp	[es:di + 0xf], al
 	jz	short .10
 	inc	si
@@ -531,7 +531,7 @@ SendPatches:
 	jnl	short .13
 	jmp	near .2
 .13:
-	dec	word [g_84F4]
+	dec	word [SeqLock]
 .14:
 	pop	ds
 	pop	si
@@ -553,8 +553,8 @@ AddLoadedSong:
 	jnl	short .3
 	db	0x8B, 0xF3		; mov si, bx
 	shl	si, byte 0x2
-	mov	ax, [si + g_E00A]
-	or	ax, [si + g_E008]
+	mov	ax, [si + LoadedSongsSeg]
+	or	ax, [si + LoadedSongs]
 	jz	short .2
 	inc	bx
 	jmp	short .1
@@ -562,8 +562,8 @@ AddLoadedSong:
 	mov	ax, [bp + 0x6]
 	mov	dx, [bp + 0x8]
 	shl	bx, byte 0x2
-	mov	[bx + g_E008], ax
-	mov	[bx + g_E00A], dx
+	mov	[bx + LoadedSongs], ax
+	mov	[bx + LoadedSongsSeg], dx
 .3:
 	pop	ds
 	pop	si
@@ -641,7 +641,7 @@ LoadSongMode:
 	mov	es, dx
 	db	0x8B, 0xD8		; mov bx, ax
 	mov	al, [es:bx]
-	mov	[si + g_8FAC], al
+	mov	[si + SongFileName], al
 	inc	si
 .8:
 	db	0x8B, 0xC6		; mov ax, si
@@ -655,19 +655,19 @@ LoadSongMode:
 	db	0x8B, 0xD8		; mov bx, ax
 	cmp	byte [es:bx], 0x0
 	jnz	short .7
-	mov	byte [si + g_8FAC], 0x0
+	mov	byte [si + SongFileName], 0x0
 	push	str_Que
 	push	word 0x8fac
 	call	0x149D:LoadRaw
 	add	sp, 0x4
 	mov	[bp - 0x4], ax
 	mov	[bp - 0x2], dx
-	mov	bl, [g_8504]
-	inc	byte [g_8504]
+	mov	bl, [SongCount]
+	inc	byte [SongCount]
 	db	0x2A, 0xFF		; sub bh, bh
 	shl	bx, byte 0x2
-	mov	[bx + g_8506], ax
-	mov	[bx + g_8508], dx
+	mov	[bx + SongPtrs], ax
+	mov	[bx + SongPtrsSeg], dx
 	db	0x0B, 0xD0		; or dx, ax
 	jnz	short .9
 	jmp	near .16
@@ -712,14 +712,14 @@ LoadSongMode:
 	add	word [bp - 0x6], 0x1000
 .13:
 	mov	al, [es:bx]
-	mov	[si + g_8FC0], al
+	mov	[si + SongFileNameEnd], al
 	inc	si
 .14:
 	cmp	si, 0x4
 	jc	short .12
-	mov	byte [si + g_8FC0], 0x0
-	push	word [g_8FC2]
-	push	word [g_8FC0]
+	mov	byte [si + SongFileNameEnd], 0x0
+	push	word [SongBankNum]
+	push	word [SongFileNameEnd]
 	push	word [bp - 0x12]
 	push	word [bp - 0x14]
 	call	0x16F2:SetupSongTracks
@@ -858,9 +858,9 @@ RemoveLoadedSong:
 	mov	ax, [bp + 0x8]
 	db	0x8B, 0xF3		; mov si, bx
 	shl	si, byte 0x2
-	cmp	[si + g_E008], cx
+	cmp	[si + LoadedSongs], cx
 	jnz	short .2
-	cmp	[si + g_E00A], ax
+	cmp	[si + LoadedSongsSeg], ax
 	jz	short .3
 .2:
 	inc	bx
@@ -868,8 +868,8 @@ RemoveLoadedSong:
 .3:
 	shl	bx, byte 0x2
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[bx + g_E00A], ax
-	mov	[bx + g_E008], ax
+	mov	[bx + LoadedSongsSeg], ax
+	mov	[bx + LoadedSongs], ax
 	jmp	short .5
 .4:
 	mov	ax, 0xffff
@@ -904,8 +904,8 @@ UnloadSong:
 	mov	bl, [bp - 0x1]
 	db	0x2A, 0xFF		; sub bh, bh
 	shl	bx, byte 0x2
-	mov	ax, [bx + g_8506]
-	mov	dx, [bx + g_8508]
+	mov	ax, [bx + SongPtrs]
+	mov	dx, [bx + SongPtrsSeg]
 	db	0x8B, 0xC8		; mov cx, ax
 	mov	[bp - 0x4], dx
 	db	0x0B, 0xD0		; or dx, ax
@@ -917,11 +917,11 @@ UnloadSong:
 .2:
 	inc	byte [bp - 0x1]
 .3:
-	mov	al, [g_8504]
+	mov	al, [SongCount]
 	cmp	[bp - 0x1], al
 	jc	short .1
 	db	0x33, 0xC0		; xor ax, ax
-	mov	[g_8504], al
+	mov	[SongCount], al
 	pop	ds
 	pop	si
 	pop	di
@@ -953,8 +953,8 @@ GetPatch:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
-	mov	ax, [g_DFF4]
-	mov	dx, [g_DFF6]
+	mov	ax, [PatchBank]
+	mov	dx, [PatchBankSeg]
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x2], dx
 	db	0x0B, 0xD0		; or dx, ax
@@ -986,8 +986,8 @@ GetPatchData:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
-	mov	ax, [g_DFF6]
-	or	ax, [g_DFF4]
+	mov	ax, [PatchBankSeg]
+	or	ax, [PatchBank]
 	jnz	short .1
 	db	0x33, 0xC0		; xor ax, ax
 	cwd
@@ -1019,14 +1019,14 @@ InitVoiceLists:
 	db	0x8B, 0xC8		; mov cx, ax
 	add	ax, 0xe082
 	db	0x8B, 0xF1		; mov si, cx
-	mov	[si + g_E094], ax
-	mov	[si + g_E096], ds
+	mov	[si + VoiceListPrev], ax
+	mov	[si + VoiceListPrevSeg], ds
 	jmp	short .3
 .2:
 	imul	si, bx, 0xe
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[si + g_E096], ax
-	mov	[si + g_E094], ax
+	mov	[si + VoiceListPrevSeg], ax
+	mov	[si + VoiceListPrev], ax
 .3:
 	cmp	bx, 0x9
 	jnl	short .4
@@ -1034,30 +1034,30 @@ InitVoiceLists:
 	db	0x8B, 0xC8		; mov cx, ax
 	add	ax, 0xe09e
 	db	0x8B, 0xF1		; mov si, cx
-	mov	[si + g_E090], ax
-	mov	[si + g_E092], ds
+	mov	[si + VoiceListNext], ax
+	mov	[si + VoiceListNextSeg], ds
 	jmp	short .5
 .4:
 	imul	si, bx, 0xe
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[si + g_E092], ax
-	mov	[si + g_E090], ax
+	mov	[si + VoiceListNextSeg], ax
+	mov	[si + VoiceListNext], ax
 .5:
 	imul	si, bx, 0xe
-	mov	[si + g_E09D], bl
+	mov	[si + VoiceListId], bl
 	inc	bx
 	cmp	bx, 0xa
 	jl	short .1
 	db	0x33, 0xDB		; xor bx, bx
 .6:
-	mov	byte [bx + g_E120], 0x0
+	mov	byte [bx + VoiceListFlags], 0x0
 	inc	bx
 	cmp	bx, 0x32
 	jl	short .6
-	mov	word [g_E11C], 0xe090
-	mov	[g_E11E], ds
-	mov	word [g_E08C], 0xe10e
-	mov	[g_E08E], ds
+	mov	word [VoiceListEnd], 0xe090
+	mov	[VoiceListEndSeg], ds
+	mov	word [VoiceFreeList], 0xe10e
+	mov	[VoiceFreeListSeg], ds
 	pop	ds
 	pop	si
 	retf
@@ -1076,7 +1076,7 @@ ScanSongParts:
 	jnc	short .5
 	db	0x8B, 0xDF		; mov bx, di
 	shl	bx, byte 0x2
-	les	bx, [bx + g_E030]
+	les	bx, [bx + SongParts]
 	mov	al, [es:bx + 0x1]
 	mov	[bp - 0x1], al
 	db	0x33, 0xF6		; xor si, si
@@ -1086,7 +1086,7 @@ ScanSongParts:
 	shl	ax, byte 0x2
 	db	0x8B, 0xDF		; mov bx, di
 	shl	bx, byte 0x2
-	les	bx, [bx + g_E030]
+	les	bx, [bx + SongParts]
 	db	0x8B, 0xCB		; mov cx, bx
 	add	bx, 0x4
 	db	0x03, 0xD8		; add bx, ax
@@ -1134,7 +1134,7 @@ ScanSongSeqs:
 	jnc	short .5
 	db	0x8B, 0xDE		; mov bx, si
 	shl	bx, byte 0x2
-	les	bx, [bx + g_E058]
+	les	bx, [bx + SongSeqs]
 	mov	al, [es:bx + 0x1]
 	mov	[bp - 0x3], al
 	db	0x33, 0xFF		; xor di, di
@@ -1146,7 +1146,7 @@ ScanSongSeqs:
 	imul	cx, si, word 0x108
 	mov	di, [bp - 0x6]
 	shl	di, byte 0x2
-	les	di, [di + g_E058]
+	les	di, [di + SongSeqs]
 	db	0x03, 0xF9		; add di, cx
 	inc	di
 	inc	di
@@ -1185,16 +1185,16 @@ PrepareSong:
 	mov	ax, DGROUP
 	mov	ds, ax
 	mov	di, [bp + 0x6]
-	cmp	byte [di + g_E120], 0x0
+	cmp	byte [di + VoiceListFlags], 0x0
 	jnz	short .1
-	les	bx, [g_E08C]
+	les	bx, [VoiceFreeList]
 	db	0x8B, 0xF3		; mov si, bx
 	mov	[bp - 0x2], es
 	cmp	byte [es:bx + 0xc], 0x0
 	jz	short .2
 	mov	bl, [es:si + 0xc]
 	db	0x2A, 0xFF		; sub bh, bh
-	mov	[bx + g_E120], bh
+	mov	[bx + VoiceListFlags], bh
 	push	di
 	call	0x16F2:ScanSongParts
 	pop	bx
@@ -1210,7 +1210,7 @@ PrepareSong:
 	jmp	short .2
 .1:
 	push	0x18
-	mov	al, [di + g_E120]
+	mov	al, [di + VoiceListFlags]
 	db	0x2A, 0xE4		; sub ah, ah
 	imul	bx, ax, 0xe
 	add	bx, 0xe090
@@ -1223,18 +1223,18 @@ PrepareSong:
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
 .2:
-	les	bx, [g_E08C]
+	les	bx, [VoiceFreeList]
 	mov	al, [es:bx + 0xd]
-	mov	[di + g_E120], al
+	mov	[di + VoiceListFlags], al
 	mov	ax, [bp - 0x2]
-	cmp	si, [g_E11C]
+	cmp	si, [VoiceListEnd]
 	jnz	short .3
-	cmp	ax, [g_E11E]
+	cmp	ax, [VoiceListEndSeg]
 	jz	short .6
 .3:
-	cmp	si, [g_E08C]
+	cmp	si, [VoiceFreeList]
 	jnz	short .4
-	cmp	ax, [g_E08E]
+	cmp	ax, [VoiceFreeListSeg]
 	jz	short .5
 .4:
 	mov	es, ax
@@ -1252,19 +1252,19 @@ PrepareSong:
 	mov	[es:bx], ax
 	mov	[es:bx + 0x2], dx
 	mov	es, cx
-	mov	ax, [g_E11C]
-	mov	dx, [g_E11E]
+	mov	ax, [VoiceListEnd]
+	mov	dx, [VoiceListEndSeg]
 	mov	[es:si], ax
 	mov	[es:si + 0x2], dx
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[es:si + 0x6], ax
 	mov	[es:si + 0x4], ax
-	mov	[g_E11C], si
-	mov	[g_E11E], cx
+	mov	[VoiceListEnd], si
+	mov	[VoiceListEndSeg], cx
 	mov	ax, [es:si + 0x4]
 	mov	dx, [es:si + 0x6]
-	mov	[g_E08C], ax
-	mov	[g_E08E], dx
+	mov	[VoiceFreeList], ax
+	mov	[VoiceFreeListSeg], dx
 .6:
 	db	0x33, 0xC0		; xor ax, ax
 	pop	ds
@@ -1288,9 +1288,9 @@ FindFreeChannel:
 	jnl	short .4
 	db	0x8B, 0xF3		; mov si, bx
 	shl	si, 1
-	test	[si + g_84D0], cx
+	test	[si + ChannelMasks], cx
 	jz	short .2
-	cmp	byte [bx + g_DFF8], 0x0
+	cmp	byte [bx + ChannelUsed], 0x0
 	jz	short .3
 .2:
 	inc	bx
@@ -1313,8 +1313,8 @@ FindFreeTrackSlot:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
-	mov	ax, [g_84C8]
-	mov	dx, [g_84CA]
+	mov	ax, [TrackSlots]
+	mov	dx, [TrackSlotsSeg]
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x2], dx
 	db	0x33, 0xDB		; xor bx, bx
@@ -1348,10 +1348,10 @@ StartSong:
 	mov	ax, DGROUP
 	mov	ds, ax
 	mov	si, [bp + 0x6]
-	add	word [g_84F0], 0x1
-	adc	word [g_84F2], 0x0
-	mov	ax, [g_84F0]
-	mov	dx, [g_84F2]
+	add	word [SongHandleLo], 0x1
+	adc	word [SongHandleHi], 0x0
+	mov	ax, [SongHandleLo]
+	mov	dx, [SongHandleHi]
 	mov	[bp - 0x10], ax
 	mov	[bp - 0xe], dx
 	mov	es, [bp + 0x8]
@@ -1371,7 +1371,7 @@ StartSong:
 	mov	[bp - 0xc], cl
 	mov	cl, [es:bx + 0x6]
 	mov	[bp - 0x6], cl
-	inc	word [g_84F4]
+	inc	word [SeqLock]
 	mov	byte [bp - 0x5], 0x0
 .1:
 	cmp	byte [bp - 0x6], 0x0
@@ -1516,7 +1516,7 @@ StartSong:
 	cwd
 	jmp	short .8
 .7:
-	dec	word [g_84F4]
+	dec	word [SeqLock]
 	mov	ax, [bp - 0x10]
 	mov	dx, [bp - 0xe]
 .8:
@@ -1533,15 +1533,15 @@ RestartSong:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
-	inc	word [g_84F4]
+	inc	word [SeqLock]
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	call	0x16F2:StartSong
 	add	sp, 0x4
 	mov	[bp - 0x6], ax
 	mov	[bp - 0x4], dx
-	mov	ax, [g_84C8]
-	mov	dx, [g_84CA]
+	mov	ax, [TrackSlots]
+	mov	dx, [TrackSlotsSeg]
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x8], dx
 	mov	word [bp - 0x2], 0x0
@@ -1568,7 +1568,7 @@ RestartSong:
 .3:
 	cmp	cx, 0x18
 	jl	short .1
-	dec	word [g_84F4]
+	dec	word [SeqLock]
 	mov	ax, [bp - 0x6]
 	mov	dx, [bp - 0x4]
 	pop	ds
@@ -1597,7 +1597,7 @@ PlayPatchNote:
 	jc	short .1
 	jmp	near .8
 .1:
-	cmp	word [g_84FC], 0x0
+	cmp	word [SfxEnabled], 0x0
 	jnz	short .2
 	db	0x33, 0xC0		; xor ax, ax
 	jmp	near .9
@@ -1625,9 +1625,9 @@ PlayPatchNote:
 .5:
 	cmp	word [bp + 0x6], 0x80
 	jc	short .7
-	mov	byte [g_8FC6], 0xb9
-	mov	byte [g_8FC7], 0x7
-	mov	byte [g_8FC8], 0x7f
+	mov	byte [SfxMsg], 0xb9
+	mov	byte [SfxMsg1], 0x7
+	mov	byte [SfxMsg2], 0x7f
 	push	0x3
 	push	word 0x8fc6
 	mov	es, [bp - 0x2]
@@ -1655,19 +1655,19 @@ PlayPatchNote:
 	add	sp, 0x12
 	jmp	near .9
 .7:
-	mov	di, [g_8498]
+	mov	di, [SfxChannel]
 	add	di, 0xc
-	mov	al, [g_8498]
+	mov	al, [SfxChannel]
 	inc	al
 	and	ax, strict word 0x3
-	mov	[g_8498], ax
+	mov	[SfxChannel], ax
 	db	0x8B, 0xC7		; mov ax, di
 	db	0x8B, 0xCF		; mov cx, di
 	or	al, 0xc0
-	mov	[g_8FC6], al
+	mov	[SfxMsg], al
 	mov	al, [bp + 0x6]
-	mov	[g_8FC7], al
-	mov	byte [g_8FC8], 0x0
+	mov	[SfxMsg1], al
+	mov	byte [SfxMsg2], 0x0
 	push	0x2
 	push	word 0x8fc6
 	mov	es, [bp - 0x2]
@@ -1679,9 +1679,9 @@ PlayPatchNote:
 	add	sp, 0x6
 	mov	al, [bp - 0x6]
 	or	al, 0xb0
-	mov	[g_8FC6], al
-	mov	byte [g_8FC7], 0x7
-	mov	byte [g_8FC8], 0x7f
+	mov	[SfxMsg], al
+	mov	byte [SfxMsg1], 0x7
+	mov	byte [SfxMsg2], 0x7f
 	push	0x3
 	push	word 0x8fc6
 	mov	es, [bp - 0x2]
@@ -1692,9 +1692,9 @@ PlayPatchNote:
 	add	sp, 0x6
 	mov	al, [bp - 0x6]
 	or	al, 0x90
-	mov	[g_8FC6], al
-	mov	byte [g_8FC7], 0x24
-	mov	byte [g_8FC8], 0x7f
+	mov	[SfxMsg], al
+	mov	byte [SfxMsg1], 0x24
+	mov	byte [SfxMsg2], 0x7f
 	push	0x0
 	push	word 0xff
 	push	word 0xff
@@ -1786,19 +1786,19 @@ ReleaseAllVoices:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
-	inc	word [g_84F4]
-	cmp	word [g_84FC], 0x0
+	inc	word [SeqLock]
+	cmp	word [SfxEnabled], 0x0
 	jz	short .3
 	db	0x33, 0xDB		; xor bx, bx
 .1:
 	imul	si, bx, 0xc
-	mov	es, [g_84CE]
-	add	si, [g_84CC]
+	mov	es, [VoicesSeg]
+	add	si, [Voices]
 	mov	ax, [es:si + 0x2]
 	or	ax, [es:si]
 	jz	short .2
 	imul	si, bx, 0xc
-	add	si, [g_84CC]
+	add	si, [Voices]
 	mov	word [es:si + 0x8], 0x1
 	mov	word [es:si + 0xa], 0x0
 .2:
@@ -1806,7 +1806,7 @@ ReleaseAllVoices:
 	cmp	bx, 0x20
 	jl	short .1
 .3:
-	dec	word [g_84F4]
+	dec	word [SeqLock]
 	pop	ds
 	pop	si
 	retf
@@ -1825,25 +1825,25 @@ StopSound:
 	mov	ax, 0xffff
 	jmp	near .12
 .1:
-	mov	ax, [g_84CC]
-	mov	dx, [g_84CE]
+	mov	ax, [Voices]
+	mov	dx, [VoicesSeg]
 	db	0x8B, 0xF8		; mov di, ax
 	mov	[bp - 0x6], dx
-	mov	ax, [g_84C8]
-	mov	dx, [g_84CA]
+	mov	ax, [TrackSlots]
+	mov	dx, [TrackSlotsSeg]
 	mov	[bp - 0x4], ax
 	mov	[bp - 0x2], dx
-	inc	word [g_84F4]
+	inc	word [SeqLock]
 	cmp	word [bp + 0x8], 0x0
 	jnz	short .4
 	cmp	word [bp + 0x6], 0x100
 	jnc	short .4
-	cmp	word [g_84FC], 0x0
+	cmp	word [SfxEnabled], 0x0
 	jnz	short .2
 	jmp	near .11
 .2:
 	imul	si, [bp + 0x6], 0xc
-	les	bx, [g_84CC]
+	les	bx, [Voices]
 	mov	ax, [es:bx + si + 0xa]
 	or	ax, [es:bx + si + 0x8]
 	jnz	short .3
@@ -1930,7 +1930,7 @@ StopSound:
 	add	sp, 0x6
 	call	0x1630:SeqService
 .10:
-	dec	word [g_84F4]
+	dec	word [SeqLock]
 .11:
 	db	0x33, 0xC0		; xor ax, ax
 .12:
@@ -1947,11 +1947,11 @@ StopSong:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
-	mov	ax, [g_84C8]
-	mov	dx, [g_84CA]
+	mov	ax, [TrackSlots]
+	mov	dx, [TrackSlotsSeg]
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x2], dx
-	inc	word [g_84F4]
+	inc	word [SeqLock]
 	db	0x33, 0xC9		; xor cx, cx
 .1:
 	mov	ax, [bp + 0x6]
@@ -1977,7 +1977,7 @@ StopSong:
 	inc	cx
 	cmp	cx, 0x18
 	jl	short .1
-	dec	word [g_84F4]
+	dec	word [SeqLock]
 	db	0x33, 0xC0		; xor ax, ax
 	pop	ds
 	pop	si
@@ -1989,8 +1989,8 @@ SongFinished:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
-	mov	ax, [g_84C8]
-	mov	dx, [g_84CA]
+	mov	ax, [TrackSlots]
+	mov	dx, [TrackSlotsSeg]
 	db	0x8B, 0xD8		; mov bx, ax
 	db	0x33, 0xC9		; xor cx, cx
 	mov	ds, dx
@@ -2025,8 +2025,8 @@ SongStopped:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
-	mov	ax, [g_84C8]
-	mov	dx, [g_84CA]
+	mov	ax, [TrackSlots]
+	mov	dx, [TrackSlotsSeg]
 	db	0x8B, 0xD8		; mov bx, ax
 	db	0x33, 0xC9		; xor cx, cx
 	mov	ds, dx
@@ -2062,8 +2062,8 @@ SongChannelValue:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
-	mov	ax, [g_84C8]
-	mov	dx, [g_84CA]
+	mov	ax, [TrackSlots]
+	mov	dx, [TrackSlotsSeg]
 	db	0x8B, 0xF0		; mov si, ax
 	db	0x33, 0xC9		; xor cx, cx
 	mov	ds, dx
@@ -2103,11 +2103,11 @@ MuteAllTracks:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
-	mov	ax, [g_84C8]
-	mov	dx, [g_84CA]
+	mov	ax, [TrackSlots]
+	mov	dx, [TrackSlotsSeg]
 	db	0x8B, 0xF8		; mov di, ax
 	mov	[bp - 0x2], dx
-	mov	word [g_84FA], 0x1
+	mov	word [TracksMuted], 0x1
 	db	0x33, 0xF6		; xor si, si
 	mov	[bp - 0x4], di
 	jmp	short .3
@@ -2146,8 +2146,8 @@ RestoreTrackVolumes:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
-	mov	ax, [g_84C8]
-	mov	dx, [g_84CA]
+	mov	ax, [TrackSlots]
+	mov	dx, [TrackSlotsSeg]
 	db	0x8B, 0xF8		; mov di, ax
 	mov	[bp - 0x2], dx
 	db	0x33, 0xF6		; xor si, si
@@ -2159,7 +2159,7 @@ RestoreTrackVolumes:
 	mov	al, [es:di + 0x4c]
 	db	0x2A, 0xE4		; sub ah, ah
 	imul	bx, ax, 0x7
-	mov	es, [g_8D14]
+	mov	es, [WorkBufferSeg3]
 	mov	al, [es:bx - 0x4491]
 	push	ax
 	push	0x7
@@ -2172,7 +2172,7 @@ RestoreTrackVolumes:
 .3:
 	cmp	si, 0x18
 	jl	short .1
-	mov	word [g_84FA], 0x0
+	mov	word [TracksMuted], 0x0
 	pop	ds
 	pop	si
 	pop	di
@@ -2183,7 +2183,7 @@ SfxOn:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
-	mov	word [g_84FC], 0x1
+	mov	word [SfxEnabled], 0x1
 	pop	ds
 	retf
 
@@ -2191,7 +2191,7 @@ SfxOff:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
-	mov	word [g_84FC], 0x0
+	mov	word [SfxEnabled], 0x0
 	pop	ds
 	retf
 
@@ -2199,14 +2199,14 @@ ToggleSfx:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
-	cmp	word [g_84FC], 0x0
+	cmp	word [SfxEnabled], 0x0
 	jz	short .1
 	call	0x16F2:SfxOff
 	jmp	short .2
 .1:
 	call	0x16F2:SfxOn
 .2:
-	mov	ax, [g_84FC]
+	mov	ax, [SfxEnabled]
 	pop	ds
 	retf
 
@@ -2214,7 +2214,7 @@ GetSfx:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
-	mov	ax, [g_84FC]
+	mov	ax, [SfxEnabled]
 	pop	ds
 	retf
 	db	0x90
@@ -2223,7 +2223,7 @@ MusicOn:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
-	mov	word [g_84FE], 0x1
+	mov	word [MusicEnabled], 0x1
 	pop	ds
 	retf
 
@@ -2231,7 +2231,7 @@ MusicOff:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
-	mov	word [g_84FE], 0x0
+	mov	word [MusicEnabled], 0x0
 	pop	ds
 	retf
 
@@ -2239,14 +2239,14 @@ ToggleMusic:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
-	cmp	word [g_84FE], 0x0
+	cmp	word [MusicEnabled], 0x0
 	jz	short .1
 	call	0x16F2:MusicOn
 	jmp	short .2
 .1:
 	call	0x16F2:MusicOff
 .2:
-	mov	ax, [g_84FE]
+	mov	ax, [MusicEnabled]
 	pop	ds
 	retf
 
@@ -2254,7 +2254,7 @@ GetMusic:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
-	mov	ax, [g_84FE]
+	mov	ax, [MusicEnabled]
 	pop	ds
 	retf
 	db	0x90

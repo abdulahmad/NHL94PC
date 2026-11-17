@@ -13,7 +13,7 @@ DrawTextCenteredInWindow:
 	push	di
 	call	0x03A3:TextWidthAll
 	pop	bx
-	mov	es, [g_8D04]
+	mov	es, [DgroupSegC]
 	mov	si, [es:0x74fe]
 	db	0x2B, 0xF0		; sub si, ax
 	sub	si, [es:0x74fc]

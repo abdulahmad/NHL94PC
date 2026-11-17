@@ -10,35 +10,35 @@ UseDbDescriptorTail:
 	db	0x90
 
 GetInputEvent:
-	cmp	word [g_0A3E], 0x0
+	cmp	word [EventPending], 0x0
 	jz	short .1
 	call	0x0C15:NullFar2
-	mov	word [g_0A3E], 0x0
+	mov	word [EventPending], 0x0
 .1:
-	mov	es, [g_8B1E]
+	mov	es, [InputEventDataSeg]
 	cmp	word [es:0x0], 0x0
 	jz	short .2
 	call	0x0837:0x10
 	call	0x0837:NullFar
 	call	0x0837:0x10
-	mov	es, [g_8B1E]
+	mov	es, [InputEventDataSeg]
 	mov	word [es:0x0], 0x0
 .2:
-	cmp	word [g_0508], 0x0
+	cmp	word [InputQueueCount], 0x0
 	jnz	short .3
 	db	0x2B, 0xC0		; sub ax, ax
 	retf
 .3:
-	dec	word [g_0508]
-	mov	al, [g_050A]
+	dec	word [InputQueueCount]
+	mov	al, [InputQueueHead]
 	inc	al
 	and	ax, strict word 0x1f
-	mov	[g_050A], ax
+	mov	[InputQueueHead], ax
 	shl	ax, byte 0x3
 	add	ax, 0xaed0
 	retf
 
 FlushInputEvents:
-	mov	word [g_050A], 0x1f
+	mov	word [InputQueueHead], 0x1f
 	db	0x2B, 0xC0		; sub ax, ax
 	db	0xA3, 0x08

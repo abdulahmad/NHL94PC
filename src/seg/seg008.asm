@@ -3,7 +3,7 @@
 PadTimerTickTail:
 	std
 	add	sp, 0x2
-	inc	word [g_0528]
+	inc	word [PadRepeatDelay]
 .1:
 	pop	si
 	retf
@@ -16,16 +16,16 @@ SpeechTimerTick:
 	jnz	short .1
 	jmp	near .9
 .1:
-	cmp	word [g_076C], 0x0
+	cmp	word [SpeechOn], 0x0
 	jnz	short .2
 	jmp	near .9
 .2:
-	les	bx, [g_8EEA]
+	les	bx, [SentencePtr]
 	cmp	word [es:bx + 0x30], 0x0
 	jz	short .3
 	dec	word [es:bx + 0x30]
 .3:
-	les	bx, [g_8EEA]
+	les	bx, [SentencePtr]
 	cmp	word [es:bx + 0x32], 0x0
 	jnz	short .4
 	jmp	near .9
@@ -43,14 +43,14 @@ SpeechTimerTick:
 	mov	ax, [es:bx + 0x2e]
 	inc	word [es:bx + 0x2e]
 	mov	[bp - 0x14], ax
-	les	bx, [g_8EEA]
+	les	bx, [SentencePtr]
 	cmp	[es:bx + 0x2c], ax
 	jg	short .6
 	jmp	near .8
 .6:
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, 1
-	mov	si, [g_8EEA]
+	mov	si, [SentencePtr]
 	mov	ax, [es:bx + si]
 	mov	[bp - 0xe], ax
 	inc	ax
@@ -61,8 +61,8 @@ SpeechTimerTick:
 	retf
 .7:
 	imul	bx, [bp - 0xe], 0x24
-	add	bx, [g_8EF6]
-	mov	es, [g_8EF8]
+	add	bx, [SpeechBank]
+	mov	es, [SpeechBankSeg]
 	mov	[bp - 0x12], bx
 	mov	[bp - 0x10], es
 	mov	ax, [es:bx + 0xe]
@@ -75,11 +75,11 @@ SpeechTimerTick:
 	mov	[bp - 0xa], dx
 	mov	ax, [es:bx + 0x1e]
 	mov	dx, [es:bx + 0x20]
-	les	bx, [g_8EEA]
+	les	bx, [SentencePtr]
 	mov	[es:bx + 0x28], ax
 	mov	[es:bx + 0x2a], dx
-	inc	word [g_0764]
-	and	word [g_0764], 0x1
+	inc	word [SpeechTickCount]
+	and	word [SpeechTickCount], 0x1
 	lea	ax, [bp - 0x8]
 	push	ax
 	call	0x03A3:EmsSaveMap
@@ -96,8 +96,8 @@ SpeechTimerTick:
 	push	str_Que
 	push	word [bp - 0x16]
 	push	word [bp - 0x18]
-	push	word [g_0764]
-	mov	al, [g_0766]
+	push	word [SpeechTickCount]
+	mov	al, [SpeechSampleBusy]
 	push	ax
 	call	0x1844:DrvPlaySample
 	add	sp, 0x1c
@@ -110,9 +110,9 @@ SpeechTimerTick:
 	retf
 .8:
 	mov	word [es:bx + 0x32], 0x0
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	mov	ax, [es:bx + 0x1210]
-	les	bx, [g_8EEA]
+	les	bx, [SentencePtr]
 	mov	[es:bx + 0x30], ax
 .9:
 	pop	si
@@ -146,27 +146,27 @@ ResetSentence:
 	mov	ax, 0x2
 	call	0x0000:__chkstk
 	push	si
-	les	bx, [g_8EEA]
+	les	bx, [SentencePtr]
 	mov	word [es:bx + 0x32], 0x0
 	mov	word [bp - 0x2], 0x0
-	mov	es, [g_8EEC]
+	mov	es, [SentenceSeg]
 .1:
 	mov	bx, [bp - 0x2]
 	shl	bx, 1
-	mov	si, [g_8EEA]
+	mov	si, [SentencePtr]
 	mov	word [es:bx + si], 0xffff
 	inc	word [bp - 0x2]
 	cmp	word [bp - 0x2], 0x14
 	jl	short .1
-	les	bx, [g_8EEA]
+	les	bx, [SentencePtr]
 	mov	word [es:bx + 0x2c], 0x0
-	les	bx, [g_8EEA]
+	les	bx, [SentencePtr]
 	mov	word [es:bx + 0x2e], 0x0
-	les	bx, [g_8EEA]
+	les	bx, [SentencePtr]
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[es:bx + 0x2a], ax
 	mov	[es:bx + 0x28], ax
-	les	bx, [g_8EEA]
+	les	bx, [SentencePtr]
 	mov	[es:bx + 0x30], ax
 	pop	si
 	leave
@@ -181,8 +181,8 @@ InitSpeechBank:
 	mov	word [bp - 0x2], 0x0
 .1:
 	imul	ax, [bp - 0x2], 0x24
-	add	ax, [g_8EF6]
-	mov	dx, [g_8EF8]
+	add	ax, [SpeechBank]
+	mov	dx, [SpeechBankSeg]
 	push	dx
 	push	ax
 	push	cs
@@ -195,7 +195,7 @@ InitSpeechBank:
 	mov	dx, [bp + 0x8]
 	sub	ax, 0x1388
 	sbb	dx, 0x0
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	mov	[es:bx + 0x1208], ax
 	mov	[es:bx + 0x120a], dx
 	push	str_Que
@@ -204,25 +204,25 @@ InitSpeechBank:
 	push	word 0x76e
 	call	0x14DB:InsertRecWrap
 	add	sp, 0x8
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	mov	[es:bx + 0x1200], ax
 	mov	[es:bx + 0x1202], dx
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	push	word [es:bx + 0x1202]
 	push	word [es:bx + 0x1200]
 	call	0x06E1:RawBase
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	mov	[es:bx + 0x1204], ax
 	mov	[es:bx + 0x1206], dx
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[es:bx + 0x120e], ax
 	mov	[es:bx + 0x120c], ax
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	mov	[es:bx + 0x1212], ax
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	mov	[es:bx + 0x1210], ax
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	mov	[es:bx + 0x1214], ax
 	leave
 	retf
@@ -235,7 +235,7 @@ ResetWantedSamples:
 	call	0x0000:__chkstk
 	push	si
 	mov	word [bp - 0x2], 0x0
-	mov	es, [g_8EF4]
+	mov	es, [WantedListSeg]
 .1:
 	mov	bx, [bp - 0x2]
 	db	0x8B, 0xC3		; mov ax, bx
@@ -243,16 +243,16 @@ ResetWantedSamples:
 	db	0x03, 0xD8		; add bx, ax
 	shl	bx, byte 0x2
 	db	0x03, 0xD8		; add bx, ax
-	mov	si, [g_8EF2]
+	mov	si, [WantedList]
 	mov	byte [es:bx + si], 0x0
 	inc	word [bp - 0x2]
 	cmp	word [bp - 0x2], 0x14
 	jl	short .1
-	les	bx, [g_8EF2]
+	les	bx, [WantedList]
 	mov	word [es:bx + 0x10a], 0x0
-	les	bx, [g_8EF2]
+	les	bx, [WantedList]
 	mov	word [es:bx + 0x108], 0x0
-	les	bx, [g_8EF2]
+	les	bx, [WantedList]
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[es:bx + 0x106], ax
 	mov	[es:bx + 0x104], ax
@@ -273,16 +273,16 @@ SpeechInit:
 	jmp	near .2
 .1:
 	mov	al, [bp + 0x6]
-	mov	[g_0766], al
-	mov	word [g_0764], 0x0
+	mov	[SpeechSampleBusy], al
+	mov	word [SpeechTickCount], 0x0
 	mov	ax, [bp + 0xc]
 	mov	dx, [bp + 0xe]
-	mov	[g_8EFA], ax
-	mov	[g_8EFC], dx
+	mov	[MoveBlockOff], ax
+	mov	[MoveBlockSeg], dx
 	mov	ax, [bp + 0x10]
 	mov	dx, [bp + 0x12]
-	mov	[g_0768], ax
-	mov	[g_076A], dx
+	mov	[SpeechMemOff], ax
+	mov	[SpeechMemSeg], dx
 	push	cs
 	call	MakePauseSample
 	push	0x0
@@ -291,8 +291,8 @@ SpeechInit:
 	push	word 0x778
 	call	0x14DB:AllocRecData
 	db	0x8B, 0xE5		; mov sp, bp
-	mov	[g_8EEA], ax
-	mov	[g_8EEC], dx
+	mov	[SentencePtr], ax
+	mov	[SentenceSeg], dx
 	push	cs
 	call	ResetSentence
 	push	0x0
@@ -301,8 +301,8 @@ SpeechInit:
 	push	word 0x781
 	call	0x14DB:AllocRecData
 	db	0x8B, 0xE5		; mov sp, bp
-	mov	[g_8EF6], ax
-	mov	[g_8EF8], dx
+	mov	[SpeechBank], ax
+	mov	[SpeechBankSeg], dx
 	push	word [bp + 0xa]
 	push	word [bp + 0x8]
 	push	cs
@@ -314,14 +314,14 @@ SpeechInit:
 	push	word 0x78d
 	call	0x14DB:AllocRecData
 	db	0x8B, 0xE5		; mov sp, bp
-	mov	[g_8EF2], ax
-	mov	[g_8EF4], dx
+	mov	[WantedList], ax
+	mov	[WantedListSeg], dx
 	push	cs
 	call	ResetWantedSamples
 	push	word 0x9b2
 	push	strict word 0xa
 	call	0x03A3:AllocSlot
-	mov	word [g_076C], 0x1
+	mov	word [SpeechOn], 0x1
 .2:
 	leave
 	retf
@@ -330,34 +330,34 @@ SpeechInit:
 SpeechShutdown:
 	db	0x33, 0xC0		; xor ax, ax
 	call	0x0000:__chkstk
-	cmp	word [g_076C], 0x0
+	cmp	word [SpeechOn], 0x0
 	jz	short .1
 	push	word 0x9b2
 	push	strict word 0xa
 	call	0x03A3:FreeSlot
 	add	sp, 0x4
-	mov	al, [g_0766]
+	mov	al, [SpeechSampleBusy]
 	push	ax
 	call	0x1844:DrvShutdown
 	add	sp, 0x2
-	push	word [g_8EEC]
-	push	word [g_8EEA]
+	push	word [SentenceSeg]
+	push	word [SentencePtr]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	push	word [es:bx + 0x1202]
 	push	word [es:bx + 0x1200]
 	call	0x06E1:UnlinkRec
 	add	sp, 0x4
-	push	word [g_8EF8]
-	push	word [g_8EF6]
+	push	word [SpeechBankSeg]
+	push	word [SpeechBank]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	push	word [g_8EF4]
-	push	word [g_8EF2]
+	push	word [WantedListSeg]
+	push	word [WantedList]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	mov	word [g_076C], 0x0
+	mov	word [SpeechOn], 0x0
 .1:
 	retf
 	db	0x90
@@ -365,7 +365,7 @@ SpeechShutdown:
 SpeechIsReady:
 	db	0x33, 0xC0		; xor ax, ax
 	call	0x0000:__chkstk
-	cmp	word [g_076C], 0x0
+	cmp	word [SpeechOn], 0x0
 	jnz	short .1
 	db	0x2B, 0xC0		; sub ax, ax
 	retf
@@ -377,13 +377,13 @@ SpeechIsReady:
 SpeechBusy:
 	db	0x33, 0xC0		; xor ax, ax
 	call	0x0000:__chkstk
-	cmp	word [g_076C], 0x0
+	cmp	word [SpeechOn], 0x0
 	jnz	short .1
 	db	0x2B, 0xC0		; sub ax, ax
 	retf
 	db	0x90
 .1:
-	les	bx, [g_8EEA]
+	les	bx, [SentencePtr]
 	cmp	word [es:bx + 0x32], 0x0
 	jz	short .2
 	mov	ax, 0x1
@@ -397,14 +397,14 @@ SpeechBusy:
 SpeechIdle:
 	db	0x33, 0xC0		; xor ax, ax
 	call	0x0000:__chkstk
-	cmp	word [g_076C], 0x0
+	cmp	word [SpeechOn], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
 	retf
 	db	0x90
 .2:
-	les	bx, [g_8EEA]
+	les	bx, [SentencePtr]
 	cmp	word [es:bx + 0x32], 0x0
 	jnz	short .1
 	cmp	word [es:bx + 0x30], 0x0
@@ -416,15 +416,15 @@ StopSpeech:
 	db	0x33, 0xC0		; xor ax, ax
 	call	0x0000:__chkstk
 	push	si
-	cmp	word [g_076C], 0x0
+	cmp	word [SpeechOn], 0x0
 	jz	short .1
-	les	bx, [g_8EEA]
+	les	bx, [SentencePtr]
 	mov	word [es:bx + 0x32], 0x0
-	les	bx, [g_8EEA]
+	les	bx, [SentencePtr]
 	mov	ax, [es:bx + 0x28]
-	les	si, [g_8EF6]
+	les	si, [SpeechBank]
 	add	ax, [es:si + 0x1210]
-	mov	es, [g_8EEC]
+	mov	es, [SentenceSeg]
 	mov	[es:bx + 0x30], ax
 .1:
 	pop	si
@@ -448,14 +448,14 @@ MakePauseSample:
 	push	ax
 	call	0x06E1:RawBase
 	add	sp, 0x4
-	mov	[g_8EEE], ax
-	mov	[g_8EF0], dx
+	mov	[PauseSampleOff], ax
+	mov	[PauseSampleSeg], dx
 	lea	ax, [bp - 0x8]
 	push	ax
 	call	0x03A3:EmsSaveMap
 	add	sp, 0x2
-	push	word [g_8EF0]
-	push	word [g_8EEE]
+	push	word [PauseSampleSeg]
+	push	word [PauseSampleOff]
 	call	0x03A3:EmsMapFrame
 	add	sp, 0x4
 	mov	[bp - 0xc], ax
@@ -483,7 +483,7 @@ PlayPauseSample:
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, 0x8
 	call	0x0000:__chkstk
-	cmp	word [g_076C], 0x0
+	cmp	word [SpeechOn], 0x0
 	jz	short .1
 	lea	ax, [bp - 0x8]
 	push	ax
@@ -499,10 +499,10 @@ PlayPauseSample:
 	push	0x0
 	push	0x0
 	push	str_Que
-	push	word [g_8EF0]
-	push	word [g_8EEE]
+	push	word [PauseSampleSeg]
+	push	word [PauseSampleOff]
 	push	0x0
-	mov	al, [g_0766]
+	mov	al, [SpeechSampleBusy]
 	push	ax
 	call	0x1844:DrvPlaySample
 	add	sp, 0x1c
@@ -516,10 +516,10 @@ PlayPauseSample:
 	push	0x0
 	push	0x0
 	push	str_Que
-	push	word [g_8EF0]
-	push	word [g_8EEE]
+	push	word [PauseSampleSeg]
+	push	word [PauseSampleOff]
 	push	0x1
-	mov	al, [g_0766]
+	mov	al, [SpeechSampleBusy]
 	push	ax
 	call	0x1844:DrvPlaySample
 	add	sp, 0x1c
@@ -612,14 +612,14 @@ OpenSpeechFile:
 	mov	ax, 0x2e
 	call	0x0000:__chkstk
 	push	si
-	cmp	word [g_076C], 0x0
+	cmp	word [SpeechOn], 0x0
 	jnz	short .1
 	jmp	near .12
 .1:
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	cmp	word [es:bx + 0x1214], 0x0
 	jz	short .3
-	lea	ax, [bx + g_1218]
+	lea	ax, [bx + SpeechFileNames]
 	push	es
 	push	ax
 	push	ds
@@ -631,7 +631,7 @@ OpenSpeechFile:
 	jz	short .2
 	jmp	near .12
 .2:
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	push	word [es:bx + 0x1216]
 	call	0x0000:_dos_close
 	add	sp, 0x2
@@ -645,26 +645,26 @@ OpenSpeechFile:
 	push	0xd
 	push	ds
 	push	word [bp + 0x6]
-	mov	ax, [g_8EF6]
-	mov	dx, [g_8EF8]
+	mov	ax, [SpeechBank]
+	mov	dx, [SpeechBankSeg]
 	add	ax, 0x1218
 	push	dx
 	push	ax
 	call	0x03A3:CopyStrNFar
 	add	sp, 0xa
 	mov	ax, [bp - 0x22]
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	mov	[es:bx + 0x1216], ax
 	mov	ax, [bp + 0x8]
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	mov	[es:bx + 0x1210], ax
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	mov	word [es:bx + 0x1214], 0x1
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[es:bx + 0x120e], ax
 	mov	[es:bx + 0x120c], ax
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	mov	[es:bx + 0x1212], ax
 	lea	ax, [bp - 0x20]
 	push	ax
@@ -679,7 +679,7 @@ OpenSpeechFile:
 	push	cs
 	call	SwapWordBytes
 	add	sp, 0x2
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	mov	[es:bx + 0x1226], ax
 	lea	ax, [bp - 0x20]
 	push	ax
@@ -694,7 +694,7 @@ OpenSpeechFile:
 	push	cs
 	call	SwapWordBytes
 	add	sp, 0x2
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	mov	[es:bx + 0x1228], ax
 	lea	ax, [bp - 0x20]
 	push	ax
@@ -709,7 +709,7 @@ OpenSpeechFile:
 	push	cs
 	call	SwapWordBytes
 	add	sp, 0x2
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	mov	[es:bx + 0x122a], ax
 	mov	word [bp - 0x1e], 0x0
 	jmp	short .5
@@ -722,7 +722,7 @@ OpenSpeechFile:
 	push	cs
 	call	ReadBe24
 	add	sp, 0x2
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	mov	[es:bx + si + 0x12], ax
 	mov	[es:bx + si + 0x14], dx
 	push	word [bp - 0x22]
@@ -731,25 +731,25 @@ OpenSpeechFile:
 	add	sp, 0x2
 	mov	[bp - 0x1c], ax
 	mov	[bp - 0x1a], dx
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	mov	[es:bx + si + 0x1a], ax
 	mov	[es:bx + si + 0x1c], dx
 	push	word [bp - 0x22]
 	db	0x8B, 0xC6		; mov ax, si
-	add	si, [g_8EF6]
-	mov	cx, [g_8EF8]
+	add	si, [SpeechBank]
+	mov	cx, [SpeechBankSeg]
 	push	cx
 	push	si
 	db	0x8B, 0xF0		; mov si, ax
 	push	cs
 	call	ReadCString
 	add	sp, 0x6
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	mov	word [es:bx + si + 0x22], 0x0
 	inc	word [bp - 0x1e]
 .5:
 	mov	ax, [bp - 0x1e]
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	cmp	[es:bx + 0x122a], ax
 	jg	short .4
 	mov	ax, [es:bx + 0x1210]
@@ -782,8 +782,8 @@ OpenSpeechFile:
 	cmp	byte [bp - 0x26], 0xfb
 	jz	short .7
 	push	0xd
-	add	si, [g_8EF6]
-	mov	cx, [g_8EF8]
+	add	si, [SpeechBank]
+	mov	cx, [SpeechBankSeg]
 	push	cx
 	push	si
 	lea	ax, [bp - 0x10]
@@ -818,7 +818,7 @@ OpenSpeechFile:
 	sub	ax, strict word 0x5
 	mov	[bp - 0x14], ax
 	imul	si, [bp - 0x1e], 0x24
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	mov	[es:bx + si + 0x16], ax
 	mov	word [es:bx + si + 0x18], 0x0
 	mov	ax, [bp - 0x14]
@@ -839,13 +839,13 @@ OpenSpeechFile:
 	db	0x2B, 0xC8		; sub cx, ax
 	db	0x1B, 0xDA		; sbb bx, dx
 	db	0x8B, 0xC3		; mov ax, bx
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	mov	[es:bx + si + 0x1e], cx
 	mov	[es:bx + si + 0x20], ax
 	inc	word [bp - 0x1e]
 .8:
 	mov	ax, [bp - 0x1e]
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	cmp	[es:bx + 0x122a], ax
 	jng	short .9
 	jmp	near .6
@@ -856,8 +856,8 @@ OpenSpeechFile:
 	db	0x90
 .10:
 	imul	ax, [bp - 0x1e], 0x24
-	add	ax, [g_8EF6]
-	mov	dx, [g_8EF8]
+	add	ax, [SpeechBank]
+	mov	dx, [SpeechBankSeg]
 	push	dx
 	push	ax
 	push	cs
@@ -888,7 +888,7 @@ ClipLength:
 	db	0x90
 .1:
 	imul	si, [bp + 0x6], 0x24
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	mov	ax, [es:bx + si + 0x16]
 	mov	dx, [es:bx + si + 0x18]
 	pop	si
@@ -903,11 +903,11 @@ LoadClipData:
 	call	0x0000:__chkstk
 	push	si
 	imul	bx, [bp + 0x6], 0x24
-	add	bx, [g_8EF6]
-	mov	es, [g_8EF8]
+	add	bx, [SpeechBank]
+	mov	es, [SpeechBankSeg]
 	mov	ax, [es:bx + 0x1a]
 	mov	[bp - 0x16], ax
-	mov	si, [g_8EF6]
+	mov	si, [SpeechBank]
 	mov	cx, [es:si + 0x1216]
 	mov	[bp - 0x1c], cx
 	mov	cx, [es:bx + 0x12]
@@ -1003,21 +1003,21 @@ LoadClipToBank:
 	push	si
 	cmp	word [bp + 0x6], 0x0
 	jnz	short .1
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	mov	ax, [es:bx + 0x1204]
 	mov	dx, [es:bx + 0x1206]
 	jmp	short .2
 .1:
 	imul	bx, [bp + 0x6], 0x24
-	add	bx, [g_8EF6]
-	mov	es, [g_8EF8]
+	add	bx, [SpeechBank]
+	mov	es, [SpeechBankSeg]
 	mov	ax, [es:bx - 0x16]
 	mov	dx, [es:bx - 0x14]
 	add	ax, [es:bx - 0xe]
 	adc	dx, [es:bx - 0xc]
 .2:
 	imul	si, [bp + 0x6], 0x24
-	mov	bx, [g_8EF6]
+	mov	bx, [SpeechBank]
 	mov	[es:bx + si + 0xe], ax
 	mov	[es:bx + si + 0x10], dx
 	push	dx
@@ -1028,14 +1028,14 @@ LoadClipToBank:
 	add	sp, 0x6
 	mov	[bp - 0x4], ax
 	mov	[bp - 0x2], dx
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	mov	word [es:bx + si + 0x22], 0x1
 	mov	ax, [bp - 0x4]
 	mov	dx, [bp - 0x2]
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	add	[es:bx + 0x120c], ax
 	adc	[es:bx + 0x120e], dx
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	inc	word [es:bx + 0x1212]
 	pop	si
 	leave
@@ -1087,7 +1087,7 @@ FindFreeClip:
 	cmp	word [bp - 0x2], 0x80
 	jnl	short .3
 	imul	si, [bp - 0x2], 0x24
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	cmp	word [es:bx + si + 0x22], 0x0
 	jnz	short .1
 	mov	ax, [bp - 0x2]
@@ -1116,7 +1116,7 @@ FindLoadedClip:
 	cmp	word [bp - 0x2], 0x80
 	jnl	short .3
 	imul	si, [bp - 0x2], 0x24
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	cmp	word [es:bx + si + 0x22], 0x1
 	jnz	short .1
 	mov	ax, [bp - 0x2]
@@ -1143,8 +1143,8 @@ FindClipByName:
 	cmp	word [bp - 0x2], 0x80
 	jnl	short .3
 	imul	ax, [bp - 0x2], 0x24
-	add	ax, [g_8EF6]
-	mov	dx, [g_8EF8]
+	add	ax, [SpeechBank]
+	mov	dx, [SpeechBankSeg]
 	push	dx
 	push	ax
 	push	ds
@@ -1170,7 +1170,7 @@ ClipIsLoaded:
 	call	0x0000:__chkstk
 	push	si
 	imul	si, [bp + 0x6], 0x24
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	cmp	word [es:bx + si + 0x22], 0x1
 	jnz	short .1
 	mov	ax, 0x1
@@ -1195,7 +1195,7 @@ SampleIsWanted:
 	inc	word [bp - 0x2]
 .2:
 	mov	ax, [bp - 0x2]
-	les	bx, [g_8EF2]
+	les	bx, [WantedList]
 	cmp	[es:bx + 0x108], ax
 	jng	short .3
 	db	0x8B, 0xC8		; mov cx, ax
@@ -1233,7 +1233,7 @@ WantSample:
 	add	sp, 0x4
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .2
-	les	bx, [g_8EF2]
+	les	bx, [WantedList]
 	mov	ax, [es:bx + 0x108]
 	inc	word [es:bx + 0x108]
 	push	0xd
@@ -1244,8 +1244,8 @@ WantSample:
 	db	0x03, 0xC1		; add ax, cx
 	shl	ax, byte 0x2
 	db	0x03, 0xC1		; add ax, cx
-	add	ax, [g_8EF2]
-	mov	dx, [g_8EF4]
+	add	ax, [WantedList]
+	mov	dx, [WantedListSeg]
 	push	dx
 	push	ax
 	call	0x03A3:CopyStrNFar
@@ -1266,11 +1266,11 @@ WantSample:
 	push	word [bp - 0x4]
 	push	cs
 	call	ClipLength
-	les	bx, [g_8EF2]
+	les	bx, [WantedList]
 	add	[es:bx + 0x104], ax
 	adc	[es:bx + 0x106], dx
 .1:
-	les	bx, [g_8EF2]
+	les	bx, [WantedList]
 	inc	word [es:bx + 0x10a]
 .2:
 	leave
@@ -1293,8 +1293,8 @@ DropUnwantedClip:
 	jl	short .3
 	imul	bx, [bp - 0x2], 0x24
 	db	0x8B, 0xC3		; mov ax, bx
-	add	bx, [g_8EF6]
-	mov	es, [g_8EF8]
+	add	bx, [SpeechBank]
+	mov	es, [SpeechBankSeg]
 	cmp	word [es:bx + 0x22], 0x1
 	jnz	short .1
 	push	es
@@ -1305,9 +1305,9 @@ DropUnwantedClip:
 	add	sp, 0x4
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .1
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	mov	[es:bx + si + 0x22], ax
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	mov	ax, [es:bx + si + 0x16]
 	mov	dx, [es:bx + si + 0x18]
 	sub	[es:bx + 0x120c], ax
@@ -1335,8 +1335,8 @@ MoveMemBlock:
 	jnz	short .2
 	jmp	near .5
 .2:
-	mov	ax, [g_0768]
-	mov	dx, [g_076A]
+	mov	ax, [SpeechMemOff]
+	mov	dx, [SpeechMemSeg]
 	cmp	[bp + 0x10], dx
 	jc	short .3
 	ja	short .4
@@ -1355,8 +1355,8 @@ MoveMemBlock:
 	push	word [bp - 0x8]
 	push	dx
 	push	ax
-	push	word [g_8EFC]
-	push	word [g_8EFA]
+	push	word [MoveBlockSeg]
+	push	word [MoveBlockOff]
 	call	0x0000:_fmemmove
 	add	sp, 0xa
 	push	word [bp + 0x8]
@@ -1364,8 +1364,8 @@ MoveMemBlock:
 	call	0x03A3:EmsMapFrame
 	add	sp, 0x4
 	push	word [bp - 0x8]
-	push	word [g_8EFC]
-	push	word [g_8EFA]
+	push	word [MoveBlockSeg]
+	push	word [MoveBlockOff]
 	push	dx
 	push	ax
 	call	0x0000:_fmemmove
@@ -1391,7 +1391,7 @@ MoveClip:
 	push	di
 	push	si
 	imul	si, [bp + 0x8], 0x24
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	mov	ax, [es:bx + si + 0xe]
 	mov	dx, [es:bx + si + 0x10]
 	mov	[bp - 0x2c], ax
@@ -1404,7 +1404,7 @@ MoveClip:
 	db	0x90
 .1:
 	imul	bx, [bp + 0x6], 0x24
-	add	bx, [g_8EF6]
+	add	bx, [SpeechBank]
 	mov	ax, [es:bx - 0x16]
 	mov	dx, [es:bx - 0x14]
 	add	ax, [es:bx - 0xe]
@@ -1413,7 +1413,7 @@ MoveClip:
 	mov	[bp - 0x30], ax
 	mov	[bp - 0x2e], dx
 	imul	si, [bp + 0x8], 0x24
-	mov	bx, [g_8EF6]
+	mov	bx, [SpeechBank]
 	mov	ax, [es:bx + si + 0x16]
 	mov	dx, [es:bx + si + 0x18]
 	mov	[bp - 0x4], ax
@@ -1429,8 +1429,8 @@ MoveClip:
 	add	sp, 0xc
 	imul	ax, [bp + 0x6], 0x24
 	db	0x8B, 0xC8		; mov cx, ax
-	add	ax, [g_8EF6]
-	mov	dx, [g_8EF8]
+	add	ax, [SpeechBank]
+	mov	dx, [SpeechBankSeg]
 	push	cx
 	push	si
 	push	ds
@@ -1445,10 +1445,10 @@ MoveClip:
 	pop	si
 	pop	cx
 	db	0x8B, 0xC6		; mov ax, si
-	add	si, [g_8EF6]
-	mov	dx, [g_8EF8]
+	add	si, [SpeechBank]
+	mov	dx, [SpeechBankSeg]
 	db	0x8B, 0xD9		; mov bx, cx
-	les	di, [g_8EF6]
+	les	di, [SpeechBank]
 	push	cx
 	push	di
 	push	es
@@ -1462,20 +1462,20 @@ MoveClip:
 	pop	di
 	pop	cx
 	db	0x8B, 0xD8		; mov bx, ax
-	les	si, [g_8EF6]
+	les	si, [SpeechBank]
 	push	cx
 	lea	di, [bx + si]
 	lea	si, [bp - 0x28]
 	mov	cx, 0x12
 	rep	movsw
 	pop	cx
-	mov	bx, [g_8EF6]
+	mov	bx, [SpeechBank]
 	db	0x8B, 0xF1		; mov si, cx
 	mov	cx, [bp - 0x30]
 	mov	dx, [bp - 0x2e]
 	mov	[es:bx + si + 0xe], cx
 	mov	[es:bx + si + 0x10], dx
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	db	0x8B, 0xF0		; mov si, ax
 	mov	word [es:bx + si + 0x22], 0x0
 	pop	si
@@ -1531,15 +1531,15 @@ MakeRoomForWanted:
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[bp - 0xc], ax
 	mov	[bp - 0x6], ax
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	mov	ax, [es:bx + 0x1208]
 	mov	dx, [es:bx + 0x120a]
 	mov	[bp - 0x4], ax
 	mov	[bp - 0x2], dx
-	les	si, [g_8EF2]
+	les	si, [WantedList]
 	mov	cx, [es:si + 0x104]
 	mov	bx, [es:si + 0x106]
-	les	si, [g_8EF6]
+	les	si, [SpeechBank]
 	add	cx, [es:si + 0x120c]
 	adc	bx, [es:si + 0x120e]
 	db	0x3B, 0xDA		; cmp bx, dx
@@ -1550,10 +1550,10 @@ MakeRoomForWanted:
 .1:
 	push	cs
 	call	DropUnwantedClip
-	les	bx, [g_8EF2]
+	les	bx, [WantedList]
 	mov	ax, [es:bx + 0x104]
 	mov	dx, [es:bx + 0x106]
-	les	bx, [g_8EF6]
+	les	bx, [SpeechBank]
 	add	ax, [es:bx + 0x120c]
 	adc	dx, [es:bx + 0x120e]
 	cmp	dx, [bp - 0x2]
@@ -1634,7 +1634,7 @@ NumberSampleNames:
 	jnz	short .3
 	mov	[bp - 0x8], cx
 .3:
-	mov	es, [g_8B12]
+	mov	es, [NumberWordsSeg]
 	mov	bx, [bp - 0x6]
 	shl	bx, byte 0x2
 	push	word [es:bx + 0xba]
@@ -1643,7 +1643,7 @@ NumberSampleNames:
 	push	word [bp + 0x8]
 	call	0x0000:_fstrcpy
 	add	sp, 0x8
-	mov	es, [g_8B12]
+	mov	es, [NumberWordsSeg]
 	mov	ax, [bp - 0x4]
 	add	[bp - 0x8], ax
 	mov	bx, [bp - 0x8]
@@ -1779,7 +1779,7 @@ QueueClip:
 	call	0x0000:__chkstk
 	push	di
 	push	si
-	les	bx, [g_8EEA]
+	les	bx, [SentencePtr]
 	mov	ax, [es:bx + 0x2c]
 	inc	word [es:bx + 0x2c]
 	mov	[bp - 0x4], ax
@@ -1791,7 +1791,7 @@ QueueClip:
 	inc	ax
 	jnz	short .2
 .1:
-	les	bx, [g_8EEA]
+	les	bx, [SentencePtr]
 	dec	word [es:bx + 0x2c]
 	db	0x2B, 0xC0		; sub ax, ax
 	pop	si
@@ -1809,7 +1809,7 @@ QueueClip:
 .3:
 	mov	bx, [bp - 0x4]
 	shl	bx, 1
-	les	si, [g_8EEA]
+	les	si, [SentencePtr]
 	mov	[es:bx + si], ax
 	mov	ax, 0x1
 	pop	si
@@ -1826,8 +1826,8 @@ QueueClip:
 	jz	short .1
 	imul	ax, [bp - 0x2], 0x24
 	db	0x8B, 0xC8		; mov cx, ax
-	add	ax, [g_8EF6]
-	mov	dx, [g_8EF8]
+	add	ax, [SpeechBank]
+	mov	dx, [SpeechBankSeg]
 	push	cx
 	push	ds
 	lea	di, [bp - 0x28]
@@ -1840,11 +1840,11 @@ QueueClip:
 	pop	ds
 	pop	cx
 	db	0x8B, 0xD9		; mov bx, cx
-	les	si, [g_8EF6]
+	les	si, [SpeechBank]
 	imul	ax, [bp - 0x2a], 0x24
 	db	0x03, 0xF0		; add si, ax
 	mov	dx, es
-	mov	di, [g_8EF6]
+	mov	di, [SpeechBank]
 	push	cx
 	push	ds
 	lea	di, [bx + di]
@@ -1854,14 +1854,14 @@ QueueClip:
 	pop	ds
 	pop	cx
 	db	0x8B, 0xD8		; mov bx, ax
-	mov	si, [g_8EF6]
+	mov	si, [SpeechBank]
 	push	cx
 	lea	di, [bx + si]
 	lea	si, [bp - 0x28]
 	mov	cx, 0x12
 	rep	movsw
 	pop	cx
-	mov	bx, [g_8EF6]
+	mov	bx, [SpeechBank]
 	db	0x8B, 0xF1		; mov si, cx
 	mov	ax, [es:bx + si + 0x16]
 	mov	dx, [es:bx + si + 0x18]
@@ -1888,7 +1888,7 @@ SayEaNhlIntro:
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, 0x8
 	call	0x0000:__chkstk
-	cmp	word [g_076C], 0x0
+	cmp	word [SpeechOn], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
@@ -1917,7 +1917,7 @@ SayEaNhlIntro:
 	push	cs
 	call	QueueClip
 	add	sp, 0x2
-	les	bx, [g_8EEA]
+	les	bx, [SentencePtr]
 	mov	word [es:bx + 0x32], 0x1
 	lea	ax, [bp - 0x8]
 	push	ax
@@ -1931,7 +1931,7 @@ SayGoodnight:
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, 0x8
 	call	0x0000:__chkstk
-	cmp	word [g_076C], 0x0
+	cmp	word [SpeechOn], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
@@ -1968,7 +1968,7 @@ SayGoodnight:
 	push	cs
 	call	QueueClip
 	add	sp, 0x2
-	les	bx, [g_8EEA]
+	les	bx, [SentencePtr]
 	mov	word [es:bx + 0x32], 0x1
 	lea	ax, [bp - 0x8]
 	push	ax
@@ -1982,7 +1982,7 @@ SayLineups:
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, 0x8
 	call	0x0000:__chkstk
-	cmp	word [g_076C], 0x0
+	cmp	word [SpeechOn], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
@@ -2011,7 +2011,7 @@ SayLineups:
 	push	cs
 	call	QueueClip
 	add	sp, 0x2
-	les	bx, [g_8EEA]
+	les	bx, [SentencePtr]
 	mov	word [es:bx + 0x32], 0x1
 	lea	ax, [bp - 0x8]
 	push	ax
@@ -2025,7 +2025,7 @@ SayElseAroundNhl:
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, 0x8
 	call	0x0000:__chkstk
-	cmp	word [g_076C], 0x0
+	cmp	word [SpeechOn], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
@@ -2054,7 +2054,7 @@ SayElseAroundNhl:
 	push	cs
 	call	QueueClip
 	add	sp, 0x2
-	les	bx, [g_8EEA]
+	les	bx, [SentencePtr]
 	mov	word [es:bx + 0x32], 0x1
 	lea	ax, [bp - 0x8]
 	push	ax
@@ -2068,7 +2068,7 @@ SayHighlightMatchup:
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, 0x32
 	call	0x0000:__chkstk
-	cmp	word [g_076C], 0x0
+	cmp	word [SpeechOn], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
@@ -2172,7 +2172,7 @@ SayHighlightMatchup:
 	push	cs
 	call	QueueClip
 	add	sp, 0x2
-	les	bx, [g_8EEA]
+	les	bx, [SentencePtr]
 	mov	word [es:bx + 0x32], 0x1
 	lea	ax, [bp - 0x8]
 	push	ax
@@ -2187,7 +2187,7 @@ SayPlayoffResult:
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, 0x4e
 	call	0x0000:__chkstk
-	cmp	word [g_076C], 0x0
+	cmp	word [SpeechOn], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
@@ -2354,7 +2354,7 @@ SayPlayoffResult:
 	call	QueueClip
 	add	sp, 0x2
 .16:
-	les	bx, [g_8EEA]
+	les	bx, [SentencePtr]
 	mov	word [es:bx + 0x32], 0x1
 	lea	ax, [bp - 0x8]
 	push	ax
@@ -2369,7 +2369,7 @@ SayPeriodSummary:
 	mov	ax, 0x26
 	call	0x0000:__chkstk
 	mov	word [bp - 0x26], 0x0
-	cmp	word [g_076C], 0x0
+	cmp	word [SpeechOn], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
@@ -2386,7 +2386,7 @@ SayPeriodSummary:
 	call	0x03A3:EmsSaveMap
 	add	sp, 0x2
 	push	0xd
-	mov	es, [g_8B12]
+	mov	es, [NumberWordsSeg]
 	mov	bx, [bp + 0x6]
 	shl	bx, byte 0x2
 	push	word [es:bx + 0x160]
@@ -2475,7 +2475,7 @@ SayPeriodSummary:
 	push	cs
 	call	QueueClip
 	add	sp, 0x2
-	les	bx, [g_8EEA]
+	les	bx, [SentencePtr]
 	mov	word [es:bx + 0x32], 0x1
 	lea	ax, [bp - 0x8]
 	push	ax
@@ -2489,7 +2489,7 @@ SayTonightsGame:
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, 0x32
 	call	0x0000:__chkstk
-	cmp	word [g_076C], 0x0
+	cmp	word [SpeechOn], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
@@ -2593,7 +2593,7 @@ SayTonightsGame:
 	push	cs
 	call	QueueClip
 	add	sp, 0x2
-	les	bx, [g_8EEA]
+	les	bx, [SentencePtr]
 	mov	word [es:bx + 0x32], 0x1
 	lea	ax, [bp - 0x8]
 	push	ax
@@ -2608,7 +2608,7 @@ SayTonightsPlayoffGame:
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, 0x6a
 	call	0x0000:__chkstk
-	cmp	word [g_076C], 0x0
+	cmp	word [SpeechOn], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
@@ -2827,7 +2827,7 @@ SayTonightsPlayoffGame:
 	push	cs
 	call	QueueClip
 	add	sp, 0x2
-	les	bx, [g_8EEA]
+	les	bx, [SentencePtr]
 	mov	word [es:bx + 0x32], 0x1
 	lea	ax, [bp - 0x8]
 	push	ax
@@ -2841,7 +2841,7 @@ SayPenalty:
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, 0xa0
 	call	0x0000:__chkstk
-	cmp	word [g_076C], 0x0
+	cmp	word [SpeechOn], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
@@ -3150,7 +3150,7 @@ SayPenalty:
 	call	QueueClip
 	add	sp, 0x2
 .14:
-	les	bx, [g_8EEA]
+	les	bx, [SentencePtr]
 	mov	word [es:bx + 0x32], 0x1
 	lea	ax, [bp - 0x16]
 	push	ax
@@ -3165,7 +3165,7 @@ SayPlayerFrom:
 	mov	ax, 0x72
 	call	0x0000:__chkstk
 	mov	word [bp - 0x20], 0x0
-	cmp	word [g_076C], 0x0
+	cmp	word [SpeechOn], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
@@ -3224,7 +3224,7 @@ SayPlayerFrom:
 	call	0x0000:_sprintf
 	add	sp, 0x8
 	push	0xd
-	mov	es, [g_8B12]
+	mov	es, [NumberWordsSeg]
 	mov	bx, [bp + 0x8]
 	shl	bx, byte 0x2
 	push	word [es:bx + 0x16c]
@@ -3355,7 +3355,7 @@ SayPlayerFrom:
 	push	cs
 	call	QueueClip
 	add	sp, 0x2
-	les	bx, [g_8EEA]
+	les	bx, [SentencePtr]
 	mov	word [es:bx + 0x32], 0x1
 	lea	ax, [bp - 0x8]
 	push	ax
@@ -3370,7 +3370,7 @@ SayGoal:
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, 0x84
 	call	0x0000:__chkstk
-	cmp	word [g_076C], 0x0
+	cmp	word [SpeechOn], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
@@ -3626,7 +3626,7 @@ SayGoal:
 	call	QueueClip
 	add	sp, 0x2
 .6:
-	les	bx, [g_8EEA]
+	les	bx, [SentencePtr]
 	mov	word [es:bx + 0x32], 0x1
 	lea	ax, [bp - 0x32]
 	push	ax
@@ -3640,7 +3640,7 @@ SayOneMinuteLeft:
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, 0x8
 	call	0x0000:__chkstk
-	cmp	word [g_076C], 0x0
+	cmp	word [SpeechOn], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
@@ -3669,7 +3669,7 @@ SayOneMinuteLeft:
 	push	cs
 	call	QueueClip
 	add	sp, 0x2
-	les	bx, [g_8EEA]
+	les	bx, [SentencePtr]
 	mov	word [es:bx + 0x32], 0x1
 	lea	ax, [bp - 0x8]
 	push	ax
@@ -3681,7 +3681,7 @@ SayOneMinuteLeft:
 OpenStudioSpeech:
 	db	0x33, 0xC0		; xor ax, ax
 	call	0x0000:__chkstk
-	cmp	word [g_076C], 0x0
+	cmp	word [SpeechOn], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
@@ -3709,7 +3709,7 @@ OpenPlayByPlaySpeech:
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, 0x1c
 	call	0x0000:__chkstk
-	cmp	word [g_076C], 0x0
+	cmp	word [SpeechOn], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax

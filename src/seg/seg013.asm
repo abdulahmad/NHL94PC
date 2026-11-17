@@ -11,7 +11,7 @@ SaveGame:
 	enter	0x2a, 0x0
 	push	di
 	push	si
-	cmp	word [g_01B4], 0x0
+	cmp	word [DbSaveMode], 0x0
 	jz	short .1
 	jmp	near .9
 .1:
@@ -29,9 +29,9 @@ SaveGame:
 	retf
 	db	0x90
 .2:
-	mov	es, [g_8B14]
+	mov	es, [DbFilesSeg]
 	or	byte [es:0x55], 0x80
-	or	byte [g_01B7], 0x80
+	or	byte [AnnouncerFlags], 0x80
 	push	es
 	push	strict word 0x0
 	call	0x1B35:OvlThunk100
@@ -215,7 +215,7 @@ SaveGame:
 	call	0x0F4A:FatalError
 	add	sp, 0x2
 .10:
-	cmp	word [g_01B4], 0x2
+	cmp	word [DbSaveMode], 0x2
 	jnz	short .11
 	push	0x0
 	push	0x0
@@ -230,9 +230,9 @@ SaveGame:
 	push	-0x1
 	call	0x0D90:MessageBox
 	add	sp, 0x16
-	mov	es, [g_8B16]
+	mov	es, [DbFilesSeg2]
 	or	byte [es:0x119], 0x80
-	or	byte [g_01B7], 0x80
+	or	byte [AnnouncerFlags], 0x80
 	push	es
 	push	word 0xc4
 	call	0x1B35:OvlThunk100
@@ -255,9 +255,9 @@ SaveGame:
 	push	-0x1
 	call	0x0D90:MessageBox
 	add	sp, 0x16
-	mov	es, [g_8B18]
+	mov	es, [DbFilesSeg3]
 	or	byte [es:0xb7], 0x80
-	or	byte [g_01B7], 0x80
+	or	byte [AnnouncerFlags], 0x80
 	push	es
 	push	strict word 0x62
 	call	0x1B35:OvlThunk100
@@ -301,7 +301,7 @@ SaveGameNameDialog:
 	push	di
 	push	si
 	push	0x0
-	les	bx, [g_AE98]
+	les	bx, [DialogData]
 	mov	ax, [es:bx]
 	inc	ax
 	inc	ax
@@ -317,8 +317,8 @@ SaveGameNameDialog:
 	add	sp, 0x8
 	mov	[bp - 0xc], ax
 	mov	[bp - 0xa], dx
-	mov	ax, [g_AE98]
-	mov	dx, [g_AE9A]
+	mov	ax, [DialogData]
+	mov	dx, [DialogDataSeg]
 	push	ds
 	db	0x8B, 0xF0		; mov si, ax
 	mov	ds, dx
@@ -348,8 +348,8 @@ SaveGameNameDialog:
 	add	sp, 0x8
 	push	word [bp - 0x24]
 	push	word [bp - 0x22]
-	push	word [g_AE9A]
-	push	word [g_AE98]
+	push	word [DialogDataSeg]
+	push	word [DialogData]
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 	push	word 0x3701
@@ -608,8 +608,8 @@ SaveGameNameDialog:
 	add	sp, 0x8
 	push	0x6c
 	push	word 0xc0
-	push	word [g_AE9A]
-	push	word [g_AE98]
+	push	word [DialogDataSeg]
+	push	word [DialogData]
 	call	0x0FEF:DrawRleTransFastAt
 	add	sp, 0x8
 	mov	ax, 0xc0
@@ -631,7 +631,7 @@ SaveGameNameDialog:
 	lea	cx, [bp - 0x8]
 	push	cx
 	push	ax
-	call	far [g_B08E]
+	call	far [HotKeyFn]
 	add	sp, 0x6
 	mov	[bp - 0x62], ax
 	test	al, 0x2
@@ -660,8 +660,8 @@ SaveGameNameDialog:
 	add	sp, 0x8
 	push	word [bp - 0xe]
 	push	word [bp - 0x8]
-	push	word [g_AE9A]
-	push	word [g_AE98]
+	push	word [DialogDataSeg]
+	push	word [DialogData]
 	call	0x0FEF:DrawRleTransAt
 	add	sp, 0x8
 	mov	ax, [bp - 0x8]

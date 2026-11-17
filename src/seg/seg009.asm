@@ -8,37 +8,37 @@
 	retf
 
 InputInit:
-	cmp	word [g_08F6], 0x0
+	cmp	word [InputInstalled], 0x0
 	jz	short .1
 	db	0x2B, 0xC0		; sub ax, ax
 	retf
 .1:
 	call	0x03A3:HookKbd
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[g_08FA], ax
-	mov	[g_08F8], ax
-	mov	word [g_08F6], 0x1
+	mov	[MouseRangeY], ax
+	mov	[MouseRangeX], ax
+	mov	word [InputInstalled], 0x1
 	push	word 0x93a
 	push	strict word 0x8
 	call	0x03A3:AllocSlot
 	add	sp, 0x4
 	call	0x0F99:FlushInputEvents
-	mov	word [g_B08E], 0x70
-	mov	word [g_B090], 0xbfe
+	mov	word [HotKeyFn], 0x70
+	mov	word [HotKeyFnSeg], 0xbfe
 	retf
 	db	0x90
 
 InputShutdown:
-	cmp	word [g_08F6], 0x0
+	cmp	word [InputInstalled], 0x0
 	jz	short .1
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[g_08FA], ax
-	mov	[g_08F8], ax
+	mov	[MouseRangeY], ax
+	mov	[MouseRangeX], ax
 	push	word 0x93a
 	push	strict word 0x8
 	call	0x03A3:FreeSlot
 	add	sp, 0x4
-	mov	word [g_08F6], 0x0
+	mov	word [InputInstalled], 0x0
 .1:
 	retf
 
@@ -58,18 +58,18 @@ EventToCursor:
 	mov	[si], ax
 	jmp	near .11
 .1:
-	cmp	word [g_AFD2], 0x1e
+	cmp	word [CursorY], 0x1e
 	jl	short .2
-	mov	word [g_AFD2], 0x1d
+	mov	word [CursorY], 0x1d
 .2:
-	mov	ax, [g_AFD2]
+	mov	ax, [CursorY]
 	mov	cx, 0xa
 	cwd
 	idiv	cx
 	db	0x8B, 0xC8		; mov cx, ax
 	mov	ax, 0x4
 	shl	ax, cl
-	mov	[g_08F8], ax
+	mov	[MouseRangeX], ax
 	mov	si, [bp + 0x8]
 	test	byte [bx + 0x3], 0x8
 	jz	short .3
@@ -78,20 +78,20 @@ EventToCursor:
 	mov	bx, [bp + 0x6]
 	test	byte [bx + 0x3], 0x4
 	jz	short .4
-	mov	ax, [g_08F8]
+	mov	ax, [MouseRangeX]
 	add	[si], ax
 .4:
 	mov	di, [bp + 0xa]
 	mov	bx, [bp + 0x6]
 	test	byte [bx + 0x3], 0x1
 	jz	short .5
-	mov	ax, [g_08F8]
+	mov	ax, [MouseRangeX]
 	sub	[di], ax
 .5:
 	mov	bx, [bp + 0x6]
 	test	byte [bx + 0x3], 0x2
 	jz	short .6
-	mov	ax, [g_08F8]
+	mov	ax, [MouseRangeX]
 	add	[di], ax
 .6:
 	cmp	word [si], 0x0
@@ -119,9 +119,9 @@ EventToCursor:
 	call	0x03A3:MouseMove
 	add	sp, 0x4
 	mov	ax, [si]
-	mov	[g_0516], ax
+	mov	[MousePosX], ax
 	mov	ax, [di]
-	mov	[g_0518], ax
+	mov	[MousePosY], ax
 	mov	bx, [bp + 0x6]
 .11:
 	mov	al, [bx + 0x2]

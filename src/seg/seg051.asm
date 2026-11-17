@@ -46,19 +46,19 @@ LoadSoundDriver:
 .2:
 	push	word [bp - 0x6]
 	push	si
-	imul	ax, [g_84C6], 0x38
+	imul	ax, [DriverCount], 0x38
 	add	ax, 0x8fd6
 	push	ax
 	call	0x1880:LinkDriver
 	add	sp, 0x6
-	imul	bx, [g_84C6], 0x38
-	call	far [bx + g_8FD6]
+	imul	bx, [DriverCount], 0x38
+	call	far [bx + DrvTableInit]
 	mov	[bp - 0x4], ax
 	mov	[bp - 0x2], dx
 	push	dx
 	push	ax
-	imul	bx, [g_84C6], 0x38
-	call	far [bx + g_8FDA]
+	imul	bx, [DriverCount], 0x38
+	call	far [bx + DrvTableCall04]
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .3
 	push	word [bp - 0x6]
@@ -73,31 +73,31 @@ LoadSoundDriver:
 	push	word 0x8be
 	push	word 0x16f2
 	push	word 0x87c
-	imul	bx, [g_84C6], 0x38
-	call	far [bx + g_8FDE]
-	mov	bx, [g_84C6]
+	imul	bx, [DriverCount], 0x38
+	call	far [bx + DrvTableCall08]
+	mov	bx, [DriverCount]
 	shl	bx, byte 0x2
 	mov	ax, [bp - 0x6]
-	mov	[bx + g_8FCE], si
-	mov	[bx + g_8FD0], ax
+	mov	[bx + DrvTableName], si
+	mov	[bx + DrvTableSeg], ax
 	push	0x3
-	imul	bx, [g_84C6], 0x38
-	call	far [bx + g_8FEE]
-	mov	bx, [g_84C6]
+	imul	bx, [DriverCount], 0x38
+	call	far [bx + DrvTableNeedsService]
+	mov	bx, [DriverCount]
 	shl	bx, byte 0x2
-	mov	[bx + g_E084], ax
-	mov	[bx + g_E086], dx
+	mov	[bx + DriverTypes], ax
+	mov	[bx + DriverEntrySeg], dx
 	push	0x7
-	imul	bx, [g_84C6], 0x38
-	call	far [bx + g_8FEE]
+	imul	bx, [DriverCount], 0x38
+	call	far [bx + DrvTableNeedsService]
 	db	0x8B, 0xF8		; mov di, ax
 	cmp	di, 0x64
 	jnc	short .4
-	mov	al, [g_84C6]
-	mov	[g_8502], al
-	mov	[g_8500], di
+	mov	al, [DriverCount]
+	mov	[DriverServiceIdx], al
+	mov	[DriverName], di
 .4:
-	inc	word [g_84C6]
+	inc	word [DriverCount]
 	db	0x8B, 0xC6		; mov ax, si
 	mov	dx, [bp - 0x6]
 .5:
@@ -124,7 +124,7 @@ DrvInit:
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
 	imul	bx, ax, 0x38
-	call	far [bx + g_8FD6]
+	call	far [bx + DrvTableInit]
 	pop	ds
 	leave
 	retf
@@ -140,7 +140,7 @@ DrvCall04:
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
 	imul	bx, ax, 0x38
-	call	far [bx + g_8FDA]
+	call	far [bx + DrvTableCall04]
 	pop	ds
 	leave
 	retf
@@ -160,7 +160,7 @@ DrvCall08:
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
 	imul	bx, ax, 0x38
-	call	far [bx + g_8FDE]
+	call	far [bx + DrvTableCall08]
 	pop	ds
 	leave
 	retf
@@ -174,7 +174,7 @@ DrvShutdown:
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
 	imul	bx, ax, 0x38
-	call	far [bx + g_8FE2]
+	call	far [bx + DrvTableShutdown]
 	pop	ds
 	leave
 	retf
@@ -188,7 +188,7 @@ DrvCall10:
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
 	imul	bx, ax, 0x38
-	call	far [bx + g_8FE6]
+	call	far [bx + DrvTableCall10]
 	pop	ds
 	leave
 	retf
@@ -202,7 +202,7 @@ DrvService:
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
 	imul	bx, ax, 0x38
-	call	far [bx + g_8FEA]
+	call	far [bx + DrvTableService]
 	pop	ds
 	leave
 	retf
@@ -217,7 +217,7 @@ DrvNeedsService:
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
 	imul	bx, ax, 0x38
-	call	far [bx + g_8FEE]
+	call	far [bx + DrvTableNeedsService]
 	pop	ds
 	leave
 	retf
@@ -235,7 +235,7 @@ DrvLoadBank:
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
 	imul	bx, ax, 0x38
-	call	far [bx + g_8FF2]
+	call	far [bx + DrvTableLoadBank]
 	pop	ds
 	leave
 	retf
@@ -290,7 +290,7 @@ DrvSendMidi:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
-	mov	al, [g_84C6]
+	mov	al, [DriverCount]
 	cmp	[bp + 0x6], al
 	ja	short .3
 	mov	si, [bp + 0xa]
@@ -312,7 +312,7 @@ DrvSendMidi:
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
 	imul	bx, ax, 0x38
-	call	far [bx + g_9002]
+	call	far [bx + DrvTableSendMidi]
 .3:
 	pop	ds
 	pop	si
@@ -394,7 +394,7 @@ DrvPlaySample:
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
 	imul	bx, ax, 0x38
-	call	far [bx + g_900A]
+	call	far [bx + DrvTablePlaySample]
 	pop	ds
 	leave
 	retf
@@ -457,7 +457,7 @@ DrvPlayRecSample:
 	mov	al, [bp + 0x6]
 	db	0x2A, 0xE4		; sub ah, ah
 	imul	bx, ax, 0x38
-	call	far [bx + g_900A]
+	call	far [bx + DrvTablePlaySample]
 	pop	ds
 	leave
 	retf

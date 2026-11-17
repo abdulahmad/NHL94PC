@@ -15,15 +15,15 @@ SeqTimerTick:
 	call	0x03A3:SsIsDs
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .1
-	cmp	word [g_846C], 0x0
+	cmp	word [SeqBusy], 0x0
 	jnz	short .1
-	cmp	word [g_84F4], 0x0
+	cmp	word [SeqLock], 0x0
 	jnz	short .1
-	cmp	word [g_84C6], 0x0
+	cmp	word [DriverCount], 0x0
 	jz	short .1
-	inc	word [g_846C]
+	inc	word [SeqBusy]
 	call	0x1630:SeqService
-	dec	word [g_846C]
+	dec	word [SeqBusy]
 .1:
 	pop	ds
 	retf
@@ -36,11 +36,11 @@ SeqService:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
-	inc	byte [g_846A]
-	cmp	byte [g_8502], 0xff
+	inc	byte [SeqTickCount]
+	cmp	byte [DriverServiceIdx], 0xff
 	jz	short .1
 	push	0x8
-	mov	al, [g_8502]
+	mov	al, [DriverServiceIdx]
 	push	ax
 	call	0x1844:DrvNeedsService
 	add	sp, 0x4
@@ -49,7 +49,7 @@ SeqService:
 	push	word 0x8f74
 	call	0x03A3:EmsSaveMap
 	pop	bx
-	mov	al, [g_8502]
+	mov	al, [DriverServiceIdx]
 	push	ax
 	call	0x1844:DrvService
 	pop	bx
@@ -61,7 +61,7 @@ SeqService:
 	jmp	short .4
 .2:
 	db	0x8B, 0xC6		; mov ax, si
-	cmp	al, [g_8502]
+	cmp	al, [DriverServiceIdx]
 	jz	short .3
 	push	ax
 	call	0x1844:DrvService
@@ -69,15 +69,15 @@ SeqService:
 .3:
 	inc	si
 .4:
-	cmp	[g_84C6], si
+	cmp	[DriverCount], si
 	ja	short .2
 	call	0x1630:FlushMidiQueue
-	cmp	word [g_84FA], 0x0
+	cmp	word [TracksMuted], 0x0
 	jz	short .5
 	jmp	near .13
 .5:
-	mov	ax, [g_84C8]
-	mov	dx, [g_84CA]
+	mov	ax, [TrackSlots]
+	mov	dx, [TrackSlotsSeg]
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x4], dx
 	db	0x33, 0xFF		; xor di, di
@@ -89,7 +89,7 @@ SeqService:
 .7:
 	test	byte [es:si + 0x56], 0x8
 	jz	short .8
-	mov	al, [g_846A]
+	mov	al, [SeqTickCount]
 	les	bx, [es:si + 0x4]
 	cmp	[es:bx + 0x15], al
 	jz	short .8
@@ -138,8 +138,8 @@ SeqService:
 	jnc	short .10
 	jmp	near .6
 .10:
-	mov	ax, [g_84CC]
-	mov	dx, [g_84CE]
+	mov	ax, [Voices]
+	mov	dx, [VoicesSeg]
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x2], dx
 	db	0x33, 0xFF		; xor di, di
@@ -163,10 +163,10 @@ SeqService:
 	inc	di
 	jmp	short .11
 .13:
-	cmp	byte [g_8502], 0xff
+	cmp	byte [DriverServiceIdx], 0xff
 	jz	short .14
 	push	0x8
-	mov	al, [g_8502]
+	mov	al, [DriverServiceIdx]
 	push	ax
 	call	0x1844:DrvNeedsService
 	add	sp, 0x4
@@ -175,7 +175,7 @@ SeqService:
 	push	word 0x8f74
 	call	0x03A3:EmsSaveMap
 	pop	bx
-	mov	al, [g_8502]
+	mov	al, [DriverServiceIdx]
 	push	ax
 	call	0x1844:DrvService
 	pop	bx
@@ -204,7 +204,7 @@ SeqStepTrack:
 	jnz	short .1
 	jmp	near SeqStepTrackJumpTable.30
 .1:
-	mov	byte [g_8F68], 0x80
+	mov	byte [MidiMsg], 0x80
 	test	byte [es:si + 0x56], 0x8
 	jnz	short .2
 	jmp	near .8
@@ -212,8 +212,8 @@ SeqStepTrack:
 	les	bx, [es:si + 0x4]
 	cmp	word [es:bx + 0xe], 0x0
 	jnz	short .6
-	mov	ax, [g_84CC]
-	mov	dx, [g_84CE]
+	mov	ax, [Voices]
+	mov	dx, [VoicesSeg]
 	db	0x8B, 0xF8		; mov di, ax
 	mov	[bp - 0x4], dx
 	db	0x33, 0xC9		; xor cx, cx
@@ -667,9 +667,9 @@ SendController:
 	mov	es, [bp + 0x8]
 	mov	al, [es:si + 0x4c]
 	or	al, 0xb0
-	mov	[g_8F68], al
+	mov	[MidiMsg], al
 	mov	al, [bp + 0xa]
-	mov	[g_8F69], al
+	mov	[MidiMsg1], al
 	db	0x2A, 0xE4		; sub ah, ah
 	sub	ax, strict word 0x7
 	jz	short .1
@@ -681,7 +681,7 @@ SendController:
 	mov	cl, [es:si + 0x4c]
 	db	0x2A, 0xED		; sub ch, ch
 	imul	bx, cx, 0x7
-	mov	es, [g_8D10]
+	mov	es, [WorkBufferSeg]
 	mov	[es:bx - 0x4491], al
 	mov	es, [bp + 0x8]
 	les	bx, [es:si + 0x4]
@@ -699,7 +699,7 @@ SendController:
 	mov	cl, [es:si + 0x4c]
 	db	0x2A, 0xED		; sub ch, ch
 	imul	bx, cx, 0x7
-	mov	es, [g_8D10]
+	mov	es, [WorkBufferSeg]
 	mov	[es:bx - 0x4490], al
 	mov	es, [bp + 0x8]
 	les	bx, [es:si + 0x4]
@@ -726,7 +726,7 @@ SendController:
 	add	[bp + 0xc], al
 .5:
 	mov	al, [bp + 0xc]
-	mov	[g_8F6A], al
+	mov	[MidiMsg2], al
 	push	ds
 	push	word 0x8f68
 	push	0x3
@@ -753,10 +753,10 @@ SendVoiceNoteOff:
 	mov	es, [bp + 0x8]
 	mov	al, [es:si + 0x6]
 	or	al, 0x80
-	mov	[g_8F68], al
+	mov	[MidiMsg], al
 	mov	al, [es:si + 0x4]
-	mov	[g_8F69], al
-	mov	byte [g_8F6A], 0x0
+	mov	[MidiMsg1], al
+	mov	byte [MidiMsg2], 0x0
 	push	ds
 	push	word 0x8f68
 	push	0x3
@@ -783,8 +783,8 @@ SetSongTempo:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
-	mov	ax, [g_84C8]
-	mov	dx, [g_84CA]
+	mov	ax, [TrackSlots]
+	mov	dx, [TrackSlotsSeg]
 	db	0x8B, 0xF0		; mov si, ax
 	db	0x33, 0xFF		; xor di, di
 	mov	ds, dx
@@ -826,11 +826,11 @@ SendPitchBend:
 	mov	es, [bp + 0x8]
 	mov	al, [es:si + 0x4c]
 	or	al, 0xe0
-	mov	[g_8F68], al
-	mov	byte [g_8F69], 0x0
+	mov	[MidiMsg], al
+	mov	byte [MidiMsg1], 0x0
 	mov	al, [bp + 0xb]
 	and	al, 0x7f
-	mov	[g_8F6A], al
+	mov	[MidiMsg2], al
 	push	ds
 	push	word 0x8f68
 	push	0x3
@@ -850,8 +850,8 @@ AllocVoice:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
-	mov	ax, [g_84CC]
-	mov	dx, [g_84CE]
+	mov	ax, [Voices]
+	mov	dx, [VoicesSeg]
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x2], dx
 	mov	byte [bp - 0x5], 0x0
@@ -897,10 +897,10 @@ AllocVoice:
 	mov	al, [bp + 0x10]
 	mov	[es:bx + 0x7], al
 	sub	dl, 0x70
-	mov	[g_8F68], dl
-	mov	[g_8F69], cl
+	mov	[MidiMsg], dl
+	mov	[MidiMsg1], cl
 	mov	al, [bp + 0x8]
-	mov	[g_8F6A], al
+	mov	[MidiMsg2], al
 	cmp	byte [bp + 0x12], 0xff
 	jz	short .7
 	push	ds
@@ -937,33 +937,33 @@ QueueMidiBytes:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
-	cmp	word [g_84F8], 0x0
+	cmp	word [MidiQueueBusy], 0x0
 	jnz	short .3
 	mov	cx, [bp + 0xa]
-	mov	ax, [g_84F6]
+	mov	ax, [MidiQueueLen]
 	db	0x03, 0xC1		; add ax, cx
 	cmp	ax, 0x80
 	jnl	short .3
-	inc	word [g_84F4]
-	inc	word [g_84F8]
+	inc	word [SeqLock]
+	inc	word [MidiQueueBusy]
 	mov	al, [bp + 0x6]
-	mov	bx, [g_84F6]
-	mov	[bx + g_DF74], al
-	inc	word [g_84F6]
+	mov	bx, [MidiQueueLen]
+	mov	[bx + MidiQueue], al
+	inc	word [MidiQueueLen]
 	mov	si, [bp + 0x8]
 	jmp	short .2
 .1:
 	mov	al, [si]
-	mov	bx, [g_84F6]
-	mov	[bx + g_DF74], al
+	mov	bx, [MidiQueueLen]
+	mov	[bx + MidiQueue], al
 	inc	si
-	inc	word [g_84F6]
+	inc	word [MidiQueueLen]
 	dec	cx
 .2:
 	db	0x0B, 0xC9		; or cx, cx
 	jnz	short .1
-	dec	word [g_84F8]
-	dec	word [g_84F4]
+	dec	word [MidiQueueBusy]
+	dec	word [SeqLock]
 .3:
 	pop	ds
 	pop	si
@@ -977,13 +977,13 @@ FlushMidiQueue:
 	mov	ax, DGROUP
 	mov	ds, ax
 	db	0x33, 0xF6		; xor si, si
-	cmp	[g_84F6], si
+	cmp	[MidiQueueLen], si
 	jz	short .4
-	cmp	[g_84F8], si
+	cmp	[MidiQueueBusy], si
 	jnz	short .4
-	inc	word [g_84F8]
+	inc	word [MidiQueueBusy]
 .1:
-	mov	al, [si + g_DF75]
+	mov	al, [si + MidiQueue1]
 	and	al, 0xf0
 	cmp	al, 0xc0
 	jnz	short .2
@@ -994,7 +994,7 @@ FlushMidiQueue:
 	push	ds
 	push	ax
 	push	0x2
-	mov	al, [di + g_DF74]
+	mov	al, [di + MidiQueue]
 	push	ax
 	call	0x1844:DrvSendMidi
 	add	sp, 0x8
@@ -1009,16 +1009,16 @@ FlushMidiQueue:
 	push	ds
 	push	ax
 	push	0x3
-	mov	al, [di + g_DF74]
+	mov	al, [di + MidiQueue]
 	push	ax
 	call	0x1844:DrvSendMidi
 	add	sp, 0x8
 	add	si, 0x3
 .3:
-	cmp	[g_84F6], si
+	cmp	[MidiQueueLen], si
 	jg	short .1
-	dec	word [g_84F8]
-	mov	word [g_84F6], 0x0
+	dec	word [MidiQueueBusy]
+	mov	word [MidiQueueLen], 0x0
 .4:
 	pop	ds
 	pop	si
@@ -1034,9 +1034,9 @@ SendProgramChange:
 	mov	ds, ax
 	mov	al, [bp + 0x8]
 	or	al, 0xc0
-	mov	[g_8F68], al
+	mov	[MidiMsg], al
 	mov	al, [bp + 0xa]
-	mov	[g_8F69], al
+	mov	[MidiMsg1], al
 	push	ds
 	push	word 0x8f68
 	push	0x2
@@ -1056,10 +1056,10 @@ SendPan:
 	mov	ds, ax
 	mov	al, [bp + 0x8]
 	or	al, 0xb0
-	mov	[g_8F68], al
-	mov	byte [g_8F69], 0xa
+	mov	[MidiMsg], al
+	mov	byte [MidiMsg1], 0xa
 	mov	al, [bp + 0xa]
-	mov	[g_8F6A], al
+	mov	[MidiMsg2], al
 	push	ds
 	push	word 0x8f68
 	push	0x3
@@ -1080,10 +1080,10 @@ SendVolume:
 	mov	ds, ax
 	mov	al, [bp + 0x8]
 	or	al, 0xb0
-	mov	[g_8F68], al
-	mov	byte [g_8F69], 0x7
+	mov	[MidiMsg], al
+	mov	byte [MidiMsg1], 0x7
 	mov	al, [bp + 0xa]
-	mov	[g_8F6A], al
+	mov	[MidiMsg2], al
 	push	ds
 	push	word 0x8f68
 	push	0x3
@@ -1219,7 +1219,7 @@ ParseMidiEventJumpTable:
 	jmp	short .8
 .7:
 	mov	al, [es:bx + si + 0x1]
-	mov	es, [g_8D12]
+	mov	es, [WorkBufferSeg2]
 	mov	[es:si - 0x4692], al
 	inc	si
 .8:

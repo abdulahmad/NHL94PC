@@ -3,5 +3,5 @@
 	bits	16
 	org	0x0
 TextWidthAll		equ	0xC0A
-g_8D04		equ	0x8D04
+DgroupSegC		equ	0x8D04
 %include "seg/seg027.asm"

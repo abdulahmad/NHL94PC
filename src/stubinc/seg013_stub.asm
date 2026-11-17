@@ -10,8 +10,8 @@ BuildPathFar		equ	0x3E
 FlushInputEvents		equ	0x66
 str_Nyi		equ	0x6C
 UseCurrentPage		equ	0x1A6
-g_01B4		equ	0x1B4
-g_01B7		equ	0x1B7
+DbSaveMode		equ	0x1B4
+AnnouncerFlags		equ	0x1B7
 FatalError		equ	0x3E4
 CreateFileNormal		equ	0x40C
 CloseHandlePtr		equ	0x41E
@@ -50,10 +50,10 @@ OvlThunk99		equ	0x23CD
 OvlThunk100		equ	0x23D7
 OvlThunk101		equ	0x23E1
 OvlThunk102		equ	0x23EB
-g_8B14		equ	0x8B14
-g_8B16		equ	0x8B16
-g_8B18		equ	0x8B18
-g_AE98		equ	0xAE98
-g_AE9A		equ	0xAE9A
-g_B08E		equ	0xB08E
+DbFilesSeg		equ	0x8B14
+DbFilesSeg2		equ	0x8B16
+DbFilesSeg3		equ	0x8B18
+DialogData		equ	0xAE98
+DialogDataSeg		equ	0xAE9A
+HotKeyFn		equ	0xB08E
 %include "seg/seg013.asm"

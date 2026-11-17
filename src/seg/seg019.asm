@@ -53,7 +53,7 @@ LoadTeamPalettes:
 	db	0x8B, 0xDF		; mov bx, di
 	db	0x03, 0xDE		; add bx, si
 	mov	al, [es:bx]
-	mov	[si + g_B1C4], al
+	mov	[si + TeamPalette2], al
 	inc	si
 	cmp	si, 0x100
 	jl	short .2
@@ -94,7 +94,7 @@ LoadTeamPalettes:
 	db	0x8B, 0xDF		; mov bx, di
 	db	0x03, 0xDE		; add bx, si
 	mov	al, [es:bx]
-	mov	[si + g_B0C4], al
+	mov	[si + TeamPalette1], al
 	inc	si
 	cmp	si, 0x90
 	jl	short .4
@@ -104,7 +104,7 @@ LoadTeamPalettes:
 	db	0x03, 0xDE		; add bx, si
 	mov	al, [es:bx]
 	add	al, 0x40
-	mov	[si + g_B0C4], al
+	mov	[si + TeamPalette1], al
 	inc	si
 	cmp	si, 0x100
 	jl	short .5

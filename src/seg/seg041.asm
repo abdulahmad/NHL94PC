@@ -37,7 +37,7 @@ AskYesNoBox:
 	mov	di, [bp + 0xc]
 	mov	si, [bp + 0xa]
 	mov	word [TickSkip], 0x1
-	call	far [g_7642]
+	call	far [BeforeDialogFn]
 	mov	ax, [bp + 0x8]
 	mov	dx, [bp + 0x6]
 	db	0x33, 0xDB		; xor bx, bx
@@ -64,8 +64,8 @@ AskYesNoBox:
 	db	0x03, 0xCF		; add cx, di
 	push	cx
 	push	di
-	mov	es, [g_8D0A]
-	mov	bx, [g_74DC]
+	mov	es, [DgroupSegF]
+	mov	bx, [CurPage]
 	shl	bx, byte 0x2
 	push	word [es:bx + 0x7572]
 	push	word [es:bx + 0x7570]
@@ -73,7 +73,7 @@ AskYesNoBox:
 	mov	[bp - 0x5e], cx
 	call	0x0FEF:SetCanvasClip
 	add	sp, 0xc
-	call	far [g_6410]
+	call	far [MouseHideFn]
 	push	word [bp - 0x4]
 	push	word [bp - 0x6]
 	call	0x0FEF:SetCanvas
@@ -120,13 +120,13 @@ AskYesNoBox:
 	push	word [bp + 0xe]
 	call	0x0FEC:DrawTextCenteredInWindow
 	add	sp, 0x4
-	call	far [g_6414]
+	call	far [MouseReadFn]
 	push	word 0xc8
 	push	0x0
 	push	word 0x140
 	push	0x0
-	mov	es, [g_8D0A]
-	mov	bx, [g_74DC]
+	mov	es, [DgroupSegF]
+	mov	bx, [CurPage]
 	shl	bx, byte 0x2
 	push	word [es:bx + 0x7572]
 	push	word [es:bx + 0x7570]
@@ -134,13 +134,13 @@ AskYesNoBox:
 	add	sp, 0xc
 	mov	si, [bp + 0x4]
 .1:
-	call	far [g_6418]
+	call	far [MousePosFn]
 	test	si, ax
 	jnz	short .1
 .2:
 	call	0x03A3:ReadKey
 	db	0x8B, 0xF8		; mov di, ax
-	call	far [g_6418]
+	call	far [MousePosFn]
 	and	ax, [bp + 0x4]
 	db	0x8B, 0xF0		; mov si, ax
 	db	0x0B, 0xFF		; or di, di
@@ -164,20 +164,20 @@ AskYesNoBox:
 	add	ax, [bp + 0xc]
 	push	ax
 	push	word [bp + 0xc]
-	mov	es, [g_8D0A]
-	mov	bx, [g_74DC]
+	mov	es, [DgroupSegF]
+	mov	bx, [CurPage]
 	shl	bx, byte 0x2
 	push	word [es:bx + 0x7572]
 	push	word [es:bx + 0x7570]
 	call	0x0FEF:SetCanvasClip
 	add	sp, 0xc
-	call	far [g_640C]
+	call	far [MouseShowFn]
 	push	word [bp - 0x4]
 	push	word [bp - 0x6]
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
 	call	RestoreBoxUnder
-	call	far [g_6414]
+	call	far [MouseReadFn]
 	lea	ax, [bp - 0x1e]
 	push	ax
 	call	0x03A3:LoadCharTab
@@ -190,7 +190,7 @@ AskYesNoBox:
 	push	word [bp - 0x6]
 	call	0x14ED:FreeCanvas
 	add	sp, 0x4
-	call	far [g_7646]
+	call	far [AfterDialogFn]
 	mov	word [TickSkip], 0x0
 	db	0x8B, 0xC6		; mov ax, si
 	pop	si
@@ -246,14 +246,14 @@ PauseBox:
 	push	word 0xbe
 	push	word 0x140
 	push	0x0
-	mov	es, [g_8D0A]
-	mov	bx, [g_74DC]
+	mov	es, [DgroupSegF]
+	mov	bx, [CurPage]
 	shl	bx, byte 0x2
 	push	word [es:bx + 0x7572]
 	push	word [es:bx + 0x7570]
 	call	0x0FEF:SetCanvasClip
 	add	sp, 0xc
-	call	far [g_6410]
+	call	far [MouseHideFn]
 	push	di
 	push	si
 	push	0x0
@@ -279,18 +279,18 @@ PauseBox:
 	push	word [bp + 0x6]
 	call	0x0FEC:DrawTextCenteredInWindow
 	add	sp, 0x4
-	call	far [g_6414]
+	call	far [MouseReadFn]
 	push	word [bp + 0xa]
 	push	word [bp + 0x8]
 	call	0x03A3:WaitAdd
 	add	sp, 0x4
-	call	far [g_640C]
+	call	far [MouseShowFn]
 	push	di
 	push	si
 	push	0x0
 	push	word 0xbe
 	call	RestoreBoxUnder
-	call	far [g_6414]
+	call	far [MouseReadFn]
 	lea	ax, [bp - 0x1c]
 	push	ax
 	call	0x03A3:LoadCharTab

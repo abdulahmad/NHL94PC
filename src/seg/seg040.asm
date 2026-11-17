@@ -32,11 +32,11 @@ CalibrateRetrace:
 	jnz	short .2
 	call	0x0000:0x1170
 	mov	ax, [bp - 0x2]
-	mov	[g_DF72], ax
+	mov	[RetraceCount], ax
 	imul	ax, ax, 0x5
 	sar	ax, byte 0x2
 	add	ax, strict word 0x4
-	mov	[g_7670], ax
+	mov	[RetraceWait], ax
 	pop	si
 	pop	di
 	leave

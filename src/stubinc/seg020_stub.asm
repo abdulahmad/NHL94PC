@@ -4,8 +4,8 @@
 	org	0x0
 TextWidthFar		equ	0x2
 DrawLine		equ	0xC
-GetInputEvent		equ	0xE
 InputInit		equ	0xE
+GetInputEvent		equ	0xE
 SetTextColors		equ	0x24
 AllocRecData		equ	0x30
 InputShutdown		equ	0x4C
@@ -17,13 +17,13 @@ UseCurrentPage		equ	0x1A6
 DrawTextFar		equ	0x246
 PutBlockAt		equ	0x4B5
 FindUnlink		equ	0x99A
-g_09EE		equ	0x9EE
-g_09F0		equ	0x9F0
-g_09F2		equ	0x9F2
-g_09F4		equ	0x9F4
-g_09F6		equ	0x9F6
-g_09FA		equ	0x9FA
-g_09FC		equ	0x9FC
+DialogBackColor		equ	0x9EE
+DialogLightColor		equ	0x9F0
+DialogDarkColor		equ	0x9F2
+ItemTextColor		equ	0x9F4
+ItemSelectColor		equ	0x9F6
+SaveUnderOff		equ	0x9FA
+SaveUnderSeg		equ	0x9FC
 JumpAhead		equ	0xCE2
 __aFldiv		equ	0x118C
 GetBlockAt		equ	0x11DD
@@ -33,15 +33,15 @@ DrawRleTransAt		equ	0x1857
 MouseMove		equ	0x1B03
 MouseRead		equ	0x1B34
 OvlThunk102		equ	0x23EB
-g_6D4E		equ	0x6D4E
-g_858D		equ	0x858D
-g_8B1A		equ	0x8B1A
-g_AE98		equ	0xAE98
-g_AE9A		equ	0xAE9A
-g_B08E		equ	0xB08E
-g_B2CC		equ	0xB2CC
-g_B2CE		equ	0xB2CE
-g_B2D0		equ	0xB2D0
-g_B2D2		equ	0xB2D2
-g_B2D4		equ	0xB2D4
+FontPtr		equ	0x6D4E
+CharTypes		equ	0x858D
+ListDialogDataSeg		equ	0x8B1A
+DialogData		equ	0xAE98
+DialogDataSeg		equ	0xAE9A
+HotKeyFn		equ	0xB08E
+BoxSaveX		equ	0xB2CC
+BoxSaveY		equ	0xB2CE
+YesNoText		equ	0xB2D0
+YesNoTextSeg		equ	0xB2D2
+MessageBoxSel		equ	0xB2D4
 %include "seg/seg020.asm"

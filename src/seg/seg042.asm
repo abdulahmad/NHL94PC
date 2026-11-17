@@ -158,7 +158,7 @@ LoadAssetMode:
 	jmp	short .6
 .4:
 	db	0x8B, 0xDF		; mov bx, di
-	push	word [bx + di + g_76DE]
+	push	word [bx + di + AssetExtList]
 	push	si
 	call	0x0000:_strcpy
 	add	sp, 0x4
@@ -175,17 +175,17 @@ LoadAssetMode:
 	inc	di
 .6:
 	db	0x8B, 0xDF		; mov bx, di
-	mov	bx, [bx + di + g_76DE]
+	mov	bx, [bx + di + AssetExtList]
 	cmp	byte [bx], 0x0
 	jnz	short .4
 	db	0x33, 0xFF		; xor di, di
 .7:
 	db	0x8B, 0xDF		; mov bx, di
-	mov	bx, [bx + di + g_76DE]
+	mov	bx, [bx + di + AssetExtList]
 	cmp	byte [bx], 0x0
 	jz	short .9
 	db	0x8B, 0xDF		; mov bx, di
-	push	word [bx + di + g_76DE]
+	push	word [bx + di + AssetExtList]
 	push	si
 	call	0x0000:_strcpy
 	add	sp, 0x4

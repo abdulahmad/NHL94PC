@@ -16,12 +16,12 @@ PollInputEvents:
 	jmp	near .11
 .1:
 	db	0x2B, 0xF6		; sub si, si
-	dec	word [g_050E]
+	dec	word [PollCountdown]
 	jz	short .2
 	jmp	near .11
 .2:
-	mov	word [g_050E], 0x5
-	test	byte [g_AECE], 0x1
+	mov	word [PollCountdown], 0x5
+	test	byte [InputFlags], 0x1
 	jz	short .3
 	lea	ax, [bp - 0x8]
 	push	ax
@@ -32,9 +32,9 @@ PollInputEvents:
 .3:
 	db	0x0B, 0xF6		; or si, si
 	jnz	short .5
-	test	byte [g_AECE], 0x2
+	test	byte [InputFlags], 0x2
 	jnz	short .4
-	test	byte [g_AECE], 0x4
+	test	byte [InputFlags], 0x4
 	jz	short .5
 .4:
 	lea	ax, [bp - 0x8]
@@ -46,7 +46,7 @@ PollInputEvents:
 .5:
 	db	0x0B, 0xF6		; or si, si
 	jnz	short .6
-	test	byte [g_AECE], 0x8
+	test	byte [InputFlags], 0x8
 	jz	short .6
 	lea	ax, [bp - 0x8]
 	push	ax
@@ -58,8 +58,8 @@ PollInputEvents:
 	db	0x0B, 0xF6		; or si, si
 	jnz	short .7
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[g_AFD0], ax
-	mov	[g_AFD2], ax
+	mov	[CursorX], ax
+	mov	[CursorY], ax
 	pop	si
 	pop	di
 	leave
@@ -68,28 +68,28 @@ PollInputEvents:
 	cmp	word [bp - 0x8], 0x1
 	jnz	short .8
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[g_AFD0], ax
-	mov	[g_AFD2], ax
+	mov	[CursorX], ax
+	mov	[CursorY], ax
 	jmp	short .10
 .8:
 	mov	al, [bp - 0x5]
 	db	0x2A, 0xE4		; sub ah, ah
-	cmp	ax, [g_AFD0]
+	cmp	ax, [CursorX]
 	jnz	short .9
-	inc	word [g_AFD2]
+	inc	word [CursorY]
 	jmp	short .10
 	db	0x90
 .9:
-	mov	word [g_AFD2], 0x0
+	mov	word [CursorY], 0x0
 	mov	al, [bp - 0x5]
 	db	0x2A, 0xE4		; sub ah, ah
-	mov	[g_AFD0], ax
+	mov	[CursorX], ax
 .10:
-	cmp	word [g_0508], 0x20
+	cmp	word [InputQueueCount], 0x20
 	jz	short .11
-	mov	bx, [g_050C]
+	mov	bx, [InputQueueTail]
 	shl	bx, byte 0x3
-	lea	di, [bx + g_AED0]
+	lea	di, [bx + InputQueue]
 	lea	si, [bp - 0x8]
 	mov	ax, ds
 	mov	es, ax
@@ -97,11 +97,11 @@ PollInputEvents:
 	movsw
 	movsw
 	movsw
-	mov	al, [g_050C]
+	mov	al, [InputQueueTail]
 	inc	al
 	and	ax, strict word 0x1f
-	mov	[g_050C], ax
-	inc	word [g_0508]
+	mov	[InputQueueTail], ax
+	inc	word [InputQueueCount]
 .11:
 	pop	si
 	pop	di
@@ -118,13 +118,13 @@ ReadMouseEvent:
 	push	ax
 	call	0x03A3:MouseRead
 	add	sp, 0x6
-	mov	ax, [g_0510]
+	mov	ax, [MouseEnabled]
 	cmp	[bp - 0x6], ax
 	jnz	short .1
-	mov	ax, [g_0516]
+	mov	ax, [MousePosX]
 	cmp	[bp - 0x4], ax
 	jnz	short .1
-	mov	ax, [g_0518]
+	mov	ax, [MousePosY]
 	cmp	[bp - 0x2], ax
 	jnz	short .1
 	db	0x2B, 0xC0		; sub ax, ax
@@ -132,12 +132,12 @@ ReadMouseEvent:
 	retf
 .1:
 	mov	ax, [bp - 0x4]
-	mov	[g_0516], ax
+	mov	[MousePosX], ax
 	mov	ax, [bp - 0x2]
-	mov	[g_0518], ax
+	mov	[MousePosY], ax
 	mov	bx, [bp + 0x6]
 	mov	word [bx], 0x1
-	cmp	word [g_0510], 0x0
+	cmp	word [MouseEnabled], 0x0
 	jz	short .2
 	cmp	word [bp - 0x6], 0x0
 	jnz	short .2
@@ -161,7 +161,7 @@ ReadMouseEvent:
 	push	word [bp - 0x4]
 	call	0x03A3:MouseMove
 	mov	ax, [bp - 0x6]
-	mov	[g_0510], ax
+	mov	[MouseEnabled], ax
 	mov	ax, 0x1
 	leave
 	retf
@@ -173,7 +173,7 @@ ReadStickEvent:
 	db	0x8B, 0xF0		; mov si, ax
 	and	si, 0xff
 	jnz	short .1
-	cmp	word [g_0512], 0x0
+	cmp	word [StickEnabled], 0x0
 	jnz	short .1
 	db	0x2B, 0xC0		; sub ax, ax
 	pop	si
@@ -189,17 +189,17 @@ ReadStickEvent:
 	db	0x1A, 0xC0		; sbb al, al
 	inc	al
 	mov	[bx + 0x2], al
-	cmp	word [g_0512], 0x0
+	cmp	word [StickEnabled], 0x0
 	jz	short .2
 	cmp	word [bp - 0x2], 0x0
 	jnz	short .2
 	add	byte [bx + 0x2], 0x2
-	mov	word [g_0512], 0x0
+	mov	word [StickEnabled], 0x0
 	jmp	short .3
 .2:
 	cmp	word [bp - 0x2], 0x0
 	jz	short .3
-	mov	word [g_0512], 0x1
+	mov	word [StickEnabled], 0x1
 .3:
 	db	0x8B, 0xC6		; mov ax, si
 	and	al, 0xf
@@ -295,14 +295,14 @@ ReadKeyEvent:
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .11
 	or	byte [si + 0x2], 0x1
-	mov	word [g_0514], 0x1
+	mov	word [KeysEnabled], 0x1
 	jmp	short .12
 	db	0x90
 .11:
-	cmp	word [g_0514], 0x0
+	cmp	word [KeysEnabled], 0x0
 	jz	short .12
 	or	byte [si + 0x2], 0x2
-	mov	word [g_0514], 0x0
+	mov	word [KeysEnabled], 0x0
 .12:
 	call	0x03A3:KeyJump
 	db	0x0B, 0xC0		; or ax, ax

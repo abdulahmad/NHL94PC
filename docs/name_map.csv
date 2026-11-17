@@ -1493,3 +1493,429 @@ seg054:0055,FpNo87Env,F054_0055,new,high,"""NO87="" and CR LF, the environment v
 seg054:09CA,FpConstants,F054_09CA,new,medium,"emulator constants (temporary reals, coefficient tables)",src/seg/seg054.asm
 SeqPad,MergeRemapTablesTail,SeqPad,new,medium,end of MergeRemapTables in seg048,src/seg/seg049.asm
 seg001:1A84,WaitDeadlineNoEoi,L1A84,new,high,"WaitDeadline entry after its end-of-interrupt write; called from seg013 and seg021",src/seg/seg001.asm
+g_01B4,DbSaveMode,g_01B4,new,medium,0/2 mode checked by SaveGame and UseDbDescriptor,src/data/dgroup.asm
+g_01B6,CrowdState,g_01B6,new,medium,bit 80h tested by the crowd routines,src/data/dgroup.asm
+g_01B7,AnnouncerFlags,g_01B7,new,medium,bit 80h set while the announcer talks,src/data/dgroup.asm
+g_01C6,SoundOptions,g_01C6,new,medium,bits 2 and 8 gate crowd and effects,src/data/dgroup.asm
+g_01E0,TeamNameClips,g_01E0,new,medium,"speech clip per team, indexed by team",src/data/dgroup.asm
+g_024E,EmsMapCache2,g_024E,new,medium,second EMS map cache word,src/data/dgroup.asm
+g_0250,EmsMapCache3,g_0250,new,medium,third EMS map cache word,src/data/dgroup.asm
+g_0252,EmsMapCache4,g_0252,new,medium,fourth EMS map cache word,src/data/dgroup.asm
+g_025E,EmsFramePrev,g_025E,new,medium,word before EmsFrame,src/data/dgroup.asm
+g_0508,InputQueueCount,g_0508,new,medium,events waiting (at most 32),src/data/dgroup.asm
+g_050A,InputQueueHead,g_050A,new,medium,next event to read,src/data/dgroup.asm
+g_050C,InputQueueTail,g_050C,new,medium,next free event slot,src/data/dgroup.asm
+g_050E,PollCountdown,g_050E,new,medium,polls until the next device read (reset to 5),src/data/dgroup.asm
+g_0510,MouseEnabled,g_0510,new,medium,mouse read when non-zero,src/data/dgroup.asm
+g_0512,StickEnabled,g_0512,new,medium,joysticks read when non-zero,src/data/dgroup.asm
+g_0514,KeysEnabled,g_0514,new,medium,keyboard read when non-zero,src/data/dgroup.asm
+g_0516,MousePosX,g_0516,new,medium,last mouse x,src/data/dgroup.asm
+g_0518,MousePosY,g_0518,new,medium,last mouse y,src/data/dgroup.asm
+g_051E,StickPresent,g_051E,new,medium,joystick 1 present,src/data/dgroup.asm
+g_0520,StickPresent2,g_0520,new,medium,joystick 2 present,src/data/dgroup.asm
+g_0522,PadTickCount,g_0522,new,medium,timer ticks counted by PadTimerTick (wraps at 1000),src/data/dgroup.asm
+g_0524,PadRepeatOn,g_0524,new,medium,key repeat active,src/data/dgroup.asm
+g_0526,PadRepeatStep,g_0526,new,medium,repeat interval,src/data/dgroup.asm
+g_0528,PadRepeatDelay,g_0528,new,medium,first repeat delay,src/data/dgroup.asm
+g_052A,PadRepeatTimer,g_052A,new,medium,ticks left before the next repeat,src/data/dgroup.asm
+g_052C,PadStates,g_052C,new,medium,state byte per pad,src/data/dgroup.asm
+g_052D,PadStates2,g_052D,new,medium,second pad's state byte,src/data/dgroup.asm
+g_052E,HotKeyPending,g_052E,new,medium,hot key waiting to be read,src/data/dgroup.asm
+g_0530,KeyPadMap,g_0530,new,medium,keys to pad bits,src/data/dgroup.asm
+g_0764,SpeechTickCount,g_0764,new,medium,speech timer ticks,src/data/dgroup.asm
+g_0766,SpeechSampleBusy,g_0766,new,medium,a sample is playing,src/data/dgroup.asm
+g_0768,SpeechMemOff,g_0768,new,medium,"speech memory block, offset",src/data/dgroup.asm
+g_076A,SpeechMemSeg,g_076A,new,medium,"speech memory block, segment",src/data/dgroup.asm
+g_076C,SpeechOn,g_076C,new,medium,speech system initialised,src/data/dgroup.asm
+g_08F6,InputInstalled,g_08F6,new,medium,input hooks installed,src/data/dgroup.asm
+g_08F8,MouseRangeX,g_08F8,new,medium,mouse range in x,src/data/dgroup.asm
+g_08FA,MouseRangeY,g_08FA,new,medium,mouse range in y,src/data/dgroup.asm
+g_0998,TextColor,g_0998,new,medium,text colour for the shadow and outline text,src/data/dgroup.asm
+g_099A,ShadowColor,g_099A,new,medium,shadow colour,src/data/dgroup.asm
+g_099C,OutlineDx,g_099C,new,medium,x offsets of the outline passes,src/data/dgroup.asm
+g_09A4,OutlineDy,g_09A4,new,medium,y offsets of the outline passes,src/data/dgroup.asm
+g_09AC,Dir8Table,g_09AC,new,medium,direction for each octant,src/data/dgroup.asm
+g_09BC,OldInt0Seg,g_09BC,new,medium,"saved divide-error vector, segment",src/data/dgroup.asm
+g_09BE,OldInt0Off,g_09BE,new,medium,"saved divide-error vector, offset",src/data/dgroup.asm
+g_09EE,DialogBackColor,g_09EE,new,medium,dialog background colour,src/data/dgroup.asm
+g_09F0,DialogLightColor,g_09F0,new,medium,dialog bevel light colour,src/data/dgroup.asm
+g_09F2,DialogDarkColor,g_09F2,new,medium,dialog bevel dark colour,src/data/dgroup.asm
+g_09F4,ItemTextColor,g_09F4,new,medium,list item text colour,src/data/dgroup.asm
+g_09F6,ItemSelectColor,g_09F6,new,medium,selected list item colour,src/data/dgroup.asm
+g_09FA,SaveUnderOff,g_09FA,new,medium,"saved screen under a box, offset",src/data/dgroup.asm
+g_09FC,SaveUnderSeg,g_09FC,new,medium,"saved screen under a box, segment",src/data/dgroup.asm
+g_0A14,JingleHandle,g_0A14,new,medium,"playing jingle, low word (-1 for none)",src/data/dgroup.asm
+g_0A16,JingleHandleHi,g_0A16,new,medium,"playing jingle, high word",src/data/dgroup.asm
+g_0A18,CrowdLevel,g_0A18,new,medium,crowd noise level,src/data/dgroup.asm
+g_0A1A,CrowdTarget,g_0A1A,new,medium,crowd level being faded to,src/data/dgroup.asm
+g_0A1C,CrowdFade,g_0A1C,new,medium,crowd fade step,src/data/dgroup.asm
+g_0A3E,EventPending,g_0A3E,new,medium,an event is held back,src/data/dgroup.asm
+g_0FB2,SfxBankOff,g_0FB2,new,medium,"effects bank, offset",src/data/dgroup.asm
+g_0FB4,SfxBankSeg,g_0FB4,new,medium,"effects bank, segment",src/data/dgroup.asm
+g_0FB6,SfxBank2Off,g_0FB6,new,medium,"second effects bank, offset",src/data/dgroup.asm
+g_0FB8,SfxBank2Seg,g_0FB8,new,medium,"second effects bank, segment",src/data/dgroup.asm
+g_106E,CrowdChannel,g_106E,new,medium,crowd noise channel,src/data/dgroup.asm
+g_1218,SpeechFileNames,g_1218,new,medium,speech file names,src/data/dgroup.asm
+g_2A00,RandSeedLo,g_2A00,new,medium,"RandomRange seed, low word",src/data/dgroup.asm
+g_2A02,RandSeedHi,g_2A02,new,medium,"RandomRange seed, high word",src/data/dgroup.asm
+g_4A52,LastSfx,g_4A52,new,medium,last effect played,src/data/dgroup.asm
+g_4A54,CrowdSound,g_4A54,new,medium,crowd sound handle,src/data/dgroup.asm
+g_62FC,CritSpare1,g_62FC,new,medium,word before CritRoutine,src/data/dgroup.asm
+g_6300,CritSpare2,g_6300,new,medium,word after CritRoutine,src/data/dgroup.asm
+g_63F6,BlockSpare1,g_63F6,new,medium,word before BlockEnd,src/data/dgroup.asm
+g_63FA,BlockSpare2,g_63FA,new,medium,word before BlockSeg,src/data/dgroup.asm
+g_6404,PaletteMode,g_6404,new,medium,DAC write mode (2 for the slow path),src/data/dgroup.asm
+g_6406,MouseActive,g_6406,new,medium,mouse driver found,src/data/dgroup.asm
+g_640C,MouseShowFn,g_640C,new,medium,far routine: show the cursor,src/data/dgroup.asm
+g_640E,MouseShowFnSeg,g_640E,new,medium,segment of MouseShowFn,src/data/dgroup.asm
+g_6410,MouseHideFn,g_6410,new,medium,far routine: hide the cursor,src/data/dgroup.asm
+g_6412,MouseHideFnSeg,g_6412,new,medium,segment of MouseHideFn,src/data/dgroup.asm
+g_6414,MouseReadFn,g_6414,new,medium,far routine: read the mouse,src/data/dgroup.asm
+g_6416,MouseReadFnSeg,g_6416,new,medium,segment of MouseReadFn,src/data/dgroup.asm
+g_6418,MousePosFn,g_6418,new,medium,far routine: mouse position,src/data/dgroup.asm
+g_641A,MousePosFnSeg,g_641A,new,medium,segment of MousePosFn,src/data/dgroup.asm
+g_6D4E,FontPtr,g_6D4E,new,medium,current 1-bpp font,src/data/dgroup.asm
+g_6D52,FontBits,g_6D52,new,medium,bit masks for the font,src/data/dgroup.asm
+g_6D98,OldInt8Off,g_6D98,new,medium,"saved INT 8 vector, offset",src/data/dgroup.asm
+g_6D9A,OldInt8Seg,g_6D9A,new,medium,"saved INT 8 vector, segment",src/data/dgroup.asm
+g_6D9C,TickHookOff,g_6D9C,new,medium,"routine the INT 8 handler calls, offset",src/data/dgroup.asm
+g_6D9E,TickHookSeg,g_6D9E,new,medium,"routine the INT 8 handler calls, segment",src/data/dgroup.asm
+g_6DA6,TickCountAll,g_6DA6,new,medium,every INT 8 tick,src/data/dgroup.asm
+g_6DB6,TickSkipCount,g_6DB6,new,medium,ticks skipped,src/data/dgroup.asm
+g_6F10,CalibTargetX,g_6F10,new,medium,x of each calibration target,src/data/dgroup.asm
+g_6F22,CalibTargetY,g_6F22,new,medium,y of each calibration target,src/data/dgroup.asm
+g_701F,JoyNibbleTable,g_701F,new,medium,joystick nibble to direction,src/data/dgroup.asm
+g_7034,Stick2XMin,g_7034,new,medium,joystick 2 x minimum,src/data/dgroup.asm
+g_7036,Stick2XMax,g_7036,new,medium,joystick 2 x maximum,src/data/dgroup.asm
+g_7038,Stick2XLast,g_7038,new,medium,joystick 2 x last reading,src/data/dgroup.asm
+g_703A,Stick2XSettle,g_703A,new,medium,joystick 2 x settle count (8),src/data/dgroup.asm
+g_703C,Stick2XLow,g_703C,new,medium,joystick 2 x low threshold,src/data/dgroup.asm
+g_703E,Stick2XHigh,g_703E,new,medium,joystick 2 x high threshold,src/data/dgroup.asm
+g_7040,Stick2YMin,g_7040,new,medium,joystick 2 y minimum,src/data/dgroup.asm
+g_7042,Stick2YMax,g_7042,new,medium,joystick 2 y maximum,src/data/dgroup.asm
+g_7044,Stick2YLast,g_7044,new,medium,joystick 2 y last reading,src/data/dgroup.asm
+g_7046,Stick2YSettle,g_7046,new,medium,joystick 2 y settle count (8),src/data/dgroup.asm
+g_7048,Stick2YLow,g_7048,new,medium,joystick 2 y low threshold,src/data/dgroup.asm
+g_704A,Stick2YHigh,g_704A,new,medium,joystick 2 y high threshold,src/data/dgroup.asm
+g_704C,Stick2XScale,g_704C,new,medium,joystick 2 x scale,src/data/dgroup.asm
+g_704E,Stick2YScale,g_704E,new,medium,joystick 2 y scale,src/data/dgroup.asm
+g_7058,Stick1XMin,g_7058,new,medium,joystick 1 x minimum,src/data/dgroup.asm
+g_705A,Stick1XMax,g_705A,new,medium,joystick 1 x maximum,src/data/dgroup.asm
+g_705C,Stick1XLast,g_705C,new,medium,joystick 1 x last reading,src/data/dgroup.asm
+g_705E,Stick1XSettle,g_705E,new,medium,joystick 1 x settle count (8),src/data/dgroup.asm
+g_7060,Stick1XLow,g_7060,new,medium,joystick 1 x low threshold,src/data/dgroup.asm
+g_7062,Stick1XHigh,g_7062,new,medium,joystick 1 x high threshold,src/data/dgroup.asm
+g_7064,Stick1YMin,g_7064,new,medium,joystick 1 y minimum,src/data/dgroup.asm
+g_7066,Stick1YMax,g_7066,new,medium,joystick 1 y maximum,src/data/dgroup.asm
+g_7068,Stick1YLast,g_7068,new,medium,joystick 1 y last reading,src/data/dgroup.asm
+g_706A,Stick1YSettle,g_706A,new,medium,joystick 1 y settle count (8),src/data/dgroup.asm
+g_706C,Stick1YLow,g_706C,new,medium,joystick 1 y low threshold,src/data/dgroup.asm
+g_706E,Stick1YHigh,g_706E,new,medium,joystick 1 y high threshold,src/data/dgroup.asm
+g_7070,Stick1XScale,g_7070,new,medium,joystick 1 x scale,src/data/dgroup.asm
+g_7072,Stick1YScale,g_7072,new,medium,joystick 1 y scale,src/data/dgroup.asm
+g_7074,StickDirTable,g_7074,new,medium,stick bits to direction,src/data/dgroup.asm
+g_712E,OldInt9Off,g_712E,new,medium,"saved INT 9 vector, offset",src/data/dgroup.asm
+g_7130,OldInt9Seg,g_7130,new,medium,"saved INT 9 vector, segment",src/data/dgroup.asm
+g_7132,OldInt16Off,g_7132,new,medium,"saved INT 16h vector, offset",src/data/dgroup.asm
+g_7134,OldInt16Seg,g_7134,new,medium,"saved INT 16h vector, segment",src/data/dgroup.asm
+g_7136,OldInt23Off,g_7136,new,medium,"saved INT 23h vector, offset",src/data/dgroup.asm
+g_7138,OldInt23Seg,g_7138,new,medium,"saved INT 23h vector, segment",src/data/dgroup.asm
+g_730A,RemapTable,g_730A,new,medium,256-byte colour remap table,src/data/dgroup.asm
+g_7428,PutBlockMasks,g_7428,new,medium,plane masks for PutBlock,src/data/dgroup.asm
+g_742C,DrawRawMasks,g_742C,new,medium,plane masks for DrawRaw,src/data/dgroup.asm
+g_7430,DrawRleMasks,g_7430,new,medium,plane masks for DrawRle,src/data/dgroup.asm
+g_7434,DrawRleFastMasks,g_7434,new,medium,plane masks for DrawRleFast,src/data/dgroup.asm
+g_7438,Text2Color,g_7438,new,medium,DrawText2 colour,src/data/dgroup.asm
+g_743A,DrawCharMasks,g_743A,new,medium,plane masks for DrawChar,src/data/dgroup.asm
+g_743E,CopySrcPage,g_743E,new,medium,CopyPlane source page,src/data/dgroup.asm
+g_743F,CopyDstPage,g_743F,new,medium,CopyPlane destination page,src/data/dgroup.asm
+g_7440,CopyActive,g_7440,new,medium,CopyPlane in progress,src/data/dgroup.asm
+g_7441,CopyMask,g_7441,new,medium,CopyPlane plane mask,src/data/dgroup.asm
+g_7442,CopyCount,g_7442,new,medium,CopyPlane byte count,src/data/dgroup.asm
+g_7444,CopyOffset,g_7444,new,medium,CopyPlane offset,src/data/dgroup.asm
+g_744C,ConCursorX,g_744C,new,medium,console cursor column,src/data/dgroup.asm
+g_744E,ConCursorY,g_744E,new,medium,console cursor row,src/data/dgroup.asm
+g_74DC,CurPage,g_74DC,new,medium,page shown,src/data/dgroup.asm
+g_74DE,DrawPage,g_74DE,new,medium,page drawn on,src/data/dgroup.asm
+g_74E0,CanvasCount,g_74E0,new,medium,canvases allocated,src/data/dgroup.asm
+g_74E4,CanvasSeg,g_74E4,new,medium,current canvas: segment (A000h for the screen),src/data/dgroup.asm
+g_74EC,CanvasRows,g_74EC,new,medium,current canvas: row address table,src/data/dgroup.asm
+g_74EE,ClipLeftPlane,g_74EE,new,medium,clip left in plane units,src/data/dgroup.asm
+g_74F0,ClipRightPlane,g_74F0,new,medium,clip right in plane units,src/data/dgroup.asm
+g_74F2,ClipTopY,g_74F2,new,medium,clip top,src/data/dgroup.asm
+g_74F4,ClipBottomY,g_74F4,new,medium,clip bottom,src/data/dgroup.asm
+g_74F6,CanvasRowBytes,g_74F6,new,medium,current canvas: bytes per row,src/data/dgroup.asm
+g_74FC,ClipLeftX,g_74FC,new,medium,clip left,src/data/dgroup.asm
+g_74FE,ClipRightX,g_74FE,new,medium,clip right,src/data/dgroup.asm
+g_7520,DeadlineHi,g_7520,new,medium,"deadline, high word",src/data/dgroup.asm
+g_7526,DrawRawTransMasks,g_7526,new,medium,plane masks for DrawRawTrans,src/data/dgroup.asm
+g_752A,DrawRleFlipMasks,g_752A,new,medium,plane masks for DrawRleFlip,src/data/dgroup.asm
+g_752E,DrawRleTransMasks,g_752E,new,medium,plane masks for DrawRleTrans,src/data/dgroup.asm
+g_7532,DrawRleTransFastMasks,g_7532,new,medium,plane masks for DrawRleTransFast,src/data/dgroup.asm
+g_7536,DrawRawTransRemapMasks,g_7536,new,medium,plane masks for DrawRawTransRemap,src/data/dgroup.asm
+g_753A,DrawRleTransRemapMasks,g_753A,new,medium,plane masks for DrawRleTransRemap,src/data/dgroup.asm
+g_753E,DrawRleFlipTransMasks,g_753E,new,medium,plane masks for DrawRleFlipTrans,src/data/dgroup.asm
+g_7542,DrawRleFlipTransRemapMasks,g_7542,new,medium,plane masks for DrawRleFlipTransRemap,src/data/dgroup.asm
+g_7546,DrawRleFlipRemapMasks,g_7546,new,medium,plane masks for DrawRleFlipRemap,src/data/dgroup.asm
+g_754A,DrawRleTransRemapFastMasks,g_754A,new,medium,plane masks for DrawRleTransRemapFast,src/data/dgroup.asm
+g_756C,PixelMasks,g_756C,new,medium,plane mask per pixel column,src/data/dgroup.asm
+g_7570,PageTable,g_7570,new,medium,"page table, offsets",src/data/dgroup.asm
+g_7572,PageTableSeg,g_7572,new,medium,"page table, segments",src/data/dgroup.asm
+g_7580,OffscreenOff,g_7580,new,medium,"off-screen canvas, offset",src/data/dgroup.asm
+g_7582,OffscreenSeg,g_7582,new,medium,"off-screen canvas, segment",src/data/dgroup.asm
+g_7584,PageBase,g_7584,new,medium,start address of page 0,src/data/dgroup.asm
+g_75D6,Pot1X,g_75D6,new,medium,game port pot 1 x count,src/data/dgroup.asm
+g_75D8,Pot1Y,g_75D8,new,medium,game port pot 1 y count,src/data/dgroup.asm
+g_75DA,Pot2X,g_75DA,new,medium,game port pot 2 x count,src/data/dgroup.asm
+g_75DC,Pot2Y,g_75DC,new,medium,game port pot 2 y count,src/data/dgroup.asm
+g_75DE,PotBits,g_75DE,new,medium,game port bits read last,src/data/dgroup.asm
+g_75E0,PotButtons,g_75E0,new,medium,game port buttons,src/data/dgroup.asm
+g_7631,AltCallPrev,g_7631,new,medium,word before AltCall,src/data/dgroup.asm
+g_7642,BeforeDialogFn,g_7642,new,medium,far routine called before a dialog,src/data/dgroup.asm
+g_7646,AfterDialogFn,g_7646,new,medium,far routine called after a dialog,src/data/dgroup.asm
+g_7664,ScaleColor,g_7664,new,medium,DrawScaled colour,src/data/dgroup.asm
+g_7665,ScaleColorHi,g_7665,new,medium,"DrawScaled colour, high byte",src/data/dgroup.asm
+g_7666,ScaleMode,g_7666,new,medium,DrawScaled mode,src/data/dgroup.asm
+g_7670,RetraceWait,g_7670,new,medium,retrace wait count from CalibrateRetrace,src/data/dgroup.asm
+g_7674,ScaleMasks,g_7674,new,medium,plane masks for DrawScaled,src/data/dgroup.asm
+g_7678,ScaleMasks2,g_7678,new,medium,second plane mask table for DrawScaled,src/data/dgroup.asm
+g_7679,ScaleEdgeMasks,g_7679,new,medium,edge masks for DrawScaled,src/data/dgroup.asm
+g_767D,ScaleRightMasks,g_767D,new,medium,right edge masks for DrawScaled,src/data/dgroup.asm
+g_7681,ScaleLeftMasks,g_7681,new,medium,left edge masks for DrawScaled,src/data/dgroup.asm
+g_7692,LineMasks,g_7692,new,medium,plane masks for DrawLineClipped,src/data/dgroup.asm
+g_7696,SpanMasks,g_7696,new,medium,plane masks for FillSpanVga,src/data/dgroup.asm
+g_769A,SpanLeftMasks,g_769A,new,medium,left edge masks for FillSpanVga,src/data/dgroup.asm
+g_769B,SpanLeftMasks2,g_769B,new,medium,"left edge masks for FillSpanVga, second table",src/data/dgroup.asm
+g_769F,SpanRightMasks,g_769F,new,medium,right edge masks for FillSpanVga,src/data/dgroup.asm
+g_76DE,AssetExtList,g_76DE,new,medium,extensions LoadAssetMode tries,src/data/dgroup.asm
+g_76F2,IdentityRemap,g_76F2,new,medium,remap table that changes nothing,src/data/dgroup.asm
+g_77B4,RectMasks,g_77B4,new,medium,plane masks for RectSpanPlanes,src/data/dgroup.asm
+g_77B8,RectLeftMasks,g_77B8,new,medium,left edge masks for RectSpanPlanes,src/data/dgroup.asm
+g_77B9,RectLeftMasks2,g_77B9,new,medium,"left edge masks for RectSpanPlanes, second table",src/data/dgroup.asm
+g_77BD,RectRightMasks,g_77BD,new,medium,right edge masks for RectSpanPlanes,src/data/dgroup.asm
+g_77C8,DrawRawFastMasks,g_77C8,new,medium,plane masks for DrawRawFast,src/data/dgroup.asm
+g_77CC,DrawRawTransFastMasks,g_77CC,new,medium,plane masks for DrawRawTransFast,src/data/dgroup.asm
+g_78D2,LineStepLimit,g_78D2,new,medium,line step limit,src/data/dgroup.asm
+g_78D4,LineStepTable,g_78D4,new,medium,line step table,src/data/dgroup.asm
+g_846A,SeqTickCount,g_846A,new,medium,sequencer ticks,src/data/dgroup.asm
+g_846C,SeqBusy,g_846C,new,medium,SeqService running,src/data/dgroup.asm
+g_8498,SfxChannel,g_8498,new,medium,effects channel,src/data/dgroup.asm
+g_84C6,DriverCount,g_84C6,new,medium,sound drivers loaded,src/data/dgroup.asm
+g_84C8,TrackSlots,g_84C8,new,medium,"24 track slots of 58h bytes, offset",src/data/dgroup.asm
+g_84CA,TrackSlotsSeg,g_84CA,new,medium,"track slots, segment",src/data/dgroup.asm
+g_84CC,Voices,g_84CC,new,medium,"32 voice records of 0Ch bytes, offset",src/data/dgroup.asm
+g_84CE,VoicesSeg,g_84CE,new,medium,"voice records, segment",src/data/dgroup.asm
+g_84D0,ChannelMasks,g_84D0,new,medium,channel bit per MIDI channel,src/data/dgroup.asm
+g_84F0,SongHandleLo,g_84F0,new,medium,"last song handle, low word",src/data/dgroup.asm
+g_84F2,SongHandleHi,g_84F2,new,medium,"last song handle, high word",src/data/dgroup.asm
+g_84F4,SeqLock,g_84F4,new,medium,sequencer locked while non-zero,src/data/dgroup.asm
+g_84F6,MidiQueueLen,g_84F6,new,medium,bytes in the MIDI queue,src/data/dgroup.asm
+g_84F8,MidiQueueBusy,g_84F8,new,medium,MIDI queue in use,src/data/dgroup.asm
+g_84FA,TracksMuted,g_84FA,new,medium,tracks muted,src/data/dgroup.asm
+g_84FC,SfxEnabled,g_84FC,new,medium,effects on,src/data/dgroup.asm
+g_84FE,MusicEnabled,g_84FE,new,medium,second sound flag (music),src/data/dgroup.asm
+g_8500,DriverName,g_8500,new,medium,driver file name being loaded,src/data/dgroup.asm
+g_8502,DriverServiceIdx,g_8502,new,medium,driver that needs service (FFh for none),src/data/dgroup.asm
+g_8504,SongCount,g_8504,new,medium,songs loaded,src/data/dgroup.asm
+g_8506,SongPtrs,g_8506,new,medium,"song pointers, offsets",src/data/dgroup.asm
+g_8508,SongPtrsSeg,g_8508,new,medium,"song pointers, segments",src/data/dgroup.asm
+g_8516,TopOfStack,g_8516,new,medium,stack pointer at startup,src/data/dgroup.asm
+g_8518,ExitRoutine,g_8518,new,medium,near routine errors leave through (_exit),src/data/dgroup.asm
+g_851A,DgroupTop,g_851A,new,medium,top offset of DGROUP,src/data/dgroup.asm
+g_8542,OldInt0Vec,g_8542,new,medium,saved INT 0 vector,src/data/dgroup.asm
+g_8544,OldInt0VecSeg,g_8544,new,medium,"saved INT 0 vector, segment",src/data/dgroup.asm
+g_8558,DosMajor,g_8558,new,medium,DOS major version,src/data/dgroup.asm
+g_8573,ArgCount,g_8573,new,medium,argc,src/data/dgroup.asm
+g_8575,ArgVector,g_8575,new,medium,argv,src/data/dgroup.asm
+g_8577,EnvVector,g_8577,new,medium,environ,src/data/dgroup.asm
+g_8580,MathVecSet,g_8580,new,medium,a math error vector was installed,src/data/dgroup.asm
+g_8581,MathVecNum,g_8581,new,medium,its interrupt number,src/data/dgroup.asm
+g_8582,MathVecOld,g_8582,new,medium,its saved vector,src/data/dgroup.asm
+g_8586,StackOverflowFn,g_8586,new,medium,alternate stack-overflow handler (FFFFh for none),src/data/dgroup.asm
+g_858A,StackLimit,g_858A,new,medium,lowest allowed stack pointer,src/data/dgroup.asm
+g_858D,CharTypes,g_858D,new,medium,character type table (bit 4: digit),src/data/dgroup.asm
+g_8694,AtexitPtr,g_8694,new,medium,next free atexit slot,src/data/dgroup.asm
+g_8696,RandSeed,g_8696,new,medium,"rand seed, low word",src/data/dgroup.asm
+g_8698,RandSeedHigh,g_8698,new,medium,"rand seed, high word",src/data/dgroup.asm
+g_86B2,MsgBannerHook,g_86B2,new,medium,far routine called before a runtime message,src/data/dgroup.asm
+g_86B4,MsgBannerHookSeg,g_86B4,new,medium,its segment,src/data/dgroup.asm
+g_876A,StreamExtra,g_876A,new,medium,extra stream records for the standard buffers,src/data/dgroup.asm
+g_880A,LastStream,g_880A,new,medium,last stream record,src/data/dgroup.asm
+g_8871,CflushCount,g_8871,new,medium,stream flush count,src/data/dgroup.asm
+g_8876,FltCvtFn,g_8876,new,medium,float conversion routine,src/data/dgroup.asm
+g_887A,CropZerosFn,g_887A,new,medium,drops trailing zeros,src/data/dgroup.asm
+g_8882,ForceDecPtFn,g_8882,new,medium,forces a decimal point,src/data/dgroup.asm
+g_888A,PositiveFn,g_888A,new,medium,checks the sign,src/data/dgroup.asm
+g_8A1C,FloatMode,g_8A1C,new,medium,float format mode,src/data/dgroup.asm
+g_8A1E,FloatPrecision,g_8A1E,new,medium,float precision,src/data/dgroup.asm
+g_8A20,FloatFlag,g_8A20,new,medium,float format flag,src/data/dgroup.asm
+g_8ABA,FpStatusByte,g_8ABA,new,medium,floating-point status byte,src/data/dgroup.asm
+g_8ABB,FpStatusPad,g_8ABB,new,medium,byte after FpStatusByte,src/data/dgroup.asm
+g_8ABD,FpConstTable,g_8ABD,new,medium,floating-point constants,src/data/dgroup.asm
+g_8AE2,InitHook,g_8AE2,new,medium,near startup hook (0 skips),src/data/dgroup.asm
+g_8AE4,DebugSignature,g_8AE4,new,medium,D6D6h when a debugger hook is present,src/data/dgroup.asm
+g_8AE6,DebugWriteHook,g_8AE6,new,medium,debugger write hook,src/data/dgroup.asm
+g_8AE8,DebugExitHook,g_8AE8,new,medium,debugger exit hook,src/data/dgroup.asm
+g_8AEA,DebugTermHook,g_8AEA,new,medium,debugger termination hook,src/data/dgroup.asm
+g_8AF4,FpHook,g_8AF4,new,medium,floating-point hook,src/data/dgroup.asm
+g_8AF6,FpHookCount,g_8AF6,new,medium,number of floating-point hooks (0 skips),src/data/dgroup.asm
+g_8AF8,FpEnvArg1,g_8AF8,new,medium,first floating-point hook argument,src/data/dgroup.asm
+g_8AFC,FpEnvArg2,g_8AFC,new,medium,second floating-point hook argument,src/data/dgroup.asm
+g_8B08,DgroupSegA,g_8B08,new,medium,DGROUP paragraph (relocated),src/data/dgroup.asm
+g_8B12,NumberWordsSeg,g_8B12,new,medium,paragraph of number_words,src/data/dgroup.asm
+g_8B14,DbFilesSeg,g_8B14,new,medium,paragraph of db_files,src/data/dgroup.asm
+g_8B16,DbFilesSeg2,g_8B16,new,medium,paragraph of db_files,src/data/dgroup.asm
+g_8B18,DbFilesSeg3,g_8B18,new,medium,paragraph of db_files,src/data/dgroup.asm
+g_8B1A,ListDialogDataSeg,g_8B1A,new,medium,paragraph of the list dialog data,src/data/dgroup.asm
+g_8B1C,DgroupSegB,g_8B1C,new,medium,DGROUP paragraph (relocated),src/data/dgroup.asm
+g_8B1E,InputEventDataSeg,g_8B1E,new,medium,paragraph of the input event data,src/data/dgroup.asm
+g_8D04,DgroupSegC,g_8D04,new,medium,DGROUP paragraph (relocated),src/data/dgroup.asm
+g_8D06,DgroupSegD,g_8D06,new,medium,DGROUP paragraph (relocated),src/data/dgroup.asm
+g_8D08,DgroupSegE,g_8D08,new,medium,DGROUP paragraph (relocated),src/data/dgroup.asm
+g_8D0A,DgroupSegF,g_8D0A,new,medium,DGROUP paragraph (relocated),src/data/dgroup.asm
+g_8D0C,PaletteFlagsSeg,g_8D0C,new,medium,paragraph of palette_flags,src/data/dgroup.asm
+g_8D0E,PaletteFlagsSeg2,g_8D0E,new,medium,paragraph of palette_flags,src/data/dgroup.asm
+g_8D10,WorkBufferSeg,g_8D10,new,medium,paragraph of work_buffer,src/data/dgroup.asm
+g_8D12,WorkBufferSeg2,g_8D12,new,medium,paragraph of work_buffer,src/data/dgroup.asm
+g_8D14,WorkBufferSeg3,g_8D14,new,medium,paragraph of work_buffer,src/data/dgroup.asm
+g_8EDC,UnpackSpare1,g_8EDC,new,medium,word before InPtr,src/data/dgroup_bss.asm
+g_8EE0,UnpackSpare2,g_8EE0,new,medium,word before MapPair,src/data/dgroup_bss.asm
+g_8EE6,UnpackSpare3,g_8EE6,new,medium,word before BitCount,src/data/dgroup_bss.asm
+g_8EEA,SentencePtr,g_8EEA,new,medium,current speech sentence,src/data/dgroup_bss.asm
+g_8EEC,SentenceSeg,g_8EEC,new,medium,its segment,src/data/dgroup_bss.asm
+g_8EEE,PauseSampleOff,g_8EEE,new,medium,"silent sample, offset",src/data/dgroup_bss.asm
+g_8EF0,PauseSampleSeg,g_8EF0,new,medium,"silent sample, segment",src/data/dgroup_bss.asm
+g_8EF2,WantedList,g_8EF2,new,medium,"samples wanted, offset",src/data/dgroup_bss.asm
+g_8EF4,WantedListSeg,g_8EF4,new,medium,"samples wanted, segment",src/data/dgroup_bss.asm
+g_8EF6,SpeechBank,g_8EF6,new,medium,"speech bank, offset",src/data/dgroup_bss.asm
+g_8EF8,SpeechBankSeg,g_8EF8,new,medium,"speech bank, segment",src/data/dgroup_bss.asm
+g_8EFA,MoveBlockOff,g_8EFA,new,medium,"MoveMemBlock target, offset",src/data/dgroup_bss.asm
+g_8EFC,MoveBlockSeg,g_8EFC,new,medium,"MoveMemBlock target, segment",src/data/dgroup_bss.asm
+g_8F56,ShadeTableOff,g_8F56,new,medium,"shade table being built, offset",src/data/dgroup_bss.asm
+g_8F58,ShadeTableSeg,g_8F58,new,medium,"shade table being built, segment",src/data/dgroup_bss.asm
+g_8F5A,ShadeFactorR,g_8F5A,new,medium,red factor,src/data/dgroup_bss.asm
+g_8F5C,ShadeFactorG,g_8F5C,new,medium,green factor,src/data/dgroup_bss.asm
+g_8F5E,ShadeFactorB,g_8F5E,new,medium,blue factor,src/data/dgroup_bss.asm
+g_8F60,ShadeR,g_8F60,new,medium,red result,src/data/dgroup_bss.asm
+g_8F62,ShadeG,g_8F62,new,medium,green result,src/data/dgroup_bss.asm
+g_8F64,ShadeB,g_8F64,new,medium,blue result,src/data/dgroup_bss.asm
+g_8F66,ShadeGrey,g_8F66,new,medium,grey the result,src/data/dgroup_bss.asm
+g_8F68,MidiMsg,g_8F68,new,medium,MIDI message being sent: status byte,src/data/dgroup_bss.asm
+g_8F69,MidiMsg1,g_8F69,new,medium,first data byte,src/data/dgroup_bss.asm
+g_8F6A,MidiMsg2,g_8F6A,new,medium,second data byte,src/data/dgroup_bss.asm
+g_8FA8,PatchMsg,g_8FA8,new,medium,patch message: status byte,src/data/dgroup_bss.asm
+g_8FA9,PatchMsg1,g_8FA9,new,medium,patch message byte 1,src/data/dgroup_bss.asm
+g_8FAA,PatchMsg2,g_8FAA,new,medium,patch message byte 2,src/data/dgroup_bss.asm
+g_8FAB,PatchMsg3,g_8FAB,new,medium,patch message byte 3,src/data/dgroup_bss.asm
+g_8FAC,SongFileName,g_8FAC,new,medium,song file name,src/data/dgroup_bss.asm
+g_8FC0,SongFileNameEnd,g_8FC0,new,medium,end of the song file name,src/data/dgroup_bss.asm
+g_8FC2,SongBankNum,g_8FC2,new,medium,song bank number,src/data/dgroup_bss.asm
+g_8FC6,SfxMsg,g_8FC6,new,medium,effect message: status byte,src/data/dgroup_bss.asm
+g_8FC7,SfxMsg1,g_8FC7,new,medium,effect message byte 1,src/data/dgroup_bss.asm
+g_8FC8,SfxMsg2,g_8FC8,new,medium,effect message byte 2,src/data/dgroup_bss.asm
+g_8FCE,DrvTableName,g_8FCE,new,medium,"driver table: name, entry -8",src/data/dgroup_bss.asm
+g_8FD0,DrvTableSeg,g_8FD0,new,medium,"driver table: segment, entry -6",src/data/dgroup_bss.asm
+g_8FD6,DrvTableInit,g_8FD6,new,medium,driver table: init routine (38h-byte entries),src/data/dgroup_bss.asm
+g_8FDA,DrvTableCall04,g_8FDA,new,medium,driver table: routine +4,src/data/dgroup_bss.asm
+g_8FDE,DrvTableCall08,g_8FDE,new,medium,driver table: routine +8,src/data/dgroup_bss.asm
+g_8FE2,DrvTableShutdown,g_8FE2,new,medium,driver table: shutdown routine,src/data/dgroup_bss.asm
+g_8FE6,DrvTableCall10,g_8FE6,new,medium,driver table: routine +10h,src/data/dgroup_bss.asm
+g_8FEA,DrvTableService,g_8FEA,new,medium,driver table: service routine,src/data/dgroup_bss.asm
+g_8FEE,DrvTableNeedsService,g_8FEE,new,medium,driver table: needs-service routine,src/data/dgroup_bss.asm
+g_8FF2,DrvTableLoadBank,g_8FF2,new,medium,driver table: load bank routine,src/data/dgroup_bss.asm
+g_9002,DrvTableSendMidi,g_9002,new,medium,driver table: send MIDI routine,src/data/dgroup_bss.asm
+g_900A,DrvTablePlaySample,g_900A,new,medium,driver table: play sample routine,src/data/dgroup_bss.asm
+g_9096,StrBufPtr,g_9096,new,medium,sprintf string stream: pointer,src/data/dgroup_bss.asm
+g_9098,StrBufCnt,g_9098,new,medium,sprintf string stream: space left,src/data/dgroup_bss.asm
+g_909A,StrBufBase,g_909A,new,medium,sprintf string stream: base,src/data/dgroup_bss.asm
+g_909C,StrBufFlag,g_909C,new,medium,sprintf string stream: flags,src/data/dgroup_bss.asm
+g_909E,FloatArgPtr,g_909E,new,medium,float argument being formatted,src/data/dgroup_bss.asm
+g_90A8,FltOutFlags,g_90A8,new,medium,float output flags,src/data/dgroup_bss.asm
+g_90A9,FltOutFlags1,g_90A9,new,medium,"float output flags, high byte",src/data/dgroup_bss.asm
+g_90AA,FltOutExp,g_90AA,new,medium,float output exponent,src/data/dgroup_bss.asm
+g_AE90,HeapSizeLo,g_AE90,new,medium,"heap size, low word",src/data/dgroup_bss.asm
+g_AE92,HeapSizeHi,g_AE92,new,medium,"heap size, high word",src/data/dgroup_bss.asm
+g_AE98,DialogData,g_AE98,new,medium,"dialog data, offset",src/data/dgroup_bss.asm
+g_AE9A,DialogDataSeg,g_AE9A,new,medium,"dialog data, segment",src/data/dgroup_bss.asm
+g_AEA0,HeapVar0,g_AEA0,new,medium,heap variable,src/data/dgroup_bss.asm
+g_AEA2,HeapList,g_AEA2,new,medium,far heap list,src/data/dgroup_bss.asm
+g_AEA4,HeapVar1,g_AEA4,new,medium,heap variable,src/data/dgroup_bss.asm
+g_AEA6,HeapVar2,g_AEA6,new,medium,heap variable,src/data/dgroup_bss.asm
+g_AEA8,HeapVar3,g_AEA8,new,medium,heap variable,src/data/dgroup_bss.asm
+g_AEAA,HeapVar4,g_AEAA,new,medium,heap variable,src/data/dgroup_bss.asm
+g_AEAC,HeapVar5,g_AEAC,new,medium,heap variable,src/data/dgroup_bss.asm
+g_AEAE,HeapVar6,g_AEAE,new,medium,heap variable,src/data/dgroup_bss.asm
+g_AEB0,HeapVar7,g_AEB0,new,medium,heap variable,src/data/dgroup_bss.asm
+g_AEB2,MemBlock1Off,g_AEB2,new,medium,"memory block 1, offset",src/data/dgroup_bss.asm
+g_AEB4,MemBlock1Seg,g_AEB4,new,medium,"memory block 1, segment",src/data/dgroup_bss.asm
+g_AEB6,MemBlock2Off,g_AEB6,new,medium,"memory block 2, offset",src/data/dgroup_bss.asm
+g_AEB8,MemBlock2Seg,g_AEB8,new,medium,"memory block 2, segment",src/data/dgroup_bss.asm
+g_AEBA,MemBlock3Off,g_AEBA,new,medium,"memory block 3, offset",src/data/dgroup_bss.asm
+g_AEBC,MemBlock3Seg,g_AEBC,new,medium,"memory block 3, segment",src/data/dgroup_bss.asm
+g_AECE,InputFlags,g_AECE,new,medium,input device flags,src/data/dgroup_bss.asm
+g_AED0,InputQueue,g_AED0,new,medium,input event queue,src/data/dgroup_bss.asm
+g_AFD0,CursorX,g_AFD0,new,medium,cursor x,src/data/dgroup_bss.asm
+g_AFD2,CursorY,g_AFD2,new,medium,cursor y,src/data/dgroup_bss.asm
+g_B06A,PadStatePtr,g_B06A,new,medium,pad state being updated,src/data/dgroup_bss.asm
+g_B08E,HotKeyFn,g_B08E,new,medium,far routine for hot keys,src/data/dgroup_bss.asm
+g_B090,HotKeyFnSeg,g_B090,new,medium,its segment,src/data/dgroup_bss.asm
+g_B0C4,TeamPalette1,g_B0C4,new,medium,first team palette,src/data/dgroup_bss.asm
+g_B1C4,TeamPalette2,g_B1C4,new,medium,second team palette,src/data/dgroup_bss.asm
+g_B2CA,ArenaJingleSet,g_B2CA,new,medium,arena jingle per team,src/data/dgroup_bss.asm
+g_B2CC,BoxSaveX,g_B2CC,new,medium,box save x,src/data/dgroup_bss.asm
+g_B2CE,BoxSaveY,g_B2CE,new,medium,box save y,src/data/dgroup_bss.asm
+g_B2D0,YesNoText,g_B2D0,new,medium,"AskYesNo text, offset",src/data/dgroup_bss.asm
+g_B2D2,YesNoTextSeg,g_B2D2,new,medium,"AskYesNo text, segment",src/data/dgroup_bss.asm
+g_B2D4,MessageBoxSel,g_B2D4,new,medium,message box selection (FFFFh for none),src/data/dgroup_bss.asm
+g_B2D6,ArenaJingleArg1,g_B2D6,new,medium,arena jingle argument,src/data/dgroup_bss.asm
+g_B2D8,ArenaJingleArg2,g_B2D8,new,medium,arena jingle argument,src/data/dgroup_bss.asm
+g_B2DA,JingleSongOff,g_B2DA,new,medium,"jingle song, offset",src/data/dgroup_bss.asm
+g_B2DC,JingleSongSeg,g_B2DC,new,medium,"jingle song, segment",src/data/dgroup_bss.asm
+g_B2DE,JingleBufOff,g_B2DE,new,medium,"jingle buffer, offset",src/data/dgroup_bss.asm
+g_B2E0,JingleBufSeg,g_B2E0,new,medium,"jingle buffer, segment",src/data/dgroup_bss.asm
+g_B2E2,JingleTempo,g_B2E2,new,medium,jingle tempo (14h),src/data/dgroup_bss.asm
+g_B2E7,JingleChannel,g_B2E7,new,medium,jingle channel (FFh),src/data/dgroup_bss.asm
+g_B2E8,JingleVolume,g_B2E8,new,medium,jingle volume (3Fh),src/data/dgroup_bss.asm
+g_B2E9,JinglePan,g_B2E9,new,medium,jingle pan,src/data/dgroup_bss.asm
+g_B2EE,ArenaJingleA,g_B2EE,new,medium,arena jingle table,src/data/dgroup_bss.asm
+g_B2F0,ArenaJingleASeg,g_B2F0,new,medium,"arena jingle table, segment",src/data/dgroup_bss.asm
+g_B2FA,ArenaJingleB,g_B2FA,new,medium,arena jingle table,src/data/dgroup_bss.asm
+g_B2FC,ArenaJingleBSeg,g_B2FC,new,medium,"arena jingle table, segment",src/data/dgroup_bss.asm
+g_B31E,ArenaJingleC,g_B31E,new,medium,arena jingle table,src/data/dgroup_bss.asm
+g_B320,ArenaJingleCSeg,g_B320,new,medium,"arena jingle table, segment",src/data/dgroup_bss.asm
+g_B336,ArenaJingleD,g_B336,new,medium,arena jingle table,src/data/dgroup_bss.asm
+g_B338,ArenaJingleDSeg,g_B338,new,medium,"arena jingle table, segment",src/data/dgroup_bss.asm
+g_B34E,VgaSave0Off,g_B34E,new,medium,"saved plane 0, offset",src/data/dgroup_bss.asm
+g_B350,VgaSave0Seg,g_B350,new,medium,"saved plane 0, segment",src/data/dgroup_bss.asm
+g_B352,VgaSave1Off,g_B352,new,medium,"saved plane 1, offset",src/data/dgroup_bss.asm
+g_B354,VgaSave1Seg,g_B354,new,medium,"saved plane 1, segment",src/data/dgroup_bss.asm
+g_B356,VgaSave2Off,g_B356,new,medium,"saved plane 2, offset",src/data/dgroup_bss.asm
+g_B358,VgaSave2Seg,g_B358,new,medium,"saved plane 2, segment",src/data/dgroup_bss.asm
+g_B35A,VgaSave3Off,g_B35A,new,medium,"saved plane 3, offset",src/data/dgroup_bss.asm
+g_B35C,VgaSave3Seg,g_B35C,new,medium,"saved plane 3, segment",src/data/dgroup_bss.asm
+g_DF72,RetraceCount,g_DF72,new,medium,retrace count measured by CalibrateRetrace,src/data/dgroup_bss.asm
+g_DF74,MidiQueue,g_DF74,new,medium,128-byte MIDI queue,src/data/dgroup_bss.asm
+g_DF75,MidiQueue1,g_DF75,new,medium,"MIDI queue, second byte",src/data/dgroup_bss.asm
+g_DFF4,PatchBank,g_DFF4,new,medium,"patch bank, offset",src/data/dgroup_bss.asm
+g_DFF6,PatchBankSeg,g_DFF6,new,medium,"patch bank, segment",src/data/dgroup_bss.asm
+g_DFF8,ChannelUsed,g_DFF8,new,medium,"channel in use, per MIDI channel",src/data/dgroup_bss.asm
+g_E008,LoadedSongs,g_E008,new,medium,"10 loaded songs, offsets",src/data/dgroup_bss.asm
+g_E00A,LoadedSongsSeg,g_E00A,new,medium,"loaded songs, segments",src/data/dgroup_bss.asm
+g_E030,SongParts,g_E030,new,medium,parts tables of the loaded songs,src/data/dgroup_bss.asm
+g_E032,SongPartsSeg,g_E032,new,medium,"parts tables, segments",src/data/dgroup_bss.asm
+g_E058,SongSeqs,g_E058,new,medium,sequence tables of the loaded songs,src/data/dgroup_bss.asm
+g_E05A,SongSeqsSeg,g_E05A,new,medium,"sequence tables, segments",src/data/dgroup_bss.asm
+g_E080,SeqTimerSlot,g_E080,new,medium,timer slot of the sequencer,src/data/dgroup_bss.asm
+g_E082,SeqTimerSlotSeg,g_E082,new,medium,"timer slot, segment",src/data/dgroup_bss.asm
+g_E084,DriverTypes,g_E084,new,medium,driver type per driver,src/data/dgroup_bss.asm
+g_E086,DriverEntrySeg,g_E086,new,medium,driver entry segment,src/data/dgroup_bss.asm
+g_E08C,VoiceFreeList,g_E08C,new,medium,free voice list,src/data/dgroup_bss.asm
+g_E08E,VoiceFreeListSeg,g_E08E,new,medium,"free voice list, segment",src/data/dgroup_bss.asm
+g_E090,VoiceListNext,g_E090,new,medium,voice list links,src/data/dgroup_bss.asm
+g_E092,VoiceListNextSeg,g_E092,new,medium,"voice list links, segment",src/data/dgroup_bss.asm
+g_E094,VoiceListPrev,g_E094,new,medium,voice list back links,src/data/dgroup_bss.asm
+g_E096,VoiceListPrevSeg,g_E096,new,medium,"voice list back links, segment",src/data/dgroup_bss.asm
+g_E09D,VoiceListId,g_E09D,new,medium,voice list id byte,src/data/dgroup_bss.asm
+g_E11C,VoiceListEnd,g_E11C,new,medium,end of the voice lists,src/data/dgroup_bss.asm
+g_E11E,VoiceListEndSeg,g_E11E,new,medium,"end of the voice lists, segment",src/data/dgroup_bss.asm
+g_E120,VoiceListFlags,g_E120,new,medium,voice list flags,src/data/dgroup_bss.asm
