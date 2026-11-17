@@ -1401,7 +1401,7 @@ CopyByName:
 	mov	word [bp - 0xa], dx
 	db	0x0B, 0xD0			; or dx, ax
 	jne	short .1
-	jmp	near S0DDF.4
+	jmp	near .9
 .1:
 	push	0
 	mov	es, word [bp - 0xa]
@@ -1418,7 +1418,7 @@ CopyByName:
 	mov	word [bp - 0x12], dx
 	db	0x0B, 0xD0			; or dx, ax
 	jne	short .2
-	jmp	near S0DDF.4
+	jmp	near .9
 .2:
 	mov	es, word [bp - 0xa]
 	mov	ax, word es:[si + 0x14]
@@ -1435,19 +1435,19 @@ CopyByName:
 	db	0x8B, 0xF9			; mov di, cx
 	mov	word [bp - 0x16], si
 	db	0x0B, 0xD0			; or dx, ax
-	je	short S0DDF.3
+	je	short .8
 .3:
 	cmp	word [bp - 2], 0
-	jl	short S0DDF.1
-	jg	short S0DDF
+	jl	short .6
+	jg	short .5
 	cmp	word [bp - 4], 0xc000
-	jbe	short S0DDF.1
-S0DDF:
+	jbe	short .6
+.5:
 	mov	si, 0xc000
-	jmp	short .2
-.1:
+	jmp	short .7
+.6:
 	mov	si, word [bp - 4]
-.2:
+.7:
 	push	si
 	push	word [bp - 6]
 	push	word [bp - 8]
@@ -1480,14 +1480,14 @@ S0DDF:
 	mov	ax, word [bp - 2]
 	or	ax, word [bp - 4]
 	jne	short CopyByName.3
-.3:
+.8:
 	mov	ax, word [bp - 0x14]
 	mov	dx, word [bp - 0x12]
 	pop	si
 	pop	di
 	leave
 	retf
-.4:
+.9:
 	db	0x2B, 0xC0			; sub ax, ax
 	cwd
 	pop	si
@@ -1510,10 +1510,10 @@ SlideDown:
 	mov	word [bp - 0x16], dx
 	db	0x8B, 0xF0			; mov si, ax
 	mov	word [bp - 0x12], dx
-S0E70:
+.1:
 	push	word es:[bx + 2]
 	push	word es:[bx]
-S0E77:
+.2:
 	call	0x3A3:FarToLinear
 	add	sp, 4
 	mov	word [bp - 4], ax
@@ -1521,7 +1521,7 @@ S0E77:
 	db	0x2B, 0xC0			; sub ax, ax
 	mov	word [bp - 6], ax
 	mov	word [bp - 8], ax
-S0E8D:
+.3:
 	mov	es, word [bp - 0x16]
 	push	word es:[di + 2]
 	push	word es:[di]
@@ -1531,11 +1531,11 @@ S0E8D:
 	add	ax, word es:[di + 0x10]
 	adc	dx, word es:[di + 0x12]
 	cmp	dx, word [bp - 2]
-	jl	short S0EE2
-	jg	short S0EB6
+	jl	short .5
+	jg	short .4
 	cmp	ax, word [bp - 4]
-	jb	short S0EE2
-S0EB6:
+	jb	short .5
+.4:
 	push	word es:[di + 2]
 	push	word es:[di]
 	call	0x3A3:FarToLinear
@@ -1548,10 +1548,10 @@ S0EB6:
 	db	0x8B, 0xF8			; mov di, ax
 	mov	word [bp - 0x16], dx
 	db	0x0B, 0xD0			; or dx, ax
-	jne	short S0E8D
-	jmp	short S0F12
+	jne	short .3
+	jmp	short .6
 	nop
-S0EE2:
+.5:
 	push	word es:[di + 2]
 	push	word es:[di]
 	call	0x3A3:FarToLinear
@@ -1567,37 +1567,37 @@ S0EE2:
 	mov	word [bp - 6], bx
 	mov	word [bp - 4], ax
 	mov	word [bp - 2], dx
-S0F12:
+.6:
 	mov	ax, word [bp - 6]
 	or	ax, word [bp - 8]
-	jne	short S0F1D
-	jmp	near S10E6
-S0F1D:
+	jne	short .7
+	jmp	near .14
+.7:
 	mov	es, word [bp - 0x12]
 	cmp	word es:[si + 0x18], 0x10
-	jne	short S0F42
+	jne	short .8
 	push	word es:[si + 2]
 	push	word es:[si]
 	call	0x3A3:FarToLinear
 	add	sp, 4
 	cmp	dx, word [bp - 2]
-	jl	short S0F5A
-	jg	short S0F42
+	jl	short .9
+	jg	short .8
 	cmp	ax, word [bp - 4]
-	jbe	short S0F5A
-S0F42:
+	jbe	short .9
+.8:
 	mov	es, word [bp - 0x12]
 	mov	ax, word es:[si + 0x20]
 	mov	dx, word es:[si + 0x22]
 	db	0x8B, 0xF0			; mov si, ax
 	mov	word [bp - 0x12], dx
 	db	0x0B, 0xD0			; or dx, ax
-	jne	short S0F1D
+	jne	short .7
 	pop	si
 	pop	di
 	leave
 	retf
-S0F5A:
+.9:
 	mov	es, word [bp - 0x12]
 	push	word es:[si + 2]
 	push	word es:[si]
@@ -1607,9 +1607,9 @@ S0F5A:
 	add	ax, word es:[si + 0x10]
 	adc	dx, word es:[si + 0x12]
 	cmp	ax, word [bp - 4]
-	jne	short S0FEC
+	jne	short .10
 	cmp	dx, word [bp - 2]
-	jne	short S0FEC
+	jne	short .10
 	mov	ax, word [bp - 8]
 	mov	dx, word [bp - 6]
 	sub	ax, word es:[si + 0x10]
@@ -1646,19 +1646,19 @@ S0F5A:
 	mov	word es:[bx + 2], dx
 	push	dx
 	push	ax
-	jmp	near S0E77
-S0FEC:
+	jmp	near .2
+.10:
 	mov	ax, word [bp - 8]
 	mov	dx, word [bp - 6]
 	cmp	word es:[si + 0x12], dx
-	jle	short S0FFB
-	jmp	near S10D8
-S0FFB:
-	jl	short S1006
+	jle	short .11
+	jmp	near .13
+.11:
+	jl	short .12
 	cmp	word es:[si + 0x10], ax
-	jbe	short S1006
-	jmp	near S10D8
-S1006:
+	jbe	short .12
+	jmp	near .13
+.12:
 	sub	ax, word es:[si + 0x10]
 	sbb	dx, word es:[si + 0x12]
 	add	ax, word [bp - 4]
@@ -1723,14 +1723,14 @@ S1006:
 	mov	word es:[di + 0x1e], dx
 	mov	es, dx
 	db	0x8B, 0xD9			; mov bx, cx
-	jmp	near S0E70
-S10D8:
+	jmp	near .1
+.13:
 	mov	es, word [bp - 0x16]
 	push	word es:[di + 2]
 	push	word es:[di]
-	jmp	near S0E77
+	jmp	near .2
 	nop
-S10E6:
+.14:
 	pop	si
 	pop	di
 	leave
@@ -1758,25 +1758,25 @@ SlideUp:
 	push	word es:[bx]
 	call	0x3A3:FarToLinear
 	add	sp, 4
-S1115:
+.1:
 	mov	word [bp - 4], ax
 	mov	word [bp - 2], dx
-S111B:
+.2:
 	db	0x2B, 0xC0			; sub ax, ax
 	mov	word [bp - 6], ax
 	mov	word [bp - 8], ax
-S1123:
+.3:
 	mov	es, word [bp - 0x16]
 	push	word es:[si + 2]
 	push	word es:[si]
 	call	0x3A3:FarToLinear
 	add	sp, 4
 	cmp	dx, word [bp - 2]
-	jg	short S1178
-	jl	short S1141
+	jg	short .5
+	jl	short .4
 	cmp	ax, word [bp - 4]
-	ja	short S1178
-S1141:
+	ja	short .5
+.4:
 	mov	es, word [bp - 0x16]
 	push	word es:[si + 2]
 	push	word es:[si]
@@ -1792,10 +1792,10 @@ S1141:
 	db	0x8B, 0xF0			; mov si, ax
 	mov	word [bp - 0x16], dx
 	db	0x0B, 0xD0			; or dx, ax
-	jne	short S1123
-	jmp	short S1196
+	jne	short .3
+	jmp	short .6
 	nop
-S1178:
+.5:
 	mov	es, word [bp - 0x16]
 	push	word es:[si + 2]
 	push	word es:[si]
@@ -1805,43 +1805,43 @@ S1178:
 	sbb	dx, word [bp - 2]
 	mov	word [bp - 8], ax
 	mov	word [bp - 6], dx
-S1196:
+.6:
 	mov	ax, word [bp - 6]
 	or	ax, word [bp - 8]
-	jne	short S11A1
-	jmp	near S1362
-S11A1:
+	jne	short .7
+	jmp	near .15
+.7:
 	mov	es, word [bp - 0x12]
 	cmp	word es:[di + 0x18], 0x10
-	jne	short S11C6
+	jne	short .8
 	push	word es:[di + 2]
 	push	word es:[di]
 	call	0x3A3:FarToLinear
 	add	sp, 4
 	cmp	dx, word [bp - 2]
-	jg	short S11DE
-	jl	short S11C6
+	jg	short .9
+	jl	short .8
 	cmp	ax, word [bp - 4]
-	jae	short S11DE
-S11C6:
+	jae	short .9
+.8:
 	mov	es, word [bp - 0x12]
 	mov	ax, word es:[di + 0x1c]
 	mov	dx, word es:[di + 0x1e]
 	db	0x8B, 0xF8			; mov di, ax
 	mov	word [bp - 0x12], dx
 	db	0x0B, 0xD0			; or dx, ax
-	jne	short S11A1
+	jne	short .7
 	pop	si
 	pop	di
 	leave
 	retf
-S11DE:
+.9:
 	mov	ax, word [bp - 0x16]
 	mov	cx, word [bp - 0x12]
 	db	0x3B, 0xF7			; cmp si, di
-	jne	short S1256
+	jne	short .11
 	db	0x3B, 0xC1			; cmp ax, cx
-	jne	short S1256
+	jne	short .11
 	mov	ax, word [bp - 4]
 	mov	dx, word [bp - 2]
 	call	0x3A3:LinearToFarRegs
@@ -1872,26 +1872,26 @@ S11DE:
 	les	bx, [bp - 0x28]
 	mov	word es:[bx], ax
 	mov	word es:[bx + 2], dx
-S1244:
+.10:
 	mov	ax, word es:[bx + 0x10]
 	mov	dx, word es:[bx + 0x12]
 	add	word [bp - 4], ax
 	adc	word [bp - 2], dx
-	jmp	near S111B
+	jmp	near .2
 	nop
-S1256:
+.11:
 	mov	ax, word [bp - 8]
 	mov	dx, word [bp - 6]
 	mov	es, cx
 	cmp	word es:[di + 0x12], dx
-	jle	short S1267
-	jmp	near S1342
-S1267:
-	jl	short S1272
+	jle	short .12
+	jmp	near .14
+.12:
+	jl	short .13
 	cmp	word es:[di + 0x10], ax
-	jbe	short S1272
-	jmp	near S1342
-S1272:
+	jbe	short .13
+	jmp	near .14
+.13:
 	mov	ax, word [bp - 4]
 	mov	dx, word [bp - 2]
 	call	0x3A3:LinearToFarRegs
@@ -1956,9 +1956,9 @@ S1272:
 	mov	word es:[si + 0x22], dx
 	mov	es, dx
 	db	0x8B, 0xD9			; mov bx, cx
-	jmp	near S1244
+	jmp	near .10
 	nop
-S1342:
+.14:
 	mov	es, word [bp - 0x16]
 	push	word es:[si + 2]
 	push	word es:[si]
@@ -1967,8 +1967,8 @@ S1342:
 	mov	es, word [bp - 0x16]
 	add	ax, word es:[si + 0x10]
 	adc	dx, word es:[si + 0x12]
-	jmp	near S1115
-S1362:
+	jmp	near .1
+.15:
 	pop	si
 	pop	di
 	leave
@@ -1982,16 +1982,16 @@ NoteLow:
 	mov	ax, word [ChainPtr]
 	mov	dx, word [ChainPtr+2]
 	cmp	word [bp - 2], dx
-	jg	short S1394
-	jl	short S1387
+	jg	short .2
+	jl	short .1
 	cmp	word [bp - 4], ax
-	jae	short S1394
-S1387:
+	jae	short .2
+.1:
 	mov	ax, word [bp - 4]
 	mov	dx, word [bp - 2]
 	mov	word [ChainPtr], ax
 	mov	word [ChainPtr+2], dx
-S1394:
+.2:
 	leave
 	ret
 LargestGap:
@@ -2010,7 +2010,7 @@ LargestGap:
 	db	0x2B, 0xC0			; sub ax, ax
 	mov	word [bp - 6], ax
 	mov	word [bp - 8], ax
-S13BE:
+.1:
 	push	word es:[di + 2]
 	push	word es:[di]
 	call	0x3A3:FarToLinear
@@ -2028,14 +2028,14 @@ S13BE:
 	sub	ax, word [bp - 0x14]
 	sbb	dx, word [bp - 0x12]
 	cmp	dx, word [bp - 6]
-	jl	short S1408
-	jg	short S1402
+	jl	short .3
+	jg	short .2
 	cmp	ax, word [bp - 8]
-	jbe	short S1408
-S1402:
+	jbe	short .3
+.2:
 	mov	word [bp - 8], ax
 	mov	word [bp - 6], dx
-S1408:
+.3:
 	mov	ax, word [bp - 0xe]
 	db	0x8B, 0xCE			; mov cx, si
 	db	0x8B, 0xF9			; mov di, cx
@@ -2047,7 +2047,7 @@ S1408:
 	db	0x8B, 0xF0			; mov si, ax
 	mov	word [bp - 0xe], dx
 	db	0x0B, 0xD0			; or dx, ax
-	jne	short S13BE
+	jne	short .1
 	mov	ax, word [bp - 8]
 	mov	dx, word [bp - 6]
 	pop	si
@@ -2076,20 +2076,20 @@ SumUsed:
 	les	bx, [ChainPtr+0xc]
 	mov	ax, es
 	db	0x0B, 0xC3			; or ax, bx
-	je	short S147D
-S145E:
+	je	short .3
+.1:
 	test	byte es:[bx + 0x18], 0x10
-	jne	short S1473
+	jne	short .2
 	mov	ax, word es:[bx + 0x10]
 	mov	dx, word es:[bx + 0x12]
 	add	word [bp - 4], ax
 	adc	word [bp - 2], dx
-S1473:
+.2:
 	les	bx, es:[bx + 0x1c]
 	mov	ax, es
 	db	0x0B, 0xC3			; or ax, bx
-	jne	short S145E
-S147D:
+	jne	short .1
+.3:
 	mov	ax, word [bp - 4]
 	mov	dx, word [bp - 2]
 	leave
@@ -2113,7 +2113,7 @@ AllocRec:
 	push	si
 	mov	ax, word [ChainPtr+0x12]
 	or	ax, word [ChainPtr+0x10]
-	je	short S14DE
+	je	short .1
 	mov	ax, word [ChainPtr+0x10]
 	mov	dx, word [ChainPtr+0x12]
 	db	0x8B, 0xD8			; mov bx, ax
@@ -2129,7 +2129,7 @@ AllocRec:
 	leave
 	retf
 	nop
-S14DE:
+.1:
 	push	0x3dd
 	call	0xF4A:0x3E4		; seg022
 	add	sp, 2
@@ -2156,7 +2156,7 @@ RecBase:
 	push	si
 	les	si, [bp + 6]
 	test	byte es:[si + 0x18], 0x80
-	je	short S1528
+	je	short .1
 	push	word es:[si + 2]
 	push	word es:[si]
 	call	0x3A3:EmsMapFrame
@@ -2164,7 +2164,7 @@ RecBase:
 	pop	si
 	leave
 	retf
-S1528:
+.1:
 	mov	ax, word es:[si]
 	mov	dx, word es:[si + 2]
 	pop	si

@@ -9,7 +9,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BR = re.compile(r'^(\s+)(j[a-z]+|loop[a-z]*|jcxz|call)(\s+)(short |near )?(0x[0-9A-Fa-f]+)\b(?!:)(.*)$')
 GLOBAL = re.compile(r'^([A-Za-z_]\w*):')
 LOCAL = re.compile(r'^(\.[A-Za-z0-9_]+):')
-LNAME = re.compile(r'^L[0-9A-F]{4}$')
+LNAME = re.compile(r'^(L|S|Rt)[0-9A-F]{4}$')
 
 
 BYTES = set()
@@ -58,6 +58,12 @@ def main(seg):
         scope_of[i] = scope
         if (i + 1) in BYTES:
             at.setdefault(off[i + 1], i)
+    nscope, ns = {}, None
+    for i, l in enumerate(lines):
+        m = GLOBAL.match(l)
+        if m:
+            ns = m.group(1)
+        nscope[i] = ns
     # wanted labels: L-label definitions and numeric targets
     want = {}      # line index -> new local name
     used = {}
@@ -92,6 +98,19 @@ def main(seg):
                 break
         counter[sc] = n
         want[i] = f'.{n}'
+    moved = {}     # (L-label, .X) -> new local in the enclosing scope
+    for i, l in enumerate(lines):
+        m = LOCAL.match(l)
+        if m and nscope[i] and LNAME.match(nscope[i]):
+            sc = scope_of[i]
+            n = counter.get(sc, 0)
+            while True:
+                n += 1
+                if f'.{n}' not in used.get(sc, set()):
+                    break
+            counter[sc] = n
+            moved[(nscope[i], m.group(1))] = f'.{n}'
+            want[i] = f'.{n}'
     # L-label definitions become the local; numeric targets get a local line inserted
     lname = {}
     for i in llines:
@@ -116,6 +135,9 @@ def main(seg):
             rest = l[len(GLOBAL.match(l).group(0)):]
             out.append(want[i] + ':' + rest)
             continue
+        mloc = LOCAL.match(l)
+        if mloc and (nscope[i], mloc.group(1)) in moved:
+            l = moved[(nscope[i], mloc.group(1))] + ':' + l[len(mloc.group(0)):]
         if i in targets:
             out.append(want[i] + ':')
         m = BR.match(l)
@@ -129,7 +151,14 @@ def main(seg):
         def sub(mm):
             return ref(lname[mm.group(0)], cur) if mm.group(0) in lname else mm.group(0)
         code, sep, com = l.partition(';')
-        code = re.sub(r'(?<![\w.])L[0-9A-F]{4}\b', sub, code)
+        if not mloc:
+            # .X inside an L-label scope, and Lxxxx.X from anywhere
+            code = re.sub(r'(?<![\w.])(\.[A-Za-z0-9_]+)\b',
+                          lambda mm: moved.get((nscope[i], mm.group(1)), mm.group(1)), code)
+        code = re.sub(r'(?<![\w.])((?:L|S|Rt)[0-9A-F]{4})(\.[A-Za-z0-9_]+)\b',
+                      lambda mm: ref((lname[mm.group(1)][0], moved[(mm.group(1), mm.group(2))]), cur)
+                      if (mm.group(1), mm.group(2)) in moved else mm.group(0), code)
+        code = re.sub(r'(?<![\w.])(?:L|S|Rt)[0-9A-F]{4}\b', sub, code)
         out.append(code + sep + com)
     open(path, 'w').write('\n'.join(out))
     print(f'{seg}: {len(llines)} L-labels and {len(targets - llines)} numeric targets made local')

@@ -1754,7 +1754,7 @@ _write:
 	mov	ax, 0x1c00
 	jmp	short .22
 
-Rt0C2C:
+.27:
 	push	bp
 	db	0x8B, 0xEC			; mov	bp, sp
 	db	0x8B, 0xD7			; mov	dx, di
@@ -1774,10 +1774,10 @@ Rt0C2C:
 	db	0x87, 0xFE			; xchg	si, di
 	mov	ax, word [bp+6]
 	test	si, 1
-	je	short .1
+	je	short .28
 	movsb
 	dec	cx
-.1:
+.28:
 	shr	cx, 1
 	rep movsw
 	db	0x13, 0xC9			; adc	cx, cx

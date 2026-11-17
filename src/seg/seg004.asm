@@ -22,7 +22,7 @@ NineCmp:
 	call	0:_fmemchr
 	add	sp, 0xa
 	db	0x0B, 0xC0			; or ax, ax
-	je	short S002A
+	je	short .1
 	db	0x8B, 0xC6			; mov ax, si
 	mov	dx, word [bp + 8]
 	pop	si
@@ -30,7 +30,7 @@ NineCmp:
 	leave
 	retf
 	nop
-S002A:
+.1:
 	mov	ax, word [bp + 8]
 	push	ax
 	push	si
@@ -55,8 +55,8 @@ ReadBe:
 	mov	word [bp - 4], ax
 	mov	si, word [bp + 6]
 	mov	di, word [bp + 0xa]
-	jmp	short S007D
-S0058:
+	jmp	short .2
+.1:
 	mov	ax, word [bp - 4]
 	mov	dx, word [bp - 2]
 	db	0x8A, 0xF2			; mov dh, dl
@@ -73,11 +73,11 @@ S0058:
 	db	0x13, 0xDA			; adc bx, dx
 	mov	word [bp - 4], cx
 	mov	word [bp - 2], bx
-S007D:
+.2:
 	db	0x8B, 0xC7			; mov ax, di
 	dec	di
 	db	0x0B, 0xC0			; or ax, ax
-	jne	short S0058
+	jne	short .1
 	mov	ax, word [bp - 4]
 	mov	dx, word [bp - 2]
 	pop	si
@@ -102,53 +102,53 @@ TypeId:
 	db	0x8B, 0xF3			; mov si, bx
 	mov	word [bp + 8], es
 	cmp	byte es:[bx + 1], 0xfb
-	je	short S00B5
-	jmp	near S023A
-S00B5:
+	je	short .1
+	jmp	near TypeTab.33
+.1:
 	mov	cl, byte es:[si]
 	and	cx, 0xfe
 	db	0x8B, 0xC1			; mov ax, cx
 	cmp	ax, strict word 0x42
-	jne	short S00C6
-	jmp	near S017A
-S00C6:
-	ja	short S00EA
+	jne	short .2
+	jmp	near TypeTab.16
+.2:
+	ja	short TypeTab.1
 	sub	ax, strict word 0x26
 	test	al, 1
-	jne	short S010E
+	jne	short TypeTab.4
 	cmp	ax, strict word 0xe
-	ja	short S010E
+	ja	short TypeTab.4
 	xchg	bx, ax
 	jmp	word [cs:bx+TypeTab]
 TypeTab:
-	dw	S0146
-	dw	S015A
-	dw	S0146
-	dw	S0150
-	dw	S015A
-	dw	S0164
-	dw	S016E
-	dw	S0174
-S00EA:
+	dw	.10
+	dw	.12
+	dw	.10
+	dw	.11
+	dw	.12
+	dw	.13
+	dw	.14
+	dw	.15
+.1:
 	cmp	ax, strict word 0x70
-	jne	short S00F2
-	jmp	near S0198
-S00F2:
-	ja	short S0118
+	jne	short .2
+	jmp	near .21
+.2:
+	ja	short .5
 	cmp	ax, strict word 0x6e
-	jne	short S00FC
-	jmp	near S0192
-S00FC:
-	ja	short S010E
+	jne	short .3
+	jmp	near .20
+.3:
+	ja	short .4
 	sub	al, 0x44
-	je	short S017A
+	je	short .16
 	sub	al, 2
-	je	short S0180
+	je	short .17
 	sub	al, 0x20
-	je	short S0186
+	je	short .18
 	sub	al, 4
-	je	short S018C
-S010E:
+	je	short .19
+.4:
 	mov	di, 0x10
 	db	0x8B, 0xC7			; mov ax, di
 	pop	si
@@ -156,34 +156,34 @@ S010E:
 	leave
 	retf
 	nop
-S0118:
+.5:
 	cmp	ax, strict word 0x76
-	jne	short S0120
-	jmp	near S01AA
-S0120:
-	ja	short S012E
+	jne	short .6
+	jmp	near .24
+.6:
+	ja	short .7
 	sub	ax, strict word 0x72
-	je	short S019E
+	je	short .22
 	dec	ax
 	dec	ax
-	je	short S01A4
-	jmp	short S010E
+	je	short .23
+	jmp	short .4
 	nop
-S012E:
+.7:
 	cmp	ax, 0xc0
-	je	short S018C
-	ja	short S010E
+	je	short .19
+	ja	short .4
 	sub	al, 0x78
-	jne	short S013C
-	jmp	near S01EE
-S013C:
+	jne	short .8
+	jmp	near .28
+.8:
 	sub	al, 2
-	jne	short S0143
-	jmp	near S01F4
-S0143:
-	jmp	short S010E
+	jne	short .9
+	jmp	near .29
+.9:
+	jmp	short .4
 	nop
-S0146:
+.10:
 	mov	di, 0x16
 	db	0x8B, 0xC7			; mov ax, di
 	pop	si
@@ -191,7 +191,7 @@ S0146:
 	leave
 	retf
 	nop
-S0150:
+.11:
 	mov	di, 0x17
 	db	0x8B, 0xC7			; mov ax, di
 	pop	si
@@ -199,7 +199,7 @@ S0150:
 	leave
 	retf
 	nop
-S015A:
+.12:
 	mov	di, 0x18
 	db	0x8B, 0xC7			; mov ax, di
 	pop	si
@@ -207,7 +207,7 @@ S015A:
 	leave
 	retf
 	nop
-S0164:
+.13:
 	mov	di, 7
 	db	0x8B, 0xC7			; mov ax, di
 	pop	si
@@ -215,96 +215,96 @@ S0164:
 	leave
 	retf
 	nop
-S016E:
+.14:
 	mov	di, 9
-	jmp	near S028C
-S0174:
+	jmp	near .35
+.15:
 	mov	di, 0xa
-	jmp	near S028C
-S017A:
+	jmp	near .35
+.16:
 	mov	di, 0x15
-	jmp	near S028C
-S0180:
+	jmp	near .35
+.17:
 	mov	di, 5
-	jmp	near S028C
-S0186:
+	jmp	near .35
+.18:
 	mov	di, 0x19
-	jmp	near S028C
-S018C:
+	jmp	near .35
+.19:
 	mov	di, 0x1d
-	jmp	near S028C
-S0192:
+	jmp	near .35
+.20:
 	mov	di, 1
-	jmp	near S028C
-S0198:
+	jmp	near .35
+.21:
 	mov	di, 0xe
-	jmp	near S028C
-S019E:
+	jmp	near .35
+.22:
 	mov	di, 0xb
-	jmp	near S028C
-S01A4:
+	jmp	near .35
+.23:
 	mov	di, 0xd
-	jmp	near S028C
-S01AA:
+	jmp	near .35
+.24:
 	mov	word [bp - 2], 0x12
 	mov	bx, 5
 	test	ch, 1
-	je	short S01BA
+	je	short .25
 	mov	bx, 8
-S01BA:
+.25:
 	db	0x8B, 0xFE			; mov di, si
 	cmp	byte es:[bx + di], 1
-	jne	short S01D0
+	jne	short .26
 	db	0x03, 0xFB			; add di, bx
 	cmp	byte es:[di + 1], 1
-	jne	short S01D0
+	jne	short .26
 	mov	word [bp - 2], 0x13
-S01D0:
+.26:
 	db	0x8B, 0xFE			; mov di, si
 	cmp	byte es:[bx + di], 2
-	jne	short S0234
+	jne	short .32
 	mov	di, word [bp - 2]
 	db	0x03, 0xF3			; add si, bx
 	cmp	byte es:[si + 1], 1
-	je	short S01E7
-	jmp	near S028C
-S01E7:
+	je	short .27
+	jmp	near .35
+.27:
 	mov	di, 0x14
-	jmp	near S028C
+	jmp	near .35
 	nop
-S01EE:
+.28:
 	mov	di, 0xf
-	jmp	near S028C
-S01F4:
+	jmp	near .35
+.29:
 	mov	word [bp - 2], 2
 	mov	bx, 5
 	test	ch, 1
-	je	short S0204
+	je	short .30
 	mov	bx, 8
-S0204:
+.30:
 	db	0x8B, 0xFE			; mov di, si
 	cmp	byte es:[bx + di], 1
-	jne	short S021A
+	jne	short .31
 	db	0x03, 0xFB			; add di, bx
 	cmp	byte es:[di + 1], 1
-	jne	short S021A
+	jne	short .31
 	mov	word [bp - 2], 3
-S021A:
+.31:
 	db	0x8B, 0xFE			; mov di, si
 	cmp	byte es:[bx + di], 2
-	jne	short S0234
+	jne	short .32
 	mov	di, word [bp - 2]
 	db	0x03, 0xF3			; add si, bx
 	cmp	byte es:[si + 1], 1
-	jne	short S028C
+	jne	short .35
 	mov	di, 4
-	jmp	short S028C
+	jmp	short .35
 	nop
-S0234:
+.32:
 	mov	di, word [bp - 2]
-	jmp	short S028C
+	jmp	short .35
 	nop
-S023A:
+.33:
 	mov	al, byte es:[si + 3]
 	db	0x2A, 0xE4			; sub ah, ah
 	mov	cl, byte es:[si + 2]
@@ -334,14 +334,14 @@ S023A:
 	db	0x03, 0xC3			; add ax, bx
 	adc	dx, 0
 	cmp	ax, 0x3f3
-	jne	short S028A
+	jne	short .34
 	db	0x0B, 0xD2			; or dx, dx
-	jne	short S028A
+	jne	short .34
 	mov	di, 0x1f
-	jmp	short S028C
-S028A:
+	jmp	short .35
+.34:
 	db	0x2B, 0xFF			; sub di, di
-S028C:
+.35:
 	db	0x8B, 0xC7			; mov ax, di
 	pop	si
 	pop	di
@@ -360,11 +360,11 @@ ReadHead:
 	push	di
 	push	si
 	cmp	word [bp + 0xc], 0
-	jl	short S02F0
-	jg	short S02A6
+	jl	short .2
+	jg	short .1
 	cmp	word [bp + 0xa], 2
-	jbe	short S02F0
-S02A6:
+	jbe	short .2
+.1:
 	push	word [bp + 8]
 	push	word [bp + 6]
 	push	cs
@@ -385,9 +385,9 @@ S02A6:
 	add	sp, 4
 	db	0x8B, 0xF8			; mov di, ax
 	db	0x0B, 0xFF			; or di, di
-	jle	short S02F0
+	jle	short .2
 	cmp	di, 0x1c
-	jg	short S02F0
+	jg	short .2
 	push	3
 	mov	cx, word [bp - 2]
 	inc	si
@@ -402,7 +402,7 @@ S02A6:
 	leave
 	retf
 	nop
-S02F0:
+.2:
 	mov	ax, word [bp + 0xa]
 	mov	dx, word [bp + 0xc]
 	pop	si
@@ -417,7 +417,7 @@ EmitByte:
 	mov	word [bp - 2], bx
 	mov	si, word [MapLo]
 	cmp	byte [bx + si], bh
-	je	short S032C
+	je	short .1
 	mov	si, word [MapHi]
 	mov	al, byte [bx + si]
 	push	ax
@@ -431,7 +431,7 @@ EmitByte:
 	leave
 	ret	2
 	nop
-S032C:
+.1:
 	mov	al, byte [bp + 4]
 	les	bx, [OutPtr]
 	mov	byte es:[bx], al
@@ -448,7 +448,7 @@ GetBits:
 	push	si
 	mov	si, word [bp + 6]
 	cmp	si, 0x10
-	jle	short S037C
+	jle	short .1
 	lea	ax, [si - 0x10]
 	push	ax
 	push	cs
@@ -465,19 +465,19 @@ GetBits:
 	pop	si
 	leave
 	retf
-S037C:
+.1:
 	mov	ax, word [BitBuf]
 	mov	dx, word [BitBuf+2]
 	mov	cl, 0x20
 	db	0x8B, 0xDE			; mov bx, si
 	db	0x2A, 0xCB			; sub cl, bl
-	je	short S0393
-S038B:
+	je	short .3
+.2:
 	shr	dx, 1
 	rcr	ax, 1
 	dec	cl
-	jne	short S038B
-S0393:
+	jne	short .2
+.3:
 	mov	word [bp - 4], ax
 	mov	word [bp - 2], dx
 	push	bx
@@ -485,31 +485,31 @@ S0393:
 	call	0:LongShlAt
 	sub	word [BitCount], si
 	cmp	word [BitCount], 0x10
-	jge	short S03E9
-S03AD:
+	jge	short .8
+.4:
 	les	bx, [InPtr]
 	add	word [InPtr], 1
-	jae	short S03BE
+	jae	short .5
 	add	word [InPtr+2], 0x1000
-S03BE:
+.5:
 	mov	al, byte es:[bx]
 	db	0x2A, 0xE4			; sub ah, ah
 	db	0x2B, 0xD2			; sub dx, dx
 	mov	cl, 0x18
 	sub	cl, byte [BitCount]
-	je	short S03D5
-S03CD:
+	je	short .7
+.6:
 	shl	ax, 1
 	rcl	dx, 1
 	dec	cl
-	jne	short S03CD
-S03D5:
+	jne	short .6
+.7:
 	or	word [BitBuf], ax
 	or	word [BitBuf+2], dx
 	add	word [BitCount], 8
 	cmp	word [BitCount], 0x10
-	jl	short S03AD
-S03E9:
+	jl	short .4
+.8:
 	mov	ax, word [bp - 4]
 	mov	dx, word [bp - 2]
 	pop	si
@@ -529,7 +529,7 @@ ReadVar:
 	mov	word [bp - 4], 2
 	mov	word [bp - 2], 0
 	mov	si, 1
-S0404:
+.1:
 	shl	word [bp - 4], 1
 	db	0xD1, 0x56, 0xFE			; rcl word [bp - 2]
 	inc	si
@@ -538,7 +538,7 @@ S0404:
 	call	GetBits
 	add	sp, 2
 	db	0x0B, 0xD0			; or dx, ax
-	je	short S0404
+	je	short .1
 	push	si
 	push	cs
 	call	GetBits
@@ -567,9 +567,9 @@ Unpack:
 	mov	word [InPtr], ax
 	mov	word [InPtr+2], dx
 	db	0x0B, 0xD0			; or dx, ax
-	jne	short S0461
-	jmp	near S0722
-S0461:
+	jne	short .1
+	jmp	near .21
+.1:
 	les	bx, [InPtr]
 	mov	al, byte es:[bx]
 	db	0x2A, 0xE4			; sub ah, ah
@@ -594,14 +594,14 @@ S0461:
 	mov	word [InPtr], ax
 	mov	word [InPtr+2], dx
 	cmp	word [bp - 0x148], 0x31fb
-	jne	short S04BF
+	jne	short .2
 	add	ax, strict word 3
 	db	0x1B, 0xC9			; sbb cx, cx
 	and	cx, 0x1000
 	db	0x03, 0xD1			; add dx, cx
 	mov	word [InPtr], ax
 	mov	word [InPtr+2], dx
-S04BF:
+.2:
 	db	0x2B, 0xC0			; sub ax, ax
 	mov	word [BitBuf+2], ax
 	mov	word [BitBuf], ax
@@ -617,9 +617,9 @@ S04BF:
 	mov	word [bp - 0x150], ax
 	mov	word [bp - 0x14e], dx
 	cmp	word [bp + 0xe], 0
-	jne	short S04EC
-	jmp	near S0722
-S04EC:
+	jne	short .3
+	jmp	near .21
+.3:
 	push	8
 	push	cs
 	call	GetBits
@@ -628,7 +628,7 @@ S04EC:
 	mov	word [bp - 0x24], 0
 	mov	word [bp - 0x146], 1
 	mov	word [bp - 0x158], 0
-S050A:
+.4:
 	shl	word [bp - 0x158], 1
 	mov	ax, word [bp - 0x158]
 	sub	ax, word [bp - 0x24]
@@ -645,73 +645,73 @@ S050A:
 	mov	word [bp - 0x158], ax
 	mov	word [bp - 2], 0
 	db	0x0B, 0xC9			; or cx, cx
-	je	short S054B
+	je	short .5
 	mov	cl, 0x10
 	sub	cl, byte [bp - 0x146]
 	shl	ax, cl
 	mov	word [bp - 2], ax
-S054B:
+.5:
 	mov	ax, word [bp - 2]
 	mov	si, word [bp - 0x146]
 	shl	si, 1
 	mov	word [bp + si - 0x144], ax
 	inc	word [bp - 0x146]
 	cmp	word [bp - 0x280], 0
-	je	short S050A
+	je	short .4
 	cmp	word [bp - 2], 0
-	jne	short S050A
+	jne	short .4
 	mov	ax, word [bp - 0x146]
 	dec	ax
 	mov	word [bp - 0x152], ax
 	mov	word [bp - 0x156], 0
-S0578:
+.6:
 	mov	si, word [bp - 0x156]
 	mov	byte [bp + si - 0x124], 0
 	inc	word [bp - 0x156]
 	cmp	word [bp - 0x156], 0x100
-	jl	short S0578
+	jl	short .6
 	mov	word [bp - 0x27e], 0xffff
 	mov	word [bp - 0x156], 0
-	jmp	short S05D2
+	jmp	short .9
 	nop
-S059C:
+.7:
 	mov	si, word [bp - 0x27e]
 	inc	si
 	and	si, 0xff
 	mov	word [bp - 0x27e], si
 	cmp	byte [bp + si - 0x124], 0
-	jne	short S05B4
+	jne	short .8
 	dec	word [bp - 0x17c]
-S05B4:
+.8:
 	cmp	word [bp - 0x17c], 0
-	jne	short S059C
+	jne	short .7
 	mov	si, word [bp - 0x27e]
 	mov	byte [bp + si - 0x124], 1
 	db	0x8B, 0xC6			; mov ax, si
 	mov	si, word [bp - 0x156]
 	mov	byte [bp + si - 0x27c], al
 	inc	word [bp - 0x156]
-S05D2:
+.9:
 	mov	ax, word [bp - 0x156]
 	cmp	word [bp - 0x24], ax
-	jle	short S0640
+	jle	short .14
 	push	cs
 	call	ReadVar
 	inc	ax
 	mov	word [bp - 0x17c], ax
-	jmp	short S05B4
-S05E6:
+	jmp	short .8
+.10:
 	mov	ax, word [bp - 0x146]
 	cmp	word [bp - 0x152], ax
-	jle	short S0603
+	jle	short .12
 	inc	word [bp - 0x146]
-S05F4:
+.11:
 	mov	ax, word [bp - 2]
 	mov	si, word [bp - 0x146]
 	shl	si, 1
 	cmp	word [bp + si - 0x144], ax
-	jbe	short S05E6
-S0603:
+	jbe	short .10
+.12:
 	push	word [bp - 0x146]
 	push	cs
 	call	GetBits
@@ -724,26 +724,26 @@ S0603:
 	mov	al, byte [bp + si - 0x27c]
 	mov	byte [bp - 0x15a], al
 	cmp	al, byte [bp - 0x154]
-	je	short S064E
-S062B:
+	je	short .15
+.13:
 	les	bx, [OutPtr]
 	mov	byte es:[bx], al
 	add	word [OutPtr], 1
 	db	0x1B, 0xC0			; sbb ax, ax
 	and	ax, 0x1000
 	add	word [OutPtr+2], ax
-S0640:
+.14:
 	mov	ax, word [BitBuf+2]
 	mov	word [bp - 2], ax
 	mov	word [bp - 0x146], 1
-	jmp	short S05F4
-S064E:
+	jmp	short .11
+.15:
 	push	cs
 	call	ReadVar
 	mov	word [bp - 0x14c], ax
 	mov	word [bp - 0x14a], dx
 	db	0x0B, 0xD0			; or dx, ax
-	je	short S06AE
+	je	short .17
 	mov	ax, word [OutPtr]
 	mov	dx, word [OutPtr+2]
 	add	ax, strict word 0xffff
@@ -755,13 +755,13 @@ S064E:
 	db	0x8B, 0xD8			; mov bx, ax
 	mov	al, byte es:[bx]
 	mov	byte [bp - 0x15a], al
-S067D:
+.16:
 	mov	ax, word [bp - 0x14c]
 	mov	dx, word [bp - 0x14a]
 	sub	word [bp - 0x14c], 1
 	sbb	word [bp - 0x14a], 0
 	db	0x0B, 0xD0			; or dx, ax
-	je	short S0640
+	je	short .14
 	mov	al, byte [bp - 0x15a]
 	les	bx, [OutPtr]
 	mov	byte es:[bx], al
@@ -769,31 +769,31 @@ S067D:
 	db	0x1B, 0xC0			; sbb ax, ax
 	and	ax, 0x1000
 	add	word [OutPtr+2], ax
-	jmp	short S067D
-S06AE:
+	jmp	short .16
+.17:
 	push	1
 	push	cs
 	call	GetBits
 	add	sp, 2
 	db	0x0B, 0xD0			; or dx, ax
-	je	short S0712
+	je	short .20
 	cmp	word [bp - 0x148], 0x32fb
-	jne	short S0722
+	jne	short .21
 	mov	word [bp - 0x156], 0
 	mov	ax, word [bp + 0xa]
 	mov	dx, word [bp + 0xc]
 	mov	word [OutPtr], ax
 	mov	word [OutPtr+2], dx
-S06D6:
+.18:
 	mov	ax, word [bp - 0x150]
 	add	ax, word [bp + 0xa]
 	mov	dx, word [bp + 0xc]
 	cmp	dx, word [OutPtr+2]
-	jb	short S0722
-	ja	short S06EE
+	jb	short .21
+	ja	short .19
 	cmp	ax, word [OutPtr]
-	jbe	short S0722
-S06EE:
+	jbe	short .21
+.19:
 	les	bx, [OutPtr]
 	mov	al, byte es:[bx]
 	db	0x2A, 0xE4			; sub ah, ah
@@ -804,15 +804,15 @@ S06EE:
 	db	0x1B, 0xC0			; sbb ax, ax
 	and	ax, 0x1000
 	add	word [OutPtr+2], ax
-	jmp	short S06D6
-S0712:
+	jmp	short .18
+.20:
 	push	8
 	push	cs
 	call	GetBits
 	add	sp, 2
 	mov	byte [bp - 0x15a], al
-	jmp	near S062B
-S0722:
+	jmp	near .13
+.21:
 	mov	ax, word [bp - 0x150]
 	mov	dx, word [bp - 0x14e]
 	pop	si
@@ -841,37 +841,37 @@ Expand:
 	mov	word [InPtr], ax
 	mov	word [InPtr+2], dx
 	db	0x0B, 0xD0			; or dx, ax
-	jne	short S0772
-	jmp	near S0950
-S0772:
+	jne	short .1
+	jmp	near .19
+.1:
 	les	bx, [InPtr]
 	add	word [InPtr], 1
-	jae	short S0783
+	jae	short .2
 	add	word [InPtr+2], 0x1000
-S0783:
+.2:
 	mov	al, byte es:[bx]
 	db	0x2A, 0xE4			; sub ah, ah
 	db	0x8B, 0xF0			; mov si, ax
 	les	bx, [InPtr]
 	add	word [InPtr], 1
-	jae	short S079B
+	jae	short .3
 	add	word [InPtr+2], 0x1000
-S079B:
+.3:
 	mov	cl, byte es:[bx]
 	db	0x8A, 0xE8			; mov ch, al
 	db	0x8B, 0xF1			; mov si, cx
 	cmp	si, 0x47fb
-	jne	short S07B6
+	jne	short .4
 	add	word [InPtr], 3
 	db	0x1B, 0xC0			; sbb ax, ax
 	and	ax, 0x1000
 	add	word [InPtr+2], ax
-S07B6:
+.4:
 	les	bx, [InPtr]
 	add	word [InPtr], 1
-	jae	short S07C7
+	jae	short .5
 	add	word [InPtr+2], 0x1000
-S07C7:
+.5:
 	mov	al, byte es:[bx]
 	db	0x2A, 0xE4			; sub ah, ah
 	mov	word [bp - 6], ax
@@ -883,9 +883,9 @@ S07C7:
 	db	0x2A, 0xC0			; sub al, al
 	les	bx, [InPtr]
 	add	word [InPtr], 1
-	jae	short S07F0
+	jae	short .6
 	add	word [InPtr+2], 0x1000
-S07F0:
+.6:
 	mov	cl, byte es:[bx]
 	db	0x2A, 0xED			; sub ch, ch
 	db	0x2B, 0xDB			; sub bx, bx
@@ -901,9 +901,9 @@ S07F0:
 	db	0x2A, 0xC0			; sub al, al
 	les	bx, [InPtr]
 	add	word [InPtr], 1
-	jae	short S081E
+	jae	short .7
 	add	word [InPtr+2], 0x1000
-S081E:
+.7:
 	mov	cl, byte es:[bx]
 	db	0x2A, 0xED			; sub ch, ch
 	db	0x2B, 0xDB			; sub bx, bx
@@ -912,17 +912,17 @@ S081E:
 	mov	word [bp - 6], cx
 	mov	word [bp - 4], bx
 	db	0x2B, 0xF6			; sub si, si
-S0831:
+.8:
 	mov	bx, word [MapLo]
 	mov	byte [bx + si], 0
 	inc	si
 	cmp	si, 0x100
-	jl	short S0831
+	jl	short .8
 	les	bx, [InPtr]
 	add	word [InPtr], 1
-	jae	short S0850
+	jae	short .9
 	add	word [InPtr+2], 0x1000
-S0850:
+.9:
 	mov	al, byte es:[bx]
 	db	0x2A, 0xE4			; sub ah, ah
 	db	0x8B, 0xF0			; mov si, ax
@@ -931,21 +931,21 @@ S0850:
 	mov	word [bp - 8], 0
 	les	bx, [InPtr]
 	add	word [InPtr], 1
-	jae	short S0874
+	jae	short .10
 	add	word [InPtr+2], 0x1000
-S0874:
+.10:
 	mov	cl, byte es:[bx]
 	db	0x2A, 0xED			; sub ch, ch
 	db	0x0B, 0xC9			; or cx, cx
-	jle	short S08DA
+	jle	short .13
 	db	0x8B, 0xF9			; mov di, cx
 	mov	word [bp - 0xa], cx
-S0882:
+.11:
 	les	bx, [InPtr]
 	add	word [InPtr], 1
-	jae	short S0893
+	jae	short .12
 	add	word [InPtr+2], 0x1000
-S0893:
+.12:
 	mov	al, byte es:[bx]
 	db	0x2A, 0xE4			; sub ah, ah
 	db	0x8B, 0xF0			; mov si, ax
@@ -968,13 +968,13 @@ S0893:
 	mov	bx, word [MapLo]
 	mov	byte [bx + si], 0xff
 	dec	di
-	jne	short S0882
-S08DA:
+	jne	short .11
+.13:
 	les	bx, [InPtr]
 	add	word [InPtr], 1
-	jae	short S08EB
+	jae	short .14
 	add	word [InPtr+2], 0x1000
-S08EB:
+.14:
 	mov	al, byte es:[bx]
 	db	0x2A, 0xE4			; sub ah, ah
 	db	0x8B, 0xF0			; mov si, ax
@@ -982,8 +982,8 @@ S08EB:
 	mov	al, byte [bx + si]
 	mov	byte [bp - 1], al
 	db	0x0A, 0xC0			; or al, al
-	jne	short S0918
-S08FF:
+	jne	short .16
+.15:
 	db	0x8B, 0xC6			; mov ax, si
 	les	bx, [OutPtr]
 	mov	byte es:[bx], al
@@ -991,10 +991,10 @@ S08FF:
 	db	0x1B, 0xC0			; sbb ax, ax
 	and	ax, 0x1000
 	add	word [OutPtr+2], ax
-	jmp	short S08DA
-S0918:
+	jmp	short .13
+.16:
 	cmp	byte [bp - 1], 0
-	jge	short S0934
+	jge	short .17
 	mov	bx, word [MapHi]
 	mov	al, byte [bx + si]
 	push	ax
@@ -1003,19 +1003,19 @@ S0918:
 	mov	al, byte [bx + si]
 	push	ax
 	call	EmitByte
-	jmp	short S08DA
-S0934:
+	jmp	short .13
+.17:
 	les	bx, [InPtr]
 	add	word [InPtr], 1
-	jae	short S0945
+	jae	short .18
 	add	word [InPtr+2], 0x1000
-S0945:
+.18:
 	mov	al, byte es:[bx]
 	db	0x2A, 0xE4			; sub ah, ah
 	db	0x8B, 0xF0			; mov si, ax
 	db	0x0B, 0xF6			; or si, si
-	jne	short S08FF
-S0950:
+	jne	short .15
+.19:
 	mov	ax, word [bp - 6]
 	mov	dx, word [bp - 4]
 	pop	si
@@ -1046,43 +1046,43 @@ AddCopy:
 	mov	word [bp - 4], ax
 	mov	word [bp - 2], dx
 	db	0x0B, 0xD0			; or dx, ax
-	jne	short S0988
-	jmp	near S0A9E
-S0988:
+	jne	short .1
+	jmp	near .12
+.1:
 	db	0xC4, 0x5E, 0xFC			; les bx, ptr [bp - 4]
 	add	word [bp - 4], 1
-	jae	short S0996
+	jae	short .2
 	add	word [bp - 2], 0x1000
-S0996:
+.2:
 	mov	al, byte es:[bx]
 	db	0x2A, 0xE4			; sub ah, ah
 	db	0x8B, 0xF0			; mov si, ax
 	db	0xC4, 0x5E, 0xFC			; les bx, ptr [bp - 4]
 	add	word [bp - 4], 1
-	jae	short S09AB
+	jae	short .3
 	add	word [bp - 2], 0x1000
-S09AB:
+.3:
 	mov	cl, byte es:[bx]
 	db	0x8A, 0xE8			; mov ch, al
 	db	0x8B, 0xF1			; mov si, cx
 	cmp	si, 0x62fb
-	jne	short S09BE
+	jne	short .4
 	add	word [bp - 4], 3
-	jmp	short S09C8
-S09BE:
+	jmp	short .5
+.4:
 	cmp	si, 0x66fb
-	jne	short S09D0
+	jne	short .6
 	add	word [bp - 4], 4
-S09C8:
+.5:
 	db	0x1B, 0xC0			; sbb ax, ax
 	and	ax, 0x1000
 	add	word [bp - 2], ax
-S09D0:
+.6:
 	db	0xC4, 0x5E, 0xFC			; les bx, ptr [bp - 4]
 	add	word [bp - 4], 1
-	jae	short S09DE
+	jae	short .7
 	add	word [bp - 2], 0x1000
-S09DE:
+.7:
 	mov	al, byte es:[bx]
 	db	0x2A, 0xE4			; sub ah, ah
 	mov	word [bp - 0x10], ax
@@ -1094,9 +1094,9 @@ S09DE:
 	db	0x2A, 0xC0			; sub al, al
 	db	0xC4, 0x5E, 0xFC			; les bx, ptr [bp - 4]
 	add	word [bp - 4], 1
-	jae	short S0A04
+	jae	short .8
 	add	word [bp - 2], 0x1000
-S0A04:
+.8:
 	mov	cl, byte es:[bx]
 	db	0x2A, 0xED			; sub ch, ch
 	db	0x2B, 0xDB			; sub bx, bx
@@ -1112,9 +1112,9 @@ S0A04:
 	db	0x2A, 0xC0			; sub al, al
 	db	0xC4, 0x5E, 0xFC			; les bx, ptr [bp - 4]
 	add	word [bp - 4], 1
-	jae	short S0A2F
+	jae	short .9
 	add	word [bp - 2], 0x1000
-S0A2F:
+.9:
 	mov	cl, byte es:[bx]
 	db	0x2A, 0xED			; sub ch, ch
 	db	0x2B, 0xDB			; sub bx, bx
@@ -1131,16 +1131,16 @@ S0A2F:
 	mov	word [bp - 0xa], dx
 	db	0x2B, 0xF6			; sub si, si
 	cmp	dx, word [bp - 6]
-	jb	short S0A9E
-	ja	short S0A61
+	jb	short .12
+	ja	short .10
 	cmp	ax, word [bp - 8]
-	jbe	short S0A9E
-S0A61:
+	jbe	short .12
+.10:
 	db	0xC4, 0x5E, 0xFC			; les bx, ptr [bp - 4]
 	add	word [bp - 4], 1
-	jae	short S0A6F
+	jae	short .11
 	add	word [bp - 2], 0x1000
-S0A6F:
+.11:
 	mov	al, byte es:[bx]
 	db	0x8B, 0xCE			; mov cx, si
 	db	0x02, 0xC1			; add al, cl
@@ -1155,11 +1155,11 @@ S0A6F:
 	mov	ax, word [bp - 8]
 	mov	dx, word [bp - 6]
 	cmp	dx, word [bp - 0xa]
-	jb	short S0A61
-	ja	short S0A9E
+	jb	short .10
+	ja	short .12
 	cmp	ax, word [bp - 0xc]
-	jb	short S0A61
-S0A9E:
+	jb	short .10
+.12:
 	mov	ax, word [bp - 0x10]
 	mov	dx, word [bp - 0xe]
 	pop	si
@@ -1197,28 +1197,28 @@ LoadBlock:
 	db	0x8B, 0xF3			; mov si, bx
 	mov	word [bp - 0xa], es
 	cmp	byte es:[bx + 1], 0xfb
-	je	short S0AF5
-	jmp	near S0BA0
-S0AF5:
+	je	short .1
+	jmp	near .10
+.1:
 	mov	al, byte es:[si]
 	and	ax, 0xfe
 	cmp	ax, strict word 0x6e
-	je	short S0B76
-	ja	short S0B14
+	je	short .8
+	ja	short .2
 	cmp	al, 0x60
-	je	short S0B66
-	jg	short S0B36
+	je	short .7
+	jg	short .4
 	sub	al, 0x30
-	je	short S0B44
+	je	short .5
 	sub	al, 2
-	je	short S0B44
+	je	short .5
 	sub	al, 0x14
-	je	short S0B58
-S0B14:
+	je	short .6
+.2:
 	cmp	word [bp + 0x12], 0
-	jne	short S0B1D
-	jmp	near S0BA0
-S0B1D:
+	jne	short .3
+	jmp	near .10
+.3:
 	mov	es, word [bp - 0xa]
 	mov	al, byte es:[si + 1]
 	db	0x2A, 0xE4			; sub ah, ah
@@ -1226,18 +1226,18 @@ S0B1D:
 	push	0x40c
 	call	0xF4A:0x3E4		; seg022
 	add	sp, 4
-	jmp	short S0BA0
+	jmp	short .10
 	nop
 	nop
-S0B36:
+.4:
 	sub	al, 0x62
-	je	short S0B66
+	je	short .7
 	sub	al, 4
-	je	short S0B66
+	je	short .7
 	sub	al, 4
-	je	short S0B76
-	jmp	short S0B14
-S0B44:
+	je	short .8
+	jmp	short .2
+.5:
 	push	1
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
@@ -1246,25 +1246,25 @@ S0B44:
 	push	cs
 	call	Unpack
 	add	sp, 0xa
-	jmp	short S0B9A
+	jmp	short .9
 	nop
-S0B58:
+.6:
 	push	es
 	push	si
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
 	call	Expand
-	jmp	short S0B9A
+	jmp	short .9
 	nop
-S0B66:
+.7:
 	push	word [bp - 0xa]
 	push	si
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
 	call	AddCopy
-	jmp	short S0B9A
+	jmp	short .9
 	nop
-S0B76:
+.8:
 	push	word [bp - 6]
 	push	word [bp - 8]
 	push	word [bp + 0xc]
@@ -1278,13 +1278,13 @@ S0B76:
 	add	sp, 0xc
 	mov	ax, word [bp - 8]
 	mov	dx, word [bp - 6]
-S0B9A:
+.9:
 	mov	word [bp - 4], ax
 	mov	word [bp - 2], dx
-S0BA0:
+.10:
 	mov	ax, word [bp - 2]
 	or	ax, word [bp - 4]
-	jne	short S0BCD
+	jne	short .11
 	push	word [bp - 6]
 	push	word [bp - 8]
 	push	word [bp + 0xc]
@@ -1298,7 +1298,7 @@ S0BA0:
 	mov	dx, word [bp - 6]
 	mov	word [bp - 4], ax
 	mov	word [bp - 2], dx
-S0BCD:
+.11:
 	mov	ax, word [bp - 4]
 	mov	dx, word [bp - 2]
 	pop	si
