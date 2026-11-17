@@ -1275,7 +1275,7 @@ Lp_2E46_06B4:
 	push	ax
 	call	0x0FEF:DrawRleTrans
 	add	sp, 0x8
-	call	0x0FEF:0x342F
+	call	0x0FEF:WaitTimerRetrace.calibrated
 	call	0x0FEF:CopyPlane
 	call	0x0FEF:WaitRetrace
 	call	0x03A3:ReadCallCount
@@ -1324,7 +1324,7 @@ Lp_2E46_06B4:
 	push	word [bp - 0x24]
 	call	0x0FEF:PutBlock
 	add	sp, 0x8
-	call	0x0FEF:0x342F
+	call	0x0FEF:WaitTimerRetrace.calibrated
 	call	0x0FEF:CopyPlane
 	call	0x0FEF:WaitRetrace
 .16:

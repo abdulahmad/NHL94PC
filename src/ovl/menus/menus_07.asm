@@ -816,7 +816,7 @@ Menus_23A3_0766:
 	or	word [0xc1ee], 0x20c
 	mov	ax, 0x11
 	mov	dx, 0xff
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	mov	es, [0x8b3e]
 	mov	ax, [es:0x4a]
 	add	ax, strict word 0xa
@@ -1028,7 +1028,7 @@ Menus_23A3_09E4:
 	call	0x0FEF:UseOtherPage
 	mov	ax, 0x11
 	mov	dx, 0xff
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	mov	word [bp - 0x4], 0x0
 .1:
 	mov	ax, [bp - 0x4]

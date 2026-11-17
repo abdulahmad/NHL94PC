@@ -976,7 +976,7 @@ Menus_1E45_07E2:
 	and	al, 0x94
 	add	ax, strict word 0x7d
 	mov	dx, 0xff
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	mov	es, [0x8b22]
 	mov	ax, [es:0x2]
 	add	ax, strict word 0xb

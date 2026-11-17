@@ -103,7 +103,7 @@ Fades10_3358_0070:
 .1:
 	mov	ax, 0xa
 	cwd
-	call	0x03A3:0x1A6E
+	call	0x03A3:SetDeadline.regs
 	mov	ax, [bp - 0xe]
 	db	0x8B, 0xC8		; mov cx, ax
 	add	ax, [bp - 0x1c]

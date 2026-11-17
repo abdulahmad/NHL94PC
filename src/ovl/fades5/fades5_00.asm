@@ -51,7 +51,7 @@ Fades5_3358_0000:
 .4:
 	mov	ax, 0x5
 	cwd
-	call	0x03A3:0x1A6E
+	call	0x03A3:SetDeadline.regs
 	mov	word [bp - 0xc], 0x0
 	cmp	word [bp - 0x12], 0x0
 	jg	short .5
@@ -116,7 +116,7 @@ Fades5_3358_0000:
 	push	word [bp - 0x2]
 	push	di
 	mov	[bp - 0x14], ax
-	call	0x3349:0x5E
+	call	0x3349:Fades_3349_005E
 	add	sp, 0x8
 	db	0x8B, 0xC6		; mov ax, si
 	shl	ax, 1
@@ -132,7 +132,7 @@ Fades5_3358_0000:
 	push	di
 	db	0x8B, 0xF8		; mov di, ax
 	mov	[bp - 0x16], cx
-	call	0x3349:0x5E
+	call	0x3349:Fades_3349_005E
 	add	sp, 0x8
 	push	0x7
 	push	word [bp - 0x14]
@@ -143,7 +143,7 @@ Fades5_3358_0000:
 	add	cx, 0x8
 	push	cx
 	db	0x8B, 0xF8		; mov di, ax
-	call	0x3349:0x5E
+	call	0x3349:Fades_3349_005E
 	add	sp, 0x8
 	push	di
 	push	0x8
@@ -152,7 +152,7 @@ Fades5_3358_0000:
 	push	ax
 	push	word [bp - 0x16]
 .13:
-	call	0x3349:0x5E
+	call	0x3349:Fades_3349_005E
 	add	sp, 0x8
 .14:
 	add	word [bp - 0x6], 0x28

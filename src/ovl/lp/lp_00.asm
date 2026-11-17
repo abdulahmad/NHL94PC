@@ -289,7 +289,7 @@ Lp_1E45_025C:
 	add	sp, 0x2
 	mov	ax, [bp + 0x14]
 	mov	dx, [bp + 0x16]
-	call	0x03A3:0x1A6E
+	call	0x03A3:SetDeadline.regs
 	push	0x0
 	push	0x4
 	call	0x03A3:SetEndMark
@@ -342,7 +342,7 @@ Lp_1E45_025C:
 .6:
 	mov	ax, [bp + 0x14]
 	mov	dx, [bp + 0x16]
-	call	0x03A3:0x1A6E
+	call	0x03A3:SetDeadline.regs
 	cmp	di, 0xd
 	jnz	short .7
 	jmp	near .41

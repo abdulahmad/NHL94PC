@@ -6914,6 +6914,7 @@ WaitTimerRetrace:
         cmp word [MouseActive], 0x0
         jnz short WaitRetraceFar
         call 0x156A:CalibrateRetrace
+.calibrated:                                    ; entry after the mouse test and calibration
         mov bx, [RetraceWait]
         db 0x0B, 0xDB                           ; insn: or bx, bx
         jz short WaitTimerRetrace

@@ -1459,7 +1459,7 @@ Lp_2A57_0C32:
 	db	0x2B, 0xC0		; sub ax, ax
 .10:
 	mov	dx, 0x7c
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	lea	ax, [si + 0x3]
 	push	ax
 	mov	al, [si + 0x1]
@@ -2540,7 +2540,7 @@ Lp_2A57_10C0:
 	jz	short .66
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	dx, 0x7c
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	push	word [0xc79a]
 	push	cs
 	call	Lp_2A57_0BE2
@@ -2559,7 +2559,7 @@ Lp_2A57_10C0:
 	mov	[bx - 0x386e], ax
 	mov	ax, 0x7d
 	mov	dx, 0x7c
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	push	word [0xc79a]
 	push	cs
 	call	Lp_2A57_0BE2
@@ -2701,7 +2701,7 @@ Lp_2A57_10C0:
 .83:
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	dx, 0x7c
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	push	word [0xc79a]
 	push	cs
 	call	Lp_2A57_0BE2
@@ -2812,7 +2812,7 @@ Lp_2A57_10C0:
 	jnz	short .95
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	dx, 0x7c
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	push	word [0xc79a]
 	push	cs
 	call	Lp_2A57_0BE2
@@ -2835,7 +2835,7 @@ Lp_2A57_10C0:
 	jz	short .96
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	dx, 0x7c
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	push	word [0xc79a]
 	push	cs
 	call	Lp_2A57_0BE2
@@ -2847,7 +2847,7 @@ Lp_2A57_10C0:
 	mov	[bx - 0x386e], ax
 	mov	ax, 0x7d
 	mov	dx, 0x7c
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	push	word [0xc79a]
 	push	cs
 	call	Lp_2A57_0BE2

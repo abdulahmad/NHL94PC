@@ -89,6 +89,7 @@ MouseRead		equ	0x1B34
 MusicOff		equ	0x13FC
 MusicOn		equ	0x13EE
 NullFar		equ	0xC
+NullFar11		equ	0x0
 NumberEntryDialog		equ	0xE6
 OpenReadShared		equ	0x3D6
 OpenReadWriteShared		equ	0x3FA
@@ -149,7 +150,9 @@ RestoreVgaPlanes		equ	0x224
 SaveCharTab		equ	0xC7A
 SaveVgaPlanes		equ	0x4
 SendPatches		equ	0x3E4
+SetCharPtr.regs		equ	0xC56
 SetClipRectRegs		equ	0x8F
+SetDeadline.regs		equ	0x1A6E
 SetDialogColors		equ	0xA3C
 SetPaletteFar		equ	0x344C
 SetRemapTable		equ	0x442
@@ -188,6 +191,7 @@ WaitDeadlineNoEoi		equ	0x1A84
 WaitJingle		equ	0x640
 WaitKey		equ	0x171A
 WaitRetraceEnd		equ	0x3482
+WaitTimerRetrace.calibrated		equ	0x342F
 WriteAtOffset		equ	0x496
 WriteFile		equ	0xA28
 WriteFileCode		equ	0xA38

@@ -1928,3 +1928,5 @@ RetOnly,_fstrlen,RetOnly,MSC,high,"repne scasb over a far string, returns the co
 RetOnly2,_fstrcmp,RetOnly2,MSC,high,"scans the second far string for its length, then repe cmpsb; returns -1, 0 or 1",src/lib/msc_runtime.asm
 seg000:1D8E,_stackavail,,MSC,high,"SP minus StackLimit, 0 when below it; was kept as bytes",src/lib/msc_runtime.asm
 g_6485,str_Locatesound44sSoundNot,,new,high,"label added: FindFarAlt's message, second string after str_Locateshape44sShapeNot",src/data/dgroup.asm
+seg000:0C2C,_strcat,,MSC,high,"repne scasb to the end of the destination then rep movsw the source; called by the overlays",src/lib/msc_runtime.asm
+seg004:0000,NullFar11,,new,high,"retf; called by the menus overlay beside NullFar",src/pc/type_id.asm

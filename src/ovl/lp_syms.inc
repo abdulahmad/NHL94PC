@@ -116,7 +116,9 @@ RestoreUnderBox		equ	0xF22
 SaveCharTab		equ	0xC7A
 SaveUnderOff		equ	0x9FA
 SaveUnderSeg		equ	0x9FC
+SetCharPtr.regs		equ	0xC56
 SetClipRectRegs		equ	0x8F
+SetDeadline.regs		equ	0x1A6E
 SetDialogColors		equ	0xA3C
 SetEndMark		equ	0x20F
 SetPaletteFar		equ	0x344C
@@ -137,6 +139,7 @@ UseOtherPage		equ	0x118C
 WaitButtonTimed		equ	0x0
 WaitJingle		equ	0x640
 WaitRetrace		equ	0x34A7
+WaitTimerRetrace.calibrated		equ	0x342F
 WriteAtOffset		equ	0x496
 WriteRecord52		equ	0x504
 XorFrame		equ	0xE

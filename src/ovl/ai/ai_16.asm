@@ -177,7 +177,7 @@ Ai_327B_0158:
 .2:
 	push	ax
 	push	word 0xbd0e
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 .3:
 	leave
 	retf
@@ -278,7 +278,7 @@ Ai_327B_018A:
 	jng	short .11
 	push	0x1d
 	push	si
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 .11:
 	mov	al, [si + 0x47]
@@ -396,7 +396,7 @@ Ai_327B_018A:
 .20:
 	push	0x1b
 	push	word 0xbc0e
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 	pop	si
 	pop	di
@@ -575,7 +575,7 @@ Ai_327B_018A:
 	mov	byte [di + 0x9d], 0xff
 	push	0xc
 	push	word [bp - 0x6]
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 	mov	bx, [bp - 0x6]
 	mov	ax, [bx + 0x5e]
@@ -649,7 +649,7 @@ Ai_327B_0550:
 	mov	byte [bx], 0xff
 	push	0x1a
 	push	word 0xbc0e
-	call	0x1E7E:0xA74
+	call	0x1E7E:Game_1E7E_0A74
 	add	sp, 0x4
 	mov	word [0xbc34], 0x1c20
 	mov	byte [0x29d5], 0xff

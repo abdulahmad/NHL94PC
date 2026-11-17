@@ -21,7 +21,7 @@ Menus_2B11_000C:
 	add	sp, 0x4
 	mov	ax, [bp + 0xe]
 	mov	dx, 0xff
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	add	di, 0xa
 	mov	ax, [bp + 0xa]
 	sub	ax, strict word 0x3

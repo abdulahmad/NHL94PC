@@ -40,12 +40,12 @@ Init_23CB_0004:
 .3:
 	lea	ax, [bp - 0x20]
 	push	ax
-	call	0x0000:0xC2C
+	call	0x0000:_strcat
 	add	sp, 0x4
 	push	word 0x4fe6
 	lea	ax, [bp - 0x20]
 	push	ax
-	call	0x0000:0xC2C
+	call	0x0000:_strcat
 	add	sp, 0x4
 	mov	ax, 0x1
 	mov	es, [0x8cb2]
@@ -77,7 +77,7 @@ Init_23CB_0004:
 	push	word 0x3a0b
 	push	word 0xb352
 	push	0x1
-	call	0x1E7E:0x4C0
+	call	0x1E7E:Game_1E7E_04C0
 	add	sp, 0x8
 	push	word 0xc8
 	call	0x0FEF:SetStartPage
@@ -227,12 +227,12 @@ Init_23CB_0004:
 .16:
 	lea	ax, [bp - 0x20]
 	push	ax
-	call	0x0000:0xC2C
+	call	0x0000:_strcat
 	add	sp, 0x4
 	push	word 0x4ff1
 	lea	ax, [bp - 0x20]
 	push	ax
-	call	0x0000:0xC2C
+	call	0x0000:_strcat
 	add	sp, 0x4
 	mov	ax, 0x1
 	mov	es, [0x8cb2]
@@ -320,12 +320,12 @@ Init_23CB_0004:
 .29:
 	lea	ax, [bp - 0x10]
 	push	ax
-	call	0x0000:0xC2C
+	call	0x0000:_strcat
 	add	sp, 0x4
 	push	word 0x5027
 	lea	ax, [bp - 0x10]
 	push	ax
-	call	0x0000:0xC2C
+	call	0x0000:_strcat
 	add	sp, 0x4
 	push	0x54
 	push	word 0xf8
@@ -398,7 +398,7 @@ Init_23CB_042C:
 	push	word 0x3a0b
 	push	word 0xb66e
 	push	0x0
-	call	0x1E7E:0x4C0
+	call	0x1E7E:Game_1E7E_04C0
 	add	sp, 0x8
 	mov	ax, 0x1
 	mov	[0x4b22], ax
@@ -472,7 +472,7 @@ Init_23CB_042C:
 	push	0x0
 	push	0x64
 	call	0x0000:__aFldiv
-	call	0x03A3:0x1A6E
+	call	0x03A3:SetDeadline.regs
 	call	0x03A3:WaitDeadlineNoEoi
 	les	bx, [0xda06]
 	cmp	word [es:bx + 0x20], 0x0
@@ -491,7 +491,7 @@ Init_23CB_042C:
 	call	0x0000:__aFlmul
 	add	ax, 0x190
 	adc	dx, 0x0
-	call	0x03A3:0x1A6E
+	call	0x03A3:SetDeadline.regs
 	call	0x03A3:WaitDeadlineNoEoi
 	push	word [0xda08]
 	push	word [0xda06]
@@ -505,14 +505,14 @@ Init_23CB_042C:
 .3:
 	mov	ax, 0x190
 	cwd
-	call	0x03A3:0x1A6E
+	call	0x03A3:SetDeadline.regs
 	call	0x03A3:WaitDeadlineNoEoi
 .4:
 	push	0x8
 	push	word 0x3a0b
 	push	word 0xb66e
 	push	0x1
-	call	0x1E7E:0x4C0
+	call	0x1E7E:Game_1E7E_04C0
 	add	sp, 0x8
 	push	word 0xc8
 	call	0x0FEF:SetStartPage

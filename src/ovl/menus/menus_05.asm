@@ -181,7 +181,7 @@ Menus_235C_0042:
 	add	sp, 0xa
 	mov	ax, 0x7d
 	mov	dx, 0xff
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
 	mov	ax, [bp - 0xc]

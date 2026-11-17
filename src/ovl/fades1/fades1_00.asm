@@ -29,7 +29,7 @@ Fades1_3358_0000:
 	mov	di, [bp - 0xc]
 	mov	ax, 0x3
 	cwd
-	call	0x03A3:0x1A6E
+	call	0x03A3:SetDeadline.regs
 	db	0x0B, 0xFF		; or di, di
 	jng	short .5
 	mov	dx, [bp - 0x8]
@@ -94,7 +94,7 @@ Fades1_3358_0000:
 .7:
 	mov	ax, 0x1
 	cwd
-	call	0x03A3:0x1A6E
+	call	0x03A3:SetDeadline.regs
 	mov	ax, 0x4
 	mov	dx, 0x3ce
 	out	dx, al

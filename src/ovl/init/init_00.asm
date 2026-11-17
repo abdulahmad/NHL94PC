@@ -321,7 +321,7 @@ Init_1F9C_01FC:
 	call	Init_1F9C_01B4
 	mov	ax, 0x4
 	mov	dx, 0xff
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	push	cs
 	call	Init_1F9C_0138
 	call	0x0D6B:HookDivideError
@@ -335,7 +335,7 @@ Init_1F9C_01FC:
 	push	word 0x3a0b
 	push	word 0xb352
 	push	0x1
-	call	0x1E7E:0x4C0
+	call	0x1E7E:Game_1E7E_04C0
 	add	sp, 0x8
 	mov	ax, 0x1
 	mov	[0x49f4], ax
@@ -379,7 +379,7 @@ Init_1F9C_0348:
 .4:
 	push	ax
 	push	si
-	call	0x1E7E:0xA74
+	call	0x1E7E:Game_1E7E_0A74
 	add	sp, 0x4
 	cmp	word [0xd672], 0x0
 	jnl	short .5
@@ -535,7 +535,7 @@ Init_1F9C_04A0:
 	push	word 0x3a0b
 	push	word 0xb352
 	push	0x1
-	call	0x1E7E:0x4C0
+	call	0x1E7E:Game_1E7E_04C0
 	add	sp, 0x8
 .3:
 	test	byte [CrowdState], 0x4

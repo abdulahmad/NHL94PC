@@ -46,7 +46,7 @@ Ai_2519_0000:
 .6:
 	push	0x2
 	push	si
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 	pop	si
 	leave
@@ -220,7 +220,7 @@ Ai_2519_0114:
 	jnz	short .14
 	push	0x1
 	push	di
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 	pop	si
 	pop	di
@@ -419,7 +419,7 @@ Ai_2519_035A:
 	jnz	short .10
 	push	0x4
 	push	si
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 	pop	si
 	leave
@@ -570,7 +570,7 @@ Ai_2519_04B0:
 	jz	short .11
 	push	0x3
 	push	si
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 	pop	si
 	pop	di
@@ -725,7 +725,7 @@ Ai_2519_0630:
 	jnz	short .10
 	push	0x6
 	push	si
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 	pop	si
 	leave
@@ -836,7 +836,7 @@ Ai_2519_0716:
 	jz	short .11
 	push	0x5
 	push	si
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 	pop	si
 	pop	di
@@ -1008,7 +1008,7 @@ Ai_2519_092A:
 	jnz	short .1
 	push	0x1a
 	push	word 0xbc0e
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 .1:
 	test	byte [si + 0x44], 0x20
@@ -1317,7 +1317,7 @@ Ai_2519_0AF0:
 	mov	word [si + 0x12], 0xffff
 	push	0x29
 	push	si
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 .17:
 	add	sp, 0x4
 .18:
@@ -1456,7 +1456,7 @@ Ai_2519_0C76:
 .16:
 	push	0xd
 	push	si
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 	pop	si
 	leave
@@ -1799,7 +1799,7 @@ Ai_2519_0EDC:
 	mov	word [si + 0x2e], 0x0
 	push	0x27
 	push	si
-	call	0x1E7E:0xA74
+	call	0x1E7E:Game_1E7E_0A74
 	add	sp, 0x4
 .28:
 	mov	al, [si + 0x43]
@@ -2335,14 +2335,14 @@ Ai_2519_11BE:
 	mov	dx, [0xd6c8]
 	call	0x03A3:ImulRegs
 	mov	bx, [0xd6b8]
-	call	0x03A3:0x9E3
+	call	0x03A3:IdivWords.regs
 	mov	[0xd672], ax
 	add	word [0xd6c8], 0x8
 	mov	dx, [0xd6c8]
 	mov	ax, [0xd66c]
 	call	0x03A3:ImulRegs
 	mov	bx, [0xd6b8]
-	call	0x03A3:0x9E3
+	call	0x03A3:IdivWords.regs
 	mov	[0xd66c], ax
 .51:
 	mov	ax, [0xd6c0]
@@ -2434,7 +2434,7 @@ Ai_2519_11BE:
 .64:
 	push	0xf
 	push	word [bp + 0x6]
-	call	0x1E7E:0xA74
+	call	0x1E7E:Game_1E7E_0A74
 	jmp	near .79
 	db	0x90
 .65:
@@ -2989,7 +2989,7 @@ Ai_2519_1C22:
 .3:
 	push	0x10
 	push	bx
-	call	0x1E7E:0xA74
+	call	0x1E7E:Game_1E7E_0A74
 	add	sp, 0x4
 	pop	si
 	pop	di
@@ -3170,7 +3170,7 @@ Ai_2519_1C22:
 	and	byte [bx + 0x44], 0xfe
 	push	0x11
 	push	bx
-	call	0x1E7E:0xA74
+	call	0x1E7E:Game_1E7E_0A74
 	add	sp, 0x4
 	push	word [bp + 0x6]
 	push	cs
@@ -3989,11 +3989,11 @@ Ai_2519_24AA:
 	and	byte [si + 0x44], 0xfb
 	push	0x18
 	push	si
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 	push	0x1f
 	push	word 0xbd0e
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 	cmp	word [0xbd10], 0x0
 	jng	short .11
@@ -5078,12 +5078,12 @@ Ai_2519_2EC2:
 .12:
 	push	0x1b
 	push	word 0xbc0e
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 	push	0x1e
 .13:
 	push	si
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 	pop	si
 	leave
@@ -5213,7 +5213,7 @@ Ai_2519_303C:
 .13:
 	push	0x21
 	push	si
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 	pop	si
 	pop	di
@@ -5442,7 +5442,7 @@ Ai_2519_31E4:
 .17:
 	push	word [bp + 0x6]
 .18:
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 	pop	si
 	pop	di
@@ -5475,7 +5475,7 @@ Ai_2519_31E4:
 .23:
 	push	0x1b
 	push	word 0xbc0e
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 	push	0x1e
 	jmp	short .17
@@ -5519,7 +5519,7 @@ Ai_2519_31E4:
 	mov	byte [bx], 0xff
 	push	0x1a
 	push	word 0xbc0e
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 .29:
 	mov	bx, [bp + 0x6]
@@ -5661,7 +5661,7 @@ Ai_2519_31E4:
 	call	0x03A3:ImulRegs
 	mov	bx, [bp - 0xe]
 	db	0x2B, 0xDE		; sub bx, si
-	call	0x03A3:0x9E3
+	call	0x03A3:IdivWords.regs
 	add	ax, [di]
 	mov	[0xd66c], ax
 	cwd
@@ -5696,7 +5696,7 @@ Ai_2519_31E4:
 	call	0x03A3:ImulRegs
 	mov	bx, [bp - 0xe]
 	db	0x2B, 0xDE		; sub bx, si
-	call	0x03A3:0x9E3
+	call	0x03A3:IdivWords.regs
 	add	ax, [di]
 	mov	[0xd66c], ax
 	cwd
@@ -5989,7 +5989,7 @@ Ai_2519_3762:
 	mov	word [0x29d4], 0xffff
 	push	0x1e
 	push	si
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 	pop	si
 	pop	di
@@ -6128,7 +6128,7 @@ Ai_2519_38EC:
 	call	0x2E42:Ai_2E42_0012
 	push	0x20
 	push	si
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 	pop	si
 	leave

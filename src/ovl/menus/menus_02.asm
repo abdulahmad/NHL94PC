@@ -399,7 +399,7 @@ Menus_1F9D_000C:
 	push	di
 	call	0x0FEF:DrawRawTransAt
 	add	sp, 0x8
-	call	0x0FEF:0x342F
+	call	0x0FEF:WaitTimerRetrace.calibrated
 	call	0x0FEF:CopyPlane
 	call	0x0FEF:WaitRetraceEnd
 	mov	si, [bp - 0x18]
@@ -767,7 +767,7 @@ Menus_1F9D_0580:
 .14:
 	cmp	word [bp - 0x62], 0x0
 	jnz	short .15
-	call	0x0FEF:0x342F
+	call	0x0FEF:WaitTimerRetrace.calibrated
 	call	0x0FEF:CopyPlane
 	call	0x0FEF:WaitRetraceEnd
 .15:

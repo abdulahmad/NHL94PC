@@ -308,7 +308,7 @@ def nasm_map(top, wrap_include):
             sec = None
             continue
         m = re.match(r'^([0-9A-F]+)\s+([0-9A-F]+)\s+(\S+)$', line.strip()) if sec else None
-        if m and '.' not in m.group(3):
+        if m and re.fullmatch(r'[A-Za-z_]\w*(\.[A-Za-z]\w*)?', m.group(3)):    # globals and named entries (Foo.regs)
             out[sec].setdefault(int(m.group(2), 16), m.group(3))
     return out
 
@@ -321,6 +321,14 @@ def read_map():
         sys.exit('the root build does not assemble')
     names = {s['name']: s['para'] for s in SEGMAP['segments'] if 'para' in s}
     out = {names[sec]: v for sec, v in rm.items() if sec in names}
+    # overlays loaded beside this one (AI and INIT call into GAME, FADESn into FADES)
+    host = {'AI': 'GAME', 'INIT': 'GAME'}.get(OV['name'], 'FADES' if OV['name'].startswith('FADES') and OV['name'] != 'FADES' else None)
+    if host:
+        hm = nasm_map(None, f'%include "ovl/{host.lower()}_build.asm"')
+        hov = next(o for o in OVLMAP['overlays'] if o['name'] == host)
+        for hs in hov['segments']:
+            if hm and hs['name'] in hm:
+                out[hs['para']] = hm[hs['name']]
     top = os.path.join(ROOT, 'src', 'ovl', OV['name'].lower() + '.asm')
     if os.path.exists(top):
         om = nasm_map(None, f'%include "ovl/{OV["name"].lower()}_build.asm"')
@@ -535,8 +543,18 @@ def lname(lin, flow, funcs, known, owner=None):
 
 
 def far_name(sg, off, known):
-    """the label of a far target outside this overlay (a root routine), or None"""
-    return known.get(sg, {}).get(off)
+    """the label of a far target outside this overlay (a root routine), or None. A root module can be called
+    through a frame paragraph other than its own, so a miss is looked up by linear address."""
+    n = known.get(sg, {}).get(off)
+    if n or any(x['para'] == sg for x in SEGS):
+        return n
+    lin = sg * 16 + off
+    for r in SEGMAP['segments']:
+        if 'para' in r and r['para'] * 16 <= lin < r['para'] * 16 + r['size']:
+            n = known.get(r['para'], {}).get(lin - r['para'] * 16)
+            d = (sg - r['para']) * 16       # the label counts from its own module's paragraph
+            return n and (f'{n} - 0x{d:X}' if d > 0 else f'{n} + 0x{-d:X}')
+    return None
 
 
 GEN = []

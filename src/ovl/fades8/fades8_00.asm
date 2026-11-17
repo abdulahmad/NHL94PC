@@ -62,19 +62,19 @@ Fades8_3358_0000:
 	db	0x8B, 0xC2		; mov ax, dx
 	imul	di
 	push	ax
-	call	0x3349:0x5E
+	call	0x3349:Fades_3349_005E
 	add	sp, 0x8
 .3:
 	lea	ax, [bp - 0x4]
 	push	ax
-	call	0x3349:0x36
+	call	0x3349:Fades_3349_0036
 	add	sp, 0x2
 	mov	[bp - 0x4], al
 	db	0x2A, 0xE4		; sub ah, ah
 	db	0x8B, 0xF0		; mov si, ax
 	lea	ax, [bp + si - 0x10a]
 	push	ax
-	call	0x3349:0x36
+	call	0x3349:Fades_3349_0036
 	add	sp, 0x2
 	mov	[bp - 0x3], al
 	dec	word [bp - 0x2]
@@ -150,7 +150,7 @@ Fades8_3358_00D4:
 .6:
 	mov	ax, 0x1
 	cwd
-	call	0x03A3:0x1A6E
+	call	0x03A3:SetDeadline.regs
 	call	0x0000:_rand
 	cwd
 	idiv	word [bp - 0x8]
@@ -191,7 +191,7 @@ Fades8_3358_00D4:
 	shl	si, byte 0x5
 	push	si
 	db	0x8B, 0xF0		; mov si, ax
-	call	0x3349:0x5E
+	call	0x3349:Fades_3349_005E
 	add	sp, 0x8
 	shl	si, byte 0x3
 	mov	bx, [bp - 0x4]

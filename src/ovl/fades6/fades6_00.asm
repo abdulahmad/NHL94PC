@@ -47,7 +47,7 @@ Fades6_3358_0000:
 .3:
 	mov	ax, 0x1
 	cwd
-	call	0x03A3:0x1A6E
+	call	0x03A3:SetDeadline.regs
 	db	0x2B, 0xFF		; sub di, di
 	cmp	[bp - 0x2], di
 	jng	short .7
@@ -69,7 +69,7 @@ Fades6_3358_0000:
 	mov	ax, [bp - 0x4]
 .6:
 	push	ax
-	call	0x3349:0x5E
+	call	0x3349:Fades_3349_005E
 	add	sp, 0x8
 	add	si, 0x5
 	inc	di
@@ -116,7 +116,7 @@ Fades6_3358_0000:
 .9:
 	mov	ax, 0x1
 	cwd
-	call	0x03A3:0x1A6E
+	call	0x03A3:SetDeadline.regs
 	db	0x2B, 0xFF		; sub di, di
 	cmp	[bp - 0x2], di
 	jng	short .13
@@ -138,7 +138,7 @@ Fades6_3358_0000:
 .12:
 	push	ax
 	push	si
-	call	0x3349:0x5E
+	call	0x3349:Fades_3349_005E
 	add	sp, 0x8
 	add	si, 0x8
 	inc	di

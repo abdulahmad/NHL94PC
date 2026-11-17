@@ -728,7 +728,7 @@ Ai_226F_054A:
 	shl	bx, byte 0x2
 	push	word [bx - 0x29ce]
 	push	word [bx - 0x29d0]
-	call	0x1F54:0x2
+	call	0x1F54:Game_1F54_0002
 	add	sp, 0xe
 	cmp	word [0x49fc], 0x0
 	jz	short .15
@@ -853,7 +853,7 @@ Ai_226F_054A:
 	add	sp, 0x4
 	mov	ax, 0x25
 	mov	dx, 0xff
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	mov	[bp - 0x2], di
 	cmp	byte [0xd4b8], 0x0
 	jz	short .27
@@ -949,7 +949,7 @@ Ai_226F_054A:
 	add	sp, 0x4
 	mov	ax, 0x27
 	mov	dx, 0xff
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	mov	[bp - 0x2], di
 	cmp	byte [0xd4b8], 0x0
 	jz	short .32
@@ -1251,7 +1251,7 @@ Ai_226F_0B94:
 	add	sp, 0x4
 	mov	ax, 0x25
 	mov	dx, 0xff
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	lea	ax, [di + 0x1]
 	push	ax
 	lea	cx, [si + 0x2]
@@ -1268,7 +1268,7 @@ Ai_226F_0B94:
 	add	sp, 0x4
 	mov	ax, 0x27
 	mov	dx, 0xff
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	push	si
 	push	di
 	mov	bx, [bp - 0xa]
@@ -1279,7 +1279,7 @@ Ai_226F_0B94:
 	push	word [bp - 0x2]
 	push	word [bp - 0xc]
 	push	word [bp - 0xe]
-	call	0x1F54:0x3FE
+	call	0x1F54:Game_1F54_03FE
 	add	sp, 0x8
 	pop	si
 	pop	di

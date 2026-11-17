@@ -364,7 +364,7 @@ Init_26D2_000A:
 	lea	ax, [bp - 0x28]
 	push	ax
 	push	0x11
-	call	0x14F6:0x2
+	call	0x14F6:SortPairs - 0x90
 	add	sp, 0x6
 	mov	ax, [bp + 0x6]
 	pop	si
@@ -401,7 +401,7 @@ Init_26D2_03F2:
 	push	ax
 	push	word 0xb3
 	push	word 0x17e
-	call	0x1E7E:0x120
+	call	0x1E7E:Game_1E7E_0120
 	add	sp, 0xa
 	inc	word [bp - 0x1e]
 .3:
@@ -437,7 +437,7 @@ Init_26D2_03F2:
 	push	ax
 	push	word 0xb3
 	push	word 0x17e
-	call	0x1E7E:0x120
+	call	0x1E7E:Game_1E7E_0120
 	add	sp, 0xa
 	dec	word [bp - 0x1e]
 .7:
@@ -464,7 +464,7 @@ Init_26D2_03F2:
 	shl	bx, byte 0x2
 	push	word [bx - 0x2d38]
 	push	word [bx - 0x2d3a]
-	call	0x1F54:0x2
+	call	0x1F54:Game_1F54_0002
 	add	sp, 0xe
 .11:
 	inc	word [bp - 0x1e]
@@ -587,7 +587,7 @@ Init_26D2_03F2:
 	push	ax
 	push	word [0xd448]
 	push	word [0xd446]
-	call	0x1F54:0x2
+	call	0x1F54:Game_1F54_0002
 	add	sp, 0xe
 .22:
 	cmp	word [bp - 0x2], 0x0
@@ -608,7 +608,7 @@ Init_26D2_03F2:
 	shl	bx, byte 0x2
 	push	word [bx - 0x2d38]
 	push	word [bx - 0x2d3a]
-	call	0x1F54:0x2
+	call	0x1F54:Game_1F54_0002
 	add	sp, 0xe
 .25:
 	cmp	word [bp - 0x1e], 0x12
@@ -634,7 +634,7 @@ Init_26D2_03F2:
 	push	ax
 	push	word [0xd458]
 	push	word [0xd456]
-	call	0x1F54:0x2
+	call	0x1F54:Game_1F54_0002
 	add	sp, 0xe
 	jmp	short .29
 	db	0x90
@@ -648,7 +648,7 @@ Init_26D2_03F2:
 	push	word [0xdb6e]
 	push	word [0xdb4c]
 	push	ax
-	call	0x1E7E:0x120
+	call	0x1E7E:Game_1E7E_0120
 	add	sp, 0xa
 .29:
 	dec	word [bp - 0x1e]
@@ -723,7 +723,7 @@ Init_26D2_03F2:
 	lea	ax, [bp - 0xe]
 	push	ax
 	push	0x3
-	call	0x14F6:0x2
+	call	0x14F6:SortPairs - 0x90
 	add	sp, 0x6
 	mov	word [bp - 0x20], 0x0
 	jmp	near .52
@@ -833,7 +833,7 @@ Init_26D2_03F2:
 	shl	bx, 1
 	push	word [bx + 0x4a28]
 .50:
-	call	0x1E7E:0x120
+	call	0x1E7E:Game_1E7E_0120
 	add	sp, 0xa
 .51:
 	inc	word [bp - 0x20]
@@ -907,7 +907,7 @@ Init_26D2_03F2:
 	push	word [bx - 0x24d2]
 .60:
 	push	word [bp - 0x2]
-	call	0x1E7E:0x120
+	call	0x1E7E:Game_1E7E_0120
 	add	sp, 0xa
 .61:
 	mov	word [bp - 0x1e], 0xe
@@ -928,7 +928,7 @@ Init_26D2_03F2:
 	push	ax
 	push	word [0xdb4a]
 	push	word [0xdb8e]
-	call	0x1E7E:0x120
+	call	0x1E7E:Game_1E7E_0120
 	add	sp, 0xa
 .62:
 	mov	word [bp - 0x20], 0x0
@@ -951,7 +951,7 @@ Init_26D2_03F2:
 .64:
 	push	word [bx - 0x24d2]
 	push	word [bx - 0x248e]
-	call	0x1E7E:0x120
+	call	0x1E7E:Game_1E7E_0120
 	add	sp, 0xa
 .65:
 	inc	word [bp - 0x20]
@@ -1045,7 +1045,7 @@ Init_26D2_03F2:
 	shl	bx, 1
 	push	word [bx - 0x24b0]
 	push	word [bx - 0x24d2]
-	call	0x1E7E:0x60
+	call	0x1E7E:Game_1E7E_0060
 	add	sp, 0x8
 .76:
 	cmp	word [bp - 0x1e], 0x5
@@ -1090,7 +1090,7 @@ Init_26D2_03F2:
 	push	ax
 	push	word [0xdb4a]
 	push	word [0xdb8e]
-	call	0x1E7E:0x120
+	call	0x1E7E:Game_1E7E_0120
 	add	sp, 0xa
 .80:
 	cmp	word [0x299a], 0xff50
@@ -1104,7 +1104,7 @@ Init_26D2_03F2:
 .81:
 	cmp	word [0x299a], 0xff70
 	jnl	short .82
-	call	0x1E7E:0x17E
+	call	0x1E7E:Game_1E7E_017E
 .82:
 	mov	word [bp - 0x1e], 0xf
 	cmp	word [0xdb6e], 0x0
@@ -1118,7 +1118,7 @@ Init_26D2_03F2:
 	push	word [0xdb6e]
 	push	word [0xdb4c]
 	push	word [0xdb90]
-	call	0x1E7E:0x120
+	call	0x1E7E:Game_1E7E_0120
 	add	sp, 0xa
 .83:
 	mov	word [bp - 0x1e], 0xe
@@ -1141,5 +1141,5 @@ Init_26D2_03F2:
 	push	ax
 	push	word [0xdb4a]
 	push	word [0xdb8e]
-	call	0x1E7E:0x120
+	call	0x1E7E:Game_1E7E_0120
 	add	sp, 0xa

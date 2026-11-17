@@ -1274,7 +1274,7 @@ Menus_2047_01B2:
 .83:
 	mov	ax, 0x7d
 	mov	dx, 0x5f
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	cmp	word [bp - 0x6], 0xc
 	jl	short .84
 	jmp	near .93
@@ -1913,7 +1913,7 @@ Menus_2047_01B2:
 	db	0x2B, 0xC0		; sub ax, ax
 .151:
 	mov	dx, 0x5f
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	imul	ax, [bp - 0x92], 0x16
 	db	0x8B, 0xC8		; mov cx, ax
 	add	ax, 0xbd99
@@ -1959,7 +1959,7 @@ Menus_2047_01B2:
 	mov	ax, 0x7d
 .154:
 	mov	dx, 0x5f
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	imul	ax, [bp - 0x92], 0x16
 	db	0x8B, 0xC8		; mov cx, ax
 	add	ax, 0xbd99
@@ -2420,7 +2420,7 @@ Menus_2047_186AJumpTable:
 .4:
 	db	0x8B, 0xC7		; mov ax, di
 	mov	dx, 0x5f
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	lea	ax, [si + 0x1]
 	push	ax
 	mov	al, [si - 0x1]
@@ -2571,7 +2571,7 @@ Menus_2047_19E0:
 	add	sp, 0x4
 	mov	ax, 0x7d
 	mov	dx, 0xff
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	push	0x1
 	push	word 0xc7
 	push	word 0x13f
@@ -4634,7 +4634,7 @@ Menus_2047_2C90:
 	mov	ax, 0x7d
 .9:
 	mov	dx, 0x5f
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	imul	ax, [si], 0x16
 	db	0x8B, 0xC8		; mov cx, ax
 	add	ax, 0xbd99
@@ -4763,7 +4763,7 @@ Menus_2047_2FA4:
 	add	sp, 0x8
 	mov	ax, 0x7e
 	mov	dx, 0x5f
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	imul	ax, [di], 0x16
 	db	0x8B, 0xC8		; mov cx, ax
 	add	ax, 0xbd99
@@ -4815,7 +4815,7 @@ Menus_2047_30E6:
 	add	sp, 0x8
 	mov	ax, 0x7d
 	mov	dx, 0x5f
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	imul	ax, [si], 0x16
 	db	0x8B, 0xC8		; mov cx, ax
 	add	ax, 0xbd99

@@ -48,7 +48,7 @@ Init_2581_000E:
 	push	word 0x3a0b
 	push	word 0xb352
 	push	0x1
-	call	0x1E7E:0x4C0
+	call	0x1E7E:Game_1E7E_04C0
 	add	sp, 0x8
 	cmp	word [bp + 0x6], 0x0
 	jz	short .4
@@ -174,7 +174,7 @@ Init_2581_000E:
 .9:
 	push	word [0xd6ce]
 	push	word [0xd6cc]
-	call	0x1F54:0x316
+	call	0x1F54:Game_1F54_0316
 	add	sp, 0x4
 	call	0x0FEF:UseOtherPage
 	mov	ax, 0x140
@@ -190,7 +190,7 @@ Init_2581_000E:
 	push	word 0x3a0b
 	push	word 0xa8e
 	push	0x0
-	call	0x1E7E:0x4C0
+	call	0x1E7E:Game_1E7E_04C0
 	add	sp, 0x8
 	call	0x03A3:CallCountStep
 	call	0x0F99:FlushInputEvents
@@ -312,7 +312,7 @@ Init_2581_000E:
 .25:
 	push	word [0xd6ce]
 	push	word [0xd6cc]
-	call	0x1F54:0x316
+	call	0x1F54:Game_1F54_0316
 	add	sp, 0x4
 	call	0x0FEF:UseOtherPage
 	mov	ax, 0x140
@@ -345,7 +345,7 @@ Init_2581_000E:
 	inc	ax
 	push	ax
 	push	word 0x188
-	call	0x1E7E:0x120
+	call	0x1E7E:Game_1E7E_0120
 	add	sp, 0xa
 	jmp	short .29
 .27:
@@ -360,7 +360,7 @@ Init_2581_000E:
 	inc	ax
 	push	ax
 	push	word 0x188
-	call	0x1E7E:0x120
+	call	0x1E7E:Game_1E7E_0120
 	add	sp, 0xa
 	mov	ax, [0xdb22]
 	cmp	[0xdb24], ax
@@ -427,7 +427,7 @@ Init_2581_000E:
 	push	word 0x3a0b
 	push	word 0xb352
 	push	0x1
-	call	0x1E7E:0x4C0
+	call	0x1E7E:Game_1E7E_04C0
 	add	sp, 0x8
 	push	0x0
 	push	word 0x7c60
@@ -1307,7 +1307,7 @@ Init_2581_0C14:
 .10:
 	mov	ax, 0x64
 	cwd
-	call	0x03A3:0x1A6E
+	call	0x03A3:SetDeadline.regs
 	push	word 0x1858
 	push	word 0x99c
 	push	word 0x2306
@@ -1430,7 +1430,7 @@ Init_2581_0C14:
 	jz	short .17
 	mov	ax, 0x1f4
 	cwd
-	call	0x03A3:0x1A6E
+	call	0x03A3:SetDeadline.regs
 	push	0x0
 	push	0x59
 	push	0x11
@@ -1477,7 +1477,7 @@ Init_2581_0C14:
 .18:
 	mov	ax, 0x64
 	cwd
-	call	0x03A3:0x1A6E
+	call	0x03A3:SetDeadline.regs
 	cmp	word [0x1b8], 0x0
 	jl	short .20
 	mov	ax, [0x1b8]
@@ -1502,7 +1502,7 @@ Init_2581_0C14:
 	jz	short .23
 	mov	ax, 0x1f4
 	cwd
-	call	0x03A3:0x1A6E
+	call	0x03A3:SetDeadline.regs
 	push	0x0
 	push	0x59
 	push	0x11

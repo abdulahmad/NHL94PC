@@ -301,7 +301,7 @@ Menus_26D4_0180:
 	add	sp, 0x8
 	mov	ax, 0x40
 	mov	dx, 0x41
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	push	0x0
 	push	0x40
 	push	0x42
@@ -531,7 +531,7 @@ Menus_26D4_0180:
 	jz	short .16
 	mov	ax, 0x190
 	cwd
-	call	0x03A3:0x1A6E
+	call	0x03A3:SetDeadline.regs
 	push	word 0x1241
 	push	word [bp - 0x3e]
 	push	word [bp - 0x40]
@@ -649,7 +649,7 @@ Menus_26D4_0180:
 .21:
 	mov	ax, 0x190
 	cwd
-	call	0x03A3:0x1A6E
+	call	0x03A3:SetDeadline.regs
 	push	word 0x1250
 	push	word [bp - 0x3e]
 	push	word [bp - 0x40]
@@ -681,7 +681,7 @@ Menus_26D4_0180:
 	jz	short .24
 	mov	ax, 0x190
 	cwd
-	call	0x03A3:0x1A6E
+	call	0x03A3:SetDeadline.regs
 	push	word 0x1255
 	push	word [bp - 0x3e]
 	push	word [bp - 0x40]
@@ -802,9 +802,9 @@ Menus_26D4_0180:
 	push	strict word 0x0
 	call	0x2E70:Menus_2E70_09FE
 	add	sp, 0x4
-	call	0x0837:0x10
+	call	0x0837:NullFar11 + 0x10
 	call	0x0837:NullFar
-	call	0x0837:0x10
+	call	0x0837:NullFar11 + 0x10
 	mov	ax, 0x2
 	pop	si
 	pop	di
@@ -3495,7 +3495,7 @@ Menus_26D4_1D02:
 .31:
 	mov	ax, 0x3e8
 	cwd
-	call	0x03A3:0x1A6E
+	call	0x03A3:SetDeadline.regs
 	push	0x0
 	lea	ax, [bp - 0x18]
 	push	ax

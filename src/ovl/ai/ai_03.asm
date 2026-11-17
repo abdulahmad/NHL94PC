@@ -68,7 +68,7 @@ Ai_2062_000E:
 	push	word 0xa8e
 	push	word [0x29cc]
 	push	word [0x29ca]
-	call	0x1E64:0x2
+	call	0x1E64:Game_1E64_0002
 	add	sp, 0x8
 	cmp	word [0x29ca], 0x18
 	jl	short .2

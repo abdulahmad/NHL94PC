@@ -426,7 +426,7 @@ Init_21A1_0008:
 	push	word 0x4db3
 	lea	ax, [bp - 0xf2]
 	push	ax
-	call	0x0000:0xC2C
+	call	0x0000:_strcat
 	add	sp, 0x4
 .25:
 	lea	ax, [bp - 0xf2]
@@ -1232,7 +1232,7 @@ Init_21A1_0008:
 	push	ax
 	lea	ax, [bp - 0xf2]
 	push	ax
-	call	0x0000:0xC2C
+	call	0x0000:_strcat
 	add	sp, 0x4
 	mov	ax, [bp - 0x746]
 	mov	cx, 0x64
@@ -1269,7 +1269,7 @@ Init_21A1_0008:
 .92:
 	lea	ax, [bp - 0xf2]
 	push	ax
-	call	0x0000:0xC2C
+	call	0x0000:_strcat
 	add	sp, 0x4
 	les	bx, [bp - 0x40]
 	test	byte [es:bx + 0x4], 0x2
@@ -1284,7 +1284,7 @@ Init_21A1_0008:
 .94:
 	lea	ax, [bp - 0xf2]
 	push	ax
-	call	0x0000:0xC2C
+	call	0x0000:_strcat
 	add	sp, 0x4
 .95:
 	lea	ax, [bp - 0xf2]
@@ -1403,13 +1403,13 @@ Init_21A1_0008:
 	push	word 0x4dfb
 	lea	ax, [bp - 0xf2]
 	push	ax
-	call	0x0000:0xC2C
+	call	0x0000:_strcat
 	add	sp, 0x4
 	lea	ax, [bp - 0x12]
 	push	ax
 	lea	ax, [bp - 0xf2]
 	push	ax
-	call	0x0000:0xC2C
+	call	0x0000:_strcat
 	add	sp, 0x4
 .98:
 	cmp	word [bp - 0x738], 0x0
@@ -1417,7 +1417,7 @@ Init_21A1_0008:
 	push	word 0x4dfe
 	lea	ax, [bp - 0xf2]
 	push	ax
-	call	0x0000:0xC2C
+	call	0x0000:_strcat
 	add	sp, 0x4
 	lea	ax, [bp - 0xf2]
 	push	ss

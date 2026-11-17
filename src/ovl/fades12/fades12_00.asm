@@ -121,12 +121,12 @@ Fades12_3358_0000:
 .7:
 	mov	ax, 0x1
 	cwd
-	call	0x03A3:0x1A6E
+	call	0x03A3:SetDeadline.regs
 	push	0x5
 	push	word [bp - 0x8]
 	push	si
 	push	di
-	call	0x3349:0x5E
+	call	0x3349:Fades_3349_005E
 	add	sp, 0x8
 	push	word [bp - 0x6]
 	push	0x8
@@ -134,7 +134,7 @@ Fades12_3358_0000:
 	mov	ax, [bp - 0x8]
 	db	0x03, 0xC7		; add ax, di
 	push	ax
-	call	0x3349:0x5E
+	call	0x3349:Fades_3349_005E
 	add	sp, 0x8
 	push	0x5
 	push	word [bp - 0x8]
@@ -143,14 +143,14 @@ Fades12_3358_0000:
 	push	ax
 	lea	ax, [di + 0x8]
 	push	ax
-	call	0x3349:0x5E
+	call	0x3349:Fades_3349_005E
 	add	sp, 0x8
 	push	word [bp - 0x6]
 	push	0x8
 	lea	ax, [si + 0x5]
 	push	ax
 	push	di
-	call	0x3349:0x5E
+	call	0x3349:Fades_3349_005E
 	add	sp, 0x8
 	call	0x03A3:WaitDeadlineNoEoi
 	sub	si, [bp - 0x10]

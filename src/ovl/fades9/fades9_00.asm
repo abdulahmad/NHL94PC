@@ -74,14 +74,14 @@ Fades9_3358_0000:
 .4:
 	lea	ax, [bp - 0x4]
 	push	ax
-	call	0x3349:0x36
+	call	0x3349:Fades_3349_0036
 	add	sp, 0x2
 	mov	[bp - 0x4], al
 	db	0x2A, 0xE4		; sub ah, ah
 	db	0x8B, 0xF0		; mov si, ax
 	lea	ax, [bp + si - 0x11a]
 	push	ax
-	call	0x3349:0x36
+	call	0x3349:Fades_3349_0036
 	add	sp, 0x2
 	mov	[bp - 0x3], al
 	dec	word [bp - 0x2]

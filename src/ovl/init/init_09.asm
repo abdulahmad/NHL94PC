@@ -383,7 +383,7 @@ Init_2425_0374:
 	mov	[0x1d9], al
 	test	byte [AnnouncerFlags], 0x2
 	jnz	short .1
-	call	0x1E45:0x0
+	call	0x1E45:Game_1E45_0000
 .1:
 	push	cs
 	call	Init_2425_0B20

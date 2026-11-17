@@ -351,7 +351,7 @@ Ai_3136_02E2:
 	shl	bx, byte 0x2
 	push	word [bx - 0x2d38]
 	push	word [bx - 0x2d3a]
-	call	0x1F54:0x2
+	call	0x1F54:Game_1F54_0002
 	add	sp, 0xe
 .4:
 	add	si, 0xe
@@ -401,7 +401,7 @@ Ai_3136_02E2:
 	push	ax
 	push	word [0xd448]
 	push	word [0xd446]
-	call	0x1F54:0x2
+	call	0x1F54:Game_1F54_0002
 	add	sp, 0xe
 .9:
 	cmp	word [bp - 0x2], 0x0
@@ -415,7 +415,7 @@ Ai_3136_02E2:
 	shl	bx, byte 0x2
 	push	word [bx - 0x2d38]
 	push	word [bx - 0x2d3a]
-	call	0x1F54:0x2
+	call	0x1F54:Game_1F54_0002
 	add	sp, 0xe
 .10:
 	db	0x0B, 0xFF		; or di, di
@@ -437,7 +437,7 @@ Ai_3136_02E2:
 	push	ax
 	push	word [0xd458]
 	push	word [0xd456]
-	call	0x1F54:0x2
+	call	0x1F54:Game_1F54_0002
 	add	sp, 0xe
 	jmp	short .12
 .11:
@@ -451,7 +451,7 @@ Ai_3136_02E2:
 	push	word [0xbc94]
 	push	word [0xbc90]
 	push	word [0xbca0]
-	call	0x1E7E:0x120
+	call	0x1E7E:Game_1E7E_0120
 	add	sp, 0xa
 .12:
 	sub	si, 0xe

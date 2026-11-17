@@ -489,7 +489,7 @@ Menus_2528_0426:
 	call	0x16F2:ShutdownSequencer
 	mov	ax, 0x64
 	cwd
-	call	0x03A3:0x1A6E
+	call	0x03A3:SetDeadline.regs
 	call	0x03A3:WaitDeadlineNoEoi
 	push	word [0xf68]
 	push	word [0xf66]
@@ -1151,7 +1151,7 @@ Menus_2528_0426:
 	call	0x16F2:ShutdownSequencer
 	mov	ax, 0x64
 	cwd
-	call	0x03A3:0x1A6E
+	call	0x03A3:SetDeadline.regs
 	call	0x03A3:WaitDeadlineNoEoi
 	mov	ax, [0xf68]
 	or	ax, [0xf66]

@@ -299,7 +299,7 @@ Ai_2E42_022A:
 	db	0x8B, 0xDF		; mov bx, di
 	mov	ax, [0xd66c]
 	mov	dx, [0xd66e]
-	call	0x03A3:0x9F1
+	call	0x03A3:DivWords.regs
 	mov	[0xd66c], ax
 .3:
 	pop	si
@@ -726,7 +726,7 @@ Ai_2E42_05E2:
 	jnz	short .2
 	push	0x11
 	push	si
-	call	0x1E7E:0xA74
+	call	0x1E7E:Game_1E7E_0A74
 	add	sp, 0x4
 .2:
 	mov	al, [si + 0x43]
@@ -1306,7 +1306,7 @@ Ai_2E42_0AFC:
 .12:
 	push	0x1a
 	push	bx
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 	push	0x15
 	mov	bx, [bp - 0x4]
@@ -1549,7 +1549,7 @@ Ai_2E42_0AFC:
 	and	byte [bx + 0x44], 0xfb
 	push	0x7
 	push	bx
-	call	0x1E7E:0xA74
+	call	0x1E7E:Game_1E7E_0A74
 	add	sp, 0x4
 .42:
 	add	word [bp - 0xa], 0x80
@@ -1588,7 +1588,7 @@ Ai_2E42_0AFC:
 	or	byte [bx + 0x44], 0x4
 	push	0x1a
 	push	bx
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 	mov	bx, [bp - 0xc]
 	add	bx, 0x80
@@ -1741,7 +1741,7 @@ Ai_2E42_103A:
 	cbw
 	push	ax
 	push	di
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 .1:
 	pop	si
@@ -1787,7 +1787,7 @@ Ai_2E42_1068:
 	push	0x9
 .4:
 	push	di
-	call	0x1E7E:0xA74
+	call	0x1E7E:Game_1E7E_0A74
 	add	sp, 0x4
 	and	byte [di + 0x44], 0xdf
 	mov	word [di + 0x38], 0x0
@@ -2855,7 +2855,7 @@ Ai_2E42_1994:
 	jnl	short .10
 	push	0x29
 	push	di
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 	mov	word [di + 0x1a], 0x5
 .10:
@@ -2928,7 +2928,7 @@ Ai_2E42_1A92:
 	mov	[0x29b4], ax
 	push	0x1b
 	push	word 0xbc0e
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 	cmp	word [0x29da], 0x0
 	jz	short .6
@@ -3654,7 +3654,7 @@ Ai_2E42_21E2:
 	push	ax
 	push	word 0xb3
 	push	word 0x17e
-	call	0x1E7E:0x120
+	call	0x1E7E:Game_1E7E_0120
 	add	sp, 0xa
 	inc	word [bp - 0x22]
 .4:
@@ -3690,7 +3690,7 @@ Ai_2E42_21E2:
 	push	ax
 	push	word 0xb3
 	push	word 0x17e
-	call	0x1E7E:0x120
+	call	0x1E7E:Game_1E7E_0120
 	add	sp, 0xa
 	dec	word [bp - 0x22]
 .8:
@@ -3752,7 +3752,7 @@ Ai_2E42_21E2:
 	lea	ax, [bp - 0x12]
 	push	ax
 	push	0x3
-	call	0x14F6:0x2
+	call	0x14F6:SortPairs - 0x90
 	add	sp, 0x6
 	mov	word [bp - 0x24], 0x0
 	jmp	near .31
@@ -3872,7 +3872,7 @@ Ai_2E42_21E2:
 	shl	bx, 1
 	push	word [bx + 0x4a28]
 .29:
-	call	0x1E7E:0x120
+	call	0x1E7E:Game_1E7E_0120
 	add	sp, 0xa
 .30:
 	inc	word [bp - 0x24]
@@ -3949,7 +3949,7 @@ Ai_2E42_21E2:
 	push	word [bx + 0x2]
 	push	word [bx + 0x12]
 .39:
-	call	0x1E7E:0x120
+	call	0x1E7E:Game_1E7E_0120
 	add	sp, 0xa
 .40:
 	mov	bx, [0x2996]
@@ -3981,7 +3981,7 @@ Ai_2E42_21E2:
 .42:
 	push	word [bx + 0x2]
 	push	word [bx + 0x12]
-	call	0x1E7E:0x120
+	call	0x1E7E:Game_1E7E_0120
 	add	sp, 0xa
 .43:
 	mov	word [bp - 0x22], 0x10
@@ -4003,7 +4003,7 @@ Ai_2E42_21E2:
 .45:
 	push	word [bx + 0x2]
 	push	word [bx + 0x12]
-	call	0x1E7E:0x120
+	call	0x1E7E:Game_1E7E_0120
 	add	sp, 0xa
 .46:
 	dec	word [bp - 0x22]
@@ -4085,7 +4085,7 @@ Ai_2E42_21E2:
 	push	ax
 	push	word [bx + 0x6]
 	push	word [bx + 0x2]
-	call	0x1E7E:0x60
+	call	0x1E7E:Game_1E7E_0060
 	add	sp, 0x8
 .56:
 	mov	bx, [bp - 0x26]
@@ -4135,7 +4135,7 @@ Ai_2E42_21E2:
 	push	ax
 	push	cx
 	push	word [0xbc20]
-	call	0x1E7E:0x120
+	call	0x1E7E:Game_1E7E_0120
 	add	sp, 0xa
 .60:
 	cmp	word [0x299a], 0xff50
@@ -4149,7 +4149,7 @@ Ai_2E42_21E2:
 .61:
 	cmp	word [0x299a], 0xff70
 	jnl	short .62
-	call	0x1E7E:0x17E
+	call	0x1E7E:Game_1E7E_017E
 .62:
 	mov	word [bp - 0x26], 0xbc8e
 	cmp	word [0xbc94], 0x0
@@ -4163,7 +4163,7 @@ Ai_2E42_21E2:
 	push	word [0xbc94]
 	push	word [0xbc90]
 	push	word [0xbca0]
-	call	0x1E7E:0x120
+	call	0x1E7E:Game_1E7E_0120
 	add	sp, 0xa
 .63:
 	mov	bx, [0x298e]
@@ -4199,7 +4199,7 @@ Ai_2E42_21E2:
 	push	word [bx + 0x2]
 	push	word [bx + 0x12]
 .65:
-	call	0x1E7E:0x120
+	call	0x1E7E:Game_1E7E_0120
 	add	sp, 0xa
 .66:
 	cmp	word [0x49f0], 0x0
@@ -4321,7 +4321,7 @@ Ai_2E42_21E2:
 	mov	bx, [bp - 0x2]
 	shl	bx, 1
 	push	word [bx + 0x61b8]
-	call	0x1E7E:0x120
+	call	0x1E7E:Game_1E7E_0120
 	add	sp, 0xa
 .80:
 	pop	si
@@ -4366,7 +4366,7 @@ Ai_2E42_2946:
 	mov	ax, 0xbc0e
 	mov	[bp - 0xa], ax
 	push	ax
-	call	0x1E7E:0xA74
+	call	0x1E7E:Game_1E7E_0A74
 	add	sp, 0x4
 	cmp	word [0x29da], 0x2
 	jnl	short .1
@@ -4378,7 +4378,7 @@ Ai_2E42_2946:
 	mov	word [0xd66c], 0x7
 	push	word [0xb444]
 	push	word [0xb36e]
-	call	0x1E45:0xC2
+	call	0x1E45:Game_1E45_00C2
 	add	sp, 0x4
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .2
@@ -4431,7 +4431,7 @@ Ai_2E42_2946:
 	jnz	short .8
 	push	0x1a
 	push	word 0xbc0e
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 .8:
 	mov	word [0xd6b8], 0x0
@@ -4468,7 +4468,7 @@ Ai_2E42_2946:
 	or	byte [0x29bb], 0x80
 	push	0x2b
 	push	word 0xbc8e
-	call	0x1E7E:0xA74
+	call	0x1E7E:Game_1E7E_0A74
 	add	sp, 0x4
 	mov	word [bp - 0x8], 0x9c40
 	mov	word [bp - 0x6], 0x0
@@ -4531,12 +4531,12 @@ Ai_2E42_2946:
 	jnz	short .26
 	push	0x8
 	push	si
-	call	0x1E7E:0xA74
+	call	0x1E7E:Game_1E7E_0A74
 	add	sp, 0x4
 	push	0x2a
 .22:
 	push	si
-	call	0x1E7E:0xA74
+	call	0x1E7E:Game_1E7E_0A74
 	add	sp, 0x4
 .23:
 	add	si, 0x80
@@ -4581,7 +4581,7 @@ Ai_2E42_2946:
 	inc	word [0xd672]
 	push	0x7
 	push	si
-	call	0x1E7E:0xA74
+	call	0x1E7E:Game_1E7E_0A74
 	add	sp, 0x4
 	push	di
 	push	si
@@ -4791,7 +4791,7 @@ Ai_2E42_2DA8:
 	call	Ai_2E42_2D88
 	cmp	word [0x29da], 0x0
 	jng	short .2
-	call	0x1E7E:0x4
+	call	0x1E7E:Game_1E7E_0004
 .2:
 	push	cs
 	call	Ai_2E42_1A92

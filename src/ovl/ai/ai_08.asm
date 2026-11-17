@@ -1256,7 +1256,7 @@ Ai_2425_0AEA:
 	call	0x03A3:ImulRegs
 	mov	bx, [si + 0x2]
 	sub	bx, [0xd66c]
-	call	0x03A3:0x9E3
+	call	0x03A3:IdivWords.regs
 	add	ax, [si + 0x6]
 	mov	[0xd6b8], ax
 	cmp	ax, 0x105
@@ -1324,7 +1324,7 @@ Ai_2425_0AEA:
 	call	0x03A3:ImulRegs
 	mov	bx, [0xd6b8]
 	sub	bx, [0xd6c0]
-	call	0x03A3:0x9E3
+	call	0x03A3:IdivWords.regs
 	add	ax, [si + 0x2]
 	mov	[0xd6c8], ax
 	cwd

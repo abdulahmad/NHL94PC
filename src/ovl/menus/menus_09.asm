@@ -314,7 +314,7 @@ Menus_25DD_006E:
 	add	sp, 0xa
 	mov	ax, 0x4a
 	mov	dx, 0xff
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	cmp	word [DbSaveMode], 0x0
 	jnz	short .6
 	mov	ax, [0x29ca]
@@ -724,7 +724,7 @@ Menus_25DD_063E:
 	call	0x0FEF:SetClipRectRegs
 	mov	ax, 0x4a
 	mov	dx, 0xff
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	cmp	word [DbSaveMode], 0x1
 	jnz	short .7
 	push	0x52

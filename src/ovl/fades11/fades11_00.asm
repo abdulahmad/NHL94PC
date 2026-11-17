@@ -259,7 +259,7 @@ Fades11_3358_0000:
 .18:
 	mov	ax, 0x1
 	cwd
-	call	0x03A3:0x1A6E
+	call	0x03A3:SetDeadline.regs
 .19:
 	cmp	word [bp - 0x1a], 0x0
 	jz	short .20
@@ -273,7 +273,7 @@ Fades11_3358_0000:
 	push	ax
 	push	di
 	push	word [bp - 0xc]
-	call	0x3349:0x5E
+	call	0x3349:Fades_3349_005E
 	add	sp, 0x8
 	mov	si, [bp - 0xc]
 .20:
@@ -289,7 +289,7 @@ Fades11_3358_0000:
 	push	ax
 	push	di
 	push	word [bp - 0x8]
-	call	0x3349:0x5E
+	call	0x3349:Fades_3349_005E
 	add	sp, 0x8
 	mov	ax, [bp - 0xe]
 	mov	[bp - 0x8], ax
@@ -306,7 +306,7 @@ Fades11_3358_0000:
 	push	ax
 	push	word [bp - 0x10]
 	push	si
-	call	0x3349:0x5E
+	call	0x3349:Fades_3349_005E
 	add	sp, 0x8
 	mov	di, [bp - 0x10]
 .22:
@@ -322,7 +322,7 @@ Fades11_3358_0000:
 	push	ax
 	push	word [bp - 0xa]
 	push	si
-	call	0x3349:0x5E
+	call	0x3349:Fades_3349_005E
 	add	sp, 0x8
 	mov	ax, [bp - 0x16]
 	mov	[bp - 0xa], ax

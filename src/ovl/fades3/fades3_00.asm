@@ -51,7 +51,7 @@ Fades3_3358_0000:
 .4:
 	mov	ax, [bp + 0x8]
 	cwd
-	call	0x03A3:0x1A6E
+	call	0x03A3:SetDeadline.regs
 	mov	ax, [bp - 0x2a]
 	mov	[bp - 0x24], ax
 	mov	word [bp - 0x22], 0xb

@@ -83,7 +83,7 @@ Ai_1FAA_000E:
 	push	word 0x3a0b
 	push	word 0xb352
 	push	0x1
-	call	0x1E7E:0x4C0
+	call	0x1E7E:Game_1E7E_04C0
 	add	sp, 0x8
 	call	0x2352:Ai_2352_0174
 	and	byte [CrowdState], 0xe4
@@ -101,7 +101,7 @@ Ai_1FAA_000E:
 	push	word 0xa8e
 	push	word [0x29cc]
 	push	word [0x29ca]
-	call	0x1E64:0x2
+	call	0x1E64:Game_1E64_0002
 	add	sp, 0x8
 	cmp	word [0x29ca], 0x18
 	jl	short .6
@@ -339,13 +339,13 @@ Ai_1FAA_000E:
 	mov	word [0xbc56], 0x0
 	push	0x18
 	push	word 0xbc0e
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 	mov	word [0xbca0], 0x189
 	mov	word [0xbcd6], 0x0
 	push	0x19
 	push	word 0xbc8e
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 	mov	word [0xbd10], 0xff88
 	mov	word [0xbd14], 0x0
@@ -357,7 +357,7 @@ Ai_1FAA_000E:
 	mov	ax, 0xbd0e
 	mov	[bp - 0xf6], ax
 	push	ax
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 	call	0x2E42:Ai_2E42_1B8E
 	call	0x2E42:Ai_2E42_1B8E
@@ -382,7 +382,7 @@ Ai_1FAA_000E:
 	jz	short .16
 	jmp	near .24
 .16:
-	call	0x1E7E:0x3E8
+	call	0x1E7E:Game_1E7E_03E8
 	mov	[bp - 0xf2], ax
 	db	0x8B, 0xC8		; mov cx, ax
 	shl	ax, 1
@@ -399,7 +399,7 @@ Ai_1FAA_000E:
 	idiv	cx
 	mov	[bp - 0x64], dx
 	push	word [bp - 0xf2]
-	call	0x1E7E:0x404
+	call	0x1E7E:Game_1E7E_0404
 	add	sp, 0x2
 	mov	ax, [0x2998]
 	add	ax, strict word 0x20
@@ -425,7 +425,7 @@ Ai_1FAA_000E:
 .20:
 	push	word [0xd6ce]
 	push	word [0xd6cc]
-	call	0x1F54:0x316
+	call	0x1F54:Game_1F54_0316
 	add	sp, 0x4
 	call	0x0FEF:UseOtherPage
 	mov	ax, 0x140
@@ -452,7 +452,7 @@ Ai_1FAA_000E:
 	push	word 0x3a0b
 	push	word 0xb352
 	push	0x1
-	call	0x1E7E:0x4C0
+	call	0x1E7E:Game_1E7E_04C0
 	add	sp, 0x8
 	mov	ax, [0xd46a]
 	mov	[PadRepeatOn], ax
@@ -492,7 +492,7 @@ Ai_1FAA_000E:
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[PadRepeatOn], ax
 	push	ax
-	call	0x1E7E:0x4C0
+	call	0x1E7E:Game_1E7E_04C0
 	add	sp, 0x8
 	mov	word [0x49f4], 0x0
 	mov	ax, [0xd46a]
@@ -523,7 +523,7 @@ Ai_1FAA_000E:
 	push	word 0x3a0b
 	push	word 0xb352
 	push	0x1
-	call	0x1E7E:0x4C0
+	call	0x1E7E:Game_1E7E_04C0
 	add	sp, 0x8
 	call	0x0EDC:CrowdFadeOut
 	mov	word [CrowdSound], 0x0
@@ -651,7 +651,7 @@ Ai_1FAA_000E:
 	push	word 0xa8e
 	push	word [0x29cc]
 	push	word [0x29ca]
-	call	0x1E64:0x2
+	call	0x1E64:Game_1E64_0002
 	add	sp, 0x8
 	call	0x1B35:OvlThunk140
 	push	word [0xc25e]
@@ -701,7 +701,7 @@ Ai_1FAA_000E:
 	mov	[0x29d4], ax
 	push	0x1e
 	push	word 0xbd0e
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 	call	0x327B:Ai_327B_0B2C
 	mov	word [0x29ce], 0xffff

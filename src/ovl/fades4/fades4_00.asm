@@ -11,7 +11,7 @@ Fades4_3358_0000:
 	jnz	short .1
 	push	word [bp + 0xa]
 	push	word [bp + 0x8]
-	call	0x3349:0x0
+	call	0x3349:Fades_3349_0000
 	add	sp, 0x4
 	pop	si
 	pop	di
@@ -30,7 +30,7 @@ Fades4_3358_0000:
 	mov	ds, ax
 	push	word 0x3946
 	push	strict word 0x0
-	call	0x3349:0x0
+	call	0x3349:Fades_3349_0000
 	add	sp, 0x4
 	push	0x0
 	call	0x0FEF:ClearClipRect
@@ -78,7 +78,7 @@ Fades4_3358_0000:
 	mov	si, [bp + 0x6]
 	push	word 0x3946
 	push	strict word 0x0
-	call	0x3349:0x0
+	call	0x3349:Fades_3349_0000
 	add	sp, 0x4
 	mov	al, [si + 0x62e6]
 	cbw

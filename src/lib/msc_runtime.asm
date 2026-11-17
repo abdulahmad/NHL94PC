@@ -1836,7 +1836,12 @@ _write:
         mov ax, 0x1c00
         jmp short .22
 
-.27:
+;-----------------------------------------------------------------------------
+; _strcat                                                       0000:0C2C  MSC
+; Append a string to another, a word at a time once the end is even.
+; Arguments: destination, source. Returns the destination. Preserves SI and DI.
+;-----------------------------------------------------------------------------
+_strcat:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         db 0x8B, 0xD7                           ; insn: mov dx, di

@@ -549,7 +549,7 @@ Ai_28BB_047E:
 	db	0x8B, 0xC2		; mov ax, dx
 	call	0x03A3:ImulRegs
 	mov	bx, 0x400
-	call	0x03A3:0x9F1
+	call	0x03A3:DivWords.regs
 	mov	[bp - 0x2], ax
 	cmp	ax, 0x100
 	ja	short .4
@@ -558,7 +558,7 @@ Ai_28BB_047E:
 	db	0x8B, 0xD0		; mov dx, ax
 	call	0x03A3:ImulRegs
 	mov	bx, 0x79
-	call	0x03A3:0x9F1
+	call	0x03A3:DivWords.regs
 	add	ax, [bp - 0x2]
 	cmp	ax, 0x100
 	ja	short .4
@@ -585,7 +585,7 @@ Ai_28BB_047E:
 	db	0x8A, 0xE0		; mov ah, al
 	db	0x2A, 0xC0		; sub al, al
 	db	0x8B, 0xDE		; mov bx, si
-	call	0x03A3:0x9E3
+	call	0x03A3:IdivWords.regs
 	mov	[0xd66c], ax
 	mov	ax, [0xd672]
 	cwd
@@ -594,7 +594,7 @@ Ai_28BB_047E:
 	db	0x8A, 0xE0		; mov ah, al
 	db	0x2A, 0xC0		; sub al, al
 	db	0x8B, 0xDE		; mov bx, si
-	call	0x03A3:0x9E3
+	call	0x03A3:IdivWords.regs
 	mov	[0xd672], ax
 	mov	word [0x5a2a], 0x1
 	push	di
@@ -1449,7 +1449,7 @@ Ai_28BB_0B96:
 	shl	ax, 1
 	rcl	dx, 1
 	mov	bx, 0xbb8
-	call	0x03A3:0x9E3
+	call	0x03A3:IdivWords.regs
 	add	ax, [si + 0xe]
 	mov	bx, [0x2990]
 	mov	[bx], ax
@@ -1467,7 +1467,7 @@ Ai_28BB_0B96:
 	shl	ax, 1
 	rcl	dx, 1
 	mov	bx, 0xbb8
-	call	0x03A3:0x9E3
+	call	0x03A3:IdivWords.regs
 	add	ax, [si + 0xc]
 	mov	bx, [0x298c]
 	mov	[bx], ax
@@ -1599,7 +1599,7 @@ Ai_28BB_0E1A:
 	mov	[0x29a8], ax
 	push	0x13
 	push	si
-	call	0x1E7E:0xA74
+	call	0x1E7E:Game_1E7E_0A74
 	add	sp, 0x4
 	push	si
 	call	0x2E42:Ai_2E42_065C
@@ -1696,7 +1696,7 @@ Ai_28BB_0E1A:
 	sub	ax, [bp - 0x6]
 	cwd
 	mov	bx, [bp - 0x14]
-	call	0x03A3:0x9E3
+	call	0x03A3:IdivWords.regs
 	db	0x8B, 0xF0		; mov si, ax
 	db	0x0B, 0xF6		; or si, si
 	jnl	short .4
@@ -1785,14 +1785,14 @@ Ai_28BB_0E1A:
 	call	0x2E42:Ai_2E42_000A
 	imul	bx, si, 0x78
 	db	0x8B, 0xF3		; mov si, bx
-	call	0x03A3:0x9E3
+	call	0x03A3:IdivWords.regs
 	mov	bx, [0x298c]
 	mov	[bx], ax
 	mov	ax, [0xd672]
 	mov	dx, [0xd674]
 	call	0x2E42:Ai_2E42_000A
 	db	0x8B, 0xDE		; mov bx, si
-	call	0x03A3:0x9E3
+	call	0x03A3:IdivWords.regs
 	mov	bx, [0x2990]
 	mov	[bx], ax
 	pop	si
@@ -2199,7 +2199,7 @@ Ai_28BB_141E:
 	mov	[si + 0x28], ax
 	push	0x12
 	push	si
-	call	0x1E7E:0xA5C
+	call	0x1E7E:Game_1E7E_0A5C
 	add	sp, 0x4
 	pop	si
 	leave
@@ -4052,7 +4052,7 @@ Ai_28BB_24BE:
 	sub	ax, [bp - 0x16]
 	sbb	dx, [bp - 0x14]
 	mov	bx, [bp - 0x2]
-	call	0x03A3:0x9E3
+	call	0x03A3:IdivWords.regs
 	db	0x8B, 0xF0		; mov si, ax
 	push	word [bp - 0x8]
 	push	word [bp - 0xa]
@@ -4074,7 +4074,7 @@ Ai_28BB_24BE:
 	sub	ax, [bp - 0x1a]
 	sbb	dx, [bp - 0x18]
 	mov	bx, [bp - 0x2]
-	call	0x03A3:0x9E3
+	call	0x03A3:IdivWords.regs
 	db	0x03, 0xF0		; add si, ax
 	db	0x8B, 0xC6		; mov ax, si
 	cwd
@@ -4336,14 +4336,14 @@ Ai_28BB_2630:
 	mov	dx, [bp - 0xe]
 	call	0x03A3:ImulRegs
 	mov	bx, [bp - 0x4]
-	call	0x03A3:0x9E3
+	call	0x03A3:IdivWords.regs
 	mov	bx, [0x298c]
 	mov	[bx], ax
 	imul	ax, [0x29a6], 0x3b
 	mov	dx, [bp - 0xc]
 	call	0x03A3:ImulRegs
 	mov	bx, [bp - 0x4]
-	call	0x03A3:0x9E3
+	call	0x03A3:IdivWords.regs
 	mov	bx, [0x2990]
 	mov	[bx], ax
 	cmp	word [bp - 0x6], 0x0
@@ -4356,13 +4356,13 @@ Ai_28BB_2630:
 	call	0x03A3:MulRegs
 	mov	bx, [bp - 0x4]
 	db	0x8B, 0xF3		; mov si, bx
-	call	0x03A3:0x9F1
+	call	0x03A3:DivWords.regs
 	mov	[bp - 0x6], ax
 	db	0x8B, 0xC6		; mov ax, si
 	mov	dx, 0xb33
 	call	0x03A3:MulRegs
 	mov	bx, [0x29a6]
-	call	0x03A3:0x9F1
+	call	0x03A3:DivWords.regs
 	add	[bp - 0x6], ax
 	cmp	word [bp - 0x6], 0x1800
 	ja	short .24
@@ -4616,7 +4616,7 @@ Ai_28BB_2A54:
 	db	0x8A, 0xE0		; mov ah, al
 	db	0x2A, 0xC0		; sub al, al
 	mov	bx, [0xd6c0]
-	call	0x03A3:0x9E3
+	call	0x03A3:IdivWords.regs
 	mov	[0xd66c], ax
 	mov	ax, [0xd672]
 	cwd
@@ -4625,7 +4625,7 @@ Ai_28BB_2A54:
 	db	0x8A, 0xE0		; mov ah, al
 	db	0x2A, 0xC0		; sub al, al
 	mov	bx, [0xd6c0]
-	call	0x03A3:0x9E3
+	call	0x03A3:IdivWords.regs
 	mov	[0xd672], ax
 	push	word [bp + 0x6]
 	push	cs
@@ -5480,7 +5480,7 @@ Ai_28BB_319A:
 	mov	ax, [0xd6c8]
 	call	0x03A3:ImulRegs
 	mov	bx, [0xd672]
-	call	0x03A3:0x9E3
+	call	0x03A3:IdivWords.regs
 	mov	[0xd66c], ax
 	mov	[0xd672], ax
 	mov	dx, [bp - 0x2]
