@@ -96,7 +96,13 @@ str_ReturnToGame:                               ; string 'Return To Game'
 str_SaveGame:                                   ; string 'Save Game ...'
         db 'Save Game ...', 0x00
 str_SportsDesk:                                 ; string 'Sports Desk'
-        db 'Sports Desk', 0x00, 'Sports Central', 0x00, 'Playoff Tree', 0x00, 'League Calendar', 0x00
+        db 'Sports Desk', 0x00
+str_SportsCentral:                              ; string 'Sports Central'
+        db 'Sports Central', 0x00
+str_PlayoffTree:                                ; string 'Playoff Tree'
+        db 'Playoff Tree', 0x00
+str_LeagueCalendar:                             ; string 'League Calendar'
+        db 'League Calendar', 0x00
 str_Exit_2:                                     ; string 'Exit'
         db 'Exit', 0x00
 str_GoToReplay:                                 ; string 'Go To Replay ...'
@@ -235,8 +241,19 @@ str_StatisticsType_2:                           ; string 'Statistics Type'
 str_ReturnTo:                                   ; string 'Return To'
         db 'Return To', 0x00
 str_SportsDesk_2:                               ; string 'Sports Desk'
-        db 'Sports Desk', 0x00, 'Sports Central', 0x00, 'League Calendar', 0x00, 'Playoff Tree', 0x00
-        db 'Broadcast Booth', 0x00, 'Intermission Desk', 0x00, 'Ron Barr at Rink Level', 0x00
+        db 'Sports Desk', 0x00
+str_SportsCentral_2:                            ; string 'Sports Central'
+        db 'Sports Central', 0x00
+str_LeagueCalendar_2:                           ; string 'League Calendar'
+        db 'League Calendar', 0x00
+str_PlayoffTree_2:                              ; string 'Playoff Tree'
+        db 'Playoff Tree', 0x00
+str_BroadcastBooth:                             ; string 'Broadcast Booth'
+        db 'Broadcast Booth', 0x00
+str_IntermissionDesk:                           ; string 'Intermission Desk'
+        db 'Intermission Desk', 0x00
+str_RonBarrAtRinkLevel:                         ; string 'Ron Barr at Rink Level'
+        db 'Ron Barr at Rink Level', 0x00
         db 'Return to', 0x00, 'Game', 0x00, 'Play', 0x00, 'Cancel', 0x00
 str_ReturnTo_2:                                 ; string 'Return To'
         db 'Return To', 0x00

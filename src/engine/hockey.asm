@@ -2546,7 +2546,7 @@ defaultsprites_0:
         push si
         push cs
         call ClearSortCords
-        mov ax, 0x0
+        mov ax, ObjectTable
         mov cx, 0x3863
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov [bp - 0x8], cx

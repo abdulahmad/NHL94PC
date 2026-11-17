@@ -74,6 +74,7 @@ EliminatedTeamText2		equ	0x113
 ExportDbsThunk		equ	0x2639
 FadePaletteInThunk		equ	0x20D5
 FatalError		equ	0x3E4
+FileDialogHitRects		equ	0x0
 FileDlgListBox		equ	0x40
 FileDlgSpec2		equ	0xEDE
 FileDlgSpec3		equ	0xEE0
@@ -199,6 +200,7 @@ PlayHilightThunk		equ	0x2413
 PlayJingle		equ	0x5F8
 PlayLeagueGameThunk		equ	0x262F
 PlayerStatsMenuBar		equ	0x164A
+PlayoffDialogHitRects		equ	0x0
 PlayoffModeLoopThunk		equ	0x203F
 PlayoffTreeMenuBar		equ	0x19BA
 PostGameToTeamDbThunk		equ	0x24B3
@@ -651,6 +653,7 @@ str_Err3_2		equ	0x1250
 str_Err3_3		equ	0x1241
 str_Exhgame2		equ	0x1177
 str_Exhibition		equ	0x1448
+str_ExhibitionGameCalled		equ	0x98
 str_Extra		equ	0xCD6
 str_Forward		equ	0xC56
 str_Forward_2		equ	0xC47
@@ -692,6 +695,8 @@ str_Kms_2		equ	0x103D
 str_Kms_3		equ	0x1021
 str_LaAtMtl		equ	0x110
 str_League		equ	0x145C
+str_LeagueCalendar		equ	0x306
+str_LeagueCalled		equ	0xB0
 str_Line1		equ	0xCA5
 str_Line1_2		equ	0xC31
 str_Line2		equ	0xCB4
@@ -767,10 +772,12 @@ str_Penalty_2		equ	0xC65
 str_Plaque_2		equ	0xC1C
 str_Play1		equ	0xC89
 str_Play2		equ	0xC96
+str_PlayOffSeriesCalled		equ	0xBF
 str_Player_3		equ	0xA62
 str_Player_4		equ	0xD21
 str_Playoff		equ	0x1454
 str_PlayoffStandings		equ	0x1410
+str_PlayoffTree		equ	0x2F9
 str_Playoffs		equ	0x11FA
 str_PleaseEnterNewPlayOffName		equ	0x1217
 str_Pnt2_11		equ	0x13D0
@@ -829,6 +836,7 @@ str_Slapshot_2		equ	0x1026
 str_Snd_2		equ	0x105E
 str_Sound		equ	0x1015
 str_Space2		equ	0x133F
+str_SportsCentral		equ	0x2EA
 str_Star		equ	0xBA8
 str_Summary_4		equ	0xB3A
 str_TeamsDb		equ	0xA4A

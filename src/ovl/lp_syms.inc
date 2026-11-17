@@ -211,9 +211,11 @@ StatsMenuLoopThunk		equ	0x246D
 StopJingle		equ	0x5B8
 TeamPalette1		equ	0xB0C4
 TeamPalette2		equ	0xB1C4
+TeamSelMenuBar		equ	0x10BA
 TextWidth		equ	0xBFA
 TextWidthAll		equ	0xC0A
 TextWidthFar		equ	0x2
+TradeHitRects		equ	0x0
 TradeLinesMenu		equ	0x15F2
 TradeMenu		equ	0x1163
 TradeRemapTable		equ	0x80

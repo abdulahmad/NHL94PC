@@ -10,7 +10,9 @@ GetInputEvent		equ	0xE
 SetTextColors		equ	0x24
 AllocRecData		equ	0x30
 InputShutdown		equ	0x4C
+msgCustomOrOriginal		equ	0x5B
 FlushInputEvents		equ	0x66
+btnsCustomOriginal		equ	0x67
 FillRect		equ	0x136
 DrawShadowText		equ	0x166
 UseCurrentPage		equ	0x1A6
@@ -28,6 +30,7 @@ str_Pointer_2		equ	0x9FE
 str_Dbox		equ	0xA06
 str_Pointer_3		equ	0xA0B
 str_Db_2		equ	0xBAF
+str_Org		equ	0xBB3
 SetCharPtr.regs		equ	0xC56
 _atoi		equ	0xCE2
 __aFldiv		equ	0x118C

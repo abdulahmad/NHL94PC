@@ -280,6 +280,7 @@ str_Addsort_2		equ	0x2663
 str_AttDb		equ	0x1FAE
 str_Bkgd		equ	0x1FF0
 str_Bkgd_10		equ	0xA40
+str_BroadcastBooth		equ	0x938
 str_CampbellConference		equ	0x2586
 str_CampbellConference_2		equ	0x2533
 str_Career		equ	0x23AE
@@ -329,6 +330,7 @@ str_Gstat		equ	0x289D
 str_Gstat_2		equ	0x2291
 str_Gstat_3		equ	0x224A
 str_Gstat_4		equ	0x219D
+str_IntermissionDesk		equ	0x948
 str_KeyDb		equ	0x28AB
 str_KeyDb_2		equ	0x23F8
 str_Keys		equ	0x2892
@@ -340,6 +342,7 @@ str_L_2		equ	0x2454
 str_L_3		equ	0x23C6
 str_L_4		equ	0x2101
 str_L_5		equ	0x20D5
+str_LeagueCalendar_2		equ	0x91B
 str_LeftWing		equ	0x236D
 str_Lssched		equ	0xB95
 str_Menubuff		equ	0x1EC5
@@ -387,6 +390,7 @@ str_Plane3_2		equ	0x2184
 str_Plane3_3		equ	0x2140
 str_PlayOffs		equ	0x146
 str_Player_2		equ	0x28B9
+str_PlayoffTree_2		equ	0x92B
 str_PlusMinus2		equ	0x2395
 str_PlusMinus3		equ	0x242F
 str_Pnt2		equ	0x1EBB
@@ -424,6 +428,7 @@ str_R_2		equ	0x2105
 str_Ratings		equ	0x23B6
 str_Ratings_2		equ	0x20ED
 str_RightWing		equ	0x2377
+str_RonBarrAtRinkLevel		equ	0x95A
 str_SRoster		equ	0x23FF
 str_SS_3		equ	0x2354
 str_SS_4		equ	0x20B4
@@ -440,6 +445,7 @@ str_Shots		equ	0x2425
 str_Shots_2		equ	0x23A2
 str_So		equ	0x20DB
 str_Space3		equ	0x25AE
+str_SportsCentral_2		equ	0x90C
 str_Standings		equ	0x257B
 str_Standings_2		equ	0x2528
 str_StatsUnavailable		equ	0x28C8

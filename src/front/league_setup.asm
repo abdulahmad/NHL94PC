@@ -1454,7 +1454,7 @@ LeagueTeamSelect:
         push word [bp - 0x7e]
         push word [bp - 0x6]
         push word [bp - 0x76]
-        mov ax, 0x10ba
+        mov ax, TeamSelMenuBar
         mov cx, 0x3701
         mov [bp - 0xe4], ax
         mov [bp - 0xe2], cx

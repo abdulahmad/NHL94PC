@@ -14,9 +14,11 @@ str_Custom:                                     ; string 'Custom'
         db 'Custom', 0x00
 str_Original:                                   ; string 'Original'
         db 'Original', 0x00
+msgCustomOrOriginal:                            ; message lines of the custom or original teams box
         dw str_DoYouWishToUse, 0x3701
         dw str_CustomNhlTeamsOrThe, 0x3701
         dw str_OriginalNhlTeams, 0x3701
+btnsCustomOriginal:                             ; Custom and Original buttons of that box
         db 0x08, 0x00, 0x28, 0x00, 0x30, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x05, 0x00
         dw str_Custom, 0x3701
         db 0xF8, 0xFF, 0x28, 0x00, 0x30, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x06, 0x00
@@ -445,6 +447,7 @@ str_S:                                          ; string '%s'; used by LP
         db 0x25, 0x73, 0x00
 str_Db_2:                                       ; string '.DB'; used by INIT, LP, MENUS, STATS
         db '.DB', 0x00
+str_Org:                                        ; string '.ORG'
         db '.ORG', 0x00
 str_Nsh:                                        ; string '.NSH'; used by STATS
         db '.NSH', 0x00
@@ -677,7 +680,9 @@ itemDone:                                       ; menu item record (box, text, h
 str_Select:                                     ; string 'Select'
         db 'Select', 0x00
 str_Settings_4:                                 ; string 'Settings'
-        db 'Settings', 0x00, 0x00, 0x00, 0x00, 0x00, 0x21, 0x00, 0x09, 0x00
+        db 'Settings', 0x00
+TeamSelMenuBar:                                 ; menu bar of the team select screen (Select, Settings)
+        db 0x00, 0x00, 0x00, 0x00, 0x21, 0x00, 0x09, 0x00
         dw str_Select, 0x3701
         db 0x00, 0x00, 0x00, 0x00
         dw itemDone, 0x3701

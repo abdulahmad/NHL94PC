@@ -2,8 +2,9 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
-FindNearestColor		equ	0x2
+FontTable		equ	0x0
 DrawTextCenteredInWindow		equ	0x2
+FindNearestColor		equ	0x2
 DrawFrame		equ	0x4
 FreeCanvas		equ	0xC
 SetCanvas		equ	0x48

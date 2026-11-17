@@ -514,7 +514,7 @@ GetSeasonTitle:
         mov es, [segSeasonTitles1]
         cmp byte [es:titleSeason], 0x1
         jnz short .2
-        mov ax, 0x2
+        mov ax, titleSeason + 2
         mov cx, 0x384b
 .1:
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -526,21 +526,21 @@ GetSeasonTitle:
         mov es, [segSeasonTitles2]
         cmp byte [es:titlePlayoffs], 0x1
         jnz short .3
-        mov ax, 0x15
+        mov ax, titlePlayoffs + 2
         mov cx, 0x384b
         jmp short .6
 .3:
         mov es, [segSeasonTitles3]
         cmp byte [es:titleLeagueSeason], 0x1
         jnz short .4
-        mov ax, 0x2b
+        mov ax, titleLeagueSeason + 2
         mov cx, 0x384b
         jmp short .1
 .4:
         mov es, [segSeasonTitles4]
         cmp byte [es:titleLeagueSeasonPlayoffs], 0x1
         jnz short .5
-        mov ax, 0x3f
+        mov ax, titleLeagueSeasonPlayoffs + 2
         mov cx, 0x384b
         jmp short .6
 .5:
@@ -549,7 +549,7 @@ GetSeasonTitle:
         mov es, [segSeasonTitles5]
         cmp byte [es:titleLeaguePlayoffs], 0x1
         jnz short .7
-        mov ax, 0x5d
+        mov ax, titleLeaguePlayoffs + 2
         mov cx, 0x384b
 .6:
         db 0x8B, 0xF0                           ; insn: mov si, ax

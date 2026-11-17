@@ -235,7 +235,7 @@ SaveGame:
         push 0x0
         push 0x2
         push word 0x35e8                        ; segment of the save messages far data
-        push strict word 0x2b
+        push strict word msgSavingLeagueGame
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -260,7 +260,7 @@ SaveGame:
         push 0x0
         push 0x2
         push word 0x35e8                        ; segment of the save messages far data
-        push strict word 0x33
+        push strict word msgSavingPlayoffGame
         push -0x1
         push -0x1
         call 0x0D90:MessageBox

@@ -22,10 +22,10 @@ AskYesNo:
         push ax
         push 0x2
         push word 0x3701                        ; segment of the team choice text far data
-        push strict word 0x67
+        push strict word btnsCustomOriginal
         push 0x3
         push word 0x3701                        ; segment of the team choice text far data
-        push strict word 0x5b
+        push strict word msgCustomOrOriginal
         push -0x1
         push -0x1
         push cs
@@ -34,7 +34,7 @@ AskYesNo:
         mov [bp - 0x2], ax
         cmp ax, strict word 0x1
         jnz short .1
-        mov ax, 0xbb3
+        mov ax, str_Org
         mov dx, 0x3701                          ; segment of the team choice text far data
         jmp short .2
         db 0x90

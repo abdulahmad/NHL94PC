@@ -515,42 +515,42 @@ SetStatsMenuTextJumpTable:                      ; jump table of SetStatsMenuText
         mov cx, [bp - 0xa]
         jmp short .8
 .2:
-        mov ax, 0x90c
+        mov ax, str_SportsCentral_2
         mov dx, 0x3448
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         mov [bp - 0x8], dx
         mov bx, 0x46
         jmp short .8
 .3:
-        mov ax, 0x92b
+        mov ax, str_PlayoffTree_2
         mov dx, 0x3448
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         mov [bp - 0x8], dx
         mov bx, 0x3f
         jmp short .8
 .4:
-        mov ax, 0x91b
+        mov ax, str_LeagueCalendar_2
         mov dx, 0x3448
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         mov [bp - 0x8], dx
         mov bx, 0x4d
         jmp short .8
 .5:
-        mov ax, 0x938
+        mov ax, str_BroadcastBooth
         mov dx, 0x3448
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         mov [bp - 0x8], dx
         mov bx, 0x50
         jmp short .8
 .6:
-        mov ax, 0x948
+        mov ax, str_IntermissionDesk
         mov dx, 0x3448
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         mov [bp - 0x8], dx
         mov bx, 0x51
         jmp short .8
 .7:
-        mov ax, 0x95a
+        mov ax, str_RonBarrAtRinkLevel
         mov dx, 0x3448
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         mov [bp - 0x8], dx

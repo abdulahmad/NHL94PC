@@ -1569,7 +1569,7 @@ TradeHitTest:
         cmp dx, 0xe0
         jnl short .5
         db 0x2B, 0xFF                           ; insn: sub di, di
-        mov bx, 0x0
+        mov bx, TradeHitRects
         mov ax, 0x382b
         mov es, ax
 .1:

@@ -66,7 +66,7 @@ AskYesNoBox:
         call 0x03A3:SaveCharTab
         pop bx
         push word 0x39ad                        ; segment of the font table far data
-        push strict word 0x0
+        push strict word FontTable
         call 0x03A3:UseCharSeg
         add sp, 0x4
         mov ax, [bp + 0x6]
@@ -254,7 +254,7 @@ PauseBox:
         call 0x03A3:SaveCharTab
         pop bx
         push word 0x39ad                        ; segment of the font table far data
-        push strict word 0x0
+        push strict word FontTable
         call 0x03A3:UseCharSeg
         add sp, 0x4
         mov ax, [bp - 0x2]

@@ -6,7 +6,9 @@ exhstate		equ	0x0
 LoadRawHeader		equ	0x2
 LoadPackedHeader		equ	0x8
 GetInputEvent		equ	0xE
+msgSavingLeagueGame		equ	0x2B
 AllocRecData		equ	0x30
+msgSavingPlayoffGame		equ	0x33
 BuildPathFar		equ	0x3E
 FlushInputEvents		equ	0x66
 postate_b55		equ	0xB7

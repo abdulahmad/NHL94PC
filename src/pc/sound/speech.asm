@@ -1755,13 +1755,13 @@ NumberSampleNames:
         db 0x0B, 0xD2                           ; insn: or dx, dx
         jnz short .2
         push word 0x342f                        ; segment of the number words far data
-        push strict word 0x1
+        push strict word str_Zero
         push ds
         push word [bp + 0x8]
         call 0x0000:_fstrcpy
         add sp, 0x8
         push word 0x342f                        ; segment of the number words far data
-        push strict word 0x0
+        push strict word str_NoNumber
 .1:
         mov ax, [bp + 0x8]
         add ax, strict word 0xd

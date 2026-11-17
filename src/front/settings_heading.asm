@@ -121,7 +121,7 @@ SetModeMenuLabels:
         push strict word str_XSettings
         call 0x0000:_fstrcpy
         db 0x8B, 0xE5                           ; insn: mov sp, bp
-        mov ax, 0x2ea
+        mov ax, str_SportsCentral
         mov cx, 0x3448
         jmp short .4
 .2:
@@ -137,7 +137,7 @@ SetModeMenuLabels:
         push strict word str_XxxxSettings
         call 0x0000:_fstrcpy
         db 0x8B, 0xE5                           ; insn: mov sp, bp
-        mov ax, 0x2f9
+        mov ax, str_PlayoffTree
         mov cx, 0x3448
         jmp short .4
 .3:
@@ -152,7 +152,7 @@ SetModeMenuLabels:
         push word 0x3448
         push strict word str_Settings
         call 0x0000:_fstrcpy
-        mov ax, 0x306
+        mov ax, str_LeagueCalendar
         mov cx, 0x3448
 .4:
         mov es, [segMenuText12]

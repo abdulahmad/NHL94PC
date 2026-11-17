@@ -194,7 +194,7 @@ SoundCardHitTest:
         sub di, 0xa
         sub word [bp + 0x8], 0xa
         db 0x2B, 0xC9                           ; insn: sub cx, cx
-        mov bx, 0x0
+        mov bx, PlayoffDialogHitRects
         mov [bp + 0x6], di
         mov ax, 0x36a8
         mov ds, ax

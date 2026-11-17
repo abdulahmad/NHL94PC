@@ -1,5 +1,6 @@
 ; Far data, paragraph 382Bh, 176 bytes: trade screen messages. The EXE's own code does not use it
 ; (the overlays probably do).
+TradeHitRects:                                  ; hit rectangles of the trade screen boxes (x1, y1, x2, y2)
         db 0x73, 0x00, 0x40, 0x00, 0x73, 0x00, 0x78, 0x00, 0xB4, 0x00, 0x40, 0x00, 0xB4, 0x00, 0x78, 0x00
 str_ThereMustBeAnEqual:                         ; string 'There must be an equal'
         db 'There must be an equal', 0x00

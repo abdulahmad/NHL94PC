@@ -2,6 +2,8 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
+str_NoNumber		equ	0x0
+str_Zero		equ	0x1
 InsertRecWrap		equ	0x13
 AllocRecData		equ	0x30
 DrvShutdown		equ	0x178

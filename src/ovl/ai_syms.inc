@@ -135,6 +135,7 @@ NumberFramesSeg		equ	0xD448
 OOlist		equ	0xD4F4
 OOlist_b1		equ	0xD4F5
 OOlist_m1		equ	0xD4F3
+ObjectTable		equ	0x0
 OneTimerDirs		equ	0x5B66
 OneTimerDirs2		equ	0x5B67
 OpenReadWriteShared		equ	0x3FA

@@ -1021,7 +1021,7 @@ FileDlgHitTest:
         sub di, 0xa
         sub word [bp + 0x8], 0xa
         db 0x2B, 0xC9                           ; insn: sub cx, cx
-        mov bx, 0x0
+        mov bx, FileDialogHitRects
         mov [bp + 0x6], di
         mov ax, 0x369a
         mov ds, ax
@@ -1946,19 +1946,19 @@ DeleteSavedGame:
         mov word [bp - 0x6], 0x64
         cmp word [fdlgtab], 0x0
         jnz short .1
-        mov ax, 0x98
+        mov ax, str_ExhibitionGameCalled
         mov dx, 0x369a
         jmp short .3
         db 0x90
 .1:
         cmp word [fdlgtab], 0x1
         jnz short .2
-        mov ax, 0xbf
+        mov ax, str_PlayOffSeriesCalled
         mov dx, 0x369a
         jmp short .3
         db 0x90
 .2:
-        mov ax, 0xb0
+        mov ax, str_LeagueCalled
         mov dx, 0x369a
 .3:
         mov [DelFileName], ax

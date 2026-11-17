@@ -1,6 +1,8 @@
 ; Far data, paragraph 342Fh, 400 bytes: numbers written as words for the announcer. Used by NumberSampleNames.
 str_NoNumber:                                   ; empty string
-        db 0x00, 'zero', 0x00
+        db 0x00
+str_Zero:                                       ; string 'zero'
+        db 'zero', 0x00
 str_One:                                        ; string 'one'
         db 'one', 0x00
 str_Two:                                        ; string 'two'
