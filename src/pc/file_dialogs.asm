@@ -2487,7 +2487,7 @@ SelectSavedFile:
         mov word [es:itemExportDatabases + 0xE], 0x1b35
         mov word [es:itemNextLeagueGame + 0xC], strict word MenuNextLeagueGameThunk
         mov word [es:itemNextLeagueGame + 0xE], 0x1b35
-        mov word [es:itemLeagueManager + 0x10], 0xd86
+        mov word [es:itemLeagueManager + 0x10], itemMergeLeagueFiles
         mov word [es:itemLeagueManager + 0x12], 0x3448
 .10:
         mov ax, [bp - 0x2]

@@ -1228,7 +1228,7 @@ UpdateTeamDbs:
         mov es, [segTeamChoiceText46]
         mov [es:msgTheLeague3 + 0x4], ax
         mov [es:msgTheLeague3 + 0x6], ss
-        mov word [es:msgTheLeague3 + 0x8], 0x84d
+        mov word [es:msgTheLeague3 + 0x8], str_HasNotBeenMerged
         mov word [es:msgTheLeague3 + 0xA], 0x3701
         lea ax, [bp - 0x2]
         push ax
@@ -1928,7 +1928,7 @@ MergeLeagueFiles:
         mov es, [segTeamChoiceText46]
         mov [es:msgTheLeague3 + 0x4], ax
         mov [es:msgTheLeague3 + 0x6], ss
-        mov word [es:msgTheLeague3 + 0x8], 0x83a
+        mov word [es:msgTheLeague3 + 0x8], str_IsAlreadyMerged
         mov word [es:msgTheLeague3 + 0xA], 0x3701
         lea ax, [bp - 0x3e]
         push ax

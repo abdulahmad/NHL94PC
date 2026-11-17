@@ -419,7 +419,9 @@ DeskMenuBar:                                    ; menu bar of the sports desk (n
         dw str_Statistics, 0x3448
         db 0x00, 0x00, 0x00, 0x00
         dw itemStatisticsType, 0x3448
-        db 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0xAD, 0x00
+        db 0x05, 0x00
+itemMergeLeagueFiles:                           ; menu item record (box, text, handler, submenu)
+        db 0x00, 0x00, 0x00, 0x00, 0xAD, 0x00
         db 0x08, 0x00
         dw str_MergeLeagueFiles, 0x3448
         dw MenuMergeLeagueFilesThunk, 0x1B35

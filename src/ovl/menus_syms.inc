@@ -406,6 +406,7 @@ itemGoToReplay		equ	0x1190
 itemHomeTeam		equ	0x1164
 itemHomeTeamGoalie		equ	0x109E
 itemLeagueManager		equ	0xB8C
+itemMergeLeagueFiles		equ	0xD86
 itemNextLeagueGame		equ	0xB76
 itemNextPlayOffGame		equ	0xBCE
 itemPlayNextGame		equ	0x18C8
@@ -547,6 +548,7 @@ str_1111		equ	0xB0E
 str_2222		equ	0xB13
 str_30Bgp		equ	0xFBC
 str_Adlib		equ	0xFFA
+str_Adlib_2		equ	0x6C
 str_AdtitleCfg		equ	0xB70
 str_AdtitleCfg_2		equ	0xAD4
 str_AdtitleKms		equ	0xB64
@@ -615,6 +617,8 @@ str_Desk_7		equ	0x15FF
 str_Desk_8		equ	0x15EC
 str_Desk_9		equ	0x15D9
 str_Dialogbx		equ	0xEF2
+str_DoYouWishToExit		equ	0x9E
+str_DoYouWishToReturn		equ	0x87
 str_Dot		equ	0xBF4
 str_Dress		equ	0xD1B
 str_Eadesk1d		equ	0x14E8
@@ -654,6 +658,7 @@ str_Err3_3		equ	0x1241
 str_Exhgame2		equ	0x1177
 str_Exhibition		equ	0x1448
 str_ExhibitionGameCalled		equ	0x98
+str_ExitingTheGame		equ	0x5B
 str_Extra		equ	0xCD6
 str_Forward		equ	0xC56
 str_Forward_2		equ	0xC47
@@ -714,6 +719,7 @@ str_Menubuff_7		equ	0x1573
 str_Menubuff_8		equ	0x1506
 str_Menubuff_9		equ	0x1407
 str_Mt32		equ	0x1004
+str_Mt32_2		equ	0x72
 str_Mt32hock		equ	0x1050
 str_Mt32hock_2		equ	0x1042
 str_Mtl_2		equ	0x117
@@ -798,6 +804,9 @@ str_Power		equ	0xC90
 str_Power_2		equ	0xC83
 str_Pstat_6		equ	0xD97
 str_Qpp		equ	0xBD0
+str_ReturningToSportsCentral		equ	0x0
+str_ReturningToTheLeagueCalendar		equ	0x1C
+str_ReturningToThePlayoffTree		equ	0x3D
 str_RockditiCfg		equ	0xB89
 str_RockditiKms		equ	0xB7C
 str_S1Fnt_6		equ	0xB33
@@ -835,6 +844,7 @@ str_Slapshot		equ	0x1034
 str_Slapshot_2		equ	0x1026
 str_Snd_2		equ	0x105E
 str_Sound		equ	0x1015
+str_SoundBlaster		equ	0x5F
 str_Space2		equ	0x133F
 str_SportsCentral		equ	0x2EA
 str_Star		equ	0xBA8

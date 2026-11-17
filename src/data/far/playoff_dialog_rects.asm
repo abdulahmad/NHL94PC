@@ -8,7 +8,13 @@ PlayoffDialogHitRects:                          ; hit rectangles of the play-off
 str_CouldNotFindA:                              ; string 'Could not find a'
         db 'Could not find a', 0x00
 str_CardInThisMachine:                          ; string 'card in this machine!'
-        db 'card in this machine!', 0x00, 'SoundBlaster', 0x00, 'Adlib', 0x00, 'MT32', 0x00
+        db 'card in this machine!', 0x00
+str_SoundBlaster:                               ; string 'SoundBlaster'
+        db 'SoundBlaster', 0x00
+str_Adlib_2:                                    ; string 'Adlib'
+        db 'Adlib', 0x00
+str_Mt32_2:                                     ; string 'MT32'
+        db 'MT32', 0x00
 msgCouldNotFindA:                               ; message list of 1 far string pointer: 'Could not find a';
                                                 ; used by MENUS
         dw str_CouldNotFindA, 0x36A8

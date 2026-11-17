@@ -1465,21 +1465,21 @@ DeskReturnConfirm:
         db 0x90
 .1:
         mov es, [segReturnMessages1]
-        mov word [es:dlgReturnMessages], 0x0
+        mov word [es:dlgReturnMessages], str_ReturningToSportsCentral
         mov word [es:dlgReturnMessages + 0x2], 0x36f5
         jmp short .4
 .2:
         mov es, [segReturnMessages1]
-        mov word [es:dlgReturnMessages], 0x3d
+        mov word [es:dlgReturnMessages], str_ReturningToThePlayoffTree
         mov word [es:dlgReturnMessages + 0x2], 0x36f5
         jmp short .4
 .3:
         mov es, [segReturnMessages1]
-        mov word [es:dlgReturnMessages], 0x1c
+        mov word [es:dlgReturnMessages], str_ReturningToTheLeagueCalendar
         mov word [es:dlgReturnMessages + 0x2], 0x36f5
 .4:
         mov es, [segReturnMessages1]
-        mov word [es:dlgReturnMessages + 0x8], 0x87
+        mov word [es:dlgReturnMessages + 0x8], str_DoYouWishToReturn
         mov word [es:dlgReturnMessages + 0xA], 0x36f5
         push 0x0
         push 0x11
@@ -1540,9 +1540,9 @@ DeskExitGame:
         call 0x03A3:MouseRead
         add sp, 0x6
         mov es, [segReturnMessages1]
-        mov word [es:dlgReturnMessages], 0x5b
+        mov word [es:dlgReturnMessages], str_ExitingTheGame
         mov word [es:dlgReturnMessages + 0x2], 0x36f5
-        mov word [es:dlgReturnMessages + 0x8], 0x9e
+        mov word [es:dlgReturnMessages + 0x8], str_DoYouWishToExit
         mov word [es:dlgReturnMessages + 0xA], 0x36f5
         push 0x0
         push 0x11

@@ -206,7 +206,10 @@ dlgAskExport:                                   ; MessageBox definition used by 
 str_TheLeague:                                  ; string 'The league'
         db 'The league', 0x00
 str_BeforeAGameCanBe:                           ; string 'before a game can be played!'
-        db 'before a game can be played!', 0x00, 'must be imported from the disk for', 0x00
+        db 'before a game can be played!', 0x00
+str_MustBeImportedFromThe:                      ; string 'must be imported from the disk for'
+        db 'must be imported from the disk for', 0x00
+str_MustBeExportedToThe:                        ; string 'must be exported to the disk for'
         db 'must be exported to the disk for', 0x00
 msgTheLeague:                                   ; message list of 1 far string pointer: 'The league'; used by
                                                 ; LP
@@ -301,7 +304,11 @@ msgCanNotImportMasterLeague:                    ; message list of 2 far string p
         dw str_CanNotImportMasterLeague, 0x3701
         dw str_TheLeagueAlreadyExists, 0x3701
 str_TheLeague_3:                                ; string 'The league'
-        db 'The league', 0x00, 'is already merged.', 0x00, 'has not been merged.', 0x00
+        db 'The league', 0x00
+str_IsAlreadyMerged:                            ; string 'is already merged.'
+        db 'is already merged.', 0x00
+str_HasNotBeenMerged:                           ; string 'has not been merged.'
+        db 'has not been merged.', 0x00
 msgTheLeague3:                                  ; message list of 1 far string pointer: 'The league'; used by
                                                 ; LP
         dw str_TheLeague_3, 0x3701

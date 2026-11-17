@@ -2225,7 +2225,7 @@ CheckLeagueDiskSync:
         test byte [bp - 0x34], 0x1
         jz short .13
         les bx, [bp - 0xae]
-        mov word [es:bx], 0x5b4
+        mov word [es:bx], str_MustBeExportedToThe
         mov word [es:bx + 0x2], 0x3701
         jmp short .12
 .10:
@@ -2258,7 +2258,7 @@ CheckLeagueDiskSync:
         test byte [es:di + 0x16], 0x2
         jz short .13
         les bx, [bp - 0xae]
-        mov word [es:bx], 0x591
+        mov word [es:bx], str_MustBeImportedFromThe
         mov word [es:bx + 0x2], 0x3701
 .12:
         mov si, 0x4

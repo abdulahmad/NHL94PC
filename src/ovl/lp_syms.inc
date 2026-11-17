@@ -305,6 +305,7 @@ itemDressPlayer		equ	0x1450
 itemExportDatabases		equ	0xB60
 itemLeagueManager		equ	0xB8C
 itemLeagueSettings		equ	0x105C
+itemMergeLeagueFiles		equ	0xD86
 itemNextLeagueGame		equ	0xB76
 itemScratchPlayer		equ	0x1466
 itemShowLeagueSettings		equ	0x1036
@@ -568,10 +569,12 @@ str_Gp_9		equ	0x1D3C
 str_Gset		equ	0x188E
 str_Gstat_5		equ	0x1A3B
 str_Gsummary_3		equ	0x1932
+str_HasNotBeenMerged		equ	0x84D
 str_Home		equ	0x189E
 str_HomepalsBin_3		equ	0x1696
 str_Hong		equ	0x1DE3
 str_Id		equ	0xBF6
+str_IsAlreadyMerged		equ	0x83A
 str_Keys_5		equ	0x1A30
 str_LineditFnt		equ	0x1AEF
 str_Lineditp		equ	0x1AFB
@@ -588,6 +591,8 @@ str_MtafanCfg		equ	0x1DB4
 str_MtafanKms		equ	0x1DA9
 str_MtawardsCfg		equ	0x1E22
 str_MtawardsKms		equ	0x1E15
+str_MustBeExportedToThe		equ	0x5B4
+str_MustBeImportedFromThe		equ	0x591
 str_Nhlhockey		equ	0xDC3
 str_Pal_31		equ	0x1E55
 str_Pal_32		equ	0x1DE8
