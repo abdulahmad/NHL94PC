@@ -8,7 +8,7 @@ SegStart_01C8A:
         leave
         retf
 
-Ai_2164_000E:
+SetPenaltyStrength:
         enter 0xa, 0x0
         push di
         mov bx, 0xb362
@@ -49,7 +49,7 @@ Ai_2164_000E:
         leave
         retf
 
-Ai_2164_006C:
+TakePlayerFromBox:
         enter 0x4, 0x0
         push di
         push si
@@ -99,7 +99,7 @@ Ai_2164_006C:
         leave
         retf
 
-Ai_2164_00E0:
+PenShotStart:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -132,7 +132,7 @@ Ai_2164_00E0:
         leave
         retf
 
-Ai_2164_0128:
+ForceStartLineup:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         cmp word [g_29DA], 0x0
@@ -150,7 +150,7 @@ Ai_2164_0128:
         leave
         retf
 
-Ai_2164_0152:
+PenShotAssign:
         push di
         push si
         mov si, 0xb50e
@@ -192,7 +192,7 @@ Ai_2164_0152:
         pop di
         retf
 
-Ai_2164_01B0:
+AllInPlace:
         mov bx, 0xb50e
         db 0x2B, 0xD2                           ; insn: sub dx, dx
 .1:
@@ -215,7 +215,7 @@ Ai_2164_01B0:
         mov ax, 0x1
         retf
 
-Ai_2164_01D6:
+assleavebox:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -227,7 +227,7 @@ Ai_2164_01D6:
 .1:
         push si
         push cs
-        call Ai_2164_0FC4
+        call check4bench
         add sp, 0x2
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .2
@@ -266,7 +266,7 @@ Ai_2164_01D6:
         add sp, 0x4
         push word [si + 0x2e]
         push si
-        call 0x2E42:Ai_2E42_1068
+        call 0x2E42:setplayer
         add sp, 0x4
         mov word [si + 0x12], 0xffff
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -350,7 +350,7 @@ Ai_2164_01D6:
         call 0x2E42:Ai_2E42_0012
         push si
         push cs
-        call Ai_2164_006C
+        call TakePlayerFromBox
         add sp, 0x2
         pop si
         pop di
@@ -367,7 +367,7 @@ Ai_2164_01D6:
         push 0x0
         push 0x0
         push si
-        call 0x2425:Ai_2425_05A8
+        call 0x2425:skateto
         add sp, 0x6
         pop si
         pop di
@@ -416,7 +416,7 @@ Ai_2164_01D6:
         leave
         retf
 
-Ai_2164_03AA:
+puckfaceoff:
         enter 0xa, 0x0
         push di
         push si
@@ -450,7 +450,7 @@ Ai_2164_03AA:
         mov ax, [g_B36E]
         cmp [g_B444], ax
         jz short .5
-        call 0x2E42:Ai_2E42_2946
+        call 0x2E42:clockcont_0
         pop si
         pop di
         leave
@@ -459,7 +459,7 @@ Ai_2164_03AA:
         test byte [g_29BB], 0x8
         jz short .6
         push 0x0
-        call 0x327B:Ai_327B_060C
+        call 0x327B:Stop4Pen
         add sp, 0x2
         pop si
         pop di
@@ -467,14 +467,14 @@ Ai_2164_03AA:
         retf
         db 0x90
 .6:
-        call 0x28BB:Ai_28BB_361E
+        call 0x28BB:ReturnGoalies
         test byte [CrowdState], 0x4
         jnz short .7
         push word 0xb362
-        call 0x2E42:Ai_2E42_1994
+        call 0x2E42:setpersonel
         add sp, 0x2
         push word 0xb438
-        call 0x2E42:Ai_2E42_1994
+        call 0x2E42:setpersonel
         add sp, 0x2
 .7:
         mov al, 0xff
@@ -499,7 +499,7 @@ Ai_2164_03AA:
         cmp word [g_48BC], 0x0
         jz short .10
         or byte [g_29BC], 0x40
-        call 0x2E42:Ai_2E42_2CEE
+        call 0x2E42:SprSortVert
         mov word [g_48BC], 0x0
 .10:
         mov ax, [g_29C2]
@@ -510,7 +510,7 @@ Ai_2164_03AA:
         add ax, 0xb50e
         push ax
         push di
-        call 0x2519:Ai_2519_2468
+        call 0x2519:StartFaceoffLineChange
         add sp, 0x4
 .11:
         mov ax, [g_29C4]
@@ -525,7 +525,7 @@ Ai_2164_03AA:
         add ax, 0xb50e
         push ax
         push di
-        call 0x2519:Ai_2519_2468
+        call 0x2519:StartFaceoffLineChange
         add sp, 0x4
 .12:
         mov word [g_D66C], 0x2
@@ -542,11 +542,11 @@ Ai_2164_03AA:
         call 0x2E42:Ai_2E42_0286
         add sp, 0x4
         push word 0xb438
-        call 0x2E42:Ai_2E42_1994
+        call 0x2E42:setpersonel
         add sp, 0x2
         push 0x1
         push cs
-        call Ai_2164_00E0
+        call PenShotStart
         add sp, 0x2
 .13:
         mov byte [bp - 0x1], 0x0
@@ -591,7 +591,7 @@ Ai_2164_03AA:
         jz short .19
         mov word [g_D6B8], 0x0
         push si
-        call 0x2C24:Ai_2C24_0608
+        call 0x2C24:lcfound
         add sp, 0x2
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov bx, [bp - 0x8]
@@ -601,15 +601,15 @@ Ai_2164_03AA:
         imul ax, [bp - 0xa], word 0xd6
         add ax, 0xb362
         push ax
-        call 0x2E42:Ai_2E42_1994
+        call 0x2E42:setpersonel
         add sp, 0x2
         push word [bp - 0xa]
         push cs
-        call Ai_2164_00E0
+        call PenShotStart
         add sp, 0x2
         push word [bp - 0xa]
         push cs
-        call Ai_2164_0128
+        call ForceStartLineup
         add sp, 0x2
 .19:
         inc byte [bp - 0x1]
@@ -633,11 +633,11 @@ Ai_2164_03AA:
         call 0x2E42:Ai_2E42_0286
         add sp, 0x4
         push word 0xb362
-        call 0x2E42:Ai_2E42_1994
+        call 0x2E42:setpersonel
         add sp, 0x2
         push 0x0
         push cs
-        call Ai_2164_00E0
+        call PenShotStart
         add sp, 0x2
 .21:
         test byte [CrowdState], 0x4
@@ -649,11 +649,11 @@ Ai_2164_03AA:
         mov [g_B378], ax
         push ax
         push ax
-        call 0x2083:Ai_2083_00B2
+        call 0x2083:DrawPanelLine
         add sp, 0x4
         push 0x0
         push 0x1
-        call 0x2083:Ai_2083_00B2
+        call 0x2083:DrawPanelLine
         add sp, 0x4
 .22:
         push 0x1c
@@ -668,7 +668,7 @@ Ai_2164_03AA:
         retf
         db 0x90, 0x90, 0x90
 
-Ai_2164_0650:
+puckfaceoff2:
         enter 0xa, 0x0
         push si
         mov bx, [bp + 0x6]
@@ -702,7 +702,7 @@ Ai_2164_0650:
         jmp near .54
 .4:
         push cs
-        call Ai_2164_01B0
+        call AllInPlace
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .5
         jmp near .54
@@ -771,7 +771,7 @@ Ai_2164_0650:
         mov ax, 0xffff
         mov [g_29D4], ax
         mov [g_29A8], ax
-        call 0x2E42:Ai_2E42_2CEE
+        call 0x2E42:SprSortVert
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [g_48BC], ax
         mov [g_299A], ax
@@ -859,16 +859,16 @@ Ai_2164_0650:
         mov [g_BC56], ax
         mov word [g_BC20], 0x18a
         and byte [g_29BC], 0xbf
-        call 0x226F:Ai_226F_0004
+        call 0x226F:checkwindow
         call 0x2E42:Ai_2E42_2E40
         push word 0xb362
-        call 0x2E42:Ai_2E42_1994
+        call 0x2E42:setpersonel
         add sp, 0x2
         push word 0xb362
         call 0x2E42:Ai_2E42_05E2
         add sp, 0x2
         push word 0xb438
-        call 0x2E42:Ai_2E42_1994
+        call 0x2E42:setpersonel
         add sp, 0x2
         push word 0xb438
         call 0x2E42:Ai_2E42_05E2
@@ -1180,7 +1180,7 @@ Ai_2164_0650:
         call 0x2E42:Ai_2E42_00B2
         add sp, 0x4
 .49:
-        call 0x2C24:Ai_2C24_06F2
+        call 0x2C24:CenterMouse
         mov ax, 0x78
         call 0x0C11:randomd0
         add ax, 0xb4
@@ -1231,14 +1231,14 @@ Ai_2164_0650:
         retf
 .53:
         push word [bp + 0x6]
-        call 0x2519:Ai_2519_24AA
+        call 0x2519:Endfaceoff
         add sp, 0x2
 .54:
         pop si
         leave
         retf
 
-Ai_2164_0CB0:
+assbenchwait:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push si
@@ -1248,7 +1248,7 @@ Ai_2164_0CB0:
         mov word [si + 0x12], 0xffff
         push si
         push cs
-        call Ai_2164_0FC4
+        call check4bench
         add sp, 0x2
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .1
@@ -1260,7 +1260,7 @@ Ai_2164_0CB0:
         retf
         db 0x90
 
-Ai_2164_0CDC:
+asstakeposition:
         enter 0xa, 0x0
         push di
         push si
@@ -1271,7 +1271,7 @@ Ai_2164_0CDC:
 .1:
         push si
         push cs
-        call Ai_2164_0FC4
+        call check4bench
         add sp, 0x2
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .2
@@ -1280,7 +1280,7 @@ Ai_2164_0CDC:
         cmp word [si + 0x2e], -0x64
         jnz short .4
         push si
-        call 0x2519:Ai_2519_285C
+        call 0x2519:assexit
         add sp, 0x2
         mov bx, [si + 0x1c]
         mov al, [bx + si + 0x1e]
@@ -1291,7 +1291,7 @@ Ai_2164_0CDC:
         jmp near .30
 .3:
         push si
-        call 0x2519:Ai_2519_285C
+        call 0x2519:assexit
         add sp, 0x2
         pop si
         pop di
@@ -1554,14 +1554,14 @@ Ai_2164_0CDC:
         push 0x0
         push 0x0
         push si
-        call 0x2425:Ai_2425_05A8
+        call 0x2425:skateto
         jmp short .29
         db 0x90
 .28:
         push 0x0
         push 0x0
         push si
-        call 0x2519:Ai_2519_2AB2
+        call 0x2519:SkateToSpot
 .29:
         add sp, 0x6
 .30:
@@ -1571,7 +1571,7 @@ Ai_2164_0CDC:
         retf
         db 0x90
 
-Ai_2164_0FC4:
+check4bench:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push si
@@ -1642,7 +1642,7 @@ Ai_2164_0FC4:
         mov [si + 0x1a], ax
 .10:
         push si
-        call 0x2E42:Ai_2E42_103A
+        call 0x2E42:Setplass
         add sp, 0x2
         test byte [g_29BB], 0x1
         jz short .13

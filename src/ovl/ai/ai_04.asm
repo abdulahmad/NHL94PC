@@ -5,7 +5,7 @@
         retf
         db 0x90
 
-Ai_2083_0006:
+DrawPanelScore:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -83,7 +83,7 @@ Ai_2083_0006:
         leave
         retf
 
-Ai_2083_00B2:
+DrawPanelLine:
         enter 0x8, 0x0
         push si
         call 0x0FEF:UseOffscreenCanvas
@@ -192,7 +192,7 @@ Ai_2083_00B2:
         leave
         retf
 
-Ai_2083_0192:
+GetLineEnergies:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -202,7 +202,7 @@ Ai_2083_0192:
 .1:
         push si
         push word [bp + 0x6]
-        call 0x2E42:Ai_2E42_04CA
+        call 0x2E42:TeamLineEnergy
         add sp, 0x4
         sub ax, strict word 0x60
         inc di
@@ -216,7 +216,7 @@ Ai_2083_0192:
         leave
         retf
 
-Ai_2083_01BA:
+PanelAddPenalty:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov cx, [bp + 0x6]
@@ -261,7 +261,7 @@ Ai_2083_01BA:
         retf
         db 0x90
 
-Ai_2083_020A:
+PanelRemovePenalty:
         enter 0x8, 0x0
         push di
         cmp word [bp + 0x6], 0x0
@@ -297,7 +297,7 @@ Ai_2083_020A:
         leave
         retf
 
-Ai_2083_0248:
+UpdateHudPanel:
         call 0x0FEF:UseOffscreenCanvas
         cmp word [g_5560], 0x0
         jnl short .1
@@ -308,7 +308,7 @@ Ai_2083_0248:
         mov word [g_D728], 0x0
         push ax
         push cs
-        call Ai_2083_0738
+        call TickPanelClock
         add sp, 0x2
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .2
@@ -317,26 +317,26 @@ Ai_2083_0248:
         push word [g_5638]
         push word 0x556c
         push cs
-        call Ai_2083_0968
+        call TickPanelPenalties
         add sp, 0x4
         push word [g_5638]
         push word 0x55ac
         push cs
-        call Ai_2083_0968
+        call TickPanelPenalties
         add sp, 0x4
 .2:
         push word 0x5550
         push 0x0
         push cs
-        call Ai_2083_0192
+        call GetLineEnergies
         add sp, 0x4
         push word 0x5540
         push 0x1
         push cs
-        call Ai_2083_0192
+        call GetLineEnergies
         add sp, 0x4
         push cs
-        call Ai_2083_0780
+        call DrawPanelClockDigits
         push 0x2b
         mov bx, [g_5640]
         shl bx, 1
@@ -346,7 +346,7 @@ Ai_2083_0248:
         idiv cx
         push ax
         push cs
-        call Ai_2083_0A1C
+        call DrawEnergyBar
         add sp, 0x4
         push word 0xfc
         mov bx, [g_5642]
@@ -357,7 +357,7 @@ Ai_2083_0248:
         idiv cx
         push ax
         push cs
-        call Ai_2083_0A1C
+        call DrawEnergyBar
         add sp, 0x4
         cmp word [g_48E2], 0x0
         jnz short .3
@@ -375,7 +375,7 @@ Ai_2083_0248:
         push word 0xda32
         push word 0x5648
         push cs
-        call Ai_2083_0ABE
+        call DrawLineGroupBars
         add sp, 0xa
         mov word [g_5644], 0x0
 .4:
@@ -404,7 +404,7 @@ Ai_2083_0248:
         push 0x48
         push word 0x556c
         push cs
-        call Ai_2083_0C56
+        call DrawPanelPenalties
         add sp, 0x4
         mov word [g_5648], 0x0
         jmp short .4
@@ -421,7 +421,7 @@ Ai_2083_0248:
         push word 0xbf
         push word 0x55ac
         push cs
-        call Ai_2083_0C56
+        call DrawPanelPenalties
         add sp, 0x4
         mov word [g_564A], 0x0
         retf
@@ -433,13 +433,13 @@ Ai_2083_0248:
         push word 0xda3e
         push word 0x564a
         push cs
-        call Ai_2083_0ABE
+        call DrawLineGroupBars
         add sp, 0xa
         mov word [g_5646], 0x0
 .11:
         retf
 
-Ai_2083_03CC:
+DrawPanelClock:
         cmp word [g_5560], 0x0
         jz short .1
         jmp near .4
@@ -561,13 +561,13 @@ Ai_2083_03CC:
         retf
         db 0x90
 
-Ai_2083_0512:
+DrawHudPanel:
         enter 0x12, 0x0
         push di
         push si
         cmp word [bp + 0xc], 0x0
         jz short .1
-        call 0x2E42:Ai_2E42_15BC
+        call 0x2E42:GetPeriodTime
         mov [g_5562], ax
         mov [g_5560], ax
         mov cx, 0x3c
@@ -623,16 +623,16 @@ Ai_2083_0512:
         push word [g_B36E]
         push 0x0
         push cs
-        call Ai_2083_0006
+        call DrawPanelScore
         add sp, 0x4
         push word [g_B444]
         push 0x1
         push cs
-        call Ai_2083_0006
+        call DrawPanelScore
         add sp, 0x4
         call 0x0FEF:UseOffscreenCanvas
         push cs
-        call Ai_2083_03CC
+        call DrawPanelClock
         cmp word [bp + 0xa], 0x0
         jnz short .2
         push 0x16
@@ -772,7 +772,7 @@ Ai_2083_0512:
         leave
         retf
 
-Ai_2083_0738:
+TickPanelClock:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, [g_5560]
@@ -802,7 +802,7 @@ Ai_2083_0738:
         retf
         db 0x90
 
-Ai_2083_0780:
+DrawPanelClockDigits:
         cmp word [g_5560], 0x0
         jz short .1
         jmp near .9
@@ -1009,7 +1009,7 @@ Ai_2083_0780:
 .17:
         retf
 
-Ai_2083_0968:
+TickPanelPenalties:
         enter 0xe, 0x0
         push di
         push si
@@ -1092,7 +1092,7 @@ Ai_2083_0968:
         retf
         db 0x90
 
-Ai_2083_0A1C:
+DrawEnergyBar:
         enter 0x2, 0x0
         push di
         push si
@@ -1168,7 +1168,7 @@ Ai_2083_0A1C:
         leave
         retf
 
-Ai_2083_0ABE:
+DrawLineGroupBars:
         enter 0x10, 0x0
         push di
         push si
@@ -1349,7 +1349,7 @@ Ai_2083_0ABE:
         retf
         db 0x90
 
-Ai_2083_0C56:
+DrawPanelPenalties:
         enter 0x4, 0x0
         push di
         push si

@@ -119,7 +119,7 @@ Ai_1FAA_000E:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [g_B45C], ax
         mov [g_B386], ax
-        call 0x2E42:Ai_2E42_1574
+        call 0x2E42:restoreteams
         mov ax, 0xffff
         mov [g_29C4], ax
         mov [g_29C2], ax
@@ -168,7 +168,7 @@ Ai_1FAA_000E:
         push word [g_BFFE]
         push word [g_29CC]
         push word [g_29CA]
-        call 0x2083:Ai_2083_0512
+        call 0x2083:DrawHudPanel
         add sp, 0x8
         mov byte [g_29BB], 0x0
         mov byte [g_29BB], 0x10
@@ -218,8 +218,8 @@ Ai_1FAA_000E:
         mov ax, 0xffff
         mov [g_D61C], ax
         mov [g_D618], ax
-        call 0x2E42:Ai_2E42_290C
-        call 0x2E42:Ai_2E42_2CEE
+        call 0x2E42:setupice
+        call 0x2E42:SprSortVert
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [g_299A], ax
         mov [g_2998], ax
@@ -228,10 +228,10 @@ Ai_1FAA_000E:
         mov [g_29AC], ax
         call 0x2E42:Ai_2E42_2E40
         push word 0xb362
-        call 0x2E42:Ai_2E42_146C
+        call 0x2E42:reenergizeteam
         add sp, 0x2
         push word 0xb362
-        call 0x2E42:Ai_2E42_1994
+        call 0x2E42:setpersonel
         add sp, 0x2
         push word 0xb362
         call 0x2E42:Ai_2E42_05E2
@@ -241,10 +241,10 @@ Ai_1FAA_000E:
         mov [g_B380], ax
         mov [g_B37E], ax
         push word 0xb438
-        call 0x2E42:Ai_2E42_146C
+        call 0x2E42:reenergizeteam
         add sp, 0x2
         push word 0xb438
-        call 0x2E42:Ai_2E42_1994
+        call 0x2E42:setpersonel
         add sp, 0x2
         push word 0xb438
         call 0x2E42:Ai_2E42_05E2
@@ -359,8 +359,8 @@ Ai_1FAA_000E:
         push ax
         call 0x1E7E:Game_1E7E_0A5C
         add sp, 0x4
-        call 0x2E42:Ai_2E42_1B8E
-        call 0x2E42:Ai_2E42_1B8E
+        call 0x2E42:DoGameFrame
+        call 0x2E42:DoGameFrame
         call 0x2E42:Ai_2E42_0026
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [bp - 0x64], ax
@@ -369,7 +369,7 @@ Ai_1FAA_000E:
         mov bx, [g_2996]
         mov byte [bx], 0xff
         mov [PadRepeatOn], ax
-        call 0x2C24:Ai_2C24_002E
+        call 0x2C24:joyq_flush
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [g_48BE], ax
         mov [g_48C0], ax
@@ -434,7 +434,7 @@ Ai_1FAA_000E:
         mov ax, [g_D6CC]
         sub ax, 0xc0
         push ax
-        call 0x2E42:Ai_2E42_21E2
+        call 0x2E42:DrawRinkOverlays
         add sp, 0x4
         cmp word [g_49F4], 0x0
         jz short .21
@@ -481,7 +481,7 @@ Ai_1FAA_000E:
         add ax, [g_5564]
         mov [g_D728], ax
 .22:
-        call 0x2083:Ai_2083_0248
+        call 0x2083:UpdateHudPanel
         cmp word [g_49F4], 0x0
         jz short .23
         mov ax, [PadRepeatOn]
@@ -533,10 +533,10 @@ Ai_1FAA_000E:
         jmp short .30
         db 0x90
 .26:
-        call 0x2C24:Ai_2C24_0678
+        call 0x2C24:ReadJoy1
         test byte [g_D672], 0x30
         jnz short .24
-        call 0x2C24:Ai_2C24_06B4
+        call 0x2C24:ReadJoy2
         test byte [g_D672], 0x10
         jz short .27
         jmp near .24
@@ -679,7 +679,7 @@ Ai_1FAA_000E:
         push word [g_BFFE]
         push word [g_29CC]
         push word [g_29CA]
-        call 0x2083:Ai_2083_0512
+        call 0x2083:DrawHudPanel
         add sp, 0x8
         push word [g_C25A]
         push word [g_C258]
@@ -705,7 +705,7 @@ Ai_1FAA_000E:
         add sp, 0x4
         call 0x327B:Ai_327B_0B2C
         mov word [g_29CE], 0xffff
-        call 0x2C24:Ai_2C24_002E
+        call 0x2C24:joyq_flush
         cmp word [g_4B02], 0x0
         db 0x74, 0x0E                           ; insn: jz 0x8e0
         mov word [g_4B02], 0x0

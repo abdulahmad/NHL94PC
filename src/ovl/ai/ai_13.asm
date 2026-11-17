@@ -190,7 +190,7 @@ Ai_2E42_00B2:
         db 0x3B, 0xC6                           ; insn: cmp ax, si
         jnz short .12
         push word [bp + 0x6]
-        call 0x28BB:Ai_28BB_0000
+        call 0x28BB:Sweepcheck
         add sp, 0x2
         pop si
         pop di
@@ -356,7 +356,7 @@ Ai_2E42_0286:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
 .4:
         push ax
-        call 0x2083:Ai_2083_00B2
+        call 0x2083:DrawPanelLine
         add sp, 0x4
         and byte [di + 0xba], 0xbf
         pop si
@@ -496,7 +496,7 @@ Ai_2E42_0286:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
 .22:
         push ax
-        call 0x2083:Ai_2083_00B2
+        call 0x2083:DrawPanelLine
         add sp, 0x4
         mov bx, [bp - 0xc]
         and byte [bx + 0xba], 0xbf
@@ -572,7 +572,7 @@ Ai_2E42_0444:
         leave
         retf
 
-Ai_2E42_04CA:
+TeamLineEnergy:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         db 0x33, 0xC0                           ; insn: xor ax, ax
@@ -720,7 +720,7 @@ Ai_2E42_05E2:
         jl short .3
         push si
         push cs
-        call Ai_2E42_103A
+        call Setplass
         add sp, 0x2
         cmp word [si + 0x1a], 0x4
         jnz short .2
@@ -744,7 +744,7 @@ Ai_2E42_05E2:
         push ax
         push si
         push cs
-        call Ai_2E42_1068
+        call setplayer
         add sp, 0x4
 .3:
         mov al, 0xff
@@ -805,7 +805,7 @@ Ai_2E42_065C:
         retf
         db 0x90
 
-Ai_2E42_06C6:
+SetCoachMode:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         db 0x33, 0xC0                           ; insn: xor ax, ax
@@ -862,7 +862,7 @@ Ai_2E42_06C6:
         leave
         retf
 
-Ai_2E42_0760:
+InitCoachModes:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
         db 0x2A, 0xC0                           ; insn: sub al, al
@@ -890,11 +890,11 @@ Ai_2E42_0760:
         jnz short .2
         push 0x0
         push cs
-        call Ai_2E42_06C6
+        call SetCoachMode
         add sp, 0x2
         push 0x1
         push cs
-        call Ai_2E42_06C6
+        call SetCoachMode
         add sp, 0x2
         jmp short .3
         db 0x90
@@ -930,7 +930,7 @@ Ai_2E42_0760:
 .5:
         retf
 
-Ai_2E42_0826:
+UpdateCoachModes:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, 0x2
@@ -954,7 +954,7 @@ Ai_2E42_0826:
         mov [bp - 0x1], al
         push 0x0
         push cs
-        call Ai_2E42_06C6
+        call SetCoachMode
         add sp, 0x2
         mov al, [bp - 0x1]
         cmp [g_B41D], al
@@ -965,7 +965,7 @@ Ai_2E42_0826:
         mov [bp - 0x1], al
         push 0x1
         push cs
-        call Ai_2E42_06C6
+        call SetCoachMode
         add sp, 0x2
         mov al, [bp - 0x1]
         cmp [g_B4F3], al
@@ -1070,7 +1070,7 @@ Ai_2E42_0826:
 .24:
         push 0x0
         push cs
-        call Ai_2E42_06C6
+        call SetCoachMode
         add sp, 0x2
 .25:
         mov al, [bp - 0x1]
@@ -1139,7 +1139,7 @@ Ai_2E42_0826:
 .37:
         push 0x1
         push cs
-        call Ai_2E42_06C6
+        call SetCoachMode
         add sp, 0x2
 .38:
         mov al, [bp - 0x1]
@@ -1151,7 +1151,7 @@ Ai_2E42_0826:
         leave
         retf
 
-Ai_2E42_0A7C:
+PenTeamScored:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, 0x2
@@ -1215,7 +1215,7 @@ Ai_2E42_0A7C:
         retf
         db 0x90
 
-Ai_2E42_0AFC:
+Goal:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, 0x12
@@ -1260,7 +1260,7 @@ Ai_2E42_0AFC:
         test byte [g_29BB], 0x1
         jnz short .7
         push cs
-        call Ai_2E42_0A7C
+        call PenTeamScored
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .7
         jmp near .13
@@ -1311,7 +1311,7 @@ Ai_2E42_0AFC:
         push 0x15
         mov bx, [bp - 0x4]
         push word [bx + 0xd4]
-        call 0x327B:Ai_327B_007E
+        call 0x327B:AddPenalty2
         add sp, 0x4
         pop si
         leave
@@ -1333,12 +1333,12 @@ Ai_2E42_0AFC:
         mov ax, [g_D624]
         mov [g_29A0], ax
 .16:
-        call 0x28BB:Ai_28BB_1638
+        call 0x28BB:ChkShotStat
         push word 0x9c
         call 0x0EDC:PlaySoundEffect
         add sp, 0x2
         push cs
-        call Ai_2E42_2152
+        call freezewindow
         cmp word [bp - 0x2], 0x0
         jnz short .18
         add word [CrowdSound], 0x320
@@ -1356,7 +1356,7 @@ Ai_2E42_0AFC:
         mov word [CrowdSound], 0x320
 .19:
         push word [bp - 0x2]
-        call 0x3136:Ai_3136_00A6
+        call 0x3136:SetBoxDoorObject
         add sp, 0x2
         cmp word [bp - 0x2], 0x0
         jnz short .21
@@ -1534,7 +1534,7 @@ Ai_2E42_0AFC:
         mov bx, [bp - 0x10]
         push word [bx + 0xc]
         push word [bp - 0x2]
-        call 0x2083:Ai_2083_0006
+        call 0x2083:DrawPanelScore
         add sp, 0x4
         mov bx, [bp - 0x10]
         mov ax, [bx + 0xd4]
@@ -1598,7 +1598,7 @@ Ai_2E42_0AFC:
         push 0x7
         mov bx, [bp - 0x4]
         push word [bx + 0xd4]
-        call 0x327B:Ai_327B_007E
+        call 0x327B:AddPenalty2
         add sp, 0x4
         test byte [g_29BB], 0x10
         jz short .47
@@ -1656,14 +1656,14 @@ Ai_2E42_0AFC:
         dec byte [g_B4F1]
 .53:
         push cs
-        call Ai_2E42_0826
+        call UpdateCoachModes
 .54:
         pop si
         leave
         retf
         db 0x90
 
-Ai_2E42_0FB6:
+GiveControl:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         db 0x33, 0xC0                           ; insn: xor ax, ax
@@ -1724,7 +1724,7 @@ Ai_2E42_0FB6:
         retf
         db 0x90
 
-Ai_2E42_103A:
+Setplass:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         db 0x33, 0xC0                           ; insn: xor ax, ax
@@ -1749,7 +1749,7 @@ Ai_2E42_103A:
         leave
         retf
 
-Ai_2E42_1068:
+setplayer:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, 0x16
@@ -2196,7 +2196,7 @@ Ai_2E42_1068:
         retf
         db 0x90
 
-Ai_2E42_146C:
+reenergizeteam:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, 0x2
@@ -2233,7 +2233,7 @@ Ai_2E42_146C:
         retf
         db 0x90
 
-Ai_2E42_14B4:
+clearteams:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
         mov bx, 0xb362
@@ -2279,7 +2279,7 @@ Ai_2E42_14B4:
         retf
         db 0x90
 
-Ai_2E42_1574:
+restoreteams:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, 0x4
@@ -2313,7 +2313,7 @@ Ai_2E42_1574:
         leave
         retf
 
-Ai_2E42_15BC:
+GetPeriodTime:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
         mov bl, [AnnouncerFlags]
@@ -2330,11 +2330,11 @@ Ai_2E42_15BC:
         retf
         db 0x90
 
-Ai_2E42_15E6:
+ResetClock:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
         push cs
-        call Ai_2E42_15BC
+        call GetPeriodTime
         mov [g_29DC], ax
         mov word [g_29DE], 0x0
         mov [g_D1AC], ax
@@ -2347,7 +2347,7 @@ Ai_2E42_15E6:
         retf
         db 0x90
 
-Ai_2E42_1614:
+ClearSortCords:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, 0x4
@@ -2370,7 +2370,7 @@ Ai_2E42_1614:
         leave
         retf
 
-Ai_2E42_1640:
+defaultsprites_0:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, 0xa
@@ -2378,7 +2378,7 @@ Ai_2E42_1640:
         push di
         push si
         push cs
-        call Ai_2E42_1614
+        call ClearSortCords
         mov ax, 0x0
         mov cx, 0x3863
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -2491,7 +2491,7 @@ Ai_2E42_1640:
         leave
         retf
 
-Ai_2E42_175E:
+TryAddPlayerToList:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, 0x2
@@ -2534,7 +2534,7 @@ Ai_2E42_175E:
         leave
         retf
 
-Ai_2E42_17AC:
+SetPlList:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, 0x10
@@ -2643,7 +2643,7 @@ Ai_2E42_17AC:
         push si
         push di
         push cs
-        call Ai_2E42_175E
+        call TryAddPlayerToList
         add sp, 0x6
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .15
@@ -2668,7 +2668,7 @@ Ai_2E42_17AC:
         push ax
         push di
         push cs
-        call Ai_2E42_175E
+        call TryAddPlayerToList
         add sp, 0x6
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .16
@@ -2731,7 +2731,7 @@ Ai_2E42_17AC:
         push ax
         push di
         push cs
-        call Ai_2E42_175E
+        call TryAddPlayerToList
         add sp, 0x6
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .25
@@ -2743,7 +2743,7 @@ Ai_2E42_17AC:
         push ax
         push di
         push cs
-        call Ai_2E42_175E
+        call TryAddPlayerToList
         add sp, 0x6
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .27
@@ -2768,7 +2768,7 @@ Ai_2E42_17AC:
         retf
         db 0x90
 
-Ai_2E42_1994:
+setpersonel:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, 0xa
@@ -2787,7 +2787,7 @@ Ai_2E42_1994:
         jnz short .1
         push word [bp + 0x6]
         push cs
-        call Ai_2E42_17AC
+        call SetPlList
         add sp, 0x2
         mov di, 0x5
 .2:
@@ -2877,18 +2877,18 @@ Ai_2E42_1994:
         retf
         db 0x90
 
-Ai_2E42_1A92:
+StartPer:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [g_D46E], ax
         mov [g_D46C], ax
         push cs
-        call Ai_2E42_0760
+        call InitCoachModes
         push cs
-        call Ai_2E42_290C
+        call setupice
         push cs
-        call Ai_2E42_15E6
+        call ResetClock
         cmp word [g_29C6], 0x1
         jnz short .1
         mov word [g_29C2], 0x2
@@ -2943,9 +2943,9 @@ Ai_2E42_1A92:
         call 0x2038:Ai_2038_0008
         mov word [lastsfx], 0xffff
         push cs
-        call Ai_2E42_1B8E
+        call DoGameFrame
         push cs
-        call Ai_2E42_1B8E
+        call DoGameFrame
         mov word [g_D6C4], 0x10
         cmp word [g_29DA], 0x2
         jnl short .7
@@ -2962,18 +2962,18 @@ Ai_2E42_1A92:
         mov word [g_49F4], 0x1
         retf
 
-Ai_2E42_1B8E:
+DoGameFrame:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
         push cs
-        call Ai_2E42_1C6A
+        call periodicevents
         push cs
-        call Ai_2E42_1D36
-        call 0x226F:Ai_226F_0004
+        call updateplayers
+        call 0x226F:checkwindow
         call 0x2038:Ai_2038_0060
         retf
 
-Ai_2E42_1BA8:
+RestoreBenchEnergy:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, 0x4
@@ -3006,7 +3006,7 @@ Ai_2E42_1BA8:
         retf
         db 0x90
 
-Ai_2E42_1BE8:
+updatecrowdf:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
         push si
@@ -3061,14 +3061,14 @@ Ai_2E42_1BE8:
         pop si
         retf
 
-Ai_2E42_1C6A:
+periodicevents:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, 0x4
         call 0x0000:__chkstk
         push di
         call 0x327B:Ai_327B_0AA6
-        call 0x3136:Ai_3136_00C2
+        call 0x3136:DecayCrowdLevel
         test byte [g_29BB], 0x1
         jnz short .1
         cmp word [g_29DC], 0x0
@@ -3079,9 +3079,9 @@ Ai_2E42_1C6A:
         call 0x0EDC:PlaySoundEffect
         add sp, 0x2
         push cs
-        call Ai_2E42_2152
+        call freezewindow
         push cs
-        call Ai_2E42_2946
+        call clockcont_0
 .1:
         cmp word [g_48BC], 0x0
         jz short .2
@@ -3091,14 +3091,14 @@ Ai_2E42_1C6A:
         jns short .8
         add byte [g_4A4F], 0x18
         xor byte [g_4A4E], 0x1
-        call 0x28BB:Ai_28BB_356A
+        call 0x28BB:ChkGoalies
         push cs
-        call Ai_2E42_1BE8
+        call updatecrowdf
         push cs
-        call Ai_2E42_1BA8
+        call RestoreBenchEnergy
         test byte [g_29BB], 0x1
         jnz short .3
-        call 0x327B:Ai_327B_0AB4
+        call 0x327B:UpdatePowerPlayFlags
 .3:
         test byte [CrowdState], 0x4
         jz short .8
@@ -3140,7 +3140,7 @@ Ai_2E42_1C6A:
         leave
         retf
 
-Ai_2E42_1D36:
+updateplayers:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
         push di
@@ -3200,7 +3200,7 @@ Ai_2E42_1D36:
 .5:
         push si
         push cs
-        call Ai_2E42_1FFC
+        call updateanim
         add sp, 0x2
         dec word [si + 0x3e]
         jns short .6
@@ -3345,17 +3345,17 @@ Ai_2E42_1D36:
         mov [g_D006], ax
         cmp [g_29C2], ax
         jnz short .21
-        call 0x2C24:Ai_2C24_0678
+        call 0x2C24:ReadJoy1
         push 0x0
         jmp short .22
 .21:
         cmp [g_29C4], ax
         jnz short .23
-        call 0x2C24:Ai_2C24_06B4
+        call 0x2C24:ReadJoy2
         push 0x2
 .22:
         push si
-        call 0x2C24:Ai_2C24_02D0
+        call 0x2C24:doinput
         add sp, 0x4
 .23:
         mov bx, [si + 0x1c]
@@ -3389,7 +3389,7 @@ Ai_2E42_1D36:
         push word [g_D6C0]
         push word [g_D6B8]
         push si
-        call 0x28BB:Ai_28BB_292A
+        call 0x28BB:checkcoll
         add sp, 0x6
 .26:
         sub word [si + 0x18], 0x2
@@ -3407,7 +3407,7 @@ Ai_2E42_1D36:
         pop di
         retf
 
-Ai_2E42_1FFC:
+updateanim:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, 0x6
@@ -3559,7 +3559,7 @@ Ai_2E42_1FFC:
         retf
         db 0x90
 
-Ai_2E42_2152:
+freezewindow:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
         mov ax, [g_2998]
@@ -3570,7 +3570,7 @@ Ai_2E42_2152:
         retf
         db 0x90
 
-Ai_2E42_216C:
+cleargamevars:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -3611,7 +3611,7 @@ Ai_2E42_216C:
         call 0x327B:Ai_327B_0B2C
         retf
 
-Ai_2E42_21E2:
+DrawRinkOverlays:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, 0x2c
@@ -3697,7 +3697,7 @@ Ai_2E42_21E2:
         cmp word [bp - 0x22], 0x0
         jnl short .7
 .9:
-        call 0x3136:Ai_3136_02E2
+        call 0x3136:DrawRinkObjects
         cmp word [g_299A], 0xff50
         jnl short .10
         mov es, [g_8CE0]
@@ -4204,12 +4204,12 @@ Ai_2E42_21E2:
 .66:
         cmp word [g_49F0], 0x0
         jl short .67
-        call 0x226F:Ai_226F_054A
+        call 0x226F:DrawTextOverlay
 .67:
         cmp word [g_49F8], -0x1
         jz short .68
         push word [g_49F8]
-        call 0x226F:Ai_226F_0B94
+        call 0x226F:DrawCallBanner
         add sp, 0x2
         cmp word [g_49FA], 0x0
         jng short .68
@@ -4330,7 +4330,7 @@ Ai_2E42_21E2:
         retf
         db 0x90
 
-Ai_2E42_290C:
+setupice:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
         and byte [g_29BC], 0xfe
@@ -4338,7 +4338,7 @@ Ai_2E42_290C:
         mov [g_2998], ax
         mov [g_299A], ax
         push cs
-        call Ai_2E42_1640
+        call defaultsprites_0
         test byte [g_29BB], 0x2
         jz short .2
         mov bx, 0xb50e
@@ -4355,7 +4355,7 @@ Ai_2E42_290C:
         retf
         db 0x90
 
-Ai_2E42_2946:
+clockcont_0:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, 0x10
@@ -4459,7 +4459,7 @@ Ai_2E42_2946:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
 .13:
         push ax
-        call 0x3136:Ai_3136_00A6
+        call 0x3136:SetBoxDoorObject
         add sp, 0x2
         cmp word [g_D66C], 0x8
         jz short .14
@@ -4586,7 +4586,7 @@ Ai_2E42_2946:
         push di
         push si
         push cs
-        call Ai_2E42_1068
+        call setplayer
         add sp, 0x4
         mov di, 0x1
         mov [bp - 0xa], si
@@ -4615,7 +4615,7 @@ Ai_2E42_2946:
         push 0x2
         push si
 .32:
-        call 0x327B:Ai_327B_007E
+        call 0x327B:AddPenalty2
         add sp, 0x4
         pop si
         pop di
@@ -4623,7 +4623,7 @@ Ai_2E42_2946:
         retf
         db 0x90
 
-Ai_2E42_2C30:
+ClockTick:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
         cmp word [g_29DC], 0x0
@@ -4687,11 +4687,11 @@ Ai_2E42_2C30:
         jnz short .9
 .8:
         push cs
-        call Ai_2E42_0826
+        call UpdateCoachModes
 .9:
         retf
 
-Ai_2E42_2CEE:
+SprSortVert:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
         and byte [g_29BC], 0x7f
@@ -4735,7 +4735,7 @@ Ai_2E42_2D2C:
 .1:
         push si
         push cs
-        call Ai_2E42_146C
+        call reenergizeteam
         add sp, 0x2
         mov word [si + 0x16], 0x0
         test byte [CrowdState], 0x4
@@ -4794,8 +4794,8 @@ Ai_2E42_2DA8:
         call 0x1E7E:Game_1E7E_0004
 .2:
         push cs
-        call Ai_2E42_1A92
-        call 0x2164:Ai_2164_000E
+        call StartPer
+        call 0x2164:SetPenaltyStrength
         retf
 
 Ai_2E42_2DD6:
@@ -4929,12 +4929,12 @@ Ai_2E42_2F00:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
         push cs
-        call Ai_2E42_216C
+        call cleargamevars
         push cs
-        call Ai_2E42_14B4
+        call clearteams
         mov word [g_29DA], 0x0
         push cs
-        call Ai_2E42_1574
+        call restoreteams
         push cs
         call Ai_2E42_2DA8
         retf
@@ -4944,7 +4944,7 @@ Ai_2E42_2F1E:
         call 0x0000:__chkstk
         push word 0xb362
         push cs
-        call Ai_2E42_1994
+        call setpersonel
         add sp, 0x2
         push word 0xb362
         push cs
@@ -4952,4 +4952,4 @@ Ai_2E42_2F1E:
         add sp, 0x2
         push word 0xb438
         push cs
-        call Ai_2E42_1994
+        call setpersonel

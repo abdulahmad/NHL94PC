@@ -4,7 +4,7 @@
         retf
         db 0x90
 
-Ai_226F_0004:
+checkwindow:
         enter 0x8, 0x0
         push di
         push si
@@ -450,7 +450,7 @@ Ai_226F_0004:
         leave
         retf
 
-Ai_226F_046A:
+LoadTeamPPV:
         enter 0x12, 0x0
         push di
         push si
@@ -532,7 +532,7 @@ Ai_226F_046A:
         leave
         retf
 
-Ai_226F_054A:
+DrawTextOverlay:
         enter 0x14, 0x0
         push di
         push si
@@ -1044,7 +1044,7 @@ Ai_226F_054A:
         retf
         db 0x90
 
-Ai_226F_0A56:
+CloseTextOverlay:
         cmp word [g_49F0], 0x100
         jnz short .1
         mov ax, 0x10
@@ -1056,7 +1056,7 @@ Ai_226F_0A56:
         mov [g_49F0], ax
         retf
 
-Ai_226F_0A6C:
+UpdateTextOverlay:
         push si
         cmp word [g_49F0], 0x0
         jnl short .1
@@ -1162,7 +1162,7 @@ Ai_226F_0A6C:
         retf
         db 0x90
 
-Ai_226F_0B94:
+DrawCallBanner:
         enter 0xe, 0x0
         push di
         push si
@@ -1287,7 +1287,7 @@ Ai_226F_0B94:
         retf
         db 0x90
 
-Ai_226F_0CE6:
+ShowGoalieBanner:
         enter 0x2, 0x0
         push di
         push si
@@ -1362,7 +1362,7 @@ Ai_226F_0CE6:
         mov ax, [bp - 0x2]
         add ax, 0xb362
         push ax
-        call 0x2E42:Ai_2E42_1994
+        call 0x2E42:setpersonel
         add sp, 0x2
 .9:
         pop si
@@ -1370,7 +1370,7 @@ Ai_226F_0CE6:
         leave
         retf
 
-Ai_226F_0DAA:
+SetTeamGoalie:
         enter 0x4, 0x0
         push di
         push si

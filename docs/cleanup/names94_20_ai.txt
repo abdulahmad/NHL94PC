@@ -1,0 +1,245 @@
+# AI.OVL (the game engine: assignments, skating, checking, puck, penalties, panel). Names from 94G through the
+# matching 95 PC routine (same C source, same file order); the asstab thunk table (DGROUP 2A52h) confirms the
+# assignment routines entry by entry.
+Ai_1F9C_0000 SetupControllers | 95 PC | high | sets the pad states from the controller choices, MouseOpen 320x200
+Ai_2083_0006 DrawPanelScore | 95 PC | high | score digits on the top panel; same constants and order as 95
+Ai_2083_00B2 DrawPanelLine | 95 PC | high | line indicator shape on the panel
+Ai_2083_0192 GetLineEnergies | 95 PC | high | TeamLineEnergy of the 8 lines minus 60h
+Ai_2083_01BA PanelAddPenalty | 95 PC | medium | 95 order between GetLineEnergies and UpdateHudPanel
+Ai_2083_020A PanelRemovePenalty | 95 PC | medium | 95 order between GetLineEnergies and UpdateHudPanel
+Ai_2083_0248 UpdateHudPanel | 95 PC | high | per-frame panel redraw: clock, penalties, energy bars
+Ai_2083_03CC DrawPanelClock | 95 PC | high | clock digits and colon
+Ai_2083_0512 DrawHudPanel | 95 PC | high | full panel redraw: scrbrd2, srb3, crests4
+Ai_2083_0738 TickPanelClock | 95 PC | high | saves the drawn clock and counts it down
+Ai_2083_0780 DrawPanelClockDigits | 95 PC | high | redraws the clock digits that changed
+Ai_2083_0968 TickPanelPenalties | 95 PC | high | counts down the first two penalty entries
+Ai_2083_0A1C DrawEnergyBar | 95 PC | high | two-column energy bar, FillRect
+Ai_2083_0ABE DrawLineGroupBars | 95 PC | high | energy bars of the current line group
+Ai_2083_0C56 DrawPanelPenalties | 95 PC | high | up to 4 penalty entries per side
+Ai_2164_000E SetPenaltyStrength | 95 PC | high | 95 order; penalized players remove skater slots
+Ai_2164_006C TakePlayerFromBox | 95 PC | high | 95 order
+Ai_2164_00E0 PenShotStart | 95 PC | high | 95 order
+Ai_2164_0128 ForceStartLineup | 95 PC | high | 95 order
+Ai_2164_0152 PenShotAssign | 95 PC | high | 95 order
+Ai_2164_01B0 AllInPlace | 95 PC | high | 95 order
+Ai_2164_01D6 assleavebox | 95 PC | high | asstab entry 40
+Ai_2164_03AA puckfaceoff | 94G logic94.asm | high | asstab entry 27
+Ai_2164_0650 puckfaceoff2 | 94G logic94.asm | high | asstab entry 28
+Ai_2164_0CB0 assbenchwait | 95 PC | high | asstab entry 41
+Ai_2164_0CDC asstakeposition | 95 PC | high | asstab entry 39
+Ai_2164_0FC4 check4bench | 94G logic94.asm | high | 95 order; called by every skater assignment
+Ai_226F_0004 checkwindow | 94G replay94.asm | high | camera follows the puck
+Ai_226F_046A LoadTeamPPV | 95 PC | medium | 95 order; loads a numbered .QPP file
+Ai_226F_054A DrawTextOverlay | 95 PC | high | text overlay sliding in and out
+Ai_226F_0A56 CloseTextOverlay | 95 PC | high | overlay timer 100h to 10h
+Ai_226F_0A6C UpdateTextOverlay | 95 PC | high | steps the overlay script
+Ai_226F_0B94 DrawCallBanner | 95 PC | high | referee call banner
+Ai_226F_0CE6 ShowGoalieBanner | 95 PC | high | pulled / returned goalie banner
+Ai_226F_0DAA SetTeamGoalie | 95 PC | medium | 95 order after ShowGoalieBanner
+Ai_2352_031A FormatPlayerName | 95 PC | high | '%s#%d %s %s%s' roster names
+Ai_2352_0478 BuildEventLines | 95 PC | high | goal / penalty / injury event text
+Ai_2352_0750 PostGoalEvent | 95 PC | high | event type 1
+Ai_2352_083E PostPenaltyEvent | 95 PC | high | event type 2
+Ai_2352_0924 PostInjuryEvent | 95 PC | high | event type 3
+Ai_2352_0998 NullCallback0C | 95 PC | high | a lone retf between PostInjuryEvent and ChkScorerMilestone, as in 95
+Ai_2352_099A ChkScorerMilestone | 95 PC | high | scorer season / game totals after a goal
+Ai_2352_0CB0 QueueGoalieNote | 95 PC | high | 95 order
+Ai_2425_0000 doplayeracc | 94G logic94.asm | high | player accelerates toward a direction
+Ai_2425_02CE EvadePlayers | 95 PC | high | skateto collision routine
+Ai_2425_04EA EvadePC | 93G logic93_3.asm | high | avoid the puck carrier
+Ai_2425_05A8 skateto | 94G logic94.asm | high | 95 order
+Ai_2425_06A4 skatetopuck | 94G logic94.asm | high | 95 order
+Ai_2425_080C playeracc | 94G logic94.asm | high | 95 order
+Ai_2425_0A20 avdgoal_box | 94G logic94.asm | high | 95 order
+Ai_2425_0AEA avdgoal | 94G logic94.asm | high | 95 order
+Ai_2425_0C9E dostop | 94G logic94.asm | high | 95 order
+Ai_2425_0D44 stopna | 94G logic94.asm | high | 95 order
+Ai_2425_0D8C goalieacc | 94G logic94.asm | high | 95 order
+Ai_2425_0DFC noturn0 | 94G logic94.asm | high | 95 order
+Ai_2519_0000 assdefo | 94G logic94.asm | high | asstab entry 1
+Ai_2519_0114 assdefd | 94G logic94.asm | high | asstab entry 2
+Ai_2519_035A asswingd | 94G logic94.asm | high | asstab entry 3
+Ai_2519_04B0 asswingo | 94G logic94.asm | high | asstab entry 4
+Ai_2519_0630 asscenterd | 94G logic94.asm | high | asstab entry 5
+Ai_2519_0716 asscentero | 94G logic94.asm | high | asstab entry 6
+Ai_2519_086C donothing | 94G logic94.asm | high | 95 order
+Ai_2519_0888 assstanley | 94G logic94.asm | high | asstab entry 8
+Ai_2519_092A assscore | 94G logic94.asm | high | asstab entry 7
+Ai_2519_0A62 asseben | 94G logic94.asm | high | asstab entry 9
+Ai_2519_0AF0 assleaveice | 95 PC | high | asstab entry 29
+Ai_2519_0C76 asspenalty | 94G logic94.asm | high | asstab entry 12
+Ai_2519_0E04 assdopen | 94G logic94.asm | high | asstab entry 13
+Ai_2519_0E2C assepen | 94G logic94.asm | high | asstab entry 10
+Ai_2519_0EDC assbench | 94G logic94.asm | high | asstab entry 11
+Ai_2519_111C assgoalietopuck | 94G logic94.asm | high | asstab entry 15
+Ai_2519_11BE assgoalie | 94G logic94.asm | high | asstab entry 14
+Ai_2519_18E6 CountPuckThreat | 95 PC | high | 95 order
+Ai_2519_1960 asspuckc | 94G logic94.asm | high | asstab entry 16
+Ai_2519_1A7E asspuckc_chkdir | 93G logic93_3.asm | high | 95 order; the skateto collision routine of asspuckc
+Ai_2519_1C22 assnearest | 94G logic94.asm | high | asstab entry 17
+Ai_2519_20F8 assshoot | 94G logic94.asm | high | asstab entry 18
+Ai_2519_2142 assfaceoff | 94G logic94.asm | high | asstab entry 22
+Ai_2519_2162 assfaceoffpl | 94G logic94.asm | high | asstab entry 23
+Ai_2519_2294 pucknorm | 94G logic94.asm | high | asstab entry 24
+Ai_2519_2396 pucknothing | 95 PC | high | asstab entry 26; calls puckunflip
+Ai_2519_23A2 rtss2 | 94G tables94.asm | medium | a second empty routine after pucknothing; nothing calls it
+Ai_2519_23A4 RequestLineChange | 95 PC | high | 95 order
+Ai_2519_2436 SetLCmode | 94G logic94.asm | high | 95 order
+Ai_2519_2468 StartFaceoffLineChange | 95 PC | high | 95 order
+Ai_2519_24AA Endfaceoff | 94G logic94.asm | high | 95 order
+Ai_2519_2642 a2offsides | 94G logic94.asm | high | 95 order
+Ai_2519_2690 ChkTwoLinePass | 95 PC | high | 95 order
+Ai_2519_272A a2touchpuck | 94G logic94.asm | high | 95 order
+Ai_2519_285C assexit | 94G logic94.asm | high | steps assnum (mod 8) and sets the new-assignment bit
+Ai_2519_2874 puckunflip | 95 PC | high | SPAnum 4..11 flips facedir bit 1 back, restarts the animation
+Ai_2519_289A puckflip | 94G logic94.asm | high | 95 order
+Ai_2519_28DC assrefatdot | 95 PC | high | asstab entry 30
+Ai_2519_295E assreffollow | 95 PC | high | asstab entry 31
+Ai_2519_2AB2 SkateToSpot | 95 PC | high | 95 order
+Ai_2519_2D8E CrowdOnStoppage | 95 PC | high | 95 order
+Ai_2519_2EC2 assrefwhistle | 95 PC | high | asstab entry 36
+Ai_2519_303C assrefsignal | 95 PC | high | asstab entry 32
+Ai_2519_31E4 assrefgoalpa | 95 PC | high | asstab entry 33
+Ai_2519_3762 assrefdrop | 95 PC | high | asstab entry 34
+Ai_2519_38EC assrefgoalline | 95 PC | high | asstab entry 35
+Ai_2519_3A1E rtss | 95 PC | high | asstab entry 0: the empty assignment
+Ai_28BB_0000 Sweepcheck | 94G logic94.asm | high | 95 order
+Ai_28BB_0018 burst | 94G logic94.asm | high | 95 order
+Ai_28BB_009C check4check | 94G logic94.asm | high | 95 order
+Ai_28BB_0168 checkagr | 94G logic94.asm | high | 95 order
+Ai_28BB_0214 FacingBoards | 95 PC | high | 95 order
+Ai_28BB_0284 checkcheck | 94G logic94.asm | high | 95 order
+Ai_28BB_047E checkgoalp | 94G logic94.asm | medium | 95 order
+Ai_28BB_055A checkint | 94G logic94.asm | high | 95 order
+Ai_28BB_0622 checkob | 94G logic94.asm | high | 95 order
+Ai_28BB_06F6 checkpuckcoll_ccx | 94G logic94.asm | high | 95 order
+Ai_28BB_08C6 checkpuckcoll | 94G logic94.asm | high | 95 order
+Ai_28BB_0956 CheckBump | 95 PC | high | 95 order
+Ai_28BB_09E2 GetLowestPen | 95 PC | medium | 95 order between CheckBump and chk4lc
+Ai_28BB_0AA0 chk4lc | 94G logic94.asm | high | 95 order
+Ai_28BB_0B96 dopass | 94G logic94.asm | high | 95 order
+Ai_28BB_0DB4 passmode | 94G logic94.asm | high | 95 order
+Ai_28BB_0E04 setpassmode | 94G logic94.asm | high | 95 order
+Ai_28BB_0E1A passtoa0 | 94G logic94.asm | high | 95 order
+Ai_28BB_105A chk4pass | 94G logic94.asm | high | 95 order
+Ai_28BB_129A chk4shot | 94G logic94.asm | high | 95 order
+Ai_28BB_141E CompShoot | 95 PC | high | 95 order
+Ai_28BB_145E ChkOffsides | 94G logic94.asm | high | 95 order
+Ai_28BB_15A2 MarkTwoLinePlayers | 95 PC | high | 95 order
+Ai_28BB_1638 ChkShotStat | 95 PC | high | 95 order
+Ai_28BB_171E setInjuryType | 94G collide94.asm | high | 95 order
+Ai_28BB_1848 FallDown | 94G collide94.asm | high | 95 order
+Ai_28BB_1B2C Bcheck | 94G collide94.asm | high | 95 order
+Ai_28BB_1BBC holdcheck | 94G collide94.asm | high | 95 order
+Ai_28BB_1C9C puckbody | 94G collide94.asm | high | 95 order
+Ai_28BB_1DB8 PuckIChk | 95 PC | high | 95 order
+Ai_28BB_1E08 puckshadow | 94G collide94.asm | high | asstab entry 25
+Ai_28BB_1E76 puckglue | 94G collide94.asm | high | 95 order
+Ai_28BB_1F2A puckgoalie | 94G collide94.asm | high | 95 order
+Ai_28BB_211A puckstick | 94G collide94.asm | high | 95 order
+Ai_28BB_2388 SetShotMode | 95 PC | high | 95 order
+Ai_28BB_23EE ShotMode | 95 PC | high | 95 order
+Ai_28BB_2442 Findhittype | 94G collide94.asm | high | 95 order
+Ai_28BB_247A deflect | 94G collide94.asm | high | 95 order
+Ai_28BB_24BE shotdiradj | 94G collide94.asm | high | 95 order
+Ai_28BB_2630 doshot | 94G collide94.asm | high | 95 order
+Ai_28BB_28E8 newcheck | 94G collide94.asm | high | 95 order
+Ai_28BB_292A checkcoll | 94G collide94.asm | high | 95 order
+Ai_28BB_2A54 checkwallcoll | 94G collide94.asm | high | 95 order
+Ai_28BB_2B8A checkgoal | 94G collide94.asm | high | 95 order
+Ai_28BB_2E12 wallcoll | 94G collide94.asm | high | 95 order
+Ai_28BB_3024 wallcollb | 94G collide94.asm | high | 95 order
+Ai_28BB_3106 checkplcoll | 94G collide94.asm | high | 95 order
+Ai_28BB_319A checkcx | 94G collide94.asm | high | 95 order
+Ai_28BB_34EA CPgoalie | 95 PC | high | 95 order
+Ai_28BB_356A ChkGoalies | 95 PC | high | 95 order
+Ai_28BB_361E ReturnGoalies | 95 PC | high | 95 order
+Ai_2C24_0002 joyq_pop | 95 PC | high | 95 order
+Ai_2C24_002E joyq_flush | 95 PC | high | 95 order
+Ai_2C24_0038 joyq_peek | 95 PC | high | 95 order
+Ai_2C24_0050 lineinput | 94G logic94.asm | high | 95 order
+Ai_2C24_0158 faceoffinput | 94G logic94.asm | high | 95 order
+Ai_2C24_01C4 Acheck | 94G logic94.asm | high | 95 order
+Ai_2C24_020A Holdplayer | 94G logic94.asm | high | 95 order
+Ai_2C24_023A lcselect | 94G logic94.asm | high | 95 order
+Ai_2C24_02D0 doinput | 94G logic94.asm | high | 95 order
+Ai_2C24_05C0 getlchoice | 94G logic94.asm | high | 95 order
+Ai_2C24_0608 lcfound | 94G logic94.asm | high | 95 order
+Ai_2C24_0678 ReadJoy1 | 94G middle94.asm | high | 95 order
+Ai_2C24_06B4 ReadJoy2 | 94G middle94.asm | high | 95 order
+Ai_2C24_06F2 CenterMouse | 95 PC | high | 95 order
+Ai_2C24_0700 PassCompleted | 95 PC | high | 95 order
+Ai_2C24_0746 assonetimer | 94G logic94.asm | high | 95 order
+Ai_2C24_096C OneTimerChk | 95 PC | high | 95 order
+Ai_2C24_0A1C asspassrec | 94G logic94.asm | high | asstab entry 19
+Ai_2CD2_04BA assintrostand | 95 PC | high | asstab entry 37
+Ai_2CD2_0534 assintroline | 95 PC | high | asstab entry 38
+Ai_2CD2_0740 AddStar | 95 PC | high | 95 order
+Ai_2CD2_0788 StarEligible | 95 PC | high | 95 order
+Ai_2CD2_07DC StarCompare | 95 PC | high | 95 order
+Ai_2CD2_09FA PickThreeStars | 95 PC | high | 95 order
+Ai_2CD2_0D46 StartThreeStars | 95 PC | high | 95 order
+Ai_2CD2_0F72 MoveInDir | 95 PC | high | 95 order
+Ai_2CD2_0FF2 SteerToTarget | 95 PC | high | 95 order
+Ai_2CD2_10B0 assstarskate | 95 PC | high | asstab entry 20
+Ai_2CD2_11D0 assthreestars | 95 PC | high | asstab entry 21
+Ai_2CD2_14DC assboxenter | 95 PC | high | asstab entry 42
+Ai_2CD2_1640 assbenchside | 95 PC | high | asstab entry 43
+Ai_2E42_04CA TeamLineEnergy | 95 PC | high | GetLineEnergies calls it per line
+Ai_2E42_06C6 SetCoachMode | 95 PC | high | 95 order
+Ai_2E42_0760 InitCoachModes | 95 PC | high | 95 order
+Ai_2E42_0826 UpdateCoachModes | 95 PC | high | 95 order
+Ai_2E42_0A7C PenTeamScored | 95 PC | high | 95 order
+Ai_2E42_0AFC Goal | 94G logic94.asm | high | 95 order
+Ai_2E42_0FB6 GiveControl | 95 PC | medium | 95 order
+Ai_2E42_103A Setplass | 94G logic94.asm | high | 95 order
+Ai_2E42_1068 setplayer | 94G logic94.asm | high | 95 order
+Ai_2E42_146C reenergizeteam | 94G logic94.asm | high | 95 order
+Ai_2E42_14B4 clearteams | 94G logic94.asm | medium | 95 order
+Ai_2E42_1574 restoreteams | 94G logic94.asm | medium | 95 order
+Ai_2E42_15BC GetPeriodTime | 95 PC | medium | 95 order
+Ai_2E42_15E6 ResetClock | 95 PC | medium | 95 order
+Ai_2E42_1614 ClearSortCords | 95 PC | high | 95 order
+Ai_2E42_1640 defaultsprites_0 | 94G logic94.asm | high | 95 order
+Ai_2E42_175E TryAddPlayerToList | 95 PC | high | 95 order
+Ai_2E42_17AC SetPlList | 95 PC | high | 95 order
+Ai_2E42_1994 setpersonel | 94G logic94.asm | high | 95 order
+Ai_2E42_1A92 StartPer | 94G logic94.asm | high | 95 order
+Ai_2E42_1B8E DoGameFrame | 95 PC | medium | 95 order; RunGameFrames calls it
+Ai_2E42_1BA8 RestoreBenchEnergy | 95 PC | high | 95 order
+Ai_2E42_1BE8 updatecrowdf | 94G logic94.asm | high | 95 order
+Ai_2E42_1C6A periodicevents | 94G logic94.asm | high | 95 order
+Ai_2E42_1D36 updateplayers | 94G logic94.asm | high | 95 order
+Ai_2E42_1FFC updateanim | 94G logic94.asm | high | 95 order
+Ai_2E42_2152 freezewindow | 95 PC | high | 95 order
+Ai_2E42_216C cleargamevars | 95 PC | medium | 95 order
+Ai_2E42_21E2 DrawRinkOverlays | 95 PC | high | 95 order
+Ai_2E42_290C setupice | 94G logic94.asm | high | 95 order
+Ai_2E42_2946 clockcont_0 | 94G logic94.asm | high | 95 order
+Ai_2E42_2C30 ClockTick | 95 PC | high | 95 order
+Ai_2E42_2CEE SprSortVert | 95 PC | high | 95 order
+Ai_3136_000E SetRinkObject | 95 PC | medium | 95 order before SetBoxDoorObject
+Ai_3136_00A6 SetBoxDoorObject | 95 PC | high | 95 order
+Ai_3136_00C2 DecayCrowdLevel | 95 PC | high | 95 order
+Ai_3136_02E2 DrawRinkObjects | 95 PC | high | 95 order
+Ai_317A_0102 BuildDefaultLines | 95 PC | high | 95 order
+Ai_317A_03D6 CanFillLineSlot | 95 PC | high | 95 order
+Ai_317A_0588 FillDressedSlots | 95 PC | high | 95 order
+Ai_317A_0666 PickForLineSlot | 95 PC | high | 95 order
+Ai_317A_09CE PickGoalie | 95 PC | high | 95 order
+Ai_317A_0A7C PickExtraSkater | 95 PC | high | 95 order
+Ai_317A_0B4C RefillLineSlots | 95 PC | high | 95 order
+Ai_317A_0BC0 RemoveFromLines | 95 PC | high | 95 order
+Ai_317A_0D92 SetupTeamLines | 95 PC | high | 95 order
+Ai_317A_0F22 NormalizeDressFlags | 95 PC | high | 95 order
+Ai_317A_0F50 CanRemovePlayer | 95 PC | high | 95 order
+Ai_327B_007E AddPenalty2 | 95 PC | high | 95 order
+Ai_327B_0158 SetPA | 94G penalty94.asm | high | 95 order
+Ai_327B_018A InProgress | 94G penalty94.asm | high | 95 order
+Ai_327B_060C Stop4Pen | 94G penalty94.asm | high | 95 order
+Ai_327B_0784 checkfornewpen | 94G penalty94.asm | high | 95 order
+Ai_327B_088C releasepl | 94G penalty94.asm | high | 95 order
+Ai_327B_0904 chkatop | 94G penalty94.asm | high | 95 order
+Ai_327B_0946 updatepentime_ut_chk | 95 PC | high | 95 order
+Ai_327B_0982 updatepentime_ut | 94G penalty94.asm | high | 95 order
+Ai_327B_0AB4 UpdatePowerPlayFlags | 95 PC | high | 95 order

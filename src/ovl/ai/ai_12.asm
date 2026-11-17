@@ -29,7 +29,7 @@ Ai_2CD2_0008:
         mov ax, 0x4
 .2:
         push ax
-        call 0x226F:Ai_226F_046A
+        call 0x226F:LoadTeamPPV
         add sp, 0x2
         db 0x2A, 0xC0                           ; insn: sub al, al
         mov [g_D5BA], al
@@ -55,19 +55,19 @@ Ai_2CD2_0008:
         mov [g_29C4], ax
         mov [g_29C2], ax
         push word 0xb362
-        call 0x2E42:Ai_2E42_146C
+        call 0x2E42:reenergizeteam
         add sp, 0x2
         push word 0xb362
-        call 0x2E42:Ai_2E42_1994
+        call 0x2E42:setpersonel
         add sp, 0x2
         push word 0xb362
         call 0x2E42:Ai_2E42_05E2
         add sp, 0x2
         push word 0xb438
-        call 0x2E42:Ai_2E42_146C
+        call 0x2E42:reenergizeteam
         add sp, 0x2
         push word 0xb438
-        call 0x2E42:Ai_2E42_1994
+        call 0x2E42:setpersonel
         add sp, 0x2
         push word 0xb438
         call 0x2E42:Ai_2E42_05E2
@@ -220,8 +220,8 @@ Ai_2CD2_0008:
         add sp, 0x4
         mov word [g_29D4], 0x0
         or byte [g_29BC], 0x40
-        call 0x2E42:Ai_2E42_1B8E
-        call 0x2E42:Ai_2E42_1B8E
+        call 0x2E42:DoGameFrame
+        call 0x2E42:DoGameFrame
         call 0x2E42:Ai_2E42_0026
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [g_D6D0], ax
@@ -229,20 +229,20 @@ Ai_2CD2_0008:
         mov bx, [g_2996]
         mov byte [bx], 0xff
         mov [PadRepeatOn], ax
-        call 0x2C24:Ai_2C24_002E
+        call 0x2C24:joyq_flush
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [g_2998], ax
         mov [g_29AC], ax
         mov [g_299A], ax
         mov [g_29AE], ax
-        call 0x226F:Ai_226F_0A56
+        call 0x226F:CloseTextOverlay
         call 0x0FEF:UseOffscreenCanvas
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [g_48D0], ax
         mov [g_48CE], ax
         mov [g_48CC], ax
         mov [g_48CA], ax
-        call 0x2083:Ai_2083_0248
+        call 0x2083:UpdateHudPanel
         pop si
         pop di
         leave
@@ -316,7 +316,7 @@ Ai_2CD2_02DA:
         mov ax, [g_D6CC]
         sub ax, 0xc0
         push ax
-        call 0x2E42:Ai_2E42_21E2
+        call 0x2E42:DrawRinkOverlays
         add sp, 0x4
         call 0x0000:VgaPageFlip
         cmp word [g_49F4], 0x0
@@ -340,10 +340,10 @@ Ai_2CD2_02DA:
         add sp, 0x2
         cmp word [g_4B02], 0x0
         jnz short .10
-        call 0x2C24:Ai_2C24_0678
+        call 0x2C24:ReadJoy1
         test byte [g_D672], 0x30
         jnz short .9
-        call 0x2C24:Ai_2C24_06B4
+        call 0x2C24:ReadJoy2
         test byte [g_D672], 0x30
         jnz short .9
         call 0x03A3:WaitDeadlineNoEoi
@@ -415,7 +415,7 @@ Ai_2CD2_0496:
         retf
         db 0x90
 
-Ai_2CD2_04BA:
+assintrostand:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push si
@@ -466,7 +466,7 @@ Ai_2CD2_04BA:
         leave
         retf
 
-Ai_2CD2_0534:
+assintroline:
         enter 0x8, 0x0
         push di
         push si
@@ -665,14 +665,14 @@ Ai_2CD2_0534:
         push 0x0
         push 0x0
         push si
-        call 0x2425:Ai_2425_05A8
+        call 0x2425:skateto
         jmp short .22
         db 0x90
 .21:
         push 0x0
         push 0x0
         push si
-        call 0x2519:Ai_2519_2AB2
+        call 0x2519:SkateToSpot
 .22:
         add sp, 0x6
 .23:
@@ -682,7 +682,7 @@ Ai_2CD2_0534:
         retf
         db 0x90
 
-Ai_2CD2_0740:
+AddStar:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -723,7 +723,7 @@ Ai_2CD2_0740:
         retf
         db 0x90
 
-Ai_2CD2_0788:
+StarEligible:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -770,7 +770,7 @@ Ai_2CD2_0788:
         retf
         db 0x90
 
-Ai_2CD2_07DC:
+StarCompare:
         enter 0x20, 0x0
         push di
         push si
@@ -914,13 +914,13 @@ Ai_2CD2_07DC:
         push word [bp - 0x14]
         push si
         push cs
-        call Ai_2CD2_0788
+        call StarEligible
         add sp, 0x4
         mov [bp - 0x2], ax
         push word [bp - 0x16]
         push word [bp - 0x12]
         push cs
-        call Ai_2CD2_0788
+        call StarEligible
         add sp, 0x4
         mov [bp - 0x8], ax
         xor ax, [bp - 0x2]
@@ -999,7 +999,7 @@ Ai_2CD2_07DC:
         leave
         retf
 
-Ai_2CD2_09FA:
+PickThreeStars:
         enter 0x72, 0x0
         push di
         push si
@@ -1061,7 +1061,7 @@ Ai_2CD2_09FA:
         push word [bp - 0x4]
         push word [bp - 0x2]
         push cs
-        call Ai_2CD2_0740
+        call AddStar
         add sp, 0x6
         add [bp - 0x2], ax
 .7:
@@ -1114,7 +1114,7 @@ Ai_2CD2_09FA:
         push word [bp - 0x4]
         push word [bp - 0x2]
         push cs
-        call Ai_2CD2_0740
+        call AddStar
         add sp, 0x6
         add [bp - 0x2], ax
 .12:
@@ -1231,7 +1231,7 @@ Ai_2CD2_09FA:
         push ax
         push word [bp - 0x2]
         push cs
-        call Ai_2CD2_0740
+        call AddStar
         add sp, 0x6
         add [bp - 0x2], ax
         cmp word [bp - 0x2], 0x3
@@ -1311,7 +1311,7 @@ Ai_2CD2_09FA:
         push si
         push word [bp - 0x2]
         push cs
-        call Ai_2CD2_0740
+        call AddStar
         add sp, 0x6
         add [bp - 0x2], ax
         cmp word [bp - 0x2], 0x3
@@ -1338,7 +1338,7 @@ Ai_2CD2_09FA:
         push ax
         push word [bp - 0x2]
         push cs
-        call Ai_2CD2_0740
+        call AddStar
         add sp, 0x6
         add [bp - 0x2], ax
         cmp word [bp - 0x2], 0x3
@@ -1349,7 +1349,7 @@ Ai_2CD2_09FA:
         leave
         retf
 
-Ai_2CD2_0D46:
+StartThreeStars:
         enter 0x2, 0x0
         push di
         push si
@@ -1360,7 +1360,7 @@ Ai_2CD2_0D46:
         mov ax, [g_BFFE]
         mov [bp - 0x2], ax
         mov word [PadRepeatOn], 0x0
-        call 0x2C24:Ai_2C24_002E
+        call 0x2C24:joyq_flush
         push word 0x3a0b
         push strict word f_3A0B_B352
         push word 0x100
@@ -1375,7 +1375,7 @@ Ai_2CD2_0D46:
         add sp, 0x8
         mov word [g_49F4], 0x1
         push cs
-        call Ai_2CD2_09FA
+        call PickThreeStars
         mov byte [g_B06C], 0xff
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [g_48BC], ax
@@ -1486,8 +1486,8 @@ Ai_2CD2_0D46:
         add sp, 0x4
         mov word [g_29D4], 0x0
         or byte [g_29BC], 0x40
-        call 0x2E42:Ai_2E42_1B8E
-        call 0x2E42:Ai_2E42_1B8E
+        call 0x2E42:DoGameFrame
+        call 0x2E42:DoGameFrame
         call 0x2E42:Ai_2E42_0026
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [g_D6D0], ax
@@ -1500,7 +1500,7 @@ Ai_2CD2_0D46:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [g_299A], ax
         mov [g_29AE], ax
-        call 0x226F:Ai_226F_0A56
+        call 0x226F:CloseTextOverlay
         push cs
         call Ai_2CD2_02DA
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -1528,7 +1528,7 @@ Ai_2CD2_0D46:
         retf
         db 0x90
 
-Ai_2CD2_0F72:
+MoveInDir:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push si
@@ -1537,7 +1537,7 @@ Ai_2CD2_0F72:
         jnz short .1
         push word [bp + 0x8]
         push si
-        call 0x2425:Ai_2425_0D8C
+        call 0x2425:goalieacc
         jmp short .5
 .1:
         mov dx, [bp + 0x8]
@@ -1550,7 +1550,7 @@ Ai_2CD2_0F72:
         or ax, [si + 0xe]
         jz short .2
         push si
-        call 0x2425:Ai_2425_0D44
+        call 0x2425:stopna
         add sp, 0x2
         pop si
         leave
@@ -1581,7 +1581,7 @@ Ai_2CD2_0F72:
         call 0x2E42:Ai_2E42_0012
         push word [si + 0x36]
         push si
-        call 0x2425:Ai_2425_080C
+        call 0x2425:playeracc
 .5:
         add sp, 0x4
 .6:
@@ -1589,7 +1589,7 @@ Ai_2CD2_0F72:
         leave
         retf
 
-Ai_2CD2_0FF2:
+SteerToTarget:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push si
@@ -1662,14 +1662,14 @@ Ai_2CD2_0FF2:
         push ax
         push si
         push cs
-        call Ai_2CD2_0F72
+        call MoveInDir
         add sp, 0x4
         pop si
         leave
         retf
         db 0x90
 
-Ai_2CD2_10B0:
+assstarskate:
         enter 0x4, 0x0
         push di
         push si
@@ -1740,7 +1740,7 @@ Ai_2CD2_10B0:
         cmp word [si + 0x2e], 0x3
         jng short .6
         push si
-        call 0x2519:Ai_2519_285C
+        call 0x2519:assexit
         jmp short .8
 .6:
         mov al, [si + 0x44]
@@ -1778,7 +1778,7 @@ Ai_2CD2_10B0:
         mov [g_D672], ax
         push si
         push cs
-        call Ai_2CD2_0FF2
+        call SteerToTarget
 .8:
         add sp, 0x2
 .9:
@@ -1787,7 +1787,7 @@ Ai_2CD2_10B0:
         leave
         retf
 
-Ai_2CD2_11D0:
+assthreestars:
         enter 0xa, 0x0
         push di
         push si
@@ -1866,7 +1866,7 @@ Ai_2CD2_11D0:
         add ax, 0x9f80
         push ax
         push word 0xd542
-        call 0x2352:Ai_2352_031A
+        call 0x2352:FormatPlayerName
         add sp, 0xc
         db 0x0B, 0xF6                           ; insn: or si, si
         jz short .5
@@ -1982,7 +1982,7 @@ Ai_2CD2_11D0:
         add ax, 0x9f80
         push ax
         push word 0xd542
-        call 0x2352:Ai_2352_031A
+        call 0x2352:FormatPlayerName
         add sp, 0xc
         db 0x0B, 0xFF                           ; insn: or di, di
         jz short .16
@@ -2065,7 +2065,7 @@ Ai_2CD2_11D0:
         mov word [si + g_B38E], 0x300
         push word [bp - 0x4]
         push bx
-        call 0x2E42:Ai_2E42_1068
+        call 0x2E42:setplayer
         add sp, 0x4
         push 0x0
         push word [bp - 0xa]
@@ -2089,7 +2089,7 @@ Ai_2CD2_11D0:
         leave
         retf
 
-Ai_2CD2_14DC:
+assboxenter:
         enter 0x2, 0x0
         push di
         push si
@@ -2136,7 +2136,7 @@ Ai_2CD2_14DC:
         mov bx, [si + 0x60]
         mov word [bx + di + 0x2c], 0x800
         push si
-        call 0x2519:Ai_2519_285C
+        call 0x2519:assexit
         add sp, 0x2
         mov al, [si + 0x44]
         and al, 0x40
@@ -2144,7 +2144,7 @@ Ai_2CD2_14DC:
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         inc ax
         push ax
-        call 0x3136:Ai_3136_00A6
+        call 0x3136:SetBoxDoorObject
         add sp, 0x2
         pop si
         pop di
@@ -2217,7 +2217,7 @@ Ai_2CD2_14DC:
         push 0x0
         push 0x0
         push si
-        call 0x2519:Ai_2519_2AB2
+        call 0x2519:SkateToSpot
         add sp, 0x6
 .10:
         pop si
@@ -2226,7 +2226,7 @@ Ai_2CD2_14DC:
         retf
         db 0x90
 
-Ai_2CD2_1640:
+assbenchside:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push si
@@ -2234,7 +2234,7 @@ Ai_2CD2_1640:
         test byte [si + 0x44], 0x2
         jz short .4
         push si
-        call 0x28BB:Ai_28BB_1E08
+        call 0x28BB:puckshadow
         add sp, 0x2
         call 0x0EDC:AnnouncerBusy
         db 0x0B, 0xC0                           ; insn: or ax, ax

@@ -2,7 +2,7 @@
         leave
         retf
 
-Ai_2C24_0002:
+joyq_pop:
         cmp word [PadRepeatDelay], 0x0
         jng short .2
         mov ax, [PadRepeatOn]
@@ -18,14 +18,14 @@ Ai_2C24_0002:
 .2:
         retf
 
-Ai_2C24_002E:
+joyq_flush:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [PadRepeatDelay], ax
         mov [PadRepeatTimer], ax
         retf
         db 0x90
 
-Ai_2C24_0038:
+joyq_peek:
         cmp word [PadRepeatDelay], 0x0
         jnz short .1
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -39,7 +39,7 @@ Ai_2C24_0038:
         retf
         db 0x90
 
-Ai_2C24_0050:
+lineinput:
         enter 0x4, 0x0
         push di
         push si
@@ -49,7 +49,7 @@ Ai_2C24_0050:
         jz short .1
         and byte [si + 0x2a], 0xfe
         push di
-        call 0x2519:Ai_2519_23A4
+        call 0x2519:RequestLineChange
         add sp, 0x2
 .1:
         mov al, [di + 0x44]
@@ -66,7 +66,7 @@ Ai_2C24_0050:
         push di
         mov [bp - 0x2], bx
         push cs
-        call Ai_2C24_0608
+        call lcfound
         add sp, 0x2
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov bx, [bp - 0x2]
@@ -135,7 +135,7 @@ Ai_2C24_0050:
         jnz short .7
         push word [g_D66C]
         push di
-        call 0x2425:Ai_2425_0000
+        call 0x2425:doplayeracc
         add sp, 0x4
 .7:
         pop si
@@ -143,7 +143,7 @@ Ai_2C24_0050:
         leave
         retf
 
-Ai_2C24_0158:
+faceoffinput:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push si
@@ -192,7 +192,7 @@ Ai_2C24_0158:
         leave
         retf
 
-Ai_2C24_01C4:
+Acheck:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push si
@@ -227,7 +227,7 @@ Ai_2C24_01C4:
         retf
         db 0x90
 
-Ai_2C24_020A:
+Holdplayer:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push si
@@ -245,13 +245,13 @@ Ai_2C24_020A:
         push ax
         push si
         push cs
-        call Ai_2C24_01C4
+        call Acheck
         add sp, 0x4
         pop si
         leave
         retf
 
-Ai_2C24_023A:
+lcselect:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -313,10 +313,10 @@ Ai_2C24_023A:
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         inc ax
         push ax
-        call 0x2083:Ai_2083_00B2
+        call 0x2083:DrawPanelLine
         add sp, 0x4
         push si
-        call 0x2E42:Ai_2E42_1994
+        call 0x2E42:setpersonel
         add sp, 0x2
 .8:
         mov ax, 0x1
@@ -326,7 +326,7 @@ Ai_2C24_023A:
         retf
         db 0x90
 
-Ai_2C24_02D0:
+doinput:
         enter 0x8, 0x0
         push di
         push si
@@ -358,7 +358,7 @@ Ai_2C24_02D0:
         push word [bx + g_D470]
         push si
         push cs
-        call Ai_2C24_023A
+        call lcselect
         add sp, 0x4
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .3
@@ -374,7 +374,7 @@ Ai_2C24_02D0:
         jz short .6
         push si
         push cs
-        call Ai_2C24_0158
+        call faceoffinput
 .5:
         add sp, 0x2
         pop si
@@ -387,7 +387,7 @@ Ai_2C24_02D0:
         jz short .7
         push si
         push cs
-        call Ai_2C24_0050
+        call lineinput
         jmp short .5
         db 0x90
 .7:
@@ -517,7 +517,7 @@ Ai_2C24_02D0:
         cmp ax, [si + 0x5e]
         jnz short .38
         push si
-        call 0x28BB:Ai_28BB_0622
+        call 0x28BB:checkob
         add sp, 0x2
         cmp word [si + 0x1a], 0x0
         jnz short .31
@@ -528,26 +528,26 @@ Ai_2C24_02D0:
         test byte [g_29BC], 0x4
         jz short .32
         push si
-        call 0x28BB:Ai_28BB_0DB4
+        call 0x28BB:passmode
         jmp near .5
         db 0x90
 .32:
         test byte [g_29BC], 0x8
         jz short .33
         push si
-        call 0x28BB:Ai_28BB_23EE
+        call 0x28BB:ShotMode
         jmp near .5
 .33:
         test byte [g_D672], 0x10
         jz short .34
         push si
-        call 0x28BB:Ai_28BB_0E04
+        call 0x28BB:setpassmode
         jmp near .5
 .34:
         test byte [g_D672], 0x40
         jz short .35
         push si
-        call 0x2519:Ai_2519_2436
+        call 0x2519:SetLCmode
         jmp near .5
 .35:
         cmp word [si + 0x1a], 0x0
@@ -559,14 +559,14 @@ Ai_2C24_02D0:
         jmp near .52
 .37:
         push si
-        call 0x28BB:Ai_28BB_2388
+        call 0x28BB:SetShotMode
         jmp near .5
 .38:
         test byte [g_D672], 0x40
         jz short .39
         push si
         push cs
-        call Ai_2C24_020A
+        call Holdplayer
         jmp near .5
         db 0x90
 .39:
@@ -642,7 +642,7 @@ Ai_2C24_02D0:
         test byte [g_D672], 0x20
         jz short .51
         push si
-        call 0x28BB:Ai_28BB_0018
+        call 0x28BB:burst
         jmp near .5
 .51:
         cmp word [g_5BF4], 0x0
@@ -650,7 +650,7 @@ Ai_2C24_02D0:
 .52:
         push word [g_D66C]
         push si
-        call 0x2425:Ai_2425_0000
+        call 0x2425:doplayeracc
 .53:
         add sp, 0x4
 .54:
@@ -659,7 +659,7 @@ Ai_2C24_02D0:
         leave
         retf
 
-Ai_2C24_05C0:
+getlchoice:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -691,7 +691,7 @@ Ai_2C24_05C0:
         leave
         retf
 
-Ai_2C24_0608:
+lcfound:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -702,7 +702,7 @@ Ai_2C24_0608:
         mov [g_D66C], ax
         push di
         push cs
-        call Ai_2C24_05C0
+        call getlchoice
         add sp, 0x2
         cmp word [g_D66C], 0x0
         jl short .2
@@ -727,10 +727,10 @@ Ai_2C24_0608:
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         inc ax
         push ax
-        call 0x2083:Ai_2083_00B2
+        call 0x2083:DrawPanelLine
         add sp, 0x4
         push si
-        call 0x2E42:Ai_2E42_1994
+        call 0x2E42:setpersonel
         add sp, 0x2
 .2:
         pop si
@@ -739,7 +739,7 @@ Ai_2C24_0608:
         retf
         db 0x90
 
-Ai_2C24_0678:
+ReadJoy1:
         cmp word [g_4B04], 0x0
         jz short .1
         mov bx, [g_4B04]
@@ -763,7 +763,7 @@ Ai_2C24_0678:
         retf
         db 0x90
 
-Ai_2C24_06B4:
+ReadJoy2:
         cmp word [g_4B04], 0x0
         jz short .1
         mov bx, [g_4B04]
@@ -788,14 +788,14 @@ Ai_2C24_06B4:
         retf
         db 0x90
 
-Ai_2C24_06F2:
+CenterMouse:
         push 0x64
         push word 0xa0
         call 0x03A3:MouseMove
         add sp, 0x4
         retf
 
-Ai_2C24_0700:
+PassCompleted:
         enter 0x2, 0x0
         cmp word [g_29A8], 0x0
         jl short .5
@@ -826,7 +826,7 @@ Ai_2C24_0700:
         leave
         retf
 
-Ai_2C24_0746:
+assonetimer:
         enter 0xa, 0x0
         push di
         push si
@@ -894,7 +894,7 @@ Ai_2C24_0746:
         call 0x0D5F:VectorToDir8
         push ax
         push si
-        call 0x28BB:Ai_28BB_2442
+        call 0x28BB:Findhittype
         add sp, 0x4
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .9
@@ -976,7 +976,7 @@ Ai_2C24_0746:
 .14:
         mov word [si + 0x3c], 0x0
         push si
-        call 0x2E42:Ai_2E42_1FFC
+        call 0x2E42:updateanim
         add sp, 0x2
 .15:
         cmp word [bp - 0x2], 0x0
@@ -1011,18 +1011,18 @@ Ai_2C24_0746:
         mov [si + 0x3c], ax
         mov byte [si + 0x46], 0x0
         push si
-        call 0x2E42:Ai_2E42_1FFC
+        call 0x2E42:updateanim
         add sp, 0x2
         add word [CrowdSound], 0x64
         push si
-        call 0x2519:Ai_2519_272A
+        call 0x2519:a2touchpuck
         add sp, 0x2
         push si
-        call 0x28BB:Ai_28BB_2630
+        call 0x28BB:doshot
         add sp, 0x2
         push si
         push cs
-        call Ai_2C24_0700
+        call PassCompleted
         add sp, 0x2
         jmp short .23
         db 0x90, 0x90
@@ -1033,14 +1033,14 @@ Ai_2C24_0746:
         jnz short .22
         push si
         push cs
-        call Ai_2C24_0700
+        call PassCompleted
         add sp, 0x2
 .22:
         mov word [g_29A8], 0xffff
 .23:
         and byte [si + 0x44], 0xfe
         push si
-        call 0x2519:Ai_2519_285C
+        call 0x2519:assexit
         add sp, 0x2
         mov word [g_4A66], 0x0
 .24:
@@ -1049,7 +1049,7 @@ Ai_2C24_0746:
         leave
         retf
 
-Ai_2C24_096C:
+OneTimerChk:
         enter 0x2, 0x0
         push di
         push si
@@ -1140,7 +1140,7 @@ Ai_2C24_096C:
         retf
         db 0x90
 
-Ai_2C24_0A1C:
+asspassrec:
         enter 0x2, 0x0
         push si
         mov si, [bp + 0x6]
@@ -1151,7 +1151,7 @@ Ai_2C24_0A1C:
         test byte [g_29BB], 0x1
         jz short .3
         push si
-        call 0x2519:Ai_2519_086C
+        call 0x2519:donothing
 .2:
         add sp, 0x2
         pop si
@@ -1164,7 +1164,7 @@ Ai_2C24_0A1C:
 .4:
         push si
         push cs
-        call Ai_2C24_0746
+        call assonetimer
         jmp short .2
 .5:
         test byte [si + 0x44], 0x2
@@ -1188,7 +1188,7 @@ Ai_2C24_0A1C:
         jz short .6
         push si
         push cs
-        call Ai_2C24_096C
+        call OneTimerChk
         add sp, 0x2
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .6
@@ -1204,7 +1204,7 @@ Ai_2C24_0A1C:
 .7:
         and byte [si + 0x44], 0xfe
         push si
-        call 0x2519:Ai_2519_285C
+        call 0x2519:assexit
         add sp, 0x2
         mov word [g_4A66], 0x0
         mov bx, [g_2996]
@@ -1215,7 +1215,7 @@ Ai_2C24_0A1C:
         jnz short .8
         push si
         push cs
-        call Ai_2C24_0700
+        call PassCompleted
         jmp near .2
 .8:
         cmp byte [bp - 0x2], 0x0

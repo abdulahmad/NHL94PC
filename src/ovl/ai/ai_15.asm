@@ -134,7 +134,7 @@ Ai_317A_0086:
         retf
         db 0x90
 
-Ai_317A_0102:
+BuildDefaultLines:
         enter 0x106, 0x0
         push di
         push si
@@ -410,7 +410,7 @@ Ai_317A_0102:
         leave
         retf
 
-Ai_317A_03D6:
+CanFillLineSlot:
         enter 0x8, 0x0
         push di
         push si
@@ -625,7 +625,7 @@ Ai_317A_03D6:
         retf
         db 0x90
 
-Ai_317A_0588:
+FillDressedSlots:
         enter 0xa, 0x0
         push di
         push si
@@ -651,7 +651,7 @@ Ai_317A_0588:
         push word [bp + 0xa]
         push si
         push cs
-        call Ai_317A_03D6
+        call CanFillLineSlot
         add sp, 0x6
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .4
@@ -727,7 +727,7 @@ Ai_317A_0588:
         retf
         db 0x90
 
-Ai_317A_0666:
+PickForLineSlot:
         enter 0x10, 0x0
         push si
         cmp word [bp + 0x6], 0x0
@@ -768,7 +768,7 @@ Ai_317A_0666:
         push word [bp + 0x8]
         push word [bp + 0x6]
         push cs
-        call Ai_317A_03D6
+        call CanFillLineSlot
         add sp, 0x6
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .5
@@ -808,7 +808,7 @@ Ai_317A_0666:
         push word [bp + 0x6]
         push ax
         push cs
-        call Ai_317A_0588
+        call FillDressedSlots
         add sp, 0x6
         mov [bp - 0x6], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -835,7 +835,7 @@ Ai_317A_0666:
         push word [bp + 0x6]
         push ax
         push cs
-        call Ai_317A_0588
+        call FillDressedSlots
         add sp, 0x6
         mov [bp - 0x6], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -855,7 +855,7 @@ Ai_317A_0666:
         push word [bp + 0x6]
         push ax
         push cs
-        call Ai_317A_0588
+        call FillDressedSlots
         add sp, 0x6
         mov [bp - 0x6], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -891,7 +891,7 @@ Ai_317A_0666:
         push word [bp + 0x6]
         push ax
         push cs
-        call Ai_317A_0588
+        call FillDressedSlots
         add sp, 0x6
         mov [bp - 0x6], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -911,7 +911,7 @@ Ai_317A_0666:
         push word [bp + 0x6]
         push ax
         push cs
-        call Ai_317A_0588
+        call FillDressedSlots
         add sp, 0x6
         mov [bp - 0x6], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -946,7 +946,7 @@ Ai_317A_0666:
         push word [bp + 0x6]
         push ax
         push cs
-        call Ai_317A_0588
+        call FillDressedSlots
         add sp, 0x6
         mov [bp - 0x6], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -966,7 +966,7 @@ Ai_317A_0666:
         push word [bp + 0x6]
         push ax
         push cs
-        call Ai_317A_0588
+        call FillDressedSlots
         add sp, 0x6
         mov [bp - 0x6], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -986,7 +986,7 @@ Ai_317A_0666:
         push word [bp + 0x6]
         push ax
         push cs
-        call Ai_317A_0588
+        call FillDressedSlots
         add sp, 0x6
         mov [bp - 0x6], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -1007,7 +1007,7 @@ Ai_317A_0666:
         push word [bp + 0x8]
         push word [bp + 0x6]
         push cs
-        call Ai_317A_03D6
+        call CanFillLineSlot
         add sp, 0x6
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .41
@@ -1054,7 +1054,7 @@ Ai_317A_0666:
         push word [bp + 0x8]
         push word [bp + 0x6]
         push cs
-        call Ai_317A_03D6
+        call CanFillLineSlot
         add sp, 0x6
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .48
@@ -1118,7 +1118,7 @@ Ai_317A_0666:
         push word [bp + 0x8]
         push word [bp + 0x6]
         push cs
-        call Ai_317A_03D6
+        call CanFillLineSlot
         add sp, 0x6
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .55
@@ -1129,7 +1129,7 @@ Ai_317A_0666:
         retf
         db 0x90
 
-Ai_317A_09CE:
+PickGoalie:
         enter 0x6, 0x0
         push di
         push si
@@ -1213,7 +1213,7 @@ Ai_317A_09CE:
         leave
         retf
 
-Ai_317A_0A7C:
+PickExtraSkater:
         enter 0x8, 0x0
         push di
         push si
@@ -1315,7 +1315,7 @@ Ai_317A_0A7C:
         retf
         db 0x90
 
-Ai_317A_0B4C:
+RefillLineSlots:
         enter 0x6, 0x0
         push di
         push si
@@ -1349,7 +1349,7 @@ Ai_317A_0B4C:
         push si
         push di
         push cs
-        call Ai_317A_0666
+        call PickForLineSlot
         add sp, 0x4
         mov bx, [bp - 0x2]
         mov [bx + si], al
@@ -1371,7 +1371,7 @@ Ai_317A_0B4C:
         leave
         retf
 
-Ai_317A_0BC0:
+RemoveFromLines:
         enter 0xc, 0x0
         push di
         push si
@@ -1466,7 +1466,7 @@ Ai_317A_0BC0:
         push si
         push word [bp + 0x6]
         push cs
-        call Ai_317A_0B4C
+        call RefillLineSlots
         add sp, 0xa
 .11:
         inc si
@@ -1490,7 +1490,7 @@ Ai_317A_0BC0:
         push si
         push word [bp + 0x6]
         push cs
-        call Ai_317A_0B4C
+        call RefillLineSlots
         add sp, 0xa
 .14:
         inc si
@@ -1514,7 +1514,7 @@ Ai_317A_0BC0:
         push si
         push word [bp + 0x6]
         push cs
-        call Ai_317A_0B4C
+        call RefillLineSlots
         add sp, 0xa
 .17:
         inc si
@@ -1538,7 +1538,7 @@ Ai_317A_0BC0:
         push si
         push word [bp + 0x6]
         push cs
-        call Ai_317A_0B4C
+        call RefillLineSlots
         add sp, 0xa
 .20:
         inc si
@@ -1558,7 +1558,7 @@ Ai_317A_0BC0:
         push si
         push word [bp + 0x6]
         push cs
-        call Ai_317A_09CE
+        call PickGoalie
         add sp, 0x6
 .22:
         inc si
@@ -1574,7 +1574,7 @@ Ai_317A_0BC0:
         push si
         push word [bp + 0x6]
         push cs
-        call Ai_317A_0A7C
+        call PickExtraSkater
         add sp, 0x4
 .24:
         inc si
@@ -1586,7 +1586,7 @@ Ai_317A_0BC0:
         retf
         db 0x90
 
-Ai_317A_0D92:
+SetupTeamLines:
         enter 0x10, 0x0
         push di
         push si
@@ -1707,7 +1707,7 @@ Ai_317A_0D92:
         push si
         push word [bp + 0x6]
         push cs
-        call Ai_317A_0BC0
+        call RemoveFromLines
         add sp, 0x4
 .13:
         add word [bp - 0x8], 0x28
@@ -1737,7 +1737,7 @@ Ai_317A_0D92:
         push si
         push di
         push cs
-        call Ai_317A_09CE
+        call PickGoalie
         add sp, 0x6
 .16:
         inc si
@@ -1764,7 +1764,7 @@ Ai_317A_0D92:
         leave
         retf
 
-Ai_317A_0F22:
+NormalizeDressFlags:
         push si
         db 0x2B, 0xF6                           ; insn: sub si, si
 .1:
@@ -1791,7 +1791,7 @@ Ai_317A_0F22:
         pop si
         retf
 
-Ai_317A_0F50:
+CanRemovePlayer:
         enter 0xa, 0x0
         push di
         push si

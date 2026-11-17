@@ -6,7 +6,7 @@
         add sp, 0x2
         retf
 
-Ai_3136_000E:
+SetRinkObject:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -70,7 +70,7 @@ Ai_3136_000E:
         leave
         retf
 
-Ai_3136_00A6:
+SetBoxDoorObject:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         cmp word [bp + 0x6], 0x0
@@ -83,12 +83,12 @@ Ai_3136_00A6:
         push 0x12
 .2:
         push cs
-        call Ai_3136_000E
+        call SetRinkObject
         leave
         retf
         db 0x90
 
-Ai_3136_00C2:
+DecayCrowdLevel:
         enter 0x4, 0x0
         push di
         push si
@@ -205,7 +205,7 @@ Ai_3136_00C2:
         push si
         push word [bp - 0x2]
         push cs
-        call Ai_3136_000E
+        call SetRinkObject
         add sp, 0x4
         jmp near .21
         db 0x90
@@ -315,7 +315,7 @@ Ai_3136_00C2:
         retf
         db 0x90
 
-Ai_3136_02E2:
+DrawRinkObjects:
         enter 0x6, 0x0
         push di
         push si

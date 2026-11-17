@@ -47,7 +47,7 @@ Ai_327B_0012:
         cmp byte [bx + g_D6C6], 0x8
         jnl short .5
         push si
-        call 0x317A:Ai_317A_0F50
+        call 0x317A:CanRemovePlayer
         add sp, 0x2
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .5
@@ -55,7 +55,7 @@ Ai_327B_0012:
         push di
         push si
         push cs
-        call Ai_327B_007E
+        call AddPenalty2
         add sp, 0x4
 .5:
         pop si
@@ -63,7 +63,7 @@ Ai_327B_0012:
         leave
         retf
 
-Ai_327B_007E:
+AddPenalty2:
         enter 0x4, 0x0
         push di
         push si
@@ -158,7 +158,7 @@ Ai_327B_007E:
         leave
         retf
 
-Ai_327B_0158:
+SetPA:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov cx, [bp + 0x6]
@@ -182,7 +182,7 @@ Ai_327B_0158:
         leave
         retf
 
-Ai_327B_018A:
+InProgress:
         enter 0x10, 0x0
         push di
         push si
@@ -315,7 +315,7 @@ Ai_327B_018A:
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         inc ax
         push ax
-        call 0x2352:Ai_2352_083E
+        call 0x2352:PostPenaltyEvent
         add sp, 0xe
         mov bx, [bp - 0xe]
         mov al, [bx + g_D677]
@@ -442,7 +442,7 @@ Ai_327B_018A:
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         inc ax
         push ax
-        call 0x2083:Ai_2083_01BA
+        call 0x2083:PanelAddPenalty
         add sp, 0x6
         cmp word [bp - 0x2], 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
@@ -472,7 +472,7 @@ Ai_327B_018A:
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         inc ax
         push ax
-        call 0x2352:Ai_2352_083E
+        call 0x2352:PostPenaltyEvent
         add sp, 0xe
         mov ax, 0x3c
         imul di
@@ -584,7 +584,7 @@ Ai_327B_018A:
         push word [bp - 0xc]
 .34:
         push cs
-        call Ai_327B_0158
+        call SetPA
         add sp, 0x2
 .35:
         pop si
@@ -599,7 +599,7 @@ Ai_327B_0550:
         jnz short .1
         jmp near .7
 .1:
-        call 0x226F:Ai_226F_0A6C
+        call 0x226F:UpdateTextOverlay
         cmp word [g_4A26], 0x0
         jl short .2
         dec word [g_4A26]
@@ -613,7 +613,7 @@ Ai_327B_0550:
         cmp word [g_29CE], 0x0
         jnl short .4
         push cs
-        call Ai_327B_018A
+        call InProgress
         pop si
         pop di
         retf
@@ -662,7 +662,7 @@ Ai_327B_0550:
         pop di
         retf
 
-Ai_327B_060C:
+Stop4Pen:
         enter 0x2, 0x0
         push si
         mov si, [bp + 0x6]
@@ -803,13 +803,13 @@ Ai_327B_060C:
         add sp, 0x2
         push 0x5
         push cs
-        call Ai_327B_0158
+        call SetPA
         add sp, 0x2
         pop si
         leave
         retf
 
-Ai_327B_0784:
+checkfornewpen:
         enter 0x6, 0x0
         push di
         push si
@@ -873,14 +873,14 @@ Ai_327B_0784:
         or byte [g_29BB], 0x8
         push 0x16
         push cs
-        call Ai_327B_0158
+        call SetPA
         add sp, 0x2
         jmp short .14
         db 0x90
 .10:
         push di
         push cs
-        call Ai_327B_060C
+        call Stop4Pen
         add sp, 0x2
 .11:
         test byte [si], 0x80
@@ -925,7 +925,7 @@ Ai_327B_0784:
         retf
         db 0x90
 
-Ai_327B_088C:
+releasepl:
         enter 0x2, 0x0
         push di
         push si
@@ -959,11 +959,11 @@ Ai_327B_088C:
         mov bx, [bp - 0x2]
         mov [bx + 0x1a], ax
         push bx
-        call 0x2E42:Ai_2E42_103A
+        call 0x2E42:Setplass
         add sp, 0x2
         push word [bp + 0x8]
         push word [bp - 0x2]
-        call 0x2E42:Ai_2E42_1068
+        call 0x2E42:setplayer
         add sp, 0x4
         mov bx, [bp - 0x2]
         or byte [bx + 0x45], 0x4
@@ -972,7 +972,7 @@ Ai_327B_088C:
         leave
         retf
 
-Ai_327B_0904:
+chkatop:
         enter 0x2, 0x0
         test byte [g_29BB], 0x10
         jnz short .6
@@ -1006,7 +1006,7 @@ Ai_327B_0904:
         leave
         retf
 
-Ai_327B_0946:
+updatepentime_ut_chk:
         enter 0x2, 0x0
         push di
         push si
@@ -1024,7 +1024,7 @@ Ai_327B_0946:
         push di
         push si
         push cs
-        call Ai_327B_088C
+        call releasepl
         add sp, 0x4
 .1:
         push word 0x97
@@ -1036,7 +1036,7 @@ Ai_327B_0946:
         leave
         retf
 
-Ai_327B_0982:
+updatepentime_ut:
         enter 0x8, 0x0
         push di
         push si
@@ -1122,7 +1122,7 @@ Ai_327B_0982:
         push ax
         push si
         push cs
-        call Ai_327B_0946
+        call updatepentime_ut_chk
         add sp, 0x4
         jmp short .10
 .9:
@@ -1135,7 +1135,7 @@ Ai_327B_0982:
         push ax
         push si
         push cs
-        call Ai_327B_0946
+        call updatepentime_ut_chk
         add sp, 0x4
 .12:
         pop si
@@ -1152,14 +1152,14 @@ Ai_327B_0A70:
         add word [g_29D0], 0x18
         or byte [g_29C0], 0x40
         push cs
-        call Ai_327B_0904
+        call chkatop
         push word 0xb362
         push cs
-        call Ai_327B_0982
+        call updatepentime_ut
         add sp, 0x2
         push word 0xb438
         push cs
-        call Ai_327B_0982
+        call updatepentime_ut
         add sp, 0x2
 .1:
         retf
@@ -1169,13 +1169,13 @@ Ai_327B_0AA6:
         push cs
         call Ai_327B_0A70
         push cs
-        call Ai_327B_0784
+        call checkfornewpen
         push cs
         call Ai_327B_0550
         retf
         db 0x90
 
-Ai_327B_0AB4:
+UpdatePowerPlayFlags:
         mov bx, 0xb438
         mov ax, [g_B384]
         sub ax, [g_B45A]
@@ -1385,7 +1385,7 @@ Ai_327B_0B42:
         push di
         mov [bp - 0x14], ax
         push cs
-        call Ai_327B_088C
+        call releasepl
         add sp, 0x4
         mov bx, [di + 0xd0]
         add bx, [bp - 0x14]
@@ -1393,7 +1393,7 @@ Ai_327B_0B42:
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push word [bp - 0xe]
-        call 0x2083:Ai_2083_020A
+        call 0x2083:PanelRemovePenalty
         add sp, 0x4
         mov si, 0x1
         mov di, [bp - 0x8]
