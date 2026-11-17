@@ -4,6 +4,13 @@
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; MenuSoundSettings                                          2528:0004  94 PC
+; Sound card dialog.
+;
+; Calls VgaCopyBytes, DrawSoundCardDlg, DrawSoundCardOpts, CopyPlane, SoundCardDlgLoop. Far routine
+; (retf).
+;-----------------------------------------------------------------------------
 MenuSoundSettings:
         push word 0x3f00
         push word 0xbd00
@@ -31,6 +38,13 @@ MenuSoundSettings:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         retf
 
+;-----------------------------------------------------------------------------
+; DrawSoundCardDlg                                           2528:0050  94 PC
+; 'sound' dbox.
+;
+; Calls UseOtherPage, BuildPathFar, LoadPackedHeader, FindFarMsg, DrawRleTransFastAt, FindUnlink. Far
+; routine (retf).
+;-----------------------------------------------------------------------------
 DrawSoundCardDlg:
         enter 0xe, 0x0
         push di
@@ -75,6 +89,12 @@ DrawSoundCardDlg:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; DrawSoundCardOpts                                          2528:00B2  94 PC
+; Option boxes.
+;
+; Calls GetPaletteFar, WaitRetraceEnd, SetPaletteFar. Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawSoundCardOpts:
         enter 0x48, 0x0
         push si
@@ -159,6 +179,12 @@ DrawSoundCardOpts:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; SoundCardHitTest                                           2528:016E  94 PC
+; Box under the pointer.
+;
+; Takes 3 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 SoundCardHitTest:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -205,6 +231,12 @@ SoundCardHitTest:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; RedrawSoundCardOpts                                        2528:01C6  94 PC
+; Redraws the chosen boxes.
+;
+; Calls GetPaletteFar, WaitRetraceEnd, SetPaletteFar. Far routine (retf).
+;-----------------------------------------------------------------------------
 RedrawSoundCardOpts:
         enter 0x48, 0x0
         push di
@@ -268,6 +300,13 @@ RedrawSoundCardOpts:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; SoundCardDlgLoop                                           2528:0250  94 PC
+; Input loop of the sound card dialog.
+;
+; Calls MouseRead, UseCurrentPage, DrawRleTransAt, FlushInputEvents, GetInputEvent, VgaCopyRect,
+; SoundCardHitTest, SetDialogColors and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 SoundCardDlgLoop:
         enter 0xc, 0x0
         push si
@@ -467,6 +506,13 @@ SoundCardDlgLoop:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; SetSoundDevice                                             2528:0426  94 PC
+; Loads the driver, patches and songs ('PCBEEP' .. 'MT32')
+;
+; Takes 2 words of stack arguments. Calls SpeechShutdown, FindUnlink, ShutdownSequencer,
+; WaitDeadlineNoEoi, UnloadSong, InitSequencer, LoadSoundDriver, LoadRawHeader and others.
+;-----------------------------------------------------------------------------
 SetSoundDevice:
         enter 0x66, 0x0
         push di

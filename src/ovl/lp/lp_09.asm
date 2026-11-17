@@ -6,6 +6,13 @@
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; CheckMasterPassword                                        2305:000C  94 PC
+; Master password check.
+;
+; Calls LeagueCheckStub, ReadLeagueInfo, _fstrcpy, _fstrcspn, SetDialogColors, MouseRead, MessageBox,
+; MergeLeagueFiles and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 CheckMasterPassword:
         enter 0x1c, 0x0
         push di
@@ -213,6 +220,12 @@ CheckMasterPassword:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; FmtFromLeague                                              2305:0214  94 PC
+; '<name> from the league <league>'
+;
+; Takes 6 words of stack arguments. Calls _fstrcpy, _fstrcspn, _fstrcat. Far routine (retf).
+;-----------------------------------------------------------------------------
 FmtFromLeague:
         enter 0xe, 0x0
         push di
@@ -261,6 +274,13 @@ FmtFromLeague:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; BuildLeagueList                                            2305:0282  94 PC
+; Lists the *.LP leagues.
+;
+; Takes 3 words of stack arguments. Calls _fstrcpy, _fstrcat, _dos_findfirst, _dos_findnext,
+; AllocRecData, _fmemset, GetLeagueId, _fstrcspn and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 BuildLeagueList:
         enter 0x52, 0x0
         push di
@@ -465,11 +485,24 @@ BuildLeagueList:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; LeagueCheckStub                                            2305:044C  94 PC
+; Empty check routine.
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 LeagueCheckStub:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; GetLeagueId                                                2305:0450  94 PC
+; League id from PLAYER.ID.
+;
+; Takes 4 words of stack arguments. Calls BuildPathFar, OpenReadShared, ReadAtOffset, CloseHandlePtr.
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 GetLeagueId:
         enter 0x24, 0x0
         push si
@@ -531,6 +564,13 @@ GetLeagueId:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; WriteLeagueInfo                                            2305:04DC  94 PC
+; Writes PINFO.DB.
+;
+; Takes 12 words of stack arguments. Calls BuildPathFar, CreateFileNormal, WriteAtOffset,
+; CloseHandlePtr. Far routine (retf).
+;-----------------------------------------------------------------------------
 WriteLeagueInfo:
         enter 0x22, 0x0
         push si
@@ -650,6 +690,12 @@ WriteLeagueInfo:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; MsgCopyingDatabases                                        2305:05E8  94 PC
+; 'copying databases' message.
+;
+; Takes 2 words of stack arguments. Calls MessageBox. Far routine (retf).
+;-----------------------------------------------------------------------------
 MsgCopyingDatabases:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -674,6 +720,13 @@ MsgCopyingDatabases:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; CopyHumanTeamDBs                                           2305:061C  94 PC
+; Copies the human teams' dbs.
+;
+; Takes 6 words of stack arguments. Calls MsgCopyingDatabases, _fstrcpy, DeleteMatching,
+; CopyFileByName, BuildPathFar, OpenReadWriteShared, WriteLeagueTeamEntry, CloseHandlePtr and others.
+;-----------------------------------------------------------------------------
 CopyHumanTeamDBs:
         enter 0xa8, 0x0
         push si

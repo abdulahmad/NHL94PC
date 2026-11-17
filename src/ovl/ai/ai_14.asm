@@ -6,6 +6,12 @@
         add sp, 0x2
         retf
 
+;-----------------------------------------------------------------------------
+; SetRinkObject                                              3136:000E  94 PC
+; Fills a rink object slot from a frame's position and animation.
+;
+; Takes 2 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 SetRinkObject:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -70,6 +76,12 @@ SetRinkObject:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; SetBoxDoorObject                                           3136:00A6  94 PC
+; Opens or closes a team's penalty box door.
+;
+; Takes 1 word of stack arguments. Calls SetRinkObject. Far routine (retf).
+;-----------------------------------------------------------------------------
 SetBoxDoorObject:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -88,6 +100,12 @@ SetBoxDoorObject:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; DecayCrowdLevel                                            3136:00C2  94 PC
+; Decays the crowd level and picks a random crowd event at 0.
+;
+; Calls randomd0, SetRinkObject. Far routine (retf).
+;-----------------------------------------------------------------------------
 DecayCrowdLevel:
         enter 0x4, 0x0
         push di
@@ -315,6 +333,12 @@ DecayCrowdLevel:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; DrawRinkObjects                                            3136:02E2  94 PC
+; Draws the rink object slots and the side sprites.
+;
+; Calls DrawSpriteClipped, DrawFrameSprite.
+;-----------------------------------------------------------------------------
 DrawRinkObjects:
         enter 0x6, 0x0
         push di

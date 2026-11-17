@@ -4,6 +4,12 @@
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; checkwindow                                                226F:0004  94 PC
+; Camera follows the puck.
+;
+; Calls ImulRegs. Far routine (retf).
+;-----------------------------------------------------------------------------
 checkwindow:
         enter 0x8, 0x0
         push di
@@ -450,6 +456,13 @@ checkwindow:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; LoadTeamPPV                                                226F:046A  94 PC
+; Loads a numbered .QPP picture file.
+;
+; Takes 1 word of stack arguments. Calls BuildPathFar, LoadPackedHeader, TableCount, _sprintf,
+; FindFarMsg. Far routine (retf).
+;-----------------------------------------------------------------------------
 LoadTeamPPV:
         enter 0x12, 0x0
         push di
@@ -532,6 +545,13 @@ LoadTeamPPV:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; DrawTextOverlay                                            226F:054A  94 PC
+; Text overlay sliding in and out.
+;
+; Calls SetClipRectRegs, AddrFlag0, FillRect, DrawSpriteClipped, UseCharSeg, TextWidthAll, DrawText.
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawTextOverlay:
         enter 0x14, 0x0
         push di
@@ -1044,6 +1064,12 @@ DrawTextOverlay:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; CloseTextOverlay                                           226F:0A56  94 PC
+; Overlay timer 100h to 10h.
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 CloseTextOverlay:
         cmp word [g_49F0], 0x100
         jnz short .1
@@ -1056,6 +1082,12 @@ CloseTextOverlay:
         mov [g_49F0], ax
         retf
 
+;-----------------------------------------------------------------------------
+; UpdateTextOverlay                                          226F:0A6C  94 PC
+; Steps the overlay script.
+;
+; Calls FindUnlink. Far routine (retf).
+;-----------------------------------------------------------------------------
 UpdateTextOverlay:
         push si
         cmp word [g_49F0], 0x0
@@ -1162,6 +1194,13 @@ UpdateTextOverlay:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; DrawCallBanner                                             226F:0B94  94 PC
+; Referee call banner.
+;
+; Takes 1 word of stack arguments. Calls TextWidthAll, AddrFlag0, FillRect, UseCharSeg, DrawText,
+; AddDirtyRect. Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawCallBanner:
         enter 0xe, 0x0
         push di
@@ -1287,6 +1326,12 @@ DrawCallBanner:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ShowGoalieBanner                                           226F:0CE6  94 PC
+; Pulled / returned goalie banner.
+;
+; Takes 1 word of stack arguments. Calls setpersonel. Far routine (retf).
+;-----------------------------------------------------------------------------
 ShowGoalieBanner:
         enter 0x2, 0x0
         push di
@@ -1370,6 +1415,12 @@ ShowGoalieBanner:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; SetTeamGoalie                                              226F:0DAA  94 PC
+; Sets a team's goalie from the goalie menu; a negative value pulls him.
+;
+; Takes 3 words of stack arguments.
+;-----------------------------------------------------------------------------
 SetTeamGoalie:
         enter 0x4, 0x0
         push di

@@ -2,6 +2,12 @@
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; joyq_pop                                                   2C24:0002  94 PC
+; Takes the oldest record off the input queue that the timer samples into.
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 joyq_pop:
         cmp word [PadRepeatDelay], 0x0
         jng short .2
@@ -18,6 +24,12 @@ joyq_pop:
 .2:
         retf
 
+;-----------------------------------------------------------------------------
+; joyq_flush                                                 2C24:002E  94 PC
+; Empties the input queue.
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 joyq_flush:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [PadRepeatDelay], ax
@@ -25,6 +37,12 @@ joyq_flush:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; joyq_peek                                                  2C24:0038  94 PC
+; Returns the oldest input queue record, or 0 when the queue is empty.
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 joyq_peek:
         cmp word [PadRepeatDelay], 0x0
         jnz short .1
@@ -39,6 +57,12 @@ joyq_peek:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; lineinput                                                  2C24:0050  94 PC
+; Line change box input: the highlighted choice cycles and blinks; a press takes it.
+;
+; Takes 1 word of stack arguments. Calls RequestLineChange, lcfound, doplayeracc. Far routine (retf).
+;-----------------------------------------------------------------------------
 lineinput:
         enter 0x4, 0x0
         push di
@@ -143,6 +167,12 @@ lineinput:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; faceoffinput                                               2C24:0158  94 PC
+; Faceoff input: the pull direction, with an automatic pull when the timer runs out.
+;
+; Takes 1 word of stack arguments. Calls SetSPA. Far routine (retf).
+;-----------------------------------------------------------------------------
 faceoffinput:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -192,6 +222,12 @@ faceoffinput:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; Acheck                                                     2C24:01C4  94 PC
+; Starts a hold check of one player against another and locks the animation.
+;
+; Takes 2 words of stack arguments. Calls SetSPA. Far routine (retf).
+;-----------------------------------------------------------------------------
 Acheck:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -227,6 +263,12 @@ Acheck:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; Holdplayer                                                 2C24:020A  94 PC
+; Hold button without the puck: hold, shot block dive or hold check.
+;
+; Takes 1 word of stack arguments. Calls SetSPA, Acheck. Far routine (retf).
+;-----------------------------------------------------------------------------
 Holdplayer:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -251,6 +293,12 @@ Holdplayer:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; lcselect                                                   2C24:023A  94 PC
+; Line change by number from the keyboard keys.
+;
+; Takes 2 words of stack arguments. Calls DrawPanelLine, setpersonel. Far routine (retf).
+;-----------------------------------------------------------------------------
 lcselect:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -326,6 +374,13 @@ lcselect:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; doinput                                                    2C24:02D0  94 PC
+; Controller input for a controlled player: line change, faceoff, pass, shot, check and skate.
+;
+; Takes 2 words of stack arguments. Calls lcselect, faceoffinput, lineinput, restorepl, checkob,
+; passmode, ShotMode, setpassmode and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 doinput:
         enter 0x8, 0x0
         push di
@@ -659,6 +714,12 @@ doinput:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; getlchoice                                                 2C24:05C0  94 PC
+; Returns the line for a line change choice.
+;
+; Takes 1 word of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 getlchoice:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -691,6 +752,12 @@ getlchoice:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; lcfound                                                    2C24:0608  94 PC
+; Applies a line change choice: sets the team's line and its personnel.
+;
+; Takes 1 word of stack arguments. Calls getlchoice, DrawPanelLine, setpersonel. Far routine (retf).
+;-----------------------------------------------------------------------------
 lcfound:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -739,6 +806,12 @@ lcfound:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ReadJoy1                                                   2C24:0678  94 PC
+; Reads the first controller from the input record.
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 ReadJoy1:
         cmp word [g_4B04], 0x0
         jz short .1
@@ -763,6 +836,12 @@ ReadJoy1:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ReadJoy2                                                   2C24:06B4  94 PC
+; Reads the second controller from the input record.
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 ReadJoy2:
         cmp word [g_4B04], 0x0
         jz short .1
@@ -788,6 +867,12 @@ ReadJoy2:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; CenterMouse                                                2C24:06F2  94 PC
+; Puts the mouse at the centre of the screen.
+;
+; Calls MouseMove. Far routine (retf).
+;-----------------------------------------------------------------------------
 CenterMouse:
         push 0x64
         push word 0xa0
@@ -795,6 +880,12 @@ CenterMouse:
         add sp, 0x4
         retf
 
+;-----------------------------------------------------------------------------
+; PassCompleted                                              2C24:0700  94 PC
+; A pass reached a teammate: counts it for the team.
+;
+; Takes 1 word of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 PassCompleted:
         enter 0x2, 0x0
         cmp word [g_29A8], 0x0
@@ -826,6 +917,13 @@ PassCompleted:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; assonetimer                                                2C24:0746  94 PC
+; Assignment: the one-timer shot when the pass arrives.
+;
+; Takes 1 word of stack arguments. Calls ImulRegs, VectorToDir8, Findhittype, SetSPA, updateanim,
+; a2touchpuck, doshot, PassCompleted and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 assonetimer:
         enter 0xa, 0x0
         push di
@@ -1049,6 +1147,12 @@ assonetimer:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; OneTimerChk                                                2C24:096C  94 PC
+; Looks for a one-timer chance for a receiver in the attacking zone.
+;
+; Takes 1 word of stack arguments. Calls randomd0. Far routine (retf).
+;-----------------------------------------------------------------------------
 OneTimerChk:
         enter 0x2, 0x0
         push di
@@ -1140,6 +1244,13 @@ OneTimerChk:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; asspassrec                                                 2C24:0A1C  94 PC
+; Assignment: catching a pass, with the one-timer and pass statistics.
+;
+; Takes 1 word of stack arguments. Calls donothing, assonetimer, OneTimerChk, assexit, PassCompleted.
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 asspassrec:
         enter 0x2, 0x0
         push si

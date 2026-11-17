@@ -5,6 +5,13 @@
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; SelectFloppyDrive                                          20F8:000C  94 PC
+; Picks the floppy with the league ('.ID')
+;
+; Takes 4 words of stack arguments. Calls _dos_getdiskfree, BuildPathFar, OpenReadShared,
+; ReadAtOffset, _fmemcmp, CloseHandlePtr, MouseRead, MessageBox. Far routine (retf).
+;-----------------------------------------------------------------------------
 SelectFloppyDrive:
         enter 0x4e, 0x0
         push di
@@ -208,6 +215,13 @@ SelectFloppyDrive:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; FindLeagueFloppy                                           20F8:0206  94 PC
+; Looks for the league disk.
+;
+; Takes 4 words of stack arguments. Calls _dos_getdiskfree, BuildPathFar, OpenReadShared,
+; ReadAtOffset, _fmemcmp, CloseHandlePtr, FmtFromLeague, MouseRead and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 FindLeagueFloppy:
         enter 0x8c, 0x0
         push di
@@ -371,6 +385,12 @@ FindLeagueFloppy:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; WaitLeagueFloppy                                           20F8:0394  94 PC
+; Insert-disk prompt.
+;
+; Takes 6 words of stack arguments. Calls FmtFromLeague, MouseRead, MessageBox.
+;-----------------------------------------------------------------------------
 WaitLeagueFloppy:
         enter 0x46, 0x0
         push di

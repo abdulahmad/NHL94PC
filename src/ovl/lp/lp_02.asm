@@ -6,6 +6,12 @@
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ClearPlayerFromLines                                       1EAE:000A  94 PC
+; Removes a player from every line slot.
+;
+; Takes 4 words of stack arguments.
+;-----------------------------------------------------------------------------
 ClearPlayerFromLines:
         enter 0x2, 0x0
         push di

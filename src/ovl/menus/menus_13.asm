@@ -2,6 +2,13 @@
         jmp near LeagueSetEditLoop.1 - 0xF80
         db 0x90
 
+;-----------------------------------------------------------------------------
+; MenuModeSettings                                           2C1E:0004  94 PC
+; Game mode settings dialog.
+;
+; Calls GetPage, CopyPlane, UseOtherPage, AllocRecData, GetBlockAt, DrawModeSetDlg, DrawModeSetChecks,
+; VgaCopyBytes and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuModeSettings:
         enter 0x4, 0x0
         push di
@@ -129,6 +136,13 @@ MenuModeSettings:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; DrawModeSetDlg                                             2C1E:015C  94 PC
+; 'setting7' / 'setting4' dbox.
+;
+; Calls SetRemapTable, UseOtherPage, BuildPathFar, LoadPackedHeader, FindFarMsg, DrawRleTransRemapAt,
+; FindUnlink, DrawSettingsHeading. Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawModeSetDlg:
         enter 0x10e, 0x0
         push di
@@ -217,6 +231,12 @@ DrawModeSetDlg:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; DrawModeSetChecks                                          2C1E:0222  94 PC
+; All check boxes.
+;
+; Calls DrawModeSetCheck, GetPaletteFar, WaitRetraceEnd, SetPaletteFar. Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawModeSetChecks:
         enter 0x12, 0x0
         push di
@@ -336,6 +356,12 @@ DrawModeSetChecks:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ModeSetHitTest                                             2C1E:0340  94 PC
+; Box under the pointer.
+;
+; Takes 3 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 ModeSetHitTest:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -401,6 +427,12 @@ ModeSetHitTest:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; DrawModeSetCheck                                           2C1E:03C4  94 PC
+; One check box.
+;
+; Calls GetPaletteFar, WaitRetraceEnd, SetPaletteFar. Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawModeSetCheck:
         enter 0x60, 0x0
         push di
@@ -473,6 +505,13 @@ DrawModeSetCheck:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ModeSetViewLoop                                            2C1E:0464  94 PC
+; View-only loop.
+;
+; Calls MouseRead, UseCurrentPage, DrawRleTransAt, FlushInputEvents, GetInputEvent, VgaCopyRect. Far
+; routine (retf).
+;-----------------------------------------------------------------------------
 ModeSetViewLoop:
         enter 0xa, 0x0
         push si
@@ -580,6 +619,13 @@ ModeSetViewLoop:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ModeSetEditLoop                                            2C1E:0570  94 PC
+; Edit loop of the mode settings screen.
+;
+; Calls MouseRead, UseCurrentPage, DrawRleTransAt, FlushInputEvents, GetInputEvent, VgaCopyRect,
+; ModeSetHitTest, DrawModeSetCheck and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 ModeSetEditLoop:
         enter 0xc, 0x0
         push si

@@ -2,6 +2,12 @@
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; DrawSpriteClipped                                          1F54:0002  94 PC
+; EMS frame, remap table, clips to the view, blits.
+;
+; Takes 7 words of stack arguments. Calls EmsMapFrame, SetRemapTable. Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawSpriteClipped:
         enter 0x1c, 0x0
         push di
@@ -321,6 +327,13 @@ DrawSpriteClipped:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; FlushDirtyRects                                            1F54:0316  94 PC
+; Copies this page's dirty rectangles (or the whole strip after a scroll)
+;
+; Takes 2 words of stack arguments. Calls SetScrollCell, VgaCopyStrip, VgaCopyWrapped. Far routine
+; (retf).
+;-----------------------------------------------------------------------------
 FlushDirtyRects:
         enter 0x2, 0x0
         push si
@@ -405,14 +418,32 @@ FlushDirtyRects:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; NullGameHook                                               1F54:03FA  94 PC
+; Empty far routine; reached through NullGameHookThunk.
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 NullGameHook:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; NullGameHook2                                              1F54:03FC  94 PC
+; Empty far routine.
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 NullGameHook2:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; AddDirtyRect                                               1F54:03FE  94 PC
+; Appends a rectangle to this page's dirty list.
+;
+; Takes 4 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 AddDirtyRect:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp

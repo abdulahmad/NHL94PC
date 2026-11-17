@@ -9,6 +9,14 @@ WaitLeagueFloppyTail:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; ExportTeamToFloppy                                         2139:000C  94 PC
+; Writes a team's dbs to floppy.
+;
+; Takes 11 words of stack arguments. Calls BuildPathFar, OpenReadWriteShared, ReadLeagueTeamEntry,
+; OpenReadShared, ReadAtOffset, CloseHandlePtr, _fstrcmp, FmtFromLeague and others. Far routine
+; (retf).
+;-----------------------------------------------------------------------------
 ExportTeamToFloppy:
         enter 0xe8, 0x0
         push si
@@ -714,6 +722,12 @@ ExportTeamToFloppy:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; CopyLeagueFiles                                            2139:07F4  94 PC
+; Copies the league db files ('.xx')
+;
+; Takes 4 words of stack arguments. Calls CopyFileByName. Far routine (retf).
+;-----------------------------------------------------------------------------
 CopyLeagueFiles:
         enter 0x4, 0x0
         push di
@@ -800,6 +814,13 @@ CopyLeagueFiles:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; ImportMasterLeague                                         2139:08C6  94 PC
+; Imports the master league from floppy.
+;
+; Calls BuildPathFar, OpenReadShared, ReadAtOffset, CloseHandlePtr, ReadLeagueInfo, _fstrcpy,
+; _dos_findfirst, AskMasterPassword and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 ImportMasterLeague:
         enter 0x70, 0x0
         push si
@@ -1146,6 +1167,13 @@ ImportMasterLeague:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; ImportPlayerTeam                                           2139:0C2E  94 PC
+; Imports a player's team from floppy.
+;
+; Calls SetDialogColors, BuildPathFar, OpenReadShared, ReadAtOffset, CloseHandlePtr, _sprintf,
+; _fstrcpy, OpenReadWriteShared and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 ImportPlayerTeam:
         enter 0xae, 0x0
         push si
@@ -1916,6 +1944,13 @@ ImportPlayerTeam:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ImportDbs                                                  2139:1430  94 PC
+; Import menu item.
+;
+; Calls SetDialogColors, MouseRead, MessageBox, SelectFloppyDrive, ImportMasterLeague,
+; ImportPlayerTeam, BuildPathFar, OpenReadShared and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 ImportDbs:
         enter 0x28, 0x0
         push si
@@ -2085,6 +2120,13 @@ ImportDbs:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; ExportDbs                                                  2139:15EC  94 PC
+; 'Select a team to export.'
+;
+; Calls LeagueCheckStub, ReadLeagueInfo, _fstrcpy, _fstrcspn, SetDialogColors, MouseRead, MessageBox,
+; UpdateTeamDbs and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 ExportDbs:
         enter 0x58, 0x0
         push di

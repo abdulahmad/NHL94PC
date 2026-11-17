@@ -8,6 +8,12 @@ SetTeamGoalieTail:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; QueueDeferredCall                                          2352:000E  94 PC
+; Stores a far routine and 7 argument words in an 18-byte queue entry.
+;
+; Takes 9 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 QueueDeferredCall:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -35,6 +41,12 @@ QueueDeferredCall:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; RunDeferredCalls                                           2352:005C  94 PC
+; Calls each queued far routine with its arguments, empties the queue.
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 RunDeferredCalls:
         push di
         push si
@@ -62,6 +74,13 @@ RunDeferredCalls:
         pop di
         retf
 
+;-----------------------------------------------------------------------------
+; AppendGSumRecord                                           2352:0096  94 PC
+; Bumps the game summary count, rewrites the header, appends the record.
+;
+; Takes 1 word of stack arguments. Calls OpenReadWriteShared, FatalError, _lseek, WriteAtOffset,
+; CloseHandlePtr. Far routine (retf).
+;-----------------------------------------------------------------------------
 AppendGSumRecord:
         enter 0x2, 0x0
         inc word [g_01CE]
@@ -149,6 +168,12 @@ AppendGSumRecord:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; FlushGSumQueue                                             2352:0174  94 PC
+; AppendGSumRecord for each queued 12-byte record, then clears the count.
+;
+; Calls AppendGSumRecord. Far routine (retf).
+;-----------------------------------------------------------------------------
 FlushGSumQueue:
         push di
         push si
@@ -171,6 +196,12 @@ FlushGSumQueue:
         pop di
         retf
 
+;-----------------------------------------------------------------------------
+; PutGSumHeader                                              2352:019C  94 PC
+; Opens the game summary file and writes the 12-byte header at the start.
+;
+; Calls OpenReadWriteShared, FatalError, WriteAtOffset, CloseHandlePtr. Far routine (retf).
+;-----------------------------------------------------------------------------
 PutGSumHeader:
         enter 0x2, 0x0
         lea ax, [bp - 0x2]
@@ -205,6 +236,12 @@ PutGSumHeader:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; PutGSumTail                                                2352:01EE  94 PC
+; Seeks to end - 12 and writes the 12-byte tail record.
+;
+; Calls OpenReadWriteShared, FatalError, _lseek, WriteAtOffset, CloseHandlePtr. Far routine (retf).
+;-----------------------------------------------------------------------------
 PutGSumTail:
         enter 0x2, 0x0
         lea ax, [bp - 0x2]
@@ -251,6 +288,12 @@ PutGSumTail:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; WriteGSumHeader                                            2352:0260  94 PC
+; Bumps the record count, writes the header at 0 and the tail at the end.
+;
+; Calls OpenReadWriteShared, FatalError, _lseek, WriteAtOffset, CloseHandlePtr. Far routine (retf).
+;-----------------------------------------------------------------------------
 WriteGSumHeader:
         enter 0x2, 0x0
         inc word [g_01CE]
@@ -324,6 +367,12 @@ WriteGSumHeader:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; FormatPlayerName                                           2352:031A  94 PC
+; '%s#%d %s %s%s' roster names.
+;
+; Takes 6 words of stack arguments. Calls UseCharSeg, _sprintf, TextWidthAll. Far routine (retf).
+;-----------------------------------------------------------------------------
 FormatPlayerName:
         enter 0x18, 0x0
         push di
@@ -456,6 +505,12 @@ FormatPlayerName:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; BuildEventLines                                            2352:0478  94 PC
+; Goal / penalty / injury event text.
+;
+; Calls _sprintf, FormatPlayerName. Far routine (retf).
+;-----------------------------------------------------------------------------
 BuildEventLines:
         enter 0x14, 0x0
         push di
@@ -763,6 +818,13 @@ BuildEventLines:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; PostGoalEvent                                              2352:0750  94 PC
+; Event type 1.
+;
+; Takes 7 words of stack arguments. Calls LoadTeamPPV, BuildEventLines, CloseTextOverlay. Far routine
+; (retf).
+;-----------------------------------------------------------------------------
 PostGoalEvent:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -851,6 +913,13 @@ PostGoalEvent:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; PostPenaltyEvent                                           2352:083E  94 PC
+; Event type 2.
+;
+; Takes 7 words of stack arguments. Calls BuildEventLines, CloseTextOverlay, AnnouncePenalty. Far
+; routine (retf).
+;-----------------------------------------------------------------------------
 PostPenaltyEvent:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -942,6 +1011,12 @@ PostPenaltyEvent:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; PostInjuryEvent                                            2352:0924  94 PC
+; Event type 3.
+;
+; Takes 5 words of stack arguments. Calls BuildEventLines, CloseTextOverlay. Far routine (retf).
+;-----------------------------------------------------------------------------
 PostInjuryEvent:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -992,10 +1067,22 @@ PostInjuryEvent:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; NullCallback0C                                             2352:0998  94 PC
+; A lone retf between PostInjuryEvent and ChkScorerMilestone.
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 NullCallback0C:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ChkScorerMilestone                                         2352:099A  94 PC
+; Scorer season / game totals after a goal.
+;
+; Calls QueueDeferredCall. Far routine (retf).
+;-----------------------------------------------------------------------------
 ChkScorerMilestone:
         enter 0xe, 0x0
         push di
@@ -1315,6 +1402,12 @@ ChkScorerMilestone:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; QueueGoalieNote                                            2352:0CB0  94 PC
+; Once per goalie, queues a deferred note for the goalie of the penalised player's team.
+;
+; Calls QueueDeferredCall. Far routine (retf).
+;-----------------------------------------------------------------------------
 QueueGoalieNote:
         enter 0x2, 0x0
         push di

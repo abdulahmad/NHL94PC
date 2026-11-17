@@ -2,6 +2,12 @@
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; StrNotPrefixFar                                            1EAE:0002  94 PC
+; 1 when the first far string differs from the start of the second.
+;
+; Takes 4 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 StrNotPrefixFar:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -43,6 +49,13 @@ StrNotPrefixFar:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; StatsMenuLoop                                              1EAE:0044  94 PC
+; Pointer menu loop over a menu bar (pnt2/pntr, menubuff)
+;
+; Takes 6 words of stack arguments. Calls FindFarMsg, AllocRecData, GetBlockAt, DrawRleTransAt,
+; MouseRange, MouseMove, FlushInputEvents, GetInputEvent and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 StatsMenuLoop:
         enter 0x66, 0x0
         push di
@@ -742,6 +755,13 @@ StatsMenuLoop:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; StandingsMenuLoop                                          1EAE:07B6  94 PC
+; Menu loop with the standings team cursor (XorRect, TeamFromMouse)
+;
+; Takes 6 words of stack arguments. Calls FindFarMsg, AllocRecData, XorRectRegs, HiliteStandingsTeam,
+; GetBlockAt, DrawRleTransAt, MouseRange, MouseMove and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 StandingsMenuLoop:
         enter 0x6c, 0x0
         push di
@@ -1810,6 +1830,13 @@ StandingsMenuLoop:
         mov [bp - 0x36], ax
         jmp near .21
 
+;-----------------------------------------------------------------------------
+; RosterMenuLoop                                             1EAE:12F6  94 PC
+; Menu loop with the roster row cursor.
+;
+; Takes 6 words of stack arguments. Calls FindFarMsg, AllocRecData, StrNotPrefixFar, XorRectRegs,
+; GetBlockAt, DrawRleTransAt, MouseRange, MouseMove and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 RosterMenuLoop:
         enter 0x6a, 0x0
         push di

@@ -4,6 +4,13 @@
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; PlayTitleMovies                                            23CB:0004  94 PC
+; P1.MVI, EASCRN.QPP, G1.MVI, logo.
+;
+; Takes 3 words of stack arguments. Calls _strcpy, _strcat, VgaCopyBytes, VgaPageFlip, VgaCopyBlock,
+; GetPaletteFar, FadePalette, SetStartPage and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 PlayTitleMovies:
         enter 0x30, 0x0
         push si
@@ -387,6 +394,13 @@ PlayTitleMovies:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; PlayMovie                                                  23CB:042C  94 PC
+; Plays an .MVI ('vidframe') at a fixed frame rate.
+;
+; Calls SetStartPage, FadePalette, AllocRecData, MviNextFrameThunk, PlanarToLinearThunk, PutBlockAt,
+; __aFldiv, WaitDeadlineNoEoi and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 PlayMovie:
         enter 0x4, 0x0
         push di

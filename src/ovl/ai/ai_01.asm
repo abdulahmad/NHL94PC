@@ -3,6 +3,15 @@
         mov word [PadRepeatOn], 0x0
         retf
 
+;-----------------------------------------------------------------------------
+; StartHL2                                                   1FAA:000E  94 PC
+; (home, vis, &hsc, &asc, period): the highlight game the INIT overlay runs after
+; AnnounceHighlightMatchup.
+;
+; Takes 6 words of stack arguments. Calls GetPaletteFar, FadePalette, FlushGSumQueue,
+; LoadGameTeamsThunk, LoadTeamPalette, LoadRinkTilesThunk, LoadScoreboardArtThunk, LoadRinkEndArtThunk
+; and others.
+;-----------------------------------------------------------------------------
 StartHL2:
         enter 0xfc, 0x0
         push di

@@ -6,22 +6,46 @@
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; StandingsActExit                                           2248:000C  94 PC
+; Menu item: leave the standings menu (action 1)
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 StandingsActExit:
         mov ax, 0x1
         mov [g_21C0], ax
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; StandingsActStandings                                      2248:0014  94 PC
+; Menu item: standings (action 2)
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 StandingsActStandings:
         mov word [g_21C0], 0x2
         mov ax, 0x1
         retf
 
+;-----------------------------------------------------------------------------
+; StandingsActRoster                                         2248:001E  94 PC
+; Menu item: team roster (action 3)
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 StandingsActRoster:
         mov word [g_21C0], 0x3
         mov ax, 0x1
         retf
 
+;-----------------------------------------------------------------------------
+; StatsSelNhlSeason                                          2248:0028  94 PC
+; Season menu: NHL season stats.
+;
+; Calls CopyStrNFar, GetPaletteFar, FadePaletteInThunk. Far routine (retf).
+;-----------------------------------------------------------------------------
 StatsSelNhlSeason:
         cmp word [g_2010], 0x0
         jnz short .1
@@ -84,6 +108,12 @@ StatsSelNhlSeason:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; StatsSelNhlPlayoffs                                        2248:00EC  94 PC
+; Season menu: NHL playoff stats.
+;
+; Calls CopyStrNFar, GetPaletteFar, FadePaletteInThunk. Far routine (retf).
+;-----------------------------------------------------------------------------
 StatsSelNhlPlayoffs:
         cmp word [g_2010], 0x0
         jnz short .1
@@ -146,6 +176,12 @@ StatsSelNhlPlayoffs:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; StatsSelLeague                                             2248:01B0  94 PC
+; Season menu: league season.
+;
+; Calls CopyStrNFar, GetPaletteFar, FadePaletteInThunk. Far routine (retf).
+;-----------------------------------------------------------------------------
 StatsSelLeague:
         cmp word [g_2010], 0x1
         jnz short .1
@@ -208,6 +244,12 @@ StatsSelLeague:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; StatsSelLeaguePlayoffs                                     2248:0274  94 PC
+; Season menu: league playoffs.
+;
+; Calls _fstrcmp, CopyStrNFar, GetPaletteFar, FadePaletteInThunk. Far routine (retf).
+;-----------------------------------------------------------------------------
 StatsSelLeaguePlayoffs:
         cmp word [g_2010], 0x1
         jnz short .1
@@ -278,6 +320,12 @@ StatsSelLeaguePlayoffs:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; StatsSelPlayoffMode                                        2248:0350  94 PC
+; Season menu: playoff mode.
+;
+; Calls _fstrcmp, CopyStrNFar, GetPaletteFar, FadePaletteInThunk. Far routine (retf).
+;-----------------------------------------------------------------------------
 StatsSelPlayoffMode:
         cmp word [g_2010], 0x1
         jnz short .1
@@ -348,6 +396,12 @@ StatsSelPlayoffMode:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; MenuTeamScoring                                            2248:042C  94 PC
+; Team stats sorted by CmpTeamScoring.
+;
+; Calls TeamStatsScreen. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuTeamScoring:
         mov word [g_21B8], 0x0
         cmp word [g_C052], 0x0
@@ -362,6 +416,12 @@ MenuTeamScoring:
         add sp, 0x2
         retf
 
+;-----------------------------------------------------------------------------
+; MenuTeamDefense                                            2248:044E  94 PC
+; Team stats sorted by CmpTeamDefense.
+;
+; Calls TeamStatsScreen. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuTeamDefense:
         mov word [g_21B8], 0x1
         cmp word [g_C052], 0x0
@@ -376,6 +436,12 @@ MenuTeamDefense:
         add sp, 0x2
         retf
 
+;-----------------------------------------------------------------------------
+; MenuTeamPP                                                 2248:0470  94 PC
+; Team stats sorted by CmpTeamPP.
+;
+; Calls TeamStatsScreen. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuTeamPP:
         mov word [g_21B8], 0x2
         cmp word [g_C052], 0x0
@@ -390,6 +456,12 @@ MenuTeamPP:
         add sp, 0x2
         retf
 
+;-----------------------------------------------------------------------------
+; MenuTeamPK                                                 2248:0492  94 PC
+; Team stats sorted by CmpTeamPK.
+;
+; Calls TeamStatsScreen. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuTeamPK:
         mov word [g_21B8], 0x3
         cmp word [g_C052], 0x0
@@ -404,6 +476,12 @@ MenuTeamPK:
         add sp, 0x2
         retf
 
+;-----------------------------------------------------------------------------
+; MenuTeamPenalties                                          2248:04B4  94 PC
+; Team stats sorted by CmpTeamPenalties.
+;
+; Calls TeamStatsScreen. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuTeamPenalties:
         mov word [g_21B8], 0x4
         cmp word [g_C052], 0x0
@@ -418,6 +496,12 @@ MenuTeamPenalties:
         add sp, 0x2
         retf
 
+;-----------------------------------------------------------------------------
+; MenuPointLeaders                                           2248:04D6  94 PC
+; Menu item: point leaders (leaders table entry 0).
+;
+; Calls LeadersScreen. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuPointLeaders:
         mov word [g_21B8], 0x0
         cmp word [g_C052], 0x0
@@ -432,6 +516,12 @@ MenuPointLeaders:
         add sp, 0x2
         retf
 
+;-----------------------------------------------------------------------------
+; MenuGoalLeaders                                            2248:04F8  94 PC
+; Menu item: goal leaders (leaders table entry 1).
+;
+; Calls LeadersScreen. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuGoalLeaders:
         mov word [g_21B8], 0x1
         cmp word [g_C052], 0x0
@@ -446,6 +536,12 @@ MenuGoalLeaders:
         add sp, 0x2
         retf
 
+;-----------------------------------------------------------------------------
+; MenuAssistLeaders                                          2248:051A  94 PC
+; Menu item: assist leaders (leaders table entry 2).
+;
+; Calls LeadersScreen. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuAssistLeaders:
         mov word [g_21B8], 0x2
         cmp word [g_C052], 0x0
@@ -460,6 +556,12 @@ MenuAssistLeaders:
         add sp, 0x2
         retf
 
+;-----------------------------------------------------------------------------
+; MenuPPGoalLeaders                                          2248:053C  94 PC
+; Menu item: power play goal leaders (leaders table entry 3).
+;
+; Calls LeadersScreen. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuPPGoalLeaders:
         mov word [g_21B8], 0x3
         cmp word [g_C052], 0x0
@@ -474,6 +576,12 @@ MenuPPGoalLeaders:
         add sp, 0x2
         retf
 
+;-----------------------------------------------------------------------------
+; MenuSHGoalLeaders                                          2248:055E  94 PC
+; Menu item: shorthanded goal leaders (leaders table entry 4).
+;
+; Calls LeadersScreen. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuSHGoalLeaders:
         mov word [g_21B8], 0x4
         cmp word [g_C052], 0x0
@@ -488,6 +596,12 @@ MenuSHGoalLeaders:
         add sp, 0x2
         retf
 
+;-----------------------------------------------------------------------------
+; MenuPlusMinusLeaders                                       2248:0580  94 PC
+; Menu item: plus/minus leaders (leaders table entry 5).
+;
+; Calls LeadersScreen. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuPlusMinusLeaders:
         mov word [g_21B8], 0x5
         cmp word [g_C052], 0x0
@@ -502,6 +616,12 @@ MenuPlusMinusLeaders:
         add sp, 0x2
         retf
 
+;-----------------------------------------------------------------------------
+; MenuPIMLeaders                                             2248:05A2  94 PC
+; Menu item: penalty minutes leaders (leaders table entry 6).
+;
+; Calls LeadersScreen. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuPIMLeaders:
         mov word [g_21B8], 0x6
         cmp word [g_C052], 0x0
@@ -516,6 +636,12 @@ MenuPIMLeaders:
         add sp, 0x2
         retf
 
+;-----------------------------------------------------------------------------
+; MenuShootPctLeaders                                        2248:05C4  94 PC
+; Menu item: shooting percentage leaders (leaders table entry 7).
+;
+; Calls LeadersScreen. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuShootPctLeaders:
         mov word [g_21B8], 0x7
         cmp word [g_C052], 0x0
@@ -530,6 +656,12 @@ MenuShootPctLeaders:
         add sp, 0x2
         retf
 
+;-----------------------------------------------------------------------------
+; MenuGAALeaders                                             2248:05E6  94 PC
+; Menu item: goals against average leaders (leaders table entry 8).
+;
+; Calls LeadersScreen. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuGAALeaders:
         mov word [g_21B8], 0x8
         cmp word [g_C052], 0x0
@@ -544,6 +676,12 @@ MenuGAALeaders:
         add sp, 0x2
         retf
 
+;-----------------------------------------------------------------------------
+; MenuWinsLeaders                                            2248:0608  94 PC
+; Menu item: goalie wins leaders (leaders table entry 9).
+;
+; Calls LeadersScreen. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuWinsLeaders:
         mov word [g_21B8], 0x9
         cmp word [g_C052], 0x0
@@ -558,6 +696,12 @@ MenuWinsLeaders:
         add sp, 0x2
         retf
 
+;-----------------------------------------------------------------------------
+; MenuSavePctLeaders                                         2248:062A  94 PC
+; Menu item: save percentage leaders (leaders table entry 10).
+;
+; Calls LeadersScreen. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuSavePctLeaders:
         mov word [g_21B8], 0xa
         cmp word [g_C052], 0x0
@@ -572,11 +716,23 @@ MenuSavePctLeaders:
         add sp, 0x2
         retf
 
+;-----------------------------------------------------------------------------
+; StandingsActRoster2                                        2248:064C  94 PC
+; Roster action from the standings cursor.
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 StandingsActRoster2:
         mov word [g_21C0], 0x3
         mov ax, 0x1
         retf
 
+;-----------------------------------------------------------------------------
+; StandingsActPlayer                                         2248:0656  94 PC
+; Player card action: goalie card for a 'G', else skater card.
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 StandingsActPlayer:
         cmp byte [g_CF1C], 0x47
         jnz short .1
@@ -589,6 +745,12 @@ StandingsActPlayer:
         mov ax, 0x1
         retf
 
+;-----------------------------------------------------------------------------
+; FreeStandingsGfx                                           2248:066C  94 PC
+; Frees the four standings shape records.
+;
+; Calls FindUnlink. Far routine (retf).
+;-----------------------------------------------------------------------------
 FreeStandingsGfx:
         mov ax, [g_21B6]
         or ax, [g_21B4]

@@ -8,6 +8,12 @@ RemoveHumanTeamTail:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; TeamGridCellAt                                             1F31:000E  94 PC
+; Team grid cell under a point.
+;
+; Takes 3 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 TeamGridCellAt:
         enter 0xa, 0x0
         push di
@@ -62,6 +68,13 @@ TeamGridCellAt:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; DrawTeamGridCell                                           1F31:008E  94 PC
+; Crest and name of one grid cell.
+;
+; Takes 6 words of stack arguments. Calls SetTextColors, SetClipRectRegs, DrawRleTransAt,
+; TextWidthFar, DrawShadowText. Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawTeamGridCell:
         enter 0x8, 0x0
         push di
@@ -141,6 +154,12 @@ DrawTeamGridCell:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; FrameTeamGridCell                                          1F31:0150  94 PC
+; Frame / XOR frame round a grid cell.
+;
+; Takes 3 words of stack arguments. Calls XorFrame, DrawFrame. Far routine (retf).
+;-----------------------------------------------------------------------------
 FrameTeamGridCell:
         enter 0xe, 0x0
         push di
@@ -195,6 +214,13 @@ FrameTeamGridCell:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; DrawTeamGrid                                               1F31:01D0  94 PC
+; crests4 grid of all teams.
+;
+; Takes 7 words of stack arguments. Calls _fstrcpy, DrawShadowTextCentered, BuildPathFar,
+; LoadPackedHeader, LoadRawHeader, SetPaletteFar, FindFarMsg, _fmemcpy and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawTeamGrid:
         enter 0xc8, 0x0
         push di
@@ -357,6 +383,13 @@ DrawTeamGrid:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ChooseLeagueController                                     1F31:03A6  94 PC
+; 'Who will control the league?' and master password.
+;
+; Takes 5 words of stack arguments. Calls AllocRecData, _fmemset, _fstrcpy, ListDialog, _fstrcat,
+; NumberEntryDialog, MessageBox, EncryptPassword and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 ChooseLeagueController:
         enter 0xd8, 0x0
         push di
@@ -657,6 +690,12 @@ ChooseLeagueController:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; AskExportToFloppy                                          1F31:06A6  94 PC
+; Export-to-floppy question.
+;
+; Takes 6 words of stack arguments. Calls MouseRead, MessageBox. Far routine (retf).
+;-----------------------------------------------------------------------------
 AskExportToFloppy:
         enter 0x10, 0x0
         push di
@@ -794,6 +833,12 @@ AskExportToFloppy:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; BuildStandingsGrid                                         1F31:07FA  94 PC
+; Team list for the selection grid.
+;
+; Takes 2 words of stack arguments. Calls ReadEntry744. Far routine (retf).
+;-----------------------------------------------------------------------------
 BuildStandingsGrid:
         enter 0x4da, 0x0
         push di
@@ -1154,16 +1199,35 @@ BuildStandingsGrid:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; TeamSelDone                                                1F31:0B9E  94 PC
+; Menu item: done.
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 TeamSelDone:
         mov word [g_C274], 0x1
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; TeamSelCancel                                              1F31:0BA6  94 PC
+; Menu item: cancel.
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 TeamSelCancel:
         mov word [g_C274], 0xffff
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; LeagueTeamSelect                                           1F31:0BAE  94 PC
+; 'Who will play', passwords.
+;
+; Takes 12 words of stack arguments. Calls UseCurrentPage, SetDialogColors, _fmemcpy, BuildPathFar,
+; OpenReadShared, BuildStandingsGrid, CloseHandlePtr, FindFarMsg and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 LeagueTeamSelect:
         enter 0x11a, 0x0
         push di

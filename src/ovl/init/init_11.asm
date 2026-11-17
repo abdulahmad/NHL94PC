@@ -4,6 +4,12 @@
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; InitScoreboard                                             251E:0004  94 PC
+; Resets the scoreboard state, loads its art.
+;
+; Calls LoadScoreboardArt. Far routine (retf).
+;-----------------------------------------------------------------------------
 InitScoreboard:
         db 0x2B, 0xDB                           ; insn: sub bx, bx
 .1:
@@ -24,6 +30,12 @@ InitScoreboard:
         call LoadScoreboardArt
         retf
 
+;-----------------------------------------------------------------------------
+; LoadScoreboardArt                                          251E:0038  94 PC
+; scrbrd1.QPP digits and labels.
+;
+; Calls BuildPathFar, LoadPackedHeader, FindFarList, FindFarMsg.
+;-----------------------------------------------------------------------------
 LoadScoreboardArt:
         enter 0xe, 0x0
         push word 0x3701

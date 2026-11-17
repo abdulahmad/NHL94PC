@@ -7,6 +7,13 @@ ViewHilightsTail:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; TitleScreen                                                1F9D:000C  94 PC
+; EA open, title movie, copyright.
+;
+; Calls LoadStudioSpeech, FlushInputEvents, UseCurrentPage, ClearClipRect, SetPaletteFar,
+; LoadRawHeader, PlayJingle, BuildPathFar and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 TitleScreen:
         enter 0x35a, 0x0
         push di
@@ -507,6 +514,13 @@ TitleScreen:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; GoodnightScreen                                            1F9D:0580  94 PC
+; Exit screen with AnnounceGoodnight.
+;
+; Calls LoadStudioSpeech, FlushInputEvents, LoadRawHeader, SaveCharTab, UseCharSeg, SetTextColors,
+; BuildPathFar, LoadPackedHeader and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 GoodnightScreen:
         enter 0x76, 0x0
         push si

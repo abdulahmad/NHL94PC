@@ -9,6 +9,13 @@ FreePlayerFramesTail:
         pop di
         retf
 
+;-----------------------------------------------------------------------------
+; InstantReplay                                              2581:000E  94 PC
+; Replay screen.
+;
+; Takes 1 word of stack arguments. Calls MouseRange, MouseMove, GetPaletteFar, FadePalette,
+; VgaCopyBlock, UseOffscreenCanvas, DrawLine, UseCurrentPage and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 InstantReplay:
         enter 0xc, 0x0
         cmp word [DbSaveMode], 0x0
@@ -436,6 +443,12 @@ InstantReplay:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; GadgetHitTest                                              2581:0510  94 PC
+; Which replay button is under the mouse.
+;
+; Takes 3 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 GadgetHitTest:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -474,6 +487,12 @@ GadgetHitTest:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; PickNearestPlayer                                          2581:0550  94 PC
+; Nearest player to the pointer.
+;
+; Takes 2 words of stack arguments. Calls ImulRegs. Far routine (retf).
+;-----------------------------------------------------------------------------
 PickNearestPlayer:
         enter 0xe, 0x0
         push di
@@ -538,6 +557,13 @@ PickNearestPlayer:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ReplayControlLoop                                          2581:05E4  94 PC
+; Replay input loop.
+;
+; Takes 1 word of stack arguments. Calls GetInputEvent, GadgetHitTest, MouseMove, PickNearestPlayer,
+; VgaCopyBlock, VgaCopyToPitch, VgaCopyFromPitch, UseOffscreenCanvas and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 ReplayControlLoop:
         enter 0x14, 0x0
         push si
@@ -1127,6 +1153,14 @@ ReplayControlLoop:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ReplaySaveHilight                                          2581:0C14  94 PC
+; Save-highlight dialog.
+;
+; Takes 3 words of stack arguments. Calls AllocRecData, VgaCopyToPitch, HilightSaveToDlg,
+; UseOffscreenCanvas, SetClipRectRegs, FlushInputEvents, VgaCopyBytes, MouseRange and others. Far
+; routine (retf).
+;-----------------------------------------------------------------------------
 ReplaySaveHilight:
         enter 0xc, 0x0
         push di
@@ -1532,6 +1566,13 @@ ReplaySaveHilight:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; HilightSaveToDlg                                           2581:105A  94 PC
+; 'Save To' 'Hilights Reel' panel.
+;
+; Calls SaveCharTab, UseCharSeg, VgaCopyBytes, VgaPageFlip, UseOtherPage, FillRect, DrawFrame,
+; DrawLine and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 HilightSaveToDlg:
         enter 0x1e, 0x0
         push di
@@ -1777,6 +1818,13 @@ HilightSaveToDlg:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; SaveHilightFile                                            2581:1304  94 PC
+; Writes the .HI file.
+;
+; Takes 1 word of stack arguments. Calls _dos_getdiskfree, FatalError, _fstrcpy, _dos_findfirst,
+; CreateFileNormal, OpenWriteShared, _lseek, WriteAtOffset and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 SaveHilightFile:
         enter 0x56, 0x0
         push di
@@ -1977,6 +2025,12 @@ SaveHilightFile:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; ShowCurrentPage                                            2581:14FC  94 PC
+; SetStartPage of the current page.
+;
+; Calls SetStartPage.
+;-----------------------------------------------------------------------------
 ShowCurrentPage:
         push word 0xa8
         call 0x0FEF:SetStartPage

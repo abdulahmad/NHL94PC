@@ -5,6 +5,13 @@
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; DrawPanelScore                                             2083:0006  94 PC
+; Score digits on the top panel.
+;
+; Takes 2 words of stack arguments. Calls UseOffscreenCanvas, DrawRleTransFastAt, UseOtherPage. Far
+; routine (retf).
+;-----------------------------------------------------------------------------
 DrawPanelScore:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -83,6 +90,13 @@ DrawPanelScore:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; DrawPanelLine                                              2083:00B2  94 PC
+; Line indicator shape on the panel.
+;
+; Takes 2 words of stack arguments. Calls UseOffscreenCanvas, DrawRleTransFastAt, UseOtherPage. Far
+; routine (retf).
+;-----------------------------------------------------------------------------
 DrawPanelLine:
         enter 0x8, 0x0
         push si
@@ -192,6 +206,12 @@ DrawPanelLine:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; GetLineEnergies                                            2083:0192  94 PC
+; TeamLineEnergy of the 8 lines minus 60h.
+;
+; Takes 2 words of stack arguments. Calls TeamLineEnergy. Far routine (retf).
+;-----------------------------------------------------------------------------
 GetLineEnergies:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -216,6 +236,13 @@ GetLineEnergies:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; PanelAddPenalty                                            2083:01BA  94 PC
+; Puts a penalty (side, player, time) in the first free slot of that side's panel penalty list and
+; flags the side for a redraw.
+;
+; Takes 3 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 PanelAddPenalty:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -261,6 +288,12 @@ PanelAddPenalty:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; PanelRemovePenalty                                         2083:020A  94 PC
+; Clears the time of a player's panel penalty entry when he leaves the box.
+;
+; Takes 2 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 PanelRemovePenalty:
         enter 0x8, 0x0
         push di
@@ -297,6 +330,13 @@ PanelRemovePenalty:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; UpdateHudPanel                                             2083:0248  94 PC
+; Per-frame panel redraw: clock, penalties, energy bars.
+;
+; Calls UseOffscreenCanvas, TickPanelClock, TickPanelPenalties, GetLineEnergies, DrawPanelClockDigits,
+; DrawEnergyBar, DrawLineGroupBars, DrawRleTransFastHere and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 UpdateHudPanel:
         call 0x0FEF:UseOffscreenCanvas
         cmp word [g_5560], 0x0
@@ -439,6 +479,12 @@ UpdateHudPanel:
 .11:
         retf
 
+;-----------------------------------------------------------------------------
+; DrawPanelClock                                             2083:03CC  94 PC
+; Clock digits and colon.
+;
+; Calls DrawRleTransFastAt. Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawPanelClock:
         cmp word [g_5560], 0x0
         jz short .1
@@ -561,6 +607,14 @@ DrawPanelClock:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; DrawHudPanel                                               2083:0512  94 PC
+; Full panel redraw: scrbrd2, srb3, crests4.
+;
+; Takes 4 words of stack arguments. Calls GetPeriodTime, UseOffscreenCanvas, BuildPathFar,
+; LoadPackedHeader, FindFarMsg, DrawRleFastHere, DrawPanelScore, DrawPanelClock and others. Far
+; routine (retf).
+;-----------------------------------------------------------------------------
 DrawHudPanel:
         enter 0x12, 0x0
         push di
@@ -772,6 +826,12 @@ DrawHudPanel:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; TickPanelClock                                             2083:0738  94 PC
+; Saves the drawn clock and counts it down.
+;
+; Takes 1 word of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 TickPanelClock:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -802,6 +862,12 @@ TickPanelClock:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; DrawPanelClockDigits                                       2083:0780  94 PC
+; Redraws the clock digits that changed.
+;
+; Calls DrawRleTransFastAt. Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawPanelClockDigits:
         cmp word [g_5560], 0x0
         jz short .1
@@ -1009,6 +1075,12 @@ DrawPanelClockDigits:
 .17:
         retf
 
+;-----------------------------------------------------------------------------
+; TickPanelPenalties                                         2083:0968  94 PC
+; Counts down the first two penalty entries.
+;
+; Takes 2 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 TickPanelPenalties:
         enter 0xe, 0x0
         push di
@@ -1092,6 +1164,12 @@ TickPanelPenalties:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; DrawEnergyBar                                              2083:0A1C  94 PC
+; Two-column energy bar, FillRect.
+;
+; Takes 2 words of stack arguments. Calls FillRect. Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawEnergyBar:
         enter 0x2, 0x0
         push di
@@ -1168,6 +1246,12 @@ DrawEnergyBar:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; DrawLineGroupBars                                          2083:0ABE  94 PC
+; Energy bars of the current line group.
+;
+; Takes 5 words of stack arguments. Calls DrawRleTransFastHere, FillRect. Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawLineGroupBars:
         enter 0x10, 0x0
         push di
@@ -1349,6 +1433,12 @@ DrawLineGroupBars:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; DrawPanelPenalties                                         2083:0C56  94 PC
+; Up to 4 penalty entries per side.
+;
+; Takes 3 words of stack arguments. Calls DrawRleTransFastAt.
+;-----------------------------------------------------------------------------
 DrawPanelPenalties:
         enter 0x4, 0x0
         push di

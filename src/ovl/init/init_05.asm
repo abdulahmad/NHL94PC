@@ -6,6 +6,13 @@ DrawPeriodTitleTail:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; ShowGameSummary                                            21A1:0008  94 PC
+; Period / game summary screen from gsummary.
+;
+; Takes 4 words of stack arguments. Calls FlushInputEvents, LoadRawHeader, PlayJingle, UseOtherPage,
+; ClearClipRect, LoadStudioSpeech, BuildPathFar, LoadPackedHeader and others.
+;-----------------------------------------------------------------------------
 ShowGameSummary:
         enter 0x78a, 0x0
         push di

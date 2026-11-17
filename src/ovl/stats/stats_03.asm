@@ -8,6 +8,13 @@
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; LoadCrestsPalette                                          20E4:000E  94 PC
+; CRESTS3.BIN palette into the current palette.
+;
+; Calls GetPaletteFar, FadePaletteInThunk, LoadRawHeader, FindUnlink, LoadPackedHeader, FindFarMsg.
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 LoadCrestsPalette:
         enter 0x312, 0x0
         push di

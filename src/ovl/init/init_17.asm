@@ -4,6 +4,12 @@
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; LoadReplayGadgets                                          28FA:0004  94 PC
+; gad1, gadget5, gg%02d, HILIGHT.FNT.
+;
+; Calls LoadAssetHeader, FindFarMsg, _sprintf, FindUnlink, LoadRawHeader. Far routine (retf).
+;-----------------------------------------------------------------------------
 LoadReplayGadgets:
         enter 0x96, 0x0
         push di

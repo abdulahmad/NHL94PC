@@ -9,6 +9,13 @@ LoadLeagueGameRefTail:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; PickAwardWinners                                           2E46:000E  94 PC
+; Trophy winners from the dbs.
+;
+; Calls BuildPathFar, ReadTeamNames, OpenReadShared, ReadRecord52, ReadRecord48, ReadGoalieSeasonRec,
+; ReadEntry744, CloseHandlePtr. Far routine (retf).
+;-----------------------------------------------------------------------------
 PickAwardWinners:
         enter 0x402, 0x0
         push di
@@ -640,6 +647,13 @@ PickAwardWinners:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ShowAwardScreens                                           2E46:06B4  94 PC
+; One screen per award ('sparkle')
+;
+; Calls FlushInputEvents, RawBase, LookupMsg, EmsMapFrame, AllocRecData, LoadRawHeader, SaveCharTab,
+; UseCharSeg and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 ShowAwardScreens:
         enter 0x7a, 0x0
         push di
@@ -1540,6 +1554,13 @@ ShowAwardScreens:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; DrawAwardsSummary                                          2E46:1068  94 PC
+; 'Awards Summary'
+;
+; Takes 3 words of stack arguments. Calls FlushInputEvents, UseCurrentPage, FadePaletteInThunk,
+; ClearClipRect, UseOtherPage, LoadRawHeader, SaveCharTab, UseCharSeg and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawAwardsSummary:
         enter 0x5e, 0x0
         push di
@@ -1724,6 +1745,13 @@ DrawAwardsSummary:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; AwardsCeremony                                             2E46:125A  94 PC
+; 'Welcome to the NHL awards presentation.'
+;
+; Calls FlushInputEvents, LoadRawHeader, UseCurrentPage, ClearClipRect, SetPaletteFar, BuildPathFar,
+; LoadPackedHeader, SaveCharTab and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 AwardsCeremony:
         enter 0x358, 0x0
         push di

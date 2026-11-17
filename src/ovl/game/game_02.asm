@@ -4,6 +4,13 @@
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; IntermissionPC                                             1E7E:0004  94 PC
+; Fades the palette out, stops the crowd and the sound, then runs the end-of-game screens.
+;
+; Calls GetPaletteFar, FadePalette, CrowdFadeOut, PlayPauseSample, ReleaseAllVoices, StopJingle,
+; UseCharSeg, EndGameScreensThunk. Far routine (retf).
+;-----------------------------------------------------------------------------
 IntermissionPC:
         push word 0x3a0b
         push strict word f_3A0B_B352
@@ -36,6 +43,12 @@ IntermissionPC:
         inc word [g_BFFE]
         retf
 
+;-----------------------------------------------------------------------------
+; DrawSpriteNumber                                           1E7E:0060  94 PC
+; Draws digits as frame sprites.
+;
+; Takes 4 words of stack arguments. Calls DrawSpriteClipped. Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawSpriteNumber:
         enter 0x2, 0x0
         push di
@@ -117,6 +130,12 @@ DrawSpriteNumber:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; DrawFrameSprite                                            1E7E:0120  94 PC
+; Draws one frame sprite.
+;
+; Takes 5 words of stack arguments. Calls DrawSpriteClipped. Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawFrameSprite:
         enter 0x4, 0x0
         push si
@@ -155,6 +174,12 @@ DrawFrameSprite:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; DrawRinkEndArt                                             1E7E:017E  94 PC
+; Rink end-board art.
+;
+; Calls DrawSpriteClipped. Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawRinkEndArt:
         push 0x0
         push -0x1
@@ -176,6 +201,12 @@ DrawRinkEndArt:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; WaitKeyRelease                                             1E7E:01AE  94 PC
+; Loops until no key is down.
+;
+; Takes 1 word of stack arguments. Calls KeyDown, KeyJump, FlushKeys. Far routine (retf).
+;-----------------------------------------------------------------------------
 WaitKeyRelease:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -199,6 +230,13 @@ WaitKeyRelease:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; HandleHotKey                                               1E7E:01DC  94 PC
+; Jump table on in-game hot keys.
+;
+; Takes 1 word of stack arguments. Calls GetPaletteFar, FadePalette, CrowdFadeOut, PlayPauseSample,
+; ReleaseAllVoices, StopSpeech, StopJingle, InputInit and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 HandleHotKey:
         enter 0x2, 0x0
         test byte [bp + 0x6], 0x80
@@ -409,6 +447,12 @@ HandleHotKeyJumpTable:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ResetInputSampling                                         1E7E:03E8  94 PC
+; Clears input sample counters.
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 ResetInputSampling:
         mov ax, [PadRepeatOn]
         mov [g_D46A], ax
@@ -422,6 +466,13 @@ ResetInputSampling:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; RunGameFrames                                              1E7E:0404  94 PC
+; Runs pending game ticks.
+;
+; Takes 1 word of stack arguments. Calls joyq_peekThunk, HandleHotKey, ClockTickThunk,
+; DoGameFrameThunk, joyq_popThunk, joyq_flushThunk. Far routine (retf).
+;-----------------------------------------------------------------------------
 RunGameFrames:
         enter 0x2, 0x0
         push di
@@ -483,6 +534,12 @@ RunGameFrames:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; SetFullPalette                                             1E7E:048A  94 PC
+; Sends the 256-colour palette.
+;
+; Takes 2 words of stack arguments. Calls WaitRetrace, SetPaletteFar. Far routine (retf).
+;-----------------------------------------------------------------------------
 SetFullPalette:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -510,6 +567,12 @@ SetFullPalette:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; FadePalette                                                1E7E:04C0  94 PC
+; Steps the palette toward a target.
+;
+; Takes 4 words of stack arguments. Calls SetFullPalette. Far routine (retf).
+;-----------------------------------------------------------------------------
 FadePalette:
         enter 0x2, 0x0
         push di
@@ -600,6 +663,13 @@ FadePalette:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; Gameloop                                                   1E7E:057E  94 PC
+; Main game loop.
+;
+; Calls CallCountStep, ResetInputSampling, RunGameFrames, FlushDirtyRects, UseOtherPage,
+; DrawRinkOverlaysThunk, GetPaletteFar, FadePalette and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 Gameloop:
         push si
         call 0x03A3:CallCountStep
@@ -859,6 +929,14 @@ Gameloop:
         pop si
         retf
 
+;-----------------------------------------------------------------------------
+; PlayGame                                                   1E7E:088A  94 PC
+; Sets up and runs one game.
+;
+; Takes 1 word of stack arguments. Calls LoadRinkTilesThunk, LoadTeamPalette, LoadArenaJinglesThunk,
+; LoadGameGfxThunk, LoadCupFinalSeries, LoadGameStateThunk, CloseHandlePtr, LoadPlayByPlaySpeech and
+; others. Far routine (retf).
+;-----------------------------------------------------------------------------
 PlayGame:
         enter 0x20, 0x0
         push di
@@ -1029,6 +1107,12 @@ PlayGame:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; assreplace                                                 1E7E:0A5C  94 PC
+; Replaces the current assignment.
+;
+; Takes 2 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 assreplace:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1043,6 +1127,12 @@ assreplace:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; assinsert                                                  1E7E:0A74  94 PC
+; Pushes an assignment.
+;
+; Takes 2 words of stack arguments. Calls assreplace. Far routine (retf).
+;-----------------------------------------------------------------------------
 assinsert:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1061,6 +1151,10 @@ assinsert:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; ReplayIsEmpty                                              1E7E:0A94  94 PC
+; Replay buffer has no frames.
+;-----------------------------------------------------------------------------
 ReplayIsEmpty:
         mov ax, [g_D014]
         mov dx, [g_D016]

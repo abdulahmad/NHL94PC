@@ -7,6 +7,12 @@
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; SaveBkgdPlanes                                             215A:000C  94 PC
+; Copies the four VGA planes into the 'BKGD' record.
+;
+; Calls InsertRecWrap, RawBase, EmsMapFrame, _fmemcpy. Far routine (retf).
+;-----------------------------------------------------------------------------
 SaveBkgdPlanes:
         enter 0x2, 0x0
         push si
@@ -148,6 +154,12 @@ SaveBkgdPlanes:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; RestoreBkgdPlanes                                          215A:018A  94 PC
+; Copies them back and frees the record.
+;
+; Calls RawBase, EmsMapFrame, _fmemcpy, UnlinkRec. Far routine (retf).
+;-----------------------------------------------------------------------------
 RestoreBkgdPlanes:
         enter 0x2, 0x0
         push si
@@ -276,6 +288,14 @@ RestoreBkgdPlanes:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; GameTeamStatsScreen                                        215A:02E6  94 PC
+; Team stats from the in-game menu.
+;
+; Takes 1 word of stack arguments. Calls SaveBkgdPlanes, GetPaletteFar, FadePaletteInThunk,
+; SetStartPage, UseOffscreenCanvas, InitMenuRemap, TeamStatsScreen, DrawMenuBar and others. Far
+; routine (retf).
+;-----------------------------------------------------------------------------
 GameTeamStatsScreen:
         enter 0x30e, 0x0
         push si
@@ -390,6 +410,14 @@ GameTeamStatsScreen:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; GameSkaterStatsScreen                                      215A:0428  94 PC
+; Skater leaders from the in-game menu.
+;
+; Takes 1 word of stack arguments. Calls SaveBkgdPlanes, GetPaletteFar, FadePaletteInThunk,
+; SetStartPage, UseOffscreenCanvas, InitMenuRemap, LeadersScreen, DrawMenuBar and others. Far routine
+; (retf).
+;-----------------------------------------------------------------------------
 GameSkaterStatsScreen:
         enter 0x30e, 0x0
         push si
@@ -504,6 +532,14 @@ GameSkaterStatsScreen:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; GameGoalieStatsScreen                                      215A:056A  94 PC
+; Goalie leaders from the in-game menu.
+;
+; Takes 1 word of stack arguments. Calls SaveBkgdPlanes, GetPaletteFar, FadePaletteInThunk,
+; SetStartPage, UseOffscreenCanvas, InitMenuRemap, LeadersScreen, DrawMenuBar and others. Far routine
+; (retf).
+;-----------------------------------------------------------------------------
 GameGoalieStatsScreen:
         enter 0x30e, 0x0
         push si
@@ -618,6 +654,13 @@ GameGoalieStatsScreen:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; GameStandingsScreen                                        215A:06AC  94 PC
+; Standings from the in-game menu.
+;
+; Calls LoadRawHeader, BuildPathFar, LoadPackedHeader, GetPage, CopyPlane, ShowStandingsTable,
+; DrawMenuBar, FreeStandingsGfx and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 GameStandingsScreen:
         enter 0xe, 0x0
         cmp word [g_200E], 0x0
@@ -707,6 +750,13 @@ GameStandingsScreen:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; GameStandingsMenu                                          215A:079E  94 PC
+; Standings, roster and player cards from the in-game menu.
+;
+; Calls SaveBkgdPlanes, GetPaletteFar, FadePaletteInThunk, InsertRecWrap, RawBase, EmsMapFrame,
+; _fmemcpy, SetStartPage and others.
+;-----------------------------------------------------------------------------
 GameStandingsMenu:
         enter 0x328, 0x0
         push si

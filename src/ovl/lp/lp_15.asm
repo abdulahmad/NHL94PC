@@ -5,6 +5,12 @@
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; PaintJerseyDigit                                           2A57:000A  94 PC
+; One 15-pixel digit from the glyph table.
+;
+; Takes 4 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 PaintJerseyDigit:
         enter 0x2, 0x0
         push di
@@ -35,6 +41,12 @@ PaintJerseyDigit:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; DrawJerseyNumber                                           2A57:0044  94 PC
+; Two-digit jersey number.
+;
+; Takes 5 words of stack arguments. Calls PaintJerseyDigit. Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawJerseyNumber:
         enter 0x4, 0x0
         push di
@@ -103,6 +115,13 @@ DrawJerseyNumber:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; BuildTradeRoster                                           2A57:00C8  94 PC
+; Roster list of a trade team.
+;
+; Takes 7 words of stack arguments. Calls BuildPathFar, OpenReadShared, ReadEntry744, CloseHandlePtr,
+; ReadRecord52, _fstrcat. Far routine (retf).
+;-----------------------------------------------------------------------------
 BuildTradeRoster:
         enter 0x6e, 0x0
         push di
@@ -351,6 +370,13 @@ BuildTradeRoster:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; TradeShowStats                                             2A57:034C  94 PC
+; Stats of the player under the cursor.
+;
+; Takes 11 words of stack arguments. Calls AllocRecData, UseCurrentPage, ClearClipRect, BuildPathFar,
+; LoadPackedHeader, FindFarMsg, SetPaletteFar, FindUnlink and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 TradeShowStats:
         enter 0x24, 0x0
         push di
@@ -562,6 +588,13 @@ TradeShowStats:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; FixJerseyConflict                                          2A57:05C0  94 PC
+; 'The jersey number %2d is already used'
+;
+; Takes 4 words of stack arguments. Calls ReadRecord52, _fstrcat, _sprintf, MouseRead, MessageBox,
+; NumberEntryDialog, WriteRecord52. Far routine (retf).
+;-----------------------------------------------------------------------------
 FixJerseyConflict:
         enter 0x630, 0x0
         push di
@@ -757,6 +790,14 @@ FixJerseyConflict:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; ExecuteTrade                                               2A57:078E  94 PC
+; Swaps the players in the dbs.
+;
+; Takes 4 words of stack arguments. Calls SetDialogColors, BuildPathFar, OpenReadWriteShared,
+; ReadEntry744, ReadRecord52, ClearPlayerFromLines, WriteRecord52, WriteTeamRec and others. Far
+; routine (retf).
+;-----------------------------------------------------------------------------
 ExecuteTrade:
         enter 0x672, 0x0
         push di
@@ -1193,6 +1234,12 @@ ExecuteTrade:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; DrawTradeRow                                               2A57:0BE2  94 PC
+; Draws one row of the trade screen ('%c %2d %s').
+;
+; Takes 1 word of stack arguments. Calls FormatCall. Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawTradeRow:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1230,6 +1277,13 @@ DrawTradeRow:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; DrawTradeScreen                                            2A57:0C32  94 PC
+; Plaques and both rosters.
+;
+; Takes 10 words of stack arguments. Calls UseOtherPage, BuildPathFar, LoadPackedHeader, FindFarMsg,
+; DrawRleTransAt, FindUnlink, UseCharSeg, DrawMenuBar and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawTradeScreen:
         enter 0x28, 0x0
         push di
@@ -1494,6 +1548,12 @@ DrawTradeScreen:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; TradeHitTest                                               2A57:0EF8  94 PC
+; Row under the pointer.
+;
+; Takes 5 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 TradeHitTest:
         enter 0x2, 0x0
         push di
@@ -1592,6 +1652,13 @@ TradeHitTest:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; TradeDone                                                  2A57:0FDE  94 PC
+; Menu item: done ('The trading deadline has passed!')
+;
+; Takes 12 words of stack arguments. Calls SetDialogColors, MouseRead, MessageBox, MouseMove. Far
+; routine (retf).
+;-----------------------------------------------------------------------------
 TradeDone:
         enter 0x6, 0x0
         push si
@@ -1664,11 +1731,23 @@ TradeDone:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; TradeCancel                                                2A57:1080  94 PC
+; Menu item: cancel.
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 TradeCancel:
         mov word [g_C27C], 0xffff
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; FindTradeSlot                                              2A57:1088  94 PC
+; Free slot in a roster.
+;
+; Takes 2 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 FindTradeSlot:
         enter 0x4, 0x0
         push di
@@ -1700,6 +1779,13 @@ FindTradeSlot:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; TradeScreenLoop                                            2A57:10C0  94 PC
+; Trade screen input loop.
+;
+; Takes 12 words of stack arguments. Calls DrawTradeScreen, FindFarMsg, AllocRecData, MouseRead,
+; GetBlockAt, DrawRleTransAt, FlushInputEvents, GetInputEvent and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 TradeScreenLoop:
         enter 0xda, 0x0
         push di
@@ -3009,6 +3095,12 @@ TradeScreenLoop:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; TradeRosterCmp                                             2A57:1F1C  94 PC
+; Qsort comparator of roster rows.
+;
+; Takes 2 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 TradeRosterCmp:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3080,6 +3172,13 @@ TradeRosterCmp:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; TradeScreen                                                2A57:1F96  94 PC
+; Sets up and runs the trade screen.
+;
+; Takes 7 words of stack arguments. Calls UseCurrentPage, ClearClipRect, GetPage, UseOtherPage,
+; CopyPlane, SaveCharTab, LoadRawHeader, UseCharSeg and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 TradeScreen:
         enter 0x610, 0x0
         push di
@@ -3244,6 +3343,13 @@ TradeScreen:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; TradePlayers                                               2A57:2152  94 PC
+; 'Select two teams for trading players'
+;
+; Calls LeagueCheckStub, ReadLeagueInfo, SetDialogColors, MouseRead, _fstrcpy, _fstrcspn, MessageBox,
+; MergeLeagueFiles and others.
+;-----------------------------------------------------------------------------
 TradePlayers:
         enter 0x5a, 0x0
         push si

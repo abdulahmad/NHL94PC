@@ -2,11 +2,25 @@
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short PlayLeagueGameTail
         jmp near PlayLeagueGame.29 - 0x2F60
+
+;-----------------------------------------------------------------------------
+; PlayLeagueGameTail                                         28A8:0007  94 PC
+; The rest of PlayLeagueGame, which runs on into this module.
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 PlayLeagueGameTail:
         pop si
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; AskTeamPassword                                            28A8:000A  94 PC
+; 'Enter password for '
+;
+; Takes 3 words of stack arguments. Calls _fstrcpy, _fstrcat, NumberEntryDialog, EncryptPassword,
+; _fstrcmp, MouseRead, MessageBox. Far routine (retf).
+;-----------------------------------------------------------------------------
 AskTeamPassword:
         enter 0x74, 0x0
         push di
@@ -116,6 +130,13 @@ AskTeamPassword:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; AskMasterPassword                                          28A8:0108  94 PC
+; ' enter master password.'
+;
+; Takes 5 words of stack arguments. Calls _fstrcpy, _fstrcat, NumberEntryDialog, EncryptPassword,
+; _fstrcmp, MouseRead, MessageBox. Far routine (retf).
+;-----------------------------------------------------------------------------
 AskMasterPassword:
         enter 0x6a, 0x0
         push di
@@ -215,6 +236,12 @@ AskMasterPassword:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; EncryptPassword                                            28A8:01E8  94 PC
+; Scrambles with 'NHLHockey'
+;
+; Takes 3 words of stack arguments. Calls _fstrlen. Far routine (retf).
+;-----------------------------------------------------------------------------
 EncryptPassword:
         enter 0x4, 0x0
         push di

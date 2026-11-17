@@ -4,6 +4,13 @@
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; CreateNewLeague                                            2A1B:0004  94 PC
+; 'Enter New League Name'
+;
+; Calls SetDialogColors, _fmemset, NumberEntryDialog, MouseRead, _fstrcat, _fstrcpy, _dos_findfirst,
+; MessageBox and others.
+;-----------------------------------------------------------------------------
 CreateNewLeague:
         enter 0x70, 0x0
         push di

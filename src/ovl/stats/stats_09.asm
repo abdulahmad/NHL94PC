@@ -2,6 +2,13 @@
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; SkaterStatsCard                                            23D5:0002  94 PC
+; Skater card: portrait, season and career stats, ratings.
+;
+; Calls LoadRawHeader, BuildPathFar, _open, _lseek, _read, _close, UseOffscreenCanvas, _sprintf and
+; others.
+;-----------------------------------------------------------------------------
 SkaterStatsCard:
         enter 0x19a, 0x0
         push di

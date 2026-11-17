@@ -2,6 +2,13 @@
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; LoadTeamPalette                                            1E64:0002  94 PC
+; HOMEPALS.BIN and AWAYPALS.BIN into TeamPalette1/2 plus RINKPAL.
+;
+; Takes 5 words of stack arguments. Calls LoadRawHeader, FindUnlink, BuildPathFar, LoadPackedHeader,
+; FindFarMsg.
+;-----------------------------------------------------------------------------
 LoadTeamPalette:
         enter 0x20, 0x0
         push di

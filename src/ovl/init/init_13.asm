@@ -2,6 +2,13 @@
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; FreeGameMemory                                             256C:0004  94 PC
+; Frees everything the game loaded.
+;
+; Calls CrowdNoiseOff, GameOverThunk, FindUnlink, FreeArenaJingles, FreePlayerFrames,
+; UnhookDivideError, joyq_flushThunk, UseCharSeg. Far routine (retf).
+;-----------------------------------------------------------------------------
 FreeGameMemory:
         call 0x0EDC:CrowdNoiseOff
         call 0x1B35:GameOverThunk
@@ -72,6 +79,12 @@ FreeGameMemory:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; FreePPVFiles                                               256C:00E8  94 PC
+; Frees the three PPV files.
+;
+; Calls FindUnlink. Far routine (retf).
+;-----------------------------------------------------------------------------
 FreePPVFiles:
         push word [g_4A58]
         push word [g_4A56]
@@ -95,6 +108,12 @@ FreePPVFiles:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; FreePlayerFrames                                           256C:012E  94 PC
+; Frees PPV files and the frame table.
+;
+; Calls FreePPVFiles, UnlinkRec.
+;-----------------------------------------------------------------------------
 FreePlayerFrames:
         push di
         push si

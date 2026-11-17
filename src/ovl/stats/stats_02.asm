@@ -2,6 +2,12 @@
         mov [bp - 0x34], ax
         jmp near RosterMenuLoop.16 - 0x1E70
 
+;-----------------------------------------------------------------------------
+; InitMenuRemap                                              2095:0008  94 PC
+; Builds the menu colour remap table.
+;
+; Takes 1 word of stack arguments. Calls SetRemapTable. Far routine (retf).
+;-----------------------------------------------------------------------------
 InitMenuRemap:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -56,6 +62,12 @@ InitMenuRemap:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; DrawTextFmt                                                2095:0076  94 PC
+; Sprintf with one argument into g_CFD4, then DrawText.
+;
+; Takes 4 words of stack arguments. Calls _sprintf, DrawText. Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawTextFmt:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -72,6 +84,12 @@ DrawTextFmt:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; DrawTextFmt2                                               2095:009A  94 PC
+; Same with two arguments.
+;
+; Takes 5 words of stack arguments. Calls _sprintf, DrawText. Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawTextFmt2:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -88,6 +106,12 @@ DrawTextFmt2:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; CmpPoints                                                  2095:00C0  94 PC
+; Leaders comparator: points (+6), then games, goals, plus/minus.
+;
+; Takes 2 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 CmpPoints:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -166,6 +190,12 @@ CmpPoints:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; CmpGAA                                                     2095:0180  94 PC
+; Leaders comparator: goals against average.
+;
+; Takes 2 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 CmpGAA:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -264,6 +294,13 @@ CmpGAA:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; LoadPhotoShape                                             2095:026E  94 PC
+; Reads one player photo from the 'shape' file ('sfh' header)
+;
+; Takes 2 words of stack arguments. Calls OpenReadShared, ReadAtOffset, AllocRecData, FindUnlink,
+; _fmemcpy, CloseHandlePtr. Far routine (retf).
+;-----------------------------------------------------------------------------
 LoadPhotoShape:
         enter 0x3c, 0x0
         push di
@@ -463,6 +500,12 @@ LoadPhotoShape:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; GetSeasonTitle                                             2095:0438  94 PC
+; Copies the season title for the stats header.
+;
+; Takes 5 words of stack arguments. Calls _fstrlen, CopyStrNFar.
+;-----------------------------------------------------------------------------
 GetSeasonTitle:
         enter 0xe, 0x0
         push di

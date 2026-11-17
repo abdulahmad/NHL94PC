@@ -3,6 +3,13 @@
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; GameLineEditor                                             2047:0008  94 PC
+; In-game line editor ('linedit.fnt', 'lineditp')
+;
+; Takes 5 words of stack arguments. Calls MouseMove, MouseRatio, UseOffscreenCanvas, SetClipRectRegs,
+; SaveCharTab, LoadRawHeader, UseCharSeg, BuildPathFar and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 GameLineEditor:
         enter 0x36, 0x0
         push di
@@ -118,6 +125,12 @@ GameLineEditor:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; GameRosterCmp                                              2047:013A  94 PC
+; Qsort comparator of roster rows.
+;
+; Takes 2 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 GameRosterCmp:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -189,6 +202,14 @@ GameRosterCmp:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; GameLineEditorLoop                                         2047:01B2  94 PC
+; Line editor input loop.
+;
+; Takes 11 words of stack arguments. Calls FindFarMsg, AllocRecData, UseCharSeg, GetPaletteFar,
+; FadePaletteInThunk, LoadJerseyColours, DrawGameLineJerseys, SetStartPage and others. Far routine
+; (retf).
+;-----------------------------------------------------------------------------
 GameLineEditorLoop:
         enter 0xac, 0x0
         push di
@@ -2001,6 +2022,12 @@ GameLineEditorLoop:
         jmp near .33
         db 0x90
 
+;-----------------------------------------------------------------------------
+; LineEdHitTest                                              2047:15C0  94 PC
+; Line slot under the pointer.
+;
+; Takes 3 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 LineEdHitTest:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2066,6 +2093,13 @@ LineEdHitTest:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; LoadGameRoster                                             2047:1640  94 PC
+; Roster of a team from the key db.
+;
+; Takes 1 word of stack arguments. Calls _sprintf, _dos_findfirst, FatalError, _open, _lseek, _read,
+; _close. Far routine (retf).
+;-----------------------------------------------------------------------------
 LoadGameRoster:
         enter 0x8c, 0x0
         push di
@@ -2282,6 +2316,13 @@ LoadGameRoster:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; DrawGameLineJerseys                                        2047:186A  94 PC
+; Jerseys of the lines ('%c %2d %s')
+;
+; Takes 4 words of stack arguments. Calls MakeJerseyShape, SetRemapTable, DrawRleTransRemapAt,
+; FormatCall. Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawGameLineJerseys:
         enter 0xc, 0x0
         push di
@@ -2444,6 +2485,13 @@ DrawGameLineJerseysJumpTable:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; DrawLineEditorScreen                                       2047:19E0  94 PC
+; Plaque, line titles ('forward line 1' .. 'extra attackers')
+;
+; Takes 8 words of stack arguments. Calls _sprintf, _fstrcat, LoadPackedHeader, LoadRawHeader,
+; FindUnlink, SetRemapTable, FindFarMsg, DrawRleTransRemapFastAt and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawLineEditorScreen:
         enter 0x138, 0x0
         push di
@@ -2987,6 +3035,13 @@ DrawLineEditorScreen:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; LoadJerseyColours                                          2047:1F76  94 PC
+; HOMEPALS.BIN remap for the jerseys.
+;
+; Takes 5 words of stack arguments. Calls FindFarMsg, LoadRawHeader, FindUnlink, SetRemapTable. Far
+; routine (retf).
+;-----------------------------------------------------------------------------
 LoadJerseyColours:
         enter 0x12, 0x0
         push di
@@ -3116,6 +3171,12 @@ LoadJerseyColours:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; DrawDlgFrame                                               2047:20E4  94 PC
+; Bevelled dialog frame.
+;
+; Takes 5 words of stack arguments. Calls FillRect, DrawLine, PutPixel. Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawDlgFrame:
         enter 0xa, 0x0
         push di
@@ -3291,6 +3352,12 @@ DrawDlgFrame:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; ShadeRect                                                  2047:229A  94 PC
+; Darkens a rectangle pixel by pixel.
+;
+; Takes 5 words of stack arguments. Calls GetPixel, PutPixel. Far routine (retf).
+;-----------------------------------------------------------------------------
 ShadeRect:
         enter 0x8, 0x0
         push di
@@ -3340,6 +3407,12 @@ ShadeRect:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; CheckGameRosterComplete                                    2047:22F2  94 PC
+; 'Your Roster is incomplete.'
+;
+; Takes 3 words of stack arguments. Calls _sprintf, RosterAlertBox. Far routine (retf).
+;-----------------------------------------------------------------------------
 CheckGameRosterComplete:
         enter 0x7c, 0x0
         push di
@@ -3549,6 +3622,12 @@ CheckGameRosterComplete:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; PruneGameLines                                             2047:248A  94 PC
+; Removes scratched players from the lines.
+;
+; Takes 2 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 PruneGameLines:
         enter 0x6, 0x0
         push di
@@ -3630,6 +3709,12 @@ PruneGameLines:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; MenuUseTheseLines                                          2047:252E  94 PC
+; Menu item: use these lines.
+;
+; Takes 13 words of stack arguments. Calls CheckGameRosterComplete. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuUseTheseLines:
         enter 0x8, 0x0
         push di
@@ -3726,10 +3811,22 @@ MenuUseTheseLines:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; MenuLineEdCancel                                           2047:25EE  94 PC
+; Menu item: cancel.
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuLineEdCancel:
         mov ax, 0x1
         retf
 
+;-----------------------------------------------------------------------------
+; MenuUseOriginalLines                                       2047:25F2  94 PC
+; Menu item: original lines.
+;
+; Takes 6 words of stack arguments. Calls PruneGameLines, DrawGameLineJerseys. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuUseOriginalLines:
         enter 0x2, 0x0
         push di
@@ -3824,6 +3921,12 @@ MenuUseOriginalLines:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; MenuUseDefaultLines                                        2047:2706  94 PC
+; Menu item: default lines.
+;
+; Takes 6 words of stack arguments. Calls PruneGameLines, DrawGameLineJerseys. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuUseDefaultLines:
         enter 0x2, 0x0
         push di
@@ -3918,6 +4021,13 @@ MenuUseDefaultLines:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; WriteTeamLines                                             2047:281A  94 PC
+; Writes the home team's lines into the teams db.
+;
+; Takes 13 words of stack arguments. Calls CheckGameRosterComplete, _sprintf, _open, ResetText,
+; WriteStderr, WaitKey, _exit, _lseek and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 WriteTeamLines:
         enter 0x312, 0x0
         push di
@@ -4160,6 +4270,13 @@ WriteTeamLines:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; WriteTeamLines2                                            2047:2A60  94 PC
+; Writes the away team's lines into the teams db.
+;
+; Takes 13 words of stack arguments. Calls CheckGameRosterComplete, _sprintf, _open, FatalError,
+; _lseek, _read, _write, _close. Far routine (retf).
+;-----------------------------------------------------------------------------
 WriteTeamLines2:
         enter 0x312, 0x0
         push di
@@ -4398,6 +4515,14 @@ WriteTeamLines2:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; MenuGameShowPlayerStats                                    2047:2C90  94 PC
+; Player stats from the line editor.
+;
+; Takes 11 words of stack arguments. Calls AllocRecData, InitMenuRemapThunk, GetPaletteFar,
+; FadePaletteInThunk, RosterScreenThunk, UseCharSeg, DrawMenuBar, StatsMenuLoopThunk and others. Far
+; routine (retf).
+;-----------------------------------------------------------------------------
 MenuGameShowPlayerStats:
         enter 0x304, 0x0
         push di
@@ -4670,10 +4795,22 @@ MenuGameShowPlayerStats:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; MenuReturnToLineEditor                                     2047:2FA0  94 PC
+; Menu item: back to the line editor.
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuReturnToLineEditor:
         mov ax, 0x1
         retf
 
+;-----------------------------------------------------------------------------
+; GameScratchPlayer                                          2047:2FA4  94 PC
+; Scratches the selected player.
+;
+; Takes 6 words of stack arguments. Calls DrawGameLineJerseys, FormatCall. Far routine (retf).
+;-----------------------------------------------------------------------------
 GameScratchPlayer:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -4792,6 +4929,12 @@ GameScratchPlayer:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; GameDressPlayer                                            2047:30E6  94 PC
+; Dresses the selected player.
+;
+; Takes 7 words of stack arguments. Calls DrawGameLineJerseys, FormatCall.
+;-----------------------------------------------------------------------------
 GameDressPlayer:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp

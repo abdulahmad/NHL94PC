@@ -5,6 +5,12 @@
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; RosterRowAt                                                2446:0006  94 PC
+; Roster row under a screen y, 1 when there is one.
+;
+; Takes 3 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 RosterRowAt:
         enter 0x2, 0x0
         push di
@@ -56,6 +62,13 @@ RosterRowAt:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; RosterScreen                                               2446:006A  94 PC
+; '%s Roster:' skaters and goalies.
+;
+; Takes 1 word of stack arguments. Calls LoadRawHeader, BuildPathFar, _open, _lseek, _read, _close,
+; _qsort, UseOffscreenCanvas and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 RosterScreen:
         enter 0x3e8, 0x0
         push di

@@ -5,6 +5,12 @@
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; CenterTextX                                                235C:000C  94 PC
+; X that centres a string in a box.
+;
+; Takes 1 word of stack arguments. Calls TextWidthAll. Far routine (retf).
+;-----------------------------------------------------------------------------
 CenterTextX:
         enter 0x50, 0x0
         push di
@@ -33,6 +39,13 @@ CenterTextX:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; RosterAlertBox                                             235C:0042  94 PC
+; 'DBOX' alert with the roster message.
+;
+; Takes 10 words of stack arguments. Calls UseCharSeg, CenterTextX, AllocRecData, GetBlockAt,
+; DrawDlgFrame, DrawTextFar, FlushInputEvents, WaitDialogClick and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 RosterAlertBox:
         enter 0x18, 0x0
         push di
@@ -239,6 +252,13 @@ RosterAlertBox:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; WaitDialogClick                                            235C:0240  94 PC
+; Pointer loop until a click.
+;
+; Takes 3 words of stack arguments. Calls AllocRecData, MouseMove, GetBlockAt,
+; DrawRleTransRemapFastAt, FlushInputEvents, GetInputEvent, PutBlockAt, FindUnlink.
+;-----------------------------------------------------------------------------
 WaitDialogClick:
         enter 0x12, 0x0
         push di

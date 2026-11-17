@@ -6,6 +6,14 @@
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; CalTeamStatsScreen                                         2351:000A  94 PC
+; Team stats from the calendar.
+;
+; Takes 1 word of stack arguments. Calls GetPaletteFar, UseOffscreenCanvas, InitMenuRemap,
+; TeamStatsScreen, DrawMenuBar, BuildPathFar, LoadPackedHeader, FindFarMsg and others. Far routine
+; (retf).
+;-----------------------------------------------------------------------------
 CalTeamStatsScreen:
         enter 0x30e, 0x0
         push si
@@ -119,6 +127,14 @@ CalTeamStatsScreen:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; CalSkaterStatsScreen                                       2351:014C  94 PC
+; Skater leaders from the calendar.
+;
+; Takes 1 word of stack arguments. Calls GetPaletteFar, UseOffscreenCanvas, InitMenuRemap,
+; LeadersScreen, DrawMenuBar, BuildPathFar, LoadPackedHeader, FindFarMsg and others. Far routine
+; (retf).
+;-----------------------------------------------------------------------------
 CalSkaterStatsScreen:
         enter 0x30e, 0x0
         push si
@@ -232,6 +248,14 @@ CalSkaterStatsScreen:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; CalGoalieStatsScreen                                       2351:028E  94 PC
+; Goalie leaders from the calendar.
+;
+; Takes 1 word of stack arguments. Calls GetPaletteFar, UseOffscreenCanvas, InitMenuRemap,
+; LeadersScreen, DrawMenuBar, BuildPathFar, LoadPackedHeader, FindFarMsg and others. Far routine
+; (retf).
+;-----------------------------------------------------------------------------
 CalGoalieStatsScreen:
         enter 0x30e, 0x0
         push si
@@ -345,6 +369,13 @@ CalGoalieStatsScreen:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; CalStandingsScreen                                         2351:03D0  94 PC
+; Standings from the calendar.
+;
+; Calls LoadRawHeader, BuildPathFar, LoadPackedHeader, ShowStandingsTable, DrawMenuBar,
+; FreeStandingsGfx, UseOffscreenCanvas, StandingsScreen and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 CalStandingsScreen:
         enter 0xe, 0x0
         cmp word [g_200E], 0x0
@@ -423,6 +454,13 @@ CalStandingsScreen:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; CalStandingsMenu                                           2351:04A6  94 PC
+; Standings menu from the calendar.
+;
+; Calls VgaCopyBytes, GetPaletteFar, FadePaletteInThunk, InitMenuRemap, AllocRecData, DrawMenuBar,
+; BuildPathFar, LoadPackedHeader and others.
+;-----------------------------------------------------------------------------
 CalStandingsMenu:
         enter 0x350, 0x0
         push si

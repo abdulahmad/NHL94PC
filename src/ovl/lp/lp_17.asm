@@ -6,6 +6,13 @@
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; SaveLeagueGameRef                                          2E18:000A  94 PC
+; Writes the league game state.
+;
+; Takes 1 word of stack arguments. Calls WriteAtOffset, BuildPathFar, OpenWriteShared, CloseHandlePtr.
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 SaveLeagueGameRef:
         enter 0x34, 0x0
         push di
@@ -239,6 +246,12 @@ SaveLeagueGameRef:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; LoadLeagueGameRef                                          2E18:0206  94 PC
+; Reads it back.
+;
+; Takes 2 words of stack arguments. Calls ReadAtOffset.
+;-----------------------------------------------------------------------------
 LoadLeagueGameRef:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp

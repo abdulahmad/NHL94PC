@@ -4,6 +4,13 @@
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; MenuOpenSaved                                              23A3:0004  94 PC
+; Open a saved game (gsummary.db, game.sav)
+;
+; Calls ScanSavedGames, VgaCopyBytes, DrawFileDlg, DrawFileDlgTabs, CopyPlane, RunFileDlg,
+; BuildSeasonTitleThunk, SetupStatsMenusThunk and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuOpenSaved:
         enter 0x34, 0x0
         push di
@@ -406,6 +413,12 @@ MenuOpenSaved:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; DrawFileDlgTabs                                            23A3:03FE  94 PC
+; File dialog tabs.
+;
+; Calls WaitRetraceEnd, SetPaletteFar. Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawFileDlgTabs:
         enter 0x60, 0x0
         push si
@@ -506,6 +519,12 @@ DrawFileDlgTabs:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; CmpFileNames                                               23A3:04FC  94 PC
+; Qsort comparator of file names.
+;
+; Takes 2 words of stack arguments. Calls _fstrcmp. Far routine (retf).
+;-----------------------------------------------------------------------------
 CmpFileNames:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -519,6 +538,12 @@ CmpFileNames:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; ScanSavedGames                                             23A3:0516  94 PC
+; Finds *.po and *.nhl saves.
+;
+; Calls _dos_findfirst, _dos_findnext, _qsort. Far routine (retf).
+;-----------------------------------------------------------------------------
 ScanSavedGames:
         enter 0x2c, 0x0
         push di
@@ -724,6 +749,12 @@ ScanSavedGames:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; PrintTextCopy                                              23A3:072A  94 PC
+; DrawText of a copied string.
+;
+; Takes 4 words of stack arguments. Calls DrawText. Far routine (retf).
+;-----------------------------------------------------------------------------
 PrintTextCopy:
         enter 0x40, 0x0
         push di
@@ -754,6 +785,13 @@ PrintTextCopy:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; DrawFileDlg                                                23A3:0766  94 PC
+; Dialogbx frame.
+;
+; Calls UseOtherPage, BuildPathFar, LoadPackedHeader, FindFarMsg, DrawRleTransFastAt, FindUnlink,
+; PrintTextCopy, DrawLine. Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawFileDlg:
         enter 0x18, 0x0
         push di
@@ -968,6 +1006,12 @@ DrawFileDlgJumpTable:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; FileDlgHitTest                                             23A3:098C  94 PC
+; Row under the pointer.
+;
+; Takes 3 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 FileDlgHitTest:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1014,6 +1058,13 @@ FileDlgHitTest:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; DrawFileDlgList                                            23A3:09E4  94 PC
+; List of saves.
+;
+; Takes 1 word of stack arguments. Calls GetPaletteFar, UseOtherPage, FillRect, CopyPlane,
+; VgaCopyRect, PrintTextCopy, DrawLine, WaitRetraceEnd and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawFileDlgList:
         enter 0x6a, 0x0
         push di
@@ -1370,6 +1421,13 @@ DrawFileDlgListJumpTable:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; RunFileDlg                                                 23A3:0D94  94 PC
+; File dialog input loop.
+;
+; Calls MouseRead, UseCurrentPage, DrawRleTransAt, FlushInputEvents, GetInputEvent, VgaCopyRect,
+; FileDlgHitTest, DrawFileDlgList and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 RunFileDlg:
         enter 0x1a, 0x0
         mov word [bp - 0x18], 0x0
@@ -1868,6 +1926,13 @@ RunFileDlg:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; DeleteSavedGame                                            23A3:121A  94 PC
+; Deletes a save and its directory.
+;
+; Takes 1 word of stack arguments. Calls SetDialogColors, MessageBox, _fstrcpy, _dos_findfirst,
+; _fmemcmp, _chdir, FatalError, _unlink and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 DeleteSavedGame:
         enter 0x46, 0x0
         push di
@@ -2184,6 +2249,13 @@ DeleteSavedGame:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; SelectSavedFile                                            23A3:1518  94 PC
+; 'LA  at MTL ...' line of a save.
+;
+; Calls _fstrcpy, ReadGameSettings, LoadModeState, CopyStrNFar, LoadScheduleDB, FindUnlink. Far
+; routine (retf).
+;-----------------------------------------------------------------------------
 SelectSavedFile:
         enter 0x18, 0x0
         push di
@@ -2424,6 +2496,13 @@ SelectSavedFile:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ReadGameSettings                                           23A3:1778  94 PC
+; Game.set of a save.
+;
+; Takes 4 words of stack arguments. Calls _chdir, FatalError, OpenReadShared, ReadAtOffset,
+; CloseHandlePtr, FindPath. Far routine (retf).
+;-----------------------------------------------------------------------------
 ReadGameSettings:
         enter 0x2, 0x0
         push di

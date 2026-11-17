@@ -3,6 +3,13 @@
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         retf
 
+;-----------------------------------------------------------------------------
+; MainDeskLoop                                               2E70:000A  94 PC
+; The main EASN desk.
+;
+; Calls SetStatsMenuTextThunk, MouseRange, MouseMove, SetSideControls, SetupStatsMenusThunk, GetPage,
+; CopyPlane, UseCurrentPage and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 MainDeskLoop:
         enter 0x96, 0x0
         push di
@@ -838,10 +845,22 @@ MainDeskLoop:
         jmp near .8
         db 0x90
 
+;-----------------------------------------------------------------------------
+; MenuExit                                                   2E70:0964  94 PC
+; Menu item: exit.
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuExit:
         mov ax, 0x1
         retf
 
+;-----------------------------------------------------------------------------
+; SaveModeState                                              2E70:0968  94 PC
+; Copies the mode settings out.
+;
+; Takes 2 words of stack arguments. Calls _fstrcpy. Far routine (retf).
+;-----------------------------------------------------------------------------
 SaveModeState:
         enter 0x4, 0x0
         push si
@@ -898,6 +917,13 @@ SaveModeState:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; LoadModeState                                              2E70:09FE  94 PC
+; Copies them back and applies them.
+;
+; Takes 2 words of stack arguments. Calls _fstrcpy, MusicOn, MusicOff, SfxOn, SfxOff, SetSideControls,
+; CopyStrNFar. Far routine (retf).
+;-----------------------------------------------------------------------------
 LoadModeState:
         enter 0xa, 0x0
         push di
@@ -1208,6 +1234,13 @@ LoadModeState:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; WriteModeState                                             2E70:0D0A  94 PC
+; Writes game.set.
+;
+; Takes 2 words of stack arguments. Calls _fstrcpy, BuildPathFar, CreateFileNormal, FatalError,
+; WriteAtOffset, CloseHandlePtr. Far routine (retf).
+;-----------------------------------------------------------------------------
 WriteModeState:
         enter 0x22, 0x0
         push di
@@ -1328,6 +1361,13 @@ WriteModeState:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; CopyGameSettings                                           2E70:0E36  94 PC
+; Copies a game.set.
+;
+; Takes 2 words of stack arguments. Calls OpenReadShared, ReadAtOffset, CloseHandlePtr,
+; OpenReadWriteShared, CreateFileNormal, WriteAtOffset. Far routine (retf).
+;-----------------------------------------------------------------------------
 CopyGameSettings:
         enter 0xc6, 0x0
         push di
@@ -1436,6 +1476,14 @@ CopyGameSettings:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; MenuNewExhibition                                          2E70:0F22  94 PC
+; New exhibition game.
+;
+; Takes 1 word of stack arguments. Calls SetupControllersThunk, CreateGSummaryDbThunk,
+; ShowMatchupScreenThunk, InputShutdown, SetupStatsMenusThunk, AllocRecData, GetPaletteFar,
+; FadePaletteInThunk and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuNewExhibition:
         enter 0x16, 0x0
         push di
@@ -1676,6 +1724,13 @@ MenuNewExhibition:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; MenuNewLeague                                              2E70:11EC  94 PC
+; Menu item: start a new league.
+;
+; Calls SaveModeState, LoadModeState, SetLeagueSetImage, CreateNewLeagueThunk, BuildSeasonTitleThunk,
+; SetupStatsMenusThunk, AllocRecData, GetPaletteFar and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuNewLeague:
         enter 0x14, 0x0
         push di
@@ -1871,6 +1926,13 @@ MenuNewLeague:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; MenuAddTeam                                                2E70:144A  94 PC
+; Add a human team.
+;
+; Calls SaveModeState, LoadModeState, SetupStatsMenusThunk, AddHumanTeamThunk, AllocRecData,
+; GetPaletteFar, FadePaletteInThunk, FindUnlink and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuAddTeam:
         enter 0x14, 0x0
         push di
@@ -1997,6 +2059,13 @@ MenuAddTeam:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; MenuRemoveTeam                                             2E70:1594  94 PC
+; Remove a human team.
+;
+; Calls SaveModeState, LoadModeState, SetupStatsMenusThunk, RemoveHumanTeamThunk, AllocRecData,
+; GetPaletteFar, FadePaletteInThunk, FindUnlink and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuRemoveTeam:
         enter 0x14, 0x0
         push di
@@ -2123,6 +2192,13 @@ MenuRemoveTeam:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; MenuLeagueSettings                                         2E70:16DE  94 PC
+; League settings.
+;
+; Calls SaveModeState, LoadModeState, CheckMasterPasswordThunk, AllocRecData, GetPaletteFar,
+; FadePaletteInThunk, FindUnlink, GetPage and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuLeagueSettings:
         enter 0x24, 0x0
         push di
@@ -2296,6 +2372,12 @@ MenuLeagueSettings:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; MenuRebuildDbs                                             2E70:18A6  94 PC
+; Rebuild the league dbs.
+;
+; Calls SaveModeState, LoadModeState, RebuildLeagueDbsThunk. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuRebuildDbs:
         push word 0x3415
         push strict word f_3415_0000
@@ -2321,6 +2403,13 @@ MenuRebuildDbs:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         retf
 
+;-----------------------------------------------------------------------------
+; MenuMergeUpdateDbs                                         2E70:18E2  94 PC
+; Merge update dbs.
+;
+; Calls SaveModeState, LoadModeState, MergeUpdateDbsThunk, AllocRecData, GetPaletteFar,
+; FadePaletteInThunk, FindUnlink, GetPage and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuMergeUpdateDbs:
         enter 0x14, 0x0
         push di
@@ -2451,6 +2540,13 @@ MenuMergeUpdateDbs:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; MenuMergeLeagueFiles                                       2E70:1A26  94 PC
+; Merge league files.
+;
+; Calls SaveModeState, LoadModeState, MergeLeagueFilesThunk, AllocRecData, GetPaletteFar,
+; FadePaletteInThunk, FindUnlink, GetPage and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuMergeLeagueFiles:
         enter 0x14, 0x0
         push di
@@ -2581,6 +2677,12 @@ MenuMergeLeagueFiles:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; MenuUpdateTeamDbs                                          2E70:1B6A  94 PC
+; Update team dbs.
+;
+; Calls SaveModeState, LoadModeState, UpdateTeamDbsThunk. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuUpdateTeamDbs:
         push word 0x3415
         push strict word f_3415_0000
@@ -2606,6 +2708,13 @@ MenuUpdateTeamDbs:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         retf
 
+;-----------------------------------------------------------------------------
+; MenuTradePlayers                                           2E70:1BA6  94 PC
+; Trade players.
+;
+; Calls SaveModeState, LoadModeState, SetupStatsMenusThunk, TradePlayersThunk, AllocRecData,
+; GetPaletteFar, FadePaletteInThunk, FindUnlink and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuTradePlayers:
         enter 0x14, 0x0
         push di
@@ -2732,6 +2841,14 @@ MenuTradePlayers:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; MenuNextLeagueGame                                         2E70:1CF0  94 PC
+; Next league game.
+;
+; Takes 1 word of stack arguments. Calls SaveModeState, LoadModeState, SetupStatsMenusThunk,
+; SetLeagueSetImage, SetStatsMenuTextThunk, _fstrcpy, OpenReadShared, PlayLeagueGameThunk and others.
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuNextLeagueGame:
         enter 0x26, 0x0
         push di
@@ -2915,6 +3032,13 @@ MenuNextLeagueGame:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; MenuLeagueHilights                                         2E70:1EEC  94 PC
+; League highlights.
+;
+; Calls SaveModeState, LoadModeState, ViewHilights, GetPage, CopyPlane, UseCurrentPage, BuildPathFar,
+; LoadPackedHeader and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuLeagueHilights:
         enter 0x10, 0x0
         push di
@@ -3056,6 +3180,12 @@ MenuLeagueHilights:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; MenuImportDbs                                              2E70:2054  94 PC
+; Menu item: import the databases.
+;
+; Calls SaveModeState, LoadModeState, ImportDbsThunk. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuImportDbs:
         push word 0x3415
         push strict word f_3415_0000
@@ -3081,6 +3211,13 @@ MenuImportDbs:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         retf
 
+;-----------------------------------------------------------------------------
+; MenuExportDbs                                              2E70:2090  94 PC
+; Menu item: export the databases.
+;
+; Calls SaveModeState, LoadModeState, SetupStatsMenusThunk, ExportDbsThunk, AllocRecData,
+; GetPaletteFar, FadePaletteInThunk, FindUnlink and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 MenuExportDbs:
         enter 0x14, 0x0
         push di

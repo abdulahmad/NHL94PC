@@ -6,6 +6,12 @@ assbenchsideTail:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ToFixed                                                    2E42:000A  94 PC
+; DX:AX words swapped: a value in AX comes back as AX << 16; passtoa0 uses it.
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 ToFixed:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -15,6 +21,12 @@ ToFixed:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; SetSPA                                                     2E42:0012  94 PC
+; New animation in AX for the player in BX: SPAnum 0, SPAcnt -1.
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 SetSPA:
         cmp [bx + 0x38], ax
         jz short .1
@@ -25,6 +37,12 @@ SetSPA:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; SprSort                                                    2E42:0026  94 PC
+; Copies each sort object's y (x when the flag is set) and bubble sorts.
+;
+; Calls __chkstk. Far routine (retf).
+;-----------------------------------------------------------------------------
 SprSort:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -92,6 +110,13 @@ SprSort:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; changeplayer                                               2E42:00B2  94 PC
+; Human control moves to the teammate nearest the puck; restorepl for the old one.
+;
+; Takes 2 words of stack arguments. Calls __chkstk, ImulRegs, Sweepcheck, restorepl. Far routine
+; (retf).
+;-----------------------------------------------------------------------------
 changeplayer:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -228,6 +253,12 @@ changeplayer:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; restorepl                                                  2E42:01DE  94 PC
+; (new, old): the old player gets his assignment back.
+;
+; Takes 2 words of stack arguments. Calls __chkstk. Far routine (retf).
+;-----------------------------------------------------------------------------
 restorepl:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -264,6 +295,12 @@ restorepl:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; AvgCline                                                   2E42:022A  94 PC
+; Average energy of the current line's skaters.
+;
+; Takes 1 word of stack arguments. Calls __chkstk. Far routine (retf).
+;-----------------------------------------------------------------------------
 AvgCline:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -307,6 +344,13 @@ AvgCline:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; CompLine                                                   2E42:0286  94 PC
+; The computer's line choice by the strength difference; calls getlinee.
+;
+; Takes 2 words of stack arguments. Calls __chkstk, getlinee, DrawPanelLine, AvgCline. Far routine
+; (retf).
+;-----------------------------------------------------------------------------
 CompLine:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -507,6 +551,12 @@ CompLine:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; getlinee                                                   2E42:0444  94 PC
+; Compares line energies for CompLine.
+;
+; Takes 2 words of stack arguments. Calls __chkstk. Far routine (retf).
+;-----------------------------------------------------------------------------
 getlinee:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -572,6 +622,12 @@ getlinee:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; TeamLineEnergy                                             2E42:04CA  94 PC
+; GetLineEnergies calls it per line.
+;
+; Takes 2 words of stack arguments. Calls __chkstk, getlinee. Far routine (retf).
+;-----------------------------------------------------------------------------
 TeamLineEnergy:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -595,6 +651,12 @@ TeamLineEnergy:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; findpc                                                     2E42:04F2  94 PC
+; Where the puck crosses each goal line; pucknorm calls it.
+;
+; Calls __chkstk, __aFldiv, ImulRegs. Far routine (retf).
+;-----------------------------------------------------------------------------
 findpc:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -702,6 +764,12 @@ findpc:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; forcepldata                                                2E42:05E2  94 PC
+; Forceteams calls it per team after setpersonel.
+;
+; Takes 1 word of stack arguments. Calls __chkstk, Setplass, assinsert, setplayer. Far routine (retf).
+;-----------------------------------------------------------------------------
 forcepldata:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -758,6 +826,12 @@ forcepldata:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; GetHot                                                     2E42:065C  94 PC
+; Hot spot of the player's frame from the HotList table, mirrored by the facing flags.
+;
+; Takes 1 word of stack arguments. Calls __chkstk. Far routine (retf).
+;-----------------------------------------------------------------------------
 GetHot:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -805,6 +879,12 @@ GetHot:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; SetCoachMode                                               2E42:06C6  94 PC
+; Sets a team's coach mode.
+;
+; Takes 1 word of stack arguments. Calls __chkstk. Far routine (retf).
+;-----------------------------------------------------------------------------
 SetCoachMode:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -862,6 +942,12 @@ SetCoachMode:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; InitCoachModes                                             2E42:0760  94 PC
+; Resets both teams' coach modes at period start.
+;
+; Calls __chkstk, SetCoachMode. Far routine (retf).
+;-----------------------------------------------------------------------------
 InitCoachModes:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
@@ -930,6 +1016,12 @@ InitCoachModes:
 .5:
         retf
 
+;-----------------------------------------------------------------------------
+; UpdateCoachModes                                           2E42:0826  94 PC
+; Once a second, picks each team's coach mode from the score, the time left and penalties.
+;
+; Calls __chkstk, SetCoachMode. Far routine (retf).
+;-----------------------------------------------------------------------------
 UpdateCoachModes:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1151,6 +1243,13 @@ UpdateCoachModes:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; PenTeamScored                                              2E42:0A7C  94 PC
+; Returns 1 when the scoring team has a skater who caused the delayed penalty (the goal is then
+; disallowed).
+;
+; Calls __chkstk. Far routine (retf).
+;-----------------------------------------------------------------------------
 PenTeamScored:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1215,6 +1314,13 @@ PenTeamScored:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; Goal                                                       2E42:0AFC  94 PC
+; The puck is in a goal: stops it in the net, then the goal, offside or disallowed goal bookkeeping.
+;
+; Takes 1 word of stack arguments. Calls __chkstk, PenTeamScored, assreplace, AddPenalty2,
+; ChkShotStat, PlaySoundEffect, freezewindow, SetBoxDoorObject and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 Goal:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1663,6 +1769,12 @@ Goal:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; GiveControl                                                2E42:0FB6  94 PC
+; Gives the human control of the player who got the puck.
+;
+; Takes 1 word of stack arguments. Calls __chkstk, restorepl. Far routine (retf).
+;-----------------------------------------------------------------------------
 GiveControl:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1724,6 +1836,12 @@ GiveControl:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; Setplass                                                   2E42:103A  94 PC
+; Sets a player's first assignment from his position.
+;
+; Takes 1 word of stack arguments. Calls __chkstk, assreplace. Far routine (retf).
+;-----------------------------------------------------------------------------
 Setplass:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1749,6 +1867,12 @@ Setplass:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; setplayer                                                  2E42:1068  94 PC
+; Brings a roster player onto the ice and copies his attributes into the sort object.
+;
+; Takes 2 words of stack arguments. Calls __chkstk, assinsert. Far routine (retf).
+;-----------------------------------------------------------------------------
 setplayer:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2196,6 +2320,12 @@ setplayer:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; reenergizeteam                                             2E42:146C  94 PC
+; Refills the energy of the whole roster.
+;
+; Takes 1 word of stack arguments. Calls __chkstk. Far routine (retf).
+;-----------------------------------------------------------------------------
 reenergizeteam:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2233,6 +2363,12 @@ reenergizeteam:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; clearteams                                                 2E42:14B4  94 PC
+; Clears both team records and sets their data pointers.
+;
+; Calls __chkstk. Far routine (retf).
+;-----------------------------------------------------------------------------
 clearteams:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
@@ -2279,6 +2415,12 @@ clearteams:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; restoreteams                                               2E42:1574  94 PC
+; Both teams: every player back on the bench.
+;
+; Calls __chkstk. Far routine (retf).
+;-----------------------------------------------------------------------------
 restoreteams:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2313,6 +2455,12 @@ restoreteams:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; GetPeriodTime                                              2E42:15BC  94 PC
+; Returns the period length from the options.
+;
+; Calls __chkstk. Far routine (retf).
+;-----------------------------------------------------------------------------
 GetPeriodTime:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
@@ -2330,6 +2478,12 @@ GetPeriodTime:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ResetClock                                                 2E42:15E6  94 PC
+; Resets the game clock to the period length and stops it.
+;
+; Calls __chkstk, GetPeriodTime, randomd0. Far routine (retf).
+;-----------------------------------------------------------------------------
 ResetClock:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
@@ -2347,6 +2501,12 @@ ResetClock:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ClearSortCords                                             2E42:1614  94 PC
+; Clears the sort objects.
+;
+; Calls __chkstk. Far routine (retf).
+;-----------------------------------------------------------------------------
 ClearSortCords:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2370,6 +2530,12 @@ ClearSortCords:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; defaultsprites_0                                           2E42:1640  94 PC
+; Clears the remaining sprite objects.
+;
+; Calls __chkstk, ClearSortCords, SprSort. Far routine (retf).
+;-----------------------------------------------------------------------------
 defaultsprites_0:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2491,6 +2657,12 @@ defaultsprites_0:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; TryAddPlayerToList                                         2E42:175E  94 PC
+; Adds a roster player to the player list if he is not in it already.
+;
+; Takes 3 words of stack arguments. Calls __chkstk. Far routine (retf).
+;-----------------------------------------------------------------------------
 TryAddPlayerToList:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2534,6 +2706,12 @@ TryAddPlayerToList:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; SetPlList                                                  2E42:17AC  94 PC
+; Builds the player list for the line and stats screens.
+;
+; Takes 1 word of stack arguments. Calls __chkstk, TryAddPlayerToList. Far routine (retf).
+;-----------------------------------------------------------------------------
 SetPlList:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2768,6 +2946,12 @@ SetPlList:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; setpersonel                                                2E42:1994  94 PC
+; Sets the personnel of a team: the players wanted on the ice and their new positions.
+;
+; Takes 1 word of stack arguments. Calls __chkstk, SetPlList, assreplace. Far routine (retf).
+;-----------------------------------------------------------------------------
 setpersonel:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -2877,6 +3061,13 @@ setpersonel:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; StartPer                                                   2E42:1A92  94 PC
+; Starts a period: rink set-up, clock, centre faceoff, coach modes, then the game frames.
+;
+; Calls __chkstk, InitCoachModes, setupice, ResetClock, assreplace, ReplayRecordReset, DoGameFrame.
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 StartPer:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
@@ -2962,6 +3153,12 @@ StartPer:
         mov word [g_49F4], 0x1
         retf
 
+;-----------------------------------------------------------------------------
+; DoGameFrame                                                2E42:1B8E  94 PC
+; Runs one game frame.
+;
+; Calls __chkstk, periodicevents, updateplayers, checkwindow, updatereplay. Far routine (retf).
+;-----------------------------------------------------------------------------
 DoGameFrame:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
@@ -2973,6 +3170,12 @@ DoGameFrame:
         call 0x2038:updatereplay
         retf
 
+;-----------------------------------------------------------------------------
+; RestoreBenchEnergy                                         2E42:1BA8  94 PC
+; Once a second with line changes on, bench players gain energy.
+;
+; Calls __chkstk. Far routine (retf).
+;-----------------------------------------------------------------------------
 RestoreBenchEnergy:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3006,6 +3209,12 @@ RestoreBenchEnergy:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; updatecrowdf                                               2E42:1BE8  94 PC
+; Raises or decays the crowd excitement and plays random crowd sounds.
+;
+; Calls __chkstk, randomd0, PlaySoundEffect. Far routine (retf).
+;-----------------------------------------------------------------------------
 updatecrowdf:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
@@ -3061,6 +3270,13 @@ updatecrowdf:
         pop si
         retf
 
+;-----------------------------------------------------------------------------
+; periodicevents                                             2E42:1C6A  94 PC
+; End of period horn when the clock reaches 0; once a second the crowd, bench energy and stats checks.
+;
+; Calls __chkstk, PenaltyManager, DecayCrowdLevel, PlaySoundEffect, freezewindow, clockcont_0,
+; ChkGoalies, updatecrowdf and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 periodicevents:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3140,6 +3356,13 @@ periodicevents:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; updateplayers                                              2E42:1D36  94 PC
+; Runs every sort object for a frame.
+;
+; Calls __chkstk, updateanim, ImulRegs, PlaySoundEffect, ReadJoy1, ReadJoy2, doinput, checkcoll. Far
+; routine (retf).
+;-----------------------------------------------------------------------------
 updateplayers:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
@@ -3407,6 +3630,12 @@ updateplayers:
         pop di
         retf
 
+;-----------------------------------------------------------------------------
+; updateanim                                                 2E42:1FFC  94 PC
+; Steps an object's animation and starts the next one when it ends.
+;
+; Takes 1 word of stack arguments. Calls __chkstk, PlaySoundEffect. Far routine (retf).
+;-----------------------------------------------------------------------------
 updateanim:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -3559,6 +3788,12 @@ updateanim:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; freezewindow                                               2E42:2152  94 PC
+; Freezes the camera at its current position.
+;
+; Calls __chkstk. Far routine (retf).
+;-----------------------------------------------------------------------------
 freezewindow:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
@@ -3570,6 +3805,12 @@ freezewindow:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; cleargamevars                                              2E42:216C  94 PC
+; Clears the per-game variables before a game starts.
+;
+; Calls __chkstk, ClearPenaltyBuffer. Far routine (retf).
+;-----------------------------------------------------------------------------
 cleargamevars:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
@@ -3611,6 +3852,13 @@ cleargamevars:
         call 0x327B:ClearPenaltyBuffer
         retf
 
+;-----------------------------------------------------------------------------
+; DrawRinkOverlays                                           2E42:21E2  94 PC
+; Draws the rink overlay sprites: penalty box markers and period marks.
+;
+; Takes 2 words of stack arguments. Calls __chkstk, DrawFrameSprite, DrawRinkObjects, SetClipRectRegs,
+; JoyNibble, DrawSpriteNumber, DrawRinkEndArt, DrawTextOverlay and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawRinkOverlays:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -4330,6 +4578,12 @@ DrawRinkOverlays:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; setupice                                                   2E42:290C  94 PC
+; Per-period rink set-up: flips the attack direction and resets the sprites.
+;
+; Calls __chkstk, defaultsprites_0. Far routine (retf).
+;-----------------------------------------------------------------------------
 setupice:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
@@ -4355,6 +4609,13 @@ setupice:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; clockcont_0                                                2E42:2946  94 PC
+; End of period: next period, overtime, shootout or game over.
+;
+; Calls __chkstk, assinsert, IsCupClinched, ClearPenaltyBuffer, assreplace, SetBoxDoorObject,
+; ImulRegs, setplayer and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 clockcont_0:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -4623,6 +4884,12 @@ clockcont_0:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ClockTick                                                  2E42:2C30  94 PC
+; Counts the game clock down from the main loop: the one-minute horn and the coach modes each second.
+;
+; Calls __chkstk, PlaySoundEffect, AnnounceOneMinute, UpdateCoachModes. Far routine (retf).
+;-----------------------------------------------------------------------------
 ClockTick:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
@@ -4691,6 +4958,12 @@ ClockTick:
 .9:
         retf
 
+;-----------------------------------------------------------------------------
+; SprSortVert                                                2E42:2CEE  94 PC
+; Clears the horizontal sort flag and falls into SprSort.
+;
+; Calls __chkstk, SprSort. Far routine (retf).
+;-----------------------------------------------------------------------------
 SprSortVert:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
@@ -4700,6 +4973,12 @@ SprSortVert:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; GameOver                                                   2E42:2D00  94 PC
+; Sets the main loop's game-over request.
+;
+; Calls __chkstk. Far routine (retf).
+;-----------------------------------------------------------------------------
 GameOver:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
@@ -4710,6 +4989,12 @@ GameOver:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; SetExitGame                                                2E42:2D16  94 PC
+; Sets the main loop's exit request.
+;
+; Calls __chkstk. Far routine (retf).
+;-----------------------------------------------------------------------------
 SetExitGame:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
@@ -4720,6 +5005,12 @@ SetExitGame:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; SetupTeamForIntermission                                   2E42:2D2C  94 PC
+; ResetBench, reenergizeteam both teams, line by score difference.
+;
+; Calls __chkstk, ResetBench, reenergizeteam. Far routine (retf).
+;-----------------------------------------------------------------------------
 SetupTeamForIntermission:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -4762,6 +5053,12 @@ SetupTeamForIntermission:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; Intermission                                               2E42:2D88  94 PC
+; SetupTeamForIntermission, clears the sort entries.
+;
+; Calls __chkstk, SetupTeamForIntermission. Far routine (retf).
+;-----------------------------------------------------------------------------
 Intermission:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
@@ -4777,6 +5074,13 @@ Intermission:
         pop si
         retf
 
+;-----------------------------------------------------------------------------
+; PeriodOver_sp                                              2E42:2DA8  94 PC
+; Period 4 ends the game, else Intermission, StartPer, SetPenaltyStrength.
+;
+; Calls __chkstk, GameOver, Intermission, IntermissionPC, StartPer, SetPenaltyStrength. Far routine
+; (retf).
+;-----------------------------------------------------------------------------
 PeriodOver_sp:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
@@ -4798,6 +5102,12 @@ PeriodOver_sp:
         call 0x2164:SetPenaltyStrength
         retf
 
+;-----------------------------------------------------------------------------
+; PeriodOver                                                 2E42:2DD6  94 PC
+; Next period, overtime or game over.
+;
+; Calls __chkstk, PeriodOver_sp. Far routine (retf).
+;-----------------------------------------------------------------------------
 PeriodOver:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
@@ -4835,6 +5145,12 @@ PeriodOver:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ResetBench                                                 2E42:2E40  94 PC
+; Resets the bench between periods.
+;
+; Calls __chkstk. Far routine (retf).
+;-----------------------------------------------------------------------------
 ResetBench:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -4887,6 +5203,12 @@ ResetBench:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; resetplstuff                                               2E42:2EAC  94 PC
+; Resets the players' flags and animations for both teams.
+;
+; Calls __chkstk, SetSPA. Far routine (retf).
+;-----------------------------------------------------------------------------
 resetplstuff:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -4925,6 +5247,12 @@ resetplstuff:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; StartGame                                                  2E42:2F00  94 PC
+; Cleargamevars, clearteams, period 0, restoreteams, PeriodOver_sp.
+;
+; Calls __chkstk, cleargamevars, clearteams, restoreteams, PeriodOver_sp. Far routine (retf).
+;-----------------------------------------------------------------------------
 StartGame:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
@@ -4939,6 +5267,12 @@ StartGame:
         call PeriodOver_sp
         retf
 
+;-----------------------------------------------------------------------------
+; forceteams                                                 2E42:2F1E  94 PC
+; Setpersonel and forcepldata for both teams.
+;
+; Calls __chkstk, setpersonel, forcepldata.
+;-----------------------------------------------------------------------------
 forceteams:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk

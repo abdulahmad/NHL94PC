@@ -2,6 +2,12 @@
         pop si
         retf
 
+;-----------------------------------------------------------------------------
+; DrawBevelBoxInit                                           2007:0002  94 PC
+; Box with DialogLight/Dark edges.
+;
+; Takes 5 words of stack arguments. Calls FillRect, DrawLine, PutPixel. Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawBevelBoxInit:
         enter 0xa, 0x0
         push di
@@ -161,6 +167,13 @@ DrawBevelBoxInit:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; ShowMatchupScreen                                          2007:01BC  94 PC
+; Pre-game "%s at %s" arena screen.
+;
+; Takes 3 words of stack arguments. Calls LoadStudioSpeech, SetDialogColors, SetTextColors,
+; AllocRecData, BuildPathFar, OpenReadShared, ReadEntry744, CloseHandlePtr and others.
+;-----------------------------------------------------------------------------
 ShowMatchupScreen:
         enter 0x654, 0x0
         push di

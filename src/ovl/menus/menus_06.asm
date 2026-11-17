@@ -5,6 +5,12 @@
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; BlitJerseyDigit                                            2397:0006  94 PC
+; One jersey digit.
+;
+; Takes 4 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 BlitJerseyDigit:
         enter 0x2, 0x0
         push di
@@ -35,6 +41,12 @@ BlitJerseyDigit:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; MakeJerseyShape                                            2397:0040  94 PC
+; Jersey with its number.
+;
+; Takes 6 words of stack arguments. Calls BlitJerseyDigit.
+;-----------------------------------------------------------------------------
 MakeJerseyShape:
         enter 0x4, 0x0
         push di

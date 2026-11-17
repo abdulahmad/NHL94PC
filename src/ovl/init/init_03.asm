@@ -3,6 +3,12 @@
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; LoadArenaJingles                                           2137:0004  94 PC
+; Loads the arena organ .KMS/.CFG jingles.
+;
+; Calls BuildPathFar, LoadRawHeader, _rand. Far routine (retf).
+;-----------------------------------------------------------------------------
 LoadArenaJingles:
         enter 0x26, 0x0
         push di
@@ -383,6 +389,12 @@ LoadArenaJingles:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; FreeArenaJingles                                           2137:03D6  94 PC
+; Frees the four jingle buffers.
+;
+; Calls FindUnlink. Far routine (retf).
+;-----------------------------------------------------------------------------
 FreeArenaJingles:
         enter 0x2, 0x0
         push di

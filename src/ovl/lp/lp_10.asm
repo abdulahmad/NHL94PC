@@ -2,6 +2,12 @@
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; RandomMod                                                  23AD:0002  94 PC
+; Positive rand() modulo the argument.
+;
+; Takes 1 word of stack arguments. Calls _rand. Far routine (retf).
+;-----------------------------------------------------------------------------
 RandomMod:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -14,6 +20,12 @@ RandomMod:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; AddScorerPair                                              23AD:0016  94 PC
+; Appends a (player, assist) pair, at most four.
+;
+; Takes 4 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 AddScorerPair:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -40,6 +52,13 @@ AddScorerPair:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; SimulateGame                                               23AD:0046  94 PC
+; Simulates one league game and posts the stats.
+;
+; Takes 11 words of stack arguments. Calls AllocRecData, ReadDbRec4Ch, ReadEntry744, BuildPathFar,
+; OpenReadShared, OpenReadWriteShared, ReadRecord48, ReadRecord52 and others.
+;-----------------------------------------------------------------------------
 SimulateGame:
         enter 0x200, 0x0
         push di

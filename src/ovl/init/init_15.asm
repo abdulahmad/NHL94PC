@@ -4,6 +4,13 @@
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; ReplayStep                                                 26D2:000A  94 PC
+; Steps the replay one frame.
+;
+; Takes 2 words of stack arguments. Calls PlaySoundEffect, LongSarAt, CrowdNoiseUpdate, CrowdNoiseOff.
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 ReplayStep:
         enter 0x2a, 0x0
         push si
@@ -372,6 +379,13 @@ ReplayStep:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; DrawReplayFrame                                            26D2:03F2  94 PC
+; Draws the sorted sprites, numbers and rink end art of a replay frame.
+;
+; Takes 3 words of stack arguments. Calls DrawFrameSprite, DrawSpriteClipped, SetClipRectRegs,
+; JoyNibble, DrawSpriteNumber, DrawRinkEndArt.
+;-----------------------------------------------------------------------------
 DrawReplayFrame:
         enter 0x28, 0x0
         push si

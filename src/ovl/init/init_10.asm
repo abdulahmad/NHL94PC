@@ -4,6 +4,13 @@
         pop di
         retf
 
+;-----------------------------------------------------------------------------
+; LoadRinkTiles                                              24DE:0006  94 PC
+; Rink.til and rink.map, then draws the first screen.
+;
+; Takes 1 word of stack arguments. Calls FileSizeMsg, FatalError, LoadRawHeader, _sprintf,
+; VgaStorePlanes, FindUnlink, PatchRinkMap, DrawRinkBackground and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 LoadRinkTiles:
         enter 0x22, 0x0
         push di
@@ -187,6 +194,12 @@ LoadRinkTiles:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; PatchRinkMap                                               24DE:01E8  94 PC
+; Copies a sub-map into the rink map.
+;
+; Takes 6 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 PatchRinkMap:
         enter 0x20, 0x0
         push di
@@ -338,6 +351,12 @@ PatchRinkMap:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; DrawRinkBackground                                         24DE:033A  94 PC
+; VGA latch stamps of the visible rink tiles.
+;
+; Calls VgaStamp8.
+;-----------------------------------------------------------------------------
 DrawRinkBackground:
         enter 0xe, 0x0
         push di

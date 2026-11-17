@@ -4,6 +4,13 @@
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; ShowStartingLineups                                        20A8:0004  94 PC
+; Lineup screen with crests, AnnounceLineups, injured players.
+;
+; Takes 3 words of stack arguments. Calls FlushInputEvents, UseCurrentPage, ClearClipRect,
+; SetPaletteFar, BuildPathFar, LoadPackedHeader, FindFarMsg, FindFarList and others.
+;-----------------------------------------------------------------------------
 ShowStartingLineups:
         enter 0xe4, 0x0
         push si

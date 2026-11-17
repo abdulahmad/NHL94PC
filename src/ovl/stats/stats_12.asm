@@ -2,6 +2,12 @@
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; CmpTeamScoring                                             25E5:0002  94 PC
+; Team comparator: goals for (+4)
+;
+; Takes 2 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 CmpTeamScoring:
         enter 0xe, 0x0
         push di
@@ -111,6 +117,12 @@ CmpTeamScoring:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; CmpTeamDefense                                             25E5:011A  94 PC
+; Team comparator: goals against (+6)
+;
+; Takes 2 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 CmpTeamDefense:
         enter 0xe, 0x0
         push di
@@ -221,6 +233,12 @@ CmpTeamDefense:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; CmpTeamPP                                                  25E5:0232  94 PC
+; Team comparator: power play (+8/+0Ah)
+;
+; Takes 2 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 CmpTeamPP:
         enter 0x1c, 0x0
         push di
@@ -390,6 +408,12 @@ CmpTeamPP:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; CmpTeamPK                                                  25E5:03B6  94 PC
+; Team comparator: penalty killing (+0Ch/+0Eh)
+;
+; Takes 2 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 CmpTeamPK:
         enter 0x1c, 0x0
         push di
@@ -553,6 +577,12 @@ CmpTeamPK:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; CmpTeamPenalties                                           25E5:052E  94 PC
+; Team comparator: penalty minutes (+10h)
+;
+; Takes 2 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 CmpTeamPenalties:
         enter 0x16, 0x0
         push di
@@ -676,6 +706,13 @@ CmpTeamPenalties:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; TeamStatsScreen                                            25E5:064A  94 PC
+; Team stats table ('Stats Unavailable')
+;
+; Takes 2 words of stack arguments. Calls AllocRecData, BuildPathFar, _open, LoadLeagueSchedule,
+; _fstrcmp, FindUnlink, __aFlmul, __aFldiv and others.
+;-----------------------------------------------------------------------------
 TeamStatsScreen:
         enter 0x15e, 0x0
         push di

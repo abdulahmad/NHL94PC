@@ -5,6 +5,12 @@
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; LoadHomePals                                               1E9D:0008  94 PC
+; HOMEPALS.BIN team colours into the palette.
+;
+; Takes 3 words of stack arguments. Calls LoadRawHeader, FindUnlink, SetPaletteFar.
+;-----------------------------------------------------------------------------
 LoadHomePals:
         enter 0x192, 0x0
         push di

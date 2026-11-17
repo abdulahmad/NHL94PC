@@ -5,6 +5,12 @@
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; SetTeamNameText                                            252F:000E  94 PC
+; Team names into the menu text.
+;
+; Calls _fstrcpy, _strncpy, TextWidthAll. Far routine (retf).
+;-----------------------------------------------------------------------------
 SetTeamNameText:
         enter 0x30, 0x0
         push di
@@ -306,6 +312,12 @@ SetTeamNameText:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; ClearTeamNameText                                          252F:0348  94 PC
+; Blanks the team name strings.
+;
+; Calls _fstrcpy.
+;-----------------------------------------------------------------------------
 ClearTeamNameText:
         push word 0x3448
         push strict word f_3448_026B

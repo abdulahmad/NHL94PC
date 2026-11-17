@@ -4,6 +4,13 @@
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; LockerRoomScreen                                           25DD:0006  94 PC
+; Draws the locker room screen.
+;
+; Calls GetPaletteFar, VgaCopyBytes, DrawLockerRoom, LockerRoomLoop, CopyPlane, FadePaletteInThunk.
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 LockerRoomScreen:
         enter 0x300, 0x0
         push si
@@ -46,6 +53,13 @@ LockerRoomScreen:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; DrawLockerRoom                                             25DD:006E  94 PC
+; Lockrm background, jerseys.
+;
+; Calls UseOtherPage, BuildPathFar, LoadPackedHeader, FindFarMsg, DrawRleTransFastHere, FindUnlink,
+; DrawRleFastHere, VgaCopyBytes and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawLockerRoom:
         enter 0x62a, 0x0
         push di
@@ -572,6 +586,12 @@ DrawLockerRoom:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; LockerHitTest                                              25DD:05F0  94 PC
+; Item under the pointer.
+;
+; Takes 3 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 LockerHitTest:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -615,6 +635,13 @@ LockerHitTest:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; DrawLockerJersey                                           25DD:063E  94 PC
+; 'JER%sV' / 'JER%sH'
+;
+; Takes 5 words of stack arguments. Calls VgaCopyRect, UseOtherPage, _sprintf, _fstrcat,
+; LoadPackedHeader, FindFarMsg, SetClipRectRegs, DrawRleTransBody and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawLockerJersey:
         enter 0xe0, 0x0
         push di
@@ -1069,6 +1096,13 @@ DrawLockerJersey:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; LockerRoomLoop                                             25DD:0AC8  94 PC
+; Input loop of the locker room screen.
+;
+; Calls MouseRead, UseCurrentPage, DrawRleTransRemapFastAt, FlushInputEvents, GetInputEvent,
+; VgaCopyRect, LockerHitTest, DrawLockerJersey and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 LockerRoomLoop:
         enter 0x318, 0x0
         mov ax, [g_29CC]

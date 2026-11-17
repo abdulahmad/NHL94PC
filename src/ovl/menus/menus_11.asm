@@ -6,6 +6,13 @@
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; DrawSettingsHeading                                        2B11:000C  94 PC
+; 'Exhibition' / 'Playoff' / 'League'
+;
+; Takes 5 words of stack arguments. Calls SaveCharTab, UseCharSeg, DrawText, LoadCharTab. Far routine
+; (retf).
+;-----------------------------------------------------------------------------
 DrawSettingsHeading:
         enter 0x18, 0x0
         push di
@@ -82,6 +89,12 @@ DrawSettingsHeading:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; SetModeMenuLabels                                          2B11:00A8  94 PC
+; '... Settings ...' menu labels.
+;
+; Takes 1 word of stack arguments. Calls _fstrcpy. Far routine (retf).
+;-----------------------------------------------------------------------------
 SetModeMenuLabels:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp

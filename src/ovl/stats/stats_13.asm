@@ -5,6 +5,12 @@
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; CmpGoals                                                   26BE:000A  94 PC
+; Leaders comparator: goals (+2)
+;
+; Takes 2 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 CmpGoals:
         enter 0x8, 0x0
         push di
@@ -91,6 +97,12 @@ CmpGoals:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; CmpAssists                                                 26BE:00EC  94 PC
+; Leaders comparator: assists (+4)
+;
+; Takes 2 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 CmpAssists:
         enter 0x8, 0x0
         push di
@@ -173,6 +185,12 @@ CmpAssists:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; CmpPPGoals                                                 26BE:01C6  94 PC
+; Leaders comparator: power play goals (+8)
+;
+; Takes 2 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 CmpPPGoals:
         enter 0x8, 0x0
         push di
@@ -266,6 +284,12 @@ CmpPPGoals:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; CmpSHGoals                                                 26BE:02C0  94 PC
+; Leaders comparator: short-handed goals (+0Ah)
+;
+; Takes 2 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 CmpSHGoals:
         enter 0x8, 0x0
         push di
@@ -359,6 +383,12 @@ CmpSHGoals:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; CmpPlusMinus                                               26BE:03BA  94 PC
+; Leaders comparator: plus/minus (+10h)
+;
+; Takes 2 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 CmpPlusMinus:
         enter 0x8, 0x0
         push di
@@ -445,6 +475,12 @@ CmpPlusMinus:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; CmpPIM                                                     26BE:049E  94 PC
+; Leaders comparator: penalty minutes (+0Ch)
+;
+; Takes 2 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 CmpPIM:
         enter 0x8, 0x0
         push di
@@ -538,6 +574,12 @@ CmpPIM:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; CmpShootPct                                                26BE:0598  94 PC
+; Leaders comparator: precomputed shooting percentage.
+;
+; Takes 2 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 CmpShootPct:
         enter 0xe, 0x0
         push di
@@ -638,6 +680,12 @@ CmpShootPct:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; CmpGoalieWins                                              26BE:067A  94 PC
+; Leaders comparator: goalie wins (+2)
+;
+; Takes 2 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 CmpGoalieWins:
         enter 0x8, 0x0
         push di
@@ -759,6 +807,12 @@ CmpGoalieWins:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; CmpSavePct                                                 26BE:07C2  94 PC
+; Leaders comparator: save percentage (+14h)
+;
+; Takes 2 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
 CmpSavePct:
         enter 0x8, 0x0
         push di
@@ -863,6 +917,13 @@ CmpSavePct:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; LeadersScreen                                              26BE:08DA  94 PC
+; Skater and goalie leaders table.
+;
+; Takes 1 word of stack arguments. Calls AllocRecData, BuildPathFar, _open, __aFlmul, _lseek, _read,
+; _close, __aFldiv and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 LeadersScreen:
         enter 0x21c, 0x0
         push di

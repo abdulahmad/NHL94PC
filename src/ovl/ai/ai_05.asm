@@ -2,12 +2,25 @@
         dec word [bp - 0x2]
         jz short DrawPanelPenaltiesTail
         jmp near DrawPanelPenalties.1 - 0xE10
+
+;-----------------------------------------------------------------------------
+; DrawPanelPenaltiesTail                                     2164:000A  94 PC
+; The rest of DrawPanelPenalties, which runs on into this module.
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 DrawPanelPenaltiesTail:
         pop si
         pop di
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; SetPenaltyStrength                                         2164:000E  94 PC
+; Sets the number of skaters each team has on the ice from the players in the penalty box.
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 SetPenaltyStrength:
         enter 0xa, 0x0
         push di
@@ -49,6 +62,12 @@ SetPenaltyStrength:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; TakePlayerFromBox                                          2164:006C  94 PC
+; Takes the first roster player whose penalty is over out of the box and back to the bench.
+;
+; Takes 1 word of stack arguments. Calls SetSPA. Far routine (retf).
+;-----------------------------------------------------------------------------
 TakePlayerFromBox:
         enter 0x4, 0x0
         push di
@@ -99,6 +118,13 @@ TakePlayerFromBox:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; PenShotStart                                               2164:00E0  94 PC
+; Sets the players of a team up for a penalty shot, or puts its skaters without a new position back
+; into play.
+;
+; Takes 1 word of stack arguments. Calls assinsert. Far routine (retf).
+;-----------------------------------------------------------------------------
 PenShotStart:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -132,6 +158,12 @@ PenShotStart:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; ForceStartLineup                                           2164:0128  94 PC
+; At the opening faceoff of a game, forces the team's starting lineup onto the ice.
+;
+; Takes 1 word of stack arguments. Calls forcepldata. Far routine (retf).
+;-----------------------------------------------------------------------------
 ForceStartLineup:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -150,6 +182,12 @@ ForceStartLineup:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; PenShotAssign                                              2164:0152  94 PC
+; Penalty shot set-up: the shooter takes his position and the other skaters wait by the side boards.
+;
+; Calls assinsert. Far routine (retf).
+;-----------------------------------------------------------------------------
 PenShotAssign:
         push di
         push si
@@ -192,6 +230,12 @@ PenShotAssign:
         pop di
         retf
 
+;-----------------------------------------------------------------------------
+; AllInPlace                                                 2164:01B0  94 PC
+; Returns 1 when every skater on the ice has reached his spot, else 0.
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
 AllInPlace:
         mov bx, 0xb50e
         db 0x2B, 0xD2                           ; insn: sub dx, dx
@@ -215,6 +259,13 @@ AllInPlace:
         mov ax, 0x1
         retf
 
+;-----------------------------------------------------------------------------
+; assleavebox                                                2164:01D6  94 PC
+; Assignment: skates out of the penalty box area and brings the released player back on.
+;
+; Takes 1 word of stack arguments. Calls check4bench, randomd0, assinsert, setplayer, SetSPA,
+; TakePlayerFromBox, skateto. Far routine (retf).
+;-----------------------------------------------------------------------------
 assleavebox:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -416,6 +467,14 @@ assleavebox:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; puckfaceoff                                                2164:03AA  94 PC
+; Puck assignment at a stoppage: end of period, penalties, computer line choice, goalies back in net,
+; then sets up the faceoff.
+;
+; Takes 1 word of stack arguments. Calls clockcont_0, Stop4Pen, ReturnGoalies, setpersonel,
+; SprSortVert, StartFaceoffLineChange, CompLine, PenShotStart and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 puckfaceoff:
         enter 0xa, 0x0
         push di
@@ -668,6 +727,13 @@ puckfaceoff:
         retf
         db 0x90, 0x90, 0x90
 
+;-----------------------------------------------------------------------------
+; puckfaceoff2                                               2164:0650  94 PC
+; Puck assignment while the faceoff is being set up.
+;
+; Takes 1 word of stack arguments. Calls AllInPlace, FindUnlink, FlushGSumQueue, SprSortVert,
+; checkwindow, ResetBench, setpersonel, forcepldata and others. Far routine (retf).
+;-----------------------------------------------------------------------------
 puckfaceoff2:
         enter 0xa, 0x0
         push si
@@ -1238,6 +1304,12 @@ puckfaceoff2:
         leave
         retf
 
+;-----------------------------------------------------------------------------
+; assbenchwait                                               2164:0CB0  94 PC
+; Assignment: waits on the bench until the player is sent back on.
+;
+; Takes 1 word of stack arguments. Calls check4bench. Far routine (retf).
+;-----------------------------------------------------------------------------
 assbenchwait:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
@@ -1260,6 +1332,14 @@ assbenchwait:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; asstakeposition                                            2164:0CDC  94 PC
+; Assignment: the goalie goes to his net; a skater skates to his position slot for the team's
+; formation.
+;
+; Takes 1 word of stack arguments. Calls check4bench, assexit, ImulRegs, __aFldiv, SetSPA,
+; VectorToDir8, skateto, SkateToSpot. Far routine (retf).
+;-----------------------------------------------------------------------------
 asstakeposition:
         enter 0xa, 0x0
         push di
@@ -1571,6 +1651,13 @@ asstakeposition:
         retf
         db 0x90
 
+;-----------------------------------------------------------------------------
+; check4bench                                                2164:0FC4  94 PC
+; Returns 1 when the player was taken off for a line change, 0 when he stays; called by every skater
+; assignment.
+;
+; Takes 1 word of stack arguments. Calls assreplace, Setplass, assinsert. Far routine (retf).
+;-----------------------------------------------------------------------------
 check4bench:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
