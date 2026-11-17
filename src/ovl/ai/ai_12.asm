@@ -2239,7 +2239,7 @@ assbenchside:
         call 0x0EDC:AnnouncerBusy
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .1
-        db 0xE9, 0xA4, 0x00                     ; insn: jmp 0x1702
+        jmp near SegStart_0EA66 + 0x1700
 .1:
         cmp word [g_49F0], 0x100
         jnz short .2
@@ -2247,14 +2247,14 @@ assbenchside:
 .2:
         cmp word [g_2998], -0x20
         jng short .3
-        db 0xE9, 0x8C, 0x00                     ; insn: jmp 0x1702
+        jmp near SegStart_0EA66 + 0x1700
 .3:
         mov ax, [g_299A]
         cwd
         db 0x33, 0xC2                           ; insn: xor ax, dx
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         cmp ax, strict word 0x14
-        db 0x7F, 0x7F                           ; insn: jg 0x1702
+        jg short SegStart_0EA66 + 0x1700
         and byte [si + 0x44], 0xfd
         mov word [si + 0x2], 0xff42
         mov word [si + 0x6], 0x3
@@ -2279,23 +2279,23 @@ assbenchside:
         db 0x90
 .5:
         cmp word [si + 0x3a], 0x4
-        db 0x7C, 0x38                           ; insn: jl 0x1702
+        jl short SegStart_0EA66 + 0x1700
         cmp word [si + 0x3c], 0xb
-        db 0x7F, 0x32                           ; insn: jg 0x1702
+        jg short SegStart_0EA66 + 0x1700
         mov word [si + 0x2], 0xff51
         pop si
         leave
         retf
 .6:
         cmp word [si + 0x26], 0xc8
-        db 0x75, 0x23                           ; insn: jnz 0x1702
+        jnz short SegStart_0EA66 + 0x1700
         cmp word [si + 0x12], 0x365
-        db 0x75, 0x1C                           ; insn: jnz 0x1702
+        jnz short SegStart_0EA66 + 0x1700
         cmp word [si + 0x38], 0x0
-        db 0x75, 0x16                           ; insn: jnz 0x1702
+        jnz short SegStart_0EA66 + 0x1700
         mov ax, 0x28
         call 0x0C11:randomd0
         db 0x0B, 0xC0                           ; insn: or ax, ax
-        db 0x75, 0x0A                           ; insn: jnz 0x1702
+        jnz short SegStart_0EA66 + 0x1700
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0xeb5

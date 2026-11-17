@@ -3395,7 +3395,7 @@ Lp_25B2_208A:
         mov [DialogDataSeg], dx
         cmp word [bp - 0x4], 0x0
         jnz short .29
-        db 0xE9, 0xEC, 0x0A                     ; insn: jmp 0x2f66
+        jmp near SegStart_0A637 + 0x2F60
 .29:
         cmp word [g_C2B0], -0x1
         jnz short .30
@@ -4414,9 +4414,9 @@ Lp_25B2_208A:
         call 0x0CD1:BuildPathFar
         add sp, 0x10
         cmp word [g_C2B0], 0x0
-        db 0x7C, 0x19                           ; insn: jl 0x2f66
+        jl short SegStart_0A637 + 0x2F60
         cmp word [bp - 0x5c], 0x0
-        db 0x75, 0x13                           ; insn: jnz 0x2f66
+        jnz short SegStart_0A637 + 0x2F60
         lea ax, [bp - 0x40]
         push ax
         call 0x0CD1:FileExists

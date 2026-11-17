@@ -3468,7 +3468,7 @@ Lp_2A57_2152:
 .10:
         cmp word [bp - 0x3e], 0x0
         jz short .11
-        db 0xE9, 0x46, 0x02                     ; insn: jmp 0x25fd
+        jmp near SegStart_0E720 + 0x2600
 .11:
         push word 0x3701
         push strict word str_Db_2
@@ -3578,7 +3578,7 @@ Lp_2A57_2152:
 .18:
         cmp word [bp - 0x3e], 0x0
         jz short .19
-        db 0xE9, 0x30, 0x01                     ; insn: jmp 0x25fd
+        jmp near SegStart_0E720 + 0x2600
 .19:
         mov es, [g_8C1C]
         cmp word [es:0xac5c], 0x1
@@ -3676,7 +3676,7 @@ Lp_2A57_2152:
         mov [bp - 0x3e], ax
 .23:
         cmp word [bp - 0x3e], 0x0
-        db 0x74, 0x38                           ; insn: jz 0x25fd
+        jz short SegStart_0E720 + 0x2600
         lea ax, [bp - 0x32]
         push ax
         lea cx, [bp - 0x2c]

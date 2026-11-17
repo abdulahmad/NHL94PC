@@ -1506,7 +1506,7 @@ Menus_25DD_0AC8:
         mov [g_01B8], ax
 .53:
         cmp word [g_01BA], 0x1
-        db 0x74, 0x7E                           ; insn: jz 0xf76
+        jz short SegStart_088F1.1 + 0xF70
 .54:
         cmp word [g_01BA], 0x2
         jnz short .56
@@ -1558,7 +1558,7 @@ Menus_25DD_0AC8JumpTable:
         jmp short .4
 .3:
         cmp word [g_01B8], 0x2
-        db 0x75, 0x06                           ; insn: jnz 0xf6f
+        jnz short SegStart_088F1 + 0xF70
         mov ax, [g_29CC]
 .4:
         mov [g_01B8], ax

@@ -381,7 +381,7 @@ Menus_2CAA_018C:
 .20:
         cmp word [bp - 0xa], 0x15
         jz short .21
-        db 0xE9, 0x65, 0x01                     ; insn: jmp 0x4e6
+        jmp near SegStart_0EB33.1 + 0x4E0
 .21:
         mov al, [g_B35E]
         and ax, strict word 0x1
@@ -511,7 +511,7 @@ Menus_2CAA_018C:
         test byte [CrowdState], 0x80
         jz short .31
         call 0x16F2:SfxOn
-        db 0xEB, 0x06                           ; insn: jmp short 0x4e1
+        jmp short SegStart_0EB33 + 0x4E0
         db 0x90
 .31:
         call 0x16F2:SfxOff

@@ -339,7 +339,7 @@ Lp_2E18_0206:
         db 0x8B, 0xF0                           ; insn: mov si, ax
 .7:
         db 0x0B, 0xF6                           ; insn: or si, si
-        db 0x75, 0x13                           ; insn: jnz 0x2e7
+        jnz short SegStart_10019 + 0x2E0
         push 0x6
         push -0x1
         push -0x1

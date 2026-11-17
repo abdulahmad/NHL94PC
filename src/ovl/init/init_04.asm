@@ -106,11 +106,11 @@ DrawPeriodTitle:
         add sp, 0x4
         cmp byte [bp + 0x8], 0x0
         jnz short .8
-        db 0xE9, 0x84, 0x00                     ; insn: jmp 0x1c4
+        jmp near SegStart_02054 + 0x1C0
 .8:
         db 0x8B, 0xC7                           ; insn: mov ax, di
         test al, 0x3
-        db 0x74, 0x7E                           ; insn: jz 0x1c4
+        jz short SegStart_02054 + 0x1C0
         mov al, [bp + 0x8]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         dec ax

@@ -707,7 +707,7 @@ StartHL2:
         mov word [g_29CE], 0xffff
         call 0x2C24:joyq_flush
         cmp word [g_4B02], 0x0
-        db 0x74, 0x0E                           ; insn: jz 0x8e0
+        jz short SegStart_009C2 + 0x8E0
         mov word [g_4B02], 0x0
         mov ax, 0xffff
         pop si

@@ -1065,9 +1065,9 @@ ReplayIsEmpty:
         mov ax, [g_D014]
         mov dx, [g_D016]
         cmp [g_2986], ax
-        db 0x75, 0x11                           ; insn: jnz 0xab2
+        jnz short ReturnZeroFar + 0xAB0
         cmp [g_2988], dx
-        db 0x75, 0x0B                           ; insn: jnz 0xab2
+        jnz short ReturnZeroFar + 0xAB0
         test byte [g_29BC], 0x10
-        db 0x75, 0x04                           ; insn: jnz 0xab2
+        jnz short ReturnZeroFar + 0xAB0
         mov ax, 0x1

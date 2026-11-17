@@ -4,7 +4,7 @@
 SegStart_05E55:
         sub si, 0x4
         dec di
-        db 0x79, 0xDF                           ; insn: jns 0xffea
+        jns short FreePlayerFrames.1 - 0x150
         pop si
         pop di
         retf

@@ -80,7 +80,7 @@ PlanarToLinearKey:
         inc word [bp - 0x2]
 .5:
         cmp word [bp - 0x2], 0x4
-        db 0x73, 0x19                           ; insn: jnc 0xe4
+        jnc short PlanarToLinearKeyTail.1 + 0xE0
         mov ax, [bp + 0x6]
         mov dx, [bp + 0x8]
         add ax, [bp - 0x2]

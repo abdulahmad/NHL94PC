@@ -491,7 +491,7 @@ Lp_1ECB_0332:
 .9:
         db 0x0B, 0xFF                           ; insn: or di, di
         jz short .10
-        db 0xE9, 0x7B, 0x01                     ; insn: jmp 0x665
+        jmp near SegStart_00EC9 + 0x660
 .10:
         mov bx, 0xac5c
         mov es, [g_8B84]
@@ -538,12 +538,12 @@ Lp_1ECB_0332:
         add sp, 0x18
         cmp word [bp - 0x8], 0x0
         jnl short .12
-        db 0xE9, 0xF2, 0x00                     ; insn: jmp 0x665
+        jmp near SegStart_00EC9 + 0x660
 .12:
         les bx, [bp - 0x46]
         cmp [es:bx], si
         jnz short .13
-        db 0xE9, 0xE7, 0x00                     ; insn: jmp 0x665
+        jmp near SegStart_00EC9 + 0x660
 .13:
         push word 0x3a0b
         push strict word f_3A0B_AF3E

@@ -1717,7 +1717,7 @@ Menus_1E45_0FD2:
 .6:
         mov [g_01BA], ax
         mov word [g_01BE], 0x10
-        db 0xEB, 0x68                           ; insn: jmp short 0x10a6
+        jmp short SegStart_010A0.1 + 0x10A0
         db 0x90, 0x90
 .7:
         mov dx, [bp + 0x8]
@@ -1732,13 +1732,13 @@ Menus_1E45_0FD2:
 .9:
         mov [g_01C2], ax
         cmp word [g_01BE], 0x10
-        db 0x75, 0x49                           ; insn: jnz 0x10a6
+        jnz short SegStart_010A0.1 + 0x10A0
         test byte [InputFlags], 0x2
         jz short .10
         cmp word [g_01BC], 0x2
         jz short .10
         mov word [g_01BE], 0x2
-        db 0xEB, 0x33                           ; insn: jmp short 0x10a6
+        jmp short SegStart_010A0.1 + 0x10A0
         db 0x90
 .10:
         test byte [InputFlags], 0x4
@@ -1746,11 +1746,11 @@ Menus_1E45_0FD2:
         cmp word [g_01BC], 0x4
         jz short .11
         mov word [g_01BE], 0x4
-        db 0xEB, 0x1C                           ; insn: jmp short 0x10a6
+        jmp short SegStart_010A0.1 + 0x10A0
 .11:
         test byte [InputFlags], 0x8
-        db 0x74, 0x0F                           ; insn: jz 0x10a0
+        jz short SegStart_010A0 + 0x10A0
         cmp word [g_01BC], 0x8
-        db 0x74, 0x08                           ; insn: jz 0x10a0
+        jz short SegStart_010A0 + 0x10A0
         mov word [g_01BE], 0x8
-        db 0xEB, 0x06                           ; insn: jmp short 0x10a6
+        jmp short SegStart_010A0.1 + 0x10A0

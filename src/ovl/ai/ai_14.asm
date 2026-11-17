@@ -2,7 +2,7 @@
         add sp, 0x2
         push word 0xb438
         push cs
-        db 0xE8, 0x98, 0xD6                     ; insn: call 0xd6a2
+        call forcepldata - 0x2F40
         add sp, 0x2
         retf
 
@@ -456,4 +456,4 @@ DrawRinkObjects:
 .12:
         sub si, 0xe
         dec di
-        db 0x78, 0x03                           ; insn: js 0x443
+        js short SegStart_11DE3 + 0x440

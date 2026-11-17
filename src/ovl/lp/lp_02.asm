@@ -184,5 +184,5 @@ Lp_1EAE_000A:
 .28:
         mov al, [bp + 0x6]
         cmp [es:si + 0x27], al
-        db 0x75, 0x05                           ; insn: jnz 0x1d2
+        jnz short SegStart_00864 + 0x1D0
         mov byte [es:si + 0x27], 0x64

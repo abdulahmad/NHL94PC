@@ -54,7 +54,7 @@ updatereplay:
         push si
         test byte [g_29BB], 0x10
         jz short .1
-        db 0xE9, 0x3A, 0x02                     ; insn: jmp 0x2aa
+        jmp near SegStart_00C61.1 + 0x2A0
 .1:
         inc word [g_547E]
         cmp word [g_547E], 0x2
@@ -238,7 +238,7 @@ updatereplay:
         mov ax, [g_2986]
         sub ax, 0x6a00
         cmp ax, [g_D014]
-        db 0x77, 0x30                           ; insn: ja 0x2aa
+        ja short SegStart_00C61.1 + 0x2A0
         or byte [g_29BC], 0x10
         mov ax, [g_2986]
         mov dx, [g_2988]
@@ -253,6 +253,6 @@ updatereplay:
         test byte [g_29BE], 0x4
         jz short .14
         mov ax, 0xffff
-        db 0xEB, 0x03                           ; insn: jmp short 0x2a1
+        jmp short SegStart_00C61 + 0x2A0
 .14:
         mov ax, [lastsfx]

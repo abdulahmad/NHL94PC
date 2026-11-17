@@ -1123,11 +1123,11 @@ DrawReplayFrame:
 .83:
         mov word [bp - 0x1e], 0xe
         cmp word [g_DB6C], 0xfef8
-        db 0x7D, 0x35                           ; insn: jnl 0xba2
+        jnl short SegStart_07F02 + 0xBA0
         cmp byte [g_DBC4], 0xff
-        db 0x75, 0x2E                           ; insn: jnz 0xba2
+        jnz short SegStart_07F02 + 0xBA0
         cmp word [g_DBBE], 0x0
-        db 0x7C, 0x27                           ; insn: jl 0xba2
+        jl short SegStart_07F02 + 0xBA0
         push 0x0
         push 0x0
         mov ax, [g_DBBE]

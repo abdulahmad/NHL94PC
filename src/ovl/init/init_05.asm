@@ -2029,5 +2029,5 @@ ShowGameSummary:
         add sp, 0x4
         mov word [bp - 0xa0], 0x0
         cmp word [bp - 0x15a], 0x3
-        db 0x75, 0x06                           ; insn: jnz 0x1651
+        jnz short SegStart_036A2 + 0x1650
         mov word [bp - 0xa0], 0x4

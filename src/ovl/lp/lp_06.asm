@@ -414,7 +414,7 @@ Lp_20F8_0394:
         add sp, 0x16
         db 0x8B, 0xF0                           ; insn: mov si, ax
         cmp si, 0x4
-        db 0x74, 0x15                           ; insn: jz 0x417
+        jz short SegStart_02F48 + 0x410
         push word [bp + 0xe]
         push word [bp + 0xc]
         push word [bp + 0xa]
