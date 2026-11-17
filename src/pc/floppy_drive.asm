@@ -62,7 +62,7 @@ SelectFloppyDrive:
 .6:
         mov al, [bp - 0x6]
         add al, 0x41
-        mov es, [g_8B9C]
+        mov es, [segTeamChoiceText9]
         mov [es:0xbfa], al
         push word 0x3701
         push strict word str_Id
@@ -207,7 +207,7 @@ SelectFloppyDrive:
         and al, 0x1
 .13:
         add al, 0x41
-        mov es, [g_8B9C]
+        mov es, [segTeamChoiceText9]
         mov [es:0xbfa], al
 .14:
         mov ax, [bp - 0x4]
@@ -256,7 +256,7 @@ FindLeagueFloppy:
 .4:
         mov al, [bp - 0x2]
         add al, 0x41
-        mov es, [g_8B9C]
+        mov es, [segTeamChoiceText9]
         mov [es:0xbfa], al
         push word 0x3701
         push strict word str_Id
@@ -345,7 +345,7 @@ FindLeagueFloppy:
         call 0x2305:FmtFromLeague
         add sp, 0xc
         lea ax, [bp - 0x8c]
-        mov es, [g_8B9E]
+        mov es, [segTeamChoiceText10]
         mov [es:0x196], ax
         mov [es:0x198], ss
         lea ax, [bp - 0x6]
@@ -407,7 +407,7 @@ WaitLeagueFloppy:
         call 0x2305:FmtFromLeague
         add sp, 0xc
         lea ax, [bp - 0x46]
-        mov es, [g_8BA0]
+        mov es, [segTeamChoiceText11]
         mov [es:0x19e], ax
         mov [es:0x1a0], ss
         lea ax, [bp - 0x2]

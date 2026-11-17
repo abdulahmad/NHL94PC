@@ -17,7 +17,7 @@ FadeRandomBlocks:
         mov [bp - 0x4], al
         mov [bp - 0x3], al
         call 0x0FEF:UseCurrentPage
-        mov es, [g_8CFA]
+        mov es, [segDgroup21]
         mov ax, [es:0x74fc]
         mov [g_DF6A], ax
         mov ax, [es:0x74fe]
@@ -104,7 +104,7 @@ FadeRandomBlocks2:
         push di
         push si
         call 0x0FEF:UseCurrentPage
-        mov es, [g_8CFA]
+        mov es, [segDgroup21]
         mov ax, [es:0x74fc]
         mov [g_DF6A], ax
         mov ax, [es:0x74fe]

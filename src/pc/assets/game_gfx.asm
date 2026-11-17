@@ -64,7 +64,7 @@ LoadPPVFiles:
         enter 0xe, 0x0
         push di
         push si
-        mov ax, [g_4A58]
+        mov ax, [photobankf_w2]
         or ax, [photobankf]
         jz short .1
         jmp near .6
@@ -135,7 +135,7 @@ LoadPPVFiles:
         idiv cx
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, byte 0x2
-        push word [bx + g_4A58]
+        push word [bx + photobankf_w2]
         push word [bx + photobankf]
         call 0x03A3:FindFarMsg
         add sp, 0x6
@@ -271,7 +271,7 @@ LoadGameGfx:
         call 0x0FEF:SetStartPage
         add sp, 0x2
         mov bx, 0x7570
-        mov es, [g_8C8C]
+        mov es, [segDgroup8]
         mov [bp - 0x1c], bx
         mov [bp - 0x1a], es
         mov ax, [es:bx + 0x2]
@@ -300,7 +300,7 @@ LoadGameGfx:
         call 0x0FEF:ClearClipRect
         add sp, 0x2
         call 0x0FEF:UseCurrentPage
-        mov word [g_08FC], 0x52
+        mov word [PlayoffDlgY], 0x52
         call 0x28FA:LoadReplayGadgets
         push word 0x3701
         push strict word str_Qpp
@@ -357,21 +357,21 @@ LoadGameGfx:
         call LoadPlayerFrames
         call 0x0D6B:HookDivideError
         push word 0x3a0b
-        push strict word f_3A0B_B352
+        push strict word GamePalette
         push word 0x100
         push 0x0
         call 0x0FEF:GetPaletteFar
         add sp, 0x8
         push 0x10
         push word 0x3a0b
-        push strict word f_3A0B_B352
+        push strict word GamePalette
         push 0x1
         call 0x1E7E:FadePalette
         add sp, 0x8
         mov ax, 0x1
         mov [fadeinpending], ax
-        mov [g_4B22], ax
-        mov [g_4B20], ax
+        mov [DeskRedrawPage2], ax
+        mov [DeskRedrawPage], ax
         pop si
         pop di
         leave
@@ -540,8 +540,8 @@ SetupGame:
         call ResetGameVars
         push 0x1
         push 0x1
-        push word [g_29CC]
-        push word [g_29CA]
+        push word [VisTeamNum]
+        push word [HomeTeamNum]
         call 0x1B35:DrawHudPanelThunk
         add sp, 0x8
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -570,14 +570,14 @@ SetupGame:
         db 0x0B, 0xF6                           ; insn: or si, si
         jz short .3
         push word 0x3a0b
-        push strict word f_3A0B_B352
+        push strict word GamePalette
         push word 0x100
         push 0x0
         call 0x0FEF:GetPaletteFar
         add sp, 0x8
         push 0x10
         push word 0x3a0b
-        push strict word f_3A0B_B352
+        push strict word GamePalette
         push 0x1
         call 0x1E7E:FadePalette
         add sp, 0x8
@@ -613,7 +613,7 @@ ResetGameVars:
         mov [curevent], al
         mov [goalevent], al
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_4A24], ax
+        mov [goalienotebits], ax
         mov [threat], ax
         mov [passplayer], ax
         mov [passspeed], ax
@@ -627,9 +627,9 @@ ResetGameVars:
         mov [lcblinktime], ax
         mov [lcblink], ax
         mov [energywarn], ax
-        mov [g_48CE], ax
-        mov [g_48CC], ax
-        mov [g_48CA], ax
+        mov [lcsel], ax
+        mov [lcrequestteam], ax
+        mov [energywarnteam], ax
         mov [lctimer], ax
         mov [lcline], ax
         mov [g_D46E], ax
@@ -655,14 +655,14 @@ ResetGameVars:
         mov [textline3], al
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [lcline], ax
-        mov [g_48E4], ax
+        mov [hudredraw], ax
         mov [lcboxon], ax
-        mov [g_48E0], ax
-        mov [g_48DE], ax
-        mov [g_48DC], ax
-        mov [g_48DA], ax
-        mov [g_48D8], ax
-        mov [g_48D6], ax
+        mov [lcstate2], ax
+        mov [lctime], ax
+        mov [lcactive], ax
+        mov [lcgroup], ax
+        mov [lcstate], ax
+        mov [lcchoice], ax
         mov [g_D610], ax
         mov [g_D60E], ax
         mov [bannertimer], ax

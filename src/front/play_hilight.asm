@@ -28,37 +28,37 @@ PlayHilight:
         push si
         mov ax, 0x3a0b
         mov es, ax
-        mov al, [es:f_3A0B_0D8E]
+        mov al, [es:hilightrec]
         mov [g_E366], al
-        mov al, [es:f_3A0B_0D8F]
+        mov al, [es:hilightrec_b1]
         mov [g_E367], al
-        mov al, [es:f_3A0B_0D90]
+        mov al, [es:hilightrec_b2]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
-        mov [g_29CA], ax
-        mov al, [es:f_3A0B_0DAD]
-        mov [g_29CC], ax
-        mov ax, [es:f_3A0B_0DCA]
+        mov [HomeTeamNum], ax
+        mov al, [es:hilightrec_b1F]
+        mov [VisTeamNum], ax
+        mov ax, [es:hilightrec_w3C]
         mov [curperiod], ax
-        mov ax, [es:f_3A0B_0DCC]
+        mov ax, [es:hilightrec_w3E]
         mov [hudclockmin], ax
-        mov ax, [es:f_3A0B_0DCE]
+        mov ax, [es:hilightrec_w40]
         mov [hudclocksec], ax
-        mov ax, [es:f_3A0B_0DD0]
+        mov ax, [es:hilightrec_w42]
         mov [hudclockhund], ax
-        mov ax, [es:f_3A0B_0DD2]
+        mov ax, [es:hilightrec_w44]
         mov [sflags], ax
-        mov ax, [es:f_3A0B_0DD4]
-        mov dx, [es:f_3A0B_0DD6]
-        add ax, [g_2986]
-        adc dx, [g_2988]
+        mov ax, [es:hilightrec_w46]
+        mov dx, [es:hilightrec_frames]
+        add ax, [replayptr]
+        adc dx, [replayseg]
         mov [g_D014], ax
         mov [g_D016], dx
         db 0x2B, 0xFF                           ; insn: sub di, di
         mov si, 0xa556
 .1:
-        mov al, [es:di + f_3A0B_0D91]
+        mov al, [es:di + hilightrec_home]
         mov [si], al
-        mov al, [es:di + f_3A0B_0DAE]
+        mov al, [es:di + hilightrec_away]
         mov [si + 0x460], al
         inc di
         add si, 0x28
@@ -79,17 +79,17 @@ PlayHilight:
         call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         push word 0x3a0b
-        push strict word f_3A0B_0A8E
-        push word [g_29CC]
-        push word [g_29CA]
+        push strict word TeamPalette768
+        push word [VisTeamNum]
+        push word [HomeTeamNum]
         call 0x1E64:LoadTeamPalette
         add sp, 0x8
-        cmp word [g_29CA], 0x18
+        cmp word [HomeTeamNum], 0x18
         jl short .2
         mov cx, 0x9
         jmp short .3
 .2:
-        mov cx, [g_29CA]
+        mov cx, [HomeTeamNum]
 .3:
         push cx
         call 0x1B35:LoadRinkTilesThunk
@@ -135,13 +135,13 @@ PlayHilight:
         push word [g_DACE]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        push word [g_0900]
-        push word [g_08FE]
+        push word [RinkTilesSeg]
+        push word [RinkTilesPtr]
         call 0x06E1:FindUnlink
         add sp, 0x4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_0900], ax
-        mov [g_08FE], ax
+        mov [RinkTilesSeg], ax
+        mov [RinkTilesPtr], ax
         mov ax, 0xd
         mov dx, 0x3d4
         out dx, al
@@ -158,7 +158,7 @@ PlayHilight:
         call 0x0FEF:SetStartPage
         add sp, 0x2
         mov bx, 0x7570
-        mov es, [g_8CD6]
+        mov es, [segDgroup10]
         mov [bp - 0x304], bx
         mov [bp - 0x302], es
         mov ax, [es:bx + 0x2]

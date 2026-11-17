@@ -86,7 +86,7 @@ lineinput:
         jz short .2
         db 0x8B, 0xDE                           ; insn: mov bx, si
         shl bx, 1
-        mov ax, [bx + g_48D6]
+        mov ax, [bx + lcchoice]
         mov [regd2], ax
         push di
         mov [bp - 0x2], bx
@@ -95,7 +95,7 @@ lineinput:
         add sp, 0x2
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov bx, [bp - 0x2]
-        mov [bx + g_48CE], ax
+        mov [bx + lcsel], ax
         mov [bx + lcboxon], ax
         pop si
         pop di
@@ -106,36 +106,36 @@ lineinput:
         db 0x8B, 0xDE                           ; insn: mov bx, si
         shl bx, 1
         mov [bp - 0x4], bx
-        mov ax, [bx + g_48DE]
-        dec word [bx + g_48DE]
+        mov ax, [bx + lctime]
+        dec word [bx + lctime]
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .5
         mov bx, [bp - 0x4]
-        add word [bx + g_48DE], 0x3c
-        cmp word [bx + g_48DA], 0x3
+        add word [bx + lctime], 0x3c
+        cmp word [bx + lcgroup], 0x3
         jng short .3
         mov bx, [bp - 0x4]
-        mov ax, [bx + g_48D6]
+        mov ax, [bx + lcchoice]
         inc ax
         mov cx, 0x2
         jmp short .4
         db 0x90
 .3:
         mov bx, [bp - 0x4]
-        mov ax, [bx + g_48D6]
+        mov ax, [bx + lcchoice]
         inc ax
         mov cx, 0x4
 .4:
         cwd
         idiv cx
-        mov [bx + g_48D6], dx
+        mov [bx + lcchoice], dx
         mov bx, [bp - 0x4]
-        mov bx, [bx + g_48DA]
+        mov bx, [bx + lcgroup]
         shl bx, 1
         mov ax, [bx + g_5AF6]
         mov bx, [bp - 0x4]
-        mov [bx + g_48DA], ax
-        mov word [bx + g_48CE], 0x1
+        mov [bx + lcgroup], ax
+        mov word [bx + lcsel], 0x1
         mov word [bx + lcblink], 0xc
 .5:
         mov bx, [bp - 0x4]
@@ -145,10 +145,10 @@ lineinput:
         jnz short .6
         mov bx, [bp - 0x4]
         add word [bx + lcblink], 0xc
-        cmp word [bx + g_48CE], 0x1
+        cmp word [bx + lcsel], 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         neg ax
-        mov [bx + g_48CE], ax
+        mov [bx + lcsel], ax
 .6:
         test byte [di + 0x44], 0x8
         jz short .7
@@ -420,7 +420,7 @@ doinput:
         jz short .3
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov bx, [bp - 0x2]
-        mov [bx + g_48CE], ax
+        mov [bx + lcsel], ax
         mov [bx + lcboxon], ax
 .3:
         shl di, 1

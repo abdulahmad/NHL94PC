@@ -39,19 +39,19 @@ AddHumanTeam:
         db 0x0B, 0xFF                           ; insn: or di, di
         jnz short .2
         push word 0x3a0b
-        push strict word f_3A0B_AF3E
+        push strict word leagueinfo_tail
         push word 0x3a0b
-        push strict word f_3A0B_AC60
+        push strict word leagueinfo_w6
         push word 0x3a0b
-        push strict word f_3A0B_AC5E
+        push strict word leagueinfo_w4
         push word 0x3a0b
-        push strict word f_3A0B_AC5C
+        push strict word leagueinfo_w2
         push word 0x3a0b
-        push strict word f_3A0B_AC5A
+        push strict word leagueinfo
         push word 0x3a0b
-        push strict word f_3A0B_AF32
+        push strict word leagueinfo_password
         push word 0x3a0b
-        push strict word f_3A0B_AC62
+        push strict word leagueinfo_teams
         push word [bp - 0x3c]
         push word [bp - 0x3e]
         call 0x22D3:ReadLeagueInfo
@@ -70,7 +70,7 @@ AddHumanTeam:
         call 0x0000:_fstrcpy
         add sp, 0x8
         push word 0x3701
-        push strict word f_3701_0BF4
+        push strict word str_Dot
         lea ax, [bp - 0x1a]
         push ss
         push ax
@@ -95,13 +95,13 @@ AddHumanTeam:
         push 0xb
         call 0x0D90:SetDialogColors
         add sp, 0xa
-        mov es, [g_8B7C]
+        mov es, [segWorkBuffer3]
         cmp word [es:0xac60], 0x0
         jnz short .4
         jmp near .14
 .4:
         lea ax, [bp - 0x1a]
-        mov es, [g_8B7E]
+        mov es, [segTeamChoiceText2]
         mov [es:0xb36], ax
         mov [es:0xb38], ss
         push -0x1
@@ -195,7 +195,7 @@ AddHumanTeam:
         jmp near .18
 .10:
         mov bx, 0xac5c
-        mov es, [g_8B84]
+        mov es, [segWorkBuffer5]
         mov [bp - 0x46], bx
         mov [bp - 0x44], es
         cmp word [es:bx], 0x18
@@ -205,7 +205,7 @@ AddHumanTeam:
         mov si, [es:bx]
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8B86]
+        mov es, [segTeamChoiceText4]
         push word [es:0xb7e]
         push word [es:0xb7c]
         push word [bp - 0x3c]
@@ -217,7 +217,7 @@ AddHumanTeam:
         add sp, 0x10
         push 0x1
         push word 0x3a0b
-        push strict word f_3A0B_AA38
+        push strict word LeagueTeamNames
         lea ax, [bp - 0x3a]
         push ax
         call 0x22D3:ReadTeamNames
@@ -228,9 +228,9 @@ AddHumanTeam:
         push strict word str_SelectNewHumanControlled
         push 0x2
         push word 0x3a0b
-        push strict word f_3A0B_AC62
+        push strict word leagueinfo_teams
         push word 0x3a0b
-        push strict word f_3A0B_AA38
+        push strict word LeagueTeamNames
         push word [bp - 0x44]
         push word [bp - 0x46]
         push word [bp - 0x3c]
@@ -247,19 +247,19 @@ AddHumanTeam:
         jmp near .18
 .13:
         push word 0x3a0b
-        push strict word f_3A0B_AF3E
-        mov es, [g_8B7C]
+        push strict word leagueinfo_tail
+        mov es, [segWorkBuffer3]
         push word [es:0xac60]
-        mov es, [g_8B80]
+        mov es, [segWorkBuffer4]
         push word [es:0xac5e]
         mov es, [bp - 0x44]
         push word [es:bx]
-        mov es, [g_8B88]
+        mov es, [segWorkBuffer6]
         push word [es:0xac5a]
         push word 0x3a0b
-        push strict word f_3A0B_AF32
+        push strict word leagueinfo_password
         push word 0x3a0b
-        push strict word f_3A0B_AC62
+        push strict word leagueinfo_teams
         push word [bp - 0x3c]
         push word [bp - 0x3e]
         call 0x2305:WriteLeagueInfo
@@ -270,13 +270,13 @@ AddHumanTeam:
         retf
         db 0x90
 .14:
-        mov es, [g_8B80]
+        mov es, [segWorkBuffer4]
         test byte [es:0xac5e], 0x4
         jz short .15
         jmp near .6
 .15:
         lea ax, [bp - 0x1a]
-        mov es, [g_8B82]
+        mov es, [segTeamChoiceText3]
         mov [es:0x8b3], ax
         mov [es:0x8b5], ss
         push -0x1
@@ -286,7 +286,7 @@ AddHumanTeam:
         push ax
         push 0x2
         push word 0x3701
-        push strict word f_3701_0913
+        push strict word dlgMergeFirst
         push 0x4
         push es
         push word 0x8af
@@ -359,19 +359,19 @@ RemoveHumanTeam:
         db 0x0B, 0xFF                           ; insn: or di, di
         jnz short .2
         push word 0x3a0b
-        push strict word f_3A0B_AF3E
+        push strict word leagueinfo_tail
         push word 0x3a0b
-        push strict word f_3A0B_AC60
+        push strict word leagueinfo_w6
         push word 0x3a0b
-        push strict word f_3A0B_AC5E
+        push strict word leagueinfo_w4
         push word 0x3a0b
-        push strict word f_3A0B_AC5C
+        push strict word leagueinfo_w2
         push word 0x3a0b
-        push strict word f_3A0B_AC5A
+        push strict word leagueinfo
         push word 0x3a0b
-        push strict word f_3A0B_AF32
+        push strict word leagueinfo_password
         push word 0x3a0b
-        push strict word f_3A0B_AC62
+        push strict word leagueinfo_teams
         push word [bp - 0x3c]
         push word [bp - 0x3e]
         call 0x22D3:ReadLeagueInfo
@@ -390,7 +390,7 @@ RemoveHumanTeam:
         call 0x0000:_fstrcpy
         add sp, 0x8
         push word 0x3701
-        push strict word f_3701_0BF4
+        push strict word str_Dot
         lea ax, [bp - 0x1a]
         push ss
         push ax
@@ -415,13 +415,13 @@ RemoveHumanTeam:
         push 0xb
         call 0x0D90:SetDialogColors
         add sp, 0xa
-        mov es, [g_8B7C]
+        mov es, [segWorkBuffer3]
         cmp word [es:0xac60], 0x0
         jnz short .4
         jmp near .14
 .4:
         lea ax, [bp - 0x1a]
-        mov es, [g_8B7E]
+        mov es, [segTeamChoiceText2]
         mov [es:0xb36], ax
         mov [es:0xb38], ss
         push -0x1
@@ -515,7 +515,7 @@ RemoveHumanTeam:
         jmp near RemoveHumanTeamTail + 0x660
 .10:
         mov bx, 0xac5c
-        mov es, [g_8B84]
+        mov es, [segWorkBuffer5]
         mov [bp - 0x46], bx
         mov [bp - 0x44], es
         cmp word [es:bx], 0x1
@@ -525,7 +525,7 @@ RemoveHumanTeam:
         mov si, [es:bx]
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8B86]
+        mov es, [segTeamChoiceText4]
         push word [es:0xb7e]
         push word [es:0xb7c]
         push word [bp - 0x3c]
@@ -537,7 +537,7 @@ RemoveHumanTeam:
         add sp, 0x10
         push 0x1
         push word 0x3a0b
-        push strict word f_3A0B_AA38
+        push strict word LeagueTeamNames
         lea ax, [bp - 0x3a]
         push ax
         call 0x22D3:ReadTeamNames
@@ -548,9 +548,9 @@ RemoveHumanTeam:
         push strict word str_SelectHumanControlledTeam
         push 0x4
         push word 0x3a0b
-        push strict word f_3A0B_AC62
+        push strict word leagueinfo_teams
         push word 0x3a0b
-        push strict word f_3A0B_AA38
+        push strict word LeagueTeamNames
         push word [bp - 0x44]
         push word [bp - 0x46]
         push word [bp - 0x3c]
@@ -567,19 +567,19 @@ RemoveHumanTeam:
         jmp near RemoveHumanTeamTail + 0x660
 .13:
         push word 0x3a0b
-        push strict word f_3A0B_AF3E
-        mov es, [g_8B7C]
+        push strict word leagueinfo_tail
+        mov es, [segWorkBuffer3]
         push word [es:0xac60]
-        mov es, [g_8B80]
+        mov es, [segWorkBuffer4]
         push word [es:0xac5e]
         mov es, [bp - 0x44]
         push word [es:bx]
-        mov es, [g_8B88]
+        mov es, [segWorkBuffer6]
         push word [es:0xac5a]
         push word 0x3a0b
-        push strict word f_3A0B_AF32
+        push strict word leagueinfo_password
         push word 0x3a0b
-        push strict word f_3A0B_AC62
+        push strict word leagueinfo_teams
         push word [bp - 0x3c]
         push word [bp - 0x3e]
         call 0x2305:WriteLeagueInfo
@@ -590,13 +590,13 @@ RemoveHumanTeam:
         retf
         db 0x90
 .14:
-        mov es, [g_8B80]
+        mov es, [segWorkBuffer4]
         test byte [es:0xac5e], 0x4
         jz short .15
         jmp near .6
 .15:
         lea ax, [bp - 0x1a]
-        mov es, [g_8B82]
+        mov es, [segTeamChoiceText3]
         mov [es:0x8b3], ax
         mov [es:0x8b5], ss
         push -0x1
@@ -606,7 +606,7 @@ RemoveHumanTeam:
         push ax
         push 0x2
         push word 0x3701
-        push strict word f_3701_0913
+        push strict word dlgMergeFirst
         push 0x4
         push es
         push word 0x8af

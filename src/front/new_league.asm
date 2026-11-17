@@ -44,7 +44,7 @@ CreateNewLeague:
         push ax
         call 0x0000:_fmemset
         add sp, 0x8
-        mov es, [g_8BF6]
+        mov es, [segWorkBuffer26]
         imul bx, [bp - 0x8], 0x1e
         mov byte [es:bx - 0x5388], 0x1
         mov byte [es:bx - 0x5387], 0x0
@@ -120,7 +120,7 @@ CreateNewLeague:
         push ax
         push 0x2
         push word 0x3701
-        push strict word f_3701_02A0
+        push strict word dlgReplaceLeague
         push 0x2
         push word 0x3701
         push strict word msgThereIsAlreadyALeague
@@ -149,7 +149,7 @@ CreateNewLeague:
         push ax
         push 0x2
         push word 0x3701
-        push strict word f_3701_0303
+        push strict word dlgWhichSchedule
         push 0x1
         push word 0x3701
         push strict word msgWhichScheduleDoYouWant
@@ -188,7 +188,7 @@ CreateNewLeague:
 .10:
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8BF8]
+        mov es, [segTeamChoiceText36]
         push word [es:0xb7e]
         push word [es:0xb7c]
         push si
@@ -200,7 +200,7 @@ CreateNewLeague:
         add sp, 0x10
         push 0x1
         push word 0x3a0b
-        push strict word f_3A0B_AA38
+        push strict word LeagueTeamNames
         lea ax, [bp - 0x3c]
         push ax
         call 0x22D3:ReadTeamNames
@@ -222,9 +222,9 @@ CreateNewLeague:
         push dx
         push cx
         push word 0x3a0b
-        push strict word f_3A0B_AA38
+        push strict word LeagueTeamNames
         push word 0x3a0b
-        push strict word f_3A0B_AC5C
+        push strict word leagueinfo_w2
         push word [bp - 0x6a]
         push word [bp - 0x6c]
         call 0x1F31:LeagueTeamSelect
@@ -254,17 +254,17 @@ CreateNewLeague:
         call 0x0D90:MessageBox
         add sp, 0x16
         push word 0x3a0b
-        push strict word f_3A0B_AF3E
-        mov es, [g_8BFA]
+        push strict word leagueinfo_tail
+        mov es, [segWorkBuffer27]
         push word [es:0xac60]
-        mov es, [g_8BFC]
+        mov es, [segWorkBuffer28]
         push word [es:0xac5e]
-        mov es, [g_8BFE]
+        mov es, [segWorkBuffer29]
         push word [es:0xac5c]
-        mov es, [g_8C00]
+        mov es, [segWorkBuffer30]
         push word [es:0xac5a]
         push word 0x3a0b
-        push strict word f_3A0B_AF32
+        push strict word leagueinfo_password
         push word [bp - 0x6e]
         push word [bp - 0x70]
         push word [bp - 0x6a]
@@ -284,7 +284,7 @@ CreateNewLeague:
         push strict word str_Db_2
         push word [YesNoTextSeg]
         push word [YesNoText]
-        mov es, [g_8BF8]
+        mov es, [segTeamChoiceText36]
         mov bx, [bp - 0x8]
         shl bx, byte 0x2
         push word [es:bx + 0xb6e]
@@ -352,7 +352,7 @@ CreateNewLeague:
         call 0x0D90:MessageBox
         add sp, 0x16
 .18:
-        mov es, [g_8C02]
+        mov es, [segDbFiles14]
         mov byte [es:0xc6], 0x0
         lea ax, [bp - 0x1c]
         push ax

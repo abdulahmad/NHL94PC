@@ -249,7 +249,7 @@ GameLineEditorLoop:
         mov [bp - 0x2e], ax
         mov [bp - 0x30], ax
         mov [bp - 0x32], ax
-        mov es, [g_8B2C]
+        mov es, [segMenuText3]
         mov [es:0x1474], ax
         mov [es:0x1472], ax
         mov [es:0x145e], ax
@@ -321,51 +321,51 @@ GameLineEditorLoop:
         add sp, 0x4
         cmp byte [bp + 0xc], 0x0
         jz short .1
-        cmp word [g_29CC], 0x19
+        cmp word [VisTeamNum], 0x19
         jnz short .2
-        mov word [g_29CC], 0x18
+        mov word [VisTeamNum], 0x18
         jmp short .2
         db 0x90
 .1:
-        cmp word [g_29CA], 0x18
+        cmp word [HomeTeamNum], 0x18
         jnz short .2
-        mov word [g_29CC], 0x19
+        mov word [VisTeamNum], 0x19
 .2:
         cmp byte [bp + 0xc], 0x0
         jz short .3
-        mov al, [g_29CC]
+        mov al, [VisTeamNum]
         jmp short .4
 .3:
-        mov al, [g_29CA]
+        mov al, [HomeTeamNum]
 .4:
         add al, 0x40
         mov [bp - 0x8c], al
         cmp byte [bp + 0xc], 0x0
         jz short .5
-        mov al, [g_29CC]
+        mov al, [VisTeamNum]
         jmp short .6
 .5:
-        mov al, [g_29CA]
+        mov al, [HomeTeamNum]
 .6:
         add al, 0x60
         mov [bp - 0x3a], al
-        mov es, [g_8B2E]
+        mov es, [segMenuText4]
         mov word [es:0x15bc], strict word WriteTeamLines2
         mov word [es:0x15be], 0x2047
         mov ax, strict word MenuUseTheseLinesThunk
         mov dx, 0x1b35
-        mov es, [g_8B30]
+        mov es, [segMenuText5]
         mov [es:0x1538], ax
         mov [es:0x153a], dx
-        mov es, [g_8B32]
+        mov es, [segMenuText6]
         mov [es:0x1404], ax
         mov [es:0x1406], dx
         mov ax, strict word WriteTeamLinesThunk
         mov dx, 0x1b35
-        mov es, [g_8B30]
+        mov es, [segMenuText5]
         mov [es:0x157a], ax
         mov [es:0x157c], dx
-        mov es, [g_8B32]
+        mov es, [segMenuText6]
         mov [es:0x1446], ax
         mov [es:0x1448], dx
         mov word [bp - 0x8a], 0x0
@@ -379,20 +379,20 @@ GameLineEditorLoop:
         mov si, [bp + 0x6]
         cmp byte [bx + si], 0x64
         jnz short .7
-        mov es, [g_8B2E]
+        mov es, [segMenuText4]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [es:0x15be], ax
         mov [es:0x15bc], ax
-        mov es, [g_8B30]
+        mov es, [segMenuText5]
         mov [es:0x153a], ax
         mov [es:0x1538], ax
-        mov es, [g_8B32]
+        mov es, [segMenuText6]
         mov [es:0x1406], ax
         mov [es:0x1404], ax
-        mov es, [g_8B30]
+        mov es, [segMenuText5]
         mov [es:0x157c], ax
         mov [es:0x157a], ax
-        mov es, [g_8B32]
+        mov es, [segMenuText6]
         mov [es:0x1448], ax
         mov [es:0x1446], ax
 .9:
@@ -682,11 +682,11 @@ GameLineEditorLoop:
         mov al, [bx + gmrosterjersey]
         push ax
         push word 0x3680
-        push strict word f_3680_0000
+        push strict word JerseyRemapTable
         call 0x2397:MakeJerseyShape
         add sp, 0xa
         push word 0x3680
-        push strict word f_3680_0000
+        push strict word JerseyRemapTable
         call 0x0FEF:SetRemapTable
         add sp, 0x4
         mov ax, [bp - 0x1e]
@@ -1348,7 +1348,7 @@ GameLineEditorLoop:
         jmp short .91
 .88:
         mov word [bp - 0xa8], 0x0
-        mov es, [g_8B34]
+        mov es, [segCharTable1]
 .89:
         mov al, [bp - 0x3a]
         mov bx, [bp - 0xa8]
@@ -1358,10 +1358,10 @@ GameLineEditorLoop:
         jl short .89
 .90:
         push word 0x3680
-        push strict word f_3680_0000
+        push strict word JerseyRemapTable
         call 0x0FEF:SetRemapTable
         add sp, 0x4
-        mov es, [g_8B34]
+        mov es, [segCharTable1]
         mov bx, [bp - 0x8a]
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         shl bx, 1
@@ -1393,28 +1393,28 @@ GameLineEditorLoop:
         mov al, [bp + si - 0x88]
         push ax
         push word 0x3680
-        push strict word f_3680_0000
+        push strict word JerseyRemapTable
         call 0x2397:MakeJerseyShape
         add sp, 0xa
         jmp short .90
 .92:
-        mov es, [g_8B2E]
+        mov es, [segMenuText4]
         mov word [es:0x15bc], strict word WriteTeamLines2
         mov word [es:0x15be], 0x2047
         mov ax, strict word MenuUseTheseLinesThunk
         mov dx, 0x1b35
-        mov es, [g_8B30]
+        mov es, [segMenuText5]
         mov [es:0x1538], ax
         mov [es:0x153a], dx
-        mov es, [g_8B32]
+        mov es, [segMenuText6]
         mov [es:0x1404], ax
         mov [es:0x1406], dx
         mov ax, strict word WriteTeamLinesThunk
         mov dx, 0x1b35
-        mov es, [g_8B30]
+        mov es, [segMenuText5]
         mov [es:0x157a], ax
         mov [es:0x157c], dx
-        mov es, [g_8B32]
+        mov es, [segMenuText6]
         mov [es:0x1446], ax
         mov [es:0x1448], dx
         mov word [bp - 0x8a], 0x0
@@ -1465,7 +1465,7 @@ GameLineEditorLoop:
         db 0x90
 .97:
         mov word [bp - 0xa8], 0x0
-        mov es, [g_8B34]
+        mov es, [segCharTable1]
 .98:
         mov al, [bp - 0x3a]
         mov bx, [bp - 0xa8]
@@ -1475,10 +1475,10 @@ GameLineEditorLoop:
         jl short .98
 .99:
         push word 0x3680
-        push strict word f_3680_0000
+        push strict word JerseyRemapTable
         call 0x0FEF:SetRemapTable
         add sp, 0x4
-        mov es, [g_8B34]
+        mov es, [segCharTable1]
         mov bx, [bp - 0x8a]
         shl bx, 1
         add bx, [bp - 0xac]
@@ -1508,7 +1508,7 @@ GameLineEditorLoop:
         mov al, [bp + si - 0x7c]
         push ax
         push word 0x3680
-        push strict word f_3680_0000
+        push strict word JerseyRemapTable
         call 0x2397:MakeJerseyShape
         add sp, 0xa
         jmp short .99
@@ -1564,7 +1564,7 @@ GameLineEditorLoop:
         db 0x90
 .107:
         mov word [bp - 0xa8], 0x0
-        mov es, [g_8B34]
+        mov es, [segCharTable1]
 .108:
         mov al, [bp - 0x3a]
         mov bx, [bp - 0xa8]
@@ -1574,10 +1574,10 @@ GameLineEditorLoop:
         jl short .108
 .109:
         push word 0x3680
-        push strict word f_3680_0000
+        push strict word JerseyRemapTable
         call 0x0FEF:SetRemapTable
         add sp, 0x4
-        mov es, [g_8B34]
+        mov es, [segCharTable1]
         mov bx, [bp - 0x8a]
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         shl bx, byte 0x2
@@ -1613,7 +1613,7 @@ GameLineEditorLoop:
         mov al, [bp + si - 0x76]
         push ax
         push word 0x3680
-        push strict word f_3680_0000
+        push strict word JerseyRemapTable
         call 0x2397:MakeJerseyShape
         add sp, 0xa
         jmp near .109
@@ -1668,7 +1668,7 @@ GameLineEditorLoop:
         db 0x90
 .118:
         mov word [bp - 0xa8], 0x0
-        mov es, [g_8B34]
+        mov es, [segCharTable1]
 .119:
         mov al, [bp - 0x3a]
         mov bx, [bp - 0xa8]
@@ -1678,10 +1678,10 @@ GameLineEditorLoop:
         jl short .119
 .120:
         push word 0x3680
-        push strict word f_3680_0000
+        push strict word JerseyRemapTable
         call 0x0FEF:SetRemapTable
         add sp, 0x4
-        mov es, [g_8B34]
+        mov es, [segCharTable1]
         mov bx, [bp - 0x8a]
         shl bx, byte 0x2
         add bx, [bp - 0xac]
@@ -1711,7 +1711,7 @@ GameLineEditorLoop:
         mov al, [bp + si - 0x6c]
         push ax
         push word 0x3680
-        push strict word f_3680_0000
+        push strict word JerseyRemapTable
         call 0x2397:MakeJerseyShape
         add sp, 0xa
         jmp short .120
@@ -1747,7 +1747,7 @@ GameLineEditorLoop:
         db 0x90
 .128:
         mov word [bp - 0xa8], 0x0
-        mov es, [g_8B34]
+        mov es, [segCharTable1]
 .129:
         mov al, [bp - 0x3a]
         mov bx, [bp - 0xa8]
@@ -1757,10 +1757,10 @@ GameLineEditorLoop:
         jl short .129
 .130:
         push word 0x3680
-        push strict word f_3680_0000
+        push strict word JerseyRemapTable
         call 0x0FEF:SetRemapTable
         add sp, 0x4
-        mov es, [g_8B34]
+        mov es, [segCharTable1]
         mov bx, [bp - 0xac]
         shl bx, byte 0x2
         push word [es:bx + 0x192]
@@ -1786,7 +1786,7 @@ GameLineEditorLoop:
         mov al, [bp + si - 0x64]
         push ax
         push word 0x3680
-        push strict word f_3680_0000
+        push strict word JerseyRemapTable
         call 0x2397:MakeJerseyShape
         add sp, 0xa
         jmp short .130
@@ -1817,7 +1817,7 @@ GameLineEditorLoop:
         jmp short .140
 .137:
         mov word [bp - 0xa8], 0x0
-        mov es, [g_8B34]
+        mov es, [segCharTable1]
 .138:
         mov al, [bp - 0x3a]
         mov bx, [bp - 0xa8]
@@ -1827,10 +1827,10 @@ GameLineEditorLoop:
         jl short .138
 .139:
         push word 0x3680
-        push strict word f_3680_0000
+        push strict word JerseyRemapTable
         call 0x0FEF:SetRemapTable
         add sp, 0x4
-        mov es, [g_8B34]
+        mov es, [segCharTable1]
         mov bx, [bp - 0xac]
         shl bx, byte 0x2
         push word [es:bx + 0x19a]
@@ -1856,7 +1856,7 @@ GameLineEditorLoop:
         mov al, [bp + si - 0x62]
         push ax
         push word 0x3680
-        push strict word f_3680_0000
+        push strict word JerseyRemapTable
         call 0x2397:MakeJerseyShape
         add sp, 0xa
         jmp short .139
@@ -1871,20 +1871,20 @@ GameLineEditorLoop:
         mov si, [bp - 0x8a]
         cmp byte [bp + si - 0x88], 0x64
         jnz short .142
-        mov es, [g_8B2E]
+        mov es, [segMenuText4]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [es:0x15be], ax
         mov [es:0x15bc], ax
-        mov es, [g_8B30]
+        mov es, [segMenuText5]
         mov [es:0x153a], ax
         mov [es:0x1538], ax
-        mov es, [g_8B32]
+        mov es, [segMenuText6]
         mov [es:0x1406], ax
         mov [es:0x1404], ax
-        mov es, [g_8B30]
+        mov es, [segMenuText5]
         mov [es:0x157c], ax
         mov [es:0x157a], ax
-        mov es, [g_8B32]
+        mov es, [segMenuText6]
         mov [es:0x1448], ax
         mov [es:0x1446], ax
         jmp near .155
@@ -1958,7 +1958,7 @@ GameLineEditorLoop:
         call 0x03A3:FormatCall
         add sp, 0xc
 .152:
-        mov es, [g_8B2C]
+        mov es, [segMenuText3]
         mov word [es:0x145c], strict word GameDressPlayerThunk
         mov word [es:0x145e], 0x1b35
         mov word [es:0x1472], strict word GameScratchPlayerThunk
@@ -2330,32 +2330,32 @@ DrawGameLineJerseys:
         push si
         cmp byte [bp + 0xc], 0x0
         jz short .1
-        cmp word [g_29CC], 0x19
+        cmp word [VisTeamNum], 0x19
         jnz short .2
-        mov word [g_29CC], 0x18
+        mov word [VisTeamNum], 0x18
         jmp short .2
         db 0x90
 .1:
-        cmp word [g_29CA], 0x18
+        cmp word [HomeTeamNum], 0x18
         jnz short .2
-        mov word [g_29CC], 0x19
+        mov word [VisTeamNum], 0x19
 .2:
         cmp byte [bp + 0xc], 0x0
         jz short .3
-        mov al, [g_29CC]
+        mov al, [VisTeamNum]
         jmp short .4
 .3:
-        mov al, [g_29CA]
+        mov al, [HomeTeamNum]
 .4:
         add al, 0x40
         mov [bp - 0x4], al
         cmp byte [bp + 0xc], 0x0
         jz short .5
-        mov al, [g_29CC]
+        mov al, [VisTeamNum]
         jmp short .6
         db 0x90
 .5:
-        mov al, [g_29CA]
+        mov al, [HomeTeamNum]
 .6:
         add al, 0x60
         mov [bp - 0x3], al
@@ -2377,7 +2377,7 @@ DrawGameLineJerseys:
         mov al, [bx]
         push ax
         push word 0x3680
-        push strict word f_3680_0000
+        push strict word JerseyRemapTable
         call 0x2397:MakeJerseyShape
         add sp, 0xa
         jmp short .10
@@ -2399,10 +2399,10 @@ DrawGameLineJerseys:
         mov ds, ax
 .10:
         push word 0x3680
-        push strict word f_3680_0000
+        push strict word JerseyRemapTable
         call 0x0FEF:SetRemapTable
         add sp, 0x4
-        mov es, [g_8B34]
+        mov es, [segCharTable1]
         mov bx, [bp - 0x8]
         push word [es:bx]
         dec bx
@@ -2536,11 +2536,11 @@ DrawLineEditorScreen:
         mov [bp - 0x14], dx
         cmp word [bp + 0x6], 0x0
         jz short .2
-        mov ax, [g_29CC]
+        mov ax, [VisTeamNum]
         jmp short .3
         db 0x90
 .2:
-        mov ax, [g_29CA]
+        mov ax, [HomeTeamNum]
 .3:
         imul ax, ax, word 0x1c0
         db 0x8B, 0xCA                           ; insn: mov cx, dx
@@ -3080,11 +3080,11 @@ LoadJerseyColours:
         mov [bp - 0x10], dx
         cmp word [bp + 0x6], 0x0
         jz short .2
-        mov ax, [g_29CC]
+        mov ax, [VisTeamNum]
         jmp short .3
         db 0x90
 .2:
-        mov ax, [g_29CA]
+        mov ax, [HomeTeamNum]
 .3:
         imul ax, ax, word 0x1c0
         db 0x03, 0xC7                           ; insn: add ax, di
@@ -3153,7 +3153,7 @@ LoadJerseyColours:
         jl short .6
         mov ax, DGROUP
         mov ds, ax
-        mov es, [g_8B34]
+        mov es, [segCharTable1]
         mov byte [es:0xfb], 0xcc
         mov byte [es:0xfc], 0xcd
         mov byte [es:0xfd], 0xce
@@ -3163,7 +3163,7 @@ LoadJerseyColours:
         call 0x06E1:FindUnlink
         add sp, 0x4
         push word 0x3680
-        push strict word f_3680_0000
+        push strict word JerseyRemapTable
         call 0x0FEF:SetRemapTable
         add sp, 0x4
         pop si
@@ -3841,23 +3841,23 @@ MenuUseOriginalLines:
         push cs
         call PruneGameLines
         add sp, 0x4
-        mov es, [g_8B2E]
+        mov es, [segMenuText4]
         mov word [es:0x15bc], strict word WriteTeamLines2
         mov word [es:0x15be], 0x2047
         mov ax, strict word MenuUseTheseLinesThunk
         mov dx, 0x1b35
-        mov es, [g_8B30]
+        mov es, [segMenuText5]
         mov [es:0x1538], ax
         mov [es:0x153a], dx
-        mov es, [g_8B32]
+        mov es, [segMenuText6]
         mov [es:0x1404], ax
         mov [es:0x1406], dx
         mov ax, strict word WriteTeamLinesThunk
         mov dx, 0x1b35
-        mov es, [g_8B30]
+        mov es, [segMenuText5]
         mov [es:0x157a], ax
         mov [es:0x157c], dx
-        mov es, [g_8B32]
+        mov es, [segMenuText6]
         mov [es:0x1446], ax
         mov [es:0x1448], dx
         db 0x2B, 0xF6                           ; insn: sub si, si
@@ -3880,20 +3880,20 @@ MenuUseOriginalLines:
 .2:
         mov bx, [bp + 0x6]
         mov byte [bx + si], 0x64
-        mov es, [g_8B2E]
+        mov es, [segMenuText4]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [es:0x15be], ax
         mov [es:0x15bc], ax
-        mov es, [g_8B30]
+        mov es, [segMenuText5]
         mov [es:0x153a], ax
         mov [es:0x1538], ax
-        mov es, [g_8B32]
+        mov es, [segMenuText6]
         mov [es:0x1406], ax
         mov [es:0x1404], ax
-        mov es, [g_8B30]
+        mov es, [segMenuText5]
         mov [es:0x157c], ax
         mov [es:0x157a], ax
-        mov es, [g_8B32]
+        mov es, [segMenuText6]
         mov [es:0x1448], ax
         mov [es:0x1446], ax
 .3:
@@ -3910,7 +3910,7 @@ MenuUseOriginalLines:
         add sp, 0x8
         mov bx, [bp + 0xc]
         mov word [bx], 0xffff
-        mov es, [g_8B2C]
+        mov es, [segMenuText3]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [es:0x1474], ax
         mov [es:0x1472], ax
@@ -3941,23 +3941,23 @@ MenuUseDefaultLines:
         push cs
         call PruneGameLines
         add sp, 0x4
-        mov es, [g_8B2E]
+        mov es, [segMenuText4]
         mov word [es:0x15bc], strict word WriteTeamLines2
         mov word [es:0x15be], 0x2047
         mov ax, strict word MenuUseTheseLinesThunk
         mov dx, 0x1b35
-        mov es, [g_8B30]
+        mov es, [segMenuText5]
         mov [es:0x1538], ax
         mov [es:0x153a], dx
-        mov es, [g_8B32]
+        mov es, [segMenuText6]
         mov [es:0x1404], ax
         mov [es:0x1406], dx
         mov ax, strict word WriteTeamLinesThunk
         mov dx, 0x1b35
-        mov es, [g_8B30]
+        mov es, [segMenuText5]
         mov [es:0x157a], ax
         mov [es:0x157c], dx
-        mov es, [g_8B32]
+        mov es, [segMenuText6]
         mov [es:0x1446], ax
         mov [es:0x1448], dx
         db 0x2B, 0xF6                           ; insn: sub si, si
@@ -3980,20 +3980,20 @@ MenuUseDefaultLines:
 .2:
         mov bx, [bp + 0x6]
         mov byte [bx + si], 0x64
-        mov es, [g_8B2E]
+        mov es, [segMenuText4]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [es:0x15be], ax
         mov [es:0x15bc], ax
-        mov es, [g_8B30]
+        mov es, [segMenuText5]
         mov [es:0x153a], ax
         mov [es:0x1538], ax
-        mov es, [g_8B32]
+        mov es, [segMenuText6]
         mov [es:0x1406], ax
         mov [es:0x1404], ax
-        mov es, [g_8B30]
+        mov es, [segMenuText5]
         mov [es:0x157c], ax
         mov [es:0x157a], ax
-        mov es, [g_8B32]
+        mov es, [segMenuText6]
         mov [es:0x1448], ax
         mov [es:0x1446], ax
 .3:
@@ -4010,7 +4010,7 @@ MenuUseDefaultLines:
         add sp, 0x8
         mov bx, [bp + 0xc]
         mov word [bx], 0xffff
-        mov es, [g_8B2C]
+        mov es, [segMenuText3]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [es:0x1474], ax
         mov [es:0x1472], ax
@@ -4090,13 +4090,13 @@ WriteTeamLines:
         jz short .6
         push 0x0
         mov ax, 0x2e8
-        imul word [g_29CC]
+        imul word [VisTeamNum]
         jmp short .7
         db 0x90
 .6:
         push 0x0
         mov ax, 0x2e8
-        imul word [g_29CA]
+        imul word [HomeTeamNum]
 .7:
         push dx
         push ax
@@ -4139,7 +4139,7 @@ WriteTeamLines:
         db 0x0B, 0xD2                           ; insn: or dx, dx
         jnl short .15
         mov ax, 0x2e8
-        imul word [g_29CA]
+        imul word [HomeTeamNum]
         cmp ax, [bp - 0x4]
         jnz short .11
         cmp dx, [bp - 0x2]
@@ -4149,7 +4149,7 @@ WriteTeamLines:
         jz short .14
 .12:
         mov ax, 0x2e8
-        imul word [g_29CC]
+        imul word [VisTeamNum]
         cmp ax, [bp - 0x4]
         jnz short .13
         cmp dx, [bp - 0x2]
@@ -4339,13 +4339,13 @@ WriteTeamLines2:
         jz short .6
         push 0x0
         mov ax, 0x2e8
-        imul word [g_29CC]
+        imul word [VisTeamNum]
         jmp short .7
         db 0x90
 .6:
         push 0x0
         mov ax, 0x2e8
-        imul word [g_29CA]
+        imul word [HomeTeamNum]
 .7:
         push dx
         push ax
@@ -4388,7 +4388,7 @@ WriteTeamLines2:
         db 0x0B, 0xD2                           ; insn: or dx, dx
         jnl short .15
         mov ax, 0x2e8
-        imul word [g_29CA]
+        imul word [HomeTeamNum]
         cmp ax, [bp - 0x4]
         jnz short .11
         cmp dx, [bp - 0x2]
@@ -4398,7 +4398,7 @@ WriteTeamLines2:
         jz short .14
 .12:
         mov ax, 0x2e8
-        imul word [g_29CC]
+        imul word [VisTeamNum]
         cmp ax, [bp - 0x4]
         jnz short .13
         cmp dx, [bp - 0x2]
@@ -4532,13 +4532,13 @@ MenuGameShowPlayerStats:
         mov [leaguestatsmode], ax
         mov [g_C050], ax
         mov word [statsredrawcb], 0x2459
-        mov word [g_21BE], 0x1b35
+        mov word [statsmenucbseg], 0x1b35
         cmp byte [bp + 0xa], 0x0
         jz short .1
-        mov ax, [g_29CC]
+        mov ax, [VisTeamNum]
         jmp short .2
 .1:
-        mov ax, [g_29CA]
+        mov ax, [HomeTeamNum]
 .2:
         mov [statscategory], ax
         push 0x0
@@ -4577,7 +4577,7 @@ MenuGameShowPlayerStats:
         call 0x1B35:InitMenuRemapThunk
         add sp, 0x2
         push word 0x3a0b
-        push strict word f_3A0B_A3D8
+        push strict word StatsPalette
         push word 0x100
         push 0x0
         call 0x0FEF:GetPaletteFar
@@ -4586,7 +4586,7 @@ MenuGameShowPlayerStats:
         mov ax, 0x3a0b
         mov es, ax
 .3:
-        mov al, [es:si + f_3A0B_A3D8]
+        mov al, [es:si + StatsPalette]
         mov [bp + si - 0x300], al
         inc si
         cmp si, 0x300
@@ -4600,11 +4600,11 @@ MenuGameShowPlayerStats:
         add sp, 0x8
         cmp byte [bp + 0xa], 0x0
         jz short .4
-        mov ax, [g_29CC]
+        mov ax, [VisTeamNum]
         jmp short .5
         db 0x90
 .4:
-        mov ax, [g_29CA]
+        mov ax, [HomeTeamNum]
 .5:
         push ax
         call 0x1B35:RosterScreenThunk
@@ -4618,14 +4618,14 @@ MenuGameShowPlayerStats:
         push 0x7d
         push 0x2
         push word 0x3448
-        push strict word f_3448_164A
+        push strict word PlayerStatsMenuBar
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
         db 0x2B, 0xF6                           ; insn: sub si, si
         mov ax, 0x3a0b
         mov es, ax
 .6:
-        mov al, [es:si + f_3A0B_A3D8]
+        mov al, [es:si + StatsPalette]
         mov [bp + si - 0x300], al
         inc si
         cmp si, 0x300
@@ -4656,7 +4656,7 @@ MenuGameShowPlayerStats:
         push 0x7d
         push 0x2
         push word 0x3448
-        push strict word f_3448_164A
+        push strict word PlayerStatsMenuBar
         call 0x1B35:StatsMenuLoopThunk
         add sp, 0xc
         push 0x10
@@ -4670,7 +4670,7 @@ MenuGameShowPlayerStats:
         mov ax, 0x3a0b
         mov es, ax
 .7:
-        mov al, [es:si + f_3A0B_A3D8]
+        mov al, [es:si + StatsPalette]
         mov [bp + si - 0x300], al
         inc si
         cmp si, 0x300
@@ -4692,7 +4692,7 @@ MenuGameShowPlayerStats:
         mov byte [bp - 0x2d1], 0xf
         mov word [leaguestatsmode], 0x0
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_21BE], ax
+        mov [statsmenucbseg], ax
         mov [statsredrawcb], ax
         push word [statsteambuf]
         push word [g_C04C]
@@ -4834,23 +4834,23 @@ GameScratchPlayer:
         inc si
         cmp si, 0x28
         jl short .1
-        mov es, [g_8B2E]
+        mov es, [segMenuText4]
         mov word [es:0x15bc], strict word WriteTeamLines2
         mov word [es:0x15be], 0x2047
         mov ax, strict word MenuUseTheseLinesThunk
         mov dx, 0x1b35
-        mov es, [g_8B30]
+        mov es, [segMenuText5]
         mov [es:0x1538], ax
         mov [es:0x153a], dx
-        mov es, [g_8B32]
+        mov es, [segMenuText6]
         mov [es:0x1404], ax
         mov [es:0x1406], dx
         mov ax, strict word WriteTeamLinesThunk
         mov dx, 0x1b35
-        mov es, [g_8B30]
+        mov es, [segMenuText5]
         mov [es:0x157a], ax
         mov [es:0x157c], dx
-        mov es, [g_8B32]
+        mov es, [segMenuText6]
         mov [es:0x1446], ax
         mov [es:0x1448], dx
         db 0x2B, 0xDB                           ; insn: sub bx, bx
@@ -4865,20 +4865,20 @@ GameScratchPlayer:
         jmp short .5
         db 0x90
 .4:
-        mov es, [g_8B2E]
+        mov es, [segMenuText4]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [es:0x15be], ax
         mov [es:0x15bc], ax
-        mov es, [g_8B30]
+        mov es, [segMenuText5]
         mov [es:0x153a], ax
         mov [es:0x1538], ax
-        mov es, [g_8B32]
+        mov es, [segMenuText6]
         mov [es:0x1406], ax
         mov [es:0x1404], ax
-        mov es, [g_8B30]
+        mov es, [segMenuText5]
         mov [es:0x157c], ax
         mov [es:0x157a], ax
-        mov es, [g_8B32]
+        mov es, [segMenuText6]
         mov [es:0x1448], ax
         mov [es:0x1446], ax
 .5:

@@ -11,11 +11,11 @@ FadePlaneBands:
         push di
         push si
         call 0x0FEF:UseCurrentPage
-        mov es, [g_8CF0]
+        mov es, [segDgroup16]
         mov ax, [es:0x74f4]
         mov [bp - 0x3c], ax
         mov di, [es:0x74f6]
-        mov es, [g_8CF2]
+        mov es, [segDgroup17]
         cmp word [CurPage], 0x1
         db 0x1B, 0xDB                           ; insn: sbb bx, bx
         neg bx
@@ -25,7 +25,7 @@ FadePlaneBands:
         mov dx, [es:bx + 0x2]
         mov [bp - 0x40], ax
         mov [bp - 0x3e], dx
-        mov es, [g_8CF2]
+        mov es, [segDgroup17]
         mov bx, [CurPage]
         shl bx, byte 0x2
         les bx, [es:bx + 0x7570]

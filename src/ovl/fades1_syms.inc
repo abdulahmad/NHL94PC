@@ -6,5 +6,5 @@ SetDeadline.regs		equ	0x1A6E
 UseCurrentPage		equ	0x1A6
 WaitDeadlineNoEoi		equ	0x1A84
 g_74FA		equ	0x74FA
-g_8CE8		equ	0x8CE8
-g_8CEA		equ	0x8CEA
+segDgroup12		equ	0x8CE8
+segDgroup13		equ	0x8CEA

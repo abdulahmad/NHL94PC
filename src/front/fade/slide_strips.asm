@@ -12,7 +12,7 @@ FadeSlideStrips:
         push di
         push si
         call 0x0FEF:UseCurrentPage
-        mov es, [g_8CF6]
+        mov es, [segDgroup19]
         mov ax, [es:0x74fc]
         mov [g_DF6A], ax
         mov ax, [es:0x74fe]

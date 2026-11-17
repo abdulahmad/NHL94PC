@@ -1,6 +1,6 @@
 ; Menu items of the stats screens: standings actions, team stats and leader categories (STATS.OVL)
 ; The first bytes finish the last routine of stats_screens.asm.
-        mov [g_21BE], ax
+        mov [statsmenucbseg], ax
         mov [statsredrawcb], ax
         mov [leaguestatsmode], ax
         pop si
@@ -15,7 +15,7 @@
 ;-----------------------------------------------------------------------------
 StandingsActExit:
         mov ax, 0x1
-        mov [g_21C0], ax
+        mov [statsmenumode], ax
         retf
         db 0x90
 
@@ -26,7 +26,7 @@ StandingsActExit:
 ; Far routine (retf).
 ;-----------------------------------------------------------------------------
 StandingsActStandings:
-        mov word [g_21C0], 0x2
+        mov word [statsmenumode], 0x2
         mov ax, 0x1
         retf
 
@@ -37,7 +37,7 @@ StandingsActStandings:
 ; Far routine (retf).
 ;-----------------------------------------------------------------------------
 StandingsActRoster:
-        mov word [g_21C0], 0x3
+        mov word [statsmenumode], 0x3
         mov ax, 0x1
         retf
 
@@ -48,32 +48,32 @@ StandingsActRoster:
 ; Calls CopyStrNFar, GetPaletteFar, FadePaletteInThunk. Far routine (retf).
 ;-----------------------------------------------------------------------------
 StatsSelNhlSeason:
-        cmp word [g_2010], 0x0
+        cmp word [statsseason], 0x0
         jnz short .1
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .1
         jmp near .4
 .1:
-        mov es, [g_8C72]
+        mov es, [segSeasonTitles6]
         mov byte [es:0x0], 0x1
         mov al, 0x2
-        mov es, [g_8C74]
+        mov es, [segSeasonTitles7]
         mov [es:0x5b], al
-        mov es, [g_8C76]
+        mov es, [segSeasonTitles8]
         mov [es:0x3d], al
-        mov es, [g_8C78]
+        mov es, [segSeasonTitles9]
         mov [es:0x29], al
-        mov es, [g_8C7A]
+        mov es, [segSeasonTitles10]
         mov [es:0x13], al
-        mov word [g_2010], 0x0
-        cmp word [g_200E], 0x0
+        mov word [statsseason], 0x0
+        cmp word [statscontext], 0x0
         jz short .2
-        mov word [g_21BA], 0x0
+        mov word [statsmenusel], 0x0
 .2:
-        mov word [g_200E], 0x0
+        mov word [statscontext], 0x0
         push 0x1f
         push word 0x3415
-        push strict word f_3415_0002
+        push strict word exhstate_name
         push word 0x3861
         push strict word 0x0
         call 0x03A3:CopyStrNFar
@@ -81,25 +81,25 @@ StatsSelNhlSeason:
         cmp word [leaguestatsmode], 0x0
         jz short .3
         push word 0x3a0b
-        push strict word f_3A0B_B052
+        push strict word StatsScreenPalette
         push word 0x100
         push 0x0
         call 0x0FEF:GetPaletteFar
         add sp, 0x8
         push 0x10
         push word 0x3a0b
-        push strict word f_3A0B_B052
+        push strict word StatsScreenPalette
         push 0x1
         call 0x1B35:FadePaletteInThunk
         add sp, 0x8
-        mov es, [g_8C7C]
+        mov es, [segWorkBuffer41]
         mov word [es:0xb050], 0xffff
         push word [statscategory]
         call far [statsredrawcb]
         add sp, 0x2
         push 0x10
         push word 0x3a0b
-        push strict word f_3A0B_B052
+        push strict word StatsScreenPalette
         push 0x0
         call 0x1B35:FadePaletteInThunk
         add sp, 0x8
@@ -116,32 +116,32 @@ StatsSelNhlSeason:
 ; Calls CopyStrNFar, GetPaletteFar, FadePaletteInThunk. Far routine (retf).
 ;-----------------------------------------------------------------------------
 StatsSelNhlPlayoffs:
-        cmp word [g_2010], 0x0
+        cmp word [statsseason], 0x0
         jnz short .1
-        cmp word [g_200E], 0x1
+        cmp word [statscontext], 0x1
         jnz short .1
         jmp near .4
 .1:
-        mov es, [g_8C7A]
+        mov es, [segSeasonTitles10]
         mov byte [es:0x13], 0x1
         mov al, 0x2
-        mov es, [g_8C74]
+        mov es, [segSeasonTitles7]
         mov [es:0x5b], al
-        mov es, [g_8C76]
+        mov es, [segSeasonTitles8]
         mov [es:0x3d], al
-        mov es, [g_8C78]
+        mov es, [segSeasonTitles9]
         mov [es:0x29], al
-        mov es, [g_8C72]
+        mov es, [segSeasonTitles6]
         mov [es:0x0], al
-        mov word [g_2010], 0x0
-        cmp word [g_200E], 0x0
+        mov word [statsseason], 0x0
+        cmp word [statscontext], 0x0
         jnz short .2
-        mov word [g_21BA], 0x0
+        mov word [statsmenusel], 0x0
 .2:
-        mov word [g_200E], 0x1
+        mov word [statscontext], 0x1
         push 0x1f
         push word 0x3415
-        push strict word f_3415_0002
+        push strict word exhstate_name
         push word 0x3861
         push strict word 0x0
         call 0x03A3:CopyStrNFar
@@ -149,25 +149,25 @@ StatsSelNhlPlayoffs:
         cmp word [leaguestatsmode], 0x0
         jz short .3
         push word 0x3a0b
-        push strict word f_3A0B_B052
+        push strict word StatsScreenPalette
         push word 0x100
         push 0x0
         call 0x0FEF:GetPaletteFar
         add sp, 0x8
         push 0x10
         push word 0x3a0b
-        push strict word f_3A0B_B052
+        push strict word StatsScreenPalette
         push 0x1
         call 0x1B35:FadePaletteInThunk
         add sp, 0x8
-        mov es, [g_8C7C]
+        mov es, [segWorkBuffer41]
         mov word [es:0xb050], 0xffff
         push word [statscategory]
         call far [statsredrawcb]
         add sp, 0x2
         push 0x10
         push word 0x3a0b
-        push strict word f_3A0B_B052
+        push strict word StatsScreenPalette
         push 0x0
         call 0x1B35:FadePaletteInThunk
         add sp, 0x8
@@ -184,32 +184,32 @@ StatsSelNhlPlayoffs:
 ; Calls CopyStrNFar, GetPaletteFar, FadePaletteInThunk. Far routine (retf).
 ;-----------------------------------------------------------------------------
 StatsSelLeague:
-        cmp word [g_2010], 0x1
+        cmp word [statsseason], 0x1
         jnz short .1
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .1
         jmp near .4
 .1:
-        mov es, [g_8C78]
+        mov es, [segSeasonTitles9]
         mov byte [es:0x29], 0x1
         mov al, 0x2
-        mov es, [g_8C74]
+        mov es, [segSeasonTitles7]
         mov [es:0x5b], al
-        mov es, [g_8C76]
+        mov es, [segSeasonTitles8]
         mov [es:0x3d], al
-        mov es, [g_8C7A]
+        mov es, [segSeasonTitles10]
         mov [es:0x13], al
-        mov es, [g_8C72]
+        mov es, [segSeasonTitles6]
         mov [es:0x0], al
-        mov word [g_2010], 0x1
-        cmp word [g_200E], 0x0
+        mov word [statsseason], 0x1
+        cmp word [statscontext], 0x0
         jz short .2
-        mov word [g_21BA], 0x0
+        mov word [statsmenusel], 0x0
 .2:
-        mov word [g_200E], 0x0
+        mov word [statscontext], 0x0
         push 0x1f
         push word 0x3415
-        push strict word f_3415_00C6
+        push strict word lgstate_name
         push word 0x3861
         push strict word 0x0
         call 0x03A3:CopyStrNFar
@@ -217,25 +217,25 @@ StatsSelLeague:
         cmp word [leaguestatsmode], 0x0
         jz short .3
         push word 0x3a0b
-        push strict word f_3A0B_B052
+        push strict word StatsScreenPalette
         push word 0x100
         push 0x0
         call 0x0FEF:GetPaletteFar
         add sp, 0x8
         push 0x10
         push word 0x3a0b
-        push strict word f_3A0B_B052
+        push strict word StatsScreenPalette
         push 0x1
         call 0x1B35:FadePaletteInThunk
         add sp, 0x8
-        mov es, [g_8C7C]
+        mov es, [segWorkBuffer41]
         mov word [es:0xb050], 0xffff
         push word [statscategory]
         call far [statsredrawcb]
         add sp, 0x2
         push 0x10
         push word 0x3a0b
-        push strict word f_3A0B_B052
+        push strict word StatsScreenPalette
         push 0x0
         call 0x1B35:FadePaletteInThunk
         add sp, 0x8
@@ -252,12 +252,12 @@ StatsSelLeague:
 ; Calls _fstrcmp, CopyStrNFar, GetPaletteFar, FadePaletteInThunk. Far routine (retf).
 ;-----------------------------------------------------------------------------
 StatsSelLeaguePlayoffs:
-        cmp word [g_2010], 0x1
+        cmp word [statsseason], 0x1
         jnz short .1
-        cmp word [g_200E], 0x1
+        cmp word [statscontext], 0x1
         jnz short .1
         push word 0x3415
-        push strict word f_3415_00C6
+        push strict word lgstate_name
         push word 0x3861
         push strict word 0x0
         call 0x0000:_fstrcmp
@@ -266,26 +266,26 @@ StatsSelLeaguePlayoffs:
         jnz short .1
         jmp near .4
 .1:
-        mov es, [g_8C76]
+        mov es, [segSeasonTitles8]
         mov byte [es:0x3d], 0x1
         mov al, 0x2
-        mov es, [g_8C74]
+        mov es, [segSeasonTitles7]
         mov [es:0x5b], al
-        mov es, [g_8C78]
+        mov es, [segSeasonTitles9]
         mov [es:0x29], al
-        mov es, [g_8C7A]
+        mov es, [segSeasonTitles10]
         mov [es:0x13], al
-        mov es, [g_8C72]
+        mov es, [segSeasonTitles6]
         mov [es:0x0], al
-        mov word [g_2010], 0x1
-        cmp word [g_200E], 0x0
+        mov word [statsseason], 0x1
+        cmp word [statscontext], 0x0
         jnz short .2
-        mov word [g_21BA], 0x0
+        mov word [statsmenusel], 0x0
 .2:
-        mov word [g_200E], 0x1
+        mov word [statscontext], 0x1
         push 0x1f
         push word 0x3415
-        push strict word f_3415_00C6
+        push strict word lgstate_name
         push word 0x3861
         push strict word 0x0
         call 0x03A3:CopyStrNFar
@@ -293,25 +293,25 @@ StatsSelLeaguePlayoffs:
         cmp word [leaguestatsmode], 0x0
         jz short .3
         push word 0x3a0b
-        push strict word f_3A0B_B052
+        push strict word StatsScreenPalette
         push word 0x100
         push 0x0
         call 0x0FEF:GetPaletteFar
         add sp, 0x8
         push 0x10
         push word 0x3a0b
-        push strict word f_3A0B_B052
+        push strict word StatsScreenPalette
         push 0x1
         call 0x1B35:FadePaletteInThunk
         add sp, 0x8
-        mov es, [g_8C7C]
+        mov es, [segWorkBuffer41]
         mov word [es:0xb050], 0xffff
         push word [statscategory]
         call far [statsredrawcb]
         add sp, 0x2
         push 0x10
         push word 0x3a0b
-        push strict word f_3A0B_B052
+        push strict word StatsScreenPalette
         push 0x0
         call 0x1B35:FadePaletteInThunk
         add sp, 0x8
@@ -328,12 +328,12 @@ StatsSelLeaguePlayoffs:
 ; Calls _fstrcmp, CopyStrNFar, GetPaletteFar, FadePaletteInThunk. Far routine (retf).
 ;-----------------------------------------------------------------------------
 StatsSelPlayoffMode:
-        cmp word [g_2010], 0x1
+        cmp word [statsseason], 0x1
         jnz short .1
-        cmp word [g_200E], 0x1
+        cmp word [statscontext], 0x1
         jnz short .1
         push word 0x3415
-        push strict word f_3415_0064
+        push strict word postate_name
         push word 0x3861
         push strict word 0x0
         call 0x0000:_fstrcmp
@@ -342,26 +342,26 @@ StatsSelPlayoffMode:
         jnz short .1
         jmp near .4
 .1:
-        mov es, [g_8C74]
+        mov es, [segSeasonTitles7]
         mov byte [es:0x5b], 0x1
         mov al, 0x2
-        mov es, [g_8C76]
+        mov es, [segSeasonTitles8]
         mov [es:0x3d], al
-        mov es, [g_8C78]
+        mov es, [segSeasonTitles9]
         mov [es:0x29], al
-        mov es, [g_8C7A]
+        mov es, [segSeasonTitles10]
         mov [es:0x13], al
-        mov es, [g_8C72]
+        mov es, [segSeasonTitles6]
         mov [es:0x0], al
-        mov word [g_2010], 0x1
-        cmp word [g_200E], 0x0
+        mov word [statsseason], 0x1
+        cmp word [statscontext], 0x0
         jnz short .2
-        mov word [g_21BA], 0x0
+        mov word [statsmenusel], 0x0
 .2:
-        mov word [g_200E], 0x1
+        mov word [statscontext], 0x1
         push 0x1f
         push word 0x3415
-        push strict word f_3415_0064
+        push strict word postate_name
         push word 0x3861
         push strict word 0x0
         call 0x03A3:CopyStrNFar
@@ -369,25 +369,25 @@ StatsSelPlayoffMode:
         cmp word [leaguestatsmode], 0x0
         jz short .3
         push word 0x3a0b
-        push strict word f_3A0B_B052
+        push strict word StatsScreenPalette
         push word 0x100
         push 0x0
         call 0x0FEF:GetPaletteFar
         add sp, 0x8
         push 0x10
         push word 0x3a0b
-        push strict word f_3A0B_B052
+        push strict word StatsScreenPalette
         push 0x1
         call 0x1B35:FadePaletteInThunk
         add sp, 0x8
-        mov es, [g_8C7C]
+        mov es, [segWorkBuffer41]
         mov word [es:0xb050], 0xffff
         push word [statscategory]
         call far [statsredrawcb]
         add sp, 0x2
         push 0x10
         push word 0x3a0b
-        push strict word f_3A0B_B052
+        push strict word StatsScreenPalette
         push 0x0
         call 0x1B35:FadePaletteInThunk
         add sp, 0x8
@@ -724,7 +724,7 @@ MenuSavePctLeaders:
 ; Far routine (retf).
 ;-----------------------------------------------------------------------------
 StandingsActRoster2:
-        mov word [g_21C0], 0x3
+        mov word [statsmenumode], 0x3
         mov ax, 0x1
         retf
 
@@ -742,7 +742,7 @@ StandingsActPlayer:
 .1:
         mov ax, 0x5
 .2:
-        mov [g_21C0], ax
+        mov [statsmenumode], ax
         mov ax, 0x1
         retf
 
@@ -753,27 +753,27 @@ StandingsActPlayer:
 ; Calls FindUnlink. Far routine (retf).
 ;-----------------------------------------------------------------------------
 FreeStandingsGfx:
-        mov ax, [g_21B6]
-        or ax, [g_21B4]
+        mov ax, [StandingsGfx2Seg]
+        or ax, [StandingsGfx2]
         jz short .1
-        push word [g_21B6]
-        push word [g_21B4]
+        push word [StandingsGfx2Seg]
+        push word [StandingsGfx2]
         call 0x06E1:FindUnlink
         add sp, 0x4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_21B6], ax
-        mov [g_21B4], ax
+        mov [StandingsGfx2Seg], ax
+        mov [StandingsGfx2], ax
 .1:
-        mov ax, [g_21B2]
-        or ax, [g_21B0]
+        mov ax, [StandingsGfx1Seg]
+        or ax, [StandingsGfx1]
         jz short .2
-        push word [g_21B2]
-        push word [g_21B0]
+        push word [StandingsGfx1Seg]
+        push word [StandingsGfx1]
         call 0x06E1:FindUnlink
         add sp, 0x4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_21B2], ax
-        mov [g_21B0], ax
+        mov [StandingsGfx1Seg], ax
+        mov [StandingsGfx1], ax
 .2:
         retf
         db 0x90

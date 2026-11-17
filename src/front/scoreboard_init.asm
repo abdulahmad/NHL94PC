@@ -15,15 +15,15 @@ InitScoreboard:
         db 0x2B, 0xDB                           ; insn: sub bx, bx
 .1:
         mov ax, 0xffff
-        mov [bx + g_55AC], ax
-        mov [bx + g_556C], ax
+        mov [bx + hudpenaway], ax
+        mov [bx + hudpenhome], ax
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [bx + g_55B2], ax
-        mov [bx + g_5572], ax
-        mov [bx + g_55B0], ax
-        mov [bx + g_5570], ax
-        mov [bx + g_55AE], ax
-        mov [bx + g_556E], ax
+        mov [bx + hudpenaway_w6], ax
+        mov [bx + hudpenhome_w6], ax
+        mov [bx + hudpenaway_w4], ax
+        mov [bx + hudpenhome_w4], ax
+        mov [bx + hudpenaway_w2], ax
+        mov [bx + hudpenhome_w2], ax
         add bx, 0x8
         cmp bx, 0x40
         jl short .1

@@ -74,9 +74,9 @@ RosterScreen:
         enter 0x3e8, 0x0
         push di
         push si
-        mov ax, [g_2010]
+        mov ax, [statsseason]
         mov [bp - 0x304], ax
-        mov ax, [g_200E]
+        mov ax, [statscontext]
         mov [bp - 0x36e], ax
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [bp - 0x3e0], ax
@@ -90,7 +90,7 @@ RosterScreen:
         push 0x0
         push 0x0
         push ds
-        push word [g_1FAC]
+        push word [StatsDbName4]
         push word 0x3861
         push strict word 0x0
         lea ax, [bp - 0x35e]
@@ -137,10 +137,10 @@ RosterScreen:
         mov [bp - 0x3a8], ax
         push 0x0
         push 0x0
-        mov bx, [g_2010]
+        mov bx, [statsseason]
         shl bx, 1
         push ds
-        push word [bx + g_1FA6]
+        push word [bx + StatsDbNames2]
         push word 0x3861
         push strict word 0x0
         lea ax, [bp - 0x35e]
@@ -220,7 +220,7 @@ RosterScreen:
         mov cx, 0x1a
         rep movsw
         push 0x0
-        cmp word [g_2010], 0x0
+        cmp word [statsseason], 0x0
         jz short .6
         jmp near .1
 .6:
@@ -294,7 +294,7 @@ RosterScreen:
         mov cx, 0x1a
         rep movsw
         push 0x0
-        cmp word [g_2010], 0x0
+        cmp word [statsseason], 0x0
         jz short .13
         jmp near .8
 .13:
@@ -462,7 +462,7 @@ RosterScreen:
         call 0x0D39:DrawShadowText
         add sp, 0x8
         push ds
-        push strict word g_242F
+        push strict word str_PlusMinus3
         push 0x11
         push word 0x108
         call 0x0D39:DrawShadowText
@@ -594,7 +594,7 @@ RosterScreen:
         push 0x30
         call 0x0D39:DrawShadowText
         add sp, 0x8
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jz short .22
         jmp near .17
 .22:
@@ -653,7 +653,7 @@ RosterScreen:
         push word 0xd7
         call 0x0D39:DrawShadowText
         add sp, 0x8
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .24
         push ds
         push strict word str_T_2
@@ -735,7 +735,7 @@ RosterScreen:
         push word 0xd7
         call 0x0D39:DrawShadowTextF
         add sp, 0x8
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .27
         les bx, [bp - 0x3ae]
         push word [es:bx + 0x6]
@@ -858,7 +858,7 @@ RosterScreen:
         push 0x30
         call 0x0D39:DrawShadowText
         add sp, 0x8
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jz short .33
         jmp near .25
 .33:

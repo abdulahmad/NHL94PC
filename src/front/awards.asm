@@ -27,11 +27,11 @@ PickAwardWinners:
         mov [bp - 0x3a], ax
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8C30]
+        mov es, [segTeamChoiceText47]
         push word [es:0xb7e]
         push word [es:0xb7c]
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x5a]
         push ss
         push ax
@@ -39,7 +39,7 @@ PickAwardWinners:
         add sp, 0x10
         push 0x1
         push word 0x3a0b
-        push strict word f_3A0B_AA38
+        push strict word LeagueTeamNames
         lea ax, [bp - 0x5a]
         push ax
         call 0x22D3:ReadTeamNames
@@ -49,11 +49,11 @@ PickAwardWinners:
         jnz short .1
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8C30]
+        mov es, [segTeamChoiceText47]
         push word [es:0xb7e]
         push word [es:0xb7c]
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x5a]
         push ss
         push ax
@@ -71,11 +71,11 @@ PickAwardWinners:
         jnz short .2
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8C30]
+        mov es, [segTeamChoiceText47]
         push word [es:0xb6e]
         push word [es:0xb6c]
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x5a]
         push ss
         push ax
@@ -93,11 +93,11 @@ PickAwardWinners:
         jnz short .3
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8C30]
+        mov es, [segTeamChoiceText47]
         push word [es:0xb82]
         push word [es:0xb80]
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x5a]
         push ss
         push ax
@@ -170,7 +170,7 @@ PickAwardWinners:
         jmp short .14
         db 0x90
 .10:
-        mov ax, [g_1D02]
+        mov ax, [AwardWinner9]
         mov [bp - 0x3d0], ax
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -207,8 +207,8 @@ PickAwardWinners:
         lea si, [bp - 0x402]
         mov cx, 0x18
         rep movsw
-        mov [g_1D02], ax
-        mov byte [g_1CEF], 0x1
+        mov [AwardWinner9], ax
+        mov byte [AwardsPending], 0x1
         mov byte [bp - 0x381], 0xff
 .13:
         inc word [bp - 0x3c8]
@@ -257,7 +257,7 @@ PickAwardWinners:
         jnz short .13
         cmp [bp - 0x402], ax
         jz short .13
-        mov ax, [g_1CF0]
+        mov ax, [AwardWinner]
         mov [bp - 0x98], ax
         cmp byte [bp - 0x38a], 0x0
         jz short .19
@@ -283,7 +283,7 @@ PickAwardWinners:
         rep movsw
         mov byte [bp - 0x38a], 0xff
 .20:
-        mov ax, [g_1CF2]
+        mov ax, [AwardWinner2]
         mov [bp - 0x98], ax
         cmp byte [bp - 0x389], 0x0
         jz short .21
@@ -311,7 +311,7 @@ PickAwardWinners:
 .22:
         cmp byte [bp - 0x3be], 0x44
         jnz short .24
-        mov ax, [g_1CF4]
+        mov ax, [AwardWinner3]
         mov [bp - 0x98], ax
         cmp byte [bp - 0x388], 0x0
         jz short .23
@@ -344,7 +344,7 @@ PickAwardWinners:
         cmp byte [bp - 0x3be], 0x43
         jnz short .27
 .25:
-        mov ax, [g_1CF6]
+        mov ax, [AwardWinner4]
         mov [bp - 0x98], ax
         cmp byte [bp - 0x387], 0x0
         jz short .26
@@ -374,7 +374,7 @@ PickAwardWinners:
         jz short .29
         cmp byte [bp - 0x3d4], 0x0
         jz short .29
-        mov ax, [g_1CFC]
+        mov ax, [AwardWinner7]
         mov [bp - 0x98], ax
         cmp byte [bp - 0x384], 0x0
         jz short .28
@@ -400,7 +400,7 @@ PickAwardWinners:
         rep movsw
         mov byte [bp - 0x384], 0xff
 .29:
-        mov ax, [g_1D00]
+        mov ax, [AwardWinner8]
         mov [bp - 0x98], ax
         cmp byte [bp - 0x382], 0x0
         jz short .30
@@ -426,11 +426,11 @@ PickAwardWinners:
         rep movsw
         mov byte [bp - 0x382], 0xff
 .31:
-        cmp byte [g_1CEF], 0x1
+        cmp byte [AwardsPending], 0x1
         jz short .32
         jmp near .10
 .32:
-        mov ax, [g_1D02]
+        mov ax, [AwardWinner9]
         mov [bp - 0x98], ax
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -443,7 +443,7 @@ PickAwardWinners:
         mov word [bp - 0x3c8], 0x0
         jmp short .38
 .34:
-        mov ax, [g_1D02]
+        mov ax, [AwardWinner9]
         mov [bp - 0x3d0], ax
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -480,8 +480,8 @@ PickAwardWinners:
         lea si, [bp - 0x96]
         mov cx, 0x1b
         rep movsw
-        mov [g_1D02], ax
-        mov byte [g_1CEF], 0x0
+        mov [AwardWinner9], ax
+        mov byte [AwardsPending], 0x0
         mov byte [bp - 0x381], 0xff
 .37:
         inc word [bp - 0x3c8]
@@ -530,7 +530,7 @@ PickAwardWinners:
         jnz short .37
         cmp [bp - 0x96], ax
         jz short .37
-        mov ax, [g_1CF8]
+        mov ax, [AwardWinner5]
         mov [bp - 0x3d0], ax
         cmp byte [bp - 0x386], 0x0
         jz short .43
@@ -556,7 +556,7 @@ PickAwardWinners:
         rep movsw
         mov byte [bp - 0x386], 0xff
 .44:
-        mov ax, [g_1CFA]
+        mov ax, [AwardWinner6]
         mov [bp - 0x3d0], ax
         cmp byte [bp - 0x385], 0x0
         jz short .45
@@ -582,11 +582,11 @@ PickAwardWinners:
         rep movsw
         mov byte [bp - 0x385], 0xff
 .46:
-        cmp byte [g_1CEF], 0x1
+        cmp byte [AwardsPending], 0x1
         jz short .47
         jmp near .34
 .47:
-        mov ax, [g_1D02]
+        mov ax, [AwardWinner9]
         mov [bp - 0x98], ax
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -666,7 +666,7 @@ ShowAwardScreens:
         add sp, 0x4
         mov [bp - 0x30], ax
         mov [bp - 0x2e], dx
-        push word [g_1C58]
+        push word [AwardTitleMsg]
         push dx
         push ax
         call 0x03A3:LookupMsg
@@ -806,7 +806,7 @@ ShowAwardScreens:
         mov word [bp - 0x62], 0xcc
         add word [bp - 0x64], 0x14
         mov bx, [bp - 0x66]
-        cmp byte [bx + g_1CE6], 0x0
+        cmp byte [bx + AwardKinds], 0x0
         jz short .2
         jmp near .7
 .2:
@@ -835,7 +835,7 @@ ShowAwardScreens:
         call 0x0D39:DrawShadowText
         add sp, 0x8
         push ds
-        push strict word g_1D47
+        push strict word str_AwardsW
         mov ax, [bp - 0x64]
         add ax, strict word 0x20
         push ax
@@ -843,7 +843,7 @@ ShowAwardScreens:
         call 0x0D39:DrawShadowText
         add sp, 0x8
         push ds
-        push strict word g_1D49
+        push strict word str_AwardsL
         mov ax, [bp - 0x64]
         add ax, strict word 0x28
         push ax
@@ -851,7 +851,7 @@ ShowAwardScreens:
         call 0x0D39:DrawShadowText
         add sp, 0x8
         push ds
-        push strict word g_1D4B
+        push strict word str_AwardsT
         mov ax, [bp - 0x64]
         add ax, strict word 0x30
         push ax
@@ -892,7 +892,7 @@ ShowAwardScreens:
         add sp, 0x8
         mov bx, [bp - 0x66]
         shl bx, 1
-        mov ax, [bx + g_1CF0]
+        mov ax, [bx + AwardWinner]
         mov [bp - 0x74], ax
         mov [bp - 0x26], ax
         mov word [bp - 0x68], 0x0
@@ -907,7 +907,7 @@ ShowAwardScreens:
         mov bx, [bp - 0x68]
         shl bx, 1
         push ds
-        push word [bx + g_1D04]
+        push word [bx + AwardTitlePtrs]
         push word [bp - 0x64]
         add word [bp - 0x62], 0x28
         mov ax, [bp - 0x62]
@@ -1032,7 +1032,7 @@ ShowAwardScreens:
         jmp near .3
         db 0x90
 .7:
-        cmp byte [bx + g_1CE6], 0x1
+        cmp byte [bx + AwardKinds], 0x1
         jz short .8
         jmp near .21
 .8:
@@ -1045,7 +1045,7 @@ ShowAwardScreens:
         call 0x0D39:DrawShadowText
         add sp, 0x8
         push ds
-        push strict word g_1D60
+        push strict word str_AwardsG
         mov ax, [bp - 0x64]
         add ax, strict word 0x10
         push ax
@@ -1053,7 +1053,7 @@ ShowAwardScreens:
         call 0x0D39:DrawShadowText
         add sp, 0x8
         push ds
-        push strict word g_1D62
+        push strict word str_AwardsA
         mov ax, [bp - 0x64]
         add ax, strict word 0x18
         push ax
@@ -1077,7 +1077,7 @@ ShowAwardScreens:
         call 0x0D39:DrawShadowText
         add sp, 0x8
         push ds
-        push strict word g_1D6B
+        push strict word str_PlusMinus
         mov ax, [bp - 0x64]
         add ax, strict word 0x30
         push ax
@@ -1118,7 +1118,7 @@ ShowAwardScreens:
         add sp, 0x8
         mov bx, [bp - 0x66]
         shl bx, 1
-        mov ax, [bx + g_1CF0]
+        mov ax, [bx + AwardWinner]
         mov [bp - 0x2c], ax
         mov [bp - 0x70], ax
         mov word [bp - 0x68], 0x0
@@ -1154,7 +1154,7 @@ ShowAwardScreens:
         mov bx, [bp - 0x68]
         shl bx, 1
         push ds
-        push word [bx + g_1D04]
+        push word [bx + AwardTitlePtrs]
         push word [bp - 0x64]
         add word [bp - 0x62], 0x28
         mov ax, [bp - 0x62]
@@ -1408,7 +1408,7 @@ ShowAwardScreens:
         add sp, 0x4
         mov bx, [bp - 0x66]
         shl bx, 1
-        push word [bx + g_1CD2]
+        push word [bx + AwardNamePtrs]
         db 0x8B, 0xF3                           ; insn: mov si, bx
         call 0x03A3:TextWidthAll
         add sp, 0x2
@@ -1419,7 +1419,7 @@ ShowAwardScreens:
         sar ax, 1
         mov [bp - 0x62], ax
         push ds
-        push word [si + g_1CD2]
+        push word [si + AwardNamePtrs]
         mov ax, 0x1e
         mov [bp - 0x64], ax
         push ax
@@ -1430,7 +1430,7 @@ ShowAwardScreens:
         add sp, 0x8
         add word [bp - 0x64], 0xa
         mov bx, [bp - 0x66]
-        cmp byte [bx + g_1CE6], 0x2
+        cmp byte [bx + AwardKinds], 0x2
         jz short .20
         jmp near .1
 .20:
@@ -1521,9 +1521,9 @@ ShowAwardScreens:
         db 0x03, 0xC2                           ; insn: add ax, dx
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, byte 0x2
-        mov ax, [bx + g_1C5A]
+        mov ax, [bx + AwardTextY]
         mov [bp - 0x6e], ax
-        mov ax, [bx + g_1C5C]
+        mov ax, [bx + AwardTextY2]
         mov [bp - 0x72], ax
         call 0x0FEF:UseCurrentPage
         push word [bp - 0x72]
@@ -1675,7 +1675,7 @@ DrawAwardsSummary:
         call 0x0D39:DrawShadowText
         add sp, 0x8
         mov bx, [bp - 0x4]
-        cmp byte [bx + g_1CE6], 0x2
+        cmp byte [bx + AwardKinds], 0x2
         jnz short .3
         push ds
         push strict word g_CC05
@@ -1996,7 +1996,7 @@ AwardsCeremony:
         add sp, 0x4
         mov [bp - 0x4], ax
         mov [bp - 0x2], dx
-        push word [si + g_1C40]
+        push word [si + AwardMsgIds2]
         push dx
         push ax
         call 0x03A3:LookupMsg
@@ -2009,7 +2009,7 @@ AwardsCeremony:
         add sp, 0x4
         mov [bp - 0x4], ax
         mov [bp - 0x2], dx
-        push word [si + g_1C2C]
+        push word [si + AwardMsgIds]
         push dx
         push ax
         call 0x03A3:LookupMsg

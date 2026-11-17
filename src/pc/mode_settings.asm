@@ -90,8 +90,8 @@ MenuModeSettings:
         jnz short .7
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [energywarn], ax
-        mov [g_48CE], ax
-        mov [g_48E4], ax
+        mov [lcsel], ax
+        mov [hudredraw], ax
         mov [lcboxon], ax
         mov bx, 0xb553
 .5:

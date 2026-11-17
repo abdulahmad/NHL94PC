@@ -114,7 +114,7 @@ DrawPanelLine:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
 .2:
         mov [bp - 0x2], ax
-        cmp word [g_5642], 0x4
+        cmp word [hudlinehome], 0x4
         jnl short .3
         mov ax, 0x1
         jmp short .4
@@ -133,7 +133,7 @@ DrawPanelLine:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
 .6:
         mov [bp - 0x4], ax
-        cmp word [g_5642], 0x6
+        cmp word [hudlinehome], 0x6
         jnl short .7
         mov ax, 0x1
         jmp short .8
@@ -144,9 +144,9 @@ DrawPanelLine:
         xor ax, [bp - 0x4]
         jz short .10
 .9:
-        mov word [g_564A], 0x0
+        mov word [hudlinegroup], 0x0
 .10:
-        mov [g_5642], si
+        mov [hudlinehome], si
         push 0x14
         push word 0xfb
         jmp short .22
@@ -191,7 +191,7 @@ DrawPanelLine:
         xor ax, [bp - 0x8]
         jz short .21
 .20:
-        mov word [g_5648], 0x0
+        mov word [hudlineaway], 0x0
 .21:
         mov [hudhomeline], si
         push 0x14
@@ -249,8 +249,8 @@ PanelAddPenalty:
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov cx, [bp + 0x6]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_5648], ax
-        mov [g_564A], ax
+        mov [hudlineaway], ax
+        mov [hudlinegroup], ax
         db 0x0B, 0xC9                           ; insn: or cx, cx
         jz short .1
         mov bx, 0x55ac
@@ -280,11 +280,11 @@ PanelAddPenalty:
         mov [bx + 0x4], ax
         db 0x0B, 0xC9                           ; insn: or cx, cx
         jz short .5
-        mov [g_563E], ax
+        mov [hudawayredraw], ax
         leave
         retf
 .5:
-        mov [g_563C], ax
+        mov [hudhomeredraw], ax
         leave
         retf
         db 0x90
@@ -381,7 +381,7 @@ UpdateHudPanel:
         push 0x2b
         mov bx, [hudhomeline]
         shl bx, 1
-        mov ax, [bx + g_5550]
+        mov ax, [bx + HudBarLevels2]
         mov cx, 0x1f4
         cwd
         idiv cx
@@ -390,9 +390,9 @@ UpdateHudPanel:
         call DrawEnergyBar
         add sp, 0x4
         push word 0xfc
-        mov bx, [g_5642]
+        mov bx, [hudlinehome]
         shl bx, 1
-        mov ax, [bx + g_5540]
+        mov ax, [bx + HudBarLevels]
         mov cx, 0x1f4
         cwd
         idiv cx
@@ -402,13 +402,13 @@ UpdateHudPanel:
         add sp, 0x4
         cmp word [lcboxon], 0x0
         jnz short .3
-        cmp word [g_563C], 0x0
+        cmp word [hudhomeredraw], 0x0
         jnz short .3
         test byte [gmode], 0x10
         jnz short .3
-        cmp word [g_556C], 0x0
+        cmp word [hudpenhome], 0x0
         jnl short .6
-        mov word [g_563C], 0x1
+        mov word [hudhomeredraw], 0x1
 .3:
         push 0x4a
         push word 0x5550
@@ -418,65 +418,65 @@ UpdateHudPanel:
         push cs
         call DrawLineGroupBars
         add sp, 0xa
-        mov word [g_5644], 0x0
+        mov word [hudclockredraw], 0x0
 .4:
-        cmp word [g_48E4], 0x0
+        cmp word [hudredraw], 0x0
         jz short .5
         jmp near .10
 .5:
-        cmp word [g_563E], 0x0
+        cmp word [hudawayredraw], 0x0
         jnz short .10
         test byte [gmode], 0x10
         jnz short .10
-        cmp word [g_55AC], 0x0
+        cmp word [hudpenaway], 0x0
         jnl short .8
-        mov word [g_563E], 0x1
+        mov word [hudawayredraw], 0x1
         jmp short .10
         db 0x90, 0x90
 .6:
-        cmp word [g_5644], 0x0
+        cmp word [hudclockredraw], 0x0
         jnz short .7
         push word [g_DA2C]
         push word [g_DA2A]
         call 0x0FEF:DrawRleTransFastHere
         add sp, 0x4
-        mov word [g_5644], 0x1
+        mov word [hudclockredraw], 0x1
 .7:
         push 0x48
         push word 0x556c
         push cs
         call DrawPanelPenalties
         add sp, 0x4
-        mov word [g_5648], 0x0
+        mov word [hudlineaway], 0x0
         jmp short .4
         db 0x90
 .8:
-        cmp word [g_5646], 0x0
+        cmp word [hudscoreredraw], 0x0
         jnz short .9
         push word [g_DA30]
         push word [g_DA2E]
         call 0x0FEF:DrawRleTransFastHere
         add sp, 0x4
-        mov word [g_5646], 0x1
+        mov word [hudscoreredraw], 0x1
 .9:
         push word 0xbf
         push word 0x55ac
         push cs
         call DrawPanelPenalties
         add sp, 0x4
-        mov word [g_564A], 0x0
+        mov word [hudlinegroup], 0x0
         retf
         db 0x90
 .10:
         push word 0xc1
         push word 0x5540
-        push word [g_5642]
+        push word [hudlinehome]
         push word 0xda3e
         push word 0x564a
         push cs
         call DrawLineGroupBars
         add sp, 0xa
-        mov word [g_5646], 0x0
+        mov word [hudscoreredraw], 0x0
 .11:
         retf
 
@@ -638,15 +638,15 @@ DrawHudPanel:
         mov ax, [hmtmline]
         mov [hudhomeline], ax
         mov ax, [awtmline]
-        mov [g_5642], ax
+        mov [hudlinehome], ax
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [panelhund], ax
-        mov [g_563E], ax
-        mov [g_563C], ax
-        mov [g_5646], ax
-        mov [g_5644], ax
-        mov [g_564A], ax
-        mov [g_5648], ax
+        mov [hudawayredraw], ax
+        mov [hudhomeredraw], ax
+        mov [hudscoreredraw], ax
+        mov [hudclockredraw], ax
+        mov [hudlinegroup], ax
+        mov [hudlineaway], ax
         call 0x0FEF:UseOffscreenCanvas
         push word 0x3701
         push strict word str_Qpp
@@ -692,7 +692,7 @@ DrawHudPanel:
         jnz short .2
         push 0x16
         push word 0x98
-        push word [g_5602]
+        push word [HudShapeName]
         jmp short .3
         db 0x90
 .2:
@@ -710,7 +710,7 @@ DrawHudPanel:
         idiv cx
         db 0x8B, 0xF8                           ; insn: mov di, ax
         shl di, 1
-        push word [di + g_55EC]
+        push word [di + HudShapeNames]
         push word [bp - 0x2]
         push si
         db 0x8B, 0xFB                           ; insn: mov di, bx
@@ -728,7 +728,7 @@ DrawHudPanel:
         idiv cx
         db 0x8B, 0xDA                           ; insn: mov bx, dx
         shl bx, 1
-        push word [bx + g_55EC]
+        push word [bx + HudShapeNames]
 .3:
         push word [bp - 0x2]
         push si
@@ -771,7 +771,7 @@ DrawHudPanel:
         push 0x4
         mov bx, [bp + 0x6]
         shl bx, 1
-        push word [bx + g_5604]
+        push word [bx + CrestShapeNames]
         mov ax, [bp - 0x2]
         push ax
         push si
@@ -790,7 +790,7 @@ DrawHudPanel:
         push word 0x11c
         mov bx, [bp + 0x8]
         shl bx, 1
-        push word [bx + g_5604]
+        push word [bx + CrestShapeNames]
         push di
         push si
         call 0x03A3:FindFarMsg
@@ -816,7 +816,7 @@ DrawHudPanel:
         add sp, 0x8
         push 0x14
         push word 0xfb
-        mov bx, [g_5642]
+        mov bx, [hudlinehome]
         shl bx, byte 0x2
         push word [bx + g_DA0C]
         push word [bx + g_DA0A]
@@ -1184,7 +1184,7 @@ DrawEnergyBar:
         db 0x2B, 0xDB                           ; insn: sub bx, bx
 .2:
         shl bx, 1
-        cmp word [bx + g_48CA], 0x0
+        cmp word [bx + energywarnteam], 0x0
         jz short .3
         mov si, [bp + 0x6]
         push 0x0
@@ -1270,7 +1270,7 @@ DrawLineGroupBars:
         jz short .3
         mov bx, [bp - 0xa]
         shl bx, 1
-        mov ax, [bx + g_48DA]
+        mov ax, [bx + lcgroup]
         jmp short .4
         db 0x90
 .3:
@@ -1356,7 +1356,7 @@ DrawLineGroupBars:
         jnz short .15
         mov bx, [bp - 0xa]
         shl bx, 1
-        cmp word [bx + g_48CE], 0x0
+        cmp word [bx + lcsel], 0x0
         jz short .15
         mov word [bp - 0x4], 0x61
         jmp short .18

@@ -858,13 +858,13 @@ StandingsMenuLoop:
         sar ax, 1
         mov [bp - 0x4e], ax
         mov [bp - 0x1a], ax
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jz short .1
         jmp near .6
 .1:
         mov word [bp - 0x50], 0x0
 .2:
-        mov ax, [g_21BA]
+        mov ax, [statsmenusel]
         mov bx, [bp - 0x50]
         shl bx, 1
         cmp [bx + g_CEE8], ax
@@ -918,7 +918,7 @@ StandingsMenuLoop:
         jmp short .7
         db 0x90
 .6:
-        mov bx, [g_21BA]
+        mov bx, [statsmenusel]
         mov [bp - 0x3a], bx
         shl bx, 1
         cmp word [bx + playofftree], 0x18
@@ -977,7 +977,7 @@ StandingsMenuLoop:
         jmp near .22
 .11:
         mov word [bp - 0x56], 0x0
-        cmp word [g_200E], 0x1
+        cmp word [statscontext], 0x1
         jz short .12
         jmp near .19
 .12:
@@ -1154,7 +1154,7 @@ StandingsMenuLoop:
         dec word [bp - 0x50]
         jns short .26
         mov word [bp - 0x2e], 0x0
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .28
         mov bx, [bp - 0x3a]
         shl bx, 1
@@ -1170,7 +1170,7 @@ StandingsMenuLoop:
         mov [statscategory], ax
         mov ax, [bp - 0x3a]
 .29:
-        mov [g_21BA], ax
+        mov [statsmenusel], ax
         push strict word str_Pntr_7
         push word [MemBlock1Seg]
         push word [MemBlock1Off]
@@ -1229,7 +1229,7 @@ StandingsMenuLoop:
         leave
         retf
 .30:
-        cmp [g_200E], ax
+        cmp [statscontext], ax
         jz short .31
         jmp near .36
 .31:
@@ -1289,7 +1289,7 @@ StandingsMenuLoop:
         jmp short .37
         db 0x90
 .36:
-        mov bx, [g_21BA]
+        mov bx, [statsmenusel]
         mov [bp - 0x3a], bx
         shl bx, 1
         cmp word [bx + playofftree], 0x18
@@ -1590,7 +1590,7 @@ StandingsMenuLoop:
         jnz short .50
         jmp near .59
 .50:
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jz short .51
         jmp near .56
 .51:
@@ -1692,7 +1692,7 @@ StandingsMenuLoop:
         add sp, 0x4
         jmp near .21
 .59:
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jz short .60
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
@@ -1724,7 +1724,7 @@ StandingsMenuLoop:
         dec word [bp - 0x50]
         jns short .61
         mov word [bp - 0x2e], 0x0
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .63
         mov bx, [bp - 0x3a]
         shl bx, 1
@@ -1739,7 +1739,7 @@ StandingsMenuLoop:
         mov [statscategory], ax
         mov ax, [bp - 0x3a]
 .64:
-        mov [g_21BA], ax
+        mov [statsmenusel], ax
         call 0x2248:StandingsActRoster2
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [bp - 0x3e], ax

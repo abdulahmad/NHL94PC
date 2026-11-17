@@ -3949,7 +3949,7 @@ RequestLineChange:
         db 0x8B, 0xDE                           ; insn: mov bx, si
         shl bx, 1
         mov [bp - 0x2], bx
-        mov word [bx + g_48D6], 0x0
+        mov word [bx + lcchoice], 0x0
         db 0x0B, 0xF6                           ; insn: or si, si
         jng short .1
         mov bx, 0xb438
@@ -3966,25 +3966,25 @@ RequestLineChange:
         db 0x8B, 0xDE                           ; insn: mov bx, si
         shl bx, 1
         mov [bp - 0x2], bx
-        mov word [bx + g_48D6], 0x1
+        mov word [bx + lcchoice], 0x1
         mov ax, [regd0]
 .4:
-        mov [bx + g_48DA], ax
+        mov [bx + lcgroup], ax
         mov bx, [bp - 0x2]
-        mov word [bx + g_48DE], 0x3c
+        mov word [bx + lctime], 0x3c
         mov word [bx + lcblink], 0xc
         mov ax, 0x1
-        mov [bx + g_48CE], ax
+        mov [bx + lcsel], ax
         mov [bx + lcboxon], ax
         db 0x0B, 0xF6                           ; insn: or si, si
         jz short .5
-        mov word [g_564A], 0x0
+        mov word [hudlinegroup], 0x0
         pop si
         pop di
         leave
         retf
 .5:
-        mov word [g_5648], 0x0
+        mov word [hudlineaway], 0x0
         pop si
         pop di
         leave
@@ -4117,7 +4117,7 @@ Endfaceoff:
         mov al, [bx + g_B555]
         cbw
         imul bx, ax, 0x14
-        mov es, [g_8CDA]
+        mov es, [segWorkBuffer59]
         db 0x8B, 0xF7                           ; insn: mov si, di
         shl si, byte 0x7
         mov al, [si + g_B555]
@@ -4176,12 +4176,12 @@ Endfaceoff:
         shl word [regd0], 1
         mov bx, [regd0]
         shl bx, 1
-        mov ax, [bx + g_29E0]
+        mov ax, [bx + dirtab0]
         shl ax, byte 0x5
         mov [si + 0xc], ax
         mov bx, [regd0]
         shl bx, 1
-        mov ax, [bx + g_29E2]
+        mov ax, [bx + dirtab_x]
         shl ax, byte 0x5
         add ax, [regd4]
         mov [si + 0xe], ax
@@ -5648,10 +5648,10 @@ assrefgoalpa:
 .9:
         cmp word [bp - 0xa], 0x0
         jz short .10
-        mov ax, [g_29CC]
+        mov ax, [VisTeamNum]
         jmp short .11
 .10:
-        mov ax, [g_29CA]
+        mov ax, [HomeTeamNum]
 .11:
         mov [bp - 0x6], ax
         cmp ax, strict word 0x18

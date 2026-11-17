@@ -13,12 +13,12 @@ SetupStatsMenus:
         mov cx, [bp + 0x6]
         db 0x0B, 0xC9                           ; insn: or cx, cx
         jnz short .3
-        mov es, [g_8C32]
+        mov es, [segDbFiles15]
         mov al, [es:0x64]
         mov [bp - 0x8], al
         db 0x0A, 0xC0                           ; insn: or al, al
         jz short .1
-        mov es, [g_8C34]
+        mov es, [segDbFiles16]
         cmp byte [es:0xc6], 0x0
         jnz short .3
 .1:
@@ -28,7 +28,7 @@ SetupStatsMenus:
         jmp short .3
         db 0x90
 .2:
-        mov es, [g_8C34]
+        mov es, [segDbFiles16]
         cmp byte [es:0xc6], 0x1
         db 0x1B, 0xC9                           ; insn: sbb cx, cx
         and cl, 0xfe
@@ -90,12 +90,12 @@ SetupStatsMenus:
         mov es, [g_8C36]
         mov [es:0x13], al
         mov [es:0x0], al
-        mov word [g_2010], 0x1
-        cmp word [g_200E], 0x0
+        mov word [statsseason], 0x1
+        cmp word [statscontext], 0x0
         jz short .8
-        mov word [g_21BA], 0x0
+        mov word [statsmenusel], 0x0
 .8:
-        mov word [g_200E], 0x0
+        mov word [statscontext], 0x0
         jmp short .11
 .9:
         les bx, [bp - 0x10]
@@ -110,16 +110,16 @@ SetupStatsMenus:
         mov es, [g_8C36]
         mov [es:0x13], al
         mov [es:0x0], al
-        mov word [g_2010], 0x1
-        cmp word [g_200E], 0x0
+        mov word [statsseason], 0x1
+        cmp word [statscontext], 0x0
         jnz short .10
-        mov word [g_21BA], 0x0
+        mov word [statsmenusel], 0x0
 .10:
-        mov word [g_200E], 0x1
+        mov word [statscontext], 0x1
 .11:
         push 0x1f
         push word 0x3415
-        push strict word f_3415_00C6
+        push strict word lgstate_name
         jmp short .14
 .12:
         les bx, [bp - 0x14]
@@ -134,15 +134,15 @@ SetupStatsMenus:
         mov es, [g_8C36]
         mov [es:0x13], al
         mov [es:0x0], al
-        mov word [g_2010], 0x1
-        cmp word [g_200E], 0x0
+        mov word [statsseason], 0x1
+        cmp word [statscontext], 0x0
         jnz short .13
-        mov word [g_21BA], 0x0
+        mov word [statsmenusel], 0x0
 .13:
-        mov word [g_200E], 0x1
+        mov word [statscontext], 0x1
         push 0x1f
         push word 0x3415
-        push strict word f_3415_0064
+        push strict word postate_name
 .14:
         push word 0x3861
         push strict word 0x0
@@ -163,15 +163,15 @@ SetupStatsMenus:
         mov [es:0x3d], al
         mov [es:0x29], al
         mov [es:0x13], al
-        mov word [g_2010], 0x0
-        cmp word [g_200E], 0x0
+        mov word [statsseason], 0x0
+        cmp word [statscontext], 0x0
         jz short .17
-        mov word [g_21BA], 0x0
+        mov word [statsmenusel], 0x0
 .17:
-        mov word [g_200E], 0x0
+        mov word [statscontext], 0x0
         push 0x1f
         push word 0x3415
-        push strict word f_3415_0002
+        push strict word exhstate_name
         push word 0x3861
         push strict word 0x0
         call 0x03A3:CopyStrNFar
@@ -211,15 +211,15 @@ SetupStatsMenus:
         mov es, [g_8C36]
         mov [es:0x13], al
         mov [es:0x0], al
-        mov word [g_2010], 0x1
-        cmp word [g_200E], 0x0
+        mov word [statsseason], 0x1
+        cmp word [statscontext], 0x0
         jnz short .21
-        mov word [g_21BA], 0x0
+        mov word [statsmenusel], 0x0
 .21:
-        mov word [g_200E], 0x1
+        mov word [statscontext], 0x1
         push 0x1f
         push word 0x3415
-        push strict word f_3415_0064
+        push strict word postate_name
         push word 0x3861
         push strict word 0x0
         call 0x03A3:CopyStrNFar
@@ -268,12 +268,12 @@ SetupStatsMenus:
         mov es, [g_8C36]
         mov [es:0x13], al
         mov [es:0x0], al
-        mov word [g_2010], 0x1
-        cmp word [g_200E], 0x0
+        mov word [statsseason], 0x1
+        cmp word [statscontext], 0x0
         jnz short .25
-        mov word [g_21BA], 0x0
+        mov word [statsmenusel], 0x0
 .25:
-        mov word [g_200E], 0x1
+        mov word [statscontext], 0x1
         jmp short .28
         db 0x90
 .26:
@@ -287,16 +287,16 @@ SetupStatsMenus:
         mov es, [g_8C36]
         mov [es:0x13], al
         mov [es:0x0], al
-        mov word [g_2010], 0x1
-        cmp word [g_200E], 0x0
+        mov word [statsseason], 0x1
+        cmp word [statscontext], 0x0
         jz short .27
-        mov word [g_21BA], 0x0
+        mov word [statsmenusel], 0x0
 .27:
-        mov word [g_200E], 0x0
+        mov word [statscontext], 0x0
 .28:
         push 0x1f
         push word 0x3415
-        push strict word f_3415_00C6
+        push strict word lgstate_name
         push word 0x3861
         push strict word 0x0
         call 0x03A3:CopyStrNFar
@@ -326,7 +326,7 @@ SetupStatsMenus:
         mov ds, ax
 .33:
         mov [bx], cx
-        mov ax, [f_384B_0094]
+        mov ax, [SeasonTitlePtr]
         lea di, [bx - 0x2]
         mov [di], ax
         add bx, 0x16
@@ -341,27 +341,27 @@ SetupStatsMenus:
         imul bx, si, 0x16
         inc word [es:bx + 0x80]
         db 0x8B, 0xC6                           ; insn: mov ax, si
-        mov es, [g_8C44]
+        mov es, [segTeamChoiceText48]
         mov [es:0x11d5], al
-        mov es, [g_8C46]
+        mov es, [segMenuText22]
         mov [es:0x1960], al
-        mov es, [g_8C48]
+        mov es, [segMenuText23]
         mov [es:0x18b0], al
-        mov es, [g_8C4A]
+        mov es, [segMenuText24]
         mov [es:0x186e], al
-        mov es, [g_8C4C]
+        mov es, [segMenuText25]
         mov [es:0x182c], al
-        mov es, [g_8C4E]
+        mov es, [segMenuText26]
         mov [es:0x1800], al
-        mov es, [g_8C50]
+        mov es, [segMenuText27]
         mov [es:0x17d4], al
-        mov es, [g_8C52]
+        mov es, [segMenuText28]
         mov [es:0x170e], al
-        mov es, [g_8C54]
+        mov es, [segMenuText29]
         mov [es:0x1674], al
-        mov es, [g_8C56]
+        mov es, [segMenuText30]
         mov [es:0x110a], al
-        mov es, [g_8C58]
+        mov es, [segMenuText31]
         mov [es:0xcea], al
         pop si
         pop di
@@ -378,7 +378,7 @@ BuildSeasonTitle:
         enter 0x8, 0x0
         push si
         mov bx, 0x64
-        mov es, [g_8C32]
+        mov es, [segDbFiles15]
         mov [bp - 0x4], bx
         mov [bp - 0x2], es
         cmp byte [es:bx], 0x0
@@ -389,7 +389,7 @@ BuildSeasonTitle:
         call SplitFileExt
         add sp, 0x4
         db 0x8B, 0xD8                           ; insn: mov bx, ax
-        mov es, [g_8C32]
+        mov es, [segDbFiles15]
         db 0x26, 0xC6, 0x87, 0x64, 0x00, 0x00   ; insn: mov byte [es:bx + 0x64], 0x0
         push word [bp - 0x2]
         push word [bp - 0x4]
@@ -407,11 +407,11 @@ BuildSeasonTitle:
         db 0x8B, 0xF0                           ; insn: mov si, ax
         call 0x0000:_fstrcpy
         add sp, 0x8
-        mov es, [g_8C32]
+        mov es, [segDbFiles15]
         db 0x26, 0xC6, 0x84, 0x64, 0x00, 0x2E   ; insn: mov byte [es:si + 0x64], 0x2e
 .1:
         mov bx, 0xc6
-        mov es, [g_8C34]
+        mov es, [segDbFiles16]
         mov [bp - 0x8], bx
         mov [bp - 0x6], es
         cmp byte [es:bx], 0x0
@@ -422,7 +422,7 @@ BuildSeasonTitle:
         call SplitFileExt
         add sp, 0x4
         db 0x8B, 0xD8                           ; insn: mov bx, ax
-        mov es, [g_8C34]
+        mov es, [segDbFiles16]
         mov byte [es:bx + 0xc6], 0x0
         push word [bp - 0x6]
         push word [bp - 0x8]
@@ -455,7 +455,7 @@ BuildSeasonTitle:
         db 0x8B, 0xF0                           ; insn: mov si, ax
         call 0x0000:_fstrcpy
         add sp, 0x8
-        mov es, [g_8C34]
+        mov es, [segDbFiles16]
         mov byte [es:si + 0xc6], 0x2e
 .2:
         pop si
@@ -557,30 +557,30 @@ SetStatsMenuTextJumpTable:                      ; jump table of SetStatsMenuText
         mov bx, 0x6b
 .8:
         mov ax, [bp - 0x8]
-        mov es, [g_8C5A]
+        mov es, [segMenuText32]
         mov [es:0x1770], cx
         mov [es:0x1772], ax
-        mov es, [g_8C5C]
+        mov es, [segMenuText33]
         mov [es:0x172e], cx
         mov [es:0x1730], ax
-        mov es, [g_8C5E]
+        mov es, [segMenuText34]
         mov [es:0x16aa], cx
         mov [es:0x16ac], ax
-        mov es, [g_8C60]
+        mov es, [segMenuText35]
         mov [es:0x167e], cx
         mov [es:0x1680], ax
-        mov es, [g_8C5E]
+        mov es, [segMenuText34]
         mov [es:0x16a6], bx
-        mov es, [g_8C60]
+        mov es, [segMenuText35]
         mov [es:0x167a], bx
         cmp bx, 0x4f
         jnl short .9
         mov bx, 0x4f
 .9:
-        mov es, [g_8C5A]
+        mov es, [segMenuText32]
         mov [es:0x176c], bx
         mov [es:0x1756], bx
         mov [es:0x1740], bx
-        mov es, [g_8C5C]
+        mov es, [segMenuText33]
         mov [es:0x172a], bx
         mov [es:0x1714], bx

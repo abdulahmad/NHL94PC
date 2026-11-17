@@ -155,10 +155,10 @@ SetModeMenuLabels:
         mov ax, 0x306
         mov cx, 0x3448
 .4:
-        mov es, [g_8B5A]
+        mov es, [segMenuText12]
         mov [es:0x1038], ax
         mov [es:0x103a], cx
-        mov es, [g_8B5C]
+        mov es, [segMenuText13]
         mov [es:0x128a], ax
         mov [es:0x128c], cx
         leave

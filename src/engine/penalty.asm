@@ -689,7 +689,7 @@ chkprogress:
         call 0x1E7E:assinsert
         add sp, 0x4
         mov word [pucktemp1], 0x1c20
-        mov byte [g_29D5], 0xff
+        mov byte [refsignal_b1], 0xff
         mov word [refsignal], 0x0
         cmp word [bannertimer], 0x0
         jnz short .7
@@ -953,7 +953,7 @@ checkfornewpen:
         mov al, [bp - 0x1]
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
-        mov al, [bx + g_2A38]
+        mov al, [bx + penkindtab]
         cbw
         db 0x8B, 0xD0                           ; insn: mov dx, ax
         shl dx, byte 0x5
@@ -1009,7 +1009,7 @@ releasepl:
 .3:
         mov si, 0x1
 .4:
-        mov al, [bx + si + g_48AF]
+        mov al, [bx + si + priolist_m1]
         cbw
         mov bx, [bp - 0x2]
         mov [bx + 0x1a], ax

@@ -20,7 +20,7 @@ FadeDirectional:
         jmp near .26
 .2:
         call 0x0FEF:UseCurrentPage
-        mov es, [g_8D02]
+        mov es, [segDgroup25]
         mov ax, [es:0x74fc]
         mov [g_DF6A], ax
         mov ax, [es:0x74fe]

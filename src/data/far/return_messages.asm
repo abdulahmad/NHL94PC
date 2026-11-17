@@ -8,6 +8,6 @@
         db 0x00, 'Do you wish to return?'
         db 0x00, 'Do you wish to exit?'
         db 0x00
-f_36F5_00B3:                                    ; used by MENUS (to name)
+dlgReturnMessages:                                    ; used by MENUS (to name)
         db 0x00, 0x00, 0x00, 0x00
         db 0x6C, 0x00, 0xF5, 0x36, 0x00, 0x00, 0x00, 0x00, 0x00

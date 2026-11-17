@@ -1,114 +1,114 @@
 ; Far data, paragraph 3A0Bh, 48096 bytes: a 48096-byte work buffer (zeros). Used by LoadTeamPalettes,
 ; SeqStepTrack.
-f_3A0B_0000:                                    ; used by AI, INIT (to name)
+HomeSortObjs:                                    ; used by AI, INIT (to name)
         times 500 db 0
-f_3A0B_01F4:                                    ; used by AI, INIT (to name)
+AwaySortObjs:                                    ; used by AI, INIT (to name)
         times 500 db 0
-f_3A0B_03E8:                                    ; used by AI, INIT (to name)
+HomeGlAttr:                                    ; used by AI, INIT (to name)
         times 48 db 0
-f_3A0B_0418:                                    ; used by AI, INIT (to name)
+AwayGlAttr:                                    ; used by AI, INIT (to name)
         times 48 db 0
-f_3A0B_0448:                                    ; used by AI, INIT (to name)
+HomePlStats:                                    ; used by AI, INIT (to name)
         times 2 db 0
-f_3A0B_044A:                                    ; used by AI (to name)
+HomePlStats_w2:                                    ; used by AI (to name)
         times 398 db 0
-f_3A0B_05D8:                                    ; used by AI, INIT (to name)
+AwayPlStats:                                    ; used by AI, INIT (to name)
         times 400 db 0
-f_3A0B_0768:                                    ; used by AI, INIT (to name)
+HomeGlStats:                                    ; used by AI, INIT (to name)
         times 2 db 0
-f_3A0B_076A:                                    ; used by INIT (to name)
+HomeGlStats_w2:                                    ; used by INIT (to name)
         times 2 db 0
-f_3A0B_076C:                                    ; used by INIT (to name)
+HomeGlStats_w4:                                    ; used by INIT (to name)
         times 14 db 0
-f_3A0B_077A:                                    ; used by AI, INIT (to name)
+AwayGlStats:                                    ; used by AI, INIT (to name)
         times 788 db 0
-f_3A0B_0A8E:                                    ; used by AI, GAME, INIT (to name)
+TeamPalette768:                                    ; used by AI, GAME, INIT (to name)
         times 768 db 0
-f_3A0B_0D8E:                                    ; used by AI, INIT, MENUS (to name)
+hilightrec:                                    ; used by AI, INIT, MENUS (to name)
         db 0x00
-f_3A0B_0D8F:                                    ; used by AI, INIT (to name)
+hilightrec_b1:                                    ; used by AI, INIT (to name)
         db 0x00
-f_3A0B_0D90:                                    ; used by AI, INIT (to name)
+hilightrec_b2:                                    ; used by AI, INIT (to name)
         db 0x00
-f_3A0B_0D91:                                    ; used by AI, INIT (to name)
+hilightrec_home:                                    ; used by AI, INIT (to name)
         times 28 db 0
-f_3A0B_0DAD:                                    ; used by AI, INIT (to name)
+hilightrec_b1F:                                    ; used by AI, INIT (to name)
         db 0x00
-f_3A0B_0DAE:                                    ; used by AI, INIT (to name)
+hilightrec_away:                                    ; used by AI, INIT (to name)
         times 28 db 0
-f_3A0B_0DCA:                                    ; used by AI, INIT (to name)
+hilightrec_w3C:                                    ; used by AI, INIT (to name)
         times 2 db 0
-f_3A0B_0DCC:                                    ; used by AI, INIT (to name)
+hilightrec_w3E:                                    ; used by AI, INIT (to name)
         times 2 db 0
-f_3A0B_0DCE:                                    ; used by AI, INIT (to name)
+hilightrec_w40:                                    ; used by AI, INIT (to name)
         times 2 db 0
-f_3A0B_0DD0:                                    ; used by AI, INIT (to name)
+hilightrec_w42:                                    ; used by AI, INIT (to name)
         times 2 db 0
-f_3A0B_0DD2:                                    ; used by AI, INIT (to name)
+hilightrec_w44:                                    ; used by AI, INIT (to name)
         times 2 db 0
-f_3A0B_0DD4:                                    ; used by AI, INIT (to name)
+hilightrec_w46:                                    ; used by AI, INIT (to name)
         times 2 db 0
-f_3A0B_0DD6:                                    ; used by AI, INIT (to name)
+hilightrec_frames:                                    ; used by AI, INIT (to name)
         times 38402 db 0
-f_3A0B_A3D8:                                    ; used by MENUS (to name)
+StatsPalette:                                    ; used by MENUS (to name)
         times 768 db 0
-f_3A0B_A6D8:                                    ; used by MENUS (to name)
+SavedGameNames:                                    ; used by MENUS (to name)
         times 864 db 0
-f_3A0B_AA38:                                    ; used by LP, STATS (to name)
+LeagueTeamNames:                                    ; used by LP, STATS (to name)
         times 504 db 0
-f_3A0B_AC30:                                    ; used by MENUS, STATS (to name)
+POTeamName1:                                    ; used by MENUS, STATS (to name)
         times 21 db 0
-f_3A0B_AC45:                                    ; used by MENUS (to name)
+POTeamName2:                                    ; used by MENUS (to name)
         times 21 db 0
-f_3A0B_AC5A:                                    ; used by LP (to name)
+leagueinfo:                                    ; used by LP (to name)
         times 2 db 0
-f_3A0B_AC5C:                                    ; used by LP (to name)
+leagueinfo_w2:                                    ; used by LP (to name)
         times 2 db 0
-f_3A0B_AC5E:                                    ; used by LP (to name)
+leagueinfo_w4:                                    ; used by LP (to name)
         times 2 db 0
-f_3A0B_AC60:                                    ; used by LP (to name)
+leagueinfo_w6:                                    ; used by LP (to name)
         times 2 db 0
-f_3A0B_AC62:                                    ; used by LP (to name)
+leagueinfo_teams:                                    ; used by LP (to name)
         times 720 db 0
-f_3A0B_AF32:                                    ; used by LP (to name)
+leagueinfo_password:                                    ; used by LP (to name)
         times 12 db 0
-f_3A0B_AF3E:                                    ; used by LP (to name)
+leagueinfo_tail:                                    ; used by LP (to name)
         times 14 db 0
-f_3A0B_AF4C:                                    ; used by INIT, LP, STATS (to name)
+MenuRemap:                                    ; used by INIT, LP, STATS (to name)
         times 128 db 0
-f_3A0B_AFCC:                                    ; used by STATS (to name)
+MenuRemap2:                                    ; used by STATS (to name)
         times 128 db 0
-f_3A0B_B04C:                                    ; used by LP (to name)
+dlgJerseyConflict:                                    ; used by LP (to name)
         times 6 db 0
-f_3A0B_B052:                                    ; used by STATS (to name)
+StatsScreenPalette:                                    ; used by STATS (to name)
         times 204 db 0
-f_3A0B_B11E:                                    ; used by STATS (to name)
+StatsCardBuf:                                    ; used by STATS (to name)
         times 384 db 0
-f_3A0B_B29E:                                    ; used by STATS (to name)
+StatsCardBuf2:                                    ; used by STATS (to name)
         times 180 db 0
-f_3A0B_B352:                                    ; used by AI, GAME, INIT (to name)
+GamePalette:                                    ; used by AI, GAME, INIT (to name)
         times 768 db 0
-f_3A0B_B652:                                    ; used by INIT (to name)
+GameTeamName1:                                    ; used by INIT (to name)
         times 6 db 0
-f_3A0B_B658:                                    ; used by INIT (to name)
+GameTeamName2:                                    ; used by INIT (to name)
         times 6 db 0
-f_3A0B_B65E:                                    ; used by INIT (to name)
+GameTeamWord0:                                    ; used by INIT (to name)
         times 2 db 0
-f_3A0B_B660:                                    ; used by INIT (to name)
+GameTeamWord1:                                    ; used by INIT (to name)
         times 2 db 0
-f_3A0B_B662:                                    ; used by INIT (to name)
+GameTeamWord2:                                    ; used by INIT (to name)
         times 2 db 0
-f_3A0B_B664:                                    ; used by INIT (to name)
+GameTeamWord3:                                    ; used by INIT (to name)
         times 2 db 0
-f_3A0B_B666:                                    ; used by INIT (to name)
+GameTeamWord4:                                    ; used by INIT (to name)
         times 2 db 0
-f_3A0B_B668:                                    ; used by INIT (to name)
+GameTeamWord5:                                    ; used by INIT (to name)
         times 2 db 0
-f_3A0B_B66A:                                    ; used by INIT (to name)
+GameTeamWord6:                                    ; used by INIT (to name)
         times 2 db 0
-f_3A0B_B66C:                                    ; used by INIT (to name)
+GameTeamWord7:                                    ; used by INIT (to name)
         times 2 db 0
-f_3A0B_B66E:                                    ; used by INIT (to name)
+MoviePalette:                                    ; used by INIT (to name)
         times 120 db 0
-f_3A0B_B6E6:                                    ; used by INIT (to name)
+MovieState:                                    ; used by INIT (to name)
         times 1274 db 0

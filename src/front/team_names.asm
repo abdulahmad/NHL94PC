@@ -16,13 +16,13 @@ SetTeamNameText:
         enter 0x30, 0x0
         push di
         push si
-        mov word [bp - 0x8], f_3448_12F0
+        mov word [bp - 0x8], HomeTeamMenuText
         mov word [bp - 0x6], 0x3448
         mov al, [g_AE34]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         imul si, ax, 0x28
         add si, 0xa550
-        mov es, [g_8CC2]
+        mov es, [segMenuText38]
         push word [es:0x12fa]
         push word [es:0x12f8]
         lea ax, [bp - 0x28]
@@ -63,7 +63,7 @@ SetTeamNameText:
         add sp, 0x2
         add ax, strict word 0x5
         mov bx, 0x12f0
-        mov es, [g_8CC2]
+        mov es, [segMenuText38]
         mov [es:bx + 0x4], ax
         lea ax, [bp - 0x28]
         push ss
@@ -120,7 +120,7 @@ SetTeamNameText:
         add sp, 0x2
         add ax, strict word 0x5
         mov bx, 0x12f0
-        mov es, [g_8CC2]
+        mov es, [segMenuText38]
         mov [es:bx + 0x1a], ax
         lea ax, [bp - 0x28]
         push ss
@@ -145,30 +145,30 @@ SetTeamNameText:
         db 0x90
 .5:
         mov bx, 0x12f0
-        mov es, [g_8CC2]
+        mov es, [segMenuText38]
         mov ax, [es:bx + 0x1a]
         mov [es:bx + 0x30], ax
         mov [es:bx + 0x4], ax
 .6:
         cmp word [hmtmgoalie], 0x0
         jnl short .7
-        mov es, [g_8CC2]
+        mov es, [segMenuText38]
         les bx, [es:0x1324]
         jmp short .8
         db 0x90
 .7:
-        mov es, [g_8CC2]
+        mov es, [segMenuText38]
         imul bx, [hmtmgoalie], 0x16
         les bx, [es:bx + 0x12f8]
 .8:
         mov byte [es:bx], 0x1
-        mov word [bp - 0x8], f_3448_1332
+        mov word [bp - 0x8], VisitorTeamMenuText
         mov word [bp - 0x6], 0x3448
         mov al, [g_AE64]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         imul si, ax, 0x28
         add si, 0xa9b0
-        mov es, [g_8CC4]
+        mov es, [segMenuText39]
         push word [es:0x133c]
         push word [es:0x133a]
         lea ax, [bp - 0x28]
@@ -209,7 +209,7 @@ SetTeamNameText:
         add sp, 0x2
         add ax, strict word 0x5
         mov bx, 0x1332
-        mov es, [g_8CC4]
+        mov es, [segMenuText39]
         mov [es:bx + 0x4], ax
         lea ax, [bp - 0x28]
         push ss
@@ -266,7 +266,7 @@ SetTeamNameText:
         add sp, 0x2
         add ax, strict word 0x5
         mov bx, 0x1332
-        mov es, [g_8CC4]
+        mov es, [segMenuText39]
         mov [es:bx + 0x1a], ax
         lea ax, [bp - 0x28]
         push ss
@@ -291,19 +291,19 @@ SetTeamNameText:
         db 0x90
 .13:
         mov bx, 0x1332
-        mov es, [g_8CC4]
+        mov es, [segMenuText39]
         mov ax, [es:bx + 0x1a]
         mov [es:bx + 0x30], ax
         mov [es:bx + 0x4], ax
 .14:
         cmp word [awtmgoalie], 0x0
         jnl short .15
-        mov es, [g_8CC4]
+        mov es, [segMenuText39]
         les bx, [es:0x1366]
         jmp short .16
         db 0x90
 .15:
-        mov es, [g_8CC4]
+        mov es, [segMenuText39]
         imul bx, [awtmgoalie], 0x16
         les bx, [es:bx + 0x133a]
 .16:
@@ -321,36 +321,36 @@ SetTeamNameText:
 ;-----------------------------------------------------------------------------
 ClearTeamNameText:
         push word 0x3448
-        push strict word f_3448_026B
-        mov es, [g_8CC2]
+        push strict word TeamNameTemplate
+        mov es, [segMenuText38]
         push word [es:0x12fa]
         push word [es:0x12f8]
         call 0x0000:_fstrcpy
         add sp, 0x8
         push word 0x3448
-        push strict word f_3448_026B
-        mov es, [g_8CC2]
+        push strict word TeamNameTemplate
+        mov es, [segMenuText38]
         push word [es:0x1310]
         push word [es:0x130e]
         call 0x0000:_fstrcpy
         add sp, 0x8
-        mov es, [g_8CC2]
+        mov es, [segMenuText38]
         les bx, [es:0x1324]
         mov byte [es:bx], 0x2
         push word 0x3448
-        push strict word f_3448_026B
-        mov es, [g_8CC4]
+        push strict word TeamNameTemplate
+        mov es, [segMenuText39]
         push word [es:0x133c]
         push word [es:0x133a]
         call 0x0000:_fstrcpy
         add sp, 0x8
         push word 0x3448
-        push strict word f_3448_026B
-        mov es, [g_8CC4]
+        push strict word TeamNameTemplate
+        mov es, [segMenuText39]
         push word [es:0x1352]
         push word [es:0x1350]
         call 0x0000:_fstrcpy
         add sp, 0x8
-        mov es, [g_8CC4]
+        mov es, [segMenuText39]
         les bx, [es:0x1366]
         mov byte [es:bx], 0x2

@@ -59,12 +59,12 @@ burst:
         sar word [regd0], byte 0x7
         mov bx, [si + 0x36]
         shl bx, byte 0x2
-        mov ax, [bx + g_29E0]
+        mov ax, [bx + dirtab0]
         imul word [regd0]
         add [si + 0xc], ax
         mov bx, [si + 0x36]
         shl bx, byte 0x2
-        mov ax, [bx + g_29E2]
+        mov ax, [bx + dirtab_x]
         imul word [regd0]
         add [si + 0xe], ax
         or byte [si + 0x44], 0x20
@@ -1534,7 +1534,7 @@ dopass:
         mov si, [bp + 0x6]
         mov bx, [passdir]
         shl bx, byte 0x2
-        mov dx, [bx + g_29E2]
+        mov dx, [bx + dirtab_x]
         mov ax, [passspeed]
         call 0x03A3:ImulRegs
         db 0x8A, 0xF2                           ; insn: mov dh, dl
@@ -1552,7 +1552,7 @@ dopass:
         mov [bx], ax
         mov bx, [passdir]
         shl bx, byte 0x2
-        mov dx, [bx + g_29E0]
+        mov dx, [bx + dirtab0]
         mov ax, [passspeed]
         call 0x03A3:ImulRegs
         db 0x8A, 0xF2                           ; insn: mov dh, dl
@@ -2634,10 +2634,10 @@ ChkShotStat:
         inc word [bx]
         test byte [si + 0x44], 0x40
         jnz short .7
-        inc byte [g_01D7]
+        inc byte [gsumtail_shots1]
         jmp short .8
 .7:
-        inc byte [g_01D9]
+        inc byte [gsumtail_shots2]
 .8:
         cmp byte [si + 0x47], 0x19
         jnl short .9

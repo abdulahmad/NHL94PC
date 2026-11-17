@@ -12,12 +12,12 @@ LoadCupFinalSeries:
         push si
         mov ax, 0x3415
         mov es, ax
-        mov si, [g_29CA]
+        mov si, [HomeTeamNum]
         shl si, 1
-        mov ax, [es:si + f_3415_0128]
-        mov si, [g_29CC]
+        mov ax, [es:si + POSeedTable]
+        mov si, [VisTeamNum]
         shl si, 1
-        or ax, [es:si + f_3415_0128]
+        or ax, [es:si + POSeedTable]
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         test al, 0xc
         jnz short .1

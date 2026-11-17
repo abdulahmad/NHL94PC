@@ -95,11 +95,11 @@ LoadRinkTiles:
         db 0x33, 0xC2                           ; insn: xor ax, dx
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         mov [bp - 0x2], ax
-        mov ax, [g_0900]
-        or ax, [g_08FE]
+        mov ax, [RinkTilesSeg]
+        or ax, [RinkTilesPtr]
         jz short .3
-        push word [g_0900]
-        push word [g_08FE]
+        push word [RinkTilesSeg]
+        push word [RinkTilesPtr]
         call 0x06E1:FindUnlink
         add sp, 0x4
 .3:
@@ -107,8 +107,8 @@ LoadRinkTiles:
         push strict word str_RinkMap
         call 0x149D:LoadRawHeader
         add sp, 0x4
-        mov [g_08FE], ax
-        mov [g_0900], dx
+        mov [RinkTilesPtr], ax
+        mov [RinkTilesSeg], dx
         push word [bp - 0x22]
         push strict word str_SMap
         lea ax, [bp - 0x20]
@@ -122,7 +122,7 @@ LoadRinkTiles:
         add sp, 0x4
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov [bp - 0x4], dx
-        les bx, [g_08FE]
+        les bx, [RinkTilesPtr]
         mov ax, [es:bx + 0x2]
         mov [g_B09A], ax
         mov ax, [es:bx]
@@ -396,7 +396,7 @@ DrawRinkBackground:
         db 0x8B, 0xF7                           ; insn: mov si, di
         mov di, [bp - 0x6]
 .2:
-        les bx, [g_08FE]
+        les bx, [RinkTilesPtr]
         push word [es:bx + si]
         push di
         mov ax, [es:bx + si]

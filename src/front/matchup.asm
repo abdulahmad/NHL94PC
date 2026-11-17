@@ -206,11 +206,11 @@ ShowMatchupScreen:
         mov [bp - 0x637], al
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8C8E]
+        mov es, [segTeamChoiceText50]
         push word [es:0xb7e]
         push word [es:0xb7c]
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x58]
         push ss
         push ax
@@ -371,7 +371,7 @@ ShowMatchupScreen:
         add sp, 0x8
         mov word [bp - 0x66], 0x0
 .3:
-        mov es, [g_8C90]
+        mov es, [segLinesMenuText1]
         mov bx, [bp - 0x66]
         shl bx, byte 0x2
         push word [es:bx + 0xbe]
@@ -381,7 +381,7 @@ ShowMatchupScreen:
         imul word [bp - 0x66]
         add ax, strict word 0x1e
         push ax
-        mov es, [g_8C90]
+        mov es, [segLinesMenuText1]
         push word [es:bx + 0xbe]
         push word [es:bx + 0xbc]
         call 0x0D39:TextWidthFar
@@ -405,7 +405,7 @@ ShowMatchupScreen:
         jmp near .6
 .4:
         mov bx, [bp - 0x66]
-        mov bl, [bx + g_4BCE]
+        mov bl, [bx + MatchupOrder]
         db 0x2A, 0xFF                           ; insn: sub bh, bh
         mov si, [bp - 0x2]
         mov al, [bx + si]
@@ -419,7 +419,7 @@ ShowMatchupScreen:
         call 0x0D39:SetTextColors
         add sp, 0x4
         mov bx, [bp - 0x66]
-        mov bl, [bx + g_4BCE]
+        mov bl, [bx + MatchupOrder]
         db 0x2A, 0xFF                           ; insn: sub bh, bh
         mov si, [bp - 0x2]
         mov al, [bx + si]
@@ -446,7 +446,7 @@ ShowMatchupScreen:
         call 0x0D39:SetTextColors
         add sp, 0x4
         mov bx, [bp - 0x66]
-        mov bl, [bx + g_4BCE]
+        mov bl, [bx + MatchupOrder]
         db 0x2A, 0xFF                           ; insn: sub bh, bh
         mov si, [bp - 0xa]
         mov al, [bx + si]
@@ -476,7 +476,7 @@ ShowMatchupScreen:
         mov [bp - 0x2e], ax
         mov [bp - 0x34], ax
         mov bx, [bp - 0x66]
-        mov bl, [bx + g_4BCE]
+        mov bl, [bx + MatchupOrder]
         db 0x2A, 0xFF                           ; insn: sub bh, bh
         mov si, [bp - 0x2]
         mov al, [bx + si]
@@ -497,7 +497,7 @@ ShowMatchupScreen:
         push word [bp - 0x62]
         call 0x03A3:UseCharSeg
         add sp, 0x4
-        mov es, [g_8C92]
+        mov es, [segMenuText37]
         mov ax, [es:0x1172]
         or ax, [es:0x1170]
         jnz short .10
@@ -526,7 +526,7 @@ ShowMatchupScreen:
 .12:
         mov word [bp - 0x650], 0x4
 .13:
-        mov word [bp - 0x64e], f_38AF_0022
+        mov word [bp - 0x64e], MatchupMenu
 .14:
         mov word [bp - 0x64c], 0x38af
         push 0x1
@@ -613,7 +613,7 @@ ShowMatchupScreen:
         push 0x0
         call 0x1B35:FadePaletteInThunk
         add sp, 0x8
-        mov es, [g_8C94]
+        mov es, [segWorkBuffer45]
         cmp word [es:0x78c], 0x3f0
         jnl short .15
         mov al, [bp + 0x8]
@@ -625,7 +625,7 @@ ShowMatchupScreen:
         add sp, 0x4
         jmp short .17
 .15:
-        mov es, [g_8C96]
+        mov es, [segDbFiles18]
         mov bl, [bp + 0x8]
         db 0x2A, 0xFF                           ; insn: sub bh, bh
         shl bx, 1
@@ -636,7 +636,7 @@ ShowMatchupScreen:
         or ax, [es:bx + 0x128]
         mov [bp - 0x32], ax
         mov word [bp - 0x63a], 0x1
-        mov es, [g_8C94]
+        mov es, [segWorkBuffer45]
         cmp word [es:0x78c], 0x428
         jl short .16
         mov word [bp - 0x63a], 0x2
@@ -731,7 +731,7 @@ ShowMatchupScreen:
         jnl short .25
         jmp near .37
 .25:
-        mov es, [g_8C92]
+        mov es, [segMenuText37]
         mov cx, [es:0x1188]
         or cx, [es:0x1186]
         jz short .26
@@ -741,16 +741,16 @@ ShowMatchupScreen:
         mov [bp - 0x648], ax
         jmp near .34
 .27:
-        mov ax, [g_29CC]
-        cmp [g_01B8], ax
+        mov ax, [VisTeamNum]
+        cmp [ctl1team], ax
         jz short .28
-        cmp [g_01BA], ax
+        cmp [ctl2team], ax
         jz short .28
         jmp near .36
 .28:
         push 0x3
         push word 0x3448
-        push strict word f_3448_14D4
+        push strict word MatchupLinesMenu
         push word 0xae40
         push 0x1
         call 0x1B35:GameLineEditorThunk
@@ -803,15 +803,15 @@ ShowMatchupScreen:
         mov word [bp - 0x64], 0x3
         jmp short .36
 .32:
-        mov ax, [g_29CA]
-        cmp [g_01B8], ax
+        mov ax, [HomeTeamNum]
+        cmp [ctl1team], ax
         jz short .33
-        cmp [g_01BA], ax
+        cmp [ctl2team], ax
         jnz short .36
 .33:
         push 0x3
         push word 0x3448
-        push strict word f_3448_14D4
+        push strict word MatchupLinesMenu
         push word 0xae10
         push 0x0
         call 0x1B35:GameLineEditorThunk

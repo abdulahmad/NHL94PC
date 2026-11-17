@@ -471,7 +471,7 @@ CompLine:
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
         shl si, byte 0x2
-        add si, [bx + g_49A6]
+        add si, [bx + CompLineTab]
         mov [bp - 0x6], si
         mov ax, [di + 0x16]
         mov [bp - 0xa], ax
@@ -2390,26 +2390,26 @@ clearteams:
         mov [g_B3FE], al
         mov [g_B4D4], al
         mov word [g_B436], 0xb50e
-        mov word [hmtmsort], f_3A0B_0000
+        mov word [hmtmsort], HomeSortObjs
         mov word [hmtmplattr], 0x3a0b
-        mov word [g_B426], f_3A0B_03E8
+        mov word [g_B426], HomeGlAttr
         mov word [g_B428], 0x3a0b
         mov word [hmtmlines], 0xae10
-        mov word [g_B42A], f_3A0B_0448
+        mov word [g_B42A], HomePlStats
         mov word [g_B42C], 0x3a0b
-        mov word [hmtmglstats], f_3A0B_0768
+        mov word [hmtmglstats], HomeGlStats
         mov word [hmtmroster], 0x3a0b
         mov word [g_B432], 0xa550
         mov word [hmtmptrF2], 0x9f80
         mov word [g_B50C], 0xb80e
-        mov word [awtmsort], f_3A0B_01F4
+        mov word [awtmsort], AwaySortObjs
         mov word [g_B4FA], 0x3a0b
-        mov word [awtmglattr], f_3A0B_0418
+        mov word [awtmglattr], AwayGlAttr
         mov word [awtmlines], 0x3a0b
         mov word [g_B4F6], 0xae40
-        mov word [awtmplstats], f_3A0B_05D8
+        mov word [awtmplstats], AwayPlStats
         mov word [awtmglstats], 0x3a0b
-        mov word [g_B504], f_3A0B_077A
+        mov word [g_B504], AwayGlStats
         mov word [g_B506], 0x3a0b
         mov word [awtmptrF2], 0xa9b0
         mov word [g_B50A], 0xa268
@@ -2468,12 +2468,12 @@ GetPeriodTime:
         mov bl, [AnnouncerFlags]
         and bx, 0xc
         shr bl, 1
-        mov dx, [bx + g_48C2]
+        mov dx, [bx + PerTimeTab]
         test byte [AnnouncerFlags], 0x2
         jz short .1
         cmp word [curperiod], 0x3
         jng short .1
-        mov dx, [g_48C2]
+        mov dx, [PerTimeTab]
 .1:
         db 0x8B, 0xC2                           ; insn: mov ax, dx
         retf
@@ -2746,7 +2746,7 @@ SetPlList:
         dec si
         js short .11
         mov bx, [bp - 0x8]
-        mov al, [bx + si + g_48B0]
+        mov al, [bx + si + priolist]
         cbw
         db 0x8B, 0xD0                           ; insn: mov dx, ax
         mov [si + LinePlayersAway], dl
@@ -3128,8 +3128,8 @@ StartPer:
 .6:
         or byte [gmode2], 0x4
         and byte [sflags], 0xaf
-        mov ax, [g_2986]
-        mov dx, [g_2988]
+        mov ax, [replayptr]
+        mov dx, [replayseg]
         mov [g_D014], ax
         mov [g_D016], dx
         call 0x2038:ReplayRecordReset
@@ -3304,10 +3304,10 @@ periodicevents:
         jz short .2
         jmp near .8
 .2:
-        dec byte [g_4A4F]
+        dec byte [secondframes]
         jns short .8
-        add byte [g_4A4F], 0x18
-        xor byte [g_4A4E], 0x1
+        add byte [secondframes], 0x18
+        xor byte [halfsecflag], 0x1
         call 0x28BB:ChkGoalies
         push cs
         call updatecrowdf
@@ -3331,7 +3331,7 @@ periodicevents:
         jl short .6
         cmp byte [bx + 0x43], 0x0
         jl short .6
-        test byte [g_4A4E], 0x1
+        test byte [halfsecflag], 0x1
         jnz short .7
 .6:
         add bx, 0x80
@@ -3351,7 +3351,7 @@ periodicevents:
 .7:
         mov bx, [bp - 0x2]
         shl bx, 1
-        mov word [bx + g_48CA], 0x1
+        mov word [bx + energywarnteam], 0x1
 .8:
         pop di
         leave
@@ -3591,7 +3591,7 @@ updateplayers:
         push si
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, byte 0x2
-        call far [bx + g_2A52]
+        call far [bx + asstab]
         add sp, 0x2
 .24:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -3845,7 +3845,7 @@ cleargamevars:
         mov [fodir1], ax
         mov [fodir2], ax
         mov [threat], ax
-        mov [g_4A4E], ax
+        mov [halfsecflag], ax
         mov [ltack], ax
         mov [sflags], ax
         mov [gmode2], ax
@@ -3949,7 +3949,7 @@ DrawRinkOverlays:
         call 0x3136:DrawRinkObjects
         cmp word [camy], 0xff50
         jnl short .10
-        mov es, [g_8CE0]
+        mov es, [segDgroup11]
         mov ax, [es:0x74f4]
         mov [bp - 0x28], ax
         mov ax, [g_B098]
@@ -4109,7 +4109,7 @@ DrawRinkOverlays:
         shl ax, byte 0x3
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, 1
-        push word [bx + g_4A2C]
+        push word [bx + RinkOverlayFrames2]
         jmp short .29
         db 0x90
 .28:
@@ -4119,7 +4119,7 @@ DrawRinkOverlays:
         push word [bp - 0x14]
         mov bx, [bp - 0x22]
         shl bx, 1
-        push word [bx + g_4A28]
+        push word [bx + RinkOverlayFrames]
 .29:
         call 0x1E7E:DrawFrameSprite
         add sp, 0xa
@@ -4149,7 +4149,7 @@ DrawRinkOverlays:
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         push word [bx + 0x6]
         push word [bx + 0x2]
-        push word [g_4A2C]
+        push word [RinkOverlayFrames2]
         jmp short .29
 .33:
         mov word [bp - 0x26], 0xbc8e
@@ -4390,7 +4390,7 @@ DrawRinkOverlays:
         cmp word [camy], 0xff50
         jnl short .61
         push word [bp - 0x28]
-        mov es, [g_8CE0]
+        mov es, [segDgroup11]
         mov ax, [es:0x74fc]
         mov bx, [es:0x74f2]
         mov dx, [es:0x74fe]
@@ -4605,8 +4605,8 @@ setupice:
         jnz short .1
 .2:
         mov al, 0xff
-        mov [g_29C3], al
-        mov [g_29C5], al
+        mov [c1playernum_b1], al
+        mov [c2playernum_b1], al
         retf
         db 0x90
 
@@ -5113,14 +5113,14 @@ PeriodOver:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
         mov ax, 0xffff
-        mov [g_48DC], ax
-        mov [g_48DA], ax
+        mov [lcactive], ax
+        mov [lcgroup], ax
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_48CC], ax
-        mov [g_48CA], ax
+        mov [lcrequestteam], ax
+        mov [energywarnteam], ax
         mov [energywarn], ax
-        mov [g_48CE], ax
-        mov [g_48E4], ax
+        mov [lcsel], ax
+        mov [hudredraw], ax
         mov [lcboxon], ax
         cmp word [exitgame], -0x1
         jz short .2

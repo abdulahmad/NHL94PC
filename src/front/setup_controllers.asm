@@ -7,32 +7,32 @@
 ; Calls MouseOpen, MouseMove.
 ;-----------------------------------------------------------------------------
 SetupControllers:
-        cmp word [g_01B8], 0x0
+        cmp word [ctl1team], 0x0
         jnl short .1
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         jmp short .2
         db 0x90
 .1:
-        cmp word [g_01C0], 0x1
+        cmp word [ctl1side], 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         inc ax
         inc ax
 .2:
         mov [cont1team], ax
-        cmp word [g_01BA], 0x0
+        cmp word [ctl2team], 0x0
         jnl short .3
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         jmp short .4
         db 0x90
 .3:
-        cmp word [g_01C2], 0x1
+        cmp word [ctl2side], 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         inc ax
         inc ax
 .4:
         mov [cont2team], ax
-        mov ax, [g_01C0]
-        cmp [g_01C2], ax
+        mov ax, [ctl1side]
+        cmp [ctl2side], ax
         jnz short .5
         mov ax, 0x1
         jmp short .6
@@ -40,7 +40,7 @@ SetupControllers:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
 .6:
         mov [samesideflag], ax
-        mov ax, [g_01BC]
+        mov ax, [ctl1dev]
         cmp ax, strict word 0x10
         jz short .11
         ja short .12
@@ -73,7 +73,7 @@ SetupControllers:
 .11:
         mov byte [PadStates], 0x0
 .12:
-        mov ax, [g_01BE]
+        mov ax, [ctl2dev]
         cmp ax, strict word 0x10
         jz short .17
         ja short .18

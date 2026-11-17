@@ -23,7 +23,7 @@ PickOtherGames:
         enter 0x8, 0x0
         mov bl, [bp + 0x6]
         db 0x2A, 0xFF                           ; insn: sub bh, bh
-        mov al, [bx + g_174C]
+        mov al, [bx + OtherGamesTable]
         mov [bp - 0x6], al
         mov word [bp - 0x2], 0x0
         jmp near .14
@@ -126,7 +126,7 @@ PickOtherGames:
         mov al, [bp - 0x6]
         mov bl, [bx + g_B0B6]
         db 0x2A, 0xFF                           ; insn: sub bh, bh
-        cmp [bx + g_174C], al
+        cmp [bx + OtherGamesTable], al
         jna short .17
 .16:
         mov word [bp - 0x8], 0xffff
@@ -231,15 +231,15 @@ UpdateOtherScores:
 .10:
         cmp word [bp - 0x2], 0x6
         jnl short .11
-        mov bx, [g_29CA]
-        mov al, [bx + g_174C]
+        mov bx, [HomeTeamNum]
+        mov al, [bx + OtherGamesTable]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         mov bx, [bp - 0x2]
         shl bx, 1
         db 0x8B, 0xCB                           ; insn: mov cx, bx
         mov bl, [bx + g_B0B6]
         db 0x2A, 0xFF                           ; insn: sub bh, bh
-        mov dl, [bx + g_174C]
+        mov dl, [bx + OtherGamesTable]
         db 0x2A, 0xF6                           ; insn: sub dh, dh
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         add ax, [bp + 0x6]
@@ -312,9 +312,9 @@ ShowTeamStats:
         enter 0x56, 0x0
         push di
         push si
-        mov ax, [g_29CA]
+        mov ax, [HomeTeamNum]
         mov [bp - 0x52], ax
-        mov ax, [g_29CC]
+        mov ax, [VisTeamNum]
         mov [bp - 0x50], ax
         call 0x0F99:FlushInputEvents
         cmp word [SoundOptions], 0x8
@@ -435,11 +435,11 @@ ShowTeamStats:
         push dx
         push ax
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0000:_fmemcpy
         add sp, 0xa
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0FEF:SetRemapTable
         add sp, 0x4
         push strict word str_City
@@ -458,7 +458,7 @@ ShowTeamStats:
 .4:
         mov bx, [bp - 0x4e]
         shl bx, byte 0x2
-        push word [bx + g_4EC6]
+        push word [bx + TeamStatsLabelPtrs]
         push word [bx + TeamStatsLabels]
         db 0x8B, 0xF3                           ; insn: mov si, bx
         call 0x0D39:TextWidthFar
@@ -469,7 +469,7 @@ ShowTeamStats:
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         sar ax, 1
         mov [bp - 0x42], ax
-        push word [si + g_4EC6]
+        push word [si + TeamStatsLabelPtrs]
         push word [si + TeamStatsLabels]
         push word [bp - 0x4c]
         push ax
@@ -486,7 +486,7 @@ ShowTeamStats:
         mov bx, [bp + si - 0x52]
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         shl bx, 1
-        push word [bx + g_5604]
+        push word [bx + CrestShapeNames]
         push word [bp - 0x22]
         push word [bp - 0x24]
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -504,13 +504,13 @@ ShowTeamStats:
         push dx
         push ax
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0000:_fmemcpy
         add sp, 0xa
-        mov es, [g_8CAE]
+        mov es, [segWorkBuffer50]
         mov byte [es:0xaf8f], 0xd9
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0FEF:SetRemapTable
         add sp, 0x4
         push 0x8

@@ -30,7 +30,7 @@ FadeWipe:
         jmp near .19
 .2:
         call 0x0FEF:UseCurrentPage
-        mov es, [g_8CEC]
+        mov es, [segDgroup14]
         mov di, [es:0x74fc]
         mov ax, [es:0x74fe]
         mov [bp - 0x16], ax
@@ -76,7 +76,7 @@ FadeWipe:
 .9:
         mov [bp - 0xa], ax
 .10:
-        mov es, [g_8CEE]
+        mov es, [segDgroup15]
         cmp word [CurPage], 0x1
         db 0x1B, 0xDB                           ; insn: sbb bx, bx
         neg bx
@@ -86,7 +86,7 @@ FadeWipe:
         mov dx, [es:bx + 0x2]
         mov [bp - 0x32], ax
         mov [bp - 0x30], dx
-        mov es, [g_8CEE]
+        mov es, [segDgroup15]
         mov bx, [CurPage]
         shl bx, byte 0x2
         les bx, [es:bx + 0x7570]
@@ -95,7 +95,7 @@ FadeWipe:
         mov [bp - 0x36], ax
         mov [bp - 0x34], dx
         call 0x0FEF:UseCurrentPage
-        mov es, [g_8CEC]
+        mov es, [segDgroup14]
         mov ax, [es:0x74f6]
         mov [bp - 0x18], ax
         mov word [bp - 0x28], 0x0

@@ -44,7 +44,7 @@ MainDeskLoop:
         mov es, cx
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         mov ax, [es:bx]
-        mov es, [g_8B70]
+        mov es, [segMenuText17]
         add ax, [es:0xd48]
         cwd
         db 0x2B, 0xC2                           ; insn: sub ax, dx
@@ -88,8 +88,8 @@ MainDeskLoop:
         mov word [gameopts], 0x1b35
         mov word [VisTeam], 0x24bd
         mov word [HomeTeam], 0x1b35
-        mov word [g_21D2], 0x219d
-        mov word [g_21D4], 0x1b35
+        mov word [menucbfn], 0x219d
+        mov word [menucbseg], 0x1b35
         call 0x0FEF:GetPage
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .1
@@ -144,7 +144,7 @@ MainDeskLoop:
         push word [DialogData]
         call 0x0FEF:DrawRleTransAt
         add sp, 0x8
-        mov word [g_08FC], 0x50
+        mov word [PlayoffDlgY], 0x50
         push strict word str_Pal_50
         push word [bp - 0x24]
         push word [bp - 0x26]
@@ -867,7 +867,7 @@ SaveModeState:
         push si
         mov si, [bp + 0x6]
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         mov cx, [bp + 0x8]
         mov [bp - 0x4], si
         mov [bp - 0x2], cx
@@ -895,24 +895,24 @@ SaveModeState:
         push ax
         call 0x0000:_fstrcpy
         add sp, 0x8
-        mov ax, [g_29CA]
+        mov ax, [HomeTeamNum]
         les bx, [bp - 0x4]
         mov [es:bx + 0x50], ax
-        mov ax, [g_29CC]
+        mov ax, [VisTeamNum]
         mov [es:bx + 0x52], ax
         mov ax, [CrowdState]
         mov [es:bx + 0x54], ax
-        mov ax, [g_01B8]
+        mov ax, [ctl1team]
         mov [es:bx + 0x56], ax
-        mov ax, [g_01BA]
+        mov ax, [ctl2team]
         mov [es:bx + 0x58], ax
-        mov ax, [g_01BC]
+        mov ax, [ctl1dev]
         mov [es:bx + 0x5a], ax
-        mov ax, [g_01BE]
+        mov ax, [ctl2dev]
         mov [es:bx + 0x5c], ax
-        mov ax, [g_01C0]
+        mov ax, [ctl1side]
         mov [es:bx + 0x5e], ax
-        mov ax, [g_01C2]
+        mov ax, [ctl2side]
         mov [es:bx + 0x60], ax
         pop si
         leave
@@ -938,7 +938,7 @@ LoadModeState:
         push cx
         push si
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         call 0x0000:_fstrcpy
         add sp, 0x8
         mov ax, [bp - 0x4]
@@ -963,24 +963,24 @@ LoadModeState:
         mov ax, [es:bx]
         mov [DbSaveMode], ax
         mov ax, [es:bx + 0x50]
-        mov [g_29CA], ax
+        mov [HomeTeamNum], ax
         mov ax, [es:bx + 0x52]
-        mov [g_29CC], ax
+        mov [VisTeamNum], ax
         mov ax, [es:bx + 0x54]
         mov [CrowdState], ax
         mov ax, [es:bx + 0x56]
-        mov [g_01B8], ax
+        mov [ctl1team], ax
         mov ax, [es:bx + 0x58]
-        mov [g_01BA], ax
+        mov [ctl2team], ax
         mov ax, [es:bx + 0x5a]
-        mov [g_01BC], ax
+        mov [ctl1dev], ax
         mov ax, [es:bx + 0x5c]
-        mov [g_01BE], ax
+        mov [ctl2dev], ax
         mov ax, [es:bx + 0x5e]
-        mov [g_01C0], ax
+        mov [ctl1side], ax
         mov ax, [es:bx + 0x60]
-        mov [g_01C2], ax
-        mov ax, [g_01BC]
+        mov [ctl2side], ax
+        mov ax, [ctl1dev]
         dec ax
         jz short .1
         dec ax
@@ -1002,9 +1002,9 @@ LoadModeState:
         test byte [InputFlags], 0x4
 .4:
         jnz short .5
-        mov word [g_01BC], 0x0
+        mov word [ctl1dev], 0x0
 .5:
-        mov ax, [g_01BE]
+        mov ax, [ctl2dev]
         dec ax
         jz short .6
         dec ax
@@ -1025,74 +1025,74 @@ LoadModeState:
         test byte [InputFlags], 0x4
 .9:
         jnz short .10
-        mov word [g_01BE], 0x0
+        mov word [ctl2dev], 0x0
 .10:
-        cmp word [g_01BC], 0x0
+        cmp word [ctl1dev], 0x0
         jnz short .15
         test byte [InputFlags], 0x2
         jz short .11
-        cmp word [g_01BE], 0x2
+        cmp word [ctl2dev], 0x2
         jz short .11
-        mov word [g_01BC], 0x2
+        mov word [ctl1dev], 0x2
         jmp short .15
 .11:
         test byte [InputFlags], 0x4
         jz short .12
-        cmp word [g_01BE], 0x4
+        cmp word [ctl2dev], 0x4
         jz short .12
-        mov word [g_01BC], 0x4
+        mov word [ctl1dev], 0x4
         jmp short .15
 .12:
         test byte [InputFlags], 0x8
         jz short .13
-        cmp word [g_01BE], 0x8
+        cmp word [ctl2dev], 0x8
         jz short .13
-        mov word [g_01BC], 0x8
+        mov word [ctl1dev], 0x8
         jmp short .15
 .13:
         test byte [InputFlags], 0x1
         jz short .14
-        cmp word [g_01BE], 0x1
+        cmp word [ctl2dev], 0x1
         jz short .14
-        mov word [g_01BC], 0x1
+        mov word [ctl1dev], 0x1
         jmp short .15
 .14:
-        mov word [g_01BC], 0x10
+        mov word [ctl1dev], 0x10
 .15:
-        cmp word [g_01BE], 0x0
+        cmp word [ctl2dev], 0x0
         jnz short .20
         test byte [InputFlags], 0x2
         jz short .16
-        cmp word [g_01BC], 0x2
+        cmp word [ctl1dev], 0x2
         jz short .16
-        mov word [g_01BE], 0x2
+        mov word [ctl2dev], 0x2
         jmp short .20
         db 0x90
 .16:
         test byte [InputFlags], 0x4
         jz short .17
-        cmp word [g_01BC], 0x4
+        cmp word [ctl1dev], 0x4
         jz short .17
-        mov word [g_01BE], 0x4
+        mov word [ctl2dev], 0x4
         jmp short .20
 .17:
         test byte [InputFlags], 0x8
         jz short .18
-        cmp word [g_01BC], 0x8
+        cmp word [ctl1dev], 0x8
         jz short .18
-        mov word [g_01BE], 0x8
+        mov word [ctl2dev], 0x8
         jmp short .20
 .18:
         test byte [InputFlags], 0x1
         jz short .19
-        cmp word [g_01BC], 0x1
+        cmp word [ctl1dev], 0x1
         jz short .19
-        mov word [g_01BE], 0x1
+        mov word [ctl2dev], 0x1
         jmp short .20
 .19:
-        mov word [g_01BE], 0x10
+        mov word [ctl2dev], 0x10
 .20:
-        cmp word [g_01BC], 0x10
+        cmp word [ctl1dev], 0x10
         jnz short .21
         mov ax, 0x1
         jmp short .22
@@ -1100,7 +1100,7 @@ LoadModeState:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
 .22:
         mov [bp - 0x6], ax
-        cmp word [g_01BE], 0x10
+        cmp word [ctl2dev], 0x10
         jnz short .23
         mov ax, 0x1
         jmp short .24
@@ -1110,7 +1110,7 @@ LoadModeState:
 .24:
         xor ax, [bp - 0x6]
         jz short .27
-        cmp word [g_01BC], 0x10
+        cmp word [ctl1dev], 0x10
         jnz short .25
         db 0x2B, 0xDB                           ; insn: sub bx, bx
         mov di, 0x1
@@ -1122,17 +1122,17 @@ LoadModeState:
 .26:
         db 0x8B, 0xF7                           ; insn: mov si, di
         shl si, 1
-        cmp word [si + g_01C0], 0x1
+        cmp word [si + ctl1side], 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         neg ax
         db 0x8B, 0xF3                           ; insn: mov si, bx
         shl si, 1
-        mov [si + g_01C0], ax
+        mov [si + ctl1side], ax
         cmp ax, strict word 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         and ax, strict word 0x1
         add ax, strict word 0xfffe
-        mov [si + g_01B8], ax
+        mov [si + ctl1team], ax
 .27:
         test byte [CrowdState], 0x40
         jz short .28
@@ -1155,9 +1155,9 @@ LoadModeState:
         jz short .32
         jmp near .40
 .32:
-        cmp word [g_29CA], 0x18
+        cmp word [HomeTeamNum], 0x18
         jnl short .34
-        mov bx, [g_29CA]
+        mov bx, [HomeTeamNum]
         shl bx, 1
         mov bx, [bx + TeamNameClips]
         mov [bp - 0x8], bx
@@ -1175,12 +1175,12 @@ LoadModeState:
         push strict word str_Mtl_2
         call 0x03A3:CopyStrNFar
         add sp, 0xa
-        mov es, [g_8B72]
+        mov es, [segMenuText18]
         mov byte [es:0x119], 0x20
         jmp short .36
 .34:
         push 0x3
-        mov bx, [g_29CA]
+        mov bx, [HomeTeamNum]
         shl bx, 1
         push ds
         push word [bx + 0x1e4]
@@ -1190,9 +1190,9 @@ LoadModeState:
         call 0x03A3:CopyStrNFar
         add sp, 0xa
 .36:
-        cmp word [g_29CC], 0x18
+        cmp word [VisTeamNum], 0x18
         jnl short .38
-        mov bx, [g_29CC]
+        mov bx, [VisTeamNum]
         shl bx, 1
         mov bx, [bx + TeamNameClips]
         mov [bp - 0xa], bx
@@ -1211,7 +1211,7 @@ LoadModeState:
         push strict word str_LaAtMtl
         call 0x03A3:CopyStrNFar
         add sp, 0xa
-        mov es, [g_8B72]
+        mov es, [segMenuText18]
         mov byte [es:0x112], 0x20
         pop si
         pop di
@@ -1219,7 +1219,7 @@ LoadModeState:
         retf
 .38:
         push 0x3
-        mov bx, [g_29CC]
+        mov bx, [VisTeamNum]
         shl bx, 1
         push ds
         push word [bx + 0x1e4]
@@ -1247,7 +1247,7 @@ WriteModeState:
         push di
         push si
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         mov ax, [bp + 0x6]
         mov dx, [bp + 0x8]
         inc ax
@@ -1277,23 +1277,23 @@ WriteModeState:
         mov ax, [DbSaveMode]
         les bx, [bp + 0x6]
         mov [es:bx], ax
-        mov ax, [g_29CA]
+        mov ax, [HomeTeamNum]
         mov [es:bx + 0x50], ax
-        mov ax, [g_29CC]
+        mov ax, [VisTeamNum]
         mov [es:bx + 0x52], ax
         mov ax, [CrowdState]
         mov [es:bx + 0x54], ax
-        mov ax, [g_01B8]
+        mov ax, [ctl1team]
         mov [es:bx + 0x56], ax
-        mov ax, [g_01BA]
+        mov ax, [ctl2team]
         mov [es:bx + 0x58], ax
-        mov ax, [g_01BC]
+        mov ax, [ctl1dev]
         mov [es:bx + 0x5a], ax
-        mov ax, [g_01BE]
+        mov ax, [ctl2dev]
         mov [es:bx + 0x5c], ax
-        mov ax, [g_01C0]
+        mov ax, [ctl1side]
         mov [es:bx + 0x5e], ax
-        mov ax, [g_01C2]
+        mov ax, [ctl2side]
         mov [es:bx + 0x60], ax
         cmp word [DbSaveMode], 0x0
         jnz short .1
@@ -1313,7 +1313,7 @@ WriteModeState:
         push ds
         push strict word str_Game_6
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x22]
         push ss
         push ax
@@ -1501,8 +1501,8 @@ MenuNewExhibition:
         mov word [gameopts], 0x1b35
         mov word [VisTeam], 0x24ef
         mov word [HomeTeam], 0x1b35
-        mov word [g_21D2], 0x232d
-        mov word [g_21D4], 0x1b35
+        mov word [menucbfn], 0x232d
+        mov word [menucbseg], 0x1b35
         call 0x1B35:SetupControllersThunk
         cmp [di], si
         jnl short .1
@@ -1510,8 +1510,8 @@ MenuNewExhibition:
         push si
         call 0x1B35:CreateGSummaryDbThunk
         add sp, 0x4
-        push word [g_29CC]
-        push word [g_29CA]
+        push word [VisTeamNum]
+        push word [HomeTeamNum]
         call 0x1B35:ShowMatchupScreenThunk
         add sp, 0x4
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -1666,7 +1666,7 @@ MenuNewExhibition:
         push 0x11
         push 0x3
         push word 0x3448
-        push strict word f_3448_0D44
+        push strict word DeskMenuBar
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
         push word 0x3f00
@@ -1674,7 +1674,7 @@ MenuNewExhibition:
         push word 0x3f00
         call 0x0000:VgaCopyBytes
         add sp, 0x6
-        mov es, [g_8B70]
+        mov es, [segMenuText17]
         mov ax, [es:0xd46]
         add ax, [es:0xd4a]
         cwd
@@ -1691,7 +1691,7 @@ MenuNewExhibition:
         push word [DialogData]
         call 0x0FEF:DrawRleTransAt
         add sp, 0x8
-        mov word [g_08FC], 0x50
+        mov word [PlayoffDlgY], 0x50
         push 0x10
         push strict word str_Pal_48
         push di
@@ -1716,8 +1716,8 @@ MenuNewExhibition:
         mov word [gameopts], 0x1b35
         mov word [VisTeam], 0x24bd
         mov word [HomeTeam], 0x1b35
-        mov word [g_21D2], 0x219d
-        mov word [g_21D4], 0x1b35
+        mov word [menucbfn], 0x219d
+        mov word [menucbseg], 0x1b35
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         pop si
         pop di
@@ -1741,7 +1741,7 @@ MenuNewLeague:
         push cs
         call SaveModeState
         add sp, 0x4
-        mov es, [g_8B78]
+        mov es, [segDbFiles11]
         mov word [es:0xc4], 0x2
         mov word [es:0x114], 0x9
         mov word [es:0x116], 0x7
@@ -1761,23 +1761,23 @@ MenuNewLeague:
         mov es, ax
         test byte [InputFlags], 0x4
         jz short .2
-        mov word [es:f_3415_011E], 0x4
+        mov word [es:lgstate_w5A], 0x4
         jmp short .5
         db 0x90
 .2:
         test byte [InputFlags], 0x8
         jz short .3
-        mov word [es:f_3415_011E], 0x8
+        mov word [es:lgstate_w5A], 0x8
         jmp short .5
 .3:
         test byte [InputFlags], 0x1
         jz short .4
-        mov word [es:f_3415_011E], 0x1
+        mov word [es:lgstate_w5A], 0x1
         jmp short .5
 .4:
-        mov word [es:f_3415_011E], 0x10
+        mov word [es:lgstate_w5A], 0x10
 .5:
-        mov es, [g_8B78]
+        mov es, [segDbFiles11]
         cmp word [es:0x11e], 0x10
         jz short .6
         mov ax, 0x9
@@ -1799,14 +1799,14 @@ MenuNewLeague:
         call 0x2B26:SetLeagueSetImage
         add sp, 0x2
         call 0x1B35:CreateNewLeagueThunk
-        mov es, [g_8B78]
+        mov es, [segDbFiles11]
         cmp byte [es:0xc6], 0x0
         jz short .8
         call 0x1B35:BuildSeasonTitleThunk
         push 0x0
         call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
-        mov es, [g_8B7A]
+        mov es, [segMenuText19]
         mov word [es:0xb6c], strict word MenuExportDbsThunk
         mov word [es:0xb6e], 0x1b35
         mov word [es:0xb82], strict word MenuNextLeagueGameThunk
@@ -1819,7 +1819,7 @@ MenuNewLeague:
         push 0x0
         call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
-        mov es, [g_8B7A]
+        mov es, [segMenuText19]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [es:0xb6e], ax
         mov [es:0xb6c], ax
@@ -1899,7 +1899,7 @@ MenuNewLeague:
         push 0x11
         push 0x3
         push word 0x3448
-        push strict word f_3448_0D44
+        push strict word DeskMenuBar
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
         push word 0x3f00
@@ -2031,7 +2031,7 @@ MenuAddTeam:
         push 0x11
         push 0x3
         push word 0x3448
-        push strict word f_3448_0D44
+        push strict word DeskMenuBar
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
         push word 0x3f00
@@ -2164,7 +2164,7 @@ MenuRemoveTeam:
         push 0x11
         push 0x3
         push word 0x3448
-        push strict word f_3448_0D44
+        push strict word DeskMenuBar
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
         push word 0x3f00
@@ -2292,7 +2292,7 @@ MenuLeagueSettings:
         push 0x11
         push 0x3
         push word 0x3448
-        push strict word f_3448_0D44
+        push strict word DeskMenuBar
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
         push word 0x3f00
@@ -2507,7 +2507,7 @@ MenuMergeUpdateDbs:
         push 0x11
         push 0x3
         push word 0x3448
-        push strict word f_3448_0D44
+        push strict word DeskMenuBar
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
         push word 0x3f00
@@ -2644,7 +2644,7 @@ MenuMergeLeagueFiles:
         push 0x11
         push 0x3
         push word 0x3448
-        push strict word f_3448_0D44
+        push strict word DeskMenuBar
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
         push word 0x3f00
@@ -2813,7 +2813,7 @@ MenuTradePlayers:
         push 0x11
         push 0x3
         push word 0x3448
-        push strict word f_3448_0D44
+        push strict word DeskMenuBar
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
         push word 0x3f00
@@ -2877,7 +2877,7 @@ MenuNextLeagueGame:
         cmp word [bx], 0x0
         jnl short .1
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x26]
         push ss
         push ax
@@ -2923,8 +2923,8 @@ MenuNextLeagueGame:
         mov word [gameopts], 0x1b35
         mov word [VisTeam], 0x24bd
         mov word [HomeTeam], 0x1b35
-        mov word [g_21D2], 0x219d
-        mov word [g_21D4], 0x1b35
+        mov word [menucbfn], 0x219d
+        mov word [menucbseg], 0x1b35
         push 0x0
         call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
@@ -3004,7 +3004,7 @@ MenuNextLeagueGame:
         push 0x11
         push 0x3
         push word 0x3448
-        push strict word f_3448_0D44
+        push strict word DeskMenuBar
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
         push word 0x3f00
@@ -3109,7 +3109,7 @@ MenuLeagueHilights:
         push 0x11
         push 0x3
         push word 0x3448
-        push strict word f_3448_0D44
+        push strict word DeskMenuBar
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
         push word 0x3f00
@@ -3117,7 +3117,7 @@ MenuLeagueHilights:
         push word 0x3f00
         call 0x0000:VgaCopyBytes
         add sp, 0x6
-        mov es, [g_8B70]
+        mov es, [segMenuText17]
         mov ax, [es:0xd46]
         add ax, [es:0xd4a]
         cwd
@@ -3134,7 +3134,7 @@ MenuLeagueHilights:
         push word [DialogData]
         call 0x0FEF:DrawRleTransAt
         add sp, 0x8
-        mov word [g_08FC], 0x50
+        mov word [PlayoffDlgY], 0x50
         push 0x10
         push strict word str_Pal_46
         push di
@@ -3158,7 +3158,7 @@ MenuLeagueHilights:
         retf
         db 0x90
 .3:
-        mov es, [g_8B70]
+        mov es, [segMenuText17]
         mov ax, [es:0xd46]
         add ax, [es:0xd4a]
         cwd
@@ -3316,7 +3316,7 @@ MenuExportDbs:
         push 0x11
         push 0x3
         push word 0x3448
-        push strict word f_3448_0D44
+        push strict word DeskMenuBar
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
         push word 0x3f00

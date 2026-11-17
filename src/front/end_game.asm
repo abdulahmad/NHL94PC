@@ -138,14 +138,14 @@ PlayRandomHighlight:
         db 0x8B, 0xCA                           ; insn: mov cx, dx
         mov ax, 0x1
         shl ax, cl
-        or [g_4FD4], ax
+        or [hilightsplayed], ax
 .2:
         inc dx
         inc bx
         inc bx
         cmp bx, 0xc
         jl short .1
-        cmp word [g_4FD4], 0x3f
+        cmp word [hilightsplayed], 0x3f
         jnz short .3
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         pop si
@@ -160,7 +160,7 @@ PlayRandomHighlight:
         db 0x8B, 0xCE                           ; insn: mov cx, si
         mov ax, 0x1
         shl ax, cl
-        test [g_4FD4], ax
+        test [hilightsplayed], ax
         jz short .5
 .4:
         mov ax, 0x6
@@ -169,13 +169,13 @@ PlayRandomHighlight:
         db 0x8B, 0xCE                           ; insn: mov cx, si
         mov ax, 0x1
         shl ax, cl
-        test [g_4FD4], ax
+        test [hilightsplayed], ax
         jnz short .4
 .5:
         db 0x8B, 0xCE                           ; insn: mov cx, si
         mov ax, 0x1
         shl ax, cl
-        or [g_4FD4], ax
+        or [hilightsplayed], ax
         db 0x8B, 0xDE                           ; insn: mov bx, si
         shl bx, 1
         mov [bp - 0x8], bx
@@ -216,10 +216,10 @@ PlayRandomHighlight:
         add sp, 0xa
         db 0x8B, 0xF8                           ; insn: mov di, ax
         call 0x2137:FreeArenaJingles
-        mov bx, [g_29CC]
+        mov bx, [VisTeamNum]
         shl bx, 1
         push word [bx + TeamNameClips]
-        mov bx, [g_29CA]
+        mov bx, [HomeTeamNum]
         shl bx, 1
         push word [bx + TeamNameClips]
         call 0x0EDC:LoadPlayByPlaySpeech
@@ -298,9 +298,9 @@ EndGameScreens:
 .3:
         cmp word [curperiod], 0x1
         jnz short .5
-        mov word [g_4FD4], 0x0
-        push word [g_29CC]
-        push word [g_29CA]
+        mov word [hilightsplayed], 0x0
+        push word [VisTeamNum]
+        push word [HomeTeamNum]
         call 0x2306:PickOtherGames
         add sp, 0x4
         db 0x2B, 0xF6                           ; insn: sub si, si
@@ -367,10 +367,10 @@ EndGameScreens:
         call 0x1B35:SportsDeskThunk
         add sp, 0x2
         db 0x2A, 0xC0                           ; insn: sub al, al
-        mov [g_01D6], al
-        mov [g_01D7], al
-        mov [g_01D8], al
-        mov [g_01D9], al
+        mov [gsumtail_goals1], al
+        mov [gsumtail_shots1], al
+        mov [gsumtail_goals2], al
+        mov [gsumtail_shots2], al
         call 0x1B35:WriteGSumHeaderThunk
         pop si
         pop di
@@ -485,5 +485,5 @@ IntermissionScreens:
         push 0x2
         call 0x1B35:SportsDeskThunk
         add sp, 0x2
-        mov es, [g_8CB0]
+        mov es, [segDbFiles20]
         mov word [es:0x126], 0x1

@@ -14,7 +14,7 @@ LoadArenaJingles:
         enter 0x26, 0x0
         push di
         push si
-        mov bx, [g_29CA]
+        mov bx, [HomeTeamNum]
         cmp bx, 0x18
         jl short .1
         mov bx, 0xd
@@ -127,13 +127,13 @@ LoadArenaJingles:
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, 1
         db 0x03, 0xDE                           ; insn: add bx, si
-        mov al, [bx + f_38BD_01F3]
+        mov al, [bx + JingleIndex]
         cbw
         mov cx, 0x38bd
         mov es, cx
         mov bx, [bp - 0x4]
         shl bx, 1
-        cmp ax, [es:bx + f_38BD_028F]
+        cmp ax, [es:bx + JingleTable]
         jnz short .10
         db 0x2B, 0xFF                           ; insn: sub di, di
 .10:
@@ -303,7 +303,7 @@ LoadArenaJingles:
         mov [ArenaJingleBSeg], dx
         push word 0x3701
         push strict word str_Kms
-        mov bx, [g_29CA]
+        mov bx, [HomeTeamNum]
         mov al, [bx + teamrocktune]
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
@@ -327,7 +327,7 @@ LoadArenaJingles:
         mov [g_B2F4], dx
         push word 0x3701
         push strict word str_Cfg
-        mov bx, [g_29CA]
+        mov bx, [HomeTeamNum]
         mov al, [bx + teamrocktune]
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax

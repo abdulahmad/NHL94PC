@@ -327,7 +327,7 @@ TitleScreen:
         mov [bp - 0x20], ax
         mov [bp - 0x22], ax
         push word 0x3f00
-        mov es, [g_8B24]
+        mov es, [segDgroup2]
         les bx, [es:0x7570]
         push word [es:bx]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -336,7 +336,7 @@ TitleScreen:
         call 0x0000:VgaCopyBytes
         add sp, 0x6
         push word 0x3f00
-        mov es, [g_8B24]
+        mov es, [segDgroup2]
         les bx, [es:0x7574]
         push word [es:bx]
         push 0x0
@@ -362,7 +362,7 @@ TitleScreen:
         push word [bp - 0x20]
         push 0x5a
         push 0x14
-        mov es, [g_8B24]
+        mov es, [segDgroup2]
         cmp word [CurPage], 0x1
         db 0x1B, 0xDB                           ; insn: sbb bx, bx
         neg bx
@@ -710,7 +710,7 @@ GoodnightScreen:
         cmp bx, 0xc8
         ja short .8
 .7:
-        mov es, [g_8B26]
+        mov es, [segCredits1]
         mov si, [bp - 0x66]
         shl si, byte 0x2
         mov ax, [es:si + 0x5cf]
@@ -727,7 +727,7 @@ GoodnightScreen:
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         sar ax, 1
         mov [bp - 0x50], ax
-        mov es, [g_8B26]
+        mov es, [segCredits1]
         push word [es:si + 0x5cf]
         push word [es:si + 0x5cd]
         push word [bp - 0x64]

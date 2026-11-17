@@ -31,13 +31,13 @@ FreeGameMemory:
         push word [g_D6D4]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        push word [g_0900]
-        push word [g_08FE]
+        push word [RinkTilesSeg]
+        push word [RinkTilesPtr]
         call 0x06E1:FindUnlink
         add sp, 0x4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_0900], ax
-        mov [g_08FE], ax
+        mov [RinkTilesSeg], ax
+        mov [RinkTilesPtr], ax
         push word [g_C25A]
         push word [g_C258]
         call 0x06E1:FindUnlink
@@ -76,7 +76,7 @@ FreeGameMemory:
         push word [HeapSizeLo]
         call 0x03A3:UseCharSeg
         add sp, 0x4
-        mov word [g_08FC], 0x50
+        mov word [PlayoffDlgY], 0x50
         retf
         db 0x90
 
@@ -87,24 +87,24 @@ FreeGameMemory:
 ; Calls FindUnlink. Far routine (retf).
 ;-----------------------------------------------------------------------------
 FreePPVFiles:
-        push word [g_4A58]
+        push word [photobankf_w2]
         push word [photobankf]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        push word [g_4A5C]
-        push word [g_4A5A]
+        push word [photobankf_w6]
+        push word [photobankf_w4]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        push word [g_4A60]
-        push word [g_4A5E]
+        push word [photobankf_wA]
+        push word [photobankf_w8]
         call 0x06E1:FindUnlink
         add sp, 0x4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_4A60], ax
-        mov [g_4A5E], ax
-        mov [g_4A5C], ax
-        mov [g_4A5A], ax
-        mov [g_4A58], ax
+        mov [photobankf_wA], ax
+        mov [photobankf_w8], ax
+        mov [photobankf_w6], ax
+        mov [photobankf_w4], ax
+        mov [photobankf_w2], ax
         mov [photobankf], ax
         retf
         db 0x90

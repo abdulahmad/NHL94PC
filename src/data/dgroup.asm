@@ -78,44 +78,44 @@ CrowdState:                                     ; bit 80h tested by the crowd ro
 AnnouncerFlags:                                 ; bit 80h set while the announcer talks; used by
                                                 ; AnnounceOneMinute, AnnouncerBusy, AnnounceGoal ...
         db 0x7B
-g_01B8:                                         ; used by AI, INIT, MENUS (to name)
+ctl1team:                                         ; used by AI, INIT, MENUS (to name)
         db 0xFF, 0xFF
-g_01BA:                                         ; used by AI, INIT, MENUS (to name)
+ctl2team:                                         ; used by AI, INIT, MENUS (to name)
         db 0xFE, 0xFF
-g_01BC:                                         ; used by AI, INIT, MENUS (to name)
+ctl1dev:                                         ; used by AI, INIT, MENUS (to name)
         db 0x10, 0x00
-g_01BE:                                         ; used by AI, INIT, MENUS (to name)
+ctl2dev:                                         ; used by AI, INIT, MENUS (to name)
         db 0x10, 0x00
-g_01C0:                                         ; used by AI, MENUS (to name)
+ctl1side:                                         ; used by AI, MENUS (to name)
         db 0x00, 0x00
-g_01C2:                                         ; used by AI, MENUS (to name)
+ctl2side:                                         ; used by AI, MENUS (to name)
         db 0x01, 0x00
-g_01C4:                                         ; used by MENUS (to name)
+sndcardmissing:                                         ; used by MENUS (to name)
         db 0x7F, 0x00
 SoundOptions:                                   ; bits 2 and 8 gate crowd and effects; used by
                                                 ; CrowdNoiseUpdate, CrowdNoiseOff, CrowdFadeOut ...
         db 0x10, 0x00
 gsumheader:                                         ; used by AI, INIT (to name)
         db 0x00, 0x00
-g_01CA:                                         ; used by INIT (to name)
+gsumheader_b2:                                         ; used by INIT (to name)
         db 0x00
-g_01CB:                                         ; used by INIT (to name)
+gsumheader_b3:                                         ; used by INIT (to name)
         db 0x00
-g_01CC:                                         ; used by INIT (to name)
+gsumheader_b4:                                         ; used by INIT (to name)
         db 0x00
-g_01CD:                                         ; used by INIT (to name)
+gsumheader_b5:                                         ; used by INIT (to name)
         db 0x00
-g_01CE:                                         ; used by AI, INIT (to name)
+gsumcount:                                         ; used by AI, INIT (to name)
         db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 gsumtail:                                         ; used by AI, INIT (to name)
         db 0x04, 0x00
-g_01D6:                                         ; used by AI, INIT (to name)
+gsumtail_goals1:                                         ; used by AI, INIT (to name)
         db 0x00
-g_01D7:                                         ; used by AI, INIT (to name)
+gsumtail_shots1:                                         ; used by AI, INIT (to name)
         db 0x00
-g_01D8:                                         ; used by AI, INIT (to name)
+gsumtail_goals2:                                         ; used by AI, INIT (to name)
         db 0x00
-g_01D9:                                         ; used by AI, INIT (to name)
+gsumtail_shots2:                                         ; used by AI, INIT (to name)
         db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 TeamNameClips:                                  ; speech clip per team, indexed by team; used by
                                                 ; AnnounceTonightsGame, AnnounceHighlightMatchup,
@@ -535,11 +535,11 @@ MouseRangeX:                                    ; mouse range in x; used by Inpu
         dw 0x0000
 MouseRangeY:                                    ; mouse range in y; used by InputInit, InputShutdown
         db 0x00, 0x00
-g_08FC:                                         ; used by INIT, MENUS (to name)
+PlayoffDlgY:                                         ; used by INIT, MENUS (to name)
         db 0x50, 0x00
-g_08FE:                                         ; used by AI, GAME, INIT (to name)
+RinkTilesPtr:                                         ; used by AI, GAME, INIT (to name)
         db 0x00, 0x00
-g_0900:                                         ; used by AI, GAME, INIT (to name)
+RinkTilesSeg:                                         ; used by AI, GAME, INIT (to name)
         db 0x00, 0x00
         db 'h2', 0x00, 'h3', 0x00
 str_GsummaryDb:                                 ; string 'gsummary.db'; not used in the EXE (overlays may use
@@ -923,11 +923,11 @@ str_Gsummary_4:                                 ; string 'gsummary'; used by MEN
 str_LpGameSav:                                  ; string '.lp\game.sav'; used by MENUS
         db '.lp\game.sav', 0x00
         db 0x6C, 0x32, 0x00
-g_0EDC:                                         ; used by MENUS (to name)
+FileDlgSpecs:                                         ; used by MENUS (to name)
         db 0xDC, 0xC0
-g_0EDE:                                         ; used by MENUS (to name)
+FileDlgSpec2:                                         ; used by MENUS (to name)
         db 0x64, 0xC1
-g_0EE0:                                         ; used by MENUS (to name)
+FileDlgSpec3:                                         ; used by MENUS (to name)
         db 0x54, 0xC0, '*.lp', 0x00
 str_Po_3:                                       ; string '*.po'; used by MENUS
         db '*.po', 0x00
@@ -942,20 +942,20 @@ str_Nhl_4:                                      ; string '.NHL'; not used in the
         db '.PO', 0x00
         db '.LP', 0x00
         db 0x63, 0x32, 0x00
-g_0F10:                                         ; used by MENUS (to name)
+str_AllFiles:                                         ; used by MENUS (to name)
         db '*.*', 0x00
         db 'c3', 0x00, '..', 0x00
         db 'c4', 0x00, 'c5', 0x00
         db 0x63, 0x36, 0x00, 0x00
 msgConfirmDeletionOfThe:                                         ; used by MENUS (to name)
         db 0x80, 0x00, 0x9A, 0x36
-g_0F28:                                         ; used by MENUS (to name)
+DelFileName:                                         ; used by MENUS (to name)
         db 0x00, 0x00
-g_0F2A:                                         ; used by MENUS (to name)
+DelFileNameSeg:                                         ; used by MENUS (to name)
         db 0x00, 0x00
-g_0F2C:                                         ; used by MENUS (to name)
+DelFileName2:                                         ; used by MENUS (to name)
         db 0x00, 0x00
-g_0F2E:                                         ; used by MENUS (to name)
+DelFileName2Seg:                                         ; used by MENUS (to name)
         db 0x00, 0x00
 str_Nhl_5:                                      ; string '.nhl'; used by MENUS
         db '.nhl', 0x00
@@ -973,18 +973,18 @@ str_Dd2:                                        ; string 'dd2'; used by MENUS
 str_GameSav_7:                                  ; string 'game.sav'; used by MENUS
         db 'game.sav', 0x00
         db 0x2E, 0x2E, 0x00, 0x64, 0x35, 0x00, 0x00
-g_0F66:                                         ; used by MENUS (to name)
+SongBuf1:                                         ; used by MENUS (to name)
         db 0x00, 0x00
-g_0F68:                                         ; used by MENUS (to name)
+SongBuf1Seg:                                         ; used by MENUS (to name)
         db 0x00, 0x00
-g_0F6A:                                         ; used by MENUS (to name)
+SongBuf2:                                         ; used by MENUS (to name)
         db 0x00, 0x00
-g_0F6C:                                         ; used by MENUS (to name)
+SongBuf2Seg:                                         ; used by MENUS (to name)
         db 0x00, 0x00
-g_0F6E:                                         ; used by MENUS (to name)
+SongBuf3:                                         ; used by MENUS (to name)
         db 0x00
         db 0x00
-g_0F70:                                         ; used by MENUS (to name)
+SongBufs:                                         ; used by MENUS (to name)
         times 66 db 0
 SfxBankOff:                                     ; effects bank, offset; used by PlaySoundEffect
         dw 0x0000
@@ -994,7 +994,7 @@ SfxBank2Off:                                    ; second effects bank, offset; u
         dw 0x0000
 SfxBank2Seg:                                    ; second effects bank, segment; used by PlaySoundEffect
         db 0x00, 0x00
-g_0FBA:                                         ; used by MENUS (to name)
+SoundDriverLoaded:                                         ; used by MENUS (to name)
         db 0x00, 0x00
 str_30Bgp:                                      ; string '30.BGP'; used by MENUS
         db '30.BGP', 0x00, 0x00
@@ -1047,11 +1047,11 @@ str_Snd_2:                                      ; string 'SND'; used by MENUS
         db 'SND', 0x00
 str_Emmcopybuf:                                 ; string 'emmcopybuf'; used by MENUS
         db 'emmcopybuf', 0x00
-g_106D:                                         ; used by MENUS (to name)
+SoundDevChoice:                                         ; used by MENUS (to name)
         db 0x00
 CrowdChannel:                                   ; crowd noise channel; used by CrowdNoiseUpdate, CrowdNoiseOff
         db 0x00, 0x00
-g_1070:                                         ; used by LP, MENUS (to name)
+SoundDevTable:                                         ; used by LP, MENUS (to name)
         db 0x10, 0x00, 0x01, 0x00, 0x04, 0x00, 0x02, 0x00
         db 0x08, 0x00
         db 'Smythe Divisional Semi-Finals'
@@ -1062,10 +1062,10 @@ g_1070:                                         ; used by LP, MENUS (to name)
         db 0x00, 'Wales Conference Finals'
         db 0x00, 'Stanley Cup Finals'
         db 0x00
-g_1138:                                         ; used by MENUS (to name)
+LockerTextPtrs:                                         ; used by MENUS (to name)
         db 0x7A, 0x10, 0x98, 0x10, 0xB6, 0x10, 0xD5, 0x10
         db 0xF2, 0x10, 0x0D, 0x11, 0x25, 0x11
-g_1146:                                         ; used by MENUS (to name)
+LockerItemTable:                                         ; used by MENUS (to name)
         db 0xFF
         db 0xFF, 0x00, 0x00, 0x01, 0x00, 0x04, 0x00, 0x03, 0x00, 0x06, 0x00, 0x06, 0x00, 0xFF, 0xFF, 0x02
         db 0x00, 0x06, 0x00, 0x06, 0x00, 0xFF, 0xFF, 0x05
@@ -1106,9 +1106,9 @@ str_P01:                                        ; string '!p01'; used by MENUS
 str_0000_3:                                     ; string '0000'; used by MENUS
         db '0000', 0x00, 0x00
         db '%s %d - %d', 0x00, 0x00
-g_11D6:                                         ; used by MENUS (to name)
+POResultFmt:                                         ; used by MENUS (to name)
         db 0xCA, 0x11
-g_11D8:                                         ; used by MENUS (to name)
+LeagueSetChoice:                                         ; used by MENUS (to name)
         db 0xFF, 0xFF
 str_Easndesk_20:                                ; string 'easndesk'; used by MENUS
         db 'easndesk'
@@ -1205,7 +1205,7 @@ str_GameSav_5:                                  ; string '\game.sav'; used by ME
         db 0x5C, 'game.sav', 0x00
 str_Palette_6:                                  ; string 'palette'; used by MENUS
         db 'palette', 0x00
-g_133F:                                         ; used by MENUS (to name)
+str_Space2:                                         ; used by MENUS (to name)
         db 0x20, 0x00
 str_Teeny05Fnt_3:                               ; string 'teeny05.fnt'; used by MENUS
         db 'teeny05.fnt', 0x00
@@ -1457,46 +1457,46 @@ str_EasndeskQpp_3:                              ; string 'easndesk.qpp'; used by
         db 'easndesk.qpp', 0x00
 str_Pal_44:                                     ; string '!pal'; used by LP
         db '!pal', 0x00
-g_16C8:                                         ; used by LP (to name)
+SchedDivTable:                                         ; used by LP (to name)
         db 0x02, 0x05, 0x07, 0x12, 0x15, 0x17, 0x03, 0x04
         db 0x08, 0x11, 0x13
         db 0x14, 0x00, 0x01, 0x06, 0x09, 0x0D, 0x10, 0x0A
         db 0x0B, 0x0C, 0x0E, 0x0F, 0x16
-g_16E0:                                         ; used by LP (to name)
+SchedConfTable:                                         ; used by LP (to name)
         db 0x02, 0x02, 0x00
         db 0x01, 0x01, 0x00, 0x02, 0x00, 0x01, 0x02, 0x03, 0x03, 0x03, 0x02, 0x03, 0x03, 0x02, 0x01, 0x00
         db 0x01, 0x01, 0x00, 0x03, 0x00
-g_16F8:                                         ; used by LP (to name)
+SchedTable3:                                         ; used by LP (to name)
         db 0x00, 0x01, 0x00, 0x00, 0x01, 0x01, 0x02, 0x02
         db 0x02, 0x03, 0x00
         db 0x01, 0x02, 0x04, 0x03, 0x04, 0x05, 0x03, 0x03
         db 0x04, 0x05, 0x04, 0x05, 0x05
-g_1710:                                         ; used by LP (to name)
+POSeedOrder1:                                         ; used by LP (to name)
         db 0x00, 0x00, 0x01
         db 0x01, 0x00, 0x01, 0x00, 0x00
-g_1718:                                         ; used by LP (to name)
+POSeedOrder2:                                         ; used by LP (to name)
         db 0x01, 0x01, 0x00, 0x00, 0x01, 0x00, 0x01, 0x00
-g_1720:                                         ; used by LP (to name)
+SimDayTable:                                         ; used by LP (to name)
         db 0x00, 0x03, 0x01
         db 0x02
-g_1724:                                         ; used by LP (to name)
+POSeriesLenArg:                                         ; used by LP (to name)
         db 0xF0, 0x03
-g_1726:                                         ; used by LP (to name)
+PORoundTable:                                         ; used by LP (to name)
         db 0x28, 0x04, 0x44, 0x04, 0x52, 0x04
-g_172C:                                         ; used by LP (to name)
+POSeriesLenArg2:                                         ; used by LP (to name)
         db 0x08, 0x00
-g_172E:                                         ; used by LP (to name)
+POSeedArgs:                                         ; used by LP (to name)
         db 0x04, 0x00, 0x02, 0x00, 0x01
-g_1733:                                         ; used by LP (to name)
+MonthDays0:                                         ; used by LP (to name)
         db 0x00
-g_1734:                                         ; used by LP (to name)
+MonthDays:                                         ; used by LP (to name)
         db 0x1F, 0x1C, 0x1F, 0x1E, 0x1F, 0x1E, 0x1F, 0x1F
         db 0x1E, 0x1F, 0x1E, 0x1F
-g_1740:                                         ; used by LP (to name)
+MonthStartDay:                                         ; used by LP (to name)
         db 0x05, 0x01, 0x01
         db 0x04, 0x06, 0x02, 0x04, 0x00, 0x03, 0x04, 0x00
         db 0x02
-g_174C:                                         ; used by INIT (to name)
+OtherGamesTable:                                         ; used by INIT (to name)
         db 0x00, 0x00, 0x02, 0x01, 0x00, 0x02, 0x00
         db 0x03, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x03, 0x00, 0x00, 0x03, 0x00
         db 0x01, 0x00, 0x00
@@ -1563,19 +1563,19 @@ str_Cfg_2:                                      ; string '.CFG'; used by LP
         db '.CFG', 0x00
 str_Snd:                                        ; string 'SND'; used by LP
         db 'SND', 0x00, 0x00
-g_1826:                                         ; used by LP (to name)
+SoundCfgSpec:                                         ; used by LP (to name)
         db 0x00, 0x17, '*?LLST', 0x00
 str_Llsn:                                       ; string 'LLSN'; used by LP
         db 'LLSN', 0x00
 str_02d_9:                                      ; string '.%02d'; used by LP
         db '.%02d', 0x00
-g_183A:                                         ; used by LP (to name)
+SimGoalOdds:                                         ; used by LP (to name)
         db 0x00, 0x00, 0x01, 0x00, 0x02, 0x00, 0x03, 0x00
         db 0x00, 0x00
         db 0x01, 0x00, 0x02, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x02, 0x00
         db 0x03, 0x00, 0x00, 0x00, 0x01, 0x00, 0x02, 0x00
         db 0x00, 0x00, 0x01, 0x00, 0x00, 0x00
-g_1862:                                         ; used by LP (to name)
+SimGoalOdds2:                                         ; used by LP (to name)
         db 0x00, 0x00
         db 0x01, 0x00, 0x02, 0x00, 0x00, 0x00, 0x01, 0x00, 0x02, 0x00
         db 0x74, 0x00, 'at', 0x00
@@ -1601,7 +1601,7 @@ str_199:                                        ; string ' 199'; used by LP
         db ' 199', 0x00
         db 0x32, 0x00, 0x33, 0x00
         db 0x25, 0x64, 0x00
-g_18B4:                                         ; used by LP (to name)
+ShapePaletteMap:                                         ; used by LP (to name)
         db 0x3F, 0x19, 0x19, 0x19, 0x19, 0x3F, 0x32, 0x00
         db 0x00
         db '???', 0x00
@@ -1662,7 +1662,7 @@ str_Pnt2_7:                                     ; string 'pnt2'; used by LP
         db 'pnt2', 0x00
 str_Pntr_11:                                    ; string 'pntr'; used by LP
         db 'pntr', 0x00
-g_1994:                                         ; used by LP (to name)
+JerseyDigitGlyphs:                                         ; used by LP (to name)
         db 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x00, 0x00
         db 0x00, 0x01, 0x01
         db 0x01, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x01, 0x01, 0x01, 0x00, 0x00
@@ -1777,21 +1777,21 @@ str_Saved:                                      ; string 'saved'; used by LP
         db 'Season', 0x00
         db 'Playoff', 0x00, 0x00
         db 0x3C, 0x1B, 0x45, 0x1B
-g_1C2C:                                         ; used by LP (to name)
+AwardMsgIds:                                         ; used by LP (to name)
         db 0x4E, 0x1B, 0x53, 0x1B, 0x58, 0x1B, 0x5D, 0x1B
         db 0x62, 0x1B, 0x67, 0x1B, 0x6C
         db 0x1B, 0x71, 0x1B, 0x76, 0x1B, 0x7B, 0x1B
-g_1C40:                                         ; used by LP (to name)
+AwardMsgIds2:                                         ; used by LP (to name)
         db 0x80, 0x1B, 0x85, 0x1B, 0x8A, 0x1B, 0x8F, 0x1B
         db 0x94
         db 0x1B, 0x99, 0x1B, 0x9E, 0x1B, 0xA3, 0x1B, 0xA8
         db 0x1B, 0xAD, 0x1B, 0xB2, 0x1B, 0xB7, 0x1B
-g_1C58:                                         ; used by LP (to name)
+AwardTitleMsg:                                         ; used by LP (to name)
         db 0xBC
         db 0x1B
-g_1C5A:                                         ; used by LP (to name)
+AwardTextY:                                         ; used by LP (to name)
         db 0x53, 0x00
-g_1C5C:                                         ; used by LP (to name)
+AwardTextY2:                                         ; used by LP (to name)
         db 0x85, 0x00
         db 0x6F, 0x00, 0x3A, 0x00
         db 0x66, 0x00, 0x5A, 0x00
@@ -1820,35 +1820,35 @@ g_1C5C:                                         ; used by LP (to name)
         db 0x6F, 0x00, 0x6C, 0x00
         db 0x62, 0x00, 0x1F, 0x00
         db 0x7E, 0x00, 0x3B, 0x00
-g_1CD2:                                         ; used by LP (to name)
+AwardNamePtrs:                                         ; used by LP (to name)
         db 0xC1, 0x1B, 0xC6, 0x1B, 0xCF, 0x1B, 0xD6, 0x1B
         db 0xDC, 0x1B, 0xE3, 0x1B
         db 0xEC, 0x1B, 0xF3, 0x1B, 0xFE, 0x1B, 0x0A, 0x1C
-g_1CE6:                                         ; used by LP (to name)
+AwardKinds:                                         ; used by LP (to name)
         db 0x01, 0x01, 0x01, 0x01, 0x00, 0x00, 0x01, 0x02
         db 0x01
-g_1CEF:                                         ; used by LP (to name)
+AwardsPending:                                         ; used by LP (to name)
         db 0x01
-g_1CF0:                                         ; used by LP (to name)
+AwardWinner:                                         ; used by LP (to name)
         db 0x0E, 0xCA
-g_1CF2:                                         ; used by LP (to name)
+AwardWinner2:                                         ; used by LP (to name)
         db 0x3E, 0xCA
-g_1CF4:                                         ; used by LP (to name)
+AwardWinner3:                                         ; used by LP (to name)
         db 0x6E, 0xCA
-g_1CF6:                                         ; used by LP (to name)
+AwardWinner4:                                         ; used by LP (to name)
         db 0x9E, 0xCA
-g_1CF8:                                         ; used by LP (to name)
+AwardWinner5:                                         ; used by LP (to name)
         db 0xCE, 0xCA
-g_1CFA:                                         ; used by LP (to name)
+AwardWinner6:                                         ; used by LP (to name)
         db 0x04, 0xCB
-g_1CFC:                                         ; used by LP (to name)
+AwardWinner7:                                         ; used by LP (to name)
         db 0x3A, 0xCB
         db 0x00, 0x00
-g_1D00:                                         ; used by LP (to name)
+AwardWinner8:                                         ; used by LP (to name)
         db 0x6A, 0xCB
-g_1D02:                                         ; used by LP (to name)
+AwardWinner9:                                         ; used by LP (to name)
         db 0x9A, 0xCB
-g_1D04:                                         ; used by LP (to name)
+AwardTitlePtrs:                                         ; used by LP (to name)
         db 0x18, 0x1C, 0x1F, 0x1C, 0x25, 0x64, 0x00, 0x00
 str_D02d_2:                                     ; string '%d.%02d'; used by LP
         db '%d.%02d', 0x00
@@ -1868,11 +1868,11 @@ str_Min_3:                                      ; string 'Min'; used by LP
         db 'Min', 0x00
 str_Gaa_3:                                      ; string 'GAA'; used by LP
         db 'GAA', 0x00
-g_1D47:                                         ; used by LP (to name)
+str_AwardsW:                                         ; used by LP (to name)
         db 0x57, 0x00
-g_1D49:                                         ; used by LP (to name)
+str_AwardsL:                                         ; used by LP (to name)
         db 0x4C, 0x00
-g_1D4B:                                         ; used by LP (to name)
+str_AwardsT:                                         ; used by LP (to name)
         db 0x54, 0x00
 str_So_2:                                       ; string 'SO'; used by LP
         db 0x53, 0x4F, 0x00
@@ -1884,15 +1884,15 @@ str_Pct_6:                                      ; string 'Pct'; used by LP
         db 'Pct', 0x00
 str_Gp_8:                                       ; string 'GP'; used by LP
         db 0x47, 0x50, 0x00
-g_1D60:                                         ; used by LP (to name)
+str_AwardsG:                                         ; used by LP (to name)
         db 0x47, 0x00
-g_1D62:                                         ; used by LP (to name)
+str_AwardsA:                                         ; used by LP (to name)
         db 0x41, 0x00
 str_Pt_3:                                       ; string 'Pt'; used by LP
         db 0x50, 0x74, 0x00
 str_Pim_3:                                      ; string 'PIM'; used by LP
         db 'PIM', 0x00
-g_1D6B:                                         ; used by LP (to name)
+str_PlusMinus:                                         ; used by LP (to name)
         db '+/-', 0x00
 str_Ppg_2:                                      ; string 'PPG'; used by LP
         db 'PPG', 0x00
@@ -2003,18 +2003,18 @@ str_Playoff_2:                                  ; string 'Playoff:'; used by LP
         db 'season.db', 0x00
         db 'carteams.db', 0x00
         db 'teams.db', 0x00, 0x00
-g_1F8E:                                         ; used by STATS (to name)
+StandingsHeadPtrs:                                         ; used by STATS (to name)
         db 0xD4, 0x1E, 0xE4, 0x1E, 0xF4, 0x1E
         db 0x03, 0x1F, 0x14, 0x1F, 0x1C, 0x1F, 0x25, 0x1F
         db 0x31, 0x1F, 0x3D, 0x1F, 0x49, 0x1F
-g_1FA2:                                         ; used by STATS (to name)
+StatsDbNames:                                         ; used by STATS (to name)
         db 0x55, 0x1F, 0x5C
         db 0x1F
-g_1FA6:                                         ; used by STATS (to name)
+StatsDbNames2:                                         ; used by STATS (to name)
         db 0x64, 0x1F, 0x6E, 0x1F
-g_1FAA:                                         ; used by STATS (to name)
+StatsDbNames3:                                         ; used by STATS (to name)
         db 0x78, 0x1F
-g_1FAC:                                         ; used by STATS (to name)
+StatsDbName4:                                         ; used by STATS (to name)
         db 0x84, 0x1F
 str_AttDb:                                      ; string 'att.db'; used by STATS
         db 'att.db', 0x00
@@ -2045,9 +2045,9 @@ str_Wittle06Fnt_2:                              ; string 'wittle06.fnt'; not use
                                                 ; it)
 str_Wittle06Fnt_4:                              ; string 'wittle06.fnt'; used by AI
         db 'wittle06.fnt', 0x00, 0x00
-g_200E:                                         ; used by STATS (to name)
+statscontext:                                         ; used by STATS (to name)
         db 0x00, 0x00
-g_2010:                                         ; used by STATS (to name)
+statsseason:                                         ; used by STATS (to name)
         db 0x00, 0x00
 str_Sfh:                                        ; string 'sfh'; used by STATS
         db 'sfh', 0x00
@@ -2106,7 +2106,7 @@ str_R_2:                                        ; string '  R'; used by STATS
         db '  R', 0x00, 0x00
         db '. 9 E P ', 0x5C, ' i o w ~ '
         db 0x92, 0x20
-g_211E:                                         ; used by STATS (to name)
+GoalieCardCols:                                         ; used by STATS (to name)
         db 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08
         db 0x0A, 0x0B, 'Plane 0'
         db 0x00
@@ -2148,23 +2148,23 @@ str_Embpal_12:                                  ; string 'embpal'; used by STATS
         db 'embpal', 0x00
 str_Pal_25:                                     ; string '!pal'; used by STATS
         db '!pal', 0x00, 0x00
-g_21B0:                                         ; used by MENUS, STATS (to name)
+StandingsGfx1:                                         ; used by MENUS, STATS (to name)
         db 0x00, 0x00
-g_21B2:                                         ; used by MENUS, STATS (to name)
+StandingsGfx1Seg:                                         ; used by MENUS, STATS (to name)
         db 0x00, 0x00
-g_21B4:                                         ; used by MENUS, STATS (to name)
+StandingsGfx2:                                         ; used by MENUS, STATS (to name)
         db 0x00, 0x00
-g_21B6:                                         ; used by MENUS, STATS (to name)
+StandingsGfx2Seg:                                         ; used by MENUS, STATS (to name)
         db 0x00, 0x00
 statscategory:                                         ; used by LP, MENUS, STATS (to name)
         db 0x00, 0x00
-g_21BA:                                         ; used by STATS (to name)
+statsmenusel:                                         ; used by STATS (to name)
         times 2 db 0
 statsredrawcb:                                         ; used by LP, MENUS, STATS (to name)
         times 2 db 0
-g_21BE:                                         ; used by LP, MENUS, STATS (to name)
+statsmenucbseg:                                         ; used by LP, MENUS, STATS (to name)
         times 2 db 0
-g_21C0:                                         ; used by STATS (to name)
+statsmenumode:                                         ; used by STATS (to name)
         times 2 db 0
 teamstatscb:                                         ; used by LP, MENUS, STATS (to name)
         times 2 db 0
@@ -2182,9 +2182,9 @@ VisTeam:                                         ; used by LP, MENUS, STATS (to 
         times 2 db 0
 HomeTeam:                                         ; used by LP, MENUS, STATS (to name)
         times 2 db 0
-g_21D2:                                         ; used by LP, MENUS (to name)
+menucbfn:                                         ; used by LP, MENUS (to name)
         times 2 db 0
-g_21D4:                                         ; used by LP, MENUS (to name)
+menucbseg:                                         ; used by LP, MENUS (to name)
         times 2 db 0
 str_Embpal_11:                                  ; string 'embpal'; used by STATS
         db 'embpal', 0x00
@@ -2292,7 +2292,7 @@ str_Pt_2:                                       ; string ' Pt'; used by STATS
         db ' Pt', 0x00
 str_Pim_2:                                      ; string 'PIM'; used by STATS
         db 'PIM', 0x00
-g_2395:                                         ; used by STATS (to name)
+str_PlusMinus2:                                         ; used by STATS (to name)
         db ' +/-', 0x00
 str_Ppg:                                        ; string 'PPG'; used by STATS
         db 'PPG', 0x00
@@ -2314,7 +2314,7 @@ str_R:                                          ; string '  R'; used by STATS
         db '  R', 0x00, 0xA4, 0x22, 0xAA, 0x22, 0xB2, 0x22, 0xB9, 0x22, 0xC4, 0x22, 0xCD, 0x22
         db 0xDB, 0x22, 0xE4, 0x22, 0xEC, 0x22, 0x00
         db 0x23, 0x14, '###-#=#'
-g_23EA:                                         ; used by STATS (to name)
+SkaterCardCols:                                         ; used by STATS (to name)
         db 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07
         db 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x13
 str_KeyDb_2:                                    ; string 'key.db'; used by STATS
@@ -2339,7 +2339,7 @@ str_Shots:                                      ; string 'Shots'; used by STATS
         db 'Shots', 0x00
 str_Pim:                                        ; string 'PIM'; used by STATS
         db 'PIM', 0x00
-g_242F:                                         ; used by STATS (to name)
+str_PlusMinus3:                                         ; used by STATS (to name)
         db ' +/-', 0x00
         db 0x25, 0x63, 0x00
 str_Pos_2:                                      ; string 'Pos'; used by STATS
@@ -2370,11 +2370,11 @@ str_Pct_2:                                      ; string '  PCT'; used by STATS
         db '%c', 0x00, 'LSSCED.DB', 0x00
         db 'SCHEDULE.DB', 0x00
         db 'l$v$'
-g_2486:                                         ; used by MENUS, STATS (to name)
+StandingsRowY:                                         ; used by MENUS, STATS (to name)
         db 0xB8
-g_2487:                                         ; used by MENUS, STATS (to name)
+StandingsSlotEnd:                                         ; used by MENUS, STATS (to name)
         db 0xFF
-g_2488:                                         ; used by MENUS, STATS (to name)
+StandingsSlots:                                         ; used by MENUS, STATS (to name)
         db 0x00, 0x02, 0x04, 0x06, 0x08, 0x0A, 0x0C, 0x0E
         db 0x01, 0x05
         db 0x09, 0x0D, 0xFF, 0xFF, 0xFF, 0xFF, 0x03, 0x0B, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x07, 0xFF
@@ -2382,16 +2382,16 @@ g_2488:                                         ; used by MENUS, STATS (to name)
         db 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x03, 0x0B, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x01, 0x05
         db 0x09, 0x0D, 0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x02
         db 0x04, 0x06, 0x08, 0x0A, 0x0C, 0x0E
-g_24D0:                                         ; used by MENUS, STATS (to name)
+StandingsSlotTeams:                                         ; used by MENUS, STATS (to name)
         db 0x00, 0x01
         db 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x10, 0x11, 0x12, 0x13, 0xFF, 0xFF, 0xFF, 0xFF, 0x18, 0x19
         db 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x1C, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x1E, 0xFF
         db 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x1D, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x1A, 0x1B
         db 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x14, 0x15, 0x16, 0x17, 0xFF, 0xFF, 0xFF, 0xFF, 0x08, 0x09
         db 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F
-g_2518:                                         ; used by STATS (to name)
+StandingsColX:                                         ; used by STATS (to name)
         db 0x05, 0x00, 0x05, 0x00, 0xA5, 0x00, 0xA5, 0x00
-g_2520:                                         ; used by STATS (to name)
+StandingsColW:                                         ; used by STATS (to name)
         db 0x23, 0x00, 0x64, 0x00
         db 0x23, 0x00, 0x64, 0x00
 str_Standings_2:                                ; string ' Standings'; used by STATS
@@ -2428,11 +2428,11 @@ str_CampbellConference:                         ; string 'Campbell Conference'; 
 str_WalesConference:                            ; string 'Wales Conference'; used by STATS
         db 'Wales Conference'
         db 0x00, '..', 0x00
-g_25AE:                                         ; used by STATS (to name)
+str_Space3:                                         ; used by STATS (to name)
         db 0x20, 0x00
-g_25B0:                                         ; used by STATS (to name)
+TeamStatsCmps:                                         ; used by STATS (to name)
         db 0xED, 0x26
-g_25B2:                                         ; used by STATS (to name)
+TeamStatsCmpsSeg:                                         ; used by STATS (to name)
         db 0x35, 0x1B, 0xF7, 0x26, 0x35, 0x1B, 0x01, 0x27
         db 0x35, 0x1B, 0x0B, 0x27, 0x35
         db 0x1B, 0x15, 0x27, 0x35, 0x1B, ' Team Scoring'
@@ -2462,21 +2462,21 @@ str_Gp_2:                                       ; string 'GP'; used by STATS
 str_StatsUnavailable_2:                         ; string 'Stats Unavailable'; used by STATS
         db 'Stats Unavailable'
         db 0x00
-g_2680:                                         ; used by STATS (to name)
+TeamStatsTitles:                                         ; used by STATS (to name)
         db 0xC4, 0x25, 0xD2, 0x25, 0xE0, 0x25, 0xF6, 0x25
         db 0x07, 0x26
-g_268A:                                         ; used by STATS (to name)
+TeamStatsHead1:                                         ; used by STATS (to name)
         db 0x17, 0x26
-g_268C:                                         ; used by STATS (to name)
+TeamStatsHead2:                                         ; used by STATS (to name)
         db 0x1A, 0x26
-g_268E:                                         ; used by STATS (to name)
+TeamStatsHead3:                                         ; used by STATS (to name)
         db 0x1D, 0x26
-g_2690:                                         ; used by STATS (to name)
+TeamStatsHeads:                                         ; used by STATS (to name)
         db ' &$&', 0x27
         db '&*&-&1&5&:&@&A&E&I&O&P&U&[&\&'
-g_26B2:                                         ; used by STATS (to name)
+LeaderCmps:                                         ; used by STATS (to name)
         db 0xD9, 0x26
-g_26B4:                                         ; used by STATS (to name)
+LeaderCmpsSeg:                                         ; used by STATS (to name)
         db 0x35, 0x1B, 0x1F, 0x27, 0x35, 0x1B, 0x29, 0x27
         db 0x35, 0x1B, 0x33, 0x27, 0x35, 0x1B, 0x3D, 0x27
         db 0x35
@@ -2555,19 +2555,19 @@ str_Gp:                                         ; string 'GP'; used by STATS
 str_StatsUnavailable:                           ; string 'Stats Unavailable'; used by STATS
         db 'Stats Unavailable'
         db 0x00, 0x25, 0x63, 0x00, 0x00
-g_28DE:                                         ; used by STATS (to name)
+LeaderTitles:                                         ; used by STATS (to name)
         db 0xDE, 0x26, 0xED, 0x26, 0xFB, 0x26, 0x0B, 0x27
         db 0x24, 0x27, 0x3E, 0x27, 0x52, 0x27, 0x6A, 0x27
         db 0x87, 0x27, 0xA6, 0x27, 0xBE, 0x27
-g_28F4:                                         ; used by STATS (to name)
+LeaderHead1:                                         ; used by STATS (to name)
         db 0xD7, 0x27
-g_28F6:                                         ; used by STATS (to name)
+LeaderHead2:                                         ; used by STATS (to name)
         db 0xDB, 0x27
-g_28F8:                                         ; used by STATS (to name)
+LeaderHead3:                                         ; used by STATS (to name)
         db 0xDF, 0x27
-g_28FA:                                         ; used by STATS (to name)
+LeaderHead4:                                         ; used by STATS (to name)
         db 0xE3, 0x27
-g_28FC:                                         ; used by STATS (to name)
+LeaderHeads:                                         ; used by STATS (to name)
         db 0xE4, 0x27
         db 0xE5, 0x27, 0xE9, 0x27, 0xED, 0x27, 0xF1, 0x27, 0xF2, 0x27, 0xF3, 0x27, 0xF7, 0x27, 0xFB, 0x27
         db 0xFF, 0x27, 0x00, 0x28, 0x01, 0x28, 0x05, 0x28, 0x09, 0x28, 0x0D, 0x28, 0x10, 0x28, 0x11, 0x28
@@ -2578,9 +2578,9 @@ g_28FC:                                         ; used by STATS (to name)
         db 'clap', 0x00
         db 'uflag', 0x00
         db 'cflag', 0x00
-g_2986:                                         ; used by AI, GAME, INIT (to name)
+replayptr:                                         ; used by AI, GAME, INIT (to name)
         db 0xD8, 0x0D
-g_2988:                                         ; used by AI, GAME, INIT (to name)
+replayseg:                                         ; used by AI, GAME, INIT (to name)
         db 0x0B, 0x3A
 puckx:                                         ; used by AI, INIT, MENUS (to name)
         db 0x10, 0xBC
@@ -2642,19 +2642,19 @@ sflags3:                                         ; used by AI, INIT (to name)
         times 2 db 0
 c1playernum:                                         ; used by AI, INIT, MENUS (to name)
         db 0xFF
-g_29C3:                                         ; used by AI (to name)
+c1playernum_b1:                                         ; used by AI (to name)
         db 0xFF
 c2playernum:                                         ; used by AI, INIT, MENUS (to name)
         db 0xFF
-g_29C5:                                         ; used by AI (to name)
+c2playernum_b1:                                         ; used by AI (to name)
         db 0xFF
 cont1team:                                         ; used by AI, INIT, MENUS (to name)
         db 0x00, 0x00
 cont2team:                                         ; used by AI, INIT, MENUS (to name)
         db 0x00, 0x00
-g_29CA:                                         ; used by AI, GAME, INIT, LP, MENUS (to name)
+HomeTeamNum:                                         ; used by AI, GAME, INIT, LP, MENUS (to name)
         db 0x09, 0x00
-g_29CC:                                         ; used by AI, GAME, INIT, LP, MENUS (to name)
+VisTeamNum:                                         ; used by AI, GAME, INIT, LP, MENUS (to name)
         db 0x07, 0x00
 PenCntDwn:                                         ; used by AI, INIT (to name)
         db 0xFF, 0xFF
@@ -2664,7 +2664,7 @@ refsignal:                                         ; used by AI, INIT (to name)
         db 0x00, 0x00
 RefStep:                                         ; used by AI, INIT (to name)
         db 0xFF
-g_29D5:                                         ; used by AI (to name)
+refsignal_b1:                                         ; used by AI (to name)
         db 0xFF
 RefPen:                                         ; used by AI, INIT (to name)
         db 0x00, 0x00
@@ -2676,9 +2676,9 @@ gameclock:                                         ; used by AI, GAME, INIT, MEN
         db 0x00, 0x00
 clockticks:                                         ; used by AI, GAME, INIT (to name)
         db 0x00, 0x00
-g_29E0:                                         ; used by AI (to name)
+dirtab0:                                         ; used by AI (to name)
         db 0x00, 0x00
-g_29E2:                                         ; used by AI (to name)
+dirtab_x:                                         ; used by AI (to name)
         db 0xAF, 0x00, 0x7C, 0x00
         db 0x7C, 0x00, 0xAF, 0x00, 0x00, 0x00
         db 0x7C, 0x00, 0x84, 0xFF, 0x00, 0x00
@@ -2686,7 +2686,7 @@ g_29E2:                                         ; used by AI (to name)
 seed:                                           ; the seed randomd0 steps; the high word is seed+2; used by
                                                 ; randomd0
         dw 0x4321
-g_2A02:                                         ; used by AI, INIT (to name)
+rngseed:                                         ; used by AI, INIT (to name)
         db 0xCD, 0xAB
 pendelaytab:                                         ; used by AI (to name)
         db 0x00, 0x0A, 0x0A, 0x03, 0x01, 0x00, 0x01, 0x01
@@ -2697,11 +2697,11 @@ penmintab:                                         ; used by AI (to name)
         db 0x00, 0x00, 0x00, 0x00
         db 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0xFF
         db 0x05, 0x00, 0x00, 0x00, 0x00, 0x00
-g_2A38:                                         ; used by AI (to name)
+penkindtab:                                         ; used by AI (to name)
         db 0x00, 0x02, 0x02, 0x02, 0x02, 0x00, 0x02, 0x04
         db 0x02, 0x06
         db 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x00, 0x02, 0x02, 0x00
-g_2A52:                                         ; used by AI (to name)
+asstab:                                         ; used by AI (to name)
         db 0x27, 0x29, 0x35, 0x1B, 0x1D, 0x29, 0x35, 0x1B, 0x13, 0x29, 0x35, 0x1B, 0x09, 0x29, 0x35, 0x1B
         db 0xFF, 0x28, 0x35, 0x1B, 0xF5, 0x28, 0x35, 0x1B, 0xEB, 0x28, 0x35, 0x1B, 0xE1, 0x28, 0x35, 0x1B
         db 0xD7, 0x28, 0x35, 0x1B, 0xCD, 0x28, 0x35, 0x1B, 0xC3, 0x28, 0x35, 0x1B, 0xB9, 0x28, 0x35, 0x1B
@@ -3620,9 +3620,9 @@ g_2A52:                                         ; used by AI (to name)
         db 0x00, 0x00, 0x00, 0x00
         db 0x6A, 0x03, 0x0C, 0x00
         db 0x6B, 0x03, 0xF4
-g_48AF:                                         ; used by AI (to name)
+priolist_m1:                                         ; used by AI (to name)
         db 0xFF
-g_48B0:                                         ; used by AI (to name)
+priolist:                                         ; used by AI (to name)
         db 0x00, 0x01, 0x02, 0x04, 0x03, 0x05, 0x06, 0x00
 shownumbers:                                         ; used by AI, GAME, INIT (to name)
         db 0x00, 0x00, 0x00, 0x00
@@ -3632,13 +3632,13 @@ exitgame:                                         ; used by AI, GAME, INIT (to n
         db 0x01, 0x00
 gameover:                                         ; used by AI, GAME, INIT (to name)
         db 0x01, 0x00
-g_48C2:                                         ; used by AI (to name)
+PerTimeTab:                                         ; used by AI (to name)
         db 0x2C, 0x01, 0x58, 0x02, 0xB0, 0x04, 0xB0, 0x04
-g_48CA:                                         ; used by AI, INIT (to name)
+energywarnteam:                                         ; used by AI, INIT (to name)
         db 0x00, 0x00
-g_48CC:                                         ; used by AI, INIT (to name)
+lcrequestteam:                                         ; used by AI, INIT (to name)
         db 0x00, 0x00
-g_48CE:                                         ; used by AI, INIT, MENUS (to name)
+lcsel:                                         ; used by AI, INIT, MENUS (to name)
         db 0x00, 0x00
 energywarn:                                         ; used by AI, INIT, MENUS (to name)
         db 0x00, 0x00
@@ -3646,21 +3646,21 @@ lcblink:                                         ; used by AI, INIT (to name)
         times 2 db 0
 lcblinktime:                                         ; used by INIT (to name)
         times 2 db 0
-g_48D6:                                         ; used by AI, INIT (to name)
+lcchoice:                                         ; used by AI, INIT (to name)
         times 2 db 0
-g_48D8:                                         ; used by INIT (to name)
+lcstate:                                         ; used by INIT (to name)
         times 2 db 0
-g_48DA:                                         ; used by AI, INIT (to name)
+lcgroup:                                         ; used by AI, INIT (to name)
         times 2 db 0
-g_48DC:                                         ; used by AI, INIT (to name)
+lcactive:                                         ; used by AI, INIT (to name)
         times 2 db 0
-g_48DE:                                         ; used by AI, INIT (to name)
+lctime:                                         ; used by AI, INIT (to name)
         times 2 db 0
-g_48E0:                                         ; used by INIT (to name)
+lcstate2:                                         ; used by INIT (to name)
         times 2 db 0
 lcboxon:                                         ; used by AI, INIT, MENUS (to name)
         times 2 db 0
-g_48E4:                                         ; used by AI, INIT, MENUS (to name)
+hudredraw:                                         ; used by AI, INIT, MENUS (to name)
         times 2 db 0
         db 0x02, 0x01, 0x00, 0x03, 0x00, 0x03, 0x02, 0x01, 0x03, 0x02, 0x01, 0x00, 0x01, 0x00, 0x03, 0x02
         db 0x01, 0x02, 0x03, 0xFF, 0x02, 0x00, 0x03, 0xFF, 0x00, 0x01, 0x03, 0xFF, 0x00, 0x01, 0x02, 0xFF
@@ -3674,7 +3674,7 @@ g_48E4:                                         ; used by AI, INIT, MENUS (to na
         db 0x01, 0x02, 0xFF, 0xFF, 0x02, 0x00, 0xFF, 0xFF, 0x00, 0x01, 0xFF, 0xFF, 0x00, 0x01, 0x02, 0xFF
         db 0x01, 0x02, 0x03, 0xFF, 0x02, 0x03, 0x00, 0xFF, 0x03, 0x00, 0x01, 0xFF, 0x00, 0x01, 0x02, 0xFF
         db 0x01, 0x02, 0xFF, 0xFF, 0x00, 0x02, 0xFF, 0xFF, 0x00, 0x01, 0xFF, 0xFF, 0x00, 0x01, 0x02, 0xFF
-g_49A6:                                         ; used by AI (to name)
+CompLineTab:                                         ; used by AI (to name)
         db 0xE6, 0x48, 0xF6, 0x48, 0x16, 'I&I6IFIVIfIvI'
         db 0x86, 0x49, 0x96, 0x49
 puckfaceoff2_ptab:                                         ; used by AI, INIT (to name)
@@ -3703,32 +3703,32 @@ ovlseq:                                         ; used by AI, INIT (to name)
         db 0xFF, 0xFF
 ovlstep:                                         ; used by AI, INIT (to name)
         db 0xFF, 0xFF
-g_4A00:                                         ; used by AI, INIT (to name)
+TeamPPVNames:                                         ; used by AI, INIT (to name)
         db 'j)p)u)z)', 0x80, 0x29
-g_4A0A:                                         ; used by AI, INIT (to name)
+TeamPPVSizes:                                         ; used by AI, INIT (to name)
         db 0x47, 0x01
-g_4A0C:                                         ; used by AI, INIT (to name)
+TeamPPVSizes2:                                         ; used by AI, INIT (to name)
         db 'c82'
         db 0x01, 'c8:', 0x01
         db 'c8f', 0x01, 0x63, 0x38, 0x8F
         db 0x01, 0x63, 0x38
-g_4A1E:                                         ; used by AI (to name)
+OverlayScript:                                         ; used by AI (to name)
         db 0x01
         db 0x00, 0x01, 0x01, 0x01, 0x00
-g_4A24:                                         ; used by AI, INIT (to name)
+goalienotebits:                                         ; used by AI, INIT (to name)
         db 0x00, 0x00
 PenCntDwn2:                                         ; used by AI, INIT (to name)
         db 0xFF, 0xFF
-g_4A28:                                         ; used by AI, INIT (to name)
+RinkOverlayFrames:                                         ; used by AI, INIT (to name)
         db 0x85, 0x01, 0x86, 0x01
-g_4A2C:                                         ; used by AI, INIT (to name)
+RinkOverlayFrames2:                                         ; used by AI, INIT (to name)
         db 0x87, 0x01, 0x7F
         db 0x01, 0x80, 0x01, 0x81, 0x01, 0x61, 0x01, 0x60, 0x01, 0x61, 0x01, 0x81, 0x01, 0x80, 0x01, 0x82
         db 0x01, 0x83, 0x01, 0x84, 0x01, 0x63, 0x01, 0x62
         db 0x01, 0x63, 0x01, 0x84, 0x01, 0x83, 0x01
-g_4A4E:                                         ; used by AI, INIT (to name)
+halfsecflag:                                         ; used by AI, INIT (to name)
         db 0x00
-g_4A4F:                                         ; used by AI (to name)
+secondframes:                                         ; used by AI (to name)
         db 0x00
 ltack:                                         ; used by AI, INIT (to name)
         db 0x00, 0x00
@@ -3739,15 +3739,15 @@ CrowdSound:                                     ; crowd sound handle; used by Cr
         times 2 db 0
 photobankf:                                         ; used by INIT (to name)
         times 2 db 0
-g_4A58:                                         ; used by INIT (to name)
+photobankf_w2:                                         ; used by INIT (to name)
         times 2 db 0
-g_4A5A:                                         ; used by INIT (to name)
+photobankf_w4:                                         ; used by INIT (to name)
         times 2 db 0
-g_4A5C:                                         ; used by INIT (to name)
+photobankf_w6:                                         ; used by INIT (to name)
         times 2 db 0
-g_4A5E:                                         ; used by INIT (to name)
+photobankf_w8:                                         ; used by INIT (to name)
         times 2 db 0
-g_4A60:                                         ; used by INIT (to name)
+photobankf_wA:                                         ; used by INIT (to name)
         times 2 db 0
 demoflag:                                         ; used by AI, INIT (to name)
         times 2 db 0
@@ -3774,27 +3774,27 @@ samesideflag:                                         ; used by AI, MENUS (to na
         times 2 db 0
 inputframes:                                         ; used by AI, GAME, INIT (to name)
         times 2 db 0
-g_4B02:                                         ; used by AI, GAME, MENUS (to name)
+framesync:                                         ; used by AI, GAME, MENUS (to name)
         times 2 db 0
 joyrec:                                         ; used by AI, GAME (to name)
         times 6 db 0
-g_4B0A:                                         ; used by GAME (to name)
+FadeSteps:                                         ; used by GAME (to name)
         db 0x01
-g_4B0B:                                         ; used by GAME (to name)
+FadeStep:                                         ; used by GAME (to name)
         db 0x0F
-g_4B0C:                                         ; used by GAME (to name)
+FadeSteps2:                                         ; used by GAME (to name)
         db 0x01, 0xFF
-g_4B0E:                                         ; used by GAME (to name)
+FadeCount:                                         ; used by GAME (to name)
         db 0x11, 0xFF, 0x5C, 0x00
 str_GameSav_2:                                  ; string 'game.sav'; used by GAME
         db 'game.sav', 0x00, 0x00
-g_4B1C:                                         ; used by GAME (to name)
+DirtyRects:                                         ; used by GAME (to name)
         db 0x00, 0x00, 0x00, 0x00
-g_4B20:                                         ; used by AI, GAME, INIT, MENUS (to name)
+DeskRedrawPage:                                         ; used by AI, GAME, INIT, MENUS (to name)
         db 0x00, 0x00
-g_4B22:                                         ; used by AI, GAME, INIT, MENUS (to name)
+DeskRedrawPage2:                                         ; used by AI, GAME, INIT, MENUS (to name)
         db 0x00, 0x00
-g_4B24:                                         ; used by GAME (to name)
+SpriteBlitFns:                                         ; used by GAME (to name)
         db 'I*5', 0x1B
         db 'I*5', 0x1B
         db 'I*5', 0x1B
@@ -3824,7 +3824,7 @@ str_04d_2:                                      ; string '%04d'; used by INIT
 str_000g000d000d000l000c000r000x:               ; string '000G000D000D000L000C000R000X'; used by INIT
         db '000G000D000D000L000C000R000X'
         db 0x00
-g_4BCE:                                         ; used by INIT (to name)
+MatchupOrder:                                         ; used by INIT (to name)
         db 0x00, 0x01, 0x04, 0x05, 0x06, 0x07, 0x08, 0x0A
         db 0x0B, 'apal', 0x00
 str_Pal_11:                                     ; string 'Pal'; used by INIT
@@ -4002,7 +4002,7 @@ str_DDD:                                        ; string '%d/%d (%d%%)'; used by
         db '%d/%d (%d%%)', 0x00, 0x00
 TeamStatsLabels:                                         ; used by INIT (to name)
         db 0x00, 0x00
-g_4EC6:                                         ; used by INIT (to name)
+TeamStatsLabelPtrs:                                         ; used by INIT (to name)
         db 0xEB, 0x38, 0x06, 0x00, 0xEB, 0x38, 0x0C, 0x00, 0xEB, 0x38, 0x17, 0x00, 0xEB, 0x38, 0x21, 0x00
         db 0xEB, 0x38, 0x2E, 0x00, 0xEB, 0x38, 0x3A, 0x00, 0xEB, 0x38, 0x46, 0x00, 0xEB, '8Geneva11.fnt'
         db 0x00, '#%d   %s %s', 0x00
@@ -4035,7 +4035,7 @@ g_4EC6:                                         ; used by INIT (to name)
         db 'PIM', 0x00
         db '+/-', 0x00
         db 'Pct', 0x00, 0x00
-g_4FD4:                                         ; used by INIT (to name)
+hilightsplayed:                                         ; used by INIT (to name)
         db 0x00, 0x00
 str_Pal_7:                                      ; string 'Pal'; used by INIT
         db 'Pal', 0x00
@@ -4172,21 +4172,21 @@ str_Lin1lin2lin3lin4pp1Pp2Pk1:                  ; string 'lin1lin2lin3lin4PP1 PP
         db 'lin1lin2lin3lin4PP1 PP2 PK1 PK2 '
         db 0x00, 0x09, 0x00, 0xB1, 0x00, 0x1C, 0x00, 0xBD
         db 0x00
-g_5328:                                         ; used by INIT (to name)
+ReplayGadgetRects:                                         ; used by INIT (to name)
         db 0x92, 0x02, 0x21, 0x00, 0xB1, 0x00
         db 0x34, 0x00, 0xBD, 0x00, 0x98, 0x02, 0x39, 0x00, 0xB1, 0x00
         db 0x4C, 0x00, 0xBD, 0x00
-g_533C:                                         ; used by INIT (to name)
+ReplayGadgetRect2:                                         ; used by INIT (to name)
         db 0x9E, 0x02, 0x51, 0x00, 0xB1, 0x00
         db 0x64, 0x00, 0xBD, 0x00, 0xA4, 0x02, 0x69, 0x00, 0xB1, 0x00
         db 0x7C, 0x00, 0xBD, 0x00, 0xAA, 0x02, 0x81, 0x00, 0xB1, 0x00, 0x94, 0x00, 0xBD, 0x00, 0xB0, 0x02
         db 0xA7, 0x00, 0xB1, 0x00, 0xD3, 0x00, 0xBD, 0x00
-g_5364:                                         ; used by INIT (to name)
+ReplayGadgetRect3:                                         ; used by INIT (to name)
         db 0xB9, 0x02, 0xD8, 0x00, 0xB1, 0x00, 0x04, 0x01
         db 0xBD, 0x00, 0xC6, 0x02, 0x09, 0x01, 0xB1, 0x00
         db 0x35, 0x01, 0xBD, 0x00, 0xD2, 0x02, 0xD8, 0x00
         db 0xB1, 0x00, 0x04, 0x01, 0xBD, 0x00
-g_5382:                                         ; used by INIT (to name)
+ReplayPointerRect:                                         ; used by INIT (to name)
         db 0xC6, 0x02, 'Pointer'
         db 0x00
 str_BothTeams:                                  ; string 'Both Teams'; used by INIT
@@ -4226,15 +4226,15 @@ str_Gg02d:                                      ; string 'gg%02d'; used by INIT
         db 'gg%02d', 0x00
 str_HilightFnt:                                 ; string 'HILIGHT.FNT'; used by INIT
         db 'HILIGHT.FNT', 0x00, 0x00
-g_544C:                                         ; used by AI (to name)
+HL2Offsets:                                         ; used by AI (to name)
         db 0x00, 0x00
-g_544E:                                         ; used by AI (to name)
+HL2Offsets2:                                         ; used by AI (to name)
         db 0x24, 0xFF, 0xB0, 0xFF, 0x79, 0xFF, 0x19, 0x00, 0x9C, 0xFF, 0x92, 0xFF, 0xC9, 0xFF, 0x1E, 0x00
         db 0xDC, 0xFF, 0x50, 0x00, 0xB8, 0xFF, 0x00, 0x00, 0xDC, 0x00
         db 0x28, 0x00, 0x52, 0x00, 0xC2, 0xFF, 0x48, 0x00
         db 0x6E, 0x00, 0x24, 0x00, 0xF1, 0xFF, 0x09, 0x00
         db 0xC9, 0xFF, 0x00, 0x00
-g_547C:                                         ; used by INIT (to name)
+replaymode:                                         ; used by INIT (to name)
         db 0xFF, 0xFF
 replaytick:                                         ; used by AI (to name)
         db 0x01, 0x00
@@ -4277,11 +4277,11 @@ replaysfx:                                         ; used by AI, INIT (to name)
         db 'WPG ', 0x00
         db 'ASC ', 0x00
         db 'ASW ', 0x00
-g_5540:                                         ; used by AI (to name)
+HudBarLevels:                                         ; used by AI (to name)
         db 0xA0, 0x0F, 0xA0, 0x0F, 0xA0, 0x0F, 0xA0, 0x0F
         db 0xA0, 0x0F, 0xA0
         db 0x0F, 0xA0, 0x0F, 0xA0, 0x0F
-g_5550:                                         ; used by AI (to name)
+HudBarLevels2:                                         ; used by AI (to name)
         db 0xA0, 0x0F, 0xA0, 0x0F, 0xA0, 0x0F, 0xA0, 0x0F
         db 0xA0, 0x0F, 0xA0
         db 0x0F, 0xA0, 0x0F, 0xA0, 0x0F
@@ -4297,37 +4297,37 @@ panelprevsec:                                         ; used by AI (to name)
         db 0x63, 0x00
 panelprevhund:                                         ; used by AI (to name)
         db 0x63, 0x00
-g_556C:                                         ; used by AI, INIT (to name)
+hudpenhome:                                         ; used by AI, INIT (to name)
         db 0xFF, 0xFF
-g_556E:                                         ; used by INIT (to name)
+hudpenhome_w2:                                         ; used by INIT (to name)
         db 0x00, 0x00
-g_5570:                                         ; used by INIT (to name)
+hudpenhome_w4:                                         ; used by INIT (to name)
         db 0x00, 0x00
-g_5572:                                         ; used by INIT (to name)
+hudpenhome_w6:                                         ; used by INIT (to name)
         db 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00
         db 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00
         db 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00
         db 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00
         db 0x00, 0x00
-g_55AC:                                         ; used by AI, INIT (to name)
+hudpenaway:                                         ; used by AI, INIT (to name)
         db 0xFF, 0xFF
-g_55AE:                                         ; used by INIT (to name)
+hudpenaway_w2:                                         ; used by INIT (to name)
         db 0x00, 0x00
-g_55B0:                                         ; used by INIT (to name)
+hudpenaway_w4:                                         ; used by INIT (to name)
         db 0x00, 0x00
-g_55B2:                                         ; used by INIT (to name)
+hudpenaway_w6:                                         ; used by INIT (to name)
         db 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00
         db 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00
         db 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00
         db 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00
         db 0x00, 0x00
-g_55EC:                                         ; used by AI (to name)
+HudShapeNames:                                         ; used by AI (to name)
         db 0x82, 0x54, 0x87, 0x54, 0x8C, 0x54, 0x91, 0x54
         db 0x96, 0x54, 0x9B, 0x54, 0xA0, 0x54
         db 0xA5, 0x54, 0xAA, 0x54, 0xAF, 0x54, 0xB4, 0x54
-g_5602:                                         ; used by AI (to name)
+HudShapeName:                                         ; used by AI (to name)
         db 0xB9, 0x54
-g_5604:                                         ; used by AI, INIT, LP, MENUS (to name)
+CrestShapeNames:                                         ; used by AI, INIT, LP, MENUS (to name)
         db 0xBE, 0x54, 0xC3, 0x54, 0xC8, 0x54
         db 0xCD, 0x54, 0xD2, 0x54, 0xD7, 0x54, 0xDC, 0x54, 0xE1, 0x54, 0xE6, 0x54, 0xEB, 0x54, 0xF0, 0x54
         db 0xF5, 0x54, 0xFA, 0x54, 0xFF, 0x54, 0x04, 0x55, 0x09, 0x55, 0x0E, 0x55, 0x13, 0x55, 0x18, 0x55
@@ -4337,21 +4337,21 @@ panelhund:                                         ; used by AI (to name)
         db 0x00, 0x00
 deferpending:                                         ; used by AI, GAME, INIT, MENUS (to name)
         times 2 db 0
-g_563C:                                         ; used by AI (to name)
+hudhomeredraw:                                         ; used by AI (to name)
         times 2 db 0
-g_563E:                                         ; used by AI (to name)
+hudawayredraw:                                         ; used by AI (to name)
         times 2 db 0
 hudhomeline:                                         ; used by AI (to name)
         times 2 db 0
-g_5642:                                         ; used by AI (to name)
+hudlinehome:                                         ; used by AI (to name)
         times 2 db 0
-g_5644:                                         ; used by AI (to name)
+hudclockredraw:                                         ; used by AI (to name)
         times 2 db 0
-g_5646:                                         ; used by AI (to name)
+hudscoreredraw:                                         ; used by AI (to name)
         times 2 db 0
-g_5648:                                         ; used by AI (to name)
+hudlineaway:                                         ; used by AI (to name)
         times 2 db 0
-g_564A:                                         ; used by AI (to name)
+hudlinegroup:                                         ; used by AI (to name)
         times 2 db 0
 str_Scrbrd2:                                    ; string 'scrbrd2'; used by AI
         db 'scrbrd2', 0x00
@@ -4363,7 +4363,7 @@ goaliemenuflags:                                         ; used by AI, MENUS (to
         db 0xE2, 0x01, 0x48, 0x34, 0xFB, 0x01, 0x48, 0x34
 goaliemenuflags_e02:                                         ; used by AI, MENUS (to name)
         db 0x14, 0x02, 0x48, 0x34, 0x32, 0x02, 0x48, 0x34, 0x4B, 0x02, 0x48, 0x34, 0x64, 0x02, 0x48, 0x34
-g_567A:                                         ; used by AI (to name)
+BannerColours:                                         ; used by AI (to name)
         db 0x00, 'UU', 0x00, 0x00, 0xAA, 0xAA, 0x00
 str_04d:                                        ; string '%04d'; used by AI
         db '%04d', 0x00
@@ -4374,7 +4374,7 @@ str_04d:                                        ; string '%04d'; used by AI
         db 'OFFSIDE', 0x00
         db 'ICING', 0x00
         db 'PENALTY', 0x00
-g_56CC:                                         ; used by AI (to name)
+CallNamePtrs:                                         ; used by AI (to name)
         db 0x87, 0x56, 0x95, 0x56, 0xA1, 0x56, 0xAA, 0x56
         db 0xB6, 0x56, 0xBE, 0x56, 0xC4, 'VRoughing', 0x00, 0x00
         db 'Charging', 0x00
@@ -4388,13 +4388,13 @@ g_56CC:                                         ; used by AI (to name)
         db 'Abuse of Official'
         db 0x00, 'Checking from Behind'
         db 0x00
-g_575A:                                         ; used by AI, INIT (to name)
+EventFmtPtrs:                                         ; used by AI, INIT (to name)
         db 0xDA, 0x56, 0xE3, 0x56, 0xE4, 0x56, 0xED, 0x56
         db 0xF6, 0x56, 0xFF, 0x56, 0x0D, 0x57, 0x15, 0x57
         db 0x1E, 'W+W3WEW'
-g_5772:                                         ; used by AI (to name)
+gsumqcount:                                         ; used by AI (to name)
         db 0x00, 0x00
-g_5774:                                         ; used by AI (to name)
+defercount:                                         ; used by AI (to name)
         db 0x00, 0x00
         db 'B3', 0x00, 'B4', 0x00
         db 'B5', 0x00, 'B6', 0x00
@@ -5942,467 +5942,467 @@ DgroupSegB:                                     ; DGROUP paragraph (relocated); 
         dw 0x45C9
 InputEventDataSeg:                              ; paragraph of the input event data; used by GetInputEvent
         db 0x2E, 0x34
-g_8B20:                                         ; used by MENUS (to name)
+segDgroup1:                                         ; used by MENUS (to name)
         db 0xC9, 0x45
-g_8B22:                                         ; used by MENUS (to name)
+segSaveDialogRects1:                                         ; used by MENUS (to name)
         db 0xEE, 0x35
-g_8B24:                                         ; used by MENUS (to name)
+segDgroup2:                                         ; used by MENUS (to name)
         db 0xC9, 0x45
-g_8B26:                                         ; used by MENUS (to name)
+segCredits1:                                         ; used by MENUS (to name)
         db 0x08, 0x36
-g_8B28:                                         ; used by MENUS (to name)
+segMenuText1:                                         ; used by MENUS (to name)
         db 0x48, 0x34
-g_8B2A:                                         ; used by MENUS (to name)
+segMenuText2:                                         ; used by MENUS (to name)
         db 0x48, 0x34
-g_8B2C:                                         ; used by MENUS (to name)
+segMenuText3:                                         ; used by MENUS (to name)
         db 0x48, 0x34
-g_8B2E:                                         ; used by MENUS (to name)
+segMenuText4:                                         ; used by MENUS (to name)
         db 0x48, 0x34
-g_8B30:                                         ; used by MENUS (to name)
+segMenuText5:                                         ; used by MENUS (to name)
         db 0x48, 0x34
-g_8B32:                                         ; used by MENUS (to name)
+segMenuText6:                                         ; used by MENUS (to name)
         db 0x48, 0x34
-g_8B34:                                         ; used by MENUS (to name)
+segCharTable1:                                         ; used by MENUS (to name)
         db 0x80, 0x36
-g_8B36:                                         ; used by MENUS (to name)
+segDbFiles1:                                         ; used by MENUS (to name)
         db 0x15, 0x34
-g_8B38:                                         ; used by MENUS (to name)
+segDbFiles2:                                         ; used by MENUS (to name)
         db 0x15, 0x34
-g_8B3A:                                         ; used by MENUS (to name)
+segDbFiles3:                                         ; used by MENUS (to name)
         db 0x15, 0x34
-g_8B3C:                                         ; used by MENUS (to name)
+segDbFiles4:                                         ; used by MENUS (to name)
         db 0x15, 0x34
-g_8B3E:                                         ; used by MENUS (to name)
+segDialogRects1:                                         ; used by MENUS (to name)
         db 0x9A, 0x36
-g_8B40:                                         ; used by MENUS (to name)
+segMenuText7:                                         ; used by MENUS (to name)
         db 0x48, 0x34
-g_8B42:                                         ; used by MENUS (to name)
+segPlayoffDialogRects1:                                         ; used by MENUS (to name)
         db 0xA8, 0x36
-g_8B44:                                         ; used by MENUS (to name)
+segDbFiles5:                                         ; used by MENUS (to name)
         db 0x15, 0x34
-g_8B46:                                         ; used by MENUS (to name)
+segMenuText8:                                         ; used by MENUS (to name)
         db 0x48, 0x34
-g_8B48:                                         ; used by MENUS (to name)
+segMenuText9:                                         ; used by MENUS (to name)
         db 0x48, 0x34
-g_8B4A:                                         ; used by MENUS (to name)
+segDbFiles6:                                         ; used by MENUS (to name)
         db 0x15, 0x34
-g_8B4C:                                         ; used by MENUS (to name)
+segTeamChoiceText1:                                         ; used by MENUS (to name)
         db 0x01, 0x37
-g_8B4E:                                         ; used by MENUS (to name)
+segMenuText10:                                         ; used by MENUS (to name)
         db 0x48, 0x34
-g_8B50:                                         ; used by MENUS (to name)
+segDbFiles7:                                         ; used by MENUS (to name)
         db 0x15, 0x34
-g_8B52:                                         ; used by MENUS (to name)
+segMenuText11:                                         ; used by MENUS (to name)
         db 0x48, 0x34
-g_8B54:                                         ; used by MENUS (to name)
+segWorkBuffer1:                                         ; used by MENUS (to name)
         db 0x0B, 0x3A
-g_8B56:                                         ; used by MENUS (to name)
+segDbFiles8:                                         ; used by MENUS (to name)
         db 0x15, 0x34
-g_8B58:                                         ; used by MENUS (to name)
+segDgroup3:                                         ; used by MENUS (to name)
         db 0xC9, 0x45
-g_8B5A:                                         ; used by MENUS (to name)
+segMenuText12:                                         ; used by MENUS (to name)
         db 0x48, 0x34
-g_8B5C:                                         ; used by MENUS (to name)
+segMenuText13:                                         ; used by MENUS (to name)
         db 0x48, 0x34
-g_8B5E:                                         ; used by MENUS (to name)
+segDgroup4:                                         ; used by MENUS (to name)
         db 0xC9, 0x45
-g_8B60:                                         ; used by MENUS (to name)
+segMenuText14:                                         ; used by MENUS (to name)
         db 0x48, 0x34
-g_8B62:                                         ; used by MENUS (to name)
+segWorkBuffer2:                                         ; used by MENUS (to name)
         db 0x0B, 0x3A
-g_8B64:                                         ; used by MENUS (to name)
+segDbFiles9:                                         ; used by MENUS (to name)
         db 0x15, 0x34
-g_8B66:                                         ; used by MENUS (to name)
+segDbFiles10:                                         ; used by MENUS (to name)
         db 0x15, 0x34
-g_8B68:                                         ; used by MENUS (to name)
+segReturnMessages1:                                         ; used by MENUS (to name)
         db 0xF5, 0x36
-g_8B6A:                                         ; used by MENUS (to name)
+segDgroup5:                                         ; used by MENUS (to name)
         db 0xC9, 0x45
-g_8B6C:                                         ; used by MENUS (to name)
+segMenuText15:                                         ; used by MENUS (to name)
         db 0x48, 0x34
-g_8B6E:                                         ; used by MENUS (to name)
+segMenuText16:                                         ; used by MENUS (to name)
         db 0x48, 0x34
-g_8B70:                                         ; used by MENUS (to name)
+segMenuText17:                                         ; used by MENUS (to name)
         db 0x48, 0x34
-g_8B72:                                         ; used by MENUS (to name)
+segMenuText18:                                         ; used by MENUS (to name)
         db 0x48, 0x34
 schedgameidx:                                         ; used by MENUS (to name)
         db 0x0B, 0x3A
 musicslot:                                         ; used by MENUS (to name)
         db 0xC9, 0x45
-g_8B78:                                         ; used by MENUS (to name)
+segDbFiles11:                                         ; used by MENUS (to name)
         db 0x15, 0x34
-g_8B7A:                                         ; used by MENUS (to name)
+segMenuText19:                                         ; used by MENUS (to name)
         db 0x48, 0x34
-g_8B7C:                                         ; used by LP (to name)
+segWorkBuffer3:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8B7E:                                         ; used by LP (to name)
+segTeamChoiceText2:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8B80:                                         ; used by LP (to name)
+segWorkBuffer4:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8B82:                                         ; used by LP (to name)
+segTeamChoiceText3:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8B84:                                         ; used by LP (to name)
+segWorkBuffer5:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8B86:                                         ; used by LP (to name)
+segTeamChoiceText4:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8B88:                                         ; used by LP (to name)
+segWorkBuffer6:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8B8A:                                         ; used by LP (to name)
+segWorkBuffer7:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8B8C:                                         ; used by LP (to name)
+segWorkBuffer8:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8B8E:                                         ; used by LP (to name)
+segWorkBuffer9:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8B90:                                         ; used by LP (to name)
+segWorkBuffer10:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8B92:                                         ; used by LP (to name)
+segWorkBuffer11:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8B94:                                         ; used by LP (to name)
+segTeamChoiceText5:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8B96:                                         ; used by LP (to name)
+segTeamChoiceText6:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8B98:                                         ; used by LP (to name)
+segTeamChoiceText7:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8B9A:                                         ; used by LP (to name)
+segTeamChoiceText8:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8B9C:                                         ; used by LP (to name)
+segTeamChoiceText9:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8B9E:                                         ; used by LP (to name)
+segTeamChoiceText10:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8BA0:                                         ; used by LP (to name)
+segTeamChoiceText11:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8BA2:                                         ; used by LP (to name)
+segTeamChoiceText12:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8BA4:                                         ; used by LP (to name)
+segTeamChoiceText13:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8BA6:                                         ; used by LP (to name)
+segTeamChoiceText14:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8BA8:                                         ; used by LP (to name)
+segWorkBuffer12:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8BAA:                                         ; used by LP (to name)
+segTeamChoiceText15:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8BAC:                                         ; used by LP (to name)
+segWorkBuffer13:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8BAE:                                         ; used by LP (to name)
+segTeamChoiceText16:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8BB0:                                         ; used by LP (to name)
+segWorkBuffer14:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8BB2:                                         ; used by LP (to name)
+segTeamChoiceText17:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8BB4:                                         ; used by LP (to name)
+segWorkBuffer15:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8BB6:                                         ; used by LP (to name)
+segTeamChoiceText18:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8BB8:                                         ; used by LP (to name)
+segTeamChoiceText19:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8BBA:                                         ; used by LP (to name)
+segTeamChoiceText20:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8BBC:                                         ; used by LP (to name)
+segMenuText20:                                         ; used by LP (to name)
         db 0x48, 0x34
-g_8BBE:                                         ; used by LP (to name)
+segDbFiles12:                                         ; used by LP (to name)
         db 0x15, 0x34
-g_8BC0:                                         ; used by LP (to name)
+segWorkBuffer16:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8BC2:                                         ; used by LP (to name)
+segTeamChoiceText21:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8BC4:                                         ; used by LP (to name)
+segWorkBuffer17:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8BC6:                                         ; used by LP (to name)
+segTeamChoiceText22:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8BC8:                                         ; used by LP (to name)
+segWorkBuffer18:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8BCA:                                         ; used by LP (to name)
+segTeamChoiceText23:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8BCC:                                         ; used by LP (to name)
+segTeamChoiceText24:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8BCE:                                         ; used by LP (to name)
+segTeamChoiceText25:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8BD0:                                         ; used by LP (to name)
+segTeamChoiceText26:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8BD2:                                         ; used by LP (to name)
+segTeamChoiceText27:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8BD4:                                         ; used by LP (to name)
+segWorkBuffer19:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8BD6:                                         ; used by LP (to name)
+segTeamChoiceText28:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8BD8:                                         ; used by LP (to name)
+segWorkBuffer20:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8BDA:                                         ; used by LP (to name)
+segTeamChoiceText29:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8BDC:                                         ; used by LP (to name)
+segTeamChoiceText30:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8BDE:                                         ; used by LP (to name)
+segTeamChoiceText31:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8BE0:                                         ; used by LP (to name)
+segTeamChoiceText32:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8BE2:                                         ; used by LP (to name)
+segWorkBuffer21:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8BE4:                                         ; used by LP (to name)
+segWorkBuffer22:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8BE6:                                         ; used by LP (to name)
+segWorkBuffer23:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8BE8:                                         ; used by LP (to name)
+segTeamChoiceText33:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8BEA:                                         ; used by LP (to name)
+segTeamChoiceText34:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8BEC:                                         ; used by LP (to name)
+segWorkBuffer24:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8BEE:                                         ; used by LP (to name)
+segWorkBuffer25:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8BF0:                                         ; used by LP (to name)
+segDgroup6:                                         ; used by LP (to name)
         db 0xC9, 0x45
-g_8BF2:                                         ; used by LP (to name)
+segDbFiles13:                                         ; used by LP (to name)
         db 0x15, 0x34
-g_8BF4:                                         ; used by LP (to name)
+segTeamChoiceText35:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8BF6:                                         ; used by LP (to name)
+segWorkBuffer26:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8BF8:                                         ; used by LP (to name)
+segTeamChoiceText36:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8BFA:                                         ; used by LP (to name)
+segWorkBuffer27:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8BFC:                                         ; used by LP (to name)
+segWorkBuffer28:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8BFE:                                         ; used by LP (to name)
+segWorkBuffer29:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8C00:                                         ; used by LP (to name)
+segWorkBuffer30:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8C02:                                         ; used by LP (to name)
+segDbFiles14:                                         ; used by LP (to name)
         db 0x15, 0x34
-g_8C04:                                         ; used by LP (to name)
+segTeamChoiceText37:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8C06:                                         ; used by LP (to name)
+segTeamChoiceText38:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8C08:                                         ; used by LP (to name)
+segTeamChoiceText39:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8C0A:                                         ; used by LP (to name)
+segWorkBuffer31:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8C0C:                                         ; used by LP (to name)
+segTradeMessages1:                                         ; used by LP (to name)
         db 0x2B, 0x38
-g_8C0E:                                         ; used by LP (to name)
+segTeamChoiceText40:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8C10:                                         ; used by LP (to name)
+segMenuText21:                                         ; used by LP (to name)
         db 0x48, 0x34
-g_8C12:                                         ; used by LP (to name)
+segCharTable2:                                         ; used by LP (to name)
         db 0x80, 0x36
-g_8C14:                                         ; used by LP (to name)
+segWorkBuffer32:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8C16:                                         ; used by LP (to name)
+segTeamChoiceText41:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8C18:                                         ; used by LP (to name)
+segWorkBuffer33:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8C1A:                                         ; used by LP (to name)
+segTeamChoiceText42:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8C1C:                                         ; used by LP (to name)
+segWorkBuffer34:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8C1E:                                         ; used by LP (to name)
+segTeamChoiceText43:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8C20:                                         ; used by LP (to name)
+segTeamChoiceText44:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8C22:                                         ; used by LP (to name)
+segWorkBuffer35:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8C24:                                         ; used by LP (to name)
+segTeamChoiceText45:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8C26:                                         ; used by LP (to name)
+segTeamChoiceText46:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8C28:                                         ; used by LP (to name)
+segWorkBuffer36:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8C2A:                                         ; used by LP (to name)
+segWorkBuffer37:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8C2C:                                         ; used by LP (to name)
+segMergeMessages1:                                         ; used by LP (to name)
         db 0x36, 0x38
-g_8C2E:                                         ; used by LP (to name)
+segWorkBuffer38:                                         ; used by LP (to name)
         db 0x0B, 0x3A
-g_8C30:                                         ; used by LP (to name)
+segTeamChoiceText47:                                         ; used by LP (to name)
         db 0x01, 0x37
-g_8C32:                                         ; used by STATS (to name)
+segDbFiles15:                                         ; used by STATS (to name)
         db 0x15, 0x34
-g_8C34:                                         ; used by STATS (to name)
+segDbFiles16:                                         ; used by STATS (to name)
         db 0x15, 0x34
 g_8C36:                                         ; used by STATS (to name)
         db 'K8K8K8K8K8K8K8'
-g_8C44:                                         ; used by STATS (to name)
+segTeamChoiceText48:                                         ; used by STATS (to name)
         db 0x01, 0x37
-g_8C46:                                         ; used by STATS (to name)
+segMenuText22:                                         ; used by STATS (to name)
         db 0x48, 0x34
-g_8C48:                                         ; used by STATS (to name)
+segMenuText23:                                         ; used by STATS (to name)
         db 0x48, 0x34
-g_8C4A:                                         ; used by STATS (to name)
+segMenuText24:                                         ; used by STATS (to name)
         db 0x48, 0x34
-g_8C4C:                                         ; used by STATS (to name)
+segMenuText25:                                         ; used by STATS (to name)
         db 0x48, 0x34
-g_8C4E:                                         ; used by STATS (to name)
+segMenuText26:                                         ; used by STATS (to name)
         db 0x48, 0x34
-g_8C50:                                         ; used by STATS (to name)
+segMenuText27:                                         ; used by STATS (to name)
         db 0x48, 0x34
-g_8C52:                                         ; used by STATS (to name)
+segMenuText28:                                         ; used by STATS (to name)
         db 0x48, 0x34
-g_8C54:                                         ; used by STATS (to name)
+segMenuText29:                                         ; used by STATS (to name)
         db 0x48, 0x34
-g_8C56:                                         ; used by STATS (to name)
+segMenuText30:                                         ; used by STATS (to name)
         db 0x48, 0x34
-g_8C58:                                         ; used by STATS (to name)
+segMenuText31:                                         ; used by STATS (to name)
         db 0x48, 0x34
-g_8C5A:                                         ; used by STATS (to name)
+segMenuText32:                                         ; used by STATS (to name)
         db 0x48, 0x34
-g_8C5C:                                         ; used by STATS (to name)
+segMenuText33:                                         ; used by STATS (to name)
         db 0x48, 0x34
-g_8C5E:                                         ; used by STATS (to name)
+segMenuText34:                                         ; used by STATS (to name)
         db 0x48, 0x34
-g_8C60:                                         ; used by STATS (to name)
+segMenuText35:                                         ; used by STATS (to name)
         db 0x48, 0x34
-g_8C62:                                         ; used by STATS (to name)
+segSeasonTitles1:                                         ; used by STATS (to name)
         db 0x4B, 0x38
-g_8C64:                                         ; used by STATS (to name)
+segSeasonTitles2:                                         ; used by STATS (to name)
         db 0x4B, 0x38
-g_8C66:                                         ; used by STATS (to name)
+segSeasonTitles3:                                         ; used by STATS (to name)
         db 0x4B, 0x38
-g_8C68:                                         ; used by STATS (to name)
+segSeasonTitles4:                                         ; used by STATS (to name)
         db 0x4B, 0x38
-g_8C6A:                                         ; used by STATS (to name)
+segSeasonTitles5:                                         ; used by STATS (to name)
         db 0x4B, 0x38
-g_8C6C:                                         ; used by STATS (to name)
+segWorkBuffer39:                                         ; used by STATS (to name)
         db 0x0B, 0x3A
 PoStandingsMode:                                         ; used by STATS (to name)
         db 0xC9, 0x45
-g_8C70:                                         ; used by STATS (to name)
+segWorkBuffer40:                                         ; used by STATS (to name)
         db 0x0B, 0x3A
-g_8C72:                                         ; used by STATS (to name)
+segSeasonTitles6:                                         ; used by STATS (to name)
         db 0x4B, 0x38
-g_8C74:                                         ; used by STATS (to name)
+segSeasonTitles7:                                         ; used by STATS (to name)
         db 0x4B, 0x38
-g_8C76:                                         ; used by STATS (to name)
+segSeasonTitles8:                                         ; used by STATS (to name)
         db 0x4B, 0x38
-g_8C78:                                         ; used by STATS (to name)
+segSeasonTitles9:                                         ; used by STATS (to name)
         db 0x4B, 0x38
-g_8C7A:                                         ; used by STATS (to name)
+segSeasonTitles10:                                         ; used by STATS (to name)
         db 0x4B, 0x38
-g_8C7C:                                         ; used by STATS (to name)
+segWorkBuffer41:                                         ; used by STATS (to name)
         db 0x0B, 0x3A
-g_8C7E:                                         ; used by STATS (to name)
+segWorkBuffer42:                                         ; used by STATS (to name)
         db 0x0B, 0x3A
-g_8C80:                                         ; used by STATS (to name)
+segWorkBuffer43:                                         ; used by STATS (to name)
         db 0x0B, 0x3A
-g_8C82:                                         ; used by STATS (to name)
+segWorkBuffer44:                                         ; used by STATS (to name)
         db 0x0B, 0x3A
-g_8C84:                                         ; used by STATS (to name)
+segMenuText36:                                         ; used by STATS (to name)
         db 0x48, 0x34
-g_8C86:                                         ; used by STATS (to name)
+segDgroup7:                                         ; used by STATS (to name)
         db 0xC9, 0x45
-g_8C88:                                         ; used by STATS (to name)
+segTeamChoiceText49:                                         ; used by STATS (to name)
         db 0x01, 0x37
-g_8C8A:                                         ; used by GAME (to name)
+segDbFiles17:                                         ; used by GAME (to name)
         db 0x15, 0x34
-g_8C8C:                                         ; used by INIT (to name)
+segDgroup8:                                         ; used by INIT (to name)
         db 0xC9, 0x45
-g_8C8E:                                         ; used by INIT (to name)
+segTeamChoiceText50:                                         ; used by INIT (to name)
         db 0x01, 0x37
-g_8C90:                                         ; used by INIT (to name)
+segLinesMenuText1:                                         ; used by INIT (to name)
         db 0xAF, 0x38
-g_8C92:                                         ; used by INIT (to name)
+segMenuText37:                                         ; used by INIT (to name)
         db 0x48, 0x34
-g_8C94:                                         ; used by INIT (to name)
+segWorkBuffer45:                                         ; used by INIT (to name)
         db 0x0B, 0x3A
-g_8C96:                                         ; used by INIT (to name)
+segDbFiles18:                                         ; used by INIT (to name)
         db 0x15, 0x34
-g_8C98:                                         ; used by INIT (to name)
+segTeamChoiceText51:                                         ; used by INIT (to name)
         db 0x01, 0x37
-g_8C9A:                                         ; used by INIT (to name)
+segWorkBuffer46:                                         ; used by INIT (to name)
         db 0x0B, 0x3A
 g_8C9C:                                         ; used by INIT (to name)
         db 0xBD, 0x38, 0xBD, 0x38, 0xBD, 0x38, 0xBD, 0x38
-g_8CA4:                                         ; used by INIT (to name)
+segWorkBuffer47:                                         ; used by INIT (to name)
         db 0x0B, 0x3A
-g_8CA6:                                         ; used by INIT (to name)
+segTeamChoiceText52:                                         ; used by INIT (to name)
         db 0x01, 0x37
-g_8CA8:                                         ; used by INIT (to name)
+segWorkBuffer48:                                         ; used by INIT (to name)
         db 0x0B, 0x3A
-g_8CAA:                                         ; used by INIT (to name)
+segDbFiles19:                                         ; used by INIT (to name)
         db 0x15, 0x34
-g_8CAC:                                         ; used by INIT (to name)
+segWorkBuffer49:                                         ; used by INIT (to name)
         db 0x0B, 0x3A
-g_8CAE:                                         ; used by INIT (to name)
+segWorkBuffer50:                                         ; used by INIT (to name)
         db 0x0B, 0x3A
-g_8CB0:                                         ; used by INIT (to name)
+segDbFiles20:                                         ; used by INIT (to name)
         db 0x15, 0x34
-g_8CB2:                                         ; used by INIT (to name)
+segWorkBuffer51:                                         ; used by INIT (to name)
         db 0x0B, 0x3A
-g_8CB4:                                         ; used by INIT (to name)
+segWorkBuffer52:                                         ; used by INIT (to name)
         db 0x0B, 0x3A
-g_8CB6:                                         ; used by INIT (to name)
+segWorkBuffer53:                                         ; used by INIT (to name)
         db 0x0B, 0x3A
-g_8CB8:                                         ; used by INIT (to name)
+segWorkBuffer54:                                         ; used by INIT (to name)
         db 0x0B, 0x3A
-g_8CBA:                                         ; used by INIT (to name)
+segWorkBuffer55:                                         ; used by INIT (to name)
         db 0x0B, 0x3A
-g_8CBC:                                         ; used by INIT (to name)
+segWorkBuffer56:                                         ; used by INIT (to name)
         db 0x0B, 0x3A
-g_8CBE:                                         ; used by INIT (to name)
+segWorkBuffer57:                                         ; used by INIT (to name)
         db 0x0B, 0x3A
-g_8CC0:                                         ; used by INIT (to name)
+segTeamChoiceText53:                                         ; used by INIT (to name)
         db 0x01, 0x37
-g_8CC2:                                         ; used by INIT (to name)
+segMenuText38:                                         ; used by INIT (to name)
         db 0x48, 0x34
-g_8CC4:                                         ; used by INIT (to name)
+segMenuText39:                                         ; used by INIT (to name)
         db 0x48, 0x34
-g_8CC6:                                         ; used by INIT (to name)
+segAnimSequences1:                                         ; used by INIT (to name)
         db 0xF6, 0x38
-g_8CC8:                                         ; used by INIT (to name)
+segAnimSequences2:                                         ; used by INIT (to name)
         db 0xF6, 0x38
-g_8CCA:                                         ; used by INIT (to name)
+segDgroup9:                                         ; used by INIT (to name)
         db 0xC9, 0x45
-g_8CCC:                                         ; used by INIT (to name)
+segAnimSequences3:                                         ; used by INIT (to name)
         db 0xF6, 0x38
-g_8CCE:                                         ; used by INIT (to name)
+segAnimSequences4:                                         ; used by INIT (to name)
         db 0xF6, 0x38
 hmplstats:                                         ; used by INIT (to name)
         db 0x0B, 0x3A
 hmglstats:                                         ; used by INIT (to name)
         db 0x0B, 0x3A
-g_8CD4:                                         ; used by INIT (to name)
+segObjectTable1:                                         ; used by INIT (to name)
         db 0x63, 0x38
-g_8CD6:                                         ; used by AI (to name)
+segDgroup10:                                         ; used by AI (to name)
         db 0xC9, 0x45
-g_8CD8:                                         ; used by AI (to name)
+segWorkBuffer58:                                         ; used by AI (to name)
         db 0x0B, 0x3A
-g_8CDA:                                         ; used by AI (to name)
+segWorkBuffer59:                                         ; used by AI (to name)
         db 0x0B, 0x3A
-g_8CDC:                                         ; used by AI (to name)
+segWorkBuffer60:                                         ; used by AI (to name)
         db 0x0B, 0x3A
-g_8CDE:                                         ; used by AI (to name)
+segWorkBuffer61:                                         ; used by AI (to name)
         db 0x0B, 0x3A
-g_8CE0:                                         ; used by AI (to name)
+segDgroup11:                                         ; used by AI (to name)
         db 0xC9, 0x45
 g_8CE2:                                         ; used by AI (to name)
         db 0xF6, 0x38, 0xF6, 0x38, 0xF6, 0x38
-g_8CE8:                                         ; used by FADES1 (to name)
+segDgroup12:                                         ; used by FADES1 (to name)
         db 0xC9, 0x45
-g_8CEA:                                         ; used by FADES1 (to name)
+segDgroup13:                                         ; used by FADES1 (to name)
         db 0xC9, 0x45
-g_8CEC:                                         ; used by FADES2 (to name)
+segDgroup14:                                         ; used by FADES2 (to name)
         db 0xC9, 0x45
-g_8CEE:                                         ; used by FADES2 (to name)
+segDgroup15:                                         ; used by FADES2 (to name)
         db 0xC9, 0x45
-g_8CF0:                                         ; used by FADES3 (to name)
+segDgroup16:                                         ; used by FADES3 (to name)
         db 0xC9, 0x45
-g_8CF2:                                         ; used by FADES3 (to name)
+segDgroup17:                                         ; used by FADES3 (to name)
         db 0xC9, 0x45
-g_8CF4:                                         ; used by FADES5 (to name)
+segDgroup18:                                         ; used by FADES5 (to name)
         db 0xC9, 0x45
-g_8CF6:                                         ; used by FADES6 (to name)
+segDgroup19:                                         ; used by FADES6 (to name)
         db 0xC9, 0x45
-g_8CF8:                                         ; used by FADES7 (to name)
+segDgroup20:                                         ; used by FADES7 (to name)
         db 0xC9, 0x45
-g_8CFA:                                         ; used by FADES8 (to name)
+segDgroup21:                                         ; used by FADES8 (to name)
         db 0xC9, 0x45
-g_8CFC:                                         ; used by FADES9 (to name)
+segDgroup22:                                         ; used by FADES9 (to name)
         db 0xC9, 0x45
-g_8CFE:                                         ; used by FADES9 (to name)
+segDgroup23:                                         ; used by FADES9 (to name)
         db 0xC9, 0x45
-g_8D00:                                         ; used by FADES10 (to name)
+segDgroup24:                                         ; used by FADES10 (to name)
         db 0xC9, 0x45
-g_8D02:                                         ; used by FADES11 (to name)
+segDgroup25:                                         ; used by FADES11 (to name)
         db 0xC9, 0x45
 DgroupSegC:                                     ; DGROUP paragraph (relocated); used by
                                                 ; DrawTextCenteredInWindow

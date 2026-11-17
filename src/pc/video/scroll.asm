@@ -161,8 +161,8 @@ VgaCopyRows:
         db 0x8B, 0xCF                           ; insn: mov cx, di
         imul word [g_B09C]
         shl ax, 1
-        add ax, [g_08FE]
-        mov dx, [g_0900]
+        add ax, [RinkTilesPtr]
+        mov dx, [RinkTilesSeg]
         add ax, strict word 0x6
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov [bp - 0x8], dx
@@ -170,8 +170,8 @@ VgaCopyRows:
         add ax, [bp + 0x6]
         imul word [g_B09C]
         shl ax, 1
-        add ax, [g_08FE]
-        mov dx, [g_0900]
+        add ax, [RinkTilesPtr]
+        mov dx, [RinkTilesSeg]
         add ax, strict word 0x6
         mov [bp - 0xe], ax
         mov [bp - 0xc], dx
@@ -290,7 +290,7 @@ VgaRedrawScroll:
         db 0x8B, 0xF7                           ; insn: mov si, di
         mov di, [bp - 0x6]
 .2:
-        les bx, [g_08FE]
+        les bx, [RinkTilesPtr]
         push word [es:bx + si]
         push di
         mov ax, [es:bx + si]

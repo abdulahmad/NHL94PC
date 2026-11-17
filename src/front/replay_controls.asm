@@ -21,9 +21,9 @@ InstantReplay:
         enter 0xc, 0x0
         cmp word [DbSaveMode], 0x0
         jz short .1
-        cmp word [g_01B8], 0x0
+        cmp word [ctl1team], 0x0
         jnl short .2
-        cmp word [g_01BA], 0x0
+        cmp word [ctl2team], 0x0
         jnl short .2
 .1:
         mov word [g_DB16], 0x1
@@ -47,14 +47,14 @@ InstantReplay:
         call 0x03A3:MouseMove
         add sp, 0x4
         push word 0x3a0b
-        push strict word f_3A0B_B352
+        push strict word GamePalette
         push word 0x100
         push 0x0
         call 0x0FEF:GetPaletteFar
         add sp, 0x8
         push 0x10
         push word 0x3a0b
-        push strict word f_3A0B_B352
+        push strict word GamePalette
         push 0x1
         call 0x1E7E:FadePalette
         add sp, 0x8
@@ -93,13 +93,13 @@ InstantReplay:
         add sp, 0x8
         push word [g_DAEA]
         push word [g_DAE8]
-        push word [g_533C]
+        push word [ReplayGadgetRect2]
         push word [g_DAE6]
         call 0x0000:VgaCopyToPitch
         add sp, 0x8
         push word [g_DB02]
         push word [g_DB00]
-        push word [g_5364]
+        push word [ReplayGadgetRect3]
         push word [g_DAFE]
         call 0x0000:VgaCopyToPitch
         add sp, 0x8
@@ -107,7 +107,7 @@ InstantReplay:
         jz short .5
         push word [g_DB14]
         push word [g_DB12]
-        push word [g_5382]
+        push word [ReplayPointerRect]
         push word [g_DB10]
         call 0x0000:VgaCopyToPitch
         add sp, 0x8
@@ -127,8 +127,8 @@ InstantReplay:
         call 0x0FEF:DrawRleTransAt
         add sp, 0x8
         mov ax, 0x1
-        mov [g_4B22], ax
-        mov [g_4B20], ax
+        mov [DeskRedrawPage2], ax
+        mov [DeskRedrawPage], ax
         mov ax, [camx]
         mov [bp - 0x8], ax
         mov ax, [camy]
@@ -140,7 +140,7 @@ InstantReplay:
         mov ax, [CrowdSound]
         mov [bp - 0xa], ax
         mov ax, 0xffff
-        mov [g_547C], ax
+        mov [replaymode], ax
         mov [g_DB22], ax
         mov [g_DB24], ax
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -196,7 +196,7 @@ InstantReplay:
         call 0x0000:VgaPageFlip
         push 0x10
         push word 0x3a0b
-        push strict word f_3A0B_0A8E
+        push strict word TeamPalette768
         push 0x0
         call 0x1E7E:FadePalette
         add sp, 0x8
@@ -268,9 +268,9 @@ InstantReplay:
         mov [g_DB1C], ax
         jmp short .21
 .17:
-        cmp word [g_547C], 0x0
+        cmp word [replaymode], 0x0
         jl short .21
-        mov bx, [g_547C]
+        mov bx, [replaymode]
         shl bx, 1
         mov ax, [bx + g_DB2E]
         mov [camx], ax
@@ -423,17 +423,17 @@ InstantReplay:
         mov [CrowdSound], ax
         mov [Crowdlevel], ax
         mov ax, 0x1
-        mov [g_4B22], ax
-        mov [g_4B20], ax
+        mov [DeskRedrawPage2], ax
+        mov [DeskRedrawPage], ax
         push word 0x3a0b
-        push strict word f_3A0B_B352
+        push strict word GamePalette
         push word 0x100
         push 0x0
         call 0x0FEF:GetPaletteFar
         add sp, 0x8
         push 0x10
         push word 0x3a0b
-        push strict word f_3A0B_B352
+        push strict word GamePalette
         push 0x1
         call 0x1E7E:FadePalette
         add sp, 0x8
@@ -773,7 +773,7 @@ ReplayControlLoop:
         mov ax, 0xffff
         mov [g_DB22], ax
         mov [g_DB24], ax
-        mov [g_547C], ax
+        mov [replaymode], ax
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [g_DB18], ax
         jmp near .49
@@ -823,7 +823,7 @@ ReplayControlLoop:
         db 0x90
 .40:
         mov word [g_DB18], 0x0
-        mov [g_547C], ax
+        mov [replaymode], ax
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
         mov ax, [bx + g_DB2E]
@@ -915,7 +915,7 @@ ReplayControlLoop:
 .55:
         mov word [g_DB18], 0x1
         mov [g_DB24], ax
-        mov [g_547C], ax
+        mov [replaymode], ax
         mov ax, [replayptrx]
         mov [g_DB1A], ax
         mov cx, [g_DB20]
@@ -986,7 +986,7 @@ ReplayControlLoop:
         shl si, byte 0x2
         db 0x03, 0xF0                           ; insn: add si, ax
         shl si, 1
-        push word [si + g_5328]
+        push word [si + ReplayGadgetRects]
         push word [bx + g_DADA]
         call 0x0000:VgaCopyToPitch
         add sp, 0x8
@@ -998,7 +998,7 @@ ReplayControlLoop:
         jz short .66
         push word [g_DB14]
         push word [g_DB12]
-        push word [g_5382]
+        push word [ReplayPointerRect]
         push word [g_DB10]
 .65:
         call 0x0000:VgaCopyToPitch
@@ -1106,7 +1106,7 @@ ReplayControlLoop:
         add sp, 0x4
         push word [g_DAEA]
         push word [g_DAE8]
-        push word [g_533C]
+        push word [ReplayGadgetRect2]
         push word [g_DAE6]
         call 0x0000:VgaCopyToPitch
         add sp, 0x8
@@ -1131,7 +1131,7 @@ ReplayControlLoop:
         jz short .76
         push word [g_DB14]
         push word [g_DB12]
-        push word [g_5382]
+        push word [ReplayPointerRect]
         push word [g_DB10]
         call 0x0000:VgaCopyToPitch
         add sp, 0x8
@@ -1166,16 +1166,16 @@ ReplaySaveHilight:
         enter 0xc, 0x0
         push di
         push si
-        cmp word [g_01B8], 0x0
+        cmp word [ctl1team], 0x0
         jnl short .1
         jmp near .18
 .1:
-        cmp word [g_01BA], 0x0
+        cmp word [ctl2team], 0x0
         jnl short .2
         jmp near .18
 .2:
-        mov ax, [g_01B8]
-        cmp [g_01BA], ax
+        mov ax, [ctl1team]
+        cmp [ctl2team], ax
         jnz short .3
         jmp near .18
 .3:
@@ -1513,18 +1513,18 @@ ReplaySaveHilight:
         mov ax, 0x64
         cwd
         call 0x03A3:SetDeadline.regs
-        cmp word [g_01B8], 0x0
+        cmp word [ctl1team], 0x0
         jl short .20
-        mov ax, [g_01B8]
-        cmp [g_29CA], ax
+        mov ax, [ctl1team]
+        cmp [HomeTeamNum], ax
         jnz short .21
 .19:
         push 0x0
         jmp short .22
         db 0x90
 .20:
-        mov ax, [g_01BA]
-        cmp [g_29CA], ax
+        mov ax, [ctl2team]
+        cmp [HomeTeamNum], ax
         jz short .19
 .21:
         push 0x1
@@ -1859,42 +1859,42 @@ SaveHilightFile:
         mov ax, 0x3a0b
         mov es, ax
         mov al, [g_E366]
-        mov [es:f_3A0B_0D8E], al
+        mov [es:hilightrec], al
         mov al, [g_E367]
-        mov [es:f_3A0B_0D8F], al
-        mov al, [g_29CA]
-        mov [es:f_3A0B_0D90], al
-        mov al, [g_29CC]
-        mov [es:f_3A0B_0DAD], al
+        mov [es:hilightrec_b1], al
+        mov al, [HomeTeamNum]
+        mov [es:hilightrec_b2], al
+        mov al, [VisTeamNum]
+        mov [es:hilightrec_b1F], al
         mov ax, [curperiod]
-        mov [es:f_3A0B_0DCA], ax
+        mov [es:hilightrec_w3C], ax
         mov ax, [hudclockmin]
-        mov [es:f_3A0B_0DCC], ax
+        mov [es:hilightrec_w3E], ax
         mov ax, [hudclocksec]
-        mov [es:f_3A0B_0DCE], ax
+        mov [es:hilightrec_w40], ax
         mov ax, [hudclockhund]
-        mov [es:f_3A0B_0DD0], ax
+        mov [es:hilightrec_w42], ax
         mov ax, [sflags]
-        mov [es:f_3A0B_0DD2], ax
+        mov [es:hilightrec_w44], ax
         mov ax, [g_D014]
         mov dx, [g_D016]
-        sub ax, [g_2986]
-        sbb dx, [g_2988]
-        mov [es:f_3A0B_0DD4], ax
-        mov [es:f_3A0B_0DD6], dx
+        sub ax, [replayptr]
+        sbb dx, [replayseg]
+        mov [es:hilightrec_w46], ax
+        mov [es:hilightrec_frames], dx
         db 0x2B, 0xFF                           ; insn: sub di, di
         mov si, 0xa556
 .3:
         mov al, [si]
-        mov [es:di + f_3A0B_0D91], al
+        mov [es:di + hilightrec_home], al
         mov al, [si + 0x460]
-        mov [es:di + f_3A0B_0DAE], al
+        mov [es:di + hilightrec_away], al
         inc di
         add si, 0x28
         cmp si, 0xa9b6
         jc short .3
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x2a]
         push ss
         push ax
@@ -2000,7 +2000,7 @@ SaveHilightFile:
         push -0x1
         push -0x1
         push word 0x3a0b
-        push strict word f_3A0B_0D8E
+        push strict word hilightrec
         push word [bp - 0x2]
         call 0x0CD1:WriteAtOffset
         add sp, 0xc

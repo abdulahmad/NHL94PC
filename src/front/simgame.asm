@@ -297,7 +297,7 @@ SimulateGame:
         jnz short .16
         push word [bp + 0xc]
         push word [bp + 0xa]
-        mov es, [g_8BD2]
+        mov es, [segTeamChoiceText27]
         push word [es:0xb6e]
         push word [es:0xb6c]
         push word [bp + 0x8]
@@ -319,7 +319,7 @@ SimulateGame:
         jnz short .17
         push word [bp + 0xc]
         push word [bp + 0xa]
-        mov es, [g_8BD2]
+        mov es, [segTeamChoiceText27]
         push word [es:0xb72]
         push word [es:0xb70]
         push word [bp + 0x8]
@@ -341,7 +341,7 @@ SimulateGame:
         jnz short .18
         push word [bp + 0xc]
         push word [bp + 0xa]
-        mov es, [g_8BD2]
+        mov es, [segTeamChoiceText27]
         push word [es:0xb82]
         push word [es:0xb80]
         push word [bp + 0x8]
@@ -943,12 +943,12 @@ SimulateGame:
         add si, [bp - 0x1ac]
         shl si, 1
         shl bx, 1
-        mov ax, [bx + g_183A]
-        xor [si + g_183A], ax
-        mov ax, [si + g_183A]
-        xor [bx + g_183A], ax
-        mov ax, [bx + g_183A]
-        xor [si + g_183A], ax
+        mov ax, [bx + SimGoalOdds]
+        xor [si + SimGoalOdds], ax
+        mov ax, [si + SimGoalOdds]
+        xor [bx + SimGoalOdds], ax
+        mov ax, [bx + SimGoalOdds]
+        xor [si + SimGoalOdds], ax
         jmp short .78
 .80:
         inc word [bp - 0x164]
@@ -986,12 +986,12 @@ SimulateGame:
         add si, [bp - 0x1ac]
         shl si, 1
         shl bx, 1
-        mov ax, [bx + g_1862]
-        xor [si + g_1862], ax
-        mov ax, [si + g_1862]
-        xor [bx + g_1862], ax
-        mov ax, [bx + g_1862]
-        xor [si + g_1862], ax
+        mov ax, [bx + SimGoalOdds2]
+        xor [si + SimGoalOdds2], ax
+        mov ax, [si + SimGoalOdds2]
+        xor [bx + SimGoalOdds2], ax
+        mov ax, [bx + SimGoalOdds2]
+        xor [si + SimGoalOdds2], ax
         jmp short .83
         db 0x90
 .85:
@@ -1172,7 +1172,7 @@ SimulateGame:
         shl ax, 1
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, 1
-        mov bx, [bx + g_183A]
+        mov bx, [bx + SimGoalOdds]
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         shl bx, 1
         db 0x03, 0xD8                           ; insn: add bx, ax
@@ -1214,7 +1214,7 @@ SimulateGame:
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, 1
-        mov bx, [bx + g_1862]
+        mov bx, [bx + SimGoalOdds2]
         shl bx, 1
         add bx, [bp + si - 0x100]
         mov es, [bp + si - 0xfe]
@@ -1261,7 +1261,7 @@ SimulateGame:
         shl cx, 1
         db 0x03, 0xD9                           ; insn: add bx, cx
         shl bx, 1
-        add si, [bx + g_183A]
+        add si, [bx + SimGoalOdds]
         mov cl, [bp + si - 0x1c6]
         db 0x2A, 0xED                           ; insn: sub ch, ch
         db 0x8B, 0xD8                           ; insn: mov bx, ax
@@ -1295,7 +1295,7 @@ SimulateGame:
         shl ax, 1
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, 1
-        mov bx, [bx + g_183A]
+        mov bx, [bx + SimGoalOdds]
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         shl bx, 1
         db 0x03, 0xD8                           ; insn: add bx, ax
@@ -1388,7 +1388,7 @@ SimulateGame:
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, 1
-        mov bx, [bx + g_1862]
+        mov bx, [bx + SimGoalOdds2]
         shl bx, 1
         add bx, [bp + si - 0x100]
         mov es, [bp + si - 0xfe]
@@ -1475,7 +1475,7 @@ SimulateGame:
         shl ax, 1
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, 1
-        add si, [bx + g_183A]
+        add si, [bx + SimGoalOdds]
         inc byte [bp + si - 0x1c6]
         imul si, [bp - 0x164], 0x19
         mov al, [bp - 0x26]
@@ -1688,7 +1688,7 @@ SimulateGame:
         db 0x8B, 0xCB                           ; insn: mov cx, bx
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, 1
-        mov bx, [bx + g_183A]
+        mov bx, [bx + SimGoalOdds]
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         shl bx, 1
         db 0x03, 0xD8                           ; insn: add bx, ax
@@ -1713,7 +1713,7 @@ SimulateGame:
         shl bx, 1
         db 0x03, 0xD9                           ; insn: add bx, cx
         shl bx, 1
-        mov bx, [bx + g_183A]
+        mov bx, [bx + SimGoalOdds]
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         shl bx, 1
         db 0x03, 0xD8                           ; insn: add bx, ax
@@ -1746,7 +1746,7 @@ SimulateGame:
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, 1
-        mov bx, [bx + g_1862]
+        mov bx, [bx + SimGoalOdds2]
         shl bx, 1
         mov cx, es
         add bx, [bp + si - 0x100]
@@ -1768,7 +1768,7 @@ SimulateGame:
         db 0x03, 0xD9                           ; insn: add bx, cx
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, 1
-        mov bx, [bx + g_1862]
+        mov bx, [bx + SimGoalOdds2]
         shl bx, 1
         add bx, [bp + di - 0x100]
         mov es, [bp + di - 0xfe]
@@ -1826,7 +1826,7 @@ SimulateGame:
         shl ax, 1
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, 1
-        mov bx, [bx + g_183A]
+        mov bx, [bx + SimGoalOdds]
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         shl bx, 1
         db 0x03, 0xD8                           ; insn: add bx, ax
@@ -1923,7 +1923,7 @@ SimulateGame:
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, 1
-        mov bx, [bx + g_1862]
+        mov bx, [bx + SimGoalOdds2]
         shl bx, 1
         add bx, [bp + si - 0x100]
         mov es, [bp + si - 0xfe]
@@ -2073,7 +2073,7 @@ SimulateGame:
         shl ax, 1
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, 1
-        mov bx, [bx + g_183A]
+        mov bx, [bx + SimGoalOdds]
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         shl bx, 1
         db 0x03, 0xD8                           ; insn: add bx, ax
@@ -2159,7 +2159,7 @@ SimulateGame:
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, 1
-        mov bx, [bx + g_1862]
+        mov bx, [bx + SimGoalOdds2]
         shl bx, 1
         add bx, [bp + si - 0x100]
         mov es, [bp + si - 0xfe]

@@ -19,20 +19,20 @@ InitMenuRemap:
         mov ax, 0x3a0b
         mov ds, ax
 .1:
-        mov byte [bx + f_3A0B_AF4C], 0x0
+        mov byte [bx + MenuRemap], 0x0
         inc bx
         cmp bx, 0x15
         jl short .1
         mov bx, 0x15
 .2:
         lea ax, [bx - 0x15]
-        mov [bx + f_3A0B_AF4C], al
+        mov [bx + MenuRemap], al
         inc bx
         cmp bx, 0x40
         jl short .2
         mov bx, 0x40
 .3:
-        mov [bx + f_3A0B_AF4C], bl
+        mov [bx + MenuRemap], bl
         inc bx
         cmp bx, 0x100
         jl short .3
@@ -47,15 +47,15 @@ InitMenuRemap:
         mov ds, ax
 .6:
         db 0x8B, 0xC6                           ; insn: mov ax, si
-        mov [si + f_3A0B_AF4C], al
-        mov [si + f_3A0B_AFCC], al
+        mov [si + MenuRemap], al
+        mov [si + MenuRemap2], al
         inc si
         cmp si, 0x80
         jl short .6
         jmp short .4
 .7:
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0FEF:SetRemapTable
         add sp, 0x4
         pop si
@@ -118,7 +118,7 @@ CmpPoints:
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
         push si
-        cmp word [ss:g_200E], 0x0
+        cmp word [ss:statscontext], 0x0
         jnz short .1
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x30
@@ -134,7 +134,7 @@ CmpPoints:
 .2:
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov ds, dx
-        cmp word [ss:g_200E], 0x0
+        cmp word [ss:statscontext], 0x0
         jnz short .3
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x30
@@ -202,7 +202,7 @@ CmpGAA:
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
         push si
-        cmp word [ss:g_200E], 0x0
+        cmp word [ss:statscontext], 0x0
         jnz short .1
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x36
@@ -218,7 +218,7 @@ CmpGAA:
 .2:
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov ds, dx
-        cmp word [ss:g_200E], 0x0
+        cmp word [ss:statscontext], 0x0
         jnz short .3
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x36
@@ -511,7 +511,7 @@ GetSeasonTitle:
         enter 0xe, 0x0
         push di
         push si
-        mov es, [g_8C62]
+        mov es, [segSeasonTitles1]
         cmp byte [es:0x0], 0x1
         jnz short .2
         mov ax, 0x2
@@ -523,21 +523,21 @@ GetSeasonTitle:
         jmp short .7
         db 0x90
 .2:
-        mov es, [g_8C64]
+        mov es, [segSeasonTitles2]
         cmp byte [es:0x13], 0x1
         jnz short .3
         mov ax, 0x15
         mov cx, 0x384b
         jmp short .6
 .3:
-        mov es, [g_8C66]
+        mov es, [segSeasonTitles3]
         cmp byte [es:0x29], 0x1
         jnz short .4
         mov ax, 0x2b
         mov cx, 0x384b
         jmp short .1
 .4:
-        mov es, [g_8C68]
+        mov es, [segSeasonTitles4]
         cmp byte [es:0x3d], 0x1
         jnz short .5
         mov ax, 0x3f
@@ -546,7 +546,7 @@ GetSeasonTitle:
 .5:
         mov si, [bp - 0xa]
         mov di, [bp - 0x6]
-        mov es, [g_8C6A]
+        mov es, [segSeasonTitles5]
         cmp byte [es:0x5b], 0x1
         jnz short .7
         mov ax, 0x5d

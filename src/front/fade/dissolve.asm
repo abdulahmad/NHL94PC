@@ -11,12 +11,12 @@ FadeDissolve:
         push si
         mov word [bp - 0x6], 0xffff
         mov byte [bp - 0x4], 0x0
-        mov es, [g_8CFC]
+        mov es, [segDgroup22]
         mov ax, [es:0x74f4]
         sub ax, [es:0x74f2]
         imul word [es:0x74fa]
         mov [bp - 0x12], ax
-        mov es, [g_8CFE]
+        mov es, [segDgroup23]
         cmp word [CurPage], 0x1
         db 0x1B, 0xDB                           ; insn: sbb bx, bx
         neg bx
@@ -26,7 +26,7 @@ FadeDissolve:
         mov dx, [es:bx + 0x2]
         mov [bp - 0x16], ax
         mov [bp - 0x14], dx
-        mov es, [g_8CFE]
+        mov es, [segDgroup23]
         mov bx, [CurPage]
         shl bx, byte 0x2
         les bx, [es:bx + 0x7570]

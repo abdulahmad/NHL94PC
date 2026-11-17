@@ -25,7 +25,7 @@ PaintJerseyDigit:
         mov di, [bp + 0x6]
 .1:
         mov bx, [bp - 0x2]
-        cmp byte [bx + si + g_1994], 0x0
+        cmp byte [bx + si + JerseyDigitGlyphs], 0x0
         jz short .2
         mov al, [bp + 0xc]
         mov es, [bp + 0x8]
@@ -149,7 +149,7 @@ BuildTradeRoster:
         mov di, [bp + 0x6]
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8C04]
+        mov es, [segTeamChoiceText37]
         push word [es:0xb7e]
         push word [es:0xb7c]
         push word [bp + 0x8]
@@ -184,7 +184,7 @@ BuildTradeRoster:
         jnz short .3
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8C04]
+        mov es, [segTeamChoiceText37]
         push word [es:0xb6e]
         push word [es:0xb6c]
         mov ax, [bp + 0x8]
@@ -257,11 +257,11 @@ BuildTradeRoster:
         mov al, [bp - 0x6b]
         mov es, [bp - 0x10]
         mov [es:si + 0x3], al
-        mov es, [g_8C06]
+        mov es, [segTeamChoiceText38]
         mov al, [es:0xbf4]
         mov es, [bp - 0x10]
         mov [es:si + 0x4], al
-        mov es, [g_8C08]
+        mov es, [segTeamChoiceText39]
         mov al, [es:0xba6]
         mov es, [bp - 0x10]
         mov [es:si + 0x5], al
@@ -334,11 +334,11 @@ BuildTradeRoster:
         mov al, [bp - 0x6b]
         mov es, [bp - 0x10]
         mov [es:si + 0x3], al
-        mov es, [g_8C06]
+        mov es, [segTeamChoiceText38]
         mov al, [es:0xbf4]
         mov es, [bp - 0x10]
         mov [es:si + 0x4], al
-        mov es, [g_8C08]
+        mov es, [segTeamChoiceText39]
         mov al, [es:0xba6]
         mov es, [bp - 0x10]
         mov [es:si + 0x5], al
@@ -385,7 +385,7 @@ TradeShowStats:
         mov si, [bp + 0xa]
         mov word [leaguestatsmode], 0x1
         mov word [statsredrawcb], 0x2459
-        mov word [g_21BE], 0x1b35
+        mov word [statsmenucbseg], 0x1b35
         mov al, [bp + 0x8]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         mov [statscategory], ax
@@ -481,7 +481,7 @@ TradeShowStats:
         push 0x40
         push 0x2
         push word 0x3701
-        push strict word f_3701_11AB
+        push strict word TradeStatsMenuBar
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
         push 0x0
@@ -492,7 +492,7 @@ TradeShowStats:
         push 0x40
         push 0x2
         push word 0x3701
-        push strict word f_3701_11AB
+        push strict word TradeStatsMenuBar
         call 0x1B35:StatsMenuLoopThunk
         add sp, 0xc
         push word 0xc8
@@ -500,7 +500,7 @@ TradeShowStats:
         add sp, 0x2
         mov word [leaguestatsmode], 0x0
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_21BE], ax
+        mov [statsmenucbseg], ax
         mov [statsredrawcb], ax
         push word [statsteambuf]
         push word [g_C04C]
@@ -675,7 +675,7 @@ FixJerseyConflict:
         rep movsb
         pop si
         push word 0x3701
-        push strict word f_3701_0BA6
+        push strict word str_Space
         lea ax, [bp - 0x2e]
         push ss
         push ax
@@ -716,7 +716,7 @@ FixJerseyConflict:
         call 0x0000:_sprintf
         add sp, 0xa
         lea ax, [bp - 0x80]
-        mov es, [g_8C0A]
+        mov es, [segWorkBuffer31]
         mov [es:0xb04c], ax
         mov [es:0xb04e], ss
         lea cx, [bp - 0x8]
@@ -737,7 +737,7 @@ FixJerseyConflict:
         push 0x0
         push 0x1
         push word 0x3a0b
-        push strict word f_3A0B_B04C
+        push strict word dlgJerseyConflict
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -821,7 +821,7 @@ ExecuteTrade:
         mov [bp - 0x66e], cx
         push cx
         push ax
-        mov es, [g_8C04]
+        mov es, [segTeamChoiceText37]
         push word [es:0xb7e]
         push word [es:0xb7c]
         push word [bp + 0x8]
@@ -866,7 +866,7 @@ ExecuteTrade:
         jnz short .3
         push word [bp - 0x66e]
         push word [bp - 0x670]
-        mov es, [g_8C04]
+        mov es, [segTeamChoiceText37]
         push word [es:0xb6e]
         push word [es:0xb6c]
         push word [bp + 0x8]
@@ -1118,17 +1118,17 @@ ExecuteTrade:
 .18:
         mov bx, [bp + 0xa]
         mov ax, [bx]
-        mov [g_29CA], ax
+        mov [HomeTeamNum], ax
         mov ax, [bx + 0x2]
-        mov [g_29CC], ax
+        mov [VisTeamNum], ax
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         push ds
         push strict word g_C000
         call 0x0000:_fstrcpy
         add sp, 0x8
         push word 0x3701
-        push strict word f_3701_0BAA
+        push strict word str_Backslash
         push ds
         push strict word g_C000
         call 0x0000:_fstrcat
@@ -1165,7 +1165,7 @@ ExecuteTrade:
         mov word [curperiod], 0xfffe
         push 0x3
         push word 0x3448
-        push strict word f_3448_15F2
+        push strict word TradeLinesMenu
         push word 0xae10
         push 0x0
         call 0x1B35:GameLineEditorThunk
@@ -1196,7 +1196,7 @@ ExecuteTrade:
         add sp, 0x4
         push 0x3
         push word 0x3448
-        push strict word f_3448_15F2
+        push strict word TradeLinesMenu
         push word 0xae40
         push 0x1
         call 0x1B35:GameLineEditorThunk
@@ -1436,7 +1436,7 @@ DrawTradeScreen:
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push word 0x3680
-        push strict word f_3680_0000
+        push strict word JerseyRemapTable
         push cs
         call DrawJerseyNumber
         add sp, 0xa
@@ -1464,14 +1464,14 @@ DrawTradeScreen:
         push ds
         push ax
         push word 0x3680
-        push strict word f_3680_0080
+        push strict word TradeRemapTable
         call 0x0000:_fmemcpy
         add sp, 0xa
         push word 0x3680
-        push strict word f_3680_0000
+        push strict word JerseyRemapTable
         call 0x0FEF:SetRemapTable
         add sp, 0x4
-        mov es, [g_8C0C]
+        mov es, [segTradeMessages1]
         mov bx, [bp - 0x10]
         push word [es:bx]
         dec bx
@@ -1642,7 +1642,7 @@ TradeHitTest:
         mov si, [bp + 0xa]
         mov [bx + si], ax
         mov word [bp - 0x2], 0x1
-        mov es, [g_8C0E]
+        mov es, [segTeamChoiceText40]
         mov word [es:0x1109], strict word TradeShowStatsThunk
         mov word [es:0x110b], 0x1b35
 .8:
@@ -1848,7 +1848,7 @@ TradeScreenLoop:
         mov [bp - 0x88], ax
         mov [bp - 0x8a], ax
         mov [bp - 0x8c], ax
-        mov es, [g_8C10]
+        mov es, [segMenuText21]
         mov [es:0x1474], ax
         mov [es:0x1472], ax
         mov [es:0x145e], ax
@@ -1944,7 +1944,7 @@ TradeScreenLoop:
         add sp, 0x8
         call 0x0F99:FlushInputEvents
         mov word [g_C27C], 0x0
-        mov es, [g_8C0E]
+        mov es, [segTeamChoiceText40]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [es:0x110b], ax
         mov [es:0x1109], ax
@@ -2657,7 +2657,7 @@ TradeScreenLoop:
         imul si, bx, 0x16
         mov [bp + si - 0x75], al
         mov word [bp - 0x78], 0xffff
-        mov es, [g_8C0E]
+        mov es, [segTeamChoiceText40]
         mov word [es:0x1109], strict word TradeShowStatsThunk
         mov word [es:0x110b], 0x1b35
         jmp near .84
@@ -2793,7 +2793,7 @@ TradeScreenLoop:
         push cs
         call DrawTradeRow
         add sp, 0x2
-        mov es, [g_8C0E]
+        mov es, [segTeamChoiceText40]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [es:0x110b], ax
         mov [es:0x1109], ax
@@ -2812,7 +2812,7 @@ TradeScreenLoop:
         jmp short .89
 .86:
         mov word [bp - 0xc2], 0x0
-        mov es, [g_8C12]
+        mov es, [segCharTable2]
 .87:
         mov al, [bp - 0x94]
         mov bx, [bp - 0xc2]
@@ -2829,14 +2829,14 @@ TradeScreenLoop:
         push ds
         push ax
         push word 0x3680
-        push strict word f_3680_0080
+        push strict word TradeRemapTable
         call 0x0000:_fmemcpy
         add sp, 0xa
         push word 0x3680
-        push strict word f_3680_0000
+        push strict word JerseyRemapTable
         call 0x0FEF:SetRemapTable
         add sp, 0x4
-        mov es, [g_8C0C]
+        mov es, [segTradeMessages1]
         mov bx, [bp - 0xbc]
         shl bx, byte 0x2
         db 0x26, 0xFF, 0xB7, 0x02, 0x00         ; insn: push word [es:bx + 0x2]
@@ -2873,7 +2873,7 @@ TradeScreenLoop:
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push word 0x3680
-        push strict word f_3680_0000
+        push strict word JerseyRemapTable
         push cs
         call DrawJerseyNumber
         add sp, 0xa
@@ -2909,7 +2909,7 @@ TradeScreenLoop:
         shl bx, 1
         mov [bx + g_C792], ax
         mov [g_C79A], ax
-        mov es, [g_8C0E]
+        mov es, [segTeamChoiceText40]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [es:0x110b], ax
         mov [es:0x1109], ax
@@ -3034,7 +3034,7 @@ TradeScreenLoop:
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push word 0x3680
-        push strict word f_3680_0000
+        push strict word JerseyRemapTable
         push cs
         call DrawJerseyNumber
         add sp, 0xa
@@ -3046,11 +3046,11 @@ TradeScreenLoop:
         push ds
         push ax
         push word 0x3680
-        push strict word f_3680_0080
+        push strict word TradeRemapTable
         call 0x0000:_fmemcpy
         add sp, 0xa
         push word 0x3680
-        push strict word f_3680_0000
+        push strict word JerseyRemapTable
         call 0x0FEF:SetRemapTable
         add sp, 0x4
         mov ax, [bp - 0x7a]
@@ -3362,7 +3362,7 @@ TradePlayers:
         mov [bp - 0x27], al
         push 0x2
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         call 0x2305:LeagueCheckStub
         add sp, 0x6
         mov [bp - 0x3e], ax
@@ -3371,21 +3371,21 @@ TradePlayers:
         cmp word [bp - 0x3e], 0x0
         jnz short .2
         push word 0x3a0b
-        push strict word f_3A0B_AF3E
+        push strict word leagueinfo_tail
         push word 0x3a0b
-        push strict word f_3A0B_AC60
+        push strict word leagueinfo_w6
         push word 0x3a0b
-        push strict word f_3A0B_AC5E
+        push strict word leagueinfo_w4
         push word 0x3a0b
-        push strict word f_3A0B_AC5C
+        push strict word leagueinfo_w2
         push word 0x3a0b
-        push strict word f_3A0B_AC5A
+        push strict word leagueinfo
         push word 0x3a0b
-        push strict word f_3A0B_AF32
+        push strict word leagueinfo_password
         push word 0x3a0b
-        push strict word f_3A0B_AC62
+        push strict word leagueinfo_teams
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         call 0x22D3:ReadLeagueInfo
         add sp, 0x20
         mov [bp - 0x3e], ax
@@ -3410,14 +3410,14 @@ TradePlayers:
         call 0x03A3:MouseRead
         add sp, 0x6
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x4c]
         push ss
         push ax
         call 0x0000:_fstrcpy
         add sp, 0x8
         push word 0x3701
-        push strict word f_3701_0BF4
+        push strict word str_Dot
         lea ax, [bp - 0x4c]
         push ss
         push ax
@@ -3426,11 +3426,11 @@ TradePlayers:
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov [bp - 0x2], si
         mov byte [bp + si - 0x4c], 0x0
-        mov es, [g_8C14]
+        mov es, [segWorkBuffer32]
         cmp word [es:0xac60], 0x0
         jz short .5
         lea ax, [bp - 0x4c]
-        mov es, [g_8C16]
+        mov es, [segTeamChoiceText41]
         mov [es:0xb36], ax
         mov [es:0xb38], ss
         push -0x1
@@ -3453,11 +3453,11 @@ TradePlayers:
         jmp near .7
         db 0x90
 .5:
-        mov es, [g_8C18]
+        mov es, [segWorkBuffer33]
         test byte [es:0xac5e], 0x4
         jnz short .6
         lea ax, [bp - 0x4c]
-        mov es, [g_8C1A]
+        mov es, [segTeamChoiceText42]
         mov [es:0x8b3], ax
         mov [es:0x8b5], ss
         push -0x1
@@ -3467,7 +3467,7 @@ TradePlayers:
         push ax
         push 0x2
         push word 0x3701
-        push strict word f_3701_0913
+        push strict word dlgMergeFirst
         push 0x4
         push es
         push word 0x8af
@@ -3485,11 +3485,11 @@ TradePlayers:
 .6:
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8C04]
+        mov es, [segTeamChoiceText37]
         push word [es:0xb7e]
         push word [es:0xb7c]
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x24]
         push ss
         push ax
@@ -3497,7 +3497,7 @@ TradePlayers:
         add sp, 0x10
         push 0x1
         push word 0x3a0b
-        push strict word f_3A0B_AA38
+        push strict word LeagueTeamNames
         lea ax, [bp - 0x24]
         push ax
         call 0x22D3:ReadTeamNames
@@ -3579,11 +3579,11 @@ TradePlayers:
 .11:
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8C04]
+        mov es, [segTeamChoiceText37]
         push word [es:0xb86]
         push word [es:0xb84]
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x24]
         push ss
         push ax
@@ -3687,7 +3687,7 @@ TradePlayers:
         jz short .19
         jmp near TradePlayersTail + 0x2600
 .19:
-        mov es, [g_8C1C]
+        mov es, [segWorkBuffer34]
         cmp word [es:0xac5c], 0x1
         jnz short .20
         push 0x0
@@ -3725,13 +3725,13 @@ TradePlayers:
         push strict word str_SelectTwoTeamsForTrading
         push 0x10
         push word 0x3a0b
-        push strict word f_3A0B_AC62
+        push strict word leagueinfo_teams
         push word 0x3a0b
-        push strict word f_3A0B_AA38
+        push strict word LeagueTeamNames
         push word 0x3a0b
-        push strict word f_3A0B_AC5C
+        push strict word leagueinfo_w2
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         call 0x1F31:LeagueTeamSelect
         add sp, 0x18
         cmp word [bp - 0x3c], 0x0
@@ -3739,7 +3739,7 @@ TradePlayers:
         cmp word [bp - 0x3a], 0x0
         jl short .23
         push word 0x3a0b
-        push strict word f_3A0B_AC62
+        push strict word leagueinfo_teams
         push word [bp - 0x3c]
         call 0x28A8:AskTeamPassword
         add sp, 0x6
@@ -3747,7 +3747,7 @@ TradePlayers:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .21
         push word 0x3a0b
-        push strict word f_3A0B_AC62
+        push strict word leagueinfo_teams
         push word [bp - 0x3a]
         call 0x28A8:AskTeamPassword
         add sp, 0x6
@@ -3757,13 +3757,13 @@ TradePlayers:
         jnz short .22
         push 0x2
         push word 0x3701
-        push strict word f_3701_1163
+        push strict word TradeMenu
         lea ax, [bp - 0x2a]
         push ax
         lea ax, [bp - 0x3c]
         push ax
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         push cs
         call TradeScreen
         add sp, 0xe
@@ -3776,7 +3776,7 @@ TradePlayers:
         lea ax, [bp - 0x3c]
         push ax
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         push cs
         call ExecuteTrade
         add sp, 0x8

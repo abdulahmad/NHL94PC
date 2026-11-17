@@ -18,7 +18,7 @@ FadeSplitCenter:
         jmp near .25
 .1:
         call 0x0FEF:UseCurrentPage
-        mov es, [g_8CF8]
+        mov es, [segDgroup20]
         mov ax, [es:0x74fe]
         mov [bp - 0x16], ax
         mov ax, [es:0x74f4]

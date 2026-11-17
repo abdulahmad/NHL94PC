@@ -16,7 +16,7 @@ CmpGoals:
         enter 0x8, 0x0
         push di
         push si
-        cmp word [ss:g_200E], 0x0
+        cmp word [ss:statscontext], 0x0
         jnz short .1
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x30
@@ -33,7 +33,7 @@ CmpGoals:
 .2:
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov [bp - 0x6], dx
-        cmp word [ss:g_200E], 0x0
+        cmp word [ss:statscontext], 0x0
         jnz short .3
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x30
@@ -108,7 +108,7 @@ CmpAssists:
         enter 0x8, 0x0
         push di
         push si
-        cmp word [ss:g_200E], 0x0
+        cmp word [ss:statscontext], 0x0
         jnz short .1
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x30
@@ -125,7 +125,7 @@ CmpAssists:
 .2:
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov [bp - 0x6], dx
-        cmp word [ss:g_200E], 0x0
+        cmp word [ss:statscontext], 0x0
         jnz short .3
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x30
@@ -196,7 +196,7 @@ CmpPPGoals:
         enter 0x8, 0x0
         push di
         push si
-        cmp word [ss:g_200E], 0x0
+        cmp word [ss:statscontext], 0x0
         jnz short .1
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x30
@@ -213,7 +213,7 @@ CmpPPGoals:
 .2:
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov [bp - 0x6], dx
-        cmp word [ss:g_200E], 0x0
+        cmp word [ss:statscontext], 0x0
         jnz short .3
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x30
@@ -295,7 +295,7 @@ CmpSHGoals:
         enter 0x8, 0x0
         push di
         push si
-        cmp word [ss:g_200E], 0x0
+        cmp word [ss:statscontext], 0x0
         jnz short .1
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x30
@@ -312,7 +312,7 @@ CmpSHGoals:
 .2:
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov [bp - 0x6], dx
-        cmp word [ss:g_200E], 0x0
+        cmp word [ss:statscontext], 0x0
         jnz short .3
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x30
@@ -394,7 +394,7 @@ CmpPlusMinus:
         enter 0x8, 0x0
         push di
         push si
-        cmp word [ss:g_200E], 0x0
+        cmp word [ss:statscontext], 0x0
         jnz short .1
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x30
@@ -411,7 +411,7 @@ CmpPlusMinus:
 .2:
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov [bp - 0x6], dx
-        cmp word [ss:g_200E], 0x0
+        cmp word [ss:statscontext], 0x0
         jnz short .3
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x30
@@ -486,7 +486,7 @@ CmpPIM:
         enter 0x8, 0x0
         push di
         push si
-        cmp word [ss:g_200E], 0x0
+        cmp word [ss:statscontext], 0x0
         jnz short .1
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x30
@@ -503,7 +503,7 @@ CmpPIM:
 .2:
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov [bp - 0x6], dx
-        cmp word [ss:g_200E], 0x0
+        cmp word [ss:statscontext], 0x0
         jnz short .3
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x30
@@ -606,7 +606,7 @@ CmpShootPct:
         retf
         db 0x90
 .1:
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .2
         imul ax, [bx], 0x30
         add ax, [g_C044]
@@ -620,7 +620,7 @@ CmpShootPct:
 .3:
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov [bp - 0x6], dx
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .4
         imul ax, [bp - 0xc], 0x30
         add ax, [g_C044]
@@ -691,7 +691,7 @@ CmpGoalieWins:
         enter 0x8, 0x0
         push di
         push si
-        cmp word [ss:g_200E], 0x0
+        cmp word [ss:statscontext], 0x0
         jnz short .1
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x36
@@ -708,7 +708,7 @@ CmpGoalieWins:
 .2:
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov [bp - 0x6], dx
-        cmp word [ss:g_200E], 0x0
+        cmp word [ss:statscontext], 0x0
         jnz short .3
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x36
@@ -737,7 +737,7 @@ CmpGoalieWins:
         sub ax, [es:di + 0x2]
         jmp near .11
 .5:
-        cmp word [ss:g_200E], 0x0
+        cmp word [ss:statscontext], 0x0
         jnz short .6
         mov es, [bp - 0x2]
         mov ax, [es:bx + 0x6]
@@ -818,7 +818,7 @@ CmpSavePct:
         enter 0x8, 0x0
         push di
         push si
-        cmp word [ss:g_200E], 0x0
+        cmp word [ss:statscontext], 0x0
         jnz short .1
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x36
@@ -835,7 +835,7 @@ CmpSavePct:
 .2:
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov [bp - 0x6], dx
-        cmp word [ss:g_200E], 0x0
+        cmp word [ss:statscontext], 0x0
         jnz short .3
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x36
@@ -983,10 +983,10 @@ LeadersScreen:
 .4:
         push 0x0
         push 0x0
-        mov bx, [g_2010]
+        mov bx, [statsseason]
         shl bx, 1
         push ds
-        push word [bx + g_1FAA]
+        push word [bx + StatsDbNames3]
         push word 0x3861
         push strict word 0x0
         lea ax, [bp - 0xc6]
@@ -1000,7 +1000,7 @@ LeadersScreen:
         call 0x0000:_open
         add sp, 0x4
         mov [bp - 0x174], ax
-        cmp word [g_2010], 0x1
+        cmp word [statsseason], 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         and ax, 0xfd64
         add ax, 0x2e8
@@ -1015,9 +1015,9 @@ LeadersScreen:
         mov si, [bp - 0x17c]
         shl si, 1
         mov [bp + si - 0xf6], ax
-        cmp word [g_2010], 0x0
+        cmp word [statsseason], 0x0
         jnz short .7
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .7
         mov si, [bp - 0x17c]
         shl si, 1
@@ -1048,7 +1048,7 @@ LeadersScreen:
         push word [bp - 0x174]
         call 0x0000:_read
         add sp, 0x6
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .5
         mov al, [bp - 0x3e]
         jmp short .6
@@ -1077,10 +1077,10 @@ LeadersScreen:
         mov [bp - 0x17e], ax
         push 0x0
         push 0x0
-        mov bx, [g_2010]
+        mov bx, [statsseason]
         shl bx, 1
         push ds
-        push word [bx + g_1FA6]
+        push word [bx + StatsDbNames2]
         push word 0x3861
         push strict word 0x0
         lea ax, [bp - 0xc6]
@@ -1110,7 +1110,7 @@ LeadersScreen:
         jmp near .48
 .14:
         push 0x0
-        cmp word [g_2010], 0x0
+        cmp word [statsseason], 0x0
         jnz short .15
         mov ax, [bp - 0x18a]
         mov dx, [bp - 0x188]
@@ -1130,7 +1130,7 @@ LeadersScreen:
         push word [bp - 0x2]
         call 0x0000:_read
         add sp, 0x6
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .17
         mov ax, [bp - 0xa6]
         jmp short .18
@@ -1165,7 +1165,7 @@ LeadersScreen:
 .22:
         cmp word [bp + 0x6], 0x9
         jnz short .25
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .23
         mov ax, [bp - 0xa4]
         jmp short .24
@@ -1193,7 +1193,7 @@ LeadersScreen:
         push ax
         mov bx, [bp + 0x6]
         shl bx, byte 0x2
-        call far [bx + g_26B2]
+        call far [bx + LeaderCmps]
         add sp, 0x4
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jl short .26
@@ -1239,7 +1239,7 @@ LeadersScreen:
         jmp near .48
 .30:
         push 0x0
-        cmp word [g_2010], 0x0
+        cmp word [statsseason], 0x0
         jnz short .31
         mov ax, [bp - 0x18a]
         mov dx, [bp - 0x188]
@@ -1259,7 +1259,7 @@ LeadersScreen:
         push word [bp - 0x2]
         call 0x0000:_read
         add sp, 0x6
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .33
         mov ax, [bp - 0x214]
         jmp short .34
@@ -1299,7 +1299,7 @@ LeadersScreen:
         rep movsw
         cmp word [bp + 0x6], 0x7
         jnz short .44
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .39
         mov ax, [bp - 0x206]
         jmp short .40
@@ -1312,7 +1312,7 @@ LeadersScreen:
         cwd
         push dx
         push ax
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .41
         mov ax, [bp - 0x212]
         jmp short .42
@@ -1356,7 +1356,7 @@ LeadersScreen:
         push ax
         mov bx, [bp + 0x6]
         shl bx, byte 0x2
-        call far [bx + g_26B2]
+        call far [bx + LeaderCmps]
         add sp, 0x4
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnl short .48
@@ -1393,8 +1393,8 @@ LeadersScreen:
 .47:
         mov bx, [bp + 0x6]
         shl bx, byte 0x2
-        push word [bx + g_26B4]
-        push word [bx + g_26B2]
+        push word [bx + LeaderCmpsSeg]
+        push word [bx + LeaderCmps]
         push 0x2
         push word [bp - 0x1e4]
         lea ax, [bp - 0x1e2]
@@ -1436,10 +1436,10 @@ LeadersScreen:
         call 0x0FEF:UseOffscreenCanvas
         push word 0x3701
         push strict word str_Qpp
-        mov bx, [g_200E]
+        mov bx, [statscontext]
         shl bx, 1
         push ds
-        push word [bx + g_1FA2]
+        push word [bx + StatsDbNames]
         push 0x0
         push 0x0
         lea ax, [bp - 0xc6]
@@ -1486,7 +1486,7 @@ LeadersScreen:
         mov bx, [bp + 0x6]
         shl bx, 1
         push ds
-        push word [bx + g_28DE]
+        push word [bx + LeaderTitles]
         lea ax, [bp - 0x172]
         push ss
         push ax
@@ -1536,27 +1536,27 @@ LeadersScreen:
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, 1
         push ds
-        push word [bx + g_28F4]
+        push word [bx + LeaderHead1]
         push 0x14
         push word 0xcd
         db 0x8B, 0xF3                           ; insn: mov si, bx
         call 0x0D39:DrawShadowText
         add sp, 0x8
         push ds
-        push word [si + g_28F6]
+        push word [si + LeaderHead2]
         push 0x14
         push word 0xe6
         call 0x0D39:DrawShadowText
         add sp, 0x8
         push ds
-        push word [si + g_28F8]
+        push word [si + LeaderHead3]
         push 0x14
         push word 0xfa
         call 0x0D39:DrawShadowText
         add sp, 0x8
         cmp word [bp + 0x6], 0x9
         jnz short .50
-        cmp word [g_200E], 0x1
+        cmp word [statscontext], 0x1
         jz short .51
 .50:
         mov bx, [bp + 0x6]
@@ -1565,7 +1565,7 @@ LeadersScreen:
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, 1
         push ds
-        push word [bx + g_28FA]
+        push word [bx + LeaderHead4]
         push word [bp - 0x17a]
         push word 0x10e
         call 0x0D39:DrawShadowText
@@ -1577,7 +1577,7 @@ LeadersScreen:
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, 1
         push ds
-        push word [bx + g_28FC]
+        push word [bx + LeaderHeads]
         push word [bp - 0x17a]
         push word 0x127
         call 0x0D39:DrawShadowText
@@ -1653,7 +1653,7 @@ LeadersScreen:
         push word 0xfa
         jmp short .61
 .58:
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .59
         imul bx, [bp - 0x1b6], 0x36
         add bx, [g_C040]
@@ -1773,7 +1773,7 @@ LeadersScreen:
         push word 0xfa
         call 0x0D39:DrawShadowTextF
         add sp, 0x8
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jz short .71
         jmp near LeadersScreenJumpTable.1
 .71:
@@ -1918,7 +1918,7 @@ LeadersScreenJumpTable:                         ; jump table of LeadersScreen: 1
         push 0x0
         push 0x0
         push ds
-        push word [g_1FAA]
+        push word [StatsDbNames3]
         push word 0x3861
         push strict word 0x0
         lea ax, [bp - 0xc6]
@@ -1962,7 +1962,7 @@ LeadersScreenJumpTable:                         ; jump table of LeadersScreen: 1
         jl short .5
         jmp near LeadersScreen.58
 .5:
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jz short .6
         jmp near LeadersScreen.56
 .6:

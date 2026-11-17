@@ -26,7 +26,7 @@ PlayTitleMovies:
 .1:
         cmp [bp + 0x6], ax
         jz short .2
-        mov bx, [g_29CC]
+        mov bx, [VisTeamNum]
         shl bx, 1
         push word [bx + TeamNameClips]
         lea ax, [bp - 0x20]
@@ -37,7 +37,7 @@ PlayTitleMovies:
         jmp short .3
         db 0x90
 .2:
-        mov bx, [g_29CA]
+        mov bx, [HomeTeamNum]
         shl bx, 1
         push word [bx + TeamNameClips]
         lea ax, [bp - 0x20]
@@ -56,7 +56,7 @@ PlayTitleMovies:
         call 0x0000:_strcat
         add sp, 0x4
         mov ax, 0x1
-        mov es, [g_8CB2]
+        mov es, [segWorkBuffer51]
         mov bx, [bp + 0x6]
         shl bx, byte 0x3
         mov [es:bx - 0x499c], ax
@@ -76,14 +76,14 @@ PlayTitleMovies:
         call 0x0000:VgaCopyBlock
         add sp, 0x4
         push word 0x3a0b
-        push strict word f_3A0B_B352
+        push strict word GamePalette
         push word 0x100
         push 0x0
         call 0x0FEF:GetPaletteFar
         add sp, 0x8
         push 0x8
         push word 0x3a0b
-        push strict word f_3A0B_B352
+        push strict word GamePalette
         push 0x1
         call 0x1E7E:FadePalette
         add sp, 0x8
@@ -97,7 +97,7 @@ PlayTitleMovies:
         db 0x2B, 0xDB                           ; insn: sub bx, bx
         call 0x0FEF:SetClipRectRegs
         mov word [bp - 0x28], 0x0
-        mov es, [g_8CB6]
+        mov es, [segWorkBuffer53]
 .6:
         mov bx, [bp - 0x28]
         mov byte [es:bx - 0x4992], 0x0
@@ -109,7 +109,7 @@ PlayTitleMovies:
         jmp near .18
 .7:
         push word 0x3a0b
-        push strict word f_3A0B_B6E6
+        push strict word MovieState
         push 0x2
         lea ax, [bp - 0x20]
         push ax
@@ -154,7 +154,7 @@ PlayTitleMovies:
         les bx, [bp - 0x30]
         mov si, [bp - 0x28]
         mov al, [es:bx + si]
-        mov es, [g_8CB6]
+        mov es, [segWorkBuffer53]
         mov [es:si - 0x4992], al
         inc word [bp - 0x28]
         cmp word [bp - 0x28], 0x30
@@ -190,7 +190,7 @@ PlayTitleMovies:
         imul bx, ax, 0x28
         mov al, [bx + g_A556]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
-        mov es, [g_8CB4]
+        mov es, [segWorkBuffer52]
         mov bx, [bp + 0x6]
         db 0x8B, 0xCB                           ; insn: mov cx, bx
         shl bx, 1
@@ -200,7 +200,7 @@ PlayTitleMovies:
         jz short .13
         jmp near .17
 .13:
-        mov es, [g_8CB2]
+        mov es, [segWorkBuffer51]
         db 0x8B, 0xD9                           ; insn: mov bx, cx
         shl bx, byte 0x3
         cmp word [es:bx - 0x49a2], 0x0
@@ -213,7 +213,7 @@ PlayTitleMovies:
 .14:
         db 0x0B, 0xC9                           ; insn: or cx, cx
         jz short .15
-        mov bx, [g_29CC]
+        mov bx, [VisTeamNum]
         shl bx, 1
         push word [bx + TeamNameClips]
         lea ax, [bp - 0x20]
@@ -224,7 +224,7 @@ PlayTitleMovies:
         jmp short .16
         db 0x90
 .15:
-        mov bx, [g_29CA]
+        mov bx, [HomeTeamNum]
         shl bx, 1
         push word [bx + TeamNameClips]
         lea ax, [bp - 0x20]
@@ -243,7 +243,7 @@ PlayTitleMovies:
         call 0x0000:_strcat
         add sp, 0x4
         mov ax, 0x1
-        mov es, [g_8CB2]
+        mov es, [segWorkBuffer51]
         mov bx, [bp + 0x6]
         shl bx, byte 0x3
         mov [es:bx - 0x49a2], ax
@@ -279,7 +279,7 @@ PlayTitleMovies:
         les bx, [bp - 0x30]
         mov si, [bp - 0x28]
         mov al, [es:bx + si]
-        mov es, [g_8CB6]
+        mov es, [segWorkBuffer53]
         mov [es:si - 0x4992], al
         inc word [bp - 0x28]
         cmp word [bp - 0x28], 0x300
@@ -303,25 +303,25 @@ PlayTitleMovies:
         add sp, 0x4
         cmp word [bp + 0x6], 0x0
         jz short .26
-        cmp word [g_29CC], 0x18
+        cmp word [VisTeamNum], 0x18
         jnl short .25
-        mov bx, [g_29CC]
+        mov bx, [VisTeamNum]
 .24:
         shl bx, 1
         push word [bx + TeamNameClips]
         jmp short .29
         db 0x90
 .25:
-        mov bx, [g_29CC]
+        mov bx, [VisTeamNum]
         jmp short .28
 .26:
-        cmp word [g_29CA], 0x18
+        cmp word [HomeTeamNum], 0x18
         jnl short .27
-        mov bx, [g_29CA]
+        mov bx, [HomeTeamNum]
         jmp short .24
         db 0x90
 .27:
-        mov bx, [g_29CA]
+        mov bx, [HomeTeamNum]
 .28:
         shl bx, 1
         push word [bx + 0x1e4]
@@ -366,7 +366,7 @@ PlayTitleMovies:
         les bx, [bp - 0x30]
         mov si, [bp - 0x28]
         mov al, [es:bx + si]
-        mov es, [g_8CB6]
+        mov es, [segWorkBuffer53]
         mov [es:si - 0x4992], al
         inc word [bp - 0x28]
         cmp word [bp - 0x28], 0x60
@@ -376,7 +376,7 @@ PlayTitleMovies:
         call 0x06E1:FindUnlink
         add sp, 0x4
         mov al, 0x3f
-        mov es, [g_8CB6]
+        mov es, [segWorkBuffer53]
         mov [es:0xb6d7], al
         mov [es:0xb6d1], al
         mov [es:0xb6cf], al
@@ -411,13 +411,13 @@ PlayMovie:
         add sp, 0x2
         push 0x8
         push word 0x3a0b
-        push strict word f_3A0B_B66E
+        push strict word MoviePalette
         push 0x0
         call 0x1E7E:FadePalette
         add sp, 0x8
         mov ax, 0x1
-        mov [g_4B22], ax
-        mov [g_4B20], ax
+        mov [DeskRedrawPage2], ax
+        mov [DeskRedrawPage], ax
         mov ax, [g_DA08]
         or ax, [g_DA06]
         jnz short .1
@@ -525,7 +525,7 @@ PlayMovie:
 .4:
         push 0x8
         push word 0x3a0b
-        push strict word f_3A0B_B66E
+        push strict word MoviePalette
         push 0x1
         call 0x1E7E:FadePalette
         add sp, 0x8

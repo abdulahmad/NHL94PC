@@ -20,10 +20,10 @@ GoalieStatsCard:
         mov [bp - 0x30], dx
         push 0x0
         push 0x0
-        mov bx, [g_2010]
+        mov bx, [statsseason]
         shl bx, 1
         push ds
-        push word [bx + g_1FA6]
+        push word [bx + StatsDbNames2]
         mov ax, 0x0
         mov cx, 0x3861
         mov [bp - 0x1a4], ax
@@ -42,7 +42,7 @@ GoalieStatsCard:
         add sp, 0x4
         db 0x8B, 0xF0                           ; insn: mov si, ax
         push 0x0
-        cmp word [g_2010], 0x0
+        cmp word [statsseason], 0x0
         jnz short .1
         mov ax, [g_CF42]
         mov dx, [g_CF44]
@@ -101,7 +101,7 @@ GoalieStatsCard:
         push 0x0
         push 0x0
         push ds
-        push word [g_1FAA]
+        push word [StatsDbNames3]
         push word [bp - 0x1a2]
         push word [bp - 0x1a4]
         lea ax, [bp - 0x6a]
@@ -229,14 +229,14 @@ GoalieStatsCard:
         inc bx
         cmp bx, 0x100
         jl short .5
-        mov es, [g_8C6C]
+        mov es, [segWorkBuffer39]
         cmp word [es:0xb050], 0x0
         jz short .6
         push word 0xb4
         push word [bp - 0x10]
         push di
         push word 0x3a0b
-        push strict word f_3A0B_B11E
+        push strict word StatsCardBuf
         call 0x0000:_fmemcpy
         add sp, 0xa
         push word 0xb4
@@ -246,7 +246,7 @@ GoalieStatsCard:
         push dx
         push ax
         push word 0x3a0b
-        push strict word f_3A0B_B29E
+        push strict word StatsCardBuf2
         call 0x0000:_fmemcpy
         add sp, 0xa
         jmp short .7
@@ -575,7 +575,7 @@ GoalieStatsCard:
         push ax
         call 0x0D39:DrawShadowText
         add sp, 0x8
-        mov al, [si + g_211E]
+        mov al, [si + GoalieCardCols]
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         lea ax, [bp - 0x2e]

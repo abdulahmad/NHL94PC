@@ -12,7 +12,7 @@ FadeBlockSweep:
         push di
         push si
         call 0x0FEF:UseCurrentPage
-        mov es, [g_8CF4]
+        mov es, [segDgroup18]
         mov ax, [es:0x74fc]
         mov [g_DF6A], ax
         mov ax, [es:0x74fe]

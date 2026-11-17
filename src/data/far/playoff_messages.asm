@@ -10,19 +10,19 @@ msgThereIsAlreadyAPlay:                                    ; used by MENUS (to n
         db 0x00, 'wish to see the final results'
         db 0x00, 'of the play-offs?'
         db 0x00, 'The '
-f_36B8_00D0:                                    ; used by MENUS (to name)
+EliminatedTeamText:                                    ; used by MENUS (to name)
         db '....,....,....,....,.'
         db 0x00, 'have been eliminated from'
         db 0x00, 'the play-offs.', 0x00
         db 'The '
-f_36B8_0113:                                    ; used by MENUS (to name)
+EliminatedTeamText2:                                    ; used by MENUS (to name)
         db '.....................'
         db 0x00, 'will continue to the next'
         db 0x00, 'series.', 0x00
         db 'YES', 0x00
         db 'NO', 0x00, 'Generating the final results.'
         db 0x00
-f_36B8_0170:                                    ; used by MENUS (to name)
+dlgReturnConfirm:                                    ; used by MENUS (to name)
         db 0x08, 0x00, 0x28, 0x00, 0x15, 0x00, 0x0A, 0x00
         db 0x00, 0x00, 0x05, 0x00
         db 0x4F, 0x01, 0xB8, 0x36, 0xF8, 0xFF, 0x28, 0x00, 0x15, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x06, 0x00

@@ -47,7 +47,7 @@ LeagueSettingsDlg:
 MenuLeagueSettingsEdit:
         push word 0x3f00
         push word 0xbd00
-        mov es, [g_8B5E]
+        mov es, [segDgroup4]
         mov bx, [CurPage]
         shl bx, byte 0x2
         les bx, [es:bx + 0x7570]
@@ -55,7 +55,7 @@ MenuLeagueSettingsEdit:
         call 0x0000:VgaCopyBytes
         add sp, 0x6
         push word 0x3f00
-        mov es, [g_8B5E]
+        mov es, [segDgroup4]
         cmp word [CurPage], 0x1
         db 0x1B, 0xDB                           ; insn: sbb bx, bx
         neg bx
@@ -64,7 +64,7 @@ MenuLeagueSettingsEdit:
         push word [es:bx]
         mov bx, [CurPage]
         shl bx, byte 0x2
-        mov es, [g_8B5E]
+        mov es, [segDgroup4]
         les bx, [es:bx + 0x7570]
         push word [es:bx]
         call 0x0000:VgaCopyBytes
@@ -726,15 +726,15 @@ DrawLeagueSetDlg:
         mov [bp - 0x68], cl
         cmp word [DbSaveMode], 0x1
         jnz short .10
-        cmp word [g_11D8], 0x1
+        cmp word [LeagueSetChoice], 0x1
         jl short .8
         mov [bp - 0x68], dl
 .8:
-        cmp word [g_11D8], 0x3
+        cmp word [LeagueSetChoice], 0x3
         jl short .9
         mov [bp - 0x67], dl
 .9:
-        cmp word [g_11D8], 0x5
+        cmp word [LeagueSetChoice], 0x5
         jl short .10
         mov [bp - 0x66], dl
 .10:
@@ -1040,19 +1040,19 @@ LeagueOptsToBitsJumpTable:                      ; jump table of LeagueOptsToBits
 .4:
         cmp word [DbSaveMode], 0x1
         jnz short .8
-        cmp word [g_11D8], 0x1
+        cmp word [LeagueSetChoice], 0x1
 .5:
         jl short .8
         jmp short LeagueOptsToBits.4
 .6:
         cmp word [DbSaveMode], 0x1
         jnz short .8
-        cmp word [g_11D8], 0x3
+        cmp word [LeagueSetChoice], 0x3
         jmp short .5
 .7:
         cmp word [DbSaveMode], 0x1
         jnz short .8
-        cmp word [g_11D8], 0x5
+        cmp word [LeagueSetChoice], 0x5
         jmp short .5
 .8:
         mov bx, [bp + 0xa]

@@ -20,7 +20,7 @@ QueueDeferredCall:
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, [bp + 0x6]
         mov dx, [bp + 0x8]
-        imul bx, [g_5774], 0x12
+        imul bx, [defercount], 0x12
         mov [bx + g_DC38], ax
         mov [bx + g_DC3A], dx
         mov ax, [bp + 0xa]
@@ -37,7 +37,7 @@ QueueDeferredCall:
         mov [bx + g_DC34], ax
         mov ax, [bp + 0x16]
         mov [bx + g_DC36], ax
-        inc word [g_5774]
+        inc word [defercount]
         leave
         retf
         db 0x90
@@ -52,7 +52,7 @@ RunDeferredCalls:
         push di
         push si
         db 0x2B, 0xFF                           ; insn: sub di, di
-        cmp [g_5774], di
+        cmp [defercount], di
         jng short .2
         mov si, 0xdc38
 .1:
@@ -67,10 +67,10 @@ RunDeferredCalls:
         add sp, 0xe
         add si, 0x12
         inc di
-        cmp [g_5774], di
+        cmp [defercount], di
         jg short .1
 .2:
-        mov word [g_5774], 0x0
+        mov word [defercount], 0x0
         pop si
         pop di
         retf
@@ -84,7 +84,7 @@ RunDeferredCalls:
 ;-----------------------------------------------------------------------------
 AppendGSumRecord:
         enter 0x2, 0x0
-        inc word [g_01CE]
+        inc word [gsumcount]
         lea ax, [bp - 0x2]
         push ax
         push word 0xae70
@@ -179,7 +179,7 @@ FlushGSumQueue:
         push di
         push si
         db 0x2B, 0xFF                           ; insn: sub di, di
-        cmp [g_5772], di
+        cmp [gsumqcount], di
         jng short .2
         mov si, 0xdc72
 .1:
@@ -189,10 +189,10 @@ FlushGSumQueue:
         add sp, 0x2
         add si, 0xc
         inc di
-        cmp [g_5772], di
+        cmp [gsumqcount], di
         jg short .1
 .2:
-        mov word [g_5772], 0x0
+        mov word [gsumqcount], 0x0
         pop si
         pop di
         retf
@@ -297,7 +297,7 @@ PutGSumTail:
 ;-----------------------------------------------------------------------------
 WriteGSumHeader:
         enter 0x2, 0x0
-        inc word [g_01CE]
+        inc word [gsumcount]
         lea ax, [bp - 0x2]
         push ax
         push word 0xae70
@@ -572,7 +572,7 @@ BuildEventLines:
         jnz short .5
         cmp si, 0x19
         jnl short .5
-        mov es, [g_8CD8]
+        mov es, [segWorkBuffer58]
         imul bx, di, 0x19
         db 0x03, 0xDE                           ; insn: add bx, si
         db 0x8B, 0xC3                           ; insn: mov ax, bx
@@ -719,7 +719,7 @@ BuildEventLines:
         mov bl, [curevent_b3]
         db 0x2A, 0xFF                           ; insn: sub bh, bh
         shl bx, 1
-        mov si, [bx + g_575A]
+        mov si, [bx + EventFmtPtrs]
         db 0x8B, 0xFE                           ; insn: mov di, si
         mov si, 0xd542
         push ds
@@ -865,7 +865,7 @@ PostGoalEvent:
         mov [curevent_b10], al
         test byte [gmode], 0x10
         jnz short .3
-        mov bx, [g_5772]
+        mov bx, [gsumqcount]
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         shl bx, 1
         db 0x03, 0xD8                           ; insn: add bx, ax
@@ -876,17 +876,17 @@ PostGoalEvent:
         mov es, ax
         mov cx, 0x6
         rep movsw
-        inc word [g_5772]
-        cmp word [g_5772], 0x8
+        inc word [gsumqcount]
+        cmp word [gsumqcount], 0x8
         jl short .1
-        dec word [g_5772]
+        dec word [gsumqcount]
 .1:
         cmp word [bp + 0x6], 0x0
         jz short .2
-        inc byte [g_01D8]
+        inc byte [gsumtail_goals2]
         jmp short .3
 .2:
-        inc byte [g_01D6]
+        inc byte [gsumtail_goals1]
 .3:
         cmp word [bp + 0x6], 0x0
         jnz short .4
@@ -949,7 +949,7 @@ PostPenaltyEvent:
         mov [curevent_b6], al
         mov al, [bp + 0x10]
         mov [curevent_b7], al
-        mov bx, [g_5772]
+        mov bx, [gsumqcount]
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         shl bx, 1
         db 0x03, 0xD8                           ; insn: add bx, ax
@@ -960,10 +960,10 @@ PostPenaltyEvent:
         mov es, ax
         mov cx, 0x6
         rep movsw
-        inc word [g_5772]
-        cmp word [g_5772], 0x8
+        inc word [gsumqcount]
+        cmp word [gsumqcount], 0x8
         jl short .2
-        dec word [g_5772]
+        dec word [gsumqcount]
 .2:
         push cs
         call BuildEventLines
@@ -977,10 +977,10 @@ PostPenaltyEvent:
 .3:
         cmp word [bp + 0x6], 0x0
         jz short .4
-        mov si, [g_29CC]
+        mov si, [VisTeamNum]
         jmp short .5
 .4:
-        mov si, [g_29CA]
+        mov si, [HomeTeamNum]
 .5:
         cmp si, 0x18
         jl short .6
@@ -1044,7 +1044,7 @@ PostInjuryEvent:
         mov [curevent_b5], al
         mov al, [bp + 0xe]
         mov [curevent_b6], al
-        mov bx, [g_5772]
+        mov bx, [gsumqcount]
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         shl bx, 1
         db 0x03, 0xD8                           ; insn: add bx, ax
@@ -1055,10 +1055,10 @@ PostInjuryEvent:
         mov es, ax
         mov cx, 0x6
         rep movsw
-        inc word [g_5772]
-        cmp word [g_5772], 0x8
+        inc word [gsumqcount]
+        cmp word [gsumqcount], 0x8
         jl short .2
-        dec word [g_5772]
+        dec word [gsumqcount]
 .2:
         push cs
         call BuildEventLines
@@ -1137,11 +1137,11 @@ ChkScorerMilestone:
         db 0x03, 0xF7                           ; insn: add si, di
         mov [bp - 0xa], si
         shl si, byte 0x4
-        mov bx, [es:si + f_3A0B_0448]
-        mov ax, [es:si + f_3A0B_044A]
+        mov bx, [es:si + HomePlStats]
+        mov ax, [es:si + HomePlStats_w2]
         db 0x03, 0xC3                           ; insn: add ax, bx
         mov [bp - 0x4], ax
-        cmp word [es:si + f_3A0B_0448], 0x3
+        cmp word [es:si + HomePlStats], 0x3
         jnz short .8
         mov word [bp - 0x6], 0x1
 .6:
@@ -1273,8 +1273,8 @@ ChkScorerMilestone:
         db 0x03, 0xDF                           ; insn: add bx, di
         mov [bp - 0xa], bx
         shl bx, byte 0x4
-        mov si, [es:bx + f_3A0B_044A]
-        add si, [es:bx + f_3A0B_0448]
+        mov si, [es:bx + HomePlStats_w2]
+        add si, [es:bx + HomePlStats]
         mov al, [AnnouncerFlags]
         and al, 0x2
         jz short .22
@@ -1334,8 +1334,8 @@ ChkScorerMilestone:
         db 0x03, 0xDF                           ; insn: add bx, di
         mov [bp - 0xa], bx
         shl bx, byte 0x4
-        mov si, [es:bx + f_3A0B_044A]
-        add si, [es:bx + f_3A0B_0448]
+        mov si, [es:bx + HomePlStats_w2]
+        add si, [es:bx + HomePlStats]
         mov al, [AnnouncerFlags]
         and al, 0x2
         jz short .27
@@ -1423,7 +1423,7 @@ QueueGoalieNote:
         retf
         db 0x90
 .2:
-        cmp word [g_4A24], 0x3f
+        cmp word [goalienotebits], 0x3f
         jz short .1
         cmp word [penaltysc], 0x0
         jl short .1
@@ -1444,9 +1444,9 @@ QueueGoalieNote:
         jz short .3
         shl di, byte 0x3
 .3:
-        test [g_4A24], di
+        test [goalienotebits], di
         jnz short .1
-        or [g_4A24], di
+        or [goalienotebits], di
         push 0x0
         push 0x0
         push 0x0

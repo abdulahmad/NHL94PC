@@ -37,8 +37,8 @@ ReplayRecordReset:
 ReplayFirstFrame:
         test byte [sflags], 0x10
         jnz short .1
-        mov ax, [g_2986]
-        mov dx, [g_2988]
+        mov ax, [replayptr]
+        mov dx, [replayseg]
         retf
         db 0x90
 .1:
@@ -55,20 +55,20 @@ ReplayFirstFrame:
 ReplayPrevFrame:
         mov ax, [g_D014]
         mov dx, [g_D016]
-        cmp [g_2986], ax
+        cmp [replayptr], ax
         jnz short .2
-        cmp [g_2988], dx
+        cmp [replayseg], dx
         jnz short .2
         test byte [sflags], 0x10
         jz short .1
-        mov ax, [g_2986]
-        mov dx, [g_2988]
+        mov ax, [replayptr]
+        mov dx, [replayseg]
         sub ax, 0x6a80
         retf
         db 0x90
 .1:
-        mov ax, [g_2986]
-        mov dx, [g_2988]
+        mov ax, [replayptr]
+        mov dx, [replayseg]
         retf
 .2:
         sub ax, 0x80
@@ -267,13 +267,13 @@ updatereplay:
         add bx, 0xe
         cmp bx, 0xd2c6
         jc short .12
-        mov ax, [g_2986]
+        mov ax, [replayptr]
         sub ax, 0x6a00
         cmp ax, [g_D014]
         ja short updatereplayTail.1 + 0x2A0
         or byte [sflags], 0x10
-        mov ax, [g_2986]
-        mov dx, [g_2988]
+        mov ax, [replayptr]
+        mov dx, [replayseg]
         mov [g_D014], ax
         mov [g_D016], dx
         pop si

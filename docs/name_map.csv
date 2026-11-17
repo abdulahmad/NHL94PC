@@ -3319,3 +3319,556 @@ g_12AC,msgYourTeamHasBeenEliminated,g_12AC,new,high,message list of 4 far string
 g_12BC,msgTeamEliminatedFromPlayoffs,g_12BC,new,high,"message list of 4 far string pointers: 'The ....,....,....,....,. / have been eliminated from / the play-offs. / The .....................'",src/data/dgroup.asm
 g_12D4,msgGeneratingTheFinalResults,g_12D4,new,high,message list of 1 far string pointer: 'Generating the final results.',src/data/dgroup.asm
 g_4EC4,TeamStatsLabels,g_4EC4,new,high,message list of 4 far string pointers: 'Score / Shots / Power play / Penalties',src/data/dgroup.asm
+f_3415_0002,exhstate_name,f_3415_0002,new,medium,exhibition state record: saved game name (string at +2),src/data/far/db_files.asm
+f_3415_0064,postate_name,f_3415_0064,new,medium,playoff state record: saved game name (string at +2),src/data/far/db_files.asm
+f_3415_00B2,postate_w50,f_3415_00B2,new,medium,playoff state record word +50h; CreatePlayoffs sets 9,src/data/far/db_files.asm
+f_3415_00B4,postate_w52,f_3415_00B4,new,medium,playoff state record word +52h; CreatePlayoffs sets 7,src/data/far/db_files.asm
+f_3415_00B6,postate_b54,f_3415_00B6,new,medium,playoff state record option bits at +54h (word or-ed with 1FFh by CreatePlayoffs),src/data/far/db_files.asm
+f_3415_00B7,postate_b55,f_3415_00B7,new,medium,"playoff state record option byte +55h; CreatePlayoffs clears bit 1, sets bits 4-6",src/data/far/db_files.asm
+f_3415_00BC,postate_w5A,f_3415_00BC,new,medium,"playoff state record word +5Ah: period length choice set by CreatePlayoffs (2, 4, 8)",src/data/far/db_files.asm
+f_3415_00C6,lgstate_name,f_3415_00C6,new,medium,league state record: saved game name (string at +2),src/data/far/db_files.asm
+f_3415_011E,lgstate_w5A,f_3415_011E,new,medium,"league state record word +5Ah: period length choice set by MenuNewLeague (1, 4, 8)",src/data/far/db_files.asm
+f_3415_0128,POSeedTable,f_3415_0128,new,medium,"playoff seeding table, word per entry, read by POSeedTeams and LoadCupFinalSeries",src/data/far/db_files.asm
+f_3415_0158,POConfTeamTable,f_3415_0158,new,medium,conference team table read by POPickConfTeams,src/data/far/db_files.asm
+f_3448_026B,TeamNameTemplate,f_3448_026B,new,medium,template text ' 00 X. XXXXXXXXXXX' copied by ClearTeamNameText,src/data/far/menu_text.asm
+f_3448_0D44,DeskMenuBar,f_3448_0D44,new,medium,"menu bar of the sports desk (new exhibition, league, add or remove team ...)",src/data/far/menu_text.asm
+f_3448_11FE,SportsDeskMenu1,f_3448_11FE,new,medium,first menu record SportsDesk keeps in a local,src/data/far/menu_text.asm
+f_3448_12AE,SportsDeskMenu2,f_3448_12AE,new,medium,second menu record SportsDesk keeps in a local,src/data/far/menu_text.asm
+f_3448_12F0,HomeTeamMenuText,f_3448_12F0,new,medium,"menu item record of the home team name (SetSideControls, SetTeamNameText)",src/data/far/menu_text.asm
+f_3448_1332,VisitorTeamMenuText,f_3448_1332,new,medium,"menu item record of the visiting team name (SetSideControls, SetTeamNameText)",src/data/far/menu_text.asm
+f_3448_14D4,MatchupLinesMenu,f_3448_14D4,new,medium,menu passed to GameLineEditor from ShowMatchupScreen,src/data/far/menu_text.asm
+f_3448_1584,DeskLinesMenu,f_3448_1584,new,medium,menu passed to GameLineEditor from DeskHomeLines and DeskVisitorLines,src/data/far/menu_text.asm
+f_3448_15F2,TradeLinesMenu,f_3448_15F2,new,medium,menu passed to GameLineEditor from ExecuteTrade,src/data/far/menu_text.asm
+f_3448_164A,PlayerStatsMenuBar,f_3448_164A,new,medium,menu bar of the in-game player stats (MenuGameShowPlayerStats),src/data/far/menu_text.asm
+f_3448_1794,StandingsRosterMenuBar,f_3448_1794,new,medium,menu bar of the standings roster view (RosterMenuLoop),src/data/far/menu_text.asm
+f_3448_17D6,StandingsMenuBar2,f_3448_17D6,new,medium,"menu bar of the standings menus (Easn, Game and Cal StandingsMenu)",src/data/far/menu_text.asm
+f_3448_1802,TeamStatsMenuBar,f_3448_1802,new,medium,menu bar of the team stats screens,src/data/far/menu_text.asm
+f_3448_1844,SkaterStatsMenuBar,f_3448_1844,new,medium,menu bar of the skater stats screens,src/data/far/menu_text.asm
+f_3448_1886,GoalieStatsMenuBar,f_3448_1886,new,medium,menu bar of the goalie stats screens,src/data/far/menu_text.asm
+f_3448_19BA,PlayoffTreeMenuBar,f_3448_19BA,new,medium,"menu bar of the playoff tree (PlayoffModeLoop, POHandleElimination)",src/data/far/menu_text.asm
+f_3680_0000,JerseyRemapTable,f_3680_0000,new,medium,"128-byte colour remap table for jersey numbers (MakeJerseyShape, SetRemapTable)",src/data/far/char_table.asm
+f_3680_0080,TradeRemapTable,f_3680_0080,new,medium,second 128-byte remap table copied by the trade screen,src/data/far/char_table.asm
+f_36B8_00D0,EliminatedTeamText,f_36B8_00D0,new,medium,text buffer for the eliminated team name in msgTeamEliminatedFromPlayoffs,src/data/far/playoff_messages.asm
+f_36B8_0113,EliminatedTeamText2,f_36B8_0113,new,medium,second team name buffer of the elimination message,src/data/far/playoff_messages.asm
+f_36B8_0170,dlgReturnConfirm,f_36B8_0170,new,medium,"MessageBox definition used by DeleteSavedGame, DeskReturnConfirm, DeskExitGame",src/data/far/playoff_messages.asm
+f_36F5_00B3,dlgReturnMessages,f_36F5_00B3,new,medium,MessageBox definition with the 'returning to' messages,src/data/far/return_messages.asm
+f_3701_01FC,dlgInsertDisk,f_3701_01FC,new,medium,MessageBox definition used by ExportTeamToFloppy and CopyHumanTeamDBs,src/data/far/team_choice_text.asm
+f_3701_02A0,dlgReplaceLeague,f_3701_02A0,new,medium,MessageBox definition used by CreateNewLeague and CreatePlayoffs,src/data/far/team_choice_text.asm
+f_3701_0303,dlgWhichSchedule,f_3701_0303,new,medium,MessageBox definition asking which schedule to use (CreateNewLeague),src/data/far/team_choice_text.asm
+f_3701_03AD,dlgLeagueTeamSelect,f_3701_03AD,new,medium,MessageBox definition used by LeagueTeamSelect,src/data/far/team_choice_text.asm
+f_3701_04E5,dlgExportButtons,f_3701_04E5,new,medium,"button list of the export dialogs (ExportTeamToFloppy, ExportDbs)",src/data/far/team_choice_text.asm
+f_3701_04F5,dlgExportToFloppy,f_3701_04F5,new,medium,MessageBox definition 'Do you want to export to a floppy disk?',src/data/far/team_choice_text.asm
+f_3701_0549,dlgAskExport,f_3701_0549,new,medium,MessageBox definition used by AskExportToFloppy,src/data/far/team_choice_text.asm
+f_3701_063C,dlgImportTeam,f_3701_063C,new,medium,dialog record used by ImportPlayerTeam,src/data/far/team_choice_text.asm
+f_3701_069C,dlgImportTeam2,f_3701_069C,new,medium,MessageBox definition used by ImportPlayerTeam,src/data/far/team_choice_text.asm
+f_3701_0756,dlgNewFloppy,f_3701_0756,new,medium,MessageBox definition used by ExportTeamToFloppy,src/data/far/team_choice_text.asm
+f_3701_07CE,dlgImportChoice,f_3701_07CE,new,medium,MessageBox definition used by ImportDbs,src/data/far/team_choice_text.asm
+f_3701_0913,dlgMergeFirst,f_3701_0913,new,medium,MessageBox definition 'Master databases for ... must be completely merged',src/data/far/team_choice_text.asm
+f_3701_09C8,dlgPlayLeagueGame,f_3701_09C8,new,medium,dialog record used by PlayLeagueGame,src/data/far/team_choice_text.asm
+f_3701_0BA6,str_Space,f_3701_0BA6,new,medium,string ' ' appended by FixJerseyConflict,src/data/far/team_choice_text.asm
+f_3701_0BA8,str_Star,f_3701_0BA8,new,medium,string '*' used by BuildLeagueList and SelectHilight,src/data/far/team_choice_text.asm
+f_3701_0BAA,str_Backslash,f_3701_0BAA,new,medium,string '\' appended by MakeTeamDbFmt and ExecuteTrade,src/data/far/team_choice_text.asm
+f_3701_0BF4,str_Dot,f_3701_0BF4,new,medium,string '.' searched for by the import and export code,src/data/far/team_choice_text.asm
+f_3701_0BFA,str_DriveColon,f_3701_0BFA,new,medium,string '?:' (drive letter is patched in) used for floppy paths,src/data/far/team_choice_text.asm
+f_3701_0DC2,PasswordKey,f_3701_0DC2,new,medium,key bytes EncryptPassword mixes into the password,src/data/far/team_choice_text.asm
+f_3701_0E53,CurLeagueName,f_3701_0E53,new,medium,"name of the current league (13 bytes), read and copied by the league code",src/data/far/team_choice_text.asm
+f_3701_0F94,CalNextMonthFn,f_3701_0F94,new,medium,far routine offset of the calendar's next-month button,src/data/far/team_choice_text.asm
+f_3701_0F96,CalNextMonthSeg,f_3701_0F96,new,medium,its segment,src/data/far/team_choice_text.asm
+f_3701_0FAA,CalPrevMonthFn,f_3701_0FAA,new,medium,far routine offset of the calendar's previous-month button,src/data/far/team_choice_text.asm
+f_3701_0FAC,CalPrevMonthSeg,f_3701_0FAC,new,medium,its segment,src/data/far/team_choice_text.asm
+f_3701_0FDF,CalendarMenuBar,f_3701_0FDF,new,medium,menu bar of the calendar screen,src/data/far/team_choice_text.asm
+f_3701_1163,TradeMenu,f_3701_1163,new,medium,menu record used by TradePlayers,src/data/far/team_choice_text.asm
+f_3701_11AB,TradeStatsMenuBar,f_3701_11AB,new,medium,menu bar of the trade stats view,src/data/far/team_choice_text.asm
+f_384B_0094,SeasonTitlePtr,f_384B_0094,new,medium,pointer to the season title text read by SetupStatsMenus,src/data/far/season_titles.asm
+f_38AF_0022,MatchupMenu,f_38AF_0022,new,medium,menu record ShowMatchupScreen keeps in a local,src/data/far/lines_menu_text.asm
+f_38BD_01F3,JingleIndex,f_38BD_01F3,new,medium,"jingle number per arena event, read by LoadArenaJingles",src/data/far/line_names.asm
+f_38BD_028F,JingleTable,f_38BD_028F,new,medium,jingle table compared by LoadArenaJingles,src/data/far/line_names.asm
+f_3A0B_0000,HomeSortObjs,f_3A0B_0000,new,medium,"home team sort objects (500 bytes), pointed to by hmtmsort",src/data/far/work_buffer.asm
+f_3A0B_01F4,AwaySortObjs,f_3A0B_01F4,new,medium,"away team sort objects (500 bytes), pointed to by awtmsort",src/data/far/work_buffer.asm
+f_3A0B_03E8,HomeGlAttr,f_3A0B_03E8,new,medium,home goalie attributes (48 bytes),src/data/far/work_buffer.asm
+f_3A0B_0418,AwayGlAttr,f_3A0B_0418,new,medium,"away goalie attributes (48 bytes), pointed to by awtmglattr",src/data/far/work_buffer.asm
+f_3A0B_0448,HomePlStats,f_3A0B_0448,new,medium,"home player stats records, read by ChkScorerMilestone",src/data/far/work_buffer.asm
+f_3A0B_044A,HomePlStats_w2,f_3A0B_044A,new,medium,"home player stats, word +2 of the first record",src/data/far/work_buffer.asm
+f_3A0B_05D8,AwayPlStats,f_3A0B_05D8,new,medium,"away player stats (400 bytes), pointed to by awtmplstats",src/data/far/work_buffer.asm
+f_3A0B_0768,HomeGlStats,f_3A0B_0768,new,medium,"home goalie stats, pointed to by hmtmglstats",src/data/far/work_buffer.asm
+f_3A0B_076A,HomeGlStats_w2,f_3A0B_076A,new,medium,"home goalie stats word +2, written by CreateGSummaryDb",src/data/far/work_buffer.asm
+f_3A0B_076C,HomeGlStats_w4,f_3A0B_076C,new,medium,"home goalie stats from +4, written by CreateGSummaryDb",src/data/far/work_buffer.asm
+f_3A0B_077A,AwayGlStats,f_3A0B_077A,new,medium,"away goalie stats, pointed to by g_B504",src/data/far/work_buffer.asm
+f_3A0B_0A8E,TeamPalette768,f_3A0B_0A8E,new,medium,"768-byte palette (256 RGB triples) loaded with the team colours and faded in (StartHL2, ThreeStarsLoop)",src/data/far/work_buffer.asm
+f_3A0B_0D8E,hilightrec,f_3A0B_0D8E,new,medium,"saved highlight record: first byte, read and written with the .HI file",src/data/far/work_buffer.asm
+f_3A0B_0D8F,hilightrec_b1,f_3A0B_0D8F,new,medium,highlight record byte +1,src/data/far/work_buffer.asm
+f_3A0B_0D90,hilightrec_b2,f_3A0B_0D90,new,medium,highlight record byte +2,src/data/far/work_buffer.asm
+f_3A0B_0D91,hilightrec_home,f_3A0B_0D91,new,medium,highlight record +3: 28 bytes of home team data,src/data/far/work_buffer.asm
+f_3A0B_0DAD,hilightrec_b1F,f_3A0B_0DAD,new,medium,highlight record byte +1Fh,src/data/far/work_buffer.asm
+f_3A0B_0DAE,hilightrec_away,f_3A0B_0DAE,new,medium,highlight record +20h: 28 bytes of away team data,src/data/far/work_buffer.asm
+f_3A0B_0DCA,hilightrec_w3C,f_3A0B_0DCA,new,medium,highlight record word +3Ch,src/data/far/work_buffer.asm
+f_3A0B_0DCC,hilightrec_w3E,f_3A0B_0DCC,new,medium,highlight record word +3Eh,src/data/far/work_buffer.asm
+f_3A0B_0DCE,hilightrec_w40,f_3A0B_0DCE,new,medium,highlight record word +40h,src/data/far/work_buffer.asm
+f_3A0B_0DD0,hilightrec_w42,f_3A0B_0DD0,new,medium,highlight record word +42h,src/data/far/work_buffer.asm
+f_3A0B_0DD2,hilightrec_w44,f_3A0B_0DD2,new,medium,highlight record word +44h,src/data/far/work_buffer.asm
+f_3A0B_0DD4,hilightrec_w46,f_3A0B_0DD4,new,medium,highlight record word +46h,src/data/far/work_buffer.asm
+f_3A0B_0DD6,hilightrec_frames,f_3A0B_0DD6,new,medium,highlight record +48h: the recorded replay frames (38402 bytes),src/data/far/work_buffer.asm
+f_3A0B_A3D8,StatsPalette,f_3A0B_A3D8,new,medium,768-byte palette saved and restored around the in-game player stats,src/data/far/work_buffer.asm
+f_3A0B_A6D8,SavedGameNames,f_3A0B_A6D8,new,medium,names of the saved games found by ScanSavedGames (864 bytes),src/data/far/work_buffer.asm
+f_3A0B_AA38,LeagueTeamNames,f_3A0B_AA38,new,medium,"team names of the league (504 bytes), filled by ReadTeamNames",src/data/far/work_buffer.asm
+f_3A0B_AC30,POTeamName1,f_3A0B_AC30,new,medium,21-byte team name buffer of the playoff screens,src/data/far/work_buffer.asm
+f_3A0B_AC45,POTeamName2,f_3A0B_AC45,new,medium,second 21-byte team name buffer of the playoff screens,src/data/far/work_buffer.asm
+f_3A0B_AC5A,leagueinfo,f_3A0B_AC5A,new,medium,league info record read by ReadLeagueInfo: first word,src/data/far/work_buffer.asm
+f_3A0B_AC5C,leagueinfo_w2,f_3A0B_AC5C,new,medium,league info record word +2,src/data/far/work_buffer.asm
+f_3A0B_AC5E,leagueinfo_w4,f_3A0B_AC5E,new,medium,league info record word +4,src/data/far/work_buffer.asm
+f_3A0B_AC60,leagueinfo_w6,f_3A0B_AC60,new,medium,league info record word +6,src/data/far/work_buffer.asm
+f_3A0B_AC62,leagueinfo_teams,f_3A0B_AC62,new,medium,league info record +8: per-team entries (720 bytes),src/data/far/work_buffer.asm
+f_3A0B_AF32,leagueinfo_password,f_3A0B_AF32,new,medium,league master password (12 bytes) after the team entries,src/data/far/work_buffer.asm
+f_3A0B_AF3E,leagueinfo_tail,f_3A0B_AF3E,new,medium,"league info record, last 14 bytes",src/data/far/work_buffer.asm
+f_3A0B_AF4C,MenuRemap,f_3A0B_AF4C,new,medium,128-byte colour remap used by the menu and summary screens (InitMenuRemap),src/data/far/work_buffer.asm
+f_3A0B_AFCC,MenuRemap2,f_3A0B_AFCC,new,medium,second 128-byte colour remap built by InitMenuRemap,src/data/far/work_buffer.asm
+f_3A0B_B04C,dlgJerseyConflict,f_3A0B_B04C,new,medium,MessageBox definition built by FixJerseyConflict,src/data/far/work_buffer.asm
+f_3A0B_B052,StatsScreenPalette,f_3A0B_B052,new,medium,"palette buffer of the stats screens, faded in with FadePaletteIn",src/data/far/work_buffer.asm
+f_3A0B_B11E,StatsCardBuf,f_3A0B_B11E,new,medium,384-byte buffer the stats cards copy their record into,src/data/far/work_buffer.asm
+f_3A0B_B29E,StatsCardBuf2,f_3A0B_B29E,new,medium,180-byte second buffer of the stats cards,src/data/far/work_buffer.asm
+f_3A0B_B352,GamePalette,f_3A0B_B352,new,medium,"the game's 768-byte palette (GetPaletteFar, FadePalette)",src/data/far/work_buffer.asm
+f_3A0B_B652,GameTeamName1,f_3A0B_B652,new,medium,6-byte home team abbreviation set by LoadGameTeams,src/data/far/work_buffer.asm
+f_3A0B_B658,GameTeamName2,f_3A0B_B658,new,medium,6-byte away team abbreviation set by LoadGameTeams,src/data/far/work_buffer.asm
+f_3A0B_B65E,GameTeamWord0,f_3A0B_B65E,new,medium,word set by LoadGameTeams,src/data/far/work_buffer.asm
+f_3A0B_B660,GameTeamWord1,f_3A0B_B660,new,medium,word set by LoadGameTeams,src/data/far/work_buffer.asm
+f_3A0B_B662,GameTeamWord2,f_3A0B_B662,new,medium,word set by LoadGameTeams,src/data/far/work_buffer.asm
+f_3A0B_B664,GameTeamWord3,f_3A0B_B664,new,medium,word set by LoadGameTeams,src/data/far/work_buffer.asm
+f_3A0B_B666,GameTeamWord4,f_3A0B_B666,new,medium,word set by LoadGameTeams,src/data/far/work_buffer.asm
+f_3A0B_B668,GameTeamWord5,f_3A0B_B668,new,medium,word set by LoadGameTeams,src/data/far/work_buffer.asm
+f_3A0B_B66A,GameTeamWord6,f_3A0B_B66A,new,medium,word set by LoadGameTeams,src/data/far/work_buffer.asm
+f_3A0B_B66C,GameTeamWord7,f_3A0B_B66C,new,medium,word set by LoadGameTeams,src/data/far/work_buffer.asm
+f_3A0B_B66E,MoviePalette,f_3A0B_B66E,new,medium,palette buffer PlayMovie fades with,src/data/far/work_buffer.asm
+f_3A0B_B6E6,MovieState,f_3A0B_B6E6,new,medium,movie player state passed to MviOpen by PlayTitleMovies,src/data/far/work_buffer.asm
+g_01B8,ctl1team,g_01B8,new,medium,"team of controller 1 (-1 none, -2 eliminated)",src/data/dgroup.asm
+g_01BA,ctl2team,g_01BA,new,medium,"team of controller 2 (-1 none, -2 eliminated)",src/data/dgroup.asm
+g_01BC,ctl1dev,g_01BC,new,medium,input device of controller 1 (10h none),src/data/dgroup.asm
+g_01BE,ctl2dev,g_01BE,new,medium,input device of controller 2 (10h none),src/data/dgroup.asm
+g_01C0,ctl1side,g_01C0,new,medium,"side controller 1 plays (0 home, 1 away)",src/data/dgroup.asm
+g_01C2,ctl2side,g_01C2,new,medium,side controller 2 plays,src/data/dgroup.asm
+g_01C4,sndcardmissing,g_01C4,new,medium,sound card dialog: a set bit greys out that card,src/data/dgroup.asm
+g_01CA,gsumheader_b2,g_01CA,new,medium,game summary header byte +2 (CreateGSummaryDb),src/data/dgroup.asm
+g_01CB,gsumheader_b3,g_01CB,new,medium,game summary header byte +3,src/data/dgroup.asm
+g_01CC,gsumheader_b4,g_01CC,new,medium,game summary header byte +4,src/data/dgroup.asm
+g_01CD,gsumheader_b5,g_01CD,new,medium,game summary header byte +5,src/data/dgroup.asm
+g_01CE,gsumcount,g_01CE,new,medium,game summary file record count (gsumheader +6),src/data/dgroup.asm
+g_01D6,gsumtail_goals1,g_01D6,new,medium,game summary tail: goals of the first team (PostGoalEvent),src/data/dgroup.asm
+g_01D7,gsumtail_shots1,g_01D7,new,medium,game summary tail: shots of the first team (ChkShotStat),src/data/dgroup.asm
+g_01D8,gsumtail_goals2,g_01D8,new,medium,game summary tail: goals of the second team,src/data/dgroup.asm
+g_01D9,gsumtail_shots2,g_01D9,new,medium,game summary tail: shots of the second team,src/data/dgroup.asm
+g_08FC,PlayoffDlgY,g_08FC,new,medium,dialog row value set to 50h / 52h by the playoff and controls screens,src/data/dgroup.asm
+g_08FE,RinkTilesPtr,g_08FE,new,medium,far pointer (offset) to the loaded rink tiles,src/data/dgroup.asm
+g_0900,RinkTilesSeg,g_0900,new,medium,its segment,src/data/dgroup.asm
+g_0EDC,FileDlgSpecs,g_0EDC,new,medium,file dialog table: pointers to the file patterns per dialog,src/data/dgroup.asm
+g_0EDE,FileDlgSpec2,g_0EDE,new,medium,second file pattern pointer,src/data/dgroup.asm
+g_0EE0,FileDlgSpec3,g_0EE0,new,medium,third file pattern pointer,src/data/dgroup.asm
+g_0F10,str_AllFiles,g_0F10,new,medium,string '*.*',src/data/dgroup.asm
+g_0F28,DelFileName,g_0F28,new,medium,far pointer (offset) to the saved game DeleteSavedGame removes,src/data/dgroup.asm
+g_0F2A,DelFileNameSeg,g_0F2A,new,medium,its segment,src/data/dgroup.asm
+g_0F2C,DelFileName2,g_0F2C,new,medium,far pointer (offset) to the second file DeleteSavedGame removes,src/data/dgroup.asm
+g_0F2E,DelFileName2Seg,g_0F2E,new,medium,its segment,src/data/dgroup.asm
+g_0F66,SongBuf1,g_0F66,new,medium,far pointer (offset) to a song buffer loaded by SetSoundDevice,src/data/dgroup.asm
+g_0F68,SongBuf1Seg,g_0F68,new,medium,its segment,src/data/dgroup.asm
+g_0F6A,SongBuf2,g_0F6A,new,medium,far pointer (offset) to the second song buffer,src/data/dgroup.asm
+g_0F6C,SongBuf2Seg,g_0F6C,new,medium,its segment,src/data/dgroup.asm
+g_0F6E,SongBuf3,g_0F6E,new,medium,far pointer (offset) to the third song buffer,src/data/dgroup.asm
+g_0F70,SongBufs,g_0F70,new,medium,further song buffer pointers (66 bytes),src/data/dgroup.asm
+g_0FBA,SoundDriverLoaded,g_0FBA,new,medium,"-1 once SetSoundDevice has loaded a driver, else 0",src/data/dgroup.asm
+g_106D,SoundDevChoice,g_106D,new,medium,sound device byte kept by SetSoundDevice,src/data/dgroup.asm
+g_1070,SoundDevTable,g_1070,new,medium,"sound device table (device bit, driver ...) searched by SetSoundDevice",src/data/dgroup.asm
+g_1138,LockerTextPtrs,g_1138,new,medium,text pointers of the locker room screen,src/data/dgroup.asm
+g_1146,LockerItemTable,g_1146,new,medium,item table of the locker room screen,src/data/dgroup.asm
+g_11D6,POResultFmt,g_11D6,new,medium,pointer to the playoff result format string,src/data/dgroup.asm
+g_11D8,LeagueSetChoice,g_11D8,new,medium,"league settings choice (-1 none), also read by the playoff loop",src/data/dgroup.asm
+g_133F,str_Space2,g_133F,new,medium,string ' ' copied by PlayoffModeLoop,src/data/dgroup.asm
+g_16C8,SchedDivTable,g_16C8,new,medium,per-team division byte table used by the schedule and standings,src/data/dgroup.asm
+g_16E0,SchedConfTable,g_16E0,new,medium,per-team conference byte table used by RandomizeSchedule,src/data/dgroup.asm
+g_16F8,SchedTable3,g_16F8,new,medium,per-team byte table used by RandomizeSchedule,src/data/dgroup.asm
+g_1710,POSeedOrder1,g_1710,new,medium,seeding order bytes used by SeedPlayoffRound,src/data/dgroup.asm
+g_1718,POSeedOrder2,g_1718,new,medium,second seeding order used by SeedPlayoffRound,src/data/dgroup.asm
+g_1720,SimDayTable,g_1720,new,medium,byte table used by SimScheduleDay,src/data/dgroup.asm
+g_1724,POSeriesLenArg,g_1724,new,medium,series length argument per round (AdvancePlayoffs),src/data/dgroup.asm
+g_1726,PORoundTable,g_1726,new,medium,per-round word table read by AdvancePlayoffs,src/data/dgroup.asm
+g_172C,POSeriesLenArg2,g_172C,new,medium,series length argument of the final round,src/data/dgroup.asm
+g_172E,POSeedArgs,g_172E,new,medium,arguments passed to SeedPlayoffRound per round,src/data/dgroup.asm
+g_1733,MonthDays0,g_1733,new,medium,entry before the month length table (NormalizeDate),src/data/dgroup.asm
+g_1734,MonthDays,g_1734,new,medium,"days per month, 12 bytes (31, 28, 31 ...)",src/data/dgroup.asm
+g_1740,MonthStartDay,g_1740,new,medium,"first weekday of each month, 12 bytes",src/data/dgroup.asm
+g_174C,OtherGamesTable,g_174C,new,medium,team pairs of the other games shown between periods,src/data/dgroup.asm
+g_1826,SoundCfgSpec,g_1826,new,medium,sound configuration file pattern and device bytes,src/data/dgroup.asm
+g_183A,SimGoalOdds,g_183A,new,medium,odds table used by SimulateGame,src/data/dgroup.asm
+g_1862,SimGoalOdds2,g_1862,new,medium,second odds table used by SimulateGame,src/data/dgroup.asm
+g_18B4,ShapePaletteMap,g_18B4,new,medium,colour map applied by ApplyShapePalette,src/data/dgroup.asm
+g_1994,JerseyDigitGlyphs,g_1994,new,medium,jersey digit glyph bits (PaintJerseyDigit),src/data/dgroup.asm
+g_1C2C,AwardMsgIds,g_1C2C,new,medium,message numbers of the award names (AwardsCeremony),src/data/dgroup.asm
+g_1C40,AwardMsgIds2,g_1C40,new,medium,message numbers of the award descriptions,src/data/dgroup.asm
+g_1C58,AwardTitleMsg,g_1C58,new,medium,message number of the awards title,src/data/dgroup.asm
+g_1C5A,AwardTextY,g_1C5A,new,medium,award text row table,src/data/dgroup.asm
+g_1C5C,AwardTextY2,g_1C5C,new,medium,second award text row table,src/data/dgroup.asm
+g_1CD2,AwardNamePtrs,g_1CD2,new,medium,award name text pointers (ShowAwardScreens),src/data/dgroup.asm
+g_1CE6,AwardKinds,g_1CE6,new,medium,"kind of each award (0 skater, 1 goalie, 2 team)",src/data/dgroup.asm
+g_1CEF,AwardsPending,g_1CEF,new,medium,1 while the awards are still to be picked,src/data/dgroup.asm
+g_1CF0,AwardWinner,g_1CF0,new,medium,winner record pointer of the first award,src/data/dgroup.asm
+g_1CF2,AwardWinner2,g_1CF2,new,medium,winner pointer of award 2,src/data/dgroup.asm
+g_1CF4,AwardWinner3,g_1CF4,new,medium,winner pointer of award 3,src/data/dgroup.asm
+g_1CF6,AwardWinner4,g_1CF6,new,medium,winner pointer of award 4,src/data/dgroup.asm
+g_1CF8,AwardWinner5,g_1CF8,new,medium,winner pointer of award 5,src/data/dgroup.asm
+g_1CFA,AwardWinner6,g_1CFA,new,medium,winner pointer of award 6,src/data/dgroup.asm
+g_1CFC,AwardWinner7,g_1CFC,new,medium,winner pointer of award 7,src/data/dgroup.asm
+g_1D00,AwardWinner8,g_1D00,new,medium,winner pointer of award 8,src/data/dgroup.asm
+g_1D02,AwardWinner9,g_1D02,new,medium,winner pointer of award 9,src/data/dgroup.asm
+g_1D04,AwardTitlePtrs,g_1D04,new,medium,award title text pointers,src/data/dgroup.asm
+g_1D47,str_AwardsW,g_1D47,new,medium,text 'W' (57h) drawn on the award screen,src/data/dgroup.asm
+g_1D49,str_AwardsL,g_1D49,new,medium,text 'L' (4Ch) drawn on the award screen,src/data/dgroup.asm
+g_1D4B,str_AwardsT,g_1D4B,new,medium,text 'T' (54h) drawn on the award screen,src/data/dgroup.asm
+g_1D60,str_AwardsG,g_1D60,new,medium,text 'G' (47h) drawn on the award screen,src/data/dgroup.asm
+g_1D62,str_AwardsA,g_1D62,new,medium,text 'A' (41h) drawn on the award screen,src/data/dgroup.asm
+g_1D6B,str_PlusMinus,g_1D6B,new,medium,string '+/-' drawn on the award screen,src/data/dgroup.asm
+g_1F8E,StandingsHeadPtrs,g_1F8E,new,medium,column heading pointers of the standings screen,src/data/dgroup.asm
+g_1FA2,StatsDbNames,g_1FA2,new,medium,database file name pointers of the stats screens (BuildPathFar),src/data/dgroup.asm
+g_1FA6,StatsDbNames2,g_1FA6,new,medium,second set of database file name pointers (roster and stats cards),src/data/dgroup.asm
+g_1FAA,StatsDbNames3,g_1FAA,new,medium,database file name pointers of the leaders and team stats screens,src/data/dgroup.asm
+g_1FAC,StatsDbName4,g_1FAC,new,medium,database file name pointer of the roster screen,src/data/dgroup.asm
+g_200E,statscontext,g_200E,new,medium,stats context: which season or playoff data the stats screens show (0..5),src/data/dgroup.asm
+g_2010,statsseason,g_2010,new,medium,stats season choice,src/data/dgroup.asm
+g_211E,GoalieCardCols,g_211E,new,medium,column order bytes of the goalie stats card,src/data/dgroup.asm
+g_21B0,StandingsGfx1,g_21B0,new,medium,far pointer (offset) to the first standings shape record,src/data/dgroup.asm
+g_21B2,StandingsGfx1Seg,g_21B2,new,medium,its segment,src/data/dgroup.asm
+g_21B4,StandingsGfx2,g_21B4,new,medium,far pointer (offset) to the second standings shape record,src/data/dgroup.asm
+g_21B6,StandingsGfx2Seg,g_21B6,new,medium,its segment,src/data/dgroup.asm
+g_21BA,statsmenusel,g_21BA,new,medium,selected item of the stats menus,src/data/dgroup.asm
+g_21BE,statsmenucbseg,g_21BE,new,medium,segment of the stats menu callback,src/data/dgroup.asm
+g_21C0,statsmenumode,g_21C0,new,medium,"stats menu mode (2, 3 ...)",src/data/dgroup.asm
+g_21D2,menucbfn,g_21D2,new,medium,far routine offset of the current menu callback,src/data/dgroup.asm
+g_21D4,menucbseg,g_21D4,new,medium,far routine segment of the current menu callback,src/data/dgroup.asm
+g_2395,str_PlusMinus2,g_2395,new,medium,string ' +/-' of the skater stats card,src/data/dgroup.asm
+g_23EA,SkaterCardCols,g_23EA,new,medium,column order bytes of the skater stats card,src/data/dgroup.asm
+g_242F,str_PlusMinus3,g_242F,new,medium,string ' +/-' of the roster screen,src/data/dgroup.asm
+g_2486,StandingsRowY,g_2486,new,medium,y of the first standings row,src/data/dgroup.asm
+g_2487,StandingsSlotEnd,g_2487,new,medium,byte before the slot table (-1 end mark),src/data/dgroup.asm
+g_2488,StandingsSlots,g_2488,new,medium,standings and playoff tree slot table,src/data/dgroup.asm
+g_24D0,StandingsSlotTeams,g_24D0,new,medium,team of each standings or tree slot,src/data/dgroup.asm
+g_2518,StandingsColX,g_2518,new,medium,standings column x table,src/data/dgroup.asm
+g_2520,StandingsColW,g_2520,new,medium,standings column width table,src/data/dgroup.asm
+g_25AE,str_Space3,g_25AE,new,medium,string ' ' copied by ShowPlayoffStandings,src/data/dgroup.asm
+g_25B0,TeamStatsCmps,g_25B0,new,medium,far comparator table of the team stats sorts (_qsort),src/data/dgroup.asm
+g_25B2,TeamStatsCmpsSeg,g_25B2,new,medium,its segment words,src/data/dgroup.asm
+g_2680,TeamStatsTitles,g_2680,new,medium,title text pointers of the team stats screens,src/data/dgroup.asm
+g_268A,TeamStatsHead1,g_268A,new,medium,team stats column heading pointer 1,src/data/dgroup.asm
+g_268C,TeamStatsHead2,g_268C,new,medium,team stats column heading pointer 2,src/data/dgroup.asm
+g_268E,TeamStatsHead3,g_268E,new,medium,team stats column heading pointer 3,src/data/dgroup.asm
+g_2690,TeamStatsHeads,g_2690,new,medium,further team stats column heading pointers,src/data/dgroup.asm
+g_26B2,LeaderCmps,g_26B2,new,medium,far comparator table of the leader categories (_qsort),src/data/dgroup.asm
+g_26B4,LeaderCmpsSeg,g_26B4,new,medium,its segment words,src/data/dgroup.asm
+g_28DE,LeaderTitles,g_28DE,new,medium,title text pointers of the leader categories,src/data/dgroup.asm
+g_28F4,LeaderHead1,g_28F4,new,medium,leaders column heading pointer 1,src/data/dgroup.asm
+g_28F6,LeaderHead2,g_28F6,new,medium,leaders column heading pointer 2,src/data/dgroup.asm
+g_28F8,LeaderHead3,g_28F8,new,medium,leaders column heading pointer 3,src/data/dgroup.asm
+g_28FA,LeaderHead4,g_28FA,new,medium,leaders column heading pointer 4,src/data/dgroup.asm
+g_28FC,LeaderHeads,g_28FC,new,medium,further leaders column heading pointers,src/data/dgroup.asm
+g_2986,replayptr,g_2986,new,medium,replay record pointer (offset),src/data/dgroup.asm
+g_2988,replayseg,g_2988,new,medium,replay record pointer (segment),src/data/dgroup.asm
+g_29C3,c1playernum_b1,g_29C3,new,medium,"high byte of c1playernum, set by setupice",src/data/dgroup.asm
+g_29C5,c2playernum_b1,g_29C5,new,medium,"high byte of c2playernum, set by setupice",src/data/dgroup.asm
+g_29CA,HomeTeamNum,g_29CA,new,medium,home team number,src/data/dgroup.asm
+g_29CC,VisTeamNum,g_29CC,new,medium,visiting team number,src/data/dgroup.asm
+g_29D5,refsignal_b1,g_29D5,new,medium,"high byte of refsignal, set to -1 by chkprogress",src/data/dgroup.asm
+g_29E0,dirtab0,g_29E0,new,medium,entry before dirtab,src/data/dgroup.asm
+g_29E2,dirtab_x,g_29E2,new,medium,x components of the direction table,src/data/dgroup.asm
+g_2A02,rngseed,g_2A02,new,medium,random number seed,src/data/dgroup.asm
+g_2A38,penkindtab,g_2A38,new,medium,penalty kind byte per penalty (checkfornewpen),src/data/dgroup.asm
+g_2A52,asstab,g_2A52,new,medium,"assignment routine table, far pointers (updateplayers)",src/data/dgroup.asm
+g_48AF,priolist_m1,g_48AF,new,medium,byte before priolist,src/data/dgroup.asm
+g_48B0,priolist,g_48B0,new,medium,player priority list used by SetPlList,src/data/dgroup.asm
+g_48C2,PerTimeTab,g_48C2,new,medium,period length table (GetPeriodTime),src/data/dgroup.asm
+g_48CA,energywarnteam,g_48CA,new,medium,energy warning flag per team,src/data/dgroup.asm
+g_48CC,lcrequestteam,g_48CC,new,medium,team that asked for a line change,src/data/dgroup.asm
+g_48CE,lcsel,g_48CE,new,medium,selected line change choice per team,src/data/dgroup.asm
+g_48D6,lcchoice,g_48D6,new,medium,line change choice per team,src/data/dgroup.asm
+g_48D8,lcstate,g_48D8,new,medium,line change state saved with the game,src/data/dgroup.asm
+g_48DA,lcgroup,g_48DA,new,medium,line group per team (3 = power play),src/data/dgroup.asm
+g_48DC,lcactive,g_48DC,new,medium,line change box active,src/data/dgroup.asm
+g_48DE,lctime,g_48DE,new,medium,line change box time per team,src/data/dgroup.asm
+g_48E0,lcstate2,g_48E0,new,medium,line change state saved with the game,src/data/dgroup.asm
+g_48E4,hudredraw,g_48E4,new,medium,panel redraw flag,src/data/dgroup.asm
+g_49A6,CompLineTab,g_49A6,new,medium,line offset table of CompLine,src/data/dgroup.asm
+g_4A00,TeamPPVNames,g_4A00,new,medium,team .QPP file name pointers (LoadTeamPPV),src/data/dgroup.asm
+g_4A0A,TeamPPVSizes,g_4A0A,new,medium,team picture size table,src/data/dgroup.asm
+g_4A0C,TeamPPVSizes2,g_4A0C,new,medium,second team picture size table,src/data/dgroup.asm
+g_4A1E,OverlayScript,g_4A1E,new,medium,text overlay script bytes,src/data/dgroup.asm
+g_4A24,goalienotebits,g_4A24,new,medium,goalie note bits (3Fh all done),src/data/dgroup.asm
+g_4A28,RinkOverlayFrames,g_4A28,new,medium,frames of the rink overlay sprites,src/data/dgroup.asm
+g_4A2C,RinkOverlayFrames2,g_4A2C,new,medium,further rink overlay frames,src/data/dgroup.asm
+g_4A4E,halfsecflag,g_4A4E,new,medium,toggled each half second by periodicevents,src/data/dgroup.asm
+g_4A4F,secondframes,g_4A4F,new,medium,frames left in the current second,src/data/dgroup.asm
+g_4A58,photobankf_w2,g_4A58,new,medium,PPV file pointer 2,src/data/dgroup.asm
+g_4A5A,photobankf_w4,g_4A5A,new,medium,PPV file pointer 3,src/data/dgroup.asm
+g_4A5C,photobankf_w6,g_4A5C,new,medium,PPV file pointer 4,src/data/dgroup.asm
+g_4A5E,photobankf_w8,g_4A5E,new,medium,PPV file pointer 5,src/data/dgroup.asm
+g_4A60,photobankf_wA,g_4A60,new,medium,PPV file pointer 6,src/data/dgroup.asm
+g_4B02,framesync,g_4B02,new,medium,frame sync flag of the game loops,src/data/dgroup.asm
+g_4B0A,FadeSteps,g_4B0A,new,medium,fade step table (FadePalette),src/data/dgroup.asm
+g_4B0B,FadeStep,g_4B0B,new,medium,current fade step,src/data/dgroup.asm
+g_4B0C,FadeSteps2,g_4B0C,new,medium,second fade step table,src/data/dgroup.asm
+g_4B0E,FadeCount,g_4B0E,new,medium,fade step count,src/data/dgroup.asm
+g_4B1C,DirtyRects,g_4B1C,new,medium,dirty rectangle list (20 per page),src/data/dgroup.asm
+g_4B20,DeskRedrawPage,g_4B20,new,medium,page redraw flags,src/data/dgroup.asm
+g_4B22,DeskRedrawPage2,g_4B22,new,medium,second page redraw flag,src/data/dgroup.asm
+g_4B24,SpriteBlitFns,g_4B24,new,medium,far routine table of the sprite blitters (DrawSpriteClipped),src/data/dgroup.asm
+g_4BCE,MatchupOrder,g_4BCE,new,medium,order bytes of the matchup screen,src/data/dgroup.asm
+g_4EC6,TeamStatsLabelPtrs,g_4EC6,new,medium,label pointers of the team stats summary,src/data/dgroup.asm
+g_4FD4,hilightsplayed,g_4FD4,new,medium,bits of the highlights already shown,src/data/dgroup.asm
+g_5328,ReplayGadgetRects,g_5328,new,medium,replay gadget rectangles,src/data/dgroup.asm
+g_533C,ReplayGadgetRect2,g_533C,new,medium,replay gadget rectangle 2,src/data/dgroup.asm
+g_5364,ReplayGadgetRect3,g_5364,new,medium,replay gadget rectangle 3,src/data/dgroup.asm
+g_5382,ReplayPointerRect,g_5382,new,medium,replay pointer rectangle,src/data/dgroup.asm
+g_544C,HL2Offsets,g_544C,new,medium,offset table of StartHL2,src/data/dgroup.asm
+g_544E,HL2Offsets2,g_544E,new,medium,second offset table of StartHL2,src/data/dgroup.asm
+g_547C,replaymode,g_547C,new,medium,replay mode (-1 off),src/data/dgroup.asm
+g_5540,HudBarLevels,g_5540,new,medium,energy bar level table,src/data/dgroup.asm
+g_5550,HudBarLevels2,g_5550,new,medium,second energy bar level table,src/data/dgroup.asm
+g_556C,hudpenhome,g_556C,new,medium,home panel penalty list,src/data/dgroup.asm
+g_556E,hudpenhome_w2,g_556E,new,medium,home panel penalty list word +2,src/data/dgroup.asm
+g_5570,hudpenhome_w4,g_5570,new,medium,home panel penalty list word +4,src/data/dgroup.asm
+g_5572,hudpenhome_w6,g_5572,new,medium,home panel penalty list word +6,src/data/dgroup.asm
+g_55AC,hudpenaway,g_55AC,new,medium,away panel penalty list,src/data/dgroup.asm
+g_55AE,hudpenaway_w2,g_55AE,new,medium,away panel penalty list word +2,src/data/dgroup.asm
+g_55B0,hudpenaway_w4,g_55B0,new,medium,away panel penalty list word +4,src/data/dgroup.asm
+g_55B2,hudpenaway_w6,g_55B2,new,medium,away panel penalty list word +6,src/data/dgroup.asm
+g_55EC,HudShapeNames,g_55EC,new,medium,panel shape message names,src/data/dgroup.asm
+g_5602,HudShapeName,g_5602,new,medium,panel shape message name,src/data/dgroup.asm
+g_5604,CrestShapeNames,g_5604,new,medium,crest shape message names,src/data/dgroup.asm
+g_563C,hudhomeredraw,g_563C,new,medium,home panel redraw flag,src/data/dgroup.asm
+g_563E,hudawayredraw,g_563E,new,medium,away panel redraw flag,src/data/dgroup.asm
+g_5642,hudlinehome,g_5642,new,medium,line shown on the home panel,src/data/dgroup.asm
+g_5644,hudclockredraw,g_5644,new,medium,clock redraw flag,src/data/dgroup.asm
+g_5646,hudscoreredraw,g_5646,new,medium,score redraw flag,src/data/dgroup.asm
+g_5648,hudlineaway,g_5648,new,medium,line shown on the away panel,src/data/dgroup.asm
+g_564A,hudlinegroup,g_564A,new,medium,line group shown on the panel,src/data/dgroup.asm
+g_567A,BannerColours,g_567A,new,medium,banner colour table,src/data/dgroup.asm
+g_56CC,CallNamePtrs,g_56CC,new,medium,referee call name pointers,src/data/dgroup.asm
+g_575A,EventFmtPtrs,g_575A,new,medium,event line format pointers,src/data/dgroup.asm
+g_5772,gsumqcount,g_5772,new,medium,number of queued game summary records,src/data/dgroup.asm
+g_5774,defercount,g_5774,new,medium,number of queued deferred calls,src/data/dgroup.asm
+g_8B20,segDgroup1,g_8B20,new,high,"segment constant 45C9h (dgroup) loaded into es by ControlsDlgLoop, ControlsDlgPlayoff",src/data/dgroup.asm
+g_8B22,segSaveDialogRects1,g_8B22,new,high,segment constant 35EEh (save_dialog_rects) loaded into es by DrawControlsDlg,src/data/dgroup.asm
+g_8B24,segDgroup2,g_8B24,new,high,segment constant 45C9h (dgroup) loaded into es by TitleScreen,src/data/dgroup.asm
+g_8B26,segCredits1,g_8B26,new,high,segment constant 3608h (credits) loaded into es by GoodnightScreen,src/data/dgroup.asm
+g_8B28,segMenuText1,g_8B28,new,high,segment constant 3448h (menu_text) loaded into es by SetSideControls,src/data/dgroup.asm
+g_8B2A,segMenuText2,g_8B2A,new,high,segment constant 3448h (menu_text) loaded into es by SetSideControls,src/data/dgroup.asm
+g_8B2C,segMenuText3,g_8B2C,new,high,"segment constant 3448h (menu_text) loaded into es by GameLineEditorLoop, MenuUseDefaultLines, MenuUseOriginalLines",src/data/dgroup.asm
+g_8B2E,segMenuText4,g_8B2E,new,high,"segment constant 3448h (menu_text) loaded into es by GameLineEditorLoop, GameScratchPlayer, MenuUseDefaultLines ...",src/data/dgroup.asm
+g_8B30,segMenuText5,g_8B30,new,high,"segment constant 3448h (menu_text) loaded into es by GameLineEditorLoop, GameScratchPlayer, MenuUseDefaultLines ...",src/data/dgroup.asm
+g_8B32,segMenuText6,g_8B32,new,high,"segment constant 3448h (menu_text) loaded into es by GameLineEditorLoop, GameScratchPlayer, MenuUseDefaultLines ...",src/data/dgroup.asm
+g_8B34,segCharTable1,g_8B34,new,high,"segment constant 3680h (char_table) loaded into es by DrawGameLineJerseys, GameLineEditorLoop, LoadJerseyColours",src/data/dgroup.asm
+g_8B36,segDbFiles1,g_8B36,new,high,"segment constant 3415h (db_files) loaded into es by MenuOpenSaved, SelectSavedFile",src/data/dgroup.asm
+g_8B38,segDbFiles2,g_8B38,new,high,"segment constant 3415h (db_files) loaded into es by DeleteSavedGame, MenuOpenSaved",src/data/dgroup.asm
+g_8B3A,segDbFiles3,g_8B3A,new,high,segment constant 3415h (db_files) loaded into es by MenuOpenSaved,src/data/dgroup.asm
+g_8B3C,segDbFiles4,g_8B3C,new,high,"segment constant 3415h (db_files) loaded into es by DeleteSavedGame, MenuOpenSaved",src/data/dgroup.asm
+g_8B3E,segDialogRects1,g_8B3E,new,high,"segment constant 369Ah (dialog_rects) loaded into es by DrawFileDlg, DrawFileDlgList, RunFileDlg",src/data/dgroup.asm
+g_8B40,segMenuText7,g_8B40,new,high,"segment constant 3448h (menu_text) loaded into es by DeleteSavedGame, SelectSavedFile",src/data/dgroup.asm
+g_8B42,segPlayoffDialogRects1,g_8B42,new,high,segment constant 36A8h (playoff_dialog_rects) loaded into es by SetSoundDevice,src/data/dgroup.asm
+g_8B44,segDbFiles5,g_8B44,new,high,"segment constant 3415h (db_files) loaded into es by DrawLockerRoom, LockerRoomLoop",src/data/dgroup.asm
+g_8B46,segMenuText8,g_8B46,new,high,segment constant 3448h (menu_text) loaded into es by LockerRoomLoop,src/data/dgroup.asm
+g_8B48,segMenuText9,g_8B48,new,high,segment constant 3448h (menu_text) loaded into es by MenuPlayoffHilights,src/data/dgroup.asm
+g_8B4A,segDbFiles6,g_8B4A,new,high,"segment constant 3415h (db_files) loaded into es by CreatePlayoffs, PlayoffModeLoop",src/data/dgroup.asm
+g_8B4C,segTeamChoiceText1,g_8B4C,new,high,"segment constant 3701h (team_choice_text) loaded into es by CreatePlayoffs, POSimSeries, POSimSeriesTeamWins",src/data/dgroup.asm
+g_8B4E,segMenuText10,g_8B4E,new,high,segment constant 3448h (menu_text) loaded into es by CreatePlayoffs,src/data/dgroup.asm
+g_8B50,segDbFiles7,g_8B50,new,high,"segment constant 3415h (db_files) loaded into es by POCreateSchedule, POInitSchedule, POPickConfTeams",src/data/dgroup.asm
+g_8B52,segMenuText11,g_8B52,new,high,"segment constant 3448h (menu_text) loaded into es by POAfterGame, PlayoffModeLoop",src/data/dgroup.asm
+g_8B54,segWorkBuffer1,g_8B54,new,high,segment constant 3A0Bh (work_buffer) loaded into es by PlayoffModeLoop,src/data/dgroup.asm
+g_8B56,segDbFiles8,g_8B56,new,high,segment constant 3415h (db_files) loaded into es by PlayoffModeLoop,src/data/dgroup.asm
+g_8B58,segDgroup3,g_8B58,new,high,"segment constant 45C9h (dgroup) loaded into es by DrawPlayoffTree, PlayoffModeLoop",src/data/dgroup.asm
+g_8B5A,segMenuText12,g_8B5A,new,high,segment constant 3448h (menu_text) loaded into es by SetModeMenuLabels,src/data/dgroup.asm
+g_8B5C,segMenuText13,g_8B5C,new,high,segment constant 3448h (menu_text) loaded into es by SetModeMenuLabels,src/data/dgroup.asm
+g_8B5E,segDgroup4,g_8B5E,new,high,segment constant 45C9h (dgroup) loaded into es by MenuLeagueSettingsEdit,src/data/dgroup.asm
+g_8B60,segMenuText14,g_8B60,new,high,segment constant 3448h (menu_text) loaded into es by SportsDesk,src/data/dgroup.asm
+g_8B62,segWorkBuffer2,g_8B62,new,high,segment constant 3A0Bh (work_buffer) loaded into es by SportsDesk,src/data/dgroup.asm
+g_8B64,segDbFiles9,g_8B64,new,high,segment constant 3415h (db_files) loaded into es by SportsDesk,src/data/dgroup.asm
+g_8B66,segDbFiles10,g_8B66,new,high,segment constant 3415h (db_files) loaded into es by SportsDesk,src/data/dgroup.asm
+g_8B68,segReturnMessages1,g_8B68,new,high,"segment constant 36F5h (return_messages) loaded into es by DeskExitGame, DeskReturnConfirm",src/data/dgroup.asm
+g_8B6A,segDgroup5,g_8B6A,new,high,segment constant 45C9h (dgroup) loaded into es by DeskExitGame,src/data/dgroup.asm
+g_8B6C,segMenuText15,g_8B6C,new,high,"segment constant 3448h (menu_text) loaded into es by DeskHomeGoalie1, DeskHomeGoalie2, DeskHomeGoalieNone",src/data/dgroup.asm
+g_8B6E,segMenuText16,g_8B6E,new,high,"segment constant 3448h (menu_text) loaded into es by DeskAwayGoalie1, DeskAwayGoalie2, DeskAwayGoalieNone",src/data/dgroup.asm
+g_8B70,segMenuText17,g_8B70,new,high,"segment constant 3448h (menu_text) loaded into es by MainDeskLoop, MenuLeagueHilights, MenuNewExhibition",src/data/dgroup.asm
+g_8B72,segMenuText18,g_8B72,new,high,segment constant 3448h (menu_text) loaded into es by LoadModeState,src/data/dgroup.asm
+g_8B78,segDbFiles11,g_8B78,new,high,segment constant 3415h (db_files) loaded into es by MenuNewLeague,src/data/dgroup.asm
+g_8B7A,segMenuText19,g_8B7A,new,high,segment constant 3448h (menu_text) loaded into es by MenuNewLeague,src/data/dgroup.asm
+g_8B7C,segWorkBuffer3,g_8B7C,new,high,"segment constant 3A0Bh (work_buffer) loaded into es by AddHumanTeam, RemoveHumanTeam",src/data/dgroup.asm
+g_8B7E,segTeamChoiceText2,g_8B7E,new,high,"segment constant 3701h (team_choice_text) loaded into es by AddHumanTeam, RemoveHumanTeam",src/data/dgroup.asm
+g_8B80,segWorkBuffer4,g_8B80,new,high,"segment constant 3A0Bh (work_buffer) loaded into es by AddHumanTeam, RemoveHumanTeam",src/data/dgroup.asm
+g_8B82,segTeamChoiceText3,g_8B82,new,high,"segment constant 3701h (team_choice_text) loaded into es by AddHumanTeam, RemoveHumanTeam",src/data/dgroup.asm
+g_8B84,segWorkBuffer5,g_8B84,new,high,"segment constant 3A0Bh (work_buffer) loaded into es by AddHumanTeam, RemoveHumanTeam",src/data/dgroup.asm
+g_8B86,segTeamChoiceText4,g_8B86,new,high,"segment constant 3701h (team_choice_text) loaded into es by AddHumanTeam, RemoveHumanTeam",src/data/dgroup.asm
+g_8B88,segWorkBuffer6,g_8B88,new,high,"segment constant 3A0Bh (work_buffer) loaded into es by AddHumanTeam, RemoveHumanTeam",src/data/dgroup.asm
+g_8B8A,segWorkBuffer7,g_8B8A,new,high,segment constant 3A0Bh (work_buffer) loaded into es by DrawTeamGrid,src/data/dgroup.asm
+g_8B8C,segWorkBuffer8,g_8B8C,new,high,segment constant 3A0Bh (work_buffer) loaded into es by ChooseLeagueController,src/data/dgroup.asm
+g_8B8E,segWorkBuffer9,g_8B8E,new,high,segment constant 3A0Bh (work_buffer) loaded into es by ChooseLeagueController,src/data/dgroup.asm
+g_8B90,segWorkBuffer10,g_8B90,new,high,segment constant 3A0Bh (work_buffer) loaded into es by ChooseLeagueController,src/data/dgroup.asm
+g_8B92,segWorkBuffer11,g_8B92,new,high,segment constant 3A0Bh (work_buffer) loaded into es by ChooseLeagueController,src/data/dgroup.asm
+g_8B94,segTeamChoiceText5,g_8B94,new,high,segment constant 3701h (team_choice_text) loaded into es by AskExportToFloppy,src/data/dgroup.asm
+g_8B96,segTeamChoiceText6,g_8B96,new,high,segment constant 3701h (team_choice_text) loaded into es by LeagueTeamSelect,src/data/dgroup.asm
+g_8B98,segTeamChoiceText7,g_8B98,new,high,segment constant 3701h (team_choice_text) loaded into es by LeagueTeamSelect,src/data/dgroup.asm
+g_8B9A,segTeamChoiceText8,g_8B9A,new,high,segment constant 3701h (team_choice_text) loaded into es by LeagueTeamSelect,src/data/dgroup.asm
+g_8B9C,segTeamChoiceText9,g_8B9C,new,high,"segment constant 3701h (team_choice_text) loaded into es by FindLeagueFloppy, SelectFloppyDrive",src/data/dgroup.asm
+g_8B9E,segTeamChoiceText10,g_8B9E,new,high,segment constant 3701h (team_choice_text) loaded into es by FindLeagueFloppy,src/data/dgroup.asm
+g_8BA0,segTeamChoiceText11,g_8BA0,new,high,segment constant 3701h (team_choice_text) loaded into es by WaitLeagueFloppy,src/data/dgroup.asm
+g_8BA2,segTeamChoiceText12,g_8BA2,new,high,segment constant 3701h (team_choice_text) loaded into es by ExportTeamToFloppy,src/data/dgroup.asm
+g_8BA4,segTeamChoiceText13,g_8BA4,new,high,"segment constant 3701h (team_choice_text) loaded into es by CopyLeagueFiles, ExportDbs, ExportTeamToFloppy ...",src/data/dgroup.asm
+g_8BA6,segTeamChoiceText14,g_8BA6,new,high,"segment constant 3701h (team_choice_text) loaded into es by ExportDbs, ExportTeamToFloppy",src/data/dgroup.asm
+g_8BA8,segWorkBuffer12,g_8BA8,new,high,"segment constant 3A0Bh (work_buffer) loaded into es by ExportDbs, ImportMasterLeague",src/data/dgroup.asm
+g_8BAA,segTeamChoiceText15,g_8BAA,new,high,segment constant 3701h (team_choice_text) loaded into es by ImportPlayerTeam,src/data/dgroup.asm
+g_8BAC,segWorkBuffer13,g_8BAC,new,high,"segment constant 3A0Bh (work_buffer) loaded into es by ExportDbs, ImportPlayerTeam",src/data/dgroup.asm
+g_8BAE,segTeamChoiceText16,g_8BAE,new,high,"segment constant 3701h (team_choice_text) loaded into es by ExportDbs, ImportPlayerTeam",src/data/dgroup.asm
+g_8BB0,segWorkBuffer14,g_8BB0,new,high,"segment constant 3A0Bh (work_buffer) loaded into es by ExportDbs, ImportPlayerTeam",src/data/dgroup.asm
+g_8BB2,segTeamChoiceText17,g_8BB2,new,high,"segment constant 3701h (team_choice_text) loaded into es by ExportDbs, ImportPlayerTeam",src/data/dgroup.asm
+g_8BB4,segWorkBuffer15,g_8BB4,new,high,"segment constant 3A0Bh (work_buffer) loaded into es by ExportDbs, ImportPlayerTeam",src/data/dgroup.asm
+g_8BB6,segTeamChoiceText18,g_8BB6,new,high,segment constant 3701h (team_choice_text) loaded into es by ImportPlayerTeam,src/data/dgroup.asm
+g_8BB8,segTeamChoiceText19,g_8BB8,new,high,segment constant 3701h (team_choice_text) loaded into es by ImportPlayerTeam,src/data/dgroup.asm
+g_8BBA,segTeamChoiceText20,g_8BBA,new,high,segment constant 3701h (team_choice_text) loaded into es by ImportPlayerTeam,src/data/dgroup.asm
+g_8BBC,segMenuText20,g_8BBC,new,high,segment constant 3448h (menu_text) loaded into es by ImportDbs,src/data/dgroup.asm
+g_8BBE,segDbFiles12,g_8BBE,new,high,segment constant 3415h (db_files) loaded into es by ImportDbs,src/data/dgroup.asm
+g_8BC0,segWorkBuffer16,g_8BC0,new,high,segment constant 3A0Bh (work_buffer) loaded into es by ExportDbs,src/data/dgroup.asm
+g_8BC2,segTeamChoiceText21,g_8BC2,new,high,segment constant 3701h (team_choice_text) loaded into es by ReadLeagueInfo,src/data/dgroup.asm
+g_8BC4,segWorkBuffer17,g_8BC4,new,high,segment constant 3A0Bh (work_buffer) loaded into es by CheckMasterPassword,src/data/dgroup.asm
+g_8BC6,segTeamChoiceText22,g_8BC6,new,high,segment constant 3701h (team_choice_text) loaded into es by CheckMasterPassword,src/data/dgroup.asm
+g_8BC8,segWorkBuffer18,g_8BC8,new,high,segment constant 3A0Bh (work_buffer) loaded into es by CheckMasterPassword,src/data/dgroup.asm
+g_8BCA,segTeamChoiceText23,g_8BCA,new,high,segment constant 3701h (team_choice_text) loaded into es by MsgCopyingDatabases,src/data/dgroup.asm
+g_8BCC,segTeamChoiceText24,g_8BCC,new,high,segment constant 3701h (team_choice_text) loaded into es by CopyHumanTeamDBs,src/data/dgroup.asm
+g_8BCE,segTeamChoiceText25,g_8BCE,new,high,segment constant 3701h (team_choice_text) loaded into es by CopyHumanTeamDBs,src/data/dgroup.asm
+g_8BD0,segTeamChoiceText26,g_8BD0,new,high,segment constant 3701h (team_choice_text) loaded into es by CopyHumanTeamDBs,src/data/dgroup.asm
+g_8BD2,segTeamChoiceText27,g_8BD2,new,high,segment constant 3701h (team_choice_text) loaded into es by SimulateGame,src/data/dgroup.asm
+g_8BD4,segWorkBuffer19,g_8BD4,new,high,segment constant 3A0Bh (work_buffer) loaded into es by DrawCalendarDay,src/data/dgroup.asm
+g_8BD6,segTeamChoiceText28,g_8BD6,new,high,segment constant 3701h (team_choice_text) loaded into es by DrawCalendarDay,src/data/dgroup.asm
+g_8BD8,segWorkBuffer20,g_8BD8,new,high,"segment constant 3A0Bh (work_buffer) loaded into es by PlayLeagueGame, SetGameSides",src/data/dgroup.asm
+g_8BDA,segTeamChoiceText29,g_8BDA,new,high,"segment constant 3701h (team_choice_text) loaded into es by CalendarScreen, PlayLeagueGame, PostGameToTeamDb",src/data/dgroup.asm
+g_8BDC,segTeamChoiceText30,g_8BDC,new,high,segment constant 3701h (team_choice_text) loaded into es by CalendarScreen,src/data/dgroup.asm
+g_8BDE,segTeamChoiceText31,g_8BDE,new,high,segment constant 3701h (team_choice_text) loaded into es by CheckLeagueDiskSync,src/data/dgroup.asm
+g_8BE0,segTeamChoiceText32,g_8BE0,new,high,segment constant 3701h (team_choice_text) loaded into es by CheckLeagueDiskSync,src/data/dgroup.asm
+g_8BE2,segWorkBuffer21,g_8BE2,new,high,segment constant 3A0Bh (work_buffer) loaded into es by PostGameToTeamDb,src/data/dgroup.asm
+g_8BE4,segWorkBuffer22,g_8BE4,new,high,segment constant 3A0Bh (work_buffer) loaded into es by PostGameToTeamDb,src/data/dgroup.asm
+g_8BE6,segWorkBuffer23,g_8BE6,new,high,segment constant 3A0Bh (work_buffer) loaded into es by PlayLeagueGame,src/data/dgroup.asm
+g_8BE8,segTeamChoiceText33,g_8BE8,new,high,segment constant 3701h (team_choice_text) loaded into es by PlayLeagueGame,src/data/dgroup.asm
+g_8BEA,segTeamChoiceText34,g_8BEA,new,high,segment constant 3701h (team_choice_text) loaded into es by PlayLeagueGame,src/data/dgroup.asm
+g_8BEC,segWorkBuffer24,g_8BEC,new,high,segment constant 3A0Bh (work_buffer) loaded into es by PlayLeagueGame,src/data/dgroup.asm
+g_8BEE,segWorkBuffer25,g_8BEE,new,high,segment constant 3A0Bh (work_buffer) loaded into es by PlayLeagueGame,src/data/dgroup.asm
+g_8BF0,segDgroup6,g_8BF0,new,high,segment constant 45C9h (dgroup) loaded into es by PlayLeagueGame,src/data/dgroup.asm
+g_8BF2,segDbFiles13,g_8BF2,new,high,segment constant 3415h (db_files) loaded into es by PlayLeagueGame,src/data/dgroup.asm
+g_8BF4,segTeamChoiceText35,g_8BF4,new,high,"segment constant 3701h (team_choice_text) loaded into es by RandomizeSchedule, UpdateSeasonSchedule",src/data/dgroup.asm
+g_8BF6,segWorkBuffer26,g_8BF6,new,high,segment constant 3A0Bh (work_buffer) loaded into es by CreateNewLeague,src/data/dgroup.asm
+g_8BF8,segTeamChoiceText36,g_8BF8,new,high,segment constant 3701h (team_choice_text) loaded into es by CreateNewLeague,src/data/dgroup.asm
+g_8BFA,segWorkBuffer27,g_8BFA,new,high,segment constant 3A0Bh (work_buffer) loaded into es by CreateNewLeague,src/data/dgroup.asm
+g_8BFC,segWorkBuffer28,g_8BFC,new,high,segment constant 3A0Bh (work_buffer) loaded into es by CreateNewLeague,src/data/dgroup.asm
+g_8BFE,segWorkBuffer29,g_8BFE,new,high,segment constant 3A0Bh (work_buffer) loaded into es by CreateNewLeague,src/data/dgroup.asm
+g_8C00,segWorkBuffer30,g_8C00,new,high,segment constant 3A0Bh (work_buffer) loaded into es by CreateNewLeague,src/data/dgroup.asm
+g_8C02,segDbFiles14,g_8C02,new,high,segment constant 3415h (db_files) loaded into es by CreateNewLeague,src/data/dgroup.asm
+g_8C04,segTeamChoiceText37,g_8C04,new,high,"segment constant 3701h (team_choice_text) loaded into es by BuildTradeRoster, ExecuteTrade, TradePlayers",src/data/dgroup.asm
+g_8C06,segTeamChoiceText38,g_8C06,new,high,segment constant 3701h (team_choice_text) loaded into es by BuildTradeRoster,src/data/dgroup.asm
+g_8C08,segTeamChoiceText39,g_8C08,new,high,segment constant 3701h (team_choice_text) loaded into es by BuildTradeRoster,src/data/dgroup.asm
+g_8C0A,segWorkBuffer31,g_8C0A,new,high,segment constant 3A0Bh (work_buffer) loaded into es by FixJerseyConflict,src/data/dgroup.asm
+g_8C0C,segTradeMessages1,g_8C0C,new,high,"segment constant 382Bh (trade_messages) loaded into es by DrawTradeScreen, TradeScreenLoop",src/data/dgroup.asm
+g_8C0E,segTeamChoiceText40,g_8C0E,new,high,"segment constant 3701h (team_choice_text) loaded into es by TradeHitTest, TradeScreenLoop",src/data/dgroup.asm
+g_8C10,segMenuText21,g_8C10,new,high,segment constant 3448h (menu_text) loaded into es by TradeScreenLoop,src/data/dgroup.asm
+g_8C12,segCharTable2,g_8C12,new,high,segment constant 3680h (char_table) loaded into es by TradeScreenLoop,src/data/dgroup.asm
+g_8C14,segWorkBuffer32,g_8C14,new,high,segment constant 3A0Bh (work_buffer) loaded into es by TradePlayers,src/data/dgroup.asm
+g_8C16,segTeamChoiceText41,g_8C16,new,high,segment constant 3701h (team_choice_text) loaded into es by TradePlayers,src/data/dgroup.asm
+g_8C18,segWorkBuffer33,g_8C18,new,high,segment constant 3A0Bh (work_buffer) loaded into es by TradePlayers,src/data/dgroup.asm
+g_8C1A,segTeamChoiceText42,g_8C1A,new,high,segment constant 3701h (team_choice_text) loaded into es by TradePlayers,src/data/dgroup.asm
+g_8C1C,segWorkBuffer34,g_8C1C,new,high,segment constant 3A0Bh (work_buffer) loaded into es by TradePlayers,src/data/dgroup.asm
+g_8C1E,segTeamChoiceText43,g_8C1E,new,high,"segment constant 3701h (team_choice_text) loaded into es by MergeLeagueFiles, MergeScheduleDb, MergeTeamDbs",src/data/dgroup.asm
+g_8C20,segTeamChoiceText44,g_8C20,new,high,segment constant 3701h (team_choice_text) loaded into es by LocateTeamDbCopy,src/data/dgroup.asm
+g_8C22,segWorkBuffer35,g_8C22,new,high,"segment constant 3A0Bh (work_buffer) loaded into es by MergeLeagueFiles, MergeUpdateDbs, UpdateTeamDbs",src/data/dgroup.asm
+g_8C24,segTeamChoiceText45,g_8C24,new,high,"segment constant 3701h (team_choice_text) loaded into es by MergeLeagueFiles, UpdateTeamDbs",src/data/dgroup.asm
+g_8C26,segTeamChoiceText46,g_8C26,new,high,"segment constant 3701h (team_choice_text) loaded into es by MergeLeagueFiles, UpdateTeamDbs",src/data/dgroup.asm
+g_8C28,segWorkBuffer36,g_8C28,new,high,"segment constant 3A0Bh (work_buffer) loaded into es by MergeLeagueFiles, MergeUpdateDbs, RebuildLeagueDbs",src/data/dgroup.asm
+g_8C2A,segWorkBuffer37,g_8C2A,new,high,"segment constant 3A0Bh (work_buffer) loaded into es by MergeLeagueFiles, MergeUpdateDbs, RebuildLeagueDbs",src/data/dgroup.asm
+g_8C2C,segMergeMessages1,g_8C2C,new,high,segment constant 3836h (merge_messages) loaded into es by MergeLeagueFiles,src/data/dgroup.asm
+g_8C2E,segWorkBuffer38,g_8C2E,new,high,segment constant 3A0Bh (work_buffer) loaded into es by MergeLeagueFiles,src/data/dgroup.asm
+g_8C30,segTeamChoiceText47,g_8C30,new,high,segment constant 3701h (team_choice_text) loaded into es by PickAwardWinners,src/data/dgroup.asm
+g_8C32,segDbFiles15,g_8C32,new,high,"segment constant 3415h (db_files) loaded into es by BuildSeasonTitle, SetupStatsMenus",src/data/dgroup.asm
+g_8C34,segDbFiles16,g_8C34,new,high,"segment constant 3415h (db_files) loaded into es by BuildSeasonTitle, SetupStatsMenus",src/data/dgroup.asm
+g_8C44,segTeamChoiceText48,g_8C44,new,high,segment constant 3701h (team_choice_text) loaded into es by SetupStatsMenus,src/data/dgroup.asm
+g_8C46,segMenuText22,g_8C46,new,high,segment constant 3448h (menu_text) loaded into es by SetupStatsMenus,src/data/dgroup.asm
+g_8C48,segMenuText23,g_8C48,new,high,segment constant 3448h (menu_text) loaded into es by SetupStatsMenus,src/data/dgroup.asm
+g_8C4A,segMenuText24,g_8C4A,new,high,segment constant 3448h (menu_text) loaded into es by SetupStatsMenus,src/data/dgroup.asm
+g_8C4C,segMenuText25,g_8C4C,new,high,segment constant 3448h (menu_text) loaded into es by SetupStatsMenus,src/data/dgroup.asm
+g_8C4E,segMenuText26,g_8C4E,new,high,segment constant 3448h (menu_text) loaded into es by SetupStatsMenus,src/data/dgroup.asm
+g_8C50,segMenuText27,g_8C50,new,high,segment constant 3448h (menu_text) loaded into es by SetupStatsMenus,src/data/dgroup.asm
+g_8C52,segMenuText28,g_8C52,new,high,segment constant 3448h (menu_text) loaded into es by SetupStatsMenus,src/data/dgroup.asm
+g_8C54,segMenuText29,g_8C54,new,high,segment constant 3448h (menu_text) loaded into es by SetupStatsMenus,src/data/dgroup.asm
+g_8C56,segMenuText30,g_8C56,new,high,segment constant 3448h (menu_text) loaded into es by SetupStatsMenus,src/data/dgroup.asm
+g_8C58,segMenuText31,g_8C58,new,high,segment constant 3448h (menu_text) loaded into es by SetupStatsMenus,src/data/dgroup.asm
+g_8C5A,segMenuText32,g_8C5A,new,high,segment constant 3448h (menu_text) loaded into es by SetStatsMenuText,src/data/dgroup.asm
+g_8C5C,segMenuText33,g_8C5C,new,high,segment constant 3448h (menu_text) loaded into es by SetStatsMenuText,src/data/dgroup.asm
+g_8C5E,segMenuText34,g_8C5E,new,high,segment constant 3448h (menu_text) loaded into es by SetStatsMenuText,src/data/dgroup.asm
+g_8C60,segMenuText35,g_8C60,new,high,segment constant 3448h (menu_text) loaded into es by SetStatsMenuText,src/data/dgroup.asm
+g_8C62,segSeasonTitles1,g_8C62,new,high,segment constant 384Bh (season_titles) loaded into es by GetSeasonTitle,src/data/dgroup.asm
+g_8C64,segSeasonTitles2,g_8C64,new,high,segment constant 384Bh (season_titles) loaded into es by GetSeasonTitle,src/data/dgroup.asm
+g_8C66,segSeasonTitles3,g_8C66,new,high,segment constant 384Bh (season_titles) loaded into es by GetSeasonTitle,src/data/dgroup.asm
+g_8C68,segSeasonTitles4,g_8C68,new,high,segment constant 384Bh (season_titles) loaded into es by GetSeasonTitle,src/data/dgroup.asm
+g_8C6A,segSeasonTitles5,g_8C6A,new,high,segment constant 384Bh (season_titles) loaded into es by GetSeasonTitle,src/data/dgroup.asm
+g_8C6C,segWorkBuffer39,g_8C6C,new,high,segment constant 3A0Bh (work_buffer) loaded into es by GoalieStatsCard,src/data/dgroup.asm
+g_8C70,segWorkBuffer40,g_8C70,new,high,segment constant 3A0Bh (work_buffer) loaded into es by GameStandingsMenu,src/data/dgroup.asm
+g_8C72,segSeasonTitles6,g_8C72,new,high,"segment constant 384Bh (season_titles) loaded into es by StatsSelLeague, StatsSelLeaguePlayoffs, StatsSelNhlPlayoffs ...",src/data/dgroup.asm
+g_8C74,segSeasonTitles7,g_8C74,new,high,"segment constant 384Bh (season_titles) loaded into es by StatsSelLeague, StatsSelLeaguePlayoffs, StatsSelNhlPlayoffs ...",src/data/dgroup.asm
+g_8C76,segSeasonTitles8,g_8C76,new,high,"segment constant 384Bh (season_titles) loaded into es by StatsSelLeague, StatsSelLeaguePlayoffs, StatsSelNhlPlayoffs ...",src/data/dgroup.asm
+g_8C78,segSeasonTitles9,g_8C78,new,high,"segment constant 384Bh (season_titles) loaded into es by StatsSelLeague, StatsSelLeaguePlayoffs, StatsSelNhlPlayoffs ...",src/data/dgroup.asm
+g_8C7A,segSeasonTitles10,g_8C7A,new,high,"segment constant 384Bh (season_titles) loaded into es by StatsSelLeague, StatsSelLeaguePlayoffs, StatsSelNhlPlayoffs ...",src/data/dgroup.asm
+g_8C7C,segWorkBuffer41,g_8C7C,new,high,"segment constant 3A0Bh (work_buffer) loaded into es by StatsSelLeague, StatsSelLeaguePlayoffs, StatsSelNhlPlayoffs ...",src/data/dgroup.asm
+g_8C7E,segWorkBuffer42,g_8C7E,new,high,segment constant 3A0Bh (work_buffer) loaded into es by EasnStandingsMenu,src/data/dgroup.asm
+g_8C80,segWorkBuffer43,g_8C80,new,high,segment constant 3A0Bh (work_buffer) loaded into es by CalStandingsMenu,src/data/dgroup.asm
+g_8C82,segWorkBuffer44,g_8C82,new,high,segment constant 3A0Bh (work_buffer) loaded into es by SkaterStatsCard,src/data/dgroup.asm
+g_8C84,segMenuText36,g_8C84,new,high,"segment constant 3448h (menu_text) loaded into es by ShowPlayoffStandings, StandingsScreen",src/data/dgroup.asm
+g_8C86,segDgroup7,g_8C86,new,high,segment constant 45C9h (dgroup) loaded into es by DrawStandingsPage,src/data/dgroup.asm
+g_8C88,segTeamChoiceText49,g_8C88,new,high,"segment constant 3701h (team_choice_text) loaded into es by LoadLeagueSchedule, ShowSeasonStandings",src/data/dgroup.asm
+g_8C8A,segDbFiles17,g_8C8A,new,high,"segment constant 3415h (db_files) loaded into es by Gameloop, PlayGame",src/data/dgroup.asm
+g_8C8C,segDgroup8,g_8C8C,new,high,segment constant 45C9h (dgroup) loaded into es by LoadGameGfx,src/data/dgroup.asm
+g_8C8E,segTeamChoiceText50,g_8C8E,new,high,segment constant 3701h (team_choice_text) loaded into es by ShowMatchupScreen,src/data/dgroup.asm
+g_8C90,segLinesMenuText1,g_8C90,new,high,segment constant 38AFh (lines_menu_text) loaded into es by ShowMatchupScreen,src/data/dgroup.asm
+g_8C92,segMenuText37,g_8C92,new,high,segment constant 3448h (menu_text) loaded into es by ShowMatchupScreen,src/data/dgroup.asm
+g_8C94,segWorkBuffer45,g_8C94,new,high,segment constant 3A0Bh (work_buffer) loaded into es by ShowMatchupScreen,src/data/dgroup.asm
+g_8C96,segDbFiles18,g_8C96,new,high,segment constant 3415h (db_files) loaded into es by ShowMatchupScreen,src/data/dgroup.asm
+g_8C98,segTeamChoiceText51,g_8C98,new,high,segment constant 3701h (team_choice_text) loaded into es by ShowStartingLineups,src/data/dgroup.asm
+g_8C9A,segWorkBuffer46,g_8C9A,new,high,segment constant 3A0Bh (work_buffer) loaded into es by ShowStartingLineups,src/data/dgroup.asm
+g_8CA4,segWorkBuffer47,g_8CA4,new,high,segment constant 3A0Bh (work_buffer) loaded into es by DrawPeriodTitle,src/data/dgroup.asm
+g_8CA6,segTeamChoiceText52,g_8CA6,new,high,segment constant 3701h (team_choice_text) loaded into es by ShowGameSummary,src/data/dgroup.asm
+g_8CA8,segWorkBuffer48,g_8CA8,new,high,segment constant 3A0Bh (work_buffer) loaded into es by ShowGameSummary,src/data/dgroup.asm
+g_8CAA,segDbFiles19,g_8CAA,new,high,segment constant 3415h (db_files) loaded into es by ShowGameSummary,src/data/dgroup.asm
+g_8CAC,segWorkBuffer49,g_8CAC,new,high,segment constant 3A0Bh (work_buffer) loaded into es by ShowGameSummary,src/data/dgroup.asm
+g_8CAE,segWorkBuffer50,g_8CAE,new,high,segment constant 3A0Bh (work_buffer) loaded into es by ShowTeamStats,src/data/dgroup.asm
+g_8CB0,segDbFiles20,g_8CB0,new,high,segment constant 3415h (db_files) loaded into es by IntermissionScreens,src/data/dgroup.asm
+g_8CB2,segWorkBuffer51,g_8CB2,new,high,segment constant 3A0Bh (work_buffer) loaded into es by PlayTitleMovies,src/data/dgroup.asm
+g_8CB4,segWorkBuffer52,g_8CB4,new,high,segment constant 3A0Bh (work_buffer) loaded into es by PlayTitleMovies,src/data/dgroup.asm
+g_8CB6,segWorkBuffer53,g_8CB6,new,high,segment constant 3A0Bh (work_buffer) loaded into es by PlayTitleMovies,src/data/dgroup.asm
+g_8CB8,segWorkBuffer54,g_8CB8,new,high,segment constant 3A0Bh (work_buffer) loaded into es by CreateGSummaryDb,src/data/dgroup.asm
+g_8CBA,segWorkBuffer55,g_8CBA,new,high,segment constant 3A0Bh (work_buffer) loaded into es by BuildTeamRoster,src/data/dgroup.asm
+g_8CBC,segWorkBuffer56,g_8CBC,new,high,segment constant 3A0Bh (work_buffer) loaded into es by BuildTeamRoster,src/data/dgroup.asm
+g_8CBE,segWorkBuffer57,g_8CBE,new,high,segment constant 3A0Bh (work_buffer) loaded into es by BuildTeamRoster,src/data/dgroup.asm
+g_8CC0,segTeamChoiceText53,g_8CC0,new,high,segment constant 3701h (team_choice_text) loaded into es by GSummaryPath,src/data/dgroup.asm
+g_8CC2,segMenuText38,g_8CC2,new,high,"segment constant 3448h (menu_text) loaded into es by ClearTeamNameText, SetTeamNameText",src/data/dgroup.asm
+g_8CC4,segMenuText39,g_8CC4,new,high,"segment constant 3448h (menu_text) loaded into es by ClearTeamNameText, SetTeamNameText",src/data/dgroup.asm
+g_8CC6,segAnimSequences1,g_8CC6,new,high,segment constant 38F6h (anim_sequences) loaded into es by DrawReplayFrame,src/data/dgroup.asm
+g_8CC8,segAnimSequences2,g_8CC8,new,high,segment constant 38F6h (anim_sequences) loaded into es by DrawReplayFrame,src/data/dgroup.asm
+g_8CCA,segDgroup9,g_8CCA,new,high,segment constant 45C9h (dgroup) loaded into es by DrawReplayFrame,src/data/dgroup.asm
+g_8CCC,segAnimSequences3,g_8CCC,new,high,segment constant 38F6h (anim_sequences) loaded into es by LoadGameState,src/data/dgroup.asm
+g_8CCE,segAnimSequences4,g_8CCE,new,high,segment constant 38F6h (anim_sequences) loaded into es by LoadGameState,src/data/dgroup.asm
+g_8CD4,segObjectTable1,g_8CD4,new,high,segment constant 3863h (object_table) loaded into es by LoadGameState,src/data/dgroup.asm
+g_8CD6,segDgroup10,g_8CD6,new,high,segment constant 45C9h (dgroup) loaded into es by PlayHilight,src/data/dgroup.asm
+g_8CD8,segWorkBuffer58,g_8CD8,new,high,segment constant 3A0Bh (work_buffer) loaded into es by BuildEventLines,src/data/dgroup.asm
+g_8CDA,segWorkBuffer59,g_8CDA,new,high,segment constant 3A0Bh (work_buffer) loaded into es by Endfaceoff,src/data/dgroup.asm
+g_8CDC,segWorkBuffer60,g_8CDC,new,high,segment constant 3A0Bh (work_buffer) loaded into es by PickThreeStars,src/data/dgroup.asm
+g_8CDE,segWorkBuffer61,g_8CDE,new,high,segment constant 3A0Bh (work_buffer) loaded into es by PickThreeStars,src/data/dgroup.asm
+g_8CE0,segDgroup11,g_8CE0,new,high,segment constant 45C9h (dgroup) loaded into es by DrawRinkOverlays,src/data/dgroup.asm
+g_8CE8,segDgroup12,g_8CE8,new,high,segment constant 45C9h (dgroup) loaded into es by FadeVenetian,src/data/dgroup.asm
+g_8CEA,segDgroup13,g_8CEA,new,high,segment constant 45C9h (dgroup) loaded into es by FadeVenetian,src/data/dgroup.asm
+g_8CEC,segDgroup14,g_8CEC,new,high,segment constant 45C9h (dgroup) loaded into es by FadeWipe,src/data/dgroup.asm
+g_8CEE,segDgroup15,g_8CEE,new,high,segment constant 45C9h (dgroup) loaded into es by FadeWipe,src/data/dgroup.asm
+g_8CF0,segDgroup16,g_8CF0,new,high,segment constant 45C9h (dgroup) loaded into es by FadePlaneBands,src/data/dgroup.asm
+g_8CF2,segDgroup17,g_8CF2,new,high,segment constant 45C9h (dgroup) loaded into es by FadePlaneBands,src/data/dgroup.asm
+g_8CF4,segDgroup18,g_8CF4,new,high,segment constant 45C9h (dgroup) loaded into es by FadeBlockSweep,src/data/dgroup.asm
+g_8CF6,segDgroup19,g_8CF6,new,high,segment constant 45C9h (dgroup) loaded into es by FadeSlideStrips,src/data/dgroup.asm
+g_8CF8,segDgroup20,g_8CF8,new,high,segment constant 45C9h (dgroup) loaded into es by FadeSplitCenter,src/data/dgroup.asm
+g_8CFA,segDgroup21,g_8CFA,new,high,"segment constant 45C9h (dgroup) loaded into es by FadeRandomBlocks, FadeRandomBlocks2",src/data/dgroup.asm
+g_8CFC,segDgroup22,g_8CFC,new,high,segment constant 45C9h (dgroup) loaded into es by FadeDissolve,src/data/dgroup.asm
+g_8CFE,segDgroup23,g_8CFE,new,high,segment constant 45C9h (dgroup) loaded into es by FadeDissolve,src/data/dgroup.asm
+g_8D00,segDgroup24,g_8D00,new,high,segment constant 45C9h (dgroup) loaded into es by FadeBoxGrow,src/data/dgroup.asm
+g_8D02,segDgroup25,g_8D02,new,high,segment constant 45C9h (dgroup) loaded into es by FadeDirectional,src/data/dgroup.asm

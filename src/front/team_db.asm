@@ -19,14 +19,14 @@ LoadGameTeams:
         mov ax, 0x3a0b
         mov ds, ax
         mov ax, 0xffff
-        mov [f_3A0B_B66C], ax
-        mov [f_3A0B_B66A], ax
-        mov [f_3A0B_B668], ax
-        mov [f_3A0B_B666], ax
-        mov [f_3A0B_B664], ax
-        mov [f_3A0B_B662], ax
-        mov [f_3A0B_B660], ax
-        mov [f_3A0B_B65E], ax
+        mov [GameTeamWord7], ax
+        mov [GameTeamWord6], ax
+        mov [GameTeamWord5], ax
+        mov [GameTeamWord4], ax
+        mov [GameTeamWord3], ax
+        mov [GameTeamWord2], ax
+        mov [GameTeamWord1], ax
+        mov [GameTeamWord0], ax
 .2:
         mov ax, DGROUP
         mov ds, ax
@@ -75,7 +75,7 @@ LoadGameTeams:
 .5:
         push 0x0
         mov ax, 0x2e8
-        imul word [g_29CA]
+        imul word [HomeTeamNum]
         push dx
         push ax
         push word [bp - 0x4]
@@ -150,7 +150,7 @@ LoadGameTeams:
 .10:
         push 0x0
         mov ax, 0x2e8
-        imul word [g_29CC]
+        imul word [VisTeamNum]
         push dx
         push ax
         push word [bp - 0x4]
@@ -316,7 +316,7 @@ LoadGameTeams:
         mov ax, 0x3a0b
         mov ds, ax
 .21:
-        mov ax, [ss:g_29CA]
+        mov ax, [ss:HomeTeamNum]
         cmp ax, strict word 0x15
         jz short .25
         ja short .22
@@ -341,9 +341,9 @@ LoadGameTeams:
 .26:
         jnz short .27
         mov ax, [si]
-        mov [f_3A0B_B652], ax
+        mov [GameTeamName1], ax
 .27:
-        mov ax, [ss:g_29CC]
+        mov ax, [ss:VisTeamNum]
         sub ax, strict word 0x4
         jz short .28
         mov word [si + 0x6], 0xffff
@@ -352,7 +352,7 @@ LoadGameTeams:
         cmp word [si + 0x6], 0x20
         jnz short .29
         mov ax, [si + 0x6]
-        mov [f_3A0B_B658], ax
+        mov [GameTeamName2], ax
 .29:
         inc si
         inc si
@@ -383,18 +383,18 @@ CreateGSummaryDb:
         mov word [curperiod], 0xffff
         mov cl, [bp + 0x6]
         mov [g_E366], cl
-        mov [g_01CA], cl
-        mov [g_01CB], al
-        mov al, [g_29CA]
-        mov [g_01CC], al
-        mov al, [g_29CC]
-        mov [g_01CD], al
-        mov word [g_01CE], 0x1
+        mov [gsumheader_b2], cl
+        mov [gsumheader_b3], al
+        mov al, [HomeTeamNum]
+        mov [gsumheader_b4], al
+        mov al, [VisTeamNum]
+        mov [gsumheader_b5], al
+        mov word [gsumcount], 0x1
         db 0x2A, 0xC0                           ; insn: sub al, al
-        mov [g_01D6], al
-        mov [g_01D7], al
-        mov [g_01D8], al
-        mov [g_01D9], al
+        mov [gsumtail_goals1], al
+        mov [gsumtail_shots1], al
+        mov [gsumtail_goals2], al
+        mov [gsumtail_shots2], al
         test byte [AnnouncerFlags], 0x2
         jnz short .1
         call 0x1E45:LoadCupFinalSeries
@@ -449,7 +449,7 @@ CreateGSummaryDb:
         call LoadGameTeams
         add sp, 0x2
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov es, [g_8CB8]
+        mov es, [segWorkBuffer54]
         mov [es:0x456], ax
         mov [es:0x454], ax
         mov [es:0x452], ax
@@ -481,9 +481,9 @@ CreateGSummaryDb:
         mov ax, 0x3a0b
         mov es, ax
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:f_3A0B_076C], ax
-        mov [es:f_3A0B_076A], ax
-        mov [es:f_3A0B_0768], ax
+        mov [es:HomeGlStats_w4], ax
+        mov [es:HomeGlStats_w2], ax
+        mov [es:HomeGlStats], ax
         mov word [bp - 0x4], 0x768
         mov word [bp - 0x6], 0x2
 .7:
@@ -972,7 +972,7 @@ BuildTeamRoster:
         imul ax, [bp + 0x12], 0x19
         add ax, [bp - 0x8]
         mov bx, [bp - 0xa]
-        mov es, [g_8CBA]
+        mov es, [segWorkBuffer55]
         db 0x8B, 0xFB                           ; insn: mov di, bx
         lea si, [bp - 0x34]
         mov cx, 0xa
@@ -1111,7 +1111,7 @@ BuildTeamRoster:
 .18:
         mov al, [bp - 0xbf]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
-        mov es, [g_8CBC]
+        mov es, [segWorkBuffer56]
         mov bx, [bp - 0xe]
         mov [es:bx], ax
 .19:
@@ -1157,7 +1157,7 @@ BuildTeamRoster:
         mov [bx], al
 .27:
         mov bx, [bp - 0xa]
-        mov es, [g_8CBE]
+        mov es, [segWorkBuffer57]
         db 0x8B, 0xFB                           ; insn: mov di, bx
         lea si, [bp - 0x20]
         mov cx, 0x8
@@ -1191,11 +1191,11 @@ GSummaryPath:
         push di
         push si
         mov byte [g_AE70], 0x0
-        mov es, [g_8CC0]
+        mov es, [segTeamChoiceText53]
         cmp byte [es:0xe53], 0x0
         jz short .1
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         push ds
         push strict word g_AE70
         call 0x0000:_fstrcpy

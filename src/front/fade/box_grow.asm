@@ -72,7 +72,7 @@ FadeBoxGrow:
         push di
         push si
         call 0x0FEF:UseCurrentPage
-        mov es, [g_8D00]
+        mov es, [segDgroup24]
         mov ax, [es:0x74fe]
         mov [g_DF6C], ax
         mov cx, [es:0x74f2]
@@ -238,7 +238,7 @@ FadeBoxGrow:
         mov ax, [g_DF70]
         sub ax, [g_DF6E]
         push ax
-        mov es, [g_8D00]
+        mov es, [segDgroup24]
         push word [es:0x74fa]
         push word [g_DF6E]
         push word [g_DF6A]

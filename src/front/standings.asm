@@ -101,7 +101,7 @@ TeamFromMouse:
         enter 0xe, 0x0
         push di
         push si
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .8
         mov di, [bp + 0xa]
         mov word [di], 0x0
@@ -148,7 +148,7 @@ TeamFromMouse:
         db 0x2B, 0xD2                           ; insn: sub dx, dx
         mov bx, [bp + 0xa]
         mov [bx], dx
-        mov ax, [g_2486]
+        mov ax, [StandingsRowY]
         add ax, strict word 0x36
         mov [bp - 0xa], ax
         mov [bp - 0x8], dx
@@ -160,7 +160,7 @@ TeamFromMouse:
 .10:
         db 0x8B, 0xDF                           ; insn: mov bx, di
         db 0x03, 0xDE                           ; insn: add bx, si
-        mov al, [bx + g_2488]
+        mov al, [bx + StandingsSlots]
         cmp al, 0xff
         jz short .11
         db 0x2A, 0xE4                           ; insn: sub ah, ah
@@ -199,7 +199,7 @@ TeamFromMouse:
 .12:
         mov bx, [bp - 0xc]
         shl bx, byte 0x3
-        mov al, [bx + si + g_24D0]
+        mov al, [bx + si + StandingsSlotTeams]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         mov bx, [bp + 0xa]
         mov [bx], ax
@@ -222,7 +222,7 @@ StandingsScreen:
         enter 0xd8, 0x0
         push di
         push si
-        mov es, [g_8C84]
+        mov es, [segMenuText36]
         mov word [es:0x16c4], strict word StandingsActRoster2
         mov word [es:0x16c6], 0x2248
         push 0x0
@@ -233,10 +233,10 @@ StandingsScreen:
         mov [bp - 0x18], dx
         push 0x0
         push 0x0
-        mov bx, [g_2010]
+        mov bx, [statsseason]
         shl bx, 1
         push ds
-        push word [bx + g_1FAA]
+        push word [bx + StatsDbNames3]
         push word 0x3861
         push strict word 0x0
         lea ax, [bp - 0x52]
@@ -250,7 +250,7 @@ StandingsScreen:
         call 0x0000:_open
         add sp, 0x4
         mov [bp - 0xe], ax
-        cmp word [g_2010], 0x1
+        cmp word [statsseason], 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         and ax, 0xfd64
         add ax, 0x2e8
@@ -344,10 +344,10 @@ StandingsScreen:
         call 0x0FEF:UseOffscreenCanvas
         push word 0x3701
         push strict word str_Qpp
-        mov bx, [g_200E]
+        mov bx, [statscontext]
         shl bx, 1
         push ds
-        push word [bx + g_1FA2]
+        push word [bx + StatsDbNames]
         push 0x0
         push 0x0
         lea ax, [bp - 0x52]
@@ -448,12 +448,12 @@ StandingsScreen:
         and bx, 0x3
         mov [bp - 0x2], bx
         shl bx, 1
-        mov ax, [bx + g_2518]
+        mov ax, [bx + StandingsColX]
         mov [bp - 0x16], ax
-        mov cx, [bx + g_2520]
+        mov cx, [bx + StandingsColW]
         mov [bp - 0x10], cx
         push ds
-        push word [bx + g_1F8E]
+        push word [bx + StandingsHeadPtrs]
         push cx
         push ax
         call 0x0D39:DrawShadowText
@@ -534,7 +534,7 @@ StandingsScreen:
         add ax, strict word 0x7
         mov [bp - 0x10], ax
 .7:
-        cmp word [g_2010], 0x0
+        cmp word [statsseason], 0x0
         jnz short .8
         mov es, [bp - 0xa]
         cmp byte [es:si + 0xe], 0x0
@@ -706,7 +706,7 @@ HiliteStandingsTeam:
 .4:
         db 0x8B, 0xDF                           ; insn: mov bx, di
         db 0x03, 0xDE                           ; insn: add bx, si
-        mov al, [bx + g_24D0]
+        mov al, [bx + StandingsSlotTeams]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         mov bx, [bp + 0x6]
         cmp ax, [bx]
@@ -716,13 +716,13 @@ HiliteStandingsTeam:
         push 0x32
         db 0x8B, 0xDF                           ; insn: mov bx, di
         db 0x03, 0xDE                           ; insn: add bx, si
-        mov al, [bx + g_2488]
+        mov al, [bx + StandingsSlots]
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         shl ax, byte 0x3
         db 0x03, 0xC1                           ; insn: add ax, cx
         add ax, strict word 0x1f
         push ax
-        mov ax, [g_2486]
+        mov ax, [StandingsRowY]
         add ax, [bp - 0x4]
         add ax, strict word 0x4
         push ax
@@ -755,7 +755,7 @@ HiliteStandingsTeam:
 .7:
         db 0x8B, 0xDF                           ; insn: mov bx, di
         db 0x03, 0xDE                           ; insn: add bx, si
-        mov al, [bx + g_24D0]
+        mov al, [bx + StandingsSlotTeams]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         mov bx, [bp + 0x8]
         cmp ax, [bx]
@@ -765,13 +765,13 @@ HiliteStandingsTeam:
         push 0x32
         db 0x8B, 0xDF                           ; insn: mov bx, di
         db 0x03, 0xDE                           ; insn: add bx, si
-        mov al, [bx + g_2488]
+        mov al, [bx + StandingsSlots]
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         shl ax, byte 0x3
         db 0x03, 0xC1                           ; insn: add ax, cx
         add ax, strict word 0x1f
         push ax
-        mov ax, [g_2486]
+        mov ax, [StandingsRowY]
         add ax, [bp - 0x4]
         add ax, strict word 0x4
         push ax
@@ -810,7 +810,7 @@ DrawStandingsPage:
         push di
         push si
         push word 0xd00
-        mov es, [g_8C86]
+        mov es, [segDgroup7]
         cmp word [CurPage], 0x1
         db 0x1B, 0xDB                           ; insn: sbb bx, bx
         neg bx
@@ -819,15 +819,15 @@ DrawStandingsPage:
         push word [es:bx]
         mov bx, [CurPage]
         shl bx, byte 0x2
-        mov es, [g_8C86]
+        mov es, [segDgroup7]
         les bx, [es:bx + 0x7570]
         push word [es:bx]
         call 0x0000:VgaCopyBytes
         add sp, 0x6
         call 0x0FEF:UseOtherPage
         push strict word str_Bkgd
-        push word [g_21B6]
-        push word [g_21B4]
+        push word [StandingsGfx2Seg]
+        push word [StandingsGfx2]
         call 0x03A3:FindFarMsg
         add sp, 0x6
         mov [statsbgshapes], ax
@@ -850,8 +850,8 @@ DrawStandingsPage:
         push ax
         call 0x03A3:SaveCharTab
         add sp, 0x2
-        push word [g_21B2]
-        push word [g_21B0]
+        push word [StandingsGfx1Seg]
+        push word [StandingsGfx1]
         call 0x03A3:UseCharSeg
         add sp, 0x4
         push 0x43
@@ -878,7 +878,7 @@ DrawStandingsPage:
         push ds
         push strict word str_CampbellConference
         push 0x19
-        mov ax, [g_2486]
+        mov ax, [StandingsRowY]
         add ax, strict word 0x50
         push ax
         call 0x0D39:DrawShadowTextBuffered
@@ -886,7 +886,7 @@ DrawStandingsPage:
         push ds
         push strict word str_WalesConference
         push 0x19
-        mov ax, [g_2486]
+        mov ax, [StandingsRowY]
         add ax, 0x13b
         push ax
         call 0x0D39:DrawShadowTextBuffered
@@ -917,18 +917,18 @@ DrawStandingsPage:
         db 0x8B, 0xDE                           ; insn: mov bx, si
         db 0x03, 0xDF                           ; insn: add bx, di
         mov [bp - 0x7e], bx
-        cmp byte [bx + g_2488], 0xff
+        cmp byte [bx + StandingsSlots], 0xff
         jnz short .6
         jmp near .11
 .6:
-        mov al, [bx + g_2488]
+        mov al, [bx + StandingsSlots]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         shl ax, byte 0x3
         db 0x03, 0xC1                           ; insn: add ax, cx
         add ax, strict word 0x28
         mov [bp - 0x2], ax
-        mov cx, [g_2486]
+        mov cx, [StandingsRowY]
         add cx, [bp - 0xa]
         inc cx
         inc cx
@@ -954,7 +954,7 @@ DrawStandingsPage:
         cmp word [bp - 0xc], 0x0
         jnz short .8
         mov bx, [bp - 0x7e]
-        mov bl, [bx + g_24D0]
+        mov bl, [bx + StandingsSlotTeams]
         db 0x2A, 0xFF                           ; insn: sub bh, bh
         shl bx, 1
         imul ax, [bx + playofftree], 0x15
@@ -986,7 +986,7 @@ DrawStandingsPage:
         jnl short .10
         push word [bp - 0x12]
         mov bx, [bp - 0x7e]
-        mov al, [bx + g_2487]
+        mov al, [bx + StandingsSlotEnd]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         shl ax, byte 0x3
@@ -994,12 +994,12 @@ DrawStandingsPage:
         add ax, [bp - 0x10]
         add ax, strict word 0x28
         push ax
-        mov ax, [g_2486]
+        mov ax, [StandingsRowY]
         add ax, [bp - 0xa]
         add ax, [bp - 0x10]
         add ax, strict word 0x36
         push ax
-        mov cl, [bx + g_2488]
+        mov cl, [bx + StandingsSlots]
         db 0x2A, 0xED                           ; insn: sub ch, ch
         db 0x8B, 0xD1                           ; insn: mov dx, cx
         shl cx, byte 0x3
@@ -1015,7 +1015,7 @@ DrawStandingsPage:
         jng short .11
         push word [bp - 0x12]
         mov bx, [bp - 0x7e]
-        mov al, [bx + g_2487]
+        mov al, [bx + StandingsSlotEnd]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         shl ax, byte 0x3
@@ -1023,13 +1023,13 @@ DrawStandingsPage:
         add ax, [bp - 0x10]
         add ax, strict word 0x28
         push ax
-        mov ax, [g_2486]
+        mov ax, [StandingsRowY]
         add ax, [bp - 0xa]
         add ax, [bp - 0x10]
         inc ax
         inc ax
         push ax
-        mov cl, [bx + g_2488]
+        mov cl, [bx + StandingsSlots]
         db 0x2A, 0xED                           ; insn: sub ch, ch
         db 0x8B, 0xD1                           ; insn: mov dx, cx
         shl cx, byte 0x3
@@ -1083,7 +1083,7 @@ MoveStandingsHilite:
         db 0x2B, 0xD2                           ; insn: sub dx, dx
         cmp bx, 0x4
         jg short .1
-        cmp [g_2486], dx
+        cmp [StandingsRowY], dx
         jnl short .3
         push word [bp + 0x10]
         push word [bp + 0xe]
@@ -1096,16 +1096,16 @@ MoveStandingsHilite:
         push cs
         call HiliteStandingsTeam
         db 0x8B, 0xE5                           ; insn: mov sp, bp
-        add word [g_2486], 0x8
-        cmp word [g_2486], 0x0
+        add word [StandingsRowY], 0x8
+        cmp word [StandingsRowY], 0x0
         jng short .2
-        mov word [g_2486], 0x0
+        mov word [StandingsRowY], 0x0
         jmp short .2
         db 0x90
 .1:
         cmp bx, 0x13c
         jl short .3
-        cmp word [g_2486], 0xff65
+        cmp word [StandingsRowY], 0xff65
         jng short .3
         push word [bp + 0x10]
         push word [bp + 0xe]
@@ -1118,10 +1118,10 @@ MoveStandingsHilite:
         push cs
         call HiliteStandingsTeam
         db 0x8B, 0xE5                           ; insn: mov sp, bp
-        sub word [g_2486], 0x8
-        cmp word [g_2486], 0xff65
+        sub word [StandingsRowY], 0x8
+        cmp word [StandingsRowY], 0xff65
         jnl short .2
-        mov word [g_2486], 0xff65
+        mov word [StandingsRowY], 0xff65
 .2:
         mov dx, 0xffff
 .3:
@@ -1139,7 +1139,7 @@ MoveStandingsHilite:
 ShowStandingsTable:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
-        cmp word [g_2010], 0x0
+        cmp word [statsseason], 0x0
         jnz short .1
         push word [bp + 0xa]
         push word [bp + 0x8]
@@ -1173,7 +1173,7 @@ ShowSeasonStandings:
         mov word [bp - 0x6], 0xffff
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8C88]
+        mov es, [segTeamChoiceText49]
         push word [es:0xb7e]
         push word [es:0xb7c]
         push word 0x3861
@@ -1185,7 +1185,7 @@ ShowSeasonStandings:
         add sp, 0x10
         push 0x0
         push word 0x3a0b
-        push strict word f_3A0B_AA38
+        push strict word LeagueTeamNames
         lea ax, [bp - 0x30]
         push ax
         call 0x1B35:ReadTeamNamesThunk
@@ -1560,7 +1560,7 @@ PlayoffSeriesWinner:
 ;-----------------------------------------------------------------------------
 LoadLeagueSchedule:
         enter 0x1c, 0x0
-        cmp word [g_2010], 0x0
+        cmp word [statsseason], 0x0
         jz short .1
         push word 0x3861
         push strict word 0x0
@@ -1575,7 +1575,7 @@ LoadLeagueSchedule:
         add sp, 0x2
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8C88]
+        mov es, [segTeamChoiceText49]
         push word [es:0xb86]
         push word [es:0xb84]
         jmp short .2
@@ -1600,7 +1600,7 @@ LoadLeagueSchedule:
         mov bx, [bp + 0x6]
         mov [bx], ax
         mov [bx + 0x2], dx
-        cmp word [g_2010], 0x0
+        cmp word [statsseason], 0x0
         jz short .3
         push word 0x25ab
         call 0x0000:_chdir
@@ -1619,7 +1619,7 @@ ShowPlayoffStandings:
         push di
         push si
         push word 0x3415
-        push strict word f_3415_00C6
+        push strict word lgstate_name
         push word 0x3861
         push strict word 0x0
         call 0x0000:_fstrcmp
@@ -1640,9 +1640,9 @@ ShowPlayoffStandings:
         cmp si, 0x248
         jc short .1
         push ds
-        push strict word g_25AE
+        push strict word str_Space3
         push word 0x3a0b
-        push strict word f_3A0B_AC30
+        push strict word POTeamName1
         call 0x0000:_fstrcpy
         add sp, 0x8
         lea ax, [bp - 0xc]
@@ -1725,7 +1725,7 @@ ShowPlayoffStandings:
         mov ax, strict word StandingsActRoster2
         mov dx, 0x2248
 .10:
-        mov es, [g_8C84]
+        mov es, [segMenuText36]
         mov [es:0x16c4], ax
         mov [es:0x16c6], dx
         push cs

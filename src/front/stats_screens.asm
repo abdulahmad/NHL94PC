@@ -304,7 +304,7 @@ GameTeamStatsScreen:
         mov word [leaguestatsmode], 0x1
         mov [statscategory], si
         mov word [statsredrawcb], 0x64a
-        mov word [g_21BE], 0x25e5
+        mov word [statsmenucbseg], 0x25e5
         push cs
         call SaveBkgdPlanes
         lea ax, [bp - 0x30e]
@@ -336,7 +336,7 @@ GameTeamStatsScreen:
         push 0x40
         push 0x3
         push word 0x3448
-        push strict word f_3448_1802
+        push strict word TeamStatsMenuBar
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
         push word 0x3701
@@ -380,7 +380,7 @@ GameTeamStatsScreen:
         push 0x40
         push 0x3
         push word 0x3448
-        push strict word f_3448_1802
+        push strict word TeamStatsMenuBar
         call 0x1EAE:StatsMenuLoop
         add sp, 0xc
         lea ax, [bp - 0x30e]
@@ -404,7 +404,7 @@ GameTeamStatsScreen:
         add sp, 0x2
         call 0x20E4:LoadCrestsPalette
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_21BE], ax
+        mov [statsmenucbseg], ax
         mov [statsredrawcb], ax
         mov [leaguestatsmode], ax
         pop si
@@ -426,7 +426,7 @@ GameSkaterStatsScreen:
         mov word [leaguestatsmode], 0x1
         mov [statscategory], si
         mov word [statsredrawcb], 0x8da
-        mov word [g_21BE], 0x26be
+        mov word [statsmenucbseg], 0x26be
         push cs
         call SaveBkgdPlanes
         lea ax, [bp - 0x30e]
@@ -458,7 +458,7 @@ GameSkaterStatsScreen:
         push 0x40
         push 0x3
         push word 0x3448
-        push strict word f_3448_1844
+        push strict word SkaterStatsMenuBar
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
         push word 0x3701
@@ -502,7 +502,7 @@ GameSkaterStatsScreen:
         push 0x40
         push 0x3
         push word 0x3448
-        push strict word f_3448_1844
+        push strict word SkaterStatsMenuBar
         call 0x1EAE:StatsMenuLoop
         add sp, 0xc
         lea ax, [bp - 0x30e]
@@ -526,7 +526,7 @@ GameSkaterStatsScreen:
         add sp, 0x2
         call 0x20E4:LoadCrestsPalette
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_21BE], ax
+        mov [statsmenucbseg], ax
         mov [statsredrawcb], ax
         mov [leaguestatsmode], ax
         pop si
@@ -548,7 +548,7 @@ GameGoalieStatsScreen:
         mov word [leaguestatsmode], 0x1
         mov [statscategory], si
         mov word [statsredrawcb], 0x8da
-        mov word [g_21BE], 0x26be
+        mov word [statsmenucbseg], 0x26be
         push cs
         call SaveBkgdPlanes
         lea ax, [bp - 0x30e]
@@ -580,7 +580,7 @@ GameGoalieStatsScreen:
         push 0x40
         push 0x3
         push word 0x3448
-        push strict word f_3448_1886
+        push strict word GoalieStatsMenuBar
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
         push word 0x3701
@@ -624,7 +624,7 @@ GameGoalieStatsScreen:
         push 0x40
         push 0x3
         push word 0x3448
-        push strict word f_3448_1886
+        push strict word GoalieStatsMenuBar
         call 0x1EAE:StatsMenuLoop
         add sp, 0xc
         lea ax, [bp - 0x30e]
@@ -648,7 +648,7 @@ GameGoalieStatsScreen:
         add sp, 0x2
         call 0x20E4:LoadCrestsPalette
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_21BE], ax
+        mov [statsmenucbseg], ax
         mov [statsredrawcb], ax
         mov [leaguestatsmode], ax
         pop si
@@ -664,29 +664,29 @@ GameGoalieStatsScreen:
 ;-----------------------------------------------------------------------------
 GameStandingsScreen:
         enter 0xe, 0x0
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .1
         jmp near .5
 .1:
-        mov ax, [g_21B2]
-        or ax, [g_21B0]
+        mov ax, [StandingsGfx1Seg]
+        or ax, [StandingsGfx1]
         jnz short .2
         push 0x0
         push strict word str_EasnFnt
         call 0x149D:LoadRawHeader
         add sp, 0x4
-        mov [g_21B0], ax
-        mov [g_21B2], dx
+        mov [StandingsGfx1], ax
+        mov [StandingsGfx1Seg], dx
 .2:
-        mov ax, [g_21B6]
-        or ax, [g_21B4]
+        mov ax, [StandingsGfx2Seg]
+        or ax, [StandingsGfx2]
         jnz short .3
         push word 0x3701
         push strict word str_Qpp
-        mov bx, [g_200E]
+        mov bx, [statscontext]
         shl bx, 1
         push ds
-        push word [bx + g_1FA2]
+        push word [bx + StatsDbNames]
         push 0x0
         push 0x0
         lea ax, [bp - 0xe]
@@ -699,8 +699,8 @@ GameStandingsScreen:
         push ax
         call 0x14B8:LoadPackedHeader
         add sp, 0x4
-        mov [g_21B4], ax
-        mov [g_21B6], dx
+        mov [StandingsGfx2], ax
+        mov [StandingsGfx2Seg], dx
 .3:
         call 0x0FEF:GetPage
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -765,9 +765,9 @@ GameStandingsMenu:
         mov ax, [VisTeam]
         mov dx, [HomeTeam]
         mov [statsredrawcb], ax
-        mov [g_21BE], dx
+        mov [statsmenucbseg], dx
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_21BA], ax
+        mov [statsmenusel], ax
         mov [statscategory], ax
         mov byte [statsplayer], 0x0
         push cs
@@ -1011,7 +1011,7 @@ GameStandingsMenu:
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
         mov ax, [g_CEE8]
-        mov [g_21BA], ax
+        mov [statsmenusel], ax
         push word 0x3701
         push strict word str_Qpp
         push ds
@@ -1068,11 +1068,11 @@ GameStandingsMenu:
         add sp, 0x6
         call 0x0FEF:CopyPlane
 .3:
-        cmp word [g_21C0], 0x1
+        cmp word [statsmenumode], 0x1
         jnz short .4
         jmp near .17
 .4:
-        mov ax, [g_21C0]
+        mov ax, [statsmenumode]
         dec ax
         dec ax
         jz short .8
@@ -1094,7 +1094,7 @@ GameStandingsMenu:
         mov ax, [VisTeam]
         mov dx, [HomeTeam]
         mov [statsredrawcb], ax
-        mov [g_21BE], dx
+        mov [statsmenucbseg], dx
         mov [bp - 0x326], dx
         mov [bp - 0x328], ax
         call far [bp - 0x328]
@@ -1115,7 +1115,7 @@ GameStandingsMenu:
         push strict word standingsmenubar
         call 0x1EAE:StandingsMenuLoop
         add sp, 0xc
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .9
         jmp near .16
 .9:
@@ -1139,7 +1139,7 @@ GameStandingsMenu:
         mov ax, strict word RosterScreen
         mov dx, 0x2446
         mov [statsredrawcb], ax
-        mov [g_21BE], dx
+        mov [statsmenucbseg], dx
         mov [bp - 0x326], dx
         mov [bp - 0x328], ax
         call far [bp - 0x328]
@@ -1149,7 +1149,7 @@ GameStandingsMenu:
         push 0x40
         push 0x3
         push word 0x3448
-        push strict word f_3448_1794
+        push strict word StandingsRosterMenuBar
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
         push 0x0
@@ -1160,26 +1160,26 @@ GameStandingsMenu:
         push 0x40
         push 0x3
         push word 0x3448
-        push strict word f_3448_1794
+        push strict word StandingsRosterMenuBar
         call 0x1EAE:RosterMenuLoop
         jmp short .15
         db 0x90
 .12:
-        mov es, [g_8C70]
+        mov es, [segWorkBuffer40]
         mov word [es:0xb050], 0x0
         push word 0xcf1a
         mov ax, strict word GoalieStatsCard
         mov dx, 0x20f4
         jmp short .14
 .13:
-        mov es, [g_8C70]
+        mov es, [segWorkBuffer40]
         mov word [es:0xb050], 0x0
         push word 0xcf1a
         mov ax, strict word SkaterStatsCard
         mov dx, 0x23d5
 .14:
         mov [statsredrawcb], ax
-        mov [g_21BE], dx
+        mov [statsmenucbseg], dx
         mov [bp - 0x326], dx
         mov [bp - 0x328], ax
         call far [bp - 0x328]
@@ -1189,7 +1189,7 @@ GameStandingsMenu:
         push 0x40
         push 0x2
         push word 0x3448
-        push strict word f_3448_17D6
+        push strict word StandingsMenuBar2
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
         push 0x0
@@ -1200,12 +1200,12 @@ GameStandingsMenu:
         push 0x40
         push 0x2
         push word 0x3448
-        push strict word f_3448_17D6
+        push strict word StandingsMenuBar2
         call 0x1EAE:StatsMenuLoop
 .15:
         add sp, 0xc
 .16:
-        cmp word [g_21C0], 0x1
+        cmp word [statsmenumode], 0x1
         jz short .17
         jmp near .4
 .17:

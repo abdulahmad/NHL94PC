@@ -7,7 +7,7 @@
 ; Calls SetSideControls. Far routine (retf).
 ;-----------------------------------------------------------------------------
 SetCtlTeamsTail:
-        mov word [g_01BE], 0x1
+        mov word [ctl2dev], 0x1
 .1:
         call 0x2037:SetSideControls
         leave
@@ -141,7 +141,7 @@ SelectHilight:
         push word 0x3701
         push strict word str_Hi
         push word 0x3701
-        push strict word f_3701_0BA8
+        push strict word str_Star
         push word [bp + 0xc]
         push word [bp + 0xa]
         lea ax, [bp - 0x12a]
@@ -515,7 +515,7 @@ ViewHilights:
         push 0x0
         push 0x0
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x4]
         push ax
         lea ax, [bp - 0x12]
@@ -532,7 +532,7 @@ ViewHilights:
         push ss
         push ax
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x32]
         push ss
         push ax
@@ -559,7 +559,7 @@ ViewHilights:
         push dx
         push ax
         push word 0x3a0b
-        push strict word f_3A0B_0D8E
+        push strict word hilightrec
         push word [bp - 0x2]
         call 0x0CD1:ReadAtOffset
         add sp, 0xc

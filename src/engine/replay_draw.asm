@@ -29,8 +29,8 @@ ReplayStep:
         cmp word [bp + 0x6], 0x1
         jl short .6
         dec word [bp + 0x6]
-        mov ax, [g_2986]
-        mov dx, [g_2988]
+        mov ax, [replayptr]
+        mov dx, [replayseg]
         sub ax, 0x6a00
         add word [g_D018], 0x80
         cmp ax, [g_D018]
@@ -39,7 +39,7 @@ ReplayStep:
         jnz short .3
         test byte [sflags], 0x10
         jz short .4
-        mov ax, [g_2986]
+        mov ax, [replayptr]
         mov [g_D018], ax
 .3:
         mov ax, [g_D014]
@@ -96,16 +96,16 @@ ReplayStep:
         inc word [bp + 0x6]
         mov ax, [g_D018]
         mov dx, [g_D01A]
-        cmp [g_2986], ax
+        cmp [replayptr], ax
         jnz short .14
-        cmp [g_2988], dx
+        cmp [replayseg], dx
         jnz short .14
         test byte [sflags], 0x10
         jnz short .13
         jmp near .5
 .13:
-        mov ax, [g_2986]
-        mov dx, [g_2988]
+        mov ax, [replayptr]
+        mov dx, [replayseg]
         sub ax, 0x6a00
         mov [g_D018], ax
         mov [g_D01A], dx
@@ -497,7 +497,7 @@ DrawReplayFrame:
         db 0x03, 0xD8                           ; insn: add bx, ax
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         shl bx, 1
-        mov es, [g_8CC6]
+        mov es, [segAnimSequences1]
         mov cx, [es:bx + 0xf8]
         mov [bp - 0x10], cx
         db 0x8B, 0xD8                           ; insn: mov bx, ax
@@ -515,7 +515,7 @@ DrawReplayFrame:
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl si, 1
         add bx, [es:si + 0xf8]
-        mov es, [g_8CC8]
+        mov es, [segAnimSequences2]
         db 0x26, 0x8A, 0x87, 0x00, 0x00         ; insn: mov al, [es:bx + 0x0]
         cbw
         mov [bp - 0x2], ax
@@ -539,7 +539,7 @@ DrawReplayFrame:
         imul word [bp - 0x20]
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        mov es, [g_8CC6]
+        mov es, [segAnimSequences1]
         mov cx, [g_B096]
         shl cx, byte 0x3
         sub cx, [es:bx + 0xf8]
@@ -563,7 +563,7 @@ DrawReplayFrame:
         mov [bp - 0x20], si
         shl si, 1
         add bx, [es:si + 0xf8]
-        mov es, [g_8CC8]
+        mov es, [segAnimSequences2]
         db 0x26, 0x8A, 0x87, 0x00, 0x00         ; insn: mov al, [es:bx + 0x0]
         cbw
         mov [bp - 0x2], ax
@@ -683,7 +683,7 @@ DrawReplayFrame:
 .32:
         cmp word [camy], 0xff50
         jnl short .33
-        mov es, [g_8CCA]
+        mov es, [segDgroup9]
         mov ax, [es:0x74f4]
         mov [bp - 0x22], ax
         mov ax, [g_B098]
@@ -837,7 +837,7 @@ DrawReplayFrame:
         shl ax, byte 0x3
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, 1
-        push word [bx + g_4A2C]
+        push word [bx + RinkOverlayFrames2]
         jmp short .50
 .49:
         push 0x0
@@ -846,7 +846,7 @@ DrawReplayFrame:
         push word [bp - 0x10]
         mov bx, [bp - 0x1e]
         shl bx, 1
-        push word [bx + g_4A28]
+        push word [bx + RinkOverlayFrames]
 .50:
         call 0x1E7E:DrawFrameSprite
         add sp, 0xa
@@ -873,7 +873,7 @@ DrawReplayFrame:
         shl bx, 1
         push word [bx + g_DB50]
         push word [bx + g_DB2E]
-        push word [g_4A2C]
+        push word [RinkOverlayFrames2]
         jmp short .50
 .54:
         mov word [bp - 0x1e], 0xf
@@ -1040,7 +1040,7 @@ DrawReplayFrame:
         mov ax, [bp - 0x1e]
         cmp [g_DB22], ax
         jz short .73
-        cmp [g_547C], ax
+        cmp [replaymode], ax
         jnz short .74
 .73:
         mov bx, [bp - 0x1e]
@@ -1111,7 +1111,7 @@ DrawReplayFrame:
         cmp word [camy], 0xff50
         jnl short .81
         push word [bp - 0x22]
-        mov es, [g_8CCA]
+        mov es, [segDgroup9]
         mov ax, [es:0x74fc]
         mov bx, [es:0x74f2]
         mov dx, [es:0x74fe]

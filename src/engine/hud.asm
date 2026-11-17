@@ -477,7 +477,7 @@ LoadTeamPPV:
         db 0x8B, 0xDE                           ; insn: mov bx, si
         shl bx, 1
         push ds
-        push word [bx + g_4A00]
+        push word [bx + TeamPPVNames]
         push 0x0
         push 0x0
         lea ax, [bp - 0x12]
@@ -530,8 +530,8 @@ LoadTeamPPV:
         mov [PadRepeatOn], ax
         mov [ovlseq], si
         shl si, byte 0x2
-        mov ax, [si + g_4A0A]
-        mov dx, [si + g_4A0C]
+        mov ax, [si + TeamPPVSizes]
+        mov dx, [si + TeamPPVSizes2]
         mov [g_D65C], ax
         mov [g_D65E], dx
         mov word [g_D658], 0xc
@@ -568,7 +568,7 @@ DrawTextOverlay:
         idiv cx
         db 0x03, 0xDA                           ; insn: add bx, dx
         shl bx, 1
-        mov ax, [bx + g_567A]
+        mov ax, [bx + BannerColours]
         mov [bp - 0x6], ax
         cmp word [ovltimer], 0x10
         jnl short .1
@@ -590,8 +590,8 @@ DrawTextOverlay:
         mov word [bannermsg], 0xffff
         mov word [bannertimer], 0x0
         mov ax, 0x1
-        mov [g_4B22], ax
-        mov [g_4B20], ax
+        mov [DeskRedrawPage2], ax
+        mov [DeskRedrawPage], ax
         db 0x0B, 0xFF                           ; insn: or di, di
         jl short .4
         jmp near .6
@@ -1151,7 +1151,7 @@ UpdateTextOverlay:
         call 0x06E1:FindUnlink
         add sp, 0x4
         mov bx, [ovlseq]
-        cmp byte [bx + g_4A1E], 0x0
+        cmp byte [bx + OverlayScript], 0x0
         jz short .9
         mov word [ovltimer], 0x258
 .9:
@@ -1217,7 +1217,7 @@ DrawCallBanner:
         idiv cx
         db 0x03, 0xDA                           ; insn: add bx, dx
         shl bx, 1
-        mov ax, [bx + g_567A]
+        mov ax, [bx + BannerColours]
         mov [bp - 0x8], ax
         mov si, [g_B094]
         add si, 0xc
@@ -1228,7 +1228,7 @@ DrawCallBanner:
         mov [bp - 0x4], ax
         mov bx, [bp + 0x6]
         shl bx, 1
-        push word [bx + g_56CC]
+        push word [bx + CallNamePtrs]
         mov [bp - 0xa], bx
         call 0x03A3:TextWidthAll
         add sp, 0x2
@@ -1297,7 +1297,7 @@ DrawCallBanner:
         lea cx, [si + 0x2]
         push cx
         mov bx, [bp - 0xa]
-        push word [bx + g_56CC]
+        push word [bx + CallNamePtrs]
         db 0x8B, 0xF0                           ; insn: mov si, ax
         db 0x8B, 0xF9                           ; insn: mov di, cx
         call 0x0FEF:DrawText
@@ -1312,7 +1312,7 @@ DrawCallBanner:
         push si
         push di
         mov bx, [bp - 0xa]
-        push word [bx + g_56CC]
+        push word [bx + CallNamePtrs]
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x11

@@ -630,7 +630,7 @@ puckfaceoff:
         mov bx, [bp + si - 0x6]
         mov byte [bx + 0x1], 0xff
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [si + g_48CE], ax
+        mov [si + lcsel], ax
         mov [si + lcboxon], ax
         jmp short .18
 .16:
@@ -655,7 +655,7 @@ puckfaceoff:
         add sp, 0x2
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov bx, [bp - 0x8]
-        mov [bx + g_48CE], ax
+        mov [bx + lcsel], ax
         mov [bx + lcboxon], ax
 .18:
         imul ax, [bp - 0xa], word 0xd6
