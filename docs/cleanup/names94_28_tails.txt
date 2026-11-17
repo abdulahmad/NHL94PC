@@ -1,0 +1,24 @@
+# module heads that finish the previous module's last routine
+SegStart_010A0 SetCtlTeamsTail | new | high | rest of SetCtlTeams after the module boundary
+SegStart_01587 ViewHilightsTail | new | high | rest of ViewHilights after the module boundary
+SegStart_088F1 LockerRoomLoopTail | new | high | rest of LockerRoomLoop after the module boundary
+SegStart_0E652 ModeSetEditLoopTail | new | high | rest of ModeSetEditLoop after the module boundary
+SegStart_0EB33 ExhSetEditLoopTail | new | high | rest of ExhSetEditLoop after the module boundary
+SegStart_00864 ClearPlayerFromLinesTail | new | high | rest of ClearPlayerFromLines after the module boundary
+SegStart_00EC9 RemoveHumanTeamTail | new | high | rest of RemoveHumanTeam after the module boundary
+SegStart_02F48 WaitLeagueFloppyTail | new | high | rest of WaitLeagueFloppy after the module boundary
+SegStart_076D1 SimulateGameTail | new | high | rest of SimulateGame after the module boundary
+SegStart_0A637 PlayLeagueGameTail | new | high | rest of PlayLeagueGame after the module boundary
+SegStart_0E720 TradePlayersTail | new | high | rest of TradePlayers after the module boundary
+SegStart_10019 LoadLeagueGameRefTail | new | high | rest of LoadLeagueGameRef after the module boundary
+SegStart_02054 DrawPeriodTitleTail | new | high | rest of DrawPeriodTitle after the module boundary
+SegStart_036A2 ShowGameSummaryTail | new | high | rest of ShowGameSummary after the module boundary
+SegStart_05E55 FreePlayerFramesTail | new | high | rest of FreePlayerFrames after the module boundary
+SegStart_07F02 DrawReplayFrameTail | new | high | rest of DrawReplayFrame after the module boundary
+SegStart_009C2 StartHL2Tail | new | high | rest of StartHL2 after the module boundary
+SegStart_00C61 updatereplayTail | new | high | rest of updatereplay after the module boundary
+SegStart_01C8A DrawPanelPenaltiesTail | new | high | rest of DrawPanelPenalties after the module boundary
+SegStart_03B6A SetTeamGoalieTail | new | high | rest of SetTeamGoalie after the module boundary
+SegStart_0D364 asspassrecTail | new | high | rest of asspassrec after the module boundary
+SegStart_0EA66 assbenchsideTail | new | high | rest of assbenchside after the module boundary
+SegStart_11DE3 DrawRinkObjectsTail | new | high | rest of DrawRinkObjects after the module boundary

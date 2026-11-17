@@ -2891,5 +2891,5 @@ SimulateGame:
         add sp, 0x4
         inc word [bp - 0x164]
         cmp word [bp - 0x164], 0x2
-        jnl short SegStart_076D1 + 0x2050
+        jnl short SimulateGameTail + 0x2050
         jmp near .221

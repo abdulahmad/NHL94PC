@@ -773,7 +773,7 @@ ModeSetEditLoop:
 .19:
         cmp word [bp - 0xc], 0x12
         jz short .20
-        jmp near SegStart_0E652 + 0x8C0
+        jmp near ModeSetEditLoopTail + 0x8C0
 .20:
         mov al, [g_B35E]
         and ax, strict word 0x1

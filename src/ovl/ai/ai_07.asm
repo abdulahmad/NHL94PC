@@ -2,7 +2,7 @@
         push ax
         call 0x2E42:setpersonel
         add sp, 0x2
-SegStart_03B6A:
+SetTeamGoalieTail:
         pop si
         pop di
         leave

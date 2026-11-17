@@ -414,7 +414,7 @@ WaitLeagueFloppy:
         add sp, 0x16
         db 0x8B, 0xF0                           ; insn: mov si, ax
         cmp si, 0x4
-        jz short SegStart_02F48 + 0x410
+        jz short WaitLeagueFloppyTail + 0x410
         push word [bp + 0xe]
         push word [bp + 0xc]
         push word [bp + 0xa]

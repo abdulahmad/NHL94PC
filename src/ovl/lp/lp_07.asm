@@ -3,7 +3,7 @@
         push cs
         call FindLeagueFloppy - 0x410
         add sp, 0xa
-SegStart_02F48:
+WaitLeagueFloppyTail:
         pop si
         pop di
         leave

@@ -339,7 +339,7 @@ LoadLeagueGameRef:
         db 0x8B, 0xF0                           ; insn: mov si, ax
 .7:
         db 0x0B, 0xF6                           ; insn: or si, si
-        jnz short SegStart_10019 + 0x2E0
+        jnz short LoadLeagueGameRefTail + 0x2E0
         push 0x6
         push -0x1
         push -0x1

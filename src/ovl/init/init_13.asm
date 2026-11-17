@@ -105,7 +105,7 @@ FreePlayerFrames:
 .1:
         mov ax, [si + 0x2]
         or ax, [si]
-        jz short SegStart_05E55 + 0x150
+        jz short FreePlayerFramesTail + 0x150
         push word [si + 0x2]
         push word [si]
         call 0x06E1:UnlinkRec

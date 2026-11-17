@@ -2702,3 +2702,26 @@ Menus_2E70_1CF0,MenuNextLeagueGame,Menus_2E70_1CF0,95 PC,high,next league game,s
 Menus_2E70_1EEC,MenuLeagueHilights,Menus_2E70_1EEC,95 PC,high,league highlights,src/ovl/menus/menus_16.asm
 Menus_2E70_2054,MenuImportDbs,Menus_2E70_2054,95 PC,high,import dbs,src/ovl/menus/menus_16.asm
 Menus_2E70_2090,MenuExportDbs,Menus_2E70_2090,95 PC,high,export dbs,src/ovl/menus/menus_16.asm
+SegStart_010A0,SetCtlTeamsTail,SegStart_010A0,new,high,rest of SetCtlTeams after the module boundary,src/ovl/menus/menus_01.asm
+SegStart_01587,ViewHilightsTail,SegStart_01587,new,high,rest of ViewHilights after the module boundary,src/ovl/menus/menus_02.asm
+SegStart_088F1,LockerRoomLoopTail,SegStart_088F1,new,high,rest of LockerRoomLoop after the module boundary,src/ovl/menus/menus_10.asm
+SegStart_0E652,ModeSetEditLoopTail,SegStart_0E652,new,high,rest of ModeSetEditLoop after the module boundary,src/ovl/menus/menus_14.asm
+SegStart_0EB33,ExhSetEditLoopTail,SegStart_0EB33,new,high,rest of ExhSetEditLoop after the module boundary,src/ovl/menus/menus_15.asm
+SegStart_00864,ClearPlayerFromLinesTail,SegStart_00864,new,high,rest of ClearPlayerFromLines after the module boundary,src/ovl/lp/lp_03.asm
+SegStart_00EC9,RemoveHumanTeamTail,SegStart_00EC9,new,high,rest of RemoveHumanTeam after the module boundary,src/ovl/lp/lp_04.asm
+SegStart_02F48,WaitLeagueFloppyTail,SegStart_02F48,new,high,rest of WaitLeagueFloppy after the module boundary,src/ovl/lp/lp_07.asm
+SegStart_076D1,SimulateGameTail,SegStart_076D1,new,high,rest of SimulateGame after the module boundary,src/ovl/lp/lp_11.asm
+SegStart_0A637,PlayLeagueGameTail,SegStart_0A637,new,high,rest of PlayLeagueGame after the module boundary,src/ovl/lp/lp_12.asm
+SegStart_0E720,TradePlayersTail,SegStart_0E720,new,high,rest of TradePlayers after the module boundary,src/ovl/lp/lp_16.asm
+SegStart_10019,LoadLeagueGameRefTail,SegStart_10019,new,high,rest of LoadLeagueGameRef after the module boundary,src/ovl/lp/lp_18.asm
+SegStart_02054,DrawPeriodTitleTail,SegStart_02054,new,high,rest of DrawPeriodTitle after the module boundary,src/ovl/init/init_05.asm
+SegStart_036A2,ShowGameSummaryTail,SegStart_036A2,new,high,rest of ShowGameSummary after the module boundary,src/ovl/init/init_06.asm
+SegStart_05E55,FreePlayerFramesTail,SegStart_05E55,new,high,rest of FreePlayerFrames after the module boundary,src/ovl/init/init_14.asm
+SegStart_07F02,DrawReplayFrameTail,SegStart_07F02,new,high,rest of DrawReplayFrame after the module boundary,src/ovl/init/init_16.asm
+SegStart_009C2,StartHL2Tail,SegStart_009C2,new,high,rest of StartHL2 after the module boundary,src/ovl/ai/ai_02.asm
+SegStart_00C61,updatereplayTail,SegStart_00C61,new,high,rest of updatereplay after the module boundary,src/ovl/ai/ai_03.asm
+SegStart_01C8A,DrawPanelPenaltiesTail,SegStart_01C8A,new,high,rest of DrawPanelPenalties after the module boundary,src/ovl/ai/ai_05.asm
+SegStart_03B6A,SetTeamGoalieTail,SegStart_03B6A,new,high,rest of SetTeamGoalie after the module boundary,src/ovl/ai/ai_07.asm
+SegStart_0D364,asspassrecTail,SegStart_0D364,new,high,rest of asspassrec after the module boundary,src/ovl/ai/ai_12.asm
+SegStart_0EA66,assbenchsideTail,SegStart_0EA66,new,high,rest of assbenchside after the module boundary,src/ovl/ai/ai_13.asm
+SegStart_11DE3,DrawRinkObjectsTail,SegStart_11DE3,new,high,rest of DrawRinkObjects after the module boundary,src/ovl/ai/ai_15.asm

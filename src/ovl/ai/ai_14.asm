@@ -456,4 +456,4 @@ DrawRinkObjects:
 .12:
         sub si, 0xe
         dec di
-        js short SegStart_11DE3 + 0x440
+        js short DrawRinkObjectsTail + 0x440

@@ -3468,7 +3468,7 @@ TradePlayers:
 .10:
         cmp word [bp - 0x3e], 0x0
         jz short .11
-        jmp near SegStart_0E720 + 0x2600
+        jmp near TradePlayersTail + 0x2600
 .11:
         push word 0x3701
         push strict word str_Db_2
@@ -3578,7 +3578,7 @@ TradePlayers:
 .18:
         cmp word [bp - 0x3e], 0x0
         jz short .19
-        jmp near SegStart_0E720 + 0x2600
+        jmp near TradePlayersTail + 0x2600
 .19:
         mov es, [g_8C1C]
         cmp word [es:0xac5c], 0x1
@@ -3676,7 +3676,7 @@ TradePlayers:
         mov [bp - 0x3e], ax
 .23:
         cmp word [bp - 0x3e], 0x0
-        jz short SegStart_0E720 + 0x2600
+        jz short TradePlayersTail + 0x2600
         lea ax, [bp - 0x32]
         push ax
         lea cx, [bp - 0x2c]

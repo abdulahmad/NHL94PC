@@ -184,5 +184,5 @@ ClearPlayerFromLines:
 .28:
         mov al, [bp + 0x6]
         cmp [es:si + 0x27], al
-        jnz short SegStart_00864 + 0x1D0
+        jnz short ClearPlayerFromLinesTail + 0x1D0
         mov byte [es:si + 0x27], 0x64

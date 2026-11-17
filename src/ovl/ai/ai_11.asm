@@ -1146,7 +1146,7 @@ asspassrec:
         mov si, [bp + 0x6]
         test byte [si + 0x44], 0x20
         jz short .1
-        jmp near SegStart_0D364 + 0xAE0
+        jmp near asspassrecTail + 0xAE0
 .1:
         test byte [g_29BB], 0x1
         jz short .3
@@ -1200,7 +1200,7 @@ asspassrec:
         cmp byte [bx], 0x0
         jnl short .7
         cmp byte [si + 0x27], 0xfb
-        jnl short SegStart_0D364 + 0xAE0
+        jnl short asspassrecTail + 0xAE0
 .7:
         and byte [si + 0x44], 0xfe
         push si
@@ -1219,5 +1219,5 @@ asspassrec:
         jmp near .2
 .8:
         cmp byte [bp - 0x2], 0x0
-        jl short SegStart_0D364 + 0xAE0
+        jl short asspassrecTail + 0xAE0
         mov word [g_29A8], 0xffff

@@ -1717,7 +1717,7 @@ SetCtlTeams:
 .6:
         mov [g_01BA], ax
         mov word [g_01BE], 0x10
-        jmp short SegStart_010A0.1 + 0x10A0
+        jmp short SetCtlTeamsTail.1 + 0x10A0
         db 0x90, 0x90
 .7:
         mov dx, [bp + 0x8]
@@ -1732,13 +1732,13 @@ SetCtlTeams:
 .9:
         mov [g_01C2], ax
         cmp word [g_01BE], 0x10
-        jnz short SegStart_010A0.1 + 0x10A0
+        jnz short SetCtlTeamsTail.1 + 0x10A0
         test byte [InputFlags], 0x2
         jz short .10
         cmp word [g_01BC], 0x2
         jz short .10
         mov word [g_01BE], 0x2
-        jmp short SegStart_010A0.1 + 0x10A0
+        jmp short SetCtlTeamsTail.1 + 0x10A0
         db 0x90
 .10:
         test byte [InputFlags], 0x4
@@ -1746,11 +1746,11 @@ SetCtlTeams:
         cmp word [g_01BC], 0x4
         jz short .11
         mov word [g_01BE], 0x4
-        jmp short SegStart_010A0.1 + 0x10A0
+        jmp short SetCtlTeamsTail.1 + 0x10A0
 .11:
         test byte [InputFlags], 0x8
-        jz short SegStart_010A0 + 0x10A0
+        jz short SetCtlTeamsTail + 0x10A0
         cmp word [g_01BC], 0x8
-        jz short SegStart_010A0 + 0x10A0
+        jz short SetCtlTeamsTail + 0x10A0
         mov word [g_01BE], 0x8
-        jmp short SegStart_010A0.1 + 0x10A0
+        jmp short SetCtlTeamsTail.1 + 0x10A0

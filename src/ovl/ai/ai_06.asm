@@ -1385,7 +1385,7 @@ SetTeamGoalie:
         db 0x8B, 0xC6                           ; insn: mov ax, si
         sub ax, [g_29C8]
         inc ax
-        jnz short SegStart_03B6A + 0xE30
+        jnz short SetTeamGoalieTail + 0xE30
 .1:
         cmp word [bp + 0x8], 0x0
         jnl short .2
@@ -1421,9 +1421,9 @@ SetTeamGoalie:
         cmp word [bx + g_B386], 0x0
         jnl short .6
         db 0x0B, 0xFF                           ; insn: or di, di
-        jl short SegStart_03B6A + 0xE30
+        jl short SetTeamGoalieTail + 0xE30
 .6:
         cmp [bx + g_B386], di
-        jz short SegStart_03B6A + 0xE30
+        jz short SetTeamGoalieTail + 0xE30
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         add ax, 0xb362

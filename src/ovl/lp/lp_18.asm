@@ -2,7 +2,7 @@
         push di
         call 0x0CD1:ReadAtOffset
         add sp, 0xc
-SegStart_10019:
+LoadLeagueGameRefTail:
         pop si
         pop di
         leave
