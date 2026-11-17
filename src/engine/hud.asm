@@ -477,7 +477,7 @@ LoadTeamPPV:
         db 0x8B, 0xDE                           ; insn: mov bx, si
         shl bx, 1
         push ds
-        push word [bx + TeamPPVNames]
+        push word [bx + ovlartnames]
         push 0x0
         push 0x0
         lea ax, [bp - 0x12]
@@ -530,8 +530,8 @@ LoadTeamPPV:
         mov [PadRepeatOn], ax
         mov [ovlseq], si
         shl si, byte 0x2
-        mov ax, [si + TeamPPVSizes]
-        mov dx, [si + TeamPPVSizes2]
+        mov ax, [si + ovlscripts]
+        mov dx, [si + ovlscripts + 2]
         mov [overlayscript], ax
         mov [overlayscriptseg], dx
         mov word [overlaytimer], 0xc
@@ -1151,7 +1151,7 @@ UpdateTextOverlay:
         call 0x06E1:FindUnlink
         add sp, 0x4
         mov bx, [ovlseq]
-        cmp byte [bx + OverlayScript], 0x0
+        cmp byte [bx + ovlseqtimed], 0x0
         jz short .9
         mov word [ovltimer], 0x258
 .9:

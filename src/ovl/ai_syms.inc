@@ -143,7 +143,6 @@ OverlayFrames		equ	0xD630
 OverlayFramesSeg		equ	0xD632
 OverlayGfx		equ	0xD62C
 OverlayGfxSeg		equ	0xD62E
-OverlayScript		equ	0x4A1E
 PBnum		equ	0xD6C6
 PBnum_b1		equ	0xD6C7
 PadReadings		equ	0xAFD4
@@ -225,9 +224,6 @@ StopJingle		equ	0x5B8
 StopSpeech		equ	0x47A
 TableCount		equ	0xAEC
 TeamNameClips		equ	0x1E0
-TeamPPVNames		equ	0x4A00
-TeamPPVSizes		equ	0x4A0A
-TeamPPVSizes2		equ	0x4A0C
 TeamPalette1		equ	0xB0C4
 TeamPalette2		equ	0xB1C4
 TeamPalette768		equ	0xA8E
@@ -521,7 +517,10 @@ overlayscript		equ	0xD65C
 overlayscriptseg		equ	0xD65E
 overlaystate		equ	0xD65A
 overlaytimer		equ	0xD658
+ovlartnames		equ	0x4A00
+ovlscripts		equ	0x4A0A
 ovlseq		equ	0x49FC
+ovlseqtimed		equ	0x4A1E
 ovlstep		equ	0x49FE
 ovltimer		equ	0x49F0
 ovltimer2		equ	0xD6CE

@@ -20,8 +20,13 @@ str_HaveBeenEliminatedFrom		equ	0xE6
 str_ThePlayOffs		equ	0x100
 str_The_2		equ	0x10F
 str_WillContinueToTheNext		equ	0x129
+OvlScriptGoal		equ	0x132
+OvlScriptClap		equ	0x13A
 str_Series		equ	0x143
+OvlScriptFanom		equ	0x147
 str_GeneratingTheFinalResults		equ	0x152
+OvlScriptUflag		equ	0x166
+OvlScriptCflag		equ	0x18F
 str_HomeGoalie1Text		equ	0x1E2
 str_HomeGoalie2Text		equ	0x1FB
 str_HomeGoalieNone		equ	0x214

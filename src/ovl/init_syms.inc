@@ -294,9 +294,6 @@ TableAt		equ	0xAF6
 TableCount		equ	0xAEC
 TeamNameClips		equ	0x1E0
 TeamNameTemplate		equ	0x26B
-TeamPPVNames		equ	0x4A00
-TeamPPVSizes		equ	0x4A0A
-TeamPPVSizes2		equ	0x4A0C
 TeamPalette768		equ	0xA8E
 TeamStatsLabelPtrs		equ	0x4EC6
 TeamStatsLabels		equ	0x4EC4
@@ -530,6 +527,8 @@ overlayscript		equ	0xD65C
 overlayscriptseg		equ	0xD65E
 overlaystate		equ	0xD65A
 overlaytimer		equ	0xD658
+ovlartnames		equ	0x4A00
+ovlscripts		equ	0x4A0A
 ovlseq		equ	0x49FC
 ovlstep		equ	0x49FE
 ovltimer		equ	0x49F0

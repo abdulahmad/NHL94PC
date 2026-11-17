@@ -1779,7 +1779,7 @@ LoadGameState:
         mov bx, [ovlseq]
         shl bx, 1
         push ds
-        push word [bx + TeamPPVNames]
+        push word [bx + ovlartnames]
         push 0x0
         push 0x0
         lea ax, [bp - 0x94]
@@ -1817,8 +1817,8 @@ LoadGameState:
         jg short .20
         mov bx, [ovlseq]
         shl bx, byte 0x2
-        mov ax, [bx + TeamPPVSizes]
-        mov dx, [bx + TeamPPVSizes2]
+        mov ax, [bx + ovlscripts]
+        mov dx, [bx + ovlscripts + 2]
         mov [overlayscript], ax
         mov [overlayscriptseg], dx
 .22:

@@ -3775,22 +3775,24 @@ ovlseq:                                         ; text overlay sequence; used by
         db 0xFF, 0xFF
 ovlstep:                                        ; text overlay step; used by AI, INIT
         db 0xFF, 0xFF
-TeamPPVNames:                                   ; team .QPP file name pointers (LoadTeamPPV); used by AI, INIT
+ovlartnames:                                    ; .QPP art file name of each text overlay sequence (ovlseq); used
+                                                ; by AI, INIT
         dw str_Fanom
         dw str_Goal
         dw str_Clap
         dw str_Uflag
         dw str_Cflag
-TeamPPVSizes:                                   ; team picture size table; used by AI, INIT
-        db 0x47, 0x01
-TeamPPVSizes2:                                  ; second team picture size table; used by AI, INIT
-        db 'c82'
-        db 0x01, 'c8:', 0x01
-        db 'c8f', 0x01, 0x63, 0x38, 0x8F
-        db 0x01, 0x63, 0x38
-OverlayScript:                                  ; text overlay script bytes; used by AI
-        db 0x01
-        db 0x00, 0x01, 0x01, 0x01, 0x00
+ovlscripts:                                     ; far pointer to the step script of each text overlay sequence
+                                                ; (ovlseq); used by AI, INIT
+        dw OvlScriptFanom, 0x3863
+        dw OvlScriptGoal, 0x3863
+        dw OvlScriptClap, 0x3863
+        dw OvlScriptUflag, 0x3863
+        dw OvlScriptCflag, 0x3863
+ovlseqtimed:                                    ; set for the overlay sequences that get the 258h ovltimer; used
+                                                ; by AI
+        db 0x01, 0x00, 0x01, 0x01, 0x01
+        db 0x00
 goalienotebits:                                 ; goalie note bits (3Fh all done); used by AI, INIT
         db 0x00, 0x00
 PenCntDwn2:                                     ; second penalty countdown; used by AI, INIT
