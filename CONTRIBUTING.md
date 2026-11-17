@@ -33,14 +33,21 @@ of its README and in every release. Add it first.
 
 ## Folders
 
+- `src/engine/`: the game logic from the overlays (play, AI, physics, replay, HUD, faceoffs, penalties).
 - `src/pc/`: DOS-only code (system services, EMS, heap, files, input devices, sound output, video).
-- `src/front/`: the front end in the EXE (start-up, menus, dialogs, crowd and announcer, saving).
+- `src/front/`: the front end (start-up, menus, dialogs, statistics, league and play-off modes, crowd and announcer,
+  saving), from the EXE and the overlays.
 - `src/lib/`: libraries: `msc_runtime.asm` and `fp_emulator.asm` (Microsoft C), `eaclib/` (EA sound library),
   `rtlink/` (the RTLink/Plus overlay manager and runtime).
 - `src/data/`: DGROUP (`dgroup.asm`, `dgroup_bss.asm`), the far data segments (`far/`), the RTLink relocations.
 - `src/header/`: the MZ header. `src/hockey94pc.asm` includes every file in EXE order; `segmap.json` lists each one.
+- `src/ovl/<name>.asm`: one overlay: its relocation table, then its segment files in load order
+  (`docs/cleanup/files_94pc_ovl.txt`). `src/ovl/<name>_syms.inc` and `_build.asm` are written by `tools/make_stubs.py`.
 - Files are named by topic, never by address. One file per linker segment; the section is named after the file.
   `docs/cleanup/files_94pc.txt` maps the old segment numbers to the files.
+- A label in another segment is reached with `Label + delta` (delta = the paragraph distance times 16) for a jump, or
+  `(Label - SegmentStart)` bytes when an instruction is split across the segment end; `DgroupStart` and
+  `MscRuntimeStart` are such segment starts.
 - The generator that first wrote the files is archived in `tools/archive/`; the files are now kept by hand.
 
 ## Comments

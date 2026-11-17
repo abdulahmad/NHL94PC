@@ -8,8 +8,13 @@
 - Branch: work on a branch, PR to `main` (`main` is the working branch).
 - Checks: `tools/format_asm.py --check` reports nothing, `tools/check_comments.py` prints `comments OK`.
 - Maps: `docs/cleanup/names94_*.txt` (every rename batch), `docs/cleanup/files_94pc.txt` (old segment to file).
-- Next: the external `.OVL` overlays (the game logic) are not disassembled. The `ovl_*` slices of the RTLink segment
-  after the load module are still incbin.
+- The 20 `.OVL` overlays are source too (`src/ovl/<name>.asm` lists each one's files; `./build.sh` compares them with
+  `lst/game/`). Far pointers in the menu, message and DGROUP tables are `dw Label, segment`; jumps and calls that cross
+  a segment end are written against the label in the other segment (`Label + delta`, or `db` opcode plus
+  `(Label - SegmentStart)` bytes when the instruction itself is split).
+- Left as numbers on purpose: segment paragraphs (a segment value cannot be a label), the overlay relocation tables,
+  and constants that only look like addresses (0BD00h, 0C8A0h, 964Ah, 9C40h, 0A800h, 0B000h, 0D600h, 0BB40h RNG
+  factor, 2000h, 640h, 9C4h, 0B33h, the menucbfn / statsredrawcb values).
 - Segment numbers in the sections below are the old names; `docs/cleanup/files_94pc.txt` gives each one's file.
 
 ## Naming
@@ -17,7 +22,7 @@
 - Earlier games win for game logic: NHLPA93SNES, else NHL94Genesis. EACLIB names come from the error string the function references. MSC runtime names stay (`__astart`, `_main`, `__chkstk`).
 - NHL95PC names only when the routine does the same PC job.
 - If an earlier-game name is used, name the exact sibling file in `docs/name_map.csv`.
-- Unsure names stay in the list at the bottom of this file. No macros. Never edit the MZ relocation table.
+- Unsure names stay in the list at the bottom of this file. No macros. The MZ relocation table is `dw` data now; keep it byte-identical.
 - A real paragraph cut can spill the previous function's last bytes. That spill is not a false split. `LoadQuiet` in seg004 ends mid-call; the last byte of that call, then `leave` / `retf`, is the start of seg005. Do not merge them.
 
 ## Known facts

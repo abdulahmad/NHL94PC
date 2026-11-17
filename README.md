@@ -4,15 +4,18 @@
 
 > **Temporary:** the retail HOCKEY.EXE is committed in `lst/` for convenience while the repo is young. It will be removed as the repo gets closer to final; after that you supply your own copy (the build finds it by SHA-1 and size, any file name, and tells you exactly what it needs when it is missing). Patch files are never committed.
 
-> **📀 The other game files are still needed.** This repo builds `HOCKEY.EXE` only. The game also loads data and overlay files that are not here and that we do not have yet: `*.INT` (`hockey.int`, `ea_nhl.int`, `elsenhl.int`, `easports.int`, `nhl.int`, `presents.int`, `imrbarr.int`, `goodnite.int`, `lineups.int`, `elsewher.int`, `tonight.int`), RTLink overlays (`AI.OVL`, `GAME.OVL`, `INIT.OVL`, `LP.OVL`, `MENUS.OVL`, `MOVIE.OVL`, `STATS.OVL`, `FADES.OVL`, `FADES1.OVL`-`FADES12.OVL`), `*.CFG`, `*.MAP`, `*.BIN` (crests, palettes). To run the game or follow code into those files, a full install is needed.
+> **📀 The other game files are still needed to run the game.** This repo builds `HOCKEY.EXE` and the 20 `.OVL` overlays. The data files (`*.INT`, `*.CFG`, `*.MAP`, `*.BIN`, `*.PPV` ...) are not built here; the retail game folder is in `lst/game/` for now (temporary, like the EXE), and the overlay build compares against the `.OVL` files there.
 
 ## 🚧 Current Status
 
-- `HOCKEY.EXE` is fully disassembled: the MZ header, the 58 load-image segments, DGROUP and the far data segments are
-  labelled source, and the NASM build is byte-identical to the retail EXE. Every routine and variable has a name and a
-  comment, and every file is named by topic (`src/pc`, `src/front`, `src/lib`, `src/data`).
-- Every file also builds on its own from its stub (`src/stubinc/<name>_stub.asm`).
-- The game logic is in the external `.OVL` overlay files, which are not part of this build and are not disassembled yet.
+- `HOCKEY.EXE` and all 20 RTLink overlays (`AI.OVL`, `GAME.OVL`, `INIT.OVL`, `LP.OVL`, `MENUS.OVL`, `MOVIE.OVL`,
+  `STATS.OVL`, `FADES.OVL`, `FADES1.OVL`-`FADES12.OVL`) are fully disassembled: the MZ header and its relocation table,
+  the 58 load-image segments, DGROUP, the far data segments and every overlay segment are labelled source, and the
+  NASM build is byte-identical to the retail EXE and to each retail overlay. Every routine and variable has a name and
+  a comment, labels stand where the code uses addresses (including far pointers in data and jumps across segment
+  ends), and every file is named by topic (`src/engine`, `src/front`, `src/pc`, `src/lib`, `src/data`).
+- Every EXE file also builds on its own from its stub (`src/stubinc/<name>_stub.asm`), and every overlay from
+  `src/ovl/<name>_build.asm`.
 - This is a **disassembly only**: labelled 16-bit x86 assembly that reassembles byte-identical. There is no C decompilation.
 
 **AI agent or new contributor: start with [START_HERE.md](START_HERE.md).**
@@ -32,7 +35,8 @@ NHL '94 PC is based on [NHLPA93SNES](https://github.com/abdulahmad/NHLPA93SNES) 
 ## Layout
 
 - `src/hockey94pc.asm` includes the whole file in order: `section header` (MZ header), one `section <name> align=16 vstart=0` per MZ segment, named after its file (labels are offsets inside the segment, as the 16-bit code uses them), then `section overlay` (bytes after the load module).
-- `src/pc/` DOS-only code, `src/front/` the front end, `src/lib/` the Microsoft C, EACLIB and RTLink libraries, `src/data/` DGROUP and the far data. `docs/cleanup/files_94pc.txt` maps the old segment numbers to files.
+- `src/engine/` the game logic (from the overlays), `src/pc/` DOS-only code, `src/front/` the front end, `src/lib/` the Microsoft C, EACLIB and RTLink libraries, `src/data/` DGROUP and the far data. `docs/cleanup/files_94pc.txt` maps the old EXE segment numbers to files, `docs/cleanup/files_94pc_ovl.txt` the overlay segments.
+- `src/ovl/<name>.asm` builds one overlay: its relocation table, then its segment files in load order. `src/ovl/<name>_syms.inc` (written by `tools/make_stubs.py`) gives it the EXE labels it uses; `ovlmap.json` lists the overlays.
 - `segmap.json` lists every segment: name, file offset, size, source file, and the paragraph of the MZ segment.
 - `src/stubinc/<segment>_stub.asm` builds one segment on its own: `bits 16`, `org`, outside labels as equates, then the segment file.
 - `tools/prebuild.py` checks the EXE (SHA-1, CRC32, size) and runs `tools/extract.py` (cuts it into `Extracted/segments/`, gitignored).
@@ -40,7 +44,7 @@ NHL '94 PC is based on [NHLPA93SNES](https://github.com/abdulahmad/NHLPA93SNES) 
 
 ## Build
 
-Needs NASM 2.15+ and Python 3. `./build.sh` ends with `MATCH output/HOCKEY.EXE`. `sh tools/verify_all.sh` deletes `output/` and `Extracted/`, rebuilds, checks every segment, last line MATCH.
+Needs NASM 2.15+ and Python 3. `./build.sh` ends with `MATCH output/HOCKEY.EXE and the 20 overlays` (the overlays are compared with the retail files in `lst/game/`). Run `python3 tools/make_stubs.py` after changing a label that another file or an overlay uses. `sh tools/verify_all.sh` deletes `output/` and `Extracted/`, rebuilds, checks every segment, last line MATCH.
 
 ## AI assistance
 

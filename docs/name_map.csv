@@ -4475,3 +4475,343 @@ seg018:0008,DivideDgroup,seg018:0008,new,high,"mov [cs:DivideDgroup], ds in Hook
 seg034:0118,InitHeapVariant,seg034:0118,new,high,"third InitHeap entry, left as data before",src/pc/heap_wrappers.asm
 pflags:0000,PaletteFlags,pflags:0000,new,high,MergeRemapTables writes [es:si+PaletteFlags] with es = PaletteFlagsSeg2,src/data/far/palette_flags.asm
 pflags:0100,PaletteFlags2,pflags:0100,new,high,MergeRemapTables writes [es:si+PaletteFlags2],src/data/far/palette_flags.asm
+dgroup:02BA,BufCount,,new,medium,word,src/data/dgroup.asm
+dgroup:02BC,BufPtr,,new,medium,word,src/data/dgroup.asm
+dgroup:02BE,RecSeq,,new,medium,word,src/data/dgroup.asm
+dgroup:48E6,CoachRotateFour,,95 PC,high,coach line table rows: four-line rotation,src/data/dgroup.asm
+dgroup:48F6,CoachRotateThree,,95 PC,high,coach line table rows: three-line rotation with the power-play rows after it,src/data/dgroup.asm
+dgroup:4916,CoachRotateThreeTop,,95 PC,high,coach line table rows: three lines with the top line first,src/data/dgroup.asm
+dgroup:4926,CoachRotateFourEven,,95 PC,high,coach line table rows: four lines in even rotation,src/data/dgroup.asm
+dgroup:4936,CoachRotateFourMixed,,95 PC,high,coach line table rows: four lines in mixed rotation,src/data/dgroup.asm
+dgroup:4946,CoachRotateThreeEven,,95 PC,high,coach line table rows: three lines in even rotation,src/data/dgroup.asm
+dgroup:4956,CoachSpecialUnits,,new,medium,coach line table rows: special team units only,src/data/dgroup.asm
+dgroup:4966,CoachRotateTwo,,95 PC,high,coach line table rows: two lines only,src/data/dgroup.asm
+dgroup:4976,CoachRotateTwoDeep,,95 PC,high,coach line table rows: two lines with the third line as backup,src/data/dgroup.asm
+dgroup:4986,CoachRotateFourShort,,95 PC,high,coach line table rows: four lines with short shifts,src/data/dgroup.asm
+dgroup:4996,CoachRotateThreeShort,,95 PC,high,coach line table rows: three lines with short shifts,src/data/dgroup.asm
+dgroup:6E02,Int8Stack,,new,medium,"the INT 8 handler's private stack, filled with 0FBh",src/data/dgroup.asm
+dgroup:6F04,Int8StackTop,,new,medium,top of Int8Stack; Int8Handler loads SP with it,src/data/dgroup.asm
+dgroup:7607,AltPath,,new,medium,,src/data/dgroup.asm
+dgroup:762F,AltBuf,,new,medium,word,src/data/dgroup.asm
+dgroup:7633,AltCall,,new,medium,dword,src/data/dgroup.asm
+dgroup:7637,AltSize,,new,medium,byte,src/data/dgroup.asm
+dgroup:763A,Cpu286,,new,medium,word,src/data/dgroup.asm
+dgroup:763C,Cpu386,,new,medium,word,src/data/dgroup.asm
+dgroup:763E,Cpu486,,new,medium,word,src/data/dgroup.asm
+dgroup:7640,CpuPe,,new,medium,word,src/data/dgroup.asm
+dgroup:7668,ScanFn,,new,medium,dword,src/data/dgroup.asm
+dgroup:766C,LineFn,,new,medium,dword,src/data/dgroup.asm
+dgroup:7672,HoldWord,,new,medium,word,src/data/dgroup.asm
+dgroup:77C2,VidMode,,new,medium,byte,src/data/dgroup.asm
+dgroup:77C3,VidEquip,,new,medium,byte,src/data/dgroup.asm
+dgroup:77C4,VidCols,,new,medium,word,src/data/dgroup.asm
+dgroup:77C6,VidRows,,new,medium,byte,src/data/dgroup.asm
+dgroup:8ACC,AllocBlockSize,,new,medium,"near heap growth size in bytes (2000h), read by the heap allocator",src/data/dgroup.asm
+dgroup_bss:8ED6,MapLo,,new,medium,word,src/data/dgroup_bss.asm
+dgroup_bss:8ED8,MapHi,,new,medium,word,src/data/dgroup_bss.asm
+dgroup_bss:8EDA,OutPtr,,new,medium,word,src/data/dgroup_bss.asm
+dgroup_bss:8EDE,InPtr,,new,medium,word,src/data/dgroup_bss.asm
+dgroup_bss:8EE2,MapPair,,new,medium,word,src/data/dgroup_bss.asm
+dgroup_bss:8EE4,BitBuf,,new,medium,word,src/data/dgroup_bss.asm
+dgroup_bss:8EE8,BitCount,,new,medium,word,src/data/dgroup_bss.asm
+dgroup_bss:8F94,PatchFileName,,new,medium,'bank%d.pat' name built by LoadBankNumber,src/data/dgroup_bss.asm
+dgroup_bss:9046,DriverFileName,,new,medium,'c:\eaclib\' path of the sound driver built by LoadSoundDriver,src/data/dgroup_bss.asm
+dgroup_bss:9140,PPVFiles,,new,medium,far pointers to the 18 loaded PPV files (LoadPlayerFrames); the 72 bytes after them are not used,src/data/dgroup_bss.asm
+dgroup_bss:AE9C,ChainIdx,,new,medium,word,src/data/dgroup_bss.asm
+dgroup_bss:AE9E,ChainPtr,,new,medium,word,src/data/dgroup_bss.asm
+dgroup_bss:AFD4,PadReadings,,new,medium,"3 bytes a pad (stick, buttons, hot key) filled by ReadPadDevice",src/data/dgroup_bss.asm
+dgroup_bss:B438,awshots,,new,medium,away shots; the away team stats start here,src/data/dgroup_bss.asm
+dgroup_bss:B43A,awppgoals,,new,medium,away power play goals,src/data/dgroup_bss.asm
+dgroup_bss:B43C,awppchances,,new,medium,away power play chances,src/data/dgroup_bss.asm
+dgroup_bss:B43E,awpenalties,,new,medium,away penalties,src/data/dgroup_bss.asm
+dgroup_bss:B440,awpenmins,,new,medium,away penalty minutes,src/data/dgroup_bss.asm
+dgroup_bss:B442,awattacktime,,new,medium,away attack time,src/data/dgroup_bss.asm
+dgroup_bss:B50E,SortCords,,new,medium,"the sort objects, 80h bytes each; sort object 0 starts here",src/data/dgroup_bss.asm
+dgroup_bss:E15E,StdinBuf,,new,medium,"stdin buffer of _iob (512 bytes, then 8 unused bytes)",src/data/dgroup_bss.asm
+char_table:0100,LineSlotPoints,,new,medium,"(x, y) word pairs of the player slots, read by GameLineEditorLoop",src/data/far/char_table.asm
+credits:05CD,CreditLines,,new,medium,"far pointers to the credit lines, read by the title screen",src/data/far/credits.asm
+dialog_rects:0000,FileDialogHitRects,,new,medium,"hit rectangles of the file dialog buttons (x1, y1, x2, y2)",src/data/far/dialog_rects.asm
+dialog_rects:0040,FileDlgListBox,,new,medium,"box (x1, y1, x2, y2) of the file dialog list (DrawFileDlg)",src/data/far/dialog_rects.asm
+dialog_rects:0048,FileDlgTitleBox,,new,medium,"box (x1, y1, x2, y2) of the file dialog title (DrawFileDlg)",src/data/far/dialog_rects.asm
+font_table:0000,FontTable,,new,medium,"font header, character offsets and widths",src/data/far/font_table.asm
+input_event_data:0000,InputEventFlag,,new,medium,word; nonzero makes GetInputEvent run its reset calls and clear it,src/data/far/input_event_data.asm
+lines_menu_text:00B4,itemPenaltyKilling,,new,medium,"menu item record (box, text, handler) of the 'PenaltyKilling' entry",src/data/far/lines_menu_text.asm
+list_dialog_data:0000,ListDlgScrollBar,,new,medium,"scroll bar record (32 bytes) of the list dialog, set up by ListDialog with ScrollBarInit",src/data/far/list_dialog_data.asm
+menu_text:0ADC,itemOpen,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/menu_text.asm
+menu_text:0B60,itemExportDatabases,,new,medium,"menu item record (box, text, handler) of the 'ExportDatabases' entry",src/data/far/menu_text.asm
+menu_text:0B76,itemNextLeagueGame,,new,medium,"menu item record (box, text, handler) of the 'NextLeagueGame' entry",src/data/far/menu_text.asm
+menu_text:0B8C,itemLeagueManager,,new,medium,"menu item record (box, text, handler) of the 'LeagueManager' entry",src/data/far/menu_text.asm
+menu_text:0BCE,itemNextPlayOffGame,,new,medium,"menu item record (box, text, handler) of the 'NextPlayOffGame' entry",src/data/far/menu_text.asm
+menu_text:0BE4,itemPlayOffSettings,,new,medium,"menu item record (box, text, handler) of the 'PlayOffSettings' entry",src/data/far/menu_text.asm
+menu_text:0BFA,itemPlayOffHilights,,new,medium,"menu item record (box, text, handler) of the 'PlayOffHilights' entry",src/data/far/menu_text.asm
+menu_text:0C3C,itemGameLaAtMtl,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/menu_text.asm
+menu_text:0CD6,itemStatisticsType,,new,medium,"menu item record (box, text, handler) of the 'StatisticsType' entry",src/data/far/menu_text.asm
+menu_text:0D86,itemMergeLeagueFiles,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/menu_text.asm
+menu_text:0EA4,itemScoring,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/menu_text.asm
+menu_text:0F12,itemPoints,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/menu_text.asm
+menu_text:0FC2,itemGoalsAgainstAverage,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/menu_text.asm
+menu_text:1004,itemReturnToGame,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/menu_text.asm
+menu_text:1030,itemSportsDesk,,new,medium,"menu item record (box, text, handler) of the 'SportsDesk' entry",src/data/far/menu_text.asm
+menu_text:105C,itemPlayer1Controls,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/menu_text.asm
+menu_text:109E,itemHomeTeamGoalie,,new,medium,"menu item record (box, text, handler) of the 'HomeTeamGoalie' entry",src/data/far/menu_text.asm
+menu_text:10B4,itemVisitingTeamGoalie,,new,medium,"menu item record (box, text, handler) of the 'VisitingTeamGoalie' entry",src/data/far/menu_text.asm
+menu_text:10F6,itemStatisticsType_2,,new,medium,"menu item record (box, text, handler) of the 'StatisticsType' entry",src/data/far/menu_text.asm
+menu_text:1164,itemHomeTeam,,new,medium,"menu item record (box, text, handler) of the 'HomeTeam' entry",src/data/far/menu_text.asm
+menu_text:117A,itemVisitingTeam,,new,medium,"menu item record (box, text, handler) of the 'VisitingTeam' entry",src/data/far/menu_text.asm
+menu_text:1190,itemGoToReplay,,new,medium,"menu item record (box, text, handler) of the 'GoToReplay' entry",src/data/far/menu_text.asm
+menu_text:11A6,itemGameStatistics,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/menu_text.asm
+menu_text:1282,itemSportsDesk_2,,new,medium,"menu item record (box, text, handler) of the 'SportsDesk' entry",src/data/far/menu_text.asm
+menu_text:13F8,itemUseTheseLines,,new,medium,"menu item record (box, text, handler) of the 'UseTheseLines' entry",src/data/far/menu_text.asm
+menu_text:143A,itemSaveAsDefaultLines,,new,medium,"menu item record (box, text, handler) of the 'SaveAsDefaultLines' entry",src/data/far/menu_text.asm
+menu_text:1450,itemDressPlayer,,new,medium,"menu item record (box, text, handler) of the 'DressPlayer' entry",src/data/far/menu_text.asm
+menu_text:1466,itemScratchPlayer,,new,medium,"menu item record (box, text, handler) of the 'ScratchPlayer' entry",src/data/far/menu_text.asm
+menu_text:147C,itemShowPlayerStatistics_2,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/menu_text.asm
+menu_text:1516,itemCancel,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/menu_text.asm
+menu_text:152C,itemUseTheseLines_2,,new,medium,"menu item record (box, text, handler) of the 'UseTheseLines' entry",src/data/far/menu_text.asm
+menu_text:156E,itemSaveAsDefaultLines_2,,new,medium,"menu item record (box, text, handler) of the 'SaveAsDefaultLines' entry",src/data/far/menu_text.asm
+menu_text:15B0,itemSaveTheseLines,,new,medium,"menu item record (box, text, handler) of the 'SaveTheseLines' entry",src/data/far/menu_text.asm
+menu_text:1634,itemLineEditor,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/menu_text.asm
+menu_text:1660,itemStatisticsType_3,,new,medium,"menu item record (box, text, handler) of the 'StatisticsType' entry",src/data/far/menu_text.asm
+menu_text:1676,itemSportsDesk_3,,new,medium,"menu item record (box, text, handler) of the 'SportsDesk' entry",src/data/far/menu_text.asm
+menu_text:16A2,itemSportsDesk_4,,new,medium,"menu item record (box, text, handler) of the 'SportsDesk' entry",src/data/far/menu_text.asm
+menu_text:16B8,itemShowTeamRoster,,new,medium,"menu item record (box, text, handler) of the 'ShowTeamRoster' entry",src/data/far/menu_text.asm
+menu_text:16FA,itemStatisticsType_4,,new,medium,"menu item record (box, text, handler) of the 'StatisticsType' entry",src/data/far/menu_text.asm
+menu_text:1710,itemOverallStandings,,new,medium,"menu item record (box, text, handler) of the 'OverallStandings' entry",src/data/far/menu_text.asm
+menu_text:1726,itemSportsDesk_5,,new,medium,"menu item record (box, text, handler) of the 'SportsDesk' entry",src/data/far/menu_text.asm
+menu_text:173C,itemTeamRoster,,new,medium,"menu item record (box, text, handler) of the 'TeamRoster' entry",src/data/far/menu_text.asm
+menu_text:1752,itemOverallStandings_2,,new,medium,"menu item record (box, text, handler) of the 'OverallStandings' entry",src/data/far/menu_text.asm
+menu_text:1768,itemSportsDesk_6,,new,medium,"menu item record (box, text, handler) of the 'SportsDesk' entry",src/data/far/menu_text.asm
+menu_text:177E,itemShowPlayerStatisticsAndAttributes,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/menu_text.asm
+menu_text:17C0,itemStatisticsType_5,,new,medium,"menu item record (box, text, handler) of the 'StatisticsType' entry",src/data/far/menu_text.asm
+menu_text:17EC,itemStatisticsType_6,,new,medium,"menu item record (box, text, handler) of the 'StatisticsType' entry",src/data/far/menu_text.asm
+menu_text:1818,itemStatisticsType_7,,new,medium,"menu item record (box, text, handler) of the 'StatisticsType' entry",src/data/far/menu_text.asm
+menu_text:185A,itemStatisticsType_8,,new,medium,"menu item record (box, text, handler) of the 'StatisticsType' entry",src/data/far/menu_text.asm
+menu_text:189C,itemStatisticsType_9,,new,medium,"menu item record (box, text, handler) of the 'StatisticsType' entry",src/data/far/menu_text.asm
+menu_text:18C8,itemPlayNextGame,,new,medium,"menu item record (box, text, handler) of the 'PlayNextGame' entry",src/data/far/menu_text.asm
+menu_text:18F4,itemPlayer1Controls_2,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/menu_text.asm
+menu_text:194C,itemStatisticsType_10,,new,medium,"menu item record (box, text, handler) of the 'StatisticsType' entry",src/data/far/menu_text.asm
+object_table:0000,ObjectTable,,new,medium,"object records (coordinates and flags), 18 bytes each",src/data/far/object_table.asm
+object_table:0132,OvlScriptGoal,,95 PC,high,"step script of the goal text overlay (step count, frames)",src/data/far/object_table.asm
+object_table:013A,OvlScriptClap,,95 PC,high,step script of the clap text overlay,src/data/far/object_table.asm
+object_table:0147,OvlScriptFanom,,95 PC,high,step script of the fan text overlay,src/data/far/object_table.asm
+object_table:0166,OvlScriptUflag,,95 PC,high,step script of the uflag text overlay,src/data/far/object_table.asm
+object_table:018F,OvlScriptCflag,,95 PC,high,step script of the cflag text overlay,src/data/far/object_table.asm
+playoff_dialog_rects:0000,SoundDialogHitRects,,new,medium,hit rectangles of the sound card dialog buttons,src/data/far/playoff_dialog_rects.asm
+runtime_state:0000,FpErrHandler,,MSC,high,dword; far error handler set by FpSetHandler (0 = none),src/data/far/runtime_state.asm
+runtime_state:0004,Fp87Present,,MSC,high,byte; 1 when a real 8087 does the work,src/data/far/runtime_state.asm
+runtime_state:0006,FpUserCw,,MSC,high,word; the control word as the program set it,src/data/far/runtime_state.asm
+runtime_state:0008,FpUserStatus,,MSC,high,word; exception flags gathered for FpGetStatus,src/data/far/runtime_state.asm
+runtime_state:000A,FpEmuCw,,MSC,high,word; the control word the emulator works with,src/data/far/runtime_state.asm
+runtime_state:000C,FpEmuStatus,,MSC,high,word; the emulated status word (high byte: C3-C0),src/data/far/runtime_state.asm
+runtime_state:000E,FpStackBase,,MSC,high,word; FpStackTop when the emulated stack is empty,src/data/far/runtime_state.asm
+runtime_state:0010,FpStackTop,,MSC,high,"word; the emulated ST, 12-byte registers growing upward",src/data/far/runtime_state.asm
+runtime_state:0012,FpStackLimit,,MSC,high,word; FpStackTop when all 14 registers are in use,src/data/far/runtime_state.asm
+runtime_state:0014,FpMachineMode,,MSC,high,word; 0 under DOS (real mode); other modes go through the OS/2 style calls,src/data/far/runtime_state.asm
+runtime_state:0016,FpOpStatus,,MSC,high,"word; exceptions raised by the current instruction, also the 8087's status word after fnstsw",src/data/far/runtime_state.asm
+runtime_state:001A,FpTemp,,MSC,high,dword; scratch control word and fistp result,src/data/far/runtime_state.asm
+runtime_state:001E,FpSavedVectors,,MSC,high,dword; INT 34h-3Eh as they were before FpHookVectors,src/data/far/runtime_state.asm
+runtime_state:004A,FpTemp0,,MSC,high,12-byte scratch register (also a temp real for fstp),src/data/far/runtime_state.asm
+runtime_state:0056,FpSavedSs,,MSC,high,word; SS when FpInit ran,src/data/far/runtime_state.asm
+runtime_state:0058,FpProbeWord,,MSC,high,word; FpInit's 8087 detection scratch word,src/data/far/runtime_state.asm
+runtime_state:005A,FpTemp1,,MSC,high,12-byte scratch register for the series routines,src/data/far/runtime_state.asm
+runtime_state:0066,FpTemp2,,MSC,high,12-byte scratch register for the series routines,src/data/far/runtime_state.asm
+runtime_state:0072,FpTemp3,,MSC,high,12-byte scratch register for the series routines,src/data/far/runtime_state.asm
+runtime_state:007E,FpTemp4,,MSC,high,12-byte scratch register for the series routines,src/data/far/runtime_state.asm
+runtime_state:008A,FpTemp5,,MSC,high,12-byte scratch register for the series routines,src/data/far/runtime_state.asm
+runtime_state:0096,FpResultPtr,,MSC,high,word; the register an arithmetic routine writes,src/data/far/runtime_state.asm
+runtime_state:0098,FpDivisor,,MSC,high,8-byte mantissa of the divisor in FpDivMantissa,src/data/far/runtime_state.asm
+runtime_state:00A0,FpRemExp,,MSC,high,word; fprem's exponent difference still to reduce,src/data/far/runtime_state.asm
+runtime_state:00A2,FpRemFlag,,MSC,high,word; 1 when fprem stopped before it finished,src/data/far/runtime_state.asm
+runtime_state:00A4,FpSignalMode,,MSC,high,word; set by FpSetMode; 0 makes FpException treat invalid operations as already handled,src/data/far/runtime_state.asm
+runtime_state:00A6,FpNextByte,,MSC,high,byte; the opcode byte after the emulated instruction,src/data/far/runtime_state.asm
+runtime_state:00A7,FpExitVector,,MSC,high,"word; FpEmuChain, or FpEmuChainEsc in other modes",src/data/far/runtime_state.asm
+runtime_state:00A9,FpStack,,MSC,high,the emulated register stack: 14 registers of 12 bytes,src/data/far/runtime_state.asm
+save_dialog_rects:0000,ControlsDlgTopBox,,new,medium,"box (x1, y1, x2, y2) of the upper controls dialog field",src/data/far/save_dialog_rects.asm
+save_dialog_rects:0008,ControlsDlgBottomBox,,new,medium,"box (x1, y1, x2, y2) of the lower controls dialog field",src/data/far/save_dialog_rects.asm
+save_messages:002B,msgSavingLeagueGame,,new,medium,message lines of the saving league game box,src/data/far/save_messages.asm
+save_messages:0033,msgSavingPlayoffGame,,new,medium,message lines of the saving play-off game box,src/data/far/save_messages.asm
+season_titles:0000,titleSeason,,new,medium,flag byte and ' 92 - 93 Season' title of the statistics menu,src/data/far/season_titles.asm
+season_titles:0013,titlePlayoffs,,new,medium,flag byte and ' 92 - 93 Play-Offs' title of the statistics menu,src/data/far/season_titles.asm
+season_titles:0029,titleLeagueSeason,,new,medium,flag byte and league season title of the statistics menu,src/data/far/season_titles.asm
+season_titles:003D,titleLeagueSeasonPlayoffs,,new,medium,flag byte and league season play-offs title,src/data/far/season_titles.asm
+season_titles:005B,titleLeaguePlayoffs,,new,medium,flag byte and league play-offs title,src/data/far/season_titles.asm
+season_titles:0090,itemNhlSeason,,new,medium,"menu item record (box, text, handler) of the ''92 - '93 Season' entry of the season menu",src/data/far/season_titles.asm
+season_titles:00A6,itemNhlPlayoffs,,new,medium,"menu item record (box, text, handler) of the ''92 - '93 Play-Offs' entry of the season menu",src/data/far/season_titles.asm
+season_titles:00BC,itemSeasonSeparator,,new,medium,"menu item record (box, text, handler) of the 'separator' entry of the season menu",src/data/far/season_titles.asm
+season_titles:00D2,itemLeagueSeason,,new,medium,"menu item record (box, text, handler) of the 'league season' entry of the season menu",src/data/far/season_titles.asm
+season_titles:00E8,itemLeagueSeasonPlayoffs,,new,medium,"menu item record (box, text, handler) of the 'league season play-offs' entry of the season menu",src/data/far/season_titles.asm
+season_titles:00FE,itemSeasonSeparator_2,,new,medium,"menu item record (box, text, handler) of the 'second separator' entry of the season menu",src/data/far/season_titles.asm
+season_titles:0114,itemLeaguePlayoffs,,new,medium,"menu item record (box, text, handler) of the 'league play- offs' entry of the season menu",src/data/far/season_titles.asm
+team_choice_text:005B,msgCustomOrOriginal,,new,medium,message lines of the custom or original teams box,src/data/far/team_choice_text.asm
+team_choice_text:0067,btnsCustomOriginal,,new,medium,Custom and Original buttons of that box,src/data/far/team_choice_text.asm
+team_choice_text:03A9,argDoYouReallyWantTo,,new,medium,"far pointer slot after 'Do you really want to remove', filled at run time",src/data/far/team_choice_text.asm
+team_choice_text:0541,argDoYouWantToExport,,new,medium,"far pointer slot after 'Do you want to export', filled at run time",src/data/far/team_choice_text.asm
+team_choice_text:06CA,argCopyingDatabasesFor,,new,medium,"far pointer slot after 'Copying databases for', filled at run time",src/data/far/team_choice_text.asm
+team_choice_text:0907,argPlayersDatabasesFor,,new,medium,"far pointer slot after the players databases message, filled at run time",src/data/far/team_choice_text.asm
+team_choice_text:09B8,argMasterDatabasesFor,,new,medium,"far pointer slot after the master databases message, filled at run time",src/data/far/team_choice_text.asm
+team_choice_text:0B6C,DbFileNameList,,new,medium,"far pointers to the database file names (KEY, CAREER, ATT ...)",src/data/far/team_choice_text.asm
+team_choice_text:0E23,MonthNameList,,new,medium,far pointers to the month names (January ...),src/data/far/team_choice_text.asm
+team_choice_text:0E60,itemStatisticsType_11,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/team_choice_text.asm
+team_choice_text:0F13,itemPlayer1Controls_3,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/team_choice_text.asm
+team_choice_text:0F88,itemNextMonth,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/team_choice_text.asm
+team_choice_text:1036,itemShowLeagueSettings,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/team_choice_text.asm
+team_choice_text:105C,itemLeagueSettings,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/team_choice_text.asm
+team_choice_text:107E,itemDone,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/team_choice_text.asm
+team_choice_text:10BA,TeamSelMenuBar,,new,medium,"menu bar of the team select screen (Select, Settings)",src/data/far/team_choice_text.asm
+team_choice_text:10E0,SettingsSubmenuPtr,,new,medium,"far pointer to the submenu of the 'Settings' title, set at run time",src/data/far/team_choice_text.asm
+team_choice_text:10FD,itemShowPlayerStatistics,,new,medium,"menu item record (box, text, handler) of the 'Show Player Statistics' entry",src/data/far/team_choice_text.asm
+team_choice_text:111F,itemDone_2,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/team_choice_text.asm
+team_choice_text:1195,itemTrade,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/team_choice_text.asm
+trade_messages:0000,TradeHitRects,,new,medium,"hit rectangles of the trade screen boxes (x1, y1, x2, y2)",src/data/far/trade_messages.asm
+,DrawGameLineJerseysJumpTable,,new,medium,jump table of DrawGameLineJerseys: 8 case targets,src/front/game_lines.asm
+,HandleHotKeyJumpTable,,new,medium,jump table of HandleHotKey: 18 case targets,src/front/game_main.asm
+,LeadersScreenJumpTable,,new,medium,jump table of LeadersScreen: 11 case targets,src/front/leaders.asm
+,LockerRoomLoopJumpTable,,new,medium,jump table of LockerRoomLoop: 8 case targets,src/front/lockerroom.asm
+,POAfterGameJumpTable,,new,medium,jump table of POAfterGame: 15 case targets,src/front/playoff_mode.asm
+,SetStatsMenuTextJumpTable,,new,medium,jump table of SetStatsMenuText: 6 case targets,src/front/stats_menus.asm
+header:0000,mz_header,,new,medium,"out from the labels of the parts they describe, so they stay right when a segment changes size.",src/header/mz_header.asm
+header:001E,reloc_table,,new,medium,"the relocation table: 1727 entries (offset, segment of a word in the image that holds a segment number)",src/header/mz_header.asm
+header:1B1A,reloc_end,,new,medium,end of the relocation table; zero fill to the image,src/header/mz_header.asm
+header:1C00,image_start,,new,medium,end of the header: the load image starts on this paragraph,src/header/mz_header.asm
+dgroup:8ED6,exe_end,,new,medium,,src/hockey94pc.asm
+seq_events:03FF,SeqStepTrackJumpTable,,new,medium,word,src/lib/eaclib/seq_events.asm
+seq_events:0B02,ParseMidiEventJumpTable,,new,medium,word,src/lib/eaclib/seq_events.asm
+fp_emulator:0000,EmuDataSeg,,MSC,high,paragraph of the emulator's data (runtime_state); every entry loads DS from here,src/lib/fp_emulator.asm
+fp_emulator:0010,FpSignature,,MSC,high,"'MSEM87' and a version word, the emulator's signature",src/lib/fp_emulator.asm
+fp_emulator:0020,FpFuncTable,,MSC,high,"word; FpMath's function table, by index 0-12",src/lib/fp_emulator.asm
+fp_emulator:005A,FpCrLf,,MSC,high,CR LF printed after the NO87= message,src/lib/fp_emulator.asm
+fp_emulator:0880,FpOpcodeTable,,MSC,high,word; FpEmulate's handlers by ESC opcode and MOD field,src/lib/fp_emulator.asm
+fp_emulator:08C0,FpArithTable,,MSC,high,"word; fadd, fmul, fcom, fcomp, fsub, fsubr, fdiv, fdivr",src/lib/fp_emulator.asm
+fp_emulator:08D0,FpOddEscMemTable,,MSC,high,"word; memory forms of ESC 1, 3, 5 and 7 by REG field",src/lib/fp_emulator.asm
+fp_emulator:08E0,FpOddEscRegTable,,MSC,high,"word; register forms of ESC 1, 3, 5 and 7 by REG field",src/lib/fp_emulator.asm
+fp_emulator:08F0,FpLoadFormatTable,,MSC,high,"word; loads a float, int32, double or int16 operand",src/lib/fp_emulator.asm
+fp_emulator:08F8,FpStoreFormatTable,,MSC,high,"word; stores ST as a float, int32, double or int16",src/lib/fp_emulator.asm
+fp_emulator:0900,FpRegField5Table,,MSC,high,"word; REG 5: fldcw, fld temp real, (reserved), fild int64",src/lib/fp_emulator.asm
+fp_emulator:0908,FpRegField7Table,,MSC,high,"word; REG 7: fstcw, fstp temp real, fstsw, fistp int64",src/lib/fp_emulator.asm
+fp_emulator:0910,FpLoadConstTable,,MSC,high,"word; fld1, fldl2t, fldl2e, fldpi, fldlg2, fldln2, fldz",src/lib/fp_emulator.asm
+fp_emulator:0920,FpTranscTable,,MSC,high,"word; f2xm1, fyl2x, fptan, fpatan",src/lib/fp_emulator.asm
+fp_emulator:0930,FpMiscOpTable,,MSC,high,"word; fprem, fyl2xp1, fsqrt, frndint, fscale (D9 F8-FF)",src/lib/fp_emulator.asm
+fp_emulator:0940,FpCompareTagTable,,MSC,high,word; compare handlers by the two operands' tags,src/lib/fp_emulator.asm
+fp_emulator:0960,FpTestTagTable,,MSC,high,word; ftst handlers by tag,src/lib/fp_emulator.asm
+fp_emulator:0968,FpAddTagTable,,MSC,high,word; add handlers by the two operands' tags,src/lib/fp_emulator.asm
+fp_emulator:0988,FpMulTagTable,,MSC,high,word; multiply handlers by the two operands' tags,src/lib/fp_emulator.asm
+fp_emulator:09A8,FpDivTagTable,,MSC,high,word; divide handlers by the two operands' tags,src/lib/fp_emulator.asm
+fp_emulator:09C8,FpExamineCodes,,MSC,high,"fxam condition codes (C3, C2, C1, C0) by tag and sign",src/lib/fp_emulator.asm
+fp_emulator:09D0,FpRegZero,,MSC,high,+0 as an emulator register,src/lib/fp_emulator.asm
+fp_emulator:09DC,FpRegInfinity,,MSC,high,+infinity as an emulator register,src/lib/fp_emulator.asm
+fp_emulator:09E8,FpRegIndefinite,,MSC,high,the indefinite NaN as an emulator register,src/lib/fp_emulator.asm
+fp_emulator:09F4,FpRegMax,,MSC,high,the largest temp real as an emulator register,src/lib/fp_emulator.asm
+fp_emulator:0A00,FpSingleInf,,MSC,high,float +infinity,src/lib/fp_emulator.asm
+fp_emulator:0A04,FpSingleMax,,MSC,high,the largest float,src/lib/fp_emulator.asm
+fp_emulator:0A08,FpDoubleInf,,MSC,high,double +infinity,src/lib/fp_emulator.asm
+fp_emulator:0A10,FpDoubleMax,,MSC,high,the largest double,src/lib/fp_emulator.asm
+fp_emulator:0A18,FpConstZero,,MSC,high,0.0 (fldz),src/lib/fp_emulator.asm
+fp_emulator:0A24,FpConstOne,,MSC,high,1.0 (fld1),src/lib/fp_emulator.asm
+fp_emulator:0A30,FpConstTan15,,MSC,high,"2 - sqrt 3, the tangent of 15 degrees",src/lib/fp_emulator.asm
+fp_emulator:0A3C,FpConstSqrt3,,MSC,high,sqrt 3,src/lib/fp_emulator.asm
+fp_emulator:0A48,FpConstPiOver6,,MSC,high,pi / 6,src/lib/fp_emulator.asm
+fp_emulator:0A54,FpConstSqrt2,,MSC,high,sqrt 2,src/lib/fp_emulator.asm
+fp_emulator:0A60,FpConstTwo,,MSC,high,2.0,src/lib/fp_emulator.asm
+fp_emulator:0A6C,FpConstPi,,MSC,high,pi (fldpi),src/lib/fp_emulator.asm
+fp_emulator:0A78,FpConstL2T,,MSC,high,log2 10 (fldl2t),src/lib/fp_emulator.asm
+fp_emulator:0A84,FpConstL2E,,MSC,high,log2 e (fldl2e),src/lib/fp_emulator.asm
+fp_emulator:0A90,FpConstLg2,,MSC,high,log10 2 (fldlg2),src/lib/fp_emulator.asm
+fp_emulator:0A9C,FpConstLn2,,MSC,high,ln 2 (fldln2),src/lib/fp_emulator.asm
+fp_emulator:0AA8,FpSeriesANum,,MSC,high,"FpSeriesA numerator: degree word, then coefficients",src/lib/fp_emulator.asm
+fp_emulator:0ADA,FpSeriesADen,,MSC,high,FpSeriesA denominator,src/lib/fp_emulator.asm
+fp_emulator:0B0C,FpAtanNum,,MSC,high,"FpAtanCore numerator: degree word, then coefficients",src/lib/fp_emulator.asm
+fp_emulator:0B4A,FpAtanDen,,MSC,high,FpAtanCore denominator,src/lib/fp_emulator.asm
+fp_emulator:0B7C,FpSeriesBNum,,MSC,high,"FpSeriesB numerator: degree word, then coefficients",src/lib/fp_emulator.asm
+fp_emulator:0BA2,FpSeriesBDen,,MSC,high,FpSeriesB denominator,src/lib/fp_emulator.asm
+fp_emulator:0BC8,FpLogNum,,MSC,high,"FpLogSeries numerator: degree word, then coefficients",src/lib/fp_emulator.asm
+fp_emulator:0BFA,FpLogDen,,MSC,high,FpLogSeries denominator,src/lib/fp_emulator.asm
+fp_emulator:0C20,FpSegEscTable,,MSC,high,word; FpEmuSegInt handlers by segment bits of the ESC byte,src/lib/fp_emulator.asm
+fp_emulator:0C3D,FpSegModrmTable,,MSC,high,word; FpEmuSegInt handlers by segment bits of the next byte,src/lib/fp_emulator.asm
+fp_emulator:2670,FpNmiStatus,,MSC,high,word; the 8087 status word FpNmiHandler reads,src/lib/fp_emulator.asm
+fp_emulator:2672,FpOldNmi,,MSC,high,dword; the INT 2 (NMI) vector before FpHookNmi,src/lib/fp_emulator.asm
+fp_emulator:2676,FpOldCtrlBreak,,MSC,high,dword; the INT 23h (Ctrl-Break) vector before FpHookNmi,src/lib/fp_emulator.asm
+msc_runtime:0000,MscRuntimeStart,,MSC,high,offset 0 of this segment; code in other segments splits a label here with label - MscRuntimeStart,src/lib/msc_runtime.asm
+msc_runtime:0868,OpenBody,,MSC,high,,src/lib/msc_runtime.asm
+msc_runtime:1046,ChdirPath,,MSC,high,,src/lib/msc_runtime.asm
+msc_runtime:104B,ChdirErr,,MSC,high,,src/lib/msc_runtime.asm
+msc_runtime:109E,DosCreate,,MSC,high,,src/lib/msc_runtime.asm
+msc_runtime:10D0,FindCommon,,MSC,high,,src/lib/msc_runtime.asm
+msc_runtime:1112,_dos_read,,MSC,high,"Read into a far buffer: DOS function 3Fh through the body of _dos_write. Arguments: handle, far buffer, count, far pointer to the bytes-read word.",src/lib/msc_runtime.asm
+msc_runtime:1142,_disable,,MSC,high,Clear the interrupt flag (cli) and return.,src/lib/msc_runtime.asm
+msc_runtime:1170,_enable,,MSC,high,Set the interrupt flag (sti) and return.,src/lib/msc_runtime.asm
+msc_runtime:1270,LongShlAt,,MSC,high,"Shift the long at a near pointer left by a count, in place (__aFlshl). Arguments: pointer, count.",src/lib/msc_runtime.asm
+msc_runtime:128E,LongSarAt,,MSC,high,"Shift the signed long at a near pointer right by a count, in place (__aFlsar). Arguments: pointer, count.",src/lib/msc_runtime.asm
+msc_runtime:16BC,DosRetZero,,MSC,high,,src/lib/msc_runtime.asm
+msc_runtime:16D1,DosRetBad,,MSC,high,,src/lib/msc_runtime.asm
+msc_runtime:16D8,DosRetLeave,,MSC,high,,src/lib/msc_runtime.asm
+msc_runtime:1EF8,FloatLoad,,MSC,high,Load a double through the floating-point emulator interrupts and test it; returns AX 1 or 0 from the compare. Most of the body is emulator escape bytes.,src/lib/msc_runtime.asm
+msc_runtime:1F26,FormatFloat,,MSC,high,"Floating-point conversion for printf and scanf: the first argument picks the job (1, 2 or a string to read with atof), then the value goes through the emulator.",src/lib/msc_runtime.asm
+msc_runtime:1F82,FloatBuf,,MSC,high,"Write a value in %f style into the output buffer: sign, digits before and after the point (precision from the argument), using PackArgs and WriteDigits.",src/lib/msc_runtime.asm
+msc_runtime:20AC,FloatToStr,,MSC,high,"%f conversion into the caller's buffer: FloatBuf with FloatMode set, so it reads the digits already converted.",src/lib/msc_runtime.asm
+msc_runtime:20D0,FloatWidth,,MSC,high,"Write a value in %e style into the output buffer: sign, one digit, the point, the precision digits from FloatPrecision, then the exponent.",src/lib/msc_runtime.asm
+msc_runtime:21C4,FloatToSci,,MSC,high,"%e conversion into the caller's buffer: FloatWidth with FloatMode set, so it reads the digits already converted.",src/lib/msc_runtime.asm
+msc_runtime:21E6,FormatOne,,MSC,high,"Format one floating-point argument for printf (%g): pack the double, then pick %e or %f style from the exponent and FloatPrecision.",src/lib/msc_runtime.asm
+msc_runtime:2298,FormatExp,,MSC,high,"Pick the floating-point style for a printf letter: e or E goes to the %e layout, f to %f, anything else to %g.",src/lib/msc_runtime.asm
+msc_runtime:22E8,FormatLen,,MSC,high,"Make room for a sign: when the flag argument is set, move the string up one byte (_strlen, _memmove). Shares its tail with the floating-point error exit.",src/lib/msc_runtime.asm
+msc_runtime:2356,FormatFixed,,MSC,high,,src/lib/msc_runtime.asm
+msc_runtime:239A,FormatPad,,MSC,high,"Lay out %e digits in a buffer: sign, leading digit, point, the requested digits and the exponent with its sign.",src/lib/msc_runtime.asm
+msc_runtime:24E4,FormatG,,MSC,high,Convert a double to digits (HexConvert) and lay them out %f style (FormatCopy).,src/lib/msc_runtime.asm
+msc_runtime:2522,FormatCopy,,MSC,high,"Lay out %f digits in a buffer: sign, the digits before the point (or 0), the point and the requested digits, padding with zeros.",src/lib/msc_runtime.asm
+msc_runtime:2622,FormatDigits,,MSC,high,"Convert a double to digits (HexConvert) with at least one digit of precision, then lay them out %e style (FormatPad).",src/lib/msc_runtime.asm
+msc_runtime:2690,FormatExp2,,MSC,high,"The same choice as FormatExp for the second set of layout routines: e or E, f, else g.",src/lib/msc_runtime.asm
+msc_runtime:26E6,ConvertFloat,,MSC,high,"Probably the stream flush: write out the buffered bytes of the FILE at SI (_write), mark an error in its flags when fewer were written, and reset the buffer.",src/lib/msc_runtime.asm
+msc_runtime:283E,WriteDigits,,MSC,high,"Copy the digits of a converted number into a buffer behind a leading 0, rounding at the requested precision and carrying into the 0 when it overflows.",src/lib/msc_runtime.asm
+msc_runtime:28DA,RetPop10,,MSC,high,An empty Pascal-style routine: returns and drops 10 bytes of arguments.,src/lib/msc_runtime.asm
+msc_runtime:28F9,RetPop2,,MSC,high,An empty Pascal-style routine: returns and drops 2 bytes of arguments.,src/lib/msc_runtime.asm
+msc_runtime:2902,WriteFar,,MSC,high,"Write a far buffer to a handle (DOS 40h) for the emulator's error output; Pascal style, drops 12 bytes of arguments. Result: AX 0.",src/lib/msc_runtime.asm
+msc_runtime:29C4,HexConvert,,MSC,high,"Split a double into sign, decimal exponent and digit string (the decimal conversion behind %e, %f and %g), into a near result block.",src/lib/msc_runtime.asm
+msc_runtime:2BD2,PackArgs,,MSC,high,"Copy the double on the stack into the emulator's conversion area, run the conversion and copy its digit string and exponent into the result block.",src/lib/msc_runtime.asm
+msc_runtime:2C18,FloatStatus,,MSC,high,"Pack a double through StrToTenByte and test it with the emulator; probably returns its class (zero, normal or infinite) for the conversion code.",src/lib/msc_runtime.asm
+overlay_manager:0000,Messages,,new,medium,start of the message pointers below,src/lib/rtlink/overlay_manager.asm
+overlay_manager:067B,SectionRecord,,new,medium,Near. AX is a section index. Returns BX pointing at that record.,src/lib/rtlink/overlay_manager.asm
+overlay_manager:0BA0,FileHandle,,new,medium,word,src/lib/rtlink/overlay_manager.asm
+overlay_manager:0BA2,SectionEnd,,new,medium,word,src/lib/rtlink/overlay_manager.asm
+overlay_manager:0D2D,SectionCount,,new,medium,word,src/lib/rtlink/overlay_manager.asm
+overlay_manager:0D33,SectionTable,,new,medium,,src/lib/rtlink/overlay_manager.asm
+overlay_manager:0EAD,SectionEndMark,,new,medium,,src/lib/rtlink/overlay_manager.asm
+rtl_runtime:004E,RtlOldTerminate,,new,medium,dword; the PSP terminate address before RtlSetHandler,src/lib/rtlink/rtl_runtime.asm
+rtl_runtime:0052,RtlPspSeg,,new,medium,word; the PSP segment RtlSaveVectors was given,src/lib/rtlink/rtl_runtime.asm
+rtl_runtime:00A7,RtlExitHandlers,,new,medium,Runs the callbacks with flag 1 and puts the PSP terminate address back.,src/lib/rtlink/rtl_runtime.asm
+rtl_runtime:014C,RtlHandlerTable,,new,medium,"12 callbacks of 6 bytes: far address, flag mask, unused",src/lib/rtlink/rtl_runtime.asm
+rtl_runtime:0194,RtlHandlerTableEnd,,new,medium,end of RtlHandlerTable (a full table),src/lib/rtlink/rtl_runtime.asm
+rtl_runtime:01C3,RtlErrorList,,new,medium,"word; the message list RtlInternalError passes to the error routine, ended by 0",src/lib/rtlink/rtl_runtime.asm
+rtl_runtime:0231,RtlMessages,,new,medium,word; the fatal error texts below,src/lib/rtlink/rtl_runtime.asm
+rtl_runtime:0239,RtlStrFatal,,new,medium,"'Fatal Error ', $-terminated",src/lib/rtlink/rtl_runtime.asm
+rtl_runtime:0246,RtlStrPressKey,,new,medium,"CR LF 'Press any key to terminate.', $-terminated",src/lib/rtlink/rtl_runtime.asm
+rtl_runtime:0264,RtlStrIntCode,,new,medium,"'ege0001: ', the internal error's code",src/lib/rtlink/rtl_runtime.asm
+rtl_runtime:026E,RtlStrIntText,,new,medium,the internal error's text,src/lib/rtlink/rtl_runtime.asm
+rtl_runtime:04FC,RtlIsExe,,new,medium,byte; 1 when the name RtlAppendName copied ends in .exe,src/lib/rtlink/rtl_runtime.asm
+rtl_runtime:05D5,RtlPrompts,,new,medium,word; the texts RtlShowMessage prints around the file name,src/lib/rtlink/rtl_runtime.asm
+rtl_runtime:05DB,RtlStrEnterDir,,new,medium,"'Enter directory for ', $-terminated",src/lib/rtlink/rtl_runtime.asm
+rtl_runtime:05F0,RtlStrToQuit,,new,medium,"' (Enter to quit) : ', $-terminated",src/lib/rtlink/rtl_runtime.asm
+rtl_runtime:0604,RtlStrCrLf,,new,medium,"CR LF, $-terminated",src/lib/rtlink/rtl_runtime.asm
+,DrawFileDlgJumpTable,,new,medium,jump table of DrawFileDlg: 6 case targets,src/pc/file_dialogs.asm
+,DrawFileDlgListJumpTable,,new,medium,jump table of DrawFileDlgList: 6 case targets,src/pc/file_dialogs.asm
+,LeagueOptsToBitsJumpTable,,new,medium,jump table of LeagueOptsToBits: 14 case targets,src/pc/league_settings.asm
+null_far2:0000,RandomTail,,new,medium,end of randomd0,src/pc/null_far2.asm
+speech:1154,DivisionSampleNameJumpTable,,new,medium,word,src/pc/sound/speech.asm
+system:0008,SpillRet,,new,medium,,src/pc/system.asm
+system:063B,FindExit,,new,medium,,src/pc/system.asm
+system:0B8A,PathTailBody,,new,medium,,src/pc/system.asm
+system:0BC8,CopyStrNBody,,new,medium,,src/pc/system.asm
+system:0C11,TextWidthBody,,new,medium,,src/pc/system.asm
+system:17F1,ConOut,,new,medium,,src/pc/system.asm
+system:26F5,FileOpenAlt,,new,medium,Second try of a failed open: open AltPath when one is set and read its first 400h bytes into AltBuf. Falls into FileOpenFail when there is none or it fails too.,src/pc/system.asm
+system:2762,FileOpenFail,,new,medium,Clean-up after a failed open: close the handle stored through the argument pointer and clear the caller's result words; a fatal error when the caller asked for ,src/pc/system.asm
+system:2823,ReadAtFail,,new,medium,"Error exit of the read-at routine above: return DX:AX 0, or a fatal error with the file name when the caller asked for one.",src/pc/system.asm
+system:28A1,ReadCloseFail,,new,medium,"Error exit of the read-and-close routine above: return DX:AX 0, or a fatal error with the file name when the caller asked for one.",src/pc/system.asm
+system:293D,CpuProbeDone,,new,medium,,src/pc/system.asm
+system:2996,FillArg,,new,medium,,src/pc/system.asm
+system:29C3,FillAddr,,new,medium,,src/pc/system.asm
+system:32F8,AngleTab,,new,medium,,src/pc/system.asm
+vga:0EA0,LeftMasks,,new,medium,byte masks with the top 0 to 8 bits set; the DrawChar body indexes it by the width of the glyph's last byte,src/pc/video/vga.asm
+vga:367A,CopyPageToPageJumpTable,,new,medium,word,src/pc/video/vga.asm
+vga:377B,CopyPageRectJumpTable,,new,medium,word,src/pc/video/vga.asm
+vga:3C53,DrawScaledJumpTable,,new,medium,word,src/pc/video/vga.asm
+vga:3CEE,DrawLineClippedJumpTable,,new,medium,word,src/pc/video/vga.asm
+vga:3F22,DrawLineClippedJumpTable2,,new,medium,word,src/pc/video/vga.asm
