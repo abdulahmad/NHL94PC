@@ -1,6 +1,6 @@
 ; Line editor: edit the lines, dress and scratch players of a team (MENUS.OVL)
 ; The first bytes finish the last routine of side_controls.asm.
-        mov [es:itemVisitingTeamGoalie + 0xE], ax
+        mov [es:itemVisitingTeamGoalie + 0x10], ax
         retf
         db 0x90
 
@@ -250,10 +250,10 @@ GameLineEditorLoop:
         mov [bp - 0x30], ax
         mov [bp - 0x32], ax
         mov es, [segMenuText3]
+        mov [es:itemScratchPlayer + 0xE], ax
         mov [es:itemScratchPlayer + 0xC], ax
-        mov [es:itemScratchPlayer + 0xA], ax
+        mov [es:itemDressPlayer + 0xE], ax
         mov [es:itemDressPlayer + 0xC], ax
-        mov [es:itemDressPlayer + 0xA], ax
         les bx, [bp - 0x22]
         mov ax, [es:bx + 0x2]
         inc ax
@@ -350,24 +350,24 @@ GameLineEditorLoop:
         add al, 0x60
         mov [bp - 0x3a], al
         mov es, [segMenuText4]
-        mov word [es:itemSaveTheseLines + 0xA], strict word WriteTeamLines2
-        mov word [es:itemSaveTheseLines + 0xC], 0x2047
+        mov word [es:itemSaveTheseLines + 0xC], strict word WriteTeamLines2
+        mov word [es:itemSaveTheseLines + 0xE], 0x2047
         mov ax, strict word MenuUseTheseLinesThunk
         mov dx, 0x1b35
         mov es, [segMenuText5]
-        mov [es:itemUseTheseLines_2 + 0xA], ax
-        mov [es:itemUseTheseLines_2 + 0xC], dx
+        mov [es:itemUseTheseLines_2 + 0xC], ax
+        mov [es:itemUseTheseLines_2 + 0xE], dx
         mov es, [segMenuText6]
-        mov [es:itemUseTheseLines + 0xA], ax
-        mov [es:itemUseTheseLines + 0xC], dx
+        mov [es:itemUseTheseLines + 0xC], ax
+        mov [es:itemUseTheseLines + 0xE], dx
         mov ax, strict word WriteTeamLinesThunk
         mov dx, 0x1b35
         mov es, [segMenuText5]
-        mov [es:itemSaveAsDefaultLines_2 + 0xA], ax
-        mov [es:itemSaveAsDefaultLines_2 + 0xC], dx
+        mov [es:itemSaveAsDefaultLines_2 + 0xC], ax
+        mov [es:itemSaveAsDefaultLines_2 + 0xE], dx
         mov es, [segMenuText6]
-        mov [es:itemSaveAsDefaultLines + 0xA], ax
-        mov [es:itemSaveAsDefaultLines + 0xC], dx
+        mov [es:itemSaveAsDefaultLines + 0xC], ax
+        mov [es:itemSaveAsDefaultLines + 0xE], dx
         mov word [bp - 0x8a], 0x0
         jmp short .8
 .7:
@@ -381,20 +381,20 @@ GameLineEditorLoop:
         jnz short .7
         mov es, [segMenuText4]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [es:itemSaveTheseLines + 0xE], ax
         mov [es:itemSaveTheseLines + 0xC], ax
-        mov [es:itemSaveTheseLines + 0xA], ax
         mov es, [segMenuText5]
+        mov [es:itemUseTheseLines_2 + 0xE], ax
         mov [es:itemUseTheseLines_2 + 0xC], ax
-        mov [es:itemUseTheseLines_2 + 0xA], ax
         mov es, [segMenuText6]
+        mov [es:itemUseTheseLines + 0xE], ax
         mov [es:itemUseTheseLines + 0xC], ax
-        mov [es:itemUseTheseLines + 0xA], ax
         mov es, [segMenuText5]
+        mov [es:itemSaveAsDefaultLines_2 + 0xE], ax
         mov [es:itemSaveAsDefaultLines_2 + 0xC], ax
-        mov [es:itemSaveAsDefaultLines_2 + 0xA], ax
         mov es, [segMenuText6]
+        mov [es:itemSaveAsDefaultLines + 0xE], ax
         mov [es:itemSaveAsDefaultLines + 0xC], ax
-        mov [es:itemSaveAsDefaultLines + 0xA], ax
 .9:
         mov word [bp - 0x8a], 0x0
         jmp short .12
@@ -1399,24 +1399,24 @@ GameLineEditorLoop:
         jmp short .90
 .92:
         mov es, [segMenuText4]
-        mov word [es:itemSaveTheseLines + 0xA], strict word WriteTeamLines2
-        mov word [es:itemSaveTheseLines + 0xC], 0x2047
+        mov word [es:itemSaveTheseLines + 0xC], strict word WriteTeamLines2
+        mov word [es:itemSaveTheseLines + 0xE], 0x2047
         mov ax, strict word MenuUseTheseLinesThunk
         mov dx, 0x1b35
         mov es, [segMenuText5]
-        mov [es:itemUseTheseLines_2 + 0xA], ax
-        mov [es:itemUseTheseLines_2 + 0xC], dx
+        mov [es:itemUseTheseLines_2 + 0xC], ax
+        mov [es:itemUseTheseLines_2 + 0xE], dx
         mov es, [segMenuText6]
-        mov [es:itemUseTheseLines + 0xA], ax
-        mov [es:itemUseTheseLines + 0xC], dx
+        mov [es:itemUseTheseLines + 0xC], ax
+        mov [es:itemUseTheseLines + 0xE], dx
         mov ax, strict word WriteTeamLinesThunk
         mov dx, 0x1b35
         mov es, [segMenuText5]
-        mov [es:itemSaveAsDefaultLines_2 + 0xA], ax
-        mov [es:itemSaveAsDefaultLines_2 + 0xC], dx
+        mov [es:itemSaveAsDefaultLines_2 + 0xC], ax
+        mov [es:itemSaveAsDefaultLines_2 + 0xE], dx
         mov es, [segMenuText6]
-        mov [es:itemSaveAsDefaultLines + 0xA], ax
-        mov [es:itemSaveAsDefaultLines + 0xC], dx
+        mov [es:itemSaveAsDefaultLines + 0xC], ax
+        mov [es:itemSaveAsDefaultLines + 0xE], dx
         mov word [bp - 0x8a], 0x0
         jmp near .143
         db 0x90
@@ -1873,20 +1873,20 @@ GameLineEditorLoop:
         jnz short .142
         mov es, [segMenuText4]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [es:itemSaveTheseLines + 0xE], ax
         mov [es:itemSaveTheseLines + 0xC], ax
-        mov [es:itemSaveTheseLines + 0xA], ax
         mov es, [segMenuText5]
+        mov [es:itemUseTheseLines_2 + 0xE], ax
         mov [es:itemUseTheseLines_2 + 0xC], ax
-        mov [es:itemUseTheseLines_2 + 0xA], ax
         mov es, [segMenuText6]
+        mov [es:itemUseTheseLines + 0xE], ax
         mov [es:itemUseTheseLines + 0xC], ax
-        mov [es:itemUseTheseLines + 0xA], ax
         mov es, [segMenuText5]
+        mov [es:itemSaveAsDefaultLines_2 + 0xE], ax
         mov [es:itemSaveAsDefaultLines_2 + 0xC], ax
-        mov [es:itemSaveAsDefaultLines_2 + 0xA], ax
         mov es, [segMenuText6]
+        mov [es:itemSaveAsDefaultLines + 0xE], ax
         mov [es:itemSaveAsDefaultLines + 0xC], ax
-        mov [es:itemSaveAsDefaultLines + 0xA], ax
         jmp near .155
 .145:
         cmp word [bp - 0x6], 0x64
@@ -1959,10 +1959,10 @@ GameLineEditorLoop:
         add sp, 0xc
 .152:
         mov es, [segMenuText3]
-        mov word [es:itemDressPlayer + 0xA], strict word GameDressPlayerThunk
-        mov word [es:itemDressPlayer + 0xC], 0x1b35
-        mov word [es:itemScratchPlayer + 0xA], strict word GameScratchPlayerThunk
-        mov word [es:itemScratchPlayer + 0xC], 0x1b35
+        mov word [es:itemDressPlayer + 0xC], strict word GameDressPlayerThunk
+        mov word [es:itemDressPlayer + 0xE], 0x1b35
+        mov word [es:itemScratchPlayer + 0xC], strict word GameScratchPlayerThunk
+        mov word [es:itemScratchPlayer + 0xE], 0x1b35
         mov al, 0x1c
         mul byte [bp + 0xc]
         mov cx, [bp - 0x6]
@@ -3842,24 +3842,24 @@ MenuUseOriginalLines:
         call PruneGameLines
         add sp, 0x4
         mov es, [segMenuText4]
-        mov word [es:itemSaveTheseLines + 0xA], strict word WriteTeamLines2
-        mov word [es:itemSaveTheseLines + 0xC], 0x2047
+        mov word [es:itemSaveTheseLines + 0xC], strict word WriteTeamLines2
+        mov word [es:itemSaveTheseLines + 0xE], 0x2047
         mov ax, strict word MenuUseTheseLinesThunk
         mov dx, 0x1b35
         mov es, [segMenuText5]
-        mov [es:itemUseTheseLines_2 + 0xA], ax
-        mov [es:itemUseTheseLines_2 + 0xC], dx
+        mov [es:itemUseTheseLines_2 + 0xC], ax
+        mov [es:itemUseTheseLines_2 + 0xE], dx
         mov es, [segMenuText6]
-        mov [es:itemUseTheseLines + 0xA], ax
-        mov [es:itemUseTheseLines + 0xC], dx
+        mov [es:itemUseTheseLines + 0xC], ax
+        mov [es:itemUseTheseLines + 0xE], dx
         mov ax, strict word WriteTeamLinesThunk
         mov dx, 0x1b35
         mov es, [segMenuText5]
-        mov [es:itemSaveAsDefaultLines_2 + 0xA], ax
-        mov [es:itemSaveAsDefaultLines_2 + 0xC], dx
+        mov [es:itemSaveAsDefaultLines_2 + 0xC], ax
+        mov [es:itemSaveAsDefaultLines_2 + 0xE], dx
         mov es, [segMenuText6]
-        mov [es:itemSaveAsDefaultLines + 0xA], ax
-        mov [es:itemSaveAsDefaultLines + 0xC], dx
+        mov [es:itemSaveAsDefaultLines + 0xC], ax
+        mov [es:itemSaveAsDefaultLines + 0xE], dx
         db 0x2B, 0xF6                           ; insn: sub si, si
 .1:
         db 0x8B, 0xDF                           ; insn: mov bx, di
@@ -3882,20 +3882,20 @@ MenuUseOriginalLines:
         mov byte [bx + si], 0x64
         mov es, [segMenuText4]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [es:itemSaveTheseLines + 0xE], ax
         mov [es:itemSaveTheseLines + 0xC], ax
-        mov [es:itemSaveTheseLines + 0xA], ax
         mov es, [segMenuText5]
+        mov [es:itemUseTheseLines_2 + 0xE], ax
         mov [es:itemUseTheseLines_2 + 0xC], ax
-        mov [es:itemUseTheseLines_2 + 0xA], ax
         mov es, [segMenuText6]
+        mov [es:itemUseTheseLines + 0xE], ax
         mov [es:itemUseTheseLines + 0xC], ax
-        mov [es:itemUseTheseLines + 0xA], ax
         mov es, [segMenuText5]
+        mov [es:itemSaveAsDefaultLines_2 + 0xE], ax
         mov [es:itemSaveAsDefaultLines_2 + 0xC], ax
-        mov [es:itemSaveAsDefaultLines_2 + 0xA], ax
         mov es, [segMenuText6]
+        mov [es:itemSaveAsDefaultLines + 0xE], ax
         mov [es:itemSaveAsDefaultLines + 0xC], ax
-        mov [es:itemSaveAsDefaultLines + 0xA], ax
 .3:
         inc si
         cmp si, 0x28
@@ -3912,10 +3912,10 @@ MenuUseOriginalLines:
         mov word [bx], 0xffff
         mov es, [segMenuText3]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [es:itemScratchPlayer + 0xE], ax
         mov [es:itemScratchPlayer + 0xC], ax
-        mov [es:itemScratchPlayer + 0xA], ax
+        mov [es:itemDressPlayer + 0xE], ax
         mov [es:itemDressPlayer + 0xC], ax
-        mov [es:itemDressPlayer + 0xA], ax
         pop si
         pop di
         leave
@@ -3942,24 +3942,24 @@ MenuUseDefaultLines:
         call PruneGameLines
         add sp, 0x4
         mov es, [segMenuText4]
-        mov word [es:itemSaveTheseLines + 0xA], strict word WriteTeamLines2
-        mov word [es:itemSaveTheseLines + 0xC], 0x2047
+        mov word [es:itemSaveTheseLines + 0xC], strict word WriteTeamLines2
+        mov word [es:itemSaveTheseLines + 0xE], 0x2047
         mov ax, strict word MenuUseTheseLinesThunk
         mov dx, 0x1b35
         mov es, [segMenuText5]
-        mov [es:itemUseTheseLines_2 + 0xA], ax
-        mov [es:itemUseTheseLines_2 + 0xC], dx
+        mov [es:itemUseTheseLines_2 + 0xC], ax
+        mov [es:itemUseTheseLines_2 + 0xE], dx
         mov es, [segMenuText6]
-        mov [es:itemUseTheseLines + 0xA], ax
-        mov [es:itemUseTheseLines + 0xC], dx
+        mov [es:itemUseTheseLines + 0xC], ax
+        mov [es:itemUseTheseLines + 0xE], dx
         mov ax, strict word WriteTeamLinesThunk
         mov dx, 0x1b35
         mov es, [segMenuText5]
-        mov [es:itemSaveAsDefaultLines_2 + 0xA], ax
-        mov [es:itemSaveAsDefaultLines_2 + 0xC], dx
+        mov [es:itemSaveAsDefaultLines_2 + 0xC], ax
+        mov [es:itemSaveAsDefaultLines_2 + 0xE], dx
         mov es, [segMenuText6]
-        mov [es:itemSaveAsDefaultLines + 0xA], ax
-        mov [es:itemSaveAsDefaultLines + 0xC], dx
+        mov [es:itemSaveAsDefaultLines + 0xC], ax
+        mov [es:itemSaveAsDefaultLines + 0xE], dx
         db 0x2B, 0xF6                           ; insn: sub si, si
 .1:
         db 0x8B, 0xDF                           ; insn: mov bx, di
@@ -3982,20 +3982,20 @@ MenuUseDefaultLines:
         mov byte [bx + si], 0x64
         mov es, [segMenuText4]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [es:itemSaveTheseLines + 0xE], ax
         mov [es:itemSaveTheseLines + 0xC], ax
-        mov [es:itemSaveTheseLines + 0xA], ax
         mov es, [segMenuText5]
+        mov [es:itemUseTheseLines_2 + 0xE], ax
         mov [es:itemUseTheseLines_2 + 0xC], ax
-        mov [es:itemUseTheseLines_2 + 0xA], ax
         mov es, [segMenuText6]
+        mov [es:itemUseTheseLines + 0xE], ax
         mov [es:itemUseTheseLines + 0xC], ax
-        mov [es:itemUseTheseLines + 0xA], ax
         mov es, [segMenuText5]
+        mov [es:itemSaveAsDefaultLines_2 + 0xE], ax
         mov [es:itemSaveAsDefaultLines_2 + 0xC], ax
-        mov [es:itemSaveAsDefaultLines_2 + 0xA], ax
         mov es, [segMenuText6]
+        mov [es:itemSaveAsDefaultLines + 0xE], ax
         mov [es:itemSaveAsDefaultLines + 0xC], ax
-        mov [es:itemSaveAsDefaultLines + 0xA], ax
 .3:
         inc si
         cmp si, 0x28
@@ -4012,10 +4012,10 @@ MenuUseDefaultLines:
         mov word [bx], 0xffff
         mov es, [segMenuText3]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [es:itemScratchPlayer + 0xE], ax
         mov [es:itemScratchPlayer + 0xC], ax
-        mov [es:itemScratchPlayer + 0xA], ax
+        mov [es:itemDressPlayer + 0xE], ax
         mov [es:itemDressPlayer + 0xC], ax
-        mov [es:itemDressPlayer + 0xA], ax
         pop si
         pop di
         leave
@@ -4835,24 +4835,24 @@ GameScratchPlayer:
         cmp si, 0x28
         jl short .1
         mov es, [segMenuText4]
-        mov word [es:itemSaveTheseLines + 0xA], strict word WriteTeamLines2
-        mov word [es:itemSaveTheseLines + 0xC], 0x2047
+        mov word [es:itemSaveTheseLines + 0xC], strict word WriteTeamLines2
+        mov word [es:itemSaveTheseLines + 0xE], 0x2047
         mov ax, strict word MenuUseTheseLinesThunk
         mov dx, 0x1b35
         mov es, [segMenuText5]
-        mov [es:itemUseTheseLines_2 + 0xA], ax
-        mov [es:itemUseTheseLines_2 + 0xC], dx
+        mov [es:itemUseTheseLines_2 + 0xC], ax
+        mov [es:itemUseTheseLines_2 + 0xE], dx
         mov es, [segMenuText6]
-        mov [es:itemUseTheseLines + 0xA], ax
-        mov [es:itemUseTheseLines + 0xC], dx
+        mov [es:itemUseTheseLines + 0xC], ax
+        mov [es:itemUseTheseLines + 0xE], dx
         mov ax, strict word WriteTeamLinesThunk
         mov dx, 0x1b35
         mov es, [segMenuText5]
-        mov [es:itemSaveAsDefaultLines_2 + 0xA], ax
-        mov [es:itemSaveAsDefaultLines_2 + 0xC], dx
+        mov [es:itemSaveAsDefaultLines_2 + 0xC], ax
+        mov [es:itemSaveAsDefaultLines_2 + 0xE], dx
         mov es, [segMenuText6]
-        mov [es:itemSaveAsDefaultLines + 0xA], ax
-        mov [es:itemSaveAsDefaultLines + 0xC], dx
+        mov [es:itemSaveAsDefaultLines + 0xC], ax
+        mov [es:itemSaveAsDefaultLines + 0xE], dx
         db 0x2B, 0xDB                           ; insn: sub bx, bx
         mov ax, 0x3448
         mov es, ax
@@ -4867,20 +4867,20 @@ GameScratchPlayer:
 .4:
         mov es, [segMenuText4]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [es:itemSaveTheseLines + 0xE], ax
         mov [es:itemSaveTheseLines + 0xC], ax
-        mov [es:itemSaveTheseLines + 0xA], ax
         mov es, [segMenuText5]
+        mov [es:itemUseTheseLines_2 + 0xE], ax
         mov [es:itemUseTheseLines_2 + 0xC], ax
-        mov [es:itemUseTheseLines_2 + 0xA], ax
         mov es, [segMenuText6]
+        mov [es:itemUseTheseLines + 0xE], ax
         mov [es:itemUseTheseLines + 0xC], ax
-        mov [es:itemUseTheseLines + 0xA], ax
         mov es, [segMenuText5]
+        mov [es:itemSaveAsDefaultLines_2 + 0xE], ax
         mov [es:itemSaveAsDefaultLines_2 + 0xC], ax
-        mov [es:itemSaveAsDefaultLines_2 + 0xA], ax
         mov es, [segMenuText6]
+        mov [es:itemSaveAsDefaultLines + 0xE], ax
         mov [es:itemSaveAsDefaultLines + 0xC], ax
-        mov [es:itemSaveAsDefaultLines + 0xA], ax
 .5:
         mov di, [bp + 0xc]
         mov al, 0x1c

@@ -156,10 +156,10 @@ SetModeMenuLabels:
         mov cx, 0x3448
 .4:
         mov es, [segMenuText12]
-        mov [es:itemSportsDesk + 0x6], ax
-        mov [es:itemSportsDesk + 0x8], cx
+        mov [es:itemSportsDesk + 0x8], ax
+        mov [es:itemSportsDesk + 0xA], cx
         mov es, [segMenuText13]
-        mov [es:itemSportsDesk_2 + 0x6], ax
-        mov [es:itemSportsDesk_2 + 0x8], cx
+        mov [es:itemSportsDesk_2 + 0x8], ax
+        mov [es:itemSportsDesk_2 + 0xA], cx
         leave
         retf

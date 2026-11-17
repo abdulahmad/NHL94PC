@@ -34,10 +34,10 @@ str_Checking:                                   ; string 'Checking'
 str_Goaltending:                                ; string 'Goaltending'
         db 'Goaltending', 0x00
 str_OverAll:                                    ; string 'Over all'
-        db 'Ove'
+        db 0x4F
 itemPenaltyKilling:                             ; menu item record (box, text, handler) of the
                                                 ; 'PenaltyKilling' entry
-        db 'r all', 0x00
+        db 'ver all', 0x00
         dw str_PenaltyKilling, 0x38AF
         dw str_PowerPlay, 0x38AF
         dw str_Shooting, 0x38AF

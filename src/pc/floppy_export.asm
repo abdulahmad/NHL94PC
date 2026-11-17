@@ -2087,12 +2087,12 @@ ImportDbs:
         call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
         mov es, [segMenuText20]
-        mov word [es:itemExportDatabases + 0xA], strict word MenuExportDbsThunk
-        mov word [es:itemExportDatabases + 0xC], 0x1b35
-        mov word [es:itemNextLeagueGame + 0xA], strict word MenuNextLeagueGameThunk
-        mov word [es:itemNextLeagueGame + 0xC], 0x1b35
-        mov word [es:itemLeagueManager + 0xE], 0xd86
-        mov word [es:itemLeagueManager + 0x10], 0x3448
+        mov word [es:itemExportDatabases + 0xC], strict word MenuExportDbsThunk
+        mov word [es:itemExportDatabases + 0xE], 0x1b35
+        mov word [es:itemNextLeagueGame + 0xC], strict word MenuNextLeagueGameThunk
+        mov word [es:itemNextLeagueGame + 0xE], 0x1b35
+        mov word [es:itemLeagueManager + 0x10], 0xd86
+        mov word [es:itemLeagueManager + 0x12], 0x3448
         jmp short .10
 .9:
         mov es, [segDbFiles12]
@@ -2103,12 +2103,12 @@ ImportDbs:
         add sp, 0x2
         mov es, [segMenuText20]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [es:itemExportDatabases + 0xE], ax
         mov [es:itemExportDatabases + 0xC], ax
-        mov [es:itemExportDatabases + 0xA], ax
+        mov [es:itemNextLeagueGame + 0xE], ax
         mov [es:itemNextLeagueGame + 0xC], ax
-        mov [es:itemNextLeagueGame + 0xA], ax
+        mov [es:itemLeagueManager + 0x12], ax
         mov [es:itemLeagueManager + 0x10], ax
-        mov [es:itemLeagueManager + 0xE], ax
 .10:
         push 0x0
         push 0x3f

@@ -2059,12 +2059,12 @@ DeleteSavedGame:
         mov es, [segDbFiles4]
         mov byte [es:lgstate_name], 0x0
         mov es, [segMenuText7]
+        mov [es:itemExportDatabases + 0xE], ax
         mov [es:itemExportDatabases + 0xC], ax
-        mov [es:itemExportDatabases + 0xA], ax
+        mov [es:itemNextLeagueGame + 0xE], ax
         mov [es:itemNextLeagueGame + 0xC], ax
-        mov [es:itemNextLeagueGame + 0xA], ax
+        mov [es:itemLeagueManager + 0x12], ax
         mov [es:itemLeagueManager + 0x10], ax
-        mov [es:itemLeagueManager + 0xE], ax
         jmp short .8
 .7:
         push word 0x3415
@@ -2079,12 +2079,12 @@ DeleteSavedGame:
         mov es, [segDbFiles2]
         mov byte [es:postate_name], 0x0
         mov es, [segMenuText7]
+        mov [es:itemNextPlayOffGame + 0xE], ax
         mov [es:itemNextPlayOffGame + 0xC], ax
-        mov [es:itemNextPlayOffGame + 0xA], ax
+        mov [es:itemPlayOffSettings + 0xE], ax
         mov [es:itemPlayOffSettings + 0xC], ax
-        mov [es:itemPlayOffSettings + 0xA], ax
+        mov [es:itemPlayOffHilights + 0xE], ax
         mov [es:itemPlayOffHilights + 0xC], ax
-        mov [es:itemPlayOffHilights + 0xA], ax
 .8:
         lea ax, [bp - 0x28]
         push ax
@@ -2409,12 +2409,12 @@ SelectSavedFile:
         add sp, 0x8
         mov [bp - 0x2], ax
         mov es, [segMenuText7]
-        mov word [es:itemNextPlayOffGame + 0xA], strict word PlayoffModeLoopThunk
-        mov word [es:itemNextPlayOffGame + 0xC], 0x1b35
-        mov word [es:itemPlayOffSettings + 0xA], strict word EditPlayoffSettingsThunk
-        mov word [es:itemPlayOffSettings + 0xC], 0x1b35
-        mov word [es:itemPlayOffHilights + 0xA], strict word MenuPlayoffHilightsThunk
-        mov word [es:itemPlayOffHilights + 0xC], 0x1b35
+        mov word [es:itemNextPlayOffGame + 0xC], strict word PlayoffModeLoopThunk
+        mov word [es:itemNextPlayOffGame + 0xE], 0x1b35
+        mov word [es:itemPlayOffSettings + 0xC], strict word EditPlayoffSettingsThunk
+        mov word [es:itemPlayOffSettings + 0xE], 0x1b35
+        mov word [es:itemPlayOffHilights + 0xC], strict word MenuPlayoffHilightsThunk
+        mov word [es:itemPlayOffHilights + 0xE], 0x1b35
         lea ax, [bp - 0x14]
         push ss
         push ax
@@ -2483,12 +2483,12 @@ SelectSavedFile:
         add sp, 0x8
         mov [bp - 0x2], ax
         mov es, [segMenuText7]
-        mov word [es:itemExportDatabases + 0xA], strict word MenuExportDbsThunk
-        mov word [es:itemExportDatabases + 0xC], 0x1b35
-        mov word [es:itemNextLeagueGame + 0xA], strict word MenuNextLeagueGameThunk
-        mov word [es:itemNextLeagueGame + 0xC], 0x1b35
-        mov word [es:itemLeagueManager + 0xE], 0xd86
-        mov word [es:itemLeagueManager + 0x10], 0x3448
+        mov word [es:itemExportDatabases + 0xC], strict word MenuExportDbsThunk
+        mov word [es:itemExportDatabases + 0xE], 0x1b35
+        mov word [es:itemNextLeagueGame + 0xC], strict word MenuNextLeagueGameThunk
+        mov word [es:itemNextLeagueGame + 0xE], 0x1b35
+        mov word [es:itemLeagueManager + 0x10], 0xd86
+        mov word [es:itemLeagueManager + 0x12], 0x3448
 .10:
         mov ax, [bp - 0x2]
         pop si

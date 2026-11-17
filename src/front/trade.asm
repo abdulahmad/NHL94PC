@@ -1643,8 +1643,8 @@ TradeHitTest:
         mov [bx + si], ax
         mov word [bp - 0x2], 0x1
         mov es, [segTeamChoiceText40]
-        mov word [es:itemShowPlayerStatistics + 0xA], strict word TradeShowStatsThunk
-        mov word [es:itemShowPlayerStatistics + 0xC], 0x1b35
+        mov word [es:itemShowPlayerStatistics + 0xC], strict word TradeShowStatsThunk
+        mov word [es:itemShowPlayerStatistics + 0xE], 0x1b35
 .8:
         mov ax, [bp - 0x2]
         pop si
@@ -1849,10 +1849,10 @@ TradeScreenLoop:
         mov [bp - 0x8a], ax
         mov [bp - 0x8c], ax
         mov es, [segMenuText21]
+        mov [es:itemScratchPlayer + 0xE], ax
         mov [es:itemScratchPlayer + 0xC], ax
-        mov [es:itemScratchPlayer + 0xA], ax
+        mov [es:itemDressPlayer + 0xE], ax
         mov [es:itemDressPlayer + 0xC], ax
-        mov [es:itemDressPlayer + 0xA], ax
         les bx, [bp - 0xb6]
         mov ax, [es:bx + 0x2]
         inc ax
@@ -1946,8 +1946,8 @@ TradeScreenLoop:
         mov word [tradestate], 0x0
         mov es, [segTeamChoiceText40]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [es:itemShowPlayerStatistics + 0xE], ax
         mov [es:itemShowPlayerStatistics + 0xC], ax
-        mov [es:itemShowPlayerStatistics + 0xA], ax
 .7:
         mov word [bp - 0xce], 0x0
 .8:
@@ -2658,8 +2658,8 @@ TradeScreenLoop:
         mov [bp + si - 0x75], al
         mov word [bp - 0x78], 0xffff
         mov es, [segTeamChoiceText40]
-        mov word [es:itemShowPlayerStatistics + 0xA], strict word TradeShowStatsThunk
-        mov word [es:itemShowPlayerStatistics + 0xC], 0x1b35
+        mov word [es:itemShowPlayerStatistics + 0xC], strict word TradeShowStatsThunk
+        mov word [es:itemShowPlayerStatistics + 0xE], 0x1b35
         jmp near .84
 .67:
         mov word [tradecursor], 0xffff
@@ -2795,8 +2795,8 @@ TradeScreenLoop:
         add sp, 0x2
         mov es, [segTeamChoiceText40]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [es:itemShowPlayerStatistics + 0xE], ax
         mov [es:itemShowPlayerStatistics + 0xC], ax
-        mov [es:itemShowPlayerStatistics + 0xA], ax
         mov ax, 0xffff
         mov bx, [tradecursor]
         shl bx, 1
@@ -2911,8 +2911,8 @@ TradeScreenLoop:
         mov [tradecursor], ax
         mov es, [segTeamChoiceText40]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [es:itemShowPlayerStatistics + 0xE], ax
         mov [es:itemShowPlayerStatistics + 0xC], ax
-        mov [es:itemShowPlayerStatistics + 0xA], ax
         jmp short .97
         db 0x90, 0x90
 .95:

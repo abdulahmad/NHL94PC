@@ -661,10 +661,10 @@ SettingsSubmenuPtr:                             ; far pointer to the submenu of 
                                                 ; run time
         db 0x5C, 0x10, 0x01, 0x37, 0x01, 0x00
 str_ShowPlayerStatistics_2:                     ; string 'Show Player Statistics'
-        db 'Show Player Statistics', 0x00, 0x00, 0x00
+        db 'Show Player Statistics', 0x00
 itemShowPlayerStatistics:                       ; menu item record (box, text, handler) of the 'Show Player
                                                 ; Statistics' entry
-        db 0x00, 0x00, 0x6C, 0x00, 0x09, 0x00
+        db 0x00, 0x00, 0x00, 0x00, 0x6C, 0x00, 0x09, 0x00
         dw str_ShowPlayerStatistics_2, 0x3701
         dw TradeShowStatsThunk, 0x1B35
         db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00

@@ -489,9 +489,9 @@ iflags		equ	0xD62A
 injurystop		equ	0x49F6
 inputframes		equ	0x4B00
 introskipped		equ	0x4A64
-itemHomeTeam		equ	0x1166
-itemPenaltyKilling		equ	0xB6
-itemVisitingTeam		equ	0x117C
+itemHomeTeam		equ	0x1164
+itemPenaltyKilling		equ	0xB4
+itemVisitingTeam		equ	0x117A
 joyq_flushThunk		equ	0x293B
 lastplayer		equ	0x29A2
 lastsfx		equ	0x4A52

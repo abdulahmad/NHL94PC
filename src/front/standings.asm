@@ -223,8 +223,8 @@ StandingsScreen:
         push di
         push si
         mov es, [segMenuText36]
-        mov word [es:itemShowTeamRoster + 0xA], strict word StandingsActRoster2
-        mov word [es:itemShowTeamRoster + 0xC], 0x2248
+        mov word [es:itemShowTeamRoster + 0xC], strict word StandingsActRoster2
+        mov word [es:itemShowTeamRoster + 0xE], 0x2248
         push 0x0
         push strict word str_EasnFnt
         call 0x149D:LoadRawHeader
@@ -1726,8 +1726,8 @@ ShowPlayoffStandings:
         mov dx, 0x2248
 .10:
         mov es, [segMenuText36]
-        mov [es:itemShowTeamRoster + 0xA], ax
-        mov [es:itemShowTeamRoster + 0xC], dx
+        mov [es:itemShowTeamRoster + 0xC], ax
+        mov [es:itemShowTeamRoster + 0xE], dx
         push cs
         call DrawStandingsPage
         pop si

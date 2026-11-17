@@ -374,16 +374,16 @@ ShowMatchupScreen:
         mov es, [segLinesMenuText1]
         mov bx, [bp - 0x66]
         shl bx, byte 0x2
+        push word [es:bx + itemPenaltyKilling + 0xA]
         push word [es:bx + itemPenaltyKilling + 0x8]
-        push word [es:bx + itemPenaltyKilling + 0x6]
         les si, [FontPtr]
         mov ax, [es:si + 0xe]
         imul word [bp - 0x66]
         add ax, strict word 0x1e
         push ax
         mov es, [segLinesMenuText1]
+        push word [es:bx + itemPenaltyKilling + 0xA]
         push word [es:bx + itemPenaltyKilling + 0x8]
-        push word [es:bx + itemPenaltyKilling + 0x6]
         call 0x0D39:TextWidthFar
         add sp, 0x4
         sub ax, 0x140
@@ -498,11 +498,11 @@ ShowMatchupScreen:
         call 0x03A3:UseCharSeg
         add sp, 0x4
         mov es, [segMenuText37]
-        mov ax, [es:itemHomeTeam + 0xC]
-        or ax, [es:itemHomeTeam + 0xA]
+        mov ax, [es:itemHomeTeam + 0xE]
+        or ax, [es:itemHomeTeam + 0xC]
         jnz short .10
-        mov ax, [es:itemVisitingTeam + 0xC]
-        or ax, [es:itemVisitingTeam + 0xA]
+        mov ax, [es:itemVisitingTeam + 0xE]
+        or ax, [es:itemVisitingTeam + 0xC]
         jnz short .10
         mov word [bp - 0x650], 0x2
 .9:
@@ -510,15 +510,15 @@ ShowMatchupScreen:
         jmp short .14
         db 0x90
 .10:
-        mov ax, [es:itemHomeTeam + 0xC]
-        or ax, [es:itemHomeTeam + 0xA]
+        mov ax, [es:itemHomeTeam + 0xE]
+        or ax, [es:itemHomeTeam + 0xC]
         jnz short .11
         mov word [bp - 0x650], 0x3
         jmp short .13
         db 0x90
 .11:
-        mov ax, [es:itemVisitingTeam + 0xC]
-        or ax, [es:itemVisitingTeam + 0xA]
+        mov ax, [es:itemVisitingTeam + 0xE]
+        or ax, [es:itemVisitingTeam + 0xC]
         jnz short .12
         mov word [bp - 0x650], 0x3
         jmp short .9
@@ -732,8 +732,8 @@ ShowMatchupScreen:
         jmp near .37
 .25:
         mov es, [segMenuText37]
-        mov cx, [es:itemVisitingTeam + 0xC]
-        or cx, [es:itemVisitingTeam + 0xA]
+        mov cx, [es:itemVisitingTeam + 0xE]
+        or cx, [es:itemVisitingTeam + 0xC]
         jz short .26
         jmp near .34
 .26:

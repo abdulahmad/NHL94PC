@@ -44,14 +44,14 @@ SportsDesk:
         jz short .1
         mov es, [segMenuText14]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [es:itemGoToReplay + 0xE], ax
         mov [es:itemGoToReplay + 0xC], ax
-        mov [es:itemGoToReplay + 0xA], ax
         jmp short .2
         db 0x90
 .1:
         mov es, [segMenuText14]
-        mov word [es:itemGoToReplay + 0xA], strict word DeskGoToReplay
-        mov word [es:itemGoToReplay + 0xC], 0x2cf8
+        mov word [es:itemGoToReplay + 0xC], strict word DeskGoToReplay
+        mov word [es:itemGoToReplay + 0xE], 0x2cf8
 .2:
         lea ax, [bp - 0x76]
         push ax
