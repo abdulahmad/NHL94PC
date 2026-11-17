@@ -149,6 +149,40 @@ def collect(flow, funcs):
     return mem, strs, starts, bad
 
 
+FAR_NAMES = {
+    0x3415: 'db_files',
+    0x342E: 'spare_1',
+    0x342F: 'number_words',
+    0x3448: 'menu_text',
+    0x35E8: 'save_messages',
+    0x35EC: 'spare_2',
+    0x35EE: 'save_dialog_rects',
+    0x35F3: 'hilight_messages',
+    0x3608: 'credits',
+    0x3680: 'char_table',
+    0x369A: 'dialog_rects',
+    0x36A8: 'playoff_dialog_rects',
+    0x36B8: 'playoff_messages',
+    0x36F5: 'return_messages',
+    0x3701: 'team_choice_text',
+    0x3821: 'import_messages',
+    0x3827: 'schedule_messages',
+    0x382B: 'trade_messages',
+    0x3836: 'merge_messages',
+    0x384B: 'season_titles',
+    0x3863: 'object_table',
+    0x38AF: 'lines_menu_text',
+    0x38BD: 'line_names',
+    0x38EB: 'stat_names',
+    0x38F0: 'hilight_save_messages',
+    0x38F6: 'anim_sequences',
+    0x3976: 'palette_flags',
+    0x3996: 'runtime_state',
+    0x39AD: 'font_table',
+    0x3A0B: 'work_buffer',
+}
+
+
 def far_segments():
     # paragraphs of the far data the code and the relocations name, from the start of the segment to DGROUP
     paras = {LOAD}
@@ -251,7 +285,7 @@ def main():
     fars = []
     bounds = paras + [DGROUP]
     for a, z in zip(bounds, bounds[1:]):
-        name = f'far{a:04X}'
+        name = FAR_NAMES.get(a, f'far{a:04X}')
         b = EXE[IMG_FILE + (a - LOAD) * 16:IMG_FILE + (z - LOAD) * 16]
         fl = {}
         fused = set()

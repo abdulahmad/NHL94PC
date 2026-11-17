@@ -426,213 +426,213 @@
    "file": "data/rtl_relocs.asm"
   },
   {
-   "name": "far3415",
+   "name": "db_files",
    "off": 135776,
    "size": 400,
-   "file": "data/far/far3415.asm",
+   "file": "data/far/db_files.asm",
    "para": 13333
   },
   {
-   "name": "far342E",
+   "name": "spare_1",
    "off": 136176,
    "size": 16,
-   "file": "data/far/far342E.asm",
+   "file": "data/far/spare_1.asm",
    "para": 13358
   },
   {
-   "name": "far342F",
+   "name": "number_words",
    "off": 136192,
    "size": 400,
-   "file": "data/far/far342F.asm",
+   "file": "data/far/number_words.asm",
    "para": 13359
   },
   {
-   "name": "far3448",
+   "name": "menu_text",
    "off": 136592,
    "size": 6656,
-   "file": "data/far/far3448.asm",
+   "file": "data/far/menu_text.asm",
    "para": 13384
   },
   {
-   "name": "far35E8",
+   "name": "save_messages",
    "off": 143248,
    "size": 64,
-   "file": "data/far/far35E8.asm",
+   "file": "data/far/save_messages.asm",
    "para": 13800
   },
   {
-   "name": "far35EC",
+   "name": "spare_2",
    "off": 143312,
    "size": 32,
-   "file": "data/far/far35EC.asm",
+   "file": "data/far/spare_2.asm",
    "para": 13804
   },
   {
-   "name": "far35EE",
+   "name": "save_dialog_rects",
    "off": 143344,
    "size": 80,
-   "file": "data/far/far35EE.asm",
+   "file": "data/far/save_dialog_rects.asm",
    "para": 13806
   },
   {
-   "name": "far35F3",
+   "name": "hilight_messages",
    "off": 143424,
    "size": 336,
-   "file": "data/far/far35F3.asm",
+   "file": "data/far/hilight_messages.asm",
    "para": 13811
   },
   {
-   "name": "far3608",
+   "name": "credits",
    "off": 143760,
    "size": 1920,
-   "file": "data/far/far3608.asm",
+   "file": "data/far/credits.asm",
    "para": 13832
   },
   {
-   "name": "far3680",
+   "name": "char_table",
    "off": 145680,
    "size": 416,
-   "file": "data/far/far3680.asm",
+   "file": "data/far/char_table.asm",
    "para": 13952
   },
   {
-   "name": "far369A",
+   "name": "dialog_rects",
    "off": 146096,
    "size": 224,
-   "file": "data/far/far369A.asm",
+   "file": "data/far/dialog_rects.asm",
    "para": 13978
   },
   {
-   "name": "far36A8",
+   "name": "playoff_dialog_rects",
    "off": 146320,
    "size": 256,
-   "file": "data/far/far36A8.asm",
+   "file": "data/far/playoff_dialog_rects.asm",
    "para": 13992
   },
   {
-   "name": "far36B8",
+   "name": "playoff_messages",
    "off": 146576,
    "size": 976,
-   "file": "data/far/far36B8.asm",
+   "file": "data/far/playoff_messages.asm",
    "para": 14008
   },
   {
-   "name": "far36F5",
+   "name": "return_messages",
    "off": 147552,
    "size": 192,
-   "file": "data/far/far36F5.asm",
+   "file": "data/far/return_messages.asm",
    "para": 14069
   },
   {
-   "name": "far3701",
+   "name": "team_choice_text",
    "off": 147744,
    "size": 4608,
-   "file": "data/far/far3701.asm",
+   "file": "data/far/team_choice_text.asm",
    "para": 14081
   },
   {
-   "name": "far3821",
+   "name": "import_messages",
    "off": 152352,
    "size": 96,
-   "file": "data/far/far3821.asm",
+   "file": "data/far/import_messages.asm",
    "para": 14369
   },
   {
-   "name": "far3827",
+   "name": "schedule_messages",
    "off": 152448,
    "size": 64,
-   "file": "data/far/far3827.asm",
+   "file": "data/far/schedule_messages.asm",
    "para": 14375
   },
   {
-   "name": "far382B",
+   "name": "trade_messages",
    "off": 152512,
    "size": 176,
-   "file": "data/far/far382B.asm",
+   "file": "data/far/trade_messages.asm",
    "para": 14379
   },
   {
-   "name": "far3836",
+   "name": "merge_messages",
    "off": 152688,
    "size": 336,
-   "file": "data/far/far3836.asm",
+   "file": "data/far/merge_messages.asm",
    "para": 14390
   },
   {
-   "name": "far384B",
+   "name": "season_titles",
    "off": 153024,
    "size": 384,
-   "file": "data/far/far384B.asm",
+   "file": "data/far/season_titles.asm",
    "para": 14411
   },
   {
-   "name": "far3863",
+   "name": "object_table",
    "off": 153408,
    "size": 1216,
-   "file": "data/far/far3863.asm",
+   "file": "data/far/object_table.asm",
    "para": 14435
   },
   {
-   "name": "far38AF",
+   "name": "lines_menu_text",
    "off": 154624,
    "size": 224,
-   "file": "data/far/far38AF.asm",
+   "file": "data/far/lines_menu_text.asm",
    "para": 14511
   },
   {
-   "name": "far38BD",
+   "name": "line_names",
    "off": 154848,
    "size": 736,
-   "file": "data/far/far38BD.asm",
+   "file": "data/far/line_names.asm",
    "para": 14525
   },
   {
-   "name": "far38EB",
+   "name": "stat_names",
    "off": 155584,
    "size": 80,
-   "file": "data/far/far38EB.asm",
+   "file": "data/far/stat_names.asm",
    "para": 14571
   },
   {
-   "name": "far38F0",
+   "name": "hilight_save_messages",
    "off": 155664,
    "size": 96,
-   "file": "data/far/far38F0.asm",
+   "file": "data/far/hilight_save_messages.asm",
    "para": 14576
   },
   {
-   "name": "far38F6",
+   "name": "anim_sequences",
    "off": 155760,
    "size": 2048,
-   "file": "data/far/far38F6.asm",
+   "file": "data/far/anim_sequences.asm",
    "para": 14582
   },
   {
-   "name": "far3976",
+   "name": "palette_flags",
    "off": 157808,
    "size": 512,
-   "file": "data/far/far3976.asm",
+   "file": "data/far/palette_flags.asm",
    "para": 14710
   },
   {
-   "name": "far3996",
+   "name": "runtime_state",
    "off": 158320,
    "size": 368,
-   "file": "data/far/far3996.asm",
+   "file": "data/far/runtime_state.asm",
    "para": 14742
   },
   {
-   "name": "far39AD",
+   "name": "font_table",
    "off": 158688,
    "size": 1504,
-   "file": "data/far/far39AD.asm",
+   "file": "data/far/font_table.asm",
    "para": 14765
   },
   {
-   "name": "far3A0B",
+   "name": "work_buffer",
    "off": 160192,
    "size": 48096,
-   "file": "data/far/far3A0B.asm",
+   "file": "data/far/work_buffer.asm",
    "para": 14859
   },
   {

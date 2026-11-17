@@ -127,67 +127,67 @@ section seg058 follows=seg056 align=16 vstart=0
 
 section rtl_relocs follows=seg058 align=1 vstart=0
 %include "data/rtl_relocs.asm"
-section far3415 follows=rtl_relocs align=16 vstart=0
-%include "data/far/far3415.asm"
-section far342E follows=far3415 align=16 vstart=0
-%include "data/far/far342E.asm"
-section far342F follows=far342E align=16 vstart=0
-%include "data/far/far342F.asm"
-section far3448 follows=far342F align=16 vstart=0
-%include "data/far/far3448.asm"
-section far35E8 follows=far3448 align=16 vstart=0
-%include "data/far/far35E8.asm"
-section far35EC follows=far35E8 align=16 vstart=0
-%include "data/far/far35EC.asm"
-section far35EE follows=far35EC align=16 vstart=0
-%include "data/far/far35EE.asm"
-section far35F3 follows=far35EE align=16 vstart=0
-%include "data/far/far35F3.asm"
-section far3608 follows=far35F3 align=16 vstart=0
-%include "data/far/far3608.asm"
-section far3680 follows=far3608 align=16 vstart=0
-%include "data/far/far3680.asm"
-section far369A follows=far3680 align=16 vstart=0
-%include "data/far/far369A.asm"
-section far36A8 follows=far369A align=16 vstart=0
-%include "data/far/far36A8.asm"
-section far36B8 follows=far36A8 align=16 vstart=0
-%include "data/far/far36B8.asm"
-section far36F5 follows=far36B8 align=16 vstart=0
-%include "data/far/far36F5.asm"
-section far3701 follows=far36F5 align=16 vstart=0
-%include "data/far/far3701.asm"
-section far3821 follows=far3701 align=16 vstart=0
-%include "data/far/far3821.asm"
-section far3827 follows=far3821 align=16 vstart=0
-%include "data/far/far3827.asm"
-section far382B follows=far3827 align=16 vstart=0
-%include "data/far/far382B.asm"
-section far3836 follows=far382B align=16 vstart=0
-%include "data/far/far3836.asm"
-section far384B follows=far3836 align=16 vstart=0
-%include "data/far/far384B.asm"
-section far3863 follows=far384B align=16 vstart=0
-%include "data/far/far3863.asm"
-section far38AF follows=far3863 align=16 vstart=0
-%include "data/far/far38AF.asm"
-section far38BD follows=far38AF align=16 vstart=0
-%include "data/far/far38BD.asm"
-section far38EB follows=far38BD align=16 vstart=0
-%include "data/far/far38EB.asm"
-section far38F0 follows=far38EB align=16 vstart=0
-%include "data/far/far38F0.asm"
-section far38F6 follows=far38F0 align=16 vstart=0
-%include "data/far/far38F6.asm"
-section far3976 follows=far38F6 align=16 vstart=0
-%include "data/far/far3976.asm"
-section far3996 follows=far3976 align=16 vstart=0
-%include "data/far/far3996.asm"
-section far39AD follows=far3996 align=16 vstart=0
-%include "data/far/far39AD.asm"
-section far3A0B follows=far39AD align=16 vstart=0
-%include "data/far/far3A0B.asm"
-section dgroup follows=far3A0B align=16 vstart=0
+section db_files follows=rtl_relocs align=16 vstart=0
+%include "data/far/db_files.asm"
+section spare_1 follows=db_files align=16 vstart=0
+%include "data/far/spare_1.asm"
+section number_words follows=spare_1 align=16 vstart=0
+%include "data/far/number_words.asm"
+section menu_text follows=number_words align=16 vstart=0
+%include "data/far/menu_text.asm"
+section save_messages follows=menu_text align=16 vstart=0
+%include "data/far/save_messages.asm"
+section spare_2 follows=save_messages align=16 vstart=0
+%include "data/far/spare_2.asm"
+section save_dialog_rects follows=spare_2 align=16 vstart=0
+%include "data/far/save_dialog_rects.asm"
+section hilight_messages follows=save_dialog_rects align=16 vstart=0
+%include "data/far/hilight_messages.asm"
+section credits follows=hilight_messages align=16 vstart=0
+%include "data/far/credits.asm"
+section char_table follows=credits align=16 vstart=0
+%include "data/far/char_table.asm"
+section dialog_rects follows=char_table align=16 vstart=0
+%include "data/far/dialog_rects.asm"
+section playoff_dialog_rects follows=dialog_rects align=16 vstart=0
+%include "data/far/playoff_dialog_rects.asm"
+section playoff_messages follows=playoff_dialog_rects align=16 vstart=0
+%include "data/far/playoff_messages.asm"
+section return_messages follows=playoff_messages align=16 vstart=0
+%include "data/far/return_messages.asm"
+section team_choice_text follows=return_messages align=16 vstart=0
+%include "data/far/team_choice_text.asm"
+section import_messages follows=team_choice_text align=16 vstart=0
+%include "data/far/import_messages.asm"
+section schedule_messages follows=import_messages align=16 vstart=0
+%include "data/far/schedule_messages.asm"
+section trade_messages follows=schedule_messages align=16 vstart=0
+%include "data/far/trade_messages.asm"
+section merge_messages follows=trade_messages align=16 vstart=0
+%include "data/far/merge_messages.asm"
+section season_titles follows=merge_messages align=16 vstart=0
+%include "data/far/season_titles.asm"
+section object_table follows=season_titles align=16 vstart=0
+%include "data/far/object_table.asm"
+section lines_menu_text follows=object_table align=16 vstart=0
+%include "data/far/lines_menu_text.asm"
+section line_names follows=lines_menu_text align=16 vstart=0
+%include "data/far/line_names.asm"
+section stat_names follows=line_names align=16 vstart=0
+%include "data/far/stat_names.asm"
+section hilight_save_messages follows=stat_names align=16 vstart=0
+%include "data/far/hilight_save_messages.asm"
+section anim_sequences follows=hilight_save_messages align=16 vstart=0
+%include "data/far/anim_sequences.asm"
+section palette_flags follows=anim_sequences align=16 vstart=0
+%include "data/far/palette_flags.asm"
+section runtime_state follows=palette_flags align=16 vstart=0
+%include "data/far/runtime_state.asm"
+section font_table follows=runtime_state align=16 vstart=0
+%include "data/far/font_table.asm"
+section work_buffer follows=font_table align=16 vstart=0
+%include "data/far/work_buffer.asm"
+section dgroup follows=work_buffer align=16 vstart=0
 %include "data/dgroup.asm"
 exe_end:
 section dgroup_bss nobits vfollows=dgroup valign=1
