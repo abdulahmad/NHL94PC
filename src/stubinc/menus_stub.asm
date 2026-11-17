@@ -9,6 +9,7 @@ InputQueueTail		equ	0x50C
 MouseEnabled		equ	0x510
 StickEnabled		equ	0x512
 KeysEnabled		equ	0x514
+SetCharPtr.regs		equ	0xC56
 DrawChar		equ	0xE85
 DGROUP		equ	0x45C9
 %include "front/menus.asm"

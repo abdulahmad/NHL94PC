@@ -25,7 +25,7 @@ _main:
 	push	si
 	db	0x2B, 0xF6			; sub	si, si
 	push	0x12c
-	call	0x14DB:0xDB		; seg034
+	call	0x14DB:InitHeap		; seg034
 	add	sp, 2
 	mov	word [bp-4], ax
 	mov	word [bp-2], dx
@@ -83,7 +83,7 @@ _main:
 	je	short .5
 	call	0x0000:_exit		; seg000
 .5:
-	call	0x0FEF:0x39A		; seg028
+	call	0x0FEF:InitGraphics		; seg028
 	call	0x03A3:HookInt8		; seg001
 	mov	word [PadRepeatOn], 0
 	push	0x969
@@ -91,7 +91,7 @@ _main:
 	call	0x03A3:AllocSlot		; seg001
 	add	sp, 4
 	push	0
-	call	0x0FEF:0x1320		; seg028
+	call	0x0FEF:SetStartPage		; seg028
 	add	sp, 2
 	mov	bx, 0x7570
 	mov	es, word [DgroupSegA]
@@ -102,7 +102,7 @@ _main:
 	je	short .6
 	push	word [es:bx+2]
 	push	word [es:bx]
-	call	0x06E1:0x99A		; seg002
+	call	0x06E1:FindUnlink		; seg002
 	add	sp, 4
 	les	bx, [bp-0x24]
 	db	0x2B, 0xC0			; sub	ax, ax
@@ -116,10 +116,10 @@ _main:
 	push	0x140
 	push	0xc8
 	push	0x140
-	call	0x0FEF:0x3804		; seg028
+	call	0x0FEF:AllocCanvases		; seg028
 	add	sp, 0xe
 	push	0xc8
-	call	0x0FEF:0x1320		; seg028
+	call	0x0FEF:SetStartPage		; seg028
 	add	sp, 2
 	or	byte [InputFlags], 8
 	push	0xc8
@@ -141,7 +141,7 @@ _main:
 .8:
 	or	byte [InputFlags], 2
 	call	0x03A3:InitStick1	; seg001
-	call	0x1508:0x232		; seg037
+	call	0x1508:CalibrateLeftStick		; seg037
 	mov	word [StickPresent], 1
 .9:
 	test	byte [PotButtons], 0xc
@@ -153,10 +153,10 @@ _main:
 .10:
 	or	byte [InputFlags], 4
 	call	0x03A3:InitStick2	; seg001
-	call	0x1508:0x244		; seg037
+	call	0x1508:CalibrateRightStick		; seg037
 	mov	word [StickPresent2], 1
 .11:
-	call	0x0BFE:0xE		; seg009
+	call	0x0BFE:InputInit		; seg009
 	lea	ax, [bp-6]
 	push	ax
 	push	ax
@@ -176,12 +176,12 @@ _main:
 	lea	ax, [bp-0x20]
 	push	ss
 	push	ax
-	call	0x0CD1:0x3E		; seg015
+	call	0x0CD1:BuildPathFar		; seg015
 	add	sp, 0x10
 	push	0
 	lea	ax, [bp-0x20]
 	push	ax
-	call	0x14B8:0x8		; seg033
+	call	0x14B8:LoadPackedHeader		; seg033
 	add	sp, 4
 	mov	word [MemBlock1Off], ax
 	mov	word [MemBlock1Seg], dx
@@ -194,30 +194,30 @@ _main:
 	mov	word [DialogDataSeg], dx
 	push	0
 	push	0x4cc
-	call	0x149D:0x2		; seg032
+	call	0x149D:LoadRawHeader		; seg032
 	add	sp, 4
 	mov	word [HeapSizeLo], ax
 	mov	word [HeapSizeHi], dx
 	push	0
 	push	0x4d9
-	call	0x149D:0x2		; seg032
+	call	0x149D:LoadRawHeader		; seg032
 	add	sp, 4
 	mov	word [MemBlock2Off], ax
 	mov	word [MemBlock2Seg], dx
 	push	0
 	push	0x4e4
-	call	0x149D:0x2		; seg032
+	call	0x149D:LoadRawHeader		; seg032
 	add	sp, 4
 	mov	word [MemBlock3Off], ax
 	mov	word [MemBlock3Seg], dx
 	push	word [HeapSizeHi]
 	push	word [HeapSizeLo]
-	call	0x03A3:0xCB8		; seg001
+	call	0x03A3:UseCharSeg		; seg001
 	add	sp, 4
 	lea	ax, [bp-8]
 	push	ax
 	push	0x4ef
-	call	0x0CD1:0x3D6		; seg015
+	call	0x0CD1:OpenReadShared		; seg015
 	add	sp, 4
 	db	0x0B, 0xC0			; or	ax, ax
 	jne	short .14
@@ -227,24 +227,24 @@ _main:
 	push	0x3415
 	db	0x68, 0x00, 0x00			; push	0
 	push	word [bp-8]
-	call	0x0CD1:0x442		; seg015
+	call	0x0CD1:ReadAtOffset		; seg015
 	add	sp, 0xc
 	db	0x0B, 0xC0			; or	ax, ax
 	je	short .12
 	push	0x4f8
-	call	0x0F4A:0x3E4		; seg022
+	call	0x0F4A:FatalError		; seg022
 	add	sp, 2
 .12:
 	lea	ax, [bp-8]
 	push	ax
-	call	0x0CD1:0x41E		; seg015
+	call	0x0CD1:CloseHandlePtr		; seg015
 	add	sp, 2
 	db	0x0B, 0xC0			; or	ax, ax
 	jne	short .13
 	jmp	near .22
 .13:
 	push	0x4fb
-	call	0x0F4A:0x3E4		; seg022
+	call	0x0F4A:FatalError		; seg022
 	add	sp, 2
 	jmp	near .22
 .14:
@@ -307,7 +307,7 @@ _main:
 	push	0
 	push	0x300
 	push	0x4fe
-	call	0x14DB:0x30		; seg034
+	call	0x14DB:AllocRecData		; seg034
 	add	sp, 8
 	mov	word [bp-2], dx
 	push	dx
@@ -316,7 +316,7 @@ _main:
 	push	0
 	db	0x8B, 0xF0			; mov	si, ax
 	db	0x8B, 0xFA			; mov	di, dx
-	call	0x0FEF:0x366		; seg028
+	call	0x0FEF:GetPaletteFar		; seg028
 	add	sp, 8
 	push	0x10
 	push	di
@@ -326,7 +326,7 @@ _main:
 	add	sp, 8
 	push	di
 	push	si
-	call	0x06E1:0x99A		; seg002
+	call	0x06E1:FindUnlink		; seg002
 	add	sp, 4
 	lea	ax, [bp-0xc]
 	push	ax
@@ -342,7 +342,7 @@ _main:
 	push	0
 	push	0x300
 	push	0x503
-	call	0x14DB:0x30		; seg034
+	call	0x14DB:AllocRecData		; seg034
 	add	sp, 8
 	push	dx
 	push	ax
@@ -350,7 +350,7 @@ _main:
 	push	0
 	db	0x8B, 0xF0			; mov	si, ax
 	db	0x8B, 0xFA			; mov	di, dx
-	call	0x0FEF:0x366		; seg028
+	call	0x0FEF:GetPaletteFar		; seg028
 	add	sp, 8
 	push	0x10
 	push	di
@@ -358,13 +358,13 @@ _main:
 	push	1
 	call	0x1B35:OvlThunk23		; seg056
 	add	sp, 8
-	call	0x0BFE:0xE		; seg009
+	call	0x0BFE:InputInit		; seg009
 	call	0x1B35:OvlThunk27		; seg056
 	push	di
 	push	si
 	push	0x100
 	push	0
-	call	0x0FEF:0x366		; seg028
+	call	0x0FEF:GetPaletteFar		; seg028
 	add	sp, 8
 	push	0x10
 	push	di

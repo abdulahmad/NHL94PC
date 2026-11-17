@@ -18,9 +18,9 @@ GetInputEvent:
 	mov	es, [InputEventDataSeg]
 	cmp	word [es:0x0], 0x0
 	jz	short .2
-	call	0x0837:0x10
+	call	0x0837:0x10		; NineCmp: offset past the end of RecFlag's segment, through that segment's base
 	call	0x0837:NullFar
-	call	0x0837:0x10
+	call	0x0837:0x10		; NineCmp: offset past the end of RecFlag's segment, through that segment's base
 	mov	es, [InputEventDataSeg]
 	mov	word [es:0x0], 0x0
 .2:

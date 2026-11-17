@@ -2,20 +2,37 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
+LoadRawHeader		equ	0x2
+LoadPackedHeader		equ	0x8
 NullFar		equ	0xC
+InputInit		equ	0xE
+AllocRecData		equ	0x30
+BuildPathFar		equ	0x3E
+InitHeap		equ	0xDB
 EmsInit		equ	0xE7
+CalibrateLeftStick		equ	0x232
+CalibrateRightStick		equ	0x244
+GetPaletteFar		equ	0x366
+InitGraphics		equ	0x39A
+OpenReadShared		equ	0x3D6
+FatalError		equ	0x3E4
 HookCrit		equ	0x3E4
+CloseHandlePtr		equ	0x41E
+ReadAtOffset		equ	0x442
 StickPresent		equ	0x51E
 StickPresent2		equ	0x520
 PadRepeatOn		equ	0x524
 _exit		equ	0x687
 _printf		equ	0x76E
 FindFarMsg		equ	0x847
+FindUnlink		equ	0x99A
+UseCharSeg		equ	0xCB8
 HookInt8		equ	0xCCA
 AllocSlot		equ	0xD8C
 _srand		equ	0x1000
 _dos_gettime		equ	0x1172
 __aFldiv		equ	0x118C
+SetStartPage		equ	0x1320
 InitStick1		equ	0x1405
 InitStick2		equ	0x1423
 MouseRead		equ	0x1B34
@@ -27,6 +44,7 @@ OvlThunk24		equ	0x20DF
 OvlThunk25		equ	0x20E9
 OvlThunk26		equ	0x20F3
 OvlThunk27		equ	0x20FD
+AllocCanvases		equ	0x3804
 Pot1X		equ	0x75D6
 Pot1Y		equ	0x75D8
 Pot2X		equ	0x75DA

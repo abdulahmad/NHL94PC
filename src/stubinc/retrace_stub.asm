@@ -3,6 +3,8 @@
 	bits	16
 	org	0x0
 DrawChar		equ	0xE85
+_disable		equ	0x1142
+_enable		equ	0x1170
 WaitRetraceCount		equ	0x3406
 WaitRetraceStart		equ	0x3499
 RetraceWait		equ	0x7670

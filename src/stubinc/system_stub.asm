@@ -2,15 +2,20 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
+LargestFreeBlock		equ	0x4
 EmsMapCache		equ	0x24C
 EmsWindowOff		equ	0x254
 EmsOutPtr		equ	0x25C
 EmsFrame		equ	0x260
 EmsHandle		equ	0x262
 EmmName		equ	0x264
+NullFar5		equ	0x3E2
+FatalError		equ	0x3E4
 _exit		equ	0x687
 _sprintf		equ	0xD74
 _onexit		equ	0xE78
+DrawChar		equ	0xE85
+ClearScreenColor		equ	0x3A84
 DGROUP		equ	0x45C9
 EndMark		equ	0x62F6
 CritOld		equ	0x62FA

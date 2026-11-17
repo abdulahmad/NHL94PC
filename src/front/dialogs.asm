@@ -159,7 +159,7 @@ NumberEntryDialog:
 	add	sp, 0xe
 	mov	ax, [ItemTextColor]
 	mov	dx, [ItemSelectColor]
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	mov	ax, [bp - 0x6]
@@ -200,7 +200,7 @@ NumberEntryDialog:
 	add	sp, 0xe
 	mov	ax, [ItemTextColor]
 	mov	dx, [ItemSelectColor]
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	mov	[bp - 0xa], di
 .2:
 	push	0x1
@@ -350,7 +350,7 @@ ItemColors:
 .2:
 	db	0x8B, 0xC6		; mov ax, si
 	db	0x8B, 0xD1		; mov dx, cx
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	pop	si
 	leave
 	retf

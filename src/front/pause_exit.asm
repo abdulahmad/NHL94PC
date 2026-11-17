@@ -114,7 +114,7 @@ AskYesNoBox:
 	mov	dx, 0x3f
 	call	0x15F1:FindNearestColor
 	db	0x33, 0xD2		; xor dx, dx
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	lea	ax, [si + 0x9]
 	push	ax
 	push	word [bp + 0xe]
@@ -274,7 +274,7 @@ PauseBox:
 	mov	dx, 0x3f
 	call	0x15F1:FindNearestColor
 	db	0x33, 0xD2		; xor dx, dx
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	push	word 0xbf
 	push	word [bp + 0x6]
 	call	0x0FEC:DrawTextCenteredInWindow

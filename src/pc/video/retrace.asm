@@ -10,10 +10,10 @@ CalibrateRetrace:
 	enter	0x2, 0x0
 	push	di
 	push	si
-	call	0x0000:0x1142
+	call	0x0000:_disable
 	call	0x0FEF:WaitRetraceStart
 .1:
-	call	0x03A3:0x33E0
+	call	0x03A3:0x33E0		; BlankBit: offset past the end of WaitBlank's segment, through that segment's base
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .1
 	mov	word [bp - 0x2], 0x1
@@ -30,7 +30,7 @@ CalibrateRetrace:
 .3:
 	dec	di
 	jnz	short .2
-	call	0x0000:0x1170
+	call	0x0000:_enable
 	mov	ax, [bp - 0x2]
 	mov	[RetraceCount], ax
 	imul	ax, ax, 0x5

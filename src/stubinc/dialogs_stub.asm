@@ -24,6 +24,7 @@ ItemTextColor		equ	0x9F4
 ItemSelectColor		equ	0x9F6
 SaveUnderOff		equ	0x9FA
 SaveUnderSeg		equ	0x9FC
+SetCharPtr.regs		equ	0xC56
 JumpAhead		equ	0xCE2
 __aFldiv		equ	0x118C
 GetBlockAt		equ	0x11DD

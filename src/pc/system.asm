@@ -189,7 +189,7 @@ EmsInit:
 	call	CopyParasDown.4:OnexitThunk		; seg001
 	add	sp, 4
 .3:
-	call	0x148B:0x4		; seg030
+	call	0x148B:LargestFreeBlock		; seg030
 	pop	di
 	pop	si
 	leave
@@ -741,7 +741,7 @@ FileSizeBody:
 	mov	ds, bx
 	push	word [bp+6]
 	push	ax
-	call	0xF4A:0x3E4			; seg022
+	call	0xF4A:FatalError			; seg022
 .1:
 	mov	word [bp-2], ax
 	db	0x8B, 0xD8			; mov bx, ax
@@ -857,7 +857,7 @@ FileHeadBody:
 	mov	ds, bx
 	push	word [bp+6]
 	push	ax
-	call	0xF4A:0x3E4
+	call	0xF4A:FatalError
 
 
 ; Find first file. Sets the DTA, searches with attribute 6, copies the
@@ -1181,7 +1181,7 @@ LookupBody:
 	mov	dx, 0x6430
 	push	word [bp+0xa]
 	push	dx
-	call	0xF4A:0x3E4			; seg022
+	call	0xF4A:FatalError			; seg022
 .miss:
 	db	0x33, 0xC0			; xor ax, ax
 	db	0x8B, 0xD0			; mov dx, ax
@@ -1239,7 +1239,7 @@ FindFarBody:
 	mov	ds, ax
 	push	word [bp+8]
 	push	bx
-	call	0xF4A:0x3E4			; seg022
+	call	0xF4A:FatalError			; seg022
 .zero:
 	db	0x33, 0xD2			; xor dx, dx
 	db	0x33, 0xC0			; xor ax, ax
@@ -1414,7 +1414,7 @@ FormatCall:
 	push	word [FmtSave+4]
 	mov	ax, FmtBuf
 	push	ax
-	call	0xFEF:0xE85			; seg028
+	call	0xFEF:DrawChar			; seg028
 	add	sp, 2
 	push	word [FmtSave+2]
 	push	word [FmtSave]
@@ -1559,7 +1559,7 @@ WriteFileBody:
 	mov	ax, 0x6d3e
 	push	word [bp + 6]
 	push	ax
-	call	0xF4A:0x3E4			; seg022
+	call	0xF4A:FatalError			; seg022
 .ACB:
 	mov	bx, word [bp - 2]
 	mov	ah, 0x3e
@@ -1827,6 +1827,7 @@ SetCharPtr:
 	db	0x8B, 0xDC			; mov bx, sp
 	mov	ax, word [bx + 4]
 	mov	dx, word [bx + 6]
+.regs:
 	mov	es, word [CharSeg]
 	mov	word es:[0], ax
 	mov	word es:[2], dx
@@ -2004,7 +2005,7 @@ AllocSlot:
 	loop	.1
 	mov	ax, 0x6ddc
 	push	ax
-	call	0xF4A:0x3E4			; seg022
+	call	0xF4A:FatalError			; seg022
 .2:
 	mov	ax, word [bp + 6]
 	mov	word [bx], ax
@@ -2183,7 +2184,7 @@ ResetText:
 	mov	word [WantText], 0
 	db	0x33, 0xC0			; xor ax, ax
 	push	ax
-	call	0xFEF:0x3A84		; seg028
+	call	0xFEF:ClearScreenColor		; seg028
 	add	sp, 2
 	mov	ax, 0x40
 	mov	es, ax
@@ -2983,7 +2984,7 @@ KbdIrq:
 	mov	al, byte [bx + 0x724b]
 	cmp	bx, 1
 	jne	short .2
-	call	0xF4A:0x3E2
+	call	0xF4A:NullFar5
 .8:
 	test	byte [0x70cb], 1
 	jne	short .11
@@ -3628,6 +3629,7 @@ SetDeadline:
 	db	0x8B, 0xDC			; mov bx, sp
 	mov	ax, word [bx + 4]
 	mov	dx, word [bx + 6]
+.regs:
 	les	bx, [CallCount]
 	mov	cx, es
 	db	0x03, 0xC3			; add ax, bx
@@ -5291,7 +5293,7 @@ FileOpenFail:
 	mov	ax, 0x75e2
 	push	word [bp + 6]
 	push	ax
-	call	0xF4A:0x3E4			; seg022
+	call	0xF4A:FatalError			; seg022
 FileClose:
 	push	bp
 	db	0x8B, 0xEC			; mov bp, sp
@@ -5371,7 +5373,7 @@ ReadAtFail:
 	mov	ds, bx
 	push	word [bp + 6]
 	push	ax
-	call	0xF4A:0x3E4			; seg022
+	call	0xF4A:FatalError			; seg022
 ReadCloseArg:
 	push	bp
 	db	0x8B, 0xEC			; mov bp, sp
@@ -5431,7 +5433,7 @@ ReadCloseFail:
 	mov	ds, bx
 	push	word [bp + 6]
 	push	ax
-	call	0xF4A:0x3E4			; seg022
+	call	0xF4A:FatalError			; seg022
 
 ; (arg1 * arg2 + 1FFFh) >> 14, returned in AX. The two words sit above
 ; the far return address.
@@ -5448,6 +5450,7 @@ Mul16k:
 	db	0x8B, 0xDC			; mov bx, sp
 	mov	ax, word [bx + 4]
 	mov	dx, word [bx + 6]
+.regs:
 	imul	dx
 	add	ax, 0x1fff
 	adc	dx, 0
@@ -6732,6 +6735,7 @@ SinLookup:
 CosLookup:
 	db	0x8B, 0xDC			; mov bx, sp
 	mov	ax, word [bx + 4]
+.regs:
 	inc	ah
 AngleTab:
 	and	ah, 3
@@ -6819,7 +6823,7 @@ RestoreMode:
 	jne	short .2
 	db	0x33, 0xC0			; xor ax, ax
 	push	ax
-	call	0xFEF:0x3A84		; seg028
+	call	0xFEF:ClearScreenColor		; seg028
 	add	sp, 2
 .2:
 	mov	ah, 0xb

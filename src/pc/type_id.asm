@@ -1224,7 +1224,7 @@ LoadBlock:
 	db	0x2A, 0xE4			; sub ah, ah
 	push	ax
 	push	0x40c
-	call	0xF4A:0x3E4		; seg022
+	call	0xF4A:FatalError		; seg022
 	add	sp, 4
 	jmp	short .10
 	nop

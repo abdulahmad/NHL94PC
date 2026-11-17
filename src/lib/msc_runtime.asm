@@ -2513,7 +2513,10 @@ _dos_write:
 	mov	word [bx], ax
 .2:
 	jmp	near DosRetCode
-	db	0,250,203
+	db	0
+_disable:
+	cli
+	retf
 
 ; _dos_getdiskfree: free space on a drive.
 ; Arguments: drive, pointer to the result.
@@ -2539,7 +2542,10 @@ _dos_getdiskfree:
 .done:
 	pop	bp
 	retf
-	db	0,251,203
+	db	0
+_enable:
+	sti
+	retf
 
 ; _dos_gettime: time of day into hour, minute, second, and hundredths.
 ; Argument: pointer to four bytes.

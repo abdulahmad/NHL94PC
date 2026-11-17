@@ -3,6 +3,8 @@
 	bits	16
 	org	0x0
 Atan2		equ	0x1DD4
+Mul16k.regs		equ	0x28C6
 FillFlag0		equ	0x2989
+CosLookup.regs		equ	0x32F6
 AngleTab		equ	0x32F8
 %include "pc/video/thick_line.asm"

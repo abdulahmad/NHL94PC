@@ -2,6 +2,7 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
+Mul16k.regs		equ	0x28C6
 PaletteFlagsSeg		equ	0x8D0C
 PaletteFlagsSeg2		equ	0x8D0E
 ShadeTableOff		equ	0x8F56

@@ -79,7 +79,7 @@ CalibrateStick:
 	add	sp, 0x8
 	mov	ax, 0xf
 	cwd
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	push	0x23
 	push	word 0x6f34
 	call	0x1567:DrawTextCenteredClip

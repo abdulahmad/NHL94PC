@@ -34,6 +34,7 @@ str_Nhl_3		equ	0x992
 FindUnlink		equ	0x99A
 SetDialogColors		equ	0xA3C
 DrawRleFastAt		equ	0xC45
+SetCharPtr.regs		equ	0xC56
 DrawChar		equ	0xE85
 RestoreUnderBox		equ	0xF22
 MessageBox		equ	0xFC8
@@ -42,6 +43,7 @@ GetBlockAt		equ	0x11DD
 _fstrcpy		equ	0x13DA
 ConPrint		equ	0x17CA
 DrawRleTransAt		equ	0x1857
+SetDeadline.regs		equ	0x1A6E
 WaitDeadlineNoEoi		equ	0x1A84
 MouseMove		equ	0x1B03
 MouseRead		equ	0x1B34

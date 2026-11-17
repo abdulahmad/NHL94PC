@@ -2,6 +2,7 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
+LargestFreeBlock		equ	0x4
 EmsMapFrame		equ	0x192
 EmsOutPtr		equ	0x25C
 BufCount		equ	0x2BA
@@ -9,6 +10,7 @@ BufPtr		equ	0x2BC
 RecSeq		equ	0x2BE
 CopyParas		equ	0x32C
 CopyParasDown		equ	0x374
+FatalError		equ	0x3E4
 LargestFree		equ	0x65A
 AllocBytes		equ	0x67A
 FarToLinear		equ	0x92E

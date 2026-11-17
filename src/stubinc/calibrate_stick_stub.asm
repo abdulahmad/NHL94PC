@@ -10,6 +10,7 @@ FillRect		equ	0x136
 AllocCanvas		equ	0x19C
 UseCurrentPage		equ	0x1A6
 DrawRawBody		equ	0x75A
+SetCharPtr.regs		equ	0xC56
 SaveCharTab		equ	0xC7A
 LoadCharTab		equ	0xC9C
 UseCharSeg		equ	0xCB8

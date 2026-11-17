@@ -20,7 +20,7 @@ ShadeColor:
 	db	0x2A, 0xE4		; sub ah, ah
 	mov	dx, [ShadeFactorR]
 	db	0x8B, 0xFB		; mov di, bx
-	call	0x03A3:0x28C6
+	call	0x03A3:Mul16k.regs
 	mov	[ShadeR], ax
 	mov	es, [bp + 0x6]
 	db	0x03, 0xFE		; add di, si
@@ -28,14 +28,14 @@ ShadeColor:
 	db	0x2A, 0xE4		; sub ah, ah
 	mov	dx, [ShadeFactorG]
 	mov	si, es
-	call	0x03A3:0x28C6
+	call	0x03A3:Mul16k.regs
 	mov	[ShadeG], ax
 	mov	es, si
 	lea	bx, [di + 0x1]
 	mov	al, [es:bx + 0x1]
 	db	0x2A, 0xE4		; sub ah, ah
 	mov	dx, [ShadeFactorB]
-	call	0x03A3:0x28C6
+	call	0x03A3:Mul16k.regs
 	mov	[ShadeB], ax
 	db	0x8B, 0xD8		; mov bx, ax
 	cmp	word [ShadeGrey], 0x0

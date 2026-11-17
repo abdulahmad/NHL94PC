@@ -3,6 +3,7 @@
 	bits	16
 	org	0x0
 CopyFar		equ	0x276
+FatalError		equ	0x3E4
 LongShlAt		equ	0x1270
 _fmemchr		equ	0x135C
 RetOnly		equ	0x1398

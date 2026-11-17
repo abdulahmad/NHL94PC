@@ -2,8 +2,8 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
-DrawTextCenteredInWindow		equ	0x2
 FindNearestColor		equ	0x2
+DrawTextCenteredInWindow		equ	0x2
 DrawFrame		equ	0x4
 FreeCanvas		equ	0xC
 SetCanvas		equ	0x48
@@ -13,6 +13,7 @@ UseCurrentPage		equ	0x1A6
 WaitAdd		equ	0x250
 NullFar5		equ	0x3E2
 DrawRawAt		equ	0x73D
+SetCharPtr.regs		equ	0xC56
 SaveCharTab		equ	0xC7A
 LoadCharTab		equ	0xC9C
 UseCharSeg		equ	0xCB8

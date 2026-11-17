@@ -53,7 +53,7 @@ MakeChain:
 	cmp	word [BufCount], 0xcc
 	jge	short .4
 	push	0x26c
-	call	0xF4A:0x3E4		; seg022
+	call	0xF4A:FatalError		; seg022
 	add	sp, 2
 .4:
 	mov	ax, word [BufCount]
@@ -762,21 +762,21 @@ InsertRec:
 .45:
 	cmp	word [bp + 0xe], ax
 	je	short .47
-	call	0x148B:0x4		; seg030
+	call	0x148B:LargestFreeBlock		; seg030
 	push	dx
 	push	ax
 	push	word [bp + 0xa]
 	push	word [bp + 8]
 	push	0x334
 .46:
-	call	0xF4A:0x3E4		; seg022
+	call	0xF4A:FatalError		; seg022
 	add	sp, 0xa
 .47:
 	cmp	word [bp + 0xe], 0
 	je	short .48
 	push	word [bp + 0xc]
 	push	0x36b
-	call	0xF4A:0x3E4		; seg022
+	call	0xF4A:FatalError		; seg022
 	add	sp, 4
 .48:
 	db	0x2B, 0xC0			; sub ax, ax
@@ -863,7 +863,7 @@ ResizeRec:
 	cmp	word [bp + 0xe], 0
 	je	short .8
 	push	0x393
-	call	0xF4A:0x3E4		; seg022
+	call	0xF4A:FatalError		; seg022
 	add	sp, 2
 .7:
 	mov	ax, word [bp + 0xa]
@@ -916,7 +916,7 @@ FindRec:
 	push	word [bp + 8]
 	push	cx
 	push	0x3b7
-	call	0xF4A:0x3E4		; seg022
+	call	0xF4A:FatalError		; seg022
 	add	sp, 6
 	db	0x2B, 0xC0			; sub ax, ax
 	cwd
@@ -2131,7 +2131,7 @@ AllocRec:
 	nop
 .1:
 	push	0x3dd
-	call	0xF4A:0x3E4		; seg022
+	call	0xF4A:FatalError		; seg022
 	add	sp, 2
 	pop	si
 	leave

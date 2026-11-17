@@ -268,7 +268,7 @@ CrowdFadeOut:
 .1:
 	mov	ax, 0x1
 	cwd
-	call	0x03A3:0x1A6E
+	call	0x03A3:SetDeadline.regs
 	sub	word [CrowdSound], 0x32
 	jns	short .2
 	mov	word [CrowdSound], 0x0

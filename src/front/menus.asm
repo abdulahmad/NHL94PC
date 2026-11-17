@@ -13,7 +13,7 @@ DrawMenuBar:
 	mov	di, [bp + 0xa]
 	mov	ax, [bp + 0xc]
 	mov	dx, 0xff
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	db	0x0B, 0xFF		; or di, di
 	jng	short .2
 	mov	ax, [bp + 0x6]
@@ -114,7 +114,7 @@ DrawMenuPanel:
 	mov	ax, [bp + 0x10]
 .2:
 	mov	dx, 0xff
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	mov	es, [bp + 0x8]
 	push	word [es:di + 0xa]
 	push	word [es:di + 0x8]
@@ -154,7 +154,7 @@ DrawMenuPanel:
 	mov	ax, [bp + 0x10]
 .5:
 	mov	dx, 0xff
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	mov	es, [bp - 0xa]
 	lea	bx, [si - 0x4]
 	push	word [es:bx + 0x2]
@@ -362,7 +362,7 @@ DrawMenuItem:
 	add	sp, 0xa
 	mov	ax, [bp + 0xe]
 	mov	dx, 0xff
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	les	bx, [bp - 0x4]
 	push	word [es:bx + 0xa]
 	push	word [es:bx + 0x8]
@@ -426,7 +426,7 @@ DrawMenuItemHilite:
 	add	sp, 0xa
 	mov	ax, [bp + 0xe]
 	mov	dx, 0xff
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	les	bx, [bp - 0x4]
 	push	word [es:bx + 0xa]
 	push	word [es:bx + 0x8]

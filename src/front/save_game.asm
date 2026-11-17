@@ -148,7 +148,7 @@ SaveGame:
 .9:
 	mov	ax, 0xc8
 	cwd
-	call	0x03A3:0x1A6E
+	call	0x03A3:SetDeadline.regs
 	push	0x0
 	push	0x11
 	push	0x5
@@ -430,7 +430,7 @@ SaveGameNameDialog:
 	add	sp, 0x8
 	mov	ax, 0x11
 	mov	dx, 0x5
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	les	bx, [bp - 0x5c]
 	mov	ax, [es:bx + 0x4]
 	add	[bp - 0x26], ax
@@ -589,7 +589,7 @@ SaveGameNameDialog:
 	mov	byte [bx + si], 0x0
 	mov	ax, 0x11
 	mov	dx, 0xb
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	push	word [bp - 0x2a]
 	push	word [bp - 0x26]
 	push	si
@@ -920,7 +920,7 @@ SaveGameNameDialog:
 	mov	byte [bx + si], 0x0
 	mov	ax, 0x11
 	mov	dx, 0x5
-	call	0x03A3:0xC56
+	call	0x03A3:SetCharPtr.regs
 	push	0x1
 	push	0x0
 	push	0x0
