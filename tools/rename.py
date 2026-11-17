@@ -20,7 +20,6 @@ def main(path, only_generated=False):
                       parts[3] if len(parts) > 3 else ''))
     files = glob.glob(os.path.join(ROOT, 'src', '**', '*.asm'), recursive=True) + \
         glob.glob(os.path.join(ROOT, 'src', '**', '*.inc'), recursive=True)
-    files.append(os.path.join(ROOT, 'tools', 'disasm', 'data_labels.json'))   # operand names for the generator
     text = {f: open(f).read() for f in files if os.path.exists(f)}
     defs = {}
     for f, t in text.items():

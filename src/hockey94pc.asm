@@ -8,138 +8,138 @@
 section header start=0
 %include "header/mz_header.asm"
 
-section seg000 follows=header align=16 vstart=0
-%include "seg/seg000.asm"
-section seg001 follows=seg000 align=16 vstart=0
-%include "seg/seg001.asm"
-section seg002 follows=seg001 align=16 vstart=0
-%include "seg/seg002.asm"
-section seg003 follows=seg002 align=16 vstart=0
-%include "seg/seg003.asm"
-section seg004 follows=seg003 align=16 vstart=0
-%include "seg/seg004.asm"
-section seg005 follows=seg004 align=16 vstart=0
-%include "seg/seg005.asm"
-section seg006 follows=seg005 align=16 vstart=0
-%include "seg/seg006.asm"
-section seg007 follows=seg006 align=16 vstart=0
-%include "seg/seg007.asm"
-section seg008 follows=seg007 align=16 vstart=0
-%include "seg/seg008.asm"
-section seg009 follows=seg008 align=16 vstart=0
-%include "seg/seg009.asm"
-section seg010 follows=seg009 align=16 vstart=0
-%include "seg/seg010.asm"
-section seg011 follows=seg010 align=16 vstart=0
-%include "seg/seg011.asm"
-section seg012 follows=seg011 align=16 vstart=0
-%include "seg/seg012.asm"
-section seg013 follows=seg012 align=16 vstart=0
-%include "seg/seg013.asm"
-section seg014 follows=seg013 align=16 vstart=0
-%include "seg/seg014.asm"
-section seg015 follows=seg014 align=16 vstart=0
-%include "seg/seg015.asm"
-section seg016 follows=seg015 align=16 vstart=0
-%include "seg/seg016.asm"
-section seg017 follows=seg016 align=16 vstart=0
-%include "seg/seg017.asm"
-section seg018 follows=seg017 align=16 vstart=0
-%include "seg/seg018.asm"
-section seg019 follows=seg018 align=16 vstart=0
-%include "seg/seg019.asm"
-section seg020 follows=seg019 align=16 vstart=0
-%include "seg/seg020.asm"
-section seg021 follows=seg020 align=16 vstart=0
-%include "seg/seg021.asm"
-section seg022 follows=seg021 align=16 vstart=0
-%include "seg/seg022.asm"
-section seg023 follows=seg022 align=16 vstart=0
-%include "seg/seg023.asm"
-section seg024 follows=seg023 align=16 vstart=0
-%include "seg/seg024.asm"
-section seg025 follows=seg024 align=16 vstart=0
-%include "seg/seg025.asm"
-section seg026 follows=seg025 align=16 vstart=0
-%include "seg/seg026.asm"
-section seg027 follows=seg026 align=16 vstart=0
-%include "seg/seg027.asm"
-section seg028 follows=seg027 align=16 vstart=0
-%include "seg/seg028.asm"
-section seg029 follows=seg028 align=16 vstart=0
-%include "seg/seg029.asm"
-section seg030 follows=seg029 align=16 vstart=0
-%include "seg/seg030.asm"
-section seg031 follows=seg030 align=16 vstart=0
-%include "seg/seg031.asm"
-section seg032 follows=seg031 align=16 vstart=0
-%include "seg/seg032.asm"
-section seg033 follows=seg032 align=16 vstart=0
-%include "seg/seg033.asm"
-section seg034 follows=seg033 align=16 vstart=0
-%include "seg/seg034.asm"
-section seg035 follows=seg034 align=16 vstart=0
-%include "seg/seg035.asm"
-section seg036 follows=seg035 align=16 vstart=0
-%include "seg/seg036.asm"
-section seg037 follows=seg036 align=16 vstart=0
-%include "seg/seg037.asm"
-section seg038 follows=seg037 align=16 vstart=0
-%include "seg/seg038.asm"
-section seg039 follows=seg038 align=16 vstart=0
-%include "seg/seg039.asm"
-section seg040 follows=seg039 align=16 vstart=0
-%include "seg/seg040.asm"
-section seg041 follows=seg040 align=16 vstart=0
-%include "seg/seg041.asm"
-section seg042 follows=seg041 align=16 vstart=0
-%include "seg/seg042.asm"
-section seg043 follows=seg042 align=16 vstart=0
-%include "seg/seg043.asm"
-section seg044 follows=seg043 align=16 vstart=0
-%include "seg/seg044.asm"
-section seg045 follows=seg044 align=16 vstart=0
-%include "seg/seg045.asm"
-section seg046 follows=seg045 align=16 vstart=0
-%include "seg/seg046.asm"
-section seg047 follows=seg046 align=16 vstart=0
-%include "seg/seg047.asm"
-section seg048 follows=seg047 align=16 vstart=0
-%include "seg/seg048.asm"
-section seg049 follows=seg048 align=16 vstart=0
-%include "seg/seg049.asm"
-section seg050 follows=seg049 align=16 vstart=0
-%include "seg/seg050.asm"
-section seg051 follows=seg050 align=16 vstart=0
-%include "seg/seg051.asm"
-section seg052 follows=seg051 align=16 vstart=0
-%include "seg/seg052.asm"
-section seg053 follows=seg052 align=16 vstart=0
-%include "seg/seg053.asm"
-section seg054 follows=seg053 align=16 vstart=0
-%include "seg/seg054.asm"
-section seg055 follows=seg054 align=16 vstart=0
-%include "seg/seg055.asm"
-section seg056 follows=seg055 align=16 vstart=0
-%include "seg/seg056.asm"
-section seg058 follows=seg056 align=16 vstart=0
-%include "seg/seg058.asm"
+section msc_runtime follows=header align=16 vstart=0
+%include "lib/msc_runtime.asm"
+section system follows=msc_runtime align=16 vstart=0
+%include "pc/system.asm"
+section heap follows=system align=16 vstart=0
+%include "pc/heap.asm"
+section rec_flag follows=heap align=16 vstart=0
+%include "pc/rec_flag.asm"
+section type_id follows=rec_flag align=16 vstart=0
+%include "pc/type_id.asm"
+section main follows=type_id align=16 vstart=0
+%include "front/main.asm"
+section poll follows=main align=16 vstart=0
+%include "pc/input/poll.asm"
+section pad follows=poll align=16 vstart=0
+%include "pc/input/pad.asm"
+section speech follows=pad align=16 vstart=0
+%include "pc/sound/speech.asm"
+section init follows=speech align=16 vstart=0
+%include "pc/input/init.asm"
+section random follows=init align=16 vstart=0
+%include "pc/random.asm"
+section null_far2 follows=random align=16 vstart=0
+%include "pc/null_far2.asm"
+section wait_button follows=null_far2 align=16 vstart=0
+%include "pc/input/wait_button.asm"
+section save_game follows=wait_button align=16 vstart=0
+%include "front/save_game.asm"
+section midi follows=save_game align=16 vstart=0
+%include "pc/sound/midi.asm"
+section files follows=midi align=16 vstart=0
+%include "pc/files.asm"
+section text follows=files align=16 vstart=0
+%include "pc/video/text.asm"
+section math follows=text align=16 vstart=0
+%include "pc/math.asm"
+section divide_error follows=math align=16 vstart=0
+%include "pc/divide_error.asm"
+section team_palettes follows=divide_error align=16 vstart=0
+%include "front/team_palettes.asm"
+section dialogs follows=team_palettes align=16 vstart=0
+%include "front/dialogs.asm"
+section crowd follows=dialogs align=16 vstart=0
+%include "front/crowd.asm"
+section save_planes follows=crowd align=16 vstart=0
+%include "pc/video/save_planes.asm"
+section fit_name follows=save_planes align=16 vstart=0
+%include "front/fit_name.asm"
+section db_descriptor follows=fit_name align=16 vstart=0
+%include "front/db_descriptor.asm"
+section events follows=db_descriptor align=16 vstart=0
+%include "pc/input/events.asm"
+section menus follows=events align=16 vstart=0
+%include "front/menus.asm"
+section window_text follows=menus align=16 vstart=0
+%include "front/window_text.asm"
+section vga follows=window_text align=16 vstart=0
+%include "pc/video/vga.asm"
+section draw_frame follows=vga align=16 vstart=0
+%include "pc/video/draw_frame.asm"
+section heap_largest follows=draw_frame align=16 vstart=0
+%include "pc/heap_largest.asm"
+section thick_line follows=heap_largest align=16 vstart=0
+%include "pc/video/thick_line.asm"
+section load_raw follows=thick_line align=16 vstart=0
+%include "pc/assets/load_raw.asm"
+section load_packed follows=load_raw align=16 vstart=0
+%include "pc/assets/load_packed.asm"
+section heap_wrappers follows=load_packed align=16 vstart=0
+%include "pc/heap_wrappers.asm"
+section canvas_free follows=heap_wrappers align=16 vstart=0
+%include "pc/video/canvas_free.asm"
+section xor_frame follows=canvas_free align=16 vstart=0
+%include "pc/video/xor_frame.asm"
+section calibrate_stick follows=xor_frame align=16 vstart=0
+%include "front/calibrate_stick.asm"
+section canvas_alloc follows=calibrate_stick align=16 vstart=0
+%include "pc/video/canvas_alloc.asm"
+section text_center follows=canvas_alloc align=16 vstart=0
+%include "pc/video/text_center.asm"
+section retrace follows=text_center align=16 vstart=0
+%include "pc/video/retrace.asm"
+section pause_exit follows=retrace align=16 vstart=0
+%include "front/pause_exit.asm"
+section load_asset follows=pause_exit align=16 vstart=0
+%include "pc/assets/load_asset.asm"
+section file_can_open follows=load_asset align=16 vstart=0
+%include "pc/assets/file_can_open.asm"
+section nearest_color follows=file_can_open align=16 vstart=0
+%include "pc/video/nearest_color.asm"
+section shape_size follows=nearest_color align=16 vstart=0
+%include "pc/assets/shape_size.asm"
+section shape_bank_size follows=shape_size align=16 vstart=0
+%include "pc/assets/shape_bank_size.asm"
+section copy_bytes follows=shape_bank_size align=16 vstart=0
+%include "pc/copy_bytes.asm"
+section shade_table follows=copy_bytes align=16 vstart=0
+%include "pc/video/shade_table.asm"
+section seq_events follows=shade_table align=16 vstart=0
+%include "lib/eaclib/seq_events.asm"
+section sequencer follows=seq_events align=16 vstart=0
+%include "lib/eaclib/sequencer.asm"
+section driver_calls follows=sequencer align=16 vstart=0
+%include "lib/eaclib/driver_calls.asm"
+section driver_link follows=driver_calls align=16 vstart=0
+%include "lib/eaclib/driver_link.asm"
+section mz_relocate follows=driver_link align=16 vstart=0
+%include "lib/eaclib/mz_relocate.asm"
+section fp_emulator follows=mz_relocate align=16 vstart=0
+%include "lib/fp_emulator.asm"
+section load_cached follows=fp_emulator align=16 vstart=0
+%include "pc/assets/load_cached.asm"
+section overlay_manager follows=load_cached align=16 vstart=0
+%include "lib/rtlink/overlay_manager.asm"
+section rtl_runtime follows=overlay_manager align=16 vstart=0
+%include "lib/rtlink/rtl_runtime.asm"
 
-section rtl_relocs follows=seg058 align=1 vstart=0
+section rtl_relocs follows=rtl_runtime align=1 vstart=0
 %include "data/rtl_relocs.asm"
 section db_files follows=rtl_relocs align=16 vstart=0
 %include "data/far/db_files.asm"
-section spare_1 follows=db_files align=16 vstart=0
-%include "data/far/spare_1.asm"
-section number_words follows=spare_1 align=16 vstart=0
+section input_event_data follows=db_files align=16 vstart=0
+%include "data/far/input_event_data.asm"
+section number_words follows=input_event_data align=16 vstart=0
 %include "data/far/number_words.asm"
 section menu_text follows=number_words align=16 vstart=0
 %include "data/far/menu_text.asm"
 section save_messages follows=menu_text align=16 vstart=0
 %include "data/far/save_messages.asm"
-section spare_2 follows=save_messages align=16 vstart=0
-%include "data/far/spare_2.asm"
-section save_dialog_rects follows=spare_2 align=16 vstart=0
+section list_dialog_data follows=save_messages align=16 vstart=0
+%include "data/far/list_dialog_data.asm"
+section save_dialog_rects follows=list_dialog_data align=16 vstart=0
 %include "data/far/save_dialog_rects.asm"
 section hilight_messages follows=save_dialog_rects align=16 vstart=0
 %include "data/far/hilight_messages.asm"

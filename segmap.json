@@ -14,409 +14,409 @@
    "file": "header/mz_header.asm"
   },
   {
-   "name": "seg000",
+   "name": "msc_runtime",
    "off": 7168,
    "size": 14896,
-   "file": "seg/seg000.asm",
+   "file": "lib/msc_runtime.asm",
    "para": 0
   },
   {
-   "name": "seg001",
+   "name": "system",
    "off": 22064,
    "size": 13280,
-   "file": "seg/seg001.asm",
+   "file": "pc/system.asm",
    "para": 931
   },
   {
-   "name": "seg002",
+   "name": "heap",
    "off": 35344,
    "size": 5472,
-   "file": "seg/seg002.asm",
+   "file": "pc/heap.asm",
    "para": 1761
   },
   {
-   "name": "seg003",
+   "name": "rec_flag",
    "off": 40816,
    "size": 16,
-   "file": "seg/seg003.asm",
+   "file": "pc/rec_flag.asm",
    "para": 2103
   },
   {
-   "name": "seg004",
+   "name": "type_id",
    "off": 40832,
    "size": 3088,
-   "file": "seg/seg004.asm",
+   "file": "pc/type_id.asm",
    "para": 2104
   },
   {
-   "name": "seg005",
+   "name": "main",
    "off": 43920,
    "size": 1040,
-   "file": "seg/seg005.asm",
+   "file": "front/main.asm",
    "para": 2297
   },
   {
-   "name": "seg006",
+   "name": "poll",
    "off": 44960,
    "size": 752,
-   "file": "seg/seg006.asm",
+   "file": "pc/input/poll.asm",
    "para": 2362
   },
   {
-   "name": "seg007",
+   "name": "pad",
    "off": 45712,
    "size": 1168,
-   "file": "seg/seg007.asm",
+   "file": "pc/input/pad.asm",
    "para": 2409
   },
   {
-   "name": "seg008",
+   "name": "speech",
    "off": 46880,
    "size": 9408,
-   "file": "seg/seg008.asm",
+   "file": "pc/sound/speech.asm",
    "para": 2482
   },
   {
-   "name": "seg009",
+   "name": "init",
    "off": 56288,
    "size": 304,
-   "file": "seg/seg009.asm",
+   "file": "pc/input/init.asm",
    "para": 3070
   },
   {
-   "name": "seg010",
+   "name": "random",
    "off": 56592,
    "size": 64,
-   "file": "seg/seg010.asm",
+   "file": "pc/random.asm",
    "para": 3089
   },
   {
-   "name": "seg011",
+   "name": "null_far2",
    "off": 56656,
    "size": 16,
-   "file": "seg/seg011.asm",
+   "file": "pc/null_far2.asm",
    "para": 3093
   },
   {
-   "name": "seg012",
+   "name": "wait_button",
    "off": 56672,
    "size": 192,
-   "file": "seg/seg012.asm",
+   "file": "pc/input/wait_button.asm",
    "para": 3094
   },
   {
-   "name": "seg013",
+   "name": "save_game",
    "off": 56864,
    "size": 2592,
-   "file": "seg/seg013.asm",
+   "file": "front/save_game.asm",
    "para": 3106
   },
   {
-   "name": "seg014",
+   "name": "midi",
    "off": 59456,
    "size": 208,
-   "file": "seg/seg014.asm",
+   "file": "pc/sound/midi.asm",
    "para": 3268
   },
   {
-   "name": "seg015",
+   "name": "files",
    "off": 59664,
    "size": 1664,
-   "file": "seg/seg015.asm",
+   "file": "pc/files.asm",
    "para": 3281
   },
   {
-   "name": "seg016",
+   "name": "text",
    "off": 61328,
    "size": 608,
-   "file": "seg/seg016.asm",
+   "file": "pc/video/text.asm",
    "para": 3385
   },
   {
-   "name": "seg017",
+   "name": "math",
    "off": 61936,
    "size": 192,
-   "file": "seg/seg017.asm",
+   "file": "pc/math.asm",
    "para": 3423
   },
   {
-   "name": "seg018",
+   "name": "divide_error",
    "off": 62128,
    "size": 144,
-   "file": "seg/seg018.asm",
+   "file": "pc/divide_error.asm",
    "para": 3435
   },
   {
-   "name": "seg019",
+   "name": "team_palettes",
    "off": 62272,
    "size": 448,
-   "file": "seg/seg019.asm",
+   "file": "front/team_palettes.asm",
    "para": 3444
   },
   {
-   "name": "seg020",
+   "name": "dialogs",
    "off": 62720,
    "size": 5312,
-   "file": "seg/seg020.asm",
+   "file": "front/dialogs.asm",
    "para": 3472
   },
   {
-   "name": "seg021",
+   "name": "crowd",
    "off": 68032,
    "size": 1760,
-   "file": "seg/seg021.asm",
+   "file": "front/crowd.asm",
    "para": 3804
   },
   {
-   "name": "seg022",
+   "name": "save_planes",
    "off": 69792,
    "size": 1008,
-   "file": "seg/seg022.asm",
+   "file": "pc/video/save_planes.asm",
    "para": 3914
   },
   {
-   "name": "seg023",
+   "name": "fit_name",
    "off": 70800,
    "size": 224,
-   "file": "seg/seg023.asm",
+   "file": "front/fit_name.asm",
    "para": 3977
   },
   {
-   "name": "seg024",
+   "name": "db_descriptor",
    "off": 71024,
    "size": 32,
-   "file": "seg/seg024.asm",
+   "file": "front/db_descriptor.asm",
    "para": 3991
   },
   {
-   "name": "seg025",
+   "name": "events",
    "off": 71056,
    "size": 112,
-   "file": "seg/seg025.asm",
+   "file": "pc/input/events.asm",
    "para": 3993
   },
   {
-   "name": "seg026",
+   "name": "menus",
    "off": 71168,
    "size": 1216,
-   "file": "seg/seg026.asm",
+   "file": "front/menus.asm",
    "para": 4000
   },
   {
-   "name": "seg027",
+   "name": "window_text",
    "off": 72384,
    "size": 48,
-   "file": "seg/seg027.asm",
+   "file": "front/window_text.asm",
    "para": 4076
   },
   {
-   "name": "seg028",
+   "name": "vga",
    "off": 72432,
    "size": 18768,
-   "file": "seg/seg028.asm",
+   "file": "pc/video/vga.asm",
    "para": 4079
   },
   {
-   "name": "seg029",
+   "name": "draw_frame",
    "off": 91200,
    "size": 112,
-   "file": "seg/seg029.asm",
+   "file": "pc/video/draw_frame.asm",
    "para": 5252
   },
   {
-   "name": "seg030",
+   "name": "heap_largest",
    "off": 91312,
    "size": 96,
-   "file": "seg/seg030.asm",
+   "file": "pc/heap_largest.asm",
    "para": 5259
   },
   {
-   "name": "seg031",
+   "name": "thick_line",
    "off": 91408,
    "size": 192,
-   "file": "seg/seg031.asm",
+   "file": "pc/video/thick_line.asm",
    "para": 5265
   },
   {
-   "name": "seg032",
+   "name": "load_raw",
    "off": 91600,
    "size": 432,
-   "file": "seg/seg032.asm",
+   "file": "pc/assets/load_raw.asm",
    "para": 5277
   },
   {
-   "name": "seg033",
+   "name": "load_packed",
    "off": 92032,
    "size": 560,
-   "file": "seg/seg033.asm",
+   "file": "pc/assets/load_packed.asm",
    "para": 5304
   },
   {
-   "name": "seg034",
+   "name": "heap_wrappers",
    "off": 92592,
    "size": 288,
-   "file": "seg/seg034.asm",
+   "file": "pc/heap_wrappers.asm",
    "para": 5339
   },
   {
-   "name": "seg035",
+   "name": "canvas_free",
    "off": 92880,
    "size": 304,
-   "file": "seg/seg035.asm",
+   "file": "pc/video/canvas_free.asm",
    "para": 5357
   },
   {
-   "name": "seg036",
+   "name": "xor_frame",
    "off": 93184,
    "size": 128,
-   "file": "seg/seg036.asm",
+   "file": "pc/video/xor_frame.asm",
    "para": 5376
   },
   {
-   "name": "seg037",
+   "name": "calibrate_stick",
    "off": 93312,
    "size": 592,
-   "file": "seg/seg037.asm",
+   "file": "front/calibrate_stick.asm",
    "para": 5384
   },
   {
-   "name": "seg038",
+   "name": "canvas_alloc",
    "off": 93904,
    "size": 928,
-   "file": "seg/seg038.asm",
+   "file": "pc/video/canvas_alloc.asm",
    "para": 5421
   },
   {
-   "name": "seg039",
+   "name": "text_center",
    "off": 94832,
    "size": 48,
-   "file": "seg/seg039.asm",
+   "file": "pc/video/text_center.asm",
    "para": 5479
   },
   {
-   "name": "seg040",
+   "name": "retrace",
    "off": 94880,
    "size": 96,
-   "file": "seg/seg040.asm",
+   "file": "pc/video/retrace.asm",
    "para": 5482
   },
   {
-   "name": "seg041",
+   "name": "pause_exit",
    "off": 94976,
    "size": 864,
-   "file": "seg/seg041.asm",
+   "file": "front/pause_exit.asm",
    "para": 5488
   },
   {
-   "name": "seg042",
+   "name": "load_asset",
    "off": 95840,
    "size": 1136,
-   "file": "seg/seg042.asm",
+   "file": "pc/assets/load_asset.asm",
    "para": 5542
   },
   {
-   "name": "seg043",
+   "name": "file_can_open",
    "off": 96976,
    "size": 64,
-   "file": "seg/seg043.asm",
+   "file": "pc/assets/file_can_open.asm",
    "para": 5613
   },
   {
-   "name": "seg044",
+   "name": "nearest_color",
    "off": 97040,
    "size": 224,
-   "file": "seg/seg044.asm",
+   "file": "pc/video/nearest_color.asm",
    "para": 5617
   },
   {
-   "name": "seg045",
+   "name": "shape_size",
    "off": 97264,
    "size": 112,
-   "file": "seg/seg045.asm",
+   "file": "pc/assets/shape_size.asm",
    "para": 5631
   },
   {
-   "name": "seg046",
+   "name": "shape_bank_size",
    "off": 97376,
    "size": 96,
-   "file": "seg/seg046.asm",
+   "file": "pc/assets/shape_bank_size.asm",
    "para": 5638
   },
   {
-   "name": "seg047",
+   "name": "copy_bytes",
    "off": 97472,
    "size": 32,
-   "file": "seg/seg047.asm",
+   "file": "pc/copy_bytes.asm",
    "para": 5644
   },
   {
-   "name": "seg048",
+   "name": "shade_table",
    "off": 97504,
    "size": 544,
-   "file": "seg/seg048.asm",
+   "file": "pc/video/shade_table.asm",
    "para": 5646
   },
   {
-   "name": "seg049",
+   "name": "seq_events",
    "off": 98048,
    "size": 3104,
-   "file": "seg/seg049.asm",
+   "file": "lib/eaclib/seq_events.asm",
    "para": 5680
   },
   {
-   "name": "seg050",
+   "name": "sequencer",
    "off": 101152,
    "size": 5408,
-   "file": "seg/seg050.asm",
+   "file": "lib/eaclib/sequencer.asm",
    "para": 5874
   },
   {
-   "name": "seg051",
+   "name": "driver_calls",
    "off": 106560,
    "size": 960,
-   "file": "seg/seg051.asm",
+   "file": "lib/eaclib/driver_calls.asm",
    "para": 6212
   },
   {
-   "name": "seg052",
+   "name": "driver_link",
    "off": 107520,
    "size": 656,
-   "file": "seg/seg052.asm",
+   "file": "lib/eaclib/driver_link.asm",
    "para": 6272
   },
   {
-   "name": "seg053",
+   "name": "mz_relocate",
    "off": 108176,
    "size": 256,
-   "file": "seg/seg053.asm",
+   "file": "lib/eaclib/mz_relocate.asm",
    "para": 6313
   },
   {
-   "name": "seg054",
+   "name": "fp_emulator",
    "off": 108432,
    "size": 9968,
-   "file": "seg/seg054.asm",
+   "file": "lib/fp_emulator.asm",
    "para": 6329
   },
   {
-   "name": "seg055",
+   "name": "load_cached",
    "off": 118400,
    "size": 208,
-   "file": "seg/seg055.asm",
+   "file": "pc/assets/load_cached.asm",
    "para": 6952
   },
   {
-   "name": "seg056",
+   "name": "overlay_manager",
    "off": 118608,
    "size": 10992,
-   "file": "seg/seg056.asm",
+   "file": "lib/rtlink/overlay_manager.asm",
    "para": 6965
   },
   {
-   "name": "seg058",
+   "name": "rtl_runtime",
    "off": 129600,
    "size": 1543,
-   "file": "seg/seg058.asm",
+   "file": "lib/rtlink/rtl_runtime.asm",
    "para": 7652
   },
   {
@@ -433,10 +433,10 @@
    "para": 13333
   },
   {
-   "name": "spare_1",
+   "name": "input_event_data",
    "off": 136176,
    "size": 16,
-   "file": "data/far/spare_1.asm",
+   "file": "data/far/input_event_data.asm",
    "para": 13358
   },
   {
@@ -461,10 +461,10 @@
    "para": 13800
   },
   {
-   "name": "spare_2",
+   "name": "list_dialog_data",
    "off": 143312,
    "size": 32,
-   "file": "data/far/spare_2.asm",
+   "file": "data/far/list_dialog_data.asm",
    "para": 13804
   },
   {
