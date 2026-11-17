@@ -5,11 +5,11 @@
 InsertRecWrap		equ	0x13
 AllocRecData		equ	0x30
 str_Que		equ	0x80
-F051_0178		equ	0x178
+DrvShutdown		equ	0x178
 EmsMapFrame		equ	0x192
 EmsSaveMap		equ	0x1B9
 EmsRestoreMap		equ	0x1D1
-F051_02A6		equ	0x2A6
+DrvPlaySample		equ	0x2A6
 g_0528		equ	0x528
 str_SS		equ	0x54A
 str_ByMsc		equ	0x550

@@ -4,7 +4,7 @@
 	org	0x0
 LoadPackedHeader0		equ	0x1A
 EmsMapFrame		equ	0x192
-F052_0272		equ	0x272
+LinkDriver		equ	0x272
 FarToLinear		equ	0x92E
 LinearToFarRegs		equ	0x959
 FindUnlink		equ	0x99A

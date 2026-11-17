@@ -2,7 +2,7 @@
 	retf
 	db	0x90
 
-F053_0002:
+RelocateMzImage:
 	enter	0x16, 0x0
 	push	di
 	push	si

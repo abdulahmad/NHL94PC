@@ -7,7 +7,7 @@
 	retf
 	db	0x90
 
-F050_0008:
+SetupSongTracks:
 	enter	0x10, 0x0
 	push	si
 	push	ds
@@ -103,7 +103,7 @@ F050_0008:
 	leave
 	retf
 
-F050_00EC:
+SetupSongTracksEms:
 	enter	0x10, 0x0
 	push	di
 	push	si
@@ -207,7 +207,7 @@ F050_00EC:
 	retf
 	db	0x90
 
-F050_01DE:
+ResetSequencer:
 	push	di
 	push	si
 	push	ds
@@ -275,7 +275,7 @@ F050_01DE:
 	pop	di
 	retf
 
-F050_0280:
+InitSequencer:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
@@ -312,7 +312,7 @@ F050_0280:
 	db	0x8B, 0xC2		; mov ax, dx
 	or	ax, [0xe080]
 	jz	short .1
-	call	0x16F2:F050_01DE
+	call	0x16F2:ResetSequencer
 	push	word 0x1630
 	push	strict word 0x8
 	call	0x03A3:AllocSlot
@@ -326,7 +326,7 @@ F050_0280:
 	retf
 	db	0x90
 
-F050_0308:
+ShutdownSequencer:
 	push	si
 	push	ds
 	mov	ax, DGROUP
@@ -340,13 +340,13 @@ F050_0308:
 .1:
 	db	0x8B, 0xC6		; mov ax, si
 	push	ax
-	call	0x1844:F051_0178
+	call	0x1844:DrvShutdown
 	pop	bx
 	inc	si
 .2:
 	cmp	[0x84c6], si
 	ja	short .1
-	call	0x16F2:F050_01DE
+	call	0x16F2:ResetSequencer
 	push	word [0x84ca]
 	push	word [0x84c8]
 	call	0x06E1:FindUnlink
@@ -365,7 +365,7 @@ F050_0308:
 	retf
 	db	0x90
 
-F050_036C:
+SeqStubLong0:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
@@ -375,7 +375,7 @@ F050_036C:
 	retf
 	db	0x90
 
-F050_0378:
+SeqStubWord0:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
@@ -383,7 +383,7 @@ F050_0378:
 	pop	ds
 	retf
 
-F050_0382:
+LoadBankNumber:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
@@ -395,13 +395,13 @@ F050_0382:
 	call	0x0000:_sprintf
 	add	sp, 0x6
 	push	word 0x8f94
-	call	0x16F2:F050_03A8
+	call	0x16F2:LoadPatchBank
 	pop	bx
 	pop	ds
 	leave
 	retf
 
-F050_03A8:
+LoadPatchBank:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
@@ -417,7 +417,7 @@ F050_03A8:
 	leave
 	retf
 
-F050_03C8:
+FreeSongData:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
@@ -432,7 +432,7 @@ F050_03C8:
 	leave
 	retf
 
-F050_03E4:
+SendPatches:
 	enter	0x6, 0x0
 	push	di
 	push	si
@@ -449,7 +449,7 @@ F050_03E4:
 .2:
 	mov	al, [bp - 0x6]
 	push	ax
-	call	0x16F2:F050_087C
+	call	0x16F2:GetPatch
 	db	0x8B, 0xF8		; mov di, ax
 	mov	[bp - 0x2], dx
 	mov	byte [0x8fa8], 0x80
@@ -493,7 +493,7 @@ F050_03E4:
 	shl	bx, byte 0x2
 	push	word [bx - 0x1ff6]
 	push	word [bx - 0x1ff8]
-	call	0x16F2:F050_0008
+	call	0x16F2:SetupSongTracks
 	add	sp, 0x8
 	mov	es, [bp - 0x2]
 	mov	[es:di + 0x10], ax
@@ -540,7 +540,7 @@ F050_03E4:
 	retf
 	db	0x90
 
-F050_04EA:
+AddLoadedSong:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	si
@@ -570,7 +570,7 @@ F050_04EA:
 	leave
 	retf
 
-F050_0522:
+LoadSongMode:
 	enter	0x18, 0x0
 	push	di
 	push	si
@@ -604,7 +604,7 @@ F050_0522:
 	push	word [bp + 0xa]
 	push	word [bp + 0x8]
 	push	word 0x8fac
-	call	0x1B28:F055_00A0
+	call	0x1B28:LoadFileCached
 	add	sp, 0x6
 .4:
 	mov	[bp - 0x14], ax
@@ -615,13 +615,13 @@ F050_0522:
 .5:
 	push	word [bp - 0x12]
 	push	ax
-	call	0x16F2:F050_04EA
+	call	0x16F2:AddLoadedSong
 	add	sp, 0x4
 	push	word 0x6769
 	push	word 0x642e
 	push	word [bp - 0x12]
 	push	word [bp - 0x14]
-	call	0x16F2:F050_0008
+	call	0x16F2:SetupSongTracks
 	add	sp, 0x8
 	mov	[bp - 0x8], ax
 	mov	[bp - 0x6], dx
@@ -722,7 +722,7 @@ F050_0522:
 	push	word [0x8fc0]
 	push	word [bp - 0x12]
 	push	word [bp - 0x14]
-	call	0x16F2:F050_0008
+	call	0x16F2:SetupSongTracks
 	add	sp, 0x8
 	mov	[bp - 0x4], ax
 	mov	[bp - 0x2], dx
@@ -734,7 +734,7 @@ F050_0522:
 	push	word [es:bx + 0x2]
 	push	word [bp - 0xe]
 	push	word [bp - 0x10]
-	call	0x16F2:F050_00EC
+	call	0x16F2:SetupSongTracksEms
 	add	sp, 0x8
 	mov	[bp - 0xc], ax
 	mov	[bp - 0xa], dx
@@ -754,7 +754,7 @@ F050_0522:
 	inc	di
 	jmp	near .10
 .16:
-	call	0x16F2:F050_03E4
+	call	0x16F2:SendPatches
 .17:
 	mov	ax, [bp - 0x14]
 	mov	dx, [bp - 0x12]
@@ -765,7 +765,7 @@ F050_0522:
 	retf
 	db	0x90
 
-F050_071C:
+LoadSongDrvBuf:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
@@ -775,19 +775,19 @@ F050_071C:
 	push	word [bp + 0xc]
 	push	word 0xff
 	push	0x0
-	call	0x1844:F051_01DC
+	call	0x1844:DrvLoadBank
 	add	sp, 0x8
 	push	0x0
 	push	word [bp + 0xa]
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
-	call	0x16F2:F050_0522
+	call	0x16F2:LoadSongMode
 	add	sp, 0x8
 	pop	ds
 	leave
 	retf
 
-F050_074E:
+LoadSongDrv:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
@@ -797,19 +797,19 @@ F050_074E:
 	push	word [bp + 0x8]
 	push	word 0xff
 	push	0x0
-	call	0x1844:F051_01DC
+	call	0x1844:DrvLoadBank
 	add	sp, 0x8
 	push	0x0
 	push	0x0
 	push	0x0
 	push	word [bp + 0x6]
-	call	0x16F2:F050_0522
+	call	0x16F2:LoadSongMode
 	add	sp, 0x8
 	pop	ds
 	leave
 	retf
 
-F050_077E:
+LoadSong:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
@@ -819,14 +819,14 @@ F050_077E:
 	push	0x0
 	push	0x0
 	push	word [bp + 0x6]
-	call	0x16F2:F050_0522
+	call	0x16F2:LoadSongMode
 	add	sp, 0x8
 	pop	ds
 	leave
 	retf
 	db	0x90
 
-F050_079C:
+LoadSongBuf:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
@@ -836,14 +836,14 @@ F050_079C:
 	push	word [bp + 0xa]
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
-	call	0x16F2:F050_0522
+	call	0x16F2:LoadSongMode
 	add	sp, 0x8
 	pop	ds
 	leave
 	retf
 	db	0x90
 
-F050_07BC:
+RemoveLoadedSong:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	si
@@ -880,7 +880,7 @@ F050_07BC:
 	retf
 	db	0x90
 
-F050_07FE:
+UnloadSong:
 	enter	0x6, 0x0
 	push	di
 	push	si
@@ -892,7 +892,7 @@ F050_07FE:
 	push	ax
 	push	si
 	db	0x8B, 0xF8		; mov di, ax
-	call	0x16F2:F050_07BC
+	call	0x16F2:RemoveLoadedSong
 	add	sp, 0x4
 	push	di
 	push	si
@@ -928,7 +928,7 @@ F050_07FE:
 	leave
 	retf
 
-F050_0866:
+SeqStubLong1:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
@@ -938,7 +938,7 @@ F050_0866:
 	retf
 	db	0x90
 
-F050_0872:
+SeqStubWord1:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
@@ -946,7 +946,7 @@ F050_0872:
 	pop	ds
 	retf
 
-F050_087C:
+GetPatch:
 	enter	0x4, 0x0
 	push	di
 	push	si
@@ -980,7 +980,7 @@ F050_087C:
 	retf	0x2
 	db	0x90
 
-F050_08BE:
+GetPatchData:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
@@ -995,7 +995,7 @@ F050_08BE:
 .1:
 	mov	al, [bp + 0x6]
 	push	ax
-	call	0x16F2:F050_087C
+	call	0x16F2:GetPatch
 	mov	es, dx
 	db	0x8B, 0xD8		; mov bx, ax
 	mov	ax, [es:bx + 0x10]
@@ -1006,7 +1006,7 @@ F050_08BE:
 	retf	0x2
 	db	0x90
 
-F050_08F0:
+InitVoiceLists:
 	push	si
 	push	ds
 	mov	ax, DGROUP
@@ -1063,7 +1063,7 @@ F050_08F0:
 	retf
 	db	0x90
 
-F050_0976:
+ScanSongParts:
 	enter	0xc, 0x0
 	push	di
 	push	si
@@ -1121,7 +1121,7 @@ F050_0976:
 	retf
 	db	0x90
 
-F050_09E6:
+ScanSongSeqs:
 	enter	0xa, 0x0
 	push	di
 	push	si
@@ -1177,7 +1177,7 @@ F050_09E6:
 	retf
 	db	0x90
 
-F050_0A4E:
+PrepareSong:
 	enter	0x4, 0x0
 	push	di
 	push	si
@@ -1196,13 +1196,13 @@ F050_0A4E:
 	db	0x2A, 0xFF		; sub bh, bh
 	mov	[bx - 0x1ee0], bh
 	push	di
-	call	0x16F2:F050_0976
+	call	0x16F2:ScanSongParts
 	pop	bx
 	les	bx, [bp + 0x8]
 	mov	[es:bx + 0x4], ax
 	mov	[es:bx + 0x6], dx
 	push	di
-	call	0x16F2:F050_09E6
+	call	0x16F2:ScanSongSeqs
 	pop	bx
 	les	bx, [bp + 0x8]
 	mov	[es:bx + 0x8], ax
@@ -1274,7 +1274,7 @@ F050_0A4E:
 	retf
 	db	0x90
 
-F050_0B58:
+FindFreeChannel:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	si
@@ -1307,7 +1307,7 @@ F050_0B58:
 	retf
 	db	0x90
 
-F050_0B8C:
+FindFreeTrackSlot:
 	enter	0x4, 0x0
 	push	si
 	push	ds
@@ -1340,7 +1340,7 @@ F050_0B8C:
 	leave
 	retf
 
-F050_0BC6:
+StartSong:
 	enter	0x1c, 0x0
 	push	di
 	push	si
@@ -1378,7 +1378,7 @@ F050_0BC6:
 	jnz	short .2
 	jmp	near .7
 .2:
-	call	0x16F2:F050_0B8C
+	call	0x16F2:FindFreeTrackSlot
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x2], dx
 	db	0x0B, 0xD0		; or dx, ax
@@ -1449,14 +1449,14 @@ F050_0BC6:
 	push	word [es:bx + 0x8]
 	mov	[bp - 0x1c], bx
 	mov	[bp - 0x1a], es
-	call	0x16F2:F050_0B58
+	call	0x16F2:FindFreeChannel
 	pop	bx
 	mov	es, [bp - 0x2]
 	mov	[es:si + 0x4c], al
 	les	bx, [bp - 0x1c]
 	mov	al, [es:bx + 0x14]
 	push	ax
-	call	0x16F2:F050_087C
+	call	0x16F2:GetPatch
 	mov	es, [bp - 0x2]
 	mov	byte [es:si + 0x4d], 0x0
 	les	bx, [bp - 0x1c]
@@ -1466,7 +1466,7 @@ F050_0BC6:
 	mov	al, [es:si + 0x4c]
 	push	ax
 	push	0x0
-	call	0x1844:F051_0110
+	call	0x1844:DrvStub1
 	add	sp, 0x8
 	les	bx, [bp - 0x1c]
 	mov	al, [es:bx + 0x14]
@@ -1476,13 +1476,13 @@ F050_0BC6:
 	push	ax
 	mov	al, [es:si + 0x4d]
 	push	ax
-	call	0x1630:F049_0A00
+	call	0x1630:SendProgramChange
 	add	sp, 0x6
 	push	0x0
 	push	0x1
 	push	word [bp - 0x2]
 	push	si
-	call	0x1630:F049_06C2
+	call	0x1630:SendController
 	add	sp, 0x8
 	les	bx, [bp - 0x1c]
 	mov	al, [es:bx + 0xe]
@@ -1490,7 +1490,7 @@ F050_0BC6:
 	push	0x7
 	push	word [bp - 0x2]
 	push	si
-	call	0x1630:F049_06C2
+	call	0x1630:SendController
 	add	sp, 0x8
 	les	bx, [bp - 0x1c]
 	mov	al, [es:bx + 0xe]
@@ -1498,12 +1498,12 @@ F050_0BC6:
 	push	0xa
 	push	word [bp - 0x2]
 	push	si
-	call	0x1630:F049_06C2
+	call	0x1630:SendController
 	add	sp, 0x8
 	push	word 0x4000
 	push	word [bp - 0x2]
 	push	si
-	call	0x1630:F049_0826
+	call	0x1630:SendPitchBend
 	add	sp, 0x6
 .5:
 	mov	es, [bp - 0x2]
@@ -1527,7 +1527,7 @@ F050_0BC6:
 	retf
 	db	0x90
 
-F050_0DD6:
+RestartSong:
 	enter	0xa, 0x0
 	push	si
 	push	ds
@@ -1536,7 +1536,7 @@ F050_0DD6:
 	inc	word [0x84f4]
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
-	call	0x16F2:F050_0BC6
+	call	0x16F2:StartSong
 	add	sp, 0x4
 	mov	[bp - 0x6], ax
 	mov	[bp - 0x4], dx
@@ -1576,7 +1576,7 @@ F050_0DD6:
 	leave
 	retf
 
-F050_0E58:
+SeqStubLong2:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
@@ -1586,7 +1586,7 @@ F050_0E58:
 	retf
 	db	0x90
 
-F050_0E64:
+PlayPatchNote:
 	enter	0x6, 0x0
 	push	di
 	push	si
@@ -1604,7 +1604,7 @@ F050_0E64:
 .2:
 	mov	al, [bp + 0x6]
 	push	ax
-	call	0x16F2:F050_087C
+	call	0x16F2:GetPatch
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x2], dx
 	mov	ax, [bp + 0xa]
@@ -1634,7 +1634,7 @@ F050_0E64:
 	mov	al, [es:si + 0xf]
 	and	al, 0x7f
 	push	ax
-	call	0x1630:F049_0934
+	call	0x1630:QueueMidiBytes
 	add	sp, 0x6
 	push	0x0
 	push	word 0xff
@@ -1651,7 +1651,7 @@ F050_0E64:
 	sub	al, 0x74
 	push	ax
 .6:
-	call	0x1630:F049_0864
+	call	0x1630:AllocVoice
 	add	sp, 0x12
 	jmp	near .9
 .7:
@@ -1675,7 +1675,7 @@ F050_0E64:
 	and	al, 0x7f
 	push	ax
 	mov	[bp - 0x6], cx
-	call	0x1630:F049_0934
+	call	0x1630:QueueMidiBytes
 	add	sp, 0x6
 	mov	al, [bp - 0x6]
 	or	al, 0xb0
@@ -1688,7 +1688,7 @@ F050_0E64:
 	mov	al, [es:si + 0xf]
 	and	al, 0x7f
 	push	ax
-	call	0x1630:F049_0934
+	call	0x1630:QueueMidiBytes
 	add	sp, 0x6
 	mov	al, [bp - 0x6]
 	or	al, 0x90
@@ -1720,7 +1720,7 @@ F050_0E64:
 	retf
 	db	0x90
 
-F050_0FB8:
+PlayPatch:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
@@ -1729,14 +1729,14 @@ F050_0FB8:
 	push	0x0
 	push	0x0
 	push	word [bp + 0x6]
-	call	0x16F2:F050_0E64
+	call	0x16F2:PlayPatchNote
 	add	sp, 0x6
 	pop	ds
 	leave
 	retf
 	db	0x90
 
-F050_0FD4:
+PlaySound:
 	enter	0x4, 0x0
 	push	di
 	push	si
@@ -1748,10 +1748,10 @@ F050_0FD4:
 	jnc	short .1
 	push	0x0
 	push	di
-	call	0x16F2:F050_0FB8
+	call	0x16F2:PlayPatch
 	jmp	short .4
 .1:
-	call	0x16F2:F050_0E58
+	call	0x16F2:SeqStubLong2
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x2], dx
 	db	0x0B, 0xD0		; or dx, ax
@@ -1764,13 +1764,13 @@ F050_0FD4:
 	push	word [bp - 0x2]
 	push	si
 	push	di
-	call	0x16F2:F050_0A4E
+	call	0x16F2:PrepareSong
 	add	sp, 0x6
 	inc	ax
 	jz	short .2
 	push	word [bp - 0x2]
 	push	si
-	call	0x16F2:F050_0BC6
+	call	0x16F2:StartSong
 .4:
 	add	sp, 0x4
 .5:
@@ -1781,7 +1781,7 @@ F050_0FD4:
 	retf
 	db	0x90
 
-F050_1028:
+ReleaseAllVoices:
 	push	si
 	push	ds
 	mov	ax, DGROUP
@@ -1811,7 +1811,7 @@ F050_1028:
 	pop	si
 	retf
 
-F050_1070:
+StopSound:
 	enter	0xc, 0x0
 	push	di
 	push	si
@@ -1865,7 +1865,7 @@ F050_1070:
 	jnz	short .6
 	push	es
 	push	di
-	call	0x1630:F049_0792
+	call	0x1630:SendVoiceNoteOff
 	add	sp, 0x4
 .6:
 	add	di, 0xc
@@ -1893,7 +1893,7 @@ F050_1070:
 	db	0x32, 0xC9		; xor cl, cl
 	mov	[bp - 0xa], cl
 	push	cx
-	call	0x1630:F049_0934
+	call	0x1630:QueueMidiBytes
 	add	sp, 0x6
 	mov	es, [bp - 0x2]
 	mov	al, [es:si + 0x4c]
@@ -1906,7 +1906,7 @@ F050_1070:
 	db	0x32, 0xC0		; xor al, al
 	mov	[bp - 0xa], al
 	push	ax
-	call	0x1630:F049_0934
+	call	0x1630:QueueMidiBytes
 	add	sp, 0x6
 	mov	es, [bp - 0x2]
 	mov	byte [es:si + 0x56], 0x0
@@ -1926,9 +1926,9 @@ F050_1070:
 	lea	ax, [bp - 0xc]
 	push	ax
 	push	0x0
-	call	0x1630:F049_0934
+	call	0x1630:QueueMidiBytes
 	add	sp, 0x6
-	call	0x1630:F049_003C
+	call	0x1630:SeqService
 .10:
 	dec	word [0x84f4]
 .11:
@@ -1941,7 +1941,7 @@ F050_1070:
 	retf
 	db	0x90
 
-F050_11BA:
+StopSong:
 	enter	0x4, 0x0
 	push	si
 	push	ds
@@ -1984,7 +1984,7 @@ F050_11BA:
 	leave
 	retf
 
-F050_1226:
+SongFinished:
 	enter	0x4, 0x0
 	push	ds
 	mov	ax, DGROUP
@@ -2020,7 +2020,7 @@ F050_1226:
 	leave
 	retf
 
-F050_1268:
+SongStopped:
 	enter	0x4, 0x0
 	push	ds
 	mov	ax, DGROUP
@@ -2056,7 +2056,7 @@ F050_1268:
 	leave
 	retf
 
-F050_12AA:
+SongChannelValue:
 	enter	0x4, 0x0
 	push	si
 	push	ds
@@ -2096,7 +2096,7 @@ F050_12AA:
 	leave
 	retf
 
-F050_12F4:
+MuteAllTracks:
 	enter	0x8, 0x0
 	push	di
 	push	si
@@ -2125,7 +2125,7 @@ F050_12F4:
 	db	0x32, 0xC0		; xor al, al
 	mov	[bp - 0x6], al
 	push	ax
-	call	0x1630:F049_0934
+	call	0x1630:QueueMidiBytes
 	add	sp, 0x6
 .2:
 	inc	si
@@ -2139,7 +2139,7 @@ F050_12F4:
 	retf
 	db	0x90
 
-F050_1350:
+RestoreTrackVolumes:
 	enter	0x4, 0x0
 	push	di
 	push	si
@@ -2165,7 +2165,7 @@ F050_1350:
 	push	0x7
 	push	word [bp - 0x2]
 	push	di
-	call	0x1630:F049_06C2
+	call	0x1630:SendController
 	add	sp, 0x8
 .2:
 	inc	si
@@ -2179,7 +2179,7 @@ F050_1350:
 	leave
 	retf
 
-F050_13A8:
+SfxOn:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
@@ -2187,7 +2187,7 @@ F050_13A8:
 	pop	ds
 	retf
 
-F050_13B6:
+SfxOff:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
@@ -2195,22 +2195,22 @@ F050_13B6:
 	pop	ds
 	retf
 
-F050_13C4:
+ToggleSfx:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
 	cmp	word [0x84fc], 0x0
 	jz	short .1
-	call	0x16F2:F050_13B6
+	call	0x16F2:SfxOff
 	jmp	short .2
 .1:
-	call	0x16F2:F050_13A8
+	call	0x16F2:SfxOn
 .2:
 	mov	ax, [0x84fc]
 	pop	ds
 	retf
 
-F050_13E2:
+GetSfx:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
@@ -2219,7 +2219,7 @@ F050_13E2:
 	retf
 	db	0x90
 
-F050_13EE:
+MusicOn:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
@@ -2227,7 +2227,7 @@ F050_13EE:
 	pop	ds
 	retf
 
-F050_13FC:
+MusicOff:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
@@ -2235,22 +2235,22 @@ F050_13FC:
 	pop	ds
 	retf
 
-F050_140A:
+ToggleMusic:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
 	cmp	word [0x84fe], 0x0
 	jz	short .1
-	call	0x16F2:F050_13EE
+	call	0x16F2:MusicOn
 	jmp	short .2
 .1:
-	call	0x16F2:F050_13FC
+	call	0x16F2:MusicOff
 .2:
 	mov	ax, [0x84fe]
 	pop	ds
 	retf
 
-F050_1428:
+GetMusic:
 	push	ds
 	mov	ax, DGROUP
 	mov	ds, ax
@@ -2259,7 +2259,7 @@ F050_1428:
 	retf
 	db	0x90
 
-F050_1434:
+ReadFarDword:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
@@ -2272,7 +2272,7 @@ F050_1434:
 	leave
 	retf
 
-F050_144A:
+ReadFarWord:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds
@@ -2284,7 +2284,7 @@ F050_144A:
 	leave
 	retf
 
-F050_145C:
+StoreDwordBE:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	di
@@ -2318,7 +2318,7 @@ F050_145C:
 	retf
 	db	0x90
 
-F050_1496:
+ReadDwordBE:
 	enter	0x4, 0x0
 	push	si
 	push	ds
@@ -2360,7 +2360,7 @@ F050_1496:
 	retf
 	db	0x90
 
-F050_14E8:
+CopyEventBytes:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	di

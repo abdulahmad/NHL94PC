@@ -1,0 +1,104 @@
+# Batch 6: EA sound library (eaclib): MIDI sequencer, sound driver calls and loaders (seg049-seg055).
+F049_0001 SeqPad | new | low | stray bytes before the sequencer timer entry
+F049_0008 SeqTimerTick | new | medium | timer hook: runs SeqService unless busy, re-entered or no driver is loaded
+F049_003C SeqService | new | medium | services the driver (EMS map saved) and steps every playing track
+F049_01D2 SeqStepTrack | new | medium | advances one track slot and handles its pending events
+F049_03FF SeqTrackEvents | new | low | event handling shared with SeqStepTrack, starts with a jump table
+F049_06C2 SendController | new | medium | sends controller 7 or 0Ah (volume, pan) scaled for the track
+F049_0792 SendVoiceNoteOff | new | medium | sends a note-off for a voice record
+F049_07DE SetSongTempo | new | medium | sets the tick rate (7D00h / tempo) for every slot of a song
+F049_0826 SendPitchBend | new | medium | sends an E0h pitch bend message
+F049_0864 AllocVoice | new | medium | takes a free entry from the 32 voice records
+F049_0934 QueueMidiBytes | new | medium | appends a message to the 128-byte MIDI queue
+F049_098E FlushMidiQueue | new | medium | sends every queued message to the driver
+F049_0A00 SendProgramChange | new | medium | sends a C0h program change
+F049_0A2C SendPan | new | medium | sends controller 0Ah
+F049_0A5E SendVolume | new | medium | sends controller 7
+F049_0A90 ParseMidiEvent | new | medium | reads a variable-length delta and dispatches the event type through a jump table
+F050_0008 SetupSongTracks | new | low | walks a song's track table and fills the slot pointers
+F050_00EC SetupSongTracksEms | new | low | SetupSongTracks for a song held in EMS
+F050_01DE ResetSequencer | new | medium | clears the 24 track slots and 32 voice records
+F050_0280 InitSequencer | new | medium | allocates the slot, voice and queue tables and hooks the timer
+F050_0308 ShutdownSequencer | new | medium | frees the timer slot, shuts every driver down and frees the tables
+F050_036C SeqStubLong0 | new | high | returns 0 in DX:AX
+F050_0378 SeqStubWord0 | new | high | returns 0
+F050_0382 LoadBankNumber | new | medium | formats "bank%d.pat" and loads it
+F050_03A8 LoadPatchBank | new | medium | loads a patch bank file and keeps its pointer
+F050_03C8 FreeSongData | new | medium | unlinks a song record, returns 0
+F050_03E4 SendPatches | new | low | sends every patch of the bank to the driver
+F050_04EA AddLoadedSong | new | medium | stores a song pointer in the first free of 10 entries
+F050_0522 LoadSongMode | new | medium | loads a song file (track, parts, seqdat) with its bank and timbres
+F050_071C LoadSongDrvBuf | new | low | driver bank call, then LoadSongMode with a buffer
+F050_074E LoadSongDrv | new | low | driver bank call, then LoadSongMode
+F050_077E LoadSong | new | low | LoadSongMode by number
+F050_079C LoadSongBuf | new | low | LoadSongMode by number into a buffer
+F050_07BC RemoveLoadedSong | new | medium | clears a song pointer from the 10 entries
+F050_07FE UnloadSong | new | medium | removes and frees a song and its parts
+F050_0866 SeqStubLong1 | new | high | returns 0 in DX:AX
+F050_0872 SeqStubWord1 | new | high | returns 0
+F050_087C GetPatch | new | medium | address of a 20-byte patch record in the bank
+F050_08BE GetPatchData | new | medium | the data pointer of a patch record
+F050_08F0 InitVoiceLists | new | low | links the voice records into lists
+F050_0976 ScanSongParts | new | low | scans the parts tables of the loaded songs
+F050_09E6 ScanSongSeqs | new | low | scans the sequence tables of the loaded songs
+F050_0A4E PrepareSong | new | low | resolves a song's parts and sequences before it starts
+F050_0B58 FindFreeChannel | new | medium | first of 16 MIDI channels allowed by the mask and unused
+F050_0B8C FindFreeTrackSlot | new | medium | first unused of the 24 track slots
+F050_0BC6 StartSong | new | medium | starts a song in free slots, returns a new handle
+F050_0DD6 RestartSong | new | low | StartSong and copies settings to its slots
+F050_0E58 SeqStubLong2 | new | high | returns 0 in DX:AX
+F050_0E64 PlayPatchNote | new | medium | plays a sound effect patch (id below 100h) on a free voice
+F050_0FB8 PlayPatch | new | medium | PlayPatchNote with default note
+F050_0FD4 PlaySound | new | medium | id below 100h plays a patch, otherwise prepares and starts a song
+F050_1028 ReleaseAllVoices | new | medium | marks every active voice for release
+F050_1070 StopSound | new | medium | stops a sound by handle and silences its voices
+F050_11BA StopSong | new | medium | flags the song's slots to stop
+F050_1226 SongFinished | new | medium | 1 when no slot plays the song
+F050_1268 SongStopped | new | medium | 1 when no slot of the song is still stopping
+F050_12AA SongChannelValue | new | low | a per-channel value of a playing song
+F050_12F4 MuteAllTracks | new | medium | sends volume 0 on every active track
+F050_1350 RestoreTrackVolumes | new | medium | sends each active track's volume again
+F050_13A8 SfxOn | new | medium | sets the effects flag
+F050_13B6 SfxOff | new | medium | clears the effects flag
+F050_13C4 ToggleSfx | new | medium | flips the effects flag and returns it
+F050_13E2 GetSfx | new | medium | returns the effects flag
+F050_13EE MusicOn | new | low | sets the second sound flag
+F050_13FC MusicOff | new | low | clears the second sound flag
+F050_140A ToggleMusic | new | low | flips the second sound flag and returns it
+F050_1428 GetMusic | new | low | returns the second sound flag
+F050_1434 ReadFarDword | new | high | returns the dword at a far pointer
+F050_144A ReadFarWord | new | high | returns the word at a far pointer
+F050_145C StoreDwordBE | new | medium | writes a dword high byte first
+F050_1496 ReadDwordBE | new | medium | reads a dword stored high byte first
+F050_14E8 CopyEventBytes | new | low | copies bytes of an event record
+F051_0000 CopyEventBytesTail | new | low | end of CopyEventBytes
+F051_000E LoadSoundDriver | new | high | loads a driver from the game folder or c:\eaclib, "Couldn't resolve sound driver"
+F051_0110 DrvStub1 | new | high | empty driver call
+F051_0118 DrvInit | new | medium | driver table entry +0
+F051_0130 DrvCall04 | new | low | driver table entry +4
+F051_014E DrvCall08 | new | low | driver table entry +8
+F051_0178 DrvShutdown | new | medium | driver table entry +0Ch, used at shutdown
+F051_0190 DrvCall10 | new | low | driver table entry +10h
+F051_01A8 DrvService | new | medium | driver table entry +14h, called from SeqService
+F051_01C0 DrvNeedsService | new | medium | driver table entry +18h, asked before DrvService
+F051_01DC DrvLoadBank | new | low | driver table entry +1Ch, called before loading a song
+F051_01FE DrvStub2 | new | high | empty driver call
+F051_0206 DrvStub3 | new | high | empty driver call
+F051_020E DrvStub4 | new | high | empty driver call
+F051_0216 DrvStub5 | new | high | empty driver call
+F051_021E DrvStub6 | new | high | empty driver call
+F051_0226 DrvStub7 | new | high | empty driver call
+F051_022E DrvSendMidi | new | medium | driver table entry +2Ch, note messages get a transpose of 18h
+F051_0274 DrvLinearToFar | new | medium | callback for drivers: LinearToFarRegs
+F051_028C DrvEmsMap | new | medium | callback for drivers: EmsMapFrame
+F051_02A6 DrvPlaySample | new | medium | starts a digital sample (EMS or conventional) through the driver
+F051_0324 DrvPlayRecSample | new | medium | DrvPlaySample for a heap record
+F052_0000 DrvLinearToFar2 | new | medium | second copy of DrvLinearToFar
+F052_0018 DrvEmsMap2 | new | medium | second copy of DrvEmsMap
+F052_0032 LinkDriverMode | new | medium | relocates a loaded driver image and fills the driver table
+F052_0252 LinkDriver0 | new | low | LinkDriverMode with mode 0
+F052_0272 LinkDriver | new | low | LinkDriverMode with mode 1
+F053_0002 RelocateMzImage | new | medium | applies an MZ header's relocations to an image in memory
+F055_0000 LoadFileCachedMode | new | medium | copies a file from a heap record of that name, or reads it from disk
+F055_00A0 LoadFileCached | new | low | LoadFileCachedMode with mode 1
+F055_00B6 LoadFileCached0 | new | low | LoadFileCachedMode with mode 0

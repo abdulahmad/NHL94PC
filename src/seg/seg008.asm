@@ -99,7 +99,7 @@ SpeechTimerTick:
 	push	word [g_0764]
 	mov	al, [g_0766]
 	push	ax
-	call	0x1844:F051_02A6
+	call	0x1844:DrvPlaySample
 	add	sp, 0x1c
 	lea	ax, [bp - 0x8]
 	push	ax
@@ -338,7 +338,7 @@ SpeechShutdown:
 	add	sp, 0x4
 	mov	al, [g_0766]
 	push	ax
-	call	0x1844:F051_0178
+	call	0x1844:DrvShutdown
 	add	sp, 0x2
 	push	word [g_8EEC]
 	push	word [g_8EEA]
@@ -504,7 +504,7 @@ PlayPauseSample:
 	push	0x0
 	mov	al, [g_0766]
 	push	ax
-	call	0x1844:F051_02A6
+	call	0x1844:DrvPlaySample
 	add	sp, 0x1c
 	push	word 0x2b11
 	push	0x0
@@ -521,7 +521,7 @@ PlayPauseSample:
 	push	0x1
 	mov	al, [g_0766]
 	push	ax
-	call	0x1844:F051_02A6
+	call	0x1844:DrvPlaySample
 	add	sp, 0x1c
 	lea	ax, [bp - 0x8]
 	push	ax

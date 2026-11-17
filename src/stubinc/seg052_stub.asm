@@ -2,7 +2,7 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
-F053_0002		equ	0x2
+RelocateMzImage		equ	0x2
 ResizeRecByName		equ	0x92
 EmsMapFrame		equ	0x192
 FatalError		equ	0x3E4

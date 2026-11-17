@@ -16,7 +16,7 @@ MidiControl:
 	push	ax
 	mov	al, [bp + 0x6]
 	push	ax
-	call	0x1630:F049_0934
+	call	0x1630:QueueMidiBytes
 	leave
 	retf
 	db	0x90
@@ -34,7 +34,7 @@ MidiPitchBend:
 	push	ax
 	mov	al, [bp + 0x6]
 	push	ax
-	call	0x1630:F049_0934
+	call	0x1630:QueueMidiBytes
 	leave
 	retf
 	db	0x90
@@ -58,7 +58,7 @@ MidiProgramNoteOn:
 	push	dx
 	mov	[bp - 0x8], cx
 	mov	[bp - 0xa], dx
-	call	0x1630:F049_0934
+	call	0x1630:QueueMidiBytes
 	add	sp, 0x6
 	mov	al, [bp - 0x8]
 	or	al, 0x90
@@ -71,7 +71,7 @@ MidiProgramNoteOn:
 	push	ax
 	mov	al, [bp - 0xa]
 	push	ax
-	call	0x1630:F049_0934
+	call	0x1630:QueueMidiBytes
 	add	sp, 0x6
 	pop	si
 	pop	di

@@ -372,7 +372,7 @@ PlaySoundEffect:
 	lea	ax, [bp - 0x18]
 	push	ss
 	push	ax
-	call	0x16F2:F050_0BC6
+	call	0x16F2:StartSong
 	add	sp, 0x4
 	pop	si
 	leave
@@ -383,13 +383,13 @@ PlaySoundEffect:
 	cmp	word [g_01C6], 0x4
 	jnz	short .6
 	push	si
-	call	0x16F2:F050_0FD4
+	call	0x16F2:PlaySound
 	add	sp, 0x2
 .6:
 	inc	si
 .7:
 	push	si
-	call	0x16F2:F050_0FD4
+	call	0x16F2:PlaySound
 	add	sp, 0x2
 .8:
 	pop	si
@@ -655,13 +655,13 @@ StopJingle:
 .1:
 	push	word [g_0A16]
 	push	word [g_0A14]
-	call	0x16F2:F050_1226
+	call	0x16F2:SongFinished
 	add	sp, 0x4
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .2
 	push	word [g_0A16]
 	push	word [g_0A14]
-	call	0x16F2:F050_11BA
+	call	0x16F2:StopSong
 	add	sp, 0x4
 	mov	word [g_0A14], 0xffff
 	mov	word [g_0A16], 0xffff
@@ -688,7 +688,7 @@ PlayJingle:
 	mov	byte [g_B2E9], 0x0
 	push	ds
 	push	word 0xb2d6
-	call	0x16F2:F050_0BC6
+	call	0x16F2:StartSong
 	mov	[g_0A14], ax
 	mov	[g_0A16], dx
 	leave
@@ -697,7 +697,7 @@ PlayJingle:
 WaitJingle:
 	push	word [g_0A16]
 	push	word [g_0A14]
-	call	0x16F2:F050_1226
+	call	0x16F2:SongFinished
 	add	sp, 0x4
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short WaitJingle

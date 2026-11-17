@@ -3,7 +3,7 @@
 	bits	16
 	org	0x0
 _lseek		equ	0x7CC
-F049_0934		equ	0x934
+QueueMidiBytes		equ	0x934
 _rmdir		equ	0x104E
 _unlink		equ	0x1076
 _dos_close		equ	0x1084
