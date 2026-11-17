@@ -37,6 +37,7 @@ FloatMode		equ	0x8A1C
 FloatPrecision		equ	0x8A1E
 FloatFlag		equ	0x8A20
 FpStatusByte		equ	0x8ABA
+AllocBlockSize		equ	0x8ACC
 InitHook		equ	0x8AE2
 DebugSignature		equ	0x8AE4
 DebugWriteHook		equ	0x8AE6

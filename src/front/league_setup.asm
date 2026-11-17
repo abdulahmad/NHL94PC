@@ -755,8 +755,8 @@ AskExportToFloppy:
         mov dx, [bp + 0x8]
         add ax, [bp - 0x8]
         mov es, [segTeamChoiceText5]
-        mov [es:dlgExportToFloppy + 0x4C], ax
-        mov [es:dlgExportToFloppy + 0x4E], dx
+        mov [es:argDoYouWantToExport], ax
+        mov [es:argDoYouWantToExport + 0x2], dx
         push -0x1
         lea ax, [bp - 0x4]
         push ax
@@ -1266,8 +1266,8 @@ LeagueTeamSelect:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText6]
-        push word [es:msgThereIsASavedGame + 0x4C]
-        push word [es:msgThereIsASavedGame + 0x4A]
+        push word [es:DbFileNameList + 0x12]
+        push word [es:DbFileNameList + 0x10]
         push word [bp + 0x8]
         push word [bp + 0x6]
         lea ax, [bp - 0x5a]
@@ -1424,8 +1424,8 @@ LeagueTeamSelect:
         test byte [bp + 0x16], 0x1
         jz short .7
         mov es, [segTeamChoiceText7]
-        mov word [es:CalendarMenuBar + 0x101], 0x105c
-        mov word [es:CalendarMenuBar + 0x103], 0x3701
+        mov word [es:SettingsSubmenuPtr], 0x105c
+        mov word [es:SettingsSubmenuPtr + 0x2], 0x3701
 .6:
         mov word [bp - 0x76], 0x2
         jmp short .9
@@ -1433,14 +1433,14 @@ LeagueTeamSelect:
         test byte [bp + 0x16], 0x8
         jz short .8
         mov es, [segTeamChoiceText7]
-        mov word [es:CalendarMenuBar + 0x101], 0x1036
-        mov word [es:CalendarMenuBar + 0x103], 0x3701
+        mov word [es:SettingsSubmenuPtr], 0x1036
+        mov word [es:SettingsSubmenuPtr + 0x2], 0x3701
         jmp short .6
 .8:
         mov es, [segTeamChoiceText7]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:CalendarMenuBar + 0x103], ax
-        mov [es:CalendarMenuBar + 0x101], ax
+        mov [es:SettingsSubmenuPtr + 0x2], ax
+        mov [es:SettingsSubmenuPtr], ax
         mov word [bp - 0x76], 0x1
 .9:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -2142,8 +2142,8 @@ LeagueTeamSelect:
 .51:
         mov ax, es
         mov es, [segTeamChoiceText8]
-        mov [es:msgErrorWhileTradingPlayers + 0x25], di
-        mov [es:msgErrorWhileTradingPlayers + 0x27], ax
+        mov [es:argDoYouReallyWantTo], di
+        mov [es:argDoYouReallyWantTo + 0x2], ax
         push -0x1
         lea ax, [bp - 0xe6]
         push ax

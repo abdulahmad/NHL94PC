@@ -1066,17 +1066,17 @@ DrawControlsDlg:
         mov dx, 0xff
         call 0x03A3:SetCharPtr.regs
         mov es, [segSaveDialogRects1]
-        mov ax, [es:0x2]
+        mov ax, [es:ControlsDlgTopBox + 0x2]
         add ax, strict word 0xb
         db 0x8B, 0xF8                           ; insn: mov di, ax
         push word 0x92
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        sub ax, [es:0x6]
+        sub ax, [es:ControlsDlgTopBox + 0x6]
         neg ax
         add ax, strict word 0xa
         push ax
-        mov ax, [es:0x4]
-        mov si, [es:0x0]
+        mov ax, [es:ControlsDlgTopBox + 0x4]
+        mov si, [es:ControlsDlgTopBox]
         add si, 0xb
         db 0x2B, 0xC6                           ; insn: sub ax, si
         add ax, strict word 0xa
@@ -1093,17 +1093,17 @@ DrawControlsDlg:
         call 0x0FEF:DrawText
         add sp, 0x6
         mov es, [segSaveDialogRects1]
-        mov ax, [es:0xa]
+        mov ax, [es:ControlsDlgBottomBox + 0x2]
         add ax, strict word 0xb
         db 0x8B, 0xF8                           ; insn: mov di, ax
         push word 0x93
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        sub ax, [es:0xe]
+        sub ax, [es:ControlsDlgBottomBox + 0x6]
         neg ax
         add ax, strict word 0xa
         push ax
-        mov ax, [es:0xc]
-        mov si, [es:0x8]
+        mov ax, [es:ControlsDlgBottomBox + 0x4]
+        mov si, [es:ControlsDlgBottomBox]
         add si, 0xb
         db 0x2B, 0xC6                           ; insn: sub ax, si
         add ax, strict word 0xa

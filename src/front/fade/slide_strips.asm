@@ -94,7 +94,7 @@ FadeSlideStrips:
         retf
         db 0x90
 .8:
-        mov ax, [es:0x74fa]
+        mov ax, [es:VenetianRowBytes]
         add ax, strict word 0x7
         cwd
         db 0x33, 0xC2                           ; insn: xor ax, dx

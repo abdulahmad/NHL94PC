@@ -703,8 +703,8 @@ MsgCopyingDatabases:
         mov ax, [bp + 0x6]
         mov dx, [bp + 0x8]
         mov es, [segTeamChoiceText23]
-        mov [es:dlgImportTeam2 + 0x2E], ax
-        mov [es:dlgImportTeam2 + 0x30], dx
+        mov [es:argCopyingDatabasesFor], ax
+        mov [es:argCopyingDatabasesFor + 0x2], dx
         push 0x0
         push 0x0
         push 0x0
@@ -767,8 +767,8 @@ CopyHumanTeamDBs:
         mov es, [segTeamChoiceText26]
         mov bx, [bp - 0xa6]
         shl bx, byte 0x2
-        push word [es:bx + msgThereIsASavedGame + 0x3C]
-        push word [es:bx + msgThereIsASavedGame + 0x3A]
+        push word [es:bx + DbFileNameList + 0x2]
+        push word [es:bx + DbFileNameList]
         lea ax, [bp - 0x54]
         push ss
         push ax
@@ -799,8 +799,8 @@ CopyHumanTeamDBs:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText26]
-        push word [es:si + msgThereIsASavedGame + 0x3C]
-        push word [es:si + msgThereIsASavedGame + 0x3A]
+        push word [es:si + DbFileNameList + 0x2]
+        push word [es:si + DbFileNameList]
         call 0x0CD1:CopyFileByName
         add sp, 0x14
         mov [bp - 0xa4], ax

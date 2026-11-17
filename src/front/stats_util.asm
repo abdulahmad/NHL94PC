@@ -512,7 +512,7 @@ GetSeasonTitle:
         push di
         push si
         mov es, [segSeasonTitles1]
-        cmp byte [es:0x0], 0x1
+        cmp byte [es:titleSeason], 0x1
         jnz short .2
         mov ax, 0x2
         mov cx, 0x384b
@@ -524,21 +524,21 @@ GetSeasonTitle:
         db 0x90
 .2:
         mov es, [segSeasonTitles2]
-        cmp byte [es:0x13], 0x1
+        cmp byte [es:titlePlayoffs], 0x1
         jnz short .3
         mov ax, 0x15
         mov cx, 0x384b
         jmp short .6
 .3:
         mov es, [segSeasonTitles3]
-        cmp byte [es:0x29], 0x1
+        cmp byte [es:titleLeagueSeason], 0x1
         jnz short .4
         mov ax, 0x2b
         mov cx, 0x384b
         jmp short .1
 .4:
         mov es, [segSeasonTitles4]
-        cmp byte [es:str_WwwwwwwwSeason + 0x11], 0x1
+        cmp byte [es:titleLeagueSeasonPlayoffs], 0x1
         jnz short .5
         mov ax, 0x3f
         mov cx, 0x384b
@@ -547,7 +547,7 @@ GetSeasonTitle:
         mov si, [bp - 0xa]
         mov di, [bp - 0x6]
         mov es, [segSeasonTitles5]
-        cmp byte [es:str_WwwwwwwwSeasonPlayOffs + 0x1B], 0x1
+        cmp byte [es:titleLeaguePlayoffs], 0x1
         jnz short .7
         mov ax, 0x5d
         mov cx, 0x384b

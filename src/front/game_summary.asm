@@ -286,8 +286,8 @@ ShowGameSummary:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText52]
-        push word [es:msgThereIsASavedGame + 0x4C]
-        push word [es:msgThereIsASavedGame + 0x4A]
+        push word [es:DbFileNameList + 0x12]
+        push word [es:DbFileNameList + 0x10]
         push word 0x3701
         push strict word CurLeagueName
         lea ax, [bp - 0xf2]
@@ -339,8 +339,8 @@ ShowGameSummary:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText52]
-        push word [es:msgThereIsASavedGame + 0x3C]
-        push word [es:msgThereIsASavedGame + 0x3A]
+        push word [es:DbFileNameList + 0x2]
+        push word [es:DbFileNameList]
         push word 0x3701
         push strict word CurLeagueName
         lea ax, [bp - 0xf2]
@@ -359,8 +359,8 @@ ShowGameSummary:
         cmp word [bp - 0x738], 0x0
         jnz short .19
         mov es, [segTeamChoiceText52]
-        push word [es:msgThereIsASavedGame + 0x50]
-        push word [es:msgThereIsASavedGame + 0x4E]
+        push word [es:DbFileNameList + 0x16]
+        push word [es:DbFileNameList + 0x14]
         lea ax, [bp - 0x12]
         push ss
         push ax
@@ -384,8 +384,8 @@ ShowGameSummary:
         cmp word [bp - 0x738], 0x0
         jnz short .20
         mov es, [segTeamChoiceText52]
-        push word [es:msgThereIsASavedGame + 0x50]
-        push word [es:msgThereIsASavedGame + 0x4E]
+        push word [es:DbFileNameList + 0x16]
+        push word [es:DbFileNameList + 0x14]
         lea ax, [bp - 0x12]
         push ss
         push ax
@@ -496,8 +496,8 @@ ShowGameSummary:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText52]
-        push word [es:msgThereIsASavedGame + 0x4C]
-        push word [es:msgThereIsASavedGame + 0x4A]
+        push word [es:DbFileNameList + 0x12]
+        push word [es:DbFileNameList + 0x10]
         push word 0x3701
         push strict word CurLeagueName
         lea ax, [bp - 0xf2]

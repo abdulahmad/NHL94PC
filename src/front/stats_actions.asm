@@ -55,16 +55,16 @@ StatsSelNhlSeason:
         jmp near .4
 .1:
         mov es, [segSeasonTitles6]
-        mov byte [es:0x0], 0x1
+        mov byte [es:titleSeason], 0x1
         mov al, 0x2
         mov es, [segSeasonTitles7]
-        mov [es:str_WwwwwwwwSeasonPlayOffs + 0x1B], al
+        mov [es:titleLeaguePlayoffs], al
         mov es, [segSeasonTitles8]
-        mov [es:str_WwwwwwwwSeason + 0x11], al
+        mov [es:titleLeagueSeasonPlayoffs], al
         mov es, [segSeasonTitles9]
-        mov [es:0x29], al
+        mov [es:titleLeagueSeason], al
         mov es, [segSeasonTitles10]
-        mov [es:0x13], al
+        mov [es:titlePlayoffs], al
         mov word [statsseason], 0x0
         cmp word [statscontext], 0x0
         jz short .2
@@ -123,16 +123,16 @@ StatsSelNhlPlayoffs:
         jmp near .4
 .1:
         mov es, [segSeasonTitles10]
-        mov byte [es:0x13], 0x1
+        mov byte [es:titlePlayoffs], 0x1
         mov al, 0x2
         mov es, [segSeasonTitles7]
-        mov [es:str_WwwwwwwwSeasonPlayOffs + 0x1B], al
+        mov [es:titleLeaguePlayoffs], al
         mov es, [segSeasonTitles8]
-        mov [es:str_WwwwwwwwSeason + 0x11], al
+        mov [es:titleLeagueSeasonPlayoffs], al
         mov es, [segSeasonTitles9]
-        mov [es:0x29], al
+        mov [es:titleLeagueSeason], al
         mov es, [segSeasonTitles6]
-        mov [es:0x0], al
+        mov [es:titleSeason], al
         mov word [statsseason], 0x0
         cmp word [statscontext], 0x0
         jnz short .2
@@ -191,16 +191,16 @@ StatsSelLeague:
         jmp near .4
 .1:
         mov es, [segSeasonTitles9]
-        mov byte [es:0x29], 0x1
+        mov byte [es:titleLeagueSeason], 0x1
         mov al, 0x2
         mov es, [segSeasonTitles7]
-        mov [es:str_WwwwwwwwSeasonPlayOffs + 0x1B], al
+        mov [es:titleLeaguePlayoffs], al
         mov es, [segSeasonTitles8]
-        mov [es:str_WwwwwwwwSeason + 0x11], al
+        mov [es:titleLeagueSeasonPlayoffs], al
         mov es, [segSeasonTitles10]
-        mov [es:0x13], al
+        mov [es:titlePlayoffs], al
         mov es, [segSeasonTitles6]
-        mov [es:0x0], al
+        mov [es:titleSeason], al
         mov word [statsseason], 0x1
         cmp word [statscontext], 0x0
         jz short .2
@@ -267,16 +267,16 @@ StatsSelLeaguePlayoffs:
         jmp near .4
 .1:
         mov es, [segSeasonTitles8]
-        mov byte [es:str_WwwwwwwwSeason + 0x11], 0x1
+        mov byte [es:titleLeagueSeasonPlayoffs], 0x1
         mov al, 0x2
         mov es, [segSeasonTitles7]
-        mov [es:str_WwwwwwwwSeasonPlayOffs + 0x1B], al
+        mov [es:titleLeaguePlayoffs], al
         mov es, [segSeasonTitles9]
-        mov [es:0x29], al
+        mov [es:titleLeagueSeason], al
         mov es, [segSeasonTitles10]
-        mov [es:0x13], al
+        mov [es:titlePlayoffs], al
         mov es, [segSeasonTitles6]
-        mov [es:0x0], al
+        mov [es:titleSeason], al
         mov word [statsseason], 0x1
         cmp word [statscontext], 0x0
         jnz short .2
@@ -343,16 +343,16 @@ StatsSelPlayoffMode:
         jmp near .4
 .1:
         mov es, [segSeasonTitles7]
-        mov byte [es:str_WwwwwwwwSeasonPlayOffs + 0x1B], 0x1
+        mov byte [es:titleLeaguePlayoffs], 0x1
         mov al, 0x2
         mov es, [segSeasonTitles8]
-        mov [es:str_WwwwwwwwSeason + 0x11], al
+        mov [es:titleLeagueSeasonPlayoffs], al
         mov es, [segSeasonTitles9]
-        mov [es:0x29], al
+        mov [es:titleLeagueSeason], al
         mov es, [segSeasonTitles10]
-        mov [es:0x13], al
+        mov [es:titlePlayoffs], al
         mov es, [segSeasonTitles6]
-        mov [es:0x0], al
+        mov [es:titleSeason], al
         mov word [statsseason], 0x1
         cmp word [statscontext], 0x0
         jnz short .2

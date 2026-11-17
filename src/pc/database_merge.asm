@@ -414,8 +414,8 @@ MergeTeamDbs:
         push word [bp - 0xa58]
         push word [bp - 0xa5a]
         mov es, [segTeamChoiceText43]
-        push word [es:msgThereIsASavedGame + 0x3C]
-        push word [es:msgThereIsASavedGame + 0x3A]
+        push word [es:DbFileNameList + 0x2]
+        push word [es:DbFileNameList]
         push word [bp + 0x8]
         push di
         lea ax, [bp - 0x38]
@@ -436,8 +436,8 @@ MergeTeamDbs:
         push word [bp - 0xa58]
         push word [bp - 0xa5a]
         mov es, [segTeamChoiceText43]
-        push word [es:msgThereIsASavedGame + 0x50]
-        push word [es:msgThereIsASavedGame + 0x4E]
+        push word [es:DbFileNameList + 0x16]
+        push word [es:DbFileNameList + 0x14]
         mov ax, [bp + 0x8]
         push ax
         push di
@@ -459,8 +459,8 @@ MergeTeamDbs:
         push word [bp + 0x14]
         push word [bp + 0x12]
         mov es, [segTeamChoiceText43]
-        push word [es:msgThereIsASavedGame + 0x50]
-        push word [es:msgThereIsASavedGame + 0x4E]
+        push word [es:DbFileNameList + 0x16]
+        push word [es:DbFileNameList + 0x14]
         push word [bp + 0xc]
         push word [bp + 0xa]
         lea ax, [bp - 0x38]
@@ -481,8 +481,8 @@ MergeTeamDbs:
         push word [bp + 0x18]
         push word [bp + 0x16]
         mov es, [segTeamChoiceText43]
-        push word [es:msgThereIsASavedGame + 0x50]
-        push word [es:msgThereIsASavedGame + 0x4E]
+        push word [es:DbFileNameList + 0x16]
+        push word [es:DbFileNameList + 0x14]
         push word [bp + 0x10]
         push word [bp + 0xe]
         lea ax, [bp - 0x38]
@@ -805,8 +805,8 @@ MergeScheduleDb:
         push word [bp + 0x10]
         push word [bp + 0xe]
         mov es, [segTeamChoiceText43]
-        push word [es:msgThereIsASavedGame + 0x54]
-        push word [es:msgThereIsASavedGame + 0x52]
+        push word [es:DbFileNameList + 0x1A]
+        push word [es:DbFileNameList + 0x18]
         push word [bp + 0x8]
         push word [bp + 0x6]
         lea ax, [bp - 0x30]
@@ -826,8 +826,8 @@ MergeScheduleDb:
         push word [bp + 0x14]
         push word [bp + 0x12]
         mov es, [segTeamChoiceText43]
-        push word [es:msgThereIsASavedGame + 0x54]
-        push word [es:msgThereIsASavedGame + 0x52]
+        push word [es:DbFileNameList + 0x1A]
+        push word [es:DbFileNameList + 0x18]
         push word [bp + 0xc]
         push word [bp + 0xa]
         lea ax, [bp - 0x30]
@@ -1753,8 +1753,8 @@ MergeLeagueFiles:
         push word 0x3701
         push strict word str_Xx
         mov es, [segTeamChoiceText43]
-        push word [es:msgThereIsASavedGame + 0x4C]
-        push word [es:msgThereIsASavedGame + 0x4A]
+        push word [es:DbFileNameList + 0x12]
+        push word [es:DbFileNameList + 0x10]
         call 0x0CD1:CopyFileByName
         add sp, 0x14
         mov [bp - 0x52], ax
@@ -1770,8 +1770,8 @@ MergeLeagueFiles:
         push word 0x3701
         push strict word str_Xx
         mov es, [segTeamChoiceText43]
-        push word [es:msgThereIsASavedGame + 0x50]
-        push word [es:msgThereIsASavedGame + 0x4E]
+        push word [es:DbFileNameList + 0x16]
+        push word [es:DbFileNameList + 0x14]
         call 0x0CD1:CopyFileByName
         add sp, 0x14
         mov [bp - 0x52], ax
@@ -1787,8 +1787,8 @@ MergeLeagueFiles:
         push word 0x3701
         push strict word str_Xx
         mov es, [segTeamChoiceText43]
-        push word [es:msgThereIsASavedGame + 0x54]
-        push word [es:msgThereIsASavedGame + 0x52]
+        push word [es:DbFileNameList + 0x1A]
+        push word [es:DbFileNameList + 0x18]
         call 0x0CD1:CopyFileByName
         add sp, 0x14
         mov [bp - 0x52], ax
@@ -1799,8 +1799,8 @@ MergeLeagueFiles:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText43]
-        push word [es:msgThereIsASavedGame + 0x54]
-        push word [es:msgThereIsASavedGame + 0x52]
+        push word [es:DbFileNameList + 0x1A]
+        push word [es:DbFileNameList + 0x18]
         push word 0x3701
         push strict word CurLeagueName
         lea ax, [bp - 0x2a]

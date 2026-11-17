@@ -2,10 +2,11 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
+ListDlgScrollBar		equ	0x0
 TextWidthFar		equ	0x2
 DrawLine		equ	0xC
-GetInputEvent		equ	0xE
 InputInit		equ	0xE
+GetInputEvent		equ	0xE
 SetTextColors		equ	0x24
 AllocRecData		equ	0x30
 InputShutdown		equ	0x4C

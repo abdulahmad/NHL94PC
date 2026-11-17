@@ -207,8 +207,8 @@ ShowMatchupScreen:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText50]
-        push word [es:msgThereIsASavedGame + 0x4C]
-        push word [es:msgThereIsASavedGame + 0x4A]
+        push word [es:DbFileNameList + 0x12]
+        push word [es:DbFileNameList + 0x10]
         push word 0x3701
         push strict word CurLeagueName
         lea ax, [bp - 0x58]
@@ -374,16 +374,16 @@ ShowMatchupScreen:
         mov es, [segLinesMenuText1]
         mov bx, [bp - 0x66]
         shl bx, byte 0x2
-        push word [es:bx + MatchupMenu + 0x9C]
-        push word [es:bx + MatchupMenu + 0x9A]
+        push word [es:bx + itemPenaltyKilling + 0x8]
+        push word [es:bx + itemPenaltyKilling + 0x6]
         les si, [FontPtr]
         mov ax, [es:si + 0xe]
         imul word [bp - 0x66]
         add ax, strict word 0x1e
         push ax
         mov es, [segLinesMenuText1]
-        push word [es:bx + MatchupMenu + 0x9C]
-        push word [es:bx + MatchupMenu + 0x9A]
+        push word [es:bx + itemPenaltyKilling + 0x8]
+        push word [es:bx + itemPenaltyKilling + 0x6]
         call 0x0D39:TextWidthFar
         add sp, 0x4
         sub ax, 0x140
@@ -498,11 +498,11 @@ ShowMatchupScreen:
         call 0x03A3:UseCharSeg
         add sp, 0x4
         mov es, [segMenuText37]
-        mov ax, [es:DeskMenuBar + 0x42E]
-        or ax, [es:DeskMenuBar + 0x42C]
+        mov ax, [es:itemHomeTeam + 0xC]
+        or ax, [es:itemHomeTeam + 0xA]
         jnz short .10
-        mov ax, [es:DeskMenuBar + 0x444]
-        or ax, [es:DeskMenuBar + 0x442]
+        mov ax, [es:itemVisitingTeam + 0xC]
+        or ax, [es:itemVisitingTeam + 0xA]
         jnz short .10
         mov word [bp - 0x650], 0x2
 .9:
@@ -510,15 +510,15 @@ ShowMatchupScreen:
         jmp short .14
         db 0x90
 .10:
-        mov ax, [es:0x1172]
-        or ax, [es:0x1170]
+        mov ax, [es:itemHomeTeam + 0xC]
+        or ax, [es:itemHomeTeam + 0xA]
         jnz short .11
         mov word [bp - 0x650], 0x3
         jmp short .13
         db 0x90
 .11:
-        mov ax, [es:0x1188]
-        or ax, [es:0x1186]
+        mov ax, [es:itemVisitingTeam + 0xC]
+        or ax, [es:itemVisitingTeam + 0xA]
         jnz short .12
         mov word [bp - 0x650], 0x3
         jmp short .9
@@ -732,8 +732,8 @@ ShowMatchupScreen:
         jmp near .37
 .25:
         mov es, [segMenuText37]
-        mov cx, [es:DeskMenuBar + 0x444]
-        or cx, [es:DeskMenuBar + 0x442]
+        mov cx, [es:itemVisitingTeam + 0xC]
+        or cx, [es:itemVisitingTeam + 0xA]
         jz short .26
         jmp near .34
 .26:

@@ -1492,7 +1492,7 @@ MenuNewExhibition:
         mov di, [bp + 0x6]
         db 0x2B, 0xF6                           ; insn: sub si, si
         mov es, [schedgameidx]
-        mov [es:0x78c], si
+        mov [es:AwayGlStats + 0x12], si
         mov word [teamstatscb], 0x250d
         mov word [skaterstatscb], 0x1b35
         mov word [goaliestatscb], 0x2503
@@ -1743,14 +1743,14 @@ MenuNewLeague:
         add sp, 0x4
         mov es, [segDbFiles11]
         mov word [es:lgstate], 0x2
-        mov word [es:lgstate_name + 0x4E], 0x9
-        mov word [es:lgstate_name + 0x50], 0x7
-        or word [es:lgstate_name + 0x52], 0x3ff
-        mov ax, [es:lgstate_name + 0x52]
+        mov word [es:lgstate + 0x50], 0x9
+        mov word [es:lgstate + 0x52], 0x7
+        or word [es:lgstate + 0x54], 0x3ff
+        mov ax, [es:lgstate + 0x54]
         and ah, 0xfb
         or ah, 0x8
-        mov [es:lgstate_name + 0x52], ax
-        or byte [es:lgstate_name + 0x53], 0x70
+        mov [es:lgstate + 0x54], ax
+        or byte [es:lgstate + 0x55], 0x70
         test byte [InputFlags], 0x2
         jz short .1
         mov word [es:lgstate_w5A], 0x2
@@ -1785,9 +1785,9 @@ MenuNewLeague:
 .6:
         mov ax, 0xffff
 .7:
-        mov [es:lgstate_name + 0x54], ax
+        mov [es:lgstate + 0x56], ax
         mov word [es:lgstate_w5A + 0x2], 0x10
-        mov word [es:lgstate_name + 0x56], 0xfffe
+        mov word [es:lgstate + 0x58], 0xfffe
         mov word [es:lgstate_w5A + 0x4], 0x0
         mov word [es:lgstate_w5A + 0x6], 0x1
         push es
@@ -1807,12 +1807,12 @@ MenuNewLeague:
         call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
         mov es, [segMenuText19]
-        mov word [es:TeamNameTemplate + 0x901], strict word MenuExportDbsThunk
-        mov word [es:TeamNameTemplate + 0x903], 0x1b35
-        mov word [es:TeamNameTemplate + 0x917], strict word MenuNextLeagueGameThunk
-        mov word [es:TeamNameTemplate + 0x919], 0x1b35
-        mov word [es:TeamNameTemplate + 0x931], 0xd86
-        mov word [es:TeamNameTemplate + 0x933], 0x3448
+        mov word [es:itemExportDatabases + 0xA], strict word MenuExportDbsThunk
+        mov word [es:itemExportDatabases + 0xC], 0x1b35
+        mov word [es:itemNextLeagueGame + 0xA], strict word MenuNextLeagueGameThunk
+        mov word [es:itemNextLeagueGame + 0xC], 0x1b35
+        mov word [es:itemLeagueManager + 0xE], 0xd86
+        mov word [es:itemLeagueManager + 0x10], 0x3448
         jmp short .9
 .8:
         call 0x1B35:BuildSeasonTitleThunk
@@ -1821,12 +1821,12 @@ MenuNewLeague:
         add sp, 0x2
         mov es, [segMenuText19]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:TeamNameTemplate + 0x903], ax
-        mov [es:TeamNameTemplate + 0x901], ax
-        mov [es:TeamNameTemplate + 0x919], ax
-        mov [es:TeamNameTemplate + 0x917], ax
-        mov [es:TeamNameTemplate + 0x933], ax
-        mov [es:TeamNameTemplate + 0x931], ax
+        mov [es:itemExportDatabases + 0xC], ax
+        mov [es:itemExportDatabases + 0xA], ax
+        mov [es:itemNextLeagueGame + 0xC], ax
+        mov [es:itemNextLeagueGame + 0xA], ax
+        mov [es:itemLeagueManager + 0x10], ax
+        mov [es:itemLeagueManager + 0xE], ax
 .9:
         push word 0x3415
         push strict word exhstate

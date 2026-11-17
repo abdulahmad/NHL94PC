@@ -59,7 +59,7 @@ f_3701_0FAC CalPrevMonthSeg | new | medium | its segment
 f_3701_0FDF CalendarMenuBar | new | medium | menu bar of the calendar screen
 f_3701_1163 TradeMenu | new | medium | menu record used by TradePlayers
 f_3701_11AB TradeStatsMenuBar | new | medium | menu bar of the trade stats view
-f_384B_0094 SeasonTitlePtr | new | medium | pointer to the season title text read by SetupStatsMenus
+f_384B_0094 SeasonMenuRight | new | medium | pointer to the season title text read by SetupStatsMenus
 f_38AF_0022 MatchupMenu | new | medium | menu record ShowMatchupScreen keeps in a local
 f_38BD_01F3 JingleIndex | new | medium | jingle number per arena event, read by LoadArenaJingles
 f_38BD_028F JingleTable | new | medium | jingle table compared by LoadArenaJingles

@@ -53,30 +53,30 @@ SetupStatsMenus:
         jmp near .30
 .7:
         mov es, [SeasonTitleSegs]
-        mov word [es:0xde], strict word OverlayThunks
-        mov word [es:0xe0], 0x1b35
-        mov word [es:0xf4], strict word StatsSelLeaguePlayoffsThunk
-        mov word [es:0xf6], 0x1b35
-        mov word [es:0x120], strict word StatsSelPlayoffModeThunk
-        mov word [es:0x122], 0x1b35
+        mov word [es:itemLeagueSeason + 0xA], strict word StatsSelLeagueThunk
+        mov word [es:itemLeagueSeason + 0xC], 0x1b35
+        mov word [es:itemLeagueSeasonPlayoffs + 0xA], strict word StatsSelLeaguePlayoffsThunk
+        mov word [es:itemLeagueSeasonPlayoffs + 0xC], 0x1b35
+        mov word [es:itemLeaguePlayoffs + 0xA], strict word StatsSelPlayoffModeThunk
+        mov word [es:itemLeaguePlayoffs + 0xC], 0x1b35
         mov ax, 0x29
         mov cx, 0x384b
-        mov [es:0xda], ax
-        mov [es:0xdc], cx
+        mov [es:itemLeagueSeason + 0x6], ax
+        mov [es:itemLeagueSeason + 0x8], cx
         mov [bp - 0xc], ax
         mov [bp - 0xa], cx
         mov dx, 0x3d
         mov bx, 0x384b
         mov [bp - 0x10], dx
         mov [bp - 0xe], bx
-        mov [es:0xf0], dx
-        mov [es:0xf2], bx
+        mov [es:itemLeagueSeasonPlayoffs + 0x6], dx
+        mov [es:itemLeagueSeasonPlayoffs + 0x8], bx
         mov dx, 0x5b
         mov bx, 0x384b
         mov [bp - 0x14], dx
         mov [bp - 0x12], bx
-        mov [es:0x11c], dx
-        mov [es:0x11e], bx
+        mov [es:itemLeaguePlayoffs + 0x6], dx
+        mov [es:itemLeaguePlayoffs + 0x8], bx
         mov es, cx
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         cmp byte [es:bx], 0x1
@@ -88,8 +88,8 @@ SetupStatsMenus:
         les bx, [bp - 0x10]
         mov [es:bx], al
         mov es, [SeasonTitleSegs]
-        mov [es:0x13], al
-        mov [es:0x0], al
+        mov [es:titlePlayoffs], al
+        mov [es:titleSeason], al
         mov word [statsseason], 0x1
         cmp word [statscontext], 0x0
         jz short .8
@@ -108,8 +108,8 @@ SetupStatsMenus:
         les bx, [bp - 0xc]
         mov [es:bx], al
         mov es, [SeasonTitleSegs]
-        mov [es:0x13], al
-        mov [es:0x0], al
+        mov [es:titlePlayoffs], al
+        mov [es:titleSeason], al
         mov word [statsseason], 0x1
         cmp word [statscontext], 0x0
         jnz short .10
@@ -132,8 +132,8 @@ SetupStatsMenus:
         les bx, [bp - 0xc]
         mov [es:bx], al
         mov es, [SeasonTitleSegs]
-        mov [es:0x13], al
-        mov [es:0x0], al
+        mov [es:titlePlayoffs], al
+        mov [es:titleSeason], al
         mov word [statsseason], 0x1
         cmp word [statscontext], 0x0
         jnz short .13
@@ -153,16 +153,16 @@ SetupStatsMenus:
         jmp near .30
 .16:
         mov es, [SeasonTitleSegs]
-        cmp byte [es:0x0], 0x2
+        cmp byte [es:titleSeason], 0x2
         jnz short .18
-        cmp byte [es:0x13], 0x2
+        cmp byte [es:titlePlayoffs], 0x2
         jnz short .18
-        mov byte [es:0x0], 0x1
+        mov byte [es:titleSeason], 0x1
         mov al, 0x2
-        mov [es:0x5b], al
-        mov [es:0x3d], al
-        mov [es:0x29], al
-        mov [es:0x13], al
+        mov [es:titleLeaguePlayoffs], al
+        mov [es:titleLeagueSeasonPlayoffs], al
+        mov [es:titleLeagueSeason], al
+        mov [es:titlePlayoffs], al
         mov word [statsseason], 0x0
         cmp word [statscontext], 0x0
         jz short .17
@@ -182,20 +182,20 @@ SetupStatsMenus:
         db 0x90
 .19:
         mov es, [SeasonTitleSegs]
-        mov word [es:0xde], strict word StatsSelPlayoffModeThunk
-        mov word [es:0xe0], 0x1b35
+        mov word [es:itemLeagueSeason + 0xA], strict word StatsSelPlayoffModeThunk
+        mov word [es:itemLeagueSeason + 0xC], 0x1b35
         mov ax, 0x5b
         mov cx, 0x384b
         mov [bp - 0x14], ax
         mov [bp - 0x12], cx
-        mov [es:0xda], ax
-        mov [es:0xdc], cx
+        mov [es:itemLeagueSeason + 0x6], ax
+        mov [es:itemLeagueSeason + 0x8], cx
         mov bx, 0x29
         mov [bp - 0xc], bx
         mov [bp - 0xa], es
         cmp byte [es:bx], 0x1
         jz short .20
-        cmp byte [es:0x3d], 0x1
+        cmp byte [es:titleLeagueSeasonPlayoffs], 0x1
         jz short .20
         les bx, [bp - 0x14]
         cmp byte [es:bx], 0x1
@@ -205,12 +205,12 @@ SetupStatsMenus:
         mov byte [es:bx], 0x1
         mov al, 0x2
         mov es, [SeasonTitleSegs]
-        mov [es:0x3d], al
+        mov [es:titleLeagueSeasonPlayoffs], al
         les bx, [bp - 0xc]
         mov [es:bx], al
         mov es, [SeasonTitleSegs]
-        mov [es:0x13], al
-        mov [es:0x0], al
+        mov [es:titlePlayoffs], al
+        mov [es:titleSeason], al
         mov word [statsseason], 0x1
         cmp word [statscontext], 0x0
         jnz short .21
@@ -230,22 +230,22 @@ SetupStatsMenus:
         db 0x90
 .23:
         mov es, [SeasonTitleSegs]
-        mov word [es:0xde], strict word OverlayThunks
-        mov word [es:0xe0], 0x1b35
-        mov word [es:0xf4], strict word StatsSelLeaguePlayoffsThunk
-        mov word [es:0xf6], 0x1b35
+        mov word [es:itemLeagueSeason + 0xA], strict word StatsSelLeagueThunk
+        mov word [es:itemLeagueSeason + 0xC], 0x1b35
+        mov word [es:itemLeagueSeasonPlayoffs + 0xA], strict word StatsSelLeaguePlayoffsThunk
+        mov word [es:itemLeagueSeasonPlayoffs + 0xC], 0x1b35
         mov ax, 0x29
         mov cx, 0x384b
         mov [bp - 0xc], ax
         mov [bp - 0xa], cx
-        mov [es:0xda], ax
-        mov [es:0xdc], cx
+        mov [es:itemLeagueSeason + 0x6], ax
+        mov [es:itemLeagueSeason + 0x8], cx
         mov ax, 0x3d
         mov cx, 0x384b
         mov [bp - 0x10], ax
         mov [bp - 0xe], cx
-        mov [es:0xf0], ax
-        mov [es:0xf2], cx
+        mov [es:itemLeagueSeasonPlayoffs + 0x6], ax
+        mov [es:itemLeagueSeasonPlayoffs + 0x8], cx
         mov bx, 0x5b
         mov [bp - 0x14], bx
         mov [bp - 0x12], es
@@ -266,8 +266,8 @@ SetupStatsMenus:
         les bx, [bp - 0xc]
         mov [es:bx], al
         mov es, [SeasonTitleSegs]
-        mov [es:0x13], al
-        mov [es:0x0], al
+        mov [es:titlePlayoffs], al
+        mov [es:titleSeason], al
         mov word [statsseason], 0x1
         cmp word [statscontext], 0x0
         jnz short .25
@@ -285,8 +285,8 @@ SetupStatsMenus:
         les bx, [bp - 0x10]
         mov [es:bx], al
         mov es, [SeasonTitleSegs]
-        mov [es:0x13], al
-        mov [es:0x0], al
+        mov [es:titlePlayoffs], al
+        mov [es:titleSeason], al
         mov word [statsseason], 0x1
         cmp word [statscontext], 0x0
         jz short .27
@@ -307,14 +307,14 @@ SetupStatsMenus:
         cmp si, 0x4
         jnz short .31
         mov es, [SeasonTitleSegs]
-        mov word [es:0x94], 0x78
-        mov byte [es:0x88], 0x0
+        mov word [es:SeasonMenuRight], 0x78
+        mov byte [es:str_Separator_5 + 0x16], 0x0
         jmp short .32
         db 0x90
 .31:
         mov es, [SeasonTitleSegs]
-        mov word [es:0x94], 0x9b
-        mov byte [es:0x88], 0x2d
+        mov word [es:SeasonMenuRight], 0x9b
+        mov byte [es:str_Separator_5 + 0x16], 0x2d
 .32:
         mov cx, 0x8
         db 0x0B, 0xF6                           ; insn: or si, si
@@ -326,7 +326,7 @@ SetupStatsMenus:
         mov ds, ax
 .33:
         mov [bx], cx
-        mov ax, [SeasonTitlePtr]
+        mov ax, [SeasonMenuRight]
         lea di, [bx - 0x2]
         mov [di], ax
         add bx, 0x16
@@ -344,25 +344,25 @@ SetupStatsMenus:
         mov es, [segTeamChoiceText48]
         mov [es:TradeStatsMenuBar + 0x2A], al
         mov es, [segMenuText22]
-        mov [es:GoalieStatsMenuBar + 0xDA], al
+        mov [es:itemStatisticsType_10 + 0x12], al
         mov es, [segMenuText23]
-        mov [es:GoalieStatsMenuBar + 0x2A], al
+        mov [es:itemStatisticsType_9 + 0x12], al
         mov es, [segMenuText24]
-        mov [es:SkaterStatsMenuBar + 0x2A], al
+        mov [es:itemStatisticsType_8 + 0x12], al
         mov es, [segMenuText25]
-        mov [es:TeamStatsMenuBar + 0x2A], al
+        mov [es:itemStatisticsType_7 + 0x12], al
         mov es, [segMenuText26]
-        mov [es:StandingsMenuBar2 + 0x2A], al
+        mov [es:itemStatisticsType_6 + 0x12], al
         mov es, [segMenuText27]
-        mov [es:StandingsRosterMenuBar + 0x40], al
+        mov [es:itemStatisticsType_5 + 0x12], al
         mov es, [segMenuText28]
-        mov [es:standingsmenubar + 0x40], al
+        mov [es:itemStatisticsType_4 + 0x12], al
         mov es, [segMenuText29]
-        mov [es:PlayerStatsMenuBar + 0x2A], al
+        mov [es:itemStatisticsType_3 + 0x12], al
         mov es, [segMenuText30]
-        mov [es:DeskMenuBar + 0x3C6], al
+        mov [es:itemStatisticsType_2 + 0x12], al
         mov es, [segMenuText31]
-        mov [es:TeamNameTemplate + 0xA7F], al
+        mov [es:itemStatisticsType + 0x12], al
         pop si
         pop di
         leave
@@ -558,29 +558,29 @@ SetStatsMenuTextJumpTable:                      ; jump table of SetStatsMenuText
 .8:
         mov ax, [bp - 0x8]
         mov es, [segMenuText32]
-        mov [es:standingsmenubar + 0xA2], cx
-        mov [es:standingsmenubar + 0xA4], ax
+        mov [es:itemSportsDesk_6 + 0x6], cx
+        mov [es:itemSportsDesk_6 + 0x8], ax
         mov es, [segMenuText33]
-        mov [es:standingsmenubar + 0x60], cx
-        mov [es:standingsmenubar + 0x62], ax
+        mov [es:itemSportsDesk_5 + 0x6], cx
+        mov [es:itemSportsDesk_5 + 0x8], ax
         mov es, [segMenuText34]
-        mov [es:PlayerStatsMenuBar + 0x60], cx
-        mov [es:PlayerStatsMenuBar + 0x62], ax
+        mov [es:itemSportsDesk_4 + 0x6], cx
+        mov [es:itemSportsDesk_4 + 0x8], ax
         mov es, [segMenuText35]
-        mov [es:PlayerStatsMenuBar + 0x34], cx
-        mov [es:PlayerStatsMenuBar + 0x36], ax
+        mov [es:itemSportsDesk_3 + 0x6], cx
+        mov [es:itemSportsDesk_3 + 0x8], ax
         mov es, [segMenuText34]
-        mov [es:PlayerStatsMenuBar + 0x5C], bx
+        mov [es:itemSportsDesk_4 + 0x2], bx
         mov es, [segMenuText35]
-        mov [es:PlayerStatsMenuBar + 0x30], bx
+        mov [es:itemSportsDesk_3 + 0x2], bx
         cmp bx, 0x4f
         jnl short .9
         mov bx, 0x4f
 .9:
         mov es, [segMenuText32]
-        mov [es:standingsmenubar + 0x9E], bx
-        mov [es:standingsmenubar + 0x88], bx
-        mov [es:standingsmenubar + 0x72], bx
+        mov [es:itemSportsDesk_6 + 0x2], bx
+        mov [es:itemOverallStandings_2 + 0x2], bx
+        mov [es:itemTeamRoster + 0x2], bx
         mov es, [segMenuText33]
-        mov [es:standingsmenubar + 0x5C], bx
-        mov [es:standingsmenubar + 0x46], bx
+        mov [es:itemSportsDesk_5 + 0x2], bx
+        mov [es:itemOverallStandings + 0x2], bx

@@ -15,11 +15,11 @@ DrawTextCenteredClip:
         call 0x03A3:TextWidthAll
         pop bx
         mov es, [DgroupSegE]
-        mov si, [es:0x74fe]
+        mov si, [es:ClipRightX]
         db 0x2B, 0xF0                           ; insn: sub si, ax
-        sub si, [es:0x74fc]
+        sub si, [es:ClipLeftX]
         sar si, 1
-        add si, [es:0x74fc]
+        add si, [es:ClipLeftX]
         push word [bp + 0x8]
         lea ax, [si + 0x1]
         push ax

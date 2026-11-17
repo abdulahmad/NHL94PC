@@ -22,6 +22,12 @@ str_The_2		equ	0x10F
 str_WillContinueToTheNext		equ	0x129
 str_Series		equ	0x143
 str_GeneratingTheFinalResults		equ	0x152
+str_HomeGoalie1Text		equ	0x1E2
+str_HomeGoalie2Text		equ	0x1FB
+str_HomeGoalieNone		equ	0x214
+str_AwayGoalie1Text		equ	0x232
+str_AwayGoalie2Text		equ	0x24B
+str_AwayGoalieNone		equ	0x264
 RetZero		equ	0x734
 DrawRleFlipAt		equ	0x1637
 ReadKey		equ	0x16D3

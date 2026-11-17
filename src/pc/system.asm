@@ -2190,7 +2190,7 @@ HookInt8:
         db 0x3B, 0xC3                           ; insn: cmp ax, bx
         je short .2
         mov word [OldInt8Seg], ax
-        mov word [es:0x20], Int8Handler
+        mov word [es:0x08 * 4], Int8Handler
         mov word es:[0x22], cs
         mov word [TickHookOff], EmptyRet
         mov word [TickHookSeg], cs
@@ -3159,19 +3159,19 @@ HookKbd:
         mov word [OldInt9Off], bx
         mov bx, word es:[0x26]
         mov word [OldInt9Seg], bx
-        mov word [es:0x24], KbdIrq
+        mov word [es:0x09 * 4], KbdIrq
         mov word es:[0x26], cs
         mov bx, word es:[0x58]
         mov word [OldInt16Off], bx
         mov bx, word es:[0x5a]
         mov word [OldInt16Seg], bx
-        mov word [es:0x58], Int16Hook
+        mov word [es:0x16 * 4], Int16Hook
         mov word es:[0x5a], cs
         mov bx, word es:[0x8c]
         mov word [OldInt23Off], bx
         mov bx, word es:[0x8e]
         mov word [OldInt23Seg], bx
-        mov word [es:0x8c], BreakIrq
+        mov word [es:0x23 * 4], BreakIrq
         mov word es:[0x8e], cs
         mov bx, KeyService
         mov word [KeyPtr], bx

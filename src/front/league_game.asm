@@ -142,8 +142,8 @@ DrawCalendarDay:
         mov es, [segTeamChoiceText28]
         mov bx, [bp + 0x6]
         shl bx, byte 0x2
-        push word [es:bx + str_Nhlhockey + 0x62]
-        push word [es:bx + str_Nhlhockey + 0x60]
+        push word [es:bx + MonthNameList + 0x2]
+        push word [es:bx + MonthNameList]
         lea ax, [bp - 0x44]
         push ss
         push ax
@@ -880,8 +880,8 @@ CalendarScreen:
         push word [bp + 0xc]
         push word [bp + 0xa]
         mov es, [segTeamChoiceText29]
-        push word [es:msgThereIsASavedGame + 0x54]
-        push word [es:msgThereIsASavedGame + 0x52]
+        push word [es:DbFileNameList + 0x1A]
+        push word [es:DbFileNameList + 0x18]
         push word [bp + 0x8]
         push word [bp + 0x6]
         lea ax, [bp - 0x4c]
@@ -1084,8 +1084,8 @@ CalendarScreen:
         jmp short .22
         db 0x90
 .21:
-        mov word [es:0xfaa], strict word CalPrevMonthThunk
-        mov word [es:0xfac], 0x1b35
+        mov word [es:CalPrevMonthFn], strict word CalPrevMonthThunk
+        mov word [es:CalPrevMonthSeg], 0x1b35
 .22:
         mov ax, [calmonth]
         mov [bp - 0x5e], ax
@@ -2434,8 +2434,8 @@ PostGameToTeamDb:
         push word [bp + 0xc]
         push word [bp + 0xa]
         mov es, [segTeamChoiceText29]
-        push word [es:msgThereIsASavedGame + 0x4C]
-        push word [es:msgThereIsASavedGame + 0x4A]
+        push word [es:DbFileNameList + 0x12]
+        push word [es:DbFileNameList + 0x10]
         push word [bp + 0x8]
         push word [bp + 0x6]
         lea ax, [bp - 0x3c]
@@ -2455,8 +2455,8 @@ PostGameToTeamDb:
         push word [bp + 0xc]
         push word [bp + 0xa]
         mov es, [segTeamChoiceText29]
-        push word [es:msgThereIsASavedGame + 0x3C]
-        push word [es:msgThereIsASavedGame + 0x3A]
+        push word [es:DbFileNameList + 0x2]
+        push word [es:DbFileNameList]
         push word [bp + 0x8]
         push word [bp + 0x6]
         lea ax, [bp - 0x3c]
@@ -2477,8 +2477,8 @@ PostGameToTeamDb:
         push word [bp + 0xc]
         push word [bp + 0xa]
         mov es, [segTeamChoiceText29]
-        push word [es:msgThereIsASavedGame + 0x50]
-        push word [es:msgThereIsASavedGame + 0x4E]
+        push word [es:DbFileNameList + 0x16]
+        push word [es:DbFileNameList + 0x14]
         push word [bp + 0x8]
         push word [bp + 0x6]
         lea ax, [bp - 0x3c]
@@ -3209,8 +3209,8 @@ PlayLeagueGame:
         jz short .6
         lea ax, [bp - 0x6a]
         mov es, [segTeamChoiceText33]
-        mov [es:dlgMergeFirst + 0xA5], ax
-        mov [es:dlgMergeFirst + 0xA7], ss
+        mov [es:argMasterDatabasesFor], ax
+        mov [es:argMasterDatabasesFor + 0x2], ss
         push -0x1
         lea ax, [bp - 0x54]
         push ax
@@ -3227,8 +3227,8 @@ PlayLeagueGame:
 .6:
         lea ax, [bp - 0x6a]
         mov es, [segTeamChoiceText34]
-        mov [es:msgMasterDatabasesFor + 0x58], ax
-        mov [es:msgMasterDatabasesFor + 0x5A], ss
+        mov [es:argPlayersDatabasesFor], ax
+        mov [es:argPlayersDatabasesFor + 0x2], ss
         push -0x1
         lea ax, [bp - 0x54]
         push ax
@@ -3264,8 +3264,8 @@ PlayLeagueGame:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText29]
-        push word [es:msgThereIsASavedGame + 0x4C]
-        push word [es:msgThereIsASavedGame + 0x4A]
+        push word [es:DbFileNameList + 0x12]
+        push word [es:DbFileNameList + 0x10]
         push word 0x3701
         push strict word CurLeagueName
         lea ax, [bp - 0x40]
@@ -3417,8 +3417,8 @@ PlayLeagueGame:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText29]
-        push word [es:msgThereIsASavedGame + 0x4C]
-        push word [es:msgThereIsASavedGame + 0x4A]
+        push word [es:DbFileNameList + 0x12]
+        push word [es:DbFileNameList + 0x10]
         push word 0x3701
         push strict word CurLeagueName
         lea ax, [bp - 0x40]
@@ -3505,8 +3505,8 @@ PlayLeagueGame:
         push word 0x3701
         push strict word str_Xx_2
         mov es, [segTeamChoiceText29]
-        push word [es:msgThereIsASavedGame + 0x54]
-        push word [es:msgThereIsASavedGame + 0x52]
+        push word [es:DbFileNameList + 0x1A]
+        push word [es:DbFileNameList + 0x18]
         push ds
         push strict word savleague
         lea ax, [bp - 0x40]
@@ -3622,8 +3622,8 @@ PlayLeagueGame:
         push word 0x3701
         push strict word str_Xx
         mov es, [segTeamChoiceText29]
-        push word [es:msgThereIsASavedGame + 0x54]
-        push word [es:msgThereIsASavedGame + 0x52]
+        push word [es:DbFileNameList + 0x1A]
+        push word [es:DbFileNameList + 0x18]
         push ds
         push strict word savleague2
         lea ax, [bp - 0x40]
@@ -4028,8 +4028,8 @@ PlayLeagueGame:
         push word 0x3701
         push strict word str_Xx_2
         mov es, [segTeamChoiceText29]
-        push word [es:msgThereIsASavedGame + 0x54]
-        push word [es:msgThereIsASavedGame + 0x52]
+        push word [es:DbFileNameList + 0x1A]
+        push word [es:DbFileNameList + 0x18]
         push ds
         push strict word savleague
         lea ax, [bp - 0x40]
@@ -4051,8 +4051,8 @@ PlayLeagueGame:
         push word 0x3701
         push strict word str_Xx
         mov es, [segTeamChoiceText29]
-        push word [es:msgThereIsASavedGame + 0x54]
-        push word [es:msgThereIsASavedGame + 0x52]
+        push word [es:DbFileNameList + 0x1A]
+        push word [es:DbFileNameList + 0x18]
         push ds
         push strict word savleague2
         lea ax, [bp - 0x40]
@@ -4226,8 +4226,8 @@ PlayLeagueGame:
         push word 0x3701
         push strict word str_Xx_2
         mov es, [segTeamChoiceText29]
-        push word [es:msgThereIsASavedGame + 0x4C]
-        push word [es:msgThereIsASavedGame + 0x4A]
+        push word [es:DbFileNameList + 0x12]
+        push word [es:DbFileNameList + 0x10]
         push ds
         push strict word savleague
         lea ax, [bp - 0x40]
@@ -4266,8 +4266,8 @@ PlayLeagueGame:
         push word 0x3701
         push strict word str_Xx
         mov es, [segTeamChoiceText29]
-        push word [es:msgThereIsASavedGame + 0x4C]
-        push word [es:msgThereIsASavedGame + 0x4A]
+        push word [es:DbFileNameList + 0x12]
+        push word [es:DbFileNameList + 0x10]
         push ds
         push strict word savleague2
         lea ax, [bp - 0x40]

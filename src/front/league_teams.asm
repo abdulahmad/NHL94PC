@@ -206,8 +206,8 @@ AddHumanTeam:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText4]
-        push word [es:msgThereIsASavedGame + 0x4C]
-        push word [es:msgThereIsASavedGame + 0x4A]
+        push word [es:DbFileNameList + 0x12]
+        push word [es:DbFileNameList + 0x10]
         push word [bp - 0x3c]
         push word [bp - 0x3e]
         lea ax, [bp - 0x3a]
@@ -526,8 +526,8 @@ RemoveHumanTeam:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText4]
-        push word [es:msgThereIsASavedGame + 0x4C]
-        push word [es:msgThereIsASavedGame + 0x4A]
+        push word [es:DbFileNameList + 0x12]
+        push word [es:DbFileNameList + 0x10]
         push word [bp - 0x3c]
         push word [bp - 0x3e]
         lea ax, [bp - 0x3a]

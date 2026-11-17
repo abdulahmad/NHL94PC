@@ -30,6 +30,7 @@ CalibTargetY		equ	0x6F22
 str_LeftJoystick		equ	0x6FDB
 str_RightJoystick		equ	0x6FE9
 JoyOn		equ	0x7308
+CanvasRowBytes		equ	0x74F6
 BeforeDialogFn		equ	0x7642
 AfterDialogFn		equ	0x7646
 DgroupSegD		equ	0x8D06

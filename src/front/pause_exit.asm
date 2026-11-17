@@ -80,8 +80,8 @@ AskYesNoBox:
         mov es, [DgroupSegF]
         mov bx, [CurPage]
         shl bx, byte 0x2
-        push word [es:bx + 0x7572]
-        push word [es:bx + 0x7570]
+        push word [es:bx + PageTableSeg]
+        push word [es:bx + PageTable]
         mov [bp - 0x5c], ax
         mov [bp - 0x5e], cx
         call 0x0FEF:SetCanvasClip
@@ -141,8 +141,8 @@ AskYesNoBox:
         mov es, [DgroupSegF]
         mov bx, [CurPage]
         shl bx, byte 0x2
-        push word [es:bx + 0x7572]
-        push word [es:bx + 0x7570]
+        push word [es:bx + PageTableSeg]
+        push word [es:bx + PageTable]
         call 0x0FEF:SetCanvasClip
         add sp, 0xc
         mov si, [bp + 0x4]
@@ -180,8 +180,8 @@ AskYesNoBox:
         mov es, [DgroupSegF]
         mov bx, [CurPage]
         shl bx, byte 0x2
-        push word [es:bx + 0x7572]
-        push word [es:bx + 0x7570]
+        push word [es:bx + PageTableSeg]
+        push word [es:bx + PageTable]
         call 0x0FEF:SetCanvasClip
         add sp, 0xc
         call far [MouseShowFn]
@@ -270,8 +270,8 @@ PauseBox:
         mov es, [DgroupSegF]
         mov bx, [CurPage]
         shl bx, byte 0x2
-        push word [es:bx + 0x7572]
-        push word [es:bx + 0x7570]
+        push word [es:bx + PageTableSeg]
+        push word [es:bx + PageTable]
         call 0x0FEF:SetCanvasClip
         add sp, 0xc
         call far [MouseHideFn]

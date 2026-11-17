@@ -3379,7 +3379,7 @@ f_3701_0FAC,CalPrevMonthSeg,f_3701_0FAC,new,medium,its segment,src/data/far/team
 f_3701_0FDF,CalendarMenuBar,f_3701_0FDF,new,medium,menu bar of the calendar screen,src/data/far/team_choice_text.asm
 f_3701_1163,TradeMenu,f_3701_1163,new,medium,menu record used by TradePlayers,src/data/far/team_choice_text.asm
 f_3701_11AB,TradeStatsMenuBar,f_3701_11AB,new,medium,menu bar of the trade stats view,src/data/far/team_choice_text.asm
-f_384B_0094,SeasonTitlePtr,f_384B_0094,new,medium,pointer to the season title text read by SetupStatsMenus,src/data/far/season_titles.asm
+f_384B_0094,SeasonMenuRight,f_384B_0094,new,medium,right edge of the first season menu item, copied to the others by SetupStatsMenus,src/data/far/season_titles.asm
 f_38AF_0022,MatchupMenu,f_38AF_0022,new,medium,menu record ShowMatchupScreen keeps in a local,src/data/far/lines_menu_text.asm
 f_38BD_01F3,JingleIndex,f_38BD_01F3,new,medium,"jingle number per arena event, read by LoadArenaJingles",src/data/far/line_names.asm
 f_38BD_028F,JingleTable,f_38BD_028F,new,medium,jingle table compared by LoadArenaJingles,src/data/far/line_names.asm

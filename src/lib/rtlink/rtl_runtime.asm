@@ -371,7 +371,7 @@ RtlGetEnv:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov es, ax
-        mov cx, [es:0x2c]
+        mov cx, [es:PspEnvSeg]
         jcxz .7
         mov es, cx
         db 0x33, 0xFF                           ; insn: xor di, di
@@ -675,7 +675,7 @@ RtlExePath:
         retf
 .3:
         mov es, di
-        mov cx, [es:0x2c]
+        mov cx, [es:PspEnvSeg]
         jcxz .1
         mov es, cx
         mov cx, 0x8000

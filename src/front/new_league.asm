@@ -189,8 +189,8 @@ CreateNewLeague:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText36]
-        push word [es:msgThereIsASavedGame + 0x4C]
-        push word [es:msgThereIsASavedGame + 0x4A]
+        push word [es:DbFileNameList + 0x12]
+        push word [es:DbFileNameList + 0x10]
         push si
         push si
         lea ax, [bp - 0x3c]
@@ -287,8 +287,8 @@ CreateNewLeague:
         mov es, [segTeamChoiceText36]
         mov bx, [bp - 0x8]
         shl bx, byte 0x2
-        push word [es:bx + msgThereIsASavedGame + 0x3C]
-        push word [es:bx + msgThereIsASavedGame + 0x3A]
+        push word [es:bx + DbFileNameList + 0x2]
+        push word [es:bx + DbFileNameList]
         call 0x0CD1:CopyFileByName
         add sp, 0x14
         db 0x8B, 0xF0                           ; insn: mov si, ax

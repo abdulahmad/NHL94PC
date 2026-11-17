@@ -53,7 +53,7 @@ str_Seventy:                                    ; string 'seventy'
 str_Eighty:                                     ; string 'eighty'
         db 'eighty', 0x00
 str_Ninety:                                     ; string 'ninety'
-        db 'ninety', 0x00, 0x00, 0x00, '/4', 0x00, 0x00, '/4'
+        db 'ninety', 0x00, 0x00, 0x00, '/4', 0x00, 0x00, 0x2F, 0x34
         dw str_Twenty, 0x342F
         dw str_Thirty, 0x342F
         dw str_Forty, 0x342F
@@ -62,7 +62,7 @@ str_Ninety:                                     ; string 'ninety'
         dw str_Seventy, 0x342F
         dw str_Eighty, 0x342F
         dw str_Ninety, 0x342F
-        db 0x00, 0x00, '/4'
+        db 0x00, 0x00, 0x2F, 0x34
         dw str_One, 0x342F
         dw str_Two, 0x342F
         dw str_Three, 0x342F
@@ -94,7 +94,7 @@ str_Star1:                                      ; string 'star1'
 str_Star2:                                      ; string 'star2'
         db 'star2', 0x00
 str_Star3:                                      ; string 'star3'
-        db 'star3', 0x00, 0x30, 0x01, '/4'
+        db 'star3', 0x00, 0x30, 0x01, 0x2F, 0x34
         dw str_The1st, 0x342F
         dw str_The2nd, 0x342F
         dw str_The3rd, 0x342F

@@ -116,6 +116,30 @@ def ovl_syms(vals):
             if m:
                 own[lo] = {k: v for k, v in m.items() if k not in need}
     print('overlay symbols written')
+    ovl_entries(own, vals)
+
+
+def ovl_entries(own, vals):
+    """src/lib/rtlink/ovl_entries.inc: the overlay routine each thunk in overlay_manager.asm far-jumps to, as an
+    equate of its offset in the overlay (read from the overlay builds)"""
+    L = open(os.path.join(ROOT, 'src', 'lib', 'rtlink', 'overlay_manager.asm')).read().split('\n')
+    rows, cur = {}, None
+    for i, l in enumerate(L):
+        m = re.match(r'^(\w+)Thunk:', l)
+        if m:
+            cur = m.group(1)
+        m = re.match(r'^\s+jmp 0x[0-9A-F]{4}:(\w+)', l)
+        ov = re.search(r'; (\w+)\.OVL', L[i + 1]) if i + 1 < len(L) else None
+        if m and cur and ov and m.group(1) == cur:
+            v = own.get(ov.group(1).lower(), {}).get(cur)
+            if v is None:
+                sys.exit(f'ovl_entries: {cur} not found in {ov.group(1)}.OVL')
+            rows[cur] = (v, ov.group(1))
+    out = [';\tOverlay routines the thunks of overlay_manager.asm jump to: their offsets in the overlay',
+           ';\t(written by tools/make_stubs.py from the overlay builds).']
+    out += [f'{n}\t\tequ\t0x{v:X}\t; {o}.OVL' for n, (v, o) in sorted(rows.items())]
+    open(os.path.join(ROOT, 'src', 'lib', 'rtlink', 'ovl_entries.inc'), 'w').write('\n'.join(out) + '\n')
+    print('overlay entry points written')
 
 
 main()

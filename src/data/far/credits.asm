@@ -153,6 +153,7 @@ str_TeamNamesAndLogosDepicted:                  ; string 'Team Names and logos d
         db 'Team Names and logos depicted are Officially', 0x00
 str_LicensedTrademarksOfTheNational:            ; string 'Licensed Trademarks of the National Hockey'
         db 'Licensed Trademarks of the National Hockey', 0x00, 'League ', 0xA9, ' NHL 1993.', 0x00
+CreditLines:                                    ; far pointers to the credit lines, read by the title screen
         dw str_OfficiallyLicensedProductOfThe, 0x3608
         dw str_NationalHockeyLeague, 0x3608
         dw str_OfficiallyLicensedProductOfThe, 0x3608

@@ -156,7 +156,7 @@ LoadArenaJingles:
         mov es, [JingleSegs]
         mov si, [bp - 0x4]
         shl si, 1
-        cmp [es:si + 0x28f], ax
+        cmp [es:si + JingleTable], ax
         jnz short .13
         mov word [bp - 0x2], 0x0
 .13:
@@ -177,7 +177,7 @@ LoadArenaJingles:
         mov es, [JingleSegs]
         mov bx, [bp - 0x4]
         shl bx, 1
-        mov bx, [es:bx + 0x28f]
+        mov bx, [es:bx + JingleTable]
         mov [di], bx
         shl bx, byte 0x2
         push word [es:bx + 0x11d]

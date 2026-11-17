@@ -44,8 +44,8 @@ Crowdlevel		equ	0xA18
 CurLeagueName		equ	0xE53
 CurPage		equ	0x74DC
 DGROUP		equ	0x45C9
+DbFileNameList		equ	0xB6C
 DbSaveMode		equ	0x1B4
-DeskMenuBar		equ	0xD44
 DeskRedrawPage		equ	0x4B20
 DeskRedrawPage2		equ	0x4B22
 DialogBackColor		equ	0x9EE
@@ -472,6 +472,9 @@ iflags		equ	0xD62A
 injurystop		equ	0x49F6
 inputframes		equ	0x4B00
 introskipped		equ	0x4A64
+itemHomeTeam		equ	0x1166
+itemPenaltyKilling		equ	0xB6
+itemVisitingTeam		equ	0x117C
 joyq_flushThunk		equ	0x293B
 lastplayer		equ	0x29A2
 lastsfx		equ	0x4A52
@@ -499,7 +502,6 @@ lty		equ	0xD628
 mousex		equ	0xD60E
 mousey		equ	0xD610
 msgInsufficientDiskSpaceToSave		equ	0x45
-msgThereIsASavedGame		equ	0xB32
 objylist		equ	0xD496
 onetimerflag		equ	0x4A66
 otherscoreaway		equ	0xB0B6

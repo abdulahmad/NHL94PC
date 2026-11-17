@@ -83,7 +83,7 @@ CalibrateStick:
         push word 0xc8
         push 0x0
         mov es, [DgroupSegD]
-        push word [es:0x74f6]
+        push word [es:CanvasRowBytes]
         push 0x0
         call 0x0FEF:SetClipRectPlanes
         add sp, 0x8

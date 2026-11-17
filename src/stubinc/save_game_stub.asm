@@ -2,12 +2,15 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
+exhstate		equ	0x0
 LoadRawHeader		equ	0x2
 LoadPackedHeader		equ	0x8
 GetInputEvent		equ	0xE
 AllocRecData		equ	0x30
 BuildPathFar		equ	0x3E
 FlushInputEvents		equ	0x66
+postate_b55		equ	0xB7
+lgstate		equ	0xC4
 UseCurrentPage		equ	0x1A6
 DbSaveMode		equ	0x1B4
 AnnouncerFlags		equ	0x1B7

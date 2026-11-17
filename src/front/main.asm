@@ -252,7 +252,7 @@ _main:
         je short .15
         mov ax, 0x3415                          ; segment of the db files far data
         mov es, ax
-        mov word [es:exhstate_name + 0x58], 2
+        mov word [es:exhstate + 0x5A], 2
         jmp short .19
         nop
 .15:
@@ -260,7 +260,7 @@ _main:
         je short .16
         mov ax, 0x3415                          ; segment of the db files far data
         mov es, ax
-        mov word [es:exhstate_name + 0x58], 4
+        mov word [es:exhstate + 0x5A], 4
         jmp short .19
         nop
 .16:
@@ -268,7 +268,7 @@ _main:
         je short .17
         mov ax, 0x3415                          ; segment of the db files far data
         mov es, ax
-        mov word [es:exhstate_name + 0x58], 8
+        mov word [es:exhstate + 0x5A], 8
         jmp short .19
         nop
 .17:
@@ -276,26 +276,26 @@ _main:
         je short .18
         mov ax, 0x3415                          ; segment of the db files far data
         mov es, ax
-        mov word [es:exhstate_name + 0x58], 1
+        mov word [es:exhstate + 0x5A], 1
         jmp short .19
         nop
 .18:
         mov ax, 0x3415                          ; segment of the db files far data
         mov es, ax
-        mov word [es:exhstate_name + 0x58], 0x10
+        mov word [es:exhstate + 0x5A], 0x10
 .19:
-        mov word [es:exhstate_name + 0x5A], 0x10
-        mov word [es:exhstate_name + 0x5C], 0
-        mov word [es:exhstate_name + 0x5E], 1
-        cmp word [es:exhstate_name + 0x58], 0x10
+        mov word [es:exhstate + 0x5C], 0x10
+        mov word [es:exhstate + 0x5E], 0
+        mov word [es:exhstate + 0x60], 1
+        cmp word [es:exhstate + 0x5A], 0x10
         je short .20
         mov ax, 9
         jmp short .21
 .20:
         mov ax, 0xffff
 .21:
-        mov word [es:exhstate_name + 0x54], ax
-        mov word [es:exhstate_name + 0x56], 0xfffe
+        mov word [es:exhstate + 0x56], ax
+        mov word [es:exhstate + 0x58], 0xfffe
 .22:
         push 0x3415                             ; segment of the db files far data
         db 0x68, 0x00, 0x00                     ; insn: push 0

@@ -57,6 +57,7 @@ CreateGSummaryDbThunk		equ	0x2535
 CrestShapeNames		equ	0x5604
 CurLeagueName		equ	0xE53
 DGROUP		equ	0x45C9
+DbFileNameList		equ	0xB6C
 DeadlineReached		equ	0x1AA8
 DeleteMatching		equ	0xC2
 DialogData		equ	0xAE98
@@ -141,6 +142,7 @@ MessageBox		equ	0xFC8
 MessageBoxSel		equ	0xB2D4
 MonthDays		equ	0x1734
 MonthDays0		equ	0x1733
+MonthNameList		equ	0xE23
 MonthStartDay		equ	0x1740
 MouseMove		equ	0x1B03
 MouseRead		equ	0x1B34
@@ -190,6 +192,7 @@ SetRemapTable		equ	0x442
 SetSoundDeviceThunk		equ	0x2495
 SetStartPage		equ	0x1320
 SetTextColors		equ	0x24
+SettingsSubmenuPtr		equ	0x10E0
 SetupControllersThunk		equ	0x2517
 SetupStatsMenusThunk		equ	0x2477
 ShapePaletteMap		equ	0x18B4
@@ -203,7 +206,6 @@ SoundDevTable		equ	0x1070
 SoundOptions		equ	0x1C6
 StatsMenuLoopThunk		equ	0x246D
 StopJingle		equ	0x5B8
-TeamNameTemplate		equ	0x26B
 TeamPalette1		equ	0xB0C4
 TeamPalette2		equ	0xB1C4
 TextWidth		equ	0xBFA
@@ -220,7 +222,6 @@ UseCurrentPage		equ	0x1A6
 UseOtherPage		equ	0x118C
 VisTeam		equ	0x21CE
 VisTeamNum		equ	0x29CC
-VisitorTeamMenuText		equ	0x1332
 WaitButtonTimed		equ	0x0
 WaitJingle		equ	0x640
 WaitRetrace		equ	0x34A7
@@ -249,6 +250,11 @@ _mkdir		equ	0x103A
 _qsort		equ	0xEAA
 _rand		equ	0x1012
 _sprintf		equ	0xD74
+argCopyingDatabasesFor		equ	0x6CA
+argDoYouReallyWantTo		equ	0x3A9
+argDoYouWantToExport		equ	0x541
+argMasterDatabasesFor		equ	0x9B8
+argPlayersDatabasesFor		equ	0x907
 awscore		equ	0xB444
 awtmgoalie		equ	0xB45C
 awtmteamrec		equ	0xB4F6
@@ -290,6 +296,12 @@ hmppgoals		equ	0xB364
 hmscore		equ	0xB36E
 hmtmgoalie		equ	0xB386
 hmtmlines		equ	0xB420
+itemDressPlayer		equ	0x1452
+itemExportDatabases		equ	0xB62
+itemLeagueManager		equ	0xB8E
+itemNextLeagueGame		equ	0xB78
+itemScratchPlayer		equ	0x1468
+itemShowPlayerStatistics		equ	0x10FF
 leagueinfo		equ	0xAC5A
 leagueinfo_password		equ	0xAF32
 leagueinfo_tail		equ	0xAF3E

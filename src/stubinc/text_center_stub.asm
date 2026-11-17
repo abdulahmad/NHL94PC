@@ -3,5 +3,7 @@
 	bits	16
 	org	0x0
 TextWidthAll		equ	0xC0A
+ClipLeftX		equ	0x74FC
+ClipRightX		equ	0x74FE
 DgroupSegE		equ	0x8D08
 %include "pc/video/text_center.asm"

@@ -308,8 +308,8 @@ ExportTeamToFloppy:
         mov es, [segTeamChoiceText13]
         mov bx, [bp - 0xb4]
         shl bx, byte 0x2
-        push word [es:bx + msgThereIsASavedGame + 0x3C]
-        push word [es:bx + msgThereIsASavedGame + 0x3A]
+        push word [es:bx + DbFileNameList + 0x2]
+        push word [es:bx + DbFileNameList]
         lea ax, [bp - 0x94]
         push ss
         push ax
@@ -385,8 +385,8 @@ ExportTeamToFloppy:
         mov es, [segTeamChoiceText13]
         mov bx, [bp - 0xb4]
         shl bx, byte 0x2
-        push word [es:bx + msgThereIsASavedGame + 0x3C]
-        push word [es:bx + msgThereIsASavedGame + 0x3A]
+        push word [es:bx + DbFileNameList + 0x2]
+        push word [es:bx + DbFileNameList]
         call 0x0CD1:CopyFileByName
         add sp, 0x14
         mov [bp - 0xb6], ax
@@ -403,8 +403,8 @@ ExportTeamToFloppy:
         mov es, [segTeamChoiceText13]
         mov bx, [bp - 0xb4]
         shl bx, byte 0x2
-        push word [es:bx + msgThereIsASavedGame + 0x3C]
-        push word [es:bx + msgThereIsASavedGame + 0x3A]
+        push word [es:bx + DbFileNameList + 0x2]
+        push word [es:bx + DbFileNameList]
         call 0x0CD1:CopyFileByName
         add sp, 0x14
         mov [bp - 0xb6], ax
@@ -961,8 +961,8 @@ ImportMasterLeague:
         mov es, [segTeamChoiceText13]
         mov bx, [bp - 0x6]
         shl bx, byte 0x2
-        push word [es:bx + msgThereIsASavedGame + 0x3C]
-        push word [es:bx + msgThereIsASavedGame + 0x3A]
+        push word [es:bx + DbFileNameList + 0x2]
+        push word [es:bx + DbFileNameList]
         call 0x0CD1:CopyFileByName
         add sp, 0x14
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -1469,8 +1469,8 @@ ImportPlayerTeam:
         jz short .13
         lea ax, [bp - 0x78]
         mov es, [segTeamChoiceText16]
-        mov [es:msgMasterDatabasesFor + 0x58], ax
-        mov [es:msgMasterDatabasesFor + 0x5A], ss
+        mov [es:argPlayersDatabasesFor], ax
+        mov [es:argPlayersDatabasesFor + 0x2], ss
         push -0x1
         lea ax, [bp - 0x62]
         push ax
@@ -1725,8 +1725,8 @@ ImportPlayerTeam:
         mov es, [segTeamChoiceText13]
         mov bx, [bp - 0x64]
         shl bx, byte 0x2
-        push word [es:bx + msgThereIsASavedGame + 0x3C]
-        push word [es:bx + msgThereIsASavedGame + 0x3A]
+        push word [es:bx + DbFileNameList + 0x2]
+        push word [es:bx + DbFileNameList]
         call 0x0CD1:CopyFileByName
         add sp, 0x14
         mov [bp - 0x6a], ax
@@ -2087,12 +2087,12 @@ ImportDbs:
         call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
         mov es, [segMenuText20]
-        mov word [es:TeamNameTemplate + 0x901], strict word MenuExportDbsThunk
-        mov word [es:TeamNameTemplate + 0x903], 0x1b35
-        mov word [es:TeamNameTemplate + 0x917], strict word MenuNextLeagueGameThunk
-        mov word [es:TeamNameTemplate + 0x919], 0x1b35
-        mov word [es:TeamNameTemplate + 0x931], 0xd86
-        mov word [es:TeamNameTemplate + 0x933], 0x3448
+        mov word [es:itemExportDatabases + 0xA], strict word MenuExportDbsThunk
+        mov word [es:itemExportDatabases + 0xC], 0x1b35
+        mov word [es:itemNextLeagueGame + 0xA], strict word MenuNextLeagueGameThunk
+        mov word [es:itemNextLeagueGame + 0xC], 0x1b35
+        mov word [es:itemLeagueManager + 0xE], 0xd86
+        mov word [es:itemLeagueManager + 0x10], 0x3448
         jmp short .10
 .9:
         mov es, [segDbFiles12]
@@ -2103,12 +2103,12 @@ ImportDbs:
         add sp, 0x2
         mov es, [segMenuText20]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:TeamNameTemplate + 0x903], ax
-        mov [es:TeamNameTemplate + 0x901], ax
-        mov [es:TeamNameTemplate + 0x919], ax
-        mov [es:TeamNameTemplate + 0x917], ax
-        mov [es:TeamNameTemplate + 0x933], ax
-        mov [es:TeamNameTemplate + 0x931], ax
+        mov [es:itemExportDatabases + 0xC], ax
+        mov [es:itemExportDatabases + 0xA], ax
+        mov [es:itemNextLeagueGame + 0xC], ax
+        mov [es:itemNextLeagueGame + 0xA], ax
+        mov [es:itemLeagueManager + 0x10], ax
+        mov [es:itemLeagueManager + 0xE], ax
 .10:
         push 0x0
         push 0x3f
@@ -2205,8 +2205,8 @@ ExportDbs:
         jz short .3
         lea ax, [bp - 0x2e]
         mov es, [segTeamChoiceText16]
-        mov [es:msgMasterDatabasesFor + 0x58], ax
-        mov [es:msgMasterDatabasesFor + 0x5A], ss
+        mov [es:argPlayersDatabasesFor], ax
+        mov [es:argPlayersDatabasesFor + 0x2], ss
         push -0x1
         lea ax, [bp - 0x16]
         push ax
@@ -2265,8 +2265,8 @@ ExportDbs:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText13]
-        push word [es:msgThereIsASavedGame + 0x4C]
-        push word [es:msgThereIsASavedGame + 0x4A]
+        push word [es:DbFileNameList + 0x12]
+        push word [es:DbFileNameList + 0x10]
         push word [bp - 0x50]
         push word [bp - 0x52]
         lea ax, [bp - 0x4e]

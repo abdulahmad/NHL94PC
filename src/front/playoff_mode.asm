@@ -737,12 +737,12 @@ CreatePlayoffs:
         call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
         mov es, [segMenuText10]
-        mov word [es:TeamNameTemplate + 0x96F], strict word PlayoffModeLoopThunk
-        mov word [es:TeamNameTemplate + 0x971], 0x1b35
-        mov word [es:TeamNameTemplate + 0x985], strict word EditPlayoffSettingsThunk
-        mov word [es:TeamNameTemplate + 0x987], 0x1b35
-        mov word [es:TeamNameTemplate + 0x99B], strict word MenuPlayoffHilightsThunk
-        mov word [es:TeamNameTemplate + 0x99D], 0x1b35
+        mov word [es:itemNextPlayOffGame + 0xA], strict word PlayoffModeLoopThunk
+        mov word [es:itemNextPlayOffGame + 0xC], 0x1b35
+        mov word [es:itemPlayOffSettings + 0xA], strict word EditPlayoffSettingsThunk
+        mov word [es:itemPlayOffSettings + 0xC], 0x1b35
+        mov word [es:itemPlayOffHilights + 0xA], strict word MenuPlayoffHilightsThunk
+        mov word [es:itemPlayOffHilights + 0xC], 0x1b35
         mov word [LeagueSetChoice], 0x0
 .25:
         push word [bp - 0x3e]
@@ -2774,8 +2774,8 @@ POSimSeriesTeamWins:
         push cx
         push ax
         mov es, [segTeamChoiceText1]
-        push word [es:msgThereIsASavedGame + 0x4C]
-        push word [es:msgThereIsASavedGame + 0x4A]
+        push word [es:DbFileNameList + 0x12]
+        push word [es:DbFileNameList + 0x10]
         push 0x0
         push 0x0
         lea ax, [bp - 0x28]
@@ -2798,8 +2798,8 @@ POSimSeriesTeamWins:
         push word [bp - 0x2a]
         push word [bp - 0x2c]
         mov es, [segTeamChoiceText1]
-        push word [es:msgThereIsASavedGame + 0x48]
-        push word [es:msgThereIsASavedGame + 0x46]
+        push word [es:DbFileNameList + 0xE]
+        push word [es:DbFileNameList + 0xC]
         push 0x0
         push 0x0
         lea ax, [bp - 0x28]
@@ -2924,8 +2924,8 @@ POSimSeries:
         push cx
         push ax
         mov es, [segTeamChoiceText1]
-        push word [es:msgThereIsASavedGame + 0x4C]
-        push word [es:msgThereIsASavedGame + 0x4A]
+        push word [es:DbFileNameList + 0x12]
+        push word [es:DbFileNameList + 0x10]
         push 0x0
         push 0x0
         lea ax, [bp - 0x2a]
@@ -2948,8 +2948,8 @@ POSimSeries:
         push word [bp - 0x2c]
         push word [bp - 0x2e]
         mov es, [segTeamChoiceText1]
-        push word [es:msgThereIsASavedGame + 0x48]
-        push word [es:msgThereIsASavedGame + 0x46]
+        push word [es:DbFileNameList + 0xE]
+        push word [es:DbFileNameList + 0xC]
         push 0x0
         push 0x0
         lea ax, [bp - 0x2a]
@@ -4217,8 +4217,8 @@ POAfterGame:
         mov word [bp - 0xc], 0xf
         mov es, [segMenuText11]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:GoalieStatsMenuBar + 0x50], ax
-        mov [es:GoalieStatsMenuBar + 0x4E], ax
+        mov [es:itemPlayNextGame + 0xC], ax
+        mov [es:itemPlayNextGame + 0xA], ax
         les bx, [bp + 0x6]
         mov word [es:bx + 0x20], 0x69
         push word [bp + 0x8]
@@ -4410,8 +4410,8 @@ POAfterGameJumpTable:                           ; jump table of POAfterGame: 15 
         mov word [es:bx + 0x20], 0x69
         mov es, [segMenuText11]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:GoalieStatsMenuBar + 0x50], ax
-        mov [es:GoalieStatsMenuBar + 0x4E], ax
+        mov [es:itemPlayNextGame + 0xC], ax
+        mov [es:itemPlayNextGame + 0xA], ax
         push word [bp + 0x8]
         push word [bp + 0x6]
         push cs
@@ -5049,15 +5049,15 @@ PlayoffModeLoop:
         cmp ax, strict word 0xf
         jnl short .13
         mov es, [segMenuText11]
-        mov word [es:GoalieStatsMenuBar + 0x4E], strict word POMenuResult4Thunk
-        mov word [es:GoalieStatsMenuBar + 0x50], 0x1b35
+        mov word [es:itemPlayNextGame + 0xA], strict word POMenuResult4Thunk
+        mov word [es:itemPlayNextGame + 0xC], 0x1b35
         jmp short .14
         db 0x90
 .13:
         mov es, [segMenuText11]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:GoalieStatsMenuBar + 0x50], ax
-        mov [es:GoalieStatsMenuBar + 0x4E], ax
+        mov [es:itemPlayNextGame + 0xC], ax
+        mov [es:itemPlayNextGame + 0xA], ax
 .14:
         cmp word [bp - 0x2a], 0xf
         jl short .15

@@ -2,4 +2,5 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
+PspEnvSeg		equ	0x2C
 %include "lib/rtlink/rtl_runtime.asm"

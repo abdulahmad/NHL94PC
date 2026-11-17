@@ -497,10 +497,10 @@ InitGraphics:
         call 0x03A3:SaveMode
         mov ax, 0x40
         mov es, ax
-        mov ax, [es:0x10]
+        mov ax, [es:BiosEquipment]
         and ax, -0x31
         or ax, 0x10
-        mov [es:0x10], ax
+        mov [es:BiosEquipment], ax
         mov ah, 0xb
         mov bx, 0x0
         int 0x10
@@ -2227,9 +2227,9 @@ CopyPlane:
         mov al, 0xc
         mov dx, 0x40
         mov es, dx
-        mov dx, [es:0x63]
+        mov dx, [es:BiosCrtcPort]
         out dx, ax
-        mov [es:0x4e], bx
+        mov [es:BiosPageStart], bx
         mov byte [CopyActive], 0x0
         mov word [HoldWord], 0x0
         leave
@@ -2247,8 +2247,8 @@ CopyPlane:
         mov [CopySrcPage], al
         mov dx, 0x40
         mov es, dx
-        mov [es:0x4e], bx
-        mov dx, [es:0x63]
+        mov [es:BiosPageStart], bx
+        mov dx, [es:BiosCrtcPort]
         add dl, 0x6
         cmp word [CopyOffset], 0x0
         jnz short .11
@@ -2551,7 +2551,7 @@ SetStartPage:
         mov [PageBase], ax
         mov ax, 0x40
         mov es, ax
-        mov dx, [es:0x63]
+        mov dx, [es:BiosCrtcPort]
         mov ax, [bp + 0x6]
         db 0x03, 0xC0                           ; insn: add ax, ax
         db 0x8A, 0xFC                           ; insn: mov bh, ah
@@ -7619,7 +7619,7 @@ AllocCanvases:
         shr ax, 1
         db 0x8A, 0xE0                           ; insn: mov ah, al
         mov al, 0x13
-        mov dx, [es:0x63]
+        mov dx, [es:BiosCrtcPort]
         out dx, ax
         mov byte [CopyActive], 0x1
         db 0x33, 0xC0                           ; insn: xor ax, ax

@@ -2568,7 +2568,7 @@ str_Shoots:                                     ; string 'Shoots'; used by STATS
 str_L_3:                                        ; string '  L'; used by STATS
         db '  L', 0x00
 str_R:                                          ; string '  R'; used by STATS
-        db '  '
+        db 0x20, 0x20
         dw str_Det
         dw str_Speed_2
         dw str_Agility_2
@@ -4505,9 +4505,13 @@ str_Srb3:                                       ; string 'srb3'; used by AI
 str_Crests4:                                    ; string 'crests4'; used by AI
         db 'crests4', 0x00, 0x00
 goaliemenuflags:                                ; goalie menu flags; used by AI, MENUS
-        db 0xE2, 0x01, 0x48, 0x34, 0xFB, 0x01, 0x48, 0x34
+        dw str_HomeGoalie1Text, 0x3448
+        dw str_HomeGoalie2Text, 0x3448
 goaliemenuflags_e02:                            ; goalie menu flags, second entry; used by AI, MENUS
-        db 0x14, 0x02, 0x48, 0x34, 0x32, 0x02, 0x48, 0x34, 0x4B, 0x02, 0x48, 0x34, 0x64, 0x02, 0x48, 0x34
+        dw str_HomeGoalieNone, 0x3448
+        dw str_AwayGoalie1Text, 0x3448
+        dw str_AwayGoalie2Text, 0x3448
+        dw str_AwayGoalieNone, 0x3448
 BannerColours:                                  ; banner colour table; used by AI
         db 0x00, 'UU', 0x00, 0x00, 0xAA, 0xAA, 0x00
 str_04d:                                        ; string '%04d'; used by AI
@@ -6148,9 +6152,11 @@ FpStatusPad:                                    ; byte after FpStatusByte; not u
         db 0x00, 0x00
 FpConstTable:                                   ; floating-point constants; not used in the EXE (overlays may
                                                 ; use it)
-        db 0x32, 0x13, 0x00, 0x80, 0x66, 0x24, 0x00, 0x80, 0xE0, 0x37, 0x79, 0xC3, 0x41, 0x43, 0x00, 0x00
-        db 0x20, 0x00, 0xFC, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFE, 0x43, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
-        db 0xFF, 0xEF, 0x7F, 0x00, 0x00
+        db 0x32, 0x13, 0x00, 0x80, 0x66, 0x24, 0x00, 0x80, 0xE0, 0x37, 0x79, 0xC3, 0x41, 0x43, 0x00
+AllocBlockSize:                                 ; near heap growth size in bytes (2000h), read by the heap
+                                                ; allocator
+        db 0x00, 0x20, 0x00, 0xFC, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFE, 0x43, 0xFF, 0xFF, 0xFF, 0xFF
+        db 0xFF, 0xFF, 0xEF, 0x7F, 0x00, 0x00
 InitHook:                                       ; near startup hook (0 skips); used by MscStartup
         dw 0x0000
 DebugSignature:                                 ; D6D6h when a debugger hook is present; used by __cintDIV,

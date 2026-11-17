@@ -40,7 +40,7 @@ SaveGame:
         db 0x90
 .2:
         mov es, [DbFilesSeg]
-        or byte [es:0x55], 0x80
+        or byte [es:exhstate + 0x55], 0x80
         or byte [AnnouncerFlags], 0x80
         push es
         push strict word 0x0
@@ -241,7 +241,7 @@ SaveGame:
         call 0x0D90:MessageBox
         add sp, 0x16
         mov es, [DbFilesSeg2]
-        or byte [es:0x119], 0x80
+        or byte [es:lgstate + 0x55], 0x80
         or byte [AnnouncerFlags], 0x80
         push es
         push word 0xc4
@@ -266,7 +266,7 @@ SaveGame:
         call 0x0D90:MessageBox
         add sp, 0x16
         mov es, [DbFilesSeg3]
-        or byte [es:0xb7], 0x80
+        or byte [es:postate_b55], 0x80
         or byte [AnnouncerFlags], 0x80
         push es
         push strict word 0x62

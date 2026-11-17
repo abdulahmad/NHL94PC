@@ -15,6 +15,12 @@ VgaCrtc		equ	0x3D4
 VgaStatus	equ	0x3DA
 VgaMem		equ	0xA000
 
+; Offsets in the PSP and in the BIOS data area (segment 40h).
+PspEnvSeg	equ	0x2C
+BiosEquipment	equ	0x10
+BiosPageStart	equ	0x4E
+BiosCrtcPort	equ	0x63
+
 
 ;-----------------------------------------------------------------------------
 ; _outp                                                         0000:0010  MSC
@@ -939,7 +945,7 @@ InitRuntime:
         mov cx, word [FpHookCount]              ; count of floating-point environment hooks; 0 skips them
         jcxz .nofp
         mov es, word [__psp]
-        mov si, word [es:0x2c]                  ; environment segment from the PSP
+        mov si, word [es:PspEnvSeg]             ; environment segment from the PSP
         lds ax, [FpEnvArg1]
         mov dx, ds
         db 0x33, 0xDB                           ; insn: xor bx, bx
@@ -959,7 +965,7 @@ InitRuntime:
 
 .nofp:
         mov es, word [__psp]
-        mov cx, word [es:0x2c]                  ; walk the environment for _C_FILE_INFO=
+        mov cx, word [es:PspEnvSeg]             ; walk the environment for _C_FILE_INFO=
         jcxz .noinfo
         mov es, cx
         db 0x33, 0xFF                           ; insn: xor di, di
@@ -7665,7 +7671,7 @@ FpPop:
 .2:
         push ss
         pop es
-        mov ax, word [es:0x8acc]
+        mov ax, word [es:AllocBlockSize]
         cmp ax, 0x2000
         je short .5
         mov dx, 0x8000
