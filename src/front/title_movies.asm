@@ -59,7 +59,7 @@ PlayTitleMovies:
         mov es, [segWorkBuffer51]
         mov bx, [bp + 0x6]
         shl bx, byte 0x3
-        mov [es:bx - 0x499c], ax
+        mov [es:bx + GameTeamWord3], ax
 .4:
         mov [bp - 0x26], ax
         cmp word [CurPage], 0x0
@@ -100,7 +100,7 @@ PlayTitleMovies:
         mov es, [segWorkBuffer53]
 .6:
         mov bx, [bp - 0x28]
-        mov byte [es:bx - 0x4992], 0x0
+        mov byte [es:bx + MoviePalette], 0x0
         inc word [bp - 0x28]
         cmp word [bp - 0x28], 0x300
         jl short .6
@@ -155,7 +155,7 @@ PlayTitleMovies:
         mov si, [bp - 0x28]
         mov al, [es:bx + si]
         mov es, [segWorkBuffer53]
-        mov [es:si - 0x4992], al
+        mov [es:si + MoviePalette], al
         inc word [bp - 0x28]
         cmp word [bp - 0x28], 0x30
         jl short .10
@@ -196,14 +196,14 @@ PlayTitleMovies:
         shl bx, 1
         db 0x03, 0xD9                           ; insn: add bx, cx
         shl bx, 1
-        cmp ax, [es:bx - 0x49ae]
+        cmp ax, [es:bx + GameTeamName1]
         jz short .13
         jmp near .17
 .13:
         mov es, [segWorkBuffer51]
         db 0x8B, 0xD9                           ; insn: mov bx, cx
         shl bx, byte 0x3
-        cmp word [es:bx - 0x49a2], 0x0
+        cmp word [es:bx + GameTeamWord0], 0x0
         jl short .14
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         pop si
@@ -246,7 +246,7 @@ PlayTitleMovies:
         mov es, [segWorkBuffer51]
         mov bx, [bp + 0x6]
         shl bx, byte 0x3
-        mov [es:bx - 0x49a2], ax
+        mov [es:bx + GameTeamWord0], ax
         jmp near .4
         db 0x90
 .17:
@@ -280,7 +280,7 @@ PlayTitleMovies:
         mov si, [bp - 0x28]
         mov al, [es:bx + si]
         mov es, [segWorkBuffer53]
-        mov [es:si - 0x4992], al
+        mov [es:si + MoviePalette], al
         inc word [bp - 0x28]
         cmp word [bp - 0x28], 0x300
         jl short .20
@@ -324,7 +324,7 @@ PlayTitleMovies:
         mov bx, [HomeTeamNum]
 .28:
         shl bx, 1
-        push word [bx + 0x1e4]
+        push word [bx + TeamNameClips + 4]
 .29:
         lea ax, [bp - 0x10]
         push ax
@@ -367,7 +367,7 @@ PlayTitleMovies:
         mov si, [bp - 0x28]
         mov al, [es:bx + si]
         mov es, [segWorkBuffer53]
-        mov [es:si - 0x4992], al
+        mov [es:si + MoviePalette], al
         inc word [bp - 0x28]
         cmp word [bp - 0x28], 0x60
         jl short .30

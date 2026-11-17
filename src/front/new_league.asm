@@ -46,13 +46,13 @@ CreateNewLeague:
         add sp, 0x8
         mov es, [segWorkBuffer26]
         imul bx, [bp - 0x8], 0x1e
-        mov byte [es:bx - 0x5388], 0x1
-        mov byte [es:bx - 0x5387], 0x0
-        mov byte [es:bx - 0x5386], 0x2
-        mov byte [es:bx - 0x5385], 0x0
+        mov byte [es:bx + leagueinfo_teams + 0x16], 0x1
+        mov byte [es:bx + leagueinfo_teams + 0x17], 0x0
+        mov byte [es:bx + leagueinfo_teams + 0x18], 0x2
+        mov byte [es:bx + leagueinfo_teams + 0x19], 0x0
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:bx - 0x5382], ax
-        mov [es:bx - 0x5384], ax
+        mov [es:bx + leagueinfo_teams + 0x1c], ax
+        mov [es:bx + leagueinfo_teams + 0x1a], ax
         inc word [bp - 0x8]
         cmp word [bp - 0x8], 0x18
         jl short .1

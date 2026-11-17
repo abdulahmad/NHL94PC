@@ -721,7 +721,7 @@ SendController:
         db 0x2A, 0xED                           ; insn: sub ch, ch
         imul bx, cx, 0x7
         mov es, [WorkBufferSeg]
-        mov [es:bx - 0x4490], al
+        mov [es:bx + ChannelSetup + 1], al
         mov es, [bp + 0x8]
         les bx, [es:si + 0x4]
         cmp byte [es:bx + 0x12], 0x3f
@@ -1282,7 +1282,7 @@ ParseMidiEventJumpTable:                        ; word; used by ParseMidiEvent
 .7:
         mov al, [es:bx + si + 0x1]
         mov es, [WorkBufferSeg2]
-        mov [es:si - 0x4692], al
+        mov [es:si + SysexBuffer], al
         inc si
 .8:
         les bx, [bp + 0x8]

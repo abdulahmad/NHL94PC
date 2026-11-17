@@ -1411,7 +1411,7 @@ MergeLeagueFiles:
         mov es, [segWorkBuffer36]
         imul bx, [es:leagueinfo], 0x1e
         mov es, [segWorkBuffer37]
-        cmp byte [es:bx - 0x5388], 0x2
+        cmp byte [es:bx + leagueinfo_teams + 0x16], 0x2
         jnz short .4
         lea ax, [bp - 0x4e]
         mov es, [segMergeMessages1]
@@ -1552,11 +1552,11 @@ MergeLeagueFiles:
 .11:
         mov es, [segWorkBuffer37]
         imul bx, [bp - 0x40], 0x1e
-        cmp byte [es:bx - 0x5387], 0x1
+        cmp byte [es:bx + leagueinfo_teams + 0x17], 0x1
         jz short .12
         jmp near .21
 .12:
-        test byte [es:bx - 0x5388], 0x4
+        test byte [es:bx + leagueinfo_teams + 0x16], 0x4
         jz short .13
         jmp near .21
 .13:
@@ -1674,9 +1674,9 @@ MergeLeagueFiles:
         mov dx, [bp - 0x30]
         mov es, [segWorkBuffer37]
         imul bx, [bp - 0x40], 0x1e
-        mov [es:bx - 0x5384], ax
-        mov [es:bx - 0x5382], dx
-        or byte [es:bx - 0x5388], 0x4
+        mov [es:bx + leagueinfo_teams + 0x1a], ax
+        mov [es:bx + leagueinfo_teams + 0x1c], dx
+        or byte [es:bx + leagueinfo_teams + 0x16], 0x4
         push word [bp - 0x40]
         add bx, leagueinfo_teams
         push es
@@ -1989,7 +1989,7 @@ MergeUpdateDbs:
         mov es, [segWorkBuffer36]
         imul bx, [es:leagueinfo], 0x1e
         mov es, [segWorkBuffer37]
-        cmp byte [es:bx - 0x5388], 0x2
+        cmp byte [es:bx + leagueinfo_teams + 0x16], 0x2
         jnz short .2
         jmp near .5
 .2:
@@ -2139,7 +2139,7 @@ RebuildLeagueDbs:
         jnz short .4
         mov es, [segWorkBuffer37]
         imul bx, [bp - 0x6], 0x1e
-        cmp byte [es:bx - 0x5387], 0x1
+        cmp byte [es:bx + leagueinfo_teams + 0x17], 0x1
         jnz short .3
         push word [bp - 0x34]
         push word [bp - 0x36]

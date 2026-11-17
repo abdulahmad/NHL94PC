@@ -107,11 +107,11 @@ FormatHilightDesc:
         mov bl, [es:si + 0x1f]
         db 0x2A, 0xFF                           ; insn: sub bh, bh
         shl bx, 1
-        push word [bx + 0x218]
+        push word [bx + TeamNameClips + 0x38]
         mov bl, [es:si + 0x2]
         db 0x2A, 0xFF                           ; insn: sub bh, bh
         shl bx, 1
-        push word [bx + 0x218]
+        push word [bx + TeamNameClips + 0x38]
         mov al, [es:si + 0x1]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
@@ -166,7 +166,7 @@ SelectHilight:
         mov [bp - 0x94], ax
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        mov ax, [bx + 0x218]
+        mov ax, [bx + TeamNameClips + 0x38]
         mov [bp - 0x18a], ax
         mov [bp - 0x188], ds
         mov word [bp - 0x6], 0x1
@@ -214,7 +214,7 @@ SelectHilight:
         shl di, 1
         mov bx, [bp + di - 0x94]
         shl bx, 1
-        mov ax, [bx + 0x218]
+        mov ax, [bx + TeamNameClips + 0x38]
         mov di, [bp - 0x12]
         shl di, byte 0x2
         mov [bp + di - 0x18a], ax

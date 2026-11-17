@@ -2335,7 +2335,7 @@ SelectSavedFile:
         mov bx, [bp - 0x16]
         shl bx, 1
         push ds
-        push word [bx + 0x1e4]
+        push word [bx + TeamNameClips + 4]
 .5:
         push word 0x3448
         push strict word str_LaAtMtl
@@ -2358,7 +2358,7 @@ SelectSavedFile:
         mov bx, [bp - 0x18]
         shl bx, 1
         push ds
-        push word [bx + 0x1e4]
+        push word [bx + TeamNameClips + 4]
 .7:
         push word 0x3448
         push strict word str_Mtl_2

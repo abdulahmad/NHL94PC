@@ -4955,7 +4955,7 @@ PlayoffModeLoop:
         mov bx, [bp - 0x28]
         shl bx, 1
         push ds
-        push word [bx + 0x218]
+        push word [bx + TeamNameClips + 0x38]
         imul ax, [bp - 0x28], 0x15
         add ax, LeagueTeamNames
         push word 0x3a0b

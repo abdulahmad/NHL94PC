@@ -2333,7 +2333,7 @@ RestoreTrackVolumes:
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         imul bx, ax, 0x7
         mov es, [WorkBufferSeg3]
-        mov al, [es:bx - 0x4491]
+        mov al, [es:bx + ChannelSetup]
         push ax
         push 0x7
         push word [bp - 0x2]

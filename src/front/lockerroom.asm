@@ -482,7 +482,7 @@ DrawLockerRoom:
         add sp, 0xa
         mov bx, [HomeTeamNum]
         shl bx, 1
-        push word [bx + 0x218]
+        push word [bx + TeamNameClips + 0x38]
         call 0x03A3:TextWidthAll
         add sp, 0x2
         mov si, 0x97
@@ -491,14 +491,14 @@ DrawLockerRoom:
         push si
         mov bx, [HomeTeamNum]
         shl bx, 1
-        push word [bx + 0x218]
+        push word [bx + TeamNameClips + 0x38]
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x15
         push word 0xaa
         mov bx, [VisTeamNum]
         shl bx, 1
-        push word [bx + 0x218]
+        push word [bx + TeamNameClips + 0x38]
         call 0x0FEF:DrawText
         add sp, 0x6
         cmp word [DbSaveMode], 0x1
@@ -837,7 +837,7 @@ DrawLockerJersey:
         push 0x15
         push word 0xaa
         mov bx, [bp - 0xe0]
-        push word [bx + 0x218]
+        push word [bx + TeamNameClips + 0x38]
         call 0x0FEF:DrawText
         add sp, 0x6
         lea ax, [bp - 0xde]
@@ -908,7 +908,7 @@ DrawLockerJersey:
         call 0x0FEF:FillRect
         add sp, 0xa
         mov bx, [bp - 0xe0]
-        push word [bx + 0x218]
+        push word [bx + TeamNameClips + 0x38]
         call 0x03A3:TextWidthAll
         add sp, 0x2
         mov si, 0x97
@@ -916,7 +916,7 @@ DrawLockerJersey:
         push 0x15
         push si
         mov bx, [bp - 0xe0]
-        push word [bx + 0x218]
+        push word [bx + TeamNameClips + 0x38]
         call 0x0FEF:DrawText
         add sp, 0x6
         lea ax, [bp - 0xde]
@@ -993,7 +993,7 @@ DrawLockerJersey:
         push word 0xaa
         mov bx, [bp + 0xe]
         shl bx, 1
-        push word [bx + 0x218]
+        push word [bx + TeamNameClips + 0x38]
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x52
@@ -1056,14 +1056,14 @@ DrawLockerJersey:
         call 0x0FEF:FillRect
         add sp, 0xa
         shl di, 1
-        push word [di + 0x218]
+        push word [di + TeamNameClips + 0x38]
         call 0x03A3:TextWidthAll
         add sp, 0x2
         mov si, 0x97
         db 0x2B, 0xF0                           ; insn: sub si, ax
         push 0x15
         push si
-        push word [di + 0x218]
+        push word [di + TeamNameClips + 0x38]
         call 0x0FEF:DrawText
         add sp, 0x6
 .21:
@@ -1441,7 +1441,7 @@ LockerRoomLoop:
         mov bx, [HomeTeamNum]
         shl bx, 1
         push ds
-        push word [bx + 0x1e4]
+        push word [bx + TeamNameClips + 4]
 .38:
         push word 0x3448
         push strict word str_Mtl_2
@@ -1478,7 +1478,7 @@ LockerRoomLoop:
         mov bx, [VisTeamNum]
         shl bx, 1
         push ds
-        push word [bx + 0x1e4]
+        push word [bx + TeamNameClips + 4]
 .42:
         push word 0x3448
         push strict word str_LaAtMtl

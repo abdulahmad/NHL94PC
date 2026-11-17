@@ -1556,14 +1556,14 @@ ImportPlayerTeam:
         cbw
         imul bx, ax, 0x1e
         mov es, [segWorkBuffer15]
-        cmp byte [es:bx - 0x5388], 0x2
+        cmp byte [es:bx + leagueinfo_teams + 0x16], 0x2
         jz short .21
         mov ax, [bp - 0x94]
         mov dx, [bp - 0x92]
-        cmp [es:bx - 0x5382], dx
+        cmp [es:bx + leagueinfo_teams + 0x1c], dx
         jc short .21
         ja short .20
-        cmp [es:bx - 0x5384], ax
+        cmp [es:bx + leagueinfo_teams + 0x1a], ax
         jc short .21
 .20:
         push 0x0
@@ -1611,10 +1611,10 @@ ImportPlayerTeam:
         mov es, [segWorkBuffer15]
         mov ax, [bp - 0x94]
         mov dx, [bp - 0x92]
-        cmp [es:bx - 0x5382], dx
+        cmp [es:bx + leagueinfo_teams + 0x1c], dx
         jc short .24
         ja short .23
-        cmp [es:bx - 0x5384], ax
+        cmp [es:bx + leagueinfo_teams + 0x1a], ax
         jna short .24
 .23:
         lea ax, [bp - 0x78]
@@ -2334,7 +2334,7 @@ ExportDbs:
         mov es, [segWorkBuffer15]
         imul bx, [bp - 0x12], 0x1e
         mov [bp - 0x54], bx
-        cmp byte [es:bx - 0x5388], 0x2
+        cmp byte [es:bx + leagueinfo_teams + 0x16], 0x2
         jz short .12
         jmp near .15
 .12:
@@ -2388,8 +2388,8 @@ ExportDbs:
         mov word [bp - 0x4], 0xffff
         mov es, [segWorkBuffer15]
         imul bx, [bp - 0x12], 0x1e
-        add word [es:bx - 0x5384], 0x0
-        adc word [es:bx - 0x5382], 0x1
+        add word [es:bx + leagueinfo_teams + 0x1a], 0x0
+        adc word [es:bx + leagueinfo_teams + 0x1c], 0x1
         jmp short .15
         db 0x90
 .14:

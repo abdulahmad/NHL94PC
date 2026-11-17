@@ -63,6 +63,7 @@ SongBankNum		equ	0x8FC2
 SfxMsg		equ	0x8FC6
 SfxMsg1		equ	0x8FC7
 SfxMsg2		equ	0x8FC8
+ChannelSetup		equ	0xBB6F
 PatchBank		equ	0xDFF4
 PatchBankSeg		equ	0xDFF6
 ChannelUsed		equ	0xDFF8

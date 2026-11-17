@@ -1183,7 +1183,7 @@ LoadModeState:
         mov bx, [HomeTeamNum]
         shl bx, 1
         push ds
-        push word [bx + 0x1e4]
+        push word [bx + TeamNameClips + 4]
 .35:
         push word 0x3448
         push strict word str_Mtl_2
@@ -1222,7 +1222,7 @@ LoadModeState:
         mov bx, [VisTeamNum]
         shl bx, 1
         push ds
-        push word [bx + 0x1e4]
+        push word [bx + TeamNameClips + 4]
 .39:
         push word 0x3448
         push strict word str_LaAtMtl

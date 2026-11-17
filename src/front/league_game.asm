@@ -705,7 +705,7 @@ SetGameSides:
         mov [bp - 0x2], ax
         mov es, [segWorkBuffer20]
         imul bx, ax, 0x1e
-        cmp byte [es:bx - 0x5387], 0x1
+        cmp byte [es:bx + leagueinfo_teams + 0x17], 0x1
         jz short .3
         mov word [bp - 0x2], 0xffff
 .3:
@@ -3375,7 +3375,7 @@ PlayLeagueGame:
         add sp, 0x8
         mov es, [segWorkBuffer20]
         imul bx, [lghometeam], 0x1e
-        test byte [es:bx - 0x5388], 0x1
+        test byte [es:bx + leagueinfo_teams + 0x16], 0x1
         jz short .19
         push word 0x3701
         push strict word CurLeagueName
@@ -3558,7 +3558,7 @@ PlayLeagueGame:
         mov word [lggamestate], 0xffff
         mov es, [segWorkBuffer20]
         imul bx, ax, 0x1e
-        cmp byte [es:bx - 0x5387], 0x0
+        cmp byte [es:bx + leagueinfo_teams + 0x17], 0x0
         jnz short .37
         mov word [lggamestate], 0x0
 .37:
@@ -3600,7 +3600,7 @@ PlayLeagueGame:
         add sp, 0x8
         mov es, [segWorkBuffer20]
         imul bx, [lgoppteam], 0x1e
-        test byte [es:bx - 0x5388], 0x1
+        test byte [es:bx + leagueinfo_teams + 0x16], 0x1
         jz short .39
         cmp word [bp - 0x48], 0x0
         jz short .39
@@ -4006,7 +4006,7 @@ PlayLeagueGame:
         add sp, 0x8
         mov es, [segWorkBuffer20]
         imul bx, [lgoppteam], 0x1e
-        test byte [es:bx - 0x5388], 0x1
+        test byte [es:bx + leagueinfo_teams + 0x16], 0x1
         jz short .62
         cmp word [bp - 0x48], 0x0
         jz short .62
