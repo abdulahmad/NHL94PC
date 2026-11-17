@@ -1599,7 +1599,7 @@ passtoa0:
         mov [g_29A8], ax
         push 0x13
         push si
-        call 0x1E7E:Game_1E7E_0A74
+        call 0x1E7E:assinsert
         add sp, 0x4
         push si
         call 0x2E42:GetHot
@@ -2199,7 +2199,7 @@ CompShoot:
         mov [si + 0x28], ax
         push 0x12
         push si
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         pop si
         leave

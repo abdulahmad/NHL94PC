@@ -77,7 +77,7 @@ Init_23CB_0004:
         push word 0x3a0b
         push strict word f_3A0B_B352
         push 0x1
-        call 0x1E7E:Game_1E7E_04C0
+        call 0x1E7E:FadePalette
         add sp, 0x8
         push word 0xc8
         call 0x0FEF:SetStartPage
@@ -398,7 +398,7 @@ Init_23CB_042C:
         push word 0x3a0b
         push strict word f_3A0B_B66E
         push 0x0
-        call 0x1E7E:Game_1E7E_04C0
+        call 0x1E7E:FadePalette
         add sp, 0x8
         mov ax, 0x1
         mov [g_4B22], ax
@@ -512,7 +512,7 @@ Init_23CB_042C:
         push word 0x3a0b
         push strict word f_3A0B_B66E
         push 0x1
-        call 0x1E7E:Game_1E7E_04C0
+        call 0x1E7E:FadePalette
         add sp, 0x8
         push word 0xc8
         call 0x0FEF:SetStartPage

@@ -726,7 +726,7 @@ forcepldata:
         jnz short .2
         push 0x11
         push si
-        call 0x1E7E:Game_1E7E_0A74
+        call 0x1E7E:assinsert
         add sp, 0x4
 .2:
         mov al, [si + 0x43]
@@ -1306,7 +1306,7 @@ Goal:
 .12:
         push 0x1a
         push bx
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         push 0x15
         mov bx, [bp - 0x4]
@@ -1549,7 +1549,7 @@ Goal:
         and byte [bx + 0x44], 0xfb
         push 0x7
         push bx
-        call 0x1E7E:Game_1E7E_0A74
+        call 0x1E7E:assinsert
         add sp, 0x4
 .42:
         add word [bp - 0xa], 0x80
@@ -1588,7 +1588,7 @@ Goal:
         or byte [bx + 0x44], 0x4
         push 0x1a
         push bx
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         mov bx, [bp - 0xc]
         add bx, 0x80
@@ -1741,7 +1741,7 @@ Setplass:
         cbw
         push ax
         push di
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
 .1:
         pop si
@@ -1787,7 +1787,7 @@ setplayer:
         push 0x9
 .4:
         push di
-        call 0x1E7E:Game_1E7E_0A74
+        call 0x1E7E:assinsert
         add sp, 0x4
         and byte [di + 0x44], 0xdf
         mov word [di + 0x38], 0x0
@@ -2855,7 +2855,7 @@ setpersonel:
         jnl short .10
         push 0x29
         push di
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         mov word [di + 0x1a], 0x5
 .10:
@@ -2928,7 +2928,7 @@ StartPer:
         mov [g_29B4], ax
         push 0x1b
         push word 0xbc0e
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         cmp word [g_29DA], 0x0
         jz short .6
@@ -3654,7 +3654,7 @@ DrawRinkOverlays:
         push ax
         push word 0xb3
         push word 0x17e
-        call 0x1E7E:Game_1E7E_0120
+        call 0x1E7E:DrawFrameSprite
         add sp, 0xa
         inc word [bp - 0x22]
 .4:
@@ -3690,7 +3690,7 @@ DrawRinkOverlays:
         push ax
         push word 0xb3
         push word 0x17e
-        call 0x1E7E:Game_1E7E_0120
+        call 0x1E7E:DrawFrameSprite
         add sp, 0xa
         dec word [bp - 0x22]
 .8:
@@ -3872,7 +3872,7 @@ DrawRinkOverlays:
         shl bx, 1
         push word [bx + g_4A28]
 .29:
-        call 0x1E7E:Game_1E7E_0120
+        call 0x1E7E:DrawFrameSprite
         add sp, 0xa
 .30:
         inc word [bp - 0x24]
@@ -3949,7 +3949,7 @@ DrawRinkOverlays:
         push word [bx + 0x2]
         push word [bx + 0x12]
 .39:
-        call 0x1E7E:Game_1E7E_0120
+        call 0x1E7E:DrawFrameSprite
         add sp, 0xa
 .40:
         mov bx, [g_2996]
@@ -3981,7 +3981,7 @@ DrawRinkOverlays:
 .42:
         push word [bx + 0x2]
         push word [bx + 0x12]
-        call 0x1E7E:Game_1E7E_0120
+        call 0x1E7E:DrawFrameSprite
         add sp, 0xa
 .43:
         mov word [bp - 0x22], 0x10
@@ -4003,7 +4003,7 @@ DrawRinkOverlays:
 .45:
         push word [bx + 0x2]
         push word [bx + 0x12]
-        call 0x1E7E:Game_1E7E_0120
+        call 0x1E7E:DrawFrameSprite
         add sp, 0xa
 .46:
         dec word [bp - 0x22]
@@ -4085,7 +4085,7 @@ DrawRinkOverlays:
         push ax
         push word [bx + 0x6]
         push word [bx + 0x2]
-        call 0x1E7E:Game_1E7E_0060
+        call 0x1E7E:DrawSpriteNumber
         add sp, 0x8
 .56:
         mov bx, [bp - 0x26]
@@ -4135,7 +4135,7 @@ DrawRinkOverlays:
         push ax
         push cx
         push word [g_BC20]
-        call 0x1E7E:Game_1E7E_0120
+        call 0x1E7E:DrawFrameSprite
         add sp, 0xa
 .60:
         cmp word [g_299A], 0xff50
@@ -4149,7 +4149,7 @@ DrawRinkOverlays:
 .61:
         cmp word [g_299A], 0xff70
         jnl short .62
-        call 0x1E7E:Game_1E7E_017E
+        call 0x1E7E:DrawRinkEndArt
 .62:
         mov word [bp - 0x26], 0xbc8e
         cmp word [g_BC94], 0x0
@@ -4163,7 +4163,7 @@ DrawRinkOverlays:
         push word [g_BC94]
         push word [g_BC90]
         push word [g_BCA0]
-        call 0x1E7E:Game_1E7E_0120
+        call 0x1E7E:DrawFrameSprite
         add sp, 0xa
 .63:
         mov bx, [g_298E]
@@ -4199,7 +4199,7 @@ DrawRinkOverlays:
         push word [bx + 0x2]
         push word [bx + 0x12]
 .65:
-        call 0x1E7E:Game_1E7E_0120
+        call 0x1E7E:DrawFrameSprite
         add sp, 0xa
 .66:
         cmp word [g_49F0], 0x0
@@ -4321,7 +4321,7 @@ DrawRinkOverlays:
         mov bx, [bp - 0x2]
         shl bx, 1
         push word [bx + g_61B8]
-        call 0x1E7E:Game_1E7E_0120
+        call 0x1E7E:DrawFrameSprite
         add sp, 0xa
 .80:
         pop si
@@ -4366,7 +4366,7 @@ clockcont_0:
         mov ax, 0xbc0e
         mov [bp - 0xa], ax
         push ax
-        call 0x1E7E:Game_1E7E_0A74
+        call 0x1E7E:assinsert
         add sp, 0x4
         cmp word [g_29DA], 0x2
         jnl short .1
@@ -4378,7 +4378,7 @@ clockcont_0:
         mov word [g_D66C], 0x7
         push word [g_B444]
         push word [g_B36E]
-        call 0x1E45:Game_1E45_00C2
+        call 0x1E45:IsCupClinched
         add sp, 0x4
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .2
@@ -4431,7 +4431,7 @@ clockcont_0:
         jnz short .8
         push 0x1a
         push word 0xbc0e
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
 .8:
         mov word [g_D6B8], 0x0
@@ -4468,7 +4468,7 @@ clockcont_0:
         or byte [g_29BB], 0x80
         push 0x2b
         push word 0xbc8e
-        call 0x1E7E:Game_1E7E_0A74
+        call 0x1E7E:assinsert
         add sp, 0x4
         mov word [bp - 0x8], 0x9c40
         mov word [bp - 0x6], 0x0
@@ -4531,12 +4531,12 @@ clockcont_0:
         jnz short .26
         push 0x8
         push si
-        call 0x1E7E:Game_1E7E_0A74
+        call 0x1E7E:assinsert
         add sp, 0x4
         push 0x2a
 .22:
         push si
-        call 0x1E7E:Game_1E7E_0A74
+        call 0x1E7E:assinsert
         add sp, 0x4
 .23:
         add si, 0x80
@@ -4581,7 +4581,7 @@ clockcont_0:
         inc word [g_D672]
         push 0x7
         push si
-        call 0x1E7E:Game_1E7E_0A74
+        call 0x1E7E:assinsert
         add sp, 0x4
         push di
         push si
@@ -4791,7 +4791,7 @@ PeriodOver_sp:
         call Intermission
         cmp word [g_29DA], 0x0
         jng short .2
-        call 0x1E7E:Game_1E7E_0004
+        call 0x1E7E:IntermissionPC
 .2:
         push cs
         call StartPer

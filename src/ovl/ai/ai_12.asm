@@ -172,7 +172,7 @@ PreGameIntro:
 .9:
         push 0x25
         push di
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         sub di, 0x80
         dec word [bp - 0x4]
@@ -192,7 +192,7 @@ PreGameIntro:
         mov [g_BC1C], ax
         push 0x1a
         push word 0xbc0e
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         mov ax, [bp - 0xc]
         mov [g_BD34], ax
@@ -216,7 +216,7 @@ PreGameIntro:
         mov word [g_BD20], 0x289
         push 0x26
         push word 0xbd0e
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         mov word [g_29D4], 0x0
         or byte [g_29BC], 0x40
@@ -261,7 +261,7 @@ ThreeStarsLoop:
         mov ax, 0x4
         cwd
         call 0x03A3:SetDeadline.regs
-        call 0x1E7E:Game_1E7E_03E8
+        call 0x1E7E:ResetInputSampling
         db 0x8B, 0xF0                           ; insn: mov si, ax
         shl ax, 1
         db 0x03, 0xC6                           ; insn: add ax, si
@@ -277,7 +277,7 @@ ThreeStarsLoop:
         idiv cx
         mov [g_D6D0], dx
         push si
-        call 0x1E7E:Game_1E7E_0404
+        call 0x1E7E:RunGameFrames
         add sp, 0x2
         sub [g_DCD8], si
         jns short .2
@@ -307,7 +307,7 @@ ThreeStarsLoop:
 .6:
         push word [g_D6CE]
         push word [g_D6CC]
-        call 0x1F54:Game_1F54_0316
+        call 0x1F54:FlushDirtyRects
         add sp, 0x4
         call 0x0FEF:UseOtherPage
         mov ax, 0x140
@@ -329,7 +329,7 @@ ThreeStarsLoop:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [PadRepeatOn], ax
         push ax
-        call 0x1E7E:Game_1E7E_04C0
+        call 0x1E7E:FadePalette
         add sp, 0x8
         mov word [g_49F4], 0x0
         mov ax, [g_D46A]
@@ -378,7 +378,7 @@ ThreeStarsLoop:
         push word 0x3a0b
         push strict word f_3A0B_B352
         push 0x1
-        call 0x1E7E:Game_1E7E_04C0
+        call 0x1E7E:FadePalette
         add sp, 0x8
         call 0x0EDC:CrowdFadeOut
         call 0x0EDC:StopJingle
@@ -459,7 +459,7 @@ assintrostand:
 .2:
         push 0x27
         push si
-        call 0x1E7E:Game_1E7E_0A74
+        call 0x1E7E:assinsert
         add sp, 0x4
 .3:
         pop si
@@ -1053,7 +1053,7 @@ PickThreeStars:
         mov [g_DCD4], ax
         push word [g_B444]
         push word [g_B36E]
-        call 0x1E45:Game_1E45_00C2
+        call 0x1E45:IsCupClinched
         add sp, 0x4
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .7
@@ -1371,7 +1371,7 @@ StartThreeStars:
         push word 0x3a0b
         push strict word f_3A0B_B352
         push 0x1
-        call 0x1E7E:Game_1E7E_04C0
+        call 0x1E7E:FadePalette
         add sp, 0x8
         mov word [g_49F4], 0x1
         push cs
@@ -1441,7 +1441,7 @@ StartThreeStars:
         call 0x2E42:SetSPA
         push 0x0
         push si
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         and byte [si + 0x44], 0xd7
         add si, 0x80
@@ -1455,7 +1455,7 @@ StartThreeStars:
         mov [g_BC1C], ax
         push 0x1a
         push word 0xbc0e
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         mov word [g_BCB6], 0x78
         mov word [g_BC90], 0xc8
@@ -1465,7 +1465,7 @@ StartThreeStars:
         mov [g_BC9C], ax
         push 0x19
         push word 0xbc8e
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         mov word [g_BD34], 0x0
         mov ax, 0xff38
@@ -1482,7 +1482,7 @@ StartThreeStars:
         mov word [g_BD20], 0xffff
         push 0x15
         push word 0xbd0e
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         mov word [g_29D4], 0x0
         or byte [g_29BC], 0x40
@@ -2069,19 +2069,19 @@ assthreestars:
         add sp, 0x4
         push 0x0
         push word [bp - 0xa]
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         push 0x1d
         push word [bp - 0xa]
-        call 0x1E7E:Game_1E7E_0A74
+        call 0x1E7E:assinsert
         add sp, 0x4
         push 0x14
         push word [bp - 0xa]
-        call 0x1E7E:Game_1E7E_0A74
+        call 0x1E7E:assinsert
         add sp, 0x4
         push 0x9
         push word [bp - 0xa]
-        call 0x1E7E:Game_1E7E_0A74
+        call 0x1E7E:assinsert
         add sp, 0x4
 .23:
         pop si

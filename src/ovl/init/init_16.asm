@@ -2032,7 +2032,7 @@ Init_278C_09C8:
         push strict word f_3A0B_0A8E
         push word [g_29CC]
         push word [g_29CA]
-        call 0x1E64:Game_1E64_0002
+        call 0x1E64:LoadTeamPalette
         add sp, 0x8
         mov ax, 0x1
         mov [g_4B22], ax

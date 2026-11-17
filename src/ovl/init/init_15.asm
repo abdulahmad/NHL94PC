@@ -401,7 +401,7 @@ Init_26D2_03F2:
         push ax
         push word 0xb3
         push word 0x17e
-        call 0x1E7E:Game_1E7E_0120
+        call 0x1E7E:DrawFrameSprite
         add sp, 0xa
         inc word [bp - 0x1e]
 .3:
@@ -437,7 +437,7 @@ Init_26D2_03F2:
         push ax
         push word 0xb3
         push word 0x17e
-        call 0x1E7E:Game_1E7E_0120
+        call 0x1E7E:DrawFrameSprite
         add sp, 0xa
         dec word [bp - 0x1e]
 .7:
@@ -464,7 +464,7 @@ Init_26D2_03F2:
         shl bx, byte 0x2
         push word [bx + g_D2C8]
         push word [bx + g_D2C6]
-        call 0x1F54:Game_1F54_0002
+        call 0x1F54:DrawSpriteClipped
         add sp, 0xe
 .11:
         inc word [bp - 0x1e]
@@ -587,7 +587,7 @@ Init_26D2_03F2:
         push ax
         push word [g_D448]
         push word [g_D446]
-        call 0x1F54:Game_1F54_0002
+        call 0x1F54:DrawSpriteClipped
         add sp, 0xe
 .22:
         cmp word [bp - 0x2], 0x0
@@ -608,7 +608,7 @@ Init_26D2_03F2:
         shl bx, byte 0x2
         push word [bx + g_D2C8]
         push word [bx + g_D2C6]
-        call 0x1F54:Game_1F54_0002
+        call 0x1F54:DrawSpriteClipped
         add sp, 0xe
 .25:
         cmp word [bp - 0x1e], 0x12
@@ -634,7 +634,7 @@ Init_26D2_03F2:
         push ax
         push word [g_D458]
         push word [g_D456]
-        call 0x1F54:Game_1F54_0002
+        call 0x1F54:DrawSpriteClipped
         add sp, 0xe
         jmp short .29
         db 0x90
@@ -648,7 +648,7 @@ Init_26D2_03F2:
         push word [g_DB6E]
         push word [g_DB4C]
         push ax
-        call 0x1E7E:Game_1E7E_0120
+        call 0x1E7E:DrawFrameSprite
         add sp, 0xa
 .29:
         dec word [bp - 0x1e]
@@ -833,7 +833,7 @@ Init_26D2_03F2:
         shl bx, 1
         push word [bx + g_4A28]
 .50:
-        call 0x1E7E:Game_1E7E_0120
+        call 0x1E7E:DrawFrameSprite
         add sp, 0xa
 .51:
         inc word [bp - 0x20]
@@ -907,7 +907,7 @@ Init_26D2_03F2:
         push word [bx + g_DB2E]
 .60:
         push word [bp - 0x2]
-        call 0x1E7E:Game_1E7E_0120
+        call 0x1E7E:DrawFrameSprite
         add sp, 0xa
 .61:
         mov word [bp - 0x1e], 0xe
@@ -928,7 +928,7 @@ Init_26D2_03F2:
         push ax
         push word [g_DB4A]
         push word [g_DB8E]
-        call 0x1E7E:Game_1E7E_0120
+        call 0x1E7E:DrawFrameSprite
         add sp, 0xa
 .62:
         mov word [bp - 0x20], 0x0
@@ -951,7 +951,7 @@ Init_26D2_03F2:
 .64:
         push word [bx + g_DB2E]
         push word [bx + g_DB72]
-        call 0x1E7E:Game_1E7E_0120
+        call 0x1E7E:DrawFrameSprite
         add sp, 0xa
 .65:
         inc word [bp - 0x20]
@@ -1045,7 +1045,7 @@ Init_26D2_03F2:
         shl bx, 1
         push word [bx + g_DB50]
         push word [bx + g_DB2E]
-        call 0x1E7E:Game_1E7E_0060
+        call 0x1E7E:DrawSpriteNumber
         add sp, 0x8
 .76:
         cmp word [bp - 0x1e], 0x5
@@ -1090,7 +1090,7 @@ Init_26D2_03F2:
         push ax
         push word [g_DB4A]
         push word [g_DB8E]
-        call 0x1E7E:Game_1E7E_0120
+        call 0x1E7E:DrawFrameSprite
         add sp, 0xa
 .80:
         cmp word [g_299A], 0xff50
@@ -1104,7 +1104,7 @@ Init_26D2_03F2:
 .81:
         cmp word [g_299A], 0xff70
         jnl short .82
-        call 0x1E7E:Game_1E7E_017E
+        call 0x1E7E:DrawRinkEndArt
 .82:
         mov word [bp - 0x1e], 0xf
         cmp word [g_DB6E], 0x0
@@ -1118,7 +1118,7 @@ Init_26D2_03F2:
         push word [g_DB6E]
         push word [g_DB4C]
         push word [g_DB90]
-        call 0x1E7E:Game_1E7E_0120
+        call 0x1E7E:DrawFrameSprite
         add sp, 0xa
 .83:
         mov word [bp - 0x1e], 0xe
@@ -1141,5 +1141,5 @@ Init_26D2_03F2:
         push ax
         push word [g_DB4A]
         push word [g_DB8E]
-        call 0x1E7E:Game_1E7E_0120
+        call 0x1E7E:DrawFrameSprite
         add sp, 0xa

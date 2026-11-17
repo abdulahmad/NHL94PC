@@ -2,7 +2,7 @@
         retf
         db 0x90
 
-Game_1F54_0002:
+DrawSpriteClipped:
         enter 0x1c, 0x0
         push di
         push si
@@ -321,7 +321,7 @@ Game_1F54_0002:
         retf
         db 0x90
 
-Game_1F54_0316:
+FlushDirtyRects:
         enter 0x2, 0x0
         push si
         cmp word [CurPage], 0x1
@@ -334,7 +334,7 @@ Game_1F54_0316:
         mov [bx + g_D9D6], cx
         push word [bp + 0x8]
         push word [bp + 0x6]
-        call 0x1F29:Game_1F29_0006
+        call 0x1F29:SetScrollCell
         add sp, 0x4
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .1
@@ -405,15 +405,15 @@ Game_1F54_0316:
         retf
         db 0x90
 
-Game_1F54_03FA:
+NullGameHook:
         retf
         db 0x90
 
-Game_1F54_03FC:
+NullGameHook2:
         retf
         db 0x90
 
-Game_1F54_03FE:
+AddDirtyRect:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov dx, [bp + 0x6]

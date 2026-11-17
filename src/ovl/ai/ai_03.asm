@@ -68,7 +68,7 @@ PlayHilight:
         push strict word f_3A0B_0A8E
         push word [g_29CC]
         push word [g_29CA]
-        call 0x1E64:Game_1E64_0002
+        call 0x1E64:LoadTeamPalette
         add sp, 0x8
         cmp word [g_29CA], 0x18
         jl short .2

@@ -48,7 +48,7 @@ Init_2581_000E:
         push word 0x3a0b
         push strict word f_3A0B_B352
         push 0x1
-        call 0x1E7E:Game_1E7E_04C0
+        call 0x1E7E:FadePalette
         add sp, 0x8
         cmp word [bp + 0x6], 0x0
         jz short .4
@@ -174,7 +174,7 @@ Init_2581_000E:
 .9:
         push word [g_D6CE]
         push word [g_D6CC]
-        call 0x1F54:Game_1F54_0316
+        call 0x1F54:FlushDirtyRects
         add sp, 0x4
         call 0x0FEF:UseOtherPage
         mov ax, 0x140
@@ -190,7 +190,7 @@ Init_2581_000E:
         push word 0x3a0b
         push strict word f_3A0B_0A8E
         push 0x0
-        call 0x1E7E:Game_1E7E_04C0
+        call 0x1E7E:FadePalette
         add sp, 0x8
         call 0x03A3:CallCountStep
         call 0x0F99:FlushInputEvents
@@ -312,7 +312,7 @@ Init_2581_000E:
 .25:
         push word [g_D6CE]
         push word [g_D6CC]
-        call 0x1F54:Game_1F54_0316
+        call 0x1F54:FlushDirtyRects
         add sp, 0x4
         call 0x0FEF:UseOtherPage
         mov ax, 0x140
@@ -345,7 +345,7 @@ Init_2581_000E:
         inc ax
         push ax
         push word 0x188
-        call 0x1E7E:Game_1E7E_0120
+        call 0x1E7E:DrawFrameSprite
         add sp, 0xa
         jmp short .29
 .27:
@@ -360,7 +360,7 @@ Init_2581_000E:
         inc ax
         push ax
         push word 0x188
-        call 0x1E7E:Game_1E7E_0120
+        call 0x1E7E:DrawFrameSprite
         add sp, 0xa
         mov ax, [g_DB22]
         cmp [g_DB24], ax
@@ -427,7 +427,7 @@ Init_2581_000E:
         push word 0x3a0b
         push strict word f_3A0B_B352
         push 0x1
-        call 0x1E7E:Game_1E7E_04C0
+        call 0x1E7E:FadePalette
         add sp, 0x8
         push 0x0
         push word 0x7c60

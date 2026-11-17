@@ -351,7 +351,7 @@ DrawRinkObjects:
         shl bx, byte 0x2
         push word [bx + g_D2C8]
         push word [bx + g_D2C6]
-        call 0x1F54:Game_1F54_0002
+        call 0x1F54:DrawSpriteClipped
         add sp, 0xe
 .4:
         add si, 0xe
@@ -401,7 +401,7 @@ DrawRinkObjects:
         push ax
         push word [g_D448]
         push word [g_D446]
-        call 0x1F54:Game_1F54_0002
+        call 0x1F54:DrawSpriteClipped
         add sp, 0xe
 .9:
         cmp word [bp - 0x2], 0x0
@@ -415,7 +415,7 @@ DrawRinkObjects:
         shl bx, byte 0x2
         push word [bx + g_D2C8]
         push word [bx + g_D2C6]
-        call 0x1F54:Game_1F54_0002
+        call 0x1F54:DrawSpriteClipped
         add sp, 0xe
 .10:
         db 0x0B, 0xFF                           ; insn: or di, di
@@ -437,7 +437,7 @@ DrawRinkObjects:
         push ax
         push word [g_D458]
         push word [g_D456]
-        call 0x1F54:Game_1F54_0002
+        call 0x1F54:DrawSpriteClipped
         add sp, 0xe
         jmp short .12
 .11:
@@ -451,7 +451,7 @@ DrawRinkObjects:
         push word [g_BC94]
         push word [g_BC90]
         push word [g_BCA0]
-        call 0x1E7E:Game_1E7E_0120
+        call 0x1E7E:DrawFrameSprite
         add sp, 0xa
 .12:
         sub si, 0xe

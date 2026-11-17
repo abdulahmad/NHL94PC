@@ -2219,3 +2219,31 @@ Ai_327B_0AA6,PenaltyManager,Ai_327B_0AA6,93G penalty93_1.asm,high,"updatepentime
 Ai_327B_0B2C,ClearPenaltyBuffer,Ai_327B_0B2C,93G penalty93_1.asm,high,clears the 32 byte pairs of the penalty buffer,src/ovl/ai/ai_16.asm
 Ai_327B_0B42,PenGoalStuff,Ai_327B_0B42,94G penalty94.asm,high,after a goal drops the scored-on team's finished minor penalties,src/ovl/ai/ai_16.asm
 Ai_327B_0CD8,PenaltyStub,Ai_327B_0CD8,new,medium,a lone retf after PenGoalStuff; nothing calls it,src/ovl/ai/ai_16.asm
+Game_1E45_0000,LoadCupFinalSeries,Game_1E45_0000,new,medium,allocs 0x2A-byte series record from the db file when both teams are playoff teams,src/ovl/game/game_00.asm
+Game_1E45_00C2,IsCupClinched,Game_1E45_00C2,new,medium,"appends the game score to the series list, 1 when CupSeriesWinner decides it",src/ovl/game/game_00.asm
+Game_1E45_015E,CupSeriesWinner,Game_1E45_015E,new,medium,counts wins per side in the series list against games to win,src/ovl/game/game_00.asm
+Game_1E64_0002,LoadTeamPalette,Game_1E64_0002,new,high,HOMEPALS.BIN and AWAYPALS.BIN into TeamPalette1/2 plus RINKPAL,src/ovl/game/game_01.asm
+Game_1E7E_0004,IntermissionPC,Game_1E7E_0004,new,medium,PC intermission wrapper,src/ovl/game/game_02.asm
+Game_1E7E_0060,DrawSpriteNumber,Game_1E7E_0060,new,medium,draws digits as frame sprites,src/ovl/game/game_02.asm
+Game_1E7E_0120,DrawFrameSprite,Game_1E7E_0120,new,medium,draws one frame sprite,src/ovl/game/game_02.asm
+Game_1E7E_017E,DrawRinkEndArt,Game_1E7E_017E,new,medium,rink end-board art,src/ovl/game/game_02.asm
+Game_1E7E_01AE,WaitKeyRelease,Game_1E7E_01AE,new,high,loops until no key is down,src/ovl/game/game_02.asm
+Game_1E7E_01DC,HandleHotKey,Game_1E7E_01DC,new,high,jump table on in-game hot keys,src/ovl/game/game_02.asm
+Game_1E7E_03E8,ResetInputSampling,Game_1E7E_03E8,new,medium,clears input sample counters,src/ovl/game/game_02.asm
+Game_1E7E_0404,RunGameFrames,Game_1E7E_0404,new,medium,runs pending game ticks,src/ovl/game/game_02.asm
+Game_1E7E_048A,SetFullPalette,Game_1E7E_048A,new,high,sends the 256-colour palette,src/ovl/game/game_02.asm
+Game_1E7E_04C0,FadePalette,Game_1E7E_04C0,new,high,steps the palette toward a target,src/ovl/game/game_02.asm
+Game_1E7E_057E,Gameloop,Game_1E7E_057E,94G,high,main game loop,src/ovl/game/game_02.asm
+Game_1E7E_088A,PlayGame,Game_1E7E_088A,new,high,sets up and runs one game,src/ovl/game/game_02.asm
+Game_1E7E_0A5C,assreplace,Game_1E7E_0A5C,94G,high,replaces the current assignment,src/ovl/game/game_02.asm
+Game_1E7E_0A74,assinsert,Game_1E7E_0A74,94G,high,pushes an assignment,src/ovl/game/game_02.asm
+Game_1E7E_0A94,ReplayIsEmpty,Game_1E7E_0A94,new,medium,replay buffer has no frames,src/ovl/game/game_02.asm
+SegStart_00E42,ReturnZeroFar,SegStart_00E42,new,high,"sub ax, ax; retf",src/ovl/game/game_03.asm
+Game_1F29_0006,SetScrollCell,Game_1F29_0006,new,high,"sets the scroll position in 8-pixel cells (g_B096/g_B098), returns nonzero when it moved",src/ovl/game/game_03.asm
+Game_1F29_010E,VgaCopyRows,Game_1F29_010E,new,high,VGA latch copy of background rows (ports 3CE/3C4),src/ovl/game/game_03.asm
+Game_1F29_01E8,VgaRedrawScroll,Game_1F29_01E8,new,medium,redraws the background strip exposed by the scroll,src/ovl/game/game_03.asm
+Game_1F54_0002,DrawSpriteClipped,Game_1F54_0002,new,high,"EMS frame, remap table, clips to the view, blits",src/ovl/game/game_04.asm
+Game_1F54_0316,FlushDirtyRects,Game_1F54_0316,new,high,copies this page's dirty rectangles (or the whole strip after a scroll),src/ovl/game/game_04.asm
+Game_1F54_03FA,NullGameHook,Game_1F54_03FA,new,high,empty far routine (OvlThunk265),src/ovl/game/game_04.asm
+Game_1F54_03FC,NullGameHook2,Game_1F54_03FC,new,high,empty far routine,src/ovl/game/game_04.asm
+Game_1F54_03FE,AddDirtyRect,Game_1F54_03FE,new,high,appends a rectangle to this page's dirty list,src/ovl/game/game_04.asm

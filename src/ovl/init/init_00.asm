@@ -335,7 +335,7 @@ Init_1F9C_01FC:
         push word 0x3a0b
         push strict word f_3A0B_B352
         push 0x1
-        call 0x1E7E:Game_1E7E_04C0
+        call 0x1E7E:FadePalette
         add sp, 0x8
         mov ax, 0x1
         mov [g_49F4], ax
@@ -379,7 +379,7 @@ Init_1F9C_0348:
 .4:
         push ax
         push si
-        call 0x1E7E:Game_1E7E_0A74
+        call 0x1E7E:assinsert
         add sp, 0x4
         cmp word [g_D672], 0x0
         jnl short .5
@@ -535,7 +535,7 @@ Init_1F9C_04A0:
         push word 0x3a0b
         push strict word f_3A0B_B352
         push 0x1
-        call 0x1E7E:Game_1E7E_04C0
+        call 0x1E7E:FadePalette
         add sp, 0x8
 .3:
         test byte [CrowdState], 0x4

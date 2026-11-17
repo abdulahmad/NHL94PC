@@ -121,7 +121,7 @@ PenShotStart:
         jz short .2
         push 0x27
         push si
-        call 0x1E7E:Game_1E7E_0A74
+        call 0x1E7E:assinsert
         add sp, 0x4
 .2:
         add si, 0x80
@@ -174,7 +174,7 @@ PenShotAssign:
         add ax, strict word 0x28
         push ax
         push si
-        call 0x1E7E:Game_1E7E_0A74
+        call 0x1E7E:assinsert
         add sp, 0x4
 .2:
         cmp word [si + 0x1a], 0x0
@@ -182,7 +182,7 @@ PenShotAssign:
         mov word [si + 0x2e], 0x0
         push 0x27
         push si
-        call 0x1E7E:Game_1E7E_0A74
+        call 0x1E7E:assinsert
         add sp, 0x4
 .3:
         add si, 0x80
@@ -262,7 +262,7 @@ assleavebox:
         jnz short .4
         push 0x28
         push si
-        call 0x1E7E:Game_1E7E_0A74
+        call 0x1E7E:assinsert
         add sp, 0x4
         push word [si + 0x2e]
         push si
@@ -658,7 +658,7 @@ puckfaceoff:
 .22:
         push 0x1c
         push di
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         mov word [di + 0x2e], 0x3e8
 .23:
@@ -914,7 +914,7 @@ puckfaceoff2:
 .23:
         push word [g_D66C]
         push word [bp - 0x8]
-        call 0x1E7E:Game_1E7E_0A74
+        call 0x1E7E:assinsert
         add sp, 0x4
 .24:
         mov bx, [bp - 0x8]
@@ -1149,7 +1149,7 @@ puckfaceoff2:
         mov [bx + 0x12], ax
         push 0x1e
         push bx
-        call 0x1E7E:Game_1E7E_0A74
+        call 0x1E7E:assinsert
         add sp, 0x4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov bx, [bp - 0x8]
@@ -1616,7 +1616,7 @@ check4bench:
 .6:
         push 0xb
         push si
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         jmp short .14
 .7:
@@ -1652,13 +1652,13 @@ check4bench:
         jnz short .11
         push 0x27
         push si
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         jmp short .12
         db 0x90
 .11:
         push 0x27
         push si
-        call 0x1E7E:Game_1E7E_0A74
+        call 0x1E7E:assinsert
 .12:
         add sp, 0x4
 .13:

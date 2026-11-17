@@ -2,7 +2,7 @@
         retf
         db 0x90
 
-Game_1E64_0002:
+LoadTeamPalette:
         enter 0x20, 0x0
         push di
         push si

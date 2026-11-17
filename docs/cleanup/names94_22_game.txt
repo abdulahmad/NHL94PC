@@ -1,0 +1,29 @@
+# GAME.OVL routines
+Game_1E45_0000 LoadCupFinalSeries | new | medium | allocs 0x2A-byte series record from the db file when both teams are playoff teams
+Game_1E45_00C2 IsCupClinched | new | medium | appends the game score to the series list, 1 when CupSeriesWinner decides it
+Game_1E45_015E CupSeriesWinner | new | medium | counts wins per side in the series list against games to win
+Game_1E64_0002 LoadTeamPalette | new | high | HOMEPALS.BIN and AWAYPALS.BIN into TeamPalette1/2 plus RINKPAL
+Game_1E7E_0004 IntermissionPC | new | medium | PC intermission wrapper
+Game_1E7E_0060 DrawSpriteNumber | new | medium | draws digits as frame sprites
+Game_1E7E_0120 DrawFrameSprite | new | medium | draws one frame sprite
+Game_1E7E_017E DrawRinkEndArt | new | medium | rink end-board art
+Game_1E7E_01AE WaitKeyRelease | new | high | loops until no key is down
+Game_1E7E_01DC HandleHotKey | new | high | jump table on in-game hot keys
+Game_1E7E_03E8 ResetInputSampling | new | medium | clears input sample counters
+Game_1E7E_0404 RunGameFrames | new | medium | runs pending game ticks
+Game_1E7E_048A SetFullPalette | new | high | sends the 256-colour palette
+Game_1E7E_04C0 FadePalette | new | high | steps the palette toward a target
+Game_1E7E_057E Gameloop | 94G | high | main game loop
+Game_1E7E_088A PlayGame | new | high | sets up and runs one game
+Game_1E7E_0A5C assreplace | 94G | high | replaces the current assignment
+Game_1E7E_0A74 assinsert | 94G | high | pushes an assignment
+Game_1E7E_0A94 ReplayIsEmpty | new | medium | replay buffer has no frames
+SegStart_00E42 ReturnZeroFar | new | high | sub ax, ax; retf
+Game_1F29_0006 SetScrollCell | new | high | sets the scroll position in 8-pixel cells (g_B096/g_B098), returns nonzero when it moved
+Game_1F29_010E VgaCopyRows | new | high | VGA latch copy of background rows (ports 3CE/3C4)
+Game_1F29_01E8 VgaRedrawScroll | new | medium | redraws the background strip exposed by the scroll
+Game_1F54_0002 DrawSpriteClipped | new | high | EMS frame, remap table, clips to the view, blits
+Game_1F54_0316 FlushDirtyRects | new | high | copies this page's dirty rectangles (or the whole strip after a scroll)
+Game_1F54_03FA NullGameHook | new | high | empty far routine (OvlThunk265)
+Game_1F54_03FC NullGameHook2 | new | high | empty far routine
+Game_1F54_03FE AddDirtyRect | new | high | appends a rectangle to this page's dirty list

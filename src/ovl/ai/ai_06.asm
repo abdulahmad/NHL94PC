@@ -728,7 +728,7 @@ DrawTextOverlay:
         shl bx, byte 0x2
         push word [bx + g_D632]
         push word [bx + g_D630]
-        call 0x1F54:Game_1F54_0002
+        call 0x1F54:DrawSpriteClipped
         add sp, 0xe
         cmp word [g_49FC], 0x0
         jz short .15
@@ -1279,7 +1279,7 @@ DrawCallBanner:
         push word [bp - 0x2]
         push word [bp - 0xc]
         push word [bp - 0xe]
-        call 0x1F54:Game_1F54_03FE
+        call 0x1F54:AddDirtyRect
         add sp, 0x8
         pop si
         pop di

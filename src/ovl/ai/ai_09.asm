@@ -46,7 +46,7 @@ assdefo:
 .6:
         push 0x2
         push si
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         pop si
         leave
@@ -220,7 +220,7 @@ assdefd:
         jnz short .14
         push 0x1
         push di
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         pop si
         pop di
@@ -419,7 +419,7 @@ asswingd:
         jnz short .10
         push 0x4
         push si
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         pop si
         leave
@@ -570,7 +570,7 @@ asswingo:
         jz short .11
         push 0x3
         push si
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         pop si
         pop di
@@ -725,7 +725,7 @@ asscenterd:
         jnz short .10
         push 0x6
         push si
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         pop si
         leave
@@ -836,7 +836,7 @@ asscentero:
         jz short .11
         push 0x5
         push si
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         pop si
         pop di
@@ -1008,7 +1008,7 @@ assscore:
         jnz short .1
         push 0x1a
         push word 0xbc0e
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
 .1:
         test byte [si + 0x44], 0x20
@@ -1317,7 +1317,7 @@ assleaveice:
         mov word [si + 0x12], 0xffff
         push 0x29
         push si
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
 .17:
         add sp, 0x4
 .18:
@@ -1456,7 +1456,7 @@ asspenalty:
 .16:
         push 0xd
         push si
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         pop si
         leave
@@ -1799,7 +1799,7 @@ assbench:
         mov word [si + 0x2e], 0x0
         push 0x27
         push si
-        call 0x1E7E:Game_1E7E_0A74
+        call 0x1E7E:assinsert
         add sp, 0x4
 .28:
         mov al, [si + 0x43]
@@ -2434,7 +2434,7 @@ assgoalie:
 .64:
         push 0xf
         push word [bp + 0x6]
-        call 0x1E7E:Game_1E7E_0A74
+        call 0x1E7E:assinsert
         jmp near .79
         db 0x90
 .65:
@@ -2989,7 +2989,7 @@ assnearest:
 .3:
         push 0x10
         push bx
-        call 0x1E7E:Game_1E7E_0A74
+        call 0x1E7E:assinsert
         add sp, 0x4
         pop si
         pop di
@@ -3170,7 +3170,7 @@ assnearest:
         and byte [bx + 0x44], 0xfe
         push 0x11
         push bx
-        call 0x1E7E:Game_1E7E_0A74
+        call 0x1E7E:assinsert
         add sp, 0x4
         push word [bp + 0x6]
         push cs
@@ -3989,11 +3989,11 @@ Endfaceoff:
         and byte [si + 0x44], 0xfb
         push 0x18
         push si
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         push 0x1f
         push word 0xbd0e
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         cmp word [g_BD10], 0x0
         jng short .11
@@ -5078,12 +5078,12 @@ assrefwhistle:
 .12:
         push 0x1b
         push word 0xbc0e
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         push 0x1e
 .13:
         push si
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         pop si
         leave
@@ -5213,7 +5213,7 @@ assrefsignal:
 .13:
         push 0x21
         push si
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         pop si
         pop di
@@ -5442,7 +5442,7 @@ assrefgoalpa:
 .17:
         push word [bp + 0x6]
 .18:
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         pop si
         pop di
@@ -5475,7 +5475,7 @@ assrefgoalpa:
 .23:
         push 0x1b
         push word 0xbc0e
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         push 0x1e
         jmp short .17
@@ -5519,7 +5519,7 @@ assrefgoalpa:
         mov byte [bx], 0xff
         push 0x1a
         push word 0xbc0e
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
 .29:
         mov bx, [bp + 0x6]
@@ -5989,7 +5989,7 @@ assrefdrop:
         mov word [g_29D4], 0xffff
         push 0x1e
         push si
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         pop si
         pop di
@@ -6128,7 +6128,7 @@ assrefgoalline:
         call 0x2E42:SetSPA
         push 0x20
         push si
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         pop si
         leave

@@ -83,7 +83,7 @@ StartHL2:
         push word 0x3a0b
         push strict word f_3A0B_B352
         push 0x1
-        call 0x1E7E:Game_1E7E_04C0
+        call 0x1E7E:FadePalette
         add sp, 0x8
         call 0x2352:FlushGSumQueue
         and byte [CrowdState], 0xe4
@@ -101,7 +101,7 @@ StartHL2:
         push strict word f_3A0B_0A8E
         push word [g_29CC]
         push word [g_29CA]
-        call 0x1E64:Game_1E64_0002
+        call 0x1E64:LoadTeamPalette
         add sp, 0x8
         cmp word [g_29CA], 0x18
         jl short .6
@@ -339,13 +339,13 @@ StartHL2:
         mov word [g_BC56], 0x0
         push 0x18
         push word 0xbc0e
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         mov word [g_BCA0], 0x189
         mov word [g_BCD6], 0x0
         push 0x19
         push word 0xbc8e
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         mov word [g_BD10], 0xff88
         mov word [g_BD14], 0x0
@@ -357,7 +357,7 @@ StartHL2:
         mov ax, 0xbd0e
         mov [bp - 0xf6], ax
         push ax
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         call 0x2E42:DoGameFrame
         call 0x2E42:DoGameFrame
@@ -382,7 +382,7 @@ StartHL2:
         jz short .16
         jmp near .24
 .16:
-        call 0x1E7E:Game_1E7E_03E8
+        call 0x1E7E:ResetInputSampling
         mov [bp - 0xf2], ax
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         shl ax, 1
@@ -399,7 +399,7 @@ StartHL2:
         idiv cx
         mov [bp - 0x64], dx
         push word [bp - 0xf2]
-        call 0x1E7E:Game_1E7E_0404
+        call 0x1E7E:RunGameFrames
         add sp, 0x2
         mov ax, [g_2998]
         add ax, strict word 0x20
@@ -425,7 +425,7 @@ StartHL2:
 .20:
         push word [g_D6CE]
         push word [g_D6CC]
-        call 0x1F54:Game_1F54_0316
+        call 0x1F54:FlushDirtyRects
         add sp, 0x4
         call 0x0FEF:UseOtherPage
         mov ax, 0x140
@@ -452,7 +452,7 @@ StartHL2:
         push word 0x3a0b
         push strict word f_3A0B_B352
         push 0x1
-        call 0x1E7E:Game_1E7E_04C0
+        call 0x1E7E:FadePalette
         add sp, 0x8
         mov ax, [g_D46A]
         mov [PadRepeatOn], ax
@@ -492,7 +492,7 @@ StartHL2:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [PadRepeatOn], ax
         push ax
-        call 0x1E7E:Game_1E7E_04C0
+        call 0x1E7E:FadePalette
         add sp, 0x8
         mov word [g_49F4], 0x0
         mov ax, [g_D46A]
@@ -523,7 +523,7 @@ StartHL2:
         push word 0x3a0b
         push strict word f_3A0B_B352
         push 0x1
-        call 0x1E7E:Game_1E7E_04C0
+        call 0x1E7E:FadePalette
         add sp, 0x8
         call 0x0EDC:CrowdFadeOut
         mov word [CrowdSound], 0x0
@@ -651,7 +651,7 @@ StartHL2:
         push strict word f_3A0B_0A8E
         push word [g_29CC]
         push word [g_29CA]
-        call 0x1E64:Game_1E64_0002
+        call 0x1E64:LoadTeamPalette
         add sp, 0x8
         call 0x1B35:OvlThunk140
         push word [g_C25E]
@@ -701,7 +701,7 @@ StartHL2:
         mov [g_29D4], ax
         push 0x1e
         push word 0xbd0e
-        call 0x1E7E:Game_1E7E_0A5C
+        call 0x1E7E:assreplace
         add sp, 0x4
         call 0x327B:ClearPenaltyBuffer
         mov word [g_29CE], 0xffff

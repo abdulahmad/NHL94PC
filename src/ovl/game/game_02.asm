@@ -4,7 +4,7 @@
         retf
         db 0x90
 
-Game_1E7E_0004:
+IntermissionPC:
         push word 0x3a0b
         push strict word f_3A0B_B352
         push word 0x100
@@ -16,7 +16,7 @@ Game_1E7E_0004:
         push strict word f_3A0B_B352
         push 0x1
         push cs
-        call Game_1E7E_04C0
+        call FadePalette
         add sp, 0x8
         call 0x0EDC:CrowdFadeOut
         cmp word [SoundOptions], 0x2
@@ -36,7 +36,7 @@ Game_1E7E_0004:
         inc word [g_BFFE]
         retf
 
-Game_1E7E_0060:
+DrawSpriteNumber:
         enter 0x2, 0x0
         push di
         push si
@@ -76,7 +76,7 @@ Game_1E7E_0060:
         shl bx, byte 0x2
         push word [bx + g_D6DA]
         push word [bx + g_D6D8]
-        call 0x1F54:Game_1F54_0002
+        call 0x1F54:DrawSpriteClipped
         add sp, 0xe
         lea si, [si + 0x7]
         mov ax, [bp + 0xa]
@@ -94,7 +94,7 @@ Game_1E7E_0060:
         shl bx, byte 0x2
         push word [bx + g_D6DA]
         push word [bx + g_D6D8]
-        call 0x1F54:Game_1F54_0002
+        call 0x1F54:DrawSpriteClipped
         add sp, 0xe
         cmp word [bp + 0xc], 0x0
         jng short .4
@@ -108,7 +108,7 @@ Game_1E7E_0060:
         shl bx, byte 0x2
         push word [bx + g_D702]
         push word [bx + g_D700]
-        call 0x1F54:Game_1F54_0002
+        call 0x1F54:DrawSpriteClipped
         add sp, 0xe
 .4:
         pop si
@@ -117,7 +117,7 @@ Game_1E7E_0060:
         retf
         db 0x90
 
-Game_1E7E_0120:
+DrawFrameSprite:
         enter 0x4, 0x0
         push si
         mov si, [bp + 0x6]
@@ -148,14 +148,14 @@ Game_1E7E_0120:
         push ax
         push word [bp - 0x2]
         push word [bp - 0x4]
-        call 0x1F54:Game_1F54_0002
+        call 0x1F54:DrawSpriteClipped
         add sp, 0xe
 .1:
         pop si
         leave
         retf
 
-Game_1E7E_017E:
+DrawRinkEndArt:
         push 0x0
         push -0x1
         push 0x0
@@ -171,12 +171,12 @@ Game_1E7E_017E:
         push ax
         push word [g_D71E]
         push word [g_D71C]
-        call 0x1F54:Game_1F54_0002
+        call 0x1F54:DrawSpriteClipped
         add sp, 0xe
         retf
         db 0x90
 
-Game_1E7E_01AE:
+WaitKeyRelease:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push si
@@ -199,11 +199,11 @@ Game_1E7E_01AE:
         leave
         retf
 
-Game_1E7E_01DC:
+HandleHotKey:
         enter 0x2, 0x0
         test byte [bp + 0x6], 0x80
         jnz short .1
-        jmp near Game_1E7E_01DCJumpTable.23
+        jmp near HandleHotKeyJumpTable.23
 .1:
         and byte [bp + 0x6], 0x7f
         mov al, [bp + 0x6]
@@ -211,33 +211,33 @@ Game_1E7E_01DC:
         mov [bp - 0x2], ax
         cmp ax, strict word 0x44
         jnz short .2
-        jmp near Game_1E7E_01DCJumpTable.21
+        jmp near HandleHotKeyJumpTable.21
 .2:
         jna short .3
-        jmp near Game_1E7E_01DCJumpTable.23
+        jmp near HandleHotKeyJumpTable.23
 .3:
         cmp al, 0x1f
         jnz short .4
-        jmp near Game_1E7E_01DCJumpTable.12
+        jmp near HandleHotKeyJumpTable.12
 .4:
         jg short .5
         dec al
-        jz short Game_1E7E_01DCJumpTable.1
+        jz short HandleHotKeyJumpTable.1
         sub al, 0xe
-        jz short Game_1E7E_01DCJumpTable.2
+        jz short HandleHotKeyJumpTable.2
         sub al, 0x4
-        jz short Game_1E7E_01DCJumpTable.3
-        jmp near Game_1E7E_01DCJumpTable.23
+        jz short HandleHotKeyJumpTable.3
+        jmp near HandleHotKeyJumpTable.23
 .5:
         sub al, 0x32
         cmp ax, strict word 0x11
         jna short .6
-        jmp near Game_1E7E_01DCJumpTable.23
+        jmp near HandleHotKeyJumpTable.23
 .6:
         shl ax, 1
         xchg ax, bx
         jmp [cs:bx + 0x22c]
-Game_1E7E_01DCJumpTable:
+HandleHotKeyJumpTable:
         dw .16
         dw .23
         dw .23
@@ -301,7 +301,7 @@ Game_1E7E_01DCJumpTable:
         push strict word f_3A0B_B352
         push 0x1
         push cs
-        call Game_1E7E_04C0
+        call FadePalette
         add sp, 0x8
         call 0x0EDC:CrowdFadeOut
         cmp word [SoundOptions], 0x2
@@ -409,7 +409,7 @@ Game_1E7E_01DCJumpTable:
         retf
         db 0x90
 
-Game_1E7E_03E8:
+ResetInputSampling:
         mov ax, [PadRepeatOn]
         mov [g_D46A], ax
         mov dx, [PadTickCount]
@@ -422,7 +422,7 @@ Game_1E7E_03E8:
         retf
         db 0x90
 
-Game_1E7E_0404:
+RunGameFrames:
         enter 0x2, 0x0
         push di
         push si
@@ -443,7 +443,7 @@ Game_1E7E_0404:
         jz short .2
         push ax
         push cs
-        call Game_1E7E_01DC
+        call HandleHotKey
         add sp, 0x2
         dec ax
         jz short .6
@@ -483,7 +483,7 @@ Game_1E7E_0404:
         retf
         db 0x90
 
-Game_1E7E_048A:
+SetFullPalette:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -510,7 +510,7 @@ Game_1E7E_048A:
         leave
         retf
 
-Game_1E7E_04C0:
+FadePalette:
         enter 0x2, 0x0
         push di
         push si
@@ -523,7 +523,7 @@ Game_1E7E_04C0:
         push word [bp + 0x8]
 .1:
         push cs
-        call Game_1E7E_048A
+        call SetFullPalette
         add sp, 0x4
         pop si
         pop di
@@ -584,7 +584,7 @@ Game_1E7E_04C0:
         push word 0x387f
         push strict word 0x0
         push cs
-        call Game_1E7E_048A
+        call SetFullPalette
         add sp, 0x4
         mov al, [si + g_4B0C]
         cbw
@@ -600,7 +600,7 @@ Game_1E7E_04C0:
         retf
         db 0x90
 
-Game_1E7E_057E:
+Gameloop:
         push si
         call 0x03A3:CallCountStep
         jmp near .25
@@ -611,7 +611,7 @@ Game_1E7E_057E:
         jmp near .20
 .2:
         push cs
-        call Game_1E7E_03E8
+        call ResetInputSampling
         db 0x8B, 0xF0                           ; insn: mov si, ax
         shl ax, 1
         db 0x03, 0xC6                           ; insn: add ax, si
@@ -628,7 +628,7 @@ Game_1E7E_057E:
         mov [g_D6D0], dx
         push si
         push cs
-        call Game_1E7E_0404
+        call RunGameFrames
         add sp, 0x2
         mov ax, [g_2998]
         add ax, strict word 0x20
@@ -654,7 +654,7 @@ Game_1E7E_057E:
 .6:
         push word [g_D6CE]
         push word [g_D6CC]
-        call 0x1F54:Game_1F54_0316
+        call 0x1F54:FlushDirtyRects
         add sp, 0x4
         call 0x0FEF:UseOtherPage
         mov ax, 0x140
@@ -682,7 +682,7 @@ Game_1E7E_057E:
         push strict word f_3A0B_B352
         push 0x1
         push cs
-        call Game_1E7E_04C0
+        call FadePalette
         add sp, 0x8
         call 0x1B35:OvlThunk250
         mov ax, [g_D46A]
@@ -724,7 +724,7 @@ Game_1E7E_057E:
         mov [PadRepeatOn], ax
         push ax
         push cs
-        call Game_1E7E_04C0
+        call FadePalette
         add sp, 0x8
         mov word [g_49F4], 0x0
         mov ax, [g_D46A]
@@ -859,7 +859,7 @@ Game_1E7E_057E:
         pop si
         retf
 
-Game_1E7E_088A:
+PlayGame:
         enter 0x20, 0x0
         push di
         push si
@@ -880,7 +880,7 @@ Game_1E7E_088A:
         push strict word f_3A0B_0A8E
         push word [g_29CC]
         push word [g_29CA]
-        call 0x1E64:Game_1E64_0002
+        call 0x1E64:LoadTeamPalette
         add sp, 0x8
         call 0x1B35:OvlThunk245
         call 0x1B35:OvlThunk244
@@ -891,7 +891,7 @@ Game_1E7E_088A:
 .4:
         test byte [AnnouncerFlags], 0x2
         jnz short .5
-        call 0x1E45:Game_1E45_0000
+        call 0x1E45:LoadCupFinalSeries
 .5:
         push word [si]
         call 0x1B35:OvlThunk264
@@ -967,7 +967,7 @@ Game_1E7E_088A:
         mov [es:0x126], ax
         call 0x1B35:OvlThunk238
         push cs
-        call Game_1E7E_057E
+        call Gameloop
         call 0x1B35:OvlThunk257
         cmp word [DbSaveMode], 0x0
         jz short .11
@@ -1029,7 +1029,7 @@ Game_1E7E_088A:
         retf
         db 0x90
 
-Game_1E7E_0A5C:
+assreplace:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push si
@@ -1043,7 +1043,7 @@ Game_1E7E_0A5C:
         retf
         db 0x90
 
-Game_1E7E_0A74:
+assinsert:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push si
@@ -1055,13 +1055,13 @@ Game_1E7E_0A74:
         push word [bp + 0x8]
         push si
         push cs
-        call Game_1E7E_0A5C
+        call assreplace
         add sp, 0x4
         pop si
         leave
         retf
 
-Game_1E7E_0A94:
+ReplayIsEmpty:
         mov ax, [g_D014]
         mov dx, [g_D016]
         cmp [g_2986], ax
