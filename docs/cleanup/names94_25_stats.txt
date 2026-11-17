@@ -1,0 +1,93 @@
+# STATS.OVL routines
+Stats_1E45_0000 SetupStatsMenus | new | medium | fills the stats menu items' far routine pointers for the chosen context and season
+Stats_1E45_047C BuildSeasonTitle | new | high | '" Season' / '" Play-Offs' / '" Season Play-Offs' title strings
+Stats_1E45_0576 SplitFileExt | 95 PC | high | cuts a file name at its '.'
+Stats_1E45_0598 SetStatsMenuText | new | medium | switch on the context (0..5) choosing the menu text pointers
+Stats_1EAE_0002 StrNotPrefixFar | new | high | 1 when the first far string differs from the start of the second
+Stats_1EAE_0044 StatsMenuLoop | new | high | pointer menu loop over a menu bar (pnt2/pntr, menubuff)
+Stats_1EAE_07B6 StandingsMenuLoop | new | high | menu loop with the standings team cursor (XorRect, TeamFromMouse)
+Stats_1EAE_12F6 RosterMenuLoop | new | high | menu loop with the roster row cursor
+Stats_2095_0008 InitMenuRemap | 95 PC | medium | builds the menu colour remap table
+Stats_2095_0076 DrawTextFmt | new | high | sprintf with one argument into g_CFD4, then DrawText
+Stats_2095_009A DrawTextFmt2 | new | high | same with two arguments
+Stats_2095_00C0 CmpPoints | 95 PC | high | leaders comparator: points (+6), then games, goals, plus/minus
+Stats_2095_0180 CmpGAA | 95 PC | high | leaders comparator: goals against average
+Stats_2095_026E LoadPhotoShape | new | medium | reads one player photo from the 'shape' file ('sfh' header)
+Stats_2095_0438 GetSeasonTitle | new | medium | copies the season title for the stats header
+Stats_20E4_000E LoadCrestsPalette | 95 PC | high | CRESTS3.BIN palette into the current palette
+Stats_20F4_0000 GoalieStatsCard | 95 PC | high | goalie card: portrait, season and career stats, ratings
+Stats_215A_000C SaveBkgdPlanes | new | high | copies the four VGA planes into the 'BKGD' record
+Stats_215A_018A RestoreBkgdPlanes | new | high | copies them back and frees the record
+Stats_215A_02E6 GameTeamStatsScreen | 95 PC | high | team stats from the in-game menu
+Stats_215A_0428 GameSkaterStatsScreen | 95 PC | high | skater leaders from the in-game menu
+Stats_215A_056A GameGoalieStatsScreen | 95 PC | high | goalie leaders from the in-game menu
+Stats_215A_06AC GameStandingsScreen | 95 PC | high | standings from the in-game menu
+Stats_215A_079E GameStandingsMenu | 95 PC | high | standings, roster and player cards from the in-game menu
+Stats_2248_000C StandingsActExit | new | high | menu item: leave the standings menu (action 1)
+Stats_2248_0014 StandingsActStandings | new | high | menu item: standings (action 2)
+Stats_2248_001E StandingsActRoster | new | high | menu item: team roster (action 3)
+Stats_2248_0028 StatsSelNhlSeason | 95 PC | medium | season menu: NHL season stats
+Stats_2248_00EC StatsSelNhlPlayoffs | 95 PC | medium | season menu: NHL playoff stats
+Stats_2248_01B0 StatsSelLeague | 95 PC | high | season menu: league season
+Stats_2248_0274 StatsSelLeaguePlayoffs | 95 PC | high | season menu: league playoffs
+Stats_2248_0350 StatsSelPlayoffMode | 95 PC | high | season menu: playoff mode
+Stats_2248_042C MenuTeamScoring | new | high | team stats sorted by CmpTeamScoring
+Stats_2248_044E MenuTeamDefense | new | high | team stats sorted by CmpTeamDefense
+Stats_2248_0470 MenuTeamPP | new | high | team stats sorted by CmpTeamPP
+Stats_2248_0492 MenuTeamPK | new | high | team stats sorted by CmpTeamPK
+Stats_2248_04B4 MenuTeamPenalties | new | high | team stats sorted by CmpTeamPenalties
+Stats_2248_04D6 MenuPointLeaders | new | high | leaders 0
+Stats_2248_04F8 MenuGoalLeaders | new | high | leaders 1
+Stats_2248_051A MenuAssistLeaders | new | high | leaders 2
+Stats_2248_053C MenuPPGoalLeaders | new | high | leaders 3
+Stats_2248_055E MenuSHGoalLeaders | new | high | leaders 4
+Stats_2248_0580 MenuPlusMinusLeaders | new | high | leaders 5
+Stats_2248_05A2 MenuPIMLeaders | new | high | leaders 6
+Stats_2248_05C4 MenuShootPctLeaders | new | high | leaders 7
+Stats_2248_05E6 MenuGAALeaders | new | high | leaders 8
+Stats_2248_0608 MenuWinsLeaders | new | high | leaders 9
+Stats_2248_062A MenuSavePctLeaders | new | high | leaders 10
+Stats_2248_064C StandingsActRoster2 | new | high | roster action from the standings cursor
+Stats_2248_0656 StandingsActPlayer | new | high | player card action: goalie card for a 'G', else skater card
+Stats_2248_066C FreeStandingsGfx | new | high | frees the four standings shape records
+Stats_22B3_0000 EasnTeamStatsScreen | 95 PC | high | team stats from the EASN desk
+Stats_22B3_01C8 EasnSkaterStatsScreen | 95 PC | high | skater leaders from the EASN desk
+Stats_22B3_0390 EasnGoalieStatsScreen | 95 PC | high | goalie leaders from the EASN desk
+Stats_22B3_0558 EasnStandingsScreen | 95 PC | high | standings from the EASN desk
+Stats_22B3_062E EasnStandingsMenu | 95 PC | high | standings menu from the EASN desk
+Stats_2351_000A CalTeamStatsScreen | 95 PC | high | team stats from the calendar
+Stats_2351_014C CalSkaterStatsScreen | 95 PC | high | skater leaders from the calendar
+Stats_2351_028E CalGoalieStatsScreen | 95 PC | high | goalie leaders from the calendar
+Stats_2351_03D0 CalStandingsScreen | 95 PC | high | standings from the calendar
+Stats_2351_04A6 CalStandingsMenu | 95 PC | high | standings menu from the calendar
+Stats_23D5_0002 SkaterStatsCard | 95 PC | high | skater card: portrait, season and career stats, ratings
+Stats_2446_0006 RosterRowAt | new | high | roster row under a screen y, 1 when there is one
+Stats_2446_006A RosterScreen | new | high | '%s Roster:' skaters and goalies
+Stats_24E6_0000 CmpConfStandings | 95 PC | high | standings comparator within a conference
+Stats_24E6_00C6 TeamFromMouse | 95 PC | high | standings team under the pointer
+Stats_24E6_01BE StandingsScreen | 95 PC | high | Campbell and Wales conference standings
+Stats_24E6_069E HiliteStandingsTeam | new | high | XOR bar on a standings row
+Stats_24E6_07A0 DrawStandingsPage | new | high | redraws the standings page
+Stats_24E6_0A52 MoveStandingsHilite | new | medium | restores the old row and highlights the new one
+Stats_24E6_0ADE ShowStandingsTable | new | medium | season or playoff standings for the chosen db
+Stats_24E6_0B08 ShowSeasonStandings | new | medium | standings from the league schedule (LSSCHED.DB)
+Stats_24E6_0D3E PlayoffSeriesWinner | new | medium | winner of one playoff series from its game list
+Stats_24E6_0E3E LoadLeagueSchedule | new | high | loads LSSCHED.DB
+Stats_24E6_0EC2 ShowPlayoffStandings | new | medium | playoff standings from the series results
+Stats_25E5_0002 CmpTeamScoring | 95 PC | high | team comparator: goals for (+4)
+Stats_25E5_011A CmpTeamDefense | 95 PC | high | team comparator: goals against (+6)
+Stats_25E5_0232 CmpTeamPP | 95 PC | high | team comparator: power play (+8/+0Ah)
+Stats_25E5_03B6 CmpTeamPK | 95 PC | high | team comparator: penalty killing (+0Ch/+0Eh)
+Stats_25E5_052E CmpTeamPenalties | 95 PC | high | team comparator: penalty minutes (+10h)
+Stats_25E5_064A TeamStatsScreen | 95 PC | high | team stats table ('Stats Unavailable')
+Stats_26BE_000A CmpGoals | 95 PC | high | leaders comparator: goals (+2)
+Stats_26BE_00EC CmpAssists | 95 PC | high | leaders comparator: assists (+4)
+Stats_26BE_01C6 CmpPPGoals | 95 PC | high | leaders comparator: power play goals (+8)
+Stats_26BE_02C0 CmpSHGoals | 95 PC | high | leaders comparator: short-handed goals (+0Ah)
+Stats_26BE_03BA CmpPlusMinus | 95 PC | high | leaders comparator: plus/minus (+10h)
+Stats_26BE_049E CmpPIM | 95 PC | high | leaders comparator: penalty minutes (+0Ch)
+Stats_26BE_0598 CmpShootPct | 95 PC | high | leaders comparator: precomputed shooting percentage
+Stats_26BE_067A CmpGoalieWins | 95 PC | high | leaders comparator: goalie wins (+2)
+Stats_26BE_07C2 CmpSavePct | 95 PC | high | leaders comparator: save percentage (+14h)
+Stats_26BE_08DA LeadersScreen | 95 PC | high | skater and goalie leaders table
+CallArg _qsort | MSC | high | qsort(array, count, size, far compare); the stats comparators go through it

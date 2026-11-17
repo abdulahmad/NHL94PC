@@ -5,7 +5,7 @@
         retf
         db 0x90
 
-Stats_2446_0006:
+RosterRowAt:
         enter 0x2, 0x0
         push di
         mov di, [bp + 0xa]
@@ -56,7 +56,7 @@ Stats_2446_0006:
         retf
         db 0x90
 
-Stats_2446_006A:
+RosterScreen:
         enter 0x3e8, 0x0
         push di
         push si
@@ -299,18 +299,18 @@ Stats_2446_006A:
         call 0x0000:_close
         add sp, 0x2
         push word 0x2095
-        push strict word Stats_2095_00C0
+        push strict word CmpPoints
         push 0x2
         push word [bp - 0x3e2]
         push word 0xcf80
-        call 0x0000:CallArg
+        call 0x0000:_qsort
         add sp, 0xa
         push word 0x2095
-        push strict word Stats_2095_0180
+        push strict word CmpGAA
         push 0x2
         push word [bp - 0x360]
         push word 0xcfbc
-        call 0x0000:CallArg
+        call 0x0000:_qsort
         add sp, 0xa
         call 0x0FEF:UseOffscreenCanvas
         lea ax, [bp - 0x2e8]

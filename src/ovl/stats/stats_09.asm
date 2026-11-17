@@ -2,7 +2,7 @@
         leave
         retf
 
-Stats_23D5_0002:
+SkaterStatsCard:
         enter 0x19a, 0x0
         push di
         push si
@@ -203,7 +203,7 @@ Stats_23D5_0002:
         push ax
         lea ax, [bp - 0x6e]
         push ax
-        call 0x2095:Stats_2095_026E
+        call 0x2095:LoadPhotoShape
         add sp, 0x4
         mov [g_C2B2], ax
         mov [g_C2B4], dx
@@ -287,7 +287,7 @@ Stats_23D5_0002:
         push ax
         lea ax, [bp - 0x6e]
         push ax
-        call 0x2095:Stats_2095_026E
+        call 0x2095:LoadPhotoShape
         add sp, 0x4
         mov [g_C2B2], ax
         mov [g_C2B4], dx

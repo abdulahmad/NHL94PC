@@ -2331,3 +2331,95 @@ Fades10_3358_0000,FadeSampleRect,Fades10_3358_0000,new,medium,clips a rectangle 
 Fades10_3358_0070,FadeBoxGrow,Fades10_3358_0070,new,medium,filled boxes grow from the centre,src/ovl/fades10/fades10_00.asm
 Fades11_3358_0000,FadeDirectional,Fades11_3358_0000,new,medium,sweep in one of eight directions,src/ovl/fades11/fades11_00.asm
 Fades12_3358_0000,FadeZoomRect,Fades12_3358_0000,new,medium,grows or shrinks from a rectangle,src/ovl/fades12/fades12_00.asm
+Stats_1E45_0000,SetupStatsMenus,Stats_1E45_0000,new,medium,fills the stats menu items' far routine pointers for the chosen context and season,src/ovl/stats/stats_00.asm
+Stats_1E45_047C,BuildSeasonTitle,Stats_1E45_047C,new,high,"'"" Season' / '"" Play-Offs' / '"" Season Play-Offs' title strings",src/ovl/stats/stats_00.asm
+Stats_1E45_0576,SplitFileExt,Stats_1E45_0576,95 PC,high,cuts a file name at its '.',src/ovl/stats/stats_00.asm
+Stats_1E45_0598,SetStatsMenuText,Stats_1E45_0598,new,medium,switch on the context (0..5) choosing the menu text pointers,src/ovl/stats/stats_00.asm
+Stats_1EAE_0002,StrNotPrefixFar,Stats_1EAE_0002,new,high,1 when the first far string differs from the start of the second,src/ovl/stats/stats_01.asm
+Stats_1EAE_0044,StatsMenuLoop,Stats_1EAE_0044,new,high,"pointer menu loop over a menu bar (pnt2/pntr, menubuff)",src/ovl/stats/stats_01.asm
+Stats_1EAE_07B6,StandingsMenuLoop,Stats_1EAE_07B6,new,high,"menu loop with the standings team cursor (XorRect, TeamFromMouse)",src/ovl/stats/stats_01.asm
+Stats_1EAE_12F6,RosterMenuLoop,Stats_1EAE_12F6,new,high,menu loop with the roster row cursor,src/ovl/stats/stats_01.asm
+Stats_2095_0008,InitMenuRemap,Stats_2095_0008,95 PC,medium,builds the menu colour remap table,src/ovl/stats/stats_02.asm
+Stats_2095_0076,DrawTextFmt,Stats_2095_0076,new,high,"sprintf with one argument into g_CFD4, then DrawText",src/ovl/stats/stats_02.asm
+Stats_2095_009A,DrawTextFmt2,Stats_2095_009A,new,high,same with two arguments,src/ovl/stats/stats_02.asm
+Stats_2095_00C0,CmpPoints,Stats_2095_00C0,95 PC,high,"leaders comparator: points (+6), then games, goals, plus/minus",src/ovl/stats/stats_02.asm
+Stats_2095_0180,CmpGAA,Stats_2095_0180,95 PC,high,leaders comparator: goals against average,src/ovl/stats/stats_02.asm
+Stats_2095_026E,LoadPhotoShape,Stats_2095_026E,new,medium,reads one player photo from the 'shape' file ('sfh' header),src/ovl/stats/stats_02.asm
+Stats_2095_0438,GetSeasonTitle,Stats_2095_0438,new,medium,copies the season title for the stats header,src/ovl/stats/stats_02.asm
+Stats_20E4_000E,LoadCrestsPalette,Stats_20E4_000E,95 PC,high,CRESTS3.BIN palette into the current palette,src/ovl/stats/stats_03.asm
+Stats_20F4_0000,GoalieStatsCard,Stats_20F4_0000,95 PC,high,"goalie card: portrait, season and career stats, ratings",src/ovl/stats/stats_04.asm
+Stats_215A_000C,SaveBkgdPlanes,Stats_215A_000C,new,high,copies the four VGA planes into the 'BKGD' record,src/ovl/stats/stats_05.asm
+Stats_215A_018A,RestoreBkgdPlanes,Stats_215A_018A,new,high,copies them back and frees the record,src/ovl/stats/stats_05.asm
+Stats_215A_02E6,GameTeamStatsScreen,Stats_215A_02E6,95 PC,high,team stats from the in-game menu,src/ovl/stats/stats_05.asm
+Stats_215A_0428,GameSkaterStatsScreen,Stats_215A_0428,95 PC,high,skater leaders from the in-game menu,src/ovl/stats/stats_05.asm
+Stats_215A_056A,GameGoalieStatsScreen,Stats_215A_056A,95 PC,high,goalie leaders from the in-game menu,src/ovl/stats/stats_05.asm
+Stats_215A_06AC,GameStandingsScreen,Stats_215A_06AC,95 PC,high,standings from the in-game menu,src/ovl/stats/stats_05.asm
+Stats_215A_079E,GameStandingsMenu,Stats_215A_079E,95 PC,high,"standings, roster and player cards from the in-game menu",src/ovl/stats/stats_05.asm
+Stats_2248_000C,StandingsActExit,Stats_2248_000C,new,high,menu item: leave the standings menu (action 1),src/ovl/stats/stats_06.asm
+Stats_2248_0014,StandingsActStandings,Stats_2248_0014,new,high,menu item: standings (action 2),src/ovl/stats/stats_06.asm
+Stats_2248_001E,StandingsActRoster,Stats_2248_001E,new,high,menu item: team roster (action 3),src/ovl/stats/stats_06.asm
+Stats_2248_0028,StatsSelNhlSeason,Stats_2248_0028,95 PC,medium,season menu: NHL season stats,src/ovl/stats/stats_06.asm
+Stats_2248_00EC,StatsSelNhlPlayoffs,Stats_2248_00EC,95 PC,medium,season menu: NHL playoff stats,src/ovl/stats/stats_06.asm
+Stats_2248_01B0,StatsSelLeague,Stats_2248_01B0,95 PC,high,season menu: league season,src/ovl/stats/stats_06.asm
+Stats_2248_0274,StatsSelLeaguePlayoffs,Stats_2248_0274,95 PC,high,season menu: league playoffs,src/ovl/stats/stats_06.asm
+Stats_2248_0350,StatsSelPlayoffMode,Stats_2248_0350,95 PC,high,season menu: playoff mode,src/ovl/stats/stats_06.asm
+Stats_2248_042C,MenuTeamScoring,Stats_2248_042C,new,high,team stats sorted by CmpTeamScoring,src/ovl/stats/stats_06.asm
+Stats_2248_044E,MenuTeamDefense,Stats_2248_044E,new,high,team stats sorted by CmpTeamDefense,src/ovl/stats/stats_06.asm
+Stats_2248_0470,MenuTeamPP,Stats_2248_0470,new,high,team stats sorted by CmpTeamPP,src/ovl/stats/stats_06.asm
+Stats_2248_0492,MenuTeamPK,Stats_2248_0492,new,high,team stats sorted by CmpTeamPK,src/ovl/stats/stats_06.asm
+Stats_2248_04B4,MenuTeamPenalties,Stats_2248_04B4,new,high,team stats sorted by CmpTeamPenalties,src/ovl/stats/stats_06.asm
+Stats_2248_04D6,MenuPointLeaders,Stats_2248_04D6,new,high,leaders 0,src/ovl/stats/stats_06.asm
+Stats_2248_04F8,MenuGoalLeaders,Stats_2248_04F8,new,high,leaders 1,src/ovl/stats/stats_06.asm
+Stats_2248_051A,MenuAssistLeaders,Stats_2248_051A,new,high,leaders 2,src/ovl/stats/stats_06.asm
+Stats_2248_053C,MenuPPGoalLeaders,Stats_2248_053C,new,high,leaders 3,src/ovl/stats/stats_06.asm
+Stats_2248_055E,MenuSHGoalLeaders,Stats_2248_055E,new,high,leaders 4,src/ovl/stats/stats_06.asm
+Stats_2248_0580,MenuPlusMinusLeaders,Stats_2248_0580,new,high,leaders 5,src/ovl/stats/stats_06.asm
+Stats_2248_05A2,MenuPIMLeaders,Stats_2248_05A2,new,high,leaders 6,src/ovl/stats/stats_06.asm
+Stats_2248_05C4,MenuShootPctLeaders,Stats_2248_05C4,new,high,leaders 7,src/ovl/stats/stats_06.asm
+Stats_2248_05E6,MenuGAALeaders,Stats_2248_05E6,new,high,leaders 8,src/ovl/stats/stats_06.asm
+Stats_2248_0608,MenuWinsLeaders,Stats_2248_0608,new,high,leaders 9,src/ovl/stats/stats_06.asm
+Stats_2248_062A,MenuSavePctLeaders,Stats_2248_062A,new,high,leaders 10,src/ovl/stats/stats_06.asm
+Stats_2248_064C,StandingsActRoster2,Stats_2248_064C,new,high,roster action from the standings cursor,src/ovl/stats/stats_06.asm
+Stats_2248_0656,StandingsActPlayer,Stats_2248_0656,new,high,"player card action: goalie card for a 'G', else skater card",src/ovl/stats/stats_06.asm
+Stats_2248_066C,FreeStandingsGfx,Stats_2248_066C,new,high,frees the four standings shape records,src/ovl/stats/stats_06.asm
+Stats_22B3_0000,EasnTeamStatsScreen,Stats_22B3_0000,95 PC,high,team stats from the EASN desk,src/ovl/stats/stats_07.asm
+Stats_22B3_01C8,EasnSkaterStatsScreen,Stats_22B3_01C8,95 PC,high,skater leaders from the EASN desk,src/ovl/stats/stats_07.asm
+Stats_22B3_0390,EasnGoalieStatsScreen,Stats_22B3_0390,95 PC,high,goalie leaders from the EASN desk,src/ovl/stats/stats_07.asm
+Stats_22B3_0558,EasnStandingsScreen,Stats_22B3_0558,95 PC,high,standings from the EASN desk,src/ovl/stats/stats_07.asm
+Stats_22B3_062E,EasnStandingsMenu,Stats_22B3_062E,95 PC,high,standings menu from the EASN desk,src/ovl/stats/stats_07.asm
+Stats_2351_000A,CalTeamStatsScreen,Stats_2351_000A,95 PC,high,team stats from the calendar,src/ovl/stats/stats_08.asm
+Stats_2351_014C,CalSkaterStatsScreen,Stats_2351_014C,95 PC,high,skater leaders from the calendar,src/ovl/stats/stats_08.asm
+Stats_2351_028E,CalGoalieStatsScreen,Stats_2351_028E,95 PC,high,goalie leaders from the calendar,src/ovl/stats/stats_08.asm
+Stats_2351_03D0,CalStandingsScreen,Stats_2351_03D0,95 PC,high,standings from the calendar,src/ovl/stats/stats_08.asm
+Stats_2351_04A6,CalStandingsMenu,Stats_2351_04A6,95 PC,high,standings menu from the calendar,src/ovl/stats/stats_08.asm
+Stats_23D5_0002,SkaterStatsCard,Stats_23D5_0002,95 PC,high,"skater card: portrait, season and career stats, ratings",src/ovl/stats/stats_09.asm
+Stats_2446_0006,RosterRowAt,Stats_2446_0006,new,high,"roster row under a screen y, 1 when there is one",src/ovl/stats/stats_10.asm
+Stats_2446_006A,RosterScreen,Stats_2446_006A,new,high,'%s Roster:' skaters and goalies,src/ovl/stats/stats_10.asm
+Stats_24E6_0000,CmpConfStandings,Stats_24E6_0000,95 PC,high,standings comparator within a conference,src/ovl/stats/stats_11.asm
+Stats_24E6_00C6,TeamFromMouse,Stats_24E6_00C6,95 PC,high,standings team under the pointer,src/ovl/stats/stats_11.asm
+Stats_24E6_01BE,StandingsScreen,Stats_24E6_01BE,95 PC,high,Campbell and Wales conference standings,src/ovl/stats/stats_11.asm
+Stats_24E6_069E,HiliteStandingsTeam,Stats_24E6_069E,new,high,XOR bar on a standings row,src/ovl/stats/stats_11.asm
+Stats_24E6_07A0,DrawStandingsPage,Stats_24E6_07A0,new,high,redraws the standings page,src/ovl/stats/stats_11.asm
+Stats_24E6_0A52,MoveStandingsHilite,Stats_24E6_0A52,new,medium,restores the old row and highlights the new one,src/ovl/stats/stats_11.asm
+Stats_24E6_0ADE,ShowStandingsTable,Stats_24E6_0ADE,new,medium,season or playoff standings for the chosen db,src/ovl/stats/stats_11.asm
+Stats_24E6_0B08,ShowSeasonStandings,Stats_24E6_0B08,new,medium,standings from the league schedule (LSSCHED.DB),src/ovl/stats/stats_11.asm
+Stats_24E6_0D3E,PlayoffSeriesWinner,Stats_24E6_0D3E,new,medium,winner of one playoff series from its game list,src/ovl/stats/stats_11.asm
+Stats_24E6_0E3E,LoadLeagueSchedule,Stats_24E6_0E3E,new,high,loads LSSCHED.DB,src/ovl/stats/stats_11.asm
+Stats_24E6_0EC2,ShowPlayoffStandings,Stats_24E6_0EC2,new,medium,playoff standings from the series results,src/ovl/stats/stats_11.asm
+Stats_25E5_0002,CmpTeamScoring,Stats_25E5_0002,95 PC,high,team comparator: goals for (+4),src/ovl/stats/stats_12.asm
+Stats_25E5_011A,CmpTeamDefense,Stats_25E5_011A,95 PC,high,team comparator: goals against (+6),src/ovl/stats/stats_12.asm
+Stats_25E5_0232,CmpTeamPP,Stats_25E5_0232,95 PC,high,team comparator: power play (+8/+0Ah),src/ovl/stats/stats_12.asm
+Stats_25E5_03B6,CmpTeamPK,Stats_25E5_03B6,95 PC,high,team comparator: penalty killing (+0Ch/+0Eh),src/ovl/stats/stats_12.asm
+Stats_25E5_052E,CmpTeamPenalties,Stats_25E5_052E,95 PC,high,team comparator: penalty minutes (+10h),src/ovl/stats/stats_12.asm
+Stats_25E5_064A,TeamStatsScreen,Stats_25E5_064A,95 PC,high,team stats table ('Stats Unavailable'),src/ovl/stats/stats_12.asm
+Stats_26BE_000A,CmpGoals,Stats_26BE_000A,95 PC,high,leaders comparator: goals (+2),src/ovl/stats/stats_13.asm
+Stats_26BE_00EC,CmpAssists,Stats_26BE_00EC,95 PC,high,leaders comparator: assists (+4),src/ovl/stats/stats_13.asm
+Stats_26BE_01C6,CmpPPGoals,Stats_26BE_01C6,95 PC,high,leaders comparator: power play goals (+8),src/ovl/stats/stats_13.asm
+Stats_26BE_02C0,CmpSHGoals,Stats_26BE_02C0,95 PC,high,leaders comparator: short-handed goals (+0Ah),src/ovl/stats/stats_13.asm
+Stats_26BE_03BA,CmpPlusMinus,Stats_26BE_03BA,95 PC,high,leaders comparator: plus/minus (+10h),src/ovl/stats/stats_13.asm
+Stats_26BE_049E,CmpPIM,Stats_26BE_049E,95 PC,high,leaders comparator: penalty minutes (+0Ch),src/ovl/stats/stats_13.asm
+Stats_26BE_0598,CmpShootPct,Stats_26BE_0598,95 PC,high,leaders comparator: precomputed shooting percentage,src/ovl/stats/stats_13.asm
+Stats_26BE_067A,CmpGoalieWins,Stats_26BE_067A,95 PC,high,leaders comparator: goalie wins (+2),src/ovl/stats/stats_13.asm
+Stats_26BE_07C2,CmpSavePct,Stats_26BE_07C2,95 PC,high,leaders comparator: save percentage (+14h),src/ovl/stats/stats_13.asm
+Stats_26BE_08DA,LeadersScreen,Stats_26BE_08DA,95 PC,high,skater and goalie leaders table,src/ovl/stats/stats_13.asm
+CallArg,_qsort,CallArg,MSC,high,"qsort(array, count, size, far compare); the stats comparators go through it",src/lib/msc_runtime.asm

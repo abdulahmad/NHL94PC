@@ -573,7 +573,7 @@ Menus_23A3_0516:
         push 0x4
         push word [g_C054]
         push word 0xc05c
-        call 0x0000:CallArg
+        call 0x0000:_qsort
         add sp, 0xa
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [g_C058], ax
@@ -636,7 +636,7 @@ Menus_23A3_0516:
         push 0x4
         push word [g_C164]
         push word 0xc16c
-        call 0x0000:CallArg
+        call 0x0000:_qsort
         add sp, 0xa
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [g_C168], ax
@@ -700,7 +700,7 @@ Menus_23A3_0516:
         push 0x4
         push word [g_C0DC]
         push word 0xc0e4
-        call 0x0000:CallArg
+        call 0x0000:_qsort
         add sp, 0xa
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [g_C0E0], ax

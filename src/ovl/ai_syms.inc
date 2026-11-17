@@ -8,7 +8,6 @@ AnnouncePlayerFrom		equ	0x3C0
 AnnouncerBusy		equ	0x2C0
 AnnouncerFlags		equ	0x1B7
 BuildPathFar		equ	0x3E
-CallArg		equ	0xEAA
 CallCountStep		equ	0x1A2C
 ClipBottomY		equ	0x74F4
 ClipLeftX		equ	0x74FC
@@ -119,6 +118,7 @@ __aFldiv		equ	0x118C
 __aFlmul		equ	0x1226
 __chkstk		equ	0x74A
 _lseek		equ	0x7CC
+_qsort		equ	0xEAA
 _sprintf		equ	0xD74
 assinsert		equ	0xA74
 assreplace		equ	0xA5C

@@ -6,23 +6,23 @@
         leave
         retf
 
-Stats_2248_000C:
+StandingsActExit:
         mov ax, 0x1
         mov [g_21C0], ax
         retf
         db 0x90
 
-Stats_2248_0014:
+StandingsActStandings:
         mov word [g_21C0], 0x2
         mov ax, 0x1
         retf
 
-Stats_2248_001E:
+StandingsActRoster:
         mov word [g_21C0], 0x3
         mov ax, 0x1
         retf
 
-Stats_2248_0028:
+StatsSelNhlSeason:
         cmp word [g_2010], 0x0
         jnz short .1
         cmp word [g_200E], 0x0
@@ -84,7 +84,7 @@ Stats_2248_0028:
         retf
         db 0x90
 
-Stats_2248_00EC:
+StatsSelNhlPlayoffs:
         cmp word [g_2010], 0x0
         jnz short .1
         cmp word [g_200E], 0x1
@@ -146,7 +146,7 @@ Stats_2248_00EC:
         retf
         db 0x90
 
-Stats_2248_01B0:
+StatsSelLeague:
         cmp word [g_2010], 0x1
         jnz short .1
         cmp word [g_200E], 0x0
@@ -208,7 +208,7 @@ Stats_2248_01B0:
         retf
         db 0x90
 
-Stats_2248_0274:
+StatsSelLeaguePlayoffs:
         cmp word [g_2010], 0x1
         jnz short .1
         cmp word [g_200E], 0x1
@@ -278,7 +278,7 @@ Stats_2248_0274:
         retf
         db 0x90
 
-Stats_2248_0350:
+StatsSelPlayoffMode:
         cmp word [g_2010], 0x1
         jnz short .1
         cmp word [g_200E], 0x1
@@ -348,12 +348,12 @@ Stats_2248_0350:
         retf
         db 0x90
 
-Stats_2248_042C:
+MenuTeamScoring:
         mov word [g_21B8], 0x0
         cmp word [g_C052], 0x0
         jz short .1
         push 0x0
-        call 0x25E5:Stats_25E5_064A
+        call 0x25E5:TeamStatsScreen
         add sp, 0x2
         retf
 .1:
@@ -362,12 +362,12 @@ Stats_2248_042C:
         add sp, 0x2
         retf
 
-Stats_2248_044E:
+MenuTeamDefense:
         mov word [g_21B8], 0x1
         cmp word [g_C052], 0x0
         jz short .1
         push 0x1
-        call 0x25E5:Stats_25E5_064A
+        call 0x25E5:TeamStatsScreen
         add sp, 0x2
         retf
 .1:
@@ -376,12 +376,12 @@ Stats_2248_044E:
         add sp, 0x2
         retf
 
-Stats_2248_0470:
+MenuTeamPP:
         mov word [g_21B8], 0x2
         cmp word [g_C052], 0x0
         jz short .1
         push 0x2
-        call 0x25E5:Stats_25E5_064A
+        call 0x25E5:TeamStatsScreen
         add sp, 0x2
         retf
 .1:
@@ -390,12 +390,12 @@ Stats_2248_0470:
         add sp, 0x2
         retf
 
-Stats_2248_0492:
+MenuTeamPK:
         mov word [g_21B8], 0x3
         cmp word [g_C052], 0x0
         jz short .1
         push 0x3
-        call 0x25E5:Stats_25E5_064A
+        call 0x25E5:TeamStatsScreen
         add sp, 0x2
         retf
 .1:
@@ -404,12 +404,12 @@ Stats_2248_0492:
         add sp, 0x2
         retf
 
-Stats_2248_04B4:
+MenuTeamPenalties:
         mov word [g_21B8], 0x4
         cmp word [g_C052], 0x0
         jz short .1
         push 0x4
-        call 0x25E5:Stats_25E5_064A
+        call 0x25E5:TeamStatsScreen
         add sp, 0x2
         retf
 .1:
@@ -418,12 +418,12 @@ Stats_2248_04B4:
         add sp, 0x2
         retf
 
-Stats_2248_04D6:
+MenuPointLeaders:
         mov word [g_21B8], 0x0
         cmp word [g_C052], 0x0
         jz short .1
         push 0x0
-        call 0x26BE:Stats_26BE_08DA
+        call 0x26BE:LeadersScreen
         add sp, 0x2
         retf
 .1:
@@ -432,12 +432,12 @@ Stats_2248_04D6:
         add sp, 0x2
         retf
 
-Stats_2248_04F8:
+MenuGoalLeaders:
         mov word [g_21B8], 0x1
         cmp word [g_C052], 0x0
         jz short .1
         push 0x1
-        call 0x26BE:Stats_26BE_08DA
+        call 0x26BE:LeadersScreen
         add sp, 0x2
         retf
 .1:
@@ -446,12 +446,12 @@ Stats_2248_04F8:
         add sp, 0x2
         retf
 
-Stats_2248_051A:
+MenuAssistLeaders:
         mov word [g_21B8], 0x2
         cmp word [g_C052], 0x0
         jz short .1
         push 0x2
-        call 0x26BE:Stats_26BE_08DA
+        call 0x26BE:LeadersScreen
         add sp, 0x2
         retf
 .1:
@@ -460,12 +460,12 @@ Stats_2248_051A:
         add sp, 0x2
         retf
 
-Stats_2248_053C:
+MenuPPGoalLeaders:
         mov word [g_21B8], 0x3
         cmp word [g_C052], 0x0
         jz short .1
         push 0x3
-        call 0x26BE:Stats_26BE_08DA
+        call 0x26BE:LeadersScreen
         add sp, 0x2
         retf
 .1:
@@ -474,12 +474,12 @@ Stats_2248_053C:
         add sp, 0x2
         retf
 
-Stats_2248_055E:
+MenuSHGoalLeaders:
         mov word [g_21B8], 0x4
         cmp word [g_C052], 0x0
         jz short .1
         push 0x4
-        call 0x26BE:Stats_26BE_08DA
+        call 0x26BE:LeadersScreen
         add sp, 0x2
         retf
 .1:
@@ -488,12 +488,12 @@ Stats_2248_055E:
         add sp, 0x2
         retf
 
-Stats_2248_0580:
+MenuPlusMinusLeaders:
         mov word [g_21B8], 0x5
         cmp word [g_C052], 0x0
         jz short .1
         push 0x5
-        call 0x26BE:Stats_26BE_08DA
+        call 0x26BE:LeadersScreen
         add sp, 0x2
         retf
 .1:
@@ -502,12 +502,12 @@ Stats_2248_0580:
         add sp, 0x2
         retf
 
-Stats_2248_05A2:
+MenuPIMLeaders:
         mov word [g_21B8], 0x6
         cmp word [g_C052], 0x0
         jz short .1
         push 0x6
-        call 0x26BE:Stats_26BE_08DA
+        call 0x26BE:LeadersScreen
         add sp, 0x2
         retf
 .1:
@@ -516,12 +516,12 @@ Stats_2248_05A2:
         add sp, 0x2
         retf
 
-Stats_2248_05C4:
+MenuShootPctLeaders:
         mov word [g_21B8], 0x7
         cmp word [g_C052], 0x0
         jz short .1
         push 0x7
-        call 0x26BE:Stats_26BE_08DA
+        call 0x26BE:LeadersScreen
         add sp, 0x2
         retf
 .1:
@@ -530,12 +530,12 @@ Stats_2248_05C4:
         add sp, 0x2
         retf
 
-Stats_2248_05E6:
+MenuGAALeaders:
         mov word [g_21B8], 0x8
         cmp word [g_C052], 0x0
         jz short .1
         push 0x8
-        call 0x26BE:Stats_26BE_08DA
+        call 0x26BE:LeadersScreen
         add sp, 0x2
         retf
 .1:
@@ -544,12 +544,12 @@ Stats_2248_05E6:
         add sp, 0x2
         retf
 
-Stats_2248_0608:
+MenuWinsLeaders:
         mov word [g_21B8], 0x9
         cmp word [g_C052], 0x0
         jz short .1
         push 0x9
-        call 0x26BE:Stats_26BE_08DA
+        call 0x26BE:LeadersScreen
         add sp, 0x2
         retf
 .1:
@@ -558,12 +558,12 @@ Stats_2248_0608:
         add sp, 0x2
         retf
 
-Stats_2248_062A:
+MenuSavePctLeaders:
         mov word [g_21B8], 0xa
         cmp word [g_C052], 0x0
         jz short .1
         push 0xa
-        call 0x26BE:Stats_26BE_08DA
+        call 0x26BE:LeadersScreen
         add sp, 0x2
         retf
 .1:
@@ -572,12 +572,12 @@ Stats_2248_062A:
         add sp, 0x2
         retf
 
-Stats_2248_064C:
+StandingsActRoster2:
         mov word [g_21C0], 0x3
         mov ax, 0x1
         retf
 
-Stats_2248_0656:
+StandingsActPlayer:
         cmp byte [g_CF1C], 0x47
         jnz short .1
         mov ax, 0x4
@@ -589,7 +589,7 @@ Stats_2248_0656:
         mov ax, 0x1
         retf
 
-Stats_2248_066C:
+FreeStandingsGfx:
         mov ax, [g_21B6]
         or ax, [g_21B4]
         jz short .1

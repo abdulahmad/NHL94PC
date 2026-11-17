@@ -3,7 +3,6 @@ AllocRecData		equ	0x30
 AnnouncerFlags		equ	0x1B7
 AskYesNo		equ	0x0
 BuildPathFar		equ	0x3E
-CallArg		equ	0xEAA
 CharTypes		equ	0x858D
 ClearClipRect		equ	0xB4
 CloseHandlePtr		equ	0x41E
@@ -166,6 +165,7 @@ _fstrcpy		equ	0x13DA
 _fstrcspn		equ	0x149E
 _fstrlen		equ	0x1398
 _mkdir		equ	0x103A
+_qsort		equ	0xEAA
 _rand		equ	0x1012
 _sprintf		equ	0xD74
 f_3415_00C4		equ	0xC4

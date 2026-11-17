@@ -2244,11 +2244,11 @@ atexit:
         retf
 
 ;-----------------------------------------------------------------------------
-; CallArg                                                       0000:0EAA  MSC
+; _qsort                                                       0000:0EAA  MSC
 ; MSC qsort (array, count, element size, far compare routine): returns at once when the array is already in
 ; order, otherwise sorts it in place with a quicksort whose partition stack is checked against _stackavail.
 ;-----------------------------------------------------------------------------
-CallArg:
+_qsort:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push si

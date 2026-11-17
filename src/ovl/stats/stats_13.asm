@@ -5,7 +5,7 @@
         leave
         retf
 
-Stats_26BE_000A:
+CmpGoals:
         enter 0x8, 0x0
         push di
         push si
@@ -91,7 +91,7 @@ Stats_26BE_000A:
         retf
         db 0x90
 
-Stats_26BE_00EC:
+CmpAssists:
         enter 0x8, 0x0
         push di
         push si
@@ -173,7 +173,7 @@ Stats_26BE_00EC:
         leave
         retf
 
-Stats_26BE_01C6:
+CmpPPGoals:
         enter 0x8, 0x0
         push di
         push si
@@ -266,7 +266,7 @@ Stats_26BE_01C6:
         leave
         retf
 
-Stats_26BE_02C0:
+CmpSHGoals:
         enter 0x8, 0x0
         push di
         push si
@@ -359,7 +359,7 @@ Stats_26BE_02C0:
         leave
         retf
 
-Stats_26BE_03BA:
+CmpPlusMinus:
         enter 0x8, 0x0
         push di
         push si
@@ -445,7 +445,7 @@ Stats_26BE_03BA:
         retf
         db 0x90
 
-Stats_26BE_049E:
+CmpPIM:
         enter 0x8, 0x0
         push di
         push si
@@ -538,7 +538,7 @@ Stats_26BE_049E:
         leave
         retf
 
-Stats_26BE_0598:
+CmpShootPct:
         enter 0xe, 0x0
         push di
         push si
@@ -638,7 +638,7 @@ Stats_26BE_0598:
         retf
         db 0x90
 
-Stats_26BE_067A:
+CmpGoalieWins:
         enter 0x8, 0x0
         push di
         push si
@@ -759,7 +759,7 @@ Stats_26BE_067A:
         retf
         db 0x90
 
-Stats_26BE_07C2:
+CmpSavePct:
         enter 0x8, 0x0
         push di
         push si
@@ -863,7 +863,7 @@ Stats_26BE_07C2:
         leave
         retf
 
-Stats_26BE_08DA:
+LeadersScreen:
         enter 0x21c, 0x0
         push di
         push si
@@ -1337,7 +1337,7 @@ Stats_26BE_08DA:
         push word [bp - 0x1e4]
         lea ax, [bp - 0x1e2]
         push ax
-        call 0x0000:CallArg
+        call 0x0000:_qsort
         add sp, 0xa
 .48:
         push 0x34
@@ -1428,7 +1428,7 @@ Stats_26BE_08DA:
         lea ax, [bp - 0x172]
         push ss
         push ax
-        call 0x2095:Stats_2095_0438
+        call 0x2095:GetSeasonTitle
         add sp, 0x8
         lea ax, [bp - 0x172]
         push ss
@@ -1546,15 +1546,15 @@ Stats_26BE_08DA:
 .53:
         cmp word [bp + 0x6], 0x8
         jl short .54
-        jmp near Stats_26BE_08DAJumpTable.7
+        jmp near LeadersScreenJumpTable.7
 .54:
         push word [g_C046]
         push word [g_C044]
-        jmp near Stats_26BE_08DAJumpTable.8
+        jmp near LeadersScreenJumpTable.8
         db 0x90
 .55:
         mov word [bp - 0x17c], 0x0
-        jmp near Stats_26BE_08DAJumpTable.2
+        jmp near LeadersScreenJumpTable.2
         db 0x90
 .56:
         imul bx, [bp - 0x1b6], 0x30
@@ -1671,7 +1671,7 @@ Stats_26BE_08DA:
 .68:
         call 0x0D39:DrawShadowTextF2
         add sp, 0xa
-        jmp near Stats_26BE_08DAJumpTable.1
+        jmp near LeadersScreenJumpTable.1
 .69:
         les bx, [bp - 0x1ba]
         push word [es:bx + 0xe]
@@ -1713,7 +1713,7 @@ Stats_26BE_08DA:
         add sp, 0x8
         cmp word [g_200E], 0x0
         jz short .71
-        jmp near Stats_26BE_08DAJumpTable.1
+        jmp near LeadersScreenJumpTable.1
 .71:
         les bx, [bp - 0x1ba]
         push word [es:bx + 0x6]
@@ -1724,7 +1724,7 @@ Stats_26BE_08DA:
         push word 0x10e
         call 0x0D39:DrawShadowTextF
         add sp, 0x8
-        jmp near Stats_26BE_08DAJumpTable.1
+        jmp near LeadersScreenJumpTable.1
         db 0x90
 .74:
         les bx, [bp - 0x1ba]
@@ -1769,23 +1769,23 @@ Stats_26BE_08DA:
         jmp near .68
 .76:
         cmp ax, strict word 0xa
-        ja short Stats_26BE_08DAJumpTable.1
+        ja short LeadersScreenJumpTable.1
         shl ax, 1
         xchg ax, bx
         jmp [cs:bx + 0x12ca]
         db 0x90
-Stats_26BE_08DAJumpTable:
+LeadersScreenJumpTable:
         dw .1
         dw .1
         dw .1
-        dw Stats_26BE_08DA.62
-        dw Stats_26BE_08DA.63
-        dw Stats_26BE_08DA.66
-        dw Stats_26BE_08DA.65
-        dw Stats_26BE_08DA.67
-        dw Stats_26BE_08DA.69
-        dw Stats_26BE_08DA.70
-        dw Stats_26BE_08DA.74
+        dw LeadersScreen.62
+        dw LeadersScreen.63
+        dw LeadersScreen.66
+        dw LeadersScreen.65
+        dw LeadersScreen.67
+        dw LeadersScreen.69
+        dw LeadersScreen.70
+        dw LeadersScreen.74
 .1:
         mov ax, [bp - 0x6c]
         add [bp - 0x17a], ax
@@ -1794,7 +1794,7 @@ Stats_26BE_08DAJumpTable:
         mov ax, [bp - 0x1e4]
         cmp [bp - 0x17c], ax
         jl short .3
-        jmp near Stats_26BE_08DA.52
+        jmp near LeadersScreen.52
 .3:
         mov si, [bp - 0x17c]
         shl si, 1
@@ -1898,16 +1898,16 @@ Stats_26BE_08DAJumpTable:
         add sp, 0x8
         cmp word [bp + 0x6], 0x8
         jl short .5
-        jmp near Stats_26BE_08DA.58
+        jmp near LeadersScreen.58
 .5:
         cmp word [g_200E], 0x0
         jz short .6
-        jmp near Stats_26BE_08DA.56
+        jmp near LeadersScreen.56
 .6:
         imul bx, [bp - 0x1b6], 0x30
         add bx, [g_C044]
         mov es, [g_C046]
-        jmp near Stats_26BE_08DA.57
+        jmp near LeadersScreen.57
         db 0x90
 .7:
         push word [g_C042]

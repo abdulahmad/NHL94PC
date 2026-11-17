@@ -2,7 +2,7 @@
         leave
         retf
 
-Stats_1EAE_0002:
+StrNotPrefixFar:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -43,7 +43,7 @@ Stats_1EAE_0002:
         leave
         retf
 
-Stats_1EAE_0044:
+StatsMenuLoop:
         enter 0x66, 0x0
         push di
         push si
@@ -742,7 +742,7 @@ Stats_1EAE_0044:
         leave
         retf
 
-Stats_1EAE_07B6:
+StandingsMenuLoop:
         enter 0x6c, 0x0
         push di
         push si
@@ -906,7 +906,7 @@ Stats_1EAE_07B6:
         push 0x0
         lea ax, [bp - 0x3a]
         push ax
-        call 0x24E6:Stats_24E6_069E
+        call 0x24E6:HiliteStandingsTeam
         add sp, 0x6
 .7:
         push word [bp - 0x4e]
@@ -967,7 +967,7 @@ Stats_1EAE_07B6:
         lea ax, [bp - 0x3a]
         push ax
         push word [bp - 0x18]
-        call 0x24E6:Stats_24E6_0A52
+        call 0x24E6:MoveStandingsHilite
         add sp, 0xc
         mov [bp - 0x56], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -1013,7 +1013,7 @@ Stats_1EAE_07B6:
         jnl short .14
         mov word [bp - 0x2e], 0x0
 .17:
-        call 0x24E6:Stats_24E6_07A0
+        call 0x24E6:DrawStandingsPage
         mov bx, [bp - 0x3a]
         shl bx, 1
         cmp word [bx + g_C204], 0x18
@@ -1022,7 +1022,7 @@ Stats_1EAE_07B6:
         push 0x0
         lea ax, [bp - 0x3a]
         push ax
-        call 0x24E6:Stats_24E6_069E
+        call 0x24E6:HiliteStandingsTeam
         add sp, 0x6
 .18:
         push word [bp - 0x4e]
@@ -1277,7 +1277,7 @@ Stats_1EAE_07B6:
         push ax
         lea ax, [bp - 0x3a]
         push ax
-        call 0x24E6:Stats_24E6_069E
+        call 0x24E6:HiliteStandingsTeam
         add sp, 0x6
 .37:
         push word [bp - 0x4e]
@@ -1558,7 +1558,7 @@ Stats_1EAE_07B6:
         push ax
         push word [bp - 0x1a]
         push word [bp - 0x18]
-        call 0x24E6:Stats_24E6_00C6
+        call 0x24E6:TeamFromMouse
         add sp, 0x6
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .49
@@ -1667,7 +1667,7 @@ Stats_1EAE_07B6:
         push ax
         lea ax, [bp - 0x3a]
         push ax
-        call 0x24E6:Stats_24E6_069E
+        call 0x24E6:HiliteStandingsTeam
         add sp, 0x4
         jmp near .21
 .59:
@@ -1719,7 +1719,7 @@ Stats_1EAE_07B6:
         mov ax, [bp - 0x3a]
 .64:
         mov [g_21BA], ax
-        call 0x2248:Stats_2248_064C
+        call 0x2248:StandingsActRoster2
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [bp - 0x3e], ax
         mov [bp - 0x40], ax
@@ -1810,7 +1810,7 @@ Stats_1EAE_07B6:
         mov [bp - 0x36], ax
         jmp near .21
 
-Stats_1EAE_12F6:
+RosterMenuLoop:
         enter 0x6a, 0x0
         push di
         push si
@@ -1935,7 +1935,7 @@ Stats_1EAE_12F6:
         push ds
         push strict word g_CF1D
         push cs
-        call Stats_1EAE_0002
+        call StrNotPrefixFar
         add sp, 0x8
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .2
@@ -1948,7 +1948,7 @@ Stats_1EAE_12F6:
         push ds
         push strict word g_CF2D
         push cs
-        call Stats_1EAE_0002
+        call StrNotPrefixFar
         add sp, 0x8
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .2
@@ -1981,7 +1981,7 @@ Stats_1EAE_12F6:
         push ds
         push strict word g_CF1D
         push cs
-        call Stats_1EAE_0002
+        call StrNotPrefixFar
         add sp, 0x8
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .6
@@ -1994,7 +1994,7 @@ Stats_1EAE_12F6:
         push ds
         push strict word g_CF2D
         push cs
-        call Stats_1EAE_0002
+        call StrNotPrefixFar
         add sp, 0x8
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .6
@@ -2287,7 +2287,7 @@ Stats_1EAE_12F6:
         push ds
         push strict word g_CF1D
         push cs
-        call Stats_1EAE_0002
+        call StrNotPrefixFar
         add sp, 0x8
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .26
@@ -2300,7 +2300,7 @@ Stats_1EAE_12F6:
         push ds
         push strict word g_CF2D
         push cs
-        call Stats_1EAE_0002
+        call StrNotPrefixFar
         add sp, 0x8
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .26
@@ -2333,7 +2333,7 @@ Stats_1EAE_12F6:
         push ds
         push strict word g_CF1D
         push cs
-        call Stats_1EAE_0002
+        call StrNotPrefixFar
         add sp, 0x8
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .30
@@ -2346,7 +2346,7 @@ Stats_1EAE_12F6:
         push ds
         push strict word g_CF2D
         push cs
-        call Stats_1EAE_0002
+        call StrNotPrefixFar
         add sp, 0x8
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .30
@@ -2656,7 +2656,7 @@ Stats_1EAE_12F6:
         push ax
         push word [bp - 0x1a]
         push word [bp - 0x18]
-        call 0x2446:Stats_2446_0006
+        call 0x2446:RosterRowAt
         add sp, 0x6
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .47
@@ -2816,7 +2816,7 @@ Stats_1EAE_12F6:
         mov cx, 0x1a
         rep movsw
         pop ds
-        call 0x2248:Stats_2248_0656
+        call 0x2248:StandingsActPlayer
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [bp - 0x3a], ax
         mov [bp - 0x3c], ax

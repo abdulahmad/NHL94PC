@@ -3197,14 +3197,14 @@ Lp_2A57_1F96:
         push 0x16
         push 0x1c
         push word 0xc2c2
-        call 0x0000:CallArg
+        call 0x0000:_qsort
         add sp, 0xa
         push word 0x2a57
         push strict word Lp_2A57_1F1C
         push 0x16
         push 0x1c
         push word 0xc52a
-        call 0x0000:CallArg
+        call 0x0000:_qsort
         add sp, 0xa
         push word [bp + 0x12]
         push word [bp - 0xc]

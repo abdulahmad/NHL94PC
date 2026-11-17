@@ -7,7 +7,7 @@
         retf
         db 0x90
 
-Stats_215A_000C:
+SaveBkgdPlanes:
         enter 0x2, 0x0
         push si
         push word 0x80
@@ -148,7 +148,7 @@ Stats_215A_000C:
         retf
         db 0x90
 
-Stats_215A_018A:
+RestoreBkgdPlanes:
         enter 0x2, 0x0
         push si
         mov ax, 0x2
@@ -276,7 +276,7 @@ Stats_215A_018A:
         leave
         retf
 
-Stats_215A_02E6:
+GameTeamStatsScreen:
         enter 0x30e, 0x0
         push si
         mov si, [bp + 0x6]
@@ -285,7 +285,7 @@ Stats_215A_02E6:
         mov word [g_21BC], 0x64a
         mov word [g_21BE], 0x25e5
         push cs
-        call Stats_215A_000C
+        call SaveBkgdPlanes
         lea ax, [bp - 0x30e]
         push ss
         push ax
@@ -305,10 +305,10 @@ Stats_215A_02E6:
         add sp, 0x2
         call 0x0FEF:UseOffscreenCanvas
         push 0x1
-        call 0x2095:Stats_2095_0008
+        call 0x2095:InitMenuRemap
         add sp, 0x2
         push si
-        call 0x25E5:Stats_25E5_064A
+        call 0x25E5:TeamStatsScreen
         add sp, 0x2
         push 0x42
         push 0x41
@@ -360,7 +360,7 @@ Stats_215A_02E6:
         push 0x3
         push word 0x3448
         push strict word f_3448_1802
-        call 0x1EAE:Stats_1EAE_0044
+        call 0x1EAE:StatsMenuLoop
         add sp, 0xc
         lea ax, [bp - 0x30e]
         push ss
@@ -377,11 +377,11 @@ Stats_215A_02E6:
         call 0x1B35:OvlThunk23
         add sp, 0x8
         push cs
-        call Stats_215A_018A
+        call RestoreBkgdPlanes
         push word 0xa8
         call 0x0FEF:SetStartPage
         add sp, 0x2
-        call 0x20E4:Stats_20E4_000E
+        call 0x20E4:LoadCrestsPalette
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [g_21BE], ax
         mov [g_21BC], ax
@@ -390,7 +390,7 @@ Stats_215A_02E6:
         leave
         retf
 
-Stats_215A_0428:
+GameSkaterStatsScreen:
         enter 0x30e, 0x0
         push si
         mov si, [bp + 0x6]
@@ -399,7 +399,7 @@ Stats_215A_0428:
         mov word [g_21BC], 0x8da
         mov word [g_21BE], 0x26be
         push cs
-        call Stats_215A_000C
+        call SaveBkgdPlanes
         lea ax, [bp - 0x30e]
         push ss
         push ax
@@ -419,10 +419,10 @@ Stats_215A_0428:
         add sp, 0x2
         call 0x0FEF:UseOffscreenCanvas
         push 0x1
-        call 0x2095:Stats_2095_0008
+        call 0x2095:InitMenuRemap
         add sp, 0x2
         push si
-        call 0x26BE:Stats_26BE_08DA
+        call 0x26BE:LeadersScreen
         add sp, 0x2
         push 0x42
         push 0x41
@@ -474,7 +474,7 @@ Stats_215A_0428:
         push 0x3
         push word 0x3448
         push strict word f_3448_1844
-        call 0x1EAE:Stats_1EAE_0044
+        call 0x1EAE:StatsMenuLoop
         add sp, 0xc
         lea ax, [bp - 0x30e]
         push ss
@@ -491,11 +491,11 @@ Stats_215A_0428:
         call 0x1B35:OvlThunk23
         add sp, 0x8
         push cs
-        call Stats_215A_018A
+        call RestoreBkgdPlanes
         push word 0xa8
         call 0x0FEF:SetStartPage
         add sp, 0x2
-        call 0x20E4:Stats_20E4_000E
+        call 0x20E4:LoadCrestsPalette
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [g_21BE], ax
         mov [g_21BC], ax
@@ -504,7 +504,7 @@ Stats_215A_0428:
         leave
         retf
 
-Stats_215A_056A:
+GameGoalieStatsScreen:
         enter 0x30e, 0x0
         push si
         mov si, [bp + 0x6]
@@ -513,7 +513,7 @@ Stats_215A_056A:
         mov word [g_21BC], 0x8da
         mov word [g_21BE], 0x26be
         push cs
-        call Stats_215A_000C
+        call SaveBkgdPlanes
         lea ax, [bp - 0x30e]
         push ss
         push ax
@@ -533,10 +533,10 @@ Stats_215A_056A:
         add sp, 0x2
         call 0x0FEF:UseOffscreenCanvas
         push 0x1
-        call 0x2095:Stats_2095_0008
+        call 0x2095:InitMenuRemap
         add sp, 0x2
         push si
-        call 0x26BE:Stats_26BE_08DA
+        call 0x26BE:LeadersScreen
         add sp, 0x2
         push 0x42
         push 0x41
@@ -588,7 +588,7 @@ Stats_215A_056A:
         push 0x3
         push word 0x3448
         push strict word f_3448_1886
-        call 0x1EAE:Stats_1EAE_0044
+        call 0x1EAE:StatsMenuLoop
         add sp, 0xc
         lea ax, [bp - 0x30e]
         push ss
@@ -605,11 +605,11 @@ Stats_215A_056A:
         call 0x1B35:OvlThunk23
         add sp, 0x8
         push cs
-        call Stats_215A_018A
+        call RestoreBkgdPlanes
         push word 0xa8
         call 0x0FEF:SetStartPage
         add sp, 0x2
-        call 0x20E4:Stats_20E4_000E
+        call 0x20E4:LoadCrestsPalette
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [g_21BE], ax
         mov [g_21BC], ax
@@ -618,7 +618,7 @@ Stats_215A_056A:
         leave
         retf
 
-Stats_215A_06AC:
+GameStandingsScreen:
         enter 0xe, 0x0
         cmp word [g_200E], 0x0
         jnz short .1
@@ -666,7 +666,7 @@ Stats_215A_06AC:
         push word 0xcee8
         push word [g_C04E]
         push word [g_C04C]
-        call 0x24E6:Stats_24E6_0ADE
+        call 0x24E6:ShowStandingsTable
         add sp, 0x6
         push 0x42
         push 0x41
@@ -685,7 +685,7 @@ Stats_215A_06AC:
         jz short .6
         call 0x0FEF:CopyPlane
 .6:
-        call 0x2248:Stats_2248_066C
+        call 0x2248:FreeStandingsGfx
         call 0x0FEF:UseOffscreenCanvas
         push 0x42
         push 0x41
@@ -698,7 +698,7 @@ Stats_215A_06AC:
         push word 0xcee8
         push word [g_C04E]
         push word [g_C04C]
-        call 0x24E6:Stats_24E6_01BE
+        call 0x24E6:StandingsScreen
         add sp, 0x6
         push 0x0
 .7:
@@ -707,7 +707,7 @@ Stats_215A_06AC:
         retf
         db 0x90
 
-Stats_215A_079E:
+GameStandingsMenu:
         enter 0x328, 0x0
         push si
         mov word [g_C052], 0x1
@@ -720,7 +720,7 @@ Stats_215A_079E:
         mov [g_21B8], ax
         mov byte [g_CF1C], 0x0
         push cs
-        call Stats_215A_000C
+        call SaveBkgdPlanes
         lea ax, [bp - 0x320]
         push ss
         push ax
@@ -914,7 +914,7 @@ Stats_215A_079E:
         call 0x0FEF:ClearClipRect
         add sp, 0x2
         push 0x1
-        call 0x2095:Stats_2095_0008
+        call 0x2095:InitMenuRemap
         add sp, 0x2
         push 0x0
         push 0x0
@@ -1003,9 +1003,9 @@ Stats_215A_079E:
         push 0x3
         push word 0x3448
         push strict word f_3448_16CE
-        call 0x1EAE:Stats_1EAE_07B6
+        call 0x1EAE:StandingsMenuLoop
         add sp, 0xc
-        call 0x2248:Stats_2248_066C
+        call 0x2248:FreeStandingsGfx
         call 0x0FEF:UseOffscreenCanvas
         call 0x0FEF:GetPage
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -1062,13 +1062,13 @@ Stats_215A_079E:
         push 0x3
         push word 0x3448
         push strict word f_3448_16CE
-        call 0x1EAE:Stats_1EAE_07B6
+        call 0x1EAE:StandingsMenuLoop
         add sp, 0xc
         cmp word [g_200E], 0x0
         jnz short .9
         jmp near .16
 .9:
-        call 0x2248:Stats_2248_066C
+        call 0x2248:FreeStandingsGfx
         call 0x0FEF:GetPage
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .10
@@ -1085,7 +1085,7 @@ Stats_215A_079E:
 .11:
         mov word [g_C050], 0x0
         push word [g_21B8]
-        mov ax, strict word Stats_2446_006A
+        mov ax, strict word RosterScreen
         mov dx, 0x2446
         mov [g_21BC], ax
         mov [g_21BE], dx
@@ -1110,21 +1110,21 @@ Stats_215A_079E:
         push 0x3
         push word 0x3448
         push strict word f_3448_1794
-        call 0x1EAE:Stats_1EAE_12F6
+        call 0x1EAE:RosterMenuLoop
         jmp short .15
         db 0x90
 .12:
         mov es, [g_8C70]
         mov word [es:0xb050], 0x0
         push word 0xcf1a
-        mov ax, strict word Stats_20F4_0000
+        mov ax, strict word GoalieStatsCard
         mov dx, 0x20f4
         jmp short .14
 .13:
         mov es, [g_8C70]
         mov word [es:0xb050], 0x0
         push word 0xcf1a
-        mov ax, strict word Stats_23D5_0002
+        mov ax, strict word SkaterStatsCard
         mov dx, 0x23d5
 .14:
         mov [g_21BC], ax
@@ -1150,7 +1150,7 @@ Stats_215A_079E:
         push 0x2
         push word 0x3448
         push strict word f_3448_17D6
-        call 0x1EAE:Stats_1EAE_0044
+        call 0x1EAE:StatsMenuLoop
 .15:
         add sp, 0xc
 .16:
@@ -1324,12 +1324,12 @@ Stats_215A_079E:
         call 0x0FEF:CopyPlane
 .19:
         push cs
-        call Stats_215A_018A
+        call RestoreBkgdPlanes
         push word 0xa8
         call 0x0FEF:SetStartPage
         add sp, 0x2
-        call 0x20E4:Stats_20E4_000E
-        call 0x2248:Stats_2248_066C
+        call 0x20E4:LoadCrestsPalette
+        call 0x2248:FreeStandingsGfx
         push word [g_C04E]
         push word [g_C04C]
         call 0x06E1:FindUnlink

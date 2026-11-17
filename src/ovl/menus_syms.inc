@@ -6,7 +6,6 @@ AnnouncePlayoffResult		equ	0x514
 AnnouncerFlags		equ	0x1B7
 AskYesNo		equ	0x0
 BuildPathFar		equ	0x3E
-CallArg		equ	0xEAA
 CallCountStep		equ	0x1A2C
 ClearClipRect		equ	0xB4
 CloseHandlePtr		equ	0x41E
@@ -225,6 +224,7 @@ _fstrcpy		equ	0x13DA
 _lseek		equ	0x7CC
 _mkdir		equ	0x103A
 _open		equ	0x860
+_qsort		equ	0xEAA
 _read		equ	0xA02
 _rmdir		equ	0x104E
 _sprintf		equ	0xD74

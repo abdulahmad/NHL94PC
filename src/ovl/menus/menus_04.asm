@@ -85,7 +85,7 @@ Menus_2047_0008:
         push 0x16
         push 0x1c
         push word 0xbd96
-        call 0x0000:CallArg
+        call 0x0000:_qsort
         add sp, 0xa
         push word [bp - 0x30]
         push word [bp - 0x32]

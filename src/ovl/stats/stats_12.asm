@@ -2,7 +2,7 @@
         retf
         db 0x90
 
-Stats_25E5_0002:
+CmpTeamScoring:
         enter 0xe, 0x0
         push di
         push si
@@ -111,7 +111,7 @@ Stats_25E5_0002:
         retf
         db 0x90
 
-Stats_25E5_011A:
+CmpTeamDefense:
         enter 0xe, 0x0
         push di
         push si
@@ -221,7 +221,7 @@ Stats_25E5_011A:
         retf
         db 0x90
 
-Stats_25E5_0232:
+CmpTeamPP:
         enter 0x1c, 0x0
         push di
         push si
@@ -390,7 +390,7 @@ Stats_25E5_0232:
         leave
         retf
 
-Stats_25E5_03B6:
+CmpTeamPK:
         enter 0x1c, 0x0
         push di
         push si
@@ -553,7 +553,7 @@ Stats_25E5_03B6:
         leave
         retf
 
-Stats_25E5_052E:
+CmpTeamPenalties:
         enter 0x16, 0x0
         push di
         push si
@@ -676,7 +676,7 @@ Stats_25E5_052E:
         leave
         retf
 
-Stats_25E5_064A:
+TeamStatsScreen:
         enter 0x15e, 0x0
         push di
         push si
@@ -740,7 +740,7 @@ Stats_25E5_064A:
 .3:
         lea ax, [bp - 0x15e]
         push ax
-        call 0x24E6:Stats_24E6_0E3E
+        call 0x24E6:LoadLeagueSchedule
         add sp, 0x2
         mov ax, [bp - 0x15e]
         mov dx, [bp - 0x15c]
@@ -957,7 +957,7 @@ Stats_25E5_064A:
         push word [bp - 0xd0]
         lea ax, [bp - 0x70]
         push ax
-        call 0x0000:CallArg
+        call 0x0000:_qsort
         add sp, 0xa
 .25:
         push word [bp - 0xca]
@@ -1035,7 +1035,7 @@ Stats_25E5_064A:
         lea ax, [bp - 0xc2]
         push ss
         push ax
-        call 0x2095:Stats_2095_0438
+        call 0x2095:GetSeasonTitle
         add sp, 0x8
         lea ax, [bp - 0xc2]
         push ss

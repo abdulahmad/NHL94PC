@@ -8,7 +8,7 @@
         retf
         db 0x90
 
-Stats_20E4_000E:
+LoadCrestsPalette:
         enter 0x312, 0x0
         push di
         push si

@@ -1,7 +1,6 @@
 AllocCanvases		equ	0x3804
 AllocRecData		equ	0x30
 BuildPathFar		equ	0x3E
-CallArg		equ	0xEAA
 ClearClipRect		equ	0xB4
 CloseHandlePtr		equ	0x41E
 CopyPlane		equ	0x10A7
@@ -90,6 +89,7 @@ _fstrcpy		equ	0x13DA
 _fstrlen		equ	0x1398
 _lseek		equ	0x7CC
 _open		equ	0x860
+_qsort		equ	0xEAA
 _read		equ	0xA02
 _sprintf		equ	0xD74
 f_3415_0002		equ	0x2

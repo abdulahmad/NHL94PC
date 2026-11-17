@@ -171,7 +171,7 @@ Menus_1F4F_00D0:
         push si
         lea ax, [bp - 0x94]
         push ax
-        call 0x0000:CallArg
+        call 0x0000:_qsort
         add sp, 0xa
         mov word [bp - 0x12], 0x0
         db 0x0B, 0xF6                           ; insn: or si, si

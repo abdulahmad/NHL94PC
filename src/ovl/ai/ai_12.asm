@@ -1196,7 +1196,7 @@ PickThreeStars:
         push word [bp - 0x70]
         lea ax, [bp - 0x6e]
         push ax
-        call 0x0000:CallArg
+        call 0x0000:_qsort
         add sp, 0xa
         mov word [bp - 0x4], 0x0
         jmp short .21
