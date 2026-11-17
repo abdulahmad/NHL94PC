@@ -17,10 +17,10 @@ UseDbDescriptor:
 .1:
         push word 0x3415                        ; segment of the db files far data
         push strict word exhstate
-        db 0xEB, 0x0E                           ; insn: jmp short UseDbDescriptorTail.1 (next segment)
+        jmp short UseDbDescriptorTail.1 + 0x20  ; to UseDbDescriptorTail.1 in the next segment
 .2:
         push word 0x3415                        ; segment of the db files far data
         push strict word postate
-        db 0xEB, 0x06                           ; insn: jmp short UseDbDescriptorTail.1 (next segment)
+        jmp short UseDbDescriptorTail.1 + 0x20  ; to UseDbDescriptorTail.1 in the next segment
 .3:
         db 0x68, 0x15                           ; insn: push word 3415h (db files): the last byte is in the next segment

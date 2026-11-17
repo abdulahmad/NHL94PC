@@ -2,6 +2,7 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
+WaitButtonTimedTail		equ	0x0
 GetInputEvent		equ	0xE
 ReadCallCount		equ	0x1A0E
 HotKeyFn		equ	0xB08E

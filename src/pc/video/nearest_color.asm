@@ -94,7 +94,7 @@ FindNearestColor:
         mov ax, [bp - 0x2]
         mov [bp - 0x6], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
-        db 0x74, 0x0D                           ; insn: jz 0xe4
+        jz short FindNearestColorTail + 0xE0
 .6:
         inc word [bp - 0x4]
         cmp word [bp - 0x4], 0x100

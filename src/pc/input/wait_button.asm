@@ -66,7 +66,7 @@ WaitButtonTimed:
         mov word [bp - 0xc], 0xffff
 .8:
         cmp word [bp - 0xc], 0x0
-        db 0x75, 0x2E                           ; insn: jnz 0xc0
+        jnz short WaitButtonTimedTail + 0xC0
         mov [bp - 0x6], di
         mov ax, [bp - 0x4]
         mov dx, [bp - 0x2]
@@ -74,7 +74,7 @@ WaitButtonTimed:
         sbb dx, [bp - 0x8]
         cmp dx, [bp + 0x8]
         jl short .10
-        db 0x7F, 0x18                           ; insn: jg 0xc0
+        jg short WaitButtonTimedTail + 0xC0
         cmp ax, [bp + 0x6]
         jc short .10
         db 0x8B, 0xC7                           ; insn: mov ax, di

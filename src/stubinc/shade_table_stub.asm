@@ -3,6 +3,7 @@
 	bits	16
 	org	0x0
 PaletteFlags		equ	0x0
+CopyBytesFar.1		equ	0x17
 PaletteFlags2		equ	0x100
 Mul16k.regs		equ	0x28C6
 PaletteFlagsSeg		equ	0x8D0C

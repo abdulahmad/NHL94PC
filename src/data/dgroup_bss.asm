@@ -6,19 +6,17 @@ MapHi:                                          ; word; used by EmitByte, Expand
         resb 2
 OutPtr:                                         ; word; used by EmitByte, ReadVar, Expand
         resb 2
-UnpackSpare1:                                   ; word before InPtr; not used in the EXE (overlays may use it)
+UnpackSpare1:                                   ; word before InPtr; not used by the EXE or the overlays
         resb 2
 InPtr:                                          ; word; used by EmitByte, ReadVar, Expand
         resb 2
-UnpackSpare2:                                   ; word before MapPair; not used in the EXE (overlays may use
-                                                ; it)
+UnpackSpare2:                                   ; word before MapPair; not used by the EXE or the overlays
         resb 2
 MapPair:                                        ; word; used by EmitByte, Expand
         resb 2
 BitBuf:                                         ; word; used by EmitByte, ReadVar
         resb 2
-UnpackSpare3:                                   ; word before BitCount; not used in the EXE (overlays may use
-                                                ; it)
+UnpackSpare3:                                   ; word before BitCount; not used by the EXE or the overlays
         resb 2
 BitCount:                                       ; word; used by EmitByte, ReadVar
         resb 2
@@ -228,11 +226,9 @@ AwayTeamColours:                                ; away team colour bytes; used b
         resb 8
 gsummarypath:                                   ; path of gsummary.db (GSummaryPath); used by INIT
         resb 32
-HeapSizeLo:                                     ; heap size, low word; not used in the EXE (overlays may use
-                                                ; it)
+HeapSizeLo:                                     ; heap size, low word; used by AI, GAME, INIT, LP, MENUS
         resb 2
-HeapSizeHi:                                     ; heap size, high word; not used in the EXE (overlays may use
-                                                ; it)
+HeapSizeHi:                                     ; heap size, high word; used by AI, GAME, INIT, LP, MENUS
         resb 2
 POTreeBuf:                                      ; far pointer (offset) to the playoff tree buffer; used by
                                                 ; MENUS
@@ -249,41 +245,39 @@ ChainIdx:                                       ; word; used by MakeChain, Alloc
         resb 2
 ChainPtr:                                       ; word; used by MakeChain, DropOldest, FindName ...
         resb 2
-HeapVar0:                                       ; heap variable; not used in the EXE (overlays may use it)
+HeapVar0:                                       ; heap variable; not used by the EXE or the overlays
         resb 2
 HeapList:                                       ; far heap list; used by LargestFreeBlock
         resb 2
-HeapVar1:                                       ; heap variable; not used in the EXE (overlays may use it)
+HeapVar1:                                       ; heap variable; not used by the EXE or the overlays
         resb 2
-HeapVar2:                                       ; heap variable; not used in the EXE (overlays may use it)
+HeapVar2:                                       ; heap variable; not used by the EXE or the overlays
         resb 2
-HeapVar3:                                       ; heap variable; not used in the EXE (overlays may use it)
+HeapVar3:                                       ; heap variable; not used by the EXE or the overlays
         resb 2
-HeapVar4:                                       ; heap variable; not used in the EXE (overlays may use it)
+HeapVar4:                                       ; heap variable; not used by the EXE or the overlays
         resb 2
-HeapVar5:                                       ; heap variable; not used in the EXE (overlays may use it)
+HeapVar5:                                       ; heap variable; not used by the EXE or the overlays
         resb 2
-HeapVar6:                                       ; heap variable; not used in the EXE (overlays may use it)
+HeapVar6:                                       ; heap variable; not used by the EXE or the overlays
         resb 2
-HeapVar7:                                       ; heap variable; not used in the EXE (overlays may use it)
+HeapVar7:                                       ; heap variable; not used by the EXE or the overlays
         resb 2
-MemBlock1Off:                                   ; memory block 1, offset; not used in the EXE (overlays may
-                                                ; use it)
+MemBlock1Off:                                   ; memory block 1, offset; used by LP, MENUS, STATS
         resb 2
-MemBlock1Seg:                                   ; memory block 1, segment; not used in the EXE (overlays may
-                                                ; use it)
+MemBlock1Seg:                                   ; memory block 1, segment; used by LP, MENUS, STATS
         resb 2
-MemBlock2Off:                                   ; memory block 2, offset; not used in the EXE (overlays may
-                                                ; use it)
+MemBlock2Off:                                   ; memory block 2, offset; used by DrawCallBanner,
+                                                ; DrawTextOverlay, FormatPlayerName
         resb 2
-MemBlock2Seg:                                   ; memory block 2, segment; not used in the EXE (overlays may
-                                                ; use it)
+MemBlock2Seg:                                   ; memory block 2, segment; used by DrawCallBanner,
+                                                ; DrawTextOverlay, FormatPlayerName
         resb 2
-MemBlock3Off:                                   ; memory block 3, offset; not used in the EXE (overlays may
-                                                ; use it)
+MemBlock3Off:                                   ; memory block 3, offset; used by DrawCallBanner,
+                                                ; DrawTextOverlay
         resb 2
-MemBlock3Seg:                                   ; memory block 3, segment; not used in the EXE (overlays may
-                                                ; use it)
+MemBlock3Seg:                                   ; memory block 3, segment; used by DrawCallBanner,
+                                                ; DrawTextOverlay
         resb 18
 InputFlags:                                     ; input device flags; used by PollInputEvents
         resb 2

@@ -2,6 +2,7 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
+ReadPackedSizeTail		equ	0x4
 InsertRec		equ	0x2EC
 ResizeRec		equ	0x86A
 FarToLinear		equ	0x92E

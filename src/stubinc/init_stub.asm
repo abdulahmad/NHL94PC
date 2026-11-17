@@ -12,6 +12,7 @@ MouseRangeY		equ	0x8FA
 str_Sav		equ	0x93A
 AllocSlot		equ	0xD8C
 FreeSlot		equ	0xDC0
+QueueClip		equ	0x118E
 HookKbd		equ	0x149E
 MouseMove		equ	0x1B03
 CursorY		equ	0xAFD2

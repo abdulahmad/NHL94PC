@@ -1254,7 +1254,7 @@ _close:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov bx, word [bp+6]
-        db 0x3B, 0x1E, 0x5D, 0x85               ; insn: cmp bx, word [_nfile]
+        cmp bx, word [_nfile]
         jb short .valid
         mov ax, 0x900
         stc
@@ -1277,7 +1277,7 @@ _lseek:
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         sub sp, 4
         mov bx, word [bp+6]
-        db 0x3B, 0x1E, 0x5D, 0x85               ; insn: cmp bx, word [_nfile]
+        cmp bx, word [_nfile]
         jb short .seek
         mov ax, 0x900
         jmp short .1
@@ -1515,7 +1515,7 @@ OpenBody:
         je short .17
         or cl, 0x20
 .17:
-        db 0x3B, 0x1E, 0x5D, 0x85               ; insn: cmp bx, word [_nfile]
+        cmp bx, word [_nfile]
         jb short .18
         mov ah, 0x3e
         int 0x21
@@ -1553,7 +1553,7 @@ _read:
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         sub sp, 2
         mov bx, word [bp+6]
-        db 0x3B, 0x1E, 0x5D, 0x85               ; insn: cmp bx, word [_nfile]
+        cmp bx, word [_nfile]
         jb short .go
         stc
         mov ax, 0x900
@@ -1673,7 +1673,7 @@ _write:
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         sub sp, 8
         mov bx, word [bp+6]
-        db 0x3B, 0x1E, 0x5D, 0x85               ; insn: cmp bx, word [_nfile]
+        cmp bx, word [_nfile]
         jb short .go
         mov ax, 0x900
         stc
@@ -2015,9 +2015,9 @@ WriteStderr:
         db 0x9A, 0xEC, 0x0A, 0x00, 0x00         ; insn: call 0:_write
         add sp, 6
 .1:
-        db 0x83, 0x3E, 0x50, 0x85, 0x00         ; insn: cmp word [errno], 0
+        cmp word [errno], 0
         jl short .2
-        db 0xA1, 0x50, 0x85                     ; insn: mov ax, word [errno]
+        mov ax, word [errno]
         cmp word [SysNerr], ax
         jg short .3
 .2:
@@ -2025,7 +2025,7 @@ WriteStderr:
         jmp short .4
         db 144
 .3:
-        db 0xA1, 0x50, 0x85                     ; insn: mov ax, word [errno]
+        mov ax, word [errno]
 .4:
         mov word [bp-2], ax
         mov bx, word [bp-2]
@@ -2712,7 +2712,7 @@ _dos_getdiskfree:
         int 0x21
         db 0x3D, 0xFF, 0xFF                     ; insn: cmp ax, 0xffff
         jne short .fill
-        db 0xC7, 0x06, 0x50, 0x85, 0x16, 0x00   ; insn: mov word [errno], 0x16
+        mov word [errno], 0x16
         jmp short .done
 .fill:
         push si
@@ -3699,7 +3699,7 @@ DosRetErrno:
 ; store the DOS error in _doserrno and the C errno.
 ;-----------------------------------------------------------------------------
 DosMapErr:
-        db 0xA2, 0x5B, 0x85                     ; insn: mov byte [_doserrno], al
+        mov byte [_doserrno], al
         db 0x0A, 0xE4                           ; insn: or ah, ah
         jne short .high
         cmp byte [DosMajor], 3
@@ -3720,7 +3720,7 @@ DosMapErr:
         xlatb
 .2:
         db 0x98                                 ; insn: cwde
-        db 0xA3, 0x50, 0x85                     ; insn: mov word [errno], ax
+        mov word [errno], ax
         ret
 .high:
         db 0x8A, 0xC4                           ; insn: mov al, ah
@@ -6308,7 +6308,8 @@ WriteCounted:
         int 0x21
         retf
         db 0x00
-FpTenthA:                                       ; the constant 0.1 as a ten-byte real; not used in the EXE
+FpTenthA:                                       ; the constant 0.1 as a ten-byte real; not used by the EXE or
+                                                ; the overlays
         db 0xCD, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xFB, 0x3F
 FpTenthB:                                       ; the constant 0.1 with sixteen extra low bits (12 bytes, the
                                                 ; TenByteMul format); HexConvert passes it to TenByteMul
@@ -8067,10 +8068,10 @@ StrToDouble:
         int 0x35
         db 0x6E, 0xF2                           ; emulated fldcw [bp-0xe]
         db 0x0B, 0xC0                           ; insn: or ax,ax
-        db 0x75, 0x17                           ; insn: jnz 0x3a38
+        jnz short SpillRet + 0x3A30
         mov bx, [bp-0xc]
         db 0x33, 0xC0                           ; insn: xor ax,ax
         test bx, 0x18
-        db 0x74, 0x0C                           ; insn: jz 0x3a38
+        jz short SpillRet + 0x3A30
         mov ax, 0x2
         db 0xf7

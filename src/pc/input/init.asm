@@ -2,7 +2,7 @@
         db 0xC4, 0x02
         push str_SecondsMsc
         push cs
-        db 0xE8, 0xC5, 0xEC                     ; insn: call 0xecce
+        call QueueClip - 0x24C0
         mov ax, 0x1
         leave
         retf

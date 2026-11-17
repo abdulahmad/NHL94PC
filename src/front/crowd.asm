@@ -855,7 +855,7 @@ PlayArenaJingle:
         db 0x90
 .3:
         cmp si, 0xc
-        db 0x7D, 0x1A                           ; insn: jnl 0x6e1
+        jnl short PlayArenaJingleTail.done + 0x6E0
         shl si, byte 0x2
         push word [si + ArenaJingleArg2]
         push word [si + ArenaJingleArg1]
@@ -864,4 +864,4 @@ PlayArenaJingle:
 .4:
         push cs
         call PlayJingle
-        db 0x83, 0xC4
+        db 0x83, 0xC4                           ; insn: add sp, 0x8: the last byte is in the next segment

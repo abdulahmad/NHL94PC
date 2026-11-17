@@ -6,31 +6,31 @@ DgroupStart:                                    ; offset 0 of DGROUP; code split
         db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
         db 'MS Run-Time Library - Copyright (c) 1990, Microsoft Corp'
         db 0x18, 0x00
-str_Bos:                                        ; string 'BOS'; not used in the EXE (overlays may use it)
+str_Bos:                                        ; string 'BOS'; in TeamNameClips
         db 'BOS', 0x00
 str_Buf:                                        ; string 'BUF'
         db 'BUF', 0x00
 str_Cgy:                                        ; string 'CGY'
         db 'CGY', 0x00
-str_Chi:                                        ; string 'CHI'; not used in the EXE (overlays may use it)
+str_Chi:                                        ; string 'CHI'; in TeamNameClips
         db 'CHI', 0x00
 str_Det:                                        ; string 'DET'
         db 'DET', 0x00
 str_Edm:                                        ; string 'EDM'
         db 'EDM', 0x00
-str_Hfd:                                        ; string 'HFD'; not used in the EXE (overlays may use it)
+str_Hfd:                                        ; string 'HFD'; in TeamNameClips
         db 'HFD', 0x00
 str_La:                                         ; string 'LA'
         db 'LA', 0x00
 str_Min_5:                                      ; string 'MIN'
         db 'MIN', 0x00
-str_Mtl:                                        ; string 'MTL'; not used in the EXE (overlays may use it)
+str_Mtl:                                        ; string 'MTL'; in TeamNameClips
         db 'MTL', 0x00
 str_Nj:                                         ; string 'NJ'
         db 'NJ', 0x00
-str_Nyi:                                        ; string 'NYI'; not used in the EXE (overlays may use it)
+str_Nyi:                                        ; string 'NYI'; in TeamNameClips
         db 'NYI', 0x00
-str_Nyr:                                        ; string 'NYR'; not used in the EXE (overlays may use it)
+str_Nyr:                                        ; string 'NYR'; in TeamNameClips
         db 'NYR', 0x00
 str_Ott:                                        ; string 'OTT'
         db 'OTT', 0x00
@@ -38,9 +38,9 @@ str_Phi:                                        ; string 'PHI'
         db 'PHI', 0x00
 str_Pit:                                        ; string 'PIT'
         db 'PIT', 0x00
-str_Que:                                        ; string 'QUE'; not used in the EXE (overlays may use it)
+str_Que:                                        ; string 'QUE'; in TeamNameClips
         db 'QUE', 0x00
-str_Stl:                                        ; string 'STL'; not used in the EXE (overlays may use it)
+str_Stl:                                        ; string 'STL'; in TeamNameClips
         db 'STL', 0x00
 str_Sj:                                         ; string 'SJ'
         db 'SJ', 0x00
@@ -60,7 +60,7 @@ str_Nhl_8:                                      ; string 'NHL'
         db 'NHL', 0x00
 str_Asc:                                        ; string 'ASC'
         db 'ASC', 0x00
-str_Asw:                                        ; string 'ASW'; not used in the EXE (overlays may use it)
+str_Asw:                                        ; string 'ASW'; in TeamNameClips
         db 'ASW', 0x00
 str_Boston:                                     ; string 'BOSTON'
         db 'BOSTON', 0x00
@@ -90,12 +90,11 @@ str_NyRangers:                                  ; string 'NY RANGERS'
         db 'NY RANGERS', 0x00
 str_Ottawa:                                     ; string 'OTTAWA'
         db 'OTTAWA', 0x00
-str_Philadelphia:                               ; string 'PHILADELPHIA'; not used in the EXE (overlays may use
-                                                ; it)
+str_Philadelphia:                               ; string 'PHILADELPHIA'; in TeamNameClips
         db 'PHILADELPHIA', 0x00
 str_Pittsburgh:                                 ; string 'PITTSBURGH'
         db 'PITTSBURGH', 0x00
-str_Quebec:                                     ; string 'QUEBEC'; not used in the EXE (overlays may use it)
+str_Quebec:                                     ; string 'QUEBEC'; in TeamNameClips
         db 'QUEBEC', 0x00
 str_StLouis:                                    ; string 'ST LOUIS'
         db 'ST LOUIS', 0x00
@@ -235,14 +234,14 @@ EmsMapCache:                                    ; four words. Each is the logica
                                                 ; physical page. The high bit marks it stale; used by EmsMap,
                                                 ; EmsMapRange, EmsMarkStale ...
         dw 0xFFFF
-EmsMapCache2:                                   ; second EMS map cache word; not used in the EXE (overlays may
-                                                ; use it)
+EmsMapCache2:                                   ; second EMS map cache word; not used by the EXE or the
+                                                ; overlays
         dw 0xFFFF
-EmsMapCache3:                                   ; third EMS map cache word; not used in the EXE (overlays may
-                                                ; use it)
+EmsMapCache3:                                   ; third EMS map cache word; not used by the EXE or the
+                                                ; overlays
         dw 0xFFFF
-EmsMapCache4:                                   ; fourth EMS map cache word; not used in the EXE (overlays may
-                                                ; use it)
+EmsMapCache4:                                   ; fourth EMS map cache word; not used by the EXE or the
+                                                ; overlays
         dw 0xFFFF
 EmsWindowOff:                                   ; added to the offset within the page when EmsMapRange returns
                                                 ; a pointer; used by EmsMapRange
@@ -250,8 +249,7 @@ EmsWindowOff:                                   ; added to the offset within the
 EmsOutPtr:                                      ; far pointer EmsInit writes the allocated size through; used
                                                 ; by MakeChain, EmsInit
         dw 0x0000
-EmsFramePrev:                                   ; word before EmsFrame; not used in the EXE (overlays may use
-                                                ; it)
+EmsFramePrev:                                   ; word before EmsFrame; not used by the EXE or the overlays
         dw 0x0000
 EmsFrame:                                       ; page-frame segment from INT 67h AH=41h; used by EmsMapRange,
                                                 ; EmsInit, EmsMapFrame
@@ -263,13 +261,13 @@ EmmName:                                        ; eight bytes compared with the 
                                                 ; the INT 67h vector; used by EmsInit
         db 'EMMXXXX0initmemman - INSUFFICIENT ROW TABLE SPACE'
         db 0x0A, 0x00
-str_LowMem:                                     ; string 'LOW MEM'; not used in the EXE (overlays may use it)
+str_LowMem:                                     ; string 'LOW MEM'; not used by the EXE or the overlays
         db 'LOW MEM', 0x00
-str_HighMem:                                    ; string 'HIGH MEM'; not used in the EXE (overlays may use it)
+str_HighMem:                                    ; string 'HIGH MEM'; not used by the EXE or the overlays
         db 'HIGH MEM', 0x00
-str_LowEmm:                                     ; string 'LOW EMM'; not used in the EXE (overlays may use it)
+str_LowEmm:                                     ; string 'LOW EMM'; not used by the EXE or the overlays
         db 'LOW EMM', 0x00
-str_HighEmm:                                    ; string 'HIGH EMM'; not used in the EXE (overlays may use it)
+str_HighEmm:                                    ; string 'HIGH EMM'; not used by the EXE or the overlays
         db 'HIGH EMM', 0x00, 0x00
 BufCount:                                       ; word; used by MakeChain
         dw 0x03E8
@@ -278,67 +276,62 @@ BufPtr:                                         ; word; used by MakeChain, Alloc
 RecSeq:                                         ; word; used by MakeChain, DropOldest
         dw 0x0000
 str_ReservememOutOfMemoryRequested:             ; string 'reservemem - OUT OF MEMORY\nrequested: %ld
-                                                ; available: %ld\n'; not used in the EXE (overlays may use it)
+                                                ; available: %ld\n'; not used by the EXE or the overlays
         db 'reservemem - OUT OF MEMORY'
         db 0x0A, 'requested: %ld available: %ld'
         db 0x0A, 0x00
 str_ReservememOutOfMemoryRequested_2:           ; string 'reservemem - OUT OF MEMORY\nrequested: %ld
-                                                ; available: %ld\n'; not used in the EXE (overlays may use it)
+                                                ; available: %ld\n'; not used by the EXE or the overlays
         db 'reservemem - OUT OF MEMORY'
         db 0x0A, 'requested: %ld available: %ld'
         db 0x0A, 0x00
 str_ReservememOutOfEmsRequested:                ; string 'reservemem - OUT OF EMS\nrequested: %ld available:
-                                                ; %ld\n'; not used in the EXE (overlays may use it)
+                                                ; %ld\n'; not used by the EXE or the overlays
         db 'reservemem - OUT OF EMS'
         db 0x0A, 'requested: %ld available: %ld'
         db 0x0A, 0x00
-str_ReservememInvalidTypeFlags04x:              ; string 'reservemem - INVALID TYPE FLAGS (%04x)\n'; not
-                                                ; referenced in the root code
+str_ReservememInvalidTypeFlags04x:              ; string 'reservemem - INVALID TYPE FLAGS (%04x)\n'; not used
+                                                ; by the EXE or the overlays
         db 'reservemem - INVALID TYPE FLAGS (%04x)'
         db 0x0A, 0x00
-str_ResizememblockNoRoomToResize:               ; string 'resizememblock - NO ROOM TO RESIZE\n'; not
-                                                ; referenced in the root code
+str_ResizememblockNoRoomToResize:               ; string 'resizememblock - NO ROOM TO RESIZE\n'; not used by
+                                                ; the EXE or the overlays
         db 'resizememblock - NO ROOM TO RESIZE'
         db 0x0A, 0x00, 'findmemblock - BLOCK NOT FOUND (%Fp)'
         db 0x0A, 0x00
-str_GetmemblockNoMemoryBlocksLeft:              ; string 'getmemblock - NO MEMORY BLOCKS LEFT\n'; not
-                                                ; referenced in the root code
+str_GetmemblockNoMemoryBlocksLeft:              ; string 'getmemblock - NO MEMORY BLOCKS LEFT\n'; not used by
+                                                ; the EXE or the overlays
         db 'getmemblock - NO MEMORY BLOCKS LEFT'
         db 0x0A, 0x00
-str_Copyright:                                  ; string 'Copyright'; not used in the EXE (overlays may use
-                                                ; it)
+str_Copyright:                                  ; string 'Copyright'; used by NullFar11
         db 'Copyright', 0x00
-str_UnpackaInvalidPackCodeX:                    ; string 'unpacka - INVALID PACK CODE (%x)'; not referenced in
-                                                ; the root code
+str_UnpackaInvalidPackCodeX:                    ; string 'unpacka - INVALID PACK CODE (%x)'; used by AddCopy
         db 'unpacka - INVALID PACK CODE (%x)'
         db 0x00, 0x00
 str_InsufficientConventionalMemoryAvaila:       ; string 'Insufficient conventional memory available. Requires
-                                                ; an addi...'; not used in the EXE (overlays may use it)
+                                                ; an addi...'; not used by the EXE or the overlays
         db 'Insufficient conventional memory available. Requires an additional %ld K'
         db ' bytes', 0x0A, 0x00
 str_InsufficientEmsAvailableRequiresAn:         ; string 'Insufficient EMS available. Requires an additional
-                                                ; %ld K byt...'; not used in the EXE (overlays may use it)
+                                                ; %ld K byt...'; not used by the EXE or the overlays
         db 'Insufficient EMS available. Requires an additional %ld K bytes'
         db 0x0A, 0x00
-str_Pointer3:                                   ; string 'pointer3'; not used in the EXE (overlays may use it)
+str_Pointer3:                                   ; string 'pointer3'; not used by the EXE or the overlays
         db 'pointer3', 0x00
-str_Pntr:                                       ; string 'pntr'; not used in the EXE (overlays may use it)
+str_Pntr:                                       ; string 'pntr'; not used by the EXE or the overlays
         db 'pntr', 0x00
-str_Wittle06Fnt:                                ; string 'wittle06.fnt'; not used in the EXE (overlays may use
-                                                ; it)
+str_Wittle06Fnt:                                ; string 'wittle06.fnt'; not used by the EXE or the overlays
         db 'wittle06.fnt', 0x00
-str_Scor2bFnt:                                  ; string 'scor2b.fnt'; not used in the EXE (overlays may use
-                                                ; it)
+str_Scor2bFnt:                                  ; string 'scor2b.fnt'; not used by the EXE or the overlays
         db 'scor2b.fnt', 0x00
-str_Scor3bFnt:                                  ; string 'scor3b.fnt'; not used in the EXE (overlays may use
-                                                ; it)
+str_Scor3bFnt:                                  ; string 'scor3b.fnt'; not used by the EXE or the overlays
         db 'scor3b.fnt', 0x00
-str_GameSet:                                    ; string 'game.set'; not used in the EXE (overlays may use it)
+str_GameSet:                                    ; string 'game.set'; not used by the EXE or the overlays
         db 'game.set', 0x00
         db 'd3', 0x00, 'd4', 0x00
-str_Temp:                                       ; string 'temp'; not used in the EXE (overlays may use it)
+str_Temp:                                       ; string 'temp'; not used by the EXE or the overlays
         db 'temp', 0x00
-str_Temp_2:                                     ; string 'temp'; not used in the EXE (overlays may use it)
+str_Temp_2:                                     ; string 'temp'; not used by the EXE or the overlays
         db 'temp', 0x00
 InputQueueCount:                                ; events waiting (at most 32); used by GetInputEvent,
                                                 ; PollInputEvents
@@ -362,8 +355,7 @@ MousePosY:                                      ; last mouse y; used by EventToC
         db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 StickPresent:                                   ; joystick 1 present; used by StickToPad
         dw 0x0000
-StickPresent2:                                  ; joystick 2 present; not used in the EXE (overlays may use
-                                                ; it)
+StickPresent2:                                  ; joystick 2 present; not used by the EXE or the overlays
         dw 0x0000
 PadTickCount:                                   ; timer ticks counted by PadTimerTick (wraps at 1000); used by
                                                 ; PadTimerTick
@@ -503,18 +495,15 @@ SpeechMemSeg:                                   ; speech memory block, segment; 
 SpeechOn:                                       ; speech system initialised; used by SpeechTimerTick,
                                                 ; SpeechInit, SpeechShutdown ...
         dw 0x0000
-str_Speechbuf:                                  ; string 'speechbuf'; not used in the EXE (overlays may use
-                                                ; it)
+str_Speechbuf:                                  ; string 'speechbuf'; used by InitSpeechBank
         db 'speechbuf', 0x00
-str_Sentence:                                   ; string 'sentence'; not used in the EXE (overlays may use it)
+str_Sentence:                                   ; string 'sentence'; used by SpeechInit
         db 'sentence', 0x00
-str_SpeechBank:                                 ; string 'speech bank'; not used in the EXE (overlays may use
-                                                ; it)
+str_SpeechBank:                                 ; string 'speech bank'; used by SpeechInit
         db 'speech bank', 0x00
-str_SampleMemMan:                               ; string 'sample mem man'; not used in the EXE (overlays may
-                                                ; use it)
+str_SampleMemMan:                               ; string 'sample mem man'; used by SpeechInit
         db 'sample mem man', 0x00
-str_Pause:                                      ; string 'pause'; not used in the EXE (overlays may use it)
+str_Pause:                                      ; string 'pause'; used by MakePauseSample
         db 'pause', 0x00
 str_Off:                                        ; string 'off'; used by GameLengthSampleName
         db 'off', 0x00
@@ -643,11 +632,9 @@ RinkTilesPtr:                                   ; far pointer (offset) to the lo
 RinkTilesSeg:                                   ; its segment; used by AI, GAME, INIT
         db 0x00, 0x00
         db 'h2', 0x00, 'h3', 0x00
-str_GsummaryDb:                                 ; string 'gsummary.db'; not used in the EXE (overlays may use
-                                                ; it)
+str_GsummaryDb:                                 ; string 'gsummary.db'; used by SaveGame
         db 'gsummary.db', 0x00
-str_GsummaryDb_2:                               ; string 'gsummary.db'; not used in the EXE (overlays may use
-                                                ; it)
+str_GsummaryDb_2:                               ; string 'gsummary.db'; used by SaveGame
         db 'gsummary.db', 0x00
         db 'h4', 0x00, 'h5', 0x00
         db 'h6', 0x00, 'h7', 0x00
@@ -659,30 +646,30 @@ str_Sav:                                        ; string '.sav'; used by SaveGam
         db '.sav', 0x00
 str_Db:                                         ; string '.db'; used by SaveGame
         db '.db', 0x00
-str_Gsummary:                                   ; string 'gsummary'; not used in the EXE (overlays may use it)
+str_Gsummary:                                   ; string 'gsummary'; used by SaveGame
         db 'gsummary', 0x00
         db 'A3', 0x00
-str_Pointer:                                    ; string 'pointer'; not used in the EXE (overlays may use it)
+str_Pointer:                                    ; string 'pointer'; used by SaveGameNameDialog
         db 'pointer', 0x00
 str_Savegame:                                   ; string 'savegame'; used by SaveGameNameDialog
         db 'savegame', 0x00
 str_Prmt:                                       ; string 'prmt'; used by SaveGameNameDialog
         db 'prmt', 0x00
-str_Dialog:                                     ; string 'dialog'; not used in the EXE (overlays may use it)
+str_Dialog:                                     ; string 'dialog'; used by SaveGameNameDialog
         db 'dialog', 0x00
 str_Nhl:                                        ; string '.nhl'; used by SaveGameNameDialog
         db '.nhl', 0x00
 str_Err1:                                       ; string 'err1'; used by SaveGameNameDialog
         db 'err1', 0x00
-str_Dialog_2:                                   ; string 'dialog'; not used in the EXE (overlays may use it)
+str_Dialog_2:                                   ; string 'dialog'; used by SaveGameNameDialog
         db 'dialog', 0x00
 str_Nhl_2:                                      ; string '.nhl'; used by SaveGameNameDialog
         db '.nhl', 0x00
 str_Prmt_2:                                     ; string 'prmt'; used by SaveGameNameDialog
         db 'prmt', 0x00
-str_Dialog_3:                                   ; string 'dialog'; not used in the EXE (overlays may use it)
+str_Dialog_3:                                   ; string 'dialog'; used by SaveGameNameDialog
         db 'dialog', 0x00
-str_D:                                          ; string '%d\n'; not used in the EXE (overlays may use it)
+str_D:                                          ; string '%d\n'; used by SaveGameNameDialog
         db 0x25, 0x64, 0x0A, 0x00
 str_Nhl_3:                                      ; string '.nhl'; used by SaveGameNameDialog
         db '.nhl', 0x00, 0x00
@@ -706,11 +693,9 @@ OldInt0Off:                                     ; saved divide-error vector, off
         db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 DivideFault:                                    ; set to 1 by DivideHandler when a divide faults
         db 0x00, 0x00
-str_HomepalsBin:                                ; string 'HOMEPALS.BIN'; not used in the EXE (overlays may use
-                                                ; it)
+str_HomepalsBin:                                ; string 'HOMEPALS.BIN'; used by LoadTeamPalettes
         db 'HOMEPALS.BIN', 0x00
-str_AwaypalsBin:                                ; string 'AWAYPALS.BIN'; not used in the EXE (overlays may use
-                                                ; it)
+str_AwaypalsBin:                                ; string 'AWAYPALS.BIN'; used by LoadTeamPalettes
         db 'AWAYPALS.BIN', 0x00
 str_Rinkpal:                                    ; string 'rinkpal'; used by LoadTeamPalettes
         db 'rinkpal', 0x00
@@ -737,11 +722,11 @@ SaveUnderOff:                                   ; saved screen under a box, offs
 SaveUnderSeg:                                   ; saved screen under a box, segment; used by SaveUnderBox,
                                                 ; RestoreUnderBox
         dw 0x0000
-str_Pointer_2:                                  ; string 'Pointer'; not used in the EXE (overlays may use it)
+str_Pointer_2:                                  ; string 'Pointer'; used by ListDialog
         db 'Pointer', 0x00
-str_Dbox:                                       ; string 'DBOX'; not used in the EXE (overlays may use it)
+str_Dbox:                                       ; string 'DBOX'; used by SaveUnderBox
         db 'DBOX', 0x00
-str_Pointer_3:                                  ; string 'Pointer'; not used in the EXE (overlays may use it)
+str_Pointer_3:                                  ; string 'Pointer'; used by MessageBoxLoop
 str_Pointer_15:                                 ; string 'Pointer'; used by AI
         db 'Pointer', 0x00, 0x00
 JingleHandle:                                   ; playing jingle, low word (-1 for none); used by StopJingle,
@@ -759,13 +744,13 @@ CrowdTarget:                                    ; crowd level being faded to; us
 CrowdFade:                                      ; crowd fade step; used by CrowdNoiseUpdate, CrowdNoiseOff,
                                                 ; CrowdReset
         dw 0x0000
-str_Plane0:                                     ; string 'Plane 0'; not used in the EXE (overlays may use it)
+str_Plane0:                                     ; string 'Plane 0'; used by SaveVgaPlanes
         db 'Plane 0', 0x00
-str_Plane1:                                     ; string 'Plane 1'; not used in the EXE (overlays may use it)
+str_Plane1:                                     ; string 'Plane 1'; used by SaveVgaPlanes
         db 'Plane 1', 0x00
-str_Plane2:                                     ; string 'Plane 2'; not used in the EXE (overlays may use it)
+str_Plane2:                                     ; string 'Plane 2'; used by SaveVgaPlanes
         db 'Plane 2', 0x00
-str_Plane3:                                     ; string 'Plane 3'; not used in the EXE (overlays may use it)
+str_Plane3:                                     ; string 'Plane 3'; used by SaveVgaPlanes
         db 'Plane 3', 0x00
 EventPending:                                   ; an event is held back; used by GetInputEvent
         db 0x00, 0x00
@@ -1044,7 +1029,7 @@ str_Dialogbx:                                   ; string 'dialogbx'; used by MEN
         db 'dialogbx', 0x00
 str_Dbox_9:                                     ; string 'dbox'; used by MENUS
         db 'dbox', 0x00
-str_Nhl_4:                                      ; string '.NHL'; not used in the EXE (overlays may use it)
+str_Nhl_4:                                      ; string '.NHL'; not used by the EXE or the overlays
         db '.NHL', 0x00
         db '.PO', 0x00
         db '.LP', 0x00
@@ -1436,7 +1421,7 @@ str_Dbox_6:                                     ; string 'dbox'; used by MENUS
         db 'dbox', 0x00
 str_Setting3:                                   ; string 'setting3'; used by MENUS
         db 'setting3', 0x00
-str_Dbox_2:                                     ; string 'dbox'; not used in the EXE (overlays may use it)
+str_Dbox_2:                                     ; string 'dbox'; used by DrawLeagueSetDlg
 str_Dbox_5:                                     ; string 'dbox'; used by MENUS
         db 'dbox', 0x00, 0x00
 str_Bkgd_5:                                     ; string 'BKGD'; used by MENUS
@@ -2268,8 +2253,7 @@ str_Bkgd:                                       ; string 'bkgd'; used by MENUS, 
         db 'bkgd', 0x00, 0x00
 str_EasnFnt:                                    ; string 'EASN.fnt'; used by STATS
         db 'EASN.fnt', 0x00, 0x00
-str_Wittle06Fnt_2:                              ; string 'wittle06.fnt'; not used in the EXE (overlays may use
-                                                ; it)
+str_Wittle06Fnt_2:                              ; string 'wittle06.fnt'; not used by the EXE or the overlays
 str_Wittle06Fnt_4:                              ; string 'wittle06.fnt'; used by AI
         db 'wittle06.fnt', 0x00, 0x00
 statscontext:                                   ; stats context: which season or playoff data the stats
@@ -4989,17 +4973,14 @@ EndMark:                                        ; long stored by SetEndMark. Wai
 CritOld:                                        ; INT 24h vector saved by HookCrit and restored by
                                                 ; CritRestore; used by HookCrit, CritRestore
         dw 0x0000
-CritSpare1:                                     ; word before CritRoutine; not used in the EXE (overlays may
-                                                ; use it)
+CritSpare1:                                     ; word before CritRoutine; not used by the EXE or the overlays
         dw 0x0000
 CritRoutine:                                    ; far routine CritHandler calls. HookCrit stores the caller's
                                                 ; pointer here; used by CritHandler, HookCrit
         dw 0x0000
-CritSpare2:                                     ; word after CritRoutine; not used in the EXE (overlays may
-                                                ; use it)
+CritSpare2:                                     ; word after CritRoutine; not used by the EXE or the overlays
         dw 0x0000
-str_SFileError:                                 ; string '%s FILE ERROR'; not used in the EXE (overlays may
-                                                ; use it)
+str_SFileError:                                 ; string '%s FILE ERROR'; used by FileHeadMsg, FileSizeMsg
         db '%s FILE ERROR', 0x00
 PathBuf:                                        ; findPath returns this buffer. The directory is copied here
                                                 ; and the DTA name is appended; used by FileHeadMsg
@@ -5010,14 +4991,12 @@ PathCut:                                        ; offset in PathBuf just past th
 FindDta:                                        ; DOS DTA for FindPath and FindNextPath. Set with INT 21h
                                                 ; AH=1Ah; used by FileHeadMsg, FindNextPath
         times 128 db 0
-BlockSpare1:                                    ; word before BlockEnd; not used in the EXE (overlays may use
-                                                ; it)
+BlockSpare1:                                    ; word before BlockEnd; not used by the EXE or the overlays
         dw 0x0000
 BlockEnd:                                       ; paragraph past the block AllocBytes allocated; used by
                                                 ; MakeChain, AllocBytes
         dw 0x0000
-BlockSpare2:                                    ; word before BlockSeg; not used in the EXE (overlays may use
-                                                ; it)
+BlockSpare2:                                    ; word before BlockSeg; not used by the EXE or the overlays
         dw 0x0000
 BlockSeg:                                       ; segment AllocBytes got from INT 21h AH=48h; used by
                                                 ; MakeChain, AllocBytes
@@ -5104,8 +5083,7 @@ FmtSave:                                        ; four words FormatCall pops: fa
 FmtBuf:                                         ; pointer passed to _sprintf as its first argument from
                                                 ; FormatCall; used by FormatCall
         times 2130 db 0
-str_RowSpaceCorrupted:                          ; string 'Row space corrupted\n'; not referenced in the root
-                                                ; code
+str_RowSpaceCorrupted:                          ; string 'Row space corrupted\n'; used by FreeCanvas
         db 'Row space corrupted'
         db 0x0A, 0x00, 0x00, '%s FILE ERROR'
         db 0x0D, 0x00, 0x00
@@ -5153,8 +5131,8 @@ SlotTab:                                        ; eight far-pointer pairs. Alloc
         dw 0x0000
 TickSkipCount:                                  ; ticks skipped; used by HookInt8
         times 38 db 0
-str_NoRoomLeftInTimer:                          ; string 'NO ROOM LEFT IN TIMER IRQ TASK LIST\r'; not
-                                                ; referenced in the root code
+str_NoRoomLeftInTimer:                          ; string 'NO ROOM LEFT IN TIMER IRQ TASK LIST\r'; used by
+                                                ; UnhookInt8
         db 'NO ROOM LEFT IN TIMER IRQ TASK LIST'
         db 0x0D, 0x00, 0x00
 Int8Stack:                                      ; the INT 8 handler's private stack, filled with 0FBh
@@ -5177,24 +5155,23 @@ CalibTargetY:                                   ; y of each calibration target; 
         db 0x67, 0x00, 0x49, 0x00
         db 0x49, 0x00, 0x67, 0x00, 0x85, 0x00, 0x85, 0x00, 0x85, 0x00
         db 0x67, 0x00, 0x49, 0x00
-str_CalibrateYourJoystickByUsing:               ; string 'Calibrate your joystick by using it'; not referenced
-                                                ; in the root code
+str_CalibrateYourJoystickByUsing:               ; string 'Calibrate your joystick by using it'; used by
+                                                ; CalibrateStick
         db 'Calibrate your joystick by using it'
         db 0x00
-str_ToMoveTheJoystickPosition:                  ; string 'to move the joystick position indicator'; not
-                                                ; referenced in the root code
+str_ToMoveTheJoystickPosition:                  ; string 'to move the joystick position indicator'; used by
+                                                ; CalibrateStick
         db 'to move the joystick position indicator'
         db 0x00
-str_BelowToAllSquares:                          ; string 'below, to all squares'; not referenced in the root
-                                                ; code
+str_BelowToAllSquares:                          ; string 'below, to all squares'; used by CalibrateStick
         db 'below, to all squares'
         db 0x00
-str_PressJoystickButtonWhenComplete:            ; string 'Press joystick button when complete'; not referenced
-                                                ; in the root code
+str_PressJoystickButtonWhenComplete:            ; string 'Press joystick button when complete'; used by
+                                                ; CalibrateStick
         db 'Press joystick button when complete'
         db 0x00
-str_PressAnyKeyToIgnore:                        ; string 'Press any key to ignore joystick'; not referenced in
-                                                ; the root code
+str_PressAnyKeyToIgnore:                        ; string 'Press any key to ignore joystick'; used by
+                                                ; CalibrateStick
         db 'Press any key to ignore joystick'
         db 0x00
 str_LeftJoystick:                               ; string 'LEFT JOYSTICK'; used by CalibrateLeftStick
@@ -5414,8 +5391,7 @@ RemapTable:                                     ; 256-byte colour remap table; u
         db 0xDF, 0xE0, 0xE1, 0xE2, 0xE3, 0xE4, 0xE5, 0xE6, 0xE7, 0xE8, 0xE9, 0xEA, 0xEB, 0xEC, 0xED, 0xEE
         db 0xEF, 0xF0, 0xF1, 0xF2, 0xF3, 0xF4, 0xF5, 0xF6, 0xF7, 0xF8, 0xF9, 0xFA, 0xFB, 0xFC, 0xFD, 0xFE
         db 0xFF, 'MCGA WINDOW', 0x00
-str_OutOfRowSpace:                              ; string 'Out of row space\n'; not used in the EXE (overlays
-                                                ; may use it)
+str_OutOfRowSpace:                              ; string 'Out of row space\n'; used by AllocLinearCanvas
         db 'Out of row space'
         db 0x0A, 0x00
 PutBlockMasks:                                  ; plane masks for PutBlock; used by PutBlockBody
@@ -5549,8 +5525,7 @@ DrawRleFlipRemapMasks:                          ; plane masks for DrawRleFlipRem
 DrawRleTransRemapFastMasks:                     ; plane masks for DrawRleTransRemapFast; used by
                                                 ; DrawRleTransRemapFastBody
         db 0x11, 0x22, 0x44, 0x88, 'VGA WINDOW', 0x00
-str_OutOfRowSpace_2:                            ; string 'Out of row space\n'; not used in the EXE (overlays
-                                                ; may use it)
+str_OutOfRowSpace_2:                            ; string 'Out of row space\n'; used by AllocCanvas
         db 'Out of row space'
         db 0x0A, 0x00, 0x00
 PixelMasks:                                     ; plane mask per pixel column; used by PutPixelAt
@@ -5586,19 +5561,17 @@ PotBits:                                        ; game port bits read last; used
         db 0x00, 0x00
 PotButtons:                                     ; game port buttons; used by ReadPots
         db 0x0F, 0x00
-str_SFileError_2:                               ; string '%s FILE ERROR\r'; not used in the EXE (overlays may
-                                                ; use it)
+str_SFileError_2:                               ; string '%s FILE ERROR\r'; used by FileOpenFail
         db '%s FILE ERROR', 0x0D, 0x00
-str_HandleDFileError:                           ; string 'HANDLE %d FILE ERROR\r'; not referenced in the root
-                                                ; code
+str_HandleDFileError:                           ; string 'HANDLE %d FILE ERROR\r'; used by ReadAtFail,
+                                                ; ReadCloseFail
         db 'HANDLE %d FILE ERROR'
         db 0x0D, 0x00
 AltPath:                                        ; used by FileOpenAlt
         times 40 db 0
 AltBuf:                                         ; word; used by FileOpenAlt
         dw 0x0000
-AltCallPrev:                                    ; word before AltCall; not used in the EXE (overlays may use
-                                                ; it)
+AltCallPrev:                                    ; word before AltCall; not used by the EXE or the overlays
         dw 0x0000
 AltCall:                                        ; dword; used by FileOpenAlt
         dd 0x00000000
@@ -5671,7 +5644,7 @@ str_PausePressAnyKeyTo:                         ; string 'PAUSE - PRESS ANY KEY 
                                                 ; ShowPausedBox
         db 'PAUSE - PRESS ANY KEY TO RESUME'
         db 0x00
-str_Vgabuf:                                     ; string 'VGABUF'; not used in the EXE (overlays may use it)
+str_Vgabuf:                                     ; string 'VGABUF'; used by BuildShapeBank
         db 'VGABUF', 0x00, 0x00
 AssetExtList:                                   ; extensions LoadAssetMode tries; used by LoadAssetMode
         db 0x02, 0x77
@@ -5684,8 +5657,7 @@ AssetExtList:                                   ; extensions LoadAssetMode tries
         dw str_Pes_2
         dw str_Esh_2
         dw str_Empty_23
-IdentityRemap:                                  ; remap table that changes nothing; not referenced in the root
-                                                ; code
+IdentityRemap:                                  ; remap table that changes nothing; used by LoadAssetMode
         db 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F
         db '.QNS', 0x00
 str_Pns_2:                                      ; string '.PNS'
@@ -5724,13 +5696,13 @@ str_Vsh:                                        ; string '.VSH'; used by LoadAss
         db '.VSH', 0x00
 str_Mga:                                        ; string '!MGA'; used by LoadAssetMode
         db '!MGA', 0x00
-str_LoadshapeblockaNoMemoryForMcgatovga:        ; string 'loadshapeblocka -\tNO MEMORY FOR MCGATOVGA\n'; not
-                                                ; referenced in the root code
+str_LoadshapeblockaNoMemoryForMcgatovga:        ; string 'loadshapeblocka -\tNO MEMORY FOR MCGATOVGA\n'; used
+                                                ; by LoadAssetMode
         db 'loadshapeblocka -'
         db 0x09, 'NO MEMORY FOR MCGATOVGA'
         db 0x0A, 0x00
-str_LoadshapeblockaNoMemoryForMcgatovga_2:      ; string 'loadshapeblocka - NO MEMORY FOR MCGATOVGA\n'; not
-                                                ; referenced in the root code
+str_LoadshapeblockaNoMemoryForMcgatovga_2:      ; string 'loadshapeblocka - NO MEMORY FOR MCGATOVGA\n'; used
+                                                ; by LoadAssetMode
         db 'loadshapeblocka - NO MEMORY FOR MCGATOVGA'
         db 0x0A, 0x00, 0x00
 RectMasks:                                      ; plane masks for RectSpanPlanes; used by RectSpanPlanes
@@ -5966,11 +5938,11 @@ SeqTickCount:                                   ; sequencer ticks; used by SeqSe
         db 0x00, 0x00
 SeqBusy:                                        ; seqService running; used by SeqTimerTick
         dw 0x0000
-str_Track:                                      ; string 'track'; not used in the EXE (overlays may use it)
+str_Track:                                      ; string 'track'; used by InitSequencer
         db 'track', 0x00
-str_Parts:                                      ; string 'parts'; not used in the EXE (overlays may use it)
+str_Parts:                                      ; string 'parts'; used by InitSequencer
         db 'parts', 0x00
-str_Seqdat:                                     ; string 'seqdat'; not used in the EXE (overlays may use it)
+str_Seqdat:                                     ; string 'seqdat'; used by InitSequencer
         db 'seqdat', 0x00
 str_BankDPat:                                   ; string 'bank%d.pat'; used by LoadBankNumber
         db 'bank%d.pat', 0x00
@@ -6043,15 +6015,14 @@ NearHeapDesc:                                   ; near heap descriptor (segment,
                                                 ; used by MscStartup, _nmalloc, _nfree
         db 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
         db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-str_CFileInfo:                                  ; string '_C_FILE_INFO='; not used in the EXE (overlays may
-                                                ; use it)
+str_CFileInfo:                                  ; string '_C_FILE_INFO='; used by InitRuntime
         db '_C_FILE_INFO=', 0x00
 OldInt0Vec:                                     ; saved INT 0 vector; used by InitRuntime, ExitRestore
         dw 0x0000
 OldInt0VecSeg:                                  ; saved INT 0 vector, segment; used by InitRuntime
         db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-errno:                                          ; dosMapErr stores the translated C error here; not referenced
-                                                ; in the root code
+errno:                                          ; dosMapErr stores the translated C error here; used by
+                                                ; DosMapErr, WriteStderr, _dos_getdiskfree
         db 0x00, 0x00
 _umaskval:                                      ; file permission mask applied by open; used by the open
                                                 ; routine
@@ -6062,8 +6033,7 @@ __psp:                                          ; startup stores the incoming DS
         dw 0x0000
 DosMajor:                                       ; DOS major version; used by _sopen, DosMapErr
         db 0x00, 0x00, 0x00
-_doserrno:                                      ; dosMapErr stores the raw DOS error here; not referenced in
-                                                ; the root code
+_doserrno:                                      ; dosMapErr stores the raw DOS error here; used by DosMapErr
         db 0x00, 0x00
 _nfile:                                         ; highest C handle
         dw 0x0014
@@ -6144,8 +6114,8 @@ _iob_stdprn:                                    ; stdprn entry of _iob; used by 
         db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
         db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
         db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-StreamExtra:                                    ; extra stream records for the standard buffers; not
-                                                ; referenced in the root code
+StreamExtra:                                    ; extra stream records for the standard buffers; used by the
+                                                ; EXE
         db 0x01, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
         times 144 db 0
 LastStream:                                     ; last stream record; used by FlushAll
@@ -6299,7 +6269,7 @@ SysErrList:                                     ; sys_errlist: near pointers to 
 SysNerr:                                        ; sys_nerr: number of messages in SysErrList (25h); used by
                                                 ; perror
         db 0x25, 0x00
-str_E000:                                       ; string 'e+000'; not used in the EXE (overlays may use it)
+str_E000:                                       ; string 'e+000'; used by FloatBuf
         db 'e+000', 0x00
 FloatMode:                                      ; float format mode; used by FloatBuf, FloatToStr, FloatWidth
                                                 ; ...

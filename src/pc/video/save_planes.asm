@@ -1,8 +1,10 @@
 ; Saves and restores the four VGA planes, and FatalError, which shows a message and quits.
 
-PlayArenaJingleTail:                            ; end of PlayArenaJingle in; not used in the EXE (overlays may
-                                                ; use it)
-        db 0x08, 0x5E, 0xC9                     ; db 0x08
+PlayArenaJingleTail:                            ; end of PlayArenaJingle
+        db 0x08                                 ; the rest of add sp, 0x8 from the segment before
+.done:
+        pop si
+        leave
         retf
 
 ;-----------------------------------------------------------------------------

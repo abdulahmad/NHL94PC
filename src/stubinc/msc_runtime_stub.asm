@@ -5,6 +5,7 @@
 NullStartup4		equ	0x4
 NullStartup6		equ	0x6
 _main		equ	0x8
+SpillRet		equ	0x8
 ScreenRowStride		equ	0x8FC
 CurPage		equ	0x74DC
 TopOfStack		equ	0x8516
@@ -14,9 +15,12 @@ NearHeapDesc		equ	0x851C
 str_CFileInfo		equ	0x8534
 OldInt0Vec		equ	0x8542
 OldInt0VecSeg		equ	0x8544
+errno		equ	0x8550
 _umaskval		equ	0x8552
 __psp		equ	0x8556
 DosMajor		equ	0x8558
+_doserrno		equ	0x855B
+_nfile		equ	0x855D
 _osfile		equ	0x855F
 ArgCount		equ	0x8573
 ArgVector		equ	0x8575

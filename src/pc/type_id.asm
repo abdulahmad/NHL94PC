@@ -1363,4 +1363,4 @@ LoadQuiet:
         push word [bp + 8]
         push word [bp + 6]
         push cs
-        db 0xE8, 0x99                           ; insn: call LoadBlock, finished in seg005
+        db 0xE8, (LoadBlock - ($ + 3)) & 0xFF   ; call near LoadBlock: the last byte is in the next segment

@@ -259,7 +259,7 @@ ReadPackedSize:
         call 0x03A3:ReadAtArg
         add sp, 0x10
         db 0x0B, 0xD0                           ; insn: or dx, ax
-        db 0x74, 0x2F                           ; insn: jz 0x234
+        jz short ReadPackedSizeTail + 0x230
         mov al, [bp - 0xa]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         db 0x2B, 0xD2                           ; insn: sub dx, dx

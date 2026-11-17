@@ -3,8 +3,8 @@
 	bits	16
 	org	0x0
 FontTable		equ	0x0
-DrawTextCenteredInWindow		equ	0x2
 FindNearestColor		equ	0x2
+DrawTextCenteredInWindow		equ	0x2
 DrawFrame		equ	0x4
 FreeCanvas		equ	0xC
 SetCanvas		equ	0x48

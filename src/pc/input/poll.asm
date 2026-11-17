@@ -329,9 +329,9 @@ ReadKeyEvent:
         or byte [si + 0x2], 0x20
 .13:
         cmp byte [si + 0x2], 0x0
-        db 0x75, 0x0C                           ; insn: jnz 0x2f0
+        jnz short ReadKeyEventHit + 0x2F0
         cmp byte [si + 0x3], 0x0
-        db 0x75, 0x06                           ; insn: jnz 0x2f0
+        jnz short ReadKeyEventHit + 0x2F0
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         pop si
         leave

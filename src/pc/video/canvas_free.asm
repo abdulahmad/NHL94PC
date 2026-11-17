@@ -11,7 +11,7 @@ InitHeapVariantTail:                            ; end of InitHeapVariant
         push dx
         push ax
         push word [bx + 0x4]
-        db 0xEB, 0xBD                           ; insn: jmp short InitHeap.1 (segment before)
+        jmp short InitHeap.1 - 0x120            ; to InitHeap.1 in the segment before
 
 ;-----------------------------------------------------------------------------
 ; FreeCanvas                                                  14ED:000C  94 PC
@@ -92,7 +92,7 @@ SortPairs:
         push si
         mov di, [bp + 0x6]
         sar di, 1
-        db 0xE9, 0x92, 0x00                     ; insn: jmp 0x132
+        jmp near SortPairsTail.check + 0x130
 
 ;-----------------------------------------------------------------------------
 ; SortPairsPass                                               14ED:00A0  94 PC

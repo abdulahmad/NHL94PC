@@ -503,11 +503,11 @@ PadTimerTick:
         call 0x03A3:SsIsDs
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .1
-        db 0xE9, 0x8D, 0x00                     ; insn: jmp 0x498
+        jmp near PadTimerTickTail.1 + 0x490
 .1:
         cmp word [PadRepeatOn], 0x0
         jnz short .2
-        db 0xE9, 0x83, 0x00                     ; insn: jmp 0x498
+        jmp near PadTimerTickTail.1 + 0x490
 .2:
         cmp word [PadTickCount], 0x3e8
         jnl short .3
@@ -516,10 +516,10 @@ PadTimerTick:
         mov ax, [PadRepeatTimer]
         dec word [PadRepeatTimer]
         db 0x0B, 0xC0                           ; insn: or ax, ax
-        db 0x75, 0x6C                           ; insn: jnz 0x498
+        jnz short PadTimerTickTail.1 + 0x490
         mov word [PadRepeatTimer], 0x4
         cmp word [PadRepeatDelay], 0x32
-        db 0x7D, 0x5F                           ; insn: jnl 0x498
+        jnl short PadTimerTickTail.1 + 0x490
         mov ax, [PadRepeatDelay]
         add ax, [PadRepeatStep]
         mov cx, 0x32

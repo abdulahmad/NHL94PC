@@ -25,8 +25,8 @@ mz_header:
 ; then segment, for every word in the image that holds a segment number; DOS adds the load segment to each),
 ; then zero fill up to the paragraph where the image starts.
         incbin "Extracted/segments/mz_header.bin", 0x1C, 2
-reloc_table:                                    ; not used in the EXE (overlays may use it)
+reloc_table:                                    ; not used by the EXE or the overlays
         incbin "Extracted/segments/mz_header.bin", 30, 6908
-reloc_end:                                      ; not used in the EXE (overlays may use it)
+reloc_end:                                      ; not used by the EXE or the overlays
         incbin "Extracted/segments/mz_header.bin", 6938
 image_start:                                    ; end of the header: the load image starts on this paragraph

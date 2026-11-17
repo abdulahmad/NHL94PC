@@ -3,6 +3,7 @@
 	bits	16
 	org	0x0
 exhstate		equ	0x0
+UseDbDescriptorTail.1		equ	0x4
 postate		equ	0x62
 DbSaveMode		equ	0x1B4
 %include "front/db_descriptor.asm"

@@ -6,6 +6,7 @@ DrvService		equ	0x1A8
 EmsSaveMap		equ	0x1B9
 DrvNeedsService		equ	0x1C0
 EmsRestoreMap		equ	0x1D1
+MergeRemapTables.copy		equ	0x1F7
 DrvSendMidi		equ	0x22E
 GetPatch		equ	0x87C
 SsIsDs		equ	0xE11

@@ -2,11 +2,15 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
+LoadAssetModeTail		equ	0x2
+LoadAssetModeTail.1		equ	0x4
 ShapeBankSize		equ	0x6
+LoadAssetModeTail.2		equ	0x7
 CopyBytesFar		equ	0x8
 LargestShapeSize		equ	0xC
 FileCanOpen		equ	0xE
 AllocRecData0		equ	0x38
+AskYesNoBox		equ	0x46
 LoadRawMode		equ	0x7C
 LoadPackedMode		equ	0x82
 CopyFar		equ	0x276

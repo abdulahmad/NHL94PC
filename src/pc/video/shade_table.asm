@@ -3,7 +3,7 @@
         inc si
 CopyBytesFarTail:
         cmp si, 0x10
-        db 0x7C, 0xEF                           ; insn: jl 0xfff7
+        jl short CopyBytesFar.1 - 0x20
         pop si
         pop di
         leave

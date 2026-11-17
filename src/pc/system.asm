@@ -2517,7 +2517,7 @@ PollJoy:
         cli
         out dx, al
         mov cx, 0x14
-        db 0xE2, 0xFE                           ; insn: loop 0xf33
+        loop $
         db 0x33, 0xC9                           ; insn: xor cx, cx
 .2:
         in al, dx
@@ -2774,7 +2774,7 @@ PollSticks:
         cli
         out dx, al
         mov cx, 0x14
-        db 0xE2, 0xFE                           ; insn: loop 0x1156
+        loop $
         db 0x33, 0xC9                           ; insn: xor cx, cx
 .2:
         in al, dx

@@ -8310,7 +8310,7 @@ DrawLineClippedJumpTable:                       ; word; used by DrawLineClipped
         mov bx, [si + 0x12]
         db 0x03, 0xDB                           ; insn: add bx, bx
         jmp [cs:bx + DrawLineClippedJumpTable2]
-DrawLineClippedJumpTable2:                      ; word; not used in the EXE (overlays may use it)
+DrawLineClippedJumpTable2:                      ; word; used by DrawLineClipped
         dw .1
         dw .1
         dw .3

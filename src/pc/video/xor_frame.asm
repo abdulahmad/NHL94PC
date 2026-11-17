@@ -6,9 +6,10 @@
 ;-----------------------------------------------------------------------------
 SortPairsTail:                                  ; end of SortPairs
         db 0x7E, 0xFE                           ; the rest of mov di, [bp - 2] from the segment before
+.check:
         db 0x0B, 0xFF                           ; insn: or di, di
         jng short .2
-        db 0xE9, 0x67, 0xFF                     ; insn: jmp SortPairsPass (segment before)
+        jmp near SortPairsPass - 0x130          ; to SortPairsPass in the segment before
 .2:
         pop si
         pop di
@@ -50,7 +51,7 @@ XorFrame:
         add sp, 0xa
 .1:
         db 0x0B, 0xFF                           ; insn: or di, di
-        db 0x7E, 0x29                           ; insn: jng 0x80
+        jng short NullFar10 + 0x80
         push word [bp + 0xe]
         push di
         push 0x1

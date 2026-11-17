@@ -1,6 +1,6 @@
 ; LargestShapeSize: the biggest shape of a set. The first bytes finish FindNearestColor.
         db 0x03
-        db 0xE9, 0x69, 0xFF                     ; insn: jmp 0xff6d
+        jmp near FindNearestColor.1 - 0xE0
 ;-----------------------------------------------------------------------------
 ; FindNearestColorTail                                        15FF:0004  94 PC
 ; End of FindNearestColor, which starts in the file before.

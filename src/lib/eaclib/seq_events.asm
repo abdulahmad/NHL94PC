@@ -7,7 +7,7 @@
 ;-----------------------------------------------------------------------------
 MergeRemapTablesTail:                           ; end of MergeRemapTables
         db 0x00, 0x01                           ; the rest of cmp si, 100h from the segment before
-        db 0x7C, 0xD3                           ; insn: jl MergeRemapTables.copy (segment before)
+        jl short MergeRemapTables.copy - 0x220  ; to MergeRemapTables.copy in the segment before
         pop si
         pop di
         leave

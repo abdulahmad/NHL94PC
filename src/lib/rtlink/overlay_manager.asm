@@ -10,7 +10,7 @@ FileSlotSize	equ	0x80
 ; Overlay-manager messages. Each eov code is its own string and the
 ; sentence follows the terminating null. The print helper substitutes
 ; xxxx with the number it was given.
-Messages:                                       ; not used in the EXE (overlays may use it)
+Messages:                                       ; start of the message pointers below
 MsgPtrClose:                                    ; RTLink overlay-manager message (eovxxxx strings); used by
                                                 ; ReportFileError
         dw MsgCloseQuote
@@ -50,94 +50,83 @@ MsgPtrOverflow:                                 ; RTLink overlay-manager message
 MsgPtrUnderflow:                                ; RTLink overlay-manager message (eovxxxx strings); used by
                                                 ; PopReloadFrame
         dw MsgEov0005
-MsgCloseQuote:                                  ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgCloseQuote:                                  ; RTLink overlay-manager message (eovxxxx strings); in
+                                                ; MsgPtrClose
         db '"', 13, 10
         db 0
-MsgEov0001:                                     ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgEov0001:                                     ; RTLink overlay-manager message (eovxxxx strings); in
+                                                ; MsgPtrCannot
         db 'eov0001: '
         db 0
-MsgCannotFind:                                  ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgCannotFind:                                  ; text that follows the eov code string before it
         db 'Cannot find overlay file "'
         db 0
-MsgEov0002:                                     ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgEov0002:                                     ; RTLink overlay-manager message (eovxxxx strings); in
+                                                ; MsgPtrOpen
         db 'eov0002: '
         db 0
-MsgOpenError:                                   ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgOpenError:                                   ; text that follows the eov code string before it
         db 'Open error on overlay file "'
         db 0
-MsgEov0003:                                     ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgEov0003:                                     ; RTLink overlay-manager message (eovxxxx strings); in
+                                                ; MsgPtrRead
         db 'eov0003: '
         db 0
-MsgReadError:                                   ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgReadError:                                   ; text that follows the eov code string before it
         db 'Read error on overlay file "'
         db 0
-MsgEov0007:                                     ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgEov0007:                                     ; RTLink overlay-manager message (eovxxxx strings); in
+                                                ; MsgPtrCommit
         db 'eov0007: '
         db 0
-MsgCommit:                                      ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgCommit:                                      ; text that follows the eov code string before it
         db 'Commit error - section '
-MsgIntersectLead:                               ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgIntersectLead:                               ; RTLink overlay-manager message (eovxxxx strings); in
+                                                ; MsgPtrIntersect
         times 4 db 0
-MsgIntersect:                                   ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgIntersect:                                   ; text that follows the eov code string before it
         db 'H intersects committed section '
-MsgIntersect2Lead:                              ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgIntersect2Lead:                              ; RTLink overlay-manager message (eovxxxx strings); in
+                                                ; MsgPtrIntersect2
         times 4 db 0
-MsgIntersect2:                                  ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgIntersect2:                                  ; text that follows the eov code string before it
         db 'H', 13, 10
         db 0
-MsgEov0009:                                     ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgEov0009:                                     ; RTLink overlay-manager message (eovxxxx strings); in
+                                                ; MsgPtrCorrupt
         db 'eov0009: '
         db 0
-MsgVector:                                      ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgVector:                                      ; text that follows the eov code string before it
         db 'Vector at '
-MsgVectorAt:                                    ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgVectorAt:                                    ; RTLink overlay-manager message (eovxxxx strings); in
+                                                ; MsgPtrVector
         db 'xxxx:xxxx is corrupted.', 13, 10
         db 0
-MsgEov0010:                                     ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgEov0010:                                     ; RTLink overlay-manager message (eovxxxx strings); in
+                                                ; MsgPtrAfter
         db 'eov0010: '
         db 0
-MsgLoadAfter:                                   ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgLoadAfter:                                   ; text that follows the eov code string before it
         db 'Attempt to load section '
-MsgAfterLead:                                   ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgAfterLead:                                   ; RTLink overlay-manager message (eovxxxx strings); in
+                                                ; MsgPtrAfterH
         times 4 db 0
-MsgAfterH:                                      ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgAfterH:                                      ; text that follows the eov code string before it
         db 'H after $$RTL_TERMINATE.', 13, 10
         db 0
-MsgEov0004:                                     ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgEov0004:                                     ; RTLink overlay-manager message (eovxxxx strings); in
+                                                ; MsgPtrOverflow
         db 'eov0004: '
         db 0
-MsgOverflow:                                    ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgOverflow:                                    ; text that follows the eov code string before it
         db 'Overlay Manager Internal Reload Stack Overflow', 13, 10
         db '      -- use RELOAD to increase size', 13, 10
         db 0
-MsgEov0005:                                     ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgEov0005:                                     ; RTLink overlay-manager message (eovxxxx strings); in
+                                                ; MsgPtrUnderflow
         db 'eov0005: '
         db 0
-MsgUnderflow:                                   ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgUnderflow:                                   ; text that follows the eov code string before it
         db 'Overlay Manager Internal Reload Stack Underflow.', 13, 10
         times 7 db 0
 
@@ -1604,8 +1593,8 @@ ReloadStackBytes:                               ; RTLink overlay manager data; u
 ;
 ; paragraphs to read.
 SectionTable:                                   ; used by LoadSection, SectionRecord, MeasureThunkList ...
-SecMenus:                                       ; 18-byte section record for MENUS.OVL; not referenced in the
-                                                ; root code
+SecMenus:                                       ; 18-byte section record for MENUS.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x1E45                               ; load paragraph, relocated
         dw FileMenus                            ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1616,8 +1605,8 @@ SecMenus:                                       ; 18-byte section record for MEN
         dw 0xFFFF                               ; section to chain, or -1
         dw 2                                    ; number printed in errors
         dw 0x1249                               ; paragraphs to read
-SecLp:                                          ; 18-byte section record for LP.OVL; not referenced in the
-                                                ; root code
+SecLp:                                          ; 18-byte section record for LP.OVL; a record of SectionTable,
+                                                ; reached by section number
         dw 0x1E45                               ; load paragraph, relocated
         dw FileLp                               ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1628,8 +1617,8 @@ SecLp:                                          ; 18-byte section record for LP.
         dw 0xFFFF                               ; section to chain, or -1
         dw 3                                    ; number printed in errors
         dw 0x116E                               ; paragraphs to read
-SecStats:                                       ; 18-byte section record for STATS.OVL; not referenced in the
-                                                ; root code
+SecStats:                                       ; 18-byte section record for STATS.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x1E45                               ; load paragraph, relocated
         dw FileStats                            ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1640,8 +1629,8 @@ SecStats:                                       ; 18-byte section record for STA
         dw 0xFFFF                               ; section to chain, or -1
         dw 4                                    ; number printed in errors
         dw 0x9BF                                ; paragraphs to read
-SecGame:                                        ; 18-byte section record for GAME.OVL; not referenced in the
-                                                ; root code
+SecGame:                                        ; 18-byte section record for GAME.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x1E45                               ; load paragraph, relocated
         dw FileGame                             ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1652,8 +1641,8 @@ SecGame:                                        ; 18-byte section record for GAM
         dw 0xFFFF                               ; section to chain, or -1
         dw 5                                    ; number printed in errors
         dw 0x157                                ; paragraphs to read
-SecInit:                                        ; 18-byte section record for INIT.OVL; not referenced in the
-                                                ; root code
+SecInit:                                        ; 18-byte section record for INIT.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x1F9C                               ; load paragraph, relocated
         dw FileInit                             ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1664,8 +1653,8 @@ SecInit:                                        ; 18-byte section record for INI
         dw 3                                    ; section to chain, or -1
         dw 6                                    ; number printed in errors
         dw 0x987                                ; paragraphs to read
-SecAi:                                          ; 18-byte section record for AI.OVL; not referenced in the
-                                                ; root code
+SecAi:                                          ; 18-byte section record for AI.OVL; a record of SectionTable,
+                                                ; reached by section number
         dw 0x1F9C                               ; load paragraph, relocated
         dw FileAi                               ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1676,8 +1665,8 @@ SecAi:                                          ; 18-byte section record for AI.
         dw 3                                    ; section to chain, or -1
         dw 7                                    ; number printed in errors
         dw 0x13AD                               ; paragraphs to read
-SecMovie:                                       ; 18-byte section record for MOVIE.OVL; not referenced in the
-                                                ; root code
+SecMovie:                                       ; 18-byte section record for MOVIE.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x3349                               ; load paragraph, relocated
         dw FileMovie                            ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1688,8 +1677,8 @@ SecMovie:                                       ; 18-byte section record for MOV
         dw 0xFFFF                               ; section to chain, or -1
         dw 8                                    ; number printed in errors
         dw 0xCC                                 ; paragraphs to read
-SecFades:                                       ; 18-byte section record for FADES.OVL; not referenced in the
-                                                ; root code
+SecFades:                                       ; 18-byte section record for FADES.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x3349                               ; load paragraph, relocated
         dw FileFades                            ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1700,8 +1689,8 @@ SecFades:                                       ; 18-byte section record for FAD
         dw 0xFFFF                               ; section to chain, or -1
         dw 9                                    ; number printed in errors
         dw 0xF                                  ; paragraphs to read
-SecFades1:                                      ; 18-byte section record for FADES1.OVL; not referenced in the
-                                                ; root code
+SecFades1:                                      ; 18-byte section record for FADES1.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades1                           ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1712,8 +1701,8 @@ SecFades1:                                      ; 18-byte section record for FAD
         dw 7                                    ; section to chain, or -1
         dw 0xA                                  ; number printed in errors
         dw 0x1C                                 ; paragraphs to read
-SecFades2:                                      ; 18-byte section record for FADES2.OVL; not referenced in the
-                                                ; root code
+SecFades2:                                      ; 18-byte section record for FADES2.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades2                           ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1724,8 +1713,8 @@ SecFades2:                                      ; 18-byte section record for FAD
         dw 7                                    ; section to chain, or -1
         dw 0xB                                  ; number printed in errors
         dw 0x1E                                 ; paragraphs to read
-SecFades3:                                      ; 18-byte section record for FADES3.OVL; not referenced in the
-                                                ; root code
+SecFades3:                                      ; 18-byte section record for FADES3.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades3                           ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1736,8 +1725,8 @@ SecFades3:                                      ; 18-byte section record for FAD
         dw 7                                    ; section to chain, or -1
         dw 0xC                                  ; number printed in errors
         dw 0x1D                                 ; paragraphs to read
-SecFades4:                                      ; 18-byte section record for FADES4.OVL; not referenced in the
-                                                ; root code
+SecFades4:                                      ; 18-byte section record for FADES4.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades4                           ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1748,8 +1737,8 @@ SecFades4:                                      ; 18-byte section record for FAD
         dw 7                                    ; section to chain, or -1
         dw 0xD                                  ; number printed in errors
         dw 0xE                                  ; paragraphs to read
-SecFades5:                                      ; 18-byte section record for FADES5.OVL; not referenced in the
-                                                ; root code
+SecFades5:                                      ; 18-byte section record for FADES5.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades5                           ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1760,8 +1749,8 @@ SecFades5:                                      ; 18-byte section record for FAD
         dw 7                                    ; section to chain, or -1
         dw 0xE                                  ; number printed in errors
         dw 0x1C                                 ; paragraphs to read
-SecFades6:                                      ; 18-byte section record for FADES6.OVL; not referenced in the
-                                                ; root code
+SecFades6:                                      ; 18-byte section record for FADES6.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades6                           ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1772,8 +1761,8 @@ SecFades6:                                      ; 18-byte section record for FAD
         dw 7                                    ; section to chain, or -1
         dw 0xF                                  ; number printed in errors
         dw 0x17                                 ; paragraphs to read
-SecFades7:                                      ; 18-byte section record for FADES7.OVL; not referenced in the
-                                                ; root code
+SecFades7:                                      ; 18-byte section record for FADES7.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades7                           ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1784,8 +1773,8 @@ SecFades7:                                      ; 18-byte section record for FAD
         dw 7                                    ; section to chain, or -1
         dw 0x10                                 ; number printed in errors
         dw 0x21                                 ; paragraphs to read
-SecFades8:                                      ; 18-byte section record for FADES8.OVL; not referenced in the
-                                                ; root code
+SecFades8:                                      ; 18-byte section record for FADES8.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades8                           ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1796,8 +1785,8 @@ SecFades8:                                      ; 18-byte section record for FAD
         dw 7                                    ; section to chain, or -1
         dw 0x11                                 ; number printed in errors
         dw 0x20                                 ; paragraphs to read
-SecFades9:                                      ; 18-byte section record for FADES9.OVL; not referenced in the
-                                                ; root code
+SecFades9:                                      ; 18-byte section record for FADES9.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades9                           ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1808,8 +1797,8 @@ SecFades9:                                      ; 18-byte section record for FAD
         dw 7                                    ; section to chain, or -1
         dw 0x12                                 ; number printed in errors
         dw 0x11                                 ; paragraphs to read
-SecFades10:                                     ; 18-byte section record for FADES10.OVL; not referenced in
-                                                ; the root code
+SecFades10:                                     ; 18-byte section record for FADES10.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades10                          ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1820,8 +1809,8 @@ SecFades10:                                     ; 18-byte section record for FAD
         dw 7                                    ; section to chain, or -1
         dw 0x13                                 ; number printed in errors
         dw 0x23                                 ; paragraphs to read
-SecFades11:                                     ; 18-byte section record for FADES11.OVL; not referenced in
-                                                ; the root code
+SecFades11:                                     ; 18-byte section record for FADES11.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades11                          ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1832,8 +1821,8 @@ SecFades11:                                     ; 18-byte section record for FAD
         dw 7                                    ; section to chain, or -1
         dw 0x14                                 ; number printed in errors
         dw 0x38                                 ; paragraphs to read
-SecFades12:                                     ; 18-byte section record for FADES12.OVL; not referenced in
-                                                ; the root code
+SecFades12:                                     ; 18-byte section record for FADES12.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades12                          ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1844,8 +1833,8 @@ SecFades12:                                     ; 18-byte section record for FAD
         dw 7                                    ; section to chain, or -1
         dw 0x15                                 ; number printed in errors
         dw 0x1A                                 ; paragraphs to read
-SecHockey:                                      ; 18-byte section record for HOCKEY.EXE; not referenced in the
-                                                ; root code
+SecHockey:                                      ; 18-byte section record for HOCKEY.EXE; a record of
+                                                ; SectionTable, reached by section number
         dw 0x3415                               ; load paragraph, relocated
         dw FileHockey                           ; file slot
         dw 0x2005                               ; file position, paragraphs
@@ -1859,8 +1848,8 @@ SecHockey:                                      ; 18-byte section record for HOC
 SectionEndMark:                                 ; used by ExeFileName
 
 ; Reload stack. The file slots begin immediately after it.
-ReloadStack:                                    ; reload stack placed after the section table; not referenced
-                                                ; in the root code
+ReloadStack:                                    ; reload stack placed after the section table; InitOverlay
+                                                ; points ReloadBase here (SectionEnd)
         times 0x6C2 db 0                        ; up to FileMenus
 
 ; One 128-byte slot per overlay file, then the EXE. The byte in front of

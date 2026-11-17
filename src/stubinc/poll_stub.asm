@@ -2,6 +2,7 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
+ReadKeyEventHit		equ	0x0
 InputQueueCount		equ	0x508
 InputQueueTail		equ	0x50C
 PollCountdown		equ	0x50E

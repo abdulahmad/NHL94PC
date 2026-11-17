@@ -111,7 +111,7 @@ LoadRawMode:
         mov [bp - 0xa], dx
         db 0x0B, 0xD0                           ; insn: or dx, ax
         jz short .1
-        db 0xE9, 0x13, 0x01                     ; insn: jmp 0x1b0
+        jmp near LoadRawModeTail + 0x1B0
 .1:
         push word [bp + 0xa]
         lea ax, [bp - 0x12]
@@ -129,7 +129,7 @@ LoadRawMode:
 .2:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         cwd
-        db 0xE9, 0xEE, 0x00                     ; insn: jmp 0x1b3
+        jmp near LoadRawModeTail.1 + 0x1B0
 .3:
         mov si, [bp + 0xa]
         push si
