@@ -3256,3 +3256,66 @@ g_DF00,lineslotmark,g_DF00,95 PC,medium,"same place in the routines that use it,
 g_DF64,dresseddefs,g_DF64,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
 g_DF66,dressedfwds,g_DF66,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
 g_DF68,dressedskaters,g_DF68,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
+g_29D8,penaltysc,g_29D8,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup.asm
+g_4A56,photobankf,g_4A56,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup.asm
+g_B37E,hmtmtouch1,g_B37E,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup_bss.asm
+g_B380,hmtmtouch2,g_B380,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup_bss.asm
+g_B382,hmtmtouch3,g_B382,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup_bss.asm
+g_B452,awtmextra,g_B452,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup_bss.asm
+g_B454,awtmtouch1,g_B454,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup_bss.asm
+g_B456,awtmtouch2,g_B456,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup_bss.asm
+g_B458,awtmtouch3,g_B458,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup_bss.asm
+g_BC4C,pucknopuck,g_BC4C,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup_bss.asm
+g_BD34,reftemp1,g_BD34,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup_bss.asm
+g_D5FC,LinePlayersAway,g_D5FC,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup_bss.asm
+f_35F3_0017,msgThereAreNoHilights,f_35F3_0017,new,high,message list of 1 far string pointer: 'There are no hilights!',src/data/far/hilight_messages.asm
+f_36A8_0077,msgCouldNotFindA,f_36A8_0077,new,high,message list of 1 far string pointer: 'Could not find a',src/data/far/playoff_dialog_rects.asm
+f_36A8_00AC,msgInitializingTheMt32CardPlease,f_36A8_00AC,new,high,message list of 2 far string pointers: 'Initializing the MT32 card. / Please wait.',src/data/far/playoff_dialog_rects.asm
+f_36B8_005B,msgThereIsAlreadyAPlay,f_36B8_005B,new,high,message list of 2 far string pointers: 'There is already a Play-Off with that name! / Do you want to replace it with a new Play-Off?',src/data/far/playoff_messages.asm
+f_3701_00A7,msgAllTheTeamsAreAlready,f_3701_00A7,new,high,message list of 1 far string pointer: 'All the teams are already human',src/data/far/team_choice_text.asm
+f_3701_00D4,msgThereIsOnlyOneHuman,f_3701_00D4,new,high,message list of 2 far string pointers: 'There is only one human / controlled team!',src/data/far/team_choice_text.asm
+f_3701_0101,msgCanNotReadDatabasesIn,f_3701_0101,new,high,message list of 1 far string pointer: 'Can not read databases in the league',src/data/far/team_choice_text.asm
+f_3701_012A,msgThatNameHasAlreadyBeen,f_3701_012A,new,high,message list of 1 far string pointer: 'That name has already been used!',src/data/far/team_choice_text.asm
+f_3701_0192,msgThatFloppyDiskIsNot,f_3701_0192,new,high,message list of 1 far string pointer: 'That floppy disk is not for',src/data/far/team_choice_text.asm
+f_3701_019A,msgInsertDiskFor,f_3701_019A,new,high,message list of 1 far string pointer: 'Insert disk for',src/data/far/team_choice_text.asm
+f_3701_01F0,msgThatDiskIsFor,f_3701_01F0,new,high,message list of 1 far string pointer: 'That disk is for',src/data/far/team_choice_text.asm
+f_3701_0298,msgThereIsAlreadyALeague,f_3701_0298,new,high,message list of 2 far string pointers: 'There is already a league with that name! / Do you want to replace it with a new league?',src/data/far/team_choice_text.asm
+f_3701_02FF,msgWhichScheduleDoYouWant,f_3701_02FF,new,high,message list of 1 far string pointer: '  Which schedule do you want to use?  ',src/data/far/team_choice_text.asm
+f_3701_0342,msgErrorWhileUpdatingDatabase,f_3701_0342,new,high,message list of 1 far string pointer: 'Error while updating database!',src/data/far/team_choice_text.asm
+f_3701_0363,msgErrorWhileCreatingLeague,f_3701_0363,new,high,message list of 1 far string pointer: 'Error while creating league!',src/data/far/team_choice_text.asm
+f_3701_0384,msgErrorWhileTradingPlayers,f_3701_0384,new,high,message list of 1 far string pointer: 'Error while trading players!',src/data/far/team_choice_text.asm
+f_3701_042A,msgPutDiskWithLeagueTo,f_3701_042A,new,high,message list of 2 far string pointers: 'Put disk with league to / import in any drive.',src/data/far/team_choice_text.asm
+f_3701_0450,msgErrorWhileImportingLeague,f_3701_0450,new,high,message list of 1 far string pointer: 'Error while importing league!',src/data/far/team_choice_text.asm
+f_3701_048A,msgIncorrectPassword,f_3701_048A,new,high,message list of 1 far string pointer: 'Incorrect password!',src/data/far/team_choice_text.asm
+f_3701_05D5,msgTheLeague,f_3701_05D5,new,high,message list of 1 far string pointer: 'The league',src/data/far/team_choice_text.asm
+f_3701_0607,msgTheLeague2,f_3701_0607,new,high,message list of 1 far string pointer: 'The league',src/data/far/team_choice_text.asm
+f_3701_06DF,msgCreatingLeague,f_3701_06DF,new,high,message list of 1 far string pointer: 'Creating league.',src/data/far/team_choice_text.asm
+f_3701_0712,msgThatFloppyDiskHasAn,f_3701_0712,new,high,message list of 2 far string pointers: 'That floppy disk has an / old copy of the league',src/data/far/team_choice_text.asm
+f_3701_074E,msgAreYouSureYouWant,f_3701_074E,new,high,message list of 2 far string pointers: 'Are you sure you want to / use a new floppy disk?',src/data/far/team_choice_text.asm
+f_3701_07C6,msgImportMasterCopyOfLeague,f_3701_07C6,new,high,message list of 2 far string pointers: 'Import master copy of league or / import for player on floppy disk?',src/data/far/team_choice_text.asm
+f_3701_0827,msgCanNotImportMasterLeague,f_3701_0827,new,high,message list of 2 far string pointers: 'Can not import master league! / The league already exists!',src/data/far/team_choice_text.asm
+f_3701_0862,msgTheLeague3,f_3701_0862,new,high,message list of 1 far string pointer: 'The league',src/data/far/team_choice_text.asm
+f_3701_08AF,msgMasterDatabasesFor,f_3701_08AF,new,high,message list of 1 far string pointer: 'Master databases for',src/data/far/team_choice_text.asm
+f_3701_0A0C,msgMergingPlayersToMasterDatabase,f_3701_0A0C,new,high,message list of 1 far string pointer: 'Merging players to master database.',src/data/far/team_choice_text.asm
+f_3701_0A23,msgUpdatingSchedule,f_3701_0A23,new,high,message list of 1 far string pointer: 'Updating schedule.',src/data/far/team_choice_text.asm
+f_3701_0A4E,msgPleasePutAFloppyDisk,f_3701_0A4E,new,high,message list of 1 far string pointer: 'Please put a floppy disk in any drive.',src/data/far/team_choice_text.asm
+f_3701_0A6B,msgUseFloppyDriveAOr,f_3701_0A6B,new,high,message list of 1 far string pointer: 'Use floppy drive A or B?',src/data/far/team_choice_text.asm
+f_3701_0AA1,msgTheFirstTeamSelectedTo,f_3701_0AA1,new,high,message list of 2 far string pointers: 'The first team selected to / play must be imported!',src/data/far/team_choice_text.asm
+f_3701_0AEA,msgThePasswordWasEnteredDifferently,f_3701_0AEA,new,high,message list of 2 far string pointers: 'The password was entered differently / the second time! Try again.',src/data/far/team_choice_text.asm
+f_3701_0B32,msgThereIsASavedGame,f_3701_0B32,new,high,message list of 1 far string pointer: 'There is a saved game in the league',src/data/far/team_choice_text.asm
+f_3821_001C,msgImportingMasterDatabases,f_3821_001C,new,high,message list of 1 far string pointer: 'Importing Master Databases.',src/data/far/import_messages.asm
+f_3821_0053,msgErrorWhileExportingPlayerPlayer,f_3821_0053,new,high,message list of 2 far string pointers: 'Error while exporting player! / Player not exported!',src/data/far/import_messages.asm
+f_3827_0029,msgGeneratingRandomSchedulePleaseWait,f_3827_0029,new,high,message list of 2 far string pointers: 'Generating random schedule. / Please wait.',src/data/far/schedule_messages.asm
+f_382B_0051,msgThereMustBeAnEqual,f_382B_0051,new,high,message list of 3 far string pointers: 'There must be an equal / number of players selected / on both teams!',src/data/far/trade_messages.asm
+f_382B_009A,msgTheTradingDeadlineHasPassed,f_382B_009A,new,high,message list of 2 far string pointers: 'The trading deadline has passed! / No more trading is allowed!',src/data/far/trade_messages.asm
+f_3836_0042,msgTheDatabasesCanOnlyBe,f_3836_0042,new,high,message list of 2 far string pointers: 'The databases can only be merged / on the master copy of the league',src/data/far/merge_messages.asm
+f_3836_008B,msgTheMasterControllerForThe,f_3836_008B,new,high,message list of 1 far string pointer: 'The master controller for the league',src/data/far/merge_messages.asm
+f_3836_00E9,msgWarningMergeNotCompletedLeague,f_3836_00E9,new,high,message list of 3 far string pointers: 'Warning! Merge not completed! / League can not be used until / the merge is complete!',src/data/far/merge_messages.asm
+f_3836_011D,msgErrorWhileUpdatingPlayersDatabases,f_3836_011D,new,high,message list of 2 far string pointers: 'Error while updating / players databases!',src/data/far/merge_messages.asm
+f_3836_0144,msgErrorWhileMergingDatabases,f_3836_0144,new,high,message list of 1 far string pointer: 'Error while merging databases!',src/data/far/merge_messages.asm
+f_38F0_0045,msgInsufficientDiskSpaceToSave,f_38F0_0045,new,high,message list of 3 far string pointers: 'Insufficient disk space to / save hilights. / Current hilight not saved.',src/data/far/hilight_save_messages.asm
+g_0F24,msgConfirmDeletionOfThe,g_0F24,new,high,message list of 1 far string pointer: 'Confirm Deletion of the',src/data/dgroup.asm
+g_12AC,msgYourTeamHasBeenEliminated,g_12AC,new,high,message list of 4 far string pointers: 'Your team has been eliminated / from the play-offs. Do you / wish to see the final results / of the play-offs?',src/data/dgroup.asm
+g_12BC,msgTeamEliminatedFromPlayoffs,g_12BC,new,high,"message list of 4 far string pointers: 'The ....,....,....,....,. / have been eliminated from / the play-offs. / The .....................'",src/data/dgroup.asm
+g_12D4,msgGeneratingTheFinalResults,g_12D4,new,high,message list of 1 far string pointer: 'Generating the final results.',src/data/dgroup.asm
+g_4EC4,TeamStatsLabels,g_4EC4,new,high,message list of 4 far string pointers: 'Score / Shots / Power play / Penalties',src/data/dgroup.asm

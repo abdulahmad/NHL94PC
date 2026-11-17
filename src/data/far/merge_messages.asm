@@ -3,28 +3,28 @@
         db 'The databases can only be merged'
         db 0x00, 'on the master copy of the league'
         db 0x00
-f_3836_0042:                                    ; used by LP (to name)
+msgTheDatabasesCanOnlyBe:                                    ; used by LP (to name)
         db 0x00, 0x00, '68!', 0x00
         db '68', 0x00, 0x00, 0x00, 0x00
         db 'The master controller for the league'
         db 0x00, 'must be imported first!'
         db 0x00
-f_3836_008B:                                    ; used by LP (to name)
+msgTheMasterControllerForThe:                                    ; used by LP (to name)
         db 0x4E, 0x00, 0x36, 0x38, 0x00, 0x00, 0x00, 0x00
         db 0x73, 0x00, '68Warning! Merge not completed!'
         db 0x00, 'League can not be used until'
         db 0x00, 'the merge is complete!'
         db 0x00
-f_3836_00E9:                                    ; used by LP (to name)
+msgWarningMergeNotCompletedLeague:                                    ; used by LP (to name)
         db 0x97, 0x00, 0x36, 0x38, 0xB5, 0x00
         db 0x36, 0x38, 0xD2, 0x00
         db '68Error while updating'
         db 0x00, 'players databases!'
         db 0x00
-f_3836_011D:                                    ; used by LP (to name)
+msgErrorWhileUpdatingPlayersDatabases:                                    ; used by LP (to name)
         db 0xF5, 0x00, 0x36, 0x38, 0x0A, 0x01
         db '68Error while merging databases!'
         db 0x00
-f_3836_0144:                                    ; used by LP (to name)
+msgErrorWhileMergingDatabases:                                    ; used by LP (to name)
         db 0x25, 0x01, 0x36, 0x38, 0x00, 0x00, 0x00, 0x00
         db 0x00, 0x00, 0x00, 0x00

@@ -259,7 +259,7 @@ SaveGameState:
         mov bx, [bp - 0x2]
         add word [bp - 0x2], 0x2
         mov [bx], ax
-        mov ax, [g_29D8]
+        mov ax, [penaltysc]
         mov bx, [bp - 0x2]
         add word [bp - 0x2], 0x2
         mov [bx], ax
@@ -1255,7 +1255,7 @@ LoadGameState:
         mov bx, [bp - 0x2]
         add word [bp - 0x2], 0x2
         mov ax, [bx]
-        mov [g_29D8], ax
+        mov [penaltysc], ax
         mov bx, [bp - 0x2]
         add word [bp - 0x2], 0x2
         mov ax, [bx]

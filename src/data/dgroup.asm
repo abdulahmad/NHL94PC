@@ -947,7 +947,7 @@ g_0F10:                                         ; used by MENUS (to name)
         db 'c3', 0x00, '..', 0x00
         db 'c4', 0x00, 'c5', 0x00
         db 0x63, 0x36, 0x00, 0x00
-g_0F24:                                         ; used by MENUS (to name)
+msgConfirmDeletionOfThe:                                         ; used by MENUS (to name)
         db 0x80, 0x00, 0x9A, 0x36
 g_0F28:                                         ; used by MENUS (to name)
         db 0x00, 0x00
@@ -1166,16 +1166,16 @@ str_ScheduleDb_4:                               ; string 'schedule.db'; used by 
 str_Xx1_2:                                      ; string 'xx1'; used by MENUS
         db 'xx1', 0x00
         db 0x2E, 0x2E, 0x00
-g_12AC:                                         ; used by MENUS (to name)
+msgYourTeamHasBeenEliminated:                                         ; used by MENUS (to name)
         db 0x63, 0x00, 0xB8, 0x36, 0x81, 0x00, 0xB8, 0x36
         db 0x9C, 0x00, 0xB8, 0x36, 0xBA
         db 0x00, 0xB8, 0x36
-g_12BC:                                         ; used by MENUS (to name)
+msgTeamEliminatedFromPlayoffs:                                         ; used by MENUS (to name)
         db 0xCC, 0x00, 0xB8, 0x36, 0xE6, 0x00, 0xB8, 0x36
         db 0x00, 0x01, 0xB8, 0x36, 0x0F
         db 0x01, 0xB8, 0x36, 0x29, 0x01, 0xB8, 0x36, 0x43
         db 0x01, 0xB8, 0x36
-g_12D4:                                         ; used by MENUS (to name)
+msgGeneratingTheFinalResults:                                         ; used by MENUS (to name)
         db 0x52, 0x01, 0xB8, 0x36
 str_Db_4:                                       ; string '.db'; used by MENUS
         db '.db'
@@ -2668,7 +2668,7 @@ g_29D5:                                         ; used by AI (to name)
         db 0xFF
 RefPen:                                         ; used by AI, INIT (to name)
         db 0x00, 0x00
-g_29D8:                                         ; used by AI, INIT (to name)
+penaltysc:                                         ; used by AI, INIT (to name)
         db 0xFF, 0xFF
 gsp:                                         ; used by AI, INIT, MENUS (to name)
         db 0x00, 0x00
@@ -3737,7 +3737,7 @@ lastsfx:                                        ; last sound effect played; used
 CrowdSound:                                     ; crowd sound handle; used by CrowdNoiseUpdate, CrowdFadeOut,
                                                 ; PlaySoundEffect
         times 2 db 0
-g_4A56:                                         ; used by INIT (to name)
+photobankf:                                         ; used by INIT (to name)
         times 2 db 0
 g_4A58:                                         ; used by INIT (to name)
         times 2 db 0
@@ -4000,7 +4000,7 @@ str_D02d:                                       ; string '%d:%02d'; used by INIT
         db '%d:%02d', 0x00
 str_DDD:                                        ; string '%d/%d (%d%%)'; used by INIT
         db '%d/%d (%d%%)', 0x00, 0x00
-g_4EC4:                                         ; used by INIT (to name)
+TeamStatsLabels:                                         ; used by INIT (to name)
         db 0x00, 0x00
 g_4EC6:                                         ; used by INIT (to name)
         db 0xEB, 0x38, 0x06, 0x00, 0xEB, 0x38, 0x0C, 0x00, 0xEB, 0x38, 0x17, 0x00, 0xEB, 0x38, 0x21, 0x00

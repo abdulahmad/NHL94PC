@@ -1481,7 +1481,7 @@ ReplaySaveHilight:
         push 0x0
         push 0x3
         push word 0x38f0
-        push strict word f_38F0_0045
+        push strict word msgInsufficientDiskSpaceToSave
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -1553,7 +1553,7 @@ ReplaySaveHilight:
         push 0x0
         push 0x3
         push word 0x38f0
-        push strict word f_38F0_0045
+        push strict word msgInsufficientDiskSpaceToSave
         push -0x1
         push -0x1
         call 0x0D90:MessageBox

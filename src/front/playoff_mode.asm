@@ -460,7 +460,7 @@ CreatePlayoffs:
         push strict word f_3701_02A0
         push 0x2
         push word 0x36b8
-        push strict word f_36B8_005B
+        push strict word msgThereIsAlreadyAPlay
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -3255,7 +3255,7 @@ POHandleElimination:
         push strict word f_36B8_0170
         push 0x4
         push ds
-        push strict word g_12AC
+        push strict word msgYourTeamHasBeenEliminated
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -3274,7 +3274,7 @@ POHandleElimination:
         push 0x0
         push 0x1
         push ds
-        push strict word g_12D4
+        push strict word msgGeneratingTheFinalResults
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -3637,7 +3637,7 @@ POHandleElimination:
         push 0x0
         push 0x6
         push ds
-        push strict word g_12BC
+        push strict word msgTeamEliminatedFromPlayoffs
         push -0x1
         push -0x1
         call 0x0D90:MessageBox

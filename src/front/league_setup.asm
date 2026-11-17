@@ -647,7 +647,7 @@ ChooseLeagueController:
         push 0x0
         push 0x2
         push word 0x3701
-        push strict word f_3701_0AEA
+        push strict word msgThePasswordWasEnteredDifferently
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -2332,7 +2332,7 @@ LeagueTeamSelect:
         push 0x0
         push 0x1
         push word 0x3701
-        push strict word f_3701_012A
+        push strict word msgThatNameHasAlreadyBeen
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -2455,7 +2455,7 @@ LeagueTeamSelect:
         push 0x0
         push 0x2
         push word 0x3701
-        push strict word f_3701_0AEA
+        push strict word msgThePasswordWasEnteredDifferently
         push -0x1
         push -0x1
         call 0x0D90:MessageBox

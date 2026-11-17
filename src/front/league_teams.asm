@@ -321,7 +321,7 @@ AddHumanTeam:
         push 0x0
         push 0x1
         push word 0x3701
-        push strict word f_3701_00A7
+        push strict word msgAllTheTeamsAreAlready
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -648,6 +648,6 @@ RemoveHumanTeam:
         push 0x0
         push 0x2
         push word 0x3701
-        push strict word f_3701_00D4
+        push strict word msgThereIsOnlyOneHuman
         push -0x1
         push -0x1

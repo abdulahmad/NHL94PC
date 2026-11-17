@@ -260,11 +260,7 @@ f_3448_1332		equ	0x1332
 f_3448_1584		equ	0x1584
 f_3448_164A		equ	0x164A
 f_3448_19BA		equ	0x19BA
-f_35F3_0017		equ	0x17
 f_3680_0000		equ	0x0
-f_36A8_0077		equ	0x77
-f_36A8_00AC		equ	0xAC
-f_36B8_005B		equ	0x5B
 f_36B8_00D0		equ	0xD0
 f_36B8_0113		equ	0x113
 f_36B8_0170		equ	0x170
@@ -290,7 +286,6 @@ g_08FC		equ	0x8FC
 g_0EDC		equ	0xEDC
 g_0EDE		equ	0xEDE
 g_0EE0		equ	0xEE0
-g_0F24		equ	0xF24
 g_0F28		equ	0xF28
 g_0F2A		equ	0xF2A
 g_0F2C		equ	0xF2C
@@ -308,9 +303,6 @@ g_1138		equ	0x1138
 g_1146		equ	0x1146
 g_11D6		equ	0x11D6
 g_11D8		equ	0x11D8
-g_12AC		equ	0x12AC
-g_12BC		equ	0x12BC
-g_12D4		equ	0x12D4
 g_133F		equ	0x133F
 g_21B0		equ	0x21B0
 g_21B2		equ	0x21B2
@@ -474,6 +466,14 @@ leaguestatsmode		equ	0xC052
 lgfilenames		equ	0xC0E6
 lgfiles		equ	0xC0DE
 lgstate		equ	0xC4
+msgConfirmDeletionOfThe		equ	0xF24
+msgCouldNotFindA		equ	0x77
+msgGeneratingTheFinalResults		equ	0x12D4
+msgInitializingTheMt32CardPlease		equ	0xAC
+msgTeamEliminatedFromPlayoffs		equ	0x12BC
+msgThereAreNoHilights		equ	0x17
+msgThereIsAlreadyAPlay		equ	0x5B
+msgYourTeamHasBeenEliminated		equ	0x12AC
 musicslot		equ	0x8B76
 playofftree		equ	0xC204
 postate		equ	0x62

@@ -200,7 +200,7 @@ StartHL2:
         mov [passplayer], ax
         mov [RefStep], ax
         mov [PenCntDwn], ax
-        mov [g_29D8], ax
+        mov [penaltysc], ax
         mov [ovltimer], ax
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [refsignal], ax
@@ -247,9 +247,9 @@ StartHL2:
         call 0x2E42:forcepldata
         add sp, 0x2
         mov ax, 0xffff
-        mov [g_B382], ax
-        mov [g_B380], ax
-        mov [g_B37E], ax
+        mov [hmtmtouch3], ax
+        mov [hmtmtouch2], ax
+        mov [hmtmtouch1], ax
         push word 0xb438
         call 0x2E42:reenergizeteam
         add sp, 0x2
@@ -260,9 +260,9 @@ StartHL2:
         call 0x2E42:forcepldata
         add sp, 0x2
         mov ax, 0xffff
-        mov [g_B458], ax
-        mov [g_B456], ax
-        mov [g_B454], ax
+        mov [awtmtouch3], ax
+        mov [awtmtouch2], ax
+        mov [awtmtouch1], ax
         call 0x2E42:resetplstuff
         mov word [bp - 0xf6], 0xb50e
         mov word [bp - 0xf0], 0x0

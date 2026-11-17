@@ -77,7 +77,7 @@ ReadLeagueInfo:
         push 0x0
         push 0x2
         push word 0x3701
-        push strict word f_3701_0101
+        push strict word msgCanNotReadDatabasesIn
         push -0x1
         push -0x1
         call 0x0D90:MessageBox

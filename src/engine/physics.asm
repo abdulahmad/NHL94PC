@@ -1859,7 +1859,7 @@ passtoa0:
         mov [bx + 0x27], al
         cbw
         sub ax, strict word 0x6
-        mov [g_BC4C], ax
+        mov [pucknopuck], ax
         db 0x8B, 0xC6                           ; insn: mov ax, si
         mov dx, [bp - 0x18]
         call 0x03A3:ImulRegs

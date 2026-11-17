@@ -158,6 +158,7 @@ StopJingle		equ	0x5B8
 TableAt		equ	0xAF6
 TableCount		equ	0xAEC
 TeamNameClips		equ	0x1E0
+TeamStatsLabels		equ	0x4EC4
 TextWidthAll		equ	0xC0A
 TextWidthFar		equ	0x2
 UnhookDivideError		equ	0x4B
@@ -228,7 +229,6 @@ f_3701_0E53		equ	0xE53
 f_38AF_0022		equ	0x22
 f_38BD_01F3		equ	0x1F3
 f_38BD_028F		equ	0x28F
-f_38F0_0045		equ	0x45
 f_3A0B_0000		equ	0x0
 f_3A0B_01F4		equ	0x1F4
 f_3A0B_03E8		equ	0x3E8
@@ -297,7 +297,6 @@ g_2986		equ	0x2986
 g_2988		equ	0x2988
 g_29CA		equ	0x29CA
 g_29CC		equ	0x29CC
-g_29D8		equ	0x29D8
 g_2A02		equ	0x2A02
 g_48CA		equ	0x48CA
 g_48CC		equ	0x48CC
@@ -316,7 +315,6 @@ g_4A24		equ	0x4A24
 g_4A28		equ	0x4A28
 g_4A2C		equ	0x4A2C
 g_4A4E		equ	0x4A4E
-g_4A56		equ	0x4A56
 g_4A58		equ	0x4A58
 g_4A5A		equ	0x4A5A
 g_4A5C		equ	0x4A5C
@@ -325,7 +323,6 @@ g_4A60		equ	0x4A60
 g_4B20		equ	0x4B20
 g_4B22		equ	0x4B22
 g_4BCE		equ	0x4BCE
-g_4EC4		equ	0x4EC4
 g_4EC6		equ	0x4EC6
 g_4FD4		equ	0x4FD4
 g_5328		equ	0x5328
@@ -605,6 +602,7 @@ lj2		equ	0xD622
 ltack		equ	0x4A50
 ltx		equ	0xD626
 lty		equ	0xD628
+msgInsufficientDiskSpaceToSave		equ	0x45
 onetimerflag		equ	0x4A66
 ovlseq		equ	0x49FC
 ovlstep		equ	0x49FE
@@ -612,6 +610,8 @@ ovltimer		equ	0x49F0
 passdir		equ	0x29A4
 passplayer		equ	0x29A8
 passspeed		equ	0x29A6
+penaltysc		equ	0x29D8
+photobankf		equ	0x4A56
 postate		equ	0x62
 puckcross		equ	0xD616
 puckfaceoff2_ptab		equ	0x49BC

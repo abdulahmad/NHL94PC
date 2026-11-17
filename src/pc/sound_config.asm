@@ -997,7 +997,7 @@ SetSoundDevice:
         push 0x0
         push 0x2
         push word 0x36a8
-        push strict word f_36A8_00AC
+        push strict word msgInitializingTheMt32CardPlease
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -1155,7 +1155,7 @@ SetSoundDevice:
         push 0x0
         push 0x3
         push word 0x36a8
-        push strict word f_36A8_0077
+        push strict word msgCouldNotFindA
         push -0x1
         push -0x1
         call 0x0D90:MessageBox

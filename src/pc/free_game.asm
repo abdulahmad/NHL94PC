@@ -88,7 +88,7 @@ FreeGameMemory:
 ;-----------------------------------------------------------------------------
 FreePPVFiles:
         push word [g_4A58]
-        push word [g_4A56]
+        push word [photobankf]
         call 0x06E1:FindUnlink
         add sp, 0x4
         push word [g_4A5C]
@@ -105,7 +105,7 @@ FreePPVFiles:
         mov [g_4A5C], ax
         mov [g_4A5A], ax
         mov [g_4A58], ax
-        mov [g_4A56], ax
+        mov [photobankf], ax
         retf
         db 0x90
 

@@ -60,6 +60,7 @@ IntermissionPC		equ	0x4
 IsCupClinched		equ	0xC2
 JoyNibble		equ	0x10E1
 LastShooterTeam		equ	0xD006
+LinePlayersAway		equ	0xD5FC
 LoadArenaJinglesThunk		equ	0x2981
 LoadGameGfxThunk		equ	0x2977
 LoadGameTeamsThunk		equ	0x26B1
@@ -154,6 +155,7 @@ awtmcoach_d3		equ	0xB4F1
 awtmcoachenergy		equ	0xB4F4
 awtmcoachflags		equ	0xB4F2
 awtmcoachmode		equ	0xB4F3
+awtmextra		equ	0xB452
 awtmflags		equ	0xB462
 awtmglattr		equ	0xB4FC
 awtmglstats		equ	0xB502
@@ -164,6 +166,9 @@ awtmlines		equ	0xB4FE
 awtmplstats		equ	0xB500
 awtmptrF2		equ	0xB508
 awtmsort		equ	0xB4F8
+awtmtouch1		equ	0xB454
+awtmtouch2		equ	0xB456
+awtmtouch3		equ	0xB458
 bannermsg		equ	0x49F8
 bannertimer		equ	0x49FA
 c1playernum		equ	0x29C2
@@ -249,7 +254,6 @@ g_29C5		equ	0x29C5
 g_29CA		equ	0x29CA
 g_29CC		equ	0x29CC
 g_29D5		equ	0x29D5
-g_29D8		equ	0x29D8
 g_29E0		equ	0x29E0
 g_29E2		equ	0x29E2
 g_2A02		equ	0x2A02
@@ -346,9 +350,6 @@ g_B096		equ	0xB096
 g_B098		equ	0xB098
 g_B107		equ	0xB107
 g_B207		equ	0xB207
-g_B37E		equ	0xB37E
-g_B380		equ	0xB380
-g_B382		equ	0xB382
 g_B387		equ	0xB387
 g_B38E		equ	0xB38E
 g_B3C6		equ	0xB3C6
@@ -359,10 +360,6 @@ g_B42A		equ	0xB42A
 g_B42C		equ	0xB42C
 g_B432		equ	0xB432
 g_B436		equ	0xB436
-g_B452		equ	0xB452
-g_B454		equ	0xB454
-g_B456		equ	0xB456
-g_B458		equ	0xB458
 g_B4D4		equ	0xB4D4
 g_B4F6		equ	0xB4F6
 g_B4FA		equ	0xB4FA
@@ -391,7 +388,6 @@ g_BC20		equ	0xBC20
 g_BC2A		equ	0xBC2A
 g_BC2C		equ	0xBC2C
 g_BC36		equ	0xBC36
-g_BC4C		equ	0xBC4C
 g_BC56		equ	0xBC56
 g_BC8E		equ	0xBC8E
 g_BC90		equ	0xBC90
@@ -411,7 +407,6 @@ g_BD10		equ	0xBD10
 g_BD1C		equ	0xBD1C
 g_BD20		equ	0xBD20
 g_BD28		equ	0xBD28
-g_BD34		equ	0xBD34
 g_BD3A		equ	0xBD3A
 g_BD3C		equ	0xBD3C
 g_BD44		equ	0xBD44
@@ -451,7 +446,6 @@ g_D496		equ	0xD496
 g_D4F3		equ	0xD4F3
 g_D4F4		equ	0xD4F4
 g_D4F5		equ	0xD4F5
-g_D5FC		equ	0xD5FC
 g_D604		equ	0xD604
 g_D606		equ	0xD606
 g_D608		equ	0xD608
@@ -551,6 +545,9 @@ hmtmplattr		equ	0xB424
 hmtmptrF2		equ	0xB434
 hmtmroster		equ	0xB430
 hmtmsort		equ	0xB422
+hmtmtouch1		equ	0xB37E
+hmtmtouch2		equ	0xB380
+hmtmtouch3		equ	0xB382
 hudclockhund		equ	0x5564
 hudclockmin		equ	0x5560
 hudclocksec		equ	0x5562
@@ -589,12 +586,14 @@ panelprevsec		equ	0x5568
 passdir		equ	0x29A4
 passplayer		equ	0x29A8
 passspeed		equ	0x29A6
+penaltysc		equ	0x29D8
 pendelaytab		equ	0x2A04
 penmintab		equ	0x2A1E
 penshotstart		equ	0x624E
 puckc		equ	0x2996
 puckfaceoff2_ptab		equ	0x49BC
 puckfaceoff2_ptab_y		equ	0x49BE
+pucknopuck		equ	0xBC4C
 puckpflags2		equ	0xBC53
 puckstruct		equ	0xBC14
 pucktemp1		equ	0xBC34
@@ -613,6 +612,7 @@ refposition		equ	0xBD2A
 refsigdir		equ	0x59C6
 refsignal		equ	0x29D2
 refsigspa_m2		equ	0x59F8
+reftemp1		equ	0xBD34
 reftemp3		equ	0xBD38
 regd0		equ	0xD66C
 regd1		equ	0xD672

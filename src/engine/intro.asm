@@ -209,7 +209,7 @@ PreGameIntro:
         call 0x1E7E:assreplace
         add sp, 0x4
         mov ax, [bp - 0xc]
-        mov [g_BD34], ax
+        mov [reftemp1], ax
         mov ax, 0x8e
         mov [g_BD10], ax
         mov [reftemp3], ax
@@ -1113,7 +1113,7 @@ PickThreeStars:
         mov ax, [bp - 0x72]
         mov [gwgteam], ax
         imul bx, ax, word 0xd6
-        mov ax, [bx + g_B37E]
+        mov ax, [bx + hmtmtouch1]
         mov [gwgplayer], ax
         push word [awscore]
         push word [hmscore]
@@ -1538,7 +1538,7 @@ StartThreeStars:
         push word 0xbc8e
         call 0x1E7E:assreplace
         add sp, 0x4
-        mov word [g_BD34], 0x0
+        mov word [reftemp1], 0x0
         mov ax, 0xff38
         mov [g_BD10], ax
         mov [reftemp3], ax

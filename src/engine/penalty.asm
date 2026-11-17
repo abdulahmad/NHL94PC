@@ -265,7 +265,7 @@ InProgress:
         mov bx, [bp - 0xe]
         mov al, [bx + PenBuf_pl]
         cbw
-        mov [g_29D8], ax
+        mov [penaltysc], ax
         db 0x2A, 0xC0                           ; insn: sub al, al
         mov [bx + PenBuf_pl], al
         mov [bx + PenBuf], al
@@ -351,7 +351,7 @@ InProgress:
         mov bx, [bp - 0xe]
         mov al, [bx + PenBuf_pl]
         cbw
-        mov [g_29D8], ax
+        mov [penaltysc], ax
         db 0x2A, 0xC0                           ; insn: sub al, al
         mov [bx + PenBuf_pl], al
         mov [bx + PenBuf], al
@@ -610,7 +610,7 @@ InProgress:
         add sp, 0x4
         mov bx, [bp - 0x6]
         mov ax, [bx + 0x5e]
-        mov [g_29D8], ax
+        mov [penaltysc], ax
 .33:
         push word [bp - 0xc]
 .34:

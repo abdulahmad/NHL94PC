@@ -480,7 +480,7 @@ SelectHilight:
         push 0x0
         push 0x1
         push word 0x35f3
-        push strict word f_35F3_0017
+        push strict word msgThereAreNoHilights
         push -0x1
         push -0x1
         call 0x0D90:MessageBox

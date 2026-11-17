@@ -2385,7 +2385,7 @@ clearteams:
         mov [awtmgoalie], ax
         mov ax, 0xffff
         mov [hmtmextra], ax
-        mov [g_B452], ax
+        mov [awtmextra], ax
         mov al, 0xff
         mov [g_B3FE], al
         mov [g_B4D4], al
@@ -2749,7 +2749,7 @@ SetPlList:
         mov al, [bx + si + g_48B0]
         cbw
         db 0x8B, 0xD0                           ; insn: mov dx, ax
-        mov [si + g_D5FC], dl
+        mov [si + LinePlayersAway], dl
         db 0x0B, 0xD2                           ; insn: or dx, dx
         jnz short .8
         mov bx, [bp + 0x6]
@@ -2801,7 +2801,7 @@ SetPlList:
         jnl short .13
         jmp near .28
 .13:
-        mov al, [bx + g_D5FC]
+        mov al, [bx + LinePlayersAway]
         cbw
         mov [bp - 0xa], ax
         db 0x8B, 0xDE                           ; insn: mov bx, si
@@ -3000,7 +3000,7 @@ setpersonel:
         jmp short .5
         db 0x90
 .4:
-        mov al, [di + g_D5FC]
+        mov al, [di + LinePlayersAway]
         mov [si + 0x42], al
         mov [si + 0x43], cl
         mov byte [di + PlList], 0xff
@@ -3045,7 +3045,7 @@ setpersonel:
         mov word [di + 0x1a], 0x5
 .10:
         mov si, [bp - 0x8]
-        mov al, [si + g_D5FC]
+        mov al, [si + LinePlayersAway]
         mov [di + 0x42], al
         mov al, [bp - 0x6]
         mov [di + 0x43], al

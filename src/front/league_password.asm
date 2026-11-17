@@ -106,7 +106,7 @@ AskTeamPassword:
         push 0x0
         push 0x1
         push word 0x3701
-        push strict word f_3701_048A
+        push strict word msgIncorrectPassword
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -212,7 +212,7 @@ AskMasterPassword:
         push 0x0
         push 0x1
         push word 0x3701
-        push strict word f_3701_048A
+        push strict word msgIncorrectPassword
         push -0x1
         push -0x1
         call 0x0D90:MessageBox

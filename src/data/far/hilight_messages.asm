@@ -2,7 +2,7 @@
 ; (the overlays probably do).
         db 'There are no hilights!'
         db 0x00
-f_35F3_0017:                                    ; used by MENUS (to name)
+msgThereAreNoHilights:                                    ; used by MENUS (to name)
         db 0x00, 0x00, 0xF3, '5There is not enogh space on'
         db 0x00, 'the floppy disk for the hilights!'
         db 0x00, 'Select less hilights or get another disk.'

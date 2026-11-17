@@ -106,7 +106,7 @@ CheckMasterPassword:
         push strict word f_3701_0913
         push 0x4
         push word 0x3701
-        push strict word f_3701_08AF
+        push strict word msgMasterDatabasesFor
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -931,7 +931,7 @@ CopyHumanTeamDBs:
         push ax
         push 0x3
         push word 0x3701
-        push strict word f_3701_019A
+        push strict word msgInsertDiskFor
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -1049,7 +1049,7 @@ CopyHumanTeamDBs:
         push strict word f_3701_01FC
         push 0x3
         push word 0x3701
-        push strict word f_3701_01F0
+        push strict word msgThatDiskIsFor
         push -0x1
         push -0x1
         call 0x0D90:MessageBox

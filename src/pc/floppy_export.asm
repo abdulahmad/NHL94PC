@@ -185,7 +185,7 @@ ExportTeamToFloppy:
         push strict word f_3701_01FC
         push 0x3
         push word 0x3701
-        push strict word f_3701_01F0
+        push strict word msgThatDiskIsFor
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -241,7 +241,7 @@ ExportTeamToFloppy:
         push strict word f_3701_0756
         push 0x2
         push word 0x3701
-        push strict word f_3701_074E
+        push strict word msgAreYouSureYouWant
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -659,7 +659,7 @@ ExportTeamToFloppy:
         push 0x0
         push 0x2
         push word 0x3821
-        push strict word f_3821_0053
+        push strict word msgErrorWhileExportingPlayerPlayer
         jmp near .42
         db 0x90
 .41:
@@ -934,7 +934,7 @@ ImportMasterLeague:
         push 0x0
         push 0x1
         push word 0x3821
-        push strict word f_3821_001C
+        push strict word msgImportingMasterDatabases
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -1081,7 +1081,7 @@ ImportMasterLeague:
         push 0x0
         push 0x2
         push word 0x3836
-        push strict word f_3836_011D
+        push strict word msgErrorWhileUpdatingPlayersDatabases
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -1120,7 +1120,7 @@ ImportMasterLeague:
         push 0x0
         push 0x2
         push word 0x3701
-        push strict word f_3701_0827
+        push strict word msgCanNotImportMasterLeague
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -1153,7 +1153,7 @@ ImportMasterLeague:
         push 0x0
         push 0x1
         push word 0x3701
-        push strict word f_3701_0450
+        push strict word msgErrorWhileImportingLeague
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -1639,7 +1639,7 @@ ImportPlayerTeam:
         push 0x0
         push 0x3
         push word 0x3701
-        push strict word f_3701_0712
+        push strict word msgThatFloppyDiskHasAn
         jmp short .26
 .24:
         cmp word [bp - 0x8c], 0x0
@@ -1676,7 +1676,7 @@ ImportPlayerTeam:
         push 0x0
         push 0x4
         push word 0x3701
-        push strict word f_3701_0607
+        push strict word msgTheLeague2
 .26:
         push -0x1
         push -0x1
@@ -1933,7 +1933,7 @@ ImportPlayerTeam:
         push 0x0
         push 0x1
         push word 0x3701
-        push strict word f_3701_0450
+        push strict word msgErrorWhileImportingLeague
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -1980,7 +1980,7 @@ ImportDbs:
         push strict word f_3701_07CE
         push 0x2
         push word 0x3701
-        push strict word f_3701_07C6
+        push strict word msgImportMasterCopyOfLeague
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -2000,7 +2000,7 @@ ImportDbs:
         push 0x0
         push 0x2
         push word 0x3701
-        push strict word f_3701_042A
+        push strict word msgPutDiskWithLeagueTo
         push -0x1
         push -0x1
         call 0x0D90:MessageBox

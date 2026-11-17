@@ -1036,7 +1036,7 @@ LocateTeamDbCopy:
         push 0x0
         push 0x3
         push word 0x3701
-        push strict word f_3701_0712
+        push strict word msgThatFloppyDiskHasAn
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -1160,7 +1160,7 @@ UpdateTeamDbs:
         push 0x0
         push 0x3
         push word 0x3701
-        push strict word f_3701_0B32
+        push strict word msgThereIsASavedGame
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -1248,7 +1248,7 @@ UpdateTeamDbs:
         push 0x0
         push 0x3
         push word 0x3701
-        push strict word f_3701_0862
+        push strict word msgTheLeague3
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -1274,7 +1274,7 @@ UpdateTeamDbs:
         push 0x0
         push 0x2
         push word 0x3836
-        push strict word f_3836_011D
+        push strict word msgErrorWhileUpdatingPlayersDatabases
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -1405,7 +1405,7 @@ MergeLeagueFiles:
         push 0x0
         push 0x3
         push word 0x3701
-        push strict word f_3701_0B32
+        push strict word msgThereIsASavedGame
         jmp near .33
 .3:
         mov es, [g_8C28]
@@ -1435,7 +1435,7 @@ MergeLeagueFiles:
         push 0x0
         push 0x3
         push word 0x3836
-        push strict word f_3836_008B
+        push strict word msgTheMasterControllerForThe
         jmp near .33
         db 0x90
 .4:
@@ -1463,7 +1463,7 @@ MergeLeagueFiles:
         push 0x0
         push 0x3
         push word 0x3836
-        push strict word f_3836_0042
+        push strict word msgTheDatabasesCanOnlyBe
         jmp near .33
 .5:
         mov es, [g_8C2E]
@@ -1538,7 +1538,7 @@ MergeLeagueFiles:
         push 0x0
         push 0x1
         push word 0x3701
-        push strict word f_3701_0A0C
+        push strict word msgMergingPlayersToMasterDatabase
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -1604,7 +1604,7 @@ MergeLeagueFiles:
         push 0x0
         push 0x1
         push word 0x3701
-        push strict word f_3701_0A0C
+        push strict word msgMergingPlayersToMasterDatabase
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -1843,7 +1843,7 @@ MergeLeagueFiles:
         push 0x0
         push 0x1
         push word 0x3701
-        push strict word f_3701_0A23
+        push strict word msgUpdatingSchedule
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -1905,7 +1905,7 @@ MergeLeagueFiles:
         push 0x0
         push 0x3
         push word 0x3836
-        push strict word f_3836_00E9
+        push strict word msgWarningMergeNotCompletedLeague
         jmp short .33
         db 0x90
 .31:
@@ -1921,7 +1921,7 @@ MergeLeagueFiles:
         push 0x0
         push 0x1
         push word 0x3836
-        push strict word f_3836_0144
+        push strict word msgErrorWhileMergingDatabases
         jmp short .33
 .32:
         lea ax, [bp - 0x4e]
@@ -1948,7 +1948,7 @@ MergeLeagueFiles:
         push 0x0
         push 0x3
         push word 0x3701
-        push strict word f_3701_0862
+        push strict word msgTheLeague3
 .33:
         push -0x1
         push -0x1
@@ -2251,7 +2251,7 @@ RebuildLeagueDbs:
         push 0x0
         push 0x2
         push word 0x3836
-        push strict word f_3836_011D
+        push strict word msgErrorWhileUpdatingPlayersDatabases
         push -0x1
         push -0x1
         call 0x0D90:MessageBox

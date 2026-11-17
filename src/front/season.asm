@@ -26,7 +26,7 @@ RandomizeSchedule:
         push 0x0
         push 0x2
         push word 0x3827
-        push strict word f_3827_0029
+        push strict word msgGeneratingRandomSchedulePleaseWait
         push ax
         push ax
         call 0x0D90:MessageBox

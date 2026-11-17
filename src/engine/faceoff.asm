@@ -914,7 +914,7 @@ puckfaceoff2:
         mov [g_BB90], ax
         mov word [g_BB94], 0xff14
         mov [RefPen], ax
-        mov word [g_29D8], 0xffff
+        mov word [penaltysc], 0xffff
         mov ax, [fox]
         mov [ltx], ax
         mov ax, [foy]

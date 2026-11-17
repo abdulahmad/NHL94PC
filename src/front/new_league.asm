@@ -123,7 +123,7 @@ CreateNewLeague:
         push strict word f_3701_02A0
         push 0x2
         push word 0x3701
-        push strict word f_3701_0298
+        push strict word msgThereIsAlreadyALeague
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -152,7 +152,7 @@ CreateNewLeague:
         push strict word f_3701_0303
         push 0x1
         push word 0x3701
-        push strict word f_3701_02FF
+        push strict word msgWhichScheduleDoYouWant
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -248,7 +248,7 @@ CreateNewLeague:
         push 0x0
         push 0x1
         push word 0x3701
-        push strict word f_3701_06DF
+        push strict word msgCreatingLeague
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -346,7 +346,7 @@ CreateNewLeague:
         push 0x0
         push 0x1
         push word 0x3701
-        push strict word f_3701_0363
+        push strict word msgErrorWhileCreatingLeague
         push -0x1
         push -0x1
         call 0x0D90:MessageBox

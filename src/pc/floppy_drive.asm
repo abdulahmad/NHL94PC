@@ -153,7 +153,7 @@ SelectFloppyDrive:
         push 0x0
         push 0x1
         push word 0x3701
-        push strict word f_3701_0A4E
+        push strict word msgPleasePutAFloppyDisk
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -195,7 +195,7 @@ SelectFloppyDrive:
         push strict word 0x0
         push 0x1
         push word 0x3701
-        push strict word f_3701_0A6B
+        push strict word msgUseFloppyDriveAOr
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -366,7 +366,7 @@ FindLeagueFloppy:
         push 0x0
         push 0x5
         push word 0x3701
-        push strict word f_3701_0192
+        push strict word msgThatFloppyDiskIsNot
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -428,7 +428,7 @@ WaitLeagueFloppy:
         push 0x0
         push 0x3
         push word 0x3701
-        push strict word f_3701_019A
+        push strict word msgInsertDiskFor
         push -0x1
         push -0x1
         call 0x0D90:MessageBox

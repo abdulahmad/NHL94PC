@@ -484,11 +484,11 @@ hmtmlcnt:                                         ; used by AI (to name)
         resb 2
 hmtmextra:                                         ; used by AI (to name)
         resb 2
-g_B37E:                                         ; used by AI (to name)
+hmtmtouch1:                                         ; used by AI (to name)
         resb 2
-g_B380:                                         ; used by AI (to name)
+hmtmtouch2:                                         ; used by AI (to name)
         resb 2
-g_B382:                                         ; used by AI (to name)
+hmtmtouch3:                                         ; used by AI (to name)
         resb 2
 hmtmap:                                         ; used by AI, INIT, MENUS (to name)
         resb 2
@@ -544,13 +544,13 @@ awtmline:                                         ; used by AI (to name)
         resb 2
 awtmlcnt:                                         ; used by AI (to name)
         resb 2
-g_B452:                                         ; used by AI (to name)
+awtmextra:                                         ; used by AI (to name)
         resb 2
-g_B454:                                         ; used by AI (to name)
+awtmtouch1:                                         ; used by AI (to name)
         resb 2
-g_B456:                                         ; used by AI (to name)
+awtmtouch2:                                         ; used by AI (to name)
         resb 2
-g_B458:                                         ; used by AI (to name)
+awtmtouch3:                                         ; used by AI (to name)
         resb 2
 awtmap:                                         ; used by AI, INIT (to name)
         resb 2
@@ -642,7 +642,7 @@ pucktemp1:                                         ; used by AI (to name)
         resb 2
 g_BC36:                                         ; used by AI (to name)
         resb 22
-g_BC4C:                                         ; used by AI (to name)
+pucknopuck:                                         ; used by AI (to name)
         resb 7
 puckpflags2:                                         ; used by AI (to name)
         resb 3
@@ -692,7 +692,7 @@ refposition:                                         ; used by AI (to name)
         resb 2
 refasslist:                                         ; used by AI (to name)
         resb 8
-g_BD34:                                         ; used by AI (to name)
+reftemp1:                                         ; used by AI (to name)
         resb 4
 reftemp3:                                         ; used by AI (to name)
         resb 2
@@ -1108,7 +1108,7 @@ textline5:                                         ; used by AI, INIT (to name)
         resb 60
 PlList:                                         ; used by AI, INIT (to name)
         resb 6
-g_D5FC:                                         ; used by AI (to name)
+LinePlayersAway:                                         ; used by AI (to name)
         resb 6
 fofdata2:                                         ; used by AI, INIT (to name)
         resb 2

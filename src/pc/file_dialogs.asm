@@ -1986,7 +1986,7 @@ DeleteSavedGame:
         push strict word f_36B8_0170
         push 0x3
         push ds
-        push strict word g_0F24
+        push strict word msgConfirmDeletionOfThe
         push -0x1
         push -0x1
         call 0x0D90:MessageBox

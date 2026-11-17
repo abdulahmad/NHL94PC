@@ -12,34 +12,34 @@
         db 0x30, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x06, 0x00
         db 0x52, 0x00, 0x01, '7All the teams are already human'
         db 0x00
-f_3701_00A7:                                    ; used by LP (to name)
+msgAllTheTeamsAreAlready:                                    ; used by LP (to name)
         db 0x87, 0x00, 0x01, '7There is only one human'
         db 0x00, 'controlled team!'
         db 0x00
-f_3701_00D4:                                    ; used by LP (to name)
+msgThereIsOnlyOneHuman:                                    ; used by LP (to name)
         db 0xAB, 0x00, 0x01, 0x37, 0xC3, 0x00, 0x01
         db '7Can not read databases in the league'
         db 0x00
-f_3701_0101:                                    ; used by LP (to name)
+msgCanNotReadDatabasesIn:                                    ; used by LP (to name)
         db 0xDC, 0x00, 0x01, 0x37, 0x00, 0x00, 0x00, 0x00
         db 'That name has already been used!'
         db 0x00
-f_3701_012A:                                    ; used by LP (to name)
+msgThatNameHasAlreadyBeen:                                    ; used by LP (to name)
         db 0x09, 0x01, 0x01, '7Disk Error', 0x00
         db 'Abort, Retry or Ignore'
         db 0x00, 0x2E, 0x01, 0x01, 0x37, 0x39, 0x01, 0x01, '7That floppy disk is not for'
         db 0x00, 'Insert disk for'
         db 0x00, 'in any drive.', 0x00
-f_3701_0192:                                    ; used by LP (to name)
+msgThatFloppyDiskIsNot:                                    ; used by LP (to name)
         db 0x58, 0x01, 0x01, 0x37, 0x00, 0x00, 0x00, 0x00
-f_3701_019A:                                    ; used by LP (to name)
+msgInsertDiskFor:                                    ; used by LP (to name)
         db 0x74, 0x01, 0x01, 0x37, 0x00, 0x00, 0x00, 0x00, 0x84, 0x01, 0x01, '7That disk is for'
         db 0x00
 str_FromTheLeague:                              ; string ' from the league '; used by LP
         db ' from the league '
         db 0x00, 'Are you sure you want to overwrite it?'
         db 0x00
-f_3701_01F0:                                    ; used by LP (to name)
+msgThatDiskIsFor:                                    ; used by LP (to name)
         db 0xA6, 0x01, 0x01, 0x37, 0x00, 0x00, 0x00, 0x00
         db 0xC9, 0x01, 0x01, 0x37
 f_3701_01FC:                                    ; used by LP (to name)
@@ -50,7 +50,7 @@ f_3701_01FC:                                    ; used by LP (to name)
         db 0x00, 0x27, 0x02, 0x01, '7There is already a league with that name!'
         db 0x00, 'Do you want to replace it with a new league?'
         db 0x00
-f_3701_0298:                                    ; used by LP (to name)
+msgThereIsAlreadyALeague:                                    ; used by LP (to name)
         db 0x41, 0x02, 0x01, 0x37, 0x6B, 0x02, 0x01, 0x37
 f_3701_02A0:                                    ; used by LP, MENUS (to name)
         db 0x08, 0x00, 0x1E, 0x00, 0x14, 0x00, 0x0A
@@ -58,20 +58,20 @@ f_3701_02A0:                                    ; used by LP, MENUS (to name)
         db 0x00, 0x00, 0x00, 0x06, 0x00, 0x04, 0x00, 0x01, '7  Which schedule do you want to use?  '
         db 0x00, 0x27, '92 - ', 0x27, '93 Season'
         db 0x00, 'Random', 0x00
-f_3701_02FF:                                    ; used by LP (to name)
+msgWhichScheduleDoYouWant:                                    ; used by LP (to name)
         db 0xC0, 0x02, 0x01, 0x37
 f_3701_0303:                                    ; used by LP (to name)
         db 0x08, 0x00, 0x18, 0x00
         db 0x50, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x05, 0x00, 0xE7, 0x02, 0x01, 0x37, 0xF8, 0xFF, 0x18, 0x00
         db 0x50, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x06, 0x00, 0xF8, 0x02, 0x01, '7Error while updating database!'
         db 0x00
-f_3701_0342:                                    ; used by LP (to name)
+msgErrorWhileUpdatingDatabase:                                    ; used by LP (to name)
         db 0x23, 0x03, 0x01, '7Error while creating league!'
         db 0x00
-f_3701_0363:                                    ; used by LP (to name)
+msgErrorWhileCreatingLeague:                                    ; used by LP (to name)
         db 0x46, 0x03, 0x01, '7Error while trading players!'
         db 0x00
-f_3701_0384:                                    ; used by LP (to name)
+msgErrorWhileTradingPlayers:                                    ; used by LP (to name)
         db 0x67, 0x03, 0x01, '7Do you really want to remove'
         db 0x00, 0x88, 0x03, 0x01, 0x37, 0x00, 0x00, 0x00
         db 0x00
@@ -88,15 +88,15 @@ str_SelectATeamToExport:                        ; string 'Select a team to expor
         db 0x00, 'Put disk with league to'
         db 0x00, 'import in any drive.'
         db 0x00
-f_3701_042A:                                    ; used by LP (to name)
+msgPutDiskWithLeagueTo:                                    ; used by LP (to name)
         db 0xFD, 0x03, 0x01, 0x37, 0x15, 0x04, 0x01
         db '7Error while importing league!'
         db 0x00
-f_3701_0450:                                    ; used by LP (to name)
+msgErrorWhileImportingLeague:                                    ; used by LP (to name)
         db 0x32, 0x04, 0x01, '7Error while exporting league!'
         db 0x00, 0x54, 0x04, 0x01, '7Incorrect password!'
         db 0x00
-f_3701_048A:                                    ; used by LP (to name)
+msgIncorrectPassword:                                    ; used by LP (to name)
         db 0x76, 0x04, 0x01, 0x37
 str_WhoWillControlTheLeague:                    ; string 'Who will control the league?'; used by LP
         db 'Who will control the league?'
@@ -120,13 +120,13 @@ f_3701_0549:                                    ; used by LP (to name)
         db 0x00, 'must be imported from the disk for'
         db 0x00, 'must be exported to the disk for'
         db 0x00
-f_3701_05D5:                                    ; used by LP (to name)
+msgTheLeague:                                    ; used by LP (to name)
         db 0x69, 0x05, 0x01, 0x37, 0x00, 0x00, 0x00, 0x00
         db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
         db 0x00, 0x74, 0x05, 0x01, '7The league', 0x00
         db 'already exists for'
         db 0x00
-f_3701_0607:                                    ; used by LP (to name)
+msgTheLeague2:                                    ; used by LP (to name)
         db 0xE9, 0x05, 0x01, 0x37, 0x00, 0x00, 0x00, 0x00
         db 0xF4, 0x05, 0x01, 0x37, 0x00, 0x00, 0x00
         db 0x00, 'has not been exported for the league'
@@ -145,17 +145,17 @@ f_3701_069C:                                    ; used by LP (to name)
         db 0x00, 0xB0, 0x06, 0x01, 0x37, 0x00, 0x00, 0x00, 0x00
         db 'Creating league.'
         db 0x00
-f_3701_06DF:                                    ; used by LP (to name)
+msgCreatingLeague:                                    ; used by LP (to name)
         db 0xCE, 0x06, 0x01, '7That floppy disk has an'
         db 0x00, 'old copy of the league'
         db 0x00
-f_3701_0712:                                    ; used by LP (to name)
+msgThatFloppyDiskHasAn:                                    ; used by LP (to name)
         db 0xE3, 0x06, 0x01, 0x37, 0xFB, 0x06, 0x01, 0x37
         db 0x00, 0x00, 0x00, 0x00
         db 'Are you sure you want to'
         db 0x00, 'use a new floppy disk?'
         db 0x00
-f_3701_074E:                                    ; used by LP (to name)
+msgAreYouSureYouWant:                                    ; used by LP (to name)
         db 0x1E, 0x07, 0x01, 0x37, 0x37, 0x07, 0x01, 0x37
 f_3701_0756:                                    ; used by LP (to name)
         db 0x08, 0x00, 0x1E, 0x00, 0x14, 0x00, 0x0A
@@ -164,7 +164,7 @@ f_3701_0756:                                    ; used by LP (to name)
         db 0x00, 'import for player on floppy disk?'
         db 0x00, 'Master', 0x00
         db 'Player', 0x00
-f_3701_07C6:                                    ; used by LP (to name)
+msgImportMasterCopyOfLeague:                                    ; used by LP (to name)
         db 0x76, 0x07, 0x01, 0x37, 0x96, 0x07, 0x01, 0x37
 f_3701_07CE:                                    ; used by LP (to name)
         db 0x08, 0x00, 0x1E, 0x00
@@ -172,20 +172,20 @@ f_3701_07CE:                                    ; used by LP (to name)
         db 0x30, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x06, 0x00, 0xBF, 0x07, 0x01, '7Can not import master league!'
         db 0x00, 'The league already exists!'
         db 0x00
-f_3701_0827:                                    ; used by LP (to name)
+msgCanNotImportMasterLeague:                                    ; used by LP (to name)
         db 0xEE, 0x07, 0x01, 0x37, 0x0C, 0x08, 0x01
         db '7The league'
         db 0x00, 'is already merged.'
         db 0x00, 'has not been merged.'
         db 0x00
-f_3701_0862:                                    ; used by LP (to name)
+msgTheLeague3:                                    ; used by LP (to name)
         db 0x2F, 0x08, 0x01, 0x37, 0x00, 0x00, 0x00, 0x00
         db 0x00, 0x00, 0x00, 0x00
         db 'Master databases for'
         db 0x00, 'must be merged first!'
         db 0x00, 'Do you want to merge?'
         db 0x00
-f_3701_08AF:                                    ; used by LP (to name)
+msgMasterDatabasesFor:                                    ; used by LP (to name)
         db 0x6E, 0x08, 0x01, 0x37, 0x00, 0x00, 0x00, 0x00
         db 0x83, 0x08, 0x01, 0x37, 0x99, 0x08, 0x01
         db '7Players databases for'
@@ -207,30 +207,30 @@ f_3701_09C8:                                    ; used by LP (to name)
         db 0x36, 0x00, 0x28, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x01, 0x37, 0xF8, 0xFF, 0x36
         db 0x00, 0x28, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x06, 0x00, 0x04, 0x00, 0x01, '7Merging players to master database.'
         db 0x00
-f_3701_0A0C:                                    ; used by LP (to name)
+msgMergingPlayersToMasterDatabase:                                    ; used by LP (to name)
         db 0xE8, 0x09, 0x01, '7Updating schedule.'
         db 0x00
-f_3701_0A23:                                    ; used by LP (to name)
+msgUpdatingSchedule:                                    ; used by LP (to name)
         db 0x10, 0x0A, 0x01, '7Please put a floppy disk in any drive.'
         db 0x00
-f_3701_0A4E:                                    ; used by LP (to name)
+msgPleasePutAFloppyDisk:                                    ; used by LP (to name)
         db 0x27, 0x0A, 0x01, '7Use floppy drive A or B?'
         db 0x00
-f_3701_0A6B:                                    ; used by LP (to name)
+msgUseFloppyDriveAOr:                                    ; used by LP (to name)
         db 0x52, 0x0A, 0x01, '7The first team selected to'
         db 0x00, 'play must be imported!'
         db 0x00
-f_3701_0AA1:                                    ; used by LP (to name)
+msgTheFirstTeamSelectedTo:                                    ; used by LP (to name)
         db 0x6F, 0x0A, 0x01, 0x37, 0x8A, 0x0A, 0x01
         db '7The password was entered differently'
         db 0x00, 'the second time! Try again.'
         db 0x00
-f_3701_0AEA:                                    ; used by LP (to name)
+msgThePasswordWasEnteredDifferently:                                    ; used by LP (to name)
         db 0xA9, 0x0A, 0x01, 0x37, 0xCE, 0x0A, 0x01
         db '7There is a saved game in the league'
         db 0x00, 'which must be played first!'
         db 0x00
-f_3701_0B32:                                    ; used by LP (to name)
+msgThereIsASavedGame:                                    ; used by LP (to name)
         db 0xF2, 0x0A, 0x01, 0x37, 0x00, 0x00, 0x00, 0x00
         db 0x16, 0x0B, 0x01, '7KEY'
         db 0x00, 'CAREER', 0x00

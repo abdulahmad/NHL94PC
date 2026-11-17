@@ -1,0 +1,13 @@
+# data labels between two matched neighbours at the same spacing
+g_29D8 penaltysc | 95 PC | medium | between two matched variables, same spacing as 95 PC
+g_4A56 photobankf | 95 PC | medium | between two matched variables, same spacing as 95 PC
+g_B37E hmtmtouch1 | 95 PC | medium | between two matched variables, same spacing as 95 PC
+g_B380 hmtmtouch2 | 95 PC | medium | between two matched variables, same spacing as 95 PC
+g_B382 hmtmtouch3 | 95 PC | medium | between two matched variables, same spacing as 95 PC
+g_B452 awtmextra | 95 PC | medium | between two matched variables, same spacing as 95 PC
+g_B454 awtmtouch1 | 95 PC | medium | between two matched variables, same spacing as 95 PC
+g_B456 awtmtouch2 | 95 PC | medium | between two matched variables, same spacing as 95 PC
+g_B458 awtmtouch3 | 95 PC | medium | between two matched variables, same spacing as 95 PC
+g_BC4C pucknopuck | 95 PC | medium | between two matched variables, same spacing as 95 PC
+g_BD34 reftemp1 | 95 PC | medium | between two matched variables, same spacing as 95 PC
+g_D5FC LinePlayersAway | 95 PC | medium | between two matched variables, same spacing as 95 PC

@@ -1713,7 +1713,7 @@ TradeDone:
         push 0x0
         push 0x3
         push word 0x382b
-        push strict word f_382B_0051
+        push strict word msgThereMustBeAnEqual
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -3676,7 +3676,7 @@ TradePlayers:
         push 0x0
         push 0x2
         push word 0x382b
-        push strict word f_382B_009A
+        push strict word msgTheTradingDeadlineHasPassed
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -3715,7 +3715,7 @@ TradePlayers:
         push 0x0
         push 0x2
         push word 0x3701
-        push strict word f_3701_00D4
+        push strict word msgThereIsOnlyOneHuman
         jmp near .24
         db 0x90
 .20:
@@ -3802,7 +3802,7 @@ TradePlayers:
         push 0x0
         push 0x1
         push word 0x3701
-        push strict word f_3701_0384
+        push strict word msgErrorWhileTradingPlayers
 .24:
         push -0x1
         push -0x1

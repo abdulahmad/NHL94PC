@@ -3,7 +3,7 @@
         db 'There is already a Play-Off with that name!'
         db 0x00, 'Do you want to replace it with a new Play-Off?'
         db 0x00
-f_36B8_005B:                                    ; used by MENUS (to name)
+msgThereIsAlreadyAPlay:                                    ; used by MENUS (to name)
         db 0x00, 0x00, 0xB8, 0x36, 0x2C, 0x00, 0xB8
         db '6Your team has been eliminated'
         db 0x00, 'from the play-offs. Do you'

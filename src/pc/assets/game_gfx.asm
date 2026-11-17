@@ -65,7 +65,7 @@ LoadPPVFiles:
         push di
         push si
         mov ax, [g_4A58]
-        or ax, [g_4A56]
+        or ax, [photobankf]
         jz short .1
         jmp near .6
 .1:
@@ -136,7 +136,7 @@ LoadPPVFiles:
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, byte 0x2
         push word [bx + g_4A58]
-        push word [bx + g_4A56]
+        push word [bx + photobankf]
         call 0x03A3:FindFarMsg
         add sp, 0x6
         add si, 0x4
@@ -636,7 +636,7 @@ ResetGameVars:
         mov [g_D46C], ax
         mov ax, 0xffff
         mov [ovltimer], ax
-        mov [g_29D8], ax
+        mov [penaltysc], ax
         mov [RefStep], ax
         mov [PenCntDwn], ax
         mov [PenCntDwn2], ax

@@ -1120,7 +1120,7 @@ ChkScorerMilestone:
         mov word [bp - 0x6], 0x0
         imul bx, cx, word 0xd6
         mov [bp - 0x8], bx
-        mov di, [bx + g_B37E]
+        mov di, [bx + hmtmtouch1]
         and di, 0xff
         cmp di, 0x19
         jl short .5
@@ -1259,7 +1259,7 @@ ChkScorerMilestone:
         jmp near .28
 .18:
         mov bx, [bp - 0x8]
-        mov di, [bx + g_B380]
+        mov di, [bx + hmtmtouch2]
         db 0x0B, 0xFF                           ; insn: or di, di
         jnl short .19
         jmp near .28
@@ -1323,7 +1323,7 @@ ChkScorerMilestone:
         jmp near .28
 .24:
         mov bx, [bp - 0x8]
-        mov di, [bx + g_B382]
+        mov di, [bx + hmtmtouch3]
         db 0x0B, 0xFF                           ; insn: or di, di
         jnl short .25
         jmp near .28
@@ -1425,9 +1425,9 @@ QueueGoalieNote:
 .2:
         cmp word [g_4A24], 0x3f
         jz short .1
-        cmp word [g_29D8], 0x0
+        cmp word [penaltysc], 0x0
         jl short .1
-        mov si, [g_29D8]
+        mov si, [penaltysc]
         shl si, byte 0x7
         add si, 0xb50e
         mov al, [si + 0x44]

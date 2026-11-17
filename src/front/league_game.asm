@@ -2247,7 +2247,7 @@ CheckLeagueDiskSync:
         push 0x0
         push 0x2
         push word 0x3701
-        push strict word f_3701_0AA1
+        push strict word msgTheFirstTeamSelectedTo
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -2320,7 +2320,7 @@ CheckLeagueDiskSync:
         push 0x0
         push 0x5
         push word 0x3701
-        push strict word f_3701_05D5
+        push strict word msgTheLeague
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -4078,7 +4078,7 @@ PlayLeagueGame:
         push 0x0
         push 0x1
         push word 0x3701
-        push strict word f_3701_0A23
+        push strict word msgUpdatingSchedule
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -4436,7 +4436,7 @@ PlayLeagueGame:
         push 0x0
         push 0x1
         push word 0x3701
-        push strict word f_3701_0342
+        push strict word msgErrorWhileUpdatingDatabase
         push -0x1
         push -0x1
         call 0x0D90:MessageBox

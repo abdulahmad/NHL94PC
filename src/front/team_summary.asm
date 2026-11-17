@@ -459,7 +459,7 @@ ShowTeamStats:
         mov bx, [bp - 0x4e]
         shl bx, byte 0x2
         push word [bx + g_4EC6]
-        push word [bx + g_4EC4]
+        push word [bx + TeamStatsLabels]
         db 0x8B, 0xF3                           ; insn: mov si, bx
         call 0x0D39:TextWidthFar
         add sp, 0x4
@@ -470,7 +470,7 @@ ShowTeamStats:
         sar ax, 1
         mov [bp - 0x42], ax
         push word [si + g_4EC6]
-        push word [si + g_4EC4]
+        push word [si + TeamStatsLabels]
         push word [bp - 0x4c]
         push ax
         call 0x0D39:DrawShadowText
