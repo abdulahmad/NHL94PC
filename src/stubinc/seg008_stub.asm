@@ -137,7 +137,6 @@ _fstrlen		equ	0x13DA
 _fmemmove		equ	0x14FA
 RawBase		equ	0x1532
 EmulatedFloat		equ	0x15C4
-g_8B0A		equ	0x8B0A
 g_8B12		equ	0x8B12
 g_8EEA		equ	0x8EEA
 g_8EEC		equ	0x8EEC

@@ -4,8 +4,8 @@
 	org	0x0
 F016_0002		equ	0x2
 F028_000C		equ	0xC
-F025_000E		equ	0xE
 F009_000E		equ	0xE
+F025_000E		equ	0xE
 F016_0024		equ	0x24
 F034_0030		equ	0x30
 F009_004C		equ	0x4C

@@ -80,9 +80,30 @@ md = capstone.Cs(capstone.CS_ARCH_X86, capstone.CS_MODE_16)
 md.detail = True
 
 
+class EmuIns:
+    # an INT 34h..3Bh with the coprocessor instruction bytes that follow it (Microsoft C floating-point emulator)
+    def __init__(self, lin, cs, fpu):
+        self.size = 1 + fpu.size
+        self.id = x86.X86_INS_INT
+        self.groups = []
+        self.operands = []
+        self.mnemonic = 'int'
+        self.bytes = IMG[lin:lin + self.size]
+        self.fpu = fpu
+
+
+def fpu_text(fpu):
+    t = (fpu.mnemonic + ' ' + fpu.op_str).strip()
+    return t.replace(' ptr ', ' ')
+
+
 def decode(lin, cs):
     ip = lin - cs * 16
     code = IMG[lin:lin + 16]
+    if len(code) >= 3 and code[0] == 0xCD and 0x34 <= code[1] <= 0x3B:
+        fb = bytes([0xD8 + code[1] - 0x34]) + code[2:]
+        for f in md.disasm(fb, 0, 1):
+            return EmuIns(lin, cs, f)
     for ins in md.disasm(code, ip, 1):
         return ins
     return None
@@ -193,7 +214,7 @@ def try_gap(flow, s, p, g1, cov):
         ins = decode(q, s['para'])
         if ins is None or ins.mnemonic in ('db', '(bad)'):
             break
-        if IMG[q:q + 2] == b'\x00\x00' or ins.mnemonic in ('hlt', 'into', 'aaa', 'aas', 'daa', 'das', 'lock', 'arpl', 'bound', 'les', 'lds') and q != p:
+        if IMG[q:q + 2] == b'\x00\x00' or ins.mnemonic in ('hlt', 'into', 'aaa', 'aas', 'daa', 'das', 'lock', 'arpl', 'bound') and q != p:
             sus += 1
         if ins.mnemonic in ('in', 'out', 'insb', 'outsb', 'insw', 'outsw') and IMG[q] not in (0xE4, 0xE5, 0xE6, 0xE7, 0xEC, 0xED, 0xEE, 0xEF):
             sus += 1
@@ -604,6 +625,11 @@ def emit(s, flow, funcs, known):
             sz = inside[lin]
             hx, txt = nd.get(lin - lo, (None, None))
             bs = IMG[lin:lin + sz]
+            e = decode(lin, s['para'])
+            if isinstance(e, EmuIns) and e.size == sz:
+                items.append(['emu', lin, f'int\t0x{bs[1]:02x}\n\t{dbline(bs[2:])}\t\t; emulated {fpu_text(e.fpu)}', bs, None])
+                lin += sz
+                continue
             if hx is None or bytes.fromhex(hx) != bs:
                 items.append(['db', lin, f'{dbline(bs)}', bs, txt])
             else:
@@ -700,7 +726,7 @@ def emit(s, flow, funcs, known):
                 if lin in funcs:
                     out.append('')
                 out.append(f'{nm}:')
-        if it[0] in ('ins', 'br', 'far'):
+        if it[0] in ('ins', 'br', 'far', 'emu'):
             out.append('\t' + it[2])
         elif it[0] == 'db':
             c = it[4]
