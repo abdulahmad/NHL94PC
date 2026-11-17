@@ -20,6 +20,22 @@ for s in SEGS:
     s['end'] = s['lin'] + s['size']
 
 
+# Hand overrides where flow analysis alone gets it wrong, by segment offset: byte ranges that are data,
+# code entries reached only through interrupt vectors or near tables, and jump table lengths.
+OVERRIDES = {
+    'seg054': {'data': [(0x0000, 0x003B), (0x0055, 0x005C), (0x09CA, 0x0C20)],
+               'code': [0x003B, 0x005C, 0x0C28, 0x0C45],
+               'tables': {0x0C20: 4, 0x0C3D: 4}},
+}
+DATA_LIN, CODE_LIN, TABLE_LIN = set(), [], {}
+for _s in SEGS:
+    _o = OVERRIDES.get(_s['name'], {})
+    for a, b in _o.get('data', []):
+        DATA_LIN.update(range(_s['lin'] + a, _s['lin'] + b))
+    CODE_LIN += [(_s['lin'] + a, _s['para']) for a in _o.get('code', [])]
+    TABLE_LIN.update({_s['lin'] + a: n for a, n in _o.get('tables', {}).items()})
+
+
 def seg_at(lin):
     for s in SEGS:
         if s['lin'] <= lin < s['end']:
@@ -121,7 +137,7 @@ class Flow:
         while work:
             lin, cs = work.pop()
             while True:
-                if lin in self.ins or lin in self.bad:
+                if lin in self.ins or lin in self.bad or lin in DATA_LIN:
                     break
                 if not (0 <= lin < len(IMG)):
                     break
@@ -170,7 +186,7 @@ class Flow:
             self.labels[tlin] = 'tab'
             n = 0
             seg = seg_at(lin)
-            while True:
+            while tlin not in TABLE_LIN:
                 p = tlin + 2 * n
                 if p + 2 > len(IMG) or p in self.ins:
                     break
@@ -181,7 +197,7 @@ class Flow:
                 n += 1
                 if n > 256:
                     break
-            # cap at the nearest following code
+            n = TABLE_LIN.get(tlin, n)
             self.tables[tlin] = max(n, 0)
             for k in range(n):
                 v = struct.unpack_from('<H', IMG, tlin + 2 * k)[0]
@@ -205,7 +221,7 @@ def looks_text(b):
 
 
 def try_gap(flow, s, p, g1, cov):
-    if p >= g1 or p in flow.bad or (looks_text(IMG[p:min(g1, p + 24)]) and not prologue_at(p)):
+    if p >= g1 or p in flow.bad or p in DATA_LIN or (looks_text(IMG[p:min(g1, p + 24)]) and not prologue_at(p)):
         return False
     if prologue_at(p):
         return True
@@ -398,6 +414,9 @@ def analyze(names):
             continue
         entries.append((lin, segv))
         funcs.add(lin)
+    for lin, segv in CODE_LIN:
+        entries.append((lin, segv))
+        funcs.add(lin)
     flow.run(entries)
     targets = [s for s in SEGS if s['name'] in names]
     GEN[:] = targets
@@ -551,7 +570,7 @@ def subst_data(items, s, funcs):
 def resolve(lines, flow):
     # @lin@ tokens: local labels .N numbered inside the scope of the last global label; a jump table is
     # <Scope>JumpTable. A reference from another scope is written Scope.N.
-    scope = None
+    scope = base = None
     defs = {}
     count = {}
     for i, l in enumerate(lines):
@@ -559,14 +578,14 @@ def resolve(lines, flow):
         if m:
             lin = int(m.group(1))
             if flow.labels.get(lin) == 'tab' and scope:
-                n = count.get((scope, 'T'), 0) + 1
-                count[(scope, 'T')] = n
-                defs[lin] = (None, f'{scope}JumpTable' + ('' if n == 1 else str(n)))
+                n = count.get((base, 'T'), 0) + 1
+                count[(base, 'T')] = n
+                defs[lin] = (None, f'{base}JumpTable' + ('' if n == 1 else str(n)))
                 scope = defs[lin][1]
                 continue
             if scope is None:
                 defs[lin] = (None, f'SegStart_{lin:05X}')
-                scope = defs[lin][1]
+                scope = base = defs[lin][1]
                 continue
             n = count.get(scope, 0) + 1
             count[scope] = n
@@ -574,7 +593,7 @@ def resolve(lines, flow):
             continue
         m = re.match(r'^([A-Za-z_][\w]*):$', l)
         if m:
-            scope = m.group(1)
+            scope = base = m.group(1)
     out = []
     scope = None
     for l in lines:

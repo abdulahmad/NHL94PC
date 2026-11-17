@@ -7895,7 +7895,7 @@ DrawLineClippedJumpTable:
 	mov	bx, [si + 0x12]
 	db	0x03, 0xDB		; add bx, bx
 	jmp	[cs:bx + 0x3f22]
-DrawLineClippedJumpTableJumpTable:
+DrawLineClippedJumpTable2:
 	dw	.1
 	dw	.1
 	dw	.3
