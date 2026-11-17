@@ -1493,3 +1493,4 @@ SegStart_160E3,CopyBytesFarTail,SegStart_160E3,new,high,end of CopyBytesFar in s
 seg054:0055,FpNo87Env,F054_0055,new,high,"""NO87="" and CR LF, the environment variable that turns the coprocessor off",src/seg/seg054.asm
 seg054:09CA,FpConstants,F054_09CA,new,medium,"emulator constants (temporary reals, coefficient tables)",src/seg/seg054.asm
 SeqPad,MergeRemapTablesTail,SeqPad,new,medium,end of MergeRemapTables in seg048,src/seg/seg049.asm
+seg001:1A84,WaitDeadlineNoEoi,L1A84,new,high,"WaitDeadline entry after its end-of-interrupt write; called from seg013 and seg021",src/seg/seg001.asm

@@ -277,7 +277,7 @@ CrowdFadeOut:
 	push	cs
 	call	CrowdNoiseUpdate
 	add	sp, 0x2
-	call	0x03A3:L1A84
+	call	0x03A3:WaitDeadlineNoEoi
 	cmp	word [g_4A54], 0x0
 	jg	short .1
 .3:

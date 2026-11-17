@@ -288,7 +288,7 @@ SaveGame:
 	call	0x0F4A:FatalError
 	add	sp, 0x2
 .13:
-	call	0x03A3:L1A84
+	call	0x03A3:WaitDeadlineNoEoi
 	call	0x0D90:RestoreUnderBox
 	pop	si
 	pop	di

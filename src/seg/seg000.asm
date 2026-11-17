@@ -1204,7 +1204,7 @@ _lseek:
 	db	0x3B, 0x1E, 0x5D, 0x85			; cmp	bx, word [_nfile]
 	jb	short .seek
 	mov	ax, 0x900
-	jmp	short 0x80A
+	jmp	short .1
 .seek:
 	test	word [bp+0xa], 0x8000
 	je	short .doseek
@@ -1214,7 +1214,7 @@ _lseek:
 	db	0x8B, 0xD1			; mov	dx, cx
 	mov	ax, 0x4201
 	int	0x21
-	jb	short 0x843
+	jb	short .2
 	test	word [bp+0xc], 2
 	jne	short .fromend
 	add	ax, word [bp+8]
@@ -1222,8 +1222,9 @@ _lseek:
 	jns	short .doseek
 .bad:
 	mov	ax, 0x1600
+.1:
 	stc
-	jmp	short 0x843
+	jmp	short .2
 .fromend:
 	mov	word [bp-2], dx
 	mov	word [bp-4], ax
@@ -1244,8 +1245,9 @@ _lseek:
 	mov	al, byte [bp+0xc]
 	mov	ah, 0x42
 	int	0x21
-	jb	short 0x843
+	jb	short .2
 	and	byte [bx-0x7aa1], 0xfd
+.2:
 	jmp	near DosRetLong
 
 ; _sopen: open a file with a sharing mode, then the same path as _open.
@@ -1295,7 +1297,7 @@ OpenBody:
 	jne	short .fail
 	test	cx, 0x100
 	je	short .fail
-	jmp	near 0x943
+	jmp	near .9
 .fail:
 	stc
 	jmp	near DosRetLong
@@ -1304,41 +1306,48 @@ OpenBody:
 	db	0x8B, 0xC1			; mov	ax, cx
 	and	ax, 0x500
 	cmp	ax, 0x500
-	jne	short 0x8BC
+	jne	short .1
 	mov	ah, 0x3e
 	int	0x21
 	mov	ax, 0x1100
 	jmp	short .fail
+.1:
 	mov	byte [bp-3], 1
 	mov	ax, 0x4400
 	int	0x21
 	test	dl, 0x80
-	je	short 0x8CE
+	je	short .2
 	or	byte [bp-4], 0x40
+.2:
 	test	byte [bp-4], 0x40
-	je	short 0x8D7
-	jmp	near 0x9AA
+	je	short .3
+	jmp	near .15
+.3:
 	mov	ax, word [bp+8]
 	test	ax, 0x200
-	je	short 0x8FB
+	je	short .5
 	test	ax, 3
-	je	short 0x8ED
+	je	short .4
 	db	0x33, 0xC9			; xor	cx, cx
 	mov	ah, 0x40
 	int	0x21
-	jmp	near 0x9AA
+	jmp	near .15
+.4:
 	mov	ah, 0x3e
 	int	0x21
 	mov	dx, word [bp+6]
 	mov	ax, 0x4300
 	int	0x21
-	jmp	short 0x960
+	jmp	short .11
+.5:
 	test	byte [bp-4], 0x80
-	jne	short 0x904
-	jmp	near 0x9AA
+	jne	short .6
+	jmp	near .15
+.6:
 	test	ax, 2
-	jne	short 0x90C
-	jmp	near 0x9AA
+	jne	short .7
+	jmp	near .15
+.7:
 	mov	cx, 0xffff
 	db	0x8B, 0xD1			; mov	dx, cx
 	mov	ax, 0x4202
@@ -1348,9 +1357,9 @@ OpenBody:
 	mov	ah, 0x3f
 	int	0x21
 	db	0x0B, 0xC0			; or	ax, ax
-	je	short 0x938
+	je	short .8
 	cmp	byte [bp-1], 0x1a
-	jne	short 0x938
+	jne	short .8
 	neg	cx
 	db	0x8B, 0xD1			; mov	dx, cx
 	mov	ax, 0x4202
@@ -1358,30 +1367,37 @@ OpenBody:
 	db	0x33, 0xC9			; xor	cx, cx
 	mov	ah, 0x40
 	int	0x21
+.8:
 	db	0x33, 0xC9			; xor	cx, cx
 	db	0x8B, 0xD1			; mov	dx, cx
 	mov	ax, 0x4200
 	int	0x21
-	jmp	short 0x9AA
+	jmp	short .15
+.9:
 	mov	byte [bp-3], 0
 	mov	cx, word [bp+0xa]
-	call	0x9f1
+	call	.20
 	mov	word [bp+0xa], cx
 	test	byte [bp-2], 0xff
-	jne	short 0x95D
+	jne	short .10
 	test	word [bp+8], 2
-	jne	short 0x960
+	jne	short .11
+.10:
 	and	cl, 0xfe
+.11:
 	mov	dx, word [bp+6]
 	mov	ah, 0x3c
 	int	0x21
-	jae	short 0x96C
+	jae	short .13
+.12:
 	jmp	near DosRetLong
+.13:
 	xchg	bx, ax
 	test	byte [bp-2], 0xff
-	jne	short 0x97A
+	jne	short .14
 	test	word [bp+8], 2
-	jne	short 0x9AA
+	jne	short .15
+.14:
 	mov	ah, 0x3e
 	int	0x21
 	mov	al, byte [bp+8]
@@ -1390,36 +1406,40 @@ OpenBody:
 	mov	dx, word [bp+6]
 	mov	ah, 0x3d
 	int	0x21
-	jb	short 0x969
+	jb	short .12
 	xchg	bx, ax
 	test	byte [bp-3], 1
-	jne	short 0x9AA
+	jne	short .15
 	test	word [bp+0xa], 1
-	je	short 0x9AA
+	je	short .15
 	or	cl, 1
 	mov	dx, word [bp+6]
 	mov	ax, 0x4301
 	int	0x21
-	jb	short 0x969
+	jb	short .12
+.15:
 	test	byte [bp-4], 0x40
-	jne	short 0x9ED
+	jne	short .19
 	mov	dx, word [bp+6]
 	mov	ax, 0x4300
 	int	0x21
 	db	0x8B, 0xC1			; mov	ax, cx
 	db	0x32, 0xC9			; xor	cl, cl
 	db	0x25, 0x01, 0x00			; and	ax, 1
-	je	short 0x9C3
+	je	short .16
 	mov	cl, 0x10
+.16:
 	test	word [bp+8], 8
-	je	short 0x9CD
+	je	short .17
 	or	cl, 0x20
+.17:
 	db	0x3B, 0x1E, 0x5D, 0x85			; cmp	bx, word [_nfile]
-	jb	short 0x9DD
+	jb	short .18
 	mov	ah, 0x3e
 	int	0x21
 	mov	ax, 0x1800
 	jmp	near .fail
+.18:
 	or	cl, byte [bp-4]
 	or	cl, 1
 	mov	byte [bx-0x7aa1], cl
@@ -1427,15 +1447,18 @@ OpenBody:
 	db	0x8B, 0xE5			; mov	sp, bp
 	pop	bp
 	retf
+.19:
 	db	0x32, 0xC9			; xor	cl, cl
-	jmp	short 0x9CD
+	jmp	short .17
+.20:
 	mov	ax, word [0x8552]
 	not	ax
 	db	0x23, 0xC1			; and	ax, cx
 	db	0x33, 0xC9			; xor	cx, cx
 	test	al, 0x80
-	jne	short 0xA01
+	jne	short .21
 	or	cl, 1
+.21:
 	ret
 
 ; _read: read bytes from a C file handle.
@@ -1449,25 +1472,27 @@ _read:
 	jb	short .go
 	stc
 	mov	ax, 0x900
-	jmp	short 0xA7F
+	jmp	short .8
 .go:
 	db	0x33, 0xC0			; xor	ax, ax
 	mov	cx, word [bp+0xa]
-	jcxz	0xA7F
+	jcxz	.8
 	test	byte [bx-0x7aa1], 2
-	jne	short 0xA7F
+	jne	short .8
 	cmp	word [0x8ae4], 0xd6d6
-	jne	short 0xA31
+	jne	short .1
 	call	word [0x8ae6]
+.1:
 	mov	cx, word [bp+0xa]
 	mov	dx, word [bp+8]
 	mov	ah, 0x3f
 	int	0x21
-	jae	short 0xA41
+	jae	short .2
 	mov	ah, 9
-	jmp	short 0xA7F
+	jmp	short .8
+.2:
 	test	byte [bx-0x7aa1], 0x80
-	je	short 0xA7F
+	je	short .8
 	and	byte [bx-0x7aa1], 0xfb
 	push	si
 	push	di
@@ -1475,67 +1500,82 @@ _read:
 	db	0x8B, 0xF2			; mov	si, dx
 	db	0x8B, 0xFA			; mov	di, dx
 	db	0x8B, 0xC8			; mov	cx, ax
-	jcxz	0xA7D
+	jcxz	.7
 	mov	ah, 0xd
 	cmp	byte [si], 0xa
-	jne	short 0xA64
+	jne	short .3
 	or	byte [bx-0x7aa1], 4
+.3:
 	lodsb
 	db	0x3A, 0xC4			; cmp	al, ah
-	je	short 0xA82
+	je	short .9
 	cmp	al, 0x1a
-	jne	short 0xA74
+	jne	short .4
 	or	byte [bx-0x7aa1], 2
-	jmp	short 0xA79
+	jmp	short .6
+.4:
 	mov	byte [di], al
 	inc	di
-	loop	0xA64
+.5:
+	loop	.3
+.6:
 	db	0x8B, 0xC7			; mov	ax, di
 	db	0x2B, 0xC2			; sub	ax, dx
+.7:
 	pop	di
 	pop	si
+.8:
 	jmp	near DosRetLong
+.9:
 	cmp	cx, 1
-	je	short 0xA8E
+	je	short .10
 	cmp	byte [si], 0xa
-	je	short 0xA77
-	jmp	short 0xA74
+	je	short .5
+	jmp	short .4
+.10:
 	test	byte [bx-0x7aa1], 0x40
-	je	short 0xAAD
+	je	short .12
 	mov	ax, 0x4400
 	int	0x21
 	test	dx, 0x20
-	jne	short 0xAA9
+	jne	short .11
 	lea	dx, [bp-1]
 	mov	ah, 0x3f
 	int	0x21
-	jb	short 0xA7D
+	jb	short .7
+.11:
 	mov	al, 0xa
-	jmp	short 0xAD9
+	jmp	short .15
+.12:
 	mov	byte [bp-1], 0
 	lea	dx, [bp-1]
 	mov	ah, 0x3f
 	int	0x21
-	jb	short 0xA7D
+	jb	short .7
 	db	0x0B, 0xC0			; or	ax, ax
-	je	short 0xAD7
+	je	short .14
 	cmp	word [bp+0xa], 1
-	je	short 0xAE3
+	je	short .17
+.13:
 	mov	cx, 0xffff
 	db	0x8B, 0xD1			; mov	dx, cx
 	mov	ax, 0x4201
 	int	0x21
 	mov	cx, 1
 	cmp	byte [bp-1], 0xa
-	je	short 0xADE
+	je	short .16
+.14:
 	mov	al, 0xd
+.15:
 	mov	dx, word [bp+8]
-	jmp	short 0xA74
+	jmp	short .4
+.16:
 	mov	dx, word [bp+8]
-	jmp	short 0xA77
+	jmp	short .5
+.17:
 	cmp	byte [bp-1], 0xa
-	jne	short 0xAC4
-	jmp	short 0xAA9
+	jne	short .13
+	jmp	short .11
 	db	0
 
 ; _write: write bytes, expanding newlines when the handle is text.
@@ -1549,20 +1589,23 @@ _write:
 	jb	short .go
 	mov	ax, 0x900
 	stc
+.1:
 	jmp	near DosRetLong
 .go:
 	cmp	word [0x8ae4], 0xd6d6
-	jne	short 0xB0E
+	jne	short .2
 	call	word [0x8ae6]
+.2:
 	test	byte [bx-0x7aa1], 0x20
-	je	short 0xB20
+	je	short .3
 	mov	ax, 0x4202
 	db	0x33, 0xC9			; xor	cx, cx
 	db	0x8B, 0xD1			; mov	dx, cx
 	int	0x21
-	jb	short 0xAFF
+	jb	short .1
+.3:
 	test	byte [bx-0x7aa1], 0x80
-	je	short 0xB97
+	je	short .13
 	mov	dx, word [bp+8]
 	push	ds
 	pop	es
@@ -1576,117 +1619,140 @@ _write:
 	db	0x8B, 0xF2			; mov	si, dx
 	mov	word [bp-8], sp
 	mov	cx, word [bp+0xa]
-	jcxz	0xB7D
+	jcxz	.8
 	mov	al, 0xa
 	repne scasb
-	jne	short 0xB95
+	jne	short .12
 	call	0:0x1D8E
 	cmp	ax, 0xa8
-	jbe	short 0xB99
+	jbe	short .14
 	sub	sp, 2
 	db	0x8B, 0xDC			; mov	bx, sp
 	mov	dx, 0x200
 	cmp	ax, 0x228
-	jae	short 0xB63
+	jae	short .4
 	mov	dx, 0x80
+.4:
 	db	0x2B, 0xE2			; sub	sp, dx
 	db	0x8B, 0xD4			; mov	dx, sp
 	db	0x8B, 0xFA			; mov	di, dx
 	push	ss
 	pop	es
 	mov	cx, word [bp+0xa]
+.5:
 	lodsb
 	cmp	al, 0xa
-	je	short 0xB7F
+	je	short .9
+.6:
 	db	0x3B, 0xFB			; cmp	di, bx
-	je	short 0xB90
+	je	short .11
+.7:
 	stosb
-	loop	0xB6E
-	call	0xba0
-	jmp	short 0xBEA
+	loop	.5
+	call	.15
+.8:
+	jmp	short .20
+.9:
 	mov	al, 0xd
 	db	0x3B, 0xFB			; cmp	di, bx
-	jne	short 0xB88
-	call	0xba0
+	jne	short .10
+	call	.15
+.10:
 	stosb
 	mov	al, 0xa
 	inc	word [bp-4]
-	jmp	short 0xB73
-	call	0xba0
-	jmp	short 0xB77
+	jmp	short .6
+.11:
+	call	.15
+	jmp	short .7
+.12:
 	pop	si
 	pop	di
-	jmp	short 0xBF8
+.13:
+	jmp	short .23
+.14:
 	mov	ax, 0xfffc
 	push	cs
-	call	0x74a
+	call	__chkstk
+.15:
 	push	ax
 	push	bx
 	push	cx
 	db	0x8B, 0xCF			; mov	cx, di
 	db	0x2B, 0xCA			; sub	cx, dx
-	jcxz	0xBBB
+	jcxz	.16
 	push	cx
 	mov	bx, word [bp+6]
 	mov	ah, 0x40
 	int	0x21
 	pop	cx
-	jb	short 0xBC1
+	jb	short .17
 	add	word [bp-2], ax
 	db	0x3B, 0xC8			; cmp	cx, ax
-	ja	short 0xBC1
+	ja	short .17
+.16:
 	pop	cx
 	pop	bx
 	pop	ax
 	db	0x8B, 0xFA			; mov	di, dx
 	ret
+.17:
 	lahf
 	add	sp, 8
 	cmp	word [bp-2], 0
-	jne	short 0xBEA
+	jne	short .20
 	sahf
-	jae	short 0xBD2
+	jae	short .18
 	mov	ah, 9
-	jmp	short 0xBF0
+	jmp	short .21
+.18:
 	test	byte [bx-0x7aa1], 0x40
-	je	short 0xBE4
+	je	short .19
 	mov	bx, word [bp+8]
 	cmp	byte [bx], 0x1a
-	jne	short 0xBE4
+	jne	short .19
 	clc
-	jmp	short 0xBF0
+	jmp	short .21
+.19:
 	stc
 	mov	ax, 0x1c00
-	jmp	short 0xBF0
+	jmp	short .21
+.20:
 	mov	ax, word [bp-2]
 	sub	ax, word [bp-4]
+.21:
 	mov	sp, word [bp-8]
 	pop	si
 	pop	di
+.22:
 	jmp	near DosRetLong
+.23:
 	mov	cx, word [bp+0xa]
 	db	0x0B, 0xC9			; or	cx, cx
-	jne	short 0xC04
+	jne	short .24
 	db	0x8B, 0xC1			; mov	ax, cx
 	jmp	near DosRetLong
+.24:
 	mov	dx, word [bp+8]
 	mov	ah, 0x40
 	int	0x21
-	jae	short 0xC11
+	jae	short .25
 	mov	ah, 9
-	jmp	short 0xBF5
+	jmp	short .22
+.25:
 	db	0x0B, 0xC0			; or	ax, ax
-	jne	short 0xBF5
+	jne	short .22
 	test	byte [bx-0x7aa1], 0x40
-	je	short 0xC26
+	je	short .26
 	db	0x8B, 0xDA			; mov	bx, dx
 	cmp	byte [bx], 0x1a
-	jne	short 0xC26
+	jne	short .26
 	clc
-	jmp	short 0xBF5
+	jmp	short .22
+.26:
 	stc
 	mov	ax, 0x1c00
-	jmp	short 0xBF5
+	jmp	short .22
 
 Rt0C2C:
 	push	bp
@@ -1708,9 +1774,10 @@ Rt0C2C:
 	db	0x87, 0xFE			; xchg	si, di
 	mov	ax, word [bp+6]
 	test	si, 1
-	je	short 0xC5D
+	je	short .1
 	movsb
 	dec	cx
+.1:
 	shr	cx, 1
 	rep movsw
 	db	0x13, 0xC9			; adc	cx, cx
@@ -1818,9 +1885,9 @@ WriteStderr:
 	mov	si, word [bp+6]
 	mov	di, 2
 	db	0x0B, 0xF6			; or	si, si
-	je	short 0xD24
+	je	short .1
 	cmp	byte [si], 0
-	je	short 0xD24
+	je	short .1
 	push	si
 	db	0x9A, 0x9E, 0x0C, 0x00, 0x00			; call	0:_strlen
 	db	0x03, 0xE7			; add	sp, di
@@ -1838,15 +1905,19 @@ WriteStderr:
 	push	ax
 	db	0x9A, 0xEC, 0x0A, 0x00, 0x00			; call	0:_write
 	add	sp, 6
+.1:
 	db	0x83, 0x3E, 0x50, 0x85, 0x00			; cmp	word [errno], 0
-	jl	short 0xD34
+	jl	short .2
 	db	0xA1, 0x50, 0x85			; mov	ax, word [errno]
 	cmp	word [0x8a14], ax
-	jg	short 0xD3A
+	jg	short .3
+.2:
 	mov	ax, word [0x8a14]
-	jmp	short 0xD3D
+	jmp	short .4
 	db	144
+.3:
 	db	0xA1, 0x50, 0x85			; mov	ax, word [errno]
+.4:
 	mov	word [bp-2], ax
 	mov	bx, word [bp-2]
 	shl	bx, 1
@@ -1894,17 +1965,19 @@ _sprintf:
 	add	sp, 6
 	db	0x8B, 0xF8			; mov	di, ax
 	dec	word [0x9098]
-	js	short 0xDBA
+	js	short .1
 	mov	bx, word [0x9096]
 	inc	word [0x9096]
 	mov	byte [bx], 0
-	jmp	short 0xDC6
+	jmp	short .2
 	db	144
+.1:
 	push	si
 	db	0x2B, 0xC0			; sub	ax, ax
 	push	ax
 	call	0:0x1710
 	add	sp, 4
+.2:
 	db	0x8B, 0xC7			; mov	ax, di
 	pop	si
 	pop	di
@@ -1921,13 +1994,14 @@ _stricmp:
 	mov	si, word [bp+8]
 	mov	bx, word [bp+6]
 	mov	al, 0xff
+.1:
 	db	0x0A, 0xC0			; or	al, al
-	je	short 0xE0B
+	je	short .2
 	lodsb
 	mov	ah, byte [bx]
 	inc	bx
 	db	0x3A, 0xE0			; cmp	ah, al
-	je	short 0xDDB
+	je	short .1
 	sub	al, 0x41
 	cmp	al, 0x1a
 	db	0x1A, 0xC9			; sbb	cl, cl
@@ -1942,9 +2016,10 @@ _stricmp:
 	db	0x02, 0xC1			; add	al, cl
 	add	al, 0x41
 	db	0x3A, 0xC4			; cmp	al, ah
-	je	short 0xDDB
+	je	short .1
 	db	0x1A, 0xC0			; sbb	al, al
 	sbb	al, 0xff
+.2:
 	db	0x98			; cwde
 	db	0x8B, 0xF2			; mov	si, dx
 	pop	bp
@@ -1965,9 +2040,10 @@ StrIndexInSet:
 	db	0x33, 0xC0			; xor	ax, ax
 	lea	di, [bp-0x20]
 	rep stosw
+.1:
 	lodsb
 	db	0x0A, 0xC0			; or	al, al
-	je	short 0xE42
+	je	short .2
 	db	0x8B, 0xF8			; mov	di, ax
 	db	0x8B, 0xC8			; mov	cx, ax
 	mov	al, 1
@@ -1976,13 +2052,15 @@ StrIndexInSet:
 	mov	cl, 3
 	shr	di, cl
 	or	byte [bp+di-0x20], al
-	jmp	short 0xE29
+	jmp	short .1
+.2:
 	mov	si, word [bp+6]
 	mov	bx, 0xffff
+.3:
 	inc	bx
 	lodsb
 	and	ax, 0xff
-	je	short 0xE63
+	je	short .4
 	db	0x8B, 0xF8			; mov	di, ax
 	db	0x8B, 0xC8			; mov	cx, ax
 	mov	al, 1
@@ -1991,7 +2069,8 @@ StrIndexInSet:
 	mov	cl, 3
 	shr	di, cl
 	and	al, byte [bp+di-0x20]
-	je	short 0xE48
+	je	short .3
+.4:
 	xchg	bx, ax
 	pop	di
 	pop	si
@@ -2017,25 +2096,27 @@ _onexit:
 	push	bp
 	db	0x8B, 0xEC			; mov	bp, sp
 	mov	ax, 0xffff
-	jmp	short 0xE85
+	jmp	short atexit.1
 
 ; atexit: register a function. Returns 0, or nothing useful if the table is full.
 atexit:
 	push	bp
 	db	0x8B, 0xEC			; mov	bp, sp
 	db	0x33, 0xC0			; xor	ax, ax
+.1:
 	db	0x8B, 0xC8			; mov	cx, ax
 	db	0x99			; cdq
 	mov	bx, word [0x8694]
 	cmp	bx, 0x9138
-	je	short 0xEA6
+	je	short .2
 	add	word [0x8694], 4
 	mov	dx, word [bp+8]
 	mov	word [bx+2], dx
 	mov	ax, word [bp+6]
 	mov	word [bx], ax
-	jcxz	0xEA6
+	jcxz	.2
 	db	0x33, 0xC0			; xor	ax, ax
+.2:
 	db	0x8B, 0xE5			; mov	sp, bp
 	pop	bp
 	retf
@@ -2046,12 +2127,13 @@ CallArg:
 	push	si
 	push	di
 	cmp	word [bp+0xa], 0
-	je	short 0xED5
+	je	short .2
 	mov	cx, word [bp+8]
-	jcxz	0xED5
+	jcxz	.2
 	dec	cx
-	je	short 0xED5
+	je	short .2
 	mov	si, word [bp+6]
+.1:
 	db	0x8B, 0xF9			; mov	di, cx
 	push	si
 	add	si, word [bp+0xa]
@@ -2060,26 +2142,29 @@ CallArg:
 	add	sp, 4
 	db	0x8B, 0xCF			; mov	cx, di
 	db	0x0B, 0xC0			; or	ax, ax
-	js	short 0xEDB
-	loop	0xEC0
+	js	short .3
+	loop	.1
+.2:
 	pop	di
 	pop	si
 	db	0x8B, 0xE5			; mov	sp, bp
 	pop	bp
 	retf
+.3:
 	mov	ax, word [bp+8]
 	dec	ax
 	db	0x33, 0xC9			; xor	cx, cx
+.4:
 	shr	ax, 1
-	loopne	0xEE1
+	loopne	.4
 	neg	cx
 	mov	ax, 4
 	mul	cx
-	jb	short 0xF0F
+	jb	short .6
 	db	0x8B, 0xF0			; mov	si, ax
 	call	0:0x1D8E
 	db	0x3B, 0xC6			; cmp	ax, si
-	jb	short 0xF0F
+	jb	short .6
 	push	bp
 	db	0x8B, 0xFC			; mov	di, sp
 	mov	ax, word [bp+8]
@@ -2088,104 +2173,120 @@ CallArg:
 	add	ax, word [bp+6]
 	push	ax
 	push	word [bp+6]
-	jmp	short 0xF18
+	jmp	short .7
+.5:
 	pop	bp
-	jmp	short 0xED5
+	jmp	short .2
+.6:
 	mov	ax, 0xfffc
 	push	cs
-	call	0x74a
-	jmp	short 0xED5
+	call	__chkstk
+	jmp	short .2
+.7:
 	db	0x3B, 0xE7			; cmp	sp, di
-	jae	short 0xF0C
+	jae	short .5
+.8:
 	db	0x8B, 0xEC			; mov	bp, sp
 	mov	si, word [bp]
 	cmp	si, word [bp+2]
-	jb	short 0xF2B
+	jb	short .9
 	add	sp, 4
-	jmp	short 0xF18
+	jmp	short .7
+.9:
 	sub	sp, 4
 	mov	dx, word [bp+2]
 	mov	word [bp-2], dx
 	add	dx, word [ss:di+0x10]
 	mov	word [bp-4], si
+.10:
 	push	dx
+.11:
 	add	si, word [ss:di+0x10]
 	cmp	si, word [bp+2]
-	je	short 0xF5B
+	je	short .12
 	push	word [bp]
 	push	si
 	call	far [ss:di+0x12]
 	add	sp, 4
 	db	0x0B, 0xC0			; or	ax, ax
-	jg	short 0xF5B
-	je	short 0xF3C
+	jg	short .12
+	je	short .11
 	mov	word [bp-4], si
-	jmp	short 0xF3C
+	jmp	short .11
+.12:
 	pop	dx
 	push	si
 	db	0x8B, 0xF2			; mov	si, dx
+.13:
 	sub	si, word [ss:di+0x10]
 	push	si
 	push	word [bp]
 	call	far [ss:di+0x12]
 	add	sp, 4
 	db	0x0B, 0xC0			; or	ax, ax
-	jg	short 0xF7E
-	je	short 0xF79
+	jg	short .15
+	je	short .14
 	mov	word [bp-2], si
-	jmp	short 0xF5F
+	jmp	short .13
+.14:
 	cmp	si, word [bp]
-	jne	short 0xF5F
+	jne	short .13
+.15:
 	db	0x8B, 0xD6			; mov	dx, si
 	pop	si
 	db	0x3B, 0xD6			; cmp	dx, si
-	jbe	short 0xF98
+	jbe	short .16
 	mov	ax, word [ss:di+0x10]
 	db	0x87, 0xFA			; xchg	dx, di
-	call	0xfe2
+	call	.18
 	db	0x87, 0xFA			; xchg	dx, di
 	mov	word [bp-2], dx
 	mov	word [bp-4], si
-	jmp	short 0xF3B
+	jmp	short .10
+.16:
 	mov	ax, word [ss:di+0x10]
 	db	0x87, 0xFA			; xchg	dx, di
 	db	0x8B, 0xCE			; mov	cx, si
 	mov	si, word [bp]
-	call	0xfe2
+	call	.18
 	db	0x8B, 0xF1			; mov	si, cx
 	db	0x87, 0xFA			; xchg	dx, di
 	mov	si, word [bp+2]
 	sub	si, word [bp-2]
 	add	si, word [bp]
 	sub	si, word [bp-4]
-	jb	short 0xFCD
+	jb	short .17
 	mov	cx, word [bp]
 	mov	ax, word [bp-2]
 	mov	word [bp], ax
 	mov	ax, word [bp-4]
 	mov	word [bp-2], ax
 	mov	word [bp-4], cx
-	jmp	near 0xF1C
+	jmp	near .8
+.17:
 	mov	cx, word [bp+2]
 	mov	ax, word [bp-4]
 	mov	word [bp+2], ax
 	mov	ax, word [bp-2]
 	mov	word [bp-4], ax
 	mov	word [bp-2], cx
-	jmp	near 0xF1C
+	jmp	near .8
+.18:
 	db	0x8B, 0xD8			; mov	bx, ax
 	test	bx, 1
-	je	short 0xFF3
+	je	short .19
 	dec	bx
 	mov	al, byte [bx+si]
 	xchg	byte [bx+di], al
 	mov	byte [bx+si], al
-	je	short 0xFFE
+	je	short .20
+.19:
 	sub	bx, 2
 	mov	ax, word [bx+si]
 	xchg	word [bx+di], ax
 	mov	word [bx+si], ax
-	jne	short 0xFF3
+	jne	short .19
+.20:
 	ret
 	db	0
 
@@ -2388,7 +2489,7 @@ _dos_read:
 	push	bp
 	db	0x8B, 0xEC			; mov	bp, sp
 	mov	ah, 0x3f
-	jmp	short 0x111E
+	jmp	short _dos_write.1
 
 ; _dos_write: write from a far buffer.
 ; Arguments: handle, far buffer, count.
@@ -2396,6 +2497,7 @@ _dos_write:
 	push	bp
 	db	0x8B, 0xEC			; mov	bp, sp
 	mov	ah, 0x40
+.1:
 	mov	bx, word [bp+6]
 	mov	cx, word [bp+0xc]
 	cmp	word [0x8ae4], 0xd6d6
@@ -2406,9 +2508,10 @@ _dos_write:
 	lds	dx, [bp+8]
 	int	0x21
 	pop	ds
-	jb	short 0x113E
+	jb	short .2
 	mov	bx, word [bp+0xe]
 	mov	word [bx], ax
+.2:
 	jmp	near DosRetCode
 	db	0,250,203
 
@@ -2476,7 +2579,7 @@ __aFldiv:
 .pos:
 	mov	ax, word [bp+0xc]
 	db	0x0B, 0xC0			; or	ax, ax
-	jge	short 0x11C4
+	jge	short .1
 	inc	di
 	mov	dx, word [bp+0xa]
 	neg	ax
@@ -2484,8 +2587,9 @@ __aFldiv:
 	db	0x1D, 0x00, 0x00			; sbb	ax, 0
 	mov	word [bp+0xc], ax
 	mov	word [bp+0xa], dx
+.1:
 	db	0x0B, 0xC0			; or	ax, ax
-	jne	short 0x11DD
+	jne	short .2
 	mov	cx, word [bp+0xa]
 	mov	ax, word [bp+8]
 	db	0x33, 0xD2			; xor	dx, dx
@@ -2494,17 +2598,19 @@ __aFldiv:
 	mov	ax, word [bp+6]
 	div	cx
 	db	0x8B, 0xD3			; mov	dx, bx
-	jmp	short 0x1215
+	jmp	short .6
+.2:
 	db	0x8B, 0xD8			; mov	bx, ax
 	mov	cx, word [bp+0xa]
 	mov	dx, word [bp+8]
 	mov	ax, word [bp+6]
+.3:
 	shr	bx, 1
 	rcr	cx, 1
 	shr	dx, 1
 	rcr	ax, 1
 	db	0x0B, 0xDB			; or	bx, bx
-	jne	short 0x11E8
+	jne	short .3
 	div	cx
 	db	0x8B, 0xF0			; mov	si, ax
 	mul	word [bp+0xc]
@@ -2512,20 +2618,24 @@ __aFldiv:
 	mov	ax, word [bp+0xa]
 	mul	si
 	db	0x03, 0xD1			; add	dx, cx
-	jb	short 0x1211
+	jb	short .4
 	cmp	dx, word [bp+8]
-	ja	short 0x1211
-	jb	short 0x1212
+	ja	short .4
+	jb	short .5
 	cmp	ax, word [bp+6]
-	jbe	short 0x1212
+	jbe	short .5
+.4:
 	dec	si
+.5:
 	db	0x33, 0xD2			; xor	dx, dx
 	xchg	si, ax
+.6:
 	dec	di
-	jne	short 0x121F
+	jne	short .7
 	neg	dx
 	neg	ax
 	sbb	dx, 0
+.7:
 	pop	bx
 	pop	si
 	pop	di
@@ -2565,9 +2675,10 @@ __aFlmul:
 __aFlshl:
 	db	0x32, 0xED			; xor	ch, ch
 	jcxz	.done
+.1:
 	shl	ax, 1
 	rcl	dx, 1
-	loop	0x125C
+	loop	.1
 .done:
 	retf
 	db	0
@@ -2576,9 +2687,10 @@ __aFlshl:
 __aFlsar:
 	db	0x32, 0xED			; xor	ch, ch
 	jcxz	.done
+.1:
 	sar	dx, 1
 	rcr	ax, 1
-	loop	0x1268
+	loop	.1
 .done:
 	retf
 	db	0
@@ -2592,7 +2704,7 @@ LongShlAt:
 	mov	dx, word [bx+2]
 	mov	cx, word [bp+8]
 	push	cs
-	call	0x1258
+	call	__aFlshl
 	mov	word [bx], ax
 	mov	word [bx+2], dx
 	pop	bx
@@ -2609,7 +2721,7 @@ LongSarAt:
 	mov	dx, word [bx+2]
 	mov	cx, word [bp+8]
 	push	cs
-	call	0x1264
+	call	__aFlsar
 	mov	word [bx], ax
 	mov	word [bx+2], dx
 	pop	bx
@@ -2621,9 +2733,10 @@ LongSarAt:
 __aFlshr:
 	db	0x32, 0xED			; xor	ch, ch
 	jcxz	.done
+.1:
 	shr	dx, 1
 	rcr	ax, 1
-	loop	0x12B0
+	loop	.1
 .done:
 	retf
 	db	0
@@ -2640,6 +2753,7 @@ _fmemcpy:
 	jcxz	.done
 	lds	si, [bp+0xa]
 	les	di, [bp+6]
+.1:
 	db	0x8B, 0xC1			; mov	ax, cx
 	dec	ax
 	db	0x8B, 0xD7			; mov	dx, di
@@ -2664,16 +2778,17 @@ _fmemcpy:
 	xchg	cx, ax
 	jcxz	.done
 	db	0x0B, 0xF6			; or	si, si
-	jne	short 0x12FE
+	jne	short .2
 	mov	ax, ds
 	add	ax, strict word 0x1000
 	mov	ds, ax
+.2:
 	db	0x0B, 0xFF			; or	di, di
-	jne	short 0x12C9
+	jne	short .1
 	mov	ax, es
 	add	ax, strict word 0x1000
 	mov	es, ax
-	jmp	short 0x12C9
+	jmp	short .1
 .done:
 	mov	ax, word [bp+6]
 	mov	dx, word [bp+8]
@@ -2691,13 +2806,14 @@ _fmemcmp:
 	lds	si, [bp+0xa]
 	les	bx, [bp+6]
 	mov	al, 0xff
+.1:
 	db	0x0A, 0xC0			; or	al, al
-	je	short 0x1355
+	je	short .2
 	lodsb
 	mov	ah, byte [es:bx]
 	inc	bx
 	db	0x3A, 0xE0			; cmp	ah, al
-	je	short 0x1324
+	je	short .1
 	sub	al, 0x41
 	cmp	al, 0x1a
 	db	0x1A, 0xC9			; sbb	cl, cl
@@ -2712,9 +2828,10 @@ _fmemcmp:
 	db	0x02, 0xC1			; add	al, cl
 	add	al, 0x41
 	db	0x3A, 0xC4			; cmp	al, ah
-	je	short 0x1324
+	je	short .1
 	db	0x1A, 0xC0			; sbb	al, al
 	sbb	al, 0xff
+.2:
 	db	0x98			; cwde
 	pop	ds
 	db	0x8B, 0xF2			; mov	si, dx
@@ -2743,10 +2860,11 @@ _fmemchr:
 	mov	al, byte [si-1]
 	db	0x33, 0xC9			; xor	cx, cx
 	cmp	al, byte [es:di-1]
-	ja	short 0x138C
+	ja	short .1
 	je	short .none
 	dec	cx
 	dec	cx
+.1:
 	not	cx
 .none:
 	db	0x8B, 0xC1			; mov	ax, cx
@@ -2788,9 +2906,10 @@ RetOnly2:
 	not	cx
 	db	0x2B, 0xF9			; sub	di, cx
 	repe cmpsb
-	je	short 0x13D2
+	je	short .1
 	db	0x1B, 0xC0			; sbb	ax, ax
 	db	0x1D, 0xFF, 0xFF			; sbb	ax, 0xffff
+.1:
 	pop	ds
 	db	0x8B, 0xF3			; mov	si, bx
 	db	0x8B, 0xFA			; mov	di, dx
@@ -2816,9 +2935,10 @@ _fstrcpy:
 	les	di, [bp+6]
 	db	0x8B, 0xC7			; mov	ax, di
 	test	al, 1
-	je	short 0x13FF
+	je	short .1
 	movsb
 	dec	cx
+.1:
 	shr	cx, 1
 	rep movsw
 	db	0x13, 0xC9			; adc	cx, cx
@@ -2853,9 +2973,10 @@ _fstrcat:
 	db	0x87, 0xFE			; xchg	si, di
 	mov	ax, word [bp+6]
 	test	si, 1
-	je	short 0x1445
+	je	short .1
 	movsb
 	dec	cx
+.1:
 	shr	cx, 1
 	rep movsw
 	db	0x13, 0xC9			; adc	cx, cx
@@ -2878,13 +2999,14 @@ _fmemset:
 	les	di, [bp+6]
 	db	0x8B, 0xD7			; mov	dx, di
 	neg	dx
-	je	short 0x1474
+	je	short .1
 	db	0x2B, 0xD1			; sub	dx, cx
 	db	0x1B, 0xDB			; sbb	bx, bx
 	db	0x23, 0xD3			; and	dx, bx
 	db	0x03, 0xD1			; add	dx, cx
 	db	0x87, 0xD1			; xchg	cx, dx
 	db	0x2B, 0xD1			; sub	dx, cx
+.1:
 	mov	ax, word [bp+0xa]
 	db	0x8A, 0xE0			; mov	ah, al
 	shr	cx, 1
@@ -2892,7 +3014,7 @@ _fmemset:
 	db	0x13, 0xC9			; adc	cx, cx
 	rep stosb
 	db	0x87, 0xD1			; xchg	cx, dx
-	jcxz	0x1495
+	jcxz	.2
 	mov	bx, es
 	add	bx, 0x1000
 	mov	es, bx
@@ -2900,6 +3022,7 @@ _fmemset:
 	rep stosw
 	db	0x13, 0xC9			; adc	cx, cx
 	rep stosb
+.2:
 	pop	di
 .done:
 	mov	ax, word [bp+6]
@@ -2921,9 +3044,10 @@ _fstrcspn:
 	db	0x33, 0xC0			; xor	ax, ax
 	lea	di, [bp-0x20]
 	rep stosw
+.1:
 	lodsb
 	db	0x0A, 0xC0			; or	al, al
-	je	short 0x14D1
+	je	short .2
 	db	0x8B, 0xF8			; mov	di, ax
 	db	0x8B, 0xC8			; mov	cx, ax
 	mov	al, 1
@@ -2932,13 +3056,15 @@ _fstrcspn:
 	mov	cl, 3
 	shr	di, cl
 	or	byte [bp+di-0x20], al
-	jmp	short 0x14B8
+	jmp	short .1
+.2:
 	lds	si, [bp+6]
 	mov	bx, 0xffff
+.3:
 	inc	bx
 	lodsb
 	and	ax, 0xff
-	je	short 0x14F2
+	je	short .4
 	db	0x8B, 0xF8			; mov	di, ax
 	db	0x8B, 0xC8			; mov	cx, ax
 	mov	al, 1
@@ -2947,7 +3073,8 @@ _fstrcspn:
 	mov	cl, 3
 	shr	di, cl
 	and	al, byte [bp+di-0x20]
-	je	short 0x14D7
+	je	short .3
+.4:
 	xchg	bx, ax
 	pop	ds
 	pop	di
@@ -2977,22 +3104,25 @@ _fmemmove:
 	call	0:0x1DF6
 	mov	cx, word [bp+0xe]
 	db	0x0B, 0xD2			; or	dx, dx
-	js	short 0x1577
+	js	short .5
 	db	0x2B, 0xC1			; sub	ax, cx
 	sbb	dx, 0
-	jae	short 0x1577
+	jae	short .5
 	dec	cx
 	db	0x03, 0xF1			; add	si, cx
-	jae	short 0x1533
+	jae	short .1
 	mov	ax, ds
 	add	ax, strict word 0x1000
 	mov	ds, ax
+.1:
 	db	0x03, 0xF9			; add	di, cx
-	jae	short 0x153E
+	jae	short .2
 	mov	ax, es
 	add	ax, strict word 0x1000
 	mov	es, ax
+.2:
 	inc	cx
+.3:
 	db	0x8B, 0xC1			; mov	ax, cx
 	dec	ax
 	db	0x2B, 0xC7			; sub	ax, di
@@ -3012,16 +3142,18 @@ _fmemmove:
 	xchg	cx, ax
 	jcxz	.done
 	cmp	si, -1
-	jne	short 0x1569
+	jne	short .4
 	mov	ax, ds
 	sub	ax, 0x1000
 	mov	ds, ax
+.4:
 	cmp	di, -1
-	jne	short 0x153F
+	jne	short .3
 	mov	ax, es
 	sub	ax, 0x1000
 	mov	es, ax
-	jmp	short 0x153F
+	jmp	short .3
+.5:
 	db	0x8B, 0xC1			; mov	ax, cx
 	dec	ax
 	db	0x8B, 0xD7			; mov	dx, di
@@ -3046,16 +3178,17 @@ _fmemmove:
 	xchg	cx, ax
 	jcxz	.done
 	db	0x0B, 0xF6			; or	si, si
-	jne	short 0x15AC
+	jne	short .6
 	mov	ax, ds
 	add	ax, strict word 0x1000
 	mov	ds, ax
+.6:
 	db	0x0B, 0xFF			; or	di, di
-	jne	short 0x1577
+	jne	short .5
 	mov	ax, es
 	add	ax, strict word 0x1000
 	mov	es, ax
-	jmp	short 0x1577
+	jmp	short .5
 .done:
 	mov	ax, word [bp+6]
 	mov	dx, word [bp+8]
@@ -3075,7 +3208,8 @@ EmulatedFloat:
 	push	si
 	push	di
 	int	0x35
-	jle	short 0x15D0
+.1:
+	jle	short .1
 	int	0x3d
 	mov	ax, word [bp-2]
 	or	ah, 0xc
@@ -3120,7 +3254,7 @@ __FF_MSGBANNER:
 	mov	ax, 0xfc
 	push	ax
 	push	cs
-	call	0x1683
+	call	__NMSG_WRITE
 	cmp	word [0x86b4], 0
 	je	short .nobannerhook
 	call	far [0x86b2]
@@ -3128,7 +3262,7 @@ __FF_MSGBANNER:
 	mov	ax, 0xff
 	push	ax
 	push	cs
-	call	0x1683
+	call	__NMSG_WRITE
 	db	0x8B, 0xE5			; mov	sp, bp
 	pop	bp
 	retf
@@ -3136,7 +3270,7 @@ __FF_MSGBANNER:
 ; FpFail: report R6002, floating-point support not loaded, and abort.
 FpFail:
 	mov	ax, 2
-	jmp	near 0x59D
+	jmp	near AmsgExit
 
 ; __nullcheck: checksum the first bytes of DGROUP.
 ; If it does not match, report the null-pointer assignment.
@@ -3153,11 +3287,11 @@ __nullcheck:
 	xor	ah, 0x55
 	je	short .ok
 	push	cs
-	call	0x160c
+	call	__FF_MSGBANNER
 	mov	ax, 1
 	push	ax
 	push	cs
-	call	0x1683
+	call	__NMSG_WRITE
 	mov	ax, 1
 .ok:
 	pop	si
@@ -3203,7 +3337,7 @@ __NMSG_WRITE:
 	push	di
 	push	word [bp+6]
 	push	cs
-	call	0x1658
+	call	__NMSG_TEXT
 	db	0x0B, 0xC0			; or	ax, ax
 	je	short .none
 	xchg	dx, ax
@@ -3241,7 +3375,7 @@ DosRetZero:
 DosRetCode:
 	jae	short DosRetZero
 	push	ax
-	call	0x16e2
+	call	DosMapErr
 	pop	ax
 	db	0x32, 0xE4			; xor	ah, ah
 	db	0x8B, 0xE5			; mov	sp, bp
@@ -3253,7 +3387,7 @@ DosRetLong:
 	jae	short DosRetLeave
 
 DosRetBad:
-	call	0x16e2
+	call	DosMapErr
 	mov	ax, 0xffff
 	db	0x99			; cdq
 
@@ -3265,7 +3399,7 @@ DosRetLeave:
 ; DosRetErrno: map the DOS error in AX and return.
 DosRetErrno:
 	db	0x32, 0xE4			; xor	ah, ah
-	call	0x16e2
+	call	DosMapErr
 	retf
 
 ; DosMapErr: store the DOS error in _doserrno and the C errno.
@@ -3276,7 +3410,7 @@ DosMapErr:
 	cmp	byte [0x8558], 3
 	jb	short .low
 	cmp	al, 0x22
-	jae	short 0x1700
+	jae	short .1
 	cmp	al, 0x20
 	jb	short .low
 	mov	al, 5
@@ -3284,16 +3418,18 @@ DosMapErr:
 .low:
 	cmp	al, 0x13
 	jbe	short .map
+.1:
 	mov	al, 0x13
 .map:
 	mov	bx, 0x86b6
 	xlatb
+.2:
 	db	0x98			; cwde
 	db	0xA3, 0x50, 0x85			; mov	word [errno], ax
 	ret
 .high:
 	db	0x8A, 0xC4			; mov	al, ah
-	jmp	short 0x1706
+	jmp	short .2
 	db	0
 
 ; Formatted output: flush, buffer, and _output.
@@ -3313,12 +3449,13 @@ _flsbuf:
 	jne	short .done
 	mov	word [si+2], 0
 	test	al, 1
-	je	short 0x1737
+	je	short .1
 	test	al, 0x10
 	je	short .done
 	mov	cx, word [si+4]
 	mov	word [si], cx
 	and	al, 0xfe
+.1:
 	or	al, 2
 	and	al, 0xef
 	mov	byte [si+6], al
@@ -3328,40 +3465,44 @@ _flsbuf:
 	db	0x33, 0xDB			; xor	bx, bx
 	mov	bl, byte [si+7]
 	test	al, 8
-	jne	short 0x179E
+	jne	short .5
 	test	al, 4
-	jne	short 0x1773
+	jne	short .3
 	test	byte [di], 1
-	jne	short 0x179E
+	jne	short .5
 	cmp	si, 0x86d2
-	je	short 0x176C
+	je	short .2
 	cmp	si, 0x86da
-	je	short 0x176C
+	je	short .2
 	cmp	si, 0x86ea
-	jne	short 0x1791
+	jne	short .4
+.2:
 	test	byte [bx-0x7aa1], 0x40
-	je	short 0x1791
+	je	short .4
+.3:
 	mov	cx, 1
 	push	cx
 	lea	di, [bp+6]
 	push	di
 	push	bx
 	push	cs
-	call	0xaec
+	call	_write
 	add	sp, 6
 	mov	cx, 1
-	jmp	short 0x17C7
+	jmp	short .7
 .done:
 	mov	ax, 0xffff
 	or	byte [si+6], 0x20
-	jmp	short 0x17EF
+	jmp	short .9
+.4:
 	push	bx
 	push	si
-	call	0x26e6
+	call	ConvertFloat
 	pop	bx
 	pop	bx
 	test	byte [si+6], 8
-	je	short 0x1773
+	je	short .3
+.5:
 	mov	cx, word [si]
 	mov	dx, word [si+4]
 	db	0x2B, 0xCA			; sub	cx, dx
@@ -3370,37 +3511,41 @@ _flsbuf:
 	mov	dx, word [di+2]
 	dec	dx
 	mov	word [si+2], dx
-	jcxz	0x17D2
+	jcxz	.8
 	push	cx
 	push	cx
 	push	word [si+4]
 	push	bx
 	push	cs
-	call	0xaec
+	call	_write
 	add	sp, 6
 	pop	cx
+.6:
 	mov	di, word [si+4]
 	mov	dx, word [bp+6]
 	mov	byte [di], dl
+.7:
 	db	0x3B, 0xC1			; cmp	ax, cx
 	jne	short .done
 	db	0x33, 0xC0			; xor	ax, ax
 	mov	al, byte [bp+6]
-	jmp	short 0x17EF
+	jmp	short .9
+.8:
 	db	0x33, 0xC0			; xor	ax, ax
 	test	byte [bx-0x7aa1], 0x20
-	je	short 0x17BF
+	je	short .6
 	mov	cx, 2
 	push	cx
 	push	ax
 	push	ax
 	push	bx
 	push	cs
-	call	0x7cc
+	call	_lseek
 	add	sp, 8
 	db	0x33, 0xC0			; xor	ax, ax
 	db	0x8B, 0xC8			; mov	cx, ax
-	jmp	short 0x17BF
+	jmp	short .6
+.9:
 	pop	di
 	pop	si
 	pop	bp
@@ -3432,7 +3577,8 @@ _stbuf:
 	jne	short .nobuf
 	mov	ax, word [bx]
 	db	0x0B, 0xC0			; or	ax, ax
-	je	short 0x184D
+	je	short .2
+.1:
 	mov	word [si+4], ax
 	mov	word [si], ax
 	mov	word [si+2], 0x200
@@ -3440,7 +3586,8 @@ _stbuf:
 	or	byte [si+6], 2
 	mov	byte [di], 0x11
 	mov	ax, 1
-	jmp	short 0x1863
+	jmp	short .3
+.2:
 	push	bx
 	mov	ax, 0x200
 	push	ax
@@ -3450,9 +3597,10 @@ _stbuf:
 	db	0x0B, 0xC0			; or	ax, ax
 	je	short .nobuf
 	mov	word [bx], ax
-	jmp	short 0x1832
+	jmp	short .1
 .nobuf:
 	db	0x33, 0xC0			; xor	ax, ax
+.3:
 	pop	di
 	pop	si
 	pop	bp
@@ -3496,7 +3644,7 @@ _output:
 	db	0x8B, 0xEC			; mov	bp, sp
 	mov	ax, 0x171
 	push	cs
-	call	0x74a
+	call	__chkstk
 	push	si
 	push	di
 	db	0x33, 0xC0			; xor	ax, ax
@@ -3508,19 +3656,23 @@ _output:
 	mov	word [bp+8], si
 	mov	byte [bp-2], al
 	db	0x0A, 0xC0			; or	al, al
-	je	short 0x18DE
+	je	short .1
 	cmp	word [bp-8], 0
-	jge	short 0x18E4
+	jge	short .2
+.1:
 	mov	ax, word [bp-8]
-	jmp	near 0x1D87
+	jmp	near .90
+.2:
 	mov	bx, 0x8812
 	sub	al, 0x20
 	cmp	al, 0x58
-	ja	short 0x18F2
+	ja	short .3
 	xlatb
 	and	al, 0xf
-	jmp	short 0x18F4
+	jmp	short .4
+.3:
 	mov	al, 0
+.4:
 	mov	cl, 3
 	shl	al, cl
 	add	al, byte [bp-5]
@@ -3535,7 +3687,7 @@ _output:
 .widthdig:
 	mov	dl, byte [bp-2]
 	mov	cx, 1
-	call	0x1d3a
+	call	.82
 	jmp	short .next
 .reset:
 	db	0x33, 0xC0			; xor	ax, ax
@@ -3549,39 +3701,45 @@ _output:
 .flags:
 	mov	al, byte [bp-2]
 	cmp	al, 0x2d
-	jne	short 0x1939
+	jne	short .5
 	or	byte [bp-4], 4
 	jmp	short .next
+.5:
 	cmp	al, 0x2b
-	jne	short 0x1943
+	jne	short .6
 	or	byte [bp-4], 1
 	jmp	short .next
+.6:
 	cmp	al, 0x20
-	jne	short 0x194E
+	jne	short .7
 	or	byte [bp-4], 2
 	jmp	near .next
+.7:
 	cmp	al, 0x23
-	jne	short 0x1959
+	jne	short .8
 	or	byte [bp-4], 0x80
 	jmp	near .next
+.8:
 	or	byte [bp-4], 8
 	jmp	near .next
 .widthstar:
 	mov	cl, byte [bp-2]
 	cmp	cl, 0x2a
-	jne	short 0x1977
-	call	0x1cc1
+	jne	short .9
+	call	.70
 	db	0x0B, 0xC0			; or	ax, ax
-	jns	short 0x1986
+	jns	short .10
 	neg	ax
 	or	byte [bp-4], 4
-	jmp	short 0x1986
+	jmp	short .10
+.9:
 	sub	cl, 0x30
 	db	0x32, 0xED			; xor	ch, ch
 	mov	ax, word [bp-0xa]
 	mov	bx, 0xa
 	mul	bx
 	db	0x03, 0xC1			; add	ax, cx
+.10:
 	mov	word [bp-0xa], ax
 	jmp	near .next
 .prec0:
@@ -3590,119 +3748,141 @@ _output:
 .precstar:
 	mov	cl, byte [bp-2]
 	cmp	cl, 0x2a
-	jne	short 0x19A8
-	call	0x1cc1
+	jne	short .11
+	call	.70
 	db	0x0B, 0xC0			; or	ax, ax
-	jns	short 0x19B7
+	jns	short .12
 	mov	ax, 0xffff
-	jmp	short 0x19B7
+	jmp	short .12
+.11:
 	sub	cl, 0x30
 	db	0x32, 0xED			; xor	ch, ch
 	mov	ax, word [bp-0xc]
 	mov	bx, 0xa
 	mul	bx
 	db	0x03, 0xC1			; add	ax, cx
+.12:
 	mov	word [bp-0xc], ax
 	jmp	near .next
 .sizech:
 	mov	al, byte [bp-2]
 	cmp	al, 0x6c
-	jne	short 0x19CA
+	jne	short .13
 	or	byte [bp-4], 0x10
-	jmp	short 0x19EC
+	jmp	short .17
+.13:
 	cmp	al, 0x46
-	jne	short 0x19D4
+	jne	short .14
 	or	byte [bp-4], 0x20
-	jmp	short 0x19EC
+	jmp	short .17
+.14:
 	cmp	al, 0x4e
-	jne	short 0x19DE
+	jne	short .15
 	or	byte [bp-3], 0x10
-	jmp	short 0x19EC
+	jmp	short .17
+.15:
 	cmp	al, 0x4c
-	jne	short 0x19E8
+	jne	short .16
 	or	byte [bp-3], 4
-	jmp	short 0x19EC
+	jmp	short .17
+.16:
 	or	byte [bp-3], 8
+.17:
 	jmp	near .next
 .convert:
 	mov	al, byte [bp-2]
 	cmp	al, 0x64
-	jne	short 0x19F9
-	jmp	near 0x1B87
+	jne	short .18
+	jmp	near .44
+.18:
 	cmp	al, 0x69
-	jne	short 0x1A00
-	jmp	near 0x1B87
+	jne	short .19
+	jmp	near .44
+.19:
 	cmp	al, 0x75
-	jne	short 0x1A07
-	jmp	near 0x1B8B
+	jne	short .20
+	jmp	near .45
+.20:
 	cmp	al, 0x58
-	jne	short 0x1A0E
-	jmp	near 0x1B91
+	jne	short .21
+	jmp	near .46
+.21:
 	cmp	al, 0x78
-	jne	short 0x1A15
-	jmp	near 0x1B97
+	jne	short .22
+	jmp	near .47
+.22:
 	cmp	al, 0x6f
-	jne	short 0x1A1C
-	jmp	near 0x1BB8
+	jne	short .23
+	jmp	near .50
+.23:
 	cmp	al, 0x63
-	je	short 0x1A3A
+	je	short .25
 	cmp	al, 0x73
-	je	short 0x1A4B
+	je	short .26
 	cmp	al, 0x6e
-	je	short 0x1A79
+	je	short .29
 	cmp	al, 0x70
-	je	short 0x1A8C
+	je	short .31
 	cmp	al, 0x45
-	je	short 0x1A37
+	je	short .24
 	cmp	al, 0x47
-	je	short 0x1A37
-	jmp	near 0x1AF2
-	jmp	near 0x1AEF
-	call	0x1cc1
+	je	short .24
+	jmp	near .36
+.24:
+	jmp	near .35
+.25:
+	call	.70
 	lea	di, [bp-0x171]
 	push	ss
 	pop	es
 	stosb
 	dec	di
 	mov	cx, 1
-	jmp	near 0x1C36
-	call	0x1cd5
+	jmp	near .62
+.26:
+	call	.72
 	db	0x0B, 0xFF			; or	di, di
-	jne	short 0x1A64
+	jne	short .27
 	mov	ax, es
 	db	0x0B, 0xC0			; or	ax, ax
-	jne	short 0x1A64
+	jne	short .27
 	push	ds
 	pop	es
 	mov	di, 0x886b
 	mov	cx, word [0x8871]
-	jmp	near 0x1C36
+	jmp	near .62
+.27:
 	push	di
 	mov	cx, word [bp-0xc]
-	jcxz	0x1A71
+	jcxz	.28
 	db	0x32, 0xC0			; xor	al, al
 	repne scasb
-	jne	short 0x1A71
+	jne	short .28
 	dec	di
+.28:
 	pop	cx
 	db	0x2B, 0xF9			; sub	di, cx
 	db	0x87, 0xCF			; xchg	di, cx
-	jmp	near 0x1C36
-	call	0x1cd5
+	jmp	near .62
+.29:
+	call	.72
 	mov	ax, word [bp-8]
 	stosw
 	test	byte [bp-4], 0x10
-	je	short 0x1A89
+	je	short .30
 	db	0x33, 0xC0			; xor	ax, ax
 	stosw
+.30:
 	jmp	near .next
+.31:
 	test	byte [bp-4], 0x30
-	jne	short 0x1A97
-	call	0x1cc1
-	jmp	short 0x1AD0
-	call	0x1cc9
+	jne	short .32
+	call	.70
+	jmp	short .33
+.32:
+	call	.71
 	test	byte [bp-3], 0x18
-	jne	short 0x1AD0
+	jne	short .33
 	mov	byte [bp-1], 7
 	mov	cx, 0x10
 	push	ss
@@ -3711,16 +3891,17 @@ _output:
 	db	0x33, 0xD2			; xor	dx, dx
 	lea	di, [bp-0x169]
 	mov	si, 4
-	call	0x1d56
+	call	.85
 	mov	cx, 0x10
 	lea	di, [bp-0x16e]
 	pop	ax
 	db	0x33, 0xD2			; xor	dx, dx
 	mov	si, 4
-	call	0x1d56
+	call	.85
 	mov	byte [bp-0x16d], 0x3a
 	mov	cx, 9
-	jmp	short 0x1AE8
+	jmp	short .34
+.33:
 	mov	byte [bp-1], 7
 	mov	cx, 0x10
 	push	ss
@@ -3728,24 +3909,29 @@ _output:
 	db	0x33, 0xD2			; xor	dx, dx
 	lea	di, [bp-0x16e]
 	mov	si, 4
-	call	0x1d56
+	call	.85
 	mov	cx, 4
+.34:
 	lea	di, [bp-0x171]
-	jmp	near 0x1C36
+	jmp	near .62
+.35:
 	inc	word [bp-0x12]
+.36:
 	or	byte [bp-4], 0x40
 	mov	al, byte [bp-2]
 	or	al, 0x20
 	db	0x98			; cwde
 	db	0x8B, 0xF0			; mov	si, ax
 	cmp	word [bp-0xc], 0
-	jg	short 0x1B17
-	je	short 0x1B0D
+	jg	short .38
+	je	short .37
 	mov	word [bp-0xc], 6
-	jmp	short 0x1B17
+	jmp	short .38
+.37:
 	db	0x3D, 0x67, 0x00			; cmp	ax, 0x67
-	jne	short 0x1B17
+	jne	short .38
 	mov	word [bp-0xc], 1
+.38:
 	lea	di, [bp-0x171]
 	push	word [bp-0x12]
 	push	word [bp-0xc]
@@ -3753,33 +3939,38 @@ _output:
 	push	di
 	push	word [bp+0xa]
 	test	byte [bp-3], 4
-	je	short 0x1B36
+	je	short .39
 	call	far [0x888a]
 	add	word [bp+0xa], 0xa
-	jmp	short 0x1B3E
+	jmp	short .40
+.39:
 	call	far [0x8876]
 	add	word [bp+0xa], 8
+.40:
 	add	sp, 0xa
 	test	byte [bp-4], 0x80
-	je	short 0x1B55
+	je	short .41
 	cmp	word [bp-0xc], 0
-	jne	short 0x1B55
+	jne	short .41
 	push	di
 	call	far [0x8882]
 	add	sp, 2
+.41:
 	cmp	si, 0x67
-	jne	short 0x1B69
+	jne	short .42
 	test	word [bp-4], 0x80
-	jne	short 0x1B69
+	jne	short .42
 	push	di
 	call	far [0x887a]
 	add	sp, 2
+.42:
 	push	ss
 	pop	es
 	cmp	byte [es:di], 0x2d
-	jne	short 0x1B76
+	jne	short .43
 	inc	di
 	or	byte [bp-3], 1
+.43:
 	mov	cx, 0xffff
 	push	di
 	mov	al, 0
@@ -3788,129 +3979,157 @@ _output:
 	pop	cx
 	db	0x2B, 0xF9			; sub	di, cx
 	db	0x87, 0xCF			; xchg	di, cx
-	jmp	near 0x1C36
+	jmp	near .62
+.44:
 	or	byte [bp-4], 0x40
+.45:
 	mov	byte [bp-6], 0xa
-	jmp	short 0x1BC6
+	jmp	short .52
+.46:
 	mov	byte [bp-1], 7
-	jmp	short 0x1B9B
+	jmp	short .48
+.47:
 	mov	byte [bp-1], 0x27
+.48:
 	test	byte [bp-4], 0x80
-	je	short 0x1BB2
+	je	short .49
 	mov	word [bp-0x10], 2
 	mov	byte [bp-0xe], 0x30
 	mov	dl, 0x51
 	add	dl, byte [bp-1]
 	mov	byte [bp-0xd], dl
+.49:
 	mov	byte [bp-6], 0x10
-	jmp	short 0x1BC6
+	jmp	short .52
+.50:
 	test	byte [bp-4], 0x80
-	je	short 0x1BC2
+	je	short .51
 	or	byte [bp-3], 2
+.51:
 	mov	byte [bp-6], 8
+.52:
 	test	byte [bp-4], 0x10
-	je	short 0x1BD1
-	call	0x1cc9
-	jmp	short 0x1BDF
-	call	0x1cc1
+	je	short .53
+	call	.71
+	jmp	short .55
+.53:
+	call	.70
 	test	byte [bp-4], 0x40
-	je	short 0x1BDD
+	je	short .54
 	db	0x99			; cdq
-	jmp	short 0x1BDF
+	jmp	short .55
+.54:
 	db	0x33, 0xD2			; xor	dx, dx
+.55:
 	test	byte [bp-4], 0x40
-	je	short 0x1BF4
+	je	short .56
 	db	0x0B, 0xD2			; or	dx, dx
-	jge	short 0x1BF4
+	jge	short .56
 	or	byte [bp-3], 1
 	neg	ax
 	adc	dx, 0
 	neg	dx
+.56:
 	cmp	word [bp-0xc], 0
-	jge	short 0x1C01
+	jge	short .57
 	mov	word [bp-0xc], 1
-	jmp	short 0x1C05
+	jmp	short .58
+.57:
 	and	byte [bp-4], 0xf7
+.58:
 	db	0x8B, 0xD8			; mov	bx, ax
 	db	0x0B, 0xDA			; or	bx, dx
-	jne	short 0x1C10
+	jne	short .59
 	mov	word [bp-0x10], 0
+.59:
 	lea	di, [bp-0x15]
 	push	ss
 	pop	es
 	mov	cl, byte [bp-6]
 	db	0x32, 0xED			; xor	ch, ch
 	mov	si, word [bp-0xc]
-	call	0x1d56
+	call	.85
 	test	byte [bp-3], 2
-	je	short 0x1C34
-	jcxz	0x1C2E
+	je	short .61
+	jcxz	.60
 	cmp	byte [es:di], 0x30
-	je	short 0x1C34
+	je	short .61
+.60:
 	dec	di
 	mov	byte [es:di], 0x30
 	inc	cx
-	jmp	short 0x1C36
+.61:
+	jmp	short .62
+.62:
 	test	byte [bp-4], 0x40
-	je	short 0x1C6D
+	je	short .65
 	test	byte [bp-3], 1
-	je	short 0x1C4D
+	je	short .63
 	mov	byte [bp-0xe], 0x2d
 	mov	word [bp-0x10], 1
-	jmp	short 0x1C6D
+	jmp	short .65
+.63:
 	test	byte [bp-4], 1
-	je	short 0x1C5E
+	je	short .64
 	mov	byte [bp-0xe], 0x2b
 	mov	word [bp-0x10], 1
-	jmp	short 0x1C6D
+	jmp	short .65
+.64:
 	test	byte [bp-4], 2
-	je	short 0x1C6D
+	je	short .65
 	mov	byte [bp-0xe], 0x20
 	mov	word [bp-0x10], 1
+.65:
 	mov	ax, word [bp-0xa]
 	db	0x2B, 0xC1			; sub	ax, cx
 	sub	ax, word [bp-0x10]
-	jge	short 0x1C79
+	jge	short .66
 	db	0x33, 0xC0			; xor	ax, ax
+.66:
 	push	es
 	push	di
 	push	cx
 	test	byte [bp-4], 0xc
-	jne	short 0x1C89
+	jne	short .67
 	db	0x8B, 0xC8			; mov	cx, ax
 	mov	dl, 0x20
-	call	0x1d3a
+	call	.82
+.67:
 	push	ax
 	push	ss
 	pop	es
 	lea	di, [bp-0xe]
 	mov	cx, word [bp-0x10]
-	call	0x1d1c
+	call	.79
 	pop	ax
 	test	byte [bp-4], 8
-	je	short 0x1CA9
+	je	short .68
 	test	byte [bp-4], 4
-	jne	short 0x1CA9
+	jne	short .68
 	db	0x8B, 0xC8			; mov	cx, ax
 	mov	dl, 0x30
-	call	0x1d3a
+	call	.82
+.68:
 	pop	cx
 	pop	di
 	pop	es
 	push	ax
-	call	0x1d1c
+	call	.79
 	pop	ax
 	test	byte [bp-4], 4
-	je	short 0x1CBE
+	je	short .69
 	db	0x8B, 0xC8			; mov	cx, ax
 	mov	dl, 0x20
-	call	0x1d3a
+	call	.82
+.69:
 	jmp	near .next
 .getarg:
+.70:
 	mov	si, word [bp+0xa]
 	lodsw
 	mov	word [bp+0xa], si
 	ret
+.71:
 	mov	si, word [bp+0xa]
 	lodsw
 	db	0x8B, 0xD0			; mov	dx, ax
@@ -3918,84 +4137,100 @@ _output:
 	xchg	dx, ax
 	mov	word [bp+0xa], si
 	ret
+.72:
 	test	byte [bp-4], 0x20
-	je	short 0x1CE3
-	call	0x1cc9
+	je	short .73
+	call	.71
 	mov	es, dx
 	db	0x8B, 0xF8			; mov	di, ax
 	ret
-	call	0x1cc1
+.73:
+	call	.70
 	db	0x8B, 0xF8			; mov	di, ax
 	db	0x0B, 0xC0			; or	ax, ax
-	jne	short 0x1CEF
+	jne	short .74
 	mov	es, ax
 	ret
+.74:
 	push	ds
 	pop	es
 	ret
+.75:
 	db	0x98			; cwde
 	push	di
 	mov	bx, word [bp+6]
 	dec	word [bx+2]
-	js	short 0x1D06
+	js	short .78
 	mov	di, word [bx]
 	inc	word [bx]
 	mov	byte [di], al
+.76:
 	db	0x33, 0xC0			; xor	ax, ax
+.77:
 	pop	di
 	ret
+.78:
 	push	es
 	push	cx
 	push	dx
 	push	bx
 	push	ax
 	push	cs
-	call	0x1710
+	call	_flsbuf
 	add	sp, 4
 	pop	dx
 	pop	cx
 	pop	es
 	db	0x3D, 0xFF, 0xFF			; cmp	ax, 0xffff
-	jne	short 0x1D02
-	jmp	short 0x1D04
-	jcxz	0x1D39
+	jne	short .76
+	jmp	short .77
+.79:
+	jcxz	.81
 	db	0x8B, 0xF7			; mov	si, di
 	add	word [bp-8], cx
 	push	di
 	db	0x33, 0xFF			; xor	di, di
+.80:
 	db	0x26, 0xAC			; lodsb
-	call	0x1cf2
+	call	.75
 	db	0x0B, 0xF8			; or	di, ax
-	loop	0x1D26
+	loop	.80
 	db	0x0B, 0xFF			; or	di, di
 	pop	di
-	je	short 0x1D39
+	je	short .81
 	mov	word [bp-8], 0xffff
+.81:
 	ret
 .count:
-	jcxz	0x1D55
+.82:
+	jcxz	.84
 	add	word [bp-8], cx
 	push	di
 	db	0x33, 0xFF			; xor	di, di
+.83:
 	db	0x8A, 0xC2			; mov	al, dl
-	call	0x1cf2
+	call	.75
 	db	0x0B, 0xF8			; or	di, ax
-	loop	0x1D42
+	loop	.83
 	db	0x0B, 0xFF			; or	di, di
 	pop	di
-	je	short 0x1D55
+	je	short .84
 	mov	word [bp-8], 0xffff
+.84:
 	ret
+.85:
 	std
 	push	di
 	xchg	bx, ax
+.86:
 	db	0x0B, 0xF6			; or	si, si
-	jg	short 0x1D67
+	jg	short .87
 	db	0x0B, 0xDB			; or	bx, bx
-	jne	short 0x1D67
+	jne	short .87
 	db	0x0B, 0xD2			; or	dx, dx
-	jne	short 0x1D67
-	jmp	short 0x1D81
+	jne	short .87
+	jmp	short .89
+.87:
 	xchg	dx, ax
 	db	0x33, 0xD2			; xor	dx, dx
 	div	cx
@@ -4005,17 +4240,20 @@ _output:
 	db	0x87, 0xD3			; xchg	bx, dx
 	add	al, 0x30
 	cmp	al, 0x39
-	jbe	short 0x1D7B
+	jbe	short .88
 	add	al, byte [bp-1]
+.88:
 	stosb
 	db	0x8B, 0xC2			; mov	ax, dx
 	dec	si
-	jmp	short 0x1D59
+	jmp	short .86
+.89:
 	pop	cx
 	db	0x2B, 0xCF			; sub	cx, di
 	inc	di
 	cld
 	ret
+.90:
 	pop	di
 	pop	si
 	db	0x8B, 0xE5			; mov	sp, bp
@@ -4038,21 +4276,24 @@ _atol:
 	db	0x33, 0xC0			; xor	ax, ax
 	db	0x99			; cdq
 	db	0x33, 0xDB			; xor	bx, bx
+.1:
 	lodsb
 	cmp	al, 0x20
-	je	short 0x1DAF
+	je	short .1
 	cmp	al, 9
-	je	short 0x1DAF
+	je	short .1
 	push	ax
 	cmp	al, 0x2d
-	je	short 0x1DC1
+	je	short .2
 	cmp	al, 0x2b
-	jne	short 0x1DC2
+	jne	short .3
+.2:
 	lodsb
+.3:
 	cmp	al, 0x39
-	ja	short 0x1DE5
+	ja	short .4
 	sub	al, 0x30
-	jb	short 0x1DE5
+	jb	short .4
 	shl	bx, 1
 	rcl	dx, 1
 	db	0x8B, 0xCB			; mov	cx, bx
@@ -4065,14 +4306,16 @@ _atol:
 	db	0x13, 0xD7			; adc	dx, di
 	db	0x03, 0xD8			; add	bx, ax
 	adc	dx, 0
-	jmp	short 0x1DC1
+	jmp	short .2
+.4:
 	pop	ax
 	cmp	al, 0x2d
 	xchg	bx, ax
-	jne	short 0x1DF2
+	jne	short .5
 	neg	ax
 	adc	dx, 0
 	neg	dx
+.5:
 	pop	si
 	pop	di
 	pop	bp
@@ -4109,26 +4352,31 @@ ScanFloat:
 	db	0x98			; cwde
 	db	0x8B, 0xD8			; mov	bx, ax
 	test	byte [bx-0x7a73], 1
-	je	short 0x1E3C
+	je	short .1
 	lea	ax, [bx+0x20]
-	jmp	short 0x1E42
+	jmp	short .2
+.1:
 	mov	bx, word [bp+6]
 	mov	al, byte [bx]
 	db	0x98			; cwde
+.2:
 	db	0x3D, 0x65, 0x00			; cmp	ax, 0x65
-	je	short 0x1E59
+	je	short .4
+.3:
 	inc	word [bp+6]
 	mov	bx, word [bp+6]
 	mov	al, byte [bx]
 	db	0x98			; cwde
 	db	0x8B, 0xD8			; mov	bx, ax
 	test	byte [bx-0x7a73], 4
-	jne	short 0x1E47
+	jne	short .3
+.4:
 	mov	bx, word [bp+6]
 	mov	al, byte [bx]
 	mov	byte [bp-2], al
 	mov	byte [bx], 0x2e
 	inc	word [bp+6]
+.5:
 	mov	bx, word [bp+6]
 	mov	al, byte [bx]
 	mov	byte [bp-4], al
@@ -4139,7 +4387,7 @@ ScanFloat:
 	mov	bx, word [bp+6]
 	inc	word [bp+6]
 	cmp	byte [bx], 0
-	jne	short 0x1E67
+	jne	short .5
 	db	0x8B, 0xE5			; mov	sp, bp
 	pop	bp
 	retf
@@ -4149,37 +4397,46 @@ ScanPoint:
 	push	bp
 	db	0x8B, 0xEC			; mov	bp, sp
 	sub	sp, 4
-	jmp	short 0x1E9A
+	jmp	short .2
+.1:
 	cmp	byte [bx], 0x2e
-	je	short 0x1EA2
+	je	short .3
 	inc	word [bp+6]
+.2:
 	mov	bx, word [bp+6]
 	cmp	byte [bx], 0
-	jne	short 0x1E92
+	jne	short .1
+.3:
 	inc	word [bp+6]
 	cmp	byte [bx], 0
-	je	short 0x1EF3
-	jmp	short 0x1EB9
+	je	short .10
+	jmp	short .5
+.4:
 	cmp	byte [bx], 0x65
-	je	short 0x1EC1
+	je	short .6
 	cmp	byte [bx], 0x45
-	je	short 0x1EC1
+	je	short .6
 	inc	word [bp+6]
+.5:
 	mov	bx, word [bp+6]
 	cmp	byte [bx], 0
-	jne	short 0x1EAC
+	jne	short .4
+.6:
 	db	0x8B, 0xC3			; mov	ax, bx
 	dec	word [bp+6]
 	mov	word [bp-2], ax
-	jmp	short 0x1ECF
+	jmp	short .8
 	db	144
+.7:
 	dec	word [bp+6]
+.8:
 	mov	bx, word [bp+6]
 	cmp	byte [bx], 0x30
-	je	short 0x1ECC
+	je	short .7
 	cmp	byte [bx], 0x2e
-	jne	short 0x1EDF
+	jne	short .9
 	dec	word [bp+6]
+.9:
 	mov	bx, word [bp-2]
 	inc	word [bp-2]
 	mov	al, byte [bx]
@@ -4187,7 +4444,8 @@ ScanPoint:
 	mov	bx, word [bp+6]
 	mov	byte [bx], al
 	db	0x0A, 0xC0			; or	al, al
-	jne	short 0x1EDF
+	jne	short .9
+.10:
 	db	0x8B, 0xE5			; mov	sp, bp
 	pop	bp
 	retf
@@ -4213,9 +4471,9 @@ FormatFloat:
 	push	si
 	mov	ax, word [bp+6]
 	dec	ax
-	je	short 0x1F68
+	je	short .3
 	dec	ax
-	je	short 0x1F4E
+	je	short .1
 	push	word [bp+0xc]
 	db	0x9A, 0xF8, 0x27, 0x00, 0x00			; call	0:SkipSpace
 	add	sp, 2
@@ -4225,20 +4483,23 @@ FormatFloat:
 	les	bx, [bp+8]
 	int	0x3c
 	fstp	dword [bx]
-	jmp	short 0x1F60
+	jmp	short .2
 	db	144
+.1:
 	push	word [bp+0xc]
 	db	0x9A, 0x18, 0x2C, 0x00, 0x00			; call	0:FloatStatus
 	add	sp, 2
 	les	bx, [bp+8]
 	int	0x3c
 	db	0xDB, 0x3F			; fstp	xword [bx]
+.2:
 	int	0x3d
 	pop	si
 	pop	di
 	db	0x8B, 0xE5			; mov	sp, bp
 	pop	bp
 	retf
+.3:
 	push	word [bp+0xc]
 	db	0x9A, 0xF8, 0x27, 0x00, 0x00			; call	0:SkipSpace
 	add	sp, 2
@@ -4261,25 +4522,30 @@ FloatBuf:
 	push	di
 	push	si
 	cmp	byte [0x8a1c], 0
-	je	short 0x1FBC
+	je	short .5
 	mov	bx, word [0x909e]
 	mov	word [bp-2], bx
 	cmp	word [bx], 0x2d
-	jne	short 0x1FA2
+	jne	short .1
 	mov	si, 1
-	jmp	short 0x1FA4
+	jmp	short .2
+.1:
 	db	0x2B, 0xF6			; sub	si, si
+.2:
 	add	si, word [bp+8]
 	push	si
 	cmp	word [bp+0xa], 0
-	jle	short 0x1FB4
+	jle	short .3
 	mov	ax, 1
-	jmp	short 0x1FB6
+	jmp	short .4
 	db	144
+.3:
 	db	0x2B, 0xC0			; sub	ax, ax
+.4:
 	push	ax
-	call	0x22e8
-	jmp	short 0x2009
+	call	FormatLen
+	jmp	short .10
+.5:
 	mov	bx, word [bp+6]
 	push	word [bx+6]
 	push	word [bx+4]
@@ -4293,35 +4559,42 @@ FloatBuf:
 	inc	ax
 	push	ax
 	cmp	word [bp+0xa], 0
-	jle	short 0x1FE6
+	jle	short .6
 	mov	ax, 1
-	jmp	short 0x1FE8
+	jmp	short .7
+.6:
 	db	0x2B, 0xC0			; sub	ax, ax
+.7:
 	mov	bx, word [bp-2]
 	mov	word [bp-4], ax
 	cmp	word [bx], 0x2d
-	jne	short 0x1FF8
+	jne	short .8
 	mov	ax, 1
-	jmp	short 0x1FFA
+	jmp	short .9
+.8:
 	db	0x2B, 0xC0			; sub	ax, ax
+.9:
 	add	ax, word [bp-4]
 	add	ax, word [bp+8]
 	push	ax
 	db	0x9A, 0x3E, 0x28, 0x00, 0x00			; call	0:WriteDigits
 	add	sp, 6
+.10:
 	mov	si, word [bp+8]
 	mov	bx, word [bp-2]
 	cmp	word [bx], 0x2d
-	jne	short 0x2018
+	jne	short .11
 	mov	byte [si], 0x2d
 	inc	si
+.11:
 	cmp	word [bp+0xa], 0
-	jle	short 0x202B
+	jle	short .12
 	mov	al, byte [si+1]
 	mov	byte [si], al
 	lea	ax, [si+1]
 	db	0x8B, 0xF0			; mov	si, ax
 	mov	byte [si], 0x2e
+.12:
 	mov	ax, 0x8a16
 	push	ax
 	cmp	byte [0x8a1c], 1
@@ -4334,24 +4607,26 @@ FloatBuf:
 	add	sp, 4
 	db	0x8B, 0xF0			; mov	si, ax
 	cmp	word [bp+0xc], 0
-	je	short 0x2051
+	je	short .13
 	mov	byte [si], 0x45
+.13:
 	inc	si
 	mov	bx, word [bp-2]
 	mov	bx, word [bx+6]
 	cmp	byte [bx], 0x30
-	je	short 0x20A2
+	je	short .17
 	mov	bx, word [bp-2]
 	mov	di, word [bx+2]
 	dec	di
-	jns	short 0x206F
+	jns	short .14
 	db	0x8B, 0xC7			; mov	ax, di
 	neg	ax
 	db	0x8B, 0xF8			; mov	di, ax
 	mov	byte [si], 0x2d
+.14:
 	inc	si
 	cmp	di, 0x64
-	jl	short 0x2086
+	jl	short .15
 	db	0x8B, 0xC7			; mov	ax, di
 	mov	cx, 0x64
 	db	0x99			; cdq
@@ -4361,9 +4636,10 @@ FloatBuf:
 	db	0x99			; cdq
 	idiv	cx
 	db	0x8B, 0xFA			; mov	di, dx
+.15:
 	inc	si
 	cmp	di, 0xa
-	jl	short 0x209D
+	jl	short .16
 	db	0x8B, 0xC7			; mov	ax, di
 	mov	cx, 0xa
 	db	0x99			; cdq
@@ -4373,9 +4649,11 @@ FloatBuf:
 	db	0x99			; cdq
 	idiv	cx
 	db	0x8B, 0xFA			; mov	di, dx
+.16:
 	db	0x8B, 0xC7			; mov	ax, di
 	inc	si
 	add	byte [si], al
+.17:
 	mov	ax, word [bp+8]
 	pop	si
 	pop	di
@@ -4394,7 +4672,7 @@ FloatToStr:
 	push	word [bp+8]
 	push	word [bp+6]
 	push	cs
-	call	0x1f82
+	call	FloatBuf
 	mov	byte [0x8a1c], 0
 	db	0x8B, 0xE5			; mov	sp, bp
 	pop	bp
@@ -4406,25 +4684,28 @@ FloatWidth:
 	sub	sp, 6
 	push	si
 	cmp	byte [0x8a1c], 0
-	je	short 0x210A
+	je	short .3
 	mov	bx, word [0x909e]
 	mov	word [bp-2], bx
 	cmp	word [bx], 0x2d
-	jne	short 0x20F0
+	jne	short .1
 	mov	si, 1
-	jmp	short 0x20F2
+	jmp	short .2
 	db	144
+.1:
 	db	0x2B, 0xF6			; sub	si, si
+.2:
 	add	si, word [bp+8]
 	mov	ax, word [0x8a1e]
 	cmp	word [bp+0xa], ax
-	jne	short 0x2146
+	jne	short .6
 	db	0x8B, 0xD8			; mov	bx, ax
 	mov	byte [bx+si], 0x30
 	db	0x03, 0xDE			; add	bx, si
 	inc	bx
 	mov	byte [bx], 0
-	jmp	short 0x2146
+	jmp	short .6
+.3:
 	mov	bx, word [bp+6]
 	push	word [bx+6]
 	push	word [bx+4]
@@ -4439,63 +4720,72 @@ FloatWidth:
 	add	ax, word [bp+0xa]
 	push	ax
 	cmp	word [bx], 0x2d
-	jne	short 0x2138
+	jne	short .4
 	mov	ax, 1
-	jmp	short 0x213A
+	jmp	short .5
 	db	144
+.4:
 	db	0x2B, 0xC0			; sub	ax, ax
+.5:
 	add	ax, word [bp+8]
 	push	ax
 	db	0x9A, 0x3E, 0x28, 0x00, 0x00			; call	0:WriteDigits
 	add	sp, 6
+.6:
 	mov	si, word [bp+8]
 	mov	bx, word [bp-2]
 	cmp	word [bx], 0x2d
-	jne	short 0x2155
+	jne	short .7
 	mov	byte [si], 0x2d
 	inc	si
+.7:
 	cmp	word [bx+2], 0
-	jg	short 0x216A
+	jg	short .8
 	push	si
 	mov	ax, 1
 	push	ax
-	call	0x22e8
+	call	FormatLen
 	mov	byte [si], 0x30
 	inc	si
-	jmp	short 0x216D
+	jmp	short .9
 	db	144
+.8:
 	add	si, word [bx+2]
+.9:
 	cmp	word [bp+0xa], 0
-	jle	short 0x21BB
+	jle	short .12
 	push	si
 	mov	ax, 1
 	push	ax
-	call	0x22e8
+	call	FormatLen
 	mov	byte [si], 0x2e
 	inc	si
 	mov	bx, word [bp-2]
 	cmp	word [bx+2], 0
-	jge	short 0x21BB
+	jge	short .12
 	cmp	byte [0x8a1c], 0
-	je	short 0x2196
+	je	short .10
 	mov	ax, word [bx+2]
 	neg	ax
-	jmp	short 0x21A3
+	jmp	short .11
+.10:
 	mov	ax, word [bx+2]
 	neg	ax
 	cmp	ax, word [bp+0xa]
-	jle	short 0x21A3
+	jle	short .11
 	mov	ax, word [bp+0xa]
+.11:
 	mov	word [bp+0xa], ax
 	push	si
 	push	ax
-	call	0x22e8
+	call	FormatLen
 	push	word [bp+0xa]
 	mov	ax, 0x30
 	push	ax
 	push	si
 	db	0x9A, 0x64, 0x29, 0x00, 0x00			; call	0:_memset
 	add	sp, 6
+.12:
 	mov	ax, word [bp+8]
 	pop	si
 	db	0x8B, 0xE5			; mov	sp, bp
@@ -4512,7 +4802,7 @@ FloatToSci:
 	push	word [bp+8]
 	push	word [bp+6]
 	push	cs
-	call	0x20d0
+	call	FloatWidth
 	mov	byte [0x8a1c], 0
 	db	0x8B, 0xE5			; mov	sp, bp
 	pop	bp
@@ -4538,10 +4828,12 @@ FormatOne:
 	push	bx
 	push	word [bp+0xa]
 	cmp	word [bx], 0x2d
-	jne	short 0x221C
+	jne	short .1
 	mov	ax, 1
-	jmp	short 0x221E
+	jmp	short .2
+.1:
 	db	0x2B, 0xC0			; sub	ax, ax
+.2:
 	add	ax, word [bp+8]
 	mov	word [bp-2], ax
 	push	ax
@@ -4552,40 +4844,46 @@ FormatOne:
 	dec	ax
 	mov	word [bp-4], ax
 	cmp	ax, word [0x8a1e]
-	jle	short 0x2242
+	jle	short .3
 	mov	al, 1
-	jmp	short 0x2244
+	jmp	short .4
+.3:
 	db	0x2A, 0xC0			; sub	al, al
+.4:
 	mov	byte [0x8a20], al
 	mov	ax, word [bp-4]
 	mov	word [0x8a1e], ax
 	db	0x3D, 0xFC, 0xFF			; cmp	ax, 0xfffc
-	jl	short 0x2257
+	jl	short .5
 	cmp	ax, word [bp+0xa]
-	jl	short 0x226E
+	jl	short .6
+.5:
 	push	word [bp+0xc]
 	push	word [bp+0xa]
 	push	word [bp+8]
 	push	word [bp+6]
 	push	cs
-	call	0x20ac
+	call	FloatToStr
 	add	sp, 8
 	db	0x8B, 0xE5			; mov	sp, bp
 	pop	bp
 	retf
+.6:
 	cmp	byte [0x8a20], 0
-	je	short 0x2287
+	je	short .8
+.7:
 	mov	bx, word [bp-2]
 	inc	word [bp-2]
 	cmp	byte [bx], 0
-	jne	short 0x2275
+	jne	short .7
 	mov	bx, word [bp-2]
 	mov	byte [bx-2], 0
+.8:
 	push	word [bp+0xa]
 	push	word [bp+8]
 	push	word [bp+6]
 	push	cs
-	call	0x21c4
+	call	FloatToSci
 	db	0x8B, 0xE5			; mov	sp, bp
 	pop	bp
 	retf
@@ -4594,35 +4892,39 @@ FormatExp:
 	push	bp
 	db	0x8B, 0xEC			; mov	bp, sp
 	cmp	word [bp+0xa], 0x65
-	je	short 0x22A7
+	je	short .1
 	cmp	word [bp+0xa], 0x45
-	jne	short 0x22BE
+	jne	short .3
+.1:
 	push	word [bp+0xe]
 	push	word [bp+0xc]
 	push	word [bp+8]
 	push	word [bp+6]
 	push	cs
-	call	0x1f82
+	call	FloatBuf
+.2:
 	db	0x8B, 0xE5			; mov	sp, bp
 	db	0x8B, 0xE5			; mov	sp, bp
 	pop	bp
 	retf
 	db	144
+.3:
 	cmp	word [bp+0xa], 0x66
-	jne	short 0x22D4
+	jne	short .4
 	push	word [bp+0xc]
 	push	word [bp+8]
 	push	word [bp+6]
 	push	cs
-	call	0x20d0
-	jmp	short 0x22B7
+	call	FloatWidth
+	jmp	short .2
 	db	144
+.4:
 	push	word [bp+0xe]
 	push	word [bp+0xc]
 	push	word [bp+8]
 	push	word [bp+6]
 	push	cs
-	call	0x21e6
+	call	FormatOne
 	db	0x8B, 0xE5			; mov	sp, bp
 	pop	bp
 	retf
@@ -4631,7 +4933,7 @@ FormatLen:
 	push	bp
 	db	0x8B, 0xEC			; mov	bp, sp
 	cmp	word [bp+4], 0
-	je	short 0x230C
+	je	short .1
 	push	word [bp+6]
 	call	0:0xC9E
 	db	0x8B, 0xE5			; mov	sp, bp
@@ -4642,6 +4944,7 @@ FormatLen:
 	add	ax, word [bp+6]
 	push	ax
 	db	0x9A, 0x1C, 0x29, 0x00, 0x00			; call	0:_memmove
+.1:
 	db	0x8B, 0xE5			; mov	sp, bp
 	pop	bp
 	ret	4
@@ -4686,21 +4989,22 @@ FormatFixed:
 	mov	ax, word [bp+0xa]
 	inc	ax
 	db	0x3D, 0x01, 0x00			; cmp	ax, 1
-	jge	short 0x2379
+	jge	short .1
 	mov	ax, 1
+.1:
 	push	ax
 	db	0x2B, 0xC0			; sub	ax, ax
 	push	ax
 	lea	ax, [bp-0x1a]
 	push	ax
-	call	0x29c4
+	call	HexConvert
 	push	word [bp+0xc]
 	push	word [bp+0xa]
 	push	word [bp+8]
 	lea	ax, [bp-0x1a]
 	push	ax
 	push	cs
-	call	0x239a
+	call	FormatPad
 	db	0x8B, 0xE5			; mov	sp, bp
 	pop	bp
 	retf
@@ -4717,30 +5021,33 @@ FormatPad:
 	mov	word [bp-6], cx
 	mov	bx, word [bp+6]
 	cmp	byte [bx+2], 0x2d
-	jne	short 0x23C1
+	jne	short .1
 	db	0x8B, 0xD8			; mov	bx, ax
 	mov	byte [bx], 0x2d
 	inc	ax
 	mov	word [bp-2], ax
+.1:
 	mov	bx, word [bp+6]
 	cmp	byte [bx+3], 0
-	je	short 0x23DC
+	je	short .2
 	db	0x8B, 0xD9			; mov	bx, cx
 	inc	word [bp-6]
 	mov	al, byte [bx]
 	mov	bx, word [bp-2]
 	inc	word [bp-2]
 	mov	byte [bx], al
-	jmp	short 0x23ED
+	jmp	short .3
 	db	144
+.2:
 	mov	bx, word [bp-2]
 	inc	word [bp-2]
 	mov	byte [bx], 0x30
 	mov	bx, word [bp+6]
 	inc	byte [bx+3]
 	inc	word [bx]
+.3:
 	cmp	word [bp+0xa], 0
-	jle	short 0x2436
+	jle	short .8
 	mov	bx, word [bp-2]
 	inc	word [bp-2]
 	mov	byte [bx], 0x2e
@@ -4750,7 +5057,8 @@ FormatPad:
 	dec	ax
 	mov	word [bp-4], ax
 	sub	word [bp+0xa], ax
-	jmp	short 0x241F
+	jmp	short .5
+.4:
 	mov	bx, word [bp-6]
 	inc	word [bp-6]
 	mov	al, byte [bx]
@@ -4758,42 +5066,50 @@ FormatPad:
 	inc	word [bp-2]
 	mov	byte [bx], al
 	dec	word [bp-4]
+.5:
 	cmp	word [bp-4], 0
-	jne	short 0x240C
-	jmp	short 0x2431
+	jne	short .4
+	jmp	short .7
 	db	144
+.6:
 	mov	bx, word [bp-2]
 	inc	word [bp-2]
 	mov	byte [bx], 0x30
+.7:
 	dec	word [bp+0xa]
-	jns	short 0x2428
+	jns	short .6
+.8:
 	cmp	word [bp+0xc], 0
-	je	short 0x2448
+	je	short .9
 	mov	bx, word [bp-2]
 	inc	word [bp-2]
 	mov	byte [bx], 0x45
-	jmp	short 0x2451
+	jmp	short .10
 	db	144
+.9:
 	mov	bx, word [bp-2]
 	inc	word [bp-2]
 	mov	byte [bx], 0x65
+.10:
 	mov	bx, word [bp+6]
 	mov	ax, word [bx]
 	dec	ax
 	mov	word [bp-8], ax
 	db	0x0B, 0xC0			; or	ax, ax
-	jge	short 0x246E
+	jge	short .11
 	neg	ax
 	mov	word [bp-8], ax
 	mov	bx, word [bp-2]
 	inc	word [bp-2]
 	mov	byte [bx], 0x2d
-	jmp	short 0x2477
+	jmp	short .12
+.11:
 	mov	bx, word [bp-2]
 	inc	word [bp-2]
 	mov	byte [bx], 0x2b
+.12:
 	cmp	ax, 0x3e8
-	jl	short 0x2495
+	jl	short .13
 	mov	cx, 0x3e8
 	db	0x99			; cdq
 	idiv	cx
@@ -4805,6 +5121,7 @@ FormatPad:
 	db	0x99			; cdq
 	idiv	cx
 	mov	word [bp-8], dx
+.13:
 	mov	ax, word [bp-8]
 	mov	cx, 0x64
 	db	0x99			; cdq
@@ -4852,20 +5169,21 @@ FormatG:
 	push	word [bx]
 	mov	ax, word [bp+0xa]
 	db	0x0B, 0xC0			; or	ax, ax
-	jge	short 0x2504
+	jge	short .1
 	db	0x2B, 0xC0			; sub	ax, ax
+.1:
 	push	ax
 	mov	ax, 1
 	push	ax
 	lea	ax, [bp-0x1a]
 	push	ax
-	call	0x29c4
+	call	HexConvert
 	push	word [bp+0xa]
 	push	word [bp+8]
 	lea	ax, [bp-0x1a]
 	push	ax
 	push	cs
-	call	0x2522
+	call	FormatCopy
 	db	0x8B, 0xE5			; mov	sp, bp
 	pop	bp
 	retf
@@ -4882,46 +5200,53 @@ FormatCopy:
 	lea	cx, [bx+4]
 	mov	word [bp-6], cx
 	cmp	byte [bx+2], 0x2d
-	jne	short 0x254B
+	jne	short .1
 	db	0x8B, 0xD8			; mov	bx, ax
 	mov	byte [bx], 0x2d
 	inc	ax
 	mov	word [bp-2], ax
+.1:
 	cmp	word [bp-8], 0
-	jle	short 0x259C
+	jle	short .6
 	mov	bx, word [bp+6]
 	mov	al, byte [bx+3]
 	db	0x98			; cwde
 	cmp	ax, word [bp-8]
-	jle	short 0x2560
+	jle	short .2
 	mov	ax, word [bp-8]
+.2:
 	mov	word [bp-4], ax
 	sub	word [bp-8], ax
 	mov	al, byte [bp-4]
 	sub	byte [bx+3], al
-	jmp	short 0x257E
+	jmp	short .4
+.3:
 	mov	bx, word [bp-6]
 	inc	word [bp-6]
 	mov	al, byte [bx]
 	mov	bx, word [bp-2]
 	inc	word [bp-2]
 	mov	byte [bx], al
+.4:
 	mov	ax, word [bp-4]
 	dec	word [bp-4]
 	db	0x0B, 0xC0			; or	ax, ax
-	jne	short 0x256E
+	jne	short .3
+.5:
 	cmp	word [bp-8], 0
-	je	short 0x25A5
+	je	short .7
 	dec	word [bp-8]
 	mov	bx, word [bp-2]
 	inc	word [bp-2]
 	mov	byte [bx], 0x30
-	jmp	short 0x2588
+	jmp	short .5
+.6:
 	mov	bx, word [bp-2]
 	inc	word [bp-2]
 	mov	byte [bx], 0x30
+.7:
 	cmp	word [bp+0xa], 0
-	jle	short 0x2615
+	jle	short .14
 	mov	bx, word [bp-2]
 	inc	word [bp-2]
 	mov	byte [bx], 0x2e
@@ -4931,39 +5256,46 @@ FormatCopy:
 	sub	ax, word [bp-8]
 	neg	ax
 	add	word [bp+0xa], ax
-	jmp	short 0x25CF
+	jmp	short .9
 	db	144
+.8:
 	mov	bx, word [bp-2]
 	inc	word [bp-2]
 	mov	byte [bx], 0x30
+.9:
 	mov	ax, word [bp-8]
 	inc	word [bp-8]
 	db	0x0B, 0xC0			; or	ax, ax
-	jl	short 0x25C6
+	jl	short .8
 	mov	bx, word [bp+6]
 	mov	al, byte [bx+3]
 	db	0x98			; cwde
 	mov	word [bp-4], ax
-	jmp	short 0x25F6
+	jmp	short .11
 	db	144
+.10:
 	mov	bx, word [bp-6]
 	inc	word [bp-6]
 	mov	al, byte [bx]
 	mov	bx, word [bp-2]
 	inc	word [bp-2]
 	mov	byte [bx], al
+.11:
 	mov	ax, word [bp-4]
 	dec	word [bp-4]
 	db	0x0B, 0xC0			; or	ax, ax
-	jne	short 0x25E6
-	jmp	short 0x260B
+	jne	short .10
+	jmp	short .13
+.12:
 	mov	bx, word [bp-2]
 	inc	word [bp-2]
 	mov	byte [bx], 0x30
+.13:
 	mov	ax, word [bp+0xa]
 	dec	word [bp+0xa]
 	db	0x0B, 0xC0			; or	ax, ax
-	jg	short 0x2602
+	jg	short .12
+.14:
 	mov	bx, word [bp-2]
 	mov	byte [bx], 0
 	mov	ax, word [bp+8]
@@ -4976,8 +5308,9 @@ FormatDigits:
 	db	0x8B, 0xEC			; mov	bp, sp
 	sub	sp, 0x1a
 	cmp	word [bp+0xa], 0
-	jg	short 0x2633
+	jg	short .1
 	mov	word [bp+0xa], 1
+.1:
 	mov	bx, word [bp+6]
 	push	word [bx+8]
 	push	word [bx+6]
@@ -4989,12 +5322,13 @@ FormatDigits:
 	push	ax
 	lea	ax, [bp-0x1a]
 	push	ax
-	call	0x29c4
+	call	HexConvert
 	cmp	word [bp-0x1a], -4
-	jle	short 0x265F
+	jle	short .2
 	mov	ax, word [bp-0x1a]
 	cmp	word [bp+0xa], ax
-	jge	short 0x267A
+	jge	short .3
+.2:
 	push	word [bp+0xc]
 	mov	ax, word [bp+0xa]
 	dec	ax
@@ -5003,12 +5337,13 @@ FormatDigits:
 	lea	ax, [bp-0x1a]
 	push	ax
 	push	cs
-	call	0x239a
+	call	FormatPad
 	add	sp, 8
 	db	0x8B, 0xE5			; mov	sp, bp
 	pop	bp
 	retf
 	db	144
+.3:
 	mov	ax, word [bp+0xa]
 	sub	ax, word [bp-0x1a]
 	push	ax
@@ -5016,7 +5351,7 @@ FormatDigits:
 	lea	ax, [bp-0x1a]
 	push	ax
 	push	cs
-	call	0x2522
+	call	FormatCopy
 	db	0x8B, 0xE5			; mov	sp, bp
 	pop	bp
 	retf
@@ -5025,37 +5360,42 @@ FormatExp2:
 	push	bp
 	db	0x8B, 0xEC			; mov	bp, sp
 	cmp	word [bp+0xa], 0x65
-	je	short 0x269F
+	je	short .1
 	cmp	word [bp+0xa], 0x45
-	jne	short 0x26B6
+	jne	short .3
+.1:
 	push	word [bp+0xe]
 	push	word [bp+0xc]
 	push	word [bp+8]
 	push	word [bp+6]
 	push	cs
-	call	0x2356
+	call	FormatFixed
+.2:
 	db	0x8B, 0xE5			; mov	sp, bp
 	db	0x8B, 0xE5			; mov	sp, bp
 	pop	bp
 	retf
 	db	144
+.3:
 	cmp	word [bp+0xa], 0x66
-	je	short 0x26C2
+	je	short .4
 	cmp	word [bp+0xa], 0x46
-	jne	short 0x26D2
+	jne	short .5
+.4:
 	push	word [bp+0xc]
 	push	word [bp+8]
 	push	word [bp+6]
 	push	cs
-	call	0x24e4
-	jmp	short 0x26AF
+	call	FormatG
+	jmp	short .2
 	db	144
+.5:
 	push	word [bp+0xe]
 	push	word [bp+0xc]
 	push	word [bp+8]
 	push	word [bp+6]
 	push	cs
-	call	0x2622
+	call	FormatDigits
 	db	0x8B, 0xE5			; mov	sp, bp
 	pop	bp
 	retf
@@ -5073,13 +5413,15 @@ ConvertFloat:
 	sub	bx, 0x86ca
 	add	bx, 0x876a
 	db	0x0B, 0xC0			; or	ax, ax
-	je	short 0x2710
+	je	short .1
 	or	byte [si+6], 8
 	mov	word [bx+2], 0x200
-	jmp	short 0x271C
+	jmp	short .2
+.1:
 	or	byte [si+6], 4
 	mov	word [bx+2], 1
 	lea	ax, [bx+1]
+.2:
 	mov	word [si], ax
 	mov	word [si+4], ax
 	mov	word [si+2], 0
@@ -5100,8 +5442,8 @@ fflush:
 	jne	short .one
 	db	0x2B, 0xC0			; sub	ax, ax
 	push	ax
-	call	0x27a6
-	jmp	short 0x2798
+	call	FlushAll
+	jmp	short .3
 	db	144
 .one:
 	mov	si, word [bp+6]
@@ -5109,18 +5451,19 @@ fflush:
 	db	0x8B, 0xC8			; mov	cx, ax
 	and	al, 3
 	cmp	al, 2
-	jne	short 0x278C
+	jne	short .2
 	test	cl, 8
-	jne	short 0x2762
+	jne	short .1
 	db	0x8B, 0xDE			; mov	bx, si
 	sub	bx, 0x86ca
 	test	byte [bx-0x7896], 1
-	je	short 0x278C
+	je	short .2
+.1:
 	mov	ax, word [si]
 	sub	ax, word [si+4]
 	mov	word [bp-2], ax
 	db	0x0B, 0xC0			; or	ax, ax
-	jle	short 0x278C
+	jle	short .2
 	push	ax
 	push	word [si+4]
 	mov	cl, byte [si+7]
@@ -5129,13 +5472,15 @@ fflush:
 	call	0:0xAEC
 	add	sp, 6
 	cmp	word [bp-2], ax
-	je	short 0x278C
+	je	short .2
 	or	byte [si+6], 0x20
 	mov	di, 0xffff
+.2:
 	mov	ax, word [si+4]
 	mov	word [si], ax
 	mov	word [si+2], 0
 	db	0x8B, 0xC7			; mov	ax, di
+.3:
 	pop	si
 	pop	di
 	db	0x8B, 0xE5			; mov	sp, bp
@@ -5152,26 +5497,32 @@ FlushAll:
 	mov	si, 0x86ca
 	db	0x2B, 0xFF			; sub	di, di
 	mov	word [bp-2], di
-	jmp	short 0x27C0
+	jmp	short .3
+.1:
 	mov	word [bp-2], 0xffff
+.2:
 	add	si, 8
+.3:
 	cmp	word [0x880a], si
-	jb	short 0x27DC
+	jb	short .4
 	test	byte [si+6], 0x83
-	je	short 0x27BD
+	je	short .2
 	push	si
 	db	0x9A, 0x2A, 0x27, 0x00, 0x00			; call	0:fflush
 	add	sp, 2
 	inc	ax
-	je	short 0x27B8
+	je	short .1
 	inc	di
-	jmp	short 0x27BD
+	jmp	short .2
 	db	144
+.4:
 	cmp	word [bp+4], 1
-	jne	short 0x27E6
+	jne	short .5
 	db	0x8B, 0xC7			; mov	ax, di
-	jmp	short 0x27E9
+	jmp	short .6
+.5:
 	mov	ax, word [bp-2]
+.6:
 	pop	si
 	pop	di
 	db	0x8B, 0xE5			; mov	sp, bp
@@ -5189,13 +5540,15 @@ SkipSpace:
 	push	di
 	push	si
 	mov	si, word [bp+6]
-	jmp	short 0x2803
+	jmp	short .2
+.1:
 	inc	si
+.2:
 	mov	al, byte [si]
 	db	0x98			; cwde
 	db	0x8B, 0xD8			; mov	bx, ax
 	test	byte [bx-0x7a73], 8
-	jne	short 0x2802
+	jne	short .1
 	db	0x2B, 0xC0			; sub	ax, ax
 	push	ax
 	push	ax
@@ -5234,43 +5587,52 @@ WriteDigits:
 	mov	bx, word [bp+6]
 	mov	byte [bx], 0x30
 	lea	si, [bx+1]
-	jmp	short 0x2867
+	jmp	short .4
+.1:
 	cmp	byte [di], 0
-	je	short 0x2860
+	je	short .2
 	mov	al, byte [di]
 	mov	byte [si], al
 	inc	di
-	jmp	short 0x2863
+	jmp	short .3
+.2:
 	mov	byte [si], 0x30
+.3:
 	inc	si
 	dec	word [bp+8]
+.4:
 	cmp	word [bp+8], 0
-	jg	short 0x2854
+	jg	short .1
 	mov	byte [si], 0
 	cmp	word [bp+8], 0
-	jl	short 0x2889
+	jl	short .7
 	cmp	byte [di], 0x35
-	jl	short 0x2889
-	jmp	short 0x2881
+	jl	short .7
+	jmp	short .6
 	db	144
+.5:
 	mov	byte [si], 0x30
+.6:
 	dec	si
 	cmp	byte [si], 0x39
-	je	short 0x287E
+	je	short .5
 	inc	byte [si]
+.7:
 	mov	bx, word [bp+6]
 	cmp	byte [bx], 0x31
-	jne	short 0x289A
+	jne	short .8
 	mov	bx, word [bp+0xa]
 	inc	word [bx+2]
-	jmp	short 0x28A7
+	jmp	short .9
 	db	144
+.8:
 	db	0x8B, 0xC3			; mov	ax, bx
 	inc	ax
 	push	ax
 	push	bx
 	call	0:0xC6C
 	add	sp, 4
+.9:
 	pop	si
 	pop	di
 	db	0x8B, 0xE5			; mov	sp, bp
@@ -5362,13 +5724,13 @@ _memmove:
 	mov	di, word [bp+6]
 	db	0x8B, 0xC7			; mov	ax, di
 	mov	cx, word [bp+0xa]
-	jcxz	0x295E
+	jcxz	.3
 	db	0x3B, 0xFE			; cmp	di, si
-	jbe	short 0x294E
+	jbe	short .1
 	db	0x8B, 0xC6			; mov	ax, si
 	db	0x03, 0xC1			; add	ax, cx
 	db	0x3B, 0xF8			; cmp	di, ax
-	jae	short 0x294E
+	jae	short .1
 	db	0x8B, 0xC7			; mov	ax, di
 	db	0x03, 0xF1			; add	si, cx
 	db	0x03, 0xF9			; add	di, cx
@@ -5377,16 +5739,19 @@ _memmove:
 	std
 	rep movsb
 	cld
-	jmp	short 0x295E
+	jmp	short .3
+.1:
 	db	0x8B, 0xC7			; mov	ax, di
 	test	al, 1
-	je	short 0x2956
+	je	short .2
 	movsb
 	dec	cx
+.2:
 	shr	cx, 1
 	rep movsw
 	db	0x13, 0xC9			; adc	cx, cx
 	rep movsb
+.3:
 	db	0x8B, 0xF3			; mov	si, bx
 	db	0x8B, 0xFA			; mov	di, dx
 	pop	bp
@@ -5403,17 +5768,19 @@ _memset:
 	mov	di, word [bp+6]
 	db	0x8B, 0xDF			; mov	bx, di
 	mov	cx, word [bp+0xa]
-	jcxz	0x298C
+	jcxz	.2
 	mov	al, byte [bp+8]
 	db	0x8A, 0xE0			; mov	ah, al
 	test	di, 1
-	je	short 0x2984
+	je	short .1
 	stosb
 	dec	cx
+.1:
 	shr	cx, 1
 	rep stosw
 	db	0x13, 0xC9			; adc	cx, cx
 	rep stosb
+.2:
 	db	0x8B, 0xFA			; mov	di, dx
 	xchg	bx, ax
 	pop	bp
@@ -5427,8 +5794,9 @@ WriteCounted:
 	db	0x8B, 0xD3			; mov	dx, bx
 	mov	bx, 2
 	cmp	word [0x8ae4], 0xd6d6
-	jne	short 0x29A8
+	jne	short .1
 	call	word [0x8ae6]
+.1:
 	mov	ah, 0x40
 	int	0x21
 	retf
@@ -5449,37 +5817,41 @@ HexConvert:
 	mov	ax, word [bp+0x12]
 	mov	byte [ss:di+2], 0x20
 	test	ah, 0x80
-	je	short 0x29F1
+	je	short .1
 	and	byte [bp+0x13], 0x7f
 	mov	byte [ss:di+2], 0x2d
 	and	ax, 0x7fff
+.1:
 	db	0x0B, 0xC0			; or	ax, ax
-	jne	short 0x2A05
+	jne	short .2
 	mov	ax, word [bp+0xa]
 	or	ax, word [bp+0xc]
 	or	ax, word [bp+0xe]
 	or	ax, word [bp+0x10]
-	je	short 0x2A50
-	jmp	short 0x2A6A
+	je	short .5
+	jmp	short .6
+.2:
 	cmp	ax, 0x7fff
-	jne	short 0x2A6A
+	jne	short .6
 	mov	ax, word [bp+0xa]
 	or	ax, word [bp+0xc]
 	or	ax, word [bp+0xe]
 	mov	ax, word [bp+0x10]
-	jne	short 0x2A2F
+	jne	short .3
 	mov	si, 0x8a52
 	cmp	ax, 0x8000
-	je	short 0x2A3A
+	je	short .4
 	cmp	ax, 0xc000
-	jne	short 0x2A2F
+	jne	short .3
 	mov	si, 0x8a58
 	cmp	byte [ss:di+2], 0x2d
-	je	short 0x2A3A
+	je	short .4
+.3:
 	mov	si, 0x8a44
 	test	ax, 0x4000
-	je	short 0x2A3A
+	je	short .4
 	mov	si, 0x8a4b
+.4:
 	mov	word [ss:di], 1
 	push	ss
 	pop	es
@@ -5489,13 +5861,15 @@ HexConvert:
 	inc	cx
 	rep movsb
 	db	0x33, 0xC0			; xor	ax, ax
-	jmp	near 0x2BC9
+	jmp	near .21
+.5:
 	mov	di, word [bp+4]
 	mov	word [ss:di], 0
 	mov	byte [ss:di+2], 0x20
 	mov	byte [ss:di+3], 0
 	mov	byte [ss:di+4], 0
-	jmp	near 0x2BC6
+	jmp	near .20
+.6:
 	db	0x33, 0xFF			; xor	di, di
 	mov	bh, byte [bp+0x11]
 	mov	ax, word [bp+0x12]
@@ -5521,10 +5895,11 @@ HexConvert:
 	push	di
 	mov	ax, 1
 	push	ax
-	call	0x30d0
+	call	FpDecode
 	pop	di
+.7:
 	cmp	word [bp+0x12], 0x3fff
-	jb	short 0x2ABA
+	jb	short .8
 	inc	di
 	lea	ax, [bp+8]
 	push	ss
@@ -5532,19 +5907,22 @@ HexConvert:
 	mov	ax, 0x29b8
 	push	cs
 	push	ax
-	call	0x31a5
-	jmp	short 0x2AA3
+	call	FpRound
+	jmp	short .7
+.8:
 	mov	bx, word [bp+4]
 	mov	word [ss:bx], di
 	mov	ax, word [bp-2]
 	test	word [bp+6], 1
-	je	short 0x2AD0
+	je	short .9
 	db	0x03, 0xC7			; add	ax, di
-	jns	short 0x2AD0
-	jmp	short 0x2A50
+	jns	short .9
+	jmp	short .5
+.9:
 	db	0x3D, 0x15, 0x00			; cmp	ax, 0x15
-	jbe	short 0x2AD8
+	jbe	short .10
 	mov	ax, 0x15
+.10:
 	mov	word [bp-2], ax
 	inc	ax
 	mov	word [bp-0xc], ax
@@ -5558,7 +5936,8 @@ HexConvert:
 	mov	si, word [bp+0xa]
 	mov	di, word [bp+8]
 	db	0x0A, 0xC0			; or	al, al
-	je	short 0x2B0C
+	je	short .12
+.11:
 	shr	bx, 1
 	rcr	cx, 1
 	rcr	dx, 1
@@ -5566,13 +5945,15 @@ HexConvert:
 	rcr	di, 1
 	rcr	ah, 1
 	dec	al
-	jne	short 0x2AFC
+	jne	short .11
+.12:
 	push	ss
 	pop	es
 	mov	word [bp-0xa], di
 	mov	di, word [bp+4]
 	lea	di, [di+4]
 	xchg	word [bp-0xa], di
+.13:
 	db	0x32, 0xC0			; xor	al, al
 	mov	word [bp+0x12], bx
 	mov	word [bp+0x10], cx
@@ -5613,40 +5994,48 @@ HexConvert:
 	stosb
 	xchg	word [bp-0xa], di
 	dec	word [bp-0xc]
-	jne	short 0x2B1A
+	jne	short .13
 	mov	di, word [bp-0xa]
 	mov	si, word [bp+4]
 	sub	di, 2
 	cmp	al, 0x35
-	jb	short 0x2BB1
+	jb	short .17
 	lea	cx, [si+4]
-	jmp	short 0x2B97
+	jmp	short .15
+.14:
 	cmp	byte [es:di], 0x39
-	jne	short 0x2BA3
+	jne	short .16
 	mov	byte [es:di], 0x30
 	dec	di
+.15:
 	db	0x3B, 0xCF			; cmp	cx, di
-	jbe	short 0x2B8C
+	jbe	short .14
 	inc	di
 	mov	byte [es:di], 0x30
 	inc	word [ss:si]
+.16:
 	inc	byte [es:di]
 	db	0x2B, 0xF9			; sub	di, cx
 	db	0x8B, 0xDF			; mov	bx, di
 	inc	bx
 	mov	byte [ss:si+3], bl
-	jmp	short 0x2BC6
+	jmp	short .20
+.17:
 	mov	cx, word [bp-2]
-	jcxz	0x2BBE
+	jcxz	.18
 	mov	al, 0x30
 	std
 	repe scasb
 	cld
-	jne	short 0x2BC1
-	jmp	near 0x2A50
+	jne	short .19
+.18:
+	jmp	near .5
+.19:
 	inc	cx
 	mov	byte [ss:si+3], cl
+.20:
 	mov	ax, 1
+.21:
 	pop	ds
 	pop	di
 	pop	si
@@ -5670,7 +6059,7 @@ PackArgs:
 	db	0x36, 0xA5			; movsw
 	mov	si, 0x8a66
 	push	bp
-	call	0x2cd3
+	call	FpExec.6
 	pop	bp
 	mov	di, 0x8a6e
 	db	0x8B, 0xC8			; mov	cx, ax
@@ -5707,7 +6096,7 @@ FloatStatus:
 	push	word [bp+6]
 	mov	cx, 1
 	push	cx
-	call	0x332a
+	call	FpPack
 	int	0x37
 	outsb
 	db	0xF6, 0x8B, 0xE5, 0x5D, 0xCB			; test	byte [bp+di+0x5de5], -0x35
@@ -5720,13 +6109,14 @@ AdjustStack:
 	mov	bx, word [bp+6]
 	mov	si, 0x851c
 	cmp	word [si+6], bx
-	jae	short 0x2C58
+	jae	short .1
 	dec	bx
 	dec	bx
 	or	byte [bx], 1
 	cmp	word [si+8], bx
-	jbe	short 0x2C58
+	jbe	short .1
 	mov	word [si+8], bx
+.1:
 	pop	si
 	db	0x8B, 0xE5			; mov	sp, bp
 	pop	bp
@@ -5745,11 +6135,11 @@ FpConvert:
 	cmp	cx, -0x18
 	ja	short .zero
 	mov	bx, 0x851c
-	call	0x35e8
+	call	FpPush
 	jae	short .done
-	call	0x3664
+	call	FpPop
 	jb	short .zero
-	call	0x35e8
+	call	FpPush
 	jae	short .done
 .zero:
 	db	0x33, 0xC0			; xor	ax, ax
@@ -5782,24 +6172,30 @@ FpExec:
 	mov	bl, 0x20
 	pop	es
 	ret
+.1:
 	db	0x0B, 0xD2			; or	dx, dx
-	jne	short 0x2CB7
+	jne	short .2
 	cmp	cx, -8
-	je	short 0x2CC9
+	je	short .4
 	and	cl, 0xf
-	je	short 0x2CC4
+	je	short .3
+.2:
 	mov	si, 0x8aa6
 	test	cl, 8
-	jne	short 0x2CCC
+	jne	short .5
 	mov	si, 0x8a9f
-	jmp	short 0x2CCC
+	jmp	short .5
+.3:
 	mov	si, 0x8aad
-	jmp	short 0x2CCC
+	jmp	short .5
+.4:
 	mov	si, 0x8ab3
+.5:
 	mov	dx, 1
 	pop	es
 	db	0x33, 0xC0			; xor	ax, ax
 	ret
+.6:
 	push	es
 	mov	ax, ds
 	mov	es, ax
@@ -5819,12 +6215,13 @@ FpExec:
 	or	ax, word [si+6]
 	je	short FpExec
 	db	0x0B, 0xC9			; or	cx, cx
-	jns	short 0x2D01
+	jns	short .7
 	mov	bl, 0x2d
+.7:
 	not	cx
 	test	cx, 0x7ff0
 	not	cx
-	je	short 0x2CA9
+	je	short .1
 	push	bx
 	int	0x35
 	db	0x3E, 0xBB, 0x8A, 0xCD			; mov	bx, 0xcd8a
@@ -5870,7 +6267,7 @@ FpExec:
 	cmp	word [0x8ab9], di
 	int	0x3d
 	test	byte [0x8aba], 0x41
-	je	short 0x2D81
+	je	short .8
 	inc	di
 	mov	bx, 0x2c8f
 	int	0x3c
@@ -5878,6 +6275,7 @@ FpExec:
 	das
 	int	0x3a
 	leave
+.8:
 	push	di
 	int	0x37
 	cmp	al, 0xcd
@@ -5896,19 +6294,22 @@ FpExec:
 	neg	cx
 	db	0x8B, 0xF7			; mov	si, di
 	db	0x33, 0xC0			; xor	ax, ax
-	jcxz	0x2DAE
+	jcxz	.10
+.9:
 	shr	bx, 1
 	rcr	dx, 1
 	rcr	bp, 1
 	rcr	si, 1
 	rcr	ah, 1
-	loop	0x2DA2
+	loop	.9
+.10:
 	adc	si, 0x39a
 	db	0x13, 0xE9			; adc	bp, cx
 	db	0x13, 0xD1			; adc	dx, cx
 	db	0x13, 0xD9			; adc	bx, cx
 	mov	di, 0x8a8f
 	mov	cx, 0x10
+.11:
 	db	0x32, 0xC0			; xor	al, al
 	push	cx
 	push	bx
@@ -5948,7 +6349,7 @@ FpExec:
 	pop	cx
 	add	al, 0x30
 	stosb
-	loop	0x2DBE
+	loop	.11
 	dec	di
 	dec	cx
 	mov	al, 0x30
@@ -6037,16 +6438,18 @@ FpDecode:
 	mov	di, word [bp+6]
 	mov	bx, 0x2db8
 	db	0x0B, 0xFF			; or	di, di
-	je	short 0x315C
-	jns	short 0x30E9
+	je	short .7
+	jns	short .1
 	mov	bx, 0x2f14
 	neg	di
+.1:
 	mov	word [bp-6], 0x316e
 	cmp	word [bp+4], 0
-	jne	short 0x3114
+	jne	short .3
 	mov	word [bp-6], 0x3164
 	int	0x35
-	jle	short 0x30FB
+.2:
+	jle	short .2
 	int	0x3d
 	mov	ax, word [bp-2]
 	db	0x0D, 0x38, 0x00			; or	ax, 0x38
@@ -6057,18 +6460,20 @@ FpDecode:
 	les	si, [bp+8]
 	int	0x3c
 	db	0xDB, 0x6C, 0x02			; fld	xword [si+2]
+.3:
 	push	di
+.4:
 	pop	di
 	add	bx, 0x54
 	db	0x0B, 0xFF			; or	di, di
-	je	short 0x3140
+	je	short .6
 	db	0x8B, 0xC7			; mov	ax, di
 	shr	di, 1
 	shr	di, 1
 	shr	di, 1
 	push	di
 	db	0x25, 0x07, 0x00			; and	ax, 7
-	je	short 0x3115
+	je	short .4
 	push	bx
 	shl	al, 1
 	shl	al, 1
@@ -6078,10 +6483,12 @@ FpDecode:
 	db	0x32, 0xE4			; xor	ah, ah
 	db	0x03, 0xD8			; add	bx, ax
 	jmp	word [bp-6]
+.5:
 	pop	bx
-	jmp	short 0x3115
+	jmp	short .4
+.6:
 	cmp	word [bp+4], 0
-	jne	short 0x315C
+	jne	short .7
 	int	0x37
 	loop	0x3117
 	xor	ax, 0xfe6e
@@ -6090,6 +6497,7 @@ FpDecode:
 	db	0xDB, 0x7C, 0x02			; fstp	xword [si+2]
 	mov	word [es:si], 0
 	int	0x3d
+.7:
 	pop	di
 	pop	si
 	db	0x8B, 0xE5			; mov	sp, bp
@@ -6100,7 +6508,7 @@ FpDecode:
 	outsw
 	db	0x02, 0xCD			; add	cl, ch
 	db	0x3A, 0xC9			; cmp	cl, cl
-	jmp	short 0x313D
+	jmp	short .5
 	push	word [cs:bx+0xa]
 	push	word [cs:bx+8]
 	push	word [cs:bx+6]
@@ -6116,11 +6524,13 @@ FpDecode:
 	push	word [bp+8]
 	push	ss
 	push	ax
-	call	0x31a5
+	call	FpRound
 	add	sp, 0xc
-	jmp	short 0x313D
-	jmp	near 0x330E
-	jmp	near 0x32F9
+	jmp	short .5
+.8:
+	jmp	near FpRound.14
+.9:
+	jmp	near FpRound.13
 
 FpRound:
 	push	bp
@@ -6145,42 +6555,46 @@ FpRound:
 	mov	dx, 0x7fff
 	db	0x23, 0xC2			; and	ax, dx
 	db	0x3B, 0xC2			; cmp	ax, dx
-	je	short 0x319F
+	je	short FpDecode.8
 	db	0x23, 0xDA			; and	bx, dx
 	db	0x3B, 0xDA			; cmp	bx, dx
-	je	short 0x319F
+	je	short FpDecode.8
 	db	0x8B, 0xD0			; mov	dx, ax
 	db	0x03, 0xD3			; add	dx, bx
 	cmp	dx, 0xbffd
-	ja	short 0x319F
+	ja	short FpDecode.8
 	cmp	dx, 0x3fbf
-	jbe	short 0x31A2
+	jbe	short FpDecode.9
 	db	0x0B, 0xC0			; or	ax, ax
-	jne	short 0x3207
+	jne	short .1
 	inc	dx
 	mov	ax, word [si]
 	or	ax, word [si+2]
 	or	ax, word [si+4]
 	or	ax, word [si+6]
 	or	ax, word [si+8]
-	je	short 0x31A2
+	je	short FpDecode.9
+.1:
 	db	0x0B, 0xDB			; or	bx, bx
-	jne	short 0x3221
+	jne	short .2
 	inc	dx
 	mov	ax, word [es:di]
 	or	ax, word [es:di+2]
 	or	ax, word [es:di+4]
 	or	ax, word [es:di+6]
 	or	ax, word [es:di+8]
-	je	short 0x31A2
+	je	short FpDecode.9
+.2:
 	sub	dx, 0x3ffe
 	mov	word [si+0xa], dx
 	add	di, 8
 	mov	cx, 5
 	lea	bx, [bp-0x12]
+.3:
 	push	cx
 	push	si
 	push	di
+.4:
 	mov	ax, word [es:di]
 	mul	word [si]
 	add	word [ss:bx], ax
@@ -6188,14 +6602,14 @@ FpRound:
 	adc	word [ss:bx+4], 0
 	add	si, 2
 	sub	di, 2
-	loop	0x3234
+	loop	.4
 	pop	di
 	pop	si
 	pop	cx
 	add	bx, 2
 	add	si, 2
 	add	cx, -1
-	jne	short 0x3231
+	jne	short .3
 	mov	si, word [bp+8]
 	mov	dx, word [bp-0x10]
 	mov	cx, word [bp-0xe]
@@ -6203,8 +6617,9 @@ FpRound:
 	mov	ax, word [bp-0xa]
 	mov	di, word [bp-8]
 	cmp	word [si+0xa], 0
-	jg	short 0x3287
-	jmp	short 0x32D4
+	jg	short .6
+	jmp	short .11
+.5:
 	shl	word [bp-0x12], 1
 	rcl	dx, 1
 	rcl	cx, 1
@@ -6212,24 +6627,28 @@ FpRound:
 	rcl	ax, 1
 	rcl	di, 1
 	dec	word [si+0xa]
-	je	short 0x32D4
+	je	short .11
+.6:
 	db	0x0B, 0xFF			; or	di, di
-	jns	short 0x3275
+	jns	short .5
+.7:
 	cmp	word [bp-0x12], 0x8000
-	jb	short 0x32B1
-	ja	short 0x329A
+	jb	short .9
+	ja	short .8
 	test	dx, 1
-	je	short 0x32B1
+	je	short .9
+.8:
 	add	dx, 1
 	adc	cx, 0
 	adc	bx, 0
 	db	0x15, 0x00, 0x00			; adc	ax, 0
 	adc	di, 0
-	jae	short 0x32B1
+	jae	short .9
 	mov	di, 0x8000
 	inc	word [si+0xa]
+.9:
 	cmp	word [si+0xa], 0x7fff
-	jae	short 0x330E
+	jae	short .14
 	mov	word [si+8], di
 	mov	word [si+6], ax
 	mov	word [si+4], bx
@@ -6237,12 +6656,15 @@ FpRound:
 	mov	word [si], dx
 	mov	ax, word [bp-2]
 	or	word [si+0xa], ax
+.10:
 	pop	di
 	pop	si
 	db	0x8B, 0xE5			; mov	sp, bp
 	pop	bp
 	ret	8
+.11:
 	dec	word [si+0xa]
+.12:
 	shr	di, 1
 	rcr	ax, 1
 	rcr	bx, 1
@@ -6251,11 +6673,12 @@ FpRound:
 	rcr	word [bp-0x12], 1
 	adc	word [bp-4], 0
 	inc	word [si+0xa]
-	jne	short 0x32D7
+	jne	short .12
 	cmp	word [bp-4], 0
-	je	short 0x328B
+	je	short .7
 	or	word [bp-0x12], 1
-	jmp	short 0x328B
+	jmp	short .7
+.13:
 	db	0x33, 0xC0			; xor	ax, ax
 	mov	word [si+0xa], ax
 	mov	word [si+8], ax
@@ -6263,7 +6686,8 @@ FpRound:
 	mov	word [si+4], ax
 	mov	word [si+2], ax
 	mov	word [si], ax
-	jmp	short 0x32CC
+	jmp	short .10
+.14:
 	mov	ax, 0x7fff
 	or	ax, word [bp-2]
 	mov	word [si+0xa], ax
@@ -6273,7 +6697,7 @@ FpRound:
 	mov	word [si+4], ax
 	mov	word [si+2], ax
 	mov	word [si], ax
-	jmp	short 0x32CC
+	jmp	short .10
 	db	0
 
 FpPack:
@@ -6295,214 +6719,254 @@ FpPack:
 	push	ss
 	pop	es
 	lea	di, [bp-0x34]
+.1:
 	lodsb
 	cmp	al, 0x20
-	je	short 0x3354
+	je	short .1
 	cmp	al, 9
-	je	short 0x3354
+	je	short .1
 	cmp	al, 0xa
-	je	short 0x3354
+	je	short .1
 	cmp	al, 0xd
-	je	short 0x3354
+	je	short .1
 	db	0x0A, 0xC0			; or	al, al
-	jne	short 0x336C
-	jmp	near 0x355B
+	jne	short .3
+.2:
+	jmp	near .42
+.3:
 	cmp	al, 0x2b
-	je	short 0x3379
+	je	short .4
 	cmp	al, 0x2d
-	jne	short 0x337A
+	jne	short .5
 	mov	word [bp-0x14], 0x8000
+.4:
 	lodsb
+.5:
 	cmp	al, 0x30
-	jb	short 0x3382
+	jb	short .6
 	cmp	al, 0x39
-	jbe	short 0x3392
+	jbe	short .8
+.6:
 	cmp	al, 0x2e
-	jne	short 0x3369
+	jne	short .2
 	lodsb
 	cmp	al, 0x30
-	jb	short 0x3369
+	jb	short .2
 	cmp	al, 0x39
-	ja	short 0x3369
-	jmp	short 0x33A6
+	ja	short .2
+	jmp	short .12
+.7:
 	lodsb
+.8:
 	cmp	al, 0x30
-	je	short 0x3391
+	je	short .7
 	db	0x0A, 0xC0			; or	al, al
-	jne	short 0x33A1
+	jne	short .10
+.9:
 	dec	si
 	mov	word [bp-0x12], si
-	jmp	near 0x355F
+	jmp	near .43
+.10:
 	cmp	al, 0x2e
-	jne	short 0x33B7
+	jne	short .14
+.11:
 	lodsb
+.12:
 	dec	word [bp-0x16]
 	cmp	al, 0x30
-	je	short 0x33A5
+	je	short .11
 	inc	word [bp-0x16]
 	db	0x0A, 0xC0			; or	al, al
-	je	short 0x339A
-	jmp	short 0x33E1
+	je	short .9
+	jmp	short .19
+.13:
 	lodsb
+.14:
 	cmp	al, 0x30
-	jb	short 0x33DC
+	jb	short .17
 	cmp	al, 0x39
-	ja	short 0x33DC
+	ja	short .17
 	sub	al, 0x30
 	stosb
 	dec	word [bp-0x1a]
-	jne	short 0x33B6
+	jne	short .13
+.15:
 	lodsb
 	inc	word [bp-0x16]
 	cmp	al, 0x30
-	jb	short 0x33D3
+	jb	short .16
 	cmp	al, 0x39
-	jbe	short 0x33C7
+	jbe	short .15
+.16:
 	dec	word [bp-0x16]
 	cmp	al, 0x2e
-	je	short 0x33F4
-	jmp	short 0x33FD
+	je	short .20
+	jmp	short .21
+.17:
 	cmp	al, 0x2e
-	jne	short 0x33FD
+	jne	short .21
+.18:
 	lodsb
+.19:
 	cmp	al, 0x30
-	jb	short 0x33FD
+	jb	short .21
 	cmp	al, 0x39
-	ja	short 0x33FD
+	ja	short .21
 	sub	al, 0x30
 	stosb
 	dec	word [bp-0x16]
 	dec	word [bp-0x1a]
-	jne	short 0x33E0
+	jne	short .18
+.20:
 	lodsb
 	cmp	al, 0x30
-	jb	short 0x33FD
+	jb	short .21
 	cmp	al, 0x39
-	jbe	short 0x33F4
+	jbe	short .20
+.21:
 	neg	word [bp-0x1a]
 	add	word [bp-0x1a], 0x19
 	lea	bx, [si-1]
 	mov	word [bp-0x12], bx
 	db	0x33, 0xDB			; xor	bx, bx
 	cmp	al, 0x45
-	je	short 0x341E
+	je	short .22
 	cmp	al, 0x65
-	je	short 0x341E
+	je	short .22
 	cmp	al, 0x44
-	je	short 0x341E
+	je	short .22
 	cmp	al, 0x64
-	je	short 0x341E
-	jmp	short 0x3470
+	je	short .22
+	jmp	short .29
+.22:
 	lodsb
 	cmp	al, 0x2b
-	je	short 0x342C
+	je	short .23
 	cmp	al, 0x2d
-	jne	short 0x342D
+	jne	short .24
 	mov	word [bp-0x18], 0xffff
+.23:
 	lodsb
+.24:
 	cmp	al, 0x30
-	jb	short 0x3470
+	jb	short .29
 	cmp	al, 0x39
-	ja	short 0x3470
+	ja	short .29
 	db	0x2D, 0x30, 0x00			; sub	ax, 0x30
 	db	0x8B, 0xD8			; mov	bx, ax
+.25:
 	lodsb
 	cmp	al, 0x30
-	jb	short 0x3463
+	jb	short .28
 	cmp	al, 0x39
-	ja	short 0x3463
+	ja	short .28
 	sub	al, 0x30
 	cmp	bx, 0x666
-	ja	short 0x3457
+	ja	short .26
 	shl	bx, 1
 	db	0x03, 0xC3			; add	ax, bx
 	shl	bx, 1
 	shl	bx, 1
 	db	0x03, 0xD8			; add	bx, ax
-	jns	short 0x343A
+	jns	short .25
+.26:
 	mov	bx, 0x3fff
+.27:
 	lodsb
 	cmp	al, 0x30
-	jb	short 0x3463
+	jb	short .28
 	cmp	al, 0x39
-	jbe	short 0x345A
+	jbe	short .27
+.28:
 	xor	bx, word [bp-0x18]
 	sub	bx, word [bp-0x18]
 	add	word [bp-0x16], bx
 	dec	si
 	mov	word [bp-0x12], si
+.29:
 	cmp	word [bp-0x1a], 0
-	jne	short 0x3479
-	jmp	near 0x355F
+	jne	short .30
+	jmp	near .43
+.30:
 	mov	byte [es:di], 0
 	dec	di
 	cmp	word [bp-0x1a], 0x18
-	jbe	short 0x349B
+	jbe	short .31
 	mov	al, byte [es:di]
 	mov	byte [es:di], 0
 	dec	word [bp-0x1a]
 	inc	word [bp-0x16]
 	dec	di
 	cmp	al, 5
-	jb	short 0x34AA
+	jb	short .33
 	inc	byte [es:di]
-	jmp	short 0x34B0
+	jmp	short .34
+.31:
 	cmp	word [bp-0x16], 0
-	je	short 0x34B0
-	jmp	short 0x34AA
+	je	short .34
+	jmp	short .33
+.32:
 	dec	di
 	dec	word [bp-0x1a]
 	inc	word [bp-0x16]
+.33:
 	cmp	byte [es:di], 0
-	je	short 0x34A3
+	je	short .32
+.34:
 	push	ss
 	lea	ax, [bp-0x34]
 	push	ax
 	push	word [bp-0x1a]
 	lea	ax, [bp-0xc]
 	push	ax
-	call	0x391c
+	call	FpFormat
 	mov	ax, word [bp-0x16]
 	db	0x0B, 0xC0			; or	ax, ax
-	je	short 0x34E4
+	je	short .37
 	cmp	ax, 0x1450
-	jl	short 0x34CE
-	jmp	near 0x3571
+	jl	short .35
+	jmp	near .45
+.35:
 	cmp	ax, 0xebb0
-	jg	short 0x34D6
-	jmp	near 0x356B
+	jg	short .36
+	jmp	near .44
+.36:
 	push	ss
 	lea	ax, [bp-0xc]
 	push	ax
 	push	word [bp-0x16]
 	push	word [bp+4]
-	call	0x30d0
+	call	FpDecode
+.37:
 	mov	ax, word [bp-4]
 	mov	bx, word [bp-6]
 	mov	cx, word [bp-8]
 	mov	dx, word [bp-0xa]
 	cmp	word [bp-0xc], 0x8000
-	jb	short 0x3513
-	ja	short 0x34FF
+	jb	short .39
+	ja	short .38
 	test	dx, 1
-	je	short 0x3513
+	je	short .39
+.38:
 	add	dx, 1
 	adc	cx, 0
 	adc	bx, 0
 	db	0x15, 0x00, 0x00			; adc	ax, 0
-	jae	short 0x3513
+	jae	short .39
 	or	ah, 0x80
 	inc	word [bp-2]
+.39:
 	mov	si, word [bp-2]
 	cmp	si, 0x7fff
-	jae	short 0x3571
+	jae	short .45
 	db	0x0B, 0xF6			; or	si, si
-	jne	short 0x352A
+	jne	short .40
 	db	0x8B, 0xF0			; mov	si, ax
 	db	0x0B, 0xF3			; or	si, bx
 	db	0x0B, 0xF1			; or	si, cx
 	db	0x0B, 0xF2			; or	si, dx
-	je	short 0x356B
+	je	short .44
+.40:
 	lds	si, [bp+0xe]
 	mov	word [si+6], ax
 	mov	word [si+4], bx
@@ -6511,6 +6975,7 @@ FpPack:
 	mov	ax, word [bp-2]
 	or	ax, word [bp-0x14]
 	mov	word [si+8], ax
+.41:
 	lds	si, [bp+0xa]
 	mov	ax, word [bp-0x12]
 	mov	word [si], ax
@@ -6523,14 +6988,18 @@ FpPack:
 	db	0x8B, 0xE5			; mov	sp, bp
 	pop	bp
 	ret	0xe
+.42:
 	or	word [bp-0xe], 4
+.43:
 	les	di, [bp+0xe]
 	db	0x33, 0xC0			; xor	ax, ax
 	mov	cx, 5
 	rep stosw
-	jmp	short 0x3541
+	jmp	short .41
+.44:
 	or	word [bp-0xe], 1
-	jmp	short 0x355F
+	jmp	short .43
+.45:
 	or	word [bp-0xe], 2
 	lds	si, [bp+0xe]
 	mov	ax, 0x7fff
@@ -6541,7 +7010,7 @@ FpPack:
 	mov	word [si+4], ax
 	mov	word [si+2], ax
 	mov	word [si], ax
-	jmp	short 0x3541
+	jmp	short .41
 
 FpScale:
 	push	bp
@@ -6557,21 +7026,24 @@ FpScale:
 	push	word [bp+6]
 	db	0x2B, 0xC0			; sub	ax, ax
 	push	ax
-	call	0x39d6
+	call	FpCall
 	mov	word [bp-2], ax
 	mov	ax, word [bp-6]
 	sub	ax, word [bp+6]
 	mov	word [0x90aa], ax
 	mov	word [0x90a8], 0
 	test	byte [bp-2], 4
-	je	short 0x35CA
+	je	short .1
 	mov	word [0x90a8], 0x200
+.1:
 	test	byte [bp-2], 2
-	je	short 0x35D5
+	je	short .2
 	or	byte [0x90a8], 1
+.2:
 	test	byte [bp-2], 1
-	je	short 0x35E0
+	je	short .3
 	or	byte [0x90a9], 1
+.3:
 	mov	ax, 0x90a8
 	db	0x8B, 0xE5			; mov	sp, bp
 	pop	bp
@@ -6586,119 +7058,139 @@ FpPush:
 	mov	si, word [bx+8]
 	mov	bx, word [bx+0xa]
 	db	0x33, 0xFF			; xor	di, di
-	jmp	short 0x361B
+	jmp	short .3
+.1:
 	db	0x8B, 0xC3			; mov	ax, bx
 	pop	bx
 	test	al, 1
-	jne	short 0x3641
+	jne	short .7
 	push	bx
 	mov	si, word [bx+6]
 	mov	bx, word [bx+8]
 	db	0x3B, 0xDE			; cmp	bx, si
-	je	short 0x3640
+	je	short .6
 	dec	bx
 	db	0x33, 0xFF			; xor	di, di
-	jmp	short 0x361B
+	jmp	short .3
 	nop
+.2:
 	lea	dx, [si-2]
 	db	0x3B, 0xD3			; cmp	dx, bx
-	jae	short 0x35F8
+	jae	short .1
 	db	0x03, 0xF0			; add	si, ax
-	jb	short 0x363E
+	jb	short .5
+.3:
 	lodsw
 	test	al, 1
-	je	short 0x3610
+	je	short .2
 	db	0x8B, 0xFE			; mov	di, si
+.4:
 	dec	ax
 	db	0x3B, 0xC1			; cmp	ax, cx
-	jae	short 0x364A
+	jae	short .8
 	db	0x03, 0xF0			; add	si, ax
-	jb	short 0x363E
+	jb	short .5
 	db	0x8B, 0xD0			; mov	dx, ax
 	lodsw
 	test	al, 1
-	je	short 0x3610
+	je	short .2
 	db	0x03, 0xC2			; add	ax, dx
 	add	ax, strict word 0x2
 	db	0x8B, 0xF7			; mov	si, di
 	mov	word [si-2], ax
-	jmp	short 0x3622
+	jmp	short .4
+.5:
 	db	0x8B, 0xC0			; mov	ax, ax
+.6:
 	pop	bx
+.7:
 	mov	ax, word [bx+6]
 	mov	word [bx+8], ax
 	stc
-	jmp	short 0x3663
+	jmp	short .10
+.8:
 	pop	bx
 	mov	word [si-2], cx
-	je	short 0x3659
+	je	short .9
 	db	0x03, 0xF9			; add	di, cx
 	db	0x2B, 0xC1			; sub	ax, cx
 	dec	ax
 	mov	word [di], ax
 	db	0x2B, 0xF9			; sub	di, cx
+.9:
 	db	0x03, 0xF9			; add	di, cx
 	mov	word [bx+8], di
 	db	0x8B, 0xC6			; mov	ax, si
 	mov	dx, ds
 	clc
+.10:
 	ret
 
 FpPop:
 	push	cx
 	push	di
 	test	byte [bx+2], 1
-	je	short 0x36CF
-	call	0x3741
+	je	short .9
+	call	.19
 	db	0x8B, 0xFE			; mov	di, si
 	mov	ax, word [si]
 	test	al, 1
-	je	short 0x367A
+	je	short .1
 	db	0x2B, 0xC8			; sub	cx, ax
 	dec	cx
+.1:
 	inc	cx
 	inc	cx
 	mov	si, word [bx+4]
 	db	0x0B, 0xF6			; or	si, si
-	je	short 0x36CF
+	je	short .9
 	db	0x03, 0xCE			; add	cx, si
-	jae	short 0x3690
+	jae	short .2
 	db	0x33, 0xC0			; xor	ax, ax
 	mov	dx, 0xfff0
-	jcxz	0x36BE
-	jmp	short 0x36CF
+	jcxz	.7
+	jmp	short .9
+.2:
 	push	ss
 	pop	es
 	mov	ax, word [es:0x8acc]
 	cmp	ax, 0x2000
-	je	short 0x36B1
+	je	short .5
 	mov	dx, 0x8000
+.3:
 	db	0x3B, 0xD0			; cmp	dx, ax
-	jb	short 0x36A8
+	jb	short .4
 	shr	dx, 1
-	jne	short 0x369E
-	jmp	short 0x36CA
+	jne	short .3
+	jmp	short .8
+.4:
 	cmp	dx, 8
-	jb	short 0x36CA
+	jb	short .8
 	shl	dx, 1
 	db	0x8B, 0xC2			; mov	ax, dx
+.5:
 	dec	ax
 	db	0x8B, 0xD0			; mov	dx, ax
 	db	0x03, 0xC1			; add	ax, cx
-	jae	short 0x36BA
+	jae	short .6
 	db	0x33, 0xC0			; xor	ax, ax
+.6:
 	not	dx
 	db	0x23, 0xC2			; and	ax, dx
+.7:
 	push	dx
-	call	0x36f0
+	call	.12
 	pop	dx
-	jae	short 0x36D2
+	jae	short .10
 	cmp	dx, -0x10
-	je	short 0x36CF
+	je	short .9
+.8:
 	mov	ax, 0x10
-	jmp	short 0x36B1
+	jmp	short .5
+.9:
 	stc
-	jmp	short 0x36ED
+	jmp	short .11
+.10:
 	db	0x8B, 0xD0			; mov	dx, ax
 	sub	dx, word [bx+4]
 	mov	word [bx+4], ax
@@ -6710,61 +7202,72 @@ FpPop:
 	db	0x03, 0xF2			; add	si, dx
 	mov	word [si], 0xfffe
 	mov	word [bx+0xa], si
+.11:
 	pop	di
 	pop	cx
 	ret
+.12:
 	db	0x8B, 0xD0			; mov	dx, ax
 	test	byte [bx+2], 4
-	je	short 0x3707
+	je	short .14
 	dec	dx
 	mov	si, word [bx+4]
 	dec	si
 	db	0x3B, 0xD6			; cmp	dx, si
-	jb	short 0x3706
+	jb	short .13
 	cmp	word [bx-2], dx
-	jae	short 0x373C
+	jae	short .17
+.13:
 	inc	dx
+.14:
 	push	bx
 	push	cx
 	mov	si, ds
 	mov	es, si
 	mov	cl, 4
 	shr	ax, cl
-	jne	short 0x3716
+	jne	short .15
 	mov	ax, 0x1000
+.15:
 	test	byte [bx+2], 4
-	je	short 0x3726
+	je	short .16
 	db	0x03, 0xC6			; add	ax, si
 	mov	bx, word [0x8556]
 	db	0x2B, 0xC3			; sub	ax, bx
 	mov	es, bx
+.16:
 	db	0x8B, 0xD8			; mov	bx, ax
 	mov	ah, 0x4a
 	int	0x21
 	pop	cx
 	pop	bx
-	jb	short 0x3740
+	jb	short .18
 	db	0x8B, 0xC2			; mov	ax, dx
 	test	byte [bx+2], 4
-	je	short 0x373C
+	je	short .17
 	dec	dx
 	mov	word [bx-2], dx
+.17:
 	clc
-	jmp	short 0x3740
+	jmp	short .18
 	stc
+.18:
 	ret
+.19:
 	push	di
 	mov	si, word [bx+8]
 	cmp	si, word [bx+0xa]
-	jne	short 0x374D
+	jne	short .20
 	mov	si, word [bx+6]
+.20:
 	lodsw
 	db	0x3D, 0xFE, 0xFF			; cmp	ax, 0xfffe
-	je	short 0x375B
+	je	short .21
 	db	0x8B, 0xFE			; mov	di, si
 	and	al, 0xfe
 	db	0x03, 0xF0			; add	si, ax
-	jmp	short 0x374D
+	jmp	short .20
+.21:
 	dec	di
 	dec	di
 	db	0x8B, 0xF7			; mov	si, di
@@ -6815,20 +7318,21 @@ FpFormat:
 	db	0x8B, 0xD0			; mov	dx, ax
 	mov	dl, byte [es:si]
 	inc	si
-	jmp	short 0x3977
+	jmp	short .2
+.1:
 	mov	word [bp-2], di
 	mov	word [bp-4], ax
 	mov	word [bp-6], bx
 	mov	word [bp-8], cx
 	mov	word [bp-0xa], dx
-	call	0x39ca
-	call	0x39ca
+	call	.7
+	call	.7
 	add	dx, word [bp-0xa]
 	adc	cx, word [bp-8]
 	adc	bx, word [bp-6]
 	adc	ax, word [bp-4]
 	adc	di, word [bp-2]
-	call	0x39ca
+	call	.7
 	add	dl, byte [es:si]
 	inc	si
 	adc	dh, 0
@@ -6836,19 +7340,23 @@ FpFormat:
 	adc	bx, 0
 	db	0x15, 0x00, 0x00			; adc	ax, 0
 	adc	di, 0
+.2:
 	dec	word [bp-0xc]
-	jne	short 0x393D
+	jne	short .1
 	mov	si, 0x404e
-	jmp	short 0x398E
+	jmp	short .4
+.3:
 	db	0x8B, 0xF8			; mov	di, ax
 	db	0x8B, 0xC3			; mov	ax, bx
 	db	0x8B, 0xD9			; mov	bx, cx
 	db	0x8B, 0xCA			; mov	cx, dx
 	db	0x33, 0xD2			; xor	dx, dx
 	sub	si, 0x10
+.4:
 	db	0x0B, 0xFF			; or	di, di
-	je	short 0x3981
-	js	short 0x39A3
+	je	short .3
+	js	short .6
+.5:
 	shl	dx, 1
 	rcl	cx, 1
 	rcl	bx, 1
@@ -6856,7 +7364,8 @@ FpFormat:
 	rcl	di, 1
 	dec	si
 	db	0x0B, 0xFF			; or	di, di
-	jns	short 0x3994
+	jns	short .5
+.6:
 	push	si
 	mov	si, word [bp+4]
 	pop	word [ss:si+0xa]
@@ -6872,6 +7381,7 @@ FpFormat:
 	db	0x8B, 0xE5			; mov	sp, bp
 	pop	bp
 	ret	8
+.7:
 	shl	dx, 1
 	rcl	cx, 1
 	rcl	bx, 1
@@ -6892,7 +7402,7 @@ FpCall:
 	push	word [bp+8]
 	push	word [bp+6]
 	push	word [bp+4]
-	call	0x332a
+	call	FpPack
 	int	0x35
 	jle	short 0x39E9
 	int	0x37

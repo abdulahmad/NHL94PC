@@ -42,7 +42,7 @@ GetBlockAt		equ	0x11DD
 _fstrcpy		equ	0x13DA
 ConPrint		equ	0x17CA
 DrawRleTransAt		equ	0x1857
-L1A84		equ	0x1A84
+WaitDeadlineNoEoi		equ	0x1A84
 MouseMove		equ	0x1B03
 MouseRead		equ	0x1B34
 DrawRleTransFastAt		equ	0x1C71

@@ -37,7 +37,7 @@ SayPlayoffResult		equ	0x1546
 SayPeriodSummary		equ	0x16E2
 SayTonightsGame		equ	0x17FA
 SayTonightsPlayoffGame		equ	0x191A
-L1A84		equ	0x1A84
+WaitDeadlineNoEoi		equ	0x1A84
 SayPenalty		equ	0x1B3C
 SayPlayerFrom		equ	0x1E44
 SayGoal		equ	0x2032

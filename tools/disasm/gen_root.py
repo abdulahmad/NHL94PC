@@ -590,13 +590,13 @@ def subst_data(items, s, funcs):
                 if v >= 0x40 and v in dg:
                     return '[' + (mm.group(1) + ':' if mm.group(1) else '') + dg[v] + ']'
                 return m.group(0)
-            mm = re.fullmatch(r'((?:bx|si|di)(?: \+ (?:si|di))?) ([+-]) 0x([0-9a-f]+)', inner)
-            if mm and dsok:
-                v = int(mm.group(3), 16)
-                if mm.group(2) == '-':
+            mm = re.fullmatch(r'(ss:)?((?:bx|si|di)(?: \+ (?:si|di))?) ([+-]) 0x([0-9a-f]+)', inner)
+            if mm and (dsok or mm.group(1)):
+                v = int(mm.group(4), 16)
+                if mm.group(3) == '-':
                     v = (-v) & 0xFFFF
                 if v >= 0x100 and v in dg:
-                    return f'[{mm.group(1)} + {dg[v]}]'
+                    return f'[{mm.group(1) or ""}{mm.group(2)} + {dg[v]}]'
             return m.group(0)
         t2 = re.sub(r'\[([^\]]+)\]', mem, t)
         mm = re.fullmatch(r'(push|mov)\t((?:[abcd]x|si|di|word \[[^\]]+\]), )?(?:word )?0x([0-9a-f]+)', t2) if dsok else None

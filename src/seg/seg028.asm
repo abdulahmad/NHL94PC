@@ -292,7 +292,7 @@ DrawTextAt:
 	jz	short .7
 	jmp	near .17
 .7:
-	mov	ah, [ss:bx + 0x6d52]
+	mov	ah, [ss:bx + g_6D52]
 	mov	[bp - 0x9], ah
 	mov	word [bp - 0x8], 0x8008
 .8:
@@ -353,7 +353,7 @@ DrawTextAt:
 	jmp	short .12
 .17:
 	db	0x03, 0xDB		; add bx, bx
-	mov	es, [ss:bx + 0x74e4]
+	mov	es, [ss:bx + g_74E4]
 	mov	[bp - 0xe], bx
 	mov	dx, 0x8008
 .18:
@@ -394,7 +394,7 @@ DrawTextAt:
 	inc	word [bp - 0x6]
 	and	bx, 0x3
 .23:
-	mov	es, [ss:bx + 0x74e4]
+	mov	es, [ss:bx + g_74E4]
 	mov	[bp - 0xe], bx
 	jmp	short .18
 .24:
@@ -757,7 +757,7 @@ PutBlockBody:
 	jmp	near .14
 .10:
 	mov	es, ax
-	mov	ah, [ss:bx + 0x7428]
+	mov	ah, [ss:bx + g_7428]
 	mov	[bp - 0x13], ah
 	mov	[bp - 0x14], bl
 .11:
@@ -821,7 +821,7 @@ PutBlockBody:
 	db	0x03, 0xDB		; add bx, bx
 	mov	[bp - 0x24], bx
 .15:
-	mov	es, [ss:bx + 0x74e4]
+	mov	es, [ss:bx + g_74E4]
 	mov	di, [bp - 0xc]
 	mov	dx, [bp - 0x20]
 	and	dx, 0x3
@@ -944,7 +944,7 @@ DrawRawBody:
 	cmp	ax, 0xa000
 	jnz	short .5
 	mov	es, ax
-	mov	ah, [ss:bx + 0x742c]
+	mov	ah, [ss:bx + g_742C]
 	mov	[bp - 0x13], ah
 	mov	[bp - 0x14], bl
 	add	si, 0x10
@@ -990,7 +990,7 @@ DrawRawBody:
 	add	si, 0x10
 	mov	word [bp - 0x1a], 0x4
 .6:
-	mov	es, [ss:bx + 0x74e4]
+	mov	es, [ss:bx + g_74E4]
 	mov	di, [bp - 0xa]
 	shl	di, 1
 	add	di, [ss:g_74EC]
@@ -1179,7 +1179,7 @@ DrawRleBody:
 	mov	[bp - 0x12], bx
 .10:
 	mov	bx, [bp - 0x12]
-	mov	es, [ss:bx + 0x74e4]
+	mov	es, [ss:bx + g_74E4]
 	mov	di, [bp - 0xe]
 	mov	dx, [bp - 0x22]
 	and	dx, 0x3
@@ -1339,7 +1339,7 @@ DrawRleBody:
 .32:
 	mov	si, [bp - 0xa]
 	mov	es, ax
-	mov	ah, [ss:bx + 0x7430]
+	mov	ah, [ss:bx + g_7430]
 	mov	[bp - 0x17], ah
 .33:
 	mov	ah, [bp - 0x17]
@@ -1590,7 +1590,7 @@ DrawRleFastBody:
 	mov	si, [bp - 0xa]
 	db	0x03, 0xDB		; add bx, bx
 .4:
-	mov	es, [ss:bx + 0x74e4]
+	mov	es, [ss:bx + g_74E4]
 	mov	di, [bp - 0xe]
 .5:
 	lodsb
@@ -1623,7 +1623,7 @@ DrawRleFastBody:
 	db	0x03, 0xDB		; add bx, bx
 .9:
 	mov	[bp - 0x12], bx
-	mov	es, [ss:bx + 0x74e4]
+	mov	es, [ss:bx + g_74E4]
 	mov	di, [bp - 0xe]
 .10:
 	lodsb
@@ -1724,7 +1724,7 @@ DrawRleFastBody:
 .22:
 	mov	si, [bp - 0xa]
 	mov	es, [ss:g_74E4]
-	mov	ah, [ss:bx + 0x7434]
+	mov	ah, [ss:bx + g_7434]
 	mov	[bp - 0x17], ah
 .23:
 	mov	dx, 0x3c4
@@ -1880,7 +1880,7 @@ DrawChar:
 	jz	short .7
 	jmp	near .20
 .7:
-	mov	ah, [ss:bx + 0x743a]
+	mov	ah, [ss:bx + g_743A]
 	mov	[bp - 0x9], ah
 	mov	word [bp - 0x8], 0x8008
 .8:
@@ -1965,7 +1965,7 @@ DrawChar:
 	jmp	short .13
 .20:
 	db	0x03, 0xDB		; add bx, bx
-	mov	es, [ss:bx + 0x74e4]
+	mov	es, [ss:bx + g_74E4]
 	mov	[bp - 0xe], bx
 	mov	dx, 0x8008
 .21:
@@ -2018,7 +2018,7 @@ DrawChar:
 	and	bx, 0x6
 	inc	word [bp - 0x6]
 .27:
-	mov	es, [ss:bx + 0x74e4]
+	mov	es, [ss:bx + g_74E4]
 	mov	[bp - 0xe], bx
 	jmp	short .21
 .28:
@@ -2302,7 +2302,7 @@ GetBlockBody:
 	db	0x8B, 0xD8		; mov bx, ax
 	and	bx, 0x3
 	db	0x03, 0xDB		; add bx, bx
-	mov	ds, [ss:bx + 0x74e4]
+	mov	ds, [ss:bx + g_74E4]
 	shr	ax, 1
 	shr	ax, 1
 	mov	dx, [bp - 0xa]
@@ -2594,7 +2594,7 @@ DrawRawTransBody:
 	jmp	near .17
 .10:
 	mov	es, ax
-	mov	ah, [ss:bx + 0x7526]
+	mov	ah, [ss:bx + g_7526]
 	mov	[bp - 0x11], ah
 .11:
 	mov	al, 0x2
@@ -2659,7 +2659,7 @@ DrawRawTransBody:
 	db	0x03, 0xDB		; add bx, bx
 	mov	[bp - 0x20], bx
 .18:
-	mov	es, [ss:bx + 0x74e4]
+	mov	es, [ss:bx + g_74E4]
 	mov	di, [bp - 0xc]
 	mov	dx, [bp - 0x1c]
 	and	dx, 0x3
@@ -2807,7 +2807,7 @@ DrawRleFlipBody:
 	db	0x03, 0xDB		; add bx, bx
 .2:
 	mov	[bp - 0x12], bx
-	mov	es, [ss:bx + 0x74e4]
+	mov	es, [ss:bx + g_74E4]
 	mov	di, [bp - 0xe]
 .3:
 	mov	al, [si]
@@ -2904,7 +2904,7 @@ DrawRleFlipBody:
 .15:
 	mov	si, [bp - 0xa]
 	mov	es, [ss:g_74E4]
-	mov	ah, [ss:bx + 0x752a]
+	mov	ah, [ss:bx + g_752A]
 	mov	[bp - 0x17], ah
 .16:
 	mov	dx, 0x3c4
@@ -3164,7 +3164,7 @@ DrawRleTransBody:
 	mov	[bp - 0x12], bx
 .10:
 	mov	bx, [bp - 0x12]
-	mov	es, [ss:bx + 0x74e4]
+	mov	es, [ss:bx + g_74E4]
 	mov	di, [bp - 0xe]
 	mov	dx, [bp - 0x22]
 	and	dx, 0x3
@@ -3347,7 +3347,7 @@ DrawRleTransBody:
 .35:
 	mov	si, [bp - 0xa]
 	mov	es, ax
-	mov	ah, [ss:bx + 0x752e]
+	mov	ah, [ss:bx + g_752E]
 	mov	[bp - 0x17], ah
 .36:
 	mov	ah, [bp - 0x17]
@@ -3618,7 +3618,7 @@ DrawRleTransFastBody:
 	mov	si, [bp - 0xa]
 	db	0x03, 0xDB		; add bx, bx
 .4:
-	mov	es, [ss:bx + 0x74e4]
+	mov	es, [ss:bx + g_74E4]
 	mov	di, [bp - 0xe]
 .5:
 	lodsb
@@ -3656,7 +3656,7 @@ DrawRleTransFastBody:
 	db	0x03, 0xDB		; add bx, bx
 .10:
 	mov	[bp - 0x12], bx
-	mov	es, [ss:bx + 0x74e4]
+	mov	es, [ss:bx + g_74E4]
 	mov	di, [bp - 0xe]
 .11:
 	lodsb
@@ -3777,7 +3777,7 @@ DrawRleTransFastBody:
 .26:
 	mov	si, [bp - 0xa]
 	mov	es, ax
-	mov	ah, [ss:bx + 0x7532]
+	mov	ah, [ss:bx + g_7532]
 	mov	[bp - 0x17], ah
 .27:
 	mov	dx, 0x3c4
@@ -4025,7 +4025,7 @@ DrawRawTransRemapBody:
 	jmp	near .17
 .10:
 	mov	es, ax
-	mov	ah, [ss:bx + 0x7536]
+	mov	ah, [ss:bx + g_7536]
 	mov	[bp - 0x11], ah
 .11:
 	mov	al, 0x2
@@ -4066,7 +4066,7 @@ DrawRawTransRemapBody:
 	cmp	al, 0xff
 	jz	short .16
 	db	0x8A, 0xD8		; mov bl, al
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	stosb
 	loop	.13
 .14:
@@ -4094,7 +4094,7 @@ DrawRawTransRemapBody:
 	db	0x03, 0xDB		; add bx, bx
 	mov	[bp - 0x20], bx
 .18:
-	mov	es, [ss:bx + 0x74e4]
+	mov	es, [ss:bx + g_74E4]
 	mov	di, [bp - 0xc]
 	mov	dx, [bp - 0x1c]
 	and	dx, 0x3
@@ -4129,7 +4129,7 @@ DrawRawTransRemapBody:
 	cmp	al, 0xff
 	jz	short .23
 	db	0x8A, 0xD8		; mov bl, al
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	stosb
 	loop	.20
 .21:
@@ -4246,7 +4246,7 @@ DrawRleTransRemapBody:
 	db	0x03, 0xDB		; add bx, bx
 .4:
 	mov	[bp - 0x12], bx
-	mov	es, [ss:bx + 0x74e4]
+	mov	es, [ss:bx + g_74E4]
 	mov	di, [bp - 0xe]
 	db	0x32, 0xFF		; xor bh, bh
 .5:
@@ -4270,7 +4270,7 @@ DrawRleTransRemapBody:
 	cmp	al, 0xff
 	jz	short .7
 	db	0x8A, 0xD8		; mov bl, al
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	rep	stosb
 	jmp	short .5
 .7:
@@ -4283,7 +4283,7 @@ DrawRleTransRemapBody:
 .9:
 	lodsb
 	db	0x8A, 0xD8		; mov bl, al
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	stosb
 	loop	.9
 	jmp	short .5
@@ -4293,7 +4293,7 @@ DrawRleTransRemapBody:
 	db	0x03, 0xDB		; add bx, bx
 .11:
 	mov	[bp - 0x12], bx
-	mov	es, [ss:bx + 0x74e4]
+	mov	es, [ss:bx + g_74E4]
 	mov	di, [bp - 0xe]
 .12:
 	lodsb
@@ -4321,7 +4321,7 @@ DrawRleTransRemapBody:
 	jz	short .16
 	db	0x8A, 0xD8		; mov bl, al
 	db	0x32, 0xFF		; xor bh, bh
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	db	0x8B, 0xDA		; mov bx, dx
 	db	0x2B, 0xD1		; sub dx, cx
 	jng	short .15
@@ -4364,7 +4364,7 @@ DrawRleTransRemapBody:
 	lodsb
 	db	0x8A, 0xD8		; mov bl, al
 	db	0x32, 0xFF		; xor bh, bh
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	stosb
 	loop	.19
 .20:
@@ -4375,7 +4375,7 @@ DrawRleTransRemapBody:
 	lodsb
 	db	0x8A, 0xD8		; mov bl, al
 	db	0x32, 0xFF		; xor bh, bh
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	stosb
 	loop	.22
 	add	di, [bp - 0xc]
@@ -4389,7 +4389,7 @@ DrawRleTransRemapBody:
 	lodsb
 	db	0x8A, 0xD8		; mov bl, al
 	db	0x32, 0xFF		; xor bh, bh
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	stosb
 	loop	.23
 	jmp	near .12
@@ -4425,7 +4425,7 @@ DrawRleTransRemapBody:
 	cmp	al, 0xff
 	jz	short .29
 	db	0x8A, 0xD8		; mov bl, al
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	rep	stosb
 	jmp	short .26
 .29:
@@ -4438,14 +4438,14 @@ DrawRleTransRemapBody:
 .31:
 	lodsb
 	db	0x8A, 0xD8		; mov bl, al
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	stosb
 	loop	.31
 	jmp	short .26
 .32:
 	mov	si, [bp - 0xa]
 	mov	es, ax
-	mov	ah, [ss:bx + 0x753a]
+	mov	ah, [ss:bx + g_753A]
 	mov	[bp - 0x17], ah
 .33:
 	mov	dx, 0x3c4
@@ -4474,7 +4474,7 @@ DrawRleTransRemapBody:
 	jz	short .38
 	db	0x8A, 0xD8		; mov bl, al
 	db	0x32, 0xFF		; xor bh, bh
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	db	0x8B, 0xDA		; mov bx, dx
 	db	0x2B, 0xD1		; sub dx, cx
 	jng	short .37
@@ -4517,7 +4517,7 @@ DrawRleTransRemapBody:
 	lodsb
 	db	0x8A, 0xD8		; mov bl, al
 	db	0x32, 0xFF		; xor bh, bh
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	stosb
 	loop	.41
 .42:
@@ -4528,7 +4528,7 @@ DrawRleTransRemapBody:
 	lodsb
 	db	0x8A, 0xD8		; mov bl, al
 	db	0x32, 0xFF		; xor bh, bh
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	stosb
 	loop	.44
 	add	di, [bp - 0xc]
@@ -4542,7 +4542,7 @@ DrawRleTransRemapBody:
 	lodsb
 	db	0x8A, 0xD8		; mov bl, al
 	db	0x32, 0xFF		; xor bh, bh
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	stosb
 	loop	.45
 	jmp	near .34
@@ -4710,7 +4710,7 @@ DrawRleFlipTransBody:
 	mov	[bp - 0x12], bx
 .10:
 	mov	bx, [bp - 0x12]
-	mov	es, [ss:bx + 0x74e4]
+	mov	es, [ss:bx + g_74E4]
 	mov	di, [bp - 0xe]
 	mov	dx, [bp - 0x22]
 	and	dx, 0x3
@@ -4911,7 +4911,7 @@ DrawRleFlipTransBody:
 .38:
 	mov	si, [bp - 0xa]
 	mov	es, ax
-	mov	ah, [ss:bx + 0x753e]
+	mov	ah, [ss:bx + g_753E]
 	mov	[bp - 0x17], ah
 .39:
 	mov	ah, [bp - 0x17]
@@ -5278,7 +5278,7 @@ DrawRleFlipTransRemapBody:
 	mov	[bp - 0x12], bx
 .10:
 	mov	bx, [bp - 0x12]
-	mov	es, [ss:bx + 0x74e4]
+	mov	es, [ss:bx + g_74E4]
 	mov	di, [bp - 0xe]
 	mov	dx, [bp - 0x22]
 	and	dx, 0x3
@@ -5372,7 +5372,7 @@ DrawRleFlipTransRemapBody:
 	cmp	bl, 0xff
 	jz	short .24
 	db	0x32, 0xFF		; xor bh, bh
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	db	0x8B, 0xDA		; mov bx, dx
 	db	0x2B, 0xD1		; sub dx, cx
 	jng	short .21
@@ -5432,7 +5432,7 @@ DrawRleFlipTransRemapBody:
 	mov	bl, [si]
 	inc	si
 	db	0x32, 0xFF		; xor bh, bh
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	stosb
 	loop	.29
 	jmp	near .18
@@ -5442,7 +5442,7 @@ DrawRleFlipTransRemapBody:
 	mov	bl, [si]
 	inc	si
 	db	0x32, 0xFF		; xor bh, bh
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	stosb
 	loop	.31
 	dec	word [bp - 0x8]
@@ -5462,7 +5462,7 @@ DrawRleFlipTransRemapBody:
 	mov	bl, [si]
 	inc	si
 	db	0x32, 0xFF		; xor bh, bh
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	stosb
 	loop	.32
 .33:
@@ -5487,7 +5487,7 @@ DrawRleFlipTransRemapBody:
 .38:
 	mov	si, [bp - 0xa]
 	mov	es, ax
-	mov	ah, [ss:bx + 0x7542]
+	mov	ah, [ss:bx + g_7542]
 	mov	[bp - 0x17], ah
 .39:
 	mov	ah, [bp - 0x17]
@@ -5584,7 +5584,7 @@ DrawRleFlipTransRemapBody:
 	cmp	bl, 0xff
 	jz	short .53
 	db	0x32, 0xFF		; xor bh, bh
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	db	0x8B, 0xDA		; mov bx, dx
 	db	0x2B, 0xD1		; sub dx, cx
 	jng	short .50
@@ -5644,7 +5644,7 @@ DrawRleFlipTransRemapBody:
 	mov	bl, [si]
 	inc	si
 	db	0x32, 0xFF		; xor bh, bh
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	stosb
 	loop	.58
 	jmp	near .47
@@ -5654,7 +5654,7 @@ DrawRleFlipTransRemapBody:
 	mov	bl, [si]
 	inc	si
 	db	0x32, 0xFF		; xor bh, bh
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	stosb
 	loop	.60
 	dec	word [bp - 0x8]
@@ -5674,7 +5674,7 @@ DrawRleFlipTransRemapBody:
 	mov	bl, [si]
 	inc	si
 	db	0x32, 0xFF		; xor bh, bh
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	stosb
 	loop	.61
 .62:
@@ -5789,7 +5789,7 @@ DrawRleFlipRemapBody:
 	db	0x03, 0xDB		; add bx, bx
 .2:
 	mov	[bp - 0x12], bx
-	mov	es, [ss:bx + 0x74e4]
+	mov	es, [ss:bx + g_74E4]
 	mov	di, [bp - 0xe]
 .3:
 	mov	al, [si]
@@ -5819,7 +5819,7 @@ DrawRleFlipRemapBody:
 	inc	si
 	cmp	bl, 0xff
 	jz	short .7
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	db	0x8B, 0xDA		; mov bx, dx
 	db	0x2B, 0xD1		; sub dx, cx
 	jng	short .6
@@ -5862,7 +5862,7 @@ DrawRleFlipRemapBody:
 	db	0x32, 0xFF		; xor bh, bh
 	mov	bl, [si]
 	inc	si
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	stosb
 	loop	.10
 .11:
@@ -5873,7 +5873,7 @@ DrawRleFlipRemapBody:
 	db	0x32, 0xFF		; xor bh, bh
 	mov	bl, [si]
 	inc	si
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	stosb
 	loop	.13
 	add	di, [bp - 0xc]
@@ -5887,14 +5887,14 @@ DrawRleFlipRemapBody:
 	db	0x32, 0xFF		; xor bh, bh
 	mov	bl, [si]
 	inc	si
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	stosb
 	loop	.14
 	jmp	near .3
 .15:
 	mov	si, [bp - 0xa]
 	mov	es, [ss:g_74E4]
-	mov	ah, [ss:bx + 0x7546]
+	mov	ah, [ss:bx + g_7546]
 	mov	[bp - 0x17], ah
 .16:
 	mov	dx, 0x3c4
@@ -5929,7 +5929,7 @@ DrawRleFlipRemapBody:
 	cmp	bl, 0xff
 	jz	short .21
 	db	0x32, 0xFF		; xor bh, bh
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	db	0x8B, 0xDA		; mov bx, dx
 	db	0x2B, 0xD1		; sub dx, cx
 	jng	short .20
@@ -5972,7 +5972,7 @@ DrawRleFlipRemapBody:
 	mov	bl, [si]
 	inc	si
 	db	0x32, 0xFF		; xor bh, bh
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	stosb
 	loop	.24
 .25:
@@ -5983,7 +5983,7 @@ DrawRleFlipRemapBody:
 	mov	bl, [si]
 	inc	si
 	db	0x32, 0xFF		; xor bh, bh
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	stosb
 	loop	.27
 	add	di, [bp - 0xc]
@@ -5997,7 +5997,7 @@ DrawRleFlipRemapBody:
 	mov	bl, [si]
 	inc	si
 	db	0x32, 0xFF		; xor bh, bh
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	stosb
 	loop	.28
 	jmp	near .17
@@ -6162,7 +6162,7 @@ DrawRleTransRemapFastBody:
 	mov	[bp - 0x12], bx
 .10:
 	mov	bx, [bp - 0x12]
-	mov	es, [ss:bx + 0x74e4]
+	mov	es, [ss:bx + g_74E4]
 	mov	di, [bp - 0xe]
 	mov	dx, [bp - 0x22]
 	and	dx, 0x3
@@ -6252,7 +6252,7 @@ DrawRleTransRemapFastBody:
 	jz	short .24
 	db	0x8A, 0xD8		; mov bl, al
 	db	0x32, 0xFF		; xor bh, bh
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	db	0x8B, 0xDA		; mov bx, dx
 	db	0x2B, 0xD1		; sub dx, cx
 	jng	short .21
@@ -6312,7 +6312,7 @@ DrawRleTransRemapFastBody:
 	lodsb
 	db	0x8A, 0xD8		; mov bl, al
 	db	0x32, 0xFF		; xor bh, bh
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	stosb
 	loop	.29
 	jmp	near .18
@@ -6322,7 +6322,7 @@ DrawRleTransRemapFastBody:
 	lodsb
 	db	0x8A, 0xD8		; mov bl, al
 	db	0x32, 0xFF		; xor bh, bh
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	stosb
 	loop	.31
 	dec	word [bp - 0x8]
@@ -6342,7 +6342,7 @@ DrawRleTransRemapFastBody:
 	lodsb
 	db	0x8A, 0xD8		; mov bl, al
 	db	0x32, 0xFF		; xor bh, bh
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	stosb
 	loop	.32
 .33:
@@ -6366,7 +6366,7 @@ DrawRleTransRemapFastBody:
 .38:
 	mov	si, [bp - 0xa]
 	mov	es, ax
-	mov	ah, [ss:bx + 0x754a]
+	mov	ah, [ss:bx + g_754A]
 	mov	[bp - 0x17], ah
 .39:
 	mov	ah, [bp - 0x17]
@@ -6459,7 +6459,7 @@ DrawRleTransRemapFastBody:
 	jz	short .53
 	db	0x8A, 0xD8		; mov bl, al
 	db	0x32, 0xFF		; xor bh, bh
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	db	0x8B, 0xDA		; mov bx, dx
 	db	0x2B, 0xD1		; sub dx, cx
 	jng	short .50
@@ -6519,7 +6519,7 @@ DrawRleTransRemapFastBody:
 	lodsb
 	db	0x8A, 0xD8		; mov bl, al
 	db	0x32, 0xFF		; xor bh, bh
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	stosb
 	loop	.58
 	jmp	near .47
@@ -6529,7 +6529,7 @@ DrawRleTransRemapFastBody:
 	lodsb
 	db	0x8A, 0xD8		; mov bl, al
 	db	0x32, 0xFF		; xor bh, bh
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	stosb
 	loop	.60
 	dec	word [bp - 0x8]
@@ -6549,7 +6549,7 @@ DrawRleTransRemapFastBody:
 	lodsb
 	db	0x8A, 0xD8		; mov bl, al
 	db	0x32, 0xFF		; xor bh, bh
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	stosb
 	loop	.61
 .62:
@@ -7446,7 +7446,7 @@ DrawScaled:
 .5:
 	jmp	near .9
 .6:
-	mov	ah, [ss:bx + 0x7674]
+	mov	ah, [ss:bx + g_7674]
 	db	0x8A, 0xFC		; mov bh, ah
 	mov	bl, [g_7664]
 	db	0x22, 0xE3		; and ah, bl
@@ -7462,7 +7462,7 @@ DrawScaled:
 	mov	[es:di], ah
 	jmp	short .9
 .7:
-	mov	ah, [ss:bx + 0x7674]
+	mov	ah, [ss:bx + g_7674]
 	db	0x8A, 0xFC		; mov bh, ah
 	mov	bl, [g_7664]
 	db	0x22, 0xE3		; and ah, bl
@@ -7501,7 +7501,7 @@ DrawScaled:
 	and	bx, 0x3
 	jz	short .9
 	db	0x8A, 0xEC		; mov ch, ah
-	mov	ah, [ss:bx + 0x7678]
+	mov	ah, [ss:bx + g_7678]
 	db	0x8A, 0xFC		; mov bh, ah
 	db	0x22, 0xE5		; and ah, ch
 	mov	al, 0x2
@@ -8139,7 +8139,7 @@ FillSpanLinear:
 	and	bx, 0x3
 	db	0x03, 0xDB		; add bx, bx
 .2:
-	mov	es, [ss:bx + 0x74e4]
+	mov	es, [ss:bx + g_74E4]
 	mov	[es:di], al
 	add	bx, 0x2
 	and	bx, 0x6
@@ -8161,15 +8161,15 @@ FillSpanVga:
 	shr	ax, 1
 	db	0x03, 0xF8		; add di, ax
 	and	bx, 0x3
-	mov	al, [ss:bx + 0x769f]
+	mov	al, [ss:bx + g_769F]
 	db	0x32, 0xE4		; xor ah, ah
 	db	0x2B, 0xC8		; sub cx, ax
 	jg	short .3
 	jz	short .2
-	mov	ah, [ss:bx + 0x7696]
+	mov	ah, [ss:bx + g_7696]
 	add	cx, 0x3
 	db	0x8B, 0xD9		; mov bx, cx
-	and	ah, [ss:bx + 0x769b]
+	and	ah, [ss:bx + g_769B]
 	mov	al, 0x2
 	out	dx, ax
 	db	0x8B, 0xC6		; mov ax, si
@@ -8178,7 +8178,7 @@ FillSpanVga:
 	pop	ax
 	ret
 .2:
-	mov	ah, [ss:bx + 0x7696]
+	mov	ah, [ss:bx + g_7696]
 	mov	al, 0x2
 	out	dx, ax
 	db	0x8B, 0xC6		; mov ax, si
@@ -8187,7 +8187,7 @@ FillSpanVga:
 	pop	ax
 	ret
 .3:
-	mov	ah, [ss:bx + 0x7696]
+	mov	ah, [ss:bx + g_7696]
 	mov	al, 0x2
 	out	dx, ax
 	db	0x8B, 0xC6		; mov ax, si
@@ -8204,7 +8204,7 @@ FillSpanVga:
 .4:
 	and	bx, 0x3
 	jz	short .5
-	mov	ah, [ss:bx + 0x769a]
+	mov	ah, [ss:bx + g_769A]
 	mov	al, 0x2
 	out	dx, ax
 	db	0x8B, 0xC6		; mov ax, si
@@ -8226,15 +8226,15 @@ RectSpanPlanes:
 	shr	ax, 1
 	db	0x03, 0xF8		; add di, ax
 	and	bx, 0x3
-	mov	al, [ss:bx + 0x77bd]
+	mov	al, [ss:bx + g_77BD]
 	db	0x32, 0xE4		; xor ah, ah
 	db	0x2B, 0xC8		; sub cx, ax
 	jg	short .3
 	jz	short .2
-	mov	ah, [ss:bx + 0x77b4]
+	mov	ah, [ss:bx + g_77B4]
 	add	cx, 0x3
 	db	0x8B, 0xD9		; mov bx, cx
-	and	ah, [ss:bx + 0x77b9]
+	and	ah, [ss:bx + g_77B9]
 	mov	al, 0x2
 	out	dx, ax
 	db	0x8B, 0xC6		; mov ax, si
@@ -8244,7 +8244,7 @@ RectSpanPlanes:
 	pop	ax
 	ret
 .2:
-	mov	ah, [ss:bx + 0x77b4]
+	mov	ah, [ss:bx + g_77B4]
 	mov	al, 0x2
 	out	dx, ax
 	db	0x8B, 0xC6		; mov ax, si
@@ -8254,7 +8254,7 @@ RectSpanPlanes:
 	pop	ax
 	ret
 .3:
-	mov	ah, [ss:bx + 0x77b4]
+	mov	ah, [ss:bx + g_77B4]
 	mov	al, 0x2
 	out	dx, ax
 	db	0x8B, 0xC6		; mov ax, si
@@ -8276,7 +8276,7 @@ RectSpanPlanes:
 .5:
 	and	bx, 0x3
 	jz	short .6
-	mov	ah, [ss:bx + 0x77b8]
+	mov	ah, [ss:bx + g_77B8]
 	mov	al, 0x2
 	out	dx, ax
 	db	0x8B, 0xC6		; mov ax, si
@@ -8369,7 +8369,7 @@ CopyPlanesRect:
 	mov	dx, 0x3ce
 	mov	al, 0x4
 	out	dx, ax
-	mov	es, [ss:bx + 0x74e4]
+	mov	es, [ss:bx + g_74E4]
 	mov	si, [bp - 0x2]
 	mov	di, [bp - 0x4]
 	mov	dx, [bp + 0x10]
@@ -8458,7 +8458,7 @@ DrawRawFastBody:
 	cmp	ax, 0xa000
 	jnz	short .8
 	mov	es, ax
-	mov	ah, [ss:bx + 0x77c8]
+	mov	ah, [ss:bx + g_77C8]
 	mov	[bp - 0x11], ah
 	add	si, 0x10
 	mov	word [bp - 0x16], 0x4
@@ -8507,7 +8507,7 @@ DrawRawFastBody:
 	add	si, 0x10
 	mov	word [bp - 0x16], 0x4
 .9:
-	mov	es, [ss:bx + 0x74e4]
+	mov	es, [ss:bx + g_74E4]
 	mov	di, [bp - 0xa]
 	shl	di, 1
 	add	di, [ss:g_74EC]
@@ -8618,7 +8618,7 @@ DrawRawTransFastBody:
 	cmp	ax, 0xa000
 	jnz	short .8
 	mov	es, ax
-	mov	ah, [ss:bx + 0x77cc]
+	mov	ah, [ss:bx + g_77CC]
 	mov	[bp - 0x11], ah
 	add	si, 0x10
 	mov	word [bp - 0x16], 0x4
@@ -8640,7 +8640,7 @@ DrawRawTransFastBody:
 	cmp	al, 0xff
 	jz	short .7
 	db	0x8A, 0xD8		; mov bl, al
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	stosb
 	loop	.4
 .5:
@@ -8670,7 +8670,7 @@ DrawRawTransFastBody:
 	mov	word [bp - 0x16], 0x4
 .9:
 	mov	[bp - 0x20], bx
-	mov	es, [ss:bx + 0x74e4]
+	mov	es, [ss:bx + g_74E4]
 	mov	di, [bp - 0xa]
 	shl	di, 1
 	add	di, [ss:g_74EC]
@@ -8687,7 +8687,7 @@ DrawRawTransFastBody:
 	cmp	al, 0xff
 	jz	short .14
 	db	0x8A, 0xD8		; mov bl, al
-	mov	al, [ss:bx + 0x730a]
+	mov	al, [ss:bx + g_730A]
 	stosb
 	loop	.11
 .12:
@@ -8829,7 +8829,7 @@ XorSpan:
 	and	bx, 0x3
 	db	0x03, 0xDB		; add bx, bx
 .2:
-	mov	es, [ss:bx + 0x74e4]
+	mov	es, [ss:bx + g_74E4]
 	xor	[es:di], al
 	add	bx, 0x2
 	and	bx, 0x6
