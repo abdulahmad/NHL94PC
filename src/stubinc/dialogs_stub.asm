@@ -5,8 +5,8 @@
 ListDlgScrollBar		equ	0x0
 TextWidthFar		equ	0x2
 DrawLine		equ	0xC
-GetInputEvent		equ	0xE
 InputInit		equ	0xE
+GetInputEvent		equ	0xE
 SetTextColors		equ	0x24
 AllocRecData		equ	0x30
 InputShutdown		equ	0x4C

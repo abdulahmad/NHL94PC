@@ -498,8 +498,7 @@ DrvPlayRecSample:
         mov ds, ax
         push word [bp + 0xc]
         push word [bp + 0xa]
-        call 0x06E1:0x1560                      ; RecFlag: offset past the end of NamePtr's segment, through
-                                                ; that segment's base
+        call 0x06E1:RecFlag + 0x1560            ; RecFlag (0837:0000), through heap's paragraph
         add sp, 0x4
         test al, 0x80
         jz short .1

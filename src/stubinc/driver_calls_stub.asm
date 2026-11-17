@@ -2,6 +2,7 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
+RecFlag		equ	0x0
 LoadPackedHeader0		equ	0x1A
 EmsMapFrame		equ	0x192
 LinkDriver		equ	0x272

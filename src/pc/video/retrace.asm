@@ -17,8 +17,7 @@ CalibrateRetrace:
         call 0x0000:_disable
         call 0x0FEF:WaitRetraceStart
 .1:
-        call 0x03A3:0x33E0                      ; BlankBit: offset past the end of WaitBlank's segment,
-                                                ; through that segment's base
+        call 0x03A3:BlankBit + 0x33E0           ; BlankBit (06E1:0000), through system's paragraph
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .1
         mov word [bp - 0x2], 0x1

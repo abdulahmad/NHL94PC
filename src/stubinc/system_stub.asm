@@ -2,7 +2,14 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
+FontInk		equ	0x0
+FontPaper		equ	0x2
 LargestFreeBlock		equ	0x4
+FontX		equ	0x8
+FontY		equ	0xA
+FontAdvance		equ	0x10
+BiosEquipment		equ	0x10
+FontProportional		equ	0x14
 AskExitToDos		equ	0x224
 EmsMapCache		equ	0x24C
 EmsWindowOff		equ	0x254
@@ -65,6 +72,7 @@ TickGate		equ	0x6DB0
 TickSkip		equ	0x6DB2
 SlotTab		equ	0x6DB4
 TickSkipCount		equ	0x6DB6
+Int8StackTop		equ	0x6F04
 Int8Sp		equ	0x6F08
 Int8Ss		equ	0x6F0A
 SkipEoi		equ	0x6F0E

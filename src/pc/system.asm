@@ -6,8 +6,20 @@
 ;
 ; The first bytes finish the C runtime routine that ends on this paragraph.
 
-; DGROUP words this segment uses. The bytes live in the near data, not here.
+; The game port, the interrupt vectors at segment 0, and BIOS data area offsets (segment 40h; add 400h
+; when ES is 0). BiosEquipment is defined with the runtime's.
 GamePort	equ	0x201
+Int08Vector	equ	0x08 * 4
+Int09Vector	equ	0x09 * 4
+Int16Vector	equ	0x16 * 4
+Int23Vector	equ	0x23 * 4
+BiosKbdFlags	equ	0x17
+BiosMotorStatus	equ	0x3F
+BiosMotorCount	equ	0x40
+BiosColumns	equ	0x4A
+BiosTicks	equ	0x6C
+BiosResetFlag	equ	0x72
+BiosRows	equ	0x84
 
 ; The previous segment ends on the first byte of test bx, 8.
 ; These bytes finish that test, then pop bp / ret 0xe.
@@ -2029,8 +2041,8 @@ TextWidthBody:
         mov es, word [CharSeg]
         mov si, word [bp + 6]
         db 0x33, 0xC0                           ; insn: xor ax, ax
-        mov cl, byte es:[0x14]
-        mov di, word es:[0x10]
+        mov cl, byte es:[FontProportional]
+        mov di, word es:[FontAdvance]
 .1:
         mov bl, byte [si]
         db 0x0A, 0xDB                           ; insn: or bl, bl
@@ -2069,8 +2081,8 @@ SetCharPtr:
         mov dx, word [bx + 6]
 .regs:
         mov es, word [CharSeg]
-        mov word es:[0], ax
-        mov word es:[2], dx
+        mov word es:[FontInk], ax
+        mov word es:[FontPaper], dx
         retf
 
 
@@ -2083,8 +2095,8 @@ SetCharPtr2:
         mov ax, word [bx + 4]
         mov dx, word [bx + 6]
         mov es, word [CharSeg]
-        mov word es:[8], ax
-        mov word es:[0xa], dx
+        mov word es:[FontX], ax
+        mov word es:[FontY], dx
         retf
 
 
@@ -2180,18 +2192,18 @@ HookInt8:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         mov es, ax
         cli
-        mov ax, word es:[0x20]
+        mov ax, word es:[Int08Vector]
         cmp ax, Int8Handler
         je short .1
         mov word [OldInt8Off], ax
 .1:
-        mov ax, word es:[0x22]
+        mov ax, word es:[Int08Vector + 2]
         mov bx, cs
         db 0x3B, 0xC3                           ; insn: cmp ax, bx
         je short .2
         mov word [OldInt8Seg], ax
         mov word [es:0x08 * 4], Int8Handler
-        mov word es:[0x22], cs
+        mov word es:[Int08Vector + 2], cs
         mov word [TickHookOff], EmptyRet
         mov word [TickHookSeg], cs
 .2:
@@ -2220,13 +2232,13 @@ HookInt8:
 UnhookInt8:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         mov es, ax
-        mov ax, word es:[0x22]
+        mov ax, word es:[Int08Vector + 2]
         mov dx, cs
         db 0x3B, 0xC2                           ; insn: cmp ax, dx
         je short .1
         retf
 .1:
-        mov ax, word es:[0x20]
+        mov ax, word es:[Int08Vector]
         cmp ax, Int8Handler
         je short .2
         retf
@@ -2236,9 +2248,9 @@ UnhookInt8:
         out 0x21, al
         cli
         mov ax, word [OldInt8Off]
-        mov word es:[0x20], ax
+        mov word es:[Int08Vector], ax
         mov ax, word [OldInt8Seg]
-        mov word es:[0x22], ax
+        mov word es:[Int08Vector + 2], ax
         in al, 0x21
         and al, 0xfc
         out 0x21, al
@@ -2370,7 +2382,7 @@ Int8Ds:                                         ; word in the code segment. Hook
 Int8Handler:
         push ds
         push ax
-        mov ds, word cs:[0xe1e]
+        mov ds, word cs:[Int8Ds]
         cmp word [SkipEoi], 0
         jne short .1
         mov al, 0x20
@@ -2391,12 +2403,12 @@ Int8Handler:
         mov word [Int8Ss], ax
         mov ax, ds
         mov ss, ax
-        mov sp, 0x6f04
+        mov sp, Int8StackTop
         mov si, SlotTab
         cld
         inc word [CallCount]
         jne short .3
-        inc word [0x6da2]
+        inc word [CallCount + 2]
         jmp short .3
 .2:
         db 0xFF, 0x1C                           ; insn: lcall [si]
@@ -2422,7 +2434,7 @@ Int8Handler:
 .5:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         mov ds, ax
-        mov bx, 0x46c
+        mov bx, BiosTicks + 0x400
         inc word [bx]
         jne short .6
         inc word [bx + 2]
@@ -2435,14 +2447,14 @@ Int8Handler:
         mov word [bx + 2], ax
         mov byte [bx + 4], 1
 .7:
-        dec byte [0x440]
+        dec byte [BiosMotorCount + 0x400]
         jne short .8
         push dx
         mov dx, 0x3f2
         mov al, 0xf
         out dx, al
         pop dx
-        and byte [0x43f], 0xf0
+        and byte [BiosMotorStatus + 0x400], 0xf0
 .8:
         pop bx
         pop ax
@@ -2465,10 +2477,10 @@ ResetText:
         add sp, 2
         mov ax, 0x40
         mov es, ax
-        mov ax, word es:[0x10]
+        mov ax, word es:[BiosEquipment]
         and ax, 0xffcf
         or ax, 0x10
-        mov word es:[0x10], ax
+        mov word es:[BiosEquipment], ax
         db 0x32, 0xE4                           ; insn: xor ah, ah
         mov al, 3
         int 0x10
@@ -3153,26 +3165,26 @@ HookKbd:
         out 0x21, al
         db 0x33, 0xDB                           ; insn: xor bx, bx
         mov es, bx
-        mov bx, word es:[0x24]
+        mov bx, word es:[Int09Vector]
         cmp bx, KbdIrq
         je short .1
         mov word [OldInt9Off], bx
-        mov bx, word es:[0x26]
+        mov bx, word es:[Int09Vector + 2]
         mov word [OldInt9Seg], bx
         mov word [es:0x09 * 4], KbdIrq
-        mov word es:[0x26], cs
-        mov bx, word es:[0x58]
+        mov word es:[Int09Vector + 2], cs
+        mov bx, word es:[Int16Vector]
         mov word [OldInt16Off], bx
-        mov bx, word es:[0x5a]
+        mov bx, word es:[Int16Vector + 2]
         mov word [OldInt16Seg], bx
         mov word [es:0x16 * 4], Int16Hook
-        mov word es:[0x5a], cs
-        mov bx, word es:[0x8c]
+        mov word es:[Int16Vector + 2], cs
+        mov bx, word es:[Int23Vector]
         mov word [OldInt23Off], bx
-        mov bx, word es:[0x8e]
+        mov bx, word es:[Int23Vector + 2]
         mov word [OldInt23Seg], bx
         mov word [es:0x23 * 4], BreakIrq
-        mov word es:[0x8e], cs
+        mov word es:[Int23Vector + 2], cs
         mov bx, KeyService
         mov word [KeyPtr], bx
 .1:
@@ -3208,23 +3220,23 @@ UnhookKbd:
         mov bx, word [OldInt9Off]
         db 0x0B, 0xDB                           ; insn: or bx, bx
         je short .2
-        mov word es:[0x24], bx
+        mov word es:[Int09Vector], bx
         mov bx, word [OldInt9Seg]
-        mov word es:[0x26], bx
+        mov word es:[Int09Vector + 2], bx
         mov bx, word [OldInt16Off]
-        mov word es:[0x58], bx
+        mov word es:[Int16Vector], bx
         mov bx, word [OldInt16Seg]
-        mov word es:[0x5a], bx
+        mov word es:[Int16Vector + 2], bx
         mov bx, word [OldInt23Off]
 .1:
-        mov word es:[0x8c], bx
+        mov word es:[Int23Vector], bx
         mov bx, word [OldInt23Seg]
-        mov word es:[0x8e], bx
+        mov word es:[Int23Vector + 2], bx
         mov bx, BiosKey
         mov word [KeyPtr], bx
-        mov al, byte es:[0x417]
+        mov al, byte es:[BiosKbdFlags + 0x400]
         and al, 0xf0
-        mov byte es:[0x417], al
+        mov byte es:[BiosKbdFlags + 0x400], al
 .2:
         db 0x8A, 0xC4                           ; insn: mov al, ah
         out 0x21, al
@@ -3311,7 +3323,7 @@ KbdIrq:
         jne short .2
         call 0xF4A:NullFar5
 .8:
-        test byte [0x70cb], 1
+        test byte [KeyState + 0x1D], 1
         jne short .11
 .9:
         mov al, byte [bx + KeyMapAlt]
@@ -3320,12 +3332,12 @@ KbdIrq:
         mov al, byte [bx + KeyMapCaps]
         jmp short .2
 .11:
-        test byte [0x7101], 1
+        test byte [KeyState + 0x53], 1
         je short .9
         db 0x33, 0xC0                           ; insn: xor ax, ax
         mov es, ax
         mov ax, 0x1234
-        mov word es:[0x472], ax
+        mov word es:[BiosResetFlag + 0x400], ax
         jmp 0xFFFF:0x0
 
 
@@ -7465,11 +7477,11 @@ SaveMode:
         mov byte [VidMode], al
         db 0x33, 0xC0                           ; insn: xor ax, ax
         mov es, ax
-        mov al, byte es:[0x410]
+        mov al, byte es:[BiosEquipment + 0x400]
         mov byte [VidEquip], al
-        mov ax, word es:[0x44a]
+        mov ax, word es:[BiosColumns + 0x400]
         mov word [VidCols], ax
-        mov al, byte es:[0x484]
+        mov al, byte es:[BiosRows + 0x400]
         mov byte [VidRows], al
         mov ax, 0x336d
         push cs
@@ -7489,7 +7501,7 @@ RestoreMode:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         mov es, ax
         mov al, byte [VidEquip]
-        mov byte es:[0x410], al
+        mov byte es:[BiosEquipment + 0x400], al
         db 0x32, 0xE4                           ; insn: xor ah, ah
         mov al, byte [VidMode]
         int 0x10
@@ -7508,7 +7520,7 @@ RestoreMode:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         mov es, ax
         mov al, byte [VidEquip]
-        mov byte es:[0x410], al
+        mov byte es:[BiosEquipment + 0x400], al
         and al, 0x30
         cmp al, 0x30
         jne short .2

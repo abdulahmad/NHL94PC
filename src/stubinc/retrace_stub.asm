@@ -2,6 +2,7 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
+BlankBit		equ	0x0
 DrawChar		equ	0xE85
 _disable		equ	0x1142
 _enable		equ	0x1170

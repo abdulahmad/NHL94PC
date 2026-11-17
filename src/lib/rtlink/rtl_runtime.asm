@@ -1,5 +1,11 @@
 ; RTLink/Plus runtime: overlay load hooks, its error messages and hex output, and the interrupt
 ; vectors it saves and restores.
+
+; The terminate address (INT 22h copy) in the PSP, and the input buffer RtlShowMessage builds at offset
+; 50h of the caller's path buffer for DOS function 0Ah (RtlFindFile also reads an environment
+; variable there).
+PspTermVector	equ	0x0A
+RtlInputBuf	equ	0x50
         db 0x23, 0x05, 0x00
 
 ;-----------------------------------------------------------------------------
@@ -56,8 +62,8 @@ RtlHexDigit:
         stosb
         ret
 
-RtlFileAdjust:                                  ; a far pointer target in  used by the overlay file code; used
-                                                ; by ExeFileName
+RtlFileAdjust:                                  ; dword added to a seek when the overlay file is the EXE
+                                                ; itself; used by ExeFileName
         db 0x00, 0x00, 0x00, 0x00
 
 ;-----------------------------------------------------------------------------
@@ -66,16 +72,20 @@ RtlFileAdjust:                                  ; a far pointer target in  used 
 ;-----------------------------------------------------------------------------
 RtlSwapErrorSlot:
         push ax
-        xchg si, [cs:0x4a]
+        xchg si, [cs:RtlErrorSlot]
         mov ax, ds
-        xchg ax, [cs:0x4c]
+        xchg ax, [cs:RtlErrorSlot + 2]
         mov ds, ax
         pop ax
         retf
 
 RtlErrorSlot:                                   ; far pointer to the fatal error routine, swapped by
                                                 ; RtlSwapErrorSlot; used by SetupErrorText
-        db 0x54, 0x00, 0xE4, 0x1D, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+        dw RtlFatalError, 0x1DE4
+RtlOldTerminate:                                ; dword; the PSP terminate address before RtlSetHandler
+        dd 0
+RtlPspSeg:                                      ; word; the PSP segment RtlSaveVectors was given
+        dw 0
 
 ;-----------------------------------------------------------------------------
 ; RtlFatalError                                              1DE4:0054  RTLink
@@ -92,7 +102,7 @@ RtlFatalError:
         push ds
         mov ax, cs
         mov ds, ax
-        mov dx, [0x231]
+        mov dx, [RtlMessages]
         mov ah, 0x9
         int 0x21
         pop ds
@@ -120,7 +130,7 @@ RtlFatalError:
         jna short .5
         cmp al, 0x7
         jz short .5
-        mov dx, [0x233]
+        mov dx, [RtlMessages + 2]
         mov ah, 0x9
         int 0x21
         mov ah, 0x7
@@ -128,17 +138,23 @@ RtlFatalError:
 .5:
         mov ax, 0x4c01
         int 0x21
+
+;-----------------------------------------------------------------------------
+; RtlExitHandlers                                            1DE4:00A7  RTLink
+; Runs the callbacks with flag 1 and puts the PSP terminate address back.
+;-----------------------------------------------------------------------------
+RtlExitHandlers:
         push ax
         push es
         mov al, 0x1
         call RtlCallHandlers
-        mov es, [cs:0x52]
+        mov es, [cs:RtlPspSeg]
         cli
-        mov ax, [cs:0x4e]
-        mov [es:0xa], ax
-        mov ax, [cs:0x50]
-        mov [es:0xc], ax
-        mov word [cs:0x107], 0x0
+        mov ax, [cs:RtlOldTerminate]
+        mov [es:PspTermVector], ax
+        mov ax, [cs:RtlOldTerminate + 2]
+        mov [es:PspTermVector + 2], ax
+        mov word [cs:RtlSetHandler.termHooked], 0x0
         sti
         pop es
         pop ax
@@ -150,15 +166,15 @@ RtlFatalError:
 ;-----------------------------------------------------------------------------
 RtlSaveVectors:
         push ax
-        mov [cs:0x52], es
-        mov ax, [cs:0x4e]
-        or ax, [cs:0x50]
+        mov [cs:RtlPspSeg], es
+        mov ax, [cs:RtlOldTerminate]
+        or ax, [cs:RtlOldTerminate + 2]
         jnz short .1
         cli
-        mov ax, [es:0xa]
-        mov [cs:0x4e], ax
-        mov ax, [es:0xc]
-        mov [cs:0x50], ax
+        mov ax, [es:PspTermVector]
+        mov [cs:RtlOldTerminate], ax
+        mov ax, [es:PspTermVector + 2]
+        mov [cs:RtlOldTerminate + 2], ax
         sti
 .1:
         pop ax
@@ -172,31 +188,32 @@ RtlSaveVectors:
 RtlSetHandler:
         push bx
         push ax
-        mov bx, 0x14c
+        mov bx, RtlHandlerTable
 .1:
         mov ax, [cs:bx]
         or ax, [cs:bx + 0x2]
         jz short .2
         add bx, 0x6
         jmp short .1
-        db 0x00, 0x00
+.termHooked:                                    ; word; 0FFh while RtlTerminate is the PSP terminate address
+        dw 0
 .2:
-        test word [cs:0x107], 0xff
+        test word [cs:RtlSetHandler.termHooked], 0xff
         jnz short .3
         pop ax
         push ax
         test al, 0x2
         jz short .3
-        mov word [cs:0x107], 0xff
+        mov word [cs:RtlSetHandler.termHooked], 0xff
         push es
-        mov es, [cs:0x52]
+        mov es, [cs:RtlPspSeg]
         cli
-        mov word [es:0xa], 0x1d7
-        mov [es:0xc], cs
+        mov word [es:PspTermVector], RtlTerminate
+        mov [es:PspTermVector + 2], cs
         sti
         pop es
 .3:
-        cmp bx, 0x194
+        cmp bx, RtlHandlerTableEnd
         jz short .4
         mov [cs:bx], dx
         mov [cs:bx + 0x2], ds
@@ -207,59 +224,32 @@ RtlSetHandler:
 .4:
         push cs
         call RtlInternalError
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
-        add [bx + si], al
+RtlHandlerTable:                                ; 12 callbacks of 6 bytes: far address, flag mask, unused
+        times 12 * 6 db 0
+RtlHandlerTableEnd:                             ; end of RtlHandlerTable (a full table)
+        times 4 db 0
 
+;-----------------------------------------------------------------------------
+; RtlInternalError                                           1DE4:0198  RTLink
+; Passes the "ege0001" internal error texts to the error routine in
+; RtlErrorSlot.
+;-----------------------------------------------------------------------------
 RtlInternalError:
         mov ax, cs
         mov ds, ax
-        mov bx, [0x235]
-        mov [cs:0x1c3], bx
-        mov bx, [0x237]
-        mov [cs:0x1c5], bx
-        mov word [cs:0x1c7], 0x0
-        mov bx, 0x1c3
+        mov bx, [RtlMessages + 4]
+        mov [cs:RtlErrorList], bx
+        mov bx, [RtlMessages + 6]
+        mov [cs:RtlErrorList + 2], bx
+        mov word [cs:RtlErrorList + 4], 0x0
+        mov bx, RtlErrorList
         mov ah, 0x6
         mov al, 0x1
         db 0x33, 0xC9                           ; insn: xor cx, cx
-        jmp far [cs:0x4a]
-        db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+        jmp far [cs:RtlErrorSlot]
+RtlErrorList:                                   ; word; the message list RtlInternalError passes to the error
+                                                ; routine, ended by 0
+        dw 0, 0, 0
 
 ;-----------------------------------------------------------------------------
 ; RtlAfterFiles                                              1DE4:01C9  RTLink
@@ -291,17 +281,17 @@ RtlTerminate:
         push es
         mov al, 0x2
         call RtlCallHandlers
-        mov es, [cs:0x52]
+        mov es, [cs:RtlPspSeg]
         cli
-        mov ax, [cs:0x4e]
-        mov [es:0xa], ax
-        mov ax, [cs:0x50]
-        mov [es:0xc], ax
-        mov word [cs:0x107], 0x0
+        mov ax, [cs:RtlOldTerminate]
+        mov [es:PspTermVector], ax
+        mov ax, [cs:RtlOldTerminate + 2]
+        mov [es:PspTermVector + 2], ax
+        mov word [cs:RtlSetHandler.termHooked], 0x0
         sti
         pop es
         pop ax
-        jmp far [cs:0x4e]
+        jmp far [cs:RtlOldTerminate]
 
 ;-----------------------------------------------------------------------------
 ; RtlCallHandlers                                            1DE4:0203  RTLink
@@ -310,7 +300,7 @@ RtlTerminate:
 RtlCallHandlers:
         push bx
         push dx
-        mov bx, 0x14c
+        mov bx, RtlHandlerTable
 .1:
         mov dx, [cs:bx]
         or dx, [cs:bx + 0x2]
@@ -352,10 +342,16 @@ RtlStubZero:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         db 0x8B, 0xD0                           ; insn: mov dx, ax
         retf
-        db 0x39, 0x02, 0x46, 0x02, 0x64, 0x02, 0x6E, 0x02, 'Fatal Error $'
-        db 0x0D, 0x0A, 'Press any key to terminate.$ege0001: '
-        db 0x00, 'Internal error in .RTLink(R)/Plus run-time code.'
-        db 0x0D, 0x0A, 0x00
+RtlMessages:                                    ; word; the fatal error texts below
+        dw RtlStrFatal, RtlStrPressKey, RtlStrIntCode, RtlStrIntText
+RtlStrFatal:                                    ; 'Fatal Error ', $-terminated
+        db 'Fatal Error $'
+RtlStrPressKey:                                 ; CR LF 'Press any key to terminate.', $-terminated
+        db 0x0D, 0x0A, 'Press any key to terminate.$'
+RtlStrIntCode:                                  ; 'ege0001: ', the internal error's code
+        db 'ege0001: ', 0x00
+RtlStrIntText:                                  ; the internal error's text
+        db 'Internal error in .RTLink(R)/Plus run-time code.', 0x0D, 0x0A, 0x00
 
 ;-----------------------------------------------------------------------------
 ; RtlGetEnv                                                  1DE4:02A1  RTLink
@@ -441,7 +437,7 @@ RtlFindFile:
 .1:
         lodsb
         push si
-        mov bx, 0x332
+        mov bx, RtlFindFileStep
         push bx
         db 0x0A, 0xC0                           ; insn: or al, al
         jz short RtlFindFileStep.3
@@ -473,7 +469,7 @@ RtlFindFileStep:
         pop si
         jc short .1
         mov [bp + 0x10], ax
-        test byte [cs:0x4fc], 0xff
+        test byte [cs:RtlIsExe], 0xff
         jmp short .4
 .1:
         mov ds, [bp + 0x2]
@@ -520,7 +516,7 @@ RtlFindFileStep:
         push ax
         push di
         mov es, [bp + 0xc]
-        mov di, 0x50
+        mov di, RtlInputBuf
         mov ax, [bp + 0x10]
         push cs
         call RtlGetEnv
@@ -747,7 +743,7 @@ RtlAppendName:
         stosb
         db 0x0A, 0xC0                           ; insn: or al, al
         jnz short .1
-        mov byte [cs:0x4fc], 0x0
+        mov byte [cs:RtlIsExe], 0x0
         mov ax, [es:di - 0x5]
         or ah, 0x20
         cmp ax, 0x652e
@@ -756,13 +752,14 @@ RtlAppendName:
         or ax, 0x2020
         cmp ax, 0x6578
         jnz short .2
-        mov byte [cs:0x4fc], 0x1
+        mov byte [cs:RtlIsExe], 0x1
 .2:
         pop es
         pop ds
         pop si
         pop ax
         ret
+RtlIsExe:                                       ; byte; 1 when the name RtlAppendName copied ends in .exe
         db 0x00
 
 ;-----------------------------------------------------------------------------
@@ -788,7 +785,7 @@ RtlShowMessage:
         int 0x21
         mov bx, cs
         mov ds, bx
-        mov dx, [0x5d5]
+        mov dx, [RtlPrompts]
         mov ah, 0x9
         int 0x21
         db 0x33, 0xFF                           ; insn: xor di, di
@@ -801,24 +798,24 @@ RtlShowMessage:
         mov ah, 0x9
         int 0x21
         mov ds, bx
-        mov dx, [0x5d7]
+        mov dx, [RtlPrompts + 2]
         mov ah, 0x9
         int 0x21
         mov ds, [bp + 0xc]
-        mov dx, 0x50
-        mov byte [0x50], 0xfe
+        mov dx, RtlInputBuf
+        mov byte [RtlInputBuf], 0xfe
         mov ah, 0xa
         int 0x21
-        mov cl, [0x51]
+        mov cl, [RtlInputBuf + 1]
         mov ds, bx
-        mov dx, [0x5d9]
+        mov dx, [RtlPrompts + 4]
         mov ah, 0x9
         int 0x21
         db 0x32, 0xED                           ; insn: xor ch, ch
         stc
         jcxz .6
         mov ds, [bp + 0xc]
-        mov si, 0x52
+        mov si, RtlInputBuf + 2
         mov es, [bp + 0xc]
         db 0x33, 0xFF                           ; insn: xor di, di
         cmp byte [si + 0x1], 0x3a
@@ -873,5 +870,11 @@ RtlShowMessage:
         db 0x8B, 0xC2                           ; insn: mov ax, dx
         sahf
         ret
-        db 0xDB, 0x05, 0xF0, 0x05, 0x04, 0x06, 'Enter directory for $ (Enter to quit) : $'
+RtlPrompts:                                     ; word; the texts RtlShowMessage prints around the file name
+        dw RtlStrEnterDir, RtlStrToQuit, RtlStrCrLf
+RtlStrEnterDir:                                 ; 'Enter directory for ', $-terminated
+        db 'Enter directory for $'
+RtlStrToQuit:                                   ; ' (Enter to quit) : ', $-terminated
+        db ' (Enter to quit) : $'
+RtlStrCrLf:                                     ; CR LF, $-terminated
         db 0x0D, 0x0A, 0x24
