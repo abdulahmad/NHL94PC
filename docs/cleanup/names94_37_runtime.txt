@@ -65,3 +65,41 @@ g_90B0 FltInValue | MSC | high | double of the _fltin block
 g_90B8 AtexitTable | MSC | high | _initterm span AtexitTable..AtexitTableEnd in ExitCommon
 g_9138 AtexitTableEnd | MSC | high | cmp bx, AtexitTableEnd in atexit
 g_E370 StackBottom | MSC | high | EXE header SS 5400h = DGROUP + E37h paragraphs, SP 1800h
+EmulatedFloat __aFftol | MSC | high | fnstcw, chop, fistp qword, fldcw, returns DX:AX
+g_8B0A CentisPerSample | new | high | double 1/110.25 used by the speech loader
+seg028:0EA0 LeftMasks | new | high | mov bl,[cs:bx+LeftMasks] with bx = 1..8 in the DrawChar body
+seg028:0EA9 DrawCharSame | new | high | second copy of the DrawChar prologue falling into its body; was left as data
+g_713A KeyMapNormal | new | high | keyboard handler: mov al,[bx+KeyMapNormal] with no shift key held
+g_7195 KeyMapShift | new | high | used when KeyState+2Ah or +36h (shift) is set
+g_71F0 KeyMapCaps | new | high | used when KeyState+3Ah (caps lock) is set
+g_724B KeyMapCtrl | new | high | used when KeyState+1Dh (ctrl) is set
+g_72A6 KeyMapAlt | new | high | used when KeyState+38h (alt) is set
+g_74C8 HexDigits | new | high | '0123456789ABCDEF', indexed by nibble in the console hex print
+g_0DD0 JerseyDigitGlyphsMenus | new | high | BlitJerseyDigit: [bx+si+...] with bx = digit*15
+g_0F72 SongSlots | new | high | 16 far pointers; sound_config unloads each with UnloadSong
+g_6FFC JoyLastBtn | new | high | PollJoy button bits
+g_6FFF JoyXMin | new | high | PollJoy / InitJoy: low X limit
+g_7001 JoyXMinSeen | new | high | PollJoy / InitJoy: lowest X while settling
+g_7003 JoyXMax | new | high | PollJoy / InitJoy: high X limit
+g_7005 JoyXMaxSeen | new | high | PollJoy / InitJoy: highest X while settling
+g_7007 JoyXSettle | new | high | PollJoy / InitJoy: X settle count (14h)
+g_7009 JoyXLeftEdge | new | high | PollJoy / InitJoy: left threshold
+g_700B JoyXRightEdge | new | high | PollJoy / InitJoy: right threshold
+g_700D JoyYMin | new | high | PollJoy / InitJoy: low Y limit
+g_700F JoyYMinSeen | new | high | PollJoy / InitJoy: lowest Y while settling
+g_7011 JoyYMax | new | high | PollJoy / InitJoy: high Y limit
+g_7013 JoyYMaxSeen | new | high | PollJoy / InitJoy: highest Y while settling
+g_7015 JoyYSettle | new | high | PollJoy / InitJoy: Y settle count
+g_7017 JoyYUpEdge | new | high | PollJoy / InitJoy: up threshold
+g_7019 JoyYDownEdge | new | high | PollJoy / InitJoy: down threshold
+g_701B JoyXScale | new | high | PollJoy / InitJoy: 4000h / X range, JoyScaleX
+g_701D JoyYScale | new | high | PollJoy / InitJoy: 4000h / Y range, JoyScaleY
+g_8F74 SeqEmsMap | new | high | EmsSaveMap / EmsRestoreMap buffer around DrvService
+g_8F7C MidiEvent | new | high | ParseMidiEvent target in SeqStepTrack
+g_8F80 MidiEvCmd | new | high | event command, D9h and up are sequencer commands
+g_8F81 MidiEvData | new | high | event data byte
+g_8F82 MidiEvValue | new | high | event value dword
+g_8F86 MidiEvLength | new | high | event length, added to the track pointer
+g_8F88 MidiNextEvent | new | high | second ParseMidiEvent target, delta only
+wbuf:B96E SysexBuffer | new | medium | push work_buffer:SysexBuffer with the event length - 4 in SeqStepTrack
+wbuf:BB6F ChannelSetup | new | medium | [es:bx+ChannelSetup], bx = channel*7, sent as controller 7

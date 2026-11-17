@@ -502,7 +502,7 @@ SetStatsMenuText:
         ja short SetStatsMenuTextJumpTable.1
         shl ax, 1
         xchg ax, bx
-        jmp [cs:bx + 0x5ac]
+        jmp [cs:bx + SetStatsMenuTextJumpTable]
 SetStatsMenuTextJumpTable:                      ; jump table of SetStatsMenuText: 6 case targets
         dw .2
         dw .3

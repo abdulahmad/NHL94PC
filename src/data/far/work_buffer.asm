@@ -142,4 +142,10 @@ MoviePalette:                                   ; palette buffer PlayMovie fades
         times 120 db 0
 MovieState:                                     ; movie player state passed to MviOpen by PlayTitleMovies;
                                                 ; used by INIT
-        times 1274 db 0
+        times 648 db 0
+SysexBuffer:                                    ; system-exclusive bytes of the current sequencer event;
+                                                ; SeqStepTrack sends them (shares the buffer with MovieState)
+        times 513 db 0
+ChannelSetup:                                   ; 7-byte record per MIDI channel; the first byte is the volume
+                                                ; SeqStepTrack sends as controller 7
+        times 113 db 0

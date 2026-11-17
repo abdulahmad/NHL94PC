@@ -238,7 +238,6 @@ The spill at the start of seg001 finishes `test bx, 8`, then `pop bp` / `ret 0xe
 - `FpFail` is `mov ax, 2` then a jump to `AmsgExit`. That is the R6002 path. The public name is not confirmed.
 - `_atoi` (was `JumpAhead`) is `jmp near _atol`: in this model `atoi` is `atol`.
 - `StrIndexInSet` returns an index, not a pointer, so it is not named `_strpbrk`.
-- `EmulatedFloat` uses the floating-point emulator interrupts. The operation it performs is not named.
 - `_qsort` (was `CallArg`) is MSC qsort: the stats overlay passes it its far comparators (`CmpGoals` ...).
 - seg056:0x0D00 (four zero bytes) and seg056:0x0D10 through 0x0D20 are not read by this segment. The byte at 0x0B71 is not read either.
 - The seg058 routines called from seg056 (`RtlSectionHook`, `RtlWriteText`, `RtlSaveVectors`, `RtlSetHandler`, `RtlAfterFiles`,

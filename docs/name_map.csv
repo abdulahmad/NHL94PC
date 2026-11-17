@@ -515,7 +515,7 @@ seg000:1410,_fstrcat,,MSC,high,"Append one far string to another",src/seg/seg000
 seg000:1456,_fmemset,,MSC,high,"Fill a far buffer",src/seg/seg000.asm
 seg000:149E,_fstrcpy,,MSC,medium,"Far string copy",src/seg/seg000.asm
 seg000:14FA,_fmemmove,,MSC,medium,"Far copy that allows overlap",src/seg/seg000.asm
-seg000:15C4,EmulatedFloat,,new,low,"Uses the floating-point emulator interrupts. The operation is not named",src/seg/seg000.asm
+seg000:15C4,__aFftol,,MSC,high,"fnstcw, or ah,0Ch (chop), fistp qword, fldcw, returns DX:AX",src/seg/seg000.asm
 seg000:15F8,CopyTemplate,,new,medium,"Copies twelve near words",src/seg/seg000.asm
 seg000:160C,__FF_MSGBANNER,,MSC,high,"Prints runtime message numbers FC and FF",src/seg/seg000.asm
 seg000:162E,FpFail,,new,medium,"mov ax, 2 then AmsgExit. R6002",src/seg/seg000.asm
@@ -4433,3 +4433,40 @@ g_90B0,FltInValue,g_90B0,MSC,high,double of the _fltin block,src/data/dgroup_bss
 g_90B8,AtexitTable,g_90B8,MSC,high,_initterm span AtexitTable..AtexitTableEnd in ExitCommon,src/data/dgroup_bss.asm
 g_9138,AtexitTableEnd,g_9138,MSC,high,"cmp bx, AtexitTableEnd in atexit",src/data/dgroup_bss.asm
 g_E370,StackBottom,g_E370,MSC,high,"EXE header SS 5400h = DGROUP + E37h paragraphs, SP 1800h",src/data/dgroup_bss.asm
+
+g_8B0A,CentisPerSample,g_8B0A,new,high,"double 1/110.25 (11025 Hz samples to 1/100 s), fmul in the speech loader",src/data/dgroup.asmseg062:0EA0,LeftMasks,seg062:0EA0,new,high,"mov bl,[cs:bx+LeftMasks] with bx = 1..8 in the DrawChar body",src/pc/video/vga.asm
+seg028:0EA9,DrawCharSame,seg028:0EA9,new,high,second copy of the DrawChar prologue falling into its body; was left as data,src/pc/video/vga.asm
+g_713A,KeyMapNormal,g_713A,new,high,"keyboard handler: mov al,[bx+KeyMapNormal] with no shift key held",src/data/dgroup.asm
+g_7195,KeyMapShift,g_7195,new,high,used when KeyState+2Ah or +36h (shift) is set,src/data/dgroup.asm
+g_71F0,KeyMapCaps,g_71F0,new,high,used when KeyState+3Ah (caps lock) is set,src/data/dgroup.asm
+g_724B,KeyMapCtrl,g_724B,new,high,used when KeyState+1Dh (ctrl) is set,src/data/dgroup.asm
+g_72A6,KeyMapAlt,g_72A6,new,high,used when KeyState+38h (alt) is set,src/data/dgroup.asm
+g_74C8,HexDigits,g_74C8,new,high,"'0123456789ABCDEF', indexed by nibble in the console hex print",src/data/dgroup.asm
+g_0DD0,JerseyDigitGlyphsMenus,g_0DD0,new,high,BlitJerseyDigit: [bx+si+...] with bx = digit*15,src/data/dgroup.asm
+g_0F72,SongSlots,g_0F72,new,high,16 far pointers; sound_config unloads each with UnloadSong,src/data/dgroup.asm
+g_6FFC,JoyLastBtn,g_6FFC,new,high,PollJoy button bits,src/data/dgroup.asm
+g_6FFF,JoyXMin,g_6FFF,new,high,PollJoy / InitJoy: low X limit,src/data/dgroup.asm
+g_7001,JoyXMinSeen,g_7001,new,high,PollJoy / InitJoy: lowest X while settling,src/data/dgroup.asm
+g_7003,JoyXMax,g_7003,new,high,PollJoy / InitJoy: high X limit,src/data/dgroup.asm
+g_7005,JoyXMaxSeen,g_7005,new,high,PollJoy / InitJoy: highest X while settling,src/data/dgroup.asm
+g_7007,JoyXSettle,g_7007,new,high,PollJoy / InitJoy: X settle count (14h),src/data/dgroup.asm
+g_7009,JoyXLeftEdge,g_7009,new,high,PollJoy / InitJoy: left threshold,src/data/dgroup.asm
+g_700B,JoyXRightEdge,g_700B,new,high,PollJoy / InitJoy: right threshold,src/data/dgroup.asm
+g_700D,JoyYMin,g_700D,new,high,PollJoy / InitJoy: low Y limit,src/data/dgroup.asm
+g_700F,JoyYMinSeen,g_700F,new,high,PollJoy / InitJoy: lowest Y while settling,src/data/dgroup.asm
+g_7011,JoyYMax,g_7011,new,high,PollJoy / InitJoy: high Y limit,src/data/dgroup.asm
+g_7013,JoyYMaxSeen,g_7013,new,high,PollJoy / InitJoy: highest Y while settling,src/data/dgroup.asm
+g_7015,JoyYSettle,g_7015,new,high,PollJoy / InitJoy: Y settle count,src/data/dgroup.asm
+g_7017,JoyYUpEdge,g_7017,new,high,PollJoy / InitJoy: up threshold,src/data/dgroup.asm
+g_7019,JoyYDownEdge,g_7019,new,high,PollJoy / InitJoy: down threshold,src/data/dgroup.asm
+g_701B,JoyXScale,g_701B,new,high,"PollJoy / InitJoy: 4000h / X range, JoyScaleX",src/data/dgroup.asm
+g_701D,JoyYScale,g_701D,new,high,"PollJoy / InitJoy: 4000h / Y range, JoyScaleY",src/data/dgroup.asm
+g_8F74,SeqEmsMap,g_8F74,new,high,EmsSaveMap / EmsRestoreMap buffer around DrvService,src/data/dgroup_bss.asm
+g_8F7C,MidiEvent,g_8F7C,new,high,ParseMidiEvent target in SeqStepTrack,src/data/dgroup_bss.asm
+g_8F80,MidiEvCmd,g_8F80,new,high,"event command, D9h and up are sequencer commands",src/data/dgroup_bss.asm
+g_8F81,MidiEvData,g_8F81,new,high,event data byte,src/data/dgroup_bss.asm
+g_8F82,MidiEvValue,g_8F82,new,high,event value dword,src/data/dgroup_bss.asm
+g_8F86,MidiEvLength,g_8F86,new,high,"event length, added to the track pointer",src/data/dgroup_bss.asm
+g_8F88,MidiNextEvent,g_8F88,new,high,"second ParseMidiEvent target, delta only",src/data/dgroup_bss.asm
+wbuf:B96E,SysexBuffer,wbuf:B96E,new,medium,push work_buffer:SysexBuffer with the event length - 4 in SeqStepTrack,src/data/far/work_buffer.asm
+wbuf:BB6F,ChannelSetup,wbuf:BB6F,new,medium,"[es:bx+ChannelSetup], bx = channel*7, sent as controller 7",src/data/far/work_buffer.asm

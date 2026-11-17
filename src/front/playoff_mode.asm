@@ -4233,7 +4233,7 @@ POAfterGame:
         ja short POAfterGameJumpTable.1
         shl ax, 1
         xchg ax, bx
-        jmp [cs:bx + 0x269e]
+        jmp [cs:bx + POAfterGameJumpTable]
         db 0x90
 POAfterGameJumpTable:                           ; jump table of POAfterGame: 15 case targets
         dw POAfterGame.44

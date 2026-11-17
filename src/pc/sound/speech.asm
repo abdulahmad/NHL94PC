@@ -906,8 +906,9 @@ OpenSpeechFile:
         int 0x3b
         db 0x6E, 0xD2                           ; emulated fild qword [bp - 0x2e]
         int 0x38
-        db 0x0E, 0x0A, 0x8B                     ; emulated fmul qword [0x8b0a]
-        call 0x0000:EmulatedFloat
+        db 0x0E                                 ; emulated fmul qword [CentisPerSample]
+        dw CentisPerSample
+        call 0x0000:__aFftol
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         mov ax, [bp + 0x8]
         db 0x8B, 0xDA                           ; insn: mov bx, dx
@@ -1896,7 +1897,7 @@ DivisionSampleName:
         ja short DivisionSampleNameJumpTable.1
         shl ax, 1
         xchg ax, bx
-        jmp [cs:bx + 0x1154]
+        jmp [cs:bx + DivisionSampleNameJumpTable]
 DivisionSampleNameJumpTable:                    ; word; used by DivisionSampleName
         dw DivisionSampleName.1
         dw DivisionSampleName.3

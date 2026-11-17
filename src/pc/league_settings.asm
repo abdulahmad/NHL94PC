@@ -1011,7 +1011,7 @@ LeagueOptsToBits:
         ja short LeagueOptsToBitsJumpTable.8
         shl ax, 1
         xchg ax, bx
-        jmp [cs:bx + 0x972]
+        jmp [cs:bx + LeagueOptsToBitsJumpTable]
 LeagueOptsToBitsJumpTable:                      ; jump table of LeagueOptsToBits: 14 case targets
         dw LeagueOptsToBits.4
         dw LeagueOptsToBits.4

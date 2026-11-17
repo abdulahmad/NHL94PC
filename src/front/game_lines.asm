@@ -2438,7 +2438,7 @@ DrawGameLineJerseys:
         ja short DrawGameLineJerseysJumpTable.4
         shl ax, 1
         xchg ax, bx
-        jmp [cs:bx + 0x1982]
+        jmp [cs:bx + DrawGameLineJerseysJumpTable]
         db 0x90
 DrawGameLineJerseysJumpTable:                   ; jump table of DrawGameLineJerseys: 8 case targets
         dw .3

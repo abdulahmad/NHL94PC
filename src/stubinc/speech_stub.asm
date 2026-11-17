@@ -133,7 +133,8 @@ SpeechFileNames		equ	0x1218
 _fstrcpy		equ	0x13DA
 _fmemmove		equ	0x14FA
 RawBase		equ	0x1532
-EmulatedFloat		equ	0x15C4
+__aFftol		equ	0x15C4
+CentisPerSample		equ	0x8B0A
 NumberWordsSeg		equ	0x8B12
 SentencePtr		equ	0x8EEA
 SentenceSeg		equ	0x8EEC

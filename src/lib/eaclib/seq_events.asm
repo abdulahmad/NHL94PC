@@ -59,14 +59,14 @@ SeqService:
         add sp, 0x4
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .1
-        push word 0x8f74
+        push word SeqEmsMap
         call 0x03A3:EmsSaveMap
         pop bx
         mov al, [DriverServiceIdx]
         push ax
         call 0x1844:DrvService
         pop bx
-        push word 0x8f74
+        push word SeqEmsMap
         call 0x03A3:EmsRestoreMap
         pop bx
 .1:
@@ -185,14 +185,14 @@ SeqService:
         add sp, 0x4
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .14
-        push word 0x8f74
+        push word SeqEmsMap
         call 0x03A3:EmsSaveMap
         pop bx
         mov al, [DriverServiceIdx]
         push ax
         call 0x1844:DrvService
         pop bx
-        push word 0x8f74
+        push word SeqEmsMap
         call 0x03A3:EmsRestoreMap
         pop bx
 .14:
@@ -306,8 +306,8 @@ SeqStepTrack:
         mov al, [es:si + 0x4c]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         imul bx, ax, 0x7
-        mov es, [0x8d10]
-        mov al, [es:bx - 0x4491]
+        mov es, [WorkBufferSeg]
+        mov al, [es:bx + ChannelSetup]
         push ax
         push 0x7
         push word [bp + 0x8]
@@ -329,8 +329,8 @@ SeqStepTrack:
         jnz short .11
         jmp near SeqStepTrackJumpTable.30
 .11:
-        mov ax, [0x84cc]
-        mov dx, [0x84ce]
+        mov ax, [Voices]
+        mov dx, [VoicesSeg]
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov [bp - 0x4], dx
         db 0x33, 0xC9                           ; insn: xor cx, cx
@@ -385,20 +385,20 @@ SeqStepTrack:
         jz short .15
         push word [es:si + 0xc]
         push word [es:si + 0xa]
-        push word 0x8f7c
+        push word MidiEvent
         call 0x1630:ParseMidiEvent
         add sp, 0x6
-        mov al, [0x8f86]
+        mov al, [MidiEvLength]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         mov es, [bp + 0x8]
         add [es:si + 0xa], ax
-        cmp byte [0x8f80], 0xd9
+        cmp byte [MidiEvCmd], 0xd9
         jnc short .19
         jmp near SeqStepTrackJumpTable.23
 .19:
-        mov al, [0x8f81]
+        mov al, [MidiEvData]
         mov [bp - 0x5], al
-        mov al, [0x8f80]
+        mov al, [MidiEvCmd]
         sub ax, 0xd9
         cmp ax, strict word 0x11
         jna short .20
@@ -406,7 +406,7 @@ SeqStepTrack:
 .20:
         shl ax, 1
         xchg ax, bx
-        jmp [cs:bx + 0x3ff]
+        jmp [cs:bx + SeqStepTrackJumpTable]
 SeqStepTrackJumpTable:                          ; word; used by SeqStepTrack
         dw .1
         dw .1
@@ -464,8 +464,8 @@ SeqStepTrackJumpTable:                          ; word; used by SeqStepTrack
         mov [es:si + 0x4b], al
         mov cl, [es:si + 0x4c]
         or cl, 0xc0
-        mov [0x8f68], cl
-        mov [0x8f69], al
+        mov [MidiMsg], cl
+        mov [MidiMsg1], al
         push ax
         call 0x16F2:GetPatch
         mov es, dx
@@ -508,7 +508,7 @@ SeqStepTrackJumpTable:                          ; word; used by SeqStepTrack
         jz short .13
         jmp near .28
 .13:
-        mov al, [0x8f82]
+        mov al, [MidiEvValue]
         push ax
         mov al, [bp - 0x5]
         push ax
@@ -561,7 +561,7 @@ SeqStepTrackJumpTable:                          ; word; used by SeqStepTrack
         mov [es:si + 0x57], al
         jmp near .28
 .19:
-        push word [0x8f82]
+        push word [MidiEvValue]
         push word [bp + 0x8]
         push si
         call 0x1630:SendPitchBend
@@ -576,14 +576,14 @@ SeqStepTrackJumpTable:                          ; word; used by SeqStepTrack
         shl bx, byte 0x2
         mov [es:bx + si + 0x32], ax
         mov [es:bx + si + 0x34], dx
-        mov ax, [0x8f82]
-        mov dx, [0x8f84]
+        mov ax, [MidiEvValue]
+        mov dx, [MidiEvValue + 0x2]
         add ax, strict word 0x4
         jmp near .4
 .21:
         push word 0x3a0b                        ; segment of the work buffer far data
-        push word 0xb96e
-        mov al, [0x8f86]
+        push word SysexBuffer
+        mov al, [MidiEvLength]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         sub ax, strict word 0x4
         push ax
@@ -594,21 +594,21 @@ SeqStepTrackJumpTable:                          ; word; used by SeqStepTrack
         mov [es:si + 0x4a], al
         jmp near .28
 .23:
-        cmp byte [0x8f80], 0x80
+        cmp byte [MidiEvCmd], 0x80
         jnc short .24
         mov es, [bp + 0x8]
         mov al, [es:si + 0x57]
-        mov [0x8f81], al
+        mov [MidiEvData], al
 .24:
-        and byte [0x8f80], 0x7f
+        and byte [MidiEvCmd], 0x7f
         mov es, [bp + 0x8]
         cmp byte [es:si + 0x4c], 0x9
         jz short .25
         les bx, [es:si + 0x4]
         mov al, [es:bx + 0x13]
-        add [0x8f80], al
+        add [MidiEvCmd], al
 .25:
-        cmp word [0x84fe], 0x0
+        cmp word [MusicEnabled], 0x0
         jz short .28
         mov es, [bp + 0x8]
         cmp byte [es:si + 0x4c], 0x9
@@ -621,7 +621,7 @@ SeqStepTrackJumpTable:                          ; word; used by SeqStepTrack
         push ax
         jmp short .27
 .26:
-        mov al, [0x8f80]
+        mov al, [MidiEvCmd]
         add al, 0x5c
         push ax
         call 0x16F2:GetPatch
@@ -639,11 +639,11 @@ SeqStepTrackJumpTable:                          ; word; used by SeqStepTrack
 .27:
         mov al, [es:si + 0x4c]
         push ax
-        push word [0x8f84]
-        push word [0x8f82]
-        mov al, [0x8f81]
+        push word [MidiEvValue + 0x2]
+        push word [MidiEvValue]
+        mov al, [MidiEvData]
         push ax
-        mov al, [0x8f80]
+        mov al, [MidiEvCmd]
         push ax
         call 0x1630:AllocVoice
         add sp, 0x12
@@ -656,11 +656,11 @@ SeqStepTrackJumpTable:                          ; word; used by SeqStepTrack
 .29:
         push word [es:si + 0xc]
         push word [es:si + 0xa]
-        push word 0x8f88
+        push word MidiNextEvent
         call 0x1630:ParseMidiEvent
         add sp, 0x6
-        mov ax, [0x8f88]
-        mov dx, [0x8f8a]
+        mov ax, [MidiNextEvent]
+        mov dx, [MidiNextEvent + 0x2]
         mov es, [bp + 0x8]
         mov [es:si + 0xe], ax
         mov [es:si + 0x10], dx
@@ -703,7 +703,7 @@ SendController:
         db 0x2A, 0xED                           ; insn: sub ch, ch
         imul bx, cx, 0x7
         mov es, [WorkBufferSeg]
-        mov [es:bx - 0x4491], al
+        mov [es:bx + ChannelSetup], al
         mov es, [bp + 0x8]
         les bx, [es:si + 0x4]
         mul byte [es:bx + 0x11]
@@ -1205,7 +1205,7 @@ ParseMidiEvent:
 .2:
         shl ax, 1
         xchg ax, bx
-        jmp [cs:bx + 0xb02]
+        jmp [cs:bx + ParseMidiEventJumpTable]
 ParseMidiEventJumpTable:                        ; word; used by ParseMidiEvent
         dw .1
         dw .1

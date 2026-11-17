@@ -981,7 +981,7 @@ DrawFileDlg:
         ja short DrawFileDlgJumpTable.7
         shl ax, 1
         xchg ax, bx
-        jmp [cs:bx + 0x95e]
+        jmp [cs:bx + DrawFileDlgJumpTable]
 DrawFileDlgJumpTable:                           ; jump table of DrawFileDlg: 6 case targets
         dw .6
         dw .5
@@ -1291,7 +1291,7 @@ DrawFileDlgList:
 .18:
         shl ax, 1
         xchg ax, bx
-        jmp [cs:bx + 0xc40]
+        jmp [cs:bx + DrawFileDlgListJumpTable]
         db 0x90
 DrawFileDlgListJumpTable:                       ; jump table of DrawFileDlgList: 6 case targets
         dw DrawFileDlgList.16

@@ -81,7 +81,24 @@ MidiMsg1:                                       ; first data byte; used by SendC
         resb 1
 MidiMsg2:                                       ; second data byte; used by SendController, SendVoiceNoteOff,
                                                 ; SendPitchBend ...
-        resb 62
+        resb 10
+SeqEmsMap:                                      ; EMS mapping saved around the driver service call in
+                                                ; SeqService
+        resb 8
+MidiEvent:                                      ; event ParseMidiEvent reads for SeqStepTrack: delta time
+                                                ; (dword)
+        resb 4
+MidiEvCmd:                                      ; MidiEvent: command (D9h and up are sequencer commands) or
+                                                ; note
+        resb 1
+MidiEvData:                                     ; MidiEvent: first data byte (velocity or command argument)
+        resb 1
+MidiEvValue:                                    ; MidiEvent: value (dword: controller value, bend, duration)
+        resb 4
+MidiEvLength:                                   ; MidiEvent: bytes the event takes in the track
+        resb 2
+MidiNextEvent:                                  ; the following event, parsed for its delta time only
+        resb 32
 PatchMsg:                                       ; patch message: status byte; used by SendPatches
         resb 1
 PatchMsg1:                                      ; patch message byte 1; used by SendPatches

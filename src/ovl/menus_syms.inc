@@ -114,6 +114,7 @@ InputFlags		equ	0xAECE
 InputInit		equ	0xE
 InputShutdown		equ	0x4C
 InstantReplayThunk		equ	0x2599
+JerseyDigitGlyphsMenus		equ	0xDD0
 JerseyRemapTable		equ	0x0
 JingleHandle		equ	0xA14
 JingleHandleHi		equ	0xA16
@@ -250,6 +251,7 @@ SongBuf2Seg		equ	0xF6C
 SongBuf3		equ	0xF6E
 SongBufs		equ	0xF70
 SongFinished		equ	0x1226
+SongSlots		equ	0xF72
 SoundDevChoice		equ	0x106D
 SoundDevTable		equ	0x1070
 SoundDriverLoaded		equ	0xFBA

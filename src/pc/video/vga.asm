@@ -1972,9 +1972,22 @@ DrawChar:
         mov ax, [bp + 0xa]
         mov [FontY], ax
         jmp short .1
-        db 0x00, 0x80, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC, 0xFE, 0xFF, 0x55, 0x8B, 0xEC, 0x83, 0xC4, 0xF0, 0x1E, 0x56, 0x57
-        db 0x8E, 0x1E, 0x50, 0x6D
-.1:
+LeftMasks:                                      ; byte masks with the top 0 to 8 bits set; the DrawChar body
+                                                ; indexes it by the width of the glyph's last byte
+        db 0x00, 0x80, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC, 0xFE, 0xFF
+;-----------------------------------------------------------------------------
+; DrawCharSame                                                0FEF:0EA9  94 PC
+; The DrawChar prologue again, then the shared body. Not called in the EXE.
+;-----------------------------------------------------------------------------
+DrawCharSame:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        add sp, -0x10
+        push ds
+        push si
+        push di
+        mov ds, [CharSeg]
+DrawChar.1:
         cld
         mov es, [ss:CanvasSeg]
 .2:
@@ -2063,7 +2076,7 @@ DrawChar:
         and bx, 0x7
         inc bx
 .11:
-        mov bl, [cs:bx + 0xea0]
+        mov bl, [cs:bx + LeftMasks]
         mov [bp - 0xf], bl
         pop bx
         mov ch, [si]
@@ -2144,7 +2157,7 @@ DrawChar:
         and bx, 0x7
         inc bx
 .24:
-        mov bl, [cs:bx + 0xea0]
+        mov bl, [cs:bx + LeftMasks]
         mov [bp - 0xf], bl
         pop bx
         mov ch, [si]
@@ -7264,7 +7277,7 @@ CopyPageToPage:
         mov [bp - 0x8], si
         mov [bp - 0xa], di
         db 0x03, 0xDB                           ; insn: add bx, bx
-        jmp [cs:bx + 0x367a]
+        jmp [cs:bx + CopyPageToPageJumpTable]
 CopyPageToPageJumpTable:                        ; word; used by CopyPageToPage
         dw .1
         dw .3
@@ -7393,7 +7406,7 @@ CopyPageRect:
         mov [bp - 0x8], si
         mov [bp - 0xa], di
         db 0x03, 0xDB                           ; insn: add bx, bx
-        jmp [cs:bx + 0x377b]
+        jmp [cs:bx + CopyPageRectJumpTable]
 CopyPageRectJumpTable:                          ; word; used by CopyPageRect
         dw .1
         dw .3
@@ -7953,7 +7966,7 @@ DrawScaled:
         and bx, 0x3
         db 0x03, 0xDB                           ; insn: add bx, bx
         mov dx, [ScaleColor]
-        jmp [cs:bx + 0x3c53]
+        jmp [cs:bx + DrawScaledJumpTable]
 DrawScaledJumpTable:                            ; word; used by DrawScaled
         dw .4
         dw .3
@@ -8030,7 +8043,7 @@ DrawLineClipped:
         mov dx, 0x3c4
         mov bx, [si + 0x12]
         db 0x03, 0xDB                           ; insn: add bx, bx
-        jmp [cs:bx + 0x3cee]
+        jmp [cs:bx + DrawLineClippedJumpTable]
 DrawLineClippedJumpTable:                       ; word; used by DrawLineClipped
         dw .1
         dw .1
@@ -8296,7 +8309,7 @@ DrawLineClippedJumpTable:                       ; word; used by DrawLineClipped
 .34:
         mov bx, [si + 0x12]
         db 0x03, 0xDB                           ; insn: add bx, bx
-        jmp [cs:bx + 0x3f22]
+        jmp [cs:bx + DrawLineClippedJumpTable2]
 DrawLineClippedJumpTable2:                      ; word; not used in the EXE (overlays may use it)
         dw .1
         dw .1

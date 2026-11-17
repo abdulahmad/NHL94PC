@@ -1834,7 +1834,7 @@ LeadersScreen:
         ja short LeadersScreenJumpTable.1
         shl ax, 1
         xchg ax, bx
-        jmp [cs:bx + 0x12ca]
+        jmp [cs:bx + LeadersScreenJumpTable]
         db 0x90
 LeadersScreenJumpTable:                         ; jump table of LeadersScreen: 11 case targets
         dw .1

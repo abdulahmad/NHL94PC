@@ -572,17 +572,17 @@ SetSoundDevice:
 .5:
         mov bx, [bp - 0x26]
         shl bx, byte 0x2
-        mov ax, [bx + 0xf74]
-        or ax, [bx + 0xf72]
+        mov ax, [bx + SongSlots + 2]
+        or ax, [bx + SongSlots]
         jz short .6
-        push word [bx + 0xf74]
-        push word [bx + 0xf72]
+        push word [bx + SongSlots + 2]
+        push word [bx + SongSlots]
         db 0x8B, 0xF3                           ; insn: mov si, bx
         call 0x16F2:UnloadSong
         add sp, 0x4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [si + 0xf74], ax
-        mov [si + 0xf72], ax
+        mov [si + SongSlots + 2], ax
+        mov [si + SongSlots], ax
 .6:
         inc word [bp - 0x26]
         cmp word [bp - 0x26], 0x10
@@ -926,8 +926,8 @@ SetSoundDevice:
         call 0x16F2:LoadSongMode
         add sp, 0x8
         shl si, byte 0x2
-        mov [si + 0xf72], ax
-        mov [si + 0xf74], dx
+        mov [si + SongSlots], ax
+        mov [si + SongSlots + 2], dx
         inc word [bp - 0x26]
 .23:
         les bx, [bp - 0x30]

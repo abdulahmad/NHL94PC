@@ -26,12 +26,22 @@ SeqLock		equ	0x84F4
 MidiQueueLen		equ	0x84F6
 MidiQueueBusy		equ	0x84F8
 TracksMuted		equ	0x84FA
+MusicEnabled		equ	0x84FE
 DriverServiceIdx		equ	0x8502
 WorkBufferSeg		equ	0x8D10
 WorkBufferSeg2		equ	0x8D12
 MidiMsg		equ	0x8F68
 MidiMsg1		equ	0x8F69
 MidiMsg2		equ	0x8F6A
+SeqEmsMap		equ	0x8F74
+MidiEvent		equ	0x8F7C
+MidiEvCmd		equ	0x8F80
+MidiEvData		equ	0x8F81
+MidiEvValue		equ	0x8F82
+MidiEvLength		equ	0x8F86
+MidiNextEvent		equ	0x8F88
+SysexBuffer		equ	0xB96E
+ChannelSetup		equ	0xBB6F
 MidiQueue		equ	0xDF74
 MidiQueue1		equ	0xDF75
 %include "lib/eaclib/seq_events.asm"

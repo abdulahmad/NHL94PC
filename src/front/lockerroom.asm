@@ -1572,7 +1572,7 @@ LockerRoomLoop:
         ja short LockerRoomLoopJumpTable.1
         shl ax, 1
         xchg ax, bx
-        jmp [cs:bx + 0xf40]
+        jmp [cs:bx + LockerRoomLoopJumpTable]
         db 0x90
 LockerRoomLoopJumpTable:                        ; jump table of LockerRoomLoop: 8 case targets
         dw LockerRoomLoop.24

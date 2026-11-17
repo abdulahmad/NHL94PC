@@ -3459,10 +3459,11 @@ _fmemmove:
         retf
 
 ;-----------------------------------------------------------------------------
-; EmulatedFloat                                                 0000:15C4  MSC
-; floating-point work done with the emulator interrupts.
+; __aFftol                                                      0000:15C4  MSC
+; Convert the value on the coprocessor stack to a long in DX:AX, truncating (the rounding
+; control is set to chop for the fistp, then restored).
 ;-----------------------------------------------------------------------------
-EmulatedFloat:
+__aFftol:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         sub sp, 0xc

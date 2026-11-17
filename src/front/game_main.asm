@@ -275,7 +275,7 @@ HandleHotKey:
 .6:
         shl ax, 1
         xchg ax, bx
-        jmp [cs:bx + 0x22c]
+        jmp [cs:bx + HandleHotKeyJumpTable]
 HandleHotKeyJumpTable:                          ; jump table of HandleHotKey: 18 case targets
         dw .16
         dw .23
