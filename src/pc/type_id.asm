@@ -1,10 +1,17 @@
 ; NineCmp and TypeId look at a short header.
-; The first two bytes are retf and nop.
+; The first two bytes are NullFar11, an empty far routine.
 
 ; DGROUP words this segment uses. The bytes live in the near data, not here.
 
+;-----------------------------------------------------------------------------
+; NullFar11                                                    0838:0000  94 PC
+; A second empty far routine (a compiled-out call). The menus overlay calls
+; it next to NullFar.
+;-----------------------------------------------------------------------------
+NullFar11:
         retf
         nop
+
 ; Compare 9 bytes of the far string with the bytes at 402h.
 ; A difference returns that pointer. A match calls _fstrlen and
 ; returns one past its result.

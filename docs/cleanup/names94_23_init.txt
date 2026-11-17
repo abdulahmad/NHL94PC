@@ -1,0 +1,57 @@
+# INIT.OVL routines
+Init_1F9C_0000 IndexPPVFrames | new | medium | builds the frame pointer table at 0x91D0 from the loaded PPV files ('%04d' lookups)
+Init_1F9C_0072 LoadPPVFiles | new | high | loads f00_49.PPV / f50_99.PPV and indexes their frames
+Init_1F9C_0138 LoadPlayerFrames | new | medium | loads the player pose files and builds both frame tables
+Init_1F9C_01B4 LoadRinkEndArt | new | high | loads trinknd.QPP
+Init_1F9C_01FC LoadGameGfx | new | high | canvases, numshp, gadgets, scoreboard, player frames, palette fade-in
+Init_1F9C_0348 PlacePlayersAtStart | 95 PC | medium | puts both teams at their opening positions
+Init_1F9C_04A0 SetupGame | 95 PC | medium | lines, crowd, faceoff setup before the opening faceoff
+Init_1F9C_056A ResetGameVars | 95 PC | medium | clears clock, score and game state
+Init_2007_0002 DrawBevelBoxInit | new | high | box with DialogLight/Dark edges
+Init_2007_01BC ShowMatchupScreen | new | high | pre-game "%s at %s" arena screen
+Init_20A8_0004 ShowStartingLineups | new | high | lineup screen with crests, AnnounceLineups, injured players
+Init_2137_0004 LoadArenaJingles | new | high | loads the arena organ .KMS/.CFG jingles
+Init_2137_03D6 FreeArenaJingles | new | high | frees the four jingle buffers
+Init_2185_0000 DrawPeriodTitle | new | high | 'First Period' .. 'Overtime Period %d' banner
+Init_21A1_0008 ShowGameSummary | new | high | period / game summary screen from gsummary
+Init_2306_000A PickOtherGames | new | high | picks six random matchups for the scores around the league
+Init_2306_012E UpdateOtherScores | new | high | advances the other games' periods and scores at random
+Init_2306_024E CenterShadowText | new | medium | centres a line of shadowed text on the 320-pixel screen
+Init_2306_02B6 ShowTeamStats | new | high | shots, power plays, faceoffs screen
+Init_237D_0000 DrawDeskFrames | 95 PC | high | draws the studio desk frames
+Init_237D_00F2 ReturnZeroInit | new | high | sub ax, ax; retf (OvlThunk270)
+Init_237D_00F6 ReturnZeroInit2 | new | high | sub ax, ax; retf (OvlThunk271)
+Init_237D_00FA PlayRandomHighlight | 95 PC | medium | studio highlight of another game
+Init_237D_023E EndGameScreens | new | high | game summary, other scores, highlights after the game
+Init_237D_03A6 IntermissionScreens | new | high | summary and highlights between periods
+Init_23CB_0004 PlayTitleMovies | new | high | P1.MVI, EASCRN.QPP, G1.MVI, logo
+Init_23CB_042C PlayMovie | new | high | plays an .MVI ('vidframe') at a fixed frame rate
+Init_2425_0000 LoadGameTeams | new | high | reads both teams from the 'teams' db into the team records
+Init_2425_0374 CreateGSummaryDb | new | high | writes the gsummary.db header for a new game, then loads the teams
+Init_2425_04E0 ReadDbBlock | new | medium | seeks and reads one block of a db file
+Init_2425_068A OpenPlayerDbs | new | high | opens the key, att, season and career dbs
+Init_2425_07EA BuildTeamRoster | new | medium | fills the player records of one team from the dbs
+Init_2425_0B20 GSummaryPath | new | high | builds the gsummary.db path
+Init_24DE_0006 LoadRinkTiles | new | high | rink.til and rink.map, then draws the first screen
+Init_24DE_01E8 PatchRinkMap | new | medium | copies a sub-map into the rink map
+Init_24DE_033A DrawRinkBackground | new | high | VGA latch stamps of the visible rink tiles
+Init_251E_0004 InitScoreboard | new | medium | resets the scoreboard state, loads its art
+Init_251E_0038 LoadScoreboardArt | new | high | scrbrd1.QPP digits and labels
+Init_252F_000E SetTeamNameText | new | high | team names into the menu text
+Init_252F_0348 ClearTeamNameText | new | high | blanks the team name strings
+Init_256C_0004 FreeGameMemory | 95 PC | high | frees everything the game loaded
+Init_256C_00E8 FreePPVFiles | new | high | frees the three PPV files
+Init_256C_012E FreePlayerFrames | new | high | frees PPV files and the frame table
+Init_2581_000E InstantReplay | 95 PC | high | replay screen
+Init_2581_0510 GadgetHitTest | 95 PC | medium | which replay button is under the mouse
+Init_2581_0550 PickNearestPlayer | 95 PC | medium | nearest player to the pointer
+Init_2581_05E4 ReplayControlLoop | 95 PC | high | replay input loop
+Init_2581_0C14 ReplaySaveHilight | 95 PC | high | save-highlight dialog
+Init_2581_105A HilightSaveToDlg | 95 PC | high | 'Save To' 'Hilights Reel' panel
+Init_2581_1304 SaveHilightFile | new | high | writes the .HI file
+Init_2581_14FC ShowCurrentPage | new | high | SetStartPage of the current page
+Init_26D2_000A ReplayStep | 95 PC | high | steps the replay one frame
+Init_26D2_03F2 DrawReplayFrame | new | medium | draws the sorted sprites, numbers and rink end art of a replay frame
+Init_278C_0006 SaveGameState | 95 PC | high | 'Error Saving Game'
+Init_278C_09C8 LoadGameState | 95 PC | high | 'Error Loading Game'
+Init_28FA_0004 LoadReplayGadgets | new | high | gad1, gadget5, gg%02d, HILIGHT.FNT

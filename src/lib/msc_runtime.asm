@@ -1836,7 +1836,12 @@ _write:
         mov ax, 0x1c00
         jmp short .22
 
-.27:
+;-----------------------------------------------------------------------------
+; _strcat                                                       0000:0C2C  MSC
+; Append a string to another, a word at a time once the end is even.
+; Arguments: destination, source. Returns the destination. Preserves SI and DI.
+;-----------------------------------------------------------------------------
+_strcat:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         db 0x8B, 0xD7                           ; insn: mov dx, di
@@ -2239,11 +2244,11 @@ atexit:
         retf
 
 ;-----------------------------------------------------------------------------
-; CallArg                                                       0000:0EAA  MSC
-; Call the far routine in the last argument once for each element of a near array (array, count, element size,
-; routine); does nothing for a count of 0 or 1. Probably the swap or compare step of a library sort.
+; _qsort                                                       0000:0EAA  MSC
+; MSC qsort (array, count, element size, far compare routine): returns at once when the array is already in
+; order, otherwise sorts it in place with a quicksort whose partition stack is checked against _stackavail.
 ;-----------------------------------------------------------------------------
-CallArg:
+_qsort:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push si

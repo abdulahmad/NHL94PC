@@ -1,0 +1,29 @@
+# MOVIE.OVL and FADES*.OVL routines
+Movie_3349_0000 PlanarToLinear | new | high | interleaves the four planes of a block into a linear buffer
+Movie_3349_006E PlanarToLinearKey | new | high | same, turning the key colour into 0xFF
+Movie_3357_0002 PlanarToLinearKeyTail | new | high | loop tail of PlanarToLinearKey (jumps back into it)
+Movie_3357_0006 MviSeek | new | high | int 21h AX=4200h on the movie handle
+Movie_3357_0026 MviParseHeader | new | high | reads the movie header, palette and allocates the frame canvases
+Movie_3357_0192 MviOpen | new | high | 'A MVI' check, DATABUFFER, opens the file
+Movie_3357_030E MviClose | new | high | closes the file and frees buffers and canvases
+Movie_3357_038C MviRewind | new | medium | seeks back to the first frame
+Movie_3357_03D2 MviRestart | new | medium | rewinds and shows the first frame
+Movie_3357_0408 MviDrawFrame | new | medium | draws the decoded frame blocks
+Movie_3357_06C8 MviNextFrame | new | medium | reads and decodes the next frame
+Fades_3349_0000 SetPaletteVsync | new | high | waits for retrace and sets the palette in halves
+Fades_3349_0036 RandLfsrByte | new | high | 8-bit LFSR step (taps 0xB8)
+Fades_3349_005E CopyFadeRect | new | high | copies a rectangle of the new page clipped to the fade area
+Fades1_3358_0000 FadeVenetian | new | high | copies every eighth row, eight passes
+Fades2_3358_0000 FadeWipe | new | medium | wipe from one of four sides
+Fades3_3358_0000 FadePlaneBands | new | medium | plane-by-plane bands from a pattern table
+Fades4_3358_0000 FadePaletteIn | new | high | palette fade in steps
+Fades5_3358_0000 FadeBlockSweep | new | medium | 40x35 blocks swept in a pattern
+Fades6_3358_0000 FadeSlideStrips | new | medium | alternate 8-pixel strips slide in
+Fades7_3358_0000 FadeSplitCenter | new | medium | strips open from the centre
+Fades8_3358_0000 FadeRandomBlocks | new | high | blocks in LFSR order
+Fades8_3358_00D4 FadeRandomBlocks2 | new | medium | random blocks with a shuffle table
+Fades9_3358_0000 FadeDissolve | new | high | bytes in LFSR order across the planes
+Fades10_3358_0000 FadeSampleRect | new | medium | clips a rectangle to the fade area and samples its centre pixel
+Fades10_3358_0070 FadeBoxGrow | new | medium | filled boxes grow from the centre
+Fades11_3358_0000 FadeDirectional | new | medium | sweep in one of eight directions
+Fades12_3358_0000 FadeZoomRect | new | medium | grows or shrinks from a rectangle

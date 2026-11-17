@@ -1,0 +1,653 @@
+; Adds or removes a human-controlled team in a league (LP.OVL)
+
+;-----------------------------------------------------------------------------
+; ClearPlayerFromLinesTail                                   1ECB:0004  94 PC
+; The rest of ClearPlayerFromLines, which runs on into this module.
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
+ClearPlayerFromLinesTail:
+        pop si
+        pop di
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; AddHumanTeam                                               1ECB:0008  94 PC
+; 'Select new human controlled team'
+;
+; Calls LeagueCheckStub, ReadLeagueInfo, _fstrcpy, _fstrcspn, MouseRead, SetDialogColors, MessageBox,
+; ClearClipRect and others. Far routine (retf).
+;-----------------------------------------------------------------------------
+AddHumanTeam:
+        enter 0x46, 0x0
+        push di
+        push si
+        mov byte [g_E36B], 0x0
+        push 0x2
+        mov ax, 0xe53
+        mov cx, 0x3701
+        mov [bp - 0x3e], ax
+        mov [bp - 0x3c], cx
+        push cx
+        push ax
+        call 0x2305:LeagueCheckStub
+        add sp, 0x6
+        db 0x8B, 0xF8                           ; insn: mov di, ax
+.1:
+        db 0x2B, 0xF6                           ; insn: sub si, si
+        db 0x0B, 0xFF                           ; insn: or di, di
+        jnz short .2
+        push word 0x3a0b
+        push strict word f_3A0B_AF3E
+        push word 0x3a0b
+        push strict word f_3A0B_AC60
+        push word 0x3a0b
+        push strict word f_3A0B_AC5E
+        push word 0x3a0b
+        push strict word f_3A0B_AC5C
+        push word 0x3a0b
+        push strict word f_3A0B_AC5A
+        push word 0x3a0b
+        push strict word f_3A0B_AF32
+        push word 0x3a0b
+        push strict word f_3A0B_AC62
+        push word [bp - 0x3c]
+        push word [bp - 0x3e]
+        call 0x22D3:ReadLeagueInfo
+        add sp, 0x20
+        db 0x8B, 0xF8                           ; insn: mov di, ax
+.2:
+        db 0x0B, 0xFF                           ; insn: or di, di
+        jz short .3
+        jmp near .6
+.3:
+        push word [bp - 0x3c]
+        push word [bp - 0x3e]
+        lea ax, [bp - 0x1a]
+        push ss
+        push ax
+        call 0x0000:_fstrcpy
+        add sp, 0x8
+        push word 0x3701
+        push strict word f_3701_0BF4
+        lea ax, [bp - 0x1a]
+        push ss
+        push ax
+        call 0x0000:_fstrcspn
+        add sp, 0x8
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        lea ax, [bp - 0x1a]
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        mov byte [bx], 0x0
+        lea ax, [bp - 0x2]
+        push ax
+        lea ax, [bp - 0x4]
+        push ax
+        lea ax, [bp - 0x6]
+        push ax
+        call 0x03A3:MouseRead
+        add sp, 0x6
+        push 0x0
+        push 0x11
+        push 0x5
+        push 0x11
+        push 0xb
+        call 0x0D90:SetDialogColors
+        add sp, 0xa
+        mov es, [g_8B7C]
+        cmp word [es:0xac60], 0x0
+        jnz short .4
+        jmp near .14
+.4:
+        lea ax, [bp - 0x1a]
+        mov es, [g_8B7E]
+        mov [es:0xb36], ax
+        mov [es:0xb38], ss
+        push -0x1
+        lea ax, [bp - 0x2]
+        push ax
+        lea ax, [bp - 0x4]
+        push ax
+        push 0x0
+        push 0x0
+        push 0x0
+        push 0x3
+        push es
+        push word 0xb32
+        push -0x1
+        push -0x1
+        call 0x0D90:MessageBox
+        add sp, 0x16
+.5:
+        mov di, 0xffff
+.6:
+        db 0x0B, 0xF6                           ; insn: or si, si
+        jz short .7
+        jmp near .1
+.7:
+        cmp byte [g_E36B], 0x0
+        jnz short .8
+        jmp near .9
+.8:
+        push si
+        call 0x0FEF:ClearClipRect
+        add sp, 0x2
+        push strict word str_Pal_45
+        push si
+        push strict word str_EasndeskQpp_4
+        call 0x14B8:LoadPackedHeader
+        add sp, 0x4
+        push dx
+        push ax
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        mov [bp - 0x42], si
+        mov [bp - 0x40], dx
+        call 0x03A3:FindFarMsg
+        add sp, 0x6
+        add ax, strict word 0x10
+        push dx
+        push ax
+        push word 0x100
+        push 0x0
+        call 0x0FEF:SetPaletteFar
+        add sp, 0x8
+        push word [bp - 0x40]
+        push word [bp - 0x42]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        mov al, 0x17
+        mov [bp - 0xc], al
+        mov [bp - 0xb], al
+        mov [bp - 0xa], al
+        lea ax, [bp - 0xc]
+        push ss
+        push ax
+        push 0x1
+        push 0x5
+        call 0x0FEF:SetPaletteFar
+        add sp, 0x8
+        mov al, 0x2a
+        mov [bp - 0xc], al
+        mov [bp - 0xb], al
+        mov [bp - 0xa], al
+        lea ax, [bp - 0xc]
+        push ss
+        push ax
+        push 0x1
+        push 0xb
+        call 0x0FEF:SetPaletteFar
+        add sp, 0x8
+        mov al, 0x3f
+        mov [bp - 0xc], al
+        mov [bp - 0xb], al
+        mov [bp - 0xa], al
+        lea ax, [bp - 0xc]
+        push ss
+        push ax
+        push 0x1
+        push 0x11
+        call 0x0FEF:SetPaletteFar
+        add sp, 0x8
+.9:
+        db 0x0B, 0xFF                           ; insn: or di, di
+        jz short .10
+        jmp near .18
+.10:
+        mov bx, 0xac5c
+        mov es, [g_8B84]
+        mov [bp - 0x46], bx
+        mov [bp - 0x44], es
+        cmp word [es:bx], 0x18
+        jl short .11
+        jmp near .17
+.11:
+        mov si, [es:bx]
+        push word 0x3701
+        push strict word str_Db_2
+        mov es, [g_8B86]
+        push word [es:0xb7e]
+        push word [es:0xb7c]
+        push word [bp - 0x3c]
+        push word [bp - 0x3e]
+        lea ax, [bp - 0x3a]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        push 0x1
+        push word 0x3a0b
+        push strict word f_3A0B_AA38
+        lea ax, [bp - 0x3a]
+        push ax
+        call 0x22D3:ReadTeamNames
+        add sp, 0x8
+        lea ax, [bp - 0x8]
+        push ax
+        push word 0x3701
+        push strict word str_SelectNewHumanControlled
+        push 0x2
+        push word 0x3a0b
+        push strict word f_3A0B_AC62
+        push word 0x3a0b
+        push strict word f_3A0B_AA38
+        push word [bp - 0x44]
+        push word [bp - 0x46]
+        push word [bp - 0x3c]
+        push word [bp - 0x3e]
+        call 0x1F31:LeagueTeamSelect
+        add sp, 0x18
+        cmp word [bp - 0x8], 0x0
+        jnl short .12
+        jmp near .18
+.12:
+        les bx, [bp - 0x46]
+        cmp [es:bx], si
+        jnz short .13
+        jmp near .18
+.13:
+        push word 0x3a0b
+        push strict word f_3A0B_AF3E
+        mov es, [g_8B7C]
+        push word [es:0xac60]
+        mov es, [g_8B80]
+        push word [es:0xac5e]
+        mov es, [bp - 0x44]
+        push word [es:bx]
+        mov es, [g_8B88]
+        push word [es:0xac5a]
+        push word 0x3a0b
+        push strict word f_3A0B_AF32
+        push word 0x3a0b
+        push strict word f_3A0B_AC62
+        push word [bp - 0x3c]
+        push word [bp - 0x3e]
+        call 0x2305:WriteLeagueInfo
+        add sp, 0x18
+        pop si
+        pop di
+        leave
+        retf
+        db 0x90
+.14:
+        mov es, [g_8B80]
+        test byte [es:0xac5e], 0x4
+        jz short .15
+        jmp near .6
+.15:
+        lea ax, [bp - 0x1a]
+        mov es, [g_8B82]
+        mov [es:0x8b3], ax
+        mov [es:0x8b5], ss
+        push -0x1
+        lea ax, [bp - 0x2]
+        push ax
+        lea ax, [bp - 0x4]
+        push ax
+        push 0x2
+        push word 0x3701
+        push strict word f_3701_0913
+        push 0x4
+        push es
+        push word 0x8af
+        push -0x1
+        push -0x1
+        call 0x0D90:MessageBox
+        add sp, 0x16
+        mov [bp - 0x6], ax
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jz short .16
+        jmp near .5
+.16:
+        call 0x2CB7:MergeLeagueFiles
+        mov si, 0xffff
+        jmp near .6
+.17:
+        lea ax, [bp - 0x2]
+        push ax
+        lea cx, [bp - 0x4]
+        push cx
+        lea dx, [bp - 0x6]
+        push dx
+        call 0x03A3:MouseRead
+        add sp, 0x6
+        push -0x1
+        lea ax, [bp - 0x2]
+        push ax
+        lea ax, [bp - 0x4]
+        push ax
+        push 0x0
+        push 0x0
+        push 0x0
+        push 0x1
+        push word 0x3701
+        push strict word msgAllTheTeamsAreAlready
+        push -0x1
+        push -0x1
+        call 0x0D90:MessageBox
+        add sp, 0x16
+.18:
+        pop si
+        pop di
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; RemoveHumanTeam                                            1ECB:0332  94 PC
+; 'Select human controlled team to remove'
+;
+; Calls LeagueCheckStub, ReadLeagueInfo, _fstrcpy, _fstrcspn, MouseRead, SetDialogColors, MessageBox,
+; ClearClipRect and others. Far routine (retf).
+;-----------------------------------------------------------------------------
+RemoveHumanTeam:
+        enter 0x46, 0x0
+        push di
+        push si
+        mov byte [g_E36B], 0x0
+        push 0x2
+        mov ax, 0xe53
+        mov cx, 0x3701
+        mov [bp - 0x3e], ax
+        mov [bp - 0x3c], cx
+        push cx
+        push ax
+        call 0x2305:LeagueCheckStub
+        add sp, 0x6
+        db 0x8B, 0xF8                           ; insn: mov di, ax
+.1:
+        db 0x2B, 0xF6                           ; insn: sub si, si
+        db 0x0B, 0xFF                           ; insn: or di, di
+        jnz short .2
+        push word 0x3a0b
+        push strict word f_3A0B_AF3E
+        push word 0x3a0b
+        push strict word f_3A0B_AC60
+        push word 0x3a0b
+        push strict word f_3A0B_AC5E
+        push word 0x3a0b
+        push strict word f_3A0B_AC5C
+        push word 0x3a0b
+        push strict word f_3A0B_AC5A
+        push word 0x3a0b
+        push strict word f_3A0B_AF32
+        push word 0x3a0b
+        push strict word f_3A0B_AC62
+        push word [bp - 0x3c]
+        push word [bp - 0x3e]
+        call 0x22D3:ReadLeagueInfo
+        add sp, 0x20
+        db 0x8B, 0xF8                           ; insn: mov di, ax
+.2:
+        db 0x0B, 0xFF                           ; insn: or di, di
+        jz short .3
+        jmp near .6
+.3:
+        push word [bp - 0x3c]
+        push word [bp - 0x3e]
+        lea ax, [bp - 0x1a]
+        push ss
+        push ax
+        call 0x0000:_fstrcpy
+        add sp, 0x8
+        push word 0x3701
+        push strict word f_3701_0BF4
+        lea ax, [bp - 0x1a]
+        push ss
+        push ax
+        call 0x0000:_fstrcspn
+        add sp, 0x8
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        lea ax, [bp - 0x1a]
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        mov byte [bx], 0x0
+        lea ax, [bp - 0x2]
+        push ax
+        lea ax, [bp - 0x4]
+        push ax
+        lea ax, [bp - 0x6]
+        push ax
+        call 0x03A3:MouseRead
+        add sp, 0x6
+        push 0x0
+        push 0x11
+        push 0x5
+        push 0x11
+        push 0xb
+        call 0x0D90:SetDialogColors
+        add sp, 0xa
+        mov es, [g_8B7C]
+        cmp word [es:0xac60], 0x0
+        jnz short .4
+        jmp near .14
+.4:
+        lea ax, [bp - 0x1a]
+        mov es, [g_8B7E]
+        mov [es:0xb36], ax
+        mov [es:0xb38], ss
+        push -0x1
+        lea ax, [bp - 0x2]
+        push ax
+        lea ax, [bp - 0x4]
+        push ax
+        push 0x0
+        push 0x0
+        push 0x0
+        push 0x3
+        push es
+        push word 0xb32
+        push -0x1
+        push -0x1
+        call 0x0D90:MessageBox
+        add sp, 0x16
+.5:
+        mov di, 0xffff
+.6:
+        db 0x0B, 0xF6                           ; insn: or si, si
+        jz short .7
+        jmp near .1
+.7:
+        cmp byte [g_E36B], 0x0
+        jnz short .8
+        jmp near .9
+.8:
+        push si
+        call 0x0FEF:ClearClipRect
+        add sp, 0x2
+        push strict word str_Pal_44
+        push si
+        push strict word str_EasndeskQpp_3
+        call 0x14B8:LoadPackedHeader
+        add sp, 0x4
+        push dx
+        push ax
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        mov [bp - 0x42], si
+        mov [bp - 0x40], dx
+        call 0x03A3:FindFarMsg
+        add sp, 0x6
+        add ax, strict word 0x10
+        push dx
+        push ax
+        push word 0x100
+        push 0x0
+        call 0x0FEF:SetPaletteFar
+        add sp, 0x8
+        push word [bp - 0x40]
+        push word [bp - 0x42]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        mov al, 0x17
+        mov [bp - 0xc], al
+        mov [bp - 0xb], al
+        mov [bp - 0xa], al
+        lea ax, [bp - 0xc]
+        push ss
+        push ax
+        push 0x1
+        push 0x5
+        call 0x0FEF:SetPaletteFar
+        add sp, 0x8
+        mov al, 0x2a
+        mov [bp - 0xc], al
+        mov [bp - 0xb], al
+        mov [bp - 0xa], al
+        lea ax, [bp - 0xc]
+        push ss
+        push ax
+        push 0x1
+        push 0xb
+        call 0x0FEF:SetPaletteFar
+        add sp, 0x8
+        mov al, 0x3f
+        mov [bp - 0xc], al
+        mov [bp - 0xb], al
+        mov [bp - 0xa], al
+        lea ax, [bp - 0xc]
+        push ss
+        push ax
+        push 0x1
+        push 0x11
+        call 0x0FEF:SetPaletteFar
+        add sp, 0x8
+.9:
+        db 0x0B, 0xFF                           ; insn: or di, di
+        jz short .10
+        jmp near RemoveHumanTeamTail + 0x660
+.10:
+        mov bx, 0xac5c
+        mov es, [g_8B84]
+        mov [bp - 0x46], bx
+        mov [bp - 0x44], es
+        cmp word [es:bx], 0x1
+        jg short .11
+        jmp near .17
+.11:
+        mov si, [es:bx]
+        push word 0x3701
+        push strict word str_Db_2
+        mov es, [g_8B86]
+        push word [es:0xb7e]
+        push word [es:0xb7c]
+        push word [bp - 0x3c]
+        push word [bp - 0x3e]
+        lea ax, [bp - 0x3a]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        push 0x1
+        push word 0x3a0b
+        push strict word f_3A0B_AA38
+        lea ax, [bp - 0x3a]
+        push ax
+        call 0x22D3:ReadTeamNames
+        add sp, 0x8
+        lea ax, [bp - 0x8]
+        push ax
+        push word 0x3701
+        push strict word str_SelectHumanControlledTeam
+        push 0x4
+        push word 0x3a0b
+        push strict word f_3A0B_AC62
+        push word 0x3a0b
+        push strict word f_3A0B_AA38
+        push word [bp - 0x44]
+        push word [bp - 0x46]
+        push word [bp - 0x3c]
+        push word [bp - 0x3e]
+        call 0x1F31:LeagueTeamSelect
+        add sp, 0x18
+        cmp word [bp - 0x8], 0x0
+        jnl short .12
+        jmp near RemoveHumanTeamTail + 0x660
+.12:
+        les bx, [bp - 0x46]
+        cmp [es:bx], si
+        jnz short .13
+        jmp near RemoveHumanTeamTail + 0x660
+.13:
+        push word 0x3a0b
+        push strict word f_3A0B_AF3E
+        mov es, [g_8B7C]
+        push word [es:0xac60]
+        mov es, [g_8B80]
+        push word [es:0xac5e]
+        mov es, [bp - 0x44]
+        push word [es:bx]
+        mov es, [g_8B88]
+        push word [es:0xac5a]
+        push word 0x3a0b
+        push strict word f_3A0B_AF32
+        push word 0x3a0b
+        push strict word f_3A0B_AC62
+        push word [bp - 0x3c]
+        push word [bp - 0x3e]
+        call 0x2305:WriteLeagueInfo
+        add sp, 0x18
+        pop si
+        pop di
+        leave
+        retf
+        db 0x90
+.14:
+        mov es, [g_8B80]
+        test byte [es:0xac5e], 0x4
+        jz short .15
+        jmp near .6
+.15:
+        lea ax, [bp - 0x1a]
+        mov es, [g_8B82]
+        mov [es:0x8b3], ax
+        mov [es:0x8b5], ss
+        push -0x1
+        lea ax, [bp - 0x2]
+        push ax
+        lea ax, [bp - 0x4]
+        push ax
+        push 0x2
+        push word 0x3701
+        push strict word f_3701_0913
+        push 0x4
+        push es
+        push word 0x8af
+        push -0x1
+        push -0x1
+        call 0x0D90:MessageBox
+        add sp, 0x16
+        mov [bp - 0x6], ax
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jz short .16
+        jmp near .5
+.16:
+        call 0x2CB7:MergeLeagueFiles
+        mov si, 0xffff
+        jmp near .6
+.17:
+        push di
+        push 0x11
+        push 0x5
+        push 0x11
+        push 0xb
+        call 0x0D90:SetDialogColors
+        add sp, 0xa
+        lea ax, [bp - 0x2]
+        push ax
+        lea cx, [bp - 0x4]
+        push cx
+        lea dx, [bp - 0x6]
+        push dx
+        call 0x03A3:MouseRead
+        add sp, 0x6
+        push -0x1
+        lea ax, [bp - 0x2]
+        push ax
+        lea ax, [bp - 0x4]
+        push ax
+        push 0x0
+        push 0x0
+        push 0x0
+        push 0x2
+        push word 0x3701
+        push strict word msgThereIsOnlyOneHuman
+        push -0x1
+        push -0x1

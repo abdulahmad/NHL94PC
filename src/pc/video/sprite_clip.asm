@@ -1,0 +1,493 @@
+; Clipped sprite drawing and the dirty rectangle list (GAME.OVL)
+; The first bytes finish the last routine of scroll.asm.
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; DrawSpriteClipped                                          1F54:0002  94 PC
+; EMS frame, remap table, clips to the view, blits.
+;
+; Takes 7 words of stack arguments. Calls EmsMapFrame, SetRemapTable. Far routine (retf).
+;-----------------------------------------------------------------------------
+DrawSpriteClipped:
+        enter 0x1c, 0x0
+        push di
+        push si
+        mov word [bp - 0xc], 0x0
+        mov si, [bp + 0x6]
+        cmp word [bp + 0x12], 0x0
+        jz short .1
+        push word [bp + 0x8]
+        push si
+        call 0x03A3:EmsMapFrame
+        add sp, 0x4
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        mov [bp + 0x8], dx
+.1:
+        mov ds, [bp + 0x8]
+        cmp word [bp + 0xe], 0x0
+        jz short .2
+        mov ax, [si]
+        shl ax, byte 0x2
+        sub ax, [si + 0x4]
+        neg ax
+        add ax, [bp + 0xa]
+        inc ax
+        jmp short .3
+.2:
+        mov ax, [bp + 0xa]
+        sub ax, [si + 0x4]
+.3:
+        mov [bp - 0x6], ax
+        mov ax, [bp + 0xc]
+        sub ax, [si + 0x6]
+        mov [bp - 0x8], ax
+        mov cx, [si]
+        shl cx, byte 0x2
+        add cx, [bp - 0x6]
+        dec cx
+        mov [bp - 0xa], cx
+        add ax, [si + 0x2]
+        mov [bp - 0xe], ax
+        mov ax, DGROUP
+        mov es, ax
+        mov ax, [bp - 0x6]
+        cmp [es:ClipRightX], ax
+        jg short .4
+        jmp near .34
+.4:
+        mov [bp + 0x6], si
+        db 0x8B, 0xC1                           ; insn: mov ax, cx
+        cmp [es:ClipLeftX], ax
+        jng short .5
+        jmp near .34
+.5:
+        mov ax, [bp - 0x8]
+        cmp [es:ClipBottomY], ax
+        jg short .6
+        jmp near .34
+.6:
+        mov ax, [bp - 0xe]
+        cmp [es:ClipTopY], ax
+        jl short .7
+        jmp near .34
+.7:
+        mov ax, [bp - 0x6]
+        cmp [es:ClipLeftX], ax
+        jg short .8
+        db 0x8B, 0xC1                           ; insn: mov ax, cx
+        cmp [es:ClipRightX], ax
+        jng short .8
+        mov ax, [bp - 0x8]
+        cmp [es:ClipTopY], ax
+        jg short .8
+        mov di, [bp - 0xc]
+        mov ax, [bp - 0xe]
+        cmp [es:ClipBottomY], ax
+        jg short .9
+.8:
+        mov di, 0x1
+.9:
+        cmp word [bp + 0xe], 0x0
+        jz short .10
+        add di, 0x4
+.10:
+        cmp word [bp + 0xe], 0x0
+        jnz short .12
+.11:
+        mov ax, DGROUP
+        mov ds, ax
+        jmp short .16
+.12:
+        mov dx, [bp + 0x10]
+        db 0x0B, 0xD2                           ; insn: or dx, dx
+        jl short .11
+        mov [bp - 0xc], di
+        db 0x0B, 0xD2                           ; insn: or dx, dx
+        jz short .13
+        mov ax, 0xb184
+        jmp short .14
+        db 0x90
+.13:
+        mov ax, 0xb284
+.14:
+        mov word [bp - 0x2], 0x0
+        mov si, [bp - 0x2]
+        db 0x8B, 0xF8                           ; insn: mov di, ax
+        mov ax, DGROUP
+        mov ds, ax
+.15:
+        db 0x8B, 0xDE                           ; insn: mov bx, si
+        db 0x03, 0xDF                           ; insn: add bx, di
+        mov al, [bx + 0x4]
+        mov cl, [bx + 0x3]
+        mov [bp - 0x13], cl
+        mov cl, [bx + 0x2]
+        mov [bp - 0x12], cl
+        mov cl, [bx + 0x1]
+        mov [bp - 0x11], cl
+        mov cl, [bx]
+        mov [bp - 0x10], cl
+        mov [bx], al
+        mov al, [bp - 0x13]
+        mov [bx + 0x1], al
+        mov al, [bp - 0x12]
+        mov [bx + 0x2], al
+        mov al, [bp - 0x11]
+        mov [bx + 0x3], al
+        mov al, [bp - 0x10]
+        mov [bx + 0x4], al
+        add si, 0x10
+        cmp si, 0x40
+        jl short .15
+        mov di, [bp - 0xc]
+.16:
+        mov si, [bp + 0x10]
+        db 0x0B, 0xF6                           ; insn: or si, si
+        jl short .19
+        db 0x0B, 0xF6                           ; insn: or si, si
+        jz short .17
+        inc di
+        inc di
+        push ds
+        push strict word TeamPalette1
+        jmp short .18
+.17:
+        inc di
+        inc di
+        push ds
+        push strict word TeamPalette2
+.18:
+        call 0x0FEF:SetRemapTable
+        add sp, 0x4
+.19:
+        cmp word [bp + 0xe], 0x0
+        jz short .23
+        db 0x0B, 0xF6                           ; insn: or si, si
+        jl short .23
+        mov [bp - 0xc], di
+        db 0x0B, 0xF6                           ; insn: or si, si
+        jz short .20
+        mov cx, 0xb184
+        jmp short .21
+.20:
+        mov cx, 0xb284
+.21:
+        db 0x2B, 0xD2                           ; insn: sub dx, dx
+        db 0x8B, 0xF2                           ; insn: mov si, dx
+        db 0x8B, 0xF9                           ; insn: mov di, cx
+.22:
+        db 0x8B, 0xDE                           ; insn: mov bx, si
+        db 0x03, 0xDF                           ; insn: add bx, di
+        mov al, [bx + 0x4]
+        mov cl, [bx + 0x3]
+        mov [bp - 0x19], cl
+        mov cl, [bx + 0x2]
+        mov [bp - 0x18], cl
+        mov cl, [bx + 0x1]
+        mov [bp - 0x17], cl
+        mov cl, [bx]
+        mov [bp - 0x16], cl
+        mov [bx], al
+        mov al, [bp - 0x19]
+        mov [bx + 0x1], al
+        mov al, [bp - 0x18]
+        mov [bx + 0x2], al
+        mov al, [bp - 0x17]
+        mov [bx + 0x3], al
+        mov al, [bp - 0x16]
+        mov [bx + 0x4], al
+        add si, 0x10
+        cmp si, 0x40
+        jl short .22
+        mov di, [bp - 0xc]
+.23:
+        les bx, [bp + 0x6]
+        test byte [es:bx + 0xe], 0xf0
+        jz short .24
+        add di, 0x8
+.24:
+        push word [bp - 0x8]
+        push word [bp - 0x6]
+        push es
+        push bx
+        shl di, byte 0x2
+        call far [di + g_4B24]
+        add sp, 0x8
+        cmp word [CurPage], 0x1
+        db 0x1B, 0xDB                           ; insn: sbb bx, bx
+        neg bx
+        shl bx, 1
+        cmp word [bx + g_4B1C], 0x14
+        jl short .25
+        mov ax, 0x1
+        mov [g_4B22], ax
+        mov [g_4B20], ax
+        jmp near .35
+        db 0x90
+.25:
+        mov di, [bp - 0x6]
+        mov ax, DGROUP
+        mov es, ax
+        cmp [es:ClipLeftX], di
+        jng short .26
+        mov ax, [bp - 0xa]
+        shr ax, byte 0x2
+        inc ax
+        mov bx, [ss:bx + g_D9D6]
+        mov [ss:bx + 0x4], ax
+        mov ax, [es:ClipLeftX]
+        db 0x8B, 0xF8                           ; insn: mov di, ax
+        jmp short .29
+        db 0x90
+.26:
+        mov ax, [bp - 0xa]
+        cmp [es:ClipRightX], ax
+        jg short .27
+        mov ax, [es:ClipRightX]
+        db 0x2B, 0xC7                           ; insn: sub ax, di
+        add ax, strict word 0x3
+        shr ax, byte 0x2
+        jmp short .28
+.27:
+        shr ax, byte 0x2
+        db 0x8B, 0xCF                           ; insn: mov cx, di
+        shr cx, byte 0x2
+        db 0x2B, 0xC1                           ; insn: sub ax, cx
+        inc ax
+.28:
+        mov bx, [ss:bx + g_D9D6]
+        mov [ss:bx + 0x4], ax
+.29:
+        mov bx, [bp - 0x8]
+        cmp [es:ClipTopY], bx
+        jng short .30
+        lds si, [bp + 0x6]
+        mov ax, [si + 0x2]
+        db 0x03, 0xC3                           ; insn: add ax, bx
+        cmp word [ss:CurPage], 0x1
+        db 0x1B, 0xF6                           ; insn: sbb si, si
+        neg si
+        shl si, 1
+        mov si, [ss:si + g_D9D6]
+        mov [ss:si + 0x6], ax
+        mov bx, [es:ClipTopY]
+        jmp short .33
+.30:
+        mov ax, [bp - 0xe]
+        cmp [es:ClipBottomY], ax
+        jg short .31
+        mov ax, [es:ClipBottomY]
+        db 0x2B, 0xC3                           ; insn: sub ax, bx
+        jmp short .32
+.31:
+        les si, [bp + 0x6]
+        mov ax, [es:si + 0x2]
+.32:
+        cmp word [ss:CurPage], 0x1
+        db 0x1B, 0xF6                           ; insn: sbb si, si
+        neg si
+        shl si, 1
+        mov si, [ss:si + g_D9D6]
+        mov [ss:si + 0x6], ax
+.33:
+        db 0x8B, 0xC7                           ; insn: mov ax, di
+        shr ax, byte 0x2
+        cmp word [ss:CurPage], 0x1
+        db 0x1B, 0xF6                           ; insn: sbb si, si
+        neg si
+        shl si, 1
+        mov si, [ss:si + g_D9D6]
+        mov [ss:si], ax
+        cmp word [ss:CurPage], 0x1
+        db 0x1B, 0xF6                           ; insn: sbb si, si
+        neg si
+        shl si, 1
+        mov si, [ss:si + g_D9D6]
+        mov [ss:si + 0x2], bx
+        cmp word [ss:CurPage], 0x1
+        db 0x1B, 0xF6                           ; insn: sbb si, si
+        neg si
+        shl si, 1
+        inc word [ss:si + g_4B1C]
+        add word [ss:si + g_D9D6], 0x8
+        mov cx, DGROUP
+        mov ds, cx
+        pop si
+        pop di
+        leave
+        retf
+.34:
+        mov ax, DGROUP
+        mov ds, ax
+.35:
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        pop si
+        pop di
+        leave
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; FlushDirtyRects                                            1F54:0316  94 PC
+; Copies this page's dirty rectangles (or the whole strip after a scroll)
+;
+; Takes 2 words of stack arguments. Calls SetScrollCell, VgaCopyStrip, VgaCopyWrapped. Far routine
+; (retf).
+;-----------------------------------------------------------------------------
+FlushDirtyRects:
+        enter 0x2, 0x0
+        push si
+        cmp word [CurPage], 0x1
+        db 0x1B, 0xC0                           ; insn: sbb ax, ax
+        neg ax
+        imul cx, ax, word 0x140
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        shl bx, 1
+        add cx, 0xd756
+        mov [bx + g_D9D6], cx
+        push word [bp + 0x8]
+        push word [bp + 0x6]
+        call 0x1F29:SetScrollCell
+        add sp, 0x4
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jz short .1
+        mov ax, 0x1
+        mov [g_4B22], ax
+        mov [g_4B20], ax
+.1:
+        cmp word [CurPage], 0x1
+        db 0x1B, 0xDB                           ; insn: sbb bx, bx
+        neg bx
+        shl bx, 1
+        mov [bp - 0x2], bx
+        cmp word [bx + g_4B20], 0x0
+        jz short .2
+        cmp word [CurPage], 0x1
+        db 0x1B, 0xC0                           ; insn: sbb ax, ax
+        and ax, 0x3900
+        add ah, 0xb
+        push ax
+        call 0x0000:VgaCopyStrip
+        add sp, 0x2
+        cmp word [CurPage], 0x1
+        db 0x1B, 0xDB                           ; insn: sbb bx, bx
+        neg bx
+        shl bx, 1
+        mov word [bx + g_4B20], 0x0
+        jmp short .4
+        db 0x90
+.2:
+        db 0x2B, 0xF6                           ; insn: sub si, si
+        cmp [bx + g_4B1C], si
+        jng short .4
+.3:
+        mov bx, [bp - 0x2]
+        mov bx, [bx + g_D9D6]
+        push word [bx + 0x6]
+        push word [bx + 0x4]
+        push word [bx + 0x2]
+        push word [bx]
+        cmp word [CurPage], 0x1
+        db 0x1B, 0xC0                           ; insn: sbb ax, ax
+        and ax, 0x3900
+        add ah, 0xb
+        push ax
+        call 0x0000:VgaCopyWrapped
+        add sp, 0xa
+        cmp word [CurPage], 0x1
+        db 0x1B, 0xDB                           ; insn: sbb bx, bx
+        neg bx
+        shl bx, 1
+        mov [bp - 0x2], bx
+        add word [bx + g_D9D6], 0x8
+        inc si
+        cmp [bx + g_4B1C], si
+        jg short .3
+.4:
+        cmp word [CurPage], 0x1
+        db 0x1B, 0xDB                           ; insn: sbb bx, bx
+        neg bx
+        db 0x8B, 0xC3                           ; insn: mov ax, bx
+        shl bx, 1
+        mov word [bx + g_4B1C], 0x0
+        imul ax, ax, word 0x140
+        add ax, 0xd756
+        mov [bx + g_D9D6], ax
+        pop si
+        leave
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; NullGameHook                                               1F54:03FA  94 PC
+; Empty far routine; reached through NullGameHookThunk.
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
+NullGameHook:
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; NullGameHook2                                              1F54:03FC  94 PC
+; Empty far routine.
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
+NullGameHook2:
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; AddDirtyRect                                               1F54:03FE  94 PC
+; Appends a rectangle to this page's dirty list.
+;
+; Takes 4 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
+AddDirtyRect:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        mov dx, [bp + 0x6]
+        mov ax, [bp + 0xa]
+        db 0x03, 0xC2                           ; insn: add ax, dx
+        shr ax, byte 0x2
+        db 0x8B, 0xCA                           ; insn: mov cx, dx
+        shr cx, byte 0x2
+        db 0x2B, 0xC1                           ; insn: sub ax, cx
+        inc ax
+        cmp word [CurPage], 0x1
+        db 0x1B, 0xDB                           ; insn: sbb bx, bx
+        neg bx
+        shl bx, 1
+        mov bx, [bx + g_D9D6]
+        mov [bx + 0x4], ax
+        mov ax, [bp + 0xc]
+        cmp word [CurPage], 0x1
+        db 0x1B, 0xDB                           ; insn: sbb bx, bx
+        neg bx
+        shl bx, 1
+        mov bx, [bx + g_D9D6]
+        mov [bx + 0x6], ax
+        cmp word [CurPage], 0x1
+        db 0x1B, 0xDB                           ; insn: sbb bx, bx
+        neg bx
+        shl bx, 1
+        mov bx, [bx + g_D9D6]
+        mov [bx], cx
+        mov ax, [bp + 0x8]
+        cmp word [CurPage], 0x1
+        db 0x1B, 0xDB                           ; insn: sbb bx, bx
+        neg bx
+        shl bx, 1
+        mov bx, [bx + g_D9D6]
+        mov [bx + 0x2], ax
+        cmp word [CurPage], 0x1
+        db 0x1B, 0xDB                           ; insn: sbb bx, bx
+        neg bx
+        shl bx, 1
+        inc word [bx + g_4B1C]
+        add word [bx + g_D9D6], 0x8
+        leave
+        retf
+        db 0x90

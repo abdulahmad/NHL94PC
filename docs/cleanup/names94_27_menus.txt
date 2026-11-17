@@ -1,0 +1,172 @@
+# MENUS.OVL routines
+Menus_1E45_0000 MenuP1ControlsExh | 95 PC | high | controls dialog for player 1 (exhibition)
+Menus_1E45_000A MenuP2ControlsExh | 95 PC | high | controls dialog for player 2 (exhibition)
+Menus_1E45_0014 ControlsDlgExh | 95 PC | high | exhibition controls dialog
+Menus_1E45_00FE MenuP1ControlsInGame | 95 PC | high | in-game controls dialog, player 1
+Menus_1E45_0108 MenuP2ControlsInGame | 95 PC | high | in-game controls dialog, player 2
+Menus_1E45_0112 CtlSwapScoreFix | 95 PC | medium | swaps the scoring side when a player changes team
+Menus_1E45_01BC CtlSwapTeamFlag | 95 PC | medium | flips a player's team flag
+Menus_1E45_020A ReassignCtlPlayer | 95 PC | medium | gives the controlled skater to the new side
+Menus_1E45_0384 ClearCtlBlink | 95 PC | medium | clears the controller blink flags
+Menus_1E45_0452 ControlsDlgInGame | 95 PC | high | in-game controls dialog ('BKGD' saved under it)
+Menus_1E45_0654 MenuP1ControlsPlayoff | 95 PC | high | playoff controls dialog, player 1
+Menus_1E45_065E MenuP2ControlsPlayoff | 95 PC | high | playoff controls dialog, player 2
+Menus_1E45_0668 ControlsDlgPlayoff | 95 PC | high | playoff controls dialog
+Menus_1E45_07E2 DrawControlsDlg | 95 PC | high | dialog box with both teams ('teams.db', 'player', 'dbox')
+Menus_1E45_09F2 DrawControlsOpts | 95 PC | high | the controller boxes
+Menus_1E45_0B98 CtlDlgHitTest | 95 PC | high | box under the pointer
+Menus_1E45_0BF0 DrawCtlBoxes | 95 PC | high | highlights the chosen boxes
+Menus_1E45_0C64 ControlsDlgLoop | 95 PC | high | controls dialog input loop
+Menus_1E45_0FD2 SetCtlTeams | 95 PC | high | applies the chosen controllers to the teams
+Menus_1F4F_000E CmpInt | 95 PC | high | qsort comparator of two ints
+Menus_1F4F_0034 TeamFromHiName | 95 PC | high | team index from a highlight file name
+Menus_1F4F_0086 FormatHilightDesc | 95 PC | high | '%d %d, %s vs %s, Period %d, Time %02d:%02d'
+Menus_1F4F_00D0 SelectHilight | 95 PC | high | 'Select a team', 'Select a hilight' (.HI files)
+Menus_1F4F_0440 ViewHilights | 95 PC | high | loads and plays a saved highlight
+Menus_1F9D_000C TitleScreen | 95 PC | high | EA open, title movie, copyright
+Menus_1F9D_0580 GoodnightScreen | new | high | exit screen with AnnounceGoodnight
+Menus_2037_0000 SetSideControls | 95 PC | high | sets the controls menu items for the human side(s)
+Menus_2047_0008 GameLineEditor | 95 PC | high | in-game line editor ('linedit.fnt', 'lineditp')
+Menus_2047_013A GameRosterCmp | 95 PC | high | qsort comparator of roster rows
+Menus_2047_01B2 GameLineEditorLoop | 95 PC | high | line editor input loop
+Menus_2047_15C0 LineEdHitTest | 95 PC | medium | line slot under the pointer
+Menus_2047_1640 LoadGameRoster | 95 PC | high | roster of a team from the key db
+Menus_2047_186A DrawGameLineJerseys | 95 PC | high | jerseys of the lines ('%c %2d %s')
+Menus_2047_19E0 DrawLineEditorScreen | 95 PC | high | plaque, line titles ('forward line 1' .. 'extra attackers')
+Menus_2047_1F76 LoadJerseyColours | 95 PC | high | HOMEPALS.BIN remap for the jerseys
+Menus_2047_20E4 DrawDlgFrame | 95 PC | high | bevelled dialog frame
+Menus_2047_229A ShadeRect | new | medium | darkens a rectangle pixel by pixel
+Menus_2047_22F2 CheckGameRosterComplete | 95 PC | high | 'Your Roster is incomplete.'
+Menus_2047_248A PruneGameLines | 95 PC | high | removes scratched players from the lines
+Menus_2047_252E MenuUseTheseLines | 95 PC | high | menu item: use these lines
+Menus_2047_25EE MenuLineEdCancel | 95 PC | high | menu item: cancel
+Menus_2047_25F2 MenuUseOriginalLines | 95 PC | high | menu item: original lines
+Menus_2047_2706 MenuUseDefaultLines | 95 PC | high | menu item: default lines
+Menus_2047_281A WriteTeamLines | new | medium | writes the home team's lines into the teams db
+Menus_2047_2A60 WriteTeamLines2 | new | medium | writes the away team's lines into the teams db
+Menus_2047_2C90 MenuGameShowPlayerStats | 95 PC | high | player stats from the line editor
+Menus_2047_2FA0 MenuReturnToLineEditor | 95 PC | high | menu item: back to the line editor
+Menus_2047_2FA4 GameScratchPlayer | 95 PC | high | scratches the selected player
+Menus_2047_30E6 GameDressPlayer | 95 PC | high | dresses the selected player
+Menus_235C_000C CenterTextX | new | medium | x that centres a string in a box
+Menus_235C_0042 RosterAlertBox | new | medium | 'DBOX' alert with the roster message
+Menus_235C_0240 WaitDialogClick | new | medium | pointer loop until a click
+Menus_2397_0006 BlitJerseyDigit | 95 PC | high | one jersey digit
+Menus_2397_0040 MakeJerseyShape | 95 PC | high | jersey with its number
+Menus_23A3_0004 MenuOpenSaved | 95 PC | high | open a saved game (gsummary.db, game.sav)
+Menus_23A3_03FE DrawFileDlgTabs | 95 PC | high | file dialog tabs
+Menus_23A3_04FC CmpFileNames | 95 PC | high | qsort comparator of file names
+Menus_23A3_0516 ScanSavedGames | 95 PC | high | finds *.po and *.nhl saves
+Menus_23A3_072A PrintTextCopy | 95 PC | high | DrawText of a copied string
+Menus_23A3_0766 DrawFileDlg | 95 PC | high | dialogbx frame
+Menus_23A3_098C FileDlgHitTest | 95 PC | high | row under the pointer
+Menus_23A3_09E4 DrawFileDlgList | 95 PC | high | list of saves
+Menus_23A3_0D94 RunFileDlg | 95 PC | high | file dialog input loop
+Menus_23A3_121A DeleteSavedGame | 95 PC | high | deletes a save and its directory
+Menus_23A3_1518 SelectSavedFile | 95 PC | high | 'LA  at MTL ...' line of a save
+Menus_23A3_1778 ReadGameSettings | 95 PC | high | game.set of a save
+Menus_2528_0004 MenuSoundSettings | 95 PC | high | sound card dialog
+Menus_2528_0050 DrawSoundCardDlg | 95 PC | high | 'sound' dbox
+Menus_2528_00B2 DrawSoundCardOpts | 95 PC | high | option boxes
+Menus_2528_016E SoundCardHitTest | 95 PC | high | box under the pointer
+Menus_2528_01C6 RedrawSoundCardOpts | 95 PC | high | redraws the chosen boxes
+Menus_2528_0250 SoundCardDlgLoop | 95 PC | high | input loop
+Menus_2528_0426 SetSoundDevice | 95 PC | high | loads the driver, patches and songs ('PCBEEP' .. 'MT32')
+Menus_25DD_0006 LockerRoomScreen | 95 PC | high | locker room
+Menus_25DD_006E DrawLockerRoom | 95 PC | high | lockrm background, jerseys
+Menus_25DD_05F0 LockerHitTest | 95 PC | high | item under the pointer
+Menus_25DD_063E DrawLockerJersey | 95 PC | high | 'JER%sV' / 'JER%sH'
+Menus_25DD_0AC8 LockerRoomLoop | 95 PC | high | input loop
+Menus_26D4_000E POMenuResult4 | new | high | menu item returning 4
+Menus_26D4_0012 POMenuResult1 | new | high | menu item returning 1
+Menus_26D4_0016 MenuPlayoffHilights | new | high | highlights from the playoff desk
+Menus_26D4_0180 CreatePlayoffs | 95 PC | high | 'Please Enter New Play-Off Name'
+Menus_26D4_08CC POSeedTeams | 95 PC | medium | seeds the playoff teams
+Menus_26D4_0B92 POPickConfTeams | 95 PC | medium | picks each conference's teams
+Menus_26D4_0D3A POCreateSchedule | 95 PC | high | writes schedule.db
+Menus_26D4_0F72 POSetSeriesTeams | 95 PC | high | sets a series' two teams
+Menus_26D4_0FEA POInitSchedule | 95 PC | high | empty playoff schedule
+Menus_26D4_1226 SeriesWinner | 95 PC | high | winner of a series
+Menus_26D4_12BA POSeriesScore | 95 PC | medium | wins of each team in a series
+Menus_26D4_1334 POSeedRound2 | 95 PC | high | second round
+Menus_26D4_164A POSeedConfFinals | 95 PC | high | conference finals
+Menus_26D4_1826 POSeedFinal | 95 PC | high | final
+Menus_26D4_192E POSimSeriesTeamWins | 95 PC | medium | simulates until a team has its wins
+Menus_26D4_1A6C POSimSeries | 95 PC | medium | simulates a series
+Menus_26D4_1BB8 POPreSimRound1 | 95 PC | medium | simulates round 1 series without humans
+Menus_26D4_1C26 POPreSimRound2 | 95 PC | medium | same for round 2
+Menus_26D4_1C94 POPreSimConfFinals | 95 PC | medium | same for the conference finals
+Menus_26D4_1D02 POHandleElimination | 95 PC | high | human team eliminated
+Menus_26D4_2112 POAfterGame | 95 PC | high | after a playoff game
+Menus_26D4_29F2 LoadScheduleDB | 95 PC | high | loads schedule.db
+Menus_26D4_2A34 SaveScheduleDB | 95 PC | high | writes schedule.db
+Menus_26D4_2A80 PlayoffModeLoop | 95 PC | high | playoff desk loop
+Menus_26D4_35E8 PORestoreSlot | new | medium | puts back the block under a tree slot
+Menus_26D4_365E POHiliteSlot | 95 PC | high | XOR box on a tree slot
+Menus_26D4_373C PlayoffTreeMenu | 95 PC | high | playoff tree input loop
+Menus_26D4_4146 DrawPlayoffTree | 95 PC | high | 'Playoff standings'
+Menus_2B11_000C DrawSettingsHeading | 95 PC | high | 'Exhibition' / 'Playoff' / 'League'
+Menus_2B11_00A8 SetModeMenuLabels | 95 PC | high | '... Settings ...' menu labels
+Menus_2B26_0000 LeagueSettingsDlg | 95 PC | medium | league settings dialog
+Menus_2B26_0052 MenuLeagueSettingsEdit | 95 PC | medium | league settings, editable
+Menus_2B26_0112 EditPlayoffSettings | 95 PC | medium | playoff settings, writes game.set
+Menus_2B26_019C MenuShowLeagueSettings | 95 PC | medium | league settings, view
+Menus_2B26_02B0 MenuShowLeagueSettings2 | 95 PC | medium | same, view loop
+Menus_2B26_03C4 DrawLeagueSetDlgSel | 95 PC | high | 'setting5' dbox
+Menus_2B26_0530 SetLeagueSetImage | 95 PC | high | embnhl / setting5 / setting3 images
+Menus_2B26_0696 DrawLeagueSetDlg | 95 PC | high | 'setting3' dbox
+Menus_2B26_07B4 DrawLeagueSetChecks | 95 PC | medium | all check boxes
+Menus_2B26_091A LeagueOptsToBits | 95 PC | medium | option index to its flag bits
+Menus_2B26_09D8 DrawLeagueSetCheck | new | medium | one check box
+Menus_2B26_0AB8 LeagueSetViewLoop | 95 PC | high | view-only loop
+Menus_2B26_0BC4 LeagueSetEditLoop | 95 PC | high | edit loop
+Menus_2C1E_0004 MenuModeSettings | 95 PC | high | game mode settings dialog
+Menus_2C1E_015C DrawModeSetDlg | 95 PC | high | 'setting7' / 'setting4' dbox
+Menus_2C1E_0222 DrawModeSetChecks | 95 PC | high | all check boxes
+Menus_2C1E_0340 ModeSetHitTest | 95 PC | high | box under the pointer
+Menus_2C1E_03C4 DrawModeSetCheck | new | medium | one check box
+Menus_2C1E_0464 ModeSetViewLoop | 95 PC | high | view-only loop
+Menus_2C1E_0570 ModeSetEditLoop | 95 PC | high | edit loop
+Menus_2CAA_0008 MenuExhibitionSettings | 95 PC | high | exhibition settings dialog
+Menus_2CAA_0056 DrawExhSetDlg | 95 PC | high | 'setting6' dbox
+Menus_2CAA_0108 ExhSetHitTest | 95 PC | high | box under the pointer
+Menus_2CAA_018C ExhSetEditLoop | 95 PC | high | edit loop
+Menus_2CF8_000E SportsDesk | 95 PC | high | the in-game desk ('eadesk%1d')
+Menus_2CF8_0E04 DeskReloadGame | 95 PC | medium | reloads crests and team palettes after the desk
+Menus_2CF8_0F98 DeskBackToGame | 95 PC | high | menu item: back to the game
+Menus_2CF8_0FB2 DeskToSportsDesk | 95 PC | medium | menu item: to the sports desk
+Menus_2CF8_0FCE DeskReturnConfirm | 95 PC | high | confirmation box
+Menus_2CF8_10A4 DeskExitGame | 95 PC | high | quits to DOS
+Menus_2CF8_1206 DeskGoToReplay | 95 PC | high | instant replay
+Menus_2CF8_12AA DeskHomeLines | 95 PC | high | home line editor
+Menus_2CF8_1388 DeskVisitorLines | 95 PC | high | visitor line editor
+Menus_2CF8_1466 DeskGameStats | 95 PC | high | team stats screen
+Menus_2CF8_14D4 DeskPenaltySummary | 95 PC | high | penalty summary
+Menus_2CF8_1550 DeskScoringSummary | 95 PC | high | scoring summary
+Menus_2CF8_15CC DeskTeamScratches | 95 PC | medium | game summary page
+Menus_2CF8_1646 DeskHomeGoalie1 | 95 PC | high | home goalie 1
+Menus_2CF8_167C DeskHomeGoalie2 | 95 PC | high | home goalie 2
+Menus_2CF8_16B2 DeskHomeGoalieNone | 95 PC | high | pull the home goalie
+Menus_2CF8_16E8 DeskAwayGoalie1 | 95 PC | high | away goalie 1
+Menus_2CF8_171E DeskAwayGoalie2 | 95 PC | high | away goalie 2
+Menus_2CF8_1754 DeskAwayGoalieNone | 95 PC | high | pull the away goalie
+Menus_2E70_000A MainDeskLoop | 95 PC | high | the main EASN desk
+Menus_2E70_0964 MenuExit | 95 PC | high | menu item: exit
+Menus_2E70_0968 SaveModeState | 95 PC | high | copies the mode settings out
+Menus_2E70_09FE LoadModeState | 95 PC | high | copies them back and applies them
+Menus_2E70_0D0A WriteModeState | 95 PC | high | writes game.set
+Menus_2E70_0E36 CopyGameSettings | 95 PC | high | copies a game.set
+Menus_2E70_0F22 MenuNewExhibition | 95 PC | high | new exhibition game
+Menus_2E70_11EC MenuNewLeague | 95 PC | high | new league
+Menus_2E70_144A MenuAddTeam | 95 PC | high | add a human team
+Menus_2E70_1594 MenuRemoveTeam | 95 PC | high | remove a human team
+Menus_2E70_16DE MenuLeagueSettings | 95 PC | high | league settings
+Menus_2E70_18A6 MenuRebuildDbs | 95 PC | high | rebuild the league dbs
+Menus_2E70_18E2 MenuMergeUpdateDbs | 95 PC | high | merge update dbs
+Menus_2E70_1A26 MenuMergeLeagueFiles | 95 PC | high | merge league files
+Menus_2E70_1B6A MenuUpdateTeamDbs | 95 PC | high | update team dbs
+Menus_2E70_1BA6 MenuTradePlayers | 95 PC | high | trade players
+Menus_2E70_1CF0 MenuNextLeagueGame | 95 PC | high | next league game
+Menus_2E70_1EEC MenuLeagueHilights | 95 PC | high | league highlights
+Menus_2E70_2054 MenuImportDbs | 95 PC | high | import dbs
+Menus_2E70_2090 MenuExportDbs | 95 PC | high | export dbs

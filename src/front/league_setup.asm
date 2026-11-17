@@ -1,0 +1,2665 @@
+; League set-up: the team grid and the league team selection (LP.OVL)
+; The first bytes and RemoveHumanTeamTail finish RemoveHumanTeam from league_teams.asm.
+        call 0x0D90:MessageBox
+        add sp, 0x16
+RemoveHumanTeamTail:
+        pop si
+        pop di
+        leave
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; TeamGridCellAt                                             1F31:000E  94 PC
+; Team grid cell under a point.
+;
+; Takes 3 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
+TeamGridCellAt:
+        enter 0xa, 0x0
+        push di
+        push si
+        mov word [bp - 0xa], 0xffff
+        mov word [bp - 0x8], 0x0
+.1:
+        db 0x2B, 0xDB                           ; insn: sub bx, bx
+.2:
+        mov si, [bp - 0x8]
+        db 0x8B, 0xC6                           ; insn: mov ax, si
+        shl si, 1
+        db 0x03, 0xF0                           ; insn: add si, ax
+        shl si, 1
+        add si, [bp + 0xa]
+        mov al, [bx + si]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        mov [bp - 0x6], ax
+        imul di, [bp - 0x8], 0x28
+        add di, 0x1e
+        imul ax, bx, 0x34
+        add ax, strict word 0xc
+        db 0x8B, 0xC8                           ; insn: mov cx, ax
+        add ax, strict word 0x20
+        mov [bp - 0x2], ax
+        lea ax, [di + 0x17]
+        mov [bp - 0x4], ax
+        cmp cx, [bp + 0x6]
+        jg short .3
+        mov ax, [bp + 0x6]
+        cmp [bp - 0x2], ax
+        jl short .3
+        cmp di, [bp + 0x8]
+        jg short .3
+        mov ax, [bp + 0x8]
+        cmp [bp - 0x4], ax
+        jl short .3
+        mov ax, [bp - 0x6]
+        mov [bp - 0xa], ax
+        mov word [bp - 0x8], 0x4
+        mov bx, 0x6
+.3:
+        inc bx
+        cmp bx, 0x6
+        jl short .2
+        inc word [bp - 0x8]
+        cmp word [bp - 0x8], 0x4
+        jl short .1
+        mov ax, [bp - 0xa]
+        pop si
+        pop di
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; DrawTeamGridCell                                           1F31:008E  94 PC
+; Crest and name of one grid cell.
+;
+; Takes 6 words of stack arguments. Calls SetTextColors, SetClipRectRegs, DrawRleTransAt,
+; TextWidthFar, DrawShadowText. Far routine (retf).
+;-----------------------------------------------------------------------------
+DrawTeamGridCell:
+        enter 0x8, 0x0
+        push di
+        push si
+        push word [ItemSelectColor]
+        push word [ItemTextColor]
+        call 0x0D39:SetTextColors
+        add sp, 0x4
+        mov di, 0x39
+        mov word [bp - 0x6], 0x0
+.1:
+        mov word [bp - 0x2], 0x0
+        mov si, 0x4
+.2:
+        mov bx, [bp - 0x2]
+        add bx, [bp + 0x10]
+        add bx, [bp - 0x6]
+        mov al, [bx]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        cmp ax, [bp + 0x6]
+        jnz short .3
+        les bx, [FontPtr]
+        mov ax, [es:bx + 0xe]
+        db 0x03, 0xC7                           ; insn: add ax, di
+        inc ax
+        push ax
+        db 0x8B, 0xC6                           ; insn: mov ax, si
+        db 0x8B, 0xDF                           ; insn: mov bx, di
+        db 0x8B, 0xD0                           ; insn: mov dx, ax
+        add dx, 0x33
+        call 0x0FEF:SetClipRectRegs
+        push 0x0
+        push 0x0
+        push word [bp + 0xe]
+        push word [bp + 0xc]
+        call 0x0FEF:DrawRleTransAt
+        add sp, 0x8
+        push word 0xc8
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov dx, 0x140
+        db 0x2B, 0xDB                           ; insn: sub bx, bx
+        call 0x0FEF:SetClipRectRegs
+        imul ax, [bp + 0x6], 0x1e
+        add ax, [bp + 0x8]
+        mov dx, [bp + 0xa]
+        push dx
+        push ax
+        push di
+        push dx
+        push ax
+        call 0x0D39:TextWidthFar
+        add sp, 0x4
+        sub ax, strict word 0x34
+        neg ax
+        cwd
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        sar ax, 1
+        db 0x03, 0xC6                           ; insn: add ax, si
+        push ax
+        call 0x0D39:DrawShadowText
+        add sp, 0x8
+.3:
+        inc word [bp - 0x2]
+        add si, 0x34
+        cmp si, 0x13c
+        jnl short .4
+        jmp near .2
+.4:
+        add di, 0x28
+        add word [bp - 0x6], 0x6
+        cmp word [bp - 0x6], 0x18
+        jnl short .5
+        jmp near .1
+.5:
+        pop si
+        pop di
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; FrameTeamGridCell                                          1F31:0150  94 PC
+; Frame / XOR frame round a grid cell.
+;
+; Takes 3 words of stack arguments. Calls XorFrame, DrawFrame. Far routine (retf).
+;-----------------------------------------------------------------------------
+FrameTeamGridCell:
+        enter 0xe, 0x0
+        push di
+        push si
+        mov word [bp - 0xc], 0x1c
+        mov word [bp - 0xa], 0x0
+.1:
+        mov word [bp - 0x6], 0x0
+        mov word [bp - 0x8], 0xa
+.2:
+        mov bx, [bp - 0x6]
+        add bx, [bp + 0x8]
+        mov si, [bp - 0xa]
+        mov al, [bx + si]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        cmp ax, [bp + 0x6]
+        jnz short .5
+        mov si, [bp - 0x8]
+        lea di, [si + 0x24]
+        mov ax, [bp - 0xc]
+        mov [bp - 0x2], ax
+        add ax, strict word 0x1b
+        cmp word [bp + 0xa], 0x0
+        jz short .3
+        push 0x40
+        push ax
+        push di
+        push word [bp - 0x2]
+        push si
+        call 0x1500:XorFrame
+        jmp short .4
+.3:
+        push 0x0
+        push ax
+        push di
+        push word [bp - 0x2]
+        push si
+        call 0x1484:DrawFrame
+.4:
+        add sp, 0xa
+.5:
+        inc word [bp - 0x6]
+        add word [bp - 0x8], 0x34
+        cmp word [bp - 0x8], 0x142
+        jl short .2
+        add word [bp - 0xc], 0x28
+        add word [bp - 0xa], 0x6
+        cmp word [bp - 0xa], 0x18
+        jl short .1
+        pop si
+        pop di
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; DrawTeamGrid                                               1F31:01D0  94 PC
+; crests4 grid of all teams.
+;
+; Takes 7 words of stack arguments. Calls _fstrcpy, DrawShadowTextCentered, BuildPathFar,
+; LoadPackedHeader, LoadRawHeader, SetPaletteFar, FindFarMsg, _fmemcpy and others. Far routine (retf).
+;-----------------------------------------------------------------------------
+DrawTeamGrid:
+        enter 0xc8, 0x0
+        push di
+        push si
+        push word [bp + 0xc]
+        push word [bp + 0xa]
+        lea ax, [bp - 0x68]
+        push ss
+        push ax
+        call 0x0000:_fstrcpy
+        add sp, 0x8
+        lea ax, [bp - 0x68]
+        push ss
+        push ax
+        push 0xe
+        call 0x0D39:DrawShadowTextCentered
+        add sp, 0x6
+        push word 0x3701
+        push strict word str_Qpp
+        push ds
+        push strict word str_Crests4_6
+        push 0x0
+        push 0x0
+        lea ax, [bp - 0x68]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        push 0x0
+        lea ax, [bp - 0x68]
+        push ax
+        call 0x14B8:LoadPackedHeader
+        add sp, 0x4
+        mov [bp - 0x16], ax
+        mov [bp - 0x14], dx
+        push 0x0
+        push strict word str_CrestsBin
+        call 0x149D:LoadRawHeader
+        add sp, 0x4
+        mov es, dx
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        db 0x8B, 0xFB                           ; insn: mov di, bx
+        mov [bp - 0x10], es
+        mov byte [es:bx + 0x171], 0x18
+        mov byte [es:bx + 0x172], 0x0
+        mov byte [es:bx + 0x173], 0x0
+        mov byte [es:bx + 0x174], 0x2a
+        mov byte [es:bx + 0x175], 0x0
+        mov byte [es:bx + 0x176], 0x0
+        mov byte [es:bx + 0x177], 0x3b
+        mov byte [es:bx + 0x178], 0x12
+        mov byte [es:bx + 0x179], 0x0
+        mov byte [es:bx + 0x17a], 0x3b
+        mov byte [es:bx + 0x17b], 0x3b
+        mov byte [es:bx + 0x17c], 0x3b
+        push es
+        push bx
+        push word 0x80
+        push word 0x80
+        call 0x0FEF:SetPaletteFar
+        add sp, 0x8
+        mov si, 0x5604
+        lea ax, [bp - 0xc8]
+        mov [bp - 0x2], ax
+        mov [bp - 0x12], di
+        mov [bp - 0x4], si
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        mov di, [bp - 0x4]
+.1:
+        inc di
+        inc di
+        push word [di - 0x2]
+        push word [bp - 0x14]
+        push word [bp - 0x16]
+        call 0x03A3:FindFarMsg
+        add sp, 0x6
+        add si, 0x4
+        mov [si - 0x4], ax
+        mov [si - 0x2], dx
+        lea ax, [bp - 0x68]
+        db 0x3B, 0xF0                           ; insn: cmp si, ax
+        jc short .1
+        mov word [bp - 0x6], 0x1e
+        mov word [bp - 0x4], 0x0
+.2:
+        db 0x2B, 0xFF                           ; insn: sub di, di
+        mov word [bp - 0x2], 0xc
+.3:
+        push word 0x100
+        mov bx, [bp + 0xe]
+        add bx, [bp - 0x4]
+        mov al, [bx + di]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        db 0x8A, 0xE0                           ; insn: mov ah, al
+        db 0x2A, 0xC0                           ; insn: sub al, al
+        add ax, [bp - 0x12]
+        mov dx, [bp - 0x10]
+        add ax, 0x180
+        push dx
+        push ax
+        push word 0x3a0b
+        push strict word f_3A0B_AF4C
+        call 0x0000:_fmemcpy
+        add sp, 0xa
+        mov es, [g_8B8A]
+        mov byte [es:0xaf8f], 0x7f
+        push word 0x3a0b
+        push strict word f_3A0B_AF4C
+        call 0x0FEF:SetRemapTable
+        add sp, 0x4
+        push word [bp - 0x6]
+        push word [bp - 0x2]
+        db 0x8B, 0xDE                           ; insn: mov bx, si
+        shl bx, byte 0x2
+        lea ax, [bp - 0xc8]
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        push word [bx + 0x2]
+        push word [bx]
+        call 0x0FEF:DrawRleTransRemapFastAt
+        add sp, 0x8
+        imul bx, si, 0x1e
+        add bx, [bp + 0x6]
+        mov es, [bp + 0x8]
+        cmp byte [es:bx + 0x17], 0x1
+        jnz short .4
+        push word [bp + 0xe]
+        push word [bp + 0x12]
+        push word [bp + 0x10]
+        push es
+        push word [bp + 0x6]
+        push si
+        push cs
+        call DrawTeamGridCell
+        add sp, 0xc
+.4:
+        inc di
+        add word [bp - 0x2], 0x34
+        cmp word [bp - 0x2], 0x144
+        jnl short .5
+        jmp near .3
+.5:
+        add word [bp - 0x6], 0x28
+        add word [bp - 0x4], 0x6
+        cmp word [bp - 0x4], 0x18
+        jnl short .6
+        jmp near .2
+.6:
+        push word [bp - 0x10]
+        push word [bp - 0x12]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        push word [bp - 0x14]
+        push word [bp - 0x16]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        pop si
+        pop di
+        leave
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; ChooseLeagueController                                     1F31:03A6  94 PC
+; 'Who will control the league?' and master password.
+;
+; Takes 5 words of stack arguments. Calls AllocRecData, _fmemset, _fstrcpy, ListDialog, _fstrcat,
+; NumberEntryDialog, MessageBox, EncryptPassword and others. Far routine (retf).
+;-----------------------------------------------------------------------------
+ChooseLeagueController:
+        enter 0xd8, 0x0
+        push di
+        push si
+        mov si, [bp + 0xa]
+        db 0x8B, 0xC6                           ; insn: mov ax, si
+        cwd
+        db 0x8B, 0xDA                           ; insn: mov bx, dx
+        shl ax, 1
+        rcl dx, 1
+        shl ax, 1
+        rcl dx, 1
+        mov [bp - 0xca], ax
+        mov [bp - 0xc8], dx
+        push ax
+        push 0x0
+        push 0x0
+        push dx
+        push ax
+        push strict word str_Plst
+        db 0x8B, 0xFE                           ; insn: mov di, si
+        mov [bp - 0xce], di
+        mov [bp - 0xcc], bx
+        call 0x14DB:AllocRecData
+        add sp, 0x8
+        mov [bp - 0x40], ax
+        mov [bp - 0x3e], dx
+        push dx
+        push ax
+        call 0x0000:_fmemset
+        add sp, 0x8
+        mov ax, [bp - 0xce]
+        mov dx, [bp - 0xcc]
+        db 0x8B, 0xC8                           ; insn: mov cx, ax
+        db 0x8B, 0xDA                           ; insn: mov bx, dx
+        shl ax, 1
+        rcl dx, 1
+        shl ax, 1
+        rcl dx, 1
+        db 0x03, 0xC1                           ; insn: add ax, cx
+        db 0x13, 0xD3                           ; insn: adc dx, bx
+        shl ax, 1
+        rcl dx, 1
+        db 0x03, 0xC1                           ; insn: add ax, cx
+        db 0x13, 0xD3                           ; insn: adc dx, bx
+        db 0x8B, 0xC8                           ; insn: mov cx, ax
+        db 0x8B, 0xDA                           ; insn: mov bx, dx
+        push ax
+        push 0x0
+        push 0x0
+        push bx
+        push cx
+        push strict word str_Ptls
+        call 0x14DB:AllocRecData
+        add sp, 0x8
+        db 0x8B, 0xF8                           ; insn: mov di, ax
+        mov [bp - 0x42], dx
+        push dx
+        push ax
+        mov [bp - 0xd2], ax
+        mov [bp - 0xd0], dx
+        call 0x0000:_fmemset
+        add sp, 0x8
+        mov word [bp - 0x2], 0x0
+        mov ax, [bp - 0x40]
+        mov dx, [bp - 0x3e]
+        mov [bp - 0x1c], ax
+        mov [bp - 0x1a], dx
+        lea ax, [bp - 0x74]
+        mov [bp - 0x10], ax
+        mov ax, [bp - 0xd2]
+        mov dx, [bp - 0xd0]
+        mov [bp - 0x24], ax
+        mov [bp - 0x22], dx
+        mov ax, [bp + 0x6]
+        mov dx, [bp + 0x8]
+        add ax, strict word 0x17
+        mov [bp - 0x18], ax
+        mov [bp - 0x16], dx
+        mov [bp - 0x44], di
+        mov si, [bp - 0x2]
+        db 0x8B, 0xF8                           ; insn: mov di, ax
+.1:
+        mov es, [bp - 0x16]
+        cmp byte [es:di], 0x1
+        jnz short .2
+        lea ax, [di - 0x17]
+        push es
+        push ax
+        lea ax, [bp - 0xc6]
+        push ss
+        push ax
+        call 0x0000:_fstrcpy
+        add sp, 0x8
+        lea ax, [bp - 0xc6]
+        push ss
+        push ax
+        push word [bp - 0x22]
+        push word [bp - 0x24]
+        call 0x0000:_fstrcpy
+        add sp, 0x8
+        mov bx, [bp - 0x10]
+        add word [bp - 0x10], 0x2
+        mov [bx], si
+        mov ax, [bp - 0x24]
+        mov dx, [bp - 0x22]
+        add word [bp - 0x24], 0xb
+        les bx, [bp - 0x1c]
+        add word [bp - 0x1c], 0x4
+        mov [es:bx], ax
+        mov [es:bx + 0x2], dx
+.2:
+        add di, 0x1e
+        mov ax, [bp - 0x16]
+        inc si
+        cmp si, 0x18
+        jl short .1
+        mov si, [bp + 0xa]
+        cmp si, 0x1
+        jng short .3
+        push 0x0
+        push 0x0
+        push 0x0
+        push 0x0
+        push word 0x3701
+        push strict word str_WhoWillControlTheLeague
+        push si
+        push word [bp - 0x3e]
+        push word [bp - 0x40]
+        call 0x0D90:ListDialog
+        add sp, 0x12
+        db 0x8B, 0xF8                           ; insn: mov di, ax
+        mov [bp - 0x4], di
+        mov di, [bp + 0x6]
+        jmp short .6
+        db 0x90
+.3:
+        db 0x2B, 0xDB                           ; insn: sub bx, bx
+        mov [bp - 0x4], bx
+        mov di, [bp + 0x6]
+        mov es, [bp + 0x8]
+.4:
+        imul si, bx, 0x1e
+        db 0x03, 0xF7                           ; insn: add si, di
+        cmp byte [es:si + 0x17], 0x1
+        jnz short .5
+        mov [bp - 0x74], bx
+        mov bx, 0x18
+.5:
+        inc bx
+        cmp bx, 0x18
+        jl short .4
+.6:
+        mov si, [bp - 0x4]
+        mov al, 0x1
+        db 0x8B, 0xDE                           ; insn: mov bx, si
+        shl bx, 1
+        lea cx, [bp - 0x74]
+        db 0x03, 0xD9                           ; insn: add bx, cx
+        mov cx, [bx]
+        mov [bp - 0xd8], cx
+        imul bx, cx, 0x1e
+        db 0x03, 0xDF                           ; insn: add bx, di
+        mov es, [bp + 0x8]
+        mov [bp - 0xd6], bx
+        mov [bp - 0xd4], es
+        mov [es:bx + 0x18], al
+        mov [es:bx + 0x19], al
+        mov es, [g_8B8C]
+        mov [es:0xac5a], cx
+.7:
+        push word 0x3701
+        push strict word str_EnterMasterControllerPassword
+        lea ax, [bp - 0xc6]
+        push ss
+        push ax
+        call 0x0000:_fstrcpy
+        add sp, 0x8
+        push word [bp - 0xd4]
+        push word [bp - 0xd6]
+        lea ax, [bp - 0xc6]
+        push ss
+        push ax
+        call 0x0000:_fstrcat
+        add sp, 0x8
+        push 0x2
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [bp - 0x2], ax
+        push ax
+        push ax
+        push ax
+        push ax
+        push 0x3c
+        push 0xa
+        lea ax, [bp - 0x30]
+        push ax
+        lea cx, [bp - 0xc6]
+        push ss
+        push cx
+        call 0x0D90:NumberEntryDialog
+        add sp, 0x14
+        push word 0x3701
+        push strict word str_VerifyMasterControllerPassword
+        lea ax, [bp - 0xc6]
+        push ss
+        push ax
+        call 0x0000:_fstrcpy
+        add sp, 0x8
+        push word [bp - 0xd4]
+        push word [bp - 0xd6]
+        lea ax, [bp - 0xc6]
+        push ss
+        push ax
+        call 0x0000:_fstrcat
+        add sp, 0x8
+        push 0x2
+        push 0x0
+        push 0x0
+        push 0x0
+        push 0x0
+        push 0x3c
+        push 0xa
+        lea ax, [bp - 0x3c]
+        push ax
+        lea cx, [bp - 0xc6]
+        push ss
+        push cx
+        call 0x0D90:NumberEntryDialog
+        add sp, 0x14
+        lea di, [bp - 0x3c]
+        lea si, [bp - 0x30]
+        push ss
+        pop es
+        mov cx, 0xffff
+        db 0x33, 0xC0                           ; insn: xor ax, ax
+        repne scasb
+        not cx
+        db 0x2B, 0xF9                           ; insn: sub di, cx
+        repe cmpsb
+        jz short .8
+        db 0x1B, 0xC0                           ; insn: sbb ax, ax
+        sbb ax, strict word 0xffff
+.8:
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jnz short .9
+        mov si, [bp - 0x2]
+        jmp short .10
+.9:
+        push -0x1
+        push word [bp + 0xe]
+        push word [bp + 0xc]
+        push 0x0
+        push 0x0
+        push 0x0
+        push 0x2
+        push word 0x3701
+        push strict word msgThePasswordWasEnteredDifferently
+        push -0x1
+        push -0x1
+        call 0x0D90:MessageBox
+        add sp, 0x16
+        mov si, 0xffff
+.10:
+        db 0x0B, 0xF6                           ; insn: or si, si
+        jz short .11
+        jmp near .7
+.11:
+        lea ax, [bp - 0x30]
+        push ss
+        push ax
+        push word 0x3a0b
+        push strict word f_3A0B_AF32
+        call 0x0000:_fstrcpy
+        add sp, 0x8
+        push word [bp - 0xd8]
+        push word 0x3a0b
+        push strict word f_3A0B_AF32
+        call 0x28A8:EncryptPassword
+        add sp, 0x6
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov es, [g_8B8E]
+        mov [es:0xac5e], ax
+        mov es, [g_8B90]
+        mov [es:0xac60], ax
+        mov es, [g_8B92]
+        mov byte [es:0xaf3e], 0x0
+        push word [bp - 0x3e]
+        push word [bp - 0x40]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        push word [bp - 0x42]
+        push word [bp - 0x44]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        pop si
+        pop di
+        leave
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; AskExportToFloppy                                          1F31:06A6  94 PC
+; Export-to-floppy question.
+;
+; Takes 6 words of stack arguments. Calls MouseRead, MessageBox. Far routine (retf).
+;-----------------------------------------------------------------------------
+AskExportToFloppy:
+        enter 0x10, 0x0
+        push di
+        push si
+        mov di, [bp + 0xe]
+        lea ax, [bp - 0x4]
+        push ax
+        lea ax, [bp - 0x6]
+        push ax
+        lea ax, [bp - 0x2]
+        push ax
+        call 0x03A3:MouseRead
+        add sp, 0x6
+        mov word [bp - 0x2], 0x0
+        mov si, [bp + 0x6]
+.1:
+        test di, 0x1
+        jz short .2
+        db 0x8B, 0xDE                           ; insn: mov bx, si
+        mov es, [bp + 0x8]
+        imul ax, [bp - 0x2], 0x1e
+        mov [bp - 0x8], ax
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        cmp byte [es:bx + 0x17], 0x1
+        jnz short .2
+        db 0x8B, 0xDE                           ; insn: mov bx, si
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        cmp byte [es:bx + 0x18], 0x2
+        jz short .5
+.2:
+        test di, 0x2
+        jnz short .3
+        jmp near .9
+.3:
+        db 0x8B, 0xDE                           ; insn: mov bx, si
+        mov es, [bp + 0x8]
+        imul ax, [bp - 0x2], 0x1e
+        mov [bp - 0x8], ax
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        cmp byte [es:bx + 0x17], 0x1
+        jz short .4
+        jmp near .9
+.4:
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        add bx, [bp + 0xa]
+        mov es, [bp + 0xc]
+        cmp byte [es:bx + 0x17], 0x0
+        jz short .5
+        jmp near .9
+.5:
+        cmp word [bp + 0x10], 0x1
+        jg short .6
+        jmp near .8
+.6:
+        db 0x8B, 0xC6                           ; insn: mov ax, si
+        mov dx, [bp + 0x8]
+        add ax, [bp - 0x8]
+        mov es, [g_8B94]
+        mov [es:0x541], ax
+        mov [es:0x543], dx
+        push -0x1
+        lea ax, [bp - 0x4]
+        push ax
+        lea ax, [bp - 0x6]
+        push ax
+        push 0x2
+        push word 0x3701
+        push strict word f_3701_0549
+        push 0x4
+        push es
+        push word 0x53d
+        push -0x1
+        push -0x1
+        call 0x0D90:MessageBox
+        add sp, 0x16
+        dec ax
+        jnz short .7
+        db 0x8B, 0xDE                           ; insn: mov bx, si
+        mov es, [bp + 0x8]
+        imul ax, [bp - 0x2], 0x1e
+        mov [bp - 0xc], bx
+        mov [bp - 0xa], es
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        mov byte [es:bx + 0x18], 0x1
+        imul bx, [bp - 0x2], 0x1e
+        add bx, [bp - 0xc]
+        mov es, [bp - 0xa]
+        jmp short .11
+        db 0x90
+.7:
+        db 0x8B, 0xDE                           ; insn: mov bx, si
+        mov es, [bp + 0x8]
+        imul ax, [bp - 0x2], 0x1e
+        mov [bp - 0x10], bx
+        mov [bp - 0xe], es
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        mov byte [es:bx + 0x18], 0x2
+        imul bx, [bp - 0x2], 0x1e
+        add bx, [bp - 0x10]
+        mov es, [bp - 0xe]
+        mov byte [es:bx + 0x16], 0x2
+        jmp short .12
+        db 0x90
+.8:
+        db 0x8B, 0xDE                           ; insn: mov bx, si
+        mov es, [bp + 0x8]
+        jmp short .10
+        db 0x90
+.9:
+        db 0x8B, 0xDE                           ; insn: mov bx, si
+        mov es, [bp + 0x8]
+        imul ax, [bp - 0x2], 0x1e
+        mov [bp - 0x8], ax
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        cmp byte [es:bx + 0x17], 0x0
+        jnz short .12
+        db 0x8B, 0xDE                           ; insn: mov bx, si
+.10:
+        db 0x8B, 0xC3                           ; insn: mov ax, bx
+        mov dx, es
+        add bx, [bp - 0x8]
+        mov byte [es:bx + 0x18], 0x1
+        imul bx, [bp - 0x2], 0x1e
+        db 0x03, 0xD8                           ; insn: add bx, ax
+.11:
+        mov byte [es:bx + 0x16], 0x1
+.12:
+        inc word [bp - 0x2]
+        cmp word [bp - 0x2], 0x18
+        jnl short .13
+        jmp near .1
+.13:
+        pop si
+        pop di
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; BuildStandingsGrid                                         1F31:07FA  94 PC
+; Team list for the selection grid.
+;
+; Takes 2 words of stack arguments. Calls ReadEntry744. Far routine (retf).
+;-----------------------------------------------------------------------------
+BuildStandingsGrid:
+        enter 0x4da, 0x0
+        push di
+        push si
+        db 0x2B, 0xF6                           ; insn: sub si, si
+        db 0x8B, 0xFE                           ; insn: mov di, si
+.1:
+        push di
+        lea ax, [bp - 0x4a4]
+        push ss
+        push ax
+        push word [bp + 0x6]
+        call 0x0CD1:ReadEntry744
+        add sp, 0x8
+        mov [bp - 0xc], ax
+        mov al, [bp - 0x47b]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        mov [bp + si - 0x3c], ax
+        mov al, [bp - 0x47a]
+        mov [bp + si - 0x6c], ax
+        mov al, [bp - 0x479]
+        mov [bp + si - 0x9c], ax
+        mov ax, [bp - 0x478]
+        mov [bp + si - 0xcc], ax
+        mov ax, [bp - 0x476]
+        mov [bp + si - 0xfc], ax
+        inc di
+        inc si
+        inc si
+        cmp si, 0x30
+        jl short .1
+        db 0x2B, 0xF6                           ; insn: sub si, si
+        mov [bp - 0x6], si
+.2:
+        db 0x2B, 0xFF                           ; insn: sub di, di
+        mov dx, [bp - 0x6]
+.3:
+        db 0x8B, 0xDA                           ; insn: mov bx, dx
+        db 0x03, 0xDF                           ; insn: add bx, di
+        db 0x8B, 0xC3                           ; insn: mov ax, bx
+        mov bl, [bx + g_16C8]
+        db 0x8B, 0xCB                           ; insn: mov cx, bx
+        db 0x2A, 0xFF                           ; insn: sub bh, bh
+        shl bx, 1
+        mov [bp - 0x4a6], ax
+        lea ax, [bp - 0x9c]
+        mov [bp - 0x4a8], bx
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        lea ax, [bp - 0x3c]
+        push ax
+        mov ax, [bx]
+        mov [bp - 0x4aa], ax
+        pop ax
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        add bx, [bp - 0x4a8]
+        mov ax, [bx]
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        shl ax, 1
+        add ax, [bp - 0x4aa]
+        mov [bp + si - 0x12c], ax
+        mov [bp + si - 0x15c], bx
+        mov bx, [bp - 0x4a8]
+        lea ax, [bp - 0xcc]
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        mov ax, [bx]
+        mov [bp + si - 0x18c], ax
+        mov bx, [bp - 0x4a8]
+        lea ax, [bp - 0xfc]
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        mov ax, [bx]
+        mov [bp + si - 0x1bc], ax
+        mov bx, [bp - 0x4a6]
+        add bx, [bp + 0x8]
+        mov [bx], cl
+        inc si
+        inc si
+        inc di
+        cmp di, 0x6
+        jl short .3
+        mov [bp - 0x4], si
+        add dx, 0x6
+        mov [bp - 0x6], dx
+        cmp dx, 0x18
+        jnl short .4
+        jmp near .2
+.4:
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [bp - 0x8], ax
+        mov [bp - 0xa], ax
+.5:
+        db 0x2B, 0xD2                           ; insn: sub dx, dx
+        mov ax, [bp - 0xa]
+        mov [bp - 0x6], ax
+        mov si, [bp - 0x8]
+.6:
+        mov [bp - 0x2], dx
+        db 0x8B, 0xFA                           ; insn: mov di, dx
+        inc di
+        cmp di, 0x6
+        jl short .7
+        jmp near .18
+.7:
+        db 0x8B, 0xC7                           ; insn: mov ax, di
+        db 0x03, 0xC6                           ; insn: add ax, si
+        shl ax, 1
+        mov [bp - 0x4], ax
+        db 0x8B, 0xC6                           ; insn: mov ax, si
+        db 0x03, 0xC2                           ; insn: add ax, dx
+        mov [bp - 0x4ac], ax
+        mov dx, [bp + 0x8]
+        mov cx, [bp - 0x2]
+.8:
+        db 0x8B, 0xC6                           ; insn: mov ax, si
+        db 0x03, 0xC7                           ; insn: add ax, di
+        mov [bp - 0x4ae], ax
+        mov bx, [bp - 0x6]
+        lea ax, [bp - 0x12c]
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        mov ax, [bx]
+        mov bx, [bp - 0x4]
+        mov [bp - 0x4b4], ax
+        lea ax, [bp - 0x12c]
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        mov ax, [bx]
+        mov [bp - 0x4b0], ax
+        mov bx, [bp - 0x4b4]
+        mov [bp - 0x4b2], bx
+        db 0x3B, 0xC3                           ; insn: cmp ax, bx
+        jng short .9
+        jmp near .15
+.9:
+        db 0x8B, 0xC3                           ; insn: mov ax, bx
+        cmp [bp - 0x4b0], ax
+        jnz short .10
+        mov bx, [bp - 0x4]
+        lea ax, [bp - 0x15c]
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        push ax
+        mov ax, [bx]
+        mov [bp - 0x4b6], ax
+        pop ax
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        add bx, [bp - 0x6]
+        mov ax, [bx]
+        cmp [bp - 0x4b6], ax
+        jng short .10
+        jmp near .15
+.10:
+        mov ax, [bp - 0x4b2]
+        cmp [bp - 0x4b0], ax
+        jnz short .11
+        mov bx, [bp - 0x4]
+        lea ax, [bp - 0x15c]
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        push ax
+        mov ax, [bx]
+        mov [bp - 0x4b8], ax
+        pop ax
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        add bx, [bp - 0x6]
+        mov ax, [bx]
+        cmp [bp - 0x4b8], ax
+        jnz short .11
+        mov bx, [bp - 0x6]
+        lea ax, [bp - 0x1bc]
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        mov ax, [bx]
+        mov bx, [bp - 0x4]
+        mov [bp - 0x4ba], ax
+        lea ax, [bp - 0x18c]
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        mov ax, [bx]
+        cmp [bp - 0x4ba], ax
+        jl short .15
+.11:
+        mov ax, [bp - 0x4b2]
+        cmp [bp - 0x4b0], ax
+        jz short .12
+        jmp near .16
+.12:
+        mov bx, [bp - 0x4]
+        lea ax, [bp - 0x15c]
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        push ax
+        mov ax, [bx]
+        mov [bp - 0x4bc], ax
+        pop ax
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        add bx, [bp - 0x6]
+        mov ax, [bx]
+        cmp [bp - 0x4bc], ax
+        jz short .13
+        jmp near .16
+.13:
+        mov bx, [bp - 0x4]
+        lea ax, [bp - 0x18c]
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        push ax
+        mov ax, [bx]
+        mov [bp - 0x4be], ax
+        pop ax
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        add bx, [bp - 0x6]
+        mov ax, [bx]
+        cmp [bp - 0x4be], ax
+        jz short .14
+        jmp near .16
+.14:
+        mov bx, [bp - 0x4]
+        lea ax, [bp - 0x1bc]
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        push ax
+        mov ax, [bx]
+        mov [bp - 0x4c0], ax
+        pop ax
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        add bx, [bp - 0x6]
+        mov ax, [bx]
+        cmp [bp - 0x4c0], ax
+        jl short .15
+        jmp near .16
+.15:
+        mov bx, [bp - 0x4]
+        lea ax, [bp - 0x12c]
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        mov ax, [bp - 0x4b2]
+        xor [bx], ax
+        mov ax, [bx]
+        mov bx, [bp - 0x6]
+        mov [bp - 0x4c2], ax
+        lea ax, [bp - 0x12c]
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        mov ax, [bp - 0x4c2]
+        xor [bx], ax
+        mov ax, [bx]
+        mov bx, [bp - 0x4]
+        mov [bp - 0x4c4], ax
+        lea ax, [bp - 0x12c]
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        mov ax, [bp - 0x4c4]
+        xor [bx], ax
+        mov bx, [bp - 0x6]
+        lea ax, [bp - 0x15c]
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        mov ax, [bx]
+        mov bx, [bp - 0x4]
+        mov [bp - 0x4c6], ax
+        lea ax, [bp - 0x15c]
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        mov ax, [bp - 0x4c6]
+        xor [bx], ax
+        mov ax, [bx]
+        mov bx, [bp - 0x6]
+        mov [bp - 0x4c8], ax
+        lea ax, [bp - 0x15c]
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        mov ax, [bp - 0x4c8]
+        xor [bx], ax
+        mov ax, [bx]
+        mov bx, [bp - 0x4]
+        mov [bp - 0x4ca], ax
+        lea ax, [bp - 0x15c]
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        mov ax, [bp - 0x4ca]
+        xor [bx], ax
+        mov bx, [bp - 0x6]
+        lea ax, [bp - 0x18c]
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        mov ax, [bx]
+        mov bx, [bp - 0x4]
+        mov [bp - 0x4cc], ax
+        lea ax, [bp - 0x18c]
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        mov ax, [bp - 0x4cc]
+        xor [bx], ax
+        mov ax, [bx]
+        mov bx, [bp - 0x6]
+        mov [bp - 0x4ce], ax
+        lea ax, [bp - 0x18c]
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        mov ax, [bp - 0x4ce]
+        xor [bx], ax
+        mov ax, [bx]
+        mov bx, [bp - 0x4]
+        mov [bp - 0x4d0], ax
+        lea ax, [bp - 0x18c]
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        mov ax, [bp - 0x4d0]
+        xor [bx], ax
+        mov bx, [bp - 0x6]
+        lea ax, [bp - 0x1bc]
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        mov ax, [bx]
+        mov bx, [bp - 0x4]
+        mov [bp - 0x4d2], ax
+        lea ax, [bp - 0x1bc]
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        mov ax, [bp - 0x4d2]
+        xor [bx], ax
+        mov ax, [bx]
+        mov bx, [bp - 0x6]
+        mov [bp - 0x4d4], ax
+        lea ax, [bp - 0x1bc]
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        mov ax, [bp - 0x4d4]
+        xor [bx], ax
+        mov ax, [bx]
+        mov bx, [bp - 0x4]
+        mov [bp - 0x4d6], ax
+        lea ax, [bp - 0x1bc]
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        mov ax, [bp - 0x4d6]
+        xor [bx], ax
+        mov bx, [bp - 0x4ac]
+        db 0x03, 0xDA                           ; insn: add bx, dx
+        mov al, [bx]
+        mov [bp - 0x4d8], bx
+        mov bx, [bp - 0x4ae]
+        db 0x03, 0xDA                           ; insn: add bx, dx
+        xor [bx], al
+        mov al, [bx]
+        mov [bp - 0x4da], bx
+        mov bx, [bp - 0x4d8]
+        xor [bx], al
+        mov al, [bx]
+        mov bx, [bp - 0x4da]
+        xor [bx], al
+.16:
+        add word [bp - 0x4], 0x2
+        inc di
+        cmp di, 0x6
+        jnl short .17
+        jmp near .8
+.17:
+        add word [bp - 0x6], 0x2
+        db 0x8B, 0xC1                           ; insn: mov ax, cx
+        inc ax
+        db 0x8B, 0xC8                           ; insn: mov cx, ax
+        mov [bp - 0x2], cx
+        cmp cx, 0x5
+        jnl short .19
+        db 0x8B, 0xD0                           ; insn: mov dx, ax
+        jmp near .6
+.18:
+        db 0x8B, 0xCA                           ; insn: mov cx, dx
+        jmp short .17
+.19:
+        add si, 0x6
+        mov [bp - 0x8], si
+        add word [bp - 0xa], 0xc
+        cmp word [bp - 0xa], 0x30
+        jnl short .20
+        jmp near .5
+.20:
+        mov ax, [bp - 0xc]
+        pop si
+        pop di
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; TeamSelDone                                                1F31:0B9E  94 PC
+; Menu item: done.
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
+TeamSelDone:
+        mov word [teamselresult], 0x1
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; TeamSelCancel                                              1F31:0BA6  94 PC
+; Menu item: cancel.
+;
+; Far routine (retf).
+;-----------------------------------------------------------------------------
+TeamSelCancel:
+        mov word [teamselresult], 0xffff
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; LeagueTeamSelect                                           1F31:0BAE  94 PC
+; 'Who will play', passwords.
+;
+; Takes 12 words of stack arguments. Calls UseCurrentPage, SetDialogColors, _fmemcpy, BuildPathFar,
+; OpenReadShared, BuildStandingsGrid, CloseHandlePtr, FindFarMsg and others. Far routine (retf).
+;-----------------------------------------------------------------------------
+LeagueTeamSelect:
+        enter 0x11a, 0x0
+        push di
+        push si
+        call 0x0FEF:UseCurrentPage
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [bp - 0x66], ax
+        push ax
+        mov ax, 0x7f
+        mov [bp - 0x6], ax
+        push ax
+        mov ax, 0x57
+        mov [bp - 0x78], ax
+        push ax
+        push 0x7f
+        mov ax, 0x6a
+        mov [bp - 0x7e], ax
+        push ax
+        call 0x0D90:SetDialogColors
+        add sp, 0xa
+        test byte [bp + 0x16], 0x1
+        jz short .1
+        mov word [bp - 0xf0], 0x0
+        push 0x18
+        push ds
+        push strict word g_16C8
+        lea ax, [bp - 0x38]
+        push ss
+        push ax
+        call 0x0000:_fmemcpy
+        add sp, 0xa
+        jmp short .3
+        db 0x90
+.1:
+        push word 0x3701
+        push strict word str_Db_2
+        mov es, [g_8B96]
+        push word [es:0xb7e]
+        push word [es:0xb7c]
+        push word [bp + 0x8]
+        push word [bp + 0x6]
+        lea ax, [bp - 0x5a]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        lea ax, [bp - 0x3a]
+        push ax
+        lea cx, [bp - 0x5a]
+        push cx
+        call 0x0CD1:OpenReadShared
+        add sp, 0x4
+        mov [bp - 0xf0], ax
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jnz short .2
+        lea ax, [bp - 0x38]
+        push ax
+        push word [bp - 0x3a]
+        push cs
+        call BuildStandingsGrid
+        add sp, 0x4
+        mov [bp - 0xf0], ax
+.2:
+        lea ax, [bp - 0x3a]
+        push ax
+        call 0x0CD1:CloseHandlePtr
+        add sp, 0x2
+.3:
+        cmp word [bp - 0xf0], 0x0
+        jz short .4
+        jmp near .79
+.4:
+        cmp word [bp + 0x16], 0x8
+        jnz short .5
+        les bx, [bp + 0xa]
+        cmp word [es:bx], 0x1
+        jnz short .5
+        jmp near .79
+.5:
+        push strict word str_Pnt2_10
+        push word [MemBlock1Seg]
+        push word [MemBlock1Off]
+        call 0x03A3:FindFarMsg
+        add sp, 0x6
+        mov [DialogData], ax
+        mov [DialogDataSeg], dx
+        mov word [bp - 0xf8], 0x2d0
+        push word 0x2d0
+        push word [bp + 0x14]
+        push word [bp + 0x12]
+        push 0x0
+        push 0x0
+        push word 0x2d0
+        push strict word str_Tpi
+        call 0x14DB:AllocRecData
+        add sp, 0x8
+        mov [bp - 0x110], ax
+        mov [bp - 0x10e], dx
+        push dx
+        push ax
+        call 0x0000:_fmemcpy
+        add sp, 0xa
+        push word 0x3701
+        push strict word str_Qpp
+        push ds
+        push strict word str_Embnhl_3
+        push 0x0
+        push 0x0
+        lea ax, [bp - 0x5a]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        push strict word str_Bkgd_4
+        push 0x0
+        lea ax, [bp - 0x5a]
+        push ax
+        call 0x14B8:LoadPackedHeader
+        add sp, 0x4
+        mov [bp - 0x1a], ax
+        mov [bp - 0x18], dx
+        push dx
+        push ax
+        call 0x03A3:FindFarMsg
+        add sp, 0x6
+        mov [bp - 0x20], ax
+        mov [bp - 0x1e], dx
+        call 0x0FEF:UseCurrentPage
+        push 0x0
+        call 0x0FEF:ClearClipRect
+        add sp, 0x2
+        call 0x0FEF:UseOtherPage
+        push 0x0
+        call 0x0FEF:ClearClipRect
+        add sp, 0x2
+        push 0x40
+        push 0x7f
+        call 0x0D39:SetTextColors
+        add sp, 0x4
+        push word 0x3701
+        push strict word str_Qpp
+        push ds
+        push strict word str_Tspal
+        push 0x0
+        push 0x0
+        lea ax, [bp - 0x5a]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        push strict word str_Pal_43
+        push 0x0
+        lea ax, [bp - 0x5a]
+        push ax
+        call 0x14B8:LoadPackedHeader
+        add sp, 0x4
+        mov [bp - 0x102], ax
+        mov [bp - 0x100], dx
+        push dx
+        push ax
+        call 0x03A3:FindFarMsg
+        add sp, 0x6
+        mov [bp - 0xf6], ax
+        mov [bp - 0xf4], dx
+        add ax, strict word 0x10
+        push dx
+        push ax
+        push word 0x80
+        push 0x0
+        call 0x0FEF:SetPaletteFar
+        add sp, 0x8
+        push word [bp - 0x100]
+        push word [bp - 0x102]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        push 0x0
+        push 0x0
+        push word [bp - 0x1e]
+        push word [bp - 0x20]
+        call 0x0FEF:DrawRleTransAt
+        add sp, 0x8
+        push word [bp - 0x1e]
+        push word [bp - 0x20]
+        lea ax, [bp - 0x38]
+        push ax
+        push word [bp + 0x1a]
+        push word [bp + 0x18]
+        push word [bp - 0x10e]
+        push word [bp - 0x110]
+        push cs
+        call DrawTeamGrid
+        add sp, 0xe
+        test byte [bp + 0x16], 0x1
+        jz short .7
+        mov es, [g_8B98]
+        mov word [es:0x10e0], 0x105c
+        mov word [es:0x10e2], 0x3701
+.6:
+        mov word [bp - 0x76], 0x2
+        jmp short .9
+.7:
+        test byte [bp + 0x16], 0x8
+        jz short .8
+        mov es, [g_8B98]
+        mov word [es:0x10e0], 0x1036
+        mov word [es:0x10e2], 0x3701
+        jmp short .6
+.8:
+        mov es, [g_8B98]
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [es:0x10e2], ax
+        mov [es:0x10e0], ax
+        mov word [bp - 0x76], 0x1
+.9:
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [bp - 0xde], ax
+        mov [bp - 0xe0], ax
+        mov [bp - 0x60], ax
+        mov [bp - 0x62], ax
+        mov [bp - 0x5c], ax
+        mov [bp - 0x5e], ax
+        push word [bp - 0x78]
+        push word [bp - 0x7e]
+        push word [bp - 0x6]
+        push word [bp - 0x76]
+        mov ax, 0x10ba
+        mov cx, 0x3701
+        mov [bp - 0xe4], ax
+        mov [bp - 0xe2], cx
+        push cx
+        push ax
+        call 0x0FA0:DrawMenuBar
+        add sp, 0xc
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [bp - 0x10a], ax
+        mov [bp - 0x108], ax
+        mov [bp - 0x10], ax
+        mov [bp - 0xe], ax
+        mov [bp - 0xfe], ax
+        mov al, [bp - 0x38]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        mov bx, [bp + 0x1c]
+        mov [bx], ax
+        mov [bp - 0x8], ax
+        push -0x1
+        lea cx, [bp - 0x38]
+        push cx
+        push ax
+        push cs
+        call FrameTeamGridCell
+        add sp, 0x6
+        call 0x0FEF:CopyPlane
+        cmp word [bp + 0x16], 0x1
+        jnz short .10
+        mov word [bp - 0xec], 0x0
+        jmp short .11
+        db 0x90
+.10:
+        les bx, [bp + 0xa]
+        mov ax, [es:bx]
+        mov [bp - 0xec], ax
+.11:
+        les bx, [DialogData]
+        mov ax, [es:bx + 0x2]
+        inc ax
+        mov cx, [es:bx]
+        inc cx
+        imul cx
+        shl ax, byte 0x2
+        add ax, strict word 0x12
+        mov [bp - 0xf8], ax
+        push 0x0
+        cwd
+        push dx
+        push ax
+        push strict word str_Pointer_10
+        call 0x14DB:AllocRecData
+        add sp, 0x8
+        mov [bp - 0x14], ax
+        mov [bp - 0x12], dx
+        mov ax, [DialogData]
+        mov dx, [DialogDataSeg]
+        push ds
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        mov ds, dx
+        les di, [bp - 0x14]
+        mov cx, 0x9
+        rep movsw
+        pop ds
+        les bx, [DialogData]
+        mov ax, [es:bx]
+        inc ax
+        les bx, [bp - 0x14]
+        mov [es:bx], ax
+        les si, [DialogData]
+        mov ax, [es:si + 0x2]
+        inc ax
+        les bx, [bp - 0x14]
+        mov [es:bx + 0x2], ax
+        lea ax, [bp - 0xe6]
+        push ax
+        lea cx, [bp - 0x7c]
+        push cx
+        lea dx, [bp - 0xfc]
+        push dx
+        call 0x03A3:MouseRead
+        add sp, 0x6
+        mov ax, [bp - 0xe6]
+        mov [bp - 0x1c], ax
+        push ax
+        mov ax, [bp - 0x7c]
+        mov [bp - 0x16], ax
+        push ax
+        push word [bp - 0x12]
+        push word [bp - 0x14]
+        call 0x0FEF:GetBlockAt
+        add sp, 0x8
+        push word [bp - 0xe6]
+        push word [bp - 0x7c]
+        push word [DialogDataSeg]
+        push word [DialogData]
+        call 0x0FEF:DrawRleTransAt
+        add sp, 0x8
+        call 0x0F99:FlushInputEvents
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [bp - 0x7a], ax
+        mov [teamselresult], ax
+.12:
+        mov word [bp - 0x10c], 0x0
+.13:
+        call 0x0F99:GetInputEvent
+        mov [bp - 0x4], ax
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jz short .14
+        lea cx, [bp - 0x1c]
+        push cx
+        lea cx, [bp - 0x16]
+        push cx
+        push ax
+        call far [HotKeyFn]
+        add sp, 0x6
+        mov [bp - 0x10c], ax
+.14:
+        cmp word [bp - 0x4], 0x0
+        jz short .15
+        test byte [bp - 0x10c], 0x2
+        jz short .13
+.15:
+        test byte [bp - 0x10c], 0x2
+        jnz short .17
+        mov ax, [bp - 0x7c]
+        cmp [bp - 0x16], ax
+        jnz short .16
+        mov ax, [bp - 0xe6]
+        cmp [bp - 0x1c], ax
+        jnz short .16
+        jmp near .75
+.16:
+        push word [bp - 0xe6]
+        push word [bp - 0x7c]
+        push word [bp - 0x12]
+        push word [bp - 0x14]
+        call 0x0FEF:PutBlockAt
+        add sp, 0x8
+        push word [bp - 0x1c]
+        push word [bp - 0x16]
+        push word [bp - 0x12]
+        push word [bp - 0x14]
+        call 0x0FEF:GetBlockAt
+        add sp, 0x8
+        jmp near .73
+        db 0x90
+.17:
+        lea ax, [bp - 0xee]
+        push ax
+        lea cx, [bp - 0x64]
+        push cx
+        lea dx, [bp - 0x10]
+        push dx
+        lea dx, [bp - 0x76]
+        push dx
+        push word [bp - 0x66]
+        lea dx, [bp - 0xe4]
+        push dx
+        push word [bp - 0x1c]
+        push word [bp - 0x16]
+        call 0x0FA0:MenuHitTest
+        add sp, 0x10
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jnz short .18
+        jmp near .39
+.18:
+        imul bx, [bp - 0xee], 0x16
+        mov si, [bp - 0x64]
+        shl si, byte 0x2
+        les si, [bp + si - 0xe4]
+        mov ax, [es:bx + si + 0xe]
+        or ax, [es:bx + si + 0xc]
+        jnz short .19
+        jmp near .29
+.19:
+        mov ax, [bp - 0xee]
+        mov si, [bp - 0x64]
+        shl si, 1
+        cmp [bp + si - 0x10a], ax
+        jz short .20
+        jmp near .37
+.20:
+        push word [bp - 0xe6]
+        push word [bp - 0x7c]
+        push word [bp - 0x12]
+        push word [bp - 0x14]
+        call 0x0FEF:PutBlockAt
+        add sp, 0x8
+        mov word [bp - 0xea], 0x1
+.21:
+        mov si, [bp - 0xea]
+        shl si, byte 0x2
+        mov ax, [bp + si - 0x60]
+        or ax, [bp + si - 0x62]
+        jz short .22
+        push word [bp + si - 0xe]
+        push word [bp + si - 0x10]
+        push word [bp + si - 0x60]
+        push word [bp + si - 0x62]
+        call 0x0FEF:PutBlockAt
+        add sp, 0x8
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [bp + si - 0x10], ax
+        mov [bp + si - 0xe], ax
+        push word [bp + si - 0x60]
+        push word [bp + si - 0x62]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+.22:
+        dec word [bp - 0xea]
+        jns short .21
+        mov word [bp - 0x66], 0x0
+        push strict word str_Pntr_14
+        push word [MemBlock1Seg]
+        push word [MemBlock1Off]
+        call 0x03A3:FindFarMsg
+        add sp, 0x6
+        mov [DialogData], ax
+        mov [DialogDataSeg], dx
+        imul bx, [bp - 0xee], 0x16
+        mov si, [bp - 0x64]
+        shl si, byte 0x2
+        les si, [bp + si - 0xe4]
+        call far [es:bx + si + 0xc]
+        mov [bp - 0x10c], ax
+        push strict word str_Pnt2_9
+        push word [MemBlock1Seg]
+        push word [MemBlock1Off]
+        call 0x03A3:FindFarMsg
+        add sp, 0x6
+        mov [DialogData], ax
+        mov [DialogDataSeg], dx
+        cmp word [teamselresult], -0x1
+        jnz short .23
+        mov ax, 0xffff
+        mov bx, [bp - 0xfe]
+        shl bx, 1
+        mov si, [bp + 0x1c]
+        mov [bx + si], ax
+        mov [bp - 0x7a], ax
+        jmp short .27
+.23:
+        cmp word [teamselresult], 0x1
+        jnz short .27
+        test byte [bp + 0x16], 0x7
+        jz short .24
+        cmp word [bp - 0xec], 0x1
+        jnl short .26
+.24:
+        test byte [bp + 0x16], 0x8
+        jz short .25
+        mov bx, [bp - 0xfe]
+        shl bx, 1
+        mov si, [bp + 0x1c]
+        imul si, [bx + si], 0x1e
+        les bx, [bp - 0x110]
+        cmp byte [es:bx + si + 0x17], 0x1
+        jz short .26
+.25:
+        test byte [bp + 0x16], 0x10
+        jz short .27
+        cmp word [bp - 0xfe], 0x1
+        jnz short .27
+        mov bx, [bp + 0x1c]
+        imul si, [bx], 0x1e
+        les bx, [bp - 0x110]
+        cmp byte [es:bx + si + 0x17], 0x1
+        jnz short .27
+        mov si, [bp + 0x1c]
+        imul si, [si + 0x2], 0x1e
+        cmp byte [es:bx + si + 0x17], 0x1
+        jnz short .27
+.26:
+        mov word [bp - 0x7a], 0xffff
+.27:
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [bp - 0xde], ax
+        mov [bp - 0xe0], ax
+        mov [bp - 0x60], ax
+        mov [bp - 0x62], ax
+        mov [bp - 0x5c], ax
+        mov [bp - 0x5e], ax
+        mov [bp - 0x108], ax
+        mov [bp - 0x74], ax
+        push word [bp - 0xe6]
+        push word [bp - 0x7c]
+        call 0x03A3:MouseMove
+        add sp, 0x4
+        mov ax, [bp - 0x7c]
+        mov [bp - 0x16], ax
+        mov ax, [bp - 0xe6]
+        mov [bp - 0x1c], ax
+.28:
+        call 0x0F99:FlushInputEvents
+        jmp near .72
+        db 0x90
+.29:
+        imul bx, [bp - 0xee], 0x16
+        mov si, [bp - 0x64]
+        shl si, byte 0x2
+        les si, [bp + si - 0xe4]
+        mov ax, [es:bx + si + 0x12]
+        or ax, [es:bx + si + 0x10]
+        jnz short .30
+        jmp near .37
+.30:
+        push word [bp - 0xe6]
+        push word [bp - 0x7c]
+        push word [bp - 0x12]
+        push word [bp - 0x14]
+        call 0x0FEF:PutBlockAt
+        add sp, 0x8
+        mov ax, [bp - 0x66]
+        cmp [bp - 0x64], ax
+        jz short .34
+        mov [bp - 0xea], ax
+        jmp short .33
+        db 0x90
+.31:
+        mov si, [bp - 0xea]
+        shl si, 1
+        mov word [bp + si - 0x10a], 0x0
+        mov di, [bp - 0xea]
+        shl di, byte 0x2
+        mov ax, [bp + di - 0x60]
+        or ax, [bp + di - 0x62]
+        jz short .32
+        push word [bp + di - 0xe]
+        push word [bp + di - 0x10]
+        push word [bp + di - 0x60]
+        push word [bp + di - 0x62]
+        call 0x0FEF:PutBlockAt
+        add sp, 0x8
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [bp + di - 0x10], ax
+        mov [bp + di - 0xe], ax
+        push word [bp + di - 0x60]
+        push word [bp + di - 0x62]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [bp + di - 0x60], ax
+        mov [bp + di - 0x62], ax
+        mov [bp + di - 0xe2], ax
+        mov [bp + di - 0xe4], ax
+        mov [bp + si - 0x76], ax
+.32:
+        dec word [bp - 0xea]
+.33:
+        mov ax, [bp - 0x64]
+        cmp [bp - 0xea], ax
+        jg short .31
+        mov [bp - 0x66], ax
+.34:
+        push word [bp - 0x78]
+        push word [bp - 0x7e]
+        push word [bp - 0x6]
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        shl si, byte 0x2
+        push word [bp + si - 0xe]
+        push word [bp + si - 0x10]
+        db 0x8B, 0xF8                           ; insn: mov di, ax
+        shl di, 1
+        imul ax, [bp + di - 0x10a], 0x16
+        add ax, [bp + si - 0xe4]
+        mov dx, [bp + si - 0xe2]
+        push dx
+        push ax
+        call 0x0FA0:DrawMenuItem
+        add sp, 0xe
+        push word [bp - 0x78]
+        push word [bp - 0x7e]
+        push word [bp - 0x6]
+        push word [bp + si - 0xe]
+        push word [bp + si - 0x10]
+        mov ax, [bp - 0xee]
+        mov [bp + di - 0x10a], ax
+        imul ax, ax, 0x16
+        add ax, [bp + si - 0xe4]
+        mov dx, [bp + si - 0xe2]
+        push dx
+        push ax
+        call 0x0FA0:DrawMenuItemHilite
+        add sp, 0xe
+        imul bx, [bp - 0xee], 0x16
+        mov si, [bp - 0x64]
+        shl si, byte 0x2
+        les di, [bp + si - 0xe4]
+        mov ax, [es:bx + di + 0x10]
+        mov dx, [es:bx + di + 0x12]
+        inc word [bp - 0x66]
+        mov di, [bp - 0x66]
+        shl di, byte 0x2
+        mov [bp + di - 0xe4], ax
+        mov [bp + di - 0xe2], dx
+        les si, [bp + si - 0xe4]
+        db 0x03, 0xF3                           ; insn: add si, bx
+        mov al, [es:si + 0x14]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        db 0x8B, 0xCE                           ; insn: mov cx, si
+        mov si, [bp - 0x66]
+        shl si, 1
+        mov [bp + si - 0x76], ax
+        mov [bp - 0x112], ax
+        mov [bp - 0x116], cx
+        mov [bp - 0x114], es
+        mov [bp - 0x118], si
+        mov [bp - 0x11a], di
+        cmp word [bp - 0x66], 0x1
+        jz short .35
+        mov ax, 0x1
+        jmp short .36
+.35:
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+.36:
+        db 0x8B, 0xC8                           ; insn: mov cx, ax
+        shl ax, 1
+        db 0x03, 0xC1                           ; insn: add ax, cx
+        shl ax, byte 0x2
+        db 0x03, 0xC1                           ; insn: add ax, cx
+        mov bx, [bp - 0x116]
+        add ax, [es:bx]
+        db 0x8B, 0xF7                           ; insn: mov si, di
+        add ax, [bp + si - 0x14]
+        mov [bp + si - 0x10], ax
+        mov ax, [es:bx + 0x6]
+        add ax, [bp + si - 0x12]
+        mov [bp + si - 0xe], ax
+        les bx, [bp + si - 0xe4]
+        mov ax, [es:bx]
+        cwd
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        sar ax, byte 0x2
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        imul di, [bp - 0x112], 0x16
+        db 0x03, 0xFB                           ; insn: add di, bx
+        db 0x8B, 0xC8                           ; insn: mov cx, ax
+        mov ax, [es:di - 0x12]
+        cwd
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        sar ax, byte 0x2
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        db 0x2B, 0xC1                           ; insn: sub ax, cx
+        inc ax
+        mov [bp - 0x2], ax
+        mov cx, [es:di - 0x10]
+        sub cx, [es:bx + 0x2]
+        inc cx
+        mov [bp - 0xe8], cx
+        push 0x0
+        imul cx
+        shl ax, byte 0x2
+        add ax, strict word 0x12
+        cwd
+        push dx
+        push ax
+        push strict word str_Menubuff_6
+        call 0x14DB:AllocRecData
+        add sp, 0x8
+        mov [bp + si - 0x62], ax
+        mov [bp + si - 0x60], dx
+        mov ax, [bp + si - 0x62]
+        mov cx, [DialogData]
+        mov bx, [DialogDataSeg]
+        push si
+        push ds
+        db 0x8B, 0xF8                           ; insn: mov di, ax
+        db 0x8B, 0xF1                           ; insn: mov si, cx
+        mov es, dx
+        mov ds, bx
+        mov cx, 0x9
+        rep movsw
+        pop ds
+        pop si
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        mov cx, [bp - 0x2]
+        mov [es:bx], cx
+        mov cx, [bp - 0xe8]
+        mov [es:bx + 0x2], cx
+        push word [bp + si - 0xe]
+        push word [bp + si - 0x10]
+        push dx
+        push ax
+        call 0x0FEF:GetBlockAt
+        add sp, 0x8
+        push word [bp - 0x78]
+        push word [bp - 0x7e]
+        push word [bp - 0x6]
+        push word [bp + si - 0xe]
+        push word [bp + si - 0x10]
+        mov di, [bp - 0x118]
+        push word [bp + di - 0x76]
+        push word [bp + si - 0xe2]
+        push word [bp + si - 0xe4]
+        call 0x0FA0:DrawMenuPanel
+        add sp, 0x10
+        mov word [bp + di - 0x10a], 0x0
+        push word [bp - 0x78]
+        push word [bp - 0x7e]
+        push word [bp - 0x6]
+        push word [bp + si - 0xe]
+        push word [bp + si - 0x10]
+        push word [bp + si - 0xe2]
+        push word [bp + si - 0xe4]
+        jmp short .38
+.37:
+        push word [bp - 0xe6]
+        push word [bp - 0x7c]
+        push word [bp - 0x12]
+        push word [bp - 0x14]
+        call 0x0FEF:PutBlockAt
+        add sp, 0x8
+        push word [bp - 0x78]
+        push word [bp - 0x7e]
+        push word [bp - 0x6]
+        mov si, [bp - 0x64]
+        shl si, byte 0x2
+        push word [bp + si - 0xe]
+        push word [bp + si - 0x10]
+        mov di, [bp - 0x64]
+        shl di, 1
+        imul ax, [bp + di - 0x10a], 0x16
+        add ax, [bp + si - 0xe4]
+        mov dx, [bp + si - 0xe2]
+        push dx
+        push ax
+        call 0x0FA0:DrawMenuItem
+        add sp, 0xe
+        push word [bp - 0x78]
+        push word [bp - 0x7e]
+        push word [bp - 0x6]
+        mov si, [bp - 0x64]
+        shl si, byte 0x2
+        push word [bp + si - 0xe]
+        push word [bp + si - 0x10]
+        mov ax, [bp - 0xee]
+        mov di, [bp - 0x64]
+        shl di, 1
+        mov [bp + di - 0x10a], ax
+        imul ax, ax, 0x16
+        add ax, [bp + si - 0xe4]
+        mov dx, [bp + si - 0xe2]
+        push dx
+        push ax
+.38:
+        call 0x0FA0:DrawMenuItemHilite
+        add sp, 0xe
+        jmp near .72
+.39:
+        push word [bp - 0xe6]
+        push word [bp - 0x7c]
+        push word [bp - 0x12]
+        push word [bp - 0x14]
+        call 0x0FEF:PutBlockAt
+        add sp, 0x8
+        cmp word [bp - 0x66], 0x0
+        jz short .42
+        mov word [bp - 0xea], 0x1
+.40:
+        mov si, [bp - 0xea]
+        shl si, byte 0x2
+        mov ax, [bp + si - 0x60]
+        or ax, [bp + si - 0x62]
+        jz short .41
+        push word [bp + si - 0xe]
+        push word [bp + si - 0x10]
+        push word [bp + si - 0x60]
+        push word [bp + si - 0x62]
+        call 0x0FEF:PutBlockAt
+        add sp, 0x8
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [bp + si - 0x10], ax
+        mov [bp + si - 0xe], ax
+        push word [bp + si - 0x60]
+        push word [bp + si - 0x62]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+.41:
+        dec word [bp - 0xea]
+        jns short .40
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [bp - 0xde], ax
+        mov [bp - 0xe0], ax
+        mov [bp - 0x60], ax
+        mov [bp - 0x62], ax
+        mov [bp - 0x5c], ax
+        mov [bp - 0x5e], ax
+        mov [bp - 0x66], ax
+        mov [bp - 0x108], ax
+        mov [bp - 0x74], ax
+        jmp near .72
+        db 0x90
+.42:
+        lea ax, [bp - 0x38]
+        push ax
+        push word [bp - 0x1c]
+        push word [bp - 0x16]
+        push cs
+        call TeamGridCellAt
+        add sp, 0x6
+        mov [bp - 0xfc], ax
+        cmp word [bp + 0x16], 0x10
+        jnz short .43
+        cmp word [bp - 0xfe], 0x1
+        jnz short .43
+        mov bx, [bp + 0x1c]
+        cmp [bx], ax
+        jnz short .43
+        mov word [bp - 0xfc], 0xffff
+.43:
+        cmp word [bp - 0xfc], 0x0
+        jnl short .44
+        jmp near .72
+.44:
+        mov bx, [bp - 0xfe]
+        shl bx, 1
+        mov si, [bp + 0x1c]
+        mov ax, [bx + si]
+        mov [bp - 0x8], ax
+        mov ax, [bp - 0xfc]
+        mov [bx + si], ax
+        cmp ax, [bp - 0x8]
+        jz short .45
+        jmp near .70
+.45:
+        test byte [bp + 0x16], 0x18
+        jz short .47
+        imul di, ax, 0x1e
+        les bx, [bp - 0x110]
+        cmp byte [es:bx + di + 0x17], 0x1
+        jnz short .47
+        cmp word [bp - 0xfe], 0x0
+        jnz short .46
+        test byte [bp + 0x16], 0x10
+        jz short .46
+        push 0x0
+        lea ax, [bp - 0x38]
+        push ax
+        push word [si]
+        push cs
+        call FrameTeamGridCell
+        add sp, 0x6
+        push -0x1
+        lea ax, [bp - 0x38]
+        push ax
+        push word [si]
+        push cs
+        call FrameTeamGridCell
+        add sp, 0x6
+        inc word [bp - 0xfe]
+        mov bx, [bp - 0xfe]
+        shl bx, 1
+        mov word [bx + si], 0xffff
+        jmp near .72
+        db 0x90
+.46:
+        mov word [bp - 0x7a], 0xffff
+        jmp near .72
+.47:
+        test byte [bp + 0x16], 0x4
+        jnz short .48
+        jmp near .54
+.48:
+        cmp word [bp - 0xec], 0x1
+        jg short .49
+        jmp near .54
+.49:
+        mov bx, [bp - 0xfe]
+        shl bx, 1
+        mov si, [bp + 0x1c]
+        imul di, [bx + si], 0x1e
+        add di, [bp - 0x110]
+        mov es, [bp - 0x10e]
+        cmp byte [es:di + 0x19], 0x0
+        jz short .50
+        jmp near .54
+.50:
+        cmp byte [es:di + 0x17], 0x1
+        jz short .51
+        jmp near .54
+.51:
+        mov ax, es
+        mov es, [g_8B9A]
+        mov [es:0x3a9], di
+        mov [es:0x3ab], ax
+        push -0x1
+        lea ax, [bp - 0xe6]
+        push ax
+        lea ax, [bp - 0x7c]
+        push ax
+        push 0x2
+        push word 0x3701
+        push strict word f_3701_03AD
+        push 0x2
+        push es
+        push word 0x3a5
+        push -0x1
+        push -0x1
+        db 0x8B, 0xFB                           ; insn: mov di, bx
+        call 0x0D90:MessageBox
+        add sp, 0x16
+        mov [bp - 0xfa], ax
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jz short .52
+        jmp near .72
+.52:
+        push word [bp - 0x10e]
+        push word [bp - 0x110]
+        db 0x03, 0xF7                           ; insn: add si, di
+        push word [si]
+        call 0x28A8:AskTeamPassword
+        add sp, 0x6
+        mov [bp - 0xf0], ax
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jz short .53
+        jmp near .72
+.53:
+        imul di, [si], 0x1e
+        les bx, [bp - 0x110]
+        mov byte [es:bx + di + 0x17], 0x0
+        dec word [bp - 0xec]
+        push 0xb
+        push ax
+        imul ax, [si], 0x1e
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        push es
+        push bx
+        call 0x0000:_fmemset
+        add sp, 0x8
+        push 0xb
+        push 0x0
+        imul ax, [si], 0x1e
+        add ax, [bp - 0x110]
+        mov dx, [bp - 0x10e]
+        add ax, strict word 0xb
+        push dx
+        push ax
+        call 0x0000:_fmemset
+        add sp, 0x8
+        lea ax, [bp - 0x38]
+        push ax
+        push word [bp - 0x1e]
+        push word [bp - 0x20]
+        push word [bp - 0x10e]
+        push word [bp - 0x110]
+        push word [si]
+        push cs
+        call DrawTeamGridCell
+        add sp, 0xc
+        jmp near .72
+        db 0x90
+.54:
+        test byte [bp + 0x16], 0x3
+        jnz short .55
+        jmp near .72
+.55:
+        mov bx, [bp - 0xfe]
+        shl bx, 1
+        mov si, [bp + 0x1c]
+        imul di, [bx + si], 0x1e
+        add di, [bp - 0x110]
+        mov es, [bp - 0x10e]
+        cmp byte [es:di + 0x17], 0x0
+        jz short .56
+        jmp near .72
+.56:
+        push 0xb
+        push 0x0
+        push es
+        push di
+        db 0x8B, 0xFB                           ; insn: mov di, bx
+        call 0x0000:_fmemset
+        add sp, 0x8
+        push 0xb
+        push 0x0
+        db 0x03, 0xF7                           ; insn: add si, di
+        imul ax, [si], 0x1e
+        add ax, [bp - 0x110]
+        mov dx, [bp - 0x10e]
+        add ax, strict word 0xb
+        push dx
+        push ax
+        call 0x0000:_fmemset
+        add sp, 0x8
+        push si
+        lea di, [bp - 0xd0]
+        mov si, str_WhoWillPlay
+        mov ax, ss
+        mov es, ax
+        mov cx, 0x7
+        rep movsw
+        movsb
+        pop si
+        imul ax, [si], 0x15
+        add ax, [bp + 0xe]
+        mov dx, [bp + 0x10]
+        push dx
+        push ax
+        lea ax, [bp - 0xd0]
+        push ss
+        push ax
+        call 0x0000:_fstrcat
+        add sp, 0x8
+.57:
+        push 0x4
+        push 0x1
+        push 0x0
+        push 0x0
+        push 0x0
+        push 0x32
+        push 0xa
+        lea ax, [bp - 0x72]
+        push ax
+        lea cx, [bp - 0xd0]
+        push ss
+        push cx
+        call 0x0D90:NumberEntryDialog
+        add sp, 0x14
+        mov [bp - 0xf0], ax
+        cmp ax, strict word 0x1b
+        jnz short .58
+        jmp near .62
+.58:
+        lea ax, [bp - 0x72]
+        push ss
+        push ax
+        mov bx, [bp - 0xfe]
+        shl bx, 1
+        mov si, [bp + 0x1c]
+        imul ax, [bx + si], 0x1e
+        add ax, [bp - 0x110]
+        mov dx, [bp - 0x10e]
+        push dx
+        push ax
+        call 0x0000:_fstrcpy
+        add sp, 0x8
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [bp - 0xf0], ax
+        mov [bp - 0xf2], ax
+        jmp short .61
+.59:
+        mov ax, [bp - 0xf2]
+        mov bx, [bp - 0xfe]
+        shl bx, 1
+        mov si, [bp + 0x1c]
+        cmp [bx + si], ax
+        jz short .60
+        imul di, ax, 0x1e
+        add di, [bp - 0x110]
+        mov es, [bp - 0x10e]
+        cmp byte [es:di + 0x17], 0x1
+        jnz short .60
+        push es
+        push di
+        imul ax, [bx + si], 0x1e
+        add ax, [bp - 0x110]
+        mov dx, es
+        push dx
+        push ax
+        call 0x0000:_fmemcmp
+        add sp, 0x8
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jnz short .60
+        push -0x1
+        lea ax, [bp - 0x1c]
+        push ax
+        lea ax, [bp - 0x16]
+        push ax
+        push 0x0
+        push 0x0
+        push 0x0
+        push 0x1
+        push word 0x3701
+        push strict word msgThatNameHasAlreadyBeen
+        push -0x1
+        push -0x1
+        call 0x0D90:MessageBox
+        add sp, 0x16
+        mov word [bp - 0xf0], 0x1
+.60:
+        inc word [bp - 0xf2]
+.61:
+        cmp word [bp - 0xf2], 0x18
+        jl short .59
+.62:
+        cmp word [bp - 0xf0], 0x0
+        jz short .63
+        cmp word [bp - 0xf0], 0x1b
+        jz short .63
+        jmp near .57
+.63:
+        cmp word [bp - 0xf0], 0x1b
+        jnz short .64
+        jmp near .68
+.64:
+        push word 0x3701
+        push strict word str_EnterPasswordFor
+        lea ax, [bp - 0xd0]
+        push ss
+        push ax
+        call 0x0000:_fstrcpy
+        add sp, 0x8
+        mov bx, [bp - 0xfe]
+        shl bx, 1
+        mov si, [bp + 0x1c]
+        imul ax, [bx + si], 0x1e
+        add ax, [bp - 0x110]
+        mov dx, [bp - 0x10e]
+        push dx
+        push ax
+        lea ax, [bp - 0xd0]
+        push ss
+        push ax
+        db 0x8B, 0xFB                           ; insn: mov di, bx
+        call 0x0000:_fstrcat
+        add sp, 0x8
+        push 0x6
+        push 0x0
+        push 0x0
+        push 0x0
+        push 0x0
+        push 0x3c
+        push 0xa
+        lea ax, [bp - 0x72]
+        push ax
+        lea ax, [bp - 0xd0]
+        push ss
+        push ax
+        call 0x0D90:NumberEntryDialog
+        add sp, 0x14
+        mov [bp - 0xf0], ax
+        cmp ax, strict word 0x1b
+        jz short .65
+        push word 0x3701
+        push strict word str_VerifyPasswordFor
+        lea ax, [bp - 0xd0]
+        push ss
+        push ax
+        call 0x0000:_fstrcpy
+        add sp, 0x8
+        db 0x03, 0xF7                           ; insn: add si, di
+        imul ax, [si], 0x1e
+        add ax, [bp - 0x110]
+        mov dx, [bp - 0x10e]
+        push dx
+        push ax
+        lea ax, [bp - 0xd0]
+        push ss
+        push ax
+        call 0x0000:_fstrcat
+        add sp, 0x8
+        push 0x6
+        push 0x0
+        push 0x0
+        push 0x0
+        push 0x0
+        push 0x3c
+        push 0xa
+        lea ax, [bp - 0xdc]
+        push ax
+        lea ax, [bp - 0xd0]
+        push ss
+        push ax
+        call 0x0D90:NumberEntryDialog
+        add sp, 0x14
+        mov [bp - 0xf0], ax
+.65:
+        cmp ax, strict word 0x1b
+        jz short .67
+        mov word [bp - 0xf0], 0x0
+        lea di, [bp - 0xdc]
+        lea si, [bp - 0x72]
+        push ss
+        pop es
+        mov cx, 0xffff
+        db 0x33, 0xC0                           ; insn: xor ax, ax
+        repne scasb
+        not cx
+        db 0x2B, 0xF9                           ; insn: sub di, cx
+        repe cmpsb
+        jz short .66
+        db 0x1B, 0xC0                           ; insn: sbb ax, ax
+        sbb ax, strict word 0xffff
+.66:
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jz short .67
+        push -0x1
+        lea ax, [bp - 0xe6]
+        push ax
+        lea ax, [bp - 0x7c]
+        push ax
+        push 0x0
+        push 0x0
+        push 0x0
+        push 0x2
+        push word 0x3701
+        push strict word msgThePasswordWasEnteredDifferently
+        push -0x1
+        push -0x1
+        call 0x0D90:MessageBox
+        add sp, 0x16
+        mov word [bp - 0xf0], 0xffff
+.67:
+        cmp word [bp - 0xf0], 0x0
+        jz short .68
+        cmp word [bp - 0xf0], 0x1b
+        jz short .68
+        jmp near .64
+.68:
+        cmp word [bp - 0xf0], 0x1b
+        jnz short .69
+        jmp near .28
+.69:
+        mov bx, [bp - 0xfe]
+        shl bx, 1
+        mov si, [bp + 0x1c]
+        imul di, [bx + si], 0x1e
+        db 0x8B, 0xC3                           ; insn: mov ax, bx
+        les bx, [bp - 0x110]
+        mov byte [es:bx + di + 0x17], 0x1
+        inc word [bp - 0xec]
+        lea cx, [bp - 0x72]
+        push ss
+        push cx
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        imul ax, [bx + si], 0x1e
+        add ax, [bp - 0x110]
+        mov dx, [bp - 0x10e]
+        add ax, strict word 0xb
+        push dx
+        push ax
+        db 0x8B, 0xFB                           ; insn: mov di, bx
+        call 0x0000:_fstrcpy
+        add sp, 0x8
+        db 0x03, 0xF7                           ; insn: add si, di
+        push word [si]
+        imul ax, [si], 0x1e
+        add ax, [bp - 0x110]
+        mov dx, [bp - 0x10e]
+        add ax, strict word 0xb
+        push dx
+        push ax
+        call 0x28A8:EncryptPassword
+        add sp, 0x6
+        lea ax, [bp - 0x38]
+        push ax
+        push word [bp - 0x1e]
+        push word [bp - 0x20]
+        push word [bp - 0x10e]
+        push word [bp - 0x110]
+        push word [si]
+        push cs
+        call DrawTeamGridCell
+        add sp, 0xc
+        jmp near .28
+        db 0x90
+.70:
+        cmp word [bp - 0x8], 0x0
+        jl short .71
+        push -0x1
+        lea ax, [bp - 0x38]
+        push ax
+        push word [bp - 0x8]
+        push cs
+        call FrameTeamGridCell
+        add sp, 0x6
+.71:
+        push -0x1
+        lea ax, [bp - 0x38]
+        push ax
+        mov bx, [bp - 0xfe]
+        shl bx, 1
+        mov si, [bp + 0x1c]
+        push word [bx + si]
+        push cs
+        call FrameTeamGridCell
+        add sp, 0x6
+.72:
+        push word [bp - 0xe6]
+        push word [bp - 0x7c]
+        push word [bp - 0x12]
+        push word [bp - 0x14]
+        call 0x0FEF:GetBlockAt
+        add sp, 0x8
+        push word [bp - 0xe6]
+        push word [bp - 0x7c]
+        push word [bp - 0x12]
+        push word [bp - 0x14]
+        call 0x0FEF:PutBlockAt
+        add sp, 0x8
+        push word [bp - 0x1c]
+        push word [bp - 0x16]
+        push word [bp - 0x12]
+        push word [bp - 0x14]
+        call 0x0FEF:GetBlockAt
+        add sp, 0x8
+        cmp word [bp - 0x7a], 0x0
+        jnz short .74
+.73:
+        push word [bp - 0x1c]
+        push word [bp - 0x16]
+        push word [DialogDataSeg]
+        push word [DialogData]
+        call 0x0FEF:DrawRleTransAt
+        add sp, 0x8
+.74:
+        mov ax, [bp - 0x16]
+        mov [bp - 0x7c], ax
+        mov ax, [bp - 0x1c]
+        mov [bp - 0xe6], ax
+.75:
+        cmp word [bp - 0x7a], 0x0
+        jnz short .76
+        jmp near .12
+.76:
+        mov ax, [bp - 0xec]
+        les bx, [bp + 0xa]
+        mov [es:bx], ax
+        push word [bp - 0x12]
+        push word [bp - 0x14]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        mov bx, [bp - 0xfe]
+        shl bx, 1
+        mov si, [bp + 0x1c]
+        cmp word [bx + si], 0x0
+        jl short .78
+        test byte [bp + 0x16], 0x8
+        jnz short .78
+        test byte [bp + 0x16], 0x1
+        jz short .77
+        lea ax, [bp - 0xe6]
+        push ax
+        lea ax, [bp - 0x7c]
+        push ax
+        les bx, [bp + 0xa]
+        push word [es:bx]
+        push word [bp - 0x10e]
+        push word [bp - 0x110]
+        push cs
+        call ChooseLeagueController
+        add sp, 0xa
+.77:
+        les bx, [bp + 0xa]
+        push word [es:bx]
+        push word [bp + 0x16]
+        push word [bp + 0x14]
+        push word [bp + 0x12]
+        push word [bp - 0x10e]
+        push word [bp - 0x110]
+        push cs
+        call AskExportToFloppy
+        add sp, 0xc
+        mov word [bp - 0xf8], 0x2d0
+        push word 0x2d0
+        push word [bp - 0x10e]
+        push word [bp - 0x110]
+        push word [bp + 0x14]
+        push word [bp + 0x12]
+        call 0x0000:_fmemcpy
+        add sp, 0xa
+.78:
+        push strict word str_Pntr_13
+        push word [MemBlock1Seg]
+        push word [MemBlock1Off]
+        call 0x03A3:FindFarMsg
+        add sp, 0x6
+        mov [DialogData], ax
+        mov [DialogDataSeg], dx
+        push word [bp - 0x10e]
+        push word [bp - 0x110]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        push word [bp - 0x18]
+        push word [bp - 0x1a]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        pop si
+        pop di
+        leave
+        retf
+        db 0x90
+.79:
+        cmp word [bp - 0xf0], 0x0
+        jnz short .82
+        mov word [bp - 0xea], 0x0
+.80:
+        imul si, [bp - 0xea], 0x1e
+        les bx, [bp + 0x12]
+        cmp byte [es:bx + si + 0x17], 0x1
+        jnz short .81
+        mov ax, [bp - 0xea]
+        mov bx, [bp + 0x1c]
+        mov [bx], ax
+        mov word [bp - 0xea], 0x18
+.81:
+        inc word [bp - 0xea]
+        cmp word [bp - 0xea], 0x18
+        jl short .80
+.82:
+        pop si
+        pop di
+        leave
+        retf

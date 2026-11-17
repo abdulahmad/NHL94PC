@@ -9,7 +9,7 @@ UseDbDescriptorTail:
         xor al, 0x68
         les ax, [bx + si]
 .1:
-        call 0x1B35:OvlThunk100
+        call 0x1B35:WriteModeStateThunk
         add sp, 0x4
         retf
         db 0x90

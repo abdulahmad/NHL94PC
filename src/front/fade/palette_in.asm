@@ -1,0 +1,100 @@
+; Palette fade in (FADES4.OVL)
+
+;-----------------------------------------------------------------------------
+; FadePaletteIn                                              3358:0000  94 PC
+; Palette fade in steps.
+;
+; Takes 4 words of stack arguments. Calls SetPaletteVsync, ClearClipRect. Far routine (retf).
+;-----------------------------------------------------------------------------
+FadePaletteIn:
+        enter 0x2, 0x0
+        push di
+        push si
+        mov di, [bp + 0xc]
+        cmp di, 0x2
+        jnl short .3
+        cmp word [bp + 0x6], 0x0
+        jnz short .1
+        push word [bp + 0xa]
+        push word [bp + 0x8]
+        call 0x3349:SetPaletteVsync
+        add sp, 0x4
+        pop si
+        pop di
+        leave
+        retf
+.1:
+        db 0x2B, 0xDB                           ; insn: sub bx, bx
+        mov ax, 0x3946
+        mov ds, ax
+.2:
+        db 0xC6, 0x87, 0x00, 0x00, 0x00         ; insn: mov byte [bx + 0x0], 0x0
+        inc bx
+        cmp bx, 0x300
+        jl short .2
+        mov ax, DGROUP
+        mov ds, ax
+        push word 0x3946
+        push strict word 0x0
+        call 0x3349:SetPaletteVsync
+        add sp, 0x4
+        push 0x0
+        call 0x0FEF:ClearClipRect
+        add sp, 0x2
+        pop si
+        pop di
+        leave
+        retf
+.3:
+        db 0x8B, 0xC7                           ; insn: mov ax, di
+        db 0x8B, 0xCF                           ; insn: mov cx, di
+        dec al
+        mov [g_62E5], al
+        inc cl
+        mov [g_62E8], cl
+        mov si, [bp + 0x6]
+        mov al, [si + g_62E4]
+        cbw
+        db 0x8B, 0xD0                           ; insn: mov dx, ax
+        mov al, [si + g_62E8]
+        cbw
+        db 0x3B, 0xD0                           ; insn: cmp dx, ax
+        jz short .6
+        mov [bp - 0x2], dx
+.4:
+        db 0x2B, 0xF6                           ; insn: sub si, si
+        mov di, [bp + 0xc]
+        mov ax, 0x3946
+        mov ds, ax
+        mov es, [bp + 0xa]
+.5:
+        mov bx, [bp + 0x8]
+        db 0x03, 0xDE                           ; insn: add bx, si
+        mov al, [es:bx]
+        cbw
+        imul word [bp - 0x2]
+        cwd
+        idiv di
+        db 0x88, 0x84, 0x00, 0x00               ; insn: mov [si + 0x0], al
+        inc si
+        cmp si, 0x300
+        jl short .5
+        mov ax, DGROUP
+        mov ds, ax
+        mov si, [bp + 0x6]
+        push word 0x3946
+        push strict word 0x0
+        call 0x3349:SetPaletteVsync
+        add sp, 0x4
+        mov al, [si + g_62E6]
+        cbw
+        add [bp - 0x2], ax
+        mov al, [si + g_62E8]
+        cbw
+        cmp [bp - 0x2], ax
+        jnz short .4
+.6:
+        pop si
+        pop di
+        leave
+        retf

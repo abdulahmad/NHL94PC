@@ -1,0 +1,963 @@
+; Game mode settings dialog and its edit loop (MENUS.OVL)
+; The first bytes finish the last routine of league_settings.asm.
+        jmp near LeagueSetEditLoop.1 - 0xF80
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; MenuModeSettings                                           2C1E:0004  94 PC
+; Game mode settings dialog.
+;
+; Calls GetPage, CopyPlane, UseOtherPage, AllocRecData, GetBlockAt, DrawModeSetDlg, DrawModeSetChecks,
+; VgaCopyBytes and others. Far routine (retf).
+;-----------------------------------------------------------------------------
+MenuModeSettings:
+        enter 0x4, 0x0
+        push di
+        push si
+        call 0x0FEF:GetPage
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jz short .1
+        call 0x0FEF:CopyPlane
+.1:
+        call 0x0FEF:UseOtherPage
+        push 0x0
+        push 0x0
+        push word 0x5a12
+        push strict word str_Bkgd_5
+        call 0x14DB:AllocRecData
+        add sp, 0x8
+        mov [bp - 0x4], ax
+        mov [bp - 0x2], dx
+        mov ax, [DialogData]
+        mov dx, [DialogDataSeg]
+        push ds
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        mov ds, dx
+        les di, [bp - 0x4]
+        mov cx, 0x9
+        rep movsw
+        pop ds
+        mov bx, [bp - 0x4]
+        mov word [es:bx], 0x24
+        les bx, [bp - 0x4]
+        mov word [es:bx + 0x2], 0xa0
+        push 0xa
+        push 0xa
+        push word [bp - 0x2]
+        push word [bp - 0x4]
+        call 0x0FEF:GetBlockAt
+        add sp, 0x8
+        push cs
+        call DrawModeSetDlg
+        push cs
+        call DrawModeSetChecks
+        call 0x0FEF:CopyPlane
+        push word 0x3860
+        push word 0xb00
+        push word 0x4400
+        call 0x0000:VgaCopyBytes
+        add sp, 0x6
+        call 0x0FEF:CopyPlane
+        cmp word [DbSaveMode], 0x2
+        jnz short .2
+        push cs
+        call ModeSetViewLoop
+        jmp short .3
+        db 0x90
+.2:
+        push cs
+        call ModeSetEditLoop
+.3:
+        call 0x0FEF:UseOtherPage
+        push 0xa
+        push 0xa
+        push word [bp - 0x2]
+        push word [bp - 0x4]
+        call 0x0FEF:PutBlockAt
+        add sp, 0x8
+        call 0x0FEF:CopyPlane
+        push word 0x3860
+        push word 0xb00
+        push word 0x4400
+        call 0x0000:VgaCopyBytes
+        add sp, 0x6
+        call 0x0FEF:GetPage
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jnz short .4
+        call 0x0FEF:CopyPlane
+.4:
+        test byte [CrowdState], 0x4
+        jnz short .7
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [energywarn], ax
+        mov [g_48CE], ax
+        mov [g_48E4], ax
+        mov [lcboxon], ax
+        mov bx, 0xb553
+.5:
+        and byte [bx], 0xf7
+        add bx, 0x80
+        cmp bx, 0xbb53
+        jc short .5
+        and byte [hmtmflags], 0xfd
+        and byte [awtmflags], 0xfd
+        mov bx, 0xb464
+.6:
+        mov ax, 0x1000
+        mov [bx], ax
+        mov [bx - 0xd6], ax
+        inc bx
+        inc bx
+        cmp bx, 0xb49c
+        jc short .6
+.7:
+        test byte [CrowdState], 0x40
+        jz short .8
+        call 0x16F2:MusicOn
+        jmp short .9
+.8:
+        call 0x16F2:MusicOff
+.9:
+        test byte [CrowdState], 0x80
+        jz short .10
+        call 0x16F2:SfxOn
+        jmp short .11
+        db 0x90
+.10:
+        call 0x16F2:SfxOff
+.11:
+        push word [bp - 0x2]
+        push word [bp - 0x4]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        pop si
+        pop di
+        leave
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; DrawModeSetDlg                                             2C1E:015C  94 PC
+; 'setting7' / 'setting4' dbox.
+;
+; Calls SetRemapTable, UseOtherPage, BuildPathFar, LoadPackedHeader, FindFarMsg, DrawRleTransRemapAt,
+; FindUnlink, DrawSettingsHeading. Far routine (retf).
+;-----------------------------------------------------------------------------
+DrawModeSetDlg:
+        enter 0x10e, 0x0
+        push di
+        push si
+        db 0x2B, 0xDB                           ; insn: sub bx, bx
+.1:
+        db 0x8B, 0xF3                           ; insn: mov si, bx
+        mov [bp + si - 0x10e], bl
+        inc bx
+        cmp bx, 0x100
+        jl short .1
+        cmp word [SoundOptions], 0x10
+        jnz short .2
+        mov al, 0x5
+        jmp short .3
+.2:
+        mov al, 0x11
+.3:
+        mov [bp - 0x69], al
+        cmp word [SoundOptions], 0x2
+        jnz short .4
+        mov al, 0x11
+        jmp short .5
+.4:
+        mov al, 0x5
+.5:
+        mov [bp - 0x6a], al
+        lea ax, [bp - 0x10e]
+        push ss
+        push ax
+        call 0x0FEF:SetRemapTable
+        add sp, 0x4
+        call 0x0FEF:UseOtherPage
+        cmp word [DbSaveMode], 0x2
+        jnz short .6
+        push word 0x3701
+        push strict word str_Qpp
+        push ds
+        push strict word str_Setting7
+        jmp short .7
+        db 0x90
+.6:
+        push word 0x3701
+        push strict word str_Qpp
+        push ds
+        push strict word str_Setting4
+.7:
+        push 0x0
+        push 0x0
+        lea ax, [bp - 0xe]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        push 0xa
+        push 0xa
+        push strict word str_Dbox_4
+        push 0x0
+        lea ax, [bp - 0xe]
+        push ax
+        call 0x14B8:LoadPackedHeader
+        add sp, 0x4
+        push dx
+        push ax
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        db 0x8B, 0xFA                           ; insn: mov di, dx
+        call 0x03A3:FindFarMsg
+        add sp, 0x6
+        push dx
+        push ax
+        call 0x0FEF:DrawRleTransRemapAt
+        add sp, 0x8
+        push di
+        push si
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        push 0x11
+        push word [DbSaveMode]
+        push 0x4
+        push 0xa
+        push 0xa
+        call 0x2B11:DrawSettingsHeading
+        add sp, 0xa
+        pop si
+        pop di
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; DrawModeSetChecks                                          2C1E:0222  94 PC
+; All check boxes.
+;
+; Calls DrawModeSetCheck, GetPaletteFar, WaitRetraceEnd, SetPaletteFar. Far routine (retf).
+;-----------------------------------------------------------------------------
+DrawModeSetChecks:
+        enter 0x12, 0x0
+        push di
+        push si
+        mov al, [SoundOptions]
+        and al, 0x10
+        jz short .1
+        db 0x2B, 0xF6                           ; insn: sub si, si
+        jmp short .2
+        db 0x90
+.1:
+        mov si, [CrowdState]
+        and si, 0x40
+.2:
+        mov al, [SoundOptions]
+        and al, 0x10
+        jz short .3
+        db 0x2B, 0xFF                           ; insn: sub di, di
+        jmp short .4
+.3:
+        mov di, [CrowdState]
+        and di, 0x80
+.4:
+        test byte [SoundOptions], 0x2
+        jz short .5
+        mov ah, [AnnouncerFlags]
+        and ax, 0x100
+        jmp short .6
+.5:
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+.6:
+        mov [bp - 0x2], ax
+        mov al, [CrowdState]
+        and ax, strict word 0x20
+        shr al, byte 0x5
+        shl ax, 1
+        mov cl, [CrowdState]
+        and cx, 0x10
+        shr cl, byte 0x4
+        db 0x0B, 0xC1                           ; insn: or ax, cx
+        shl ax, 1
+        mov cl, [CrowdState]
+        and cx, 0x8
+        shr cl, byte 0x3
+        db 0x0B, 0xC1                           ; insn: or ax, cx
+        shl ax, 1
+        mov cl, [CrowdState]
+        and cx, 0x4
+        shr cl, byte 0x2
+        db 0x0B, 0xC1                           ; insn: or ax, cx
+        shl ax, 1
+        mov cl, [CrowdState]
+        and cx, 0x2
+        shr cl, 1
+        db 0x0B, 0xC1                           ; insn: or ax, cx
+        shl ax, 1
+        mov cl, [CrowdState]
+        and cx, 0x1
+        db 0x0B, 0xC1                           ; insn: or ax, cx
+        db 0x0B, 0xC6                           ; insn: or ax, si
+        db 0x0B, 0xC7                           ; insn: or ax, di
+        or ax, [bp - 0x2]
+        mov [g_B35E], ax
+        push cs
+        call DrawModeSetCheck
+        lea ax, [bp - 0x12]
+        push ss
+        push ax
+        push 0x5
+        push word 0x90
+        call 0x0FEF:GetPaletteFar
+        add sp, 0x8
+        mov al, 0x3f
+        mov [bp - 0xd], al
+        mov [bp - 0xe], al
+        mov [bp - 0xf], al
+        mov [bp - 0x10], al
+        mov [bp - 0x11], al
+        mov [bp - 0x12], al
+        mov al, 0x17
+        mov [bp - 0x7], al
+        mov [bp - 0x8], al
+        mov [bp - 0x9], al
+        mov [bp - 0xa], al
+        mov [bp - 0xb], al
+        mov [bp - 0xc], al
+        test byte [SoundOptions], 0x2
+        jz short .7
+        mov al, 0x3f
+        jmp short .8
+        db 0x90
+.7:
+        mov al, 0x17
+.8:
+        mov [bp - 0x4], al
+        mov [bp - 0x5], al
+        mov [bp - 0x6], al
+        call 0x0FEF:WaitRetraceEnd
+        lea ax, [bp - 0x12]
+        push ss
+        push ax
+        push 0x4
+        push word 0x90
+        call 0x0FEF:SetPaletteFar
+        add sp, 0x8
+        call 0x0FEF:WaitRetraceEnd
+        lea ax, [bp - 0x12]
+        push ss
+        push ax
+        push 0x5
+        push word 0xa0
+        call 0x0FEF:SetPaletteFar
+        add sp, 0x8
+        pop si
+        pop di
+        leave
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; ModeSetHitTest                                             2C1E:0340  94 PC
+; Box under the pointer.
+;
+; Takes 3 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
+ModeSetHitTest:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        push di
+        mov di, [bp + 0x6]
+        sub di, 0xa
+        sub word [bp + 0x8], 0xa
+        db 0x2B, 0xC9                           ; insn: sub cx, cx
+        mov bx, 0x0
+        mov [bp + 0x6], di
+        mov ax, 0x36df
+        mov ds, ax
+.1:
+        cmp [bx], di
+        jg short .2
+        cmp [bx + 0x4], di
+        jl short .2
+        mov ax, [bp + 0x8]
+        cmp [bx + 0x2], ax
+        jg short .2
+        cmp [bx + 0x6], ax
+        jnl short .3
+.2:
+        inc cx
+        add bx, 0x8
+        cmp bx, 0xa0
+        jc short .1
+        mov ax, DGROUP
+        mov ds, ax
+        jmp short .7
+.3:
+        mov ax, DGROUP
+        mov ds, ax
+        cmp cx, 0xa
+        jz short .7
+        cmp cx, 0xb
+        jz short .7
+        cmp cx, 0xc
+        jl short .4
+        cmp cx, 0xf
+        jg short .4
+        cmp word [SoundOptions], 0x10
+        jz short .7
+.4:
+        cmp cx, 0x10
+        jz short .5
+        cmp cx, 0x11
+        jnz short .6
+.5:
+        test byte [SoundOptions], 0x2
+        jz short .7
+.6:
+        mov bx, [bp + 0xa]
+        mov [bx], cx
+        mov ax, 0x1
+        pop di
+        leave
+        retf
+.7:
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        pop di
+        leave
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; DrawModeSetCheck                                           2C1E:03C4  94 PC
+; One check box.
+;
+; Calls GetPaletteFar, WaitRetraceEnd, SetPaletteFar. Far routine (retf).
+;-----------------------------------------------------------------------------
+DrawModeSetCheck:
+        enter 0x60, 0x0
+        push di
+        push si
+        lea ax, [bp - 0x60]
+        push ss
+        push ax
+        push 0x20
+        push word 0x80
+        call 0x0FEF:GetPaletteFar
+        add sp, 0x8
+        db 0x2B, 0xFF                           ; insn: sub di, di
+        lea si, [bp - 0x5e]
+.1:
+        db 0x8B, 0xCF                           ; insn: mov cx, di
+        mov ax, 0x1
+        shl ax, cl
+        test [g_B35E], ax
+        jz short .2
+        mov al, 0x17
+        mov [si], al
+        mov [si - 0x1], al
+        mov [si - 0x2], al
+        mov al, 0x3f
+        jmp short .3
+.2:
+        mov al, 0x3f
+        mov [si], al
+        mov [si - 0x1], al
+        mov [si - 0x2], al
+        mov al, 0x17
+.3:
+        mov [si + 0x18], al
+        mov [si + 0x17], al
+        mov [si + 0x16], al
+        inc di
+        add si, 0x3
+        lea ax, [bp - 0x46]
+        db 0x3B, 0xF0                           ; insn: cmp si, ax
+        jc short .1
+        test byte [g_B35F], 0x1
+        jz short .4
+        mov al, 0x17
+        mov [bp - 0x19], al
+        mov [bp - 0x1a], al
+        mov [bp - 0x1b], al
+        mov al, 0x3f
+        jmp short .5
+.4:
+        mov al, 0x3f
+        mov [bp - 0x19], al
+        mov [bp - 0x1a], al
+        mov [bp - 0x1b], al
+        mov al, 0x17
+.5:
+        mov [bp - 0x1], al
+        mov [bp - 0x2], al
+        mov [bp - 0x3], al
+        call 0x0FEF:WaitRetraceEnd
+        lea ax, [bp - 0x60]
+        push ss
+        push ax
+        push 0x20
+        push word 0x80
+        call 0x0FEF:SetPaletteFar
+        add sp, 0x8
+        pop si
+        pop di
+        leave
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; ModeSetViewLoop                                            2C1E:0464  94 PC
+; View-only loop.
+;
+; Calls MouseRead, UseCurrentPage, DrawRleTransAt, FlushInputEvents, GetInputEvent, VgaCopyRect. Far
+; routine (retf).
+;-----------------------------------------------------------------------------
+ModeSetViewLoop:
+        enter 0xa, 0x0
+        push si
+        lea ax, [bp - 0x2]
+        push ax
+        lea cx, [bp - 0x4]
+        push cx
+        lea dx, [bp - 0xa]
+        push dx
+        call 0x03A3:MouseRead
+        add sp, 0x6
+        mov ax, [bp - 0x4]
+        mov [bp - 0x6], ax
+        mov ax, [bp - 0x2]
+        mov [bp - 0x8], ax
+        call 0x0FEF:UseCurrentPage
+        push word [bp - 0x8]
+        mov ax, [bp - 0x6]
+        sub ax, strict word 0x4
+        push ax
+        push word [DialogDataSeg]
+        push word [DialogData]
+        call 0x0FEF:DrawRleTransAt
+        add sp, 0x8
+        call 0x0F99:FlushInputEvents
+.1:
+        mov word [bp - 0xa], 0x0
+.2:
+        call 0x0F99:GetInputEvent
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        db 0x0B, 0xF6                           ; insn: or si, si
+        jz short .3
+        lea ax, [bp - 0x8]
+        push ax
+        lea ax, [bp - 0x6]
+        push ax
+        push si
+        call far [HotKeyFn]
+        add sp, 0x6
+        mov [bp - 0xa], ax
+        test byte [bp - 0xa], 0x6
+        jz short .2
+.3:
+        cmp word [bp - 0xa], 0x0
+        jz short .4
+        jmp near .9
+.4:
+        mov ax, [bp - 0x6]
+        cmp [bp - 0x4], ax
+        jnz short .5
+        mov ax, [bp - 0x8]
+        cmp [bp - 0x2], ax
+        jz short .1
+.5:
+        call 0x0FEF:UseCurrentPage
+        cmp word [bp - 0x2], 0xb0
+        jnl short .8
+        les bx, [DialogData]
+        mov ax, [es:bx + 0x2]
+        add ax, [bp - 0x2]
+        cmp ax, 0xb0
+        jl short .6
+        mov ax, 0xb0
+        sub ax, [bp - 0x2]
+        push ax
+        jmp short .7
+.6:
+        push word [es:bx + 0x2]
+.7:
+        mov ax, [es:bx]
+        inc ax
+        push ax
+        push word [bp - 0x2]
+        mov ax, [bp - 0x4]
+        sub ax, strict word 0x4
+        cwd
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        sar ax, byte 0x2
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        push ax
+        push word 0xb00
+        push word 0x4400
+        call 0x0000:VgaCopyRect
+        add sp, 0xc
+.8:
+        push word [bp - 0x8]
+        mov ax, [bp - 0x6]
+        sub ax, strict word 0x4
+        push ax
+        push word [DialogDataSeg]
+        push word [DialogData]
+        call 0x0FEF:DrawRleTransAt
+        add sp, 0x8
+        mov ax, [bp - 0x6]
+        mov [bp - 0x4], ax
+        mov ax, [bp - 0x8]
+        mov [bp - 0x2], ax
+        jmp near .1
+.9:
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        pop si
+        leave
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; ModeSetEditLoop                                            2C1E:0570  94 PC
+; Edit loop of the mode settings screen.
+;
+; Calls MouseRead, UseCurrentPage, DrawRleTransAt, FlushInputEvents, GetInputEvent, VgaCopyRect,
+; ModeSetHitTest, DrawModeSetCheck and others. Far routine (retf).
+;-----------------------------------------------------------------------------
+ModeSetEditLoop:
+        enter 0xc, 0x0
+        push si
+        lea ax, [bp - 0x2]
+        push ax
+        lea cx, [bp - 0x4]
+        push cx
+        lea dx, [bp - 0xa]
+        push dx
+        call 0x03A3:MouseRead
+        add sp, 0x6
+        mov ax, [bp - 0x4]
+        mov [bp - 0x6], ax
+        mov ax, [bp - 0x2]
+        mov [bp - 0x8], ax
+        call 0x0FEF:UseCurrentPage
+        push word [bp - 0x8]
+        mov ax, [bp - 0x6]
+        sub ax, strict word 0x4
+        push ax
+        push word [DialogDataSeg]
+        push word [DialogData]
+        call 0x0FEF:DrawRleTransAt
+        add sp, 0x8
+        call 0x0F99:FlushInputEvents
+.1:
+        mov word [bp - 0xa], 0x0
+.2:
+        call 0x0F99:GetInputEvent
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        db 0x0B, 0xF6                           ; insn: or si, si
+        jz short .3
+        lea ax, [bp - 0x8]
+        push ax
+        lea ax, [bp - 0x6]
+        push ax
+        push si
+        call far [HotKeyFn]
+        add sp, 0x6
+        mov [bp - 0xa], ax
+        test byte [bp - 0xa], 0x6
+        jz short .2
+.3:
+        test byte [bp - 0xa], 0x6
+        jz short .4
+        jmp near .9
+.4:
+        mov ax, [bp - 0x4]
+        cmp [bp - 0x6], ax
+        jnz short .5
+        mov ax, [bp - 0x2]
+        cmp [bp - 0x8], ax
+        jz short .1
+.5:
+        call 0x0FEF:UseCurrentPage
+        cmp word [bp - 0x2], 0xb0
+        jnl short .8
+        les bx, [DialogData]
+        mov ax, [es:bx + 0x2]
+        add ax, [bp - 0x2]
+        cmp ax, 0xb0
+        jl short .6
+        mov ax, 0xb0
+        sub ax, [bp - 0x2]
+        push ax
+        jmp short .7
+.6:
+        push word [es:bx + 0x2]
+.7:
+        mov ax, [es:bx]
+        inc ax
+        push ax
+        push word [bp - 0x2]
+        mov ax, [bp - 0x4]
+        sub ax, strict word 0x4
+        cwd
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        sar ax, byte 0x2
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        push ax
+        push word 0xb00
+        push word 0x4400
+        call 0x0000:VgaCopyRect
+        add sp, 0xc
+.8:
+        push word [bp - 0x8]
+        mov ax, [bp - 0x6]
+        sub ax, strict word 0x4
+        push ax
+        push word [DialogDataSeg]
+        push word [DialogData]
+        call 0x0FEF:DrawRleTransAt
+        add sp, 0x8
+        mov ax, [bp - 0x6]
+        mov [bp - 0x4], ax
+        mov ax, [bp - 0x8]
+        mov [bp - 0x2], ax
+        jmp near .1
+.9:
+        test byte [bp - 0xa], 0x2
+        jnz short .10
+        jmp near .17
+.10:
+        cmp word [bp - 0x2], 0xb0
+        jnl short .13
+        les bx, [DialogData]
+        mov ax, [es:bx + 0x2]
+        add ax, [bp - 0x2]
+        cmp ax, 0xb0
+        jl short .11
+        mov ax, 0xb0
+        sub ax, [bp - 0x2]
+        push ax
+        jmp short .12
+        db 0x90
+.11:
+        push word [es:bx + 0x2]
+.12:
+        mov ax, [es:bx]
+        inc ax
+        push ax
+        push word [bp - 0x2]
+        mov ax, [bp - 0x4]
+        sub ax, strict word 0x4
+        cwd
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        sar ax, byte 0x2
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        push ax
+        push word 0xb00
+        push word 0x4400
+        call 0x0000:VgaCopyRect
+        add sp, 0xc
+.13:
+        lea ax, [bp - 0xc]
+        push ax
+        push word [bp - 0x8]
+        push word [bp - 0x6]
+        push cs
+        call ModeSetHitTest
+        add sp, 0x6
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jz short .16
+        cmp word [bp - 0xc], 0x12
+        jnl short .19
+        mov ax, [bp - 0xc]
+        mov cx, 0x2
+        cwd
+        idiv cx
+        db 0x0B, 0xD2                           ; insn: or dx, dx
+        jz short .14
+        mov ax, [bp - 0xc]
+        cwd
+        idiv cx
+        mov [bp - 0xc], ax
+        db 0x8A, 0xC8                           ; insn: mov cl, al
+        mov ax, 0x1
+        shl ax, cl
+        not ax
+        and [g_B35E], ax
+        jmp short .15
+        db 0x90
+.14:
+        mov ax, [bp - 0xc]
+        cwd
+        idiv cx
+        mov [bp - 0xc], ax
+        db 0x8A, 0xC8                           ; insn: mov cl, al
+        mov ax, 0x1
+        shl ax, cl
+        or [g_B35E], ax
+.15:
+        push cs
+        call DrawModeSetCheck
+.16:
+        call 0x0FEF:UseCurrentPage
+        jmp near .8
+.17:
+        test byte [bp - 0xa], 0x4
+        jnz short .18
+        jmp near .1
+.18:
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        pop si
+        leave
+        retf
+.19:
+        cmp word [bp - 0xc], 0x12
+        jz short .20
+        jmp near ModeSetEditLoopTail + 0x8C0
+.20:
+        mov al, [g_B35E]
+        and ax, strict word 0x1
+        cmp ax, strict word 0x1
+        db 0x1B, 0xC0                           ; insn: sbb ax, ax
+        inc ax
+        xor al, [CrowdState]
+        and ax, strict word 0x1
+        xor [CrowdState], ax
+        mov al, [CrowdState]
+        mov cl, [g_B35E]
+        and cx, 0x2
+        cmp cx, 0x1
+        db 0x1B, 0xC9                           ; insn: sbb cx, cx
+        inc cx
+        shl cx, 1
+        db 0x32, 0xC1                           ; insn: xor al, cl
+        and ax, strict word 0x2
+        xor [CrowdState], ax
+        mov al, [CrowdState]
+        mov cl, [g_B35E]
+        and cx, 0x4
+        cmp cx, 0x1
+        db 0x1B, 0xC9                           ; insn: sbb cx, cx
+        inc cx
+        shl cx, byte 0x2
+        db 0x32, 0xC1                           ; insn: xor al, cl
+        and ax, strict word 0x4
+        xor [CrowdState], ax
+        mov al, [CrowdState]
+        mov cl, [g_B35E]
+        and cx, 0x8
+        cmp cx, 0x1
+        db 0x1B, 0xC9                           ; insn: sbb cx, cx
+        inc cx
+        shl cx, byte 0x3
+        db 0x32, 0xC1                           ; insn: xor al, cl
+        and ax, strict word 0x8
+        xor [CrowdState], ax
+        mov al, [CrowdState]
+        mov cl, [g_B35E]
+        and cx, 0x10
+        cmp cx, 0x1
+        db 0x1B, 0xC9                           ; insn: sbb cx, cx
+        inc cx
+        shl cx, byte 0x4
+        db 0x32, 0xC1                           ; insn: xor al, cl
+        and ax, strict word 0x10
+        xor [CrowdState], ax
+        mov al, [CrowdState]
+        mov cl, [g_B35E]
+        and cx, 0x20
+        cmp cx, 0x1
+        db 0x1B, 0xC9                           ; insn: sbb cx, cx
+        inc cx
+        shl cx, byte 0x5
+        db 0x32, 0xC1                           ; insn: xor al, cl
+        and ax, strict word 0x20
+        xor [CrowdState], ax
+        cmp word [SoundOptions], 0x10
+        jz short .21
+        mov al, [g_B35E]
+        and ax, strict word 0x40
+        cmp ax, strict word 0x1
+        db 0x1B, 0xC0                           ; insn: sbb ax, ax
+        inc ax
+        shl al, byte 0x6
+        xor al, [CrowdState]
+        and ax, strict word 0x40
+        xor [CrowdState], ax
+        mov al, [CrowdState]
+        mov cl, [g_B35E]
+        and cx, 0x80
+        cmp cx, 0x1
+        db 0x1B, 0xC9                           ; insn: sbb cx, cx
+        inc cx
+        shl cx, byte 0x7
+        db 0x32, 0xC1                           ; insn: xor al, cl
+        and ax, 0x80
+        xor [CrowdState], ax
+.21:
+        mov al, [g_B35E]
+        and ax, 0x80
+        cmp ax, strict word 0x1
+        db 0x1B, 0xF6                           ; insn: sbb si, si
+        inc si
+        test byte [CrowdState], 0x80
+        jz short .22
+        db 0x0B, 0xF6                           ; insn: or si, si
+        jnz short .22
+        call 0x0EDC:CrowdNoiseOff
+.22:
+        test byte [CrowdState], 0x80
+        jnz short .23
+        db 0x0B, 0xF6                           ; insn: or si, si
+        jz short .23
+        db 0x8B, 0xC6                           ; insn: mov ax, si
+        shl al, byte 0x7
+        xor al, [CrowdState]
+        and ax, 0x80
+        xor [CrowdState], ax
+        call 0x0EDC:CrowdReset
+        jmp short .24
+        db 0x90
+.23:
+        db 0x8B, 0xC6                           ; insn: mov ax, si
+        shl al, byte 0x7
+        xor al, [CrowdState]
+        and ax, 0x80
+        xor [CrowdState], ax
+.24:
+        test byte [SoundOptions], 0x2
+        jz short .25
+        mov ah, [g_B35F]
+        and ax, 0x100
+        cmp ax, strict word 0x1
+        db 0x1B, 0xC0                           ; insn: sbb ax, ax
+        inc ax
+        db 0x8A, 0xE0                           ; insn: mov ah, al
+        xor ah, [AnnouncerFlags]
+        and ax, 0x100
+        xor [CrowdState], ax
+.25:
+        test byte [CrowdState], 0x40
+        jz short .26
+        call 0x16F2:MusicOn
+        jmp short .27
+        db 0x90
+.26:
+        call 0x16F2:MusicOff
+.27:
+        test byte [CrowdState], 0x80
+        jz short .28
+        call 0x16F2:SfxOn
+        jmp short .29
+        db 0x90
+.28:
+        call 0x16F2:SfxOff
+.29:
+        call 0x0F97:UseDbDescriptor

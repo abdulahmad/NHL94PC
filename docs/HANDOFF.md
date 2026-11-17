@@ -239,11 +239,11 @@ The spill at the start of seg001 finishes `test bx, 8`, then `pop bp` / `ret 0xe
 - `_atoi` (was `JumpAhead`) is `jmp near _atol`: in this model `atoi` is `atol`.
 - `StrIndexInSet` returns an index, not a pointer, so it is not named `_strpbrk`.
 - `EmulatedFloat` uses the floating-point emulator interrupts. The operation it performs is not named.
-- `CallArg` calls the far routine in its last argument once per array element (probably a library sort's step). The library symbol is not confirmed.
+- `_qsort` (was `CallArg`) is MSC qsort: the stats overlay passes it its far comparators (`CmpGoals` ...).
 - seg056:0x0D00 (four zero bytes) and seg056:0x0D10 through 0x0D20 are not read by this segment. The byte at 0x0B71 is not read either.
 - The seg058 routines called from seg056 (`RtlSectionHook`, `RtlWriteText`, `RtlSaveVectors`, `RtlSetHandler`, `RtlAfterFiles`,
   `RtlBeforeClose`, `RtlFindFile`, `RtlExePath`) are named from the call sites. seg058 (`lib/rtlink/rtl_runtime.asm`) is source. Its first three bytes finish
-  `OvlThunk281`; `stc` / `retf` is at seg058:0003.
+  `BuildEventLinesThunk` (far jump to `BuildEventLines` in AI.OVL); `stc` / `retf` is at seg058:0003.
 - Flag bit `0x20` selects the other read path (`call 0:0` in `LoadSection`). None of these 21 records has that bit set, and the far call is stored as zeros.
 - `ReturnBytePtr` is written from the reload return hook; what that byte represents is not pinned down.
 - `ReadEndPtr` and the four routines around it spin on `EndPtr`. The bytes do not say what advances that pointer.

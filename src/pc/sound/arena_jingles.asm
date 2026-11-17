@@ -1,0 +1,491 @@
+; Loads and frees the arena organ jingles (INIT.OVL)
+; The first bytes finish the last routine of lineups.asm.
+        pop si
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; LoadArenaJingles                                           2137:0004  94 PC
+; Loads the arena organ .KMS/.CFG jingles.
+;
+; Calls BuildPathFar, LoadRawHeader, _rand. Far routine (retf).
+;-----------------------------------------------------------------------------
+LoadArenaJingles:
+        enter 0x26, 0x0
+        push di
+        push si
+        mov bx, [g_29CA]
+        cmp bx, 0x18
+        jl short .1
+        mov bx, 0xd
+.1:
+        db 0x2B, 0xC9                           ; insn: sub cx, cx
+        db 0x8B, 0xF9                           ; insn: mov di, cx
+        db 0x8B, 0xC3                           ; insn: mov ax, bx
+        shl ax, 1
+        db 0x03, 0xC3                           ; insn: add ax, bx
+        shl ax, 1
+        mov [bp - 0x22], ax
+        mov [bp - 0xa], bx
+        mov [bp - 0x2], cx
+        db 0x8B, 0xF1                           ; insn: mov si, cx
+.2:
+        mov bx, [bp - 0x22]
+        db 0x03, 0xDF                           ; insn: add bx, di
+        add bx, 0x1f3
+        mov es, [g_8C9C]
+        mov [bp - 0x26], bx
+        mov [bp - 0x24], es
+        cmp byte [es:bx], 0x0
+        jnl short .3
+        jmp near .4
+.3:
+        push word 0x3701
+        push strict word str_Kms
+        mov al, [es:bx]
+        cbw
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        shl bx, byte 0x2
+        push word [es:bx + 0x11d]
+        push word [es:bx + 0x11b]
+        push 0x0
+        push 0x0
+        lea ax, [bp - 0x20]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        push 0x0
+        lea ax, [bp - 0x20]
+        push ax
+        call 0x149D:LoadRawHeader
+        add sp, 0x4
+        mov [si + ArenaJingleC], ax
+        mov [si + ArenaJingleCSeg], dx
+        push word 0x3701
+        push strict word str_Cfg
+        les bx, [bp - 0x26]
+        mov al, [es:bx]
+        cbw
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        shl bx, byte 0x2
+        mov es, [g_8C9C]
+        push word [es:bx + 0x11d]
+        push word [es:bx + 0x11b]
+        push 0x0
+        push 0x0
+        lea ax, [bp - 0x20]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        push 0x0
+        lea ax, [bp - 0x20]
+        push ax
+        call 0x149D:LoadRawHeader
+        add sp, 0x4
+        mov [si + ArenaJingleD], ax
+        mov [si + ArenaJingleDSeg], dx
+        jmp short .5
+.4:
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [si + ArenaJingleCSeg], ax
+        mov [si + ArenaJingleC], ax
+        mov [si + ArenaJingleDSeg], ax
+        mov [si + ArenaJingleD], ax
+.5:
+        inc di
+        add si, 0x4
+        cmp si, 0x18
+        jnl short .6
+        jmp near .2
+.6:
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [bp - 0x6], ax
+        mov [bp - 0xc], ax
+        lea di, [bp - 0x12]
+        jmp near .16
+.7:
+        mov [bp - 0x8], di
+.8:
+        mov di, 0xffff
+        call 0x0000:_rand
+        and ah, 0x7f
+        mov cx, 0x9
+        cwd
+        idiv cx
+        mov [bp - 0x4], dx
+        db 0x2B, 0xF6                           ; insn: sub si, si
+        mov ax, 0x38bd
+        mov ds, ax
+.9:
+        db 0x0B, 0xFF                           ; insn: or di, di
+        jz short .11
+        mov bx, [bp - 0xa]
+        db 0x8B, 0xC3                           ; insn: mov ax, bx
+        shl bx, 1
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        shl bx, 1
+        db 0x03, 0xDE                           ; insn: add bx, si
+        mov al, [bx + f_38BD_01F3]
+        cbw
+        mov cx, 0x38bd
+        mov es, cx
+        mov bx, [bp - 0x4]
+        shl bx, 1
+        cmp ax, [es:bx + f_38BD_028F]
+        jnz short .10
+        db 0x2B, 0xFF                           ; insn: sub di, di
+.10:
+        inc si
+        cmp si, 0x6
+        jl short .9
+.11:
+        mov [bp - 0x2], di
+        mov ax, DGROUP
+        mov ds, ax
+        db 0x2B, 0xDB                           ; insn: sub bx, bx
+        lea ax, [bp - 0x12]
+        cmp [bp - 0x8], ax
+        jna short .14
+        lea di, [bp - 0x12]
+.12:
+        cmp word [bp - 0x2], 0x0
+        jz short .14
+        mov ax, [di]
+        mov es, [g_8C9C]
+        mov si, [bp - 0x4]
+        shl si, 1
+        cmp [es:si + 0x28f], ax
+        jnz short .13
+        mov word [bp - 0x2], 0x0
+.13:
+        inc di
+        inc di
+        inc bx
+        cmp [bp - 0x6], bx
+        jg short .12
+.14:
+        cmp word [bp - 0x2], 0x0
+        jnz short .15
+        jmp near .8
+.15:
+        mov di, [bp - 0x8]
+        mov si, [bp - 0xc]
+        push word 0x3701
+        push strict word str_Kms
+        mov es, [g_8C9C]
+        mov bx, [bp - 0x4]
+        shl bx, 1
+        mov bx, [es:bx + 0x28f]
+        mov [di], bx
+        shl bx, byte 0x2
+        push word [es:bx + 0x11d]
+        push word [es:bx + 0x11b]
+        push 0x0
+        push 0x0
+        lea ax, [bp - 0x20]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        push 0x0
+        lea ax, [bp - 0x20]
+        push ax
+        call 0x149D:LoadRawHeader
+        add sp, 0x4
+        mov [si + g_B306], ax
+        mov [si + g_B308], dx
+        push word 0x3701
+        push strict word str_Cfg
+        mov es, [g_8C9C]
+        mov bx, [di]
+        shl bx, byte 0x2
+        push word [es:bx + 0x11d]
+        push word [es:bx + 0x11b]
+        push 0x0
+        push 0x0
+        lea ax, [bp - 0x20]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        push 0x0
+        lea ax, [bp - 0x20]
+        push ax
+        call 0x149D:LoadRawHeader
+        add sp, 0x4
+        mov [si + g_B312], ax
+        mov [si + g_B314], dx
+        add si, 0x4
+        inc di
+        inc di
+        inc word [bp - 0x6]
+        mov [bp - 0xc], si
+.16:
+        lea ax, [bp - 0xc]
+        db 0x3B, 0xF8                           ; insn: cmp di, ax
+        jnc short .17
+        jmp near .7
+.17:
+        cmp word [SoundOptions], 0x8
+        jnz short .18
+        push word 0x3701
+        push strict word str_Kms
+        push ds
+        push strict word str_Mtrocku_2
+        jmp short .20
+.18:
+        cmp word [SoundOptions], 0x2
+        jnz short .19
+        push word 0x3701
+        push strict word str_Kms
+        push ds
+        push strict word str_Sbrocku_2
+        jmp short .20
+        db 0x90
+.19:
+        push word 0x3701
+        push strict word str_Kms
+        push ds
+        push strict word str_Adrocku_2
+.20:
+        push 0x0
+        push 0x0
+        lea ax, [bp - 0x20]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        push 0x0
+        lea ax, [bp - 0x20]
+        push ax
+        call 0x149D:LoadRawHeader
+        add sp, 0x4
+        mov [ArenaJingleA], ax
+        mov [ArenaJingleASeg], dx
+        cmp word [SoundOptions], 0x8
+        jnz short .21
+        push word 0x3701
+        push strict word str_Cfg
+        push ds
+        push strict word str_Mtrocku
+        jmp short .23
+        db 0x90
+.21:
+        cmp word [SoundOptions], 0x2
+        jnz short .22
+        push word 0x3701
+        push strict word str_Cfg
+        push ds
+        push strict word str_Sbrocku
+        jmp short .23
+        db 0x90
+.22:
+        push word 0x3701
+        push strict word str_Cfg
+        push ds
+        push strict word str_Adrocku
+.23:
+        push 0x0
+        push 0x0
+        lea ax, [bp - 0x20]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        push 0x0
+        lea ax, [bp - 0x20]
+        push ax
+        call 0x149D:LoadRawHeader
+        add sp, 0x4
+        mov [ArenaJingleB], ax
+        mov [ArenaJingleBSeg], dx
+        push word 0x3701
+        push strict word str_Kms
+        mov bx, [g_29CA]
+        mov al, [bx + teamrocktune]
+        cbw
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        shl bx, byte 0x2
+        mov es, [g_8C9C]
+        push word [es:bx + 0x2ae]
+        push word [es:bx + 0x2ac]
+        push 0x0
+        push 0x0
+        lea ax, [bp - 0x20]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        push 0x0
+        lea ax, [bp - 0x20]
+        push ax
+        call 0x149D:LoadRawHeader
+        add sp, 0x4
+        mov [g_B2F2], ax
+        mov [g_B2F4], dx
+        push word 0x3701
+        push strict word str_Cfg
+        mov bx, [g_29CA]
+        mov al, [bx + teamrocktune]
+        cbw
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        shl bx, byte 0x2
+        mov es, [g_8C9C]
+        push word [es:bx + 0x2ae]
+        push word [es:bx + 0x2ac]
+        push 0x0
+        push 0x0
+        lea ax, [bp - 0x20]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        push 0x0
+        lea ax, [bp - 0x20]
+        push ax
+        call 0x149D:LoadRawHeader
+        add sp, 0x4
+        mov [g_B2FE], ax
+        mov [g_B300], dx
+        push word 0x3701
+        push strict word str_Kms
+        push ds
+        push strict word str_Rockditi_2
+        push 0x0
+        push 0x0
+        lea ax, [bp - 0x20]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        push 0x0
+        lea ax, [bp - 0x20]
+        push ax
+        call 0x149D:LoadRawHeader
+        add sp, 0x4
+        mov [g_B2F6], ax
+        mov [g_B2F8], dx
+        push word 0x3701
+        push strict word str_Cfg
+        push ds
+        push strict word str_Rockditi
+        push 0x0
+        push 0x0
+        lea ax, [bp - 0x20]
+        push ss
+        push ax
+        call 0x0CD1:BuildPathFar
+        add sp, 0x10
+        push 0x0
+        lea ax, [bp - 0x20]
+        push ax
+        call 0x149D:LoadRawHeader
+        add sp, 0x4
+        mov [g_B302], ax
+        mov [g_B304], dx
+        pop si
+        pop di
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; FreeArenaJingles                                           2137:03D6  94 PC
+; Frees the four jingle buffers.
+;
+; Calls FindUnlink. Far routine (retf).
+;-----------------------------------------------------------------------------
+FreeArenaJingles:
+        enter 0x2, 0x0
+        push di
+        push si
+        db 0x2B, 0xF6                           ; insn: sub si, si
+        mov di, [bp - 0x2]
+.1:
+        mov ax, [si + ArenaJingleCSeg]
+        or ax, [si + ArenaJingleC]
+        jz short .2
+        push word [si + ArenaJingleCSeg]
+        push word [si + ArenaJingleC]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [si + ArenaJingleCSeg], ax
+        mov [si + ArenaJingleC], ax
+.2:
+        mov ax, [si + ArenaJingleDSeg]
+        or ax, [si + ArenaJingleD]
+        jz short .3
+        push word [si + ArenaJingleDSeg]
+        push word [si + ArenaJingleD]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [si + ArenaJingleDSeg], ax
+        mov [si + ArenaJingleD], ax
+.3:
+        add si, 0x4
+        cmp si, 0x18
+        jl short .1
+        db 0x2B, 0xF6                           ; insn: sub si, si
+        mov di, [bp - 0x2]
+.4:
+        mov ax, [si + g_B308]
+        or ax, [si + g_B306]
+        jz short .5
+        push word [si + g_B308]
+        push word [si + g_B306]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [si + g_B308], ax
+        mov [si + g_B306], ax
+.5:
+        mov ax, [si + g_B314]
+        or ax, [si + g_B312]
+        jz short .6
+        push word [si + g_B314]
+        push word [si + g_B312]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [si + g_B314], ax
+        mov [si + g_B312], ax
+.6:
+        add si, 0x4
+        cmp si, 0xc
+        jl short .4
+        db 0x2B, 0xF6                           ; insn: sub si, si
+        mov di, [bp - 0x2]
+.7:
+        mov ax, [si + ArenaJingleASeg]
+        or ax, [si + ArenaJingleA]
+        jz short .8
+        push word [si + ArenaJingleASeg]
+        push word [si + ArenaJingleA]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [si + ArenaJingleASeg], ax
+        mov [si + ArenaJingleA], ax
+.8:
+        mov ax, [si + ArenaJingleBSeg]
+        or ax, [si + ArenaJingleB]
+        jz short .9
+        push word [si + ArenaJingleBSeg]
+        push word [si + ArenaJingleB]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        mov [si + ArenaJingleBSeg], ax
+        mov [si + ArenaJingleB], ax
+.9:
+        add si, 0x4
+        cmp si, 0xc
+        jl short .7
+        pop si
+        pop di
+        leave
+        retf
+        db 0x90

@@ -1,0 +1,7 @@
+; FADES5.OVL: RTLink overlay, loaded at paragraph 3358h. Files: docs/cleanup/files_94pc_ovl.txt.
+; 7 relocation entries (offset, segment paragraph), zero fill to the next paragraph, then the image.
+section fades5_relocs start=0
+        dw 0x0081, 0x3358, 0x0009, 0x3358, 0x0168, 0x3358, 0x0153, 0x3358
+        dw 0x0137, 0x3358, 0x0112, 0x3358, 0x0197, 0x3358
+section block_sweep follows=fades5_relocs align=16 vstart=0x0
+%include "front/fade/block_sweep.asm"

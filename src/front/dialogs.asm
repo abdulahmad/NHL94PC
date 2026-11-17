@@ -249,7 +249,7 @@ NumberEntryDialog:
         push ax
         push word [bp + 0xc]
         push si
-        call 0x1B35:OvlThunk102
+        call 0x1B35:EditTextFieldThunk
         add sp, 0x14
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov word [bp - 0x2], 0x1
@@ -286,7 +286,7 @@ NumberEntryDialog:
         push ax
         push word [bp + 0xc]
         push si
-        call 0x1B35:OvlThunk102
+        call 0x1B35:EditTextFieldThunk
         add sp, 0x14
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [bp - 0x4], ax

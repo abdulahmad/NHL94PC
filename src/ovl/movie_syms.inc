@@ -1,0 +1,17 @@
+AllocLinearCanvas		equ	0x6
+AllocRecData0		equ	0x38
+DrawRawTransAt		equ	0x13B0
+EmsMapFrame		equ	0x192
+FindUnlink		equ	0x99A
+FreeCanvas		equ	0xC
+InsertRecWrap		equ	0x13
+LoadRawMode		equ	0x7C
+PutBlockAt		equ	0x4B5
+RawBase		equ	0x1532
+UnlinkRec		equ	0x9B2
+_dos_close		equ	0x1084
+_dos_open		equ	0x10FA
+_dos_read		equ	0x1112
+_fmemcpy		equ	0x12B8
+str_AMvi		equ	0x628E
+str_Databuffer		equ	0x6294

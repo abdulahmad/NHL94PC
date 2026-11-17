@@ -1,7 +1,9 @@
 ; Far data, paragraph 35F3h, 336 bytes: highlight replay messages. The EXE's own code does not use it
 ; (the overlays probably do).
         db 'There are no hilights!'
-        db 0x00, 0x00, 0x00, 0xF3, '5There is not enogh space on'
+        db 0x00
+msgThereAreNoHilights:                                    ; used by MENUS (to name)
+        db 0x00, 0x00, 0xF3, '5There is not enogh space on'
         db 0x00, 'the floppy disk for the hilights!'
         db 0x00, 'Select less hilights or get another disk.'
         db 0x00, 0x1B, 0x00, 0xF3, 0x35, 0x37, 0x00, 0xF3, 0x35, 0x59, 0x00, 0xF3, '5There is not enogh space on'

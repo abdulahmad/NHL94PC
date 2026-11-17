@@ -1,6 +1,7 @@
 #!/bin/sh
 # build.sh: check the EXE (tools/prebuild.py, which also cuts Extracted/ on the first run), assemble src/hockey94pc.asm with nasm into
-# output/HOCKEY.EXE, and compare it byte for byte with the retail EXE. The last line is MATCH or MISMATCH.
+# output/HOCKEY.EXE, and compare it byte for byte with the retail EXE; then build the 20 overlays (tools/build_ovl.py,
+# output/ovl/) and compare each with its retail file. The last line is MATCH or MISMATCH.
 cd "$(dirname "$0")"
 NASM="${NASM:-nasm}"
 command -v "$NASM" >/dev/null || { echo "nasm not found (apt install nasm / brew install nasm; or set NASM=)"; exit 1; }
@@ -11,4 +12,6 @@ ref=$(python3 tools/exefile.py) || exit 1
 if command -v sha1sum >/dev/null; then SHA="sha1sum"; else SHA="shasum -a 1"; fi
 a=$($SHA "$ref" | cut -d' ' -f1 | tr -d '\\'); b=$($SHA output/HOCKEY.EXE | cut -d' ' -f1 | tr -d '\\')
 echo "ref $a  $(wc -c <"$ref") bytes"; echo "out $b  $(wc -c <output/HOCKEY.EXE) bytes"
-if [ "$a" = "$b" ]; then echo "MATCH output/HOCKEY.EXE"; else echo MISMATCH; cmp -l "$ref" output/HOCKEY.EXE | head -20; exit 1; fi
+[ "$a" = "$b" ] || { echo MISMATCH; cmp -l "$ref" output/HOCKEY.EXE | head -20; exit 1; }
+ov=$(python3 tools/build_ovl.py) || { echo "$ov" | grep -v ': MATCH$'; echo MISMATCH; exit 1; }
+echo "MATCH output/HOCKEY.EXE and the 20 overlays"

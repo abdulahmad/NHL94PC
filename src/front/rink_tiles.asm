@@ -1,0 +1,444 @@
+; Loads and draws the rink tiles (INIT.OVL)
+; The first bytes finish the last routine of team_db.asm.
+        rep movsb
+        pop si
+        pop di
+        retf
+
+;-----------------------------------------------------------------------------
+; LoadRinkTiles                                              24DE:0006  94 PC
+; Rink.til and rink.map, then draws the first screen.
+;
+; Takes 1 word of stack arguments. Calls FileSizeMsg, FatalError, LoadRawHeader, _sprintf,
+; VgaStorePlanes, FindUnlink, PatchRinkMap, DrawRinkBackground and others. Far routine (retf).
+;-----------------------------------------------------------------------------
+LoadRinkTiles:
+        enter 0x22, 0x0
+        push di
+        push si
+        push strict word str_RinkTil_2
+        call 0x03A3:FileSizeMsg
+        add sp, 0x2
+        mov [bp - 0xa], ax
+        mov cx, 0x40
+        cwd
+        idiv cx
+        db 0x0B, 0xD2                           ; insn: or dx, dx
+        jz short .1
+        push word [bp - 0xa]
+        push strict word str_InvalidFileRinkTilSizeS
+        call 0x0F4A:FatalError
+        add sp, 0x4
+.1:
+        push 0x0
+        push strict word str_RinkTil
+        call 0x149D:LoadRawHeader
+        add sp, 0x4
+        mov [bp - 0x12], ax
+        mov [bp - 0x10], dx
+        mov ax, [bp + 0x6]
+        db 0x8B, 0xC8                           ; insn: mov cx, ax
+        shl ax, 1
+        db 0x03, 0xC1                           ; insn: add ax, cx
+        shl ax, byte 0x2
+        add ax, 0x512c
+        mov [bp - 0x22], ax
+        push ax
+        push strict word str_STil
+        lea ax, [bp - 0x20]
+        push ax
+        call 0x0000:_sprintf
+        add sp, 0x6
+        lea ax, [bp - 0x20]
+        push ax
+        call 0x03A3:FileSizeMsg
+        add sp, 0x2
+        mov [bp - 0x8], ax
+        mov cx, 0x40
+        cwd
+        idiv cx
+        db 0x0B, 0xD2                           ; insn: or dx, dx
+        jz short .2
+        push word [bp - 0x8]
+        lea ax, [bp - 0x20]
+        push ax
+        push strict word str_InvalidFileSSizeD
+        call 0x0F4A:FatalError
+        add sp, 0x6
+.2:
+        push 0x0
+        lea ax, [bp - 0x20]
+        push ax
+        call 0x149D:LoadRawHeader
+        add sp, 0x4
+        mov [bp - 0xe], ax
+        mov [bp - 0xc], dx
+        lea ax, [bp - 0xa]
+        push ax
+        lea cx, [bp - 0x12]
+        push cx
+        call 0x0000:VgaStorePlanes
+        add sp, 0x4
+        push word [bp - 0x10]
+        push word [bp - 0x12]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        push word [bp - 0xc]
+        push word [bp - 0xe]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        mov ax, [bp - 0xa]
+        cwd
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        sar ax, byte 0x6
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        mov [bp - 0x2], ax
+        mov ax, [g_0900]
+        or ax, [g_08FE]
+        jz short .3
+        push word [g_0900]
+        push word [g_08FE]
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+.3:
+        push 0x0
+        push strict word str_RinkMap
+        call 0x149D:LoadRawHeader
+        add sp, 0x4
+        mov [g_08FE], ax
+        mov [g_0900], dx
+        push word [bp - 0x22]
+        push strict word str_SMap
+        lea ax, [bp - 0x20]
+        push ax
+        call 0x0000:_sprintf
+        add sp, 0x6
+        push 0x0
+        lea ax, [bp - 0x20]
+        push ax
+        call 0x149D:LoadRawHeader
+        add sp, 0x4
+        db 0x8B, 0xF8                           ; insn: mov di, ax
+        mov [bp - 0x4], dx
+        les bx, [g_08FE]
+        mov ax, [es:bx + 0x2]
+        mov [g_B09A], ax
+        mov ax, [es:bx]
+        mov [g_B09C], ax
+        push word [bp - 0x22]
+        push word [bp - 0x2]
+        db 0x8B, 0xC2                           ; insn: mov ax, dx
+        push ax
+        push di
+        push es
+        push bx
+        db 0x8B, 0xF2                           ; insn: mov si, dx
+        push cs
+        call PatchRinkMap
+        add sp, 0xc
+        push si
+        push di
+        call 0x06E1:FindUnlink
+        add sp, 0x4
+        mov ax, [g_B09A]
+        sub ax, strict word 0xf
+        shl ax, byte 0x2
+        db 0x8B, 0xC8                           ; insn: mov cx, ax
+        cwd
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        sar ax, byte 0x3
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        mov [g_B098], ax
+        db 0x8B, 0xC1                           ; insn: mov ax, cx
+        mov cx, 0x8
+        cwd
+        idiv cx
+        mov [g_B092], dx
+        mov ax, [g_B09C]
+        shl ax, byte 0x2
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        cwd
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        sar ax, byte 0x3
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        sub ax, strict word 0x14
+        mov [g_B096], ax
+        db 0x8B, 0xC3                           ; insn: mov ax, bx
+        cwd
+        idiv cx
+        mov [g_B094], dx
+        push cs
+        call DrawRinkBackground
+        cmp word [CurPage], 0x1
+        db 0x1B, 0xC0                           ; insn: sbb ax, ax
+        and ax, 0x3900
+        add ah, 0xb
+        push ax
+        call 0x0000:VgaCopyStrip
+        add sp, 0x2
+        call 0x0000:VgaPageFlip
+        cmp word [CurPage], 0x1
+        db 0x1B, 0xC0                           ; insn: sbb ax, ax
+        and ax, 0x3900
+        add ah, 0xb
+        push ax
+        call 0x0000:VgaCopyStrip
+        add sp, 0x2
+        pop si
+        pop di
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; PatchRinkMap                                               24DE:01E8  94 PC
+; Copies a sub-map into the rink map.
+;
+; Takes 6 words of stack arguments. Far routine (retf).
+;-----------------------------------------------------------------------------
+PatchRinkMap:
+        enter 0x20, 0x0
+        push di
+        push si
+        lds di, [bp + 0x6]
+        les bx, [bp + 0xa]
+        mov ax, [es:bx + 0x2]
+        mov [bp - 0x1c], ax
+        mov cx, [es:bx]
+        mov [bp - 0xc], cx
+        mov dx, [di]
+        mov [bp - 0x1a], dx
+        db 0x8B, 0xF2                           ; insn: mov si, dx
+        db 0x2B, 0xD1                           ; insn: sub dx, cx
+        mov [bp - 0x18], dx
+        lea cx, [bx + 0x6]
+        mov [bp - 0x10], cx
+        mov [bp - 0xe], es
+        db 0x8B, 0xCE                           ; insn: mov cx, si
+        mov si, [bp + 0x10]
+        db 0x8B, 0xD0                           ; insn: mov dx, ax
+        mov ax, [ss:si + 0x6]
+        mov [bp - 0x20], dx
+        imul cx
+        add ax, [ss:si + 0x4]
+        shl ax, 1
+        db 0x03, 0xC7                           ; insn: add ax, di
+        mov dx, ds
+        add ax, strict word 0x6
+        mov [bp - 0x14], ax
+        mov [bp - 0x12], dx
+        cmp word [bp - 0x20], 0x0
+        jg short .1
+        mov ax, DGROUP
+        mov ds, ax
+        jmp short .4
+.1:
+        mov ax, [bp - 0x1c]
+        mov [bp - 0x16], ax
+        mov ax, DGROUP
+        mov ds, ax
+.2:
+        mov dx, [bp - 0xc]
+        db 0x0B, 0xD2                           ; insn: or dx, dx
+        jg short .8
+        mov di, [bp - 0x14]
+.3:
+        mov ax, [bp - 0x18]
+        shl ax, 1
+        db 0x03, 0xF8                           ; insn: add di, ax
+        mov ax, [bp - 0x12]
+        mov [bp - 0x14], di
+        dec word [bp - 0x16]
+        jnz short .2
+.4:
+        mov bx, [bp + 0x10]
+        cmp word [bx + 0x8], 0x0
+        jnl short .5
+        jmp near .14
+.5:
+        mov ax, [bx + 0xa]
+        imul word [bp - 0x1a]
+        add ax, [bx + 0x8]
+        shl ax, 1
+        add ax, [bp + 0x6]
+        mov dx, [bp + 0x8]
+        add ax, strict word 0x6
+        mov [bp - 0x14], ax
+        mov [bp - 0x12], dx
+        mov ax, [bp + 0xa]
+        mov dx, [bp + 0xc]
+        add ax, strict word 0x6
+        mov [bp - 0x10], ax
+        mov [bp - 0xe], dx
+        mov ax, [bp - 0x1a]
+        sub ax, [bp - 0xc]
+        mov [bp - 0x18], ax
+        cmp word [bp - 0x1c], 0x0
+        jg short .6
+        jmp near .14
+.6:
+        mov ax, [bp - 0x1c]
+        mov [bp - 0x16], ax
+.7:
+        mov dx, [bp - 0xc]
+        db 0x0B, 0xD2                           ; insn: or dx, dx
+        jng short .10
+        jmp short .11
+        db 0x90, 0x90, 0x90
+.8:
+        db 0x8B, 0xCA                           ; insn: mov cx, dx
+        mov bx, [bp - 0x10]
+        mov di, [bp - 0x14]
+        mov ds, [bp - 0xe]
+        mov es, [bp - 0x12]
+.9:
+        db 0x8B, 0xF3                           ; insn: mov si, bx
+        inc bx
+        inc bx
+        mov ax, [si]
+        add ax, [bp + 0xe]
+        db 0x8B, 0xF7                           ; insn: mov si, di
+        inc di
+        inc di
+        mov [es:si], ax
+        loop .9
+        mov [bp - 0x10], bx
+        mov ax, DGROUP
+        mov ds, ax
+        jmp near .3
+        db 0x90
+.10:
+        mov bx, [bp - 0x14]
+        jmp short .13
+        db 0x90
+.11:
+        db 0x8B, 0xCA                           ; insn: mov cx, dx
+        mov bx, [bp - 0x14]
+        mov di, [bp - 0x10]
+        mov ds, [bp - 0xe]
+        mov es, [bp - 0x12]
+.12:
+        db 0x8B, 0xF7                           ; insn: mov si, di
+        inc di
+        inc di
+        mov ax, [si]
+        add ax, [bp + 0xe]
+        add ah, 0x18
+        db 0x8B, 0xF3                           ; insn: mov si, bx
+        dec bx
+        dec bx
+        mov [es:si], ax
+        loop .12
+        mov [bp - 0x10], di
+        mov ax, DGROUP
+        mov ds, ax
+.13:
+        mov ax, [bp - 0x18]
+        shl ax, 1
+        db 0x2B, 0xD8                           ; insn: sub bx, ax
+        mov ax, [bp - 0x12]
+        mov [bp - 0x14], bx
+        dec word [bp - 0x16]
+        jnz short .7
+.14:
+        pop si
+        pop di
+        leave
+        retf
+        db 0x90
+
+;-----------------------------------------------------------------------------
+; DrawRinkBackground                                         24DE:033A  94 PC
+; VGA latch stamps of the visible rink tiles.
+;
+; Calls VgaStamp8.
+;-----------------------------------------------------------------------------
+DrawRinkBackground:
+        enter 0xe, 0x0
+        push di
+        push si
+        mov ax, [g_B09C]
+        imul word [g_B098]
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        add si, 0x3
+        mov word [bp - 0x6], 0x86a0
+        mov word [g_B0C2], 0x0
+        mov ax, 0x5
+        mov dx, 0x3ce
+        out dx, al
+        mov dx, 0x3cf
+        in al, dx
+        mov [bp - 0xe], al
+        mov ax, 0x2
+        mov dx, 0x3c4
+        out dx, al
+        mov dx, 0x3c5
+        in al, dx
+        mov [bp - 0xd], al
+        mov ax, 0x4
+        mov dx, 0x3ce
+        out dx, al
+        mov dx, 0x3cf
+        in al, dx
+        mov [bp - 0xc], al
+        mov word [bp - 0x8], 0x16
+.1:
+        db 0x8B, 0xFE                           ; insn: mov di, si
+        shl di, 1
+        add si, 0x30
+        mov word [bp - 0x4], 0x30
+        mov [bp - 0xa], si
+        db 0x8B, 0xF7                           ; insn: mov si, di
+        mov di, [bp - 0x6]
+.2:
+        les bx, [g_08FE]
+        push word [es:bx + si]
+        push di
+        mov ax, [es:bx + si]
+        and ah, 0x3
+        shl ax, byte 0x4
+        sub ax, 0x2588
+        push ax
+        call 0x0000:VgaStamp8
+        add sp, 0x6
+        inc si
+        inc si
+        inc di
+        inc di
+        dec word [bp - 0x4]
+        jnz short .2
+        add di, 0x2a0
+        mov [bp - 0x6], di
+        dec word [bp - 0x8]
+        jz short .3
+        mov si, [bp - 0xa]
+        jmp short .1
+        db 0x90
+.3:
+        mov ax, 0x5
+        mov dx, 0x3ce
+        out dx, al
+        mov al, [bp - 0xe]
+        cbw
+        mov dx, 0x3cf
+        out dx, al
+        mov ax, 0x2
+        mov dx, 0x3c4
+        out dx, al
+        mov al, [bp - 0xd]
+        cbw
+        mov dx, 0x3c5
+        out dx, al
+        mov ax, 0x4
+        mov dx, 0x3ce
+        out dx, al
+        mov al, [bp - 0xc]
+        cbw
+        mov dx, 0x3cf
+        out dx, al
+        pop si

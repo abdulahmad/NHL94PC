@@ -1629,6 +1629,7 @@ IdivWords:
         mov ax, word [bx+4]
         mov dx, word [bx+6]
         mov bx, word [bx+8]
+.regs:                                          ; entry with DX:AX and BX already loaded
         idiv bx
         retf
 
@@ -1641,6 +1642,7 @@ DivWords:
         mov ax, word [bx+4]
         mov dx, word [bx+6]
         mov bx, word [bx+8]
+.regs:                                          ; entry with DX:AX and BX already loaded
         div bx
         retf
 

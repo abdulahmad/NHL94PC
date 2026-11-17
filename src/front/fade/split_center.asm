@@ -1,0 +1,250 @@
+; Fade opening from the centre (FADES7.OVL)
+
+;-----------------------------------------------------------------------------
+; FadeSplitCenter                                            3358:0000  94 PC
+; Strips open from the centre.
+;
+; Takes 1 word of stack arguments. Calls UseCurrentPage, CopyPageRect. Far routine (retf).
+;-----------------------------------------------------------------------------
+FadeSplitCenter:
+        enter 0x20, 0x0
+        push di
+        push si
+        mov si, [bp + 0x6]
+        mov ax, 0x8
+        mov [bp - 0x4], ax
+        cmp si, 0x1
+        jnz short .1
+        jmp near .25
+.1:
+        call 0x0FEF:UseCurrentPage
+        mov es, [g_8CF8]
+        mov ax, [es:0x74fe]
+        mov [bp - 0x16], ax
+        mov ax, [es:0x74f4]
+        mov [bp - 0x1c], ax
+        mov cx, [es:0x74fa]
+        mov [bp - 0x14], cx
+        db 0x8B, 0xF8                           ; insn: mov di, ax
+        sub di, [es:0x74f2]
+        db 0x0B, 0xF6                           ; insn: or si, si
+        jz short .2
+        jmp near .14
+.2:
+        lea ax, [di + 0x7]
+        cwd
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        sar ax, byte 0x3
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        mov ax, [bp - 0x14]
+        add ax, strict word 0x7
+        cwd
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        sar ax, byte 0x3
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        mov [bp - 0x1e], ax
+        db 0x0B, 0xC0                           ; insn: or ax, ax
+        jg short .3
+        jmp near .25
+.3:
+        mov ax, 0x8
+        mov [bp - 0xc], ax
+        mov [bp - 0x10], ax
+        db 0x8B, 0xC3                           ; insn: mov ax, bx
+        cwd
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        sar ax, 1
+        mov [bp - 0x20], ax
+        mov ax, [bp - 0x1e]
+        mov [bp - 0x18], ax
+.4:
+        mov ax, [bp - 0xc]
+        mov [bp - 0xe], ax
+        mov ax, [bp - 0x20]
+        mov word [bp - 0x8], 0x0
+        mov [bp - 0x12], bx
+        db 0x0B, 0xDB                           ; insn: or bx, bx
+        jng short .12
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        mov di, [bp - 0x8]
+.5:
+        db 0x8B, 0xC7                           ; insn: mov ax, di
+        mov cx, 0x2
+        cwd
+        idiv cx
+        db 0x0B, 0xD2                           ; insn: or dx, dx
+        jz short .6
+        db 0x2B, 0xF7                           ; insn: sub si, di
+        jmp short .7
+        db 0x90, 0x90
+.6:
+        db 0x03, 0xF7                           ; insn: add si, di
+.7:
+        db 0x8B, 0xC6                           ; insn: mov ax, si
+        cwd
+        idiv cx
+        db 0x0B, 0xD2                           ; insn: or dx, dx
+        jz short .8
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        jmp short .9
+        db 0x90
+.8:
+        mov ax, [bp - 0x16]
+        sub ax, [bp - 0xe]
+.9:
+        mov [bp - 0x4], ax
+        db 0x8B, 0xC6                           ; insn: mov ax, si
+        shl ax, byte 0x3
+        mov [bp - 0x6], ax
+        db 0x8B, 0xC6                           ; insn: mov ax, si
+        cwd
+        idiv cx
+        db 0x0B, 0xD2                           ; insn: or dx, dx
+        jz short .10
+        mov ax, [bp - 0x16]
+        sub ax, [bp - 0xe]
+        jmp short .11
+.10:
+        mov ax, [bp - 0x4]
+        neg ax
+.11:
+        mov [bp - 0xa], ax
+        push ax
+        push word [bp - 0x10]
+        push word [bp - 0xe]
+        push word [bp - 0x6]
+        push word [bp - 0x4]
+        cmp word [CurPage], 0x1
+        db 0x1B, 0xC0                           ; insn: sbb ax, ax
+        neg ax
+        push ax
+        call 0x0FEF:CopyPageRect
+        add sp, 0xc
+        inc di
+        cmp [bp - 0x12], di
+        jg short .5
+.12:
+        add word [bp - 0xc], 0x8
+        dec word [bp - 0x18]
+        jnz short .13
+        jmp near .25
+.13:
+        mov bx, [bp - 0x12]
+        jmp near .4
+        db 0x90
+.14:
+        mov ax, [bp - 0x14]
+        add ax, strict word 0x7
+        cwd
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        sar ax, byte 0x3
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        db 0x8B, 0xD8                           ; insn: mov bx, ax
+        db 0x8B, 0xC7                           ; insn: mov ax, di
+        add ax, strict word 0x7
+        cwd
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        sar ax, byte 0x3
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        db 0x0B, 0xF6                           ; insn: or si, si
+        jg short .15
+        jmp near .25
+.15:
+        mov ax, 0x8
+        mov [bp - 0xc], ax
+        mov [bp - 0xe], ax
+        db 0x8B, 0xC3                           ; insn: mov ax, bx
+        cwd
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        sar ax, 1
+        mov [bp - 0x20], ax
+        mov [bp - 0x16], si
+        mov [bp - 0x12], bx
+.16:
+        mov ax, [bp - 0xc]
+        mov [bp - 0x10], ax
+        mov ax, [bp - 0x20]
+        mov word [bp - 0x8], 0x0
+        cmp word [bp - 0x12], 0x0
+        jng short .24
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        mov di, [bp - 0x8]
+.17:
+        db 0x8B, 0xC7                           ; insn: mov ax, di
+        mov cx, 0x2
+        cwd
+        idiv cx
+        db 0x0B, 0xD2                           ; insn: or dx, dx
+        jz short .18
+        db 0x2B, 0xF7                           ; insn: sub si, di
+        jmp short .19
+        db 0x90, 0x90
+.18:
+        db 0x03, 0xF7                           ; insn: add si, di
+.19:
+        db 0x8B, 0xC6                           ; insn: mov ax, si
+        cwd
+        idiv cx
+        db 0x0B, 0xD2                           ; insn: or dx, dx
+        jz short .20
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        jmp short .21
+        db 0x90
+.20:
+        mov ax, [bp - 0x1c]
+        sub ax, [bp - 0x10]
+.21:
+        mov [bp - 0x6], ax
+        db 0x8B, 0xC6                           ; insn: mov ax, si
+        shl ax, byte 0x3
+        mov [bp - 0x4], ax
+        db 0x8B, 0xC6                           ; insn: mov ax, si
+        cwd
+        idiv cx
+        db 0x0B, 0xD2                           ; insn: or dx, dx
+        jz short .22
+        mov ax, [bp - 0x1c]
+        sub ax, [bp - 0x10]
+        jmp short .23
+.22:
+        mov ax, [bp - 0x6]
+        neg ax
+.23:
+        mov [bp - 0xa], ax
+        mov ax, [bp - 0x14]
+        imul word [bp - 0xa]
+        push ax
+        push word [bp - 0x10]
+        push word [bp - 0xe]
+        push word [bp - 0x6]
+        push word [bp - 0x4]
+        cmp word [CurPage], 0x1
+        db 0x1B, 0xC0                           ; insn: sbb ax, ax
+        neg ax
+        push ax
+        call 0x0FEF:CopyPageRect
+        add sp, 0xc
+        inc di
+        cmp [bp - 0x12], di
+        jg short .17
+.24:
+        add word [bp - 0xc], 0x8
+        dec word [bp - 0x16]
+        jz short .25
+        jmp near .16
+.25:
+        pop si
+        pop di
+        leave
+        retf
+        db 0x90

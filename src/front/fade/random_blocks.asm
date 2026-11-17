@@ -1,0 +1,222 @@
+; Random blocks fade (FADES8.OVL)
+
+;-----------------------------------------------------------------------------
+; FadeRandomBlocks                                           3358:0000  94 PC
+; Blocks in LFSR order.
+;
+; Takes 2 words of stack arguments. Calls UseCurrentPage, CopyFadeRect, RandLfsrByte. Far routine
+; (retf).
+;-----------------------------------------------------------------------------
+FadeRandomBlocks:
+        enter 0x10a, 0x0
+        push di
+        push si
+        mov si, [bp + 0x8]
+        mov di, [bp + 0x6]
+        db 0x2A, 0xC0                           ; insn: sub al, al
+        mov [bp - 0x4], al
+        mov [bp - 0x3], al
+        call 0x0FEF:UseCurrentPage
+        mov es, [g_8CFA]
+        mov ax, [es:0x74fc]
+        mov [g_DF6A], ax
+        mov ax, [es:0x74fe]
+        mov [g_DF6C], ax
+        mov ax, [es:0x74f2]
+        mov [g_DF6E], ax
+        mov cx, [es:0x74f4]
+        mov [g_DF70], cx
+        db 0x8B, 0xD0                           ; insn: mov dx, ax
+        mov ax, [es:0x74fa]
+        db 0x03, 0xC7                           ; insn: add ax, di
+        dec ax
+        db 0x8B, 0xDA                           ; insn: mov bx, dx
+        cwd
+        idiv di
+        mov [bp - 0x6], ax
+        db 0x8B, 0xD0                           ; insn: mov dx, ax
+        db 0x8B, 0xC1                           ; insn: mov ax, cx
+        db 0x2B, 0xC3                           ; insn: sub ax, bx
+        db 0x03, 0xC6                           ; insn: add ax, si
+        dec ax
+        db 0x8B, 0xCA                           ; insn: mov cx, dx
+        cwd
+        idiv si
+        imul cx
+        mov [bp - 0x8], ax
+        mov word [bp - 0xa], 0x100
+.1:
+        mov byte [bp - 0x4], 0x0
+        mov word [bp - 0x2], 0x100
+.2:
+        mov al, [bp - 0x4]
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        imul si, ax, word 0xff
+        mov al, [bp - 0x3]
+        db 0x03, 0xF0                           ; insn: add si, ax
+        cmp si, [bp - 0x8]
+        jnc short .3
+        push word [bp + 0x8]
+        push di
+        db 0x8B, 0xC6                           ; insn: mov ax, si
+        db 0x2B, 0xD2                           ; insn: sub dx, dx
+        div word [bp - 0x6]
+        imul word [bp + 0x8]
+        push ax
+        db 0x8B, 0xC6                           ; insn: mov ax, si
+        db 0x2B, 0xD2                           ; insn: sub dx, dx
+        div word [bp - 0x6]
+        db 0x8B, 0xC2                           ; insn: mov ax, dx
+        imul di
+        push ax
+        call 0x3349:CopyFadeRect
+        add sp, 0x8
+.3:
+        lea ax, [bp - 0x4]
+        push ax
+        call 0x3349:RandLfsrByte
+        add sp, 0x2
+        mov [bp - 0x4], al
+        db 0x2A, 0xE4                           ; insn: sub ah, ah
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        lea ax, [bp + si - 0x10a]
+        push ax
+        call 0x3349:RandLfsrByte
+        add sp, 0x2
+        mov [bp - 0x3], al
+        dec word [bp - 0x2]
+        jnz short .2
+        dec word [bp - 0xa]
+        jnz short .1
+        pop si
+        pop di
+        leave
+        retf
+
+;-----------------------------------------------------------------------------
+; FadeRandomBlocks2                                          3358:00D4  94 PC
+; Random blocks with a shuffle table.
+;
+; Calls UseCurrentPage, _rand, CopyFadeRect, WaitDeadlineNoEoi. Far routine (retf).
+;-----------------------------------------------------------------------------
+FadeRandomBlocks2:
+        enter 0x10, 0x0
+        push di
+        push si
+        call 0x0FEF:UseCurrentPage
+        mov es, [g_8CFA]
+        mov ax, [es:0x74fc]
+        mov [g_DF6A], ax
+        mov ax, [es:0x74fe]
+        mov [g_DF6C], ax
+        mov ax, [es:0x74f2]
+        mov [g_DF6E], ax
+        mov cx, [es:0x74f4]
+        mov [g_DF70], cx
+        mov ax, [es:0x74fa]
+        add ax, strict word 0x1f
+        cwd
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        sar ax, byte 0x5
+        db 0x33, 0xC2                           ; insn: xor ax, dx
+        db 0x2B, 0xC2                           ; insn: sub ax, dx
+        mov [bp - 0x8], ax
+        db 0x8B, 0xC1                           ; insn: mov ax, cx
+        sub ax, [g_DF6E]
+        add ax, strict word 0x1b
+        mov cx, 0x1c
+        cwd
+        idiv cx
+        mov [bp - 0xa], ax
+        imul word [bp - 0x8]
+        mov [bp - 0xc], ax
+        mov word [bp - 0x4], 0x0
+        cmp word [bp - 0xa], 0x0
+        jng short .4
+        mov cx, [bp - 0x4]
+.1:
+        cmp word [bp - 0x8], 0x0
+        jng short .3
+        db 0x8B, 0xD9                           ; insn: mov bx, cx
+        add bx, 0x8efe
+        mov ax, [bp - 0x8]
+        mov [bp - 0x2], ax
+        mov [bp - 0x4], cx
+        db 0x8B, 0xD0                           ; insn: mov dx, ax
+.2:
+        add bx, 0x8
+        mov byte [bx - 0x8], 0x0
+        dec dx
+        jnz short .2
+.3:
+        inc cx
+        cmp [bp - 0xa], cx
+        jg short .1
+.4:
+        cmp word [bp - 0xc], 0x0
+        jg short .5
+        jmp near .11
+.5:
+        mov ax, [bp - 0xc]
+        mov [bp - 0xe], ax
+.6:
+        mov ax, 0x1
+        cwd
+        call 0x03A3:SetDeadline.regs
+        call 0x0000:_rand
+        cwd
+        idiv word [bp - 0x8]
+        db 0x8B, 0xF2                           ; insn: mov si, dx
+        call 0x0000:_rand
+        cwd
+        idiv word [bp - 0xa]
+        db 0x8B, 0xFA                           ; insn: mov di, dx
+        mov word [bp - 0x2], 0x0
+        cmp word [bp - 0xc], 0x0
+        jng short .10
+        mov dx, [bp - 0x2]
+.7:
+        db 0x8B, 0xDE                           ; insn: mov bx, si
+        shl bx, byte 0x3
+        cmp byte [bx + di + g_8EFE], 0x0
+        jz short .9
+        inc si
+        cmp [bp - 0x8], si
+        jg short .8
+        db 0x2B, 0xF6                           ; insn: sub si, si
+        inc di
+        cmp [bp - 0xa], di
+        jg short .8
+        db 0x2B, 0xFF                           ; insn: sub di, di
+.8:
+        inc dx
+        cmp [bp - 0xc], dx
+        jg short .7
+        jmp short .10
+.9:
+        mov [bp - 0x4], di
+        push 0x1c
+        push 0x20
+        imul ax, di, 0x1c
+        push ax
+        db 0x8B, 0xC6                           ; insn: mov ax, si
+        shl si, byte 0x5
+        push si
+        db 0x8B, 0xF0                           ; insn: mov si, ax
+        call 0x3349:CopyFadeRect
+        add sp, 0x8
+        shl si, byte 0x3
+        mov bx, [bp - 0x4]
+        mov byte [bx + si + g_8EFE], 0x1
+.10:
+        call 0x03A3:WaitDeadlineNoEoi
+        dec word [bp - 0xe]
+        jz short .11
+        jmp near .6
+.11:
+        pop si
+        pop di
+        leave
+        retf
+        db 0x90
