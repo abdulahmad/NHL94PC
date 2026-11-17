@@ -60,7 +60,7 @@ Menus_26D4_0016:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x11e3
+        push strict word str_Desk_17
         push 0x0
         lea ax, [bp - 0x10]
         push ax
@@ -108,7 +108,7 @@ Menus_26D4_0016:
         add sp, 0x8
         mov word [g_08FC], 0x50
         push 0x10
-        push word 0x11e8
+        push strict word str_Pal_66
         push di
         push si
         call 0x03A3:FindFarMsg
@@ -183,7 +183,7 @@ Menus_26D4_0180:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x11f5
+        push strict word str_Bkgd_7
         push 0x0
         lea ax, [bp - 0x3c]
         push ax
@@ -237,7 +237,7 @@ Menus_26D4_0180:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x1203
+        push strict word str_Palette_8
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x1c], ax
@@ -267,7 +267,7 @@ Menus_26D4_0180:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x1212
+        push strict word str_Pal_65
         push 0x0
         lea ax, [bp - 0x3c]
         push ax
@@ -391,7 +391,7 @@ Menus_26D4_0180:
         call 0x2E70:Menus_2E70_09FE
         add sp, 0x4
         mov word [bp - 0xe], 0x0
-        mov di, 0x1236
+        mov di, str_Po
         lea si, [bp - 0x2e]
         push ds
         pop es
@@ -479,7 +479,7 @@ Menus_26D4_0180:
         rep movsw
         db 0x13, 0xC9                           ; insn: adc cx, cx
         rep movsb
-        mov di, 0x123a
+        mov di, str_SDb
         mov si, 0xc000
         push ds
         pop es
@@ -532,7 +532,7 @@ Menus_26D4_0180:
         mov ax, 0x190
         cwd
         call 0x03A3:SetDeadline.regs
-        push word 0x1241
+        push strict word str_Err3_3
         push word [bp - 0x3e]
         push word [bp - 0x40]
         call 0x03A3:FindFarMsg
@@ -589,7 +589,7 @@ Menus_26D4_0180:
         call 0x0FEF:CopyPlane
 .19:
         push 0x10
-        push word 0x1246
+        push strict word str_Pal_64
         push word [bp - 0x1e]
         push word [bp - 0x20]
         call 0x03A3:FindFarMsg
@@ -613,7 +613,7 @@ Menus_26D4_0180:
         push cs
         call Menus_26D4_08CC
         add sp, 0x2
-        push word 0x124b
+        push strict word str_Wait
         push word [bp - 0x3e]
         push word [bp - 0x40]
         call 0x03A3:FindFarMsg
@@ -650,7 +650,7 @@ Menus_26D4_0180:
         mov ax, 0x190
         cwd
         call 0x03A3:SetDeadline.regs
-        push word 0x1250
+        push strict word str_Err3_2
         push word [bp - 0x3e]
         push word [bp - 0x40]
         call 0x03A3:FindFarMsg
@@ -682,7 +682,7 @@ Menus_26D4_0180:
         mov ax, 0x190
         cwd
         call 0x03A3:SetDeadline.regs
-        push word 0x1255
+        push strict word str_Err3
         push word [bp - 0x3e]
         push word [bp - 0x40]
         call 0x03A3:FindFarMsg
@@ -721,7 +721,7 @@ Menus_26D4_0180:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x125a
+        push strict word str_Temp_15
         call 0x14DB:AllocRecData
         add sp, 0x8
         push dx
@@ -766,7 +766,7 @@ Menus_26D4_0180:
         add sp, 0x4
         mov [g_AE94], ax
         mov [g_AE96], dx
-        push word 0x1268
+        push strict word str_Desk_16
         push dx
         push ax
         call 0x03A3:FindFarMsg
@@ -1325,7 +1325,7 @@ Menus_26D4_0D3A:
         retf
 .2:
         push 0x0
-        push word 0x126d
+        push strict word str_ScheduleDb_6
         call 0x149D:LoadRawHeader0
         add sp, 0x4
         mov [bp - 0x8], ax
@@ -1477,14 +1477,14 @@ Menus_26D4_0D3A:
         idiv cx
         les bx, [bp - 0x8]
         mov [es:bx + 0x22], ax
-        push word 0x1279
+        push strict word str_ScheduleDb_5
         call 0x03A3:FileSizeMsg
         add sp, 0x2
         push dx
         push ax
         push word [bp - 0x6]
         push word [bp - 0x8]
-        push word 0x1285
+        push strict word str_ScheduleDb_4
         call 0x03A3:WriteFileCode
         add sp, 0xa
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -3161,7 +3161,7 @@ Menus_26D4_1D02:
         add sp, 0x2
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .4
-        push word 0x12a5
+        push strict word str_Xx1_2
         call 0x0F4A:FatalError
         add sp, 0x2
 .4:
@@ -3627,7 +3627,7 @@ Menus_26D4_2112:
         add sp, 0x2
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .4
-        push word 0x12e0
+        push strict word str_Xx1
         call 0x0F4A:FatalError
         add sp, 0x2
 .4:
@@ -4128,7 +4128,7 @@ Menus_26D4_2112JumpTable:
         add sp, 0x4
         push 0x0
         push 0x0
-        push word 0x12e7
+        push strict word str_Tied_3
         push word [g_11D6]
         push word 0xc1f4
         call 0x0000:_sprintf
@@ -4186,7 +4186,7 @@ Menus_26D4_2112JumpTable:
         jnz short .4
         push word [bp - 0x24]
         push ax
-        push word 0x12ec
+        push strict word str_Tied_2
         jmp short .7
         db 0x90
 .4:
@@ -4443,7 +4443,7 @@ Menus_26D4_29F2:
         call 0x0000:_chdir
         add sp, 0x2
         push 0x0
-        push word 0x12f1
+        push strict word str_ScheduleDb_3
         call 0x149D:LoadRawHeader0
         add sp, 0x4
         mov bx, [bp + 0x6]
@@ -4467,14 +4467,14 @@ Menus_26D4_2A34:
         push ax
         call 0x0000:_chdir
         add sp, 0x2
-        push word 0x1300
+        push strict word str_ScheduleDb_2
         call 0x03A3:FileSizeMsg
         add sp, 0x2
         push dx
         push ax
         push word [bp + 0x8]
         push word [bp + 0x6]
-        push word 0x130c
+        push strict word str_ScheduleDb
         call 0x03A3:WriteFile
         add sp, 0xa
         push word 0x1318
@@ -4520,7 +4520,7 @@ Menus_26D4_2A80:
         push ax
         call 0x0000:_fstrcpy
         add sp, 0x8
-        mov di, 0x131b
+        mov di, str_GameSav_6
         lea si, [bp - 0x20]
         push ds
         pop es
@@ -4571,7 +4571,7 @@ Menus_26D4_2A80:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x1325
+        push strict word str_Palette_7
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x34], ax
@@ -4635,7 +4635,7 @@ Menus_26D4_2A80:
         push ax
         call 0x0000:_fstrcpy
         add sp, 0x8
-        mov di, 0x132d
+        mov di, str_GameSav_5
         lea si, [bp - 0x20]
         push ds
         pop es
@@ -4684,7 +4684,7 @@ Menus_26D4_2A80:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x1337
+        push strict word str_Palette_6
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x34], ax
@@ -4813,7 +4813,7 @@ Menus_26D4_2A80:
         call 0x0000:_fstrcpy
         add sp, 0x8
         push 0x0
-        push word 0x1341
+        push strict word str_Teeny05Fnt_3
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [g_21B0], ax
@@ -4839,7 +4839,7 @@ Menus_26D4_2A80:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x1355
+        push strict word str_Palette_5
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x34], ax
@@ -4929,7 +4929,7 @@ Menus_26D4_2A80:
         jnz short .16
         push word [bp - 0x3e]
         push ax
-        push word 0x135d
+        push strict word str_Tied
         jmp short .19
         db 0x90
 .16:
@@ -4982,7 +4982,7 @@ Menus_26D4_2A80:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x1369
+        push strict word str_Pal_63
         push 0x0
         lea ax, [bp - 0x20]
         push ax
@@ -5038,7 +5038,7 @@ Menus_26D4_2A80:
         push ax
         push ax
         push word 0x300
-        push word 0x136e
+        push strict word str_Palette_4
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x34], ax
@@ -5082,7 +5082,7 @@ Menus_26D4_2A80:
         push ax
         call 0x0000:_fstrcpy
         add sp, 0x8
-        mov di, 0x1376
+        mov di, str_GameSav_4
         lea si, [bp - 0x20]
         push ds
         pop es
@@ -5198,7 +5198,7 @@ Menus_26D4_2A80:
         mov [bp - 0x30], bx
         mov [bp - 0x2e], es
         push 0x0
-        push word 0x1380
+        push strict word str_Teeny05Fnt_2
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [g_21B0], ax
@@ -5224,7 +5224,7 @@ Menus_26D4_2A80:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x1394
+        push strict word str_Palette_3
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x34], ax
@@ -5295,7 +5295,7 @@ Menus_26D4_2A80:
         call 0x0CD1:BuildPathFar
         add sp, 0x10
         push 0x10
-        push word 0x13a3
+        push strict word str_Pal_62
         push 0x0
         lea ax, [bp - 0x20]
         push ax
@@ -5376,7 +5376,7 @@ Menus_26D4_2A80:
         push ax
         push ax
         push word 0x300
-        push word 0x13a8
+        push strict word str_Palette_2
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x34], ax
@@ -5421,7 +5421,7 @@ Menus_26D4_2A80:
         add sp, 0x4
         mov [g_AE94], ax
         mov [g_AE96], dx
-        push word 0x13b9
+        push strict word str_Desk_15
         push dx
         push ax
         call 0x03A3:FindFarMsg
@@ -5629,7 +5629,7 @@ Menus_26D4_373C:
         enter 0x14a, 0x0
         push di
         push si
-        push word 0x13be
+        push strict word str_Pnt2_12
         push word [MemBlock1Seg]
         push word [MemBlock1Off]
         call 0x03A3:FindFarMsg
@@ -5678,7 +5678,7 @@ Menus_26D4_373C:
         cwd
         push dx
         push ax
-        push word 0x13c3
+        push strict word str_Pointer_12
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x16], ax
@@ -5963,7 +5963,7 @@ Menus_26D4_373C:
         push word [bp - 0x16]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        push word 0x13cb
+        push strict word str_Pntr_17
         push word [MemBlock1Seg]
         push word [MemBlock1Off]
         call 0x03A3:FindFarMsg
@@ -5997,7 +5997,7 @@ Menus_26D4_373C:
         les si, [bp + si - 0x58]
         call far [es:bx + si + 0xc]
         mov [bp - 0x76], ax
-        push word 0x13d0
+        push strict word str_Pnt2_11
         push word [MemBlock1Seg]
         push word [MemBlock1Off]
         call 0x03A3:FindFarMsg
@@ -6017,7 +6017,7 @@ Menus_26D4_373C:
         cwd
         push dx
         push ax
-        push word 0x13d5
+        push strict word str_Pointer_11
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x16], ax
@@ -6062,7 +6062,7 @@ Menus_26D4_373C:
         mov [bp - 0x44], ax
         cmp word [bp - 0x76], 0x1
         jnz short .21
-        push word 0x13dd
+        push strict word str_Pntr_16
         push word [MemBlock1Seg]
         push word [MemBlock1Off]
         call 0x03A3:FindFarMsg
@@ -6082,7 +6082,7 @@ Menus_26D4_373C:
 .21:
         cmp word [bp - 0x76], 0x4
         jnz short .22
-        push word 0x13e2
+        push strict word str_Pntr_15
         push word [MemBlock1Seg]
         push word [MemBlock1Off]
         call 0x03A3:FindFarMsg
@@ -6104,7 +6104,7 @@ Menus_26D4_373C:
         jmp near .24
 .23:
         push ax
-        push word 0x13e7
+        push strict word str_Teeny05Fnt
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [g_21B0], ax
@@ -6138,7 +6138,7 @@ Menus_26D4_373C:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x1402
+        push strict word str_Pal_61
         push 0x0
         lea ax, [bp - 0x2a]
         push ax
@@ -6400,7 +6400,7 @@ Menus_26D4_373C:
         cwd
         push dx
         push ax
-        push word 0x1407
+        push strict word str_Menubuff_9
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp + si - 0x3a], ax
@@ -6573,7 +6573,7 @@ Menus_26D4_4146:
         mov dx, 0x140
         mov bx, 0xa
         call 0x0FEF:SetClipRectRegs
-        push word 0x1ff0
+        push strict word str_Bkgd
         push word [g_21B6]
         push word [g_21B4]
         call 0x03A3:FindFarMsg

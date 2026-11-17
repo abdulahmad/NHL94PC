@@ -79,7 +79,7 @@ Menus_2CAA_0056:
         add sp, 0x10
         push 0xa
         push 0xa
-        push word 0x14e3
+        push strict word str_Dbox_3
         push 0x0
         lea ax, [bp - 0xe]
         push ax

@@ -250,7 +250,7 @@ Ai_2425_0000:
         mov cx, 0xabb
         jmp short .29
 .23:
-        mov cx, 0xbab
+        mov cx, str_Shrt_2
         jmp short .29
         db 0x90
 .24:

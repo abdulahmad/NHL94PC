@@ -66,7 +66,7 @@ Menus_25DD_006E:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x116d
+        push strict word str_P01_4
         push 0x0
         lea ax, [bp - 0x20]
         push ax
@@ -94,7 +94,7 @@ Menus_25DD_006E:
         cmp si, 0x180
         jl short .1
         mov di, [bp - 0x12]
-        push word 0x1172
+        push strict word str_0000_6
         push word [bp - 0x10]
         push di
         call 0x03A3:FindFarMsg
@@ -118,7 +118,7 @@ Menus_25DD_006E:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x1180
+        push strict word str_Botm
         push 0x0
         lea ax, [bp - 0x20]
         push ax
@@ -136,11 +136,11 @@ Menus_25DD_006E:
         add sp, 0x4
         cmp word [DbSaveMode], 0x0
         jnz short .2
-        push word 0x1185
+        push strict word str_Top
         jmp short .3
         db 0x90
 .2:
-        push word 0x118a
+        push strict word str_Head
 .3:
         push word [bp - 0x10]
         push di
@@ -162,7 +162,7 @@ Menus_25DD_006E:
         mov bx, [g_29CA]
         shl bx, 1
         push word [bx + TeamNameClips]
-        push word 0x118f
+        push strict word str_JerSh_2
         lea ax, [bp - 0x20]
         push ax
         call 0x0000:_sprintf
@@ -174,7 +174,7 @@ Menus_25DD_006E:
         push ax
         call 0x0000:_fstrcat
         add sp, 0x8
-        push word 0x1196
+        push strict word str_P01_3
         push 0x0
         lea ax, [bp - 0x20]
         push ax
@@ -207,7 +207,7 @@ Menus_25DD_006E:
         mov dx, 0x13f
         mov bx, 0x2e
         call 0x0FEF:SetClipRectRegs
-        push word 0x119b
+        push strict word str_0000_5
         push word [bp - 0x10]
         push di
         call 0x03A3:FindFarMsg
@@ -223,7 +223,7 @@ Menus_25DD_006E:
         mov bx, [g_29CC]
         shl bx, 1
         push word [bx + TeamNameClips]
-        push word 0x11a0
+        push strict word str_JerSv_2
         lea ax, [bp - 0x20]
         push ax
         call 0x0000:_sprintf
@@ -235,7 +235,7 @@ Menus_25DD_006E:
         push ax
         call 0x0000:_fstrcat
         add sp, 0x8
-        push word 0x11a7
+        push strict word str_P01_2
         push 0x0
         lea ax, [bp - 0x20]
         push ax
@@ -264,7 +264,7 @@ Menus_25DD_006E:
         cmp si, 0x240
         jl short .5
         mov di, [bp - 0x12]
-        push word 0x11ac
+        push strict word str_0000_4
         mov ax, [bp - 0x10]
         push ax
         push di
@@ -639,10 +639,10 @@ Menus_25DD_063E:
         push word [bx + TeamNameClips]
         db 0x0B, 0xFF                           ; insn: or di, di
         jz short .1
-        mov ax, 0x11b1
+        mov ax, str_JerSv
         jmp short .2
 .1:
-        mov ax, 0x11b8
+        mov ax, str_JerSh
 .2:
         push ax
         lea ax, [bp - 0x1e]
@@ -656,7 +656,7 @@ Menus_25DD_063E:
         push ax
         call 0x0000:_fstrcat
         add sp, 0x8
-        push word 0x11bf
+        push strict word str_P01
         push 0x0
         lea ax, [bp - 0x1e]
         push ax
@@ -704,7 +704,7 @@ Menus_25DD_063E:
         mov dx, 0x13f
         mov bx, 0x2e
         call 0x0FEF:SetClipRectRegs
-        push word 0x11c4
+        push strict word str_0000_3
         push word [bp - 0xe]
         push word [bp - 0x10]
         call 0x03A3:FindFarMsg

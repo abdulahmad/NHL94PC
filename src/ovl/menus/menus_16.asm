@@ -99,7 +99,7 @@ Menus_2E70_000A:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x155b
+        push strict word str_Desk_12
         push 0x0
         lea ax, [bp - 0x4a]
         push ax
@@ -137,7 +137,7 @@ Menus_2E70_000A:
         call 0x0FEF:DrawRleTransAt
         add sp, 0x8
         mov word [g_08FC], 0x50
-        push word 0x1560
+        push strict word str_Pal_50
         push word [bp - 0x24]
         push word [bp - 0x26]
         call 0x03A3:FindFarMsg
@@ -359,7 +359,7 @@ Menus_2E70_000A:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x156e
+        push strict word str_Pal_49
         push 0x0
         lea ax, [bp - 0x4a]
         push ax
@@ -700,7 +700,7 @@ Menus_2E70_000A:
         cwd
         push dx
         push ax
-        push word 0x1573
+        push strict word str_Menubuff_7
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp + si - 0x82], ax
@@ -1264,7 +1264,7 @@ Menus_2E70_0D0A:
         cmp word [DbSaveMode], 0x0
         jnz short .1
         lea di, [bp - 0x22]
-        mov si, 0x157c
+        mov si, str_GameSet_2
         mov ax, ss
         mov es, ax
         movsw
@@ -1481,7 +1481,7 @@ Menus_2E70_0F22:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x1598
+        push strict word str_Palette
         call 0x14DB:AllocRecData
         add sp, 0x8
         push dx
@@ -1526,7 +1526,7 @@ Menus_2E70_0F22:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x15a0
+        push strict word str_Temp_14
         call 0x14DB:AllocRecData
         add sp, 0x8
         push dx
@@ -1596,7 +1596,7 @@ Menus_2E70_0F22:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x15ae
+        push strict word str_Desk_11
         push 0x0
         lea ax, [bp - 0xe]
         push ax
@@ -1644,7 +1644,7 @@ Menus_2E70_0F22:
         add sp, 0x8
         mov word [g_08FC], 0x50
         push 0x10
-        push word 0x15b3
+        push strict word str_Pal_48
         push di
         push si
         call 0x03A3:FindFarMsg
@@ -1780,7 +1780,7 @@ Menus_2E70_11EC:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x15b8
+        push strict word str_Temp_13
         call 0x14DB:AllocRecData
         add sp, 0x8
         push dx
@@ -1818,7 +1818,7 @@ Menus_2E70_11EC:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x15c6
+        push strict word str_Desk_10
         push 0x0
         lea ax, [bp - 0x14]
         push ax
@@ -1905,7 +1905,7 @@ Menus_2E70_144A:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x15cb
+        push strict word str_Temp_12
         call 0x14DB:AllocRecData
         add sp, 0x8
         push dx
@@ -1943,7 +1943,7 @@ Menus_2E70_144A:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x15d9
+        push strict word str_Desk_9
         push 0x0
         lea ax, [bp - 0x14]
         push ax
@@ -2031,7 +2031,7 @@ Menus_2E70_1594:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x15de
+        push strict word str_Temp_11
         call 0x14DB:AllocRecData
         add sp, 0x8
         push dx
@@ -2069,7 +2069,7 @@ Menus_2E70_1594:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x15ec
+        push strict word str_Desk_8
         push 0x0
         lea ax, [bp - 0x14]
         push ax
@@ -2150,7 +2150,7 @@ Menus_2E70_16DE:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x15f1
+        push strict word str_Temp_10
         call 0x14DB:AllocRecData
         add sp, 0x8
         push dx
@@ -2189,7 +2189,7 @@ Menus_2E70_16DE:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x15ff
+        push strict word str_Desk_7
         push 0x0
         lea ax, [bp - 0x18]
         push ax
@@ -2248,7 +2248,7 @@ Menus_2E70_16DE:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x160d
+        push strict word str_Pal_47
         push 0x0
         lea ax, [bp - 0x18]
         push ax
@@ -2354,7 +2354,7 @@ Menus_2E70_18E2:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x1612
+        push strict word str_Temp_9
         call 0x14DB:AllocRecData
         add sp, 0x8
         push dx
@@ -2392,7 +2392,7 @@ Menus_2E70_18E2:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x1620
+        push strict word str_Desk_6
         push 0x0
         lea ax, [bp - 0x14]
         push ax
@@ -2484,7 +2484,7 @@ Menus_2E70_1A26:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x1625
+        push strict word str_Temp_8
         call 0x14DB:AllocRecData
         add sp, 0x8
         push dx
@@ -2522,7 +2522,7 @@ Menus_2E70_1A26:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x1633
+        push strict word str_Desk_5
         push 0x0
         lea ax, [bp - 0x14]
         push ax
@@ -2640,7 +2640,7 @@ Menus_2E70_1BA6:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x1638
+        push strict word str_Temp_7
         call 0x14DB:AllocRecData
         add sp, 0x8
         push dx
@@ -2678,7 +2678,7 @@ Menus_2E70_1BA6:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x1646
+        push strict word str_Desk_4
         push 0x0
         lea ax, [bp - 0x14]
         push ax
@@ -2765,7 +2765,7 @@ Menus_2E70_1CF0:
         push ax
         call 0x0000:_fstrcpy
         add sp, 0x8
-        mov di, 0x164b
+        mov di, str_GameSav_3
         lea si, [bp - 0x26]
         push ds
         pop es
@@ -2823,7 +2823,7 @@ Menus_2E70_1CF0:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x1655
+        push strict word str_Temp_6
         call 0x14DB:AllocRecData
         add sp, 0x8
         push dx
@@ -2861,7 +2861,7 @@ Menus_2E70_1CF0:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x1663
+        push strict word str_Desk_3
         push 0x0
         lea ax, [bp - 0x26]
         push ax
@@ -2963,7 +2963,7 @@ Menus_2E70_1EEC:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x1671
+        push strict word str_Desk_2
         push 0x0
         lea ax, [bp - 0x10]
         push ax
@@ -3011,7 +3011,7 @@ Menus_2E70_1EEC:
         add sp, 0x8
         mov word [g_08FC], 0x50
         push 0x10
-        push word 0x1676
+        push strict word str_Pal_46
         push di
         push si
         call 0x03A3:FindFarMsg
@@ -3115,7 +3115,7 @@ Menus_2E70_2090:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x167b
+        push strict word str_Temp_5
         call 0x14DB:AllocRecData
         add sp, 0x8
         push dx
@@ -3153,7 +3153,7 @@ Menus_2E70_2090:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x1689
+        push strict word str_Desk
         push 0x0
         lea ax, [bp - 0x14]
         push ax

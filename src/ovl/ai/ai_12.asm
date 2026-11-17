@@ -1811,7 +1811,7 @@ Ai_2CD2_11D0:
         and byte [bx + 0x44], 0xfd
         mov ax, 0xd4b8
         db 0x8B, 0xF8                           ; insn: mov di, ax
-        mov si, 0x5bd2
+        mov si, str_EaSports
         push ds
         pop es
         mov cx, 0x5
@@ -1842,7 +1842,7 @@ Ai_2CD2_11D0:
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
         push word [bx + g_5BEE]
-        push word 0x5bdc
+        push strict word str_SStar_2
         push word 0xd506
         call 0x0000:_sprintf
         add sp, 0x6
@@ -1958,7 +1958,7 @@ Ai_2CD2_11D0:
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
         push word [bx + g_5BEE]
-        push word 0x5be5
+        push strict word str_SStar
         push word 0xd506
         call 0x0000:_sprintf
         add sp, 0x6

@@ -56,19 +56,19 @@ Menus_2B11_000C:
         push di
         lea ax, [si - 0x28]
         push ax
-        push word 0x1448
+        push strict word str_Exhibition
         jmp short .7
 .5:
         push di
         lea ax, [si - 0x25]
         push ax
-        push word 0x1454
+        push strict word str_Playoff
         jmp short .7
 .6:
         push di
         lea ax, [si - 0x1e]
         push ax
-        push word 0x145c
+        push strict word str_League
 .7:
         call 0x0FEF:DrawText
         add sp, 0x6

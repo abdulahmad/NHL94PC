@@ -92,7 +92,7 @@ Menus_1F4F_0086:
         push ax
         mov al, [es:si]
         push ax
-        push word 0xa74
+        push strict word str_DDSVsSPeriodDTime02d02d
         push word [bp + 0x6]
         call 0x0000:_sprintf
         add sp, 0x12
@@ -262,7 +262,7 @@ Menus_1F4F_00D0:
         cwd
         push dx
         push ax
-        push word 0xaa2
+        push strict word str_Hltl
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x1c], ax
@@ -272,7 +272,7 @@ Menus_1F4F_00D0:
         cwd
         push dx
         push ax
-        push word 0xaa7
+        push strict word str_Hlt
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x20], ax
@@ -287,7 +287,7 @@ Menus_1F4F_00D0:
         cwd
         push dx
         push ax
-        push word 0xaab
+        push strict word str_Hlts
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov bx, [bp + 0x10]

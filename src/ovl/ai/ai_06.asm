@@ -489,7 +489,7 @@ Ai_226F_046A:
         mov si, [bp - 0x2]
 .1:
         push si
-        push word 0x5682
+        push strict word str_04d
         lea ax, [bp - 0x12]
         push ax
         call 0x0000:_sprintf

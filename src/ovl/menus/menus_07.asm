@@ -101,7 +101,7 @@ Menus_23A3_0004:
 .5:
         lea ax, [bp - 0x6]
         push ax
-        push word 0xe6e
+        push strict word str_GsummaryDb_4
         call 0x0CD1:CreateFileNormal
         add sp, 0x4
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -273,7 +273,7 @@ Menus_23A3_0004:
         push ax
         call 0x0000:_fstrcpy
         add sp, 0x8
-        mov di, 0xea7
+        mov di, str_PoGameSav
         lea si, [bp - 0x34]
         push ds
         pop es
@@ -358,7 +358,7 @@ Menus_23A3_0004:
         push ax
         call 0x0000:_fstrcpy
         add sp, 0x8
-        mov di, 0xecc
+        mov di, str_LpGameSav
         lea si, [bp - 0x34]
         push ds
         pop es
@@ -591,7 +591,7 @@ Menus_23A3_0516:
         lea ax, [bp - 0x2c]
         push ax
         push 0x10
-        push word 0xee7
+        push strict word str_Po_3
         call 0x0000:_dos_findfirst
         add sp, 0x6
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -655,7 +655,7 @@ Menus_23A3_0516:
         lea ax, [bp - 0x2c]
         push ax
         push 0x0
-        push word 0xeec
+        push strict word str_Nhl_6
         call 0x0000:_dos_findfirst
         add sp, 0x6
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -772,7 +772,7 @@ Menus_23A3_0766:
         add sp, 0x10
         push 0xa
         push 0xa
-        push word 0xefb
+        push strict word str_Dbox_9
         push 0x0
         lea ax, [bp - 0x18]
         push ax
@@ -2214,7 +2214,7 @@ Menus_23A3_1518:
         push ax
         call 0x0000:_fstrcpy
         add sp, 0x8
-        mov di, 0xf30
+        mov di, str_Nhl_5
         lea si, [bp - 0x14]
         push ds
         pop es
@@ -2307,7 +2307,7 @@ Menus_23A3_1518:
         push ax
         call 0x0000:_fstrcpy
         add sp, 0x8
-        mov di, 0xf35
+        mov di, str_Po_2
         lea si, [bp - 0x14]
         push ds
         pop es
@@ -2381,7 +2381,7 @@ Menus_23A3_1518:
         push ax
         call 0x0000:_fstrcpy
         add sp, 0x8
-        mov di, 0xf39
+        mov di, str_Lp_2
         lea si, [bp - 0x14]
         push ds
         pop es
@@ -2443,7 +2443,7 @@ Menus_23A3_1778:
 .1:
         lea ax, [bp - 0x2]
         push ax
-        push word 0xf40
+        push strict word str_GameSet_3
         call 0x0CD1:OpenReadShared
         add sp, 0x4
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -2459,7 +2459,7 @@ Menus_23A3_1778:
         add sp, 0x4
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .4
-        push word 0xf4c
+        push strict word str_Dd2
 .3:
         call 0x0F4A:FatalError
         add sp, 0x2
@@ -2490,7 +2490,7 @@ Menus_23A3_1778:
 .6:
         db 0x0B, 0xFF                           ; insn: or di, di
         jnz short .7
-        push word 0xf56
+        push strict word str_GameSav_7
         call 0x03A3:FindPath
         add sp, 0x2
         db 0x8B, 0xF0                           ; insn: mov si, ax

@@ -8,7 +8,7 @@ Stats_23D5_0002:
         push si
         mov word [bp - 0x2], 0xcf1a
         push 0x0
-        push word 0x1ff6
+        push strict word str_EasnFnt
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0x4e], ax
@@ -132,7 +132,7 @@ Stats_23D5_0002:
         call 0x0FEF:UseOffscreenCanvas
         lea ax, [bp - 0x1e]
         push ax
-        push word 0x1fea
+        push strict word str_EmbS
         push word 0xcfd4
         call 0x0000:_sprintf
         add sp, 0x6
@@ -154,7 +154,7 @@ Stats_23D5_0002:
         add sp, 0x4
         mov [g_CFD0], ax
         mov [g_CFD2], dx
-        push word 0x1ff0
+        push strict word str_Bkgd
         push dx
         push ax
         call 0x03A3:FindFarMsg
@@ -194,7 +194,7 @@ Stats_23D5_0002:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x234f
+        push strict word str_Pal_13
         lea ax, [bp - 0x18]
         push ax
         call 0x0000:_sprintf
@@ -324,7 +324,7 @@ Stats_23D5_0002:
         add sp, 0x4
         push word 0xcf2d
         push word 0xcf1d
-        push word 0x2354
+        push strict word str_SS_3
         push word 0xcfd4
         call 0x0000:_sprintf
         add sp, 0x8
@@ -336,7 +336,7 @@ Stats_23D5_0002:
         mov al, [g_CF1B]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
-        push word 0x235a
+        push strict word str_D_4
         push word 0xcfd4
         call 0x0000:_sprintf
         add sp, 0x6
@@ -353,19 +353,19 @@ Stats_23D5_0002:
         jz short .12
         jmp short .15
 .10:
-        mov di, 0x235e
+        mov di, str_Center
         jmp short .14
         db 0x90
 .11:
-        mov di, 0x2365
+        mov di, str_Defense
         jmp short .14
         db 0x90
 .12:
-        mov di, 0x236d
+        mov di, str_LeftWing
         jmp short .14
         db 0x90
 .13:
-        mov di, 0x2377
+        mov di, str_RightWing
 .14:
         mov si, 0xcfd4
         push ds
@@ -465,55 +465,55 @@ Stats_23D5_0002:
         call 0x0D39:DrawShadowText
         add sp, 0x8
         push word [si]
-        push word 0x1fb6
+        push strict word str_2d
         push di
         push 0x3c
         call 0x0D39:DrawShadowTextF
         add sp, 0x8
         push word [si + 0x2]
-        push word 0x1fba
+        push strict word str_3d
         push di
         push 0x50
         call 0x0D39:DrawShadowTextF
         add sp, 0x8
         push word [si + 0x4]
-        push word 0x1fba
+        push strict word str_3d
         push di
         push 0x64
         call 0x0D39:DrawShadowTextF
         add sp, 0x8
         push word [si + 0x6]
-        push word 0x1fba
+        push strict word str_3d
         push di
         push 0x78
         call 0x0D39:DrawShadowTextF
         add sp, 0x8
         push word [si + 0xc]
-        push word 0x1fba
+        push strict word str_3d
         push di
         push word 0x8c
         call 0x0D39:DrawShadowTextF
         add sp, 0x8
         push word [si + 0x10]
-        push word 0x1fbe
+        push strict word str_4d
         push di
         push word 0xa0
         call 0x0D39:DrawShadowTextF
         add sp, 0x8
         push word [si + 0x8]
-        push word 0x1fba
+        push strict word str_3d
         push di
         push word 0xbe
         call 0x0D39:DrawShadowTextF
         add sp, 0x8
         push word [si + 0xa]
-        push word 0x1fba
+        push strict word str_3d
         push di
         push word 0xd2
         call 0x0D39:DrawShadowTextF
         add sp, 0x8
         push word [si + 0xe]
-        push word 0x1fc2
+        push strict word str_5d
         push di
         push word 0xe6
         call 0x0D39:DrawShadowTextF
@@ -546,7 +546,7 @@ Stats_23D5_0002:
         cwd
         idiv cx
         push ax
-        push word 0x1fc6
+        push strict word str_3d1d
         push di
         push word 0x104
         call 0x0D39:DrawShadowTextF2
@@ -571,7 +571,7 @@ Stats_23D5_0002:
         add ax, [bp - 0x72]
         add ax, [bp - 0x94]
         push ax
-        push word 0x1fbe
+        push strict word str_4d
         push di
         push 0x4c
         call 0x0D39:DrawShadowTextF
@@ -580,7 +580,7 @@ Stats_23D5_0002:
         add ax, [bp - 0x92]
         add ax, [bp - 0x80]
         push ax
-        push word 0x1fbe
+        push strict word str_4d
         push di
         push 0x60
         call 0x0D39:DrawShadowTextF
@@ -590,7 +590,7 @@ Stats_23D5_0002:
         add ax, [bp - 0x7e]
         add ax, [bp - 0x72]
         push ax
-        push word 0x1fbe
+        push strict word str_4d
         push di
         push 0x74
         call 0x0D39:DrawShadowTextF
@@ -658,7 +658,7 @@ Stats_23D5_0002:
         shl ax, byte 0x2
         db 0x03, 0xC1                           ; insn: add ax, cx
         push ax
-        push word 0x1fba
+        push strict word str_3d
         push di
         mov ax, [bp - 0x8]
         add ax, 0x82

@@ -396,7 +396,7 @@ Ai_2164_01D6:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .15
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0xd97
+        mov ax, str_Pstat_6
         call 0x2E42:Ai_2E42_0012
         or byte [si + 0x44], 0x20
         pop si

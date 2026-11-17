@@ -42,7 +42,7 @@ Init_23CB_0004:
         push ax
         call 0x0000:_strcat
         add sp, 0x4
-        push word 0x4fe6
+        push strict word str_P1Mvi
         lea ax, [bp - 0x20]
         push ax
         call 0x0000:_strcat
@@ -118,9 +118,9 @@ Init_23CB_0004:
 .9:
         push 0x0
         push 0x0
-        push word 0x5013
+        push strict word str_Scrn
         push 0x0
-        push word 0x5008
+        push strict word str_EascrnQpp
         call 0x14B8:LoadPackedHeader
         add sp, 0x4
         mov [bp - 0x2c], ax
@@ -133,7 +133,7 @@ Init_23CB_0004:
         push ax
         call 0x0FEF:DrawRleFastAt
         add sp, 0x8
-        push word 0x5018
+        push strict word str_Pal_3
         push word [bp - 0x2a]
         push word [bp - 0x2c]
         call 0x03A3:FindFarMsg
@@ -162,7 +162,7 @@ Init_23CB_0004:
 .11:
         push 0x22
         push 0xf
-        push word 0x501d
+        push strict word str_0000
         push word [bp - 0x22]
         push word [bp - 0x24]
         call 0x03A3:FindFarMsg
@@ -229,7 +229,7 @@ Init_23CB_0004:
         push ax
         call 0x0000:_strcat
         add sp, 0x4
-        push word 0x4ff1
+        push strict word str_G1Mvi
         lea ax, [bp - 0x20]
         push ax
         call 0x0000:_strcat
@@ -258,7 +258,7 @@ Init_23CB_0004:
         jnz short .19
         jmp near .8
 .19:
-        push word 0x5003
+        push strict word str_Pal_4
         push word [bp - 0x22]
         push ax
         call 0x03A3:FindFarMsg
@@ -288,7 +288,7 @@ Init_23CB_0004:
         call 0x0FEF:FillRect
         add sp, 0xa
 .23:
-        push word 0x5022
+        push strict word str_Stop
         lea ax, [bp - 0x10]
         push ax
         call 0x0000:_strcpy
@@ -322,14 +322,14 @@ Init_23CB_0004:
         push ax
         call 0x0000:_strcat
         add sp, 0x4
-        push word 0x5027
+        push strict word str_Qpp_2
         lea ax, [bp - 0x10]
         push ax
         call 0x0000:_strcat
         add sp, 0x4
         push 0x54
         push word 0xf8
-        push word 0x502c
+        push strict word str_Logo
         push 0x0
         lea ax, [bp - 0x10]
         push ax
@@ -345,7 +345,7 @@ Init_23CB_0004:
         push ax
         call 0x0FEF:DrawRleTransFast
         add sp, 0x8
-        push word 0x5031
+        push strict word str_Pal_2
         push word [bp - 0x2a]
         push word [bp - 0x2c]
         call 0x03A3:FindFarMsg
@@ -416,7 +416,7 @@ Init_23CB_042C:
         cwd
         push dx
         push ax
-        push word 0x5036
+        push strict word str_Vidframe
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x4], ax

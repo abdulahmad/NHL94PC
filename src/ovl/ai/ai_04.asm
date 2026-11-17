@@ -604,7 +604,7 @@ Ai_2083_0512:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x5654
+        push strict word str_Srb3
         push 0x0
         lea ax, [bp - 0x12]
         push ax

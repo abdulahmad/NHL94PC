@@ -679,7 +679,7 @@ Lp_2E46_06B4:
         push 0x0
         push dx
         push ax
-        push word 0x1d1c
+        push strict word str_Sparkle
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x24], ax
@@ -705,7 +705,7 @@ Lp_2E46_06B4:
         les bx, [bp - 0x24]
         mov [es:bx + 0x2], ax
         push 0x0
-        push word 0x1d24
+        push strict word str_Wittle06Fnt_6
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0x60], ax
@@ -733,7 +733,7 @@ Lp_2E46_06B4:
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         add cx, 0xc809
         push cx
-        push word 0x1d36
+        push strict word str_SS_5
         lea cx, [bp - 0x5a]
         push cx
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -929,7 +929,7 @@ Lp_2E46_06B4:
         db 0x2B, 0xD2                           ; insn: sub dx, dx
         div cx
         push ax
-        push word 0x1d0c
+        push strict word str_D02d_2
         mov ax, [bp - 0x64]
         add ax, strict word 0x18
         push ax
@@ -1004,7 +1004,7 @@ Lp_2E46_06B4:
         db 0x2B, 0xD2                           ; insn: sub dx, dx
         div cx
         push ax
-        push word 0x1d14
+        push strict word str_D01d
         mov ax, [bp - 0x64]
         add ax, strict word 0x50
         push ax
@@ -1120,7 +1120,7 @@ Lp_2E46_06B4:
         cwd
         idiv cx
         push ax
-        push word 0x1d14
+        push strict word str_D01d
         mov ax, [bp - 0x64]
         add ax, strict word 0x50
         push ax
@@ -1345,7 +1345,7 @@ Lp_2E46_06B4:
         push 0x0
         call 0x0FEF:ClearClipRect
         add sp, 0x2
-        push word 0x1d31
+        push strict word str_Scrn_2
         push word [g_C7A4]
         push word [g_C7A2]
         call 0x06E1:RawBase
@@ -1560,7 +1560,7 @@ Lp_2E46_1068:
         call 0x0FEF:ClearClipRect
         add sp, 0x2
         push 0x0
-        push word 0x1d81
+        push strict word str_Wittle06Fnt_5
         call 0x149D:LoadRawHeader
         add sp, 0x4
         db 0x8B, 0xF8                           ; insn: mov di, ax
@@ -1584,7 +1584,7 @@ Lp_2E46_1068:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x1d95
+        push strict word str_Pal_33
         push 0x0
         lea ax, [bp - 0x5e]
         push ax
@@ -1732,24 +1732,24 @@ Lp_2E46_125A:
         cmp word [SoundOptions], 0x8
         jnz short .1
         push 0x0
-        push word 0x1da9
+        push strict word str_MtafanKms
         call 0x149D:LoadRawHeader
         add sp, 0x4
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov [bp - 0x28], dx
         push 0x0
-        push word 0x1db4
+        push strict word str_MtafanCfg
         jmp short .2
         db 0x90
 .1:
         push 0x0
-        push word 0x1dbf
+        push strict word str_AdafanKms
         call 0x149D:LoadRawHeader
         add sp, 0x4
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov [bp - 0x28], dx
         push 0x0
-        push word 0x1dca
+        push strict word str_AdafanCfg
 .2:
         call 0x149D:LoadRawHeader
         add sp, 0x4
@@ -1797,7 +1797,7 @@ Lp_2E46_125A:
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov [bp - 0xc], dx
         push 0x0
-        push word 0x1ddc
+        push strict word str_S1Fnt_5
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0x12], ax
@@ -1810,7 +1810,7 @@ Lp_2E46_125A:
         push word [bp - 0x12]
         call 0x03A3:UseCharSeg
         add sp, 0x4
-        push word 0x1de3
+        push strict word str_Hong
         mov ax, [bp - 0xc]
         push ax
         push di
@@ -1823,7 +1823,7 @@ Lp_2E46_125A:
         push ax
         call 0x0FEF:DrawRleBody
         add sp, 0x4
-        push word 0x1de8
+        push strict word str_Pal_32
         push word [bp - 0x356]
         push word [bp - 0x358]
         call 0x03A3:FindFarMsg
@@ -1891,24 +1891,24 @@ Lp_2E46_125A:
         cmp word [SoundOptions], 0x8
         jnz short .4
         push 0x0
-        push word 0x1e15
+        push strict word str_MtawardsKms
         call 0x149D:LoadRawHeader
         add sp, 0x4
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov [bp - 0x28], dx
         push 0x0
-        push word 0x1e22
+        push strict word str_MtawardsCfg
         jmp short .5
         db 0x90
 .4:
         push 0x0
-        push word 0x1e2f
+        push strict word str_AdawardsKms
         call 0x149D:LoadRawHeader
         add sp, 0x4
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov [bp - 0x28], dx
         push 0x0
-        push word 0x1e3c
+        push strict word str_AdawardsCfg
 .5:
         call 0x149D:LoadRawHeader
         add sp, 0x4
@@ -2032,7 +2032,7 @@ Lp_2E46_125A:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x1e50
+        push strict word str_Bkgd_2
         push 0x0
         lea ax, [bp - 0x3c]
         push ax
@@ -2050,7 +2050,7 @@ Lp_2E46_125A:
         push 0x0
         call 0x0FEF:ClearClipRect
         add sp, 0x2
-        push word 0x1e55
+        push strict word str_Pal_31
         push word [g_C7A4]
         push word [g_C7A2]
         call 0x06E1:RawBase

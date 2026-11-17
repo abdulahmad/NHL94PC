@@ -36,24 +36,24 @@ Menus_1F9D_000C:
         cmp word [SoundOptions], 0x8
         jnz short .2
         push 0x0
-        push word 0xab0
+        push strict word str_MttitleKms_2
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [g_BD8E], ax
         mov [g_BD90], dx
         push 0x0
-        push word 0xabc
+        push strict word str_MttitleCfg_2
         jmp short .3
         db 0x90
 .2:
         push 0x0
-        push word 0xac8
+        push strict word str_AdtitleKms_2
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [g_BD8E], ax
         mov [g_BD90], dx
         push 0x0
-        push word 0xad4
+        push strict word str_AdtitleCfg_2
 .3:
         call 0x149D:LoadRawHeader
         add sp, 0x4
@@ -76,7 +76,7 @@ Menus_1F9D_000C:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0xae7
+        push strict word str_Pal_72
         push 0x0
         lea ax, [bp - 0x5a]
         push ax
@@ -93,7 +93,7 @@ Menus_1F9D_000C:
         add ax, strict word 0x10
         mov [bp - 0x2e], ax
         mov [bp - 0x2c], dx
-        push word 0xaec
+        push strict word str_Scrn_4
         push word [bp - 0x24]
         push word [bp - 0x26]
         call 0x03A3:FindFarMsg
@@ -143,7 +143,7 @@ Menus_1F9D_000C:
         call 0x0CD1:BuildPathFar
         add sp, 0x10
         push 0x30
-        push word 0xaf8
+        push strict word str_Pal_71
         push 0x0
         lea ax, [bp - 0x5a]
         push ax
@@ -167,7 +167,7 @@ Menus_1F9D_000C:
         add sp, 0xa
         push 0x0
         push 0x0
-        push word 0xafd
+        push strict word str_Scrn_3
         push word [bp - 0x24]
         push word [bp - 0x26]
         call 0x03A3:FindFarMsg
@@ -194,7 +194,7 @@ Menus_1F9D_000C:
         call 0x0CD1:BuildPathFar
         add sp, 0x10
         push 0x48
-        push word 0xb09
+        push strict word str_Pal_70
         push 0x0
         lea ax, [bp - 0x5a]
         push ax
@@ -216,7 +216,7 @@ Menus_1F9D_000C:
         push ax
         call 0x0000:_fmemcpy
         add sp, 0xa
-        push word 0xb0e
+        push strict word str_1111
         push di
         push si
         call 0x03A3:FindFarMsg
@@ -227,7 +227,7 @@ Menus_1F9D_000C:
         push ax
         call 0x0FEF:DrawRleTransFastHere
         add sp, 0x4
-        push word 0xb13
+        push strict word str_2222
         push di
         push si
         call 0x03A3:FindFarMsg
@@ -238,7 +238,7 @@ Menus_1F9D_000C:
         push ax
         call 0x0FEF:DrawRleTransFastHere
         add sp, 0x4
-        push word 0xb18
+        push strict word str_Hock
         push di
         push si
         call 0x03A3:FindFarMsg
@@ -249,7 +249,7 @@ Menus_1F9D_000C:
         push ax
         call 0x0FEF:DrawRleTransFastHere
         add sp, 0x4
-        push word 0xb1d
+        push strict word str_Copy
         push di
         push si
         call 0x03A3:FindFarMsg
@@ -300,7 +300,7 @@ Menus_1F9D_000C:
         cwd
         push dx
         push ax
-        push word 0xb29
+        push strict word str_Ividframe
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x3a], ax
@@ -513,7 +513,7 @@ Menus_1F9D_0580:
         call 0x0EDC:LoadStudioSpeech
         call 0x0F99:FlushInputEvents
         push 0x0
-        push word 0xb33
+        push strict word str_S1Fnt_6
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0x4c], ax
@@ -541,7 +541,7 @@ Menus_1F9D_0580:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0xb42
+        push strict word str_City_4
         push 0x0
         lea ax, [bp - 0x3c]
         push ax
@@ -555,7 +555,7 @@ Menus_1F9D_0580:
         add sp, 0x6
         mov [bp - 0x6a], ax
         mov [bp - 0x68], dx
-        push word 0xb47
+        push strict word str_Pal_69
         push word [bp - 0x5a]
         push word [bp - 0x5c]
         call 0x03A3:FindFarMsg
@@ -565,36 +565,36 @@ Menus_1F9D_0580:
         cmp word [SoundOptions], 0x8
         jnz short .1
         push 0x0
-        push word 0xb4c
+        push strict word str_MttitleKms
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0x58], ax
         mov [bp - 0x56], dx
         push 0x0
-        push word 0xb58
+        push strict word str_MttitleCfg
         jmp short .2
 .1:
         push 0x0
-        push word 0xb64
+        push strict word str_AdtitleKms
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0x58], ax
         mov [bp - 0x56], dx
         push 0x0
-        push word 0xb70
+        push strict word str_AdtitleCfg
 .2:
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0x48], ax
         mov [bp - 0x46], dx
         push 0x0
-        push word 0xb7c
+        push strict word str_RockditiKms
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0x54], ax
         mov [bp - 0x52], dx
         push 0x0
-        push word 0xb89
+        push strict word str_RockditiCfg
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0x44], ax

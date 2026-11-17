@@ -336,7 +336,7 @@ Lp_2305_0282:
         cwd
         push dx
         push ax
-        push word 0x182f
+        push strict word str_Llsn
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov [bp - 0x52], si
         mov [bp - 0x50], dx
@@ -818,7 +818,7 @@ Lp_2305_061C:
         jnz short .8
 .12:
         push word [bp - 0xa2]
-        push word 0x1834
+        push strict word str_02d_9
         lea ax, [bp - 0x94]
         push ax
         call 0x0000:_sprintf

@@ -339,7 +339,7 @@ Ai_2352_031A:
         push si
         push word [bp + 0xa]
         push word [bp + 0x8]
-        push word 0x57a6
+        push strict word str_SDSSS
         push word [bp + 0x6]
         call 0x0000:_sprintf
         add sp, 0xe
@@ -357,7 +357,7 @@ Ai_2352_031A:
         push ax
         push word [bp + 0xa]
         push word [bp + 0x8]
-        push word 0x57b4
+        push strict word str_SDCSS
         push word [bp + 0x6]
         call 0x0000:_sprintf
         add sp, 0xe
@@ -372,7 +372,7 @@ Ai_2352_031A:
         push word [bp + 0xe]
         push word [bp + 0xa]
         push word [bp + 0x8]
-        push word 0x57c3
+        push strict word str_SDSS_2
         push word [bp + 0x6]
         call 0x0000:_sprintf
         add sp, 0xc
@@ -386,7 +386,7 @@ Ai_2352_031A:
         push word [bp + 0x10]
         push word [bp + 0xa]
         push word [bp + 0x8]
-        push word 0x57ce
+        push strict word str_SDS
         push word [bp + 0x6]
         call 0x0000:_sprintf
         add sp, 0xa
@@ -442,7 +442,7 @@ Ai_2352_031A:
         push ax
         push word [bp + 0xa]
         push word [bp + 0x8]
-        push word 0x57d7
+        push strict word str_SDSS
         push word [bp + 0x6]
         call 0x0000:_sprintf
         add sp, 0xc
@@ -481,7 +481,7 @@ Ai_2352_0478:
         push ax
         mov al, [g_B074]
         push ax
-        push word 0x57e2
+        push strict word str_02d02dS
         push word 0xd4b8
         call 0x0000:_sprintf
         add sp, 0xa
@@ -492,12 +492,12 @@ Ai_2352_0478:
         mov [bp - 0x8], ax
         test al, 0x2
         jz short .2
-        mov ax, 0x57ef
+        mov ax, str_Sh
         jmp short .4
 .2:
         test byte [bp - 0x8], 0x4
         jz short .3
-        mov ax, 0x57f3
+        mov ax, str_Pp
         jmp short .4
         db 0x90
 .3:
@@ -526,7 +526,7 @@ Ai_2352_0478:
         shl bx, byte 0x4
         add cx, [es:bx + 0x448]
         push cx
-        push word 0x57fb
+        push strict word str_D_2
         mov ax, [bp - 0x6]
         lea cx, [bp - 0x12]
         db 0x03, 0xC1                           ; insn: add ax, cx
@@ -560,14 +560,14 @@ Ai_2352_0478:
         db 0x8B, 0xF0                           ; insn: mov si, ax
         cmp si, 0xff
         jnz short .6
-        push word 0x5802
+        push strict word str_Unassisted
         push word 0xd542
         call 0x0000:_sprintf
         add sp, 0x4
         jmp short .7
         db 0x90
 .6:
-        push word 0x580d
+        push strict word str_Assists
         push word 0xd542
         call 0x0000:_sprintf
         add sp, 0x4
@@ -637,7 +637,7 @@ Ai_2352_0478:
         push ax
         mov al, [g_B073]
         push ax
-        push word 0x581a
+        push strict word str_02d02dSPenalty
         push word 0xd4b8
         call 0x0000:_sprintf
         add sp, 0xa
@@ -685,7 +685,7 @@ Ai_2352_0478:
         jnz short .11
         mov ax, 0xd57e
         db 0x8B, 0xF8                           ; insn: mov di, ax
-        mov si, 0x5831
+        mov si, str_GameMisconduct
         mov cx, 0x8
         rep movsw
         pop si
@@ -694,7 +694,7 @@ Ai_2352_0478:
         retf
 .11:
         push ax
-        push word 0x5841
+        push strict word str_DMinutes
         push word 0xd57e
         call 0x0000:_sprintf
         add sp, 0x6
@@ -723,7 +723,7 @@ Ai_2352_0478:
         push ax
         mov al, [g_B072]
         push ax
-        push word 0x584c
+        push strict word str_02d02dSInjury
         push word 0xd4b8
         call 0x0000:_sprintf
         add sp, 0xa
@@ -748,11 +748,11 @@ Ai_2352_0478:
         add sp, 0xc
         cmp word [bp - 0x6], 0x0
         jng short .13
-        push word 0x5862
+        push strict word str_GoneForTheGame
         jmp short .14
         db 0x90
 .13:
-        push word 0x5874
+        push strict word str_GoneFor1Period
 .14:
         push word 0xd542
         call 0x0000:_sprintf

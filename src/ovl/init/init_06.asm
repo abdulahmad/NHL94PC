@@ -288,23 +288,23 @@ Init_2306_02B6:
         cmp word [SoundOptions], 0x8
         jnz short .1
         push 0x0
-        push word 0x4e46
+        push strict word str_MtsumKms
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0x46], ax
         mov [bp - 0x44], dx
         push 0x0
-        push word 0x4e50
+        push strict word str_MtsumCfg
         jmp short .2
 .1:
         push 0x0
-        push word 0x4e5a
+        push strict word str_AdsumKms
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0x46], ax
         mov [bp - 0x44], dx
         push 0x0
-        push word 0x4e64
+        push strict word str_AdsumCfg
 .2:
         call 0x149D:LoadRawHeader
         add sp, 0x4
@@ -373,13 +373,13 @@ Init_2306_02B6:
         mov [bp - 0x24], ax
         mov [bp - 0x22], dx
         push 0x0
-        push word 0x4e7e
+        push strict word str_Crests2Bin
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0x56], ax
         mov [bp - 0x54], dx
         push 0x0
-        push word 0x4e8a
+        push strict word str_S1Fnt
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0x40], ax
@@ -410,7 +410,7 @@ Init_2306_02B6:
         push strict word f_3A0B_AF4C
         call 0x0FEF:SetRemapTable
         add sp, 0x4
-        push word 0x4e91
+        push strict word str_City
         push word [bp - 0x48]
         push word [bp - 0x4a]
         call 0x03A3:FindFarMsg
@@ -544,7 +544,7 @@ Init_2306_02B6:
         add sp, 0x8
         push word [di + g_B366]
         push word [di + g_B364]
-        push word 0x4e9c
+        push strict word str_DD_2
         lea ax, [bp - 0x3c]
         push ax
         call 0x0000:_sprintf
@@ -559,7 +559,7 @@ Init_2306_02B6:
         add sp, 0x8
         push word [di + g_B36A]
         push word [di + g_B368]
-        push word 0x4ea2
+        push strict word str_DD
         lea ax, [bp - 0x3c]
         push ax
         call 0x0000:_sprintf
@@ -611,7 +611,7 @@ Init_2306_02B6:
         cwd
         idiv cx
         push ax
-        push word 0x4eae
+        push strict word str_D02d
         lea ax, [bp - 0x3c]
         push ax
         call 0x0000:_sprintf
@@ -643,7 +643,7 @@ Init_2306_02B6:
         imul bx, [bp - 0x4e], word 0xd6
         push word [bx + g_B374]
         push word [bx + g_B376]
-        push word 0x4eb6
+        push strict word str_DDD
         lea ax, [bp - 0x3c]
         push ax
         call 0x0000:_sprintf

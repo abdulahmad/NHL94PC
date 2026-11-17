@@ -683,7 +683,7 @@ Stats_25E5_064A:
         push 0x0
         push 0x0
         push word 0x720
-        push word 0x265d
+        push strict word str_Teams_3
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [g_CFCC], ax
@@ -693,7 +693,7 @@ Stats_25E5_064A:
         push 0x0
         push 0x0
         push 0x30
-        push word 0x2663
+        push strict word str_Addsort_2
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [g_CFC8], ax
@@ -964,7 +964,7 @@ Stats_25E5_064A:
         call 0x0000:_close
         add sp, 0x2
         push 0x0
-        push word 0x1ff6
+        push strict word str_EasnFnt
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0xce], ax
@@ -999,7 +999,7 @@ Stats_25E5_064A:
         add sp, 0x4
         mov [g_CFD0], ax
         mov [g_CFD2], dx
-        push word 0x1ff0
+        push strict word str_Bkgd
         push dx
         push ax
         call 0x03A3:FindFarMsg
@@ -1143,7 +1143,7 @@ Stats_25E5_064A:
 .34:
         push word [bp - 0x40]
         inc word [bp - 0x40]
-        push word 0x1fb6
+        push strict word str_2d
         push word [bp - 0xd2]
         push 0x28
         call 0x0D39:DrawShadowTextF
@@ -1159,7 +1159,7 @@ Stats_25E5_064A:
         mov al, [bx]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
-        push word 0x1fb6
+        push strict word str_2d
         push word [bp - 0xd2]
         push word 0xaa
         call 0x0D39:DrawShadowTextF
@@ -1190,7 +1190,7 @@ Stats_25E5_064A:
         mov al, [bx + 0x1]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
-        push word 0x1fb6
+        push strict word str_2d
         push word [bp - 0xd2]
         push word 0xc3
         call 0x0D39:DrawShadowTextF
@@ -1199,7 +1199,7 @@ Stats_25E5_064A:
         mov al, [bx + 0x2]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
-        push word 0x1fb6
+        push strict word str_2d
         push word [bp - 0xd2]
         push word 0xdc
         call 0x0D39:DrawShadowTextF
@@ -1210,7 +1210,7 @@ Stats_25E5_064A:
         mov al, [bx + 0x3]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
-        push word 0x1fb6
+        push strict word str_2d
         push word [bp - 0xd2]
         push word 0xf5
         call 0x0D39:DrawShadowTextF
@@ -1219,7 +1219,7 @@ Stats_25E5_064A:
         mov bx, [bp - 0xc8]
         push word [bx + 0x4]
 .41:
-        push word 0x1fba
+        push strict word str_3d
         push word [bp - 0xd2]
         push word 0x10e
         call 0x0D39:DrawShadowTextF
@@ -1233,7 +1233,7 @@ Stats_25E5_064A:
         mov al, [bx + 0x1]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
-        push word 0x1fb6
+        push strict word str_2d
         push word [bp - 0xd2]
         push word 0xc3
         call 0x0D39:DrawShadowTextF
@@ -1242,7 +1242,7 @@ Stats_25E5_064A:
         mov al, [bx + 0x2]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
-        push word 0x1fb6
+        push strict word str_2d
         push word [bp - 0xd2]
         push word 0xdc
         call 0x0D39:DrawShadowTextF
@@ -1253,7 +1253,7 @@ Stats_25E5_064A:
         mov al, [bx + 0x3]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
-        push word 0x1fb6
+        push strict word str_2d
         push word [bp - 0xd2]
         push word 0xf5
         call 0x0D39:DrawShadowTextF
@@ -1266,14 +1266,14 @@ Stats_25E5_064A:
 .45:
         mov bx, [bp - 0xc8]
         push word [bx + 0xe]
-        push word 0x1fba
+        push strict word str_3d
         push word [bp - 0xd2]
         push word 0xc3
         call 0x0D39:DrawShadowTextF
         add sp, 0x8
         mov bx, [bp - 0xc8]
         push word [bx + 0xc]
-        push word 0x1fbe
+        push strict word str_4d
 .46:
         push word [bp - 0xd2]
         push word 0xdc
@@ -1292,7 +1292,7 @@ Stats_25E5_064A:
         cwd
         idiv cx
         push ax
-        push word 0x1fc6
+        push strict word str_3d1d
         push word [bp - 0xd2]
         push word 0xf5
 .47:
@@ -1303,20 +1303,20 @@ Stats_25E5_064A:
 .48:
         mov bx, [bp - 0xc8]
         push word [bx + 0xa]
-        push word 0x1fba
+        push strict word str_3d
         push word [bp - 0xd2]
         push word 0xc3
         call 0x0D39:DrawShadowTextF
         add sp, 0x8
         mov bx, [bp - 0xc8]
         push word [bx + 0x8]
-        push word 0x1fba
+        push strict word str_3d
         jmp short .46
         db 0x90
 .49:
         mov bx, [bp - 0xc8]
         push word [bx + 0x10]
-        push word 0x1fba
+        push strict word str_3d
         push word [bp - 0xd2]
         push word 0xc3
         call 0x0D39:DrawShadowTextF
@@ -1334,7 +1334,7 @@ Stats_25E5_064A:
         cwd
         idiv cx
         push ax
-        push word 0x1fc6
+        push strict word str_3d1d
         push word [bp - 0xd2]
         push word 0xdc
         jmp short .47

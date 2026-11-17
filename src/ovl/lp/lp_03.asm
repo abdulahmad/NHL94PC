@@ -119,9 +119,9 @@ Lp_1ECB_0008:
         push si
         call 0x0FEF:ClearClipRect
         add sp, 0x2
-        push word 0x16b1
+        push strict word str_Pal_45
         push si
-        push word 0x16a4
+        push strict word str_EasndeskQpp_4
         call 0x14B8:LoadPackedHeader
         add sp, 0x4
         push dx
@@ -432,9 +432,9 @@ Lp_1ECB_0332:
         push si
         call 0x0FEF:ClearClipRect
         add sp, 0x2
-        push word 0x16c3
+        push strict word str_Pal_44
         push si
-        push word 0x16b6
+        push strict word str_EasndeskQpp_3
         call 0x14B8:LoadPackedHeader
         add sp, 0x4
         push dx

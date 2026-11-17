@@ -72,7 +72,7 @@ Init_1F9C_0072:
         sar ax, 1
         push ax
         push ax
-        push word 0x4b69
+        push strict word str_FD50D99
         jmp short .4
         db 0x90
 .3:
@@ -82,7 +82,7 @@ Init_1F9C_0072:
         sar ax, 1
         push ax
         push ax
-        push word 0x4b74
+        push strict word str_FD00D49
 .4:
         lea ax, [bp - 0xe]
         push ax
@@ -110,7 +110,7 @@ Init_1F9C_0072:
         mov si, 0xd2c6
 .5:
         push di
-        push word 0x4b7f
+        push strict word str_04d_3
         lea ax, [bp - 0xe]
         push ax
         call 0x0000:_sprintf
@@ -159,7 +159,7 @@ Init_1F9C_0138:
         sar ax, 1
         push ax
         push ax
-        push word 0x4b84
+        push strict word str_D50D99
         jmp short .3
         db 0x90
 .2:
@@ -169,7 +169,7 @@ Init_1F9C_0138:
         sar ax, 1
         push ax
         push ax
-        push word 0x4b8e
+        push strict word str_D00D49
 .3:
         lea ax, [bp - 0xe]
         push ax
@@ -222,7 +222,7 @@ Init_1F9C_01B4:
         add sp, 0x4
         mov [g_C25C], ax
         mov [g_C25E], dx
-        push word 0x4ba0
+        push strict word str_0000_2
         push dx
         push ax
         call 0x03A3:FindFarMsg
@@ -293,7 +293,7 @@ Init_1F9C_01FC:
         mov si, 0xd6d8
 .2:
         push di
-        push word 0x4bac
+        push strict word str_04d_2
         lea ax, [bp - 0xa]
         push ax
         call 0x0000:_sprintf
@@ -311,7 +311,7 @@ Init_1F9C_01FC:
         cmp si, 0xd700
         jc short .2
         push word 0xd700
-        push word 0x4bb1
+        push strict word str_000g000d000d000l000c000r000x
         push word [g_D6D6]
         push word [g_D6D4]
         call 0x03A3:FindFarList

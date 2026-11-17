@@ -1631,12 +1631,12 @@ Init_2581_105A:
         mov word [es:bx], 0x10
         push 0x6d
         push 0xe
-        push word 0x53a5
+        push strict word str_SaveTo_2
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x6d
         push word 0xdf
-        push word 0x53ad
+        push strict word str_HilightsReel_2
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x54
@@ -1668,7 +1668,7 @@ Init_2581_105A:
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x76
-        push word 0x538c
+        push strict word str_BothTeams
         call 0x03A3:TextWidthAll
         add sp, 0x2
         sub ax, 0x85
@@ -1678,11 +1678,11 @@ Init_2581_105A:
         sar ax, 1
         add ax, strict word 0x52
         push ax
-        push word 0x538c
+        push strict word str_BothTeams
         call 0x0FEF:DrawText
         add sp, 0x6
         push word 0x87
-        push word 0x5397
+        push strict word str_NeitherTeams
         call 0x03A3:TextWidthAll
         add sp, 0x2
         sub ax, 0x85
@@ -1692,19 +1692,19 @@ Init_2581_105A:
         sar ax, 1
         add ax, strict word 0x52
         push ax
-        push word 0x5397
+        push strict word str_NeitherTeams
         call 0x0FEF:DrawText
         add sp, 0x6
         les bx, [FontPtr]
         mov word [es:bx], 0x59
         push 0x6c
         push 0xd
-        push word 0x53bb
+        push strict word str_SaveTo
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x6c
         push word 0xde
-        push word 0x53c3
+        push strict word str_HilightsReel
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x53
@@ -1736,7 +1736,7 @@ Init_2581_105A:
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x75
-        push word 0x538c
+        push strict word str_BothTeams
         call 0x03A3:TextWidthAll
         add sp, 0x2
         sub ax, 0x85
@@ -1746,11 +1746,11 @@ Init_2581_105A:
         sar ax, 1
         add ax, strict word 0x51
         push ax
-        push word 0x538c
+        push strict word str_BothTeams
         call 0x0FEF:DrawText
         add sp, 0x6
         push word 0x86
-        push word 0x5397
+        push strict word str_NeitherTeams
         call 0x03A3:TextWidthAll
         add sp, 0x2
         sub ax, 0x85
@@ -1760,7 +1760,7 @@ Init_2581_105A:
         sar ax, 1
         add ax, strict word 0x51
         push ax
-        push word 0x5397
+        push strict word str_NeitherTeams
         call 0x0FEF:DrawText
         add sp, 0x6
         push word 0x1858
@@ -1888,7 +1888,7 @@ Init_2581_1304:
         rep movsw
         db 0x13, 0xC9                           ; insn: adc cx, cx
         rep movsb
-        mov di, 0x53d6
+        mov di, str_Hi_2
         lea si, [bp - 0x2a]
         mov cx, 0xffff
         db 0x33, 0xC0                           ; insn: xor ax, ax
@@ -1937,7 +1937,7 @@ Init_2581_1304:
         jz short .5
         lea ax, [bp - 0x2a]
         push ax
-        push word 0x53dd
+        push strict word str_CanNotOpenSFile
         call 0x0F4A:FatalError
         add sp, 0x4
 .5:

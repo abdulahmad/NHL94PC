@@ -49,7 +49,7 @@ Menus_2528_0050:
         add sp, 0x10
         push 0xa
         push 0xa
-        push word 0x101b
+        push strict word str_Dbox_8
         push 0x0
         lea ax, [bp - 0xe]
         push ax
@@ -580,7 +580,7 @@ Menus_2528_0426:
         jnz short .12
         jmp near .21
 .12:
-        mov di, 0x100e
+        mov di, str_Pcbeep
         lea si, [bp - 0x62]
         push ds
         pop es
@@ -598,7 +598,7 @@ Menus_2528_0426:
         jmp short .14
         db 0x90
 .13:
-        mov di, 0xfe4
+        mov di, str_Pcbeep_2
         lea si, [bp - 0x62]
         push ds
         pop es
@@ -631,7 +631,7 @@ Menus_2528_0426:
         push word 0x1020
         call 0x16F2:InitSequencer
         add sp, 0x2
-        mov di, 0xfc4
+        mov di, str_Scn
         lea si, [bp - 0x62]
         push ds
         pop es
@@ -650,7 +650,7 @@ Menus_2528_0426:
         rep movsw
         db 0x13, 0xC9                           ; insn: adc cx, cx
         rep movsb
-        mov di, 0xfbc
+        mov di, str_30Bgp
         lea si, [bp - 0x44]
         mov cx, 0xffff
         db 0x33, 0xC0                           ; insn: xor ax, ax
@@ -680,7 +680,7 @@ Menus_2528_0426:
         jz short .17
         cmp byte [bp - 0x54], 0x0
         jz short .16
-        mov di, 0xfbc
+        mov di, str_30Bgp
         lea si, [bp - 0x54]
         push ds
         pop es
@@ -727,12 +727,12 @@ Menus_2528_0426:
         mov al, [es:bx + 0x1]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
-        push word 0xfd6
+        push strict word str_Pcff03d
         lea ax, [bp - 0x10]
         push ax
         call 0x0000:_sprintf
         add sp, 0x6
-        mov di, 0xfca
+        mov di, str_Pat
         lea si, [bp - 0x10]
         push ds
         pop es
@@ -761,7 +761,7 @@ Menus_2528_0426:
         jmp near .23
         db 0x90
 .19:
-        mov di, 0xff0
+        mov di, str_Sbdac
         lea si, [bp - 0x62]
         push ds
         pop es
@@ -804,7 +804,7 @@ Menus_2528_0426:
         mov [CrowdChannel], al
         jmp near .15
 .20:
-        mov di, 0xffa
+        mov di, str_Adlib
         lea si, [bp - 0x62]
         push ds
         pop es
@@ -822,7 +822,7 @@ Menus_2528_0426:
         jmp near .14
         db 0x90
 .21:
-        mov di, 0x1004
+        mov di, str_Mt32
         lea si, [bp - 0x62]
         push ds
         pop es
@@ -845,13 +845,13 @@ Menus_2528_0426:
         mov al, [es:bx + si]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
-        push word 0xfd6
+        push strict word str_Pcff03d
         lea ax, [bp - 0x20]
         push ax
         call 0x0000:_sprintf
         add sp, 0x6
         push si
-        mov di, 0xfd0
+        mov di, str_Tim
         lea si, [bp - 0x20]
         push ds
         pop es
@@ -1184,7 +1184,7 @@ Menus_2528_0426:
         push 0x0
         push 0x0
         push word 0x400
-        push word 0x1062
+        push strict word str_Emmcopybuf
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [g_C1F0], ax

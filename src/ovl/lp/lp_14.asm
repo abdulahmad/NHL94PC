@@ -221,7 +221,7 @@ Lp_2A1B_0004:
         push word [bp - 0x6c]
         call 0x1F31:Lp_1F31_0BAE
         add sp, 0x18
-        push word 0x198a
+        push strict word str_Pnt2_7
         push word [MemBlock1Seg]
         push word [MemBlock1Off]
         call 0x03A3:FindFarMsg
@@ -351,7 +351,7 @@ Lp_2A1B_0004:
         call 0x0CD1:RemoveDirTree
         add sp, 0x2
 .19:
-        push word 0x198f
+        push strict word str_Pntr_11
         push word [MemBlock1Seg]
         push word [MemBlock1Off]
         call 0x03A3:FindFarMsg

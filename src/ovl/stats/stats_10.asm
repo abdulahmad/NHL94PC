@@ -68,7 +68,7 @@ Stats_2446_006A:
         mov [bp - 0x3e0], ax
         mov [bp - 0x362], ax
         push ax
-        push word 0x1ff6
+        push strict word str_EasnFnt
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0x36c], ax
@@ -315,7 +315,7 @@ Stats_2446_006A:
         call 0x0FEF:UseOffscreenCanvas
         lea ax, [bp - 0x2e8]
         push ax
-        push word 0x1fea
+        push strict word str_EmbS
         push word 0xcfd4
         call 0x0000:_sprintf
         add sp, 0x6
@@ -337,7 +337,7 @@ Stats_2446_006A:
         add sp, 0x4
         mov [g_CFD0], ax
         mov [g_CFD2], dx
-        push word 0x1ff0
+        push strict word str_Bkgd
         push dx
         push ax
         call 0x03A3:FindFarMsg
@@ -384,7 +384,7 @@ Stats_2446_006A:
         add sp, 0x4
         lea ax, [bp - 0x2e3]
         push ax
-        push word 0x23ff
+        push strict word str_SRoster
         push word 0xcfd4
         call 0x0000:_sprintf
         add sp, 0x6
@@ -466,49 +466,49 @@ Stats_2446_006A:
         mov [bp - 0x33e], bx
         mov [bp - 0x33c], es
         push word [es:bx]
-        push word 0x1fb6
+        push strict word str_2d
         push word [bp - 0x370]
         push word 0x87
         call 0x0D39:DrawShadowTextF
         add sp, 0x8
         les bx, [bp - 0x33e]
         push word [es:bx + 0x2]
-        push word 0x1fba
+        push strict word str_3d
         push word [bp - 0x370]
         push word 0x9b
         call 0x0D39:DrawShadowTextF
         add sp, 0x8
         les bx, [bp - 0x33e]
         push word [es:bx + 0x4]
-        push word 0x1fba
+        push strict word str_3d
         push word [bp - 0x370]
         push word 0xaf
         call 0x0D39:DrawShadowTextF
         add sp, 0x8
         les bx, [bp - 0x33e]
         push word [es:bx + 0x6]
-        push word 0x1fba
+        push strict word str_3d
         push word [bp - 0x370]
         push word 0xc3
         call 0x0D39:DrawShadowTextF
         add sp, 0x8
         les bx, [bp - 0x33e]
         push word [es:bx + 0xe]
-        push word 0x1fc2
+        push strict word str_5d
         push word [bp - 0x370]
         push word 0xd7
         call 0x0D39:DrawShadowTextF
         add sp, 0x8
         les bx, [bp - 0x33e]
         push word [es:bx + 0xc]
-        push word 0x1fba
+        push strict word str_3d
         push word [bp - 0x370]
         push word 0xf4
         call 0x0D39:DrawShadowTextF
         add sp, 0x8
         les bx, [bp - 0x33e]
         push word [es:bx + 0x10]
-        push word 0x1fbe
+        push strict word str_4d
         push word [bp - 0x370]
         push word 0x108
         call 0x0D39:DrawShadowTextF
@@ -557,7 +557,7 @@ Stats_2446_006A:
         mov al, [bp - 0x3a5]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
-        push word 0x1fb6
+        push strict word str_2d
         push word [bp - 0x370]
         push 0x21
         call 0x0D39:DrawShadowTextF
@@ -679,14 +679,14 @@ Stats_2446_006A:
         mov [bp - 0x3ae], bx
         mov [bp - 0x3ac], es
         push word [es:bx]
-        push word 0x1fb6
+        push strict word str_2d
         push word [bp - 0x370]
         push word 0x87
         call 0x0D39:DrawShadowTextF
         add sp, 0x8
         les bx, [bp - 0x3ae]
         push word [es:bx + 0xc]
-        push word 0x1fbe
+        push strict word str_4d
         push word [bp - 0x370]
         push word 0x9b
         call 0x0D39:DrawShadowTextF
@@ -702,21 +702,21 @@ Stats_2446_006A:
         db 0x2B, 0xD2                           ; insn: sub dx, dx
         div cx
         push ax
-        push word 0x1fe0
+        push strict word str_2d22d
         push word [bp - 0x370]
         push word 0xaf
         call 0x0D39:DrawShadowTextF2
         add sp, 0xa
         les bx, [bp - 0x3ae]
         push word [es:bx + 0x2]
-        push word 0x1fb6
+        push strict word str_2d
         push word [bp - 0x370]
         push word 0xc8
         call 0x0D39:DrawShadowTextF
         add sp, 0x8
         les bx, [bp - 0x3ae]
         push word [es:bx + 0x4]
-        push word 0x1fb6
+        push strict word str_2d
         push word [bp - 0x370]
         push word 0xd7
         call 0x0D39:DrawShadowTextF
@@ -725,7 +725,7 @@ Stats_2446_006A:
         jnz short .27
         les bx, [bp - 0x3ae]
         push word [es:bx + 0x6]
-        push word 0x1fb6
+        push strict word str_2d
         push word [bp - 0x370]
         push word 0xe6
         call 0x0D39:DrawShadowTextF
@@ -733,14 +733,14 @@ Stats_2446_006A:
 .27:
         les bx, [bp - 0x3ae]
         push word [es:bx + 0xe]
-        push word 0x1fba
+        push strict word str_3d
         push word [bp - 0x370]
         push word 0xf5
         call 0x0D39:DrawShadowTextF
         add sp, 0x8
         les bx, [bp - 0x3ae]
         push word [es:bx + 0x12]
-        push word 0x1fbe
+        push strict word str_4d
         push word [bp - 0x370]
         push word 0x107
         call 0x0D39:DrawShadowTextF
@@ -753,7 +753,7 @@ Stats_2446_006A:
         db 0x2B, 0xD2                           ; insn: sub dx, dx
         div cx
         push dx
-        push word 0x1fd8
+        push strict word str_03d
         push word [bp - 0x370]
         push word 0x120
         call 0x0D39:DrawShadowTextF
@@ -771,7 +771,7 @@ Stats_2446_006A:
         db 0x2B, 0xD2                           ; insn: sub dx, dx
         div cx
         push ax
-        push word 0x1fce
+        push strict word str_1d03d
         push word [bp - 0x370]
         push word 0x120
         call 0x0D39:DrawShadowTextF2
@@ -821,7 +821,7 @@ Stats_2446_006A:
         mov al, [bp - 0x3a5]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
-        push word 0x1fb6
+        push strict word str_2d
         push word [bp - 0x370]
         push 0x21
         call 0x0D39:DrawShadowTextF

@@ -23,7 +23,7 @@ Init_2425_0000:
 .2:
         mov ax, DGROUP
         mov ds, ax
-        push word 0x5040
+        push strict word str_Teams_2
         push word 0xc000
         lea ax, [bp - 0x2c]
         push ax
@@ -98,7 +98,7 @@ Init_2425_0000:
         push ax
         call 0x0CD1:CloseHandlePtr
         add sp, 0x2
-        push word 0x5050
+        push strict word str_Teams
         push word 0xc020
         lea ax, [bp - 0x2c]
         push ax
@@ -674,7 +674,7 @@ Init_2425_068A:
         enter 0x4c, 0x0
         push si
         mov si, [bp + 0x10]
-        push word 0x5081
+        push strict word str_Key
         push si
         lea ax, [bp - 0x20]
         push ax
@@ -704,7 +704,7 @@ Init_2425_068A:
         call 0x0F4A:FatalError
         add sp, 0x2
 .2:
-        push word 0x5089
+        push strict word str_Att
         push si
         lea ax, [bp - 0x20]
         push ax
@@ -734,7 +734,7 @@ Init_2425_068A:
         call 0x0F4A:FatalError
         add sp, 0x2
 .4:
-        push word 0x5091
+        push strict word str_Season_2
         push si
         lea ax, [bp - 0x20]
         push ax
@@ -773,7 +773,7 @@ Init_2425_068A:
         retf
         db 0x90
 .7:
-        push word 0x509c
+        push strict word str_Career_2
         push si
         lea ax, [bp - 0x20]
         push ax
@@ -1181,7 +1181,7 @@ Init_2425_0B20:
         db 0x13, 0xC9                           ; insn: adc cx, cx
         rep movsb
 .1:
-        mov di, 0x50ba
+        mov di, str_GsummaryDb_3
         mov si, 0xae70
         push ds
         pop es

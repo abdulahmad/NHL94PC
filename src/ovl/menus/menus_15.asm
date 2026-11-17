@@ -90,7 +90,7 @@ Menus_2CF8_000E:
         add sp, 0x4
         call 0x0FEF:UseOtherPage
         push word [bp + 0x6]
-        push word 0x14e8
+        push strict word str_Eadesk1d
         push word 0xc242
         call 0x0000:_sprintf
         add sp, 0x6
@@ -100,7 +100,7 @@ Menus_2CF8_000E:
         push strict word g_C242
         call 0x0000:_fstrcat
         add sp, 0x8
-        push word 0x14f2
+        push strict word str_Desk_14
         push 0x0
         push word 0xc242
         call 0x14B8:LoadPackedHeader
@@ -125,7 +125,7 @@ Menus_2CF8_000E:
         call 0x0FEF:DrawRleAt
         add sp, 0x8
         call 0x0FEF:UseOtherPage
-        push word 0x14f7
+        push strict word str_Pal_60
         push word [bp - 0x28]
         push word [bp - 0x2a]
         call 0x03A3:FindFarMsg
@@ -647,7 +647,7 @@ Menus_2CF8_000E:
         call 0x0FEF:CopyPlane
 .39:
         call 0x0FEF:UseCurrentPage
-        push word 0x14fc
+        push strict word str_Desk_13
         push 0x0
         push word 0xc242
         call 0x14B8:LoadPackedHeader
@@ -671,7 +671,7 @@ Menus_2CF8_000E:
         push word [bp - 0x26]
         call 0x0FEF:DrawRleAt
         add sp, 0x8
-        push word 0x1501
+        push strict word str_Pal_59
         push word [bp - 0x28]
         push word [bp - 0x2a]
         call 0x03A3:FindFarMsg
@@ -1029,7 +1029,7 @@ Menus_2CF8_000E:
         cwd
         push dx
         push ax
-        push word 0x1506
+        push strict word str_Menubuff_8
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp + si - 0x8e], ax
@@ -1241,7 +1241,7 @@ Menus_2CF8_0E04:
         enter 0x1a0, 0x0
         push di
         push si
-        push word 0xa40
+        push strict word str_Bkgd_10
         push word 0x79d0
         push 0x0
         call 0x0000:VgaCopyBytes
@@ -1313,7 +1313,7 @@ Menus_2CF8_0E04:
         call 0x06E1:FindUnlink
         add sp, 0x4
         push 0x0
-        push word 0x1517
+        push strict word str_HomepalsBin_4
         call 0x149D:LoadRawHeader
         add sp, 0x4
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -1341,7 +1341,7 @@ Menus_2CF8_0E04:
         call 0x06E1:FindUnlink
         add sp, 0x4
         push 0x0
-        push word 0x1524
+        push strict word str_AwaypalsBin_3
         call 0x149D:LoadRawHeader
         add sp, 0x4
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -1670,7 +1670,7 @@ Menus_2CF8_12AA:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x1531
+        push strict word str_Pal_58
         call 0x14DB:AllocRecData
         add sp, 0x8
         push dx
@@ -1712,7 +1712,7 @@ Menus_2CF8_12AA:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x1535
+        push strict word str_Pal_57
         call 0x14DB:AllocRecData
         add sp, 0x8
         push dx
@@ -1756,7 +1756,7 @@ Menus_2CF8_1388:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x1539
+        push strict word str_Pal_56
         call 0x14DB:AllocRecData
         add sp, 0x8
         push dx
@@ -1798,7 +1798,7 @@ Menus_2CF8_1388:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x153d
+        push strict word str_Pal_55
         call 0x14DB:AllocRecData
         add sp, 0x8
         push dx
@@ -1842,7 +1842,7 @@ Menus_2CF8_1466:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x1541
+        push strict word str_Pal_54
         call 0x14DB:AllocRecData
         add sp, 0x8
         push dx
@@ -1885,7 +1885,7 @@ Menus_2CF8_14D4:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x1545
+        push strict word str_Pal_53
         call 0x14DB:AllocRecData
         add sp, 0x8
         push dx
@@ -1934,7 +1934,7 @@ Menus_2CF8_1550:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x1549
+        push strict word str_Pal_52
         call 0x14DB:AllocRecData
         add sp, 0x8
         push dx
@@ -1983,7 +1983,7 @@ Menus_2CF8_15CC:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x154d
+        push strict word str_Pal_51
         call 0x14DB:AllocRecData
         add sp, 0x8
         push dx

@@ -302,7 +302,7 @@ Stats_2095_026E:
         shl si, byte 0x3
         push 0x0
         push si
-        push word 0x2012
+        push strict word str_Sfh
         call 0x14DB:AllocRecData
         add sp, 0x8
         db 0x8B, 0xF8                           ; insn: mov di, ax
@@ -427,7 +427,7 @@ Stats_2095_026E:
         add di, 0x12
         push 0x0
         push di
-        push word 0x2016
+        push strict word str_Shape
         call 0x14DB:AllocRecData
         add sp, 0x8
         db 0x8B, 0xF0                           ; insn: mov si, ax

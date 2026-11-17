@@ -45,43 +45,43 @@ Init_251E_0038:
         mov [g_C258], ax
         mov [g_C25A], dx
         push word 0xdaa2
-        push word 0x5254
+        push strict word str_0000000100020003000400050006000700080009000
         push dx
         push ax
         call 0x03A3:FindFarList
         add sp, 0x8
         push word 0xda76
-        push word 0x5281
+        push strict word str_1000100110021003100410051006100710081009100
         push word [g_C25A]
         push word [g_C258]
         call 0x03A3:FindFarList
         add sp, 0x8
         push word 0xda4a
-        push word 0x52ae
+        push strict word str_2000200120022003200420052006200720082009200
         push word [g_C25A]
         push word [g_C258]
         call 0x03A3:FindFarList
         add sp, 0x8
         push word 0xda3e
-        push word 0x52db
+        push strict word str_VlinvppVpk
         push word [g_C25A]
         push word [g_C258]
         call 0x03A3:FindFarList
         add sp, 0x8
         push word 0xda32
-        push word 0x52e8
+        push strict word str_HlinhppHpk
         push word [g_C25A]
         push word [g_C258]
         call 0x03A3:FindFarList
         add sp, 0x8
-        push word 0x52f5
+        push strict word str_Visp
         push word [g_C25A]
         push word [g_C258]
         call 0x03A3:FindFarMsg
         add sp, 0x6
         mov [g_DA2E], ax
         mov [g_DA30], dx
-        push word 0x52fa
+        push strict word str_Homp
         push word [g_C25A]
         push word [g_C258]
         call 0x03A3:FindFarMsg
@@ -89,5 +89,5 @@ Init_251E_0038:
         mov [g_DA2A], ax
         mov [g_DA2C], dx
         push word 0xda0a
-        push word 0x52ff
+        push strict word str_Lin1lin2lin3lin4pp1Pp2Pk1
         push word [g_C25A]

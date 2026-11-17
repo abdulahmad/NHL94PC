@@ -1001,7 +1001,7 @@ Game_1E7E_088A:
         rep movsw
         db 0x13, 0xC9                           ; insn: adc cx, cx
         rep movsb
-        mov di, 0x4b12
+        mov di, str_GameSav_2
         lea si, [bp - 0x20]
         mov cx, 0xffff
         db 0x33, 0xC0                           ; insn: xor ax, ax

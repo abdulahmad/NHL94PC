@@ -13,3 +13,5 @@ _dos_close		equ	0x1084
 _dos_open		equ	0x10FA
 _dos_read		equ	0x1112
 _fmemcpy		equ	0x12B8
+str_AMvi		equ	0x628E
+str_Databuffer		equ	0x6294

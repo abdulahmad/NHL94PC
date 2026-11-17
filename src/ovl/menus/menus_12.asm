@@ -420,7 +420,7 @@ Menus_2B26_03C4:
         add sp, 0x10
         push 0x0
         push 0xa
-        push word 0x1487
+        push strict word str_Dbox_7
         push 0x0
         lea ax, [bp - 0xe]
         push ax
@@ -539,7 +539,7 @@ Menus_2B26_0530:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x1493
+        push strict word str_Bkgd_6
         push 0x0
         lea ax, [bp - 0xe]
         push ax
@@ -583,7 +583,7 @@ Menus_2B26_0530:
         add sp, 0x10
         push 0x0
         push 0xa
-        push word 0x14aa
+        push strict word str_Dbox_6
         push 0x0
         lea ax, [bp - 0xe]
         push ax
@@ -700,7 +700,7 @@ Menus_2B26_0696:
         add sp, 0x10
         push 0x0
         push 0xa
-        push word 0x14b8
+        push strict word str_Dbox_2
         push 0x0
         lea ax, [bp - 0xe]
         push ax

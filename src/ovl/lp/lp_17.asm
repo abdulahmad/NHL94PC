@@ -120,7 +120,7 @@ Lp_2E18_000A:
 .8:
         mov word [bp - 0x6], 0xffff
         lea di, [bp - 0x14]
-        mov si, 0x1b36
+        mov si, str_Saved
         mov ax, ss
         mov es, ax
         movsw

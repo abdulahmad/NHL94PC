@@ -374,7 +374,7 @@ Lp_2A57_034C:
         push 0x0
         push 0x0
         push word 0x5b0
-        push word 0x1a30
+        push strict word str_Keys_5
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [g_C048], ax
@@ -382,7 +382,7 @@ Lp_2A57_034C:
         push 0x0
         push 0x0
         push word 0x4b0
-        push word 0x1a35
+        push strict word str_Pstat_5
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [g_C044], ax
@@ -390,7 +390,7 @@ Lp_2A57_034C:
         push 0x0
         push 0x0
         push word 0x10e
-        push word 0x1a3b
+        push strict word str_Gstat_5
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [g_C040], ax
@@ -411,7 +411,7 @@ Lp_2A57_034C:
         call 0x0CD1:BuildPathFar
         add sp, 0x10
         db 0x8B, 0xC7                           ; insn: mov ax, di
-        push word 0x1a48
+        push strict word str_Pal_39
         push 0x0
         lea cx, [bp - 0x1a]
         push cx
@@ -515,7 +515,7 @@ Lp_2A57_034C:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x1a56
+        push strict word str_Pal_38
         push 0x0
         lea ax, [bp - 0x1a]
         push ax
@@ -676,7 +676,7 @@ Lp_2A57_05C0:
         mov al, [bp + si - 0x62f]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
-        push word 0x1a5b
+        push strict word str_TheJerseyNumber2dIsAlready
         lea ax, [bp - 0x80]
         push ax
         call 0x0000:_sprintf
@@ -710,7 +710,7 @@ Lp_2A57_05C0:
         add sp, 0x16
         lea ax, [bp - 0x2e]
         push ax
-        push word 0x1a89
+        push strict word str_EnterJerseyNumberForS
         lea ax, [bp - 0x80]
         push ax
         call 0x0000:_sprintf
@@ -1131,7 +1131,7 @@ Lp_2A57_078E:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x1aa4
+        push strict word str_Pal_37
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x8], ax
@@ -1162,7 +1162,7 @@ Lp_2A57_078E:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x1aa8
+        push strict word str_Pal_36
         call 0x14DB:AllocRecData
         add sp, 0x8
         push dx
@@ -1212,7 +1212,7 @@ Lp_2A57_0BE2:
         push ax
         mov al, [bx + g_C2C2]
         push ax
-        push word 0x1aac
+        push strict word str_C2dS_2
         mov ax, [si + g_C792]
         db 0x8B, 0xD0                           ; insn: mov dx, ax
         shl ax, 1
@@ -1248,7 +1248,7 @@ Lp_2A57_0C32:
         add sp, 0x10
         push 0x0
         push 0x0
-        push word 0x1abd
+        push strict word str_Bkgd_3
         push 0x0
         lea ax, [bp - 0x22]
         push ax
@@ -1327,7 +1327,7 @@ Lp_2A57_0C32:
         call 0x0FEF:SetRemapTable
         add sp, 0x4
         push di
-        push word 0x1ac9
+        push strict word str_S_3
         lea ax, [bp - 0x22]
         push ax
         call 0x0000:_sprintf
@@ -1467,7 +1467,7 @@ Lp_2A57_0C32:
         push ax
         mov al, [si]
         push ax
-        push word 0x1acf
+        push strict word str_C2dS
         push word [bp - 0x4]
         push word [bp - 0x8]
         call 0x03A3:FormatCall
@@ -1733,7 +1733,7 @@ Lp_2A57_10C0:
         push cs
         call Lp_2A57_0C32
         add sp, 0x14
-        push word 0x1ad9
+        push strict word str_Pntr_10
         push word [bp + 0x16]
         push word [bp + 0x14]
         call 0x03A3:FindFarMsg
@@ -1786,7 +1786,7 @@ Lp_2A57_10C0:
         cwd
         push dx
         push ax
-        push word 0x1ade
+        push strict word str_Pointer_8
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x1c], ax
@@ -2344,7 +2344,7 @@ Lp_2A57_10C0:
         cwd
         push dx
         push ax
-        push word 0x1ae6
+        push strict word str_Menubuff_4
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp + si - 0x8c], ax
@@ -3103,7 +3103,7 @@ Lp_2A57_1F96:
         call 0x03A3:SaveCharTab
         add sp, 0x2
         push 0x0
-        push word 0x1aef
+        push strict word str_LineditFnt
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0xe], ax
@@ -3123,7 +3123,7 @@ Lp_2A57_1F96:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x1b04
+        push strict word str_Shrt
         push 0x0
         lea ax, [bp - 0x24]
         push ax
@@ -3139,7 +3139,7 @@ Lp_2A57_1F96:
         add sp, 0x6
         mov [bp - 0x16], ax
         mov [bp - 0x14], dx
-        push word 0x1b09
+        push strict word str_Pal_35
         push word [bp - 0x60e]
         push word [bp - 0x610]
         call 0x03A3:FindFarMsg
@@ -3193,14 +3193,14 @@ Lp_2A57_1F96:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .3
         push word 0x2a57
-        push word 0x1f1c
+        push strict word str_Playoff_2
         push 0x16
         push 0x1c
         push word 0xc2c2
         call 0x0000:CallArg
         add sp, 0xa
         push word 0x2a57
-        push word 0x1f1c
+        push strict word str_Playoff_2
         push 0x16
         push 0x1c
         push word 0xc52a
@@ -3408,9 +3408,9 @@ Lp_2A57_2152:
         push 0x0
         call 0x0FEF:ClearClipRect
         add sp, 0x2
-        push word 0x1b1b
+        push strict word str_Pal_34
         push 0x0
-        push word 0x1b0e
+        push strict word str_EasndeskQpp
         call 0x14B8:LoadPackedHeader
         add sp, 0x4
         mov [bp - 0x56], ax

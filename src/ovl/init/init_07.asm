@@ -294,7 +294,7 @@ Init_237D_023E:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x4fd6
+        push strict word str_Pal_7
         call 0x14DB:AllocRecData
         add sp, 0x8
         push dx
@@ -365,7 +365,7 @@ Init_237D_03A6:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x4fda
+        push strict word str_Pal_6
         call 0x14DB:AllocRecData
         add sp, 0x8
         push dx
@@ -410,7 +410,7 @@ Init_237D_03A6:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x4fde
+        push strict word str_Pal_5
         call 0x14DB:AllocRecData
         add sp, 0x8
         push dx

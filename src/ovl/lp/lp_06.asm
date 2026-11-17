@@ -61,7 +61,7 @@ Lp_20F8_000C:
         push word 0x3701
         push strict word str_Player
         push es
-        push word 0xbfa
+        push strict word str_C2dS_6
         lea ax, [bp - 0x4e]
         push ss
         push ax
@@ -248,7 +248,7 @@ Lp_20F8_0206:
         push word 0x3701
         push strict word str_Player
         push es
-        push word 0xbfa
+        push strict word str_C2dS_6
         lea ax, [bp - 0x4c]
         push ss
         push ax

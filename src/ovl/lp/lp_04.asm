@@ -231,7 +231,7 @@ Lp_1F31_01D0:
         mov [bp - 0x16], ax
         mov [bp - 0x14], dx
         push 0x0
-        push word 0x176e
+        push strict word str_CrestsBin
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov es, dx
@@ -376,7 +376,7 @@ Lp_1F31_03A6:
         push 0x0
         push dx
         push ax
-        push word 0x1779
+        push strict word str_Plst
         db 0x8B, 0xFE                           ; insn: mov di, si
         mov [bp - 0xce], di
         mov [bp - 0xcc], bx
@@ -409,7 +409,7 @@ Lp_1F31_03A6:
         push 0x0
         push bx
         push cx
-        push word 0x177e
+        push strict word str_Ptls
         call 0x14DB:AllocRecData
         add sp, 0x8
         db 0x8B, 0xF8                           ; insn: mov di, ax
@@ -1243,7 +1243,7 @@ Lp_1F31_0BAE:
         jnz short .5
         jmp near .79
 .5:
-        push word 0x1783
+        push strict word str_Pnt2_10
         push word [MemBlock1Seg]
         push word [MemBlock1Off]
         call 0x03A3:FindFarMsg
@@ -1257,7 +1257,7 @@ Lp_1F31_0BAE:
         push 0x0
         push 0x0
         push word 0x2d0
-        push word 0x1788
+        push strict word str_Tpi
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x110], ax
@@ -1277,7 +1277,7 @@ Lp_1F31_0BAE:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x1793
+        push strict word str_Bkgd_4
         push 0x0
         lea ax, [bp - 0x5a]
         push ax
@@ -1314,7 +1314,7 @@ Lp_1F31_0BAE:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x179e
+        push strict word str_Pal_43
         push 0x0
         lea ax, [bp - 0x5a]
         push ax
@@ -1439,7 +1439,7 @@ Lp_1F31_0BAE:
         cwd
         push dx
         push ax
-        push word 0x17a3
+        push strict word str_Pointer_10
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x14], ax
@@ -1602,7 +1602,7 @@ Lp_1F31_0BAE:
         dec word [bp - 0xea]
         jns short .21
         mov word [bp - 0x66], 0x0
-        push word 0x17ab
+        push strict word str_Pntr_14
         push word [MemBlock1Seg]
         push word [MemBlock1Off]
         call 0x03A3:FindFarMsg
@@ -1615,7 +1615,7 @@ Lp_1F31_0BAE:
         les si, [bp + si - 0xe4]
         call far [es:bx + si + 0xc]
         mov [bp - 0x10c], ax
-        push word 0x17b0
+        push strict word str_Pnt2_9
         push word [MemBlock1Seg]
         push word [MemBlock1Off]
         call 0x03A3:FindFarMsg
@@ -1850,7 +1850,7 @@ Lp_1F31_0BAE:
         cwd
         push dx
         push ax
-        push word 0x17b5
+        push strict word str_Menubuff_6
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp + si - 0x62], ax
@@ -2180,7 +2180,7 @@ Lp_1F31_0BAE:
         add sp, 0x8
         push si
         lea di, [bp - 0xd0]
-        mov si, 0x17be
+        mov si, str_WhoWillPlay
         mov ax, ss
         mov es, ax
         mov cx, 0x7
@@ -2556,7 +2556,7 @@ Lp_1F31_0BAE:
         call 0x0000:_fmemcpy
         add sp, 0xa
 .78:
-        push word 0x17cd
+        push strict word str_Pntr_13
         push word [MemBlock1Seg]
         push word [MemBlock1Off]
         call 0x03A3:FindFarMsg

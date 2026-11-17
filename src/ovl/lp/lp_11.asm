@@ -103,7 +103,7 @@ Lp_25B2_000A:
         mov word [es:bx], 0xf5
         push word [bp - 0x4]
         push word [bp - 0x2]
-        push word 0x189e
+        push strict word str_Home
         call 0x0FEF:DrawText
         add sp, 0x6
         les bx, [FontPtr]
@@ -112,7 +112,7 @@ Lp_25B2_000A:
         add ax, strict word 0x8
         push ax
         push word [bp - 0x2]
-        push word 0x18a3
+        push strict word str_Away
         call 0x0FEF:DrawText
         add sp, 0x6
         lea ax, [bp - 0x24]
@@ -135,7 +135,7 @@ Lp_25B2_000A:
         push ax
         call 0x0000:_fstrcpy
         add sp, 0x8
-        mov di, 0x18a8
+        mov di, str_199
         lea si, [bp - 0x44]
         push ds
         pop es
@@ -550,7 +550,7 @@ Lp_25B2_057E:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x18db
+        push strict word str_Pal_42
         push 0x0
         lea ax, [bp - 0x30]
         push ax
@@ -579,7 +579,7 @@ Lp_25B2_057E:
         call 0x06E1:FindUnlink
         add sp, 0x4
         push 0x0
-        push word 0x18e0
+        push strict word str_Crests4Bin_2
         call 0x149D:LoadRawHeader
         add sp, 0x4
         db 0x8B, 0xF8                           ; insn: mov di, ax
@@ -713,7 +713,7 @@ Lp_25B2_06D6:
         call 0x0D90:SetDialogColors
         add sp, 0xa
         push 0x0
-        push word 0x18ec
+        push strict word str_Ftimes24Fnt
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0xa], ax
@@ -735,7 +735,7 @@ Lp_25B2_06D6:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x1902
+        push strict word str_Pal_41
         push 0x0
         lea ax, [bp - 0x4c]
         push ax
@@ -761,7 +761,7 @@ Lp_25B2_06D6:
         call 0x06E1:FindUnlink
         add sp, 0x4
         push 0x0
-        push word 0x1907
+        push strict word str_Crests4Bin
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0x2c], ax
@@ -1094,7 +1094,7 @@ Lp_25B2_06D6:
         cwd
         push dx
         push ax
-        push word 0x191b
+        push strict word str_Pointer_9
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x1a], ax
@@ -1646,7 +1646,7 @@ Lp_25B2_06D6:
         cwd
         push dx
         push ax
-        push word 0x1923
+        push strict word str_Menubuff_5
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp + si - 0x58], ax
@@ -2283,7 +2283,7 @@ Lp_25B2_1876:
         jnz short .1
         mov si, [bp + 0x6]
         push di
-        push word 0x192c
+        push strict word str_02d_8
         lea ax, [bp - 0x4]
         push ax
         call 0x0000:_sprintf
@@ -3246,7 +3246,7 @@ Lp_25B2_208A:
         push strict word f_3701_0E53
         call 0x1F31:Lp_1F31_0BAE
         add sp, 0x18
-        push word 0x193b
+        push strict word str_Pnt2_8
         push word [MemBlock1Seg]
         push word [MemBlock1Off]
         call 0x03A3:FindFarMsg
@@ -3279,7 +3279,7 @@ Lp_25B2_208A:
         jmp near .23
 .18:
         push word [g_C2A6]
-        push word 0x1940
+        push strict word str_02d_7
         lea ax, [bp - 0x46]
         push ax
         call 0x0000:_sprintf
@@ -3362,7 +3362,7 @@ Lp_25B2_208A:
         call 0x0D90:SetDialogColors
         add sp, 0xa
         push word [g_C2A6]
-        push word 0x1946
+        push strict word str_02d_6
         lea ax, [bp - 0x46]
         push ax
         call 0x0000:_sprintf
@@ -3386,7 +3386,7 @@ Lp_25B2_208A:
         jnz short .28
         mov word [bp - 0x4], 0xffff
 .28:
-        push word 0x194c
+        push strict word str_Pntr_12
         push word [MemBlock1Seg]
         push word [MemBlock1Off]
         call 0x03A3:FindFarMsg
@@ -3504,7 +3504,7 @@ Lp_25B2_208A:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .41
         push word [g_C2A8]
-        push word 0x1951
+        push strict word str_02d_5
         lea ax, [bp - 0x46]
         push ax
         call 0x0000:_sprintf
@@ -3579,7 +3579,7 @@ Lp_25B2_208A:
         cmp word [bp - 0x5c], 0x0
         jnz short .44
         push word [g_C2A8]
-        push word 0x1957
+        push strict word str_02d_4
         lea ax, [bp - 0x46]
         push ax
         call 0x0000:_sprintf
@@ -3611,7 +3611,7 @@ Lp_25B2_208A:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x195d
+        push strict word str_Temp_4
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x58], ax
@@ -3830,9 +3830,9 @@ Lp_25B2_208A:
         push 0x0
         call 0x0FEF:ClearClipRect
         add sp, 0x2
-        push word 0x196f
+        push strict word str_Pal_40
         push 0x0
-        push word 0x1962
+        push strict word str_EasndeskQpp_2
         call 0x14B8:LoadPackedHeader
         add sp, 0x4
         mov [bp - 0x76], ax
@@ -3910,7 +3910,7 @@ Lp_25B2_208A:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .64
         push word [g_C2A8]
-        push word 0x1974
+        push strict word str_02d_3
         lea ax, [bp - 0x46]
         push ax
         call 0x0000:_sprintf
@@ -4375,7 +4375,7 @@ Lp_25B2_208A:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x197a
+        push strict word str_Temp_3
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x58], ax

@@ -162,5 +162,9 @@ g_D71C		equ	0xD71C
 g_D71E		equ	0xD71E
 g_D728		equ	0xD728
 g_D9D6		equ	0xD9D6
+str_AwaypalsBin_2		equ	0x4A75
+str_GameSav_2		equ	0x4B12
+str_HomepalsBin_2		equ	0x4A68
+str_Pal_12		equ	0x4A8A
 str_Qpp		equ	0xBD0
 str_Rinkpal_2		equ	0x4A82

@@ -27,7 +27,7 @@ Menus_2047_0008:
         call 0x03A3:SaveCharTab
         add sp, 0x2
         push 0x0
-        push word 0xb96
+        push strict word str_LineditFnt_2
         call 0x149D:LoadRawHeader
         add sp, 0x4
         push dx
@@ -48,7 +48,7 @@ Menus_2047_0008:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0xbab
+        push strict word str_Shrt_2
         push 0x0
         lea ax, [bp - 0x12]
         push ax
@@ -199,7 +199,7 @@ Menus_2047_01B2:
         mov word [bp - 0x4], 0x7d
         mov word [bp - 0x44], 0x5f
         mov word [bp - 0x38], 0x7b
-        push word 0xbb0
+        push strict word str_Pntr_18
         push word [bp + 0x1a]
         push word [bp + 0x18]
         call 0x03A3:FindFarMsg
@@ -253,7 +253,7 @@ Menus_2047_01B2:
         cwd
         push dx
         push ax
-        push word 0xbb5
+        push strict word str_Pointer_14
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x1a], ax
@@ -425,7 +425,7 @@ Menus_2047_01B2:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0xbbd
+        push strict word str_Pal_68
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0xa0], ax
@@ -1098,7 +1098,7 @@ Menus_2047_01B2:
         cwd
         push dx
         push ax
-        push word 0xbc1
+        push strict word str_Menubuff_10
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp + si - 0x32], ax
@@ -1924,7 +1924,7 @@ Menus_2047_01B2:
         push ax
         mov al, [bx + g_BD96]
         push ax
-        push word 0xbca
+        push strict word str_C2dS_8
         mov ax, [bp - 0x92]
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         shl ax, 1
@@ -1970,7 +1970,7 @@ Menus_2047_01B2:
         push ax
         mov al, [bx + g_BD96]
         push ax
-        push word 0xbd4
+        push strict word str_C2dS_7
         mov ax, [bp - 0x92]
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         shl ax, 1
@@ -2078,7 +2078,7 @@ Menus_2047_1640:
         inc dx
         cmp bx, 0xc000
         jc short .1
-        push word 0xbde
+        push strict word str_Key_2
         push word 0xc000
         lea ax, [bp - 0x2c]
         push ax
@@ -2428,7 +2428,7 @@ Menus_2047_186AJumpTable:
         push ax
         mov al, [si - 0x2]
         push ax
-        push word 0xbfa
+        push strict word str_C2dS_6
         push word [bp - 0x2]
         push word 0xe5
         call 0x03A3:FormatCall
@@ -2452,7 +2452,7 @@ Menus_2047_19E0:
         add ax, 0x9f80
         mov [bp - 0x134], ax
         push ax
-        push word 0xc04
+        push strict word str_EmbS_2
         lea ax, [bp - 0x32]
         push ax
         call 0x0000:_sprintf
@@ -2480,7 +2480,7 @@ Menus_2047_19E0:
         cmp bx, 0x100
         jl short .1
         push 0x0
-        push word 0xc0a
+        push strict word str_HomepalsBin_6
         call 0x149D:LoadRawHeader
         add sp, 0x4
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -2529,7 +2529,7 @@ Menus_2047_19E0:
         add sp, 0x4
         push 0x0
         push -0x30
-        push word 0xc17
+        push strict word str_Bkgd_8
         push word [bp - 0x22]
         push di
         call 0x03A3:FindFarMsg
@@ -2599,7 +2599,7 @@ Menus_2047_19E0:
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov [bp - 0x22], dx
         push word [bp - 0x134]
-        push word 0xc23
+        push strict word str_S_4
         lea ax, [bp - 0x20]
         push ax
         call 0x0000:_sprintf
@@ -2666,12 +2666,12 @@ Menus_2047_19E0:
         add sp, 0xa
         push 0xe
         push 0x7
-        push word 0xc29
+        push strict word str_Forward_4
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x14
         push 0x7
-        push word 0xc31
+        push strict word str_Line1_2
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x18
@@ -2692,12 +2692,12 @@ Menus_2047_19E0:
         add sp, 0xa
         push 0x26
         push 0x7
-        push word 0xc38
+        push strict word str_Forward_3
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x2c
         push 0x7
-        push word 0xc40
+        push strict word str_Line2_2
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x18
@@ -2718,12 +2718,12 @@ Menus_2047_19E0:
         add sp, 0xa
         push 0x3e
         push 0x7
-        push word 0xc47
+        push strict word str_Forward_2
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x44
         push 0x7
-        push word 0xc4f
+        push strict word str_Line3_2
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x18
@@ -2744,12 +2744,12 @@ Menus_2047_19E0:
         add sp, 0xa
         push 0x56
         push 0x7
-        push word 0xc56
+        push strict word str_Forward
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x5c
         push 0x7
-        push word 0xc5e
+        push strict word str_Line4
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x18
@@ -2770,12 +2770,12 @@ Menus_2047_19E0:
         add sp, 0xa
         push 0x70
         push 0x7
-        push word 0xc65
+        push strict word str_Penalty_2
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x76
         push 0x7
-        push word 0xc6d
+        push strict word str_Kill1
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x18
@@ -2796,12 +2796,12 @@ Menus_2047_19E0:
         add sp, 0xa
         push word 0x88
         push 0x7
-        push word 0xc74
+        push strict word str_Penalty
         call 0x0FEF:DrawText
         add sp, 0x6
         push word 0x8e
         push 0x7
-        push word 0xc7c
+        push strict word str_Kill2
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x18
@@ -2822,12 +2822,12 @@ Menus_2047_19E0:
         add sp, 0xa
         push word 0xa2
         push 0xb
-        push word 0xc83
+        push strict word str_Power_2
         call 0x0FEF:DrawText
         add sp, 0x6
         push word 0xa8
         push 0xb
-        push word 0xc89
+        push strict word str_Play1
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x18
@@ -2848,12 +2848,12 @@ Menus_2047_19E0:
         add sp, 0xa
         push word 0xba
         push 0xb
-        push word 0xc90
+        push strict word str_Power
         call 0x0FEF:DrawText
         add sp, 0x6
         push word 0xc0
         push 0xb
-        push word 0xc96
+        push strict word str_Play2
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x18
@@ -2874,12 +2874,12 @@ Menus_2047_19E0:
         add sp, 0xa
         push 0xe
         push word 0x89
-        push word 0xc9d
+        push strict word str_Defense_4
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x14
         push word 0x89
-        push word 0xca5
+        push strict word str_Line1
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x18
@@ -2900,12 +2900,12 @@ Menus_2047_19E0:
         add sp, 0xa
         push 0x26
         push word 0x89
-        push word 0xcac
+        push strict word str_Defense_3
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x2c
         push word 0x89
-        push word 0xcb4
+        push strict word str_Line2
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x18
@@ -2926,12 +2926,12 @@ Menus_2047_19E0:
         add sp, 0xa
         push 0x3e
         push word 0x89
-        push word 0xcbb
+        push strict word str_Defense_2
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x44
         push word 0x89
-        push word 0xcc3
+        push strict word str_Line3
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x18
@@ -2952,7 +2952,7 @@ Menus_2047_19E0:
         add sp, 0xa
         push 0x70
         push word 0xa1
-        push word 0xcca
+        push strict word str_Goaltenders
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x18
@@ -2973,12 +2973,12 @@ Menus_2047_19E0:
         add sp, 0xa
         push 0x56
         push word 0x81
-        push word 0xcd6
+        push strict word str_Extra
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x5c
         push word 0x81
-        push word 0xcdc
+        push strict word str_Attackers
         call 0x0FEF:DrawText
         add sp, 0x6
         pop si
@@ -2991,7 +2991,7 @@ Menus_2047_1F76:
         enter 0x12, 0x0
         push di
         push si
-        push word 0xce6
+        push strict word str_Pal_67
         push word [bp + 0xa]
         push word [bp + 0x8]
         call 0x03A3:FindFarMsg
@@ -3017,7 +3017,7 @@ Menus_2047_1F76:
         mov ax, DGROUP
         mov ds, ax
         push 0x0
-        push word 0xceb
+        push strict word str_HomepalsBin_5
         call 0x149D:LoadRawHeader
         add sp, 0x4
         db 0x8B, 0xF8                           ; insn: mov di, ax
@@ -3348,31 +3348,31 @@ Menus_2047_22F2:
         mov [bp - 0x4], ax
         mov [bp - 0x8], ax
         lea di, [bp - 0x42]
-        mov si, 0xcf8
+        mov si, str_YourRosterIsIncomplete
         mov ax, ss
         mov es, ax
         mov cx, 0xd
         rep movsw
         movsb
         lea di, [bp - 0x26]
-        mov si, 0xd13
+        mov si, str_Scratch
         movsw
         movsw
         movsw
         movsw
         lea di, [bp - 0xe]
-        mov si, 0xd1b
+        mov si, str_Dress
         movsw
         movsw
         movsw
         lea di, [bp - 0x16]
-        mov si, 0xd21
+        mov si, str_Player_4
         movsw
         movsw
         movsw
         movsb
         lea di, [bp - 0x1e]
-        mov si, 0xd28
+        mov si, str_Goalie
         mov ax, ss
         movsw
         movsw
@@ -3450,7 +3450,7 @@ Menus_2047_22F2:
         lea ax, [bp - 0x26]
 .11:
         push ax
-        push word 0xd2f
+        push strict word str_S2dSS
         lea ax, [bp - 0x7a]
         push ax
         call 0x0000:_sprintf
@@ -3494,7 +3494,7 @@ Menus_2047_22F2:
         lea ax, [bp - 0x26]
 .18:
         push ax
-        push word 0xd2f
+        push strict word str_S2dSS
         lea ax, [bp - 0x5e]
         push ax
         call 0x0000:_sprintf
@@ -3935,11 +3935,11 @@ Menus_2047_281A:
 .1:
         cmp byte [bp + 0xa], 0x0
         jz short .2
-        push word 0xd4f
+        push strict word str_Teams_7
         push word 0xc020
         jmp short .3
 .2:
-        push word 0xd55
+        push strict word str_Teams_6
         push word 0xc000
 .3:
         lea ax, [bp - 0x28]
@@ -3955,7 +3955,7 @@ Menus_2047_281A:
         db 0x0B, 0xFF                           ; insn: or di, di
         jnl short .4
         call 0x03A3:ResetText
-        push word 0xd5b
+        push strict word str_B2
         call 0x0000:WriteStderr
         add sp, 0x2
         call 0x03A3:WaitKey
@@ -4182,11 +4182,11 @@ Menus_2047_2A60:
 .1:
         cmp byte [bp + 0xa], 0x0
         jz short .2
-        push word 0xd6e
+        push strict word str_Teams_5
         push word 0xc020
         jmp short .3
 .2:
-        push word 0xd74
+        push strict word str_Teams_4
         push word 0xc000
 .3:
         lea ax, [bp - 0x28]
@@ -4418,7 +4418,7 @@ Menus_2047_2C90:
         push 0x0
         push 0x0
         push word 0x270
-        push word 0xd8c
+        push strict word str_Tstat_4
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [g_C04C], ax
@@ -4426,7 +4426,7 @@ Menus_2047_2C90:
         push 0x0
         push 0x0
         push word 0x5b0
-        push word 0xd92
+        push strict word str_Keys_6
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [g_C048], ax
@@ -4434,7 +4434,7 @@ Menus_2047_2C90:
         push 0x0
         push 0x0
         push word 0x4b0
-        push word 0xd97
+        push strict word str_Pstat_6
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [g_C044], ax
@@ -4442,7 +4442,7 @@ Menus_2047_2C90:
         push 0x0
         push 0x0
         push word 0x10e
-        push word 0xd9d
+        push strict word str_Gstat_6
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [g_C040], ax
@@ -4645,7 +4645,7 @@ Menus_2047_2C90:
         push ax
         mov al, [bx + g_BD96]
         push ax
-        push word 0xda3
+        push strict word str_C2dS_5
         mov ax, [si]
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         shl ax, 1
@@ -4774,7 +4774,7 @@ Menus_2047_2FA4:
         push ax
         mov al, [bx + g_BD96]
         push ax
-        push word 0xdad
+        push strict word str_C2dS_4
         mov ax, [di]
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         shl ax, 1
@@ -4826,7 +4826,7 @@ Menus_2047_30E6:
         push ax
         mov al, [bx + g_BD96]
         push ax
-        push word 0xdb7
+        push strict word str_C2dS_3
         mov ax, [si]
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         shl ax, 1

@@ -10,7 +10,7 @@ Lp_1E9D_0008:
         push di
         push si
         push 0x0
-        push word 0x1696
+        push strict word str_HomepalsBin_3
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0x12], ax

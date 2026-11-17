@@ -12,7 +12,7 @@ Stats_215A_000C:
         push si
         push word 0x80
         push 0x0
-        push word 0xa40
+        push strict word str_Bkgd_10
         push word 0x2128
         call 0x14DB:InsertRecWrap
         add sp, 0x8
@@ -20,24 +20,24 @@ Stats_215A_000C:
         mov [VgaSave0Seg], dx
         push word 0x80
         push 0x0
-        push word 0xa40
-        push word 0x2130
+        push strict word str_Bkgd_10
+        push strict word str_Plane1_3
         call 0x14DB:InsertRecWrap
         add sp, 0x8
         mov [VgaSave1Off], ax
         mov [VgaSave1Seg], dx
         push word 0x80
         push 0x0
-        push word 0xa40
-        push word 0x2138
+        push strict word str_Bkgd_10
+        push strict word str_Plane2_3
         call 0x14DB:InsertRecWrap
         add sp, 0x8
         mov [VgaSave2Off], ax
         mov [VgaSave2Seg], dx
         push word 0x80
         push 0x0
-        push word 0xa40
-        push word 0x2140
+        push strict word str_Bkgd_10
+        push strict word str_Plane3_3
         call 0x14DB:InsertRecWrap
         add sp, 0x8
         mov [VgaSave3Off], ax
@@ -59,7 +59,7 @@ Stats_215A_000C:
         and ax, 0xfc
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         out dx, al
-        push word 0xa40
+        push strict word str_Bkgd_10
         push word 0xa000
         push 0x0
         push word [VgaSave0Seg]
@@ -78,7 +78,7 @@ Stats_215A_000C:
         lea ax, [si + 0x1]
         mov dx, 0x3cf
         out dx, al
-        push word 0xa40
+        push strict word str_Bkgd_10
         push word 0xa000
         push 0x0
         push word [VgaSave1Seg]
@@ -96,7 +96,7 @@ Stats_215A_000C:
         lea ax, [si + 0x2]
         mov dx, 0x3cf
         out dx, al
-        push word 0xa40
+        push strict word str_Bkgd_10
         push word 0xa000
         push 0x0
         push word [VgaSave2Seg]
@@ -114,7 +114,7 @@ Stats_215A_000C:
         lea ax, [si + 0x3]
         mov dx, 0x3cf
         out dx, al
-        push word 0xa40
+        push strict word str_Bkgd_10
         push word 0xa000
         push 0x0
         push word [VgaSave3Seg]
@@ -172,7 +172,7 @@ Stats_215A_018A:
         inc ax
         mov dx, 0x3c5
         out dx, al
-        push word 0xa40
+        push strict word str_Bkgd_10
         push word [VgaSave0Seg]
         push word [VgaSave0Off]
         db 0x8B, 0xF1                           ; insn: mov si, cx
@@ -195,7 +195,7 @@ Stats_215A_018A:
         lea ax, [si + 0x2]
         mov dx, 0x3c5
         out dx, al
-        push word 0xa40
+        push strict word str_Bkgd_10
         push word [VgaSave1Seg]
         push word [VgaSave1Off]
         call 0x06E1:RawBase
@@ -217,7 +217,7 @@ Stats_215A_018A:
         lea ax, [si + 0x4]
         mov dx, 0x3c5
         out dx, al
-        push word 0xa40
+        push strict word str_Bkgd_10
         push word [VgaSave2Seg]
         push word [VgaSave2Off]
         call 0x06E1:RawBase
@@ -239,7 +239,7 @@ Stats_215A_018A:
         lea ax, [si + 0x8]
         mov dx, 0x3c5
         out dx, al
-        push word 0xa40
+        push strict word str_Bkgd_10
         push word [VgaSave3Seg]
         push word [VgaSave3Off]
         call 0x06E1:RawBase
@@ -336,7 +336,7 @@ Stats_215A_02E6:
         add sp, 0x4
         mov [g_CFD0], ax
         mov [g_CFD2], dx
-        push word 0x214f
+        push strict word str_Pal_28
         push dx
         push ax
         call 0x03A3:FindFarMsg
@@ -450,7 +450,7 @@ Stats_215A_0428:
         add sp, 0x4
         mov [g_CFD0], ax
         mov [g_CFD2], dx
-        push word 0x215b
+        push strict word str_Pal_27
         push dx
         push ax
         call 0x03A3:FindFarMsg
@@ -564,7 +564,7 @@ Stats_215A_056A:
         add sp, 0x4
         mov [g_CFD0], ax
         mov [g_CFD2], dx
-        push word 0x2167
+        push strict word str_Pal_26
         push dx
         push ax
         call 0x03A3:FindFarMsg
@@ -628,7 +628,7 @@ Stats_215A_06AC:
         or ax, [g_21B0]
         jnz short .2
         push 0x0
-        push word 0x1ff6
+        push strict word str_EasnFnt
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [g_21B0], ax
@@ -738,7 +738,7 @@ Stats_215A_079E:
         push word 0x80
         push 0x0
         push word 0x3b00
-        push word 0x216c
+        push strict word str_Plane0_2
         call 0x14DB:InsertRecWrap
         add sp, 0x8
         mov [bp - 0x20], ax
@@ -746,7 +746,7 @@ Stats_215A_079E:
         push word 0x80
         push 0x0
         push word 0x3b00
-        push word 0x2174
+        push strict word str_Plane1_2
         call 0x14DB:InsertRecWrap
         add sp, 0x8
         mov [bp - 0x1c], ax
@@ -754,7 +754,7 @@ Stats_215A_079E:
         push word 0x80
         push 0x0
         push word 0x3b00
-        push word 0x217c
+        push strict word str_Plane2_2
         call 0x14DB:InsertRecWrap
         add sp, 0x8
         mov [bp - 0x18], ax
@@ -762,7 +762,7 @@ Stats_215A_079E:
         push word 0x80
         push 0x0
         push word 0x3b00
-        push word 0x2184
+        push strict word str_Plane3_2
         call 0x14DB:InsertRecWrap
         add sp, 0x8
         mov [bp - 0x14], ax
@@ -919,7 +919,7 @@ Stats_215A_079E:
         push 0x0
         push 0x0
         push word 0x270
-        push word 0x218c
+        push strict word str_Tstat_3
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [g_C04C], ax
@@ -927,7 +927,7 @@ Stats_215A_079E:
         push 0x0
         push 0x0
         push word 0x5b0
-        push word 0x2192
+        push strict word str_Keys_4
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [g_C048], ax
@@ -935,7 +935,7 @@ Stats_215A_079E:
         push 0x0
         push 0x0
         push word 0x4b0
-        push word 0x2197
+        push strict word str_Pstat_4
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [g_C044], ax
@@ -943,7 +943,7 @@ Stats_215A_079E:
         push 0x0
         push 0x0
         push word 0x10e
-        push word 0x219d
+        push strict word str_Gstat_4
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [g_C040], ax
@@ -979,7 +979,7 @@ Stats_215A_079E:
         add sp, 0x4
         mov [g_CFD0], ax
         mov [g_CFD2], dx
-        push word 0x21aa
+        push strict word str_Pal_25
         push dx
         push ax
         call 0x03A3:FindFarMsg
@@ -1086,7 +1086,7 @@ Stats_215A_079E:
         mov word [g_C050], 0x0
         push word [g_21B8]
         mov ax, 0x6a
-        mov dx, 0x2446
+        mov dx, str_Min
         mov [g_21BC], ax
         mov [g_21BE], dx
         mov [bp - 0x326], dx

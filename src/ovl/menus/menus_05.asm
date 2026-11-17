@@ -131,7 +131,7 @@ Menus_235C_0042:
         adc dx, 0x0
         push dx
         push ax
-        push word 0xdc2
+        push strict word str_Dbox_10
         db 0x8B, 0xF1                           ; insn: mov si, cx
         db 0x8B, 0xFB                           ; insn: mov di, bx
         call 0x14DB:AllocRecData
@@ -255,7 +255,7 @@ Menus_235C_0240:
         cwd
         push dx
         push ax
-        push word 0xdc7
+        push strict word str_Pointer_13
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x12], ax

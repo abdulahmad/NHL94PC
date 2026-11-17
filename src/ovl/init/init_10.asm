@@ -8,7 +8,7 @@ Init_24DE_0006:
         enter 0x22, 0x0
         push di
         push si
-        push word 0x50c6
+        push strict word str_RinkTil_2
         call 0x03A3:FileSizeMsg
         add sp, 0x2
         mov [bp - 0xa], ax
@@ -18,12 +18,12 @@ Init_24DE_0006:
         db 0x0B, 0xD2                           ; insn: or dx, dx
         jz short .1
         push word [bp - 0xa]
-        push word 0x50cf
+        push strict word str_InvalidFileRinkTilSizeS
         call 0x0F4A:FatalError
         add sp, 0x4
 .1:
         push 0x0
-        push word 0x50f0
+        push strict word str_RinkTil
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0x12], ax
@@ -36,7 +36,7 @@ Init_24DE_0006:
         add ax, 0x512c
         mov [bp - 0x22], ax
         push ax
-        push word 0x50f9
+        push strict word str_STil
         lea ax, [bp - 0x20]
         push ax
         call 0x0000:_sprintf
@@ -54,7 +54,7 @@ Init_24DE_0006:
         push word [bp - 0x8]
         lea ax, [bp - 0x20]
         push ax
-        push word 0x5100
+        push strict word str_InvalidFileSSizeD
         call 0x0F4A:FatalError
         add sp, 0x6
 .2:
@@ -96,13 +96,13 @@ Init_24DE_0006:
         add sp, 0x4
 .3:
         push 0x0
-        push word 0x511b
+        push strict word str_RinkMap
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [g_08FE], ax
         mov [g_0900], dx
         push word [bp - 0x22]
-        push word 0x5124
+        push strict word str_SMap
         lea ax, [bp - 0x20]
         push ax
         call 0x0000:_sprintf

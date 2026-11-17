@@ -54,7 +54,7 @@ Stats_2351_000A:
         add sp, 0x4
         mov [g_CFD0], ax
         mov [g_CFD2], dx
-        push word 0x2263
+        push strict word str_Pal_17
         push dx
         push ax
         call 0x03A3:FindFarMsg
@@ -167,7 +167,7 @@ Stats_2351_014C:
         add sp, 0x4
         mov [g_CFD0], ax
         mov [g_CFD2], dx
-        push word 0x226f
+        push strict word str_Pal_16
         push dx
         push ax
         call 0x03A3:FindFarMsg
@@ -280,7 +280,7 @@ Stats_2351_028E:
         add sp, 0x4
         mov [g_CFD0], ax
         mov [g_CFD2], dx
-        push word 0x227b
+        push strict word str_Pal_15
         push dx
         push ax
         call 0x03A3:FindFarMsg
@@ -355,7 +355,7 @@ Stats_2351_03D0:
         or ax, [g_21B0]
         jnz short .2
         push 0x0
-        push word 0x1ff6
+        push strict word str_EasnFnt
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [g_21B0], ax
@@ -469,7 +469,7 @@ Stats_2351_04A6:
         push 0x0
         push 0x0
         push word 0x270
-        push word 0x2280
+        push strict word str_Tstat
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [g_C04C], ax
@@ -477,7 +477,7 @@ Stats_2351_04A6:
         push 0x0
         push 0x0
         push word 0x5b0
-        push word 0x2286
+        push strict word str_Keys_2
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [g_C048], ax
@@ -485,7 +485,7 @@ Stats_2351_04A6:
         push 0x0
         push 0x0
         push word 0x4b0
-        push word 0x228b
+        push strict word str_Pstat_2
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [g_C044], ax
@@ -493,7 +493,7 @@ Stats_2351_04A6:
         push 0x0
         push 0x0
         push word 0x10e
-        push word 0x2291
+        push strict word str_Gstat_2
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [g_C040], ax
@@ -529,7 +529,7 @@ Stats_2351_04A6:
         add sp, 0x4
         mov [g_CFD0], ax
         mov [g_CFD2], dx
-        push word 0x229e
+        push strict word str_Pal_14
         push dx
         push ax
         call 0x03A3:FindFarMsg
@@ -614,7 +614,7 @@ Stats_2351_04A6:
         mov word [g_C050], 0x0
         push word [g_21B8]
         mov ax, 0x6a
-        mov dx, 0x2446
+        mov dx, str_Min
         mov [g_21BC], ax
         mov [g_21BE], dx
         mov [bp - 0x34e], dx

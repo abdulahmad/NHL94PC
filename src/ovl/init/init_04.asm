@@ -132,7 +132,7 @@ Init_2185_0000:
 .9:
         cmp cx, 0x5
         jnl short .10
-        push word 0x4d01
+        push strict word str_Overtime
         lea ax, [bp - 0x20]
         push ax
         call 0x0000:_sprintf
@@ -144,7 +144,7 @@ Init_2185_0000:
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         sub ax, strict word 0x3
         push ax
-        push word 0x4cee
+        push strict word str_OvertimePeriodD
         lea ax, [bp - 0x20]
         push ax
         call 0x0000:_sprintf

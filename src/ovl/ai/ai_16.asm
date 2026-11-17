@@ -536,7 +536,7 @@ Ai_327B_018A:
         mov al, [bx + 0x52]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
-        push word 0x6280
+        push strict word str_ServedByD
         push word 0xd5ba
         call 0x0000:_sprintf
         add sp, 0x6

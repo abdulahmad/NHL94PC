@@ -66,7 +66,7 @@ Init_20A8_0004:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x4c34
+        push strict word str_City_3
         push 0x0
         lea ax, [bp - 0x12]
         push ax
@@ -93,7 +93,7 @@ Init_20A8_0004:
         add sp, 0x10
         lea ax, [bp - 0xbc]
         push ax
-        push word 0x4c42
+        push strict word str_Defnforwlineootspairscrasummtoni_2
         push 0x0
         lea ax, [bp - 0x12]
         push ax
@@ -106,13 +106,13 @@ Init_20A8_0004:
         call 0x03A3:FindFarList
         add sp, 0x8
         push 0x0
-        push word 0x4c63
+        push strict word str_Crests2Bin_3
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0xe4], ax
         mov [bp - 0xe2], dx
         push 0x0
-        push word 0x4c6f
+        push strict word str_S1Fnt_3
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0x9a], ax
@@ -162,7 +162,7 @@ Init_20A8_0004:
         mov [bp - 0xd6], dx
         push dx
         push ax
-        push word 0x4c76
+        push strict word str_Gipk
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x44], ax

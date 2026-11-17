@@ -7,7 +7,7 @@ Game_1E64_0002:
         push di
         push si
         push 0x0
-        push word 0x4a68
+        push strict word str_HomepalsBin_2
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0x20], ax
@@ -49,7 +49,7 @@ Game_1E64_0002:
         call 0x06E1:FindUnlink
         add sp, 0x4
         push 0x0
-        push word 0x4a75
+        push strict word str_AwaypalsBin_2
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0x20], ax
@@ -112,7 +112,7 @@ Game_1E64_0002:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x4a8a
+        push strict word str_Pal_12
         push 0x0
         lea ax, [bp - 0x1c]
         push ax

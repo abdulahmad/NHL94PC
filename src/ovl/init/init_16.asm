@@ -19,7 +19,7 @@ Init_278C_0006:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .1
-        push word 0x5410
+        push strict word str_ErrorSavingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .1:
@@ -38,7 +38,7 @@ Init_278C_0006:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .3
-        push word 0x5410
+        push strict word str_ErrorSavingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .3:
@@ -59,7 +59,7 @@ Init_278C_0006:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .5
-        push word 0x5410
+        push strict word str_ErrorSavingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .5:
@@ -76,7 +76,7 @@ Init_278C_0006:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .6
-        push word 0x5410
+        push strict word str_ErrorSavingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .6:
@@ -90,7 +90,7 @@ Init_278C_0006:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .7
-        push word 0x5410
+        push strict word str_ErrorSavingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .7:
@@ -335,7 +335,7 @@ Init_278C_0006:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .10
-        push word 0x5410
+        push strict word str_ErrorSavingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .10:
@@ -651,7 +651,7 @@ Init_278C_0006:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .12
-        push word 0x5410
+        push strict word str_ErrorSavingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .12:
@@ -719,7 +719,7 @@ Init_278C_0006:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .14
-        push word 0x5410
+        push strict word str_ErrorSavingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .14:
@@ -733,7 +733,7 @@ Init_278C_0006:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .15
-        push word 0x5410
+        push strict word str_ErrorSavingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .15:
@@ -747,7 +747,7 @@ Init_278C_0006:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .16
-        push word 0x5410
+        push strict word str_ErrorSavingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .16:
@@ -761,7 +761,7 @@ Init_278C_0006:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .17
-        push word 0x5410
+        push strict word str_ErrorSavingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .17:
@@ -775,7 +775,7 @@ Init_278C_0006:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .18
-        push word 0x5410
+        push strict word str_ErrorSavingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .18:
@@ -789,7 +789,7 @@ Init_278C_0006:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .19
-        push word 0x5410
+        push strict word str_ErrorSavingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .19:
@@ -803,7 +803,7 @@ Init_278C_0006:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .20
-        push word 0x5410
+        push strict word str_ErrorSavingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .20:
@@ -817,7 +817,7 @@ Init_278C_0006:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .21
-        push word 0x5410
+        push strict word str_ErrorSavingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .21:
@@ -844,7 +844,7 @@ Init_278C_0006:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .23
-        push word 0x5410
+        push strict word str_ErrorSavingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .23:
@@ -906,7 +906,7 @@ Init_278C_0006:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .28
-        push word 0x5410
+        push strict word str_ErrorSavingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .28:
@@ -967,7 +967,7 @@ Init_278C_0006:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .31
-        push word 0x5410
+        push strict word str_ErrorSavingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .31:
@@ -990,7 +990,7 @@ Init_278C_09C8:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .1
-        push word 0x5410
+        push strict word str_ErrorSavingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .1:
@@ -1009,7 +1009,7 @@ Init_278C_09C8:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .3
-        push word 0x53fc
+        push strict word str_ErrorLoadingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .3:
@@ -1030,7 +1030,7 @@ Init_278C_09C8:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .5
-        push word 0x53fc
+        push strict word str_ErrorLoadingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .5:
@@ -1047,7 +1047,7 @@ Init_278C_09C8:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .6
-        push word 0x53fc
+        push strict word str_ErrorLoadingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .6:
@@ -1061,7 +1061,7 @@ Init_278C_09C8:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .7
-        push word 0x53fc
+        push strict word str_ErrorLoadingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .7:
@@ -1076,7 +1076,7 @@ Init_278C_09C8:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .8
-        push word 0x53fc
+        push strict word str_ErrorLoadingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .8:
@@ -1321,7 +1321,7 @@ Init_278C_09C8:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .11
-        push word 0x53fc
+        push strict word str_ErrorLoadingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .11:
@@ -1641,7 +1641,7 @@ Init_278C_09C8:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .13
-        push word 0x53fc
+        push strict word str_ErrorLoadingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .13:
@@ -1812,7 +1812,7 @@ Init_278C_09C8:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .23
-        push word 0x53fc
+        push strict word str_ErrorLoadingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .23:
@@ -1826,7 +1826,7 @@ Init_278C_09C8:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .24
-        push word 0x53fc
+        push strict word str_ErrorLoadingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .24:
@@ -1840,7 +1840,7 @@ Init_278C_09C8:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .25
-        push word 0x53fc
+        push strict word str_ErrorLoadingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .25:
@@ -1854,7 +1854,7 @@ Init_278C_09C8:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .26
-        push word 0x53fc
+        push strict word str_ErrorLoadingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .26:
@@ -1868,7 +1868,7 @@ Init_278C_09C8:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .27
-        push word 0x53fc
+        push strict word str_ErrorLoadingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .27:
@@ -1883,7 +1883,7 @@ Init_278C_09C8:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .28
-        push word 0x53fc
+        push strict word str_ErrorLoadingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .28:
@@ -1898,7 +1898,7 @@ Init_278C_09C8:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .29
-        push word 0x53fc
+        push strict word str_ErrorLoadingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .29:
@@ -1926,7 +1926,7 @@ Init_278C_09C8:
         add sp, 0xc
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .32
-        push word 0x53fc
+        push strict word str_ErrorLoadingGame
         call 0x0F4A:FatalError
         add sp, 0x2
 .32:

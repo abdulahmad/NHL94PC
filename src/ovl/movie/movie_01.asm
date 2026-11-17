@@ -162,7 +162,7 @@ Movie_3357_0192:
         push 0x0
         push 0x0
         push 0x2e
-        push word 0x628e
+        push strict word str_AMvi
         call 0x14DB:AllocRecData0
         add sp, 0x8
         mov [bp - 0x8], ax
@@ -270,7 +270,7 @@ Movie_3357_0192:
         cwd
         push dx
         push ax
-        push word 0x6294
+        push strict word str_Databuffer
         call 0x14DB:InsertRecWrap
         add sp, 0x8
         les bx, [bp - 0x8]

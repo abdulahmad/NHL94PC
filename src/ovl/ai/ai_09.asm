@@ -961,7 +961,7 @@ Ai_2519_0888:
         mov bx, [si + 0x60]
         mov word [bx + di + 0x2c], 0x300
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0x833
+        mov ax, str_EaNhlInt_2
         call 0x2E42:Ai_2E42_0012
 .3:
         mov ax, [si + 0x2a]
@@ -4786,7 +4786,7 @@ Ai_2519_2AB2:
 .34:
         cmp word [bp - 0x6], 0x0
         jng short .35
-        mov ax, 0x640
+        mov ax, str_SemiBar
         jmp short .36
 .35:
         mov ax, 0xf9c0
@@ -4819,7 +4819,7 @@ Ai_2519_2AB2:
 .40:
         cmp word [bp - 0x8], 0x0
         jng short .41
-        mov ax, 0x640
+        mov ax, str_SemiBar
         jmp short .42
 .41:
         mov ax, 0xf9c0

@@ -312,7 +312,7 @@ Lp_2CB7_02F6:
         mov [bp - 0xa58], cx
         push cx
         push ax
-        mov bx, 0xb7c
+        mov bx, str_RockditiKms
         mov es, [g_8C1E]
         mov [bp - 0xa5e], bx
         mov [bp - 0xa5c], es
@@ -1435,7 +1435,7 @@ Lp_2CB7_0C28:
         jnz short .8
         mov es, [g_8C28]
         push word [es:0xac5a]
-        push word 0x1b20
+        push strict word str_02d_2
         lea ax, [bp - 0x2e]
         push ax
         call 0x0000:_sprintf
@@ -1500,7 +1500,7 @@ Lp_2CB7_0C28:
         jmp near .21
 .13:
         push word [bp - 0x40]
-        push word 0x1b26
+        push strict word str_02d
         lea ax, [bp - 0x2e]
         push ax
         call 0x0000:_sprintf
@@ -2142,8 +2142,8 @@ Lp_2CB7_1442:
         push ax
         call 0x0000:_fstrcpy
         add sp, 0x8
-        push word 0x1b2c
-        push word 0x1b30
+        push strict word str_Sav_6
+        push strict word str_Game_7
         lea ax, [bp - 0x2e]
         push ax
         call 0x0CD1:DeleteMatching

@@ -487,7 +487,7 @@ Menus_1E45_0452:
         push 0x0
         push 0x0
         push word 0x39c2
-        push word 0xa40
+        push strict word str_Bkgd_10
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x8], ax
@@ -730,7 +730,7 @@ Menus_1E45_0668:
         push 0x0
         push 0x0
         push word 0x39c2
-        push word 0xa45
+        push strict word str_Bkgd_9
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x4], ax
@@ -859,7 +859,7 @@ Menus_1E45_07E2:
         add sp, 0x4
 .2:
         push word 0x8000
-        push word 0xa4a
+        push strict word str_TeamsDb
         call 0x0000:_open
         add sp, 0x4
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -945,7 +945,7 @@ Menus_1E45_07E2:
         jz short .8
         push 0xa
         push 0xa
-        push word 0xa69
+        push strict word str_Dbox_12
         push dx
         push ax
         call 0x03A3:FindFarMsg
@@ -957,7 +957,7 @@ Menus_1E45_07E2:
 .8:
         push 0xa
         push 0xa
-        push word 0xa6e
+        push strict word str_Dbox_11
         push dx
         push ax
         call 0x03A3:FindFarMsg

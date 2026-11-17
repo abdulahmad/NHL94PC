@@ -47,7 +47,7 @@ Stats_1EAE_0044:
         enter 0x66, 0x0
         push di
         push si
-        push word 0x1e5a
+        push strict word str_Pnt2_6
         push word [MemBlock1Seg]
         push word [MemBlock1Off]
         call 0x03A3:FindFarMsg
@@ -94,7 +94,7 @@ Stats_1EAE_0044:
         cwd
         push dx
         push ax
-        push word 0x1e5f
+        push strict word str_Pointer_7
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x5a], ax
@@ -250,7 +250,7 @@ Stats_1EAE_0044:
         sub si, 0x4
         dec di
         jns short .8
-        push word 0x1e67
+        push strict word str_Pntr_9
         push word [MemBlock1Seg]
         push word [MemBlock1Off]
         call 0x03A3:FindFarMsg
@@ -263,7 +263,7 @@ Stats_1EAE_0044:
         les si, [bp + si - 0x46]
         call far [es:bx + si + 0xc]
         db 0x8B, 0xF8                           ; insn: mov di, ax
-        push word 0x1e6c
+        push strict word str_Pnt2_5
         push word [MemBlock1Seg]
         push word [MemBlock1Off]
         call 0x03A3:FindFarMsg
@@ -543,7 +543,7 @@ Stats_1EAE_0044:
         cwd
         push dx
         push ax
-        push word 0x1e76
+        push strict word str_Menubuff_3
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov si, [bp - 0x66]
@@ -725,7 +725,7 @@ Stats_1EAE_0044:
         mov [bp - 0x6], ax
         jmp near .1
 .31:
-        push word 0x1e71
+        push strict word str_Pntr_8
         push word [MemBlock1Seg]
         push word [MemBlock1Off]
         call 0x03A3:FindFarMsg
@@ -750,7 +750,7 @@ Stats_1EAE_07B6:
         mov [bp - 0x30], ax
         mov [bp - 0x3a], ax
         mov [bp - 0x2e], ax
-        push word 0x1e7f
+        push strict word str_Pnt2_4
         push word [MemBlock1Seg]
         push word [MemBlock1Off]
         call 0x03A3:FindFarMsg
@@ -798,7 +798,7 @@ Stats_1EAE_07B6:
         cwd
         push dx
         push ax
-        push word 0x1e84
+        push strict word str_Pointer_6
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x16], ax
@@ -1150,7 +1150,7 @@ Stats_1EAE_07B6:
         mov ax, [bp - 0x3a]
 .29:
         mov [g_21BA], ax
-        push word 0x1e8c
+        push strict word str_Pntr_7
         push word [MemBlock1Seg]
         push word [MemBlock1Off]
         call 0x03A3:FindFarMsg
@@ -1163,7 +1163,7 @@ Stats_1EAE_07B6:
         les si, [bp + si - 0x4c]
         call far [es:bx + si + 0xc]
         mov [bp - 0x60], ax
-        push word 0x1e91
+        push strict word str_Pnt2_3
         push word [MemBlock1Seg]
         push word [MemBlock1Off]
         call 0x03A3:FindFarMsg
@@ -1191,7 +1191,7 @@ Stats_1EAE_07B6:
         mov [bp - 0x36], ax
         cmp word [bp - 0x60], 0x1
         jnz short .30
-        push word 0x1e96
+        push strict word str_Pntr_6
         push word [MemBlock1Seg]
         push word [MemBlock1Off]
         call 0x03A3:FindFarMsg
@@ -1497,7 +1497,7 @@ Stats_1EAE_07B6:
         cwd
         push dx
         push ax
-        push word 0x1e9b
+        push strict word str_Menubuff_2
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp + si - 0x2a], ax
@@ -1739,7 +1739,7 @@ Stats_1EAE_07B6:
         push word [bp - 0x16]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        push word 0x1ea4
+        push strict word str_Pntr_5
         push word [MemBlock1Seg]
         push word [MemBlock1Off]
         call 0x03A3:FindFarMsg
@@ -1818,7 +1818,7 @@ Stats_1EAE_12F6:
         mov [bp - 0x52], ax
         mov [bp - 0x54], ax
         mov [bp - 0x2e], ax
-        push word 0x1ea9
+        push strict word str_Pnt2_2
         push word [MemBlock1Seg]
         push word [MemBlock1Off]
         call 0x03A3:FindFarMsg
@@ -1866,7 +1866,7 @@ Stats_1EAE_12F6:
         cwd
         push dx
         push ax
-        push word 0x1eae
+        push strict word str_Pointer_5
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x16], ax
@@ -2200,7 +2200,7 @@ Stats_1EAE_12F6:
         mov cx, 0x1a
         rep movsw
         pop ds
-        push word 0x1eb6
+        push strict word str_Pntr_4
         push word [MemBlock1Seg]
         push word [MemBlock1Off]
         call 0x03A3:FindFarMsg
@@ -2213,7 +2213,7 @@ Stats_1EAE_12F6:
         les si, [bp + si - 0x48]
         call far [es:bx + si + 0xc]
         mov [bp - 0x5e], ax
-        push word 0x1ebb
+        push strict word str_Pnt2
         push word [MemBlock1Seg]
         push word [MemBlock1Off]
         call 0x03A3:FindFarMsg
@@ -2243,7 +2243,7 @@ Stats_1EAE_12F6:
         mov [bp - 0x34], ax
         cmp word [bp - 0x5e], 0x1
         jnz short .25
-        push word 0x1ec0
+        push strict word str_Pntr_3
         push word [MemBlock1Seg]
         push word [MemBlock1Off]
         call 0x03A3:FindFarMsg
@@ -2551,7 +2551,7 @@ Stats_1EAE_12F6:
         cwd
         push dx
         push ax
-        push word 0x1ec5
+        push strict word str_Menubuff
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp + si - 0x2a], ax
@@ -2836,7 +2836,7 @@ Stats_1EAE_12F6:
         push word [bp - 0x16]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        push word 0x1ece
+        push strict word str_Pntr_2
         push word [MemBlock1Seg]
         push word [MemBlock1Off]
         call 0x03A3:FindFarMsg

@@ -135,7 +135,7 @@ Lp_23AD_0046:
         push 0x0
         push 0x0
         push 0x64
-        push word 0x1879
+        push strict word str_Pset
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp + si - 0x1b4], ax
@@ -143,7 +143,7 @@ Lp_23AD_0046:
         push 0x0
         push 0x0
         push word 0x3e8
-        push word 0x187e
+        push strict word str_Aps
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp + si - 0x8], ax
@@ -151,7 +151,7 @@ Lp_23AD_0046:
         push 0x0
         push 0x0
         push 0x64
-        push word 0x1882
+        push strict word str_Apset
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp + si - 0x1d8], ax
@@ -175,7 +175,7 @@ Lp_23AD_0046:
         push 0x0
         push 0x0
         push 0xc
-        push word 0x188e
+        push strict word str_Gset
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp + si - 0x30], ax
@@ -183,7 +183,7 @@ Lp_23AD_0046:
         push 0x0
         push 0x0
         push word 0x84
-        push word 0x1893
+        push strict word str_Ags
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp + si - 0xf8], ax
@@ -191,7 +191,7 @@ Lp_23AD_0046:
         push 0x0
         push 0x0
         push 0xc
-        push word 0x1897
+        push strict word str_Agset
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp + si - 0x50], ax

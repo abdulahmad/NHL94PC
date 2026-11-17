@@ -27,7 +27,7 @@ Stats_20E4_000E:
         call 0x1B35:OvlThunk23
         add sp, 0x8
         push 0x0
-        push word 0x201c
+        push strict word str_Crests3Bin
         call 0x149D:LoadRawHeader
         add sp, 0x4
         db 0x8B, 0xF8                           ; insn: mov di, ax
@@ -50,7 +50,7 @@ Stats_20E4_000E:
         push di
         call 0x06E1:FindUnlink
         add sp, 0x4
-        push word 0x2028
+        push strict word str_Pal_30
         push 0x0
         push word 0xc242
         call 0x14B8:LoadPackedHeader

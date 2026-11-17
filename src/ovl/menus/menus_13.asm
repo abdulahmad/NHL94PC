@@ -15,7 +15,7 @@ Menus_2C1E_0004:
         push 0x0
         push 0x0
         push word 0x5a12
-        push word 0x14be
+        push strict word str_Bkgd_5
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x4], ax
@@ -185,7 +185,7 @@ Menus_2C1E_015C:
         add sp, 0x10
         push 0xa
         push 0xa
-        push word 0x14d5
+        push strict word str_Dbox_4
         push 0x0
         lea ax, [bp - 0xe]
         push ax

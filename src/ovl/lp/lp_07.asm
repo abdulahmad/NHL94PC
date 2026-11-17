@@ -810,7 +810,7 @@ Lp_2139_08C6:
         push strict word str_Id
         push word 0x3701
         push strict word str_Player
-        mov ax, 0xbfa
+        mov ax, str_C2dS_6
         mov cx, 0x3701
         mov [bp - 0x6c], ax
         mov [bp - 0x6a], cx
@@ -987,8 +987,8 @@ Lp_2139_08C6:
         push ax
         call 0x0000:_fstrcpy
         add sp, 0x8
-        push word 0x17ec
-        push word 0x17f0
+        push strict word str_Sav_7
+        push strict word str_Game_9
         lea ax, [bp - 0x3c]
         push ax
         call 0x0CD1:DeleteMatching
@@ -1240,7 +1240,7 @@ Lp_2139_0C2E:
         mov al, [bp - 0x8e]
         cbw
         push ax
-        push word 0x17f5
+        push strict word str_02d_11
         lea ax, [bp - 0x56]
         push ax
         call 0x0000:_sprintf
@@ -2371,7 +2371,7 @@ Lp_2139_15EC:
         add sp, 0xa
 .18:
         push word [bp - 0x12]
-        push word 0x180b
+        push strict word str_02d_10
         lea ax, [bp - 0x20]
         push ax
         call 0x0000:_sprintf

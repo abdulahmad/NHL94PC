@@ -207,7 +207,7 @@ Stats_24E6_01BE:
         mov word [es:0x16c4], 0x64c
         mov word [es:0x16c6], 0x2248
         push 0x0
-        push word 0x1ff6
+        push strict word str_EasnFnt
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0x1a], ax
@@ -343,7 +343,7 @@ Stats_24E6_01BE:
         add sp, 0x4
         mov [g_CFD0], ax
         mov [g_CFD2], dx
-        push word 0x1ff0
+        push strict word str_Bkgd
         push dx
         push ax
         call 0x03A3:FindFarMsg
@@ -541,7 +541,7 @@ Stats_24E6_01BE:
         mov al, [bp - 0x5e]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
-        push word 0x1fb6
+        push strict word str_2d
         push word [bp - 0x10]
         mov ax, [bp - 0x16]
         add ax, strict word 0x32
@@ -551,7 +551,7 @@ Stats_24E6_01BE:
         mov al, [bp - 0x5d]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
-        push word 0x1fb6
+        push strict word str_2d
         push word [bp - 0x10]
         mov ax, [bp - 0x16]
         add ax, strict word 0x3c
@@ -561,7 +561,7 @@ Stats_24E6_01BE:
         mov al, [bp - 0x5c]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
-        push word 0x1fb6
+        push strict word str_2d
         push word [bp - 0x10]
         mov ax, [bp - 0x16]
         add ax, strict word 0x46
@@ -571,7 +571,7 @@ Stats_24E6_01BE:
         mov al, [bp - 0x5b]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
-        push word 0x1fb6
+        push strict word str_2d
         push word [bp - 0x10]
         mov ax, [bp - 0x16]
         add ax, strict word 0x50
@@ -579,7 +579,7 @@ Stats_24E6_01BE:
         call 0x0D39:DrawShadowTextF
         add sp, 0x8
         push word [bp - 0x5a]
-        push word 0x1fba
+        push strict word str_3d
         push word [bp - 0x10]
         mov ax, [bp - 0x16]
         add ax, strict word 0x5a
@@ -587,7 +587,7 @@ Stats_24E6_01BE:
         call 0x0D39:DrawShadowTextF
         add sp, 0x8
         push word [bp - 0x58]
-        push word 0x1fba
+        push strict word str_3d
         push word [bp - 0x10]
         mov ax, [bp - 0x16]
         add ax, strict word 0x69
@@ -595,7 +595,7 @@ Stats_24E6_01BE:
         call 0x0D39:DrawShadowTextF
         add sp, 0x8
         push word [bp - 0x56]
-        push word 0x1fba
+        push strict word str_3d
         push word [bp - 0x10]
         mov ax, [bp - 0x16]
         add ax, strict word 0x78
@@ -609,7 +609,7 @@ Stats_24E6_01BE:
         db 0x2B, 0xD2                           ; insn: sub dx, dx
         div cx
         push dx
-        push word 0x1fd8
+        push strict word str_03d
         push word [bp - 0x10]
         mov ax, [bp - 0x16]
         add ax, 0x87
@@ -627,7 +627,7 @@ Stats_24E6_01BE:
         db 0x2B, 0xD2                           ; insn: sub dx, dx
         div cx
         push ax
-        push word 0x1fce
+        push strict word str_1d03d
         push word [bp - 0x10]
         mov ax, [bp - 0x16]
         add ax, 0x87
@@ -793,7 +793,7 @@ Stats_24E6_07A0:
         call 0x0000:VgaCopyBytes
         add sp, 0x6
         call 0x0FEF:UseOtherPage
-        push word 0x1ff0
+        push strict word str_Bkgd
         push word [g_21B6]
         push word [g_21B4]
         call 0x03A3:FindFarMsg

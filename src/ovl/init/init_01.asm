@@ -238,7 +238,7 @@ Init_2007_01BC:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x4bdc
+        push strict word str_Pal_11
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x654], ax
@@ -260,13 +260,13 @@ Init_2007_01BC:
         call 0x06E1:FindUnlink
         add sp, 0x4
         push 0x0
-        push word 0x4be0
+        push strict word str_S1Fnt_4
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0x5c], ax
         mov [bp - 0x5a], dx
         push 0x0
-        push word 0x4be7
+        push strict word str_Wittle06Fnt_3
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0x62], ax
@@ -291,7 +291,7 @@ Init_2007_01BC:
         call 0x0CD1:BuildPathFar
         add sp, 0x10
         push word 0x300
-        push word 0x4bfa
+        push strict word str_Pal_10
         push 0x0
         lea ax, [bp - 0x58]
         push ax
@@ -312,7 +312,7 @@ Init_2007_01BC:
         push word [bp - 0x8]
         call 0x0000:_fmemcpy
         add sp, 0xa
-        push word 0x4bff
+        push strict word str_Rink
         push word [bp - 0x644]
         push word [bp - 0x646]
         call 0x03A3:FindFarMsg
@@ -335,7 +335,7 @@ Init_2007_01BC:
         push ax
         lea ax, [bp - 0x334]
         push ax
-        push word 0x4c04
+        push strict word str_SAtS
         lea ax, [bp - 0x58]
         push ax
         call 0x0000:_sprintf
@@ -541,7 +541,7 @@ Init_2007_01BC:
         cwd
         push dx
         push ax
-        push word 0x4c13
+        push strict word str_Pointer_4
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x26], ax
@@ -744,7 +744,7 @@ Init_2007_01BC:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x4c1b
+        push strict word str_Pal_9
 .29:
         call 0x14DB:AllocRecData
         add sp, 0x8
@@ -805,7 +805,7 @@ Init_2007_01BC:
         push 0x0
         push 0x0
         push word 0x300
-        push word 0x4c1f
+        push strict word str_Pal_8
         jmp near .29
         db 0x90
 .34:

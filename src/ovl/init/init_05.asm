@@ -48,23 +48,23 @@ Init_21A1_0008:
         cmp word [SoundOptions], 0x8
         jnz short .6
         push ax
-        push word 0x4d0a
+        push strict word str_MtsumKms_2
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0xfe], ax
         mov [bp - 0xfc], dx
         push 0x0
-        push word 0x4d14
+        push strict word str_MtsumCfg_2
         jmp short .7
 .6:
         push ax
-        push word 0x4d1e
+        push strict word str_AdsumKms_2
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0xfe], ax
         mov [bp - 0xfc], dx
         push 0x0
-        push word 0x4d28
+        push strict word str_AdsumCfg_2
 .7:
         call 0x149D:LoadRawHeader
         add sp, 0x4
@@ -132,7 +132,7 @@ Init_21A1_0008:
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        push word 0x4d42
+        push strict word str_City_2
         push 0x0
         lea ax, [bp - 0x12]
         push ax
@@ -159,7 +159,7 @@ Init_21A1_0008:
         add sp, 0x10
         lea ax, [bp - 0x120]
         push ax
-        push word 0x4d50
+        push strict word str_Defnforwlineootspairscrasummtoni
         push 0x0
         lea cx, [bp - 0x12]
         push cx
@@ -172,13 +172,13 @@ Init_21A1_0008:
         call 0x03A3:FindFarList
         add sp, 0x8
         push 0x0
-        push word 0x4d71
+        push strict word str_Crests2Bin_2
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0x750], ax
         mov [bp - 0x74e], dx
         push 0x0
-        push word 0x4d7d
+        push strict word str_S1Fnt_2
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0xf6], ax
@@ -415,7 +415,7 @@ Init_21A1_0008:
         mov word [bp - 0x15e], 0x0
         jmp near .29
 .23:
-        push word 0x4d93
+        push strict word str_1st
 .24:
         lea ax, [bp - 0xf2]
         push ax
@@ -423,7 +423,7 @@ Init_21A1_0008:
         add sp, 0x4
         cmp byte [bp - 0x46], 0x3
         jnc short .25
-        push word 0x4db3
+        push strict word str_Period
         lea ax, [bp - 0xf2]
         push ax
         call 0x0000:_strcat
@@ -646,20 +646,20 @@ Init_21A1_0008:
         jz short .40
         dec ax
         jz short .41
-        push word 0x4dad
+        push strict word str_Final
         jmp near .24
         db 0x90
 .38:
-        push word 0x4d97
+        push strict word str_2nd
         jmp near .24
 .39:
-        push word 0x4d9b
+        push strict word str_3rd
         jmp near .24
 .40:
         push word 0x4d9f
         jmp near .24
 .41:
-        push word 0x4da2
+        push strict word str_FinalOt
         jmp near .24
 .42:
         test byte [bp + 0x6], 0x4
@@ -853,7 +853,7 @@ Init_21A1_0008:
         adc dx, 0x0
         push dx
         push ax
-        push word 0x4dc3
+        push strict word str_Evnt
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x56], ax
@@ -955,7 +955,7 @@ Init_21A1_0008:
         adc dx, 0x0
         push dx
         push ax
-        push word 0x4dc8
+        push strict word str_Prds
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x9c], ax
@@ -1223,7 +1223,7 @@ Init_21A1_0008:
         add [bp - 0x746], ax
 .88:
         push word [bp - 0x746]
-        push word 0x4dd0
+        push strict word str_D_3
         lea ax, [bp - 0x12]
         push ax
         call 0x0000:_sprintf
@@ -1248,24 +1248,24 @@ Init_21A1_0008:
         jnz short .89
         cmp word [bp - 0x736], 0xb
         jz short .89
-        push word 0x4dd5
+        push strict word str_St
         jmp short .92
 .89:
         cmp word [bp - 0x5e], 0x2
         jnz short .90
         cmp word [bp - 0x736], 0xc
         jz short .90
-        push word 0x4dd9
+        push strict word str_Nd
         jmp short .92
 .90:
         cmp word [bp - 0x5e], 0x3
         jnz short .91
         cmp word [bp - 0x736], 0xd
         jz short .91
-        push word 0x4ddd
+        push strict word str_Rd
         jmp short .92
 .91:
-        push word 0x4de1
+        push strict word str_Th
 .92:
         lea ax, [bp - 0xf2]
         push ax
@@ -1274,13 +1274,13 @@ Init_21A1_0008:
         les bx, [bp - 0x40]
         test byte [es:bx + 0x4], 0x2
         jz short .93
-        push word 0x4de5
+        push strict word str_Sh_2
         jmp short .94
         db 0x90
 .93:
         test byte [es:bx + 0x4], 0x4
         jz short .95
-        push word 0x4de9
+        push strict word str_Pp_2
 .94:
         lea ax, [bp - 0xf2]
         push ax
@@ -1301,7 +1301,7 @@ Init_21A1_0008:
         push ax
         mov al, [es:bx + 0x6]
         push ax
-        push word 0x4ded
+        push strict word str_02d02d_2
         lea ax, [bp - 0xf2]
         push ax
         call 0x0000:_sprintf
@@ -1357,7 +1357,7 @@ Init_21A1_0008:
         add sp, 0xe
         lea ax, [bp - 0x12]
         push ax
-        push word 0x4df7
+        push strict word str_S_2
         lea ax, [bp - 0xf2]
         push ax
         call 0x0000:_sprintf
@@ -1536,7 +1536,7 @@ Init_21A1_0008:
         push word [bx + g_575A]
         lea ax, [bp - 0x12]
         push ax
-        push word 0x4e03
+        push strict word str_SS_2
         lea ax, [bp - 0xf2]
         push ax
         call 0x0000:_sprintf
@@ -1554,7 +1554,7 @@ Init_21A1_0008:
         push ax
         lea ax, [bp - 0x12]
         push ax
-        push word 0x4e0c
+        push strict word str_SDMinS
         lea ax, [bp - 0xf2]
         push ax
         call 0x0000:_sprintf
@@ -1591,7 +1591,7 @@ Init_21A1_0008:
         push ax
         mov al, [es:bx + 0x5]
         push ax
-        push word 0x4e1b
+        push strict word str_02d02d
         lea ax, [bp - 0xf2]
         push ax
         call 0x0000:_sprintf
@@ -1666,7 +1666,7 @@ Init_21A1_0008:
         push cx
         lea cx, [bp - 0x71a]
         push cx
-        push word 0x4e33
+        push strict word str_SDD_2
         lea cx, [bp - 0xf2]
         push cx
         call 0x0000:_sprintf
@@ -1694,7 +1694,7 @@ Init_21A1_0008:
         push ax
         lea ax, [bp - 0x432]
         push ax
-        push word 0x4e3c
+        push strict word str_SDD
         lea ax, [bp - 0xf2]
         push ax
         call 0x0000:_sprintf

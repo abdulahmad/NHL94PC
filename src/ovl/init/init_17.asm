@@ -24,9 +24,9 @@ Init_28FA_0004:
         and ax, 0xfc
         mov dx, 0x3cf
         out dx, al
-        push word 0x542c
+        push strict word str_Gad1
         push 0x0
-        push word 0x5424
+        push strict word str_Gadget5
         call 0x0FEF:LoadAssetHeader
         add sp, 0x4
         mov [bp - 0x2c], ax
@@ -103,7 +103,7 @@ Init_28FA_0004:
         lea di, [bp - 0x90]
 .6:
         push word [bp - 0x8]
-        push word 0x5431
+        push strict word str_Gg02d_2
         lea ax, [bp - 0x26]
         push ax
         call 0x0000:_sprintf
@@ -133,7 +133,7 @@ Init_28FA_0004:
         db 0x3B, 0xF8                           ; insn: cmp di, ax
         jc short .6
         push word [bp - 0x8]
-        push word 0x5438
+        push strict word str_Gg02d
         lea ax, [bp - 0x26]
         push ax
         call 0x0000:_sprintf
@@ -240,7 +240,7 @@ Init_28FA_0004:
         call 0x06E1:FindUnlink
         add sp, 0x4
         push 0x0
-        push word 0x543f
+        push strict word str_HilightFnt
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [g_DACE], ax
