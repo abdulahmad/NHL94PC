@@ -3,14 +3,14 @@
 ; another retf and a nop.
 
 RecFlag:
-	push	bp
-	db	0x8B, 0xEC			; mov bp, sp
-	les	bx, [bp + 6]
-	mov	ax, es:[bx + 0x18]
-	leave
-	retf
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        les bx, [bp + 6]
+        mov ax, es:[bx + 0x18]
+        leave
+        retf
 NullFar:
-	retf
-	nop
-	retf
-	nop
+        retf
+        nop
+        retf
+        nop

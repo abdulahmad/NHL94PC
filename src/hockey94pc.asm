@@ -3,7 +3,7 @@
 ; section, offsets from 0) after another, then the RTLink/Plus overlay area. A segment starts as an incbin of its
 ; bytes and becomes source as it is disassembled; build.sh checks every byte against the retail EXE.
 
-	bits	16
+bits	16
 
 section header start=0
 %include "header/mz_header.asm"
