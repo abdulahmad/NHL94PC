@@ -2,10 +2,10 @@
 ; and store the ranges the stick readers scale by.
 
 ;-----------------------------------------------------------------------------
-; NullFar10                                                   1508:0000  94 PC
-; A lone retf.
+; XorFrameTail                                                1508:0000  94 PC
+; End of XorFrame.
 ;-----------------------------------------------------------------------------
-NullFar10:
+XorFrameTail:                                   ; end of XorFrame
         pop si
         pop di
         leave

@@ -1,10 +1,10 @@
 ; Loads raw files and their headers into memory blocks.
 
 ;-----------------------------------------------------------------------------
-; NullFar9                                                    149D:0000  94 PC
-; A lone retf.
+; DrawThickLineTail                                           149D:0000  94 PC
+; End of DrawThickLine.
 ;-----------------------------------------------------------------------------
-NullFar9:
+DrawThickLineTail:                              ; end of DrawThickLine
         leave
         retf
 

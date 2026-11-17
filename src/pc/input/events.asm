@@ -21,15 +21,15 @@ UseDbDescriptorTail:                            ; end of UseDbDescriptor
 GetInputEvent:
         cmp word [EventPending], 0x0
         jz short .1
-        call 0x0C15:NullFar2
+        call 0x0C15:NullEventHook
         mov word [EventPending], 0x0
 .1:
         mov es, [InputEventDataSeg]
         cmp word [es:InputEventFlag], 0x0
         jz short .2
-        call 0x0837:NullFar11 + 0x10            ; NullFar11 (0838:0000), through rec_flag's paragraph
-        call 0x0837:NullFar
-        call 0x0837:NullFar11 + 0x10            ; NullFar11 (0838:0000), through rec_flag's paragraph
+        call 0x0837:NullInputHookWrap + 0x10    ; NullInputHookWrap (0838:0000), through rec_flag's paragraph
+        call 0x0837:NullInputHook
+        call 0x0837:NullInputHookWrap + 0x10    ; NullInputHookWrap (0838:0000), through rec_flag's paragraph
         mov es, [InputEventDataSeg]
         mov word [es:InputEventFlag], 0x0
 .2:

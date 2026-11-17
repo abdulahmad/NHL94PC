@@ -3321,7 +3321,7 @@ KbdIrq:
         mov al, byte [bx + KeyMapCtrl]
         cmp bx, 1
         jne short .2
-        call 0xF4A:NullFar5
+        call 0xF4A:NullQuitHook
 .8:
         test byte [KeyState + 0x1D], 1
         jne short .11

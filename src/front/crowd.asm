@@ -2,10 +2,10 @@
 ; the calls that queue spoken lines (goals, penalties, lineups, period and game summaries).
 
 ;-----------------------------------------------------------------------------
-; NullFar6                                                    0EDC:0000  94 PC
-; A lone retf.
+; MessageBoxResetTail                                         0EDC:0000  94 PC
+; End of MessageBoxReset.
 ;-----------------------------------------------------------------------------
-NullFar6:
+MessageBoxResetTail:                            ; end of MessageBoxReset
         retf
         db 0x90
 

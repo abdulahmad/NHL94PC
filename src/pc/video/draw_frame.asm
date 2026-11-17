@@ -1,10 +1,10 @@
 ; DrawFrame: draws a rectangular frame.
 
 ;-----------------------------------------------------------------------------
-; NullFar8                                                    1484:0000  94 PC
-; A lone retf.
+; FillPolySpansTail                                           1484:0000  94 PC
+; End of FillPolySpans.
 ;-----------------------------------------------------------------------------
-NullFar8:
+FillPolySpansTail:                              ; end of FillPolySpans
         pop di
         pop si
         leave

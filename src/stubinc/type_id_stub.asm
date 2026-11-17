@@ -7,7 +7,7 @@ FatalError		equ	0x3E4
 str_Copyright		equ	0x402
 str_UnpackaInvalidPackCodeX		equ	0x40C
 LongShlAt		equ	0x1270
-_fmemchr		equ	0x135C
+_fstrncmp		equ	0x135C
 _fstrlen		equ	0x1398
 MapLo		equ	0x8ED6
 MapHi		equ	0x8ED8

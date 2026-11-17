@@ -1,5 +1,5 @@
 ; RecFlag returns the word at offset 18h of a far
-; record. NullFar is the retf _main calls. The last two bytes are
+; record. NullInputHook is the retf _main calls. The last two bytes are
 ; another retf and a nop.
 
 ;-----------------------------------------------------------------------------
@@ -14,10 +14,10 @@ RecFlag:
         leave
         retf
 ;-----------------------------------------------------------------------------
-; NullFar                                                     0837:000C  94 PC
+; NullInputHook                                               0837:000C  94 PC
 ; A lone retf. _main calls it.
 ;-----------------------------------------------------------------------------
-NullFar:
+NullInputHook:
         retf
         nop
         retf

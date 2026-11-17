@@ -1,10 +1,10 @@
 ; Text drawing: string width, text colours, and shadowed text (plain, centred, buffered).
 
 ;-----------------------------------------------------------------------------
-; NullFar3                                                    0D39:0000  94 PC
-; A lone retf.
+; ReadEntry12Tail                                             0D39:0000  94 PC
+; End of ReadEntry12.
 ;-----------------------------------------------------------------------------
-NullFar3:
+ReadEntry12Tail:                                ; end of ReadEntry12
         retf
         db 0x90
 

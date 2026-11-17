@@ -833,9 +833,9 @@ CreatePlayoffs:
         push strict word exhstate
         call 0x2E70:LoadModeState
         add sp, 0x4
-        call 0x0837:NullFar11 + 0x10
-        call 0x0837:NullFar
-        call 0x0837:NullFar11 + 0x10
+        call 0x0837:NullInputHookWrap + 0x10
+        call 0x0837:NullInputHook
+        call 0x0837:NullInputHookWrap + 0x10
         mov ax, 0x2
         pop si
         pop di

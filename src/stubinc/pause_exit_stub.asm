@@ -3,8 +3,8 @@
 	bits	16
 	org	0x0
 FontTable		equ	0x0
-FindNearestColor		equ	0x2
 DrawTextCenteredInWindow		equ	0x2
+FindNearestColor		equ	0x2
 DrawFrame		equ	0x4
 FreeCanvas		equ	0xC
 SetCanvas		equ	0x48
@@ -12,7 +12,7 @@ FillRect		equ	0x136
 AllocCanvas		equ	0x19C
 UseCurrentPage		equ	0x1A6
 WaitAdd		equ	0x250
-NullFar5		equ	0x3E2
+NullQuitHook		equ	0x3E2
 DrawRawAt		equ	0x73D
 SetCharPtr.regs		equ	0xC56
 SaveCharTab		equ	0xC7A

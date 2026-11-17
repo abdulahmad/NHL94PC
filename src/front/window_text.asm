@@ -1,10 +1,10 @@
 ; DrawTextCenteredInWindow: draws a string centred in a window rectangle.
 
 ;-----------------------------------------------------------------------------
-; NullFar7                                                    0FEC:0000  94 PC
-; A lone retf.
+; MenuHitTestTail                                             0FEC:0000  94 PC
+; End of MenuHitTest.
 ;-----------------------------------------------------------------------------
-NullFar7:
+MenuHitTestTail:                                ; end of MenuHitTest
         leave
         retf
 

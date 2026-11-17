@@ -225,7 +225,7 @@ AskExitToDos:
         call AskYesNoBox
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .1
-        call 0x0F4A:NullFar5
+        call 0x0F4A:NullQuitHook
 .1:
         retf
         db 0x90

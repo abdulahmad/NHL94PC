@@ -7,8 +7,8 @@ FontPaper		equ	0x2
 LargestFreeBlock		equ	0x4
 FontX		equ	0x8
 FontY		equ	0xA
-FontAdvance		equ	0x10
 BiosEquipment		equ	0x10
+FontAdvance		equ	0x10
 FontProportional		equ	0x14
 AskExitToDos		equ	0x224
 EmsMapCache		equ	0x24C
@@ -17,7 +17,7 @@ EmsOutPtr		equ	0x25C
 EmsFrame		equ	0x260
 EmsHandle		equ	0x262
 EmmName		equ	0x264
-NullFar5		equ	0x3E2
+NullQuitHook		equ	0x3E2
 FatalError		equ	0x3E4
 _exit		equ	0x687
 _sprintf		equ	0xD74

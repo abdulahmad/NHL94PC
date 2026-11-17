@@ -303,7 +303,7 @@ str_GetmemblockNoMemoryBlocksLeft:              ; string 'getmemblock - NO MEMOR
                                                 ; the EXE or the overlays
         db 'getmemblock - NO MEMORY BLOCKS LEFT'
         db 0x0A, 0x00
-str_Copyright:                                  ; string 'Copyright'; used by NullFar11
+str_Copyright:                                  ; string 'Copyright'; used by NullInputHookWrap
         db 'Copyright', 0x00
 str_UnpackaInvalidPackCodeX:                    ; string 'unpacka - INVALID PACK CODE (%x)'; used by AddCopy
         db 'unpacka - INVALID PACK CODE (%x)'
@@ -5399,7 +5399,7 @@ KeyMapCaps:                                     ; character for each scan code w
         db 0x00, 0x00, 0xC7, 0xC8, 0xC9, 0x2D, 0xCB, 0xCC, 0xCD, 0x2B, 0xCF, 0xD0, 0xD1, 0xD2, 0xD3, 0x00
         db 0x00, 0x00, 0x89, 0x8A, 0x00, 0x00
 KeyMapCtrl:                                     ; character for each scan code with ctrl held (scan code 1
-                                                ; also calls NullFar5)
+                                                ; also calls NullQuitHook)
         db 0x00, 0x1B, 0x21, 0x00, '#$%', 0x1E, '&*()', 0x1F, 0xB3, 0x7F, 0x09, 0x11, 0x17, 0x05, 0x12, 0x14
         db 0x19, 0x15, 0x09, 0x0F, 0x10, 0x1B, 0x1D, 0x0D, 0x00, 0x01, 0x13, 0x04, 0x06, 0x07, 0x08, 0x0A
         db 0x0B, 0x0C, ';,`', 0x00, 0x1C, 0x1A, 0x18, 0x03, 0x16, 0x02, 0x0E, 0xB2, '<>?', 0x00, 0x00, 0x00

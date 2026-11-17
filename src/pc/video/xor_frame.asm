@@ -51,7 +51,7 @@ XorFrame:
         add sp, 0xa
 .1:
         db 0x0B, 0xFF                           ; insn: or di, di
-        jng short NullFar10 + 0x80
+        jng short XorFrameTail + 0x80
         push word [bp + 0xe]
         push di
         push 0x1

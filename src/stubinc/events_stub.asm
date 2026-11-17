@@ -2,10 +2,10 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
-NullFar11		equ	0x0
+NullInputHookWrap		equ	0x0
 InputEventFlag		equ	0x0
-NullFar		equ	0xC
-NullFar2		equ	0xE
+NullInputHook		equ	0xC
+NullEventHook		equ	0xE
 lgstate		equ	0xC4
 InputQueueCount		equ	0x508
 InputQueueHead		equ	0x50A

@@ -3071,10 +3071,10 @@ _fmemcmp:
         db 0
 
 ;-----------------------------------------------------------------------------
-; _fmemchr                                                      0000:135C  MSC
-; Far scan for a byte.
+; _fstrncmp                                                     0000:135C  MSC
+; Compares two far strings, at most n bytes, stopping at a null; returns <0, 0 or >0.
 ;-----------------------------------------------------------------------------
-_fmemchr:
+_fstrncmp:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di

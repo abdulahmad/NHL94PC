@@ -509,7 +509,7 @@ seg000:1264,__aFlsar,,MSC,high,"Arithmetic shift of DX:AX right by CX",src/seg/s
 seg000:12AC,__aFlshr,,MSC,high,"Logical shift of DX:AX right by CX",src/seg/seg000.asm
 seg000:12B8,_fmemcpy,,MSC,high,"Far copy of a byte count",src/seg/seg000.asm
 seg000:1316,_fmemcmp,,MSC,medium,"Far compare. Name from the call shape",src/seg/seg000.asm
-seg000:135C,_fmemchr,,MSC,medium,"Far scan for a byte",src/seg/seg000.asm
+seg000:135C,_fstrncmp,,MSC,high,"compares two far strings up to n bytes, stopping at a null (scasb for the null, then repe cmpsb)",src/seg/seg000.asm
 seg000:13DA,_fstrlen,,MSC,high,"Far scasb length",src/seg/seg000.asm
 seg000:1410,_fstrcat,,MSC,high,"Append one far string to another",src/seg/seg000.asm
 seg000:1456,_fmemset,,MSC,high,"Fill a far buffer",src/seg/seg000.asm
@@ -892,12 +892,12 @@ seg002:1532,RawBase,,new,high,"The far pointer stored at the start of the record
 seg002:1542,RecSpan,,new,high,"The size dword stored at offset 14h",src/seg/seg002.asm
 seg002:1552,NamePtr,,new,high,"The caller's far pointer plus 4, the name field",src/seg/seg002.asm
 seg003:0000,RecFlag,,new,high,"Returns the word at offset 18h of the far record",src/seg/seg003.asm
-seg003:000C,NullFar,,new,high,"A lone retf. _main calls it",src/seg/seg003.asm
-seg004:0002,NineCmp,,new,high,"Compares 9 bytes of a far string with the bytes at 402h. A match calls RetOnly",src/seg/seg004.asm
+seg003:000C,NullInputHook,,new,high,"A lone retf. _main calls it",src/seg/seg003.asm
+seg004:0002,SkipCopyright,,new,high,"_fstrncmp with 'Copyright' (9 bytes); a match returns the pointer past that string",src/seg/seg004.asm
 seg004:0042,ReadBe,,new,high,"Folds a counted far byte string into a dword, one byte at a time",src/seg/seg004.asm
 seg004:008E,TypeId,,new,high,"A second byte of FBh selects a type code. Otherwise four bytes are a big-endian dword",src/seg/seg004.asm
 seg004:00DA,TypeTab,,new,high,"Eight words. The low bits of the type byte select the case",src/seg/seg004.asm
-seg004:0292,ReadHead,,new,high,"NineCmp then TypeId. A type from 1 to 1Ch returns the following 3-byte value",src/seg/seg004.asm
+seg004:0292,ReadHead,,new,high,"SkipCopyright then TypeId. A type from 1 to 1Ch returns the following 3-byte value",src/seg/seg004.asm
 seg004:02FA,EmitByte,,new,high,"Writes one byte through OutPtr, or expands it through MapHi and MapPair",src/seg/seg004.asm
 seg004:034A,GetBits,,new,high,"Pulls a bit count from BitBuf. Fewer than 16 bits refills from InPtr",src/seg/seg004.asm
 seg004:03F2,ReadVar,,new,high,"Reads a variable-length number from the bit stream",src/seg/seg004.asm
@@ -978,7 +978,7 @@ seg009:004C,InputShutdown,F009_004C,new,high,frees the PollInputEvents timer slo
 seg009:0070,EventToCursor,F009_0070,new,high,"mouse event sets the cursor; key and stick events move it, faster with the repeat count; clamps to 320x200",src/seg/seg009.asm
 seg010:0000,InputTail,F010_0000,new,low,"sub ah, ah / retf at the start of the paragraph (end of the routine before)",src/seg/seg010.asm
 seg010:0006,RandomRange,F010_0006,new,high,"32-bit linear congruential step (multiplier BB40E62Dh, +1) on RandSeed, result scaled to the range",src/seg/seg010.asm
-seg011:000E,NullFar2,F011_000E,new,high,a lone retf,src/seg/seg011.asm
+seg011:000E,NullEventHook,F011_000E,new,high,a lone retf,src/seg/seg011.asm
 seg012:0000,WaitButtonTimed,F012_0000,new,medium,"reads events through CursorHandler until a click, a double click or the time runs out",src/seg/seg012.asm
 seg014:000A,MidiControl,F014_000A,new,high,B0h,src/seg/seg014.asm
 seg014:0032,MidiPitchBend,F014_0032,new,high,E0h,src/seg/seg014.asm
@@ -1002,7 +1002,7 @@ seg015:0602,ReadRecord48,F015_0602,new,medium,ReadAtOffset of 30h bytes,src/seg/
 seg015:061C,ReadEntry6,F015_061C,new,medium,6-byte entry n at 2 + 6n,src/seg/seg015.asm
 seg015:0640,ReadEntry744,F015_0640,new,medium,2E8h-byte entry n,src/seg/seg015.asm
 seg015:065E,ReadEntry12,F015_065E,new,medium,12-byte entry n,src/seg/seg015.asm
-seg016:0000,NullFar3,F016_0000,new,high,a lone retf,src/seg/seg016.asm
+seg016:0000,ReadEntry12Tail,F016_0000,new,high,"end of ReadEntry12 spilling into this paragraph (was taken for a lone retf)",src/seg/seg016.asm
 seg016:0002,TextWidthFar,F016_0002,new,high,copies a far string and returns TextWidthAll of it,src/seg/seg016.asm
 seg016:0024,SetTextColors,F016_0024,new,high,text colour and shadow colour,src/seg/seg016.asm
 seg016:0036,DrawShadowTextBuffered,F016_0036,new,medium,"draws a shadowed string into an off-screen block 64-pixel aligned, then blits it",src/seg/seg016.asm
@@ -1011,7 +1011,7 @@ seg016:0166,DrawShadowText,F016_0166,new,high,"shadow at +1,+1 in the shadow col
 seg016:01B8,DrawOutlineText,F016_01B8,new,high,"the string at the four outline offsets in the shadow colour, then the text",src/seg/seg016.asm
 seg016:0210,DrawShadowTextF,F016_0210,new,high,"_sprintf with one argument, then DrawShadowText",src/seg/seg016.asm
 seg016:0238,DrawShadowTextF2,F016_0238,new,high,"_sprintf with two arguments, then DrawShadowText",src/seg/seg016.asm
-seg017:0000,NullFar4,F017_0000,new,high,a lone retf,src/seg/seg017.asm
+seg017:0000,DrawShadowTextF2Tail,F017_0000,new,high,"end of DrawShadowTextF2 spilling into this paragraph (was taken for a lone retf)",src/seg/seg017.asm
 seg017:0002,SqrtLong,F017_0002,new,high,Newton iteration on a long with __aFldiv,src/seg/seg017.asm
 seg017:0089,VectorToDir8,F017_0089,new,high,"direction 0..7 from the signs and the ratio of dx, dy; 8 for no vector",src/seg/seg017.asm
 seg018:000A,HookDivideError,F018_000A,new,high,"saves INT 0, points it at DivideHandler, registers UnhookDivideError",src/seg/seg018.asm
@@ -1045,7 +1045,7 @@ seg020:0F5C,GrowToItemBox,F020_0F5C,new,medium,widens and heightens a box to fit
 seg020:0FC8,MessageBox,F020_0FC8,new,high,box with text lines and buttons; returns the button chosen,src/seg/seg020.asm
 seg020:1260,MessageBoxLoop,F020_1260,new,medium,"input loop of MessageBox (mouse, keys, highlight)",src/seg/seg020.asm
 seg020:14B8,MessageBoxReset,F020_14B8,new,low,sets the last button to -1,src/seg/seg020.asm
-seg021:0000,NullFar6,F021_0000,new,high,a lone retf,src/seg/seg021.asm
+seg021:0000,MessageBoxResetTail,F021_0000,new,high,"end of MessageBoxReset spilling into this paragraph (was taken for a lone retf)",src/seg/seg021.asm
 seg021:0002,CrowdNoiseUpdate,F021_0002,new,high,"eases the crowd level toward CrowdTarget and drives the MIDI crowd notes (volume, pitch)",src/seg/seg021.asm
 seg021:01DC,CrowdNoiseOff,F021_01DC,new,high,note off and volume 0 on the two crowd channels,src/seg/seg021.asm
 seg021:024E,CrowdFadeOut,F021_024E,new,high,lowers CrowdTarget step by step to silence,src/seg/seg021.asm
@@ -1073,7 +1073,7 @@ seg021:0640,WaitJingle,F021_0640,new,high,waits until the jingle sample has fini
 seg021:0656,PlayArenaJingle,F021_0656,new,medium,"the loaded clip for the event, else a random one of three, through PlayJingle",src/seg/seg021.asm
 seg022:0004,SaveVgaPlanes,F022_0004,new,high,copies the four VGA planes (plane0..plane3 blocks) through the read map,src/seg/seg022.asm
 seg022:0224,RestoreVgaPlanes,F022_0224,new,high,writes the four planes back through the map mask,src/seg/seg022.asm
-seg022:03E2,NullFar5,F022_03E2,new,high,a lone retf,src/seg/seg022.asm
+seg022:03E2,NullQuitHook,F022_03E2,new,high,a lone retf,src/seg/seg022.asm
 seg022:03E4,FatalError,F022_03E4,new,high,prints the message with ConPrint and exits,src/seg/seg022.asm
 seg023:0008,FitNameToWidth,F023_0008,new,high,"""first last"", else ""F. last"", then cut until it fits the width",src/seg/seg023.asm
 seg024:0000,UseDbDescriptor,F024_0000,new,low,"pushes the far descriptor of the database set (0, 1 or 2) for the overlay call that follows",src/seg/seg024.asm
@@ -1086,7 +1086,7 @@ seg026:01BA,DrawFrameBox,F026_01BA,new,high,filled rectangle with a light and a 
 seg026:02D6,DrawMenuItem,F026_02D6,new,medium,one item in the normal colour,src/seg/seg026.asm
 seg026:036A,DrawMenuItemHilite,F026_036A,new,medium,one item in the highlight colour,src/seg/seg026.asm
 seg026:03FE,MenuHitTest,F026_03FE,new,high,menu and item under a point,src/seg/seg026.asm
-seg027:0000,NullFar7,F027_0000,new,high,a lone retf,src/seg/seg027.asm
+seg027:0000,MenuHitTestTail,F027_0000,new,high,"end of MenuHitTest spilling into this paragraph (was taken for a lone retf)",src/seg/seg027.asm
 seg027:0002,DrawTextCenteredInWindow,F027_0002,new,medium,x centred between the window's left and right edges,src/seg/seg027.asm
 seg028:000C,DrawLine,F028_000C,new,medium,Bresenham steps over the row table of the current canvas,src/seg/seg028.asm
 seg028:0048,SetCanvas,F028_0048,new,high,copies a 0x1E-byte canvas record into CurCanvas,src/seg/seg028.asm
@@ -1210,11 +1210,11 @@ seg028:46A8,SetCanvasClip,F028_46A8,new,medium,sets a canvas record's clip recta
 seg028:472A,RemapShapeBank,F028_472A,new,low,remaps every shape in a bank through a table,src/seg/seg028.asm
 seg028:4782,ConvertShapeBank,F028_4782,new,low,converts the shapes of a bank in place,src/seg/seg028.asm
 seg028:48D2,FillPolySpans,F028_48D2,new,medium,fills a list of spans,src/seg/seg028.asm
-seg029:0000,NullFar8,F029_0000,new,high,a lone retf,src/seg/seg029.asm
+seg029:0000,FillPolySpansTail,F029_0000,new,high,"end of FillPolySpans spilling into this paragraph (was taken for a lone retf)",src/seg/seg029.asm
 seg029:0004,DrawFrame,F029_0004,new,medium,draws a rectangle outline with four FillRectClip calls,src/seg/seg029.asm
 seg030:0004,LargestFreeBlock,F030_0004,new,low,walks the far heap list and returns the largest gap,src/seg/seg030.asm
 seg031:0002,DrawThickLine,F031_0002,new,low,builds a quad around a line from Atan2 and AngleTab,src/seg/seg031.asm
-seg032:0000,NullFar9,F032_0000,new,high,a lone retf,src/seg/seg032.asm
+seg032:0000,DrawThickLineTail,F032_0000,new,high,"end of DrawThickLine spilling into this paragraph (was taken for a lone retf)",src/seg/seg032.asm
 seg032:0002,LoadRawHeader,F032_0002,new,low,LoadRawHeaderMode with mode 1,src/seg/seg032.asm
 seg032:0014,LoadRawHeader0,F032_0014,new,low,LoadRawHeaderMode with mode 0,src/seg/seg032.asm
 seg032:0026,LoadRawHeaderMode,F032_0026,new,medium,"LoadRawMode, then returns the first dword of the data",src/seg/seg032.asm
@@ -1246,7 +1246,7 @@ seg035:0092,SortPairs,F035_0092,new,medium,shell sort of a key array with a para
 seg035:00A0,SortPairsPass,F035_00A0,new,medium,SortPairs inner passes,src/seg/seg035.asm
 seg036:0000,SortPairsTail,F036_0000,new,medium,end of SortPairs,src/seg/seg036.asm
 seg036:000E,XorFrame,F036_000E,new,medium,XORs a rectangle outline with four XorRect calls,src/seg/seg036.asm
-seg037:0000,NullFar10,F037_0000,new,high,a lone retf,src/seg/seg037.asm
+seg037:0000,XorFrameTail,F037_0000,new,high,"end of XorFrame spilling into this paragraph (was taken for a lone retf)",src/seg/seg037.asm
 seg037:0004,CalibrateStick,F037_0004,new,medium,"joystick calibration screen (needs a 64 KB gap, draws the target grid, waits for buttons)",src/seg/seg037.asm
 seg037:0232,CalibrateLeftStick,F037_0232,new,high,"CalibrateStick with the ""Left Joystick"" title",src/seg/seg037.asm
 seg037:0244,CalibrateRightStick,F037_0244,new,high,"CalibrateStick with the ""Right Joystick"" title",src/seg/seg037.asm
@@ -1929,7 +1929,7 @@ RetOnly2,_fstrcmp,RetOnly2,MSC,high,"scans the second far string for its length,
 seg000:1D8E,_stackavail,,MSC,high,"SP minus StackLimit, 0 when below it; was kept as bytes",src/lib/msc_runtime.asm
 g_6485,str_Locatesound44sSoundNot,,new,high,"label added: FindFarAlt's message, second string after str_Locateshape44sShapeNot",src/data/dgroup.asm
 seg000:0C2C,_strcat,,MSC,high,"repne scasb to the end of the destination then rep movsw the source; called by the overlays",src/lib/msc_runtime.asm
-seg004:0000,NullFar11,,new,high,"retf; called by the menus overlay beside NullFar",src/pc/type_id.asm
+seg004:0000,NullInputHookWrap,,new,high,"retf; called by the menus overlay beside NullInputHook",src/pc/type_id.asm
 Ai_1F9C_0000,SetupControllers,Ai_1F9C_0000,95 PC,high,"sets the pad states from the controller choices, MouseOpen 320x200",src/front/setup_controllers.asm
 Ai_2083_0006,DrawPanelScore,Ai_2083_0006,95 PC,high,score digits on the top panel; same constants and order as 95,src/engine/hud_panel.asm
 Ai_2083_00B2,DrawPanelLine,Ai_2083_00B2,95 PC,high,line indicator shape on the panel,src/engine/hud_panel.asm

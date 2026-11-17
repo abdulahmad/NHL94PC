@@ -172,8 +172,8 @@ MusicOn		equ	0x13EE
 MviCloseThunk		equ	0x2427
 MviNextFrameThunk		equ	0x243B
 MviOpenThunk		equ	0x241D
-NullFar		equ	0xC
-NullFar11		equ	0x0
+NullInputHook		equ	0xC
+NullInputHookWrap		equ	0x0
 NumberEntryDialog		equ	0xE6
 OpenReadShared		equ	0x3D6
 OpenReadWriteShared		equ	0x3FA
