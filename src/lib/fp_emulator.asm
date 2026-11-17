@@ -1,22 +1,40 @@
 ; Microsoft C floating-point emulator: the INT 34h-3Dh handlers that run 8087 instructions in
 ; software, or patch them to real ones when a coprocessor is present.
-        db 0x96, 0x39, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 'MSEM87'
-        db 0x06, 0x00, 'gfw...GW', 0x5C, 0x00, 0xCF, 0x01, 0xAE, 0x01
-        db 0xF0, 0x01, 0xEE, 0x06, 0x07, 0x07, 0x29, 0x07, 0x6E, 0x07, 0x0B, 0x07, 0xDE, 0x01, 0x56, 0x02
-        db 0x95, 0x02, 0x9A, 0x02, 0x83
+EmuDataSeg:                                     ; paragraph of the emulator's data (runtime_state); every
+                                                ; entry loads DS from here
+        dw 0x3996
+        times 14 db 0
+FpSignature:                                    ; 'MSEM87' and a version word, the emulator's signature
+        db 'MSEM87'
+        dw 6
+        db 'gfw...GW'
+FpFuncTable:                                    ; word; FpMath's function table, by index 0-12
+        dw FpInit
+        dw FpReset
+        dw FpTerm
+        dw FpSetHandler
+        dw FpLoadCw
+        dw FpGetCw
+        dw FpRoundInt
+        dw FpToLong
+        dw FpGetStatus
+        dw FpReset.clear
+        dw FpStackDepth
+        dw FpHave87
+        dw FpSetMode
 
 ;-----------------------------------------------------------------------------
-; FpMath                                                        18B9:003B  MSC
-; Far entry: calls the function whose index is in BX through the word table
-; at offset 20h.
+; FpMath                                                        18B9:003A  MSC
+; Far entry: calls the function whose index is in BX through FpFuncTable,
+; with DS set to the emulator's data.
 ;-----------------------------------------------------------------------------
 FpMath:
-        sti
-        or al, 0x77
-        psrlw mm4, mm3
+        cmp bx, 0xc
+        ja short FpMathBadIndex
+        shl bx, 1
         push ds
-        mov ds, [cs:0x0]
-        db 0x2E, 0xFF, 0x97, 0x20, 0x00         ; insn: call [cs:bx + 0x20]
+        mov ds, [cs:EmuDataSeg]
+        call [cs:bx + FpFuncTable]
         pop ds
 .1:
         retf
@@ -30,9 +48,11 @@ FpMathBadIndex:
         db 0x8B, 0xD0                           ; insn: mov dx, ax
         jmp short FpMath.1
 
-FpNo87Env:                                      ; "NO87=" and CR LF, the environment variable that turns the
-                                                ; coprocessor off; not used in the EXE (overlays may use it)
-        db 'NO87=', 0x0D, 0x0A
+FpNo87Env:                                      ; "NO87=", the environment variable that turns the coprocessor
+                                                ; off; FpInit prints the text after it
+        db 'NO87='
+FpCrLf:                                         ; CR LF printed after the NO87= message
+        db 0x0D, 0x0A
 
 ;-----------------------------------------------------------------------------
 ; FpInit                                                        18B9:005C  MSC
@@ -42,11 +62,11 @@ FpNo87Env:                                      ; "NO87=" and CR LF, the environ
 FpInit:
         push ss
         push ds
-        mov ax, 0x56
+        mov ax, FpSavedSs
         push ax
         call 0x0000:StoreWord
         push ds
-        mov ax, 0x14
+        mov ax, FpMachineMode
         push ax
         call 0x0000:StoreZero
         push ds
@@ -61,7 +81,7 @@ FpInit:
         cmp byte [es:di], 0x0
         jz short .4
         mov cx, 0x5
-        mov si, 0x55
+        mov si, FpNo87Env
         repe cmpsb
         jz short .2
         mov cx, 0x7fff
@@ -99,7 +119,7 @@ FpInit:
         mov bx, 0x1
         push bx
         push cs
-        mov di, 0x5a
+        mov di, FpCrLf
         push di
         mov bx, 0x2
         push bx
@@ -109,12 +129,12 @@ FpInit:
         pop bx
 .3:
         pop ds
-        mov byte [0x4], 0x0
+        mov byte [Fp87Present], 0x0
         jmp short .13
         db 0x90
 .4:
         pop ds
-        cmp word [0x14], 0x0
+        cmp word [FpMachineMode], 0x0
         jnz short .10
         fninit
         push cx
@@ -123,40 +143,40 @@ FpInit:
         loop .5
         pop cx
         db 0x33, 0xC0                           ; insn: xor ax, ax
-        mov [0x58], ax
-        fnstcw [0x58]
+        mov [FpProbeWord], ax
+        fnstcw [FpProbeWord]
         push cx
         mov cx, 0x14
 .6:
         loop .6
         pop cx
-        and word [0x58], 0xf3f
-        cmp word [0x58], 0x33f
+        and word [FpProbeWord], 0xf3f
+        cmp word [FpProbeWord], 0x33f
         jnz short .8
-        fnstsw [0x58]
+        fnstsw [FpProbeWord]
         push cx
         mov cx, 0x14
 .7:
         loop .7
         pop cx
         inc ax
-        test word [0x58], 0xb8bf
+        test word [FpProbeWord], 0xb8bf
 .8:
         jz short .9
         db 0x33, 0xC0                           ; insn: xor ax, ax
 .9:
-        mov [0x4], al
+        mov [Fp87Present], al
         jmp short .11
 .10:
         push ds
-        push strict word 0x4
+        push strict word Fp87Present
         push 0x3
         push 0x0
         call 0x0000:StoreOne
 .11:
-        cmp byte [0x4], 0x0
+        cmp byte [Fp87Present], 0x0
         jz short .13
-        cmp word [0x14], 0x0
+        cmp word [FpMachineMode], 0x0
         jnz short .12
         call FpHookNmi
         jnc short .13
@@ -166,38 +186,38 @@ FpInit:
 .12:
         push 0x10
         push cs
-        push word 0x2b8
+        push word Fp87Exception
         push ds
-        push strict word 0x22
+        push strict word FpSavedVectors + 4
         call 0x0000:RetPop10
 .13:
-        cmp word [0x14], 0x0
+        cmp word [FpMachineMode], 0x0
         jnz short .14
         call FpHookVectors
         jmp short .15
 .14:
-        cmp byte [0x4], 0x0
+        cmp byte [Fp87Present], 0x0
         jnz short .15
         push 0x7
         push cs
-        push word 0xc98
+        push word FpEmuSegIntAlt
         push ds
-        push strict word 0x1e
+        push strict word FpSavedVectors
         call 0x0000:RetPop10
 .15:
         call FpReset
         mov ax, 0x1332
         call FpLoadCw
         db 0x33, 0xC0                           ; insn: xor ax, ax
-        mov [0x0], ax
-        mov [0x2], ax
-        mov ax, 0xe98
-        cmp word [0x14], 0x0
+        mov [FpErrHandler], ax
+        mov [FpErrHandler + 2], ax
+        mov ax, FpEmuChain
+        cmp word [FpMachineMode], 0x0
         jz short .16
-        mov ax, 0xed1
+        mov ax, FpEmuChainEsc
 .16:
-        mov [0xa7], ax
-        mov al, [0x4]
+        mov [FpExitVector], ax
+        mov al, [Fp87Present]
         cbw
         ret
 
@@ -206,39 +226,41 @@ FpInit:
 ; Function 2: restores the interrupt vectors.
 ;-----------------------------------------------------------------------------
 FpTerm:
-        cmp word [0x14], 0x0
+        cmp word [FpMachineMode], 0x0
         jnz short .2
         call FpUnhookVectors
-        cmp byte [0x4], 0x0
+        cmp byte [Fp87Present], 0x0
         jz short .1
         fninit
         call FpUnhookNmi
 .1:
         ret
 .2:
-        push word [0x56]
+        push word [FpSavedSs]
         call 0x0000:RetPop2
         ret
 
 ;-----------------------------------------------------------------------------
 ; FpReset                                                       18B9:01CF  MSC
-; Function 1: resets the emulated stack and clears exceptions.
+; Function 1: resets the emulated stack and clears exceptions; .clear is
+; function 9, which only clears the exceptions.
 ;-----------------------------------------------------------------------------
 FpReset:
-        cmp byte [0x4], 0x0
+        cmp byte [Fp87Present], 0x0
         jz short .1
         fninit
 .1:
-        mov ax, [0xe]
-        mov [0x10], ax
+        mov ax, [FpStackBase]
+        mov [FpStackTop], ax
+.clear:
         db 0x33, 0xC0                           ; insn: xor ax, ax
-        cmp al, [0x4]
+        cmp al, [Fp87Present]
         jz short .2
         wait
         fnclex
 .2:
-        mov [0xc], ax
-        mov [0x8], ax
+        mov [FpEmuStatus], ax
+        mov [FpUserStatus], ax
         ret
 
 ;-----------------------------------------------------------------------------
@@ -246,8 +268,8 @@ FpReset:
 ; Function 3: stores the far error handler.
 ;-----------------------------------------------------------------------------
 FpSetHandler:
-        mov [0x0], ax
-        mov [0x2], dx
+        mov [FpErrHandler], ax
+        mov [FpErrHandler + 2], dx
         ret
 
 ;-----------------------------------------------------------------------------
@@ -257,7 +279,7 @@ FpSetHandler:
 FpHookVectors:
         mov cx, 0xb
         mov ax, 0x3534
-        mov di, 0x1e
+        mov di, FpSavedVectors
 .1:
         int 0x21
         inc ax
@@ -265,14 +287,14 @@ FpHookVectors:
         mov [di + 0x2], es
         add di, 0x4
         loop .1
-        mov dx, 0xcbc
-        mov si, 0xc45
-        mov di, 0xc28
-        cmp byte [0x4], 0x0
+        mov dx, FpEmulate
+        mov si, FpEmuSegInt
+        mov di, FpEmuWaitInt
+        cmp byte [Fp87Present], 0x0
         jz short .2
-        mov dx, 0x833
-        mov si, 0x7fe
-        mov di, 0x82b
+        mov dx, FpPatchInt
+        mov si, FpPatchSegInt
+        mov di, FpPatchWaitInt
 .2:
         push ds
         push cs
@@ -298,7 +320,7 @@ FpHookVectors:
 FpUnhookVectors:
         mov cx, 0xb
         mov ax, 0x2534
-        mov di, 0x1e
+        mov di, FpSavedVectors
 .1:
         push ds
         lds dx, [di]
@@ -315,7 +337,7 @@ FpUnhookVectors:
 ;-----------------------------------------------------------------------------
 FpStackDepth:
         db 0x33, 0xD2                           ; insn: xor dx, dx
-        cmp byte [0x4], 0x0
+        cmp byte [Fp87Present], 0x0
         jz short .3
         sub sp, 0xe
         db 0x8B, 0xDC                           ; insn: mov bx, sp
@@ -337,8 +359,8 @@ FpStackDepth:
 .2:
         loop .1
 .3:
-        mov ax, [0x10]
-        sub ax, [0xe]
+        mov ax, [FpStackTop]
+        sub ax, [FpStackBase]
         mov bl, 0xc
         div bl
         db 0x03, 0xC2                           ; insn: add ax, dx
@@ -349,7 +371,7 @@ FpStackDepth:
 ; Function 11: 1 when an 8087 is present.
 ;-----------------------------------------------------------------------------
 FpHave87:
-        mov al, [0x4]
+        mov al, [Fp87Present]
         cbw
         ret
 
@@ -358,7 +380,7 @@ FpHave87:
 ; Function 12: stores a mode word.
 ;-----------------------------------------------------------------------------
 FpSetMode:
-        mov [0xa4], ax
+        mov [FpSignalMode], ax
         ret
 
 ;-----------------------------------------------------------------------------
@@ -366,8 +388,8 @@ FpSetMode:
 ; Sets status bit C1.
 ;-----------------------------------------------------------------------------
 FpSetC1:
-        or byte [0x17], 0x2
-        cmp byte [0x4], 0x0
+        or byte [FpOpStatus + 1], 0x2
+        cmp byte [Fp87Present], 0x0
         jz short .1
         or ah, 0x2
 .1:
@@ -378,7 +400,7 @@ FpSetC1:
 ; Sets status bit C2.
 ;-----------------------------------------------------------------------------
 FpSetC2:
-        or byte [0x17], 0x4
+        or byte [FpOpStatus + 1], 0x4
         ret
 
 ;-----------------------------------------------------------------------------
@@ -407,7 +429,7 @@ Fp87Exception:
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         wait
         fnstenv [bp + 0x0]
-        mov ax, 0x2b4
+        mov ax, FpIret
         xchg ax, [bp + 0x20]
         mov [bp + 0x2], ax
         push bx
@@ -438,11 +460,11 @@ FpException:
         push bx
         push ds
 .1:
-        mov ds, [cs:0x0]
+        mov ds, [cs:EmuDataSeg]
         db 0x33, 0xC0                           ; insn: xor ax, ax
         mov al, [bp + 0x2]
         db 0x32, 0xFF                           ; insn: xor bh, bh
-        cmp word [0xa4], 0x0
+        cmp word [FpSignalMode], 0x0
         jnz short .2
         or bh, 0x1
 .2:
@@ -472,7 +494,7 @@ FpException:
         or bh, 0x8
         jmp near FpCheckPrecision
 .6:
-        mov bl, [0x6]
+        mov bl, [FpUserCw]
         or bl, 0xc0
         and bl, 0xfd
         not bl
@@ -500,7 +522,7 @@ FpException:
         wait
         fldcw [bp + 0x0]
 .9:
-        or [0x8], ax
+        or [FpUserStatus], ax
         pop ds
         pop bx
         add sp, 0x1c
@@ -559,13 +581,13 @@ FpException:
         jnz short .16
 .14:
         and bh, 0x3f
-        mov si, [0x10]
-        cmp si, [0x12]
+        mov si, [FpStackTop]
+        cmp si, [FpStackLimit]
         jnz short .15
         call FpSetC1
 .15:
         add si, 0xc
-        mov [0x10], si
+        mov [FpStackTop], si
         wait
         fdecstp
         wait
@@ -592,8 +614,8 @@ FpException:
         jmp short .22
         db 0x90
 .19:
-        mov si, [0x10]
-        cmp si, [0xe]
+        mov si, [FpStackTop]
+        cmp si, [FpStackBase]
         jnz short .20
         jmp near FpSkipEmptyRegs.1
 .20:
@@ -602,13 +624,13 @@ FpException:
         fincstp
         wait
         fld tword [si]
-        mov si, [0x10]
-        cmp si, [0xe]
+        mov si, [FpStackTop]
+        cmp si, [FpStackBase]
         jnz short .21
         call FpSetC2
 .21:
         sub si, 0xc
-        mov [0x10], si
+        mov [FpStackTop], si
 .22:
         test bl, 0xc
         jnz short .25
@@ -617,19 +639,19 @@ FpException:
         db 0x0B, 0xF6                           ; insn: or si, si
         jz short .23
         wait
-        fstp tword [0x4a]
+        fstp tword [FpTemp0]
         shr bx, 1
         shr bx, 1
         call FpSkipEmptyRegs
         wait
-        fld tword [0x4a]
+        fld tword [FpTemp0]
         shl bx, 1
         shl bx, 1
         or bl, 0x3
         jmp short .25
 .23:
-        mov si, [0x10]
-        cmp si, [0xe]
+        mov si, [FpStackTop]
+        cmp si, [FpStackBase]
         jz short .25
         or bl, 0xc
         wait
@@ -640,13 +662,13 @@ FpException:
         fld tword [si]
         wait
         fdecstp
-        mov si, [0x10]
-        cmp si, [0xe]
+        mov si, [FpStackTop]
+        cmp si, [FpStackBase]
         jnz short .24
         call FpSetC2
 .24:
         sub si, 0xc
-        mov [0x10], si
+        mov [FpStackTop], si
 .25:
         mov dx, [bp + 0x8]
         xor dx, 0x1e0
@@ -711,7 +733,7 @@ FpSkipEmptyRegs:
         pop si
         jmp near FpException.2
 .3:
-        or byte [0x8], 0x2
+        or byte [FpUserStatus], 0x2
         push cx
         mov cx, [bp + 0x8]
         and cl, 0xc0
@@ -730,13 +752,13 @@ FpSkipEmptyRegs:
         test bh, 0xc0
         jz short .6
         and bh, 0x3f
-        mov si, [0x10]
-        cmp si, [0x12]
+        mov si, [FpStackTop]
+        cmp si, [FpStackLimit]
         jnz short .5
         call FpSetC1
 .5:
         add si, 0xc
-        mov [0x10], si
+        mov [FpStackTop], si
         wait
         fdecstp
         wait
@@ -786,9 +808,9 @@ FpSkipEmptyRegs:
         wait
         fstp st0
         wait
-        fnstsw [0x16]
+        fnstsw [FpOpStatus]
         wait
-        or al, [0x16]
+        or al, [FpOpStatus]
 .11:
         pop cx
         and al, 0xfd
@@ -864,9 +886,9 @@ FpSignal:
         wait
         fnclex
         mov di, ss
-        cmp word [0x14], 0x0
+        cmp word [FpMachineMode], 0x0
         jz short .1
-        mov di, [0x56]
+        mov di, [FpSavedSs]
 .1:
         mov cx, [bp + 0x8]
         db 0x8B, 0xD9                           ; insn: mov bx, cx
@@ -893,9 +915,9 @@ FpSignal:
         pop di
         pop ds
         wait
-        fnstsw [0x16]
+        fnstsw [FpOpStatus]
         wait
-        or al, [0x16]
+        or al, [FpOpStatus]
 .3:
         ret
 .4:
@@ -932,9 +954,9 @@ FpSignal:
         test al, 0x40
         jnz short .5
 .5:
-        mov ds, [cs:0x0]
-        mov ax, [0x0]
-        or ax, [0x2]
+        mov ds, [cs:EmuDataSeg]
+        mov ax, [FpErrHandler]
+        or ax, [FpErrHandler + 2]
         jnz short .6
         xchg ax, bx
         mov ah, 0x4c
@@ -942,7 +964,7 @@ FpSignal:
 .6:
         xchg ax, bx
         pop bx
-        call far [0x0]
+        call far [FpErrHandler]
         pop ds
         pop ax
         iret
@@ -952,15 +974,15 @@ FpSignal:
 ; Function 4: sets the control word.
 ;-----------------------------------------------------------------------------
 FpLoadCw:
-        mov [0x6], ax
+        mov [FpUserCw], ax
         and ax, 0xff3c
-        cmp byte [0x4], 0x0
+        cmp byte [Fp87Present], 0x0
         jz short .1
-        mov [0x1a], ax
+        mov [FpTemp], ax
         wait
-        fldcw [0x1a]
+        fldcw [FpTemp]
 .1:
-        mov [0xa], ax
+        mov [FpEmuCw], ax
         ret
 
 ;-----------------------------------------------------------------------------
@@ -968,7 +990,7 @@ FpLoadCw:
 ; Function 5: returns the control word.
 ;-----------------------------------------------------------------------------
 FpGetCw:
-        mov ax, [0x6]
+        mov ax, [FpUserCw]
         ret
 
 ;-----------------------------------------------------------------------------
@@ -977,17 +999,17 @@ FpGetCw:
 ;-----------------------------------------------------------------------------
 FpGetStatus:
         db 0x33, 0xC0                           ; insn: xor ax, ax
-        cmp al, [0x4]
+        cmp al, [Fp87Present]
         jz short .1
         wait
-        fnstsw [0x16]
+        fnstsw [FpOpStatus]
         wait
-        mov al, [0x16]
+        mov al, [FpOpStatus]
         and al, 0x3f
 .1:
-        or ax, [0x8]
+        or ax, [FpUserStatus]
         and ax, 0x1fff
-        mov [0x8], ax
+        mov [FpUserStatus], ax
         ret
 
 ;-----------------------------------------------------------------------------
@@ -996,32 +1018,32 @@ FpGetStatus:
 ;-----------------------------------------------------------------------------
 FpRoundInt:
         and ax, 0xc00
-        cmp byte [0x4], 0x0
+        cmp byte [Fp87Present], 0x0
         jz short .1
         wait
-        fnstcw [0xa]
+        fnstcw [FpEmuCw]
         wait
-        mov cx, [0xa]
+        mov cx, [FpEmuCw]
         and ch, 0xf3
         db 0x0B, 0xC1                           ; insn: or ax, cx
-        mov [0x1a], ax
+        mov [FpTemp], ax
         wait
-        fldcw [0x1a]
+        fldcw [FpTemp]
         wait
         frndint
         wait
-        fldcw [0xa]
+        fldcw [FpEmuCw]
         ret
 .1:
-        mov cx, [0xa]
+        mov cx, [FpEmuCw]
         push cx
         and ch, 0xf3
         db 0x0A, 0xE5                           ; insn: or ah, ch
-        mov [0xb], ah
+        mov [FpEmuCw + 1], ah
         push bp
         call FpRndint
         pop bp
-        pop word [0xa]
+        pop word [FpEmuCw]
         call FpCheckPending
         ret
 
@@ -1031,44 +1053,44 @@ FpRoundInt:
 ;-----------------------------------------------------------------------------
 FpToLong:
         and ax, 0xc00
-        cmp byte [0x4], 0x0
+        cmp byte [Fp87Present], 0x0
         jz short .1
         wait
-        fnstcw [0xa]
+        fnstcw [FpEmuCw]
         wait
-        mov cx, [0xa]
+        mov cx, [FpEmuCw]
         and ch, 0xf3
         db 0x0B, 0xC1                           ; insn: or ax, cx
-        mov [0x1a], ax
+        mov [FpTemp], ax
         wait
-        fldcw [0x1a]
+        fldcw [FpTemp]
         wait
-        fistp dword [0x1a]
+        fistp dword [FpTemp]
         wait
-        fldcw [0xa]
-        mov ax, [0x1a]
-        mov dx, [0x1c]
+        fldcw [FpEmuCw]
+        mov ax, [FpTemp]
+        mov dx, [FpTemp + 2]
         ret
 .1:
-        mov cx, [0xa]
+        mov cx, [FpEmuCw]
         push cx
         and ch, 0xf3
         db 0x0A, 0xE5                           ; insn: or ah, ch
-        mov [0xb], ah
+        mov [FpEmuCw + 1], ah
         push bp
         call FpToInt32
         pop bp
         db 0x8B, 0xC2                           ; insn: mov ax, dx
         db 0x8B, 0xD3                           ; insn: mov dx, bx
         call FpCheckPending
-        mov si, [0x10]
-        cmp si, [0xe]
+        mov si, [FpStackTop]
+        cmp si, [FpStackBase]
         jnz short .2
         call FpSetC2
 .2:
         sub si, 0xc
-        mov [0x10], si
-        pop word [0xa]
+        mov [FpStackTop], si
+        pop word [FpEmuCw]
 .3:
         ret
 
@@ -1077,16 +1099,16 @@ FpToLong:
 ; Raises unmasked exceptions after a conversion.
 ;-----------------------------------------------------------------------------
 FpCheckPending:
-        mov cx, [0x16]
-        or [0x8], cx
-        or [0xc], cl
+        mov cx, [FpOpStatus]
+        or [FpUserStatus], cx
+        or [FpEmuStatus], cl
         not cl
-        mov ch, [0x6]
+        mov ch, [FpUserCw]
         or ch, 0xc2
         and ch, 0x3f
         db 0x0A, 0xCD                           ; insn: or cl, ch
         not cl
-        mov ch, [0x17]
+        mov ch, [FpOpStatus + 1]
         test cx, 0xdfff
         jz short FpToLong.3
         xchg ax, cx
@@ -1185,7 +1207,7 @@ FpPatchInt:
         pop ax
         iret
         db 0x90
-FpPatchIntJumpTable:                            ; word; not used in the EXE (overlays may use it)
+FpOpcodeTable:                                  ; word; FpEmulate's handlers by ESC opcode and MOD field
         dw FpEmulate.23
         dw FpEmulate.7
         dw FpEmulate.15
@@ -1218,7 +1240,7 @@ FpPatchIntJumpTable:                            ; word; not used in the EXE (ove
         dw FpEmulate.9
         dw FpEmulate.17
         dw FpEmulate.27
-FpPatchIntJumpTable2:                           ; word; not used in the EXE (overlays may use it)
+FpArithTable:                                   ; word; fadd, fmul, fcom, fcomp, fsub, fsubr, fdiv, fdivr
         dw FpAdd
         dw FpMul
         dw FpShiftRight.38
@@ -1227,7 +1249,7 @@ FpPatchIntJumpTable2:                           ; word; not used in the EXE (ove
         dw FpSetStackFault.1
         dw FpDivRev
         dw FpDiv
-FpPatchIntJumpTable3:                           ; word; not used in the EXE (overlays may use it)
+FpOddEscMemTable:                               ; word; memory forms of ESC 1, 3, 5 and 7 by REG field
         dw FpEmuChainEsc.4
         dw FpSetStackFault
         dw FpEmuChainEsc.5
@@ -1236,6 +1258,7 @@ FpPatchIntJumpTable3:                           ; word; not used in the EXE (ove
         dw FpEmuChainEsc.9
         dw FpSetStackFault
         dw FpEmuChainEsc.10
+FpOddEscRegTable:                               ; word; register forms of ESC 1, 3, 5 and 7 by REG field
         dw FpEmuChainEsc.11
         dw FpEmuChainEsc.23
         dw FpEmuChainEsc.25
@@ -1244,27 +1267,27 @@ FpPatchIntJumpTable3:                           ; word; not used in the EXE (ove
         dw FpEmuChainEsc.20
         dw FpEmuChainEsc.21
         dw FpEmuChainEsc.22
-FpPatchIntJumpTable4:                           ; word; not used in the EXE (overlays may use it)
+FpLoadFormatTable:                              ; word; loads a float, int32, double or int16 operand
         dw FpDivMantissa.40
         dw FpDivMantissa.109
         dw FpDivMantissa.69
         dw FpDivMantissa.99
-FpPatchIntJumpTable5:                           ; word; not used in the EXE (overlays may use it)
+FpStoreFormatTable:                             ; word; stores ST as a float, int32, double or int16
         dw FpDivMantissa.52
         dw FpDivMantissa.114
         dw FpDivMantissa.82
         dw FpDivMantissa.104
-FpPatchIntJumpTable6:                           ; word; not used in the EXE (overlays may use it)
+FpRegField5Table:                               ; word; REG 5: fldcw, fld temp real, (reserved), fild int64
         dw FpShiftRight.28
         dw FpShiftRight.11
         dw FpSetStackFault
         dw FpToInt32.6
-FpPatchIntJumpTable7:                           ; word; not used in the EXE (overlays may use it)
+FpRegField7Table:                               ; word; REG 7: fstcw, fstp temp real, fstsw, fistp int64
         dw FpShiftRight.29
         dw FpShiftRight.24
         dw FpShiftRight.30
         dw FpToInt32.11
-FpPatchIntJumpTable8:                           ; word; not used in the EXE (overlays may use it)
+FpLoadConstTable:                               ; word; fld1, fldl2t, fldl2e, fldpi, fldlg2, fldln2, fldz
         dw FpShiftRight.64
         dw FpShiftRight.59
         dw FpShiftRight.60
@@ -1273,7 +1296,7 @@ FpPatchIntJumpTable8:                           ; word; not used in the EXE (ove
         dw FpShiftRight.62
         dw FpShiftRight.63
         dw FpSetStackFault
-FpPatchIntJumpTable9:                           ; word; not used in the EXE (overlays may use it)
+FpTranscTable:                                  ; word; f2xm1, fyl2x, fptan, fpatan
         dw FpAtanCore.3
         dw FpSeriesB.1
         dw FpPolyRatio.3
@@ -1282,7 +1305,7 @@ FpPatchIntJumpTable9:                           ; word; not used in the EXE (ove
         dw FpSetStackFault
         dw FpSetStackFault
         dw FpSetStackFault
-FpPatchIntJumpTable10:                          ; word; not used in the EXE (overlays may use it)
+FpMiscOpTable:                                  ; word; fprem, fyl2xp1, fsqrt, frndint, fscale (D9 F8-FF)
         dw FpShiftRight.83
         dw FpLog2Core.5
         dw FpSubMantissa.1
@@ -1291,7 +1314,7 @@ FpPatchIntJumpTable10:                          ; word; not used in the EXE (ove
         dw FpShiftRight.31
         dw FpSetStackFault
         dw FpSetStackFault
-FpPatchIntJumpTable11:                          ; word; not used in the EXE (overlays may use it)
+FpCompareTagTable:                              ; word; compare handlers by the two operands' tags
         dw FpShiftRight.41
         dw FpShiftRight.48
         dw FpShiftRight.46
@@ -1308,11 +1331,12 @@ FpPatchIntJumpTable11:                          ; word; not used in the EXE (ove
         dw FpShiftRight.47
         dw FpShiftRight.46
         dw FpShiftRight.51
-FpPatchIntJumpTable12:                          ; word; not used in the EXE (overlays may use it)
+FpTestTagTable:                                 ; word; ftst handlers by tag
         dw FpShiftRight.48
         dw FpShiftRight.43
         dw FpShiftRight.46
         dw FpShiftRight.47
+FpAddTagTable:                                  ; word; add handlers by the two operands' tags
         dw FpCopyReg.5
         dw FpAdd.3
         dw FpAdd.7
@@ -1329,6 +1353,7 @@ FpPatchIntJumpTable12:                          ; word; not used in the EXE (ove
         dw FpAdd.3
         dw FpAdd.7
         dw FpCopyReg.2
+FpMulTagTable:                                  ; word; multiply handlers by the two operands' tags
         dw FpCopyReg.23
         dw FpAdd.8
         dw FpAdd.7
@@ -1345,6 +1370,7 @@ FpPatchIntJumpTable12:                          ; word; not used in the EXE (ove
         dw FpAdd.13
         dw FpAdd.7
         dw FpAdd.11
+FpDivTagTable:                                  ; word; divide handlers by the two operands' tags
         dw FpCopyReg.40
         dw FpAdd.8
         dw FpAdd.7
@@ -1361,49 +1387,95 @@ FpPatchIntJumpTable12:                          ; word; not used in the EXE (ove
         dw FpAdd.8
         dw FpAdd.7
         dw FpAdd.13
-        dw FpFixDenormal.2
-
-FpConstants:                                    ; emulator constants (temporary reals, coefficient tables);
-                                                ; not used in the EXE (overlays may use it)
-        db 0x40, 0x42, 0x01, 0x03, 0x05, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xC0
-        db 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x00, 0x03, 0x00, 0x00
-        db 0x00, 0x00, 0x00, 0x00, 0x00, 0xC0, 0x00, 0x40, 0x80, 0x02, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
-        db 0xFF, 0xFF, 0xFF, 0x3F, 0x00, 0x00, 0x00, 0x00, 0x80, 0x7F, 0xFF, 0xFF, 0x7F, 0x7F, 0x00, 0x00
-        db 0x00, 0x00, 0x00, 0x00, 0xF0, 0x7F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xEF, 0x7F, 0x00, 0x00
-        db 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x01, 0xC0, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-        db 0x00, 0x80, 0x00, 0x00, 0x00, 0x00, 0x8A, 0xB1, 0x6A, 0xF6, 0xF4, 0xA2, 0x30, 0x89, 0xFE, 0xFF
-        db 0x00, 0x00, 0x9E, 0x53, 0x65, 0xC2, 0x42, 0xD7, 0xB3, 0xDD, 0x00, 0x00, 0x00, 0x00, '#,'
-        db 0x9B, 0x6B, 0xC1, 0x91, 0x0A, 0x86, 0xFF, 0xFF, 0x00, 0x00, 0x84, 0x64, 0xDE, 0xF9, 0x33, 0xF3
-        db 0x04, 0xB5, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x01, 0x00
-        db 0x00, 0x00, 0x35, 0xC2, 0x68, 0x21, 0xA2, 0xDA, 0x0F, 0xC9, 0x01, 0x00, 0x00, 0x00, 0xFE, 0x8A
-        db 0x1B, 0xCD, 0x4B, 0x78, 0x9A, 0xD4, 0x01, 0x00, 0x00, 0x00, 0xBC, 0xF0, 0x17, 0x5C, 0x29, 0x3B
-        db 0xAA, 0xB8, 0x00, 0x00, 0x00, 0x00, 0x99, 0xF7, 0xCF, 0xFB, 0x84, 0x9A, 0x20, 0x9A, 0xFE, 0xFF
-        db 0x00, 0x00, 0xAC, 0x79, 0xCF, 0xD1, 0xF7, 0x17, 0x72, 0xB1, 0xFF, 0xFF, 0x00, 0x00, 0x03, 0x00
-        db 0xD4, 0x7B, 0x5A, 0xD8, 0x3E, 0x5C, 0x69, 0x8F, 0x05, 0x00, 0x80, 0x00, 0x37, 0x4D, 0xD7, 0x2C
-        db 0xF8, 0xD0, 0xD4, 0xD6, 0x0C, 0x00, 0x00, 0x00, 0xD3, 0xDC, 0x17, 0x66, 0xEE, 0xBB, 0xBA, 0x82
-        db 0x12, 0x00, 0x80, 0x00, 0xCB, 0x91, 0x58, 0x5E, 0x8B, 0x86, 0x06, 0xF5, 0x14, 0x00, 0x00, 0x00
-        db 0x03, 0x00, 0xE5, 0x86, 0x20, 0x01, 0x02, 0x05, 0x79, 0x9C, 0x09, 0x00, 0x80, 0x00, 'cf'
-        db 0xCF, 0x88, 0x70, 0xB2, 0x39, 0xC9, 0x0F, 0x00, 0x00, 0x00, 0x96, 0xFA, 0x46, 0xC7, 0xFE, 0x0C
-        db 0xB7, 0xE4, 0x13, 0x00, 0x80, 0x00, 0xCB, 0x91, 0x58, 0x5E, 0x8B, 0x86, 0x06, 0xF5, 0x14, 0x00
-        db 0x00, 0x00, 0x04, 0x00, 0x32, 0x5B, 0x08, 0xCF, 0xC9, 0xA4, 0x50, 0xA6, 0xFD, 0xFF, 0x00, 0x00
-        db 0xCE, 0xD1, 0xCA, 0xD5, 0x4B, 0xA8, 0xF0, 0xD0, 0x02, 0x00, 0x00, 0x00, 0x9F, 0x89, 0x2B, 0xE2
-        db 0xA8, 0x52, 0x4A, 0x9C, 0x05, 0x00, 0x00, 0x00, 'eBPU', 0xCF, 0xE9, 0xEF, 0x90
-        db 0x06, 0x00, 0x00, 0x00, 0x90, 0x4B, 0xAD, 0x24, 0xE6, 0xE5, 0x43, 0xA4, 0x05, 0x00, 0x00, 0x00
-        db 0x03, 0x00, 0x10, 0x83, 0x38, 0x56, 0x0A, 0x4F, 0x62, 0xF0, 0x03, 0x00, 0x00, 0x00, 0xE7, 0xB4
-        db 0x1E, 0x6D, 0x90, 0x51, 0x50, 0xEE, 0x05, 0x00, 0x00, 0x00, ';$m[ ', 0x90, 0x50
-        db 0xAC, 0x06, 0x00, 0x00, 0x00, 0x90, 0x4B, 0xAD, 0x24, 0xE6, 0xE5, 0x43, 0xA4, 0x05, 0x00, 0x00
-        db 0x00, 0x02, 0x00, 0x98, 0x18, 0x05, 0xF4, 0xFC, 0x06, 0x74, 0xF2, 0x05, 0x00, 0x00, 0x00, 0x08
-        db 0xAD, 0xE1, 0x14, 0x54, 0x3D, 0x9B, 0xEC, 0x0E, 0x00, 0x00, 0x00, 0xAF, 0x5F, 0xA3, 0xC3, 0x4A
-        db 0xD8, 0xF0, 0xFD, 0x14, 0x00, 0x00, 0x00, 0x02, 0x00, 'ow{8', 0x8B, 0x10, 0xA7
-        db 0xDA, 0x0A, 0x00, 0x00, 0x00, 0x5D, 0xE8, 0x7B, 0x9B, 0x82, 0xB1, 0x03, 0xA0, 0x12, 0x00, 0x00
-        db 0x00, 0x7E, 0x83, 0x09, 0xE7, 0x14, 0xF8, 0x2D, 0xB7, 0x16, 0x00, 0x00, 0x00, 0x03, 0x00, 0x04, 0x77
-        db 0x99, 0xC2, 0xE2, 0x57, 0x71, 0x9B, 0xFE, 0xFF, 0x00, 0x00, 0x9C, 0x4F, 0x31, 0xF6, 0x35, 0x5E
-        db 0x91, 0xDE, 0x04, 0x00, 0x80, 0x00, 0x8A, 0x4B, 0xEA, 0x7A, 0xED, 0xC9, 0xD3, 0xB2, 0x08, 0x00
-        db 0x00, 0x00, 0xC9, 0x28, 0x09, 0x1D, 0x2F, 0xE4, 0xC4, 0x8A, 0x0A, 0x00, 0x80, 0x00, 0x02, 0x00
-        db 0xBB, 'vp>[', 0x02, 0xAC, 0x8E, 0x05, 0x00, 0x80, 0x00, 0x60, 0xEF, 0x33, 0xA9
-        db 0xD0, 0x1F, 0x04, 0x9C, 0x08, 0x00, 0x00, 0x00, 0x96, 0xBB, 0x83, 0x6C, 0xE0, 0xF4, 0x5F, 0xC0
-        db 0x09, 0x00, 0x80, 0x00
-FpConstantsJumpTable:                           ; word; not used in the EXE (overlays may use it)
+FpExamineCodes:                                 ; fxam condition codes (C3, C2, C1, C0) by tag and sign
+        db 0x04, 0x06, 0x40, 0x42, 0x01, 0x03, 0x05, 0x07
+FpRegZero:                                      ; +0 as an emulator register
+        db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xC0, 0x00, 0x01
+FpRegInfinity:                                  ; +infinity as an emulator register
+        db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x00, 0x03
+FpRegIndefinite:                                ; the indefinite NaN as an emulator register
+        db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xC0, 0x00, 0x40, 0x80, 0x02
+FpRegMax:                                       ; the largest temp real as an emulator register
+        db 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x3F, 0x00, 0x00
+FpSingleInf:                                    ; float +infinity
+        dw 0x0000, 0x7F80
+FpSingleMax:                                    ; the largest float
+        dw 0xFFFF, 0x7F7F
+FpDoubleInf:                                    ; double +infinity
+        dw 0x0000, 0x0000, 0x0000, 0x7FF0
+FpDoubleMax:                                    ; the largest double
+        dw 0xFFFF, 0xFFFF, 0xFFFF, 0x7FEF
+FpConstZero:                                    ; 0.0 (fldz)
+        db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x01, 0xC0, 0x00, 0x01
+FpConstOne:                                     ; 1.0 (fld1)
+        db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00, 0x00
+FpConstTan15:                                   ; 2 - sqrt 3, the tangent of 15 degrees
+        db 0x8A, 0xB1, 0x6A, 0xF6, 0xF4, 0xA2, 0x30, 0x89, 0xFE, 0xFF, 0x00, 0x00
+FpConstSqrt3:                                   ; sqrt 3
+        db 0x9E, 0x53, 0x65, 0xC2, 0x42, 0xD7, 0xB3, 0xDD, 0x00, 0x00, 0x00, 0x00
+FpConstPiOver6:                                 ; pi / 6
+        db 0x23, 0x2C, 0x9B, 0x6B, 0xC1, 0x91, 0x0A, 0x86, 0xFF, 0xFF, 0x00, 0x00
+FpConstSqrt2:                                   ; sqrt 2
+        db 0x84, 0x64, 0xDE, 0xF9, 0x33, 0xF3, 0x04, 0xB5, 0x00, 0x00, 0x00, 0x00
+FpConstTwo:                                     ; 2.0
+        db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x01, 0x00, 0x00, 0x00
+FpConstPi:                                      ; pi (fldpi)
+        db 0x35, 0xC2, 0x68, 0x21, 0xA2, 0xDA, 0x0F, 0xC9, 0x01, 0x00, 0x00, 0x00
+FpConstL2T:                                     ; log2 10 (fldl2t)
+        db 0xFE, 0x8A, 0x1B, 0xCD, 0x4B, 0x78, 0x9A, 0xD4, 0x01, 0x00, 0x00, 0x00
+FpConstL2E:                                     ; log2 e (fldl2e)
+        db 0xBC, 0xF0, 0x17, 0x5C, 0x29, 0x3B, 0xAA, 0xB8, 0x00, 0x00, 0x00, 0x00
+FpConstLg2:                                     ; log10 2 (fldlg2)
+        db 0x99, 0xF7, 0xCF, 0xFB, 0x84, 0x9A, 0x20, 0x9A, 0xFE, 0xFF, 0x00, 0x00
+FpConstLn2:                                     ; ln 2 (fldln2)
+        db 0xAC, 0x79, 0xCF, 0xD1, 0xF7, 0x17, 0x72, 0xB1, 0xFF, 0xFF, 0x00, 0x00
+FpSeriesANum:                                   ; FpSeriesA numerator: degree word, then coefficients
+        dw 3
+        db 0xD4, 0x7B, 0x5A, 0xD8, 0x3E, 0x5C, 0x69, 0x8F, 0x05, 0x00, 0x80, 0x00
+        db 0x37, 0x4D, 0xD7, 0x2C, 0xF8, 0xD0, 0xD4, 0xD6, 0x0C, 0x00, 0x00, 0x00
+        db 0xD3, 0xDC, 0x17, 0x66, 0xEE, 0xBB, 0xBA, 0x82, 0x12, 0x00, 0x80, 0x00
+        db 0xCB, 0x91, 0x58, 0x5E, 0x8B, 0x86, 0x06, 0xF5, 0x14, 0x00, 0x00, 0x00
+FpSeriesADen:                                   ; FpSeriesA denominator
+        dw 3
+        db 0xE5, 0x86, 0x20, 0x01, 0x02, 0x05, 0x79, 0x9C, 0x09, 0x00, 0x80, 0x00
+        db 0x63, 0x66, 0xCF, 0x88, 0x70, 0xB2, 0x39, 0xC9, 0x0F, 0x00, 0x00, 0x00
+        db 0x96, 0xFA, 0x46, 0xC7, 0xFE, 0x0C, 0xB7, 0xE4, 0x13, 0x00, 0x80, 0x00
+        db 0xCB, 0x91, 0x58, 0x5E, 0x8B, 0x86, 0x06, 0xF5, 0x14, 0x00, 0x00, 0x00
+FpAtanNum:                                      ; FpAtanCore numerator: degree word, then coefficients
+        dw 4
+        db 0x32, 0x5B, 0x08, 0xCF, 0xC9, 0xA4, 0x50, 0xA6, 0xFD, 0xFF, 0x00, 0x00
+        db 0xCE, 0xD1, 0xCA, 0xD5, 0x4B, 0xA8, 0xF0, 0xD0, 0x02, 0x00, 0x00, 0x00
+        db 0x9F, 0x89, 0x2B, 0xE2, 0xA8, 0x52, 0x4A, 0x9C, 0x05, 0x00, 0x00, 0x00
+        db 0x65, 0x42, 0x50, 0x55, 0xCF, 0xE9, 0xEF, 0x90, 0x06, 0x00, 0x00, 0x00
+        db 0x90, 0x4B, 0xAD, 0x24, 0xE6, 0xE5, 0x43, 0xA4, 0x05, 0x00, 0x00, 0x00
+FpAtanDen:                                      ; FpAtanCore denominator
+        dw 3
+        db 0x10, 0x83, 0x38, 0x56, 0x0A, 0x4F, 0x62, 0xF0, 0x03, 0x00, 0x00, 0x00
+        db 0xE7, 0xB4, 0x1E, 0x6D, 0x90, 0x51, 0x50, 0xEE, 0x05, 0x00, 0x00, 0x00
+        db 0x3B, 0x24, 0x6D, 0x5B, 0x20, 0x90, 0x50, 0xAC, 0x06, 0x00, 0x00, 0x00
+        db 0x90, 0x4B, 0xAD, 0x24, 0xE6, 0xE5, 0x43, 0xA4, 0x05, 0x00, 0x00, 0x00
+FpSeriesBNum:                                   ; FpSeriesB numerator: degree word, then coefficients
+        dw 2
+        db 0x98, 0x18, 0x05, 0xF4, 0xFC, 0x06, 0x74, 0xF2, 0x05, 0x00, 0x00, 0x00
+        db 0x08, 0xAD, 0xE1, 0x14, 0x54, 0x3D, 0x9B, 0xEC, 0x0E, 0x00, 0x00, 0x00
+        db 0xAF, 0x5F, 0xA3, 0xC3, 0x4A, 0xD8, 0xF0, 0xFD, 0x14, 0x00, 0x00, 0x00
+FpSeriesBDen:                                   ; FpSeriesB denominator
+        dw 2
+        db 0x6F, 0x77, 0x7B, 0x38, 0x8B, 0x10, 0xA7, 0xDA, 0x0A, 0x00, 0x00, 0x00
+        db 0x5D, 0xE8, 0x7B, 0x9B, 0x82, 0xB1, 0x03, 0xA0, 0x12, 0x00, 0x00, 0x00
+        db 0x7E, 0x83, 0x09, 0xE7, 0x14, 0xF8, 0x2D, 0xB7, 0x16, 0x00, 0x00, 0x00
+FpLogNum:                                       ; FpLogSeries numerator: degree word, then coefficients
+        dw 3
+        db 0x04, 0x77, 0x99, 0xC2, 0xE2, 0x57, 0x71, 0x9B, 0xFE, 0xFF, 0x00, 0x00
+        db 0x9C, 0x4F, 0x31, 0xF6, 0x35, 0x5E, 0x91, 0xDE, 0x04, 0x00, 0x80, 0x00
+        db 0x8A, 0x4B, 0xEA, 0x7A, 0xED, 0xC9, 0xD3, 0xB2, 0x08, 0x00, 0x00, 0x00
+        db 0xC9, 0x28, 0x09, 0x1D, 0x2F, 0xE4, 0xC4, 0x8A, 0x0A, 0x00, 0x80, 0x00
+FpLogDen:                                       ; FpLogSeries denominator
+        dw 2
+        db 0xBB, 0x76, 0x70, 0x3E, 0x5B, 0x02, 0xAC, 0x8E, 0x05, 0x00, 0x80, 0x00
+        db 0x60, 0xEF, 0x33, 0xA9, 0xD0, 0x1F, 0x04, 0x9C, 0x08, 0x00, 0x00, 0x00
+        db 0x96, 0xBB, 0x83, 0x6C, 0xE0, 0xF4, 0x5F, 0xC0, 0x09, 0x00, 0x80, 0x00
+FpSegEscTable:                                  ; word; FpEmuSegInt handlers by segment bits of the ESC byte
         dw FpEmuSegInt.1
         dw FpEmuSegInt.4
         dw FpEmuSegInt.2
@@ -1427,7 +1499,7 @@ FpEmuWaitInt:
         pop ds
         pop bp
         iret
-FpEmuWaitIntJumpTable:                          ; word; not used in the EXE (overlays may use it)
+FpSegModrmTable:                                ; word; FpEmuSegInt handlers by segment bits of the next byte
         dw FpEmuSegInt.1
         dw FpEmuSegInt.3
         dw FpEmuSegInt.2
@@ -1462,7 +1534,7 @@ FpEmuSegInt:
         rol bl, 1
         and bx, 0x3
         rol bx, 1
-        jmp [cs:bx + 0xc3d]
+        jmp [cs:bx + FpSegModrmTable]
 .1:
         mov es, [bp + 0xe]
         jmp short .4
@@ -1488,7 +1560,7 @@ FpEmuSegDecode:
         and bx, 0x6
         inc di
         mov cx, [di - 0x2]
-        jmp [cs:bx + 0xc20]
+        jmp [cs:bx + FpSegEscTable]
 
 ;-----------------------------------------------------------------------------
 ; FpEmuSegIntAlt                                                18B9:0C98  MSC
@@ -1551,7 +1623,7 @@ FpEmulate:
         db 0x8A, 0xDD                           ; insn: mov bl, ch
         and bx, 0x1f
         shl bx, 1
-        jmp [cs:bx + 0x880]
+        jmp [cs:bx + FpOpcodeTable]
 .2:
         db 0x8B, 0xF2                           ; insn: mov si, dx
         jmp short .25
@@ -1637,9 +1709,9 @@ FpEmulate:
 .25:
         mov [bp + 0x14], di
         mov bl, [di]
-        mov ds, [cs:0x0]
-        mov [0xa6], bl
-        mov word [0x16], 0x2000
+        mov ds, [cs:EmuDataSeg]
+        mov [FpNextByte], bl
+        mov word [FpOpStatus], 0x2000
         shr ch, 1
         shr ch, 1
         shr ch, 1
@@ -1648,33 +1720,33 @@ FpEmulate:
         and bx, 0xe
         test cl, 0x1
         jz short .26
-        mov ax, 0xe74
+        mov ax, FpEmuExit.1
         push ax
-        jmp [cs:bx + 0x8d0]
+        jmp [cs:bx + FpOddEscMemTable]
         db 0x90
 .26:
         push bx
         db 0x8B, 0xD9                           ; insn: mov bx, cx
         and bx, 0x6
-        call [cs:bx + 0x8f0]
+        call [cs:bx + FpLoadFormatTable]
         pop bx
         mov ax, ds
         mov es, ax
-        mov si, [0x10]
+        mov si, [FpStackTop]
         db 0x8B, 0xFE                           ; insn: mov di, si
         sub di, 0xc
-        mov [0x96], di
+        mov [FpResultPtr], di
         jmp short .31
         db 0x90
 .27:
         mov [bp + 0x14], di
         mov bl, [di]
         db 0x33, 0xC0                           ; insn: xor ax, ax
-        mov di, [cs:0x0]
+        mov di, [cs:EmuDataSeg]
         mov ds, di
         mov es, di
-        mov [0xa6], bl
-        mov [0x16], ax
+        mov [FpNextByte], bl
+        mov [FpOpStatus], ax
         db 0x8A, 0xDD                           ; insn: mov bl, ch
         shr bl, 1
         shr bl, 1
@@ -1683,16 +1755,16 @@ FpEmulate:
         and bx, 0xe
         test cl, 0x1
         jz short .28
-        call [cs:bx + 0x8e0]
+        call [cs:bx + FpOddEscRegTable]
         jmp near FpEmuExit.1
         db 0x90
 .28:
         call FpStackRoom
         jc short .35
-        mov [0x96], si
+        mov [FpResultPtr], si
         test cl, 0x4
         jz short .29
-        mov [0x96], di
+        mov [FpResultPtr], di
 .29:
         test bl, 0x8
         jz short .30
@@ -1701,24 +1773,24 @@ FpEmulate:
         test cl, 0x2
         jz short .34
 .31:
-        call [cs:bx + 0x8c0]
-        mov si, [0x10]
-        cmp si, [0xe]
+        call [cs:bx + FpArithTable]
+        mov si, [FpStackTop]
+        cmp si, [FpStackBase]
         jz short .33
 .32:
         sub si, 0xc
-        mov [0x10], si
+        mov [FpStackTop], si
         jmp short FpEmuExit.1
 .33:
         call FpSetC2
         jmp short .32
 .34:
-        mov ax, 0xe74
+        mov ax, FpEmuExit.1
         push ax
-        jmp [cs:bx + 0x8c0]
+        jmp [cs:bx + FpArithTable]
 .35:
         call FpSetC2
-        or word [0x16], 0x1
+        or word [FpOpStatus], 0x1
         jmp short FpEmuExit.1
 
 ;-----------------------------------------------------------------------------
@@ -1726,7 +1798,7 @@ FpEmulate:
 ; Checks room on the emulated register stack.
 ;-----------------------------------------------------------------------------
 FpStackRoom:
-        mov si, [0x10]
+        mov si, [FpStackTop]
         db 0x8B, 0xFE                           ; insn: mov di, si
         db 0x8A, 0xD5                           ; insn: mov dl, ch
         and dl, 0x1c
@@ -1735,7 +1807,7 @@ FpStackRoom:
         db 0x02, 0xD6                           ; insn: add dl, dh
         db 0x32, 0xF6                           ; insn: xor dh, dh
         db 0x2B, 0xFA                           ; insn: sub di, dx
-        cmp di, [0xe]
+        cmp di, [FpStackBase]
         clc
         jg short .1
         cmc
@@ -1779,25 +1851,25 @@ FpEmuExit:
         pop ax
         iret
 .1:
-        mov ax, [0x16]
-        or [0x8], ax
-        or [0xc], al
+        mov ax, [FpOpStatus]
+        or [FpUserStatus], ax
+        or [FpEmuStatus], al
         not al
-        mov bh, [0x6]
+        mov bh, [FpUserCw]
         or bh, 0xc2
         and bh, 0x3f
         db 0x0A, 0xC7                           ; insn: or al, bh
         not al
         test ax, 0xdfff
         jnz short FpEmuSignal.1
-        jmp [0xa7]
+        jmp [FpExitVector]
 
 ;-----------------------------------------------------------------------------
 ; FpEmuChain                                                    18B9:0E98  MSC
 ; Emulates the next instruction too when it is another INT 34h-3Bh.
 ;-----------------------------------------------------------------------------
 FpEmuChain:
-        cmp byte [0xa6], 0xcd
+        cmp byte [FpNextByte], 0xcd
         jnz short FpEmuExit
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         lds di, [bp + 0x14]
@@ -1816,14 +1888,14 @@ FpEmuChain:
         db 0x8A, 0xDD                           ; insn: mov bl, ch
         and bx, 0x1f
         shl bx, 1
-        jmp [cs:bx + 0x880]
+        jmp [cs:bx + FpOpcodeTable]
 
 ;-----------------------------------------------------------------------------
 ; FpEmuChainEsc                                                 18B9:0ED1  MSC
 ; Emulates the next instruction when it is a real ESC opcode.
 ;-----------------------------------------------------------------------------
 FpEmuChainEsc:
-        mov cl, [0xa6]
+        mov cl, [FpNextByte]
         cmp cl, 0x9b
         jz short .2
         cmp cl, 0x90
@@ -1857,25 +1929,25 @@ FpEmuChainEsc:
         db 0x8A, 0xDD                           ; insn: mov bl, ch
         and bx, 0x1f
         shl bx, 1
-        jmp [cs:bx + 0x880]
+        jmp [cs:bx + FpOpcodeTable]
 .4:
         db 0x8B, 0xD9                           ; insn: mov bx, cx
         and bx, 0x6
-        jmp [cs:bx + 0x8f0]
+        jmp [cs:bx + FpLoadFormatTable]
 .5:
         db 0x8B, 0xD9                           ; insn: mov bx, cx
         and bx, 0x6
-        jmp [cs:bx + 0x8f8]
+        jmp [cs:bx + FpStoreFormatTable]
 .6:
         db 0x8B, 0xD9                           ; insn: mov bx, cx
         and bx, 0x6
-        call [cs:bx + 0x8f8]
-        mov si, [0x10]
-        cmp si, [0xe]
+        call [cs:bx + FpStoreFormatTable]
+        mov si, [FpStackTop]
+        cmp si, [FpStackBase]
         jna short .8
 .7:
         sub si, 0xc
-        mov [0x10], si
+        mov [FpStackTop], si
         ret
 .8:
         call FpSetC2
@@ -1883,11 +1955,11 @@ FpEmuChainEsc:
 .9:
         db 0x8B, 0xD9                           ; insn: mov bx, cx
         and bx, 0x6
-        jmp [cs:bx + 0x900]
+        jmp [cs:bx + FpRegField5Table]
 .10:
         db 0x8B, 0xD9                           ; insn: mov bx, cx
         and bx, 0x6
-        jmp [cs:bx + 0x908]
+        jmp [cs:bx + FpRegField7Table]
 .11:
         test cx, 0x6
         jnz short .12
@@ -1902,7 +1974,7 @@ FpEmuChainEsc:
         jnz short .15
         cmp cx, 0x8104
         jz short .14
-        mov word [0xc], 0x0
+        mov word [FpEmuStatus], 0x0
         ret
 .14:
         push sp
@@ -1910,7 +1982,7 @@ FpEmuChainEsc:
         db 0x3B, 0xC4                           ; insn: cmp ax, sp
 .15:
         jnz short FpSetStackFault
-        mov ax, [0xc]
+        mov ax, [FpEmuStatus]
         mov [bp + 0x12], ax
         ret
 .16:
@@ -1931,17 +2003,17 @@ FpEmuChainEsc:
         db 0x8A, 0xDD                           ; insn: mov bl, ch
         shr bl, 1
         and bx, 0xe
-        jmp [cs:bx + 0x910]
+        jmp [cs:bx + FpLoadConstTable]
 .21:
         db 0x8A, 0xDD                           ; insn: mov bl, ch
         shr bl, 1
         and bx, 0xe
-        jmp [cs:bx + 0x920]
+        jmp [cs:bx + FpTranscTable]
 .22:
         db 0x8A, 0xDD                           ; insn: mov bl, ch
         shr bl, 1
         and bx, 0xe
-        jmp [cs:bx + 0x930]
+        jmp [cs:bx + FpMiscOpTable]
 .23:
         test cx, 0x6
         jnz short FpSetStackFault
@@ -1963,7 +2035,7 @@ FpEmuChainEsc:
 ; Sets status bit 40h (stack fault).
 ;-----------------------------------------------------------------------------
 FpSetStackFault:
-        or word [0x16], 0x40
+        or word [FpOpStatus], 0x40
         ret
         db 0x90
 .1:
@@ -1986,7 +2058,7 @@ FpSub:
 ;-----------------------------------------------------------------------------
 FpMul:
         db 0x33, 0xD2                           ; insn: xor dx, dx
-        mov bx, 0x988
+        mov bx, FpMulTagTable
         jmp short FpAdd.2
         db 0x90
 
@@ -1997,7 +2069,7 @@ FpMul:
 FpDivRev:
         db 0x33, 0xD2                           ; insn: xor dx, dx
         xchg si, di
-        mov bx, 0x9a8
+        mov bx, FpDivTagTable
         jmp short FpAdd.2
         db 0x90
 
@@ -2007,7 +2079,7 @@ FpDivRev:
 ;-----------------------------------------------------------------------------
 FpDiv:
         db 0x33, 0xD2                           ; insn: xor dx, dx
-        mov bx, 0x9a8
+        mov bx, FpDivTagTable
         jmp short FpAdd.2
         db 0x90
 
@@ -2018,7 +2090,7 @@ FpDiv:
 FpAdd:
         db 0x33, 0xD2                           ; insn: xor dx, dx
 .1:
-        mov bx, 0x968
+        mov bx, FpAddTagTable
 .2:
         mov al, [di + 0xb]
         shl al, 1
@@ -2040,15 +2112,15 @@ FpAdd:
         mov [di + 0xa], dl
         ret
 .5:
-        or word [0x16], 0x4
+        or word [FpOpStatus], 0x4
         jmp short .7
 .6:
         db 0x8B, 0xF7                           ; insn: mov si, di
 .7:
-        or word [0x16], 0x1
+        or word [FpOpStatus], 0x1
         jmp short FpCopyToTemp
 .8:
-        mov si, 0x9d0
+        mov si, FpRegZero
 .9:
         db 0x32, 0xF2                           ; insn: xor dh, dl
         and dh, 0x80
@@ -2056,18 +2128,18 @@ FpAdd:
         or [di + 0xa], dh
         ret
 .10:
-        or word [0x16], 0x4
+        or word [FpOpStatus], 0x4
 .11:
-        mov si, 0x9dc
+        mov si, FpRegInfinity
         jmp short .9
 .12:
-        or word [0x16], 0x4
+        or word [FpOpStatus], 0x4
 .13:
-        mov si, 0x9e8
-        or word [0x16], 0x1
+        mov si, FpRegIndefinite
+        or word [FpOpStatus], 0x1
 
 FpCopyConstToTemp:
-        mov di, [0x96]
+        mov di, [FpResultPtr]
 
 FpCopyConst:
         cs movsw
@@ -2085,7 +2157,7 @@ FpCopyConst:
 ; FpCopyReg into the temporary at [96h].
 ;-----------------------------------------------------------------------------
 FpCopyToTemp:
-        mov di, [0x96]
+        mov di, [FpResultPtr]
         db 0x3B, 0xF7                           ; insn: cmp si, di
         jz short FpCopyReg.1
 
@@ -2101,7 +2173,7 @@ FpCopyReg:
 .1:
         ret
 .2:
-        test byte [0xb], 0x10
+        test byte [FpEmuCw + 1], 0x10
         jz short FpAdd.13
         db 0x32, 0xD6                           ; insn: xor dl, dh
         js short FpAdd.13
@@ -2507,7 +2579,7 @@ FpCopyReg:
         lodsw
         xchg ax, dx
         db 0x8B, 0xF7                           ; insn: mov si, di
-        mov di, 0x98
+        mov di, FpDivisor
         movsw
         movsw
         movsw
@@ -2523,10 +2595,10 @@ FpCopyReg:
         inc bp
 .41:
         push bp
-        mov [0x1a], di
+        mov [FpTemp], di
         call FpDivMantissa
         push di
-        mov word [0x1a], 0x0
+        mov word [FpTemp], 0x0
         call FpDivMantissa
         push di
         call FpDivMantissa
@@ -2538,7 +2610,7 @@ FpCopyReg:
         rcl ax, 1
         rcl dx, 1
         jc short .43
-        mov si, 0x98
+        mov si, FpDivisor
         cmp dx, [si + 0x6]
         jnz short .42
         cmp ax, [si + 0x4]
@@ -2567,7 +2639,7 @@ FpCopyReg:
 ; Long division of two mantissas.
 ;-----------------------------------------------------------------------------
 FpDivMantissa:
-        mov si, [0x9e]
+        mov si, [FpDivisor + 6]
         db 0x33, 0xFF                           ; insn: xor di, di
         db 0x3B, 0xD6                           ; insn: cmp dx, si
         jnc short .8
@@ -2582,21 +2654,21 @@ FpDivMantissa:
         xchg ax, di
         db 0x33, 0xED                           ; insn: xor bp, bp
         db 0x8B, 0xF5                           ; insn: mov si, bp
-        mov ax, [0x98]
+        mov ax, [FpDivisor]
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .2
         mul di
         db 0x8B, 0xF2                           ; insn: mov si, dx
 .2:
         push ax
-        mov ax, [0x9a]
+        mov ax, [FpDivisor + 2]
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .3
         mul di
         db 0x03, 0xF0                           ; insn: add si, ax
         db 0x13, 0xEA                           ; insn: adc bp, dx
 .3:
-        mov ax, [0x9c]
+        mov ax, [FpDivisor + 4]
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .4
         mul di
@@ -2604,7 +2676,7 @@ FpDivMantissa:
         adc dx, 0x0
         xchg ax, dx
 .4:
-        mov dx, [0x1a]
+        mov dx, [FpTemp]
         pop bx
         db 0x2B, 0xD3                           ; insn: sub dx, bx
         db 0x1B, 0xCE                           ; insn: sbb cx, si
@@ -2620,22 +2692,22 @@ FpDivMantissa:
         jnc short .7
 .6:
         dec di
-        add cx, [0x98]
-        adc bx, [0x9a]
-        adc ax, [0x9c]
-        adc dx, [0x9e]
+        add cx, [FpDivisor]
+        adc bx, [FpDivisor + 2]
+        adc ax, [FpDivisor + 4]
+        adc dx, [FpDivisor + 6]
         jnc short .6
 .7:
         ret
 .8:
         dec di
-        sub cx, [0x98]
-        sbb bx, [0x9a]
-        sbb ax, [0x9c]
-        add cx, [0x9a]
-        adc bx, [0x9c]
+        sub cx, [FpDivisor]
+        sbb bx, [FpDivisor + 2]
+        sbb ax, [FpDivisor + 4]
+        add cx, [FpDivisor + 2]
+        adc bx, [FpDivisor + 4]
         db 0x13, 0xC2                           ; insn: adc ax, dx
-        mov dx, [0x98]
+        mov dx, [FpDivisor]
         cmc
         jmp short .5
         db 0x90
@@ -2654,8 +2726,8 @@ FpDivMantissa:
         db 0x33, 0xED                           ; insn: xor bp, bp
         jmp short .10
 .11:
-        mov si, 0x9d0
-        mov di, [0x96]
+        mov si, FpRegZero
+        mov di, [FpResultPtr]
         pop ax
         pop bp
         jmp near FpCopyConst
@@ -2699,7 +2771,7 @@ FpDivMantissa:
         db 0x8A, 0xEB                           ; insn: mov ch, bl
         db 0x0B, 0xC9                           ; insn: or cx, cx
         jz short .20
-        or word [0x16], 0x20
+        or word [FpOpStatus], 0x20
         shr al, 1
         jc short .17
         shr al, 1
@@ -2749,13 +2821,13 @@ FpDivMantissa:
         rcl di, 1
         nop
 .22:
-        mov al, [0xb]
+        mov al, [FpEmuCw + 1]
         shr al, 1
         jnc short .29
         shr al, 1
         db 0x0B, 0xED                           ; insn: or bp, bp
         jz short .24
-        or word [0x16], 0x20
+        or word [FpOpStatus], 0x20
         shr al, 1
         jc short .27
         shr al, 1
@@ -2775,7 +2847,7 @@ FpDivMantissa:
         mov di, 0x8000
         inc si
 .24:
-        mov ax, [0x96]
+        mov ax, [FpResultPtr]
         xchg ax, di
         mov [di], dx
         mov [di + 0x2], cx
@@ -2822,7 +2894,7 @@ FpDivMantissa:
         xchg ax, bp
         db 0x0B, 0xED                           ; insn: or bp, bp
         jz short .24
-        or word [0x16], 0x20
+        or word [FpOpStatus], 0x20
         shr al, 1
         jc short .32
         shr al, 1
@@ -2834,7 +2906,7 @@ FpDivMantissa:
         jz short .34
         jmp short .33
 .30:
-        mov si, 0x9d0
+        mov si, FpRegZero
         call FpCopyConst
         mov [di + 0xa], ah
         ret
@@ -2866,8 +2938,8 @@ FpDivMantissa:
         db 0x32, 0xD2                           ; insn: xor dl, dl
         jmp near .24
 .35:
-        or word [0x16], 0x8
-        mov al, [0xb]
+        or word [FpOpStatus], 0x8
+        mov al, [FpEmuCw + 1]
         shr al, 1
         shr al, 1
         shr al, 1
@@ -2875,23 +2947,23 @@ FpDivMantissa:
         shr al, 1
         jc short .39
 .36:
-        mov si, 0x9dc
+        mov si, FpRegInfinity
         call FpCopyConst
         mov [di + 0xa], ah
         ret
 .37:
         shr al, 1
         jc short .38
-        or word [0x16], 0x20
+        or word [FpOpStatus], 0x20
         test ah, 0x80
         jnz short .36
 .38:
-        mov si, 0x9f4
+        mov si, FpRegMax
         call FpCopyConst
         mov [di + 0xa], ah
         ret
 .39:
-        or word [0x16], 0x20
+        or word [FpOpStatus], 0x20
         test ah, 0x80
         jz short .36
         jmp short .38
@@ -2904,13 +2976,13 @@ FpDivMantissa:
         and al, 0x1
         ror al, 1
         xchg al, ah
-        mov si, [0x10]
-        cmp si, [0x12]
+        mov si, [FpStackTop]
+        cmp si, [FpStackLimit]
         jnz short .41
         call FpSetC1
 .41:
         add si, 0xc
-        mov [0x10], si
+        mov [FpStackTop], si
         or dl, 0x80
         db 0x32, 0xF6                           ; insn: xor dh, dh
         cmp al, 0xff
@@ -2950,7 +3022,7 @@ FpDivMantissa:
         or dh, 0x1
         jmp short .42
 .45:
-        or word [0x16], 0x2
+        or word [FpOpStatus], 0x2
         sub al, 0x7f
         cbw
         inc ax
@@ -2986,7 +3058,7 @@ FpDivMantissa:
         jmp near .64
 .52:
         db 0x8B, 0xFE                           ; insn: mov di, si
-        mov si, [0x10]
+        mov si, [FpStackTop]
         mov ax, [si + 0xa]
         mov cl, [si + 0xb]
         db 0x0A, 0xC9                           ; insn: or cl, cl
@@ -3010,9 +3082,9 @@ FpDivMantissa:
         mov bx, [si + 0x5]
         or dx, [si + 0x3]
         jz short .55
-        or word [0x16], 0x20
+        or word [FpOpStatus], 0x20
 .53:
-        mov cl, [0xb]
+        mov cl, [FpEmuCw + 1]
         shr cl, 1
         shr cl, 1
         shr cl, 1
@@ -3052,8 +3124,8 @@ FpDivMantissa:
         js short .55
         jmp short .54
 .59:
-        or word [0x16], 0x28
-        mov cl, [0xb]
+        or word [FpOpStatus], 0x28
+        mov cl, [FpEmuCw + 1]
         shr cl, 1
         shr cl, 1
         shr cl, 1
@@ -3061,10 +3133,10 @@ FpDivMantissa:
         shr cl, 1
         jc short .63
 .60:
-        mov bx, [cs:0xa02]
+        mov bx, [cs:FpSingleInf + 2]
         and ah, 0x80
         db 0x0A, 0xFC                           ; insn: or bh, ah
-        mov ax, [cs:0xa00]
+        mov ax, [cs:FpSingleInf]
         stosw
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         stosw
@@ -3075,12 +3147,12 @@ FpDivMantissa:
         test ah, 0x80
         jnz short .60
 .62:
-        mov bx, [cs:0xa06]
+        mov bx, [cs:FpSingleMax + 2]
         and ah, 0x80
         db 0x0A, 0xE7                           ; insn: or ah, bh
         db 0x8A, 0xC3                           ; insn: mov al, bl
         stosw
-        mov ax, [cs:0xa04]
+        mov ax, [cs:FpSingleMax]
         stosw
         jmp short .56
 .63:
@@ -3088,7 +3160,7 @@ FpDivMantissa:
         jz short .60
         jmp short .62
 .64:
-        or word [0x16], 0x30
+        or word [FpOpStatus], 0x30
         neg ax
         add ax, strict word 0xff82
         cmp ax, strict word 0x18
@@ -3129,12 +3201,12 @@ FpDivMantissa:
         xchg di, si
         jmp short .70
 .69:
-        mov di, [0x10]
-        cmp di, [0x12]
+        mov di, [FpStackTop]
+        cmp di, [FpStackLimit]
         jnc short .68
 .70:
         add di, 0xc
-        mov [0x10], di
+        mov [FpStackTop], di
         es lodsw
         db 0x8B, 0xE8                           ; insn: mov bp, ax
         es lodsw
@@ -3200,7 +3272,7 @@ FpDivMantissa:
         mov dh, 0x1
         jmp short .71
 .74:
-        or word [0x16], 0x2
+        or word [FpOpStatus], 0x2
         sub ax, 0x3ff
         mov bp, [si]
         mov dx, [si + 0x2]
@@ -3275,7 +3347,7 @@ FpDivMantissa:
         db 0x90
 .82:
         db 0x8B, 0xFE                           ; insn: mov di, si
-        mov si, [0x10]
+        mov si, [FpStackTop]
         mov cl, [si + 0xb]
         db 0x0A, 0xC9                           ; insn: or cl, cl
         jnz short .81
@@ -3293,8 +3365,8 @@ FpDivMantissa:
 .83:
         test dl, 0x7
         jz short .87
-        or word [0x16], 0x20
-        mov al, [0xb]
+        or word [FpOpStatus], 0x20
+        mov al, [FpEmuCw + 1]
         shr al, 1
         shr al, 1
         shr al, 1
@@ -3369,10 +3441,10 @@ FpDivMantissa:
 .90:
         sub di, 0x6
 .91:
-        or word [0x16], 0x28
+        or word [FpOpStatus], 0x28
         mov bl, [si + 0xa]
         and bl, 0x80
-        mov cl, [0xb]
+        mov cl, [FpEmuCw + 1]
         shr cl, 1
         shr cl, 1
         shr cl, 1
@@ -3380,7 +3452,7 @@ FpDivMantissa:
         shr cl, 1
         jc short .96
 .92:
-        mov si, 0xa08
+        mov si, FpDoubleInf
 .93:
         cs movsw
         cs movsw
@@ -3395,14 +3467,14 @@ FpDivMantissa:
         db 0x0A, 0xDB                           ; insn: or bl, bl
         jnz short .92
 .95:
-        mov si, 0xa10
+        mov si, FpDoubleMax
         jmp short .93
 .96:
         db 0x0A, 0xDB                           ; insn: or bl, bl
         jz short .92
         jmp short .95
 .97:
-        or word [0x16], 0x30
+        or word [FpOpStatus], 0x30
         add bp, 0x3ff
         neg bp
         db 0x8B, 0xCD                           ; insn: mov cx, bp
@@ -3436,13 +3508,13 @@ FpDivMantissa:
         db 0x8B, 0xDD                           ; insn: mov bx, bp
         db 0x8B, 0xD3                           ; insn: mov dx, bx
         mov ax, 0xf
-        mov si, [0x10]
-        cmp si, [0x12]
+        mov si, [FpStackTop]
+        cmp si, [FpStackLimit]
         jnz short .100
         call FpSetC1
 .100:
         add si, 0xc
-        mov [0x10], si
+        mov [FpStackTop], si
         db 0x32, 0xC9                           ; insn: xor cl, cl
         mov [si + 0xb], cl
         db 0x8B, 0xCF                           ; insn: mov cx, di
@@ -3453,13 +3525,13 @@ FpDivMantissa:
         mov [si + 0xa], ch
         jmp near FpNormalize
 .102:
-        mov si, [0x10]
-        cmp si, [0x12]
+        mov si, [FpStackTop]
+        cmp si, [FpStackLimit]
         jnz short .103
         call FpSetC1
 .103:
         add si, 0xc
-        mov [0x10], si
+        mov [FpStackTop], si
         db 0x33, 0xC0                           ; insn: xor ax, ax
         mov [si], ax
         mov [si + 0x2], ax
@@ -3472,7 +3544,7 @@ FpDivMantissa:
         ret
 .104:
         push si
-        mov si, [0x10]
+        mov si, [FpStackTop]
         test byte [si + 0xb], 0x2
         jnz short .108
         test byte [si + 0xb], 0x1
@@ -3504,7 +3576,7 @@ FpDivMantissa:
         db 0x33, 0xD2                           ; insn: xor dx, dx
         jmp short .106
 .108:
-        or word [0x16], 0x1
+        or word [FpOpStatus], 0x1
         mov dx, 0x8000
         jmp short .106
 .109:
@@ -3517,13 +3589,13 @@ FpDivMantissa:
         db 0x33, 0xDB                           ; insn: xor bx, bx
         db 0x8B, 0xD3                           ; insn: mov dx, bx
         mov ax, 0x1f
-        mov si, [0x10]
-        cmp si, [0x12]
+        mov si, [FpStackTop]
+        cmp si, [FpStackLimit]
         jnz short .110
         call FpSetC1
 .110:
         add si, 0xc
-        mov [0x10], si
+        mov [FpStackTop], si
         db 0x32, 0xC9                           ; insn: xor cl, cl
         mov [si + 0xb], cl
         db 0x8B, 0xCF                           ; insn: mov cx, di
@@ -3560,7 +3632,7 @@ FpDivMantissa:
 ; Converts ST to a 32-bit integer.
 ;-----------------------------------------------------------------------------
 FpToInt32:
-        mov si, [0x10]
+        mov si, [FpStackTop]
         test byte [si + 0xb], 0x2
         jnz short .5
         test byte [si + 0xb], 0x1
@@ -3595,7 +3667,7 @@ FpToInt32:
         db 0x0B, 0xDA                           ; insn: or bx, dx
         jz short .2
 .5:
-        or word [0x16], 0x1
+        or word [FpOpStatus], 0x1
         mov bx, 0x8000
         db 0x33, 0xD2                           ; insn: xor dx, dx
         ret
@@ -3613,13 +3685,13 @@ FpToInt32:
         db 0x0B, 0xC2                           ; insn: or ax, dx
         jz short .10
         mov ax, 0x3f
-        mov si, [0x10]
-        cmp si, [0x12]
+        mov si, [FpStackTop]
+        cmp si, [FpStackLimit]
         jnz short .7
         call FpSetC1
 .7:
         add si, 0xc
-        mov [0x10], si
+        mov [FpStackTop], si
         db 0x32, 0xC9                           ; insn: xor cl, cl
         mov [si + 0xb], cl
         db 0x8B, 0xCF                           ; insn: mov cx, di
@@ -3661,7 +3733,7 @@ FpToInt32:
 ; Converts ST to a 64-bit integer.
 ;-----------------------------------------------------------------------------
 FpToInt64:
-        mov si, [0x10]
+        mov si, [FpStackTop]
         test byte [si + 0xb], 0x2
         jnz short .7
         test byte [si + 0xb], 0x1
@@ -3682,12 +3754,12 @@ FpToInt64:
         db 0x33, 0xC7                           ; insn: xor ax, di
         js short .6
 .2:
-        cmp si, [0xe]
+        cmp si, [FpStackBase]
         jnz short .3
         call FpSetC2
 .3:
         sub si, 0xc
-        mov [0x10], si
+        mov [FpStackTop], si
         ret
 .4:
         db 0x33, 0xFF                           ; insn: xor di, di
@@ -3703,7 +3775,7 @@ FpToInt64:
         jnz short .7
         jmp short .2
 .7:
-        or word [0x16], 0x1
+        or word [FpOpStatus], 0x1
         mov di, 0x8000
         jmp short .5
 
@@ -3727,7 +3799,7 @@ FpNegate64:
 ; Frndint.
 ;-----------------------------------------------------------------------------
 FpRndint:
-        mov si, [0x10]
+        mov si, [FpStackTop]
         mov cx, [si + 0x8]
         cmp cx, 0x3f
         jnl short .1
@@ -3824,10 +3896,10 @@ FpShiftRight:
 .5:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .7
-        or word [0x16], 0x20
-        test byte [0xb], 0x4
+        or word [FpOpStatus], 0x20
+        test byte [FpEmuCw + 1], 0x4
         jnz short .9
-        test byte [0xb], 0x8
+        test byte [FpEmuCw + 1], 0x8
         jnz short .10
         db 0x0A, 0xC2                           ; insn: or al, dl
         db 0x22, 0xE0                           ; insn: and ah, al
@@ -3850,7 +3922,7 @@ FpShiftRight:
         db 0x8B, 0xD7                           ; insn: mov dx, di
         jmp short .5
 .9:
-        test byte [0xb], 0x8
+        test byte [FpEmuCw + 1], 0x8
         jnz short .7
         test byte [si + 0xa], 0x80
         jnz short .6
@@ -3861,13 +3933,13 @@ FpShiftRight:
         jmp short .6
 .11:
         db 0x8B, 0xFE                           ; insn: mov di, si
-        mov si, [0x10]
-        cmp si, [0x12]
+        mov si, [FpStackTop]
+        cmp si, [FpStackLimit]
         jnz short .12
         call FpSetC1
 .12:
         add si, 0xc
-        mov [0x10], si
+        mov [FpStackTop], si
         xchg di, si
         mov ax, es
         mov dx, ds
@@ -3920,7 +3992,7 @@ FpShiftRight:
         mov dh, 0x1
         jmp short .13
 .17:
-        or word [0x16], 0x30
+        or word [FpOpStatus], 0x30
         db 0x33, 0xED                           ; insn: xor bp, bp
         mov [si], bp
         mov [si + 0x2], bp
@@ -3937,13 +4009,13 @@ FpShiftRight:
         mov ax, 0x7fff
         db 0x0A, 0xE6                           ; insn: or ah, dh
         stosw
-        mov si, [0x10]
-        cmp si, [0xe]
+        mov si, [FpStackTop]
+        cmp si, [FpStackBase]
         jnz short .19
         call FpSetC2
 .19:
         sub si, 0xc
-        mov [0x10], si
+        mov [FpStackTop], si
         ret
 .20:
         db 0x33, 0xC0                           ; insn: xor ax, ax
@@ -3955,13 +4027,13 @@ FpShiftRight:
         mov ax, 0x7fff
         db 0x0A, 0xE6                           ; insn: or ah, dh
         stosw
-        mov si, [0x10]
-        cmp si, [0xe]
+        mov si, [FpStackTop]
+        cmp si, [FpStackBase]
         jnz short .21
         call FpSetC2
 .21:
         sub si, 0xc
-        mov [0x10], si
+        mov [FpStackTop], si
         ret
 .22:
         test bh, 0x2
@@ -3972,17 +4044,17 @@ FpShiftRight:
         stosw
         stosw
         stosw
-        mov si, [0x10]
-        cmp si, [0xe]
+        mov si, [FpStackTop]
+        cmp si, [FpStackBase]
         jnz short .23
         call FpSetC2
 .23:
         sub si, 0xc
-        mov [0x10], si
+        mov [FpStackTop], si
         ret
 .24:
         db 0x8B, 0xFE                           ; insn: mov di, si
-        mov si, [0x10]
+        mov si, [FpStackTop]
         mov ax, [si + 0x8]
         add ax, 0x3fff
         mov dh, [si + 0xa]
@@ -3997,38 +4069,38 @@ FpShiftRight:
         movsw
         stosw
         sub si, 0x8
-        cmp si, [0xe]
+        cmp si, [FpStackBase]
         jnz short .25
         call FpSetC2
 .25:
         sub si, 0xc
-        mov [0x10], si
+        mov [FpStackTop], si
         ret
 .26:
-        mov si, [0x10]
+        mov si, [FpStackTop]
         and byte [si + 0xa], 0x7f
         ret
 .27:
-        mov si, [0x10]
+        mov si, [FpStackTop]
         xor byte [si + 0xa], 0x80
         ret
 .28:
         es lodsw
-        mov [0xa], ax
-        mov [0x6], ax
+        mov [FpEmuCw], ax
+        mov [FpUserCw], ax
         ret
 .29:
-        mov ax, [0x6]
+        mov ax, [FpUserCw]
         db 0x8B, 0xFE                           ; insn: mov di, si
         stosw
         ret
 .30:
-        mov ax, [0xc]
+        mov ax, [FpEmuStatus]
         db 0x8B, 0xFE                           ; insn: mov di, si
         stosw
         ret
 .31:
-        mov si, [0x10]
+        mov si, [FpStackTop]
         db 0x8B, 0xFE                           ; insn: mov di, si
         sub di, 0xc
         mov cl, 0xf
@@ -4067,7 +4139,7 @@ FpShiftRight:
 .38:
         db 0x33, 0xD2                           ; insn: xor dx, dx
 .39:
-        test word [0x16], 0x2000
+        test word [FpOpStatus], 0x2000
         jz short .40
         xchg si, di
 .40:
@@ -4079,7 +4151,7 @@ FpShiftRight:
         shl bl, 1
         or bl, [di + 0xb]
         shl bl, 1
-        jmp [cs:bx + 0x940]
+        jmp [cs:bx + FpCompareTagTable]
 .41:
         db 0x32, 0xE0                           ; insn: xor ah, al
         js short .48
@@ -4101,33 +4173,33 @@ FpShiftRight:
         jc short .44
         ja short .45
 .43:
-        mov byte [0xd], 0x40
+        mov byte [FpEmuStatus + 1], 0x40
         jmp short .52
 .44:
-        mov byte [0xd], 0x1
+        mov byte [FpEmuStatus + 1], 0x1
         jmp short .52
 .45:
-        mov byte [0xd], 0x0
+        mov byte [FpEmuStatus + 1], 0x0
         jmp short .52
 .46:
-        mov byte [0xd], 0x41
+        mov byte [FpEmuStatus + 1], 0x41
         jmp short .52
 .47:
-        test byte [0xb], 0x10
+        test byte [FpEmuCw + 1], 0x10
         jz short .46
 .48:
         and al, 0x80
         js short .44
         jmp short .45
 .49:
-        test byte [0xb], 0x10
+        test byte [FpEmuCw + 1], 0x10
         jz short .46
 .50:
         and ah, 0x80
         js short .45
         jmp short .44
 .51:
-        test byte [0xb], 0x10
+        test byte [FpEmuCw + 1], 0x10
         jz short .46
         db 0x32, 0xE0                           ; insn: xor ah, al
         and ah, 0x80
@@ -4136,68 +4208,68 @@ FpShiftRight:
 .52:
         db 0x0B, 0xD2                           ; insn: or dx, dx
         jz short .54
-        mov si, [0x10]
-        cmp si, [0xe]
+        mov si, [FpStackTop]
+        cmp si, [FpStackBase]
         jnz short .53
         call FpSetC2
 .53:
         sub si, 0xc
-        mov [0x10], si
+        mov [FpStackTop], si
 .54:
         ret
 .55:
-        mov si, [0x10]
+        mov si, [FpStackTop]
         mov al, 0x41
-        cmp si, [0xe]
+        cmp si, [FpStackBase]
         jz short .56
         mov ax, [si + 0xa]
         xchg al, ah
         rol ax, 1
         and al, 0x7
-        mov bx, 0x9c8
+        mov bx, FpExamineCodes
         cs xlatb
 .56:
-        mov [0xd], al
+        mov [FpEmuStatus + 1], al
         ret
 .57:
-        mov si, [0x10]
+        mov si, [FpStackTop]
         mov al, [si + 0xa]
         and al, 0x80
         db 0x33, 0xDB                           ; insn: xor bx, bx
         db 0x8B, 0xD3                           ; insn: mov dx, bx
         mov bl, [si + 0xb]
         shl bx, 1
-        jmp [cs:bx + 0x960]
+        jmp [cs:bx + FpTestTagTable]
 .58:
-        mov bx, 0xa6c
+        mov bx, FpConstPi
         jmp short .65
 .59:
-        mov bx, 0xa78
+        mov bx, FpConstL2T
         jmp short .65
 .60:
-        mov bx, 0xa84
+        mov bx, FpConstL2E
         jmp short .65
 .61:
-        mov bx, 0xa90
+        mov bx, FpConstLg2
         jmp short .65
 .62:
-        mov bx, 0xa9c
+        mov bx, FpConstLn2
         jmp short .65
 .63:
-        mov bx, 0xa18
+        mov bx, FpConstZero
         jmp short .65
 .64:
-        mov bx, 0xa24
+        mov bx, FpConstOne
 .65:
-        mov si, [0x10]
-        cmp si, [0x12]
+        mov si, [FpStackTop]
+        cmp si, [FpStackLimit]
         jnz short .66
         call FpSetC1
 .66:
         add si, 0xc
-        mov [0x10], si
+        mov [FpStackTop], si
         db 0x8B, 0xF3                           ; insn: mov si, bx
-        mov di, [0x10]
+        mov di, [FpStackTop]
         cs movsw
         cs movsw
         cs movsw
@@ -4214,14 +4286,14 @@ FpShiftRight:
         db 0x8B, 0xF7                           ; insn: mov si, di
 .69:
         add si, 0xc
-        cmp si, [0x10]
+        cmp si, [FpStackTop]
         jg short .70
         call FpCopyReg
         add di, 0xc
         jmp short .69
 .70:
         sub di, 0xc
-        mov [0x10], di
+        mov [FpStackTop], di
         ret
 .71:
         test cx, 0x1c00
@@ -4250,13 +4322,13 @@ FpShiftRight:
         pop dx
         jmp near FpEmulate.35
 .76:
-        mov si, [0x10]
-        cmp si, [0x12]
+        mov si, [FpStackTop]
+        cmp si, [FpStackLimit]
         jnz short .77
         call FpSetC1
 .77:
         add si, 0xc
-        mov [0x10], si
+        mov [FpStackTop], si
         mov ax, ds
         mov es, ax
         xchg si, di
@@ -4276,26 +4348,26 @@ FpShiftRight:
 .80:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .82
-        mov si, [0x10]
-        cmp si, [0xe]
+        mov si, [FpStackTop]
+        cmp si, [FpStackBase]
         jnz short .81
         call FpSetC2
 .81:
         sub si, 0xc
-        mov [0x10], si
+        mov [FpStackTop], si
 .82:
         ret
 .83:
         push bp
-        mov di, [0x10]
-        mov [0x96], di
+        mov di, [FpStackTop]
+        mov [FpResultPtr], di
         db 0x33, 0xED                           ; insn: xor bp, bp
-        mov word [0xa2], 0x0
+        mov word [FpRemFlag], 0x0
         db 0x8B, 0xF7                           ; insn: mov si, di
         sub si, 0xc
         mov ax, [di + 0x8]
         sub ax, [si + 0x8]
-        mov [0xa0], ax
+        mov [FpRemExp], ax
         mov dx, [di]
         mov cx, [di + 0x2]
         mov bx, [di + 0x4]
@@ -4318,13 +4390,13 @@ FpShiftRight:
         jc short .86
 .85:
         call FpSubMantissa
-        cmp word [0xa0], 0x0
+        cmp word [FpRemExp], 0x0
         jz short .87
         call FpNormLoop
         jnz short .84
         jmp short .87
 .86:
-        cmp word [0xa0], 0x0
+        cmp word [FpRemExp], 0x0
         jz short .87
         call FpShiftLeft1
         call FpSubMantissa
@@ -4340,8 +4412,8 @@ FpShiftRight:
         push ax
         db 0x8B, 0xC5                           ; insn: mov ax, bp
         and bp, -0x4
-        or bp, [0xa2]
-        mov ah, [0xd]
+        or bp, [FpRemFlag]
+        mov ah, [FpEmuStatus + 1]
         and ah, 0xfb
         test al, 0x1
         jnz short .89
@@ -4368,11 +4440,11 @@ FpShiftRight:
 .93:
         or ah, 0x1
 .94:
-        mov [0xd], ah
+        mov [FpEmuStatus + 1], ah
         db 0x33, 0xED                           ; insn: xor bp, bp
         jmp near FpDivMantissa.9
 .95:
-        mov al, [0xd]
+        mov al, [FpEmuStatus + 1]
         test al, 0x2
         jnz short .96
         and ah, 0xbf
@@ -4380,7 +4452,7 @@ FpShiftRight:
 .96:
         or ah, 0x40
 .97:
-        mov al, [0xd]
+        mov al, [FpEmuStatus + 1]
         test al, 0x40
         jnz short .98
         and ah, 0xfe
@@ -4396,7 +4468,7 @@ FpShiftRight:
 FpNormLoop:
         test ah, 0x80
         jnz short .1
-        cmp word [0xa0], 0x0
+        cmp word [FpRemExp], 0x0
         jz short .1
         call FpShiftLeft1
         jmp short FpNormLoop
@@ -4412,12 +4484,12 @@ FpShiftLeft1:
         rcl cx, 1
         rcl bx, 1
         rcl ax, 1
-        dec word [0xa0]
+        dec word [FpRemExp]
         shl bp, 1
         jc short .1
         ret
 .1:
-        mov word [0xa2], 0x1
+        mov word [FpRemFlag], 0x1
         ret
 
 ;-----------------------------------------------------------------------------
@@ -4432,7 +4504,7 @@ FpSubMantissa:
         inc bp
         ret
 .1:
-        mov si, [0x10]
+        mov si, [FpStackTop]
         call FpSqrtCore
         ret
 .2:
@@ -4440,7 +4512,7 @@ FpSubMantissa:
         jnc short .5
         rcl al, 1
         jc short .4
-        mov al, [0xb]
+        mov al, [FpEmuCw + 1]
         test al, 0x10
         jnz short .6
         jmp short .4
@@ -4451,11 +4523,11 @@ FpSubMantissa:
         jc short .6
 .4:
         db 0x8B, 0xFE                           ; insn: mov di, si
-        mov si, 0x9e8
+        mov si, FpRegIndefinite
         call FpCopyConst
         db 0x8B, 0xF7                           ; insn: mov si, di
 .5:
-        or word [0x16], 0x81
+        or word [FpOpStatus], 0x81
 .6:
         ret
 
@@ -4468,7 +4540,7 @@ FpSqrtCore:
         test ax, 0x380
         jnz short FpSubMantissa.3
         push si
-        mov di, 0x4a
+        mov di, FpTemp0
         mov word [di + 0xa], 0x0
         mov ax, [si + 0x8]
         dec ax
@@ -4527,9 +4599,9 @@ FpSqrtCore:
         mov word [di], 0x0
         db 0x8B, 0xF7                           ; insn: mov si, di
         pop di
-        mov [0x96], di
+        mov [FpResultPtr], di
         call FpDivRev
-        mov si, 0x4a
+        mov si, FpTemp0
         call FpAdd
         dec word [di + 0x8]
         db 0x8B, 0xF7                           ; insn: mov si, di
@@ -4541,14 +4613,14 @@ FpSqrtCore:
 ;-----------------------------------------------------------------------------
 FpLoadConst:
         push di
-        mov di, 0x8a
+        mov di, FpTemp5
         cs movsw
         cs movsw
         cs movsw
         cs movsw
         cs movsw
         cs movsw
-        mov si, 0x8a
+        mov si, FpTemp5
         pop di
         ret
 .1:
@@ -4618,25 +4690,25 @@ FpCompare:
 ; entry.
 ;-----------------------------------------------------------------------------
 FpPolyRatio:
-        mov di, 0x7e
+        mov di, FpTemp4
         call FpCopyReg
         push di
         push si
         push bx
-        mov di, 0x72
+        mov di, FpTemp3
         call FpCopyReg
-        mov [0x96], di
+        mov [FpResultPtr], di
         call FpMul
         pop si
         cs lodsw
         xchg ax, cx
         pop di
         call FpCopyConst
-        mov [0x96], di
+        mov [FpResultPtr], di
 .1:
         push cx
         push si
-        mov si, 0x72
+        mov si, FpTemp3
         call FpMul
         pop si
         add si, 0xc
@@ -4661,8 +4733,8 @@ FpPolyRatio:
         call FpCopyConst
         push cx
         push si
-        mov si, 0x72
-        mov [0x96], di
+        mov si, FpTemp3
+        mov [FpResultPtr], di
         call FpAdd
         pop si
         pop cx
@@ -4670,7 +4742,7 @@ FpPolyRatio:
         push cx
         add si, 0xc
         push si
-        mov si, 0x72
+        mov si, FpTemp3
         call FpMul
         pop si
         push si
@@ -4683,17 +4755,17 @@ FpPolyRatio:
         pop di
         ret
 .3:
-        mov si, [0x10]
+        mov si, [FpStackTop]
         call FpSeriesA
         push si
-        mov si, [0x10]
-        cmp si, [0x12]
+        mov si, [FpStackTop]
+        cmp si, [FpStackLimit]
         jnz short .4
         call FpSetC1
 .4:
         add si, 0xc
-        mov [0x10], si
-        mov di, [0x10]
+        mov [FpStackTop], si
+        mov di, [FpStackTop]
         pop si
         call FpCopyReg
         ret
@@ -4703,23 +4775,23 @@ FpPolyRatio:
 ; FpPolyRatio with the first table; also the fpatan entry.
 ;-----------------------------------------------------------------------------
 FpSeriesA:
-        mov bx, 0xaa8
+        mov bx, FpSeriesANum
         call FpPolyRatio
         ret
 .1:
-        mov di, [0x10]
+        mov di, [FpStackTop]
         db 0x8B, 0xF7                           ; insn: mov si, di
         mov ax, [si + 0xa]
         sub di, 0xc
         call FpAtanCore
-        mov si, [0x10]
-        mov si, [0x10]
-        cmp si, [0xe]
+        mov si, [FpStackTop]
+        mov si, [FpStackTop]
+        cmp si, [FpStackBase]
         jnz short .2
         call FpSetC2
 .2:
         sub si, 0xc
-        mov [0x10], si
+        mov [FpStackTop], si
         ret
 
 ;-----------------------------------------------------------------------------
@@ -4727,29 +4799,29 @@ FpSeriesA:
 ; Arctangent work for fpatan; also the f2xm1 entry.
 ;-----------------------------------------------------------------------------
 FpAtanCore:
-        mov [0x96], di
+        mov [FpResultPtr], di
         call FpDivRev
         mov al, 0x0
-        mov si, 0xa30
+        mov si, FpConstTan15
         call FpCompare
         jnc short .1
         db 0x8B, 0xF7                           ; insn: mov si, di
-        mov di, 0x4a
+        mov di, FpTemp0
         call FpCopyReg
         push si
-        mov si, 0xa3c
+        mov si, FpConstSqrt3
         call FpLoadConst
-        mov [0x96], di
+        mov [FpResultPtr], di
         call FpMul
-        mov si, 0xa24
+        mov si, FpConstOne
         call FpLoadConst
         call FpSub
         pop si
         push di
         db 0x8B, 0xFE                           ; insn: mov di, si
-        mov si, 0xa3c
+        mov si, FpConstSqrt3
         call FpLoadConst
-        mov [0x96], di
+        mov [FpResultPtr], di
         call FpAdd
         pop si
         call FpDiv
@@ -4757,20 +4829,20 @@ FpAtanCore:
 .1:
         push ax
         db 0x8B, 0xF7                           ; insn: mov si, di
-        mov bx, 0xb0c
+        mov bx, FpAtanNum
         call FpPolyRatio
-        mov [0x96], di
+        mov [FpResultPtr], di
         call FpDivRev
         pop ax
         db 0x0A, 0xC0                           ; insn: or al, al
         jz short .2
-        mov si, 0xa48
+        mov si, FpConstPiOver6
         call FpLoadConst
         call FpAdd
 .2:
         ret
 .3:
-        mov si, [0x10]
+        mov si, [FpStackTop]
         call FpSeriesB
         ret
 
@@ -4779,33 +4851,33 @@ FpAtanCore:
 ; FpPolyRatio with the second table; also the fyl2x entry.
 ;-----------------------------------------------------------------------------
 FpSeriesB:
-        mov bx, 0xb7c
+        mov bx, FpSeriesBNum
         call FpPolyRatio
         push di
         xchg si, di
-        mov [0x96], di
+        mov [FpResultPtr], di
         call FpSub
         db 0x8B, 0xF7                           ; insn: mov si, di
         pop di
-        mov [0x96], di
+        mov [FpResultPtr], di
         call FpDivRev
         inc word [di + 0x8]
         db 0x8B, 0xF7                           ; insn: mov si, di
         ret
 .1:
-        mov di, [0x10]
+        mov di, [FpStackTop]
         db 0x8B, 0xF7                           ; insn: mov si, di
         mov ax, [si + 0xa]
         sub di, 0xc
         call FpLog2Core
-        mov si, [0x10]
-        mov si, [0x10]
-        cmp si, [0xe]
+        mov si, [FpStackTop]
+        mov si, [FpStackTop]
+        cmp si, [FpStackBase]
         jnz short .2
         call FpSetC2
 .2:
         sub si, 0xc
-        mov [0x10], si
+        mov [FpStackTop], si
         ret
 
 ;-----------------------------------------------------------------------------
@@ -4815,25 +4887,25 @@ FpSeriesB:
 FpLog2Core:
         push si
         db 0x8B, 0xF7                           ; insn: mov si, di
-        mov di, 0x5a
+        mov di, FpTemp1
         call FpCopyReg
         db 0x8B, 0xFE                           ; insn: mov di, si
         pop si
         push di
-        mov di, 0x66
+        mov di, FpTemp2
         call FpCopyReg
         mov bx, [di + 0x8]
         mov word [di + 0x8], 0x0
-        mov si, 0xa54
+        mov si, FpConstSqrt2
         call FpCompare
         ja short .1
         dec word [di + 0x8]
         inc bx
 .1:
         push bx
-        mov si, 0xa24
+        mov si, FpConstOne
         call FpLoadConst
-        mov [0x96], di
+        mov [FpResultPtr], di
         call FpSub
         db 0x8B, 0xF7                           ; insn: mov si, di
         pop bx
@@ -4856,7 +4928,7 @@ FpLog2Core:
         jnc short .3
         push di
         rcr bx, 1
-        mov di, 0x66
+        mov di, FpTemp2
         stosw
         stosw
         stosw
@@ -4866,30 +4938,30 @@ FpLog2Core:
         stosw
         db 0x8B, 0xC2                           ; insn: mov ax, dx
         stosw
-        mov di, 0x5a
-        mov si, 0x66
-        mov [0x96], di
+        mov di, FpTemp1
+        mov si, FpTemp2
+        mov [FpResultPtr], di
         call FpMul
         db 0x8B, 0xF7                           ; insn: mov si, di
         pop di
-        mov [0x96], di
+        mov [FpResultPtr], di
         call FpAdd
 .4:
         ret
 .5:
-        mov di, [0x10]
+        mov di, [FpStackTop]
         db 0x8B, 0xF7                           ; insn: mov si, di
         mov ax, [si + 0xa]
         sub di, 0xc
         call FpLogSeries
-        mov si, [0x10]
-        mov si, [0x10]
-        cmp si, [0xe]
+        mov si, [FpStackTop]
+        mov si, [FpStackTop]
+        cmp si, [FpStackBase]
         jnz short .6
         call FpSetC2
 .6:
         sub si, 0xc
-        mov [0x10], si
+        mov [FpStackTop], si
         ret
 
 ;-----------------------------------------------------------------------------
@@ -4898,27 +4970,33 @@ FpLog2Core:
 ;-----------------------------------------------------------------------------
 FpLogSeries:
         push di
-        mov di, 0x4a
+        mov di, FpTemp0
         call FpCopyReg
         push si
-        mov si, 0xa60
+        mov si, FpConstTwo
         call FpLoadConst
-        mov [0x96], di
+        mov [FpResultPtr], di
         call FpAdd
         pop si
         call FpDiv
         inc word [di + 0x8]
         db 0x8B, 0xF7                           ; insn: mov si, di
-        mov bx, 0xbc8
+        mov bx, FpLogNum
         call FpPolyRatio
-        mov [0x96], di
+        mov [FpResultPtr], di
         call FpDivRev
         db 0x8B, 0xF7                           ; insn: mov si, di
         pop di
-        mov [0x96], di
+        mov [FpResultPtr], di
         call FpMul
         ret
-        db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+        db 0x00
+FpNmiStatus:                                    ; word; the 8087 status word FpNmiHandler reads
+        dw 0
+FpOldNmi:                                       ; dword; the INT 2 (NMI) vector before FpHookNmi
+        dd 0
+FpOldCtrlBreak:                                 ; dword; the INT 23h (Ctrl-Break) vector before FpHookNmi
+        dd 0
 
 ;-----------------------------------------------------------------------------
 ; FpHookNmi                                                     18B9:267A  MSC
@@ -4930,16 +5008,16 @@ FpHookNmi:
         pop ds
         mov ax, 0x3502
         int 0x21
-        mov [0x2672], bx
-        mov [0x2674], es
-        mov dx, 0x26d2
+        mov [FpOldNmi], bx
+        mov [FpOldNmi + 2], es
+        mov dx, FpNmiHandler
         mov ax, 0x2502
         int 0x21
         mov ax, 0x3523
         int 0x21
-        mov [0x2676], bx
-        mov [0x2678], es
-        mov dx, 0x26ba
+        mov [FpOldCtrlBreak], bx
+        mov [FpOldCtrlBreak + 2], es
+        mov dx, FpCtrlBreak
         mov ax, 0x2523
         int 0x21
         pop ds
@@ -4954,7 +5032,7 @@ FpUnhookNmi:
         push ax
         push dx
         mov ax, 0x2502
-        lds dx, [cs:0x2672]
+        lds dx, [cs:FpOldNmi]
         int 0x21
         pop dx
         pop ax
@@ -4970,29 +5048,29 @@ FpCtrlBreak:
         push dx
         push ds
         call FpUnhookNmi
-        lds dx, [cs:0x2676]
+        lds dx, [cs:FpOldCtrlBreak]
         mov ax, 0x2523
         int 0x21
         pop ds
         pop dx
         pop ax
-        jmp far [cs:0x2676]
-        db 0x90
+        jmp far [cs:FpOldCtrlBreak]
 
 ;-----------------------------------------------------------------------------
-; FpNmiHandler                                                  18B9:26D3  MSC
+; FpNmiHandler                                                  18B9:26D2  MSC
 ; INT 2 handler: an 8087 exception goes to FpException, anything else chains.
 ;-----------------------------------------------------------------------------
 FpNmiHandler:
-        fnstsw [cs:0x2670]
+        nop
+        fnstsw [cs:FpNmiStatus]
         push cx
         mov cx, 0x3
 .1:
         loop .1
         pop cx
-        test byte [cs:0x2670], 0x80
+        test byte [cs:FpNmiStatus], 0x80
         jz short .2
         call FpException
         iret
 .2:
-        jmp far [cs:0x2672]
+        jmp far [cs:FpOldNmi]
