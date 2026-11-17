@@ -61,7 +61,7 @@ SaveVgaPlanes:
         and ax, 0xfc
         out dx, al
         push word 0xb00
-        push word 0xa000
+        push word VgaMem
         push 0x0
         push word [VgaSave0Seg]
         push word [VgaSave0Off]
@@ -81,7 +81,7 @@ SaveVgaPlanes:
         mov dx, 0x3cf
         out dx, al
         push word 0xb00
-        push word 0xa000
+        push word VgaMem
         push 0x0
         push word [VgaSave1Seg]
         push word [VgaSave1Off]
@@ -99,7 +99,7 @@ SaveVgaPlanes:
         mov dx, 0x3cf
         out dx, al
         push word 0xb00
-        push word 0xa000
+        push word VgaMem
         push 0x0
         push word [VgaSave2Seg]
         push word [VgaSave2Off]
@@ -117,7 +117,7 @@ SaveVgaPlanes:
         mov dx, 0x3cf
         out dx, al
         push word 0xb00
-        push word 0xa000
+        push word VgaMem
         push 0x0
         push word [VgaSave3Seg]
         push word [VgaSave3Off]
@@ -246,7 +246,7 @@ RestoreVgaPlanes:
         add sp, 0x4
         push dx
         push ax
-        push word 0xa000
+        push word VgaMem
         push 0x0
         call 0x0000:_fmemcpy
         add sp, 0xa
@@ -268,7 +268,7 @@ RestoreVgaPlanes:
         add sp, 0x4
         push dx
         push ax
-        push word 0xa000
+        push word VgaMem
         push 0x0
         call 0x0000:_fmemcpy
         add sp, 0xa
@@ -290,7 +290,7 @@ RestoreVgaPlanes:
         add sp, 0x4
         push dx
         push ax
-        push word 0xa000
+        push word VgaMem
         push 0x0
         call 0x0000:_fmemcpy
         add sp, 0xa
@@ -312,7 +312,7 @@ RestoreVgaPlanes:
         add sp, 0x4
         push dx
         push ax
-        push word 0xa000
+        push word VgaMem
         push 0x0
         call 0x0000:_fmemcpy
         add sp, 0xa

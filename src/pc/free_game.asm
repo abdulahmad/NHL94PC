@@ -121,7 +121,7 @@ FreePlayerFrames:
         push cs
         call FreePPVFiles
         mov di, 0x11
-        mov si, 0x9184
+        mov si, PPVFiles + 17 * 4
 .1:
         mov ax, [si + 0x2]
         or ax, [si]

@@ -22,6 +22,7 @@ ConPrint		equ	0x17CA
 AllocCanvases		equ	0x3804
 PageTable		equ	0x7570
 DgroupSegB		equ	0x8B1C
+VgaMem		equ	0xA000
 VgaSave0Off		equ	0xB34E
 VgaSave0Seg		equ	0xB350
 VgaSave1Off		equ	0xB352

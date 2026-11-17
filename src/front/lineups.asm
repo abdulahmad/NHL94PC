@@ -225,8 +225,8 @@ ShowStartingLineups:
         push ax
         call 0x0CD1:CloseHandlePtr
         add sp, 0x2
-        mov word [bp - 0x2e], 0xae10
-        mov word [bp - 0x2c], 0xae40
+        mov word [bp - 0x2e], HomeTeamRec
+        mov word [bp - 0x2c], AwayTeamRec
         call 0x0EDC:AnnounceLineups
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [bp - 0x3a], ax

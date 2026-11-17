@@ -153,7 +153,7 @@ PickAwardWinners:
         cmp [AwardCandidates], al
         jnc short .9
 .8:
-        mov ax, 0xcc00
+        mov ax, AwardScores + 0x3fa
         db 0x8B, 0xF8                           ; insn: mov di, ax
         lea si, [bp - 0x380]
         push ds
@@ -195,14 +195,14 @@ PickAwardWinners:
         cmp [bp - 0x402], ax
         jnc short .13
 .12:
-        mov ax, 0xc9da
+        mov ax, AwardScores + 0x1d4
         db 0x8B, 0xF8                           ; insn: mov di, ax
         lea si, [bp - 0x3c0]
         push ds
         pop es
         mov cx, 0x1a
         rep movsw
-        mov ax, 0xcb9a
+        mov ax, AwardScores + 0x394
         db 0x8B, 0xF8                           ; insn: mov di, ax
         lea si, [bp - 0x402]
         mov cx, 0x18
@@ -270,7 +270,7 @@ PickAwardWinners:
         cmp [bx], cx
         jna short .20
 .19:
-        mov ax, 0xc806
+        mov ax, AwardScores
         db 0x8B, 0xF8                           ; insn: mov di, ax
         lea si, [bp - 0x3c0]
         push ds
@@ -296,7 +296,7 @@ PickAwardWinners:
         cmp [bx], cx
         jna short .22
 .21:
-        mov ax, 0xc83a
+        mov ax, AwardScores + 0x34
         db 0x8B, 0xF8                           ; insn: mov di, ax
         lea si, [bp - 0x3c0]
         push ds
@@ -324,7 +324,7 @@ PickAwardWinners:
         cmp [bx], cx
         jna short .24
 .23:
-        mov ax, 0xc86e
+        mov ax, AwardScores + 0x68
         db 0x8B, 0xF8                           ; insn: mov di, ax
         lea si, [bp - 0x3c0]
         push ds
@@ -357,7 +357,7 @@ PickAwardWinners:
         cmp [bx], cx
         jna short .27
 .26:
-        mov ax, 0xc8a2
+        mov ax, AwardScores + 0x9c
         db 0x8B, 0xF8                           ; insn: mov di, ax
         lea si, [bp - 0x3c0]
         push ds
@@ -387,7 +387,7 @@ PickAwardWinners:
         cmp [bx], cx
         jna short .29
 .28:
-        mov ax, 0xc93e
+        mov ax, AwardScores + 0x138
         db 0x8B, 0xF8                           ; insn: mov di, ax
         lea si, [bp - 0x3c0]
         push ds
@@ -413,7 +413,7 @@ PickAwardWinners:
         cmp [bx + 0x12], cx
         jna short .31
 .30:
-        mov ax, 0xc9a6
+        mov ax, AwardScores + 0x1a0
         db 0x8B, 0xF8                           ; insn: mov di, ax
         lea si, [bp - 0x3c0]
         push ds
@@ -468,14 +468,14 @@ PickAwardWinners:
         cmp [bp - 0x96], ax
         jnc short .37
 .36:
-        mov ax, 0xc9da
+        mov ax, AwardScores + 0x1d4
         db 0x8B, 0xF8                           ; insn: mov di, ax
         lea si, [bp - 0x3c0]
         push ds
         pop es
         mov cx, 0x1a
         rep movsw
-        mov ax, 0xcbca
+        mov ax, AwardScores + 0x3c4
         db 0x8B, 0xF8                           ; insn: mov di, ax
         lea si, [bp - 0x96]
         mov cx, 0x1b
@@ -543,7 +543,7 @@ PickAwardWinners:
         cmp [bx + 0x12], cx
         jnc short .44
 .43:
-        mov ax, 0xc8d6
+        mov ax, AwardScores + 0xd0
         db 0x8B, 0xF8                           ; insn: mov di, ax
         lea si, [bp - 0x34]
         push ds
@@ -569,7 +569,7 @@ PickAwardWinners:
         cmp [bx + 0xc], cx
         jnc short .46
 .45:
-        mov ax, 0xc90a
+        mov ax, AwardScores + 0x104
         db 0x8B, 0xF8                           ; insn: mov di, ax
         lea si, [bp - 0x34]
         push ds
@@ -743,7 +743,7 @@ ShowAwardScreens:
 .1:
         imul ax, bx, 0x34
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        add ax, 0xc819
+        add ax, AwardScores + 0x13
         push ax
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         add cx, 0xc809
@@ -775,7 +775,7 @@ ShowAwardScreens:
         add sp, 0x8
         mov al, 0x15
         mul byte [si + AwardScores]
-        add ax, 0xaa38
+        add ax, LeagueTeamNames
         push word 0x3a0b
         push ax
         lea ax, [bp - 0x5a]
@@ -1660,8 +1660,8 @@ DrawAwardsSummary:
         call 0x0D39:DrawShadowTextCentered
         add sp, 0x6
         mov word [bp - 0x4], 0x0
-        mov di, 0xc819
-        mov word [bp - 0x6], 0x1cd2
+        mov di, AwardScores + 0x13
+        mov word [bp - 0x6], AwardNamePtrs
         mov word [bp - 0x8], 0x1e
         mov [bp - 0x2], di
         db 0x8B, 0xF7                           ; insn: mov si, di
@@ -1701,7 +1701,7 @@ DrawAwardsSummary:
         add sp, 0x8
         mov al, 0x15
         mul byte [si - 0x13]
-        add ax, 0xaa38
+        add ax, LeagueTeamNames
         push word 0x3a0b
         push ax
 .4:
@@ -1952,7 +1952,7 @@ AwardsCeremony:
         push cs
         call PickAwardWinners
         mov [bp - 0x10], ax
-        mov word [bp - 0x4], 0xc7a2
+        mov word [bp - 0x4], AwardRawA
         mov word [bp - 0x2], 0x1c28
         mov [bp - 0x2e], si
         mov [bp - 0x2a], di
@@ -1982,7 +1982,7 @@ AwardsCeremony:
         mov [di - 0x2], dx
         inc si
         inc si
-        cmp si, 0x1c2c
+        cmp si, AwardMsgIds
         jc short .6
 .7:
         db 0x2B, 0xFF                           ; insn: sub di, di
@@ -2043,7 +2043,7 @@ AwardsCeremony:
         add si, 0x4
         mov [si - 0x4], ax
         mov [si - 0x2], dx
-        cmp si, 0xc806
+        cmp si, AwardScores
         jc short .10
 .11:
         cmp word [bp - 0x10], 0x0
@@ -2127,7 +2127,7 @@ AwardsCeremony:
         push word [bp - 0x22]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        mov word [bp - 0x2], 0xc7a2
+        mov word [bp - 0x2], AwardRawA
         mov si, [bp - 0x2]
         mov di, [bp - 0x10]
 .14:
@@ -2138,7 +2138,7 @@ AwardsCeremony:
         call 0x06E1:UnlinkRec
         add sp, 0x4
         add si, 0x4
-        cmp si, 0xc7aa
+        cmp si, AwardFrames
         jc short .14
 .15:
         call 0x0FEF:UseCurrentPage

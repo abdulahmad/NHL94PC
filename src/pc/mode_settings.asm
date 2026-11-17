@@ -97,18 +97,18 @@ MenuModeSettings:
 .5:
         and byte [bx], 0xf7
         add bx, 0x80
-        cmp bx, 0xbb53
+        cmp bx, SortCords + 12 * 0x80 + 0x45
         jc short .5
         and byte [hmtmflags], 0xfd
         and byte [awtmflags], 0xfd
-        mov bx, 0xb464
+        mov bx, awtmflags + 2
 .6:
         mov ax, 0x1000
         mov [bx], ax
         mov [bx - 0xd6], ax
         inc bx
         inc bx
-        cmp bx, 0xb49c
+        cmp bx, awtmflags + 0x3a
         jc short .6
 .7:
         test byte [CrowdState], 0x40

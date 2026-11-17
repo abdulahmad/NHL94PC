@@ -83,5 +83,6 @@ RectLeftMasks2		equ	0x77B9
 RectRightMasks		equ	0x77BD
 DrawRawFastMasks		equ	0x77C8
 DrawRawTransFastMasks		equ	0x77CC
+VgaMem		equ	0xA000
 ChainIdx		equ	0xAE9C
 %include "pc/video/vga.asm"

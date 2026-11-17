@@ -147,7 +147,7 @@ checkwindow:
         jg short .19
         jmp near .30
 .19:
-        mov word [bp - 0x8], 0xbd0e
+        mov word [bp - 0x8], refstruct
         mov ax, [refXpos2]
         mov [xc1], ax
         mov ax, [refYpos2]
@@ -267,7 +267,7 @@ checkwindow:
         mov al, [bx]
         cbw
         shl ax, byte 0x7
-        add ax, 0xb50e
+        add ax, SortCords
         mov [bp - 0x8], ax
         mov word [regd0], 0x2
         db 0x8B, 0xD8                           ; insn: mov bx, ax
@@ -316,7 +316,7 @@ checkwindow:
         jmp short .39
         db 0x90
 .38:
-        mov word [bp - 0x8], 0xbc0e
+        mov word [bp - 0x8], puckstruct
 .39:
         mov bx, [bp - 0x8]
         mov al, [bx + 0xf]
@@ -1406,7 +1406,7 @@ ShowGoalieBanner:
 .8:
         mov byte [es:bx], 0x1
         mov ax, [bp - 0x2]
-        add ax, 0xb362
+        add ax, hmshots
         push ax
         call 0x2E42:setpersonel
         add sp, 0x2
@@ -1478,4 +1478,4 @@ SetTeamGoalie:
         cmp [bx + hmtmgoalie], di
         jz short SetTeamGoalieTail + 0xE30
         db 0x8B, 0xC3                           ; insn: mov ax, bx
-        add ax, 0xb362
+        add ax, hmshots

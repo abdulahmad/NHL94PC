@@ -831,7 +831,7 @@ CalendarScreen:
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         shl ax, 1
         db 0x03, 0xC1                           ; insn: add ax, cx
-        add ax, 0x18b4
+        add ax, ShapePaletteMap
         push ds
         push ax
         push 0x1
@@ -2413,8 +2413,8 @@ PostGameToTeamDb:
         mov [bp - 0x3be], ax
         mov [bp - 0x1c], ax
         mov [bp - 0x3b2], ax
-        mov word [bp - 0x3bc], 0xae10
-        mov word [bp - 0x3ba], 0xae40
+        mov word [bp - 0x3bc], HomeTeamRec
+        mov word [bp - 0x3ba], AwayTeamRec
         cmp word [bp + 0x12], 0x3f0
         jnl short .1
         lea ax, [bp - 0x336]

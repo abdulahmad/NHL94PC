@@ -4,6 +4,8 @@
 	org	0x0
 CopyFar		equ	0x276
 FatalError		equ	0x3E4
+str_Copyright		equ	0x402
+str_UnpackaInvalidPackCodeX		equ	0x40C
 LongShlAt		equ	0x1270
 _fmemchr		equ	0x135C
 _fstrlen		equ	0x1398

@@ -525,7 +525,7 @@ ShowTeamStats:
         call 0x0FEF:DrawRleTransRemapFastAt
         add sp, 0x8
         imul ax, [bp - 0x4e], word 0x2e8
-        add ax, 0x9f9a
+        add ax, GameTeamRecs + 0x1a
         push ds
         push ax
         push 0x28

@@ -52,7 +52,7 @@ SprSort:
         push di
         push si
         mov bx, objxlist
-        mov di, 0xb50e
+        mov di, SortCords
         mov dx, 0x11
 .1:
         test byte [sflags], 0x80
@@ -149,11 +149,11 @@ changeplayer:
 .2:
         dec ax
         jz short .3
-        mov si, 0xb80e
+        mov si, SortCords + 6 * 0x80
         jmp short .4
         db 0x90
 .3:
-        mov si, 0xb50e
+        mov si, SortCords
 .4:
         mov word [bp - 0xc], 0x6
 .5:
@@ -274,7 +274,7 @@ restorepl:
         jg short .1
         db 0x8B, 0xFB                           ; insn: mov di, bx
         shl di, byte 0x7
-        add di, 0xb50e
+        add di, SortCords
         test byte [di + 0x45], 0x8
         jnz short .2
         and byte [di + 0x44], 0xf7
@@ -392,7 +392,7 @@ CompLine:
 .2:
         mov [di + 0x16], si
         push si
-        cmp di, 0xb438
+        cmp di, awshots
         jnz short .3
         mov ax, 0x1
         jmp short .4
@@ -532,7 +532,7 @@ CompLine:
 .20:
         push si
         mov [bp - 0xc], di
-        cmp di, 0xb438
+        cmp di, awshots
         jnz short .21
         mov ax, 0x1
         jmp short .22
@@ -638,7 +638,7 @@ TeamLineEnergy:
         push word [bp + 0x8]
         cmp word [bp + 0x6], 0x0
         jng short .1
-        mov di, 0xb438
+        mov di, awshots
         jmp short .2
         db 0x90
 .1:
@@ -1290,7 +1290,7 @@ PenTeamScored:
         db 0x1B, 0xDB                           ; insn: sbb bx, bx
         and bx, 0x6
         shl bx, byte 0x7
-        add bx, 0xb50e
+        add bx, SortCords
         db 0x2B, 0xD2                           ; insn: sub dx, dx
 .5:
         cmp word [bx + 0x1a], 0x0
@@ -1328,7 +1328,7 @@ Goal:
         mov ax, 0x12
         call 0x0000:__chkstk
         push si
-        mov word [bp - 0xc], 0xbc0e
+        mov word [bp - 0xc], puckstruct
         cmp word [puckYpos2], 0x0
         jnl short .1
         mov ax, 0x1
@@ -1346,11 +1346,11 @@ Goal:
         mov [bp - 0x2], cx
         db 0x0B, 0xC9                           ; insn: or cx, cx
         jng short .3
-        mov ax, 0xb438
+        mov ax, awshots
         jmp short .4
         db 0x90
 .3:
-        mov ax, 0xb362
+        mov ax, hmshots
 .4:
         mov [bp - 0x10], ax
         cmp cx, 0x1
@@ -1358,10 +1358,10 @@ Goal:
         neg ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jng short .5
-        mov ax, 0xb438
+        mov ax, awshots
         jmp short .6
 .5:
-        mov ax, 0xb362
+        mov ax, hmshots
 .6:
         mov [bp - 0x4], ax
         test byte [gmode], 0x1
@@ -1885,11 +1885,11 @@ setplayer:
         and byte [di + 0x45], 0xbf
         cmp word [di + 0x5e], 0x6
         jl short .1
-        mov ax, 0xb438
+        mov ax, awshots
         jmp short .2
         db 0x90
 .1:
-        mov ax, 0xb362
+        mov ax, hmshots
 .2:
         mov [bp - 0x6], ax
         mov al, [bp + 0x8]
@@ -2389,30 +2389,30 @@ clearteams:
         mov al, 0xff
         mov [hmtmpbox_m1], al
         mov [awtmpbox_m1], al
-        mov word [hmtmptrs], 0xb50e
+        mov word [hmtmptrs], SortCords
         mov word [hmtmsort], HomeSortObjs
         mov word [hmtmplattr], 0x3a0b
         mov word [hmtmglattr], HomeGlAttr
         mov word [hmtmglattrseg], 0x3a0b
-        mov word [hmtmlines], 0xae10
+        mov word [hmtmlines], HomeTeamRec
         mov word [hmtmplstats], HomePlStats
         mov word [hmtmplstatsseg], 0x3a0b
         mov word [hmtmglstats], HomeGlStats
         mov word [hmtmroster], 0x3a0b
-        mov word [hmtmrosterptr], 0xa550
-        mov word [hmtmptrF2], 0x9f80
-        mov word [SortCords_m2], 0xb80e
+        mov word [hmtmrosterptr], hmroster
+        mov word [hmtmptrF2], GameTeamRecs
+        mov word [SortCords_m2], SortCords + 6 * 0x80
         mov word [awtmsort], AwaySortObjs
         mov word [awtmglattrseg], 0x3a0b
         mov word [awtmglattr], AwayGlAttr
         mov word [awtmlines], 0x3a0b
-        mov word [awtmteamrec], 0xae40
+        mov word [awtmteamrec], AwayTeamRec
         mov word [awtmplstats], AwayPlStats
         mov word [awtmglstats], 0x3a0b
         mov word [awtmglstatsptr], AwayGlStats
         mov word [awtmglstatsseg], 0x3a0b
-        mov word [awtmptrF2], 0xa9b0
-        mov word [awtmroster], 0xa268
+        mov word [awtmptrF2], GamePlayerFlags
+        mov word [awtmroster], GameRosterRecs
         retf
         db 0x90
 
@@ -2448,7 +2448,7 @@ restoreteams:
         mov [di - 0x2], ax
         dec dx
         jnz short .2
-        mov bx, 0xb438
+        mov bx, awshots
         dec word [bp - 0x4]
         jnz short .1
         pop si
@@ -2514,7 +2514,7 @@ ClearSortCords:
         mov ax, 0x4
         call 0x0000:__chkstk
         push di
-        mov cx, 0xb50e
+        mov cx, SortCords
         mov di, [bp - 0x4]
 .1:
         db 0x8B, 0xD9                           ; insn: mov bx, cx
@@ -2550,9 +2550,9 @@ defaultsprites_0:
         mov cx, 0x3863
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov [bp - 0x8], cx
-        mov di, 0xb50e
-        mov word [bp - 0x4], 0xd4f4
-        mov word [bp - 0x6], 0xd496
+        mov di, SortCords
+        mov word [bp - 0x4], OOlist
+        mov word [bp - 0x6], objylist
         mov word [bp - 0x2], 0x0
         mov cx, [bp - 0x2]
 .1:
@@ -2617,18 +2617,18 @@ defaultsprites_0:
         mov [di + 0x44], al
         test al, 0x40
         jz short .2
-        mov word [di + 0x60], 0xb438
+        mov word [di + 0x60], awshots
         jmp short .3
         db 0x90
 .2:
-        mov word [di + 0x60], 0xb362
+        mov word [di + 0x60], hmshots
 .3:
         test byte [di + 0x44], 0x40
         jnz short .4
-        mov word [di + 0x62], 0xb438
+        mov word [di + 0x62], awshots
         jmp short .5
 .4:
-        mov word [di + 0x62], 0xb362
+        mov word [di + 0x62], hmshots
 .5:
         mov word [di + 0x2e], 0x0
         mov bx, [bp - 0x4]
@@ -2831,7 +2831,7 @@ SetPlList:
         mov bx, [bp - 0xa]
         shl bx, 1
         mov si, [bx + PlListOffsets]
-        add si, 0x612e
+        add si, PlListSlots
 .16:
         lodsb
         mov [bp - 0x1], al
@@ -2871,11 +2871,11 @@ SetPlList:
         cmp di, 0x2
         jz short .20
         imul ax, bx, 0x19
-        add ax, 0xdd70
+        add ax, defsort_d + 50
         jmp short .23
 .20:
         imul ax, bx, 0x19
-        add ax, 0xdd3e
+        add ax, defsort_d
         jmp short .23
 .21:
         cmp di, 0x1
@@ -2883,11 +2883,11 @@ SetPlList:
         cmp di, 0x2
         jz short .22
         imul ax, bx, 0x19
-        add ax, 0xdd0c
+        add ax, offsort_fwd
         jmp short .23
 .22:
         imul ax, bx, 0x19
-        add ax, 0xdcda
+        add ax, offsort_fwd - 50
 .23:
         mov [bp - 0x8], ax
         db 0x2B, 0xF6                           ; insn: sub si, si
@@ -3119,7 +3119,7 @@ StartPer:
         mov [fox], ax
         mov [foy], ax
         push 0x1b
-        push word 0xbc0e
+        push word puckstruct
         call 0x1E7E:assreplace
         add sp, 0x4
         cmp word [gsp], 0x0
@@ -3202,7 +3202,7 @@ RestoreBenchEnergy:
         dec bx
         dec dx
         jns short .2
-        mov di, 0xb438
+        mov di, awshots
         loop .1
 .4:
         pop di
@@ -3320,7 +3320,7 @@ periodicevents:
         test byte [CrowdState], 0x4
         jz short .8
         mov word [bp - 0x2], 0x0
-        mov cx, 0xb362
+        mov cx, hmshots
         mov di, energywarnteam
 .4:
         db 0x8B, 0xD9                           ; insn: mov bx, cx
@@ -3341,8 +3341,8 @@ periodicevents:
         inc di
         mov word [di - 0x2], 0x0
         inc word [bp - 0x2]
-        mov cx, 0xb438
-        cmp di, 0x48ce
+        mov cx, awshots
+        cmp di, lcsel
         jc short .4
         pop di
         leave
@@ -3401,7 +3401,7 @@ updateplayers:
 .2:
         mov word [playsuspended], 0x0
 .3:
-        mov si, 0xb50e
+        mov si, SortCords
         mov di, 0x11
 .4:
         mov ax, [si]
@@ -4027,7 +4027,7 @@ DrawRinkOverlays:
         mov ax, [bp - 0xa]
 .20:
         shl ax, byte 0x7
-        add ax, 0xb50e
+        add ax, SortCords
         mov [bp - 0x26], ax
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         cmp word [bx + 0x12], -0x1
@@ -4142,7 +4142,7 @@ DrawRinkOverlays:
         mov al, [bx]
         cbw
         shl ax, byte 0x7
-        add ax, 0xb50e
+        add ax, SortCords
         mov [bp - 0x26], ax
         push 0x0
         push 0x0
@@ -4152,7 +4152,7 @@ DrawRinkOverlays:
         push word [RinkOverlayFrames2]
         jmp short .29
 .33:
-        mov word [bp - 0x26], 0xbc8e
+        mov word [bp - 0x26], doorstruct
         cmp word [doorframe], 0x284
         jl short .36
         cmp word [doorframe], 0x288
@@ -4266,7 +4266,7 @@ DrawRinkOverlays:
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, byte 0x7
-        add bx, 0xb50e
+        add bx, SortCords
         mov [bp - 0x26], bx
         cmp word [bx + 0x5e], 0xf
         jz short .46
@@ -4400,7 +4400,7 @@ DrawRinkOverlays:
         jnl short .62
         call 0x1E7E:DrawRinkEndArt
 .62:
-        mov word [bp - 0x26], 0xbc8e
+        mov word [bp - 0x26], doorstruct
         cmp word [doorYpos2], 0x0
         jnl short .63
         cmp word [doorframe], 0x22a
@@ -4421,7 +4421,7 @@ DrawRinkOverlays:
         mov bx, [puckc]
         cmp byte [bx], 0x0
         jnl short .66
-        mov word [bp - 0x26], 0xbc0e
+        mov word [bp - 0x26], puckstruct
         cmp word [puckZpos2], 0x0
         jnz short .64
         push 0x0
@@ -4596,7 +4596,7 @@ setupice:
         call defaultsprites_0
         test byte [gmode], 0x2
         jz short .2
-        mov bx, 0xb50e
+        mov bx, SortCords
         mov dx, 0xc
 .1:
         xor byte [bx + 0x44], 0x80
@@ -4625,7 +4625,7 @@ clockcont_0:
         push di
         push si
         push 0x18
-        mov ax, 0xbc0e
+        mov ax, puckstruct
         mov [bp - 0xa], ax
         push ax
         call 0x1E7E:assinsert
@@ -4633,7 +4633,7 @@ clockcont_0:
         cmp word [gsp], 0x2
         jnl short .1
         push 0x1
-        push word 0xbc0e
+        push word puckstruct
         jmp near .32
         db 0x90
 .1:
@@ -4646,7 +4646,7 @@ clockcont_0:
         jz short .2
         mov word [regd0], 0x8
 .2:
-        mov word [bp - 0xa], 0xb50e
+        mov word [bp - 0xa], SortCords
         mov ax, [hmscore]
         sub ax, [awscore]
         mov [regd1], ax
@@ -4680,7 +4680,7 @@ clockcont_0:
 .5:
         push 0x1
 .6:
-        push word 0xb50e
+        push word SortCords
         jmp near .32
 .7:
         mov ax, 0xffff
@@ -4692,7 +4692,7 @@ clockcont_0:
         cmp byte [bx + puckasslist], 0x18
         jnz short .8
         push 0x1a
-        push word 0xbc0e
+        push word puckstruct
         call 0x1E7E:assreplace
         add sp, 0x4
 .8:
@@ -4712,7 +4712,7 @@ clockcont_0:
         mov si, 0x6
 .11:
         shl si, byte 0x7
-        add si, 0xb50e
+        add si, SortCords
         cmp word [regd1], 0x0
         jnl short .12
         mov ax, 0x1
@@ -4779,7 +4779,7 @@ clockcont_0:
         mov si, 0x6
 .20:
         shl si, byte 0x7
-        add si, 0xb50e
+        add si, SortCords
         mov word [shotplayer], 0xffff
         mov word [regd1], 0x0
         mov word [regd2], 0x6
@@ -5022,7 +5022,7 @@ SetupTeamForIntermission:
         push cs
         call ResetBench
         mov si, hmshots
-        mov di, 0xb438
+        mov di, awshots
         mov word [bp - 0x2], 0x2
 .1:
         push si
@@ -5045,7 +5045,7 @@ SetupTeamForIntermission:
 .2:
         mov word [si + 0x16], 0x6
 .3:
-        mov si, 0xb438
+        mov si, awshots
         mov di, hmshots
         dec word [bp - 0x2]
         jnz short .1
@@ -5070,7 +5070,7 @@ Intermission:
 .1:
         add si, 0x80
         mov word [si - 0x80], 0x0
-        cmp si, 0xbd90
+        cmp si, TitleJingleSeg
         jc short .1
         pop si
         retf
@@ -5195,7 +5195,7 @@ ResetBench:
         dec bx
         dec dx
         jns short .2
-        mov bx, 0xb438
+        mov bx, awshots
         inc cx
         cmp cx, 0x2
         jl short .1
@@ -5240,7 +5240,7 @@ resetplstuff:
         add si, 0x80
         dec di
         jnz short .2
-        mov bx, 0xb438
+        mov bx, awshots
         dec word [bp - 0x4]
         jnz short .1
         pop si
@@ -5285,6 +5285,6 @@ forceteams:
         push cs
         call forcepldata
         add sp, 0x2
-        push word 0xb438
+        push word awshots
         push cs
         call setpersonel

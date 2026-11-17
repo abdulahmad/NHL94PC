@@ -958,7 +958,7 @@ DrawStandingsPage:
         db 0x2A, 0xFF                           ; insn: sub bh, bh
         shl bx, 1
         imul ax, [bx + playofftree], 0x15
-        add ax, 0xaa38
+        add ax, LeagueTeamNames
         push word 0x3a0b
         push ax
         lea ax, [bp - 0x7c]
@@ -1342,7 +1342,7 @@ ShowSeasonStandings:
         jmp near .4
 .19:
         mov bx, POTreeRows
-        mov di, 0xc208
+        mov di, POTreeSlots + 2
         mov dx, [bp - 0x2]
 .20:
         mov ax, [bx]
@@ -1360,10 +1360,10 @@ ShowSeasonStandings:
 .22:
         add bx, 0x4
         add di, 0x8
-        cmp di, 0xc228
+        cmp di, POTreeRows + 4
         jc short .20
-        mov bx, 0xc234
-        mov di, 0xc228
+        mov bx, POTreeRows + 0x10
+        mov di, POTreeRows + 4
         mov dx, [bp - 0x2]
 .23:
         mov ax, [bx]
@@ -1381,7 +1381,7 @@ ShowSeasonStandings:
 .25:
         add bx, 0x4
         add di, 0x8
-        cmp di, 0xc238
+        cmp di, standingsteam
         jc short .23
         mov ax, [standingsteam]
         cmp [standingskey], ax
@@ -1625,7 +1625,7 @@ ShowPlayoffStandings:
         call 0x0000:_fstrcmp
         add sp, 0x8
         mov [bp - 0x4], ax
-        mov di, 0xaa38
+        mov di, LeagueTeamNames
         mov si, 0x218
 .1:
         push ds
@@ -1679,7 +1679,7 @@ ShowPlayoffStandings:
 .5:
         add di, 0x2a
         add si, 0x4
-        cmp si, 0xc224
+        cmp si, POTreeRows
         jc short .3
         mov ax, [bp - 0xc]
         mov dx, [bp - 0xa]

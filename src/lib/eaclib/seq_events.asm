@@ -1035,7 +1035,7 @@ FlushMidiQueue:
         db 0x8B, 0xFE                           ; insn: mov di, si
         inc si
         db 0x8B, 0xC6                           ; insn: mov ax, si
-        add ax, 0xdf74
+        add ax, MidiQueue
         push ds
         push ax
         push 0x2
@@ -1050,7 +1050,7 @@ FlushMidiQueue:
         db 0x8B, 0xFE                           ; insn: mov di, si
         inc si
         db 0x8B, 0xC6                           ; insn: mov ax, si
-        add ax, 0xdf74
+        add ax, MidiQueue
         push ds
         push ax
         push 0x3

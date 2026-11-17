@@ -31,7 +31,7 @@ CreateNewLeague:
         push 0xb
         push 0x0
         imul ax, [bp - 0x8], 0x1e
-        add ax, 0xac62
+        add ax, leagueinfo_teams
         push word 0x3a0b
         push ax
         call 0x0000:_fmemset
@@ -39,7 +39,7 @@ CreateNewLeague:
         push 0xb
         push 0x0
         imul ax, [bp - 0x8], 0x1e
-        add ax, 0xac6d
+        add ax, leagueinfo_teams + 0xb
         push word 0x3a0b
         push ax
         call 0x0000:_fmemset

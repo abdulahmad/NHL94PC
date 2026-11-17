@@ -44,7 +44,7 @@ GetInputEvent:
         and ax, strict word 0x1f
         mov [InputQueueHead], ax
         shl ax, byte 0x3
-        add ax, 0xaed0
+        add ax, InputQueue
         retf
 
 ;-----------------------------------------------------------------------------

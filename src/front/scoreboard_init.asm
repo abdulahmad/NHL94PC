@@ -75,13 +75,13 @@ LoadScoreboardArt:
         push word [ScoreboardArt]
         call 0x03A3:FindFarList
         add sp, 0x8
-        push word 0xda3e
+        push word PanelScoreShapeSeg + 0xe
         push strict word str_VlinvppVpk
         push word [ScoreboardArtSeg]
         push word [ScoreboardArt]
         call 0x03A3:FindFarList
         add sp, 0x8
-        push word 0xda32
+        push word PanelScoreShapeSeg + 2
         push strict word str_HlinhppHpk
         push word [ScoreboardArtSeg]
         push word [ScoreboardArt]

@@ -1678,7 +1678,7 @@ MergeLeagueFiles:
         mov [es:bx - 0x5382], dx
         or byte [es:bx - 0x5388], 0x4
         push word [bp - 0x40]
-        add bx, 0xac62
+        add bx, leagueinfo_teams
         push es
         push bx
         push word [bp - 0x3a]
@@ -1690,7 +1690,7 @@ MergeLeagueFiles:
         jnz short .18
         push word [bp - 0x40]
         imul ax, [bp - 0x40], 0x1e
-        add ax, 0xac62
+        add ax, leagueinfo_teams
         push word 0x3a0b
         push ax
         push word [bp - 0x50]
@@ -1713,7 +1713,7 @@ MergeLeagueFiles:
         push 0x0
         push 0x13
         push es
-        push word 0xac5e
+        push word leagueinfo_w4
         push word [bp - 0x50]
         call 0x0CD1:WriteAtOffset
         add sp, 0xc
@@ -1731,7 +1731,7 @@ MergeLeagueFiles:
         push 0x0
         push 0x13
         push es
-        push word 0xac5e
+        push word leagueinfo_w4
         push word [bp - 0x3a]
         call 0x0CD1:WriteAtOffset
         add sp, 0xc
@@ -1869,7 +1869,7 @@ MergeLeagueFiles:
         push 0x0
         push 0x13
         push es
-        push word 0xac5e
+        push word leagueinfo_w4
         push word [bp - 0x3a]
         call 0x0CD1:WriteAtOffset
         add sp, 0xc

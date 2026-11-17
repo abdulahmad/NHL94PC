@@ -839,7 +839,7 @@ FileSizeBody:
         leave
         retf
 .2:
-        mov ax, 0x6302
+        mov ax, str_SFileError
         mov bx, ss
         mov ds, bx
         push word [bp+6]
@@ -969,7 +969,7 @@ FileHeadBody:
         leave
         retf
 .5:
-        mov ax, 0x6302
+        mov ax, str_SFileError
         mov bx, ss
         mov ds, bx
         push word [bp+6]
@@ -2272,7 +2272,7 @@ AllocSlot:
         je short .2
         add bx, 4
         loop .1
-        mov ax, 0x6ddc
+        mov ax, str_NoRoomLeftInTimer
         push ax
         call 0xF4A:FatalError
 .2:
@@ -5890,7 +5890,7 @@ FileOpenFail:
 .1:
         mov ax, ss
         mov ds, ax
-        mov ax, 0x75e2
+        mov ax, str_SFileError_2
         push word [bp + 6]
         push ax
         call 0xF4A:FatalError
@@ -5985,7 +5985,7 @@ ReadAtFail:
         leave
         retf
 .1:
-        mov ax, 0x75f1
+        mov ax, str_HandleDFileError
         mov bx, ss
         mov ds, bx
         push word [bp + 6]
@@ -6058,7 +6058,7 @@ ReadCloseFail:
         leave
         retf
 .1:
-        mov ax, 0x75f1
+        mov ax, str_HandleDFileError
         mov bx, ss
         mov ds, bx
         push word [bp + 6]

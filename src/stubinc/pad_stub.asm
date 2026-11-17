@@ -21,5 +21,6 @@ MousePosFn		equ	0x6418
 MouseX		equ	0x6422
 MouseY		equ	0x6424
 MouseBtn		equ	0x6426
+PadReadings		equ	0xAFD4
 PadStatePtr		equ	0xB06A
 %include "pc/input/pad.asm"

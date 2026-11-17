@@ -66,6 +66,7 @@ MouseRange		equ	0x1BCD
 OpenReadShared		equ	0x3D6
 POTeamName1		equ	0xAC30
 POTreeRows		equ	0xC224
+POTreeSlots		equ	0xC206
 PageTable		equ	0x7570
 PoStandingsMode		equ	0x8C6E
 PutBlockAt		equ	0x4B5
@@ -121,6 +122,7 @@ UseCurrentPage		equ	0x1A6
 UseOffscreenCanvas		equ	0x137E
 UseOtherPage		equ	0x118C
 VgaCopyBytes		equ	0x41D
+VgaMem		equ	0xA000
 VgaSave0Off		equ	0xB34E
 VgaSave0Seg		equ	0xB350
 VgaSave1Off		equ	0xB352

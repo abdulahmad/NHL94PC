@@ -54,7 +54,7 @@ joyq_peek:
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         shl ax, 1
         db 0x03, 0xC1                           ; insn: add ax, cx
-        add ax, 0xafd4
+        add ax, PadReadings
         retf
         db 0x90
 
@@ -284,7 +284,7 @@ Holdplayer:
 .1:
         mov ax, [si + 0x14]
         shl ax, byte 0x7
-        add ax, 0xb50e
+        add ax, SortCords
         push ax
         push si
         push cs
@@ -508,7 +508,7 @@ doinput:
 .17:
         db 0x8B, 0xF8                           ; insn: mov di, ax
         shl di, byte 0x7
-        add di, 0xb50e
+        add di, SortCords
         cmp byte [bp - 0x4], 0x0
         jl short .18
         jmp near .54
@@ -641,7 +641,7 @@ doinput:
 .42:
         mov di, [passplayer]
         shl di, byte 0x7
-        add di, 0xb50e
+        add di, SortCords
         mov ax, [passplayer]
         cmp [si + 0x5e], ax
         jnz short .43
@@ -1199,7 +1199,7 @@ OneTimerChk:
         mov bx, 0x6
 .6:
         shl bx, byte 0x7
-        add bx, 0xb50e
+        add bx, SortCords
         db 0x2B, 0xD2                           ; insn: sub dx, dx
 .7:
         cmp word [bx + 0x1a], 0x0

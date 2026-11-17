@@ -1938,7 +1938,7 @@ GameLineEditorLoop:
         call 0x03A3:SetCharPtr.regs
         imul ax, [bp - 0x92], 0x16
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        add ax, 0xbd99
+        add ax, gmrosterjersey_b2
         push ax
         db 0x8B, 0xD9                           ; insn: mov bx, cx
         mov al, [bx + gmrosterjersey]
@@ -1984,7 +1984,7 @@ GameLineEditorLoop:
         call 0x03A3:SetCharPtr.regs
         imul ax, [bp - 0x92], 0x16
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        add ax, 0xbd99
+        add ax, gmrosterjersey_b2
         push ax
         db 0x8B, 0xD9                           ; insn: mov bx, cx
         mov al, [bx + gmrosterjersey]
@@ -2111,10 +2111,10 @@ LoadGameRoster:
         add bx, 0x16
         mov [bx - 0x16], dl
         inc dx
-        cmp bx, 0xc000
+        cmp bx, HomeTeamDbName
         jc short .1
         push strict word str_Key_2
-        push word 0xc000
+        push word HomeTeamDbName
         lea ax, [bp - 0x2c]
         push ax
         call 0x0000:_sprintf
@@ -2146,7 +2146,7 @@ LoadGameRoster:
 .3:
         db 0x2B, 0xFF                           ; insn: sub di, di
         imul ax, [bp + 0x6], word 0x2e8
-        add ax, 0x9fcc
+        add ax, GamePlayerNames
         mov [bp - 0x8], ax
 .4:
         mov bx, [bp - 0x8]
@@ -2229,7 +2229,7 @@ LoadGameRoster:
         mov [bp - 0xc], si
         db 0x2B, 0xFF                           ; insn: sub di, di
         imul ax, [bp + 0x6], word 0x2e8
-        add ax, 0xa030
+        add ax, GamePlayerNames + 0x64
         mov [bp - 0x8], ax
 .13:
         mov bx, [bp - 0x8]
@@ -2477,7 +2477,7 @@ DrawGameLineJerseysJumpTable:                   ; jump table of DrawGameLineJers
         add sp, 0xc
         add word [bp - 0x2], 0x6
         add si, 0x16
-        cmp si, 0xc000
+        cmp si, HomeTeamDbName
         jc short DrawGameLineJerseys.12
 .5:
         pop si
@@ -2498,7 +2498,7 @@ DrawLineEditorScreen:
         push di
         push si
         imul ax, [bp + 0x6], word 0x2e8
-        add ax, 0x9f80
+        add ax, GameTeamRecs
         mov [bp - 0x134], ax
         push ax
         push strict word str_EmbS_2
@@ -3477,7 +3477,7 @@ CheckGameRosterComplete:
         inc word [bp - 0x8]
 .4:
         add si, 0x16
-        cmp si, 0xc000
+        cmp si, HomeTeamDbName
         jc short .2
         mov si, [bp - 0x8]
         cmp di, 0x12
@@ -3670,7 +3670,7 @@ PruneGameLines:
         mov al, [bp + 0x6]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         imul si, ax, word 0x460
-        add si, 0xa550
+        add si, hmroster
         mov di, 0x1c
         mov dx, [bp - 0x2]
 .4:
@@ -3696,7 +3696,7 @@ PruneGameLines:
         db 0x2A, 0xED                           ; insn: sub ch, ch
         db 0x03, 0xC8                           ; insn: add cx, ax
         imul bx, cx, 0x28
-        add bx, 0xa550
+        add bx, hmroster
         cmp byte [bx], 0x3
         jnz short .7
         mov byte [bx], 0x2
@@ -3740,7 +3740,7 @@ MenuUseTheseLines:
         mov al, [bp + 0xa]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         imul ax, ax, word 0x460
-        add ax, 0xa550
+        add ax, hmroster
         mov [bp - 0x8], ax
 .2:
         db 0x2B, 0xFF                           ; insn: sub di, di
@@ -3785,7 +3785,7 @@ MenuUseTheseLines:
         mov al, [bp + 0xa]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         imul ax, ax, word 0x460
-        add ax, 0xa550
+        add ax, hmroster
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         db 0x8B, 0xD6                           ; insn: mov dx, si
         mov cx, [bp + 0x8]
@@ -3835,7 +3835,7 @@ MenuUseOriginalLines:
         mov al, [bp + 0xa]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         imul di, ax, word 0x2e8
-        add di, 0xa06c
+        add di, TeamLinesRecs
         push di
         push ax
         push cs
@@ -3935,7 +3935,7 @@ MenuUseDefaultLines:
         mov al, [bp + 0xa]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         imul di, ax, word 0x2e8
-        add di, 0xa03c
+        add di, HomeLinesRec
         push di
         push ax
         push cs
@@ -4051,7 +4051,7 @@ WriteTeamLines:
         jmp short .3
 .2:
         push strict word str_Teams_6
-        push word 0xc000
+        push word HomeTeamDbName
 .3:
         lea ax, [bp - 0x28]
         push ax
@@ -4166,7 +4166,7 @@ WriteTeamLines:
         mov al, [bp + 0xa]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         imul ax, ax, word 0x460
-        add ax, 0xa550
+        add ax, hmroster
         mov [bp - 0x312], ax
 .16:
         db 0x2B, 0xFF                           ; insn: sub di, di
@@ -4211,7 +4211,7 @@ WriteTeamLines:
         mov al, [bp + 0xa]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         imul ax, ax, word 0x460
-        add ax, 0xa550
+        add ax, hmroster
         mov [bp - 0x4], ax
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         mov [bp - 0x2], si
@@ -4305,7 +4305,7 @@ WriteTeamLines2:
         jmp short .3
 .2:
         push strict word str_Teams_4
-        push word 0xc000
+        push word HomeTeamDbName
 .3:
         lea ax, [bp - 0x28]
         push ax
@@ -4415,7 +4415,7 @@ WriteTeamLines2:
         mov al, [bp + 0xa]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         imul ax, ax, word 0x460
-        add ax, 0xa550
+        add ax, hmroster
         mov [bp - 0x312], ax
 .16:
         db 0x2B, 0xFF                           ; insn: sub di, di
@@ -4458,7 +4458,7 @@ WriteTeamLines2:
         mov al, [bp + 0xa]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         imul ax, ax, word 0x460
-        add ax, 0xa550
+        add ax, hmroster
         mov [bp - 0x4], ax
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         mov [bp - 0x2], si
@@ -4763,7 +4763,7 @@ MenuGameShowPlayerStats:
         call 0x03A3:SetCharPtr.regs
         imul ax, [si], 0x16
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        add ax, 0xbd99
+        add ax, gmrosterjersey_b2
         push ax
         db 0x8B, 0xD9                           ; insn: mov bx, cx
         mov al, [bx + gmrosterjersey]
@@ -4904,7 +4904,7 @@ GameScratchPlayer:
         call 0x03A3:SetCharPtr.regs
         imul ax, [di], 0x16
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        add ax, 0xbd99
+        add ax, gmrosterjersey_b2
         push ax
         db 0x8B, 0xD9                           ; insn: mov bx, cx
         mov al, [bx + gmrosterjersey]
@@ -4962,7 +4962,7 @@ GameDressPlayer:
         call 0x03A3:SetCharPtr.regs
         imul ax, [si], 0x16
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        add ax, 0xbd99
+        add ax, gmrosterjersey_b2
         push ax
         db 0x8B, 0xD9                           ; insn: mov bx, cx
         mov al, [bx + gmrosterjersey]

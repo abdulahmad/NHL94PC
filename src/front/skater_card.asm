@@ -14,7 +14,7 @@ SkaterStatsCard:
         enter 0x19a, 0x0
         push di
         push si
-        mov word [bp - 0x2], 0xcf1a
+        mov word [bp - 0x2], statscardteam
         push 0x0
         push strict word str_EasnFnt
         call 0x149D:LoadRawHeader

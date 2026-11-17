@@ -21,7 +21,7 @@ SetTeamNameText:
         mov al, [HomeTeamAbbr]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         imul si, ax, 0x28
-        add si, 0xa550
+        add si, hmroster
         mov es, [segMenuText38]
         push word [es:HomeTeamMenuText + 0xA]
         push word [es:HomeTeamMenuText + 0x8]
@@ -78,7 +78,7 @@ SetTeamNameText:
         mov al, [HomeTeamAbbr_b1]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         imul si, ax, 0x28
-        add si, 0xa550
+        add si, hmroster
         les bx, [bp - 0x2c]
         push word [es:bx + 0x20]
         push word [es:bx + 0x1e]
@@ -167,7 +167,7 @@ SetTeamNameText:
         mov al, [AwayTeamAbbr]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         imul si, ax, 0x28
-        add si, 0xa9b0
+        add si, GamePlayerFlags
         mov es, [segMenuText39]
         push word [es:VisitorTeamMenuText + 0xA]
         push word [es:VisitorTeamMenuText + 0x8]
@@ -224,7 +224,7 @@ SetTeamNameText:
         mov al, [AwayTeamAbbr_b1]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         imul si, ax, 0x28
-        add si, 0xa9b0
+        add si, GamePlayerFlags
         les bx, [bp - 0x30]
         push word [es:bx + 0x20]
         push word [es:bx + 0x1e]

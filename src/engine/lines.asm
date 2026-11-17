@@ -28,7 +28,7 @@ SortPlayersByPos:
         mov di, [bp + 0xa]
         db 0x2B, 0xF6                           ; insn: sub si, si
         imul ax, [bp + 0x6], word 0x460
-        add ax, 0xa557
+        add ax, hmrosterpos
         mov [bp - 0x8], di
         db 0x8B, 0xF8                           ; insn: mov di, ax
         db 0x8B, 0xD6                           ; insn: mov dx, si
@@ -55,7 +55,7 @@ SortPlayersByPos:
         cmp si, 0x32
         jl short .1
         push word possort
-        push word 0xdf00
+        push word lineslotmark
         push 0x19
         call 0x14F6:SortPairs - 0x90
         add sp, 0x6
@@ -98,7 +98,7 @@ SortNonDefPlayers:
         mov di, [bp + 0xa]
         db 0x2B, 0xF6                           ; insn: sub si, si
         imul ax, [bp + 0x6], word 0x460
-        add ax, 0xa557
+        add ax, hmrosterpos
         mov [bp - 0x8], di
         db 0x8B, 0xF8                           ; insn: mov di, ax
         db 0x8B, 0xD6                           ; insn: mov dx, si
@@ -124,7 +124,7 @@ SortNonDefPlayers:
         cmp si, 0x32
         jl short .1
         push word possort
-        push word 0xdf00
+        push word lineslotmark
         push 0x19
         call 0x14F6:SortPairs - 0x90
         add sp, 0x6
@@ -167,7 +167,7 @@ BuildDefaultLines:
         db 0x2B, 0xFF                           ; insn: sub di, di
         db 0x8B, 0xD7                           ; insn: mov dx, di
         mov [bp - 0xa], dx
-        mov cx, 0xa550
+        mov cx, hmroster
         mov si, 0x0
 .1:
         mov [bp - 0x2], di
@@ -290,7 +290,7 @@ BuildDefaultLines:
         lea ax, [bp + di - 0x76]
         push ax
         db 0x8B, 0xC6                           ; insn: mov ax, si
-        add ax, 0xdcda
+        add ax, offsort_fwd - 50
         push ax
         push word [bp - 0xc]
         push cs
@@ -300,7 +300,7 @@ BuildDefaultLines:
         lea ax, [bp + di - 0x76]
         push ax
         db 0x8B, 0xC6                           ; insn: mov ax, si
-        add ax, 0xddd4
+        add ax, defsort_d + 3 * 50
         push ax
         push word [bp - 0xc]
         push cs
@@ -310,7 +310,7 @@ BuildDefaultLines:
         lea ax, [bp + di - 0x76]
         push ax
         db 0x8B, 0xC6                           ; insn: mov ax, si
-        add ax, 0xde06
+        add ax, defsort_d + 4 * 50
         push ax
         push word [bp - 0xc]
         push cs
@@ -320,7 +320,7 @@ BuildDefaultLines:
         lea ax, [bp + di - 0x76]
         push ax
         db 0x8B, 0xC6                           ; insn: mov ax, si
-        add ax, 0xdda2
+        add ax, defsort_d + 2 * 50
         push ax
         push word [bp - 0xc]
         push cs
@@ -330,7 +330,7 @@ BuildDefaultLines:
         lea ax, [bp + di - 0xda]
         push ax
         db 0x8B, 0xC6                           ; insn: mov ax, si
-        add ax, 0xdd3e
+        add ax, defsort_d
         push ax
         push word [bp - 0xc]
         push cs
@@ -340,7 +340,7 @@ BuildDefaultLines:
         lea ax, [bp + di - 0xda]
         push ax
         db 0x8B, 0xC6                           ; insn: mov ax, si
-        add ax, 0xde6a
+        add ax, defsort_d + 6 * 50
         push ax
         push word [bp - 0xc]
         push cs
@@ -350,7 +350,7 @@ BuildDefaultLines:
         lea ax, [bp + di - 0xda]
         push ax
         db 0x8B, 0xC6                           ; insn: mov ax, si
-        add ax, 0xde9c
+        add ax, defsort_d + 7 * 50
         push ax
         push word [bp - 0xc]
         push cs
@@ -360,7 +360,7 @@ BuildDefaultLines:
         lea ax, [bp + di - 0xda]
         push ax
         db 0x8B, 0xC6                           ; insn: mov ax, si
-        add ax, 0xde38
+        add ax, defsort_d + 5 * 50
         push ax
         push word [bp - 0xc]
         push cs
@@ -369,7 +369,7 @@ BuildDefaultLines:
         lea ax, [bp + di - 0x76]
         push ax
         db 0x8B, 0xC6                           ; insn: mov ax, si
-        add ax, 0xdd0c
+        add ax, offsort_fwd
         push ax
         push word [bp - 0xc]
         push cs
@@ -378,7 +378,7 @@ BuildDefaultLines:
         lea ax, [bp + di - 0xda]
         push ax
         db 0x8B, 0xC6                           ; insn: mov ax, si
-        add ax, 0xdd70
+        add ax, defsort_d + 50
         push ax
         push word [bp - 0xc]
         push cs
@@ -449,10 +449,10 @@ CanFillLineSlot:
         mov di, [bp + 0x6]
         db 0x0B, 0xFF                           ; insn: or di, di
         jz short .1
-        mov ax, 0xae40
+        mov ax, AwayTeamRec
         jmp short .2
 .1:
-        mov ax, 0xae10
+        mov ax, HomeTeamRec
 .2:
         mov [bp - 0x6], ax
         imul ax, di, 0x1c
@@ -681,7 +681,7 @@ FillDressedSlots:
 .2:
         imul bx, si, 0x19
         db 0x03, 0xDF                           ; insn: add bx, di
-        add bx, 0xdece
+        add bx, dressflags
         mov [bp - 0x8], bx
         cmp byte [bx], 0x0
         jz short .4
@@ -720,11 +720,11 @@ FillDressedSlots:
         mov byte [bx + hmroster], 0x3
         db 0x0B, 0xF6                           ; insn: or si, si
         jz short .6
-        mov ax, 0xae40
+        mov ax, AwayTeamRec
         jmp short .7
         db 0x90
 .6:
-        mov ax, 0xae10
+        mov ax, HomeTeamRec
 .7:
         mov word [bp - 0x4], 0x28
         mov si, [bp - 0x4]
@@ -776,10 +776,10 @@ PickForLineSlot:
         push si
         cmp word [bp + 0x6], 0x0
         jz short .1
-        mov ax, 0xae40
+        mov ax, AwayTeamRec
         jmp short .2
 .1:
-        mov ax, 0xae10
+        mov ax, HomeTeamRec
 .2:
         mov [bp - 0xc], ax
         mov bx, [bp + 0x8]
@@ -840,12 +840,12 @@ PickForLineSlot:
         cmp si, 0x12
         jl short .8
         imul ax, [bp + 0x6], 0x19
-        add ax, 0xdcda
+        add ax, offsort_fwd - 50
         jmp short .9
         db 0x90
 .8:
         imul ax, [bp + 0x6], 0x19
-        add ax, 0xdd3e
+        add ax, defsort_d
 .9:
         push si
 .10:
@@ -868,12 +868,12 @@ PickForLineSlot:
         cmp si, 0x1c
         jl short .13
         imul ax, [bp + 0x6], 0x19
-        add ax, 0xde38
+        add ax, defsort_d + 5 * 50
         jmp short .14
         db 0x90
 .13:
         imul ax, [bp + 0x6], 0x19
-        add ax, 0xdda2
+        add ax, defsort_d + 2 * 50
 .14:
         push si
         push word [bp + 0x6]
@@ -889,11 +889,11 @@ PickForLineSlot:
         cmp word [bp + 0x8], 0x1c
         jl short .16
         imul ax, [bp + 0x6], 0x19
-        add ax, 0xde9c
+        add ax, defsort_d + 7 * 50
         jmp short .17
 .16:
         imul ax, [bp + 0x6], 0x19
-        add ax, 0xde06
+        add ax, defsort_d + 4 * 50
 .17:
         push word [bp + 0x8]
         push word [bp + 0x6]
@@ -909,11 +909,11 @@ PickForLineSlot:
         cmp word [bp + 0x8], 0x1c
         jl short .19
         imul ax, [bp + 0x6], 0x19
-        add ax, 0xde6a
+        add ax, defsort_d + 6 * 50
         jmp short .20
 .19:
         imul ax, [bp + 0x6], 0x19
-        add ax, 0xddd4
+        add ax, defsort_d + 3 * 50
 .20:
         push word [bp + 0x8]
         jmp near .10
@@ -924,12 +924,12 @@ PickForLineSlot:
         cmp si, 0x1c
         jl short .22
         imul ax, [bp + 0x6], 0x19
-        add ax, 0xde6a
+        add ax, defsort_d + 6 * 50
         jmp short .23
         db 0x90
 .22:
         imul ax, [bp + 0x6], 0x19
-        add ax, 0xddd4
+        add ax, defsort_d + 3 * 50
 .23:
         push si
         push word [bp + 0x6]
@@ -945,11 +945,11 @@ PickForLineSlot:
         cmp word [bp + 0x8], 0x1c
         jl short .25
         imul ax, [bp + 0x6], 0x19
-        add ax, 0xde9c
+        add ax, defsort_d + 7 * 50
         jmp short .26
 .25:
         imul ax, [bp + 0x6], 0x19
-        add ax, 0xde06
+        add ax, defsort_d + 4 * 50
 .26:
         push word [bp + 0x8]
         push word [bp + 0x6]
@@ -965,11 +965,11 @@ PickForLineSlot:
         cmp word [bp + 0x8], 0x1c
         jl short .28
         imul ax, [bp + 0x6], 0x19
-        add ax, 0xde38
+        add ax, defsort_d + 5 * 50
         jmp short .20
 .28:
         imul ax, [bp + 0x6], 0x19
-        add ax, 0xdda2
+        add ax, defsort_d + 2 * 50
         jmp short .20
         db 0x90
 .29:
@@ -980,11 +980,11 @@ PickForLineSlot:
         cmp si, 0x1c
         jl short .31
         imul ax, [bp + 0x6], 0x19
-        add ax, 0xde9c
+        add ax, defsort_d + 7 * 50
         jmp short .32
 .31:
         imul ax, [bp + 0x6], 0x19
-        add ax, 0xde06
+        add ax, defsort_d + 4 * 50
 .32:
         push si
         push word [bp + 0x6]
@@ -1000,11 +1000,11 @@ PickForLineSlot:
         cmp word [bp + 0x8], 0x1c
         jl short .34
         imul ax, [bp + 0x6], 0x19
-        add ax, 0xde6a
+        add ax, defsort_d + 6 * 50
         jmp short .35
 .34:
         imul ax, [bp + 0x6], 0x19
-        add ax, 0xddd4
+        add ax, defsort_d + 3 * 50
 .35:
         push word [bp + 0x8]
         push word [bp + 0x6]
@@ -1020,11 +1020,11 @@ PickForLineSlot:
         cmp word [bp + 0x8], 0x1c
         jl short .37
         imul ax, [bp + 0x6], 0x19
-        add ax, 0xde38
+        add ax, defsort_d + 5 * 50
         jmp short .38
 .37:
         imul ax, [bp + 0x6], 0x19
-        add ax, 0xdda2
+        add ax, defsort_d + 2 * 50
 .38:
         push word [bp + 0x8]
         push word [bp + 0x6]
@@ -1071,23 +1071,23 @@ PickForLineSlot:
         cmp ax, strict word 0x1c
         jnl short .43
         imul ax, [bp + 0x6], 0x19
-        add ax, 0xdcda
+        add ax, offsort_fwd - 50
         jmp short .46
         db 0x90
 .43:
         imul ax, [bp + 0x6], 0x19
-        add ax, 0xdd3e
+        add ax, defsort_d
         jmp short .46
         db 0x90
 .44:
         cmp ax, strict word 0x1c
         jl short .45
         imul ax, [bp + 0x6], 0x19
-        add ax, 0xdd70
+        add ax, defsort_d + 50
         jmp short .46
 .45:
         imul ax, [bp + 0x6], 0x19
-        add ax, 0xdd0c
+        add ax, offsort_fwd
 .46:
         mov [bp - 0xe], ax
         mov word [bp - 0x8], 0x0
@@ -1123,24 +1123,24 @@ PickForLineSlot:
         cmp word [bp + 0x8], 0x1c
         jnl short .51
         imul ax, [bp + 0x6], 0x19
-        add ax, 0xdd0c
+        add ax, offsort_fwd
         jmp short .54
         db 0x90
 .51:
         imul ax, [bp + 0x6], 0x19
-        add ax, 0xdd70
+        add ax, defsort_d + 50
         jmp short .54
         db 0x90
 .52:
         cmp word [bp + 0x8], 0x1c
         jl short .53
         imul ax, [bp + 0x6], 0x19
-        add ax, 0xdd3e
+        add ax, defsort_d
         jmp short .54
         db 0x90
 .53:
         imul ax, [bp + 0x6], 0x19
-        add ax, 0xdcda
+        add ax, offsort_fwd - 50
 .54:
         mov [bp - 0xe], ax
         mov word [bp - 0x8], 0x0
@@ -1198,7 +1198,7 @@ PickGoalie:
 .3:
         mov word [bp - 0x4], 0x19
         imul ax, di, word 0x460
-        add ax, 0xa938
+        add ax, hmroster + 0x3e8
         mov [bp - 0x2], ax
         mov di, [bp - 0x4]
         mov [bp - 0x6], si
@@ -1275,15 +1275,15 @@ PickExtraSkater:
         push si
         cmp word [bp + 0x6], 0x0
         jz short .1
-        mov ax, 0xae40
+        mov ax, AwayTeamRec
         jmp short .2
         db 0x90
 .1:
-        mov ax, 0xae10
+        mov ax, HomeTeamRec
 .2:
         mov [bp - 0x4], ax
         imul ax, [bp + 0x6], 0x19
-        add ax, 0xdd0c
+        add ax, offsort_fwd
         mov [bp - 0x6], ax
         mov [bp - 0x2], ax
         cmp word [bp + 0x8], 0x26
@@ -1448,11 +1448,11 @@ RemoveFromLines:
         mov di, [bp + 0x6]
         db 0x0B, 0xFF                           ; insn: or di, di
         jz short .1
-        mov ax, 0xae40
+        mov ax, AwayTeamRec
         jmp short .2
         db 0x90
 .1:
-        mov ax, 0xae10
+        mov ax, HomeTeamRec
 .2:
         mov [bp - 0x6], ax
         imul ax, di, 0x1c
@@ -1668,10 +1668,10 @@ SetupTeamLines:
         mov di, [bp + 0x6]
         db 0x0B, 0xFF                           ; insn: or di, di
         jz short .1
-        mov ax, 0xae40
+        mov ax, AwayTeamRec
         jmp short .2
 .1:
-        mov ax, 0xae10
+        mov ax, HomeTeamRec
 .2:
         mov [bp - 0xc], ax
         db 0x2B, 0xF6                           ; insn: sub si, si
@@ -1725,12 +1725,12 @@ SetupTeamLines:
         mov ax, [dressedfwds]
         add ax, [dresseddefs]
         mov [dressedskaters], ax
-        mov bx, 0xdf00
+        mov bx, lineslotmark
 .9:
         inc bx
         inc bx
         mov word [bx - 0x2], 0x0
-        cmp bx, 0xdf32
+        cmp bx, possort
         jc short .9
         db 0x2B, 0xF6                           ; insn: sub si, si
         mov di, [bp - 0xc]
@@ -1762,9 +1762,9 @@ SetupTeamLines:
         shl bx, 1
         mov [bx + lineslotmark], cx
         mov word [bp - 0x4], 0x0
-        mov word [bp - 0xa], 0xdf00
+        mov word [bp - 0xa], lineslotmark
         imul ax, [bp + 0x6], word 0x460
-        add ax, 0xa550
+        add ax, hmroster
         mov [bp - 0x8], ax
         mov si, [bp - 0x4]
         mov di, [bp - 0xa]
@@ -1789,7 +1789,7 @@ SetupTeamLines:
         inc si
         inc di
         inc di
-        cmp di, 0xdf32
+        cmp di, possort
         jc short .11
         mov si, 0x24
         mov di, [bp + 0x6]

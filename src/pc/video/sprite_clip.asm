@@ -412,7 +412,7 @@ FlushDirtyRects:
         shl bx, 1
         mov word [bx + DirtyRects], 0x0
         imul ax, ax, word 0x140
-        add ax, 0xd756
+        add ax, hudhundstep + 0x2e
         mov [bx + dirtycount], ax
         pop si
         leave

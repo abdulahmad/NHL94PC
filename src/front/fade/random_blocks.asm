@@ -139,7 +139,7 @@ FadeRandomBlocks2:
         cmp word [bp - 0x8], 0x0
         jng short .3
         db 0x8B, 0xD9                           ; insn: mov bx, cx
-        add bx, 0x8efe
+        add bx, RandomBlockDone
         mov ax, [bp - 0x8]
         mov [bp - 0x2], ax
         mov [bp - 0x4], cx

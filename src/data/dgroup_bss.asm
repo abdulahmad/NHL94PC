@@ -98,7 +98,9 @@ MidiEvValue:                                    ; MidiEvent: value (dword: contr
 MidiEvLength:                                   ; MidiEvent: bytes the event takes in the track
         resb 2
 MidiNextEvent:                                  ; the following event, parsed for its delta time only
-        resb 32
+        resb 12
+PatchFileName:                                  ; 'bank%d.pat' name built by LoadBankNumber
+        resb 20
 PatchMsg:                                       ; patch message: status byte; used by SendPatches
         resb 1
 PatchMsg1:                                      ; patch message byte 1; used by SendPatches
@@ -145,7 +147,10 @@ DrvTableSendMidi:                               ; driver table: send MIDI routin
         resb 8
 DrvTablePlaySample:                             ; driver table: play sample routine; used by DrvPlaySample,
                                                 ; DrvPlayRecSample
-        resb 140
+        resb 60
+DriverFileName:                                 ; 'c:\eaclib\' path of the sound driver built by
+                                                ; LoadSoundDriver
+        resb 80
 StrBufPtr:                                      ; sprintf string stream: pointer; used by _sprintf
         resb 2
 StrBufCnt:                                      ; sprintf string stream: space left; used by _sprintf
@@ -171,7 +176,10 @@ AtexitTable:                                    ; atexit and onexit functions (3
                                                 ; ExitCommon
         resb 128
 AtexitTableEnd:                                 ; end of AtexitTable; atexit compares AtexitPtr with it
-        resb 152
+        resb 8
+PPVFiles:                                       ; far pointers to the 18 loaded PPV files (LoadPlayerFrames);
+                                                ; the 72 bytes after them are not used
+        resb 144
 FrameTable:                                     ; frame pointer table (offset words) built by IndexPPVFrames;
                                                 ; used by GAME
         resb 2
@@ -284,7 +292,10 @@ InputQueue:                                     ; input event queue; used by Pol
 CursorX:                                        ; cursor x; used by PollInputEvents
         resb 2
 CursorY:                                        ; cursor y; used by EventToCursor, PollInputEvents
-        resb 152
+        resb 2
+PadReadings:                                    ; 3 bytes a pad (stick, buttons, hot key) filled by
+                                                ; ReadPadDevice
+        resb 150
 PadStatePtr:                                    ; pad state being updated; used by StickToPad, PadTimerTick
         resb 2
 curevent:                                       ; current game summary event record; used by AI, INIT
@@ -492,7 +503,7 @@ editopts_b1:                                    ; high byte of editopts; used by
         resb 1
 editctlopts:                                    ; controller option bits being edited; used by MENUS
         resb 2
-hmshots:                                        ; home shots; used by INIT
+hmshots:                                        ; home shots; the home team stats start here; used by INIT
         resb 2
 hmppgoals:                                      ; home power play goals; used by INIT, LP
         resb 2
@@ -573,8 +584,20 @@ hmtmrosterptr:                                  ; home roster pointer; used by A
         resb 2
 hmtmptrF2:                                      ; home team pointer; used by AI, INIT
         resb 2
-hmtmptrs:                                       ; further home team pointers (14 bytes); used by AI, INIT
-        resb 14
+hmtmptrs:                                       ; home team pointer; used by AI, INIT
+        resb 2
+awshots:                                        ; away shots; the away team stats start here
+        resb 2
+awppgoals:                                      ; away power play goals
+        resb 2
+awppchances:                                    ; away power play chances
+        resb 2
+awpenalties:                                    ; away penalties
+        resb 2
+awpenmins:                                      ; away penalty minutes
+        resb 2
+awattacktime:                                   ; away attack time
+        resb 2
 awscore:                                        ; away score; used by AI, LP, MENUS
         resb 10
 awtmline:                                       ; away current line; used by AI
@@ -629,144 +652,147 @@ awtmptrF2:                                      ; away team pointer; used by AI,
         resb 2
 awtmroster:                                     ; away roster pointer; used by AI, INIT
         resb 2
-SortCords_m2:                                   ; the word before SortCords and the first two bytes of it
-                                                ; (clearteams stores 0B80Eh, an object address); used by AI,
-                                                ; INIT
-        resb 4
+SortCords_m2:                                   ; object address word before SortCords (clearteams stores
+                                                ; sort object 6 there); used by AI, INIT
+        resb 2
+SortCords:                                      ; the sort objects, 80h bytes each; sort object 0 starts here
+        resb 2
 sortobj0_Xpos2:                                 ; sort object 0 (sortobj0), field +02h; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 4
 sortobj0_Ypos2:                                 ; sort object 0 (sortobj0), field +06h; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 20
 sortobj0_position:                              ; sort object 0 (sortobj0), field +1Ah; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 42
 CwdExciteLvl:                                   ; crowd excitement level; used by AI
         resb 1
 sortobj0_pflags2:                               ; sort object 0 (sortobj0), field +45h; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 2
 sortobj0_47:                                    ; sort object 0 (sortobj0), field +47h; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 1467
 sortobj12_Xpos2:                                ; sort object 12 (sortobj12), field +02h; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 4
 sortobj12_Ypos2:                                ; sort object 12 (sortobj12), field +06h; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 6
 sortobj12_Xvel:                                 ; sort object 12 (sortobj12), field +0Ch; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 2
 sortobj12_Yvel:                                 ; sort object 12 (sortobj12), field +0Eh; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 116
 sortobj13_Xpos2:                                ; sort object 13 (sortobj13), field +02h; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 4
 sortobj13_Ypos2:                                ; sort object 13 (sortobj13), field +06h; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 6
 sortobj13_Xvel:                                 ; sort object 13 (sortobj13), field +0Ch; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 2
 sortobj13_Yvel:                                 ; sort object 13 (sortobj13), field +0Eh; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
-        resb 116
+                                                ; bytes from SortCords; used by AI
+        resb 114
+puckstruct:                                     ; sort object 14 (puck), field +00h
+        resb 2
 puckXpos2:                                      ; sort object 14 (puck), field +02h; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 4
 puckYpos2:                                      ; puck sort object field +06h (the object starts 6 bytes
                                                 ; before); used by AI
         resb 4
 puckZpos2:                                      ; sort object 14 (puck), field +0Ah; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 2
 puckXvel:                                       ; sort object 14 (puck), field +0Ch; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 2
 puckYvel:                                       ; sort object 14 (puck), field +0Eh; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 4
 puckframe:                                      ; sort object 14 (puck), field +12h; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 10
 puck_1C:                                        ; sort object 14 (puck), field +1Ch; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 2
 puckasslist:                                    ; sort object 14 (puck), field +1Eh; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 8
 pucktemp1:                                      ; puck sort object temp1; used by AI
         resb 2
 pucktemp2:                                      ; sort object 14 (puck), field +28h; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 22
 pucknopuck:                                     ; puck sort object nopuck field; used by AI
         resb 7
 puckpflags2:                                    ; puck sort object pflags2; used by AI
         resb 3
 puck_48:                                        ; sort object 14 (puck), field +48h; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 56
 doorstruct:                                     ; sort object 15 (door), field +00h; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 2
 doorXpos2:                                      ; sort object 15 (door), field +02h; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 4
 doorYpos2:                                      ; sort object 15 (door), field +06h; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 4
 doorZpos2:                                      ; sort object 15 (door), field +0Ah; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 2
 doorXvel:                                       ; sort object 15 (door), field +0Ch; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 2
 doorYvel:                                       ; sort object 15 (door), field +0Eh; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 4
 doorframe:                                      ; sort object 15 (door), field +12h; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 20
 doortemp1:                                      ; sort object 15 (door), field +26h; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 2
 doortemp2:                                      ; sort object 15 (door), field +28h; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 16
 door_38:                                        ; sort object 15 (door), field +38h; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 12
 doorpflags:                                     ; sort object 15 (door), field +44h; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 2
 doorpflags3:                                    ; sort object 15 (door), field +46h; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 2
 door_48:                                        ; sort object 15 (door), field +48h; sort objects are 80h
-                                                ; bytes from 0B50Eh; used by AI
+                                                ; bytes from SortCords; used by AI
         resb 56
-refstruct:                                      ; sort object 16 (ref), field +00h; sort objects are 80h bytes
-                                                ; from 0B50Eh; used by AI
+refstruct:                                      ; sort object 16 (ref), field +00h; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 2
-refXpos2:                                       ; sort object 16 (ref), field +02h; sort objects are 80h bytes
-                                                ; from 0B50Eh; used by AI
+refXpos2:                                       ; sort object 16 (ref), field +02h; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 4
 refYpos2:                                       ; referee sort object field +06h; used by AI
         resb 6
 refXvel:                                        ; referee x velocity; used by AI
         resb 2
-refYvel:                                        ; sort object 16 (ref), field +0Eh; sort objects are 80h bytes
-                                                ; from 0B50Eh; used by AI
+refYvel:                                        ; sort object 16 (ref), field +0Eh; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 4
-refframe:                                       ; sort object 16 (ref), field +12h; sort objects are 80h bytes
-                                                ; from 0B50Eh; used by AI
+refframe:                                       ; sort object 16 (ref), field +12h; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 8
-refposition:                                    ; sort object 16 (ref), field +1Ah; sort objects are 80h bytes
-                                                ; from 0B50Eh; used by AI
+refposition:                                    ; sort object 16 (ref), field +1Ah; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 2
 ref_1C:                                         ; referee sort object field +1Ch; used by AI
         resb 2
@@ -776,23 +802,23 @@ reftemp1:                                       ; referee temp1; used by AI
         resb 4
 reftemp3:                                       ; referee temp3; used by AI
         resb 2
-reftemp4:                                       ; sort object 16 (ref), field +2Ch; sort objects are 80h bytes
-                                                ; from 0B50Eh; used by AI
+reftemp4:                                       ; sort object 16 (ref), field +2Ch; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 2
-reftemp5:                                       ; sort object 16 (ref), field +2Eh; sort objects are 80h bytes
-                                                ; from 0B50Eh; used by AI
+reftemp5:                                       ; sort object 16 (ref), field +2Eh; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 8
-ref_36:                                         ; sort object 16 (ref), field +36h; sort objects are 80h bytes
-                                                ; from 0B50Eh; used by AI
+ref_36:                                         ; sort object 16 (ref), field +36h; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 20
-ref_4A:                                         ; sort object 16 (ref), field +4Ah; sort objects are 80h bytes
-                                                ; from 0B50Eh; used by AI
+ref_4A:                                         ; sort object 16 (ref), field +4Ah; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 1
-ref_4B:                                         ; sort object 16 (ref), field +4Bh; sort objects are 80h bytes
-                                                ; from 0B50Eh; used by AI
+ref_4B:                                         ; sort object 16 (ref), field +4Bh; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 1
-ref_4C:                                         ; sort object 16 (ref), field +4Ch; sort objects are 80h bytes
-                                                ; from 0B50Eh; used by AI
+ref_4C:                                         ; sort object 16 (ref), field +4Ch; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 52
 TitleJingle:                                    ; title jingle buffer pointer (offset); used by MENUS
         resb 2

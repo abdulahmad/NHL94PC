@@ -87,6 +87,7 @@ FlushDirtyRects		equ	0x316
 FlushGSumQueueThunk		equ	0x29B3
 FlushInputEvents		equ	0x66
 FontPtr		equ	0x6D4E
+FrameTable		equ	0x91D0
 GameGfx		equ	0xD6D4
 GameGfxSeg		equ	0xD6D6
 GameLineEditorThunk		equ	0x244F
@@ -126,6 +127,7 @@ HomeSortObjs		equ	0x0
 HomeTeamAbbr		equ	0xAE34
 HomeTeamAbbr_b1		equ	0xAE35
 HomeTeamColours		equ	0xAE38
+HomeTeamDbName		equ	0xC000
 HomeTeamMenuText		equ	0x12F0
 HomeTeamNum		equ	0x29CA
 HomeTeamRec		equ	0xAE10
@@ -182,6 +184,7 @@ NumberFrames2		equ	0xD456
 NumberFrames2Seg		equ	0xD458
 NumberFramesSeg		equ	0xD448
 NumberSprites		equ	0xD6D8
+NumberSprites2		equ	0xD700
 OOlist		equ	0xD4F4
 OpenReadShared		equ	0x3D6
 OpenReadWriteShared		equ	0x3FA
@@ -194,6 +197,7 @@ OverlayGfx		equ	0xD62C
 OverlayGfxSeg		equ	0xD62E
 PBnum		equ	0xD6C6
 POSeedTable		equ	0x128
+PPVFiles		equ	0x9140
 PadRepeatOn		equ	0x524
 PadStates		equ	0x52C
 PadStates2		equ	0x52D
@@ -272,6 +276,7 @@ SetRemapTable		equ	0x442
 SetStartPage		equ	0x1320
 SetTextColors		equ	0x24
 SetupTeamLinesThunk		equ	0x2A21
+SortCords		equ	0xB50E
 SortCords_m2		equ	0xB50C
 SortPairs		equ	0x92
 SortPending		equ	0x48BC
@@ -311,6 +316,7 @@ VgaCopyBytes		equ	0x41D
 VgaCopyFromPitch		equ	0x123
 VgaCopyStrip		equ	0x360
 VgaCopyToPitch		equ	0xCB
+VgaMem		equ	0xA000
 VgaPageFlip		equ	0x25C
 VgaStamp8		equ	0x17B
 VgaStorePlanes		equ	0x2D5
@@ -336,6 +342,7 @@ _strlen		equ	0xC9E
 _strncpy		equ	0xCBA
 apl		equ	0x49D8
 assinsert		equ	0xA74
+awshots		equ	0xB438
 awtmap		equ	0xB45A
 awtmglattr		equ	0xB4FC
 awtmglattrseg		equ	0xB4FA
@@ -455,6 +462,7 @@ hmtmglattrseg		equ	0xB428
 hmtmglstats		equ	0xB42E
 hmtmgoalie		equ	0xB386
 hmtmlines		equ	0xB420
+hmtmpdst		equ	0xB3C6
 hmtmplattr		equ	0xB424
 hmtmplstats		equ	0xB42A
 hmtmplstatsseg		equ	0xB42C
@@ -536,6 +544,7 @@ photobankf_w4		equ	0x4A5A
 photobankf_w6		equ	0x4A5C
 photobankf_w8		equ	0x4A5E
 photobankf_wA		equ	0x4A60
+plstatsoff		equ	0xD01C
 postate		equ	0x62
 puckcross		equ	0xD616
 puckfaceoff2_ptab		equ	0x49BC

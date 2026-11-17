@@ -201,7 +201,7 @@ FillRect:
         cmp word [bp + 0xc], 0x0
         jng short FillRectClip.4
         mov ax, [CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .3
         mov es, ax
         mov dx, 0x3c4
@@ -345,7 +345,7 @@ DrawTextAt:
         mov [bp - 0x6], ax
         and bx, 0x3
         mov ax, es
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jz short .7
         jmp near .17
 .7:
@@ -861,7 +861,7 @@ PutBlockBody:
         and bx, 0x3
         mov word [bp - 0x1a], 0x4
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jz short .10
         jmp near .14
 .10:
@@ -1062,7 +1062,7 @@ DrawRawBody:
         mov [bp - 0x2], ax
         and bx, 0x3
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .5
         mov es, ax
         mov ah, [ss:bx + DrawRawMasks]
@@ -1303,7 +1303,7 @@ DrawRleBody:
         and bx, 0x3
         mov word [bp - 0x10], 0x4
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .9
         jmp near .32
 .9:
@@ -1720,7 +1720,7 @@ DrawRleFastBody:
         add ax, [ss:di]
         mov [bp - 0xe], ax
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jz short .1
         cmp word [bp - 0xc], 0x0
         jz short .3
@@ -1946,7 +1946,7 @@ DrawText2:
         push di
         mov ax, [bp + 0x6]
         mov [Text2Color], al
-        mov ax, 0x7438
+        mov ax, Text2Color
         mov [bp + 0x6], ax
         mov ds, [CharSeg]
         mov ax, [bp + 0x8]
@@ -2042,7 +2042,7 @@ DrawChar.1:
         mov [bp - 0x6], ax
         and bx, 0x3
         mov ax, es
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jz short .7
         jmp near .20
 .7:
@@ -2458,7 +2458,7 @@ GetBlockBody:
         add bx, [ss:CanvasRows]
         mov [bp - 0x6], bx
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .4
         mov ds, ax
         mov es, [bp + 0x8]
@@ -2538,7 +2538,7 @@ GetPixel:
         push si
         push di
         mov ax, [CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .2
         mov es, ax
         mov bx, [bp + 0x6]
@@ -2815,7 +2815,7 @@ DrawRawTransBody:
         and bx, 0x3
         mov word [bp - 0x16], 0x4
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jz short .10
         jmp near .17
 .10:
@@ -3036,7 +3036,7 @@ DrawRleFlipBody:
         add ax, [ss:di]
         mov [bp - 0xe], ax
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .1
         jmp near .15
 .1:
@@ -3405,7 +3405,7 @@ DrawRleTransBody:
         and bx, 0x3
         mov word [bp - 0x10], 0x4
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .9
         jmp near .35
 .9:
@@ -3865,7 +3865,7 @@ DrawRleTransFastBody:
         add ax, [ss:di]
         mov [bp - 0xe], ax
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jz short .1
         cmp word [bp - 0xc], 0x0
         jz short .3
@@ -4294,7 +4294,7 @@ DrawRawTransRemapBody:
         and bx, 0x3
         mov word [bp - 0x16], 0x4
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jz short .10
         jmp near .17
 .10:
@@ -4516,7 +4516,7 @@ DrawRleTransRemapBody:
         add ax, [ss:di]
         mov [bp - 0xe], ax
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jz short .1
         cmp word [bp - 0xc], 0x0
         jz short .3
@@ -4999,7 +4999,7 @@ DrawRleFlipTransBody:
         and bx, 0x3
         mov word [bp - 0x10], 0x4
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .9
         jmp near .38
 .9:
@@ -5579,7 +5579,7 @@ DrawRleFlipTransRemapBody:
         and bx, 0x3
         mov word [bp - 0x10], 0x4
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .9
         jmp near .38
 .9:
@@ -6102,7 +6102,7 @@ DrawRleFlipRemapBody:
         add ax, [ss:di]
         mov [bp - 0xe], ax
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .1
         jmp near .15
 .1:
@@ -6487,7 +6487,7 @@ DrawRleTransRemapFastBody:
         and bx, 0x3
         mov word [bp - 0x10], 0x4
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .9
         jmp near .38
 .9:
@@ -7179,7 +7179,7 @@ XorRectRegs:
         cmp word [bp + 0xc], 0x0
         jng short XorRect.4
         mov ax, [CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .3
         mov es, ax
         mov dx, 0x3ce
@@ -7268,7 +7268,7 @@ CopyPageToPage:
         mov ax, [CanvasRowBytes]
         sub ax, [bp - 0x4]
         mov [bp - 0x6], ax
-        mov ax, 0xa000
+        mov ax, VgaMem
         mov es, ax
         mov ds, ax
         mov bx, [bp + 0xe]
@@ -7397,7 +7397,7 @@ CopyPageRect:
         mov ax, [CanvasRowBytes]
         sub ax, [bp - 0x4]
         mov [bp - 0x6], ax
-        mov ax, 0xa000
+        mov ax, VgaMem
         mov es, ax
         mov ds, ax
         mov bx, [bp + 0x10]
@@ -7577,7 +7577,7 @@ AllocCanvases:
         mov [bp - 0x2], ax
         mov ax, [bp - 0x4]
         mov [es:bx], ax
-        mov ax, 0xa000
+        mov ax, VgaMem
         mov [es:bx + 0x2], ax
         mov [es:bx + 0x4], ax
         mov [es:bx + 0x6], ax
@@ -7754,7 +7754,7 @@ ClearScreenColor:
         mov ax, 0xf02
         mov dx, 0x3c4
         out dx, ax
-        mov ax, 0xa000
+        mov ax, VgaMem
         mov es, ax
         mov ax, [bp + 0x6]
         db 0x8A, 0xE0                           ; insn: mov ah, al
@@ -7804,7 +7804,7 @@ DrawScaled:
         db 0x03, 0xF6                           ; insn: add si, si
         add si, [CanvasRows]
         mov ax, [CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jz short .3
         jmp near .11
 .3:
@@ -8035,7 +8035,7 @@ DrawLineClipped:
         mov ax, [si + 0xc]
         mov [bp - 0xa], ax
         mov ax, [CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jz short .1
         jmp near DrawLineClippedJumpTable.34
 .1:
@@ -8761,11 +8761,11 @@ CopyPlanesRect:
         mov ax, [CanvasRowBytes]
         sub ax, [bp - 0xa]
         mov [bp - 0x8], ax
-        mov ax, 0xa000
+        mov ax, VgaMem
         mov ds, ax
         cld
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .2
         mov es, ax
         mov dx, 0x3c4
@@ -8898,7 +8898,7 @@ DrawRawFastBody:
         mov [bp - 0x2], ax
         and bx, 0x3
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .8
         mov es, ax
         mov ah, [ss:bx + DrawRawFastMasks]
@@ -9070,7 +9070,7 @@ DrawRawTransFastBody:
         mov [bp - 0x2], ax
         and bx, 0x3
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .8
         mov es, ax
         mov ah, [ss:bx + DrawRawTransFastMasks]
@@ -9587,7 +9587,7 @@ FillPolySpans:
         mov [bp - 0x2], si
         mov ax, [CanvasSeg]
         mov es, ax
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .3
         mov dx, 0x3c4
 .1:

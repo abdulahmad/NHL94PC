@@ -62,7 +62,7 @@ PlayHilight:
         mov [si + 0x460], al
         inc di
         add si, 0x28
-        cmp si, 0xa9b6
+        cmp si, GamePlayerFlags + 6
         jc short .1
         lea ax, [bp - 0x300]
         push ss

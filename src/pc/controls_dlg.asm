@@ -158,7 +158,7 @@ CtlSwapScoreFix:
         push si
         mov di, [bp + 0x6]
         imul si, di, word 0xd6
-        add si, 0xb362
+        add si, hmshots
         cmp word [si + 0x24], 0x0
         jl short .1
         jmp near .7
@@ -234,7 +234,7 @@ CtlSwapTeamFlag:
         push si
         mov di, [bp + 0x6]
         imul si, di, word 0xd6
-        add si, 0xb362
+        add si, hmshots
         cmp word [si + 0x24], 0x0
         jnl short .4
         test byte [si + 0x24], 0xf0
@@ -279,11 +279,11 @@ ReassignCtlPlayer:
         cmp word [bp + 0x6], 0x0
         jz short .1
         mov bx, cont2team
-        mov dx, 0x29c4
+        mov dx, c2playernum
         jmp short .2
 .1:
         mov bx, cont1team
-        mov dx, 0x29c2
+        mov dx, c1playernum
 .2:
         cmp word [bx], 0x0
         jnz short .7
@@ -346,11 +346,11 @@ ReassignCtlPlayer:
         mov word [bp - 0x8], 0x1000
         cmp word [bx], 0x1
         jnz short .10
-        mov ax, 0xb50e
+        mov ax, SortCords
         jmp short .11
         db 0x90
 .10:
-        mov ax, 0xb80e
+        mov ax, SortCords + 6 * 0x80
 .11:
         mov word [bp - 0xe], 0x6
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -445,7 +445,7 @@ ReassignCtlPlayer:
 ClearCtlBlink:
         enter 0x8, 0x0
         push si
-        mov word [bp - 0x8], 0xb378
+        mov word [bp - 0x8], hmtmline
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [bp - 0x6], ax
         mov [bp - 0x4], ax
@@ -465,11 +465,11 @@ ClearCtlBlink:
         mov [bx + lcboxon], ax
         cmp [bp - 0x4], ax
         jz short .4
-        mov bx, 0xb853
+        mov bx, SortCords + 6 * 0x80 + 0x45
 .2:
         and byte [bx], 0xf7
         add bx, 0x80
-        cmp bx, 0xbb53
+        cmp bx, SortCords + 12 * 0x80 + 0x45
         jc short .2
         jmp short .6
         db 0x90
@@ -482,7 +482,7 @@ ClearCtlBlink:
 .5:
         and byte [bx], 0xf7
         add bx, 0x80
-        cmp bx, 0xb853
+        cmp bx, SortCords + 6 * 0x80 + 0x45
         jc short .5
 .6:
         mov bx, [bp - 0x8]
@@ -1089,7 +1089,7 @@ DrawControlsDlg:
         push ax
         lea ax, [si + 0x2]
         push ax
-        push word 0x9f9a
+        push word GameTeamRecs + 0x1a
         call 0x0FEF:DrawText
         add sp, 0x6
         mov es, [segSaveDialogRects1]
@@ -1116,7 +1116,7 @@ DrawControlsDlg:
         push ax
         lea ax, [si + 0x2]
         push ax
-        push word 0xa282
+        push word GameRosterRecs + 0x1a
         call 0x0FEF:DrawText
         add sp, 0x6
         pop si

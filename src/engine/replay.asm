@@ -101,7 +101,7 @@ updatereplay:
         mov [replayrecptr], ax
         mov [replayrecseg], dx
 .3:
-        mov bx, 0xb50e
+        mov bx, SortCords
         mov di, 0x11
         mov es, [replayrecseg]
 .4:
@@ -148,7 +148,7 @@ updatereplay:
         add bx, 0x80
         dec di
         jnz short .4
-        mov si, 0xb50e
+        mov si, SortCords
         mov cx, 0xc
         mov es, [replayrecseg]
 .5:
@@ -158,7 +158,7 @@ updatereplay:
         inc word [replayrecptr]
         add si, 0x80
         loop .5
-        mov si, 0xb50e
+        mov si, SortCords
         mov di, 0x6
 .6:
         cmp word [si + 0x1a], 0x0
@@ -242,7 +242,7 @@ updatereplay:
         les bx, [replayrecptr]
         mov [es:bx], ax
         add word [replayrecptr], 0x2
-        mov si, 0xd1b1
+        mov si, rinkobjs + 3
         mov es, [replayrecseg]
 .11:
         mov al, [si]
@@ -255,7 +255,7 @@ updatereplay:
         mov [es:bx], cl
         inc word [replayrecptr]
         add si, 0x1c
-        cmp si, 0xd2c9
+        cmp si, rinkobjs + 280 + 3
         jc short .11
         mov bx, rinkobjs
         mov es, [replayrecseg]
@@ -265,7 +265,7 @@ updatereplay:
         mov [es:si], al
         inc word [replayrecptr]
         add bx, 0xe
-        cmp bx, 0xd2c6
+        cmp bx, SpriteFrames
         jc short .12
         mov ax, [replayptr]
         sub ax, 0x6a00

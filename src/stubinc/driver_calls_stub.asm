@@ -30,6 +30,7 @@ DrvTableNeedsService		equ	0x8FEE
 DrvTableLoadBank		equ	0x8FF2
 DrvTableSendMidi		equ	0x9002
 DrvTablePlaySample		equ	0x900A
+DriverFileName		equ	0x9046
 DriverTypes		equ	0xE084
 DriverEntrySeg		equ	0xE086
 %include "lib/eaclib/driver_calls.asm"

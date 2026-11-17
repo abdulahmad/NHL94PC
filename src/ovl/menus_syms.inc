@@ -89,6 +89,7 @@ FontPtr		equ	0x6D4E
 FormatCall		equ	0x988
 FreePPVFilesThunk		equ	0x2567
 GameDressPlayerThunk		equ	0x202B
+GamePlayerNames		equ	0x9FCC
 GameRosterRecs		equ	0xA268
 GameScratchPlayerThunk		equ	0x2085
 GameTeamRecs		equ	0x9F80
@@ -119,6 +120,7 @@ JerseyRemapTable		equ	0x0
 JingleHandle		equ	0xA14
 JingleHandleHi		equ	0xA16
 LeagueSetChoice		equ	0x11D8
+LeagueTeamNames		equ	0xAA38
 LineSlotPoints		equ	0x100
 ListDialog		equ	0x4FA
 LoadCharTab		equ	0xC9C
@@ -252,6 +254,7 @@ SongBuf3		equ	0xF6E
 SongBufs		equ	0xF70
 SongFinished		equ	0x1226
 SongSlots		equ	0xF72
+SortCords		equ	0xB50E
 SoundDevChoice		equ	0x106D
 SoundDevTable		equ	0x1070
 SoundDriverLoaded		equ	0xFBA
@@ -390,8 +393,10 @@ hilightrec		equ	0xD8E
 hmroster		equ	0xA550
 hmrosterjersey		equ	0xA556
 hmscore		equ	0xB36E
+hmshots		equ	0xB362
 hmtmap		equ	0xB384
 hmtmflags		equ	0xB38C
+hmtmline		equ	0xB378
 hudredraw		equ	0x48E4
 itemDressPlayer		equ	0x1452
 itemExportDatabases		equ	0xB62

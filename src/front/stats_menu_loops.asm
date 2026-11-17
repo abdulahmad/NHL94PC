@@ -2215,7 +2215,7 @@ RosterMenuLoop:
         mov ax, [bx + rosterrows2]
 .24:
         mov [bp - 0x50], ax
-        mov ax, 0xcf1a
+        mov ax, statscardteam
         imul cx, [bp - 0x50], 0x34
         add cx, [statsplayerbufseg]
         mov dx, [statsplayerbuf]
@@ -2831,7 +2831,7 @@ RosterMenuLoop:
         mov ax, [bx + rosterrows2]
 .58:
         mov [bp - 0x50], ax
-        mov ax, 0xcf1a
+        mov ax, statscardteam
         imul cx, [bp - 0x50], 0x34
         add cx, [statsplayerbufseg]
         mov dx, [statsplayerbuf]

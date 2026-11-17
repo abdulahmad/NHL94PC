@@ -723,7 +723,7 @@ OpenSpeechFile:
         push word [bp + 0x6]
         mov ax, [SpeechBank]
         mov dx, [SpeechBankSeg]
-        add ax, 0x1218
+        add ax, SpeechFileNames
         push dx
         push ax
         call 0x03A3:CopyStrNFar

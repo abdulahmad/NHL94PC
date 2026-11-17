@@ -46,7 +46,7 @@ _main:
         call 0x0000:__aFldiv
         push dx
         push ax
-        push 0x42e
+        push str_InsufficientConventionalMemoryAvaila
         call 0x0000:_printf
         add sp, 6
         mov si, 1
@@ -74,7 +74,7 @@ _main:
         call 0x0000:__aFldiv
         push dx
         push ax
-        push 0x47e
+        push str_InsufficientEmsAvailableRequiresAn
         call 0x0000:_printf
         add sp, 6
         mov si, 1
@@ -170,7 +170,7 @@ _main:
         push 0x3701                             ; segment of the team choice text far data
         push 0xbd0
         push ds
-        push 0x4be
+        push str_Pointer3
         push 0
         push 0
         lea ax, [bp-0x20]
@@ -185,7 +185,7 @@ _main:
         add sp, 4
         mov word [MemBlock1Off], ax
         mov word [MemBlock1Seg], dx
-        push 0x4c7
+        push str_Pntr
         push dx
         push ax
         call 0x03A3:FindFarMsg
@@ -193,19 +193,19 @@ _main:
         mov word [DialogData], ax
         mov word [DialogDataSeg], dx
         push 0
-        push 0x4cc
+        push str_Wittle06Fnt
         call 0x149D:LoadRawHeader
         add sp, 4
         mov word [HeapSizeLo], ax
         mov word [HeapSizeHi], dx
         push 0
-        push 0x4d9
+        push str_Scor2bFnt
         call 0x149D:LoadRawHeader
         add sp, 4
         mov word [MemBlock2Off], ax
         mov word [MemBlock2Seg], dx
         push 0
-        push 0x4e4
+        push str_Scor3bFnt
         call 0x149D:LoadRawHeader
         add sp, 4
         mov word [MemBlock3Off], ax
@@ -216,7 +216,7 @@ _main:
         add sp, 4
         lea ax, [bp-8]
         push ax
-        push 0x4ef
+        push str_GameSet
         call 0x0CD1:OpenReadShared
         add sp, 4
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -306,7 +306,7 @@ _main:
         push 0
         push 0
         push 0x300
-        push 0x4fe
+        push str_Temp
         call 0x14DB:AllocRecData
         add sp, 8
         mov word [bp-2], dx
@@ -341,7 +341,7 @@ _main:
         push 0
         push 0
         push 0x300
-        push 0x503
+        push str_Temp_2
         call 0x14DB:AllocRecData
         add sp, 8
         push dx

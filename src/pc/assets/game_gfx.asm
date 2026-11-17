@@ -2,7 +2,7 @@
 
 ;-----------------------------------------------------------------------------
 ; IndexPPVFrames                                             1F9C:0000  94 PC
-; Builds the frame pointer table at 0x91D0 from the loaded PPV files ('%04d' lookups)
+; Builds FrameTable from the loaded PPV files ('%04d' lookups)
 ;
 ; Calls _sprintf, RawBase, Lookup. Far routine (retf).
 ;-----------------------------------------------------------------------------
@@ -11,12 +11,12 @@ IndexPPVFrames:
         push di
         push si
         db 0x2B, 0xFF                           ; insn: sub di, di
-        mov word [bp - 0x4], 0x9140
+        mov word [bp - 0x4], PPVFiles
 .1:
         mov word [bp - 0x2], 0x0
         db 0x8B, 0xF7                           ; insn: mov si, di
         shl si, byte 0x2
-        add si, 0x91d0
+        add si, FrameTable
 .2:
         push di
         push word 0x4b64
@@ -39,13 +39,13 @@ IndexPPVFrames:
         mov [si - 0x4], ax
         mov [si - 0x2], dx
         inc di
-        cmp si, 0x9f80
+        cmp si, GameTeamRecs
         jnc short .3
         inc word [bp - 0x2]
         cmp word [bp - 0x2], 0x32
         jl short .2
         add word [bp - 0x4], 0x4
-        cmp word [bp - 0x4], 0x9188
+        cmp word [bp - 0x4], PPVFiles + 18 * 4
         jc short .1
 .3:
         pop si
@@ -116,7 +116,7 @@ LoadPPVFiles:
         mov [di - 0x4], ax
         mov [di - 0x2], dx
         inc si
-        cmp di, 0x4a62
+        cmp di, demoflag
         jc short .2
         db 0x2B, 0xFF                           ; insn: sub di, di
         mov si, SpriteFrames
@@ -143,7 +143,7 @@ LoadPPVFiles:
         mov [si - 0x4], ax
         mov [si - 0x2], dx
         inc di
-        cmp si, 0xd46a
+        cmp si, gameframe
         jc short .5
 .6:
         pop si
@@ -163,7 +163,7 @@ LoadPlayerFrames:
         push di
         push si
         db 0x2B, 0xF6                           ; insn: sub si, si
-        mov di, 0x9140
+        mov di, PPVFiles
 .1:
         db 0x8B, 0xC6                           ; insn: mov ax, si
         mov cx, 0x2
@@ -209,7 +209,7 @@ LoadPlayerFrames:
         mov [di - 0x4], ax
         mov [di - 0x2], dx
         inc si
-        cmp di, 0x9188
+        cmp di, PPVFiles + 18 * 4
         jc short .1
         push cs
         call IndexPPVFrames
@@ -339,9 +339,9 @@ LoadGameGfx:
         mov [si - 0x4], ax
         mov [si - 0x2], dx
         inc di
-        cmp si, 0xd700
+        cmp si, NumberSprites2
         jc short .2
-        push word 0xd700
+        push word NumberSprites2
         push strict word str_000g000d000d000l000c000r000x
         push word [GameGfxSeg]
         push word [GameGfx]
@@ -400,7 +400,7 @@ PlacePlayersAtStart:
         mov ax, [bx]
         mov bx, [puckx]
         mov [bx], ax
-        mov si, 0xb50e
+        mov si, SortCords
         mov word [regd2], 0xc
 .2:
         mov word [si + 0x2e], 0xff9c
@@ -677,14 +677,14 @@ ResetGameVars:
         add al, 0x3c
         mov [si + 0x2], al
         add si, 0xe
-        cmp si, 0xd2c6
+        cmp si, SpriteFrames
         jc short .1
         mov bx, rinkobjused
 .2:
         inc bx
         inc bx
         mov word [bx - 0x2], 0x0
-        cmp bx, 0xd9fa
+        cmp bx, hilightslots
         jc short .2
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [gamevar5], ax

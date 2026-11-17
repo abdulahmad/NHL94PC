@@ -530,7 +530,7 @@ BuildEventLines:
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         db 0x8B, 0xF8                           ; insn: mov di, ax
         imul ax, di, word 0x2e8
-        add ax, 0x9f9a
+        add ax, GameTeamRecs + 0x1a
         push ax
         mov al, [curevent_b8]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
@@ -597,7 +597,7 @@ BuildEventLines:
         db 0x03, 0xC6                           ; insn: add ax, si
         imul ax, ax, 0x28
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        add ax, 0xa568
+        add ax, hmroster + 0x18
         push ax
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         add cx, 0xa558
@@ -631,7 +631,7 @@ BuildEventLines:
         add si, [bp - 0x14]
         imul ax, si, 0x28
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        add ax, 0xa568
+        add ax, hmroster + 0x18
         push ax
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         add cx, 0xa558
@@ -657,7 +657,7 @@ BuildEventLines:
         add si, [bp - 0x14]
         imul ax, si, 0x28
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        add ax, 0xa568
+        add ax, hmroster + 0x18
         push ax
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         add cx, 0xa558
@@ -686,7 +686,7 @@ BuildEventLines:
         mov al, [curevent_b1]
         mov [bp - 0x2], ax
         imul ax, ax, word 0x2e8
-        add ax, 0x9f80
+        add ax, GameTeamRecs
         push ax
         mov al, [curevent_b7]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
@@ -702,7 +702,7 @@ BuildEventLines:
         add ax, [bp - 0x4]
         imul ax, ax, 0x28
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        add ax, 0xa568
+        add ax, hmroster + 0x18
         push ax
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         add cx, 0xa558
@@ -739,7 +739,7 @@ BuildEventLines:
         mov [bp - 0x6], ax
         cmp ax, 0xff
         jnz short .11
-        mov ax, 0xd57e
+        mov ax, textline4
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov si, str_GameMisconduct
         mov cx, 0x8
@@ -772,7 +772,7 @@ BuildEventLines:
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         db 0x8B, 0xF8                           ; insn: mov di, ax
         imul ax, di, word 0x2e8
-        add ax, 0x9f80
+        add ax, GameTeamRecs
         push ax
         mov al, [curevent_b6]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
@@ -788,7 +788,7 @@ BuildEventLines:
         db 0x03, 0xC6                           ; insn: add ax, si
         imul ax, ax, 0x28
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        add ax, 0xa568
+        add ax, hmroster + 0x18
         push ax
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         add cx, 0xa558
@@ -900,7 +900,7 @@ PostGoalEvent:
         mov ax, [PadRepeatOn]
         mov [gameframe], ax
         mov word [PadRepeatOn], 0x0
-        mov ax, 0xb078
+        mov ax, goalevent
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov si, curevent
         push ds
@@ -1429,7 +1429,7 @@ QueueGoalieNote:
         jl short .1
         mov si, [penaltysc]
         shl si, byte 0x7
-        add si, 0xb50e
+        add si, SortCords
         mov al, [si + 0x44]
         and al, 0x40
         cmp al, 0x1

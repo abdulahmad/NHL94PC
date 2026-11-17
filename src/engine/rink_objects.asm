@@ -1,7 +1,7 @@
 ; Rink objects: penalty box doors and crowd level (AI.OVL)
 ; The first bytes finish the last routine of hockey.asm.
         add sp, 0x2
-        push word 0xb438
+        push word awshots
         push cs
         call forcepldata - 0x2F40
         add sp, 0x2
@@ -52,7 +52,7 @@ SetRinkObject:
         shl bx, 1
         mov es, [AnimSeqSegs]
         mov cx, [es:bx + 0xf8]
-        add di, 0xd1ae
+        add di, rinkobjs
         mov [di + 0x6], cx
         inc ax
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -133,7 +133,7 @@ DecayCrowdLevel:
         mov [CrowdSound], ax
 .3:
         mov word [bp - 0x2], 0x0
-        mov word [bp - 0x4], 0xd1ae
+        mov word [bp - 0x4], rinkobjs
 .4:
         mov si, [bp - 0x4]
         cmp word [si], 0x0
@@ -468,7 +468,7 @@ DrawRinkObjects:
 .11:
         test byte [gmode], 0x80
         jz short .12
-        mov word [bp - 0x2], 0xbc8e
+        mov word [bp - 0x2], doorstruct
         cmp word [doorframe], 0x362
         jl short .12
         push 0x0

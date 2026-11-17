@@ -38,11 +38,11 @@ LoadSoundDriver:
         jnz short .2
         push word [bp + 0x6]
         push str_CEaclibS
-        push word 0x9046
+        push word DriverFileName
         call 0x0000:_sprintf
         add sp, 0x6
         push 0x0
-        push word 0x9046
+        push word DriverFileName
         call 0x14B8:LoadPackedHeader0
         add sp, 0x4
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -57,7 +57,7 @@ LoadSoundDriver:
         push word [bp - 0x6]
         push si
         imul ax, [DriverCount], 0x38
-        add ax, 0x8fd6
+        add ax, DrvTableInit
         push ax
         call 0x1880:LinkDriver
         add sp, 0x6

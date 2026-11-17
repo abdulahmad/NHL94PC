@@ -43,7 +43,7 @@ SaveGameState:
         push -0x1
         mov ax, [bp - 0x8]
         shl ax, byte 0x7
-        add ax, 0xb50e
+        add ax, SortCords
         push ds
         push ax
         push word [bp + 0x6]
@@ -64,7 +64,7 @@ SaveGameState:
         push -0x1
         push -0x1
         imul ax, [bp - 0x8], word 0xd6
-        add ax, 0xb362
+        add ax, hmshots
         push ds
         push ax
         push word [bp + 0x6]
@@ -1021,7 +1021,7 @@ LoadGameState:
         push -0x1
         mov ax, [bp - 0xaa]
         shl ax, byte 0x7
-        add ax, 0xb50e
+        add ax, SortCords
         push ds
         push ax
         push word [bp + 0x6]
@@ -1042,7 +1042,7 @@ LoadGameState:
         push -0x1
         push -0x1
         imul ax, [bp - 0xaa], word 0xd6
-        add ax, 0xb362
+        add ax, hmshots
         push ds
         push ax
         push word [bp + 0x6]
@@ -1687,7 +1687,7 @@ LoadGameState:
         shl bx, 1
         db 0x03, 0xD9                           ; insn: add bx, cx
         shl bx, 1
-        add bx, 0xd1ae
+        add bx, rinkobjs
         mov [bp - 0x196], bx
         mov [bx], ax
         mov [bp - 0x12e], ax
@@ -2106,41 +2106,41 @@ LoadGameState:
         mov word [hmtmplattr], 0x3a0b
         mov word [hmtmglattr], HomeGlAttr
         mov word [hmtmglattrseg], 0x3a0b
-        mov word [hmtmlines], 0xae10
+        mov word [hmtmlines], HomeTeamRec
         mov word [hmtmplstats], HomePlStats
         mov word [hmtmplstatsseg], 0x3a0b
         mov word [hmtmglstats], HomeGlStats
         mov word [hmtmroster], 0x3a0b
-        mov word [hmtmrosterptr], 0xa550
-        mov word [hmtmptrF2], 0x9f80
-        mov word [SortCords_m2], 0xb80e
+        mov word [hmtmrosterptr], hmroster
+        mov word [hmtmptrF2], GameTeamRecs
+        mov word [SortCords_m2], SortCords + 6 * 0x80
         mov word [awtmsort], AwaySortObjs
         mov word [awtmglattrseg], 0x3a0b
         mov word [awtmglattr], AwayGlAttr
         mov word [awtmlines], 0x3a0b
-        mov word [awtmteamrec], 0xae40
+        mov word [awtmteamrec], AwayTeamRec
         mov word [awtmplstats], AwayPlStats
         mov word [awtmglstats], 0x3a0b
         mov word [awtmglstatsptr], AwayGlStats
         mov word [awtmglstatsseg], 0x3a0b
-        mov word [awtmptrF2], 0xa9b0
-        mov word [awtmroster], 0xa268
-        mov ax, 0xb50e
+        mov word [awtmptrF2], GamePlayerFlags
+        mov word [awtmroster], GameRosterRecs
+        mov ax, SortCords
         mov [hmtmptrs], ax
         mov [bp - 0x130], ax
         mov word [bp - 0xaa], 0x0
         jmp short .50
 .46:
         mov bx, [bp - 0x130]
-        mov word [bx + 0x60], 0xb362
+        mov word [bx + 0x60], hmshots
 .47:
         mov bx, [bp - 0x130]
         test byte [bx + 0x44], 0x40
         jnz short .48
-        mov word [bx + 0x62], 0xb438
+        mov word [bx + 0x62], awshots
         jmp short .49
 .48:
-        mov word [bx + 0x62], 0xb362
+        mov word [bx + 0x62], hmshots
 .49:
         mov bx, [bp - 0x130]
         mov ax, [bx]
@@ -2179,7 +2179,7 @@ LoadGameState:
         jnz short .51
         jmp near .46
 .51:
-        mov word [bx + 0x60], 0xb438
+        mov word [bx + 0x60], awshots
         jmp near .47
 .52:
         call 0x1B35:SprSortThunk

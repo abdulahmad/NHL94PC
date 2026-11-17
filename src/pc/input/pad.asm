@@ -538,7 +538,7 @@ PadTimerTick:
         shl si, 1
         db 0x03, 0xF0                           ; insn: add si, ax
         db 0x8B, 0xC6                           ; insn: mov ax, si
-        add si, 0xafd4
+        add si, PadReadings
         push si
         push 0x0
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -546,14 +546,14 @@ PadTimerTick:
         call ReadPadDevice
         add sp, 0x4
         db 0x8B, 0xC6                           ; insn: mov ax, si
-        add si, 0xafd5
+        add si, PadReadings + 1
         push si
         push 0x1
         db 0x8B, 0xF0                           ; insn: mov si, ax
         push cs
         call ReadPadDevice
         add sp, 0x4
-        add si, 0xafd6
+        add si, PadReadings + 2
         push si
         push cs
         db 0xE8, (ReadHotKey - ($ + 3)) & 0xFF  ; call near ReadHotKey: the last byte is in the next segment

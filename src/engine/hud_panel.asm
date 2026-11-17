@@ -413,7 +413,7 @@ UpdateHudPanel:
         push 0x4a
         push word HudBarLevels2
         push word [hudhomeline]
-        push word 0xda32
+        push word PanelScoreShapeSeg + 2
         push word hudlineaway
         push cs
         call DrawLineGroupBars
@@ -471,7 +471,7 @@ UpdateHudPanel:
         push word 0xc1
         push word HudBarLevels
         push word [hudlinehome]
-        push word 0xda3e
+        push word PanelScoreShapeSeg + 0xe
         push word hudlinegroup
         push cs
         call DrawLineGroupBars

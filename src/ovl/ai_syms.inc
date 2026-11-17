@@ -70,6 +70,9 @@ FreePlayerFramesThunk		equ	0x2AAD
 GameGfx		equ	0xD6D4
 GameGfxSeg		equ	0xD6D6
 GamePalette		equ	0xB352
+GamePlayerFlags		equ	0xA9B0
+GameRosterRecs		equ	0xA268
+GameTeamRecs		equ	0x9F80
 GetPaletteFar		equ	0x366
 GoalState		equ	0xD61E
 GoalState_m1		equ	0xD61D
@@ -142,6 +145,7 @@ OverlayGfxSeg		equ	0xD62E
 OverlayScript		equ	0x4A1E
 PBnum		equ	0xD6C6
 PBnum_b1		equ	0xD6C7
+PadReadings		equ	0xAFD4
 PadRepeatDelay		equ	0x528
 PadRepeatOn		equ	0x524
 PadRepeatStep		equ	0x526
@@ -205,6 +209,7 @@ SetRemapTable		equ	0x442
 SetStartPage		equ	0x1320
 Setplass_alist		equ	0x6106
 ShotSpeeds		equ	0x5AD0
+SortCords		equ	0xB50E
 SortCords_m2		equ	0xB50C
 SortPairs		equ	0x92
 SortPending		equ	0x48BC
@@ -228,6 +233,7 @@ TeamPalette768		equ	0xA8E
 TextOverlayPtr		equ	0xB092
 TextOverlaySeg		equ	0xB094
 TextWidthAll		equ	0xC0A
+TitleJingleSeg		equ	0xBD90
 UseCharSeg		equ	0xCB8
 UseOffscreenCanvas		equ	0x137E
 UseOtherPage		equ	0x118C
@@ -262,6 +268,7 @@ asswingo_dedata_y		equ	0x594E
 asswingo_dedata_yrand		equ	0x5950
 avdgoal_boxThunk		equ	0x20AD
 awscore		equ	0xB444
+awshots		equ	0xB438
 awtmap		equ	0xB45A
 awtmcoach_d2		equ	0xB4F0
 awtmcoach_d3		equ	0xB4F1
@@ -552,6 +559,7 @@ puckfaceoff2_ptab_y		equ	0x49BE
 puckframe		equ	0xBC20
 pucknopuck		equ	0xBC4C
 puckpflags2		equ	0xBC53
+puckstruct		equ	0xBC0E
 pucktemp1		equ	0xBC34
 pucktemp2		equ	0xBC36
 puckvx		equ	0x298C

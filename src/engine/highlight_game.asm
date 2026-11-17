@@ -66,7 +66,7 @@ StartHL2:
         cmp word [bp - 0xf0], 0x2
         jnl short .5
         imul ax, [bp - 0xf0], word 0xd6
-        add ax, 0xb3c6
+        add ax, hmtmpdst
         mov [bp - 0xf4], ax
         mov word [bp - 0xf2], 0x0
         jmp short .2
@@ -250,13 +250,13 @@ StartHL2:
         mov [hmtmtouch3], ax
         mov [hmtmtouch2], ax
         mov [hmtmtouch1], ax
-        push word 0xb438
+        push word awshots
         call 0x2E42:reenergizeteam
         add sp, 0x2
-        push word 0xb438
+        push word awshots
         call 0x2E42:setpersonel
         add sp, 0x2
-        push word 0xb438
+        push word awshots
         call 0x2E42:forcepldata
         add sp, 0x2
         mov ax, 0xffff
@@ -264,7 +264,7 @@ StartHL2:
         mov [awtmtouch2], ax
         mov [awtmtouch1], ax
         call 0x2E42:resetplstuff
-        mov word [bp - 0xf6], 0xb50e
+        mov word [bp - 0xf6], SortCords
         mov word [bp - 0xf0], 0x0
         jmp short .12
         db 0x90
@@ -348,7 +348,7 @@ StartHL2:
         mov word [puckframe], 0x18a
         mov word [puck_48], 0x0
         push 0x18
-        push word 0xbc0e
+        push word puckstruct
         call 0x1E7E:assreplace
         add sp, 0x4
         mov word [doorframe], 0x189
@@ -364,7 +364,7 @@ StartHL2:
         mov [refYvel], ax
         mov [refXvel], ax
         push 0x1f
-        mov ax, 0xbd0e
+        mov ax, refstruct
         mov [bp - 0xf6], ax
         push ax
         call 0x1E7E:assreplace
@@ -616,21 +616,21 @@ StartHL2:
         cmp word [bp - 0xf0], 0x2
         jnl short .35
         imul ax, [bp - 0xf0], word 0xd6
-        add ax, 0xb3c6
+        add ax, hmtmpdst
         mov [bp - 0xf4], ax
         mov word [bp - 0xf2], 0x0
         jmp short .32
 .35:
         mov ax, [bp - 0xf8]
         mov [CrowdState], ax
-        mov ax, 0xae10
+        mov ax, HomeTeamRec
         db 0x8B, 0xF8                           ; insn: mov di, ax
         lea si, [bp - 0x62]
         push ds
         pop es
         mov cx, 0x18
         rep movsw
-        mov ax, 0xae40
+        mov ax, AwayTeamRec
         db 0x8B, 0xF8                           ; insn: mov di, ax
         lea si, [bp - 0x30]
         mov cx, 0x18

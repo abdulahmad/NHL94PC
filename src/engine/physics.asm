@@ -115,7 +115,7 @@ check4check:
         mov si, 0x6
 .4:
         shl si, byte 0x7
-        add si, 0xb50e
+        add si, SortCords
         mov word [regd2], 0x6
 .5:
         cmp word [si + 0x1a], 0x0
@@ -773,7 +773,7 @@ checkob:
         db 0x2B, 0xF6                           ; insn: sub si, si
 .3:
         shl si, byte 0x7
-        add si, 0xb50e
+        add si, SortCords
         mov bx, [bp - 0x6]
         test byte [bx + 0x44], 0x80
         jnz short .8
@@ -866,7 +866,7 @@ checkpuckcoll_ccx:
 .2:
         db 0x8B, 0xFE                           ; insn: mov di, si
         shl di, byte 0x7
-        add di, 0xb50e
+        add di, SortCords
         test byte [di + 0x44], 0x4
         jz short .3
         jmp near .18
@@ -1198,15 +1198,15 @@ GetLowestPen:
         sub dx, [awtmap]
         db 0x0B, 0xD2                           ; insn: or dx, dx
         jng short .1
-        mov dx, 0xb362
-        mov bx, 0xb438
+        mov dx, hmshots
+        mov bx, awshots
         jmp short .3
 .1:
         db 0x0B, 0xD2                           ; insn: or dx, dx
         jl short .2
         jmp near .10
 .2:
-        mov dx, 0xb438
+        mov dx, awshots
         mov bx, hmshots
 .3:
         db 0x2B, 0xC9                           ; insn: sub cx, cx
@@ -1445,7 +1445,7 @@ dopass:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
 .4:
         shl ax, byte 0x7
-        add ax, 0xb50e
+        add ax, SortCords
         mov word [bp - 0xe], 0xffff
         mov word [bp - 0xc], 0xffff
         mov bx, 0x6
@@ -1970,7 +1970,7 @@ chk4pass:
 .4:
         db 0x8B, 0xF0                           ; insn: mov si, ax
         shl si, byte 0x7
-        add si, 0xb50e
+        add si, SortCords
         cmp word [si + 0x1a], 0x0
         jg short .5
         jmp near .20
@@ -2053,7 +2053,7 @@ chk4pass:
         mov di, 0x6
 .13:
         shl di, byte 0x7
-        add di, 0xb50e
+        add di, SortCords
         mov word [regd3], 0x6
 .14:
         mov ax, [di + 0x2]
@@ -2237,7 +2237,7 @@ chk4shot:
         mov si, 0x6
 .8:
         shl si, byte 0x7
-        add si, 0xb50e
+        add si, SortCords
         mov word [regd3], 0x6
 .9:
         cmp word [si + 0x1a], 0x0
@@ -2383,7 +2383,7 @@ ChkOffsides:
         jl short .7
         and byte [di + 0x2a], 0xef
 .7:
-        mov di, 0xb438
+        mov di, awshots
         loop .2
         mov word [regd0], 0x4a
         mov bx, [bp + 0x6]
@@ -2452,7 +2452,7 @@ ChkOffsides:
         sub word [regd0], 0xa
         test byte [gmode], 0x2
         jnz short .19
-        mov di, 0xb438
+        mov di, awshots
         jmp short .20
 .19:
         mov di, hmshots
@@ -2513,12 +2513,12 @@ MarkTwoLinePlayers:
 .1:
         test byte [gmode], 0x2
         jz short .2
-        mov di, 0xb80e
-        mov bx, 0xb50e
+        mov di, SortCords + 6 * 0x80
+        mov bx, SortCords
         jmp short .3
 .2:
-        mov di, 0xb50e
-        mov bx, 0xb80e
+        mov di, SortCords
+        mov bx, SortCords + 6 * 0x80
 .3:
         mov dx, [bp + 0x6]
         db 0x8B, 0xF2                           ; insn: mov si, dx
@@ -2595,7 +2595,7 @@ ChkShotStat:
 .2:
         mov ax, [shotplayer]
         shl ax, byte 0x7
-        add ax, 0xb50e
+        add ax, SortCords
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov bx, [pucky]
         mov [bp - 0x4], ax
@@ -3077,7 +3077,7 @@ FallDown:
         inc si
         inc di
         inc di
-        cmp di, 0xd6b6
+        cmp di, PenBuf + 0x40
         jc short .33
         jmp short .36
 .35:
@@ -3798,7 +3798,7 @@ puckstick:
 .3:
         cbw
         shl ax, byte 0x7
-        add ax, 0xb50e
+        add ax, SortCords
         db 0x8B, 0xF8                           ; insn: mov di, ax
         db 0x8B, 0xDF                           ; insn: mov bx, di
         mov al, [bx + 0x44]
@@ -4218,7 +4218,7 @@ shotdiradj:
         mov si, 0x6
 .3:
         shl si, byte 0x7
-        add si, 0xb50e
+        add si, SortCords
         db 0x2B, 0xD2                           ; insn: sub dx, dx
 .4:
         cmp word [si + 0x1a], 0x0
@@ -4865,7 +4865,7 @@ checkwallcoll:
         mov ax, 0xc
 .3:
         shl ax, byte 0x7
-        add ax, 0xb50e
+        add ax, SortCords
         push ax
         push word [bp + 0x6]
         push cs
@@ -5503,7 +5503,7 @@ wallcollb:
         push 0x3
         mov ax, [lasttouch]
         shl ax, byte 0x7
-        add ax, 0xb50e
+        add ax, SortCords
         push ax
         call 0x327B:AddPenalty2
         add sp, 0x4
@@ -5601,7 +5601,7 @@ checkcx:
         push si
         mov di, [bp + 0xc]
         shl di, byte 0x7
-        add di, 0xb50e
+        add di, SortCords
         test byte [di + 0x44], 0x4
         jz short .1
         jmp near .19
@@ -5949,7 +5949,7 @@ CPgoalie:
         db 0x0B, 0xD2                           ; insn: or dx, dx
         jl short .4
         mov byte [si + 0x25], 0xff
-        cmp si, 0xb438
+        cmp si, awshots
         jnz short .2
         mov bx, 0x1
         jmp short .3
@@ -5993,7 +5993,7 @@ ChkGoalies:
         jmp near .7
 .1:
         mov si, hmshots
-        mov cx, 0xb438
+        mov cx, awshots
         db 0x2B, 0xFF                           ; insn: sub di, di
         mov [bp - 0x2], di
 .2:
@@ -6051,8 +6051,8 @@ ChkGoalies:
         add sp, 0x6
 .6:
         inc di
-        mov si, 0xb438
-        mov cx, 0xb362
+        mov si, awshots
+        mov cx, hmshots
         add word [bp - 0x2], 0xc
         cmp word [bp - 0x2], 0x18
         jnl short .7
@@ -6075,7 +6075,7 @@ ReturnGoalies:
         push di
         push si
         mov si, hmshots
-        mov word [bp - 0x4], 0xb438
+        mov word [bp - 0x4], awshots
         db 0x2B, 0xFF                           ; insn: sub di, di
         mov [bp - 0x2], di
 .1:
@@ -6107,8 +6107,8 @@ ReturnGoalies:
         add sp, 0x6
 .2:
         inc di
-        mov si, 0xb438
-        mov word [bp - 0x4], 0xb362
+        mov si, awshots
+        mov word [bp - 0x4], hmshots
         add word [bp - 0x2], 0xc
         cmp word [bp - 0x2], 0x18
         jl short .1

@@ -31,7 +31,7 @@ LoadGameTeams:
         mov ax, DGROUP
         mov ds, ax
         push strict word str_Teams_2
-        push word 0xc000
+        push word HomeTeamDbName
         lea ax, [bp - 0x2c]
         push ax
         call 0x0000:_sprintf
@@ -182,7 +182,7 @@ LoadGameTeams:
         add sp, 0x2
         lea ax, [bp - 0xc]
         push ax
-        push word 0xc000
+        push word HomeTeamDbName
         lea cx, [bp - 0x6]
         push cx
         lea dx, [bp - 0x8]
@@ -273,16 +273,16 @@ LoadGameTeams:
         cmp word [bp + 0x6], 0x2
         jnz short .16
 .15:
-        mov ax, 0xae10
+        mov ax, HomeTeamRec
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov si, HomeLinesRec
         push ds
         pop es
         mov cx, 0x18
         rep movsw
-        mov ax, 0xae40
+        mov ax, AwayTeamRec
         db 0x8B, 0xF8                           ; insn: mov di, ax
-        mov si, 0xa324
+        mov si, GameRosterRecs + 0xbc
         mov cx, 0x18
         rep movsw
 .16:
@@ -356,7 +356,7 @@ LoadGameTeams:
 .29:
         inc si
         inc si
-        cmp si, 0xb658
+        cmp si, GameTeamName2
         jc short .21
         mov cx, DGROUP
         mov ds, cx
@@ -849,19 +849,19 @@ BuildTeamRoster:
         push si
         mov bx, [bp + 0x12]
         imul ax, bx, word 0xc8
-        add ax, 0xd01c
+        add ax, plstatsoff
         mov [bp - 0x2], ax
         imul ax, bx, word 0x1f4
         add ax, strict word 0x0
         mov [bp - 0xa], ax
         imul ax, bx, word 0x460
-        add ax, 0xa550
+        add ax, hmroster
         mov [bp - 0x4], ax
         imul ax, bx, word 0xd6
-        add ax, 0xb3c6
+        add ax, hmtmpdst
         mov [bp - 0xc], ax
         imul ax, bx, word 0x2e8
-        add ax, 0x9fcc
+        add ax, GamePlayerNames
         mov [bp - 0x6], ax
         mov word [bp - 0xe], 0x19
 .1:
@@ -1026,19 +1026,19 @@ BuildTeamRoster:
         add ax, 0x3e8
         mov [bp - 0xa], ax
         imul ax, bx, word 0x460
-        add ax, 0xa938
+        add ax, hmroster + 0x3e8
         mov [bp - 0x2], ax
         imul ax, bx, word 0xd6
-        add ax, 0xb3f8
+        add ax, hmshots + 0x96
         mov [bp - 0xc], ax
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         shl ax, 1
         db 0x03, 0xC3                           ; insn: add ax, bx
         shl ax, 1
-        add ax, 0xb652
+        add ax, GameTeamName1
         mov [bp - 0xe], ax
         imul ax, bx, word 0x2e8
-        add ax, 0xa030
+        add ax, GamePlayerNames + 0x64
         mov [bp - 0x4], ax
         mov word [bp - 0x10], 0x3
 .16:

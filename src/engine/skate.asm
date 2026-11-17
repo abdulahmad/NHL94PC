@@ -203,7 +203,7 @@ doplayeracc:
 .17:
         db 0x8B, 0xDF                           ; insn: mov bx, di
         shl bx, 1
-        add bx, 0x58fa
+        add bx, doplayeracc_ftab
         mov [bp - 0xe], bx
         mov dx, [bx]
         mov ax, [regd4]
@@ -389,7 +389,7 @@ EvadePlayers:
         db 0x90
 .10:
         mov word [bp - 0x6], 0x64
-        mov di, 0xb50e
+        mov di, SortCords
         mov word [bp - 0x2], 0x0
 .11:
         cmp word [bp - 0x2], 0xc
@@ -585,7 +585,7 @@ EvadePC:
         mov si, [bp + 0x6]
         cbw
         shl ax, byte 0x7
-        add ax, 0xb50e
+        add ax, SortCords
         db 0x8B, 0xF8                           ; insn: mov di, ax
         db 0x8B, 0xDF                           ; insn: mov bx, di
         mov cx, [si + 0x2]

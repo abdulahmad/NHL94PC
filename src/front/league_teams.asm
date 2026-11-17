@@ -194,7 +194,7 @@ AddHumanTeam:
         jz short .10
         jmp near .18
 .10:
-        mov bx, 0xac5c
+        mov bx, leagueinfo_w2
         mov es, [segWorkBuffer5]
         mov [bp - 0x46], bx
         mov [bp - 0x44], es
@@ -514,7 +514,7 @@ RemoveHumanTeam:
         jz short .10
         jmp near RemoveHumanTeamTail + 0x660
 .10:
-        mov bx, 0xac5c
+        mov bx, leagueinfo_w2
         mov es, [segWorkBuffer5]
         mov [bp - 0x46], bx
         mov [bp - 0x44], es

@@ -67,7 +67,7 @@ SaveBkgdPlanes:
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         out dx, al
         push strict word str_Bkgd_10
-        push word 0xa000
+        push word VgaMem
         push 0x0
         push word [VgaSave0Seg]
         push word [VgaSave0Off]
@@ -86,7 +86,7 @@ SaveBkgdPlanes:
         mov dx, 0x3cf
         out dx, al
         push strict word str_Bkgd_10
-        push word 0xa000
+        push word VgaMem
         push 0x0
         push word [VgaSave1Seg]
         push word [VgaSave1Off]
@@ -104,7 +104,7 @@ SaveBkgdPlanes:
         mov dx, 0x3cf
         out dx, al
         push strict word str_Bkgd_10
-        push word 0xa000
+        push word VgaMem
         push 0x0
         push word [VgaSave2Seg]
         push word [VgaSave2Off]
@@ -122,7 +122,7 @@ SaveBkgdPlanes:
         mov dx, 0x3cf
         out dx, al
         push strict word str_Bkgd_10
-        push word 0xa000
+        push word VgaMem
         push 0x0
         push word [VgaSave3Seg]
         push word [VgaSave3Off]
@@ -197,7 +197,7 @@ RestoreBkgdPlanes:
         add sp, 0x4
         push dx
         push ax
-        push word 0xa000
+        push word VgaMem
         push 0x0
         call 0x0000:_fmemcpy
         add sp, 0xa
@@ -219,7 +219,7 @@ RestoreBkgdPlanes:
         add sp, 0x4
         push dx
         push ax
-        push word 0xa000
+        push word VgaMem
         push 0x0
         call 0x0000:_fmemcpy
         add sp, 0xa
@@ -241,7 +241,7 @@ RestoreBkgdPlanes:
         add sp, 0x4
         push dx
         push ax
-        push word 0xa000
+        push word VgaMem
         push 0x0
         call 0x0000:_fmemcpy
         add sp, 0xa
@@ -263,7 +263,7 @@ RestoreBkgdPlanes:
         add sp, 0x4
         push dx
         push ax
-        push word 0xa000
+        push word VgaMem
         push 0x0
         call 0x0000:_fmemcpy
         add sp, 0xa
@@ -835,7 +835,7 @@ GameStandingsMenu:
         and ax, 0xfc
         out dx, al
         push word 0x3b00
-        push word 0xa000
+        push word VgaMem
         push word 0x4400
         push word [bp - 0x1e]
         push word [bp - 0x20]
@@ -855,7 +855,7 @@ GameStandingsMenu:
         mov dx, 0x3cf
         out dx, al
         push word 0x3b00
-        push word 0xa000
+        push word VgaMem
         push word 0x4400
         push word [bp - 0x1a]
         push word [bp - 0x1c]
@@ -873,7 +873,7 @@ GameStandingsMenu:
         mov dx, 0x3cf
         out dx, al
         push word 0x3b00
-        push word 0xa000
+        push word VgaMem
         push word 0x4400
         push word [bp - 0x16]
         push word [bp - 0x18]
@@ -891,7 +891,7 @@ GameStandingsMenu:
         mov dx, 0x3cf
         out dx, al
         push word 0x3b00
-        push word 0xa000
+        push word VgaMem
         push word 0x4400
         push word [bp - 0x12]
         push word [bp - 0x14]
@@ -1256,7 +1256,7 @@ GameStandingsMenu:
         add sp, 0x4
         push dx
         push ax
-        push word 0xa000
+        push word VgaMem
         push word 0x4400
         call 0x0000:_fmemcpy
         add sp, 0xa
@@ -1278,7 +1278,7 @@ GameStandingsMenu:
         add sp, 0x4
         push dx
         push ax
-        push word 0xa000
+        push word VgaMem
         push word 0x4400
         call 0x0000:_fmemcpy
         add sp, 0xa
@@ -1300,7 +1300,7 @@ GameStandingsMenu:
         add sp, 0x4
         push dx
         push ax
-        push word 0xa000
+        push word VgaMem
         push word 0x4400
         call 0x0000:_fmemcpy
         add sp, 0xa
@@ -1322,7 +1322,7 @@ GameStandingsMenu:
         add sp, 0x4
         push dx
         push ax
-        push word 0xa000
+        push word VgaMem
         push word 0x4400
         call 0x0000:_fmemcpy
         add sp, 0xa

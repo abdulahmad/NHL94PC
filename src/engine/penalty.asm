@@ -129,7 +129,7 @@ AddPenalty2:
         add sp, 0x2
 .7:
         db 0x2B, 0xFF                           ; insn: sub di, di
-        mov dx, 0xd676
+        mov dx, PenBuf
         db 0x8B, 0xF2                           ; insn: mov si, dx
 .8:
         cmp byte [si], 0x0
@@ -137,7 +137,7 @@ AddPenalty2:
         inc di
         inc si
         inc si
-        cmp si, 0xd6b6
+        cmp si, PenBuf + 0x40
         jc short .8
         pop si
         pop di
@@ -290,7 +290,7 @@ InProgress:
         cbw
         db 0x8B, 0xF0                           ; insn: mov si, ax
         shl si, byte 0x7
-        add si, 0xb50e
+        add si, SortCords
         mov ax, [si + 0x60]
         mov [bp - 0x4], ax
         db 0x8B, 0xD8                           ; insn: mov bx, ax
@@ -408,11 +408,11 @@ InProgress:
         dec dx
         jns short .17
         mov [di + 0x22], cx
-        mov di, 0xb438
+        mov di, awshots
         dec word [bp - 0x6]
         jnz short .16
         and byte [gmode], 0xfb
-        mov word [bp - 0x6], 0xbc0e
+        mov word [bp - 0x6], puckstruct
         mov bx, [puck_1C]
         mov al, [bx + puckasslist]
         cbw
@@ -426,7 +426,7 @@ InProgress:
         jmp near .35
 .20:
         push 0x1b
-        push word 0xbc0e
+        push word puckstruct
         call 0x1E7E:assreplace
         add sp, 0x4
         pop si
@@ -445,7 +445,7 @@ InProgress:
         cbw
         db 0x8B, 0xF0                           ; insn: mov si, ax
         shl si, byte 0x7
-        add si, 0xb50e
+        add si, SortCords
         mov ax, [si + 0x60]
         mov [bp - 0x4], ax
         db 0x8B, 0xD8                           ; insn: mov bx, ax
@@ -685,7 +685,7 @@ chkprogress:
         mov bx, [puckc]
         mov byte [bx], 0xff
         push 0x1a
-        push word 0xbc0e
+        push word puckstruct
         call 0x1E7E:assinsert
         add sp, 0x4
         mov word [pucktemp1], 0x1c20
@@ -1056,7 +1056,7 @@ chkatop:
 .3:
         db 0x0B, 0xD2                           ; insn: or dx, dx
         jng short .4
-        mov bx, 0xb438
+        mov bx, awshots
         jmp short .5
         db 0x90
 .4:
@@ -1236,7 +1236,7 @@ updatepentime:
         push cs
         call updatepentime_ut
         add sp, 0x2
-        push word 0xb438
+        push word awshots
         push cs
         call updatepentime_ut
         add sp, 0x2
@@ -1267,7 +1267,7 @@ PenaltyManager:
 ; Calls PlayArenaJingle. Far routine (retf).
 ;-----------------------------------------------------------------------------
 UpdatePowerPlayFlags:
-        mov bx, 0xb438
+        mov bx, awshots
         mov ax, [hmtmap]
         sub ax, [awtmap]
         db 0x8B, 0xD0                           ; insn: mov dx, ax
@@ -1301,7 +1301,7 @@ UpdatePowerPlayFlags:
         cmp word [SoundOptions], 0x2
         jz short .7
 .4:
-        cmp bx, 0xb362
+        cmp bx, hmshots
         jnz short .5
         push 0x1
         jmp short .6
@@ -1330,7 +1330,7 @@ ClearPenaltyBuffer:
         mov [si - 0x1], al
         inc si
         inc si
-        cmp si, 0xd6b7
+        cmp si, PenBuf_pl + 0x40
         jc short .1
         pop si
         retf
@@ -1349,10 +1349,10 @@ PenGoalStuff:
         mov cx, [bp + 0x6]
         db 0x0B, 0xC9                           ; insn: or cx, cx
         jng short .1
-        mov ax, 0xb438
+        mov ax, awshots
         jmp short .2
 .1:
-        mov ax, 0xb362
+        mov ax, hmshots
 .2:
         mov [bp - 0xc], ax
         cmp cx, 0x1
@@ -1361,11 +1361,11 @@ PenGoalStuff:
         mov [bp - 0xe], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jng short .3
-        mov dx, 0xb438
+        mov dx, awshots
         jmp short .4
         db 0x90
 .3:
-        mov dx, 0xb362
+        mov dx, hmshots
 .4:
         db 0x2B, 0xFF                           ; insn: sub di, di
         mov [bp - 0x4], di
@@ -1374,8 +1374,8 @@ PenGoalStuff:
         jmp near .14
 .5:
         mov [bp - 0xa], dx
-        mov word [bp - 0x6], 0xd676
-        mov word [bp - 0x2], 0xd677
+        mov word [bp - 0x6], PenBuf
+        mov word [bp - 0x2], PenBuf_pl
         mov [bp - 0x8], di
         mov si, [bp - 0x2]
         db 0x8B, 0xD7                           ; insn: mov dx, di

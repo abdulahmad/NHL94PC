@@ -564,7 +564,7 @@ ScanSavedGames:
         mov ax, 0x3a0b
         mov es, ax
         db 0x8B, 0xC7                           ; insn: mov ax, di
-        add ax, 0xa6d8
+        add ax, SavedGameNames
         mov bx, [savedcount1]
         shl bx, byte 0x2
         mov [bx + savednames1], ax
@@ -625,7 +625,7 @@ ScanSavedGames:
         jmp near .12
 .7:
         db 0x8B, 0xC7                           ; insn: mov ax, di
-        add ax, 0xa6d8
+        add ax, SavedGameNames
         mov bx, [savedcount3]
         shl bx, byte 0x2
         mov [bx + savednames3], ax
@@ -689,7 +689,7 @@ ScanSavedGames:
         jmp near .18
 .13:
         db 0x8B, 0xC7                           ; insn: mov ax, di
-        add ax, 0xa6d8
+        add ax, SavedGameNames
         mov bx, [savedcount2]
         shl bx, byte 0x2
         mov [bx + savednames2], ax

@@ -258,7 +258,7 @@ assdefd:
         mov si, 0x6
 .18:
         shl si, byte 0x7
-        add si, 0xb50e
+        add si, SortCords
         mov word [regd2], 0x6
         test byte [di + 0x44], 0x80
         jz short .23
@@ -1068,7 +1068,7 @@ assscore:
         cmp byte [bx + puckasslist], 0x18
         jnz short .1
         push 0x1a
-        push word 0xbc0e
+        push word puckstruct
         call 0x1E7E:assreplace
         add sp, 0x4
 .1:
@@ -2164,7 +2164,7 @@ assgoalie:
         mov ax, 0x6
 .22:
         shl ax, byte 0x7
-        add ax, 0xb50e
+        add ax, SortCords
         mov [bp - 0x4], ax
         mov word [bp - 0x2], 0x0
         jmp short .24
@@ -2197,12 +2197,12 @@ assgoalie:
         cmp ax, strict word 0x19
         jg short .23
 .26:
-        mov word [bp - 0x6], 0xd616
+        mov word [bp - 0x6], puckcross
         mov word [regd3], 0xe4
         mov bx, [bp + 0x6]
         test byte [bx + 0x44], 0x80
         jz short .27
-        mov word [bp - 0x6], 0xd61a
+        mov word [bp - 0x6], GoalState_m5 + 1
         mov word [regd3], 0xff1c
 .27:
         mov ax, [bx + 0x6]
@@ -2745,7 +2745,7 @@ CountPuckThreat:
         mov bx, 0x6
 .2:
         shl bx, byte 0x7
-        add bx, 0xb50e
+        add bx, SortCords
         mov di, 0x6
 .3:
         mov al, [bx + 0xd]
@@ -2942,7 +2942,7 @@ asspuckc_chkdir:
         mov si, 0x6
 .2:
         shl si, byte 0x7
-        add si, 0xb50e
+        add si, SortCords
 .3:
         mov al, [si + 0xd]
         cbw
@@ -3019,7 +3019,7 @@ asspuckc_chkdir:
         db 0x2B, 0xF6                           ; insn: sub si, si
 .10:
         shl si, byte 0x7
-        add si, 0xb50e
+        add si, SortCords
 .11:
         cmp word [si + 0x1a], 0x0
         jz short .12
@@ -3169,7 +3169,7 @@ assnearest:
         mov al, [bx]
         cbw
         shl ax, byte 0x7
-        add ax, 0xb50e
+        add ax, SortCords
         mov [bp - 0xa], ax
         jmp near .23
 .9:
@@ -3189,7 +3189,7 @@ assnearest:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
 .11:
         shl ax, byte 0x7
-        add ax, 0xb50e
+        add ax, SortCords
         mov [bp - 0x8], ax
 .12:
         mov bx, [bp - 0x8]
@@ -3824,7 +3824,7 @@ pucknorm:
         jl short .3
         cbw
         shl ax, byte 0x7
-        add ax, 0xb50e
+        add ax, SortCords
         db 0x8B, 0xF8                           ; insn: mov di, ax
         push ax
         push cs
@@ -3952,7 +3952,7 @@ RequestLineChange:
         mov word [bx + lcchoice], 0x0
         db 0x0B, 0xF6                           ; insn: or si, si
         jng short .1
-        mov bx, 0xb438
+        mov bx, awshots
         jmp short .2
         db 0x90
 .1:
@@ -4091,25 +4091,25 @@ Endfaceoff:
         add ax, strict word 0x10
         mov [regd2], ax
         db 0x2B, 0xFF                           ; insn: sub di, di
-        mov word [bp - 0x2], 0xb528
+        mov word [bp - 0x2], sortobj0_position
         mov bx, [bp - 0x2]
 .1:
         cmp word [bx], 0x4
         jz short .2
         inc di
         add bx, 0x80
-        cmp bx, 0xb828
+        cmp bx, SortCords + 6 * 0x80 + 0x1a
         jc short .1
 .2:
         mov [bp - 0x4], di
         mov di, 0x6
-        mov bx, 0xb828
+        mov bx, SortCords + 6 * 0x80 + 0x1a
 .3:
         cmp word [bx], 0x4
         jz short .4
         inc di
         add bx, 0x80
-        cmp bx, 0xbb28
+        cmp bx, SortCords + 12 * 0x80 + 0x1a
         jc short .3
 .4:
         mov bx, [bp - 0x4]
@@ -4436,7 +4436,7 @@ a2touchpuck:
         mov al, [iflags_b1]
         cbw
         shl ax, byte 0x7
-        add ax, 0xb50e
+        add ax, SortCords
         push ax
         call 0x327B:AddPenalty
         add sp, 0x4
@@ -4629,7 +4629,7 @@ assreffollow:
         cbw
         db 0x8B, 0xF8                           ; insn: mov di, ax
         shl di, byte 0x7
-        add di, 0xb50e
+        add di, SortCords
         test byte [si + 0x44], 0x20
         jz short .1
         jmp near .19
@@ -5351,7 +5351,7 @@ assrefwhistle:
         mov word [ovltimer], 0x258
 .12:
         push 0x1b
-        push word 0xbc0e
+        push word puckstruct
         call 0x1E7E:assreplace
         add sp, 0x4
         push 0x1e
@@ -5448,7 +5448,7 @@ assrefsignal:
         mov [bp - 0x8], cx
         db 0x0B, 0xC9                           ; insn: or cx, cx
         jng short .7
-        mov di, 0xb438
+        mov di, awshots
         jmp short .8
         db 0x90
 .7:
@@ -5762,7 +5762,7 @@ assrefgoalpa:
         mov word [ovltimer], 0x258
 .23:
         push 0x1b
-        push word 0xbc0e
+        push word puckstruct
         call 0x1E7E:assreplace
         add sp, 0x4
         push 0x1e
@@ -5806,7 +5806,7 @@ assrefgoalpa:
         jl short .29
         mov byte [bx], 0xff
         push 0x1a
-        push word 0xbc0e
+        push word puckstruct
         call 0x1E7E:assreplace
         add sp, 0x4
 .29:

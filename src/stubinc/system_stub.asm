@@ -28,6 +28,7 @@ DGROUP		equ	0x45C9
 EndMark		equ	0x62F6
 CritOld		equ	0x62FA
 CritRoutine		equ	0x62FE
+str_SFileError		equ	0x6302
 PathBuf		equ	0x6310
 PathCut		equ	0x6374
 FindDta		equ	0x6376
@@ -72,6 +73,7 @@ TickGate		equ	0x6DB0
 TickSkip		equ	0x6DB2
 SlotTab		equ	0x6DB4
 TickSkipCount		equ	0x6DB6
+str_NoRoomLeftInTimer		equ	0x6DDC
 Int8StackTop		equ	0x6F04
 Int8Sp		equ	0x6F08
 Int8Ss		equ	0x6F0A
@@ -178,6 +180,8 @@ Pot2X		equ	0x75DA
 Pot2Y		equ	0x75DC
 PotBits		equ	0x75DE
 PotButtons		equ	0x75E0
+str_SFileError_2		equ	0x75E2
+str_HandleDFileError		equ	0x75F1
 AltPath		equ	0x7607
 AltBuf		equ	0x762F
 AltCall		equ	0x7633

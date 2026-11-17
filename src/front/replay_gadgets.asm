@@ -54,7 +54,7 @@ LoadReplayGadgets:
         mov [bp - 0x92], ax
 .1:
         mov ax, 0xc8a0
-        mov dx, 0xa000
+        mov dx, VgaMem
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov [bp - 0xa], dx
         mov ax, 0x1
@@ -104,7 +104,7 @@ LoadReplayGadgets:
         inc di
         cmp di, 0x4
         jl short .1
-        mov word [ReplayGadgets], 0xd2e0
+        mov word [ReplayGadgets], SpriteFrames + 0x1a
         mov word [bp - 0x8], 0x0
         mov si, ReplayGadgetsSeg
         lea di, [bp - 0x90]
@@ -159,7 +159,7 @@ LoadReplayGadgets:
         mov [ReplayBackSeg], ax
         mov ax, [es:bx + 0x2]
         mov [ReplayBack2], ax
-        mov word [bp - 0x12], 0xdada
+        mov word [bp - 0x12], ReplayGadgets
         lea di, [bp - 0x90]
         mov al, [bp - 0xf]
         and ax, 0xf0

@@ -1145,7 +1145,7 @@ ExecuteTrade:
         push strict word HomeTeamDbName
         call 0x0000:_fstrcat
         add sp, 0x8
-        mov di, 0xc000
+        mov di, HomeTeamDbName
         mov si, AwayTeamDbName
         push ds
         pop es
@@ -1252,7 +1252,7 @@ DrawTradeRow:
         add ax, [si + tradesel]
         imul ax, ax, 0x16
         db 0x8B, 0xD0                           ; insn: mov dx, ax
-        add ax, 0xc2c5
+        add ax, traderows + 3
         push ax
         db 0x8B, 0xDA                           ; insn: mov bx, dx
         mov al, [bx + traderows_b1]
@@ -1372,7 +1372,7 @@ DrawTradeScreen:
         db 0x2B, 0xF6                           ; insn: sub si, si
         mov ax, [bp + 0x6]
         mov [bp - 0x4], ax
-        mov word [bp - 0x2], 0xc79c
+        mov word [bp - 0x2], tradecolour
         mov [bp - 0x14], di
         db 0x8B, 0xF8                           ; insn: mov di, ax
 .1:
@@ -1493,8 +1493,8 @@ DrawTradeScreen:
         call 0x03A3:UseCharSeg
         add sp, 0x4
         mov word [bp - 0x8], 0x5
-        mov word [bp - 0x6], 0xc792
-        mov word [bp - 0xa], 0xc2c2
+        mov word [bp - 0x6], tradesel
+        mov word [bp - 0xa], traderows
 .7:
         db 0x2B, 0xFF                           ; insn: sub di, di
         mov word [bp - 0x4], 0x1d
@@ -1756,7 +1756,7 @@ FindTradeSlot:
         mov word [bp - 0x4], 0xffff
         db 0x2B, 0xFF                           ; insn: sub di, di
         imul ax, [bp + 0x6], word 0x268
-        add ax, 0xc2c4
+        add ax, traderows_b2
         db 0x8B, 0xF0                           ; insn: mov si, ax
 .1:
         mov al, [si]
@@ -3255,8 +3255,8 @@ TradeScreen:
         push word [si]
         call 0x1E9D:LoadHomePals
         add sp, 0x4
-        mov word [tradecolour], 0xb1c4
-        mov word [tradecolour2], 0xb0c4
+        mov word [tradecolour], TeamPalette2
+        mov word [tradecolour2], TeamPalette1
         mov ax, 0xffff
         mov [tradesel], ax
         mov [tradesel2], ax

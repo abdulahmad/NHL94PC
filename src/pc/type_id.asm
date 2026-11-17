@@ -23,7 +23,7 @@ NineCmp:
         mov si, word [bp + 6]
         push 9
         push ds
-        push 0x402
+        push str_Copyright
         push word [bp + 8]
         push si
         call 0:_fmemchr
@@ -502,7 +502,7 @@ GetBits:
         mov word [bp - 4], ax
         mov word [bp - 2], dx
         push bx
-        push 0x8ee4
+        push BitBuf
         call 0:LongShlAt
         sub word [BitCount], si
         cmp word [BitCount], 0x10
@@ -1254,7 +1254,7 @@ LoadBlock:
         mov al, byte es:[si + 1]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
-        push 0x40c
+        push str_UnpackaInvalidPackCodeX
         call 0xF4A:FatalError
         add sp, 4
         jmp short .10

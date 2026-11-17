@@ -77,17 +77,17 @@ PreGameIntro:
         push word hmshots
         call 0x2E42:forcepldata
         add sp, 0x2
-        push word 0xb438
+        push word awshots
         call 0x2E42:reenergizeteam
         add sp, 0x2
-        push word 0xb438
+        push word awshots
         call 0x2E42:setpersonel
         add sp, 0x2
-        push word 0xb438
+        push word awshots
         call 0x2E42:forcepldata
         add sp, 0x2
         call 0x2E42:resetplstuff
-        mov word [bp - 0x6], 0xba8e
+        mov word [bp - 0x6], SortCords + 11 * 0x80
         mov word [bp - 0xa], 0x2
         mov [bp - 0xc], si
 .3:
@@ -205,7 +205,7 @@ PreGameIntro:
         mov [puckXvel], ax
         mov [puckYvel], ax
         push 0x1a
-        push word 0xbc0e
+        push word puckstruct
         call 0x1E7E:assreplace
         add sp, 0x4
         mov ax, [bp - 0xc]
@@ -521,14 +521,14 @@ assintroline:
         jg short .2
         jmp near .23
 .2:
-        mov bx, 0xb53c
+        mov bx, SortCords + 0x2e
 .3:
         cmp word [bx], -0x64
         jz short .4
         jmp near .23
 .4:
         add bx, 0x80
-        cmp bx, 0xbb3c
+        cmp bx, SortCords + 12 * 0x80 + 0x2e
         jc short .3
         mov word [introtimers], 0xa
         pop si
@@ -798,7 +798,7 @@ StarEligible:
         db 0x1B, 0xF6                           ; insn: sbb si, si
         and si, 0x6
         shl si, byte 0x7
-        add si, 0xb50e
+        add si, SortCords
         db 0x2B, 0xD2                           ; insn: sub dx, dx
         mov di, [bp + 0x8]
 .3:
@@ -1491,7 +1491,7 @@ StartThreeStars:
         mov [textline3], al
         mov [PBnum_b1], al
         mov [PBnum], al
-        mov si, 0xb50e
+        mov si, SortCords
         mov di, 0xc
 .3:
         mov ax, 0xff38
@@ -1525,7 +1525,7 @@ StartThreeStars:
         mov [puckXvel], ax
         mov [puckYvel], ax
         push 0x1a
-        push word 0xbc0e
+        push word puckstruct
         call 0x1E7E:assreplace
         add sp, 0x4
         mov word [doortemp2], 0x78
@@ -1906,7 +1906,7 @@ assthreestars:
         jmp near .8
 .3:
         and byte [bx + 0x44], 0xfd
-        mov ax, 0xd4b8
+        mov ax, textline3
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov si, str_EaSports
         push ds
@@ -1948,7 +1948,7 @@ assthreestars:
         db 0x03, 0xC7                           ; insn: add ax, di
         imul ax, ax, 0x28
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        add ax, 0xa568
+        add ax, hmroster + 0x18
         push ax
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         add cx, 0xa558
@@ -1960,7 +1960,7 @@ assthreestars:
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         imul ax, si, word 0x2e8
-        add ax, 0x9f80
+        add ax, GameTeamRecs
         push ax
         push word textline2
         call 0x2352:FormatPlayerName
@@ -2013,7 +2013,7 @@ assthreestars:
         db 0x8B, 0xF3                           ; insn: mov si, bx
         mov bx, [si + 0x2a]
         shl bx, byte 0x7
-        add bx, 0xb50e
+        add bx, SortCords
         cmp word [si + 0x2a], 0x0
         jnl short .11
         jmp near .19
@@ -2064,7 +2064,7 @@ assthreestars:
         db 0x03, 0xC6                           ; insn: add ax, si
         imul ax, ax, 0x28
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        add ax, 0xa568
+        add ax, hmroster + 0x18
         push ax
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         add cx, 0xa558
@@ -2076,7 +2076,7 @@ assthreestars:
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         imul ax, di, word 0x2e8
-        add ax, 0x9f80
+        add ax, GameTeamRecs
         push ax
         push word textline2
         call 0x2352:FormatPlayerName
@@ -2123,7 +2123,7 @@ assthreestars:
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov [si + 0x2a], ax
         shl di, byte 0x7
-        add di, 0xb50e
+        add di, SortCords
         mov al, [di + 0x44]
         and al, 0x40
         cmp al, 0x1

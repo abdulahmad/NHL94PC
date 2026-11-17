@@ -497,7 +497,7 @@ CreatePlayoffs:
         call 0x0000:_fstrcpy
         add sp, 0x8
         lea di, [bp - 0x2e]
-        mov si, 0xc000
+        mov si, HomeTeamDbName
         push ss
         pop es
         mov cx, 0xffff
@@ -511,7 +511,7 @@ CreatePlayoffs:
         db 0x13, 0xC9                           ; insn: adc cx, cx
         rep movsb
         mov di, str_SDb
-        mov si, 0xc000
+        mov si, HomeTeamDbName
         push ds
         pop es
         mov cx, 0xffff
@@ -528,7 +528,7 @@ CreatePlayoffs:
         rep movsw
         db 0x13, 0xC9                           ; insn: adc cx, cx
         rep movsb
-        mov di, 0xc000
+        mov di, HomeTeamDbName
         mov si, AwayTeamDbName
         mov cx, 0xffff
         repne scasb
@@ -4427,7 +4427,7 @@ POAfterGameJumpTable:                           ; jump table of POAfterGame: 15 
         cmp word [bp - 0x2], 0x2
         jnz short .24
         imul ax, [bp - 0x6], word 0x2e8
-        add ax, 0x9f85
+        add ax, GameTeamRecs + 5
         push ds
         push ax
         push word 0x36b8
@@ -4438,7 +4438,7 @@ POAfterGameJumpTable:                           ; jump table of POAfterGame: 15 
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         neg ax
         imul ax, ax, word 0x2e8
-        add ax, 0x9f85
+        add ax, GameTeamRecs + 5
         push ds
         push ax
         push word 0x36b8
@@ -4957,7 +4957,7 @@ PlayoffModeLoop:
         push ds
         push word [bx + 0x218]
         imul ax, [bp - 0x28], 0x15
-        add ax, 0xaa38
+        add ax, LeagueTeamNames
         push word 0x3a0b
         push ax
         call 0x0000:_fstrcpy
@@ -6876,7 +6876,7 @@ DrawPlayoffTree:
         db 0x2A, 0xFF                           ; insn: sub bh, bh
         shl bx, 1
         imul ax, [bx + playofftree], 0x15
-        add ax, 0xaa38
+        add ax, LeagueTeamNames
         push word 0x3a0b
         push ax
         lea ax, [bp - 0x4a]

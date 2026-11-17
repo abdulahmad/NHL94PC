@@ -52,6 +52,7 @@ SongCount		equ	0x8504
 SongPtrs		equ	0x8506
 SongPtrsSeg		equ	0x8508
 WorkBufferSeg3		equ	0x8D14
+PatchFileName		equ	0x8F94
 PatchMsg		equ	0x8FA8
 PatchMsg1		equ	0x8FA9
 PatchMsg2		equ	0x8FAA

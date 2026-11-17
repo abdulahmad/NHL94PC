@@ -504,9 +504,9 @@ PickNearestPlayer:
         db 0x2B, 0xFF                           ; insn: sub di, di
         mov si, rpl_y
 .1:
-        cmp si, 0xdb68
+        cmp si, rpl_y + 0x18
         jc short .2
-        cmp si, 0xdb6e
+        cmp si, rpl_shadow
         jna short .5
 .2:
         mov ax, [si - 0x22]
@@ -549,7 +549,7 @@ PickNearestPlayer:
         inc di
         inc si
         inc si
-        cmp si, 0xdb72
+        cmp si, rpl_frame
         jc short .1
         mov ax, [bp - 0xa]
         pop si
@@ -1578,8 +1578,8 @@ HilightSaveToDlg:
         enter 0x1e, 0x0
         push di
         push si
-        mov word [bp - 0x6], 0x538c
-        mov word [bp - 0x4], 0x5397
+        mov word [bp - 0x6], str_BothTeams
+        mov word [bp - 0x4], str_NeitherTeams
         lea ax, [bp - 0x1e]
         push ax
         call 0x03A3:SaveCharTab
@@ -1682,7 +1682,7 @@ HilightSaveToDlg:
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x54
-        push word 0x9f85
+        push word GameTeamRecs + 5
         call 0x03A3:TextWidthAll
         add sp, 0x2
         sub ax, 0x85
@@ -1692,11 +1692,11 @@ HilightSaveToDlg:
         sar ax, 1
         add ax, strict word 0x52
         push ax
-        push word 0x9f85
+        push word GameTeamRecs + 5
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x65
-        push word 0xa26d
+        push word GameRosterRecs + 5
         call 0x03A3:TextWidthAll
         add sp, 0x2
         sub ax, 0x85
@@ -1706,7 +1706,7 @@ HilightSaveToDlg:
         sar ax, 1
         add ax, strict word 0x52
         push ax
-        push word 0xa26d
+        push word GameRosterRecs + 5
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x76
@@ -1750,7 +1750,7 @@ HilightSaveToDlg:
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x53
-        push word 0x9f85
+        push word GameTeamRecs + 5
         call 0x03A3:TextWidthAll
         add sp, 0x2
         sub ax, 0x85
@@ -1760,11 +1760,11 @@ HilightSaveToDlg:
         sar ax, 1
         add ax, strict word 0x51
         push ax
-        push word 0x9f85
+        push word GameTeamRecs + 5
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x64
-        push word 0xa26d
+        push word GameRosterRecs + 5
         call 0x03A3:TextWidthAll
         add sp, 0x2
         sub ax, 0x85
@@ -1774,7 +1774,7 @@ HilightSaveToDlg:
         sar ax, 1
         add ax, strict word 0x51
         push ax
-        push word 0xa26d
+        push word GameRosterRecs + 5
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x75
@@ -1891,7 +1891,7 @@ SaveHilightFile:
         mov [es:di + hilightrec_away], al
         inc di
         add si, 0x28
-        cmp si, 0xa9b6
+        cmp si, GamePlayerFlags + 6
         jc short .3
         push word 0x3701
         push strict word CurLeagueName

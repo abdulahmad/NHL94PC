@@ -26,7 +26,7 @@ SetPenaltyStrength:
         enter 0xa, 0x0
         push di
         mov bx, hmshots
-        mov dx, 0xb828
+        mov dx, SortCords + 6 * 0x80 + 0x1a
 .1:
         mov cx, 0x6
         mov di, 0x1b
@@ -54,7 +54,7 @@ SetPenaltyStrength:
         jns short .2
         mov bx, [bp - 0x8]
         mov [bx + 0x22], cx
-        mov bx, 0xb438
+        mov bx, awshots
         mov dx, [bp - 0xa]
         add dh, 0x3
         cmp dx, 0xbe28
@@ -82,7 +82,7 @@ TakePlayerFromBox:
         inc ax
         mov [bp - 0x4], ax
         imul ax, ax, word 0x460
-        add ax, 0xa550
+        add ax, hmroster
         db 0x8B, 0xD8                           ; insn: mov bx, ax
 .1:
         cmp byte [bx], 0x7
@@ -132,7 +132,7 @@ PenShotStart:
         push di
         push si
         imul si, [bp + 0x6], word 0x300
-        add si, 0xb50e
+        add si, SortCords
         mov di, 0x6
 .1:
         cmp word [si + 0x1a], 0x0
@@ -176,7 +176,7 @@ ForceStartLineup:
         cmp word [clockticks], 0x0
         jnz short .1
         imul ax, [bp + 0x6], word 0xd6
-        add ax, 0xb362
+        add ax, hmshots
         push ax
         call 0x2E42:forcepldata
 .1:
@@ -192,7 +192,7 @@ ForceStartLineup:
 PenShotAssign:
         push di
         push si
-        mov si, 0xb50e
+        mov si, SortCords
         mov di, 0xc
 .1:
         cmp word [si + 0x1a], 0x0
@@ -238,7 +238,7 @@ PenShotAssign:
 ; Far routine (retf).
 ;-----------------------------------------------------------------------------
 AllInPlace:
-        mov bx, 0xb50e
+        mov bx, SortCords
         db 0x2B, 0xD2                           ; insn: sub dx, dx
 .1:
         cmp word [bx + 0x1a], 0x0
@@ -533,7 +533,7 @@ puckfaceoff:
         push word hmshots
         call 0x2E42:setpersonel
         add sp, 0x2
-        push word 0xb438
+        push word awshots
         call 0x2E42:setpersonel
         add sp, 0x2
 .7:
@@ -546,7 +546,7 @@ puckfaceoff:
 .8:
         and byte [hmtmflags], 0xfd
         and byte [awtmflags], 0xfd
-        mov bx, 0xb50e
+        mov bx, SortCords
         mov dx, 0xc
 .9:
         and byte [bx + 0x45], 0xf7
@@ -567,7 +567,7 @@ puckfaceoff:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jl short .11
         shl ax, byte 0x7
-        add ax, 0xb50e
+        add ax, SortCords
         push ax
         push di
         call 0x2519:StartFaceoffLineChange
@@ -582,7 +582,7 @@ puckfaceoff:
         jz short .12
         mov ax, [regd0]
         shl ax, byte 0x7
-        add ax, 0xb50e
+        add ax, SortCords
         push ax
         push di
         call 0x2519:StartFaceoffLineChange
@@ -597,11 +597,11 @@ puckfaceoff:
         jz short .13
         cmp [cont2team], ax
         jz short .13
-        push word 0xb438
+        push word awshots
         push word hmshots
         call 0x2E42:CompLine
         add sp, 0x4
-        push word 0xb438
+        push word awshots
         call 0x2E42:setpersonel
         add sp, 0x2
         push 0x1
@@ -646,7 +646,7 @@ puckfaceoff:
         jns short .19
         mov si, [regd1]
         shl si, byte 0x7
-        add si, 0xb50e
+        add si, SortCords
         test byte [si + 0x45], 0x8
         jz short .19
         mov word [regd2], 0x0
@@ -659,7 +659,7 @@ puckfaceoff:
         mov [bx + lcboxon], ax
 .18:
         imul ax, [bp - 0xa], word 0xd6
-        add ax, 0xb362
+        add ax, hmshots
         push ax
         call 0x2E42:setpersonel
         add sp, 0x2
@@ -689,7 +689,7 @@ puckfaceoff:
         cmp word [cont2team], 0x1
         jz short .21
         push word hmshots
-        push word 0xb438
+        push word awshots
         call 0x2E42:CompLine
         add sp, 0x4
         push word hmshots
@@ -934,14 +934,14 @@ puckfaceoff2:
         push word hmshots
         call 0x2E42:forcepldata
         add sp, 0x2
-        push word 0xb438
+        push word awshots
         call 0x2E42:setpersonel
         add sp, 0x2
-        push word 0xb438
+        push word awshots
         call 0x2E42:forcepldata
         add sp, 0x2
         call 0x2E42:resetplstuff
-        mov word [bp - 0x8], 0xb50e
+        mov word [bp - 0x8], SortCords
         mov word [regd2], 0xc
 .19:
         mov bx, [bp - 0x8]
@@ -1185,7 +1185,7 @@ puckfaceoff2:
         jz short .43
         jmp near .19
 .43:
-        mov word [bp - 0x8], 0xbd0e
+        mov word [bp - 0x8], refstruct
         cmp word [fox], 0x0
         jg short .44
         mov word [ref_36], 0x2

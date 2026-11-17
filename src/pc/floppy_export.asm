@@ -1655,7 +1655,7 @@ ImportPlayerTeam:
         mov [es:msgTheLeague2 + 0x4], ax
         mov [es:msgTheLeague2 + 0x6], ss
         imul ax, [bp - 0x8c], 0x1e
-        add ax, 0xac62
+        add ax, leagueinfo_teams
         mov [es:msgTheLeague2 + 0xC], ax
         mov word [es:msgTheLeague2 + 0xE], 0x3a0b
         lea ax, [bp - 0x62]
@@ -2343,7 +2343,7 @@ ExportDbs:
         mov [es:dlgExportButtons], ax
         mov [es:dlgExportButtons + 0x2], ss
         mov ax, [bp - 0x54]
-        add ax, 0xac62
+        add ax, leagueinfo_teams
         mov [es:dlgExportButtons + 0x8], ax
         mov word [es:dlgExportButtons + 0xA], 0x3a0b
         lea ax, [bp - 0x16]
@@ -2448,7 +2448,7 @@ ExportDbs:
         mov [bp - 0xc], ax
         mov [bp - 0xa], dx
         imul ax, [bp - 0x12], 0x1e
-        add ax, 0xac62
+        add ax, leagueinfo_teams
         push word 0x3a0b
         push ax
         push word [bp - 0x50]

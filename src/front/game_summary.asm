@@ -368,7 +368,7 @@ ShowGameSummary:
         add sp, 0x8
         lea ax, [bp - 0x12]
         push ax
-        push word 0xc000
+        push word HomeTeamDbName
         lea ax, [bp - 0xf2]
         push ax
         call 0x0000:_sprintf
@@ -414,8 +414,8 @@ ShowGameSummary:
         mov [bp - 0x163], al
 .21:
         mov word [bp - 0x15c], 0x50
-        mov word [bp - 0x3c], 0xae10
-        mov word [bp - 0x3a], 0xae40
+        mov word [bp - 0x3c], HomeTeamRec
+        mov word [bp - 0x3a], AwayTeamRec
         test byte [bp + 0x6], 0x20
         jnz short .22
         jmp near .42
