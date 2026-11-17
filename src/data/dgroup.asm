@@ -1217,9 +1217,10 @@ str_P01:                                        ; string '!p01'; used by MENUS
         db '!p01', 0x00
 str_0000_3:                                     ; string '0000'; used by MENUS
         db '0000', 0x00, 0x00
+str_POResult:                                   ; string '%s %d - %d'
         db '%s %d - %d', 0x00, 0x00
 POResultFmt:                                    ; pointer to the playoff result format string; used by MENUS
-        db 0xCA, 0x11
+        dw str_POResult
 LeagueSetChoice:                                ; league settings choice (-1 none), also read by the playoff
                                                 ; loop; used by MENUS
         db 0xFF, 0xFF
@@ -2711,6 +2712,7 @@ TeamStatsCmpsSeg:                               ; its segment words; used by STA
         dw CmpTeamPKThunk, 0x1B35
         dw CmpTeamPPThunk, 0x1B35
         dw CmpTeamPenaltiesThunk, 0x1B35
+str_TeamScoring:                                ; string ' Team Scoring'
         db ' Team Scoring', 0x00
 str_TeamDefense:                                ; string ' Team Defense'
         db ' Team Defense', 0x00
@@ -2770,7 +2772,7 @@ str_StatsUnavailable_2:                         ; string 'Stats Unavailable'; us
         db 'Stats Unavailable'
         db 0x00
 TeamStatsTitles:                                ; title text pointers of the team stats screens; used by STATS
-        db 0xC4, 0x25
+        dw str_TeamScoring
         dw str_TeamDefense
         dw str_TeamPenaltyKilling
         dw str_TeamPowerPlay
@@ -2814,6 +2816,7 @@ LeaderCmpsSeg:                                  ; its segment words; used by STA
         dw CmpGAAThunk, 0x1B35
         dw CmpGoalieWinsThunk, 0x1B35
         dw CmpSavePctThunk, 0x1B35
+str_PointLeaders:                               ; string ' Point Leaders'
         db ' Point Leaders', 0x00
 str_GoalLeaders:                                ; string ' Goal Leaders'
         db ' Goal Leaders', 0x00
@@ -2969,7 +2972,7 @@ str_StatsUnavailable:                           ; string 'Stats Unavailable'; us
         db 'Stats Unavailable'
         db 0x00, 0x25, 0x63, 0x00, 0x00
 LeaderTitles:                                   ; title text pointers of the leader categories; used by STATS
-        db 0xDE, 0x26
+        dw str_PointLeaders
         dw str_GoalLeaders
         dw str_AssistLeaders
         dw str_PowerPlayGoalLeaders
@@ -3742,21 +3745,44 @@ lcboxon:                                        ; line change box shown; used by
         times 2 db 0
 hudredraw:                                      ; panel redraw flag; used by AI, INIT, MENUS
         times 2 db 0
+CoachRotateFour:                                ; coach line table rows: four-line rotation
         db 0x02, 0x01, 0x00, 0x03, 0x00, 0x03, 0x02, 0x01, 0x03, 0x02, 0x01, 0x00, 0x01, 0x00, 0x03, 0x02
+CoachRotateThree:                               ; coach line table rows: three-line rotation with the
+                                                ; power-play rows after it
         db 0x01, 0x02, 0x03, 0xFF, 0x02, 0x00, 0x03, 0xFF, 0x00, 0x01, 0x03, 0xFF, 0x00, 0x01, 0x02, 0xFF
         db 0x01, 0x02, 0x03, 0xFF, 0x02, 0x00, 0x03, 0xFF, 0x03, 0x00, 0x01, 0xFF, 0x00, 0x01, 0x02, 0xFF
+CoachRotateThreeTop:                            ; coach line table rows: three lines with the top line first
         db 0x02, 0x01, 0x00, 0xFF, 0x00, 0x02, 0x01, 0xFF, 0x01, 0x02, 0x00, 0xFF, 0x01, 0x00, 0x02, 0xFF
+CoachRotateFourEven:                            ; coach line table rows: four lines in even rotation
         db 0x02, 0x01, 0x00, 0x03, 0x00, 0x01, 0x02, 0x03, 0x03, 0x02, 0x01, 0x00, 0x01, 0x00, 0x03, 0x02
+CoachRotateFourMixed:                           ; coach line table rows: four lines in mixed rotation
         db 0x02, 0x01, 0x00, 0x03, 0x00, 0x01, 0x03, 0x02, 0x03, 0x02, 0x01, 0x00, 0x01, 0x00, 0x03, 0x02
+CoachRotateThreeEven:                           ; coach line table rows: three lines in even rotation
         db 0x02, 0x01, 0x00, 0xFF, 0x00, 0x01, 0x02, 0xFF, 0x02, 0x01, 0x00, 0xFF, 0x01, 0x00, 0x02, 0xFF
+CoachSpecialUnits:                              ; coach line table rows: special team units only
         db 0x05, 0x04, 0xFF, 0xFF, 0x04, 0x05, 0xFF, 0xFF, 0x04, 0x05, 0xFF, 0xFF, 0x04, 0x05, 0xFF, 0xFF
+CoachRotateTwo:                                 ; coach line table rows: two lines only
         db 0x01, 0x00, 0xFF, 0xFF, 0x00, 0x01, 0xFF, 0xFF, 0x00, 0x01, 0xFF, 0xFF, 0x00, 0x01, 0xFF, 0xFF
+CoachRotateTwoDeep:                             ; coach line table rows: two lines with the third line as
+                                                ; backup
         db 0x01, 0x02, 0xFF, 0xFF, 0x02, 0x00, 0xFF, 0xFF, 0x00, 0x01, 0xFF, 0xFF, 0x00, 0x01, 0x02, 0xFF
+CoachRotateFourShort:                           ; coach line table rows: four lines with short shifts
         db 0x01, 0x02, 0x03, 0xFF, 0x02, 0x03, 0x00, 0xFF, 0x03, 0x00, 0x01, 0xFF, 0x00, 0x01, 0x02, 0xFF
+CoachRotateThreeShort:                          ; coach line table rows: three lines with short shifts
         db 0x01, 0x02, 0xFF, 0xFF, 0x00, 0x02, 0xFF, 0xFF, 0x00, 0x01, 0xFF, 0xFF, 0x00, 0x01, 0x02, 0xFF
-CompLineTab:                                    ; line offset table of CompLine; used by AI
-        db 0xE6, 0x48, 0xF6, 0x48, 0x16, 'I&I6IFIVIfIvI'
-        db 0x86, 0x49, 0x96, 0x49
+coachlinetab:                                   ; CompLine: row table of each coach mode (tmcoachmode); used
+                                                ; by AI
+        dw CoachRotateFour
+        dw CoachRotateThree
+        dw CoachRotateThreeTop
+        dw CoachRotateFourEven
+        dw CoachRotateFourMixed
+        dw CoachRotateThreeEven
+        dw CoachSpecialUnits
+        dw CoachRotateTwo
+        dw CoachRotateTwoDeep
+        dw CoachRotateFourShort
+        dw CoachRotateThreeShort
 puckfaceoff2_ptab:                              ; faceoff positions, x; used by AI, INIT
         db 0x00, 0x00
 puckfaceoff2_ptab_y:                            ; faceoff positions, y; used by AI, INIT
@@ -4541,6 +4567,7 @@ CallNamePtrs:                                   ; referee call name pointers; us
         dw str_Offside
         dw str_Icing
         dw str_Penalty_3
+str_CallRoughing:                               ; string 'Roughing'
         db 'Roughing', 0x00
 str_Empty_21:                                   ; empty string
         db 0x00
@@ -4565,7 +4592,7 @@ str_AbuseOfOfficial:                            ; string 'Abuse of Official'
 str_CheckingFromBehind:                         ; string 'Checking from Behind'
         db 'Checking from Behind', 0x00
 EventFmtPtrs:                                   ; event line format pointers; used by AI, INIT
-        db 0xDA, 0x56
+        dw str_CallRoughing
         dw str_Empty_21
         dw str_Charging
         dw str_Slashing
@@ -4790,8 +4817,12 @@ assstarskate_path:                              ; three stars skate path, x; use
 assstarskate_path_y:                            ; three stars skate path, y; used by AI
         db 0xC9, 0xFF, 0xCA, 0xFF, 0xD3, 0xFF, 0xC5, 0xFF
         db 0x0F, 0x00, 0x84, 0xFF, 0x0A, 0x00, 0xA2, 0xFF, 0x14, 0x00, 0xD4, 0xFF, 0x05, 0x00, 0xC0, 0xFF
-        db 0xCE, 0xFF, 0x8E, 0xFF, 0xEC, 0xFF, 0x31, 0x73, 0x74, 0x00
+        db 0xCE, 0xFF, 0x8E, 0xFF, 0xEC, 0xFF
+str_Star1st:                                    ; string '1st'
+        db 0x31, 0x73, 0x74, 0x00
+str_Star2nd:                                    ; string '2nd'
         db '2nd', 0x00
+str_Star3rd:                                    ; string '3rd'
         db '3rd', 0x00
 str_EaSports:                                   ; string 'EA Sports'; used by AI
         db 'EA Sports', 0x00
@@ -4800,7 +4831,9 @@ str_SStar_2:                                    ; string '%s Star'; used by AI
 str_SStar:                                      ; string '%s Star'; used by AI
         db '%s Star', 0x00, 0x00
 StarNamePtrs:                                   ; '1st/2nd/3rd' star text pointers (assthreestars); used by AI
-        db 0xC6, 0x5B, 0xCA, 0x5B, 0xCE, 0x5B
+        dw str_Star1st
+        dw str_Star2nd
+        dw str_Star3rd
 playsuspended:                                  ; 1 while play is suspended (highlight, no replay); used by AI
         db 0x00
         db 0x00

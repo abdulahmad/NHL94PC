@@ -17,8 +17,8 @@ CalibrateRightStick		equ	0x244
 GetPaletteFar		equ	0x366
 InitGraphics		equ	0x39A
 OpenReadShared		equ	0x3D6
-FatalError		equ	0x3E4
 HookCrit		equ	0x3E4
+FatalError		equ	0x3E4
 CloseHandlePtr		equ	0x41E
 str_InsufficientConventionalMemoryAvaila		equ	0x42E
 ReadAtOffset		equ	0x442

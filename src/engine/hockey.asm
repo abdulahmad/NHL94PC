@@ -471,7 +471,7 @@ CompLine:
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
         shl si, byte 0x2
-        add si, [bx + CompLineTab]
+        add si, [bx + coachlinetab]
         mov [bp - 0x6], si
         mov ax, [di + 0x16]
         mov [bp - 0xa], ax

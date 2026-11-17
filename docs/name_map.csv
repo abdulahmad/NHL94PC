@@ -3590,7 +3590,7 @@ g_48DC,lcactive,g_48DC,new,medium,line change box active,src/data/dgroup.asm
 g_48DE,lctime,g_48DE,new,medium,line change box time per team,src/data/dgroup.asm
 g_48E0,lcstate2,g_48E0,new,medium,line change state saved with the game,src/data/dgroup.asm
 g_48E4,hudredraw,g_48E4,new,medium,panel redraw flag,src/data/dgroup.asm
-g_49A6,CompLineTab,g_49A6,new,medium,line offset table of CompLine,src/data/dgroup.asm
+g_49A6,coachlinetab,g_49A6,95 PC,high,same row tables as 95 coachlinetab,src/data/dgroup.asm
 g_4A00,ovlartnames,g_4A00,95 PC,high,.QPP art file name of each text overlay sequence (LoadTeamPPV),src/data/dgroup.asm
 g_4A0A,ovlscripts,g_4A0A,95 PC,high,"far pointers to the overlay step scripts, read as ovlscripts and ovlscripts + 2",src/data/dgroup.asm
 g_4A1E,ovlseqtimed,g_4A1E,95 PC,high,same 01 00 01 01 01 bytes as 95; cmp byte [bx + ovlseqtimed] before the 258h ovltimer,src/data/dgroup.asm

@@ -28,7 +28,6 @@ ClockColonShape		equ	0xDA9E
 ClockDigits		equ	0xDA76
 ClockDigitsSeg		equ	0xDA78
 CloseHandlePtr		equ	0x41E
-CompLineTab		equ	0x49A6
 CrestShapeNames		equ	0x5604
 CrowdFadeOut		equ	0x24E
 CrowdNoiseUpdate		equ	0x2
@@ -304,6 +303,7 @@ cleared1		equ	0xD00C
 cleared2		equ	0xD00E
 clockcolon		equ	0xDAA0
 clockticks		equ	0x29DE
+coachlinetab		equ	0x49A6
 collflag		equ	0x29BA
 cont1team		equ	0x29C6
 cont2team		equ	0x29C8
