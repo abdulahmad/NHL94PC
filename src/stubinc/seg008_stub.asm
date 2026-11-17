@@ -133,7 +133,7 @@ _dos_close		equ	0x1084
 _dos_open		equ	0x10FA
 _dos_read		equ	0x1112
 g_1218		equ	0x1218
-_fstrlen		equ	0x13DA
+_fstrcpy		equ	0x13DA
 _fmemmove		equ	0x14FA
 RawBase		equ	0x1532
 EmulatedFloat		equ	0x15C4

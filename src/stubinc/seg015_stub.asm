@@ -13,6 +13,6 @@ _dos_findfirst		equ	0x10C7
 _dos_open		equ	0x10FA
 _dos_read		equ	0x1112
 _dos_write		equ	0x1119
-_fstrlen		equ	0x13DA
+_fstrcpy		equ	0x13DA
 _fstrcat		equ	0x1410
 %include "seg/seg015.asm"

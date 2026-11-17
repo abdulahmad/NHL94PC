@@ -907,3 +907,69 @@ seg004:095C,AddCopy,,new,high,"Words 62FBh and 66FBh. Writes each input byte plu
 seg004:0AAA,LoadBlock,,new,high,"Picks Unpack, Expand, AddCopy, or CopyFar from the type byte. An unknown type can call seg022",src/seg/seg004.asm
 seg004:0BD8,LoadReport,,new,high,"LoadBlock with the report flag set",src/seg/seg004.asm
 seg004:0BF6,LoadQuiet,,new,high,"LoadBlock with the report flag clear. The near call finishes in seg005",src/seg/seg004.asm
+seg006:0008,PollInputEvents,F006_0008,new,high,"every 5th call reads mouse, sticks and keys per the device bits and queues an 8-byte event (32 entries)",src/seg/seg006.asm
+seg006:00E6,ReadMouseEvent,F006_00E6,new,high,"MouseRead, compares with the last buttons and position, fills the event, MouseMove",src/seg/seg006.asm
+seg006:0174,ReadStickEvent,F006_0174,new,high,PollSticks bits to an event (fire edge and direction),src/seg/seg006.asm
+seg006:01DE,ReadKeyEvent,F006_01DE,new,high,"keypad/arrow scan codes to direction bits, Space/Esc/Enter to buttons, KeyJump",src/seg/seg006.asm
+seg007:0000,ReadKeyEventHit,F007_0000,new,medium,tail of ReadKeyEvent in the next paragraph: return 1,src/seg/seg007.asm
+seg007:0006,KeysToPad,F007_0006,new,high,"arrow and keypad scan codes through DirBitsToPad, Ins/Enter/Alt/Space to pad buttons",src/seg/seg007.asm
+seg007:0120,StickToPad,F007_0120,new,high,stick bits (low or high byte of StickPollBits) to pad direction and buttons,src/seg/seg007.asm
+seg007:018A,MouseToPad,F007_018A,new,high,"mouse offset from the centre (160,100) to a direction when far enough, buttons to pad buttons",src/seg/seg007.asm
+seg007:0224,ReadPadDevice,F007_0224,new,high,"pad of one player from the device in PadDevice (8 keys, 2 stick 1, 4 stick 2, 1 mouse)",src/seg/seg007.asm
+seg007:026E,ReadHotKey,F007_026E,new,high,"Esc, Ctrl+S, Ctrl+M, F1-F10, Tab and R with a repeat guard; bit 7 set on a new key",src/seg/seg007.asm
+seg007:03FE,PadTimerTick,F007_03FE,new,high,timer slot: every 4th tick records both players' pads into the 50-entry pad ring,src/seg/seg007.asm
+seg008:0000,PadTimerTickTail,F008_0000,new,medium,"the last instructions of PadTimerTick, in the next paragraph",src/seg/seg008.asm
+seg008:000A,SpeechTimerTick,F008_000A,new,high,"timer slot: when the wait runs out, plays the next clip of the sentence on the other buffer",src/seg/seg008.asm
+seg008:013A,ClearSpeechClip,F008_013A,new,high,zeroes one 24h-byte clip entry,src/seg/seg008.asm
+seg008:0174,ResetSentence,F008_0174,new,high,"20 empty clip slots, count, position, wait and playing cleared",src/seg/seg008.asm
+seg008:01D8,InitSpeechBank,F008_01D8,new,high,clears the 128 clips and reserves the speechbuf memory block,src/seg/seg008.asm
+seg008:0292,ResetWantedSamples,F008_0292,new,high,clears the 20 wanted sample names and their total size,src/seg/seg008.asm
+seg008:02F0,SpeechInit,F008_02F0,new,high,"allocates Sentence, SpeechBank and SampleMemMan, the pause sample, the timer slot",src/seg/seg008.asm
+seg008:039E,SpeechShutdown,F008_039E,new,high,"frees the timer slot, the sound channel and the three blocks",src/seg/seg008.asm
+seg008:0414,SpeechIsReady,F008_0414,new,high,returns SpeechOn,src/seg/seg008.asm
+seg008:042A,SpeechBusy,F008_042A,new,high,"playing flag, else the wait count",src/seg/seg008.asm
+seg008:0452,SpeechIdle,F008_0452,new,high,"ready, not playing and no wait",src/seg/seg008.asm
+seg008:047A,StopSpeech,F008_047A,new,medium,clears playing and sets the wait from the bank,src/seg/seg008.asm
+seg008:04AE,MakePauseSample,F008_04AE,new,high,256-byte silent sample in a memory block,src/seg/seg008.asm
+seg008:0532,PlayPauseSample,F008_0532,new,high,queues the pause sample on both sound buffers,src/seg/seg008.asm
+seg008:05B6,SwapWordBytes,F008_05B6,new,high,swaps the two bytes of a word (big-endian file fields),src/seg/seg008.asm
+seg008:05DE,ReadBe24,F008_05DE,new,high,"reads 3 bytes, big-endian, into a long",src/seg/seg008.asm
+seg008:0634,ReadCString,F008_0634,new,high,reads bytes from a handle until a zero,src/seg/seg008.asm
+seg008:0664,OpenSpeechFile,F008_0664,new,high,"opens a speech file, reads its clip count and each clip's offset, size and name",src/seg/seg008.asm
+seg008:0942,ClipLength,F008_0942,new,high,"size of a clip, 0 for -1",src/seg/seg008.asm
+seg008:096E,LoadClipData,F008_096E,new,high,reads one clip from the file into memory and undoes its delta coding,src/seg/seg008.asm
+seg008:0A84,LoadClipToBank,F008_0A84,new,high,puts a clip after the previous one in the bank and marks it loaded,src/seg/seg008.asm
+seg008:0B0E,StrSameNoCaseFar,F008_0B0E,new,high,compares two far strings ignoring case (xor and DFh),src/seg/seg008.asm
+seg008:0B4C,FindFreeClip,F008_0B4C,new,high,first clip slot from the index that is not loaded,src/seg/seg008.asm
+seg008:0B86,FindLoadedClip,F008_0B86,new,high,first loaded clip slot from the index,src/seg/seg008.asm
+seg008:0BC0,FindClipByName,F008_0BC0,new,high,"clip index of a name, or -1",src/seg/seg008.asm
+seg008:0C04,ClipIsLoaded,F008_0C04,new,high,clip state is 1,src/seg/seg008.asm
+seg008:0C2A,SampleIsWanted,F008_0C2A,new,high,name is in the wanted list,src/seg/seg008.asm
+seg008:0C76,WantSample,F008_0C76,new,high,adds a name to the wanted list and its size to the total,src/seg/seg008.asm
+seg008:0D00,DropUnwantedClip,F008_0D00,new,high,"from the last slot, unloads a loaded clip nobody wants",src/seg/seg008.asm
+seg008:0D6C,MoveMemBlock,F008_0D6C,new,high,copies between two mapped memory addresses through the copy buffer,src/seg/seg008.asm
+seg008:0E04,MoveClip,F008_0E04,new,high,moves a clip into a lower free slot and its bytes after the previous clip,src/seg/seg008.asm
+seg008:0EFC,CompactSpeechBank,F008_0EFC,new,high,moves loaded clips down into the free slots,src/seg/seg008.asm
+seg008:0F4A,MakeRoomForWanted,F008_0F4A,new,high,drops unwanted clips until the wanted total fits,src/seg/seg008.asm
+seg008:0FDC,PrepareSpeechBank,F008_0FDC,new,high,MakeRoomForWanted then CompactSpeechBank,src/seg/seg008.asm
+seg008:0FEC,NumberSampleNames,F008_0FEC,new,high,names of the tens and ones clips of a number (zero..ninety-nine),src/seg/seg008.asm
+seg008:109C,GameLengthSampleName,F008_109C,new,high,"sample for the period length (game mis., 2, 5 or 10 minutes, off)",src/seg/seg008.asm
+seg008:10EC,DivisionSampleName,F008_10EC,new,high,"sample for a division or conference (Adams, Patrick, Norris, Smythe, Campbell, Wales, Stanley)",src/seg/seg008.asm
+seg008:118E,QueueClip,F008_118E,new,high,"appends a clip to the sentence, loading it into the bank when needed",src/seg/seg008.asm
+seg008:128A,SayEaNhlIntro,F008_128A,new,high,ea_nhl.int,src/seg/seg008.asm
+seg008:12EC,SayGoodnight,F008_12EC,new,high,"goodnite.int, imrbarr.int",src/seg/seg008.asm
+seg008:1362,SayLineups,F008_1362,new,high,lineups.int,src/seg/seg008.asm
+seg008:13C4,SayElseAroundNhl,F008_13C4,new,medium,elsenhl.int,src/seg/seg008.asm
+seg008:1426,SayHighlightMatchup,F008_1426,new,high,"takeynow, highlite, gamebtwn, home and away teams",src/seg/seg008.asm
+seg008:1546,SayPlayoffResult,F008_1546,new,high,"havewon, division/conf/semi/final, game number, overtime",src/seg/seg008.asm
+seg008:16E2,SayPeriodSummary,F008_16E2,new,high,"period, ot, scoring, thegame, theot",src/seg/seg008.asm
+seg008:17FA,SayTonightsGame,F008_17FA,new,high,"easports, tonight, gamebtwn, the two teams",src/seg/seg008.asm
+seg008:191A,SayTonightsPlayoffGame,F008_191A,new,high,"easports, tonight, between, division/conf/final, game number",src/seg/seg008.asm
+seg008:1B3C,SayPenalty,F008_1B3C,new,high,"penalty.msc, number, at minute/second, off",src/seg/seg008.asm
+seg008:1E44,SayPlayerFrom,F008_1E44,new,medium,"number, from/fromthe, team city, tonight.msc",src/seg/seg008.asm
+seg008:2032,SayGoal,F008_2032,new,high,"goals.msc, by, number, assisted, and",src/seg/seg008.asm
+seg008:22C0,SayOneMinuteLeft,F008_22C0,new,high,onemin.msc,src/seg/seg008.asm
+seg008:2322,OpenStudioSpeech,F008_2322,new,medium,opens xrbarr2.viv,src/seg/seg008.asm
+seg008:2354,OpenPlayByPlaySpeech,F008_2354,new,medium,opens xbruce2.viv and wants its penalty and goal clips,src/seg/seg008.asm
+_fstrcpy,_fstrcspn,_fstrcpy,MSC,high,builds a 256-bit set of the second string and returns the index of the first character of the first string in it (it was named _fstrcpy),src/seg/seg000.asm
+_fstrlen,_fstrcpy,_fstrlen,MSC,high,copies the far string at [bp+0Ah] to [bp+6] and returns the destination (it was named _fstrlen),src/seg/seg000.asm

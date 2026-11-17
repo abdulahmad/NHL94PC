@@ -18,7 +18,7 @@ F023_0008:
 	push	di
 	push	word [bp + 0x8]
 	push	si
-	call	0x0000:_fstrlen
+	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	push	word 0x3701
 	push	word 0xba6
@@ -58,7 +58,7 @@ F023_0008:
 	push	word [bp + 0xe]
 	push	word [bp + 0x8]
 	push	si
-	call	0x0000:_fstrlen
+	call	0x0000:_fstrcpy
 .2:
 	add	sp, 0x8
 .3:

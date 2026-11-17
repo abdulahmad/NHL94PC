@@ -501,7 +501,13 @@ def subst_data(items, s, funcs):
     import bisect
     starts = sorted(funcs)
     dg = DATA['dg']
-    for it in items:
+
+    def has_reloc(k):
+        if k < 0 or k >= len(items) or items[k][0] in ('data', 'dw'):
+            return False
+        a = items[k][1]
+        return any((a + j) in RELOC for j in range(len(items[k][3])))
+    for idx, it in enumerate(items):
         if it[0] not in ('ins',):
             continue
         lin = it[1]
@@ -531,7 +537,9 @@ def subst_data(items, s, funcs):
             return m.group(0)
         t2 = re.sub(r'\[([^\]]+)\]', mem, t)
         mm = re.fullmatch(r'(push|mov)\t((?:[abcd]x|si|di|word \[[^\]]+\]), )?(?:word )?0x([0-9a-f]+)', t2)
-        if mm and len(it[3]) >= 3:
+        near_reloc = has_reloc(idx) or has_reloc(idx - 1) or has_reloc(idx + 1) or \
+            (idx > 0 and items[idx - 1][3] == b'\x0e')
+        if mm and len(it[3]) >= 3 and not near_reloc:
             v = int(mm.group(3), 16)
             if v in DATA['strings'] and v in dg:
                 t2 = f'{mm.group(1)}\t{mm.group(2) or ""}{dg[v]}'

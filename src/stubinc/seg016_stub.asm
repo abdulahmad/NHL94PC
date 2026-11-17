@@ -14,7 +14,7 @@ g_09A4		equ	0x9A4
 TextWidthAll		equ	0xC0A
 _sprintf		equ	0xD74
 F028_13B0		equ	0x13B0
-_fstrlen		equ	0x13DA
+_fstrcpy		equ	0x13DA
 SaveTextState		equ	0x19B2
 LoadTextState		equ	0x19E1
 g_6D4E		equ	0x6D4E

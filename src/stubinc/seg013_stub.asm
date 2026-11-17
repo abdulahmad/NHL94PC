@@ -34,7 +34,7 @@ F020_0F22		equ	0xF22
 F020_0FC8		equ	0xFC8
 _dos_findfirst		equ	0x10C7
 F028_11DD		equ	0x11DD
-_fstrlen		equ	0x13DA
+_fstrcpy		equ	0x13DA
 ConPrint		equ	0x17CA
 F028_1857		equ	0x1857
 L1A84		equ	0x1A84

@@ -5,6 +5,6 @@
 F016_0002		equ	0x2
 _exit		equ	0x687
 RetOnly		equ	0x1398
-_fstrlen		equ	0x13DA
+_fstrcpy		equ	0x13DA
 _fstrcat		equ	0x1410
 %include "seg/seg023.asm"

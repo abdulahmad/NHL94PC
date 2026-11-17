@@ -11,7 +11,7 @@ F016_0002:
 	lea	ax, [bp - 0x52]
 	push	ss
 	push	ax
-	call	0x0000:_fstrlen
+	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	lea	ax, [bp - 0x52]
 	push	ax
@@ -39,7 +39,7 @@ F016_0036:
 	lea	ax, [bp - 0x92]
 	push	ss
 	push	ax
-	call	0x0000:_fstrlen
+	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	lea	ax, [bp - 0x92]
 	push	ax
@@ -108,7 +108,7 @@ F016_00E4:
 	push	ss
 	push	cx
 	db	0x8B, 0xF0		; mov si, ax
-	call	0x0000:_fstrlen
+	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	db	0x8B, 0xC7		; mov ax, di
 	db	0x8B, 0xD6		; mov dx, si

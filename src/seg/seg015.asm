@@ -50,7 +50,7 @@ F015_003E:
 	push	di
 	push	word [bp + 0x8]
 	push	si
-	call	0x0000:_fstrlen
+	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	push	word 0x3701
 	push	word 0xbaa
@@ -183,7 +183,7 @@ F015_00C2:
 	lea	ax, [bp - 0x22]
 	push	ss
 	push	ax
-	call	0x0000:_fstrlen
+	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	push	word [bp - 0x50]
 	push	word [bp - 0x52]

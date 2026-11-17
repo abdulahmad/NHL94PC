@@ -8,7 +8,7 @@ import csv, glob, os, re, sys
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 
-def main(path):
+def main(path, only_generated=False):
     pairs = []
     for line in open(path):
         line = line.rstrip('\n')
@@ -18,6 +18,9 @@ def main(path):
         old, new = parts[0].split()
         pairs.append((old, new, parts[1] if len(parts) > 1 else 'new', parts[2] if len(parts) > 2 else 'high',
                       parts[3] if len(parts) > 3 else ''))
+    if only_generated:
+        # re-apply to regenerated files only: placeholder names, no name_map rows
+        pairs = [p for p in pairs if re.match(r'^(F\d{3}_[0-9A-F]{4}|g_[0-9A-F]{4}|str_\w+|far[0-9A-F]{4})$', p[0])]
     files = glob.glob(os.path.join(ROOT, 'src', '**', '*.asm'), recursive=True) + \
         glob.glob(os.path.join(ROOT, 'src', '**', '*.inc'), recursive=True)
     text = {f: open(f).read() for f in files}
@@ -26,8 +29,9 @@ def main(path):
         for m in re.finditer(r'^([A-Za-z_]\w*):', t, re.M):
             defs.setdefault(m.group(1), f)
     newnames = set()
+    olds = {o for o, *_ in pairs}
     for old, new, *_ in pairs:
-        if new in defs and new != old:
+        if new in defs and new != old and new not in olds and not only_generated:
             sys.exit(f'{new} already exists ({defs[new]})')
         if new in newnames:
             sys.exit(f'{new} given twice')
@@ -39,6 +43,9 @@ def main(path):
         t2 = big.sub(lambda mm: m[mm.group(1)], t)
         if t2 != t:
             open(f, 'w').write(t2)
+    if only_generated:
+        print(f'{len(pairs)} re-applied')
+        return
     nm = os.path.join(ROOT, 'docs', 'name_map.csv')
     with open(nm, 'a', newline='') as fh:
         w = csv.writer(fh)
@@ -50,4 +57,4 @@ def main(path):
     print(f'{len(pairs)} renamed')
 
 
-main(sys.argv[1])
+main(sys.argv[-1], '--generated' in sys.argv)

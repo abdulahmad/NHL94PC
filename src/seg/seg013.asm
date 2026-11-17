@@ -165,7 +165,7 @@ F013_0006:
 	lea	ax, [bp - 0x26]
 	push	ss
 	push	ax
-	call	0x0000:_fstrlen
+	call	0x0000:_fstrcpy
 	add	sp, 0x8
 	mov	di, 0x92c
 	lea	si, [bp - 0x26]

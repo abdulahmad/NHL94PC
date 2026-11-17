@@ -300,8 +300,8 @@ F021_02A6:
 	jnz	short .1
 	test	byte [g_01B7], 0x1
 	jz	short .1
-	call	0x09B2:F008_0532
-	call	0x09B2:F008_22C0
+	call	0x09B2:PlayPauseSample
+	call	0x09B2:SayOneMinuteLeft
 .1:
 	retf
 	db	0x90
@@ -311,7 +311,7 @@ F021_02C0:
 	jnz	short .1
 	test	byte [g_01B7], 0x1
 	jz	short .1
-	call	0x09B2:F008_042A
+	call	0x09B2:SpeechBusy
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .1
 	mov	ax, 0x1
@@ -404,13 +404,13 @@ F021_0394:
 	jnz	short .1
 	test	byte [g_01B7], 0x1
 	jz	short .1
-	call	0x09B2:F008_0532
+	call	0x09B2:PlayPauseSample
 	push	word [bp + 0xe]
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
-	call	0x09B2:F008_2032
+	call	0x09B2:SayGoal
 .1:
 	leave
 	retf
@@ -422,11 +422,11 @@ F021_03C0:
 	jnz	short .1
 	test	byte [g_01B7], 0x1
 	jz	short .1
-	call	0x09B2:F008_0532
+	call	0x09B2:PlayPauseSample
 	push	word [bp + 0xa]
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
-	call	0x09B2:F008_1E44
+	call	0x09B2:SayPlayerFrom
 .1:
 	leave
 	retf
@@ -438,7 +438,7 @@ F021_03E6:
 	jnz	short .1
 	test	byte [g_01B7], 0x1
 	jz	short .1
-	call	0x09B2:F008_0532
+	call	0x09B2:PlayPauseSample
 	push	word [bp + 0x12]
 	push	word [bp + 0x10]
 	push	word [bp + 0xe]
@@ -446,7 +446,7 @@ F021_03E6:
 	push	word [bp + 0xa]
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
-	call	0x09B2:F008_1B3C
+	call	0x09B2:SayPenalty
 .1:
 	leave
 	retf
@@ -483,7 +483,7 @@ F021_0418:
 	mov	bx, [bp - 0x2]
 	shl	bx, 1
 	push	word [bx + g_01E0]
-	call	0x09B2:F008_17FA
+	call	0x09B2:SayTonightsGame
 	add	sp, 0x6
 .4:
 	pop	si
@@ -501,7 +501,7 @@ F021_046E:
 	push	word [bp + 0xa]
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
-	call	0x09B2:F008_16E2
+	call	0x09B2:SayPeriodSummary
 .1:
 	leave
 	retf
@@ -512,7 +512,7 @@ F021_0490:
 	jnz	short .1
 	test	byte [g_01B7], 0x1
 	jz	short .1
-	call	0x09B2:F008_128A
+	call	0x09B2:SayEaNhlIntro
 .1:
 	retf
 
@@ -521,7 +521,7 @@ F021_04A4:
 	jnz	short .1
 	test	byte [g_01B7], 0x1
 	jz	short .1
-	call	0x09B2:F008_12EC
+	call	0x09B2:SayGoodnight
 .1:
 	retf
 
@@ -530,7 +530,7 @@ F021_04B8:
 	jnz	short .1
 	test	byte [g_01B7], 0x1
 	jz	short .1
-	call	0x09B2:F008_1362
+	call	0x09B2:SayLineups
 .1:
 	retf
 
@@ -539,7 +539,7 @@ F021_04CC:
 	jnz	short .1
 	test	byte [g_01B7], 0x1
 	jz	short .1
-	call	0x09B2:F008_13C4
+	call	0x09B2:SayElseAroundNhl
 .1:
 	retf
 
@@ -558,7 +558,7 @@ F021_04E0:
 	shl	bx, 1
 	push	word [bx + g_01E0]
 	push	word [si + g_01E0]
-	call	0x09B2:F008_1426
+	call	0x09B2:SayHighlightMatchup
 	add	sp, 0x6
 .1:
 	pop	si
@@ -580,7 +580,7 @@ F021_0514:
 	mov	bx, [bp + 0x6]
 	shl	bx, 1
 	push	word [bx + g_01E0]
-	call	0x09B2:F008_1546
+	call	0x09B2:SayPlayoffResult
 .1:
 	leave
 	retf
@@ -604,7 +604,7 @@ F021_0542:
 	shl	bx, 1
 	push	word [bx + g_01E0]
 	push	word [si + g_01E0]
-	call	0x09B2:F008_191A
+	call	0x09B2:SayTonightsPlayoffGame
 	add	sp, 0xc
 .1:
 	pop	si
@@ -617,7 +617,7 @@ F021_057E:
 	cmp	word [g_01C6], 0x2
 	jnz	short .2
 .1:
-	call	0x09B2:F008_2322
+	call	0x09B2:OpenStudioSpeech
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .1
 .2:
@@ -637,7 +637,7 @@ F021_0594:
 .1:
 	push	di
 	push	si
-	call	0x09B2:F008_2354
+	call	0x09B2:OpenPlayByPlaySpeech
 	add	sp, 0x4
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .1

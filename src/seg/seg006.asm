@@ -6,7 +6,7 @@
 	retf
 	db	0x90
 
-F006_0008:
+PollInputEvents:
 	enter	0x8, 0x0
 	push	di
 	push	si
@@ -26,7 +26,7 @@ F006_0008:
 	lea	ax, [bp - 0x8]
 	push	ax
 	push	cs
-	call	F006_00E6
+	call	ReadMouseEvent
 	add	sp, 0x2
 	db	0x8B, 0xF0		; mov si, ax
 .3:
@@ -40,7 +40,7 @@ F006_0008:
 	lea	ax, [bp - 0x8]
 	push	ax
 	push	cs
-	call	F006_0174
+	call	ReadStickEvent
 	add	sp, 0x2
 	db	0x8B, 0xF0		; mov si, ax
 .5:
@@ -51,7 +51,7 @@ F006_0008:
 	lea	ax, [bp - 0x8]
 	push	ax
 	push	cs
-	call	F006_01DE
+	call	ReadKeyEvent
 	add	sp, 0x2
 	db	0x8B, 0xF0		; mov si, ax
 .6:
@@ -108,7 +108,7 @@ F006_0008:
 	leave
 	retf
 
-F006_00E6:
+ReadMouseEvent:
 	enter	0x6, 0x0
 	lea	ax, [bp - 0x2]
 	push	ax
@@ -166,7 +166,7 @@ F006_00E6:
 	leave
 	retf
 
-F006_0174:
+ReadStickEvent:
 	enter	0x2, 0x0
 	push	si
 	call	0x03A3:PollSticks
@@ -210,7 +210,7 @@ F006_0174:
 	retf
 	db	0x90
 
-F006_01DE:
+ReadKeyEvent:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	si

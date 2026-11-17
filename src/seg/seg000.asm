@@ -2798,8 +2798,8 @@ RetOnly2:
 	retf
 	db	0
 
-; _fstrlen: length of a far string.
-_fstrlen:
+; _fstrcpy: length of a far string.
+_fstrcpy:
 	push	bp
 	db	0x8B, 0xEC			; mov	bp, sp
 	db	0x8B, 0xD7			; mov	dx, di
@@ -2907,7 +2907,7 @@ _fmemset:
 	pop	bp
 	retf
 
-_fstrcpy:
+_fstrcspn:
 	push	bp
 	db	0x8B, 0xEC			; mov	bp, sp
 	sub	sp, 0x20
