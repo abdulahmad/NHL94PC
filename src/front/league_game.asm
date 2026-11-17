@@ -29,7 +29,7 @@ DrawCalendarDay:
         mov byte [bp - 0x44], 0x21
         db 0x8B, 0xDF                           ; insn: mov bx, di
         shl bx, 1
-        mov bx, [bx + g_5604]
+        mov bx, [bx + CrestShapeNames]
         mov al, [bx]
         mov [bp - 0x43], al
         mov al, [bx + 0x1]
@@ -60,13 +60,13 @@ DrawCalendarDay:
         push dx
         push ax
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0000:_fmemcpy
         add sp, 0xa
-        mov es, [g_8BD4]
-        mov byte [es:0xaf8f], 0x79
+        mov es, [segWorkBuffer19]
+        mov byte [es:MenuRemap + 0x43], 0x79
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0FEF:SetRemapTable
         add sp, 0x4
         push 0xf
@@ -104,7 +104,7 @@ DrawCalendarDay:
         cmp si, 0x16a
         jl short .2
         mov bx, [bp + 0x6]
-        cmp byte [bx + g_1740], 0x0
+        cmp byte [bx + MonthStartDay], 0x0
         jz short .3
         mov word [bp - 0x2], 0x4
         mov word [bp - 0x4], 0x29
@@ -139,11 +139,11 @@ DrawCalendarDay:
         add sp, 0x4
         les bx, [FontPtr]
         mov word [es:bx], 0x7d
-        mov es, [g_8BD6]
+        mov es, [segTeamChoiceText28]
         mov bx, [bp + 0x6]
         shl bx, byte 0x2
-        push word [es:bx + 0xe25]
-        push word [es:bx + 0xe23]
+        push word [es:bx + MonthNameList + 0x2]
+        push word [es:bx + MonthNameList]
         lea ax, [bp - 0x44]
         push ss
         push ax
@@ -229,7 +229,7 @@ DrawCalendarDay:
         jmp near .19
 .9:
         mov bx, [bp + 0x6]
-        mov al, [bx + g_1740]
+        mov al, [bx + MonthStartDay]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         mov cl, [si - 0x1]
         db 0x2A, 0xED                           ; insn: sub ch, ch
@@ -280,13 +280,13 @@ DrawCalendarDay:
         push dx
         push ax
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0000:_fmemcpy
         add sp, 0xa
-        mov es, [g_8BD4]
-        mov byte [es:0xaf8f], 0x79
+        mov es, [segWorkBuffer19]
+        mov byte [es:MenuRemap + 0x43], 0x79
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0FEF:SetRemapTable
         add sp, 0x4
         push word [bp - 0x4]
@@ -353,10 +353,10 @@ DrawCalendarDay:
 .18:
         mov al, [si - 0x2]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
-        cmp ax, [g_C2A2]
+        cmp ax, [calcursor]
         jnz short .19
         mov al, [si - 0x1]
-        cmp ax, [g_C2A4]
+        cmp ax, [calcursor2]
         jnz short .19
         mov ax, [bp - 0xa]
         mov [bp - 0xc], ax
@@ -370,11 +370,11 @@ DrawCalendarDay:
 .20:
         db 0x2B, 0xF6                           ; insn: sub si, si
         mov bx, [bp + 0x6]
-        cmp byte [bx + g_1734], 0x0
+        cmp byte [bx + MonthDays], 0x0
         jz short .22
         db 0x8B, 0xFB                           ; insn: mov di, bx
 .21:
-        mov al, [di + g_1740]
+        mov al, [di + MonthStartDay]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         db 0x03, 0xC6                           ; insn: add ax, si
         mov cx, 0x7
@@ -405,7 +405,7 @@ DrawCalendarDay:
         push ax
         call 0x0FEF:DrawText
         add sp, 0x6
-        mov al, [di + g_1734]
+        mov al, [di + MonthDays]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         lea cx, [si + 0x1]
         db 0x8B, 0xF1                           ; insn: mov si, cx
@@ -425,7 +425,7 @@ DrawCalendarDay:
         mov bx, [bp + 0xe]
         mov al, [bx + di + 0x1]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
-        mov cl, [si + g_1740]
+        mov cl, [si + MonthStartDay]
         db 0x2A, 0xED                           ; insn: sub ch, ch
         db 0x03, 0xC1                           ; insn: add ax, cx
         dec ax
@@ -500,26 +500,26 @@ DrawCalendarDay:
 CalNextMonth:
         mov ax, 0x3701
         mov es, ax
-        mov word [es:f_3701_0F94], 0x200d
-        mov word [es:f_3701_0F96], 0x1b35
-        mov word [es:f_3701_0FAA], 0x2017
-        mov word [es:f_3701_0FAC], 0x1b35
-        inc word [g_C270]
-        cmp word [g_C270], 0xc
+        mov word [es:CalNextMonthFn], 0x200d
+        mov word [es:CalNextMonthSeg], 0x1b35
+        mov word [es:CalPrevMonthFn], 0x2017
+        mov word [es:CalPrevMonthSeg], 0x1b35
+        inc word [calmonth]
+        cmp word [calmonth], 0xc
         jnz short .1
-        mov word [g_C270], 0x0
+        mov word [calmonth], 0x0
 .1:
-        cmp word [g_C270], 0x6
+        cmp word [calmonth], 0x6
         jnz short .2
-        mov word [g_C270], 0x5
+        mov word [calmonth], 0x5
 .2:
-        cmp word [g_C270], 0x5
+        cmp word [calmonth], 0x5
         jnz short .3
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:f_3701_0F96], ax
-        mov [es:f_3701_0F94], ax
+        mov [es:CalNextMonthSeg], ax
+        mov [es:CalNextMonthFn], ax
 .3:
-        mov word [g_C272], 0xffff
+        mov word [calday], 0xffff
         retf
         db 0x90
 
@@ -532,26 +532,26 @@ CalNextMonth:
 CalPrevMonth:
         mov ax, 0x3701
         mov es, ax
-        mov word [es:f_3701_0F94], 0x200d
-        mov word [es:f_3701_0F96], 0x1b35
-        mov word [es:f_3701_0FAA], 0x2017
-        mov word [es:f_3701_0FAC], 0x1b35
-        dec word [g_C270]
-        cmp word [g_C270], -0x1
+        mov word [es:CalNextMonthFn], 0x200d
+        mov word [es:CalNextMonthSeg], 0x1b35
+        mov word [es:CalPrevMonthFn], 0x2017
+        mov word [es:CalPrevMonthSeg], 0x1b35
+        dec word [calmonth]
+        cmp word [calmonth], -0x1
         jnz short .1
-        mov word [g_C270], 0xb
+        mov word [calmonth], 0xb
 .1:
-        cmp word [g_C270], 0x8
+        cmp word [calmonth], 0x8
         jnz short .2
-        mov word [g_C270], 0x9
+        mov word [calmonth], 0x9
 .2:
-        cmp word [g_C270], 0x9
+        cmp word [calmonth], 0x9
         jnz short .3
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:f_3701_0FAC], ax
-        mov [es:f_3701_0FAA], ax
+        mov [es:CalPrevMonthSeg], ax
+        mov [es:CalPrevMonthFn], ax
 .3:
-        mov word [g_C272], 0xffff
+        mov word [calday], 0xffff
         retf
         db 0x90
 
@@ -563,8 +563,8 @@ CalPrevMonth:
 ;-----------------------------------------------------------------------------
 CalReturn:
         mov ax, 0xffff
-        mov [g_C26E], ax
-        mov [g_C272], ax
+        mov [calresult], ax
+        mov [calday], ax
         retf
 
 ;-----------------------------------------------------------------------------
@@ -602,9 +602,9 @@ ApplyShapePalette:
         call 0x03A3:FindFarMsg
         add sp, 0x6
         mov [statsbgshapes], ax
-        mov [g_C2B4], dx
+        mov [statsbgseg], dx
         db 0x2B, 0xF6                           ; insn: sub si, si
-        mov es, [g_C2B4]
+        mov es, [statsbgseg]
 .1:
         mov bx, [statsbgshapes]
         add bx, 0x10
@@ -642,7 +642,7 @@ ApplyShapePalette:
 .4:
         db 0x8B, 0xDF                           ; insn: mov bx, di
         db 0x03, 0xDE                           ; insn: add bx, si
-        mov al, [bx + g_18B4]
+        mov al, [bx + ShapePaletteMap]
         lea dx, [bp - 0x51]
         db 0x03, 0xDA                           ; insn: add bx, dx
         mov [bx], al
@@ -703,9 +703,9 @@ SetGameSides:
         mov ax, [bp - 0x6]
 .2:
         mov [bp - 0x2], ax
-        mov es, [g_8BD8]
+        mov es, [segWorkBuffer20]
         imul bx, ax, 0x1e
-        cmp byte [es:bx - 0x5387], 0x1
+        cmp byte [es:bx + leagueinfo_teams + 0x17], 0x1
         jz short .3
         mov word [bp - 0x2], 0xffff
 .3:
@@ -750,8 +750,8 @@ CalendarScreen:
         mov word [gameopts], 0x1b35
         mov word [VisTeam], 0x2689
         mov word [HomeTeam], 0x1b35
-        mov word [g_21D2], 0x267f
-        mov word [g_21D4], 0x1b35
+        mov word [menucbfn], 0x267f
+        mov word [menucbseg], 0x1b35
         push 0x0
         mov ax, 0x7d
         mov [bp - 0x6], ax
@@ -771,11 +771,11 @@ CalendarScreen:
         add sp, 0x4
         mov [bp - 0xa], ax
         mov [bp - 0x8], dx
-        mov word [g_C272], 0xffff
+        mov word [calday], 0xffff
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [bp - 0xe4], ax
         mov [bp - 0x26], ax
-        mov [g_C26E], ax
+        mov [calresult], ax
         mov [statspalshape], ax
         push word 0x3701
         push strict word str_Qpp
@@ -831,7 +831,7 @@ CalendarScreen:
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         shl ax, 1
         db 0x03, 0xC1                           ; insn: add ax, cx
-        add ax, 0x18b4
+        add ax, ShapePaletteMap
         push ds
         push ax
         push 0x1
@@ -865,7 +865,7 @@ CalendarScreen:
 .2:
         mov bx, [bp - 0xde]
         shl bx, 1
-        push word [bx + g_5604]
+        push word [bx + CrestShapeNames]
         push word [bp - 0x22]
         push word [bp - 0x24]
         call 0x03A3:FindFarMsg
@@ -879,9 +879,9 @@ CalendarScreen:
         jl short .2
         push word [bp + 0xc]
         push word [bp + 0xa]
-        mov es, [g_8BDA]
-        push word [es:0xb86]
-        push word [es:0xb84]
+        mov es, [segTeamChoiceText29]
+        push word [es:DbFileNameList + 0x1A]
+        push word [es:DbFileNameList + 0x18]
         push word [bp + 0x8]
         push word [bp + 0x6]
         lea ax, [bp - 0x4c]
@@ -915,7 +915,7 @@ CalendarScreen:
 .4:
         mov word [bp - 0x484], 0x5
         mov ax, 0xffff
-        mov [g_C270], ax
+        mov [calmonth], ax
         mov [bp - 0x1e], ax
         mov [bp - 0xec], ax
         mov word [bp - 0xde], 0x0
@@ -932,11 +932,11 @@ CalendarScreen:
         mov [bp - 0x484], ax
         mov al, [bp + si - 0x478]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
-        mov [g_C2A2], ax
+        mov [calcursor], ax
 .6:
         mov al, [bp + si - 0x477]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
-        mov [g_C2A4], ax
+        mov [calcursor2], ax
 .7:
         mov si, [bp - 0x26]
         db 0x8B, 0xC6                           ; insn: mov ax, si
@@ -964,12 +964,12 @@ CalendarScreen:
         jnz short .9
         cmp byte [bp + si - 0x473], 0xff
         jnz short .9
-        cmp word [g_C270], 0x0
+        cmp word [calmonth], 0x0
         jnl short .9
         mov al, [bp + si - 0x478]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         dec ax
-        mov [g_C270], ax
+        mov [calmonth], ax
         mov ax, [bp - 0xde]
         mov [bp - 0x1e], ax
         mov ax, [bp - 0x26]
@@ -1021,14 +1021,14 @@ CalendarScreen:
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         dec ax
         mov [bp - 0x484], ax
-        mov [g_C2A2], cx
+        mov [calcursor], cx
         jmp near .6
         db 0x90
 .15:
-        cmp word [g_C270], 0x0
+        cmp word [calmonth], 0x0
         jnl short .16
         mov ax, [bp - 0x484]
-        mov [g_C270], ax
+        mov [calmonth], ax
 .16:
         lea ax, [bp - 0x28]
         push ax
@@ -1052,45 +1052,45 @@ CalendarScreen:
         shl si, 1
         mov al, [bp + si - 0x478]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
-        mov [g_C2A2], ax
+        mov [calcursor], ax
         mov al, [bp + si - 0x477]
-        mov [g_C2A4], ax
+        mov [calcursor2], ax
         mov si, [bp - 0xec]
         shl si, 1
         mov ax, [bp + si - 0x1d2]
-        mov [g_C272], ax
+        mov [calday], ax
 .17:
         cmp word [bp - 0xe4], 0x0
         jz short .18
         jmp near .89
 .18:
-        cmp word [g_C270], 0x5
+        cmp word [calmonth], 0x5
         jnz short .19
-        mov es, [g_8BDC]
+        mov es, [segTeamChoiceText30]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0xf96], ax
-        mov [es:0xf94], ax
+        mov [es:CalNextMonthSeg], ax
+        mov [es:CalNextMonthFn], ax
         jmp short .20
 .19:
-        mov es, [g_8BDC]
-        mov word [es:0xf94], strict word CalNextMonthThunk
-        mov word [es:0xf96], 0x1b35
+        mov es, [segTeamChoiceText30]
+        mov word [es:CalNextMonthFn], strict word CalNextMonthThunk
+        mov word [es:CalNextMonthSeg], 0x1b35
 .20:
-        cmp word [g_C270], 0x9
+        cmp word [calmonth], 0x9
         jnz short .21
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0xfac], ax
-        mov [es:0xfaa], ax
+        mov [es:CalPrevMonthSeg], ax
+        mov [es:CalPrevMonthFn], ax
         jmp short .22
         db 0x90
 .21:
-        mov word [es:0xfaa], strict word CalPrevMonthThunk
-        mov word [es:0xfac], 0x1b35
+        mov word [es:CalPrevMonthFn], strict word CalPrevMonthThunk
+        mov word [es:CalPrevMonthSeg], 0x1b35
 .22:
-        mov ax, [g_C270]
+        mov ax, [calmonth]
         mov [bp - 0x5e], ax
         call 0x0FEF:UseCurrentPage
-        mov ax, 0xfdf
+        mov ax, CalendarMenuBar
         mov cx, 0x3701
         mov [bp - 0xd6], ax
         mov [bp - 0xd4], cx
@@ -1124,7 +1124,7 @@ CalendarScreen:
         push word [bp - 0x2c]
         lea ax, [bp - 0xca]
         push ax
-        push word [g_C270]
+        push word [calmonth]
         push cs
         call DrawCalendarDay
         add sp, 0x12
@@ -1349,7 +1349,7 @@ CalendarScreen:
         mov ax, [bp - 0xd8]
         mov [bp - 0x20], ax
         call 0x0F99:FlushInputEvents
-        mov ax, [g_C270]
+        mov ax, [calmonth]
         cmp [bp - 0x5e], ax
         jz short .36
         call 0x0FEF:UseOtherPage
@@ -1358,7 +1358,7 @@ CalendarScreen:
         push word [bp - 0x6]
         push 0x3
         push word 0x3701
-        push strict word f_3701_0FDF
+        push strict word CalendarMenuBar
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
         push word [bp - 0x8]
@@ -1371,7 +1371,7 @@ CalendarScreen:
         push word [bp - 0x2c]
         lea ax, [bp - 0xca]
         push ax
-        push word [g_C270]
+        push word [calmonth]
         push cs
         call DrawCalendarDay
         add sp, 0x12
@@ -1385,7 +1385,7 @@ CalendarScreen:
         push word [bp - 0x6]
         push 0x3
         push word 0x3701
-        push strict word f_3701_0FDF
+        push strict word CalendarMenuBar
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
         push word [bp - 0x8]
@@ -1398,7 +1398,7 @@ CalendarScreen:
         push word [bp - 0x2c]
         lea ax, [bp - 0xca]
         push ax
-        push word [g_C270]
+        push word [calmonth]
         push cs
         call DrawCalendarDay
         add sp, 0x12
@@ -1406,7 +1406,7 @@ CalendarScreen:
         call ApplyShapePalette
         mov word [statspalshape], 0x0
 .37:
-        mov ax, [g_C270]
+        mov ax, [calmonth]
         mov [bp - 0x5e], ax
         jmp near .85
 .38:
@@ -1886,9 +1886,9 @@ CalendarScreen:
         db 0x03, 0xC1                           ; insn: add ax, cx
         shl ax, 1
         db 0x03, 0xC1                           ; insn: add ax, cx
-        mov bx, [g_C270]
+        mov bx, [calmonth]
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        mov al, [bx + g_1740]
+        mov al, [bx + MonthStartDay]
         mov dl, 0x7
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         div dl
@@ -1907,7 +1907,7 @@ CalendarScreen:
         jnl short .71
         jmp near .84
 .71:
-        mov al, [bx + g_1734]
+        mov al, [bx + MonthDays]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         db 0x3B, 0xC8                           ; insn: cmp cx, ax
         jl short .72
@@ -1923,7 +1923,7 @@ CalendarScreen:
         shl si, 1
         mov al, [bp + si - 0x478]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
-        sub ax, [g_C270]
+        sub ax, [calmonth]
         dec ax
         jz short .74
         jmp near .82
@@ -1943,12 +1943,12 @@ CalendarScreen:
         jz short .77
         jmp near .82
 .77:
-        mov ax, [g_C272]
+        mov ax, [calday]
         mov si, [bp - 0xde]
         shl si, 1
         cmp [bp + si - 0x1d2], ax
         jnz short .78
-        mov word [g_C26E], 0xffff
+        mov word [calresult], 0xffff
 .78:
         cmp word [bp - 0xdc], 0x3f0
         jl short .79
@@ -1974,10 +1974,10 @@ CalendarScreen:
         shl si, 1
         mov al, [bp + si - 0x478]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
-        mov [g_C2A2], ax
+        mov [calcursor], ax
         mov al, [bp + si - 0x477]
-        mov [g_C2A4], ax
-        cmp word [g_C26E], 0x0
+        mov [calcursor2], ax
+        cmp word [calresult], 0x0
         jnz short .81
         push word [bp - 0xec]
         lea ax, [bp - 0x478]
@@ -1993,7 +1993,7 @@ CalendarScreen:
         push word [bp - 0x6]
         push 0x3
         push word 0x3701
-        push strict word f_3701_0FDF
+        push strict word CalendarMenuBar
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
         push word [bp - 0x8]
@@ -2006,7 +2006,7 @@ CalendarScreen:
         push word [bp - 0x2c]
         lea ax, [bp - 0xca]
         push ax
-        push word [g_C270]
+        push word [calmonth]
         push cs
         call DrawCalendarDay
         add sp, 0x12
@@ -2020,7 +2020,7 @@ CalendarScreen:
         jmp near .73
 .84:
         mov ax, [bp - 0xe2]
-        mov [g_C272], ax
+        mov [calday], ax
 .85:
         push word [bp - 0xd8]
         push word [bp - 0x6a]
@@ -2040,7 +2040,7 @@ CalendarScreen:
         push word [bp - 0x1a]
         call 0x0FEF:GetBlockAt
         add sp, 0x8
-        cmp word [g_C26E], 0x0
+        cmp word [calresult], 0x0
         jnz short .87
 .86:
         push word [bp - 0x20]
@@ -2055,7 +2055,7 @@ CalendarScreen:
         mov ax, [bp - 0x20]
         mov [bp - 0xd8], ax
 .88:
-        cmp word [g_C26E], 0x0
+        cmp word [calresult], 0x0
         jnz short .89
         jmp near .23
 .89:
@@ -2083,9 +2083,9 @@ CalendarScreen:
         mov word [gameopts], 0x1b35
         mov word [VisTeam], 0x24ef
         mov word [HomeTeam], 0x1b35
-        mov word [g_21D2], 0x232d
-        mov word [g_21D4], 0x1b35
-        mov ax, [g_C272]
+        mov word [menucbfn], 0x232d
+        mov word [menucbseg], 0x1b35
+        mov ax, [calday]
         pop si
         pop di
         leave
@@ -2112,7 +2112,7 @@ CheckLeagueDiskSync:
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov [bp - 0xc], dx
         mov bx, 0x5dd
-        mov es, [g_8BDE]
+        mov es, [segTeamChoiceText31]
         mov [bp - 0xae], bx
         mov [bp - 0xac], es
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -2159,9 +2159,9 @@ CheckLeagueDiskSync:
         call 0x2305:FmtFromLeague
         add sp, 0xc
         lea ax, [bp - 0xaa]
-        mov es, [g_8BE0]
-        mov [es:0x19e], ax
-        mov [es:0x1a0], ss
+        mov es, [segTeamChoiceText32]
+        mov [es:msgInsertDiskFor + 0x4], ax
+        mov [es:msgInsertDiskFor + 0x6], ss
         push -0x1
         push word [bp - 0xc]
         push di
@@ -2192,7 +2192,7 @@ CheckLeagueDiskSync:
         push word 0x3701
         push strict word str_Pinfo
         push word 0x3701
-        push strict word f_3701_0BFA
+        push strict word str_DriveColon
         lea ax, [bp - 0x6a]
         push ss
         push ax
@@ -2225,7 +2225,7 @@ CheckLeagueDiskSync:
         test byte [bp - 0x34], 0x1
         jz short .13
         les bx, [bp - 0xae]
-        mov word [es:bx], 0x5b4
+        mov word [es:bx], str_MustBeExportedToThe
         mov word [es:bx + 0x2], 0x3701
         jmp short .12
 .10:
@@ -2258,7 +2258,7 @@ CheckLeagueDiskSync:
         test byte [es:di + 0x16], 0x2
         jz short .13
         les bx, [bp - 0xae]
-        mov word [es:bx], 0x591
+        mov word [es:bx], str_MustBeImportedFromThe
         mov word [es:bx + 0x2], 0x3701
 .12:
         mov si, 0x4
@@ -2277,7 +2277,7 @@ CheckLeagueDiskSync:
         call 0x0000:_fstrcpy
         add sp, 0x8
         push word 0x3701
-        push strict word f_3701_0BF4
+        push strict word str_Dot
         lea ax, [bp - 0x2c]
         push ss
         push ax
@@ -2287,9 +2287,9 @@ CheckLeagueDiskSync:
         lea ax, [bp - 0x2c]
         db 0x03, 0xD8                           ; insn: add bx, ax
         mov byte [bx], 0x0
-        mov es, [g_8BDE]
-        mov [es:0x5d9], ax
-        mov [es:0x5db], ss
+        mov es, [segTeamChoiceText31]
+        mov [es:msgTheLeague + 0x4], ax
+        mov [es:msgTheLeague + 0x6], ss
         mov ax, [bp - 0xc]
         push ax
         push di
@@ -2299,9 +2299,9 @@ CheckLeagueDiskSync:
         call 0x0000:_fstrcpy
         add sp, 0x8
         lea ax, [bp - 0x1e]
-        mov es, [g_8BDE]
-        mov [es:0x5e1], ax
-        mov [es:0x5e3], ss
+        mov es, [segTeamChoiceText31]
+        mov [es:msgTheLeague + 0xC], ax
+        mov [es:msgTheLeague + 0xE], ss
         lea ax, [bp - 0x6]
         push ax
         lea cx, [bp - 0x8]
@@ -2364,7 +2364,7 @@ MakeTeamDbFmt:
         call 0x0000:_fstrcpy
         add sp, 0x8
         push word 0x3701
-        push strict word f_3701_0BAA
+        push strict word str_Backslash
         push di
         push si
         call 0x0000:_fstrcat
@@ -2413,8 +2413,8 @@ PostGameToTeamDb:
         mov [bp - 0x3be], ax
         mov [bp - 0x1c], ax
         mov [bp - 0x3b2], ax
-        mov word [bp - 0x3bc], 0xae10
-        mov word [bp - 0x3ba], 0xae40
+        mov word [bp - 0x3bc], HomeTeamRec
+        mov word [bp - 0x3ba], AwayTeamRec
         cmp word [bp + 0x12], 0x3f0
         jnl short .1
         lea ax, [bp - 0x336]
@@ -2433,9 +2433,9 @@ PostGameToTeamDb:
         mov [bp - 0x1a], ax
         push word [bp + 0xc]
         push word [bp + 0xa]
-        mov es, [g_8BDA]
-        push word [es:0xb7e]
-        push word [es:0xb7c]
+        mov es, [segTeamChoiceText29]
+        push word [es:DbFileNameList + 0x12]
+        push word [es:DbFileNameList + 0x10]
         push word [bp + 0x8]
         push word [bp + 0x6]
         lea ax, [bp - 0x3c]
@@ -2454,9 +2454,9 @@ PostGameToTeamDb:
         jnz short .3
         push word [bp + 0xc]
         push word [bp + 0xa]
-        mov es, [g_8BDA]
-        push word [es:0xb6e]
-        push word [es:0xb6c]
+        mov es, [segTeamChoiceText29]
+        push word [es:DbFileNameList + 0x2]
+        push word [es:DbFileNameList]
         push word [bp + 0x8]
         push word [bp + 0x6]
         lea ax, [bp - 0x3c]
@@ -2476,9 +2476,9 @@ PostGameToTeamDb:
         jnz short .4
         push word [bp + 0xc]
         push word [bp + 0xa]
-        mov es, [g_8BDA]
-        push word [es:0xb82]
-        push word [es:0xb80]
+        mov es, [segTeamChoiceText29]
+        push word [es:DbFileNameList + 0x16]
+        push word [es:DbFileNameList + 0x14]
         push word [bp + 0x8]
         push word [bp + 0x6]
         lea ax, [bp - 0x3c]
@@ -2575,15 +2575,15 @@ PostGameToTeamDb:
         imul di, ax, word 0xd6
         mov ax, [di + hmscore]
         add [si + 0x6], ax
-        mov ax, [bx + g_B366]
+        mov ax, [bx + hmppchances]
         add [si + 0xa], ax
-        mov ax, [bx + g_B364]
+        mov ax, [bx + hmppgoals]
         add [si + 0x8], ax
-        mov ax, [di + g_B366]
+        mov ax, [di + hmppchances]
         add [si + 0xe], ax
-        mov ax, [di + g_B364]
+        mov ax, [di + hmppgoals]
         add [si + 0xc], ax
-        mov ax, [di + g_B36A]
+        mov ax, [di + hmpenmins]
         add [si + 0x10], ax
         mov word [bp - 0x3b0], 0x0
         jmp short .19
@@ -2680,7 +2680,7 @@ PostGameToTeamDb:
         mov [bp - 0x6], al
         mov si, [awtmgoalie]
         and si, 0x1
-        mov bx, [g_B4F6]
+        mov bx, [awtmteamrec]
         mov al, [bx + si + 0x24]
         mov [bp - 0x5], al
 .24:
@@ -2752,27 +2752,27 @@ PostGameToTeamDb:
         jz short .33
         mov bx, [bp - 0x3c0]
         inc word [bx]
-        mov es, [g_8BE2]
+        mov es, [segWorkBuffer21]
         imul ax, [bp + 0x10], 0x19
         db 0x03, 0xF0                           ; insn: add si, ax
         shl si, byte 0x4
-        mov ax, [es:si + 0x448]
+        mov ax, [es:si + HomePlStats]
         add [bx + 0x2], ax
-        mov ax, [es:si + 0x44a]
+        mov ax, [es:si + HomePlStats_w2]
         add [bx + 0x4], ax
-        mov ax, [es:si + 0x448]
+        mov ax, [es:si + HomePlStats]
         add [bx + 0x6], ax
-        mov ax, [es:si + 0x44a]
+        mov ax, [es:si + HomePlStats_w2]
         add [bx + 0x6], ax
-        mov ax, [es:si + 0x44c]
+        mov ax, [es:si + HomePlStats_w2 + 0x2]
         add [bx + 0xc], ax
-        mov ax, [es:si + 0x44e]
+        mov ax, [es:si + HomePlStats_w2 + 0x4]
         add [bx + 0x10], ax
-        mov ax, [es:si + 0x450]
+        mov ax, [es:si + HomePlStats_w2 + 0x6]
         add [bx + 0x8], ax
-        mov ax, [es:si + 0x452]
+        mov ax, [es:si + HomePlStats_w2 + 0x8]
         add [bx + 0xa], ax
-        mov ax, [es:si + 0x456]
+        mov ax, [es:si + HomePlStats_w2 + 0xC]
         add [bx + 0xe], ax
         push word [bp - 0x364]
         push word [bp - 0x366]
@@ -3027,7 +3027,7 @@ PostGameToTeamDb:
         mov si, [bp - 0x3b0]
         cmp byte [bp + si - 0x395], 0x0
         jz short .62
-        mov es, [g_8BE4]
+        mov es, [segWorkBuffer22]
         mov ax, [bp + 0x10]
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         shl ax, 1
@@ -3037,20 +3037,20 @@ PostGameToTeamDb:
         shl si, 1
         db 0x03, 0xF0                           ; insn: add si, ax
         shl si, 1
-        cmp word [es:si + 0x768], 0x0
+        cmp word [es:si + HomeGlStats], 0x0
         jnz short .68
         jmp near .62
 .68:
         mov bx, [bp - 0x1a]
         inc word [bx]
-        mov ax, [es:si + 0x768]
+        mov ax, [es:si + HomeGlStats]
         mov cx, 0x3c
         cwd
         idiv cx
         add [bx + 0xc], ax
-        mov ax, [es:si + 0x76a]
+        mov ax, [es:si + HomeGlStats_w2]
         add [bx + 0x12], ax
-        mov ax, [es:si + 0x76c]
+        mov ax, [es:si + HomeGlStats_w4]
         add [bx + 0xe], ax
         mov si, [bp + 0x10]
         mov al, [bp + si - 0x6]
@@ -3125,7 +3125,7 @@ PlayLeagueGame:
         mov [bp - 0x50], ax
         mov [bp - 0x5a], ax
         mov [bp - 0x2], ax
-        mov [g_C2B0], ax
+        mov [lggameidx], ax
         mov bx, [bp + 0x6]
         cmp word [bx], 0x0
         jl short .1
@@ -3135,7 +3135,7 @@ PlayLeagueGame:
 .1:
         push 0x3
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         call 0x2305:LeagueCheckStub
         add sp, 0x6
         mov [bp - 0x5c], ax
@@ -3144,21 +3144,21 @@ PlayLeagueGame:
         cmp word [bp - 0x5c], 0x0
         jnz short .3
         push word 0x3a0b
-        push strict word f_3A0B_AF3E
+        push strict word leagueinfo_tail
         push word 0x3a0b
-        push strict word f_3A0B_AC60
+        push strict word leagueinfo_w6
         push word 0x3a0b
-        push strict word f_3A0B_AC5E
+        push strict word leagueinfo_w4
         push word 0x3a0b
-        push strict word f_3A0B_AC5C
+        push strict word leagueinfo_w2
         push word 0x3a0b
-        push strict word f_3A0B_AC5A
+        push strict word leagueinfo
         push word 0x3a0b
-        push strict word f_3A0B_AF32
+        push strict word leagueinfo_password
         push word 0x3a0b
-        push strict word f_3A0B_AC62
+        push strict word leagueinfo_teams
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         call 0x22D3:ReadLeagueInfo
         add sp, 0x20
         mov [bp - 0x5c], ax
@@ -3168,14 +3168,14 @@ PlayLeagueGame:
         jmp near .11
 .4:
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x6a]
         push ss
         push ax
         call 0x0000:_fstrcpy
         add sp, 0x8
         push word 0x3701
-        push strict word f_3701_0BF4
+        push strict word str_Dot
         lea ax, [bp - 0x6a]
         push ss
         push ax
@@ -3184,8 +3184,8 @@ PlayLeagueGame:
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov [bp - 0x1a], si
         mov byte [bp + si - 0x6a], 0x0
-        mov es, [g_8BE6]
-        test byte [es:0xac5e], 0xc
+        mov es, [segWorkBuffer23]
+        test byte [es:leagueinfo_w4], 0xc
         jnz short .5
         jmp near .10
 .5:
@@ -3204,13 +3204,13 @@ PlayLeagueGame:
         push 0xb
         call 0x0D90:SetDialogColors
         add sp, 0xa
-        mov es, [g_8BE6]
-        test byte [es:0xac5e], 0x8
+        mov es, [segWorkBuffer23]
+        test byte [es:leagueinfo_w4], 0x8
         jz short .6
         lea ax, [bp - 0x6a]
-        mov es, [g_8BE8]
-        mov [es:0x9b8], ax
-        mov [es:0x9ba], ss
+        mov es, [segTeamChoiceText33]
+        mov [es:argMasterDatabasesFor], ax
+        mov [es:argMasterDatabasesFor + 0x2], ss
         push -0x1
         lea ax, [bp - 0x54]
         push ax
@@ -3218,7 +3218,7 @@ PlayLeagueGame:
         push ax
         push 0x2
         push word 0x3701
-        push strict word f_3701_09C8
+        push strict word dlgPlayLeagueGame
         push 0x5
         push es
         push word 0x9b4
@@ -3226,9 +3226,9 @@ PlayLeagueGame:
         db 0x90
 .6:
         lea ax, [bp - 0x6a]
-        mov es, [g_8BEA]
-        mov [es:0x907], ax
-        mov [es:0x909], ss
+        mov es, [segTeamChoiceText34]
+        mov [es:argPlayersDatabasesFor], ax
+        mov [es:argPlayersDatabasesFor + 0x2], ss
         push -0x1
         lea ax, [bp - 0x54]
         push ax
@@ -3236,7 +3236,7 @@ PlayLeagueGame:
         push ax
         push 0x2
         push word 0x3701
-        push strict word f_3701_0913
+        push strict word dlgMergeFirst
         push 0x4
         push es
         push word 0x903
@@ -3248,8 +3248,8 @@ PlayLeagueGame:
         mov [bp - 0x6e], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .9
-        mov es, [g_8BE6]
-        test byte [es:0xac5e], 0x8
+        mov es, [segWorkBuffer23]
+        test byte [es:leagueinfo_w4], 0x8
         jz short .8
         call 0x2CB7:MergeLeagueFiles
 .8:
@@ -3263,11 +3263,11 @@ PlayLeagueGame:
 .10:
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8BDA]
-        push word [es:0xb7e]
-        push word [es:0xb7c]
+        mov es, [segTeamChoiceText29]
+        push word [es:DbFileNameList + 0x12]
+        push word [es:DbFileNameList + 0x10]
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x40]
         push ss
         push ax
@@ -3275,7 +3275,7 @@ PlayLeagueGame:
         add sp, 0x10
         push 0x1
         push word 0x3a0b
-        push strict word f_3A0B_AA38
+        push strict word LeagueTeamNames
         lea ax, [bp - 0x40]
         push ax
         call 0x22D3:ReadTeamNames
@@ -3305,27 +3305,27 @@ PlayLeagueGame:
         push ss
         push ax
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         call 0x2305:GetLeagueId
         add sp, 0x8
-        mov [g_C2A6], ax
+        mov [lghometeam], ax
 .14:
         cmp word [bp - 0x5c], 0x0
         jnz short .15
-        cmp word [g_C2A6], 0x0
+        cmp word [lghometeam], 0x0
         jnl short .15
-        push word 0xc2a6
+        push word lghometeam
         push word 0x3701
         push strict word str_SelectATeamToPlay
         push 0x8
         push word 0x3a0b
-        push strict word f_3A0B_AC62
+        push strict word leagueinfo_teams
         push word 0x3a0b
-        push strict word f_3A0B_AA38
+        push strict word LeagueTeamNames
         push word 0x3a0b
-        push strict word f_3A0B_AC5C
+        push strict word leagueinfo_w2
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         call 0x1F31:LeagueTeamSelect
         add sp, 0x18
         push strict word str_Pnt2_8
@@ -3341,17 +3341,17 @@ PlayLeagueGame:
         jz short .16
         jmp near .28
 .16:
-        cmp word [g_C2A6], 0x0
+        cmp word [lghometeam], 0x0
         jnl short .17
         jmp near .28
 .17:
         push 0x0
         push 0x0
-        push word [g_C2A6]
+        push word [lghometeam]
         push word 0x3a0b
-        push strict word f_3A0B_AC62
+        push strict word leagueinfo_teams
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         push cs
         call CheckLeagueDiskSync
         add sp, 0xe
@@ -3360,7 +3360,7 @@ PlayLeagueGame:
         jz short .18
         jmp near .23
 .18:
-        push word [g_C2A6]
+        push word [lghometeam]
         push strict word str_02d_7
         lea ax, [bp - 0x46]
         push ax
@@ -3373,24 +3373,24 @@ PlayLeagueGame:
         push strict word str_Xx_2
         call 0x0000:_fstrcpy
         add sp, 0x8
-        mov es, [g_8BD8]
-        imul bx, [g_C2A6], 0x1e
-        test byte [es:bx - 0x5388], 0x1
+        mov es, [segWorkBuffer20]
+        imul bx, [lghometeam], 0x1e
+        test byte [es:bx + leagueinfo_teams + 0x16], 0x1
         jz short .19
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         jmp short .20
         db 0x90
 .19:
         push word 0x3701
-        push strict word f_3701_0BFA
+        push strict word str_DriveColon
 .20:
         push ds
-        push strict word g_C27E
+        push strict word savleague
         call 0x0000:_fstrcpy
         add sp, 0x8
-        mov es, [g_8BEC]
-        cmp word [es:0xac5c], 0x1
+        mov es, [segWorkBuffer24]
+        cmp word [es:leagueinfo_w2], 0x1
         jz short .21
         cmp word [bp - 0x48], 0x0
         jnz short .22
@@ -3404,8 +3404,8 @@ PlayLeagueGame:
         add sp, 0xa
 .22:
         push word 0x3a0b
-        push strict word f_3A0B_AC62
-        push word [g_C2A6]
+        push strict word leagueinfo_teams
+        push word [lghometeam]
         call 0x28A8:AskTeamPassword
         add sp, 0x6
         mov [bp - 0x5c], ax
@@ -3416,11 +3416,11 @@ PlayLeagueGame:
 .24:
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8BDA]
-        push word [es:0xb7e]
-        push word [es:0xb7c]
+        mov es, [segTeamChoiceText29]
+        push word [es:DbFileNameList + 0x12]
+        push word [es:DbFileNameList + 0x10]
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x40]
         push ss
         push ax
@@ -3428,7 +3428,7 @@ PlayLeagueGame:
         add sp, 0x10
         push 0x0
         push word 0x3a0b
-        push strict word f_3A0B_AA38
+        push strict word LeagueTeamNames
         lea ax, [bp - 0x40]
         push ax
         call 0x22D3:ReadTeamNames
@@ -3443,7 +3443,7 @@ PlayLeagueGame:
         push 0xb
         call 0x0D90:SetDialogColors
         add sp, 0xa
-        push word [g_C2A6]
+        push word [lghometeam]
         push strict word str_02d_6
         lea ax, [bp - 0x46]
         push ax
@@ -3457,8 +3457,8 @@ PlayLeagueGame:
         call 0x0000:_fstrcpy
         add sp, 0x8
         push word 0x3a0b
-        push strict word f_3A0B_AC62
-        push word [g_C2A6]
+        push strict word leagueinfo_teams
+        push word [lghometeam]
         call 0x28A8:AskTeamPassword
         add sp, 0x6
 .26:
@@ -3479,7 +3479,7 @@ PlayLeagueGame:
         jnz short .29
         jmp near PlayLeagueGameTail + 0x2F60
 .29:
-        cmp word [g_C2B0], -0x1
+        cmp word [lggameidx], -0x1
         jnz short .30
         mov bx, [bp + 0x6]
         cmp word [bx], 0x0
@@ -3488,27 +3488,27 @@ PlayLeagueGame:
         cmp word [bp - 0x6c], 0x0
         jz short .32
 .31:
-        push word [g_C2A6]
+        push word [lghometeam]
         push word 0x3701
         push strict word str_Xx_2
         push ds
-        push strict word g_C27E
+        push strict word savleague
         push cs
         call CalendarScreen
         add sp, 0xa
-        mov [g_C2B0], ax
+        mov [lggameidx], ax
 .32:
-        cmp word [g_C2B0], 0x0
+        cmp word [lggameidx], 0x0
         jnl short .33
         jmp near .94
 .33:
         push word 0x3701
         push strict word str_Xx_2
-        mov es, [g_8BDA]
-        push word [es:0xb86]
-        push word [es:0xb84]
+        mov es, [segTeamChoiceText29]
+        push word [es:DbFileNameList + 0x1A]
+        push word [es:DbFileNameList + 0x18]
         push ds
-        push strict word g_C27E
+        push strict word savleague
         lea ax, [bp - 0x40]
         push ss
         push ax
@@ -3530,7 +3530,7 @@ PlayLeagueGame:
         push ax
         push ax
         push ds
-        push strict word g_C2AC
+        push strict word lgreadword
         push word [bp - 0x4a]
         call 0x0CD1:ReadAtOffset
         add sp, 0xc
@@ -3538,9 +3538,9 @@ PlayLeagueGame:
 .34:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .35
-        push word [g_C2B0]
+        push word [lggameidx]
         push ds
-        push strict word g_C29A
+        push strict word lgschedrec
         push word [bp - 0x4a]
         call 0x0CD1:ReadEntry6
         add sp, 0x8
@@ -3548,25 +3548,25 @@ PlayLeagueGame:
 .35:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .37
-        mov al, [g_C29C]
+        mov al, [lgschedrec_b2]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
-        cmp ax, [g_C2A6]
+        cmp ax, [lghometeam]
         jnz short .36
-        mov al, [g_C29D]
+        mov al, [lgschedrec_b3]
 .36:
-        mov [g_C2A8], ax
-        mov word [g_C2AA], 0xffff
-        mov es, [g_8BD8]
+        mov [lgoppteam], ax
+        mov word [lggamestate], 0xffff
+        mov es, [segWorkBuffer20]
         imul bx, ax, 0x1e
-        cmp byte [es:bx - 0x5387], 0x0
+        cmp byte [es:bx + leagueinfo_teams + 0x17], 0x0
         jnz short .37
-        mov word [g_C2AA], 0x0
+        mov word [lggamestate], 0x0
 .37:
         lea ax, [bp - 0x4a]
         push ax
         call 0x0CD1:CloseHandlePtr
         add sp, 0x2
-        cmp word [g_C2AA], 0x0
+        cmp word [lggamestate], 0x0
         jnz short .38
         jmp near .44
 .38:
@@ -3574,18 +3574,18 @@ PlayLeagueGame:
         jnz short .41
         push 0x0
         push -0x1
-        push word [g_C2A8]
+        push word [lgoppteam]
         push word 0x3a0b
-        push strict word f_3A0B_AC62
+        push strict word leagueinfo_teams
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         push cs
         call CheckLeagueDiskSync
         add sp, 0xe
         mov [bp - 0x5c], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .41
-        push word [g_C2A8]
+        push word [lgoppteam]
         push strict word str_02d_5
         lea ax, [bp - 0x46]
         push ax
@@ -3598,22 +3598,22 @@ PlayLeagueGame:
         push strict word str_Xx
         call 0x0000:_fstrcpy
         add sp, 0x8
-        mov es, [g_8BD8]
-        imul bx, [g_C2A8], 0x1e
-        test byte [es:bx - 0x5388], 0x1
+        mov es, [segWorkBuffer20]
+        imul bx, [lgoppteam], 0x1e
+        test byte [es:bx + leagueinfo_teams + 0x16], 0x1
         jz short .39
         cmp word [bp - 0x48], 0x0
         jz short .39
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         jmp short .40
         db 0x90
 .39:
         push word 0x3701
-        push strict word f_3701_0BFA
+        push strict word str_DriveColon
 .40:
         push ds
-        push strict word g_C28C
+        push strict word savleague2
         call 0x0000:_fstrcpy
         add sp, 0x8
 .41:
@@ -3621,11 +3621,11 @@ PlayLeagueGame:
         jnz short .42
         push word 0x3701
         push strict word str_Xx
-        mov es, [g_8BDA]
-        push word [es:0xb86]
-        push word [es:0xb84]
+        mov es, [segTeamChoiceText29]
+        push word [es:DbFileNameList + 0x1A]
+        push word [es:DbFileNameList + 0x18]
         push ds
-        push strict word g_C28C
+        push strict word savleague2
         lea ax, [bp - 0x40]
         push ss
         push ax
@@ -3648,7 +3648,7 @@ PlayLeagueGame:
         push 0x0
         push 0x0
         push ds
-        push strict word g_C2AE
+        push strict word lgreadword2
         push word [bp - 0x52]
         call 0x0CD1:ReadAtOffset
         add sp, 0xc
@@ -3660,7 +3660,7 @@ PlayLeagueGame:
         add sp, 0x2
         cmp word [bp - 0x5c], 0x0
         jnz short .44
-        push word [g_C2A8]
+        push word [lgoppteam]
         push strict word str_02d_4
         lea ax, [bp - 0x46]
         push ax
@@ -3674,8 +3674,8 @@ PlayLeagueGame:
         call 0x0000:_fstrcpy
         add sp, 0x8
         push word 0x3a0b
-        push strict word f_3A0B_AC62
-        push word [g_C2A8]
+        push strict word leagueinfo_teams
+        push word [lgoppteam]
         call 0x28A8:AskTeamPassword
         add sp, 0x6
         mov [bp - 0x5c], ax
@@ -3715,80 +3715,80 @@ PlayLeagueGame:
         call 0x06E1:FindUnlink
         add sp, 0x4
 .46:
-        mov al, [g_C29C]
+        mov al, [lgschedrec_b2]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
-        cmp ax, [g_C2A6]
+        cmp ax, [lghometeam]
         jnz short .47
         mov word [bp - 0x1e], 0x0
         mov word [bp - 0x20], 0x1
         push ax
         push word 0x3a0b
-        push strict word f_3A0B_AC62
+        push strict word leagueinfo_teams
         push ds
-        push strict word g_C27E
+        push strict word savleague
         push ds
-        push strict word g_C000
+        push strict word HomeTeamDbName
         push cs
         call MakeTeamDbFmt
         add sp, 0xe
-        mov al, [g_C29D]
+        mov al, [lgschedrec_b3]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push word 0x3a0b
-        push strict word f_3A0B_AC62
+        push strict word leagueinfo_teams
         push ds
-        push strict word g_C28C
+        push strict word savleague2
         jmp short .48
         db 0x90
 .47:
         mov word [bp - 0x1e], 0x1
         mov word [bp - 0x20], 0x0
-        mov al, [g_C29C]
+        mov al, [lgschedrec_b2]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push word 0x3a0b
-        push strict word f_3A0B_AC62
+        push strict word leagueinfo_teams
         push ds
-        push strict word g_C28C
+        push strict word savleague2
         push ds
-        push strict word g_C000
+        push strict word HomeTeamDbName
         push cs
         call MakeTeamDbFmt
         add sp, 0xe
-        mov al, [g_C29D]
+        mov al, [lgschedrec_b3]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push word 0x3a0b
-        push strict word f_3A0B_AC62
+        push strict word leagueinfo_teams
         push ds
-        push strict word g_C27E
+        push strict word savleague
 .48:
         push ds
-        push strict word g_C020
+        push strict word AwayTeamDbName
         push cs
         call MakeTeamDbFmt
         add sp, 0xe
-        cmp byte [g_C020], 0x0
+        cmp byte [AwayTeamDbName], 0x0
         jnz short .49
         push ds
-        push strict word g_C000
+        push strict word HomeTeamDbName
         push ds
-        push strict word g_C020
+        push strict word AwayTeamDbName
         call 0x0000:_fstrcpy
         add sp, 0x8
 .49:
-        cmp byte [g_C000], 0x0
+        cmp byte [HomeTeamDbName], 0x0
         jnz short .50
         push ds
-        push strict word g_C020
+        push strict word AwayTeamDbName
         push ds
-        push strict word g_C000
+        push strict word HomeTeamDbName
         call 0x0000:_fstrcpy
         add sp, 0x8
 .50:
-        mov ax, [g_C2B0]
-        mov es, [g_8BEE]
-        mov [es:0x78c], ax
+        mov ax, [lggameidx]
+        mov es, [segWorkBuffer25]
+        mov [es:AwayGlStats + 0x12], ax
         cmp ax, 0x3f0
         jnl short .51
         or byte [AnnouncerFlags], 0x2
@@ -3800,23 +3800,23 @@ PlayLeagueGame:
         mov bx, [bp + 0x6]
         cmp word [bx], 0x0
         jnl short .53
-        mov al, [g_C29A]
-        mov [g_E366], al
-        mov al, [g_C29B]
-        mov [g_E367], al
-        mov al, [g_C29C]
+        mov al, [lgschedrec]
+        mov [savedteam1], al
+        mov al, [lgschedrec_b1]
+        mov [savedteam2], al
+        mov al, [lgschedrec_b2]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
-        mov [g_29CA], ax
-        mov al, [g_C29D]
-        mov [g_29CC], ax
+        mov [HomeTeamNum], ax
+        mov al, [lgschedrec_b3]
+        mov [VisTeamNum], ax
 .53:
         call 0x1B35:SetupControllersThunk
         mov bx, [bp + 0x6]
         cmp word [bx], 0x0
         jnl short .54
-        mov al, [g_E367]
+        mov al, [savedteam2]
         push ax
-        mov al, [g_E366]
+        mov al, [savedteam1]
         push ax
         call 0x1B35:CreateGSummaryDbThunk
         add sp, 0x4
@@ -3825,9 +3825,9 @@ PlayLeagueGame:
         mov bx, [bp + 0x6]
         cmp word [bx], 0x0
         jnl short .55
-        mov al, [g_29CC]
+        mov al, [VisTeamNum]
         push ax
-        mov al, [g_29CA]
+        mov al, [HomeTeamNum]
         push ax
         call 0x1B35:ShowMatchupScreenThunk
         add sp, 0x4
@@ -3845,8 +3845,8 @@ PlayLeagueGame:
         mov word [gameopts], 0x1b35
         mov word [VisTeam], 0x24ef
         mov word [HomeTeam], 0x1b35
-        mov word [g_21D2], 0x232d
-        mov word [g_21D4], 0x1b35
+        mov word [menucbfn], 0x232d
+        mov word [menucbseg], 0x1b35
         call 0x0BFE:InputShutdown
         push word [bp + 0x6]
         call 0x1B35:PlayGameThunk
@@ -3861,18 +3861,18 @@ PlayLeagueGame:
         push 0x0
         call 0x0FEF:SetStartPage
         add sp, 0x2
-        mov es, [g_8BF0]
-        mov ax, [es:0x7572]
-        or ax, [es:0x7570]
+        mov es, [segDgroup6]
+        mov ax, [es:PageTableSeg]
+        or ax, [es:PageTable]
         jz short .57
-        push word [es:0x7572]
-        push word [es:0x7570]
+        push word [es:PageTableSeg]
+        push word [es:PageTable]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        mov es, [g_8BF0]
+        mov es, [segDgroup6]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0x7572], ax
-        mov [es:0x7570], ax
+        mov [es:PageTableSeg], ax
+        mov [es:PageTable], ax
 .57:
         push 0x0
         push 0x2
@@ -3886,28 +3886,28 @@ PlayLeagueGame:
         push word 0xc8
         call 0x0FEF:SetStartPage
         add sp, 0x2
-        mov es, [g_8BF2]
-        cmp word [es:0x126], 0x1
+        mov es, [segDbFiles13]
+        cmp word [es:lgstate_w5A + 0x8], 0x1
         jnz short .59
         mov al, [hmscore]
         mov [lgschedrec_b4], al
         mov al, [awscore]
-        mov [g_C29F], al
+        mov [lgschedrec_b5], al
         jmp short .59
 .58:
-        mov es, [g_8BF2]
-        mov word [es:0x126], 0x2
+        mov es, [segDbFiles13]
+        mov word [es:lgstate_w5A + 0x8], 0x2
 .59:
         cmp word [bp - 0x5c], 0x0
         jz short .60
         jmp near .91
 .60:
-        mov es, [g_8BF2]
-        cmp word [es:0x126], 0x1
+        mov es, [segDbFiles13]
+        cmp word [es:lgstate_w5A + 0x8], 0x1
         jz short .61
         jmp near .91
 .61:
-        mov ax, [g_C2B0]
+        mov ax, [lggameidx]
         mov [bp - 0x4e], ax
         push 0x0
         call 0x0FEF:ClearClipRect
@@ -3976,22 +3976,22 @@ PlayLeagueGame:
         push 0xb
         call 0x0D90:SetDialogColors
         add sp, 0xa
-        cmp word [g_C2AA], 0x0
+        cmp word [lggamestate], 0x0
         jz short .64
         push -0x1
         push -0x1
-        push word [g_C2A8]
+        push word [lgoppteam]
         push word 0x3a0b
-        push strict word f_3A0B_AC62
+        push strict word leagueinfo_teams
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         push cs
         call CheckLeagueDiskSync
         add sp, 0xe
         mov [bp - 0x5c], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .64
-        push word [g_C2A8]
+        push word [lgoppteam]
         push strict word str_02d_3
         lea ax, [bp - 0x46]
         push ax
@@ -4004,22 +4004,22 @@ PlayLeagueGame:
         push strict word str_Xx
         call 0x0000:_fstrcpy
         add sp, 0x8
-        mov es, [g_8BD8]
-        imul bx, [g_C2A8], 0x1e
-        test byte [es:bx - 0x5388], 0x1
+        mov es, [segWorkBuffer20]
+        imul bx, [lgoppteam], 0x1e
+        test byte [es:bx + leagueinfo_teams + 0x16], 0x1
         jz short .62
         cmp word [bp - 0x48], 0x0
         jz short .62
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         jmp short .63
         db 0x90
 .62:
         push word 0x3701
-        push strict word f_3701_0BFA
+        push strict word str_DriveColon
 .63:
         push ds
-        push strict word g_C28C
+        push strict word savleague2
         call 0x0000:_fstrcpy
         add sp, 0x8
 .64:
@@ -4027,11 +4027,11 @@ PlayLeagueGame:
         jnz short .65
         push word 0x3701
         push strict word str_Xx_2
-        mov es, [g_8BDA]
-        push word [es:0xb86]
-        push word [es:0xb84]
+        mov es, [segTeamChoiceText29]
+        push word [es:DbFileNameList + 0x1A]
+        push word [es:DbFileNameList + 0x18]
         push ds
-        push strict word g_C27E
+        push strict word savleague
         lea ax, [bp - 0x40]
         push ss
         push ax
@@ -4044,17 +4044,17 @@ PlayLeagueGame:
         call 0x0CD1:OpenReadWriteShared
         add sp, 0x4
         mov [bp - 0x5c], ax
-        cmp word [g_C2AA], 0x0
+        cmp word [lggamestate], 0x0
         jz short .65
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .65
         push word 0x3701
         push strict word str_Xx
-        mov es, [g_8BDA]
-        push word [es:0xb86]
-        push word [es:0xb84]
+        mov es, [segTeamChoiceText29]
+        push word [es:DbFileNameList + 0x1A]
+        push word [es:DbFileNameList + 0x18]
         push ds
-        push strict word g_C28C
+        push strict word savleague2
         lea ax, [bp - 0x40]
         push ss
         push ax
@@ -4093,7 +4093,7 @@ PlayLeagueGame:
         push word 0x3701
         push strict word str_Pinfo
         push ds
-        push strict word g_C27E
+        push strict word savleague
         lea ax, [bp - 0x40]
         push ss
         push ax
@@ -4137,7 +4137,7 @@ PlayLeagueGame:
         push ax
         call 0x0CD1:CloseHandlePtr
         add sp, 0x2
-        cmp word [g_C2AA], 0x0
+        cmp word [lggamestate], 0x0
         jnz short .70
         jmp near .74
 .70:
@@ -4148,7 +4148,7 @@ PlayLeagueGame:
         push word 0x3701
         push strict word str_Pinfo
         push ds
-        push strict word g_C28C
+        push strict word savleague2
         lea ax, [bp - 0x40]
         push ss
         push ax
@@ -4195,9 +4195,9 @@ PlayLeagueGame:
 .74:
         cmp word [bp - 0x5c], 0x0
         jnz short .75
-        push word [g_C2B0]
+        push word [lggameidx]
         push ds
-        push strict word g_C29A
+        push strict word lgschedrec
         push word [bp - 0x4a]
         call 0x20E6:WriteSchedGame
         add sp, 0x8
@@ -4205,11 +4205,11 @@ PlayLeagueGame:
 .75:
         cmp word [bp - 0x5c], 0x0
         jnz short .76
-        cmp word [g_C2AA], 0x0
+        cmp word [lggamestate], 0x0
         jz short .76
-        push word [g_C2B0]
+        push word [lggameidx]
         push ds
-        push strict word g_C29A
+        push strict word lgschedrec
         push word [bp - 0x52]
         call 0x20E6:WriteSchedGame
         add sp, 0x8
@@ -4219,17 +4219,17 @@ PlayLeagueGame:
         jz short .77
         jmp near .85
 .77:
-        cmp word [g_C2B0], 0x3f0
+        cmp word [lggameidx], 0x3f0
         jnl short .78
         jmp near .83
 .78:
         push word 0x3701
         push strict word str_Xx_2
-        mov es, [g_8BDA]
-        push word [es:0xb7e]
-        push word [es:0xb7c]
+        mov es, [segTeamChoiceText29]
+        push word [es:DbFileNameList + 0x12]
+        push word [es:DbFileNameList + 0x10]
         push ds
-        push strict word g_C27E
+        push strict word savleague
         lea ax, [bp - 0x40]
         push ss
         push ax
@@ -4244,7 +4244,7 @@ PlayLeagueGame:
         mov [bp - 0x5c], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .79
-        push word [g_C2B0]
+        push word [lggameidx]
         push word [bp - 0x50]
         push word [bp - 0x4a]
         call 0x28CD:PostSeriesResult
@@ -4259,17 +4259,17 @@ PlayLeagueGame:
         jz short .80
         jmp near .85
 .80:
-        cmp word [g_C2AA], 0x0
+        cmp word [lggamestate], 0x0
         jnz short .81
         jmp near .85
 .81:
         push word 0x3701
         push strict word str_Xx
-        mov es, [g_8BDA]
-        push word [es:0xb7e]
-        push word [es:0xb7c]
+        mov es, [segTeamChoiceText29]
+        push word [es:DbFileNameList + 0x12]
+        push word [es:DbFileNameList + 0x10]
         push ds
-        push strict word g_C28C
+        push strict word savleague2
         lea ax, [bp - 0x40]
         push ss
         push ax
@@ -4284,7 +4284,7 @@ PlayLeagueGame:
         mov [bp - 0x5c], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .82
-        push word [g_C2B0]
+        push word [lggameidx]
         push word [bp - 0x5a]
         push word [bp - 0x52]
         call 0x28CD:PostSeriesResult
@@ -4297,15 +4297,15 @@ PlayLeagueGame:
         add sp, 0x2
         jmp short .85
 .83:
-        mov ax, [g_C2AC]
-        inc word [g_C2B0]
-        cmp [g_C2B0], ax
+        mov ax, [lgreadword]
+        inc word [lggameidx]
+        cmp [lggameidx], ax
         jng short .84
         push 0x2
         push 0x0
         push 0x0
         push ds
-        push strict word g_C2B0
+        push strict word lggameidx
         push word [bp - 0x4a]
         call 0x0CD1:WriteAtOffset
         add sp, 0xc
@@ -4313,16 +4313,16 @@ PlayLeagueGame:
 .84:
         cmp word [bp - 0x5c], 0x0
         jnz short .85
-        cmp word [g_C2AA], 0x0
+        cmp word [lggamestate], 0x0
         jz short .85
-        mov ax, [g_C2AE]
-        cmp [g_C2B0], ax
+        mov ax, [lgreadword2]
+        cmp [lggameidx], ax
         jng short .85
         push 0x2
         push 0x0
         push 0x0
         push ds
-        push strict word g_C2B0
+        push strict word lggameidx
         push word [bp - 0x52]
         call 0x0CD1:WriteAtOffset
         add sp, 0xc
@@ -4333,30 +4333,30 @@ PlayLeagueGame:
         jmp near .90
 .86:
         push 0x2
-        push word [g_C2A6]
+        push word [lghometeam]
         push word 0x3a0b
-        push strict word f_3A0B_AC62
-        mov ax, [g_C2B0]
+        push strict word leagueinfo_teams
+        mov ax, [lggameidx]
         dec ax
         push ax
         push word 0x3701
         push strict word str_Xx_2
         push ds
-        push strict word g_C27E
+        push strict word savleague
         call 0x28CD:UpdateSeasonSchedule
         add sp, 0x12
         mov [bp - 0x5c], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .87
         push ds
-        push strict word g_C27E
+        push strict word savleague
         push word [bp - 0x4e]
         push word [bp - 0x1e]
-        push word [g_C2A6]
+        push word [lghometeam]
         push word 0x3701
         push strict word str_Xx_2
         push ds
-        push strict word g_C27E
+        push strict word savleague
         push cs
         call PostGameToTeamDb
         add sp, 0x12
@@ -4364,43 +4364,43 @@ PlayLeagueGame:
 .87:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .90
-        cmp [g_C2AA], ax
+        cmp [lggamestate], ax
         jz short .88
         push 0x2
-        push word [g_C2A8]
+        push word [lgoppteam]
         push word 0x3a0b
-        push strict word f_3A0B_AC62
-        push word [g_C2B0]
+        push strict word leagueinfo_teams
+        push word [lggameidx]
         push word 0x3701
         push strict word str_Xx
         push ds
-        push strict word g_C28C
+        push strict word savleague2
         call 0x28CD:UpdateSeasonSchedule
         add sp, 0x12
         mov [bp - 0x5c], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .90
         push ds
-        push strict word g_C27E
+        push strict word savleague
         push word [bp - 0x4e]
         push word [bp - 0x20]
-        push word [g_C2A8]
+        push word [lgoppteam]
         push word 0x3701
         push strict word str_Xx
         push ds
-        push strict word g_C28C
+        push strict word savleague2
         jmp short .89
         db 0x90
 .88:
         push ds
-        push strict word g_C27E
+        push strict word savleague
         push word [bp - 0x4e]
         push word [bp - 0x20]
-        push word [g_C2A8]
+        push word [lgoppteam]
         push word 0x3701
         push strict word str_Xx_2
         push ds
-        push strict word g_C27E
+        push strict word savleague
 .89:
         push cs
         call PostGameToTeamDb
@@ -4442,7 +4442,7 @@ PlayLeagueGame:
         call 0x0D90:MessageBox
         add sp, 0x16
 .92:
-        cmp word [g_C2AA], 0x0
+        cmp word [lggamestate], 0x0
         jz short .93
         lea ax, [bp - 0x52]
         push ax
@@ -4489,13 +4489,13 @@ PlayLeagueGame:
         push ds
         push strict word str_Game_2
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x40]
         push ss
         push ax
         call 0x0CD1:BuildPathFar
         add sp, 0x10
-        cmp word [g_C2B0], 0x0
+        cmp word [lggameidx], 0x0
         jl short PlayLeagueGameTail + 0x2F60
         cmp word [bp - 0x5c], 0x0
         jnz short PlayLeagueGameTail + 0x2F60

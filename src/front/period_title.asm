@@ -19,11 +19,11 @@ DrawPeriodTitle:
         push dx
         push ax
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0000:_fmemcpy
         add sp, 0xa
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0FEF:SetRemapTable
         add sp, 0x4
         db 0x8B, 0xC7                           ; insn: mov ax, di
@@ -133,8 +133,8 @@ DrawPeriodTitle:
         mov al, [si]
         cmp [si + 0x1], al
         jnz short .9
-        mov es, [g_8CA4]
-        cmp word [es:0x78c], 0x3f0
+        mov es, [segWorkBuffer47]
+        cmp word [es:AwayGlStats + 0x12], 0x3f0
         jnl short .10
 .9:
         cmp cx, 0x5

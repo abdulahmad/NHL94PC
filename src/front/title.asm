@@ -47,8 +47,8 @@ TitleScreen:
         push strict word str_MttitleKms_2
         call 0x149D:LoadRawHeader
         add sp, 0x4
-        mov [g_BD8E], ax
-        mov [g_BD90], dx
+        mov [TitleJingle], ax
+        mov [TitleJingleSeg], dx
         push 0x0
         push strict word str_MttitleCfg_2
         jmp short .3
@@ -58,19 +58,19 @@ TitleScreen:
         push strict word str_AdtitleKms_2
         call 0x149D:LoadRawHeader
         add sp, 0x4
-        mov [g_BD8E], ax
-        mov [g_BD90], dx
+        mov [TitleJingle], ax
+        mov [TitleJingleSeg], dx
         push 0x0
         push strict word str_AdtitleCfg_2
 .3:
         call 0x149D:LoadRawHeader
         add sp, 0x4
-        mov [g_BD92], ax
-        mov [g_BD94], dx
+        mov [TitleJingle2], ax
+        mov [TitleJingle2Seg], dx
         push dx
         push ax
-        push word [g_BD90]
-        push word [g_BD8E]
+        push word [TitleJingleSeg]
+        push word [TitleJingle]
         call 0x0EDC:PlayJingle
         add sp, 0x8
         push word 0x3701
@@ -327,8 +327,8 @@ TitleScreen:
         mov [bp - 0x20], ax
         mov [bp - 0x22], ax
         push word 0x3f00
-        mov es, [g_8B24]
-        les bx, [es:0x7570]
+        mov es, [segDgroup2]
+        les bx, [es:PageTable]
         push word [es:bx]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [bp - 0x2], ax
@@ -336,8 +336,8 @@ TitleScreen:
         call 0x0000:VgaCopyBytes
         add sp, 0x6
         push word 0x3f00
-        mov es, [g_8B24]
-        les bx, [es:0x7574]
+        mov es, [segDgroup2]
+        les bx, [es:PageTableSeg + 0x2]
         push word [es:bx]
         push 0x0
         call 0x0000:VgaCopyBytes
@@ -362,12 +362,12 @@ TitleScreen:
         push word [bp - 0x20]
         push 0x5a
         push 0x14
-        mov es, [g_8B24]
+        mov es, [segDgroup2]
         cmp word [CurPage], 0x1
         db 0x1B, 0xDB                           ; insn: sbb bx, bx
         neg bx
         shl bx, byte 0x2
-        les bx, [es:bx + 0x7570]
+        les bx, [es:bx + PageTable]
         push word [es:bx]
         push 0x0
         call 0x0000:VgaCopyRect
@@ -470,10 +470,10 @@ TitleScreen:
         add sp, 0x4
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .10
-        push word [g_BD94]
-        push word [g_BD92]
-        push word [g_BD90]
-        push word [g_BD8E]
+        push word [TitleJingle2Seg]
+        push word [TitleJingle2]
+        push word [TitleJingleSeg]
+        push word [TitleJingle]
         call 0x0EDC:PlayJingle
         add sp, 0x8
 .10:
@@ -498,12 +498,12 @@ TitleScreen:
         call 0x06E1:FindUnlink
         add sp, 0x4
         call 0x0EDC:StopJingle
-        push word [g_BD94]
-        push word [g_BD92]
+        push word [TitleJingle2Seg]
+        push word [TitleJingle2]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        push word [g_BD90]
-        push word [g_BD8E]
+        push word [TitleJingleSeg]
+        push word [TitleJingle]
         call 0x06E1:FindUnlink
         add sp, 0x4
         call 0x0FEF:UseCurrentPage
@@ -710,15 +710,15 @@ GoodnightScreen:
         cmp bx, 0xc8
         ja short .8
 .7:
-        mov es, [g_8B26]
+        mov es, [segCredits1]
         mov si, [bp - 0x66]
         shl si, byte 0x2
-        mov ax, [es:si + 0x5cf]
-        or ax, [es:si + 0x5cd]
+        mov ax, [es:si + CreditLines + 0x2]
+        or ax, [es:si + CreditLines]
         jz short .8
         mov [bp - 0x64], bx
-        push word [es:si + 0x5cf]
-        push word [es:si + 0x5cd]
+        push word [es:si + CreditLines + 0x2]
+        push word [es:si + CreditLines]
         call 0x0D39:TextWidthFar
         add sp, 0x4
         sub ax, 0x140
@@ -727,9 +727,9 @@ GoodnightScreen:
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         sar ax, 1
         mov [bp - 0x50], ax
-        mov es, [g_8B26]
-        push word [es:si + 0x5cf]
-        push word [es:si + 0x5cd]
+        mov es, [segCredits1]
+        push word [es:si + CreditLines + 0x2]
+        push word [es:si + CreditLines]
         push word [bp - 0x64]
         push ax
         call 0x0D39:DrawShadowTextBuffered

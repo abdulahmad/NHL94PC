@@ -1,6 +1,7 @@
 ; Resident RTLink/Plus overlay manager, and the thunk that calls each overlaid routine. DOS enters at
 ; __astart, which saves the PSP, sets this manager up, and jumps to the Microsoft C startup. The file-name
 ; slots and the thunks follow the manager in the same segment.
+%include "lib/rtlink/ovl_entries.inc"
 
 ; MscStartup is in the C runtime; the Rtl routines are in the RTLink runtime.
 SectionStride	equ	18
@@ -9,7 +10,7 @@ FileSlotSize	equ	0x80
 ; Overlay-manager messages. Each eov code is its own string and the
 ; sentence follows the terminating null. The print helper substitutes
 ; xxxx with the number it was given.
-Messages:                                       ; not used in the EXE (overlays may use it)
+Messages:                                       ; start of the message pointers below
 MsgPtrClose:                                    ; RTLink overlay-manager message (eovxxxx strings); used by
                                                 ; ReportFileError
         dw MsgCloseQuote
@@ -49,94 +50,83 @@ MsgPtrOverflow:                                 ; RTLink overlay-manager message
 MsgPtrUnderflow:                                ; RTLink overlay-manager message (eovxxxx strings); used by
                                                 ; PopReloadFrame
         dw MsgEov0005
-MsgCloseQuote:                                  ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgCloseQuote:                                  ; RTLink overlay-manager message (eovxxxx strings); in
+                                                ; MsgPtrClose
         db '"', 13, 10
         db 0
-MsgEov0001:                                     ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgEov0001:                                     ; RTLink overlay-manager message (eovxxxx strings); in
+                                                ; MsgPtrCannot
         db 'eov0001: '
         db 0
-MsgCannotFind:                                  ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgCannotFind:                                  ; text that follows the eov code string before it
         db 'Cannot find overlay file "'
         db 0
-MsgEov0002:                                     ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgEov0002:                                     ; RTLink overlay-manager message (eovxxxx strings); in
+                                                ; MsgPtrOpen
         db 'eov0002: '
         db 0
-MsgOpenError:                                   ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgOpenError:                                   ; text that follows the eov code string before it
         db 'Open error on overlay file "'
         db 0
-MsgEov0003:                                     ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgEov0003:                                     ; RTLink overlay-manager message (eovxxxx strings); in
+                                                ; MsgPtrRead
         db 'eov0003: '
         db 0
-MsgReadError:                                   ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgReadError:                                   ; text that follows the eov code string before it
         db 'Read error on overlay file "'
         db 0
-MsgEov0007:                                     ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgEov0007:                                     ; RTLink overlay-manager message (eovxxxx strings); in
+                                                ; MsgPtrCommit
         db 'eov0007: '
         db 0
-MsgCommit:                                      ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgCommit:                                      ; text that follows the eov code string before it
         db 'Commit error - section '
-MsgIntersectLead:                               ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgIntersectLead:                               ; RTLink overlay-manager message (eovxxxx strings); in
+                                                ; MsgPtrIntersect
         times 4 db 0
-MsgIntersect:                                   ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgIntersect:                                   ; text that follows the eov code string before it
         db 'H intersects committed section '
-MsgIntersect2Lead:                              ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgIntersect2Lead:                              ; RTLink overlay-manager message (eovxxxx strings); in
+                                                ; MsgPtrIntersect2
         times 4 db 0
-MsgIntersect2:                                  ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgIntersect2:                                  ; text that follows the eov code string before it
         db 'H', 13, 10
         db 0
-MsgEov0009:                                     ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgEov0009:                                     ; RTLink overlay-manager message (eovxxxx strings); in
+                                                ; MsgPtrCorrupt
         db 'eov0009: '
         db 0
-MsgVector:                                      ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgVector:                                      ; text that follows the eov code string before it
         db 'Vector at '
-MsgVectorAt:                                    ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgVectorAt:                                    ; RTLink overlay-manager message (eovxxxx strings); in
+                                                ; MsgPtrVector
         db 'xxxx:xxxx is corrupted.', 13, 10
         db 0
-MsgEov0010:                                     ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgEov0010:                                     ; RTLink overlay-manager message (eovxxxx strings); in
+                                                ; MsgPtrAfter
         db 'eov0010: '
         db 0
-MsgLoadAfter:                                   ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgLoadAfter:                                   ; text that follows the eov code string before it
         db 'Attempt to load section '
-MsgAfterLead:                                   ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgAfterLead:                                   ; RTLink overlay-manager message (eovxxxx strings); in
+                                                ; MsgPtrAfterH
         times 4 db 0
-MsgAfterH:                                      ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgAfterH:                                      ; text that follows the eov code string before it
         db 'H after $$RTL_TERMINATE.', 13, 10
         db 0
-MsgEov0004:                                     ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgEov0004:                                     ; RTLink overlay-manager message (eovxxxx strings); in
+                                                ; MsgPtrOverflow
         db 'eov0004: '
         db 0
-MsgOverflow:                                    ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgOverflow:                                    ; text that follows the eov code string before it
         db 'Overlay Manager Internal Reload Stack Overflow', 13, 10
         db '      -- use RELOAD to increase size', 13, 10
         db 0
-MsgEov0005:                                     ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgEov0005:                                     ; RTLink overlay-manager message (eovxxxx strings); in
+                                                ; MsgPtrUnderflow
         db 'eov0005: '
         db 0
-MsgUnderflow:                                   ; RTLink overlay-manager message (eovxxxx strings); not
-                                                ; referenced in the root code
+MsgUnderflow:                                   ; text that follows the eov code string before it
         db 'Overlay Manager Internal Reload Stack Underflow.', 13, 10
         times 7 db 0
 
@@ -1603,8 +1593,8 @@ ReloadStackBytes:                               ; RTLink overlay manager data; u
 ;
 ; paragraphs to read.
 SectionTable:                                   ; used by LoadSection, SectionRecord, MeasureThunkList ...
-SecMenus:                                       ; 18-byte section record for MENUS.OVL; not referenced in the
-                                                ; root code
+SecMenus:                                       ; 18-byte section record for MENUS.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x1E45                               ; load paragraph, relocated
         dw FileMenus                            ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1615,8 +1605,8 @@ SecMenus:                                       ; 18-byte section record for MEN
         dw 0xFFFF                               ; section to chain, or -1
         dw 2                                    ; number printed in errors
         dw 0x1249                               ; paragraphs to read
-SecLp:                                          ; 18-byte section record for LP.OVL; not referenced in the
-                                                ; root code
+SecLp:                                          ; 18-byte section record for LP.OVL; a record of SectionTable,
+                                                ; reached by section number
         dw 0x1E45                               ; load paragraph, relocated
         dw FileLp                               ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1627,8 +1617,8 @@ SecLp:                                          ; 18-byte section record for LP.
         dw 0xFFFF                               ; section to chain, or -1
         dw 3                                    ; number printed in errors
         dw 0x116E                               ; paragraphs to read
-SecStats:                                       ; 18-byte section record for STATS.OVL; not referenced in the
-                                                ; root code
+SecStats:                                       ; 18-byte section record for STATS.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x1E45                               ; load paragraph, relocated
         dw FileStats                            ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1639,8 +1629,8 @@ SecStats:                                       ; 18-byte section record for STA
         dw 0xFFFF                               ; section to chain, or -1
         dw 4                                    ; number printed in errors
         dw 0x9BF                                ; paragraphs to read
-SecGame:                                        ; 18-byte section record for GAME.OVL; not referenced in the
-                                                ; root code
+SecGame:                                        ; 18-byte section record for GAME.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x1E45                               ; load paragraph, relocated
         dw FileGame                             ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1651,8 +1641,8 @@ SecGame:                                        ; 18-byte section record for GAM
         dw 0xFFFF                               ; section to chain, or -1
         dw 5                                    ; number printed in errors
         dw 0x157                                ; paragraphs to read
-SecInit:                                        ; 18-byte section record for INIT.OVL; not referenced in the
-                                                ; root code
+SecInit:                                        ; 18-byte section record for INIT.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x1F9C                               ; load paragraph, relocated
         dw FileInit                             ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1663,8 +1653,8 @@ SecInit:                                        ; 18-byte section record for INI
         dw 3                                    ; section to chain, or -1
         dw 6                                    ; number printed in errors
         dw 0x987                                ; paragraphs to read
-SecAi:                                          ; 18-byte section record for AI.OVL; not referenced in the
-                                                ; root code
+SecAi:                                          ; 18-byte section record for AI.OVL; a record of SectionTable,
+                                                ; reached by section number
         dw 0x1F9C                               ; load paragraph, relocated
         dw FileAi                               ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1675,8 +1665,8 @@ SecAi:                                          ; 18-byte section record for AI.
         dw 3                                    ; section to chain, or -1
         dw 7                                    ; number printed in errors
         dw 0x13AD                               ; paragraphs to read
-SecMovie:                                       ; 18-byte section record for MOVIE.OVL; not referenced in the
-                                                ; root code
+SecMovie:                                       ; 18-byte section record for MOVIE.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x3349                               ; load paragraph, relocated
         dw FileMovie                            ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1687,8 +1677,8 @@ SecMovie:                                       ; 18-byte section record for MOV
         dw 0xFFFF                               ; section to chain, or -1
         dw 8                                    ; number printed in errors
         dw 0xCC                                 ; paragraphs to read
-SecFades:                                       ; 18-byte section record for FADES.OVL; not referenced in the
-                                                ; root code
+SecFades:                                       ; 18-byte section record for FADES.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x3349                               ; load paragraph, relocated
         dw FileFades                            ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1699,8 +1689,8 @@ SecFades:                                       ; 18-byte section record for FAD
         dw 0xFFFF                               ; section to chain, or -1
         dw 9                                    ; number printed in errors
         dw 0xF                                  ; paragraphs to read
-SecFades1:                                      ; 18-byte section record for FADES1.OVL; not referenced in the
-                                                ; root code
+SecFades1:                                      ; 18-byte section record for FADES1.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades1                           ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1711,8 +1701,8 @@ SecFades1:                                      ; 18-byte section record for FAD
         dw 7                                    ; section to chain, or -1
         dw 0xA                                  ; number printed in errors
         dw 0x1C                                 ; paragraphs to read
-SecFades2:                                      ; 18-byte section record for FADES2.OVL; not referenced in the
-                                                ; root code
+SecFades2:                                      ; 18-byte section record for FADES2.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades2                           ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1723,8 +1713,8 @@ SecFades2:                                      ; 18-byte section record for FAD
         dw 7                                    ; section to chain, or -1
         dw 0xB                                  ; number printed in errors
         dw 0x1E                                 ; paragraphs to read
-SecFades3:                                      ; 18-byte section record for FADES3.OVL; not referenced in the
-                                                ; root code
+SecFades3:                                      ; 18-byte section record for FADES3.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades3                           ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1735,8 +1725,8 @@ SecFades3:                                      ; 18-byte section record for FAD
         dw 7                                    ; section to chain, or -1
         dw 0xC                                  ; number printed in errors
         dw 0x1D                                 ; paragraphs to read
-SecFades4:                                      ; 18-byte section record for FADES4.OVL; not referenced in the
-                                                ; root code
+SecFades4:                                      ; 18-byte section record for FADES4.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades4                           ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1747,8 +1737,8 @@ SecFades4:                                      ; 18-byte section record for FAD
         dw 7                                    ; section to chain, or -1
         dw 0xD                                  ; number printed in errors
         dw 0xE                                  ; paragraphs to read
-SecFades5:                                      ; 18-byte section record for FADES5.OVL; not referenced in the
-                                                ; root code
+SecFades5:                                      ; 18-byte section record for FADES5.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades5                           ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1759,8 +1749,8 @@ SecFades5:                                      ; 18-byte section record for FAD
         dw 7                                    ; section to chain, or -1
         dw 0xE                                  ; number printed in errors
         dw 0x1C                                 ; paragraphs to read
-SecFades6:                                      ; 18-byte section record for FADES6.OVL; not referenced in the
-                                                ; root code
+SecFades6:                                      ; 18-byte section record for FADES6.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades6                           ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1771,8 +1761,8 @@ SecFades6:                                      ; 18-byte section record for FAD
         dw 7                                    ; section to chain, or -1
         dw 0xF                                  ; number printed in errors
         dw 0x17                                 ; paragraphs to read
-SecFades7:                                      ; 18-byte section record for FADES7.OVL; not referenced in the
-                                                ; root code
+SecFades7:                                      ; 18-byte section record for FADES7.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades7                           ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1783,8 +1773,8 @@ SecFades7:                                      ; 18-byte section record for FAD
         dw 7                                    ; section to chain, or -1
         dw 0x10                                 ; number printed in errors
         dw 0x21                                 ; paragraphs to read
-SecFades8:                                      ; 18-byte section record for FADES8.OVL; not referenced in the
-                                                ; root code
+SecFades8:                                      ; 18-byte section record for FADES8.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades8                           ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1795,8 +1785,8 @@ SecFades8:                                      ; 18-byte section record for FAD
         dw 7                                    ; section to chain, or -1
         dw 0x11                                 ; number printed in errors
         dw 0x20                                 ; paragraphs to read
-SecFades9:                                      ; 18-byte section record for FADES9.OVL; not referenced in the
-                                                ; root code
+SecFades9:                                      ; 18-byte section record for FADES9.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades9                           ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1807,8 +1797,8 @@ SecFades9:                                      ; 18-byte section record for FAD
         dw 7                                    ; section to chain, or -1
         dw 0x12                                 ; number printed in errors
         dw 0x11                                 ; paragraphs to read
-SecFades10:                                     ; 18-byte section record for FADES10.OVL; not referenced in
-                                                ; the root code
+SecFades10:                                     ; 18-byte section record for FADES10.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades10                          ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1819,8 +1809,8 @@ SecFades10:                                     ; 18-byte section record for FAD
         dw 7                                    ; section to chain, or -1
         dw 0x13                                 ; number printed in errors
         dw 0x23                                 ; paragraphs to read
-SecFades11:                                     ; 18-byte section record for FADES11.OVL; not referenced in
-                                                ; the root code
+SecFades11:                                     ; 18-byte section record for FADES11.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades11                          ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1831,8 +1821,8 @@ SecFades11:                                     ; 18-byte section record for FAD
         dw 7                                    ; section to chain, or -1
         dw 0x14                                 ; number printed in errors
         dw 0x38                                 ; paragraphs to read
-SecFades12:                                     ; 18-byte section record for FADES12.OVL; not referenced in
-                                                ; the root code
+SecFades12:                                     ; 18-byte section record for FADES12.OVL; a record of
+                                                ; SectionTable, reached by section number
         dw 0x3358                               ; load paragraph, relocated
         dw FileFades12                          ; file slot
         dw 0                                    ; file position, paragraphs
@@ -1843,8 +1833,8 @@ SecFades12:                                     ; 18-byte section record for FAD
         dw 7                                    ; section to chain, or -1
         dw 0x15                                 ; number printed in errors
         dw 0x1A                                 ; paragraphs to read
-SecHockey:                                      ; 18-byte section record for HOCKEY.EXE; not referenced in the
-                                                ; root code
+SecHockey:                                      ; 18-byte section record for HOCKEY.EXE; a record of
+                                                ; SectionTable, reached by section number
         dw 0x3415                               ; load paragraph, relocated
         dw FileHockey                           ; file slot
         dw 0x2005                               ; file position, paragraphs
@@ -1858,8 +1848,8 @@ SecHockey:                                      ; 18-byte section record for HOC
 SectionEndMark:                                 ; used by ExeFileName
 
 ; Reload stack. The file slots begin immediately after it.
-ReloadStack:                                    ; reload stack placed after the section table; not referenced
-                                                ; in the root code
+ReloadStack:                                    ; reload stack placed after the section table; InitOverlay
+                                                ; points ReloadBase here (SectionEnd)
         times 0x6C2 db 0                        ; up to FileMenus
 
 ; One 128-byte slot per overlay file, then the EXE. The byte in front of
@@ -1936,7 +1926,7 @@ FileHockey:                                     ; file slot for HOCKEY.EXE; used
 OverlayThunks:
 StatsSelLeagueThunk:
         call LoadFromThunk
-        jmp 0x2248:0x1B0                        ; load paragraph, relocated
+        jmp 0x2248:StatsSelLeague               ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; StatsSelLeaguePlayoffsThunk                                1B35:1FF9  RTLink
@@ -1944,7 +1934,7 @@ StatsSelLeagueThunk:
 ;-----------------------------------------------------------------------------
 StatsSelLeaguePlayoffsThunk:
         call LoadFromThunk
-        jmp 0x2248:0x274                        ; load paragraph, relocated
+        jmp 0x2248:StatsSelLeaguePlayoffs       ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; StatsSelPlayoffModeThunk                                   1B35:2003  RTLink
@@ -1952,7 +1942,7 @@ StatsSelLeaguePlayoffsThunk:
 ;-----------------------------------------------------------------------------
 StatsSelPlayoffModeThunk:
         call LoadFromThunk
-        jmp 0x2248:0x350                        ; load paragraph, relocated
+        jmp 0x2248:StatsSelPlayoffMode          ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; CalNextMonthThunk                                          1B35:200D  RTLink
@@ -1960,7 +1950,7 @@ StatsSelPlayoffModeThunk:
 ;-----------------------------------------------------------------------------
 CalNextMonthThunk:
         call LoadFromThunk
-        jmp 0x25B2:0x4C4                        ; load paragraph, relocated
+        jmp 0x25B2:CalNextMonth                 ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
 ; CalPrevMonthThunk                                          1B35:2017  RTLink
@@ -1968,7 +1958,7 @@ CalNextMonthThunk:
 ;-----------------------------------------------------------------------------
 CalPrevMonthThunk:
         call LoadFromThunk
-        jmp 0x25B2:0x51C                        ; load paragraph, relocated
+        jmp 0x25B2:CalPrevMonth                 ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
 ; TradeShowStatsThunk                                        1B35:2021  RTLink
@@ -1976,7 +1966,7 @@ CalPrevMonthThunk:
 ;-----------------------------------------------------------------------------
 TradeShowStatsThunk:
         call LoadFromThunk
-        jmp 0x2A57:0x34C                        ; load paragraph, relocated
+        jmp 0x2A57:TradeShowStats               ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
 ; GameDressPlayerThunk                                       1B35:202B  RTLink
@@ -1984,7 +1974,7 @@ TradeShowStatsThunk:
 ;-----------------------------------------------------------------------------
 GameDressPlayerThunk:
         call LoadFromThunk
-        jmp 0x2047:0x30E6                       ; load paragraph, relocated
+        jmp 0x2047:GameDressPlayer              ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; DeskHomeLinesThunk                                         1B35:2035  RTLink
@@ -1992,7 +1982,7 @@ GameDressPlayerThunk:
 ;-----------------------------------------------------------------------------
 DeskHomeLinesThunk:
         call LoadFromThunk
-        jmp 0x2CF8:0x12AA                       ; load paragraph, relocated
+        jmp 0x2CF8:DeskHomeLines                ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; PlayoffModeLoopThunk                                       1B35:203F  RTLink
@@ -2000,7 +1990,7 @@ DeskHomeLinesThunk:
 ;-----------------------------------------------------------------------------
 PlayoffModeLoopThunk:
         call LoadFromThunk
-        jmp 0x26D4:0x2A80                       ; load paragraph, relocated
+        jmp 0x26D4:PlayoffModeLoop              ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuExportDbsThunk                                         1B35:2049  RTLink
@@ -2008,7 +1998,7 @@ PlayoffModeLoopThunk:
 ;-----------------------------------------------------------------------------
 MenuExportDbsThunk:
         call LoadFromThunk
-        jmp 0x2E70:0x2090                       ; load paragraph, relocated
+        jmp 0x2E70:MenuExportDbs                ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; EditPlayoffSettingsThunk                                   1B35:2053  RTLink
@@ -2016,7 +2006,7 @@ MenuExportDbsThunk:
 ;-----------------------------------------------------------------------------
 EditPlayoffSettingsThunk:
         call LoadFromThunk
-        jmp 0x2B26:0x112                        ; load paragraph, relocated
+        jmp 0x2B26:EditPlayoffSettings          ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuPlayoffHilightsThunk                                   1B35:205D  RTLink
@@ -2024,7 +2014,7 @@ EditPlayoffSettingsThunk:
 ;-----------------------------------------------------------------------------
 MenuPlayoffHilightsThunk:
         call LoadFromThunk
-        jmp 0x26D4:0x16                         ; load paragraph, relocated
+        jmp 0x26D4:MenuPlayoffHilights          ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; POMenuResult4Thunk                                         1B35:2067  RTLink
@@ -2032,7 +2022,7 @@ MenuPlayoffHilightsThunk:
 ;-----------------------------------------------------------------------------
 POMenuResult4Thunk:
         call LoadFromThunk
-        jmp 0x26D4:0xE                          ; load paragraph, relocated
+        jmp 0x26D4:POMenuResult4                ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuNextLeagueGameThunk                                    1B35:2071  RTLink
@@ -2040,7 +2030,7 @@ POMenuResult4Thunk:
 ;-----------------------------------------------------------------------------
 MenuNextLeagueGameThunk:
         call LoadFromThunk
-        jmp 0x2E70:0x1CF0                       ; load paragraph, relocated
+        jmp 0x2E70:MenuNextLeagueGame           ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; WriteTeamLinesThunk                                        1B35:207B  RTLink
@@ -2048,7 +2038,7 @@ MenuNextLeagueGameThunk:
 ;-----------------------------------------------------------------------------
 WriteTeamLinesThunk:
         call LoadFromThunk
-        jmp 0x2047:0x281A                       ; load paragraph, relocated
+        jmp 0x2047:WriteTeamLines               ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; GameScratchPlayerThunk                                     1B35:2085  RTLink
@@ -2056,7 +2046,7 @@ WriteTeamLinesThunk:
 ;-----------------------------------------------------------------------------
 GameScratchPlayerThunk:
         call LoadFromThunk
-        jmp 0x2047:0x2FA4                       ; load paragraph, relocated
+        jmp 0x2047:GameScratchPlayer            ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuUseTheseLinesThunk                                     1B35:208F  RTLink
@@ -2064,7 +2054,7 @@ GameScratchPlayerThunk:
 ;-----------------------------------------------------------------------------
 MenuUseTheseLinesThunk:
         call LoadFromThunk
-        jmp 0x2047:0x252E                       ; load paragraph, relocated
+        jmp 0x2047:MenuUseTheseLines            ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; DeskVisitorLinesThunk                                      1B35:2099  RTLink
@@ -2072,7 +2062,7 @@ MenuUseTheseLinesThunk:
 ;-----------------------------------------------------------------------------
 DeskVisitorLinesThunk:
         call LoadFromThunk
-        jmp 0x2CF8:0x1388                       ; load paragraph, relocated
+        jmp 0x2CF8:DeskVisitorLines             ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; EvadePCThunk                                               1B35:20A3  RTLink
@@ -2080,7 +2070,7 @@ DeskVisitorLinesThunk:
 ;-----------------------------------------------------------------------------
 EvadePCThunk:
         call LoadFromThunk
-        jmp 0x2425:0x4EA                        ; load paragraph, relocated
+        jmp 0x2425:EvadePC                      ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; avdgoal_boxThunk                                           1B35:20AD  RTLink
@@ -2088,7 +2078,7 @@ EvadePCThunk:
 ;-----------------------------------------------------------------------------
 avdgoal_boxThunk:
         call LoadFromThunk
-        jmp 0x2425:0xA20                        ; load paragraph, relocated
+        jmp 0x2425:avdgoal_box                  ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; asspuckc_chkdirThunk                                       1B35:20B7  RTLink
@@ -2096,7 +2086,7 @@ avdgoal_boxThunk:
 ;-----------------------------------------------------------------------------
 asspuckc_chkdirThunk:
         call LoadFromThunk
-        jmp 0x2519:0x1A7E                       ; load paragraph, relocated
+        jmp 0x2519:asspuckc_chkdir              ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; EvadePlayersThunk                                          1B35:20C1  RTLink
@@ -2104,7 +2094,7 @@ asspuckc_chkdirThunk:
 ;-----------------------------------------------------------------------------
 EvadePlayersThunk:
         call LoadFromThunk
-        jmp 0x2425:0x2CE                        ; load paragraph, relocated
+        jmp 0x2425:EvadePlayers                 ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; MainDeskLoopThunk                                          1B35:20CB  RTLink
@@ -2112,7 +2102,7 @@ EvadePlayersThunk:
 ;-----------------------------------------------------------------------------
 MainDeskLoopThunk:
         call LoadFromThunk
-        jmp 0x2E70:0xA                          ; load paragraph, relocated
+        jmp 0x2E70:MainDeskLoop                 ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; FadePaletteInThunk                                         1B35:20D5  RTLink
@@ -2120,7 +2110,7 @@ MainDeskLoopThunk:
 ;-----------------------------------------------------------------------------
 FadePaletteInThunk:
         call LoadFromThunk
-        jmp 0x3358:0                            ; load paragraph, relocated
+        jmp 0x3358:FadePaletteIn                ; load paragraph, relocated
         dw 11                                   ; FADES4.OVL
 ;-----------------------------------------------------------------------------
 ; TitleScreenThunk                                           1B35:20DF  RTLink
@@ -2128,7 +2118,7 @@ FadePaletteInThunk:
 ;-----------------------------------------------------------------------------
 TitleScreenThunk:
         call LoadFromThunk
-        jmp 0x1F9D:0xC                          ; load paragraph, relocated
+        jmp 0x1F9D:TitleScreen                  ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; ReloadSoundConfigThunk                                     1B35:20E9  RTLink
@@ -2136,7 +2126,7 @@ TitleScreenThunk:
 ;-----------------------------------------------------------------------------
 ReloadSoundConfigThunk:
         call LoadFromThunk
-        jmp 0x22D3:0x262                        ; load paragraph, relocated
+        jmp 0x22D3:ReloadSoundConfig            ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
 ; LoadModeStateThunk                                         1B35:20F3  RTLink
@@ -2144,7 +2134,7 @@ ReloadSoundConfigThunk:
 ;-----------------------------------------------------------------------------
 LoadModeStateThunk:
         call LoadFromThunk
-        jmp 0x2E70:0x9FE                        ; load paragraph, relocated
+        jmp 0x2E70:LoadModeState                ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; GoodnightScreenThunk                                       1B35:20FD  RTLink
@@ -2152,7 +2142,7 @@ LoadModeStateThunk:
 ;-----------------------------------------------------------------------------
 GoodnightScreenThunk:
         call LoadFromThunk
-        jmp 0x1F9D:0x580                        ; load paragraph, relocated
+        jmp 0x1F9D:GoodnightScreen              ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuExitThunk                                              1B35:2107  RTLink
@@ -2160,7 +2150,7 @@ GoodnightScreenThunk:
 ;-----------------------------------------------------------------------------
 MenuExitThunk:
         call LoadFromThunk
-        jmp 0x2E70:0x964                        ; load paragraph, relocated
+        jmp 0x2E70:MenuExit                     ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; CreatePlayoffsThunk                                        1B35:2111  RTLink
@@ -2168,7 +2158,7 @@ MenuExitThunk:
 ;-----------------------------------------------------------------------------
 CreatePlayoffsThunk:
         call LoadFromThunk
-        jmp 0x26D4:0x180                        ; load paragraph, relocated
+        jmp 0x26D4:CreatePlayoffs               ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuImportDbsThunk                                         1B35:211B  RTLink
@@ -2176,7 +2166,7 @@ CreatePlayoffsThunk:
 ;-----------------------------------------------------------------------------
 MenuImportDbsThunk:
         call LoadFromThunk
-        jmp 0x2E70:0x2054                       ; load paragraph, relocated
+        jmp 0x2E70:MenuImportDbs                ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuNewLeagueThunk                                         1B35:2125  RTLink
@@ -2184,7 +2174,7 @@ MenuImportDbsThunk:
 ;-----------------------------------------------------------------------------
 MenuNewLeagueThunk:
         call LoadFromThunk
-        jmp 0x2E70:0x11EC                       ; load paragraph, relocated
+        jmp 0x2E70:MenuNewLeague                ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuNewExhibitionThunk                                     1B35:212F  RTLink
@@ -2192,7 +2182,7 @@ MenuNewLeagueThunk:
 ;-----------------------------------------------------------------------------
 MenuNewExhibitionThunk:
         call LoadFromThunk
-        jmp 0x2E70:0xF22                        ; load paragraph, relocated
+        jmp 0x2E70:MenuNewExhibition            ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuOpenSavedThunk                                         1B35:2139  RTLink
@@ -2200,7 +2190,7 @@ MenuNewExhibitionThunk:
 ;-----------------------------------------------------------------------------
 MenuOpenSavedThunk:
         call LoadFromThunk
-        jmp 0x23A3:4                            ; load paragraph, relocated
+        jmp 0x23A3:MenuOpenSaved                ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuUpdateTeamDbsThunk                                     1B35:2143  RTLink
@@ -2208,7 +2198,7 @@ MenuOpenSavedThunk:
 ;-----------------------------------------------------------------------------
 MenuUpdateTeamDbsThunk:
         call LoadFromThunk
-        jmp 0x2E70:0x1B6A                       ; load paragraph, relocated
+        jmp 0x2E70:MenuUpdateTeamDbs            ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuLeagueHilightsThunk                                    1B35:214D  RTLink
@@ -2216,7 +2206,7 @@ MenuUpdateTeamDbsThunk:
 ;-----------------------------------------------------------------------------
 MenuLeagueHilightsThunk:
         call LoadFromThunk
-        jmp 0x2E70:0x1EEC                       ; load paragraph, relocated
+        jmp 0x2E70:MenuLeagueHilights           ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuLeagueSettingsThunk                                    1B35:2157  RTLink
@@ -2224,7 +2214,7 @@ MenuLeagueHilightsThunk:
 ;-----------------------------------------------------------------------------
 MenuLeagueSettingsThunk:
         call LoadFromThunk
-        jmp 0x2E70:0x16DE                       ; load paragraph, relocated
+        jmp 0x2E70:MenuLeagueSettings           ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuMergeUpdateDbsThunk                                    1B35:2161  RTLink
@@ -2232,7 +2222,7 @@ MenuLeagueSettingsThunk:
 ;-----------------------------------------------------------------------------
 MenuMergeUpdateDbsThunk:
         call LoadFromThunk
-        jmp 0x2E70:0x18E2                       ; load paragraph, relocated
+        jmp 0x2E70:MenuMergeUpdateDbs           ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuRebuildDbsThunk                                        1B35:216B  RTLink
@@ -2240,7 +2230,7 @@ MenuMergeUpdateDbsThunk:
 ;-----------------------------------------------------------------------------
 MenuRebuildDbsThunk:
         call LoadFromThunk
-        jmp 0x2E70:0x18A6                       ; load paragraph, relocated
+        jmp 0x2E70:MenuRebuildDbs               ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuTradePlayersThunk                                      1B35:2175  RTLink
@@ -2248,7 +2238,7 @@ MenuRebuildDbsThunk:
 ;-----------------------------------------------------------------------------
 MenuTradePlayersThunk:
         call LoadFromThunk
-        jmp 0x2E70:0x1BA6                       ; load paragraph, relocated
+        jmp 0x2E70:MenuTradePlayers             ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuAddTeamThunk                                           1B35:217F  RTLink
@@ -2256,7 +2246,7 @@ MenuTradePlayersThunk:
 ;-----------------------------------------------------------------------------
 MenuAddTeamThunk:
         call LoadFromThunk
-        jmp 0x2E70:0x144A                       ; load paragraph, relocated
+        jmp 0x2E70:MenuAddTeam                  ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuRemoveTeamThunk                                        1B35:2189  RTLink
@@ -2264,7 +2254,7 @@ MenuAddTeamThunk:
 ;-----------------------------------------------------------------------------
 MenuRemoveTeamThunk:
         call LoadFromThunk
-        jmp 0x2E70:0x1594                       ; load paragraph, relocated
+        jmp 0x2E70:MenuRemoveTeam               ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuMergeLeagueFilesThunk                                  1B35:2193  RTLink
@@ -2272,7 +2262,7 @@ MenuRemoveTeamThunk:
 ;-----------------------------------------------------------------------------
 MenuMergeLeagueFilesThunk:
         call LoadFromThunk
-        jmp 0x2E70:0x1A26                       ; load paragraph, relocated
+        jmp 0x2E70:MenuMergeLeagueFiles         ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; EasnStandingsMenuThunk                                     1B35:219D  RTLink
@@ -2280,7 +2270,7 @@ MenuMergeLeagueFilesThunk:
 ;-----------------------------------------------------------------------------
 EasnStandingsMenuThunk:
         call LoadFromThunk
-        jmp 0x22B3:0x62E                        ; load paragraph, relocated
+        jmp 0x22B3:EasnStandingsMenu            ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuSoundSettingsThunk                                     1B35:21A7  RTLink
@@ -2288,7 +2278,7 @@ EasnStandingsMenuThunk:
 ;-----------------------------------------------------------------------------
 MenuSoundSettingsThunk:
         call LoadFromThunk
-        jmp 0x2528:4                            ; load paragraph, relocated
+        jmp 0x2528:MenuSoundSettings            ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuP2ControlsExhThunk                                     1B35:21B1  RTLink
@@ -2296,7 +2286,7 @@ MenuSoundSettingsThunk:
 ;-----------------------------------------------------------------------------
 MenuP2ControlsExhThunk:
         call LoadFromThunk
-        jmp 0x1E45:0xA                          ; load paragraph, relocated
+        jmp 0x1E45:MenuP2ControlsExh            ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuP1ControlsExhThunk                                     1B35:21BB  RTLink
@@ -2304,7 +2294,7 @@ MenuP2ControlsExhThunk:
 ;-----------------------------------------------------------------------------
 MenuP1ControlsExhThunk:
         call LoadFromThunk
-        jmp 0x1E45:0                            ; load paragraph, relocated
+        jmp 0x1E45:MenuP1ControlsExh            ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuExhibitionSettingsThunk                                1B35:21C5  RTLink
@@ -2312,7 +2302,7 @@ MenuP1ControlsExhThunk:
 ;-----------------------------------------------------------------------------
 MenuExhibitionSettingsThunk:
         call LoadFromThunk
-        jmp 0x2CAA:8                            ; load paragraph, relocated
+        jmp 0x2CAA:MenuExhibitionSettings       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; LockerRoomScreenThunk                                      1B35:21CF  RTLink
@@ -2320,7 +2310,7 @@ MenuExhibitionSettingsThunk:
 ;-----------------------------------------------------------------------------
 LockerRoomScreenThunk:
         call LoadFromThunk
-        jmp 0x25DD:6                            ; load paragraph, relocated
+        jmp 0x25DD:LockerRoomScreen             ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuSavePctLeadersThunk                                    1B35:21D9  RTLink
@@ -2328,7 +2318,7 @@ LockerRoomScreenThunk:
 ;-----------------------------------------------------------------------------
 MenuSavePctLeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:0x62A                        ; load paragraph, relocated
+        jmp 0x2248:MenuSavePctLeaders           ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuWinsLeadersThunk                                       1B35:21E3  RTLink
@@ -2336,7 +2326,7 @@ MenuSavePctLeadersThunk:
 ;-----------------------------------------------------------------------------
 MenuWinsLeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:0x608                        ; load paragraph, relocated
+        jmp 0x2248:MenuWinsLeaders              ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuGAALeadersThunk                                        1B35:21ED  RTLink
@@ -2344,7 +2334,7 @@ MenuWinsLeadersThunk:
 ;-----------------------------------------------------------------------------
 MenuGAALeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:0x5E6                        ; load paragraph, relocated
+        jmp 0x2248:MenuGAALeaders               ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuShootPctLeadersThunk                                   1B35:21F7  RTLink
@@ -2352,7 +2342,7 @@ MenuGAALeadersThunk:
 ;-----------------------------------------------------------------------------
 MenuShootPctLeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:0x5C4                        ; load paragraph, relocated
+        jmp 0x2248:MenuShootPctLeaders          ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuPIMLeadersThunk                                        1B35:2201  RTLink
@@ -2360,7 +2350,7 @@ MenuShootPctLeadersThunk:
 ;-----------------------------------------------------------------------------
 MenuPIMLeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:0x5A2                        ; load paragraph, relocated
+        jmp 0x2248:MenuPIMLeaders               ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuPlusMinusLeadersThunk                                  1B35:220B  RTLink
@@ -2368,7 +2358,7 @@ MenuPIMLeadersThunk:
 ;-----------------------------------------------------------------------------
 MenuPlusMinusLeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:0x580                        ; load paragraph, relocated
+        jmp 0x2248:MenuPlusMinusLeaders         ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuSHGoalLeadersThunk                                     1B35:2215  RTLink
@@ -2376,7 +2366,7 @@ MenuPlusMinusLeadersThunk:
 ;-----------------------------------------------------------------------------
 MenuSHGoalLeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:0x55E                        ; load paragraph, relocated
+        jmp 0x2248:MenuSHGoalLeaders            ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuPPGoalLeadersThunk                                     1B35:221F  RTLink
@@ -2384,7 +2374,7 @@ MenuSHGoalLeadersThunk:
 ;-----------------------------------------------------------------------------
 MenuPPGoalLeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:0x53C                        ; load paragraph, relocated
+        jmp 0x2248:MenuPPGoalLeaders            ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuAssistLeadersThunk                                     1B35:2229  RTLink
@@ -2392,7 +2382,7 @@ MenuPPGoalLeadersThunk:
 ;-----------------------------------------------------------------------------
 MenuAssistLeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:0x51A                        ; load paragraph, relocated
+        jmp 0x2248:MenuAssistLeaders            ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuGoalLeadersThunk                                       1B35:2233  RTLink
@@ -2400,7 +2390,7 @@ MenuAssistLeadersThunk:
 ;-----------------------------------------------------------------------------
 MenuGoalLeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:0x4F8                        ; load paragraph, relocated
+        jmp 0x2248:MenuGoalLeaders              ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuPointLeadersThunk                                      1B35:223D  RTLink
@@ -2408,7 +2398,7 @@ MenuGoalLeadersThunk:
 ;-----------------------------------------------------------------------------
 MenuPointLeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:0x4D6                        ; load paragraph, relocated
+        jmp 0x2248:MenuPointLeaders             ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuTeamPenaltiesThunk                                     1B35:2247  RTLink
@@ -2416,7 +2406,7 @@ MenuPointLeadersThunk:
 ;-----------------------------------------------------------------------------
 MenuTeamPenaltiesThunk:
         call LoadFromThunk
-        jmp 0x2248:0x4B4                        ; load paragraph, relocated
+        jmp 0x2248:MenuTeamPenalties            ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuTeamPKThunk                                            1B35:2251  RTLink
@@ -2424,7 +2414,7 @@ MenuTeamPenaltiesThunk:
 ;-----------------------------------------------------------------------------
 MenuTeamPKThunk:
         call LoadFromThunk
-        jmp 0x2248:0x492                        ; load paragraph, relocated
+        jmp 0x2248:MenuTeamPK                   ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuTeamPPThunk                                            1B35:225B  RTLink
@@ -2432,7 +2422,7 @@ MenuTeamPKThunk:
 ;-----------------------------------------------------------------------------
 MenuTeamPPThunk:
         call LoadFromThunk
-        jmp 0x2248:0x470                        ; load paragraph, relocated
+        jmp 0x2248:MenuTeamPP                   ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuTeamDefenseThunk                                       1B35:2265  RTLink
@@ -2440,7 +2430,7 @@ MenuTeamPPThunk:
 ;-----------------------------------------------------------------------------
 MenuTeamDefenseThunk:
         call LoadFromThunk
-        jmp 0x2248:0x44E                        ; load paragraph, relocated
+        jmp 0x2248:MenuTeamDefense              ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuTeamScoringThunk                                       1B35:226F  RTLink
@@ -2448,7 +2438,7 @@ MenuTeamDefenseThunk:
 ;-----------------------------------------------------------------------------
 MenuTeamScoringThunk:
         call LoadFromThunk
-        jmp 0x2248:0x42C                        ; load paragraph, relocated
+        jmp 0x2248:MenuTeamScoring              ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; DeskExitGameThunk                                          1B35:2279  RTLink
@@ -2456,7 +2446,7 @@ MenuTeamScoringThunk:
 ;-----------------------------------------------------------------------------
 DeskExitGameThunk:
         call LoadFromThunk
-        jmp 0x2CF8:0x10A4                       ; load paragraph, relocated
+        jmp 0x2CF8:DeskExitGame                 ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; DeskReturnConfirmThunk                                     1B35:2283  RTLink
@@ -2464,7 +2454,7 @@ DeskExitGameThunk:
 ;-----------------------------------------------------------------------------
 DeskReturnConfirmThunk:
         call LoadFromThunk
-        jmp 0x2CF8:0xFCE                        ; load paragraph, relocated
+        jmp 0x2CF8:DeskReturnConfirm            ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; DeskBackToGameThunk                                        1B35:228D  RTLink
@@ -2472,7 +2462,7 @@ DeskReturnConfirmThunk:
 ;-----------------------------------------------------------------------------
 DeskBackToGameThunk:
         call LoadFromThunk
-        jmp 0x2CF8:0xF98                        ; load paragraph, relocated
+        jmp 0x2CF8:DeskBackToGame               ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; DeskToSportsDeskThunk                                      1B35:2297  RTLink
@@ -2480,7 +2470,7 @@ DeskBackToGameThunk:
 ;-----------------------------------------------------------------------------
 DeskToSportsDeskThunk:
         call LoadFromThunk
-        jmp 0x2CF8:0xFB2                        ; load paragraph, relocated
+        jmp 0x2CF8:DeskToSportsDesk             ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuModeSettingsThunk                                      1B35:22A1  RTLink
@@ -2488,7 +2478,7 @@ DeskToSportsDeskThunk:
 ;-----------------------------------------------------------------------------
 MenuModeSettingsThunk:
         call LoadFromThunk
-        jmp 0x2C1E:4                            ; load paragraph, relocated
+        jmp 0x2C1E:MenuModeSettings             ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuP2ControlsInGameThunk                                  1B35:22AB  RTLink
@@ -2496,7 +2486,7 @@ MenuModeSettingsThunk:
 ;-----------------------------------------------------------------------------
 MenuP2ControlsInGameThunk:
         call LoadFromThunk
-        jmp 0x1E45:0x108                        ; load paragraph, relocated
+        jmp 0x1E45:MenuP2ControlsInGame         ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuP1ControlsInGameThunk                                  1B35:22B5  RTLink
@@ -2504,7 +2494,7 @@ MenuP2ControlsInGameThunk:
 ;-----------------------------------------------------------------------------
 MenuP1ControlsInGameThunk:
         call LoadFromThunk
-        jmp 0x1E45:0xFE                         ; load paragraph, relocated
+        jmp 0x1E45:MenuP1ControlsInGame         ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; DeskAwayGoalieNoneThunk                                    1B35:22BF  RTLink
@@ -2512,7 +2502,7 @@ MenuP1ControlsInGameThunk:
 ;-----------------------------------------------------------------------------
 DeskAwayGoalieNoneThunk:
         call LoadFromThunk
-        jmp 0x2CF8:0x1754                       ; load paragraph, relocated
+        jmp 0x2CF8:DeskAwayGoalieNone           ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; DeskAwayGoalie2Thunk                                       1B35:22C9  RTLink
@@ -2520,7 +2510,7 @@ DeskAwayGoalieNoneThunk:
 ;-----------------------------------------------------------------------------
 DeskAwayGoalie2Thunk:
         call LoadFromThunk
-        jmp 0x2CF8:0x171E                       ; load paragraph, relocated
+        jmp 0x2CF8:DeskAwayGoalie2              ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; DeskAwayGoalie1Thunk                                       1B35:22D3  RTLink
@@ -2528,7 +2518,7 @@ DeskAwayGoalie2Thunk:
 ;-----------------------------------------------------------------------------
 DeskAwayGoalie1Thunk:
         call LoadFromThunk
-        jmp 0x2CF8:0x16E8                       ; load paragraph, relocated
+        jmp 0x2CF8:DeskAwayGoalie1              ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; DeskHomeGoalieNoneThunk                                    1B35:22DD  RTLink
@@ -2536,7 +2526,7 @@ DeskAwayGoalie1Thunk:
 ;-----------------------------------------------------------------------------
 DeskHomeGoalieNoneThunk:
         call LoadFromThunk
-        jmp 0x2CF8:0x16B2                       ; load paragraph, relocated
+        jmp 0x2CF8:DeskHomeGoalieNone           ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; DeskHomeGoalie2Thunk                                       1B35:22E7  RTLink
@@ -2544,7 +2534,7 @@ DeskHomeGoalieNoneThunk:
 ;-----------------------------------------------------------------------------
 DeskHomeGoalie2Thunk:
         call LoadFromThunk
-        jmp 0x2CF8:0x167C                       ; load paragraph, relocated
+        jmp 0x2CF8:DeskHomeGoalie2              ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; DeskHomeGoalie1Thunk                                       1B35:22F1  RTLink
@@ -2552,7 +2542,7 @@ DeskHomeGoalie2Thunk:
 ;-----------------------------------------------------------------------------
 DeskHomeGoalie1Thunk:
         call LoadFromThunk
-        jmp 0x2CF8:0x1646                       ; load paragraph, relocated
+        jmp 0x2CF8:DeskHomeGoalie1              ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; DeskGoToReplayThunk                                        1B35:22FB  RTLink
@@ -2560,7 +2550,7 @@ DeskHomeGoalie1Thunk:
 ;-----------------------------------------------------------------------------
 DeskGoToReplayThunk:
         call LoadFromThunk
-        jmp 0x2CF8:0x1206                       ; load paragraph, relocated
+        jmp 0x2CF8:DeskGoToReplay               ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; DeskTeamScratchesThunk                                     1B35:2305  RTLink
@@ -2568,7 +2558,7 @@ DeskGoToReplayThunk:
 ;-----------------------------------------------------------------------------
 DeskTeamScratchesThunk:
         call LoadFromThunk
-        jmp 0x2CF8:0x15CC                       ; load paragraph, relocated
+        jmp 0x2CF8:DeskTeamScratches            ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; DeskScoringSummaryThunk                                    1B35:230F  RTLink
@@ -2576,7 +2566,7 @@ DeskTeamScratchesThunk:
 ;-----------------------------------------------------------------------------
 DeskScoringSummaryThunk:
         call LoadFromThunk
-        jmp 0x2CF8:0x1550                       ; load paragraph, relocated
+        jmp 0x2CF8:DeskScoringSummary           ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; DeskPenaltySummaryThunk                                    1B35:2319  RTLink
@@ -2584,7 +2574,7 @@ DeskScoringSummaryThunk:
 ;-----------------------------------------------------------------------------
 DeskPenaltySummaryThunk:
         call LoadFromThunk
-        jmp 0x2CF8:0x14D4                       ; load paragraph, relocated
+        jmp 0x2CF8:DeskPenaltySummary           ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; DeskGameStatsThunk                                         1B35:2323  RTLink
@@ -2592,7 +2582,7 @@ DeskPenaltySummaryThunk:
 ;-----------------------------------------------------------------------------
 DeskGameStatsThunk:
         call LoadFromThunk
-        jmp 0x2CF8:0x1466                       ; load paragraph, relocated
+        jmp 0x2CF8:DeskGameStats                ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; GameStandingsMenuThunk                                     1B35:232D  RTLink
@@ -2600,7 +2590,7 @@ DeskGameStatsThunk:
 ;-----------------------------------------------------------------------------
 GameStandingsMenuThunk:
         call LoadFromThunk
-        jmp 0x215A:0x79E                        ; load paragraph, relocated
+        jmp 0x215A:GameStandingsMenu            ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuGameShowPlayerStatsThunk                               1B35:2337  RTLink
@@ -2608,7 +2598,7 @@ GameStandingsMenuThunk:
 ;-----------------------------------------------------------------------------
 MenuGameShowPlayerStatsThunk:
         call LoadFromThunk
-        jmp 0x2047:0x2C90                       ; load paragraph, relocated
+        jmp 0x2047:MenuGameShowPlayerStats      ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuUseDefaultLinesThunk                                   1B35:2341  RTLink
@@ -2616,7 +2606,7 @@ MenuGameShowPlayerStatsThunk:
 ;-----------------------------------------------------------------------------
 MenuUseDefaultLinesThunk:
         call LoadFromThunk
-        jmp 0x2047:0x2706                       ; load paragraph, relocated
+        jmp 0x2047:MenuUseDefaultLines          ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuUseOriginalLinesThunk                                  1B35:234B  RTLink
@@ -2624,7 +2614,7 @@ MenuUseDefaultLinesThunk:
 ;-----------------------------------------------------------------------------
 MenuUseOriginalLinesThunk:
         call LoadFromThunk
-        jmp 0x2047:0x25F2                       ; load paragraph, relocated
+        jmp 0x2047:MenuUseOriginalLines         ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuLineEdCancelThunk                                      1B35:2355  RTLink
@@ -2632,7 +2622,7 @@ MenuUseOriginalLinesThunk:
 ;-----------------------------------------------------------------------------
 MenuLineEdCancelThunk:
         call LoadFromThunk
-        jmp 0x2047:0x25EE                       ; load paragraph, relocated
+        jmp 0x2047:MenuLineEdCancel             ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; WriteTeamLines2Thunk                                       1B35:235F  RTLink
@@ -2640,7 +2630,7 @@ MenuLineEdCancelThunk:
 ;-----------------------------------------------------------------------------
 WriteTeamLines2Thunk:
         call LoadFromThunk
-        jmp 0x2047:0x2A60                       ; load paragraph, relocated
+        jmp 0x2047:WriteTeamLines2              ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuReturnToLineEditorThunk                                1B35:2369  RTLink
@@ -2648,7 +2638,7 @@ WriteTeamLines2Thunk:
 ;-----------------------------------------------------------------------------
 MenuReturnToLineEditorThunk:
         call LoadFromThunk
-        jmp 0x2047:0x2FA0                       ; load paragraph, relocated
+        jmp 0x2047:MenuReturnToLineEditor       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; StandingsActExitThunk                                      1B35:2373  RTLink
@@ -2656,7 +2646,7 @@ MenuReturnToLineEditorThunk:
 ;-----------------------------------------------------------------------------
 StandingsActExitThunk:
         call LoadFromThunk
-        jmp 0x2248:0xC                          ; load paragraph, relocated
+        jmp 0x2248:StandingsActExit             ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; StandingsActStandingsThunk                                 1B35:237D  RTLink
@@ -2664,7 +2654,7 @@ StandingsActExitThunk:
 ;-----------------------------------------------------------------------------
 StandingsActStandingsThunk:
         call LoadFromThunk
-        jmp 0x2248:0x14                         ; load paragraph, relocated
+        jmp 0x2248:StandingsActStandings        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; StandingsActRosterThunk                                    1B35:2387  RTLink
@@ -2672,7 +2662,7 @@ StandingsActStandingsThunk:
 ;-----------------------------------------------------------------------------
 StandingsActRosterThunk:
         call LoadFromThunk
-        jmp 0x2248:0x1E                         ; load paragraph, relocated
+        jmp 0x2248:StandingsActRoster           ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; StandingsActRoster2Thunk                                   1B35:2391  RTLink
@@ -2680,7 +2670,7 @@ StandingsActRosterThunk:
 ;-----------------------------------------------------------------------------
 StandingsActRoster2Thunk:
         call LoadFromThunk
-        jmp 0x2248:0x64C                        ; load paragraph, relocated
+        jmp 0x2248:StandingsActRoster2          ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; StandingsActPlayerThunk                                    1B35:239B  RTLink
@@ -2688,7 +2678,7 @@ StandingsActRoster2Thunk:
 ;-----------------------------------------------------------------------------
 StandingsActPlayerThunk:
         call LoadFromThunk
-        jmp 0x2248:0x656                        ; load paragraph, relocated
+        jmp 0x2248:StandingsActPlayer           ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuLeagueSettingsEditThunk                                1B35:23A5  RTLink
@@ -2696,7 +2686,7 @@ StandingsActPlayerThunk:
 ;-----------------------------------------------------------------------------
 MenuLeagueSettingsEditThunk:
         call LoadFromThunk
-        jmp 0x2B26:0x52                         ; load paragraph, relocated
+        jmp 0x2B26:MenuLeagueSettingsEdit       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuP2ControlsPlayoffThunk                                 1B35:23AF  RTLink
@@ -2704,7 +2694,7 @@ MenuLeagueSettingsEditThunk:
 ;-----------------------------------------------------------------------------
 MenuP2ControlsPlayoffThunk:
         call LoadFromThunk
-        jmp 0x1E45:0x65E                        ; load paragraph, relocated
+        jmp 0x1E45:MenuP2ControlsPlayoff        ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuP1ControlsPlayoffThunk                                 1B35:23B9  RTLink
@@ -2712,7 +2702,7 @@ MenuP2ControlsPlayoffThunk:
 ;-----------------------------------------------------------------------------
 MenuP1ControlsPlayoffThunk:
         call LoadFromThunk
-        jmp 0x1E45:0x654                        ; load paragraph, relocated
+        jmp 0x1E45:MenuP1ControlsPlayoff        ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; POMenuResult1Thunk                                         1B35:23C3  RTLink
@@ -2720,7 +2710,7 @@ MenuP1ControlsPlayoffThunk:
 ;-----------------------------------------------------------------------------
 POMenuResult1Thunk:
         call LoadFromThunk
-        jmp 0x26D4:0x12                         ; load paragraph, relocated
+        jmp 0x26D4:POMenuResult1                ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; SaveGameStateThunk                                         1B35:23CD  RTLink
@@ -2728,7 +2718,7 @@ POMenuResult1Thunk:
 ;-----------------------------------------------------------------------------
 SaveGameStateThunk:
         call LoadFromThunk
-        jmp 0x278C:6                            ; load paragraph, relocated
+        jmp 0x278C:SaveGameState                ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
 ; WriteModeStateThunk                                        1B35:23D7  RTLink
@@ -2736,7 +2726,7 @@ SaveGameStateThunk:
 ;-----------------------------------------------------------------------------
 WriteModeStateThunk:
         call LoadFromThunk
-        jmp 0x2E70:0xD0A                        ; load paragraph, relocated
+        jmp 0x2E70:WriteModeState               ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; SaveLeagueGameRefThunk                                     1B35:23E1  RTLink
@@ -2744,7 +2734,7 @@ WriteModeStateThunk:
 ;-----------------------------------------------------------------------------
 SaveLeagueGameRefThunk:
         call LoadFromThunk
-        jmp 0x2E18:0xA                          ; load paragraph, relocated
+        jmp 0x2E18:SaveLeagueGameRef            ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
 ; EditTextFieldThunk                                         1B35:23EB  RTLink
@@ -2752,7 +2742,7 @@ SaveLeagueGameRefThunk:
 ;-----------------------------------------------------------------------------
 EditTextFieldThunk:
         call LoadFromThunk
-        jmp 0x1E45:0x25C                        ; load paragraph, relocated
+        jmp 0x1E45:EditTextField                ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
 ; SetCtlTeamsThunk                                           1B35:23F5  RTLink
@@ -2760,7 +2750,7 @@ EditTextFieldThunk:
 ;-----------------------------------------------------------------------------
 SetCtlTeamsThunk:
         call LoadFromThunk
-        jmp 0x1E45:0xFD2                        ; load paragraph, relocated
+        jmp 0x1E45:SetCtlTeams                  ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; restoreplThunk                                             1B35:23FF  RTLink
@@ -2768,7 +2758,7 @@ SetCtlTeamsThunk:
 ;-----------------------------------------------------------------------------
 restoreplThunk:
         call LoadFromThunk
-        jmp 0x2E42:0x1DE                        ; load paragraph, relocated
+        jmp 0x2E42:restorepl                    ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; setpersonelThunk                                           1B35:2409  RTLink
@@ -2776,7 +2766,7 @@ restoreplThunk:
 ;-----------------------------------------------------------------------------
 setpersonelThunk:
         call LoadFromThunk
-        jmp 0x2E42:0x1994                       ; load paragraph, relocated
+        jmp 0x2E42:setpersonel                  ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; PlayHilightThunk                                           1B35:2413  RTLink
@@ -2784,7 +2774,7 @@ setpersonelThunk:
 ;-----------------------------------------------------------------------------
 PlayHilightThunk:
         call LoadFromThunk
-        jmp 0x2062:0xE                          ; load paragraph, relocated
+        jmp 0x2062:PlayHilight                  ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; MviOpenThunk                                               1B35:241D  RTLink
@@ -2792,7 +2782,7 @@ PlayHilightThunk:
 ;-----------------------------------------------------------------------------
 MviOpenThunk:
         call LoadFromThunk
-        jmp 0x3357:0x192                        ; load paragraph, relocated
+        jmp 0x3357:MviOpen                      ; load paragraph, relocated
         dw 6                                    ; MOVIE.OVL
 ;-----------------------------------------------------------------------------
 ; MviCloseThunk                                              1B35:2427  RTLink
@@ -2800,7 +2790,7 @@ MviOpenThunk:
 ;-----------------------------------------------------------------------------
 MviCloseThunk:
         call LoadFromThunk
-        jmp 0x3357:0x30E                        ; load paragraph, relocated
+        jmp 0x3357:MviClose                     ; load paragraph, relocated
         dw 6                                    ; MOVIE.OVL
 ;-----------------------------------------------------------------------------
 ; PlanarToLinearThunk                                        1B35:2431  RTLink
@@ -2808,7 +2798,7 @@ MviCloseThunk:
 ;-----------------------------------------------------------------------------
 PlanarToLinearThunk:
         call LoadFromThunk
-        jmp 0x3349:0                            ; load paragraph, relocated
+        jmp 0x3349:PlanarToLinear               ; load paragraph, relocated
         dw 6                                    ; MOVIE.OVL
 ;-----------------------------------------------------------------------------
 ; MviNextFrameThunk                                          1B35:243B  RTLink
@@ -2816,7 +2806,7 @@ PlanarToLinearThunk:
 ;-----------------------------------------------------------------------------
 MviNextFrameThunk:
         call LoadFromThunk
-        jmp 0x3357:0x6C8                        ; load paragraph, relocated
+        jmp 0x3357:MviNextFrame                 ; load paragraph, relocated
         dw 6                                    ; MOVIE.OVL
 ;-----------------------------------------------------------------------------
 ; DrawDlgFrameThunk                                          1B35:2445  RTLink
@@ -2824,7 +2814,7 @@ MviNextFrameThunk:
 ;-----------------------------------------------------------------------------
 DrawDlgFrameThunk:
         call LoadFromThunk
-        jmp 0x2047:0x20E4                       ; load paragraph, relocated
+        jmp 0x2047:DrawDlgFrame                 ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; GameLineEditorThunk                                        1B35:244F  RTLink
@@ -2832,7 +2822,7 @@ DrawDlgFrameThunk:
 ;-----------------------------------------------------------------------------
 GameLineEditorThunk:
         call LoadFromThunk
-        jmp 0x2047:8                            ; load paragraph, relocated
+        jmp 0x2047:GameLineEditor               ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; RosterScreenThunk                                          1B35:2459  RTLink
@@ -2840,7 +2830,7 @@ GameLineEditorThunk:
 ;-----------------------------------------------------------------------------
 RosterScreenThunk:
         call LoadFromThunk
-        jmp 0x2446:0x6A                         ; load paragraph, relocated
+        jmp 0x2446:RosterScreen                 ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; InitMenuRemapThunk                                         1B35:2463  RTLink
@@ -2848,7 +2838,7 @@ RosterScreenThunk:
 ;-----------------------------------------------------------------------------
 InitMenuRemapThunk:
         call LoadFromThunk
-        jmp 0x2095:8                            ; load paragraph, relocated
+        jmp 0x2095:InitMenuRemap                ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; StatsMenuLoopThunk                                         1B35:246D  RTLink
@@ -2856,7 +2846,7 @@ InitMenuRemapThunk:
 ;-----------------------------------------------------------------------------
 StatsMenuLoopThunk:
         call LoadFromThunk
-        jmp 0x1EAE:0x44                         ; load paragraph, relocated
+        jmp 0x1EAE:StatsMenuLoop                ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; SetupStatsMenusThunk                                       1B35:2477  RTLink
@@ -2864,7 +2854,7 @@ StatsMenuLoopThunk:
 ;-----------------------------------------------------------------------------
 SetupStatsMenusThunk:
         call LoadFromThunk
-        jmp 0x1E45:0                            ; load paragraph, relocated
+        jmp 0x1E45:SetupStatsMenus              ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; BuildSeasonTitleThunk                                      1B35:2481  RTLink
@@ -2872,7 +2862,7 @@ SetupStatsMenusThunk:
 ;-----------------------------------------------------------------------------
 BuildSeasonTitleThunk:
         call LoadFromThunk
-        jmp 0x1E45:0x47C                        ; load paragraph, relocated
+        jmp 0x1E45:BuildSeasonTitle             ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; LoadScheduleDBThunk                                        1B35:248B  RTLink
@@ -2880,7 +2870,7 @@ BuildSeasonTitleThunk:
 ;-----------------------------------------------------------------------------
 LoadScheduleDBThunk:
         call LoadFromThunk
-        jmp 0x26D4:0x29F2                       ; load paragraph, relocated
+        jmp 0x26D4:LoadScheduleDB               ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; SetSoundDeviceThunk                                        1B35:2495  RTLink
@@ -2888,7 +2878,7 @@ LoadScheduleDBThunk:
 ;-----------------------------------------------------------------------------
 SetSoundDeviceThunk:
         call LoadFromThunk
-        jmp 0x2528:0x426                        ; load paragraph, relocated
+        jmp 0x2528:SetSoundDevice               ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; SaveModeStateThunk                                         1B35:249F  RTLink
@@ -2896,7 +2886,7 @@ SetSoundDeviceThunk:
 ;-----------------------------------------------------------------------------
 SaveModeStateThunk:
         call LoadFromThunk
-        jmp 0x2E70:0x968                        ; load paragraph, relocated
+        jmp 0x2E70:SaveModeState                ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; SimulateGameThunk                                          1B35:24A9  RTLink
@@ -2904,7 +2894,7 @@ SaveModeStateThunk:
 ;-----------------------------------------------------------------------------
 SimulateGameThunk:
         call LoadFromThunk
-        jmp 0x23AD:0x46                         ; load paragraph, relocated
+        jmp 0x23AD:SimulateGame                 ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
 ; PostGameToTeamDbThunk                                      1B35:24B3  RTLink
@@ -2912,7 +2902,7 @@ SimulateGameThunk:
 ;-----------------------------------------------------------------------------
 PostGameToTeamDbThunk:
         call LoadFromThunk
-        jmp 0x25B2:0x18F4                       ; load paragraph, relocated
+        jmp 0x25B2:PostGameToTeamDb             ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
 ; EasnStandingsScreenThunk                                   1B35:24BD  RTLink
@@ -2920,7 +2910,7 @@ PostGameToTeamDbThunk:
 ;-----------------------------------------------------------------------------
 EasnStandingsScreenThunk:
         call LoadFromThunk
-        jmp 0x22B3:0x558                        ; load paragraph, relocated
+        jmp 0x22B3:EasnStandingsScreen          ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; EasnGoalieStatsScreenThunk                                 1B35:24C7  RTLink
@@ -2928,7 +2918,7 @@ EasnStandingsScreenThunk:
 ;-----------------------------------------------------------------------------
 EasnGoalieStatsScreenThunk:
         call LoadFromThunk
-        jmp 0x22B3:0x390                        ; load paragraph, relocated
+        jmp 0x22B3:EasnGoalieStatsScreen        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; EasnSkaterStatsScreenThunk                                 1B35:24D1  RTLink
@@ -2936,7 +2926,7 @@ EasnGoalieStatsScreenThunk:
 ;-----------------------------------------------------------------------------
 EasnSkaterStatsScreenThunk:
         call LoadFromThunk
-        jmp 0x22B3:0x1C8                        ; load paragraph, relocated
+        jmp 0x22B3:EasnSkaterStatsScreen        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; EasnTeamStatsScreenThunk                                   1B35:24DB  RTLink
@@ -2944,7 +2934,7 @@ EasnSkaterStatsScreenThunk:
 ;-----------------------------------------------------------------------------
 EasnTeamStatsScreenThunk:
         call LoadFromThunk
-        jmp 0x22B3:0                            ; load paragraph, relocated
+        jmp 0x22B3:EasnTeamStatsScreen          ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; PlayGameThunk                                              1B35:24E5  RTLink
@@ -2952,7 +2942,7 @@ EasnTeamStatsScreenThunk:
 ;-----------------------------------------------------------------------------
 PlayGameThunk:
         call LoadFromThunk
-        jmp 0x1E7E:0x88A                        ; load paragraph, relocated
+        jmp 0x1E7E:PlayGame                     ; load paragraph, relocated
         dw 3                                    ; GAME.OVL
 ;-----------------------------------------------------------------------------
 ; GameStandingsScreenThunk                                   1B35:24EF  RTLink
@@ -2960,7 +2950,7 @@ PlayGameThunk:
 ;-----------------------------------------------------------------------------
 GameStandingsScreenThunk:
         call LoadFromThunk
-        jmp 0x215A:0x6AC                        ; load paragraph, relocated
+        jmp 0x215A:GameStandingsScreen          ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; GameGoalieStatsScreenThunk                                 1B35:24F9  RTLink
@@ -2968,7 +2958,7 @@ GameStandingsScreenThunk:
 ;-----------------------------------------------------------------------------
 GameGoalieStatsScreenThunk:
         call LoadFromThunk
-        jmp 0x215A:0x56A                        ; load paragraph, relocated
+        jmp 0x215A:GameGoalieStatsScreen        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; GameSkaterStatsScreenThunk                                 1B35:2503  RTLink
@@ -2976,7 +2966,7 @@ GameGoalieStatsScreenThunk:
 ;-----------------------------------------------------------------------------
 GameSkaterStatsScreenThunk:
         call LoadFromThunk
-        jmp 0x215A:0x428                        ; load paragraph, relocated
+        jmp 0x215A:GameSkaterStatsScreen        ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; GameTeamStatsScreenThunk                                   1B35:250D  RTLink
@@ -2984,7 +2974,7 @@ GameSkaterStatsScreenThunk:
 ;-----------------------------------------------------------------------------
 GameTeamStatsScreenThunk:
         call LoadFromThunk
-        jmp 0x215A:0x2E6                        ; load paragraph, relocated
+        jmp 0x215A:GameTeamStatsScreen          ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; SetupControllersThunk                                      1B35:2517  RTLink
@@ -2992,7 +2982,7 @@ GameTeamStatsScreenThunk:
 ;-----------------------------------------------------------------------------
 SetupControllersThunk:
         call LoadFromThunk
-        jmp 0x1F9C:0                            ; load paragraph, relocated
+        jmp 0x1F9C:SetupControllers             ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; SetStatsMenuTextThunk                                      1B35:2521  RTLink
@@ -3000,7 +2990,7 @@ SetupControllersThunk:
 ;-----------------------------------------------------------------------------
 SetStatsMenuTextThunk:
         call LoadFromThunk
-        jmp 0x1E45:0x598                        ; load paragraph, relocated
+        jmp 0x1E45:SetStatsMenuText             ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; ShowMatchupScreenThunk                                     1B35:252B  RTLink
@@ -3008,7 +2998,7 @@ SetStatsMenuTextThunk:
 ;-----------------------------------------------------------------------------
 ShowMatchupScreenThunk:
         call LoadFromThunk
-        jmp 0x2007:0x1BC                        ; load paragraph, relocated
+        jmp 0x2007:ShowMatchupScreen            ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
 ; CreateGSummaryDbThunk                                      1B35:2535  RTLink
@@ -3016,7 +3006,7 @@ ShowMatchupScreenThunk:
 ;-----------------------------------------------------------------------------
 CreateGSummaryDbThunk:
         call LoadFromThunk
-        jmp 0x2425:0x374                        ; load paragraph, relocated
+        jmp 0x2425:CreateGSummaryDb             ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
 ; DrawLeagueSetDlgSelThunk                                   1B35:253F  RTLink
@@ -3024,7 +3014,7 @@ CreateGSummaryDbThunk:
 ;-----------------------------------------------------------------------------
 DrawLeagueSetDlgSelThunk:
         call LoadFromThunk
-        jmp 0x2B26:0x3C4                        ; load paragraph, relocated
+        jmp 0x2B26:DrawLeagueSetDlgSel          ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuShowLeagueSettingsThunk                                1B35:2549  RTLink
@@ -3032,7 +3022,7 @@ DrawLeagueSetDlgSelThunk:
 ;-----------------------------------------------------------------------------
 MenuShowLeagueSettingsThunk:
         call LoadFromThunk
-        jmp 0x2B26:0x19C                        ; load paragraph, relocated
+        jmp 0x2B26:MenuShowLeagueSettings       ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuShowLeagueSettings2Thunk                               1B35:2553  RTLink
@@ -3040,7 +3030,7 @@ MenuShowLeagueSettingsThunk:
 ;-----------------------------------------------------------------------------
 MenuShowLeagueSettings2Thunk:
         call LoadFromThunk
-        jmp 0x2B26:0x2B0                        ; load paragraph, relocated
+        jmp 0x2B26:MenuShowLeagueSettings2      ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; SportsDeskThunk                                            1B35:255D  RTLink
@@ -3048,7 +3038,7 @@ MenuShowLeagueSettings2Thunk:
 ;-----------------------------------------------------------------------------
 SportsDeskThunk:
         call LoadFromThunk
-        jmp 0x2CF8:0xE                          ; load paragraph, relocated
+        jmp 0x2CF8:SportsDesk                   ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; FreePPVFilesThunk                                          1B35:2567  RTLink
@@ -3056,7 +3046,7 @@ SportsDeskThunk:
 ;-----------------------------------------------------------------------------
 FreePPVFilesThunk:
         call LoadFromThunk
-        jmp 0x256C:0xE8                         ; load paragraph, relocated
+        jmp 0x256C:FreePPVFiles                 ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
 ; ReplayIsEmptyThunk                                         1B35:2571  RTLink
@@ -3064,7 +3054,7 @@ FreePPVFilesThunk:
 ;-----------------------------------------------------------------------------
 ReplayIsEmptyThunk:
         call LoadFromThunk
-        jmp 0x1E7E:0xA94                        ; load paragraph, relocated
+        jmp 0x1E7E:ReplayIsEmpty                ; load paragraph, relocated
         dw 3                                    ; GAME.OVL
 ;-----------------------------------------------------------------------------
 ; LoadScoreboardArtThunk                                     1B35:257B  RTLink
@@ -3072,7 +3062,7 @@ ReplayIsEmptyThunk:
 ;-----------------------------------------------------------------------------
 LoadScoreboardArtThunk:
         call LoadFromThunk
-        jmp 0x251E:0x38                         ; load paragraph, relocated
+        jmp 0x251E:LoadScoreboardArt            ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
 ; LoadRinkEndArtThunk                                        1B35:2585  RTLink
@@ -3080,7 +3070,7 @@ LoadScoreboardArtThunk:
 ;-----------------------------------------------------------------------------
 LoadRinkEndArtThunk:
         call LoadFromThunk
-        jmp 0x1F9C:0x1B4                        ; load paragraph, relocated
+        jmp 0x1F9C:LoadRinkEndArt               ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
 ; LoadPPVFilesThunk                                          1B35:258F  RTLink
@@ -3088,7 +3078,7 @@ LoadRinkEndArtThunk:
 ;-----------------------------------------------------------------------------
 LoadPPVFilesThunk:
         call LoadFromThunk
-        jmp 0x1F9C:0x72                         ; load paragraph, relocated
+        jmp 0x1F9C:LoadPPVFiles                 ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
 ; InstantReplayThunk                                         1B35:2599  RTLink
@@ -3096,7 +3086,7 @@ LoadPPVFilesThunk:
 ;-----------------------------------------------------------------------------
 InstantReplayThunk:
         call LoadFromThunk
-        jmp 0x2581:0xE                          ; load paragraph, relocated
+        jmp 0x2581:InstantReplay                ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
 ; ShowGameSummaryThunk                                       1B35:25A3  RTLink
@@ -3104,7 +3094,7 @@ InstantReplayThunk:
 ;-----------------------------------------------------------------------------
 ShowGameSummaryThunk:
         call LoadFromThunk
-        jmp 0x21A1:8                            ; load paragraph, relocated
+        jmp 0x21A1:ShowGameSummary              ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
 ; ShowTeamStatsThunk                                         1B35:25AD  RTLink
@@ -3112,7 +3102,7 @@ ShowGameSummaryThunk:
 ;-----------------------------------------------------------------------------
 ShowTeamStatsThunk:
         call LoadFromThunk
-        jmp 0x2306:0x2B6                        ; load paragraph, relocated
+        jmp 0x2306:ShowTeamStats                ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
 ; SetTeamGoalieThunk                                         1B35:25B7  RTLink
@@ -3120,7 +3110,7 @@ ShowTeamStatsThunk:
 ;-----------------------------------------------------------------------------
 SetTeamGoalieThunk:
         call LoadFromThunk
-        jmp 0x226F:0xDAA                        ; load paragraph, relocated
+        jmp 0x226F:SetTeamGoalie                ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; CopyGameSettingsThunk                                      1B35:25C1  RTLink
@@ -3128,7 +3118,7 @@ SetTeamGoalieThunk:
 ;-----------------------------------------------------------------------------
 CopyGameSettingsThunk:
         call LoadFromThunk
-        jmp 0x2E70:0xE36                        ; load paragraph, relocated
+        jmp 0x2E70:CopyGameSettings             ; load paragraph, relocated
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; AddHumanTeamThunk                                          1B35:25CB  RTLink
@@ -3136,7 +3126,7 @@ CopyGameSettingsThunk:
 ;-----------------------------------------------------------------------------
 AddHumanTeamThunk:
         call LoadFromThunk
-        jmp 0x1ECB:8                            ; load paragraph, relocated
+        jmp 0x1ECB:AddHumanTeam                 ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
 ; CreateNewLeagueThunk                                       1B35:25D5  RTLink
@@ -3144,7 +3134,7 @@ AddHumanTeamThunk:
 ;-----------------------------------------------------------------------------
 CreateNewLeagueThunk:
         call LoadFromThunk
-        jmp 0x2A1B:4                            ; load paragraph, relocated
+        jmp 0x2A1B:CreateNewLeague              ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
 ; MergeUpdateDbsThunk                                        1B35:25DF  RTLink
@@ -3152,7 +3142,7 @@ CreateNewLeagueThunk:
 ;-----------------------------------------------------------------------------
 MergeUpdateDbsThunk:
         call LoadFromThunk
-        jmp 0x2CB7:0x134E                       ; load paragraph, relocated
+        jmp 0x2CB7:MergeUpdateDbs               ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
 ; RebuildLeagueDbsThunk                                      1B35:25E9  RTLink
@@ -3160,7 +3150,7 @@ MergeUpdateDbsThunk:
 ;-----------------------------------------------------------------------------
 RebuildLeagueDbsThunk:
         call LoadFromThunk
-        jmp 0x2CB7:0x1442                       ; load paragraph, relocated
+        jmp 0x2CB7:RebuildLeagueDbs             ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
 ; CheckMasterPasswordThunk                                   1B35:25F3  RTLink
@@ -3168,7 +3158,7 @@ RebuildLeagueDbsThunk:
 ;-----------------------------------------------------------------------------
 CheckMasterPasswordThunk:
         call LoadFromThunk
-        jmp 0x2305:0xC                          ; load paragraph, relocated
+        jmp 0x2305:CheckMasterPassword          ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
 ; RemoveHumanTeamThunk                                       1B35:25FD  RTLink
@@ -3176,7 +3166,7 @@ CheckMasterPasswordThunk:
 ;-----------------------------------------------------------------------------
 RemoveHumanTeamThunk:
         call LoadFromThunk
-        jmp 0x1ECB:0x332                        ; load paragraph, relocated
+        jmp 0x1ECB:RemoveHumanTeam              ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
 ; TradePlayersThunk                                          1B35:2607  RTLink
@@ -3184,7 +3174,7 @@ RemoveHumanTeamThunk:
 ;-----------------------------------------------------------------------------
 TradePlayersThunk:
         call LoadFromThunk
-        jmp 0x2A57:0x2152                       ; load paragraph, relocated
+        jmp 0x2A57:TradePlayers                 ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
 ; UpdateTeamDbsThunk                                         1B35:2611  RTLink
@@ -3192,7 +3182,7 @@ TradePlayersThunk:
 ;-----------------------------------------------------------------------------
 UpdateTeamDbsThunk:
         call LoadFromThunk
-        jmp 0x2CB7:0x9FA                        ; load paragraph, relocated
+        jmp 0x2CB7:UpdateTeamDbs                ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
 ; MergeLeagueFilesThunk                                      1B35:261B  RTLink
@@ -3200,7 +3190,7 @@ UpdateTeamDbsThunk:
 ;-----------------------------------------------------------------------------
 MergeLeagueFilesThunk:
         call LoadFromThunk
-        jmp 0x2CB7:0xC28                        ; load paragraph, relocated
+        jmp 0x2CB7:MergeLeagueFiles             ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
 ; ImportDbsThunk                                             1B35:2625  RTLink
@@ -3208,7 +3198,7 @@ MergeLeagueFilesThunk:
 ;-----------------------------------------------------------------------------
 ImportDbsThunk:
         call LoadFromThunk
-        jmp 0x2139:0x1430                       ; load paragraph, relocated
+        jmp 0x2139:ImportDbs                    ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
 ; PlayLeagueGameThunk                                        1B35:262F  RTLink
@@ -3216,7 +3206,7 @@ ImportDbsThunk:
 ;-----------------------------------------------------------------------------
 PlayLeagueGameThunk:
         call LoadFromThunk
-        jmp 0x25B2:0x208A                       ; load paragraph, relocated
+        jmp 0x25B2:PlayLeagueGame               ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
 ; ExportDbsThunk                                             1B35:2639  RTLink
@@ -3224,7 +3214,7 @@ PlayLeagueGameThunk:
 ;-----------------------------------------------------------------------------
 ExportDbsThunk:
         call LoadFromThunk
-        jmp 0x2139:0x15EC                       ; load paragraph, relocated
+        jmp 0x2139:ExportDbs                    ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
 ; ReadTeamNamesThunk                                         1B35:2643  RTLink
@@ -3232,7 +3222,7 @@ ExportDbsThunk:
 ;-----------------------------------------------------------------------------
 ReadTeamNamesThunk:
         call LoadFromThunk
-        jmp 0x22D3:0x1E2                        ; load paragraph, relocated
+        jmp 0x22D3:ReadTeamNames                ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
 ; TradeCancelThunk                                           1B35:264D  RTLink
@@ -3240,7 +3230,7 @@ ReadTeamNamesThunk:
 ;-----------------------------------------------------------------------------
 TradeCancelThunk:
         call LoadFromThunk
-        jmp 0x2A57:0x1080                       ; load paragraph, relocated
+        jmp 0x2A57:TradeCancel                  ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
 ; TradeDoneThunk                                             1B35:2657  RTLink
@@ -3248,7 +3238,7 @@ TradeCancelThunk:
 ;-----------------------------------------------------------------------------
 TradeDoneThunk:
         call LoadFromThunk
-        jmp 0x2A57:0xFDE                        ; load paragraph, relocated
+        jmp 0x2A57:TradeDone                    ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
 ; TeamSelCancelThunk                                         1B35:2661  RTLink
@@ -3256,7 +3246,7 @@ TradeDoneThunk:
 ;-----------------------------------------------------------------------------
 TeamSelCancelThunk:
         call LoadFromThunk
-        jmp 0x1F31:0xBA6                        ; load paragraph, relocated
+        jmp 0x1F31:TeamSelCancel                ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
 ; TeamSelDoneThunk                                           1B35:266B  RTLink
@@ -3264,7 +3254,7 @@ TeamSelCancelThunk:
 ;-----------------------------------------------------------------------------
 TeamSelDoneThunk:
         call LoadFromThunk
-        jmp 0x1F31:0xB9E                        ; load paragraph, relocated
+        jmp 0x1F31:TeamSelDone                  ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
 ; CalReturnThunk                                             1B35:2675  RTLink
@@ -3272,7 +3262,7 @@ TeamSelDoneThunk:
 ;-----------------------------------------------------------------------------
 CalReturnThunk:
         call LoadFromThunk
-        jmp 0x25B2:0x574                        ; load paragraph, relocated
+        jmp 0x25B2:CalReturn                    ; load paragraph, relocated
         dw 1                                    ; LP.OVL
 ;-----------------------------------------------------------------------------
 ; CalStandingsMenuThunk                                      1B35:267F  RTLink
@@ -3280,7 +3270,7 @@ CalReturnThunk:
 ;-----------------------------------------------------------------------------
 CalStandingsMenuThunk:
         call LoadFromThunk
-        jmp 0x2351:0x4A6                        ; load paragraph, relocated
+        jmp 0x2351:CalStandingsMenu             ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; CalStandingsScreenThunk                                    1B35:2689  RTLink
@@ -3288,7 +3278,7 @@ CalStandingsMenuThunk:
 ;-----------------------------------------------------------------------------
 CalStandingsScreenThunk:
         call LoadFromThunk
-        jmp 0x2351:0x3D0                        ; load paragraph, relocated
+        jmp 0x2351:CalStandingsScreen           ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; CalGoalieStatsScreenThunk                                  1B35:2693  RTLink
@@ -3296,7 +3286,7 @@ CalStandingsScreenThunk:
 ;-----------------------------------------------------------------------------
 CalGoalieStatsScreenThunk:
         call LoadFromThunk
-        jmp 0x2351:0x28E                        ; load paragraph, relocated
+        jmp 0x2351:CalGoalieStatsScreen         ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; CalSkaterStatsScreenThunk                                  1B35:269D  RTLink
@@ -3304,7 +3294,7 @@ CalGoalieStatsScreenThunk:
 ;-----------------------------------------------------------------------------
 CalSkaterStatsScreenThunk:
         call LoadFromThunk
-        jmp 0x2351:0x14C                        ; load paragraph, relocated
+        jmp 0x2351:CalSkaterStatsScreen         ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; CalTeamStatsScreenThunk                                    1B35:26A7  RTLink
@@ -3312,7 +3302,7 @@ CalSkaterStatsScreenThunk:
 ;-----------------------------------------------------------------------------
 CalTeamStatsScreenThunk:
         call LoadFromThunk
-        jmp 0x2351:0xA                          ; load paragraph, relocated
+        jmp 0x2351:CalTeamStatsScreen           ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; LoadGameTeamsThunk                                         1B35:26B1  RTLink
@@ -3320,7 +3310,7 @@ CalTeamStatsScreenThunk:
 ;-----------------------------------------------------------------------------
 LoadGameTeamsThunk:
         call LoadFromThunk
-        jmp 0x2425:0                            ; load paragraph, relocated
+        jmp 0x2425:LoadGameTeams                ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
 ; FadeZoomRectThunk                                          1B35:26BB  RTLink
@@ -3328,7 +3318,7 @@ LoadGameTeamsThunk:
 ;-----------------------------------------------------------------------------
 FadeZoomRectThunk:
         call LoadFromThunk
-        jmp 0x3358:0                            ; load paragraph, relocated
+        jmp 0x3358:FadeZoomRect                 ; load paragraph, relocated
         dw 19                                   ; FADES12.OVL
 ;-----------------------------------------------------------------------------
 ; StatsSelNhlPlayoffsThunk                                   1B35:26C5  RTLink
@@ -3336,7 +3326,7 @@ FadeZoomRectThunk:
 ;-----------------------------------------------------------------------------
 StatsSelNhlPlayoffsThunk:
         call LoadFromThunk
-        jmp 0x2248:0xEC                         ; load paragraph, relocated
+        jmp 0x2248:StatsSelNhlPlayoffs          ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; StatsSelNhlSeasonThunk                                     1B35:26CF  RTLink
@@ -3344,7 +3334,7 @@ StatsSelNhlPlayoffsThunk:
 ;-----------------------------------------------------------------------------
 StatsSelNhlSeasonThunk:
         call LoadFromThunk
-        jmp 0x2248:0x28                         ; load paragraph, relocated
+        jmp 0x2248:StatsSelNhlSeason            ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; CmpPointsThunk                                             1B35:26D9  RTLink
@@ -3352,7 +3342,7 @@ StatsSelNhlSeasonThunk:
 ;-----------------------------------------------------------------------------
 CmpPointsThunk:
         call LoadFromThunk
-        jmp 0x2095:0xC0                         ; load paragraph, relocated
+        jmp 0x2095:CmpPoints                    ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; CmpGAAThunk                                                1B35:26E3  RTLink
@@ -3360,7 +3350,7 @@ CmpPointsThunk:
 ;-----------------------------------------------------------------------------
 CmpGAAThunk:
         call LoadFromThunk
-        jmp 0x2095:0x180                        ; load paragraph, relocated
+        jmp 0x2095:CmpGAA                       ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; CmpTeamScoringThunk                                        1B35:26ED  RTLink
@@ -3368,7 +3358,7 @@ CmpGAAThunk:
 ;-----------------------------------------------------------------------------
 CmpTeamScoringThunk:
         call LoadFromThunk
-        jmp 0x25E5:2                            ; load paragraph, relocated
+        jmp 0x25E5:CmpTeamScoring               ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; CmpTeamDefenseThunk                                        1B35:26F7  RTLink
@@ -3376,7 +3366,7 @@ CmpTeamScoringThunk:
 ;-----------------------------------------------------------------------------
 CmpTeamDefenseThunk:
         call LoadFromThunk
-        jmp 0x25E5:0x11A                        ; load paragraph, relocated
+        jmp 0x25E5:CmpTeamDefense               ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; CmpTeamPKThunk                                             1B35:2701  RTLink
@@ -3384,7 +3374,7 @@ CmpTeamDefenseThunk:
 ;-----------------------------------------------------------------------------
 CmpTeamPKThunk:
         call LoadFromThunk
-        jmp 0x25E5:0x3B6                        ; load paragraph, relocated
+        jmp 0x25E5:CmpTeamPK                    ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; CmpTeamPPThunk                                             1B35:270B  RTLink
@@ -3392,7 +3382,7 @@ CmpTeamPKThunk:
 ;-----------------------------------------------------------------------------
 CmpTeamPPThunk:
         call LoadFromThunk
-        jmp 0x25E5:0x232                        ; load paragraph, relocated
+        jmp 0x25E5:CmpTeamPP                    ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; CmpTeamPenaltiesThunk                                      1B35:2715  RTLink
@@ -3400,7 +3390,7 @@ CmpTeamPPThunk:
 ;-----------------------------------------------------------------------------
 CmpTeamPenaltiesThunk:
         call LoadFromThunk
-        jmp 0x25E5:0x52E                        ; load paragraph, relocated
+        jmp 0x25E5:CmpTeamPenalties             ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; CmpGoalsThunk                                              1B35:271F  RTLink
@@ -3408,7 +3398,7 @@ CmpTeamPenaltiesThunk:
 ;-----------------------------------------------------------------------------
 CmpGoalsThunk:
         call LoadFromThunk
-        jmp 0x26BE:0xA                          ; load paragraph, relocated
+        jmp 0x26BE:CmpGoals                     ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; CmpAssistsThunk                                            1B35:2729  RTLink
@@ -3416,7 +3406,7 @@ CmpGoalsThunk:
 ;-----------------------------------------------------------------------------
 CmpAssistsThunk:
         call LoadFromThunk
-        jmp 0x26BE:0xEC                         ; load paragraph, relocated
+        jmp 0x26BE:CmpAssists                   ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; CmpPPGoalsThunk                                            1B35:2733  RTLink
@@ -3424,7 +3414,7 @@ CmpAssistsThunk:
 ;-----------------------------------------------------------------------------
 CmpPPGoalsThunk:
         call LoadFromThunk
-        jmp 0x26BE:0x1C6                        ; load paragraph, relocated
+        jmp 0x26BE:CmpPPGoals                   ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; CmpSHGoalsThunk                                            1B35:273D  RTLink
@@ -3432,7 +3422,7 @@ CmpPPGoalsThunk:
 ;-----------------------------------------------------------------------------
 CmpSHGoalsThunk:
         call LoadFromThunk
-        jmp 0x26BE:0x2C0                        ; load paragraph, relocated
+        jmp 0x26BE:CmpSHGoals                   ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; CmpPlusMinusThunk                                          1B35:2747  RTLink
@@ -3440,7 +3430,7 @@ CmpSHGoalsThunk:
 ;-----------------------------------------------------------------------------
 CmpPlusMinusThunk:
         call LoadFromThunk
-        jmp 0x26BE:0x3BA                        ; load paragraph, relocated
+        jmp 0x26BE:CmpPlusMinus                 ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; CmpPIMThunk                                                1B35:2751  RTLink
@@ -3448,7 +3438,7 @@ CmpPlusMinusThunk:
 ;-----------------------------------------------------------------------------
 CmpPIMThunk:
         call LoadFromThunk
-        jmp 0x26BE:0x49E                        ; load paragraph, relocated
+        jmp 0x26BE:CmpPIM                       ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; CmpShootPctThunk                                           1B35:275B  RTLink
@@ -3456,7 +3446,7 @@ CmpPIMThunk:
 ;-----------------------------------------------------------------------------
 CmpShootPctThunk:
         call LoadFromThunk
-        jmp 0x26BE:0x598                        ; load paragraph, relocated
+        jmp 0x26BE:CmpShootPct                  ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; CmpGoalieWinsThunk                                         1B35:2765  RTLink
@@ -3464,7 +3454,7 @@ CmpShootPctThunk:
 ;-----------------------------------------------------------------------------
 CmpGoalieWinsThunk:
         call LoadFromThunk
-        jmp 0x26BE:0x67A                        ; load paragraph, relocated
+        jmp 0x26BE:CmpGoalieWins                ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; CmpSavePctThunk                                            1B35:276F  RTLink
@@ -3472,7 +3462,7 @@ CmpGoalieWinsThunk:
 ;-----------------------------------------------------------------------------
 CmpSavePctThunk:
         call LoadFromThunk
-        jmp 0x26BE:0x7C2                        ; load paragraph, relocated
+        jmp 0x26BE:CmpSavePct                   ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; assbenchsideThunk                                          1B35:2779  RTLink
@@ -3480,7 +3470,7 @@ CmpSavePctThunk:
 ;-----------------------------------------------------------------------------
 assbenchsideThunk:
         call LoadFromThunk
-        jmp 0x2CD2:0x1640                       ; load paragraph, relocated
+        jmp 0x2CD2:assbenchside                 ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; assboxenterThunk                                           1B35:2783  RTLink
@@ -3488,7 +3478,7 @@ assbenchsideThunk:
 ;-----------------------------------------------------------------------------
 assboxenterThunk:
         call LoadFromThunk
-        jmp 0x2CD2:0x14DC                       ; load paragraph, relocated
+        jmp 0x2CD2:assboxenter                  ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; assbenchwaitThunk                                          1B35:278D  RTLink
@@ -3496,7 +3486,7 @@ assboxenterThunk:
 ;-----------------------------------------------------------------------------
 assbenchwaitThunk:
         call LoadFromThunk
-        jmp 0x2164:0xCB0                        ; load paragraph, relocated
+        jmp 0x2164:assbenchwait                 ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; assleaveboxThunk                                           1B35:2797  RTLink
@@ -3504,7 +3494,7 @@ assbenchwaitThunk:
 ;-----------------------------------------------------------------------------
 assleaveboxThunk:
         call LoadFromThunk
-        jmp 0x2164:0x1D6                        ; load paragraph, relocated
+        jmp 0x2164:assleavebox                  ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; asstakepositionThunk                                       1B35:27A1  RTLink
@@ -3512,7 +3502,7 @@ assleaveboxThunk:
 ;-----------------------------------------------------------------------------
 asstakepositionThunk:
         call LoadFromThunk
-        jmp 0x2164:0xCDC                        ; load paragraph, relocated
+        jmp 0x2164:asstakeposition              ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; assintrolineThunk                                          1B35:27AB  RTLink
@@ -3520,7 +3510,7 @@ asstakepositionThunk:
 ;-----------------------------------------------------------------------------
 assintrolineThunk:
         call LoadFromThunk
-        jmp 0x2CD2:0x534                        ; load paragraph, relocated
+        jmp 0x2CD2:assintroline                 ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; assintrostandThunk                                         1B35:27B5  RTLink
@@ -3528,7 +3518,7 @@ assintrolineThunk:
 ;-----------------------------------------------------------------------------
 assintrostandThunk:
         call LoadFromThunk
-        jmp 0x2CD2:0x4BA                        ; load paragraph, relocated
+        jmp 0x2CD2:assintrostand                ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; assrefwhistleThunk                                         1B35:27BF  RTLink
@@ -3536,7 +3526,7 @@ assintrostandThunk:
 ;-----------------------------------------------------------------------------
 assrefwhistleThunk:
         call LoadFromThunk
-        jmp 0x2519:0x2EC2                       ; load paragraph, relocated
+        jmp 0x2519:assrefwhistle                ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; assrefgoallineThunk                                        1B35:27C9  RTLink
@@ -3544,7 +3534,7 @@ assrefwhistleThunk:
 ;-----------------------------------------------------------------------------
 assrefgoallineThunk:
         call LoadFromThunk
-        jmp 0x2519:0x38EC                       ; load paragraph, relocated
+        jmp 0x2519:assrefgoalline               ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; assrefdropThunk                                            1B35:27D3  RTLink
@@ -3552,7 +3542,7 @@ assrefgoallineThunk:
 ;-----------------------------------------------------------------------------
 assrefdropThunk:
         call LoadFromThunk
-        jmp 0x2519:0x3762                       ; load paragraph, relocated
+        jmp 0x2519:assrefdrop                   ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; assrefgoalpaThunk                                          1B35:27DD  RTLink
@@ -3560,7 +3550,7 @@ assrefdropThunk:
 ;-----------------------------------------------------------------------------
 assrefgoalpaThunk:
         call LoadFromThunk
-        jmp 0x2519:0x31E4                       ; load paragraph, relocated
+        jmp 0x2519:assrefgoalpa                 ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; assrefsignalThunk                                          1B35:27E7  RTLink
@@ -3568,7 +3558,7 @@ assrefgoalpaThunk:
 ;-----------------------------------------------------------------------------
 assrefsignalThunk:
         call LoadFromThunk
-        jmp 0x2519:0x303C                       ; load paragraph, relocated
+        jmp 0x2519:assrefsignal                 ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; assreffollowThunk                                          1B35:27F1  RTLink
@@ -3576,7 +3566,7 @@ assrefsignalThunk:
 ;-----------------------------------------------------------------------------
 assreffollowThunk:
         call LoadFromThunk
-        jmp 0x2519:0x295E                       ; load paragraph, relocated
+        jmp 0x2519:assreffollow                 ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; assrefatdotThunk                                           1B35:27FB  RTLink
@@ -3584,7 +3574,7 @@ assreffollowThunk:
 ;-----------------------------------------------------------------------------
 assrefatdotThunk:
         call LoadFromThunk
-        jmp 0x2519:0x28DC                       ; load paragraph, relocated
+        jmp 0x2519:assrefatdot                  ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; assleaveiceThunk                                           1B35:2805  RTLink
@@ -3592,7 +3582,7 @@ assrefatdotThunk:
 ;-----------------------------------------------------------------------------
 assleaveiceThunk:
         call LoadFromThunk
-        jmp 0x2519:0xAF0                        ; load paragraph, relocated
+        jmp 0x2519:assleaveice                  ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; puckfaceoff2Thunk                                          1B35:280F  RTLink
@@ -3600,7 +3590,7 @@ assleaveiceThunk:
 ;-----------------------------------------------------------------------------
 puckfaceoff2Thunk:
         call LoadFromThunk
-        jmp 0x2164:0x650                        ; load paragraph, relocated
+        jmp 0x2164:puckfaceoff2                 ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; puckfaceoffThunk                                           1B35:2819  RTLink
@@ -3608,7 +3598,7 @@ puckfaceoff2Thunk:
 ;-----------------------------------------------------------------------------
 puckfaceoffThunk:
         call LoadFromThunk
-        jmp 0x2164:0x3AA                        ; load paragraph, relocated
+        jmp 0x2164:puckfaceoff                  ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; pucknothingThunk                                           1B35:2823  RTLink
@@ -3616,7 +3606,7 @@ puckfaceoffThunk:
 ;-----------------------------------------------------------------------------
 pucknothingThunk:
         call LoadFromThunk
-        jmp 0x2519:0x2396                       ; load paragraph, relocated
+        jmp 0x2519:pucknothing                  ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; puckshadowThunk                                            1B35:282D  RTLink
@@ -3624,7 +3614,7 @@ pucknothingThunk:
 ;-----------------------------------------------------------------------------
 puckshadowThunk:
         call LoadFromThunk
-        jmp 0x28BB:0x1E08                       ; load paragraph, relocated
+        jmp 0x28BB:puckshadow                   ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; pucknormThunk                                              1B35:2837  RTLink
@@ -3632,7 +3622,7 @@ puckshadowThunk:
 ;-----------------------------------------------------------------------------
 pucknormThunk:
         call LoadFromThunk
-        jmp 0x2519:0x2294                       ; load paragraph, relocated
+        jmp 0x2519:pucknorm                     ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; assfaceoffplThunk                                          1B35:2841  RTLink
@@ -3640,7 +3630,7 @@ pucknormThunk:
 ;-----------------------------------------------------------------------------
 assfaceoffplThunk:
         call LoadFromThunk
-        jmp 0x2519:0x2162                       ; load paragraph, relocated
+        jmp 0x2519:assfaceoffpl                 ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; assfaceoffThunk                                            1B35:284B  RTLink
@@ -3648,7 +3638,7 @@ assfaceoffplThunk:
 ;-----------------------------------------------------------------------------
 assfaceoffThunk:
         call LoadFromThunk
-        jmp 0x2519:0x2142                       ; load paragraph, relocated
+        jmp 0x2519:assfaceoff                   ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; assthreestarsThunk                                         1B35:2855  RTLink
@@ -3656,7 +3646,7 @@ assfaceoffThunk:
 ;-----------------------------------------------------------------------------
 assthreestarsThunk:
         call LoadFromThunk
-        jmp 0x2CD2:0x11D0                       ; load paragraph, relocated
+        jmp 0x2CD2:assthreestars                ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; assstarskateThunk                                          1B35:285F  RTLink
@@ -3664,7 +3654,7 @@ assthreestarsThunk:
 ;-----------------------------------------------------------------------------
 assstarskateThunk:
         call LoadFromThunk
-        jmp 0x2CD2:0x10B0                       ; load paragraph, relocated
+        jmp 0x2CD2:assstarskate                 ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; asspassrecThunk                                            1B35:2869  RTLink
@@ -3672,7 +3662,7 @@ assstarskateThunk:
 ;-----------------------------------------------------------------------------
 asspassrecThunk:
         call LoadFromThunk
-        jmp 0x2C24:0xA1C                        ; load paragraph, relocated
+        jmp 0x2C24:asspassrec                   ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; assshootThunk                                              1B35:2873  RTLink
@@ -3680,7 +3670,7 @@ asspassrecThunk:
 ;-----------------------------------------------------------------------------
 assshootThunk:
         call LoadFromThunk
-        jmp 0x2519:0x20F8                       ; load paragraph, relocated
+        jmp 0x2519:assshoot                     ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; assnearestThunk                                            1B35:287D  RTLink
@@ -3688,7 +3678,7 @@ assshootThunk:
 ;-----------------------------------------------------------------------------
 assnearestThunk:
         call LoadFromThunk
-        jmp 0x2519:0x1C22                       ; load paragraph, relocated
+        jmp 0x2519:assnearest                   ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; asspuckcThunk                                              1B35:2887  RTLink
@@ -3696,7 +3686,7 @@ assnearestThunk:
 ;-----------------------------------------------------------------------------
 asspuckcThunk:
         call LoadFromThunk
-        jmp 0x2519:0x1960                       ; load paragraph, relocated
+        jmp 0x2519:asspuckc                     ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; assgoalietopuckThunk                                       1B35:2891  RTLink
@@ -3704,7 +3694,7 @@ asspuckcThunk:
 ;-----------------------------------------------------------------------------
 assgoalietopuckThunk:
         call LoadFromThunk
-        jmp 0x2519:0x111C                       ; load paragraph, relocated
+        jmp 0x2519:assgoalietopuck              ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; assgoalieThunk                                             1B35:289B  RTLink
@@ -3712,7 +3702,7 @@ assgoalietopuckThunk:
 ;-----------------------------------------------------------------------------
 assgoalieThunk:
         call LoadFromThunk
-        jmp 0x2519:0x11BE                       ; load paragraph, relocated
+        jmp 0x2519:assgoalie                    ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; assdopenThunk                                              1B35:28A5  RTLink
@@ -3720,7 +3710,7 @@ assgoalieThunk:
 ;-----------------------------------------------------------------------------
 assdopenThunk:
         call LoadFromThunk
-        jmp 0x2519:0xE04                        ; load paragraph, relocated
+        jmp 0x2519:assdopen                     ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; asspenaltyThunk                                            1B35:28AF  RTLink
@@ -3728,7 +3718,7 @@ assdopenThunk:
 ;-----------------------------------------------------------------------------
 asspenaltyThunk:
         call LoadFromThunk
-        jmp 0x2519:0xC76                        ; load paragraph, relocated
+        jmp 0x2519:asspenalty                   ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; assbenchThunk                                              1B35:28B9  RTLink
@@ -3736,7 +3726,7 @@ asspenaltyThunk:
 ;-----------------------------------------------------------------------------
 assbenchThunk:
         call LoadFromThunk
-        jmp 0x2519:0xEDC                        ; load paragraph, relocated
+        jmp 0x2519:assbench                     ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; assepenThunk                                               1B35:28C3  RTLink
@@ -3744,7 +3734,7 @@ assbenchThunk:
 ;-----------------------------------------------------------------------------
 assepenThunk:
         call LoadFromThunk
-        jmp 0x2519:0xE2C                        ; load paragraph, relocated
+        jmp 0x2519:assepen                      ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; assebenThunk                                               1B35:28CD  RTLink
@@ -3752,7 +3742,7 @@ assepenThunk:
 ;-----------------------------------------------------------------------------
 assebenThunk:
         call LoadFromThunk
-        jmp 0x2519:0xA62                        ; load paragraph, relocated
+        jmp 0x2519:asseben                      ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; assstanleyThunk                                            1B35:28D7  RTLink
@@ -3760,7 +3750,7 @@ assebenThunk:
 ;-----------------------------------------------------------------------------
 assstanleyThunk:
         call LoadFromThunk
-        jmp 0x2519:0x888                        ; load paragraph, relocated
+        jmp 0x2519:assstanley                   ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; assscoreThunk                                              1B35:28E1  RTLink
@@ -3768,7 +3758,7 @@ assstanleyThunk:
 ;-----------------------------------------------------------------------------
 assscoreThunk:
         call LoadFromThunk
-        jmp 0x2519:0x92A                        ; load paragraph, relocated
+        jmp 0x2519:assscore                     ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; asscenteroThunk                                            1B35:28EB  RTLink
@@ -3776,7 +3766,7 @@ assscoreThunk:
 ;-----------------------------------------------------------------------------
 asscenteroThunk:
         call LoadFromThunk
-        jmp 0x2519:0x716                        ; load paragraph, relocated
+        jmp 0x2519:asscentero                   ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; asscenterdThunk                                            1B35:28F5  RTLink
@@ -3784,7 +3774,7 @@ asscenteroThunk:
 ;-----------------------------------------------------------------------------
 asscenterdThunk:
         call LoadFromThunk
-        jmp 0x2519:0x630                        ; load paragraph, relocated
+        jmp 0x2519:asscenterd                   ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; asswingoThunk                                              1B35:28FF  RTLink
@@ -3792,7 +3782,7 @@ asscenterdThunk:
 ;-----------------------------------------------------------------------------
 asswingoThunk:
         call LoadFromThunk
-        jmp 0x2519:0x4B0                        ; load paragraph, relocated
+        jmp 0x2519:asswingo                     ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; asswingdThunk                                              1B35:2909  RTLink
@@ -3800,7 +3790,7 @@ asswingoThunk:
 ;-----------------------------------------------------------------------------
 asswingdThunk:
         call LoadFromThunk
-        jmp 0x2519:0x35A                        ; load paragraph, relocated
+        jmp 0x2519:asswingd                     ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; assdefdThunk                                               1B35:2913  RTLink
@@ -3808,7 +3798,7 @@ asswingdThunk:
 ;-----------------------------------------------------------------------------
 assdefdThunk:
         call LoadFromThunk
-        jmp 0x2519:0x114                        ; load paragraph, relocated
+        jmp 0x2519:assdefd                      ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; assdefoThunk                                               1B35:291D  RTLink
@@ -3816,7 +3806,7 @@ assdefdThunk:
 ;-----------------------------------------------------------------------------
 assdefoThunk:
         call LoadFromThunk
-        jmp 0x2519:0                            ; load paragraph, relocated
+        jmp 0x2519:assdefo                      ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; rtssThunk                                                  1B35:2927  RTLink
@@ -3824,7 +3814,7 @@ assdefoThunk:
 ;-----------------------------------------------------------------------------
 rtssThunk:
         call LoadFromThunk
-        jmp 0x2519:0x3A1E                       ; load paragraph, relocated
+        jmp 0x2519:rtss                         ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; EndGameScreensThunk                                        1B35:2931  RTLink
@@ -3832,7 +3822,7 @@ rtssThunk:
 ;-----------------------------------------------------------------------------
 EndGameScreensThunk:
         call LoadFromThunk
-        jmp 0x237D:0x23E                        ; load paragraph, relocated
+        jmp 0x237D:EndGameScreens               ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
 ; joyq_flushThunk                                            1B35:293B  RTLink
@@ -3840,7 +3830,7 @@ EndGameScreensThunk:
 ;-----------------------------------------------------------------------------
 joyq_flushThunk:
         call LoadFromThunk
-        jmp 0x2C24:0x2E                         ; load paragraph, relocated
+        jmp 0x2C24:joyq_flush                   ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; joyq_popThunk                                              1B35:2945  RTLink
@@ -3848,7 +3838,7 @@ joyq_flushThunk:
 ;-----------------------------------------------------------------------------
 joyq_popThunk:
         call LoadFromThunk
-        jmp 0x2C24:2                            ; load paragraph, relocated
+        jmp 0x2C24:joyq_pop                     ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; DoGameFrameThunk                                           1B35:294F  RTLink
@@ -3856,7 +3846,7 @@ joyq_popThunk:
 ;-----------------------------------------------------------------------------
 DoGameFrameThunk:
         call LoadFromThunk
-        jmp 0x2E42:0x1B8E                       ; load paragraph, relocated
+        jmp 0x2E42:DoGameFrame                  ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; ClockTickThunk                                             1B35:2959  RTLink
@@ -3864,7 +3854,7 @@ DoGameFrameThunk:
 ;-----------------------------------------------------------------------------
 ClockTickThunk:
         call LoadFromThunk
-        jmp 0x2E42:0x2C30                       ; load paragraph, relocated
+        jmp 0x2E42:ClockTick                    ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; joyq_peekThunk                                             1B35:2963  RTLink
@@ -3872,7 +3862,7 @@ ClockTickThunk:
 ;-----------------------------------------------------------------------------
 joyq_peekThunk:
         call LoadFromThunk
-        jmp 0x2C24:0x38                         ; load paragraph, relocated
+        jmp 0x2C24:joyq_peek                    ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; ShowGoalieBannerThunk                                      1B35:296D  RTLink
@@ -3880,7 +3870,7 @@ joyq_peekThunk:
 ;-----------------------------------------------------------------------------
 ShowGoalieBannerThunk:
         call LoadFromThunk
-        jmp 0x226F:0xCE6                        ; load paragraph, relocated
+        jmp 0x226F:ShowGoalieBanner             ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; LoadGameGfxThunk                                           1B35:2977  RTLink
@@ -3888,7 +3878,7 @@ ShowGoalieBannerThunk:
 ;-----------------------------------------------------------------------------
 LoadGameGfxThunk:
         call LoadFromThunk
-        jmp 0x1F9C:0x1FC                        ; load paragraph, relocated
+        jmp 0x1F9C:LoadGameGfx                  ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
 ; LoadArenaJinglesThunk                                      1B35:2981  RTLink
@@ -3896,7 +3886,7 @@ LoadGameGfxThunk:
 ;-----------------------------------------------------------------------------
 LoadArenaJinglesThunk:
         call LoadFromThunk
-        jmp 0x2137:4                            ; load paragraph, relocated
+        jmp 0x2137:LoadArenaJingles             ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
 ; LoadRinkTilesThunk                                         1B35:298B  RTLink
@@ -3904,7 +3894,7 @@ LoadArenaJinglesThunk:
 ;-----------------------------------------------------------------------------
 LoadRinkTilesThunk:
         call LoadFromThunk
-        jmp 0x24DE:6                            ; load paragraph, relocated
+        jmp 0x24DE:LoadRinkTiles                ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
 ; FreeGameMemoryThunk                                        1B35:2995  RTLink
@@ -3912,7 +3902,7 @@ LoadRinkTilesThunk:
 ;-----------------------------------------------------------------------------
 FreeGameMemoryThunk:
         call LoadFromThunk
-        jmp 0x256C:4                            ; load paragraph, relocated
+        jmp 0x256C:FreeGameMemory               ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
 ; IntermissionScreensThunk                                   1B35:299F  RTLink
@@ -3920,7 +3910,7 @@ FreeGameMemoryThunk:
 ;-----------------------------------------------------------------------------
 IntermissionScreensThunk:
         call LoadFromThunk
-        jmp 0x237D:0x3A6                        ; load paragraph, relocated
+        jmp 0x237D:IntermissionScreens          ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
 ; StartThreeStarsThunk                                       1B35:29A9  RTLink
@@ -3928,7 +3918,7 @@ IntermissionScreensThunk:
 ;-----------------------------------------------------------------------------
 StartThreeStarsThunk:
         call LoadFromThunk
-        jmp 0x2CD2:0xD46                        ; load paragraph, relocated
+        jmp 0x2CD2:StartThreeStars              ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; FlushGSumQueueThunk                                        1B35:29B3  RTLink
@@ -3936,7 +3926,7 @@ StartThreeStarsThunk:
 ;-----------------------------------------------------------------------------
 FlushGSumQueueThunk:
         call LoadFromThunk
-        jmp 0x2352:0x174                        ; load paragraph, relocated
+        jmp 0x2352:FlushGSumQueue               ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; DrawHudPanelThunk                                          1B35:29BD  RTLink
@@ -3944,7 +3934,7 @@ FlushGSumQueueThunk:
 ;-----------------------------------------------------------------------------
 DrawHudPanelThunk:
         call LoadFromThunk
-        jmp 0x2083:0x512                        ; load paragraph, relocated
+        jmp 0x2083:DrawHudPanel                 ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; PeriodOverThunk                                            1B35:29C7  RTLink
@@ -3952,7 +3942,7 @@ DrawHudPanelThunk:
 ;-----------------------------------------------------------------------------
 PeriodOverThunk:
         call LoadFromThunk
-        jmp 0x2E42:0x2DD6                       ; load paragraph, relocated
+        jmp 0x2E42:PeriodOver                   ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; RunDeferredCallsThunk                                      1B35:29D1  RTLink
@@ -3960,7 +3950,7 @@ PeriodOverThunk:
 ;-----------------------------------------------------------------------------
 RunDeferredCallsThunk:
         call LoadFromThunk
-        jmp 0x2352:0x5C                         ; load paragraph, relocated
+        jmp 0x2352:RunDeferredCalls             ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; PutGSumTailThunk                                           1B35:29DB  RTLink
@@ -3968,7 +3958,7 @@ RunDeferredCallsThunk:
 ;-----------------------------------------------------------------------------
 PutGSumTailThunk:
         call LoadFromThunk
-        jmp 0x2352:0x1EE                        ; load paragraph, relocated
+        jmp 0x2352:PutGSumTail                  ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; UpdateHudPanelThunk                                        1B35:29E5  RTLink
@@ -3976,7 +3966,7 @@ PutGSumTailThunk:
 ;-----------------------------------------------------------------------------
 UpdateHudPanelThunk:
         call LoadFromThunk
-        jmp 0x2083:0x248                        ; load paragraph, relocated
+        jmp 0x2083:UpdateHudPanel               ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; DrawRinkOverlaysThunk                                      1B35:29EF  RTLink
@@ -3984,7 +3974,7 @@ UpdateHudPanelThunk:
 ;-----------------------------------------------------------------------------
 DrawRinkOverlaysThunk:
         call LoadFromThunk
-        jmp 0x2E42:0x21E2                       ; load paragraph, relocated
+        jmp 0x2E42:DrawRinkOverlays             ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; ClearTeamNameTextThunk                                     1B35:29F9  RTLink
@@ -3992,7 +3982,7 @@ DrawRinkOverlaysThunk:
 ;-----------------------------------------------------------------------------
 ClearTeamNameTextThunk:
         call LoadFromThunk
-        jmp 0x252F:0x348                        ; load paragraph, relocated
+        jmp 0x252F:ClearTeamNameText            ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
 ; SetTeamNameTextThunk                                       1B35:2A03  RTLink
@@ -4000,7 +3990,7 @@ ClearTeamNameTextThunk:
 ;-----------------------------------------------------------------------------
 SetTeamNameTextThunk:
         call LoadFromThunk
-        jmp 0x252F:0xE                          ; load paragraph, relocated
+        jmp 0x252F:SetTeamNameText              ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
 ; SetupGameThunk                                             1B35:2A0D  RTLink
@@ -4008,7 +3998,7 @@ SetTeamNameTextThunk:
 ;-----------------------------------------------------------------------------
 SetupGameThunk:
         call LoadFromThunk
-        jmp 0x1F9C:0x4A0                        ; load paragraph, relocated
+        jmp 0x1F9C:SetupGame                    ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
 ; GSummaryPathThunk                                          1B35:2A17  RTLink
@@ -4016,7 +4006,7 @@ SetupGameThunk:
 ;-----------------------------------------------------------------------------
 GSummaryPathThunk:
         call LoadFromThunk
-        jmp 0x2425:0xB20                        ; load paragraph, relocated
+        jmp 0x2425:GSummaryPath                 ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
 ; SetupTeamLinesThunk                                        1B35:2A21  RTLink
@@ -4024,7 +4014,7 @@ GSummaryPathThunk:
 ;-----------------------------------------------------------------------------
 SetupTeamLinesThunk:
         call LoadFromThunk
-        jmp 0x317A:0xD92                        ; load paragraph, relocated
+        jmp 0x317A:SetupTeamLines               ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; NormalizeDressFlagsThunk                                   1B35:2A2B  RTLink
@@ -4032,7 +4022,7 @@ SetupTeamLinesThunk:
 ;-----------------------------------------------------------------------------
 NormalizeDressFlagsThunk:
         call LoadFromThunk
-        jmp 0x317A:0xF22                        ; load paragraph, relocated
+        jmp 0x317A:NormalizeDressFlags          ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; BuildDefaultLinesThunk                                     1B35:2A35  RTLink
@@ -4040,7 +4030,7 @@ NormalizeDressFlagsThunk:
 ;-----------------------------------------------------------------------------
 BuildDefaultLinesThunk:
         call LoadFromThunk
-        jmp 0x317A:0x102                        ; load paragraph, relocated
+        jmp 0x317A:BuildDefaultLines            ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; LoadGameStateThunk                                         1B35:2A3F  RTLink
@@ -4048,7 +4038,7 @@ BuildDefaultLinesThunk:
 ;-----------------------------------------------------------------------------
 LoadGameStateThunk:
         call LoadFromThunk
-        jmp 0x278C:0x9C8                        ; load paragraph, relocated
+        jmp 0x278C:LoadGameState                ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
 ; NullGameHookThunk                                          1B35:2A49  RTLink
@@ -4056,7 +4046,7 @@ LoadGameStateThunk:
 ;-----------------------------------------------------------------------------
 NullGameHookThunk:
         call LoadFromThunk
-        jmp 0x1F54:0x3FA                        ; load paragraph, relocated
+        jmp 0x1F54:NullGameHook                 ; load paragraph, relocated
         dw 3                                    ; GAME.OVL
 ;-----------------------------------------------------------------------------
 ; StartPreGameThunk                                          1B35:2A53  RTLink
@@ -4064,7 +4054,7 @@ NullGameHookThunk:
 ;-----------------------------------------------------------------------------
 StartPreGameThunk:
         call LoadFromThunk
-        jmp 0x2CD2:0x496                        ; load paragraph, relocated
+        jmp 0x2CD2:StartPreGame                 ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; forceteamsThunk                                            1B35:2A5D  RTLink
@@ -4072,7 +4062,7 @@ StartPreGameThunk:
 ;-----------------------------------------------------------------------------
 forceteamsThunk:
         call LoadFromThunk
-        jmp 0x2E42:0x2F1E                       ; load paragraph, relocated
+        jmp 0x2E42:forceteams                   ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; StartGameThunk                                             1B35:2A67  RTLink
@@ -4080,7 +4070,7 @@ forceteamsThunk:
 ;-----------------------------------------------------------------------------
 StartGameThunk:
         call LoadFromThunk
-        jmp 0x2E42:0x2F00                       ; load paragraph, relocated
+        jmp 0x2E42:StartGame                    ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; FreeArenaJinglesThunk                                      1B35:2A71  RTLink
@@ -4088,7 +4078,7 @@ StartGameThunk:
 ;-----------------------------------------------------------------------------
 FreeArenaJinglesThunk:
         call LoadFromThunk
-        jmp 0x2137:0x3D6                        ; load paragraph, relocated
+        jmp 0x2137:FreeArenaJingles             ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
 ; ReturnZeroInitThunk                                        1B35:2A7B  RTLink
@@ -4096,7 +4086,7 @@ FreeArenaJinglesThunk:
 ;-----------------------------------------------------------------------------
 ReturnZeroInitThunk:
         call LoadFromThunk
-        jmp 0x237D:0xF2                         ; load paragraph, relocated
+        jmp 0x237D:ReturnZeroInit               ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
 ; ReturnZeroInit2Thunk                                       1B35:2A85  RTLink
@@ -4104,7 +4094,7 @@ ReturnZeroInitThunk:
 ;-----------------------------------------------------------------------------
 ReturnZeroInit2Thunk:
         call LoadFromThunk
-        jmp 0x237D:0xF6                         ; load paragraph, relocated
+        jmp 0x237D:ReturnZeroInit2              ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
 ; WriteGSumHeaderThunk                                       1B35:2A8F  RTLink
@@ -4112,7 +4102,7 @@ ReturnZeroInit2Thunk:
 ;-----------------------------------------------------------------------------
 WriteGSumHeaderThunk:
         call LoadFromThunk
-        jmp 0x2352:0x260                        ; load paragraph, relocated
+        jmp 0x2352:WriteGSumHeader              ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; StartHL2Thunk                                              1B35:2A99  RTLink
@@ -4120,7 +4110,7 @@ WriteGSumHeaderThunk:
 ;-----------------------------------------------------------------------------
 StartHL2Thunk:
         call LoadFromThunk
-        jmp 0x1FAA:0xE                          ; load paragraph, relocated
+        jmp 0x1FAA:StartHL2                     ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; PutGSumHeaderThunk                                         1B35:2AA3  RTLink
@@ -4128,7 +4118,7 @@ StartHL2Thunk:
 ;-----------------------------------------------------------------------------
 PutGSumHeaderThunk:
         call LoadFromThunk
-        jmp 0x2352:0x19C                        ; load paragraph, relocated
+        jmp 0x2352:PutGSumHeader                ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; FreePlayerFramesThunk                                      1B35:2AAD  RTLink
@@ -4136,7 +4126,7 @@ PutGSumHeaderThunk:
 ;-----------------------------------------------------------------------------
 FreePlayerFramesThunk:
         call LoadFromThunk
-        jmp 0x256C:0x12E                        ; load paragraph, relocated
+        jmp 0x256C:FreePlayerFrames             ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
 ; GameOverThunk                                              1B35:2AB7  RTLink
@@ -4144,7 +4134,7 @@ FreePlayerFramesThunk:
 ;-----------------------------------------------------------------------------
 GameOverThunk:
         call LoadFromThunk
-        jmp 0x2E42:0x2D00                       ; load paragraph, relocated
+        jmp 0x2E42:GameOver                     ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; ReplayFirstFrameThunk                                      1B35:2AC1  RTLink
@@ -4152,7 +4142,7 @@ GameOverThunk:
 ;-----------------------------------------------------------------------------
 ReplayFirstFrameThunk:
         call LoadFromThunk
-        jmp 0x2038:0x16                         ; load paragraph, relocated
+        jmp 0x2038:ReplayFirstFrame             ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; GetPeriodTimeThunk                                         1B35:2ACB  RTLink
@@ -4160,7 +4150,7 @@ ReplayFirstFrameThunk:
 ;-----------------------------------------------------------------------------
 GetPeriodTimeThunk:
         call LoadFromThunk
-        jmp 0x2E42:0x15BC                       ; load paragraph, relocated
+        jmp 0x2E42:GetPeriodTime                ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; SprSortThunk                                               1B35:2AD5  RTLink
@@ -4168,7 +4158,7 @@ GetPeriodTimeThunk:
 ;-----------------------------------------------------------------------------
 SprSortThunk:
         call LoadFromThunk
-        jmp 0x2E42:0x26                         ; load paragraph, relocated
+        jmp 0x2E42:SprSort                      ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; ReplayRecordResetThunk                                     1B35:2ADF  RTLink
@@ -4176,7 +4166,7 @@ SprSortThunk:
 ;-----------------------------------------------------------------------------
 ReplayRecordResetThunk:
         call LoadFromThunk
-        jmp 0x2038:8                            ; load paragraph, relocated
+        jmp 0x2038:ReplayRecordReset            ; load paragraph, relocated
         dw 5                                    ; AI.OVL
 ;-----------------------------------------------------------------------------
 ; BuildEventLinesThunk                                       1B35:2AE9  RTLink
@@ -4184,4 +4174,6 @@ ReplayRecordResetThunk:
 ;-----------------------------------------------------------------------------
 BuildEventLinesThunk:
         call LoadFromThunk
-        db 0xEA, 0x78, 0x04, 0x52               ; far jump continues in the RTLink runtime
+        db 0xEA                                 ; insn: jmp 0x2352:BuildEventLines, finished in the next segment
+        dw BuildEventLines                      ; AI.OVL
+        db 0x52

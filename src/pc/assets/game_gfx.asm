@@ -2,7 +2,7 @@
 
 ;-----------------------------------------------------------------------------
 ; IndexPPVFrames                                             1F9C:0000  94 PC
-; Builds the frame pointer table at 0x91D0 from the loaded PPV files ('%04d' lookups)
+; Builds FrameTable from the loaded PPV files ('%04d' lookups)
 ;
 ; Calls _sprintf, RawBase, Lookup. Far routine (retf).
 ;-----------------------------------------------------------------------------
@@ -11,12 +11,12 @@ IndexPPVFrames:
         push di
         push si
         db 0x2B, 0xFF                           ; insn: sub di, di
-        mov word [bp - 0x4], 0x9140
+        mov word [bp - 0x4], PPVFiles
 .1:
         mov word [bp - 0x2], 0x0
         db 0x8B, 0xF7                           ; insn: mov si, di
         shl si, byte 0x2
-        add si, 0x91d0
+        add si, FrameTable
 .2:
         push di
         push word 0x4b64
@@ -39,13 +39,13 @@ IndexPPVFrames:
         mov [si - 0x4], ax
         mov [si - 0x2], dx
         inc di
-        cmp si, 0x9f80
+        cmp si, GameTeamRecs
         jnc short .3
         inc word [bp - 0x2]
         cmp word [bp - 0x2], 0x32
         jl short .2
         add word [bp - 0x4], 0x4
-        cmp word [bp - 0x4], 0x9188
+        cmp word [bp - 0x4], PPVFiles + 18 * 4
         jc short .1
 .3:
         pop si
@@ -64,13 +64,13 @@ LoadPPVFiles:
         enter 0xe, 0x0
         push di
         push si
-        mov ax, [g_4A58]
+        mov ax, [photobankf_w2]
         or ax, [photobankf]
         jz short .1
         jmp near .6
 .1:
         db 0x2B, 0xF6                           ; insn: sub si, si
-        mov di, 0x4a56
+        mov di, photobankf
 .2:
         db 0x8B, 0xC6                           ; insn: mov ax, si
         mov cx, 0x2
@@ -116,10 +116,10 @@ LoadPPVFiles:
         mov [di - 0x4], ax
         mov [di - 0x2], dx
         inc si
-        cmp di, 0x4a62
+        cmp di, demoflag
         jc short .2
         db 0x2B, 0xFF                           ; insn: sub di, di
-        mov si, 0xd2c6
+        mov si, SpriteFrames
 .5:
         push di
         push strict word str_04d_3
@@ -135,7 +135,7 @@ LoadPPVFiles:
         idiv cx
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, byte 0x2
-        push word [bx + g_4A58]
+        push word [bx + photobankf_w2]
         push word [bx + photobankf]
         call 0x03A3:FindFarMsg
         add sp, 0x6
@@ -143,7 +143,7 @@ LoadPPVFiles:
         mov [si - 0x4], ax
         mov [si - 0x2], dx
         inc di
-        cmp si, 0xd46a
+        cmp si, gameframe
         jc short .5
 .6:
         pop si
@@ -163,7 +163,7 @@ LoadPlayerFrames:
         push di
         push si
         db 0x2B, 0xF6                           ; insn: sub si, si
-        mov di, 0x9140
+        mov di, PPVFiles
 .1:
         db 0x8B, 0xC6                           ; insn: mov ax, si
         mov cx, 0x2
@@ -209,7 +209,7 @@ LoadPlayerFrames:
         mov [di - 0x4], ax
         mov [di - 0x2], dx
         inc si
-        cmp di, 0x9188
+        cmp di, PPVFiles + 18 * 4
         jc short .1
         push cs
         call IndexPPVFrames
@@ -244,14 +244,14 @@ LoadRinkEndArt:
         push ax
         call 0x14B8:LoadPackedHeader
         add sp, 0x4
-        mov [g_C25C], ax
-        mov [g_C25E], dx
+        mov [RinkEndArt], ax
+        mov [RinkEndArtSeg], dx
         push strict word str_0000_2
         push dx
         push ax
         call 0x03A3:FindFarMsg
-        mov [g_D71C], ax
-        mov [g_D71E], dx
+        mov [RinkEndFrames], ax
+        mov [RinkEndFramesSeg], dx
         leave
         retf
         db 0x90
@@ -270,8 +270,8 @@ LoadGameGfx:
         push word 0xa8
         call 0x0FEF:SetStartPage
         add sp, 0x2
-        mov bx, 0x7570
-        mov es, [g_8C8C]
+        mov bx, PageTable
+        mov es, [segDgroup8]
         mov [bp - 0x1c], bx
         mov [bp - 0x1a], es
         mov ax, [es:bx + 0x2]
@@ -300,7 +300,7 @@ LoadGameGfx:
         call 0x0FEF:ClearClipRect
         add sp, 0x2
         call 0x0FEF:UseCurrentPage
-        mov word [g_08FC], 0x52
+        mov word [ScreenRowStride], 0x52
         call 0x28FA:LoadReplayGadgets
         push word 0x3701
         push strict word str_Qpp
@@ -318,10 +318,10 @@ LoadGameGfx:
         push ax
         call 0x14B8:LoadPackedHeader
         add sp, 0x4
-        mov [g_D6D4], ax
-        mov [g_D6D6], dx
+        mov [GameGfx], ax
+        mov [GameGfxSeg], dx
         db 0x2B, 0xFF                           ; insn: sub di, di
-        mov si, 0xd6d8
+        mov si, NumberSprites
 .2:
         push di
         push strict word str_04d_2
@@ -331,20 +331,20 @@ LoadGameGfx:
         add sp, 0x6
         lea ax, [bp - 0xa]
         push ax
-        push word [g_D6D6]
-        push word [g_D6D4]
+        push word [GameGfxSeg]
+        push word [GameGfx]
         call 0x03A3:FindFarMsg
         add sp, 0x6
         add si, 0x4
         mov [si - 0x4], ax
         mov [si - 0x2], dx
         inc di
-        cmp si, 0xd700
+        cmp si, NumberSprites2
         jc short .2
-        push word 0xd700
+        push word NumberSprites2
         push strict word str_000g000d000d000l000c000r000x
-        push word [g_D6D6]
-        push word [g_D6D4]
+        push word [GameGfxSeg]
+        push word [GameGfx]
         call 0x03A3:FindFarList
         add sp, 0x8
         call 0x251E:InitScoreboard
@@ -357,21 +357,21 @@ LoadGameGfx:
         call LoadPlayerFrames
         call 0x0D6B:HookDivideError
         push word 0x3a0b
-        push strict word f_3A0B_B352
+        push strict word GamePalette
         push word 0x100
         push 0x0
         call 0x0FEF:GetPaletteFar
         add sp, 0x8
         push 0x10
         push word 0x3a0b
-        push strict word f_3A0B_B352
+        push strict word GamePalette
         push 0x1
         call 0x1E7E:FadePalette
         add sp, 0x8
         mov ax, 0x1
         mov [fadeinpending], ax
-        mov [g_4B22], ax
-        mov [g_4B20], ax
+        mov [DeskRedrawPage2], ax
+        mov [DeskRedrawPage], ax
         pop si
         pop di
         leave
@@ -400,7 +400,7 @@ PlacePlayersAtStart:
         mov ax, [bx]
         mov bx, [puckx]
         mov [bx], ax
-        mov si, 0xb50e
+        mov si, SortCords
         mov word [regd2], 0xc
 .2:
         mov word [si + 0x2e], 0xff9c
@@ -540,8 +540,8 @@ SetupGame:
         call ResetGameVars
         push 0x1
         push 0x1
-        push word [g_29CC]
-        push word [g_29CA]
+        push word [VisTeamNum]
+        push word [HomeTeamNum]
         call 0x1B35:DrawHudPanelThunk
         add sp, 0x8
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -570,14 +570,14 @@ SetupGame:
         db 0x0B, 0xF6                           ; insn: or si, si
         jz short .3
         push word 0x3a0b
-        push strict word f_3A0B_B352
+        push strict word GamePalette
         push word 0x100
         push 0x0
         call 0x0FEF:GetPaletteFar
         add sp, 0x8
         push 0x10
         push word 0x3a0b
-        push strict word f_3A0B_B352
+        push strict word GamePalette
         push 0x1
         call 0x1E7E:FadePalette
         add sp, 0x8
@@ -613,7 +613,7 @@ ResetGameVars:
         mov [curevent], al
         mov [goalevent], al
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_4A24], ax
+        mov [goalienotebits], ax
         mov [threat], ax
         mov [passplayer], ax
         mov [passspeed], ax
@@ -627,13 +627,13 @@ ResetGameVars:
         mov [lcblinktime], ax
         mov [lcblink], ax
         mov [energywarn], ax
-        mov [g_48CE], ax
-        mov [g_48CC], ax
-        mov [g_48CA], ax
+        mov [lcsel], ax
+        mov [lcrequestteam], ax
+        mov [energywarnteam], ax
         mov [lctimer], ax
         mov [lcline], ax
-        mov [g_D46E], ax
-        mov [g_D46C], ax
+        mov [controlled2], ax
+        mov [controlled], ax
         mov ax, 0xffff
         mov [ovltimer], ax
         mov [penaltysc], ax
@@ -644,10 +644,10 @@ ResetGameVars:
         mov [ovlstep], ax
         mov [ovlseq], ax
         db 0x2A, 0xC0                           ; insn: sub al, al
-        mov [g_D663], al
-        mov [g_D662], al
-        mov [g_D661], al
-        mov [g_D660], al
+        mov [gamevar2], al
+        mov [gamevar1], al
+        mov [scorerflags2], al
+        mov [scorerflags], al
         mov [textline5], al
         mov [textline4], al
         mov [textline2], al
@@ -655,21 +655,21 @@ ResetGameVars:
         mov [textline3], al
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [lcline], ax
-        mov [g_48E4], ax
+        mov [hudredraw], ax
         mov [lcboxon], ax
-        mov [g_48E0], ax
-        mov [g_48DE], ax
-        mov [g_48DC], ax
-        mov [g_48DA], ax
-        mov [g_48D8], ax
-        mov [g_48D6], ax
-        mov [g_D610], ax
-        mov [g_D60E], ax
+        mov [lcstate2], ax
+        mov [lctime], ax
+        mov [lcactive], ax
+        mov [lcgroup], ax
+        mov [lcstate], ax
+        mov [lcchoice], ax
+        mov [mousey], ax
+        mov [mousex], ax
         mov [bannertimer], ax
         mov [injurystop], ax
         mov [refhitcount], ax
-        mov [g_D6C4], ax
-        mov si, 0xd1ae
+        mov [crowdheat], ax
+        mov si, rinkobjs
 .1:
         mov word [si], 0xffff
         mov ax, 0x28
@@ -677,26 +677,26 @@ ResetGameVars:
         add al, 0x3c
         mov [si + 0x2], al
         add si, 0xe
-        cmp si, 0xd2c6
+        cmp si, SpriteFrames
         jc short .1
-        mov bx, 0xd9da
+        mov bx, rinkobjused
 .2:
         inc bx
         inc bx
         mov word [bx - 0x2], 0x0
-        cmp bx, 0xd9fa
+        cmp bx, hilightslots
         jc short .2
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_D66A], ax
-        mov [g_D666], ax
-        mov [g_D664], ax
-        mov [g_D00A], ax
-        mov [g_D004], ax
-        mov [g_D6BE], ax
-        mov [g_D6BC], ax
-        mov [g_D012], ax
-        mov [g_D010], ax
-        mov word [g_D670], 0xffff
+        mov [gamevar5], ax
+        mov [gamevar4], ax
+        mov [gamevar3], ax
+        mov [crowdcount], ax
+        mov [crowdtimer], ax
+        mov [gamevar8], ax
+        mov [gamevar7], ax
+        mov [crowdsumhi], ax
+        mov [crowdsum], ax
+        mov word [gamevar6], 0xffff
         call 0x1B35:StartGameThunk
         mov word [curperiod], 0x1
         cmp byte [PadStates], 0x1
@@ -717,5 +717,5 @@ ResetGameVars:
         mov [hudhundaccum], ax
         mov [frameaccum], ax
         mov [PadRepeatOn], ax
-        mov [g_D46A], ax
+        mov [gameframe], ax
         call 0x1B35:joyq_flushThunk

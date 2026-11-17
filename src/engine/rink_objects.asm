@@ -1,7 +1,7 @@
 ; Rink objects: penalty box doors and crowd level (AI.OVL)
 ; The first bytes finish the last routine of hockey.asm.
         add sp, 0x2
-        push word 0xb438
+        push word awshots
         push cs
         call forcepldata - 0x2F40
         add sp, 0x2
@@ -45,14 +45,14 @@ SetRinkObject:
         db 0x8B, 0xCA                           ; insn: mov cx, dx
         mov ax, 0x1
         shl ax, cl
-        or [bx + g_D9DA], ax
+        or [bx + rinkobjused], ax
         mov ax, 0x3
         imul si
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        mov es, [g_8CE2]
+        mov es, [AnimSeqSegs]
         mov cx, [es:bx + 0xf8]
-        add di, 0xd1ae
+        add di, rinkobjs
         mov [di + 0x6], cx
         inc ax
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -133,7 +133,7 @@ DecayCrowdLevel:
         mov [CrowdSound], ax
 .3:
         mov word [bp - 0x2], 0x0
-        mov word [bp - 0x4], 0xd1ae
+        mov word [bp - 0x4], rinkobjs
 .4:
         mov si, [bp - 0x4]
         cmp word [si], 0x0
@@ -193,7 +193,7 @@ DecayCrowdLevel:
         db 0x8B, 0xCB                           ; insn: mov cx, bx
         mov ax, 0x1
         shl ax, cl
-        test [di + g_D9DA], ax
+        test [di + rinkobjused], ax
         jz short .12
 .10:
         inc si
@@ -218,7 +218,7 @@ DecayCrowdLevel:
         db 0x8B, 0xCB                           ; insn: mov cx, bx
         mov ax, 0x1
         shl ax, cl
-        test [di + g_D9DA], ax
+        test [di + rinkobjused], ax
         jnz short .10
 .12:
         push si
@@ -249,7 +249,7 @@ DecayCrowdLevel:
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         add bx, [si + 0xa]
-        mov es, [g_8CE2]
+        mov es, [AnimSeqSegs]
         db 0x26, 0x8A, 0x87, 0x00, 0x00         ; insn: mov al, [es:bx + 0x0]
         mov [si + 0x4], al
         jmp near .21
@@ -260,7 +260,7 @@ DecayCrowdLevel:
         call 0x0C11:randomd0
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .16
-        mov es, [g_8CE2]
+        mov es, [AnimSeqSegs]
         mov bx, [si + 0xa]
         db 0x26, 0x8A, 0x87, 0x01, 0x00         ; insn: mov al, [es:bx + 0x1]
         mov [si + 0x4], al
@@ -287,7 +287,7 @@ DecayCrowdLevel:
         mov ax, 0x1
         shl ax, cl
         not ax
-        and [di + g_D9DA], ax
+        and [di + rinkobjused], ax
         mov word [si], 0xffff
         mov ax, 0x3e8
         sub ax, [CrowdSound]
@@ -344,7 +344,7 @@ DrawRinkObjects:
         enter 0x6, 0x0
         push di
         push si
-        mov si, 0xd1ae
+        mov si, rinkobjs
         mov di, 0x12
 .1:
         cmp word [si], 0x0
@@ -360,12 +360,12 @@ DrawRinkObjects:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
 .3:
         push ax
-        mov ax, [g_B098]
+        mov ax, [viewcelly]
         shl ax, byte 0x3
         sub ax, [si + 0x8]
         neg ax
         push ax
-        mov ax, [g_B096]
+        mov ax, [viewcellx]
         shl ax, byte 0x3
         sub ax, [si + 0x6]
         neg ax
@@ -374,8 +374,8 @@ DrawRinkObjects:
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, byte 0x2
-        push word [bx + g_D2C8]
-        push word [bx + g_D2C6]
+        push word [bx + SpriteFramesSeg]
+        push word [bx + SpriteFrames]
         call 0x1F54:DrawSpriteClipped
         add sp, 0xe
 .4:
@@ -394,12 +394,12 @@ DrawRinkObjects:
         cbw
         mov [bp - 0x2], ax
 .7:
-        mov ax, [g_B096]
+        mov ax, [viewcellx]
         shl ax, byte 0x3
         sub ax, [si + 0x6]
         neg ax
         mov [bp - 0x4], ax
-        mov ax, [g_B098]
+        mov ax, [viewcelly]
         shl ax, byte 0x3
         sub ax, [si + 0x8]
         neg ax
@@ -412,20 +412,20 @@ DrawRinkObjects:
         push 0x0
         push di
         push 0x0
-        mov ax, [g_B098]
+        mov ax, [viewcelly]
         shl ax, byte 0x3
         db 0x8B, 0xDF                           ; insn: mov bx, di
         shl bx, 1
-        sub ax, [bx + g_61CA]
+        sub ax, [bx + RinkObjectXOffsets]
         neg ax
         push ax
-        mov ax, [g_B096]
+        mov ax, [viewcellx]
         shl ax, byte 0x3
         sub ax, strict word 0x4
         neg ax
         push ax
-        push word [g_D448]
-        push word [g_D446]
+        push word [NumberFramesSeg]
+        push word [NumberFrames]
         call 0x1F54:DrawSpriteClipped
         add sp, 0xe
 .9:
@@ -438,8 +438,8 @@ DrawRinkObjects:
         push word [bp - 0x4]
         mov bx, [bp - 0x2]
         shl bx, byte 0x2
-        push word [bx + g_D2C8]
-        push word [bx + g_D2C6]
+        push word [bx + SpriteFramesSeg]
+        push word [bx + SpriteFrames]
         call 0x1F54:DrawSpriteClipped
         add sp, 0xe
 .10:
@@ -448,34 +448,34 @@ DrawRinkObjects:
         push di
         push -0x1
         push di
-        mov ax, [g_B098]
+        mov ax, [viewcelly]
         shl ax, byte 0x3
         db 0x8B, 0xDF                           ; insn: mov bx, di
         shl bx, 1
-        sub ax, [bx + g_61CA]
+        sub ax, [bx + RinkObjectXOffsets]
         neg ax
         push ax
-        mov ax, [g_B096]
+        mov ax, [viewcellx]
         shl ax, byte 0x3
         sub ax, strict word 0x4
         neg ax
         push ax
-        push word [g_D458]
-        push word [g_D456]
+        push word [NumberFrames2Seg]
+        push word [NumberFrames2]
         call 0x1F54:DrawSpriteClipped
         add sp, 0xe
         jmp short .12
 .11:
         test byte [gmode], 0x80
         jz short .12
-        mov word [bp - 0x2], 0xbc8e
-        cmp word [g_BCA0], 0x362
+        mov word [bp - 0x2], doorstruct
+        cmp word [doorframe], 0x362
         jl short .12
         push 0x0
         push 0x0
-        push word [g_BC94]
-        push word [g_BC90]
-        push word [g_BCA0]
+        push word [doorYpos2]
+        push word [doorXpos2]
+        push word [doorframe]
         call 0x1E7E:DrawFrameSprite
         add sp, 0xa
 .12:

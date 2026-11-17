@@ -18,7 +18,7 @@ FadeVenetian:
 .1:
         mov ax, DGROUP
         mov es, ax
-        mov ax, [es:g_74FA]
+        mov ax, [es:VenetianRowBytes]
         mov [bp - 0xa], ax
         mov bx, [es:ClipBottomY]
         lea ax, [bx + 0x7]
@@ -72,27 +72,27 @@ FadeVenetian:
         leave
         retf
 .6:
-        mov es, [g_8CE8]
-        mov ax, [es:0x74f2]
+        mov es, [segDgroup12]
+        mov ax, [es:ClipTopY]
         mov [bp - 0x28], ax
-        mov ax, [es:0x74f4]
+        mov ax, [es:ClipBottomY]
         mov [bp - 0x1e], ax
-        mov cx, [es:0x74f6]
+        mov cx, [es:CanvasRowBytes]
         mov [bp - 0x4], cx
-        mov es, [g_8CEA]
+        mov es, [segDgroup13]
         cmp word [CurPage], 0x1
         db 0x1B, 0xDB                           ; insn: sbb bx, bx
         neg bx
         shl bx, byte 0x2
-        les bx, [es:bx + 0x7570]
+        les bx, [es:bx + PageTable]
         mov cx, [es:bx]
         mov dx, [es:bx + 0x2]
         mov [bp - 0x2c], cx
         mov [bp - 0x2a], dx
-        mov es, [g_8CEA]
+        mov es, [segDgroup13]
         mov bx, [CurPage]
         shl bx, byte 0x2
-        les bx, [es:bx + 0x7570]
+        les bx, [es:bx + PageTable]
         mov cx, [es:bx]
         mov dx, [es:bx + 0x2]
         mov [bp - 0x30], cx

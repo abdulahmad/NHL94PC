@@ -258,7 +258,7 @@ assdefd:
         mov si, 0x6
 .18:
         shl si, byte 0x7
-        add si, 0xb50e
+        add si, SortCords
         mov word [regd2], 0x6
         test byte [di + 0x44], 0x80
         jz short .23
@@ -457,7 +457,7 @@ asswingd:
 .12:
         cwd
         mov [regd0], ax
-        mov [g_D66E], dx
+        mov [regd0_w2], dx
         mov word [regd1], 0x8e
         mov word [regd2], 0x44
         test byte [si + 0x44], 0x80
@@ -642,24 +642,24 @@ asswingo:
 .14:
         mov [si + 0x2e], di
         shl di, 1
-        mov ax, [di + g_594C]
+        mov ax, [di + asswingo_dedata_xrand]
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         shl ax, 1
         mov [bp - 0x6], cx
         call 0x0C11:randomd0
-        mov cx, [di + g_594A]
+        mov cx, [di + asswingo_dedata]
         sub cx, [bp - 0x6]
         mov dl, [si + 0x4d]
         db 0x2A, 0xF6                           ; insn: sub dh, dh
         db 0x03, 0xCA                           ; insn: add cx, dx
         db 0x03, 0xC1                           ; insn: add ax, cx
         mov [si + 0x2a], ax
-        mov ax, [di + g_5950]
+        mov ax, [di + asswingo_dedata_yrand]
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         shl ax, 1
         mov [bp - 0x8], cx
         call 0x0C11:randomd0
-        mov cx, [di + g_594E]
+        mov cx, [di + asswingo_dedata_y]
         sub cx, [bp - 0x8]
         db 0x03, 0xC1                           ; insn: add ax, cx
         mov [si + 0x2c], ax
@@ -1064,11 +1064,11 @@ assscore:
         cmp ax, [si + 0x5e]
         jnz short .1
         mov byte [bx], 0xff
-        mov bx, [g_BC2A]
-        cmp byte [bx + g_BC2C], 0x18
+        mov bx, [puck_1C]
+        cmp byte [bx + puckasslist], 0x18
         jnz short .1
         push 0x1a
-        push word 0xbc0e
+        push word puckstruct
         call 0x1E7E:assreplace
         add sp, 0x4
 .1:
@@ -1446,20 +1446,20 @@ asspenalty:
         cbw
         mov [regd1], ax
         mov word [regd0], 0xfff5
-        mov word [g_D66E], 0xffff
+        mov word [regd0_w2], 0xffff
         jmp short .7
 .6:
-        mov al, [g_D6C7]
+        mov al, [PBnum_b1]
         cbw
         mov [regd1], ax
         mov word [regd0], 0xb
-        mov word [g_D66E], 0x0
+        mov word [regd0_w2], 0x0
 .7:
         and word [regd1], 0xf
         cmp word [regd1], 0x2
         jng short .8
         mov word [regd1], 0x2
-        mov word [g_D674], 0x0
+        mov word [regd1_w2], 0x0
 .8:
         add word [regd1], 0x3
         mov ax, [regd1]
@@ -1575,7 +1575,7 @@ assdopen:
         inc byte [PBnum]
         jmp short .2
 .1:
-        inc byte [g_D6C7]
+        inc byte [PBnum_b1]
 .2:
         mov byte [bx + 0x1b], 0xff
         mov word [bx + 0x12], 0xffff
@@ -1619,8 +1619,8 @@ assepen:
         jmp short .5
         db 0x90
 .3:
-        dec byte [g_D6C7]
-        mov al, [g_D6C7]
+        dec byte [PBnum_b1]
+        mov al, [PBnum_b1]
         cmp al, 0x2
         jng short .4
         mov al, 0x2
@@ -2164,7 +2164,7 @@ assgoalie:
         mov ax, 0x6
 .22:
         shl ax, byte 0x7
-        add ax, 0xb50e
+        add ax, SortCords
         mov [bp - 0x4], ax
         mov word [bp - 0x2], 0x0
         jmp short .24
@@ -2197,12 +2197,12 @@ assgoalie:
         cmp ax, strict word 0x19
         jg short .23
 .26:
-        mov word [bp - 0x6], 0xd616
+        mov word [bp - 0x6], puckcross
         mov word [regd3], 0xe4
         mov bx, [bp + 0x6]
         test byte [bx + 0x44], 0x80
         jz short .27
-        mov word [bp - 0x6], 0xd61a
+        mov word [bp - 0x6], GoalState_m5 + 1
         mov word [regd3], 0xff1c
 .27:
         mov ax, [bx + 0x6]
@@ -2299,7 +2299,7 @@ assgoalie:
         jng short .37
         mov word [CrowdSound], 0x4b0
 .37:
-        add word [g_D6C4], 0xa
+        add word [crowdheat], 0xa
         pop si
         leave
         retf
@@ -2631,7 +2631,7 @@ assgoalie:
         jng short .72
         mov word [CrowdSound], 0x3e8
 .72:
-        add word [g_D6C4], 0xa
+        add word [crowdheat], 0xa
 .73:
         mov bx, [bp - 0x6]
         mov ax, [bx]
@@ -2745,7 +2745,7 @@ CountPuckThreat:
         mov bx, 0x6
 .2:
         shl bx, byte 0x7
-        add bx, 0xb50e
+        add bx, SortCords
         mov di, 0x6
 .3:
         mov al, [bx + 0xd]
@@ -2942,7 +2942,7 @@ asspuckc_chkdir:
         mov si, 0x6
 .2:
         shl si, byte 0x7
-        add si, 0xb50e
+        add si, SortCords
 .3:
         mov al, [si + 0xd]
         cbw
@@ -3019,7 +3019,7 @@ asspuckc_chkdir:
         db 0x2B, 0xF6                           ; insn: sub si, si
 .10:
         shl si, byte 0x7
-        add si, 0xb50e
+        add si, SortCords
 .11:
         cmp word [si + 0x1a], 0x0
         jz short .12
@@ -3169,7 +3169,7 @@ assnearest:
         mov al, [bx]
         cbw
         shl ax, byte 0x7
-        add ax, 0xb50e
+        add ax, SortCords
         mov [bp - 0xa], ax
         jmp near .23
 .9:
@@ -3179,7 +3179,7 @@ assnearest:
         mov ax, [bx + 0x6]
         mov [bp - 0x2], ax
         mov word [regd2], 0xffff
-        mov word [g_D6BA], 0xffff
+        mov word [regd2_w2], 0xffff
         mov word [regd4], 0x6
         cmp word [bx + 0x5e], 0x6
         jl short .10
@@ -3189,7 +3189,7 @@ assnearest:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
 .11:
         shl ax, byte 0x7
-        add ax, 0xb50e
+        add ax, SortCords
         mov [bp - 0x8], ax
 .12:
         mov bx, [bp - 0x8]
@@ -3252,7 +3252,7 @@ assnearest:
         db 0x8B, 0xD0                           ; insn: mov dx, ax
         call 0x03A3:ImulRegs
         mov [regd0], ax
-        mov [g_D66E], dx
+        mov [regd0_w2], dx
         mov bx, [puckvy]
         mov ax, [bx]
         sar ax, byte 0x6
@@ -3266,23 +3266,23 @@ assnearest:
         db 0x8B, 0xD0                           ; insn: mov dx, ax
         call 0x03A3:ImulRegs
         mov [regd1], ax
-        mov [g_D674], dx
+        mov [regd1_w2], dx
         mov ax, [regd2]
-        mov dx, [g_D6BA]
+        mov dx, [regd2_w2]
         mov cx, [regd1]
-        mov bx, [g_D674]
+        mov bx, [regd1_w2]
         add [regd0], cx
-        adc [g_D66E], bx
-        cmp [g_D66E], dx
+        adc [regd0_w2], bx
+        cmp [regd0_w2], dx
         ja short .21
         jc short .20
         cmp [regd0], ax
         ja short .21
 .20:
         mov ax, [regd0]
-        mov dx, [g_D66E]
+        mov dx, [regd0_w2]
         mov [regd2], ax
-        mov [g_D6BA], dx
+        mov [regd2_w2], dx
         mov ax, [bp - 0x8]
         mov [bp - 0xa], ax
 .21:
@@ -3291,10 +3291,10 @@ assnearest:
         jz short .22
         jmp near .12
 .22:
-        cmp word [g_D6BA], 0x0
+        cmp word [regd2_w2], 0x0
         jl short .24
         mov ax, [regd2]
-        mov dx, [g_D6BA]
+        mov dx, [regd2_w2]
         mov bx, [bp - 0xc]
         mov [bx + 0x26], ax
         mov [bx + 0x28], dx
@@ -3323,7 +3323,7 @@ assnearest:
         jmp near .50
 .25:
         mov word [regd1], 0x2
-        mov word [g_D674], 0x0
+        mov word [regd1_w2], 0x0
         cmp word [regd2], 0x190
         jng short .28
         cmp word [regd2], 0xe10
@@ -3406,7 +3406,7 @@ assnearest:
         test al, 0x40
         jz short .32
         add word [regd1], 0x4
-        adc word [g_D674], 0x0
+        adc word [regd1_w2], 0x0
 .32:
         cmp word [regd1], 0x0
         jnl short .33
@@ -3711,11 +3711,11 @@ assfaceoffpl:
 .3:
         mov word [si + 0x2e], 0x28
 .4:
-        mov di, 0xd602
+        mov di, fofdata2
         mov al, [si + 0x44]
         and al, 0x40
         jz short .5
-        mov di, 0xd606
+        mov di, fofdata_w2
 .5:
         cmp word [si + 0x12], 0x169
         jz short .8
@@ -3808,8 +3808,8 @@ pucknorm:
         mov word [si + 0x26], 0x0
         mov word [si + 0x28], 0x78
 .1:
-        dec word [g_D618]
-        dec word [g_D61C]
+        dec word [GoalState_m6]
+        dec word [GoalState_m2]
         dec word [si + 0x26]
         jns short .2
         add word [si + 0x26], 0x5
@@ -3824,7 +3824,7 @@ pucknorm:
         jl short .3
         cbw
         shl ax, byte 0x7
-        add ax, 0xb50e
+        add ax, SortCords
         db 0x8B, 0xF8                           ; insn: mov di, ax
         push ax
         push cs
@@ -3949,14 +3949,14 @@ RequestLineChange:
         db 0x8B, 0xDE                           ; insn: mov bx, si
         shl bx, 1
         mov [bp - 0x2], bx
-        mov word [bx + g_48D6], 0x0
+        mov word [bx + lcchoice], 0x0
         db 0x0B, 0xF6                           ; insn: or si, si
         jng short .1
-        mov bx, 0xb438
+        mov bx, awshots
         jmp short .2
         db 0x90
 .1:
-        mov bx, 0xb362
+        mov bx, hmshots
 .2:
         mov ax, [bx + 0x16]
         mov bx, [bp - 0x2]
@@ -3966,25 +3966,25 @@ RequestLineChange:
         db 0x8B, 0xDE                           ; insn: mov bx, si
         shl bx, 1
         mov [bp - 0x2], bx
-        mov word [bx + g_48D6], 0x1
+        mov word [bx + lcchoice], 0x1
         mov ax, [regd0]
 .4:
-        mov [bx + g_48DA], ax
+        mov [bx + lcgroup], ax
         mov bx, [bp - 0x2]
-        mov word [bx + g_48DE], 0x3c
+        mov word [bx + lctime], 0x3c
         mov word [bx + lcblink], 0xc
         mov ax, 0x1
-        mov [bx + g_48CE], ax
+        mov [bx + lcsel], ax
         mov [bx + lcboxon], ax
         db 0x0B, 0xF6                           ; insn: or si, si
         jz short .5
-        mov word [g_564A], 0x0
+        mov word [hudlinegroup], 0x0
         pop si
         pop di
         leave
         retf
 .5:
-        mov word [g_5648], 0x0
+        mov word [hudlineaway], 0x0
         pop si
         pop di
         leave
@@ -4083,7 +4083,7 @@ Endfaceoff:
         mov bx, [fofdata2]
         mov al, [bx + Endfaceoff_ftab_m1]
         cbw
-        mov bx, [g_D606]
+        mov bx, [fofdata_w2]
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         mov al, [bx + Endfaceoff_ftab_m1]
         cbw
@@ -4091,39 +4091,39 @@ Endfaceoff:
         add ax, strict word 0x10
         mov [regd2], ax
         db 0x2B, 0xFF                           ; insn: sub di, di
-        mov word [bp - 0x2], 0xb528
+        mov word [bp - 0x2], sortobj0_position
         mov bx, [bp - 0x2]
 .1:
         cmp word [bx], 0x4
         jz short .2
         inc di
         add bx, 0x80
-        cmp bx, 0xb828
+        cmp bx, SortCords + 6 * 0x80 + 0x1a
         jc short .1
 .2:
         mov [bp - 0x4], di
         mov di, 0x6
-        mov bx, 0xb828
+        mov bx, SortCords + 6 * 0x80 + 0x1a
 .3:
         cmp word [bx], 0x4
         jz short .4
         inc di
         add bx, 0x80
-        cmp bx, 0xbb28
+        cmp bx, SortCords + 12 * 0x80 + 0x1a
         jc short .3
 .4:
         mov bx, [bp - 0x4]
         shl bx, byte 0x7
-        mov al, [bx + g_B555]
+        mov al, [bx + sortobj0_47]
         cbw
         imul bx, ax, 0x14
-        mov es, [g_8CDA]
+        mov es, [segWorkBuffer59]
         db 0x8B, 0xF7                           ; insn: mov si, di
         shl si, byte 0x7
-        mov al, [si + g_B555]
+        mov al, [si + sortobj0_47]
         cbw
         imul si, ax, 0x14
-        mov al, [es:si + 0x207]
+        mov al, [es:si + AwaySortObjs + 0x13]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         db 0x26, 0x8A, 0x8F, 0x13, 0x00         ; insn: mov cl, [es:bx + 0x13]
         db 0x2A, 0xED                           ; insn: sub ch, ch
@@ -4133,11 +4133,11 @@ Endfaceoff:
         call 0x0C11:randomd0
         cmp ax, [regd2]
         jnl short .5
-        mov dx, [g_D608]
+        mov dx, [fofdata_w4]
         mov [lasttouch], di
         jmp short .6
 .5:
-        mov dx, [g_D604]
+        mov dx, [fofdata]
         mov ax, [bp - 0x4]
         mov [lasttouch], ax
 .6:
@@ -4176,12 +4176,12 @@ Endfaceoff:
         shl word [regd0], 1
         mov bx, [regd0]
         shl bx, 1
-        mov ax, [bx + g_29E0]
+        mov ax, [bx + dirtab0]
         shl ax, byte 0x5
         mov [si + 0xc], ax
         mov bx, [regd0]
         shl bx, 1
-        mov ax, [bx + g_29E2]
+        mov ax, [bx + dirtab_x]
         shl ax, byte 0x5
         add ax, [regd4]
         mov [si + 0xe], ax
@@ -4196,10 +4196,10 @@ Endfaceoff:
         call 0x1E7E:assreplace
         add sp, 0x4
         push 0x1f
-        push word 0xbd0e
+        push word refstruct
         call 0x1E7E:assreplace
         add sp, 0x4
-        cmp word [g_BD10], 0x0
+        cmp word [refXpos2], 0x0
         jng short .11
         mov ax, 0x500
         jmp short .12
@@ -4433,10 +4433,10 @@ a2touchpuck:
         db 0x33, 0xC1                           ; insn: xor ax, cx
         jz short .8
         push 0x6
-        mov al, [g_D62B]
+        mov al, [iflags_b1]
         cbw
         shl ax, byte 0x7
-        add ax, 0xb50e
+        add ax, SortCords
         push ax
         call 0x327B:AddPenalty
         add sp, 0x4
@@ -4447,7 +4447,7 @@ a2touchpuck:
 .8:
         mov byte [iflags], 0x0
         mov al, [si + 0x5e]
-        mov [g_D62B], al
+        mov [iflags_b1], al
         mov bx, [pucky]
         mov ax, [bx]
         mov [regd0], ax
@@ -4629,7 +4629,7 @@ assreffollow:
         cbw
         db 0x8B, 0xF8                           ; insn: mov di, ax
         shl di, byte 0x7
-        add di, 0xb50e
+        add di, SortCords
         test byte [si + 0x44], 0x20
         jz short .1
         jmp near .19
@@ -5147,7 +5147,7 @@ CrowdOnStoppage:
         jz short .3
         jmp near .14
 .3:
-        mov ax, [g_D1AC]
+        mov ax, [gameclock2]
         sar ax, 1
         cmp ax, [gameclock]
         jng short .4
@@ -5163,9 +5163,9 @@ CrowdOnStoppage:
         cmp word [gsp], 0x2
         jnz short .5
         mov ax, [gameclock]
-        cmp [g_D668], ax
+        cmp [stoppagetime], ax
         jl short .5
-        mov word [g_D668], 0xffff
+        mov word [stoppagetime], 0xffff
         push 0x5
         jmp near .13
         db 0x90
@@ -5332,7 +5332,7 @@ assrefwhistle:
         mov ax, 0xa5b
         call 0x2E42:SetSPA
         mov word [regd2], 0x2
-        mov word [g_D6BA], 0x0
+        mov word [regd2_w2], 0x0
         mov ax, [regd2]
         cmp [si + 0x36], ax
         jz short .16
@@ -5351,7 +5351,7 @@ assrefwhistle:
         mov word [ovltimer], 0x258
 .12:
         push 0x1b
-        push word 0xbc0e
+        push word puckstruct
         call 0x1E7E:assreplace
         add sp, 0x4
         push 0x1e
@@ -5448,13 +5448,13 @@ assrefsignal:
         mov [bp - 0x8], cx
         db 0x0B, 0xC9                           ; insn: or cx, cx
         jng short .7
-        mov di, 0xb438
+        mov di, awshots
         jmp short .8
         db 0x90
 .7:
-        mov di, 0xb362
+        mov di, hmshots
 .8:
-        mov ax, [g_D1AC]
+        mov ax, [gameclock2]
         sub ax, [gameclock]
         mov [bp - 0x2], ax
         cmp word [di + 0x20], 0x0
@@ -5627,14 +5627,14 @@ assrefgoalpa:
         jz short .7
         jmp near .52
 .7:
-        mov al, [g_B07A]
+        mov al, [goalevent_b1]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         mov [bp - 0xa], ax
-        mov al, [g_B07B]
+        mov al, [goalevent_b2]
         mov [bp - 0x2], ax
-        mov al, [g_B07C]
+        mov al, [goalevent_b3]
         mov [bp - 0x4], ax
-        mov cl, [g_B07D]
+        mov cl, [goalevent_text]
         db 0x2A, 0xED                           ; insn: sub ch, ch
         mov [bp - 0x8], cx
         mov word [bp - 0xc], 0x0
@@ -5648,10 +5648,10 @@ assrefgoalpa:
 .9:
         cmp word [bp - 0xa], 0x0
         jz short .10
-        mov ax, [g_29CC]
+        mov ax, [VisTeamNum]
         jmp short .11
 .10:
-        mov ax, [g_29CA]
+        mov ax, [HomeTeamNum]
 .11:
         mov [bp - 0x6], ax
         cmp ax, strict word 0x18
@@ -5661,24 +5661,24 @@ assrefgoalpa:
         mov [bp - 0x6], ax
 .12:
         mov ax, [PadRepeatOn]
-        mov [g_D46A], ax
+        mov [gameframe], ax
         mov word [PadRepeatOn], 0x0
         imul ax, [bp - 0xa], 0x1c
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         add ax, [bp - 0x8]
         imul bx, ax, 0x28
-        mov al, [bx + g_A556]
+        mov al, [bx + hmrosterjersey]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         add cx, [bp - 0x4]
         imul bx, cx, 0x28
-        mov cl, [bx + g_A556]
+        mov cl, [bx + hmrosterjersey]
         db 0x2A, 0xED                           ; insn: sub ch, ch
         push cx
         add ax, [bp - 0x2]
         imul bx, ax, 0x28
-        mov al, [bx + g_A556]
+        mov al, [bx + hmrosterjersey]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push word [bp - 0xc]
@@ -5687,7 +5687,7 @@ assrefgoalpa:
         push word [bx + TeamNameClips]
         call 0x0EDC:AnnounceGoal
         add sp, 0xa
-        mov ax, [g_D46A]
+        mov ax, [gameframe]
         mov [PadRepeatOn], ax
         mov byte [goalevent], 0xff
         cmp word [gsp], 0x3
@@ -5762,7 +5762,7 @@ assrefgoalpa:
         mov word [ovltimer], 0x258
 .23:
         push 0x1b
-        push word 0xbc0e
+        push word puckstruct
         call 0x1E7E:assreplace
         add sp, 0x4
         push 0x1e
@@ -5806,7 +5806,7 @@ assrefgoalpa:
         jl short .29
         mov byte [bx], 0xff
         push 0x1a
-        push word 0xbc0e
+        push word puckstruct
         call 0x1E7E:assreplace
         add sp, 0x4
 .29:
@@ -6251,7 +6251,7 @@ assrefdrop:
 .11:
         cwd
         mov [regd2], ax
-        mov [g_D6BA], dx
+        mov [regd2_w2], dx
         cmp [si + 0x36], ax
         jz short .14
         mov al, [regd2]
@@ -6398,7 +6398,7 @@ assrefgoalline:
         call 0x0D5F:VectorToDir8
         cwd
         mov [regd2], ax
-        mov [g_D6BA], dx
+        mov [regd2_w2], dx
         cmp [si + 0x36], ax
         jz short .12
         mov al, [regd2]

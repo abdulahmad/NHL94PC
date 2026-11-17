@@ -2,6 +2,7 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
+FontTable		equ	0x0
 DrawTextCenteredInWindow		equ	0x2
 FindNearestColor		equ	0x2
 DrawFrame		equ	0x4
@@ -11,7 +12,7 @@ FillRect		equ	0x136
 AllocCanvas		equ	0x19C
 UseCurrentPage		equ	0x1A6
 WaitAdd		equ	0x250
-NullFar5		equ	0x3E2
+NullQuitHook		equ	0x3E2
 DrawRawAt		equ	0x73D
 SetCharPtr.regs		equ	0xC56
 SaveCharTab		equ	0xC7A
@@ -28,6 +29,8 @@ MouseReadFn		equ	0x6414
 MousePosFn		equ	0x6418
 TickSkip		equ	0x6DB2
 CurPage		equ	0x74DC
+PageTable		equ	0x7570
+PageTableSeg		equ	0x7572
 BeforeDialogFn		equ	0x7642
 AfterDialogFn		equ	0x7646
 str_ExitToDosYN		equ	0x76A4

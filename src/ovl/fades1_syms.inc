@@ -1,10 +1,13 @@
+CanvasRowBytes		equ	0x74F6
 ClipBottomY		equ	0x74F4
+ClipTopY		equ	0x74F2
 CopyPageRect		equ	0x3704
 CurPage		equ	0x74DC
 DGROUP		equ	0x45C9
+PageTable		equ	0x7570
 SetDeadline.regs		equ	0x1A6E
 UseCurrentPage		equ	0x1A6
+VenetianRowBytes		equ	0x74FA
 WaitDeadlineNoEoi		equ	0x1A84
-g_74FA		equ	0x74FA
-g_8CE8		equ	0x8CE8
-g_8CEA		equ	0x8CEA
+segDgroup12		equ	0x8CE8
+segDgroup13		equ	0x8CEA

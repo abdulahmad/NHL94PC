@@ -2,6 +2,7 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
+PadTimerTickTail.1		equ	0x8
 VectorToDir8		equ	0x89
 StickPresent		equ	0x51E
 PadTickCount		equ	0x522
@@ -21,5 +22,6 @@ MousePosFn		equ	0x6418
 MouseX		equ	0x6422
 MouseY		equ	0x6424
 MouseBtn		equ	0x6426
+PadReadings		equ	0xAFD4
 PadStatePtr		equ	0xB06A
 %include "pc/input/pad.asm"

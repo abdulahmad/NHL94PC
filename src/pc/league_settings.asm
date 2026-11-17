@@ -47,25 +47,25 @@ LeagueSettingsDlg:
 MenuLeagueSettingsEdit:
         push word 0x3f00
         push word 0xbd00
-        mov es, [g_8B5E]
+        mov es, [segDgroup4]
         mov bx, [CurPage]
         shl bx, byte 0x2
-        les bx, [es:bx + 0x7570]
+        les bx, [es:bx + PageTable]
         push word [es:bx]
         call 0x0000:VgaCopyBytes
         add sp, 0x6
         push word 0x3f00
-        mov es, [g_8B5E]
+        mov es, [segDgroup4]
         cmp word [CurPage], 0x1
         db 0x1B, 0xDB                           ; insn: sbb bx, bx
         neg bx
         shl bx, byte 0x2
-        les bx, [es:bx + 0x7570]
+        les bx, [es:bx + PageTable]
         push word [es:bx]
         mov bx, [CurPage]
         shl bx, byte 0x2
-        mov es, [g_8B5E]
-        les bx, [es:bx + 0x7570]
+        mov es, [segDgroup4]
+        les bx, [es:bx + PageTable]
         push word [es:bx]
         call 0x0000:VgaCopyBytes
         add sp, 0x6
@@ -574,7 +574,7 @@ SetLeagueSetImage:
         call 0x0FEF:SetRemapTable
         add sp, 0x4
         call 0x0FEF:UseOffscreenCanvas
-        mov ax, 0xbd0
+        mov ax, str_Qpp
         mov cx, 0x3701
         mov [bp - 0x112], ax
         mov [bp - 0x110], cx
@@ -726,15 +726,15 @@ DrawLeagueSetDlg:
         mov [bp - 0x68], cl
         cmp word [DbSaveMode], 0x1
         jnz short .10
-        cmp word [g_11D8], 0x1
+        cmp word [LeagueSetChoice], 0x1
         jl short .8
         mov [bp - 0x68], dl
 .8:
-        cmp word [g_11D8], 0x3
+        cmp word [LeagueSetChoice], 0x3
         jl short .9
         mov [bp - 0x67], dl
 .9:
-        cmp word [g_11D8], 0x5
+        cmp word [LeagueSetChoice], 0x5
         jl short .10
         mov [bp - 0x66], dl
 .10:
@@ -862,7 +862,7 @@ DrawLeagueSetChecks:
         db 0x0B, 0xC7                           ; insn: or ax, di
         db 0x0B, 0xC6                           ; insn: or ax, si
         db 0x0B, 0xC2                           ; insn: or ax, dx
-        mov [g_B35E], ax
+        mov [editopts], ax
         mov al, [AnnouncerFlags]
         and ax, strict word 0xc
         shr al, byte 0x2
@@ -875,15 +875,15 @@ DrawLeagueSetChecks:
         jmp short .10
         db 0x90
 .7:
-        or byte [g_B35F], 0x8
+        or byte [editopts_b1], 0x8
         jmp short .10
         db 0x90
 .8:
-        or byte [g_B35F], 0x4
+        or byte [editopts_b1], 0x4
         jmp short .10
         db 0x90
 .9:
-        or byte [g_B35F], 0x2
+        or byte [editopts_b1], 0x2
 .10:
         mov al, [AnnouncerFlags]
         and ax, strict word 0x70
@@ -902,19 +902,19 @@ DrawLeagueSetChecks:
         jmp short .15
         db 0x90
 .11:
-        or byte [g_B35F], 0x10
+        or byte [editopts_b1], 0x10
         jmp short .15
         db 0x90
 .12:
-        or byte [g_B35F], 0x20
+        or byte [editopts_b1], 0x20
         jmp short .15
         db 0x90
 .13:
-        or byte [g_B35F], 0x40
+        or byte [editopts_b1], 0x40
         jmp short .15
         db 0x90
 .14:
-        or byte [g_B35F], 0x80
+        or byte [editopts_b1], 0x80
 .15:
         push cs
         call DrawLeagueSetCheck
@@ -1011,7 +1011,7 @@ LeagueOptsToBits:
         ja short LeagueOptsToBitsJumpTable.8
         shl ax, 1
         xchg ax, bx
-        jmp [cs:bx + 0x972]
+        jmp [cs:bx + LeagueOptsToBitsJumpTable]
 LeagueOptsToBitsJumpTable:                      ; jump table of LeagueOptsToBits: 14 case targets
         dw LeagueOptsToBits.4
         dw LeagueOptsToBits.4
@@ -1040,19 +1040,19 @@ LeagueOptsToBitsJumpTable:                      ; jump table of LeagueOptsToBits
 .4:
         cmp word [DbSaveMode], 0x1
         jnz short .8
-        cmp word [g_11D8], 0x1
+        cmp word [LeagueSetChoice], 0x1
 .5:
         jl short .8
         jmp short LeagueOptsToBits.4
 .6:
         cmp word [DbSaveMode], 0x1
         jnz short .8
-        cmp word [g_11D8], 0x3
+        cmp word [LeagueSetChoice], 0x3
         jmp short .5
 .7:
         cmp word [DbSaveMode], 0x1
         jnz short .8
-        cmp word [g_11D8], 0x5
+        cmp word [LeagueSetChoice], 0x5
         jmp short .5
 .8:
         mov bx, [bp + 0xa]
@@ -1086,7 +1086,7 @@ DrawLeagueSetCheck:
         db 0x8B, 0xCF                           ; insn: mov cx, di
         mov ax, 0x1
         shl ax, cl
-        test [g_B35E], ax
+        test [editopts], ax
         jz short .2
         mov al, 0x17
         mov [si], al
@@ -1109,7 +1109,7 @@ DrawLeagueSetCheck:
         lea ax, [bp - 0x52]
         db 0x3B, 0xF0                           ; insn: cmp si, ax
         jc short .1
-        test byte [g_B35F], 0x1
+        test byte [editopts_b1], 0x1
         jz short .4
         mov al, 0x17
         mov [bp - 0x25], al
@@ -1133,7 +1133,7 @@ DrawLeagueSetCheck:
         db 0x8B, 0xCA                           ; insn: mov cx, dx
         mov ax, 0x200
         shl ax, cl
-        test [g_B35E], ax
+        test [editopts], ax
         jz short .7
         mov al, 0x17
         mov [si], al
@@ -1440,7 +1440,7 @@ LeagueSetEditLoop:
         mov ax, 0x1
         shl ax, cl
         not ax
-        and [g_B35E], ax
+        and [editopts], ax
 .13:
         push cs
         call DrawLeagueSetCheck
@@ -1469,7 +1469,7 @@ LeagueSetEditLoop:
         db 0x8A, 0xC8                           ; insn: mov cl, al
         mov ax, 0x1
         shl ax, cl
-        or [g_B35E], ax
+        or [editopts], ax
         jmp short .13
 .17:
         cmp word [bp - 0xa], 0x15
@@ -1478,11 +1478,11 @@ LeagueSetEditLoop:
         mov cl, [bp - 0xa]
         mov ax, 0x1
         shl ax, cl
-        mov cx, [g_B35E]
+        mov cx, [editopts]
         and ch, 0xf1
 .18:
         db 0x0B, 0xC1                           ; insn: or ax, cx
-        mov [g_B35E], ax
+        mov [editopts], ax
         jmp short .13
 .19:
         cmp word [bp - 0xa], 0x19
@@ -1491,7 +1491,7 @@ LeagueSetEditLoop:
         mov cl, [bp - 0xa]
         mov ax, 0x1
         shl ax, cl
-        mov cx, [g_B35E]
+        mov cx, [editopts]
         and ch, 0xf
         jmp short .18
         db 0x90
@@ -1500,7 +1500,7 @@ LeagueSetEditLoop:
         jz short .21
         jmp near .39
 .21:
-        mov al, [g_B35E]
+        mov al, [editopts]
         and ax, strict word 0x1
         cmp ax, strict word 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
@@ -1509,7 +1509,7 @@ LeagueSetEditLoop:
         and ax, strict word 0x1
         xor [CrowdState], ax
         mov al, [CrowdState]
-        mov cl, [g_B35E]
+        mov cl, [editopts]
         and cx, 0x2
         cmp cx, 0x1
         db 0x1B, 0xC9                           ; insn: sbb cx, cx
@@ -1519,7 +1519,7 @@ LeagueSetEditLoop:
         and ax, strict word 0x2
         xor [CrowdState], ax
         mov al, [CrowdState]
-        mov cl, [g_B35E]
+        mov cl, [editopts]
         and cx, 0x4
         cmp cx, 0x1
         db 0x1B, 0xC9                           ; insn: sbb cx, cx
@@ -1529,7 +1529,7 @@ LeagueSetEditLoop:
         and ax, strict word 0x4
         xor [CrowdState], ax
         mov al, [CrowdState]
-        mov cl, [g_B35E]
+        mov cl, [editopts]
         and cx, 0x8
         cmp cx, 0x1
         db 0x1B, 0xC9                           ; insn: sbb cx, cx
@@ -1539,7 +1539,7 @@ LeagueSetEditLoop:
         and ax, strict word 0x8
         xor [CrowdState], ax
         mov al, [CrowdState]
-        mov cl, [g_B35E]
+        mov cl, [editopts]
         and cx, 0x10
         cmp cx, 0x1
         db 0x1B, 0xC9                           ; insn: sbb cx, cx
@@ -1549,7 +1549,7 @@ LeagueSetEditLoop:
         and ax, strict word 0x10
         xor [CrowdState], ax
         mov al, [CrowdState]
-        mov cl, [g_B35E]
+        mov cl, [editopts]
         and cx, 0x20
         cmp cx, 0x1
         db 0x1B, 0xC9                           ; insn: sbb cx, cx
@@ -1560,7 +1560,7 @@ LeagueSetEditLoop:
         xor [CrowdState], ax
         cmp word [SoundOptions], 0x10
         jz short .22
-        mov al, [g_B35E]
+        mov al, [editopts]
         and ax, strict word 0x40
         cmp ax, strict word 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
@@ -1570,7 +1570,7 @@ LeagueSetEditLoop:
         and ax, strict word 0x40
         xor [CrowdState], ax
         mov al, [CrowdState]
-        mov cl, [g_B35E]
+        mov cl, [editopts]
         and cx, 0x80
         cmp cx, 0x1
         db 0x1B, 0xC9                           ; insn: sbb cx, cx
@@ -1582,7 +1582,7 @@ LeagueSetEditLoop:
 .22:
         test byte [SoundOptions], 0x2
         jz short .23
-        mov ah, [g_B35F]
+        mov ah, [editopts_b1]
         and ax, 0x100
         cmp ax, strict word 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
@@ -1592,7 +1592,7 @@ LeagueSetEditLoop:
         and ax, 0x100
         xor [CrowdState], ax
 .23:
-        mov ah, [g_B35F]
+        mov ah, [editopts_b1]
         and ax, 0xe00
         sub ax, 0x200
         jz short .24
@@ -1608,7 +1608,7 @@ LeagueSetEditLoop:
 .25:
         mov [CrowdState], ax
 .26:
-        mov ah, [g_B35F]
+        mov ah, [editopts_b1]
         and ax, 0xf000
         sub ax, 0x1000
         jz short .29

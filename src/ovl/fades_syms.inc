@@ -3,7 +3,7 @@ CurPage		equ	0x74DC
 SetPaletteFar		equ	0x344C
 UseCurrentPage		equ	0x1A6
 WaitRetrace		equ	0x34A7
-g_DF6A		equ	0xDF6A
-g_DF6C		equ	0xDF6C
-g_DF6E		equ	0xDF6E
-g_DF70		equ	0xDF70
+fadeh		equ	0xDF70
+fadew		equ	0xDF6E
+fadex		equ	0xDF6A
+fadey		equ	0xDF6C

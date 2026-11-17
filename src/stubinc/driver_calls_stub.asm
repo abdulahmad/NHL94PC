@@ -2,9 +2,11 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
+RecFlag		equ	0x0
 LoadPackedHeader0		equ	0x1A
 EmsMapFrame		equ	0x192
 LinkDriver		equ	0x272
+str_Bru_9		equ	0x8BE
 FarToLinear		equ	0x92E
 LinearToFarRegs		equ	0x959
 FindUnlink		equ	0x99A
@@ -28,6 +30,7 @@ DrvTableNeedsService		equ	0x8FEE
 DrvTableLoadBank		equ	0x8FF2
 DrvTableSendMidi		equ	0x9002
 DrvTablePlaySample		equ	0x900A
+DriverFileName		equ	0x9046
 DriverTypes		equ	0xE084
 DriverEntrySeg		equ	0xE086
 %include "lib/eaclib/driver_calls.asm"

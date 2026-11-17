@@ -12,12 +12,12 @@ LoadCupFinalSeries:
         push si
         mov ax, 0x3415
         mov es, ax
-        mov si, [g_29CA]
+        mov si, [HomeTeamNum]
         shl si, 1
-        mov ax, [es:si + f_3415_0128]
-        mov si, [g_29CC]
+        mov ax, [es:si + POSeedTable]
+        mov si, [VisTeamNum]
         shl si, 1
-        or ax, [es:si + f_3415_0128]
+        or ax, [es:si + POSeedTable]
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         test al, 0xc
         jnz short .1
@@ -33,8 +33,8 @@ LoadCupFinalSeries:
         push word 0x2962
         call 0x14DB:AllocRecData
         add sp, 0x8
-        mov [g_CFFC], ax
-        mov [g_CFFE], dx
+        mov [cupseries], ax
+        mov [cupseriesseg], dx
         lea ax, [bp - 0x6]
         push ax
         call 0x1B35:LoadScheduleDBThunk
@@ -47,9 +47,9 @@ LoadCupFinalSeries:
         mov [bp - 0x6], ax
 .3:
         mov word [bp - 0x2], 0x0
-        mov es, [g_CFFE]
+        mov es, [cupseriesseg]
 .4:
-        mov bx, [g_CFFC]
+        mov bx, [cupseries]
         mov si, [bp - 0x2]
         mov ax, [bp - 0x6]
         mov dx, [bp - 0x4]
@@ -83,8 +83,8 @@ LoadCupFinalSeries:
         retf
 .6:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_CFFE], ax
-        mov [g_CFFC], ax
+        mov [cupseriesseg], ax
+        mov [cupseries], ax
         pop si
         pop di
         leave
@@ -100,8 +100,8 @@ IsCupClinched:
         enter 0x4, 0x0
         push di
         push si
-        mov ax, [g_CFFE]
-        or ax, [g_CFFC]
+        mov ax, [cupseriesseg]
+        or ax, [cupseries]
         jnz short .2
 .1:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -112,7 +112,7 @@ IsCupClinched:
         db 0x90
 .2:
         db 0x2B, 0xFF                           ; insn: sub di, di
-        les bx, [g_CFFC]
+        les bx, [cupseries]
         cmp byte [es:bx + 0x4], 0xff
         jz short .4
         db 0x8B, 0xC3                           ; insn: mov ax, bx
@@ -132,25 +132,25 @@ IsCupClinched:
         shl di, 1
         db 0x03, 0xF9                           ; insn: add di, cx
         shl di, 1
-        les bx, [g_CFFC]
+        les bx, [cupseries]
         mov [es:bx + di + 0x4], al
         mov al, [bp + 0x8]
-        les bx, [g_CFFC]
+        les bx, [cupseries]
         mov [es:bx + di + 0x5], al
         mov al, [AnnouncerFlags]
         and ax, strict word 0x70
         shr al, byte 0x4
         push ax
-        push word [g_CFFE]
-        push word [g_CFFC]
+        push word [cupseriesseg]
+        push word [cupseries]
         push cs
         call CupSeriesWinner
         add sp, 0x6
         db 0x8B, 0xF0                           ; insn: mov si, ax
-        les bx, [g_CFFC]
+        les bx, [cupseries]
         mov byte [es:bx + di + 0x5], 0xff
-        add di, [g_CFFC]
-        mov es, [g_CFFE]
+        add di, [cupseries]
+        mov es, [cupseriesseg]
         mov al, [es:di + 0x5]
         mov [es:di + 0x4], al
         db 0x0B, 0xF6                           ; insn: or si, si

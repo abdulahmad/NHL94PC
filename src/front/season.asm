@@ -88,7 +88,7 @@ RandomizeSchedule:
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, 1
         add bx, [bp - 0x360]
-        mov al, [bx + g_16C8]
+        mov al, [bx + SchedDivTable]
         db 0x8B, 0xF3                           ; insn: mov si, bx
         mov [bp + si - 0x18], al
         inc word [bp - 0x360]
@@ -99,9 +99,9 @@ RandomizeSchedule:
 .8:
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8BF4]
-        push word [es:0xb86]
-        push word [es:0xb84]
+        mov es, [segTeamChoiceText35]
+        push word [es:DbFileNameList + 0x1A]
+        push word [es:DbFileNameList + 0x18]
         push word [bp + 0x8]
         push word [bp + 0x6]
         lea ax, [bp - 0x6c]
@@ -120,9 +120,9 @@ RandomizeSchedule:
         jnz short .9
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8BF4]
-        push word [es:0xb7e]
-        push word [es:0xb7c]
+        mov es, [segTeamChoiceText35]
+        push word [es:DbFileNameList + 0x12]
+        push word [es:DbFileNameList + 0x10]
         push word [bp + 0x8]
         push word [bp + 0x6]
         lea ax, [bp - 0x6c]
@@ -172,9 +172,9 @@ RandomizeSchedule:
         mov word [bp - 0x360], 0x0
 .15:
         mov bx, [bp - 0x6e]
-        mov al, [bx + g_16E0]
+        mov al, [bx + SchedConfTable]
         mov [bp - 0x36e], al
-        mov cl, [bx + g_16F8]
+        mov cl, [bx + SchedTable3]
         mov [bp - 0x36c], cl
         db 0x0B, 0xDB                           ; insn: or bx, bx
         jl short .16
@@ -186,7 +186,7 @@ RandomizeSchedule:
         shl bx, 1
         db 0x2A, 0xED                           ; insn: sub ch, ch
         db 0x03, 0xD9                           ; insn: add bx, cx
-        mov al, [bx + g_16C8]
+        mov al, [bx + SchedDivTable]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         cmp ax, [bp - 0x6e]
         jnz short .16
@@ -196,9 +196,9 @@ RandomizeSchedule:
         mov word [bp - 0x6e], 0xffff
 .16:
         mov bx, [bp - 0x70]
-        mov al, [bx + g_16E0]
+        mov al, [bx + SchedConfTable]
         mov [bp - 0x36e], al
-        mov cl, [bx + g_16F8]
+        mov cl, [bx + SchedTable3]
         mov [bp - 0x36c], cl
         db 0x0B, 0xDB                           ; insn: or bx, bx
         jl short .17
@@ -210,7 +210,7 @@ RandomizeSchedule:
         shl bx, 1
         db 0x2A, 0xED                           ; insn: sub ch, ch
         db 0x03, 0xD9                           ; insn: add bx, cx
-        mov al, [bx + g_16C8]
+        mov al, [bx + SchedDivTable]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         cmp ax, [bp - 0x70]
         jnz short .17
@@ -402,7 +402,7 @@ NormalizeDate:
         push si
         jmp short .2
 .1:
-        mov al, [bx + g_1733]
+        mov al, [bx + MonthDays0]
         mov bx, [bp + 0x8]
         sub [bx], al
         inc byte [si]
@@ -412,7 +412,7 @@ NormalizeDate:
         mov si, [bp + 0x6]
         mov bl, [si]
         db 0x2A, 0xFF                           ; insn: sub bh, bh
-        cmp [bx + g_1733], al
+        cmp [bx + MonthDays0], al
         jc short .1
         pop si
         leave
@@ -696,7 +696,7 @@ SimScheduleDay:
         cmp word [bp - 0x28], 0x4
         jnl short .32
         mov bx, [bp - 0x28]
-        mov al, [bx + g_1720]
+        mov al, [bx + SimDayTable]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov ax, [bp - 0xe]
@@ -806,7 +806,7 @@ AdvancePlayoffs:
         jnz short .6
         mov bx, [bp - 0x6]
         shl bx, 1
-        mov ax, [bx + g_1726]
+        mov ax, [bx + PORoundTable]
         mov [bp - 0x2], ax
         lea ax, [bp - 0x1a]
         push ax
@@ -816,8 +816,8 @@ AdvancePlayoffs:
         push ax
         lea ax, [bp - 0x4]
         push ax
-        push word [bx + g_172C]
-        push word [bx + g_1724]
+        push word [bx + POSeriesLenArg2]
+        push word [bx + POSeriesLenArg]
         lea ax, [bp - 0x16]
         push ax
         push word [bp + 0x6]
@@ -837,7 +837,7 @@ AdvancePlayoffs:
         push word [bp - 0x2]
         mov bx, [bp - 0x6]
         shl bx, 1
-        push word [bx + g_172E]
+        push word [bx + POSeedArgs]
         lea ax, [bp - 0x16]
         push ax
         push word [bp + 0x8]
@@ -867,7 +867,7 @@ AdvancePlayoffs:
         add sp, 0xc
         mov [bp - 0x18], ax
         call 0x2E46:AwardsCeremony
-        mov byte [g_E36B], 0xff
+        mov byte [lgflags], 0xff
         mov ax, [bp - 0x18]
         leave
         retf
@@ -1142,7 +1142,7 @@ SeedPlayoffRound:
         jmp near .15
 .5:
         mov bx, [bp - 0x1c]
-        mov bl, [bx + g_1710]
+        mov bl, [bx + POSeedOrder1]
         db 0x2A, 0xFF                           ; insn: sub bh, bh
         mov ax, [bp - 0xa]
         shl ax, 1
@@ -1152,7 +1152,7 @@ SeedPlayoffRound:
         db 0x2A, 0xED                           ; insn: sub ch, ch
         mov [bp - 0x24], cx
         mov bx, [bp - 0x1c]
-        mov bl, [bx + g_1718]
+        mov bl, [bx + POSeedOrder2]
         db 0x2A, 0xFF                           ; insn: sub bh, bh
         db 0x03, 0xD8                           ; insn: add bx, ax
 .6:
@@ -1815,7 +1815,7 @@ UpdatePlayoffSeries:
         add sp, 0x12
         mov [bp - 0x16], ax
         call 0x2E46:AwardsCeremony
-        mov byte [g_E36B], 0xff
+        mov byte [lgflags], 0xff
 .26:
         cmp word [bp - 0x16], 0x0
         jnz short .27
@@ -1849,12 +1849,12 @@ UpdateSeasonSchedule:
         mov [bp - 0x2], ax
         mov [bp - 0x4], ax
         mov [bp - 0x26], ax
-        mov byte [g_E36B], 0x0
+        mov byte [lgflags], 0x0
         push word [bp + 0xc]
         push word [bp + 0xa]
-        mov es, [g_8BF4]
-        push word [es:0xb86]
-        push word [es:0xb84]
+        mov es, [segTeamChoiceText35]
+        push word [es:DbFileNameList + 0x1A]
+        push word [es:DbFileNameList + 0x18]
         push word [bp + 0x8]
         push word [bp + 0x6]
         lea ax, [bp - 0x24]
@@ -1873,9 +1873,9 @@ UpdateSeasonSchedule:
         jnz short .1
         push word [bp + 0xc]
         push word [bp + 0xa]
-        mov es, [g_8BF4]
-        push word [es:0xb7e]
-        push word [es:0xb7c]
+        mov es, [segTeamChoiceText35]
+        push word [es:DbFileNameList + 0x12]
+        push word [es:DbFileNameList + 0x10]
         push word [bp + 0x8]
         push word [bp + 0x6]
         lea ax, [bp - 0x24]
@@ -1895,9 +1895,9 @@ UpdateSeasonSchedule:
         jnz short .2
         push word [bp + 0xc]
         push word [bp + 0xa]
-        mov es, [g_8BF4]
-        push word [es:0xb7a]
-        push word [es:0xb78]
+        mov es, [segTeamChoiceText35]
+        push word [es:DbFileNameList + 0xE]
+        push word [es:DbFileNameList + 0xC]
         push word [bp + 0x8]
         push word [bp + 0x6]
         lea ax, [bp - 0x24]

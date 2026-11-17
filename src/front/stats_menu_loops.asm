@@ -858,16 +858,16 @@ StandingsMenuLoop:
         sar ax, 1
         mov [bp - 0x4e], ax
         mov [bp - 0x1a], ax
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jz short .1
         jmp near .6
 .1:
         mov word [bp - 0x50], 0x0
 .2:
-        mov ax, [g_21BA]
+        mov ax, [statsmenusel]
         mov bx, [bp - 0x50]
         shl bx, 1
-        cmp [bx + g_CEE8], ax
+        cmp [bx + standingstab], ax
         jnz short .3
         mov ax, [bp - 0x50]
         mov [bp - 0x3a], ax
@@ -877,8 +877,8 @@ StandingsMenuLoop:
         jl short .2
         mov bx, [bp - 0x3a]
         shl bx, 1
-        imul si, [bx + g_CEE8], 0x1a
-        les bx, [g_C04C]
+        imul si, [bx + standingstab], 0x1a
+        les bx, [statsteambufseg]
         mov al, [es:bx + si + 0xd]
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         and al, 0x1
@@ -918,7 +918,7 @@ StandingsMenuLoop:
         jmp short .7
         db 0x90
 .6:
-        mov bx, [g_21BA]
+        mov bx, [statsmenusel]
         mov [bp - 0x3a], bx
         shl bx, 1
         cmp word [bx + playofftree], 0x18
@@ -977,7 +977,7 @@ StandingsMenuLoop:
         jmp near .22
 .11:
         mov word [bp - 0x56], 0x0
-        cmp word [g_200E], 0x1
+        cmp word [statscontext], 0x1
         jz short .12
         jmp near .19
 .12:
@@ -1154,11 +1154,11 @@ StandingsMenuLoop:
         dec word [bp - 0x50]
         jns short .26
         mov word [bp - 0x2e], 0x0
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .28
         mov bx, [bp - 0x3a]
         shl bx, 1
-        mov ax, [bx + g_CEE8]
+        mov ax, [bx + standingstab]
         mov [bp - 0x30], ax
         mov [statscategory], ax
         jmp short .29
@@ -1170,7 +1170,7 @@ StandingsMenuLoop:
         mov [statscategory], ax
         mov ax, [bp - 0x3a]
 .29:
-        mov [g_21BA], ax
+        mov [statsmenusel], ax
         push strict word str_Pntr_7
         push word [MemBlock1Seg]
         push word [MemBlock1Off]
@@ -1229,7 +1229,7 @@ StandingsMenuLoop:
         leave
         retf
 .30:
-        cmp [g_200E], ax
+        cmp [statscontext], ax
         jz short .31
         jmp near .36
 .31:
@@ -1238,7 +1238,7 @@ StandingsMenuLoop:
         mov ax, [bp - 0x30]
         mov bx, [bp - 0x50]
         shl bx, 1
-        cmp [bx + g_CEE8], ax
+        cmp [bx + standingstab], ax
         jnz short .33
         mov ax, [bp - 0x50]
         mov [bp - 0x3a], ax
@@ -1248,8 +1248,8 @@ StandingsMenuLoop:
         jl short .32
         mov bx, [bp - 0x3a]
         shl bx, 1
-        imul si, [bx + g_CEE8], 0x1a
-        les bx, [g_C04C]
+        imul si, [bx + standingstab], 0x1a
+        les bx, [statsteambufseg]
         mov al, [es:bx + si + 0xd]
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         and al, 0x1
@@ -1289,7 +1289,7 @@ StandingsMenuLoop:
         jmp short .37
         db 0x90
 .36:
-        mov bx, [g_21BA]
+        mov bx, [statsmenusel]
         mov [bp - 0x3a], bx
         shl bx, 1
         cmp word [bx + playofftree], 0x18
@@ -1590,7 +1590,7 @@ StandingsMenuLoop:
         jnz short .50
         jmp near .59
 .50:
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jz short .51
         jmp near .56
 .51:
@@ -1602,8 +1602,8 @@ StandingsMenuLoop:
         idiv cx
         mov bx, [bp - 0x3a]
         shl bx, 1
-        imul si, [bx + g_CEE8], 0x1a
-        les bx, [g_C04C]
+        imul si, [bx + standingstab], 0x1a
+        les bx, [statsteambufseg]
         mov al, [es:bx + si + 0xd]
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         and al, 0x1
@@ -1631,8 +1631,8 @@ StandingsMenuLoop:
         mov bx, [bp - 0x30]
         mov [bp - 0x3a], bx
         shl bx, 1
-        imul si, [bx + g_CEE8], 0x1a
-        les bx, [g_C04C]
+        imul si, [bx + standingstab], 0x1a
+        les bx, [statsteambufseg]
         mov al, [es:bx + si + 0xd]
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         and al, 0x1
@@ -1692,7 +1692,7 @@ StandingsMenuLoop:
         add sp, 0x4
         jmp near .21
 .59:
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jz short .60
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
@@ -1724,11 +1724,11 @@ StandingsMenuLoop:
         dec word [bp - 0x50]
         jns short .61
         mov word [bp - 0x2e], 0x0
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .63
         mov bx, [bp - 0x3a]
         shl bx, 1
-        mov ax, [bx + g_CEE8]
+        mov ax, [bx + standingstab]
         mov [bp - 0x30], ax
         mov [statscategory], ax
         jmp short .64
@@ -1739,7 +1739,7 @@ StandingsMenuLoop:
         mov [statscategory], ax
         mov ax, [bp - 0x3a]
 .64:
-        mov [g_21BA], ax
+        mov [statsmenusel], ax
         call 0x2248:StandingsActRoster2
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [bp - 0x3e], ax
@@ -1943,45 +1943,45 @@ RosterMenuLoop:
 .2:
         inc word [bp - 0x4c]
 .3:
-        mov ax, [g_CFC6]
+        mov ax, [rostersel]
         cmp [bp - 0x4c], ax
         jl short .4
         jmp near .9
 .4:
         mov bx, [bp - 0x4c]
         shl bx, 1
-        mov bx, [bx + g_CFBC]
+        mov bx, [bx + rosterrowptrs2]
         shl bx, 1
-        mov ax, [bx + g_CFB2]
+        mov ax, [bx + rosterrows2]
         mov [bp - 0x50], ax
         imul ax, ax, 0x34
-        add ax, [g_C048]
+        add ax, [statsplayerbufseg]
         mov dx, [statsplayerbuf]
         add ax, strict word 0x3
         push dx
         push ax
         push ds
-        push strict word g_CF1D
+        push strict word rosterfilter
         push cs
         call StrNotPrefixFar
         add sp, 0x8
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .2
         imul ax, [bp - 0x50], 0x34
-        add ax, [g_C048]
+        add ax, [statsplayerbufseg]
         mov dx, [statsplayerbuf]
         add ax, strict word 0x13
         push dx
         push ax
         push ds
-        push strict word g_CF2D
+        push strict word rosterfilter2
         push cs
         call StrNotPrefixFar
         add sp, 0x8
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .2
         mov ax, [bp - 0x4c]
-        add ax, [g_CF18]
+        add ax, [rostertop]
         jmp short .8
 .5:
         cmp byte [statsplayer], 0x0
@@ -1991,36 +1991,36 @@ RosterMenuLoop:
 .6:
         inc word [bp - 0x4c]
 .7:
-        mov ax, [g_CF18]
+        mov ax, [rostertop]
         cmp [bp - 0x4c], ax
         jnl short .9
         mov bx, [bp - 0x4c]
         shl bx, 1
-        mov bx, [bx + g_CF80]
+        mov bx, [bx + rosterrowptrs]
         shl bx, 1
-        mov ax, [bx + g_CF4E]
+        mov ax, [bx + rosterrows]
         mov [bp - 0x50], ax
         imul ax, ax, 0x34
-        add ax, [g_C048]
+        add ax, [statsplayerbufseg]
         mov dx, [statsplayerbuf]
         add ax, strict word 0x3
         push dx
         push ax
         push ds
-        push strict word g_CF1D
+        push strict word rosterfilter
         push cs
         call StrNotPrefixFar
         add sp, 0x8
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .6
         imul ax, [bp - 0x50], 0x34
-        add ax, [g_C048]
+        add ax, [statsplayerbufseg]
         mov dx, [statsplayerbuf]
         add ax, strict word 0x13
         push dx
         push ax
         push ds
-        push strict word g_CF2D
+        push strict word rosterfilter2
         push cs
         call StrNotPrefixFar
         add sp, 0x8
@@ -2033,7 +2033,7 @@ RosterMenuLoop:
         push word 0x80
         push 0x7
         push word 0x140
-        mov ax, [g_CF18]
+        mov ax, [rostertop]
         cmp [bp - 0x54], ax
         jl short .10
         mov ax, 0x1f
@@ -2195,29 +2195,29 @@ RosterMenuLoop:
         jns short .21
         mov word [bp - 0x2e], 0x0
         mov ax, [bp - 0x52]
-        cmp [g_CF18], ax
+        cmp [rostertop], ax
         jng short .23
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        mov bx, [bx + g_CF80]
+        mov bx, [bx + rosterrowptrs]
         mov [bp - 0x4c], bx
         shl bx, 1
-        mov ax, [bx + g_CF4E]
+        mov ax, [bx + rosterrows]
         jmp short .24
         db 0x90
 .23:
         db 0x8B, 0xD8                           ; insn: mov bx, ax
-        sub bx, [g_CF18]
+        sub bx, [rostertop]
         shl bx, 1
-        mov bx, [bx + g_CFBC]
+        mov bx, [bx + rosterrowptrs2]
         mov [bp - 0x4c], bx
         shl bx, 1
-        mov ax, [bx + g_CFB2]
+        mov ax, [bx + rosterrows2]
 .24:
         mov [bp - 0x50], ax
-        mov ax, 0xcf1a
+        mov ax, statscardteam
         imul cx, [bp - 0x50], 0x34
-        add cx, [g_C048]
+        add cx, [statsplayerbufseg]
         mov dx, [statsplayerbuf]
         push ds
         db 0x8B, 0xF8                           ; insn: mov di, ax
@@ -2295,45 +2295,45 @@ RosterMenuLoop:
 .26:
         inc word [bp - 0x4c]
 .27:
-        mov ax, [g_CFC6]
+        mov ax, [rostersel]
         cmp [bp - 0x4c], ax
         jl short .28
         jmp near .33
 .28:
         mov bx, [bp - 0x4c]
         shl bx, 1
-        mov bx, [bx + g_CFBC]
+        mov bx, [bx + rosterrowptrs2]
         shl bx, 1
-        mov ax, [bx + g_CFB2]
+        mov ax, [bx + rosterrows2]
         mov [bp - 0x50], ax
         imul ax, ax, 0x34
-        add ax, [g_C048]
+        add ax, [statsplayerbufseg]
         mov dx, [statsplayerbuf]
         add ax, strict word 0x3
         push dx
         push ax
         push ds
-        push strict word g_CF1D
+        push strict word rosterfilter
         push cs
         call StrNotPrefixFar
         add sp, 0x8
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .26
         imul ax, [bp - 0x50], 0x34
-        add ax, [g_C048]
+        add ax, [statsplayerbufseg]
         mov dx, [statsplayerbuf]
         add ax, strict word 0x13
         push dx
         push ax
         push ds
-        push strict word g_CF2D
+        push strict word rosterfilter2
         push cs
         call StrNotPrefixFar
         add sp, 0x8
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .26
         mov ax, [bp - 0x4c]
-        add ax, [g_CF18]
+        add ax, [rostertop]
         jmp short .32
 .29:
         cmp byte [statsplayer], 0x0
@@ -2343,36 +2343,36 @@ RosterMenuLoop:
 .30:
         inc word [bp - 0x4c]
 .31:
-        mov ax, [g_CF18]
+        mov ax, [rostertop]
         cmp [bp - 0x4c], ax
         jnl short .33
         mov bx, [bp - 0x4c]
         shl bx, 1
-        mov bx, [bx + g_CF80]
+        mov bx, [bx + rosterrowptrs]
         shl bx, 1
-        mov ax, [bx + g_CF4E]
+        mov ax, [bx + rosterrows]
         mov [bp - 0x50], ax
         imul ax, ax, 0x34
-        add ax, [g_C048]
+        add ax, [statsplayerbufseg]
         mov dx, [statsplayerbuf]
         add ax, strict word 0x3
         push dx
         push ax
         push ds
-        push strict word g_CF1D
+        push strict word rosterfilter
         push cs
         call StrNotPrefixFar
         add sp, 0x8
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .30
         imul ax, [bp - 0x50], 0x34
-        add ax, [g_C048]
+        add ax, [statsplayerbufseg]
         mov dx, [statsplayerbuf]
         add ax, strict word 0x13
         push dx
         push ax
         push ds
-        push strict word g_CF2D
+        push strict word rosterfilter2
         push cs
         call StrNotPrefixFar
         add sp, 0x8
@@ -2385,7 +2385,7 @@ RosterMenuLoop:
         push word 0x80
         push 0x7
         push word 0x140
-        mov ax, [g_CF18]
+        mov ax, [rostertop]
         cmp [bp - 0x54], ax
         jl short .34
         mov ax, 0x1f
@@ -2741,7 +2741,7 @@ RosterMenuLoop:
         push word 0x80
         push 0x7
         push word 0x140
-        mov ax, [g_CF18]
+        mov ax, [rostertop]
         cmp [bp - 0x54], ax
         jl short .50
         mov ax, 0x1f
@@ -2762,7 +2762,7 @@ RosterMenuLoop:
         add sp, 0xa
         mov ax, [bp - 0x52]
         mov [bp - 0x54], ax
-        cmp ax, [g_CF18]
+        cmp ax, [rostertop]
         jl short .52
         mov ax, 0x1f
         jmp short .53
@@ -2811,29 +2811,29 @@ RosterMenuLoop:
         jns short .55
         mov word [bp - 0x2e], 0x0
         mov ax, [bp - 0x52]
-        cmp [g_CF18], ax
+        cmp [rostertop], ax
         jng short .57
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        mov bx, [bx + g_CF80]
+        mov bx, [bx + rosterrowptrs]
         mov [bp - 0x4c], bx
         shl bx, 1
-        mov ax, [bx + g_CF4E]
+        mov ax, [bx + rosterrows]
         jmp short .58
         db 0x90
 .57:
         db 0x8B, 0xD8                           ; insn: mov bx, ax
-        sub bx, [g_CF18]
+        sub bx, [rostertop]
         shl bx, 1
-        mov bx, [bx + g_CFBC]
+        mov bx, [bx + rosterrowptrs2]
         mov [bp - 0x4c], bx
         shl bx, 1
-        mov ax, [bx + g_CFB2]
+        mov ax, [bx + rosterrows2]
 .58:
         mov [bp - 0x50], ax
-        mov ax, 0xcf1a
+        mov ax, statscardteam
         imul cx, [bp - 0x50], 0x34
-        add cx, [g_C048]
+        add cx, [statsplayerbufseg]
         mov dx, [statsplayerbuf]
         push ds
         db 0x8B, 0xF8                           ; insn: mov di, ax

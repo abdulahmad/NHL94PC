@@ -147,8 +147,8 @@ checkwindow:
         jg short .19
         jmp near .30
 .19:
-        mov word [bp - 0x8], 0xbd0e
-        mov ax, [g_BD10]
+        mov word [bp - 0x8], refstruct
+        mov ax, [refXpos2]
         mov [xc1], ax
         mov ax, [refYpos2]
         mov [yc1], ax
@@ -267,7 +267,7 @@ checkwindow:
         mov al, [bx]
         cbw
         shl ax, byte 0x7
-        add ax, 0xb50e
+        add ax, SortCords
         mov [bp - 0x8], ax
         mov word [regd0], 0x2
         db 0x8B, 0xD8                           ; insn: mov bx, ax
@@ -316,7 +316,7 @@ checkwindow:
         jmp short .39
         db 0x90
 .38:
-        mov word [bp - 0x8], 0xbc0e
+        mov word [bp - 0x8], puckstruct
 .39:
         mov bx, [bp - 0x8]
         mov al, [bx + 0xf]
@@ -470,14 +470,14 @@ LoadTeamPPV:
         push si
         mov si, [bp + 0x6]
         mov ax, [PadRepeatOn]
-        mov [g_D46A], ax
+        mov [gameframe], ax
         mov word [PadRepeatOn], 0x0
         push word 0x3701
         push strict word str_Qpp
         db 0x8B, 0xDE                           ; insn: mov bx, si
         shl bx, 1
         push ds
-        push word [bx + g_4A00]
+        push word [bx + ovlartnames]
         push 0x0
         push 0x0
         lea ax, [bp - 0x12]
@@ -490,8 +490,8 @@ LoadTeamPPV:
         push ax
         call 0x14B8:LoadPackedHeader
         add sp, 0x4
-        mov [g_D62C], ax
-        mov [g_D62E], dx
+        mov [OverlayGfx], ax
+        mov [OverlayGfxSeg], dx
         mov word [bp - 0x2], 0x0
         push dx
         push ax
@@ -499,7 +499,7 @@ LoadTeamPPV:
         add sp, 0x4
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jng short .2
-        mov di, 0xd630
+        mov di, OverlayFrames
         mov si, [bp - 0x2]
 .1:
         push si
@@ -510,15 +510,15 @@ LoadTeamPPV:
         add sp, 0x6
         lea ax, [bp - 0x12]
         push ax
-        push word [g_D62E]
-        push word [g_D62C]
+        push word [OverlayGfxSeg]
+        push word [OverlayGfx]
         call 0x03A3:FindFarMsg
         add sp, 0x6
         add di, 0x4
         mov [di - 0x4], ax
         mov [di - 0x2], dx
-        push word [g_D62E]
-        push word [g_D62C]
+        push word [OverlayGfxSeg]
+        push word [OverlayGfx]
         call 0x03A3:TableCount
         add sp, 0x4
         inc si
@@ -526,16 +526,16 @@ LoadTeamPPV:
         jg short .1
         mov si, [bp + 0x6]
 .2:
-        mov ax, [g_D46A]
+        mov ax, [gameframe]
         mov [PadRepeatOn], ax
         mov [ovlseq], si
         shl si, byte 0x2
-        mov ax, [si + g_4A0A]
-        mov dx, [si + g_4A0C]
-        mov [g_D65C], ax
-        mov [g_D65E], dx
-        mov word [g_D658], 0xc
-        mov word [g_D65A], 0x1
+        mov ax, [si + ovlscripts]
+        mov dx, [si + ovlscripts + 2]
+        mov [overlayscript], ax
+        mov [overlayscriptseg], dx
+        mov word [overlaytimer], 0xc
+        mov word [overlaystate], 0x1
         mov es, dx
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         mov al, [es:bx + 0x1]
@@ -557,18 +557,18 @@ DrawTextOverlay:
         enter 0x14, 0x0
         push di
         push si
-        mov ax, [g_B094]
+        mov ax, [TextOverlaySeg]
         mov cx, 0x2
         cwd
         idiv cx
         db 0x8B, 0xDA                           ; insn: mov bx, dx
         shl bx, 1
-        mov ax, [g_B092]
+        mov ax, [TextOverlayPtr]
         cwd
         idiv cx
         db 0x03, 0xDA                           ; insn: add bx, dx
         shl bx, 1
-        mov ax, [bx + g_567A]
+        mov ax, [bx + BannerColours]
         mov [bp - 0x6], ax
         cmp word [ovltimer], 0x10
         jnl short .1
@@ -590,8 +590,8 @@ DrawTextOverlay:
         mov word [bannermsg], 0xffff
         mov word [bannertimer], 0x0
         mov ax, 0x1
-        mov [g_4B22], ax
-        mov [g_4B20], ax
+        mov [DeskRedrawPage2], ax
+        mov [DeskRedrawPage], ax
         db 0x0B, 0xFF                           ; insn: or di, di
         jl short .4
         jmp near .6
@@ -624,14 +624,14 @@ DrawTextOverlay:
         db 0x33, 0xC2                           ; insn: xor ax, dx
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         mov [bp - 0xa], ax
-        mov si, [g_B094]
+        mov si, [TextOverlaySeg]
         db 0x2B, 0xF0                           ; insn: sub si, ax
         add si, 0x4a
         cmp word [gsp], 0x4
         jnz short .5
         add si, 0xac
 .5:
-        mov ax, [g_B092]
+        mov ax, [TextOverlayPtr]
         sub ax, [bp - 0x4]
         add ax, strict word 0x32
         mov cx, [bp - 0x4]
@@ -645,7 +645,7 @@ DrawTextOverlay:
         db 0x03, 0xD0                           ; insn: add dx, ax
         call 0x0FEF:SetClipRectRegs
 .6:
-        mov si, [g_B094]
+        mov si, [TextOverlaySeg]
         add si, 0xc
         cmp word [gsp], 0x4
         jnz short .7
@@ -653,7 +653,7 @@ DrawTextOverlay:
 .7:
         lea ax, [si + 0x7b]
         mov [bp - 0x8], ax
-        mov ax, [g_B092]
+        mov ax, [TextOverlayPtr]
         add ax, strict word 0xc
         mov [bp - 0x14], ax
         add ax, strict word 0x4b
@@ -747,8 +747,8 @@ DrawTextOverlay:
         push si
         mov bx, [ovlstep]
         shl bx, byte 0x2
-        push word [bx + g_D632]
-        push word [bx + g_D630]
+        push word [bx + OverlayFramesSeg]
+        push word [bx + OverlayFrames]
         call 0x1F54:DrawSpriteClipped
         add sp, 0xe
         cmp word [ovlseq], 0x0
@@ -879,7 +879,7 @@ DrawTextOverlay:
         cmp byte [textline3], 0x0
         jz short .27
         push di
-        push word 0xd4b8
+        push word textline3
         call 0x03A3:TextWidthAll
         add sp, 0x2
         cwd
@@ -888,7 +888,7 @@ DrawTextOverlay:
         db 0x8B, 0xCE                           ; insn: mov cx, si
         db 0x2B, 0xC8                           ; insn: sub cx, ax
         push cx
-        push word 0xd4b8
+        push word textline3
         call 0x0FEF:DrawText
         add sp, 0x6
 .27:
@@ -897,7 +897,7 @@ DrawTextOverlay:
         mov ax, [bp - 0x4]
         add [bp - 0x2], ax
         push word [bp - 0x2]
-        push word 0xd506
+        push word textline1
         call 0x03A3:TextWidthAll
         add sp, 0x2
         cwd
@@ -906,7 +906,7 @@ DrawTextOverlay:
         db 0x8B, 0xCE                           ; insn: mov cx, si
         db 0x2B, 0xC8                           ; insn: sub cx, ax
         push cx
-        push word 0xd506
+        push word textline1
         call 0x0FEF:DrawText
         add sp, 0x6
 .28:
@@ -915,7 +915,7 @@ DrawTextOverlay:
         mov ax, [bp - 0x4]
         add [bp - 0x2], ax
         push word [bp - 0x2]
-        push word 0xd542
+        push word textline2
         call 0x03A3:TextWidthAll
         add sp, 0x2
         cwd
@@ -924,7 +924,7 @@ DrawTextOverlay:
         db 0x8B, 0xCE                           ; insn: mov cx, si
         db 0x2B, 0xC8                           ; insn: sub cx, ax
         push cx
-        push word 0xd542
+        push word textline2
         call 0x0FEF:DrawText
         add sp, 0x6
 .29:
@@ -933,7 +933,7 @@ DrawTextOverlay:
         mov ax, [bp - 0x4]
         add [bp - 0x2], ax
         push word [bp - 0x2]
-        push word 0xd57e
+        push word textline4
         call 0x03A3:TextWidthAll
         add sp, 0x2
         cwd
@@ -942,7 +942,7 @@ DrawTextOverlay:
         db 0x8B, 0xCE                           ; insn: mov cx, si
         db 0x2B, 0xC8                           ; insn: sub cx, ax
         push cx
-        push word 0xd57e
+        push word textline4
         call 0x0FEF:DrawText
         add sp, 0x6
 .30:
@@ -951,7 +951,7 @@ DrawTextOverlay:
         mov ax, [bp - 0x4]
         add ax, [bp - 0x2]
         push ax
-        push word 0xd5ba
+        push word textline5
         call 0x03A3:TextWidthAll
         add sp, 0x2
         cwd
@@ -960,7 +960,7 @@ DrawTextOverlay:
         db 0x8B, 0xCE                           ; insn: mov cx, si
         db 0x2B, 0xC8                           ; insn: sub cx, ax
         push cx
-        push word 0xd5ba
+        push word textline5
         call 0x0FEF:DrawText
         add sp, 0x6
 .31:
@@ -975,7 +975,7 @@ DrawTextOverlay:
         cmp byte [textline3], 0x0
         jz short .32
         push di
-        push word 0xd4b8
+        push word textline3
         call 0x03A3:TextWidthAll
         add sp, 0x2
         cwd
@@ -984,7 +984,7 @@ DrawTextOverlay:
         db 0x8B, 0xCE                           ; insn: mov cx, si
         db 0x2B, 0xC8                           ; insn: sub cx, ax
         push cx
-        push word 0xd4b8
+        push word textline3
         call 0x0FEF:DrawText
         add sp, 0x6
 .32:
@@ -993,7 +993,7 @@ DrawTextOverlay:
         mov ax, [bp - 0x4]
         add [bp - 0x2], ax
         push word [bp - 0x2]
-        push word 0xd506
+        push word textline1
         call 0x03A3:TextWidthAll
         add sp, 0x2
         cwd
@@ -1002,7 +1002,7 @@ DrawTextOverlay:
         db 0x8B, 0xCE                           ; insn: mov cx, si
         db 0x2B, 0xC8                           ; insn: sub cx, ax
         push cx
-        push word 0xd506
+        push word textline1
         call 0x0FEF:DrawText
         add sp, 0x6
 .33:
@@ -1011,7 +1011,7 @@ DrawTextOverlay:
         mov ax, [bp - 0x4]
         add [bp - 0x2], ax
         push word [bp - 0x2]
-        push word 0xd542
+        push word textline2
         call 0x03A3:TextWidthAll
         add sp, 0x2
         cwd
@@ -1020,7 +1020,7 @@ DrawTextOverlay:
         db 0x8B, 0xCE                           ; insn: mov cx, si
         db 0x2B, 0xC8                           ; insn: sub cx, ax
         push cx
-        push word 0xd542
+        push word textline2
         call 0x0FEF:DrawText
         add sp, 0x6
 .34:
@@ -1029,7 +1029,7 @@ DrawTextOverlay:
         mov ax, [bp - 0x4]
         add [bp - 0x2], ax
         push word [bp - 0x2]
-        push word 0xd57e
+        push word textline4
         call 0x03A3:TextWidthAll
         add sp, 0x2
         cwd
@@ -1038,7 +1038,7 @@ DrawTextOverlay:
         db 0x8B, 0xCE                           ; insn: mov cx, si
         db 0x2B, 0xC8                           ; insn: sub cx, ax
         push cx
-        push word 0xd57e
+        push word textline4
         call 0x0FEF:DrawText
         add sp, 0x6
 .35:
@@ -1047,7 +1047,7 @@ DrawTextOverlay:
         mov ax, [bp - 0x4]
         add ax, [bp - 0x2]
         push ax
-        push word 0xd5ba
+        push word textline5
         call 0x03A3:TextWidthAll
         add sp, 0x2
         cwd
@@ -1055,7 +1055,7 @@ DrawTextOverlay:
         sar ax, 1
         db 0x2B, 0xF0                           ; insn: sub si, ax
         push si
-        push word 0xd5ba
+        push word textline5
         call 0x0FEF:DrawText
         add sp, 0x6
 .36:
@@ -1109,23 +1109,23 @@ UpdateTextOverlay:
         jnl short .7
         cmp word [CrowdSound], 0x5dc
         jnl short .7
-        cmp word [g_D65A], 0x1
+        cmp word [overlaystate], 0x1
         jnz short .3
         cmp word [CrowdSound], 0x280
         jnl short .3
         mov word [CrowdSound], 0x280
 .3:
-        cmp word [g_D65A], 0x1
+        cmp word [overlaystate], 0x1
         jl short .4
-        cmp word [g_D65A], 0x5
+        cmp word [overlaystate], 0x5
         jl short .6
 .4:
-        cmp word [g_D65A], 0x7
+        cmp word [overlaystate], 0x7
         jng short .5
-        cmp word [g_D65A], 0xd
+        cmp word [overlaystate], 0xd
         jl short .6
 .5:
-        cmp word [g_D65A], 0x10
+        cmp word [overlaystate], 0x10
         jng short .7
 .6:
         add word [CrowdSound], 0x8
@@ -1134,24 +1134,24 @@ UpdateTextOverlay:
         jnz short .11
         cmp word [ovlseq], -0x1
         jz short .11
-        mov ax, [g_D65E]
-        or ax, [g_D65C]
+        mov ax, [overlayscriptseg]
+        or ax, [overlayscript]
         jz short .11
-        dec word [g_D658]
+        dec word [overlaytimer]
         js short .8
         jmp near .14
 .8:
-        les bx, [g_D65C]
+        les bx, [overlayscript]
         mov al, [es:bx]
         cbw
-        cmp ax, [g_D65A]
+        cmp ax, [overlaystate]
         jnz short .10
-        push word [g_D62E]
-        push word [g_D62C]
+        push word [OverlayGfxSeg]
+        push word [OverlayGfx]
         call 0x06E1:FindUnlink
         add sp, 0x4
         mov bx, [ovlseq]
-        cmp byte [bx + g_4A1E], 0x0
+        cmp byte [bx + ovlseqtimed], 0x0
         jz short .9
         mov word [ovltimer], 0x258
 .9:
@@ -1159,17 +1159,17 @@ UpdateTextOverlay:
         mov [ovlstep], ax
         mov [ovlseq], ax
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_D65E], ax
-        mov [g_D65C], ax
+        mov [overlayscriptseg], ax
+        mov [overlayscript], ax
         pop si
         retf
 .10:
-        inc word [g_D65A]
-        mov si, [g_D65A]
+        inc word [overlaystate]
+        mov si, [overlaystate]
         mov al, [es:bx + si]
         cbw
         mov [ovlstep], ax
-        mov word [g_D658], 0xc
+        mov word [overlaytimer], 0xc
         pop si
         retf
         db 0x90
@@ -1206,29 +1206,29 @@ DrawCallBanner:
         enter 0xe, 0x0
         push di
         push si
-        mov ax, [g_B094]
+        mov ax, [TextOverlaySeg]
         mov cx, 0x2
         cwd
         idiv cx
         db 0x8B, 0xDA                           ; insn: mov bx, dx
         shl bx, 1
-        mov ax, [g_B092]
+        mov ax, [TextOverlayPtr]
         cwd
         idiv cx
         db 0x03, 0xDA                           ; insn: add bx, dx
         shl bx, 1
-        mov ax, [bx + g_567A]
+        mov ax, [bx + BannerColours]
         mov [bp - 0x8], ax
-        mov si, [g_B094]
+        mov si, [TextOverlaySeg]
         add si, 0xc
-        mov ax, [g_B092]
+        mov ax, [TextOverlayPtr]
         add ax, 0x95
         db 0x8B, 0xF8                           ; insn: mov di, ax
         add ax, strict word 0x9
         mov [bp - 0x4], ax
         mov bx, [bp + 0x6]
         shl bx, 1
-        push word [bx + g_56CC]
+        push word [bx + CallNamePtrs]
         mov [bp - 0xa], bx
         call 0x03A3:TextWidthAll
         add sp, 0x2
@@ -1297,7 +1297,7 @@ DrawCallBanner:
         lea cx, [si + 0x2]
         push cx
         mov bx, [bp - 0xa]
-        push word [bx + g_56CC]
+        push word [bx + CallNamePtrs]
         db 0x8B, 0xF0                           ; insn: mov si, ax
         db 0x8B, 0xF9                           ; insn: mov di, cx
         call 0x0FEF:DrawText
@@ -1312,7 +1312,7 @@ DrawCallBanner:
         push si
         push di
         mov bx, [bp - 0xa]
-        push word [bx + g_56CC]
+        push word [bx + CallNamePtrs]
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x11
@@ -1406,7 +1406,7 @@ ShowGoalieBanner:
 .8:
         mov byte [es:bx], 0x1
         mov ax, [bp - 0x2]
-        add ax, 0xb362
+        add ax, hmshots
         push ax
         call 0x2E42:setpersonel
         add sp, 0x2
@@ -1467,7 +1467,7 @@ SetTeamGoalie:
         db 0x33, 0xC6                           ; insn: xor ax, si
         jz short .5
         mov bx, [bp - 0x2]
-        or byte [bx + g_B387], 0xff
+        or byte [bx + hmtmgoalie_b1], 0xff
 .5:
         mov bx, [bp - 0x2]
         cmp word [bx + hmtmgoalie], 0x0
@@ -1478,4 +1478,4 @@ SetTeamGoalie:
         cmp [bx + hmtmgoalie], di
         jz short SetTeamGoalieTail + 0xE30
         db 0x8B, 0xC3                           ; insn: mov ax, bx
-        add ax, 0xb362
+        add ax, hmshots

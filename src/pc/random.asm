@@ -37,4 +37,4 @@ randomd0:
         adc dx, 0x0
         mov [seed], ax
         mov [seed + 2], dx
-        db 0x8A
+        db 0x8A                                 ; insn: mov al, ah: the last byte is in the next segment

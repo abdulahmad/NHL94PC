@@ -1,0 +1,321 @@
+# data labels named from their use (by hand), part 3
+g_58A6 GoalieSaveSides2 | new | medium | save side bytes of puckgoalie, indexed by the hit direction
+g_B50C SortCords_m2 | new | medium | the word before SortCords and the first two bytes of it (clearteams stores 0B80Eh, an object address)
+g_BD8E TitleJingle | new | medium | title jingle buffer pointer (offset)
+g_BD90 TitleJingleSeg | new | medium | its segment
+g_BD92 TitleJingle2 | new | medium | second title jingle buffer pointer (offset)
+g_BD94 TitleJingle2Seg | new | medium | its segment
+g_BD96 gmrosterpos | new | medium | roster position letter (C, L, R, D, G) of the game roster entries
+g_BD99 gmrosterjersey_b2 | new | medium | game roster entry byte +3
+g_BD9A gmrosterdot | new | medium | game roster entry: the '.' after the initial
+g_BD9B gmrosterspace | new | medium | game roster entry: the space before the name
+g_BD9C gmrostername | new | medium | game roster entry names
+g_BFBC gmroster2pos | new | medium | second game roster: first byte
+g_BFBD gmroster2jersey | new | medium | second game roster: jersey bytes
+g_BFBF gmroster2init | new | medium | second game roster: initial
+g_BFC0 gmroster2dot | new | medium | second game roster: the '.'
+g_BFC1 gmroster2space | new | medium | second game roster: the space
+g_BFC2 gmroster2name | new | medium | second game roster: names
+g_C000 HomeTeamDbName | new | medium | home team database name (32 bytes)
+g_C020 AwayTeamDbName | new | medium | away team database name (32 bytes)
+g_C040 statsgoaliebufseg | new | medium | segment of statsgoaliebuf
+g_C044 statsskaterbufseg | new | medium | segment of statsskaterbuf
+g_C048 statsplayerbufseg | new | medium | segment of statsplayerbuf
+g_C04C statsteambufseg | new | medium | segment of statsteambuf
+g_C050 statsrosterteam | new | medium | team shown on the roster screen
+g_C054 savedcount1 | new | medium | number of saved games of the first kind (ScanSavedGames)
+g_C056 savedsel1 | new | medium | selected saved game of the first kind
+g_C058 savedtop1 | new | medium | first saved game shown, first kind
+g_C05A savedrows1 | new | medium | rows of the first saved game list
+g_C05C savednames1 | new | medium | name pointers (offset) of the first saved game list
+g_C05E savednames1seg | new | medium | further name pointers of the first list
+g_C0DC savedcount2 | new | medium | number of saved games of the second kind
+g_C0E0 savedtop2 | new | medium | first saved game shown, second kind
+g_C0E2 savedrows2 | new | medium | rows of the second list
+g_C0E4 savednames2 | new | medium | name pointers of the second list
+g_C164 savedcount3 | new | medium | number of saved games of the third kind
+g_C166 savedsel3 | new | medium | selected saved game of the third kind
+g_C168 savedtop3 | new | medium | first saved game shown, third kind
+g_C16A savedrows3 | new | medium | rows of the third list
+g_C16C savednames3 | new | medium | name pointers of the third list
+g_C16E savednames3seg | new | medium | further name pointers of the third list
+g_C1EE fdlgflags | new | medium | file dialog flag bits (80h, 40h, 20h)
+g_C1EF fdlgflags2 | new | medium | file dialog flag bits, second byte
+g_C1F0 SoundDrvBuf | new | medium | sound driver buffer pointer (offset)
+g_C1F2 SoundDrvBufSeg | new | medium | its segment
+g_C1F4 POTitleText | new | medium | playoff title text (16 bytes)
+g_C206 POTreeSlots | new | medium | playoff tree slot words
+g_C224 POTreeRows | new | medium | playoff tree row words (19h)
+g_C238 standingsteam | new | medium | team of the standings row
+g_C23A standingsprev | new | medium | previous standings value
+g_C23C standingskey | new | medium | standings sort key
+g_C23E standingskey2 | new | medium | second standings sort key
+g_C240 standingsrank | new | medium | standings rank
+g_C242 DeskTitleText | new | medium | sports desk title text (22 bytes)
+g_C258 ScoreboardArt | new | medium | scoreboard art pointer (offset)
+g_C25A ScoreboardArtSeg | new | medium | its segment
+g_C25C RinkEndArt | new | medium | rink end art pointer (offset)
+g_C25E RinkEndArtSeg | new | medium | its segment
+g_C260 editactive | new | medium | text field: editing active
+g_C262 editcursorx | new | medium | text field: cursor x
+g_C264 editx | new | medium | text field: x
+g_C266 edity | new | medium | text field: y
+g_C268 editpos | new | medium | text field: cursor position
+g_C26A editlen | new | medium | text field: text length
+g_C26C editmax | new | medium | text field: maximum width
+g_C26E calresult | new | medium | calendar result (-1 none)
+g_C270 calmonth | new | medium | calendar month shown (0-11)
+g_C272 calday | new | medium | calendar day chosen (-1 none)
+g_C276 floppydrive | new | medium | floppy drive chosen
+g_C278 floppyok | new | medium | floppy drive flags
+g_C27A floppycount | new | medium | number of floppy drives
+g_C27C tradestate | new | medium | trade screen state (1 done, -1 cancelled, 0 running)
+g_C27E savleague | new | medium | league name of the game being played (14 bytes)
+g_C28C savleague2 | new | medium | second league name (14 bytes)
+g_C29A lgschedrec | new | medium | schedule record of the league game
+g_C29B lgschedrec_b1 | new | medium | schedule record byte +1
+g_C29C lgschedrec_b2 | new | medium | schedule record byte +2
+g_C29D lgschedrec_b3 | new | medium | schedule record byte +3
+g_C29F lgschedrec_b5 | new | medium | schedule record byte +5
+g_C2A2 calcursor | new | medium | calendar cursor day
+g_C2A4 calcursor2 | new | medium | calendar cursor row
+g_C2A6 lghometeam | new | medium | home team of the league game
+g_C2A8 lgoppteam | new | medium | other team of the league game
+g_C2AA lggamestate | new | medium | league game state (-1 none)
+g_C2AC lgreadword | new | medium | word read with the league game reference
+g_C2AE lgreadword2 | new | medium | second word read with the league game reference
+g_C2B0 lggameidx | new | medium | index of the league game
+g_C2B4 statsbgseg | new | medium | stats background shape segment
+g_C2C2 traderows | new | medium | trade screen rows
+g_C2C3 traderows_b1 | new | medium | trade screen rows from +1
+g_C2C4 traderows_b2 | new | medium | trade screen row bytes from +2
+g_C52A traderoster | new | medium | trade roster (BuildTradeRoster)
+g_C792 tradesel | new | medium | selected trade rows
+g_C794 tradesel2 | new | medium | second trade selection word
+g_C796 tradescroll | new | medium | trade list scroll
+g_C798 tradescroll2 | new | medium | second trade scroll word
+g_C79A tradecursor | new | medium | trade screen cursor
+g_C79C tradecolour | new | medium | trade screen row colour
+g_C79E tradecolour2 | new | medium | second trade row colour
+g_C7A0 mergestate | new | medium | merge state of the league files
+g_C7A2 AwardRawA | new | medium | award art raw handle
+g_C7A4 AwardRawB | new | medium | second award art raw handle
+g_C7A6 AwardRawC | new | medium | third award art raw handle
+g_C7A8 AwardRawD | new | medium | fourth award art raw handle
+g_C7AA AwardFrames | new | medium | award EMS frames (offset)
+g_C7AC AwardFramesSeg | new | medium | award EMS frames
+g_C7D2 AwardFrames2 | new | medium | second award EMS frames
+g_C7D4 AwardFrames2Seg | new | medium | second award EMS frames
+g_C7FA AwardFrames3 | new | medium | third award EMS frame
+g_C7FC AwardFrames3Seg | new | medium | third award EMS frames
+g_C806 AwardScores | new | medium | award score bytes (ShowAwardScreens)
+g_CC05 AwardText | new | medium | award text buffer
+g_CC29 AwardCandidates | new | medium | award candidate bytes (PickAwardWinners)
+g_CEE8 standingstab | new | medium | standings table (26-byte rows)
+g_CF18 rostertop | new | medium | roster screen first row
+g_CF1A statscardteam | new | medium | stats card team
+g_CF1B statscardplayer | new | medium | stats card player
+g_CF1D rosterfilter | new | medium | roster filter text
+g_CF2D rosterfilter2 | new | medium | second roster filter text
+g_CF3E statsfilepos | new | medium | stats file position (low)
+g_CF40 statsfileposhi | new | medium | stats file position (high)
+g_CF42 statscardrec | new | medium | stats card record pointer
+g_CF44 statscardrecseg | new | medium | its segment
+g_CF46 statscardrec2 | new | medium | second stats card record pointer
+g_CF48 statscardrec2seg | new | medium | its segment
+g_CF4A statscardgoalie | new | medium | stats card goalie flag
+g_CF4C statscardrec3 | new | medium | third stats card record word
+g_CF4E rosterrows | new | medium | roster screen row records
+g_CF80 rosterrowptrs | new | medium | roster screen row pointers
+g_CFB2 rosterrows2 | new | medium | second roster row records
+g_CFBC rosterrowptrs2 | new | medium | second roster row pointers
+g_CFC6 rostersel | new | medium | roster selected row
+g_CFC8 statsrecs | new | medium | stats records pointer (offset)
+g_CFCA statsrecsseg | new | medium | its segment
+g_CFCC statscmpsum | new | medium | comparator sum
+g_CFCE statscmpsum2 | new | medium | comparator sum, high word
+g_CFD4 statstext | new | medium | text buffer of DrawTextFmt (40 bytes)
+g_CFFC cupseries | new | medium | cup series buffer pointer (offset)
+g_CFFE cupseriesseg | new | medium | its segment
+g_D002 lastgoalx | new | medium | last goal position x
+g_D004 crowdtimer | new | medium | crowd timer
+g_D008 lastgoaly | new | medium | last goal position y
+g_D00A crowdcount | new | medium | crowd counter
+g_D00C cleared1 | new | medium | game variable cleared by cleargamevars
+g_D00E cleared2 | new | medium | game variable cleared by cleargamevars
+g_D010 crowdsum | new | medium | crowd excitement sum (low)
+g_D012 crowdsumhi | new | medium | crowd excitement sum (high)
+g_D014 replayrecptr | new | medium | replay record pointer (offset)
+g_D016 replayrecseg | new | medium | replay record pointer (segment)
+g_D018 replayplay | new | medium | replay play pointer (offset)
+g_D01A replayplayseg | new | medium | replay play pointer (segment)
+g_D01C plstatsoff | new | medium | player stats offsets
+g_D01E plstatsoff2 | new | medium | player stats offsets, second word
+g_D020 plstatsoff3 | new | medium | player stats offsets, third word
+g_D022 plstatsrecs | new | medium | player stats offset table (394 bytes)
+g_D1AC gameclock2 | new | medium | game clock copy
+g_D2C6 SpriteFrames | new | medium | sprite frame pointers (offset)
+g_D2C8 SpriteFramesSeg | new | medium | sprite frame pointers
+g_D446 NumberFrames | new | medium | number sprite frames
+g_D448 NumberFramesSeg | new | medium | number sprite frames
+g_D456 NumberFrames2 | new | medium | second number sprite frames
+g_D458 NumberFrames2Seg | new | medium | second number sprite frames
+g_D46A gameframe | new | medium | game frame counter
+g_D46C controlled | new | medium | controlled player per controller
+g_D46E controlled2 | new | medium | second controlled player word
+g_D474 objxlist | new | medium | object x list (34 bytes)
+g_D496 objylist | new | medium | object y list (34 bytes)
+g_D4F3 OOlist_m1 | new | medium | byte before OOlist
+g_D4F5 OOlist_b1 | new | medium | OOlist from +1
+g_D604 fofdata | new | medium | faceoff data word
+g_D606 fofdata_w2 | new | medium | faceoff data word +2
+g_D608 fofdata_w4 | new | medium | faceoff data word +4
+g_D60A fofdata_w6 | new | medium | faceoff data word +6
+g_D60C fofdata_w8 | new | medium | faceoff data word +8
+g_D60E mousex | new | medium | mouse x
+g_D610 mousey | new | medium | mouse y
+g_D612 savedword1 | new | medium | game variable saved with the game
+g_D614 savedword2 | new | medium | game variable saved with the game
+g_D618 GoalState_m6 | new | medium | home goal state byte
+g_D619 GoalState_m5 | new | medium | home goal state bytes
+g_D61C GoalState_m2 | new | medium | away goal state byte
+g_D61D GoalState_m1 | new | medium | away goal state byte
+g_D62B iflags_b1 | new | medium | iflags high byte
+g_D62C OverlayGfx | new | medium | text overlay graphics pointer (offset)
+g_D62E OverlayGfxSeg | new | medium | its segment
+g_D630 OverlayFrames | new | medium | text overlay frames
+g_D632 OverlayFramesSeg | new | medium | text overlay frames
+g_D658 overlaytimer | new | medium | text overlay timer
+g_D65A overlaystate | new | medium | text overlay state (1..5)
+g_D65C overlayscript | new | medium | text overlay script pointer (offset)
+g_D65E overlayscriptseg | new | medium | its segment
+g_D660 scorerflags | new | medium | scorer milestone flags
+g_D661 scorerflags2 | new | medium | second scorer milestone flags
+g_D662 gamevar1 | new | medium | game variable saved with the game
+g_D663 gamevar2 | new | medium | game variable cleared by ResetGameVars
+g_D664 gamevar3 | new | medium | game variable saved with the game
+g_D666 gamevar4 | new | medium | game variable saved with the game
+g_D668 stoppagetime | new | medium | clock at the last stoppage
+g_D66A gamevar5 | new | medium | game variable saved with the game
+g_D66D regd0_b1 | new | medium | regd0 high byte
+g_D66E regd0_w2 | new | medium | regd0 high word
+g_D670 gamevar6 | new | medium | game variable saved with the game
+g_D673 regd1_b1 | new | medium | regd1 byte +1
+g_D674 regd1_w2 | new | medium | regd1 high word
+g_D678 PenBuf_b2 | new | medium | penalty buffer from +2
+g_D6BA regd2_w2 | new | medium | regd2 high word
+g_D6BC gamevar7 | new | medium | game variable saved with the game
+g_D6BE gamevar8 | new | medium | game variable saved with the game
+g_D6C2 regd3_w2 | new | medium | regd3 high word
+g_D6C4 crowdheat | new | medium | crowd heat, raised by goals and shots
+g_D6C7 PBnum_b1 | new | medium | away penalty box count (PBnum+1)
+g_D6CA regd4_w2 | new | medium | regd4 high word
+g_D6CE ovltimer2 | new | medium | frame timer of the replay and intro loops
+g_D6D4 GameGfx | new | medium | game graphics pointer (offset)
+g_D6D6 GameGfxSeg | new | medium | its segment
+g_D6D8 NumberSprites | new | medium | jersey number sprites
+g_D6DA NumberSpritesSeg | new | medium | jersey number sprites
+g_D700 NumberSprites2 | new | medium | second jersey number sprites
+g_D702 NumberSprites2Seg | new | medium | second jersey number sprites
+g_D71C RinkEndFrames | new | medium | rink end frames pointer (offset)
+g_D71E RinkEndFramesSeg | new | medium | rink end frames
+g_D9D6 dirtycount | new | medium | dirty rectangle counts per page
+g_D9DA rinkobjused | new | medium | rink object frame bits
+g_D9FA hilightslots | new | medium | highlight slot words
+g_DA06 MovieBuf | new | medium | movie buffer pointer (offset)
+g_DA08 MovieBufSeg | new | medium | its segment
+g_DA0A PanelShapes | new | medium | panel shapes
+g_DA0C PanelShapes_b2 | new | medium | panel shapes from +2
+g_DA0D PanelShapes_b3 | new | medium | panel shapes from +3
+g_DA2A PanelClockShape | new | medium | panel clock shape pointer
+g_DA2C PanelClockShapeSeg | new | medium | its segment
+g_DA2E PanelScoreShape | new | medium | panel score shape pointer
+g_DA30 PanelScoreShapeSeg | new | medium | its segment
+g_DA4A PenaltyShapes | new | medium | panel penalty shapes
+g_DA4C PenaltyShapesSeg | new | medium | panel penalty shapes
+g_DA72 PenaltyShape | new | medium | panel penalty shape
+g_DA74 PenaltyShapeSeg | new | medium | its segment
+g_DA76 ClockDigits | new | medium | panel clock digit shapes
+g_DA78 ClockDigitsSeg | new | medium | panel clock digit shapes
+g_DA9E ClockColonShape | new | medium | panel clock colon shape
+g_DAA2 ScoreDigits | new | medium | panel score digit shapes
+g_DAA4 ScoreDigitsSeg | new | medium | panel score digit shapes
+g_DACE ReplayFont | new | medium | replay font pointer (offset)
+g_DAD0 ReplayFontSeg | new | medium | its segment
+g_DAD2 replaymousex | new | medium | replay pointer x
+g_DAD4 replaymousey | new | medium | replay pointer y
+g_DAD6 replaydx | new | medium | replay pointer x step
+g_DAD8 replayspeed | new | medium | replay speed
+g_DADA ReplayGadgets | new | medium | replay gadget shapes
+g_DADC ReplayGadgetsSeg | new | medium | replay gadget shapes
+g_DADE ReplayGadgets2 | new | medium | further replay gadget shapes
+g_DAE6 ReplayPanel | new | medium | replay panel shape
+g_DAE8 ReplayPanelSeg | new | medium | its segment
+g_DAEA ReplayPanels | new | medium | further replay panel shapes
+g_DAFE ReplayPointer | new | medium | replay pointer shape
+g_DB00 ReplayPointerSeg | new | medium | its segment
+g_DB02 ReplayPointers | new | medium | further replay pointer shapes
+g_DB10 ReplayBack | new | medium | replay background shape
+g_DB12 ReplayBackSeg | new | medium | its segment
+g_DB14 ReplayBack2 | new | medium | second replay background shape
+g_DB16 replaysaved | new | medium | replay saved flag
+g_DB18 replayplaying | new | medium | replay playing flag
+g_DB1A replaystart | new | medium | replay start frame
+g_DB1C replayend | new | medium | replay end frame
+g_DB20 replaypick | new | medium | player picked in the replay
+g_DB22 replayfollow | new | medium | player the replay follows (-1 none)
+g_DB24 replayfollow2 | new | medium | previous followed player
+g_DB26 replayfwd | new | medium | replay direction
+g_DB28 replaybutton | new | medium | replay button pressed
+g_DB2A replaystep | new | medium | replay step
+g_DB2C replaysavestate | new | medium | replay save state
+g_DB2E rpl_x | new | medium | replay frame: object x
+g_DB4A rpl_puckx | new | medium | replay frame: puck x
+g_DB4C rpl_puckframe | new | medium | replay frame: puck frame
+g_DB50 rpl_y | new | medium | replay frame: object y
+g_DB6C rpl_pucky | new | medium | replay frame: puck y
+g_DB6E rpl_shadow | new | medium | replay frame: puck shadow
+g_DB72 rpl_frame | new | medium | replay frame: object frame
+g_DB8E rpl_reff | new | medium | replay frame: referee frame
+g_DB90 rpl_door | new | medium | replay frame: door frame
+g_DB94 rpl_flags | new | medium | replay frame: object flags
+g_DBA5 rpl_jerseys | new | medium | replay frame: jerseys
+g_DBB1 rpl_puckowner | new | medium | replay frame: puck owner
+g_DBB2 rpl_bytes | new | medium | replay frame bytes
+g_DBBE rpl_camx | new | medium | replay frame: camera x
+g_DBC0 rpl_word | new | medium | replay frame word
+g_DBC2 rpl_b1 | new | medium | replay frame byte
+g_DBC3 rpl_b2 | new | medium | replay frame byte
+g_DBC4 rpl_b3 | new | medium | replay frame byte
+g_DBC5 rpl_b4 | new | medium | replay frame byte
+g_DBC6 rpl_b5 | new | medium | replay frame bytes
+g_DBC8 rpl_w1 | new | medium | replay frame word
+g_DBCA rpl_w2 | new | medium | replay frame word
+g_DBCC rpl_words | new | medium | replay frame words
+g_DBF4 rpl_b6 | new | medium | replay frame byte
+g_DBF5 rpl_b7 | new | medium | replay frame bytes
+g_DC08 rpl_words2 | new | medium | replay frame words
+g_DC2A defertab_a1 | new | medium | deferred call argument 1
+g_DC2C defertab_a2 | new | medium | deferred call argument 2
+g_DC2E defertab_a3 | new | medium | deferred call argument 3
+g_DC30 defertab_a4 | new | medium | deferred call argument 4
+g_DC32 defertab_a5 | new | medium | deferred call argument 5
+g_DC34 defertab_a6 | new | medium | deferred call argument 6
+g_DC36 defertab_a7 | new | medium | deferred call argument 7
+g_DC38 defertab_fn | new | medium | deferred call routine offset
+g_DC3A defertab_seg | new | medium | deferred call routine segment
+g_DC72 gsumqueue | new | medium | queued game summary records
+g_DCD8 introtimers | new | medium | intro timers
+g_DEE7 dressflags_aw | new | medium | away dressed flags
+g_DF32 possort | new | medium | players sorted by position
+g_DF6A fadex | new | medium | fade area x
+g_DF6C fadey | new | medium | fade area y
+g_DF6E fadew | new | medium | fade area width
+g_DF70 fadeh | new | medium | fade area height
+g_E366 savedteam1 | new | medium | saved team byte
+g_E367 savedteam2 | new | medium | saved team byte
+g_E368 savedbyte3 | new | medium | saved game byte
+g_E369 savedbyte4 | new | medium | saved game byte
+g_E36A savedbyte5 | new | medium | saved game byte
+g_E36B lgflags | new | medium | league flags and buffers
+g_D4F4 OOlist | 95 PC | medium | sorted object order list; OOlist_m1 and OOlist_b1 are its neighbours

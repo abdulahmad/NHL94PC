@@ -25,7 +25,7 @@ FitNameToWidth:
         call 0x0000:_fstrcpy
         add sp, 0x8
         push word 0x3701                        ; segment of the team choice text far data
-        push word 0xba6
+        push word str_Space
         push word [bp + 0x8]
         push si
         call 0x0000:_fstrcat

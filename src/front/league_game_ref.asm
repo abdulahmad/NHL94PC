@@ -24,7 +24,7 @@ SaveLeagueGameRef:
         push -0x1
         push -0x1
         push ds
-        push strict word g_C2A6
+        push strict word lghometeam
         push di
         call 0x0CD1:WriteAtOffset
         add sp, 0xc
@@ -35,7 +35,7 @@ SaveLeagueGameRef:
         push -0x1
         push -0x1
         push ds
-        push strict word g_C2A8
+        push strict word lgoppteam
         push di
         call 0x0CD1:WriteAtOffset
         add sp, 0xc
@@ -47,7 +47,7 @@ SaveLeagueGameRef:
         push -0x1
         push -0x1
         push ds
-        push strict word g_C2AA
+        push strict word lggamestate
         push di
         call 0x0CD1:WriteAtOffset
         add sp, 0xc
@@ -59,7 +59,7 @@ SaveLeagueGameRef:
         push -0x1
         push -0x1
         push ds
-        push strict word g_C2AC
+        push strict word lgreadword
         push di
         call 0x0CD1:WriteAtOffset
         add sp, 0xc
@@ -71,7 +71,7 @@ SaveLeagueGameRef:
         push -0x1
         push -0x1
         push ds
-        push strict word g_C2AE
+        push strict word lgreadword2
         push di
         call 0x0CD1:WriteAtOffset
         add sp, 0xc
@@ -83,7 +83,7 @@ SaveLeagueGameRef:
         push -0x1
         push -0x1
         push ds
-        push strict word g_C2B0
+        push strict word lggameidx
         push di
         call 0x0CD1:WriteAtOffset
         add sp, 0xc
@@ -95,7 +95,7 @@ SaveLeagueGameRef:
         push -0x1
         push -0x1
         push ds
-        push strict word g_C27E
+        push strict word savleague
         push di
         call 0x0CD1:WriteAtOffset
         add sp, 0xc
@@ -107,7 +107,7 @@ SaveLeagueGameRef:
         push -0x1
         push -0x1
         push ds
-        push strict word g_C28C
+        push strict word savleague2
         push di
         call 0x0CD1:WriteAtOffset
         add sp, 0xc
@@ -120,7 +120,7 @@ SaveLeagueGameRef:
         push -0x1
         push -0x1
         push ds
-        push strict word g_C29A
+        push strict word lgschedrec
         push di
         call 0x0CD1:WriteAtOffset
         add sp, 0xc
@@ -144,7 +144,7 @@ SaveLeagueGameRef:
         push word 0x3701
         push strict word str_Pinfo
         push ds
-        push strict word g_C27E
+        push strict word savleague
         lea ax, [bp - 0x34]
         push ss
         push ax
@@ -188,7 +188,7 @@ SaveLeagueGameRef:
         push ax
         call 0x0CD1:CloseHandlePtr
         add sp, 0x2
-        cmp word [g_C2AA], 0x0
+        cmp word [lggamestate], 0x0
         jz short .16
         db 0x0B, 0xF6                           ; insn: or si, si
         jnz short .13
@@ -197,7 +197,7 @@ SaveLeagueGameRef:
         push word 0x3701
         push strict word str_Pinfo
         push ds
-        push strict word g_C28C
+        push strict word savleague2
         lea ax, [bp - 0x34]
         push ss
         push ax
@@ -263,7 +263,7 @@ LoadLeagueGameRef:
         push -0x1
         push -0x1
         push ds
-        push strict word g_C2A6
+        push strict word lghometeam
         push di
         call 0x0CD1:ReadAtOffset
         add sp, 0xc
@@ -274,7 +274,7 @@ LoadLeagueGameRef:
         push -0x1
         push -0x1
         push ds
-        push strict word g_C2A8
+        push strict word lgoppteam
         push di
         call 0x0CD1:ReadAtOffset
         add sp, 0xc
@@ -286,7 +286,7 @@ LoadLeagueGameRef:
         push -0x1
         push -0x1
         push ds
-        push strict word g_C2AA
+        push strict word lggamestate
         push di
         call 0x0CD1:ReadAtOffset
         add sp, 0xc
@@ -298,7 +298,7 @@ LoadLeagueGameRef:
         push -0x1
         push -0x1
         push ds
-        push strict word g_C2AC
+        push strict word lgreadword
         push di
         call 0x0CD1:ReadAtOffset
         add sp, 0xc
@@ -310,7 +310,7 @@ LoadLeagueGameRef:
         push -0x1
         push -0x1
         push ds
-        push strict word g_C2AE
+        push strict word lgreadword2
         push di
         call 0x0CD1:ReadAtOffset
         add sp, 0xc
@@ -322,7 +322,7 @@ LoadLeagueGameRef:
         push -0x1
         push -0x1
         push ds
-        push strict word g_C2B0
+        push strict word lggameidx
         push di
         call 0x0CD1:ReadAtOffset
         add sp, 0xc
@@ -334,7 +334,7 @@ LoadLeagueGameRef:
         push -0x1
         push -0x1
         push ds
-        push strict word g_C27E
+        push strict word savleague
         push di
         call 0x0CD1:ReadAtOffset
         add sp, 0xc
@@ -346,7 +346,7 @@ LoadLeagueGameRef:
         push -0x1
         push -0x1
         push ds
-        push strict word g_C28C
+        push strict word savleague2
         push di
         call 0x0CD1:ReadAtOffset
         add sp, 0xc
@@ -358,4 +358,4 @@ LoadLeagueGameRef:
         push -0x1
         push -0x1
         push ds
-        push strict word g_C29A
+        push strict word lgschedrec

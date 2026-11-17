@@ -90,25 +90,25 @@ MenuModeSettings:
         jnz short .7
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [energywarn], ax
-        mov [g_48CE], ax
-        mov [g_48E4], ax
+        mov [lcsel], ax
+        mov [hudredraw], ax
         mov [lcboxon], ax
-        mov bx, 0xb553
+        mov bx, sortobj0_pflags2
 .5:
         and byte [bx], 0xf7
         add bx, 0x80
-        cmp bx, 0xbb53
+        cmp bx, SortCords + 12 * 0x80 + 0x45
         jc short .5
         and byte [hmtmflags], 0xfd
         and byte [awtmflags], 0xfd
-        mov bx, 0xb464
+        mov bx, awtmflags + 2
 .6:
         mov ax, 0x1000
         mov [bx], ax
         mov [bx - 0xd6], ax
         inc bx
         inc bx
-        cmp bx, 0xb49c
+        cmp bx, awtmflags + 0x3a
         jc short .6
 .7:
         test byte [CrowdState], 0x40
@@ -300,7 +300,7 @@ DrawModeSetChecks:
         db 0x0B, 0xC6                           ; insn: or ax, si
         db 0x0B, 0xC7                           ; insn: or ax, di
         or ax, [bp - 0x2]
-        mov [g_B35E], ax
+        mov [editopts], ax
         push cs
         call DrawModeSetCheck
         lea ax, [bp - 0x12]
@@ -451,7 +451,7 @@ DrawModeSetCheck:
         db 0x8B, 0xCF                           ; insn: mov cx, di
         mov ax, 0x1
         shl ax, cl
-        test [g_B35E], ax
+        test [editopts], ax
         jz short .2
         mov al, 0x17
         mov [si], al
@@ -474,7 +474,7 @@ DrawModeSetCheck:
         lea ax, [bp - 0x46]
         db 0x3B, 0xF0                           ; insn: cmp si, ax
         jc short .1
-        test byte [g_B35F], 0x1
+        test byte [editopts_b1], 0x1
         jz short .4
         mov al, 0x17
         mov [bp - 0x19], al
@@ -790,7 +790,7 @@ ModeSetEditLoop:
         mov ax, 0x1
         shl ax, cl
         not ax
-        and [g_B35E], ax
+        and [editopts], ax
         jmp short .15
         db 0x90
 .14:
@@ -801,7 +801,7 @@ ModeSetEditLoop:
         db 0x8A, 0xC8                           ; insn: mov cl, al
         mov ax, 0x1
         shl ax, cl
-        or [g_B35E], ax
+        or [editopts], ax
 .15:
         push cs
         call DrawModeSetCheck
@@ -822,7 +822,7 @@ ModeSetEditLoop:
         jz short .20
         jmp near ModeSetEditLoopTail + 0x8C0
 .20:
-        mov al, [g_B35E]
+        mov al, [editopts]
         and ax, strict word 0x1
         cmp ax, strict word 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
@@ -831,7 +831,7 @@ ModeSetEditLoop:
         and ax, strict word 0x1
         xor [CrowdState], ax
         mov al, [CrowdState]
-        mov cl, [g_B35E]
+        mov cl, [editopts]
         and cx, 0x2
         cmp cx, 0x1
         db 0x1B, 0xC9                           ; insn: sbb cx, cx
@@ -841,7 +841,7 @@ ModeSetEditLoop:
         and ax, strict word 0x2
         xor [CrowdState], ax
         mov al, [CrowdState]
-        mov cl, [g_B35E]
+        mov cl, [editopts]
         and cx, 0x4
         cmp cx, 0x1
         db 0x1B, 0xC9                           ; insn: sbb cx, cx
@@ -851,7 +851,7 @@ ModeSetEditLoop:
         and ax, strict word 0x4
         xor [CrowdState], ax
         mov al, [CrowdState]
-        mov cl, [g_B35E]
+        mov cl, [editopts]
         and cx, 0x8
         cmp cx, 0x1
         db 0x1B, 0xC9                           ; insn: sbb cx, cx
@@ -861,7 +861,7 @@ ModeSetEditLoop:
         and ax, strict word 0x8
         xor [CrowdState], ax
         mov al, [CrowdState]
-        mov cl, [g_B35E]
+        mov cl, [editopts]
         and cx, 0x10
         cmp cx, 0x1
         db 0x1B, 0xC9                           ; insn: sbb cx, cx
@@ -871,7 +871,7 @@ ModeSetEditLoop:
         and ax, strict word 0x10
         xor [CrowdState], ax
         mov al, [CrowdState]
-        mov cl, [g_B35E]
+        mov cl, [editopts]
         and cx, 0x20
         cmp cx, 0x1
         db 0x1B, 0xC9                           ; insn: sbb cx, cx
@@ -882,7 +882,7 @@ ModeSetEditLoop:
         xor [CrowdState], ax
         cmp word [SoundOptions], 0x10
         jz short .21
-        mov al, [g_B35E]
+        mov al, [editopts]
         and ax, strict word 0x40
         cmp ax, strict word 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
@@ -892,7 +892,7 @@ ModeSetEditLoop:
         and ax, strict word 0x40
         xor [CrowdState], ax
         mov al, [CrowdState]
-        mov cl, [g_B35E]
+        mov cl, [editopts]
         and cx, 0x80
         cmp cx, 0x1
         db 0x1B, 0xC9                           ; insn: sbb cx, cx
@@ -902,7 +902,7 @@ ModeSetEditLoop:
         and ax, 0x80
         xor [CrowdState], ax
 .21:
-        mov al, [g_B35E]
+        mov al, [editopts]
         and ax, 0x80
         cmp ax, strict word 0x1
         db 0x1B, 0xF6                           ; insn: sbb si, si
@@ -934,7 +934,7 @@ ModeSetEditLoop:
 .24:
         test byte [SoundOptions], 0x2
         jz short .25
-        mov ah, [g_B35F]
+        mov ah, [editopts_b1]
         and ax, 0x100
         cmp ax, strict word 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax

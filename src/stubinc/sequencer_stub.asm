@@ -28,6 +28,10 @@ _fmemcpy		equ	0x12B8
 _fmemset		equ	0x1456
 RawBase		equ	0x1532
 DGROUP		equ	0x45C9
+MouseRatioShift		equ	0x642E
+str_Track		equ	0x846E
+str_Parts		equ	0x8474
+str_Seqdat		equ	0x847A
 str_BankDPat		equ	0x8481
 str_TimbDTim		equ	0x848C
 SfxChannel		equ	0x8498
@@ -48,6 +52,7 @@ SongCount		equ	0x8504
 SongPtrs		equ	0x8506
 SongPtrsSeg		equ	0x8508
 WorkBufferSeg3		equ	0x8D14
+PatchFileName		equ	0x8F94
 PatchMsg		equ	0x8FA8
 PatchMsg1		equ	0x8FA9
 PatchMsg2		equ	0x8FAA
@@ -58,6 +63,7 @@ SongBankNum		equ	0x8FC2
 SfxMsg		equ	0x8FC6
 SfxMsg1		equ	0x8FC7
 SfxMsg2		equ	0x8FC8
+ChannelSetup		equ	0xBB6F
 PatchBank		equ	0xDFF4
 PatchBankSeg		equ	0xDFF6
 ChannelUsed		equ	0xDFF8

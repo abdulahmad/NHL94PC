@@ -212,17 +212,17 @@ DrawSpriteClipped:
         push es
         push bx
         shl di, byte 0x2
-        call far [di + g_4B24]
+        call far [di + SpriteBlitFns]
         add sp, 0x8
         cmp word [CurPage], 0x1
         db 0x1B, 0xDB                           ; insn: sbb bx, bx
         neg bx
         shl bx, 1
-        cmp word [bx + g_4B1C], 0x14
+        cmp word [bx + DirtyRects], 0x14
         jl short .25
         mov ax, 0x1
-        mov [g_4B22], ax
-        mov [g_4B20], ax
+        mov [DeskRedrawPage2], ax
+        mov [DeskRedrawPage], ax
         jmp near .35
         db 0x90
 .25:
@@ -234,7 +234,7 @@ DrawSpriteClipped:
         mov ax, [bp - 0xa]
         shr ax, byte 0x2
         inc ax
-        mov bx, [ss:bx + g_D9D6]
+        mov bx, [ss:bx + dirtycount]
         mov [ss:bx + 0x4], ax
         mov ax, [es:ClipLeftX]
         db 0x8B, 0xF8                           ; insn: mov di, ax
@@ -256,7 +256,7 @@ DrawSpriteClipped:
         db 0x2B, 0xC1                           ; insn: sub ax, cx
         inc ax
 .28:
-        mov bx, [ss:bx + g_D9D6]
+        mov bx, [ss:bx + dirtycount]
         mov [ss:bx + 0x4], ax
 .29:
         mov bx, [bp - 0x8]
@@ -269,7 +269,7 @@ DrawSpriteClipped:
         db 0x1B, 0xF6                           ; insn: sbb si, si
         neg si
         shl si, 1
-        mov si, [ss:si + g_D9D6]
+        mov si, [ss:si + dirtycount]
         mov [ss:si + 0x6], ax
         mov bx, [es:ClipTopY]
         jmp short .33
@@ -288,7 +288,7 @@ DrawSpriteClipped:
         db 0x1B, 0xF6                           ; insn: sbb si, si
         neg si
         shl si, 1
-        mov si, [ss:si + g_D9D6]
+        mov si, [ss:si + dirtycount]
         mov [ss:si + 0x6], ax
 .33:
         db 0x8B, 0xC7                           ; insn: mov ax, di
@@ -297,20 +297,20 @@ DrawSpriteClipped:
         db 0x1B, 0xF6                           ; insn: sbb si, si
         neg si
         shl si, 1
-        mov si, [ss:si + g_D9D6]
+        mov si, [ss:si + dirtycount]
         mov [ss:si], ax
         cmp word [ss:CurPage], 0x1
         db 0x1B, 0xF6                           ; insn: sbb si, si
         neg si
         shl si, 1
-        mov si, [ss:si + g_D9D6]
+        mov si, [ss:si + dirtycount]
         mov [ss:si + 0x2], bx
         cmp word [ss:CurPage], 0x1
         db 0x1B, 0xF6                           ; insn: sbb si, si
         neg si
         shl si, 1
-        inc word [ss:si + g_4B1C]
-        add word [ss:si + g_D9D6], 0x8
+        inc word [ss:si + DirtyRects]
+        add word [ss:si + dirtycount], 0x8
         mov cx, DGROUP
         mov ds, cx
         pop si
@@ -345,7 +345,7 @@ FlushDirtyRects:
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
         add cx, 0xd756
-        mov [bx + g_D9D6], cx
+        mov [bx + dirtycount], cx
         push word [bp + 0x8]
         push word [bp + 0x6]
         call 0x1F29:SetScrollCell
@@ -353,15 +353,15 @@ FlushDirtyRects:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .1
         mov ax, 0x1
-        mov [g_4B22], ax
-        mov [g_4B20], ax
+        mov [DeskRedrawPage2], ax
+        mov [DeskRedrawPage], ax
 .1:
         cmp word [CurPage], 0x1
         db 0x1B, 0xDB                           ; insn: sbb bx, bx
         neg bx
         shl bx, 1
         mov [bp - 0x2], bx
-        cmp word [bx + g_4B20], 0x0
+        cmp word [bx + DeskRedrawPage], 0x0
         jz short .2
         cmp word [CurPage], 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
@@ -374,16 +374,16 @@ FlushDirtyRects:
         db 0x1B, 0xDB                           ; insn: sbb bx, bx
         neg bx
         shl bx, 1
-        mov word [bx + g_4B20], 0x0
+        mov word [bx + DeskRedrawPage], 0x0
         jmp short .4
         db 0x90
 .2:
         db 0x2B, 0xF6                           ; insn: sub si, si
-        cmp [bx + g_4B1C], si
+        cmp [bx + DirtyRects], si
         jng short .4
 .3:
         mov bx, [bp - 0x2]
-        mov bx, [bx + g_D9D6]
+        mov bx, [bx + dirtycount]
         push word [bx + 0x6]
         push word [bx + 0x4]
         push word [bx + 0x2]
@@ -400,9 +400,9 @@ FlushDirtyRects:
         neg bx
         shl bx, 1
         mov [bp - 0x2], bx
-        add word [bx + g_D9D6], 0x8
+        add word [bx + dirtycount], 0x8
         inc si
-        cmp [bx + g_4B1C], si
+        cmp [bx + DirtyRects], si
         jg short .3
 .4:
         cmp word [CurPage], 0x1
@@ -410,10 +410,10 @@ FlushDirtyRects:
         neg bx
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         shl bx, 1
-        mov word [bx + g_4B1C], 0x0
+        mov word [bx + DirtyRects], 0x0
         imul ax, ax, word 0x140
-        add ax, 0xd756
-        mov [bx + g_D9D6], ax
+        add ax, hudhundstep + 0x2e
+        mov [bx + dirtycount], ax
         pop si
         leave
         retf
@@ -460,34 +460,34 @@ AddDirtyRect:
         db 0x1B, 0xDB                           ; insn: sbb bx, bx
         neg bx
         shl bx, 1
-        mov bx, [bx + g_D9D6]
+        mov bx, [bx + dirtycount]
         mov [bx + 0x4], ax
         mov ax, [bp + 0xc]
         cmp word [CurPage], 0x1
         db 0x1B, 0xDB                           ; insn: sbb bx, bx
         neg bx
         shl bx, 1
-        mov bx, [bx + g_D9D6]
+        mov bx, [bx + dirtycount]
         mov [bx + 0x6], ax
         cmp word [CurPage], 0x1
         db 0x1B, 0xDB                           ; insn: sbb bx, bx
         neg bx
         shl bx, 1
-        mov bx, [bx + g_D9D6]
+        mov bx, [bx + dirtycount]
         mov [bx], cx
         mov ax, [bp + 0x8]
         cmp word [CurPage], 0x1
         db 0x1B, 0xDB                           ; insn: sbb bx, bx
         neg bx
         shl bx, 1
-        mov bx, [bx + g_D9D6]
+        mov bx, [bx + dirtycount]
         mov [bx + 0x2], ax
         cmp word [CurPage], 0x1
         db 0x1B, 0xDB                           ; insn: sbb bx, bx
         neg bx
         shl bx, 1
-        inc word [bx + g_4B1C]
-        add word [bx + g_D9D6], 0x8
+        inc word [bx + DirtyRects]
+        add word [bx + dirtycount], 0x8
         leave
         retf
         db 0x90

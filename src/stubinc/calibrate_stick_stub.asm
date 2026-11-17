@@ -2,6 +2,7 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
+FontTable		equ	0x0
 DrawTextCenteredClip		equ	0x2
 FreeCanvas		equ	0xC
 SetCanvas		equ	0x48
@@ -27,9 +28,15 @@ CopyPlanesRect		equ	0x4262
 TickSkip		equ	0x6DB2
 CalibTargetX		equ	0x6F10
 CalibTargetY		equ	0x6F22
+str_CalibrateYourJoystickByUsing		equ	0x6F34
+str_ToMoveTheJoystickPosition		equ	0x6F58
+str_BelowToAllSquares		equ	0x6F80
+str_PressJoystickButtonWhenComplete		equ	0x6F96
+str_PressAnyKeyToIgnore		equ	0x6FBA
 str_LeftJoystick		equ	0x6FDB
 str_RightJoystick		equ	0x6FE9
 JoyOn		equ	0x7308
+CanvasRowBytes		equ	0x74F6
 BeforeDialogFn		equ	0x7642
 AfterDialogFn		equ	0x7646
 DgroupSegD		equ	0x8D06

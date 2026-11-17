@@ -2,6 +2,8 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
+str_NoNumber		equ	0x0
+str_Zero		equ	0x1
 InsertRecWrap		equ	0x13
 AllocRecData		equ	0x30
 DrvShutdown		equ	0x178
@@ -56,6 +58,11 @@ SpeechSampleBusy		equ	0x766
 SpeechMemOff		equ	0x768
 SpeechMemSeg		equ	0x76A
 SpeechOn		equ	0x76C
+str_Speechbuf		equ	0x76E
+str_Sentence		equ	0x778
+str_SpeechBank		equ	0x781
+str_SampleMemMan		equ	0x78D
+str_Pause		equ	0x79C
 str_Off		equ	0x7A2
 str_2minsS		equ	0x7A6
 str_Off_2		equ	0x7AF
@@ -128,7 +135,8 @@ SpeechFileNames		equ	0x1218
 _fstrcpy		equ	0x13DA
 _fmemmove		equ	0x14FA
 RawBase		equ	0x1532
-EmulatedFloat		equ	0x15C4
+__aFftol		equ	0x15C4
+CentisPerSample		equ	0x8B0A
 NumberWordsSeg		equ	0x8B12
 SentencePtr		equ	0x8EEA
 SentenceSeg		equ	0x8EEC

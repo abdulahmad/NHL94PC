@@ -1,3 +1,7 @@
+ClipBottomY		equ	0x74F4
+ClipLeftX		equ	0x74FC
+ClipRightX		equ	0x74FE
+ClipTopY		equ	0x74F2
 CopyPageRect		equ	0x3704
 CurPage		equ	0x74DC
 FillRectClip		equ	0xDE
@@ -5,9 +9,10 @@ GetPixel		equ	0x12DA
 SetDeadline.regs		equ	0x1A6E
 UseCurrentPage		equ	0x1A6
 UseOtherPage		equ	0x118C
+VenetianRowBytes		equ	0x74FA
 WaitDeadlineNoEoi		equ	0x1A84
-g_8D00		equ	0x8D00
-g_DF6A		equ	0xDF6A
-g_DF6C		equ	0xDF6C
-g_DF6E		equ	0xDF6E
-g_DF70		equ	0xDF70
+fadeh		equ	0xDF70
+fadew		equ	0xDF6E
+fadex		equ	0xDF6A
+fadey		equ	0xDF6C
+segDgroup24		equ	0x8D00

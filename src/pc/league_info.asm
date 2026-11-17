@@ -33,14 +33,14 @@ ReadLeagueInfo:
 .1:
         mov si, 0x1
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x16]
         push ss
         push ax
         call 0x0000:_fstrcpy
         add sp, 0x8
         push word 0x3701
-        push strict word f_3701_0BF4
+        push strict word str_Dot
         lea ax, [bp - 0x16]
         push ss
         push ax
@@ -49,9 +49,9 @@ ReadLeagueInfo:
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov byte [bp + di - 0x16], 0x0
         lea ax, [bp - 0x16]
-        mov es, [g_8BC2]
-        mov [es:0x105], ax
-        mov [es:0x107], ss
+        mov es, [segTeamChoiceText21]
+        mov [es:msgCanNotReadDatabasesIn + 0x4], ax
+        mov [es:msgCanNotReadDatabasesIn + 0x6], ss
         push 0x0
         push 0x11
         push 0x5
@@ -313,7 +313,7 @@ ReloadSoundConfig:
         mov bl, [bp - 0x1]
         db 0x2A, 0xFF                           ; insn: sub bh, bh
         shl bx, 1
-        mov di, [bx + g_1070]
+        mov di, [bx + SoundDevTable]
         jmp short .2
         db 0x90
 .1:
@@ -326,7 +326,7 @@ ReloadSoundConfig:
         db 0x2B, 0xF6                           ; insn: sub si, si
         mov [bp - 0x4], di
 .3:
-        mov al, [si + g_1826]
+        mov al, [si + SoundCfgSpec]
         mov [bp - 0x14], al
         mov [bp - 0x13], al
         mov [bp - 0x12], al

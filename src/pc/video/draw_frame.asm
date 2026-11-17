@@ -1,10 +1,10 @@
 ; DrawFrame: draws a rectangular frame.
 
 ;-----------------------------------------------------------------------------
-; NullFar8                                                    1484:0000  94 PC
-; A lone retf.
+; FillPolySpansTail                                           1484:0000  94 PC
+; End of FillPolySpans.
 ;-----------------------------------------------------------------------------
-NullFar8:
+FillPolySpansTail:                              ; end of FillPolySpans
         pop di
         pop si
         leave
@@ -43,7 +43,7 @@ DrawFrame:
         add sp, 0xa
 .1:
         db 0x0B, 0xFF                           ; insn: or di, di
-        db 0x7E, 0x24                           ; insn: jng 0x70
+        jng short DrawFrameTail + 0x70
         push word [bp + 0xe]
         push di
         push 0x1

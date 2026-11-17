@@ -46,7 +46,7 @@ ExportTeamToFloppy:
         push word 0x3701
         push strict word str_Pinfo
         push word 0x3701
-        push strict word f_3701_0BFA
+        push strict word str_DriveColon
         lea ax, [bp - 0x34]
         push ss
         push ax
@@ -78,7 +78,7 @@ ExportTeamToFloppy:
         push word 0x3701
         push strict word str_Player
         push word 0x3701
-        push strict word f_3701_0BFA
+        push strict word str_DriveColon
         lea ax, [bp - 0x34]
         push ss
         push ax
@@ -164,9 +164,9 @@ ExportTeamToFloppy:
         call 0x2305:FmtFromLeague
         add sp, 0xc
         lea ax, [bp - 0x74]
-        mov es, [g_8BA2]
-        mov [es:0x1f4], ax
-        mov [es:0x1f6], ss
+        mov es, [segTeamChoiceText12]
+        mov [es:msgThatDiskIsFor + 0x4], ax
+        mov [es:msgThatDiskIsFor + 0x6], ss
         lea ax, [bp - 0xb2]
         push ax
         lea cx, [bp - 0xaa]
@@ -182,7 +182,7 @@ ExportTeamToFloppy:
         push ax
         push 0x2
         push word 0x3701
-        push strict word f_3701_01FC
+        push strict word dlgInsertDisk
         push 0x3
         push word 0x3701
         push strict word msgThatDiskIsFor
@@ -238,7 +238,7 @@ ExportTeamToFloppy:
         push ax
         push 0x2
         push word 0x3701
-        push strict word f_3701_0756
+        push strict word dlgNewFloppy
         push 0x2
         push word 0x3701
         push strict word msgAreYouSureYouWant
@@ -299,17 +299,17 @@ ExportTeamToFloppy:
         cmp word [bp - 0xb6], 0x0
         jnz short .23
         push word 0x3701
-        push strict word f_3701_0BFA
+        push strict word str_DriveColon
         lea ax, [bp - 0x34]
         push ss
         push ax
         call 0x0000:_fstrcpy
         add sp, 0x8
-        mov es, [g_8BA4]
+        mov es, [segTeamChoiceText13]
         mov bx, [bp - 0xb4]
         shl bx, byte 0x2
-        push word [es:bx + 0xb6e]
-        push word [es:bx + 0xb6c]
+        push word [es:bx + DbFileNameList + 0x2]
+        push word [es:bx + DbFileNameList]
         lea ax, [bp - 0x94]
         push ss
         push ax
@@ -327,7 +327,7 @@ ExportTeamToFloppy:
         jl short .22
 .23:
         push word 0x3701
-        push strict word f_3701_0BFA
+        push strict word str_DriveColon
         lea ax, [bp - 0x34]
         push ss
         push ax
@@ -348,7 +348,7 @@ ExportTeamToFloppy:
         call 0x0CD1:DeleteMatching
         add sp, 0x6
         push word 0x3701
-        push strict word f_3701_0BFA
+        push strict word str_DriveColon
         lea ax, [bp - 0x34]
         push ss
         push ax
@@ -375,36 +375,36 @@ ExportTeamToFloppy:
         jmp near .27
 .25:
         push word 0x3701
-        push strict word f_3701_0BFA
+        push strict word str_DriveColon
         push word [bp + 0x8]
         push word [bp + 0x6]
         push word [bp + 0x10]
         push word [bp + 0xe]
         push word [bp + 0xc]
         push word [bp + 0xa]
-        mov es, [g_8BA4]
+        mov es, [segTeamChoiceText13]
         mov bx, [bp - 0xb4]
         shl bx, byte 0x2
-        push word [es:bx + 0xb6e]
-        push word [es:bx + 0xb6c]
+        push word [es:bx + DbFileNameList + 0x2]
+        push word [es:bx + DbFileNameList]
         call 0x0CD1:CopyFileByName
         add sp, 0x14
         mov [bp - 0xb6], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .26
         push word 0x3701
-        push strict word f_3701_0BFA
+        push strict word str_DriveColon
         push word [bp + 0x8]
         push word [bp + 0x6]
         push word 0x3701
         push strict word str_Db_2
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8BA4]
+        mov es, [segTeamChoiceText13]
         mov bx, [bp - 0xb4]
         shl bx, byte 0x2
-        push word [es:bx + 0xb6e]
-        push word [es:bx + 0xb6c]
+        push word [es:bx + DbFileNameList + 0x2]
+        push word [es:bx + DbFileNameList]
         call 0x0CD1:CopyFileByName
         add sp, 0x14
         mov [bp - 0xb6], ax
@@ -417,7 +417,7 @@ ExportTeamToFloppy:
         cmp word [bp - 0xb6], 0x0
         jnz short .28
         push word 0x3701
-        push strict word f_3701_0BFA
+        push strict word str_DriveColon
         push word [bp + 0x8]
         push word [bp + 0x6]
         push word 0x3701
@@ -448,7 +448,7 @@ ExportTeamToFloppy:
         push word 0x3701
         push strict word str_Game
         push word 0x3701
-        push strict word f_3701_0BFA
+        push strict word str_DriveColon
         lea ax, [bp - 0x94]
         push ss
         push ax
@@ -475,7 +475,7 @@ ExportTeamToFloppy:
         push word 0x3701
         push strict word str_Player
         push word 0x3701
-        push strict word f_3701_0BFA
+        push strict word str_DriveColon
         lea ax, [bp - 0x34]
         push ss
         push ax
@@ -554,7 +554,7 @@ ExportTeamToFloppy:
         push word 0x3701
         push strict word str_Pinfo
         push word 0x3701
-        push strict word f_3701_0BFA
+        push strict word str_DriveColon
         lea ax, [bp - 0x34]
         push ss
         push ax
@@ -671,7 +671,7 @@ ExportTeamToFloppy:
         call 0x0000:_fstrcpy
         add sp, 0x8
         push word 0x3701
-        push strict word f_3701_0BF4
+        push strict word str_Dot
         lea ax, [bp - 0x12]
         push ss
         push ax
@@ -681,13 +681,13 @@ ExportTeamToFloppy:
         mov [bp - 0x14], si
         mov byte [bp + si - 0x12], 0x0
         lea ax, [bp - 0x12]
-        mov es, [g_8BA6]
-        mov [es:0x4e5], ax
-        mov [es:0x4e7], ss
+        mov es, [segTeamChoiceText14]
+        mov [es:dlgExportButtons], ax
+        mov [es:dlgExportButtons + 0x2], ss
         mov ax, [bp - 0xae]
         mov dx, [bp - 0xac]
-        mov [es:0x4ed], ax
-        mov [es:0x4ef], dx
+        mov [es:dlgExportButtons + 0x8], ax
+        mov [es:dlgExportButtons + 0xA], dx
         lea ax, [bp - 0xb2]
         push ax
         lea cx, [bp - 0xaa]
@@ -706,7 +706,7 @@ ExportTeamToFloppy:
         push 0x0
         push 0x3
         push word 0x3701
-        push strict word f_3701_04E5
+        push strict word dlgExportButtons
 .42:
         push -0x1
         push -0x1
@@ -747,7 +747,7 @@ CopyLeagueFiles:
         push strict word str_Db_2
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8BA4]
+        mov es, [segTeamChoiceText13]
         push word [es:si + 0x2]
         push word [es:si]
         call 0x0CD1:CopyFileByName
@@ -762,7 +762,7 @@ CopyLeagueFiles:
         push strict word str_Xx_2
         push word 0x3701
         push strict word str_Xx_2
-        mov es, [g_8BA4]
+        mov es, [segTeamChoiceText13]
         push word [es:si + 0x2]
         push word [es:si]
         call 0x0CD1:CopyFileByName
@@ -832,7 +832,7 @@ ImportMasterLeague:
         push strict word str_Id
         push word 0x3701
         push strict word str_Player
-        mov ax, 0xbfa
+        mov ax, str_DriveColon
         mov cx, 0x3701
         mov [bp - 0x6c], ax
         mov [bp - 0x6a], cx
@@ -856,7 +856,7 @@ ImportMasterLeague:
         push si
         push 0xc
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         push word [bp - 0xa]
         call 0x0CD1:ReadAtOffset
         add sp, 0xc
@@ -871,25 +871,25 @@ ImportMasterLeague:
         jmp near .13
 .2:
         push word 0x3a0b
-        push strict word f_3A0B_AF3E
+        push strict word leagueinfo_tail
         push word 0x3a0b
-        push strict word f_3A0B_AC60
+        push strict word leagueinfo_w6
         push word 0x3a0b
-        push strict word f_3A0B_AC5E
+        push strict word leagueinfo_w4
         push word 0x3a0b
-        push strict word f_3A0B_AC5C
+        push strict word leagueinfo_w2
         push word 0x3a0b
-        push strict word f_3A0B_AC5A
+        push strict word leagueinfo
         push word 0x3a0b
-        push strict word f_3A0B_AF32
+        push strict word leagueinfo_password
         push word 0x3a0b
-        push strict word f_3A0B_AC62
+        push strict word leagueinfo_teams
         push word [bp - 0x6a]
         push word [bp - 0x6c]
         call 0x22D3:ReadLeagueInfo
         add sp, 0x20
         db 0x8B, 0xF0                           ; insn: mov si, ax
-        mov ax, 0xe53
+        mov ax, CurLeagueName
         mov cx, 0x3701
         mov [bp - 0x70], ax
         mov [bp - 0x6e], cx
@@ -912,11 +912,11 @@ ImportMasterLeague:
         jmp near .12
 .3:
         push word 0x3a0b
-        push strict word f_3A0B_AF32
+        push strict word leagueinfo_password
         push word 0x3a0b
-        push strict word f_3A0B_AC62
-        mov es, [g_8BA8]
-        push word [es:0xac5a]
+        push strict word leagueinfo_teams
+        mov es, [segWorkBuffer12]
+        push word [es:leagueinfo]
         call 0x28A8:AskMasterPassword
         add sp, 0xa
         mov [bp - 0xc], ax
@@ -958,11 +958,11 @@ ImportMasterLeague:
         push strict word str_Db_2
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8BA4]
+        mov es, [segTeamChoiceText13]
         mov bx, [bp - 0x6]
         shl bx, byte 0x2
-        push word [es:bx + 0xb6e]
-        push word [es:bx + 0xb6c]
+        push word [es:bx + DbFileNameList + 0x2]
+        push word [es:bx + DbFileNameList]
         call 0x0CD1:CopyFileByName
         add sp, 0x14
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -1054,7 +1054,7 @@ ImportMasterLeague:
         jnz short .10
         push -0x1
         push word 0x3a0b
-        push strict word f_3A0B_AC62
+        push strict word leagueinfo_teams
         push word [bp - 0x6e]
         push word [bp - 0x70]
         call 0x2305:CopyHumanTeamDBs
@@ -1196,7 +1196,7 @@ ImportPlayerTeam:
         push word 0x3701
         push strict word str_Player
         push word 0x3701
-        push strict word f_3701_0BFA
+        push strict word str_DriveColon
         lea ax, [bp - 0x50]
         push ss
         push ax
@@ -1241,7 +1241,7 @@ ImportPlayerTeam:
         push ax
         push 0xc
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         push word [bp - 0x8a]
         call 0x0CD1:ReadAtOffset
         add sp, 0xc
@@ -1286,7 +1286,7 @@ ImportPlayerTeam:
         push word 0x3701
         push strict word str_Pinfo
         push word 0x3701
-        push strict word f_3701_0BFA
+        push strict word str_DriveColon
         lea ax, [bp - 0x50]
         push ss
         push ax
@@ -1339,14 +1339,14 @@ ImportPlayerTeam:
         jmp near .10
 .9:
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x78]
         push ss
         push ax
         call 0x0000:_fstrcpy
         add sp, 0x8
         push word 0x3701
-        push strict word f_3701_0BF4
+        push strict word str_Dot
         lea ax, [bp - 0x78]
         push ss
         push ax
@@ -1363,12 +1363,12 @@ ImportPlayerTeam:
         call 0x0D90:SetDialogColors
         add sp, 0xa
         lea ax, [bp - 0x84]
-        mov es, [g_8BAA]
-        mov [es:0x69c], ax
-        mov [es:0x69e], ss
+        mov es, [segTeamChoiceText15]
+        mov [es:dlgImportTeam2], ax
+        mov [es:dlgImportTeam2 + 0x2], ss
         lea ax, [bp - 0x78]
-        mov [es:0x6a4], ax
-        mov [es:0x6a6], ss
+        mov [es:dlgImportTeam2 + 0x8], ax
+        mov [es:dlgImportTeam2 + 0xA], ss
         lea ax, [bp - 0x62]
         push ax
         lea cx, [bp - 0x5e]
@@ -1387,7 +1387,7 @@ ImportPlayerTeam:
         push 0x0
         push 0x5
         push word 0x3701
-        push strict word f_3701_069C
+        push strict word dlgImportTeam2
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -1400,7 +1400,7 @@ ImportPlayerTeam:
         jmp near .42
 .11:
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x78]
         push ss
         push ax
@@ -1415,7 +1415,7 @@ ImportPlayerTeam:
         add sp, 0x6
         mov [bp - 0x88], ax
         push word 0x3701
-        push strict word f_3701_0BF4
+        push strict word str_Dot
         lea ax, [bp - 0x78]
         push ss
         push ax
@@ -1429,21 +1429,21 @@ ImportPlayerTeam:
         jmp near .16
 .12:
         push word 0x3a0b
-        push strict word f_3A0B_AF3E
+        push strict word leagueinfo_tail
         push word 0x3a0b
-        push strict word f_3A0B_AC60
+        push strict word leagueinfo_w6
         push word 0x3a0b
-        push strict word f_3A0B_AC5E
+        push strict word leagueinfo_w4
         push word 0x3a0b
-        push strict word f_3A0B_AC5C
+        push strict word leagueinfo_w2
         push word 0x3a0b
-        push strict word f_3A0B_AC5A
+        push strict word leagueinfo
         push word 0x3a0b
-        push strict word f_3A0B_AF32
+        push strict word leagueinfo_password
         push word 0x3a0b
-        push strict word f_3A0B_AC62
+        push strict word leagueinfo_teams
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         call 0x22D3:ReadLeagueInfo
         add sp, 0x20
         mov [bp - 0x6a], ax
@@ -1464,13 +1464,13 @@ ImportPlayerTeam:
         push dx
         call 0x03A3:MouseRead
         add sp, 0x6
-        mov es, [g_8BAC]
-        test byte [es:0xac5e], 0xc
+        mov es, [segWorkBuffer13]
+        test byte [es:leagueinfo_w4], 0xc
         jz short .13
         lea ax, [bp - 0x78]
-        mov es, [g_8BAE]
-        mov [es:0x907], ax
-        mov [es:0x909], ss
+        mov es, [segTeamChoiceText16]
+        mov [es:argPlayersDatabasesFor], ax
+        mov [es:argPlayersDatabasesFor + 0x2], ss
         push -0x1
         lea ax, [bp - 0x62]
         push ax
@@ -1478,7 +1478,7 @@ ImportPlayerTeam:
         push ax
         push 0x2
         push word 0x3701
-        push strict word f_3701_0913
+        push strict word dlgMergeFirst
         push 0x4
         push es
         push word 0x903
@@ -1494,13 +1494,13 @@ ImportPlayerTeam:
         jmp short .15
         db 0x90
 .13:
-        mov es, [g_8BB0]
-        cmp word [es:0xac60], 0x0
+        mov es, [segWorkBuffer14]
+        cmp word [es:leagueinfo_w6], 0x0
         jz short .15
         lea ax, [bp - 0x78]
-        mov es, [g_8BB2]
-        mov [es:0xb36], ax
-        mov [es:0xb38], ss
+        mov es, [segTeamChoiceText17]
+        mov [es:msgThereIsASavedGame + 0x4], ax
+        mov [es:msgThereIsASavedGame + 0x6], ss
         push -0x1
         lea ax, [bp - 0x62]
         push ax
@@ -1542,7 +1542,7 @@ ImportPlayerTeam:
         push ss
         push ax
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         call 0x2305:GetLeagueId
         add sp, 0x8
         mov [bp - 0x8c], ax
@@ -1555,15 +1555,15 @@ ImportPlayerTeam:
         mov al, [bp - 0x8e]
         cbw
         imul bx, ax, 0x1e
-        mov es, [g_8BB4]
-        cmp byte [es:bx - 0x5388], 0x2
+        mov es, [segWorkBuffer15]
+        cmp byte [es:bx + leagueinfo_teams + 0x16], 0x2
         jz short .21
         mov ax, [bp - 0x94]
         mov dx, [bp - 0x92]
-        cmp [es:bx - 0x5382], dx
+        cmp [es:bx + leagueinfo_teams + 0x1c], dx
         jc short .21
         ja short .20
-        cmp [es:bx - 0x5384], ax
+        cmp [es:bx + leagueinfo_teams + 0x1a], ax
         jc short .21
 .20:
         push 0x0
@@ -1574,12 +1574,12 @@ ImportPlayerTeam:
         call 0x0D90:SetDialogColors
         add sp, 0xa
         lea ax, [bp - 0x84]
-        mov es, [g_8BB6]
-        mov [es:0x63c], ax
-        mov [es:0x63e], ss
+        mov es, [segTeamChoiceText18]
+        mov [es:dlgImportTeam], ax
+        mov [es:dlgImportTeam + 0x2], ss
         lea ax, [bp - 0x78]
-        mov [es:0x644], ax
-        mov [es:0x646], ss
+        mov [es:dlgImportTeam + 0x8], ax
+        mov [es:dlgImportTeam + 0xA], ss
         lea ax, [bp - 0x62]
         push ax
         lea cx, [bp - 0x5e]
@@ -1598,7 +1598,7 @@ ImportPlayerTeam:
         push 0x0
         push 0x3
         push word 0x3701
-        push strict word f_3701_063C
+        push strict word dlgImportTeam
         jmp near .26
 .21:
         cmp word [bp - 0x88], 0x0
@@ -1608,19 +1608,19 @@ ImportPlayerTeam:
         mov al, [bp - 0x8e]
         cbw
         imul bx, ax, 0x1e
-        mov es, [g_8BB4]
+        mov es, [segWorkBuffer15]
         mov ax, [bp - 0x94]
         mov dx, [bp - 0x92]
-        cmp [es:bx - 0x5382], dx
+        cmp [es:bx + leagueinfo_teams + 0x1c], dx
         jc short .24
         ja short .23
-        cmp [es:bx - 0x5384], ax
+        cmp [es:bx + leagueinfo_teams + 0x1a], ax
         jna short .24
 .23:
         lea ax, [bp - 0x78]
-        mov es, [g_8BB8]
-        mov [es:0x71a], ax
-        mov [es:0x71c], ss
+        mov es, [segTeamChoiceText19]
+        mov [es:msgThatFloppyDiskHasAn + 0x8], ax
+        mov [es:msgThatFloppyDiskHasAn + 0xA], ss
         lea ax, [bp - 0x62]
         push ax
         lea cx, [bp - 0x5e]
@@ -1651,13 +1651,13 @@ ImportPlayerTeam:
         cmp ax, [bp - 0x8c]
         jz short .27
         lea ax, [bp - 0x78]
-        mov es, [g_8BBA]
-        mov [es:0x60b], ax
-        mov [es:0x60d], ss
+        mov es, [segTeamChoiceText20]
+        mov [es:msgTheLeague2 + 0x4], ax
+        mov [es:msgTheLeague2 + 0x6], ss
         imul ax, [bp - 0x8c], 0x1e
-        add ax, 0xac62
-        mov [es:0x613], ax
-        mov word [es:0x615], 0x3a0b
+        add ax, leagueinfo_teams
+        mov [es:msgTheLeague2 + 0xC], ax
+        mov word [es:msgTheLeague2 + 0xE], 0x3a0b
         lea ax, [bp - 0x62]
         push ax
         lea cx, [bp - 0x5e]
@@ -1694,9 +1694,9 @@ ImportPlayerTeam:
         cmp word [bp - 0x6a], 0x0
         jnz short .30
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         push word 0x3701
-        push strict word f_3701_0BFA
+        push strict word str_DriveColon
         push cs
         call CopyLeagueFiles
         add sp, 0x8
@@ -1715,18 +1715,18 @@ ImportPlayerTeam:
         cmp word [bp - 0x6a], 0x0
         jnz short .30
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         push word 0x3701
-        push strict word f_3701_0BFA
-        push word 0x3701
-        push strict word str_Xx_2
+        push strict word str_DriveColon
         push word 0x3701
         push strict word str_Xx_2
-        mov es, [g_8BA4]
+        push word 0x3701
+        push strict word str_Xx_2
+        mov es, [segTeamChoiceText13]
         mov bx, [bp - 0x64]
         shl bx, byte 0x2
-        push word [es:bx + 0xb6e]
-        push word [es:bx + 0xb6c]
+        push word [es:bx + DbFileNameList + 0x2]
+        push word [es:bx + DbFileNameList]
         call 0x0CD1:CopyFileByName
         add sp, 0x14
         mov [bp - 0x6a], ax
@@ -1737,9 +1737,9 @@ ImportPlayerTeam:
         cmp word [bp - 0x6a], 0x0
         jnz short .31
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         push word 0x3701
-        push strict word f_3701_0BFA
+        push strict word str_DriveColon
         push word 0x3701
         push strict word str_Set
         push word 0x3701
@@ -1757,7 +1757,7 @@ ImportPlayerTeam:
         push word 0x3701
         push strict word str_Pinfo
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x50]
         push ss
         push ax
@@ -1780,7 +1780,7 @@ ImportPlayerTeam:
         call 0x2305:MsgCopyingDatabases
         add sp, 0x4
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x78]
         push ss
         push ax
@@ -1795,9 +1795,9 @@ ImportPlayerTeam:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .34
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         push word 0x3701
-        push strict word f_3701_0BFA
+        push strict word str_DriveColon
         push cs
         call CopyLeagueFiles
         add sp, 0x8
@@ -1806,9 +1806,9 @@ ImportPlayerTeam:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .35
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         push word 0x3701
-        push strict word f_3701_0BFA
+        push strict word str_DriveColon
         push word 0x3701
         push strict word str_Set
         push word 0x3701
@@ -1826,7 +1826,7 @@ ImportPlayerTeam:
         push word 0x3701
         push strict word str_Pinfo
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x50]
         push ss
         push ax
@@ -1865,7 +1865,7 @@ ImportPlayerTeam:
         push word 0x3701
         push strict word str_Pinfo
         push word 0x3701
-        push strict word f_3701_0BFA
+        push strict word str_DriveColon
         lea ax, [bp - 0x50]
         push ss
         push ax
@@ -1901,7 +1901,7 @@ ImportPlayerTeam:
         cmp word [bp - 0x88], 0x0
         jz short .42
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x78]
         push ss
         push ax
@@ -1977,7 +1977,7 @@ ImportDbs:
         push ax
         push 0x2
         push word 0x3701
-        push strict word f_3701_07CE
+        push strict word dlgImportChoice
         push 0x2
         push word 0x3701
         push strict word msgImportMasterCopyOfLeague
@@ -2040,7 +2040,7 @@ ImportDbs:
         push ds
         push strict word str_Game_4
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x28]
         push ss
         push ax
@@ -2086,29 +2086,29 @@ ImportDbs:
         push 0x0
         call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
-        mov es, [g_8BBC]
-        mov word [es:0xb6c], strict word MenuExportDbsThunk
-        mov word [es:0xb6e], 0x1b35
-        mov word [es:0xb82], strict word MenuNextLeagueGameThunk
-        mov word [es:0xb84], 0x1b35
-        mov word [es:0xb9c], 0xd86
-        mov word [es:0xb9e], 0x3448
+        mov es, [segMenuText20]
+        mov word [es:itemExportDatabases + 0xC], strict word MenuExportDbsThunk
+        mov word [es:itemExportDatabases + 0xE], 0x1b35
+        mov word [es:itemNextLeagueGame + 0xC], strict word MenuNextLeagueGameThunk
+        mov word [es:itemNextLeagueGame + 0xE], 0x1b35
+        mov word [es:itemLeagueManager + 0x10], itemMergeLeagueFiles
+        mov word [es:itemLeagueManager + 0x12], 0x3448
         jmp short .10
 .9:
-        mov es, [g_8BBE]
-        mov byte [es:0xc6], 0x0
+        mov es, [segDbFiles12]
+        mov byte [es:lgstate_name], 0x0
         call 0x1B35:BuildSeasonTitleThunk
         push 0x0
         call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
-        mov es, [g_8BBC]
+        mov es, [segMenuText20]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0xb6e], ax
-        mov [es:0xb6c], ax
-        mov [es:0xb84], ax
-        mov [es:0xb82], ax
-        mov [es:0xb9e], ax
-        mov [es:0xb9c], ax
+        mov [es:itemExportDatabases + 0xE], ax
+        mov [es:itemExportDatabases + 0xC], ax
+        mov [es:itemNextLeagueGame + 0xE], ax
+        mov [es:itemNextLeagueGame + 0xC], ax
+        mov [es:itemLeagueManager + 0x12], ax
+        mov [es:itemLeagueManager + 0x10], ax
 .10:
         push 0x0
         push 0x3f
@@ -2133,7 +2133,7 @@ ExportDbs:
         push di
         push si
         push 0x3
-        mov ax, 0xe53
+        mov ax, CurLeagueName
         mov cx, 0x3701
         mov [bp - 0x52], ax
         mov [bp - 0x50], cx
@@ -2149,19 +2149,19 @@ ExportDbs:
         jmp near .5
 .2:
         push word 0x3a0b
-        push strict word f_3A0B_AF3E
+        push strict word leagueinfo_tail
         push word 0x3a0b
-        push strict word f_3A0B_AC60
+        push strict word leagueinfo_w6
         push word 0x3a0b
-        push strict word f_3A0B_AC5E
+        push strict word leagueinfo_w4
         push word 0x3a0b
-        push strict word f_3A0B_AC5C
+        push strict word leagueinfo_w2
         push word 0x3a0b
-        push strict word f_3A0B_AC5A
+        push strict word leagueinfo
         push word 0x3a0b
-        push strict word f_3A0B_AF32
+        push strict word leagueinfo_password
         push word 0x3a0b
-        push strict word f_3A0B_AC62
+        push strict word leagueinfo_teams
         push word [bp - 0x50]
         push word [bp - 0x52]
         call 0x22D3:ReadLeagueInfo
@@ -2175,7 +2175,7 @@ ExportDbs:
         call 0x0000:_fstrcpy
         add sp, 0x8
         push word 0x3701
-        push strict word f_3701_0BF4
+        push strict word str_Dot
         lea ax, [bp - 0x2e]
         push ss
         push ax
@@ -2200,13 +2200,13 @@ ExportDbs:
         push ax
         call 0x03A3:MouseRead
         add sp, 0x6
-        mov es, [g_8BAC]
-        test byte [es:0xac5e], 0xc
+        mov es, [segWorkBuffer13]
+        test byte [es:leagueinfo_w4], 0xc
         jz short .3
         lea ax, [bp - 0x2e]
-        mov es, [g_8BAE]
-        mov [es:0x907], ax
-        mov [es:0x909], ss
+        mov es, [segTeamChoiceText16]
+        mov [es:argPlayersDatabasesFor], ax
+        mov [es:argPlayersDatabasesFor + 0x2], ss
         push -0x1
         lea ax, [bp - 0x16]
         push ax
@@ -2214,7 +2214,7 @@ ExportDbs:
         push ax
         push 0x2
         push word 0x3701
-        push strict word f_3701_0913
+        push strict word dlgMergeFirst
         push 0x4
         push es
         push word 0x903
@@ -2229,13 +2229,13 @@ ExportDbs:
         mov di, 0xffff
         jmp short .5
 .3:
-        mov es, [g_8BB0]
-        cmp word [es:0xac60], 0x0
+        mov es, [segWorkBuffer14]
+        cmp word [es:leagueinfo_w6], 0x0
         jz short .5
         lea ax, [bp - 0x2e]
-        mov es, [g_8BB2]
-        mov [es:0xb36], ax
-        mov [es:0xb38], ss
+        mov es, [segTeamChoiceText17]
+        mov [es:msgThereIsASavedGame + 0x4], ax
+        mov [es:msgThereIsASavedGame + 0x6], ss
         push -0x1
         lea ax, [bp - 0x16]
         push ax
@@ -2264,9 +2264,9 @@ ExportDbs:
 .7:
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8BA4]
-        push word [es:0xb7e]
-        push word [es:0xb7c]
+        mov es, [segTeamChoiceText13]
+        push word [es:DbFileNameList + 0x12]
+        push word [es:DbFileNameList + 0x10]
         push word [bp - 0x50]
         push word [bp - 0x52]
         lea ax, [bp - 0x4e]
@@ -2276,7 +2276,7 @@ ExportDbs:
         add sp, 0x10
         push 0x1
         push word 0x3a0b
-        push strict word f_3A0B_AA38
+        push strict word LeagueTeamNames
         lea ax, [bp - 0x4e]
         push ax
         call 0x22D3:ReadTeamNames
@@ -2303,17 +2303,17 @@ ExportDbs:
         push strict word str_SelectATeamToExport
         push 0x8
         push word 0x3a0b
-        push strict word f_3A0B_AC62
+        push strict word leagueinfo_teams
         push word 0x3a0b
-        push strict word f_3A0B_AA38
+        push strict word LeagueTeamNames
         push word 0x3a0b
-        push strict word f_3A0B_AC5C
+        push strict word leagueinfo_w2
         push word [bp - 0x50]
         push word [bp - 0x52]
         call 0x1F31:LeagueTeamSelect
         add sp, 0x18
-        mov es, [g_8BC0]
-        cmp word [es:0xac5c], 0x1
+        mov es, [segWorkBuffer16]
+        cmp word [es:leagueinfo_w2], 0x1
         jnz short .10
         push 0x0
         push 0x11
@@ -2331,21 +2331,21 @@ ExportDbs:
         jnl short .11
         jmp near .15
 .11:
-        mov es, [g_8BB4]
+        mov es, [segWorkBuffer15]
         imul bx, [bp - 0x12], 0x1e
         mov [bp - 0x54], bx
-        cmp byte [es:bx - 0x5388], 0x2
+        cmp byte [es:bx + leagueinfo_teams + 0x16], 0x2
         jz short .12
         jmp near .15
 .12:
         lea ax, [bp - 0x2e]
-        mov es, [g_8BA6]
-        mov [es:0x4e5], ax
-        mov [es:0x4e7], ss
+        mov es, [segTeamChoiceText14]
+        mov [es:dlgExportButtons], ax
+        mov [es:dlgExportButtons + 0x2], ss
         mov ax, [bp - 0x54]
-        add ax, 0xac62
-        mov [es:0x4ed], ax
-        mov word [es:0x4ef], 0x3a0b
+        add ax, leagueinfo_teams
+        mov [es:dlgExportButtons + 0x8], ax
+        mov word [es:dlgExportButtons + 0xA], 0x3a0b
         lea ax, [bp - 0x16]
         push ax
         lea cx, [bp - 0x18]
@@ -2361,10 +2361,10 @@ ExportDbs:
         push ax
         push 0x2
         push word 0x3701
-        push strict word f_3701_04F5
+        push strict word dlgExportToFloppy
         push 0x4
         push word 0x3701
-        push strict word f_3701_04E5
+        push strict word dlgExportButtons
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -2374,11 +2374,11 @@ ExportDbs:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .13
         push word 0x3a0b
-        push strict word f_3A0B_AF32
+        push strict word leagueinfo_password
         push word 0x3a0b
-        push strict word f_3A0B_AC62
-        mov es, [g_8BA8]
-        push word [es:0xac5a]
+        push strict word leagueinfo_teams
+        mov es, [segWorkBuffer12]
+        push word [es:leagueinfo]
         call 0x28A8:AskMasterPassword
         add sp, 0xa
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -2386,10 +2386,10 @@ ExportDbs:
         db 0x0B, 0xF6                           ; insn: or si, si
         jnz short .14
         mov word [bp - 0x4], 0xffff
-        mov es, [g_8BB4]
+        mov es, [segWorkBuffer15]
         imul bx, [bp - 0x12], 0x1e
-        add word [es:bx - 0x5384], 0x0
-        adc word [es:bx - 0x5382], 0x1
+        add word [es:bx + leagueinfo_teams + 0x1a], 0x0
+        adc word [es:bx + leagueinfo_teams + 0x1c], 0x1
         jmp short .15
         db 0x90
 .14:
@@ -2399,8 +2399,8 @@ ExportDbs:
         jnl short .16
         jmp near .21
 .16:
-        mov es, [g_8BC0]
-        cmp word [es:0xac5c], 0x1
+        mov es, [segWorkBuffer16]
+        cmp word [es:leagueinfo_w2], 0x1
         jz short .17
         cmp word [bp - 0x2], 0x0
         jnz short .18
@@ -2422,7 +2422,7 @@ ExportDbs:
         lea ax, [bp - 0x20]
         push ss
         push ax
-        mov ax, 0xbe4
+        mov ax, str_Xx_2
         mov cx, 0x3701
         mov [bp - 0x58], ax
         mov [bp - 0x56], cx
@@ -2432,7 +2432,7 @@ ExportDbs:
         add sp, 0x8
         cmp word [bp - 0x4], 0x0
         jz short .19
-        mov ax, 0xbaf
+        mov ax, str_Db_2
         mov cx, 0x3701
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov [bp - 0xe], cx
@@ -2448,7 +2448,7 @@ ExportDbs:
         mov [bp - 0xc], ax
         mov [bp - 0xa], dx
         imul ax, [bp - 0x12], 0x1e
-        add ax, 0xac62
+        add ax, leagueinfo_teams
         push word 0x3a0b
         push ax
         push word [bp - 0x50]
@@ -2460,7 +2460,7 @@ ExportDbs:
         push -0x1
         push word [bp - 0x4]
         push word 0x3a0b
-        push strict word f_3A0B_AC62
+        push strict word leagueinfo_teams
         push word [bp - 0x12]
         push word 0x3701
         push strict word str_Xx_2

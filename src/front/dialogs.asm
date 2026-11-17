@@ -22,10 +22,10 @@ AskYesNo:
         push ax
         push 0x2
         push word 0x3701                        ; segment of the team choice text far data
-        push strict word 0x67
+        push strict word btnsCustomOriginal
         push 0x3
         push word 0x3701                        ; segment of the team choice text far data
-        push strict word 0x5b
+        push strict word msgCustomOrOriginal
         push -0x1
         push -0x1
         push cs
@@ -34,12 +34,12 @@ AskYesNo:
         mov [bp - 0x2], ax
         cmp ax, strict word 0x1
         jnz short .1
-        mov ax, 0xbb3
+        mov ax, str_Org
         mov dx, 0x3701                          ; segment of the team choice text far data
         jmp short .2
         db 0x90
 .1:
-        mov ax, 0xbaf
+        mov ax, str_Db_2
         mov dx, 0x3701                          ; segment of the team choice text far data
 .2:
         mov [YesNoText], ax
@@ -684,12 +684,12 @@ ListDialog:
         mov word [bp - 0x6], 0xffff
         db 0x03, 0xD1                           ; insn: add dx, cx
         mov es, [ListDialogDataSeg]
-        mov [es:0x0], dx
+        mov [es:ListDlgScrollBar], dx
         mov dx, [bp - 0x2e]
-        mov [es:0x2], dx
-        mov word [es:0x4], 0xa
+        mov [es:ListDlgScrollBar + 0x2], dx
+        mov word [es:ListDlgScrollBar + 0x4], 0xa
         mov bx, [bp - 0x28]
-        mov [es:0x6], bx
+        mov [es:ListDlgScrollBar + 0x6], bx
         push word [bp + 0xa]
         push ax
         push es
@@ -699,11 +699,11 @@ ListDialog:
         call ScrollBarInit
         add sp, 0x8
         mov es, [ListDialogDataSeg]
-        mov word [es:0x10], 0x0
+        mov word [es:ListDlgScrollBar + 0x10], 0x0
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         db 0x2B, 0xD2                           ; insn: sub dx, dx
-        div word [es:0x14]
-        mov [es:0xa], ax
+        div word [es:ListDlgScrollBar + 0x14]
+        mov [es:ListDlgScrollBar + 0xA], ax
         push word [bp - 0x28]
         mov ax, [bp - 0x24]
         add ax, strict word 0xa
@@ -714,7 +714,7 @@ ListDialog:
         call SaveUnderBox
         add sp, 0x8
         push word 0x35ec                        ; segment of the list dialog data far data
-        push strict word 0x0
+        push strict word ListDlgScrollBar
         push cs
         call DrawScrollBar
         add sp, 0x4
@@ -794,7 +794,7 @@ ListDialog:
         cwd
         push dx
         push ax
-        push word 0x9fe
+        push word str_Pointer_2
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0xc], ax
@@ -991,7 +991,7 @@ ListDialog:
         push word [bp - 0x8]
         push 0x1
         push word 0x35ec                        ; segment of the list dialog data far data
-        push strict word 0x0
+        push strict word ListDlgScrollBar
         push cs
         call ScrollBarDrag
         add sp, 0xc
@@ -999,9 +999,9 @@ ListDialog:
         jl short .25
         mov ax, [bp - 0x4]
         mov es, [ListDialogDataSeg]
-        cmp [es:0x10], ax
+        cmp [es:ListDlgScrollBar + 0x10], ax
         jz short .25
-        mov ax, [es:0x10]
+        mov ax, [es:ListDlgScrollBar + 0x10]
         mov [bp - 0x4], ax
         push word [bp + 0x16]
         push word [bp + 0x14]
@@ -1574,7 +1574,7 @@ SaveUnderBox:
         adc dx, 0x0
         push dx
         push ax
-        push word 0xa06
+        push word str_Dbox
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [SaveUnderOff], ax
@@ -2002,7 +2002,7 @@ MessageBoxLoop:
         cwd
         push dx
         push ax
-        push word 0xa0b
+        push word str_Pointer_3
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x18], ax

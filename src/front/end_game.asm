@@ -130,22 +130,22 @@ PlayRandomHighlight:
         db 0x2B, 0xDB                           ; insn: sub bx, bx
         db 0x8B, 0xD3                           ; insn: mov dx, bx
 .1:
-        cmp word [bx + g_B09E], 0x5
+        cmp word [bx + otherscoresb], 0x5
         jl short .2
-        mov ax, [bx + g_B09E]
-        cmp [bx + g_D9FA], ax
+        mov ax, [bx + otherscoresb]
+        cmp [bx + hilightslots], ax
         jz short .2
         db 0x8B, 0xCA                           ; insn: mov cx, dx
         mov ax, 0x1
         shl ax, cl
-        or [g_4FD4], ax
+        or [hilightsplayed], ax
 .2:
         inc dx
         inc bx
         inc bx
         cmp bx, 0xc
         jl short .1
-        cmp word [g_4FD4], 0x3f
+        cmp word [hilightsplayed], 0x3f
         jnz short .3
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         pop si
@@ -160,7 +160,7 @@ PlayRandomHighlight:
         db 0x8B, 0xCE                           ; insn: mov cx, si
         mov ax, 0x1
         shl ax, cl
-        test [g_4FD4], ax
+        test [hilightsplayed], ax
         jz short .5
 .4:
         mov ax, 0x6
@@ -169,22 +169,22 @@ PlayRandomHighlight:
         db 0x8B, 0xCE                           ; insn: mov cx, si
         mov ax, 0x1
         shl ax, cl
-        test [g_4FD4], ax
+        test [hilightsplayed], ax
         jnz short .4
 .5:
         db 0x8B, 0xCE                           ; insn: mov cx, si
         mov ax, 0x1
         shl ax, cl
-        or [g_4FD4], ax
+        or [hilightsplayed], ax
         db 0x8B, 0xDE                           ; insn: mov bx, si
         shl bx, 1
         mov [bp - 0x8], bx
-        mov al, [bx + g_B0AA]
+        mov al, [bx + otherscorehome]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         mov [bp - 0x4], ax
-        mov al, [bx + g_B0AB]
+        mov al, [bx + otherscorehome_b1]
         mov [bp - 0x6], ax
-        mov di, [bx + g_B09E]
+        mov di, [bx + otherscoresb]
         cmp di, 0x5
         jl short .6
         dec word [bp - 0x4]
@@ -194,10 +194,10 @@ PlayRandomHighlight:
         call 0x2137:LoadArenaJingles
         call 0x0EDC:LoadStudioSpeech
         mov bx, [bp - 0x8]
-        mov al, [bx + g_B0B7]
+        mov al, [bx + otherscores]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
-        mov al, [bx + g_B0B6]
+        mov al, [bx + otherscoreaway]
         push ax
         call 0x0EDC:AnnounceHighlightMatchup
         add sp, 0x4
@@ -207,40 +207,40 @@ PlayRandomHighlight:
         lea ax, [bp - 0x4]
         push ax
         mov bx, [bp - 0x8]
-        mov al, [bx + g_B0B7]
+        mov al, [bx + otherscores]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
-        mov al, [bx + g_B0B6]
+        mov al, [bx + otherscoreaway]
         push ax
         call 0x1B35:StartHL2Thunk
         add sp, 0xa
         db 0x8B, 0xF8                           ; insn: mov di, ax
         call 0x2137:FreeArenaJingles
-        mov bx, [g_29CC]
+        mov bx, [VisTeamNum]
         shl bx, 1
         push word [bx + TeamNameClips]
-        mov bx, [g_29CA]
+        mov bx, [HomeTeamNum]
         shl bx, 1
         push word [bx + TeamNameClips]
         call 0x0EDC:LoadPlayByPlaySpeech
         add sp, 0x4
         mov bx, [bp - 0x8]
-        cmp word [bx + g_B09E], 0x4
+        cmp word [bx + otherscoresb], 0x4
         jg short .7
         mov al, [bp - 0x4]
-        mov [bx + g_B0AA], al
+        mov [bx + otherscorehome], al
         mov al, [bp - 0x6]
-        mov [bx + g_B0AB], al
-        cmp word [bx + g_B09E], 0x4
+        mov [bx + otherscorehome_b1], al
+        cmp word [bx + otherscoresb], 0x4
         jnz short .7
         mov bx, [bp - 0x8]
-        mov word [bx + g_B09E], 0x5
+        mov word [bx + otherscoresb], 0x5
 .7:
         db 0x2B, 0xDB                           ; insn: sub bx, bx
         mov [bp - 0x2], di
 .8:
-        mov ax, [bx + g_B09E]
-        mov [bx + g_D9FA], ax
+        mov ax, [bx + otherscoresb]
+        mov [bx + hilightslots], ax
         inc bx
         inc bx
         cmp bx, 0xc
@@ -268,12 +268,12 @@ EndGameScreens:
         call 0x1B35:PutGSumTailThunk
 .1:
         call 0x256C:FreePPVFiles
-        push word [g_C25E]
-        push word [g_C25C]
+        push word [RinkEndArtSeg]
+        push word [RinkEndArt]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        push word [g_C25A]
-        push word [g_C258]
+        push word [ScoreboardArtSeg]
+        push word [ScoreboardArt]
         call 0x06E1:FindUnlink
         add sp, 0x4
         call 0x2137:FreeArenaJingles
@@ -298,15 +298,15 @@ EndGameScreens:
 .3:
         cmp word [curperiod], 0x1
         jnz short .5
-        mov word [g_4FD4], 0x0
-        push word [g_29CC]
-        push word [g_29CA]
+        mov word [hilightsplayed], 0x0
+        push word [VisTeamNum]
+        push word [HomeTeamNum]
         call 0x2306:PickOtherGames
         add sp, 0x4
         db 0x2B, 0xF6                           ; insn: sub si, si
 .4:
-        mov ax, [si + g_B09E]
-        mov [si + g_D9FA], ax
+        mov ax, [si + otherscoresb]
+        mov [si + hilightslots], ax
         inc si
         inc si
         cmp si, 0xc
@@ -367,10 +367,10 @@ EndGameScreens:
         call 0x1B35:SportsDeskThunk
         add sp, 0x2
         db 0x2A, 0xC0                           ; insn: sub al, al
-        mov [g_01D6], al
-        mov [g_01D7], al
-        mov [g_01D8], al
-        mov [g_01D9], al
+        mov [gsumtail_goals1], al
+        mov [gsumtail_shots1], al
+        mov [gsumtail_goals2], al
+        mov [gsumtail_shots2], al
         call 0x1B35:WriteGSumHeaderThunk
         pop si
         pop di
@@ -392,12 +392,12 @@ IntermissionScreens:
         call 0x1B35:PutGSumTailThunk
         call 0x1B35:PutGSumHeaderThunk
         call 0x256C:FreePPVFiles
-        push word [g_C25E]
-        push word [g_C25C]
+        push word [RinkEndArtSeg]
+        push word [RinkEndArt]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        push word [g_C25A]
-        push word [g_C258]
+        push word [ScoreboardArtSeg]
+        push word [ScoreboardArt]
         call 0x06E1:FindUnlink
         add sp, 0x4
         call 0x2137:FreeArenaJingles
@@ -485,5 +485,5 @@ IntermissionScreens:
         push 0x2
         call 0x1B35:SportsDeskThunk
         add sp, 0x2
-        mov es, [g_8CB0]
-        mov word [es:0x126], 0x1
+        mov es, [segDbFiles20]
+        mov word [es:lgstate_w5A + 0x8], 0x1

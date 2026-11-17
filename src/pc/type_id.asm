@@ -1,21 +1,23 @@
-; NineCmp and TypeId look at a short header.
-; The first two bytes are NullFar11, an empty far routine.
+; SkipCopyright and TypeId look at a short header.
+; The first two bytes are NullInputHookWrap, an empty far routine.
 
 ; DGROUP words this segment uses. The bytes live in the near data, not here.
 
 ;-----------------------------------------------------------------------------
-; NullFar11                                                    0838:0000  94 PC
+; NullInputHookWrap                                           0838:0000  94 PC
 ; A second empty far routine (a compiled-out call). The menus overlay calls
-; it next to NullFar.
+; it next to NullInputHook.
 ;-----------------------------------------------------------------------------
-NullFar11:
+NullInputHookWrap:
         retf
         nop
 
-; Compare 9 bytes of the far string with the bytes at 402h.
-; A difference returns that pointer. A match calls _fstrlen and
-; returns one past its result.
-NineCmp:
+;-----------------------------------------------------------------------------
+; SkipCopyright                                               0838:0002  94 PC
+; If the far data starts with 'Copyright' (_fstrncmp, 9 bytes), returns the pointer past that string and its
+; null; otherwise returns the pointer unchanged.
+;-----------------------------------------------------------------------------
+SkipCopyright:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -23,10 +25,10 @@ NineCmp:
         mov si, word [bp + 6]
         push 9
         push ds
-        push 0x402
+        push str_Copyright
         push word [bp + 8]
         push si
-        call 0:_fmemchr
+        call 0:_fstrncmp
         add sp, 0xa
         db 0x0B, 0xC0                           ; insn: or ax, ax
         je short .1
@@ -107,7 +109,7 @@ TypeId:
         push word [bp + 8]
         push si
         push cs
-        call 2
+        call SkipCopyright
         add sp, 4
         mov es, dx
         db 0x8B, 0xD8                           ; insn: mov bx, ax
@@ -361,15 +363,15 @@ TypeTab:                                        ; eight words. The low bits of t
         leave
         retf
 
-; ReadHead runs NineCmp and TypeId. A type from 1 to 1Ch returns the 3-byte value that follows the two type
-; bytes. Otherwise the caller dword is returned. EmitByte writes one byte through OutPtr, or expands it
+; ReadHead runs SkipCopyright and TypeId. A type from 1 to 1Ch returns the 3-byte value that follows the two
+; type bytes. Otherwise the caller dword is returned. EmitByte writes one byte through OutPtr, or expands it
 ; through the two maps when the low map marks it.
 ;
 ; GetBits pulls that many bits from BitBuf, refilling from InPtr when fewer than 16 remain.
 
 ;-----------------------------------------------------------------------------
 ; ReadHead                                                    0838:0292  94 PC
-; NineCmp then TypeId. A type from 1 to 1Ch returns the following 3-byte
+; SkipCopyright then TypeId. A type from 1 to 1Ch returns the following 3-byte
 ; value.
 ;-----------------------------------------------------------------------------
 ReadHead:
@@ -385,7 +387,7 @@ ReadHead:
         push word [bp + 8]
         push word [bp + 6]
         push cs
-        call 2
+        call SkipCopyright
         add sp, 4
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov word [bp - 2], dx
@@ -502,7 +504,7 @@ GetBits:
         mov word [bp - 4], ax
         mov word [bp - 2], dx
         push bx
-        push 0x8ee4
+        push BitBuf
         call 0:LongShlAt
         sub word [BitCount], si
         cmp word [BitCount], 0x10
@@ -1221,7 +1223,7 @@ LoadBlock:
         push dx
         push ax
         push cs
-        call 2
+        call SkipCopyright
         add sp, 4
         mov es, dx
         db 0x8B, 0xD8                           ; insn: mov bx, ax
@@ -1254,7 +1256,7 @@ LoadBlock:
         mov al, byte es:[si + 1]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
-        push 0x40c
+        push str_UnpackaInvalidPackCodeX
         call 0xF4A:FatalError
         add sp, 4
         jmp short .10
@@ -1363,4 +1365,4 @@ LoadQuiet:
         push word [bp + 8]
         push word [bp + 6]
         push cs
-        db 0xE8, 0x99                           ; insn: call LoadBlock, finished in seg005
+        db 0xE8, (LoadBlock - ($ + 3)) & 0xFF   ; call near LoadBlock: the last byte is in the next segment

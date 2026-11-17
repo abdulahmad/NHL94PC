@@ -46,7 +46,7 @@ _main:
         call 0x0000:__aFldiv
         push dx
         push ax
-        push 0x42e
+        push str_InsufficientConventionalMemoryAvaila
         call 0x0000:_printf
         add sp, 6
         mov si, 1
@@ -74,7 +74,7 @@ _main:
         call 0x0000:__aFldiv
         push dx
         push ax
-        push 0x47e
+        push str_InsufficientEmsAvailableRequiresAn
         call 0x0000:_printf
         add sp, 6
         mov si, 1
@@ -93,7 +93,7 @@ _main:
         push 0
         call 0x0FEF:SetStartPage
         add sp, 2
-        mov bx, 0x7570
+        mov bx, PageTable
         mov es, word [DgroupSegA]
         mov word [bp-0x24], bx
         mov word [bp-0x22], es
@@ -170,7 +170,7 @@ _main:
         push 0x3701                             ; segment of the team choice text far data
         push 0xbd0
         push ds
-        push 0x4be
+        push str_Pointer3
         push 0
         push 0
         lea ax, [bp-0x20]
@@ -185,7 +185,7 @@ _main:
         add sp, 4
         mov word [MemBlock1Off], ax
         mov word [MemBlock1Seg], dx
-        push 0x4c7
+        push str_Pntr
         push dx
         push ax
         call 0x03A3:FindFarMsg
@@ -193,19 +193,19 @@ _main:
         mov word [DialogData], ax
         mov word [DialogDataSeg], dx
         push 0
-        push 0x4cc
+        push str_Wittle06Fnt
         call 0x149D:LoadRawHeader
         add sp, 4
         mov word [HeapSizeLo], ax
         mov word [HeapSizeHi], dx
         push 0
-        push 0x4d9
+        push str_Scor2bFnt
         call 0x149D:LoadRawHeader
         add sp, 4
         mov word [MemBlock2Off], ax
         mov word [MemBlock2Seg], dx
         push 0
-        push 0x4e4
+        push str_Scor3bFnt
         call 0x149D:LoadRawHeader
         add sp, 4
         mov word [MemBlock3Off], ax
@@ -216,7 +216,7 @@ _main:
         add sp, 4
         lea ax, [bp-8]
         push ax
-        push 0x4ef
+        push str_GameSet
         call 0x0CD1:OpenReadShared
         add sp, 4
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -252,7 +252,7 @@ _main:
         je short .15
         mov ax, 0x3415                          ; segment of the db files far data
         mov es, ax
-        mov word [es:0x5a], 2
+        mov word [es:exhstate + 0x5A], 2
         jmp short .19
         nop
 .15:
@@ -260,7 +260,7 @@ _main:
         je short .16
         mov ax, 0x3415                          ; segment of the db files far data
         mov es, ax
-        mov word [es:0x5a], 4
+        mov word [es:exhstate + 0x5A], 4
         jmp short .19
         nop
 .16:
@@ -268,7 +268,7 @@ _main:
         je short .17
         mov ax, 0x3415                          ; segment of the db files far data
         mov es, ax
-        mov word [es:0x5a], 8
+        mov word [es:exhstate + 0x5A], 8
         jmp short .19
         nop
 .17:
@@ -276,26 +276,26 @@ _main:
         je short .18
         mov ax, 0x3415                          ; segment of the db files far data
         mov es, ax
-        mov word [es:0x5a], 1
+        mov word [es:exhstate + 0x5A], 1
         jmp short .19
         nop
 .18:
         mov ax, 0x3415                          ; segment of the db files far data
         mov es, ax
-        mov word [es:0x5a], 0x10
+        mov word [es:exhstate + 0x5A], 0x10
 .19:
-        mov word [es:0x5c], 0x10
-        mov word [es:0x5e], 0
-        mov word [es:0x60], 1
-        cmp word [es:0x5a], 0x10
+        mov word [es:exhstate + 0x5C], 0x10
+        mov word [es:exhstate + 0x5E], 0
+        mov word [es:exhstate + 0x60], 1
+        cmp word [es:exhstate + 0x5A], 0x10
         je short .20
         mov ax, 9
         jmp short .21
 .20:
         mov ax, 0xffff
 .21:
-        mov word [es:0x56], ax
-        mov word [es:0x58], 0xfffe
+        mov word [es:exhstate + 0x56], ax
+        mov word [es:exhstate + 0x58], 0xfffe
 .22:
         push 0x3415                             ; segment of the db files far data
         db 0x68, 0x00, 0x00                     ; insn: push 0
@@ -306,7 +306,7 @@ _main:
         push 0
         push 0
         push 0x300
-        push 0x4fe
+        push str_Temp
         call 0x14DB:AllocRecData
         add sp, 8
         mov word [bp-2], dx
@@ -341,7 +341,7 @@ _main:
         push 0
         push 0
         push 0x300
-        push 0x503
+        push str_Temp_2
         call 0x14DB:AllocRecData
         add sp, 8
         push dx
@@ -372,8 +372,8 @@ _main:
         push 1
         call 0x1B35:FadePaletteInThunk
         add sp, 8
-        call 0x0837:NullFar
+        call 0x0837:NullInputHook
 
 ; The far call continues in the next segment. Those bytes complete it as
 ; a call to _exit.
-        db 0x9A, 0x87
+        db 0x9A, (_exit - MscRuntimeStart) & 0xFF ; call 0x0000:_exit, finished in the next segment

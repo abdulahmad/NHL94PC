@@ -6,19 +6,17 @@ MapHi:                                          ; word; used by EmitByte, Expand
         resb 2
 OutPtr:                                         ; word; used by EmitByte, ReadVar, Expand
         resb 2
-UnpackSpare1:                                   ; word before InPtr; not used in the EXE (overlays may use it)
+UnpackSpare1:                                   ; word before InPtr; not used by the EXE or the overlays
         resb 2
 InPtr:                                          ; word; used by EmitByte, ReadVar, Expand
         resb 2
-UnpackSpare2:                                   ; word before MapPair; not used in the EXE (overlays may use
-                                                ; it)
+UnpackSpare2:                                   ; word before MapPair; not used by the EXE or the overlays
         resb 2
 MapPair:                                        ; word; used by EmitByte, Expand
         resb 2
 BitBuf:                                         ; word; used by EmitByte, ReadVar
         resb 2
-UnpackSpare3:                                   ; word before BitCount; not used in the EXE (overlays may use
-                                                ; it)
+UnpackSpare3:                                   ; word before BitCount; not used by the EXE or the overlays
         resb 2
 BitCount:                                       ; word; used by EmitByte, ReadVar
         resb 2
@@ -52,7 +50,8 @@ MoveBlockOff:                                   ; moveMemBlock target, offset; u
 MoveBlockSeg:                                   ; moveMemBlock target, segment; used by SpeechInit,
                                                 ; MoveMemBlock
         resb 2
-g_8EFE:                                         ; used by FADES8 (to name)
+RandomBlockDone:                                ; 88 flags of the blocks already drawn (FadeRandomBlocks2);
+                                                ; used by FADES8
         resb 88
 ShadeTableOff:                                  ; shade table being built, offset; used by ShadeColor
         resb 2
@@ -80,7 +79,26 @@ MidiMsg1:                                       ; first data byte; used by SendC
         resb 1
 MidiMsg2:                                       ; second data byte; used by SendController, SendVoiceNoteOff,
                                                 ; SendPitchBend ...
-        resb 62
+        resb 10
+SeqEmsMap:                                      ; EMS mapping saved around the driver service call in
+                                                ; SeqService
+        resb 8
+MidiEvent:                                      ; event ParseMidiEvent reads for SeqStepTrack: delta time
+                                                ; (dword)
+        resb 4
+MidiEvCmd:                                      ; MidiEvent: command (D9h and up are sequencer commands) or
+                                                ; note
+        resb 1
+MidiEvData:                                     ; MidiEvent: first data byte (velocity or command argument)
+        resb 1
+MidiEvValue:                                    ; MidiEvent: value (dword: controller value, bend, duration)
+        resb 4
+MidiEvLength:                                   ; MidiEvent: bytes the event takes in the track
+        resb 2
+MidiNextEvent:                                  ; the following event, parsed for its delta time only
+        resb 12
+PatchFileName:                                  ; 'bank%d.pat' name built by LoadBankNumber
+        resb 20
 PatchMsg:                                       ; patch message: status byte; used by SendPatches
         resb 1
 PatchMsg1:                                      ; patch message byte 1; used by SendPatches
@@ -127,7 +145,10 @@ DrvTableSendMidi:                               ; driver table: send MIDI routin
         resb 8
 DrvTablePlaySample:                             ; driver table: play sample routine; used by DrvPlaySample,
                                                 ; DrvPlayRecSample
-        resb 140
+        resb 60
+DriverFileName:                                 ; 'c:\eaclib\' path of the sound driver built by
+                                                ; LoadSoundDriver
+        resb 80
 StrBufPtr:                                      ; sprintf string stream: pointer; used by _sprintf
         resb 2
 StrBufCnt:                                      ; sprintf string stream: space left; used by _sprintf
@@ -138,64 +159,81 @@ StrBufFlag:                                     ; sprintf string stream: flags; 
         resb 2
 FloatArgPtr:                                    ; float argument being formatted; used by FloatBuf,
                                                 ; FloatWidth, FormatOne
-        resb 10
-FltOutFlags:                                    ; float output flags; used by FpScale
-        resb 1
-FltOutFlags1:                                   ; float output flags, high byte; used by FpScale
-        resb 1
-FltOutExp:                                      ; float output exponent; used by FpScale
-        resb 294
-g_91D0:                                         ; used by GAME (to name)
         resb 2
-g_91D2:                                         ; used by GAME (to name)
-        resb 3502
-g_9F80:                                         ; used by INIT (to name)
-        resb 76
-g_9FCC:                                         ; used by INIT (to name)
-        resb 2
-g_9FCE:                                         ; used by INIT (to name)
-        resb 110
-g_A03C:                                         ; used by MENUS (to name)
-        resb 48
-g_A06C:                                         ; used by MENUS (to name)
-        resb 508
-g_A268:                                         ; used by INIT (to name)
-        resb 744
-hmroster:                                         ; used by AI, INIT, MENUS (to name)
+FloatAccum:                                     ; the double atof returns (its address in AX)
+        resb 8
+FltOutFlags:                                    ; FLT block of _fltin: flags; used by _fltin
+        resb 1
+FltOutFlags1:                                   ; FLT block of _fltin: flags, high byte
+        resb 1
+FltOutExp:                                      ; FLT block of _fltin: characters converted
         resb 6
-g_A556:                                         ; used by AI, INIT, MENUS (to name)
+FltInValue:                                     ; FLT block of _fltin: the double
+        resb 8
+AtexitTable:                                    ; atexit and onexit functions (32 far pointers), run by
+                                                ; ExitCommon
+        resb 128
+AtexitTableEnd:                                 ; end of AtexitTable; atexit compares AtexitPtr with it
+        resb 8
+PPVFiles:                                       ; far pointers to the 18 loaded PPV files (LoadPlayerFrames);
+                                                ; the 72 bytes after them are not used
+        resb 144
+FrameTable:                                     ; frame pointer table (offset words) built by IndexPPVFrames;
+                                                ; used by GAME
+        resb 2
+FrameTableSeg:                                  ; frame pointer table (segment words); used by GAME
+        resb 3502
+GameTeamRecs:                                   ; team records read by LoadGameTeams (76 bytes); used by INIT
+        resb 76
+GamePlayerNames:                                ; player name pointers (offset) of the game summary and
+                                                ; lineups; used by INIT
+        resb 2
+GamePlayerNamesSeg:                             ; player name pointers (segment); used by INIT
+        resb 110
+HomeLinesRec:                                   ; home line record written by WriteTeamLines; used by MENUS
+        resb 48
+TeamLinesRecs:                                  ; line records written by WriteTeamLines; used by MENUS
+        resb 508
+GameRosterRecs:                                 ; roster records read by LoadGameTeams (744 bytes); used by
+                                                ; INIT
+        resb 744
+hmroster:                                       ; home roster records; used by AI, INIT, MENUS
+        resb 6
+hmrosterjersey:                                 ; jersey byte of the home roster records; used by AI, INIT,
+                                                ; MENUS
         resb 1
-hmrosterpos:                                         ; used by AI (to name)
+hmrosterpos:                                    ; position byte of the home roster records; used by AI
         resb 1113
-g_A9B0:                                         ; used by INIT (to name)
+GamePlayerFlags:                                ; player flags filled by LoadGameTeams; used by INIT
         resb 1120
-g_AE10:                                         ; used by INIT (to name)
+HomeTeamRec:                                    ; home team record saved with the game (36 bytes); used by
+                                                ; INIT
         resb 36
-g_AE34:                                         ; used by INIT (to name)
+HomeTeamAbbr:                                   ; first byte of the home team abbreviation; used by INIT
         resb 1
-g_AE35:                                         ; used by INIT (to name)
+HomeTeamAbbr_b1:                                ; rest of the home team abbreviation; used by INIT
         resb 3
-g_AE38:                                         ; used by INIT (to name)
+HomeTeamColours:                                ; home team colour bytes (LoadGameTeams); used by INIT
         resb 8
-g_AE40:                                         ; used by INIT (to name)
+AwayTeamRec:                                    ; away team record saved with the game (36 bytes); used by
+                                                ; INIT
         resb 36
-g_AE64:                                         ; used by INIT (to name)
+AwayTeamAbbr:                                   ; first byte of the away team abbreviation; used by INIT
         resb 1
-g_AE65:                                         ; used by INIT (to name)
+AwayTeamAbbr_b1:                                ; rest of the away team abbreviation; used by INIT
         resb 3
-g_AE68:                                         ; used by INIT (to name)
+AwayTeamColours:                                ; away team colour bytes; used by INIT
         resb 8
-g_AE70:                                         ; used by INIT (to name)
+gsummarypath:                                   ; path of gsummary.db (GSummaryPath); used by INIT
         resb 32
-HeapSizeLo:                                     ; heap size, low word; not used in the EXE (overlays may use
-                                                ; it)
+HeapSizeLo:                                     ; heap size, low word; used by AI, GAME, INIT, LP, MENUS
         resb 2
-HeapSizeHi:                                     ; heap size, high word; not used in the EXE (overlays may use
-                                                ; it)
+HeapSizeHi:                                     ; heap size, high word; used by AI, GAME, INIT, LP, MENUS
         resb 2
-g_AE94:                                         ; used by MENUS (to name)
+POTreeBuf:                                      ; far pointer (offset) to the playoff tree buffer; used by
+                                                ; MENUS
         resb 2
-g_AE96:                                         ; used by MENUS (to name)
+POTreeBufSeg:                                   ; its segment; used by MENUS
         resb 2
 DialogData:                                     ; dialog data, offset; used by ListDialog, SaveUnderBox,
                                                 ; MessageBoxLoop ...
@@ -207,41 +245,39 @@ ChainIdx:                                       ; word; used by MakeChain, Alloc
         resb 2
 ChainPtr:                                       ; word; used by MakeChain, DropOldest, FindName ...
         resb 2
-HeapVar0:                                       ; heap variable; not used in the EXE (overlays may use it)
+HeapVar0:                                       ; heap variable; not used by the EXE or the overlays
         resb 2
 HeapList:                                       ; far heap list; used by LargestFreeBlock
         resb 2
-HeapVar1:                                       ; heap variable; not used in the EXE (overlays may use it)
+HeapVar1:                                       ; heap variable; not used by the EXE or the overlays
         resb 2
-HeapVar2:                                       ; heap variable; not used in the EXE (overlays may use it)
+HeapVar2:                                       ; heap variable; not used by the EXE or the overlays
         resb 2
-HeapVar3:                                       ; heap variable; not used in the EXE (overlays may use it)
+HeapVar3:                                       ; heap variable; not used by the EXE or the overlays
         resb 2
-HeapVar4:                                       ; heap variable; not used in the EXE (overlays may use it)
+HeapVar4:                                       ; heap variable; not used by the EXE or the overlays
         resb 2
-HeapVar5:                                       ; heap variable; not used in the EXE (overlays may use it)
+HeapVar5:                                       ; heap variable; not used by the EXE or the overlays
         resb 2
-HeapVar6:                                       ; heap variable; not used in the EXE (overlays may use it)
+HeapVar6:                                       ; heap variable; not used by the EXE or the overlays
         resb 2
-HeapVar7:                                       ; heap variable; not used in the EXE (overlays may use it)
+HeapVar7:                                       ; heap variable; not used by the EXE or the overlays
         resb 2
-MemBlock1Off:                                   ; memory block 1, offset; not used in the EXE (overlays may
-                                                ; use it)
+MemBlock1Off:                                   ; memory block 1, offset; used by LP, MENUS, STATS
         resb 2
-MemBlock1Seg:                                   ; memory block 1, segment; not used in the EXE (overlays may
-                                                ; use it)
+MemBlock1Seg:                                   ; memory block 1, segment; used by LP, MENUS, STATS
         resb 2
-MemBlock2Off:                                   ; memory block 2, offset; not used in the EXE (overlays may
-                                                ; use it)
+MemBlock2Off:                                   ; memory block 2, offset; used by DrawCallBanner,
+                                                ; DrawTextOverlay, FormatPlayerName
         resb 2
-MemBlock2Seg:                                   ; memory block 2, segment; not used in the EXE (overlays may
-                                                ; use it)
+MemBlock2Seg:                                   ; memory block 2, segment; used by DrawCallBanner,
+                                                ; DrawTextOverlay, FormatPlayerName
         resb 2
-MemBlock3Off:                                   ; memory block 3, offset; not used in the EXE (overlays may
-                                                ; use it)
+MemBlock3Off:                                   ; memory block 3, offset; used by DrawCallBanner,
+                                                ; DrawTextOverlay
         resb 2
-MemBlock3Seg:                                   ; memory block 3, segment; not used in the EXE (overlays may
-                                                ; use it)
+MemBlock3Seg:                                   ; memory block 3, segment; used by DrawCallBanner,
+                                                ; DrawTextOverlay
         resb 18
 InputFlags:                                     ; input device flags; used by PollInputEvents
         resb 2
@@ -250,107 +286,111 @@ InputQueue:                                     ; input event queue; used by Pol
 CursorX:                                        ; cursor x; used by PollInputEvents
         resb 2
 CursorY:                                        ; cursor y; used by EventToCursor, PollInputEvents
-        resb 152
+        resb 2
+PadReadings:                                    ; 3 bytes a pad (stick, buttons, hot key) filled by
+                                                ; ReadPadDevice
+        resb 150
 PadStatePtr:                                    ; pad state being updated; used by StickToPad, PadTimerTick
         resb 2
-curevent:                                         ; used by AI, INIT (to name)
+curevent:                                       ; current game summary event record; used by AI, INIT
         resb 2
-curevent_b1:                                         ; used by AI (to name)
+curevent_b1:                                    ; current event byte +1; used by AI
         resb 1
-curevent_b2:                                         ; used by AI (to name)
+curevent_b2:                                    ; current event byte +2; used by AI
         resb 1
-curevent_b3:                                         ; used by AI (to name)
+curevent_b3:                                    ; current event byte +3; used by AI
         resb 1
-curevent_b4:                                         ; used by AI (to name)
+curevent_b4:                                    ; current event byte +4; used by AI
         resb 1
-curevent_b5:                                         ; used by AI (to name)
+curevent_b5:                                    ; current event byte +5; used by AI
         resb 1
-curevent_b6:                                         ; used by AI (to name)
+curevent_b6:                                    ; current event byte +6; used by AI
         resb 1
-curevent_b7:                                         ; used by AI (to name)
+curevent_b7:                                    ; current event byte +7; used by AI
         resb 1
-curevent_b8:                                         ; used by AI (to name)
+curevent_b8:                                    ; current event byte +8; used by AI
         resb 1
-curevent_b9:                                         ; used by AI (to name)
+curevent_b9:                                    ; current event byte +9; used by AI
         resb 1
-curevent_b10:                                         ; used by AI (to name)
+curevent_b10:                                   ; current event byte +10; used by AI
         resb 1
-goalevent:                                         ; used by AI, INIT (to name)
+goalevent:                                      ; goal event pending (1); used by AI, INIT
         resb 2
-g_B07A:                                         ; used by AI (to name)
+goalevent_b1:                                   ; scorer jersey of the goal event; used by AI
         resb 1
-g_B07B:                                         ; used by AI (to name)
+goalevent_b2:                                   ; first assist jersey; used by AI
         resb 1
-g_B07C:                                         ; used by AI (to name)
+goalevent_b3:                                   ; second assist jersey; used by AI
         resb 1
-g_B07D:                                         ; used by AI (to name)
+goalevent_text:                                 ; team abbreviation of the goal event; used by AI
         resb 17
 HotKeyFn:                                       ; far routine for hot keys; used by ListDialog,
                                                 ; MessageBoxLoop, SaveGameNameDialog ...
         resb 2
 HotKeyFnSeg:                                    ; its segment; used by InputInit
         resb 2
-g_B092:                                         ; used by AI, GAME, INIT, MENUS (to name)
+TextOverlayPtr:                                 ; text overlay string pointer (offset); used by AI, GAME,
+                                                ; INIT, MENUS
         resb 2
-g_B094:                                         ; used by AI, GAME, INIT, MENUS (to name)
+TextOverlaySeg:                                 ; its segment; used by AI, GAME, INIT, MENUS
         resb 2
-g_B096:                                         ; used by AI, GAME, INIT (to name)
+viewcellx:                                      ; scroll position in 8-pixel cells, x; used by AI, GAME, INIT
         resb 2
-g_B098:                                         ; used by AI, GAME, INIT (to name)
+viewcelly:                                      ; scroll position in 8-pixel cells, y; used by AI, GAME, INIT
         resb 2
-g_B09A:                                         ; used by INIT (to name)
+RinkMapWidth:                                   ; rink map width in cells; used by INIT
         resb 2
-g_B09C:                                         ; used by GAME, INIT (to name)
+RinkRowBytes:                                   ; bytes per rink row; used by GAME, INIT
         resb 2
-g_B09E:                                         ; used by INIT (to name)
+otherscoresb:                                   ; other games: scores (12 bytes); used by INIT
         resb 12
-g_B0AA:                                         ; used by INIT (to name)
+otherscorehome:                                 ; other games: home team bytes; used by INIT
         resb 1
-g_B0AB:                                         ; used by INIT (to name)
+otherscorehome_b1:                              ; other games: home team bytes from +1; used by INIT
         resb 11
-g_B0B6:                                         ; used by INIT (to name)
+otherscoreaway:                                 ; other games: away team bytes; used by INIT
         resb 1
-g_B0B7:                                         ; used by INIT (to name)
+otherscores:                                    ; other games: away team bytes from +1; used by INIT
         resb 11
-g_B0C2:                                         ; used by GAME, INIT (to name)
+scrolldelay:                                    ; scroll redraw countdown; used by GAME, INIT
         resb 2
 TeamPalette1:                                   ; first team palette; used by LoadTeamPalettes
         resb 67
-g_B107:                                         ; used by AI, MENUS (to name)
+PanelText:                                      ; panel text bytes (DrawHudPanel); used by AI, MENUS
         resb 189
 TeamPalette2:                                   ; second team palette; used by LoadTeamPalettes
         resb 5
-g_B1C9:                                         ; used by MENUS (to name)
+LockerText1:                                    ; locker room text byte 1; used by MENUS
         resb 2
-g_B1CB:                                         ; used by MENUS (to name)
+LockerText2:                                    ; locker room text from +2; used by MENUS
         resb 9
-g_B1D4:                                         ; used by MENUS (to name)
+LockerText3:                                    ; locker room text byte; used by MENUS
         resb 1
-g_B1D5:                                         ; used by MENUS (to name)
+LockerText4:                                    ; locker room text bytes; used by MENUS
         resb 2
-g_B1D7:                                         ; used by MENUS (to name)
+LockerText5:                                    ; locker room text byte; used by MENUS
         resb 1
-g_B1D8:                                         ; used by MENUS (to name)
+LockerText6:                                    ; locker room text bytes; used by MENUS
         resb 2
-g_B1DA:                                         ; used by MENUS (to name)
+LockerText7:                                    ; locker room text block; used by MENUS
         resb 45
-g_B207:                                         ; used by AI, MENUS (to name)
+PanelText2:                                     ; panel text bytes; used by AI, MENUS
         resb 6
-g_B20D:                                         ; used by MENUS (to name)
+LockerText8:                                    ; locker room text block; used by MENUS
         resb 7
-g_B214:                                         ; used by MENUS (to name)
+LockerText9:                                    ; locker room text byte; used by MENUS
         resb 1
-g_B215:                                         ; used by MENUS (to name)
+LockerText10:                                   ; locker room text block; used by MENUS
         resb 15
-g_B224:                                         ; used by MENUS (to name)
+LockerText11:                                   ; locker room text block; used by MENUS
         resb 155
-g_B2BF:                                         ; used by MENUS (to name)
+LockerText12:                                   ; locker room text byte; used by MENUS
         resb 1
-g_B2C0:                                         ; used by MENUS (to name)
+LockerText13:                                   ; locker room text byte; used by MENUS
         resb 1
-g_B2C1:                                         ; used by MENUS (to name)
+LockerText14:                                   ; locker room text byte; used by MENUS
         resb 1
-g_B2C2:                                         ; used by MENUS (to name)
+LockerText15:                                   ; locker room text block; used by MENUS
         resb 8
 ArenaJingleSet:                                 ; arena jingle per team; used by PlayArenaJingle
         resb 2
@@ -390,33 +430,33 @@ ArenaJingleA:                                   ; arena jingle table; used by Pl
         resb 2
 ArenaJingleASeg:                                ; arena jingle table, segment; used by PlayArenaJingle
         resb 2
-g_B2F2:                                         ; used by INIT (to name)
+JingleBuf1:                                     ; jingle buffer pointer 1 (offset); used by INIT
         resb 2
-g_B2F4:                                         ; used by INIT (to name)
+JingleBuf1Seg:                                  ; its segment; used by INIT
         resb 2
-g_B2F6:                                         ; used by INIT (to name)
+JingleBuf2:                                     ; jingle buffer pointer 2 (offset); used by INIT
         resb 2
-g_B2F8:                                         ; used by INIT (to name)
+JingleBuf2Seg:                                  ; its segment; used by INIT
         resb 2
 ArenaJingleB:                                   ; arena jingle table; used by PlayArenaJingle
         resb 2
 ArenaJingleBSeg:                                ; arena jingle table, segment; used by PlayArenaJingle
         resb 2
-g_B2FE:                                         ; used by INIT (to name)
+JingleBuf3:                                     ; jingle buffer pointer 3 (offset); used by INIT
         resb 2
-g_B300:                                         ; used by INIT (to name)
+JingleBuf3Seg:                                  ; its segment; used by INIT
         resb 2
-g_B302:                                         ; used by INIT (to name)
+JingleBuf4:                                     ; jingle buffer pointer 4 (offset); used by INIT
         resb 2
-g_B304:                                         ; used by INIT (to name)
+JingleBuf4Seg:                                  ; its segment; used by INIT
         resb 2
-g_B306:                                         ; used by INIT (to name)
+JingleCfgBufs:                                  ; jingle config buffer pointers (offset); used by INIT
         resb 2
-g_B308:                                         ; used by INIT (to name)
+JingleCfgBufsSeg:                               ; their segments; used by INIT
         resb 10
-g_B312:                                         ; used by INIT (to name)
+JingleKmsBufs:                                  ; jingle song buffer pointers (offset); used by INIT
         resb 2
-g_B314:                                         ; used by INIT (to name)
+JingleKmsBufsSeg:                               ; their segments; used by INIT
         resb 10
 ArenaJingleC:                                   ; arena jingle table; used by PlayArenaJingle
         resb 2
@@ -450,1021 +490,1097 @@ VgaSave3Off:                                    ; saved plane 3, offset; used by
 VgaSave3Seg:                                    ; saved plane 3, segment; used by SaveVgaPlanes,
                                                 ; RestoreVgaPlanes
         resb 2
-g_B35E:                                         ; used by MENUS (to name)
+editopts:                                       ; option bits being edited by the settings dialogs; used by
+                                                ; MENUS
         resb 1
-g_B35F:                                         ; used by MENUS (to name)
+editopts_b1:                                    ; high byte of editopts; used by MENUS
         resb 1
-g_B360:                                         ; used by MENUS (to name)
+editctlopts:                                    ; controller option bits being edited; used by MENUS
         resb 2
-g_B362:                                         ; used by INIT (to name)
+hmshots:                                        ; home shots; the home team stats start here; used by INIT
         resb 2
-g_B364:                                         ; used by INIT, LP (to name)
+hmppgoals:                                      ; home power play goals; used by INIT, LP
         resb 2
-g_B366:                                         ; used by INIT, LP (to name)
+hmppchances:                                    ; home power play chances; used by INIT, LP
         resb 2
-g_B368:                                         ; used by INIT (to name)
+hmpenalties:                                    ; home penalty count; used by INIT
         resb 2
-g_B36A:                                         ; used by INIT, LP (to name)
+hmpenmins:                                      ; home penalty minutes; used by INIT, LP
         resb 2
-g_B36C:                                         ; used by INIT (to name)
+hmattacktime:                                   ; home attack zone time; used by INIT
         resb 2
-hmscore:                                         ; used by AI, INIT, LP, MENUS (to name)
+hmscore:                                        ; home score; used by AI, INIT, LP, MENUS
         resb 2
-g_B370:                                         ; used by INIT (to name)
+hmfaceoffs:                                     ; home faceoffs won; used by INIT
         resb 2
-g_B372:                                         ; used by INIT (to name)
+hmchecks:                                       ; home body checks; used by INIT
         resb 2
-g_B374:                                         ; used by INIT (to name)
+hmpassatt:                                      ; home pass attempts; used by INIT
         resb 2
-g_B376:                                         ; used by INIT (to name)
+hmpasscmp:                                      ; home passes completed; used by INIT
         resb 2
-hmtmline:                                         ; used by AI (to name)
+hmtmline:                                       ; home current line; used by AI
         resb 2
-hmtmlcnt:                                         ; used by AI (to name)
+hmtmlcnt:                                       ; home line count; used by AI
         resb 2
-hmtmextra:                                         ; used by AI (to name)
+hmtmextra:                                      ; home extra skater; used by AI
         resb 2
-hmtmtouch1:                                         ; used by AI (to name)
+hmtmtouch1:                                     ; home last touch 1; used by AI
         resb 2
-hmtmtouch2:                                         ; used by AI (to name)
+hmtmtouch2:                                     ; home last touch 2; used by AI
         resb 2
-hmtmtouch3:                                         ; used by AI (to name)
+hmtmtouch3:                                     ; home last touch 3; used by AI
         resb 2
-hmtmap:                                         ; used by AI, INIT, MENUS (to name)
+hmtmap:                                         ; home skaters on the ice; used by AI, INIT, MENUS
         resb 2
-hmtmgoalie:                                         ; used by AI, INIT, LP (to name)
+hmtmgoalie:                                     ; home goalie (negative = pulled); used by AI, INIT, LP
         resb 1
-g_B387:                                         ; used by AI (to name)
+hmtmgoalie_b1:                                  ; home goalie, high byte; used by AI
         resb 5
-hmtmflags:                                         ; used by AI, MENUS (to name)
+hmtmflags:                                      ; home team flags (line change mode, offside ...); used by AI,
+                                                ; MENUS
         resb 2
-g_B38E:                                         ; used by AI (to name)
+hmtmpde:                                        ; home player energy (56 bytes); used by AI
         resb 56
-g_B3C6:                                         ; used by AI (to name)
+hmtmpdst:                                       ; home player status per roster slot (56 bytes); used by AI
         resb 56
-g_B3FE:                                         ; used by AI (to name)
+hmtmpbox_m1:                                    ; home team bytes before hmtmpbox (28 bytes); used by AI
         resb 28
-hmtmcoach_d2:                                         ; used by AI (to name)
+hmtmcoach_d2:                                   ; home coach data byte; used by AI
         resb 1
-hmtmcoach_d3:                                         ; used by AI (to name)
+hmtmcoach_d3:                                   ; home coach data byte; used by AI
         resb 1
-hmtmcoachflags:                                         ; used by AI (to name)
+hmtmcoachflags:                                 ; home coach flags; used by AI
         resb 1
-hmtmcoachmode:                                         ; used by AI (to name)
+hmtmcoachmode:                                  ; home coach mode; used by AI
         resb 1
-hmtmcoachenergy:                                         ; used by AI (to name)
+hmtmcoachenergy:                                ; home coach energy setting; used by AI
         resb 2
-hmtmlines:                                         ; used by AI, INIT, LP (to name)
+hmtmlines:                                      ; home line table pointer; used by AI, INIT, LP
         resb 2
-hmtmsort:                                         ; used by AI, INIT (to name)
+hmtmsort:                                       ; home sort objects pointer; used by AI, INIT
         resb 2
-hmtmplattr:                                         ; used by AI, INIT (to name)
+hmtmplattr:                                     ; home player attributes pointer; used by AI, INIT
         resb 2
-g_B426:                                         ; used by AI, INIT (to name)
+hmtmglattr:                                     ; home goalie attributes pointer; used by AI, INIT
         resb 2
-g_B428:                                         ; used by AI, INIT (to name)
+hmtmglattrseg:                                  ; its segment; used by AI, INIT
         resb 2
-g_B42A:                                         ; used by AI, INIT (to name)
+hmtmplstats:                                    ; home player stats pointer; used by AI, INIT
         resb 2
-g_B42C:                                         ; used by AI, INIT (to name)
+hmtmplstatsseg:                                 ; its segment; used by AI, INIT
         resb 2
-hmtmglstats:                                         ; used by AI, INIT (to name)
+hmtmglstats:                                    ; home goalie stats pointer; used by AI, INIT
         resb 2
-hmtmroster:                                         ; used by AI, INIT (to name)
+hmtmroster:                                     ; home roster pointer; used by AI, INIT
         resb 2
-g_B432:                                         ; used by AI, INIT (to name)
+hmtmrosterptr:                                  ; home roster pointer; used by AI, INIT
         resb 2
-hmtmptrF2:                                         ; used by AI, INIT (to name)
+hmtmptrF2:                                      ; home team pointer; used by AI, INIT
         resb 2
-g_B436:                                         ; used by AI, INIT (to name)
-        resb 14
-awscore:                                         ; used by AI, LP, MENUS (to name)
+hmtmptrs:                                       ; home team pointer; used by AI, INIT
+        resb 2
+awshots:                                        ; away shots; the away team stats start here
+        resb 2
+awppgoals:                                      ; away power play goals
+        resb 2
+awppchances:                                    ; away power play chances
+        resb 2
+awpenalties:                                    ; away penalties
+        resb 2
+awpenmins:                                      ; away penalty minutes
+        resb 2
+awattacktime:                                   ; away attack time
+        resb 2
+awscore:                                        ; away score; used by AI, LP, MENUS
         resb 10
-awtmline:                                         ; used by AI (to name)
+awtmline:                                       ; away current line; used by AI
         resb 2
-awtmlcnt:                                         ; used by AI (to name)
+awtmlcnt:                                       ; away line count; used by AI
         resb 2
-awtmextra:                                         ; used by AI (to name)
+awtmextra:                                      ; away extra skater; used by AI
         resb 2
-awtmtouch1:                                         ; used by AI (to name)
+awtmtouch1:                                     ; away last touch 1; used by AI
         resb 2
-awtmtouch2:                                         ; used by AI (to name)
+awtmtouch2:                                     ; away last touch 2; used by AI
         resb 2
-awtmtouch3:                                         ; used by AI (to name)
+awtmtouch3:                                     ; away last touch 3; used by AI
         resb 2
-awtmap:                                         ; used by AI, INIT (to name)
+awtmap:                                         ; away skaters on the ice; used by AI, INIT
         resb 2
-awtmgoalie:                                         ; used by AI, INIT, LP (to name)
+awtmgoalie:                                     ; away goalie (negative = pulled); used by AI, INIT, LP
         resb 6
-awtmflags:                                         ; used by AI, MENUS (to name)
+awtmflags:                                      ; away team flags; used by AI, MENUS
         resb 114
-g_B4D4:                                         ; used by AI (to name)
+awtmpbox_m1:                                    ; away team bytes before awtmpbox (28 bytes); used by AI
         resb 28
-awtmcoach_d2:                                         ; used by AI (to name)
+awtmcoach_d2:                                   ; away coach data byte; used by AI
         resb 1
-awtmcoach_d3:                                         ; used by AI (to name)
+awtmcoach_d3:                                   ; away coach data byte; used by AI
         resb 1
-awtmcoachflags:                                         ; used by AI (to name)
+awtmcoachflags:                                 ; away coach flags; used by AI
         resb 1
-awtmcoachmode:                                         ; used by AI (to name)
+awtmcoachmode:                                  ; away coach mode; used by AI
         resb 1
-awtmcoachenergy:                                         ; used by AI (to name)
+awtmcoachenergy:                                ; away coach energy setting; used by AI
         resb 2
-g_B4F6:                                         ; used by AI, INIT, LP (to name)
+awtmteamrec:                                    ; away team record pointer; used by AI, INIT, LP
         resb 2
-awtmsort:                                         ; used by AI, INIT (to name)
+awtmsort:                                       ; away sort objects pointer; used by AI, INIT
         resb 2
-g_B4FA:                                         ; used by AI, INIT (to name)
+awtmglattrseg:                                  ; segment of the away goalie attributes; used by AI, INIT
         resb 2
-awtmglattr:                                         ; used by AI, INIT (to name)
+awtmglattr:                                     ; away goalie attributes pointer; used by AI, INIT
         resb 2
-awtmlines:                                         ; used by AI, INIT (to name)
+awtmlines:                                      ; away line table pointer; used by AI, INIT
         resb 2
-awtmplstats:                                         ; used by AI, INIT (to name)
+awtmplstats:                                    ; away player stats pointer; used by AI, INIT
         resb 2
-awtmglstats:                                         ; used by AI, INIT (to name)
+awtmglstats:                                    ; away goalie stats pointer; used by AI, INIT
         resb 2
-g_B504:                                         ; used by AI, INIT (to name)
+awtmglstatsptr:                                 ; away goalie stats pointer; used by AI, INIT
         resb 2
-g_B506:                                         ; used by AI, INIT (to name)
+awtmglstatsseg:                                 ; its segment; used by AI, INIT
         resb 2
-awtmptrF2:                                         ; used by AI, INIT (to name)
+awtmptrF2:                                      ; away team pointer; used by AI, INIT
         resb 2
-g_B50A:                                         ; used by AI, INIT (to name)
+awtmroster:                                     ; away roster pointer; used by AI, INIT
         resb 2
-g_B50C:                                         ; used by AI, INIT (to name)
+SortCords_m2:                                   ; object address word before SortCords (clearteams stores
+                                                ; sort object 6 there); used by AI, INIT
+        resb 2
+SortCords:                                      ; the sort objects, 80h bytes each; sort object 0 starts here
+        resb 2
+sortobj0_Xpos2:                                 ; sort object 0 (sortobj0), field +02h; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 4
-g_B510:                                         ; used by AI (to name)
-        resb 4
-g_B514:                                         ; used by AI (to name)
+sortobj0_Ypos2:                                 ; sort object 0 (sortobj0), field +06h; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 20
-g_B528:                                         ; used by AI (to name)
+sortobj0_position:                              ; sort object 0 (sortobj0), field +1Ah; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 42
-CwdExciteLvl:                                         ; used by AI (to name)
+CwdExciteLvl:                                   ; crowd excitement level; used by AI
         resb 1
-g_B553:                                         ; used by AI (to name)
+sortobj0_pflags2:                               ; sort object 0 (sortobj0), field +45h; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 2
-g_B555:                                         ; used by AI (to name)
+sortobj0_47:                                    ; sort object 0 (sortobj0), field +47h; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 1467
-g_BB10:                                         ; used by AI (to name)
+sortobj12_Xpos2:                                ; sort object 12 (sortobj12), field +02h; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 4
-g_BB14:                                         ; used by AI (to name)
+sortobj12_Ypos2:                                ; sort object 12 (sortobj12), field +06h; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 6
-g_BB1A:                                         ; used by AI (to name)
+sortobj12_Xvel:                                 ; sort object 12 (sortobj12), field +0Ch; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 2
-g_BB1C:                                         ; used by AI (to name)
+sortobj12_Yvel:                                 ; sort object 12 (sortobj12), field +0Eh; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 116
-g_BB90:                                         ; used by AI (to name)
+sortobj13_Xpos2:                                ; sort object 13 (sortobj13), field +02h; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 4
-g_BB94:                                         ; used by AI (to name)
+sortobj13_Ypos2:                                ; sort object 13 (sortobj13), field +06h; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 6
-g_BB9A:                                         ; used by AI (to name)
+sortobj13_Xvel:                                 ; sort object 13 (sortobj13), field +0Ch; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 2
-g_BB9C:                                         ; used by AI (to name)
-        resb 116
-g_BC10:                                         ; used by AI (to name)
-        resb 4
-puckstruct:                                         ; used by AI (to name)
-        resb 4
-g_BC18:                                         ; used by AI (to name)
+sortobj13_Yvel:                                 ; sort object 13 (sortobj13), field +0Eh; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
+        resb 114
+puckstruct:                                     ; sort object 14 (puck), field +00h
         resb 2
-g_BC1A:                                         ; used by AI (to name)
-        resb 2
-g_BC1C:                                         ; used by AI (to name)
+puckXpos2:                                      ; sort object 14 (puck), field +02h; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 4
-g_BC20:                                         ; used by AI (to name)
+puckYpos2:                                      ; puck sort object field +06h (the object starts 6 bytes
+                                                ; before); used by AI
+        resb 4
+puckZpos2:                                      ; sort object 14 (puck), field +0Ah; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
+        resb 2
+puckXvel:                                       ; sort object 14 (puck), field +0Ch; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
+        resb 2
+puckYvel:                                       ; sort object 14 (puck), field +0Eh; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
+        resb 4
+puckframe:                                      ; sort object 14 (puck), field +12h; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 10
-g_BC2A:                                         ; used by AI (to name)
+puck_1C:                                        ; sort object 14 (puck), field +1Ch; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 2
-g_BC2C:                                         ; used by AI (to name)
+puckasslist:                                    ; sort object 14 (puck), field +1Eh; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 8
-pucktemp1:                                         ; used by AI (to name)
+pucktemp1:                                      ; puck sort object temp1; used by AI
         resb 2
-g_BC36:                                         ; used by AI (to name)
+pucktemp2:                                      ; sort object 14 (puck), field +28h; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 22
-pucknopuck:                                         ; used by AI (to name)
+pucknopuck:                                     ; puck sort object nopuck field; used by AI
         resb 7
-puckpflags2:                                         ; used by AI (to name)
+puckpflags2:                                    ; puck sort object pflags2; used by AI
         resb 3
-g_BC56:                                         ; used by AI (to name)
+puck_48:                                        ; sort object 14 (puck), field +48h; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 56
-g_BC8E:                                         ; used by AI (to name)
+doorstruct:                                     ; sort object 15 (door), field +00h; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 2
-g_BC90:                                         ; used by AI (to name)
+doorXpos2:                                      ; sort object 15 (door), field +02h; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 4
-g_BC94:                                         ; used by AI (to name)
+doorYpos2:                                      ; sort object 15 (door), field +06h; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 4
-g_BC98:                                         ; used by AI (to name)
+doorZpos2:                                      ; sort object 15 (door), field +0Ah; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 2
-g_BC9A:                                         ; used by AI (to name)
+doorXvel:                                       ; sort object 15 (door), field +0Ch; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 2
-g_BC9C:                                         ; used by AI (to name)
+doorYvel:                                       ; sort object 15 (door), field +0Eh; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 4
-g_BCA0:                                         ; used by AI (to name)
+doorframe:                                      ; sort object 15 (door), field +12h; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 20
-g_BCB4:                                         ; used by AI (to name)
+doortemp1:                                      ; sort object 15 (door), field +26h; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 2
-g_BCB6:                                         ; used by AI (to name)
+doortemp2:                                      ; sort object 15 (door), field +28h; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 16
-g_BCC6:                                         ; used by AI (to name)
+door_38:                                        ; sort object 15 (door), field +38h; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 12
-g_BCD2:                                         ; used by AI (to name)
+doorpflags:                                     ; sort object 15 (door), field +44h; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 2
-g_BCD4:                                         ; used by AI (to name)
+doorpflags3:                                    ; sort object 15 (door), field +46h; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 2
-g_BCD6:                                         ; used by AI (to name)
+door_48:                                        ; sort object 15 (door), field +48h; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 56
-g_BD0E:                                         ; used by AI (to name)
+refstruct:                                      ; sort object 16 (ref), field +00h; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 2
-g_BD10:                                         ; used by AI (to name)
+refXpos2:                                       ; sort object 16 (ref), field +02h; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 4
-refYpos2:                                         ; used by AI (to name)
+refYpos2:                                       ; referee sort object field +06h; used by AI
         resb 6
-refXvel:                                         ; used by AI (to name)
+refXvel:                                        ; referee x velocity; used by AI
         resb 2
-g_BD1C:                                         ; used by AI (to name)
+refYvel:                                        ; sort object 16 (ref), field +0Eh; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 4
-g_BD20:                                         ; used by AI (to name)
+refframe:                                       ; sort object 16 (ref), field +12h; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 8
-g_BD28:                                         ; used by AI (to name)
+refposition:                                    ; sort object 16 (ref), field +1Ah; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 2
-refposition:                                         ; used by AI (to name)
+ref_1C:                                         ; referee sort object field +1Ch; used by AI
         resb 2
-refasslist:                                         ; used by AI (to name)
+refasslist:                                     ; referee assignment list; used by AI
         resb 8
-reftemp1:                                         ; used by AI (to name)
+reftemp1:                                       ; referee temp1; used by AI
         resb 4
-reftemp3:                                         ; used by AI (to name)
+reftemp3:                                       ; referee temp3; used by AI
         resb 2
-g_BD3A:                                         ; used by AI (to name)
+reftemp4:                                       ; sort object 16 (ref), field +2Ch; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 2
-g_BD3C:                                         ; used by AI (to name)
+reftemp5:                                       ; sort object 16 (ref), field +2Eh; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 8
-g_BD44:                                         ; used by AI (to name)
+ref_36:                                         ; sort object 16 (ref), field +36h; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 20
-g_BD58:                                         ; used by AI (to name)
+ref_4A:                                         ; sort object 16 (ref), field +4Ah; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 1
-g_BD59:                                         ; used by AI (to name)
+ref_4B:                                         ; sort object 16 (ref), field +4Bh; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 1
-g_BD5A:                                         ; used by AI (to name)
+ref_4C:                                         ; sort object 16 (ref), field +4Ch; sort objects are 80h
+                                                ; bytes from SortCords; used by AI
         resb 52
-g_BD8E:                                         ; used by MENUS (to name)
+TitleJingle:                                    ; title jingle buffer pointer (offset); used by MENUS
         resb 2
-g_BD90:                                         ; used by MENUS (to name)
+TitleJingleSeg:                                 ; its segment; used by MENUS
         resb 2
-g_BD92:                                         ; used by MENUS (to name)
+TitleJingle2:                                   ; second title jingle buffer pointer (offset); used by MENUS
         resb 2
-g_BD94:                                         ; used by MENUS (to name)
+TitleJingle2Seg:                                ; its segment; used by MENUS
         resb 2
-g_BD96:                                         ; used by MENUS (to name)
+gmrosterpos:                                    ; roster position letter (C, L, R, D, G) of the game roster
+                                                ; entries; used by MENUS
         resb 1
-gmrosterjersey:                                         ; used by MENUS (to name)
+gmrosterjersey:                                 ; game roster jersey; used by MENUS
         resb 1
-gmrosterslot:                                         ; used by MENUS (to name)
+gmrosterslot:                                   ; game roster slot; used by MENUS
         resb 1
-g_BD99:                                         ; used by MENUS (to name)
+gmrosterjersey_b2:                              ; game roster entry byte +3; used by MENUS
         resb 1
-g_BD9A:                                         ; used by MENUS (to name)
+gmrosterdot:                                    ; game roster entry: the '.' after the initial; used by MENUS
         resb 1
-g_BD9B:                                         ; used by MENUS (to name)
+gmrosterspace:                                  ; game roster entry: the space before the name; used by MENUS
         resb 1
-g_BD9C:                                         ; used by MENUS (to name)
+gmrostername:                                   ; game roster entry names; used by MENUS
         resb 544
-g_BFBC:                                         ; used by MENUS (to name)
+gmroster2pos:                                   ; second game roster: first byte; used by MENUS
         resb 1
-g_BFBD:                                         ; used by MENUS (to name)
+gmroster2jersey:                                ; second game roster: jersey bytes; used by MENUS
         resb 2
-g_BFBF:                                         ; used by MENUS (to name)
+gmroster2init:                                  ; second game roster: initial; used by MENUS
         resb 1
-g_BFC0:                                         ; used by MENUS (to name)
+gmroster2dot:                                   ; second game roster: the '.'; used by MENUS
         resb 1
-g_BFC1:                                         ; used by MENUS (to name)
+gmroster2space:                                 ; second game roster: the space; used by MENUS
         resb 1
-g_BFC2:                                         ; used by MENUS (to name)
+gmroster2name:                                  ; second game roster: names; used by MENUS
         resb 60
-curperiod:                                         ; used by AI, GAME, INIT, LP, MENUS (to name)
+curperiod:                                      ; current period; used by AI, GAME, INIT, LP, MENUS
         resb 2
-g_C000:                                         ; used by LP (to name)
+HomeTeamDbName:                                 ; home team database name (32 bytes); used by LP
         resb 32
-g_C020:                                         ; used by LP (to name)
+AwayTeamDbName:                                 ; away team database name (32 bytes); used by LP
         resb 32
-g_C040:                                         ; used by LP, MENUS, STATS (to name)
+statsgoaliebufseg:                              ; segment of statsgoaliebuf; used by LP, MENUS, STATS
         resb 2
-statsgoaliebuf:                                         ; used by LP, MENUS, STATS (to name)
+statsgoaliebuf:                                 ; goalie stats buffer; used by LP, MENUS, STATS
         resb 2
-g_C044:                                         ; used by LP, MENUS, STATS (to name)
+statsskaterbufseg:                              ; segment of statsskaterbuf; used by LP, MENUS, STATS
         resb 2
-statsskaterbuf:                                         ; used by LP, MENUS, STATS (to name)
+statsskaterbuf:                                 ; skater stats buffer; used by LP, MENUS, STATS
         resb 2
-g_C048:                                         ; used by LP, MENUS, STATS (to name)
+statsplayerbufseg:                              ; segment of statsplayerbuf; used by LP, MENUS, STATS
         resb 2
-statsplayerbuf:                                         ; used by LP, MENUS, STATS (to name)
+statsplayerbuf:                                 ; player stats buffer; used by LP, MENUS, STATS
         resb 2
-g_C04C:                                         ; used by LP, MENUS, STATS (to name)
+statsteambufseg:                                ; segment of statsteambuf; used by LP, MENUS, STATS
         resb 2
-statsteambuf:                                         ; used by LP, MENUS, STATS (to name)
+statsteambuf:                                   ; team stats buffer; used by LP, MENUS, STATS
         resb 2
-g_C050:                                         ; used by MENUS, STATS (to name)
+statsrosterteam:                                ; team shown on the roster screen; used by MENUS, STATS
         resb 2
-leaguestatsmode:                                         ; used by LP, MENUS, STATS (to name)
+leaguestatsmode:                                ; league stats mode; used by LP, MENUS, STATS
         resb 2
-g_C054:                                         ; used by MENUS (to name)
+savedcount1:                                    ; number of saved games of the first kind (ScanSavedGames);
+                                                ; used by MENUS
         resb 2
-g_C056:                                         ; used by MENUS (to name)
+savedsel1:                                      ; selected saved game of the first kind; used by MENUS
         resb 2
-g_C058:                                         ; used by MENUS (to name)
+savedtop1:                                      ; first saved game shown, first kind; used by MENUS
         resb 2
-g_C05A:                                         ; used by MENUS (to name)
+savedrows1:                                     ; rows of the first saved game list; used by MENUS
         resb 2
-g_C05C:                                         ; used by MENUS (to name)
+savednames1:                                    ; name pointers (offset) of the first saved game list; used by
+                                                ; MENUS
         resb 2
-g_C05E:                                         ; used by MENUS (to name)
+savednames1seg:                                 ; further name pointers of the first list; used by MENUS
         resb 126
-g_C0DC:                                         ; used by MENUS (to name)
+savedcount2:                                    ; number of saved games of the second kind; used by MENUS
         resb 2
-lgfiles:                                         ; used by MENUS (to name)
+lgfiles:                                        ; league file handles; used by MENUS
         resb 2
-g_C0E0:                                         ; used by MENUS (to name)
+savedtop2:                                      ; first saved game shown, second kind; used by MENUS
         resb 2
-g_C0E2:                                         ; used by MENUS (to name)
+savedrows2:                                     ; rows of the second list; used by MENUS
         resb 2
-g_C0E4:                                         ; used by MENUS (to name)
+savednames2:                                    ; name pointers of the second list; used by MENUS
         resb 2
-lgfilenames:                                         ; used by MENUS (to name)
+lgfilenames:                                    ; league file names; used by MENUS
         resb 126
-g_C164:                                         ; used by MENUS (to name)
+savedcount3:                                    ; number of saved games of the third kind; used by MENUS
         resb 2
-g_C166:                                         ; used by MENUS (to name)
+savedsel3:                                      ; selected saved game of the third kind; used by MENUS
         resb 2
-g_C168:                                         ; used by MENUS (to name)
+savedtop3:                                      ; first saved game shown, third kind; used by MENUS
         resb 2
-g_C16A:                                         ; used by MENUS (to name)
+savedrows3:                                     ; rows of the third list; used by MENUS
         resb 2
-g_C16C:                                         ; used by MENUS (to name)
+savednames3:                                    ; name pointers of the third list; used by MENUS
         resb 2
-g_C16E:                                         ; used by MENUS (to name)
+savednames3seg:                                 ; further name pointers of the third list; used by MENUS
         resb 126
-fdlgtab:                                         ; used by MENUS (to name)
+fdlgtab:                                        ; file dialog table; used by MENUS
         resb 2
-g_C1EE:                                         ; used by MENUS (to name)
+fdlgflags:                                      ; file dialog flag bits (80h, 40h, 20h); used by MENUS
         resb 1
-g_C1EF:                                         ; used by MENUS (to name)
+fdlgflags2:                                     ; file dialog flag bits, second byte; used by MENUS
         resb 1
-g_C1F0:                                         ; used by MENUS (to name)
+SoundDrvBuf:                                    ; sound driver buffer pointer (offset); used by MENUS
         resb 2
-g_C1F2:                                         ; used by MENUS (to name)
+SoundDrvBufSeg:                                 ; its segment; used by MENUS
         resb 2
-g_C1F4:                                         ; used by MENUS (to name)
+POTitleText:                                    ; playoff title text (16 bytes); used by MENUS
         resb 16
-playofftree:                                         ; used by MENUS, STATS (to name)
+playofftree:                                    ; playoff tree; used by MENUS, STATS
         resb 2
-g_C206:                                         ; used by MENUS (to name)
+POTreeSlots:                                    ; playoff tree slot words; used by MENUS
         resb 30
-g_C224:                                         ; used by MENUS (to name)
+POTreeRows:                                     ; playoff tree row words (19h); used by MENUS
         resb 20
-g_C238:                                         ; used by STATS (to name)
+standingsteam:                                  ; team of the standings row; used by STATS
         resb 2
-g_C23A:                                         ; used by STATS (to name)
+standingsprev:                                  ; previous standings value; used by STATS
         resb 2
-g_C23C:                                         ; used by STATS (to name)
+standingskey:                                   ; standings sort key; used by STATS
         resb 2
-g_C23E:                                         ; used by STATS (to name)
+standingskey2:                                  ; second standings sort key; used by STATS
         resb 2
-g_C240:                                         ; used by STATS (to name)
+standingsrank:                                  ; standings rank; used by STATS
         resb 2
-g_C242:                                         ; used by MENUS (to name)
+DeskTitleText:                                  ; sports desk title text (22 bytes); used by MENUS
         resb 22
-g_C258:                                         ; used by AI, INIT, MENUS (to name)
+ScoreboardArt:                                  ; scoreboard art pointer (offset); used by AI, INIT, MENUS
         resb 2
-g_C25A:                                         ; used by AI, INIT, MENUS (to name)
+ScoreboardArtSeg:                               ; its segment; used by AI, INIT, MENUS
         resb 2
-g_C25C:                                         ; used by AI, INIT, MENUS (to name)
+RinkEndArt:                                     ; rink end art pointer (offset); used by AI, INIT, MENUS
         resb 2
-g_C25E:                                         ; used by AI, INIT, MENUS (to name)
+RinkEndArtSeg:                                  ; its segment; used by AI, INIT, MENUS
         resb 2
-g_C260:                                         ; used by LP (to name)
+editactive:                                     ; text field: editing active; used by LP
         resb 2
-g_C262:                                         ; used by LP (to name)
+editcursorx:                                    ; text field: cursor x; used by LP
         resb 2
-g_C264:                                         ; used by LP (to name)
+editx:                                          ; text field: x; used by LP
         resb 2
-g_C266:                                         ; used by LP (to name)
+edity:                                          ; text field: y; used by LP
         resb 2
-g_C268:                                         ; used by LP (to name)
+editpos:                                        ; text field: cursor position; used by LP
         resb 2
-g_C26A:                                         ; used by LP (to name)
+editlen:                                        ; text field: text length; used by LP
         resb 2
-g_C26C:                                         ; used by LP (to name)
+editmax:                                        ; text field: maximum width; used by LP
         resb 2
-g_C26E:                                         ; used by LP (to name)
+calresult:                                      ; calendar result (-1 none); used by LP
         resb 2
-g_C270:                                         ; used by LP (to name)
+calmonth:                                       ; calendar month shown (0-11); used by LP
         resb 2
-g_C272:                                         ; used by LP (to name)
+calday:                                         ; calendar day chosen (-1 none); used by LP
         resb 2
-teamselresult:                                         ; used by LP (to name)
+teamselresult:                                  ; team selection result; used by LP
         resb 2
-g_C276:                                         ; used by LP (to name)
+floppydrive:                                    ; floppy drive chosen; used by LP
         resb 2
-g_C278:                                         ; used by LP (to name)
+floppyok:                                       ; floppy drive flags; used by LP
         resb 2
-g_C27A:                                         ; used by LP (to name)
+floppycount:                                    ; number of floppy drives; used by LP
         resb 2
-g_C27C:                                         ; used by LP (to name)
+tradestate:                                     ; trade screen state (1 done, -1 cancelled, 0 running); used
+                                                ; by LP
         resb 2
-g_C27E:                                         ; used by LP (to name)
+savleague:                                      ; league name of the game being played (14 bytes); used by LP
         resb 14
-g_C28C:                                         ; used by LP (to name)
+savleague2:                                     ; second league name (14 bytes); used by LP
         resb 14
-g_C29A:                                         ; used by LP (to name)
+lgschedrec:                                     ; schedule record of the league game; used by LP
         resb 1
-g_C29B:                                         ; used by LP (to name)
+lgschedrec_b1:                                  ; schedule record byte +1; used by LP
         resb 1
-g_C29C:                                         ; used by LP (to name)
+lgschedrec_b2:                                  ; schedule record byte +2; used by LP
         resb 1
-g_C29D:                                         ; used by LP (to name)
+lgschedrec_b3:                                  ; schedule record byte +3; used by LP
         resb 1
-lgschedrec_b4:                                         ; used by LP (to name)
+lgschedrec_b4:                                  ; schedule record byte +4; used by LP
         resb 1
-g_C29F:                                         ; used by LP (to name)
+lgschedrec_b5:                                  ; schedule record byte +5; used by LP
         resb 1
-statspalshape:                                         ; used by LP, STATS (to name)
+statspalshape:                                  ; stats palette shape; used by LP, STATS
         resb 2
-g_C2A2:                                         ; used by LP (to name)
+calcursor:                                      ; calendar cursor day; used by LP
         resb 2
-g_C2A4:                                         ; used by LP (to name)
+calcursor2:                                     ; calendar cursor row; used by LP
         resb 2
-g_C2A6:                                         ; used by LP (to name)
+lghometeam:                                     ; home team of the league game; used by LP
         resb 2
-g_C2A8:                                         ; used by LP (to name)
+lgoppteam:                                      ; other team of the league game; used by LP
         resb 2
-g_C2AA:                                         ; used by LP (to name)
+lggamestate:                                    ; league game state (-1 none); used by LP
         resb 2
-g_C2AC:                                         ; used by LP (to name)
+lgreadword:                                     ; word read with the league game reference; used by LP
         resb 2
-g_C2AE:                                         ; used by LP (to name)
+lgreadword2:                                    ; second word read with the league game reference; used by LP
         resb 2
-g_C2B0:                                         ; used by LP (to name)
+lggameidx:                                      ; index of the league game; used by LP
         resb 2
-statsbgshapes:                                         ; used by LP, STATS (to name)
+statsbgshapes:                                  ; stats background shapes; used by LP, STATS
         resb 2
-g_C2B4:                                         ; used by LP, STATS (to name)
+statsbgseg:                                     ; stats background shape segment; used by LP, STATS
         resb 2
-startm:                                         ; used by AI, LP (to name)
+startm:                                         ; three stars: team of each star; used by AI, LP
         resb 2
-starpl:                                         ; used by AI, LP (to name)
+starpl:                                         ; three stars: player of each star; used by AI, LP
         resb 10
-g_C2C2:                                         ; used by LP (to name)
+traderows:                                      ; trade screen rows; used by LP
         resb 1
-g_C2C3:                                         ; used by LP (to name)
+traderows_b1:                                   ; trade screen rows from +1; used by LP
         resb 1
-g_C2C4:                                         ; used by LP (to name)
+traderows_b2:                                   ; trade screen row bytes from +2; used by LP
         resb 614
-g_C52A:                                         ; used by LP (to name)
+traderoster:                                    ; trade roster (BuildTradeRoster); used by LP
         resb 616
-g_C792:                                         ; used by LP (to name)
+tradesel:                                       ; selected trade rows; used by LP
         resb 2
-g_C794:                                         ; used by LP (to name)
+tradesel2:                                      ; second trade selection word; used by LP
         resb 2
-g_C796:                                         ; used by LP (to name)
+tradescroll:                                    ; trade list scroll; used by LP
         resb 2
-g_C798:                                         ; used by LP (to name)
+tradescroll2:                                   ; second trade scroll word; used by LP
         resb 2
-g_C79A:                                         ; used by LP (to name)
+tradecursor:                                    ; trade screen cursor; used by LP
         resb 2
-g_C79C:                                         ; used by LP (to name)
+tradecolour:                                    ; trade screen row colour; used by LP
         resb 2
-g_C79E:                                         ; used by LP (to name)
+tradecolour2:                                   ; second trade row colour; used by LP
         resb 2
-g_C7A0:                                         ; used by LP (to name)
+mergestate:                                     ; merge state of the league files; used by LP
         resb 2
-g_C7A2:                                         ; used by LP (to name)
+AwardRawA:                                      ; award art raw handle; used by LP
         resb 2
-g_C7A4:                                         ; used by LP (to name)
+AwardRawB:                                      ; second award art raw handle; used by LP
         resb 2
-g_C7A6:                                         ; used by LP (to name)
+AwardRawC:                                      ; third award art raw handle; used by LP
         resb 2
-g_C7A8:                                         ; used by LP (to name)
+AwardRawD:                                      ; fourth award art raw handle; used by LP
         resb 2
-g_C7AA:                                         ; used by LP (to name)
+AwardFrames:                                    ; award EMS frames (offset); used by LP
         resb 2
-g_C7AC:                                         ; used by LP (to name)
+AwardFramesSeg:                                 ; award EMS frames; used by LP
         resb 38
-g_C7D2:                                         ; used by LP (to name)
+AwardFrames2:                                   ; second award EMS frames; used by LP
         resb 2
-g_C7D4:                                         ; used by LP (to name)
+AwardFrames2Seg:                                ; second award EMS frames; used by LP
         resb 38
-g_C7FA:                                         ; used by LP (to name)
+AwardFrames3:                                   ; third award EMS frame; used by LP
         resb 2
-g_C7FC:                                         ; used by LP (to name)
+AwardFrames3Seg:                                ; third award EMS frames; used by LP
         resb 10
-g_C806:                                         ; used by LP (to name)
+AwardScores:                                    ; award score bytes (ShowAwardScreens); used by LP
         resb 1023
-g_CC05:                                         ; used by LP (to name)
+AwardText:                                      ; award text buffer; used by LP
         resb 36
-g_CC29:                                         ; used by LP (to name)
+AwardCandidates:                                ; award candidate bytes (PickAwardWinners); used by LP
         resb 703
-g_CEE8:                                         ; used by STATS (to name)
+standingstab:                                   ; standings table (26-byte rows); used by STATS
         resb 48
-g_CF18:                                         ; used by STATS (to name)
+rostertop:                                      ; roster screen first row; used by STATS
         resb 2
-g_CF1A:                                         ; used by STATS (to name)
+statscardteam:                                  ; stats card team; used by STATS
         resb 1
-g_CF1B:                                         ; used by STATS (to name)
+statscardplayer:                                ; stats card player; used by STATS
         resb 1
-statsplayer:                                         ; used by STATS (to name)
+statsplayer:                                    ; stats player; used by STATS
         resb 1
-g_CF1D:                                         ; used by STATS (to name)
+rosterfilter:                                   ; roster filter text; used by STATS
         resb 16
-g_CF2D:                                         ; used by STATS (to name)
+rosterfilter2:                                  ; second roster filter text; used by STATS
         resb 17
-g_CF3E:                                         ; used by STATS (to name)
+statsfilepos:                                   ; stats file position (low); used by STATS
         resb 2
-g_CF40:                                         ; used by STATS (to name)
+statsfileposhi:                                 ; stats file position (high); used by STATS
         resb 2
-g_CF42:                                         ; used by STATS (to name)
+statscardrec:                                   ; stats card record pointer; used by STATS
         resb 2
-g_CF44:                                         ; used by STATS (to name)
+statscardrecseg:                                ; its segment; used by STATS
         resb 2
-g_CF46:                                         ; used by STATS (to name)
+statscardrec2:                                  ; second stats card record pointer; used by STATS
         resb 2
-g_CF48:                                         ; used by STATS (to name)
+statscardrec2seg:                               ; its segment; used by STATS
         resb 2
-g_CF4A:                                         ; used by STATS (to name)
+statscardgoalie:                                ; stats card goalie flag; used by STATS
         resb 2
-g_CF4C:                                         ; used by STATS (to name)
+statscardrec3:                                  ; third stats card record word; used by STATS
         resb 2
-g_CF4E:                                         ; used by STATS (to name)
+rosterrows:                                     ; roster screen row records; used by STATS
         resb 50
-g_CF80:                                         ; used by STATS (to name)
+rosterrowptrs:                                  ; roster screen row pointers; used by STATS
         resb 50
-g_CFB2:                                         ; used by STATS (to name)
+rosterrows2:                                    ; second roster row records; used by STATS
         resb 10
-g_CFBC:                                         ; used by STATS (to name)
+rosterrowptrs2:                                 ; second roster row pointers; used by STATS
         resb 10
-g_CFC6:                                         ; used by STATS (to name)
+rostersel:                                      ; roster selected row; used by STATS
         resb 2
-g_CFC8:                                         ; used by STATS (to name)
+statsrecs:                                      ; stats records pointer (offset); used by STATS
         resb 2
-g_CFCA:                                         ; used by STATS (to name)
+statsrecsseg:                                   ; its segment; used by STATS
         resb 2
-g_CFCC:                                         ; used by STATS (to name)
+statscmpsum:                                    ; comparator sum; used by STATS
         resb 2
-g_CFCE:                                         ; used by STATS (to name)
+statscmpsum2:                                   ; comparator sum, high word; used by STATS
         resb 2
-fileoncd:                                         ; used by STATS (to name)
+fileoncd:                                       ; file is on the CD; used by STATS
         resb 2
-cddriveptr:                                         ; used by STATS (to name)
+cddriveptr:                                     ; CD drive pointer; used by STATS
         resb 2
-g_CFD4:                                         ; used by STATS (to name)
+statstext:                                      ; text buffer of DrawTextFmt (40 bytes); used by STATS
         resb 40
-g_CFFC:                                         ; used by GAME, INIT (to name)
+cupseries:                                      ; cup series buffer pointer (offset); used by GAME, INIT
         resb 2
-g_CFFE:                                         ; used by GAME, INIT (to name)
+cupseriesseg:                                   ; its segment; used by GAME, INIT
         resb 2
-regd5:                                         ; used by AI (to name)
+regd5:                                          ; register-style work variable d5; used by AI
         resb 2
-g_D002:                                         ; used by AI (to name)
+lastgoalx:                                      ; last goal position x; used by AI
         resb 2
-g_D004:                                         ; used by AI, INIT (to name)
+crowdtimer:                                     ; crowd timer; used by AI, INIT
         resb 2
-LastShooterTeam:                                         ; used by AI (to name)
+LastShooterTeam:                                ; team of the last shooter; used by AI
         resb 2
-g_D008:                                         ; used by AI (to name)
+lastgoaly:                                      ; last goal position y; used by AI
         resb 2
-g_D00A:                                         ; used by AI, INIT (to name)
+crowdcount:                                     ; crowd counter; used by AI, INIT
         resb 2
-g_D00C:                                         ; used by AI (to name)
+cleared1:                                       ; game variable cleared by cleargamevars; used by AI
         resb 2
-g_D00E:                                         ; used by AI (to name)
+cleared2:                                       ; game variable cleared by cleargamevars; used by AI
         resb 2
-g_D010:                                         ; used by AI, INIT (to name)
+crowdsum:                                       ; crowd excitement sum (low); used by AI, INIT
         resb 2
-g_D012:                                         ; used by AI, INIT (to name)
+crowdsumhi:                                     ; crowd excitement sum (high); used by AI, INIT
         resb 2
-g_D014:                                         ; used by AI, GAME, INIT (to name)
+replayrecptr:                                   ; replay record pointer (offset); used by AI, GAME, INIT
         resb 2
-g_D016:                                         ; used by AI, GAME, INIT (to name)
+replayrecseg:                                   ; replay record pointer (segment); used by AI, GAME, INIT
         resb 2
-g_D018:                                         ; used by INIT (to name)
+replayplay:                                     ; replay play pointer (offset); used by INIT
         resb 2
-g_D01A:                                         ; used by INIT (to name)
+replayplayseg:                                  ; replay play pointer (segment); used by INIT
         resb 2
-g_D01C:                                         ; used by AI (to name)
+plstatsoff:                                     ; player stats offsets; used by AI
         resb 2
-g_D01E:                                         ; used by AI (to name)
+plstatsoff2:                                    ; player stats offsets, second word; used by AI
         resb 2
-g_D020:                                         ; used by AI (to name)
+plstatsoff3:                                    ; player stats offsets, third word; used by AI
         resb 2
-g_D022:                                         ; used by AI (to name)
+plstatsrecs:                                    ; player stats offset table (394 bytes); used by AI
         resb 394
-g_D1AC:                                         ; used by AI, INIT (to name)
+gameclock2:                                     ; game clock copy; used by AI, INIT
         resb 2
-rinkobjs:                                         ; used by AI, INIT (to name)
+rinkobjs:                                       ; rink object slots; used by AI, INIT
         resb 2
-rinkobjs_w2:                                         ; used by INIT (to name)
+rinkobjs_w2:                                    ; rink object slots word +2; used by INIT
         resb 278
-g_D2C6:                                         ; used by AI, INIT (to name)
+SpriteFrames:                                   ; sprite frame pointers (offset); used by AI, INIT
         resb 2
-g_D2C8:                                         ; used by AI, INIT (to name)
+SpriteFramesSeg:                                ; sprite frame pointers; used by AI, INIT
         resb 382
-g_D446:                                         ; used by AI, INIT (to name)
+NumberFrames:                                   ; number sprite frames; used by AI, INIT
         resb 2
-g_D448:                                         ; used by AI, INIT (to name)
+NumberFramesSeg:                                ; number sprite frames; used by AI, INIT
         resb 14
-g_D456:                                         ; used by AI, INIT (to name)
+NumberFrames2:                                  ; second number sprite frames; used by AI, INIT
         resb 2
-g_D458:                                         ; used by AI, INIT (to name)
+NumberFrames2Seg:                               ; second number sprite frames; used by AI, INIT
         resb 18
-g_D46A:                                         ; used by AI, GAME, INIT (to name)
+gameframe:                                      ; game frame counter; used by AI, GAME, INIT
         resb 2
-g_D46C:                                         ; used by AI, GAME, INIT (to name)
+controlled:                                     ; controlled player per controller; used by AI, GAME, INIT
         resb 2
-g_D46E:                                         ; used by AI, GAME, INIT (to name)
+controlled2:                                    ; second controlled player word; used by AI, GAME, INIT
         resb 2
-lcline:                                         ; used by AI, GAME, INIT (to name)
+lcline:                                         ; line change: line chosen; used by AI, GAME, INIT
         resb 2
-lctimer:                                         ; used by GAME, INIT (to name)
+lctimer:                                        ; line change box timer; used by GAME, INIT
         resb 2
-g_D474:                                         ; used by AI (to name)
+objxlist:                                       ; object x list (34 bytes); used by AI
         resb 34
-g_D496:                                         ; used by AI, INIT (to name)
+objylist:                                       ; object y list (34 bytes); used by AI, INIT
         resb 34
-textline3:                                         ; used by AI, INIT (to name)
+textline3:                                      ; text line 3; used by AI, INIT
         resb 59
-g_D4F3:                                         ; used by AI (to name)
+OOlist_m1:                                      ; byte before OOlist; used by AI
         resb 1
-g_D4F4:                                         ; used by AI, INIT (to name)
+OOlist:                                         ; sorted object order list; OOlist_m1 and OOlist_b1 are its
+                                                ; neighbours; used by AI, INIT
         resb 1
-g_D4F5:                                         ; used by AI (to name)
+OOlist_b1:                                      ; OOlist from +1; used by AI
         resb 17
-textline1:                                         ; used by AI, INIT (to name)
+textline1:                                      ; text line 1; used by AI, INIT
         resb 60
-textline2:                                         ; used by AI, INIT (to name)
+textline2:                                      ; text line 2; used by AI, INIT
         resb 60
-textline4:                                         ; used by AI, INIT (to name)
+textline4:                                      ; text line 4; used by AI, INIT
         resb 60
-textline5:                                         ; used by AI, INIT (to name)
+textline5:                                      ; text line 5; used by AI, INIT
         resb 60
-PlList:                                         ; used by AI, INIT (to name)
+PlList:                                         ; player list; used by AI, INIT
         resb 6
-LinePlayersAway:                                         ; used by AI (to name)
+LinePlayersAway:                                ; away line players; used by AI
         resb 6
-fofdata2:                                         ; used by AI, INIT (to name)
+fofdata2:                                       ; faceoff data; used by AI, INIT
         resb 2
-g_D604:                                         ; used by AI (to name)
+fofdata:                                        ; faceoff data word; used by AI
         resb 2
-g_D606:                                         ; used by AI (to name)
+fofdata_w2:                                     ; faceoff data word +2; used by AI
         resb 2
-g_D608:                                         ; used by AI (to name)
+fofdata_w4:                                     ; faceoff data word +4; used by AI
         resb 2
-g_D60A:                                         ; used by AI (to name)
+fofdata_w6:                                     ; faceoff data word +6; used by AI
         resb 2
-g_D60C:                                         ; used by AI (to name)
+fofdata_w8:                                     ; faceoff data word +8; used by AI
         resb 2
-g_D60E:                                         ; used by GAME, INIT (to name)
+mousex:                                         ; mouse x; used by GAME, INIT
         resb 2
-g_D610:                                         ; used by GAME, INIT (to name)
+mousey:                                         ; mouse y; used by GAME, INIT
         resb 2
-g_D612:                                         ; used by INIT (to name)
+savedword1:                                     ; game variable saved with the game; used by INIT
         resb 2
-g_D614:                                         ; used by INIT (to name)
+savedword2:                                     ; game variable saved with the game; used by INIT
         resb 2
-puckcross:                                         ; used by INIT (to name)
+puckcross:                                      ; where the puck crosses the goal lines; used by INIT
         resb 2
-g_D618:                                         ; used by AI (to name)
+GoalState_m6:                                   ; home goal state byte; used by AI
         resb 1
-g_D619:                                         ; used by AI (to name)
+GoalState_m5:                                   ; home goal state bytes; used by AI
         resb 3
-g_D61C:                                         ; used by AI (to name)
+GoalState_m2:                                   ; away goal state byte; used by AI
         resb 1
-g_D61D:                                         ; used by AI (to name)
+GoalState_m1:                                   ; away goal state byte; used by AI
         resb 1
-GoalState:                                         ; used by AI, INIT (to name)
+GoalState:                                      ; goal state; used by AI, INIT
         resb 2
-lj1:                                         ; used by AI, INIT (to name)
+lj1:                                            ; last pad state of controller 1; used by AI, INIT
         resb 2
-lj2:                                         ; used by AI, INIT (to name)
+lj2:                                            ; last pad state of controller 2; used by AI, INIT
         resb 2
-lasttouch:                                         ; used by AI, INIT (to name)
+lasttouch:                                      ; last player to touch the puck; used by AI, INIT
         resb 2
-ltx:                                         ; used by AI, INIT (to name)
+ltx:                                            ; last touch x; used by AI, INIT
         resb 2
-lty:                                         ; used by AI, INIT (to name)
+lty:                                            ; last touch y; used by AI, INIT
         resb 2
-iflags:                                         ; used by AI, INIT (to name)
+iflags:                                         ; icing flags; used by AI, INIT
         resb 1
-g_D62B:                                         ; used by AI (to name)
+iflags_b1:                                      ; iflags high byte; used by AI
         resb 1
-g_D62C:                                         ; used by AI, INIT (to name)
+OverlayGfx:                                     ; text overlay graphics pointer (offset); used by AI, INIT
         resb 2
-g_D62E:                                         ; used by AI, INIT (to name)
+OverlayGfxSeg:                                  ; its segment; used by AI, INIT
         resb 2
-g_D630:                                         ; used by AI, INIT (to name)
+OverlayFrames:                                  ; text overlay frames; used by AI, INIT
         resb 2
-g_D632:                                         ; used by AI, INIT (to name)
+OverlayFramesSeg:                               ; text overlay frames; used by AI, INIT
         resb 38
-g_D658:                                         ; used by AI, INIT (to name)
+overlaytimer:                                   ; text overlay timer; used by AI, INIT
         resb 2
-g_D65A:                                         ; used by AI, INIT (to name)
+overlaystate:                                   ; text overlay state (1..5); used by AI, INIT
         resb 2
-g_D65C:                                         ; used by AI, INIT (to name)
+overlayscript:                                  ; text overlay script pointer (offset); used by AI, INIT
         resb 2
-g_D65E:                                         ; used by AI, INIT (to name)
+overlayscriptseg:                               ; its segment; used by AI, INIT
         resb 2
-g_D660:                                         ; used by AI, INIT (to name)
+scorerflags:                                    ; scorer milestone flags; used by AI, INIT
         resb 1
-g_D661:                                         ; used by AI, INIT (to name)
+scorerflags2:                                   ; second scorer milestone flags; used by AI, INIT
         resb 1
-g_D662:                                         ; used by INIT (to name)
+gamevar1:                                       ; game variable saved with the game; used by INIT
         resb 1
-g_D663:                                         ; used by INIT (to name)
+gamevar2:                                       ; game variable cleared by ResetGameVars; used by INIT
         resb 1
-g_D664:                                         ; used by INIT (to name)
+gamevar3:                                       ; game variable saved with the game; used by INIT
         resb 2
-g_D666:                                         ; used by INIT (to name)
+gamevar4:                                       ; game variable saved with the game; used by INIT
         resb 2
-g_D668:                                         ; used by AI, INIT (to name)
+stoppagetime:                                   ; clock at the last stoppage; used by AI, INIT
         resb 2
-g_D66A:                                         ; used by INIT (to name)
+gamevar5:                                       ; game variable saved with the game; used by INIT
         resb 2
-regd0:                                         ; used by AI, INIT (to name)
+regd0:                                          ; register-style work variable d0; used by AI, INIT
         resb 1
-g_D66D:                                         ; used by INIT (to name)
+regd0_b1:                                       ; regd0 high byte; used by INIT
         resb 1
-g_D66E:                                         ; used by AI, INIT (to name)
+regd0_w2:                                       ; regd0 high word; used by AI, INIT
         resb 2
-g_D670:                                         ; used by INIT (to name)
+gamevar6:                                       ; game variable saved with the game; used by INIT
         resb 2
-regd1:                                         ; used by AI, INIT (to name)
+regd1:                                          ; register-style work variable d1; used by AI, INIT
         resb 1
-g_D673:                                         ; used by AI (to name)
+regd1_b1:                                       ; regd1 byte +1; used by AI
         resb 1
-g_D674:                                         ; used by AI (to name)
+regd1_w2:                                       ; regd1 high word; used by AI
         resb 2
-PenBuf:                                         ; used by AI (to name)
+PenBuf:                                         ; penalty buffer (penalty, player); used by AI
         resb 1
-PenBuf_pl:                                         ; used by AI (to name)
+PenBuf_pl:                                      ; penalty buffer player byte; used by AI
         resb 1
-g_D678:                                         ; used by AI (to name)
+PenBuf_b2:                                      ; penalty buffer from +2; used by AI
         resb 64
-regd2:                                         ; used by AI, INIT (to name)
+regd2:                                          ; register-style work variable d2; used by AI, INIT
         resb 2
-g_D6BA:                                         ; used by AI (to name)
+regd2_w2:                                       ; regd2 high word; used by AI
         resb 2
-g_D6BC:                                         ; used by INIT (to name)
+gamevar7:                                       ; game variable saved with the game; used by INIT
         resb 2
-g_D6BE:                                         ; used by INIT (to name)
+gamevar8:                                       ; game variable saved with the game; used by INIT
         resb 2
-regd3:                                         ; used by AI (to name)
+regd3:                                          ; register-style work variable d3; used by AI
         resb 2
-g_D6C2:                                         ; used by AI (to name)
+regd3_w2:                                       ; regd3 high word; used by AI
         resb 2
-g_D6C4:                                         ; used by AI, INIT (to name)
+crowdheat:                                      ; crowd heat, raised by goals and shots; used by AI, INIT
         resb 2
-PBnum:                                         ; used by AI, INIT (to name)
+PBnum:                                          ; home penalty box count; used by AI, INIT
         resb 1
-g_D6C7:                                         ; used by AI (to name)
+PBnum_b1:                                       ; away penalty box count (PBnum+1); used by AI
         resb 1
-regd4:                                         ; used by AI, INIT (to name)
+regd4:                                          ; register-style work variable d4; used by AI, INIT
         resb 2
-g_D6CA:                                         ; used by AI (to name)
+regd4_w2:                                       ; regd4 high word; used by AI
         resb 2
-viewscrollx:                                         ; used by AI, GAME, INIT (to name)
+viewscrollx:                                    ; view scroll x; used by AI, GAME, INIT
         resb 2
-g_D6CE:                                         ; used by AI, GAME, INIT (to name)
+ovltimer2:                                      ; frame timer of the replay and intro loops; used by AI, GAME,
+                                                ; INIT
         resb 2
-frameaccum:                                         ; used by AI, GAME, INIT (to name)
+frameaccum:                                     ; frame accumulator; used by AI, GAME, INIT
         resb 2
-hudhundaccum:                                         ; used by AI, GAME, INIT (to name)
+hudhundaccum:                                   ; panel hundredths accumulator; used by AI, GAME, INIT
         resb 2
-g_D6D4:                                         ; used by AI, INIT (to name)
+GameGfx:                                        ; game graphics pointer (offset); used by AI, INIT
         resb 2
-g_D6D6:                                         ; used by AI, INIT (to name)
+GameGfxSeg:                                     ; its segment; used by AI, INIT
         resb 2
-g_D6D8:                                         ; used by GAME (to name)
+NumberSprites:                                  ; jersey number sprites; used by GAME
         resb 2
-g_D6DA:                                         ; used by GAME (to name)
+NumberSpritesSeg:                               ; jersey number sprites; used by GAME
         resb 38
-g_D700:                                         ; used by GAME (to name)
+NumberSprites2:                                 ; second jersey number sprites; used by GAME
         resb 2
-g_D702:                                         ; used by GAME (to name)
+NumberSprites2Seg:                              ; second jersey number sprites; used by GAME
         resb 26
-g_D71C:                                         ; used by GAME, INIT (to name)
+RinkEndFrames:                                  ; rink end frames pointer (offset); used by GAME, INIT
         resb 2
-g_D71E:                                         ; used by GAME, INIT (to name)
+RinkEndFramesSeg:                               ; rink end frames; used by GAME, INIT
         resb 10
-hudhundstep:                                         ; used by AI, GAME, INIT (to name)
+hudhundstep:                                    ; panel hundredths step; used by AI, GAME, INIT
         resb 686
-g_D9D6:                                         ; used by GAME (to name)
+dirtycount:                                     ; dirty rectangle counts per page; used by GAME
         resb 4
-g_D9DA:                                         ; used by AI, INIT (to name)
+rinkobjused:                                    ; rink object frame bits; used by AI, INIT
         resb 32
-g_D9FA:                                         ; used by INIT (to name)
+hilightslots:                                   ; highlight slot words; used by INIT
         resb 12
-g_DA06:                                         ; used by INIT (to name)
+MovieBuf:                                       ; movie buffer pointer (offset); used by INIT
         resb 2
-g_DA08:                                         ; used by INIT (to name)
+MovieBufSeg:                                    ; its segment; used by INIT
         resb 2
-g_DA0A:                                         ; used by AI (to name)
+PanelShapes:                                    ; panel shapes; used by AI
         resb 2
-g_DA0C:                                         ; used by AI (to name)
+PanelShapes_b2:                                 ; panel shapes from +2; used by AI
         resb 1
-g_DA0D:                                         ; used by MENUS (to name)
+PanelShapes_b3:                                 ; panel shapes from +3; used by MENUS
         resb 29
-g_DA2A:                                         ; used by AI, INIT (to name)
+PanelClockShape:                                ; panel clock shape pointer; used by AI, INIT
         resb 2
-g_DA2C:                                         ; used by AI, INIT (to name)
+PanelClockShapeSeg:                             ; its segment; used by AI, INIT
         resb 2
-g_DA2E:                                         ; used by AI, INIT (to name)
+PanelScoreShape:                                ; panel score shape pointer; used by AI, INIT
         resb 2
-g_DA30:                                         ; used by AI, INIT (to name)
+PanelScoreShapeSeg:                             ; its segment; used by AI, INIT
         resb 26
-g_DA4A:                                         ; used by AI (to name)
+PenaltyShapes:                                  ; panel penalty shapes; used by AI
         resb 2
-g_DA4C:                                         ; used by AI (to name)
+PenaltyShapesSeg:                               ; panel penalty shapes; used by AI
         resb 38
-g_DA72:                                         ; used by AI (to name)
+PenaltyShape:                                   ; panel penalty shape; used by AI
         resb 2
-g_DA74:                                         ; used by AI (to name)
+PenaltyShapeSeg:                                ; its segment; used by AI
         resb 2
-g_DA76:                                         ; used by AI (to name)
+ClockDigits:                                    ; panel clock digit shapes; used by AI
         resb 2
-g_DA78:                                         ; used by AI (to name)
+ClockDigitsSeg:                                 ; panel clock digit shapes; used by AI
         resb 38
-g_DA9E:                                         ; used by AI (to name)
+ClockColonShape:                                ; panel clock colon shape; used by AI
         resb 2
-clockcolon:                                         ; used by AI (to name)
+clockcolon:                                     ; panel clock colon state; used by AI
         resb 2
-g_DAA2:                                         ; used by AI (to name)
+ScoreDigits:                                    ; panel score digit shapes; used by AI
         resb 2
-g_DAA4:                                         ; used by AI (to name)
+ScoreDigitsSeg:                                 ; panel score digit shapes; used by AI
         resb 42
-g_DACE:                                         ; used by AI, INIT (to name)
+ReplayFont:                                     ; replay font pointer (offset); used by AI, INIT
         resb 2
-g_DAD0:                                         ; used by AI, INIT (to name)
+ReplayFontSeg:                                  ; its segment; used by AI, INIT
         resb 2
-g_DAD2:                                         ; used by INIT (to name)
+replaymousex:                                   ; replay pointer x; used by INIT
         resb 2
-g_DAD4:                                         ; used by INIT (to name)
+replaymousey:                                   ; replay pointer y; used by INIT
         resb 2
-g_DAD6:                                         ; used by INIT (to name)
+replaydx:                                       ; replay pointer x step; used by INIT
         resb 2
-g_DAD8:                                         ; used by INIT (to name)
+replayspeed:                                    ; replay speed; used by INIT
         resb 2
-g_DADA:                                         ; used by INIT (to name)
+ReplayGadgets:                                  ; replay gadget shapes; used by INIT
         resb 2
-g_DADC:                                         ; used by INIT (to name)
+ReplayGadgetsSeg:                               ; replay gadget shapes; used by INIT
         resb 2
-g_DADE:                                         ; used by INIT (to name)
+ReplayGadgets2:                                 ; further replay gadget shapes; used by INIT
         resb 8
-g_DAE6:                                         ; used by INIT (to name)
+ReplayPanel:                                    ; replay panel shape; used by INIT
         resb 2
-g_DAE8:                                         ; used by INIT (to name)
+ReplayPanelSeg:                                 ; its segment; used by INIT
         resb 2
-g_DAEA:                                         ; used by INIT (to name)
+ReplayPanels:                                   ; further replay panel shapes; used by INIT
         resb 20
-g_DAFE:                                         ; used by INIT (to name)
+ReplayPointer:                                  ; replay pointer shape; used by INIT
         resb 2
-g_DB00:                                         ; used by INIT (to name)
+ReplayPointerSeg:                               ; its segment; used by INIT
         resb 2
-g_DB02:                                         ; used by INIT (to name)
+ReplayPointers:                                 ; further replay pointer shapes; used by INIT
         resb 14
-g_DB10:                                         ; used by INIT (to name)
+ReplayBack:                                     ; replay background shape; used by INIT
         resb 2
-g_DB12:                                         ; used by INIT (to name)
+ReplayBackSeg:                                  ; its segment; used by INIT
         resb 2
-g_DB14:                                         ; used by INIT (to name)
+ReplayBack2:                                    ; second replay background shape; used by INIT
         resb 2
-g_DB16:                                         ; used by INIT (to name)
+replaysaved:                                    ; replay saved flag; used by INIT
         resb 2
-g_DB18:                                         ; used by INIT (to name)
+replayplaying:                                  ; replay playing flag; used by INIT
         resb 2
-g_DB1A:                                         ; used by INIT (to name)
+replaystart:                                    ; replay start frame; used by INIT
         resb 2
-g_DB1C:                                         ; used by INIT (to name)
+replayend:                                      ; replay end frame; used by INIT
         resb 2
-replayptrx:                                         ; used by INIT (to name)
+replayptrx:                                     ; replay pointer x; used by INIT
         resb 2
-g_DB20:                                         ; used by INIT (to name)
+replaypick:                                     ; player picked in the replay; used by INIT
         resb 2
-g_DB22:                                         ; used by INIT (to name)
+replayfollow:                                   ; player the replay follows (-1 none); used by INIT
         resb 2
-g_DB24:                                         ; used by INIT (to name)
+replayfollow2:                                  ; previous followed player; used by INIT
         resb 2
-g_DB26:                                         ; used by INIT (to name)
+replayfwd:                                      ; replay direction; used by INIT
         resb 2
-g_DB28:                                         ; used by INIT (to name)
+replaybutton:                                   ; replay button pressed; used by INIT
         resb 2
-g_DB2A:                                         ; used by INIT (to name)
+replaystep:                                     ; replay step; used by INIT
         resb 2
-g_DB2C:                                         ; used by INIT (to name)
+replaysavestate:                                ; replay save state; used by INIT
         resb 2
-g_DB2E:                                         ; used by INIT (to name)
+rpl_x:                                          ; replay frame: object x; used by INIT
         resb 28
-g_DB4A:                                         ; used by INIT (to name)
+rpl_puckx:                                      ; replay frame: puck x; used by INIT
         resb 2
-g_DB4C:                                         ; used by INIT (to name)
+rpl_puckframe:                                  ; replay frame: puck frame; used by INIT
         resb 4
-g_DB50:                                         ; used by INIT (to name)
+rpl_y:                                          ; replay frame: object y; used by INIT
         resb 28
-g_DB6C:                                         ; used by INIT (to name)
+rpl_pucky:                                      ; replay frame: puck y; used by INIT
         resb 2
-g_DB6E:                                         ; used by INIT (to name)
+rpl_shadow:                                     ; replay frame: puck shadow; used by INIT
         resb 4
-g_DB72:                                         ; used by INIT (to name)
+rpl_frame:                                      ; replay frame: object frame; used by INIT
         resb 28
-g_DB8E:                                         ; used by INIT (to name)
+rpl_reff:                                       ; replay frame: referee frame; used by INIT
         resb 2
-g_DB90:                                         ; used by INIT (to name)
+rpl_door:                                       ; replay frame: door frame; used by INIT
         resb 4
-g_DB94:                                         ; used by INIT (to name)
+rpl_flags:                                      ; replay frame: object flags; used by INIT
         resb 17
-g_DBA5:                                         ; used by INIT (to name)
+rpl_jerseys:                                    ; replay frame: jerseys; used by INIT
         resb 12
-g_DBB1:                                         ; used by INIT (to name)
+rpl_puckowner:                                  ; replay frame: puck owner; used by INIT
         resb 1
-g_DBB2:                                         ; used by INIT (to name)
+rpl_bytes:                                      ; replay frame bytes; used by INIT
         resb 12
-g_DBBE:                                         ; used by INIT (to name)
+rpl_camx:                                       ; replay frame: camera x; used by INIT
         resb 2
-g_DBC0:                                         ; used by INIT (to name)
+rpl_word:                                       ; replay frame word; used by INIT
         resb 2
-g_DBC2:                                         ; used by INIT (to name)
+rpl_b1:                                         ; replay frame byte; used by INIT
         resb 1
-g_DBC3:                                         ; used by INIT (to name)
+rpl_b2:                                         ; replay frame byte; used by INIT
         resb 1
-g_DBC4:                                         ; used by INIT (to name)
+rpl_b3:                                         ; replay frame byte; used by INIT
         resb 1
-g_DBC5:                                         ; used by INIT (to name)
+rpl_b4:                                         ; replay frame byte; used by INIT
         resb 1
-g_DBC6:                                         ; used by INIT (to name)
+rpl_b5:                                         ; replay frame bytes; used by INIT
         resb 2
-g_DBC8:                                         ; used by INIT (to name)
+rpl_w1:                                         ; replay frame word; used by INIT
         resb 2
-g_DBCA:                                         ; used by INIT (to name)
+rpl_w2:                                         ; replay frame word; used by INIT
         resb 2
-g_DBCC:                                         ; used by INIT (to name)
+rpl_words:                                      ; replay frame words; used by INIT
         resb 40
-g_DBF4:                                         ; used by INIT (to name)
+rpl_b6:                                         ; replay frame byte; used by INIT
         resb 1
-g_DBF5:                                         ; used by INIT (to name)
+rpl_b7:                                         ; replay frame bytes; used by INIT
         resb 19
-g_DC08:                                         ; used by INIT (to name)
+rpl_words2:                                     ; replay frame words; used by INIT
         resb 34
-g_DC2A:                                         ; used by AI (to name)
+defertab_a1:                                    ; deferred call argument 1; used by AI
         resb 2
-g_DC2C:                                         ; used by AI (to name)
+defertab_a2:                                    ; deferred call argument 2; used by AI
         resb 2
-g_DC2E:                                         ; used by AI (to name)
+defertab_a3:                                    ; deferred call argument 3; used by AI
         resb 2
-g_DC30:                                         ; used by AI (to name)
+defertab_a4:                                    ; deferred call argument 4; used by AI
         resb 2
-g_DC32:                                         ; used by AI (to name)
+defertab_a5:                                    ; deferred call argument 5; used by AI
         resb 2
-g_DC34:                                         ; used by AI (to name)
+defertab_a6:                                    ; deferred call argument 6; used by AI
         resb 2
-g_DC36:                                         ; used by AI (to name)
+defertab_a7:                                    ; deferred call argument 7; used by AI
         resb 2
-g_DC38:                                         ; used by AI (to name)
+defertab_fn:                                    ; deferred call routine offset; used by AI
         resb 2
-g_DC3A:                                         ; used by AI (to name)
+defertab_seg:                                   ; deferred call routine segment; used by AI
         resb 56
-g_DC72:                                         ; used by AI (to name)
+gsumqueue:                                      ; queued game summary records; used by AI
         resb 96
-lastimpact:                                         ; used by AI (to name)
+lastimpact:                                     ; last impact; used by AI
         resb 2
-gwgplayer:                                         ; used by AI (to name)
+gwgplayer:                                      ; game-winning goal player; used by AI
         resb 2
-gwgteam:                                         ; used by AI (to name)
+gwgteam:                                        ; game-winning goal team; used by AI
         resb 2
-g_DCD8:                                         ; used by AI (to name)
+introtimers:                                    ; intro timers; used by AI
         resb 52
-offsort_fwd:                                         ; used by AI (to name)
+offsort_fwd:                                    ; forwards sorted by rating; used by AI
         resb 50
-defsort_d:                                         ; used by AI (to name)
+defsort_d:                                      ; defencemen sorted by rating; used by AI
         resb 400
-dressflags:                                         ; used by AI (to name)
+dressflags:                                     ; home dressed flags; used by AI
         resb 25
-g_DEE7:                                         ; used by AI (to name)
+dressflags_aw:                                  ; away dressed flags; used by AI
         resb 25
-lineslotmark:                                         ; used by AI (to name)
+lineslotmark:                                   ; line slot marks; used by AI
         resb 50
-g_DF32:                                         ; used by AI (to name)
+possort:                                        ; players sorted by position; used by AI
         resb 50
-dresseddefs:                                         ; used by AI (to name)
+dresseddefs:                                    ; dressed defencemen; used by AI
         resb 2
-dressedfwds:                                         ; used by AI (to name)
+dressedfwds:                                    ; dressed forwards; used by AI
         resb 2
-dressedskaters:                                         ; used by AI (to name)
+dressedskaters:                                 ; dressed skaters; used by AI
         resb 2
-g_DF6A:                                         ; used by FADES, FADES10, FADES11, FADES12, FADES5, FADES6, FADES8 (to name)
+fadex:                                          ; fade area x; used by FADES, FADES10, FADES11, FADES12,
+                                                ; FADES5, FADES6, FADES8
         resb 2
-g_DF6C:                                         ; used by FADES, FADES10, FADES11, FADES12, FADES5, FADES6, FADES8 (to name)
+fadey:                                          ; fade area y; used by FADES, FADES10, FADES11, FADES12,
+                                                ; FADES5, FADES6, FADES8
         resb 2
-g_DF6E:                                         ; used by FADES, FADES10, FADES11, FADES12, FADES5, FADES6, FADES8 (to name)
+fadew:                                          ; fade area width; used by FADES, FADES10, FADES11, FADES12,
+                                                ; FADES5, FADES6, FADES8
         resb 2
-g_DF70:                                         ; used by FADES, FADES10, FADES11, FADES12, FADES5, FADES6, FADES8 (to name)
+fadeh:                                          ; fade area height; used by FADES, FADES10, FADES11, FADES12,
+                                                ; FADES5, FADES6, FADES8
         resb 2
 RetraceCount:                                   ; retrace count measured by CalibrateRetrace; used by
                                                 ; CalibrateRetrace
@@ -1528,17 +1644,24 @@ VoiceListEnd:                                   ; end of the voice lists; used b
 VoiceListEndSeg:                                ; end of the voice lists, segment; used by InitVoiceLists,
                                                 ; PrepareSong
         resb 2
-VoiceListFlags:                                 ; voice list flags; used by InitVoiceLists, PrepareSong
-        resb 582
-g_E366:                                         ; used by AI, INIT, LP (to name)
+VoiceListFlags:                                 ; voice list flags (50 bytes, the last 12 unused); used by
+                                                ; InitVoiceLists, PrepareSong
+        resb 0x3E
+StdinBuf:                                       ; stdin buffer of _iob (512 bytes, then 8 unused bytes)
+        resb 0x208
+savedteam1:                                     ; saved team byte; used by AI, INIT, LP
         resb 1
-g_E367:                                         ; used by AI, INIT, LP (to name)
+savedteam2:                                     ; saved team byte; used by AI, INIT, LP
         resb 1
-g_E368:                                         ; used by INIT (to name)
+savedbyte3:                                     ; saved game byte; used by INIT
         resb 1
-g_E369:                                         ; used by INIT (to name)
+savedbyte4:                                     ; saved game byte; used by INIT
         resb 1
-g_E36A:                                         ; used by INIT (to name)
+savedbyte5:                                     ; saved game byte; used by INIT
         resb 1
-g_E36B:                                         ; used by LP, MENUS (to name)
-        resb 6149
+lgflags:                                        ; league flags and buffers; used by LP, MENUS
+        resb 5
+StackBottom:                                    ; the 1800h-byte startup stack (the EXE header puts SS here,
+                                                ; SP
+                                                ; 1800h); MscStartup moves it into DGROUP
+        resb 0x1800

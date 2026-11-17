@@ -20,7 +20,7 @@ RosterRowAt:
         mov word [di], 0x0
         cmp bx, 0x17
         jl short .3
-        mov ax, [g_CF18]
+        mov ax, [rostertop]
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         shl ax, 1
         db 0x03, 0xC1                           ; insn: add ax, cx
@@ -44,7 +44,7 @@ RosterRowAt:
         add ax, strict word 0x1f
         db 0x3B, 0xC3                           ; insn: cmp ax, bx
         jg short .3
-        mov ax, [g_CFC6]
+        mov ax, [rostersel]
         db 0x03, 0xC1                           ; insn: add ax, cx
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         shl ax, 1
@@ -74,9 +74,9 @@ RosterScreen:
         enter 0x3e8, 0x0
         push di
         push si
-        mov ax, [g_2010]
+        mov ax, [statsseason]
         mov [bp - 0x304], ax
-        mov ax, [g_200E]
+        mov ax, [statscontext]
         mov [bp - 0x36e], ax
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [bp - 0x3e0], ax
@@ -90,7 +90,7 @@ RosterScreen:
         push 0x0
         push 0x0
         push ds
-        push word [g_1FAC]
+        push word [StatsDbName4]
         push word 0x3861
         push strict word 0x0
         lea ax, [bp - 0x35e]
@@ -137,10 +137,10 @@ RosterScreen:
         mov [bp - 0x3a8], ax
         push 0x0
         push 0x0
-        mov bx, [g_2010]
+        mov bx, [statsseason]
         shl bx, 1
         push ds
-        push word [bx + g_1FA6]
+        push word [bx + StatsDbNames2]
         push word 0x3861
         push strict word 0x0
         lea ax, [bp - 0x35e]
@@ -175,7 +175,7 @@ RosterScreen:
         call 0x0000:_read
         add sp, 0x6
         imul bx, [bp - 0x3e2], 0x30
-        les si, [g_C044]
+        les si, [statsskaterbufseg]
         lea di, [bx + si]
         lea si, [bp - 0x3de]
         mov cx, 0x18
@@ -183,9 +183,9 @@ RosterScreen:
         mov ax, [bp - 0x372]
         mov bx, [bp - 0x3e2]
         shl bx, 1
-        mov [bx + g_CF4E], ax
+        mov [bx + rosterrows], ax
         mov ax, [bp - 0x3e2]
-        mov [bx + g_CF80], ax
+        mov [bx + rosterrowptrs], ax
         inc word [bp - 0x3e2]
 .3:
         inc word [bp - 0x372]
@@ -214,13 +214,13 @@ RosterScreen:
         call 0x0000:_read
         add sp, 0x6
         imul bx, [bp - 0x372], 0x34
-        les si, [g_C048]
+        les si, [statsplayerbufseg]
         lea di, [bx + si]
         lea si, [bp - 0x3a6]
         mov cx, 0x1a
         rep movsw
         push 0x0
-        cmp word [g_2010], 0x0
+        cmp word [statsseason], 0x0
         jz short .6
         jmp near .1
 .6:
@@ -248,7 +248,7 @@ RosterScreen:
         call 0x0000:_read
         add sp, 0x6
         imul bx, [bp - 0x360], 0x36
-        les si, [g_C040]
+        les si, [statsgoaliebufseg]
         lea di, [bx + si]
         lea si, [bp - 0x33a]
         mov cx, 0x1b
@@ -257,9 +257,9 @@ RosterScreen:
         add ax, strict word 0x19
         mov bx, [bp - 0x360]
         shl bx, 1
-        mov [bx + g_CFB2], ax
+        mov [bx + rosterrows2], ax
         mov ax, [bp - 0x360]
-        mov [bx + g_CFBC], ax
+        mov [bx + rosterrowptrs2], ax
         inc word [bp - 0x360]
 .10:
         inc word [bp - 0x372]
@@ -288,13 +288,13 @@ RosterScreen:
         call 0x0000:_read
         add sp, 0x6
         imul si, [bp - 0x372], 0x34
-        les bx, [g_C048]
+        les bx, [statsplayerbufseg]
         lea di, [bx + si + KeysEnabled]
         lea si, [bp - 0x3a6]
         mov cx, 0x1a
         rep movsw
         push 0x0
-        cmp word [g_2010], 0x0
+        cmp word [statsseason], 0x0
         jz short .13
         jmp near .8
 .13:
@@ -316,27 +316,27 @@ RosterScreen:
         push strict word CmpPoints
         push 0x2
         push word [bp - 0x3e2]
-        push word 0xcf80
+        push word rosterrowptrs
         call 0x0000:_qsort
         add sp, 0xa
         push word 0x2095
         push strict word CmpGAA
         push 0x2
         push word [bp - 0x360]
-        push word 0xcfbc
+        push word rosterrowptrs2
         call 0x0000:_qsort
         add sp, 0xa
         call 0x0FEF:UseOffscreenCanvas
         lea ax, [bp - 0x2e8]
         push ax
         push strict word str_EmbS
-        push word 0xcfd4
+        push word statstext
         call 0x0000:_sprintf
         add sp, 0x6
         push word 0x3701
         push strict word str_Qpp
         push ds
-        push strict word g_CFD4
+        push strict word statstext
         push 0x0
         push 0x0
         lea ax, [bp - 0x35e]
@@ -357,13 +357,13 @@ RosterScreen:
         call 0x03A3:FindFarMsg
         add sp, 0x6
         mov [statsbgshapes], ax
-        mov [g_C2B4], dx
+        mov [statsbgseg], dx
         push word 0xc8
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov dx, 0x140
         mov bx, 0xa
         call 0x0FEF:SetClipRectRegs
-        push word [g_C2B4]
+        push word [statsbgseg]
         push word [statsbgshapes]
         call 0x0FEF:DrawRleTransBody
         add sp, 0x4
@@ -384,7 +384,7 @@ RosterScreen:
         push word [bp - 0x36c]
         call 0x03A3:UseCharSeg
         add sp, 0x4
-        cmp word [g_C050], 0x0
+        cmp word [statsrosterteam], 0x0
         jz short .15
         push 0x0
         push 0x7d
@@ -399,11 +399,11 @@ RosterScreen:
         lea ax, [bp - 0x2e3]
         push ax
         push strict word str_SRoster
-        push word 0xcfd4
+        push word statstext
         call 0x0000:_sprintf
         add sp, 0x6
         push ds
-        push strict word g_CFD4
+        push strict word statstext
         push 0xb
         call 0x0D39:DrawShadowTextCentered
         add sp, 0x6
@@ -462,7 +462,7 @@ RosterScreen:
         call 0x0D39:DrawShadowText
         add sp, 0x8
         push ds
-        push strict word g_242F
+        push strict word str_PlusMinus3
         push 0x11
         push word 0x108
         call 0x0D39:DrawShadowText
@@ -473,7 +473,7 @@ RosterScreen:
         db 0x90
 .17:
         imul bx, [bp - 0x3aa], 0x30
-        add bx, [g_C044]
+        add bx, [statsskaterbufseg]
         mov es, [statsskaterbuf]
         add bx, 0x12
 .18:
@@ -537,12 +537,12 @@ RosterScreen:
 .20:
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        mov ax, [bx + g_CF80]
+        mov ax, [bx + rosterrowptrs]
         mov [bp - 0x3aa], ax
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        imul ax, [bx + g_CF4E], 0x34
-        add ax, [g_C048]
+        imul ax, [bx + rosterrows], 0x34
+        add ax, [statsplayerbufseg]
         mov dx, [statsplayerbuf]
         push ds
         lea di, [bp - 0x3a6]
@@ -557,11 +557,11 @@ RosterScreen:
         cbw
         push ax
         push word 0x2434
-        push word 0xcfd4
+        push word statstext
         call 0x0000:_sprintf
         add sp, 0x6
         push ds
-        push strict word g_CFD4
+        push strict word statstext
         push word [bp - 0x370]
         push 0xa
         call 0x0D39:DrawShadowText
@@ -585,21 +585,21 @@ RosterScreen:
         push ss
         push ax
         push ds
-        push strict word g_CFD4
+        push strict word statstext
         call 0x0F89:FitNameToWidth
         add sp, 0xe
         push ds
-        push strict word g_CFD4
+        push strict word statstext
         push word [bp - 0x370]
         push 0x30
         call 0x0D39:DrawShadowText
         add sp, 0x8
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jz short .22
         jmp near .17
 .22:
         imul bx, [bp - 0x3aa], 0x30
-        add bx, [g_C044]
+        add bx, [statsskaterbufseg]
         mov es, [statsskaterbuf]
         jmp near .18
 .23:
@@ -653,7 +653,7 @@ RosterScreen:
         push word 0xd7
         call 0x0D39:DrawShadowText
         add sp, 0x8
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .24
         push ds
         push strict word str_T_2
@@ -686,7 +686,7 @@ RosterScreen:
         db 0x90
 .25:
         imul bx, [bp - 0x3aa], 0x36
-        add bx, [g_C040]
+        add bx, [statsgoaliebufseg]
         mov es, [statsgoaliebuf]
         add bx, 0x16
 .26:
@@ -735,7 +735,7 @@ RosterScreen:
         push word 0xd7
         call 0x0D39:DrawShadowTextF
         add sp, 0x8
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .27
         les bx, [bp - 0x3ae]
         push word [es:bx + 0x6]
@@ -801,12 +801,12 @@ RosterScreen:
 .31:
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        mov ax, [bx + g_CFBC]
+        mov ax, [bx + rosterrowptrs2]
         mov [bp - 0x3aa], ax
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        imul ax, [bx + g_CFB2], 0x34
-        add ax, [g_C048]
+        imul ax, [bx + rosterrows2], 0x34
+        add ax, [statsplayerbufseg]
         mov dx, [statsplayerbuf]
         push ds
         lea di, [bp - 0x3a6]
@@ -821,11 +821,11 @@ RosterScreen:
         cbw
         push ax
         push word 0x2469
-        push word 0xcfd4
+        push word statstext
         call 0x0000:_sprintf
         add sp, 0x6
         push ds
-        push strict word g_CFD4
+        push strict word statstext
         push word [bp - 0x370]
         push 0xa
         call 0x0D39:DrawShadowText
@@ -849,21 +849,21 @@ RosterScreen:
         push ss
         push ax
         push ds
-        push strict word g_CFD4
+        push strict word statstext
         call 0x0F89:FitNameToWidth
         add sp, 0xe
         push ds
-        push strict word g_CFD4
+        push strict word statstext
         push word [bp - 0x370]
         push 0x30
         call 0x0D39:DrawShadowText
         add sp, 0x8
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jz short .33
         jmp near .25
 .33:
         imul bx, [bp - 0x3aa], 0x36
-        add bx, [g_C040]
+        add bx, [statsgoaliebufseg]
         mov es, [statsgoaliebuf]
         jmp near .26
 .34:
@@ -876,9 +876,9 @@ RosterScreen:
         call 0x06E1:FindUnlink
         add sp, 0x4
         mov ax, [bp - 0x3e2]
-        mov [g_CF18], ax
+        mov [rostertop], ax
         mov ax, [bp - 0x360]
-        mov [g_CFC6], ax
+        mov [rostersel], ax
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         pop si
         pop di

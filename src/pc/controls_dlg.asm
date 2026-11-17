@@ -158,7 +158,7 @@ CtlSwapScoreFix:
         push si
         mov di, [bp + 0x6]
         imul si, di, word 0xd6
-        add si, 0xb362
+        add si, hmshots
         cmp word [si + 0x24], 0x0
         jl short .1
         jmp near .7
@@ -234,7 +234,7 @@ CtlSwapTeamFlag:
         push si
         mov di, [bp + 0x6]
         imul si, di, word 0xd6
-        add si, 0xb362
+        add si, hmshots
         cmp word [si + 0x24], 0x0
         jnl short .4
         test byte [si + 0x24], 0xf0
@@ -278,12 +278,12 @@ ReassignCtlPlayer:
         push si
         cmp word [bp + 0x6], 0x0
         jz short .1
-        mov bx, 0x29c8
-        mov dx, 0x29c4
+        mov bx, cont2team
+        mov dx, c2playernum
         jmp short .2
 .1:
-        mov bx, 0x29c6
-        mov dx, 0x29c2
+        mov bx, cont1team
+        mov dx, c1playernum
 .2:
         cmp word [bx], 0x0
         jnz short .7
@@ -346,11 +346,11 @@ ReassignCtlPlayer:
         mov word [bp - 0x8], 0x1000
         cmp word [bx], 0x1
         jnz short .10
-        mov ax, 0xb50e
+        mov ax, SortCords
         jmp short .11
         db 0x90
 .10:
-        mov ax, 0xb80e
+        mov ax, SortCords + 6 * 0x80
 .11:
         mov word [bp - 0xe], 0x6
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -445,7 +445,7 @@ ReassignCtlPlayer:
 ClearCtlBlink:
         enter 0x8, 0x0
         push si
-        mov word [bp - 0x8], 0xb378
+        mov word [bp - 0x8], hmtmline
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [bp - 0x6], ax
         mov [bp - 0x4], ax
@@ -460,16 +460,16 @@ ClearCtlBlink:
         jz short .3
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov bx, [bp - 0x4]
-        mov [bx + g_48CE], ax
+        mov [bx + lcsel], ax
         mov bx, [bp - 0x4]
         mov [bx + lcboxon], ax
         cmp [bp - 0x4], ax
         jz short .4
-        mov bx, 0xb853
+        mov bx, SortCords + 6 * 0x80 + 0x45
 .2:
         and byte [bx], 0xf7
         add bx, 0x80
-        cmp bx, 0xbb53
+        cmp bx, SortCords + 12 * 0x80 + 0x45
         jc short .2
         jmp short .6
         db 0x90
@@ -478,11 +478,11 @@ ClearCtlBlink:
         jmp short .10
         db 0x90
 .4:
-        mov bx, 0xb553
+        mov bx, sortobj0_pflags2
 .5:
         and byte [bx], 0xf7
         add bx, 0x80
-        cmp bx, 0xb853
+        cmp bx, SortCords + 6 * 0x80 + 0x45
         jc short .5
 .6:
         mov bx, [bp - 0x8]
@@ -612,12 +612,12 @@ ControlsDlgInGame:
 .2:
         mov bx, [bp + 0x6]
         shl bx, 1
-        cmp word [bx + g_01B8], 0x0
+        cmp word [bx + ctl1team], 0x0
         jnl short .3
         db 0x2B, 0xD2                           ; insn: sub dx, dx
         jmp short .4
 .3:
-        cmp word [bx + g_01C0], 0x1
+        cmp word [bx + ctl1side], 0x1
         db 0x1B, 0xD2                           ; insn: sbb dx, dx
         inc dx
         inc dx
@@ -633,12 +633,12 @@ ControlsDlgInGame:
 .5:
         mov [cont1team], dx
 .6:
-        cmp word [g_01B8], 0x0
+        cmp word [ctl1team], 0x0
         jl short .7
-        cmp word [g_01BA], 0x0
+        cmp word [ctl2team], 0x0
         jl short .7
-        mov ax, [g_01C0]
-        cmp [g_01C2], ax
+        mov ax, [ctl1side]
+        cmp [ctl2side], ax
         jnz short .7
         mov word [samesideflag], 0x1
         jmp short .8
@@ -646,7 +646,7 @@ ControlsDlgInGame:
 .7:
         mov word [samesideflag], 0x0
 .8:
-        mov ax, [bx + g_01BC]
+        mov ax, [bx + ctl1dev]
         cmp ax, strict word 0x10
         jz short .13
         ja short .14
@@ -783,11 +783,11 @@ ControlsDlgPlayoff:
         enter 0x4, 0x0
         push di
         push si
-        mov es, [g_8B20]
-        les bx, [es:0x7570]
+        mov es, [segDgroup1]
+        les bx, [es:PageTable]
         mov di, [es:bx]
-        mov es, [g_8B20]
-        les bx, [es:0x7574]
+        mov es, [segDgroup1]
+        les bx, [es:PageTableSeg + 0x2]
         mov si, [es:bx]
         call 0x0FEF:GetPage
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -874,7 +874,7 @@ ControlsDlgPlayoff:
 .3:
         mov bx, [bp + 0x6]
         shl bx, 1
-        cmp word [bx + g_01B8], 0x0
+        cmp word [bx + ctl1team], 0x0
         jnl short .4
         db 0x2B, 0xD2                           ; insn: sub dx, dx
         jmp short .5
@@ -882,7 +882,7 @@ ControlsDlgPlayoff:
 .4:
         mov bx, [bp + 0x6]
         shl bx, 1
-        cmp word [bx + g_01C0], 0x1
+        cmp word [bx + ctl1side], 0x1
         db 0x1B, 0xD2                           ; insn: sbb dx, dx
         inc dx
         inc dx
@@ -894,12 +894,12 @@ ControlsDlgPlayoff:
 .6:
         mov [cont1team], dx
 .7:
-        cmp word [g_01B8], 0x0
+        cmp word [ctl1team], 0x0
         jl short .8
-        cmp word [g_01BA], 0x0
+        cmp word [ctl2team], 0x0
         jl short .8
-        mov ax, [g_01C0]
-        cmp [g_01C2], ax
+        mov ax, [ctl1side]
+        cmp [ctl2side], ax
         jnz short .8
         mov word [samesideflag], 0x1
         jmp short .9
@@ -959,7 +959,7 @@ DrawControlsDlg:
 .3:
         push 0x0
         mov ax, 0x2e8
-        imul word [g_29CA]
+        imul word [HomeTeamNum]
         push dx
         push ax
         push si
@@ -972,7 +972,7 @@ DrawControlsDlg:
         add sp, 0x2
 .4:
         push word 0x2e8
-        push word 0x9f80
+        push word GameTeamRecs
         push si
         call 0x0000:_read
         add sp, 0x6
@@ -984,7 +984,7 @@ DrawControlsDlg:
 .5:
         push 0x0
         mov ax, 0x2e8
-        imul word [g_29CC]
+        imul word [VisTeamNum]
         push dx
         push ax
         push si
@@ -997,7 +997,7 @@ DrawControlsDlg:
         add sp, 0x2
 .6:
         push word 0x2e8
-        push word 0xa268
+        push word GameRosterRecs
         push si
         call 0x0000:_read
         add sp, 0x6
@@ -1065,18 +1065,18 @@ DrawControlsDlg:
         add ax, strict word 0x7d
         mov dx, 0xff
         call 0x03A3:SetCharPtr.regs
-        mov es, [g_8B22]
-        mov ax, [es:0x2]
+        mov es, [segSaveDialogRects1]
+        mov ax, [es:ControlsDlgTopBox + 0x2]
         add ax, strict word 0xb
         db 0x8B, 0xF8                           ; insn: mov di, ax
         push word 0x92
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        sub ax, [es:0x6]
+        sub ax, [es:ControlsDlgTopBox + 0x6]
         neg ax
         add ax, strict word 0xa
         push ax
-        mov ax, [es:0x4]
-        mov si, [es:0x0]
+        mov ax, [es:ControlsDlgTopBox + 0x4]
+        mov si, [es:ControlsDlgTopBox]
         add si, 0xb
         db 0x2B, 0xC6                           ; insn: sub ax, si
         add ax, strict word 0xa
@@ -1089,21 +1089,21 @@ DrawControlsDlg:
         push ax
         lea ax, [si + 0x2]
         push ax
-        push word 0x9f9a
+        push word GameTeamRecs + 0x1a
         call 0x0FEF:DrawText
         add sp, 0x6
-        mov es, [g_8B22]
-        mov ax, [es:0xa]
+        mov es, [segSaveDialogRects1]
+        mov ax, [es:ControlsDlgBottomBox + 0x2]
         add ax, strict word 0xb
         db 0x8B, 0xF8                           ; insn: mov di, ax
         push word 0x93
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        sub ax, [es:0xe]
+        sub ax, [es:ControlsDlgBottomBox + 0x6]
         neg ax
         add ax, strict word 0xa
         push ax
-        mov ax, [es:0xc]
-        mov si, [es:0x8]
+        mov ax, [es:ControlsDlgBottomBox + 0x4]
+        mov si, [es:ControlsDlgBottomBox]
         add si, 0xb
         db 0x2B, 0xC6                           ; insn: sub ax, si
         add ax, strict word 0xa
@@ -1116,7 +1116,7 @@ DrawControlsDlg:
         push ax
         lea ax, [si + 0x2]
         push ax
-        push word 0xa282
+        push word GameRosterRecs + 0x1a
         call 0x0FEF:DrawText
         add sp, 0x6
         pop si
@@ -1161,7 +1161,7 @@ DrawControlsOpts:
         mov [bp - 0xa], al
         mov [bp - 0xb], al
         mov [bp - 0xc], al
-        mov word [g_B35E], 0x0
+        mov word [editopts], 0x0
         mov al, [InputFlags]
         and ax, strict word 0x8
         shr al, byte 0x3
@@ -1181,48 +1181,48 @@ DrawControlsOpts:
         db 0x0B, 0xC1                           ; insn: or ax, cx
         shl ax, byte 0x2
         or ax, 0x1c3
-        mov [g_B360], ax
+        mov [editctlopts], ax
         cmp si, 0x1
         db 0x1B, 0xDB                           ; insn: sbb bx, bx
         neg bx
         shl bx, 1
-        mov ax, [bx + g_01BC]
+        mov ax, [bx + ctl1dev]
         mov [bp - 0x62], ax
         cmp ax, strict word 0x10
         jz short .3
         shl ax, byte 0x2
         not ax
-        and [g_B360], ax
+        and [editctlopts], ax
 .3:
         db 0x8B, 0xDE                           ; insn: mov bx, si
         shl bx, 1
         mov [bp - 0x64], bx
-        cmp word [bx + g_01B8], 0x0
+        cmp word [bx + ctl1team], 0x0
         jnl short .5
-        cmp word [bx + g_01B8], -0x1
+        cmp word [bx + ctl1team], -0x1
         jnz short .4
-        mov word [g_B35E], 0x41
+        mov word [editopts], 0x41
         jmp short .6
         db 0x90
 .4:
-        cmp word [bx + g_01B8], -0x2
+        cmp word [bx + ctl1team], -0x2
         jnz short .6
-        mov word [g_B35E], 0x42
+        mov word [editopts], 0x42
         jmp short .6
         db 0x90
 .5:
-        cmp word [bx + g_01C0], 0x1
+        cmp word [bx + ctl1side], 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         inc ax
         inc ax
-        mov [g_B35E], ax
-        mov ax, [bx + g_01BC]
+        mov [editopts], ax
+        mov ax, [bx + ctl1dev]
         shl ax, byte 0x2
-        test [g_B360], ax
+        test [editctlopts], ax
         jz short .6
-        mov ax, [bx + g_01BC]
+        mov ax, [bx + ctl1dev]
         shl ax, byte 0x2
-        or [g_B35E], ax
+        or [editopts], ax
 .6:
         db 0x2B, 0xF6                           ; insn: sub si, si
 .7:
@@ -1254,7 +1254,7 @@ DrawControlsOpts:
         db 0x8B, 0xCA                           ; insn: mov cx, dx
         mov ax, 0x1
         shl ax, cl
-        test [g_B35E], ax
+        test [editopts], ax
         jz short .9
         mov al, 0x17
         mov [si], al
@@ -1276,7 +1276,7 @@ DrawControlsOpts:
         db 0x8B, 0xCA                           ; insn: mov cx, dx
         mov ax, 0x1
         shl ax, cl
-        test [g_B360], ax
+        test [editctlopts], ax
         jnz short .11
         mov al, 0x17
         mov [si], al
@@ -1315,7 +1315,7 @@ CtlDlgHitTest:
         sub di, 0xa
         sub word [bp + 0x8], 0xa
         db 0x2B, 0xC9                           ; insn: sub cx, cx
-        mov bx, 0x0
+        mov bx, ControlsDlgTopBox
         mov [bp + 0x6], di
         mov ax, 0x35ee
         mov ds, ax
@@ -1376,7 +1376,7 @@ DrawCtlBoxes:
         db 0x8B, 0xCF                           ; insn: mov cx, di
         mov ax, 0x1
         shl ax, cl
-        test [g_B35E], ax
+        test [editopts], ax
         jz short .2
         mov al, 0x17
         mov [si], al
@@ -1424,14 +1424,14 @@ ControlsDlgLoop:
         enter 0x16, 0x0
         push di
         push si
-        mov es, [g_8B20]
-        les bx, [es:0x7570]
+        mov es, [segDgroup1]
+        les bx, [es:PageTable]
         mov si, [es:bx]
-        mov es, [g_8B20]
-        les bx, [es:0x7574]
+        mov es, [segDgroup1]
+        les bx, [es:PageTableSeg + 0x2]
         mov ax, [es:bx]
         mov [bp - 0x4], ax
-        cmp word [g_08FC], 0x50
+        cmp word [ScreenRowStride], 0x50
         jnz short .1
         mov ax, 0xc8
         jmp short .2
@@ -1600,11 +1600,11 @@ ControlsDlgLoop:
         mov ax, 0x1
         shl ax, cl
         mov [bp - 0x10], ax
-        test [g_B35E], ax
+        test [editopts], ax
         jz short .18
         jmp near .31
 .18:
-        mov ax, [g_B360]
+        mov ax, [editctlopts]
         test [bp - 0x10], ax
         jnz short .19
         jmp near .31
@@ -1638,47 +1638,47 @@ ControlsDlgLoop:
         jmp short .30
         db 0x90
 .22:
-        mov ax, [g_B35E]
+        mov ax, [editopts]
         and al, 0xfd
         or al, 0x1
         jmp short .29
         db 0x90
 .23:
-        mov ax, [g_B35E]
+        mov ax, [editopts]
         and al, 0xfe
         or al, 0x2
         jmp short .29
         db 0x90
 .24:
-        mov ax, [g_B35E]
+        mov ax, [editopts]
         and al, 0x87
         or al, 0x4
         jmp short .29
         db 0x90
 .25:
-        mov ax, [g_B35E]
+        mov ax, [editopts]
         and al, 0x8b
         or al, 0x8
         jmp short .29
         db 0x90
 .26:
-        mov ax, [g_B35E]
+        mov ax, [editopts]
         and al, 0x93
         or al, 0x10
         jmp short .29
         db 0x90
 .27:
-        mov ax, [g_B35E]
+        mov ax, [editopts]
         and al, 0xa3
         or al, 0x20
         jmp short .29
         db 0x90
 .28:
-        mov ax, [g_B35E]
+        mov ax, [editopts]
         and al, 0xc3
         or al, 0x40
 .29:
-        mov [g_B35E], ax
+        mov [editopts], ax
 .30:
         push cs
         call DrawCtlBoxes
@@ -1698,89 +1698,89 @@ ControlsDlgLoop:
         db 0x90
 .34:
         mov bx, [bp + 0x6]
-        mov ax, [g_B35E]
+        mov ax, [editopts]
         sar ax, byte 0x2
         db 0x8B, 0xF3                           ; insn: mov si, bx
         shl si, 1
         mov [bp - 0x14], si
-        mov [si + g_01BC], ax
-        cmp word [g_B35E], 0x41
+        mov [si + ctl1dev], ax
+        cmp word [editopts], 0x41
         jnz short .39
         mov si, [bp - 0x14]
-        mov word [si + g_01B8], 0xffff
-        mov word [si + g_01C0], 0x0
+        mov word [si + ctl1team], 0xffff
+        mov word [si + ctl1side], 0x0
         cmp bx, 0x1
         db 0x1B, 0xF6                           ; insn: sbb si, si
         neg si
         shl si, 1
         mov [bp - 0x16], si
-        cmp word [si + g_01B8], -0x1
+        cmp word [si + ctl1team], -0x1
         jnz short .37
 .35:
-        mov word [si + g_01B8], 0xfffe
+        mov word [si + ctl1team], 0xfffe
 .36:
-        mov word [si + g_01C0], 0x1
+        mov word [si + ctl1side], 0x1
         jmp near .44
 .37:
-        cmp word [si + g_01C0], 0x0
+        cmp word [si + ctl1side], 0x0
         jz short .38
         jmp near .44
 .38:
-        mov ax, [g_29CC]
-        mov [si + g_01B8], ax
+        mov ax, [VisTeamNum]
+        mov [si + ctl1team], ax
         jmp short .36
         db 0x90
 .39:
-        cmp word [g_B35E], 0x42
+        cmp word [editopts], 0x42
         jnz short .40
         mov si, [bp - 0x14]
-        mov word [si + g_01B8], 0xfffe
-        mov word [si + g_01C0], 0x1
+        mov word [si + ctl1team], 0xfffe
+        mov word [si + ctl1side], 0x1
         cmp bx, 0x1
         db 0x1B, 0xF6                           ; insn: sbb si, si
         neg si
         shl si, 1
         mov [bp - 0x16], si
-        cmp word [si + g_01B8], -0x2
+        cmp word [si + ctl1team], -0x2
         jz short .42
-        cmp word [si + g_01C0], 0x1
+        cmp word [si + ctl1side], 0x1
         jnz short .44
-        mov ax, [g_29CA]
-        mov [si + g_01B8], ax
+        mov ax, [HomeTeamNum]
+        mov [si + ctl1team], ax
         jmp short .43
         db 0x90
 .40:
-        test byte [g_B35E], 0x1
+        test byte [editopts], 0x1
         jz short .41
-        mov ax, [g_29CA]
+        mov ax, [HomeTeamNum]
         mov si, [bp - 0x14]
-        mov [si + g_01B8], ax
-        mov word [si + g_01C0], 0x0
+        mov [si + ctl1team], ax
+        mov word [si + ctl1side], 0x0
         cmp bx, 0x1
         db 0x1B, 0xF6                           ; insn: sbb si, si
         neg si
         shl si, 1
         mov [bp - 0x16], si
-        cmp word [si + g_01B8], -0x1
+        cmp word [si + ctl1team], -0x1
         jnz short .44
         jmp near .35
         db 0x90
 .41:
-        mov ax, [g_29CC]
+        mov ax, [VisTeamNum]
         mov si, [bp - 0x14]
-        mov [si + g_01B8], ax
-        mov word [si + g_01C0], 0x1
+        mov [si + ctl1team], ax
+        mov word [si + ctl1side], 0x1
         cmp bx, 0x1
         db 0x1B, 0xF6                           ; insn: sbb si, si
         neg si
         shl si, 1
         mov [bp - 0x16], si
-        cmp word [si + g_01B8], -0x2
+        cmp word [si + ctl1team], -0x2
         jnz short .44
 .42:
-        mov word [si + g_01B8], 0xffff
+        mov word [si + ctl1team], 0xffff
 .43:
-        mov word [si + g_01C0], 0x0
+        mov word [si + ctl1side], 0x0
 .44:
         call 0x2037:SetSideControls
         call 0x0F97:UseDbDescriptor
@@ -1804,30 +1804,30 @@ SetCtlTeams:
         mov dx, [bp + 0x6]
         mov bx, [bp + 0xa]
         mov ax, [bp + 0xc]
-        mov [g_29CC], ax
-        mov [g_01B8], dx
-        mov [g_29CA], bx
+        mov [VisTeamNum], ax
+        mov [ctl1team], dx
+        mov [HomeTeamNum], bx
         db 0x3B, 0xD3                           ; insn: cmp dx, bx
         jnz short .2
-        cmp word [g_01BC], 0x10
+        cmp word [ctl1dev], 0x10
         jnz short .1
-        mov word [g_01B8], 0xffff
+        mov word [ctl1team], 0xffff
 .1:
-        mov word [g_01C0], 0x0
+        mov word [ctl1side], 0x0
         jmp short .4
 .2:
-        cmp word [g_01BC], 0x10
+        cmp word [ctl1dev], 0x10
         jnz short .3
-        mov word [g_01B8], 0xfffe
+        mov word [ctl1team], 0xfffe
 .3:
-        mov word [g_01C0], 0x1
+        mov word [ctl1side], 0x1
 .4:
         cmp word [bp + 0x8], 0x0
         jnl short .7
-        cmp word [g_01C0], 0x1
+        cmp word [ctl1side], 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         neg ax
-        mov [g_01C2], ax
+        mov [ctl2side], ax
         db 0x3B, 0xDA                           ; insn: cmp bx, dx
         jnz short .5
         mov ax, 0xfffe
@@ -1835,13 +1835,13 @@ SetCtlTeams:
 .5:
         mov ax, 0xffff
 .6:
-        mov [g_01BA], ax
-        mov word [g_01BE], 0x10
+        mov [ctl2team], ax
+        mov word [ctl2dev], 0x10
         jmp short SetCtlTeamsTail.1 + 0x10A0
         db 0x90, 0x90
 .7:
         mov dx, [bp + 0x8]
-        mov [g_01BA], dx
+        mov [ctl2team], dx
         db 0x3B, 0xDA                           ; insn: cmp bx, dx
         jnz short .8
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -1850,27 +1850,27 @@ SetCtlTeams:
 .8:
         mov ax, 0x1
 .9:
-        mov [g_01C2], ax
-        cmp word [g_01BE], 0x10
+        mov [ctl2side], ax
+        cmp word [ctl2dev], 0x10
         jnz short SetCtlTeamsTail.1 + 0x10A0
         test byte [InputFlags], 0x2
         jz short .10
-        cmp word [g_01BC], 0x2
+        cmp word [ctl1dev], 0x2
         jz short .10
-        mov word [g_01BE], 0x2
+        mov word [ctl2dev], 0x2
         jmp short SetCtlTeamsTail.1 + 0x10A0
         db 0x90
 .10:
         test byte [InputFlags], 0x4
         jz short .11
-        cmp word [g_01BC], 0x4
+        cmp word [ctl1dev], 0x4
         jz short .11
-        mov word [g_01BE], 0x4
+        mov word [ctl2dev], 0x4
         jmp short SetCtlTeamsTail.1 + 0x10A0
 .11:
         test byte [InputFlags], 0x8
         jz short SetCtlTeamsTail + 0x10A0
-        cmp word [g_01BC], 0x8
+        cmp word [ctl1dev], 0x8
         jz short SetCtlTeamsTail + 0x10A0
-        mov word [g_01BE], 0x8
+        mov word [ctl2dev], 0x8
         jmp short SetCtlTeamsTail.1 + 0x10A0

@@ -212,11 +212,11 @@ ShowGameSummary:
         push dx
         push ax
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0000:_fmemcpy
         add sp, 0xa
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0FEF:SetRemapTable
         add sp, 0x4
         push word [bp - 0x160]
@@ -244,7 +244,7 @@ ShowGameSummary:
         push ds
         push strict word str_Gsummary_2
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0xf2]
         push ss
         push ax
@@ -285,11 +285,11 @@ ShowGameSummary:
         mov [bp - 0x163], al
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8CA6]
-        push word [es:0xb7e]
-        push word [es:0xb7c]
+        mov es, [segTeamChoiceText52]
+        push word [es:DbFileNameList + 0x12]
+        push word [es:DbFileNameList + 0x10]
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0xf2]
         push ss
         push ax
@@ -338,11 +338,11 @@ ShowGameSummary:
         jnz short .18
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8CA6]
-        push word [es:0xb6e]
-        push word [es:0xb6c]
+        mov es, [segTeamChoiceText52]
+        push word [es:DbFileNameList + 0x2]
+        push word [es:DbFileNameList]
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0xf2]
         push ss
         push ax
@@ -358,9 +358,9 @@ ShowGameSummary:
 .18:
         cmp word [bp - 0x738], 0x0
         jnz short .19
-        mov es, [g_8CA6]
-        push word [es:0xb82]
-        push word [es:0xb80]
+        mov es, [segTeamChoiceText52]
+        push word [es:DbFileNameList + 0x16]
+        push word [es:DbFileNameList + 0x14]
         lea ax, [bp - 0x12]
         push ss
         push ax
@@ -368,7 +368,7 @@ ShowGameSummary:
         add sp, 0x8
         lea ax, [bp - 0x12]
         push ax
-        push word 0xc000
+        push word HomeTeamDbName
         lea ax, [bp - 0xf2]
         push ax
         call 0x0000:_sprintf
@@ -383,9 +383,9 @@ ShowGameSummary:
 .19:
         cmp word [bp - 0x738], 0x0
         jnz short .20
-        mov es, [g_8CA6]
-        push word [es:0xb82]
-        push word [es:0xb80]
+        mov es, [segTeamChoiceText52]
+        push word [es:DbFileNameList + 0x16]
+        push word [es:DbFileNameList + 0x14]
         lea ax, [bp - 0x12]
         push ss
         push ax
@@ -393,7 +393,7 @@ ShowGameSummary:
         add sp, 0x8
         lea ax, [bp - 0x12]
         push ax
-        push word 0xc020
+        push word AwayTeamDbName
         lea ax, [bp - 0xf2]
         push ax
         call 0x0000:_sprintf
@@ -408,14 +408,14 @@ ShowGameSummary:
 .20:
         test byte [bp + 0x6], 0x1c
         jz short .21
-        mov al, [g_29CA]
+        mov al, [HomeTeamNum]
         mov [bp - 0x164], al
-        mov al, [g_29CC]
+        mov al, [VisTeamNum]
         mov [bp - 0x163], al
 .21:
         mov word [bp - 0x15c], 0x50
-        mov word [bp - 0x3c], 0xae10
-        mov word [bp - 0x3a], 0xae40
+        mov word [bp - 0x3c], HomeTeamRec
+        mov word [bp - 0x3a], AwayTeamRec
         test byte [bp + 0x6], 0x20
         jnz short .22
         jmp near .42
@@ -481,25 +481,25 @@ ShowGameSummary:
 .32:
         mov bx, [bp - 0x15e]
         shl bx, 1
-        mov al, [bx + g_B0B6]
+        mov al, [bx + otherscoreaway]
         mov [bp - 0x164], al
-        mov al, [bx + g_B0B7]
+        mov al, [bx + otherscores]
         mov [bp - 0x163], al
-        mov al, [bx + g_B09E]
+        mov al, [bx + otherscoresb]
         mov [bp - 0x46], al
-        mov al, [bx + g_B0AA]
+        mov al, [bx + otherscorehome]
         mov [bp - 0x9e], al
-        mov al, [bx + g_B0AB]
+        mov al, [bx + otherscorehome_b1]
         mov [bp - 0x9d], al
         cmp word [bp - 0x738], 0x0
         jnz short .33
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8CA6]
-        push word [es:0xb7e]
-        push word [es:0xb7c]
+        mov es, [segTeamChoiceText52]
+        push word [es:DbFileNameList + 0x12]
+        push word [es:DbFileNameList + 0x10]
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0xf2]
         push ss
         push ax
@@ -555,11 +555,11 @@ ShowGameSummary:
         push dx
         push ax
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0000:_fmemcpy
         add sp, 0xa
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0FEF:SetRemapTable
         add sp, 0x4
         push word [bp - 0x160]
@@ -687,11 +687,11 @@ ShowGameSummary:
         push dx
         push ax
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0000:_fmemcpy
         add sp, 0xa
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0FEF:SetRemapTable
         add sp, 0x4
         push word [bp - 0x160]
@@ -716,7 +716,7 @@ ShowGameSummary:
         db 0x2A, 0xFF                           ; insn: sub bh, bh
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         shl bx, 1
-        push word [bx + g_5604]
+        push word [bx + CrestShapeNames]
         push word [bp - 0x42]
         push word [bp - 0x44]
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -734,13 +734,13 @@ ShowGameSummary:
         push dx
         push ax
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0000:_fmemcpy
         add sp, 0xa
-        mov es, [g_8CA8]
-        mov byte [es:0xaf8f], 0xd9
+        mov es, [segWorkBuffer48]
+        mov byte [es:MenuRemap + 0x43], 0xd9
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0FEF:SetRemapTable
         add sp, 0x4
         push 0x1c
@@ -774,8 +774,8 @@ ShowGameSummary:
         imul ax, [bp - 0x73a], word 0xba
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, byte 0x2
-        mov ax, [bx + g_9FCC]
-        mov dx, [bx + g_9FCE]
+        mov ax, [bx + GamePlayerNames]
+        mov dx, [bx + GamePlayerNamesSeg]
         mov [bp - 0x744], ax
         mov [bp - 0x742], dx
         push dx
@@ -1019,8 +1019,8 @@ ShowGameSummary:
         test byte [bp + 0x6], 0x1
         jz short .73
         mov word [bp - 0x73c], 0x0
-        mov es, [g_8CAA]
-        cmp word [es:0x126], 0x1
+        mov es, [segDbFiles19]
+        cmp word [es:lgstate_w5A + 0x8], 0x1
         jz short .66
         mov al, [bp + 0x8]
         cmp [bp + 0xa], al
@@ -1045,8 +1045,8 @@ ShowGameSummary:
         mov al, [bp - 0x73f]
         cmp [bp - 0x740], al
         jnz short .70
-        mov es, [g_8CAC]
-        cmp word [es:0x78c], 0x3f0
+        mov es, [segWorkBuffer49]
+        cmp word [es:AwayGlStats + 0x12], 0x3f0
         jl short .70
         push 0x0
         push -0x1
@@ -1541,7 +1541,7 @@ ShowGameSummary:
         mov bl, [es:bx + 0x2]
         db 0x2A, 0xFF                           ; insn: sub bh, bh
         shl bx, 1
-        push word [bx + g_575A]
+        push word [bx + EventFmtPtrs]
         lea ax, [bp - 0x12]
         push ax
         push strict word str_SS_2
@@ -1555,7 +1555,7 @@ ShowGameSummary:
         mov bl, [es:bx + 0x2]
         db 0x2A, 0xFF                           ; insn: sub bh, bh
         shl bx, 1
-        push word [bx + g_575A]
+        push word [bx + EventFmtPtrs]
         mov bx, [bp - 0x74c]
         mov al, [es:bx + 0x3]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
@@ -1875,11 +1875,11 @@ ShowGameSummary:
         push dx
         push ax
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0000:_fmemcpy
         add sp, 0xa
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0FEF:SetRemapTable
         add sp, 0x4
         push word [bp - 0x160]
@@ -1904,8 +1904,8 @@ ShowGameSummary:
         cmp word [bp - 0x73c], 0x0
         jz short .138
         mov word [bp - 0x73c], 0x0
-        mov es, [g_8CAA]
-        cmp word [es:0x126], 0x1
+        mov es, [segDbFiles19]
+        cmp word [es:lgstate_w5A + 0x8], 0x1
         jz short .138
         mov al, [bp + 0x8]
         cmp [bp + 0xa], al
@@ -1930,8 +1930,8 @@ ShowGameSummary:
         mov al, [bp - 0x73f]
         cmp [bp - 0x740], al
         jnz short .136
-        mov es, [g_8CAC]
-        cmp word [es:0x78c], 0x3f0
+        mov es, [segWorkBuffer49]
+        cmp word [es:AwayGlStats + 0x12], 0x3f0
         jl short .136
         push 0x0
         push -0x1
@@ -2027,10 +2027,10 @@ ShowGameSummary:
         call 0x06E1:FindUnlink
         add sp, 0x4
 .141:
-        mov bx, [g_29CC]
+        mov bx, [VisTeamNum]
         shl bx, 1
         push word [bx + TeamNameClips]
-        mov bx, [g_29CA]
+        mov bx, [HomeTeamNum]
         shl bx, 1
         push word [bx + TeamNameClips]
         call 0x0EDC:LoadPlayByPlaySpeech

@@ -13,28 +13,28 @@ CmpTeamScoring:
         enter 0xe, 0x0
         push di
         push si
-        cmp word [ss:g_200E], 0x0
+        cmp word [ss:statscontext], 0x0
         jnz short .1
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x4c
-        add ax, [ss:g_CFCC]
-        mov dx, [ss:g_CFCE]
+        add ax, [ss:statscmpsum]
+        mov dx, [ss:statscmpsum2]
         add ax, strict word 0x28
         jmp short .2
 .1:
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x4c
-        add ax, [ss:g_CFCC]
-        mov dx, [ss:g_CFCE]
+        add ax, [ss:statscmpsum]
+        mov dx, [ss:statscmpsum2]
         add ax, strict word 0x3a
 .2:
         mov [bp - 0xc], ax
         mov [bp - 0xa], dx
-        cmp word [ss:g_200E], 0x0
+        cmp word [ss:statscontext], 0x0
         jnz short .3
         mov bx, [bp + 0x8]
         imul ax, [ss:bx], 0x4c
-        add ax, [ss:g_CFCC]
+        add ax, [ss:statscmpsum]
         add ax, strict word 0x28
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov ds, dx
@@ -43,8 +43,8 @@ CmpTeamScoring:
 .3:
         mov bx, [bp + 0x8]
         imul ax, [ss:bx], 0x4c
-        add ax, [ss:g_CFCC]
-        mov dx, [ss:g_CFCE]
+        add ax, [ss:statscmpsum]
+        mov dx, [ss:statscmpsum2]
         add ax, strict word 0x3a
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov [bp - 0x2], dx
@@ -128,28 +128,28 @@ CmpTeamDefense:
         enter 0xe, 0x0
         push di
         push si
-        cmp word [ss:g_200E], 0x0
+        cmp word [ss:statscontext], 0x0
         jnz short .1
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x4c
-        add ax, [ss:g_CFCC]
-        mov dx, [ss:g_CFCE]
+        add ax, [ss:statscmpsum]
+        mov dx, [ss:statscmpsum2]
         add ax, strict word 0x28
         jmp short .2
 .1:
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x4c
-        add ax, [ss:g_CFCC]
-        mov dx, [ss:g_CFCE]
+        add ax, [ss:statscmpsum]
+        mov dx, [ss:statscmpsum2]
         add ax, strict word 0x3a
 .2:
         mov [bp - 0xc], ax
         mov [bp - 0xa], dx
-        cmp word [ss:g_200E], 0x0
+        cmp word [ss:statscontext], 0x0
         jnz short .3
         mov bx, [bp + 0x8]
         imul ax, [ss:bx], 0x4c
-        add ax, [ss:g_CFCC]
+        add ax, [ss:statscmpsum]
         add ax, strict word 0x28
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov ds, dx
@@ -158,8 +158,8 @@ CmpTeamDefense:
 .3:
         mov bx, [bp + 0x8]
         imul ax, [ss:bx], 0x4c
-        add ax, [ss:g_CFCC]
-        mov dx, [ss:g_CFCE]
+        add ax, [ss:statscmpsum]
+        mov dx, [ss:statscmpsum2]
         add ax, strict word 0x3a
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov [bp - 0x2], dx
@@ -249,14 +249,14 @@ CmpTeamPP:
         mov si, [si]
         mov [bp - 0x18], si
         shl si, 1
-        add si, [g_CFC8]
-        mov es, [g_CFCA]
+        add si, [statsrecs]
+        mov es, [statsrecsseg]
         mov ax, [es:si]
         mov [bp - 0x16], ax
         mov si, [bx]
         mov [bp - 0x1c], si
         shl si, 1
-        add si, [g_CFC8]
+        add si, [statsrecs]
         mov cx, [es:si]
         db 0x3B, 0xC1                           ; insn: cmp ax, cx
         jz short .1
@@ -265,31 +265,31 @@ CmpTeamPP:
         jmp near .14
         db 0x90
 .1:
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .2
         imul ax, [bp - 0x18], 0x4c
-        add ax, [g_CFCC]
-        mov dx, [g_CFCE]
+        add ax, [statscmpsum]
+        mov dx, [statscmpsum2]
         add ax, strict word 0x28
         jmp short .3
 .2:
         imul ax, [bp - 0x18], 0x4c
-        add ax, [g_CFCC]
-        mov dx, [g_CFCE]
+        add ax, [statscmpsum]
+        mov dx, [statscmpsum2]
         add ax, strict word 0x3a
 .3:
         mov [bp - 0x8], ax
         mov [bp - 0x6], dx
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .4
         imul ax, [bx], 0x4c
-        add ax, [g_CFCC]
+        add ax, [statscmpsum]
         add ax, strict word 0x28
         jmp short .5
 .4:
         imul ax, [bx], 0x4c
-        add ax, [g_CFCC]
-        mov dx, [g_CFCE]
+        add ax, [statscmpsum]
+        mov dx, [statscmpsum2]
         add ax, strict word 0x3a
 .5:
         db 0x8B, 0xF8                           ; insn: mov di, ax
@@ -424,14 +424,14 @@ CmpTeamPK:
         mov si, [si]
         mov [bp - 0x18], si
         shl si, 1
-        add si, [g_CFC8]
-        mov es, [g_CFCA]
+        add si, [statsrecs]
+        mov es, [statsrecsseg]
         mov ax, [es:si]
         mov [bp - 0x16], ax
         mov si, [bx]
         mov [bp - 0x1c], si
         shl si, 1
-        add si, [g_CFC8]
+        add si, [statsrecs]
         mov cx, [es:si]
         db 0x3B, 0xC1                           ; insn: cmp ax, cx
         jz short .1
@@ -440,31 +440,31 @@ CmpTeamPK:
         jmp near .13
         db 0x90
 .1:
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .2
         imul ax, [bp - 0x18], 0x4c
-        add ax, [g_CFCC]
-        mov dx, [g_CFCE]
+        add ax, [statscmpsum]
+        mov dx, [statscmpsum2]
         add ax, strict word 0x28
         jmp short .3
 .2:
         imul ax, [bp - 0x18], 0x4c
-        add ax, [g_CFCC]
-        mov dx, [g_CFCE]
+        add ax, [statscmpsum]
+        mov dx, [statscmpsum2]
         add ax, strict word 0x3a
 .3:
         mov [bp - 0x8], ax
         mov [bp - 0x6], dx
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .4
         imul ax, [bx], 0x4c
-        add ax, [g_CFCC]
+        add ax, [statscmpsum]
         add ax, strict word 0x28
         jmp short .5
 .4:
         imul ax, [bx], 0x4c
-        add ax, [g_CFCC]
-        mov dx, [g_CFCE]
+        add ax, [statscmpsum]
+        mov dx, [statscmpsum2]
         add ax, strict word 0x3a
 .5:
         db 0x8B, 0xF8                           ; insn: mov di, ax
@@ -593,13 +593,13 @@ CmpTeamPenalties:
         mov si, [si]
         mov [bp - 0x12], si
         shl si, 1
-        add si, [g_CFC8]
-        mov es, [g_CFCA]
+        add si, [statsrecs]
+        mov es, [statsrecsseg]
         mov ax, [es:si]
         mov si, [bx]
         mov [bp - 0x16], si
         shl si, 1
-        add si, [g_CFC8]
+        add si, [statsrecs]
         mov cx, [es:si]
         db 0x3B, 0xC1                           ; insn: cmp ax, cx
         jz short .2
@@ -610,31 +610,31 @@ CmpTeamPenalties:
         leave
         retf
 .2:
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .3
         imul ax, [bp - 0x12], 0x4c
-        add ax, [g_CFCC]
-        mov dx, [g_CFCE]
+        add ax, [statscmpsum]
+        mov dx, [statscmpsum2]
         add ax, strict word 0x28
         jmp short .4
 .3:
         imul ax, [bp - 0x12], 0x4c
-        add ax, [g_CFCC]
-        mov dx, [g_CFCE]
+        add ax, [statscmpsum]
+        mov dx, [statscmpsum2]
         add ax, strict word 0x3a
 .4:
         mov [bp - 0xc], ax
         mov [bp - 0xa], dx
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .5
         imul ax, [bx], 0x4c
-        add ax, [g_CFCC]
+        add ax, [statscmpsum]
         add ax, strict word 0x28
         jmp short .6
 .5:
         imul ax, [bx], 0x4c
-        add ax, [g_CFCC]
-        mov dx, [g_CFCE]
+        add ax, [statscmpsum]
+        mov dx, [statscmpsum2]
         add ax, strict word 0x3a
 .6:
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -724,8 +724,8 @@ TeamStatsScreen:
         push strict word str_Teams_3
         call 0x14DB:AllocRecData
         add sp, 0x8
-        mov [g_CFCC], ax
-        mov [g_CFCE], dx
+        mov [statscmpsum], ax
+        mov [statscmpsum2], dx
         cmp word [bp + 0x6], 0x1
         jng short .1
         push 0x0
@@ -734,15 +734,15 @@ TeamStatsScreen:
         push strict word str_Addsort_2
         call 0x14DB:AllocRecData
         add sp, 0x8
-        mov [g_CFC8], ax
-        mov [g_CFCA], dx
+        mov [statsrecs], ax
+        mov [statsrecsseg], dx
 .1:
         push 0x0
         push 0x0
-        mov bx, [g_2010]
+        mov bx, [statsseason]
         shl bx, 1
         push ds
-        push word [bx + g_1FAA]
+        push word [bx + StatsDbNames3]
         push word 0x3861
         push strict word 0x0
         lea ax, [bp - 0x3e]
@@ -756,13 +756,13 @@ TeamStatsScreen:
         call 0x0000:_open
         add sp, 0x4
         mov [bp - 0xca], ax
-        cmp word [g_2010], 0x1
+        cmp word [statsseason], 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         and ax, 0xfd64
         add ax, 0x2e8
         mov [bp - 0x1e], ax
         mov word [bp - 0x1c], 0x0
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .3
         mov word [bp - 0xd4], 0x0
 .2:
@@ -786,7 +786,7 @@ TeamStatsScreen:
         mov [bp - 0x15a], ax
         mov [bp - 0x158], dx
         push word 0x3415
-        push strict word f_3415_0064
+        push strict word postate_name
         push word 0x3861
         push strict word 0x0
         call 0x0000:_fstrcmp
@@ -944,7 +944,7 @@ TeamStatsScreen:
 .20:
         mov bx, [bp - 0xd4]
         shl bx, 1
-        les si, [g_CFC8]
+        les si, [statsrecs]
         mov [es:bx + si], ax
 .21:
         inc word [bp - 0xd4]
@@ -975,12 +975,12 @@ TeamStatsScreen:
         call 0x0000:_read
         add sp, 0x6
         imul bx, [bp - 0xd4], 0x4c
-        les si, [g_CFCC]
+        les si, [statscmpsum]
         lea di, [bx + si]
         lea si, [bp - 0x154]
         mov cx, 0x26
         rep movsw
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jz short .23
         jmp near .10
 .23:
@@ -989,8 +989,8 @@ TeamStatsScreen:
 .24:
         mov bx, [bp + 0x6]
         shl bx, byte 0x2
-        push word [bx + g_25B2]
-        push word [bx + g_25B0]
+        push word [bx + TeamStatsCmpsSeg]
+        push word [bx + TeamStatsCmps]
         push 0x2
         push word [bp - 0xd0]
         lea ax, [bp - 0x70]
@@ -1019,10 +1019,10 @@ TeamStatsScreen:
         call 0x0FEF:UseOffscreenCanvas
         push word 0x3701
         push strict word str_Qpp
-        mov bx, [g_200E]
+        mov bx, [statscontext]
         shl bx, 1
         push ds
-        push word [bx + g_1FA2]
+        push word [bx + StatsDbNames]
         push 0x0
         push 0x0
         lea ax, [bp - 0x3e]
@@ -1043,13 +1043,13 @@ TeamStatsScreen:
         call 0x03A3:FindFarMsg
         add sp, 0x6
         mov [statsbgshapes], ax
-        mov [g_C2B4], dx
+        mov [statsbgseg], dx
         push word 0xc8
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov dx, 0x140
         mov bx, 0xa
         call 0x0FEF:SetClipRectRegs
-        push word [g_C2B4]
+        push word [statsbgseg]
         push word [statsbgshapes]
         call 0x0FEF:DrawRleTransBody
         add sp, 0x4
@@ -1069,7 +1069,7 @@ TeamStatsScreen:
         mov bx, [bp + 0x6]
         shl bx, 1
         push ds
-        push word [bx + g_2680]
+        push word [bx + TeamStatsTitles]
         lea ax, [bp - 0xc2]
         push ss
         push ax
@@ -1092,19 +1092,19 @@ TeamStatsScreen:
         mov bx, [bp + 0x6]
         shl bx, byte 0x3
         push ds
-        push word [bx + g_268A]
+        push word [bx + TeamStatsHead1]
         push 0x14
         push word 0xc3
         db 0x8B, 0xF3                           ; insn: mov si, bx
         call 0x0D39:DrawShadowText
         add sp, 0x8
         push ds
-        push word [si + g_268C]
+        push word [si + TeamStatsHead2]
         push 0x14
         push word 0xdc
         call 0x0D39:DrawShadowText
         add sp, 0x8
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jz short .26
         cmp word [bp + 0x6], 0x1
         jz short .27
@@ -1114,7 +1114,7 @@ TeamStatsScreen:
         mov bx, [bp + 0x6]
         shl bx, byte 0x3
         push ds
-        push word [bx + g_268E]
+        push word [bx + TeamStatsHead3]
         push word [bp - 0xd2]
         push word 0xf5
         call 0x0D39:DrawShadowText
@@ -1123,7 +1123,7 @@ TeamStatsScreen:
         mov bx, [bp + 0x6]
         shl bx, byte 0x3
         push ds
-        push word [bx + g_2690]
+        push word [bx + TeamStatsHeads]
         push word [bp - 0xd2]
         push word 0x10e
         call 0x0D39:DrawShadowText
@@ -1144,7 +1144,7 @@ TeamStatsScreen:
         lea ax, [bp - 0x11a]
 .30:
         mov [bp - 0xc8], ax
-        cmp word [g_2010], 0x0
+        cmp word [statsseason], 0x0
         jnz short .34
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         cmp byte [bx], 0x0
@@ -1162,8 +1162,8 @@ TeamStatsScreen:
         mov ax, [bp + si - 0x70]
         mov [bp - 0x108], ax
         imul ax, ax, 0x4c
-        add ax, [g_CFCC]
-        mov dx, [g_CFCE]
+        add ax, [statscmpsum]
+        mov dx, [statscmpsum2]
         push ds
         lea di, [bp - 0x154]
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -1173,7 +1173,7 @@ TeamStatsScreen:
         mov cx, 0x26
         rep movsw
         pop ds
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .29
         lea ax, [bp - 0x12c]
         jmp short .30
@@ -1242,7 +1242,7 @@ TeamStatsScreen:
         push word 0xdc
         call 0x0D39:DrawShadowTextF
         add sp, 0x8
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .40
         mov bx, [bp - 0xc8]
         mov al, [bx + 0x3]
@@ -1285,7 +1285,7 @@ TeamStatsScreen:
         push word 0xdc
         call 0x0D39:DrawShadowTextF
         add sp, 0x8
-        cmp word [g_200E], 0x0
+        cmp word [statscontext], 0x0
         jnz short .44
         mov bx, [bp - 0xc8]
         mov al, [bx + 0x3]
@@ -1319,7 +1319,7 @@ TeamStatsScreen:
         add sp, 0x8
         mov bx, [bp - 0x108]
         shl bx, 1
-        les si, [g_CFC8]
+        les si, [statsrecs]
         mov ax, [es:bx + si]
         mov cx, 0xa
         db 0x8B, 0xD8                           ; insn: mov bx, ax
@@ -1361,7 +1361,7 @@ TeamStatsScreen:
         add sp, 0x8
         mov bx, [bp - 0x108]
         shl bx, 1
-        les si, [g_CFC8]
+        les si, [statsrecs]
         mov ax, [es:bx + si]
         mov cx, 0xa
         db 0x8B, 0xD8                           ; insn: mov bx, ax
@@ -1388,11 +1388,11 @@ TeamStatsScreen:
         add sp, 0x4
         cmp word [bp + 0x6], 0x1
         jng short .51
-        push word [g_CFCA]
-        push word [g_CFC8]
+        push word [statsrecsseg]
+        push word [statsrecs]
         call 0x06E1:FindUnlink
         add sp, 0x4
 .51:
-        push word [g_CFCE]
-        push word [g_CFCC]
+        push word [statscmpsum2]
+        push word [statscmpsum]
         call 0x06E1:FindUnlink

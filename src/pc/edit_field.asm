@@ -14,11 +14,11 @@ DrawEditCursor:
         call 0x03A3:TextWidthAll
         add sp, 0x2
         mov [bp - 0x2], ax
-        cmp word [g_C260], 0x0
+        cmp word [editactive], 0x0
         jnz short .1
         jmp near .9
 .1:
-        mov ax, [g_C26C]
+        mov ax, [editmax]
         db 0x8B, 0xD0                           ; insn: mov dx, ax
         db 0x8B, 0xF8                           ; insn: mov di, ax
         push ds
@@ -28,17 +28,17 @@ DrawEditCursor:
         repne scasb
         not cx
         dec cx
-        cmp cx, [g_C268]
+        cmp cx, [editpos]
         jnl short .2
         db 0x8B, 0xFA                           ; insn: mov di, dx
         mov cx, 0xffff
         repne scasb
         not cx
         dec cx
-        mov [g_C268], cx
+        mov [editpos], cx
 .2:
         db 0x8B, 0xDA                           ; insn: mov bx, dx
-        add bx, [g_C268]
+        add bx, [editpos]
         cmp byte [bx], 0x0
         jz short .4
         test byte [bp + 0x6], 0x2
@@ -63,23 +63,23 @@ DrawEditCursor:
         test byte [bp + 0x6], 0x2
         jz short .7
         mov ax, [bp - 0x2]
-        imul word [g_C268]
+        imul word [editpos]
         jmp short .8
 .7:
-        push word [g_C268]
-        push word [g_C26C]
+        push word [editpos]
+        push word [editmax]
         call 0x03A3:TextWidth
         add sp, 0x4
 .8:
-        add ax, [g_C264]
+        add ax, [editx]
         mov [bp - 0x4], ax
         les bx, [FontPtr]
         push word [es:bx]
-        push word [g_C262]
+        push word [editcursorx]
         push si
         mov ax, [es:bx + 0x12]
-        sub ax, [g_C262]
-        add ax, [g_C266]
+        sub ax, [editcursorx]
+        add ax, [edity]
         push ax
         push word [bp - 0x4]
         call 0x0FEF:XorRect
@@ -105,13 +105,13 @@ DrawEditText:
         call 0x03A3:TextWidthAll
         add sp, 0x2
         mov [bp - 0x8], ax
-        cmp word [g_C26A], 0x0
+        cmp word [editlen], 0x0
         jnz short .1
         jmp near .6
 .1:
         test byte [bp + 0x6], 0x2
         jz short .4
-        mov ax, [g_C26C]
+        mov ax, [editmax]
         db 0x8B, 0xD0                           ; insn: mov dx, ax
         db 0x8B, 0xF8                           ; insn: mov di, ax
         push ds
@@ -124,11 +124,11 @@ DrawEditText:
         mov [bp - 0x4], cx
         mov ax, [bp - 0x8]
         imul cx
-        cmp ax, [g_C26A]
+        cmp ax, [editlen]
         jg short .2
         jmp near .6
 .2:
-        mov ax, [g_C26C]
+        mov ax, [editmax]
         db 0x8B, 0xD0                           ; insn: mov dx, ax
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov cx, 0xffff
@@ -147,7 +147,7 @@ DrawEditText:
         db 0x8B, 0xF1                           ; insn: mov si, cx
         db 0x8B, 0xDA                           ; insn: mov bx, dx
         mov byte [bx + si - 0x1], 0x0
-        mov ax, [g_C26C]
+        mov ax, [editmax]
         db 0x8B, 0xD0                           ; insn: mov dx, ax
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov cx, 0xffff
@@ -158,18 +158,18 @@ DrawEditText:
         mov [bp - 0x4], cx
         mov ax, [bp - 0x8]
         imul cx
-        cmp ax, [g_C26A]
+        cmp ax, [editlen]
         jg short .2
         jmp short .6
         db 0x90, 0x90, 0x90
 .4:
-        push word [g_C26C]
+        push word [editmax]
         call 0x03A3:TextWidthAll
         add sp, 0x2
-        cmp ax, [g_C26A]
+        cmp ax, [editlen]
         jng short .6
 .5:
-        mov ax, [g_C26C]
+        mov ax, [editmax]
         db 0x8B, 0xD0                           ; insn: mov dx, ax
         db 0x8B, 0xF8                           ; insn: mov di, ax
         push ds
@@ -188,13 +188,13 @@ DrawEditText:
         db 0x8B, 0xF1                           ; insn: mov si, cx
         db 0x8B, 0xDA                           ; insn: mov bx, dx
         mov byte [bx + si - 0x1], 0x0
-        push word [g_C26C]
+        push word [editmax]
         call 0x03A3:TextWidthAll
         add sp, 0x2
-        cmp ax, [g_C26A]
+        cmp ax, [editlen]
         jg short .5
 .6:
-        mov ax, [g_C26C]
+        mov ax, [editmax]
         db 0x8B, 0xF8                           ; insn: mov di, ax
         push ds
         pop es
@@ -204,9 +204,9 @@ DrawEditText:
         not cx
         dec cx
         db 0x8B, 0xD1                           ; insn: mov dx, cx
-        cmp [g_C268], dx
+        cmp [editpos], dx
         jng short .7
-        mov [g_C268], dx
+        mov [editpos], dx
 .7:
         mov al, [bp + 0x6]
         and al, 0x2
@@ -218,8 +218,8 @@ DrawEditText:
         db 0x8B, 0xFA                           ; insn: mov di, dx
         db 0x8B, 0xF1                           ; insn: mov si, cx
 .8:
-        push word [g_C266]
-        mov ax, [g_C264]
+        push word [edity]
+        mov ax, [editx]
         db 0x03, 0xC6                           ; insn: add ax, si
         push ax
         push word 0x1694
@@ -232,13 +232,13 @@ DrawEditText:
         db 0x90
 .9:
         mov [bp - 0x4], dx
-        push word [g_C266]
-        push word [g_C264]
-        push word [g_C26C]
+        push word [edity]
+        push word [editx]
+        push word [editmax]
         call 0x0FEF:DrawChar
         add sp, 0x6
 .10:
-        cmp word [g_C26A], 0x0
+        cmp word [editlen], 0x0
         jz short .13
         mov al, [bp + 0x6]
         and al, 0x2
@@ -248,12 +248,12 @@ DrawEditText:
         jmp short .12
         db 0x90
 .11:
-        push word [g_C26C]
+        push word [editmax]
         call 0x03A3:TextWidthAll
         add sp, 0x2
 .12:
         db 0x8B, 0xF0                           ; insn: mov si, ax
-        mov cx, [g_C26A]
+        mov cx, [editlen]
         db 0x2B, 0xCE                           ; insn: sub cx, si
         db 0x0B, 0xC9                           ; insn: or cx, cx
         jng short .13
@@ -261,8 +261,8 @@ DrawEditText:
         push word [es:bx + 0x2]
         push word [es:bx + 0x12]
         push cx
-        push word [g_C266]
-        add si, [g_C264]
+        push word [edity]
+        add si, [editx]
         push si
         call 0x0FEF:FillRectClip
         add sp, 0xa
@@ -286,21 +286,21 @@ EditTextField:
         mov si, [bp + 0x18]
         call 0x0FEF:UseCurrentPage
         mov ax, [bp + 0xc]
-        mov [g_C264], ax
+        mov [editx], ax
         mov ax, [bp + 0xe]
-        mov [g_C266], ax
+        mov [edity], ax
         mov ax, [bp + 0x6]
-        mov [g_C26C], ax
+        mov [editmax], ax
         mov ax, [bp + 0xa]
-        mov [g_C26A], ax
-        mov word [g_C268], 0x0
+        mov [editlen], ax
+        mov word [editpos], 0x0
         push si
         push cs
         call DrawEditText
         add sp, 0x2
         mov ax, 0x1
-        mov [g_C262], ax
-        mov [g_C260], ax
+        mov [editcursorx], ax
+        mov [editactive], ax
         mov word [bp - 0x6], 0x0
         push si
         push cs
@@ -341,8 +341,8 @@ EditTextField:
         push 0x4
         call 0x03A3:SetEndMark
         add sp, 0x4
-        mov si, [g_C260]
-        mov word [g_C260], 0x1
+        mov si, [editactive]
+        mov word [editactive], 0x1
         push word [bp + 0x18]
         push cs
         call DrawEditCursor
@@ -350,7 +350,7 @@ EditTextField:
         cmp si, 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         neg ax
-        mov [g_C260], ax
+        mov [editactive], ax
         mov ax, [bp + 0x16]
         or ax, [bp + 0x14]
         jz short .1
@@ -376,7 +376,7 @@ EditTextField:
         cmp di, 0x4d00
         jnz short .12
         mov bx, [bp + 0x6]
-        mov di, [g_C268]
+        mov di, [editpos]
         cmp byte [bx + di], 0x0
         jnz short .9
         jmp near .1
@@ -386,9 +386,9 @@ EditTextField:
         call DrawEditCursor
         add sp, 0x2
         mov ax, [bp + 0x8]
-        cmp [g_C268], ax
+        cmp [editpos], ax
         jnl short .10
-        inc word [g_C268]
+        inc word [editpos]
 .10:
         push si
 .11:
@@ -404,9 +404,9 @@ EditTextField:
         push cs
         call DrawEditCursor
         add sp, 0x2
-        cmp word [g_C268], 0x0
+        cmp word [editpos], 0x0
         jz short .10
-        dec word [g_C268]
+        dec word [editpos]
         jmp short .10
         db 0x90
 .13:
@@ -416,7 +416,7 @@ EditTextField:
         push cs
         call DrawEditCursor
         add sp, 0x2
-        mov word [g_C268], 0x0
+        mov word [editpos], 0x0
         jmp short .10
 .14:
         cmp di, 0x4f00
@@ -425,14 +425,14 @@ EditTextField:
         push cs
         call DrawEditCursor
         add sp, 0x2
-        mov word [g_C268], 0x0
+        mov word [editpos], 0x0
         mov bx, [bp + 0x6]
         cmp byte [bx], 0x0
         jz short .16
         db 0x8B, 0xFB                           ; insn: mov di, bx
 .15:
-        inc word [g_C268]
-        mov bx, [g_C268]
+        inc word [editpos]
+        mov bx, [editpos]
         cmp byte [bx + di], 0x0
         jnz short .15
 .16:
@@ -450,23 +450,23 @@ EditTextField:
         mov word [bp - 0x6], 0x1
         les bx, [FontPtr]
         mov ax, [es:bx + 0xe]
-        mov [g_C262], ax
+        mov [editcursorx], ax
         jmp near .10
         db 0x90
 .18:
         mov word [bp - 0x6], 0x0
-        mov word [g_C262], 0x1
+        mov word [editcursorx], 0x1
         jmp near .10
 .19:
         cmp di, 0x5300
         jnz short .24
         mov ax, [bp + 0x8]
-        cmp [g_C268], ax
+        cmp [editpos], ax
         jl short .20
         jmp near .1
 .20:
         mov bx, [bp + 0x6]
-        mov di, [g_C268]
+        mov di, [editpos]
         cmp byte [bx + di], 0x0
         jnz short .21
         jmp near .1
@@ -475,7 +475,7 @@ EditTextField:
         push cs
         call DrawEditCursor
         add sp, 0x2
-        mov ax, [g_C268]
+        mov ax, [editpos]
         cmp ax, [bp + 0x8]
         jnl short .23
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -503,7 +503,7 @@ EditTextField:
 .24:
         cmp di, 0x8
         jnz short .29
-        cmp word [g_C268], 0x0
+        cmp word [editpos], 0x0
         jnz short .25
         jmp near .1
 .25:
@@ -511,8 +511,8 @@ EditTextField:
         push cs
         call DrawEditCursor
         add sp, 0x2
-        dec word [g_C268]
-        mov si, [g_C268]
+        dec word [editpos]
+        mov si, [editpos]
         cmp si, [bp + 0x8]
         jnl short .27
         mov di, [bp + 0x6]
@@ -546,7 +546,7 @@ EditTextField:
         jmp near .1
 .31:
         mov ax, [bp + 0x8]
-        cmp [g_C268], ax
+        cmp [editpos], ax
         jl short .32
         jmp near .1
 .32:
@@ -569,14 +569,14 @@ EditTextField:
         cmp word [bp - 0x6], 0x0
         jnz short .36
         mov si, [bp + 0x6]
-        mov bx, [g_C268]
+        mov bx, [editpos]
         cmp byte [bx + si], 0x0
         jnz short .35
         db 0x03, 0xDE                           ; insn: add bx, si
         mov byte [bx + 0x1], 0x0
 .35:
         db 0x8B, 0xC7                           ; insn: mov ax, di
-        mov bx, [g_C268]
+        mov bx, [editpos]
         jmp short .39
         db 0x90
 .36:
@@ -584,7 +584,7 @@ EditTextField:
         mov dx, [bp + 0x8]
         dec dx
         dec dx
-        cmp dx, [g_C268]
+        cmp dx, [editpos]
         jl short .38
         mov [bp - 0x4], di
         db 0x8B, 0xF2                           ; insn: mov si, dx
@@ -595,21 +595,21 @@ EditTextField:
         mov al, [bx]
         mov [bx + 0x1], al
         dec si
-        cmp [g_C268], si
+        cmp [editpos], si
         jng short .37
         mov di, [bp - 0x4]
 .38:
         db 0x8B, 0xC7                           ; insn: mov ax, di
         mov bx, [bp + 0x6]
-        mov si, [g_C268]
+        mov si, [editpos]
 .39:
         mov [bx + si], al
         mov ax, [bp + 0x8]
-        cmp [g_C268], ax
+        cmp [editpos], ax
         jl short .40
         jmp near .28
 .40:
-        inc word [g_C268]
+        inc word [editpos]
         jmp near .28
         db 0x90
 .41:

@@ -1,11 +1,16 @@
-; Far data, paragraph 3821h, 96 bytes: messages for importing databases. The EXE's own code does not use it
-; (the overlays probably do).
-        db 'Importing Master Databases.'
-        db 0x00
-msgImportingMasterDatabases:                                    ; used by LP (to name)
-        db 0x00, 0x00, '!8Error while exporting player!'
-        db 0x00, 'Player not exported!'
-        db 0x00
-msgErrorWhileExportingPlayerPlayer:                                    ; used by LP (to name)
-        db 0x20, 0x00, '!8>', 0x00
-        db '!8', 0x00, 0x00, 0x00, 0x00, 0x00
+; Far data, paragraph 3821h, 96 bytes: messages for importing databases. Used by ExportTeamToFloppy,
+; ImportMasterLeague.
+str_ImportingMasterDatabases:                   ; string 'Importing Master Databases.'
+        db 'Importing Master Databases.', 0x00
+msgImportingMasterDatabases:                    ; message list of 1 far string pointer: 'Importing Master
+                                                ; Databases.'; used by LP
+        dw str_ImportingMasterDatabases, 0x3821
+str_ErrorWhileExportingPlayer:                  ; string 'Error while exporting player!'
+        db 'Error while exporting player!', 0x00
+str_PlayerNotExported:                          ; string 'Player not exported!'
+        db 'Player not exported!', 0x00
+msgErrorWhileExportingPlayerPlayer:             ; message list of 2 far string pointers: 'Error while
+                                                ; exporting player! / Player not exported!'; used by LP
+        dw str_ErrorWhileExportingPlayer, 0x3821
+        dw str_PlayerNotExported, 0x3821
+        db 0x00, 0x00, 0x00, 0x00, 0x00

@@ -19,20 +19,20 @@ InitMenuRemap:
         mov ax, 0x3a0b
         mov ds, ax
 .1:
-        mov byte [bx + f_3A0B_AF4C], 0x0
+        mov byte [bx + MenuRemap], 0x0
         inc bx
         cmp bx, 0x15
         jl short .1
         mov bx, 0x15
 .2:
         lea ax, [bx - 0x15]
-        mov [bx + f_3A0B_AF4C], al
+        mov [bx + MenuRemap], al
         inc bx
         cmp bx, 0x40
         jl short .2
         mov bx, 0x40
 .3:
-        mov [bx + f_3A0B_AF4C], bl
+        mov [bx + MenuRemap], bl
         inc bx
         cmp bx, 0x100
         jl short .3
@@ -47,15 +47,15 @@ InitMenuRemap:
         mov ds, ax
 .6:
         db 0x8B, 0xC6                           ; insn: mov ax, si
-        mov [si + f_3A0B_AF4C], al
-        mov [si + f_3A0B_AFCC], al
+        mov [si + MenuRemap], al
+        mov [si + MenuRemap2], al
         inc si
         cmp si, 0x80
         jl short .6
         jmp short .4
 .7:
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0FEF:SetRemapTable
         add sp, 0x4
         pop si
@@ -65,7 +65,7 @@ InitMenuRemap:
 
 ;-----------------------------------------------------------------------------
 ; DrawTextFmt                                                2095:0076  94 PC
-; Sprintf with one argument into g_CFD4, then DrawText.
+; Sprintf with one argument into statstext, then DrawText.
 ;
 ; Takes 4 words of stack arguments. Calls _sprintf, DrawText. Far routine (retf).
 ;-----------------------------------------------------------------------------
@@ -74,12 +74,12 @@ DrawTextFmt:
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push word [bp + 0xc]
         push word [bp + 0xa]
-        push word 0xcfd4
+        push word statstext
         call 0x0000:_sprintf
         db 0x8B, 0xE5                           ; insn: mov sp, bp
         push word [bp + 0x8]
         push word [bp + 0x6]
-        push word 0xcfd4
+        push word statstext
         call 0x0FEF:DrawText
         leave
         retf
@@ -97,12 +97,12 @@ DrawTextFmt2:
         push word [bp + 0xe]
         push word [bp + 0xc]
         push word [bp + 0xa]
-        push word 0xcfd4
+        push word statstext
         call 0x0000:_sprintf
         db 0x8B, 0xE5                           ; insn: mov sp, bp
         push word [bp + 0x8]
         push word [bp + 0x6]
-        push word 0xcfd4
+        push word statstext
         call 0x0FEF:DrawText
         leave
         retf
@@ -118,32 +118,32 @@ CmpPoints:
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
         push si
-        cmp word [ss:g_200E], 0x0
+        cmp word [ss:statscontext], 0x0
         jnz short .1
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         mov dx, [ss:statsskaterbuf]
         jmp short .2
 .1:
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         mov dx, [ss:statsskaterbuf]
         add ax, strict word 0x12
 .2:
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov ds, dx
-        cmp word [ss:g_200E], 0x0
+        cmp word [ss:statscontext], 0x0
         jnz short .3
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         jmp short .4
 .3:
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         mov dx, [ss:statsskaterbuf]
         add ax, strict word 0x12
 .4:
@@ -202,32 +202,32 @@ CmpGAA:
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
         push si
-        cmp word [ss:g_200E], 0x0
+        cmp word [ss:statscontext], 0x0
         jnz short .1
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x36
-        add ax, [ss:g_C040]
+        add ax, [ss:statsgoaliebufseg]
         mov dx, [ss:statsgoaliebuf]
         jmp short .2
 .1:
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x36
-        add ax, [ss:g_C040]
+        add ax, [ss:statsgoaliebufseg]
         mov dx, [ss:statsgoaliebuf]
         add ax, strict word 0x16
 .2:
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov ds, dx
-        cmp word [ss:g_200E], 0x0
+        cmp word [ss:statscontext], 0x0
         jnz short .3
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x36
-        add ax, [ss:g_C040]
+        add ax, [ss:statsgoaliebufseg]
         jmp short .4
 .3:
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x36
-        add ax, [ss:g_C040]
+        add ax, [ss:statsgoaliebufseg]
         mov dx, [ss:statsgoaliebuf]
         add ax, strict word 0x16
 .4:
@@ -511,10 +511,10 @@ GetSeasonTitle:
         enter 0xe, 0x0
         push di
         push si
-        mov es, [g_8C62]
-        cmp byte [es:0x0], 0x1
+        mov es, [segSeasonTitles1]
+        cmp byte [es:titleSeason], 0x1
         jnz short .2
-        mov ax, 0x2
+        mov ax, titleSeason + 2
         mov cx, 0x384b
 .1:
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -523,33 +523,33 @@ GetSeasonTitle:
         jmp short .7
         db 0x90
 .2:
-        mov es, [g_8C64]
-        cmp byte [es:0x13], 0x1
+        mov es, [segSeasonTitles2]
+        cmp byte [es:titlePlayoffs], 0x1
         jnz short .3
-        mov ax, 0x15
+        mov ax, titlePlayoffs + 2
         mov cx, 0x384b
         jmp short .6
 .3:
-        mov es, [g_8C66]
-        cmp byte [es:0x29], 0x1
+        mov es, [segSeasonTitles3]
+        cmp byte [es:titleLeagueSeason], 0x1
         jnz short .4
-        mov ax, 0x2b
+        mov ax, titleLeagueSeason + 2
         mov cx, 0x384b
         jmp short .1
 .4:
-        mov es, [g_8C68]
-        cmp byte [es:0x3d], 0x1
+        mov es, [segSeasonTitles4]
+        cmp byte [es:titleLeagueSeasonPlayoffs], 0x1
         jnz short .5
-        mov ax, 0x3f
+        mov ax, titleLeagueSeasonPlayoffs + 2
         mov cx, 0x384b
         jmp short .6
 .5:
         mov si, [bp - 0xa]
         mov di, [bp - 0x6]
-        mov es, [g_8C6A]
-        cmp byte [es:0x5b], 0x1
+        mov es, [segSeasonTitles5]
+        cmp byte [es:titleLeaguePlayoffs], 0x1
         jnz short .7
-        mov ax, 0x5d
+        mov ax, titleLeaguePlayoffs + 2
         mov cx, 0x384b
 .6:
         db 0x8B, 0xF0                           ; insn: mov si, ax

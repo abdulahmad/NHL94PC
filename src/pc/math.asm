@@ -1,10 +1,10 @@
 ; Integer maths: square root of a long, and a vector turned into one of 8 directions.
 
 ;-----------------------------------------------------------------------------
-; NullFar4                                                    0D5F:0000  94 PC
-; A lone retf.
+; DrawShadowTextF2Tail                                        0D5F:0000  94 PC
+; End of DrawShadowTextF2.
 ;-----------------------------------------------------------------------------
-NullFar4:
+DrawShadowTextF2Tail:                           ; end of DrawShadowTextF2
         leave
         retf
 
@@ -121,5 +121,5 @@ VectorToDir8:
 .4:
         shl cx, 1
         db 0x3B, 0xC8                           ; insn: cmp cx, ax
-        db 0x72, 0x03                           ; insn: jc 0xc1
+        jc short VectorToDir8Tail + 0xC0
         db 0x83, 0xCB

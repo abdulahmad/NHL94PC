@@ -66,7 +66,7 @@ AskYesNoBox:
         call 0x03A3:SaveCharTab
         pop bx
         push word 0x39ad                        ; segment of the font table far data
-        push strict word 0x0
+        push strict word FontTable
         call 0x03A3:UseCharSeg
         add sp, 0x4
         mov ax, [bp + 0x6]
@@ -80,8 +80,8 @@ AskYesNoBox:
         mov es, [DgroupSegF]
         mov bx, [CurPage]
         shl bx, byte 0x2
-        push word [es:bx + 0x7572]
-        push word [es:bx + 0x7570]
+        push word [es:bx + PageTableSeg]
+        push word [es:bx + PageTable]
         mov [bp - 0x5c], ax
         mov [bp - 0x5e], cx
         call 0x0FEF:SetCanvasClip
@@ -141,8 +141,8 @@ AskYesNoBox:
         mov es, [DgroupSegF]
         mov bx, [CurPage]
         shl bx, byte 0x2
-        push word [es:bx + 0x7572]
-        push word [es:bx + 0x7570]
+        push word [es:bx + PageTableSeg]
+        push word [es:bx + PageTable]
         call 0x0FEF:SetCanvasClip
         add sp, 0xc
         mov si, [bp + 0x4]
@@ -180,8 +180,8 @@ AskYesNoBox:
         mov es, [DgroupSegF]
         mov bx, [CurPage]
         shl bx, byte 0x2
-        push word [es:bx + 0x7572]
-        push word [es:bx + 0x7570]
+        push word [es:bx + PageTableSeg]
+        push word [es:bx + PageTable]
         call 0x0FEF:SetCanvasClip
         add sp, 0xc
         call far [MouseShowFn]
@@ -225,7 +225,7 @@ AskExitToDos:
         call AskYesNoBox
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .1
-        call 0x0F4A:NullFar5
+        call 0x0F4A:NullQuitHook
 .1:
         retf
         db 0x90
@@ -254,7 +254,7 @@ PauseBox:
         call 0x03A3:SaveCharTab
         pop bx
         push word 0x39ad                        ; segment of the font table far data
-        push strict word 0x0
+        push strict word FontTable
         call 0x03A3:UseCharSeg
         add sp, 0x4
         mov ax, [bp - 0x2]
@@ -270,8 +270,8 @@ PauseBox:
         mov es, [DgroupSegF]
         mov bx, [CurPage]
         shl bx, byte 0x2
-        push word [es:bx + 0x7572]
-        push word [es:bx + 0x7570]
+        push word [es:bx + PageTableSeg]
+        push word [es:bx + PageTable]
         call 0x0FEF:SetCanvasClip
         add sp, 0xc
         call far [MouseHideFn]

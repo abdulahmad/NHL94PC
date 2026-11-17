@@ -5,8 +5,8 @@
 ; PadTimerTickTail                                            09B2:0000  94 PC
 ; The last instructions of PadTimerTick, in the next paragraph.
 ;-----------------------------------------------------------------------------
-PadTimerTickTail:
-        std
+PadTimerTickTail:                               ; end of PadTimerTick
+        db 0xFD                                 ; last byte of the call to ReadHotKey in the segment before
         add sp, 0x2
         inc word [PadRepeatDelay]
 .1:
@@ -223,7 +223,7 @@ InitSpeechBank:
         push 0x80
         push word [bp + 0x8]
         push word [bp + 0x6]
-        push word 0x76e
+        push word str_Speechbuf
         call 0x14DB:InsertRecWrap
         add sp, 0x8
         les bx, [SpeechBank]
@@ -319,7 +319,7 @@ SpeechInit:
         push 0x0
         push 0x0
         push 0x34
-        push word 0x778
+        push word str_Sentence
         call 0x14DB:AllocRecData
         db 0x8B, 0xE5                           ; insn: mov sp, bp
         mov [SentencePtr], ax
@@ -329,7 +329,7 @@ SpeechInit:
         push 0x0
         push 0x0
         push word 0x122c
-        push word 0x781
+        push word str_SpeechBank
         call 0x14DB:AllocRecData
         db 0x8B, 0xE5                           ; insn: mov sp, bp
         mov [SpeechBank], ax
@@ -342,7 +342,7 @@ SpeechInit:
         push 0x0
         push 0x0
         push word 0x10c
-        push word 0x78d
+        push word str_SampleMemMan
         call 0x14DB:AllocRecData
         db 0x8B, 0xE5                           ; insn: mov sp, bp
         mov [WantedList], ax
@@ -494,7 +494,7 @@ MakePauseSample:
         push 0x80
         push 0x0
         push word 0x100
-        push word 0x79c
+        push word str_Pause
         call 0x14DB:InsertRecWrap
         add sp, 0x8
         mov [bp - 0x10], ax
@@ -723,7 +723,7 @@ OpenSpeechFile:
         push word [bp + 0x6]
         mov ax, [SpeechBank]
         mov dx, [SpeechBankSeg]
-        add ax, 0x1218
+        add ax, SpeechFileNames
         push dx
         push ax
         call 0x03A3:CopyStrNFar
@@ -906,8 +906,9 @@ OpenSpeechFile:
         int 0x3b
         db 0x6E, 0xD2                           ; emulated fild qword [bp - 0x2e]
         int 0x38
-        db 0x0E, 0x0A, 0x8B                     ; emulated fmul qword [0x8b0a]
-        call 0x0000:EmulatedFloat
+        db 0x0E                                 ; emulated fmul qword [CentisPerSample]
+        dw CentisPerSample
+        call 0x0000:__aFftol
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         mov ax, [bp + 0x8]
         db 0x8B, 0xDA                           ; insn: mov bx, dx
@@ -1754,13 +1755,13 @@ NumberSampleNames:
         db 0x0B, 0xD2                           ; insn: or dx, dx
         jnz short .2
         push word 0x342f                        ; segment of the number words far data
-        push strict word 0x1
+        push strict word str_Zero
         push ds
         push word [bp + 0x8]
         call 0x0000:_fstrcpy
         add sp, 0x8
         push word 0x342f                        ; segment of the number words far data
-        push strict word 0x0
+        push strict word str_NoNumber
 .1:
         mov ax, [bp + 0x8]
         add ax, strict word 0xd
@@ -1896,7 +1897,7 @@ DivisionSampleName:
         ja short DivisionSampleNameJumpTable.1
         shl ax, 1
         xchg ax, bx
-        jmp [cs:bx + 0x1154]
+        jmp [cs:bx + DivisionSampleNameJumpTable]
 DivisionSampleNameJumpTable:                    ; word; used by DivisionSampleName
         dw DivisionSampleName.1
         dw DivisionSampleName.3

@@ -1,5 +1,21 @@
 ; The VGA graphics library: canvases and clipping, lines and rectangles, RLE and block shapes,
 ; palettes, retrace waits and the screen pages.
+
+; Fields of the font header at offset 0 of the font segment (CharSeg); the text routines address them
+; through ds. FontCharTable is the table of glyph offsets, one word per character.
+FontInk		equ	0x00
+FontPaper	equ	0x02
+FontLeft	equ	0x04
+FontRight	equ	0x06
+FontX		equ	0x08
+FontY		equ	0x0A
+FontRowBytes	equ	0x0C
+FontHeight	equ	0x0E
+FontAdvance	equ	0x10
+FontLineStep	equ	0x12
+FontProportional equ	0x14
+FontCharTable	equ	0x16
+
         call 0x0FEF:DrawText
         add sp, 0x6
         pop si
@@ -185,7 +201,7 @@ FillRect:
         cmp word [bp + 0xc], 0x0
         jng short FillRectClip.4
         mov ax, [CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .3
         mov es, ax
         mov dx, 0x3c4
@@ -228,7 +244,7 @@ FillRect:
 
 ;-----------------------------------------------------------------------------
 ; UseCurrentPage                                              0FEF:01A6  94 PC
-; Points CurCanvas at the page in g_74DC.
+; Points CurCanvas at the page in CurPage.
 ;-----------------------------------------------------------------------------
 UseCurrentPage:
         mov bx, [CurPage]
@@ -257,9 +273,9 @@ DrawText:
         push di
         mov ds, [CharSeg]
         mov ax, [bp + 0x8]
-        mov [0x8], ax
+        mov [FontX], ax
         mov ax, [bp + 0xa]
-        mov [0xa], ax
+        mov [FontY], ax
         jmp short DrawTextAt.1
 
 ;-----------------------------------------------------------------------------
@@ -286,7 +302,7 @@ DrawTextAt:
         inc word [bp + 0x6]
         db 0x32, 0xFF                           ; insn: xor bh, bh
         db 0x03, 0xDB                           ; insn: add bx, bx
-        add bx, 0x16
+        add bx, FontCharTable
         mov si, [bx]
         cmp si, 0x0
         jnz short .5
@@ -295,10 +311,10 @@ DrawTextAt:
         cmp al, 0xa
         jnz short .2
 .3:
-        mov ax, [0x4]
-        mov [0x8], ax
-        mov ax, [0x12]
-        add [0xa], ax
+        mov ax, [FontLeft]
+        mov [FontX], ax
+        mov ax, [FontLineStep]
+        add [FontY], ax
         jmp short .2
 .4:
         pop di
@@ -307,19 +323,19 @@ DrawTextAt:
         leave
         retf
 .5:
-        mov ax, [0x8]
+        mov ax, [FontX]
         mov [bp - 0x2], ax
-        cmp byte [0x14], 0x0
+        cmp byte [FontProportional], 0x0
         jz short .6
         mov al, [si]
         db 0x32, 0xE4                           ; insn: xor ah, ah
         inc si
-        mov [0x10], ax
+        mov [FontAdvance], ax
         add ax, 0x7
         shr ax, 1
         shr ax, 1
         shr ax, 1
-        mov [0xc], al
+        mov [FontRowBytes], al
 .6:
         mov [bp - 0xc], si
         mov ax, [bp - 0x2]
@@ -329,7 +345,7 @@ DrawTextAt:
         mov [bp - 0x6], ax
         and bx, 0x3
         mov ax, es
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jz short .7
         jmp near .17
 .7:
@@ -342,17 +358,17 @@ DrawTextAt:
         mov al, 0x2
         out dx, ax
         mov dx, [bp - 0x8]
-        mov al, [0x0]
-        mov ah, [0x2]
-        mov cx, [0xe]
+        mov al, [FontInk]
+        mov ah, [FontPaper]
+        mov cx, [FontHeight]
         mov [bp - 0x4], cx
-        mov bx, [0xa]
+        mov bx, [FontY]
         db 0x03, 0xDB                           ; insn: add bx, bx
         add bx, [ss:CanvasRows]
 .9:
         mov di, [ss:bx]
         add di, [bp - 0x6]
-        mov cl, [0xc]
+        mov cl, [FontRowBytes]
 .10:
         mov ch, [si]
         inc si
@@ -380,8 +396,8 @@ DrawTextAt:
         mov [bp - 0x9], ah
         jmp short .8
 .14:
-        mov ax, [0x10]
-        add [0x8], ax
+        mov ax, [FontAdvance]
+        add [FontX], ax
         jmp near .2
 .15:
         inc di
@@ -399,17 +415,17 @@ DrawTextAt:
         mov dx, 0x8008
 .18:
         mov si, [bp - 0xc]
-        mov al, [0x0]
-        mov ah, [0x2]
-        mov cx, [0xe]
+        mov al, [FontInk]
+        mov ah, [FontPaper]
+        mov cx, [FontHeight]
         mov [bp - 0x4], cx
-        mov bx, [0xa]
+        mov bx, [FontY]
         db 0x03, 0xDB                           ; insn: add bx, bx
         add bx, [ss:CanvasRows]
 .19:
         mov di, [ss:bx]
         add di, [bp - 0x6]
-        mov cl, [0xc]
+        mov cl, [FontRowBytes]
 .20:
         mov ch, [si]
         inc si
@@ -497,10 +513,10 @@ InitGraphics:
         call 0x03A3:SaveMode
         mov ax, 0x40
         mov es, ax
-        mov ax, [es:0x10]
+        mov ax, [es:BiosEquipment]
         and ax, -0x31
         or ax, 0x10
-        mov [es:0x10], ax
+        mov [es:BiosEquipment], ax
         mov ah, 0xb
         mov bx, 0x0
         int 0x10
@@ -610,7 +626,7 @@ SetRemapTable:
         push di
         mov ax, ds
         mov es, ax
-        mov di, 0x730a
+        mov di, RemapTable
         lds si, [bp + 0x6]
         cld
         mov cx, 0x80
@@ -632,7 +648,7 @@ GetRemapTable:
         push si
         push di
         les di, [bp + 0x6]
-        mov si, 0x730a
+        mov si, RemapTable
         cld
         mov cx, 0x80
         rep movsw
@@ -656,7 +672,7 @@ SetRemapRange:
         lds si, [bp + 0xa]
         mov ax, ss
         mov es, ax
-        mov di, 0x730a
+        mov di, RemapTable
         add di, [bp + 0x6]
         cld
         rep movsb
@@ -845,7 +861,7 @@ PutBlockBody:
         and bx, 0x3
         mov word [bp - 0x1a], 0x4
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jz short .10
         jmp near .14
 .10:
@@ -1046,7 +1062,7 @@ DrawRawBody:
         mov [bp - 0x2], ax
         and bx, 0x3
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .5
         mov es, ax
         mov ah, [ss:bx + DrawRawMasks]
@@ -1287,7 +1303,7 @@ DrawRleBody:
         and bx, 0x3
         mov word [bp - 0x10], 0x4
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .9
         jmp near .32
 .9:
@@ -1704,7 +1720,7 @@ DrawRleFastBody:
         add ax, [ss:di]
         mov [bp - 0xe], ax
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jz short .1
         cmp word [bp - 0xc], 0x0
         jz short .3
@@ -1930,13 +1946,13 @@ DrawText2:
         push di
         mov ax, [bp + 0x6]
         mov [Text2Color], al
-        mov ax, 0x7438
+        mov ax, Text2Color
         mov [bp + 0x6], ax
         mov ds, [CharSeg]
         mov ax, [bp + 0x8]
-        mov [0x8], ax
+        mov [FontX], ax
         mov ax, [bp + 0xa]
-        mov [0xa], ax
+        mov [FontY], ax
         jmp short DrawChar.1
 
 ;-----------------------------------------------------------------------------
@@ -1952,13 +1968,26 @@ DrawChar:
         push di
         mov ds, [CharSeg]
         mov ax, [bp + 0x8]
-        mov [0x8], ax
+        mov [FontX], ax
         mov ax, [bp + 0xa]
-        mov [0xa], ax
+        mov [FontY], ax
         jmp short .1
-        db 0x00, 0x80, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC, 0xFE, 0xFF, 0x55, 0x8B, 0xEC, 0x83, 0xC4, 0xF0, 0x1E, 0x56, 0x57
-        db 0x8E, 0x1E, 0x50, 0x6D
-.1:
+LeftMasks:                                      ; byte masks with the top 0 to 8 bits set; the DrawChar body
+                                                ; indexes it by the width of the glyph's last byte
+        db 0x00, 0x80, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC, 0xFE, 0xFF
+;-----------------------------------------------------------------------------
+; DrawCharSame                                                0FEF:0EA9  94 PC
+; The DrawChar prologue again, then the shared body. Not called in the EXE.
+;-----------------------------------------------------------------------------
+DrawCharSame:
+        push bp
+        db 0x8B, 0xEC                           ; insn: mov bp, sp
+        add sp, -0x10
+        push ds
+        push si
+        push di
+        mov ds, [CharSeg]
+DrawChar.1:
         cld
         mov es, [ss:CanvasSeg]
 .2:
@@ -1970,7 +1999,7 @@ DrawChar:
         inc word [bp + 0x6]
         db 0x32, 0xFF                           ; insn: xor bh, bh
         db 0x03, 0xDB                           ; insn: add bx, bx
-        add bx, 0x16
+        add bx, FontCharTable
         mov si, [bx]
         cmp si, 0x0
         jnz short .5
@@ -1979,10 +2008,10 @@ DrawChar:
         cmp al, 0xa
         jnz short .2
 .3:
-        mov ax, [0x4]
-        mov [0x8], ax
-        mov ax, [0x12]
-        add [0xa], ax
+        mov ax, [FontLeft]
+        mov [FontX], ax
+        mov ax, [FontLineStep]
+        add [FontY], ax
         jmp short .2
 .4:
         pop di
@@ -1991,19 +2020,19 @@ DrawChar:
         leave
         retf
 .5:
-        mov ax, [0x8]
+        mov ax, [FontX]
         mov [bp - 0x2], ax
-        cmp byte [0x14], 0x0
+        cmp byte [FontProportional], 0x0
         jz short .6
         mov al, [si]
         db 0x32, 0xE4                           ; insn: xor ah, ah
         inc si
-        mov [0x10], ax
+        mov [FontAdvance], ax
         add ax, 0x7
         shr ax, 1
         shr ax, 1
         shr ax, 1
-        mov [0xc], al
+        mov [FontRowBytes], al
 .6:
         mov [bp - 0xc], si
         mov ax, [bp - 0x2]
@@ -2013,7 +2042,7 @@ DrawChar:
         mov [bp - 0x6], ax
         and bx, 0x3
         mov ax, es
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jz short .7
         jmp near .20
 .7:
@@ -2026,28 +2055,28 @@ DrawChar:
         mov al, 0x2
         out dx, ax
         mov dx, [bp - 0x8]
-        mov al, [0x0]
-        mov ah, [0x2]
-        mov cx, [0xe]
+        mov al, [FontInk]
+        mov ah, [FontPaper]
+        mov cx, [FontHeight]
         mov [bp - 0x4], cx
-        mov bx, [0xa]
+        mov bx, [FontY]
         db 0x03, 0xDB                           ; insn: add bx, bx
         add bx, [ss:CanvasRows]
 .9:
         mov di, [ss:bx]
         add di, [bp - 0x6]
-        mov cl, [0xc]
+        mov cl, [FontRowBytes]
 .10:
         push bx
         mov bx, 0x8
         cmp cl, 0x1
         jnz short .11
-        mov bx, [0x10]
+        mov bx, [FontAdvance]
         dec bx
         and bx, 0x7
         inc bx
 .11:
-        mov bl, [cs:bx + 0xea0]
+        mov bl, [cs:bx + LeftMasks]
         mov [bp - 0xf], bl
         pop bx
         mov ch, [si]
@@ -2076,8 +2105,8 @@ DrawChar:
         mov [bp - 0x9], ah
         jmp short .8
 .15:
-        mov ax, [0x10]
-        add [0x8], ax
+        mov ax, [FontAdvance]
+        add [FontX], ax
         jmp near .2
 .16:
         add di, 0x2
@@ -2107,28 +2136,28 @@ DrawChar:
         mov dx, 0x8008
 .21:
         mov si, [bp - 0xc]
-        mov al, [0x0]
-        mov ah, [0x2]
-        mov cx, [0xe]
+        mov al, [FontInk]
+        mov ah, [FontPaper]
+        mov cx, [FontHeight]
         mov [bp - 0x4], cx
-        mov bx, [0xa]
+        mov bx, [FontY]
         db 0x03, 0xDB                           ; insn: add bx, bx
         add bx, [ss:CanvasRows]
 .22:
         mov di, [ss:bx]
         add di, [bp - 0x6]
-        mov cl, [0xc]
+        mov cl, [FontRowBytes]
 .23:
         push bx
         mov bx, 0x8
         cmp cl, 0x1
         jnz short .24
-        mov bx, [0x10]
+        mov bx, [FontAdvance]
         dec bx
         and bx, 0x7
         inc bx
 .24:
-        mov bl, [cs:bx + 0xea0]
+        mov bl, [cs:bx + LeftMasks]
         mov [bp - 0xf], bl
         pop bx
         mov ch, [si]
@@ -2227,9 +2256,9 @@ CopyPlane:
         mov al, 0xc
         mov dx, 0x40
         mov es, dx
-        mov dx, [es:0x63]
+        mov dx, [es:BiosCrtcPort]
         out dx, ax
-        mov [es:0x4e], bx
+        mov [es:BiosPageStart], bx
         mov byte [CopyActive], 0x0
         mov word [HoldWord], 0x0
         leave
@@ -2247,8 +2276,8 @@ CopyPlane:
         mov [CopySrcPage], al
         mov dx, 0x40
         mov es, dx
-        mov [es:0x4e], bx
-        mov dx, [es:0x63]
+        mov [es:BiosPageStart], bx
+        mov dx, [es:BiosCrtcPort]
         add dl, 0x6
         cmp word [CopyOffset], 0x0
         jnz short .11
@@ -2338,7 +2367,7 @@ UseOtherPage:
 
 ;-----------------------------------------------------------------------------
 ; GetPage                                                     0FEF:11B1  94 PC
-; Returns g_74DC.
+; Returns CurPage.
 ;-----------------------------------------------------------------------------
 GetPage:
         mov ax, [CurPage]
@@ -2429,7 +2458,7 @@ GetBlockBody:
         add bx, [ss:CanvasRows]
         mov [bp - 0x6], bx
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .4
         mov ds, ax
         mov es, [bp + 0x8]
@@ -2509,7 +2538,7 @@ GetPixel:
         push si
         push di
         mov ax, [CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .2
         mov es, ax
         mov bx, [bp + 0x6]
@@ -2551,7 +2580,7 @@ SetStartPage:
         mov [PageBase], ax
         mov ax, 0x40
         mov es, ax
-        mov dx, [es:0x63]
+        mov dx, [es:BiosCrtcPort]
         mov ax, [bp + 0x6]
         db 0x03, 0xC0                           ; insn: add ax, ax
         db 0x8A, 0xFC                           ; insn: mov bh, ah
@@ -2786,7 +2815,7 @@ DrawRawTransBody:
         and bx, 0x3
         mov word [bp - 0x16], 0x4
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jz short .10
         jmp near .17
 .10:
@@ -3007,7 +3036,7 @@ DrawRleFlipBody:
         add ax, [ss:di]
         mov [bp - 0xe], ax
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .1
         jmp near .15
 .1:
@@ -3376,7 +3405,7 @@ DrawRleTransBody:
         and bx, 0x3
         mov word [bp - 0x10], 0x4
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .9
         jmp near .35
 .9:
@@ -3836,7 +3865,7 @@ DrawRleTransFastBody:
         add ax, [ss:di]
         mov [bp - 0xe], ax
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jz short .1
         cmp word [bp - 0xc], 0x0
         jz short .3
@@ -4265,7 +4294,7 @@ DrawRawTransRemapBody:
         and bx, 0x3
         mov word [bp - 0x16], 0x4
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jz short .10
         jmp near .17
 .10:
@@ -4487,7 +4516,7 @@ DrawRleTransRemapBody:
         add ax, [ss:di]
         mov [bp - 0xe], ax
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jz short .1
         cmp word [bp - 0xc], 0x0
         jz short .3
@@ -4970,7 +4999,7 @@ DrawRleFlipTransBody:
         and bx, 0x3
         mov word [bp - 0x10], 0x4
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .9
         jmp near .38
 .9:
@@ -5550,7 +5579,7 @@ DrawRleFlipTransRemapBody:
         and bx, 0x3
         mov word [bp - 0x10], 0x4
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .9
         jmp near .38
 .9:
@@ -6073,7 +6102,7 @@ DrawRleFlipRemapBody:
         add ax, [ss:di]
         mov [bp - 0xe], ax
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .1
         jmp near .15
 .1:
@@ -6458,7 +6487,7 @@ DrawRleTransRemapFastBody:
         and bx, 0x3
         mov word [bp - 0x10], 0x4
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .9
         jmp near .38
 .9:
@@ -7150,7 +7179,7 @@ XorRectRegs:
         cmp word [bp + 0xc], 0x0
         jng short XorRect.4
         mov ax, [CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .3
         mov es, ax
         mov dx, 0x3ce
@@ -7239,7 +7268,7 @@ CopyPageToPage:
         mov ax, [CanvasRowBytes]
         sub ax, [bp - 0x4]
         mov [bp - 0x6], ax
-        mov ax, 0xa000
+        mov ax, VgaMem
         mov es, ax
         mov ds, ax
         mov bx, [bp + 0xe]
@@ -7248,7 +7277,7 @@ CopyPageToPage:
         mov [bp - 0x8], si
         mov [bp - 0xa], di
         db 0x03, 0xDB                           ; insn: add bx, bx
-        jmp [cs:bx + 0x367a]
+        jmp [cs:bx + CopyPageToPageJumpTable]
 CopyPageToPageJumpTable:                        ; word; used by CopyPageToPage
         dw .1
         dw .3
@@ -7368,7 +7397,7 @@ CopyPageRect:
         mov ax, [CanvasRowBytes]
         sub ax, [bp - 0x4]
         mov [bp - 0x6], ax
-        mov ax, 0xa000
+        mov ax, VgaMem
         mov es, ax
         mov ds, ax
         mov bx, [bp + 0x10]
@@ -7377,7 +7406,7 @@ CopyPageRect:
         mov [bp - 0x8], si
         mov [bp - 0xa], di
         db 0x03, 0xDB                           ; insn: add bx, bx
-        jmp [cs:bx + 0x377b]
+        jmp [cs:bx + CopyPageRectJumpTable]
 CopyPageRectJumpTable:                          ; word; used by CopyPageRect
         dw .1
         dw .3
@@ -7548,7 +7577,7 @@ AllocCanvases:
         mov [bp - 0x2], ax
         mov ax, [bp - 0x4]
         mov [es:bx], ax
-        mov ax, 0xa000
+        mov ax, VgaMem
         mov [es:bx + 0x2], ax
         mov [es:bx + 0x4], ax
         mov [es:bx + 0x6], ax
@@ -7619,7 +7648,7 @@ AllocCanvases:
         shr ax, 1
         db 0x8A, 0xE0                           ; insn: mov ah, al
         mov al, 0x13
-        mov dx, [es:0x63]
+        mov dx, [es:BiosCrtcPort]
         out dx, ax
         mov byte [CopyActive], 0x1
         db 0x33, 0xC0                           ; insn: xor ax, ax
@@ -7725,7 +7754,7 @@ ClearScreenColor:
         mov ax, 0xf02
         mov dx, 0x3c4
         out dx, ax
-        mov ax, 0xa000
+        mov ax, VgaMem
         mov es, ax
         mov ax, [bp + 0x6]
         db 0x8A, 0xE0                           ; insn: mov ah, al
@@ -7740,7 +7769,7 @@ ClearScreenColor:
 
 ;-----------------------------------------------------------------------------
 ; DrawScaledColor                                             0FEF:3AA8  94 PC
-; Sets g_7664/g_7666 then enters DrawScaled.
+; Sets ScaleColor/ScaleMode then enters DrawScaled.
 ;-----------------------------------------------------------------------------
 DrawScaledColor:
         push bp
@@ -7775,7 +7804,7 @@ DrawScaled:
         db 0x03, 0xF6                           ; insn: add si, si
         add si, [CanvasRows]
         mov ax, [CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jz short .3
         jmp near .11
 .3:
@@ -7937,7 +7966,7 @@ DrawScaled:
         and bx, 0x3
         db 0x03, 0xDB                           ; insn: add bx, bx
         mov dx, [ScaleColor]
-        jmp [cs:bx + 0x3c53]
+        jmp [cs:bx + DrawScaledJumpTable]
 DrawScaledJumpTable:                            ; word; used by DrawScaled
         dw .4
         dw .3
@@ -8006,7 +8035,7 @@ DrawLineClipped:
         mov ax, [si + 0xc]
         mov [bp - 0xa], ax
         mov ax, [CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jz short .1
         jmp near DrawLineClippedJumpTable.34
 .1:
@@ -8014,7 +8043,7 @@ DrawLineClipped:
         mov dx, 0x3c4
         mov bx, [si + 0x12]
         db 0x03, 0xDB                           ; insn: add bx, bx
-        jmp [cs:bx + 0x3cee]
+        jmp [cs:bx + DrawLineClippedJumpTable]
 DrawLineClippedJumpTable:                       ; word; used by DrawLineClipped
         dw .1
         dw .1
@@ -8280,8 +8309,8 @@ DrawLineClippedJumpTable:                       ; word; used by DrawLineClipped
 .34:
         mov bx, [si + 0x12]
         db 0x03, 0xDB                           ; insn: add bx, bx
-        jmp [cs:bx + 0x3f22]
-DrawLineClippedJumpTable2:                      ; word; not used in the EXE (overlays may use it)
+        jmp [cs:bx + DrawLineClippedJumpTable2]
+DrawLineClippedJumpTable2:                      ; word; used by DrawLineClipped
         dw .1
         dw .1
         dw .3
@@ -8732,11 +8761,11 @@ CopyPlanesRect:
         mov ax, [CanvasRowBytes]
         sub ax, [bp - 0xa]
         mov [bp - 0x8], ax
-        mov ax, 0xa000
+        mov ax, VgaMem
         mov ds, ax
         cld
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .2
         mov es, ax
         mov dx, 0x3c4
@@ -8869,7 +8898,7 @@ DrawRawFastBody:
         mov [bp - 0x2], ax
         and bx, 0x3
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .8
         mov es, ax
         mov ah, [ss:bx + DrawRawFastMasks]
@@ -9041,7 +9070,7 @@ DrawRawTransFastBody:
         mov [bp - 0x2], ax
         and bx, 0x3
         mov ax, [ss:CanvasSeg]
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .8
         mov es, ax
         mov ah, [ss:bx + DrawRawTransFastMasks]
@@ -9558,7 +9587,7 @@ FillPolySpans:
         mov [bp - 0x2], si
         mov ax, [CanvasSeg]
         mov es, ax
-        cmp ax, 0xa000
+        cmp ax, VgaMem
         jnz short .3
         mov dx, 0x3c4
 .1:

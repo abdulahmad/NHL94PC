@@ -13,7 +13,7 @@ joyq_pop:
         cmp word [PadRepeatDelay], 0x0
         jng short .2
         mov ax, [PadRepeatOn]
-        mov [g_D46A], ax
+        mov [gameframe], ax
         mov word [PadRepeatOn], 0x0
         dec word [PadRepeatDelay]
         inc word [PadRepeatStep]
@@ -54,7 +54,7 @@ joyq_peek:
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         shl ax, 1
         db 0x03, 0xC1                           ; insn: add ax, cx
-        add ax, 0xafd4
+        add ax, PadReadings
         retf
         db 0x90
 
@@ -86,7 +86,7 @@ lineinput:
         jz short .2
         db 0x8B, 0xDE                           ; insn: mov bx, si
         shl bx, 1
-        mov ax, [bx + g_48D6]
+        mov ax, [bx + lcchoice]
         mov [regd2], ax
         push di
         mov [bp - 0x2], bx
@@ -95,7 +95,7 @@ lineinput:
         add sp, 0x2
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov bx, [bp - 0x2]
-        mov [bx + g_48CE], ax
+        mov [bx + lcsel], ax
         mov [bx + lcboxon], ax
         pop si
         pop di
@@ -106,36 +106,36 @@ lineinput:
         db 0x8B, 0xDE                           ; insn: mov bx, si
         shl bx, 1
         mov [bp - 0x4], bx
-        mov ax, [bx + g_48DE]
-        dec word [bx + g_48DE]
+        mov ax, [bx + lctime]
+        dec word [bx + lctime]
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .5
         mov bx, [bp - 0x4]
-        add word [bx + g_48DE], 0x3c
-        cmp word [bx + g_48DA], 0x3
+        add word [bx + lctime], 0x3c
+        cmp word [bx + lcgroup], 0x3
         jng short .3
         mov bx, [bp - 0x4]
-        mov ax, [bx + g_48D6]
+        mov ax, [bx + lcchoice]
         inc ax
         mov cx, 0x2
         jmp short .4
         db 0x90
 .3:
         mov bx, [bp - 0x4]
-        mov ax, [bx + g_48D6]
+        mov ax, [bx + lcchoice]
         inc ax
         mov cx, 0x4
 .4:
         cwd
         idiv cx
-        mov [bx + g_48D6], dx
+        mov [bx + lcchoice], dx
         mov bx, [bp - 0x4]
-        mov bx, [bx + g_48DA]
+        mov bx, [bx + lcgroup]
         shl bx, 1
-        mov ax, [bx + g_5AF6]
+        mov ax, [bx + LineChoiceKeys]
         mov bx, [bp - 0x4]
-        mov [bx + g_48DA], ax
-        mov word [bx + g_48CE], 0x1
+        mov [bx + lcgroup], ax
+        mov word [bx + lcsel], 0x1
         mov word [bx + lcblink], 0xc
 .5:
         mov bx, [bp - 0x4]
@@ -145,14 +145,14 @@ lineinput:
         jnz short .6
         mov bx, [bp - 0x4]
         add word [bx + lcblink], 0xc
-        cmp word [bx + g_48CE], 0x1
+        cmp word [bx + lcsel], 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         neg ax
-        mov [bx + g_48CE], ax
+        mov [bx + lcsel], ax
 .6:
         test byte [di + 0x44], 0x8
         jz short .7
-        cmp word [g_5BF4], 0x0
+        cmp word [playsuspended], 0x0
         jnz short .7
         test byte [di + 0x44], 0x20
         jnz short .7
@@ -284,7 +284,7 @@ Holdplayer:
 .1:
         mov ax, [si + 0x14]
         shl ax, byte 0x7
-        add ax, 0xb50e
+        add ax, SortCords
         push ax
         push si
         push cs
@@ -394,7 +394,7 @@ doinput:
         inc di
         db 0x8B, 0xDF                           ; insn: mov bx, di
         shl bx, 1
-        cmp word [bx + g_D46C], 0x0
+        cmp word [bx + controlled], 0x0
         jz short .4
         mov ax, [cont1team]
         cmp [cont2team], ax
@@ -420,11 +420,11 @@ doinput:
         jz short .3
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov bx, [bp - 0x2]
-        mov [bx + g_48CE], ax
+        mov [bx + lcsel], ax
         mov [bx + lcboxon], ax
 .3:
         shl di, 1
-        mov word [di + g_D46C], 0x0
+        mov word [di + controlled], 0x0
 .4:
         test byte [gmode2], 0x1
         jz short .6
@@ -447,8 +447,8 @@ doinput:
         jmp short .5
         db 0x90
 .7:
-        mov bx, [g_BC2A]
-        cmp byte [bx + g_BC2C], 0x1c
+        mov bx, [puck_1C]
+        cmp byte [bx + puckasslist], 0x1c
         jnz short .9
         test byte [regd1], 0x10
         jnz short .8
@@ -508,7 +508,7 @@ doinput:
 .17:
         db 0x8B, 0xF8                           ; insn: mov di, ax
         shl di, byte 0x7
-        add di, 0xb50e
+        add di, SortCords
         cmp byte [bp - 0x4], 0x0
         jl short .18
         jmp near .54
@@ -641,7 +641,7 @@ doinput:
 .42:
         mov di, [passplayer]
         shl di, byte 0x7
-        add di, 0xb50e
+        add di, SortCords
         mov ax, [passplayer]
         cmp [si + 0x5e], ax
         jnz short .43
@@ -701,7 +701,7 @@ doinput:
         call 0x28BB:burst
         jmp near .5
 .51:
-        cmp word [g_5BF4], 0x0
+        cmp word [playsuspended], 0x0
         jnz short .54
 .52:
         push word [regd0]
@@ -745,7 +745,7 @@ getlchoice:
         shl ax, byte 0x2
         add [regd0], ax
         mov bx, [regd0]
-        mov al, [bx + g_5B06]
+        mov al, [bx + lchoicetab_m1]
         cbw
         mov [regd0], ax
         pop si
@@ -1023,10 +1023,10 @@ assonetimer:
 .11:
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        mov al, [bx + g_5B67]
+        mov al, [bx + OneTimerDirs2]
         cbw
         mov [regd1], ax
-        mov al, [bx + g_5B66]
+        mov al, [bx + OneTimerDirs]
         cbw
         mov [regd0], ax
         test byte [si + 0x49], 0x8
@@ -1199,7 +1199,7 @@ OneTimerChk:
         mov bx, 0x6
 .6:
         shl bx, byte 0x7
-        add bx, 0xb50e
+        add bx, SortCords
         db 0x2B, 0xD2                           ; insn: sub dx, dx
 .7:
         cmp word [bx + 0x1a], 0x0

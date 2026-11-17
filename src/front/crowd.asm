@@ -2,10 +2,10 @@
 ; the calls that queue spoken lines (goals, penalties, lineups, period and game summaries).
 
 ;-----------------------------------------------------------------------------
-; NullFar6                                                    0EDC:0000  94 PC
-; A lone retf.
+; MessageBoxResetTail                                         0EDC:0000  94 PC
+; End of MessageBoxReset.
 ;-----------------------------------------------------------------------------
-NullFar6:
+MessageBoxResetTail:                            ; end of MessageBoxReset
         retf
         db 0x90
 
@@ -786,7 +786,7 @@ PlayJingle:
         mov word [JingleTempo], 0x14
         mov byte [JinglePan], 0x0
         push ds
-        push word 0xb2d6
+        push word ArenaJingleArg1
         call 0x16F2:StartSong
         mov [JingleHandle], ax
         mov [JingleHandleHi], dx
@@ -855,7 +855,7 @@ PlayArenaJingle:
         db 0x90
 .3:
         cmp si, 0xc
-        db 0x7D, 0x1A                           ; insn: jnl 0x6e1
+        jnl short PlayArenaJingleTail.done + 0x6E0
         shl si, byte 0x2
         push word [si + ArenaJingleArg2]
         push word [si + ArenaJingleArg1]
@@ -864,4 +864,4 @@ PlayArenaJingle:
 .4:
         push cs
         call PlayJingle
-        db 0x83, 0xC4
+        db 0x83, 0xC4                           ; insn: add sp, 0x8: the last byte is in the next segment

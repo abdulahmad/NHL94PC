@@ -189,7 +189,7 @@ AskMasterPassword:
         push ss
         push ax
         push word 0x3a0b
-        push strict word f_3A0B_AF32
+        push strict word leagueinfo_password
         call 0x0000:_fstrcmp
         add sp, 0x8
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -270,7 +270,7 @@ EncryptPassword:
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         mov bx, [bp - 0x4]
         db 0x2B, 0xDE                           ; insn: sub bx, si
-        mov dl, [bx + f_3701_0DC2]
+        mov dl, [bx + PasswordKey]
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         xor [es:bx], dl
         inc si

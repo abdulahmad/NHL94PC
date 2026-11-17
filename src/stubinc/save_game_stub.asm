@@ -2,12 +2,17 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
+exhstate		equ	0x0
 LoadRawHeader		equ	0x2
 LoadPackedHeader		equ	0x8
 GetInputEvent		equ	0xE
+msgSavingLeagueGame		equ	0x2B
 AllocRecData		equ	0x30
+msgSavingPlayoffGame		equ	0x33
 BuildPathFar		equ	0x3E
 FlushInputEvents		equ	0x66
+postate_b55		equ	0xB7
+lgstate		equ	0xC4
 UseCurrentPage		equ	0x1A6
 DbSaveMode		equ	0x1B4
 AnnouncerFlags		equ	0x1B7
@@ -20,20 +25,30 @@ FileSizeMsg		equ	0x4EF
 CopyFileByName		equ	0x51E
 DrawRawAt		equ	0x73D
 FindFarMsg		equ	0x847
+str_GsummaryDb		equ	0x908
+str_GsummaryDb_2		equ	0x914
 str_GameSav		equ	0x92E
 str_Sav		equ	0x93A
 str_Db		equ	0x93F
+str_Gsummary		equ	0x943
+str_Pointer		equ	0x94F
 str_Savegame		equ	0x957
 str_Prmt		equ	0x960
+str_Dialog		equ	0x965
 str_Nhl		equ	0x96C
 str_Err1		equ	0x971
+str_Dialog_2		equ	0x976
 str_Nhl_2		equ	0x97D
 str_Prmt_2		equ	0x982
+str_Dialog_3		equ	0x987
+str_D		equ	0x98E
 str_Nhl_3		equ	0x992
 FindUnlink		equ	0x99A
 SetDialogColors		equ	0xA3C
+str_Qpp		equ	0xBD0
 DrawRleFastAt		equ	0xC45
 SetCharPtr.regs		equ	0xC56
+CurLeagueName		equ	0xE53
 DrawChar		equ	0xE85
 RestoreUnderBox		equ	0xF22
 MessageBox		equ	0xFC8
@@ -57,4 +72,7 @@ DbFilesSeg3		equ	0x8B18
 DialogData		equ	0xAE98
 DialogDataSeg		equ	0xAE9A
 HotKeyFn		equ	0xB08E
+otherscoresb		equ	0xB09E
+otherscorehome		equ	0xB0AA
+otherscoreaway		equ	0xB0B6
 %include "front/save_game.asm"

@@ -66,7 +66,7 @@ DrawLockerRoom:
         push di
         push si
         call 0x0FEF:UseOtherPage
-        mov ax, 0xbd0
+        mov ax, str_Qpp
         mov cx, 0x3701
         mov [bp - 0x624], ax
         mov [bp - 0x622], cx
@@ -174,7 +174,7 @@ DrawLockerRoom:
         push word 0x7e00
         call 0x0000:VgaCopyBytes
         add sp, 0x6
-        mov bx, [g_29CA]
+        mov bx, [HomeTeamNum]
         shl bx, 1
         push word [bx + TeamNameClips]
         push strict word str_JerSh_2
@@ -235,7 +235,7 @@ DrawLockerRoom:
         push di
         call 0x06E1:FindUnlink
         add sp, 0x4
-        mov bx, [g_29CC]
+        mov bx, [VisTeamNum]
         shl bx, 1
         push word [bx + TeamNameClips]
         push strict word str_JerSv_2
@@ -332,7 +332,7 @@ DrawLockerRoom:
         call 0x03A3:SetCharPtr.regs
         cmp word [DbSaveMode], 0x0
         jnz short .6
-        mov ax, [g_29CA]
+        mov ax, [HomeTeamNum]
         add ax, strict word 0x19
         mov cx, 0x1a
         cwd
@@ -345,13 +345,13 @@ DrawLockerRoom:
         jmp short .7
         db 0x90
 .6:
-        mov ax, [g_29CA]
+        mov ax, [HomeTeamNum]
         add ax, strict word 0x17
         mov cx, 0x18
         cwd
         idiv cx
         db 0x8B, 0xF2                           ; insn: mov si, dx
-        cmp si, [g_29CC]
+        cmp si, [VisTeamNum]
         jnz short .7
         lea ax, [si + 0x17]
         mov cx, 0x18
@@ -367,7 +367,7 @@ DrawLockerRoom:
         add sp, 0x6
         cmp word [DbSaveMode], 0x0
         jnz short .8
-        mov ax, [g_29CA]
+        mov ax, [HomeTeamNum]
         inc ax
         mov cx, 0x1a
         cwd
@@ -379,7 +379,7 @@ DrawLockerRoom:
         inc si
         jmp short .9
 .8:
-        mov ax, [g_29CA]
+        mov ax, [HomeTeamNum]
         inc ax
         mov cx, 0x18
         cwd
@@ -395,7 +395,7 @@ DrawLockerRoom:
         add sp, 0x6
         cmp word [DbSaveMode], 0x0
         jnz short .10
-        mov ax, [g_29CC]
+        mov ax, [VisTeamNum]
         add ax, strict word 0x19
         mov cx, 0x1a
         cwd
@@ -408,7 +408,7 @@ DrawLockerRoom:
         jmp short .11
         db 0x90
 .10:
-        mov ax, [g_29CC]
+        mov ax, [VisTeamNum]
         add ax, strict word 0x17
         mov cx, 0x18
         cwd
@@ -424,7 +424,7 @@ DrawLockerRoom:
         add sp, 0x6
         cmp word [DbSaveMode], 0x0
         jnz short .12
-        mov ax, [g_29CC]
+        mov ax, [VisTeamNum]
         inc ax
         mov cx, 0x1a
         cwd
@@ -436,7 +436,7 @@ DrawLockerRoom:
         inc si
         jmp short .13
 .12:
-        mov ax, [g_29CC]
+        mov ax, [VisTeamNum]
         inc ax
         mov cx, 0x18
         cwd
@@ -480,25 +480,25 @@ DrawLockerRoom:
         push word 0xaa
         call 0x0FEF:FillRect
         add sp, 0xa
-        mov bx, [g_29CA]
+        mov bx, [HomeTeamNum]
         shl bx, 1
-        push word [bx + 0x218]
+        push word [bx + TeamNameClips + 0x38]
         call 0x03A3:TextWidthAll
         add sp, 0x2
         mov si, 0x97
         db 0x2B, 0xF0                           ; insn: sub si, ax
         push 0x15
         push si
-        mov bx, [g_29CA]
+        mov bx, [HomeTeamNum]
         shl bx, 1
-        push word [bx + 0x218]
+        push word [bx + TeamNameClips + 0x38]
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x15
         push word 0xaa
-        mov bx, [g_29CC]
+        mov bx, [VisTeamNum]
         shl bx, 1
-        push word [bx + 0x218]
+        push word [bx + TeamNameClips + 0x38]
         call 0x0FEF:DrawText
         add sp, 0x6
         cmp word [DbSaveMode], 0x1
@@ -511,17 +511,17 @@ DrawLockerRoom:
         call 0x0FEF:FillRect
         add sp, 0xa
         push 0xc
-        mov es, [g_8B44]
-        mov bx, [g_29CC]
+        mov es, [segDbFiles5]
+        mov bx, [VisTeamNum]
         shl bx, 1
-        mov bx, [es:bx + 0x128]
-        mov si, [g_29CA]
+        mov bx, [es:bx + POSeedTable]
+        mov si, [HomeTeamNum]
         shl si, 1
-        or bx, [es:si + 0x128]
+        or bx, [es:si + POSeedTable]
         shl bx, 1
-        mov bx, [bx + g_1146]
+        mov bx, [bx + LockerItemTable]
         shl bx, 1
-        push word [bx + g_1138]
+        push word [bx + LockerTextPtrs]
         call 0x0FEC:DrawTextCenteredInWindow
         add sp, 0x4
 .16:
@@ -560,23 +560,23 @@ DrawLockerRoom:
         inc si
         cmp si, 0x100
         jl short .17
-        mov byte [g_B1D4], 0x2c
-        mov byte [g_B1D5], 0x1
-        mov byte [g_B1CB], 0x2f
-        mov byte [g_B1D7], 0x32
-        mov byte [g_B1D8], 0x3a
-        mov byte [g_B20D], 0x19
-        mov byte [g_B1DA], 0x51
-        mov byte [g_B224], 0x18
-        mov byte [g_B1C9], 0x7f
+        mov byte [LockerText3], 0x2c
+        mov byte [LockerText4], 0x1
+        mov byte [LockerText2], 0x2f
+        mov byte [LockerText5], 0x32
+        mov byte [LockerText6], 0x3a
+        mov byte [LockerText8], 0x19
+        mov byte [LockerText7], 0x51
+        mov byte [LockerText11], 0x18
+        mov byte [LockerText1], 0x7f
         mov al, 0x6d
-        mov [g_B215], al
-        mov [g_B2BF], al
+        mov [LockerText10], al
+        mov [LockerText12], al
         mov al, 0x6e
-        mov [g_B214], al
-        mov [g_B2C0], al
-        mov byte [g_B2C1], 0x70
-        mov byte [g_B2C2], 0x58
+        mov [LockerText9], al
+        mov [LockerText13], al
+        mov byte [LockerText14], 0x70
+        mov byte [LockerText15], 0x58
         push ds
         push strict word TeamPalette2
         call 0x0FEF:SetRemapTable
@@ -765,9 +765,9 @@ DrawLockerJersey:
         push 0xc
         mov bx, [bp + 0xa]
         shl bx, 1
-        mov bx, [bx + g_1146]
+        mov bx, [bx + LockerItemTable]
         shl bx, 1
-        push word [bx + g_1138]
+        push word [bx + LockerTextPtrs]
         call 0x0FEC:DrawTextCenteredInWindow
         add sp, 0x4
 .7:
@@ -837,7 +837,7 @@ DrawLockerJersey:
         push 0x15
         push word 0xaa
         mov bx, [bp - 0xe0]
-        push word [bx + 0x218]
+        push word [bx + TeamNameClips + 0x38]
         call 0x0FEF:DrawText
         add sp, 0x6
         lea ax, [bp - 0xde]
@@ -908,7 +908,7 @@ DrawLockerJersey:
         call 0x0FEF:FillRect
         add sp, 0xa
         mov bx, [bp - 0xe0]
-        push word [bx + 0x218]
+        push word [bx + TeamNameClips + 0x38]
         call 0x03A3:TextWidthAll
         add sp, 0x2
         mov si, 0x97
@@ -916,7 +916,7 @@ DrawLockerJersey:
         push 0x15
         push si
         mov bx, [bp - 0xe0]
-        push word [bx + 0x218]
+        push word [bx + TeamNameClips + 0x38]
         call 0x0FEF:DrawText
         add sp, 0x6
         lea ax, [bp - 0xde]
@@ -993,7 +993,7 @@ DrawLockerJersey:
         push word 0xaa
         mov bx, [bp + 0xe]
         shl bx, 1
-        push word [bx + 0x218]
+        push word [bx + TeamNameClips + 0x38]
         call 0x0FEF:DrawText
         add sp, 0x6
         push 0x52
@@ -1056,14 +1056,14 @@ DrawLockerJersey:
         call 0x0FEF:FillRect
         add sp, 0xa
         shl di, 1
-        push word [di + 0x218]
+        push word [di + TeamNameClips + 0x38]
         call 0x03A3:TextWidthAll
         add sp, 0x2
         mov si, 0x97
         db 0x2B, 0xF0                           ; insn: sub si, ax
         push 0x15
         push si
-        push word [di + 0x218]
+        push word [di + TeamNameClips + 0x38]
         call 0x0FEF:DrawText
         add sp, 0x6
 .21:
@@ -1106,31 +1106,31 @@ DrawLockerJersey:
 ;-----------------------------------------------------------------------------
 LockerRoomLoop:
         enter 0x318, 0x0
-        mov ax, [g_29CC]
+        mov ax, [VisTeamNum]
         mov [bp - 0x14], ax
-        mov ax, [g_29CA]
+        mov ax, [HomeTeamNum]
         mov [bp - 0x318], ax
-        cmp ax, [g_01B8]
+        cmp ax, [ctl1team]
         jnz short .1
-        mov word [g_01B8], 0x1
+        mov word [ctl1team], 0x1
         jmp short .2
         db 0x90
 .1:
-        mov ax, [g_29CC]
-        cmp [g_01B8], ax
+        mov ax, [VisTeamNum]
+        cmp [ctl1team], ax
         jnz short .2
-        mov word [g_01B8], 0x2
+        mov word [ctl1team], 0x2
 .2:
-        mov ax, [g_29CA]
-        cmp [g_01BA], ax
+        mov ax, [HomeTeamNum]
+        cmp [ctl2team], ax
         jnz short .3
-        mov word [g_01BA], 0x1
+        mov word [ctl2team], 0x1
         jmp short .4
 .3:
-        mov ax, [g_29CC]
-        cmp [g_01BA], ax
+        mov ax, [VisTeamNum]
+        cmp [ctl2team], ax
         jnz short .4
-        mov word [g_01BA], 0x2
+        mov word [ctl2team], 0x2
 .4:
         lea ax, [bp - 0xe]
         push ax
@@ -1306,13 +1306,13 @@ LockerRoomLoop:
 .22:
         push word [bp - 0x14]
         push word [bp - 0x318]
-        mov es, [g_8B44]
+        mov es, [segDbFiles5]
         mov bx, [bp - 0x318]
         shl bx, 1
-        mov ax, [es:bx + 0x128]
+        mov ax, [es:bx + POSeedTable]
         mov bx, [bp - 0x14]
         shl bx, 1
-        or ax, [es:bx + 0x128]
+        or ax, [es:bx + POSeedTable]
         push ax
         push word [bp - 0x318]
         push 0x0
@@ -1369,13 +1369,13 @@ LockerRoomLoop:
 .30:
         push word [bp - 0x14]
         push word [bp - 0x318]
-        mov es, [g_8B44]
+        mov es, [segDbFiles5]
         mov bx, [bp - 0x318]
         shl bx, 1
-        mov ax, [es:bx + 0x128]
+        mov ax, [es:bx + POSeedTable]
         mov bx, [bp - 0x14]
         shl bx, 1
-        or ax, [es:bx + 0x128]
+        or ax, [es:bx + POSeedTable]
         push ax
         push word [bp - 0x14]
         push 0x1
@@ -1403,9 +1403,9 @@ LockerRoomLoop:
         jmp short .29
 .34:
         mov ax, [bp - 0x318]
-        mov [g_29CA], ax
+        mov [HomeTeamNum], ax
         mov cx, [bp - 0x14]
-        mov [g_29CC], cx
+        mov [VisTeamNum], cx
         cmp word [DbSaveMode], 0x0
         jz short .35
         jmp near .43
@@ -1424,7 +1424,7 @@ LockerRoomLoop:
         db 0x90
 .36:
         push 0x2
-        mov bx, [g_29CA]
+        mov bx, [HomeTeamNum]
         shl bx, 1
         push ds
         push word [bx + TeamNameClips]
@@ -1432,25 +1432,25 @@ LockerRoomLoop:
         push strict word str_Mtl_2
         call 0x03A3:CopyStrNFar
         add sp, 0xa
-        mov es, [g_8B46]
-        mov byte [es:0x119], 0x20
+        mov es, [segMenuText8]
+        mov byte [es:str_Mtl_2 + 0x2], 0x20
         jmp short .39
         db 0x90
 .37:
         push 0x3
-        mov bx, [g_29CA]
+        mov bx, [HomeTeamNum]
         shl bx, 1
         push ds
-        push word [bx + 0x1e4]
+        push word [bx + TeamNameClips + 4]
 .38:
         push word 0x3448
         push strict word str_Mtl_2
         call 0x03A3:CopyStrNFar
         add sp, 0xa
 .39:
-        cmp word [g_29CC], 0x18
+        cmp word [VisTeamNum], 0x18
         jnl short .41
-        mov bx, [g_29CC]
+        mov bx, [VisTeamNum]
         shl bx, 1
         mov bx, [bx + TeamNameClips]
         cmp byte [bx + 0x2], 0x0
@@ -1461,7 +1461,7 @@ LockerRoomLoop:
         jmp short .42
 .40:
         push 0x2
-        mov bx, [g_29CC]
+        mov bx, [VisTeamNum]
         shl bx, 1
         push ds
         push word [bx + TeamNameClips]
@@ -1469,45 +1469,45 @@ LockerRoomLoop:
         push strict word str_LaAtMtl
         call 0x03A3:CopyStrNFar
         add sp, 0xa
-        mov es, [g_8B46]
-        mov byte [es:0x112], 0x20
+        mov es, [segMenuText8]
+        mov byte [es:str_LaAtMtl + 0x2], 0x20
         jmp short .43
         db 0x90
 .41:
         push 0x3
-        mov bx, [g_29CC]
+        mov bx, [VisTeamNum]
         shl bx, 1
         push ds
-        push word [bx + 0x1e4]
+        push word [bx + TeamNameClips + 4]
 .42:
         push word 0x3448
         push strict word str_LaAtMtl
         call 0x03A3:CopyStrNFar
         add sp, 0xa
 .43:
-        cmp word [g_01B8], 0x1
+        cmp word [ctl1team], 0x1
         jnz short .44
-        mov ax, [g_29CA]
+        mov ax, [HomeTeamNum]
         jmp short .45
         db 0x90
 .44:
-        cmp word [g_01B8], 0x2
+        cmp word [ctl1team], 0x2
         jnz short .46
-        mov ax, [g_29CC]
+        mov ax, [VisTeamNum]
 .45:
-        mov [g_01B8], ax
+        mov [ctl1team], ax
 .46:
-        cmp word [g_01BA], 0x1
+        cmp word [ctl2team], 0x1
         jnz short .47
-        mov ax, [g_29CA]
+        mov ax, [HomeTeamNum]
         jmp short .48
         db 0x90
 .47:
-        cmp word [g_01BA], 0x2
+        cmp word [ctl2team], 0x2
         jnz short .49
-        mov ax, [g_29CC]
+        mov ax, [VisTeamNum]
 .48:
-        mov [g_01BA], ax
+        mov [ctl2team], ax
 .49:
         call 0x0F97:UseDbDescriptor
         lea ax, [bp - 0x316]
@@ -1529,25 +1529,25 @@ LockerRoomLoop:
         retf
         db 0x90
 .50:
-        cmp word [g_01B8], 0x1
+        cmp word [ctl1team], 0x1
         jnz short .51
-        mov ax, [g_29CA]
+        mov ax, [HomeTeamNum]
         jmp short .52
 .51:
-        cmp word [g_01B8], 0x2
+        cmp word [ctl1team], 0x2
         jnz short .53
-        mov ax, [g_29CC]
+        mov ax, [VisTeamNum]
 .52:
-        mov [g_01B8], ax
+        mov [ctl1team], ax
 .53:
-        cmp word [g_01BA], 0x1
+        cmp word [ctl2team], 0x1
         jz short LockerRoomLoopTail.1 + 0xF70
 .54:
-        cmp word [g_01BA], 0x2
+        cmp word [ctl2team], 0x2
         jnz short .56
-        mov ax, [g_29CC]
+        mov ax, [VisTeamNum]
 .55:
-        mov [g_01BA], ax
+        mov [ctl2team], ax
 .56:
         lea ax, [bp - 0x316]
         push ss
@@ -1572,7 +1572,7 @@ LockerRoomLoop:
         ja short LockerRoomLoopJumpTable.1
         shl ax, 1
         xchg ax, bx
-        jmp [cs:bx + 0xf40]
+        jmp [cs:bx + LockerRoomLoopJumpTable]
         db 0x90
 LockerRoomLoopJumpTable:                        ; jump table of LockerRoomLoop: 8 case targets
         dw LockerRoomLoop.24
@@ -1587,13 +1587,13 @@ LockerRoomLoopJumpTable:                        ; jump table of LockerRoomLoop: 
         call 0x0FEF:UseCurrentPage
         jmp near LockerRoomLoop.12
 .2:
-        cmp word [g_01B8], 0x1
+        cmp word [ctl1team], 0x1
         jnz short .3
-        mov ax, [g_29CA]
+        mov ax, [HomeTeamNum]
         jmp short .4
 .3:
-        cmp word [g_01B8], 0x2
+        cmp word [ctl1team], 0x2
         jnz short LockerRoomLoopTail + 0xF70
-        mov ax, [g_29CC]
+        mov ax, [VisTeamNum]
 .4:
-        mov [g_01B8], ax
+        mov [ctl1team], ax

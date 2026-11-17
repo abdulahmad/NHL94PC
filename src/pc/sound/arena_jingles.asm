@@ -14,7 +14,7 @@ LoadArenaJingles:
         enter 0x26, 0x0
         push di
         push si
-        mov bx, [g_29CA]
+        mov bx, [HomeTeamNum]
         cmp bx, 0x18
         jl short .1
         mov bx, 0xd
@@ -33,7 +33,7 @@ LoadArenaJingles:
         mov bx, [bp - 0x22]
         db 0x03, 0xDF                           ; insn: add bx, di
         add bx, 0x1f3
-        mov es, [g_8C9C]
+        mov es, [JingleSegs]
         mov [bp - 0x26], bx
         mov [bp - 0x24], es
         cmp byte [es:bx], 0x0
@@ -69,7 +69,7 @@ LoadArenaJingles:
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, byte 0x2
-        mov es, [g_8C9C]
+        mov es, [JingleSegs]
         push word [es:bx + 0x11d]
         push word [es:bx + 0x11b]
         push 0x0
@@ -127,13 +127,13 @@ LoadArenaJingles:
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, 1
         db 0x03, 0xDE                           ; insn: add bx, si
-        mov al, [bx + f_38BD_01F3]
+        mov al, [bx + JingleIndex]
         cbw
         mov cx, 0x38bd
         mov es, cx
         mov bx, [bp - 0x4]
         shl bx, 1
-        cmp ax, [es:bx + f_38BD_028F]
+        cmp ax, [es:bx + JingleTable]
         jnz short .10
         db 0x2B, 0xFF                           ; insn: sub di, di
 .10:
@@ -153,10 +153,10 @@ LoadArenaJingles:
         cmp word [bp - 0x2], 0x0
         jz short .14
         mov ax, [di]
-        mov es, [g_8C9C]
+        mov es, [JingleSegs]
         mov si, [bp - 0x4]
         shl si, 1
-        cmp [es:si + 0x28f], ax
+        cmp [es:si + JingleTable], ax
         jnz short .13
         mov word [bp - 0x2], 0x0
 .13:
@@ -174,10 +174,10 @@ LoadArenaJingles:
         mov si, [bp - 0xc]
         push word 0x3701
         push strict word str_Kms
-        mov es, [g_8C9C]
+        mov es, [JingleSegs]
         mov bx, [bp - 0x4]
         shl bx, 1
-        mov bx, [es:bx + 0x28f]
+        mov bx, [es:bx + JingleTable]
         mov [di], bx
         shl bx, byte 0x2
         push word [es:bx + 0x11d]
@@ -194,11 +194,11 @@ LoadArenaJingles:
         push ax
         call 0x149D:LoadRawHeader
         add sp, 0x4
-        mov [si + g_B306], ax
-        mov [si + g_B308], dx
+        mov [si + JingleCfgBufs], ax
+        mov [si + JingleCfgBufsSeg], dx
         push word 0x3701
         push strict word str_Cfg
-        mov es, [g_8C9C]
+        mov es, [JingleSegs]
         mov bx, [di]
         shl bx, byte 0x2
         push word [es:bx + 0x11d]
@@ -215,8 +215,8 @@ LoadArenaJingles:
         push ax
         call 0x149D:LoadRawHeader
         add sp, 0x4
-        mov [si + g_B312], ax
-        mov [si + g_B314], dx
+        mov [si + JingleKmsBufs], ax
+        mov [si + JingleKmsBufsSeg], dx
         add si, 0x4
         inc di
         inc di
@@ -303,12 +303,12 @@ LoadArenaJingles:
         mov [ArenaJingleBSeg], dx
         push word 0x3701
         push strict word str_Kms
-        mov bx, [g_29CA]
+        mov bx, [HomeTeamNum]
         mov al, [bx + teamrocktune]
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, byte 0x2
-        mov es, [g_8C9C]
+        mov es, [JingleSegs]
         push word [es:bx + 0x2ae]
         push word [es:bx + 0x2ac]
         push 0x0
@@ -323,16 +323,16 @@ LoadArenaJingles:
         push ax
         call 0x149D:LoadRawHeader
         add sp, 0x4
-        mov [g_B2F2], ax
-        mov [g_B2F4], dx
+        mov [JingleBuf1], ax
+        mov [JingleBuf1Seg], dx
         push word 0x3701
         push strict word str_Cfg
-        mov bx, [g_29CA]
+        mov bx, [HomeTeamNum]
         mov al, [bx + teamrocktune]
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, byte 0x2
-        mov es, [g_8C9C]
+        mov es, [JingleSegs]
         push word [es:bx + 0x2ae]
         push word [es:bx + 0x2ac]
         push 0x0
@@ -347,8 +347,8 @@ LoadArenaJingles:
         push ax
         call 0x149D:LoadRawHeader
         add sp, 0x4
-        mov [g_B2FE], ax
-        mov [g_B300], dx
+        mov [JingleBuf3], ax
+        mov [JingleBuf3Seg], dx
         push word 0x3701
         push strict word str_Kms
         push ds
@@ -365,8 +365,8 @@ LoadArenaJingles:
         push ax
         call 0x149D:LoadRawHeader
         add sp, 0x4
-        mov [g_B2F6], ax
-        mov [g_B2F8], dx
+        mov [JingleBuf2], ax
+        mov [JingleBuf2Seg], dx
         push word 0x3701
         push strict word str_Cfg
         push ds
@@ -383,8 +383,8 @@ LoadArenaJingles:
         push ax
         call 0x149D:LoadRawHeader
         add sp, 0x4
-        mov [g_B302], ax
-        mov [g_B304], dx
+        mov [JingleBuf4], ax
+        mov [JingleBuf4Seg], dx
         pop si
         pop di
         leave
@@ -431,27 +431,27 @@ FreeArenaJingles:
         db 0x2B, 0xF6                           ; insn: sub si, si
         mov di, [bp - 0x2]
 .4:
-        mov ax, [si + g_B308]
-        or ax, [si + g_B306]
+        mov ax, [si + JingleCfgBufsSeg]
+        or ax, [si + JingleCfgBufs]
         jz short .5
-        push word [si + g_B308]
-        push word [si + g_B306]
+        push word [si + JingleCfgBufsSeg]
+        push word [si + JingleCfgBufs]
         call 0x06E1:FindUnlink
         add sp, 0x4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [si + g_B308], ax
-        mov [si + g_B306], ax
+        mov [si + JingleCfgBufsSeg], ax
+        mov [si + JingleCfgBufs], ax
 .5:
-        mov ax, [si + g_B314]
-        or ax, [si + g_B312]
+        mov ax, [si + JingleKmsBufsSeg]
+        or ax, [si + JingleKmsBufs]
         jz short .6
-        push word [si + g_B314]
-        push word [si + g_B312]
+        push word [si + JingleKmsBufsSeg]
+        push word [si + JingleKmsBufs]
         call 0x06E1:FindUnlink
         add sp, 0x4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [si + g_B314], ax
-        mov [si + g_B312], ax
+        mov [si + JingleKmsBufsSeg], ax
+        mov [si + JingleKmsBufs], ax
 .6:
         add si, 0x4
         cmp si, 0xc

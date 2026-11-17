@@ -2,8 +2,10 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
+DgroupStart		equ	0x0
 OnexitThunk		equ	0x4AE
 Dir8Table		equ	0x9AC
 OldInt0Seg		equ	0x9BC
 OldInt0Off		equ	0x9BE
+DivideFault		equ	0x9C4
 %include "pc/divide_error.asm"

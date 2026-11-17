@@ -37,13 +37,13 @@ ReplayRecordReset:
 ReplayFirstFrame:
         test byte [sflags], 0x10
         jnz short .1
-        mov ax, [g_2986]
-        mov dx, [g_2988]
+        mov ax, [replayptr]
+        mov dx, [replayseg]
         retf
         db 0x90
 .1:
-        mov ax, [g_D014]
-        mov dx, [g_D016]
+        mov ax, [replayrecptr]
+        mov dx, [replayrecseg]
         retf
 
 ;-----------------------------------------------------------------------------
@@ -53,22 +53,22 @@ ReplayFirstFrame:
 ; Far routine (retf).
 ;-----------------------------------------------------------------------------
 ReplayPrevFrame:
-        mov ax, [g_D014]
-        mov dx, [g_D016]
-        cmp [g_2986], ax
+        mov ax, [replayrecptr]
+        mov dx, [replayrecseg]
+        cmp [replayptr], ax
         jnz short .2
-        cmp [g_2988], dx
+        cmp [replayseg], dx
         jnz short .2
         test byte [sflags], 0x10
         jz short .1
-        mov ax, [g_2986]
-        mov dx, [g_2988]
+        mov ax, [replayptr]
+        mov dx, [replayseg]
         sub ax, 0x6a80
         retf
         db 0x90
 .1:
-        mov ax, [g_2986]
-        mov dx, [g_2988]
+        mov ax, [replayptr]
+        mov dx, [replayseg]
         retf
 .2:
         sub ax, 0x80
@@ -98,12 +98,12 @@ updatereplay:
         jz short .3
         push cs
         call ReplayPrevFrame
-        mov [g_D014], ax
-        mov [g_D016], dx
+        mov [replayrecptr], ax
+        mov [replayrecseg], dx
 .3:
-        mov bx, 0xb50e
+        mov bx, SortCords
         mov di, 0x11
-        mov es, [g_D016]
+        mov es, [replayrecseg]
 .4:
         mov ax, [bx + 0x2]
         and ah, 0x3
@@ -141,24 +141,24 @@ updatereplay:
         or cx, [bp - 0x4]
         or si, [bp - 0x2]
         db 0x8B, 0xC6                           ; insn: mov ax, si
-        mov si, [g_D014]
+        mov si, [replayrecptr]
         mov [es:si], cx
         mov [es:si + 0x2], ax
-        add word [g_D014], 0x4
+        add word [replayrecptr], 0x4
         add bx, 0x80
         dec di
         jnz short .4
-        mov si, 0xb50e
+        mov si, SortCords
         mov cx, 0xc
-        mov es, [g_D016]
+        mov es, [replayrecseg]
 .5:
         mov al, [si + 0x52]
-        mov bx, [g_D014]
+        mov bx, [replayrecptr]
         mov [es:bx], al
-        inc word [g_D014]
+        inc word [replayrecptr]
         add si, 0x80
         loop .5
-        mov si, 0xb50e
+        mov si, SortCords
         mov di, 0x6
 .6:
         cmp word [si + 0x1a], 0x0
@@ -182,26 +182,26 @@ updatereplay:
 .10:
         add si, 0x80
         mov al, [regd0]
-        les bx, [g_D014]
+        les bx, [replayrecptr]
         mov [es:bx], al
-        inc word [g_D014]
+        inc word [replayrecptr]
         dec di
         jnz short .6
         mov bx, [puckz]
         mov al, [bx]
-        les bx, [g_D014]
+        les bx, [replayrecptr]
         mov [es:bx], al
-        mov al, [g_BC98]
-        inc word [g_D014]
-        les bx, [g_D014]
+        mov al, [doorZpos2]
+        inc word [replayrecptr]
+        les bx, [replayrecptr]
         mov [es:bx], al
         mov al, [replaysfx]
-        inc word [g_D014]
-        les bx, [g_D014]
+        inc word [replayrecptr]
+        les bx, [replayrecptr]
         mov [es:bx], al
         mov al, [lastsfx]
-        inc word [g_D014]
-        les bx, [g_D014]
+        inc word [replayrecptr]
+        les bx, [replayrecptr]
         mov [es:bx], al
         mov ax, 0xffff
         mov [lastsfx], ax
@@ -212,38 +212,38 @@ updatereplay:
         xor al, [c1playernum]
         and al, 0xf
         db 0x32, 0xC8                           ; insn: xor cl, al
-        inc word [g_D014]
-        les bx, [g_D014]
+        inc word [replayrecptr]
+        les bx, [replayrecptr]
         mov [es:bx], cl
-        inc word [g_D014]
+        inc word [replayrecptr]
         mov bx, [puckc]
         mov al, [bx]
-        les bx, [g_D014]
+        les bx, [replayrecptr]
         mov [es:bx], al
-        mov al, [g_D6C7]
+        mov al, [PBnum_b1]
         shl al, byte 0x4
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         xor al, [PBnum]
         and al, 0xf
         db 0x32, 0xC8                           ; insn: xor cl, al
-        inc word [g_D014]
-        les bx, [g_D014]
+        inc word [replayrecptr]
+        les bx, [replayrecptr]
         mov [es:bx], cl
         mov al, [camx]
-        inc word [g_D014]
-        les bx, [g_D014]
+        inc word [replayrecptr]
+        les bx, [replayrecptr]
         mov [es:bx], al
         mov ax, [camy]
-        inc word [g_D014]
-        les bx, [g_D014]
+        inc word [replayrecptr]
+        les bx, [replayrecptr]
         mov [es:bx], ax
         mov ax, [CrowdSound]
-        add word [g_D014], 0x2
-        les bx, [g_D014]
+        add word [replayrecptr], 0x2
+        les bx, [replayrecptr]
         mov [es:bx], ax
-        add word [g_D014], 0x2
-        mov si, 0xd1b1
-        mov es, [g_D016]
+        add word [replayrecptr], 0x2
+        mov si, rinkobjs + 3
+        mov es, [replayrecseg]
 .11:
         mov al, [si]
         shl al, byte 0x4
@@ -251,31 +251,31 @@ updatereplay:
         xor al, [si + 0xe]
         and al, 0xf
         db 0x32, 0xC8                           ; insn: xor cl, al
-        mov bx, [g_D014]
+        mov bx, [replayrecptr]
         mov [es:bx], cl
-        inc word [g_D014]
+        inc word [replayrecptr]
         add si, 0x1c
-        cmp si, 0xd2c9
+        cmp si, rinkobjs + 280 + 3
         jc short .11
-        mov bx, 0xd1ae
-        mov es, [g_D016]
+        mov bx, rinkobjs
+        mov es, [replayrecseg]
 .12:
         mov al, [bx]
-        mov si, [g_D014]
+        mov si, [replayrecptr]
         mov [es:si], al
-        inc word [g_D014]
+        inc word [replayrecptr]
         add bx, 0xe
-        cmp bx, 0xd2c6
+        cmp bx, SpriteFrames
         jc short .12
-        mov ax, [g_2986]
+        mov ax, [replayptr]
         sub ax, 0x6a00
-        cmp ax, [g_D014]
+        cmp ax, [replayrecptr]
         ja short updatereplayTail.1 + 0x2A0
         or byte [sflags], 0x10
-        mov ax, [g_2986]
-        mov dx, [g_2988]
-        mov [g_D014], ax
-        mov [g_D016], dx
+        mov ax, [replayptr]
+        mov dx, [replayseg]
+        mov [replayrecptr], ax
+        mov [replayrecseg], dx
         pop si
         pop di
         leave

@@ -12,26 +12,26 @@ FadeSlideStrips:
         push di
         push si
         call 0x0FEF:UseCurrentPage
-        mov es, [g_8CF6]
-        mov ax, [es:0x74fc]
-        mov [g_DF6A], ax
-        mov ax, [es:0x74fe]
-        mov [g_DF6C], ax
-        mov ax, [es:0x74f2]
-        mov [g_DF6E], ax
-        mov ax, [es:0x74f4]
-        mov [g_DF70], ax
+        mov es, [segDgroup19]
+        mov ax, [es:ClipLeftX]
+        mov [fadex], ax
+        mov ax, [es:ClipRightX]
+        mov [fadey], ax
+        mov ax, [es:ClipTopY]
+        mov [fadew], ax
+        mov ax, [es:ClipBottomY]
+        mov [fadeh], ax
         cmp word [bp + 0x6], 0x0
         jz short .1
         jmp near .8
 .1:
-        sub ax, [g_DF6E]
+        sub ax, [fadew]
         add ax, strict word 0x4
         mov cx, 0x5
         cwd
         idiv cx
         db 0x8B, 0xF0                           ; insn: mov si, ax
-        mov ax, [es:0x74fa]
+        mov ax, [es:VenetianRowBytes]
         add ax, strict word 0x7
         cwd
         db 0x33, 0xC2                           ; insn: xor ax, dx
@@ -41,7 +41,7 @@ FadeSlideStrips:
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl ax, byte 0x3
-        add ax, [g_DF6A]
+        add ax, [fadex]
         db 0x0B, 0xDB                           ; insn: or bx, bx
         jg short .2
         jmp near .14
@@ -94,7 +94,7 @@ FadeSlideStrips:
         retf
         db 0x90
 .8:
-        mov ax, [es:0x74fa]
+        mov ax, [es:VenetianRowBytes]
         add ax, strict word 0x7
         cwd
         db 0x33, 0xC2                           ; insn: xor ax, dx
@@ -103,8 +103,8 @@ FadeSlideStrips:
         db 0x33, 0xC2                           ; insn: xor ax, dx
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         db 0x8B, 0xF0                           ; insn: mov si, ax
-        mov ax, [g_DF70]
-        sub ax, [g_DF6E]
+        mov ax, [fadeh]
+        sub ax, [fadew]
         add ax, strict word 0x4
         mov cx, 0x5
         cwd
@@ -112,7 +112,7 @@ FadeSlideStrips:
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl ax, byte 0x2
         db 0x03, 0xC3                           ; insn: add ax, bx
-        add ax, [g_DF6E]
+        add ax, [fadew]
         db 0x0B, 0xDB                           ; insn: or bx, bx
         jng short .14
         mov word [bp - 0x4], 0x0

@@ -10,7 +10,8 @@ VectorToDir8Tail:
         cbw
         leave
         retf
-        db 0x00, 0x00
+DivideDgroup:                                   ; DGROUP, stored here by HookDivideError for DivideHandler
+        dw 0x0000
 
 ;-----------------------------------------------------------------------------
 ; HookDivideError                                             0D6B:000A  94 PC
@@ -29,16 +30,16 @@ HookDivideError:
 .1:
         mov dx, cs
         mov ds, dx
-        mov dx, 0x5c
+        mov dx, DivideHandler
         mov ah, 0x25
         mov al, 0x0
         int 0x21
         mov ax, ss
         mov ds, ax
         mov ax, ds
-        mov [cs:0x8], ax
+        mov [cs:DivideDgroup], ax
         push cs
-        mov ax, 0x4b
+        mov ax, UnhookDivideError
         push ax
         call 0x03A3:OnexitThunk
         add sp, 0x4
@@ -70,7 +71,7 @@ DivideHandler:
         push di
         push dx
         push cx
-        mov ds, [cs:0x8]
+        mov ds, [cs:DivideDgroup]
         mov ax, [bp + 0x4]
         mov es, ax
         mov ax, [bp + 0x2]
@@ -89,4 +90,5 @@ DivideHandler:
         inc ax
 .2:
         mov [bp + 0x2], ax
-        db 0xC6, 0x06, 0xC4
+; mov byte [DivideFault], 1: the rest is in the next segment
+        db 0xC6, 0x06, (DivideFault - DgroupStart) & 0xFF

@@ -2,10 +2,10 @@
 ; and store the ranges the stick readers scale by.
 
 ;-----------------------------------------------------------------------------
-; NullFar10                                                   1508:0000  94 PC
-; A lone retf.
+; XorFrameTail                                                1508:0000  94 PC
+; End of XorFrame.
 ;-----------------------------------------------------------------------------
-NullFar10:
+XorFrameTail:                                   ; end of XorFrame
         pop si
         pop di
         leave
@@ -56,7 +56,7 @@ CalibrateStick:
         call 0x03A3:SaveCharTab
         pop bx
         push word 0x39ad                        ; segment of the font table far data
-        push strict word 0x0
+        push strict word FontTable
         call 0x03A3:UseCharSeg
         add sp, 0x4
         mov ax, 0x140
@@ -83,7 +83,7 @@ CalibrateStick:
         push word 0xc8
         push 0x0
         mov es, [DgroupSegD]
-        push word [es:0x74f6]
+        push word [es:CanvasRowBytes]
         push 0x0
         call 0x0FEF:SetClipRectPlanes
         add sp, 0x8
@@ -91,23 +91,23 @@ CalibrateStick:
         cwd
         call 0x03A3:SetCharPtr.regs
         push 0x23
-        push word 0x6f34
+        push word str_CalibrateYourJoystickByUsing
         call 0x1567:DrawTextCenteredClip
         add sp, 0x4
         push 0x2d
-        push word 0x6f58
+        push word str_ToMoveTheJoystickPosition
         call 0x1567:DrawTextCenteredClip
         add sp, 0x4
         push 0x37
-        push word 0x6f80
+        push word str_BelowToAllSquares
         call 0x1567:DrawTextCenteredClip
         add sp, 0x4
         push word 0xb4
-        push word 0x6f96
+        push word str_PressJoystickButtonWhenComplete
         call 0x1567:DrawTextCenteredClip
         add sp, 0x4
         push word 0xbe
-        push word 0x6fba
+        push word str_PressAnyKeyToIgnore
         call 0x1567:DrawTextCenteredClip
         add sp, 0x4
         push 0xf
@@ -244,4 +244,5 @@ CalibrateRightStick:
         push 0x1
         push 0x8
         push 0x2
-        db 0x9A, 0x04, 0x00
+        db 0x9A                                 ; insn: call 0x1508:CalibrateStick, finished in the next segment
+        dw CalibrateStick

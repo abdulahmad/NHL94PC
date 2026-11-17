@@ -8,6 +8,10 @@ EmsMapFrame		equ	0x192
 UseCurrentPage		equ	0x1A6
 FindUnlink		equ	0x99A
 UnlinkRec		equ	0x9B2
+str_Plane0		equ	0xA1E
+str_Plane1		equ	0xA26
+str_Plane2		equ	0xA2E
+str_Plane3		equ	0xA36
 CopyPlane		equ	0x10A7
 UseOtherPage		equ	0x118C
 GetPage		equ	0x11B1
@@ -16,7 +20,9 @@ SetStartPage		equ	0x1320
 RawBase		equ	0x1532
 ConPrint		equ	0x17CA
 AllocCanvases		equ	0x3804
+PageTable		equ	0x7570
 DgroupSegB		equ	0x8B1C
+VgaMem		equ	0xA000
 VgaSave0Off		equ	0xB34E
 VgaSave0Seg		equ	0xB350
 VgaSave1Off		equ	0xB352

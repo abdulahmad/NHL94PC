@@ -2,7 +2,14 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
+FontInk		equ	0x0
+FontPaper		equ	0x2
 LargestFreeBlock		equ	0x4
+FontX		equ	0x8
+FontY		equ	0xA
+BiosEquipment		equ	0x10
+FontAdvance		equ	0x10
+FontProportional		equ	0x14
 AskExitToDos		equ	0x224
 EmsMapCache		equ	0x24C
 EmsWindowOff		equ	0x254
@@ -10,7 +17,7 @@ EmsOutPtr		equ	0x25C
 EmsFrame		equ	0x260
 EmsHandle		equ	0x262
 EmmName		equ	0x264
-NullFar5		equ	0x3E2
+NullQuitHook		equ	0x3E2
 FatalError		equ	0x3E4
 _exit		equ	0x687
 _sprintf		equ	0xD74
@@ -21,6 +28,7 @@ DGROUP		equ	0x45C9
 EndMark		equ	0x62F6
 CritOld		equ	0x62FA
 CritRoutine		equ	0x62FE
+str_SFileError		equ	0x6302
 PathBuf		equ	0x6310
 PathCut		equ	0x6374
 FindDta		equ	0x6376
@@ -65,13 +73,32 @@ TickGate		equ	0x6DB0
 TickSkip		equ	0x6DB2
 SlotTab		equ	0x6DB4
 TickSkipCount		equ	0x6DB6
+str_NoRoomLeftInTimer		equ	0x6DDC
+Int8StackTop		equ	0x6F04
 Int8Sp		equ	0x6F08
 Int8Ss		equ	0x6F0A
 SkipEoi		equ	0x6F0E
 JoyX		equ	0x6FF8
 JoyY		equ	0x6FFA
+JoyLastBtn		equ	0x6FFC
 JoyBtn		equ	0x6FFD
 JoyBits		equ	0x6FFE
+JoyXMin		equ	0x6FFF
+JoyXMinSeen		equ	0x7001
+JoyXMax		equ	0x7003
+JoyXMaxSeen		equ	0x7005
+JoyXSettle		equ	0x7007
+JoyXLeftEdge		equ	0x7009
+JoyXRightEdge		equ	0x700B
+JoyYMin		equ	0x700D
+JoyYMinSeen		equ	0x700F
+JoyYMax		equ	0x7011
+JoyYMaxSeen		equ	0x7013
+JoyYSettle		equ	0x7015
+JoyYUpEdge		equ	0x7017
+JoyYDownEdge		equ	0x7019
+JoyXScale		equ	0x701B
+JoyYScale		equ	0x701D
 JoyNibbleTable		equ	0x701F
 Stick2X		equ	0x7030
 Stick2Y		equ	0x7032
@@ -120,6 +147,11 @@ OldInt16Off		equ	0x7132
 OldInt16Seg		equ	0x7134
 OldInt23Off		equ	0x7136
 OldInt23Seg		equ	0x7138
+KeyMapNormal		equ	0x713A
+KeyMapShift		equ	0x7195
+KeyMapCaps		equ	0x71F0
+KeyMapCtrl		equ	0x724B
+KeyMapAlt		equ	0x72A6
 KeyHook		equ	0x7302
 KeyPtr		equ	0x7306
 JoyOn		equ	0x7308
@@ -130,6 +162,7 @@ TextPos		equ	0x744A
 ConCursorX		equ	0x744C
 ConCursorY		equ	0x744E
 ConBuf		equ	0x7450
+HexDigits		equ	0x74C8
 TextAttr		equ	0x74DA
 CurPage		equ	0x74DC
 ClipTopY		equ	0x74F2
@@ -147,6 +180,8 @@ Pot2X		equ	0x75DA
 Pot2Y		equ	0x75DC
 PotBits		equ	0x75DE
 PotButtons		equ	0x75E0
+str_SFileError_2		equ	0x75E2
+str_HandleDFileError		equ	0x75F1
 AltPath		equ	0x7607
 AltBuf		equ	0x762F
 AltCall		equ	0x7633
@@ -167,8 +202,5 @@ VidRows		equ	0x77C6
 AtanByte		equ	0x77D0
 LineStepLimit		equ	0x78D2
 LineStepTable		equ	0x78D4
-Sin2		equ	0x8068
-Sin0		equ	0x8268
-Sin1		equ	0x8468
-Sin3		equ	0x8A68
+SinTable		equ	0x8268
 %include "pc/system.asm"

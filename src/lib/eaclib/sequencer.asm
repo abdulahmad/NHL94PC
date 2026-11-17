@@ -299,7 +299,7 @@ InitSequencer:
         push 0x0
         push 0x0
         push word 0x840
-        push word 0x846e
+        push word str_Track
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [TrackSlots], ax
@@ -307,7 +307,7 @@ InitSequencer:
         push 0x0
         push 0x0
         push word 0x180
-        push word 0x8474
+        push word str_Parts
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [Voices], ax
@@ -315,7 +315,7 @@ InitSequencer:
         push 0x0
         push 0x0
         push word 0x240
-        push word 0x847a
+        push word str_Seqdat
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [SeqTimerSlot], ax
@@ -424,10 +424,10 @@ LoadBankNumber:
         mov ds, ax
         push word [bp + 0x6]
         push str_BankDPat
-        push word 0x8f94
+        push word PatchFileName
         call 0x0000:_sprintf
         add sp, 0x6
-        push word 0x8f94
+        push word PatchFileName
         call 0x16F2:LoadPatchBank
         pop bx
         pop ds
@@ -635,13 +635,13 @@ LoadSongMode:
         jnz short .1
         push word [bp + 0x6]
         push str_TimbDTim
-        push word 0x8fac
+        push word SongFileName
         call 0x0000:_sprintf
         add sp, 0x6
         jmp short .2
 .1:
         push cx
-        push word 0x8fac
+        push word SongFileName
         call 0x0000:_strcpy
         add sp, 0x4
 .2:
@@ -649,14 +649,14 @@ LoadSongMode:
         or ax, [bp + 0x8]
         jnz short .3
         push 0x0
-        push word 0x8fac
+        push word SongFileName
         call 0x149D:LoadRawHeader
         add sp, 0x4
         jmp short .4
 .3:
         push word [bp + 0xa]
         push word [bp + 0x8]
-        push word 0x8fac
+        push word SongFileName
         call 0x1B28:LoadFileCached
         add sp, 0x6
 .4:
@@ -671,7 +671,7 @@ LoadSongMode:
         call 0x16F2:AddLoadedSong
         add sp, 0x4
         push word 0x6769
-        push word 0x642e
+        push word MouseRatioShift
         push word [bp - 0x12]
         push word [bp - 0x14]
         call 0x16F2:SetupSongTracks
@@ -710,7 +710,7 @@ LoadSongMode:
         jnz short .7
         mov byte [si + SongFileName], 0x0
         push 0x80
-        push word 0x8fac
+        push word SongFileName
         call 0x149D:LoadRaw
         add sp, 0x4
         mov [bp - 0x4], ax
@@ -1114,7 +1114,7 @@ InitVoiceLists:
         jng short .2
         imul ax, bx, 0xe
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        add ax, 0xe082
+        add ax, SeqTimerSlotSeg
         db 0x8B, 0xF1                           ; insn: mov si, cx
         mov [si + VoiceListPrev], ax
         mov [si + VoiceListPrevSeg], ds
@@ -1129,7 +1129,7 @@ InitVoiceLists:
         jnl short .4
         imul ax, bx, 0xe
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        add ax, 0xe09e
+        add ax, VoiceListId + 1
         db 0x8B, 0xF1                           ; insn: mov si, cx
         mov [si + VoiceListNext], ax
         mov [si + VoiceListNextSeg], ds
@@ -1151,9 +1151,9 @@ InitVoiceLists:
         inc bx
         cmp bx, 0x32
         jl short .6
-        mov word [VoiceListEnd], 0xe090
+        mov word [VoiceListEnd], VoiceListNext
         mov [VoiceListEndSeg], ds
-        mov word [VoiceFreeList], 0xe10e
+        mov word [VoiceFreeList], VoiceListId + 0x71
         mov [VoiceFreeListSeg], ds
         pop ds
         pop si
@@ -1322,7 +1322,7 @@ PrepareSong:
         mov al, [di + VoiceListFlags]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         imul bx, ax, 0xe
-        add bx, 0xe090
+        add bx, VoiceListNext
         db 0x8B, 0xF3                           ; insn: mov si, bx
         mov [bp - 0x2], ds
         push word [bx + 0xa]
@@ -1762,7 +1762,7 @@ PlayPatchNote:
         mov byte [SfxMsg1], 0x7
         mov byte [SfxMsg2], 0x7f
         push 0x3
-        push word 0x8fc6
+        push word SfxMsg
         mov es, [bp - 0x2]
         mov al, [es:si + 0xf]
         and al, 0x7f
@@ -1802,7 +1802,7 @@ PlayPatchNote:
         mov [SfxMsg1], al
         mov byte [SfxMsg2], 0x0
         push 0x2
-        push word 0x8fc6
+        push word SfxMsg
         mov es, [bp - 0x2]
         mov al, [es:si + 0xf]
         and al, 0x7f
@@ -1816,7 +1816,7 @@ PlayPatchNote:
         mov byte [SfxMsg1], 0x7
         mov byte [SfxMsg2], 0x7f
         push 0x3
-        push word 0x8fc6
+        push word SfxMsg
         mov es, [bp - 0x2]
         mov al, [es:si + 0xf]
         and al, 0x7f
@@ -2333,7 +2333,7 @@ RestoreTrackVolumes:
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         imul bx, ax, 0x7
         mov es, [WorkBufferSeg3]
-        mov al, [es:bx - 0x4491]
+        mov al, [es:bx + ChannelSetup]
         push ax
         push 0x7
         push word [bp - 0x2]

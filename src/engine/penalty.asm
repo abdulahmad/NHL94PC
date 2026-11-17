@@ -11,7 +11,7 @@ GetPeriodTimeRemaining:
         shl ah, byte 0x6
         db 0x2A, 0xC0                           ; insn: sub al, al
         sub ax, [gameclock]
-        add ax, [g_D1AC]
+        add ax, [gameclock2]
         retf
 
 ;-----------------------------------------------------------------------------
@@ -118,7 +118,7 @@ AddPenalty2:
         mov bx, [bp + 0x6]
         test byte [bx + 0x44], 0x40
         jz short .5
-        add word [g_D6C4], 0x14
+        add word [crowdheat], 0x14
         push 0x7d
         jmp short .6
         db 0x90
@@ -129,7 +129,7 @@ AddPenalty2:
         add sp, 0x2
 .7:
         db 0x2B, 0xFF                           ; insn: sub di, di
-        mov dx, 0xd676
+        mov dx, PenBuf
         db 0x8B, 0xF2                           ; insn: mov si, dx
 .8:
         cmp byte [si], 0x0
@@ -137,7 +137,7 @@ AddPenalty2:
         inc di
         inc si
         inc si
-        cmp si, 0xd6b6
+        cmp si, PenBuf + 0x40
         jc short .8
         pop si
         pop di
@@ -200,7 +200,7 @@ SetPA:
         mov ax, 0x20
 .2:
         push ax
-        push word 0xbd0e
+        push word refstruct
         call 0x1E7E:assreplace
 .3:
         leave
@@ -231,9 +231,9 @@ InProgress:
         jmp near .14
 .3:
         mov di, 0x1
-        cmp byte [g_D678], 0x0
+        cmp byte [PenBuf_b2], 0x0
         jz short .5
-        mov bx, 0xd678
+        mov bx, PenBuf_b2
 .4:
         inc di
         inc bx
@@ -290,7 +290,7 @@ InProgress:
         cbw
         db 0x8B, 0xF0                           ; insn: mov si, ax
         shl si, byte 0x7
-        add si, 0xb50e
+        add si, SortCords
         mov ax, [si + 0x60]
         mov [bp - 0x4], ax
         db 0x8B, 0xD8                           ; insn: mov bx, ax
@@ -322,7 +322,7 @@ InProgress:
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         neg ax
         push ax
-        mov ax, [g_D1AC]
+        mov ax, [gameclock2]
         sub ax, [gameclock]
         mov cx, 0x3c
         db 0x8B, 0xD8                           ; insn: mov bx, ax
@@ -365,7 +365,7 @@ InProgress:
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, byte 0x7
-        cmp word [bx + g_B528], 0x0
+        cmp word [bx + sortobj0_position], 0x0
         jl short .13
         jmp near .35
 .13:
@@ -386,7 +386,7 @@ InProgress:
         jl short .15
         jmp near .35
 .15:
-        mov di, 0xb362
+        mov di, hmshots
         mov word [bp - 0x6], 0x2
 .16:
         mov cx, 0x6
@@ -408,13 +408,13 @@ InProgress:
         dec dx
         jns short .17
         mov [di + 0x22], cx
-        mov di, 0xb438
+        mov di, awshots
         dec word [bp - 0x6]
         jnz short .16
         and byte [gmode], 0xfb
-        mov word [bp - 0x6], 0xbc0e
-        mov bx, [g_BC2A]
-        mov al, [bx + g_BC2C]
+        mov word [bp - 0x6], puckstruct
+        mov bx, [puck_1C]
+        mov al, [bx + puckasslist]
         cbw
         db 0x8B, 0xD0                           ; insn: mov dx, ax
         cmp ax, strict word 0x1b
@@ -426,7 +426,7 @@ InProgress:
         jmp near .35
 .20:
         push 0x1b
-        push word 0xbc0e
+        push word puckstruct
         call 0x1E7E:assreplace
         add sp, 0x4
         pop si
@@ -445,7 +445,7 @@ InProgress:
         cbw
         db 0x8B, 0xF0                           ; insn: mov si, ax
         shl si, byte 0x7
-        add si, 0xb50e
+        add si, SortCords
         mov ax, [si + 0x60]
         mov [bp - 0x4], ax
         db 0x8B, 0xD8                           ; insn: mov bx, ax
@@ -479,7 +479,7 @@ InProgress:
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         neg ax
         push ax
-        mov ax, [g_D1AC]
+        mov ax, [gameclock2]
         sub ax, [gameclock]
         mov cx, 0x3c
         db 0x8B, 0xD8                           ; insn: mov bx, ax
@@ -568,7 +568,7 @@ InProgress:
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push strict word str_ServedByD
-        push word 0xd5ba
+        push word textline5
         call 0x0000:_sprintf
         add sp, 0x6
 .29:
@@ -665,7 +665,7 @@ chkprogress:
         and byte [gmode], 0xf7
         db 0x2B, 0xFF                           ; insn: sub di, di
         mov [refsignal], di
-        mov si, 0xd674
+        mov si, regd1_w2
 .6:
         inc si
         inc si
@@ -685,11 +685,11 @@ chkprogress:
         mov bx, [puckc]
         mov byte [bx], 0xff
         push 0x1a
-        push word 0xbc0e
+        push word puckstruct
         call 0x1E7E:assinsert
         add sp, 0x4
         mov word [pucktemp1], 0x1c20
-        mov byte [g_29D5], 0xff
+        mov byte [refsignal_b1], 0xff
         mov word [refsignal], 0x0
         cmp word [bannertimer], 0x0
         jnz short .7
@@ -806,7 +806,7 @@ Stop4Pen:
         mov [fox], ax
         mov word [foy], 0xff48
 .13:
-        mov si, 0xd677
+        mov si, PenBuf_pl
         mov dx, [bp + 0x6]
 .14:
         mov al, [si]
@@ -875,7 +875,7 @@ checkfornewpen:
         jnz short .3
         jmp near .15
 .3:
-        mov si, 0xd677
+        mov si, PenBuf_pl
 .4:
         mov al, [si - 0x1]
         mov [bp - 0x1], al
@@ -953,7 +953,7 @@ checkfornewpen:
         mov al, [bp - 0x1]
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
-        mov al, [bx + g_2A38]
+        mov al, [bx + penkindtab]
         cbw
         db 0x8B, 0xD0                           ; insn: mov dx, ax
         shl dx, byte 0x5
@@ -1009,7 +1009,7 @@ releasepl:
 .3:
         mov si, 0x1
 .4:
-        mov al, [bx + si + g_48AF]
+        mov al, [bx + si + priolist_m1]
         cbw
         mov bx, [bp - 0x2]
         mov [bx + 0x1a], ax
@@ -1056,11 +1056,11 @@ chkatop:
 .3:
         db 0x0B, 0xD2                           ; insn: or dx, dx
         jng short .4
-        mov bx, 0xb438
+        mov bx, awshots
         jmp short .5
         db 0x90
 .4:
-        mov bx, 0xb362
+        mov bx, hmshots
 .5:
         inc word [bx + 0xa]
 .6:
@@ -1117,9 +1117,9 @@ updatepentime_ut:
         mov ax, 0x2
         cwd
         mov [regd1], ax
-        mov [g_D674], dx
+        mov [regd1_w2], dx
         mov [regd3], ax
-        mov [g_D6C2], dx
+        mov [regd3_w2], dx
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [bp - 0x4], ax
         mov [bp - 0x2], ax
@@ -1232,11 +1232,11 @@ updatepentime:
         or byte [sflags3], 0x40
         push cs
         call chkatop
-        push word 0xb362
+        push word hmshots
         push cs
         call updatepentime_ut
         add sp, 0x2
-        push word 0xb438
+        push word awshots
         push cs
         call updatepentime_ut
         add sp, 0x2
@@ -1267,7 +1267,7 @@ PenaltyManager:
 ; Calls PlayArenaJingle. Far routine (retf).
 ;-----------------------------------------------------------------------------
 UpdatePowerPlayFlags:
-        mov bx, 0xb438
+        mov bx, awshots
         mov ax, [hmtmap]
         sub ax, [awtmap]
         db 0x8B, 0xD0                           ; insn: mov dx, ax
@@ -1278,7 +1278,7 @@ UpdatePowerPlayFlags:
 .1:
         db 0x0B, 0xD2                           ; insn: or dx, dx
         jng short .2
-        mov bx, 0xb362
+        mov bx, hmshots
         test byte [gmode2], 0x40
         jz short .3
         and byte [gmode2], 0x9f
@@ -1301,7 +1301,7 @@ UpdatePowerPlayFlags:
         cmp word [SoundOptions], 0x2
         jz short .7
 .4:
-        cmp bx, 0xb362
+        cmp bx, hmshots
         jnz short .5
         push 0x1
         jmp short .6
@@ -1323,14 +1323,14 @@ UpdatePowerPlayFlags:
 ;-----------------------------------------------------------------------------
 ClearPenaltyBuffer:
         push si
-        mov si, 0xd677
+        mov si, PenBuf_pl
 .1:
         db 0x2A, 0xC0                           ; insn: sub al, al
         mov [si], al
         mov [si - 0x1], al
         inc si
         inc si
-        cmp si, 0xd6b7
+        cmp si, PenBuf_pl + 0x40
         jc short .1
         pop si
         retf
@@ -1349,10 +1349,10 @@ PenGoalStuff:
         mov cx, [bp + 0x6]
         db 0x0B, 0xC9                           ; insn: or cx, cx
         jng short .1
-        mov ax, 0xb438
+        mov ax, awshots
         jmp short .2
 .1:
-        mov ax, 0xb362
+        mov ax, hmshots
 .2:
         mov [bp - 0xc], ax
         cmp cx, 0x1
@@ -1361,11 +1361,11 @@ PenGoalStuff:
         mov [bp - 0xe], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jng short .3
-        mov dx, 0xb438
+        mov dx, awshots
         jmp short .4
         db 0x90
 .3:
-        mov dx, 0xb362
+        mov dx, hmshots
 .4:
         db 0x2B, 0xFF                           ; insn: sub di, di
         mov [bp - 0x4], di
@@ -1374,8 +1374,8 @@ PenGoalStuff:
         jmp near .14
 .5:
         mov [bp - 0xa], dx
-        mov word [bp - 0x6], 0xd676
-        mov word [bp - 0x2], 0xd677
+        mov word [bp - 0x6], PenBuf
+        mov word [bp - 0x2], PenBuf_pl
         mov [bp - 0x8], di
         mov si, [bp - 0x2]
         db 0x8B, 0xD7                           ; insn: mov dx, di
@@ -1417,7 +1417,7 @@ PenGoalStuff:
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, byte 0x7
-        and byte [bx + g_B553], 0xef
+        and byte [bx + sortobj0_pflags2], 0xef
 .11:
         db 0x2A, 0xC0                           ; insn: sub al, al
         mov [si], al

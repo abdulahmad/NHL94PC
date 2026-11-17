@@ -16,11 +16,11 @@ UseDbDescriptor:
         retf
 .1:
         push word 0x3415                        ; segment of the db files far data
-        push strict word 0x0
-        db 0xEB, 0x0E                           ; insn: jmp short 0x24
+        push strict word exhstate
+        jmp short UseDbDescriptorTail.1 + 0x20  ; to UseDbDescriptorTail.1 in the next segment
 .2:
         push word 0x3415                        ; segment of the db files far data
-        push strict word 0x62
-        db 0xEB, 0x06                           ; insn: jmp short 0x24
+        push strict word postate
+        jmp short UseDbDescriptorTail.1 + 0x20  ; to UseDbDescriptorTail.1 in the next segment
 .3:
-        db 0x68, 0x15
+        db 0x68, 0x15                           ; insn: push word 3415h (db files): the last byte is in the next segment

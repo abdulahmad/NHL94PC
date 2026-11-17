@@ -6,7 +6,7 @@
 ; End of ShowPausedBox.
 ;-----------------------------------------------------------------------------
 ShowPausedBoxTail:
-        db 0xE8, 0xE3, 0xFC                     ; insn: call 0xfce6
+        call AskYesNoBox - 0x360
         retf
 
 ;-----------------------------------------------------------------------------
@@ -26,7 +26,7 @@ BuildShapeBank:
         add sp, 0x4
         push dx
         push ax
-        push word 0x76d6
+        push word str_Vgabuf
         call 0x14DB:AllocRecData0
         add sp, 0x8
         mov [bp - 0x12], ax
@@ -185,7 +185,7 @@ LoadAssetMode:
         mov [bp - 0x6], dx
         db 0x0B, 0xD0                           ; insn: or dx, ax
         jz short .5
-        db 0xE9, 0xE9, 0x02                     ; insn: jmp 0x474
+        jmp near LoadAssetModeTail.1 + 0x470
 .5:
         inc di
 .6:
@@ -222,7 +222,7 @@ LoadAssetMode:
         mov [bp - 0x6], dx
         db 0x0B, 0xD0                           ; insn: or dx, ax
         jz short .9
-        db 0xE9, 0x97, 0x02                     ; insn: jmp 0x474
+        jmp near LoadAssetModeTail.1 + 0x470
 .9:
         push word [bp - 0x2]
         lea ax, [bp - 0x1a]
@@ -426,7 +426,7 @@ LoadAssetMode:
         push si
         call 0x06E1:UnlinkRec
         add sp, 0x4
-        push word 0x76f2
+        push word IdentityRemap
         les bx, [bp - 0x82]
         push word [es:bx + 0x2]
         push word [es:bx]
@@ -451,11 +451,11 @@ LoadAssetMode:
         jnz short .29
         cmp [bp + 0xa], ax
         jz short .28
-        push word 0x775d
+        push word str_LoadshapeblockaNoMemoryForMcgatovga
         call 0x0F4A:FatalError
         pop bx
 .28:
-        push word 0x7788
+        push word str_LoadshapeblockaNoMemoryForMcgatovga_2
         call 0x03A3:ConPrint
         pop bx
         push word [bp - 0x6]
@@ -464,13 +464,13 @@ LoadAssetMode:
         add sp, 0x4
         db 0x33, 0xC0                           ; insn: xor ax, ax
         cwd
-        db 0xEB, 0x23                           ; insn: jmp short 0x477
+        jmp short LoadAssetModeTail.2 + 0x470
 .29:
         mov ax, [bp - 0x6]
         db 0x0B, 0xC6                           ; insn: or ax, si
-        db 0x74, 0x17                           ; insn: jz 0x472
+        jz short LoadAssetModeTail + 0x470
         test byte [bp + 0x8], 0x80
-        db 0x74, 0x11                           ; insn: jz 0x472
+        jz short LoadAssetModeTail + 0x470
         push word [bp - 0x6]
         push si
         call 0x06E1:MovePtr

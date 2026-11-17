@@ -70,7 +70,7 @@ MenuOpenSaved:
         mov bx, [lgfiles]
         shl bx, byte 0x2
         push word [bx + lgfilenames]
-        push word [bx + g_C0E4]
+        push word [bx + savednames2]
         lea ax, [bp - 0x34]
         push ss
         push ax
@@ -196,7 +196,7 @@ MenuOpenSaved:
         push -0x1
         push -0x1
         push ds
-        push strict word g_B0B6
+        push strict word otherscoreaway
         push word [bp - 0x4]
         call 0x0CD1:ReadAtOffset
         add sp, 0xc
@@ -210,7 +210,7 @@ MenuOpenSaved:
         push -0x1
         push -0x1
         push ds
-        push strict word g_B0AA
+        push strict word otherscorehome
         push word [bp - 0x4]
         call 0x0CD1:ReadAtOffset
         add sp, 0xc
@@ -224,7 +224,7 @@ MenuOpenSaved:
         push -0x1
         push -0x1
         push ds
-        push strict word g_B09E
+        push strict word otherscoresb
         push word [bp - 0x4]
         call 0x0CD1:ReadAtOffset
         add sp, 0xc
@@ -234,8 +234,8 @@ MenuOpenSaved:
         call 0x0F4A:FatalError
         add sp, 0x2
 .15:
-        mov es, [g_8B36]
-        and byte [es:0x55], 0x7f
+        mov es, [segDbFiles1]
+        and byte [es:exhstate + 0x55], 0x7f
         lea ax, [bp - 0x4]
         push ax
         call 0x2E70:MenuNewExhibition
@@ -252,9 +252,9 @@ MenuOpenSaved:
         retf
 .17:
         push word 0x3415
-        push strict word f_3415_0064
+        push strict word postate_name
         push word 0x3415
-        push strict word f_3415_0064
+        push strict word postate_name
         push ds
         push strict word str_Db_6
         push ds
@@ -272,10 +272,10 @@ MenuOpenSaved:
         push 0x2
         call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
-        mov bx, [g_C166]
+        mov bx, [savedsel3]
         shl bx, byte 0x2
-        push word [bx + g_C16E]
-        push word [bx + g_C16C]
+        push word [bx + savednames3seg]
+        push word [bx + savednames3]
         lea ax, [bp - 0x34]
         push ss
         push ax
@@ -312,21 +312,21 @@ MenuOpenSaved:
         call 0x0F4A:FatalError
         add sp, 0x2
 .19:
-        mov es, [g_8B38]
-        and byte [es:0xb7], 0x7f
+        mov es, [segDbFiles2]
+        and byte [es:postate_b55], 0x7f
         lea ax, [bp - 0x4]
         push ax
         call 0x1B35:PlayoffModeLoopThunk
         add sp, 0x2
         db 0x8B, 0xF0                           ; insn: mov si, ax
-        mov es, [g_8B38]
-        test byte [es:0xb7], 0x80
+        mov es, [segDbFiles2]
+        test byte [es:postate_b55], 0x80
 .20:
         jz short .21
         jmp near .16
 .21:
-        mov es, [g_8B3A]
-        cmp word [es:0x126], 0x1
+        mov es, [segDbFiles3]
+        cmp word [es:lgstate_w5A + 0x8], 0x1
         jz short .22
         jmp near .16
 .22:
@@ -337,9 +337,9 @@ MenuOpenSaved:
         jmp near .16
 .23:
         push word 0x3415
-        push strict word f_3415_00C6
+        push strict word lgstate_name
         push word 0x3415
-        push strict word f_3415_00C6
+        push strict word lgstate_name
         push ds
         push strict word str_Db_5
         push ds
@@ -357,10 +357,10 @@ MenuOpenSaved:
         push 0x3
         call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
-        mov bx, [g_C056]
+        mov bx, [savedsel1]
         shl bx, byte 0x2
-        push word [bx + g_C05E]
-        push word [bx + g_C05C]
+        push word [bx + savednames1seg]
+        push word [bx + savednames1]
         lea ax, [bp - 0x34]
         push ss
         push ax
@@ -397,15 +397,15 @@ MenuOpenSaved:
         call 0x0F4A:FatalError
         add sp, 0x2
 .25:
-        mov es, [g_8B3C]
-        and byte [es:0x119], 0x7f
+        mov es, [segDbFiles4]
+        and byte [es:lgstate + 0x55], 0x7f
         lea ax, [bp - 0x4]
         push ax
         call 0x1B35:MenuNextLeagueGameThunk
         add sp, 0x2
         db 0x8B, 0xF0                           ; insn: mov si, ax
-        mov es, [g_8B3C]
-        test byte [es:0x119], 0x80
+        mov es, [segDbFiles4]
+        test byte [es:lgstate + 0x55], 0x80
         jmp near .20
 .26:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -465,21 +465,21 @@ DrawFileDlgTabs:
         jmp short .6
         db 0x90
 .2:
-        test byte [g_C1EE], 0x80
+        test byte [fdlgflags], 0x80
         jnz short .3
         mov al, 0x17
         mov [bp - 0x19], al
         mov [bp - 0x1a], al
         mov [bp - 0x1b], al
 .3:
-        test byte [g_C1EE], 0x40
+        test byte [fdlgflags], 0x40
         jnz short .4
         mov al, 0x17
         mov [bp - 0x1c], al
         mov [bp - 0x1d], al
         mov [bp - 0x1e], al
 .4:
-        test byte [g_C1EE], 0x20
+        test byte [fdlgflags], 0x20
         jnz short .5
         mov al, 0x17
         mov [bp - 0x1f], al
@@ -550,11 +550,11 @@ ScanSavedGames:
         push di
         push si
         db 0x2B, 0xFF                           ; insn: sub di, di
-        mov [g_C054], di
+        mov [savedcount1], di
         lea ax, [bp - 0x2c]
         push ax
         push 0x10
-        push word 0xee2
+        push word str_Lp_4
         call 0x0000:_dos_findfirst
         add sp, 0x6
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -564,11 +564,11 @@ ScanSavedGames:
         mov ax, 0x3a0b
         mov es, ax
         db 0x8B, 0xC7                           ; insn: mov ax, di
-        add ax, 0xa6d8
-        mov bx, [g_C054]
+        add ax, SavedGameNames
+        mov bx, [savedcount1]
         shl bx, byte 0x2
-        mov [bx + g_C05C], ax
-        mov [bx + g_C05E], es
+        mov [bx + savednames1], ax
+        mov [bx + savednames1seg], es
         db 0x2B, 0xF6                           ; insn: sub si, si
 .2:
         cmp byte [bp + si - 0xe], 0x0
@@ -576,16 +576,16 @@ ScanSavedGames:
         cmp byte [bp + si - 0xe], 0x2e
         jz short .3
         mov al, [bp + si - 0xe]
-        mov [es:di + f_3A0B_A6D8], al
+        mov [es:di + SavedGameNames], al
         inc di
         inc si
         cmp si, 0x8
         jl short .2
 .3:
-        mov byte [es:di + f_3A0B_A6D8], 0x0
+        mov byte [es:di + SavedGameNames], 0x0
         inc di
-        inc word [g_C054]
-        cmp word [g_C054], 0x20
+        inc word [savedcount1]
+        cmp word [savedcount1], 0x20
         jnl short .4
         lea ax, [bp - 0x2c]
         push ax
@@ -597,23 +597,23 @@ ScanSavedGames:
         push word 0x23a3
         push strict word CmpFileNames
         push 0x4
-        push word [g_C054]
-        push word 0xc05c
+        push word [savedcount1]
+        push word savednames1
         call 0x0000:_qsort
         add sp, 0xa
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_C058], ax
-        mov [g_C056], ax
-        cmp word [g_C054], 0x6
+        mov [savedtop1], ax
+        mov [savedsel1], ax
+        cmp word [savedcount1], 0x6
         jl short .5
-        mov word [g_C05A], 0x5
+        mov word [savedrows1], 0x5
         jmp short .6
 .5:
-        mov ax, [g_C054]
+        mov ax, [savedcount1]
         dec ax
-        mov [g_C05A], ax
+        mov [savedrows1], ax
 .6:
-        mov word [g_C164], 0x0
+        mov word [savedcount3], 0x0
         lea ax, [bp - 0x2c]
         push ax
         push 0x10
@@ -625,11 +625,11 @@ ScanSavedGames:
         jmp near .12
 .7:
         db 0x8B, 0xC7                           ; insn: mov ax, di
-        add ax, 0xa6d8
-        mov bx, [g_C164]
+        add ax, SavedGameNames
+        mov bx, [savedcount3]
         shl bx, byte 0x2
-        mov [bx + g_C16C], ax
-        mov word [bx + g_C16E], 0x3a0b
+        mov [bx + savednames3], ax
+        mov word [bx + savednames3seg], 0x3a0b
         db 0x2B, 0xF6                           ; insn: sub si, si
         mov ax, 0x3a0b
         mov es, ax
@@ -639,16 +639,16 @@ ScanSavedGames:
         cmp byte [bp + si - 0xe], 0x2e
         jz short .9
         mov al, [bp + si - 0xe]
-        mov [es:di + f_3A0B_A6D8], al
+        mov [es:di + SavedGameNames], al
         inc di
         inc si
         cmp si, 0x8
         jl short .8
 .9:
-        mov byte [es:di + f_3A0B_A6D8], 0x0
+        mov byte [es:di + SavedGameNames], 0x0
         inc di
-        inc word [g_C164]
-        cmp word [g_C164], 0x20
+        inc word [savedcount3]
+        cmp word [savedcount3], 0x20
         jnl short .10
         lea ax, [bp - 0x2c]
         push ax
@@ -660,24 +660,24 @@ ScanSavedGames:
         push word 0x23a3
         push strict word CmpFileNames
         push 0x4
-        push word [g_C164]
-        push word 0xc16c
+        push word [savedcount3]
+        push word savednames3
         call 0x0000:_qsort
         add sp, 0xa
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_C168], ax
-        mov [g_C166], ax
-        cmp word [g_C164], 0x6
+        mov [savedtop3], ax
+        mov [savedsel3], ax
+        cmp word [savedcount3], 0x6
         jl short .11
-        mov word [g_C16A], 0x5
+        mov word [savedrows3], 0x5
         jmp short .12
         db 0x90
 .11:
-        mov ax, [g_C164]
+        mov ax, [savedcount3]
         dec ax
-        mov [g_C16A], ax
+        mov [savedrows3], ax
 .12:
-        mov word [g_C0DC], 0x0
+        mov word [savedcount2], 0x0
         lea ax, [bp - 0x2c]
         push ax
         push 0x0
@@ -689,10 +689,10 @@ ScanSavedGames:
         jmp near .18
 .13:
         db 0x8B, 0xC7                           ; insn: mov ax, di
-        add ax, 0xa6d8
-        mov bx, [g_C0DC]
+        add ax, SavedGameNames
+        mov bx, [savedcount2]
         shl bx, byte 0x2
-        mov [bx + g_C0E4], ax
+        mov [bx + savednames2], ax
         mov word [bx + lgfilenames], 0x3a0b
         db 0x2B, 0xF6                           ; insn: sub si, si
         mov ax, 0x3a0b
@@ -703,16 +703,16 @@ ScanSavedGames:
         cmp byte [bp + si - 0xe], 0x2e
         jz short .15
         mov al, [bp + si - 0xe]
-        mov [es:di + f_3A0B_A6D8], al
+        mov [es:di + SavedGameNames], al
         inc di
         inc si
         cmp si, 0x8
         jl short .14
 .15:
-        mov byte [es:di + f_3A0B_A6D8], 0x0
+        mov byte [es:di + SavedGameNames], 0x0
         inc di
-        inc word [g_C0DC]
-        cmp word [g_C0DC], 0x20
+        inc word [savedcount2]
+        cmp word [savedcount2], 0x20
         jnl short .16
         lea ax, [bp - 0x2c]
         push ax
@@ -724,25 +724,25 @@ ScanSavedGames:
         push word 0x23a3
         push strict word CmpFileNames
         push 0x4
-        push word [g_C0DC]
-        push word 0xc0e4
+        push word [savedcount2]
+        push word savednames2
         call 0x0000:_qsort
         add sp, 0xa
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_C0E0], ax
+        mov [savedtop2], ax
         mov [lgfiles], ax
-        cmp word [g_C0DC], 0x6
+        cmp word [savedcount2], 0x6
         jl short .17
-        mov word [g_C0E2], 0x5
+        mov word [savedrows2], 0x5
         pop si
         pop di
         leave
         retf
         db 0x90
 .17:
-        mov ax, [g_C0DC]
+        mov ax, [savedcount2]
         dec ax
-        mov [g_C0E2], ax
+        mov [savedrows2], ax
 .18:
         pop si
         pop di
@@ -831,41 +831,41 @@ DrawFileDlg:
         push si
         call 0x06E1:FindUnlink
         add sp, 0x4
-        mov word [g_C1EE], 0x10
+        mov word [fdlgflags], 0x10
         mov word [fdlgtab], 0xffff
-        cmp word [g_C054], 0x0
+        cmp word [savedcount1], 0x0
         jz short .1
-        mov word [g_C1EE], 0x90
+        mov word [fdlgflags], 0x90
         mov word [fdlgtab], 0x2
 .1:
-        cmp word [g_C164], 0x0
+        cmp word [savedcount3], 0x0
         jz short .2
-        or byte [g_C1EE], 0x40
+        or byte [fdlgflags], 0x40
         mov word [fdlgtab], 0x1
 .2:
-        cmp word [g_C0DC], 0x0
+        cmp word [savedcount2], 0x0
         jz short .3
-        or byte [g_C1EE], 0x20
+        or byte [fdlgflags], 0x20
         mov word [fdlgtab], 0x0
 .3:
         cmp word [fdlgtab], 0x0
         jnl short .4
         jmp near DrawFileDlgJumpTable.7
 .4:
-        or word [g_C1EE], 0x20c
+        or word [fdlgflags], 0x20c
         mov ax, 0x11
         mov dx, 0xff
         call 0x03A3:SetCharPtr.regs
-        mov es, [g_8B3E]
-        mov ax, [es:0x4a]
+        mov es, [segDialogRects1]
+        mov ax, [es:FileDlgTitleBox + 0x2]
         add ax, strict word 0xa
         push ax
-        mov ax, [es:0x48]
+        mov ax, [es:FileDlgTitleBox]
         add ax, strict word 0xa
         push ax
         mov bx, [fdlgtab]
         shl bx, 1
-        mov si, [bx + g_0EDC]
+        mov si, [bx + FileDlgSpecs]
         mov bx, [si + 0x2]
         shl bx, byte 0x2
         push word [bx + si + 0xa]
@@ -889,7 +889,7 @@ DrawFileDlg:
         mov si, [bp - 0x2]
         db 0x8B, 0xFA                           ; insn: mov di, dx
 .5:
-        mov es, [g_8B3E]
+        mov es, [segDialogRects1]
         mov ax, [es:si]
         add ax, strict word 0xa
         push ax
@@ -915,15 +915,15 @@ DrawFileDlg:
         jg short .7
         jmp near .8
 .7:
-        or word [g_C1EE], 0xff03
-        mov es, [g_8B3E]
-        mov ax, [es:0x40]
+        or word [fdlgflags], 0xff03
+        mov es, [segDialogRects1]
+        mov ax, [es:FileDlgListBox]
         add ax, strict word 0xa
         mov [bp - 0x2], ax
-        mov cx, [es:0x42]
+        mov cx, [es:FileDlgListBox + 0x2]
         add cx, 0xa
         mov [bp - 0xa], cx
-        mov dx, [es:0x44]
+        mov dx, [es:FileDlgListBox + 0x4]
         add dx, 0xa
         mov [bp - 0x4], dx
         db 0x8B, 0xD8                           ; insn: mov bx, ax
@@ -981,7 +981,7 @@ DrawFileDlg:
         ja short DrawFileDlgJumpTable.7
         shl ax, 1
         xchg ax, bx
-        jmp [cs:bx + 0x95e]
+        jmp [cs:bx + DrawFileDlgJumpTable]
 DrawFileDlgJumpTable:                           ; jump table of DrawFileDlg: 6 case targets
         dw .6
         dw .5
@@ -990,17 +990,17 @@ DrawFileDlgJumpTable:                           ; jump table of DrawFileDlg: 6 c
         dw .2
         dw .1
 .1:
-        or byte [g_C1EF], 0x80
+        or byte [fdlgflags2], 0x80
 .2:
-        or byte [g_C1EF], 0x40
+        or byte [fdlgflags2], 0x40
 .3:
-        or byte [g_C1EF], 0x20
+        or byte [fdlgflags2], 0x20
 .4:
-        or byte [g_C1EF], 0x10
+        or byte [fdlgflags2], 0x10
 .5:
-        or byte [g_C1EF], 0x8
+        or byte [fdlgflags2], 0x8
 .6:
-        or byte [g_C1EF], 0x4
+        or byte [fdlgflags2], 0x4
 .7:
         pop si
         pop di
@@ -1021,7 +1021,7 @@ FileDlgHitTest:
         sub di, 0xa
         sub word [bp + 0x8], 0xa
         db 0x2B, 0xC9                           ; insn: sub cx, cx
-        mov bx, 0x0
+        mov bx, FileDialogHitRects
         mov [bp + 0x6], di
         mov ax, 0x369a
         mov ds, ax
@@ -1086,7 +1086,7 @@ DrawFileDlgList:
         mov ax, [bp - 0x4]
         add ax, 0x99
         push ax
-        mov es, [g_8B3E]
+        mov es, [segDialogRects1]
         mov bx, [bp - 0x4]
         shl bx, byte 0x3
         db 0x26, 0x8B, 0x87, 0x56, 0x00         ; insn: mov ax, [es:bx + 0x56]
@@ -1109,19 +1109,19 @@ DrawFileDlgList:
         cmp word [bp - 0x4], 0x6
         jl short .1
         push word 0x98
-        mov es, [g_8B3E]
-        mov ax, [es:0x4e]
-        sub ax, [es:0x4a]
+        mov es, [segDialogRects1]
+        mov ax, [es:FileDlgTitleBox + 0x6]
+        sub ax, [es:FileDlgTitleBox + 0x2]
         inc ax
         push ax
-        mov ax, [es:0x4c]
-        sub ax, [es:0x48]
+        mov ax, [es:FileDlgTitleBox + 0x4]
+        sub ax, [es:FileDlgTitleBox]
         inc ax
         push ax
-        mov ax, [es:0x4a]
+        mov ax, [es:FileDlgTitleBox + 0x2]
         add ax, strict word 0xa
         push ax
-        mov ax, [es:0x48]
+        mov ax, [es:FileDlgTitleBox]
         add ax, strict word 0xa
         push ax
         call 0x0FEF:FillRect
@@ -1160,7 +1160,7 @@ DrawFileDlgList:
         jng short .7
         db 0x8B, 0xF0                           ; insn: mov si, ax
         shl si, byte 0x3
-        mov es, [g_8B3E]
+        mov es, [segDialogRects1]
         db 0x26, 0x8B, 0x8C, 0x52, 0x00         ; insn: mov cx, [es:si + 0x52]
         add cx, 0xa
         push cx
@@ -1178,7 +1178,7 @@ DrawFileDlgList:
 .5:
         mov word [bp - 0x4], 0x0
 .6:
-        mov es, [g_8B3E]
+        mov es, [segDialogRects1]
         mov bx, [bp - 0x4]
         shl bx, byte 0x3
         db 0x26, 0x8B, 0x87, 0x52, 0x00         ; insn: mov ax, [es:bx + 0x52]
@@ -1203,11 +1203,11 @@ DrawFileDlgList:
         mov bx, [bp + 0x6]
         cmp word [bx], 0x0
         jng short .8
-        mov es, [g_8B3E]
-        mov ax, [es:0x4a]
+        mov es, [segDialogRects1]
+        mov ax, [es:FileDlgTitleBox + 0x2]
         add ax, strict word 0xa
         push ax
-        mov ax, [es:0x48]
+        mov ax, [es:FileDlgTitleBox]
         add ax, strict word 0xa
         push ax
         mov si, [bx + 0x2]
@@ -1246,19 +1246,19 @@ DrawFileDlgList:
         mov [bp + si - 0x6a], cl
 .10:
         push 0xb
-        mov es, [g_8B3E]
-        mov ax, [es:0x46]
-        sub ax, [es:0x42]
+        mov es, [segDialogRects1]
+        mov ax, [es:FileDlgListBox + 0x6]
+        sub ax, [es:FileDlgListBox + 0x2]
         inc ax
         push ax
-        mov ax, [es:0x44]
-        sub ax, [es:0x40]
+        mov ax, [es:FileDlgListBox + 0x4]
+        sub ax, [es:FileDlgListBox]
         inc ax
         push ax
-        mov ax, [es:0x42]
+        mov ax, [es:FileDlgListBox + 0x2]
         add ax, strict word 0xa
         push ax
-        mov ax, [es:0x40]
+        mov ax, [es:FileDlgListBox]
         add ax, strict word 0xa
         push ax
         call 0x0FEF:FillRect
@@ -1266,21 +1266,21 @@ DrawFileDlgList:
         mov bx, [bp + 0x6]
         cmp word [bx], 0x6
         jg short DrawFileDlgListJumpTable.1
-        and word [g_C1EE], 0x6fc
+        and word [fdlgflags], 0x6fc
         mov ax, [bx]
         jmp short .17
 .11:
-        or byte [g_C1EF], 0x80
+        or byte [fdlgflags2], 0x80
 .12:
-        or byte [g_C1EF], 0x40
+        or byte [fdlgflags2], 0x40
 .13:
-        or byte [g_C1EF], 0x20
+        or byte [fdlgflags2], 0x20
 .14:
-        or byte [g_C1EF], 0x10
+        or byte [fdlgflags2], 0x10
 .15:
-        or byte [g_C1EF], 0x8
+        or byte [fdlgflags2], 0x8
 .16:
-        or byte [g_C1EF], 0x4
+        or byte [fdlgflags2], 0x4
         jmp near DrawFileDlgListJumpTable.2
         db 0x90
 .17:
@@ -1291,7 +1291,7 @@ DrawFileDlgList:
 .18:
         shl ax, 1
         xchg ax, bx
-        jmp [cs:bx + 0xc40]
+        jmp [cs:bx + DrawFileDlgListJumpTable]
         db 0x90
 DrawFileDlgListJumpTable:                       ; jump table of DrawFileDlgList: 6 case targets
         dw DrawFileDlgList.16
@@ -1301,9 +1301,9 @@ DrawFileDlgListJumpTable:                       ; jump table of DrawFileDlgList:
         dw DrawFileDlgList.12
         dw DrawFileDlgList.11
 .1:
-        or word [g_C1EE], 0xf903
-        mov es, [g_8B3E]
-        mov ax, [es:0x40]
+        or word [fdlgflags], 0xf903
+        mov es, [segDialogRects1]
+        mov ax, [es:FileDlgListBox]
         add ax, strict word 0xa
         mov [bp - 0x2], ax
         db 0x8B, 0xC8                           ; insn: mov cx, ax
@@ -1311,10 +1311,10 @@ DrawFileDlgListJumpTable:                       ; jump table of DrawFileDlgList:
         shl ax, byte 0x5
         cwd
         idiv word [bx]
-        add ax, [es:0x42]
+        add ax, [es:FileDlgListBox + 0x2]
         add ax, strict word 0xa
         mov [bp - 0x8], ax
-        mov dx, [es:0x44]
+        mov dx, [es:FileDlgListBox + 0x4]
         add dx, 0xa
         mov [bp - 0x6], dx
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -1324,7 +1324,7 @@ DrawFileDlgListJumpTable:                       ; jump table of DrawFileDlgList:
         db 0x8B, 0xFA                           ; insn: mov di, dx
         cwd
         idiv word [bx]
-        add ax, [es:0x42]
+        add ax, [es:FileDlgListBox + 0x2]
         add ax, strict word 0xa
         mov [bp - 0xa], ax
         push 0x11
@@ -1455,7 +1455,7 @@ RunFileDlg:
         add sp, 0x8
         mov bx, [fdlgtab]
         shl bx, 1
-        mov ax, [bx + g_0EDC]
+        mov ax, [bx + FileDlgSpecs]
         mov [bp - 0x14], ax
         call 0x0F99:FlushInputEvents
 .1:
@@ -1538,7 +1538,7 @@ RunFileDlg:
         jnz short .10
         jmp near .29
 .10:
-        test byte [g_C1EF], 0x1
+        test byte [fdlgflags2], 0x1
         jnz short .11
         jmp near .29
 .11:
@@ -1569,8 +1569,8 @@ RunFileDlg:
         jmp near .27
 .15:
         mov ax, [bp - 0xe]
-        mov es, [g_8B3E]
-        sub ax, [es:0x42]
+        mov es, [segDialogRects1]
+        sub ax, [es:FileDlgListBox + 0x2]
         sub ax, strict word 0xa
         mov bx, [bp - 0x14]
         imul word [bx]
@@ -1748,7 +1748,7 @@ RunFileDlg:
         mov ax, 0x1
         shl ax, cl
         mov [bp - 0xa], ax
-        test [g_C1EE], ax
+        test [fdlgflags], ax
         jz short .42
         cmp ax, strict word 0x10
         jnz short .35
@@ -1800,8 +1800,8 @@ RunFileDlg:
         db 0x90
 .44:
         mov ax, [bp - 0x6]
-        mov es, [g_8B3E]
-        sub ax, [es:0x42]
+        mov es, [segDialogRects1]
+        sub ax, [es:FileDlgListBox + 0x2]
         sub ax, strict word 0xa
         mov bx, [bp - 0x14]
         imul word [bx]
@@ -1849,19 +1849,19 @@ RunFileDlg:
         db 0x90
 .50:
         mov word [fdlgtab], 0x0
-        mov ax, [g_0EDC]
+        mov ax, [FileDlgSpecs]
 .51:
         mov [bp - 0x14], ax
         push ax
         jmp near .41
 .52:
         mov word [fdlgtab], 0x1
-        mov ax, [g_0EDE]
+        mov ax, [FileDlgSpec2]
         jmp short .51
         db 0x90
 .53:
         mov word [fdlgtab], 0x2
-        mov ax, [g_0EE0]
+        mov ax, [FileDlgSpec3]
         jmp short .51
         db 0x90
 .54:
@@ -1872,7 +1872,7 @@ RunFileDlg:
 .55:
         mov bx, [fdlgtab]
         shl bx, 1
-        push word [bx + g_0EDC]
+        push word [bx + FileDlgSpecs]
         push cs
         call DeleteSavedGame
         add sp, 0x2
@@ -1884,7 +1884,7 @@ RunFileDlg:
 .56:
         mov bx, [fdlgtab]
         shl bx, 1
-        mov ax, [bx + g_0EDC]
+        mov ax, [bx + FileDlgSpecs]
         mov [bp - 0x14], ax
         jmp short .49
         db 0x90
@@ -1946,29 +1946,29 @@ DeleteSavedGame:
         mov word [bp - 0x6], 0x64
         cmp word [fdlgtab], 0x0
         jnz short .1
-        mov ax, 0x98
+        mov ax, str_ExhibitionGameCalled
         mov dx, 0x369a
         jmp short .3
         db 0x90
 .1:
         cmp word [fdlgtab], 0x1
         jnz short .2
-        mov ax, 0xbf
+        mov ax, str_PlayOffSeriesCalled
         mov dx, 0x369a
         jmp short .3
         db 0x90
 .2:
-        mov ax, 0xb0
+        mov ax, str_LeagueCalled
         mov dx, 0x369a
 .3:
-        mov [g_0F28], ax
-        mov [g_0F2A], dx
+        mov [DelFileName], ax
+        mov [DelFileNameSeg], dx
         mov bx, [si + 0x2]
         shl bx, byte 0x2
         mov ax, [bx + si + 0x8]
         mov dx, [bx + si + 0xa]
-        mov [g_0F2C], ax
-        mov [g_0F2E], dx
+        mov [DelFileName2], ax
+        mov [DelFileName2Seg], dx
         push 0x0
         push 0x11
         push 0x5
@@ -1983,7 +1983,7 @@ DeleteSavedGame:
         push ax
         push 0x2
         push word 0x36b8
-        push strict word f_36B8_0170
+        push strict word dlgReturnConfirm
         push 0x3
         push ds
         push strict word msgConfirmDeletionOfThe
@@ -2048,7 +2048,7 @@ DeleteSavedGame:
         jmp near .14
 .6:
         push word 0x3415
-        push strict word f_3415_00C6
+        push strict word lgstate_name
         lea ax, [bp - 0x1a]
         push ss
         push ax
@@ -2056,19 +2056,19 @@ DeleteSavedGame:
         add sp, 0x8
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .7
-        mov es, [g_8B3C]
-        mov byte [es:0xc6], 0x0
-        mov es, [g_8B40]
-        mov [es:0xb6e], ax
-        mov [es:0xb6c], ax
-        mov [es:0xb84], ax
-        mov [es:0xb82], ax
-        mov [es:0xb9e], ax
-        mov [es:0xb9c], ax
+        mov es, [segDbFiles4]
+        mov byte [es:lgstate_name], 0x0
+        mov es, [segMenuText7]
+        mov [es:itemExportDatabases + 0xE], ax
+        mov [es:itemExportDatabases + 0xC], ax
+        mov [es:itemNextLeagueGame + 0xE], ax
+        mov [es:itemNextLeagueGame + 0xC], ax
+        mov [es:itemLeagueManager + 0x12], ax
+        mov [es:itemLeagueManager + 0x10], ax
         jmp short .8
 .7:
         push word 0x3415
-        push strict word f_3415_0064
+        push strict word postate_name
         lea ax, [bp - 0x1a]
         push ss
         push ax
@@ -2076,15 +2076,15 @@ DeleteSavedGame:
         add sp, 0x8
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .8
-        mov es, [g_8B38]
-        mov byte [es:0x64], 0x0
-        mov es, [g_8B40]
-        mov [es:0xbdc], ax
-        mov [es:0xbda], ax
-        mov [es:0xbf2], ax
-        mov [es:0xbf0], ax
-        mov [es:0xc08], ax
-        mov [es:0xc06], ax
+        mov es, [segDbFiles2]
+        mov byte [es:postate_name], 0x0
+        mov es, [segMenuText7]
+        mov [es:itemNextPlayOffGame + 0xE], ax
+        mov [es:itemNextPlayOffGame + 0xC], ax
+        mov [es:itemPlayOffSettings + 0xE], ax
+        mov [es:itemPlayOffSettings + 0xC], ax
+        mov [es:itemPlayOffHilights + 0xE], ax
+        mov [es:itemPlayOffHilights + 0xC], ax
 .8:
         lea ax, [bp - 0x28]
         push ax
@@ -2099,7 +2099,7 @@ DeleteSavedGame:
         lea ax, [bp - 0x46]
         push ax
         push 0x0
-        push word 0xf10
+        push word str_AllFiles
         call 0x0000:_dos_findfirst
         add sp, 0x6
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -2211,35 +2211,35 @@ DeleteSavedGame:
         jmp short .25
         db 0x90
 .22:
-        and byte [g_C1EE], 0xdf
+        and byte [fdlgflags], 0xdf
         jmp short .25
         db 0x90
 .23:
-        and byte [g_C1EE], 0xbf
+        and byte [fdlgflags], 0xbf
         jmp short .25
         db 0x90
 .24:
-        and byte [g_C1EE], 0x7f
+        and byte [fdlgflags], 0x7f
 .25:
-        cmp word [g_C0DC], 0x0
+        cmp word [savedcount2], 0x0
         jz short .26
         mov word [fdlgtab], 0x0
         jmp short .29
 .26:
-        cmp word [g_C164], 0x0
+        cmp word [savedcount3], 0x0
         jz short .27
         mov word [fdlgtab], 0x1
         jmp short .29
         db 0x90
 .27:
-        cmp word [g_C054], 0x0
+        cmp word [savedcount1], 0x0
         jz short .28
         mov word [fdlgtab], 0x2
         jmp short .29
         db 0x90
 .28:
         mov word [fdlgtab], 0xffff
-        and byte [g_C1EE], 0xf3
+        and byte [fdlgflags], 0xf3
 .29:
         push cs
         call DrawFileDlgTabs
@@ -2281,7 +2281,7 @@ SelectSavedFile:
         mov bx, [lgfiles]
         shl bx, byte 0x2
         push word [bx + lgfilenames]
-        push word [bx + g_C0E4]
+        push word [bx + savednames2]
         lea ax, [bp - 0x14]
         push ss
         push ax
@@ -2318,8 +2318,8 @@ SelectSavedFile:
         push strict word exhstate
         call 0x2E70:LoadModeState
         add sp, 0x4
-        mov es, [g_8B36]
-        mov ax, [es:0x50]
+        mov es, [segDbFiles1]
+        mov ax, [es:exhstate + 0x50]
         mov [bp - 0x16], ax
         cmp ax, strict word 0x18
         jnl short .4
@@ -2335,14 +2335,14 @@ SelectSavedFile:
         mov bx, [bp - 0x16]
         shl bx, 1
         push ds
-        push word [bx + 0x1e4]
+        push word [bx + TeamNameClips + 4]
 .5:
         push word 0x3448
         push strict word str_LaAtMtl
         call 0x03A3:CopyStrNFar
         add sp, 0xa
-        mov es, [g_8B36]
-        mov ax, [es:0x52]
+        mov es, [segDbFiles1]
+        mov ax, [es:exhstate + 0x52]
         mov [bp - 0x18], ax
         cmp ax, strict word 0x18
         jnl short .6
@@ -2358,7 +2358,7 @@ SelectSavedFile:
         mov bx, [bp - 0x18]
         shl bx, 1
         push ds
-        push word [bx + 0x1e4]
+        push word [bx + TeamNameClips + 4]
 .7:
         push word 0x3448
         push strict word str_Mtl_2
@@ -2371,10 +2371,10 @@ SelectSavedFile:
         retf
         db 0x90
 .8:
-        mov bx, [g_C166]
+        mov bx, [savedsel3]
         shl bx, byte 0x2
-        push word [bx + g_C16E]
-        push word [bx + g_C16C]
+        push word [bx + savednames3seg]
+        push word [bx + savednames3]
         lea ax, [bp - 0x14]
         push ss
         push ax
@@ -2408,18 +2408,18 @@ SelectSavedFile:
         call ReadGameSettings
         add sp, 0x8
         mov [bp - 0x2], ax
-        mov es, [g_8B40]
-        mov word [es:0xbda], strict word PlayoffModeLoopThunk
-        mov word [es:0xbdc], 0x1b35
-        mov word [es:0xbf0], strict word EditPlayoffSettingsThunk
-        mov word [es:0xbf2], 0x1b35
-        mov word [es:0xc06], strict word MenuPlayoffHilightsThunk
-        mov word [es:0xc08], 0x1b35
+        mov es, [segMenuText7]
+        mov word [es:itemNextPlayOffGame + 0xC], strict word PlayoffModeLoopThunk
+        mov word [es:itemNextPlayOffGame + 0xE], 0x1b35
+        mov word [es:itemPlayOffSettings + 0xC], strict word EditPlayoffSettingsThunk
+        mov word [es:itemPlayOffSettings + 0xE], 0x1b35
+        mov word [es:itemPlayOffHilights + 0xC], strict word MenuPlayoffHilightsThunk
+        mov word [es:itemPlayOffHilights + 0xE], 0x1b35
         lea ax, [bp - 0x14]
         push ss
         push ax
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         call 0x0000:_fstrcpy
         add sp, 0x8
         lea ax, [bp - 0x6]
@@ -2427,9 +2427,9 @@ SelectSavedFile:
         call 0x26D4:LoadScheduleDB
         add sp, 0x2
         push word 0x3415
-        push strict word f_3415_0002
+        push strict word exhstate_name
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         call 0x0000:_fstrcpy
         add sp, 0x8
         les bx, [bp - 0x6]
@@ -2437,7 +2437,7 @@ SelectSavedFile:
         mov cx, 0x7
         cwd
         idiv cx
-        mov [g_11D8], dx
+        mov [LeagueSetChoice], dx
         push es
         push bx
         call 0x06E1:FindUnlink
@@ -2445,10 +2445,10 @@ SelectSavedFile:
         jmp near .10
         db 0x90
 .9:
-        mov bx, [g_C056]
+        mov bx, [savedsel1]
         shl bx, byte 0x2
-        push word [bx + g_C05E]
-        push word [bx + g_C05C]
+        push word [bx + savednames1seg]
+        push word [bx + savednames1]
         lea ax, [bp - 0x14]
         push ss
         push ax
@@ -2482,13 +2482,13 @@ SelectSavedFile:
         call ReadGameSettings
         add sp, 0x8
         mov [bp - 0x2], ax
-        mov es, [g_8B40]
-        mov word [es:0xb6c], strict word MenuExportDbsThunk
-        mov word [es:0xb6e], 0x1b35
-        mov word [es:0xb82], strict word MenuNextLeagueGameThunk
-        mov word [es:0xb84], 0x1b35
-        mov word [es:0xb9c], 0xd86
-        mov word [es:0xb9e], 0x3448
+        mov es, [segMenuText7]
+        mov word [es:itemExportDatabases + 0xC], strict word MenuExportDbsThunk
+        mov word [es:itemExportDatabases + 0xE], 0x1b35
+        mov word [es:itemNextLeagueGame + 0xC], strict word MenuNextLeagueGameThunk
+        mov word [es:itemNextLeagueGame + 0xE], 0x1b35
+        mov word [es:itemLeagueManager + 0x10], itemMergeLeagueFiles
+        mov word [es:itemLeagueManager + 0x12], 0x3448
 .10:
         mov ax, [bp - 0x2]
         pop si

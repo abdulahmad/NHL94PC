@@ -12,33 +12,33 @@ FadeBlockSweep:
         push di
         push si
         call 0x0FEF:UseCurrentPage
-        mov es, [g_8CF4]
-        mov ax, [es:0x74fc]
-        mov [g_DF6A], ax
-        mov ax, [es:0x74fe]
-        mov [g_DF6C], ax
-        mov ax, [es:0x74f2]
-        mov [g_DF6E], ax
-        mov cx, [es:0x74f4]
-        mov [g_DF70], cx
-        mov ax, [es:0x74fa]
+        mov es, [segDgroup18]
+        mov ax, [es:ClipLeftX]
+        mov [fadex], ax
+        mov ax, [es:ClipRightX]
+        mov [fadey], ax
+        mov ax, [es:ClipTopY]
+        mov [fadew], ax
+        mov cx, [es:ClipBottomY]
+        mov [fadeh], cx
+        mov ax, [es:VenetianRowBytes]
         add ax, strict word 0x27
         mov bx, 0x28
         cwd
         idiv bx
         mov [bp - 0xe], ax
         db 0x8B, 0xC1                           ; insn: mov ax, cx
-        sub ax, [g_DF6E]
+        sub ax, [fadew]
         add ax, strict word 0x22
         mov cx, 0x23
         cwd
         idiv cx
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov bx, [bp + 0x6]
-        mov al, [bx + g_62EA]
+        mov al, [bx + BlockSweepDX]
         cbw
         db 0x8B, 0xF0                           ; insn: mov si, ax
-        mov al, [bx + g_62F2]
+        mov al, [bx + BlockSweepOrder]
         cbw
         db 0x3B, 0xF0                           ; insn: cmp si, ax
         jnz short .1
@@ -180,10 +180,10 @@ FadeBlockSweep:
 .17:
         call 0x03A3:WaitDeadlineNoEoi
         mov bx, [bp + 0x6]
-        mov al, [bx + g_62EE]
+        mov al, [bx + BlockSweepDY]
         cbw
         db 0x03, 0xF0                           ; insn: add si, ax
-        mov al, [bx + g_62F2]
+        mov al, [bx + BlockSweepOrder]
         cbw
         db 0x3B, 0xF0                           ; insn: cmp si, ax
         jz short .18

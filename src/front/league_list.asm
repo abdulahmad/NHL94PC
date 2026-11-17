@@ -19,7 +19,7 @@ CheckMasterPassword:
         push di
         push si
         push 0x2
-        mov ax, 0xe53
+        mov ax, CurLeagueName
         mov cx, 0x3701
         mov [bp - 0x1c], ax
         mov [bp - 0x1a], cx
@@ -34,19 +34,19 @@ CheckMasterPassword:
         db 0x0B, 0xF6                           ; insn: or si, si
         jnz short .2
         push word 0x3a0b
-        push strict word f_3A0B_AF3E
+        push strict word leagueinfo_tail
         push word 0x3a0b
-        push strict word f_3A0B_AC60
+        push strict word leagueinfo_w6
         push word 0x3a0b
-        push strict word f_3A0B_AC5E
+        push strict word leagueinfo_w4
         push word 0x3a0b
-        push strict word f_3A0B_AC5C
+        push strict word leagueinfo_w2
         push word 0x3a0b
-        push strict word f_3A0B_AC5A
+        push strict word leagueinfo
         push word 0x3a0b
-        push strict word f_3A0B_AF32
+        push strict word leagueinfo_password
         push word 0x3a0b
-        push strict word f_3A0B_AC62
+        push strict word leagueinfo_teams
         push word [bp - 0x1a]
         push word [bp - 0x1c]
         call 0x22D3:ReadLeagueInfo
@@ -65,7 +65,7 @@ CheckMasterPassword:
         call 0x0000:_fstrcpy
         add sp, 0x8
         push word 0x3701
-        push strict word f_3701_0BF4
+        push strict word str_Dot
         lea ax, [bp - 0x18]
         push ss
         push ax
@@ -75,12 +75,12 @@ CheckMasterPassword:
         lea ax, [bp - 0x18]
         db 0x03, 0xD8                           ; insn: add bx, ax
         mov byte [bx], 0x0
-        mov es, [g_8BC4]
-        test byte [es:0xac5e], 0x4
+        mov es, [segWorkBuffer17]
+        test byte [es:leagueinfo_w4], 0x4
         jnz short .5
-        mov es, [g_8BC6]
-        mov [es:0x8b3], ax
-        mov [es:0x8b5], ss
+        mov es, [segTeamChoiceText22]
+        mov [es:msgMasterDatabasesFor + 0x4], ax
+        mov [es:msgMasterDatabasesFor + 0x6], ss
         push 0x0
         push 0x11
         push 0x5
@@ -103,7 +103,7 @@ CheckMasterPassword:
         push ax
         push 0x2
         push word 0x3701
-        push strict word f_3701_0913
+        push strict word dlgMergeFirst
         push 0x4
         push word 0x3701
         push strict word msgMasterDatabasesFor
@@ -128,7 +128,7 @@ CheckMasterPassword:
         jz short .7
         jmp near .9
 .7:
-        cmp byte [g_E36B], 0x0
+        cmp byte [lgflags], 0x0
         jz short .8
         push si
         call 0x0FEF:ClearClipRect
@@ -175,15 +175,15 @@ CheckMasterPassword:
         call 0x0D90:SetDialogColors
         add sp, 0xa
         push word 0x3a0b
-        push strict word f_3A0B_AF32
+        push strict word leagueinfo_password
         push word 0x3a0b
-        push strict word f_3A0B_AC62
-        mov es, [g_8BC8]
-        push word [es:0xac5a]
+        push strict word leagueinfo_teams
+        mov es, [segWorkBuffer18]
+        push word [es:leagueinfo]
         call 0x28A8:AskMasterPassword
         add sp, 0xa
         db 0x8B, 0xF0                           ; insn: mov si, ax
-        cmp byte [g_E36B], 0x0
+        cmp byte [lgflags], 0x0
         jz short .9
         push 0x0
         call 0x0FEF:ClearClipRect
@@ -240,7 +240,7 @@ FmtFromLeague:
         call 0x0000:_fstrcpy
         add sp, 0x8
         push word 0x3701
-        push strict word f_3701_0BF4
+        push strict word str_Dot
         lea ax, [bp - 0xe]
         push ss
         push ax
@@ -287,7 +287,7 @@ BuildLeagueList:
         push di
         push si
         push word 0x3701
-        push strict word f_3701_0BA8
+        push strict word str_Star
         lea ax, [bp - 0x1e]
         push ss
         push ax
@@ -425,7 +425,7 @@ BuildLeagueList:
         jz short .11
 .10:
         push word 0x3701
-        push strict word f_3701_0BF4
+        push strict word str_Dot
         lea ax, [bp - 0x2c]
         push ss
         push ax
@@ -702,9 +702,9 @@ MsgCopyingDatabases:
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, [bp + 0x6]
         mov dx, [bp + 0x8]
-        mov es, [g_8BCA]
-        mov [es:0x6ca], ax
-        mov [es:0x6cc], dx
+        mov es, [segTeamChoiceText23]
+        mov [es:argCopyingDatabasesFor], ax
+        mov [es:argCopyingDatabasesFor + 0x2], dx
         push 0x0
         push 0x0
         push 0x0
@@ -764,11 +764,11 @@ CopyHumanTeamDBs:
         push ax
         call 0x0000:_fstrcpy
         add sp, 0x8
-        mov es, [g_8BD0]
+        mov es, [segTeamChoiceText26]
         mov bx, [bp - 0xa6]
         shl bx, byte 0x2
-        push word [es:bx + 0xb6e]
-        push word [es:bx + 0xb6c]
+        push word [es:bx + DbFileNameList + 0x2]
+        push word [es:bx + DbFileNameList]
         lea ax, [bp - 0x54]
         push ss
         push ax
@@ -798,9 +798,9 @@ CopyHumanTeamDBs:
         push strict word str_Xx_2
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8BD0]
-        push word [es:si + 0xb6e]
-        push word [es:si + 0xb6c]
+        mov es, [segTeamChoiceText26]
+        push word [es:si + DbFileNameList + 0x2]
+        push word [es:si + DbFileNameList]
         call 0x0CD1:CopyFileByName
         add sp, 0x14
         mov [bp - 0xa4], ax
@@ -908,9 +908,9 @@ CopyHumanTeamDBs:
         call 0x0000:_fstrcpy
         add sp, 0x8
         lea ax, [bp - 0xe]
-        mov es, [g_8BCC]
-        mov [es:0x19e], ax
-        mov [es:0x1a0], ss
+        mov es, [segTeamChoiceText24]
+        mov [es:msgInsertDiskFor + 0x4], ax
+        mov [es:msgInsertDiskFor + 0x6], ss
         lea ax, [bp - 0xa0]
         push ax
         lea cx, [bp - 0x9a]
@@ -958,7 +958,7 @@ CopyHumanTeamDBs:
         push word 0x3701
         push strict word str_Player
         push word 0x3701
-        push strict word f_3701_0BFA
+        push strict word str_DriveColon
         lea ax, [bp - 0x54]
         push ss
         push ax
@@ -1028,9 +1028,9 @@ CopyHumanTeamDBs:
         call FmtFromLeague
         add sp, 0xc
         lea ax, [bp - 0x94]
-        mov es, [g_8BCE]
-        mov [es:0x1f4], ax
-        mov [es:0x1f6], ss
+        mov es, [segTeamChoiceText25]
+        mov [es:msgThatDiskIsFor + 0x4], ax
+        mov [es:msgThatDiskIsFor + 0x6], ss
         lea ax, [bp - 0xa0]
         push ax
         lea cx, [bp - 0x9a]
@@ -1046,7 +1046,7 @@ CopyHumanTeamDBs:
         push ax
         push 0x2
         push word 0x3701
-        push strict word f_3701_01FC
+        push strict word dlgInsertDisk
         push 0x3
         push word 0x3701
         push strict word msgThatDiskIsFor

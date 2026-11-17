@@ -26,7 +26,7 @@ PreGameIntro:
         push 0xa
         call 0x0EDC:PlayArenaJingle
         add sp, 0x2
-        mov bx, [g_29CA]
+        mov bx, [HomeTeamNum]
         mov al, [bx + teamrocktune]
         cbw
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -51,14 +51,14 @@ PreGameIntro:
         mov [textline2], al
         mov [textline1], al
         mov [textline3], al
-        mov ax, [g_29CA]
-        mov cl, [g_29CC]
+        mov ax, [HomeTeamNum]
+        mov cl, [VisTeamNum]
         add cl, 0x10
         shl ax, cl
         cwd
         add [seed], ax
-        adc [g_2A02], dx
-        mov word [g_DCD8], 0x708
+        adc [rngseed], dx
+        mov word [introtimers], 0x708
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [foy], ax
         mov [fox], ax
@@ -68,26 +68,26 @@ PreGameIntro:
         mov [curperiod], ax
         mov [c2playernum], ax
         mov [c1playernum], ax
-        push word 0xb362
+        push word hmshots
         call 0x2E42:reenergizeteam
         add sp, 0x2
-        push word 0xb362
+        push word hmshots
         call 0x2E42:setpersonel
         add sp, 0x2
-        push word 0xb362
+        push word hmshots
         call 0x2E42:forcepldata
         add sp, 0x2
-        push word 0xb438
+        push word awshots
         call 0x2E42:reenergizeteam
         add sp, 0x2
-        push word 0xb438
+        push word awshots
         call 0x2E42:setpersonel
         add sp, 0x2
-        push word 0xb438
+        push word awshots
         call 0x2E42:forcepldata
         add sp, 0x2
         call 0x2E42:resetplstuff
-        mov word [bp - 0x6], 0xba8e
+        mov word [bp - 0x6], SortCords + 11 * 0x80
         mov word [bp - 0xa], 0x2
         mov [bp - 0xc], si
 .3:
@@ -198,38 +198,38 @@ PreGameIntro:
         jz short .11
         jmp near .3
 .11:
-        mov word [g_BC36], 0x78
-        mov word [g_BC10], 0xc8
-        mov word [puckstruct], 0xfed4
+        mov word [pucktemp2], 0x78
+        mov word [puckXpos2], 0xc8
+        mov word [puckYpos2], 0xfed4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_BC1A], ax
-        mov [g_BC1C], ax
+        mov [puckXvel], ax
+        mov [puckYvel], ax
         push 0x1a
-        push word 0xbc0e
+        push word puckstruct
         call 0x1E7E:assreplace
         add sp, 0x4
         mov ax, [bp - 0xc]
         mov [reftemp1], ax
         mov ax, 0x8e
-        mov [g_BD10], ax
+        mov [refXpos2], ax
         mov [reftemp3], ax
         mov ax, 0x2
         call 0x0C11:randomd0
-        add [g_BD10], ax
+        add [refXpos2], ax
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [refYpos2], ax
-        mov [g_BD3A], ax
-        mov word [g_BD44], 0x4
-        mov [g_BD1C], ax
+        mov [reftemp4], ax
+        mov word [ref_36], 0x4
+        mov [refYvel], ax
         mov [refXvel], ax
         mov ax, [bp - 0x8]
-        mov [g_BD3C], ax
-        lea bx, [g_BD0E]
+        mov [reftemp5], ax
+        lea bx, [refstruct]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         call 0x2E42:SetSPA
-        mov word [g_BD20], 0x289
+        mov word [refframe], 0x289
         push 0x26
-        push word 0xbd0e
+        push word refstruct
         call 0x1E7E:assreplace
         add sp, 0x4
         mov word [RefStep], 0x0
@@ -253,9 +253,9 @@ PreGameIntro:
         call 0x0FEF:UseOffscreenCanvas
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [energywarn], ax
-        mov [g_48CE], ax
-        mov [g_48CC], ax
-        mov [g_48CA], ax
+        mov [lcsel], ax
+        mov [lcrequestteam], ax
+        mov [energywarnteam], ax
         call 0x2083:UpdateHudPanel
         pop si
         pop di
@@ -274,8 +274,8 @@ ThreeStarsLoop:
         push si
         call 0x03A3:CallCountStep
         mov word [PadRepeatOn], 0x1
-        mov word [g_4B02], 0x0
-        cmp word [g_DCD8], 0x0
+        mov word [framesync], 0x0
+        cmp word [introtimers], 0x0
         jnz short .1
         jmp near .10
 .1:
@@ -300,9 +300,9 @@ ThreeStarsLoop:
         push si
         call 0x1E7E:RunGameFrames
         add sp, 0x2
-        sub [g_DCD8], si
+        sub [introtimers], si
         jns short .2
-        mov word [g_DCD8], 0x0
+        mov word [introtimers], 0x0
 .2:
         mov ax, [camx]
         add ax, strict word 0x20
@@ -317,22 +317,22 @@ ThreeStarsLoop:
 .4:
         mov ax, 0xec
         sub ax, [camy]
-        mov [g_D6CE], ax
+        mov [ovltimer2], ax
         cmp ax, 0x1a8
         jng short .5
-        mov word [g_D6CE], 0x1a8
+        mov word [ovltimer2], 0x1a8
 .5:
-        cmp word [g_D6CE], 0x0
+        cmp word [ovltimer2], 0x0
         jnl short .6
-        mov word [g_D6CE], 0x0
+        mov word [ovltimer2], 0x0
 .6:
-        push word [g_D6CE]
+        push word [ovltimer2]
         push word [viewscrollx]
         call 0x1F54:FlushDirtyRects
         add sp, 0x4
         call 0x0FEF:UseOtherPage
         mov ax, 0x140
-        sub ax, [g_D6CE]
+        sub ax, [ovltimer2]
         push ax
         mov ax, [viewscrollx]
         sub ax, 0xc0
@@ -343,23 +343,23 @@ ThreeStarsLoop:
         cmp word [fadeinpending], 0x0
         jz short .7
         mov ax, [PadRepeatOn]
-        mov [g_D46A], ax
+        mov [gameframe], ax
         push 0x10
         push word 0x3a0b
-        push strict word f_3A0B_0A8E
+        push strict word TeamPalette768
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [PadRepeatOn], ax
         push ax
         call 0x1E7E:FadePalette
         add sp, 0x8
         mov word [fadeinpending], 0x0
-        mov ax, [g_D46A]
+        mov ax, [gameframe]
         mov [PadRepeatOn], ax
 .7:
         push si
         call 0x0EDC:CrowdNoiseUpdate
         add sp, 0x2
-        cmp word [g_4B02], 0x0
+        cmp word [framesync], 0x0
         jnz short .10
         call 0x2C24:ReadJoy1
         test byte [regd1], 0x30
@@ -368,7 +368,7 @@ ThreeStarsLoop:
         test byte [regd1], 0x30
         jnz short .9
         call 0x03A3:WaitDeadlineNoEoi
-        cmp word [g_DCD8], 0x0
+        cmp word [introtimers], 0x0
         jz short .8
         jmp near .1
 .8:
@@ -381,30 +381,30 @@ ThreeStarsLoop:
         mov word [PadRepeatOn], 0x0
         cmp word [ovlseq], -0x1
         jz short .11
-        push word [g_D62E]
-        push word [g_D62C]
+        push word [OverlayGfxSeg]
+        push word [OverlayGfx]
         call 0x06E1:FindUnlink
         add sp, 0x4
         mov word [ovlseq], 0xffff
 .11:
-        cmp word [g_4B02], 0x0
+        cmp word [framesync], 0x0
         jz short .12
         push word 0x3a0b
-        push strict word f_3A0B_B352
+        push strict word GamePalette
         push word 0x100
         push 0x0
         call 0x0FEF:GetPaletteFar
         add sp, 0x8
         push 0x10
         push word 0x3a0b
-        push strict word f_3A0B_B352
+        push strict word GamePalette
         push 0x1
         call 0x1E7E:FadePalette
         add sp, 0x8
         call 0x0EDC:CrowdFadeOut
         call 0x0EDC:StopJingle
         call 0x09B2:StopSpeech
-        mov word [g_4B02], 0x0
+        mov word [framesync], 0x0
         mov ax, 0xffff
         pop si
         retf
@@ -517,20 +517,20 @@ assintroline:
 .1:
         cmp word [si + 0x2e], -0x64
         jnz short .5
-        cmp word [g_DCD8], 0xa
+        cmp word [introtimers], 0xa
         jg short .2
         jmp near .23
 .2:
-        mov bx, 0xb53c
+        mov bx, SortCords + 0x2e
 .3:
         cmp word [bx], -0x64
         jz short .4
         jmp near .23
 .4:
         add bx, 0x80
-        cmp bx, 0xbb3c
+        cmp bx, SortCords + 12 * 0x80 + 0x2e
         jc short .3
-        mov word [g_DCD8], 0xa
+        mov word [introtimers], 0xa
         pop si
         pop di
         leave
@@ -656,7 +656,7 @@ assintroline:
         call 0x0D5F:VectorToDir8
         cwd
         mov [regd2], ax
-        mov [g_D6BA], dx
+        mov [regd2_w2], dx
         cmp [si + 0x36], ax
         jz short .18
         mov al, [regd2]
@@ -736,7 +736,7 @@ AddStar:
         db 0x2B, 0xD2                           ; insn: sub dx, dx
         db 0x0B, 0xFF                           ; insn: or di, di
         jng short .4
-        mov bx, 0xc2b6
+        mov bx, startm
         mov cx, [bp + 0x8]
 .1:
         cmp [bx], cx
@@ -783,7 +783,7 @@ StarEligible:
         imul bx, [bp + 0x6], 0x6b
         add bx, [bp + 0x8]
         shl bx, 1
-        cmp word [bx + g_B3C6], -0x1
+        cmp word [bx + hmtmpdst], -0x1
         jnl short .2
 .1:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -798,7 +798,7 @@ StarEligible:
         db 0x1B, 0xF6                           ; insn: sbb si, si
         and si, 0x6
         shl si, byte 0x7
-        add si, 0xb50e
+        add si, SortCords
         db 0x2B, 0xD2                           ; insn: sub dx, dx
         mov di, [bp + 0x8]
 .3:
@@ -1140,26 +1140,26 @@ PickThreeStars:
         jmp near .12
 .9:
         mov word [bp - 0x6], 0x0
-        mov es, [g_8CDC]
+        mov es, [segWorkBuffer60]
         imul bx, [bp - 0x4], 0x12
-        mov ax, [es:bx + 0x770]
-        cmp [es:bx + 0x76a], ax
+        mov ax, [es:bx + HomeGlStats_w4 + 0x4]
+        cmp [es:bx + HomeGlStats_w2], ax
         jnl short .10
         mov word [bp - 0x6], 0x1
 .10:
         imul bx, [bp - 0x4], 0x12
-        mov ax, [es:bx + 0x76a]
-        cmp [es:bx + 0x776], ax
+        mov ax, [es:bx + HomeGlStats_w2]
+        cmp [es:bx + HomeGlStats_w4 + 0xA], ax
         jng short .11
-        mov ax, [es:bx + 0x770]
-        cmp [es:bx + 0x776], ax
+        mov ax, [es:bx + HomeGlStats_w4 + 0x4]
+        cmp [es:bx + HomeGlStats_w4 + 0xA], ax
         jng short .11
         mov word [bp - 0x6], 0x2
 .11:
         mov bl, [AnnouncerFlags]
         and bx, 0xc
         shr bl, byte 0x2
-        mov al, [bx + g_5B9E]
+        mov al, [bx + StarPoints]
         cbw
         mov bx, [bp - 0x4]
         db 0x8B, 0xCB                           ; insn: mov cx, bx
@@ -1170,7 +1170,7 @@ PickThreeStars:
         shl bx, 1
         db 0x03, 0xD9                           ; insn: add bx, cx
         shl bx, 1
-        cmp [es:bx + 0x76a], ax
+        cmp [es:bx + HomeGlStats_w2], ax
         jng short .12
         mov ax, [bp - 0x6]
         add ax, strict word 0x19
@@ -1212,13 +1212,13 @@ PickThreeStars:
         mov es, ax
         cmp word [es:bx], 0x0
         jnz short .18
-        cmp word [es:bx + 0x2], 0x0
+        cmp word [es:bx + HomeSortObjs + 0x2], 0x0
         jnz short .18
-        cmp word [es:bx + 0x4], 0x0
+        cmp word [es:bx + HomeSortObjs + 0x4], 0x0
         jnz short .18
-        cmp word [es:bx + 0x6], 0x0
+        cmp word [es:bx + HomeSortObjs + 0x6], 0x0
         jnz short .18
-        cmp word [es:bx + 0xe], 0x0
+        cmp word [es:bx + HomeSortObjs + 0xE], 0x0
         jnz short .18
 .15:
         inc word [bp - 0x4]
@@ -1286,9 +1286,9 @@ PickThreeStars:
         imul si, ax, 0x19
         db 0x03, 0xF3                           ; insn: add si, bx
         shl si, byte 0x4
-        mov es, [g_8CDE]
-        mov dx, [es:si + 0x44a]
-        add dx, [es:si + 0x448]
+        mov es, [segWorkBuffer61]
+        mov dx, [es:si + HomePlStats_w2]
+        add dx, [es:si + HomePlStats]
         cmp dx, 0x1
         jng short .23
         push bx
@@ -1332,24 +1332,24 @@ PickThreeStars:
         shl si, 1
         db 0x03, 0xF0                           ; insn: add si, ax
         shl si, 1
-        mov es, [g_8CDC]
+        mov es, [segWorkBuffer60]
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         mov bl, [AnnouncerFlags]
         and bx, 0xc
         shr bl, byte 0x2
         db 0x8B, 0xF8                           ; insn: mov di, ax
-        mov al, [bx + g_5BA2]
+        mov al, [bx + StarPoints2]
         cbw
-        cmp [es:si + 0x76a], ax
+        cmp [es:si + HomeGlStats_w2], ax
         jl short .24
-        mov ax, [es:si + 0x76a]
+        mov ax, [es:si + HomeGlStats_w2]
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         db 0x8B, 0xCA                           ; insn: mov cx, dx
         cwd
         push dx
         push ax
         mov ax, 0x3e8
-        imul word [es:si + 0x76c]
+        imul word [es:si + HomeGlStats_w4]
         db 0x8B, 0xF0                           ; insn: mov si, ax
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         db 0x8B, 0xDA                           ; insn: mov bx, dx
@@ -1433,14 +1433,14 @@ StartThreeStars:
         mov word [PadRepeatOn], 0x0
         call 0x2C24:joyq_flush
         push word 0x3a0b
-        push strict word f_3A0B_B352
+        push strict word GamePalette
         push word 0x100
         push 0x0
         call 0x0FEF:GetPaletteFar
         add sp, 0x8
         push 0x10
         push word 0x3a0b
-        push strict word f_3A0B_B352
+        push strict word GamePalette
         push 0x1
         call 0x1E7E:FadePalette
         add sp, 0x8
@@ -1455,18 +1455,18 @@ StartThreeStars:
         mov [Penaltytimer], ax
         mov [bannertimer], ax
         mov [injurystop], ax
-        mov [g_48E4], ax
+        mov [hudredraw], ax
         mov [lcboxon], ax
         mov [energywarn], ax
-        mov [g_48CE], ax
-        mov [g_48CC], ax
-        mov [g_48CA], ax
-        mov [g_D46E], ax
-        mov [g_D46C], ax
+        mov [lcsel], ax
+        mov [lcrequestteam], ax
+        mov [energywarnteam], ax
+        mov [controlled2], ax
+        mov [controlled], ax
         cmp word [ovlseq], -0x1
         jz short .2
-        push word [g_D62E]
-        push word [g_D62C]
+        push word [OverlayGfxSeg]
+        push word [OverlayGfx]
         call 0x06E1:FindUnlink
         add sp, 0x4
 .2:
@@ -1475,7 +1475,7 @@ StartThreeStars:
         mov [gameover], ax
         or byte [gmode], 0x1
         and byte [gmode], 0x7f
-        mov word [g_DCD8], 0x2ee0
+        mov word [introtimers], 0x2ee0
         mov ax, 0xffff
         mov [bannermsg], ax
         mov [ovlstep], ax
@@ -1489,9 +1489,9 @@ StartThreeStars:
         mov [textline2], al
         mov [textline1], al
         mov [textline3], al
-        mov [g_D6C7], al
+        mov [PBnum_b1], al
         mov [PBnum], al
-        mov si, 0xb50e
+        mov si, SortCords
         mov di, 0xc
 .3:
         mov ax, 0xff38
@@ -1518,41 +1518,41 @@ StartThreeStars:
         add si, 0x80
         dec di
         jnz short .3
-        mov word [g_BC36], 0x78
-        mov word [g_BC10], 0xc8
-        mov word [puckstruct], 0xfed4
+        mov word [pucktemp2], 0x78
+        mov word [puckXpos2], 0xc8
+        mov word [puckYpos2], 0xfed4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_BC1A], ax
-        mov [g_BC1C], ax
+        mov [puckXvel], ax
+        mov [puckYvel], ax
         push 0x1a
-        push word 0xbc0e
+        push word puckstruct
         call 0x1E7E:assreplace
         add sp, 0x4
-        mov word [g_BCB6], 0x78
-        mov word [g_BC90], 0xc8
-        mov word [g_BC94], 0xfed4
+        mov word [doortemp2], 0x78
+        mov word [doorXpos2], 0xc8
+        mov word [doorYpos2], 0xfed4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_BC9A], ax
-        mov [g_BC9C], ax
+        mov [doorXvel], ax
+        mov [doorYvel], ax
         push 0x19
-        push word 0xbc8e
+        push word doorstruct
         call 0x1E7E:assreplace
         add sp, 0x4
         mov word [reftemp1], 0x0
         mov ax, 0xff38
-        mov [g_BD10], ax
+        mov [refXpos2], ax
         mov [reftemp3], ax
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [refYpos2], ax
-        mov [g_BD3A], ax
-        mov [g_BD1C], ax
+        mov [reftemp4], ax
+        mov [refYvel], ax
         mov [refXvel], ax
-        lea bx, [g_BD0E]
+        lea bx, [refstruct]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         call 0x2E42:SetSPA
-        mov word [g_BD20], 0xffff
+        mov word [refframe], 0xffff
         push 0x15
-        push word 0xbd0e
+        push word refstruct
         call 0x1E7E:assreplace
         add sp, 0x4
         mov word [RefStep], 0x0
@@ -1906,7 +1906,7 @@ assthreestars:
         jmp near .8
 .3:
         and byte [bx + 0x44], 0xfd
-        mov ax, 0xd4b8
+        mov ax, textline3
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov si, str_EaSports
         push ds
@@ -1938,9 +1938,9 @@ assthreestars:
         mov di, [bx + starpl]
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        push word [bx + g_5BEE]
+        push word [bx + StarNamePtrs]
         push strict word str_SStar_2
-        push word 0xd506
+        push word textline1
         call 0x0000:_sprintf
         add sp, 0x6
         push word 0x5be4
@@ -1948,29 +1948,29 @@ assthreestars:
         db 0x03, 0xC7                           ; insn: add ax, di
         imul ax, ax, 0x28
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        add ax, 0xa568
+        add ax, hmroster + 0x18
         push ax
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         add cx, 0xa558
         push cx
-        mov bx, 0xa556
+        mov bx, hmrosterjersey
         db 0x03, 0xD8                           ; insn: add bx, ax
         mov [bp - 0x8], bx
         mov al, [bx]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         imul ax, si, word 0x2e8
-        add ax, 0x9f80
+        add ax, GameTeamRecs
         push ax
-        push word 0xd542
+        push word textline2
         call 0x2352:FormatPlayerName
         add sp, 0xc
         db 0x0B, 0xF6                           ; insn: or si, si
         jz short .5
-        mov ax, [g_29CC]
+        mov ax, [VisTeamNum]
         jmp short .6
 .5:
-        mov ax, [g_29CA]
+        mov ax, [HomeTeamNum]
 .6:
         mov [bp - 0x6], ax
         cmp ax, strict word 0x18
@@ -2000,7 +2000,7 @@ assthreestars:
         mov bx, [bp + 0x6]
         cmp word [bx + 0x26], 0x3
         jnz short .10
-        mov word [g_DCD8], 0x0
+        mov word [introtimers], 0x0
         mov ax, 0x1
         mov [exitgame], ax
         mov [gameover], ax
@@ -2013,7 +2013,7 @@ assthreestars:
         db 0x8B, 0xF3                           ; insn: mov si, bx
         mov bx, [si + 0x2a]
         shl bx, byte 0x7
-        add bx, 0xb50e
+        add bx, SortCords
         cmp word [si + 0x2a], 0x0
         jnl short .11
         jmp near .19
@@ -2054,9 +2054,9 @@ assthreestars:
         mov si, [bx + starpl]
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        push word [bx + g_5BEE]
+        push word [bx + StarNamePtrs]
         push strict word str_SStar
-        push word 0xd506
+        push word textline1
         call 0x0000:_sprintf
         add sp, 0x6
         push word 0x5bed
@@ -2064,29 +2064,29 @@ assthreestars:
         db 0x03, 0xC6                           ; insn: add ax, si
         imul ax, ax, 0x28
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        add ax, 0xa568
+        add ax, hmroster + 0x18
         push ax
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         add cx, 0xa558
         push cx
-        mov bx, 0xa556
+        mov bx, hmrosterjersey
         db 0x03, 0xD8                           ; insn: add bx, ax
         mov [bp - 0x8], bx
         mov al, [bx]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         imul ax, di, word 0x2e8
-        add ax, 0x9f80
+        add ax, GameTeamRecs
         push ax
-        push word 0xd542
+        push word textline2
         call 0x2352:FormatPlayerName
         add sp, 0xc
         db 0x0B, 0xFF                           ; insn: or di, di
         jz short .16
-        mov ax, [g_29CC]
+        mov ax, [VisTeamNum]
         jmp short .17
 .16:
-        mov ax, [g_29CA]
+        mov ax, [HomeTeamNum]
 .17:
         mov [bp - 0x6], ax
         cmp ax, strict word 0x18
@@ -2123,7 +2123,7 @@ assthreestars:
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov [si + 0x2a], ax
         shl di, byte 0x7
-        add di, 0xb50e
+        add di, SortCords
         mov al, [di + 0x44]
         and al, 0x40
         cmp al, 0x1
@@ -2159,7 +2159,7 @@ assthreestars:
         imul si, [bp - 0x2], 0x6b
         add si, [bp - 0x4]
         shl si, 1
-        mov word [si + g_B38E], 0x300
+        mov word [si + hmtmpde], 0x300
         push word [bp - 0x4]
         push bx
         call 0x2E42:setplayer
@@ -2215,14 +2215,14 @@ assboxenter:
 .2:
         cmp word [si + 0x26], 0x64
         jnz short .4
-        cmp word [g_BCB4], 0x64
+        cmp word [doortemp1], 0x64
         jz short .3
         jmp near .10
 .3:
-        mov word [g_BCB4], 0xc8
-        mov byte [g_BCD4], 0x0
-        or byte [g_BCD2], 0x20
-        lea bx, [g_BC8E]
+        mov word [doortemp1], 0xc8
+        mov byte [doorpflags3], 0x0
+        or byte [doorpflags], 0x20
+        lea bx, [doorstruct]
         mov ax, 0xea9
         call 0x2E42:SetSPA
         and byte [si + 0x49], 0xf7

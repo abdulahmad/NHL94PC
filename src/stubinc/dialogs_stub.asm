@@ -2,6 +2,7 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
+ListDlgScrollBar		equ	0x0
 TextWidthFar		equ	0x2
 DrawLine		equ	0xC
 InputInit		equ	0xE
@@ -9,7 +10,9 @@ GetInputEvent		equ	0xE
 SetTextColors		equ	0x24
 AllocRecData		equ	0x30
 InputShutdown		equ	0x4C
+msgCustomOrOriginal		equ	0x5B
 FlushInputEvents		equ	0x66
+btnsCustomOriginal		equ	0x67
 FillRect		equ	0x136
 DrawShadowText		equ	0x166
 UseCurrentPage		equ	0x1A6
@@ -23,6 +26,11 @@ ItemTextColor		equ	0x9F4
 ItemSelectColor		equ	0x9F6
 SaveUnderOff		equ	0x9FA
 SaveUnderSeg		equ	0x9FC
+str_Pointer_2		equ	0x9FE
+str_Dbox		equ	0xA06
+str_Pointer_3		equ	0xA0B
+str_Db_2		equ	0xBAF
+str_Org		equ	0xBB3
 SetCharPtr.regs		equ	0xC56
 _atoi		equ	0xCE2
 __aFldiv		equ	0x118C

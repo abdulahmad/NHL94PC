@@ -1,0 +1,554 @@
+# data labels named from their use (by hand), and the segment constants
+f_3415_0002 exhstate_name | new | medium | exhibition state record: saved game name (string at +2)
+f_3415_0064 postate_name | new | medium | playoff state record: saved game name (string at +2)
+f_3415_00B2 postate_w50 | new | medium | playoff state record word +50h; CreatePlayoffs sets 9
+f_3415_00B4 postate_w52 | new | medium | playoff state record word +52h; CreatePlayoffs sets 7
+f_3415_00B6 postate_b54 | new | medium | playoff state record option bits at +54h (word or-ed with 1FFh by CreatePlayoffs)
+f_3415_00B7 postate_b55 | new | medium | playoff state record option byte +55h; CreatePlayoffs clears bit 1, sets bits 4-6
+f_3415_00BC postate_w5A | new | medium | playoff state record word +5Ah: period length choice set by CreatePlayoffs (2, 4, 8)
+f_3415_00C6 lgstate_name | new | medium | league state record: saved game name (string at +2)
+f_3415_011E lgstate_w5A | new | medium | league state record word +5Ah: period length choice set by MenuNewLeague (1, 4, 8)
+f_3415_0128 POSeedTable | new | medium | playoff seeding table, word per entry, read by POSeedTeams and LoadCupFinalSeries
+f_3415_0158 POConfTeamTable | new | medium | conference team table read by POPickConfTeams
+f_3448_026B TeamNameTemplate | new | medium | template text ' 00 X. XXXXXXXXXXX' copied by ClearTeamNameText
+f_3448_0D44 DeskMenuBar | new | medium | menu bar of the sports desk (new exhibition, league, add or remove team ...)
+f_3448_11FE SportsDeskMenu1 | new | medium | first menu record SportsDesk keeps in a local
+f_3448_12AE SportsDeskMenu2 | new | medium | second menu record SportsDesk keeps in a local
+f_3448_12F0 HomeTeamMenuText | new | medium | menu item record of the home team name (SetSideControls, SetTeamNameText)
+f_3448_1332 VisitorTeamMenuText | new | medium | menu item record of the visiting team name (SetSideControls, SetTeamNameText)
+f_3448_14D4 MatchupLinesMenu | new | medium | menu passed to GameLineEditor from ShowMatchupScreen
+f_3448_1584 DeskLinesMenu | new | medium | menu passed to GameLineEditor from DeskHomeLines and DeskVisitorLines
+f_3448_15F2 TradeLinesMenu | new | medium | menu passed to GameLineEditor from ExecuteTrade
+f_3448_164A PlayerStatsMenuBar | new | medium | menu bar of the in-game player stats (MenuGameShowPlayerStats)
+f_3448_1794 StandingsRosterMenuBar | new | medium | menu bar of the standings roster view (RosterMenuLoop)
+f_3448_17D6 StandingsMenuBar2 | new | medium | menu bar of the standings menus (Easn, Game and Cal StandingsMenu)
+f_3448_1802 TeamStatsMenuBar | new | medium | menu bar of the team stats screens
+f_3448_1844 SkaterStatsMenuBar | new | medium | menu bar of the skater stats screens
+f_3448_1886 GoalieStatsMenuBar | new | medium | menu bar of the goalie stats screens
+f_3448_19BA PlayoffTreeMenuBar | new | medium | menu bar of the playoff tree (PlayoffModeLoop, POHandleElimination)
+f_3680_0000 JerseyRemapTable | new | medium | 128-byte colour remap table for jersey numbers (MakeJerseyShape, SetRemapTable)
+f_3680_0080 TradeRemapTable | new | medium | second 128-byte remap table copied by the trade screen
+f_36B8_00D0 EliminatedTeamText | new | medium | text buffer for the eliminated team name in msgTeamEliminatedFromPlayoffs
+f_36B8_0113 EliminatedTeamText2 | new | medium | second team name buffer of the elimination message
+f_36B8_0170 dlgReturnConfirm | new | medium | MessageBox definition used by DeleteSavedGame, DeskReturnConfirm, DeskExitGame
+f_36F5_00B3 dlgReturnMessages | new | medium | MessageBox definition with the 'returning to' messages
+f_3701_01FC dlgInsertDisk | new | medium | MessageBox definition used by ExportTeamToFloppy and CopyHumanTeamDBs
+f_3701_02A0 dlgReplaceLeague | new | medium | MessageBox definition used by CreateNewLeague and CreatePlayoffs
+f_3701_0303 dlgWhichSchedule | new | medium | MessageBox definition asking which schedule to use (CreateNewLeague)
+f_3701_03AD dlgLeagueTeamSelect | new | medium | MessageBox definition used by LeagueTeamSelect
+f_3701_04E5 dlgExportButtons | new | medium | button list of the export dialogs (ExportTeamToFloppy, ExportDbs)
+f_3701_04F5 dlgExportToFloppy | new | medium | MessageBox definition 'Do you want to export to a floppy disk?'
+f_3701_0549 dlgAskExport | new | medium | MessageBox definition used by AskExportToFloppy
+f_3701_063C dlgImportTeam | new | medium | dialog record used by ImportPlayerTeam
+f_3701_069C dlgImportTeam2 | new | medium | MessageBox definition used by ImportPlayerTeam
+f_3701_0756 dlgNewFloppy | new | medium | MessageBox definition used by ExportTeamToFloppy
+f_3701_07CE dlgImportChoice | new | medium | MessageBox definition used by ImportDbs
+f_3701_0913 dlgMergeFirst | new | medium | MessageBox definition 'Master databases for ... must be completely merged'
+f_3701_09C8 dlgPlayLeagueGame | new | medium | dialog record used by PlayLeagueGame
+f_3701_0BA6 str_Space | new | medium | string ' ' appended by FixJerseyConflict
+f_3701_0BA8 str_Star | new | medium | string '*' used by BuildLeagueList and SelectHilight
+f_3701_0BAA str_Backslash | new | medium | string '\' appended by MakeTeamDbFmt and ExecuteTrade
+f_3701_0BF4 str_Dot | new | medium | string '.' searched for by the import and export code
+f_3701_0BFA str_DriveColon | new | medium | string '?:' (drive letter is patched in) used for floppy paths
+f_3701_0DC2 PasswordKey | new | medium | key bytes EncryptPassword mixes into the password
+f_3701_0E53 CurLeagueName | new | medium | name of the current league (13 bytes), read and copied by the league code
+f_3701_0F94 CalNextMonthFn | new | medium | far routine offset of the calendar's next-month button
+f_3701_0F96 CalNextMonthSeg | new | medium | its segment
+f_3701_0FAA CalPrevMonthFn | new | medium | far routine offset of the calendar's previous-month button
+f_3701_0FAC CalPrevMonthSeg | new | medium | its segment
+f_3701_0FDF CalendarMenuBar | new | medium | menu bar of the calendar screen
+f_3701_1163 TradeMenu | new | medium | menu record used by TradePlayers
+f_3701_11AB TradeStatsMenuBar | new | medium | menu bar of the trade stats view
+f_384B_0094 SeasonMenuRight | new | medium | pointer to the season title text read by SetupStatsMenus
+f_38AF_0022 MatchupMenu | new | medium | menu record ShowMatchupScreen keeps in a local
+f_38BD_01F3 JingleIndex | new | medium | jingle number per arena event, read by LoadArenaJingles
+f_38BD_028F JingleTable | new | medium | jingle table compared by LoadArenaJingles
+f_3A0B_0000 HomeSortObjs | new | medium | home team sort objects (500 bytes), pointed to by hmtmsort
+f_3A0B_01F4 AwaySortObjs | new | medium | away team sort objects (500 bytes), pointed to by awtmsort
+f_3A0B_03E8 HomeGlAttr | new | medium | home goalie attributes (48 bytes)
+f_3A0B_0418 AwayGlAttr | new | medium | away goalie attributes (48 bytes), pointed to by awtmglattr
+f_3A0B_0448 HomePlStats | new | medium | home player stats records, read by ChkScorerMilestone
+f_3A0B_044A HomePlStats_w2 | new | medium | home player stats, word +2 of the first record
+f_3A0B_05D8 AwayPlStats | new | medium | away player stats (400 bytes), pointed to by awtmplstats
+f_3A0B_0768 HomeGlStats | new | medium | home goalie stats, pointed to by hmtmglstats
+f_3A0B_076A HomeGlStats_w2 | new | medium | home goalie stats word +2, written by CreateGSummaryDb
+f_3A0B_076C HomeGlStats_w4 | new | medium | home goalie stats from +4, written by CreateGSummaryDb
+f_3A0B_077A AwayGlStats | new | medium | away goalie stats, pointed to by g_B504
+f_3A0B_0A8E TeamPalette768 | new | medium | 768-byte palette (256 RGB triples) loaded with the team colours and faded in (StartHL2, ThreeStarsLoop)
+f_3A0B_0D8E hilightrec | new | medium | saved highlight record: first byte, read and written with the .HI file
+f_3A0B_0D8F hilightrec_b1 | new | medium | highlight record byte +1
+f_3A0B_0D90 hilightrec_b2 | new | medium | highlight record byte +2
+f_3A0B_0D91 hilightrec_home | new | medium | highlight record +3: 28 bytes of home team data
+f_3A0B_0DAD hilightrec_b1F | new | medium | highlight record byte +1Fh
+f_3A0B_0DAE hilightrec_away | new | medium | highlight record +20h: 28 bytes of away team data
+f_3A0B_0DCA hilightrec_w3C | new | medium | highlight record word +3Ch
+f_3A0B_0DCC hilightrec_w3E | new | medium | highlight record word +3Eh
+f_3A0B_0DCE hilightrec_w40 | new | medium | highlight record word +40h
+f_3A0B_0DD0 hilightrec_w42 | new | medium | highlight record word +42h
+f_3A0B_0DD2 hilightrec_w44 | new | medium | highlight record word +44h
+f_3A0B_0DD4 hilightrec_w46 | new | medium | highlight record word +46h
+f_3A0B_0DD6 hilightrec_frames | new | medium | highlight record +48h: the recorded replay frames (38402 bytes)
+f_3A0B_A3D8 StatsPalette | new | medium | 768-byte palette saved and restored around the in-game player stats
+f_3A0B_A6D8 SavedGameNames | new | medium | names of the saved games found by ScanSavedGames (864 bytes)
+f_3A0B_AA38 LeagueTeamNames | new | medium | team names of the league (504 bytes), filled by ReadTeamNames
+f_3A0B_AC30 POTeamName1 | new | medium | 21-byte team name buffer of the playoff screens
+f_3A0B_AC45 POTeamName2 | new | medium | second 21-byte team name buffer of the playoff screens
+f_3A0B_AC5A leagueinfo | new | medium | league info record read by ReadLeagueInfo: first word
+f_3A0B_AC5C leagueinfo_w2 | new | medium | league info record word +2
+f_3A0B_AC5E leagueinfo_w4 | new | medium | league info record word +4
+f_3A0B_AC60 leagueinfo_w6 | new | medium | league info record word +6
+f_3A0B_AC62 leagueinfo_teams | new | medium | league info record +8: per-team entries (720 bytes)
+f_3A0B_AF32 leagueinfo_password | new | medium | league master password (12 bytes) after the team entries
+f_3A0B_AF3E leagueinfo_tail | new | medium | league info record, last 14 bytes
+f_3A0B_AF4C MenuRemap | new | medium | 128-byte colour remap used by the menu and summary screens (InitMenuRemap)
+f_3A0B_AFCC MenuRemap2 | new | medium | second 128-byte colour remap built by InitMenuRemap
+f_3A0B_B04C dlgJerseyConflict | new | medium | MessageBox definition built by FixJerseyConflict
+f_3A0B_B052 StatsScreenPalette | new | medium | palette buffer of the stats screens, faded in with FadePaletteIn
+f_3A0B_B11E StatsCardBuf | new | medium | 384-byte buffer the stats cards copy their record into
+f_3A0B_B29E StatsCardBuf2 | new | medium | 180-byte second buffer of the stats cards
+f_3A0B_B352 GamePalette | new | medium | the game's 768-byte palette (GetPaletteFar, FadePalette)
+f_3A0B_B652 GameTeamName1 | new | medium | 6-byte home team abbreviation set by LoadGameTeams
+f_3A0B_B658 GameTeamName2 | new | medium | 6-byte away team abbreviation set by LoadGameTeams
+f_3A0B_B65E GameTeamWord0 | new | medium | word set by LoadGameTeams
+f_3A0B_B660 GameTeamWord1 | new | medium | word set by LoadGameTeams
+f_3A0B_B662 GameTeamWord2 | new | medium | word set by LoadGameTeams
+f_3A0B_B664 GameTeamWord3 | new | medium | word set by LoadGameTeams
+f_3A0B_B666 GameTeamWord4 | new | medium | word set by LoadGameTeams
+f_3A0B_B668 GameTeamWord5 | new | medium | word set by LoadGameTeams
+f_3A0B_B66A GameTeamWord6 | new | medium | word set by LoadGameTeams
+f_3A0B_B66C GameTeamWord7 | new | medium | word set by LoadGameTeams
+f_3A0B_B66E MoviePalette | new | medium | palette buffer PlayMovie fades with
+f_3A0B_B6E6 MovieState | new | medium | movie player state passed to MviOpen by PlayTitleMovies
+g_01B8 ctl1team | new | medium | team of controller 1 (-1 none, -2 eliminated)
+g_01BA ctl2team | new | medium | team of controller 2 (-1 none, -2 eliminated)
+g_01BC ctl1dev | new | medium | input device of controller 1 (10h none)
+g_01BE ctl2dev | new | medium | input device of controller 2 (10h none)
+g_01C0 ctl1side | new | medium | side controller 1 plays (0 home, 1 away)
+g_01C2 ctl2side | new | medium | side controller 2 plays
+g_01C4 sndcardmissing | new | medium | sound card dialog: a set bit greys out that card
+g_01CA gsumheader_b2 | new | medium | game summary header byte +2 (CreateGSummaryDb)
+g_01CB gsumheader_b3 | new | medium | game summary header byte +3
+g_01CC gsumheader_b4 | new | medium | game summary header byte +4
+g_01CD gsumheader_b5 | new | medium | game summary header byte +5
+g_01CE gsumcount | new | medium | game summary file record count (gsumheader +6)
+g_01D6 gsumtail_goals1 | new | medium | game summary tail: goals of the first team (PostGoalEvent)
+g_01D7 gsumtail_shots1 | new | medium | game summary tail: shots of the first team (ChkShotStat)
+g_01D8 gsumtail_goals2 | new | medium | game summary tail: goals of the second team
+g_01D9 gsumtail_shots2 | new | medium | game summary tail: shots of the second team
+g_08FC ScreenRowStride | new | medium | dialog row value set to 50h / 52h by the playoff and controls screens
+g_08FE RinkTilesPtr | new | medium | far pointer (offset) to the loaded rink tiles
+g_0900 RinkTilesSeg | new | medium | its segment
+g_0EDC FileDlgSpecs | new | medium | file dialog table: pointers to the file patterns per dialog
+g_0EDE FileDlgSpec2 | new | medium | second file pattern pointer
+g_0EE0 FileDlgSpec3 | new | medium | third file pattern pointer
+g_0F10 str_AllFiles | new | medium | string '*.*'
+g_0F28 DelFileName | new | medium | far pointer (offset) to the saved game DeleteSavedGame removes
+g_0F2A DelFileNameSeg | new | medium | its segment
+g_0F2C DelFileName2 | new | medium | far pointer (offset) to the second file DeleteSavedGame removes
+g_0F2E DelFileName2Seg | new | medium | its segment
+g_0F66 SongBuf1 | new | medium | far pointer (offset) to a song buffer loaded by SetSoundDevice
+g_0F68 SongBuf1Seg | new | medium | its segment
+g_0F6A SongBuf2 | new | medium | far pointer (offset) to the second song buffer
+g_0F6C SongBuf2Seg | new | medium | its segment
+g_0F6E SongBuf3 | new | medium | far pointer (offset) to the third song buffer
+g_0F70 SongBufs | new | medium | further song buffer pointers (66 bytes)
+g_0FBA SoundDriverLoaded | new | medium | -1 once SetSoundDevice has loaded a driver, else 0
+g_106D SoundDevChoice | new | medium | sound device byte kept by SetSoundDevice
+g_1070 SoundDevTable | new | medium | sound device table (device bit, driver ...) searched by SetSoundDevice
+g_1138 LockerTextPtrs | new | medium | text pointers of the locker room screen
+g_1146 LockerItemTable | new | medium | item table of the locker room screen
+g_11D6 POResultFmt | new | medium | pointer to the playoff result format string
+g_11D8 LeagueSetChoice | new | medium | league settings choice (-1 none), also read by the playoff loop
+g_133F str_Space2 | new | medium | string ' ' copied by PlayoffModeLoop
+g_16C8 SchedDivTable | new | medium | per-team division byte table used by the schedule and standings
+g_16E0 SchedConfTable | new | medium | per-team conference byte table used by RandomizeSchedule
+g_16F8 SchedTable3 | new | medium | per-team byte table used by RandomizeSchedule
+g_1710 POSeedOrder1 | new | medium | seeding order bytes used by SeedPlayoffRound
+g_1718 POSeedOrder2 | new | medium | second seeding order used by SeedPlayoffRound
+g_1720 SimDayTable | new | medium | byte table used by SimScheduleDay
+g_1724 POSeriesLenArg | new | medium | series length argument per round (AdvancePlayoffs)
+g_1726 PORoundTable | new | medium | per-round word table read by AdvancePlayoffs
+g_172C POSeriesLenArg2 | new | medium | series length argument of the final round
+g_172E POSeedArgs | new | medium | arguments passed to SeedPlayoffRound per round
+g_1733 MonthDays0 | new | medium | entry before the month length table (NormalizeDate)
+g_1734 MonthDays | new | medium | days per month, 12 bytes (31, 28, 31 ...)
+g_1740 MonthStartDay | new | medium | first weekday of each month, 12 bytes
+g_174C OtherGamesTable | new | medium | team pairs of the other games shown between periods
+g_1826 SoundCfgSpec | new | medium | sound configuration file pattern and device bytes
+g_183A SimGoalOdds | new | medium | odds table used by SimulateGame
+g_1862 SimGoalOdds2 | new | medium | second odds table used by SimulateGame
+g_18B4 ShapePaletteMap | new | medium | colour map applied by ApplyShapePalette
+g_1994 JerseyDigitGlyphs | new | medium | jersey digit glyph bits (PaintJerseyDigit)
+g_1C2C AwardMsgIds | new | medium | message numbers of the award names (AwardsCeremony)
+g_1C40 AwardMsgIds2 | new | medium | message numbers of the award descriptions
+g_1C58 AwardTitleMsg | new | medium | message number of the awards title
+g_1C5A AwardTextY | new | medium | award text row table
+g_1C5C AwardTextY2 | new | medium | second award text row table
+g_1CD2 AwardNamePtrs | new | medium | award name text pointers (ShowAwardScreens)
+g_1CE6 AwardKinds | new | medium | kind of each award (0 skater, 1 goalie, 2 team)
+g_1CEF AwardsPending | new | medium | 1 while the awards are still to be picked
+g_1CF0 AwardWinner | new | medium | winner record pointer of the first award
+g_1CF2 AwardWinner2 | new | medium | winner pointer of award 2
+g_1CF4 AwardWinner3 | new | medium | winner pointer of award 3
+g_1CF6 AwardWinner4 | new | medium | winner pointer of award 4
+g_1CF8 AwardWinner5 | new | medium | winner pointer of award 5
+g_1CFA AwardWinner6 | new | medium | winner pointer of award 6
+g_1CFC AwardWinner7 | new | medium | winner pointer of award 7
+g_1D00 AwardWinner8 | new | medium | winner pointer of award 8
+g_1D02 AwardWinner9 | new | medium | winner pointer of award 9
+g_1D04 AwardTitlePtrs | new | medium | award title text pointers
+g_1D47 str_AwardsW | new | medium | text 'W' (57h) drawn on the award screen
+g_1D49 str_AwardsL | new | medium | text 'L' (4Ch) drawn on the award screen
+g_1D4B str_AwardsT | new | medium | text 'T' (54h) drawn on the award screen
+g_1D60 str_AwardsG | new | medium | text 'G' (47h) drawn on the award screen
+g_1D62 str_AwardsA | new | medium | text 'A' (41h) drawn on the award screen
+g_1D6B str_PlusMinus | new | medium | string '+/-' drawn on the award screen
+g_1F8E StandingsHeadPtrs | new | medium | column heading pointers of the standings screen
+g_1FA2 StatsDbNames | new | medium | database file name pointers of the stats screens (BuildPathFar)
+g_1FA6 StatsDbNames2 | new | medium | second set of database file name pointers (roster and stats cards)
+g_1FAA StatsDbNames3 | new | medium | database file name pointers of the leaders and team stats screens
+g_1FAC StatsDbName4 | new | medium | database file name pointer of the roster screen
+g_200E statscontext | new | medium | stats context: which season or playoff data the stats screens show (0..5)
+g_2010 statsseason | new | medium | stats season choice
+g_211E GoalieCardCols | new | medium | column order bytes of the goalie stats card
+g_21B0 StandingsGfx1 | new | medium | far pointer (offset) to the first standings shape record
+g_21B2 StandingsGfx1Seg | new | medium | its segment
+g_21B4 StandingsGfx2 | new | medium | far pointer (offset) to the second standings shape record
+g_21B6 StandingsGfx2Seg | new | medium | its segment
+g_21BA statsmenusel | new | medium | selected item of the stats menus
+g_21BE statsmenucbseg | new | medium | segment of the stats menu callback
+g_21C0 statsmenumode | new | medium | stats menu mode (2, 3 ...)
+g_21D2 menucbfn | new | medium | far routine offset of the current menu callback
+g_21D4 menucbseg | new | medium | far routine segment of the current menu callback
+g_2395 str_PlusMinus2 | new | medium | string ' +/-' of the skater stats card
+g_23EA SkaterCardCols | new | medium | column order bytes of the skater stats card
+g_242F str_PlusMinus3 | new | medium | string ' +/-' of the roster screen
+g_2486 StandingsRowY | new | medium | y of the first standings row
+g_2487 StandingsSlotEnd | new | medium | byte before the slot table (-1 end mark)
+g_2488 StandingsSlots | new | medium | standings and playoff tree slot table
+g_24D0 StandingsSlotTeams | new | medium | team of each standings or tree slot
+g_2518 StandingsColX | new | medium | standings column x table
+g_2520 StandingsColW | new | medium | standings column width table
+g_25AE str_Space3 | new | medium | string ' ' copied by ShowPlayoffStandings
+g_25B0 TeamStatsCmps | new | medium | far comparator table of the team stats sorts (_qsort)
+g_25B2 TeamStatsCmpsSeg | new | medium | its segment words
+g_2680 TeamStatsTitles | new | medium | title text pointers of the team stats screens
+g_268A TeamStatsHead1 | new | medium | team stats column heading pointer 1
+g_268C TeamStatsHead2 | new | medium | team stats column heading pointer 2
+g_268E TeamStatsHead3 | new | medium | team stats column heading pointer 3
+g_2690 TeamStatsHeads | new | medium | further team stats column heading pointers
+g_26B2 LeaderCmps | new | medium | far comparator table of the leader categories (_qsort)
+g_26B4 LeaderCmpsSeg | new | medium | its segment words
+g_28DE LeaderTitles | new | medium | title text pointers of the leader categories
+g_28F4 LeaderHead1 | new | medium | leaders column heading pointer 1
+g_28F6 LeaderHead2 | new | medium | leaders column heading pointer 2
+g_28F8 LeaderHead3 | new | medium | leaders column heading pointer 3
+g_28FA LeaderHead4 | new | medium | leaders column heading pointer 4
+g_28FC LeaderHeads | new | medium | further leaders column heading pointers
+g_2986 replayptr | new | medium | replay record pointer (offset)
+g_2988 replayseg | new | medium | replay record pointer (segment)
+g_29C3 c1playernum_b1 | new | medium | high byte of c1playernum, set by setupice
+g_29C5 c2playernum_b1 | new | medium | high byte of c2playernum, set by setupice
+g_29CA HomeTeamNum | new | medium | home team number
+g_29CC VisTeamNum | new | medium | visiting team number
+g_29D5 refsignal_b1 | new | medium | high byte of refsignal, set to -1 by chkprogress
+g_29E0 dirtab0 | new | medium | entry before dirtab
+g_29E2 dirtab_x | new | medium | x components of the direction table
+g_2A02 rngseed | new | medium | random number seed
+g_2A38 penkindtab | new | medium | penalty kind byte per penalty (checkfornewpen)
+g_2A52 asstab | new | medium | assignment routine table, far pointers (updateplayers)
+g_48AF priolist_m1 | new | medium | byte before priolist
+g_48B0 priolist | new | medium | player priority list used by SetPlList
+g_48C2 PerTimeTab | new | medium | period length table (GetPeriodTime)
+g_48CA energywarnteam | new | medium | energy warning flag per team
+g_48CC lcrequestteam | new | medium | team that asked for a line change
+g_48CE lcsel | new | medium | selected line change choice per team
+g_48D6 lcchoice | new | medium | line change choice per team
+g_48D8 lcstate | new | medium | line change state saved with the game
+g_48DA lcgroup | new | medium | line group per team (3 = power play)
+g_48DC lcactive | new | medium | line change box active
+g_48DE lctime | new | medium | line change box time per team
+g_48E0 lcstate2 | new | medium | line change state saved with the game
+g_48E4 hudredraw | new | medium | panel redraw flag
+g_49A6 CompLineTab | new | medium | line offset table of CompLine
+g_4A00 TeamPPVNames | new | medium | team .QPP file name pointers (LoadTeamPPV)
+g_4A0A TeamPPVSizes | new | medium | team picture size table
+g_4A0C TeamPPVSizes2 | new | medium | second team picture size table
+g_4A1E OverlayScript | new | medium | text overlay script bytes
+g_4A24 goalienotebits | new | medium | goalie note bits (3Fh all done)
+g_4A28 RinkOverlayFrames | new | medium | frames of the rink overlay sprites
+g_4A2C RinkOverlayFrames2 | new | medium | further rink overlay frames
+g_4A4E halfsecflag | new | medium | toggled each half second by periodicevents
+g_4A4F secondframes | new | medium | frames left in the current second
+g_4A58 photobankf_w2 | new | medium | PPV file pointer 2
+g_4A5A photobankf_w4 | new | medium | PPV file pointer 3
+g_4A5C photobankf_w6 | new | medium | PPV file pointer 4
+g_4A5E photobankf_w8 | new | medium | PPV file pointer 5
+g_4A60 photobankf_wA | new | medium | PPV file pointer 6
+g_4B02 framesync | new | medium | frame sync flag of the game loops
+g_4B0A FadeSteps | new | medium | fade step table (FadePalette)
+g_4B0B FadeStep | new | medium | current fade step
+g_4B0C FadeSteps2 | new | medium | second fade step table
+g_4B0E FadeCount | new | medium | fade step count
+g_4B1C DirtyRects | new | medium | dirty rectangle list (20 per page)
+g_4B20 DeskRedrawPage | new | medium | page redraw flags
+g_4B22 DeskRedrawPage2 | new | medium | second page redraw flag
+g_4B24 SpriteBlitFns | new | medium | far routine table of the sprite blitters (DrawSpriteClipped)
+g_4BCE MatchupOrder | new | medium | order bytes of the matchup screen
+g_4EC6 TeamStatsLabelPtrs | new | medium | label pointers of the team stats summary
+g_4FD4 hilightsplayed | new | medium | bits of the highlights already shown
+g_5328 ReplayGadgetRects | new | medium | replay gadget rectangles
+g_533C ReplayGadgetRect2 | new | medium | replay gadget rectangle 2
+g_5364 ReplayGadgetRect3 | new | medium | replay gadget rectangle 3
+g_5382 ReplayPointerRect | new | medium | replay pointer rectangle
+g_544C HL2Offsets | new | medium | offset table of StartHL2
+g_544E HL2Offsets2 | new | medium | second offset table of StartHL2
+g_547C replaymode | new | medium | replay mode (-1 off)
+g_5540 HudBarLevels | new | medium | energy bar level table
+g_5550 HudBarLevels2 | new | medium | second energy bar level table
+g_556C hudpenhome | new | medium | home panel penalty list
+g_556E hudpenhome_w2 | new | medium | home panel penalty list word +2
+g_5570 hudpenhome_w4 | new | medium | home panel penalty list word +4
+g_5572 hudpenhome_w6 | new | medium | home panel penalty list word +6
+g_55AC hudpenaway | new | medium | away panel penalty list
+g_55AE hudpenaway_w2 | new | medium | away panel penalty list word +2
+g_55B0 hudpenaway_w4 | new | medium | away panel penalty list word +4
+g_55B2 hudpenaway_w6 | new | medium | away panel penalty list word +6
+g_55EC HudShapeNames | new | medium | panel shape message names
+g_5602 HudShapeName | new | medium | panel shape message name
+g_5604 CrestShapeNames | new | medium | crest shape message names
+g_563C hudhomeredraw | new | medium | home panel redraw flag
+g_563E hudawayredraw | new | medium | away panel redraw flag
+g_5642 hudlinehome | new | medium | line shown on the home panel
+g_5644 hudclockredraw | new | medium | clock redraw flag
+g_5646 hudscoreredraw | new | medium | score redraw flag
+g_5648 hudlineaway | new | medium | line shown on the away panel
+g_564A hudlinegroup | new | medium | line group shown on the panel
+g_567A BannerColours | new | medium | banner colour table
+g_56CC CallNamePtrs | new | medium | referee call name pointers
+g_575A EventFmtPtrs | new | medium | event line format pointers
+g_5772 gsumqcount | new | medium | number of queued game summary records
+g_5774 defercount | new | medium | number of queued deferred calls
+g_8B20 segDgroup1 | new | high | segment constant 45C9h (dgroup) loaded into es by ControlsDlgLoop, ControlsDlgPlayoff
+g_8B22 segSaveDialogRects1 | new | high | segment constant 35EEh (save_dialog_rects) loaded into es by DrawControlsDlg
+g_8B24 segDgroup2 | new | high | segment constant 45C9h (dgroup) loaded into es by TitleScreen
+g_8B26 segCredits1 | new | high | segment constant 3608h (credits) loaded into es by GoodnightScreen
+g_8B28 segMenuText1 | new | high | segment constant 3448h (menu_text) loaded into es by SetSideControls
+g_8B2A segMenuText2 | new | high | segment constant 3448h (menu_text) loaded into es by SetSideControls
+g_8B2C segMenuText3 | new | high | segment constant 3448h (menu_text) loaded into es by GameLineEditorLoop, MenuUseDefaultLines, MenuUseOriginalLines
+g_8B2E segMenuText4 | new | high | segment constant 3448h (menu_text) loaded into es by GameLineEditorLoop, GameScratchPlayer, MenuUseDefaultLines ...
+g_8B30 segMenuText5 | new | high | segment constant 3448h (menu_text) loaded into es by GameLineEditorLoop, GameScratchPlayer, MenuUseDefaultLines ...
+g_8B32 segMenuText6 | new | high | segment constant 3448h (menu_text) loaded into es by GameLineEditorLoop, GameScratchPlayer, MenuUseDefaultLines ...
+g_8B34 segCharTable1 | new | high | segment constant 3680h (char_table) loaded into es by DrawGameLineJerseys, GameLineEditorLoop, LoadJerseyColours
+g_8B36 segDbFiles1 | new | high | segment constant 3415h (db_files) loaded into es by MenuOpenSaved, SelectSavedFile
+g_8B38 segDbFiles2 | new | high | segment constant 3415h (db_files) loaded into es by DeleteSavedGame, MenuOpenSaved
+g_8B3A segDbFiles3 | new | high | segment constant 3415h (db_files) loaded into es by MenuOpenSaved
+g_8B3C segDbFiles4 | new | high | segment constant 3415h (db_files) loaded into es by DeleteSavedGame, MenuOpenSaved
+g_8B3E segDialogRects1 | new | high | segment constant 369Ah (dialog_rects) loaded into es by DrawFileDlg, DrawFileDlgList, RunFileDlg
+g_8B40 segMenuText7 | new | high | segment constant 3448h (menu_text) loaded into es by DeleteSavedGame, SelectSavedFile
+g_8B42 segPlayoffDialogRects1 | new | high | segment constant 36A8h (playoff_dialog_rects) loaded into es by SetSoundDevice
+g_8B44 segDbFiles5 | new | high | segment constant 3415h (db_files) loaded into es by DrawLockerRoom, LockerRoomLoop
+g_8B46 segMenuText8 | new | high | segment constant 3448h (menu_text) loaded into es by LockerRoomLoop
+g_8B48 segMenuText9 | new | high | segment constant 3448h (menu_text) loaded into es by MenuPlayoffHilights
+g_8B4A segDbFiles6 | new | high | segment constant 3415h (db_files) loaded into es by CreatePlayoffs, PlayoffModeLoop
+g_8B4C segTeamChoiceText1 | new | high | segment constant 3701h (team_choice_text) loaded into es by CreatePlayoffs, POSimSeries, POSimSeriesTeamWins
+g_8B4E segMenuText10 | new | high | segment constant 3448h (menu_text) loaded into es by CreatePlayoffs
+g_8B50 segDbFiles7 | new | high | segment constant 3415h (db_files) loaded into es by POCreateSchedule, POInitSchedule, POPickConfTeams
+g_8B52 segMenuText11 | new | high | segment constant 3448h (menu_text) loaded into es by POAfterGame, PlayoffModeLoop
+g_8B54 segWorkBuffer1 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by PlayoffModeLoop
+g_8B56 segDbFiles8 | new | high | segment constant 3415h (db_files) loaded into es by PlayoffModeLoop
+g_8B58 segDgroup3 | new | high | segment constant 45C9h (dgroup) loaded into es by DrawPlayoffTree, PlayoffModeLoop
+g_8B5A segMenuText12 | new | high | segment constant 3448h (menu_text) loaded into es by SetModeMenuLabels
+g_8B5C segMenuText13 | new | high | segment constant 3448h (menu_text) loaded into es by SetModeMenuLabels
+g_8B5E segDgroup4 | new | high | segment constant 45C9h (dgroup) loaded into es by MenuLeagueSettingsEdit
+g_8B60 segMenuText14 | new | high | segment constant 3448h (menu_text) loaded into es by SportsDesk
+g_8B62 segWorkBuffer2 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by SportsDesk
+g_8B64 segDbFiles9 | new | high | segment constant 3415h (db_files) loaded into es by SportsDesk
+g_8B66 segDbFiles10 | new | high | segment constant 3415h (db_files) loaded into es by SportsDesk
+g_8B68 segReturnMessages1 | new | high | segment constant 36F5h (return_messages) loaded into es by DeskExitGame, DeskReturnConfirm
+g_8B6A segDgroup5 | new | high | segment constant 45C9h (dgroup) loaded into es by DeskExitGame
+g_8B6C segMenuText15 | new | high | segment constant 3448h (menu_text) loaded into es by DeskHomeGoalie1, DeskHomeGoalie2, DeskHomeGoalieNone
+g_8B6E segMenuText16 | new | high | segment constant 3448h (menu_text) loaded into es by DeskAwayGoalie1, DeskAwayGoalie2, DeskAwayGoalieNone
+g_8B70 segMenuText17 | new | high | segment constant 3448h (menu_text) loaded into es by MainDeskLoop, MenuLeagueHilights, MenuNewExhibition
+g_8B72 segMenuText18 | new | high | segment constant 3448h (menu_text) loaded into es by LoadModeState
+g_8B78 segDbFiles11 | new | high | segment constant 3415h (db_files) loaded into es by MenuNewLeague
+g_8B7A segMenuText19 | new | high | segment constant 3448h (menu_text) loaded into es by MenuNewLeague
+g_8B7C segWorkBuffer3 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by AddHumanTeam, RemoveHumanTeam
+g_8B7E segTeamChoiceText2 | new | high | segment constant 3701h (team_choice_text) loaded into es by AddHumanTeam, RemoveHumanTeam
+g_8B80 segWorkBuffer4 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by AddHumanTeam, RemoveHumanTeam
+g_8B82 segTeamChoiceText3 | new | high | segment constant 3701h (team_choice_text) loaded into es by AddHumanTeam, RemoveHumanTeam
+g_8B84 segWorkBuffer5 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by AddHumanTeam, RemoveHumanTeam
+g_8B86 segTeamChoiceText4 | new | high | segment constant 3701h (team_choice_text) loaded into es by AddHumanTeam, RemoveHumanTeam
+g_8B88 segWorkBuffer6 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by AddHumanTeam, RemoveHumanTeam
+g_8B8A segWorkBuffer7 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by DrawTeamGrid
+g_8B8C segWorkBuffer8 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by ChooseLeagueController
+g_8B8E segWorkBuffer9 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by ChooseLeagueController
+g_8B90 segWorkBuffer10 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by ChooseLeagueController
+g_8B92 segWorkBuffer11 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by ChooseLeagueController
+g_8B94 segTeamChoiceText5 | new | high | segment constant 3701h (team_choice_text) loaded into es by AskExportToFloppy
+g_8B96 segTeamChoiceText6 | new | high | segment constant 3701h (team_choice_text) loaded into es by LeagueTeamSelect
+g_8B98 segTeamChoiceText7 | new | high | segment constant 3701h (team_choice_text) loaded into es by LeagueTeamSelect
+g_8B9A segTeamChoiceText8 | new | high | segment constant 3701h (team_choice_text) loaded into es by LeagueTeamSelect
+g_8B9C segTeamChoiceText9 | new | high | segment constant 3701h (team_choice_text) loaded into es by FindLeagueFloppy, SelectFloppyDrive
+g_8B9E segTeamChoiceText10 | new | high | segment constant 3701h (team_choice_text) loaded into es by FindLeagueFloppy
+g_8BA0 segTeamChoiceText11 | new | high | segment constant 3701h (team_choice_text) loaded into es by WaitLeagueFloppy
+g_8BA2 segTeamChoiceText12 | new | high | segment constant 3701h (team_choice_text) loaded into es by ExportTeamToFloppy
+g_8BA4 segTeamChoiceText13 | new | high | segment constant 3701h (team_choice_text) loaded into es by CopyLeagueFiles, ExportDbs, ExportTeamToFloppy ...
+g_8BA6 segTeamChoiceText14 | new | high | segment constant 3701h (team_choice_text) loaded into es by ExportDbs, ExportTeamToFloppy
+g_8BA8 segWorkBuffer12 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by ExportDbs, ImportMasterLeague
+g_8BAA segTeamChoiceText15 | new | high | segment constant 3701h (team_choice_text) loaded into es by ImportPlayerTeam
+g_8BAC segWorkBuffer13 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by ExportDbs, ImportPlayerTeam
+g_8BAE segTeamChoiceText16 | new | high | segment constant 3701h (team_choice_text) loaded into es by ExportDbs, ImportPlayerTeam
+g_8BB0 segWorkBuffer14 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by ExportDbs, ImportPlayerTeam
+g_8BB2 segTeamChoiceText17 | new | high | segment constant 3701h (team_choice_text) loaded into es by ExportDbs, ImportPlayerTeam
+g_8BB4 segWorkBuffer15 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by ExportDbs, ImportPlayerTeam
+g_8BB6 segTeamChoiceText18 | new | high | segment constant 3701h (team_choice_text) loaded into es by ImportPlayerTeam
+g_8BB8 segTeamChoiceText19 | new | high | segment constant 3701h (team_choice_text) loaded into es by ImportPlayerTeam
+g_8BBA segTeamChoiceText20 | new | high | segment constant 3701h (team_choice_text) loaded into es by ImportPlayerTeam
+g_8BBC segMenuText20 | new | high | segment constant 3448h (menu_text) loaded into es by ImportDbs
+g_8BBE segDbFiles12 | new | high | segment constant 3415h (db_files) loaded into es by ImportDbs
+g_8BC0 segWorkBuffer16 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by ExportDbs
+g_8BC2 segTeamChoiceText21 | new | high | segment constant 3701h (team_choice_text) loaded into es by ReadLeagueInfo
+g_8BC4 segWorkBuffer17 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by CheckMasterPassword
+g_8BC6 segTeamChoiceText22 | new | high | segment constant 3701h (team_choice_text) loaded into es by CheckMasterPassword
+g_8BC8 segWorkBuffer18 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by CheckMasterPassword
+g_8BCA segTeamChoiceText23 | new | high | segment constant 3701h (team_choice_text) loaded into es by MsgCopyingDatabases
+g_8BCC segTeamChoiceText24 | new | high | segment constant 3701h (team_choice_text) loaded into es by CopyHumanTeamDBs
+g_8BCE segTeamChoiceText25 | new | high | segment constant 3701h (team_choice_text) loaded into es by CopyHumanTeamDBs
+g_8BD0 segTeamChoiceText26 | new | high | segment constant 3701h (team_choice_text) loaded into es by CopyHumanTeamDBs
+g_8BD2 segTeamChoiceText27 | new | high | segment constant 3701h (team_choice_text) loaded into es by SimulateGame
+g_8BD4 segWorkBuffer19 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by DrawCalendarDay
+g_8BD6 segTeamChoiceText28 | new | high | segment constant 3701h (team_choice_text) loaded into es by DrawCalendarDay
+g_8BD8 segWorkBuffer20 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by PlayLeagueGame, SetGameSides
+g_8BDA segTeamChoiceText29 | new | high | segment constant 3701h (team_choice_text) loaded into es by CalendarScreen, PlayLeagueGame, PostGameToTeamDb
+g_8BDC segTeamChoiceText30 | new | high | segment constant 3701h (team_choice_text) loaded into es by CalendarScreen
+g_8BDE segTeamChoiceText31 | new | high | segment constant 3701h (team_choice_text) loaded into es by CheckLeagueDiskSync
+g_8BE0 segTeamChoiceText32 | new | high | segment constant 3701h (team_choice_text) loaded into es by CheckLeagueDiskSync
+g_8BE2 segWorkBuffer21 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by PostGameToTeamDb
+g_8BE4 segWorkBuffer22 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by PostGameToTeamDb
+g_8BE6 segWorkBuffer23 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by PlayLeagueGame
+g_8BE8 segTeamChoiceText33 | new | high | segment constant 3701h (team_choice_text) loaded into es by PlayLeagueGame
+g_8BEA segTeamChoiceText34 | new | high | segment constant 3701h (team_choice_text) loaded into es by PlayLeagueGame
+g_8BEC segWorkBuffer24 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by PlayLeagueGame
+g_8BEE segWorkBuffer25 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by PlayLeagueGame
+g_8BF0 segDgroup6 | new | high | segment constant 45C9h (dgroup) loaded into es by PlayLeagueGame
+g_8BF2 segDbFiles13 | new | high | segment constant 3415h (db_files) loaded into es by PlayLeagueGame
+g_8BF4 segTeamChoiceText35 | new | high | segment constant 3701h (team_choice_text) loaded into es by RandomizeSchedule, UpdateSeasonSchedule
+g_8BF6 segWorkBuffer26 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by CreateNewLeague
+g_8BF8 segTeamChoiceText36 | new | high | segment constant 3701h (team_choice_text) loaded into es by CreateNewLeague
+g_8BFA segWorkBuffer27 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by CreateNewLeague
+g_8BFC segWorkBuffer28 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by CreateNewLeague
+g_8BFE segWorkBuffer29 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by CreateNewLeague
+g_8C00 segWorkBuffer30 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by CreateNewLeague
+g_8C02 segDbFiles14 | new | high | segment constant 3415h (db_files) loaded into es by CreateNewLeague
+g_8C04 segTeamChoiceText37 | new | high | segment constant 3701h (team_choice_text) loaded into es by BuildTradeRoster, ExecuteTrade, TradePlayers
+g_8C06 segTeamChoiceText38 | new | high | segment constant 3701h (team_choice_text) loaded into es by BuildTradeRoster
+g_8C08 segTeamChoiceText39 | new | high | segment constant 3701h (team_choice_text) loaded into es by BuildTradeRoster
+g_8C0A segWorkBuffer31 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by FixJerseyConflict
+g_8C0C segTradeMessages1 | new | high | segment constant 382Bh (trade_messages) loaded into es by DrawTradeScreen, TradeScreenLoop
+g_8C0E segTeamChoiceText40 | new | high | segment constant 3701h (team_choice_text) loaded into es by TradeHitTest, TradeScreenLoop
+g_8C10 segMenuText21 | new | high | segment constant 3448h (menu_text) loaded into es by TradeScreenLoop
+g_8C12 segCharTable2 | new | high | segment constant 3680h (char_table) loaded into es by TradeScreenLoop
+g_8C14 segWorkBuffer32 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by TradePlayers
+g_8C16 segTeamChoiceText41 | new | high | segment constant 3701h (team_choice_text) loaded into es by TradePlayers
+g_8C18 segWorkBuffer33 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by TradePlayers
+g_8C1A segTeamChoiceText42 | new | high | segment constant 3701h (team_choice_text) loaded into es by TradePlayers
+g_8C1C segWorkBuffer34 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by TradePlayers
+g_8C1E segTeamChoiceText43 | new | high | segment constant 3701h (team_choice_text) loaded into es by MergeLeagueFiles, MergeScheduleDb, MergeTeamDbs
+g_8C20 segTeamChoiceText44 | new | high | segment constant 3701h (team_choice_text) loaded into es by LocateTeamDbCopy
+g_8C22 segWorkBuffer35 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by MergeLeagueFiles, MergeUpdateDbs, UpdateTeamDbs
+g_8C24 segTeamChoiceText45 | new | high | segment constant 3701h (team_choice_text) loaded into es by MergeLeagueFiles, UpdateTeamDbs
+g_8C26 segTeamChoiceText46 | new | high | segment constant 3701h (team_choice_text) loaded into es by MergeLeagueFiles, UpdateTeamDbs
+g_8C28 segWorkBuffer36 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by MergeLeagueFiles, MergeUpdateDbs, RebuildLeagueDbs
+g_8C2A segWorkBuffer37 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by MergeLeagueFiles, MergeUpdateDbs, RebuildLeagueDbs
+g_8C2C segMergeMessages1 | new | high | segment constant 3836h (merge_messages) loaded into es by MergeLeagueFiles
+g_8C2E segWorkBuffer38 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by MergeLeagueFiles
+g_8C30 segTeamChoiceText47 | new | high | segment constant 3701h (team_choice_text) loaded into es by PickAwardWinners
+g_8C32 segDbFiles15 | new | high | segment constant 3415h (db_files) loaded into es by BuildSeasonTitle, SetupStatsMenus
+g_8C34 segDbFiles16 | new | high | segment constant 3415h (db_files) loaded into es by BuildSeasonTitle, SetupStatsMenus
+g_8C44 segTeamChoiceText48 | new | high | segment constant 3701h (team_choice_text) loaded into es by SetupStatsMenus
+g_8C46 segMenuText22 | new | high | segment constant 3448h (menu_text) loaded into es by SetupStatsMenus
+g_8C48 segMenuText23 | new | high | segment constant 3448h (menu_text) loaded into es by SetupStatsMenus
+g_8C4A segMenuText24 | new | high | segment constant 3448h (menu_text) loaded into es by SetupStatsMenus
+g_8C4C segMenuText25 | new | high | segment constant 3448h (menu_text) loaded into es by SetupStatsMenus
+g_8C4E segMenuText26 | new | high | segment constant 3448h (menu_text) loaded into es by SetupStatsMenus
+g_8C50 segMenuText27 | new | high | segment constant 3448h (menu_text) loaded into es by SetupStatsMenus
+g_8C52 segMenuText28 | new | high | segment constant 3448h (menu_text) loaded into es by SetupStatsMenus
+g_8C54 segMenuText29 | new | high | segment constant 3448h (menu_text) loaded into es by SetupStatsMenus
+g_8C56 segMenuText30 | new | high | segment constant 3448h (menu_text) loaded into es by SetupStatsMenus
+g_8C58 segMenuText31 | new | high | segment constant 3448h (menu_text) loaded into es by SetupStatsMenus
+g_8C5A segMenuText32 | new | high | segment constant 3448h (menu_text) loaded into es by SetStatsMenuText
+g_8C5C segMenuText33 | new | high | segment constant 3448h (menu_text) loaded into es by SetStatsMenuText
+g_8C5E segMenuText34 | new | high | segment constant 3448h (menu_text) loaded into es by SetStatsMenuText
+g_8C60 segMenuText35 | new | high | segment constant 3448h (menu_text) loaded into es by SetStatsMenuText
+g_8C62 segSeasonTitles1 | new | high | segment constant 384Bh (season_titles) loaded into es by GetSeasonTitle
+g_8C64 segSeasonTitles2 | new | high | segment constant 384Bh (season_titles) loaded into es by GetSeasonTitle
+g_8C66 segSeasonTitles3 | new | high | segment constant 384Bh (season_titles) loaded into es by GetSeasonTitle
+g_8C68 segSeasonTitles4 | new | high | segment constant 384Bh (season_titles) loaded into es by GetSeasonTitle
+g_8C6A segSeasonTitles5 | new | high | segment constant 384Bh (season_titles) loaded into es by GetSeasonTitle
+g_8C6C segWorkBuffer39 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by GoalieStatsCard
+g_8C70 segWorkBuffer40 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by GameStandingsMenu
+g_8C72 segSeasonTitles6 | new | high | segment constant 384Bh (season_titles) loaded into es by StatsSelLeague, StatsSelLeaguePlayoffs, StatsSelNhlPlayoffs ...
+g_8C74 segSeasonTitles7 | new | high | segment constant 384Bh (season_titles) loaded into es by StatsSelLeague, StatsSelLeaguePlayoffs, StatsSelNhlPlayoffs ...
+g_8C76 segSeasonTitles8 | new | high | segment constant 384Bh (season_titles) loaded into es by StatsSelLeague, StatsSelLeaguePlayoffs, StatsSelNhlPlayoffs ...
+g_8C78 segSeasonTitles9 | new | high | segment constant 384Bh (season_titles) loaded into es by StatsSelLeague, StatsSelLeaguePlayoffs, StatsSelNhlPlayoffs ...
+g_8C7A segSeasonTitles10 | new | high | segment constant 384Bh (season_titles) loaded into es by StatsSelLeague, StatsSelLeaguePlayoffs, StatsSelNhlPlayoffs ...
+g_8C7C segWorkBuffer41 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by StatsSelLeague, StatsSelLeaguePlayoffs, StatsSelNhlPlayoffs ...
+g_8C7E segWorkBuffer42 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by EasnStandingsMenu
+g_8C80 segWorkBuffer43 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by CalStandingsMenu
+g_8C82 segWorkBuffer44 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by SkaterStatsCard
+g_8C84 segMenuText36 | new | high | segment constant 3448h (menu_text) loaded into es by ShowPlayoffStandings, StandingsScreen
+g_8C86 segDgroup7 | new | high | segment constant 45C9h (dgroup) loaded into es by DrawStandingsPage
+g_8C88 segTeamChoiceText49 | new | high | segment constant 3701h (team_choice_text) loaded into es by LoadLeagueSchedule, ShowSeasonStandings
+g_8C8A segDbFiles17 | new | high | segment constant 3415h (db_files) loaded into es by Gameloop, PlayGame
+g_8C8C segDgroup8 | new | high | segment constant 45C9h (dgroup) loaded into es by LoadGameGfx
+g_8C8E segTeamChoiceText50 | new | high | segment constant 3701h (team_choice_text) loaded into es by ShowMatchupScreen
+g_8C90 segLinesMenuText1 | new | high | segment constant 38AFh (lines_menu_text) loaded into es by ShowMatchupScreen
+g_8C92 segMenuText37 | new | high | segment constant 3448h (menu_text) loaded into es by ShowMatchupScreen
+g_8C94 segWorkBuffer45 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by ShowMatchupScreen
+g_8C96 segDbFiles18 | new | high | segment constant 3415h (db_files) loaded into es by ShowMatchupScreen
+g_8C98 segTeamChoiceText51 | new | high | segment constant 3701h (team_choice_text) loaded into es by ShowStartingLineups
+g_8C9A segWorkBuffer46 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by ShowStartingLineups
+g_8CA4 segWorkBuffer47 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by DrawPeriodTitle
+g_8CA6 segTeamChoiceText52 | new | high | segment constant 3701h (team_choice_text) loaded into es by ShowGameSummary
+g_8CA8 segWorkBuffer48 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by ShowGameSummary
+g_8CAA segDbFiles19 | new | high | segment constant 3415h (db_files) loaded into es by ShowGameSummary
+g_8CAC segWorkBuffer49 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by ShowGameSummary
+g_8CAE segWorkBuffer50 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by ShowTeamStats
+g_8CB0 segDbFiles20 | new | high | segment constant 3415h (db_files) loaded into es by IntermissionScreens
+g_8CB2 segWorkBuffer51 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by PlayTitleMovies
+g_8CB4 segWorkBuffer52 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by PlayTitleMovies
+g_8CB6 segWorkBuffer53 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by PlayTitleMovies
+g_8CB8 segWorkBuffer54 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by CreateGSummaryDb
+g_8CBA segWorkBuffer55 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by BuildTeamRoster
+g_8CBC segWorkBuffer56 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by BuildTeamRoster
+g_8CBE segWorkBuffer57 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by BuildTeamRoster
+g_8CC0 segTeamChoiceText53 | new | high | segment constant 3701h (team_choice_text) loaded into es by GSummaryPath
+g_8CC2 segMenuText38 | new | high | segment constant 3448h (menu_text) loaded into es by ClearTeamNameText, SetTeamNameText
+g_8CC4 segMenuText39 | new | high | segment constant 3448h (menu_text) loaded into es by ClearTeamNameText, SetTeamNameText
+g_8CC6 segAnimSequences1 | new | high | segment constant 38F6h (anim_sequences) loaded into es by DrawReplayFrame
+g_8CC8 segAnimSequences2 | new | high | segment constant 38F6h (anim_sequences) loaded into es by DrawReplayFrame
+g_8CCA segDgroup9 | new | high | segment constant 45C9h (dgroup) loaded into es by DrawReplayFrame
+g_8CCC segAnimSequences3 | new | high | segment constant 38F6h (anim_sequences) loaded into es by LoadGameState
+g_8CCE segAnimSequences4 | new | high | segment constant 38F6h (anim_sequences) loaded into es by LoadGameState
+g_8CD4 segObjectTable1 | new | high | segment constant 3863h (object_table) loaded into es by LoadGameState
+g_8CD6 segDgroup10 | new | high | segment constant 45C9h (dgroup) loaded into es by PlayHilight
+g_8CD8 segWorkBuffer58 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by BuildEventLines
+g_8CDA segWorkBuffer59 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by Endfaceoff
+g_8CDC segWorkBuffer60 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by PickThreeStars
+g_8CDE segWorkBuffer61 | new | high | segment constant 3A0Bh (work_buffer) loaded into es by PickThreeStars
+g_8CE0 segDgroup11 | new | high | segment constant 45C9h (dgroup) loaded into es by DrawRinkOverlays
+g_8CE8 segDgroup12 | new | high | segment constant 45C9h (dgroup) loaded into es by FadeVenetian
+g_8CEA segDgroup13 | new | high | segment constant 45C9h (dgroup) loaded into es by FadeVenetian
+g_8CEC segDgroup14 | new | high | segment constant 45C9h (dgroup) loaded into es by FadeWipe
+g_8CEE segDgroup15 | new | high | segment constant 45C9h (dgroup) loaded into es by FadeWipe
+g_8CF0 segDgroup16 | new | high | segment constant 45C9h (dgroup) loaded into es by FadePlaneBands
+g_8CF2 segDgroup17 | new | high | segment constant 45C9h (dgroup) loaded into es by FadePlaneBands
+g_8CF4 segDgroup18 | new | high | segment constant 45C9h (dgroup) loaded into es by FadeBlockSweep
+g_8CF6 segDgroup19 | new | high | segment constant 45C9h (dgroup) loaded into es by FadeSlideStrips
+g_8CF8 segDgroup20 | new | high | segment constant 45C9h (dgroup) loaded into es by FadeSplitCenter
+g_8CFA segDgroup21 | new | high | segment constant 45C9h (dgroup) loaded into es by FadeRandomBlocks, FadeRandomBlocks2
+g_8CFC segDgroup22 | new | high | segment constant 45C9h (dgroup) loaded into es by FadeDissolve
+g_8CFE segDgroup23 | new | high | segment constant 45C9h (dgroup) loaded into es by FadeDissolve
+g_8D00 segDgroup24 | new | high | segment constant 45C9h (dgroup) loaded into es by FadeBoxGrow
+g_8D02 segDgroup25 | new | high | segment constant 45C9h (dgroup) loaded into es by FadeDirectional

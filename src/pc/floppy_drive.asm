@@ -19,7 +19,7 @@ SelectFloppyDrive:
         push si
         mov ax, 0xffff
         mov [bp - 0x8], ax
-        mov [g_C276], ax
+        mov [floppydrive], ax
 .1:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [bp - 0x4], ax
@@ -35,7 +35,7 @@ SelectFloppyDrive:
         mov word [MessageBoxSel], 0x0
         mov bx, [bp - 0x6]
         shl bx, 1
-        mov word [bx + g_C278], 0xffff
+        mov word [bx + floppyok], 0xffff
         lea ax, [bp - 0x14]
         push ax
         mov ax, [bp - 0x6]
@@ -47,7 +47,7 @@ SelectFloppyDrive:
         jz short .4
         mov bx, [bp - 0x6]
         shl bx, 1
-        mov word [bx + g_C278], 0x0
+        mov word [bx + floppyok], 0x0
         jmp near .8
 .4:
         mov ax, [bp + 0x8]
@@ -62,8 +62,8 @@ SelectFloppyDrive:
 .6:
         mov al, [bp - 0x6]
         add al, 0x41
-        mov es, [g_8B9C]
-        mov [es:0xbfa], al
+        mov es, [segTeamChoiceText9]
+        mov [es:str_DriveColon], al
         push word 0x3701
         push strict word str_Id
         push word 0x3701
@@ -131,9 +131,9 @@ SelectFloppyDrive:
         jnl short .9
         jmp near .2
 .9:
-        cmp word [g_C278], 0x0
+        cmp word [floppyok], 0x0
         jnz short .10
-        cmp word [g_C27A], 0x0
+        cmp word [floppycount], 0x0
         jnz short .10
         lea ax, [bp - 0xa]
         push ax
@@ -160,22 +160,22 @@ SelectFloppyDrive:
         add sp, 0x16
         mov [bp - 0x4], ax
 .10:
-        cmp word [g_C278], 0x0
+        cmp word [floppyok], 0x0
         jnz short .11
-        cmp word [g_C27A], 0x0
+        cmp word [floppycount], 0x0
         jnz short .11
         cmp word [bp - 0x4], 0x4
         jz short .11
         jmp near .1
 .11:
-        mov word [g_C276], 0x0
+        mov word [floppydrive], 0x0
         cmp word [bp - 0x2], 0x0
         jnz short .14
         cmp word [bp - 0x4], 0x4
         jz short .14
-        cmp word [g_C278], 0x0
+        cmp word [floppyok], 0x0
         jz short .12
-        cmp word [g_C27A], 0x0
+        cmp word [floppycount], 0x0
         jz short .12
         lea ax, [bp - 0xa]
         push ax
@@ -202,13 +202,13 @@ SelectFloppyDrive:
         add sp, 0x16
         jmp short .13
 .12:
-        cmp word [g_C278], 0x1
+        cmp word [floppyok], 0x1
         db 0x1A, 0xC0                           ; insn: sbb al, al
         and al, 0x1
 .13:
         add al, 0x41
-        mov es, [g_8B9C]
-        mov [es:0xbfa], al
+        mov es, [segTeamChoiceText9]
+        mov [es:str_DriveColon], al
 .14:
         mov ax, [bp - 0x4]
         pop si
@@ -230,7 +230,7 @@ FindLeagueFloppy:
         mov word [bp - 0x4], 0xffff
 .1:
         mov si, 0xffff
-        mov [g_C276], si
+        mov [floppydrive], si
         mov word [bp - 0x2], 0x0
         mov di, [bp - 0xa]
 .2:
@@ -242,7 +242,7 @@ FindLeagueFloppy:
         mov [MessageBoxSel], si
         mov bx, [bp - 0x2]
         shl bx, 1
-        mov word [bx + g_C278], 0xffff
+        mov word [bx + floppyok], 0xffff
         lea ax, [bp - 0x12]
         push ax
         mov ax, [bp - 0x2]
@@ -256,8 +256,8 @@ FindLeagueFloppy:
 .4:
         mov al, [bp - 0x2]
         add al, 0x41
-        mov es, [g_8B9C]
-        mov [es:0xbfa], al
+        mov es, [segTeamChoiceText9]
+        mov [es:str_DriveColon], al
         push word 0x3701
         push strict word str_Id
         push word 0x3701
@@ -332,7 +332,7 @@ FindLeagueFloppy:
         jmp near .2
 .9:
         mov [bp - 0xa], di
-        mov word [g_C276], 0x0
+        mov word [floppydrive], 0x0
         db 0x0B, 0xF6                           ; insn: or si, si
         jz short .10
         push word [bp + 0x8]
@@ -345,9 +345,9 @@ FindLeagueFloppy:
         call 0x2305:FmtFromLeague
         add sp, 0xc
         lea ax, [bp - 0x8c]
-        mov es, [g_8B9E]
-        mov [es:0x196], ax
-        mov [es:0x198], ss
+        mov es, [segTeamChoiceText10]
+        mov [es:msgThatFloppyDiskIsNot + 0x4], ax
+        mov [es:msgThatFloppyDiskIsNot + 0x6], ss
         lea ax, [bp - 0x6]
         push ax
         lea cx, [bp - 0x8]
@@ -407,9 +407,9 @@ WaitLeagueFloppy:
         call 0x2305:FmtFromLeague
         add sp, 0xc
         lea ax, [bp - 0x46]
-        mov es, [g_8BA0]
-        mov [es:0x19e], ax
-        mov [es:0x1a0], ss
+        mov es, [segTeamChoiceText11]
+        mov [es:msgInsertDiskFor + 0x4], ax
+        mov [es:msgInsertDiskFor + 0x6], ss
         lea ax, [bp - 0x2]
         push ax
         lea cx, [bp - 0x4]

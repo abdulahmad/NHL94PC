@@ -20,24 +20,24 @@ QueueDeferredCall:
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, [bp + 0x6]
         mov dx, [bp + 0x8]
-        imul bx, [g_5774], 0x12
-        mov [bx + g_DC38], ax
-        mov [bx + g_DC3A], dx
+        imul bx, [defercount], 0x12
+        mov [bx + defertab_fn], ax
+        mov [bx + defertab_seg], dx
         mov ax, [bp + 0xa]
-        mov [bx + g_DC2A], ax
+        mov [bx + defertab_a1], ax
         mov ax, [bp + 0xc]
-        mov [bx + g_DC2C], ax
+        mov [bx + defertab_a2], ax
         mov ax, [bp + 0xe]
-        mov [bx + g_DC2E], ax
+        mov [bx + defertab_a3], ax
         mov ax, [bp + 0x10]
-        mov [bx + g_DC30], ax
+        mov [bx + defertab_a4], ax
         mov ax, [bp + 0x12]
-        mov [bx + g_DC32], ax
+        mov [bx + defertab_a5], ax
         mov ax, [bp + 0x14]
-        mov [bx + g_DC34], ax
+        mov [bx + defertab_a6], ax
         mov ax, [bp + 0x16]
-        mov [bx + g_DC36], ax
-        inc word [g_5774]
+        mov [bx + defertab_a7], ax
+        inc word [defercount]
         leave
         retf
         db 0x90
@@ -52,9 +52,9 @@ RunDeferredCalls:
         push di
         push si
         db 0x2B, 0xFF                           ; insn: sub di, di
-        cmp [g_5774], di
+        cmp [defercount], di
         jng short .2
-        mov si, 0xdc38
+        mov si, defertab_fn
 .1:
         push word [si - 0x2]
         push word [si - 0x4]
@@ -67,10 +67,10 @@ RunDeferredCalls:
         add sp, 0xe
         add si, 0x12
         inc di
-        cmp [g_5774], di
+        cmp [defercount], di
         jg short .1
 .2:
-        mov word [g_5774], 0x0
+        mov word [defercount], 0x0
         pop si
         pop di
         retf
@@ -84,10 +84,10 @@ RunDeferredCalls:
 ;-----------------------------------------------------------------------------
 AppendGSumRecord:
         enter 0x2, 0x0
-        inc word [g_01CE]
+        inc word [gsumcount]
         lea ax, [bp - 0x2]
         push ax
-        push word 0xae70
+        push word gsummarypath
         call 0x0CD1:OpenReadWriteShared
         add sp, 0x4
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -179,9 +179,9 @@ FlushGSumQueue:
         push di
         push si
         db 0x2B, 0xFF                           ; insn: sub di, di
-        cmp [g_5772], di
+        cmp [gsumqcount], di
         jng short .2
-        mov si, 0xdc72
+        mov si, gsumqueue
 .1:
         push si
         push cs
@@ -189,10 +189,10 @@ FlushGSumQueue:
         add sp, 0x2
         add si, 0xc
         inc di
-        cmp [g_5772], di
+        cmp [gsumqcount], di
         jg short .1
 .2:
-        mov word [g_5772], 0x0
+        mov word [gsumqcount], 0x0
         pop si
         pop di
         retf
@@ -207,7 +207,7 @@ PutGSumHeader:
         enter 0x2, 0x0
         lea ax, [bp - 0x2]
         push ax
-        push word 0xae70
+        push word gsummarypath
         call 0x0CD1:OpenReadWriteShared
         add sp, 0x4
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -247,7 +247,7 @@ PutGSumTail:
         enter 0x2, 0x0
         lea ax, [bp - 0x2]
         push ax
-        push word 0xae70
+        push word gsummarypath
         call 0x0CD1:OpenReadWriteShared
         add sp, 0x4
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -297,10 +297,10 @@ PutGSumTail:
 ;-----------------------------------------------------------------------------
 WriteGSumHeader:
         enter 0x2, 0x0
-        inc word [g_01CE]
+        inc word [gsumcount]
         lea ax, [bp - 0x2]
         push ax
-        push word 0xae70
+        push word gsummarypath
         call 0x0CD1:OpenReadWriteShared
         add sp, 0x4
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -530,7 +530,7 @@ BuildEventLines:
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         db 0x8B, 0xF8                           ; insn: mov di, ax
         imul ax, di, word 0x2e8
-        add ax, 0x9f9a
+        add ax, GameTeamRecs + 0x1a
         push ax
         mov al, [curevent_b8]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
@@ -538,7 +538,7 @@ BuildEventLines:
         mov al, [curevent_b7]
         push ax
         push strict word str_02d02dS
-        push word 0xd4b8
+        push word textline3
         call 0x0000:_sprintf
         add sp, 0xa
         mov al, [curevent_b2]
@@ -572,15 +572,15 @@ BuildEventLines:
         jnz short .5
         cmp si, 0x19
         jnl short .5
-        mov es, [g_8CD8]
+        mov es, [segWorkBuffer58]
         imul bx, di, 0x19
         db 0x03, 0xDE                           ; insn: add bx, si
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         shl bx, byte 0x3
-        mov cx, [bx + g_D020]
+        mov cx, [bx + plstatsoff3]
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, byte 0x4
-        add cx, [es:bx + 0x448]
+        add cx, [es:bx + HomePlStats]
         push cx
         push strict word str_D_2
         mov ax, [bp - 0x6]
@@ -597,17 +597,17 @@ BuildEventLines:
         db 0x03, 0xC6                           ; insn: add ax, si
         imul ax, ax, 0x28
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        add ax, 0xa568
+        add ax, hmroster + 0x18
         push ax
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         add cx, 0xa558
         push cx
         db 0x8B, 0xD8                           ; insn: mov bx, ax
-        mov al, [bx + g_A556]
+        mov al, [bx + hmrosterjersey]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push word 0x5801
-        push word 0xd506
+        push word textline1
         push cs
         call FormatPlayerName
         add sp, 0xc
@@ -617,31 +617,31 @@ BuildEventLines:
         cmp si, 0xff
         jnz short .6
         push strict word str_Unassisted
-        push word 0xd542
+        push word textline2
         call 0x0000:_sprintf
         add sp, 0x4
         jmp short .7
         db 0x90
 .6:
         push strict word str_Assists
-        push word 0xd542
+        push word textline2
         call 0x0000:_sprintf
         add sp, 0x4
         push word 0x5816
         add si, [bp - 0x14]
         imul ax, si, 0x28
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        add ax, 0xa568
+        add ax, hmroster + 0x18
         push ax
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         add cx, 0xa558
         push cx
         db 0x8B, 0xD8                           ; insn: mov bx, ax
-        mov al, [bx + g_A556]
+        mov al, [bx + hmrosterjersey]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push word 0x5817
-        push word 0xd57e
+        push word textline4
         push cs
         call FormatPlayerName
         add sp, 0xc
@@ -657,17 +657,17 @@ BuildEventLines:
         add si, [bp - 0x14]
         imul ax, si, 0x28
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        add ax, 0xa568
+        add ax, hmroster + 0x18
         push ax
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         add cx, 0xa558
         push cx
         db 0x8B, 0xD8                           ; insn: mov bx, ax
-        mov al, [bx + g_A556]
+        mov al, [bx + hmrosterjersey]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push word 0x5819
-        push word 0xd5ba
+        push word textline5
         push cs
         call FormatPlayerName
         add sp, 0xc
@@ -686,7 +686,7 @@ BuildEventLines:
         mov al, [curevent_b1]
         mov [bp - 0x2], ax
         imul ax, ax, word 0x2e8
-        add ax, 0x9f80
+        add ax, GameTeamRecs
         push ax
         mov al, [curevent_b7]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
@@ -694,7 +694,7 @@ BuildEventLines:
         mov al, [curevent_b6]
         push ax
         push strict word str_02d02dSPenalty
-        push word 0xd4b8
+        push word textline3
         call 0x0000:_sprintf
         add sp, 0xa
         push word 0x582f
@@ -702,26 +702,26 @@ BuildEventLines:
         add ax, [bp - 0x4]
         imul ax, ax, 0x28
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        add ax, 0xa568
+        add ax, hmroster + 0x18
         push ax
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         add cx, 0xa558
         push cx
         db 0x8B, 0xD8                           ; insn: mov bx, ax
-        mov al, [bx + g_A556]
+        mov al, [bx + hmrosterjersey]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push word 0x5830
-        push word 0xd506
+        push word textline1
         push cs
         call FormatPlayerName
         add sp, 0xc
         mov bl, [curevent_b3]
         db 0x2A, 0xFF                           ; insn: sub bh, bh
         shl bx, 1
-        mov si, [bx + g_575A]
+        mov si, [bx + EventFmtPtrs]
         db 0x8B, 0xFE                           ; insn: mov di, si
-        mov si, 0xd542
+        mov si, textline2
         push ds
         pop es
         mov cx, 0xffff
@@ -739,7 +739,7 @@ BuildEventLines:
         mov [bp - 0x6], ax
         cmp ax, 0xff
         jnz short .11
-        mov ax, 0xd57e
+        mov ax, textline4
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov si, str_GameMisconduct
         mov cx, 0x8
@@ -751,7 +751,7 @@ BuildEventLines:
 .11:
         push ax
         push strict word str_DMinutes
-        push word 0xd57e
+        push word textline4
         call 0x0000:_sprintf
         add sp, 0x6
         pop si
@@ -772,7 +772,7 @@ BuildEventLines:
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         db 0x8B, 0xF8                           ; insn: mov di, ax
         imul ax, di, word 0x2e8
-        add ax, 0x9f80
+        add ax, GameTeamRecs
         push ax
         mov al, [curevent_b6]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
@@ -780,7 +780,7 @@ BuildEventLines:
         mov al, [curevent_b5]
         push ax
         push strict word str_02d02dSInjury
-        push word 0xd4b8
+        push word textline3
         call 0x0000:_sprintf
         add sp, 0xa
         push word 0x5860
@@ -788,17 +788,17 @@ BuildEventLines:
         db 0x03, 0xC6                           ; insn: add ax, si
         imul ax, ax, 0x28
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        add ax, 0xa568
+        add ax, hmroster + 0x18
         push ax
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         add cx, 0xa558
         push cx
         db 0x8B, 0xD8                           ; insn: mov bx, ax
-        mov al, [bx + g_A556]
+        mov al, [bx + hmrosterjersey]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push word 0x5861
-        push word 0xd506
+        push word textline1
         push cs
         call FormatPlayerName
         add sp, 0xc
@@ -810,7 +810,7 @@ BuildEventLines:
 .13:
         push strict word str_GoneFor1Period
 .14:
-        push word 0xd542
+        push word textline2
         call 0x0000:_sprintf
         add sp, 0x4
 .15:
@@ -865,28 +865,28 @@ PostGoalEvent:
         mov [curevent_b10], al
         test byte [gmode], 0x10
         jnz short .3
-        mov bx, [g_5772]
+        mov bx, [gsumqcount]
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         shl bx, 1
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, byte 0x2
-        lea di, [bx + g_DC72]
-        mov si, 0xb06c
+        lea di, [bx + gsumqueue]
+        mov si, curevent
         mov ax, ds
         mov es, ax
         mov cx, 0x6
         rep movsw
-        inc word [g_5772]
-        cmp word [g_5772], 0x8
+        inc word [gsumqcount]
+        cmp word [gsumqcount], 0x8
         jl short .1
-        dec word [g_5772]
+        dec word [gsumqcount]
 .1:
         cmp word [bp + 0x6], 0x0
         jz short .2
-        inc byte [g_01D8]
+        inc byte [gsumtail_goals2]
         jmp short .3
 .2:
-        inc byte [g_01D6]
+        inc byte [gsumtail_goals1]
 .3:
         cmp word [bp + 0x6], 0x0
         jnz short .4
@@ -898,16 +898,16 @@ PostGoalEvent:
         call BuildEventLines
         call 0x226F:CloseTextOverlay
         mov ax, [PadRepeatOn]
-        mov [g_D46A], ax
+        mov [gameframe], ax
         mov word [PadRepeatOn], 0x0
-        mov ax, 0xb078
+        mov ax, goalevent
         db 0x8B, 0xF8                           ; insn: mov di, ax
-        mov si, 0xb06c
+        mov si, curevent
         push ds
         pop es
         mov cx, 0x6
         rep movsw
-        mov ax, [g_D46A]
+        mov ax, [gameframe]
         mov [PadRepeatOn], ax
         pop si
         pop di
@@ -949,27 +949,27 @@ PostPenaltyEvent:
         mov [curevent_b6], al
         mov al, [bp + 0x10]
         mov [curevent_b7], al
-        mov bx, [g_5772]
+        mov bx, [gsumqcount]
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         shl bx, 1
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, byte 0x2
-        lea di, [bx + g_DC72]
-        mov si, 0xb06c
+        lea di, [bx + gsumqueue]
+        mov si, curevent
         mov ax, ds
         mov es, ax
         mov cx, 0x6
         rep movsw
-        inc word [g_5772]
-        cmp word [g_5772], 0x8
+        inc word [gsumqcount]
+        cmp word [gsumqcount], 0x8
         jl short .2
-        dec word [g_5772]
+        dec word [gsumqcount]
 .2:
         push cs
         call BuildEventLines
         call 0x226F:CloseTextOverlay
         mov ax, [PadRepeatOn]
-        mov [g_D46A], ax
+        mov [gameframe], ax
         mov word [PadRepeatOn], 0x0
         cmp word [CrowdSound], 0x190
         jng short .3
@@ -977,10 +977,10 @@ PostPenaltyEvent:
 .3:
         cmp word [bp + 0x6], 0x0
         jz short .4
-        mov si, [g_29CC]
+        mov si, [VisTeamNum]
         jmp short .5
 .4:
-        mov si, [g_29CA]
+        mov si, [HomeTeamNum]
 .5:
         cmp si, 0x18
         jl short .6
@@ -992,19 +992,19 @@ PostPenaltyEvent:
         push word [bp + 0xe]
         mov bx, [bp + 0xa]
         shl bx, 1
-        push word [bx + g_58E2]
+        push word [bx + PenaltyNamePtrs]
         push word [bp + 0xc]
         imul ax, [bp + 0x6], 0x1c
         add ax, [bp + 0x8]
         imul bx, ax, 0x28
-        mov al, [bx + g_A556]
+        mov al, [bx + hmrosterjersey]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         shl si, 1
         push word [si + TeamNameClips]
         call 0x0EDC:AnnouncePenalty
         add sp, 0xe
-        mov ax, [g_D46A]
+        mov ax, [gameframe]
         mov [PadRepeatOn], ax
         pop si
         pop di
@@ -1044,21 +1044,21 @@ PostInjuryEvent:
         mov [curevent_b5], al
         mov al, [bp + 0xe]
         mov [curevent_b6], al
-        mov bx, [g_5772]
+        mov bx, [gsumqcount]
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         shl bx, 1
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, byte 0x2
-        lea di, [bx + g_DC72]
-        mov si, 0xb06c
+        lea di, [bx + gsumqueue]
+        mov si, curevent
         mov ax, ds
         mov es, ax
         mov cx, 0x6
         rep movsw
-        inc word [g_5772]
-        cmp word [g_5772], 0x8
+        inc word [gsumqcount]
+        cmp word [gsumqcount], 0x8
         jl short .2
-        dec word [g_5772]
+        dec word [gsumqcount]
 .2:
         push cs
         call BuildEventLines
@@ -1109,11 +1109,11 @@ ChkScorerMilestone:
 .3:
         db 0x8B, 0xD9                           ; insn: mov bx, cx
         shl bx, 1
-        cmp byte [bx + g_D660], 0x0
+        cmp byte [bx + scorerflags], 0x0
         jz short .4
         db 0x8B, 0xD9                           ; insn: mov bx, cx
         shl bx, 1
-        cmp byte [bx + g_D661], 0x0
+        cmp byte [bx + scorerflags2], 0x0
         jz short .4
         jmp near .29
 .4:
@@ -1137,11 +1137,11 @@ ChkScorerMilestone:
         db 0x03, 0xF7                           ; insn: add si, di
         mov [bp - 0xa], si
         shl si, byte 0x4
-        mov bx, [es:si + f_3A0B_0448]
-        mov ax, [es:si + f_3A0B_044A]
+        mov bx, [es:si + HomePlStats]
+        mov ax, [es:si + HomePlStats_w2]
         db 0x03, 0xC3                           ; insn: add ax, bx
         mov [bp - 0x4], ax
-        cmp word [es:si + f_3A0B_0448], 0x3
+        cmp word [es:si + HomePlStats], 0x3
         jnz short .8
         mov word [bp - 0x6], 0x1
 .6:
@@ -1160,8 +1160,8 @@ ChkScorerMilestone:
         mov si, [bp - 0xa]
         shl si, byte 0x3
         mov [bp - 0xe], si
-        mov ax, [si + g_D020]
-        add ax, [si + g_D01C]
+        mov ax, [si + plstatsoff3]
+        add ax, [si + plstatsoff]
         db 0x03, 0xC3                           ; insn: add ax, bx
         dec ax
         jnz short .10
@@ -1169,7 +1169,7 @@ ChkScorerMilestone:
         mov si, 0x1
         jmp near .16
 .10:
-        add bx, [si + g_D020]
+        add bx, [si + plstatsoff3]
         cmp bx, 0x32
         jl short .11
         db 0x8B, 0xC3                           ; insn: mov ax, bx
@@ -1181,7 +1181,7 @@ ChkScorerMilestone:
         mov word [bp - 0x6], 0x2
         jmp short .6
 .11:
-        mov ax, [si + g_D022]
+        mov ax, [si + plstatsrecs]
         add [bp - 0x4], ax
         cmp word [bp - 0x4], 0x64
         jl short .12
@@ -1195,7 +1195,7 @@ ChkScorerMilestone:
         jmp short .7
         db 0x90
 .12:
-        add bx, [si + g_D01C]
+        add bx, [si + plstatsoff]
         cmp bx, 0x64
         jl short .13
         db 0x8B, 0xC3                           ; insn: mov ax, bx
@@ -1210,7 +1210,7 @@ ChkScorerMilestone:
 .13:
         mov si, [bp - 0x4]
         mov bx, [bp - 0xe]
-        add si, [bx + g_D01E]
+        add si, [bx + plstatsoff2]
         cmp si, 0x64
         jl short .16
         db 0x8B, 0xC6                           ; insn: mov ax, si
@@ -1225,7 +1225,7 @@ ChkScorerMilestone:
         mov si, [bp - 0xa]
         shl si, byte 0x3
         mov [bp - 0xe], si
-        add bx, [si + g_D020]
+        add bx, [si + plstatsoff3]
         cmp bx, 0xa
         jl short .15
         db 0x8B, 0xC3                           ; insn: mov ax, bx
@@ -1239,7 +1239,7 @@ ChkScorerMilestone:
 .15:
         mov si, [bp - 0x4]
         mov bx, [bp - 0xe]
-        add si, [bx + g_D022]
+        add si, [bx + plstatsrecs]
         cmp si, 0x14
         jl short .16
         db 0x8B, 0xC6                           ; insn: mov ax, si
@@ -1273,15 +1273,15 @@ ChkScorerMilestone:
         db 0x03, 0xDF                           ; insn: add bx, di
         mov [bp - 0xa], bx
         shl bx, byte 0x4
-        mov si, [es:bx + f_3A0B_044A]
-        add si, [es:bx + f_3A0B_0448]
+        mov si, [es:bx + HomePlStats_w2]
+        add si, [es:bx + HomePlStats]
         mov al, [AnnouncerFlags]
         and al, 0x2
         jz short .22
         mov bx, [bp - 0xa]
         shl bx, byte 0x3
         mov [bp - 0xe], bx
-        add si, [bx + g_D022]
+        add si, [bx + plstatsrecs]
         cmp si, 0x64
         jl short .21
         db 0x8B, 0xC6                           ; insn: mov ax, si
@@ -1293,7 +1293,7 @@ ChkScorerMilestone:
         mov word [bp - 0x6], 0x4
         jmp short .23
 .21:
-        add si, [bx + g_D01E]
+        add si, [bx + plstatsoff2]
         cmp si, 0x64
         jl short .23
         db 0x8B, 0xC6                           ; insn: mov ax, si
@@ -1307,7 +1307,7 @@ ChkScorerMilestone:
 .22:
         mov bx, [bp - 0xa]
         shl bx, byte 0x3
-        add si, [bx + g_D022]
+        add si, [bx + plstatsrecs]
         cmp si, 0x14
         jl short .23
         db 0x8B, 0xC6                           ; insn: mov ax, si
@@ -1334,15 +1334,15 @@ ChkScorerMilestone:
         db 0x03, 0xDF                           ; insn: add bx, di
         mov [bp - 0xa], bx
         shl bx, byte 0x4
-        mov si, [es:bx + f_3A0B_044A]
-        add si, [es:bx + f_3A0B_0448]
+        mov si, [es:bx + HomePlStats_w2]
+        add si, [es:bx + HomePlStats]
         mov al, [AnnouncerFlags]
         and al, 0x2
         jz short .27
         mov bx, [bp - 0xa]
         shl bx, byte 0x3
         mov [bp - 0xe], bx
-        add si, [bx + g_D022]
+        add si, [bx + plstatsrecs]
         cmp si, 0x64
         jl short .26
         db 0x8B, 0xC6                           ; insn: mov ax, si
@@ -1355,7 +1355,7 @@ ChkScorerMilestone:
         jmp short .28
         db 0x90
 .26:
-        add si, [bx + g_D01E]
+        add si, [bx + plstatsoff2]
         cmp si, 0x64
         jl short .28
         db 0x8B, 0xC6                           ; insn: mov ax, si
@@ -1369,7 +1369,7 @@ ChkScorerMilestone:
 .27:
         mov bx, [bp - 0xa]
         shl bx, byte 0x3
-        add si, [bx + g_D022]
+        add si, [bx + plstatsrecs]
         cmp si, 0x14
         jl short .28
         db 0x8B, 0xC6                           ; insn: mov ax, si
@@ -1423,13 +1423,13 @@ QueueGoalieNote:
         retf
         db 0x90
 .2:
-        cmp word [g_4A24], 0x3f
+        cmp word [goalienotebits], 0x3f
         jz short .1
         cmp word [penaltysc], 0x0
         jl short .1
         mov si, [penaltysc]
         shl si, byte 0x7
-        add si, 0xb50e
+        add si, SortCords
         mov al, [si + 0x44]
         and al, 0x40
         cmp al, 0x1
@@ -1444,9 +1444,9 @@ QueueGoalieNote:
         jz short .3
         shl di, byte 0x3
 .3:
-        test [g_4A24], di
+        test [goalienotebits], di
         jnz short .1
-        or [g_4A24], di
+        or [goalienotebits], di
         push 0x0
         push 0x0
         push 0x0

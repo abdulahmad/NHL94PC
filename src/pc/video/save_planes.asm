@@ -1,8 +1,10 @@
 ; Saves and restores the four VGA planes, and FatalError, which shows a message and quits.
 
-PlayArenaJingleTail:                            ; end of PlayArenaJingle in; not used in the EXE (overlays may
-                                                ; use it)
-        db 0x08, 0x5E, 0xC9                     ; db 0x08
+PlayArenaJingleTail:                            ; end of PlayArenaJingle
+        db 0x08                                 ; the rest of add sp, 0x8 from the segment before
+.done:
+        pop si
+        leave
         retf
 
 ;-----------------------------------------------------------------------------
@@ -15,7 +17,7 @@ SaveVgaPlanes:
         push 0x80
         push 0x0
         push word 0xb00
-        push word 0xa1e
+        push word str_Plane0
         call 0x14DB:InsertRecWrap
         add sp, 0x8
         mov [VgaSave0Off], ax
@@ -23,7 +25,7 @@ SaveVgaPlanes:
         push 0x80
         push 0x0
         push word 0xb00
-        push word 0xa26
+        push word str_Plane1
         call 0x14DB:InsertRecWrap
         add sp, 0x8
         mov [VgaSave1Off], ax
@@ -31,7 +33,7 @@ SaveVgaPlanes:
         push 0x80
         push 0x0
         push word 0xb00
-        push word 0xa2e
+        push word str_Plane2
         call 0x14DB:InsertRecWrap
         add sp, 0x8
         mov [VgaSave2Off], ax
@@ -39,7 +41,7 @@ SaveVgaPlanes:
         push 0x80
         push 0x0
         push word 0xb00
-        push word 0xa36
+        push word str_Plane3
         call 0x14DB:InsertRecWrap
         add sp, 0x8
         mov [VgaSave3Off], ax
@@ -61,7 +63,7 @@ SaveVgaPlanes:
         and ax, 0xfc
         out dx, al
         push word 0xb00
-        push word 0xa000
+        push word VgaMem
         push 0x0
         push word [VgaSave0Seg]
         push word [VgaSave0Off]
@@ -81,7 +83,7 @@ SaveVgaPlanes:
         mov dx, 0x3cf
         out dx, al
         push word 0xb00
-        push word 0xa000
+        push word VgaMem
         push 0x0
         push word [VgaSave1Seg]
         push word [VgaSave1Off]
@@ -99,7 +101,7 @@ SaveVgaPlanes:
         mov dx, 0x3cf
         out dx, al
         push word 0xb00
-        push word 0xa000
+        push word VgaMem
         push 0x0
         push word [VgaSave2Seg]
         push word [VgaSave2Off]
@@ -117,7 +119,7 @@ SaveVgaPlanes:
         mov dx, 0x3cf
         out dx, al
         push word 0xb00
-        push word 0xa000
+        push word VgaMem
         push 0x0
         push word [VgaSave3Seg]
         push word [VgaSave3Off]
@@ -160,7 +162,7 @@ SaveVgaPlanes:
         push word 0xc7
         call 0x0FEF:SetStartPage
         add sp, 0x2
-        mov bx, 0x7570
+        mov bx, PageTable
         mov es, [DgroupSegB]
         mov [bp - 0x6], bx
         mov [bp - 0x4], es
@@ -246,7 +248,7 @@ RestoreVgaPlanes:
         add sp, 0x4
         push dx
         push ax
-        push word 0xa000
+        push word VgaMem
         push 0x0
         call 0x0000:_fmemcpy
         add sp, 0xa
@@ -268,7 +270,7 @@ RestoreVgaPlanes:
         add sp, 0x4
         push dx
         push ax
-        push word 0xa000
+        push word VgaMem
         push 0x0
         call 0x0000:_fmemcpy
         add sp, 0xa
@@ -290,7 +292,7 @@ RestoreVgaPlanes:
         add sp, 0x4
         push dx
         push ax
-        push word 0xa000
+        push word VgaMem
         push 0x0
         call 0x0000:_fmemcpy
         add sp, 0xa
@@ -312,7 +314,7 @@ RestoreVgaPlanes:
         add sp, 0x4
         push dx
         push ax
-        push word 0xa000
+        push word VgaMem
         push 0x0
         call 0x0000:_fmemcpy
         add sp, 0xa
@@ -337,7 +339,7 @@ RestoreVgaPlanes:
         push word 0xa8
         call 0x0FEF:SetStartPage
         add sp, 0x2
-        mov bx, 0x7570
+        mov bx, PageTable
         mov es, [DgroupSegB]
         mov [bp - 0x6], bx
         mov [bp - 0x4], es
@@ -372,10 +374,10 @@ RestoreVgaPlanes:
         retf
 
 ;-----------------------------------------------------------------------------
-; NullFar5                                                    0F4A:03E2  94 PC
+; NullQuitHook                                                0F4A:03E2  94 PC
 ; A lone retf.
 ;-----------------------------------------------------------------------------
-NullFar5:
+NullQuitHook:
         retf
         db 0x90
 

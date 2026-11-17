@@ -107,7 +107,7 @@ DrawSoundCardOpts:
         call 0x0FEF:GetPaletteFar
         add sp, 0x8
         mov ax, [SoundOptions]
-        mov [g_B35E], ax
+        mov [editopts], ax
         db 0x2B, 0xF6                           ; insn: sub si, si
 .1:
         mov al, 0x3f
@@ -130,7 +130,7 @@ DrawSoundCardOpts:
         db 0x8B, 0xCE                           ; insn: mov cx, si
         mov ax, 0x1
         shl ax, cl
-        test [g_B35E], ax
+        test [editopts], ax
         jnz short .3
         inc si
         cmp si, 0x7
@@ -155,7 +155,7 @@ DrawSoundCardOpts:
         db 0x8B, 0xCA                           ; insn: mov cx, dx
         mov ax, 0x1
         shl ax, cl
-        test [g_01C4], ax
+        test [sndcardmissing], ax
         jnz short .6
         mov al, 0x17
         mov [si], al
@@ -194,7 +194,7 @@ SoundCardHitTest:
         sub di, 0xa
         sub word [bp + 0x8], 0xa
         db 0x2B, 0xC9                           ; insn: sub cx, cx
-        mov bx, 0x0
+        mov bx, SoundDialogHitRects
         mov [bp + 0x6], di
         mov ax, 0x36a8
         mov ds, ax
@@ -255,7 +255,7 @@ RedrawSoundCardOpts:
         db 0x8B, 0xCF                           ; insn: mov cx, di
         mov ax, 0x1
         shl ax, cl
-        test [g_B35E], ax
+        test [editopts], ax
         jz short .2
         mov al, 0x17
         mov [si], al
@@ -275,7 +275,7 @@ RedrawSoundCardOpts:
         mov [si + 0x16], al
         mov ax, 0x1
         shl ax, cl
-        test [g_01C4], ax
+        test [sndcardmissing], ax
         jnz short .4
         mov al, 0x17
         mov [si + 0x30], al
@@ -435,9 +435,9 @@ SoundCardDlgLoop:
         mov ax, 0x1
         shl ax, cl
         mov [bp - 0xc], ax
-        test [g_B35E], ax
+        test [editopts], ax
         jnz short .13
-        test [g_01C4], ax
+        test [sndcardmissing], ax
         jz short .13
         cmp ax, strict word 0x40
         jz short .17
@@ -471,17 +471,17 @@ SoundCardDlgLoop:
         push 0xb
         call 0x0D90:SetDialogColors
         add sp, 0xa
-        push word [g_B35E]
+        push word [editopts]
         push cs
         call SetSoundDevice
         add sp, 0x2
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .16
-        mov ax, [g_B35E]
-        xor [g_01C4], ax
+        mov ax, [editopts]
+        xor [sndcardmissing], ax
         mov ax, [SoundOptions]
 .11:
-        mov [g_B35E], ax
+        mov [editopts], ax
 .12:
         push cs
         call RedrawSoundCardOpts
@@ -498,7 +498,7 @@ SoundCardDlgLoop:
         leave
         retf
 .16:
-        mov ax, [g_B35E]
+        mov ax, [editopts]
         mov [SoundOptions], ax
 .17:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -519,70 +519,70 @@ SetSoundDevice:
         push di
         push si
         mov word [bp - 0x22], 0xffff
-        mov ax, [g_0F68]
-        or ax, [g_0F66]
+        mov ax, [SongBuf1Seg]
+        or ax, [SongBuf1]
         jz short .2
         cmp word [SoundOptions], 0x2
         jnz short .1
         call 0x09B2:SpeechShutdown
-        push word [g_C1F2]
-        push word [g_C1F0]
+        push word [SoundDrvBufSeg]
+        push word [SoundDrvBuf]
         call 0x06E1:FindUnlink
         add sp, 0x4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_C1F2], ax
-        mov [g_C1F0], ax
+        mov [SoundDrvBufSeg], ax
+        mov [SoundDrvBuf], ax
 .1:
         call 0x16F2:ShutdownSequencer
         mov ax, 0x64
         cwd
         call 0x03A3:SetDeadline.regs
         call 0x03A3:WaitDeadlineNoEoi
-        push word [g_0F68]
-        push word [g_0F66]
+        push word [SongBuf1Seg]
+        push word [SongBuf1]
         call 0x06E1:FindUnlink
         add sp, 0x4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_0F68], ax
-        mov [g_0F66], ax
+        mov [SongBuf1Seg], ax
+        mov [SongBuf1], ax
 .2:
-        mov ax, [g_0F6C]
-        or ax, [g_0F6A]
+        mov ax, [SongBuf2Seg]
+        or ax, [SongBuf2]
         jz short .3
-        push word [g_0F6C]
-        push word [g_0F6A]
+        push word [SongBuf2Seg]
+        push word [SongBuf2]
         call 0x06E1:FindUnlink
         add sp, 0x4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_0F6C], ax
-        mov [g_0F6A], ax
+        mov [SongBuf2Seg], ax
+        mov [SongBuf2], ax
 .3:
-        mov ax, [g_0F70]
-        or ax, [g_0F6E]
+        mov ax, [SongBufs]
+        or ax, [SongBuf3]
         jz short .4
-        push word [g_0F70]
-        push word [g_0F6E]
+        push word [SongBufs]
+        push word [SongBuf3]
         call 0x06E1:FindUnlink
         add sp, 0x4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_0F70], ax
-        mov [g_0F6E], ax
+        mov [SongBufs], ax
+        mov [SongBuf3], ax
 .4:
         mov word [bp - 0x26], 0x0
 .5:
         mov bx, [bp - 0x26]
         shl bx, byte 0x2
-        mov ax, [bx + 0xf74]
-        or ax, [bx + 0xf72]
+        mov ax, [bx + SongSlots + 2]
+        or ax, [bx + SongSlots]
         jz short .6
-        push word [bx + 0xf74]
-        push word [bx + 0xf72]
+        push word [bx + SongSlots + 2]
+        push word [bx + SongSlots]
         db 0x8B, 0xF3                           ; insn: mov si, bx
         call 0x16F2:UnloadSong
         add sp, 0x4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [si + 0xf74], ax
-        mov [si + 0xf72], ax
+        mov [si + SongSlots + 2], ax
+        mov [si + SongSlots], ax
 .6:
         inc word [bp - 0x26]
         cmp word [bp - 0x26], 0x10
@@ -714,16 +714,16 @@ SetSoundDevice:
         rep movsw
         db 0x13, 0xC9                           ; insn: adc cx, cx
         rep movsb
-        mov [g_0F6C], ax
-        mov [g_0F6A], ax
+        mov [SongBuf2Seg], ax
+        mov [SongBuf2], ax
         lea ax, [bp - 0x44]
         push ax
         call 0x1844:LoadSoundDriver
         add sp, 0x2
-        mov [g_0F66], ax
-        mov [g_0F68], dx
+        mov [SongBuf1], ax
+        mov [SongBuf1Seg], dx
         db 0x8B, 0xC2                           ; insn: mov ax, dx
-        or ax, [g_0F66]
+        or ax, [SongBuf1]
         jz short .17
         cmp byte [bp - 0x54], 0x0
         jz short .16
@@ -750,10 +750,10 @@ SetSoundDevice:
         push ax
         call 0x1844:LoadSoundDriver
         add sp, 0x2
-        mov [g_0F6A], ax
-        mov [g_0F6C], dx
+        mov [SongBuf2], ax
+        mov [SongBuf2Seg], dx
         db 0x8B, 0xC2                           ; insn: mov ax, dx
-        or ax, [g_0F6A]
+        or ax, [SongBuf2]
         jz short .17
 .16:
         mov word [bp - 0x2a], 0xffff
@@ -802,8 +802,8 @@ SetSoundDevice:
         push ax
         call 0x16F2:LoadPatchBank
         add sp, 0x2
-        mov [g_0F6E], ax
-        mov [g_0F70], dx
+        mov [SongBuf3], ax
+        mov [SongBufs], dx
         mov word [bp - 0x26], 0x0
         jmp near .23
         db 0x90
@@ -847,7 +847,7 @@ SetSoundDevice:
         db 0x13, 0xC9                           ; insn: adc cx, cx
         rep movsb
         mov al, 0x1
-        mov [g_106D], al
+        mov [SoundDevChoice], al
         mov [CrowdChannel], al
         jmp near .15
 .20:
@@ -926,8 +926,8 @@ SetSoundDevice:
         call 0x16F2:LoadSongMode
         add sp, 0x8
         shl si, byte 0x2
-        mov [si + 0xf72], ax
-        mov [si + 0xf74], dx
+        mov [si + SongSlots], ax
+        mov [si + SongSlots + 2], dx
         inc word [bp - 0x26]
 .23:
         les bx, [bp - 0x30]
@@ -983,7 +983,7 @@ SetSoundDevice:
         jz short .25
         jmp near .27
 .25:
-        cmp word [g_0FBA], 0x0
+        cmp word [SoundDriverLoaded], 0x0
         jz short .26
         jmp near .27
 .26:
@@ -1038,7 +1038,7 @@ SetSoundDevice:
         add sp, 0x4
         mov [bp - 0x36], ax
         mov [bp - 0x34], dx
-        mov word [g_0FBA], 0xffff
+        mov word [SoundDriverLoaded], 0xffff
         push dx
         push ax
         push word [bp - 0x64]
@@ -1058,7 +1058,7 @@ SetSoundDevice:
 .27:
         mov ax, [bp + 0x6]
         mov [SoundOptions], ax
-        mov [g_B35E], ax
+        mov [editopts], ax
         push ds
         push strict word str_Cfg_3
         push ds
@@ -1089,7 +1089,7 @@ SetSoundDevice:
         mov bl, [bp - 0x2c]
         db 0x2A, 0xFF                           ; insn: sub bh, bh
         shl bx, 1
-        cmp [bx + g_1070], ax
+        cmp [bx + SoundDevTable], ax
         jnz short .28
         push 0x1
         push 0x0
@@ -1131,9 +1131,9 @@ SetSoundDevice:
 .35:
         jmp short .37
 .36:
-        mov es, [g_8B42]
-        mov word [es:0x7b], 0x5f
-        mov word [es:0x7d], 0x36a8
+        mov es, [segPlayoffDialogRects1]
+        mov word [es:msgCouldNotFindA + 0x4], str_SoundBlaster
+        mov word [es:msgCouldNotFindA + 0x6], 0x36a8
 .37:
         lea ax, [bp - 0x28]
         push ax
@@ -1181,15 +1181,15 @@ SetSoundDevice:
         jmp short .43
         db 0x90
 .40:
-        mov es, [g_8B42]
-        mov word [es:0x7b], 0x6c
-        mov word [es:0x7d], 0x36a8
+        mov es, [segPlayoffDialogRects1]
+        mov word [es:msgCouldNotFindA + 0x4], str_Adlib_2
+        mov word [es:msgCouldNotFindA + 0x6], 0x36a8
         jmp near .37
         db 0x90
 .41:
-        mov es, [g_8B42]
-        mov word [es:0x7b], 0x72
-        mov word [es:0x7d], 0x36a8
+        mov es, [segPlayoffDialogRects1]
+        mov word [es:msgCouldNotFindA + 0x4], str_Mt32_2
+        mov word [es:msgCouldNotFindA + 0x6], 0x36a8
         jmp near .37
         db 0x90
 .42:
@@ -1200,27 +1200,27 @@ SetSoundDevice:
         cwd
         call 0x03A3:SetDeadline.regs
         call 0x03A3:WaitDeadlineNoEoi
-        mov ax, [g_0F68]
-        or ax, [g_0F66]
+        mov ax, [SongBuf1Seg]
+        or ax, [SongBuf1]
         jz short .44
-        push word [g_0F68]
-        push word [g_0F66]
+        push word [SongBuf1Seg]
+        push word [SongBuf1]
         call 0x06E1:FindUnlink
         add sp, 0x4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_0F68], ax
-        mov [g_0F66], ax
+        mov [SongBuf1Seg], ax
+        mov [SongBuf1], ax
 .44:
-        mov ax, [g_0F6C]
-        or ax, [g_0F6A]
+        mov ax, [SongBuf2Seg]
+        or ax, [SongBuf2]
         jz short .45
-        push word [g_0F6C]
-        push word [g_0F6A]
+        push word [SongBuf2Seg]
+        push word [SongBuf2]
         call 0x06E1:FindUnlink
         add sp, 0x4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_0F6C], ax
-        mov [g_0F6A], ax
+        mov [SongBuf2Seg], ax
+        mov [SongBuf2], ax
 .45:
         cmp word [bp - 0x2a], 0x0
         jnz short .46
@@ -1234,15 +1234,15 @@ SetSoundDevice:
         push strict word str_Emmcopybuf
         call 0x14DB:AllocRecData
         add sp, 0x8
-        mov [g_C1F0], ax
-        mov [g_C1F2], dx
+        mov [SoundDrvBuf], ax
+        mov [SoundDrvBufSeg], dx
         push 0x0
         push word 0x400
         push dx
         push ax
         push 0xc
         push word 0x3500
-        mov al, [g_106D]
+        mov al, [SoundDevChoice]
         push ax
         call 0x09B2:SpeechInit
         add sp, 0xe

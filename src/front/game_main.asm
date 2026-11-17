@@ -14,14 +14,14 @@
 ;-----------------------------------------------------------------------------
 IntermissionPC:
         push word 0x3a0b
-        push strict word f_3A0B_B352
+        push strict word GamePalette
         push word 0x100
         push 0x0
         call 0x0FEF:GetPaletteFar
         add sp, 0x8
         push 0x10
         push word 0x3a0b
-        push strict word f_3A0B_B352
+        push strict word GamePalette
         push 0x1
         push cs
         call FadePalette
@@ -57,11 +57,11 @@ DrawSpriteNumber:
         mov ax, [bp + 0xa]
         mov [bp - 0x2], ax
         mov si, 0x18
-        sub si, [g_B096]
+        sub si, [viewcellx]
         shl si, byte 0x3
         add si, [bp + 0x6]
         mov di, 0x14d
-        mov ax, [g_B098]
+        mov ax, [viewcelly]
         shl ax, byte 0x3
         db 0x2B, 0xF8                           ; insn: sub di, ax
         sub di, [bp + 0x8]
@@ -88,8 +88,8 @@ DrawSpriteNumber:
         idiv cx
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, byte 0x2
-        push word [bx + g_D6DA]
-        push word [bx + g_D6D8]
+        push word [bx + NumberSpritesSeg]
+        push word [bx + NumberSprites]
         call 0x1F54:DrawSpriteClipped
         add sp, 0xe
         lea si, [si + 0x7]
@@ -106,8 +106,8 @@ DrawSpriteNumber:
         push si
         mov bx, [bp - 0x2]
         shl bx, byte 0x2
-        push word [bx + g_D6DA]
-        push word [bx + g_D6D8]
+        push word [bx + NumberSpritesSeg]
+        push word [bx + NumberSprites]
         call 0x1F54:DrawSpriteClipped
         add sp, 0xe
         cmp word [bp + 0xc], 0x0
@@ -120,8 +120,8 @@ DrawSpriteNumber:
         push ax
         mov bx, [bp + 0xc]
         shl bx, byte 0x2
-        push word [bx + g_D702]
-        push word [bx + g_D700]
+        push word [bx + NumberSprites2Seg]
+        push word [bx + NumberSprites2]
         call 0x1F54:DrawSpriteClipped
         add sp, 0xe
 .4:
@@ -147,8 +147,8 @@ DrawFrameSprite:
         jnl short .1
         db 0x8B, 0xDE                           ; insn: mov bx, si
         shl bx, byte 0x2
-        mov ax, [bx + g_91D0]
-        mov dx, [bx + g_91D2]
+        mov ax, [bx + FrameTable]
+        mov dx, [bx + FrameTableSeg]
         mov [bp - 0x4], ax
         mov [bp - 0x2], dx
         db 0x0B, 0xD0                           ; insn: or dx, ax
@@ -157,12 +157,12 @@ DrawFrameSprite:
         push word [bp + 0xe]
         push word [bp + 0xc]
         mov ax, 0x28
-        sub ax, [g_B098]
+        sub ax, [viewcelly]
         shl ax, byte 0x3
         sub ax, [bp + 0xa]
         push ax
         mov ax, 0x18
-        sub ax, [g_B096]
+        sub ax, [viewcellx]
         shl ax, byte 0x3
         add ax, [bp + 0x8]
         push ax
@@ -185,18 +185,18 @@ DrawRinkEndArt:
         push 0x0
         push -0x1
         push 0x0
-        mov ax, [g_B098]
+        mov ax, [viewcelly]
         shl ax, byte 0x3
         sub ax, 0x225
         neg ax
         push ax
-        mov ax, [g_B096]
+        mov ax, [viewcellx]
         shl ax, byte 0x3
         sub ax, strict word 0x22
         neg ax
         push ax
-        push word [g_D71E]
-        push word [g_D71C]
+        push word [RinkEndFramesSeg]
+        push word [RinkEndFrames]
         call 0x1F54:DrawSpriteClipped
         add sp, 0xe
         retf
@@ -275,7 +275,7 @@ HandleHotKey:
 .6:
         shl ax, 1
         xchg ax, bx
-        jmp [cs:bx + 0x22c]
+        jmp [cs:bx + HandleHotKeyJumpTable]
 HandleHotKeyJumpTable:                          ; jump table of HandleHotKey: 18 case targets
         dw .16
         dw .23
@@ -297,7 +297,7 @@ HandleHotKeyJumpTable:                          ; jump table of HandleHotKey: 18
         dw .20
 .1:
         mov ax, 0x1
-        mov [g_4B02], ax
+        mov [framesync], ax
         leave
         retf
 .2:
@@ -317,7 +317,7 @@ HandleHotKeyJumpTable:                          ; jump table of HandleHotKey: 18
         jmp near .23
 .5:
         mov ax, [PadRepeatOn]
-        mov [g_D46A], ax
+        mov [gameframe], ax
         mov word [PadRepeatOn], 0x0
         cmp byte [PadStates], 0x1
         jz short .6
@@ -325,19 +325,19 @@ HandleHotKeyJumpTable:                          ; jump table of HandleHotKey: 18
         jnz short .7
 .6:
         mov ax, [MouseX]
-        mov [g_D60E], ax
+        mov [mousex], ax
         mov ax, [MouseY]
-        mov [g_D610], ax
+        mov [mousey], ax
 .7:
         push word 0x3a0b
-        push strict word f_3A0B_B352
+        push strict word GamePalette
         push word 0x100
         push 0x0
         call 0x0FEF:GetPaletteFar
         add sp, 0x8
         push 0x10
         push word 0x3a0b
-        push strict word f_3A0B_B352
+        push strict word GamePalette
         push 0x1
         push cs
         call FadePalette
@@ -364,12 +364,12 @@ HandleHotKeyJumpTable:                          ; jump table of HandleHotKey: 18
         cmp byte [PadStates2], 0x1
         jnz short .11
 .10:
-        push word [g_D610]
-        push word [g_D60E]
+        push word [mousey]
+        push word [mousex]
         call 0x03A3:MouseMove
         add sp, 0x4
 .11:
-        mov ax, [g_D46A]
+        mov ax, [gameframe]
         mov [PadRepeatOn], ax
         mov ax, 0x1
         leave
@@ -422,14 +422,14 @@ HandleHotKeyJumpTable:                          ; jump table of HandleHotKey: 18
         call 0x16F2:MusicOff
         jmp short .23
 .18:
-        mov word [g_D46C], 0x1
+        mov word [controlled], 0x1
         mov ax, [bp - 0x2]
         sub ax, strict word 0x3b
         mov [lcline], ax
         jmp short .23
         db 0x90
 .19:
-        mov word [g_D46E], 0x1
+        mov word [controlled2], 0x1
         mov ax, [bp - 0x2]
         sub ax, strict word 0x3f
         mov [lctimer], ax
@@ -456,12 +456,12 @@ HandleHotKeyJumpTable:                          ; jump table of HandleHotKey: 18
 ;-----------------------------------------------------------------------------
 ResetInputSampling:
         mov ax, [PadRepeatOn]
-        mov [g_D46A], ax
+        mov [gameframe], ax
         mov dx, [PadTickCount]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [PadRepeatOn], ax
         mov [PadTickCount], ax
-        mov ax, [g_D46A]
+        mov ax, [gameframe]
         mov [PadRepeatOn], ax
         db 0x8B, 0xC2                           ; insn: mov ax, dx
         retf
@@ -612,14 +612,14 @@ FadePalette:
         db 0x8B, 0xC7                           ; insn: mov ax, di
         db 0x8B, 0xCF                           ; insn: mov cx, di
         dec al
-        mov [g_4B0B], al
+        mov [FadeStep], al
         inc cl
-        mov [g_4B0E], cl
+        mov [FadeCount], cl
         mov si, [bp + 0x6]
-        mov al, [si + g_4B0A]
+        mov al, [si + FadeSteps]
         cbw
         db 0x8B, 0xD0                           ; insn: mov dx, ax
-        mov al, [si + g_4B0E]
+        mov al, [si + FadeCount]
         cbw
         db 0x3B, 0xD0                           ; insn: cmp dx, ax
         jz short .7
@@ -650,10 +650,10 @@ FadePalette:
         push cs
         call SetFullPalette
         add sp, 0x4
-        mov al, [si + g_4B0C]
+        mov al, [si + FadeSteps2]
         cbw
         add [bp - 0x2], ax
-        mov al, [si + g_4B0E]
+        mov al, [si + FadeCount]
         cbw
         cmp [bp - 0x2], ax
         jnz short .5
@@ -714,22 +714,22 @@ Gameloop:
 .4:
         mov ax, 0xec
         sub ax, [camy]
-        mov [g_D6CE], ax
+        mov [ovltimer2], ax
         cmp ax, 0x1a8
         jng short .5
-        mov word [g_D6CE], 0x1a8
+        mov word [ovltimer2], 0x1a8
 .5:
-        cmp word [g_D6CE], 0x0
+        cmp word [ovltimer2], 0x0
         jnl short .6
-        mov word [g_D6CE], 0x0
+        mov word [ovltimer2], 0x0
 .6:
-        push word [g_D6CE]
+        push word [ovltimer2]
         push word [viewscrollx]
         call 0x1F54:FlushDirtyRects
         add sp, 0x4
         call 0x0FEF:UseOtherPage
         mov ax, 0x140
-        sub ax, [g_D6CE]
+        sub ax, [ovltimer2]
         push ax
         mov ax, [viewscrollx]
         sub ax, 0xc0
@@ -739,9 +739,9 @@ Gameloop:
         cmp word [fadeinpending], 0x0
         jz short .7
         mov ax, [PadRepeatOn]
-        mov [g_D46A], ax
+        mov [gameframe], ax
         push word 0x3a0b
-        push strict word f_3A0B_B352
+        push strict word GamePalette
         push word 0x100
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [PadRepeatOn], ax
@@ -750,13 +750,13 @@ Gameloop:
         add sp, 0x8
         push 0x10
         push word 0x3a0b
-        push strict word f_3A0B_B352
+        push strict word GamePalette
         push 0x1
         push cs
         call FadePalette
         add sp, 0x8
         call 0x1B35:FlushGSumQueueThunk
-        mov ax, [g_D46A]
+        mov ax, [gameframe]
         mov [PadRepeatOn], ax
 .7:
         push si
@@ -787,10 +787,10 @@ Gameloop:
         cmp word [fadeinpending], 0x0
         jz short .9
         mov ax, [PadRepeatOn]
-        mov [g_D46A], ax
+        mov [gameframe], ax
         push 0x10
         push word 0x3a0b
-        push strict word f_3A0B_0A8E
+        push strict word TeamPalette768
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [PadRepeatOn], ax
         push ax
@@ -798,15 +798,15 @@ Gameloop:
         call FadePalette
         add sp, 0x8
         mov word [fadeinpending], 0x0
-        mov ax, [g_D46A]
+        mov ax, [gameframe]
         mov [PadRepeatOn], ax
 .9:
-        cmp word [g_4B02], 0x0
+        cmp word [framesync], 0x0
         jnz short .10
         jmp near .18
 .10:
         mov ax, [PadRepeatOn]
-        mov [g_D46A], ax
+        mov [gameframe], ax
         mov word [PadRepeatOn], 0x0
         cmp byte [PadStates], 0x1
         jz short .11
@@ -814,9 +814,9 @@ Gameloop:
         jnz short .12
 .11:
         mov ax, [MouseX]
-        mov [g_D60E], ax
+        mov [mousex], ax
         mov ax, [MouseY]
-        mov [g_D610], ax
+        mov [mousey], ax
 .12:
         call 0x0EDC:CrowdFadeOut
         cmp word [SoundOptions], 0x2
@@ -838,8 +838,8 @@ Gameloop:
         push 0x0
         call 0x1B35:SportsDeskThunk
         add sp, 0x2
-        mov es, [g_8C8A]
-        cmp word [es:0x126], 0x2
+        mov es, [segDbFiles17]
+        cmp word [es:lgstate_w5A + 0x8], 0x2
         jnz short .15
         jmp near .27
 .15:
@@ -848,25 +848,25 @@ Gameloop:
         cmp byte [PadStates2], 0x1
         jnz short .17
 .16:
-        push word [g_D610]
-        push word [g_D60E]
+        push word [mousey]
+        push word [mousex]
         call 0x03A3:MouseMove
         add sp, 0x4
 .17:
         mov word [fadeinpending], 0x1
-        mov word [g_4B02], 0x0
-        mov ax, [g_D46A]
+        mov word [framesync], 0x0
+        mov ax, [gameframe]
         mov [PadRepeatOn], ax
         call 0x1B35:joyq_flushThunk
 .18:
         cmp word [deferpending], 0x0
         jz short .19
         mov ax, [PadRepeatOn]
-        mov [g_D46A], ax
+        mov [gameframe], ax
         mov word [PadRepeatOn], 0x0
         call 0x1B35:RunDeferredCallsThunk
         mov word [deferpending], 0x0
-        mov ax, [g_D46A]
+        mov ax, [gameframe]
         mov [PadRepeatOn], ax
         call 0x1B35:joyq_flushThunk
 .19:
@@ -876,8 +876,8 @@ Gameloop:
 .20:
         mov word [PadRepeatOn], 0x0
         call 0x1B35:PeriodOverThunk
-        mov es, [g_8C8A]
-        cmp word [es:0x126], 0x2
+        mov es, [segDbFiles17]
+        cmp word [es:lgstate_w5A + 0x8], 0x2
         jnz short .21
         jmp near .27
 .21:
@@ -886,8 +886,8 @@ Gameloop:
         call 0x0FEF:UseOffscreenCanvas
         push 0x1
         push word [curperiod]
-        push word [g_29CC]
-        push word [g_29CA]
+        push word [VisTeamNum]
+        push word [HomeTeamNum]
         call 0x1B35:DrawHudPanelThunk
         add sp, 0x8
         push 0x0
@@ -905,8 +905,8 @@ Gameloop:
         add sp, 0x4
 .24:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_D46E], ax
-        mov [g_D46C], ax
+        mov [controlled2], ax
+        mov [controlled], ax
         mov [deferpending], ax
         mov [inputframes], ax
         mov [exitgame], ax
@@ -923,8 +923,8 @@ Gameloop:
         call 0x1B35:FlushGSumQueueThunk
         call 0x1B35:StartThreeStarsThunk
         call 0x1B35:IntermissionScreensThunk
-        mov es, [g_8C8A]
-        mov word [es:0x126], 0x1
+        mov es, [segDbFiles17]
+        mov word [es:lgstate_w5A + 0x8], 0x1
 .27:
         call 0x1B35:FreeGameMemoryThunk
         pop si
@@ -945,20 +945,20 @@ PlayGame:
         mov si, [bp + 0x6]
         cmp word [si], 0x0
         jnl short .3
-        cmp word [g_29CA], 0x18
+        cmp word [HomeTeamNum], 0x18
         jl short .1
         mov cx, 0x9
         jmp short .2
 .1:
-        mov cx, [g_29CA]
+        mov cx, [HomeTeamNum]
 .2:
         push cx
         call 0x1B35:LoadRinkTilesThunk
         add sp, 0x2
         push word 0x3a0b
-        push strict word f_3A0B_0A8E
-        push word [g_29CC]
-        push word [g_29CA]
+        push strict word TeamPalette768
+        push word [VisTeamNum]
+        push word [HomeTeamNum]
         call 0x1E64:LoadTeamPalette
         add sp, 0x8
         call 0x1B35:LoadArenaJinglesThunk
@@ -979,10 +979,10 @@ PlayGame:
         call 0x0CD1:CloseHandlePtr
         add sp, 0x2
         mov word [si], 0xffff
-        mov bx, [g_29CC]
+        mov bx, [VisTeamNum]
         shl bx, 1
         push word [bx + TeamNameClips]
-        mov bx, [g_29CA]
+        mov bx, [HomeTeamNum]
         shl bx, 1
         push word [bx + TeamNameClips]
         call 0x0EDC:LoadPlayByPlaySpeech
@@ -1001,13 +1001,13 @@ PlayGame:
         cmp word [exitgame], -0x1
         jz short .10
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov es, [g_8C8A]
-        mov [es:0x126], ax
+        mov es, [segDbFiles17]
+        mov [es:lgstate_w5A + 0x8], ax
         push ax
         call 0x1B35:SportsDeskThunk
         add sp, 0x2
-        mov es, [g_8C8A]
-        cmp word [es:0x126], 0x2
+        mov es, [segDbFiles17]
+        cmp word [es:lgstate_w5A + 0x8], 0x2
         jnz short .6
         call 0x1B35:FreeGameMemoryThunk
         pop si
@@ -1020,8 +1020,8 @@ PlayGame:
         cmp byte [PadStates2], 0x1
         jnz short .10
 .7:
-        push word [g_D610]
-        push word [g_D60E]
+        push word [mousey]
+        push word [mousex]
         call 0x03A3:MouseMove
         add sp, 0x4
         jmp short .10
@@ -1029,8 +1029,8 @@ PlayGame:
         call 0x1B35:SetupGameThunk
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnl short .9
-        mov es, [g_8C8A]
-        mov word [es:0x126], 0x2
+        mov es, [segDbFiles17]
+        mov word [es:lgstate_w5A + 0x8], 0x2
         call 0x1B35:FreeGameMemoryThunk
         mov ax, 0xffff
         pop si
@@ -1042,20 +1042,20 @@ PlayGame:
 .10:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [introskipped], ax
-        mov es, [g_8C8A]
-        mov [es:0x126], ax
+        mov es, [segDbFiles17]
+        mov [es:lgstate_w5A + 0x8], ax
         call 0x1B35:joyq_flushThunk
         push cs
         call Gameloop
         call 0x1B35:ClearTeamNameTextThunk
         cmp word [DbSaveMode], 0x0
         jz short .11
-        mov es, [g_8C8A]
-        cmp word [es:0x126], 0x1
+        mov es, [segDbFiles17]
+        cmp word [es:lgstate_w5A + 0x8], 0x1
         jnz short .11
         and byte [AnnouncerFlags], 0x7f
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x20]
         push ss
         push ax
@@ -1157,11 +1157,11 @@ assinsert:
 ; Replay buffer has no frames.
 ;-----------------------------------------------------------------------------
 ReplayIsEmpty:
-        mov ax, [g_D014]
-        mov dx, [g_D016]
-        cmp [g_2986], ax
+        mov ax, [replayrecptr]
+        mov dx, [replayrecseg]
+        cmp [replayptr], ax
         jnz short ReturnZeroFar + 0xAB0
-        cmp [g_2988], dx
+        cmp [replayseg], dx
         jnz short ReturnZeroFar + 0xAB0
         test byte [sflags], 0x10
         jnz short ReturnZeroFar + 0xAB0

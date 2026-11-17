@@ -4,6 +4,9 @@
 	org	0x0
 _lseek		equ	0x7CC
 QueueMidiBytes		equ	0x934
+str_Star		equ	0xBA8
+str_Backslash		equ	0xBAA
+str_Dot		equ	0xBF4
 _rmdir		equ	0x104E
 _unlink		equ	0x1076
 _dos_close		equ	0x1084

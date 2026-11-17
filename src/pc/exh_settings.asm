@@ -373,7 +373,7 @@ ExhSetEditLoop:
         mov ax, 0x1
         shl ax, cl
         not ax
-        and [g_B35E], ax
+        and [editopts], ax
         jmp short .16
         db 0x90
 .14:
@@ -384,7 +384,7 @@ ExhSetEditLoop:
         db 0x8A, 0xC8                           ; insn: mov cl, al
         mov ax, 0x1
         shl ax, cl
-        or [g_B35E], ax
+        or [editopts], ax
         jmp short .16
 .15:
         cmp word [bp - 0xa], 0x15
@@ -393,10 +393,10 @@ ExhSetEditLoop:
         mov cl, [bp - 0xa]
         mov ax, 0x1
         shl ax, cl
-        mov cx, [g_B35E]
+        mov cx, [editopts]
         and ch, 0xf1
         db 0x0B, 0xC1                           ; insn: or ax, cx
-        mov [g_B35E], ax
+        mov [editopts], ax
 .16:
         call 0x2B26:DrawLeagueSetCheck
 .17:
@@ -417,7 +417,7 @@ ExhSetEditLoop:
         jz short .21
         jmp near ExhSetEditLoopTail.1 + 0x4E0
 .21:
-        mov al, [g_B35E]
+        mov al, [editopts]
         and ax, strict word 0x1
         cmp ax, strict word 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
@@ -426,7 +426,7 @@ ExhSetEditLoop:
         and ax, strict word 0x1
         xor [CrowdState], ax
         mov al, [CrowdState]
-        mov cl, [g_B35E]
+        mov cl, [editopts]
         and cx, 0x2
         cmp cx, 0x1
         db 0x1B, 0xC9                           ; insn: sbb cx, cx
@@ -436,7 +436,7 @@ ExhSetEditLoop:
         and ax, strict word 0x2
         xor [CrowdState], ax
         mov al, [CrowdState]
-        mov cl, [g_B35E]
+        mov cl, [editopts]
         and cx, 0x4
         cmp cx, 0x1
         db 0x1B, 0xC9                           ; insn: sbb cx, cx
@@ -446,7 +446,7 @@ ExhSetEditLoop:
         and ax, strict word 0x4
         xor [CrowdState], ax
         mov al, [CrowdState]
-        mov cl, [g_B35E]
+        mov cl, [editopts]
         and cx, 0x8
         cmp cx, 0x1
         db 0x1B, 0xC9                           ; insn: sbb cx, cx
@@ -456,7 +456,7 @@ ExhSetEditLoop:
         and ax, strict word 0x8
         xor [CrowdState], ax
         mov al, [CrowdState]
-        mov cl, [g_B35E]
+        mov cl, [editopts]
         and cx, 0x10
         cmp cx, 0x1
         db 0x1B, 0xC9                           ; insn: sbb cx, cx
@@ -466,7 +466,7 @@ ExhSetEditLoop:
         and ax, strict word 0x10
         xor [CrowdState], ax
         mov al, [CrowdState]
-        mov cl, [g_B35E]
+        mov cl, [editopts]
         and cx, 0x20
         cmp cx, 0x1
         db 0x1B, 0xC9                           ; insn: sbb cx, cx
@@ -477,7 +477,7 @@ ExhSetEditLoop:
         xor [CrowdState], ax
         cmp word [SoundOptions], 0x10
         jz short .22
-        mov al, [g_B35E]
+        mov al, [editopts]
         and ax, strict word 0x40
         cmp ax, strict word 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
@@ -487,7 +487,7 @@ ExhSetEditLoop:
         and ax, strict word 0x40
         xor [CrowdState], ax
         mov al, [CrowdState]
-        mov cl, [g_B35E]
+        mov cl, [editopts]
         and cx, 0x80
         cmp cx, 0x1
         db 0x1B, 0xC9                           ; insn: sbb cx, cx
@@ -499,7 +499,7 @@ ExhSetEditLoop:
 .22:
         test byte [SoundOptions], 0x2
         jz short .23
-        mov ah, [g_B35F]
+        mov ah, [editopts_b1]
         and ax, 0x100
         cmp ax, strict word 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
@@ -509,7 +509,7 @@ ExhSetEditLoop:
         and ax, 0x100
         xor [CrowdState], ax
 .23:
-        mov ah, [g_B35F]
+        mov ah, [editopts_b1]
         and ax, 0xe00
         sub ax, 0x200
         jz short .24

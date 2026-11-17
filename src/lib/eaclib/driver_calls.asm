@@ -38,11 +38,11 @@ LoadSoundDriver:
         jnz short .2
         push word [bp + 0x6]
         push str_CEaclibS
-        push word 0x9046
+        push word DriverFileName
         call 0x0000:_sprintf
         add sp, 0x6
         push 0x0
-        push word 0x9046
+        push word DriverFileName
         call 0x14B8:LoadPackedHeader0
         add sp, 0x4
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -57,7 +57,7 @@ LoadSoundDriver:
         push word [bp - 0x6]
         push si
         imul ax, [DriverCount], 0x38
-        add ax, 0x8fd6
+        add ax, DrvTableInit
         push ax
         call 0x1880:LinkDriver
         add sp, 0x6
@@ -80,7 +80,7 @@ LoadSoundDriver:
         push word [bp - 0x2]
         push word [bp - 0x4]
         push word 0x16f2
-        push word 0x8be
+        push word str_Bru_9
         push word 0x16f2
         push word 0x87c
         imul bx, [DriverCount], 0x38
@@ -498,8 +498,7 @@ DrvPlayRecSample:
         mov ds, ax
         push word [bp + 0xc]
         push word [bp + 0xa]
-        call 0x06E1:0x1560                      ; RecFlag: offset past the end of NamePtr's segment, through
-                                                ; that segment's base
+        call 0x06E1:RecFlag + 0x1560            ; RecFlag (0837:0000), through heap's paragraph
         add sp, 0x4
         test al, 0x80
         jz short .1

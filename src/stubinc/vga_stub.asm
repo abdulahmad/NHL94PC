@@ -3,7 +3,10 @@
 	bits	16
 	org	0x0
 CalibrateRetrace		equ	0xC
+BiosEquipment		equ	0x10
 AllocRecData		equ	0x30
+BiosPageStart		equ	0x4E
+BiosCrtcPort		equ	0x63
 LoadAssetMode		equ	0x134
 BufPtr		equ	0x2BC
 FatalError		equ	0x3E4
@@ -80,5 +83,6 @@ RectLeftMasks2		equ	0x77B9
 RectRightMasks		equ	0x77BD
 DrawRawFastMasks		equ	0x77C8
 DrawRawTransFastMasks		equ	0x77CC
+VgaMem		equ	0xA000
 ChainIdx		equ	0xAE9C
 %include "pc/video/vga.asm"

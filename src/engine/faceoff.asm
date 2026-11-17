@@ -25,8 +25,8 @@ DrawPanelPenaltiesTail:
 SetPenaltyStrength:
         enter 0xa, 0x0
         push di
-        mov bx, 0xb362
-        mov dx, 0xb828
+        mov bx, hmshots
+        mov dx, SortCords + 6 * 0x80 + 0x1a
 .1:
         mov cx, 0x6
         mov di, 0x1b
@@ -54,7 +54,7 @@ SetPenaltyStrength:
         jns short .2
         mov bx, [bp - 0x8]
         mov [bx + 0x22], cx
-        mov bx, 0xb438
+        mov bx, awshots
         mov dx, [bp - 0xa]
         add dh, 0x3
         cmp dx, 0xbe28
@@ -82,7 +82,7 @@ TakePlayerFromBox:
         inc ax
         mov [bp - 0x4], ax
         imul ax, ax, word 0x460
-        add ax, 0xa550
+        add ax, hmroster
         db 0x8B, 0xD8                           ; insn: mov bx, ax
 .1:
         cmp byte [bx], 0x7
@@ -113,7 +113,7 @@ TakePlayerFromBox:
         imul bx, [bp - 0x4], 0x6b
         db 0x03, 0xD9                           ; insn: add bx, cx
         shl bx, 1
-        mov word [bx + g_B3C6], 0xfffe
+        mov word [bx + hmtmpdst], 0xfffe
         pop si
         pop di
         leave
@@ -132,7 +132,7 @@ PenShotStart:
         push di
         push si
         imul si, [bp + 0x6], word 0x300
-        add si, 0xb50e
+        add si, SortCords
         mov di, 0x6
 .1:
         cmp word [si + 0x1a], 0x0
@@ -171,12 +171,12 @@ ForceStartLineup:
         cmp word [gsp], 0x0
         jnz short .1
         mov ax, [gameclock]
-        cmp [g_D1AC], ax
+        cmp [gameclock2], ax
         jnz short .1
         cmp word [clockticks], 0x0
         jnz short .1
         imul ax, [bp + 0x6], word 0xd6
-        add ax, 0xb362
+        add ax, hmshots
         push ax
         call 0x2E42:forcepldata
 .1:
@@ -192,7 +192,7 @@ ForceStartLineup:
 PenShotAssign:
         push di
         push si
-        mov si, 0xb50e
+        mov si, SortCords
         mov di, 0xc
 .1:
         cmp word [si + 0x1a], 0x0
@@ -238,7 +238,7 @@ PenShotAssign:
 ; Far routine (retf).
 ;-----------------------------------------------------------------------------
 AllInPlace:
-        mov bx, 0xb50e
+        mov bx, SortCords
         db 0x2B, 0xD2                           ; insn: sub dx, dx
 .1:
         cmp word [bx + 0x1a], 0x0
@@ -530,10 +530,10 @@ puckfaceoff:
         call 0x28BB:ReturnGoalies
         test byte [CrowdState], 0x4
         jnz short .7
-        push word 0xb362
+        push word hmshots
         call 0x2E42:setpersonel
         add sp, 0x2
-        push word 0xb438
+        push word awshots
         call 0x2E42:setpersonel
         add sp, 0x2
 .7:
@@ -546,7 +546,7 @@ puckfaceoff:
 .8:
         and byte [hmtmflags], 0xfd
         and byte [awtmflags], 0xfd
-        mov bx, 0xb50e
+        mov bx, SortCords
         mov dx, 0xc
 .9:
         and byte [bx + 0x45], 0xf7
@@ -567,7 +567,7 @@ puckfaceoff:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jl short .11
         shl ax, byte 0x7
-        add ax, 0xb50e
+        add ax, SortCords
         push ax
         push di
         call 0x2519:StartFaceoffLineChange
@@ -582,14 +582,14 @@ puckfaceoff:
         jz short .12
         mov ax, [regd0]
         shl ax, byte 0x7
-        add ax, 0xb50e
+        add ax, SortCords
         push ax
         push di
         call 0x2519:StartFaceoffLineChange
         add sp, 0x4
 .12:
         mov word [regd0], 0x2
-        mov word [g_D66E], 0x0
+        mov word [regd0_w2], 0x0
         test byte [CrowdState], 0x4
         jz short .13
         mov ax, [regd0]
@@ -597,11 +597,11 @@ puckfaceoff:
         jz short .13
         cmp [cont2team], ax
         jz short .13
-        push word 0xb438
-        push word 0xb362
+        push word awshots
+        push word hmshots
         call 0x2E42:CompLine
         add sp, 0x4
-        push word 0xb438
+        push word awshots
         call 0x2E42:setpersonel
         add sp, 0x2
         push 0x1
@@ -625,12 +625,12 @@ puckfaceoff:
         mov bx, [bx + 0x4]
         mov [regd1], bx
         shl bx, byte 0x7
-        test byte [bx + g_B553], 0x8
+        test byte [bx + sortobj0_pflags2], 0x8
         jnz short .17
         mov bx, [bp + si - 0x6]
         mov byte [bx + 0x1], 0xff
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [si + g_48CE], ax
+        mov [si + lcsel], ax
         mov [si + lcboxon], ax
         jmp short .18
 .16:
@@ -646,7 +646,7 @@ puckfaceoff:
         jns short .19
         mov si, [regd1]
         shl si, byte 0x7
-        add si, 0xb50e
+        add si, SortCords
         test byte [si + 0x45], 0x8
         jz short .19
         mov word [regd2], 0x0
@@ -655,11 +655,11 @@ puckfaceoff:
         add sp, 0x2
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov bx, [bp - 0x8]
-        mov [bx + g_48CE], ax
+        mov [bx + lcsel], ax
         mov [bx + lcboxon], ax
 .18:
         imul ax, [bp - 0xa], word 0xd6
-        add ax, 0xb362
+        add ax, hmshots
         push ax
         call 0x2E42:setpersonel
         add sp, 0x2
@@ -688,11 +688,11 @@ puckfaceoff:
         jz short .21
         cmp word [cont2team], 0x1
         jz short .21
-        push word 0xb362
-        push word 0xb438
+        push word hmshots
+        push word awshots
         call 0x2E42:CompLine
         add sp, 0x4
-        push word 0xb362
+        push word hmshots
         call 0x2E42:setpersonel
         add sp, 0x2
         push 0x0
@@ -757,7 +757,7 @@ puckfaceoff2:
         cmp word [clockticks], 0x0
         jnz short .2
         mov ax, [gameclock]
-        cmp [g_D1AC], ax
+        cmp [gameclock2], ax
         jz short .5
 .2:
         cmp word [RefStep], 0x0
@@ -780,16 +780,16 @@ puckfaceoff2:
         jz short .6
         cmp word [ovlseq], -0x1
         jz short .6
-        push word [g_D62E]
-        push word [g_D62C]
+        push word [OverlayGfxSeg]
+        push word [OverlayGfx]
         call 0x06E1:FindUnlink
         add sp, 0x4
 .6:
         mov ax, [PadRepeatOn]
-        mov [g_D46A], ax
+        mov [gameframe], ax
         mov word [PadRepeatOn], 0x0
         call 0x2352:FlushGSumQueue
-        mov ax, [g_D46A]
+        mov ax, [gameframe]
         mov [PadRepeatOn], ax
         mov ax, 0xffff
         mov [bannermsg], ax
@@ -812,7 +812,7 @@ puckfaceoff2:
         jmp near .12
 .8:
         mov ax, [gameclock]
-        cmp [g_D1AC], ax
+        cmp [gameclock2], ax
         jz short .9
         jmp near .12
 .9:
@@ -831,8 +831,8 @@ puckfaceoff2:
         mov [injurystop], ax
         mov [refsignal], ax
         mov al, 0xff
-        mov [g_D619], al
-        mov [g_D61D], al
+        mov [GoalState_m5], al
+        mov [GoalState_m1], al
         and byte [gmode2], 0x7d
         or byte [gmode2], 0x5
         mov ax, 0xffff
@@ -905,43 +905,43 @@ puckfaceoff2:
         mov bx, [puckc]
         mov byte [bx], 0xff
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_BB1A], ax
-        mov [g_BB1C], ax
-        mov [g_BB10], ax
-        mov word [g_BB14], 0xec
-        mov [g_BB9A], ax
-        mov [g_BB9C], ax
-        mov [g_BB90], ax
-        mov word [g_BB94], 0xff14
+        mov [sortobj12_Xvel], ax
+        mov [sortobj12_Yvel], ax
+        mov [sortobj12_Xpos2], ax
+        mov word [sortobj12_Ypos2], 0xec
+        mov [sortobj13_Xvel], ax
+        mov [sortobj13_Yvel], ax
+        mov [sortobj13_Xpos2], ax
+        mov word [sortobj13_Ypos2], 0xff14
         mov [RefPen], ax
         mov word [penaltysc], 0xffff
         mov ax, [fox]
         mov [ltx], ax
         mov ax, [foy]
         mov [lty], ax
-        mov word [g_BCA0], 0x189
+        mov word [doorframe], 0x189
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_BCC6], ax
-        mov [g_BCD6], ax
-        mov [g_BC56], ax
-        mov word [g_BC20], 0x18a
+        mov [door_38], ax
+        mov [door_48], ax
+        mov [puck_48], ax
+        mov word [puckframe], 0x18a
         and byte [sflags], 0xbf
         call 0x226F:checkwindow
         call 0x2E42:ResetBench
-        push word 0xb362
+        push word hmshots
         call 0x2E42:setpersonel
         add sp, 0x2
-        push word 0xb362
+        push word hmshots
         call 0x2E42:forcepldata
         add sp, 0x2
-        push word 0xb438
+        push word awshots
         call 0x2E42:setpersonel
         add sp, 0x2
-        push word 0xb438
+        push word awshots
         call 0x2E42:forcepldata
         add sp, 0x2
         call 0x2E42:resetplstuff
-        mov word [bp - 0x8], 0xb50e
+        mov word [bp - 0x8], SortCords
         mov word [regd2], 0xc
 .19:
         mov bx, [bp - 0x8]
@@ -1185,13 +1185,13 @@ puckfaceoff2:
         jz short .43
         jmp near .19
 .43:
-        mov word [bp - 0x8], 0xbd0e
+        mov word [bp - 0x8], refstruct
         cmp word [fox], 0x0
         jg short .44
-        mov word [g_BD44], 0x2
+        mov word [ref_36], 0x2
         mov ax, [fox]
         sub ax, strict word 0xf
-        mov [g_BD10], ax
+        mov [refXpos2], ax
         jmp short .45
         db 0x90
 .44:
@@ -1241,7 +1241,7 @@ puckfaceoff2:
         cmp word [cont2team], 0x0
         jz short .49
         mov word [regd4], 0x2
-        mov word [g_D6CA], 0x0
+        mov word [regd4_w2], 0x0
         push word [regd4]
         push word [bp + 0x6]
         call 0x2E42:changeplayer
@@ -1254,16 +1254,16 @@ puckfaceoff2:
         mov bx, [bp + 0x6]
         mov [bx + 0x26], ax
         mov word [fofdata2], 0x1
-        mov word [g_D606], 0x4
-        mov word [g_D608], 0xa800
-        mov word [g_D60A], 0x7
+        mov word [fofdata_w2], 0x4
+        mov word [fofdata_w4], 0xa800
+        mov word [fofdata_w6], 0x7
         mov ax, 0x8000
-        mov [g_D604], ax
-        mov [g_D60C], ax
+        mov [fofdata], ax
+        mov [fofdata_w8], ax
         test byte [gmode], 0x2
         jnz short .50
-        mov word [g_D604], 0x8800
-        mov word [g_D608], 0xa000
+        mov word [fofdata], 0x8800
+        mov word [fofdata_w4], 0xa000
 .50:
         mov ax, 0xffff
         mov [fodir2], ax
@@ -1277,7 +1277,7 @@ puckfaceoff2:
         js short .53
         cmp word [bx + 0x26], 0x11
         jnz short .52
-        lea bx, [g_BD0E]
+        lea bx, [refstruct]
         mov ax, 0xc43
         call 0x2E42:SetSPA
 .52:
@@ -1292,7 +1292,7 @@ puckfaceoff2:
         jg short .54
         sub ax, strict word 0xa
         neg ax
-        mov [g_D60A], ax
+        mov [fofdata_w6], ax
         pop si
         leave
         retf
@@ -1565,7 +1565,7 @@ asstakeposition:
         call 0x0D5F:VectorToDir8
         cwd
         mov [regd2], ax
-        mov [g_D6BA], dx
+        mov [regd2_w2], dx
         cmp word [si + 0x1a], 0x0
         jnz short .22
         cmp ax, strict word 0x2

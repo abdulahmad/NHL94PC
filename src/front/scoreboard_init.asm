@@ -15,15 +15,15 @@ InitScoreboard:
         db 0x2B, 0xDB                           ; insn: sub bx, bx
 .1:
         mov ax, 0xffff
-        mov [bx + g_55AC], ax
-        mov [bx + g_556C], ax
+        mov [bx + hudpenaway], ax
+        mov [bx + hudpenhome], ax
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [bx + g_55B2], ax
-        mov [bx + g_5572], ax
-        mov [bx + g_55B0], ax
-        mov [bx + g_5570], ax
-        mov [bx + g_55AE], ax
-        mov [bx + g_556E], ax
+        mov [bx + hudpenaway_w6], ax
+        mov [bx + hudpenhome_w6], ax
+        mov [bx + hudpenaway_w4], ax
+        mov [bx + hudpenhome_w4], ax
+        mov [bx + hudpenaway_w2], ax
+        mov [bx + hudpenhome_w2], ax
         add bx, 0x8
         cmp bx, 0x40
         jl short .1
@@ -55,52 +55,52 @@ LoadScoreboardArt:
         push ax
         call 0x14B8:LoadPackedHeader
         add sp, 0x4
-        mov [g_C258], ax
-        mov [g_C25A], dx
-        push word 0xdaa2
+        mov [ScoreboardArt], ax
+        mov [ScoreboardArtSeg], dx
+        push word ScoreDigits
         push strict word str_0000000100020003000400050006000700080009000
         push dx
         push ax
         call 0x03A3:FindFarList
         add sp, 0x8
-        push word 0xda76
+        push word ClockDigits
         push strict word str_1000100110021003100410051006100710081009100
-        push word [g_C25A]
-        push word [g_C258]
+        push word [ScoreboardArtSeg]
+        push word [ScoreboardArt]
         call 0x03A3:FindFarList
         add sp, 0x8
-        push word 0xda4a
+        push word PenaltyShapes
         push strict word str_2000200120022003200420052006200720082009200
-        push word [g_C25A]
-        push word [g_C258]
+        push word [ScoreboardArtSeg]
+        push word [ScoreboardArt]
         call 0x03A3:FindFarList
         add sp, 0x8
-        push word 0xda3e
+        push word PanelScoreShapeSeg + 0xe
         push strict word str_VlinvppVpk
-        push word [g_C25A]
-        push word [g_C258]
+        push word [ScoreboardArtSeg]
+        push word [ScoreboardArt]
         call 0x03A3:FindFarList
         add sp, 0x8
-        push word 0xda32
+        push word PanelScoreShapeSeg + 2
         push strict word str_HlinhppHpk
-        push word [g_C25A]
-        push word [g_C258]
+        push word [ScoreboardArtSeg]
+        push word [ScoreboardArt]
         call 0x03A3:FindFarList
         add sp, 0x8
         push strict word str_Visp
-        push word [g_C25A]
-        push word [g_C258]
+        push word [ScoreboardArtSeg]
+        push word [ScoreboardArt]
         call 0x03A3:FindFarMsg
         add sp, 0x6
-        mov [g_DA2E], ax
-        mov [g_DA30], dx
+        mov [PanelScoreShape], ax
+        mov [PanelScoreShapeSeg], dx
         push strict word str_Homp
-        push word [g_C25A]
-        push word [g_C258]
+        push word [ScoreboardArtSeg]
+        push word [ScoreboardArt]
         call 0x03A3:FindFarMsg
         add sp, 0x6
-        mov [g_DA2A], ax
-        mov [g_DA2C], dx
-        push word 0xda0a
+        mov [PanelClockShape], ax
+        mov [PanelClockShapeSeg], dx
+        push word PanelShapes
         push strict word str_Lin1lin2lin3lin4pp1Pp2Pk1
-        push word [g_C25A]
+        push word [ScoreboardArtSeg]

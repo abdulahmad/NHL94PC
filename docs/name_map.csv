@@ -509,13 +509,13 @@ seg000:1264,__aFlsar,,MSC,high,"Arithmetic shift of DX:AX right by CX",src/seg/s
 seg000:12AC,__aFlshr,,MSC,high,"Logical shift of DX:AX right by CX",src/seg/seg000.asm
 seg000:12B8,_fmemcpy,,MSC,high,"Far copy of a byte count",src/seg/seg000.asm
 seg000:1316,_fmemcmp,,MSC,medium,"Far compare. Name from the call shape",src/seg/seg000.asm
-seg000:135C,_fmemchr,,MSC,medium,"Far scan for a byte",src/seg/seg000.asm
+seg000:135C,_fstrncmp,,MSC,high,"compares two far strings up to n bytes, stopping at a null (scasb for the null, then repe cmpsb)",src/seg/seg000.asm
 seg000:13DA,_fstrlen,,MSC,high,"Far scasb length",src/seg/seg000.asm
 seg000:1410,_fstrcat,,MSC,high,"Append one far string to another",src/seg/seg000.asm
 seg000:1456,_fmemset,,MSC,high,"Fill a far buffer",src/seg/seg000.asm
 seg000:149E,_fstrcpy,,MSC,medium,"Far string copy",src/seg/seg000.asm
 seg000:14FA,_fmemmove,,MSC,medium,"Far copy that allows overlap",src/seg/seg000.asm
-seg000:15C4,EmulatedFloat,,new,low,"Uses the floating-point emulator interrupts. The operation is not named",src/seg/seg000.asm
+seg000:15C4,__aFftol,,MSC,high,"fnstcw, or ah,0Ch (chop), fistp qword, fldcw, returns DX:AX",src/seg/seg000.asm
 seg000:15F8,CopyTemplate,,new,medium,"Copies twelve near words",src/seg/seg000.asm
 seg000:160C,__FF_MSGBANNER,,MSC,high,"Prints runtime message numbers FC and FF",src/seg/seg000.asm
 seg000:162E,FpFail,,new,medium,"mov ax, 2 then AmsgExit. R6002",src/seg/seg000.asm
@@ -540,7 +540,7 @@ seg000:1E22,ScanFloat,,new,medium,"Classifies a character and looks for an expon
 seg000:1E8A,ScanPoint,,new,medium,"Scans for a decimal point",src/seg/seg000.asm
 seg000:272A,fflush,,MSC,high,"Null argument flushes every open FILE. Otherwise flushes that FILE",src/seg/seg000.asm
 seg000:27A6,FlushAll,,new,high,"Walks the FILE table and fflushs each open one",src/seg/seg000.asm
-seg000:27F2,JmpFpConvert,,new,high,"Far jump to the floating-point convert routine that is still ahead in this segment",src/seg/seg000.asm
+seg000:27F2,_malloc,,MSC,high,"Far jump to _nmalloc",src/seg/seg000.asm
 seg000:2312,FpError,,new,high,"Prints the runtime banner and a floating-point message, then _exit",src/seg/seg000.asm
 seg000:291C,_memmove,,MSC,high,"Near copy that runs backward when the ranges overlap",src/seg/seg000.asm
 seg000:2964,_memset,,MSC,high,"Fills with stosw of the repeated byte",src/seg/seg000.asm
@@ -548,16 +548,16 @@ seg000:2992,WriteCounted,,new,high,"First byte is a count. Writes that many foll
 seg000:28AE,StoreOne,,new,medium,"Stores 1 through a far pointer and returns 0",src/seg/seg000.asm
 seg000:28C5,StoreZero,,new,medium,"Stores 0 through a far pointer",src/seg/seg000.asm
 seg000:28E3,StoreWord,,new,medium,"Stores a word through a far pointer",src/seg/seg000.asm
-seg000:2C5D,FpConvert,,new,high,"Exponent check against -24, then the convert helpers. JmpFpConvert lands here. Out of range returns zero",src/seg/seg000.asm
-seg000:2C99,FpExec,,new,high,"Emulator body. INT 34h-3Dh are the coprocessor escapes. Constant tables sit between the routines",src/seg/seg000.asm
-seg000:30D0,FpDecode,,new,medium,"Emulator helper reached after the first constant table",src/seg/seg000.asm
-seg000:31A5,FpRound,,new,medium,"Emulator helper",src/seg/seg000.asm
-seg000:332A,FpPack,,new,medium,"Emulator helper called while formatting a float",src/seg/seg000.asm
-seg000:3592,FpScale,,new,medium,"Emulator helper that scales a value",src/seg/seg000.asm
-seg000:35E8,FpPush,,new,medium,"Called by FpConvert to push a value",src/seg/seg000.asm
-seg000:3664,FpPop,,new,medium,"Called by FpConvert when the first push does not fit",src/seg/seg000.asm
+seg000:2C5D,_nmalloc,,MSC,high,"Size check against -24 (0FFE8h), rounds up to even, then HeapSearch in NearHeapDesc; HeapGrow when no block fits; zero on failure",src/seg/seg000.asm
+seg000:2C99,DoubleToDigits,,new,high,"Copies the double to CvtWork, handles zero, NaN and infinity, estimates the decimal exponent (4D10h = log10 2), scales by ScalePow10Near, writes 16 digits to CvtDigits",src/seg/seg000.asm
+seg000:30D0,ScalePow10,,new,high,"Multiplies a ten-byte real by 10^DI, one octal digit at a time, from Pow10Table / Pow10Neg (12-byte entries)",src/seg/seg000.asm
+seg000:31A5,TenByteMul,,new,medium,"Software multiply of two ten-byte reals (sign xor, exponent add, 64-bit mantissa product)",src/seg/seg000.asm
+seg000:332A,StrToTenByte,,new,medium,"Parses a decimal string (blanks, sign, digits, point, exponent) into a ten-byte real; called by StrToDouble",src/seg/seg000.asm
+seg000:3592,_fltin,,MSC,high,"Converts a string to a double through StrToDouble; fills the FLT block at FltOutFlags (flags, length, value in FltInValue) and returns its address",src/seg/seg000.asm
+seg000:35E8,HeapSearch,,new,high,"Walks the near heap blocks of the descriptor in BX for a free block of CX bytes, merging free neighbours",src/seg/seg000.asm
+seg000:3664,HeapGrow,,new,high,"Grows the near heap through DOS when HeapSearch finds nothing",src/seg/seg000.asm
 seg000:391C,FpFormat,,new,medium,"Walks a far digit string at the end of the emulator",src/seg/seg000.asm
-seg000:39D6,FpCall,,new,medium,"Called from FpScale",src/seg/seg000.asm
+seg000:39D6,StrToDouble,,new,medium,"StrToTenByte, then rounds to a double on the emulator with the precision control saved and restored; called from _fltin",src/seg/seg000.asm
 DGROUP:024C,EmsMapCache,,new,high,"Four words. Each is the logical page last mapped on that physical page. The high bit marks it stale",src/seg/seg001.asm
 DGROUP:0254,EmsWindowOff,,new,high,"Added to the offset within the page when EmsMapRange returns a pointer",src/seg/seg001.asm
 DGROUP:025C,EmsOutPtr,,new,high,"Far pointer EmsInit writes the allocated size through",src/seg/seg001.asm
@@ -892,12 +892,12 @@ seg002:1532,RawBase,,new,high,"The far pointer stored at the start of the record
 seg002:1542,RecSpan,,new,high,"The size dword stored at offset 14h",src/seg/seg002.asm
 seg002:1552,NamePtr,,new,high,"The caller's far pointer plus 4, the name field",src/seg/seg002.asm
 seg003:0000,RecFlag,,new,high,"Returns the word at offset 18h of the far record",src/seg/seg003.asm
-seg003:000C,NullFar,,new,high,"A lone retf. _main calls it",src/seg/seg003.asm
-seg004:0002,NineCmp,,new,high,"Compares 9 bytes of a far string with the bytes at 402h. A match calls RetOnly",src/seg/seg004.asm
+seg003:000C,NullInputHook,,new,high,"A lone retf. _main calls it",src/seg/seg003.asm
+seg004:0002,SkipCopyright,,new,high,"_fstrncmp with 'Copyright' (9 bytes); a match returns the pointer past that string",src/seg/seg004.asm
 seg004:0042,ReadBe,,new,high,"Folds a counted far byte string into a dword, one byte at a time",src/seg/seg004.asm
 seg004:008E,TypeId,,new,high,"A second byte of FBh selects a type code. Otherwise four bytes are a big-endian dword",src/seg/seg004.asm
 seg004:00DA,TypeTab,,new,high,"Eight words. The low bits of the type byte select the case",src/seg/seg004.asm
-seg004:0292,ReadHead,,new,high,"NineCmp then TypeId. A type from 1 to 1Ch returns the following 3-byte value",src/seg/seg004.asm
+seg004:0292,ReadHead,,new,high,"SkipCopyright then TypeId. A type from 1 to 1Ch returns the following 3-byte value",src/seg/seg004.asm
 seg004:02FA,EmitByte,,new,high,"Writes one byte through OutPtr, or expands it through MapHi and MapPair",src/seg/seg004.asm
 seg004:034A,GetBits,,new,high,"Pulls a bit count from BitBuf. Fewer than 16 bits refills from InPtr",src/seg/seg004.asm
 seg004:03F2,ReadVar,,new,high,"Reads a variable-length number from the bit stream",src/seg/seg004.asm
@@ -978,7 +978,7 @@ seg009:004C,InputShutdown,F009_004C,new,high,frees the PollInputEvents timer slo
 seg009:0070,EventToCursor,F009_0070,new,high,"mouse event sets the cursor; key and stick events move it, faster with the repeat count; clamps to 320x200",src/seg/seg009.asm
 seg010:0000,InputTail,F010_0000,new,low,"sub ah, ah / retf at the start of the paragraph (end of the routine before)",src/seg/seg010.asm
 seg010:0006,RandomRange,F010_0006,new,high,"32-bit linear congruential step (multiplier BB40E62Dh, +1) on RandSeed, result scaled to the range",src/seg/seg010.asm
-seg011:000E,NullFar2,F011_000E,new,high,a lone retf,src/seg/seg011.asm
+seg011:000E,NullEventHook,F011_000E,new,high,a lone retf,src/seg/seg011.asm
 seg012:0000,WaitButtonTimed,F012_0000,new,medium,"reads events through CursorHandler until a click, a double click or the time runs out",src/seg/seg012.asm
 seg014:000A,MidiControl,F014_000A,new,high,B0h,src/seg/seg014.asm
 seg014:0032,MidiPitchBend,F014_0032,new,high,E0h,src/seg/seg014.asm
@@ -1002,7 +1002,7 @@ seg015:0602,ReadRecord48,F015_0602,new,medium,ReadAtOffset of 30h bytes,src/seg/
 seg015:061C,ReadEntry6,F015_061C,new,medium,6-byte entry n at 2 + 6n,src/seg/seg015.asm
 seg015:0640,ReadEntry744,F015_0640,new,medium,2E8h-byte entry n,src/seg/seg015.asm
 seg015:065E,ReadEntry12,F015_065E,new,medium,12-byte entry n,src/seg/seg015.asm
-seg016:0000,NullFar3,F016_0000,new,high,a lone retf,src/seg/seg016.asm
+seg016:0000,ReadEntry12Tail,F016_0000,new,high,"end of ReadEntry12 spilling into this paragraph (was taken for a lone retf)",src/seg/seg016.asm
 seg016:0002,TextWidthFar,F016_0002,new,high,copies a far string and returns TextWidthAll of it,src/seg/seg016.asm
 seg016:0024,SetTextColors,F016_0024,new,high,text colour and shadow colour,src/seg/seg016.asm
 seg016:0036,DrawShadowTextBuffered,F016_0036,new,medium,"draws a shadowed string into an off-screen block 64-pixel aligned, then blits it",src/seg/seg016.asm
@@ -1011,7 +1011,7 @@ seg016:0166,DrawShadowText,F016_0166,new,high,"shadow at +1,+1 in the shadow col
 seg016:01B8,DrawOutlineText,F016_01B8,new,high,"the string at the four outline offsets in the shadow colour, then the text",src/seg/seg016.asm
 seg016:0210,DrawShadowTextF,F016_0210,new,high,"_sprintf with one argument, then DrawShadowText",src/seg/seg016.asm
 seg016:0238,DrawShadowTextF2,F016_0238,new,high,"_sprintf with two arguments, then DrawShadowText",src/seg/seg016.asm
-seg017:0000,NullFar4,F017_0000,new,high,a lone retf,src/seg/seg017.asm
+seg017:0000,DrawShadowTextF2Tail,F017_0000,new,high,"end of DrawShadowTextF2 spilling into this paragraph (was taken for a lone retf)",src/seg/seg017.asm
 seg017:0002,SqrtLong,F017_0002,new,high,Newton iteration on a long with __aFldiv,src/seg/seg017.asm
 seg017:0089,VectorToDir8,F017_0089,new,high,"direction 0..7 from the signs and the ratio of dx, dy; 8 for no vector",src/seg/seg017.asm
 seg018:000A,HookDivideError,F018_000A,new,high,"saves INT 0, points it at DivideHandler, registers UnhookDivideError",src/seg/seg018.asm
@@ -1045,7 +1045,7 @@ seg020:0F5C,GrowToItemBox,F020_0F5C,new,medium,widens and heightens a box to fit
 seg020:0FC8,MessageBox,F020_0FC8,new,high,box with text lines and buttons; returns the button chosen,src/seg/seg020.asm
 seg020:1260,MessageBoxLoop,F020_1260,new,medium,"input loop of MessageBox (mouse, keys, highlight)",src/seg/seg020.asm
 seg020:14B8,MessageBoxReset,F020_14B8,new,low,sets the last button to -1,src/seg/seg020.asm
-seg021:0000,NullFar6,F021_0000,new,high,a lone retf,src/seg/seg021.asm
+seg021:0000,MessageBoxResetTail,F021_0000,new,high,"end of MessageBoxReset spilling into this paragraph (was taken for a lone retf)",src/seg/seg021.asm
 seg021:0002,CrowdNoiseUpdate,F021_0002,new,high,"eases the crowd level toward CrowdTarget and drives the MIDI crowd notes (volume, pitch)",src/seg/seg021.asm
 seg021:01DC,CrowdNoiseOff,F021_01DC,new,high,note off and volume 0 on the two crowd channels,src/seg/seg021.asm
 seg021:024E,CrowdFadeOut,F021_024E,new,high,lowers CrowdTarget step by step to silence,src/seg/seg021.asm
@@ -1073,7 +1073,7 @@ seg021:0640,WaitJingle,F021_0640,new,high,waits until the jingle sample has fini
 seg021:0656,PlayArenaJingle,F021_0656,new,medium,"the loaded clip for the event, else a random one of three, through PlayJingle",src/seg/seg021.asm
 seg022:0004,SaveVgaPlanes,F022_0004,new,high,copies the four VGA planes (plane0..plane3 blocks) through the read map,src/seg/seg022.asm
 seg022:0224,RestoreVgaPlanes,F022_0224,new,high,writes the four planes back through the map mask,src/seg/seg022.asm
-seg022:03E2,NullFar5,F022_03E2,new,high,a lone retf,src/seg/seg022.asm
+seg022:03E2,NullQuitHook,F022_03E2,new,high,a lone retf,src/seg/seg022.asm
 seg022:03E4,FatalError,F022_03E4,new,high,prints the message with ConPrint and exits,src/seg/seg022.asm
 seg023:0008,FitNameToWidth,F023_0008,new,high,"""first last"", else ""F. last"", then cut until it fits the width",src/seg/seg023.asm
 seg024:0000,UseDbDescriptor,F024_0000,new,low,"pushes the far descriptor of the database set (0, 1 or 2) for the overlay call that follows",src/seg/seg024.asm
@@ -1086,7 +1086,7 @@ seg026:01BA,DrawFrameBox,F026_01BA,new,high,filled rectangle with a light and a 
 seg026:02D6,DrawMenuItem,F026_02D6,new,medium,one item in the normal colour,src/seg/seg026.asm
 seg026:036A,DrawMenuItemHilite,F026_036A,new,medium,one item in the highlight colour,src/seg/seg026.asm
 seg026:03FE,MenuHitTest,F026_03FE,new,high,menu and item under a point,src/seg/seg026.asm
-seg027:0000,NullFar7,F027_0000,new,high,a lone retf,src/seg/seg027.asm
+seg027:0000,MenuHitTestTail,F027_0000,new,high,"end of MenuHitTest spilling into this paragraph (was taken for a lone retf)",src/seg/seg027.asm
 seg027:0002,DrawTextCenteredInWindow,F027_0002,new,medium,x centred between the window's left and right edges,src/seg/seg027.asm
 seg028:000C,DrawLine,F028_000C,new,medium,Bresenham steps over the row table of the current canvas,src/seg/seg028.asm
 seg028:0048,SetCanvas,F028_0048,new,high,copies a 0x1E-byte canvas record into CurCanvas,src/seg/seg028.asm
@@ -1210,11 +1210,11 @@ seg028:46A8,SetCanvasClip,F028_46A8,new,medium,sets a canvas record's clip recta
 seg028:472A,RemapShapeBank,F028_472A,new,low,remaps every shape in a bank through a table,src/seg/seg028.asm
 seg028:4782,ConvertShapeBank,F028_4782,new,low,converts the shapes of a bank in place,src/seg/seg028.asm
 seg028:48D2,FillPolySpans,F028_48D2,new,medium,fills a list of spans,src/seg/seg028.asm
-seg029:0000,NullFar8,F029_0000,new,high,a lone retf,src/seg/seg029.asm
+seg029:0000,FillPolySpansTail,F029_0000,new,high,"end of FillPolySpans spilling into this paragraph (was taken for a lone retf)",src/seg/seg029.asm
 seg029:0004,DrawFrame,F029_0004,new,medium,draws a rectangle outline with four FillRectClip calls,src/seg/seg029.asm
 seg030:0004,LargestFreeBlock,F030_0004,new,low,walks the far heap list and returns the largest gap,src/seg/seg030.asm
 seg031:0002,DrawThickLine,F031_0002,new,low,builds a quad around a line from Atan2 and AngleTab,src/seg/seg031.asm
-seg032:0000,NullFar9,F032_0000,new,high,a lone retf,src/seg/seg032.asm
+seg032:0000,DrawThickLineTail,F032_0000,new,high,"end of DrawThickLine spilling into this paragraph (was taken for a lone retf)",src/seg/seg032.asm
 seg032:0002,LoadRawHeader,F032_0002,new,low,LoadRawHeaderMode with mode 1,src/seg/seg032.asm
 seg032:0014,LoadRawHeader0,F032_0014,new,low,LoadRawHeaderMode with mode 0,src/seg/seg032.asm
 seg032:0026,LoadRawHeaderMode,F032_0026,new,medium,"LoadRawMode, then returns the first dword of the data",src/seg/seg032.asm
@@ -1246,7 +1246,7 @@ seg035:0092,SortPairs,F035_0092,new,medium,shell sort of a key array with a para
 seg035:00A0,SortPairsPass,F035_00A0,new,medium,SortPairs inner passes,src/seg/seg035.asm
 seg036:0000,SortPairsTail,F036_0000,new,medium,end of SortPairs,src/seg/seg036.asm
 seg036:000E,XorFrame,F036_000E,new,medium,XORs a rectangle outline with four XorRect calls,src/seg/seg036.asm
-seg037:0000,NullFar10,F037_0000,new,high,a lone retf,src/seg/seg037.asm
+seg037:0000,XorFrameTail,F037_0000,new,high,"end of XorFrame spilling into this paragraph (was taken for a lone retf)",src/seg/seg037.asm
 seg037:0004,CalibrateStick,F037_0004,new,medium,"joystick calibration screen (needs a 64 KB gap, draws the target grid, waits for buttons)",src/seg/seg037.asm
 seg037:0232,CalibrateLeftStick,F037_0232,new,high,"CalibrateStick with the ""Left Joystick"" title",src/seg/seg037.asm
 seg037:0244,CalibrateRightStick,F037_0244,new,high,"CalibrateStick with the ""Right Joystick"" title",src/seg/seg037.asm
@@ -1741,7 +1741,7 @@ g_86B2,MsgBannerHook,g_86B2,new,medium,far routine called before a runtime messa
 g_86B4,MsgBannerHookSeg,g_86B4,new,medium,its segment,src/data/dgroup.asm
 g_876A,StreamExtra,g_876A,new,medium,extra stream records for the standard buffers,src/data/dgroup.asm
 g_880A,LastStream,g_880A,new,medium,last stream record,src/data/dgroup.asm
-g_8871,CflushCount,g_8871,new,medium,stream flush count,src/data/dgroup.asm
+g_8871,NullStrLen,g_8871,new,medium,"length of str_Null (6), read by _output for a null %s",src/data/dgroup.asm
 g_8876,FltCvtFn,g_8876,new,medium,float conversion routine,src/data/dgroup.asm
 g_887A,CropZerosFn,g_887A,new,medium,drops trailing zeros,src/data/dgroup.asm
 g_8882,ForceDecPtFn,g_8882,new,medium,forces a decimal point,src/data/dgroup.asm
@@ -1750,15 +1750,15 @@ g_8A1C,FloatMode,g_8A1C,new,medium,float format mode,src/data/dgroup.asm
 g_8A1E,FloatPrecision,g_8A1E,new,medium,float precision,src/data/dgroup.asm
 g_8A20,FloatFlag,g_8A20,new,medium,float format flag,src/data/dgroup.asm
 g_8ABA,FpStatusByte,g_8ABA,new,medium,floating-point status byte,src/data/dgroup.asm
-g_8ABB,FpStatusPad,g_8ABB,new,medium,byte after FpStatusByte,src/data/dgroup.asm
-g_8ABD,FpConstTable,g_8ABD,new,medium,floating-point constants,src/data/dgroup.asm
+g_8ABB,FpSavedCw,g_8ABB,new,medium,"coprocessor control word saved by DoubleToDigits (fnstcw)",src/data/dgroup.asm
+g_8ABD,FpRoundCw,g_8ABD,new,medium,"control word 1332h; DoubleToDigits copies the mask bits of FpSavedCw into it and loads it (fldcw)",src/data/dgroup.asm
 g_8AE2,InitHook,g_8AE2,new,medium,near startup hook (0 skips),src/data/dgroup.asm
 g_8AE4,DebugSignature,g_8AE4,new,medium,D6D6h when a debugger hook is present,src/data/dgroup.asm
 g_8AE6,DebugWriteHook,g_8AE6,new,medium,debugger write hook,src/data/dgroup.asm
 g_8AE8,DebugExitHook,g_8AE8,new,medium,debugger exit hook,src/data/dgroup.asm
 g_8AEA,DebugTermHook,g_8AEA,new,medium,debugger termination hook,src/data/dgroup.asm
 g_8AF4,FpHook,g_8AF4,new,medium,floating-point hook,src/data/dgroup.asm
-g_8AF6,FpHookCount,g_8AF6,new,medium,number of floating-point hooks (0 skips),src/data/dgroup.asm
+g_8AF6,FpHookSeg,g_8AF6,new,high,"segment half of the FpHook far pointer (FpMath:18B9h), tested for 0",src/data/dgroup.asm
 g_8AF8,FpEnvArg1,g_8AF8,new,medium,first floating-point hook argument,src/data/dgroup.asm
 g_8AFC,FpEnvArg2,g_8AFC,new,medium,second floating-point hook argument,src/data/dgroup.asm
 g_8B08,DgroupSegA,g_8B08,new,medium,DGROUP paragraph (relocated),src/data/dgroup.asm
@@ -1929,7 +1929,7 @@ RetOnly2,_fstrcmp,RetOnly2,MSC,high,"scans the second far string for its length,
 seg000:1D8E,_stackavail,,MSC,high,"SP minus StackLimit, 0 when below it; was kept as bytes",src/lib/msc_runtime.asm
 g_6485,str_Locatesound44sSoundNot,,new,high,"label added: FindFarAlt's message, second string after str_Locateshape44sShapeNot",src/data/dgroup.asm
 seg000:0C2C,_strcat,,MSC,high,"repne scasb to the end of the destination then rep movsw the source; called by the overlays",src/lib/msc_runtime.asm
-seg004:0000,NullFar11,,new,high,"retf; called by the menus overlay beside NullFar",src/pc/type_id.asm
+seg004:0000,NullInputHookWrap,,new,high,"retf; called by the menus overlay beside NullInputHook",src/pc/type_id.asm
 Ai_1F9C_0000,SetupControllers,Ai_1F9C_0000,95 PC,high,"sets the pad states from the controller choices, MouseOpen 320x200",src/front/setup_controllers.asm
 Ai_2083_0006,DrawPanelScore,Ai_2083_0006,95 PC,high,score digits on the top panel; same constants and order as 95,src/engine/hud_panel.asm
 Ai_2083_00B2,DrawPanelLine,Ai_2083_00B2,95 PC,high,line indicator shape on the panel,src/engine/hud_panel.asm
@@ -3319,3 +3319,1499 @@ g_12AC,msgYourTeamHasBeenEliminated,g_12AC,new,high,message list of 4 far string
 g_12BC,msgTeamEliminatedFromPlayoffs,g_12BC,new,high,"message list of 4 far string pointers: 'The ....,....,....,....,. / have been eliminated from / the play-offs. / The .....................'",src/data/dgroup.asm
 g_12D4,msgGeneratingTheFinalResults,g_12D4,new,high,message list of 1 far string pointer: 'Generating the final results.',src/data/dgroup.asm
 g_4EC4,TeamStatsLabels,g_4EC4,new,high,message list of 4 far string pointers: 'Score / Shots / Power play / Penalties',src/data/dgroup.asm
+f_3415_0002,exhstate_name,f_3415_0002,new,medium,exhibition state record: saved game name (string at +2),src/data/far/db_files.asm
+f_3415_0064,postate_name,f_3415_0064,new,medium,playoff state record: saved game name (string at +2),src/data/far/db_files.asm
+f_3415_00B2,postate_w50,f_3415_00B2,new,medium,playoff state record word +50h; CreatePlayoffs sets 9,src/data/far/db_files.asm
+f_3415_00B4,postate_w52,f_3415_00B4,new,medium,playoff state record word +52h; CreatePlayoffs sets 7,src/data/far/db_files.asm
+f_3415_00B6,postate_b54,f_3415_00B6,new,medium,playoff state record option bits at +54h (word or-ed with 1FFh by CreatePlayoffs),src/data/far/db_files.asm
+f_3415_00B7,postate_b55,f_3415_00B7,new,medium,"playoff state record option byte +55h; CreatePlayoffs clears bit 1, sets bits 4-6",src/data/far/db_files.asm
+f_3415_00BC,postate_w5A,f_3415_00BC,new,medium,"playoff state record word +5Ah: period length choice set by CreatePlayoffs (2, 4, 8)",src/data/far/db_files.asm
+f_3415_00C6,lgstate_name,f_3415_00C6,new,medium,league state record: saved game name (string at +2),src/data/far/db_files.asm
+f_3415_011E,lgstate_w5A,f_3415_011E,new,medium,"league state record word +5Ah: period length choice set by MenuNewLeague (1, 4, 8)",src/data/far/db_files.asm
+f_3415_0128,POSeedTable,f_3415_0128,new,medium,"playoff seeding table, word per entry, read by POSeedTeams and LoadCupFinalSeries",src/data/far/db_files.asm
+f_3415_0158,POConfTeamTable,f_3415_0158,new,medium,conference team table read by POPickConfTeams,src/data/far/db_files.asm
+f_3448_026B,TeamNameTemplate,f_3448_026B,new,medium,template text ' 00 X. XXXXXXXXXXX' copied by ClearTeamNameText,src/data/far/menu_text.asm
+f_3448_0D44,DeskMenuBar,f_3448_0D44,new,medium,"menu bar of the sports desk (new exhibition, league, add or remove team ...)",src/data/far/menu_text.asm
+f_3448_11FE,SportsDeskMenu1,f_3448_11FE,new,medium,first menu record SportsDesk keeps in a local,src/data/far/menu_text.asm
+f_3448_12AE,SportsDeskMenu2,f_3448_12AE,new,medium,second menu record SportsDesk keeps in a local,src/data/far/menu_text.asm
+f_3448_12F0,HomeTeamMenuText,f_3448_12F0,new,medium,"menu item record of the home team name (SetSideControls, SetTeamNameText)",src/data/far/menu_text.asm
+f_3448_1332,VisitorTeamMenuText,f_3448_1332,new,medium,"menu item record of the visiting team name (SetSideControls, SetTeamNameText)",src/data/far/menu_text.asm
+f_3448_14D4,MatchupLinesMenu,f_3448_14D4,new,medium,menu passed to GameLineEditor from ShowMatchupScreen,src/data/far/menu_text.asm
+f_3448_1584,DeskLinesMenu,f_3448_1584,new,medium,menu passed to GameLineEditor from DeskHomeLines and DeskVisitorLines,src/data/far/menu_text.asm
+f_3448_15F2,TradeLinesMenu,f_3448_15F2,new,medium,menu passed to GameLineEditor from ExecuteTrade,src/data/far/menu_text.asm
+f_3448_164A,PlayerStatsMenuBar,f_3448_164A,new,medium,menu bar of the in-game player stats (MenuGameShowPlayerStats),src/data/far/menu_text.asm
+f_3448_1794,StandingsRosterMenuBar,f_3448_1794,new,medium,menu bar of the standings roster view (RosterMenuLoop),src/data/far/menu_text.asm
+f_3448_17D6,StandingsMenuBar2,f_3448_17D6,new,medium,"menu bar of the standings menus (Easn, Game and Cal StandingsMenu)",src/data/far/menu_text.asm
+f_3448_1802,TeamStatsMenuBar,f_3448_1802,new,medium,menu bar of the team stats screens,src/data/far/menu_text.asm
+f_3448_1844,SkaterStatsMenuBar,f_3448_1844,new,medium,menu bar of the skater stats screens,src/data/far/menu_text.asm
+f_3448_1886,GoalieStatsMenuBar,f_3448_1886,new,medium,menu bar of the goalie stats screens,src/data/far/menu_text.asm
+f_3448_19BA,PlayoffTreeMenuBar,f_3448_19BA,new,medium,"menu bar of the playoff tree (PlayoffModeLoop, POHandleElimination)",src/data/far/menu_text.asm
+f_3680_0000,JerseyRemapTable,f_3680_0000,new,medium,"128-byte colour remap table for jersey numbers (MakeJerseyShape, SetRemapTable)",src/data/far/char_table.asm
+f_3680_0080,TradeRemapTable,f_3680_0080,new,medium,second 128-byte remap table copied by the trade screen,src/data/far/char_table.asm
+f_36B8_00D0,EliminatedTeamText,f_36B8_00D0,new,medium,text buffer for the eliminated team name in msgTeamEliminatedFromPlayoffs,src/data/far/playoff_messages.asm
+f_36B8_0113,EliminatedTeamText2,f_36B8_0113,new,medium,second team name buffer of the elimination message,src/data/far/playoff_messages.asm
+f_36B8_0170,dlgReturnConfirm,f_36B8_0170,new,medium,"MessageBox definition used by DeleteSavedGame, DeskReturnConfirm, DeskExitGame",src/data/far/playoff_messages.asm
+f_36F5_00B3,dlgReturnMessages,f_36F5_00B3,new,medium,MessageBox definition with the 'returning to' messages,src/data/far/return_messages.asm
+f_3701_01FC,dlgInsertDisk,f_3701_01FC,new,medium,MessageBox definition used by ExportTeamToFloppy and CopyHumanTeamDBs,src/data/far/team_choice_text.asm
+f_3701_02A0,dlgReplaceLeague,f_3701_02A0,new,medium,MessageBox definition used by CreateNewLeague and CreatePlayoffs,src/data/far/team_choice_text.asm
+f_3701_0303,dlgWhichSchedule,f_3701_0303,new,medium,MessageBox definition asking which schedule to use (CreateNewLeague),src/data/far/team_choice_text.asm
+f_3701_03AD,dlgLeagueTeamSelect,f_3701_03AD,new,medium,MessageBox definition used by LeagueTeamSelect,src/data/far/team_choice_text.asm
+f_3701_04E5,dlgExportButtons,f_3701_04E5,new,medium,"button list of the export dialogs (ExportTeamToFloppy, ExportDbs)",src/data/far/team_choice_text.asm
+f_3701_04F5,dlgExportToFloppy,f_3701_04F5,new,medium,MessageBox definition 'Do you want to export to a floppy disk?',src/data/far/team_choice_text.asm
+f_3701_0549,dlgAskExport,f_3701_0549,new,medium,MessageBox definition used by AskExportToFloppy,src/data/far/team_choice_text.asm
+f_3701_063C,dlgImportTeam,f_3701_063C,new,medium,dialog record used by ImportPlayerTeam,src/data/far/team_choice_text.asm
+f_3701_069C,dlgImportTeam2,f_3701_069C,new,medium,MessageBox definition used by ImportPlayerTeam,src/data/far/team_choice_text.asm
+f_3701_0756,dlgNewFloppy,f_3701_0756,new,medium,MessageBox definition used by ExportTeamToFloppy,src/data/far/team_choice_text.asm
+f_3701_07CE,dlgImportChoice,f_3701_07CE,new,medium,MessageBox definition used by ImportDbs,src/data/far/team_choice_text.asm
+f_3701_0913,dlgMergeFirst,f_3701_0913,new,medium,MessageBox definition 'Master databases for ... must be completely merged',src/data/far/team_choice_text.asm
+f_3701_09C8,dlgPlayLeagueGame,f_3701_09C8,new,medium,dialog record used by PlayLeagueGame,src/data/far/team_choice_text.asm
+f_3701_0BA6,str_Space,f_3701_0BA6,new,medium,string ' ' appended by FixJerseyConflict,src/data/far/team_choice_text.asm
+f_3701_0BA8,str_Star,f_3701_0BA8,new,medium,string '*' used by BuildLeagueList and SelectHilight,src/data/far/team_choice_text.asm
+f_3701_0BAA,str_Backslash,f_3701_0BAA,new,medium,string '\' appended by MakeTeamDbFmt and ExecuteTrade,src/data/far/team_choice_text.asm
+f_3701_0BF4,str_Dot,f_3701_0BF4,new,medium,string '.' searched for by the import and export code,src/data/far/team_choice_text.asm
+f_3701_0BFA,str_DriveColon,f_3701_0BFA,new,medium,string '?:' (drive letter is patched in) used for floppy paths,src/data/far/team_choice_text.asm
+f_3701_0DC2,PasswordKey,f_3701_0DC2,new,medium,key bytes EncryptPassword mixes into the password,src/data/far/team_choice_text.asm
+f_3701_0E53,CurLeagueName,f_3701_0E53,new,medium,"name of the current league (13 bytes), read and copied by the league code",src/data/far/team_choice_text.asm
+f_3701_0F94,CalNextMonthFn,f_3701_0F94,new,medium,far routine offset of the calendar's next-month button,src/data/far/team_choice_text.asm
+f_3701_0F96,CalNextMonthSeg,f_3701_0F96,new,medium,its segment,src/data/far/team_choice_text.asm
+f_3701_0FAA,CalPrevMonthFn,f_3701_0FAA,new,medium,far routine offset of the calendar's previous-month button,src/data/far/team_choice_text.asm
+f_3701_0FAC,CalPrevMonthSeg,f_3701_0FAC,new,medium,its segment,src/data/far/team_choice_text.asm
+f_3701_0FDF,CalendarMenuBar,f_3701_0FDF,new,medium,menu bar of the calendar screen,src/data/far/team_choice_text.asm
+f_3701_1163,TradeMenu,f_3701_1163,new,medium,menu record used by TradePlayers,src/data/far/team_choice_text.asm
+f_3701_11AB,TradeStatsMenuBar,f_3701_11AB,new,medium,menu bar of the trade stats view,src/data/far/team_choice_text.asm
+f_384B_0094,SeasonMenuRight,f_384B_0094,new,medium,right edge of the first season menu item, copied to the others by SetupStatsMenus,src/data/far/season_titles.asm
+f_38AF_0022,MatchupMenu,f_38AF_0022,new,medium,menu record ShowMatchupScreen keeps in a local,src/data/far/lines_menu_text.asm
+f_38BD_01F3,JingleIndex,f_38BD_01F3,new,medium,"jingle number per arena event, read by LoadArenaJingles",src/data/far/line_names.asm
+f_38BD_028F,JingleTable,f_38BD_028F,new,medium,jingle table compared by LoadArenaJingles,src/data/far/line_names.asm
+f_3A0B_0000,HomeSortObjs,f_3A0B_0000,new,medium,"home team sort objects (500 bytes), pointed to by hmtmsort",src/data/far/work_buffer.asm
+f_3A0B_01F4,AwaySortObjs,f_3A0B_01F4,new,medium,"away team sort objects (500 bytes), pointed to by awtmsort",src/data/far/work_buffer.asm
+f_3A0B_03E8,HomeGlAttr,f_3A0B_03E8,new,medium,home goalie attributes (48 bytes),src/data/far/work_buffer.asm
+f_3A0B_0418,AwayGlAttr,f_3A0B_0418,new,medium,"away goalie attributes (48 bytes), pointed to by awtmglattr",src/data/far/work_buffer.asm
+f_3A0B_0448,HomePlStats,f_3A0B_0448,new,medium,"home player stats records, read by ChkScorerMilestone",src/data/far/work_buffer.asm
+f_3A0B_044A,HomePlStats_w2,f_3A0B_044A,new,medium,"home player stats, word +2 of the first record",src/data/far/work_buffer.asm
+f_3A0B_05D8,AwayPlStats,f_3A0B_05D8,new,medium,"away player stats (400 bytes), pointed to by awtmplstats",src/data/far/work_buffer.asm
+f_3A0B_0768,HomeGlStats,f_3A0B_0768,new,medium,"home goalie stats, pointed to by hmtmglstats",src/data/far/work_buffer.asm
+f_3A0B_076A,HomeGlStats_w2,f_3A0B_076A,new,medium,"home goalie stats word +2, written by CreateGSummaryDb",src/data/far/work_buffer.asm
+f_3A0B_076C,HomeGlStats_w4,f_3A0B_076C,new,medium,"home goalie stats from +4, written by CreateGSummaryDb",src/data/far/work_buffer.asm
+f_3A0B_077A,AwayGlStats,f_3A0B_077A,new,medium,"away goalie stats, pointed to by awtmglstatsptr",src/data/far/work_buffer.asm
+f_3A0B_0A8E,TeamPalette768,f_3A0B_0A8E,new,medium,"768-byte palette (256 RGB triples) loaded with the team colours and faded in (StartHL2, ThreeStarsLoop)",src/data/far/work_buffer.asm
+f_3A0B_0D8E,hilightrec,f_3A0B_0D8E,new,medium,"saved highlight record: first byte, read and written with the .HI file",src/data/far/work_buffer.asm
+f_3A0B_0D8F,hilightrec_b1,f_3A0B_0D8F,new,medium,highlight record byte +1,src/data/far/work_buffer.asm
+f_3A0B_0D90,hilightrec_b2,f_3A0B_0D90,new,medium,highlight record byte +2,src/data/far/work_buffer.asm
+f_3A0B_0D91,hilightrec_home,f_3A0B_0D91,new,medium,highlight record +3: 28 bytes of home team data,src/data/far/work_buffer.asm
+f_3A0B_0DAD,hilightrec_b1F,f_3A0B_0DAD,new,medium,highlight record byte +1Fh,src/data/far/work_buffer.asm
+f_3A0B_0DAE,hilightrec_away,f_3A0B_0DAE,new,medium,highlight record +20h: 28 bytes of away team data,src/data/far/work_buffer.asm
+f_3A0B_0DCA,hilightrec_w3C,f_3A0B_0DCA,new,medium,highlight record word +3Ch,src/data/far/work_buffer.asm
+f_3A0B_0DCC,hilightrec_w3E,f_3A0B_0DCC,new,medium,highlight record word +3Eh,src/data/far/work_buffer.asm
+f_3A0B_0DCE,hilightrec_w40,f_3A0B_0DCE,new,medium,highlight record word +40h,src/data/far/work_buffer.asm
+f_3A0B_0DD0,hilightrec_w42,f_3A0B_0DD0,new,medium,highlight record word +42h,src/data/far/work_buffer.asm
+f_3A0B_0DD2,hilightrec_w44,f_3A0B_0DD2,new,medium,highlight record word +44h,src/data/far/work_buffer.asm
+f_3A0B_0DD4,hilightrec_w46,f_3A0B_0DD4,new,medium,highlight record word +46h,src/data/far/work_buffer.asm
+f_3A0B_0DD6,hilightrec_frames,f_3A0B_0DD6,new,medium,highlight record +48h: the recorded replay frames (38402 bytes),src/data/far/work_buffer.asm
+f_3A0B_A3D8,StatsPalette,f_3A0B_A3D8,new,medium,768-byte palette saved and restored around the in-game player stats,src/data/far/work_buffer.asm
+f_3A0B_A6D8,SavedGameNames,f_3A0B_A6D8,new,medium,names of the saved games found by ScanSavedGames (864 bytes),src/data/far/work_buffer.asm
+f_3A0B_AA38,LeagueTeamNames,f_3A0B_AA38,new,medium,"team names of the league (504 bytes), filled by ReadTeamNames",src/data/far/work_buffer.asm
+f_3A0B_AC30,POTeamName1,f_3A0B_AC30,new,medium,21-byte team name buffer of the playoff screens,src/data/far/work_buffer.asm
+f_3A0B_AC45,POTeamName2,f_3A0B_AC45,new,medium,second 21-byte team name buffer of the playoff screens,src/data/far/work_buffer.asm
+f_3A0B_AC5A,leagueinfo,f_3A0B_AC5A,new,medium,league info record read by ReadLeagueInfo: first word,src/data/far/work_buffer.asm
+f_3A0B_AC5C,leagueinfo_w2,f_3A0B_AC5C,new,medium,league info record word +2,src/data/far/work_buffer.asm
+f_3A0B_AC5E,leagueinfo_w4,f_3A0B_AC5E,new,medium,league info record word +4,src/data/far/work_buffer.asm
+f_3A0B_AC60,leagueinfo_w6,f_3A0B_AC60,new,medium,league info record word +6,src/data/far/work_buffer.asm
+f_3A0B_AC62,leagueinfo_teams,f_3A0B_AC62,new,medium,league info record +8: per-team entries (720 bytes),src/data/far/work_buffer.asm
+f_3A0B_AF32,leagueinfo_password,f_3A0B_AF32,new,medium,league master password (12 bytes) after the team entries,src/data/far/work_buffer.asm
+f_3A0B_AF3E,leagueinfo_tail,f_3A0B_AF3E,new,medium,"league info record, last 14 bytes",src/data/far/work_buffer.asm
+f_3A0B_AF4C,MenuRemap,f_3A0B_AF4C,new,medium,128-byte colour remap used by the menu and summary screens (InitMenuRemap),src/data/far/work_buffer.asm
+f_3A0B_AFCC,MenuRemap2,f_3A0B_AFCC,new,medium,second 128-byte colour remap built by InitMenuRemap,src/data/far/work_buffer.asm
+f_3A0B_B04C,dlgJerseyConflict,f_3A0B_B04C,new,medium,MessageBox definition built by FixJerseyConflict,src/data/far/work_buffer.asm
+f_3A0B_B052,StatsScreenPalette,f_3A0B_B052,new,medium,"palette buffer of the stats screens, faded in with FadePaletteIn",src/data/far/work_buffer.asm
+f_3A0B_B11E,StatsCardBuf,f_3A0B_B11E,new,medium,384-byte buffer the stats cards copy their record into,src/data/far/work_buffer.asm
+f_3A0B_B29E,StatsCardBuf2,f_3A0B_B29E,new,medium,180-byte second buffer of the stats cards,src/data/far/work_buffer.asm
+f_3A0B_B352,GamePalette,f_3A0B_B352,new,medium,"the game's 768-byte palette (GetPaletteFar, FadePalette)",src/data/far/work_buffer.asm
+f_3A0B_B652,GameTeamName1,f_3A0B_B652,new,medium,6-byte home team abbreviation set by LoadGameTeams,src/data/far/work_buffer.asm
+f_3A0B_B658,GameTeamName2,f_3A0B_B658,new,medium,6-byte away team abbreviation set by LoadGameTeams,src/data/far/work_buffer.asm
+f_3A0B_B65E,GameTeamWord0,f_3A0B_B65E,new,medium,word set by LoadGameTeams,src/data/far/work_buffer.asm
+f_3A0B_B660,GameTeamWord1,f_3A0B_B660,new,medium,word set by LoadGameTeams,src/data/far/work_buffer.asm
+f_3A0B_B662,GameTeamWord2,f_3A0B_B662,new,medium,word set by LoadGameTeams,src/data/far/work_buffer.asm
+f_3A0B_B664,GameTeamWord3,f_3A0B_B664,new,medium,word set by LoadGameTeams,src/data/far/work_buffer.asm
+f_3A0B_B666,GameTeamWord4,f_3A0B_B666,new,medium,word set by LoadGameTeams,src/data/far/work_buffer.asm
+f_3A0B_B668,GameTeamWord5,f_3A0B_B668,new,medium,word set by LoadGameTeams,src/data/far/work_buffer.asm
+f_3A0B_B66A,GameTeamWord6,f_3A0B_B66A,new,medium,word set by LoadGameTeams,src/data/far/work_buffer.asm
+f_3A0B_B66C,GameTeamWord7,f_3A0B_B66C,new,medium,word set by LoadGameTeams,src/data/far/work_buffer.asm
+f_3A0B_B66E,MoviePalette,f_3A0B_B66E,new,medium,palette buffer PlayMovie fades with,src/data/far/work_buffer.asm
+f_3A0B_B6E6,MovieState,f_3A0B_B6E6,new,medium,movie player state passed to MviOpen by PlayTitleMovies,src/data/far/work_buffer.asm
+g_01B8,ctl1team,g_01B8,new,medium,"team of controller 1 (-1 none, -2 eliminated)",src/data/dgroup.asm
+g_01BA,ctl2team,g_01BA,new,medium,"team of controller 2 (-1 none, -2 eliminated)",src/data/dgroup.asm
+g_01BC,ctl1dev,g_01BC,new,medium,input device of controller 1 (10h none),src/data/dgroup.asm
+g_01BE,ctl2dev,g_01BE,new,medium,input device of controller 2 (10h none),src/data/dgroup.asm
+g_01C0,ctl1side,g_01C0,new,medium,"side controller 1 plays (0 home, 1 away)",src/data/dgroup.asm
+g_01C2,ctl2side,g_01C2,new,medium,side controller 2 plays,src/data/dgroup.asm
+g_01C4,sndcardmissing,g_01C4,new,medium,sound card dialog: a set bit greys out that card,src/data/dgroup.asm
+g_01CA,gsumheader_b2,g_01CA,new,medium,game summary header byte +2 (CreateGSummaryDb),src/data/dgroup.asm
+g_01CB,gsumheader_b3,g_01CB,new,medium,game summary header byte +3,src/data/dgroup.asm
+g_01CC,gsumheader_b4,g_01CC,new,medium,game summary header byte +4,src/data/dgroup.asm
+g_01CD,gsumheader_b5,g_01CD,new,medium,game summary header byte +5,src/data/dgroup.asm
+g_01CE,gsumcount,g_01CE,new,medium,game summary file record count (gsumheader +6),src/data/dgroup.asm
+g_01D6,gsumtail_goals1,g_01D6,new,medium,game summary tail: goals of the first team (PostGoalEvent),src/data/dgroup.asm
+g_01D7,gsumtail_shots1,g_01D7,new,medium,game summary tail: shots of the first team (ChkShotStat),src/data/dgroup.asm
+g_01D8,gsumtail_goals2,g_01D8,new,medium,game summary tail: goals of the second team,src/data/dgroup.asm
+g_01D9,gsumtail_shots2,g_01D9,new,medium,game summary tail: shots of the second team,src/data/dgroup.asm
+g_08FC,ScreenRowStride,g_08FC,new,medium,bytes per row of the planar screen (50h or 52h),src/data/dgroup.asm
+g_08FE,RinkTilesPtr,g_08FE,new,medium,far pointer (offset) to the loaded rink tiles,src/data/dgroup.asm
+g_0900,RinkTilesSeg,g_0900,new,medium,its segment,src/data/dgroup.asm
+g_0EDC,FileDlgSpecs,g_0EDC,new,high,"file dialog table: pointer to each dialog's saved list state (savedcount2, savedcount3, savedcount1)",src/data/dgroup.asm
+g_0EDE,FileDlgSpec2,g_0EDE,new,high,list state pointer of the second dialog,src/data/dgroup.asm
+g_0EE0,FileDlgSpec3,g_0EE0,new,high,list state pointer of the third dialog,src/data/dgroup.asm
+g_0F10,str_AllFiles,g_0F10,new,medium,string '*.*',src/data/dgroup.asm
+g_0F28,DelFileName,g_0F28,new,medium,far pointer (offset) to the saved game DeleteSavedGame removes,src/data/dgroup.asm
+g_0F2A,DelFileNameSeg,g_0F2A,new,medium,its segment,src/data/dgroup.asm
+g_0F2C,DelFileName2,g_0F2C,new,medium,far pointer (offset) to the second file DeleteSavedGame removes,src/data/dgroup.asm
+g_0F2E,DelFileName2Seg,g_0F2E,new,medium,its segment,src/data/dgroup.asm
+g_0F66,SongBuf1,g_0F66,new,medium,far pointer (offset) to a song buffer loaded by SetSoundDevice,src/data/dgroup.asm
+g_0F68,SongBuf1Seg,g_0F68,new,medium,its segment,src/data/dgroup.asm
+g_0F6A,SongBuf2,g_0F6A,new,medium,far pointer (offset) to the second song buffer,src/data/dgroup.asm
+g_0F6C,SongBuf2Seg,g_0F6C,new,medium,its segment,src/data/dgroup.asm
+g_0F6E,SongBuf3,g_0F6E,new,medium,far pointer (offset) to the third song buffer,src/data/dgroup.asm
+g_0F70,SongBufs,g_0F70,new,medium,further song buffer pointers (66 bytes),src/data/dgroup.asm
+g_0FBA,SoundDriverLoaded,g_0FBA,new,medium,"-1 once SetSoundDevice has loaded a driver, else 0",src/data/dgroup.asm
+g_106D,SoundDevChoice,g_106D,new,medium,sound device byte kept by SetSoundDevice,src/data/dgroup.asm
+g_1070,SoundDevTable,g_1070,new,medium,"sound device table (device bit, driver ...) searched by SetSoundDevice",src/data/dgroup.asm
+g_1138,LockerTextPtrs,g_1138,new,medium,text pointers of the locker room screen,src/data/dgroup.asm
+g_1146,LockerItemTable,g_1146,new,medium,item table of the locker room screen,src/data/dgroup.asm
+g_11D6,POResultFmt,g_11D6,new,medium,pointer to the playoff result format string,src/data/dgroup.asm
+g_11D8,LeagueSetChoice,g_11D8,new,medium,"league settings choice (-1 none), also read by the playoff loop",src/data/dgroup.asm
+g_133F,str_Space2,g_133F,new,medium,string ' ' copied by PlayoffModeLoop,src/data/dgroup.asm
+g_16C8,SchedDivTable,g_16C8,new,medium,per-team division byte table used by the schedule and standings,src/data/dgroup.asm
+g_16E0,SchedConfTable,g_16E0,new,medium,per-team conference byte table used by RandomizeSchedule,src/data/dgroup.asm
+g_16F8,SchedTable3,g_16F8,new,medium,per-team byte table used by RandomizeSchedule,src/data/dgroup.asm
+g_1710,POSeedOrder1,g_1710,new,medium,seeding order bytes used by SeedPlayoffRound,src/data/dgroup.asm
+g_1718,POSeedOrder2,g_1718,new,medium,second seeding order used by SeedPlayoffRound,src/data/dgroup.asm
+g_1720,SimDayTable,g_1720,new,medium,byte table used by SimScheduleDay,src/data/dgroup.asm
+g_1724,POSeriesLenArg,g_1724,new,medium,series length argument per round (AdvancePlayoffs),src/data/dgroup.asm
+g_1726,PORoundTable,g_1726,new,medium,per-round word table read by AdvancePlayoffs,src/data/dgroup.asm
+g_172C,POSeriesLenArg2,g_172C,new,medium,series length argument of the final round,src/data/dgroup.asm
+g_172E,POSeedArgs,g_172E,new,medium,arguments passed to SeedPlayoffRound per round,src/data/dgroup.asm
+g_1733,MonthDays0,g_1733,new,medium,entry before the month length table (NormalizeDate),src/data/dgroup.asm
+g_1734,MonthDays,g_1734,new,medium,"days per month, 12 bytes (31, 28, 31 ...)",src/data/dgroup.asm
+g_1740,MonthStartDay,g_1740,new,medium,"first weekday of each month, 12 bytes",src/data/dgroup.asm
+g_174C,OtherGamesTable,g_174C,new,medium,team pairs of the other games shown between periods,src/data/dgroup.asm
+g_1826,SoundCfgSpec,g_1826,new,medium,sound configuration file pattern and device bytes,src/data/dgroup.asm
+g_183A,SimGoalOdds,g_183A,new,medium,odds table used by SimulateGame,src/data/dgroup.asm
+g_1862,SimGoalOdds2,g_1862,new,medium,second odds table used by SimulateGame,src/data/dgroup.asm
+g_18B4,ShapePaletteMap,g_18B4,new,medium,colour map applied by ApplyShapePalette,src/data/dgroup.asm
+g_1994,JerseyDigitGlyphs,g_1994,new,medium,jersey digit glyph bits (PaintJerseyDigit),src/data/dgroup.asm
+g_1C2C,AwardMsgIds,g_1C2C,new,medium,message numbers of the award names (AwardsCeremony),src/data/dgroup.asm
+g_1C40,AwardMsgIds2,g_1C40,new,medium,message numbers of the award descriptions,src/data/dgroup.asm
+g_1C58,AwardTitleMsg,g_1C58,new,medium,message number of the awards title,src/data/dgroup.asm
+g_1C5A,AwardTextY,g_1C5A,new,medium,award text row table,src/data/dgroup.asm
+g_1C5C,AwardTextY2,g_1C5C,new,medium,second award text row table,src/data/dgroup.asm
+g_1CD2,AwardNamePtrs,g_1CD2,new,medium,award name text pointers (ShowAwardScreens),src/data/dgroup.asm
+g_1CE6,AwardKinds,g_1CE6,new,medium,"kind of each award (0 skater, 1 goalie, 2 team)",src/data/dgroup.asm
+g_1CEF,AwardsPending,g_1CEF,new,medium,1 while the awards are still to be picked,src/data/dgroup.asm
+g_1CF0,AwardWinner,g_1CF0,new,medium,winner record pointer of the first award,src/data/dgroup.asm
+g_1CF2,AwardWinner2,g_1CF2,new,medium,winner pointer of award 2,src/data/dgroup.asm
+g_1CF4,AwardWinner3,g_1CF4,new,medium,winner pointer of award 3,src/data/dgroup.asm
+g_1CF6,AwardWinner4,g_1CF6,new,medium,winner pointer of award 4,src/data/dgroup.asm
+g_1CF8,AwardWinner5,g_1CF8,new,medium,winner pointer of award 5,src/data/dgroup.asm
+g_1CFA,AwardWinner6,g_1CFA,new,medium,winner pointer of award 6,src/data/dgroup.asm
+g_1CFC,AwardWinner7,g_1CFC,new,medium,winner pointer of award 7,src/data/dgroup.asm
+g_1D00,AwardWinner8,g_1D00,new,medium,winner pointer of award 8,src/data/dgroup.asm
+g_1D02,AwardWinner9,g_1D02,new,medium,winner pointer of award 9,src/data/dgroup.asm
+g_1D04,AwardTitlePtrs,g_1D04,new,medium,award title text pointers,src/data/dgroup.asm
+g_1D47,str_AwardsW,g_1D47,new,medium,text 'W' (57h) drawn on the award screen,src/data/dgroup.asm
+g_1D49,str_AwardsL,g_1D49,new,medium,text 'L' (4Ch) drawn on the award screen,src/data/dgroup.asm
+g_1D4B,str_AwardsT,g_1D4B,new,medium,text 'T' (54h) drawn on the award screen,src/data/dgroup.asm
+g_1D60,str_AwardsG,g_1D60,new,medium,text 'G' (47h) drawn on the award screen,src/data/dgroup.asm
+g_1D62,str_AwardsA,g_1D62,new,medium,text 'A' (41h) drawn on the award screen,src/data/dgroup.asm
+g_1D6B,str_PlusMinus,g_1D6B,new,medium,string '+/-' drawn on the award screen,src/data/dgroup.asm
+g_1F8E,StandingsHeadPtrs,g_1F8E,new,medium,column heading pointers of the standings screen,src/data/dgroup.asm
+g_1FA2,StatsDbNames,g_1FA2,new,medium,database file name pointers of the stats screens (BuildPathFar),src/data/dgroup.asm
+g_1FA6,StatsDbNames2,g_1FA6,new,medium,second set of database file name pointers (roster and stats cards),src/data/dgroup.asm
+g_1FAA,StatsDbNames3,g_1FAA,new,medium,database file name pointers of the leaders and team stats screens,src/data/dgroup.asm
+g_1FAC,StatsDbName4,g_1FAC,new,medium,database file name pointer of the roster screen,src/data/dgroup.asm
+g_200E,statscontext,g_200E,new,medium,stats context: which season or playoff data the stats screens show (0..5),src/data/dgroup.asm
+g_2010,statsseason,g_2010,new,medium,stats season choice,src/data/dgroup.asm
+g_211E,GoalieCardCols,g_211E,new,medium,column order bytes of the goalie stats card,src/data/dgroup.asm
+g_21B0,StandingsGfx1,g_21B0,new,medium,far pointer (offset) to the first standings shape record,src/data/dgroup.asm
+g_21B2,StandingsGfx1Seg,g_21B2,new,medium,its segment,src/data/dgroup.asm
+g_21B4,StandingsGfx2,g_21B4,new,medium,far pointer (offset) to the second standings shape record,src/data/dgroup.asm
+g_21B6,StandingsGfx2Seg,g_21B6,new,medium,its segment,src/data/dgroup.asm
+g_21BA,statsmenusel,g_21BA,new,medium,selected item of the stats menus,src/data/dgroup.asm
+g_21BE,statsmenucbseg,g_21BE,new,medium,segment of the stats menu callback,src/data/dgroup.asm
+g_21C0,statsmenumode,g_21C0,new,medium,"stats menu mode (2, 3 ...)",src/data/dgroup.asm
+g_21D2,menucbfn,g_21D2,new,medium,far routine offset of the current menu callback,src/data/dgroup.asm
+g_21D4,menucbseg,g_21D4,new,medium,far routine segment of the current menu callback,src/data/dgroup.asm
+g_2395,str_PlusMinus2,g_2395,new,medium,string ' +/-' of the skater stats card,src/data/dgroup.asm
+g_23EA,SkaterCardCols,g_23EA,new,medium,column order bytes of the skater stats card,src/data/dgroup.asm
+g_242F,str_PlusMinus3,g_242F,new,medium,string ' +/-' of the roster screen,src/data/dgroup.asm
+g_2486,StandingsRowY,g_2486,new,medium,y of the first standings row,src/data/dgroup.asm
+g_2487,StandingsSlotEnd,g_2487,new,medium,byte before the slot table (-1 end mark),src/data/dgroup.asm
+g_2488,StandingsSlots,g_2488,new,medium,standings and playoff tree slot table,src/data/dgroup.asm
+g_24D0,StandingsSlotTeams,g_24D0,new,medium,team of each standings or tree slot,src/data/dgroup.asm
+g_2518,StandingsColX,g_2518,new,medium,standings column x table,src/data/dgroup.asm
+g_2520,StandingsColW,g_2520,new,medium,standings column width table,src/data/dgroup.asm
+g_25AE,str_Space3,g_25AE,new,medium,string ' ' copied by ShowPlayoffStandings,src/data/dgroup.asm
+g_25B0,TeamStatsCmps,g_25B0,new,medium,far comparator table of the team stats sorts (_qsort),src/data/dgroup.asm
+g_25B2,TeamStatsCmpsSeg,g_25B2,new,medium,its segment words,src/data/dgroup.asm
+g_2680,TeamStatsTitles,g_2680,new,medium,title text pointers of the team stats screens,src/data/dgroup.asm
+g_268A,TeamStatsHead1,g_268A,new,medium,team stats column heading pointer 1,src/data/dgroup.asm
+g_268C,TeamStatsHead2,g_268C,new,medium,team stats column heading pointer 2,src/data/dgroup.asm
+g_268E,TeamStatsHead3,g_268E,new,medium,team stats column heading pointer 3,src/data/dgroup.asm
+g_2690,TeamStatsHeads,g_2690,new,medium,further team stats column heading pointers,src/data/dgroup.asm
+g_26B2,LeaderCmps,g_26B2,new,medium,far comparator table of the leader categories (_qsort),src/data/dgroup.asm
+g_26B4,LeaderCmpsSeg,g_26B4,new,medium,its segment words,src/data/dgroup.asm
+g_28DE,LeaderTitles,g_28DE,new,medium,title text pointers of the leader categories,src/data/dgroup.asm
+g_28F4,LeaderHead1,g_28F4,new,medium,leaders column heading pointer 1,src/data/dgroup.asm
+g_28F6,LeaderHead2,g_28F6,new,medium,leaders column heading pointer 2,src/data/dgroup.asm
+g_28F8,LeaderHead3,g_28F8,new,medium,leaders column heading pointer 3,src/data/dgroup.asm
+g_28FA,LeaderHead4,g_28FA,new,medium,leaders column heading pointer 4,src/data/dgroup.asm
+g_28FC,LeaderHeads,g_28FC,new,medium,further leaders column heading pointers,src/data/dgroup.asm
+g_2986,replayptr,g_2986,new,medium,replay record pointer (offset),src/data/dgroup.asm
+g_2988,replayseg,g_2988,new,medium,replay record pointer (segment),src/data/dgroup.asm
+g_29C3,c1playernum_b1,g_29C3,new,medium,"high byte of c1playernum, set by setupice",src/data/dgroup.asm
+g_29C5,c2playernum_b1,g_29C5,new,medium,"high byte of c2playernum, set by setupice",src/data/dgroup.asm
+g_29CA,HomeTeamNum,g_29CA,new,medium,home team number,src/data/dgroup.asm
+g_29CC,VisTeamNum,g_29CC,new,medium,visiting team number,src/data/dgroup.asm
+g_29D5,refsignal_b1,g_29D5,new,medium,"high byte of refsignal, set to -1 by chkprogress",src/data/dgroup.asm
+g_29E0,dirtab0,g_29E0,new,medium,entry before dirtab,src/data/dgroup.asm
+g_29E2,dirtab_x,g_29E2,new,medium,x components of the direction table,src/data/dgroup.asm
+g_2A02,rngseed,g_2A02,new,medium,random number seed,src/data/dgroup.asm
+g_2A38,penkindtab,g_2A38,new,medium,penalty kind byte per penalty (checkfornewpen),src/data/dgroup.asm
+g_2A52,asstab,g_2A52,new,medium,"assignment routine table, far pointers (updateplayers)",src/data/dgroup.asm
+g_48AF,priolist_m1,g_48AF,new,medium,byte before priolist,src/data/dgroup.asm
+g_48B0,priolist,g_48B0,new,medium,player priority list used by SetPlList,src/data/dgroup.asm
+g_48C2,PerTimeTab,g_48C2,new,medium,period length table (GetPeriodTime),src/data/dgroup.asm
+g_48CA,energywarnteam,g_48CA,new,medium,energy warning flag per team,src/data/dgroup.asm
+g_48CC,lcrequestteam,g_48CC,new,medium,team that asked for a line change,src/data/dgroup.asm
+g_48CE,lcsel,g_48CE,new,medium,selected line change choice per team,src/data/dgroup.asm
+g_48D6,lcchoice,g_48D6,new,medium,line change choice per team,src/data/dgroup.asm
+g_48D8,lcstate,g_48D8,new,medium,line change state saved with the game,src/data/dgroup.asm
+g_48DA,lcgroup,g_48DA,new,medium,line group per team (3 = power play),src/data/dgroup.asm
+g_48DC,lcactive,g_48DC,new,medium,line change box active,src/data/dgroup.asm
+g_48DE,lctime,g_48DE,new,medium,line change box time per team,src/data/dgroup.asm
+g_48E0,lcstate2,g_48E0,new,medium,line change state saved with the game,src/data/dgroup.asm
+g_48E4,hudredraw,g_48E4,new,medium,panel redraw flag,src/data/dgroup.asm
+g_49A6,coachlinetab,g_49A6,95 PC,high,same row tables as 95 coachlinetab,src/data/dgroup.asm
+g_4A00,ovlartnames,g_4A00,95 PC,high,.QPP art file name of each text overlay sequence (LoadTeamPPV),src/data/dgroup.asm
+g_4A0A,ovlscripts,g_4A0A,95 PC,high,"far pointers to the overlay step scripts, read as ovlscripts and ovlscripts + 2",src/data/dgroup.asm
+g_4A1E,ovlseqtimed,g_4A1E,95 PC,high,same 01 00 01 01 01 bytes as 95; cmp byte [bx + ovlseqtimed] before the 258h ovltimer,src/data/dgroup.asm
+g_4A24,goalienotebits,g_4A24,new,medium,goalie note bits (3Fh all done),src/data/dgroup.asm
+g_4A28,RinkOverlayFrames,g_4A28,new,medium,frames of the rink overlay sprites,src/data/dgroup.asm
+g_4A2C,RinkOverlayFrames2,g_4A2C,new,medium,further rink overlay frames,src/data/dgroup.asm
+g_4A4E,halfsecflag,g_4A4E,new,medium,toggled each half second by periodicevents,src/data/dgroup.asm
+g_4A4F,secondframes,g_4A4F,new,medium,frames left in the current second,src/data/dgroup.asm
+g_4A58,photobankf_w2,g_4A58,new,medium,PPV file pointer 2,src/data/dgroup.asm
+g_4A5A,photobankf_w4,g_4A5A,new,medium,PPV file pointer 3,src/data/dgroup.asm
+g_4A5C,photobankf_w6,g_4A5C,new,medium,PPV file pointer 4,src/data/dgroup.asm
+g_4A5E,photobankf_w8,g_4A5E,new,medium,PPV file pointer 5,src/data/dgroup.asm
+g_4A60,photobankf_wA,g_4A60,new,medium,PPV file pointer 6,src/data/dgroup.asm
+g_4B02,framesync,g_4B02,new,medium,frame sync flag of the game loops,src/data/dgroup.asm
+g_4B0A,FadeSteps,g_4B0A,new,medium,fade step table (FadePalette),src/data/dgroup.asm
+g_4B0B,FadeStep,g_4B0B,new,medium,current fade step,src/data/dgroup.asm
+g_4B0C,FadeSteps2,g_4B0C,new,medium,second fade step table,src/data/dgroup.asm
+g_4B0E,FadeCount,g_4B0E,new,medium,fade step count,src/data/dgroup.asm
+g_4B1C,DirtyRects,g_4B1C,new,medium,dirty rectangle list (20 per page),src/data/dgroup.asm
+g_4B20,DeskRedrawPage,g_4B20,new,medium,page redraw flags,src/data/dgroup.asm
+g_4B22,DeskRedrawPage2,g_4B22,new,medium,second page redraw flag,src/data/dgroup.asm
+g_4B24,SpriteBlitFns,g_4B24,new,medium,far routine table of the sprite blitters (DrawSpriteClipped),src/data/dgroup.asm
+g_4BCE,MatchupOrder,g_4BCE,new,medium,order bytes of the matchup screen,src/data/dgroup.asm
+g_4EC6,TeamStatsLabelPtrs,g_4EC6,new,medium,label pointers of the team stats summary,src/data/dgroup.asm
+g_4FD4,hilightsplayed,g_4FD4,new,medium,bits of the highlights already shown,src/data/dgroup.asm
+g_5328,ReplayGadgetRects,g_5328,new,medium,replay gadget rectangles,src/data/dgroup.asm
+g_533C,ReplayGadgetRect2,g_533C,new,medium,replay gadget rectangle 2,src/data/dgroup.asm
+g_5364,ReplayGadgetRect3,g_5364,new,medium,replay gadget rectangle 3,src/data/dgroup.asm
+g_5382,ReplayPointerRect,g_5382,new,medium,replay pointer rectangle,src/data/dgroup.asm
+g_544C,HL2Offsets,g_544C,new,medium,offset table of StartHL2,src/data/dgroup.asm
+g_544E,HL2Offsets2,g_544E,new,medium,second offset table of StartHL2,src/data/dgroup.asm
+g_547C,replaymode,g_547C,new,medium,replay mode (-1 off),src/data/dgroup.asm
+g_5540,HudBarLevels,g_5540,new,medium,energy bar level table,src/data/dgroup.asm
+g_5550,HudBarLevels2,g_5550,new,medium,second energy bar level table,src/data/dgroup.asm
+g_556C,hudpenhome,g_556C,new,medium,home panel penalty list,src/data/dgroup.asm
+g_556E,hudpenhome_w2,g_556E,new,medium,home panel penalty list word +2,src/data/dgroup.asm
+g_5570,hudpenhome_w4,g_5570,new,medium,home panel penalty list word +4,src/data/dgroup.asm
+g_5572,hudpenhome_w6,g_5572,new,medium,home panel penalty list word +6,src/data/dgroup.asm
+g_55AC,hudpenaway,g_55AC,new,medium,away panel penalty list,src/data/dgroup.asm
+g_55AE,hudpenaway_w2,g_55AE,new,medium,away panel penalty list word +2,src/data/dgroup.asm
+g_55B0,hudpenaway_w4,g_55B0,new,medium,away panel penalty list word +4,src/data/dgroup.asm
+g_55B2,hudpenaway_w6,g_55B2,new,medium,away panel penalty list word +6,src/data/dgroup.asm
+g_55EC,HudShapeNames,g_55EC,new,medium,panel shape message names,src/data/dgroup.asm
+g_5602,HudShapeName,g_5602,new,medium,panel shape message name,src/data/dgroup.asm
+g_5604,CrestShapeNames,g_5604,new,medium,crest shape message names,src/data/dgroup.asm
+g_563C,hudhomeredraw,g_563C,new,medium,home panel redraw flag,src/data/dgroup.asm
+g_563E,hudawayredraw,g_563E,new,medium,away panel redraw flag,src/data/dgroup.asm
+g_5642,hudlinehome,g_5642,new,medium,line shown on the home panel,src/data/dgroup.asm
+g_5644,hudclockredraw,g_5644,new,medium,clock redraw flag,src/data/dgroup.asm
+g_5646,hudscoreredraw,g_5646,new,medium,score redraw flag,src/data/dgroup.asm
+g_5648,hudlineaway,g_5648,new,medium,line shown on the away panel,src/data/dgroup.asm
+g_564A,hudlinegroup,g_564A,new,medium,line group shown on the panel,src/data/dgroup.asm
+g_567A,BannerColours,g_567A,new,medium,banner colour table,src/data/dgroup.asm
+g_56CC,CallNamePtrs,g_56CC,new,medium,referee call name pointers,src/data/dgroup.asm
+g_575A,EventFmtPtrs,g_575A,new,medium,event line format pointers,src/data/dgroup.asm
+g_5772,gsumqcount,g_5772,new,medium,number of queued game summary records,src/data/dgroup.asm
+g_5774,defercount,g_5774,new,medium,number of queued deferred calls,src/data/dgroup.asm
+g_8B20,segDgroup1,g_8B20,new,high,"segment constant 45C9h (dgroup) loaded into es by ControlsDlgLoop, ControlsDlgPlayoff",src/data/dgroup.asm
+g_8B22,segSaveDialogRects1,g_8B22,new,high,segment constant 35EEh (save_dialog_rects) loaded into es by DrawControlsDlg,src/data/dgroup.asm
+g_8B24,segDgroup2,g_8B24,new,high,segment constant 45C9h (dgroup) loaded into es by TitleScreen,src/data/dgroup.asm
+g_8B26,segCredits1,g_8B26,new,high,segment constant 3608h (credits) loaded into es by GoodnightScreen,src/data/dgroup.asm
+g_8B28,segMenuText1,g_8B28,new,high,segment constant 3448h (menu_text) loaded into es by SetSideControls,src/data/dgroup.asm
+g_8B2A,segMenuText2,g_8B2A,new,high,segment constant 3448h (menu_text) loaded into es by SetSideControls,src/data/dgroup.asm
+g_8B2C,segMenuText3,g_8B2C,new,high,"segment constant 3448h (menu_text) loaded into es by GameLineEditorLoop, MenuUseDefaultLines, MenuUseOriginalLines",src/data/dgroup.asm
+g_8B2E,segMenuText4,g_8B2E,new,high,"segment constant 3448h (menu_text) loaded into es by GameLineEditorLoop, GameScratchPlayer, MenuUseDefaultLines ...",src/data/dgroup.asm
+g_8B30,segMenuText5,g_8B30,new,high,"segment constant 3448h (menu_text) loaded into es by GameLineEditorLoop, GameScratchPlayer, MenuUseDefaultLines ...",src/data/dgroup.asm
+g_8B32,segMenuText6,g_8B32,new,high,"segment constant 3448h (menu_text) loaded into es by GameLineEditorLoop, GameScratchPlayer, MenuUseDefaultLines ...",src/data/dgroup.asm
+g_8B34,segCharTable1,g_8B34,new,high,"segment constant 3680h (char_table) loaded into es by DrawGameLineJerseys, GameLineEditorLoop, LoadJerseyColours",src/data/dgroup.asm
+g_8B36,segDbFiles1,g_8B36,new,high,"segment constant 3415h (db_files) loaded into es by MenuOpenSaved, SelectSavedFile",src/data/dgroup.asm
+g_8B38,segDbFiles2,g_8B38,new,high,"segment constant 3415h (db_files) loaded into es by DeleteSavedGame, MenuOpenSaved",src/data/dgroup.asm
+g_8B3A,segDbFiles3,g_8B3A,new,high,segment constant 3415h (db_files) loaded into es by MenuOpenSaved,src/data/dgroup.asm
+g_8B3C,segDbFiles4,g_8B3C,new,high,"segment constant 3415h (db_files) loaded into es by DeleteSavedGame, MenuOpenSaved",src/data/dgroup.asm
+g_8B3E,segDialogRects1,g_8B3E,new,high,"segment constant 369Ah (dialog_rects) loaded into es by DrawFileDlg, DrawFileDlgList, RunFileDlg",src/data/dgroup.asm
+g_8B40,segMenuText7,g_8B40,new,high,"segment constant 3448h (menu_text) loaded into es by DeleteSavedGame, SelectSavedFile",src/data/dgroup.asm
+g_8B42,segPlayoffDialogRects1,g_8B42,new,high,segment constant 36A8h (playoff_dialog_rects) loaded into es by SetSoundDevice,src/data/dgroup.asm
+g_8B44,segDbFiles5,g_8B44,new,high,"segment constant 3415h (db_files) loaded into es by DrawLockerRoom, LockerRoomLoop",src/data/dgroup.asm
+g_8B46,segMenuText8,g_8B46,new,high,segment constant 3448h (menu_text) loaded into es by LockerRoomLoop,src/data/dgroup.asm
+g_8B48,segMenuText9,g_8B48,new,high,segment constant 3448h (menu_text) loaded into es by MenuPlayoffHilights,src/data/dgroup.asm
+g_8B4A,segDbFiles6,g_8B4A,new,high,"segment constant 3415h (db_files) loaded into es by CreatePlayoffs, PlayoffModeLoop",src/data/dgroup.asm
+g_8B4C,segTeamChoiceText1,g_8B4C,new,high,"segment constant 3701h (team_choice_text) loaded into es by CreatePlayoffs, POSimSeries, POSimSeriesTeamWins",src/data/dgroup.asm
+g_8B4E,segMenuText10,g_8B4E,new,high,segment constant 3448h (menu_text) loaded into es by CreatePlayoffs,src/data/dgroup.asm
+g_8B50,segDbFiles7,g_8B50,new,high,"segment constant 3415h (db_files) loaded into es by POCreateSchedule, POInitSchedule, POPickConfTeams",src/data/dgroup.asm
+g_8B52,segMenuText11,g_8B52,new,high,"segment constant 3448h (menu_text) loaded into es by POAfterGame, PlayoffModeLoop",src/data/dgroup.asm
+g_8B54,segWorkBuffer1,g_8B54,new,high,segment constant 3A0Bh (work_buffer) loaded into es by PlayoffModeLoop,src/data/dgroup.asm
+g_8B56,segDbFiles8,g_8B56,new,high,segment constant 3415h (db_files) loaded into es by PlayoffModeLoop,src/data/dgroup.asm
+g_8B58,segDgroup3,g_8B58,new,high,"segment constant 45C9h (dgroup) loaded into es by DrawPlayoffTree, PlayoffModeLoop",src/data/dgroup.asm
+g_8B5A,segMenuText12,g_8B5A,new,high,segment constant 3448h (menu_text) loaded into es by SetModeMenuLabels,src/data/dgroup.asm
+g_8B5C,segMenuText13,g_8B5C,new,high,segment constant 3448h (menu_text) loaded into es by SetModeMenuLabels,src/data/dgroup.asm
+g_8B5E,segDgroup4,g_8B5E,new,high,segment constant 45C9h (dgroup) loaded into es by MenuLeagueSettingsEdit,src/data/dgroup.asm
+g_8B60,segMenuText14,g_8B60,new,high,segment constant 3448h (menu_text) loaded into es by SportsDesk,src/data/dgroup.asm
+g_8B62,segWorkBuffer2,g_8B62,new,high,segment constant 3A0Bh (work_buffer) loaded into es by SportsDesk,src/data/dgroup.asm
+g_8B64,segDbFiles9,g_8B64,new,high,segment constant 3415h (db_files) loaded into es by SportsDesk,src/data/dgroup.asm
+g_8B66,segDbFiles10,g_8B66,new,high,segment constant 3415h (db_files) loaded into es by SportsDesk,src/data/dgroup.asm
+g_8B68,segReturnMessages1,g_8B68,new,high,"segment constant 36F5h (return_messages) loaded into es by DeskExitGame, DeskReturnConfirm",src/data/dgroup.asm
+g_8B6A,segDgroup5,g_8B6A,new,high,segment constant 45C9h (dgroup) loaded into es by DeskExitGame,src/data/dgroup.asm
+g_8B6C,segMenuText15,g_8B6C,new,high,"segment constant 3448h (menu_text) loaded into es by DeskHomeGoalie1, DeskHomeGoalie2, DeskHomeGoalieNone",src/data/dgroup.asm
+g_8B6E,segMenuText16,g_8B6E,new,high,"segment constant 3448h (menu_text) loaded into es by DeskAwayGoalie1, DeskAwayGoalie2, DeskAwayGoalieNone",src/data/dgroup.asm
+g_8B70,segMenuText17,g_8B70,new,high,"segment constant 3448h (menu_text) loaded into es by MainDeskLoop, MenuLeagueHilights, MenuNewExhibition",src/data/dgroup.asm
+g_8B72,segMenuText18,g_8B72,new,high,segment constant 3448h (menu_text) loaded into es by LoadModeState,src/data/dgroup.asm
+g_8B78,segDbFiles11,g_8B78,new,high,segment constant 3415h (db_files) loaded into es by MenuNewLeague,src/data/dgroup.asm
+g_8B7A,segMenuText19,g_8B7A,new,high,segment constant 3448h (menu_text) loaded into es by MenuNewLeague,src/data/dgroup.asm
+g_8B7C,segWorkBuffer3,g_8B7C,new,high,"segment constant 3A0Bh (work_buffer) loaded into es by AddHumanTeam, RemoveHumanTeam",src/data/dgroup.asm
+g_8B7E,segTeamChoiceText2,g_8B7E,new,high,"segment constant 3701h (team_choice_text) loaded into es by AddHumanTeam, RemoveHumanTeam",src/data/dgroup.asm
+g_8B80,segWorkBuffer4,g_8B80,new,high,"segment constant 3A0Bh (work_buffer) loaded into es by AddHumanTeam, RemoveHumanTeam",src/data/dgroup.asm
+g_8B82,segTeamChoiceText3,g_8B82,new,high,"segment constant 3701h (team_choice_text) loaded into es by AddHumanTeam, RemoveHumanTeam",src/data/dgroup.asm
+g_8B84,segWorkBuffer5,g_8B84,new,high,"segment constant 3A0Bh (work_buffer) loaded into es by AddHumanTeam, RemoveHumanTeam",src/data/dgroup.asm
+g_8B86,segTeamChoiceText4,g_8B86,new,high,"segment constant 3701h (team_choice_text) loaded into es by AddHumanTeam, RemoveHumanTeam",src/data/dgroup.asm
+g_8B88,segWorkBuffer6,g_8B88,new,high,"segment constant 3A0Bh (work_buffer) loaded into es by AddHumanTeam, RemoveHumanTeam",src/data/dgroup.asm
+g_8B8A,segWorkBuffer7,g_8B8A,new,high,segment constant 3A0Bh (work_buffer) loaded into es by DrawTeamGrid,src/data/dgroup.asm
+g_8B8C,segWorkBuffer8,g_8B8C,new,high,segment constant 3A0Bh (work_buffer) loaded into es by ChooseLeagueController,src/data/dgroup.asm
+g_8B8E,segWorkBuffer9,g_8B8E,new,high,segment constant 3A0Bh (work_buffer) loaded into es by ChooseLeagueController,src/data/dgroup.asm
+g_8B90,segWorkBuffer10,g_8B90,new,high,segment constant 3A0Bh (work_buffer) loaded into es by ChooseLeagueController,src/data/dgroup.asm
+g_8B92,segWorkBuffer11,g_8B92,new,high,segment constant 3A0Bh (work_buffer) loaded into es by ChooseLeagueController,src/data/dgroup.asm
+g_8B94,segTeamChoiceText5,g_8B94,new,high,segment constant 3701h (team_choice_text) loaded into es by AskExportToFloppy,src/data/dgroup.asm
+g_8B96,segTeamChoiceText6,g_8B96,new,high,segment constant 3701h (team_choice_text) loaded into es by LeagueTeamSelect,src/data/dgroup.asm
+g_8B98,segTeamChoiceText7,g_8B98,new,high,segment constant 3701h (team_choice_text) loaded into es by LeagueTeamSelect,src/data/dgroup.asm
+g_8B9A,segTeamChoiceText8,g_8B9A,new,high,segment constant 3701h (team_choice_text) loaded into es by LeagueTeamSelect,src/data/dgroup.asm
+g_8B9C,segTeamChoiceText9,g_8B9C,new,high,"segment constant 3701h (team_choice_text) loaded into es by FindLeagueFloppy, SelectFloppyDrive",src/data/dgroup.asm
+g_8B9E,segTeamChoiceText10,g_8B9E,new,high,segment constant 3701h (team_choice_text) loaded into es by FindLeagueFloppy,src/data/dgroup.asm
+g_8BA0,segTeamChoiceText11,g_8BA0,new,high,segment constant 3701h (team_choice_text) loaded into es by WaitLeagueFloppy,src/data/dgroup.asm
+g_8BA2,segTeamChoiceText12,g_8BA2,new,high,segment constant 3701h (team_choice_text) loaded into es by ExportTeamToFloppy,src/data/dgroup.asm
+g_8BA4,segTeamChoiceText13,g_8BA4,new,high,"segment constant 3701h (team_choice_text) loaded into es by CopyLeagueFiles, ExportDbs, ExportTeamToFloppy ...",src/data/dgroup.asm
+g_8BA6,segTeamChoiceText14,g_8BA6,new,high,"segment constant 3701h (team_choice_text) loaded into es by ExportDbs, ExportTeamToFloppy",src/data/dgroup.asm
+g_8BA8,segWorkBuffer12,g_8BA8,new,high,"segment constant 3A0Bh (work_buffer) loaded into es by ExportDbs, ImportMasterLeague",src/data/dgroup.asm
+g_8BAA,segTeamChoiceText15,g_8BAA,new,high,segment constant 3701h (team_choice_text) loaded into es by ImportPlayerTeam,src/data/dgroup.asm
+g_8BAC,segWorkBuffer13,g_8BAC,new,high,"segment constant 3A0Bh (work_buffer) loaded into es by ExportDbs, ImportPlayerTeam",src/data/dgroup.asm
+g_8BAE,segTeamChoiceText16,g_8BAE,new,high,"segment constant 3701h (team_choice_text) loaded into es by ExportDbs, ImportPlayerTeam",src/data/dgroup.asm
+g_8BB0,segWorkBuffer14,g_8BB0,new,high,"segment constant 3A0Bh (work_buffer) loaded into es by ExportDbs, ImportPlayerTeam",src/data/dgroup.asm
+g_8BB2,segTeamChoiceText17,g_8BB2,new,high,"segment constant 3701h (team_choice_text) loaded into es by ExportDbs, ImportPlayerTeam",src/data/dgroup.asm
+g_8BB4,segWorkBuffer15,g_8BB4,new,high,"segment constant 3A0Bh (work_buffer) loaded into es by ExportDbs, ImportPlayerTeam",src/data/dgroup.asm
+g_8BB6,segTeamChoiceText18,g_8BB6,new,high,segment constant 3701h (team_choice_text) loaded into es by ImportPlayerTeam,src/data/dgroup.asm
+g_8BB8,segTeamChoiceText19,g_8BB8,new,high,segment constant 3701h (team_choice_text) loaded into es by ImportPlayerTeam,src/data/dgroup.asm
+g_8BBA,segTeamChoiceText20,g_8BBA,new,high,segment constant 3701h (team_choice_text) loaded into es by ImportPlayerTeam,src/data/dgroup.asm
+g_8BBC,segMenuText20,g_8BBC,new,high,segment constant 3448h (menu_text) loaded into es by ImportDbs,src/data/dgroup.asm
+g_8BBE,segDbFiles12,g_8BBE,new,high,segment constant 3415h (db_files) loaded into es by ImportDbs,src/data/dgroup.asm
+g_8BC0,segWorkBuffer16,g_8BC0,new,high,segment constant 3A0Bh (work_buffer) loaded into es by ExportDbs,src/data/dgroup.asm
+g_8BC2,segTeamChoiceText21,g_8BC2,new,high,segment constant 3701h (team_choice_text) loaded into es by ReadLeagueInfo,src/data/dgroup.asm
+g_8BC4,segWorkBuffer17,g_8BC4,new,high,segment constant 3A0Bh (work_buffer) loaded into es by CheckMasterPassword,src/data/dgroup.asm
+g_8BC6,segTeamChoiceText22,g_8BC6,new,high,segment constant 3701h (team_choice_text) loaded into es by CheckMasterPassword,src/data/dgroup.asm
+g_8BC8,segWorkBuffer18,g_8BC8,new,high,segment constant 3A0Bh (work_buffer) loaded into es by CheckMasterPassword,src/data/dgroup.asm
+g_8BCA,segTeamChoiceText23,g_8BCA,new,high,segment constant 3701h (team_choice_text) loaded into es by MsgCopyingDatabases,src/data/dgroup.asm
+g_8BCC,segTeamChoiceText24,g_8BCC,new,high,segment constant 3701h (team_choice_text) loaded into es by CopyHumanTeamDBs,src/data/dgroup.asm
+g_8BCE,segTeamChoiceText25,g_8BCE,new,high,segment constant 3701h (team_choice_text) loaded into es by CopyHumanTeamDBs,src/data/dgroup.asm
+g_8BD0,segTeamChoiceText26,g_8BD0,new,high,segment constant 3701h (team_choice_text) loaded into es by CopyHumanTeamDBs,src/data/dgroup.asm
+g_8BD2,segTeamChoiceText27,g_8BD2,new,high,segment constant 3701h (team_choice_text) loaded into es by SimulateGame,src/data/dgroup.asm
+g_8BD4,segWorkBuffer19,g_8BD4,new,high,segment constant 3A0Bh (work_buffer) loaded into es by DrawCalendarDay,src/data/dgroup.asm
+g_8BD6,segTeamChoiceText28,g_8BD6,new,high,segment constant 3701h (team_choice_text) loaded into es by DrawCalendarDay,src/data/dgroup.asm
+g_8BD8,segWorkBuffer20,g_8BD8,new,high,"segment constant 3A0Bh (work_buffer) loaded into es by PlayLeagueGame, SetGameSides",src/data/dgroup.asm
+g_8BDA,segTeamChoiceText29,g_8BDA,new,high,"segment constant 3701h (team_choice_text) loaded into es by CalendarScreen, PlayLeagueGame, PostGameToTeamDb",src/data/dgroup.asm
+g_8BDC,segTeamChoiceText30,g_8BDC,new,high,segment constant 3701h (team_choice_text) loaded into es by CalendarScreen,src/data/dgroup.asm
+g_8BDE,segTeamChoiceText31,g_8BDE,new,high,segment constant 3701h (team_choice_text) loaded into es by CheckLeagueDiskSync,src/data/dgroup.asm
+g_8BE0,segTeamChoiceText32,g_8BE0,new,high,segment constant 3701h (team_choice_text) loaded into es by CheckLeagueDiskSync,src/data/dgroup.asm
+g_8BE2,segWorkBuffer21,g_8BE2,new,high,segment constant 3A0Bh (work_buffer) loaded into es by PostGameToTeamDb,src/data/dgroup.asm
+g_8BE4,segWorkBuffer22,g_8BE4,new,high,segment constant 3A0Bh (work_buffer) loaded into es by PostGameToTeamDb,src/data/dgroup.asm
+g_8BE6,segWorkBuffer23,g_8BE6,new,high,segment constant 3A0Bh (work_buffer) loaded into es by PlayLeagueGame,src/data/dgroup.asm
+g_8BE8,segTeamChoiceText33,g_8BE8,new,high,segment constant 3701h (team_choice_text) loaded into es by PlayLeagueGame,src/data/dgroup.asm
+g_8BEA,segTeamChoiceText34,g_8BEA,new,high,segment constant 3701h (team_choice_text) loaded into es by PlayLeagueGame,src/data/dgroup.asm
+g_8BEC,segWorkBuffer24,g_8BEC,new,high,segment constant 3A0Bh (work_buffer) loaded into es by PlayLeagueGame,src/data/dgroup.asm
+g_8BEE,segWorkBuffer25,g_8BEE,new,high,segment constant 3A0Bh (work_buffer) loaded into es by PlayLeagueGame,src/data/dgroup.asm
+g_8BF0,segDgroup6,g_8BF0,new,high,segment constant 45C9h (dgroup) loaded into es by PlayLeagueGame,src/data/dgroup.asm
+g_8BF2,segDbFiles13,g_8BF2,new,high,segment constant 3415h (db_files) loaded into es by PlayLeagueGame,src/data/dgroup.asm
+g_8BF4,segTeamChoiceText35,g_8BF4,new,high,"segment constant 3701h (team_choice_text) loaded into es by RandomizeSchedule, UpdateSeasonSchedule",src/data/dgroup.asm
+g_8BF6,segWorkBuffer26,g_8BF6,new,high,segment constant 3A0Bh (work_buffer) loaded into es by CreateNewLeague,src/data/dgroup.asm
+g_8BF8,segTeamChoiceText36,g_8BF8,new,high,segment constant 3701h (team_choice_text) loaded into es by CreateNewLeague,src/data/dgroup.asm
+g_8BFA,segWorkBuffer27,g_8BFA,new,high,segment constant 3A0Bh (work_buffer) loaded into es by CreateNewLeague,src/data/dgroup.asm
+g_8BFC,segWorkBuffer28,g_8BFC,new,high,segment constant 3A0Bh (work_buffer) loaded into es by CreateNewLeague,src/data/dgroup.asm
+g_8BFE,segWorkBuffer29,g_8BFE,new,high,segment constant 3A0Bh (work_buffer) loaded into es by CreateNewLeague,src/data/dgroup.asm
+g_8C00,segWorkBuffer30,g_8C00,new,high,segment constant 3A0Bh (work_buffer) loaded into es by CreateNewLeague,src/data/dgroup.asm
+g_8C02,segDbFiles14,g_8C02,new,high,segment constant 3415h (db_files) loaded into es by CreateNewLeague,src/data/dgroup.asm
+g_8C04,segTeamChoiceText37,g_8C04,new,high,"segment constant 3701h (team_choice_text) loaded into es by BuildTradeRoster, ExecuteTrade, TradePlayers",src/data/dgroup.asm
+g_8C06,segTeamChoiceText38,g_8C06,new,high,segment constant 3701h (team_choice_text) loaded into es by BuildTradeRoster,src/data/dgroup.asm
+g_8C08,segTeamChoiceText39,g_8C08,new,high,segment constant 3701h (team_choice_text) loaded into es by BuildTradeRoster,src/data/dgroup.asm
+g_8C0A,segWorkBuffer31,g_8C0A,new,high,segment constant 3A0Bh (work_buffer) loaded into es by FixJerseyConflict,src/data/dgroup.asm
+g_8C0C,segTradeMessages1,g_8C0C,new,high,"segment constant 382Bh (trade_messages) loaded into es by DrawTradeScreen, TradeScreenLoop",src/data/dgroup.asm
+g_8C0E,segTeamChoiceText40,g_8C0E,new,high,"segment constant 3701h (team_choice_text) loaded into es by TradeHitTest, TradeScreenLoop",src/data/dgroup.asm
+g_8C10,segMenuText21,g_8C10,new,high,segment constant 3448h (menu_text) loaded into es by TradeScreenLoop,src/data/dgroup.asm
+g_8C12,segCharTable2,g_8C12,new,high,segment constant 3680h (char_table) loaded into es by TradeScreenLoop,src/data/dgroup.asm
+g_8C14,segWorkBuffer32,g_8C14,new,high,segment constant 3A0Bh (work_buffer) loaded into es by TradePlayers,src/data/dgroup.asm
+g_8C16,segTeamChoiceText41,g_8C16,new,high,segment constant 3701h (team_choice_text) loaded into es by TradePlayers,src/data/dgroup.asm
+g_8C18,segWorkBuffer33,g_8C18,new,high,segment constant 3A0Bh (work_buffer) loaded into es by TradePlayers,src/data/dgroup.asm
+g_8C1A,segTeamChoiceText42,g_8C1A,new,high,segment constant 3701h (team_choice_text) loaded into es by TradePlayers,src/data/dgroup.asm
+g_8C1C,segWorkBuffer34,g_8C1C,new,high,segment constant 3A0Bh (work_buffer) loaded into es by TradePlayers,src/data/dgroup.asm
+g_8C1E,segTeamChoiceText43,g_8C1E,new,high,"segment constant 3701h (team_choice_text) loaded into es by MergeLeagueFiles, MergeScheduleDb, MergeTeamDbs",src/data/dgroup.asm
+g_8C20,segTeamChoiceText44,g_8C20,new,high,segment constant 3701h (team_choice_text) loaded into es by LocateTeamDbCopy,src/data/dgroup.asm
+g_8C22,segWorkBuffer35,g_8C22,new,high,"segment constant 3A0Bh (work_buffer) loaded into es by MergeLeagueFiles, MergeUpdateDbs, UpdateTeamDbs",src/data/dgroup.asm
+g_8C24,segTeamChoiceText45,g_8C24,new,high,"segment constant 3701h (team_choice_text) loaded into es by MergeLeagueFiles, UpdateTeamDbs",src/data/dgroup.asm
+g_8C26,segTeamChoiceText46,g_8C26,new,high,"segment constant 3701h (team_choice_text) loaded into es by MergeLeagueFiles, UpdateTeamDbs",src/data/dgroup.asm
+g_8C28,segWorkBuffer36,g_8C28,new,high,"segment constant 3A0Bh (work_buffer) loaded into es by MergeLeagueFiles, MergeUpdateDbs, RebuildLeagueDbs",src/data/dgroup.asm
+g_8C2A,segWorkBuffer37,g_8C2A,new,high,"segment constant 3A0Bh (work_buffer) loaded into es by MergeLeagueFiles, MergeUpdateDbs, RebuildLeagueDbs",src/data/dgroup.asm
+g_8C2C,segMergeMessages1,g_8C2C,new,high,segment constant 3836h (merge_messages) loaded into es by MergeLeagueFiles,src/data/dgroup.asm
+g_8C2E,segWorkBuffer38,g_8C2E,new,high,segment constant 3A0Bh (work_buffer) loaded into es by MergeLeagueFiles,src/data/dgroup.asm
+g_8C30,segTeamChoiceText47,g_8C30,new,high,segment constant 3701h (team_choice_text) loaded into es by PickAwardWinners,src/data/dgroup.asm
+g_8C32,segDbFiles15,g_8C32,new,high,"segment constant 3415h (db_files) loaded into es by BuildSeasonTitle, SetupStatsMenus",src/data/dgroup.asm
+g_8C34,segDbFiles16,g_8C34,new,high,"segment constant 3415h (db_files) loaded into es by BuildSeasonTitle, SetupStatsMenus",src/data/dgroup.asm
+g_8C44,segTeamChoiceText48,g_8C44,new,high,segment constant 3701h (team_choice_text) loaded into es by SetupStatsMenus,src/data/dgroup.asm
+g_8C46,segMenuText22,g_8C46,new,high,segment constant 3448h (menu_text) loaded into es by SetupStatsMenus,src/data/dgroup.asm
+g_8C48,segMenuText23,g_8C48,new,high,segment constant 3448h (menu_text) loaded into es by SetupStatsMenus,src/data/dgroup.asm
+g_8C4A,segMenuText24,g_8C4A,new,high,segment constant 3448h (menu_text) loaded into es by SetupStatsMenus,src/data/dgroup.asm
+g_8C4C,segMenuText25,g_8C4C,new,high,segment constant 3448h (menu_text) loaded into es by SetupStatsMenus,src/data/dgroup.asm
+g_8C4E,segMenuText26,g_8C4E,new,high,segment constant 3448h (menu_text) loaded into es by SetupStatsMenus,src/data/dgroup.asm
+g_8C50,segMenuText27,g_8C50,new,high,segment constant 3448h (menu_text) loaded into es by SetupStatsMenus,src/data/dgroup.asm
+g_8C52,segMenuText28,g_8C52,new,high,segment constant 3448h (menu_text) loaded into es by SetupStatsMenus,src/data/dgroup.asm
+g_8C54,segMenuText29,g_8C54,new,high,segment constant 3448h (menu_text) loaded into es by SetupStatsMenus,src/data/dgroup.asm
+g_8C56,segMenuText30,g_8C56,new,high,segment constant 3448h (menu_text) loaded into es by SetupStatsMenus,src/data/dgroup.asm
+g_8C58,segMenuText31,g_8C58,new,high,segment constant 3448h (menu_text) loaded into es by SetupStatsMenus,src/data/dgroup.asm
+g_8C5A,segMenuText32,g_8C5A,new,high,segment constant 3448h (menu_text) loaded into es by SetStatsMenuText,src/data/dgroup.asm
+g_8C5C,segMenuText33,g_8C5C,new,high,segment constant 3448h (menu_text) loaded into es by SetStatsMenuText,src/data/dgroup.asm
+g_8C5E,segMenuText34,g_8C5E,new,high,segment constant 3448h (menu_text) loaded into es by SetStatsMenuText,src/data/dgroup.asm
+g_8C60,segMenuText35,g_8C60,new,high,segment constant 3448h (menu_text) loaded into es by SetStatsMenuText,src/data/dgroup.asm
+g_8C62,segSeasonTitles1,g_8C62,new,high,segment constant 384Bh (season_titles) loaded into es by GetSeasonTitle,src/data/dgroup.asm
+g_8C64,segSeasonTitles2,g_8C64,new,high,segment constant 384Bh (season_titles) loaded into es by GetSeasonTitle,src/data/dgroup.asm
+g_8C66,segSeasonTitles3,g_8C66,new,high,segment constant 384Bh (season_titles) loaded into es by GetSeasonTitle,src/data/dgroup.asm
+g_8C68,segSeasonTitles4,g_8C68,new,high,segment constant 384Bh (season_titles) loaded into es by GetSeasonTitle,src/data/dgroup.asm
+g_8C6A,segSeasonTitles5,g_8C6A,new,high,segment constant 384Bh (season_titles) loaded into es by GetSeasonTitle,src/data/dgroup.asm
+g_8C6C,segWorkBuffer39,g_8C6C,new,high,segment constant 3A0Bh (work_buffer) loaded into es by GoalieStatsCard,src/data/dgroup.asm
+g_8C70,segWorkBuffer40,g_8C70,new,high,segment constant 3A0Bh (work_buffer) loaded into es by GameStandingsMenu,src/data/dgroup.asm
+g_8C72,segSeasonTitles6,g_8C72,new,high,"segment constant 384Bh (season_titles) loaded into es by StatsSelLeague, StatsSelLeaguePlayoffs, StatsSelNhlPlayoffs ...",src/data/dgroup.asm
+g_8C74,segSeasonTitles7,g_8C74,new,high,"segment constant 384Bh (season_titles) loaded into es by StatsSelLeague, StatsSelLeaguePlayoffs, StatsSelNhlPlayoffs ...",src/data/dgroup.asm
+g_8C76,segSeasonTitles8,g_8C76,new,high,"segment constant 384Bh (season_titles) loaded into es by StatsSelLeague, StatsSelLeaguePlayoffs, StatsSelNhlPlayoffs ...",src/data/dgroup.asm
+g_8C78,segSeasonTitles9,g_8C78,new,high,"segment constant 384Bh (season_titles) loaded into es by StatsSelLeague, StatsSelLeaguePlayoffs, StatsSelNhlPlayoffs ...",src/data/dgroup.asm
+g_8C7A,segSeasonTitles10,g_8C7A,new,high,"segment constant 384Bh (season_titles) loaded into es by StatsSelLeague, StatsSelLeaguePlayoffs, StatsSelNhlPlayoffs ...",src/data/dgroup.asm
+g_8C7C,segWorkBuffer41,g_8C7C,new,high,"segment constant 3A0Bh (work_buffer) loaded into es by StatsSelLeague, StatsSelLeaguePlayoffs, StatsSelNhlPlayoffs ...",src/data/dgroup.asm
+g_8C7E,segWorkBuffer42,g_8C7E,new,high,segment constant 3A0Bh (work_buffer) loaded into es by EasnStandingsMenu,src/data/dgroup.asm
+g_8C80,segWorkBuffer43,g_8C80,new,high,segment constant 3A0Bh (work_buffer) loaded into es by CalStandingsMenu,src/data/dgroup.asm
+g_8C82,segWorkBuffer44,g_8C82,new,high,segment constant 3A0Bh (work_buffer) loaded into es by SkaterStatsCard,src/data/dgroup.asm
+g_8C84,segMenuText36,g_8C84,new,high,"segment constant 3448h (menu_text) loaded into es by ShowPlayoffStandings, StandingsScreen",src/data/dgroup.asm
+g_8C86,segDgroup7,g_8C86,new,high,segment constant 45C9h (dgroup) loaded into es by DrawStandingsPage,src/data/dgroup.asm
+g_8C88,segTeamChoiceText49,g_8C88,new,high,"segment constant 3701h (team_choice_text) loaded into es by LoadLeagueSchedule, ShowSeasonStandings",src/data/dgroup.asm
+g_8C8A,segDbFiles17,g_8C8A,new,high,"segment constant 3415h (db_files) loaded into es by Gameloop, PlayGame",src/data/dgroup.asm
+g_8C8C,segDgroup8,g_8C8C,new,high,segment constant 45C9h (dgroup) loaded into es by LoadGameGfx,src/data/dgroup.asm
+g_8C8E,segTeamChoiceText50,g_8C8E,new,high,segment constant 3701h (team_choice_text) loaded into es by ShowMatchupScreen,src/data/dgroup.asm
+g_8C90,segLinesMenuText1,g_8C90,new,high,segment constant 38AFh (lines_menu_text) loaded into es by ShowMatchupScreen,src/data/dgroup.asm
+g_8C92,segMenuText37,g_8C92,new,high,segment constant 3448h (menu_text) loaded into es by ShowMatchupScreen,src/data/dgroup.asm
+g_8C94,segWorkBuffer45,g_8C94,new,high,segment constant 3A0Bh (work_buffer) loaded into es by ShowMatchupScreen,src/data/dgroup.asm
+g_8C96,segDbFiles18,g_8C96,new,high,segment constant 3415h (db_files) loaded into es by ShowMatchupScreen,src/data/dgroup.asm
+g_8C98,segTeamChoiceText51,g_8C98,new,high,segment constant 3701h (team_choice_text) loaded into es by ShowStartingLineups,src/data/dgroup.asm
+g_8C9A,segWorkBuffer46,g_8C9A,new,high,segment constant 3A0Bh (work_buffer) loaded into es by ShowStartingLineups,src/data/dgroup.asm
+g_8CA4,segWorkBuffer47,g_8CA4,new,high,segment constant 3A0Bh (work_buffer) loaded into es by DrawPeriodTitle,src/data/dgroup.asm
+g_8CA6,segTeamChoiceText52,g_8CA6,new,high,segment constant 3701h (team_choice_text) loaded into es by ShowGameSummary,src/data/dgroup.asm
+g_8CA8,segWorkBuffer48,g_8CA8,new,high,segment constant 3A0Bh (work_buffer) loaded into es by ShowGameSummary,src/data/dgroup.asm
+g_8CAA,segDbFiles19,g_8CAA,new,high,segment constant 3415h (db_files) loaded into es by ShowGameSummary,src/data/dgroup.asm
+g_8CAC,segWorkBuffer49,g_8CAC,new,high,segment constant 3A0Bh (work_buffer) loaded into es by ShowGameSummary,src/data/dgroup.asm
+g_8CAE,segWorkBuffer50,g_8CAE,new,high,segment constant 3A0Bh (work_buffer) loaded into es by ShowTeamStats,src/data/dgroup.asm
+g_8CB0,segDbFiles20,g_8CB0,new,high,segment constant 3415h (db_files) loaded into es by IntermissionScreens,src/data/dgroup.asm
+g_8CB2,segWorkBuffer51,g_8CB2,new,high,segment constant 3A0Bh (work_buffer) loaded into es by PlayTitleMovies,src/data/dgroup.asm
+g_8CB4,segWorkBuffer52,g_8CB4,new,high,segment constant 3A0Bh (work_buffer) loaded into es by PlayTitleMovies,src/data/dgroup.asm
+g_8CB6,segWorkBuffer53,g_8CB6,new,high,segment constant 3A0Bh (work_buffer) loaded into es by PlayTitleMovies,src/data/dgroup.asm
+g_8CB8,segWorkBuffer54,g_8CB8,new,high,segment constant 3A0Bh (work_buffer) loaded into es by CreateGSummaryDb,src/data/dgroup.asm
+g_8CBA,segWorkBuffer55,g_8CBA,new,high,segment constant 3A0Bh (work_buffer) loaded into es by BuildTeamRoster,src/data/dgroup.asm
+g_8CBC,segWorkBuffer56,g_8CBC,new,high,segment constant 3A0Bh (work_buffer) loaded into es by BuildTeamRoster,src/data/dgroup.asm
+g_8CBE,segWorkBuffer57,g_8CBE,new,high,segment constant 3A0Bh (work_buffer) loaded into es by BuildTeamRoster,src/data/dgroup.asm
+g_8CC0,segTeamChoiceText53,g_8CC0,new,high,segment constant 3701h (team_choice_text) loaded into es by GSummaryPath,src/data/dgroup.asm
+g_8CC2,segMenuText38,g_8CC2,new,high,"segment constant 3448h (menu_text) loaded into es by ClearTeamNameText, SetTeamNameText",src/data/dgroup.asm
+g_8CC4,segMenuText39,g_8CC4,new,high,"segment constant 3448h (menu_text) loaded into es by ClearTeamNameText, SetTeamNameText",src/data/dgroup.asm
+g_8CC6,segAnimSequences1,g_8CC6,new,high,segment constant 38F6h (anim_sequences) loaded into es by DrawReplayFrame,src/data/dgroup.asm
+g_8CC8,segAnimSequences2,g_8CC8,new,high,segment constant 38F6h (anim_sequences) loaded into es by DrawReplayFrame,src/data/dgroup.asm
+g_8CCA,segDgroup9,g_8CCA,new,high,segment constant 45C9h (dgroup) loaded into es by DrawReplayFrame,src/data/dgroup.asm
+g_8CCC,segAnimSequences3,g_8CCC,new,high,segment constant 38F6h (anim_sequences) loaded into es by LoadGameState,src/data/dgroup.asm
+g_8CCE,segAnimSequences4,g_8CCE,new,high,segment constant 38F6h (anim_sequences) loaded into es by LoadGameState,src/data/dgroup.asm
+g_8CD4,segObjectTable1,g_8CD4,new,high,segment constant 3863h (object_table) loaded into es by LoadGameState,src/data/dgroup.asm
+g_8CD6,segDgroup10,g_8CD6,new,high,segment constant 45C9h (dgroup) loaded into es by PlayHilight,src/data/dgroup.asm
+g_8CD8,segWorkBuffer58,g_8CD8,new,high,segment constant 3A0Bh (work_buffer) loaded into es by BuildEventLines,src/data/dgroup.asm
+g_8CDA,segWorkBuffer59,g_8CDA,new,high,segment constant 3A0Bh (work_buffer) loaded into es by Endfaceoff,src/data/dgroup.asm
+g_8CDC,segWorkBuffer60,g_8CDC,new,high,segment constant 3A0Bh (work_buffer) loaded into es by PickThreeStars,src/data/dgroup.asm
+g_8CDE,segWorkBuffer61,g_8CDE,new,high,segment constant 3A0Bh (work_buffer) loaded into es by PickThreeStars,src/data/dgroup.asm
+g_8CE0,segDgroup11,g_8CE0,new,high,segment constant 45C9h (dgroup) loaded into es by DrawRinkOverlays,src/data/dgroup.asm
+g_8CE8,segDgroup12,g_8CE8,new,high,segment constant 45C9h (dgroup) loaded into es by FadeVenetian,src/data/dgroup.asm
+g_8CEA,segDgroup13,g_8CEA,new,high,segment constant 45C9h (dgroup) loaded into es by FadeVenetian,src/data/dgroup.asm
+g_8CEC,segDgroup14,g_8CEC,new,high,segment constant 45C9h (dgroup) loaded into es by FadeWipe,src/data/dgroup.asm
+g_8CEE,segDgroup15,g_8CEE,new,high,segment constant 45C9h (dgroup) loaded into es by FadeWipe,src/data/dgroup.asm
+g_8CF0,segDgroup16,g_8CF0,new,high,segment constant 45C9h (dgroup) loaded into es by FadePlaneBands,src/data/dgroup.asm
+g_8CF2,segDgroup17,g_8CF2,new,high,segment constant 45C9h (dgroup) loaded into es by FadePlaneBands,src/data/dgroup.asm
+g_8CF4,segDgroup18,g_8CF4,new,high,segment constant 45C9h (dgroup) loaded into es by FadeBlockSweep,src/data/dgroup.asm
+g_8CF6,segDgroup19,g_8CF6,new,high,segment constant 45C9h (dgroup) loaded into es by FadeSlideStrips,src/data/dgroup.asm
+g_8CF8,segDgroup20,g_8CF8,new,high,segment constant 45C9h (dgroup) loaded into es by FadeSplitCenter,src/data/dgroup.asm
+g_8CFA,segDgroup21,g_8CFA,new,high,"segment constant 45C9h (dgroup) loaded into es by FadeRandomBlocks, FadeRandomBlocks2",src/data/dgroup.asm
+g_8CFC,segDgroup22,g_8CFC,new,high,segment constant 45C9h (dgroup) loaded into es by FadeDissolve,src/data/dgroup.asm
+g_8CFE,segDgroup23,g_8CFE,new,high,segment constant 45C9h (dgroup) loaded into es by FadeDissolve,src/data/dgroup.asm
+g_8D00,segDgroup24,g_8D00,new,high,segment constant 45C9h (dgroup) loaded into es by FadeBoxGrow,src/data/dgroup.asm
+g_8D02,segDgroup25,g_8D02,new,high,segment constant 45C9h (dgroup) loaded into es by FadeDirectional,src/data/dgroup.asm
+puckstruct,puckYpos2,puckstruct,95 PC,high,puck sort object field +06h (the object starts 6 bytes before),src/data/dgroup_bss.asm
+refposition,ref_1C,refposition,new,medium,referee sort object field +1Ch,src/data/dgroup_bss.asm
+g_B510,sortobj0_Xpos2,g_B510,new,medium,"sort object 0 (sortobj0), field +02h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_B514,sortobj0_Ypos2,g_B514,new,medium,"sort object 0 (sortobj0), field +06h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_B528,sortobj0_position,g_B528,new,medium,"sort object 0 (sortobj0), field +1Ah; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_B553,sortobj0_pflags2,g_B553,new,medium,"sort object 0 (sortobj0), field +45h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_B555,sortobj0_47,g_B555,new,medium,"sort object 0 (sortobj0), field +47h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BB10,sortobj12_Xpos2,g_BB10,new,medium,"sort object 12 (sortobj12), field +02h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BB14,sortobj12_Ypos2,g_BB14,new,medium,"sort object 12 (sortobj12), field +06h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BB1A,sortobj12_Xvel,g_BB1A,new,medium,"sort object 12 (sortobj12), field +0Ch; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BB1C,sortobj12_Yvel,g_BB1C,new,medium,"sort object 12 (sortobj12), field +0Eh; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BB90,sortobj13_Xpos2,g_BB90,new,medium,"sort object 13 (sortobj13), field +02h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BB94,sortobj13_Ypos2,g_BB94,new,medium,"sort object 13 (sortobj13), field +06h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BB9A,sortobj13_Xvel,g_BB9A,new,medium,"sort object 13 (sortobj13), field +0Ch; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BB9C,sortobj13_Yvel,g_BB9C,new,medium,"sort object 13 (sortobj13), field +0Eh; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BC10,puckXpos2,g_BC10,new,medium,"sort object 14 (puck), field +02h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BC18,puckZpos2,g_BC18,new,medium,"sort object 14 (puck), field +0Ah; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BC1A,puckXvel,g_BC1A,new,medium,"sort object 14 (puck), field +0Ch; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BC1C,puckYvel,g_BC1C,new,medium,"sort object 14 (puck), field +0Eh; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BC20,puckframe,g_BC20,new,medium,"sort object 14 (puck), field +12h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BC2A,puck_1C,g_BC2A,new,medium,"sort object 14 (puck), field +1Ch; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BC2C,puckasslist,g_BC2C,new,medium,"sort object 14 (puck), field +1Eh; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BC36,pucktemp2,g_BC36,new,medium,"sort object 14 (puck), field +28h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BC56,puck_48,g_BC56,new,medium,"sort object 14 (puck), field +48h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BC8E,doorstruct,g_BC8E,new,medium,"sort object 15 (door), field +00h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BC90,doorXpos2,g_BC90,new,medium,"sort object 15 (door), field +02h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BC94,doorYpos2,g_BC94,new,medium,"sort object 15 (door), field +06h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BC98,doorZpos2,g_BC98,new,medium,"sort object 15 (door), field +0Ah; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BC9A,doorXvel,g_BC9A,new,medium,"sort object 15 (door), field +0Ch; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BC9C,doorYvel,g_BC9C,new,medium,"sort object 15 (door), field +0Eh; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BCA0,doorframe,g_BCA0,new,medium,"sort object 15 (door), field +12h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BCB4,doortemp1,g_BCB4,new,medium,"sort object 15 (door), field +26h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BCB6,doortemp2,g_BCB6,new,medium,"sort object 15 (door), field +28h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BCC6,door_38,g_BCC6,new,medium,"sort object 15 (door), field +38h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BCD2,doorpflags,g_BCD2,new,medium,"sort object 15 (door), field +44h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BCD4,doorpflags3,g_BCD4,new,medium,"sort object 15 (door), field +46h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BCD6,door_48,g_BCD6,new,medium,"sort object 15 (door), field +48h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BD0E,refstruct,g_BD0E,new,medium,"sort object 16 (ref), field +00h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BD10,refXpos2,g_BD10,new,medium,"sort object 16 (ref), field +02h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BD1C,refYvel,g_BD1C,new,medium,"sort object 16 (ref), field +0Eh; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BD20,refframe,g_BD20,new,medium,"sort object 16 (ref), field +12h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BD28,refposition,g_BD28,new,medium,"sort object 16 (ref), field +1Ah; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BD3A,reftemp4,g_BD3A,new,medium,"sort object 16 (ref), field +2Ch; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BD3C,reftemp5,g_BD3C,new,medium,"sort object 16 (ref), field +2Eh; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BD44,ref_36,g_BD44,new,medium,"sort object 16 (ref), field +36h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BD58,ref_4A,g_BD58,new,medium,"sort object 16 (ref), field +4Ah; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BD59,ref_4B,g_BD59,new,medium,"sort object 16 (ref), field +4Bh; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_BD5A,ref_4C,g_BD5A,new,medium,"sort object 16 (ref), field +4Ch; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+g_58A6,GoalieSaveSides,g_58A6,new,medium,"save side bytes of puckgoalie, indexed by the hit direction",src/data/dgroup.asm
+g_58E2,PenaltyNamePtrs,g_58E2,new,medium,penalty name pointers of the game summary events (PostPenaltyEvent),src/data/dgroup.asm
+g_590A,AccelFactors,g_590A,new,medium,acceleration factor table of playeracc,src/data/dgroup.asm
+g_590C,AccelFactors2,g_590C,new,medium,second acceleration table of playeracc,src/data/dgroup.asm
+g_594A,asswingo_dedata,g_594A,new,medium,winger attack spots: x,src/data/dgroup.asm
+g_594C,asswingo_dedata_xrand,g_594C,new,medium,winger attack spots: random x range,src/data/dgroup.asm
+g_594E,asswingo_dedata_y,g_594E,new,medium,winger attack spots: y,src/data/dgroup.asm
+g_5950,asswingo_dedata_yrand,g_5950,new,medium,winger attack spots: random y range,src/data/dgroup.asm
+g_5A2C,CheckAnims,g_5A2C,new,medium,check animation table of checkcheck,src/data/dgroup.asm
+g_5AD0,ShotSpeeds,g_5AD0,new,medium,shot speed table of doshot,src/data/dgroup.asm
+g_5AF6,LineChoiceKeys,g_5AF6,new,medium,line choice table of lineinput,src/data/dgroup.asm
+g_5B06,lchoicetab_m1,g_5B06,new,medium,entry before lchoicetab,src/data/dgroup.asm
+g_5B66,OneTimerDirs,g_5B66,new,medium,direction offsets of assonetimer,src/data/dgroup.asm
+g_5B67,OneTimerDirs2,g_5B67,new,medium,direction table of assonetimer,src/data/dgroup.asm
+g_5B9E,StarPoints,g_5B9E,new,medium,points per stat for the three stars,src/data/dgroup.asm
+g_5BA2,StarPoints2,g_5BA2,new,medium,second points table for the three stars,src/data/dgroup.asm
+g_5BEE,StarNamePtrs,g_5BEE,new,medium,'1st/2nd/3rd' star text pointers (assthreestars),src/data/dgroup.asm
+g_5BF4,playsuspended,g_5BF4,new,medium,"1 while play is suspended (highlight, no replay)",src/data/dgroup.asm
+g_5BF6,HotList_m1,g_5BF6,new,medium,byte before the hot spot table,src/data/dgroup.asm
+g_5BF7,HotList,g_5BF7,new,medium,stick blade hot spot x/y bytes per frame (GetHot),src/data/dgroup.asm
+g_6106,Setplass_alist,g_6106,new,medium,first assignment per position (Setplass),src/data/dgroup.asm
+g_610E,RestoreTeamTable,g_610E,new,medium,word table of restoreteams,src/data/dgroup.asm
+g_6120,PlListOffsets,g_6120,new,medium,offsets of the player lists (SetPlList),src/data/dgroup.asm
+g_612E,PlListSlots,g_612E,new,medium,slot bytes of SetPlList (-1 end),src/data/dgroup.asm
+g_61B8,RinkOverlayFrames3,g_61B8,new,medium,frames of the period marks (DrawRinkOverlays),src/data/dgroup.asm
+g_61CA,RinkObjectXOffsets,g_61CA,new,medium,x offsets of the rink objects (DrawRinkObjects),src/data/dgroup.asm
+g_61D8,lineslotgroupstart,g_61D8,new,medium,first preference group per line slot (PickForLineSlot),src/data/dgroup.asm
+g_622A,lineslotgroups,g_622A,new,medium,position preference groups of the line slots,src/data/dgroup.asm
+g_62A0,WipeDirX,g_62A0,new,medium,x step per wipe direction (FadeWipe),src/data/dgroup.asm
+g_62A8,WipeDirY,g_62A8,new,medium,y step per wipe direction,src/data/dgroup.asm
+g_62B0,WipeDirX2,g_62B0,new,medium,second x step per wipe direction,src/data/dgroup.asm
+g_62B8,WipeDirY2,g_62B8,new,medium,second y step per wipe direction,src/data/dgroup.asm
+g_62C0,PlaneBandPattern,g_62C0,new,medium,band pattern of FadePlaneBands,src/data/dgroup.asm
+g_62E4,FadeInSteps,g_62E4,new,medium,fade step table (FadePaletteIn),src/data/dgroup.asm
+g_62E5,FadeInStep,g_62E5,new,medium,current fade-in step,src/data/dgroup.asm
+g_62E6,FadeInSteps2,g_62E6,new,medium,second fade-in step table,src/data/dgroup.asm
+g_62E8,FadeInCount,g_62E8,new,medium,fade-in step count,src/data/dgroup.asm
+g_62EA,BlockSweepDX,g_62EA,new,medium,x direction per sweep pattern (FadeBlockSweep),src/data/dgroup.asm
+g_62EE,BlockSweepDY,g_62EE,new,medium,y direction per sweep pattern,src/data/dgroup.asm
+g_62F2,BlockSweepOrder,g_62F2,new,medium,sweep order bytes,src/data/dgroup.asm
+g_74FA,VenetianRowBytes,g_74FA,new,medium,row length in bytes read by FadeVenetian,src/data/dgroup.asm
+g_8C36,SeasonTitleSegs,g_8C36,new,medium,segment words of the season titles (SetupStatsMenus),src/data/dgroup.asm
+g_8C9C,JingleSegs,g_8C9C,new,medium,segment words of the jingle data (LoadArenaJingles),src/data/dgroup.asm
+g_8CE2,AnimSeqSegs,g_8CE2,new,medium,"segment words of the animation sequences (DecayCrowdLevel, SetRinkObject)",src/data/dgroup.asm
+g_8EFE,RandomBlockDone,g_8EFE,new,medium,88 flags of the blocks already drawn (FadeRandomBlocks2),src/data/dgroup_bss.asm
+g_91D0,FrameTable,g_91D0,new,medium,frame pointer table (offset words) built by IndexPPVFrames,src/data/dgroup_bss.asm
+g_91D2,FrameTableSeg,g_91D2,new,medium,frame pointer table (segment words),src/data/dgroup_bss.asm
+g_9F80,GameTeamRecs,g_9F80,new,medium,team records read by LoadGameTeams (76 bytes),src/data/dgroup_bss.asm
+g_9FCC,GamePlayerNames,g_9FCC,new,medium,player name pointers (offset) of the game summary and lineups,src/data/dgroup_bss.asm
+g_9FCE,GamePlayerNamesSeg,g_9FCE,new,medium,player name pointers (segment),src/data/dgroup_bss.asm
+g_A03C,HomeLinesRec,g_A03C,new,medium,home line record written by WriteTeamLines,src/data/dgroup_bss.asm
+g_A06C,TeamLinesRecs,g_A06C,new,medium,line records written by WriteTeamLines,src/data/dgroup_bss.asm
+g_A268,GameRosterRecs,g_A268,new,medium,roster records read by LoadGameTeams (744 bytes),src/data/dgroup_bss.asm
+g_A556,hmrosterjersey,g_A556,new,medium,jersey byte of the home roster records,src/data/dgroup_bss.asm
+g_A9B0,GamePlayerFlags,g_A9B0,new,medium,player flags filled by LoadGameTeams,src/data/dgroup_bss.asm
+g_AE10,HomeTeamRec,g_AE10,new,medium,home team record saved with the game (36 bytes),src/data/dgroup_bss.asm
+g_AE34,HomeTeamAbbr,g_AE34,new,medium,first byte of the home team abbreviation,src/data/dgroup_bss.asm
+g_AE35,HomeTeamAbbr_b1,g_AE35,new,medium,rest of the home team abbreviation,src/data/dgroup_bss.asm
+g_AE38,HomeTeamColours,g_AE38,new,medium,home team colour bytes (LoadGameTeams),src/data/dgroup_bss.asm
+g_AE40,AwayTeamRec,g_AE40,new,medium,away team record saved with the game (36 bytes),src/data/dgroup_bss.asm
+g_AE64,AwayTeamAbbr,g_AE64,new,medium,first byte of the away team abbreviation,src/data/dgroup_bss.asm
+g_AE65,AwayTeamAbbr_b1,g_AE65,new,medium,rest of the away team abbreviation,src/data/dgroup_bss.asm
+g_AE68,AwayTeamColours,g_AE68,new,medium,away team colour bytes,src/data/dgroup_bss.asm
+g_AE70,gsummarypath,g_AE70,new,medium,path of gsummary.db (GSummaryPath),src/data/dgroup_bss.asm
+g_AE94,POTreeBuf,g_AE94,new,medium,far pointer (offset) to the playoff tree buffer,src/data/dgroup_bss.asm
+g_AE96,POTreeBufSeg,g_AE96,new,medium,its segment,src/data/dgroup_bss.asm
+g_B07A,goalevent_b1,g_B07A,new,medium,scorer jersey of the goal event,src/data/dgroup_bss.asm
+g_B07B,goalevent_b2,g_B07B,new,medium,first assist jersey,src/data/dgroup_bss.asm
+g_B07C,goalevent_b3,g_B07C,new,medium,second assist jersey,src/data/dgroup_bss.asm
+g_B07D,goalevent_text,g_B07D,new,medium,team abbreviation of the goal event,src/data/dgroup_bss.asm
+g_B092,TextOverlayPtr,g_B092,new,medium,text overlay string pointer (offset),src/data/dgroup_bss.asm
+g_B094,TextOverlaySeg,g_B094,new,medium,its segment,src/data/dgroup_bss.asm
+g_B096,viewcellx,g_B096,new,medium,"scroll position in 8-pixel cells, x",src/data/dgroup_bss.asm
+g_B098,viewcelly,g_B098,new,medium,"scroll position in 8-pixel cells, y",src/data/dgroup_bss.asm
+g_B09A,RinkMapWidth,g_B09A,new,medium,rink map width in cells,src/data/dgroup_bss.asm
+g_B09C,RinkRowBytes,g_B09C,new,medium,bytes per rink row,src/data/dgroup_bss.asm
+g_B09E,otherscoresb,g_B09E,new,medium,other games: scores (12 bytes),src/data/dgroup_bss.asm
+g_B0AA,otherscorehome,g_B0AA,new,medium,other games: home team bytes,src/data/dgroup_bss.asm
+g_B0AB,otherscorehome_b1,g_B0AB,new,medium,other games: home team bytes from +1,src/data/dgroup_bss.asm
+g_B0B6,otherscoreaway,g_B0B6,new,medium,other games: away team bytes,src/data/dgroup_bss.asm
+g_B0B7,otherscores,g_B0B7,new,medium,other games: away team bytes from +1,src/data/dgroup_bss.asm
+g_B0C2,scrolldelay,g_B0C2,new,medium,scroll redraw countdown,src/data/dgroup_bss.asm
+g_B107,PanelText,g_B107,new,medium,panel text bytes (DrawHudPanel),src/data/dgroup_bss.asm
+g_B1C9,LockerText1,g_B1C9,new,medium,locker room text byte 1,src/data/dgroup_bss.asm
+g_B1CB,LockerText2,g_B1CB,new,medium,locker room text from +2,src/data/dgroup_bss.asm
+g_B1D4,LockerText3,g_B1D4,new,medium,locker room text byte,src/data/dgroup_bss.asm
+g_B1D5,LockerText4,g_B1D5,new,medium,locker room text bytes,src/data/dgroup_bss.asm
+g_B1D7,LockerText5,g_B1D7,new,medium,locker room text byte,src/data/dgroup_bss.asm
+g_B1D8,LockerText6,g_B1D8,new,medium,locker room text bytes,src/data/dgroup_bss.asm
+g_B1DA,LockerText7,g_B1DA,new,medium,locker room text block,src/data/dgroup_bss.asm
+g_B207,PanelText2,g_B207,new,medium,panel text bytes,src/data/dgroup_bss.asm
+g_B20D,LockerText8,g_B20D,new,medium,locker room text block,src/data/dgroup_bss.asm
+g_B214,LockerText9,g_B214,new,medium,locker room text byte,src/data/dgroup_bss.asm
+g_B215,LockerText10,g_B215,new,medium,locker room text block,src/data/dgroup_bss.asm
+g_B224,LockerText11,g_B224,new,medium,locker room text block,src/data/dgroup_bss.asm
+g_B2BF,LockerText12,g_B2BF,new,medium,locker room text byte,src/data/dgroup_bss.asm
+g_B2C0,LockerText13,g_B2C0,new,medium,locker room text byte,src/data/dgroup_bss.asm
+g_B2C1,LockerText14,g_B2C1,new,medium,locker room text byte,src/data/dgroup_bss.asm
+g_B2C2,LockerText15,g_B2C2,new,medium,locker room text block,src/data/dgroup_bss.asm
+g_B2F2,JingleBuf1,g_B2F2,new,medium,jingle buffer pointer 1 (offset),src/data/dgroup_bss.asm
+g_B2F4,JingleBuf1Seg,g_B2F4,new,medium,its segment,src/data/dgroup_bss.asm
+g_B2F6,JingleBuf2,g_B2F6,new,medium,jingle buffer pointer 2 (offset),src/data/dgroup_bss.asm
+g_B2F8,JingleBuf2Seg,g_B2F8,new,medium,its segment,src/data/dgroup_bss.asm
+g_B2FE,JingleBuf3,g_B2FE,new,medium,jingle buffer pointer 3 (offset),src/data/dgroup_bss.asm
+g_B300,JingleBuf3Seg,g_B300,new,medium,its segment,src/data/dgroup_bss.asm
+g_B302,JingleBuf4,g_B302,new,medium,jingle buffer pointer 4 (offset),src/data/dgroup_bss.asm
+g_B304,JingleBuf4Seg,g_B304,new,medium,its segment,src/data/dgroup_bss.asm
+g_B306,JingleCfgBufs,g_B306,new,medium,jingle config buffer pointers (offset),src/data/dgroup_bss.asm
+g_B308,JingleCfgBufsSeg,g_B308,new,medium,their segments,src/data/dgroup_bss.asm
+g_B312,JingleKmsBufs,g_B312,new,medium,jingle song buffer pointers (offset),src/data/dgroup_bss.asm
+g_B314,JingleKmsBufsSeg,g_B314,new,medium,their segments,src/data/dgroup_bss.asm
+g_B35E,editopts,g_B35E,new,medium,option bits being edited by the settings dialogs,src/data/dgroup_bss.asm
+g_B35F,editopts_b1,g_B35F,new,medium,high byte of editopts,src/data/dgroup_bss.asm
+g_B360,editctlopts,g_B360,new,medium,controller option bits being edited,src/data/dgroup_bss.asm
+g_B362,hmshots,g_B362,new,medium,home shots,src/data/dgroup_bss.asm
+g_B364,hmppgoals,g_B364,new,medium,home power play goals,src/data/dgroup_bss.asm
+g_B366,hmppchances,g_B366,new,medium,home power play chances,src/data/dgroup_bss.asm
+g_B368,hmpenalties,g_B368,new,medium,home penalty count,src/data/dgroup_bss.asm
+g_B36A,hmpenmins,g_B36A,new,medium,home penalty minutes,src/data/dgroup_bss.asm
+g_B36C,hmattacktime,g_B36C,new,medium,home attack zone time,src/data/dgroup_bss.asm
+g_B370,hmfaceoffs,g_B370,new,medium,home faceoffs won,src/data/dgroup_bss.asm
+g_B372,hmchecks,g_B372,new,medium,home body checks,src/data/dgroup_bss.asm
+g_B374,hmpassatt,g_B374,new,medium,home pass attempts,src/data/dgroup_bss.asm
+g_B376,hmpasscmp,g_B376,new,medium,home passes completed,src/data/dgroup_bss.asm
+g_B387,hmtmgoalie_b1,g_B387,new,medium,"home goalie, high byte",src/data/dgroup_bss.asm
+g_B38E,hmtmpde,g_B38E,new,medium,home player energy (56 bytes),src/data/dgroup_bss.asm
+g_B3C6,hmtmpdst,g_B3C6,new,medium,home player status per roster slot (56 bytes),src/data/dgroup_bss.asm
+g_B3FE,hmtmpbox_m1,g_B3FE,new,medium,home team bytes before hmtmpbox (28 bytes),src/data/dgroup_bss.asm
+g_B426,hmtmglattr,g_B426,new,medium,home goalie attributes pointer,src/data/dgroup_bss.asm
+g_B428,hmtmglattrseg,g_B428,new,medium,its segment,src/data/dgroup_bss.asm
+g_B42A,hmtmplstats,g_B42A,new,medium,home player stats pointer,src/data/dgroup_bss.asm
+g_B42C,hmtmplstatsseg,g_B42C,new,medium,its segment,src/data/dgroup_bss.asm
+g_B432,hmtmrosterptr,g_B432,new,medium,home roster pointer,src/data/dgroup_bss.asm
+g_B436,hmtmptrs,g_B436,new,medium,further home team pointers (14 bytes),src/data/dgroup_bss.asm
+g_B4D4,awtmpbox_m1,g_B4D4,new,medium,away team bytes before awtmpbox (28 bytes),src/data/dgroup_bss.asm
+g_B4F6,awtmteamrec,g_B4F6,new,medium,away team record pointer,src/data/dgroup_bss.asm
+g_B4FA,awtmglattrseg,g_B4FA,new,medium,segment of the away goalie attributes,src/data/dgroup_bss.asm
+g_B504,awtmglstatsptr,g_B504,new,medium,away goalie stats pointer,src/data/dgroup_bss.asm
+g_B506,awtmglstatsseg,g_B506,new,medium,its segment,src/data/dgroup_bss.asm
+g_B50A,awtmroster,g_B50A,new,medium,away roster pointer,src/data/dgroup_bss.asm
+g_58A6,GoalieSaveSides2,g_58A6,new,medium,"save side bytes of puckgoalie, indexed by the hit direction",
+g_B50C,SortCords_m2,g_B50C,new,medium,"the word before SortCords and the first two bytes of it (clearteams stores 0B80Eh, an object address)",src/data/dgroup_bss.asm
+g_BD8E,TitleJingle,g_BD8E,new,medium,title jingle buffer pointer (offset),src/data/dgroup_bss.asm
+g_BD90,TitleJingleSeg,g_BD90,new,medium,its segment,src/data/dgroup_bss.asm
+g_BD92,TitleJingle2,g_BD92,new,medium,second title jingle buffer pointer (offset),src/data/dgroup_bss.asm
+g_BD94,TitleJingle2Seg,g_BD94,new,medium,its segment,src/data/dgroup_bss.asm
+g_BD96,gmrosterpos,g_BD96,new,medium,"roster position letter (C, L, R, D, G) of the game roster entries",src/data/dgroup_bss.asm
+g_BD99,gmrosterjersey_b2,g_BD99,new,medium,game roster entry byte +3,src/data/dgroup_bss.asm
+g_BD9A,gmrosterdot,g_BD9A,new,medium,game roster entry: the '.' after the initial,src/data/dgroup_bss.asm
+g_BD9B,gmrosterspace,g_BD9B,new,medium,game roster entry: the space before the name,src/data/dgroup_bss.asm
+g_BD9C,gmrostername,g_BD9C,new,medium,game roster entry names,src/data/dgroup_bss.asm
+g_BFBC,gmroster2pos,g_BFBC,new,medium,second game roster: first byte,src/data/dgroup_bss.asm
+g_BFBD,gmroster2jersey,g_BFBD,new,medium,second game roster: jersey bytes,src/data/dgroup_bss.asm
+g_BFBF,gmroster2init,g_BFBF,new,medium,second game roster: initial,src/data/dgroup_bss.asm
+g_BFC0,gmroster2dot,g_BFC0,new,medium,second game roster: the '.',src/data/dgroup_bss.asm
+g_BFC1,gmroster2space,g_BFC1,new,medium,second game roster: the space,src/data/dgroup_bss.asm
+g_BFC2,gmroster2name,g_BFC2,new,medium,second game roster: names,src/data/dgroup_bss.asm
+g_C000,HomeTeamDbName,g_C000,new,medium,home team database name (32 bytes),src/data/dgroup_bss.asm
+g_C020,AwayTeamDbName,g_C020,new,medium,away team database name (32 bytes),src/data/dgroup_bss.asm
+g_C040,statsgoaliebufseg,g_C040,new,medium,segment of statsgoaliebuf,src/data/dgroup_bss.asm
+g_C044,statsskaterbufseg,g_C044,new,medium,segment of statsskaterbuf,src/data/dgroup_bss.asm
+g_C048,statsplayerbufseg,g_C048,new,medium,segment of statsplayerbuf,src/data/dgroup_bss.asm
+g_C04C,statsteambufseg,g_C04C,new,medium,segment of statsteambuf,src/data/dgroup_bss.asm
+g_C050,statsrosterteam,g_C050,new,medium,team shown on the roster screen,src/data/dgroup_bss.asm
+g_C054,savedcount1,g_C054,new,medium,number of saved games of the first kind (ScanSavedGames),src/data/dgroup_bss.asm
+g_C056,savedsel1,g_C056,new,medium,selected saved game of the first kind,src/data/dgroup_bss.asm
+g_C058,savedtop1,g_C058,new,medium,"first saved game shown, first kind",src/data/dgroup_bss.asm
+g_C05A,savedrows1,g_C05A,new,medium,rows of the first saved game list,src/data/dgroup_bss.asm
+g_C05C,savednames1,g_C05C,new,medium,name pointers (offset) of the first saved game list,src/data/dgroup_bss.asm
+g_C05E,savednames1seg,g_C05E,new,medium,further name pointers of the first list,src/data/dgroup_bss.asm
+g_C0DC,savedcount2,g_C0DC,new,medium,number of saved games of the second kind,src/data/dgroup_bss.asm
+g_C0E0,savedtop2,g_C0E0,new,medium,"first saved game shown, second kind",src/data/dgroup_bss.asm
+g_C0E2,savedrows2,g_C0E2,new,medium,rows of the second list,src/data/dgroup_bss.asm
+g_C0E4,savednames2,g_C0E4,new,medium,name pointers of the second list,src/data/dgroup_bss.asm
+g_C164,savedcount3,g_C164,new,medium,number of saved games of the third kind,src/data/dgroup_bss.asm
+g_C166,savedsel3,g_C166,new,medium,selected saved game of the third kind,src/data/dgroup_bss.asm
+g_C168,savedtop3,g_C168,new,medium,"first saved game shown, third kind",src/data/dgroup_bss.asm
+g_C16A,savedrows3,g_C16A,new,medium,rows of the third list,src/data/dgroup_bss.asm
+g_C16C,savednames3,g_C16C,new,medium,name pointers of the third list,src/data/dgroup_bss.asm
+g_C16E,savednames3seg,g_C16E,new,medium,further name pointers of the third list,src/data/dgroup_bss.asm
+g_C1EE,fdlgflags,g_C1EE,new,medium,"file dialog flag bits (80h, 40h, 20h)",src/data/dgroup_bss.asm
+g_C1EF,fdlgflags2,g_C1EF,new,medium,"file dialog flag bits, second byte",src/data/dgroup_bss.asm
+g_C1F0,SoundDrvBuf,g_C1F0,new,medium,sound driver buffer pointer (offset),src/data/dgroup_bss.asm
+g_C1F2,SoundDrvBufSeg,g_C1F2,new,medium,its segment,src/data/dgroup_bss.asm
+g_C1F4,POTitleText,g_C1F4,new,medium,playoff title text (16 bytes),src/data/dgroup_bss.asm
+g_C206,POTreeSlots,g_C206,new,medium,playoff tree slot words,src/data/dgroup_bss.asm
+g_C224,POTreeRows,g_C224,new,medium,playoff tree row words (19h),src/data/dgroup_bss.asm
+g_C238,standingsteam,g_C238,new,medium,team of the standings row,src/data/dgroup_bss.asm
+g_C23A,standingsprev,g_C23A,new,medium,previous standings value,src/data/dgroup_bss.asm
+g_C23C,standingskey,g_C23C,new,medium,standings sort key,src/data/dgroup_bss.asm
+g_C23E,standingskey2,g_C23E,new,medium,second standings sort key,src/data/dgroup_bss.asm
+g_C240,standingsrank,g_C240,new,medium,standings rank,src/data/dgroup_bss.asm
+g_C242,DeskTitleText,g_C242,new,medium,sports desk title text (22 bytes),src/data/dgroup_bss.asm
+g_C258,ScoreboardArt,g_C258,new,medium,scoreboard art pointer (offset),src/data/dgroup_bss.asm
+g_C25A,ScoreboardArtSeg,g_C25A,new,medium,its segment,src/data/dgroup_bss.asm
+g_C25C,RinkEndArt,g_C25C,new,medium,rink end art pointer (offset),src/data/dgroup_bss.asm
+g_C25E,RinkEndArtSeg,g_C25E,new,medium,its segment,src/data/dgroup_bss.asm
+g_C260,editactive,g_C260,new,medium,text field: editing active,src/data/dgroup_bss.asm
+g_C262,editcursorx,g_C262,new,medium,text field: cursor x,src/data/dgroup_bss.asm
+g_C264,editx,g_C264,new,medium,text field: x,src/data/dgroup_bss.asm
+g_C266,edity,g_C266,new,medium,text field: y,src/data/dgroup_bss.asm
+g_C268,editpos,g_C268,new,medium,text field: cursor position,src/data/dgroup_bss.asm
+g_C26A,editlen,g_C26A,new,medium,text field: text length,src/data/dgroup_bss.asm
+g_C26C,editmax,g_C26C,new,medium,text field: maximum width,src/data/dgroup_bss.asm
+g_C26E,calresult,g_C26E,new,medium,calendar result (-1 none),src/data/dgroup_bss.asm
+g_C270,calmonth,g_C270,new,medium,calendar month shown (0-11),src/data/dgroup_bss.asm
+g_C272,calday,g_C272,new,medium,calendar day chosen (-1 none),src/data/dgroup_bss.asm
+g_C276,floppydrive,g_C276,new,medium,floppy drive chosen,src/data/dgroup_bss.asm
+g_C278,floppyok,g_C278,new,medium,floppy drive flags,src/data/dgroup_bss.asm
+g_C27A,floppycount,g_C27A,new,medium,number of floppy drives,src/data/dgroup_bss.asm
+g_C27C,tradestate,g_C27C,new,medium,"trade screen state (1 done, -1 cancelled, 0 running)",src/data/dgroup_bss.asm
+g_C27E,savleague,g_C27E,new,medium,league name of the game being played (14 bytes),src/data/dgroup_bss.asm
+g_C28C,savleague2,g_C28C,new,medium,second league name (14 bytes),src/data/dgroup_bss.asm
+g_C29A,lgschedrec,g_C29A,new,medium,schedule record of the league game,src/data/dgroup_bss.asm
+g_C29B,lgschedrec_b1,g_C29B,new,medium,schedule record byte +1,src/data/dgroup_bss.asm
+g_C29C,lgschedrec_b2,g_C29C,new,medium,schedule record byte +2,src/data/dgroup_bss.asm
+g_C29D,lgschedrec_b3,g_C29D,new,medium,schedule record byte +3,src/data/dgroup_bss.asm
+g_C29F,lgschedrec_b5,g_C29F,new,medium,schedule record byte +5,src/data/dgroup_bss.asm
+g_C2A2,calcursor,g_C2A2,new,medium,calendar cursor day,src/data/dgroup_bss.asm
+g_C2A4,calcursor2,g_C2A4,new,medium,calendar cursor row,src/data/dgroup_bss.asm
+g_C2A6,lghometeam,g_C2A6,new,medium,home team of the league game,src/data/dgroup_bss.asm
+g_C2A8,lgoppteam,g_C2A8,new,medium,other team of the league game,src/data/dgroup_bss.asm
+g_C2AA,lggamestate,g_C2AA,new,medium,league game state (-1 none),src/data/dgroup_bss.asm
+g_C2AC,lgreadword,g_C2AC,new,medium,word read with the league game reference,src/data/dgroup_bss.asm
+g_C2AE,lgreadword2,g_C2AE,new,medium,second word read with the league game reference,src/data/dgroup_bss.asm
+g_C2B0,lggameidx,g_C2B0,new,medium,index of the league game,src/data/dgroup_bss.asm
+g_C2B4,statsbgseg,g_C2B4,new,medium,stats background shape segment,src/data/dgroup_bss.asm
+g_C2C2,traderows,g_C2C2,new,medium,trade screen rows,src/data/dgroup_bss.asm
+g_C2C3,traderows_b1,g_C2C3,new,medium,trade screen rows from +1,src/data/dgroup_bss.asm
+g_C2C4,traderows_b2,g_C2C4,new,medium,trade screen row bytes from +2,src/data/dgroup_bss.asm
+g_C52A,traderoster,g_C52A,new,medium,trade roster (BuildTradeRoster),src/data/dgroup_bss.asm
+g_C792,tradesel,g_C792,new,medium,selected trade rows,src/data/dgroup_bss.asm
+g_C794,tradesel2,g_C794,new,medium,second trade selection word,src/data/dgroup_bss.asm
+g_C796,tradescroll,g_C796,new,medium,trade list scroll,src/data/dgroup_bss.asm
+g_C798,tradescroll2,g_C798,new,medium,second trade scroll word,src/data/dgroup_bss.asm
+g_C79A,tradecursor,g_C79A,new,medium,trade screen cursor,src/data/dgroup_bss.asm
+g_C79C,tradecolour,g_C79C,new,medium,trade screen row colour,src/data/dgroup_bss.asm
+g_C79E,tradecolour2,g_C79E,new,medium,second trade row colour,src/data/dgroup_bss.asm
+g_C7A0,mergestate,g_C7A0,new,medium,merge state of the league files,src/data/dgroup_bss.asm
+g_C7A2,AwardRawA,g_C7A2,new,medium,award art raw handle,src/data/dgroup_bss.asm
+g_C7A4,AwardRawB,g_C7A4,new,medium,second award art raw handle,src/data/dgroup_bss.asm
+g_C7A6,AwardRawC,g_C7A6,new,medium,third award art raw handle,src/data/dgroup_bss.asm
+g_C7A8,AwardRawD,g_C7A8,new,medium,fourth award art raw handle,src/data/dgroup_bss.asm
+g_C7AA,AwardFrames,g_C7AA,new,medium,award EMS frames (offset),src/data/dgroup_bss.asm
+g_C7AC,AwardFramesSeg,g_C7AC,new,medium,award EMS frames,src/data/dgroup_bss.asm
+g_C7D2,AwardFrames2,g_C7D2,new,medium,second award EMS frames,src/data/dgroup_bss.asm
+g_C7D4,AwardFrames2Seg,g_C7D4,new,medium,second award EMS frames,src/data/dgroup_bss.asm
+g_C7FA,AwardFrames3,g_C7FA,new,medium,third award EMS frame,src/data/dgroup_bss.asm
+g_C7FC,AwardFrames3Seg,g_C7FC,new,medium,third award EMS frames,src/data/dgroup_bss.asm
+g_C806,AwardScores,g_C806,new,medium,award score bytes (ShowAwardScreens),src/data/dgroup_bss.asm
+g_CC05,AwardText,g_CC05,new,medium,award text buffer,src/data/dgroup_bss.asm
+g_CC29,AwardCandidates,g_CC29,new,medium,award candidate bytes (PickAwardWinners),src/data/dgroup_bss.asm
+g_CEE8,standingstab,g_CEE8,new,medium,standings table (26-byte rows),src/data/dgroup_bss.asm
+g_CF18,rostertop,g_CF18,new,medium,roster screen first row,src/data/dgroup_bss.asm
+g_CF1A,statscardteam,g_CF1A,new,medium,stats card team,src/data/dgroup_bss.asm
+g_CF1B,statscardplayer,g_CF1B,new,medium,stats card player,src/data/dgroup_bss.asm
+g_CF1D,rosterfilter,g_CF1D,new,medium,roster filter text,src/data/dgroup_bss.asm
+g_CF2D,rosterfilter2,g_CF2D,new,medium,second roster filter text,src/data/dgroup_bss.asm
+g_CF3E,statsfilepos,g_CF3E,new,medium,stats file position (low),src/data/dgroup_bss.asm
+g_CF40,statsfileposhi,g_CF40,new,medium,stats file position (high),src/data/dgroup_bss.asm
+g_CF42,statscardrec,g_CF42,new,medium,stats card record pointer,src/data/dgroup_bss.asm
+g_CF44,statscardrecseg,g_CF44,new,medium,its segment,src/data/dgroup_bss.asm
+g_CF46,statscardrec2,g_CF46,new,medium,second stats card record pointer,src/data/dgroup_bss.asm
+g_CF48,statscardrec2seg,g_CF48,new,medium,its segment,src/data/dgroup_bss.asm
+g_CF4A,statscardgoalie,g_CF4A,new,medium,stats card goalie flag,src/data/dgroup_bss.asm
+g_CF4C,statscardrec3,g_CF4C,new,medium,third stats card record word,src/data/dgroup_bss.asm
+g_CF4E,rosterrows,g_CF4E,new,medium,roster screen row records,src/data/dgroup_bss.asm
+g_CF80,rosterrowptrs,g_CF80,new,medium,roster screen row pointers,src/data/dgroup_bss.asm
+g_CFB2,rosterrows2,g_CFB2,new,medium,second roster row records,src/data/dgroup_bss.asm
+g_CFBC,rosterrowptrs2,g_CFBC,new,medium,second roster row pointers,src/data/dgroup_bss.asm
+g_CFC6,rostersel,g_CFC6,new,medium,roster selected row,src/data/dgroup_bss.asm
+g_CFC8,statsrecs,g_CFC8,new,medium,stats records pointer (offset),src/data/dgroup_bss.asm
+g_CFCA,statsrecsseg,g_CFCA,new,medium,its segment,src/data/dgroup_bss.asm
+g_CFCC,statscmpsum,g_CFCC,new,medium,comparator sum,src/data/dgroup_bss.asm
+g_CFCE,statscmpsum2,g_CFCE,new,medium,"comparator sum, high word",src/data/dgroup_bss.asm
+g_CFD4,statstext,g_CFD4,new,medium,text buffer of DrawTextFmt (40 bytes),src/data/dgroup_bss.asm
+g_CFFC,cupseries,g_CFFC,new,medium,cup series buffer pointer (offset),src/data/dgroup_bss.asm
+g_CFFE,cupseriesseg,g_CFFE,new,medium,its segment,src/data/dgroup_bss.asm
+g_D002,lastgoalx,g_D002,new,medium,last goal position x,src/data/dgroup_bss.asm
+g_D004,crowdtimer,g_D004,new,medium,crowd timer,src/data/dgroup_bss.asm
+g_D008,lastgoaly,g_D008,new,medium,last goal position y,src/data/dgroup_bss.asm
+g_D00A,crowdcount,g_D00A,new,medium,crowd counter,src/data/dgroup_bss.asm
+g_D00C,cleared1,g_D00C,new,medium,game variable cleared by cleargamevars,src/data/dgroup_bss.asm
+g_D00E,cleared2,g_D00E,new,medium,game variable cleared by cleargamevars,src/data/dgroup_bss.asm
+g_D010,crowdsum,g_D010,new,medium,crowd excitement sum (low),src/data/dgroup_bss.asm
+g_D012,crowdsumhi,g_D012,new,medium,crowd excitement sum (high),src/data/dgroup_bss.asm
+g_D014,replayrecptr,g_D014,new,medium,replay record pointer (offset),src/data/dgroup_bss.asm
+g_D016,replayrecseg,g_D016,new,medium,replay record pointer (segment),src/data/dgroup_bss.asm
+g_D018,replayplay,g_D018,new,medium,replay play pointer (offset),src/data/dgroup_bss.asm
+g_D01A,replayplayseg,g_D01A,new,medium,replay play pointer (segment),src/data/dgroup_bss.asm
+g_D01C,plstatsoff,g_D01C,new,medium,player stats offsets,src/data/dgroup_bss.asm
+g_D01E,plstatsoff2,g_D01E,new,medium,"player stats offsets, second word",src/data/dgroup_bss.asm
+g_D020,plstatsoff3,g_D020,new,medium,"player stats offsets, third word",src/data/dgroup_bss.asm
+g_D022,plstatsrecs,g_D022,new,medium,player stats offset table (394 bytes),src/data/dgroup_bss.asm
+g_D1AC,gameclock2,g_D1AC,new,medium,game clock copy,src/data/dgroup_bss.asm
+g_D2C6,SpriteFrames,g_D2C6,new,medium,sprite frame pointers (offset),src/data/dgroup_bss.asm
+g_D2C8,SpriteFramesSeg,g_D2C8,new,medium,sprite frame pointers,src/data/dgroup_bss.asm
+g_D446,NumberFrames,g_D446,new,medium,number sprite frames,src/data/dgroup_bss.asm
+g_D448,NumberFramesSeg,g_D448,new,medium,number sprite frames,src/data/dgroup_bss.asm
+g_D456,NumberFrames2,g_D456,new,medium,second number sprite frames,src/data/dgroup_bss.asm
+g_D458,NumberFrames2Seg,g_D458,new,medium,second number sprite frames,src/data/dgroup_bss.asm
+g_D46A,gameframe,g_D46A,new,medium,game frame counter,src/data/dgroup_bss.asm
+g_D46C,controlled,g_D46C,new,medium,controlled player per controller,src/data/dgroup_bss.asm
+g_D46E,controlled2,g_D46E,new,medium,second controlled player word,src/data/dgroup_bss.asm
+g_D474,objxlist,g_D474,new,medium,object x list (34 bytes),src/data/dgroup_bss.asm
+g_D496,objylist,g_D496,new,medium,object y list (34 bytes),src/data/dgroup_bss.asm
+g_D4F3,OOlist_m1,g_D4F3,new,medium,byte before OOlist,src/data/dgroup_bss.asm
+g_D4F5,OOlist_b1,g_D4F5,new,medium,OOlist from +1,src/data/dgroup_bss.asm
+g_D604,fofdata,g_D604,new,medium,faceoff data word,src/data/dgroup_bss.asm
+g_D606,fofdata_w2,g_D606,new,medium,faceoff data word +2,src/data/dgroup_bss.asm
+g_D608,fofdata_w4,g_D608,new,medium,faceoff data word +4,src/data/dgroup_bss.asm
+g_D60A,fofdata_w6,g_D60A,new,medium,faceoff data word +6,src/data/dgroup_bss.asm
+g_D60C,fofdata_w8,g_D60C,new,medium,faceoff data word +8,src/data/dgroup_bss.asm
+g_D60E,mousex,g_D60E,new,medium,mouse x,src/data/dgroup_bss.asm
+g_D610,mousey,g_D610,new,medium,mouse y,src/data/dgroup_bss.asm
+g_D612,savedword1,g_D612,new,medium,game variable saved with the game,src/data/dgroup_bss.asm
+g_D614,savedword2,g_D614,new,medium,game variable saved with the game,src/data/dgroup_bss.asm
+g_D618,GoalState_m6,g_D618,new,medium,home goal state byte,src/data/dgroup_bss.asm
+g_D619,GoalState_m5,g_D619,new,medium,home goal state bytes,src/data/dgroup_bss.asm
+g_D61C,GoalState_m2,g_D61C,new,medium,away goal state byte,src/data/dgroup_bss.asm
+g_D61D,GoalState_m1,g_D61D,new,medium,away goal state byte,src/data/dgroup_bss.asm
+g_D62B,iflags_b1,g_D62B,new,medium,iflags high byte,src/data/dgroup_bss.asm
+g_D62C,OverlayGfx,g_D62C,new,medium,text overlay graphics pointer (offset),src/data/dgroup_bss.asm
+g_D62E,OverlayGfxSeg,g_D62E,new,medium,its segment,src/data/dgroup_bss.asm
+g_D630,OverlayFrames,g_D630,new,medium,text overlay frames,src/data/dgroup_bss.asm
+g_D632,OverlayFramesSeg,g_D632,new,medium,text overlay frames,src/data/dgroup_bss.asm
+g_D658,overlaytimer,g_D658,new,medium,text overlay timer,src/data/dgroup_bss.asm
+g_D65A,overlaystate,g_D65A,new,medium,text overlay state (1..5),src/data/dgroup_bss.asm
+g_D65C,overlayscript,g_D65C,new,medium,text overlay script pointer (offset),src/data/dgroup_bss.asm
+g_D65E,overlayscriptseg,g_D65E,new,medium,its segment,src/data/dgroup_bss.asm
+g_D660,scorerflags,g_D660,new,medium,scorer milestone flags,src/data/dgroup_bss.asm
+g_D661,scorerflags2,g_D661,new,medium,second scorer milestone flags,src/data/dgroup_bss.asm
+g_D662,gamevar1,g_D662,new,medium,game variable saved with the game,src/data/dgroup_bss.asm
+g_D663,gamevar2,g_D663,new,medium,game variable cleared by ResetGameVars,src/data/dgroup_bss.asm
+g_D664,gamevar3,g_D664,new,medium,game variable saved with the game,src/data/dgroup_bss.asm
+g_D666,gamevar4,g_D666,new,medium,game variable saved with the game,src/data/dgroup_bss.asm
+g_D668,stoppagetime,g_D668,new,medium,clock at the last stoppage,src/data/dgroup_bss.asm
+g_D66A,gamevar5,g_D66A,new,medium,game variable saved with the game,src/data/dgroup_bss.asm
+g_D66D,regd0_b1,g_D66D,new,medium,regd0 high byte,src/data/dgroup_bss.asm
+g_D66E,regd0_w2,g_D66E,new,medium,regd0 high word,src/data/dgroup_bss.asm
+g_D670,gamevar6,g_D670,new,medium,game variable saved with the game,src/data/dgroup_bss.asm
+g_D673,regd1_b1,g_D673,new,medium,regd1 byte +1,src/data/dgroup_bss.asm
+g_D674,regd1_w2,g_D674,new,medium,regd1 high word,src/data/dgroup_bss.asm
+g_D678,PenBuf_b2,g_D678,new,medium,penalty buffer from +2,src/data/dgroup_bss.asm
+g_D6BA,regd2_w2,g_D6BA,new,medium,regd2 high word,src/data/dgroup_bss.asm
+g_D6BC,gamevar7,g_D6BC,new,medium,game variable saved with the game,src/data/dgroup_bss.asm
+g_D6BE,gamevar8,g_D6BE,new,medium,game variable saved with the game,src/data/dgroup_bss.asm
+g_D6C2,regd3_w2,g_D6C2,new,medium,regd3 high word,src/data/dgroup_bss.asm
+g_D6C4,crowdheat,g_D6C4,new,medium,"crowd heat, raised by goals and shots",src/data/dgroup_bss.asm
+g_D6C7,PBnum_b1,g_D6C7,new,medium,away penalty box count (PBnum+1),src/data/dgroup_bss.asm
+g_D6CA,regd4_w2,g_D6CA,new,medium,regd4 high word,src/data/dgroup_bss.asm
+g_D6CE,ovltimer2,g_D6CE,new,medium,frame timer of the replay and intro loops,src/data/dgroup_bss.asm
+g_D6D4,GameGfx,g_D6D4,new,medium,game graphics pointer (offset),src/data/dgroup_bss.asm
+g_D6D6,GameGfxSeg,g_D6D6,new,medium,its segment,src/data/dgroup_bss.asm
+g_D6D8,NumberSprites,g_D6D8,new,medium,jersey number sprites,src/data/dgroup_bss.asm
+g_D6DA,NumberSpritesSeg,g_D6DA,new,medium,jersey number sprites,src/data/dgroup_bss.asm
+g_D700,NumberSprites2,g_D700,new,medium,second jersey number sprites,src/data/dgroup_bss.asm
+g_D702,NumberSprites2Seg,g_D702,new,medium,second jersey number sprites,src/data/dgroup_bss.asm
+g_D71C,RinkEndFrames,g_D71C,new,medium,rink end frames pointer (offset),src/data/dgroup_bss.asm
+g_D71E,RinkEndFramesSeg,g_D71E,new,medium,rink end frames,src/data/dgroup_bss.asm
+g_D9D6,dirtycount,g_D9D6,new,medium,dirty rectangle counts per page,src/data/dgroup_bss.asm
+g_D9DA,rinkobjused,g_D9DA,new,medium,rink object frame bits,src/data/dgroup_bss.asm
+g_D9FA,hilightslots,g_D9FA,new,medium,highlight slot words,src/data/dgroup_bss.asm
+g_DA06,MovieBuf,g_DA06,new,medium,movie buffer pointer (offset),src/data/dgroup_bss.asm
+g_DA08,MovieBufSeg,g_DA08,new,medium,its segment,src/data/dgroup_bss.asm
+g_DA0A,PanelShapes,g_DA0A,new,medium,panel shapes,src/data/dgroup_bss.asm
+g_DA0C,PanelShapes_b2,g_DA0C,new,medium,panel shapes from +2,src/data/dgroup_bss.asm
+g_DA0D,PanelShapes_b3,g_DA0D,new,medium,panel shapes from +3,src/data/dgroup_bss.asm
+g_DA2A,PanelClockShape,g_DA2A,new,medium,panel clock shape pointer,src/data/dgroup_bss.asm
+g_DA2C,PanelClockShapeSeg,g_DA2C,new,medium,its segment,src/data/dgroup_bss.asm
+g_DA2E,PanelScoreShape,g_DA2E,new,medium,panel score shape pointer,src/data/dgroup_bss.asm
+g_DA30,PanelScoreShapeSeg,g_DA30,new,medium,its segment,src/data/dgroup_bss.asm
+g_DA4A,PenaltyShapes,g_DA4A,new,medium,panel penalty shapes,src/data/dgroup_bss.asm
+g_DA4C,PenaltyShapesSeg,g_DA4C,new,medium,panel penalty shapes,src/data/dgroup_bss.asm
+g_DA72,PenaltyShape,g_DA72,new,medium,panel penalty shape,src/data/dgroup_bss.asm
+g_DA74,PenaltyShapeSeg,g_DA74,new,medium,its segment,src/data/dgroup_bss.asm
+g_DA76,ClockDigits,g_DA76,new,medium,panel clock digit shapes,src/data/dgroup_bss.asm
+g_DA78,ClockDigitsSeg,g_DA78,new,medium,panel clock digit shapes,src/data/dgroup_bss.asm
+g_DA9E,ClockColonShape,g_DA9E,new,medium,panel clock colon shape,src/data/dgroup_bss.asm
+g_DAA2,ScoreDigits,g_DAA2,new,medium,panel score digit shapes,src/data/dgroup_bss.asm
+g_DAA4,ScoreDigitsSeg,g_DAA4,new,medium,panel score digit shapes,src/data/dgroup_bss.asm
+g_DACE,ReplayFont,g_DACE,new,medium,replay font pointer (offset),src/data/dgroup_bss.asm
+g_DAD0,ReplayFontSeg,g_DAD0,new,medium,its segment,src/data/dgroup_bss.asm
+g_DAD2,replaymousex,g_DAD2,new,medium,replay pointer x,src/data/dgroup_bss.asm
+g_DAD4,replaymousey,g_DAD4,new,medium,replay pointer y,src/data/dgroup_bss.asm
+g_DAD6,replaydx,g_DAD6,new,medium,replay pointer x step,src/data/dgroup_bss.asm
+g_DAD8,replayspeed,g_DAD8,new,medium,replay speed,src/data/dgroup_bss.asm
+g_DADA,ReplayGadgets,g_DADA,new,medium,replay gadget shapes,src/data/dgroup_bss.asm
+g_DADC,ReplayGadgetsSeg,g_DADC,new,medium,replay gadget shapes,src/data/dgroup_bss.asm
+g_DADE,ReplayGadgets2,g_DADE,new,medium,further replay gadget shapes,src/data/dgroup_bss.asm
+g_DAE6,ReplayPanel,g_DAE6,new,medium,replay panel shape,src/data/dgroup_bss.asm
+g_DAE8,ReplayPanelSeg,g_DAE8,new,medium,its segment,src/data/dgroup_bss.asm
+g_DAEA,ReplayPanels,g_DAEA,new,medium,further replay panel shapes,src/data/dgroup_bss.asm
+g_DAFE,ReplayPointer,g_DAFE,new,medium,replay pointer shape,src/data/dgroup_bss.asm
+g_DB00,ReplayPointerSeg,g_DB00,new,medium,its segment,src/data/dgroup_bss.asm
+g_DB02,ReplayPointers,g_DB02,new,medium,further replay pointer shapes,src/data/dgroup_bss.asm
+g_DB10,ReplayBack,g_DB10,new,medium,replay background shape,src/data/dgroup_bss.asm
+g_DB12,ReplayBackSeg,g_DB12,new,medium,its segment,src/data/dgroup_bss.asm
+g_DB14,ReplayBack2,g_DB14,new,medium,second replay background shape,src/data/dgroup_bss.asm
+g_DB16,replaysaved,g_DB16,new,medium,replay saved flag,src/data/dgroup_bss.asm
+g_DB18,replayplaying,g_DB18,new,medium,replay playing flag,src/data/dgroup_bss.asm
+g_DB1A,replaystart,g_DB1A,new,medium,replay start frame,src/data/dgroup_bss.asm
+g_DB1C,replayend,g_DB1C,new,medium,replay end frame,src/data/dgroup_bss.asm
+g_DB20,replaypick,g_DB20,new,medium,player picked in the replay,src/data/dgroup_bss.asm
+g_DB22,replayfollow,g_DB22,new,medium,player the replay follows (-1 none),src/data/dgroup_bss.asm
+g_DB24,replayfollow2,g_DB24,new,medium,previous followed player,src/data/dgroup_bss.asm
+g_DB26,replayfwd,g_DB26,new,medium,replay direction,src/data/dgroup_bss.asm
+g_DB28,replaybutton,g_DB28,new,medium,replay button pressed,src/data/dgroup_bss.asm
+g_DB2A,replaystep,g_DB2A,new,medium,replay step,src/data/dgroup_bss.asm
+g_DB2C,replaysavestate,g_DB2C,new,medium,replay save state,src/data/dgroup_bss.asm
+g_DB2E,rpl_x,g_DB2E,new,medium,replay frame: object x,src/data/dgroup_bss.asm
+g_DB4A,rpl_puckx,g_DB4A,new,medium,replay frame: puck x,src/data/dgroup_bss.asm
+g_DB4C,rpl_puckframe,g_DB4C,new,medium,replay frame: puck frame,src/data/dgroup_bss.asm
+g_DB50,rpl_y,g_DB50,new,medium,replay frame: object y,src/data/dgroup_bss.asm
+g_DB6C,rpl_pucky,g_DB6C,new,medium,replay frame: puck y,src/data/dgroup_bss.asm
+g_DB6E,rpl_shadow,g_DB6E,new,medium,replay frame: puck shadow,src/data/dgroup_bss.asm
+g_DB72,rpl_frame,g_DB72,new,medium,replay frame: object frame,src/data/dgroup_bss.asm
+g_DB8E,rpl_reff,g_DB8E,new,medium,replay frame: referee frame,src/data/dgroup_bss.asm
+g_DB90,rpl_door,g_DB90,new,medium,replay frame: door frame,src/data/dgroup_bss.asm
+g_DB94,rpl_flags,g_DB94,new,medium,replay frame: object flags,src/data/dgroup_bss.asm
+g_DBA5,rpl_jerseys,g_DBA5,new,medium,replay frame: jerseys,src/data/dgroup_bss.asm
+g_DBB1,rpl_puckowner,g_DBB1,new,medium,replay frame: puck owner,src/data/dgroup_bss.asm
+g_DBB2,rpl_bytes,g_DBB2,new,medium,replay frame bytes,src/data/dgroup_bss.asm
+g_DBBE,rpl_camx,g_DBBE,new,medium,replay frame: camera x,src/data/dgroup_bss.asm
+g_DBC0,rpl_word,g_DBC0,new,medium,replay frame word,src/data/dgroup_bss.asm
+g_DBC2,rpl_b1,g_DBC2,new,medium,replay frame byte,src/data/dgroup_bss.asm
+g_DBC3,rpl_b2,g_DBC3,new,medium,replay frame byte,src/data/dgroup_bss.asm
+g_DBC4,rpl_b3,g_DBC4,new,medium,replay frame byte,src/data/dgroup_bss.asm
+g_DBC5,rpl_b4,g_DBC5,new,medium,replay frame byte,src/data/dgroup_bss.asm
+g_DBC6,rpl_b5,g_DBC6,new,medium,replay frame bytes,src/data/dgroup_bss.asm
+g_DBC8,rpl_w1,g_DBC8,new,medium,replay frame word,src/data/dgroup_bss.asm
+g_DBCA,rpl_w2,g_DBCA,new,medium,replay frame word,src/data/dgroup_bss.asm
+g_DBCC,rpl_words,g_DBCC,new,medium,replay frame words,src/data/dgroup_bss.asm
+g_DBF4,rpl_b6,g_DBF4,new,medium,replay frame byte,src/data/dgroup_bss.asm
+g_DBF5,rpl_b7,g_DBF5,new,medium,replay frame bytes,src/data/dgroup_bss.asm
+g_DC08,rpl_words2,g_DC08,new,medium,replay frame words,src/data/dgroup_bss.asm
+g_DC2A,defertab_a1,g_DC2A,new,medium,deferred call argument 1,src/data/dgroup_bss.asm
+g_DC2C,defertab_a2,g_DC2C,new,medium,deferred call argument 2,src/data/dgroup_bss.asm
+g_DC2E,defertab_a3,g_DC2E,new,medium,deferred call argument 3,src/data/dgroup_bss.asm
+g_DC30,defertab_a4,g_DC30,new,medium,deferred call argument 4,src/data/dgroup_bss.asm
+g_DC32,defertab_a5,g_DC32,new,medium,deferred call argument 5,src/data/dgroup_bss.asm
+g_DC34,defertab_a6,g_DC34,new,medium,deferred call argument 6,src/data/dgroup_bss.asm
+g_DC36,defertab_a7,g_DC36,new,medium,deferred call argument 7,src/data/dgroup_bss.asm
+g_DC38,defertab_fn,g_DC38,new,medium,deferred call routine offset,src/data/dgroup_bss.asm
+g_DC3A,defertab_seg,g_DC3A,new,medium,deferred call routine segment,src/data/dgroup_bss.asm
+g_DC72,gsumqueue,g_DC72,new,medium,queued game summary records,src/data/dgroup_bss.asm
+g_DCD8,introtimers,g_DCD8,new,medium,intro timers,src/data/dgroup_bss.asm
+g_DEE7,dressflags_aw,g_DEE7,new,medium,away dressed flags,src/data/dgroup_bss.asm
+g_DF32,possort,g_DF32,new,medium,players sorted by position,src/data/dgroup_bss.asm
+g_DF6A,fadex,g_DF6A,new,medium,fade area x,src/data/dgroup_bss.asm
+g_DF6C,fadey,g_DF6C,new,medium,fade area y,src/data/dgroup_bss.asm
+g_DF6E,fadew,g_DF6E,new,medium,fade area width,src/data/dgroup_bss.asm
+g_DF70,fadeh,g_DF70,new,medium,fade area height,src/data/dgroup_bss.asm
+g_E366,savedteam1,g_E366,new,medium,saved team byte,src/data/dgroup_bss.asm
+g_E367,savedteam2,g_E367,new,medium,saved team byte,src/data/dgroup_bss.asm
+g_E368,savedbyte3,g_E368,new,medium,saved game byte,src/data/dgroup_bss.asm
+g_E369,savedbyte4,g_E369,new,medium,saved game byte,src/data/dgroup_bss.asm
+g_E36A,savedbyte5,g_E36A,new,medium,saved game byte,src/data/dgroup_bss.asm
+g_E36B,lgflags,g_E36B,new,medium,league flags and buffers,src/data/dgroup_bss.asm
+g_D4F4,OOlist,g_D4F4,95 PC,medium,sorted object order list,src/data/dgroup_bss.asm
+g_D4F4,OOlist,g_D4F4,95 PC,medium,sorted object order list; OOlist_m1 and OOlist_b1 are its neighbours,src/data/dgroup_bss.asm
+seg000:279E,_flushall,seg000:279E,MSC,high,"mov ax,1 / push / call FlushAll / retf: the far C _flushall, left as data before",src/lib/msc_runtime.asm
+seg000:18A6,OutputStates,seg000:18A6,MSC,high,jmp word [cs:bx+OutputStates] in _output: eight state handlers,src/lib/msc_runtime.asm
+seg000:29AE,FpTenthA,seg000:29AE,new,high,ten-byte 0.1 (CDCC..FB3F),src/lib/msc_runtime.asm
+seg000:29B8,FpTenthB,seg000:29B8,new,high,"twelve-byte 0.1, pushed as CS:FpTenthB by HexConvert for TenByteMul",src/lib/msc_runtime.asm
+seg000:2C85,FpAlmostOne,seg000:2C85,new,high,ten-byte 0.99999...; loaded by DoubleToDigits ([cs:bx] through int 3Ch with segment bits 10 = CS),src/lib/msc_runtime.asm
+seg000:2C8F,FpTenth,seg000:2C8F,new,high,ten-byte 0.1; DoubleToDigits multiplies by it when the estimate is one too high,src/lib/msc_runtime.asm
+seg000:2E18,Pow10Table,seg000:2E18,new,high,29 twelve-byte powers of ten; ScalePow10 starts at Pow10Table - 8*12 and adds 7*12 per octal digit,src/lib/msc_runtime.asm
+seg000:2F74,Pow10Neg,seg000:2F74,new,high,29 twelve-byte powers of 0.1 for ScalePow10,src/lib/msc_runtime.asm
+seg000:3761,Pow10Near,seg000:3761,new,high,19 ten-byte powers of ten for ScalePow10Near,src/lib/msc_runtime.asm
+seg000:381F,Pow10NearNeg,seg000:381F,new,high,19 ten-byte powers of 0.1 for ScalePow10Near,src/lib/msc_runtime.asm
+seg000:38DD,ScalePow10Near,seg000:38DD,new,high,called by DoubleToDigits; was left as data at the end of the table blob,src/lib/msc_runtime.asm
+seg000:2C3C,_nfree,seg000:2C3C,MSC,high,"marks the block free (or byte [bx-2],1) and lowers the rover of NearHeapDesc",src/lib/msc_runtime.asm
+seg000:27F8,atof,seg000:27F8,MSC,high,"skips CharTypes space characters, _fltin, copies the double to FloatAccum, returns its address",src/lib/msc_runtime.asm
+g_8268,SinTable,g_8268,new,high,"257 words, 0 to 4000h; SinLookup / CosLookup index it from four quadrant bases (the old Sin0 to Sin3 were those bases)",src/data/dgroup.asm
+g_851C,NearHeapDesc,g_851C,MSC,high,"mov bx, NearHeapDesc before HeapSearch in _nmalloc; [si+6] start, [si+8] rover",src/data/dgroup.asm
+g_8552,_umaskval,g_8552,MSC,high,not ax and the mode in the open routine,src/data/dgroup.asm
+g_868E,str_ColonSpace,g_868E,MSC,high,': ' written by perror,src/data/dgroup.asm
+g_8691,str_Newline,g_8691,MSC,high,line feed written by perror,src/data/dgroup.asm
+g_869A,FltCvtInit,g_869A,MSC,high,12 words copied over FltCvtFn,src/data/dgroup.asm
+g_86B6,DosErrnoTable,g_86B6,MSC,high,xlat table in DosMapErr,src/data/dgroup.asm
+g_86CA,_iob,g_86CA,MSC,high,"FILE table, 8 bytes each; FlushAll walks it to LastStream",src/data/dgroup.asm
+g_86D2,_iob_stdout,g_86D2,MSC,high,second FILE; printf passes it to _output,src/data/dgroup.asm
+g_86DA,_iob_stderr,g_86DA,MSC,high,third FILE,src/data/dgroup.asm
+g_86EA,_iob_stdprn,g_86EA,MSC,high,fifth FILE,src/data/dgroup.asm
+g_880C,StdoutBuf,g_880C,MSC,high,_stbuf buffer word for stdout,src/data/dgroup.asm
+g_880E,StderrBuf,g_880E,MSC,high,_stbuf buffer word for stderr,src/data/dgroup.asm
+g_8810,StdprnBuf,g_8810,MSC,high,_stbuf buffer word for stdprn,src/data/dgroup.asm
+g_8812,OutputClassTable,g_8812,MSC,high,"_output: sub al,20h / cmp al,58h / xlat",src/data/dgroup.asm
+g_886B,str_Null,g_886B,MSC,high,'(null)',src/data/dgroup.asm
+g_8874,_fmode,g_8874,MSC,high,"test byte [_fmode+1],80h (O_BINARY) in open",src/data/dgroup.asm
+g_89C8,SysErrList,g_89C8,MSC,high,"sys_errlist, 38 near pointers; perror indexes it",src/data/dgroup.asm
+g_8A14,SysNerr,g_8A14,MSC,high,sys_nerr = 25h,src/data/dgroup.asm
+g_8A22,FpErrDigits,g_8A22,MSC,high,two-digit codes for the M61xx message,src/data/dgroup.asm
+g_8A3A,FpErrMsg,g_8A3A,MSC,high,counted 'M61xx',src/data/dgroup.asm
+g_8A40,FpErrCode,g_8A40,MSC,high,floating-point error number in FpError,src/data/dgroup.asm
+g_8A5E,FltResult,g_8A5E,new,medium,result block of HexConvert,src/data/dgroup.asm
+g_8A66,FltValue,g_8A66,new,medium,double copied by HexConvert,src/data/dgroup.asm
+g_8A6E,FltDigits,g_8A6E,new,medium,digit buffer of HexConvert,src/data/dgroup.asm
+g_8A82,CvtWork,g_8A82,new,high,ten-byte work value of DoubleToDigits,src/data/dgroup.asm
+g_8A8E,CvtDigitCount,g_8A8E,new,high,digit count of DoubleToDigits,src/data/dgroup.asm
+g_8A8F,CvtDigits,g_8A8F,new,high,digits of DoubleToDigits,src/data/dgroup.asm
+g_8AB9,FpStatusWord,g_8AB9,new,high,"fnstsw target; test byte [FpStatusByte],41h reads its high byte",src/data/dgroup.asm
+g_8B00,InitTable,g_8B00,MSC,high,"_initterm span InitTable..InitTable (empty), then InitTable..PreTermTable",src/data/dgroup.asm
+g_8B04,PreTermTable,g_8B04,MSC,high,_initterm span in ExitCommon,src/data/dgroup.asm
+g_8B08,TermTable,g_8B08,MSC,high,empty _initterm span in ExitCommon,src/data/dgroup.asm
+g_8D16,FpZero,g_8D16,new,high,double 0.0 for FloatLoad,src/data/dgroup.asm
+g_8D26,NmsgTable,g_8D26,MSC,high,runtime message table after <<NMSG>>,src/data/dgroup.asm
+g_90A0,FloatAccum,g_90A0,MSC,high,atof result,src/data/dgroup_bss.asm
+g_90B0,FltInValue,g_90B0,MSC,high,double of the _fltin block,src/data/dgroup_bss.asm
+g_90B8,AtexitTable,g_90B8,MSC,high,_initterm span AtexitTable..AtexitTableEnd in ExitCommon,src/data/dgroup_bss.asm
+g_9138,AtexitTableEnd,g_9138,MSC,high,"cmp bx, AtexitTableEnd in atexit",src/data/dgroup_bss.asm
+g_E370,StackBottom,g_E370,MSC,high,"EXE header SS 5400h = DGROUP + E37h paragraphs, SP 1800h",src/data/dgroup_bss.asm
+
+g_8B0A,CentisPerSample,g_8B0A,new,high,"double 1/110.25 (11025 Hz samples to 1/100 s), fmul in the speech loader",src/data/dgroup.asmseg062:0EA0,LeftMasks,seg062:0EA0,new,high,"mov bl,[cs:bx+LeftMasks] with bx = 1..8 in the DrawChar body",src/pc/video/vga.asm
+seg028:0EA9,DrawCharSame,seg028:0EA9,new,high,second copy of the DrawChar prologue falling into its body; was left as data,src/pc/video/vga.asm
+g_713A,KeyMapNormal,g_713A,new,high,"keyboard handler: mov al,[bx+KeyMapNormal] with no shift key held",src/data/dgroup.asm
+g_7195,KeyMapShift,g_7195,new,high,used when KeyState+2Ah or +36h (shift) is set,src/data/dgroup.asm
+g_71F0,KeyMapCaps,g_71F0,new,high,used when KeyState+3Ah (caps lock) is set,src/data/dgroup.asm
+g_724B,KeyMapCtrl,g_724B,new,high,used when KeyState+1Dh (ctrl) is set,src/data/dgroup.asm
+g_72A6,KeyMapAlt,g_72A6,new,high,used when KeyState+38h (alt) is set,src/data/dgroup.asm
+g_74C8,HexDigits,g_74C8,new,high,"'0123456789ABCDEF', indexed by nibble in the console hex print",src/data/dgroup.asm
+g_0DD0,JerseyDigitGlyphsMenus,g_0DD0,new,high,BlitJerseyDigit: [bx+si+...] with bx = digit*15,src/data/dgroup.asm
+g_0F72,SongSlots,g_0F72,new,high,16 far pointers; sound_config unloads each with UnloadSong,src/data/dgroup.asm
+g_6FFC,JoyLastBtn,g_6FFC,new,high,PollJoy button bits,src/data/dgroup.asm
+g_6FFF,JoyXMin,g_6FFF,new,high,PollJoy / InitJoy: low X limit,src/data/dgroup.asm
+g_7001,JoyXMinSeen,g_7001,new,high,PollJoy / InitJoy: lowest X while settling,src/data/dgroup.asm
+g_7003,JoyXMax,g_7003,new,high,PollJoy / InitJoy: high X limit,src/data/dgroup.asm
+g_7005,JoyXMaxSeen,g_7005,new,high,PollJoy / InitJoy: highest X while settling,src/data/dgroup.asm
+g_7007,JoyXSettle,g_7007,new,high,PollJoy / InitJoy: X settle count (14h),src/data/dgroup.asm
+g_7009,JoyXLeftEdge,g_7009,new,high,PollJoy / InitJoy: left threshold,src/data/dgroup.asm
+g_700B,JoyXRightEdge,g_700B,new,high,PollJoy / InitJoy: right threshold,src/data/dgroup.asm
+g_700D,JoyYMin,g_700D,new,high,PollJoy / InitJoy: low Y limit,src/data/dgroup.asm
+g_700F,JoyYMinSeen,g_700F,new,high,PollJoy / InitJoy: lowest Y while settling,src/data/dgroup.asm
+g_7011,JoyYMax,g_7011,new,high,PollJoy / InitJoy: high Y limit,src/data/dgroup.asm
+g_7013,JoyYMaxSeen,g_7013,new,high,PollJoy / InitJoy: highest Y while settling,src/data/dgroup.asm
+g_7015,JoyYSettle,g_7015,new,high,PollJoy / InitJoy: Y settle count,src/data/dgroup.asm
+g_7017,JoyYUpEdge,g_7017,new,high,PollJoy / InitJoy: up threshold,src/data/dgroup.asm
+g_7019,JoyYDownEdge,g_7019,new,high,PollJoy / InitJoy: down threshold,src/data/dgroup.asm
+g_701B,JoyXScale,g_701B,new,high,"PollJoy / InitJoy: 4000h / X range, JoyScaleX",src/data/dgroup.asm
+g_701D,JoyYScale,g_701D,new,high,"PollJoy / InitJoy: 4000h / Y range, JoyScaleY",src/data/dgroup.asm
+g_8F74,SeqEmsMap,g_8F74,new,high,EmsSaveMap / EmsRestoreMap buffer around DrvService,src/data/dgroup_bss.asm
+g_8F7C,MidiEvent,g_8F7C,new,high,ParseMidiEvent target in SeqStepTrack,src/data/dgroup_bss.asm
+g_8F80,MidiEvCmd,g_8F80,new,high,"event command, D9h and up are sequencer commands",src/data/dgroup_bss.asm
+g_8F81,MidiEvData,g_8F81,new,high,event data byte,src/data/dgroup_bss.asm
+g_8F82,MidiEvValue,g_8F82,new,high,event value dword,src/data/dgroup_bss.asm
+g_8F86,MidiEvLength,g_8F86,new,high,"event length, added to the track pointer",src/data/dgroup_bss.asm
+g_8F88,MidiNextEvent,g_8F88,new,high,"second ParseMidiEvent target, delta only",src/data/dgroup_bss.asm
+wbuf:B96E,SysexBuffer,wbuf:B96E,new,medium,push work_buffer:SysexBuffer with the event length - 4 in SeqStepTrack,src/data/far/work_buffer.asm
+wbuf:BB6F,ChannelSetup,wbuf:BB6F,new,medium,"[es:bx+ChannelSetup], bx = channel*7, sent as controller 7",src/data/far/work_buffer.asm
+g_0000,DgroupStart,g_0000,new,high,"offset 0 of DGROUP, for label arithmetic across a segment end",src/data/dgroup.asm
+g_09C4,DivideFault,g_09C4,new,high,"mov byte [DivideFault],1 in DivideHandler (split over the segment end)",src/data/dgroup.asm
+seg018:0008,DivideDgroup,seg018:0008,new,high,"mov [cs:DivideDgroup], ds in HookDivideError; DivideHandler loads ds from it",src/pc/divide_error.asm
+seg034:0118,InitHeapVariant,seg034:0118,new,high,"third InitHeap entry, left as data before",src/pc/heap_wrappers.asm
+pflags:0000,PaletteFlags,pflags:0000,new,high,MergeRemapTables writes [es:si+PaletteFlags] with es = PaletteFlagsSeg2,src/data/far/palette_flags.asm
+pflags:0100,PaletteFlags2,pflags:0100,new,high,MergeRemapTables writes [es:si+PaletteFlags2],src/data/far/palette_flags.asm
+dgroup:02BA,BufCount,,new,medium,word,src/data/dgroup.asm
+dgroup:02BC,BufPtr,,new,medium,word,src/data/dgroup.asm
+dgroup:02BE,RecSeq,,new,medium,word,src/data/dgroup.asm
+dgroup:48E6,CoachRotateFour,,95 PC,high,coach line table rows: four-line rotation,src/data/dgroup.asm
+dgroup:48F6,CoachRotateThree,,95 PC,high,coach line table rows: three-line rotation with the power-play rows after it,src/data/dgroup.asm
+dgroup:4916,CoachRotateThreeTop,,95 PC,high,coach line table rows: three lines with the top line first,src/data/dgroup.asm
+dgroup:4926,CoachRotateFourEven,,95 PC,high,coach line table rows: four lines in even rotation,src/data/dgroup.asm
+dgroup:4936,CoachRotateFourMixed,,95 PC,high,coach line table rows: four lines in mixed rotation,src/data/dgroup.asm
+dgroup:4946,CoachRotateThreeEven,,95 PC,high,coach line table rows: three lines in even rotation,src/data/dgroup.asm
+dgroup:4956,CoachSpecialUnits,,new,medium,coach line table rows: special team units only,src/data/dgroup.asm
+dgroup:4966,CoachRotateTwo,,95 PC,high,coach line table rows: two lines only,src/data/dgroup.asm
+dgroup:4976,CoachRotateTwoDeep,,95 PC,high,coach line table rows: two lines with the third line as backup,src/data/dgroup.asm
+dgroup:4986,CoachRotateFourShort,,95 PC,high,coach line table rows: four lines with short shifts,src/data/dgroup.asm
+dgroup:4996,CoachRotateThreeShort,,95 PC,high,coach line table rows: three lines with short shifts,src/data/dgroup.asm
+dgroup:6E02,Int8Stack,,new,medium,"the INT 8 handler's private stack, filled with 0FBh",src/data/dgroup.asm
+dgroup:6F04,Int8StackTop,,new,medium,top of Int8Stack; Int8Handler loads SP with it,src/data/dgroup.asm
+dgroup:7607,AltPath,,new,medium,,src/data/dgroup.asm
+dgroup:762F,AltBuf,,new,medium,word,src/data/dgroup.asm
+dgroup:7633,AltCall,,new,medium,dword,src/data/dgroup.asm
+dgroup:7637,AltSize,,new,medium,byte,src/data/dgroup.asm
+dgroup:763A,Cpu286,,new,medium,word,src/data/dgroup.asm
+dgroup:763C,Cpu386,,new,medium,word,src/data/dgroup.asm
+dgroup:763E,Cpu486,,new,medium,word,src/data/dgroup.asm
+dgroup:7640,CpuPe,,new,medium,word,src/data/dgroup.asm
+dgroup:7668,ScanFn,,new,medium,dword,src/data/dgroup.asm
+dgroup:766C,LineFn,,new,medium,dword,src/data/dgroup.asm
+dgroup:7672,HoldWord,,new,medium,word,src/data/dgroup.asm
+dgroup:77C2,VidMode,,new,medium,byte,src/data/dgroup.asm
+dgroup:77C3,VidEquip,,new,medium,byte,src/data/dgroup.asm
+dgroup:77C4,VidCols,,new,medium,word,src/data/dgroup.asm
+dgroup:77C6,VidRows,,new,medium,byte,src/data/dgroup.asm
+dgroup:8ACC,AllocBlockSize,,new,medium,"near heap growth size in bytes (2000h), read by the heap allocator",src/data/dgroup.asm
+dgroup_bss:8ED6,MapLo,,new,medium,word,src/data/dgroup_bss.asm
+dgroup_bss:8ED8,MapHi,,new,medium,word,src/data/dgroup_bss.asm
+dgroup_bss:8EDA,OutPtr,,new,medium,word,src/data/dgroup_bss.asm
+dgroup_bss:8EDE,InPtr,,new,medium,word,src/data/dgroup_bss.asm
+dgroup_bss:8EE2,MapPair,,new,medium,word,src/data/dgroup_bss.asm
+dgroup_bss:8EE4,BitBuf,,new,medium,word,src/data/dgroup_bss.asm
+dgroup_bss:8EE8,BitCount,,new,medium,word,src/data/dgroup_bss.asm
+dgroup_bss:8F94,PatchFileName,,new,medium,'bank%d.pat' name built by LoadBankNumber,src/data/dgroup_bss.asm
+dgroup_bss:9046,DriverFileName,,new,medium,'c:\eaclib\' path of the sound driver built by LoadSoundDriver,src/data/dgroup_bss.asm
+dgroup_bss:9140,PPVFiles,,new,medium,far pointers to the 18 loaded PPV files (LoadPlayerFrames); the 72 bytes after them are not used,src/data/dgroup_bss.asm
+dgroup_bss:AE9C,ChainIdx,,new,medium,word,src/data/dgroup_bss.asm
+dgroup_bss:AE9E,ChainPtr,,new,medium,word,src/data/dgroup_bss.asm
+dgroup_bss:AFD4,PadReadings,,new,medium,"3 bytes a pad (stick, buttons, hot key) filled by ReadPadDevice",src/data/dgroup_bss.asm
+dgroup_bss:B438,awshots,,new,medium,away shots; the away team stats start here,src/data/dgroup_bss.asm
+dgroup_bss:B43A,awppgoals,,new,medium,away power play goals,src/data/dgroup_bss.asm
+dgroup_bss:B43C,awppchances,,new,medium,away power play chances,src/data/dgroup_bss.asm
+dgroup_bss:B43E,awpenalties,,new,medium,away penalties,src/data/dgroup_bss.asm
+dgroup_bss:B440,awpenmins,,new,medium,away penalty minutes,src/data/dgroup_bss.asm
+dgroup_bss:B442,awattacktime,,new,medium,away attack time,src/data/dgroup_bss.asm
+dgroup_bss:B50E,SortCords,,new,medium,"the sort objects, 80h bytes each; sort object 0 starts here",src/data/dgroup_bss.asm
+dgroup_bss:E15E,StdinBuf,,new,medium,"stdin buffer of _iob (512 bytes, then 8 unused bytes)",src/data/dgroup_bss.asm
+char_table:0100,LineSlotPoints,,new,medium,"(x, y) word pairs of the player slots, read by GameLineEditorLoop",src/data/far/char_table.asm
+credits:05CD,CreditLines,,new,medium,"far pointers to the credit lines, read by the title screen",src/data/far/credits.asm
+dialog_rects:0000,FileDialogHitRects,,new,medium,"hit rectangles of the file dialog buttons (x1, y1, x2, y2)",src/data/far/dialog_rects.asm
+dialog_rects:0040,FileDlgListBox,,new,medium,"box (x1, y1, x2, y2) of the file dialog list (DrawFileDlg)",src/data/far/dialog_rects.asm
+dialog_rects:0048,FileDlgTitleBox,,new,medium,"box (x1, y1, x2, y2) of the file dialog title (DrawFileDlg)",src/data/far/dialog_rects.asm
+font_table:0000,FontTable,,new,medium,"font header, character offsets and widths",src/data/far/font_table.asm
+input_event_data:0000,InputEventFlag,,new,medium,word; nonzero makes GetInputEvent run its reset calls and clear it,src/data/far/input_event_data.asm
+lines_menu_text:00B4,itemPenaltyKilling,,new,medium,"menu item record (box, text, handler) of the 'PenaltyKilling' entry",src/data/far/lines_menu_text.asm
+list_dialog_data:0000,ListDlgScrollBar,,new,medium,"scroll bar record (32 bytes) of the list dialog, set up by ListDialog with ScrollBarInit",src/data/far/list_dialog_data.asm
+menu_text:0ADC,itemOpen,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/menu_text.asm
+menu_text:0B60,itemExportDatabases,,new,medium,"menu item record (box, text, handler) of the 'ExportDatabases' entry",src/data/far/menu_text.asm
+menu_text:0B76,itemNextLeagueGame,,new,medium,"menu item record (box, text, handler) of the 'NextLeagueGame' entry",src/data/far/menu_text.asm
+menu_text:0B8C,itemLeagueManager,,new,medium,"menu item record (box, text, handler) of the 'LeagueManager' entry",src/data/far/menu_text.asm
+menu_text:0BCE,itemNextPlayOffGame,,new,medium,"menu item record (box, text, handler) of the 'NextPlayOffGame' entry",src/data/far/menu_text.asm
+menu_text:0BE4,itemPlayOffSettings,,new,medium,"menu item record (box, text, handler) of the 'PlayOffSettings' entry",src/data/far/menu_text.asm
+menu_text:0BFA,itemPlayOffHilights,,new,medium,"menu item record (box, text, handler) of the 'PlayOffHilights' entry",src/data/far/menu_text.asm
+menu_text:0C3C,itemGameLaAtMtl,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/menu_text.asm
+menu_text:0CD6,itemStatisticsType,,new,medium,"menu item record (box, text, handler) of the 'StatisticsType' entry",src/data/far/menu_text.asm
+menu_text:0D86,itemMergeLeagueFiles,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/menu_text.asm
+menu_text:0EA4,itemScoring,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/menu_text.asm
+menu_text:0F12,itemPoints,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/menu_text.asm
+menu_text:0FC2,itemGoalsAgainstAverage,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/menu_text.asm
+menu_text:1004,itemReturnToGame,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/menu_text.asm
+menu_text:1030,itemSportsDesk,,new,medium,"menu item record (box, text, handler) of the 'SportsDesk' entry",src/data/far/menu_text.asm
+menu_text:105C,itemPlayer1Controls,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/menu_text.asm
+menu_text:109E,itemHomeTeamGoalie,,new,medium,"menu item record (box, text, handler) of the 'HomeTeamGoalie' entry",src/data/far/menu_text.asm
+menu_text:10B4,itemVisitingTeamGoalie,,new,medium,"menu item record (box, text, handler) of the 'VisitingTeamGoalie' entry",src/data/far/menu_text.asm
+menu_text:10F6,itemStatisticsType_2,,new,medium,"menu item record (box, text, handler) of the 'StatisticsType' entry",src/data/far/menu_text.asm
+menu_text:1164,itemHomeTeam,,new,medium,"menu item record (box, text, handler) of the 'HomeTeam' entry",src/data/far/menu_text.asm
+menu_text:117A,itemVisitingTeam,,new,medium,"menu item record (box, text, handler) of the 'VisitingTeam' entry",src/data/far/menu_text.asm
+menu_text:1190,itemGoToReplay,,new,medium,"menu item record (box, text, handler) of the 'GoToReplay' entry",src/data/far/menu_text.asm
+menu_text:11A6,itemGameStatistics,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/menu_text.asm
+menu_text:1282,itemSportsDesk_2,,new,medium,"menu item record (box, text, handler) of the 'SportsDesk' entry",src/data/far/menu_text.asm
+menu_text:13F8,itemUseTheseLines,,new,medium,"menu item record (box, text, handler) of the 'UseTheseLines' entry",src/data/far/menu_text.asm
+menu_text:143A,itemSaveAsDefaultLines,,new,medium,"menu item record (box, text, handler) of the 'SaveAsDefaultLines' entry",src/data/far/menu_text.asm
+menu_text:1450,itemDressPlayer,,new,medium,"menu item record (box, text, handler) of the 'DressPlayer' entry",src/data/far/menu_text.asm
+menu_text:1466,itemScratchPlayer,,new,medium,"menu item record (box, text, handler) of the 'ScratchPlayer' entry",src/data/far/menu_text.asm
+menu_text:147C,itemShowPlayerStatistics_2,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/menu_text.asm
+menu_text:1516,itemCancel,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/menu_text.asm
+menu_text:152C,itemUseTheseLines_2,,new,medium,"menu item record (box, text, handler) of the 'UseTheseLines' entry",src/data/far/menu_text.asm
+menu_text:156E,itemSaveAsDefaultLines_2,,new,medium,"menu item record (box, text, handler) of the 'SaveAsDefaultLines' entry",src/data/far/menu_text.asm
+menu_text:15B0,itemSaveTheseLines,,new,medium,"menu item record (box, text, handler) of the 'SaveTheseLines' entry",src/data/far/menu_text.asm
+menu_text:1634,itemLineEditor,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/menu_text.asm
+menu_text:1660,itemStatisticsType_3,,new,medium,"menu item record (box, text, handler) of the 'StatisticsType' entry",src/data/far/menu_text.asm
+menu_text:1676,itemSportsDesk_3,,new,medium,"menu item record (box, text, handler) of the 'SportsDesk' entry",src/data/far/menu_text.asm
+menu_text:16A2,itemSportsDesk_4,,new,medium,"menu item record (box, text, handler) of the 'SportsDesk' entry",src/data/far/menu_text.asm
+menu_text:16B8,itemShowTeamRoster,,new,medium,"menu item record (box, text, handler) of the 'ShowTeamRoster' entry",src/data/far/menu_text.asm
+menu_text:16FA,itemStatisticsType_4,,new,medium,"menu item record (box, text, handler) of the 'StatisticsType' entry",src/data/far/menu_text.asm
+menu_text:1710,itemOverallStandings,,new,medium,"menu item record (box, text, handler) of the 'OverallStandings' entry",src/data/far/menu_text.asm
+menu_text:1726,itemSportsDesk_5,,new,medium,"menu item record (box, text, handler) of the 'SportsDesk' entry",src/data/far/menu_text.asm
+menu_text:173C,itemTeamRoster,,new,medium,"menu item record (box, text, handler) of the 'TeamRoster' entry",src/data/far/menu_text.asm
+menu_text:1752,itemOverallStandings_2,,new,medium,"menu item record (box, text, handler) of the 'OverallStandings' entry",src/data/far/menu_text.asm
+menu_text:1768,itemSportsDesk_6,,new,medium,"menu item record (box, text, handler) of the 'SportsDesk' entry",src/data/far/menu_text.asm
+menu_text:177E,itemShowPlayerStatisticsAndAttributes,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/menu_text.asm
+menu_text:17C0,itemStatisticsType_5,,new,medium,"menu item record (box, text, handler) of the 'StatisticsType' entry",src/data/far/menu_text.asm
+menu_text:17EC,itemStatisticsType_6,,new,medium,"menu item record (box, text, handler) of the 'StatisticsType' entry",src/data/far/menu_text.asm
+menu_text:1818,itemStatisticsType_7,,new,medium,"menu item record (box, text, handler) of the 'StatisticsType' entry",src/data/far/menu_text.asm
+menu_text:185A,itemStatisticsType_8,,new,medium,"menu item record (box, text, handler) of the 'StatisticsType' entry",src/data/far/menu_text.asm
+menu_text:189C,itemStatisticsType_9,,new,medium,"menu item record (box, text, handler) of the 'StatisticsType' entry",src/data/far/menu_text.asm
+menu_text:18C8,itemPlayNextGame,,new,medium,"menu item record (box, text, handler) of the 'PlayNextGame' entry",src/data/far/menu_text.asm
+menu_text:18F4,itemPlayer1Controls_2,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/menu_text.asm
+menu_text:194C,itemStatisticsType_10,,new,medium,"menu item record (box, text, handler) of the 'StatisticsType' entry",src/data/far/menu_text.asm
+object_table:0000,ObjectTable,,new,medium,"object records (coordinates and flags), 18 bytes each",src/data/far/object_table.asm
+object_table:0132,OvlScriptGoal,,95 PC,high,"step script of the goal text overlay (step count, frames)",src/data/far/object_table.asm
+object_table:013A,OvlScriptClap,,95 PC,high,step script of the clap text overlay,src/data/far/object_table.asm
+object_table:0147,OvlScriptFanom,,95 PC,high,step script of the fan text overlay,src/data/far/object_table.asm
+object_table:0166,OvlScriptUflag,,95 PC,high,step script of the uflag text overlay,src/data/far/object_table.asm
+object_table:018F,OvlScriptCflag,,95 PC,high,step script of the cflag text overlay,src/data/far/object_table.asm
+playoff_dialog_rects:0000,SoundDialogHitRects,,new,medium,hit rectangles of the sound card dialog buttons,src/data/far/playoff_dialog_rects.asm
+runtime_state:0000,FpErrHandler,,MSC,high,dword; far error handler set by FpSetHandler (0 = none),src/data/far/runtime_state.asm
+runtime_state:0004,Fp87Present,,MSC,high,byte; 1 when a real 8087 does the work,src/data/far/runtime_state.asm
+runtime_state:0006,FpUserCw,,MSC,high,word; the control word as the program set it,src/data/far/runtime_state.asm
+runtime_state:0008,FpUserStatus,,MSC,high,word; exception flags gathered for FpGetStatus,src/data/far/runtime_state.asm
+runtime_state:000A,FpEmuCw,,MSC,high,word; the control word the emulator works with,src/data/far/runtime_state.asm
+runtime_state:000C,FpEmuStatus,,MSC,high,word; the emulated status word (high byte: C3-C0),src/data/far/runtime_state.asm
+runtime_state:000E,FpStackBase,,MSC,high,word; FpStackTop when the emulated stack is empty,src/data/far/runtime_state.asm
+runtime_state:0010,FpStackTop,,MSC,high,"word; the emulated ST, 12-byte registers growing upward",src/data/far/runtime_state.asm
+runtime_state:0012,FpStackLimit,,MSC,high,word; FpStackTop when all 14 registers are in use,src/data/far/runtime_state.asm
+runtime_state:0014,FpMachineMode,,MSC,high,word; 0 under DOS (real mode); other modes go through the OS/2 style calls,src/data/far/runtime_state.asm
+runtime_state:0016,FpOpStatus,,MSC,high,"word; exceptions raised by the current instruction, also the 8087's status word after fnstsw",src/data/far/runtime_state.asm
+runtime_state:001A,FpTemp,,MSC,high,dword; scratch control word and fistp result,src/data/far/runtime_state.asm
+runtime_state:001E,FpSavedVectors,,MSC,high,dword; INT 34h-3Eh as they were before FpHookVectors,src/data/far/runtime_state.asm
+runtime_state:004A,FpTemp0,,MSC,high,12-byte scratch register (also a temp real for fstp),src/data/far/runtime_state.asm
+runtime_state:0056,FpSavedSs,,MSC,high,word; SS when FpInit ran,src/data/far/runtime_state.asm
+runtime_state:0058,FpProbeWord,,MSC,high,word; FpInit's 8087 detection scratch word,src/data/far/runtime_state.asm
+runtime_state:005A,FpTemp1,,MSC,high,12-byte scratch register for the series routines,src/data/far/runtime_state.asm
+runtime_state:0066,FpTemp2,,MSC,high,12-byte scratch register for the series routines,src/data/far/runtime_state.asm
+runtime_state:0072,FpTemp3,,MSC,high,12-byte scratch register for the series routines,src/data/far/runtime_state.asm
+runtime_state:007E,FpTemp4,,MSC,high,12-byte scratch register for the series routines,src/data/far/runtime_state.asm
+runtime_state:008A,FpTemp5,,MSC,high,12-byte scratch register for the series routines,src/data/far/runtime_state.asm
+runtime_state:0096,FpResultPtr,,MSC,high,word; the register an arithmetic routine writes,src/data/far/runtime_state.asm
+runtime_state:0098,FpDivisor,,MSC,high,8-byte mantissa of the divisor in FpDivMantissa,src/data/far/runtime_state.asm
+runtime_state:00A0,FpRemExp,,MSC,high,word; fprem's exponent difference still to reduce,src/data/far/runtime_state.asm
+runtime_state:00A2,FpRemFlag,,MSC,high,word; 1 when fprem stopped before it finished,src/data/far/runtime_state.asm
+runtime_state:00A4,FpSignalMode,,MSC,high,word; set by FpSetMode; 0 makes FpException treat invalid operations as already handled,src/data/far/runtime_state.asm
+runtime_state:00A6,FpNextByte,,MSC,high,byte; the opcode byte after the emulated instruction,src/data/far/runtime_state.asm
+runtime_state:00A7,FpExitVector,,MSC,high,"word; FpEmuChain, or FpEmuChainEsc in other modes",src/data/far/runtime_state.asm
+runtime_state:00A9,FpStack,,MSC,high,the emulated register stack: 14 registers of 12 bytes,src/data/far/runtime_state.asm
+save_dialog_rects:0000,ControlsDlgTopBox,,new,medium,"box (x1, y1, x2, y2) of the upper controls dialog field",src/data/far/save_dialog_rects.asm
+save_dialog_rects:0008,ControlsDlgBottomBox,,new,medium,"box (x1, y1, x2, y2) of the lower controls dialog field",src/data/far/save_dialog_rects.asm
+save_messages:002B,msgSavingLeagueGame,,new,medium,message lines of the saving league game box,src/data/far/save_messages.asm
+save_messages:0033,msgSavingPlayoffGame,,new,medium,message lines of the saving play-off game box,src/data/far/save_messages.asm
+season_titles:0000,titleSeason,,new,medium,flag byte and ' 92 - 93 Season' title of the statistics menu,src/data/far/season_titles.asm
+season_titles:0013,titlePlayoffs,,new,medium,flag byte and ' 92 - 93 Play-Offs' title of the statistics menu,src/data/far/season_titles.asm
+season_titles:0029,titleLeagueSeason,,new,medium,flag byte and league season title of the statistics menu,src/data/far/season_titles.asm
+season_titles:003D,titleLeagueSeasonPlayoffs,,new,medium,flag byte and league season play-offs title,src/data/far/season_titles.asm
+season_titles:005B,titleLeaguePlayoffs,,new,medium,flag byte and league play-offs title,src/data/far/season_titles.asm
+season_titles:0090,itemNhlSeason,,new,medium,"menu item record (box, text, handler) of the ''92 - '93 Season' entry of the season menu",src/data/far/season_titles.asm
+season_titles:00A6,itemNhlPlayoffs,,new,medium,"menu item record (box, text, handler) of the ''92 - '93 Play-Offs' entry of the season menu",src/data/far/season_titles.asm
+season_titles:00BC,itemSeasonSeparator,,new,medium,"menu item record (box, text, handler) of the 'separator' entry of the season menu",src/data/far/season_titles.asm
+season_titles:00D2,itemLeagueSeason,,new,medium,"menu item record (box, text, handler) of the 'league season' entry of the season menu",src/data/far/season_titles.asm
+season_titles:00E8,itemLeagueSeasonPlayoffs,,new,medium,"menu item record (box, text, handler) of the 'league season play-offs' entry of the season menu",src/data/far/season_titles.asm
+season_titles:00FE,itemSeasonSeparator_2,,new,medium,"menu item record (box, text, handler) of the 'second separator' entry of the season menu",src/data/far/season_titles.asm
+season_titles:0114,itemLeaguePlayoffs,,new,medium,"menu item record (box, text, handler) of the 'league play- offs' entry of the season menu",src/data/far/season_titles.asm
+team_choice_text:005B,msgCustomOrOriginal,,new,medium,message lines of the custom or original teams box,src/data/far/team_choice_text.asm
+team_choice_text:0067,btnsCustomOriginal,,new,medium,Custom and Original buttons of that box,src/data/far/team_choice_text.asm
+team_choice_text:03A9,argDoYouReallyWantTo,,new,medium,"far pointer slot after 'Do you really want to remove', filled at run time",src/data/far/team_choice_text.asm
+team_choice_text:0541,argDoYouWantToExport,,new,medium,"far pointer slot after 'Do you want to export', filled at run time",src/data/far/team_choice_text.asm
+team_choice_text:06CA,argCopyingDatabasesFor,,new,medium,"far pointer slot after 'Copying databases for', filled at run time",src/data/far/team_choice_text.asm
+team_choice_text:0907,argPlayersDatabasesFor,,new,medium,"far pointer slot after the players databases message, filled at run time",src/data/far/team_choice_text.asm
+team_choice_text:09B8,argMasterDatabasesFor,,new,medium,"far pointer slot after the master databases message, filled at run time",src/data/far/team_choice_text.asm
+team_choice_text:0B6C,DbFileNameList,,new,medium,"far pointers to the database file names (KEY, CAREER, ATT ...)",src/data/far/team_choice_text.asm
+team_choice_text:0E23,MonthNameList,,new,medium,far pointers to the month names (January ...),src/data/far/team_choice_text.asm
+team_choice_text:0E60,itemStatisticsType_11,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/team_choice_text.asm
+team_choice_text:0F13,itemPlayer1Controls_3,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/team_choice_text.asm
+team_choice_text:0F88,itemNextMonth,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/team_choice_text.asm
+team_choice_text:1036,itemShowLeagueSettings,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/team_choice_text.asm
+team_choice_text:105C,itemLeagueSettings,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/team_choice_text.asm
+team_choice_text:107E,itemDone,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/team_choice_text.asm
+team_choice_text:10BA,TeamSelMenuBar,,new,medium,"menu bar of the team select screen (Select, Settings)",src/data/far/team_choice_text.asm
+team_choice_text:10E0,SettingsSubmenuPtr,,new,medium,"far pointer to the submenu of the 'Settings' title, set at run time",src/data/far/team_choice_text.asm
+team_choice_text:10FD,itemShowPlayerStatistics,,new,medium,"menu item record (box, text, handler) of the 'Show Player Statistics' entry",src/data/far/team_choice_text.asm
+team_choice_text:111F,itemDone_2,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/team_choice_text.asm
+team_choice_text:1195,itemTrade,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/team_choice_text.asm
+trade_messages:0000,TradeHitRects,,new,medium,"hit rectangles of the trade screen boxes (x1, y1, x2, y2)",src/data/far/trade_messages.asm
+,DrawGameLineJerseysJumpTable,,new,medium,jump table of DrawGameLineJerseys: 8 case targets,src/front/game_lines.asm
+,HandleHotKeyJumpTable,,new,medium,jump table of HandleHotKey: 18 case targets,src/front/game_main.asm
+,LeadersScreenJumpTable,,new,medium,jump table of LeadersScreen: 11 case targets,src/front/leaders.asm
+,LockerRoomLoopJumpTable,,new,medium,jump table of LockerRoomLoop: 8 case targets,src/front/lockerroom.asm
+,POAfterGameJumpTable,,new,medium,jump table of POAfterGame: 15 case targets,src/front/playoff_mode.asm
+,SetStatsMenuTextJumpTable,,new,medium,jump table of SetStatsMenuText: 6 case targets,src/front/stats_menus.asm
+header:0000,mz_header,,new,medium,"out from the labels of the parts they describe, so they stay right when a segment changes size.",src/header/mz_header.asm
+header:001E,reloc_table,,new,medium,"the relocation table: 1727 entries (offset, segment of a word in the image that holds a segment number)",src/header/mz_header.asm
+header:1B1A,reloc_end,,new,medium,end of the relocation table; zero fill to the image,src/header/mz_header.asm
+header:1C00,image_start,,new,medium,end of the header: the load image starts on this paragraph,src/header/mz_header.asm
+dgroup:8ED6,exe_end,,new,medium,,src/hockey94pc.asm
+seq_events:03FF,SeqStepTrackJumpTable,,new,medium,word,src/lib/eaclib/seq_events.asm
+seq_events:0B02,ParseMidiEventJumpTable,,new,medium,word,src/lib/eaclib/seq_events.asm
+fp_emulator:0000,EmuDataSeg,,MSC,high,paragraph of the emulator's data (runtime_state); every entry loads DS from here,src/lib/fp_emulator.asm
+fp_emulator:0010,FpSignature,,MSC,high,"'MSEM87' and a version word, the emulator's signature",src/lib/fp_emulator.asm
+fp_emulator:0020,FpFuncTable,,MSC,high,"word; FpMath's function table, by index 0-12",src/lib/fp_emulator.asm
+fp_emulator:005A,FpCrLf,,MSC,high,CR LF printed after the NO87= message,src/lib/fp_emulator.asm
+fp_emulator:0880,FpOpcodeTable,,MSC,high,word; FpEmulate's handlers by ESC opcode and MOD field,src/lib/fp_emulator.asm
+fp_emulator:08C0,FpArithTable,,MSC,high,"word; fadd, fmul, fcom, fcomp, fsub, fsubr, fdiv, fdivr",src/lib/fp_emulator.asm
+fp_emulator:08D0,FpOddEscMemTable,,MSC,high,"word; memory forms of ESC 1, 3, 5 and 7 by REG field",src/lib/fp_emulator.asm
+fp_emulator:08E0,FpOddEscRegTable,,MSC,high,"word; register forms of ESC 1, 3, 5 and 7 by REG field",src/lib/fp_emulator.asm
+fp_emulator:08F0,FpLoadFormatTable,,MSC,high,"word; loads a float, int32, double or int16 operand",src/lib/fp_emulator.asm
+fp_emulator:08F8,FpStoreFormatTable,,MSC,high,"word; stores ST as a float, int32, double or int16",src/lib/fp_emulator.asm
+fp_emulator:0900,FpRegField5Table,,MSC,high,"word; REG 5: fldcw, fld temp real, (reserved), fild int64",src/lib/fp_emulator.asm
+fp_emulator:0908,FpRegField7Table,,MSC,high,"word; REG 7: fstcw, fstp temp real, fstsw, fistp int64",src/lib/fp_emulator.asm
+fp_emulator:0910,FpLoadConstTable,,MSC,high,"word; fld1, fldl2t, fldl2e, fldpi, fldlg2, fldln2, fldz",src/lib/fp_emulator.asm
+fp_emulator:0920,FpTranscTable,,MSC,high,"word; f2xm1, fyl2x, fptan, fpatan",src/lib/fp_emulator.asm
+fp_emulator:0930,FpMiscOpTable,,MSC,high,"word; fprem, fyl2xp1, fsqrt, frndint, fscale (D9 F8-FF)",src/lib/fp_emulator.asm
+fp_emulator:0940,FpCompareTagTable,,MSC,high,word; compare handlers by the two operands' tags,src/lib/fp_emulator.asm
+fp_emulator:0960,FpTestTagTable,,MSC,high,word; ftst handlers by tag,src/lib/fp_emulator.asm
+fp_emulator:0968,FpAddTagTable,,MSC,high,word; add handlers by the two operands' tags,src/lib/fp_emulator.asm
+fp_emulator:0988,FpMulTagTable,,MSC,high,word; multiply handlers by the two operands' tags,src/lib/fp_emulator.asm
+fp_emulator:09A8,FpDivTagTable,,MSC,high,word; divide handlers by the two operands' tags,src/lib/fp_emulator.asm
+fp_emulator:09C8,FpExamineCodes,,MSC,high,"fxam condition codes (C3, C2, C1, C0) by tag and sign",src/lib/fp_emulator.asm
+fp_emulator:09D0,FpRegZero,,MSC,high,+0 as an emulator register,src/lib/fp_emulator.asm
+fp_emulator:09DC,FpRegInfinity,,MSC,high,+infinity as an emulator register,src/lib/fp_emulator.asm
+fp_emulator:09E8,FpRegIndefinite,,MSC,high,the indefinite NaN as an emulator register,src/lib/fp_emulator.asm
+fp_emulator:09F4,FpRegMax,,MSC,high,the largest temp real as an emulator register,src/lib/fp_emulator.asm
+fp_emulator:0A00,FpSingleInf,,MSC,high,float +infinity,src/lib/fp_emulator.asm
+fp_emulator:0A04,FpSingleMax,,MSC,high,the largest float,src/lib/fp_emulator.asm
+fp_emulator:0A08,FpDoubleInf,,MSC,high,double +infinity,src/lib/fp_emulator.asm
+fp_emulator:0A10,FpDoubleMax,,MSC,high,the largest double,src/lib/fp_emulator.asm
+fp_emulator:0A18,FpConstZero,,MSC,high,0.0 (fldz),src/lib/fp_emulator.asm
+fp_emulator:0A24,FpConstOne,,MSC,high,1.0 (fld1),src/lib/fp_emulator.asm
+fp_emulator:0A30,FpConstTan15,,MSC,high,"2 - sqrt 3, the tangent of 15 degrees",src/lib/fp_emulator.asm
+fp_emulator:0A3C,FpConstSqrt3,,MSC,high,sqrt 3,src/lib/fp_emulator.asm
+fp_emulator:0A48,FpConstPiOver6,,MSC,high,pi / 6,src/lib/fp_emulator.asm
+fp_emulator:0A54,FpConstSqrt2,,MSC,high,sqrt 2,src/lib/fp_emulator.asm
+fp_emulator:0A60,FpConstTwo,,MSC,high,2.0,src/lib/fp_emulator.asm
+fp_emulator:0A6C,FpConstPi,,MSC,high,pi (fldpi),src/lib/fp_emulator.asm
+fp_emulator:0A78,FpConstL2T,,MSC,high,log2 10 (fldl2t),src/lib/fp_emulator.asm
+fp_emulator:0A84,FpConstL2E,,MSC,high,log2 e (fldl2e),src/lib/fp_emulator.asm
+fp_emulator:0A90,FpConstLg2,,MSC,high,log10 2 (fldlg2),src/lib/fp_emulator.asm
+fp_emulator:0A9C,FpConstLn2,,MSC,high,ln 2 (fldln2),src/lib/fp_emulator.asm
+fp_emulator:0AA8,FpSeriesANum,,MSC,high,"FpSeriesA numerator: degree word, then coefficients",src/lib/fp_emulator.asm
+fp_emulator:0ADA,FpSeriesADen,,MSC,high,FpSeriesA denominator,src/lib/fp_emulator.asm
+fp_emulator:0B0C,FpAtanNum,,MSC,high,"FpAtanCore numerator: degree word, then coefficients",src/lib/fp_emulator.asm
+fp_emulator:0B4A,FpAtanDen,,MSC,high,FpAtanCore denominator,src/lib/fp_emulator.asm
+fp_emulator:0B7C,FpSeriesBNum,,MSC,high,"FpSeriesB numerator: degree word, then coefficients",src/lib/fp_emulator.asm
+fp_emulator:0BA2,FpSeriesBDen,,MSC,high,FpSeriesB denominator,src/lib/fp_emulator.asm
+fp_emulator:0BC8,FpLogNum,,MSC,high,"FpLogSeries numerator: degree word, then coefficients",src/lib/fp_emulator.asm
+fp_emulator:0BFA,FpLogDen,,MSC,high,FpLogSeries denominator,src/lib/fp_emulator.asm
+fp_emulator:0C20,FpSegEscTable,,MSC,high,word; FpEmuSegInt handlers by segment bits of the ESC byte,src/lib/fp_emulator.asm
+fp_emulator:0C3D,FpSegModrmTable,,MSC,high,word; FpEmuSegInt handlers by segment bits of the next byte,src/lib/fp_emulator.asm
+fp_emulator:2670,FpNmiStatus,,MSC,high,word; the 8087 status word FpNmiHandler reads,src/lib/fp_emulator.asm
+fp_emulator:2672,FpOldNmi,,MSC,high,dword; the INT 2 (NMI) vector before FpHookNmi,src/lib/fp_emulator.asm
+fp_emulator:2676,FpOldCtrlBreak,,MSC,high,dword; the INT 23h (Ctrl-Break) vector before FpHookNmi,src/lib/fp_emulator.asm
+msc_runtime:0000,MscRuntimeStart,,MSC,high,offset 0 of this segment; code in other segments splits a label here with label - MscRuntimeStart,src/lib/msc_runtime.asm
+msc_runtime:0868,OpenBody,,MSC,high,,src/lib/msc_runtime.asm
+msc_runtime:1046,ChdirPath,,MSC,high,,src/lib/msc_runtime.asm
+msc_runtime:104B,ChdirErr,,MSC,high,,src/lib/msc_runtime.asm
+msc_runtime:109E,DosCreate,,MSC,high,,src/lib/msc_runtime.asm
+msc_runtime:10D0,FindCommon,,MSC,high,,src/lib/msc_runtime.asm
+msc_runtime:1112,_dos_read,,MSC,high,"Read into a far buffer: DOS function 3Fh through the body of _dos_write. Arguments: handle, far buffer, count, far pointer to the bytes-read word.",src/lib/msc_runtime.asm
+msc_runtime:1142,_disable,,MSC,high,Clear the interrupt flag (cli) and return.,src/lib/msc_runtime.asm
+msc_runtime:1170,_enable,,MSC,high,Set the interrupt flag (sti) and return.,src/lib/msc_runtime.asm
+msc_runtime:1270,LongShlAt,,MSC,high,"Shift the long at a near pointer left by a count, in place (__aFlshl). Arguments: pointer, count.",src/lib/msc_runtime.asm
+msc_runtime:128E,LongSarAt,,MSC,high,"Shift the signed long at a near pointer right by a count, in place (__aFlsar). Arguments: pointer, count.",src/lib/msc_runtime.asm
+msc_runtime:16BC,DosRetZero,,MSC,high,,src/lib/msc_runtime.asm
+msc_runtime:16D1,DosRetBad,,MSC,high,,src/lib/msc_runtime.asm
+msc_runtime:16D8,DosRetLeave,,MSC,high,,src/lib/msc_runtime.asm
+msc_runtime:1EF8,FloatLoad,,MSC,high,Load a double through the floating-point emulator interrupts and test it; returns AX 1 or 0 from the compare. Most of the body is emulator escape bytes.,src/lib/msc_runtime.asm
+msc_runtime:1F26,FormatFloat,,MSC,high,"Floating-point conversion for printf and scanf: the first argument picks the job (1, 2 or a string to read with atof), then the value goes through the emulator.",src/lib/msc_runtime.asm
+msc_runtime:1F82,FloatBuf,,MSC,high,"Write a value in %f style into the output buffer: sign, digits before and after the point (precision from the argument), using PackArgs and WriteDigits.",src/lib/msc_runtime.asm
+msc_runtime:20AC,FloatToStr,,MSC,high,"%f conversion into the caller's buffer: FloatBuf with FloatMode set, so it reads the digits already converted.",src/lib/msc_runtime.asm
+msc_runtime:20D0,FloatWidth,,MSC,high,"Write a value in %e style into the output buffer: sign, one digit, the point, the precision digits from FloatPrecision, then the exponent.",src/lib/msc_runtime.asm
+msc_runtime:21C4,FloatToSci,,MSC,high,"%e conversion into the caller's buffer: FloatWidth with FloatMode set, so it reads the digits already converted.",src/lib/msc_runtime.asm
+msc_runtime:21E6,FormatOne,,MSC,high,"Format one floating-point argument for printf (%g): pack the double, then pick %e or %f style from the exponent and FloatPrecision.",src/lib/msc_runtime.asm
+msc_runtime:2298,FormatExp,,MSC,high,"Pick the floating-point style for a printf letter: e or E goes to the %e layout, f to %f, anything else to %g.",src/lib/msc_runtime.asm
+msc_runtime:22E8,FormatLen,,MSC,high,"Make room for a sign: when the flag argument is set, move the string up one byte (_strlen, _memmove). Shares its tail with the floating-point error exit.",src/lib/msc_runtime.asm
+msc_runtime:2356,FormatFixed,,MSC,high,,src/lib/msc_runtime.asm
+msc_runtime:239A,FormatPad,,MSC,high,"Lay out %e digits in a buffer: sign, leading digit, point, the requested digits and the exponent with its sign.",src/lib/msc_runtime.asm
+msc_runtime:24E4,FormatG,,MSC,high,Convert a double to digits (HexConvert) and lay them out %f style (FormatCopy).,src/lib/msc_runtime.asm
+msc_runtime:2522,FormatCopy,,MSC,high,"Lay out %f digits in a buffer: sign, the digits before the point (or 0), the point and the requested digits, padding with zeros.",src/lib/msc_runtime.asm
+msc_runtime:2622,FormatDigits,,MSC,high,"Convert a double to digits (HexConvert) with at least one digit of precision, then lay them out %e style (FormatPad).",src/lib/msc_runtime.asm
+msc_runtime:2690,FormatExp2,,MSC,high,"The same choice as FormatExp for the second set of layout routines: e or E, f, else g.",src/lib/msc_runtime.asm
+msc_runtime:26E6,ConvertFloat,,MSC,high,"Probably the stream flush: write out the buffered bytes of the FILE at SI (_write), mark an error in its flags when fewer were written, and reset the buffer.",src/lib/msc_runtime.asm
+msc_runtime:283E,WriteDigits,,MSC,high,"Copy the digits of a converted number into a buffer behind a leading 0, rounding at the requested precision and carrying into the 0 when it overflows.",src/lib/msc_runtime.asm
+msc_runtime:28DA,RetPop10,,MSC,high,An empty Pascal-style routine: returns and drops 10 bytes of arguments.,src/lib/msc_runtime.asm
+msc_runtime:28F9,RetPop2,,MSC,high,An empty Pascal-style routine: returns and drops 2 bytes of arguments.,src/lib/msc_runtime.asm
+msc_runtime:2902,WriteFar,,MSC,high,"Write a far buffer to a handle (DOS 40h) for the emulator's error output; Pascal style, drops 12 bytes of arguments. Result: AX 0.",src/lib/msc_runtime.asm
+msc_runtime:29C4,HexConvert,,MSC,high,"Split a double into sign, decimal exponent and digit string (the decimal conversion behind %e, %f and %g), into a near result block.",src/lib/msc_runtime.asm
+msc_runtime:2BD2,PackArgs,,MSC,high,"Copy the double on the stack into the emulator's conversion area, run the conversion and copy its digit string and exponent into the result block.",src/lib/msc_runtime.asm
+msc_runtime:2C18,FloatStatus,,MSC,high,"Pack a double through StrToTenByte and test it with the emulator; probably returns its class (zero, normal or infinite) for the conversion code.",src/lib/msc_runtime.asm
+overlay_manager:0000,Messages,,new,medium,start of the message pointers below,src/lib/rtlink/overlay_manager.asm
+overlay_manager:067B,SectionRecord,,new,medium,Near. AX is a section index. Returns BX pointing at that record.,src/lib/rtlink/overlay_manager.asm
+overlay_manager:0BA0,FileHandle,,new,medium,word,src/lib/rtlink/overlay_manager.asm
+overlay_manager:0BA2,SectionEnd,,new,medium,word,src/lib/rtlink/overlay_manager.asm
+overlay_manager:0D2D,SectionCount,,new,medium,word,src/lib/rtlink/overlay_manager.asm
+overlay_manager:0D33,SectionTable,,new,medium,,src/lib/rtlink/overlay_manager.asm
+overlay_manager:0EAD,SectionEndMark,,new,medium,,src/lib/rtlink/overlay_manager.asm
+rtl_runtime:004E,RtlOldTerminate,,new,medium,dword; the PSP terminate address before RtlSetHandler,src/lib/rtlink/rtl_runtime.asm
+rtl_runtime:0052,RtlPspSeg,,new,medium,word; the PSP segment RtlSaveVectors was given,src/lib/rtlink/rtl_runtime.asm
+rtl_runtime:00A7,RtlExitHandlers,,new,medium,Runs the callbacks with flag 1 and puts the PSP terminate address back.,src/lib/rtlink/rtl_runtime.asm
+rtl_runtime:014C,RtlHandlerTable,,new,medium,"12 callbacks of 6 bytes: far address, flag mask, unused",src/lib/rtlink/rtl_runtime.asm
+rtl_runtime:0194,RtlHandlerTableEnd,,new,medium,end of RtlHandlerTable (a full table),src/lib/rtlink/rtl_runtime.asm
+rtl_runtime:01C3,RtlErrorList,,new,medium,"word; the message list RtlInternalError passes to the error routine, ended by 0",src/lib/rtlink/rtl_runtime.asm
+rtl_runtime:0231,RtlMessages,,new,medium,word; the fatal error texts below,src/lib/rtlink/rtl_runtime.asm
+rtl_runtime:0239,RtlStrFatal,,new,medium,"'Fatal Error ', $-terminated",src/lib/rtlink/rtl_runtime.asm
+rtl_runtime:0246,RtlStrPressKey,,new,medium,"CR LF 'Press any key to terminate.', $-terminated",src/lib/rtlink/rtl_runtime.asm
+rtl_runtime:0264,RtlStrIntCode,,new,medium,"'ege0001: ', the internal error's code",src/lib/rtlink/rtl_runtime.asm
+rtl_runtime:026E,RtlStrIntText,,new,medium,the internal error's text,src/lib/rtlink/rtl_runtime.asm
+rtl_runtime:04FC,RtlIsExe,,new,medium,byte; 1 when the name RtlAppendName copied ends in .exe,src/lib/rtlink/rtl_runtime.asm
+rtl_runtime:05D5,RtlPrompts,,new,medium,word; the texts RtlShowMessage prints around the file name,src/lib/rtlink/rtl_runtime.asm
+rtl_runtime:05DB,RtlStrEnterDir,,new,medium,"'Enter directory for ', $-terminated",src/lib/rtlink/rtl_runtime.asm
+rtl_runtime:05F0,RtlStrToQuit,,new,medium,"' (Enter to quit) : ', $-terminated",src/lib/rtlink/rtl_runtime.asm
+rtl_runtime:0604,RtlStrCrLf,,new,medium,"CR LF, $-terminated",src/lib/rtlink/rtl_runtime.asm
+,DrawFileDlgJumpTable,,new,medium,jump table of DrawFileDlg: 6 case targets,src/pc/file_dialogs.asm
+,DrawFileDlgListJumpTable,,new,medium,jump table of DrawFileDlgList: 6 case targets,src/pc/file_dialogs.asm
+,LeagueOptsToBitsJumpTable,,new,medium,jump table of LeagueOptsToBits: 14 case targets,src/pc/league_settings.asm
+null_far2:0000,RandomTail,,new,medium,end of randomd0,src/pc/null_far2.asm
+speech:1154,DivisionSampleNameJumpTable,,new,medium,word,src/pc/sound/speech.asm
+system:0008,SpillRet,,new,medium,,src/pc/system.asm
+system:063B,FindExit,,new,medium,,src/pc/system.asm
+system:0B8A,PathTailBody,,new,medium,,src/pc/system.asm
+system:0BC8,CopyStrNBody,,new,medium,,src/pc/system.asm
+system:0C11,TextWidthBody,,new,medium,,src/pc/system.asm
+system:17F1,ConOut,,new,medium,,src/pc/system.asm
+system:26F5,FileOpenAlt,,new,medium,Second try of a failed open: open AltPath when one is set and read its first 400h bytes into AltBuf. Falls into FileOpenFail when there is none or it fails too.,src/pc/system.asm
+system:2762,FileOpenFail,,new,medium,Clean-up after a failed open: close the handle stored through the argument pointer and clear the caller's result words; a fatal error when the caller asked for ,src/pc/system.asm
+system:2823,ReadAtFail,,new,medium,"Error exit of the read-at routine above: return DX:AX 0, or a fatal error with the file name when the caller asked for one.",src/pc/system.asm
+system:28A1,ReadCloseFail,,new,medium,"Error exit of the read-and-close routine above: return DX:AX 0, or a fatal error with the file name when the caller asked for one.",src/pc/system.asm
+system:293D,CpuProbeDone,,new,medium,,src/pc/system.asm
+system:2996,FillArg,,new,medium,,src/pc/system.asm
+system:29C3,FillAddr,,new,medium,,src/pc/system.asm
+system:32F8,AngleTab,,new,medium,,src/pc/system.asm
+vga:0EA0,LeftMasks,,new,medium,byte masks with the top 0 to 8 bits set; the DrawChar body indexes it by the width of the glyph's last byte,src/pc/video/vga.asm
+vga:367A,CopyPageToPageJumpTable,,new,medium,word,src/pc/video/vga.asm
+vga:377B,CopyPageRectJumpTable,,new,medium,word,src/pc/video/vga.asm
+vga:3C53,DrawScaledJumpTable,,new,medium,word,src/pc/video/vga.asm
+vga:3CEE,DrawLineClippedJumpTable,,new,medium,word,src/pc/video/vga.asm
+vga:3F22,DrawLineClippedJumpTable2,,new,medium,word,src/pc/video/vga.asm

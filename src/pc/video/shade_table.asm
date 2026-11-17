@@ -3,7 +3,7 @@
         inc si
 CopyBytesFarTail:
         cmp si, 0x10
-        db 0x7C, 0xEF                           ; insn: jl 0xfff7
+        jl short CopyBytesFar.1 - 0x20
         pop si
         pop di
         leave
@@ -235,8 +235,20 @@ MergeRemapTables:
         mov di, [bp + 0xa]
         mov cx, [bp + 0x6]
         jmp short .1
-        db 0x8E, 0x46, 0x08, 0x8B, 0xD9, 0x03, 0xDE, 0x26, 0x8A, 0x07, 0x8E, 0x06, 0x0E, 0x8D, 0x26, 0x88
-        db 0x84, 0x00, 0x00, 0x8E, 0x46, 0x0C, 0x8B, 0xDF, 0x03, 0xDE, 0x26, 0x8A, 0x07, 0x8E, 0x06, 0x0E
-        db 0x8D, 0x26, 0x88, 0x84, 0x00, 0x01, 0x46
+.copy:
+        mov es, [bp + 0x8]
+        db 0x8B, 0xD9                           ; insn: mov bx, cx
+        db 0x03, 0xDE                           ; insn: add bx, si
+        mov al, [es:bx]
+        mov es, [PaletteFlagsSeg2]
+        db 0x26, 0x88, 0x84                     ; insn: mov [es:si + PaletteFlags], al
+        dw PaletteFlags
+        mov es, [bp + 0xc]
+        db 0x8B, 0xDF                           ; insn: mov bx, di
+        db 0x03, 0xDE                           ; insn: add bx, si
+        mov al, [es:bx]
+        mov es, [PaletteFlagsSeg2]
+        mov [es:si + PaletteFlags2], al
+        inc si
 .1:
-        db 0x81, 0xFE
+        db 0x81, 0xFE                           ; insn: cmp si, 100h: the rest is in the next segment

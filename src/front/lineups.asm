@@ -141,11 +141,11 @@ ShowStartingLineups:
         jnz short .2
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8C98]
-        push word [es:0xb6e]
-        push word [es:0xb6c]
+        mov es, [segTeamChoiceText51]
+        push word [es:DbFileNameList + 0x2]
+        push word [es:DbFileNameList]
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x96]
         push ss
         push ax
@@ -188,8 +188,8 @@ ShowStartingLineups:
         imul bx, [bp - 0xca], word 0xba
         add bx, [bp - 0xd4]
         shl bx, byte 0x2
-        mov ax, [bx + g_9FCC]
-        mov dx, [bx + g_9FCE]
+        mov ax, [bx + GamePlayerNames]
+        mov dx, [bx + GamePlayerNamesSeg]
         mov [bp - 0xe0], ax
         mov [bp - 0xde], dx
         cmp ax, strict word 0xffff
@@ -225,8 +225,8 @@ ShowStartingLineups:
         push ax
         call 0x0CD1:CloseHandlePtr
         add sp, 0x2
-        mov word [bp - 0x2e], 0xae10
-        mov word [bp - 0x2c], 0xae40
+        mov word [bp - 0x2e], HomeTeamRec
+        mov word [bp - 0x2c], AwayTeamRec
         call 0x0EDC:AnnounceLineups
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [bp - 0x3a], ax
@@ -252,11 +252,11 @@ ShowStartingLineups:
         push dx
         push ax
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0000:_fmemcpy
         add sp, 0xa
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0FEF:SetRemapTable
         add sp, 0x4
         push word [bp - 0xcc]
@@ -280,7 +280,7 @@ ShowStartingLineups:
         db 0x2A, 0xFF                           ; insn: sub bh, bh
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         shl bx, 1
-        push word [bx + g_5604]
+        push word [bx + CrestShapeNames]
         push word [bp - 0x30]
         push word [bp - 0x32]
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -298,13 +298,13 @@ ShowStartingLineups:
         push dx
         push ax
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0000:_fmemcpy
         add sp, 0xa
-        mov es, [g_8C9A]
-        mov byte [es:0xaf8f], 0xd9
+        mov es, [segWorkBuffer46]
+        mov byte [es:MenuRemap + 0x43], 0xd9
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0FEF:SetRemapTable
         add sp, 0x4
         push 0x1c
@@ -421,11 +421,11 @@ ShowStartingLineups:
         push dx
         push ax
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0000:_fmemcpy
         add sp, 0xa
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0FEF:SetRemapTable
         add sp, 0x4
         push word [bp - 0xcc]
@@ -449,7 +449,7 @@ ShowStartingLineups:
         db 0x2A, 0xFF                           ; insn: sub bh, bh
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         shl bx, 1
-        push word [bx + g_5604]
+        push word [bx + CrestShapeNames]
         push word [bp - 0x30]
         push word [bp - 0x32]
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -467,13 +467,13 @@ ShowStartingLineups:
         push dx
         push ax
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0000:_fmemcpy
         add sp, 0xa
-        mov es, [g_8C9A]
-        mov byte [es:0xaf8f], 0xd9
+        mov es, [segWorkBuffer46]
+        mov byte [es:MenuRemap + 0x43], 0xd9
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0FEF:SetRemapTable
         add sp, 0x4
         push 0x1c
@@ -589,11 +589,11 @@ ShowStartingLineups:
         push dx
         push ax
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0000:_fmemcpy
         add sp, 0xa
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0FEF:SetRemapTable
         add sp, 0x4
         push word [bp - 0xcc]
@@ -617,7 +617,7 @@ ShowStartingLineups:
         db 0x2A, 0xFF                           ; insn: sub bh, bh
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         shl bx, 1
-        push word [bx + g_5604]
+        push word [bx + CrestShapeNames]
         push word [bp - 0x30]
         push word [bp - 0x32]
         db 0x8B, 0xF0                           ; insn: mov si, ax
@@ -635,13 +635,13 @@ ShowStartingLineups:
         push dx
         push ax
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0000:_fmemcpy
         add sp, 0xa
-        mov es, [g_8C9A]
-        mov byte [es:0xaf8f], 0xd9
+        mov es, [segWorkBuffer46]
+        mov byte [es:MenuRemap + 0x43], 0xd9
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0FEF:SetRemapTable
         add sp, 0x4
         push 0x1c

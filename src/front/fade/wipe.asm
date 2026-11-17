@@ -13,13 +13,13 @@ FadeWipe:
         mov si, [bp + 0x6]
         db 0x8B, 0xDE                           ; insn: mov bx, si
         shl bx, 1
-        mov ax, [bx + g_62A0]
+        mov ax, [bx + WipeDirX]
         mov [bp - 0x10], ax
-        mov ax, [bx + g_62A8]
+        mov ax, [bx + WipeDirY]
         mov [bp - 0x12], ax
-        mov ax, [bx + g_62B0]
+        mov ax, [bx + WipeDirX2]
         mov [bp - 0x2e], ax
-        mov ax, [bx + g_62B8]
+        mov ax, [bx + WipeDirY2]
         mov [bp - 0x2c], ax
         cmp si, 0x3
         jng short .1
@@ -30,16 +30,16 @@ FadeWipe:
         jmp near .19
 .2:
         call 0x0FEF:UseCurrentPage
-        mov es, [g_8CEC]
-        mov di, [es:0x74fc]
-        mov ax, [es:0x74fe]
+        mov es, [segDgroup14]
+        mov di, [es:ClipLeftX]
+        mov ax, [es:ClipRightX]
         mov [bp - 0x16], ax
-        mov ax, [es:0x74f2]
+        mov ax, [es:ClipTopY]
         mov [bp - 0x1c], ax
-        mov cx, [es:0x74f4]
+        mov cx, [es:ClipBottomY]
         mov [bp - 0x1e], cx
         db 0x2B, 0xC8                           ; insn: sub cx, ax
-        add cx, [es:0x74fa]
+        add cx, [es:VenetianRowBytes]
         dec cx
         mov [bp - 0x2a], cx
         db 0x0B, 0xF6                           ; insn: or si, si
@@ -76,27 +76,27 @@ FadeWipe:
 .9:
         mov [bp - 0xa], ax
 .10:
-        mov es, [g_8CEE]
+        mov es, [segDgroup15]
         cmp word [CurPage], 0x1
         db 0x1B, 0xDB                           ; insn: sbb bx, bx
         neg bx
         shl bx, byte 0x2
-        les bx, [es:bx + 0x7570]
+        les bx, [es:bx + PageTable]
         mov ax, [es:bx]
         mov dx, [es:bx + 0x2]
         mov [bp - 0x32], ax
         mov [bp - 0x30], dx
-        mov es, [g_8CEE]
+        mov es, [segDgroup15]
         mov bx, [CurPage]
         shl bx, byte 0x2
-        les bx, [es:bx + 0x7570]
+        les bx, [es:bx + PageTable]
         mov ax, [es:bx]
         mov dx, [es:bx + 0x2]
         mov [bp - 0x36], ax
         mov [bp - 0x34], dx
         call 0x0FEF:UseCurrentPage
-        mov es, [g_8CEC]
-        mov ax, [es:0x74f6]
+        mov es, [segDgroup14]
+        mov ax, [es:CanvasRowBytes]
         mov [bp - 0x18], ax
         mov word [bp - 0x28], 0x0
         cmp word [bp - 0x2a], 0x0

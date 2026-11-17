@@ -283,7 +283,7 @@ DrawTeamGrid:
         push word 0x80
         call 0x0FEF:SetPaletteFar
         add sp, 0x8
-        mov si, 0x5604
+        mov si, CrestShapeNames
         lea ax, [bp - 0xc8]
         mov [bp - 0x2], ax
         mov [bp - 0x12], di
@@ -324,13 +324,13 @@ DrawTeamGrid:
         push dx
         push ax
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0000:_fmemcpy
         add sp, 0xa
-        mov es, [g_8B8A]
-        mov byte [es:0xaf8f], 0x7f
+        mov es, [segWorkBuffer7]
+        mov byte [es:MenuRemap + 0x43], 0x7f
         push word 0x3a0b
-        push strict word f_3A0B_AF4C
+        push strict word MenuRemap
         call 0x0FEF:SetRemapTable
         add sp, 0x4
         push word [bp - 0x6]
@@ -559,8 +559,8 @@ ChooseLeagueController:
         mov [bp - 0xd4], es
         mov [es:bx + 0x18], al
         mov [es:bx + 0x19], al
-        mov es, [g_8B8C]
-        mov [es:0xac5a], cx
+        mov es, [segWorkBuffer8]
+        mov [es:leagueinfo], cx
 .7:
         push word 0x3701
         push strict word str_EnterMasterControllerPassword
@@ -662,21 +662,21 @@ ChooseLeagueController:
         push ss
         push ax
         push word 0x3a0b
-        push strict word f_3A0B_AF32
+        push strict word leagueinfo_password
         call 0x0000:_fstrcpy
         add sp, 0x8
         push word [bp - 0xd8]
         push word 0x3a0b
-        push strict word f_3A0B_AF32
+        push strict word leagueinfo_password
         call 0x28A8:EncryptPassword
         add sp, 0x6
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov es, [g_8B8E]
-        mov [es:0xac5e], ax
-        mov es, [g_8B90]
-        mov [es:0xac60], ax
-        mov es, [g_8B92]
-        mov byte [es:0xaf3e], 0x0
+        mov es, [segWorkBuffer9]
+        mov [es:leagueinfo_w4], ax
+        mov es, [segWorkBuffer10]
+        mov [es:leagueinfo_w6], ax
+        mov es, [segWorkBuffer11]
+        mov byte [es:leagueinfo_tail], 0x0
         push word [bp - 0x3e]
         push word [bp - 0x40]
         call 0x06E1:FindUnlink
@@ -754,9 +754,9 @@ AskExportToFloppy:
         db 0x8B, 0xC6                           ; insn: mov ax, si
         mov dx, [bp + 0x8]
         add ax, [bp - 0x8]
-        mov es, [g_8B94]
-        mov [es:0x541], ax
-        mov [es:0x543], dx
+        mov es, [segTeamChoiceText5]
+        mov [es:argDoYouWantToExport], ax
+        mov [es:argDoYouWantToExport + 0x2], dx
         push -0x1
         lea ax, [bp - 0x4]
         push ax
@@ -764,7 +764,7 @@ AskExportToFloppy:
         push ax
         push 0x2
         push word 0x3701
-        push strict word f_3701_0549
+        push strict word dlgAskExport
         push 0x4
         push es
         push word 0x53d
@@ -880,7 +880,7 @@ BuildStandingsGrid:
         db 0x8B, 0xDA                           ; insn: mov bx, dx
         db 0x03, 0xDF                           ; insn: add bx, di
         db 0x8B, 0xC3                           ; insn: mov ax, bx
-        mov bl, [bx + g_16C8]
+        mov bl, [bx + SchedDivTable]
         db 0x8B, 0xCB                           ; insn: mov cx, bx
         db 0x2A, 0xFF                           ; insn: sub bh, bh
         shl bx, 1
@@ -1254,7 +1254,7 @@ LeagueTeamSelect:
         mov word [bp - 0xf0], 0x0
         push 0x18
         push ds
-        push strict word g_16C8
+        push strict word SchedDivTable
         lea ax, [bp - 0x38]
         push ss
         push ax
@@ -1265,9 +1265,9 @@ LeagueTeamSelect:
 .1:
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8B96]
-        push word [es:0xb7e]
-        push word [es:0xb7c]
+        mov es, [segTeamChoiceText6]
+        push word [es:DbFileNameList + 0x12]
+        push word [es:DbFileNameList + 0x10]
         push word [bp + 0x8]
         push word [bp + 0x6]
         lea ax, [bp - 0x5a]
@@ -1423,24 +1423,24 @@ LeagueTeamSelect:
         add sp, 0xe
         test byte [bp + 0x16], 0x1
         jz short .7
-        mov es, [g_8B98]
-        mov word [es:0x10e0], 0x105c
-        mov word [es:0x10e2], 0x3701
+        mov es, [segTeamChoiceText7]
+        mov word [es:SettingsSubmenuPtr], itemLeagueSettings
+        mov word [es:SettingsSubmenuPtr + 0x2], 0x3701
 .6:
         mov word [bp - 0x76], 0x2
         jmp short .9
 .7:
         test byte [bp + 0x16], 0x8
         jz short .8
-        mov es, [g_8B98]
-        mov word [es:0x10e0], 0x1036
-        mov word [es:0x10e2], 0x3701
+        mov es, [segTeamChoiceText7]
+        mov word [es:SettingsSubmenuPtr], itemShowLeagueSettings
+        mov word [es:SettingsSubmenuPtr + 0x2], 0x3701
         jmp short .6
 .8:
-        mov es, [g_8B98]
+        mov es, [segTeamChoiceText7]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0x10e2], ax
-        mov [es:0x10e0], ax
+        mov [es:SettingsSubmenuPtr + 0x2], ax
+        mov [es:SettingsSubmenuPtr], ax
         mov word [bp - 0x76], 0x1
 .9:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -1454,7 +1454,7 @@ LeagueTeamSelect:
         push word [bp - 0x7e]
         push word [bp - 0x6]
         push word [bp - 0x76]
-        mov ax, 0x10ba
+        mov ax, TeamSelMenuBar
         mov cx, 0x3701
         mov [bp - 0xe4], ax
         mov [bp - 0xe2], cx
@@ -2141,9 +2141,9 @@ LeagueTeamSelect:
         jmp near .54
 .51:
         mov ax, es
-        mov es, [g_8B9A]
-        mov [es:0x3a9], di
-        mov [es:0x3ab], ax
+        mov es, [segTeamChoiceText8]
+        mov [es:argDoYouReallyWantTo], di
+        mov [es:argDoYouReallyWantTo + 0x2], ax
         push -0x1
         lea ax, [bp - 0xe6]
         push ax
@@ -2151,7 +2151,7 @@ LeagueTeamSelect:
         push ax
         push 0x2
         push word 0x3701
-        push strict word f_3701_03AD
+        push strict word dlgLeagueTeamSelect
         push 0x2
         push es
         push word 0x3a5

@@ -7,7 +7,7 @@
 ; Calls SetSideControls. Far routine (retf).
 ;-----------------------------------------------------------------------------
 SetCtlTeamsTail:
-        mov word [g_01BE], 0x1
+        mov word [ctl2dev], 0x1
 .1:
         call 0x2037:SetSideControls
         leave
@@ -107,11 +107,11 @@ FormatHilightDesc:
         mov bl, [es:si + 0x1f]
         db 0x2A, 0xFF                           ; insn: sub bh, bh
         shl bx, 1
-        push word [bx + 0x218]
+        push word [bx + TeamNameClips + 0x38]
         mov bl, [es:si + 0x2]
         db 0x2A, 0xFF                           ; insn: sub bh, bh
         shl bx, 1
-        push word [bx + 0x218]
+        push word [bx + TeamNameClips + 0x38]
         mov al, [es:si + 0x1]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
@@ -141,7 +141,7 @@ SelectHilight:
         push word 0x3701
         push strict word str_Hi
         push word 0x3701
-        push strict word f_3701_0BA8
+        push strict word str_Star
         push word [bp + 0xc]
         push word [bp + 0xa]
         lea ax, [bp - 0x12a]
@@ -166,7 +166,7 @@ SelectHilight:
         mov [bp - 0x94], ax
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        mov ax, [bx + 0x218]
+        mov ax, [bx + TeamNameClips + 0x38]
         mov [bp - 0x18a], ax
         mov [bp - 0x188], ds
         mov word [bp - 0x6], 0x1
@@ -214,7 +214,7 @@ SelectHilight:
         shl di, 1
         mov bx, [bp + di - 0x94]
         shl bx, 1
-        mov ax, [bx + 0x218]
+        mov ax, [bx + TeamNameClips + 0x38]
         mov di, [bp - 0x12]
         shl di, byte 0x2
         mov [bp + di - 0x18a], ax
@@ -515,7 +515,7 @@ ViewHilights:
         push 0x0
         push 0x0
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x4]
         push ax
         lea ax, [bp - 0x12]
@@ -532,7 +532,7 @@ ViewHilights:
         push ss
         push ax
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x32]
         push ss
         push ax
@@ -559,7 +559,7 @@ ViewHilights:
         push dx
         push ax
         push word 0x3a0b
-        push strict word f_3A0B_0D8E
+        push strict word hilightrec
         push word [bp - 0x2]
         call 0x0CD1:ReadAtOffset
         add sp, 0xc

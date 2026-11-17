@@ -17,7 +17,7 @@ NASM 2.15+ (`apt install nasm` / `brew install nasm`) and Python 3. If the EXE i
 
 ## 2. Build and confirm MATCH
 
-`./build.sh` (last line `MATCH output/HOCKEY.EXE`), `sh tools/verify_all.sh` (clean check, last line `MATCH`). If not MATCH on a fresh clone, stop and report.
+`./build.sh` (last line `MATCH output/HOCKEY.EXE and the 20 overlays`), `sh tools/verify_all.sh` (clean check, last line `MATCH`). If not MATCH on a fresh clone, stop and report.
 
 ## 3. Work loop
 
@@ -25,8 +25,8 @@ Every byte of `HOCKEY.EXE` is source: every routine and variable is named and co
 `CONTRIBUTING.md`. The files are kept by hand (the generator that first wrote them is in `tools/archive/`).
 For a change: edit, `./build.sh` (MATCH), `python3 tools/make_stubs.py` when a label used across files changed,
 `sh tools/verify_all.sh`, `python3 tools/format_asm.py --check`, `python3 tools/check_comments.py`, commit, push,
-open a PR to `main`, update `docs/HANDOFF.md`. The game logic lives in the external `.OVL` files, which this repo does
-not disassemble yet.
+open a PR to `main`, update `docs/HANDOFF.md`. The overlays (the game logic) are source too: `src/ovl/<name>.asm`
+lists each one's files and `./build.sh` checks them.
 
 ## 4. When stuck
 

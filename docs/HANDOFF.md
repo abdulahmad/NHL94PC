@@ -8,8 +8,13 @@
 - Branch: work on a branch, PR to `main` (`main` is the working branch).
 - Checks: `tools/format_asm.py --check` reports nothing, `tools/check_comments.py` prints `comments OK`.
 - Maps: `docs/cleanup/names94_*.txt` (every rename batch), `docs/cleanup/files_94pc.txt` (old segment to file).
-- Next: the external `.OVL` overlays (the game logic) are not disassembled. The `ovl_*` slices of the RTLink segment
-  after the load module are still incbin.
+- The 20 `.OVL` overlays are source too (`src/ovl/<name>.asm` lists each one's files; `./build.sh` compares them with
+  `lst/game/`). Far pointers in the menu, message and DGROUP tables are `dw Label, segment`; jumps and calls that cross
+  a segment end are written against the label in the other segment (`Label + delta`, or `db` opcode plus
+  `(Label - SegmentStart)` bytes when the instruction itself is split).
+- Left as numbers on purpose: segment paragraphs (a segment value cannot be a label), the overlay relocation tables,
+  and constants that only look like addresses (0BD00h, 0C8A0h, 964Ah, 9C40h, 0A800h, 0B000h, 0D600h, 0BB40h RNG
+  factor, 2000h, 640h, 9C4h, 0B33h, the menucbfn / statsredrawcb values).
 - Segment numbers in the sections below are the old names; `docs/cleanup/files_94pc.txt` gives each one's file.
 
 ## Naming
@@ -17,7 +22,7 @@
 - Earlier games win for game logic: NHLPA93SNES, else NHL94Genesis. EACLIB names come from the error string the function references. MSC runtime names stay (`__astart`, `_main`, `__chkstk`).
 - NHL95PC names only when the routine does the same PC job.
 - If an earlier-game name is used, name the exact sibling file in `docs/name_map.csv`.
-- Unsure names stay in the list at the bottom of this file. No macros. Never edit the MZ relocation table.
+- Unsure names stay in the list at the bottom of this file. No macros. The MZ relocation table is `dw` data now; keep it byte-identical.
 - A real paragraph cut can spill the previous function's last bytes. That spill is not a false split. `LoadQuiet` in seg004 ends mid-call; the last byte of that call, then `leave` / `retf`, is the start of seg005. Do not merge them.
 
 ## Known facts
@@ -162,7 +167,7 @@ file layout. The 94 load path above is from this EXE and `lst/game/`.
 
 ## seg000 floating-point emulator
 
-`FpConvert` turns a floating value into an integer, or zero when the exponent is out of range. `JmpFpConvert` jumps to it. `FpExec` is the emulator body: interrupts 34h through 3Dh stand in for the coprocessor. The long runs of zeros and `40h` bytes between those routines are the constant tables, left as data.
+`_nmalloc` is the C near allocator; `_malloc` jumps to it. `DoubleToDigits` turns a double into sixteen decimal digits for `printf`; `ScalePow10` and `ScalePow10Near` multiply by a power of ten from the tables `Pow10Table`, `Pow10Neg`, `Pow10Near` and `Pow10NearNeg`. Floating-point instructions are emulator calls: interrupts 34h through 3Bh stand for the escape opcodes D8h to DFh, 3Ch for an escape with a segment override and 3Dh for fwait, each followed by the rest of the instruction as `db` bytes.
 
 ## seg000 number helpers
 
@@ -238,7 +243,6 @@ The spill at the start of seg001 finishes `test bx, 8`, then `pop bp` / `ret 0xe
 - `FpFail` is `mov ax, 2` then a jump to `AmsgExit`. That is the R6002 path. The public name is not confirmed.
 - `_atoi` (was `JumpAhead`) is `jmp near _atol`: in this model `atoi` is `atol`.
 - `StrIndexInSet` returns an index, not a pointer, so it is not named `_strpbrk`.
-- `EmulatedFloat` uses the floating-point emulator interrupts. The operation it performs is not named.
 - `_qsort` (was `CallArg`) is MSC qsort: the stats overlay passes it its far comparators (`CmpGoals` ...).
 - seg056:0x0D00 (four zero bytes) and seg056:0x0D10 through 0x0D20 are not read by this segment. The byte at 0x0B71 is not read either.
 - The seg058 routines called from seg056 (`RtlSectionHook`, `RtlWriteText`, `RtlSaveVectors`, `RtlSetHandler`, `RtlAfterFiles`,

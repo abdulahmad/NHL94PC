@@ -18,25 +18,25 @@ FadeSampleRect:
         mov di, [bp + 0xc]
         db 0x03, 0xFE                           ; insn: add di, si
         dec di
-        cmp [g_DF6A], cx
+        cmp [fadex], cx
         jng short .1
-        mov ax, [g_DF6A]
+        mov ax, [fadex]
         mov [bp + 0x6], ax
 .1:
-        cmp [g_DF6E], si
+        cmp [fadew], si
         jng short .2
-        mov si, [g_DF6E]
+        mov si, [fadew]
 .2:
         mov [bp - 0x2], dx
-        cmp [g_DF6C], dx
+        cmp [fadey], dx
         jg short .3
-        mov ax, [g_DF6C]
+        mov ax, [fadey]
         dec ax
         mov [bp - 0x2], ax
 .3:
-        cmp [g_DF70], di
+        cmp [fadeh], di
         jg short .4
-        mov di, [g_DF70]
+        mov di, [fadeh]
         dec di
 .4:
         db 0x8B, 0xC7                           ; insn: mov ax, di
@@ -72,15 +72,15 @@ FadeBoxGrow:
         push di
         push si
         call 0x0FEF:UseCurrentPage
-        mov es, [g_8D00]
-        mov ax, [es:0x74fe]
-        mov [g_DF6C], ax
-        mov cx, [es:0x74f2]
-        mov [g_DF6E], cx
-        mov dx, [es:0x74f4]
-        mov [g_DF70], dx
-        mov bx, [es:0x74fc]
-        mov [g_DF6A], bx
+        mov es, [segDgroup24]
+        mov ax, [es:ClipRightX]
+        mov [fadey], ax
+        mov cx, [es:ClipTopY]
+        mov [fadew], cx
+        mov dx, [es:ClipBottomY]
+        mov [fadeh], dx
+        mov bx, [es:ClipLeftX]
+        mov [fadex], bx
         db 0x03, 0xC3                           ; insn: add ax, bx
         inc ax
         cwd
@@ -88,19 +88,19 @@ FadeBoxGrow:
         sar ax, 1
         mov [bp - 0x18], ax
         db 0x8B, 0xC1                           ; insn: mov ax, cx
-        add ax, [g_DF70]
+        add ax, [fadeh]
         inc ax
         cwd
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         sar ax, 1
         mov [bp - 0x1a], ax
-        mov ax, [es:0x74fa]
+        mov ax, [es:VenetianRowBytes]
         inc ax
         cwd
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         sar ax, 1
         mov [bp - 0x1c], ax
-        mov ax, [g_DF70]
+        mov ax, [fadeh]
         db 0x2B, 0xC1                           ; insn: sub ax, cx
         inc ax
         cwd
@@ -235,13 +235,13 @@ FadeBoxGrow:
         cmp word [bp + 0x6], 0x1
         jnz short .12
         push 0x0
-        mov ax, [g_DF70]
-        sub ax, [g_DF6E]
+        mov ax, [fadeh]
+        sub ax, [fadew]
         push ax
-        mov es, [g_8D00]
-        push word [es:0x74fa]
-        push word [g_DF6E]
-        push word [g_DF6A]
+        mov es, [segDgroup24]
+        push word [es:VenetianRowBytes]
+        push word [fadew]
+        push word [fadex]
         cmp word [CurPage], 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         neg ax

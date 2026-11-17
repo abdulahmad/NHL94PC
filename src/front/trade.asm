@@ -25,7 +25,7 @@ PaintJerseyDigit:
         mov di, [bp + 0x6]
 .1:
         mov bx, [bp - 0x2]
-        cmp byte [bx + si + g_1994], 0x0
+        cmp byte [bx + si + JerseyDigitGlyphs], 0x0
         jz short .2
         mov al, [bp + 0xc]
         mov es, [bp + 0x8]
@@ -149,9 +149,9 @@ BuildTradeRoster:
         mov di, [bp + 0x6]
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8C04]
-        push word [es:0xb7e]
-        push word [es:0xb7c]
+        mov es, [segTeamChoiceText37]
+        push word [es:DbFileNameList + 0x12]
+        push word [es:DbFileNameList + 0x10]
         push word [bp + 0x8]
         push di
         lea ax, [bp - 0x3a]
@@ -184,9 +184,9 @@ BuildTradeRoster:
         jnz short .3
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8C04]
-        push word [es:0xb6e]
-        push word [es:0xb6c]
+        mov es, [segTeamChoiceText37]
+        push word [es:DbFileNameList + 0x2]
+        push word [es:DbFileNameList]
         mov ax, [bp + 0x8]
         push ax
         push di
@@ -257,12 +257,12 @@ BuildTradeRoster:
         mov al, [bp - 0x6b]
         mov es, [bp - 0x10]
         mov [es:si + 0x3], al
-        mov es, [g_8C06]
-        mov al, [es:0xbf4]
+        mov es, [segTeamChoiceText38]
+        mov al, [es:str_Dot]
         mov es, [bp - 0x10]
         mov [es:si + 0x4], al
-        mov es, [g_8C08]
-        mov al, [es:0xba6]
+        mov es, [segTeamChoiceText39]
+        mov al, [es:str_Space]
         mov es, [bp - 0x10]
         mov [es:si + 0x5], al
         mov es, [bp - 0x10]
@@ -334,12 +334,12 @@ BuildTradeRoster:
         mov al, [bp - 0x6b]
         mov es, [bp - 0x10]
         mov [es:si + 0x3], al
-        mov es, [g_8C06]
-        mov al, [es:0xbf4]
+        mov es, [segTeamChoiceText38]
+        mov al, [es:str_Dot]
         mov es, [bp - 0x10]
         mov [es:si + 0x4], al
-        mov es, [g_8C08]
-        mov al, [es:0xba6]
+        mov es, [segTeamChoiceText39]
+        mov al, [es:str_Space]
         mov es, [bp - 0x10]
         mov [es:si + 0x5], al
         mov es, [bp - 0x10]
@@ -385,7 +385,7 @@ TradeShowStats:
         mov si, [bp + 0xa]
         mov word [leaguestatsmode], 0x1
         mov word [statsredrawcb], 0x2459
-        mov word [g_21BE], 0x1b35
+        mov word [statsmenucbseg], 0x1b35
         mov al, [bp + 0x8]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         mov [statscategory], ax
@@ -396,7 +396,7 @@ TradeShowStats:
         db 0x8B, 0xF8                           ; insn: mov di, ax
         call 0x14DB:AllocRecData
         add sp, 0x8
-        mov [g_C04C], ax
+        mov [statsteambufseg], ax
         mov [statsteambuf], dx
         push 0x0
         push 0x0
@@ -404,7 +404,7 @@ TradeShowStats:
         push strict word str_Keys_5
         call 0x14DB:AllocRecData
         add sp, 0x8
-        mov [g_C048], ax
+        mov [statsplayerbufseg], ax
         mov [statsplayerbuf], dx
         push 0x0
         push 0x0
@@ -412,7 +412,7 @@ TradeShowStats:
         push strict word str_Pstat_5
         call 0x14DB:AllocRecData
         add sp, 0x8
-        mov [g_C044], ax
+        mov [statsskaterbufseg], ax
         mov [statsskaterbuf], dx
         push 0x0
         push 0x0
@@ -420,7 +420,7 @@ TradeShowStats:
         push strict word str_Gstat_5
         call 0x14DB:AllocRecData
         add sp, 0x8
-        mov [g_C040], ax
+        mov [statsgoaliebufseg], ax
         mov [statsgoaliebuf], dx
         call 0x0FEF:UseCurrentPage
         push 0x0
@@ -481,7 +481,7 @@ TradeShowStats:
         push 0x40
         push 0x2
         push word 0x3701
-        push strict word f_3701_11AB
+        push strict word TradeStatsMenuBar
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
         push 0x0
@@ -492,7 +492,7 @@ TradeShowStats:
         push 0x40
         push 0x2
         push word 0x3701
-        push strict word f_3701_11AB
+        push strict word TradeStatsMenuBar
         call 0x1B35:StatsMenuLoopThunk
         add sp, 0xc
         push word 0xc8
@@ -500,33 +500,33 @@ TradeShowStats:
         add sp, 0x2
         mov word [leaguestatsmode], 0x0
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_21BE], ax
+        mov [statsmenucbseg], ax
         mov [statsredrawcb], ax
         push word [statsteambuf]
-        push word [g_C04C]
+        push word [statsteambufseg]
         call 0x06E1:FindUnlink
         add sp, 0x4
         push word [statsgoaliebuf]
-        push word [g_C040]
+        push word [statsgoaliebufseg]
         call 0x06E1:FindUnlink
         add sp, 0x4
         push word [statsskaterbuf]
-        push word [g_C044]
+        push word [statsskaterbufseg]
         call 0x06E1:FindUnlink
         add sp, 0x4
         push word [statsplayerbuf]
-        push word [g_C048]
+        push word [statsplayerbufseg]
         call 0x06E1:FindUnlink
         add sp, 0x4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [statsplayerbuf], ax
-        mov [g_C048], ax
+        mov [statsplayerbufseg], ax
         mov [statsteambuf], ax
-        mov [g_C04C], ax
+        mov [statsteambufseg], ax
         mov [statsgoaliebuf], ax
-        mov [g_C040], ax
+        mov [statsgoaliebufseg], ax
         mov [statsskaterbuf], ax
-        mov [g_C044], ax
+        mov [statsskaterbufseg], ax
         call 0x0FEF:UseCurrentPage
         push 0x0
         call 0x0FEF:ClearClipRect
@@ -675,7 +675,7 @@ FixJerseyConflict:
         rep movsb
         pop si
         push word 0x3701
-        push strict word f_3701_0BA6
+        push strict word str_Space
         lea ax, [bp - 0x2e]
         push ss
         push ax
@@ -716,9 +716,9 @@ FixJerseyConflict:
         call 0x0000:_sprintf
         add sp, 0xa
         lea ax, [bp - 0x80]
-        mov es, [g_8C0A]
-        mov [es:0xb04c], ax
-        mov [es:0xb04e], ss
+        mov es, [segWorkBuffer31]
+        mov [es:dlgJerseyConflict], ax
+        mov [es:dlgJerseyConflict + 0x2], ss
         lea cx, [bp - 0x8]
         push cx
         lea dx, [bp - 0xa]
@@ -737,7 +737,7 @@ FixJerseyConflict:
         push 0x0
         push 0x1
         push word 0x3a0b
-        push strict word f_3A0B_B04C
+        push strict word dlgJerseyConflict
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -815,15 +815,15 @@ ExecuteTrade:
         push 0x7c
         call 0x0D90:SetDialogColors
         add sp, 0xa
-        mov ax, 0xbaf
+        mov ax, str_Db_2
         mov cx, 0x3701
         mov [bp - 0x670], ax
         mov [bp - 0x66e], cx
         push cx
         push ax
-        mov es, [g_8C04]
-        push word [es:0xb7e]
-        push word [es:0xb7c]
+        mov es, [segTeamChoiceText37]
+        push word [es:DbFileNameList + 0x12]
+        push word [es:DbFileNameList + 0x10]
         push word [bp + 0x8]
         push word [bp + 0x6]
         lea ax, [bp - 0x34]
@@ -866,9 +866,9 @@ ExecuteTrade:
         jnz short .3
         push word [bp - 0x66e]
         push word [bp - 0x670]
-        mov es, [g_8C04]
-        push word [es:0xb6e]
-        push word [es:0xb6c]
+        mov es, [segTeamChoiceText37]
+        push word [es:DbFileNameList + 0x2]
+        push word [es:DbFileNameList]
         push word [bp + 0x8]
         push word [bp + 0x6]
         lea ax, [bp - 0x34]
@@ -1118,35 +1118,35 @@ ExecuteTrade:
 .18:
         mov bx, [bp + 0xa]
         mov ax, [bx]
-        mov [g_29CA], ax
+        mov [HomeTeamNum], ax
         mov ax, [bx + 0x2]
-        mov [g_29CC], ax
+        mov [VisTeamNum], ax
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         push ds
-        push strict word g_C000
+        push strict word HomeTeamDbName
         call 0x0000:_fstrcpy
         add sp, 0x8
         push word 0x3701
-        push strict word f_3701_0BAA
+        push strict word str_Backslash
         push ds
-        push strict word g_C000
+        push strict word HomeTeamDbName
         call 0x0000:_fstrcat
         add sp, 0x8
         push word 0x3701
         push strict word str_S
         push ds
-        push strict word g_C000
+        push strict word HomeTeamDbName
         call 0x0000:_fstrcat
         add sp, 0x8
         push word [bp - 0x66e]
         push word [bp - 0x670]
         push ds
-        push strict word g_C000
+        push strict word HomeTeamDbName
         call 0x0000:_fstrcat
         add sp, 0x8
-        mov di, 0xc000
-        mov si, 0xc020
+        mov di, HomeTeamDbName
+        mov si, AwayTeamDbName
         push ds
         pop es
         mov cx, 0xffff
@@ -1165,8 +1165,8 @@ ExecuteTrade:
         mov word [curperiod], 0xfffe
         push 0x3
         push word 0x3448
-        push strict word f_3448_15F2
-        push word 0xae10
+        push strict word TradeLinesMenu
+        push word HomeTeamRec
         push 0x0
         call 0x1B35:GameLineEditorThunk
         add sp, 0xa
@@ -1196,8 +1196,8 @@ ExecuteTrade:
         add sp, 0x4
         push 0x3
         push word 0x3448
-        push strict word f_3448_15F2
-        push word 0xae40
+        push strict word TradeLinesMenu
+        push word AwayTeamRec
         push 0x1
         call 0x1B35:GameLineEditorThunk
         add sp, 0xa
@@ -1249,19 +1249,19 @@ DrawTradeRow:
         imul ax, si, 0x1c
         db 0x8B, 0xCE                           ; insn: mov cx, si
         shl si, 1
-        add ax, [si + g_C792]
+        add ax, [si + tradesel]
         imul ax, ax, 0x16
         db 0x8B, 0xD0                           ; insn: mov dx, ax
-        add ax, 0xc2c5
+        add ax, traderows + 3
         push ax
         db 0x8B, 0xDA                           ; insn: mov bx, dx
-        mov al, [bx + g_C2C3]
+        mov al, [bx + traderows_b1]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
-        mov al, [bx + g_C2C2]
+        mov al, [bx + traderows]
         push ax
         push strict word str_C2dS_2
-        mov ax, [si + g_C792]
+        mov ax, [si + tradesel]
         db 0x8B, 0xD0                           ; insn: mov dx, ax
         shl ax, 1
         db 0x03, 0xC2                           ; insn: add ax, dx
@@ -1372,7 +1372,7 @@ DrawTradeScreen:
         db 0x2B, 0xF6                           ; insn: sub si, si
         mov ax, [bp + 0x6]
         mov [bp - 0x4], ax
-        mov word [bp - 0x2], 0xc79c
+        mov word [bp - 0x2], tradecolour
         mov [bp - 0x14], di
         db 0x8B, 0xF8                           ; insn: mov di, ax
 .1:
@@ -1436,7 +1436,7 @@ DrawTradeScreen:
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push word 0x3680
-        push strict word f_3680_0000
+        push strict word JerseyRemapTable
         push cs
         call DrawJerseyNumber
         add sp, 0xa
@@ -1459,19 +1459,19 @@ DrawTradeScreen:
         push word 0x80
         db 0x8B, 0xDE                           ; insn: mov bx, si
         and bl, 0xfe
-        mov ax, [bx + g_C79C]
+        mov ax, [bx + tradecolour]
         add ax, 0x80
         push ds
         push ax
         push word 0x3680
-        push strict word f_3680_0080
+        push strict word TradeRemapTable
         call 0x0000:_fmemcpy
         add sp, 0xa
         push word 0x3680
-        push strict word f_3680_0000
+        push strict word JerseyRemapTable
         call 0x0FEF:SetRemapTable
         add sp, 0x4
-        mov es, [g_8C0C]
+        mov es, [segTradeMessages1]
         mov bx, [bp - 0x10]
         push word [es:bx]
         dec bx
@@ -1493,8 +1493,8 @@ DrawTradeScreen:
         call 0x03A3:UseCharSeg
         add sp, 0x4
         mov word [bp - 0x8], 0x5
-        mov word [bp - 0x6], 0xc792
-        mov word [bp - 0xa], 0xc2c2
+        mov word [bp - 0x6], tradesel
+        mov word [bp - 0xa], traderows
 .7:
         db 0x2B, 0xFF                           ; insn: sub di, di
         mov word [bp - 0x4], 0x1d
@@ -1569,7 +1569,7 @@ TradeHitTest:
         cmp dx, 0xe0
         jnl short .5
         db 0x2B, 0xFF                           ; insn: sub di, di
-        mov bx, 0x0
+        mov bx, TradeHitRects
         mov ax, 0x382b
         mov es, ax
 .1:
@@ -1642,9 +1642,9 @@ TradeHitTest:
         mov si, [bp + 0xa]
         mov [bx + si], ax
         mov word [bp - 0x2], 0x1
-        mov es, [g_8C0E]
-        mov word [es:0x1109], strict word TradeShowStatsThunk
-        mov word [es:0x110b], 0x1b35
+        mov es, [segTeamChoiceText40]
+        mov word [es:itemShowPlayerStatistics + 0xC], strict word TradeShowStatsThunk
+        mov word [es:itemShowPlayerStatistics + 0xE], 0x1b35
 .8:
         mov ax, [bp - 0x2]
         pop si
@@ -1726,7 +1726,7 @@ TradeDone:
         leave
         retf
 .5:
-        mov word [g_C27C], 0x1
+        mov word [tradestate], 0x1
         pop si
         leave
         retf
@@ -1739,7 +1739,7 @@ TradeDone:
 ; Far routine (retf).
 ;-----------------------------------------------------------------------------
 TradeCancel:
-        mov word [g_C27C], 0xffff
+        mov word [tradestate], 0xffff
         retf
         db 0x90
 
@@ -1756,7 +1756,7 @@ FindTradeSlot:
         mov word [bp - 0x4], 0xffff
         db 0x2B, 0xFF                           ; insn: sub di, di
         imul ax, [bp + 0x6], word 0x268
-        add ax, 0xc2c4
+        add ax, traderows_b2
         db 0x8B, 0xF0                           ; insn: mov si, ax
 .1:
         mov al, [si]
@@ -1848,11 +1848,11 @@ TradeScreenLoop:
         mov [bp - 0x88], ax
         mov [bp - 0x8a], ax
         mov [bp - 0x8c], ax
-        mov es, [g_8C10]
-        mov [es:0x1474], ax
-        mov [es:0x1472], ax
-        mov [es:0x145e], ax
-        mov [es:0x145c], ax
+        mov es, [segMenuText21]
+        mov [es:itemScratchPlayer + 0xE], ax
+        mov [es:itemScratchPlayer + 0xC], ax
+        mov [es:itemDressPlayer + 0xE], ax
+        mov [es:itemDressPlayer + 0xC], ax
         les bx, [bp - 0xb6]
         mov ax, [es:bx + 0x2]
         inc ax
@@ -1943,11 +1943,11 @@ TradeScreenLoop:
         call 0x0FEF:DrawRleTransAt
         add sp, 0x8
         call 0x0F99:FlushInputEvents
-        mov word [g_C27C], 0x0
-        mov es, [g_8C0E]
+        mov word [tradestate], 0x0
+        mov es, [segTeamChoiceText40]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0x110b], ax
-        mov [es:0x1109], ax
+        mov [es:itemShowPlayerStatistics + 0xE], ax
+        mov [es:itemShowPlayerStatistics + 0xC], ax
 .7:
         mov word [bp - 0xce], 0x0
 .8:
@@ -2124,7 +2124,7 @@ TradeScreenLoop:
         lea ax, [bp - 0x76]
         push ax
         push word [bp + 0xc]
-        mov bx, [g_C79A]
+        mov bx, [tradecursor]
         shl bx, 1
         mov si, [bp + 0xc]
         push word [bx + si]
@@ -2527,8 +2527,8 @@ TradeScreenLoop:
         add sp, 0x8
         lea ax, [bp - 0xa2]
         push ax
-        push word 0xc79a
-        push word 0xc796
+        push word tradecursor
+        push word tradescroll
         push word [bp - 0x7a]
         push word [bp - 0x1e]
         push cs
@@ -2592,24 +2592,24 @@ TradeScreenLoop:
         mov [bp - 0x96], ax
         mov [bp - 0x98], ax
         mov [bp - 0x9a], ax
-        mov bx, [g_C79A]
+        mov bx, [tradecursor]
         shl bx, 1
-        cmp word [bx + g_C796], 0x64
+        cmp word [bx + tradescroll], 0x64
         jl short .63
         jmp near .92
 .63:
-        cmp word [bx + g_C792], -0x1
+        cmp word [bx + tradesel], -0x1
         jnz short .64
         cmp [bp - 0xa2], ax
         jnz short .64
         jmp near .92
 .64:
         mov [bp - 0x78], ax
-        mov bx, [g_C79A]
+        mov bx, [tradecursor]
         shl bx, 1
-        mov ax, [bx + g_C796]
+        mov ax, [bx + tradescroll]
         mov [bp - 0x7c], ax
-        mov cx, [bx + g_C792]
+        mov cx, [bx + tradesel]
         mov [bp - 0x2], cx
         cmp word [bp - 0xa2], 0x0
         jnz short .65
@@ -2628,7 +2628,7 @@ TradeScreenLoop:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov dx, 0x7c
         call 0x03A3:SetCharPtr.regs
-        push word [g_C79A]
+        push word [tradecursor]
         push cs
         call DrawTradeRow
         add sp, 0x2
@@ -2637,17 +2637,17 @@ TradeScreenLoop:
         mov si, [bp + 0xe]
         mov al, [bx + si]
         push ax
-        push word [g_C79A]
+        push word [tradecursor]
         push cs
         call FindTradeSlot
         add sp, 0x4
-        mov bx, [g_C79A]
+        mov bx, [tradecursor]
         shl bx, 1
-        mov [bx + g_C792], ax
+        mov [bx + tradesel], ax
         mov ax, 0x7d
         mov dx, 0x7c
         call 0x03A3:SetCharPtr.regs
-        push word [g_C79A]
+        push word [tradecursor]
         push cs
         call DrawTradeRow
         add sp, 0x2
@@ -2657,12 +2657,12 @@ TradeScreenLoop:
         imul si, bx, 0x16
         mov [bp + si - 0x75], al
         mov word [bp - 0x78], 0xffff
-        mov es, [g_8C0E]
-        mov word [es:0x1109], strict word TradeShowStatsThunk
-        mov word [es:0x110b], 0x1b35
+        mov es, [segTeamChoiceText40]
+        mov word [es:itemShowPlayerStatistics + 0xC], strict word TradeShowStatsThunk
+        mov word [es:itemShowPlayerStatistics + 0xE], 0x1b35
         jmp near .84
 .67:
-        mov word [g_C79A], 0xffff
+        mov word [tradecursor], 0xffff
         jmp near .84
         db 0x90
 .68:
@@ -2670,36 +2670,36 @@ TradeScreenLoop:
         jl short .69
         jmp near .76
 .69:
-        cmp word [g_C79A], 0x0
+        cmp word [tradecursor], 0x0
         jz short .70
         jmp near .84
 .70:
         mov bx, [bp + 0xe]
         mov al, [bx]
-        imul cx, [g_C79A], 0x1c
+        imul cx, [tradecursor], 0x1c
         add cx, [bp - 0x2]
         imul si, cx, 0x16
-        cmp [si + g_C2C4], al
+        cmp [si + traderows_b2], al
         jnz short .71
         jmp near .84
 .71:
         mov al, [bx + 0x1]
-        cmp [si + g_C2C4], al
+        cmp [si + traderows_b2], al
         jnz short .72
         jmp near .84
 .72:
         mov bx, [bp - 0x7c]
-        mov al, [si + g_C2C4]
+        mov al, [si + traderows_b2]
         mov si, [bp + 0xe]
         mov [bx + si], al
         imul si, bx, 0x16
         lea ax, [bp + si - 0x76]
-        imul cx, [g_C79A], 0x1c
+        imul cx, [tradecursor], 0x1c
         add cx, [bp - 0x2]
         imul bx, cx, 0x16
         push si
         db 0x8B, 0xF8                           ; insn: mov di, ax
-        lea si, [bx + g_C2C2]
+        lea si, [bx + traderows]
         push ds
         pop es
         mov cx, 0xb
@@ -2732,36 +2732,36 @@ TradeScreenLoop:
         jl short .77
         jmp near .84
 .77:
-        cmp word [g_C79A], 0x1
+        cmp word [tradecursor], 0x1
         jz short .78
         jmp near .84
 .78:
         mov bx, [bp + 0xe]
         mov al, [bx + 0x2]
-        imul cx, [g_C79A], 0x1c
+        imul cx, [tradecursor], 0x1c
         add cx, [bp - 0x2]
         imul si, cx, 0x16
-        cmp [si + g_C2C4], al
+        cmp [si + traderows_b2], al
         jnz short .79
         jmp near .84
 .79:
         mov al, [bx + 0x3]
-        cmp [si + g_C2C4], al
+        cmp [si + traderows_b2], al
         jnz short .80
         jmp near .84
 .80:
         mov bx, [bp - 0x7c]
-        mov al, [si + g_C2C4]
+        mov al, [si + traderows_b2]
         mov si, [bp + 0xe]
         mov [bx + si], al
         imul si, bx, 0x16
         lea ax, [bp + si - 0x76]
-        imul cx, [g_C79A], 0x1c
+        imul cx, [tradecursor], 0x1c
         add cx, [bp - 0x2]
         imul bx, cx, 0x16
         push si
         db 0x8B, 0xF8                           ; insn: mov di, ax
-        lea si, [bx + g_C2C2]
+        lea si, [bx + traderows]
         push ds
         pop es
         mov cx, 0xb
@@ -2789,19 +2789,19 @@ TradeScreenLoop:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov dx, 0x7c
         call 0x03A3:SetCharPtr.regs
-        push word [g_C79A]
+        push word [tradecursor]
         push cs
         call DrawTradeRow
         add sp, 0x2
-        mov es, [g_8C0E]
+        mov es, [segTeamChoiceText40]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0x110b], ax
-        mov [es:0x1109], ax
+        mov [es:itemShowPlayerStatistics + 0xE], ax
+        mov [es:itemShowPlayerStatistics + 0xC], ax
         mov ax, 0xffff
-        mov bx, [g_C79A]
+        mov bx, [tradecursor]
         shl bx, 1
-        mov [bx + g_C792], ax
-        mov [g_C79A], ax
+        mov [bx + tradesel], ax
+        mov [tradecursor], ax
         mov [bp - 0x78], ax
 .84:
         cmp word [bp - 0x78], 0x0
@@ -2812,7 +2812,7 @@ TradeScreenLoop:
         jmp short .89
 .86:
         mov word [bp - 0xc2], 0x0
-        mov es, [g_8C12]
+        mov es, [segCharTable2]
 .87:
         mov al, [bp - 0x94]
         mov bx, [bp - 0xc2]
@@ -2824,19 +2824,19 @@ TradeScreenLoop:
         push word 0x80
         mov bx, [bp - 0xbc]
         and bl, 0xfe
-        mov ax, [bx + g_C79C]
+        mov ax, [bx + tradecolour]
         add ax, 0x80
         push ds
         push ax
         push word 0x3680
-        push strict word f_3680_0080
+        push strict word TradeRemapTable
         call 0x0000:_fmemcpy
         add sp, 0xa
         push word 0x3680
-        push strict word f_3680_0000
+        push strict word JerseyRemapTable
         call 0x0FEF:SetRemapTable
         add sp, 0x4
-        mov es, [g_8C0C]
+        mov es, [segTradeMessages1]
         mov bx, [bp - 0xbc]
         shl bx, byte 0x2
         db 0x26, 0xFF, 0xB7, 0x02, 0x00         ; insn: push word [es:bx + 0x2]
@@ -2873,69 +2873,69 @@ TradeScreenLoop:
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push word 0x3680
-        push strict word f_3680_0000
+        push strict word JerseyRemapTable
         push cs
         call DrawJerseyNumber
         add sp, 0xa
         jmp near .88
         db 0x90
 .92:
-        mov bx, [g_C79A]
+        mov bx, [tradecursor]
         shl bx, 1
-        cmp word [bx + g_C796], 0x64
+        cmp word [bx + tradescroll], 0x64
         jnl short .93
         jmp near .97
 .93:
-        sub word [bx + g_C796], 0x64
-        mov ax, [bx + g_C796]
-        imul cx, [g_C79A], 0x1c
+        sub word [bx + tradescroll], 0x64
+        mov ax, [bx + tradescroll]
+        imul cx, [tradecursor], 0x1c
         db 0x03, 0xC8                           ; insn: add cx, ax
         imul si, cx, 0x16
-        cmp byte [si + g_C2C2], 0x0
+        cmp byte [si + traderows], 0x0
         jnz short .94
         jmp near .97
 .94:
-        cmp ax, [bx + g_C792]
+        cmp ax, [bx + tradesel]
         jnz short .95
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov dx, 0x7c
         call 0x03A3:SetCharPtr.regs
-        push word [g_C79A]
+        push word [tradecursor]
         push cs
         call DrawTradeRow
         add sp, 0x2
         mov ax, 0xffff
-        mov bx, [g_C79A]
+        mov bx, [tradecursor]
         shl bx, 1
-        mov [bx + g_C792], ax
-        mov [g_C79A], ax
-        mov es, [g_8C0E]
+        mov [bx + tradesel], ax
+        mov [tradecursor], ax
+        mov es, [segTeamChoiceText40]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0x110b], ax
-        mov [es:0x1109], ax
+        mov [es:itemShowPlayerStatistics + 0xE], ax
+        mov [es:itemShowPlayerStatistics + 0xC], ax
         jmp short .97
         db 0x90, 0x90
 .95:
-        mov bx, [g_C79A]
+        mov bx, [tradecursor]
         shl bx, 1
-        cmp word [bx + g_C792], -0x1
+        cmp word [bx + tradesel], -0x1
         jz short .96
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov dx, 0x7c
         call 0x03A3:SetCharPtr.regs
-        push word [g_C79A]
+        push word [tradecursor]
         push cs
         call DrawTradeRow
         add sp, 0x2
 .96:
-        mov bx, [g_C79A]
+        mov bx, [tradecursor]
         shl bx, 1
-        mov ax, [bx + g_C796]
-        mov [bx + g_C792], ax
+        mov ax, [bx + tradescroll]
+        mov [bx + tradesel], ax
         mov ax, 0x7d
         mov dx, 0x7c
         call 0x03A3:SetCharPtr.regs
-        push word [g_C79A]
+        push word [tradecursor]
         push cs
         call DrawTradeRow
         add sp, 0x2
@@ -2945,7 +2945,7 @@ TradeScreenLoop:
         call 0x03A3:UseCharSeg
         add sp, 0x4
 .98:
-        cmp word [g_C27C], 0x0
+        cmp word [tradestate], 0x0
         jz short .99
         jmp near .111
 .99:
@@ -2984,13 +2984,13 @@ TradeScreenLoop:
         jl short .106
         jmp near .110
 .106:
-        cmp word [g_C79A], -0x1
+        cmp word [tradecursor], -0x1
         jnz short .107
         jmp near .110
 .107:
-        mov bx, [g_C79A]
+        mov bx, [tradecursor]
         shl bx, 1
-        cmp word [bx + g_C792], -0x1
+        cmp word [bx + tradesel], -0x1
         jnz short .108
         jmp near .110
 .108:
@@ -3016,7 +3016,7 @@ TradeScreenLoop:
         jz short .109
         jmp near .110
 .109:
-        mov bx, [g_C79A]
+        mov bx, [tradecursor]
         shl bx, 1
         mov si, [bp + 0xc]
         mov al, [bx + si]
@@ -3027,30 +3027,30 @@ TradeScreenLoop:
         mov [bp - 0x94], cl
         push cx
         push ax
-        imul ax, [g_C79A], 0x1c
-        add ax, [bx + g_C792]
+        imul ax, [tradecursor], 0x1c
+        add ax, [bx + tradesel]
         imul bx, ax, 0x16
-        mov al, [bx + g_C2C3]
+        mov al, [bx + traderows_b1]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push word 0x3680
-        push strict word f_3680_0000
+        push strict word JerseyRemapTable
         push cs
         call DrawJerseyNumber
         add sp, 0xa
         push word 0x80
-        mov bx, [g_C79A]
+        mov bx, [tradecursor]
         shl bx, 1
-        mov ax, [bx + g_C79C]
+        mov ax, [bx + tradecolour]
         add ax, 0x80
         push ds
         push ax
         push word 0x3680
-        push strict word f_3680_0080
+        push strict word TradeRemapTable
         call 0x0000:_fmemcpy
         add sp, 0xa
         push word 0x3680
-        push strict word f_3680_0000
+        push strict word JerseyRemapTable
         call 0x0FEF:SetRemapTable
         add sp, 0x4
         mov ax, [bp - 0x7a]
@@ -3077,7 +3077,7 @@ TradeScreenLoop:
         mov ax, [bp - 0x7a]
         mov [bp - 0xb8], ax
 .111:
-        cmp word [g_C27C], 0x0
+        cmp word [tradestate], 0x0
         jnz short .112
         jmp near .7
 .112:
@@ -3085,11 +3085,11 @@ TradeScreenLoop:
         push word [bp - 0x1c]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        cmp word [g_C27C], 0x0
+        cmp word [tradestate], 0x0
         jng short .113
-        mov word [g_C27C], 0x0
+        mov word [tradestate], 0x0
 .113:
-        mov ax, [g_C27C]
+        mov ax, [tradestate]
         pop si
         pop di
         leave
@@ -3255,19 +3255,19 @@ TradeScreen:
         push word [si]
         call 0x1E9D:LoadHomePals
         add sp, 0x4
-        mov word [g_C79C], 0xb1c4
-        mov word [g_C79E], 0xb0c4
+        mov word [tradecolour], TeamPalette2
+        mov word [tradecolour2], TeamPalette1
         mov ax, 0xffff
-        mov [g_C792], ax
-        mov [g_C794], ax
-        mov [g_C796], ax
-        mov [g_C798], ax
-        mov [g_C79A], ax
+        mov [tradesel], ax
+        mov [tradesel2], ax
+        mov [tradescroll], ax
+        mov [tradescroll2], ax
+        mov [tradecursor], ax
         lea ax, [bp - 0x60c]
         push ss
         push ax
         push ds
-        push strict word g_C2C2
+        push strict word traderows
         push word [si]
         push word [bp + 0x8]
         push word [bp + 0x6]
@@ -3281,7 +3281,7 @@ TradeScreen:
         push ss
         push ax
         push ds
-        push strict word g_C52A
+        push strict word traderoster
         push word [si + 0x2]
         push word [bp + 0x8]
         push word [bp + 0x6]
@@ -3296,14 +3296,14 @@ TradeScreen:
         push strict word TradeRosterCmp
         push 0x16
         push 0x1c
-        push word 0xc2c2
+        push word traderows
         call 0x0000:_qsort
         add sp, 0xa
         push word 0x2a57
         push strict word TradeRosterCmp
         push 0x16
         push 0x1c
-        push word 0xc52a
+        push word traderoster
         call 0x0000:_qsort
         add sp, 0xa
         push word [bp + 0x12]
@@ -3362,7 +3362,7 @@ TradePlayers:
         mov [bp - 0x27], al
         push 0x2
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         call 0x2305:LeagueCheckStub
         add sp, 0x6
         mov [bp - 0x3e], ax
@@ -3371,21 +3371,21 @@ TradePlayers:
         cmp word [bp - 0x3e], 0x0
         jnz short .2
         push word 0x3a0b
-        push strict word f_3A0B_AF3E
+        push strict word leagueinfo_tail
         push word 0x3a0b
-        push strict word f_3A0B_AC60
+        push strict word leagueinfo_w6
         push word 0x3a0b
-        push strict word f_3A0B_AC5E
+        push strict word leagueinfo_w4
         push word 0x3a0b
-        push strict word f_3A0B_AC5C
+        push strict word leagueinfo_w2
         push word 0x3a0b
-        push strict word f_3A0B_AC5A
+        push strict word leagueinfo
         push word 0x3a0b
-        push strict word f_3A0B_AF32
+        push strict word leagueinfo_password
         push word 0x3a0b
-        push strict word f_3A0B_AC62
+        push strict word leagueinfo_teams
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         call 0x22D3:ReadLeagueInfo
         add sp, 0x20
         mov [bp - 0x3e], ax
@@ -3410,14 +3410,14 @@ TradePlayers:
         call 0x03A3:MouseRead
         add sp, 0x6
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x4c]
         push ss
         push ax
         call 0x0000:_fstrcpy
         add sp, 0x8
         push word 0x3701
-        push strict word f_3701_0BF4
+        push strict word str_Dot
         lea ax, [bp - 0x4c]
         push ss
         push ax
@@ -3426,13 +3426,13 @@ TradePlayers:
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov [bp - 0x2], si
         mov byte [bp + si - 0x4c], 0x0
-        mov es, [g_8C14]
-        cmp word [es:0xac60], 0x0
+        mov es, [segWorkBuffer32]
+        cmp word [es:leagueinfo_w6], 0x0
         jz short .5
         lea ax, [bp - 0x4c]
-        mov es, [g_8C16]
-        mov [es:0xb36], ax
-        mov [es:0xb38], ss
+        mov es, [segTeamChoiceText41]
+        mov [es:msgThereIsASavedGame + 0x4], ax
+        mov [es:msgThereIsASavedGame + 0x6], ss
         push -0x1
         lea ax, [bp - 0x32]
         push ax
@@ -3453,13 +3453,13 @@ TradePlayers:
         jmp near .7
         db 0x90
 .5:
-        mov es, [g_8C18]
-        test byte [es:0xac5e], 0x4
+        mov es, [segWorkBuffer33]
+        test byte [es:leagueinfo_w4], 0x4
         jnz short .6
         lea ax, [bp - 0x4c]
-        mov es, [g_8C1A]
-        mov [es:0x8b3], ax
-        mov [es:0x8b5], ss
+        mov es, [segTeamChoiceText42]
+        mov [es:msgMasterDatabasesFor + 0x4], ax
+        mov [es:msgMasterDatabasesFor + 0x6], ss
         push -0x1
         lea ax, [bp - 0x32]
         push ax
@@ -3467,7 +3467,7 @@ TradePlayers:
         push ax
         push 0x2
         push word 0x3701
-        push strict word f_3701_0913
+        push strict word dlgMergeFirst
         push 0x4
         push es
         push word 0x8af
@@ -3485,11 +3485,11 @@ TradePlayers:
 .6:
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8C04]
-        push word [es:0xb7e]
-        push word [es:0xb7c]
+        mov es, [segTeamChoiceText37]
+        push word [es:DbFileNameList + 0x12]
+        push word [es:DbFileNameList + 0x10]
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x24]
         push ss
         push ax
@@ -3497,7 +3497,7 @@ TradePlayers:
         add sp, 0x10
         push 0x1
         push word 0x3a0b
-        push strict word f_3A0B_AA38
+        push strict word LeagueTeamNames
         lea ax, [bp - 0x24]
         push ax
         call 0x22D3:ReadTeamNames
@@ -3508,7 +3508,7 @@ TradePlayers:
         jz short .8
         jmp near .1
 .8:
-        cmp byte [g_E36B], 0x0
+        cmp byte [lgflags], 0x0
         jnz short .9
         jmp near .10
 .9:
@@ -3579,11 +3579,11 @@ TradePlayers:
 .11:
         push word 0x3701
         push strict word str_Db_2
-        mov es, [g_8C04]
-        push word [es:0xb86]
-        push word [es:0xb84]
+        mov es, [segTeamChoiceText37]
+        push word [es:DbFileNameList + 0x1A]
+        push word [es:DbFileNameList + 0x18]
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         lea ax, [bp - 0x24]
         push ss
         push ax
@@ -3687,8 +3687,8 @@ TradePlayers:
         jz short .19
         jmp near TradePlayersTail + 0x2600
 .19:
-        mov es, [g_8C1C]
-        cmp word [es:0xac5c], 0x1
+        mov es, [segWorkBuffer34]
+        cmp word [es:leagueinfo_w2], 0x1
         jnz short .20
         push 0x0
         push 0x11
@@ -3725,13 +3725,13 @@ TradePlayers:
         push strict word str_SelectTwoTeamsForTrading
         push 0x10
         push word 0x3a0b
-        push strict word f_3A0B_AC62
+        push strict word leagueinfo_teams
         push word 0x3a0b
-        push strict word f_3A0B_AA38
+        push strict word LeagueTeamNames
         push word 0x3a0b
-        push strict word f_3A0B_AC5C
+        push strict word leagueinfo_w2
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         call 0x1F31:LeagueTeamSelect
         add sp, 0x18
         cmp word [bp - 0x3c], 0x0
@@ -3739,7 +3739,7 @@ TradePlayers:
         cmp word [bp - 0x3a], 0x0
         jl short .23
         push word 0x3a0b
-        push strict word f_3A0B_AC62
+        push strict word leagueinfo_teams
         push word [bp - 0x3c]
         call 0x28A8:AskTeamPassword
         add sp, 0x6
@@ -3747,7 +3747,7 @@ TradePlayers:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .21
         push word 0x3a0b
-        push strict word f_3A0B_AC62
+        push strict word leagueinfo_teams
         push word [bp - 0x3a]
         call 0x28A8:AskTeamPassword
         add sp, 0x6
@@ -3757,13 +3757,13 @@ TradePlayers:
         jnz short .22
         push 0x2
         push word 0x3701
-        push strict word f_3701_1163
+        push strict word TradeMenu
         lea ax, [bp - 0x2a]
         push ax
         lea ax, [bp - 0x3c]
         push ax
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         push cs
         call TradeScreen
         add sp, 0xe
@@ -3776,7 +3776,7 @@ TradePlayers:
         lea ax, [bp - 0x3c]
         push ax
         push word 0x3701
-        push strict word f_3701_0E53
+        push strict word CurLeagueName
         push cs
         call ExecuteTrade
         add sp, 0x8

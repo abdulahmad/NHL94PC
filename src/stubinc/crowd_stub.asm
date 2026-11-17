@@ -2,6 +2,7 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
+PlayArenaJingleTail.done		equ	0x1
 randomd0		equ	0x6
 MidiControl		equ	0xA
 MidiPitchBend		equ	0x32

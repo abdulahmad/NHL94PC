@@ -25,7 +25,7 @@ BlitJerseyDigit:
         mov di, [bp + 0x6]
 .1:
         mov bx, [bp - 0x2]
-        cmp byte [bx + si + 0xdd0], 0x0
+        cmp byte [bx + si + JerseyDigitGlyphsMenus], 0x0
         jz short .2
         mov al, [bp + 0xc]
         mov es, [bp + 0x8]

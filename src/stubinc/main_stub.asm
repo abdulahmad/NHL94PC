@@ -2,9 +2,11 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
+exhstate		equ	0x0
+MscRuntimeStart		equ	0x0
 LoadRawHeader		equ	0x2
 LoadPackedHeader		equ	0x8
-NullFar		equ	0xC
+NullInputHook		equ	0xC
 InputInit		equ	0xE
 AllocRecData		equ	0x30
 BuildPathFar		equ	0x3E
@@ -15,10 +17,20 @@ CalibrateRightStick		equ	0x244
 GetPaletteFar		equ	0x366
 InitGraphics		equ	0x39A
 OpenReadShared		equ	0x3D6
-HookCrit		equ	0x3E4
 FatalError		equ	0x3E4
+HookCrit		equ	0x3E4
 CloseHandlePtr		equ	0x41E
+str_InsufficientConventionalMemoryAvaila		equ	0x42E
 ReadAtOffset		equ	0x442
+str_InsufficientEmsAvailableRequiresAn		equ	0x47E
+str_Pointer3		equ	0x4BE
+str_Pntr		equ	0x4C7
+str_Wittle06Fnt		equ	0x4CC
+str_Scor2bFnt		equ	0x4D9
+str_Scor3bFnt		equ	0x4E4
+str_GameSet		equ	0x4EF
+str_Temp		equ	0x4FE
+str_Temp_2		equ	0x503
 StickPresent		equ	0x51E
 StickPresent2		equ	0x520
 PadRepeatOn		equ	0x524
@@ -45,6 +57,7 @@ ReloadSoundConfigThunk		equ	0x20E9
 LoadModeStateThunk		equ	0x20F3
 GoodnightScreenThunk		equ	0x20FD
 AllocCanvases		equ	0x3804
+PageTable		equ	0x7570
 Pot1X		equ	0x75D6
 Pot1Y		equ	0x75D8
 Pot2X		equ	0x75DA

@@ -18,15 +18,15 @@ FadeSplitCenter:
         jmp near .25
 .1:
         call 0x0FEF:UseCurrentPage
-        mov es, [g_8CF8]
-        mov ax, [es:0x74fe]
+        mov es, [segDgroup20]
+        mov ax, [es:ClipRightX]
         mov [bp - 0x16], ax
-        mov ax, [es:0x74f4]
+        mov ax, [es:ClipBottomY]
         mov [bp - 0x1c], ax
-        mov cx, [es:0x74fa]
+        mov cx, [es:VenetianRowBytes]
         mov [bp - 0x14], cx
         db 0x8B, 0xF8                           ; insn: mov di, ax
-        sub di, [es:0x74f2]
+        sub di, [es:ClipTopY]
         db 0x0B, 0xF6                           ; insn: or si, si
         jz short .2
         jmp near .14

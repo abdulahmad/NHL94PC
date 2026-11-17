@@ -5,9 +5,9 @@
 ; UseDbDescriptorTail                                         0F99:0000  94 PC
 ; The end of UseDbDescriptor in the next paragraph (the overlay call).
 ;-----------------------------------------------------------------------------
-UseDbDescriptorTail:
-        xor al, 0x68
-        les ax, [bx + si]
+UseDbDescriptorTail:                            ; end of UseDbDescriptor
+        db 0x34                                 ; last byte of push word 3415h from the segment before
+        push strict word lgstate
 .1:
         call 0x1B35:WriteModeStateThunk
         add sp, 0x4
@@ -21,19 +21,17 @@ UseDbDescriptorTail:
 GetInputEvent:
         cmp word [EventPending], 0x0
         jz short .1
-        call 0x0C15:NullFar2
+        call 0x0C15:NullEventHook
         mov word [EventPending], 0x0
 .1:
         mov es, [InputEventDataSeg]
-        cmp word [es:0x0], 0x0
+        cmp word [es:InputEventFlag], 0x0
         jz short .2
-        call 0x0837:0x10                        ; NineCmp: offset past the end of RecFlag's segment, through
-                                                ; that segment's base
-        call 0x0837:NullFar
-        call 0x0837:0x10                        ; NineCmp: offset past the end of RecFlag's segment, through
-                                                ; that segment's base
+        call 0x0837:NullInputHookWrap + 0x10    ; NullInputHookWrap (0838:0000), through rec_flag's paragraph
+        call 0x0837:NullInputHook
+        call 0x0837:NullInputHookWrap + 0x10    ; NullInputHookWrap (0838:0000), through rec_flag's paragraph
         mov es, [InputEventDataSeg]
-        mov word [es:0x0], 0x0
+        mov word [es:InputEventFlag], 0x0
 .2:
         cmp word [InputQueueCount], 0x0
         jnz short .3
@@ -46,7 +44,7 @@ GetInputEvent:
         and ax, strict word 0x1f
         mov [InputQueueHead], ax
         shl ax, byte 0x3
-        add ax, 0xaed0
+        add ax, InputQueue
         retf
 
 ;-----------------------------------------------------------------------------

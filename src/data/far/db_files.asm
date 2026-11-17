@@ -1,7 +1,9 @@
 ; Far data, paragraph 3415h, 400 bytes: the database file list. Used by UseDbDescriptor, SaveGame.
-exhstate:                                    ; used by INIT, MENUS (to name)
+exhstate:                                       ; exhibition mode state record (62h bytes, saved with
+                                                ; SaveModeState); used by INIT, MENUS
         db 0x00, 0x00
-f_3415_0002:                                    ; used by MENUS, STATS (to name)
+exhstate_name:                                  ; exhibition state record: saved game name (string at +2);
+                                                ; used by MENUS, STATS
         db 0x2E, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
         db 0x00, 0x00, 0x00, 0x00, 0x00
         db '%s.db', 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
@@ -10,29 +12,37 @@ f_3415_0002:                                    ; used by MENUS, STATS (to name)
         times 17 db 0
         db 0x09, 0x00, 0x07, 0x00, 0xFF, 0x7B, 0xFF, 0xFF, 0xFE, 0xFF, 0x10, 0x00, 0x10, 0x00, 0x00, 0x00
         db 0x01, 0x00
-postate:                                    ; used by INIT, MENUS (to name)
+postate:                                        ; playoff mode state record (62h bytes); used by INIT, MENUS
         db 0x01, 0x00
-f_3415_0064:                                    ; used by MENUS, STATS (to name)
+postate_name:                                   ; playoff state record: saved game name (string at +2); used
+                                                ; by MENUS, STATS
         db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
         db 0x00, 0x00, 0x00, 0x00
         db 0x00, '%s.db', 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
         times 17 db 0
         db '%s.db', 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
         times 17 db 0
-f_3415_00B2:                                    ; used by MENUS (to name)
+postate_w50:                                    ; playoff state record word +50h; CreatePlayoffs sets 9; used
+                                                ; by MENUS
         db 0x09, 0x00
-f_3415_00B4:                                    ; used by MENUS (to name)
+postate_w52:                                    ; playoff state record word +52h; CreatePlayoffs sets 7; used
+                                                ; by MENUS
         db 0x07, 0x00
-f_3415_00B6:                                    ; used by MENUS (to name)
+postate_b54:                                    ; playoff state record option bits at +54h (word or-ed with
+                                                ; 1FFh by CreatePlayoffs); used by MENUS
         db 0xFF
-f_3415_00B7:                                    ; used by MENUS (to name)
+postate_b55:                                    ; playoff state record option byte +55h; CreatePlayoffs clears
+                                                ; bit 1, sets bits 4-6; used by MENUS
         db 0x79, 0xFF, 0xFF, 0xFE, 0xFF
-f_3415_00BC:                                    ; used by MENUS (to name)
+postate_w5A:                                    ; playoff state record word +5Ah: period length choice set by
+                                                ; CreatePlayoffs (2, 4, 8); used by MENUS
         db 0x10, 0x00, 0x10, 0x00, 0x00, 0x00
         db 0x01, 0x00
-lgstate:                                    ; used by INIT, LP, MENUS (to name)
+lgstate:                                        ; league mode state record (62h bytes); used by INIT, LP,
+                                                ; MENUS
         db 0x02, 0x00
-f_3415_00C6:                                    ; used by MENUS, STATS (to name)
+lgstate_name:                                   ; league state record: saved game name (string at +2); used by
+                                                ; MENUS, STATS
         db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
         db 0x00, 0x00, 0x00, 0x00
         db 0x00, '%s.db', 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
@@ -41,16 +51,18 @@ f_3415_00C6:                                    ; used by MENUS, STATS (to name)
         times 17 db 0
         db 0x09, 0x00, 0x07, 0x00, 0xFF, 0x7B, 0xFF, 0xFF
         db 0xFE, 0xFF
-f_3415_011E:                                    ; used by MENUS (to name)
+lgstate_w5A:                                    ; league state record word +5Ah: period length choice set by
+                                                ; MenuNewLeague (1, 4, 8); used by MENUS
         db 0x10, 0x00, 0x10, 0x00, 0x00, 0x00
         db 0x01, 0x00, 0x00, 0x00
-f_3415_0128:                                    ; used by GAME, MENUS (to name)
+POSeedTable:                                    ; playoff seeding table, word per entry, read by POSeedTeams
+                                                ; and LoadCupFinalSeries; used by GAME, MENUS
         db 0x04, 0x00, 0x04, 0x00, 0x01, 0x00, 0x02, 0x00
         db 0x02, 0x00, 0x01, 0x00
         db 0x04, 0x00, 0x01, 0x00, 0x02, 0x00, 0x04, 0x00, 0x08, 0x00, 0x08, 0x00, 0x08, 0x00, 0x04, 0x00
         db 0x08, 0x00, 0x08, 0x00, 0x04, 0x00, 0x02, 0x00, 0x01, 0x00, 0x02, 0x00, 0x02, 0x00, 0x01, 0x00
         db 0x08, 0x00, 0x01, 0x00
-f_3415_0158:                                    ; used by MENUS (to name)
+POConfTeamTable:                                ; conference team table read by POPickConfTeams; used by MENUS
         db 0x02, 0x00, 0x05, 0x00, 0x07, 0x00, 0x12, 0x00
         db 0x15, 0x00, 0x17, 0x00
         db 0x03, 0x00, 0x04, 0x00, 0x08, 0x00, 0x11, 0x00, 0x13, 0x00, 0x14, 0x00, 0x00, 0x00, 0x01, 0x00

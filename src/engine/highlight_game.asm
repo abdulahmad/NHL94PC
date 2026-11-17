@@ -19,9 +19,9 @@ StartHL2:
         push si
         mov ax, [gameover]
         mov [bp - 0x66], ax
-        mov ax, [g_29CA]
+        mov ax, [HomeTeamNum]
         mov [bp - 0xee], ax
-        mov ax, [g_29CC]
+        mov ax, [VisTeamNum]
         mov [bp - 0xec], ax
         mov ax, [hmtmgoalie]
         mov [bp - 0xea], ax
@@ -66,7 +66,7 @@ StartHL2:
         cmp word [bp - 0xf0], 0x2
         jnl short .5
         imul ax, [bp - 0xf0], word 0xd6
-        add ax, 0xb3c6
+        add ax, hmtmpdst
         mov [bp - 0xf4], ax
         mov word [bp - 0xf2], 0x0
         jmp short .2
@@ -74,24 +74,24 @@ StartHL2:
         mov ax, [CrowdState]
         mov [bp - 0xf8], ax
         lea di, [bp - 0x62]
-        mov si, 0xae10
+        mov si, HomeTeamRec
         mov ax, ss
         mov es, ax
         mov cx, 0x18
         rep movsw
         lea di, [bp - 0x30]
-        mov si, 0xae40
+        mov si, AwayTeamRec
         mov cx, 0x18
         rep movsw
         push word 0x3a0b
-        push strict word f_3A0B_B352
+        push strict word GamePalette
         push word 0x100
         push 0x0
         call 0x0FEF:GetPaletteFar
         add sp, 0x8
         push 0x10
         push word 0x3a0b
-        push strict word f_3A0B_B352
+        push strict word GamePalette
         push 0x1
         call 0x1E7E:FadePalette
         add sp, 0x8
@@ -99,26 +99,26 @@ StartHL2:
         and byte [CrowdState], 0xe4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [gameover], ax
-        mov [g_D6C4], ax
+        mov [crowdheat], ax
         mov ax, [bp + 0x6]
-        mov [g_29CA], ax
+        mov [HomeTeamNum], ax
         mov ax, [bp + 0x8]
-        mov [g_29CC], ax
+        mov [VisTeamNum], ax
         push 0x2
         call 0x1B35:LoadGameTeamsThunk
         add sp, 0x2
         push word 0x3a0b
-        push strict word f_3A0B_0A8E
-        push word [g_29CC]
-        push word [g_29CA]
+        push strict word TeamPalette768
+        push word [VisTeamNum]
+        push word [HomeTeamNum]
         call 0x1E64:LoadTeamPalette
         add sp, 0x8
-        cmp word [g_29CA], 0x18
+        cmp word [HomeTeamNum], 0x18
         jl short .6
         mov ax, 0xe
         jmp short .7
 .6:
-        mov ax, [g_29CA]
+        mov ax, [HomeTeamNum]
 .7:
         push ax
         call 0x1B35:LoadRinkTilesThunk
@@ -176,8 +176,8 @@ StartHL2:
         call 0x0FEF:UseOffscreenCanvas
         push 0x0
         push word [curperiod]
-        push word [g_29CC]
-        push word [g_29CA]
+        push word [VisTeamNum]
+        push word [HomeTeamNum]
         call 0x2083:DrawHudPanel
         add sp, 0x8
         mov byte [gmode], 0x0
@@ -194,7 +194,7 @@ StartHL2:
         mov [sflags], ax
         mov word [gmode2], 0x4
         db 0x2A, 0xC0                           ; insn: sub al, al
-        mov [g_D62B], al
+        mov [iflags_b1], al
         mov [iflags], al
         mov ax, 0xffff
         mov [passplayer], ax
@@ -208,8 +208,8 @@ StartHL2:
         mov [SortPending], ax
         cmp word [ovlseq], -0x1
         jz short .9
-        push word [g_D62E]
-        push word [g_D62C]
+        push word [OverlayGfxSeg]
+        push word [OverlayGfx]
         call 0x06E1:FindUnlink
         add sp, 0x4
 .9:
@@ -226,8 +226,8 @@ StartHL2:
         mov [CrowdSound], ax
         mov [Crowdlevel], ax
         mov ax, 0xffff
-        mov [g_D61C], ax
-        mov [g_D618], ax
+        mov [GoalState_m2], ax
+        mov [GoalState_m6], ax
         call 0x2E42:setupice
         call 0x2E42:SprSortVert
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -237,26 +237,26 @@ StartHL2:
         mov [yc1], ax
         mov [xc1], ax
         call 0x2E42:ResetBench
-        push word 0xb362
+        push word hmshots
         call 0x2E42:reenergizeteam
         add sp, 0x2
-        push word 0xb362
+        push word hmshots
         call 0x2E42:setpersonel
         add sp, 0x2
-        push word 0xb362
+        push word hmshots
         call 0x2E42:forcepldata
         add sp, 0x2
         mov ax, 0xffff
         mov [hmtmtouch3], ax
         mov [hmtmtouch2], ax
         mov [hmtmtouch1], ax
-        push word 0xb438
+        push word awshots
         call 0x2E42:reenergizeteam
         add sp, 0x2
-        push word 0xb438
+        push word awshots
         call 0x2E42:setpersonel
         add sp, 0x2
-        push word 0xb438
+        push word awshots
         call 0x2E42:forcepldata
         add sp, 0x2
         mov ax, 0xffff
@@ -264,7 +264,7 @@ StartHL2:
         mov [awtmtouch2], ax
         mov [awtmtouch1], ax
         call 0x2E42:resetplstuff
-        mov word [bp - 0xf6], 0xb50e
+        mov word [bp - 0xf6], SortCords
         mov word [bp - 0xf0], 0x0
         jmp short .12
         db 0x90
@@ -273,7 +273,7 @@ StartHL2:
 .11:
         mov bx, [bp - 0xf2]
         shl bx, 1
-        add ax, [bx + g_544E]
+        add ax, [bx + HL2Offsets2]
         mov bx, [bp - 0xf6]
         mov [bx + 0x6], ax
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -306,7 +306,7 @@ StartHL2:
         mov ax, 0x14
         call 0x0C11:randomd0
         shl si, 1
-        add ax, [si + g_544C]
+        add ax, [si + HL2Offsets]
         sub ax, strict word 0xa
         mov bx, [bp - 0xf6]
         mov [bx + 0x2], ax
@@ -327,44 +327,44 @@ StartHL2:
         jmp near .11
         db 0x90
 .14:
-        mov word [g_BC36], 0x78
+        mov word [pucktemp2], 0x78
         mov ax, 0x14
         call 0x0C11:randomd0
         sub ax, strict word 0xa
-        mov [g_BC10], ax
+        mov [puckXpos2], ax
         mov ax, 0x14
         call 0x0C11:randomd0
         sub ax, strict word 0xa
-        mov [puckstruct], ax
-        mov word [g_BC18], 0x0
+        mov [puckYpos2], ax
+        mov word [puckZpos2], 0x0
         mov ax, 0x7d0
         call 0x0C11:randomd0
         sub ax, 0x3e8
-        mov [g_BC1A], ax
+        mov [puckXvel], ax
         mov ax, 0x7d0
         call 0x0C11:randomd0
         sub ax, 0x3e8
-        mov [g_BC1C], ax
-        mov word [g_BC20], 0x18a
-        mov word [g_BC56], 0x0
+        mov [puckYvel], ax
+        mov word [puckframe], 0x18a
+        mov word [puck_48], 0x0
         push 0x18
-        push word 0xbc0e
+        push word puckstruct
         call 0x1E7E:assreplace
         add sp, 0x4
-        mov word [g_BCA0], 0x189
-        mov word [g_BCD6], 0x0
+        mov word [doorframe], 0x189
+        mov word [door_48], 0x0
         push 0x19
-        push word 0xbc8e
+        push word doorstruct
         call 0x1E7E:assreplace
         add sp, 0x4
-        mov word [g_BD10], 0xff88
+        mov word [refXpos2], 0xff88
         mov word [refYpos2], 0x0
-        mov word [g_BD44], 0x2
+        mov word [ref_36], 0x2
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_BD1C], ax
+        mov [refYvel], ax
         mov [refXvel], ax
         push 0x1f
-        mov ax, 0xbd0e
+        mov ax, refstruct
         mov [bp - 0xf6], ax
         push ax
         call 0x1E7E:assreplace
@@ -386,7 +386,7 @@ StartHL2:
         mov word [fadeinpending], 0x1
         call 0x03A3:CallCountStep
         mov word [PadRepeatOn], 0x1
-        mov word [g_4B02], 0x0
+        mov word [framesync], 0x0
 .15:
         cmp word [exitgame], 0x0
         jz short .16
@@ -424,22 +424,22 @@ StartHL2:
 .18:
         mov ax, 0xec
         sub ax, [camy]
-        mov [g_D6CE], ax
+        mov [ovltimer2], ax
         cmp ax, 0x1a8
         jng short .19
-        mov word [g_D6CE], 0x1a8
+        mov word [ovltimer2], 0x1a8
 .19:
-        cmp word [g_D6CE], 0x0
+        cmp word [ovltimer2], 0x0
         jnl short .20
-        mov word [g_D6CE], 0x0
+        mov word [ovltimer2], 0x0
 .20:
-        push word [g_D6CE]
+        push word [ovltimer2]
         push word [viewscrollx]
         call 0x1F54:FlushDirtyRects
         add sp, 0x4
         call 0x0FEF:UseOtherPage
         mov ax, 0x140
-        sub ax, [g_D6CE]
+        sub ax, [ovltimer2]
         push ax
         mov ax, [viewscrollx]
         sub ax, 0xc0
@@ -449,9 +449,9 @@ StartHL2:
         cmp word [fadeinpending], 0x0
         jz short .21
         mov ax, [PadRepeatOn]
-        mov [g_D46A], ax
+        mov [gameframe], ax
         push word 0x3a0b
-        push strict word f_3A0B_B352
+        push strict word GamePalette
         push word 0x100
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [PadRepeatOn], ax
@@ -460,11 +460,11 @@ StartHL2:
         add sp, 0x8
         push 0x10
         push word 0x3a0b
-        push strict word f_3A0B_B352
+        push strict word GamePalette
         push 0x1
         call 0x1E7E:FadePalette
         add sp, 0x8
-        mov ax, [g_D46A]
+        mov ax, [gameframe]
         mov [PadRepeatOn], ax
 .21:
         push word [bp - 0xf2]
@@ -495,27 +495,27 @@ StartHL2:
         cmp word [fadeinpending], 0x0
         jz short .23
         mov ax, [PadRepeatOn]
-        mov [g_D46A], ax
+        mov [gameframe], ax
         push 0x10
         push word 0x3a0b
-        push strict word f_3A0B_0A8E
+        push strict word TeamPalette768
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [PadRepeatOn], ax
         push ax
         call 0x1E7E:FadePalette
         add sp, 0x8
         mov word [fadeinpending], 0x0
-        mov ax, [g_D46A]
+        mov ax, [gameframe]
         mov [PadRepeatOn], ax
 .23:
-        cmp word [g_4B02], 0x0
+        cmp word [framesync], 0x0
         jz short .26
 .24:
         mov word [PadRepeatOn], 0x0
         cmp word [ovlseq], -0x1
         jz short .25
-        push word [g_D62E]
-        push word [g_D62C]
+        push word [OverlayGfxSeg]
+        push word [OverlayGfx]
         call 0x06E1:FindUnlink
         add sp, 0x4
 .25:
@@ -524,14 +524,14 @@ StartHL2:
         mov [ovlstep], ax
         mov [ovlseq], ax
         push word 0x3a0b
-        push strict word f_3A0B_B352
+        push strict word GamePalette
         push word 0x100
         push 0x0
         call 0x0FEF:GetPaletteFar
         add sp, 0x8
         push 0x10
         push word 0x3a0b
-        push strict word f_3A0B_B352
+        push strict word GamePalette
         push 0x1
         call 0x1E7E:FadePalette
         add sp, 0x8
@@ -564,9 +564,9 @@ StartHL2:
         mov ax, [bp - 0x66]
         mov [gameover], ax
         mov ax, [bp - 0xee]
-        mov [g_29CA], ax
+        mov [HomeTeamNum], ax
         mov ax, [bp - 0xec]
-        mov [g_29CC], ax
+        mov [VisTeamNum], ax
         mov ax, [bp - 0xea]
         mov [hmtmgoalie], ax
         mov ax, [bp - 0xe8]
@@ -616,21 +616,21 @@ StartHL2:
         cmp word [bp - 0xf0], 0x2
         jnl short .35
         imul ax, [bp - 0xf0], word 0xd6
-        add ax, 0xb3c6
+        add ax, hmtmpdst
         mov [bp - 0xf4], ax
         mov word [bp - 0xf2], 0x0
         jmp short .32
 .35:
         mov ax, [bp - 0xf8]
         mov [CrowdState], ax
-        mov ax, 0xae10
+        mov ax, HomeTeamRec
         db 0x8B, 0xF8                           ; insn: mov di, ax
         lea si, [bp - 0x62]
         push ds
         pop es
         mov cx, 0x18
         rep movsw
-        mov ax, 0xae40
+        mov ax, AwayTeamRec
         db 0x8B, 0xF8                           ; insn: mov di, ax
         lea si, [bp - 0x30]
         mov cx, 0x18
@@ -658,27 +658,27 @@ StartHL2:
         mov [camx], ax
         mov [camy], ax
         push word 0x3a0b
-        push strict word f_3A0B_0A8E
-        push word [g_29CC]
-        push word [g_29CA]
+        push strict word TeamPalette768
+        push word [VisTeamNum]
+        push word [HomeTeamNum]
         call 0x1E64:LoadTeamPalette
         add sp, 0x8
         call 0x1B35:FreePPVFilesThunk
-        push word [g_C25E]
-        push word [g_C25C]
+        push word [RinkEndArtSeg]
+        push word [RinkEndArt]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        push word [g_C25A]
-        push word [g_C258]
+        push word [ScoreboardArtSeg]
+        push word [ScoreboardArt]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        cmp word [g_29CA], 0x18
+        cmp word [HomeTeamNum], 0x18
         jl short .37
         mov ax, 0x9
         jmp short .38
         db 0x90
 .37:
-        mov ax, [g_29CA]
+        mov ax, [HomeTeamNum]
 .38:
         push ax
         call 0x1B35:LoadRinkTilesThunk
@@ -687,38 +687,38 @@ StartHL2:
         call 0x1B35:LoadScoreboardArtThunk
         push 0x1
         push word [curperiod]
-        push word [g_29CC]
-        push word [g_29CA]
+        push word [VisTeamNum]
+        push word [HomeTeamNum]
         call 0x2083:DrawHudPanel
         add sp, 0x8
-        push word [g_C25A]
-        push word [g_C258]
+        push word [ScoreboardArtSeg]
+        push word [ScoreboardArt]
         call 0x06E1:FindUnlink
         add sp, 0x4
         mov word [fadeinpending], 0x1
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_48CC], ax
-        mov [g_48CA], ax
+        mov [lcrequestteam], ax
+        mov [energywarnteam], ax
         mov [energywarn], ax
-        mov [g_48CE], ax
-        mov [g_48E4], ax
+        mov [lcsel], ax
+        mov [hudredraw], ax
         mov [lcboxon], ax
         mov [hudhundaccum], ax
         mov [refsignal], ax
         mov ax, 0xffff
-        mov [g_48DC], ax
-        mov [g_48DA], ax
+        mov [lcactive], ax
+        mov [lcgroup], ax
         mov [RefStep], ax
         push 0x1e
-        push word 0xbd0e
+        push word refstruct
         call 0x1E7E:assreplace
         add sp, 0x4
         call 0x327B:ClearPenaltyBuffer
         mov word [PenCntDwn], 0xffff
         call 0x2C24:joyq_flush
-        cmp word [g_4B02], 0x0
+        cmp word [framesync], 0x0
         jz short StartHL2Tail + 0x8E0
-        mov word [g_4B02], 0x0
+        mov word [framesync], 0x0
         mov ax, 0xffff
         pop si
         pop di

@@ -193,7 +193,7 @@ doplayeracc:
         db 0x8B, 0xC2                           ; insn: mov ax, dx
         cwd
         mov [regd3], ax
-        mov [g_D6C2], dx
+        mov [regd3_w2], dx
         mov ax, 0x300
         sub ax, [regd3]
         mov [regd4], ax
@@ -203,21 +203,21 @@ doplayeracc:
 .17:
         db 0x8B, 0xDF                           ; insn: mov bx, di
         shl bx, 1
-        add bx, 0x58fa
+        add bx, doplayeracc_ftab
         mov [bp - 0xe], bx
         mov dx, [bx]
         mov ax, [regd4]
         call 0x03A3:ImulRegs
         mov [regd4], ax
-        mov [g_D6CA], dx
+        mov [regd4_w2], dx
         test byte [si + 0x44], 0x10
         jz short .18
         neg word [regd4]
-        adc word [g_D6CA], 0x0
-        neg word [g_D6CA]
+        adc word [regd4_w2], 0x0
+        neg word [regd4_w2]
 .18:
         mov ax, [regd4]
-        mov dx, [g_D6CA]
+        mov dx, [regd4_w2]
         add [si + 0x34], ax
         adc [si + 0x36], dx
         and word [si + 0x36], 0x7
@@ -389,7 +389,7 @@ EvadePlayers:
         db 0x90
 .10:
         mov word [bp - 0x6], 0x64
-        mov di, 0xb50e
+        mov di, SortCords
         mov word [bp - 0x2], 0x0
 .11:
         cmp word [bp - 0x2], 0xc
@@ -585,7 +585,7 @@ EvadePC:
         mov si, [bp + 0x6]
         cbw
         shl ax, byte 0x7
-        add ax, 0xb50e
+        add ax, SortCords
         db 0x8B, 0xF8                           ; insn: mov di, ax
         db 0x8B, 0xDF                           ; insn: mov bx, di
         mov cx, [si + 0x2]
@@ -895,7 +895,7 @@ skatetopuck:
         add ax, [bp - 0x6]
         adc dx, [bp - 0x4]
         mov [regd0], ax
-        mov [g_D66E], dx
+        mov [regd0_w2], dx
         db 0x0B, 0xD2                           ; insn: or dx, dx
         jnz short .5
         cmp ax, 0x384
@@ -944,7 +944,7 @@ playeracc:
         add cx, 0x30
         mov bx, [bp + 0x8]
         shl bx, byte 0x2
-        mov ax, [bx + g_29E0]
+        mov ax, [bx + dirtab0]
         imul cx
         cwd
         db 0x33, 0xC2                           ; insn: xor ax, dx
@@ -953,7 +953,7 @@ playeracc:
         db 0x33, 0xC2                           ; insn: xor ax, dx
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         mov [bp - 0x2], ax
-        mov ax, [bx + g_29E2]
+        mov ax, [bx + dirtab_x]
         imul cx
         cwd
         db 0x33, 0xC2                           ; insn: xor ax, dx
@@ -1005,7 +1005,7 @@ playeracc:
         sar dx, 1
         rcr ax, 1
         mov [regd0], ax
-        mov [g_D66E], dx
+        mov [regd0_w2], dx
         mov ax, [bp - 0x4]
         mov dx, [regd2]
         call 0x03A3:ImulRegs
@@ -1020,7 +1020,7 @@ playeracc:
         sar dx, 1
         rcr ax, 1
         mov [regd1], ax
-        mov [g_D674], dx
+        mov [regd1_w2], dx
         mov ax, [si + 0xc]
         add [regd0], ax
         mov ax, [si + 0xe]
@@ -1037,11 +1037,11 @@ playeracc:
         add ax, [bp - 0x8]
         adc dx, [bp - 0x6]
         mov [regd3], ax
-        mov [g_D6C2], dx
+        mov [regd3_w2], dx
         cmp word [si + 0x5e], 0x10
         jnz short .4
         mov word [regd2], 0xf
-        mov word [g_D6BA], 0x0
+        mov word [regd2_w2], 0x0
         jmp short .5
         db 0x90
 .4:
@@ -1067,23 +1067,23 @@ playeracc:
         shr dx, 1
         rcr ax, 1
         mov [regd2], ax
-        mov [g_D6BA], dx
+        mov [regd2_w2], dx
 .5:
         mov bx, [regd2]
         shl bx, byte 0x2
-        mov ax, [bx + g_590A]
-        mov dx, [bx + g_590C]
+        mov ax, [bx + AccelFactors]
+        mov dx, [bx + AccelFactors2]
         mov [regd2], ax
-        mov [g_D6BA], dx
+        mov [regd2_w2], dx
         test byte [si + 0x45], 0x40
         jz short .6
         push 0x3
-        push word 0xd6b8
+        push word regd2
         call 0x0000:LongSarAt
 .6:
         mov ax, [regd2]
-        mov dx, [g_D6BA]
-        cmp [g_D6C2], dx
+        mov dx, [regd2_w2]
+        cmp [regd3_w2], dx
         ja short .8
         jc short .7
         cmp [regd3], ax

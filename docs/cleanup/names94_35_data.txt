@@ -1,0 +1,141 @@
+# data labels named from their use (by hand), part 2
+g_58A6 GoalieSaveSides | new | medium | save side bytes of puckgoalie, indexed by the hit direction
+g_58E2 PenaltyNamePtrs | new | medium | penalty name pointers of the game summary events (PostPenaltyEvent)
+g_590A AccelFactors | new | medium | acceleration factor table of playeracc
+g_590C AccelFactors2 | new | medium | second acceleration table of playeracc
+g_594A asswingo_dedata | new | medium | winger attack spots: x
+g_594C asswingo_dedata_xrand | new | medium | winger attack spots: random x range
+g_594E asswingo_dedata_y | new | medium | winger attack spots: y
+g_5950 asswingo_dedata_yrand | new | medium | winger attack spots: random y range
+g_5A2C CheckAnims | new | medium | check animation table of checkcheck
+g_5AD0 ShotSpeeds | new | medium | shot speed table of doshot
+g_5AF6 LineChoiceKeys | new | medium | line choice table of lineinput
+g_5B06 lchoicetab_m1 | new | medium | entry before lchoicetab
+g_5B66 OneTimerDirs | new | medium | direction offsets of assonetimer
+g_5B67 OneTimerDirs2 | new | medium | direction table of assonetimer
+g_5B9E StarPoints | new | medium | points per stat for the three stars
+g_5BA2 StarPoints2 | new | medium | second points table for the three stars
+g_5BEE StarNamePtrs | new | medium | '1st/2nd/3rd' star text pointers (assthreestars)
+g_5BF4 playsuspended | new | medium | 1 while play is suspended (highlight, no replay)
+g_5BF6 HotList_m1 | new | medium | byte before the hot spot table
+g_5BF7 HotList | new | medium | stick blade hot spot x/y bytes per frame (GetHot)
+g_6106 Setplass_alist | new | medium | first assignment per position (Setplass)
+g_610E RestoreTeamTable | new | medium | word table of restoreteams
+g_6120 PlListOffsets | new | medium | offsets of the player lists (SetPlList)
+g_612E PlListSlots | new | medium | slot bytes of SetPlList (-1 end)
+g_61B8 RinkOverlayFrames3 | new | medium | frames of the period marks (DrawRinkOverlays)
+g_61CA RinkObjectXOffsets | new | medium | x offsets of the rink objects (DrawRinkObjects)
+g_61D8 lineslotgroupstart | new | medium | first preference group per line slot (PickForLineSlot)
+g_622A lineslotgroups | new | medium | position preference groups of the line slots
+g_62A0 WipeDirX | new | medium | x step per wipe direction (FadeWipe)
+g_62A8 WipeDirY | new | medium | y step per wipe direction
+g_62B0 WipeDirX2 | new | medium | second x step per wipe direction
+g_62B8 WipeDirY2 | new | medium | second y step per wipe direction
+g_62C0 PlaneBandPattern | new | medium | band pattern of FadePlaneBands
+g_62E4 FadeInSteps | new | medium | fade step table (FadePaletteIn)
+g_62E5 FadeInStep | new | medium | current fade-in step
+g_62E6 FadeInSteps2 | new | medium | second fade-in step table
+g_62E8 FadeInCount | new | medium | fade-in step count
+g_62EA BlockSweepDX | new | medium | x direction per sweep pattern (FadeBlockSweep)
+g_62EE BlockSweepDY | new | medium | y direction per sweep pattern
+g_62F2 BlockSweepOrder | new | medium | sweep order bytes
+g_74FA VenetianRowBytes | new | medium | row length in bytes read by FadeVenetian
+g_8C36 SeasonTitleSegs | new | medium | segment words of the season titles (SetupStatsMenus)
+g_8C9C JingleSegs | new | medium | segment words of the jingle data (LoadArenaJingles)
+g_8CE2 AnimSeqSegs | new | medium | segment words of the animation sequences (DecayCrowdLevel, SetRinkObject)
+g_8EFE RandomBlockDone | new | medium | 88 flags of the blocks already drawn (FadeRandomBlocks2)
+g_91D0 FrameTable | new | medium | frame pointer table (offset words) built by IndexPPVFrames
+g_91D2 FrameTableSeg | new | medium | frame pointer table (segment words)
+g_9F80 GameTeamRecs | new | medium | team records read by LoadGameTeams (76 bytes)
+g_9FCC GamePlayerNames | new | medium | player name pointers (offset) of the game summary and lineups
+g_9FCE GamePlayerNamesSeg | new | medium | player name pointers (segment)
+g_A03C HomeLinesRec | new | medium | home line record written by WriteTeamLines
+g_A06C TeamLinesRecs | new | medium | line records written by WriteTeamLines
+g_A268 GameRosterRecs | new | medium | roster records read by LoadGameTeams (744 bytes)
+g_A556 hmrosterjersey | new | medium | jersey byte of the home roster records
+g_A9B0 GamePlayerFlags | new | medium | player flags filled by LoadGameTeams
+g_AE10 HomeTeamRec | new | medium | home team record saved with the game (36 bytes)
+g_AE34 HomeTeamAbbr | new | medium | first byte of the home team abbreviation
+g_AE35 HomeTeamAbbr_b1 | new | medium | rest of the home team abbreviation
+g_AE38 HomeTeamColours | new | medium | home team colour bytes (LoadGameTeams)
+g_AE40 AwayTeamRec | new | medium | away team record saved with the game (36 bytes)
+g_AE64 AwayTeamAbbr | new | medium | first byte of the away team abbreviation
+g_AE65 AwayTeamAbbr_b1 | new | medium | rest of the away team abbreviation
+g_AE68 AwayTeamColours | new | medium | away team colour bytes
+g_AE70 gsummarypath | new | medium | path of gsummary.db (GSummaryPath)
+g_AE94 POTreeBuf | new | medium | far pointer (offset) to the playoff tree buffer
+g_AE96 POTreeBufSeg | new | medium | its segment
+g_B07A goalevent_b1 | new | medium | scorer jersey of the goal event
+g_B07B goalevent_b2 | new | medium | first assist jersey
+g_B07C goalevent_b3 | new | medium | second assist jersey
+g_B07D goalevent_text | new | medium | team abbreviation of the goal event
+g_B092 TextOverlayPtr | new | medium | text overlay string pointer (offset)
+g_B094 TextOverlaySeg | new | medium | its segment
+g_B096 viewcellx | new | medium | scroll position in 8-pixel cells, x
+g_B098 viewcelly | new | medium | scroll position in 8-pixel cells, y
+g_B09A RinkMapWidth | new | medium | rink map width in cells
+g_B09C RinkRowBytes | new | medium | bytes per rink row
+g_B09E otherscoresb | new | medium | other games: scores (12 bytes)
+g_B0AA otherscorehome | new | medium | other games: home team bytes
+g_B0AB otherscorehome_b1 | new | medium | other games: home team bytes from +1
+g_B0B6 otherscoreaway | new | medium | other games: away team bytes
+g_B0B7 otherscores | new | medium | other games: away team bytes from +1
+g_B0C2 scrolldelay | new | medium | scroll redraw countdown
+g_B107 PanelText | new | medium | panel text bytes (DrawHudPanel)
+g_B1C9 LockerText1 | new | medium | locker room text byte 1
+g_B1CB LockerText2 | new | medium | locker room text from +2
+g_B1D4 LockerText3 | new | medium | locker room text byte
+g_B1D5 LockerText4 | new | medium | locker room text bytes
+g_B1D7 LockerText5 | new | medium | locker room text byte
+g_B1D8 LockerText6 | new | medium | locker room text bytes
+g_B1DA LockerText7 | new | medium | locker room text block
+g_B207 PanelText2 | new | medium | panel text bytes
+g_B20D LockerText8 | new | medium | locker room text block
+g_B214 LockerText9 | new | medium | locker room text byte
+g_B215 LockerText10 | new | medium | locker room text block
+g_B224 LockerText11 | new | medium | locker room text block
+g_B2BF LockerText12 | new | medium | locker room text byte
+g_B2C0 LockerText13 | new | medium | locker room text byte
+g_B2C1 LockerText14 | new | medium | locker room text byte
+g_B2C2 LockerText15 | new | medium | locker room text block
+g_B2F2 JingleBuf1 | new | medium | jingle buffer pointer 1 (offset)
+g_B2F4 JingleBuf1Seg | new | medium | its segment
+g_B2F6 JingleBuf2 | new | medium | jingle buffer pointer 2 (offset)
+g_B2F8 JingleBuf2Seg | new | medium | its segment
+g_B2FE JingleBuf3 | new | medium | jingle buffer pointer 3 (offset)
+g_B300 JingleBuf3Seg | new | medium | its segment
+g_B302 JingleBuf4 | new | medium | jingle buffer pointer 4 (offset)
+g_B304 JingleBuf4Seg | new | medium | its segment
+g_B306 JingleCfgBufs | new | medium | jingle config buffer pointers (offset)
+g_B308 JingleCfgBufsSeg | new | medium | their segments
+g_B312 JingleKmsBufs | new | medium | jingle song buffer pointers (offset)
+g_B314 JingleKmsBufsSeg | new | medium | their segments
+g_B35E editopts | new | medium | option bits being edited by the settings dialogs
+g_B35F editopts_b1 | new | medium | high byte of editopts
+g_B360 editctlopts | new | medium | controller option bits being edited
+g_B362 hmshots | new | medium | home shots
+g_B364 hmppgoals | new | medium | home power play goals
+g_B366 hmppchances | new | medium | home power play chances
+g_B368 hmpenalties | new | medium | home penalty count
+g_B36A hmpenmins | new | medium | home penalty minutes
+g_B36C hmattacktime | new | medium | home attack zone time
+g_B370 hmfaceoffs | new | medium | home faceoffs won
+g_B372 hmchecks | new | medium | home body checks
+g_B374 hmpassatt | new | medium | home pass attempts
+g_B376 hmpasscmp | new | medium | home passes completed
+g_B387 hmtmgoalie_b1 | new | medium | home goalie, high byte
+g_B38E hmtmpde | new | medium | home player energy (56 bytes)
+g_B3C6 hmtmpdst | new | medium | home player status per roster slot (56 bytes)
+g_B3FE hmtmpbox_m1 | new | medium | home team bytes before hmtmpbox (28 bytes)
+g_B426 hmtmglattr | new | medium | home goalie attributes pointer
+g_B428 hmtmglattrseg | new | medium | its segment
+g_B42A hmtmplstats | new | medium | home player stats pointer
+g_B42C hmtmplstatsseg | new | medium | its segment
+g_B432 hmtmrosterptr | new | medium | home roster pointer
+g_B436 hmtmptrs | new | medium | further home team pointers (14 bytes)
+g_B4D4 awtmpbox_m1 | new | medium | away team bytes before awtmpbox (28 bytes)
+g_B4F6 awtmteamrec | new | medium | away team record pointer
+g_B4FA awtmglattrseg | new | medium | segment of the away goalie attributes
+g_B504 awtmglstatsptr | new | medium | away goalie stats pointer
+g_B506 awtmglstatsseg | new | medium | its segment
+g_B50A awtmroster | new | medium | away roster pointer

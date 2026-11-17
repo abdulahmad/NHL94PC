@@ -247,7 +247,7 @@ g_86B2 MsgBannerHook | new | medium | far routine called before a runtime messag
 g_86B4 MsgBannerHookSeg | new | medium | its segment
 g_876A StreamExtra | new | medium | extra stream records for the standard buffers
 g_880A LastStream | new | medium | last stream record
-g_8871 CflushCount | new | medium | stream flush count
+g_8871 NullStrLen | new | medium | length of str_Null (6), read by _output for a null %s
 g_8876 FltCvtFn | new | medium | float conversion routine
 g_887A CropZerosFn | new | medium | drops trailing zeros
 g_8882 ForceDecPtFn | new | medium | forces a decimal point
@@ -256,8 +256,8 @@ g_8A1C FloatMode | new | medium | float format mode
 g_8A1E FloatPrecision | new | medium | float precision
 g_8A20 FloatFlag | new | medium | float format flag
 g_8ABA FpStatusByte | new | medium | floating-point status byte
-g_8ABB FpStatusPad | new | medium | byte after FpStatusByte
-g_8ABD FpConstTable | new | medium | floating-point constants
+g_8ABB FpSavedCw | new | medium | coprocessor control word saved by DoubleToDigits (fnstcw)
+g_8ABD FpRoundCw | new | medium | control word 1332h; DoubleToDigits copies the mask bits of FpSavedCw into it and loads it (fldcw)
 g_8AE2 InitHook | new | medium | near startup hook (0 skips)
 g_8AE4 DebugSignature | new | medium | D6D6h when a debugger hook is present
 g_8AE6 DebugWriteHook | new | medium | debugger write hook

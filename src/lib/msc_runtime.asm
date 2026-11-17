@@ -3,6 +3,8 @@
 ; helpers, and the floating-point emulator. __astart jumps to MscStartup.
 
 ; Sixteen zero bytes. The first routine starts on the next paragraph.
+MscRuntimeStart:                                ; offset 0 of this segment; code in other segments splits a
+                                                ; label here with label - MscRuntimeStart
         db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 
 ; VGA ports and the graphics window.
@@ -14,6 +16,12 @@ VgaAttr		equ	0x3C0
 VgaCrtc		equ	0x3D4
 VgaStatus	equ	0x3DA
 VgaMem		equ	0xA000
+
+; Offsets in the PSP and in the BIOS data area (segment 40h).
+PspEnvSeg	equ	0x2C
+BiosEquipment	equ	0x10
+BiosPageStart	equ	0x4E
+BiosCrtcPort	equ	0x63
 
 
 ;-----------------------------------------------------------------------------
@@ -79,13 +87,13 @@ VgaCopyWrapped:
         out dx, al
         mov bx, word [bp+0xa]
         mov cx, word [bp+8]
-        mov ax, word [0x8fc]                    ; row stride
+        mov ax, word [ScreenRowStride]          ; row stride
         mul bx
         mov di, word [bp+6]
         db 0x03, 0xF8                           ; insn: add di, ax
         db 0x03, 0xF9                           ; insn: add di, cx
         mov ax, 0x60
-        mov dx, word [0xb0c2]
+        mov dx, word [scrolldelay]
         shl dx, 3
         db 0x03, 0xDA                           ; insn: add bx, dx
         cmp bx, 0xb0                            ; keep the row inside the circular buffer
@@ -96,11 +104,11 @@ VgaCopyWrapped:
         mov si, 0x86a0                          ; source base in VGA memory
         db 0x03, 0xF0                           ; insn: add si, ax
         db 0x03, 0xF1                           ; insn: add si, cx
-        mov dx, word [0xb096]
+        mov dx, word [viewcellx]
         db 0x03, 0xF2                           ; insn: add si, dx
         db 0x03, 0xF2                           ; insn: add si, dx
         mov ax, word [bp+0xc]
-        mov bx, word [0x8fc]
+        mov bx, word [ScreenRowStride]
         db 0x2B, 0xD8                           ; insn: sub bx, ax
         mov dx, 0x60
         db 0x2B, 0xD0                           ; insn: sub dx, ax
@@ -163,7 +171,7 @@ VgaCopyToPitch:
         and al, 0xf0
         add ax, strict word 0xf
         out dx, al
-        mov bx, word [0x8fc]
+        mov bx, word [ScreenRowStride]
         sub bx, word [bp+0xa]
         mov ax, VgaMem
         mov ds, ax
@@ -220,7 +228,7 @@ VgaCopyFromPitch:
         and al, 0xf0
         add ax, strict word 0xf
         out dx, al
-        mov bx, word [0x8fc]
+        mov bx, word [ScreenRowStride]
         sub bx, word [bp+0xa]
         mov ax, VgaMem
         mov ds, ax
@@ -409,9 +417,9 @@ VgaPageFlip:
 .page1:
         mov di, 0x4400
 .origin:
-        mov ax, word [0x8fc]
-        mul word [0xb092]
-        mov bx, word [0xb094]
+        mov ax, word [ScreenRowStride]
+        mul word [TextOverlayPtr]
+        mov bx, word [TextOverlaySeg]
         db 0x8B, 0xCB                           ; insn: mov cx, bx
         shr bx, 1
         shr bx, 1
@@ -501,7 +509,7 @@ VgaStorePlanes:
         shl ah, 1
         push cx
         db 0x8B, 0xCB                           ; insn: mov cx, bx
-        mov di, 0xda78                          ; fixed VGA destination
+        mov di, ClockDigitsSeg                  ; fixed VGA destination
         cld
         rep movsb
         pop cx
@@ -575,12 +583,12 @@ VgaCopyStrip:
         and al, 0xf0
         add al, 0xf
         out dx, al
-        mov ax, word [0xb0c2]                   ; row inside the circular buffer
+        mov ax, word [scrolldelay]              ; row inside the circular buffer
         mov dx, 0x300
         mul dx
         db 0x8B, 0xF0                           ; insn: mov si, ax
         add si, 0x86a0                          ; buffer base
-        mov dx, word [0xb096]
+        mov dx, word [viewcellx]
         db 0x03, 0xF2                           ; insn: add si, dx
         db 0x03, 0xF2                           ; insn: add si, dx
         mov di, word [bp+6]
@@ -745,7 +753,7 @@ VgaCopyRect:
         out dx, al
         mov bx, word [bp+0xc]
         mov cx, word [bp+0xa]
-        mov ax, word [0x8fc]                    ; row stride
+        mov ax, word [ScreenRowStride]          ; row stride
         mul bx
         db 0x8B, 0xF8                           ; insn: mov di, ax
         db 0x03, 0xF9                           ; insn: add di, cx
@@ -753,7 +761,7 @@ VgaCopyRect:
         add di, word [bp+8]
         add si, word [bp+6]
         mov ax, word [bp+0xe]
-        mov bx, word [0x8fc]
+        mov bx, word [ScreenRowStride]
         db 0x2B, 0xD8                           ; insn: sub bx, ax
         cld
         mov cx, VgaMem
@@ -814,7 +822,7 @@ MscStartup:
 .limited:
         cli
         mov ss, di                              ; SS = DGROUP, SP = the startup stack
-        add sp, 0xe36e
+        add sp, StackBottom - 2                 ; the header SP, now from DGROUP
         sti
         jae .stackok
 
@@ -836,7 +844,7 @@ MscStartup:
         shl ax, cl
         dec ax
         mov word [ss:DgroupTop], ax             ; top offset of DGROUP
-        mov bx, 0x851c
+        mov bx, NearHeapDesc
         mov word [ss:bx], ss
         and sp, 0xfffe                          ; keep SP even
         mov word [ss:bx+4], sp
@@ -859,8 +867,8 @@ MscStartup:
         push ss
         pop es
         cld
-        mov di, 0x8ed6                          ; zero the BSS
-        mov cx, 0xe370
+        mov di, exe_end                         ; zero the BSS
+        mov cx, StackBottom
         db 0x2B, 0xCF                           ; insn: sub cx, di
         db 0x33, 0xC0                           ; insn: xor ax, ax
         rep stosb
@@ -936,10 +944,10 @@ InitRuntime:
         int 0x21
         push ss
         pop ds
-        mov cx, word [FpHookCount]              ; count of floating-point environment hooks; 0 skips them
+        mov cx, word [FpHookSeg]                ; segment of the floating-point hook; 0 skips it
         jcxz .nofp
         mov es, word [__psp]
-        mov si, word [es:0x2c]                  ; environment segment from the PSP
+        mov si, word [es:PspEnvSeg]             ; environment segment from the PSP
         lds ax, [FpEnvArg1]
         mov dx, ds
         db 0x33, 0xDB                           ; insn: xor bx, bx
@@ -959,7 +967,7 @@ InitRuntime:
 
 .nofp:
         mov es, word [__psp]
-        mov cx, word [es:0x2c]                  ; walk the environment for _C_FILE_INFO=
+        mov cx, word [es:PspEnvSeg]             ; walk the environment for _C_FILE_INFO=
         jcxz .noinfo
         mov es, cx
         db 0x33, 0xFF                           ; insn: xor di, di
@@ -968,7 +976,7 @@ InitRuntime:
         cmp byte [es:di], 0
         je .noinfo
         mov cx, 0xd                             ; 13 bytes: the name and the equals sign
-        mov si, 0x8534
+        mov si, str_CFileInfo
         repe cmpsb
         je .gotinfo
         mov cx, 0x7fff
@@ -1019,11 +1027,11 @@ InitRuntime:
 .nextdec:
         dec bx
         jns .nexthandle
-        mov si, 0x8b00                          ; initializer tables. The first span is empty
-        mov di, 0x8b00
+        mov si, InitTable                       ; initializer tables. The first span is empty
+        mov di, InitTable
         call _initterm
-        mov si, 0x8b00
-        mov di, 0x8b04
+        mov si, InitTable
+        mov di, PreTermTable
         call _initterm
         retf
 
@@ -1078,22 +1086,22 @@ ExitCommon:
         push cx
         db 0x0A, 0xC9                           ; insn: or cl, cl: cl == 0 runs the atexit tables
         jne .after_atexit
-        mov si, 0x90b8
-        mov di, 0x9138
+        mov si, AtexitTable
+        mov di, AtexitTableEnd
         call _initterm
-        mov si, 0x8b04
-        mov di, 0x8b08
+        mov si, PreTermTable
+        mov di, TermTable
         call _initterm
         cmp word [DebugSignature], 0xd6d6       ; debugger termination hook
         jne .after_atexit
         call word [DebugTermHook]
 
 .after_atexit:
-        mov si, 0x8b08
-        mov di, 0x8b08
+        mov si, TermTable
+        mov di, TermTable
         call _initterm
-        mov si, 0x8b08
-        mov di, 0x8b08
+        mov si, TermTable
+        mov di, TermTable
         call _initterm
         call 0:__nullcheck                      ; null-pointer check. AX != 0 means the low bytes of DGROUP
                                                 ; changed
@@ -1128,7 +1136,7 @@ ExitCommon:
 ; Near, no arguments.
 ;-----------------------------------------------------------------------------
 ExitRestore:
-        mov cx, word [FpHookCount]              ; put interrupt 0 back
+        mov cx, word [FpHookSeg]                ; put interrupt 0 back
         jcxz .nomathexit
         mov bx, 2
         call far [FpHook]
@@ -1214,7 +1222,7 @@ _printf:
         sub sp, 4
         push di
         push si
-        mov si, 0x86d2
+        mov si, _iob_stdout
         push si
         call _stbuf
         add sp, 2
@@ -1222,12 +1230,12 @@ _printf:
         lea ax, [bp+8]
         push ax
         push word [bp+6]
-        mov ax, 0x86d2
+        mov ax, _iob_stdout
         push ax
         call 0:_output
         add sp, 6
         mov word [bp-4], ax
-        mov ax, 0x86d2
+        mov ax, _iob_stdout
         push ax
         push di
         call _ftbuf
@@ -1248,7 +1256,7 @@ _close:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov bx, word [bp+6]
-        db 0x3B, 0x1E, 0x5D, 0x85               ; insn: cmp bx, word [_nfile]
+        cmp bx, word [_nfile]
         jb short .valid
         mov ax, 0x900
         stc
@@ -1257,7 +1265,7 @@ _close:
         mov ah, 0x3e
         int 0x21
         jb short .join
-        mov byte [bx-0x7aa1], 0
+        mov byte [bx+_osfile], 0
 .join:
         jmp near DosRet
 
@@ -1271,7 +1279,7 @@ _lseek:
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         sub sp, 4
         mov bx, word [bp+6]
-        db 0x3B, 0x1E, 0x5D, 0x85               ; insn: cmp bx, word [_nfile]
+        cmp bx, word [_nfile]
         jb short .seek
         mov ax, 0x900
         jmp short .1
@@ -1316,7 +1324,7 @@ _lseek:
         mov ah, 0x42
         int 0x21
         jb short .2
-        and byte [bx-0x7aa1], 0xfd
+        and byte [bx+_osfile], 0xfd
 .2:
         jmp near DosRetLong
 
@@ -1358,7 +1366,7 @@ OpenBody:
         jne short .haveflag
         test ax, 0x4000
         jne short .binary
-        test byte [0x8875], 0x80
+        test byte [_fmode+1], 0x80
         jne short .haveflag
 .binary:
         mov byte [bp-4], 0x80
@@ -1509,7 +1517,7 @@ OpenBody:
         je short .17
         or cl, 0x20
 .17:
-        db 0x3B, 0x1E, 0x5D, 0x85               ; insn: cmp bx, word [_nfile]
+        cmp bx, word [_nfile]
         jb short .18
         mov ah, 0x3e
         int 0x21
@@ -1518,7 +1526,7 @@ OpenBody:
 .18:
         or cl, byte [bp-4]
         or cl, 1
-        mov byte [bx-0x7aa1], cl
+        mov byte [bx+_osfile], cl
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         db 0x8B, 0xE5                           ; insn: mov sp, bp
         pop bp
@@ -1527,7 +1535,7 @@ OpenBody:
         db 0x32, 0xC9                           ; insn: xor cl, cl
         jmp short .17
 .20:
-        mov ax, word [0x8552]
+        mov ax, word [_umaskval]
         not ax
         db 0x23, 0xC1                           ; insn: and ax, cx
         db 0x33, 0xC9                           ; insn: xor cx, cx
@@ -1547,7 +1555,7 @@ _read:
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         sub sp, 2
         mov bx, word [bp+6]
-        db 0x3B, 0x1E, 0x5D, 0x85               ; insn: cmp bx, word [_nfile]
+        cmp bx, word [_nfile]
         jb short .go
         stc
         mov ax, 0x900
@@ -1556,7 +1564,7 @@ _read:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         mov cx, word [bp+0xa]
         jcxz .8
-        test byte [bx-0x7aa1], 2
+        test byte [bx+_osfile], 2
         jne short .8
         cmp word [DebugSignature], 0xd6d6
         jne short .1
@@ -1570,9 +1578,9 @@ _read:
         mov ah, 9
         jmp short .8
 .2:
-        test byte [bx-0x7aa1], 0x80
+        test byte [bx+_osfile], 0x80
         je short .8
-        and byte [bx-0x7aa1], 0xfb
+        and byte [bx+_osfile], 0xfb
         push si
         push di
         cld
@@ -1583,14 +1591,14 @@ _read:
         mov ah, 0xd
         cmp byte [si], 0xa
         jne short .3
-        or byte [bx-0x7aa1], 4
+        or byte [bx+_osfile], 4
 .3:
         lodsb
         db 0x3A, 0xC4                           ; insn: cmp al, ah
         je short .9
         cmp al, 0x1a
         jne short .4
-        or byte [bx-0x7aa1], 2
+        or byte [bx+_osfile], 2
         jmp short .6
 .4:
         mov byte [di], al
@@ -1612,7 +1620,7 @@ _read:
         je short .5
         jmp short .4
 .10:
-        test byte [bx-0x7aa1], 0x40
+        test byte [bx+_osfile], 0x40
         je short .12
         mov ax, 0x4400
         int 0x21
@@ -1667,7 +1675,7 @@ _write:
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         sub sp, 8
         mov bx, word [bp+6]
-        db 0x3B, 0x1E, 0x5D, 0x85               ; insn: cmp bx, word [_nfile]
+        cmp bx, word [_nfile]
         jb short .go
         mov ax, 0x900
         stc
@@ -1678,7 +1686,7 @@ _write:
         jne short .2
         call word [DebugWriteHook]
 .2:
-        test byte [bx-0x7aa1], 0x20
+        test byte [bx+_osfile], 0x20
         je short .3
         mov ax, 0x4202
         db 0x33, 0xC9                           ; insn: xor cx, cx
@@ -1686,7 +1694,7 @@ _write:
         int 0x21
         jb short .1
 .3:
-        test byte [bx-0x7aa1], 0x80
+        test byte [bx+_osfile], 0x80
         je short .13
         mov dx, word [bp+8]
         push ds
@@ -1788,7 +1796,7 @@ _write:
         mov ah, 9
         jmp short .21
 .18:
-        test byte [bx-0x7aa1], 0x40
+        test byte [bx+_osfile], 0x40
         je short .19
         mov bx, word [bp+8]
         cmp byte [bx], 0x1a
@@ -1824,7 +1832,7 @@ _write:
 .25:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jne short .22
-        test byte [bx-0x7aa1], 0x40
+        test byte [bx+_osfile], 0x40
         je short .26
         db 0x8B, 0xDA                           ; insn: mov bx, dx
         cmp byte [bx], 0x1a
@@ -2002,29 +2010,29 @@ WriteStderr:
         add sp, 6
         db 0x8B, 0xC7                           ; insn: mov ax, di
         push ax
-        mov ax, 0x868e
+        mov ax, str_ColonSpace
         push ax
         db 0x8B, 0xC7                           ; insn: mov ax, di
         push ax
         db 0x9A, 0xEC, 0x0A, 0x00, 0x00         ; insn: call 0:_write
         add sp, 6
 .1:
-        db 0x83, 0x3E, 0x50, 0x85, 0x00         ; insn: cmp word [errno], 0
+        cmp word [errno], 0
         jl short .2
-        db 0xA1, 0x50, 0x85                     ; insn: mov ax, word [errno]
-        cmp word [0x8a14], ax
+        mov ax, word [errno]
+        cmp word [SysNerr], ax
         jg short .3
 .2:
-        mov ax, word [0x8a14]
+        mov ax, word [SysNerr]
         jmp short .4
         db 144
 .3:
-        db 0xA1, 0x50, 0x85                     ; insn: mov ax, word [errno]
+        mov ax, word [errno]
 .4:
         mov word [bp-2], ax
         mov bx, word [bp-2]
         shl bx, 1
-        mov si, word [bx-0x7638]
+        mov si, word [bx+SysErrList]
         push si
         db 0x9A, 0x9E, 0x0C, 0x00, 0x00         ; insn: call 0:_strlen
         db 0x03, 0xE7                           ; insn: add sp, di
@@ -2035,7 +2043,7 @@ WriteStderr:
         add sp, 6
         mov ax, 1
         push ax
-        mov ax, 0x8691
+        mov ax, str_Newline
         push ax
         push di
         db 0x9A, 0xEC, 0x0A, 0x00, 0x00         ; insn: call 0:_write
@@ -2060,7 +2068,7 @@ _sprintf:
         mov byte [StrBufFlag], 0x42
         mov ax, word [bp+6]
         mov word [StrBufBase], ax
-        mov si, 0x9096
+        mov si, StrBufPtr
         mov word [si], ax
         mov word [StrBufCnt], 0x7fff
         lea ax, [bp+0xa]
@@ -2229,7 +2237,7 @@ atexit:
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         db 0x99                                 ; insn: cdq
         mov bx, word [AtexitPtr]
-        cmp bx, 0x9138
+        cmp bx, AtexitTableEnd
         je short .2
         add word [AtexitPtr], 4
         mov dx, word [bp+8]
@@ -2706,7 +2714,7 @@ _dos_getdiskfree:
         int 0x21
         db 0x3D, 0xFF, 0xFF                     ; insn: cmp ax, 0xffff
         jne short .fill
-        db 0xC7, 0x06, 0x50, 0x85, 0x16, 0x00   ; insn: mov word [errno], 0x16
+        mov word [errno], 0x16
         jmp short .done
 .fill:
         push si
@@ -3063,10 +3071,10 @@ _fmemcmp:
         db 0
 
 ;-----------------------------------------------------------------------------
-; _fmemchr                                                      0000:135C  MSC
-; Far scan for a byte.
+; _fstrncmp                                                     0000:135C  MSC
+; Compares two far strings, at most n bytes, stopping at a null; returns <0, 0 or >0.
 ;-----------------------------------------------------------------------------
-_fmemchr:
+_fstrncmp:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -3453,10 +3461,11 @@ _fmemmove:
         retf
 
 ;-----------------------------------------------------------------------------
-; EmulatedFloat                                                 0000:15C4  MSC
-; floating-point work done with the emulator interrupts.
+; __aFftol                                                      0000:15C4  MSC
+; Convert the value on the coprocessor stack to a long in DX:AX, truncating (the rounding
+; control is set to chop for the fistp, then restored).
 ;-----------------------------------------------------------------------------
-EmulatedFloat:
+__aFftol:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         sub sp, 0xc
@@ -3465,20 +3474,18 @@ EmulatedFloat:
         push si
         push di
         int 0x35
-.1:
-        jle short .1
-        int 0x3d
+        db 0x7E, 0xFE                           ; emulated fnstcw [bp-0x2]
+        int 0x3d                                ; emulated fwait
         mov ax, word [bp-2]
         or ah, 0xc
         mov word [bp-4], ax
         int 0x35
-        outsb
-        cld
+        db 0x6E, 0xFC                           ; emulated fldcw [bp-0x4]
         int 0x3b
-        jle short 0x15D9
+        db 0x7E, 0xF4                           ; emulated fistp qword [bp-0xc]
         int 0x35
-        outsb
-        dec byte [bp+di-0xbba]
+        db 0x6E, 0xFE                           ; emulated fldcw [bp-0x2]
+        mov ax, [bp-0xc]
         mov dx, word [bp-0xa]
         pop di
         pop si
@@ -3498,8 +3505,8 @@ CopyTemplate:
         push di
         mov ax, ds
         mov es, ax
-        mov si, 0x869a
-        mov di, 0x8876
+        mov si, FltCvtInit
+        mov di, FltCvtFn
         mov cx, 0xc
         rep movsw
         pop di
@@ -3579,7 +3586,7 @@ __NMSG_TEXT:
         push ds
         pop es
         mov dx, word [bp+6]
-        mov si, 0x8d26
+        mov si, NmsgTable
 .next:
         lodsw
         db 0x3B, 0xC2                           ; insn: cmp ax, dx
@@ -3694,7 +3701,7 @@ DosRetErrno:
 ; store the DOS error in _doserrno and the C errno.
 ;-----------------------------------------------------------------------------
 DosMapErr:
-        db 0xA2, 0x5B, 0x85                     ; insn: mov byte [_doserrno], al
+        mov byte [_doserrno], al
         db 0x0A, 0xE4                           ; insn: or ah, ah
         jne short .high
         cmp byte [DosMajor], 3
@@ -3711,11 +3718,11 @@ DosMapErr:
 .1:
         mov al, 0x13
 .map:
-        mov bx, 0x86b6
+        mov bx, DosErrnoTable
         xlatb
 .2:
         db 0x98                                 ; insn: cwde
-        db 0xA3, 0x50, 0x85                     ; insn: mov word [errno], ax
+        mov word [errno], ax
         ret
 .high:
         db 0x8A, 0xC4                           ; insn: mov al, ah
@@ -3753,8 +3760,8 @@ _flsbuf:
         and al, 0xef
         mov byte [si+6], al
         db 0x8B, 0xFE                           ; insn: mov di, si
-        sub di, 0x86ca
-        add di, 0x876a
+        sub di, _iob
+        add di, StreamExtra
         db 0x33, 0xDB                           ; insn: xor bx, bx
         mov bl, byte [si+7]
         test al, 8
@@ -3763,14 +3770,14 @@ _flsbuf:
         jne short .3
         test byte [di], 1
         jne short .5
-        cmp si, 0x86d2
+        cmp si, _iob_stdout
         je short .2
-        cmp si, 0x86da
+        cmp si, _iob_stderr
         je short .2
-        cmp si, 0x86ea
+        cmp si, _iob_stdprn
         jne short .4
 .2:
-        test byte [bx-0x7aa1], 0x40
+        test byte [bx+_osfile], 0x40
         je short .4
 .3:
         mov cx, 1
@@ -3825,7 +3832,7 @@ _flsbuf:
         jmp short .9
 .8:
         db 0x33, 0xC0                           ; insn: xor ax, ax
-        test byte [bx-0x7aa1], 0x20
+        test byte [bx+_osfile], 0x20
         je short .6
         mov cx, 2
         push cx
@@ -3855,19 +3862,19 @@ _stbuf:
         push si
         push di
         mov si, word [bp+4]
-        mov bx, 0x880c
-        cmp si, 0x86d2
+        mov bx, StdoutBuf
+        cmp si, _iob_stdout
         je short .stdio
-        mov bx, 0x880e
-        cmp si, 0x86da
+        mov bx, StderrBuf
+        cmp si, _iob_stderr
         je short .stdio
-        mov bx, 0x8810
-        cmp si, 0x86ea
+        mov bx, StdprnBuf
+        cmp si, _iob_stdprn
         jne short .nobuf
 .stdio:
         db 0x8B, 0xFE                           ; insn: mov di, si
-        sub di, 0x86ca
-        add di, 0x876a
+        sub di, _iob
+        add di, StreamExtra
         test byte [si+6], 0xc
         jne short .nobuf
         test byte [di], 1
@@ -3888,7 +3895,7 @@ _stbuf:
         push bx
         mov ax, 0x200
         push ax
-        call 0:JmpFpConvert
+        call 0:_malloc
         pop bx
         pop bx
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -3914,13 +3921,13 @@ _ftbuf:
         push di
         mov si, word [bp+6]
         db 0x8B, 0xFE                           ; insn: mov di, si
-        sub di, 0x86ca
-        add di, 0x876a
+        sub di, _iob
+        add di, StreamExtra
         test byte [di], 0x10
         je short .out
         db 0x33, 0xDB                           ; insn: xor bx, bx
         mov bl, byte [si+7]
-        test byte [bx-0x7aa1], 0x40
+        test byte [bx+_osfile], 0x40
         je short .out
         push si
         push cs
@@ -3938,7 +3945,10 @@ _ftbuf:
         pop si
         pop bp
         ret
-        db 13,25,24,25,44,25,96,25,140,25,148,25,189,25,239,25
+OutputStates:                                   ; _output jumps through this by the class of the format
+                                                ; character
+        dw _output.widthdig, _output.reset, _output.flags, _output.widthstar
+        dw _output.prec0, _output.precstar, _output.sizech, _output.convert
 
 ;-----------------------------------------------------------------------------
 ; _output                                                       0000:18B6  MSC
@@ -3969,7 +3979,7 @@ _output:
         mov ax, word [bp-8]
         jmp near .90
 .2:
-        mov bx, 0x8812
+        mov bx, OutputClassTable
         sub al, 0x20
         cmp al, 0x58
         ja short .3
@@ -3989,7 +3999,7 @@ _output:
         db 0x98                                 ; insn: cwde
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        jmp word [cs:bx+0x18a6]
+        jmp word [cs:bx+OutputStates]
 .widthdig:
         mov dl, byte [bp-2]
         mov cx, 1
@@ -4154,8 +4164,8 @@ _output:
         jne short .27
         push ds
         pop es
-        mov di, 0x886b
-        mov cx, word [CflushCount]
+        mov di, str_Null
+        mov cx, word [NullStrLen]
         jmp near .62
 .27:
         push di
@@ -4688,7 +4698,7 @@ ScanFloat:
         mov al, byte [bx]
         db 0x98                                 ; insn: cwde
         db 0x8B, 0xD8                           ; insn: mov bx, ax
-        test byte [bx-0x7a73], 1
+        test byte [bx+CharTypes], 1
         je short .1
         lea ax, [bx+0x20]
         jmp short .2
@@ -4705,7 +4715,7 @@ ScanFloat:
         mov al, byte [bx]
         db 0x98                                 ; insn: cwde
         db 0x8B, 0xD8                           ; insn: mov bx, ax
-        test byte [bx-0x7a73], 4
+        test byte [bx+CharTypes], 4
         jne short .3
 .4:
         mov bx, word [bp+6]
@@ -4803,17 +4813,33 @@ FloatLoad:
         sub sp, 2
         mov bx, word [bp+6]
         int 0x39
-        pop es
+        db 0x07                                 ; emulated fld qword [bx]
         int 0x38
-        push ss
-        push ss
-        db 141,205,57,216,205,57,126,254,205,61,138,102,255,158,114,8
-        db 184,1,0,139,229,93,203,144,43,192,139,229,93,203
+        db 0x16                                 ; emulated fcom qword [FpZero]
+        dw FpZero
+        int 0x39
+        db 0xD8                                 ; emulated fstp st0
+        int 0x39
+        db 0x7E, 0xFE                           ; emulated fnstsw [bp-0x2]
+        int 0x3d                                ; emulated fwait
+        mov ah, [bp-0x1]
+        sahf
+        jc short .negative
+        mov ax, 1
+        db 0x8B, 0xE5                           ; insn: mov sp, bp
+        pop bp
+        retf
+        nop
+.negative:
+        db 0x2B, 0xC0                           ; insn: sub ax, ax
+        db 0x8B, 0xE5                           ; insn: mov sp, bp
+        pop bp
+        retf
 
 ;-----------------------------------------------------------------------------
 ; FormatFloat                                                   0000:1F26  MSC
 ; Floating-point conversion for printf and scanf: the first argument picks the job
-; (1, 2 or a string to read with SkipSpace), then the value goes through the emulator.
+; (1, 2 or a string to read with atof), then the value goes through the emulator.
 ;-----------------------------------------------------------------------------
 FormatFloat:
         push bp
@@ -4826,14 +4852,14 @@ FormatFloat:
         dec ax
         je short .1
         push word [bp+0xc]
-        db 0x9A, 0xF8, 0x27, 0x00, 0x00         ; insn: call 0:SkipSpace
+        db 0x9A, 0xF8, 0x27, 0x00, 0x00         ; insn: call 0:atof
         add sp, 2
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         int 0x39
-        pop es
+        db 0x07                                 ; emulated fld qword [bx]
         les bx, [bp+8]
         int 0x3c
-        fstp dword [bx]
+        db 0xD9, 0x1F                           ; emulated fstp dword [ds:bx]
         jmp short .2
         db 144
 .1:
@@ -4842,9 +4868,9 @@ FormatFloat:
         add sp, 2
         les bx, [bp+8]
         int 0x3c
-        db 0xDB, 0x3F                           ; insn: fstp xword [bx]
+        db 0xDB, 0x3F                           ; emulated fstp tword [ds:bx]
 .2:
-        int 0x3d
+        int 0x3d                                ; emulated fwait
         pop si
         pop di
         db 0x8B, 0xE5                           ; insn: mov sp, bp
@@ -4852,7 +4878,7 @@ FormatFloat:
         retf
 .3:
         push word [bp+0xc]
-        db 0x9A, 0xF8, 0x27, 0x00, 0x00         ; insn: call 0:SkipSpace
+        db 0x9A, 0xF8, 0x27, 0x00, 0x00         ; insn: call 0:atof
         add sp, 2
         db 0x8B, 0xF0                           ; insn: mov si, ax
         les di, [bp+8]
@@ -4951,7 +4977,7 @@ FloatBuf:
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov byte [si], 0x2e
 .12:
-        mov ax, 0x8a16
+        mov ax, str_E000
         push ax
         cmp byte [FloatMode], 1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
@@ -5343,23 +5369,23 @@ FormatLen:
 FpError:
         pop dx
         pop dx
-        mov dx, 0x45c9
+        mov dx, DGROUP
         mov ds, dx
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         sub ax, 0x81
-        mov word [0x8a40], ax
+        mov word [FpErrCode], ax
         call 0:__FF_MSGBANNER
-        mov bx, word [0x8a40]
+        mov bx, word [FpErrCode]
         shl bx, 1
-        mov cx, word [bx-0x75de]
-        mov bx, 0x8a3a
+        mov cx, word [bx+FpErrDigits]
+        mov bx, FpErrMsg
         mov word [bx+4], cx
         db 0x9A, 0x92, 0x29, 0x00, 0x00         ; insn: call 0:WriteCounted
         mov ax, 0xfd
         push ax
         call 0:__NMSG_WRITE
-        mov ax, word [0x8a40]
+        mov ax, word [FpErrCode]
         add ax, strict word 0x65
         push ax
         call 0:__NMSG_WRITE
@@ -5824,11 +5850,11 @@ ConvertFloat:
         mov si, word [bp+4]
         mov ax, 0x200
         push ax
-        db 0x9A, 0xF2, 0x27, 0x00, 0x00         ; insn: call 0:JmpFpConvert
+        db 0x9A, 0xF2, 0x27, 0x00, 0x00         ; insn: call 0:_malloc
         pop cx
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        sub bx, 0x86ca
-        add bx, 0x876a
+        sub bx, _iob
+        add bx, StreamExtra
         db 0x0B, 0xC0                           ; insn: or ax, ax
         je short .1
         or byte [si+6], 8
@@ -5875,8 +5901,8 @@ fflush:
         test cl, 8
         jne short .1
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        sub bx, 0x86ca
-        test byte [bx-0x7896], 1
+        sub bx, _iob
+        test byte [bx+StreamExtra], 1
         je short .2
 .1:
         mov ax, word [si]
@@ -5906,7 +5932,17 @@ fflush:
         db 0x8B, 0xE5                           ; insn: mov sp, bp
         pop bp
         retf
-        db 184,1,0,80,232,1,0,203
+
+;-----------------------------------------------------------------------------
+; _flushall                                                     0000:279E  MSC
+; C _flushall: flush every open stream. Far, no arguments. Returns the number of
+; streams flushed.
+;-----------------------------------------------------------------------------
+_flushall:
+        mov ax, 1
+        push ax
+        call FlushAll
+        retf
 
 ;-----------------------------------------------------------------------------
 ; FlushAll                                                      0000:27A6  MSC
@@ -5918,7 +5954,7 @@ FlushAll:
         sub sp, 2
         push di
         push si
-        mov si, 0x86ca
+        mov si, _iob
         db 0x2B, 0xFF                           ; insn: sub di, di
         mov word [bp-2], di
         jmp short .3
@@ -5955,20 +5991,19 @@ FlushAll:
         db 144
 
 ;-----------------------------------------------------------------------------
-; JmpFpConvert                                                  0000:27F2  MSC
-; Far jump to the floating-point convert routine that is still ahead in this
-; segment.
+; _malloc                                                       0000:27F2  MSC
+; C malloc: far jump to _nmalloc (the near heap of the medium model).
 ;-----------------------------------------------------------------------------
-JmpFpConvert:
-        jmp 0:FpConvert
+_malloc:
+        jmp 0:_nmalloc
         db 0
 
 ;-----------------------------------------------------------------------------
-; SkipSpace                                                     0000:27F8  MSC
-; Skip blanks, tabs and newlines at the start of a string. Argument: string.
-; Result in AX: the first other character.
+; atof                                                          0000:27F8  MSC
+; C atof: skip blanks (the space bit of CharTypes), convert the string with _fltin and
+; copy the double to FloatAccum. Argument: string. Returns the address of FloatAccum.
 ;-----------------------------------------------------------------------------
-SkipSpace:
+atof:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -5981,7 +6016,7 @@ SkipSpace:
         mov al, byte [si]
         db 0x98                                 ; insn: cwde
         db 0x8B, 0xD8                           ; insn: mov bx, ax
-        test byte [bx-0x7a73], 8
+        test byte [bx+CharTypes], 8
         jne short .1
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         push ax
@@ -5991,10 +6026,10 @@ SkipSpace:
         add sp, 2
         push ax
         push si
-        call 0:FpScale
+        call 0:_fltin
         add sp, 8
         db 0x8B, 0xD8                           ; insn: mov bx, ax
-        mov ax, 0x90a0
+        mov ax, FloatAccum
         push si
         db 0x8B, 0xF8                           ; insn: mov di, ax
         lea si, [bx+8]
@@ -6274,8 +6309,13 @@ WriteCounted:
         mov ah, 0x40
         int 0x21
         retf
-        db 0,205,204,204,204,204,204,204,204,251,63,205,204,204,204,204
-        db 204,204,204,204,204,251,63
+        db 0x00
+FpTenthA:                                       ; the constant 0.1 as a ten-byte real; not used by the EXE or
+                                                ; the overlays
+        db 0xCD, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xFB, 0x3F
+FpTenthB:                                       ; the constant 0.1 with sixteen extra low bits (12 bytes, the
+                                                ; TenByteMul format); HexConvert passes it to TenByteMul
+        db 0xCD, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xFB, 0x3F
 
 ;-----------------------------------------------------------------------------
 ; HexConvert                                                    0000:29C4  MSC
@@ -6317,19 +6357,19 @@ HexConvert:
         or ax, word [bp+0xe]
         mov ax, word [bp+0x10]
         jne short .3
-        mov si, 0x8a52
+        mov si, str_INF
         cmp ax, 0x8000
         je short .4
         cmp ax, 0xc000
         jne short .3
-        mov si, 0x8a58
+        mov si, str_IND
         cmp byte [ss:di+2], 0x2d
         je short .4
 .3:
-        mov si, 0x8a44
+        mov si, str_SNAN
         test ax, 0x4000
         je short .4
-        mov si, 0x8a4b
+        mov si, str_QNAN
 .4:
         mov word [ss:di], 1
         push ss
@@ -6374,7 +6414,7 @@ HexConvert:
         push di
         mov ax, 1
         push ax
-        call FpDecode
+        call ScalePow10
         pop di
 .7:
         cmp word [bp+0x12], 0x3fff
@@ -6383,10 +6423,10 @@ HexConvert:
         lea ax, [bp+8]
         push ss
         push ax
-        mov ax, 0x29b8
+        mov ax, FpTenthB                        ; far pointer CS:FpTenthB
         push cs
         push ax
-        call FpRound
+        call TenByteMul
         jmp short .7
 .8:
         mov bx, word [bp+4]
@@ -6536,16 +6576,16 @@ PackArgs:
         mov ax, ds
         mov es, ax
         lea si, [bp+6]
-        mov di, 0x8a66
+        mov di, FltValue
         db 0x36, 0xA5                           ; insn: movsw
         db 0x36, 0xA5                           ; insn: movsw
         db 0x36, 0xA5                           ; insn: movsw
         db 0x36, 0xA5                           ; insn: movsw
-        mov si, 0x8a66
+        mov si, FltValue
         push bp
-        call FpExec.6
+        call DoubleToDigits.6
         pop bp
-        mov di, 0x8a6e
+        mov di, FltDigits
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         lodsb
         db 0x98                                 ; insn: cwde
@@ -6553,12 +6593,12 @@ PackArgs:
         rep movsb
         xchg cx, ax
         stosb
-        mov di, 0x8a5e
+        mov di, FltResult
         db 0x32, 0xFF                           ; insn: xor bh, bh
         mov word [di], bx
         mov word [di+2], dx
         mov word [di+4], cx
-        mov word [di+6], 0x8a6e
+        mov word [di+6], FltDigits
         db 0x8B, 0xC7                           ; insn: mov ax, di
         pop di
         pop si
@@ -6568,7 +6608,7 @@ PackArgs:
 
 ;-----------------------------------------------------------------------------
 ; FloatStatus                                                   0000:2C18  MSC
-; Pack a double through FpPack and test it with the emulator; probably returns its
+; Pack a double through StrToTenByte and test it with the emulator; probably returns its
 ; class (zero, normal or infinite) for the conversion code.
 ;-----------------------------------------------------------------------------
 FloatStatus:
@@ -6585,18 +6625,25 @@ FloatStatus:
         push word [bp+6]
         mov cx, 1
         push cx
-        call FpPack
+        call StrToTenByte
         int 0x37
-        outsb
-        db 0xF6, 0x8B, 0xE5, 0x5D, 0xCB         ; insn: test byte [bp+di+0x5de5], -0x35
+        db 0x6E, 0xF6                           ; emulated fld tword [bp-0xa]
+        db 0x8B, 0xE5                           ; insn: mov sp,bp
+        pop bp
+        retf
         nop
 
-AdjustStack:
+;-----------------------------------------------------------------------------
+; _nfree                                                        0000:2C3C  MSC
+; C _nfree: mark the block free and move the rover of NearHeapDesc back to it when it
+; lies lower. Argument: block.
+;-----------------------------------------------------------------------------
+_nfree:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push si
         mov bx, word [bp+6]
-        mov si, 0x851c
+        mov si, NearHeapDesc
         cmp word [si+6], bx
         jae short .1
         dec bx
@@ -6611,14 +6658,15 @@ AdjustStack:
         pop bp
         retf
 
-; Floating-point convert and the emulator helpers.
+; The near heap allocator, then the floating-point conversions and their tables.
 
 
 ;-----------------------------------------------------------------------------
-; FpConvert                                                     0000:2C5D  MSC
-; turn a floating value into an integer, or zero when it is out of range.
+; _nmalloc                                                      0000:2C5D  MSC
+; C _nmalloc: round the size up to even, find a free block in NearHeapDesc with HeapSearch,
+; grow the heap with HeapGrow when none fits. Argument: size. Returns the block or zero.
 ;-----------------------------------------------------------------------------
-FpConvert:
+_nmalloc:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push si
@@ -6626,12 +6674,12 @@ FpConvert:
         mov cx, word [bp+6]
         cmp cx, -0x18
         ja short .zero
-        mov bx, 0x851c
-        call FpPush
+        mov bx, NearHeapDesc
+        call HeapSearch
         jae short .done
-        call FpPop
+        call HeapGrow
         jb short .zero
-        call FpPush
+        call HeapSearch
         jae short .done
 .zero:
         db 0x33, 0xC0                           ; insn: xor ax, ax
@@ -6642,21 +6690,19 @@ FpConvert:
         pop si
         pop bp
         retf
-        db 102,252,255,255,255,255,255,255,254
-        aas
-        int 0xcc
-        int3
-        int3
-        int3
-        int3
-        int3
-        int3
-        sti
-        aas
+FpAlmostOne:                                    ; ten-byte real just below 1.0; DoubleToDigits compares the
+                                                ; scaled value
+        db 0x66, 0xFC, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFE, 0x3F
+FpTenth:                                        ; the constant 0.1 as a ten-byte real; used by DoubleToDigits
+        db 0xCD, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xFB, 0x3F
 
-; FpExec: the emulator body. Interrupt 34h through 3Dh stand in for the coprocessor.
-FpExec:
-        mov si, 0x8a8e
+;-----------------------------------------------------------------------------
+; DoubleToDigits                                                0000:2C99  MSC
+; Turn a double (DS:SI, at entry .6) into up to sixteen digits in CvtDigits for printf, or a
+; fixed string for zero, NaN and infinity; the exponent is estimated with log10 2 (4D10h).
+;-----------------------------------------------------------------------------
+DoubleToDigits:
+        mov si, CvtDigitCount
         mov word [si], 0x3001
         db 0x33, 0xC0                           ; insn: xor ax, ax
         db 0x8B, 0xD0                           ; insn: mov dx, ax
@@ -6672,16 +6718,16 @@ FpExec:
         and cl, 0xf
         je short .3
 .2:
-        mov si, 0x8aa6
+        mov si, str_CvtQNAN
         test cl, 8
         jne short .5
-        mov si, 0x8a9f
+        mov si, str_CvtSNAN
         jmp short .5
 .3:
-        mov si, 0x8aad
+        mov si, str_CvtINF
         jmp short .5
 .4:
-        mov si, 0x8ab3
+        mov si, str_CvtIND
 .5:
         mov dx, 1
         pop es
@@ -6692,7 +6738,7 @@ FpExec:
         mov ax, ds
         mov es, ax
         cld
-        mov di, 0x8a82
+        mov di, CvtWork
         push di
         mov cx, 4
         rep movsw
@@ -6705,7 +6751,7 @@ FpExec:
         or ax, word [si+4]
         db 0x8B, 0xD0                           ; insn: mov dx, ax
         or ax, word [si+6]
-        je short FpExec
+        je short DoubleToDigits
         db 0x0B, 0xC9                           ; insn: or cx, cx
         jns short .7
         mov bl, 0x2d
@@ -6716,18 +6762,25 @@ FpExec:
         je short .1
         push bx
         int 0x35
-        db 0x3E, 0xBB, 0x8A, 0xCD               ; insn: mov bx, 0xcd8a
-        cmp ax, 0xa050
-        mov bx, 0xa28a
-        mov bp, 0x588a
+        db 0x3E                                 ; emulated fnstcw [FpSavedCw]
+        dw FpSavedCw
+        int 0x3d                                ; emulated fwait
+        push ax
+        mov al, [FpSavedCw]
+        mov [FpRoundCw], al
+        pop ax
         int 0x35
-        db 0x2E, 0xBD, 0x8A, 0xCD               ; insn: mov bp, 0xcd8a
-        cmp word [si], ax
+        db 0x2E                                 ; emulated fldcw [FpRoundCw]
+        dw FpRoundCw
+        int 0x39
+        db 0x04                                 ; emulated fld qword [si]
         int 0x35
-        ror ch, 0x37
-        cmp al, 0xcd
-        cmp ax, 0xff33
-        mov si, 0x8a89
+        db 0xC0                                 ; emulated fld st0
+        int 0x37
+        db 0x3C                                 ; emulated fstp tword [si]
+        int 0x3d                                ; emulated fwait
+        db 0x33, 0xFF                           ; insn: xor di,di
+        mov si, CvtWork+7
         lodsb
         db 0x8A, 0xF8                           ; insn: mov bh, al
         lodsw
@@ -6747,33 +6800,36 @@ FpExec:
         sbb di, 0x1343
         push di
         neg di
-        mov si, 0x8a82
-        call 0x38dd
-        mov bx, 0x2c85
+        mov si, CvtWork
+        call ScalePow10Near
+        mov bx, FpAlmostOne
         pop di
         int 0x3c
-        wait
-        das
+        db 0x9B, 0x2F                           ; emulated fld tword [cs:bx]
         int 0x34
-        db 0xD9, 0xCD                           ; insn: fxch st(5)
-        cmp word [0x8ab9], di
-        int 0x3d
+        db 0xD9                                 ; emulated fcomp st1
+        int 0x39
+        db 0x3E                                 ; emulated fnstsw [FpStatusWord]
+        dw FpStatusWord
+        int 0x3d                                ; emulated fwait
         test byte [FpStatusByte], 0x41
         je short .8
         inc di
-        mov bx, 0x2c8f
+        mov bx, FpTenth
         int 0x3c
-        wait
-        das
+        db 0x9B, 0x2F                           ; emulated fld tword [cs:bx]
         int 0x3a
-        leave
+        db 0xC9                                 ; emulated fmulp st1
 .8:
         push di
         int 0x37
-        cmp al, 0xcd
-        xor ax, 0xbb2e
-        db 0x8A, 0xCD                           ; insn: mov cl, ch
-        cmp ax, 0x97ad
+        db 0x3C                                 ; emulated fstp tword [si]
+        int 0x35
+        db 0x2E                                 ; emulated fldcw [FpSavedCw]
+        dw FpSavedCw
+        int 0x3d                                ; emulated fwait
+        lodsw
+        xchg ax, di
         lodsw
         xchg bp, ax
         lodsw
@@ -6799,7 +6855,7 @@ FpExec:
         db 0x13, 0xE9                           ; insn: adc bp, cx
         db 0x13, 0xD1                           ; insn: adc dx, cx
         db 0x13, 0xD9                           ; insn: adc bx, cx
-        mov di, 0x8a8f
+        mov di, CvtDigits
         mov cx, 0x10
 .11:
         db 0x32, 0xC0                           ; insn: xor al, al
@@ -6849,113 +6905,112 @@ FpExec:
         repe scasb
         cld
         add cx, 0x12
-        mov si, 0x8a8e
+        mov si, CvtDigitCount
         mov byte [si], cl
         mov ax, 1
         pop dx
         pop bx
         pop es
         ret
-        add byte [bx+si], al
-        add byte [bx+si], al
-        add byte [bx+si], al
-        add byte [bx+si], al
-        add byte [bx+si+0x4002], ah
-        add byte [bx+si], al
-        add byte [bx+si], al
-        add byte [bx+si], al
-        add byte [bx+si], al
-        add al, cl
-        add ax, strict word 0x40
-        add byte [bx+si], al
-        add byte [bx+si], al
-        add byte [bx+si], al
-        add byte [bx+si], al
-        cli
-        db 0x08, 0x40, 0x00                     ; insn: or byte [bx+si], al
-        add byte [bx+si], al
-        add byte [bx+si], al
-        add byte [bx+si], al
-        add byte [bx+si-0x64], al
-        or al, 0x40
-        db 0,0,0,0,0,0,0,0,80,195,15
-        inc ax
-        db 0,0,0,0,0,0,0,0,36,244,18,64,0,0,0,0
-        db 0,0,0,128,150,152,22,64,0,0,0,0,0,0,0,32
-        db 188,190,25,64,0,0,0,0,0,4,191,201,27,142,52,64
-        db 0,0,0,161,237,204,206,27,194,211,78,64,32,240,158,181
-        db 112,43,168,173,197,157,105,64,208,93,253,37,229,26,142,79
-        db 25,235,131,64,113,150,215,149,67,14,5,141,41,175,158,64
-        db 249,191,160,68,237,129,18,143,129,130,185,64,191,60,213,166
-        db 207,255,73,31,120,194,211,64,111,198,224,140,233,128,201,71
-        db 186,147,168,65,188,133,107,85,39,57,141,247,112,224,124,66
-        db 188,221,142,222,249,157,251,235,126,170,81,67,161,230,118,227
-        db 204,242,41,47,132,129,38,68,40,16,23,170,248,174,16,227
-        db 197,196,250,68,235,167,212,243,247,235,225,74,122,149,207,69
-        db 101,204,199,145,14,166,174,160,25,227,163,70,13,101,23,12
-        db 117,129,134,117,118,201,72,77,88,66,228,167,147,57,59,53
-        db 184,178,237,83,77,167,229,93,61,197,93,59,139,158,146,90
-        db 255,93,166,240,161,32,192,84,165,140,55,97,209,253,139,90
-        db 139,216,37,93,137,249,219,103,170,149,248,243,39,191,162,200
-        db 93,221,128,110,76,201,155,151,32,138,2,82,96,196,37,117
-        db 205,204,205,204,204,204,204,204,204,204,251,63,113,61,10,215
-        db 163,112,61,10,215,163,248,63,90,100,59,223,79,141,151,110
-        db 18,131,245,63,195,211,44,101,25,226,88,23,183,209,241,63
-        db 208,15,35,132,71,27,71,172,197,167,238,63,64,166,182,105
-        db 108,175,5,189,55,134,235,63,51,61,188,66,122,229,213,148
-        db 191,214,231,63,194,253,253,206,97,132,17,119,204,171,228,63
-        db 47,76,91,225,77,196,190,148,149,230,201,63,146,196,83,59
-        db 117,68,205,20,190,154,175,63,222,103,186,148,57,69,173,30
-        db 177,207,148,63,36,35,198,226,188,186,59,49,97,139,122,63
-        db 97,85,89,193,126,177,83,124,18,187,95,63,215,238,47,141
-        db 6,190,146,133,21,251,68,63,36,63,165,233,57,165,39,234
-        db 127,168,42,63,125,172,161,228,188,100,124,70,208,221,85,62
-        db 99,123,6,204,35,84,119,131,255,145,129,61,145,250,58,25
-        db 122,99,37,67,49,192,172,60,33,137,209,56,130,71,151,184
-        db 0,253,215,59,220,136,88,8,27,177,232,227,134,166,3,59
-        db 198,132,69,66,7,182,153,117,55,219,46,58,51,113,28,210
-        db 35,219,50,238,73,144,90,57,166,135,190,192,87,218,165,130
-        db 166,162,181,50,226,104,178,17,167,82,159,68,89,183,16,44
-        db 37,73,228,45,54,52,79,83,174,206,107,37,143,89,4,164
-        db 192,222,194,125,251,232,198,30,158,231,136,90,87,145,60,191
-        db 80,131,34,24,78,75,101,98,253,131,143,175,6,148,125,17
-        db 228,45,222,159,206,210,200,4,221,166,216,10
+
+; Powers of ten for ScalePow10, twelve bytes each: sixteen extra low bits, then a ten-byte real.
+; Seven entries per octal digit of the exponent: 10^(1..7), 10^(8..56 by 8), 10^(64..448 by 64),
+; 10^(512..3584 by 512), then 10^4096. Pow10Neg holds the same powers of 0.1.
+Pow10Table:                                     ; positive powers of ten, 29 entries
+        db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xA0, 0x02, 0x40 ; 1e+1
+        db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xC8, 0x05, 0x40 ; 1e+2
+        db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFA, 0x08, 0x40 ; 1e+3
+        db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x9C, 0x0C, 0x40 ; 1e+4
+        db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x50, 0xC3, 0x0F, 0x40 ; 1e+5
+        db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x24, 0xF4, 0x12, 0x40 ; 1e+6
+        db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x96, 0x98, 0x16, 0x40 ; 1e+7
+        db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20, 0xBC, 0xBE, 0x19, 0x40 ; 1e+8
+        db 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0xBF, 0xC9, 0x1B, 0x8E, 0x34, 0x40 ; 1e+16
+        db 0x00, 0x00, 0x00, 0xA1, 0xED, 0xCC, 0xCE, 0x1B, 0xC2, 0xD3, 0x4E, 0x40 ; 1e+24
+        db 0x20, 0xF0, 0x9E, 0xB5, 0x70, 0x2B, 0xA8, 0xAD, 0xC5, 0x9D, 0x69, 0x40 ; 1e+32
+        db 0xD0, 0x5D, 0xFD, 0x25, 0xE5, 0x1A, 0x8E, 0x4F, 0x19, 0xEB, 0x83, 0x40 ; 1e+40
+        db 0x71, 0x96, 0xD7, 0x95, 0x43, 0x0E, 0x05, 0x8D, 0x29, 0xAF, 0x9E, 0x40 ; 1e+48
+        db 0xF9, 0xBF, 0xA0, 0x44, 0xED, 0x81, 0x12, 0x8F, 0x81, 0x82, 0xB9, 0x40 ; 1e+56
+        db 0xBF, 0x3C, 0xD5, 0xA6, 0xCF, 0xFF, 0x49, 0x1F, 0x78, 0xC2, 0xD3, 0x40 ; 1e+64
+        db 0x6F, 0xC6, 0xE0, 0x8C, 0xE9, 0x80, 0xC9, 0x47, 0xBA, 0x93, 0xA8, 0x41 ; 1e+128
+        db 0xBC, 0x85, 0x6B, 0x55, 0x27, 0x39, 0x8D, 0xF7, 0x70, 0xE0, 0x7C, 0x42 ; 1e+192
+        db 0xBC, 0xDD, 0x8E, 0xDE, 0xF9, 0x9D, 0xFB, 0xEB, 0x7E, 0xAA, 0x51, 0x43 ; 1e+256
+        db 0xA1, 0xE6, 0x76, 0xE3, 0xCC, 0xF2, 0x29, 0x2F, 0x84, 0x81, 0x26, 0x44 ; 1e+320
+        db 0x28, 0x10, 0x17, 0xAA, 0xF8, 0xAE, 0x10, 0xE3, 0xC5, 0xC4, 0xFA, 0x44 ; 1e+384
+        db 0xEB, 0xA7, 0xD4, 0xF3, 0xF7, 0xEB, 0xE1, 0x4A, 0x7A, 0x95, 0xCF, 0x45 ; 1e+448
+        db 0x65, 0xCC, 0xC7, 0x91, 0x0E, 0xA6, 0xAE, 0xA0, 0x19, 0xE3, 0xA3, 0x46 ; 1e+512
+        db 0x0D, 0x65, 0x17, 0x0C, 0x75, 0x81, 0x86, 0x75, 0x76, 0xC9, 0x48, 0x4D ; 1e+1024
+        db 0x58, 0x42, 0xE4, 0xA7, 0x93, 0x39, 0x3B, 0x35, 0xB8, 0xB2, 0xED, 0x53 ; 1e+1536
+        db 0x4D, 0xA7, 0xE5, 0x5D, 0x3D, 0xC5, 0x5D, 0x3B, 0x8B, 0x9E, 0x92, 0x5A ; 1e+2048
+        db 0xFF, 0x5D, 0xA6, 0xF0, 0xA1, 0x20, 0xC0, 0x54, 0xA5, 0x8C, 0x37, 0x61 ; 1e+2560
+        db 0xD1, 0xFD, 0x8B, 0x5A, 0x8B, 0xD8, 0x25, 0x5D, 0x89, 0xF9, 0xDB, 0x67 ; 1e+3072
+        db 0xAA, 0x95, 0xF8, 0xF3, 0x27, 0xBF, 0xA2, 0xC8, 0x5D, 0xDD, 0x80, 0x6E ; 1e+3584
+        db 0x4C, 0xC9, 0x9B, 0x97, 0x20, 0x8A, 0x02, 0x52, 0x60, 0xC4, 0x25, 0x75 ; 1e+4096
+Pow10Neg:                                       ; negative powers of ten, 29 entries
+        db 0xCD, 0xCC, 0xCD, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xFB, 0x3F ; 1e-1
+        db 0x71, 0x3D, 0x0A, 0xD7, 0xA3, 0x70, 0x3D, 0x0A, 0xD7, 0xA3, 0xF8, 0x3F ; 1e-2
+        db 0x5A, 0x64, 0x3B, 0xDF, 0x4F, 0x8D, 0x97, 0x6E, 0x12, 0x83, 0xF5, 0x3F ; 1e-3
+        db 0xC3, 0xD3, 0x2C, 0x65, 0x19, 0xE2, 0x58, 0x17, 0xB7, 0xD1, 0xF1, 0x3F ; 1e-4
+        db 0xD0, 0x0F, 0x23, 0x84, 0x47, 0x1B, 0x47, 0xAC, 0xC5, 0xA7, 0xEE, 0x3F ; 1e-5
+        db 0x40, 0xA6, 0xB6, 0x69, 0x6C, 0xAF, 0x05, 0xBD, 0x37, 0x86, 0xEB, 0x3F ; 1e-6
+        db 0x33, 0x3D, 0xBC, 0x42, 0x7A, 0xE5, 0xD5, 0x94, 0xBF, 0xD6, 0xE7, 0x3F ; 1e-7
+        db 0xC2, 0xFD, 0xFD, 0xCE, 0x61, 0x84, 0x11, 0x77, 0xCC, 0xAB, 0xE4, 0x3F ; 1e-8
+        db 0x2F, 0x4C, 0x5B, 0xE1, 0x4D, 0xC4, 0xBE, 0x94, 0x95, 0xE6, 0xC9, 0x3F ; 1e-16
+        db 0x92, 0xC4, 0x53, 0x3B, 0x75, 0x44, 0xCD, 0x14, 0xBE, 0x9A, 0xAF, 0x3F ; 1e-24
+        db 0xDE, 0x67, 0xBA, 0x94, 0x39, 0x45, 0xAD, 0x1E, 0xB1, 0xCF, 0x94, 0x3F ; 1e-32
+        db 0x24, 0x23, 0xC6, 0xE2, 0xBC, 0xBA, 0x3B, 0x31, 0x61, 0x8B, 0x7A, 0x3F ; 1e-40
+        db 0x61, 0x55, 0x59, 0xC1, 0x7E, 0xB1, 0x53, 0x7C, 0x12, 0xBB, 0x5F, 0x3F ; 1e-48
+        db 0xD7, 0xEE, 0x2F, 0x8D, 0x06, 0xBE, 0x92, 0x85, 0x15, 0xFB, 0x44, 0x3F ; 1e-56
+        db 0x24, 0x3F, 0xA5, 0xE9, 0x39, 0xA5, 0x27, 0xEA, 0x7F, 0xA8, 0x2A, 0x3F ; 1e-64
+        db 0x7D, 0xAC, 0xA1, 0xE4, 0xBC, 0x64, 0x7C, 0x46, 0xD0, 0xDD, 0x55, 0x3E ; 1e-128
+        db 0x63, 0x7B, 0x06, 0xCC, 0x23, 0x54, 0x77, 0x83, 0xFF, 0x91, 0x81, 0x3D ; 1e-192
+        db 0x91, 0xFA, 0x3A, 0x19, 0x7A, 0x63, 0x25, 0x43, 0x31, 0xC0, 0xAC, 0x3C ; 1e-256
+        db 0x21, 0x89, 0xD1, 0x38, 0x82, 0x47, 0x97, 0xB8, 0x00, 0xFD, 0xD7, 0x3B ; 1e-320
+        db 0xDC, 0x88, 0x58, 0x08, 0x1B, 0xB1, 0xE8, 0xE3, 0x86, 0xA6, 0x03, 0x3B ; 1e-384
+        db 0xC6, 0x84, 0x45, 0x42, 0x07, 0xB6, 0x99, 0x75, 0x37, 0xDB, 0x2E, 0x3A ; 1e-448
+        db 0x33, 0x71, 0x1C, 0xD2, 0x23, 0xDB, 0x32, 0xEE, 0x49, 0x90, 0x5A, 0x39 ; 1e-512
+        db 0xA6, 0x87, 0xBE, 0xC0, 0x57, 0xDA, 0xA5, 0x82, 0xA6, 0xA2, 0xB5, 0x32 ; 1e-1024
+        db 0xE2, 0x68, 0xB2, 0x11, 0xA7, 0x52, 0x9F, 0x44, 0x59, 0xB7, 0x10, 0x2C ; 1e-1536
+        db 0x25, 0x49, 0xE4, 0x2D, 0x36, 0x34, 0x4F, 0x53, 0xAE, 0xCE, 0x6B, 0x25 ; 1e-2048
+        db 0x8F, 0x59, 0x04, 0xA4, 0xC0, 0xDE, 0xC2, 0x7D, 0xFB, 0xE8, 0xC6, 0x1E ; 1e-2560
+        db 0x9E, 0xE7, 0x88, 0x5A, 0x57, 0x91, 0x3C, 0xBF, 0x50, 0x83, 0x22, 0x18 ; 1e-3072
+        db 0x4E, 0x4B, 0x65, 0x62, 0xFD, 0x83, 0x8F, 0xAF, 0x06, 0x94, 0x7D, 0x11 ; 1e-3584
+        db 0xE4, 0x2D, 0xDE, 0x9F, 0xCE, 0xD2, 0xC8, 0x04, 0xDD, 0xA6, 0xD8, 0x0A ; 1e-4096
 
 ;-----------------------------------------------------------------------------
-; FpDecode                                                      0000:30D0  MSC
-; Emulator helper reached after the first constant table.
+; ScalePow10                                                    0000:30D0  MSC
+; Multiply a ten-byte real by 10 to a signed power, an octal digit at a time, from Pow10Table
+; or Pow10Neg. Arguments: power, mode (0: emulator, else TenByteMul), far pointer to the value.
 ;-----------------------------------------------------------------------------
-FpDecode:
+ScalePow10:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         sub sp, 6
         push si
         push di
         mov di, word [bp+6]
-        mov bx, 0x2db8
+        mov bx, Pow10Table - 8*12               ; one group before the table; the loop adds 7*12 first
         db 0x0B, 0xFF                           ; insn: or di, di
         je short .7
         jns short .1
-        mov bx, 0x2f14
+        mov bx, Pow10Neg - 8*12                 ; negative exponent: powers of 0.1
         neg di
 .1:
-        mov word [bp-6], 0x316e
+        mov word [bp-6], .soft                  ; multiply in software through TenByteMul
         cmp word [bp+4], 0
         jne short .3
-        mov word [bp-6], 0x3164
+        mov word [bp-6], .fpu                   ; multiply on the (emulated) coprocessor
         int 0x35
-.2:
-        jle short .2
-        int 0x3d
+        db 0x7E, 0xFE                           ; emulated fnstcw [bp-0x2]
+        int 0x3d                                ; emulated fwait
         mov ax, word [bp-2]
         db 0x0D, 0x38, 0x00                     ; insn: or ax, 0x38
         mov word [bp-4], ax
         int 0x35
-        outsb
-        cld
+        db 0x6E, 0xFC                           ; emulated fldcw [bp-0x4]
         les si, [bp+8]
         int 0x3c
-        db 0xDB, 0x6C, 0x02                     ; insn: fld xword [si+2]
+        db 0xDB, 0x6C, 0x02                     ; emulated fld tword [ds:si+0x2]
 .3:
         push di
 .4:
@@ -6986,11 +7041,12 @@ FpDecode:
         cmp word [bp+4], 0
         jne short .7
         int 0x37
-        loop 0x3117
-        xor ax, 0xfe6e
+        db 0xE2                                 ; emulated fnclex
+        int 0x35
+        db 0x6E, 0xFE                           ; emulated fldcw [bp-0x2]
         les si, [bp+8]
         int 0x3c
-        db 0xDB, 0x7C, 0x02                     ; insn: fstp xword [si+2]
+        db 0xDB, 0x7C, 0x02                     ; emulated fstp tword [ds:si+0x2]
         mov word [es:si], 0
         int 0x3d
 .7:
@@ -6999,12 +7055,13 @@ FpDecode:
         db 0x8B, 0xE5                           ; insn: mov sp, bp
         pop bp
         ret 8
+.fpu:
         int 0x3c
-        wait
-        outsw
-        db 0x02, 0xCD                           ; insn: add cl, ch
-        db 0x3A, 0xC9                           ; insn: cmp cl, cl
+        db 0x9B, 0x6F, 0x02                     ; emulated fld tword [cs:bx+0x2]
+        int 0x3a
+        db 0xC9                                 ; emulated fmulp st1
         jmp short .5
+.soft:
         push word [cs:bx+0xa]
         push word [cs:bx+8]
         push word [cs:bx+6]
@@ -7020,19 +7077,20 @@ FpDecode:
         push word [bp+8]
         push ss
         push ax
-        call FpRound
+        call TenByteMul
         add sp, 0xc
         jmp short .5
 .8:
-        jmp near FpRound.14
+        jmp near TenByteMul.14
 .9:
-        jmp near FpRound.13
+        jmp near TenByteMul.13
 
 ;-----------------------------------------------------------------------------
-; FpRound                                                       0000:31A5  MSC
-; Emulator helper.
+; TenByteMul                                                    0000:31A5  MSC
+; Multiply two ten-byte reals in software (sign xor, exponent add, 64-bit mantissa product,
+; rounding). Arguments: far pointer to the result and operand, far pointer to the multiplier.
 ;-----------------------------------------------------------------------------
-FpRound:
+TenByteMul:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         sub sp, 0x12
@@ -7055,16 +7113,16 @@ FpRound:
         mov dx, 0x7fff
         db 0x23, 0xC2                           ; insn: and ax, dx
         db 0x3B, 0xC2                           ; insn: cmp ax, dx
-        je short FpDecode.8
+        je short ScalePow10.8
         db 0x23, 0xDA                           ; insn: and bx, dx
         db 0x3B, 0xDA                           ; insn: cmp bx, dx
-        je short FpDecode.8
+        je short ScalePow10.8
         db 0x8B, 0xD0                           ; insn: mov dx, ax
         db 0x03, 0xD3                           ; insn: add dx, bx
         cmp dx, 0xbffd
-        ja short FpDecode.8
+        ja short ScalePow10.8
         cmp dx, 0x3fbf
-        jbe short FpDecode.9
+        jbe short ScalePow10.9
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jne short .1
         inc dx
@@ -7073,7 +7131,7 @@ FpRound:
         or ax, word [si+4]
         or ax, word [si+6]
         or ax, word [si+8]
-        je short FpDecode.9
+        je short ScalePow10.9
 .1:
         db 0x0B, 0xDB                           ; insn: or bx, bx
         jne short .2
@@ -7083,7 +7141,7 @@ FpRound:
         or ax, word [es:di+4]
         or ax, word [es:di+6]
         or ax, word [es:di+8]
-        je short FpDecode.9
+        je short ScalePow10.9
 .2:
         sub dx, 0x3ffe
         mov word [si+0xa], dx
@@ -7201,10 +7259,11 @@ FpRound:
         db 0
 
 ;-----------------------------------------------------------------------------
-; FpPack                                                        0000:332A  MSC
-; Emulator helper called while formatting a float.
+; StrToTenByte                                                  0000:332A  MSC
+; Parse a decimal string (blanks, sign, digits, point, exponent) into a ten-byte real.
+; Called by StrToDouble. Returns flags for overflow, underflow and no digits.
 ;-----------------------------------------------------------------------------
-FpPack:
+StrToTenByte:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         sub sp, 0x34
@@ -7440,7 +7499,7 @@ FpPack:
         push ax
         push word [bp-0x16]
         push word [bp+4]
-        call FpDecode
+        call ScalePow10
 .37:
         mov ax, word [bp-4]
         mov bx, word [bp-6]
@@ -7517,14 +7576,15 @@ FpPack:
         jmp short .41
 
 ;-----------------------------------------------------------------------------
-; FpScale                                                       0000:3592  MSC
-; Emulator helper that scales a value.
+; _fltin                                                        0000:3592  MSC
+; C _fltin: convert a string with StrToDouble into the FLT block at FltOutFlags (flags,
+; characters used, the double in FltInValue). Arguments: string, length. Returns the block.
 ;-----------------------------------------------------------------------------
-FpScale:
+_fltin:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         sub sp, 6
-        mov ax, 0x90b0
+        mov ax, FltInValue
         push ds
         push ax
         lea ax, [bp-6]
@@ -7534,7 +7594,7 @@ FpScale:
         push word [bp+6]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         push ax
-        call FpCall
+        call StrToDouble
         mov word [bp-2], ax
         mov ax, word [bp-6]
         sub ax, word [bp+6]
@@ -7552,13 +7612,18 @@ FpScale:
         je short .3
         or byte [FltOutFlags1], 1
 .3:
-        mov ax, 0x90a8
+        mov ax, FltOutFlags
         db 0x8B, 0xE5                           ; insn: mov sp, bp
         pop bp
         retf
         nop
 
-FpPush:
+;-----------------------------------------------------------------------------
+; HeapSearch                                                    0000:35E8  MSC
+; Find a free block of CX bytes (rounded to even) in the near heap descriptor at BX, merging
+; free neighbours; split it and return it in AX. Carry set when none fits. Near.
+;-----------------------------------------------------------------------------
+HeapSearch:
         inc cx
         and cl, 0xfe
         push bx
@@ -7635,10 +7700,11 @@ FpPush:
         ret
 
 ;-----------------------------------------------------------------------------
-; FpPop                                                         0000:3664  MSC
-; Called by FpConvert when the first push does not fit.
+; HeapGrow                                                      0000:3664  MSC
+; Grow the near heap through DOS (INT 21h AH=4Ah) when HeapSearch finds no block, then
+; link the new space in as a free block. Carry set on failure. Near.
 ;-----------------------------------------------------------------------------
-FpPop:
+HeapGrow:
         push cx
         push di
         test byte [bx+2], 1
@@ -7665,7 +7731,7 @@ FpPop:
 .2:
         push ss
         pop es
-        mov ax, word [es:0x8acc]
+        mov ax, word [es:AllocBlockSize]
         cmp ax, 0x2000
         je short .5
         mov dx, 0x8000
@@ -7785,34 +7851,93 @@ FpPop:
         db 0x8B, 0xF7                           ; insn: mov si, di
         pop di
         ret
-        db 0,0,0,0,0,0,0,160,2,64,0,0,0,0,0,0
-        db 0,200,5,64,0,0,0,0,0,0,0,250,8,64,0,0
-        db 0,0,0,0,64,156,12,64,0,0,0,0,0,0,80,195
-        db 15,64,0,0,0,0,0,0,36,244,18,64,0,0,0,0
-        db 0,128,150,152,22,64,0,0,0,0,0,32,188,190,25,64
-        db 0,0,0,4,191,201,27,142,52,64,0,161,237,204,206,27
-        db 194,211,78,64,158,181,112,43,168,173,197,157,105,64,253,37
-        db 229,26,142,79,25,235,131,64,215,149,67,14,5,141,41,175
-        db 158,64,160,68,237,129,18,143,129,130,185,64,213,166,207,255
-        db 73,31,120,194,211,64,224,140,233,128,201,71,186,147,168,65
-        db 107,85,39,57,141,247,112,224,124,66,142,222,249,157,251,235
-        db 126,170,81,67,118,227,204,242,41,47,132,129,38,68,205,204
-        db 204,204,204,204,204,204,251,63,10,215,163,112,61,10,215,163
-        db 248,63,59,223,79,141,151,110,18,131,245,63,44,101,25,226
-        db 88,23,183,209,241,63,35,132,71,27,71,172,197,167,238,63
-        db 182,105,108,175,5,189,55,134,235,63,188,66,122,229,213,148
-        db 191,214,231,63,253,206,97,132,17,119,204,171,228,63,91,225
-        db 77,196,190,148,149,230,201,63,83,59,117,68,205,20,190,154
-        db 175,63,186,148,57,69,173,30,177,207,148,63,198,226,188,186
-        db 59,49,97,139,122,63,89,193,126,177,83,124,18,187,95,63
-        db 47,141,6,190,146,133,21,251,68,63,165,233,57,165,39,234
-        db 127,168,42,63,161,228,188,100,124,70,208,221,85,62,6,204
-        db 35,84,119,131,255,145,129,61,58,25,122,99,37,67,49,192
-        db 172,60,209,56,130,71,151,184,0,253,215,59,187,17,55,11
-        db 255,121,5,187,207,55,247,223,87,95,129,195,70,0,11,255
-        db 116,39,139,199,209,239,209,239,209,239,87,37,7,0,116,233
-        db 83,208,224,138,224,208,224,208,224,2,196,50,228,3,216,205
-        db 60,155,47,205,58,201,91,235,208,195,0
+
+; Powers of ten for ScalePow10Near as ten-byte reals: 10^(1..8), 10^(16..64 by 8), 10^(128..320 by 64),
+; then the same powers of 0.1 in Pow10NearNeg.
+Pow10Near:                                      ; positive powers of ten, 19 entries
+        db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xA0, 0x02, 0x40 ; 1e+1
+        db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xC8, 0x05, 0x40 ; 1e+2
+        db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFA, 0x08, 0x40 ; 1e+3
+        db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x9C, 0x0C, 0x40 ; 1e+4
+        db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x50, 0xC3, 0x0F, 0x40 ; 1e+5
+        db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x24, 0xF4, 0x12, 0x40 ; 1e+6
+        db 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x96, 0x98, 0x16, 0x40 ; 1e+7
+        db 0x00, 0x00, 0x00, 0x00, 0x00, 0x20, 0xBC, 0xBE, 0x19, 0x40 ; 1e+8
+        db 0x00, 0x00, 0x00, 0x04, 0xBF, 0xC9, 0x1B, 0x8E, 0x34, 0x40 ; 1e+16
+        db 0x00, 0xA1, 0xED, 0xCC, 0xCE, 0x1B, 0xC2, 0xD3, 0x4E, 0x40 ; 1e+24
+        db 0x9E, 0xB5, 0x70, 0x2B, 0xA8, 0xAD, 0xC5, 0x9D, 0x69, 0x40 ; 1e+32
+        db 0xFD, 0x25, 0xE5, 0x1A, 0x8E, 0x4F, 0x19, 0xEB, 0x83, 0x40 ; 1e+40
+        db 0xD7, 0x95, 0x43, 0x0E, 0x05, 0x8D, 0x29, 0xAF, 0x9E, 0x40 ; 1e+48
+        db 0xA0, 0x44, 0xED, 0x81, 0x12, 0x8F, 0x81, 0x82, 0xB9, 0x40 ; 1e+56
+        db 0xD5, 0xA6, 0xCF, 0xFF, 0x49, 0x1F, 0x78, 0xC2, 0xD3, 0x40 ; 1e+64
+        db 0xE0, 0x8C, 0xE9, 0x80, 0xC9, 0x47, 0xBA, 0x93, 0xA8, 0x41 ; 1e+128
+        db 0x6B, 0x55, 0x27, 0x39, 0x8D, 0xF7, 0x70, 0xE0, 0x7C, 0x42 ; 1e+192
+        db 0x8E, 0xDE, 0xF9, 0x9D, 0xFB, 0xEB, 0x7E, 0xAA, 0x51, 0x43 ; 1e+256
+        db 0x76, 0xE3, 0xCC, 0xF2, 0x29, 0x2F, 0x84, 0x81, 0x26, 0x44 ; 1e+320
+Pow10NearNeg:                                   ; negative powers of ten, 19 entries
+        db 0xCD, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xFB, 0x3F ; 1e-1
+        db 0x0A, 0xD7, 0xA3, 0x70, 0x3D, 0x0A, 0xD7, 0xA3, 0xF8, 0x3F ; 1e-2
+        db 0x3B, 0xDF, 0x4F, 0x8D, 0x97, 0x6E, 0x12, 0x83, 0xF5, 0x3F ; 1e-3
+        db 0x2C, 0x65, 0x19, 0xE2, 0x58, 0x17, 0xB7, 0xD1, 0xF1, 0x3F ; 1e-4
+        db 0x23, 0x84, 0x47, 0x1B, 0x47, 0xAC, 0xC5, 0xA7, 0xEE, 0x3F ; 1e-5
+        db 0xB6, 0x69, 0x6C, 0xAF, 0x05, 0xBD, 0x37, 0x86, 0xEB, 0x3F ; 1e-6
+        db 0xBC, 0x42, 0x7A, 0xE5, 0xD5, 0x94, 0xBF, 0xD6, 0xE7, 0x3F ; 1e-7
+        db 0xFD, 0xCE, 0x61, 0x84, 0x11, 0x77, 0xCC, 0xAB, 0xE4, 0x3F ; 1e-8
+        db 0x5B, 0xE1, 0x4D, 0xC4, 0xBE, 0x94, 0x95, 0xE6, 0xC9, 0x3F ; 1e-16
+        db 0x53, 0x3B, 0x75, 0x44, 0xCD, 0x14, 0xBE, 0x9A, 0xAF, 0x3F ; 1e-24
+        db 0xBA, 0x94, 0x39, 0x45, 0xAD, 0x1E, 0xB1, 0xCF, 0x94, 0x3F ; 1e-32
+        db 0xC6, 0xE2, 0xBC, 0xBA, 0x3B, 0x31, 0x61, 0x8B, 0x7A, 0x3F ; 1e-40
+        db 0x59, 0xC1, 0x7E, 0xB1, 0x53, 0x7C, 0x12, 0xBB, 0x5F, 0x3F ; 1e-48
+        db 0x2F, 0x8D, 0x06, 0xBE, 0x92, 0x85, 0x15, 0xFB, 0x44, 0x3F ; 1e-56
+        db 0xA5, 0xE9, 0x39, 0xA5, 0x27, 0xEA, 0x7F, 0xA8, 0x2A, 0x3F ; 1e-64
+        db 0xA1, 0xE4, 0xBC, 0x64, 0x7C, 0x46, 0xD0, 0xDD, 0x55, 0x3E ; 1e-128
+        db 0x06, 0xCC, 0x23, 0x54, 0x77, 0x83, 0xFF, 0x91, 0x81, 0x3D ; 1e-192
+        db 0x3A, 0x19, 0x7A, 0x63, 0x25, 0x43, 0x31, 0xC0, 0xAC, 0x3C ; 1e-256
+        db 0xD1, 0x38, 0x82, 0x47, 0x97, 0xB8, 0x00, 0xFD, 0xD7, 0x3B ; 1e-320
+
+;-----------------------------------------------------------------------------
+; ScalePow10Near                                                0000:38DD  MSC
+; Multiply the value on the coprocessor stack by 10 to the power DI (signed), one octal
+; digit of the exponent at a time, with the ten-byte powers in Pow10Near. Near.
+;-----------------------------------------------------------------------------
+ScalePow10Near:
+        mov bx, Pow10Near - 8*10                ; one group before the table; the loop adds 7*10 first
+        db 0x0B, 0xFF                           ; insn: or di, di
+        jns short .1
+        mov bx, Pow10NearNeg - 8*10             ; negative exponent: powers of 0.1
+        neg di
+.1:
+        push di
+.next:
+        pop di
+        add bx, strict word 7*10                ; next octal digit
+        db 0x0B, 0xFF                           ; insn: or di, di
+        je short .done
+        db 0x8B, 0xC7                           ; insn: mov ax, di
+        shr di, 1
+        shr di, 1
+        shr di, 1
+        push di
+        db 0x25, 0x07, 0x00                     ; insn: and ax, 7
+        je short .next
+        push bx
+        shl al, 1
+        db 0x8A, 0xE0                           ; insn: mov ah, al
+        shl al, 1
+        shl al, 1
+        db 0x02, 0xC4                           ; insn: add al, ah
+        db 0x32, 0xE4                           ; insn: xor ah, ah
+        db 0x03, 0xD8                           ; insn: add bx, ax
+        int 0x3c
+        db 0x9B, 0x2F                           ; emulated fld tword [cs:bx]
+        int 0x3a
+        db 0xC9                                 ; emulated fmulp st1
+        pop bx
+        jmp short .next
+.done:
+        ret
+        db 0x00
+
 
 ;-----------------------------------------------------------------------------
 ; FpFormat                                                      0000:391C  MSC
@@ -7907,10 +8032,11 @@ FpFormat:
         db 0
 
 ;-----------------------------------------------------------------------------
-; FpCall                                                        0000:39D6  MSC
-; Called from FpScale.
+; StrToDouble                                                   0000:39D6  MSC
+; StrToTenByte, then round the ten-byte result to a double on the emulator with the
+; precision control saved and restored. Called from _fltin.
 ;-----------------------------------------------------------------------------
-FpCall:
+StrToDouble:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         sub sp, 0xe
@@ -7922,14 +8048,32 @@ FpCall:
         push word [bp+8]
         push word [bp+6]
         push word [bp+4]
-        call FpPack
+        call StrToTenByte
         int 0x35
-        jle short 0x39E9
+        db 0x7E, 0xF2                           ; emulated fnstcw [bp-0xe]
         int 0x37
-        outsb
-        db 0xF6, 0x8B, 0x5E, 0xF2, 0x83         ; insn: test byte [bp+di-0xda2], -0x7d
-        retf
-        db 24,137,94,244,205,55,226,196,94,14,205,53,110,244,205,60
-        db 221,31,205,57,126,244,205,55,226,205,53,110,242,11,192,117
-        db 23,139,94,244,51,192,247,195,24,0,116,12,184,2
-        add bh, dh
+        db 0x6E, 0xF6                           ; emulated fld tword [bp-0xa]
+        mov bx, [bp-0xe]
+        or bx, byte +0x18
+        mov [bp-0xc], bx
+        int 0x37
+        db 0xE2                                 ; emulated fnclex
+        les bx, [bp+0xe]
+        int 0x35
+        db 0x6E, 0xF4                           ; emulated fldcw [bp-0xc]
+        int 0x3c
+        db 0xDD, 0x1F                           ; emulated fstp qword [ds:bx]
+        int 0x39
+        db 0x7E, 0xF4                           ; emulated fnstsw [bp-0xc]
+        int 0x37
+        db 0xE2                                 ; emulated fnclex
+        int 0x35
+        db 0x6E, 0xF2                           ; emulated fldcw [bp-0xe]
+        db 0x0B, 0xC0                           ; insn: or ax,ax
+        jnz short SpillRet + 0x3A30
+        mov bx, [bp-0xc]
+        db 0x33, 0xC0                           ; insn: xor ax,ax
+        test bx, 0x18
+        jz short SpillRet + 0x3A30
+        mov ax, 0x2
+        db 0xf7

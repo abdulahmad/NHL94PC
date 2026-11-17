@@ -42,16 +42,16 @@ SportsDesk:
         call 0x1B35:ReplayIsEmptyThunk
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .1
-        mov es, [g_8B60]
+        mov es, [segMenuText14]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0x119e], ax
-        mov [es:0x119c], ax
+        mov [es:itemGoToReplay + 0xE], ax
+        mov [es:itemGoToReplay + 0xC], ax
         jmp short .2
         db 0x90
 .1:
-        mov es, [g_8B60]
-        mov word [es:0x119c], strict word DeskGoToReplay
-        mov word [es:0x119e], 0x2cf8
+        mov es, [segMenuText14]
+        mov word [es:itemGoToReplay + 0xC], strict word DeskGoToReplay
+        mov word [es:itemGoToReplay + 0xE], 0x2cf8
 .2:
         lea ax, [bp - 0x76]
         push ax
@@ -62,17 +62,17 @@ SportsDesk:
         call 0x03A3:MouseRead
         add sp, 0x6
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_4B02], ax
+        mov [framesync], ax
         mov [PadRepeatOn], ax
         cmp [bp + 0x6], ax
         jnz short .3
         call 0x1B35:FreePPVFilesThunk
-        push word [g_C25E]
-        push word [g_C25C]
+        push word [RinkEndArtSeg]
+        push word [RinkEndArt]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        push word [g_C25A]
-        push word [g_C258]
+        push word [ScoreboardArtSeg]
+        push word [ScoreboardArt]
         call 0x06E1:FindUnlink
         add sp, 0x4
         lea ax, [bp - 0x390]
@@ -106,18 +106,18 @@ SportsDesk:
         call 0x0FEF:UseOtherPage
         push word [bp + 0x6]
         push strict word str_Eadesk1d
-        push word 0xc242
+        push word DeskTitleText
         call 0x0000:_sprintf
         add sp, 0x6
         push word 0x3701
         push strict word str_Qpp
         push ds
-        push strict word g_C242
+        push strict word DeskTitleText
         call 0x0000:_fstrcat
         add sp, 0x8
         push strict word str_Desk_14
         push 0x0
-        push word 0xc242
+        push word DeskTitleText
         call 0x14B8:LoadPackedHeader
         add sp, 0x4
         mov [bp - 0x2a], ax
@@ -183,13 +183,13 @@ SportsDesk:
         cmp word [bp + 0x6], 0x2
         jnz short .7
         call 0x0EDC:LoadStudioSpeech
-        mov word [bp - 0x62], f_3448_12AE
+        mov word [bp - 0x62], SportsDeskMenu2
         mov word [bp - 0x60], 0x3448
         mov word [bp - 0x50], 0x3
         jmp short .8
         db 0x90
 .7:
-        mov word [bp - 0x62], f_3448_11FE
+        mov word [bp - 0x62], SportsDeskMenu1
         mov word [bp - 0x60], 0x3448
         mov word [bp - 0x50], 0x6
 .8:
@@ -216,9 +216,9 @@ SportsDesk:
         push word [bp - 0x62]
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
-        mov ax, [g_B092]
+        mov ax, [TextOverlayPtr]
         mov [bp - 0x42], ax
-        mov ax, [g_B094]
+        mov ax, [TextOverlaySeg]
         mov [bp - 0x6a], ax
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [bp - 0x78], ax
@@ -227,8 +227,8 @@ SportsDesk:
         mov [bp - 0x7e], ax
         mov [bp - 0x38], ax
         mov [bp - 0x3a], ax
-        mov [g_B092], ax
-        mov [g_B094], ax
+        mov [TextOverlayPtr], ax
+        mov [TextOverlaySeg], ax
         call 0x0000:VgaPageFlip
         push word 0x3860
         push word 0xb00
@@ -236,9 +236,9 @@ SportsDesk:
         call 0x0000:VgaCopyBytes
         add sp, 0x6
         mov ax, [bp - 0x42]
-        mov [g_B092], ax
+        mov [TextOverlayPtr], ax
         mov ax, [bp - 0x6a]
-        mov [g_B094], ax
+        mov [TextOverlaySeg], ax
         push 0x10
         lea ax, [bp - 0x390]
         push ss
@@ -283,9 +283,9 @@ SportsDesk:
         call 0x0F99:FlushInputEvents
         cmp word [bp + 0x6], 0x1
         jnz short .9
-        cmp word [g_01B8], 0x0
+        cmp word [ctl1team], 0x0
         jnl short .9
-        cmp word [g_01BA], 0x0
+        cmp word [ctl2team], 0x0
         jnl short .9
         mov word [bp - 0x70], 0x1
 .9:
@@ -294,17 +294,17 @@ SportsDesk:
         jz short .10
         jmp near .15
 .10:
-        mov es, [g_8B62]
-        cmp word [es:0x78c], 0x3f0
+        mov es, [segWorkBuffer2]
+        cmp word [es:AwayGlStats + 0x12], 0x3f0
         jl short .15
         mov ax, [hmscore]
         cmp [awscore], ax
         jnl short .11
-        mov ax, [g_29CA]
+        mov ax, [HomeTeamNum]
         jmp short .12
         db 0x90, 0x90
 .11:
-        mov ax, [g_29CC]
+        mov ax, [VisTeamNum]
 .12:
         mov [bp - 0x3e], ax
         mov word [bp - 0x74], 0x0
@@ -312,24 +312,24 @@ SportsDesk:
         jng short .13
         mov word [bp - 0x74], 0xffff
 .13:
-        mov es, [g_8B64]
-        mov bx, [g_29CA]
+        mov es, [segDbFiles9]
+        mov bx, [HomeTeamNum]
         shl bx, 1
-        mov ax, [es:bx + 0x128]
-        mov bx, [g_29CC]
+        mov ax, [es:bx + POSeedTable]
+        mov bx, [VisTeamNum]
         shl bx, 1
-        or ax, [es:bx + 0x128]
+        or ax, [es:bx + POSeedTable]
         mov [bp - 0x44], ax
         mov word [bp - 0x6c], 0x1
-        mov es, [g_8B62]
-        cmp word [es:0x78c], 0x428
+        mov es, [segWorkBuffer2]
+        cmp word [es:AwayGlStats + 0x12], 0x428
         jl short .14
         mov word [bp - 0x6c], 0x2
 .14:
         push word [bp - 0x74]
         push word [bp - 0x6c]
         push ax
-        mov ax, [es:0x78c]
+        mov ax, [es:AwayGlStats + 0x12]
         sub ax, 0x3f0
         mov cx, 0x7
         cwd
@@ -353,8 +353,8 @@ SportsDesk:
         call 0x1B35:LoadRinkEndArtThunk
         call 0x1B35:LoadScoreboardArtThunk
         mov ax, 0x1
-        mov [g_4B22], ax
-        mov [g_4B20], ax
+        mov [DeskRedrawPage2], ax
+        mov [DeskRedrawPage], ax
         call 0x0F99:FlushInputEvents
         call 0x0BFE:InputShutdown
         lea ax, [bp - 0x1e]
@@ -368,9 +368,9 @@ SportsDesk:
         call 0x03A3:MouseRange
         add sp, 0x8
         mov ax, [bp - 0x42]
-        mov [g_B092], ax
+        mov [TextOverlayPtr], ax
         mov ax, [bp - 0x6a]
-        mov [g_B094], ax
+        mov [TextOverlaySeg], ax
         mov word [deferpending], 0x0
         push word [bp - 0x76]
         push word [bp - 0x72]
@@ -603,9 +603,9 @@ SportsDesk:
         call 0x03A3:MouseRange
         add sp, 0x8
         mov ax, [bp - 0x42]
-        mov [g_B092], ax
+        mov [TextOverlayPtr], ax
         mov ax, [bp - 0x6a]
-        mov [g_B094], ax
+        mov [TextOverlaySeg], ax
         mov word [deferpending], 0x0
         push word [bp - 0x76]
         push word [bp - 0x72]
@@ -634,8 +634,8 @@ SportsDesk:
         jnz short .36
         jmp near .18
 .36:
-        mov es, [g_8B66]
-        mov word [es:0x126], 0x2
+        mov es, [segDbFiles10]
+        mov word [es:lgstate_w5A + 0x8], 0x2
         jmp near .18
         db 0x90
 .37:
@@ -664,7 +664,7 @@ SportsDesk:
         call 0x0FEF:UseCurrentPage
         push strict word str_Desk_13
         push 0x0
-        push word 0xc242
+        push word DeskTitleText
         call 0x14B8:LoadPackedHeader
         add sp, 0x4
         mov [bp - 0x2a], ax
@@ -1291,17 +1291,17 @@ DeskReloadGame:
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov [bp - 0x10], dx
         mov al, 0x11
-        mov [g_B207], al
-        mov [g_B107], al
+        mov [PanelText2], al
+        mov [PanelText], al
         push ds
         push strict word TeamPalette2
         call 0x0FEF:SetRemapTable
         add sp, 0x4
         push 0x4
         push 0x4
-        mov bx, [g_29CA]
+        mov bx, [HomeTeamNum]
         shl bx, 1
-        push word [bx + g_5604]
+        push word [bx + CrestShapeNames]
         push word [bp - 0x10]
         push si
         call 0x03A3:FindFarMsg
@@ -1316,9 +1316,9 @@ DeskReloadGame:
         add sp, 0x4
         push 0x4
         push word 0x11c
-        mov bx, [g_29CC]
+        mov bx, [VisTeamNum]
         shl bx, 1
-        push word [bx + g_5604]
+        push word [bx + CrestShapeNames]
         push word [bp - 0x10]
         push si
         call 0x03A3:FindFarMsg
@@ -1328,8 +1328,8 @@ DeskReloadGame:
         call 0x0FEF:DrawRleTransRemapAt
         add sp, 0x8
         mov al, 0x43
-        mov [g_B207], al
-        mov [g_B107], al
+        mov [PanelText2], al
+        mov [PanelText], al
         push word [bp - 0x10]
         push si
         call 0x06E1:FindUnlink
@@ -1340,7 +1340,7 @@ DeskReloadGame:
         add sp, 0x4
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov [bp - 0x10], dx
-        imul cx, [g_29CA], word 0x1c0
+        imul cx, [HomeTeamNum], word 0x1c0
         db 0x03, 0xC1                           ; insn: add ax, cx
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov [bp - 0x8], dx
@@ -1368,7 +1368,7 @@ DeskReloadGame:
         add sp, 0x4
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov [bp - 0x10], dx
-        imul cx, [g_29CC], word 0x1c0
+        imul cx, [VisTeamNum], word 0x1c0
         db 0x03, 0xC1                           ; insn: add ax, cx
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov [bp - 0x8], dx
@@ -1416,8 +1416,8 @@ DeskBackToGame:
         call 0x1B35:LoadRinkEndArtThunk
         call 0x1B35:LoadScoreboardArtThunk
         mov ax, 0x1
-        mov [g_4B22], ax
-        mov [g_4B20], ax
+        mov [DeskRedrawPage2], ax
+        mov [DeskRedrawPage], ax
         retf
         db 0x90
 
@@ -1432,8 +1432,8 @@ DeskToSportsDesk:
         call 0x1B35:LoadRinkEndArtThunk
         call 0x1B35:LoadScoreboardArtThunk
         mov ax, 0x1
-        mov [g_4B22], ax
-        mov [g_4B20], ax
+        mov [DeskRedrawPage2], ax
+        mov [DeskRedrawPage], ax
         mov ax, 0x5
         retf
 
@@ -1464,23 +1464,23 @@ DeskReturnConfirm:
         jmp short .4
         db 0x90
 .1:
-        mov es, [g_8B68]
-        mov word [es:0xb3], 0x0
-        mov word [es:0xb5], 0x36f5
+        mov es, [segReturnMessages1]
+        mov word [es:dlgReturnMessages], str_ReturningToSportsCentral
+        mov word [es:dlgReturnMessages + 0x2], 0x36f5
         jmp short .4
 .2:
-        mov es, [g_8B68]
-        mov word [es:0xb3], 0x3d
-        mov word [es:0xb5], 0x36f5
+        mov es, [segReturnMessages1]
+        mov word [es:dlgReturnMessages], str_ReturningToThePlayoffTree
+        mov word [es:dlgReturnMessages + 0x2], 0x36f5
         jmp short .4
 .3:
-        mov es, [g_8B68]
-        mov word [es:0xb3], 0x1c
-        mov word [es:0xb5], 0x36f5
+        mov es, [segReturnMessages1]
+        mov word [es:dlgReturnMessages], str_ReturningToTheLeagueCalendar
+        mov word [es:dlgReturnMessages + 0x2], 0x36f5
 .4:
-        mov es, [g_8B68]
-        mov word [es:0xbb], 0x87
-        mov word [es:0xbd], 0x36f5
+        mov es, [segReturnMessages1]
+        mov word [es:dlgReturnMessages + 0x8], str_DoYouWishToReturn
+        mov word [es:dlgReturnMessages + 0xA], 0x36f5
         push 0x0
         push 0x11
         push 0x5
@@ -1495,10 +1495,10 @@ DeskReturnConfirm:
         push ax
         push 0x2
         push word 0x36b8
-        push strict word f_36B8_0170
+        push strict word dlgReturnConfirm
         push 0x3
         push word 0x36f5
-        push strict word f_36F5_00B3
+        push strict word dlgReturnMessages
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -1515,8 +1515,8 @@ DeskReturnConfirm:
         call 0x1B35:LoadRinkEndArtThunk
         call 0x1B35:LoadScoreboardArtThunk
         mov ax, 0x1
-        mov [g_4B22], ax
-        mov [g_4B20], ax
+        mov [DeskRedrawPage2], ax
+        mov [DeskRedrawPage], ax
         mov ax, 0x5
         leave
         retf
@@ -1539,11 +1539,11 @@ DeskExitGame:
         push dx
         call 0x03A3:MouseRead
         add sp, 0x6
-        mov es, [g_8B68]
-        mov word [es:0xb3], 0x5b
-        mov word [es:0xb5], 0x36f5
-        mov word [es:0xbb], 0x9e
-        mov word [es:0xbd], 0x36f5
+        mov es, [segReturnMessages1]
+        mov word [es:dlgReturnMessages], str_ExitingTheGame
+        mov word [es:dlgReturnMessages + 0x2], 0x36f5
+        mov word [es:dlgReturnMessages + 0x8], str_DoYouWishToExit
+        mov word [es:dlgReturnMessages + 0xA], 0x36f5
         push 0x0
         push 0x11
         push 0x5
@@ -1558,10 +1558,10 @@ DeskExitGame:
         push ax
         push 0x2
         push word 0x36b8
-        push strict word f_36B8_0170
+        push strict word dlgReturnConfirm
         push 0x3
         push word 0x36f5
-        push strict word f_36F5_00B3
+        push strict word dlgReturnMessages
         push -0x1
         push -0x1
         call 0x0D90:MessageBox
@@ -1591,8 +1591,8 @@ DeskExitGame:
         push 0x0
         call 0x0FEF:SetStartPage
         add sp, 0x2
-        mov bx, 0x7570
-        mov es, [g_8B6A]
+        mov bx, PageTable
+        mov es, [segDgroup5]
         mov [bp - 0x30a], bx
         mov [bp - 0x308], es
         mov ax, [es:bx + 0x2]
@@ -1684,16 +1684,16 @@ DeskGoToReplay:
         call 0x03A3:UseCharSeg
         add sp, 0x4
         call 0x1B35:FreePPVFilesThunk
-        push word [g_C25E]
-        push word [g_C25C]
+        push word [RinkEndArtSeg]
+        push word [RinkEndArt]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        push word [g_C25A]
-        push word [g_C258]
+        push word [ScoreboardArtSeg]
+        push word [ScoreboardArt]
         call 0x06E1:FindUnlink
         mov ax, 0x1
-        mov [g_4B22], ax
-        mov [g_4B20], ax
+        mov [DeskRedrawPage2], ax
+        mov [DeskRedrawPage], ax
         mov ax, 0xc
         mov dx, 0x3d4
         out dx, al
@@ -1766,8 +1766,8 @@ DeskHomeLines:
         add sp, 0x6
         push 0x2
         push word 0x3448
-        push strict word f_3448_1584
-        push word 0xae10
+        push strict word DeskLinesMenu
+        push word HomeTeamRec
         push 0x0
         call 0x2047:GameLineEditor
         add sp, 0xa
@@ -1859,8 +1859,8 @@ DeskVisitorLines:
         add sp, 0x6
         push 0x2
         push word 0x3448
-        push strict word f_3448_1584
-        push word 0xae40
+        push strict word DeskLinesMenu
+        push word AwayTeamRec
         push 0x1
         call 0x2047:GameLineEditor
         add sp, 0xa
@@ -2134,14 +2134,14 @@ DeskHomeGoalie1:
         push 0x0
         call 0x1B35:SetTeamGoalieThunk
         add sp, 0x4
-        mov es, [g_8B6C]
-        les bx, [es:0x12f8]
+        mov es, [segMenuText15]
+        les bx, [es:HomeTeamMenuText + 0x8]
         mov byte [es:bx], 0x1
-        mov es, [g_8B6C]
-        les bx, [es:0x130e]
+        mov es, [segMenuText15]
+        les bx, [es:HomeTeamMenuText + 0x1E]
         mov byte [es:bx], 0x2
-        mov es, [g_8B6C]
-        les bx, [es:0x1324]
+        mov es, [segMenuText15]
+        les bx, [es:HomeTeamMenuText + 0x34]
         mov byte [es:bx], 0x2
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         retf
@@ -2157,14 +2157,14 @@ DeskHomeGoalie2:
         push 0x0
         call 0x1B35:SetTeamGoalieThunk
         add sp, 0x4
-        mov es, [g_8B6C]
-        les bx, [es:0x12f8]
+        mov es, [segMenuText15]
+        les bx, [es:HomeTeamMenuText + 0x8]
         mov byte [es:bx], 0x2
-        mov es, [g_8B6C]
-        les bx, [es:0x130e]
+        mov es, [segMenuText15]
+        les bx, [es:HomeTeamMenuText + 0x1E]
         mov byte [es:bx], 0x1
-        mov es, [g_8B6C]
-        les bx, [es:0x1324]
+        mov es, [segMenuText15]
+        les bx, [es:HomeTeamMenuText + 0x34]
         mov byte [es:bx], 0x2
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         retf
@@ -2180,14 +2180,14 @@ DeskHomeGoalieNone:
         push 0x0
         call 0x1B35:SetTeamGoalieThunk
         add sp, 0x4
-        mov es, [g_8B6C]
-        les bx, [es:0x12f8]
+        mov es, [segMenuText15]
+        les bx, [es:HomeTeamMenuText + 0x8]
         mov byte [es:bx], 0x2
-        mov es, [g_8B6C]
-        les bx, [es:0x130e]
+        mov es, [segMenuText15]
+        les bx, [es:HomeTeamMenuText + 0x1E]
         mov byte [es:bx], 0x2
-        mov es, [g_8B6C]
-        les bx, [es:0x1324]
+        mov es, [segMenuText15]
+        les bx, [es:HomeTeamMenuText + 0x34]
         mov byte [es:bx], 0x1
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         retf
@@ -2203,14 +2203,14 @@ DeskAwayGoalie1:
         push 0x1
         call 0x1B35:SetTeamGoalieThunk
         add sp, 0x4
-        mov es, [g_8B6E]
-        les bx, [es:0x133a]
+        mov es, [segMenuText16]
+        les bx, [es:VisitorTeamMenuText + 0x8]
         mov byte [es:bx], 0x1
-        mov es, [g_8B6E]
-        les bx, [es:0x1350]
+        mov es, [segMenuText16]
+        les bx, [es:VisitorTeamMenuText + 0x1E]
         mov byte [es:bx], 0x2
-        mov es, [g_8B6E]
-        les bx, [es:0x1366]
+        mov es, [segMenuText16]
+        les bx, [es:VisitorTeamMenuText + 0x34]
         mov byte [es:bx], 0x2
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         retf
@@ -2226,14 +2226,14 @@ DeskAwayGoalie2:
         push 0x1
         call 0x1B35:SetTeamGoalieThunk
         add sp, 0x4
-        mov es, [g_8B6E]
-        les bx, [es:0x133a]
+        mov es, [segMenuText16]
+        les bx, [es:VisitorTeamMenuText + 0x8]
         mov byte [es:bx], 0x2
-        mov es, [g_8B6E]
-        les bx, [es:0x1350]
+        mov es, [segMenuText16]
+        les bx, [es:VisitorTeamMenuText + 0x1E]
         mov byte [es:bx], 0x1
-        mov es, [g_8B6E]
-        les bx, [es:0x1366]
+        mov es, [segMenuText16]
+        les bx, [es:VisitorTeamMenuText + 0x34]
         mov byte [es:bx], 0x2
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         retf
@@ -2249,11 +2249,11 @@ DeskAwayGoalieNone:
         push 0x1
         call 0x1B35:SetTeamGoalieThunk
         add sp, 0x4
-        mov es, [g_8B6E]
-        les bx, [es:0x133a]
+        mov es, [segMenuText16]
+        les bx, [es:VisitorTeamMenuText + 0x8]
         mov byte [es:bx], 0x2
-        mov es, [g_8B6E]
-        les bx, [es:0x1350]
+        mov es, [segMenuText16]
+        les bx, [es:VisitorTeamMenuText + 0x1E]
         mov byte [es:bx], 0x2
-        mov es, [g_8B6E]
-        les bx, [es:0x1366]
+        mov es, [segMenuText16]
+        les bx, [es:VisitorTeamMenuText + 0x34]

@@ -13,14 +13,14 @@ FadeZoomRect:
         push si
         mov ax, [bp + 0xc]
         and al, 0xf8
-        mov [g_DF6A], ax
+        mov [fadex], ax
         mov ax, [bp + 0x10]
         and al, 0xf8
-        mov [g_DF6C], ax
+        mov [fadey], ax
         mov ax, [bp + 0xe]
-        mov [g_DF6E], ax
+        mov [fadew], ax
         mov ax, [bp + 0x12]
-        mov [g_DF70], ax
+        mov [fadeh], ax
         call 0x0FEF:UseCurrentPage
         and byte [bp + 0x8], 0xf8
         mov ax, [bp + 0x8]
