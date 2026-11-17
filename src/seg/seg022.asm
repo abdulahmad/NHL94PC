@@ -8,38 +8,38 @@ SegStart_0F4A1:
 F022_0004:
 	enter	0x6, 0x0
 	push	si
-	push	word 0x80
+	push	str_Que
 	push	0x0
 	push	word 0xb00
-	push	word 0xa1e
+	push	str_Plane0
 	call	0x14DB:F034_0013
 	add	sp, 0x8
-	mov	[0xb34e], ax
-	mov	[0xb350], dx
-	push	word 0x80
+	mov	[g_B34E], ax
+	mov	[g_B350], dx
+	push	str_Que
 	push	0x0
 	push	word 0xb00
-	push	word 0xa26
+	push	str_Plane1
 	call	0x14DB:F034_0013
 	add	sp, 0x8
-	mov	[0xb352], ax
-	mov	[0xb354], dx
-	push	word 0x80
+	mov	[g_B352], ax
+	mov	[g_B354], dx
+	push	str_Que
 	push	0x0
 	push	word 0xb00
-	push	word 0xa2e
+	push	str_Plane2
 	call	0x14DB:F034_0013
 	add	sp, 0x8
-	mov	[0xb356], ax
-	mov	[0xb358], dx
-	push	word 0x80
+	mov	[g_B356], ax
+	mov	[g_B358], dx
+	push	str_Que
 	push	0x0
 	push	word 0xb00
-	push	word 0xa36
+	push	str_Plane3
 	call	0x14DB:F034_0013
 	add	sp, 0x8
-	mov	[0xb35a], ax
-	mov	[0xb35c], dx
+	mov	[g_B35A], ax
+	mov	[g_B35C], dx
 	mov	ax, 0x2
 	mov	dx, 0x3c4
 	out	dx, al
@@ -59,8 +59,8 @@ F022_0004:
 	push	word 0xb00
 	push	word 0xa000
 	push	0x0
-	push	word [0xb350]
-	push	word [0xb34e]
+	push	word [g_B350]
+	push	word [g_B34E]
 	db	0x8B, 0xF0		; mov si, ax
 	call	0x06E1:RawBase
 	add	sp, 0x4
@@ -79,8 +79,8 @@ F022_0004:
 	push	word 0xb00
 	push	word 0xa000
 	push	0x0
-	push	word [0xb354]
-	push	word [0xb352]
+	push	word [g_B354]
+	push	word [g_B352]
 	call	0x06E1:RawBase
 	add	sp, 0x4
 	push	dx
@@ -97,8 +97,8 @@ F022_0004:
 	push	word 0xb00
 	push	word 0xa000
 	push	0x0
-	push	word [0xb358]
-	push	word [0xb356]
+	push	word [g_B358]
+	push	word [g_B356]
 	call	0x06E1:RawBase
 	add	sp, 0x4
 	push	dx
@@ -115,8 +115,8 @@ F022_0004:
 	push	word 0xb00
 	push	word 0xa000
 	push	0x0
-	push	word [0xb35c]
-	push	word [0xb35a]
+	push	word [g_B35C]
+	push	word [g_B35A]
 	call	0x06E1:RawBase
 	add	sp, 0x4
 	push	dx
@@ -157,7 +157,7 @@ F022_0004:
 	call	0x0FEF:F028_1320
 	add	sp, 0x2
 	mov	bx, 0x7570
-	mov	es, [0x8b1c]
+	mov	es, [g_8B1C]
 	mov	[bp - 0x6], bx
 	mov	[bp - 0x4], es
 	mov	ax, [es:bx + 0x2]
@@ -227,8 +227,8 @@ F022_0224:
 	mov	dx, 0x3c5
 	out	dx, al
 	push	word 0xb00
-	push	word [0xb350]
-	push	word [0xb34e]
+	push	word [g_B350]
+	push	word [g_B34E]
 	db	0x8B, 0xF1		; mov si, cx
 	call	0x06E1:RawBase
 	add	sp, 0x4
@@ -242,16 +242,16 @@ F022_0224:
 	push	0x0
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
-	push	word [0xb350]
-	push	word [0xb34e]
+	push	word [g_B350]
+	push	word [g_B34E]
 	call	0x06E1:UnlinkRec
 	add	sp, 0x4
 	lea	ax, [si + 0x2]
 	mov	dx, 0x3c5
 	out	dx, al
 	push	word 0xb00
-	push	word [0xb354]
-	push	word [0xb352]
+	push	word [g_B354]
+	push	word [g_B352]
 	call	0x06E1:RawBase
 	add	sp, 0x4
 	push	dx
@@ -264,16 +264,16 @@ F022_0224:
 	push	0x0
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
-	push	word [0xb354]
-	push	word [0xb352]
+	push	word [g_B354]
+	push	word [g_B352]
 	call	0x06E1:UnlinkRec
 	add	sp, 0x4
 	lea	ax, [si + 0x4]
 	mov	dx, 0x3c5
 	out	dx, al
 	push	word 0xb00
-	push	word [0xb358]
-	push	word [0xb356]
+	push	word [g_B358]
+	push	word [g_B356]
 	call	0x06E1:RawBase
 	add	sp, 0x4
 	push	dx
@@ -286,16 +286,16 @@ F022_0224:
 	push	0x0
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
-	push	word [0xb358]
-	push	word [0xb356]
+	push	word [g_B358]
+	push	word [g_B356]
 	call	0x06E1:UnlinkRec
 	add	sp, 0x4
 	lea	ax, [si + 0x8]
 	mov	dx, 0x3c5
 	out	dx, al
 	push	word 0xb00
-	push	word [0xb35c]
-	push	word [0xb35a]
+	push	word [g_B35C]
+	push	word [g_B35A]
 	call	0x06E1:RawBase
 	add	sp, 0x4
 	push	dx
@@ -308,8 +308,8 @@ F022_0224:
 	push	0x0
 	call	0x0000:_fmemcpy
 	add	sp, 0xa
-	push	word [0xb35c]
-	push	word [0xb35a]
+	push	word [g_B35C]
+	push	word [g_B35A]
 	call	0x06E1:UnlinkRec
 	add	sp, 0x4
 	mov	ax, 0x2
@@ -330,7 +330,7 @@ F022_0224:
 	call	0x0FEF:F028_1320
 	add	sp, 0x2
 	mov	bx, 0x7570
-	mov	es, [0x8b1c]
+	mov	es, [g_8B1C]
 	mov	[bp - 0x6], bx
 	mov	[bp - 0x4], es
 	mov	ax, [es:bx + 0x2]
@@ -351,7 +351,7 @@ F022_0224:
 	push	word 0xc8
 	push	word 0x140
 	push	word 0xb0
-	push	word 0x148
+	push	str_Quebec
 	call	0x0FEF:F028_3804
 	add	sp, 0xe
 	call	0x0FEF:F028_11B1

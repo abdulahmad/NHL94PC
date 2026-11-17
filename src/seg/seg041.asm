@@ -36,8 +36,8 @@ F041_0046:
 	push	si
 	mov	di, [bp + 0xc]
 	mov	si, [bp + 0xa]
-	mov	word [0x6db2], 0x1
-	call	far [0x7642]
+	mov	word [TickSkip], 0x1
+	call	far [g_7642]
 	mov	ax, [bp + 0x8]
 	mov	dx, [bp + 0x6]
 	db	0x33, 0xDB		; xor bx, bx
@@ -64,8 +64,8 @@ F041_0046:
 	db	0x03, 0xCF		; add cx, di
 	push	cx
 	push	di
-	mov	es, [0x8d0a]
-	mov	bx, [0x74dc]
+	mov	es, [g_8D0A]
+	mov	bx, [g_74DC]
 	shl	bx, byte 0x2
 	push	word [es:bx + 0x7572]
 	push	word [es:bx + 0x7570]
@@ -73,7 +73,7 @@ F041_0046:
 	mov	[bp - 0x5e], cx
 	call	0x0FEF:F028_46A8
 	add	sp, 0xc
-	call	far [0x6410]
+	call	far [g_6410]
 	push	word [bp - 0x4]
 	push	word [bp - 0x6]
 	call	0x0FEF:F028_0048
@@ -120,13 +120,13 @@ F041_0046:
 	push	word [bp + 0xe]
 	call	0x0FEC:F027_0002
 	add	sp, 0x4
-	call	far [0x6414]
+	call	far [g_6414]
 	push	word 0xc8
 	push	0x0
 	push	word 0x140
 	push	0x0
-	mov	es, [0x8d0a]
-	mov	bx, [0x74dc]
+	mov	es, [g_8D0A]
+	mov	bx, [g_74DC]
 	shl	bx, byte 0x2
 	push	word [es:bx + 0x7572]
 	push	word [es:bx + 0x7570]
@@ -134,13 +134,13 @@ F041_0046:
 	add	sp, 0xc
 	mov	si, [bp + 0x4]
 .1:
-	call	far [0x6418]
+	call	far [g_6418]
 	test	si, ax
 	jnz	short .1
 .2:
 	call	0x03A3:ReadKey
 	db	0x8B, 0xF8		; mov di, ax
-	call	far [0x6418]
+	call	far [g_6418]
 	and	ax, [bp + 0x4]
 	db	0x8B, 0xF0		; mov si, ax
 	db	0x0B, 0xFF		; or di, di
@@ -164,20 +164,20 @@ F041_0046:
 	add	ax, [bp + 0xc]
 	push	ax
 	push	word [bp + 0xc]
-	mov	es, [0x8d0a]
-	mov	bx, [0x74dc]
+	mov	es, [g_8D0A]
+	mov	bx, [g_74DC]
 	shl	bx, byte 0x2
 	push	word [es:bx + 0x7572]
 	push	word [es:bx + 0x7570]
 	call	0x0FEF:F028_46A8
 	add	sp, 0xc
-	call	far [0x640c]
+	call	far [g_640C]
 	push	word [bp - 0x4]
 	push	word [bp - 0x6]
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
 	call	F041_0024
-	call	far [0x6414]
+	call	far [g_6414]
 	lea	ax, [bp - 0x1e]
 	push	ax
 	call	0x03A3:LoadCharTab
@@ -190,8 +190,8 @@ F041_0046:
 	push	word [bp - 0x6]
 	call	0x14ED:F035_000C
 	add	sp, 0x4
-	call	far [0x7646]
-	mov	word [0x6db2], 0x0
+	call	far [g_7646]
+	mov	word [TickSkip], 0x0
 	db	0x8B, 0xC6		; mov ax, si
 	pop	si
 	pop	di
@@ -199,7 +199,7 @@ F041_0046:
 	ret	0xc
 
 F041_0224:
-	push	word 0x76a4
+	push	str_ExitToDosYN
 	push	0x50
 	push	0x58
 	push	word 0xa0
@@ -217,7 +217,7 @@ F041_0240:
 	enter	0x58, 0x0
 	push	di
 	push	si
-	mov	word [0x6db2], 0x1
+	mov	word [TickSkip], 0x1
 	mov	ax, 0x140
 	mov	dx, 0xa
 	db	0x33, 0xDB		; xor bx, bx
@@ -246,14 +246,14 @@ F041_0240:
 	push	word 0xbe
 	push	word 0x140
 	push	0x0
-	mov	es, [0x8d0a]
-	mov	bx, [0x74dc]
+	mov	es, [g_8D0A]
+	mov	bx, [g_74DC]
 	shl	bx, byte 0x2
 	push	word [es:bx + 0x7572]
 	push	word [es:bx + 0x7570]
 	call	0x0FEF:F028_46A8
 	add	sp, 0xc
-	call	far [0x6410]
+	call	far [g_6410]
 	push	di
 	push	si
 	push	0x0
@@ -279,18 +279,18 @@ F041_0240:
 	push	word [bp + 0x6]
 	call	0x0FEC:F027_0002
 	add	sp, 0x4
-	call	far [0x6414]
+	call	far [g_6414]
 	push	word [bp + 0xa]
 	push	word [bp + 0x8]
 	call	0x03A3:WaitAdd
 	add	sp, 0x4
-	call	far [0x640c]
+	call	far [g_640C]
 	push	di
 	push	si
 	push	0x0
 	push	word 0xbe
 	call	F041_0024
-	call	far [0x6414]
+	call	far [g_6414]
 	lea	ax, [bp - 0x1c]
 	push	ax
 	call	0x03A3:LoadCharTab
@@ -303,7 +303,7 @@ F041_0240:
 	push	si
 	call	0x14ED:F035_000C
 	add	sp, 0x4
-	mov	word [0x6db2], 0x0
+	mov	word [TickSkip], 0x0
 	pop	si
 	pop	di
 	leave
@@ -311,7 +311,7 @@ F041_0240:
 	db	0x90
 
 F041_0352:
-	push	word 0x76b6
+	push	str_PausePressAnyKeyTo
 	push	0x10
 	push	0x58
 	push	word 0x120

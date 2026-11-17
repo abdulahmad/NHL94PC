@@ -753,8 +753,6 @@ VgaCopyRect:
 
 ; Near data in DGROUP (past the load image, not this segment).
 DGROUP		equ	0x45C9
-__psp		equ	0x8556
-_osfile		equ	0x855F
 
 
 ; MscStartup: Microsoft C startup. __astart jumps here after the overlay preload.
@@ -1141,9 +1139,6 @@ __chkstk:
 
 
 ; Low-level C files, DOS calls, strings, and the runtime messages.
-_nfile		equ	0x855D		; highest C handle
-errno		equ	0x8550
-_doserrno	equ	0x855B
 
 
 ; _printf: print to the standard output.

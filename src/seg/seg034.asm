@@ -132,9 +132,9 @@ F034_00DB:
 	push	word [bx + 0x4]
 .1:
 	call	0x03A3:CpuProbe
-	cmp	word [0x763a], 0x0
+	cmp	word [Cpu286], 0x0
 	jnz	short .2
-	mov	ax, 0x64ae
+	mov	ax, str_ThisProgramRequiresAn80286
 	push	ax
 	call	0x0F4A:F022_03E4
 .2:

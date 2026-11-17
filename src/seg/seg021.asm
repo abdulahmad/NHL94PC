@@ -8,16 +8,16 @@ F021_0002:
 	enter	0x2, 0x0
 	push	di
 	push	si
-	test	byte [0x1b6], 0x80
+	test	byte [g_01B6], 0x80
 	jnz	short .1
 	jmp	near .23
 .1:
-	test	byte [0x1c6], 0xa
+	test	byte [g_01C6], 0xa
 	jnz	short .2
 	jmp	near .23
 .2:
-	mov	di, [0x4a54]
-	sub	di, [0xa18]
+	mov	di, [g_4A54]
+	sub	di, [g_0A18]
 	imul	bx, [bp + 0x6], 0x1e
 	db	0x8B, 0xC7		; mov ax, di
 	cwd
@@ -27,24 +27,24 @@ F021_0002:
 	jng	short .4
 	db	0x0B, 0xFF		; or di, di
 	jl	short .3
-	add	[0xa18], bx
+	add	[g_0A18], bx
 	jmp	short .5
 	db	0x90
 .3:
-	sub	[0xa18], bx
+	sub	[g_0A18], bx
 	jmp	short .5
 .4:
-	mov	ax, [0x4a54]
-	mov	[0xa18], ax
+	mov	ax, [g_4A54]
+	mov	[g_0A18], ax
 .5:
-	cmp	word [0xa18], 0x200
+	cmp	word [g_0A18], 0x200
 	jnl	short .6
 	db	0x2B, 0xF6		; sub si, si
 	jmp	short .9
 .6:
-	cmp	word [0xa18], 0x390
+	cmp	word [g_0A18], 0x390
 	jnl	short .7
-	mov	ax, [0xa18]
+	mov	ax, [g_0A18]
 	sub	ax, 0x200
 	mov	cx, 0xa
 	cwd
@@ -52,12 +52,12 @@ F021_0002:
 	db	0x8B, 0xF0		; mov si, ax
 	jmp	short .8
 .7:
-	mov	si, [0xa18]
+	mov	si, [g_0A18]
 	sub	si, 0x390
 	sar	si, byte 0x2
 	add	si, 0x28
 .8:
-	test	byte [0x1c6], 0x8
+	test	byte [g_01C6], 0x8
 	jz	short .9
 	add	si, 0x20
 .9:
@@ -65,13 +65,13 @@ F021_0002:
 	jng	short .10
 	mov	si, 0x7f
 .10:
-	mov	ax, [0xa18]
+	mov	ax, [g_0A18]
 	mov	cx, 0xc
 	cwd
 	idiv	cx
 	db	0x8B, 0xF8		; mov di, ax
 	add	di, 0xa
-	test	byte [0x1c6], 0x8
+	test	byte [g_01C6], 0x8
 	jz	short .11
 	add	di, 0x32
 .11:
@@ -83,41 +83,41 @@ F021_0002:
 	jnl	short .13
 	mov	di, 0xa
 .13:
-	cmp	word [0xa1a], 0x0
+	cmp	word [g_0A1A], 0x0
 	jng	short .14
 	db	0x0B, 0xF6		; or si, si
 	jnz	short .14
 	push	si
 	push	0x8
-	mov	al, [0x106e]
+	mov	al, [g_106E]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	call	0x0CC4:F014_000A
 	add	sp, 0x6
 	push	0x24
 	push	0x8
-	mov	al, [0x106e]
+	mov	al, [g_106E]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	call	0x0CC4:F014_00B4
 	jmp	short .15
 	db	0x90
 .14:
-	cmp	word [0xa1a], 0x0
+	cmp	word [g_0A1A], 0x0
 	jnz	short .16
 	db	0x0B, 0xF6		; or si, si
 	jng	short .16
 	push	0x7d
 	push	0x24
 	push	0x8
-	mov	al, [0x106e]
+	mov	al, [g_106E]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	call	0x0CC4:F014_005A
 	add	sp, 0x8
 	push	0x40
 	push	0x8
-	mov	al, [0x106e]
+	mov	al, [g_106E]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	call	0x0CC4:F014_0032
@@ -128,14 +128,14 @@ F021_0002:
 	jng	short .20
 	push	si
 	push	0x8
-	mov	al, [0x106e]
+	mov	al, [g_106E]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	call	0x0CC4:F014_000A
 	add	sp, 0x6
 	cmp	si, 0x7f
 	jnl	short .17
-	cmp	word [0xa1a], 0x7f
+	cmp	word [g_0A1A], 0x7f
 	jl	short .20
 .17:
 	cmp	si, 0x7f
@@ -152,21 +152,21 @@ F021_0002:
 	sub	ax, [bp - 0x2]
 	push	ax
 	push	0x8
-	mov	al, [0x106e]
+	mov	al, [g_106E]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	call	0x0CC4:F014_0032
 	add	sp, 0x6
 .20:
-	mov	[0xa1a], si
-	cmp	word [0xa1c], 0x0
+	mov	[g_0A1A], si
+	cmp	word [g_0A1C], 0x0
 	jnz	short .21
 	db	0x0B, 0xFF		; or di, di
 	jng	short .21
 	push	0x7e
 	push	0x24
 	push	0x7
-	mov	al, [0x106e]
+	mov	al, [g_106E]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	call	0x0CC4:F014_005A
@@ -174,7 +174,7 @@ F021_0002:
 .21:
 	push	di
 	push	0x7
-	mov	al, [0x106e]
+	mov	al, [g_106E]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	call	0x0CC4:F014_000A
@@ -185,7 +185,7 @@ F021_0002:
 	idiv	cx
 	db	0x8B, 0xF0		; mov si, ax
 	add	si, 0x20
-	mov	al, [0x1c6]
+	mov	al, [g_01C6]
 	and	ax, strict word 0x8
 	cmp	ax, strict word 0x1
 	cmc
@@ -200,12 +200,12 @@ F021_0002:
 .22:
 	push	si
 	push	0x7
-	mov	al, [0x106e]
+	mov	al, [g_106E]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	call	0x0CC4:F014_0032
 	add	sp, 0x6
-	mov	[0xa1c], di
+	mov	[g_0A1C], di
 .23:
 	pop	si
 	pop	di
@@ -213,55 +213,55 @@ F021_0002:
 	retf
 
 F021_01DC:
-	test	byte [0x1b6], 0x80
+	test	byte [g_01B6], 0x80
 	jz	short .2
-	test	byte [0x1c6], 0xa
+	test	byte [g_01C6], 0xa
 	jz	short .2
-	cmp	word [0xa1a], 0x0
+	cmp	word [g_0A1A], 0x0
 	jng	short .1
 	push	0x0
 	push	0x8
-	mov	al, [0x106e]
+	mov	al, [g_106E]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	call	0x0CC4:F014_000A
 	add	sp, 0x6
 	push	0x24
 	push	0x8
-	mov	al, [0x106e]
+	mov	al, [g_106E]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	call	0x0CC4:F014_00B4
 	add	sp, 0x6
-	mov	word [0xa1a], 0x0
+	mov	word [g_0A1A], 0x0
 .1:
-	cmp	word [0xa1c], 0x0
+	cmp	word [g_0A1C], 0x0
 	jng	short .2
 	push	0x0
 	push	0x7
-	mov	al, [0x106e]
+	mov	al, [g_106E]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	call	0x0CC4:F014_000A
 	add	sp, 0x6
 	push	0x24
 	push	0x7
-	mov	al, [0x106e]
+	mov	al, [g_106E]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
 	call	0x0CC4:F014_00B4
 	add	sp, 0x6
-	mov	word [0xa1c], 0x0
+	mov	word [g_0A1C], 0x0
 .2:
 	retf
 	db	0x90
 
 F021_024E:
 	push	si
-	mov	si, [0x4a54]
-	test	byte [0x1b6], 0x80
+	mov	si, [g_4A54]
+	test	byte [g_01B6], 0x80
 	jz	short .4
-	test	byte [0x1c6], 0xa
+	test	byte [g_01C6], 0xa
 	jz	short .4
 	db	0x0B, 0xF6		; or si, si
 	jng	short .3
@@ -269,36 +269,36 @@ F021_024E:
 	mov	ax, 0x1
 	cwd
 	call	0x03A3:0x1A6E
-	sub	word [0x4a54], 0x32
+	sub	word [g_4A54], 0x32
 	jns	short .2
-	mov	word [0x4a54], 0x0
+	mov	word [g_4A54], 0x0
 .2:
 	push	0x2
 	push	cs
 	call	F021_0002
 	add	sp, 0x2
 	call	0x03A3:L1A84
-	cmp	word [0x4a54], 0x0
+	cmp	word [g_4A54], 0x0
 	jg	short .1
 .3:
 	push	cs
 	call	F021_01DC
-	mov	[0x4a54], si
+	mov	[g_4A54], si
 .4:
 	pop	si
 	retf
 
 F021_029A:
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0xa18], ax
-	mov	[0xa1a], ax
-	mov	[0xa1c], ax
+	mov	[g_0A18], ax
+	mov	[g_0A1A], ax
+	mov	[g_0A1C], ax
 	retf
 
 F021_02A6:
-	cmp	word [0x1c6], 0x2
+	cmp	word [g_01C6], 0x2
 	jnz	short .1
-	test	byte [0x1b7], 0x1
+	test	byte [g_01B7], 0x1
 	jz	short .1
 	call	0x09B2:F008_0532
 	call	0x09B2:F008_22C0
@@ -307,9 +307,9 @@ F021_02A6:
 	db	0x90
 
 F021_02C0:
-	cmp	word [0x1c6], 0x2
+	cmp	word [g_01C6], 0x2
 	jnz	short .1
-	test	byte [0x1b7], 0x1
+	test	byte [g_01B7], 0x1
 	jz	short .1
 	call	0x09B2:F008_042A
 	db	0x0B, 0xC0		; or ax, ax
@@ -326,7 +326,7 @@ F021_02E0:
 	enter	0x18, 0x0
 	push	si
 	mov	si, [bp + 0x6]
-	mov	[0x4a52], si
+	mov	[g_4A52], si
 	push	cs
 	call	F021_02C0
 	db	0x0B, 0xC0		; or ax, ax
@@ -335,9 +335,9 @@ F021_02E0:
 	jz	short .1
 	jmp	near .8
 .1:
-	cmp	word [0x1c6], 0x8
+	cmp	word [g_01C6], 0x8
 	jz	short .2
-	cmp	word [0x1c6], 0x4
+	cmp	word [g_01C6], 0x4
 	jnz	short .3
 .2:
 	cmp	si, 0xa0
@@ -347,22 +347,22 @@ F021_02E0:
 .3:
 	cmp	si, 0x7d
 	jnz	short .4
-	add	word [0x4a54], 0x1f4
+	add	word [g_4A54], 0x1f4
 	pop	si
 	leave
 	retf
 	db	0x90, 0x90, 0x90
 .4:
-	cmp	word [0x1c6], 0x4
+	cmp	word [g_01C6], 0x4
 	jnz	short .5
 	cmp	si, 0xaa
 	jnz	short .5
-	mov	ax, [0xfb2]
-	mov	dx, [0xfb4]
+	mov	ax, [g_0FB2]
+	mov	dx, [g_0FB4]
 	mov	[bp - 0x14], ax
 	mov	[bp - 0x12], dx
-	mov	ax, [0xfb6]
-	mov	dx, [0xfb8]
+	mov	ax, [g_0FB6]
+	mov	dx, [g_0FB8]
 	mov	[bp - 0x10], ax
 	mov	[bp - 0xe], dx
 	mov	byte [bp - 0x7], 0xff
@@ -380,7 +380,7 @@ F021_02E0:
 .5:
 	cmp	si, 0x90
 	jnz	short .7
-	cmp	word [0x1c6], 0x4
+	cmp	word [g_01C6], 0x4
 	jnz	short .6
 	push	si
 	call	0x16F2:F050_0FD4
@@ -400,9 +400,9 @@ F021_02E0:
 F021_0394:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
-	cmp	word [0x1c6], 0x2
+	cmp	word [g_01C6], 0x2
 	jnz	short .1
-	test	byte [0x1b7], 0x1
+	test	byte [g_01B7], 0x1
 	jz	short .1
 	call	0x09B2:F008_0532
 	push	word [bp + 0xe]
@@ -418,9 +418,9 @@ F021_0394:
 F021_03C0:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
-	cmp	word [0x1c6], 0x2
+	cmp	word [g_01C6], 0x2
 	jnz	short .1
-	test	byte [0x1b7], 0x1
+	test	byte [g_01B7], 0x1
 	jz	short .1
 	call	0x09B2:F008_0532
 	push	word [bp + 0xa]
@@ -434,9 +434,9 @@ F021_03C0:
 F021_03E6:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
-	cmp	word [0x1c6], 0x2
+	cmp	word [g_01C6], 0x2
 	jnz	short .1
-	test	byte [0x1b7], 0x1
+	test	byte [g_01B7], 0x1
 	jz	short .1
 	call	0x09B2:F008_0532
 	push	word [bp + 0x12]
@@ -472,17 +472,17 @@ F021_0418:
 	inc	si
 	inc	si
 .3:
-	cmp	word [0x1c6], 0x2
+	cmp	word [g_01C6], 0x2
 	jnz	short .4
-	test	byte [0x1b7], 0x1
+	test	byte [g_01B7], 0x1
 	jz	short .4
 	shl	di, 1
-	push	word [di + 0x1e0]
+	push	word [di + g_01E0]
 	shl	si, 1
-	push	word [si + 0x1e0]
+	push	word [si + g_01E0]
 	mov	bx, [bp - 0x2]
 	shl	bx, 1
-	push	word [bx + 0x1e0]
+	push	word [bx + g_01E0]
 	call	0x09B2:F008_17FA
 	add	sp, 0x6
 .4:
@@ -494,9 +494,9 @@ F021_0418:
 F021_046E:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
-	cmp	word [0x1c6], 0x2
+	cmp	word [g_01C6], 0x2
 	jnz	short .1
-	test	byte [0x1b7], 0x1
+	test	byte [g_01B7], 0x1
 	jz	short .1
 	push	word [bp + 0xa]
 	push	word [bp + 0x8]
@@ -508,36 +508,36 @@ F021_046E:
 	db	0x90
 
 F021_0490:
-	cmp	word [0x1c6], 0x2
+	cmp	word [g_01C6], 0x2
 	jnz	short .1
-	test	byte [0x1b7], 0x1
+	test	byte [g_01B7], 0x1
 	jz	short .1
 	call	0x09B2:F008_128A
 .1:
 	retf
 
 F021_04A4:
-	cmp	word [0x1c6], 0x2
+	cmp	word [g_01C6], 0x2
 	jnz	short .1
-	test	byte [0x1b7], 0x1
+	test	byte [g_01B7], 0x1
 	jz	short .1
 	call	0x09B2:F008_12EC
 .1:
 	retf
 
 F021_04B8:
-	cmp	word [0x1c6], 0x2
+	cmp	word [g_01C6], 0x2
 	jnz	short .1
-	test	byte [0x1b7], 0x1
+	test	byte [g_01B7], 0x1
 	jz	short .1
 	call	0x09B2:F008_1362
 .1:
 	retf
 
 F021_04CC:
-	cmp	word [0x1c6], 0x2
+	cmp	word [g_01C6], 0x2
 	jnz	short .1
-	test	byte [0x1b7], 0x1
+	test	byte [g_01B7], 0x1
 	jz	short .1
 	call	0x09B2:F008_13C4
 .1:
@@ -547,17 +547,17 @@ F021_04E0:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	si
-	cmp	word [0x1c6], 0x2
+	cmp	word [g_01C6], 0x2
 	jnz	short .1
-	test	byte [0x1b7], 0x1
+	test	byte [g_01B7], 0x1
 	jz	short .1
 	mov	si, [bp + 0x6]
 	shl	si, 1
-	push	word [si + 0x1e0]
+	push	word [si + g_01E0]
 	mov	bx, [bp + 0x8]
 	shl	bx, 1
-	push	word [bx + 0x1e0]
-	push	word [si + 0x1e0]
+	push	word [bx + g_01E0]
+	push	word [si + g_01E0]
 	call	0x09B2:F008_1426
 	add	sp, 0x6
 .1:
@@ -569,9 +569,9 @@ F021_04E0:
 F021_0514:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
-	cmp	word [0x1c6], 0x2
+	cmp	word [g_01C6], 0x2
 	jnz	short .1
-	test	byte [0x1b7], 0x1
+	test	byte [g_01B7], 0x1
 	jz	short .1
 	push	word [bp + 0xe]
 	push	word [bp + 0xc]
@@ -579,7 +579,7 @@ F021_0514:
 	push	word [bp + 0x8]
 	mov	bx, [bp + 0x6]
 	shl	bx, 1
-	push	word [bx + 0x1e0]
+	push	word [bx + g_01E0]
 	call	0x09B2:F008_1546
 .1:
 	leave
@@ -590,20 +590,20 @@ F021_0542:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	si
-	cmp	word [0x1c6], 0x2
+	cmp	word [g_01C6], 0x2
 	jnz	short .1
-	test	byte [0x1b7], 0x1
+	test	byte [g_01B7], 0x1
 	jz	short .1
 	mov	si, [bp + 0x6]
 	push	word [bp + 0xe]
 	push	word [bp + 0xc]
 	push	word [bp + 0xa]
 	shl	si, 1
-	push	word [si + 0x1e0]
+	push	word [si + g_01E0]
 	mov	bx, [bp + 0x8]
 	shl	bx, 1
-	push	word [bx + 0x1e0]
-	push	word [si + 0x1e0]
+	push	word [bx + g_01E0]
+	push	word [si + g_01E0]
 	call	0x09B2:F008_191A
 	add	sp, 0xc
 .1:
@@ -614,7 +614,7 @@ F021_0542:
 F021_057E:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
-	cmp	word [0x1c6], 0x2
+	cmp	word [g_01C6], 0x2
 	jnz	short .2
 .1:
 	call	0x09B2:F008_2322
@@ -630,7 +630,7 @@ F021_0594:
 	db	0x8B, 0xEC		; mov bp, sp
 	push	di
 	push	si
-	cmp	word [0x1c6], 0x2
+	cmp	word [g_01C6], 0x2
 	jnz	short .2
 	mov	si, [bp + 0x6]
 	mov	di, [bp + 0x8]
@@ -648,23 +648,23 @@ F021_0594:
 	retf
 
 F021_05B8:
-	cmp	word [0xa14], -0x1
+	cmp	word [g_0A14], -0x1
 	jnz	short .1
-	cmp	word [0xa16], -0x1
+	cmp	word [g_0A16], -0x1
 	jz	short .2
 .1:
-	push	word [0xa16]
-	push	word [0xa14]
+	push	word [g_0A16]
+	push	word [g_0A14]
 	call	0x16F2:F050_1226
 	add	sp, 0x4
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .2
-	push	word [0xa16]
-	push	word [0xa14]
+	push	word [g_0A16]
+	push	word [g_0A14]
 	call	0x16F2:F050_11BA
 	add	sp, 0x4
-	mov	word [0xa14], 0xffff
-	mov	word [0xa16], 0xffff
+	mov	word [g_0A14], 0xffff
+	mov	word [g_0A16], 0xffff
 .2:
 	retf
 	db	0x90
@@ -676,27 +676,27 @@ F021_05F8:
 	call	F021_05B8
 	mov	ax, [bp + 0x6]
 	mov	dx, [bp + 0x8]
-	mov	[0xb2da], ax
-	mov	[0xb2dc], dx
+	mov	[g_B2DA], ax
+	mov	[g_B2DC], dx
 	mov	ax, [bp + 0xa]
 	mov	dx, [bp + 0xc]
-	mov	[0xb2de], ax
-	mov	[0xb2e0], dx
-	mov	byte [0xb2e7], 0xff
-	mov	byte [0xb2e8], 0x3f
-	mov	word [0xb2e2], 0x14
-	mov	byte [0xb2e9], 0x0
+	mov	[g_B2DE], ax
+	mov	[g_B2E0], dx
+	mov	byte [g_B2E7], 0xff
+	mov	byte [g_B2E8], 0x3f
+	mov	word [g_B2E2], 0x14
+	mov	byte [g_B2E9], 0x0
 	push	ds
 	push	word 0xb2d6
 	call	0x16F2:F050_0BC6
-	mov	[0xa14], ax
-	mov	[0xa16], dx
+	mov	[g_0A14], ax
+	mov	[g_0A16], dx
 	leave
 	retf
 
 F021_0640:
-	push	word [0xa16]
-	push	word [0xa14]
+	push	word [g_0A16]
+	push	word [g_0A14]
 	call	0x16F2:F050_1226
 	add	sp, 0x4
 	db	0x0B, 0xC0		; or ax, ax

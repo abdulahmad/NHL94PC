@@ -420,172 +420,227 @@
    "para": 7652
   },
   {
-   "name": "ovl_00000",
+   "name": "rtl_relocs",
    "off": 131143,
-   "size": 4096,
-   "file": "overlay/ovl_00000.asm"
+   "size": 4633,
+   "file": "data/rtl_relocs.asm"
   },
   {
-   "name": "ovl_01000",
-   "off": 135239,
-   "size": 4096,
-   "file": "overlay/ovl_01000.asm"
+   "name": "far3415",
+   "off": 135776,
+   "size": 400,
+   "file": "data/far/far3415.asm",
+   "para": 13333
   },
   {
-   "name": "ovl_02000",
-   "off": 139335,
-   "size": 4096,
-   "file": "overlay/ovl_02000.asm"
+   "name": "far342E",
+   "off": 136176,
+   "size": 16,
+   "file": "data/far/far342E.asm",
+   "para": 13358
   },
   {
-   "name": "ovl_03000",
-   "off": 143431,
-   "size": 4096,
-   "file": "overlay/ovl_03000.asm"
+   "name": "far342F",
+   "off": 136192,
+   "size": 400,
+   "file": "data/far/far342F.asm",
+   "para": 13359
   },
   {
-   "name": "ovl_04000",
-   "off": 147527,
-   "size": 4096,
-   "file": "overlay/ovl_04000.asm"
+   "name": "far3448",
+   "off": 136592,
+   "size": 6656,
+   "file": "data/far/far3448.asm",
+   "para": 13384
   },
   {
-   "name": "ovl_05000",
-   "off": 151623,
-   "size": 4096,
-   "file": "overlay/ovl_05000.asm"
+   "name": "far35E8",
+   "off": 143248,
+   "size": 64,
+   "file": "data/far/far35E8.asm",
+   "para": 13800
   },
   {
-   "name": "ovl_06000",
-   "off": 155719,
-   "size": 4096,
-   "file": "overlay/ovl_06000.asm"
+   "name": "far35EC",
+   "off": 143312,
+   "size": 32,
+   "file": "data/far/far35EC.asm",
+   "para": 13804
   },
   {
-   "name": "ovl_07000",
-   "off": 159815,
-   "size": 4096,
-   "file": "overlay/ovl_07000.asm"
+   "name": "far35EE",
+   "off": 143344,
+   "size": 80,
+   "file": "data/far/far35EE.asm",
+   "para": 13806
   },
   {
-   "name": "ovl_08000",
-   "off": 163911,
-   "size": 4096,
-   "file": "overlay/ovl_08000.asm"
+   "name": "far35F3",
+   "off": 143424,
+   "size": 336,
+   "file": "data/far/far35F3.asm",
+   "para": 13811
   },
   {
-   "name": "ovl_09000",
-   "off": 168007,
-   "size": 4096,
-   "file": "overlay/ovl_09000.asm"
+   "name": "far3608",
+   "off": 143760,
+   "size": 1920,
+   "file": "data/far/far3608.asm",
+   "para": 13832
   },
   {
-   "name": "ovl_0A000",
-   "off": 172103,
-   "size": 4096,
-   "file": "overlay/ovl_0A000.asm"
+   "name": "far3680",
+   "off": 145680,
+   "size": 416,
+   "file": "data/far/far3680.asm",
+   "para": 13952
   },
   {
-   "name": "ovl_0B000",
-   "off": 176199,
-   "size": 4096,
-   "file": "overlay/ovl_0B000.asm"
+   "name": "far369A",
+   "off": 146096,
+   "size": 224,
+   "file": "data/far/far369A.asm",
+   "para": 13978
   },
   {
-   "name": "ovl_0C000",
-   "off": 180295,
-   "size": 4096,
-   "file": "overlay/ovl_0C000.asm"
+   "name": "far36A8",
+   "off": 146320,
+   "size": 256,
+   "file": "data/far/far36A8.asm",
+   "para": 13992
   },
   {
-   "name": "ovl_0D000",
-   "off": 184391,
-   "size": 4096,
-   "file": "overlay/ovl_0D000.asm"
+   "name": "far36B8",
+   "off": 146576,
+   "size": 976,
+   "file": "data/far/far36B8.asm",
+   "para": 14008
   },
   {
-   "name": "ovl_0E000",
-   "off": 188487,
-   "size": 4096,
-   "file": "overlay/ovl_0E000.asm"
+   "name": "far36F5",
+   "off": 147552,
+   "size": 192,
+   "file": "data/far/far36F5.asm",
+   "para": 14069
   },
   {
-   "name": "ovl_0F000",
-   "off": 192583,
-   "size": 4096,
-   "file": "overlay/ovl_0F000.asm"
+   "name": "far3701",
+   "off": 147744,
+   "size": 4608,
+   "file": "data/far/far3701.asm",
+   "para": 14081
   },
   {
-   "name": "ovl_10000",
-   "off": 196679,
-   "size": 4096,
-   "file": "overlay/ovl_10000.asm"
+   "name": "far3821",
+   "off": 152352,
+   "size": 96,
+   "file": "data/far/far3821.asm",
+   "para": 14369
   },
   {
-   "name": "ovl_11000",
-   "off": 200775,
-   "size": 4096,
-   "file": "overlay/ovl_11000.asm"
+   "name": "far3827",
+   "off": 152448,
+   "size": 64,
+   "file": "data/far/far3827.asm",
+   "para": 14375
   },
   {
-   "name": "ovl_12000",
-   "off": 204871,
-   "size": 4096,
-   "file": "overlay/ovl_12000.asm"
+   "name": "far382B",
+   "off": 152512,
+   "size": 176,
+   "file": "data/far/far382B.asm",
+   "para": 14379
   },
   {
-   "name": "ovl_13000",
-   "off": 208967,
-   "size": 4096,
-   "file": "overlay/ovl_13000.asm"
+   "name": "far3836",
+   "off": 152688,
+   "size": 336,
+   "file": "data/far/far3836.asm",
+   "para": 14390
   },
   {
-   "name": "ovl_14000",
-   "off": 213063,
-   "size": 4096,
-   "file": "overlay/ovl_14000.asm"
+   "name": "far384B",
+   "off": 153024,
+   "size": 384,
+   "file": "data/far/far384B.asm",
+   "para": 14411
   },
   {
-   "name": "ovl_15000",
-   "off": 217159,
-   "size": 4096,
-   "file": "overlay/ovl_15000.asm"
+   "name": "far3863",
+   "off": 153408,
+   "size": 1216,
+   "file": "data/far/far3863.asm",
+   "para": 14435
   },
   {
-   "name": "ovl_16000",
-   "off": 221255,
-   "size": 4096,
-   "file": "overlay/ovl_16000.asm"
+   "name": "far38AF",
+   "off": 154624,
+   "size": 224,
+   "file": "data/far/far38AF.asm",
+   "para": 14511
   },
   {
-   "name": "ovl_17000",
-   "off": 225351,
-   "size": 4096,
-   "file": "overlay/ovl_17000.asm"
+   "name": "far38BD",
+   "off": 154848,
+   "size": 736,
+   "file": "data/far/far38BD.asm",
+   "para": 14525
   },
   {
-   "name": "ovl_18000",
-   "off": 229447,
-   "size": 4096,
-   "file": "overlay/ovl_18000.asm"
+   "name": "far38EB",
+   "off": 155584,
+   "size": 80,
+   "file": "data/far/far38EB.asm",
+   "para": 14571
   },
   {
-   "name": "ovl_19000",
-   "off": 233543,
-   "size": 4096,
-   "file": "overlay/ovl_19000.asm"
+   "name": "far38F0",
+   "off": 155664,
+   "size": 96,
+   "file": "data/far/far38F0.asm",
+   "para": 14576
   },
   {
-   "name": "ovl_1A000",
-   "off": 237639,
-   "size": 4096,
-   "file": "overlay/ovl_1A000.asm"
+   "name": "far38F6",
+   "off": 155760,
+   "size": 2048,
+   "file": "data/far/far38F6.asm",
+   "para": 14582
   },
   {
-   "name": "ovl_1B000",
-   "off": 241735,
-   "size": 3119,
-   "file": "overlay/ovl_1B000.asm"
+   "name": "far3976",
+   "off": 157808,
+   "size": 512,
+   "file": "data/far/far3976.asm",
+   "para": 14710
+  },
+  {
+   "name": "far3996",
+   "off": 158320,
+   "size": 368,
+   "file": "data/far/far3996.asm",
+   "para": 14742
+  },
+  {
+   "name": "far39AD",
+   "off": 158688,
+   "size": 1504,
+   "file": "data/far/far39AD.asm",
+   "para": 14765
+  },
+  {
+   "name": "far3A0B",
+   "off": 160192,
+   "size": 48096,
+   "file": "data/far/far3A0B.asm",
+   "para": 14859
+  },
+  {
+   "name": "dgroup",
+   "off": 208288,
+   "size": 36566,
+   "file": "data/dgroup.asm",
+   "para": 17865
   }
  ]
 }

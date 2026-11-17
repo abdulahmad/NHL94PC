@@ -5,5 +5,9 @@
 F028_000C		equ	0xC
 F028_0136		equ	0x136
 F028_01C6		equ	0x1C6
+g_050C		equ	0x50C
+g_0510		equ	0x510
+g_0512		equ	0x512
+g_0514		equ	0x514
 F028_0E85		equ	0xE85
 %include "seg/seg026.asm"

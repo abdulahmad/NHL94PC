@@ -5,4 +5,6 @@
 F028_0E85		equ	0xE85
 F028_3406		equ	0x3406
 F028_3499		equ	0x3499
+g_7670		equ	0x7670
+g_DF72		equ	0xDF72
 %include "seg/seg040.asm"

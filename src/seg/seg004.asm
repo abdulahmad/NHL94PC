@@ -2,13 +2,6 @@
 ; The first two bytes are retf and nop.
 
 ; DGROUP words this segment uses. The bytes live in the near data, not here.
-MapLo		equ	0x8ED6
-MapHi		equ	0x8ED8
-MapPair		equ	0x8EE2
-OutPtr		equ	0x8EDA
-InPtr		equ	0x8EDE
-BitBuf		equ	0x8EE4
-BitCount	equ	0x8EE8
 
 	retf
 	nop

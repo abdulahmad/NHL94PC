@@ -125,32 +125,70 @@ section seg056 follows=seg055 align=16 vstart=0
 section seg058 follows=seg056 align=16 vstart=0
 %include "seg/seg058.asm"
 
-section overlay follows=seg058 align=1
-%include "overlay/ovl_00000.asm"
-%include "overlay/ovl_01000.asm"
-%include "overlay/ovl_02000.asm"
-%include "overlay/ovl_03000.asm"
-%include "overlay/ovl_04000.asm"
-%include "overlay/ovl_05000.asm"
-%include "overlay/ovl_06000.asm"
-%include "overlay/ovl_07000.asm"
-%include "overlay/ovl_08000.asm"
-%include "overlay/ovl_09000.asm"
-%include "overlay/ovl_0A000.asm"
-%include "overlay/ovl_0B000.asm"
-%include "overlay/ovl_0C000.asm"
-%include "overlay/ovl_0D000.asm"
-%include "overlay/ovl_0E000.asm"
-%include "overlay/ovl_0F000.asm"
-%include "overlay/ovl_10000.asm"
-%include "overlay/ovl_11000.asm"
-%include "overlay/ovl_12000.asm"
-%include "overlay/ovl_13000.asm"
-%include "overlay/ovl_14000.asm"
-%include "overlay/ovl_15000.asm"
-%include "overlay/ovl_16000.asm"
-%include "overlay/ovl_17000.asm"
-%include "overlay/ovl_18000.asm"
-%include "overlay/ovl_19000.asm"
-%include "overlay/ovl_1A000.asm"
-%include "overlay/ovl_1B000.asm"
+section rtl_relocs follows=seg058 align=1 vstart=0
+%include "data/rtl_relocs.asm"
+section far3415 follows=rtl_relocs align=16 vstart=0
+%include "data/far/far3415.asm"
+section far342E follows=far3415 align=16 vstart=0
+%include "data/far/far342E.asm"
+section far342F follows=far342E align=16 vstart=0
+%include "data/far/far342F.asm"
+section far3448 follows=far342F align=16 vstart=0
+%include "data/far/far3448.asm"
+section far35E8 follows=far3448 align=16 vstart=0
+%include "data/far/far35E8.asm"
+section far35EC follows=far35E8 align=16 vstart=0
+%include "data/far/far35EC.asm"
+section far35EE follows=far35EC align=16 vstart=0
+%include "data/far/far35EE.asm"
+section far35F3 follows=far35EE align=16 vstart=0
+%include "data/far/far35F3.asm"
+section far3608 follows=far35F3 align=16 vstart=0
+%include "data/far/far3608.asm"
+section far3680 follows=far3608 align=16 vstart=0
+%include "data/far/far3680.asm"
+section far369A follows=far3680 align=16 vstart=0
+%include "data/far/far369A.asm"
+section far36A8 follows=far369A align=16 vstart=0
+%include "data/far/far36A8.asm"
+section far36B8 follows=far36A8 align=16 vstart=0
+%include "data/far/far36B8.asm"
+section far36F5 follows=far36B8 align=16 vstart=0
+%include "data/far/far36F5.asm"
+section far3701 follows=far36F5 align=16 vstart=0
+%include "data/far/far3701.asm"
+section far3821 follows=far3701 align=16 vstart=0
+%include "data/far/far3821.asm"
+section far3827 follows=far3821 align=16 vstart=0
+%include "data/far/far3827.asm"
+section far382B follows=far3827 align=16 vstart=0
+%include "data/far/far382B.asm"
+section far3836 follows=far382B align=16 vstart=0
+%include "data/far/far3836.asm"
+section far384B follows=far3836 align=16 vstart=0
+%include "data/far/far384B.asm"
+section far3863 follows=far384B align=16 vstart=0
+%include "data/far/far3863.asm"
+section far38AF follows=far3863 align=16 vstart=0
+%include "data/far/far38AF.asm"
+section far38BD follows=far38AF align=16 vstart=0
+%include "data/far/far38BD.asm"
+section far38EB follows=far38BD align=16 vstart=0
+%include "data/far/far38EB.asm"
+section far38F0 follows=far38EB align=16 vstart=0
+%include "data/far/far38F0.asm"
+section far38F6 follows=far38F0 align=16 vstart=0
+%include "data/far/far38F6.asm"
+section far3976 follows=far38F6 align=16 vstart=0
+%include "data/far/far3976.asm"
+section far3996 follows=far3976 align=16 vstart=0
+%include "data/far/far3996.asm"
+section far39AD follows=far3996 align=16 vstart=0
+%include "data/far/far39AD.asm"
+section far3A0B follows=far39AD align=16 vstart=0
+%include "data/far/far3A0B.asm"
+section dgroup follows=far3A0B align=16 vstart=0
+%include "data/dgroup.asm"
+exe_end:
+section dgroup_bss nobits vfollows=dgroup valign=1
+%include "data/dgroup_bss.asm"

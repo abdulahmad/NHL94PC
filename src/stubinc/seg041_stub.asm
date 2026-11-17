@@ -21,4 +21,15 @@ ReadKey		equ	0x16D3
 SaveTextState		equ	0x19B2
 LoadTextState		equ	0x19E1
 F028_46A8		equ	0x46A8
+g_640C		equ	0x640C
+g_6410		equ	0x6410
+g_6414		equ	0x6414
+g_6418		equ	0x6418
+TickSkip		equ	0x6DB2
+g_74DC		equ	0x74DC
+g_7642		equ	0x7642
+g_7646		equ	0x7646
+str_ExitToDosYN		equ	0x76A4
+str_PausePressAnyKeyTo		equ	0x76B6
+g_8D0A		equ	0x8D0A
 %include "seg/seg041.asm"

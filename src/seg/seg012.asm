@@ -22,7 +22,7 @@ F012_0000:
 	lea	ax, [bp - 0x14]
 	push	ax
 	push	di
-	call	far [0xb08e]
+	call	far [g_B08E]
 	add	sp, 0x6
 	mov	[bp - 0x2], ax
 	test	al, 0x2

@@ -6,94 +6,7 @@
 ; The first bytes finish the seg000 routine that ends on this paragraph.
 
 ; DGROUP words this segment uses. The bytes live in the near data, not here.
-EmsMapCache	equ	0x24C
-EmsWindowOff	equ	0x254
-EmsOutPtr	equ	0x25C
-EmsFrame	equ	0x260
-EmsHandle	equ	0x262
-EmmName		equ	0x264
-EndPtr		equ	0x6DA4
-EndMark		equ	0x62F6
-CritRoutine	equ	0x62FE
-CritOld		equ	0x62FA
-SavedSp		equ	0x6402
-PathBuf		equ	0x6310
-PathCut		equ	0x6374
-FindDta		equ	0x6376
-BlockEnd		equ	0x63F8
-BlockSeg		equ	0x63FC
-SavedCs		equ	0x63FE
-SavedDs		equ	0x6400
-CharSeg		equ	0x6D50
-SlotTab		equ	0x6DB4
-TickGate		equ	0x6DB0
-TickSkip		equ	0x6DB2
-Int8Sp		equ	0x6F08
-Int8Ss		equ	0x6F0A
-CallCount	equ	0x6DA0
-TickFrac		equ	0x6DA8
-TickStep		equ	0x6DAA
-TickTotal	equ	0x6DA4
-SkipEoi		equ	0x6F0E
-WantText		equ	0x640A
-JoyX		equ	0x6FF8
-JoyY		equ	0x6FFA
-JoyBtn		equ	0x6FFD
-JoyBits		equ	0x6FFE
-JoyOn		equ	0x7308
-Stick1X		equ	0x7050
-Stick1Y		equ	0x7052
-Stick2X		equ	0x7030
-Stick2Y		equ	0x7032
-Stick1Bits	equ	0x7055
-Stick2Bits	equ	0x7056
-StickRaw		equ	0x7054
-KeyPtr		equ	0x7306
-KeyHook		equ	0x7302
-KeyHead		equ	0x70A8
-KeyTail		equ	0x70AA
-KeyMask		equ	0x70AC
-KeyBuf		equ	0x7088
-KeyState	equ	0x70AE
-TextRow		equ	0x7446
-TextAttr		equ	0x74DA
-TextPos		equ	0x744A
-TextMark		equ	0x7448
-ConBuf		equ	0x7450
-ConKeep		equ	0x7447
-Deadline		equ	0x751E
-LastCount	equ	0x7522
-MouseOn		equ	0x6420
-MouseX		equ	0x6422
-MouseY		equ	0x6424
-MouseBtn		equ	0x6426
-MouseXShift	equ	0x6428
-MouseYShift	equ	0x642A
-MouseLevel	equ	0x642C
-MouseRatioShift	equ	0x642E
-AtanByte	equ	0x77D0
-AltPath		equ	0x7607
-AltBuf		equ	0x762F
-AltCall		equ	0x7633
-AltSize		equ	0x7637
-Cpu286		equ	0x763A
-Cpu386		equ	0x763C
-Cpu486		equ	0x763E
-CpuPe		equ	0x7640
-ScanFn		equ	0x7668
-LineFn		equ	0x766C
-HoldWord	equ	0x7672
-Sin0		equ	0x8268
-Sin1		equ	0x8468
-Sin2		equ	0x8068
-Sin3		equ	0x8A68
-VidMode		equ	0x77C2
-VidEquip	equ	0x77C3
-VidCols		equ	0x77C4
-VidRows		equ	0x77C6
 GamePort	equ	0x201
-FmtSave		equ	0x64CE
-FmtBuf		equ	0x64D6
 
 ; The previous segment ends on the first byte of test bx, 8.
 ; These bytes finish that test, then pop bp / ret 0xe.
@@ -367,17 +280,17 @@ EmsRestoreMap:
 	leave
 	retf
 
-; ReadEndPtr: return the far pointer at EndPtr in DX:AX.
+; ReadEndPtr: return the far pointer at TickTotal in DX:AX.
 ReadEndPtr:
-	les	ax, [EndPtr]
+	les	ax, [TickTotal]
 	mov	dx, es
 	retf
 
-; SetEndMark: store EndPtr plus the long argument at EndMark.
+; SetEndMark: store TickTotal plus the long argument at EndMark.
 SetEndMark:
 	push	bp
 	db	0x8B, 0xEC			; mov bp, sp
-	les	ax, [EndPtr]
+	les	ax, [TickTotal]
 	mov	dx, es
 	add	ax, word [bp + 6]
 	adc	dx, word [bp + 8]
@@ -386,9 +299,9 @@ SetEndMark:
 	leave
 	retf
 
-; WaitEnd: spin until EndPtr is at or past EndMark.
+; WaitEnd: spin until TickTotal is at or past EndMark.
 WaitEnd:
-	les	ax, [EndPtr]
+	les	ax, [TickTotal]
 	mov	dx, es
 	cmp	dx, word [EndMark+2]
 	jb	short WaitEnd
@@ -396,7 +309,7 @@ WaitEnd:
 	jb	short WaitEnd
 	retf
 
-; EndReached: AX is 1 when EndPtr is at or past EndMark, else 0.
+; EndReached: AX is 1 when TickTotal is at or past EndMark, else 0.
 EndReached:
 	push	cs
 	call	ReadEndPtr
@@ -410,7 +323,7 @@ EndReached:
 	db	0x8B, 0xC1			; mov ax, cx
 	retf
 
-; WaitAdd: add the long argument to EndPtr, then spin until EndPtr reaches that sum.
+; WaitAdd: add the long argument to TickTotal, then spin until TickTotal reaches that sum.
 WaitAdd:
 	push	bp
 	db	0x8B, 0xEC			; mov bp, sp

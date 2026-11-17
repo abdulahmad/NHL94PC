@@ -9,8 +9,8 @@ F037_0004:
 	enter	0x5a, 0x0
 	push	di
 	push	si
-	mov	word [0x6db2], 0x1
-	call	far [0x7642]
+	mov	word [TickSkip], 0x1
+	call	far [g_7642]
 	call	0x06E1:LargestGap
 	and	al, 0xf0
 	db	0x0B, 0xD2		; or dx, dx
@@ -71,7 +71,7 @@ F037_0004:
 	call	0x0FEF:F028_00B9
 	push	word 0xc8
 	push	0x0
-	mov	es, [0x8d06]
+	mov	es, [g_8D06]
 	push	word [es:0x74f6]
 	push	0x0
 	call	0x0FEF:F028_3A59
@@ -80,23 +80,23 @@ F037_0004:
 	cwd
 	call	0x03A3:0xC56
 	push	0x23
-	push	word 0x6f34
+	push	str_CalibrateYourJoystickByUsing
 	call	0x1567:F039_0002
 	add	sp, 0x4
 	push	0x2d
-	push	word 0x6f58
+	push	str_ToMoveTheJoystickPosition
 	call	0x1567:F039_0002
 	add	sp, 0x4
 	push	0x37
-	push	word 0x6f80
+	push	str_BelowToAllSquares
 	call	0x1567:F039_0002
 	add	sp, 0x4
 	push	word 0xb4
-	push	word 0x6f96
+	push	str_PressJoystickButtonWhenComplete
 	call	0x1567:F039_0002
 	add	sp, 0x4
 	push	word 0xbe
-	push	word 0x6fba
+	push	str_PressAnyKeyToIgnore
 	call	0x1567:F039_0002
 	add	sp, 0x4
 	push	0xf
@@ -110,7 +110,7 @@ F037_0004:
 	push	0x5b
 	push	0x1
 	push	0x46
-	push	word 0xaa
+	push	str_Asw
 	call	0x0FEF:F028_0136
 	add	sp, 0xa
 	push	0xf
@@ -155,8 +155,8 @@ F037_0004:
 	push	0x20
 	db	0x8B, 0xDE		; mov bx, si
 	shl	bx, 1
-	push	word [bx + 0x6f22]
-	push	word [bx + 0x6f10]
+	push	word [bx + g_6F22]
+	push	word [bx + g_6F10]
 	call	0x0FEF:F028_0136
 	add	sp, 0xa
 	inc	si
@@ -168,8 +168,8 @@ F037_0004:
 	push	0x20
 	db	0x8B, 0xC7		; mov ax, di
 	shl	di, 1
-	push	word [di + 0x6f22]
-	push	word [di + 0x6f10]
+	push	word [di + g_6F22]
+	push	word [di + g_6F10]
 	db	0x8B, 0xF0		; mov si, ax
 	call	0x0FEF:F028_0136
 	add	sp, 0xa
@@ -179,7 +179,7 @@ F037_0004:
 	jz	short .6
 	mov	ax, [bp + 0x6]
 	not	ax
-	and	[0x7308], ax
+	and	[JoyOn], ax
 .10:
 	les	bx, [bp - 0x6]
 	push	word [es:bx + 0x2]
@@ -202,17 +202,17 @@ F037_0004:
 .11:
 	mov	ax, [bp + 0x6]
 	not	ax
-	and	[0x7308], ax
+	and	[JoyOn], ax
 .12:
-	call	far [0x7646]
-	mov	word [0x6db2], 0x0
+	call	far [g_7646]
+	mov	word [TickSkip], 0x0
 	pop	si
 	pop	di
 	leave
 	retf
 
 F037_0232:
-	push	word 0x6fdb
+	push	str_LeftJoystick
 	push	0x0
 	push	0x0
 	push	0x1
@@ -221,7 +221,7 @@ F037_0232:
 	retf
 
 F037_0244:
-	push	word 0x6fe9
+	push	str_RightJoystick
 	push	0x1
 	push	0x8
 	push	0x2

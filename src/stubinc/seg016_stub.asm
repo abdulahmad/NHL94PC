@@ -7,10 +7,15 @@ F028_0048		equ	0x48
 F028_00B4		equ	0xB4
 F038_019C		equ	0x19C
 F026_0246		equ	0x246
+g_0998		equ	0x998
+g_099A		equ	0x99A
+g_099C		equ	0x99C
+g_09A4		equ	0x9A4
 TextWidthAll		equ	0xC0A
 _sprintf		equ	0xD74
 F028_13B0		equ	0x13B0
 _fstrlen		equ	0x13DA
 SaveTextState		equ	0x19B2
 LoadTextState		equ	0x19E1
+g_6D4E		equ	0x6D4E
 %include "seg/seg016.asm"

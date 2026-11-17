@@ -32,11 +32,11 @@ F040_000C:
 	jnz	short .2
 	call	0x0000:0x1170
 	mov	ax, [bp - 0x2]
-	mov	[0xdf72], ax
+	mov	[g_DF72], ax
 	imul	ax, ax, 0x5
 	sar	ax, byte 0x2
 	add	ax, strict word 0x4
-	mov	[0x7670], ax
+	mov	[g_7670], ax
 	pop	si
 	pop	di
 	leave

@@ -4,14 +4,6 @@
 ; seg001 ends on WaitBlank retf. These first bytes are their own function.
 
 ; DGROUP words this segment uses. The bytes live in the near data, not here.
-BlockEnd	equ	0x63F8
-BlockSeg	equ	0x63FC
-EmsOutPtr	equ	0x25C
-BufPtr		equ	0x2BC
-BufCount	equ	0x2BA
-ChainIdx	equ	0xAE9C
-ChainPtr	equ	0xAE9E
-RecSeq		equ	0x2BE
 
 ; Bit 0 of the video status port. AX is 0 or 1.
 BlankBit:

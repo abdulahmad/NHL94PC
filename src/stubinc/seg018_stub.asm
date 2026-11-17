@@ -3,4 +3,5 @@
 	bits	16
 	org	0x0
 OnexitThunk		equ	0x4AE
+g_09AC		equ	0x9AC
 %include "seg/seg018.asm"

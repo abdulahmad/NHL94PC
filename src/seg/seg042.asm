@@ -158,7 +158,7 @@ F042_0134:
 	jmp	short .6
 .4:
 	db	0x8B, 0xDF		; mov bx, di
-	push	word [bx + di + 0x76de]
+	push	word [bx + di + g_76DE]
 	push	si
 	call	0x0000:_strcpy
 	add	sp, 0x4
@@ -175,17 +175,17 @@ F042_0134:
 	inc	di
 .6:
 	db	0x8B, 0xDF		; mov bx, di
-	mov	bx, [bx + di + 0x76de]
+	mov	bx, [bx + di + g_76DE]
 	cmp	byte [bx], 0x0
 	jnz	short .4
 	db	0x33, 0xFF		; xor di, di
 .7:
 	db	0x8B, 0xDF		; mov bx, di
-	mov	bx, [bx + di + 0x76de]
+	mov	bx, [bx + di + g_76DE]
 	cmp	byte [bx], 0x0
 	jz	short .9
 	db	0x8B, 0xDF		; mov bx, di
-	push	word [bx + di + 0x76de]
+	push	word [bx + di + g_76DE]
 	push	si
 	call	0x0000:_strcpy
 	add	sp, 0x4
@@ -220,14 +220,14 @@ F042_0134:
 	db	0x33, 0xC0		; xor ax, ax
 	mov	[bp - 0x4], ax
 	mov	[bp - 0x10], ax
-	push	word 0x7730
+	push	str_Qns
 	lea	cx, [bp - 0x1a]
 	push	cx
 	call	0x0000:_stricmp
 	add	sp, 0x4
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .10
-	push	word 0x7735
+	push	str_Pns
 	lea	ax, [bp - 0x1a]
 	push	ax
 	call	0x0000:_stricmp
@@ -237,14 +237,14 @@ F042_0134:
 .10:
 	jmp	near .21
 .11:
-	push	word 0x773a
+	push	str_Qvs
 	lea	ax, [bp - 0x1a]
 	push	ax
 	call	0x0000:_stricmp
 	add	sp, 0x4
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .12
-	push	word 0x773f
+	push	str_Pvs
 	lea	ax, [bp - 0x1a]
 	push	ax
 	call	0x0000:_stricmp
@@ -254,7 +254,7 @@ F042_0134:
 .12:
 	jmp	near .20
 .13:
-	push	word 0x7744
+	push	str_Qes
 	lea	ax, [bp - 0x1a]
 	push	ax
 	call	0x0000:_stricmp
@@ -263,14 +263,14 @@ F042_0134:
 	jnz	short .14
 	jmp	near .19
 .14:
-	push	word 0x7749
+	push	str_Pes
 	lea	ax, [bp - 0x1a]
 	push	ax
 	call	0x0000:_stricmp
 	add	sp, 0x4
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .19
-	push	word 0x774e
+	push	str_Esh
 	lea	ax, [bp - 0x1a]
 	push	ax
 	call	0x0000:_stricmp
@@ -294,7 +294,7 @@ F042_0134:
 	mov	[bp - 0x10], ax
 	jmp	near .23
 .16:
-	push	word 0x7753
+	push	str_Vsh
 	lea	ax, [bp - 0x1a]
 	push	ax
 	call	0x0000:_stricmp
@@ -363,7 +363,7 @@ F042_0134:
 	add	sp, 0x4
 	mov	[bp - 0x4], ax
 	mov	[bp - 0x2], dx
-	push	word 0x7758
+	push	str_Mga
 	mov	es, [bp - 0x6]
 	push	word [es:si + 0x2]
 	push	word [es:si]
@@ -436,11 +436,11 @@ F042_0134:
 	jnz	short .29
 	cmp	[bp + 0xa], ax
 	jz	short .28
-	push	word 0x775d
+	push	str_LoadshapeblockaNoMemoryForMcgatovga
 	call	0x0F4A:F022_03E4
 	pop	bx
 .28:
-	push	word 0x7788
+	push	str_LoadshapeblockaNoMemoryForMcgatovga_2
 	call	0x03A3:ConPrint
 	pop	bx
 	push	word [bp - 0x6]

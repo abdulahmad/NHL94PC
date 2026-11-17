@@ -3,7 +3,7 @@
 F008_0000:
 	std
 	add	sp, 0x2
-	inc	word [0x528]
+	inc	word [g_0528]
 .1:
 	pop	si
 	retf
@@ -16,16 +16,16 @@ F008_000A:
 	jnz	short .1
 	jmp	near .9
 .1:
-	cmp	word [0x76c], 0x0
+	cmp	word [g_076C], 0x0
 	jnz	short .2
 	jmp	near .9
 .2:
-	les	bx, [0x8eea]
+	les	bx, [g_8EEA]
 	cmp	word [es:bx + 0x30], 0x0
 	jz	short .3
 	dec	word [es:bx + 0x30]
 .3:
-	les	bx, [0x8eea]
+	les	bx, [g_8EEA]
 	cmp	word [es:bx + 0x32], 0x0
 	jnz	short .4
 	jmp	near .9
@@ -43,14 +43,14 @@ F008_000A:
 	mov	ax, [es:bx + 0x2e]
 	inc	word [es:bx + 0x2e]
 	mov	[bp - 0x14], ax
-	les	bx, [0x8eea]
+	les	bx, [g_8EEA]
 	cmp	[es:bx + 0x2c], ax
 	jg	short .6
 	jmp	near .8
 .6:
 	db	0x8B, 0xD8		; mov bx, ax
 	shl	bx, 1
-	mov	si, [0x8eea]
+	mov	si, [g_8EEA]
 	mov	ax, [es:bx + si]
 	mov	[bp - 0xe], ax
 	inc	ax
@@ -61,8 +61,8 @@ F008_000A:
 	retf
 .7:
 	imul	bx, [bp - 0xe], 0x24
-	add	bx, [0x8ef6]
-	mov	es, [0x8ef8]
+	add	bx, [g_8EF6]
+	mov	es, [g_8EF8]
 	mov	[bp - 0x12], bx
 	mov	[bp - 0x10], es
 	mov	ax, [es:bx + 0xe]
@@ -75,11 +75,11 @@ F008_000A:
 	mov	[bp - 0xa], dx
 	mov	ax, [es:bx + 0x1e]
 	mov	dx, [es:bx + 0x20]
-	les	bx, [0x8eea]
+	les	bx, [g_8EEA]
 	mov	[es:bx + 0x28], ax
 	mov	[es:bx + 0x2a], dx
-	inc	word [0x764]
-	and	word [0x764], 0x1
+	inc	word [g_0764]
+	and	word [g_0764], 0x1
 	lea	ax, [bp - 0x8]
 	push	ax
 	call	0x03A3:EmsSaveMap
@@ -93,11 +93,11 @@ F008_000A:
 	push	word [bp - 0xc]
 	push	0x0
 	push	0x0
-	push	word 0x80
+	push	str_Que
 	push	word [bp - 0x16]
 	push	word [bp - 0x18]
-	push	word [0x764]
-	mov	al, [0x766]
+	push	word [g_0764]
+	mov	al, [g_0766]
 	push	ax
 	call	0x1844:F051_02A6
 	add	sp, 0x1c
@@ -110,9 +110,9 @@ F008_000A:
 	retf
 .8:
 	mov	word [es:bx + 0x32], 0x0
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	mov	ax, [es:bx + 0x1210]
-	les	bx, [0x8eea]
+	les	bx, [g_8EEA]
 	mov	[es:bx + 0x30], ax
 .9:
 	pop	si
@@ -146,27 +146,27 @@ F008_0174:
 	mov	ax, 0x2
 	call	0x0000:__chkstk
 	push	si
-	les	bx, [0x8eea]
+	les	bx, [g_8EEA]
 	mov	word [es:bx + 0x32], 0x0
 	mov	word [bp - 0x2], 0x0
-	mov	es, [0x8eec]
+	mov	es, [g_8EEC]
 .1:
 	mov	bx, [bp - 0x2]
 	shl	bx, 1
-	mov	si, [0x8eea]
+	mov	si, [g_8EEA]
 	mov	word [es:bx + si], 0xffff
 	inc	word [bp - 0x2]
 	cmp	word [bp - 0x2], 0x14
 	jl	short .1
-	les	bx, [0x8eea]
+	les	bx, [g_8EEA]
 	mov	word [es:bx + 0x2c], 0x0
-	les	bx, [0x8eea]
+	les	bx, [g_8EEA]
 	mov	word [es:bx + 0x2e], 0x0
-	les	bx, [0x8eea]
+	les	bx, [g_8EEA]
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[es:bx + 0x2a], ax
 	mov	[es:bx + 0x28], ax
-	les	bx, [0x8eea]
+	les	bx, [g_8EEA]
 	mov	[es:bx + 0x30], ax
 	pop	si
 	leave
@@ -181,8 +181,8 @@ F008_01D8:
 	mov	word [bp - 0x2], 0x0
 .1:
 	imul	ax, [bp - 0x2], 0x24
-	add	ax, [0x8ef6]
-	mov	dx, [0x8ef8]
+	add	ax, [g_8EF6]
+	mov	dx, [g_8EF8]
 	push	dx
 	push	ax
 	push	cs
@@ -195,34 +195,34 @@ F008_01D8:
 	mov	dx, [bp + 0x8]
 	sub	ax, 0x1388
 	sbb	dx, 0x0
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	mov	[es:bx + 0x1208], ax
 	mov	[es:bx + 0x120a], dx
-	push	word 0x80
+	push	str_Que
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
-	push	word 0x76e
+	push	str_Speechbuf
 	call	0x14DB:F034_0013
 	add	sp, 0x8
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	mov	[es:bx + 0x1200], ax
 	mov	[es:bx + 0x1202], dx
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	push	word [es:bx + 0x1202]
 	push	word [es:bx + 0x1200]
 	call	0x06E1:RawBase
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	mov	[es:bx + 0x1204], ax
 	mov	[es:bx + 0x1206], dx
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[es:bx + 0x120e], ax
 	mov	[es:bx + 0x120c], ax
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	mov	[es:bx + 0x1212], ax
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	mov	[es:bx + 0x1210], ax
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	mov	[es:bx + 0x1214], ax
 	leave
 	retf
@@ -235,7 +235,7 @@ F008_0292:
 	call	0x0000:__chkstk
 	push	si
 	mov	word [bp - 0x2], 0x0
-	mov	es, [0x8ef4]
+	mov	es, [g_8EF4]
 .1:
 	mov	bx, [bp - 0x2]
 	db	0x8B, 0xC3		; mov ax, bx
@@ -243,16 +243,16 @@ F008_0292:
 	db	0x03, 0xD8		; add bx, ax
 	shl	bx, byte 0x2
 	db	0x03, 0xD8		; add bx, ax
-	mov	si, [0x8ef2]
+	mov	si, [g_8EF2]
 	mov	byte [es:bx + si], 0x0
 	inc	word [bp - 0x2]
 	cmp	word [bp - 0x2], 0x14
 	jl	short .1
-	les	bx, [0x8ef2]
+	les	bx, [g_8EF2]
 	mov	word [es:bx + 0x10a], 0x0
-	les	bx, [0x8ef2]
+	les	bx, [g_8EF2]
 	mov	word [es:bx + 0x108], 0x0
-	les	bx, [0x8ef2]
+	les	bx, [g_8EF2]
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[es:bx + 0x106], ax
 	mov	[es:bx + 0x104], ax
@@ -273,36 +273,36 @@ F008_02F0:
 	jmp	near .2
 .1:
 	mov	al, [bp + 0x6]
-	mov	[0x766], al
-	mov	word [0x764], 0x0
+	mov	[g_0766], al
+	mov	word [g_0764], 0x0
 	mov	ax, [bp + 0xc]
 	mov	dx, [bp + 0xe]
-	mov	[0x8efa], ax
-	mov	[0x8efc], dx
+	mov	[g_8EFA], ax
+	mov	[g_8EFC], dx
 	mov	ax, [bp + 0x10]
 	mov	dx, [bp + 0x12]
-	mov	[0x768], ax
-	mov	[0x76a], dx
+	mov	[g_0768], ax
+	mov	[g_076A], dx
 	push	cs
 	call	F008_04AE
 	push	0x0
 	push	0x0
 	push	0x34
-	push	word 0x778
+	push	str_Sentence
 	call	0x14DB:F034_0030
 	db	0x8B, 0xE5		; mov sp, bp
-	mov	[0x8eea], ax
-	mov	[0x8eec], dx
+	mov	[g_8EEA], ax
+	mov	[g_8EEC], dx
 	push	cs
 	call	F008_0174
 	push	0x0
 	push	0x0
 	push	word 0x122c
-	push	word 0x781
+	push	str_SpeechBank
 	call	0x14DB:F034_0030
 	db	0x8B, 0xE5		; mov sp, bp
-	mov	[0x8ef6], ax
-	mov	[0x8ef8], dx
+	mov	[g_8EF6], ax
+	mov	[g_8EF8], dx
 	push	word [bp + 0xa]
 	push	word [bp + 0x8]
 	push	cs
@@ -311,17 +311,17 @@ F008_02F0:
 	push	0x0
 	push	0x0
 	push	word 0x10c
-	push	word 0x78d
+	push	str_SampleMemMan
 	call	0x14DB:F034_0030
 	db	0x8B, 0xE5		; mov sp, bp
-	mov	[0x8ef2], ax
-	mov	[0x8ef4], dx
+	mov	[g_8EF2], ax
+	mov	[g_8EF4], dx
 	push	cs
 	call	F008_0292
 	push	word 0x9b2
 	push	strict word 0xa
 	call	0x03A3:AllocSlot
-	mov	word [0x76c], 0x1
+	mov	word [g_076C], 0x1
 .2:
 	leave
 	retf
@@ -330,34 +330,34 @@ F008_02F0:
 F008_039E:
 	db	0x33, 0xC0		; xor ax, ax
 	call	0x0000:__chkstk
-	cmp	word [0x76c], 0x0
+	cmp	word [g_076C], 0x0
 	jz	short .1
 	push	word 0x9b2
 	push	strict word 0xa
 	call	0x03A3:FreeSlot
 	add	sp, 0x4
-	mov	al, [0x766]
+	mov	al, [g_0766]
 	push	ax
 	call	0x1844:F051_0178
 	add	sp, 0x2
-	push	word [0x8eec]
-	push	word [0x8eea]
+	push	word [g_8EEC]
+	push	word [g_8EEA]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	push	word [es:bx + 0x1202]
 	push	word [es:bx + 0x1200]
 	call	0x06E1:UnlinkRec
 	add	sp, 0x4
-	push	word [0x8ef8]
-	push	word [0x8ef6]
+	push	word [g_8EF8]
+	push	word [g_8EF6]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	push	word [0x8ef4]
-	push	word [0x8ef2]
+	push	word [g_8EF4]
+	push	word [g_8EF2]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
-	mov	word [0x76c], 0x0
+	mov	word [g_076C], 0x0
 .1:
 	retf
 	db	0x90
@@ -365,7 +365,7 @@ F008_039E:
 F008_0414:
 	db	0x33, 0xC0		; xor ax, ax
 	call	0x0000:__chkstk
-	cmp	word [0x76c], 0x0
+	cmp	word [g_076C], 0x0
 	jnz	short .1
 	db	0x2B, 0xC0		; sub ax, ax
 	retf
@@ -377,13 +377,13 @@ F008_0414:
 F008_042A:
 	db	0x33, 0xC0		; xor ax, ax
 	call	0x0000:__chkstk
-	cmp	word [0x76c], 0x0
+	cmp	word [g_076C], 0x0
 	jnz	short .1
 	db	0x2B, 0xC0		; sub ax, ax
 	retf
 	db	0x90
 .1:
-	les	bx, [0x8eea]
+	les	bx, [g_8EEA]
 	cmp	word [es:bx + 0x32], 0x0
 	jz	short .2
 	mov	ax, 0x1
@@ -397,14 +397,14 @@ F008_042A:
 F008_0452:
 	db	0x33, 0xC0		; xor ax, ax
 	call	0x0000:__chkstk
-	cmp	word [0x76c], 0x0
+	cmp	word [g_076C], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
 	retf
 	db	0x90
 .2:
-	les	bx, [0x8eea]
+	les	bx, [g_8EEA]
 	cmp	word [es:bx + 0x32], 0x0
 	jnz	short .1
 	cmp	word [es:bx + 0x30], 0x0
@@ -422,10 +422,10 @@ F008_04AE:
 	mov	ax, 0x12
 	call	0x0000:__chkstk
 	push	si
-	push	word 0x80
+	push	str_Que
 	push	0x0
 	push	word 0x100
-	push	word 0x79c
+	push	str_Pause
 	call	0x14DB:F034_0013
 	add	sp, 0x8
 	mov	[bp - 0x10], ax
@@ -434,14 +434,14 @@ F008_04AE:
 	push	ax
 	call	0x06E1:RawBase
 	add	sp, 0x4
-	mov	[0x8eee], ax
-	mov	[0x8ef0], dx
+	mov	[g_8EEE], ax
+	mov	[g_8EF0], dx
 	lea	ax, [bp - 0x8]
 	push	ax
 	call	0x03A3:EmsSaveMap
 	add	sp, 0x2
-	push	word [0x8ef0]
-	push	word [0x8eee]
+	push	word [g_8EF0]
+	push	word [g_8EEE]
 	call	0x03A3:EmsMapFrame
 	add	sp, 0x4
 	mov	[bp - 0xc], ax
@@ -469,7 +469,7 @@ F008_0532:
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, 0x8
 	call	0x0000:__chkstk
-	cmp	word [0x76c], 0x0
+	cmp	word [g_076C], 0x0
 	jz	short .1
 	lea	ax, [bp - 0x8]
 	push	ax
@@ -484,11 +484,11 @@ F008_0532:
 	push	word 0x100
 	push	0x0
 	push	0x0
-	push	word 0x80
-	push	word [0x8ef0]
-	push	word [0x8eee]
+	push	str_Que
+	push	word [g_8EF0]
+	push	word [g_8EEE]
 	push	0x0
-	mov	al, [0x766]
+	mov	al, [g_0766]
 	push	ax
 	call	0x1844:F051_02A6
 	add	sp, 0x1c
@@ -501,11 +501,11 @@ F008_0532:
 	push	word 0x100
 	push	0x0
 	push	0x0
-	push	word 0x80
-	push	word [0x8ef0]
-	push	word [0x8eee]
+	push	str_Que
+	push	word [g_8EF0]
+	push	word [g_8EEE]
 	push	0x1
-	mov	al, [0x766]
+	mov	al, [g_0766]
 	push	ax
 	call	0x1844:F051_02A6
 	add	sp, 0x1c
@@ -598,14 +598,14 @@ F008_0664:
 	mov	ax, 0x2e
 	call	0x0000:__chkstk
 	push	si
-	cmp	word [0x76c], 0x0
+	cmp	word [g_076C], 0x0
 	jnz	short .1
 	jmp	near .12
 .1:
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	cmp	word [es:bx + 0x1214], 0x0
 	jz	short .3
-	lea	ax, [bx + 0x1218]
+	lea	ax, [bx + g_1218]
 	push	es
 	push	ax
 	push	ds
@@ -617,7 +617,7 @@ F008_0664:
 	jz	short .2
 	jmp	near .12
 .2:
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	push	word [es:bx + 0x1216]
 	call	0x0000:_dos_close
 	add	sp, 0x2
@@ -631,26 +631,26 @@ F008_0664:
 	push	0xd
 	push	ds
 	push	word [bp + 0x6]
-	mov	ax, [0x8ef6]
-	mov	dx, [0x8ef8]
+	mov	ax, [g_8EF6]
+	mov	dx, [g_8EF8]
 	add	ax, 0x1218
 	push	dx
 	push	ax
 	call	0x03A3:CopyStrNFar
 	add	sp, 0xa
 	mov	ax, [bp - 0x22]
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	mov	[es:bx + 0x1216], ax
 	mov	ax, [bp + 0x8]
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	mov	[es:bx + 0x1210], ax
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	mov	word [es:bx + 0x1214], 0x1
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[es:bx + 0x120e], ax
 	mov	[es:bx + 0x120c], ax
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	mov	[es:bx + 0x1212], ax
 	lea	ax, [bp - 0x20]
 	push	ax
@@ -665,7 +665,7 @@ F008_0664:
 	push	cs
 	call	F008_05B6
 	add	sp, 0x2
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	mov	[es:bx + 0x1226], ax
 	lea	ax, [bp - 0x20]
 	push	ax
@@ -680,7 +680,7 @@ F008_0664:
 	push	cs
 	call	F008_05B6
 	add	sp, 0x2
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	mov	[es:bx + 0x1228], ax
 	lea	ax, [bp - 0x20]
 	push	ax
@@ -695,7 +695,7 @@ F008_0664:
 	push	cs
 	call	F008_05B6
 	add	sp, 0x2
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	mov	[es:bx + 0x122a], ax
 	mov	word [bp - 0x1e], 0x0
 	jmp	short .5
@@ -708,7 +708,7 @@ F008_0664:
 	push	cs
 	call	F008_05DE
 	add	sp, 0x2
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	mov	[es:bx + si + 0x12], ax
 	mov	[es:bx + si + 0x14], dx
 	push	word [bp - 0x22]
@@ -717,25 +717,25 @@ F008_0664:
 	add	sp, 0x2
 	mov	[bp - 0x1c], ax
 	mov	[bp - 0x1a], dx
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	mov	[es:bx + si + 0x1a], ax
 	mov	[es:bx + si + 0x1c], dx
 	push	word [bp - 0x22]
 	db	0x8B, 0xC6		; mov ax, si
-	add	si, [0x8ef6]
-	mov	cx, [0x8ef8]
+	add	si, [g_8EF6]
+	mov	cx, [g_8EF8]
 	push	cx
 	push	si
 	db	0x8B, 0xF0		; mov si, ax
 	push	cs
 	call	F008_0634
 	add	sp, 0x6
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	mov	word [es:bx + si + 0x22], 0x0
 	inc	word [bp - 0x1e]
 .5:
 	mov	ax, [bp - 0x1e]
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	cmp	[es:bx + 0x122a], ax
 	jg	short .4
 	mov	ax, [es:bx + 0x1210]
@@ -768,8 +768,8 @@ F008_0664:
 	cmp	byte [bp - 0x26], 0xfb
 	jz	short .7
 	push	0xd
-	add	si, [0x8ef6]
-	mov	cx, [0x8ef8]
+	add	si, [g_8EF6]
+	mov	cx, [g_8EF8]
 	push	cx
 	push	si
 	lea	ax, [bp - 0x10]
@@ -804,7 +804,7 @@ F008_0664:
 	sub	ax, strict word 0x5
 	mov	[bp - 0x14], ax
 	imul	si, [bp - 0x1e], 0x24
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	mov	[es:bx + si + 0x16], ax
 	mov	word [es:bx + si + 0x18], 0x0
 	mov	ax, [bp - 0x14]
@@ -816,7 +816,7 @@ F008_0664:
 	int	0x3b
 	outsb
 	ror	ch, cl
-	cmp	[0x8b0a], cl
+	cmp	[g_8B0A], cl
 	call	0x0000:EmulatedFloat
 	db	0x8B, 0xC8		; mov cx, ax
 	mov	ax, [bp + 0x8]
@@ -825,13 +825,13 @@ F008_0664:
 	db	0x2B, 0xC8		; sub cx, ax
 	db	0x1B, 0xDA		; sbb bx, dx
 	db	0x8B, 0xC3		; mov ax, bx
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	mov	[es:bx + si + 0x1e], cx
 	mov	[es:bx + si + 0x20], ax
 	inc	word [bp - 0x1e]
 .8:
 	mov	ax, [bp - 0x1e]
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	cmp	[es:bx + 0x122a], ax
 	jng	short .9
 	jmp	near .6
@@ -842,8 +842,8 @@ F008_0664:
 	db	0x90
 .10:
 	imul	ax, [bp - 0x1e], 0x24
-	add	ax, [0x8ef6]
-	mov	dx, [0x8ef8]
+	add	ax, [g_8EF6]
+	mov	dx, [g_8EF8]
 	push	dx
 	push	ax
 	push	cs
@@ -874,7 +874,7 @@ F008_0942:
 	db	0x90
 .1:
 	imul	si, [bp + 0x6], 0x24
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	mov	ax, [es:bx + si + 0x16]
 	mov	dx, [es:bx + si + 0x18]
 	pop	si
@@ -889,11 +889,11 @@ F008_096E:
 	call	0x0000:__chkstk
 	push	si
 	imul	bx, [bp + 0x6], 0x24
-	add	bx, [0x8ef6]
-	mov	es, [0x8ef8]
+	add	bx, [g_8EF6]
+	mov	es, [g_8EF8]
 	mov	ax, [es:bx + 0x1a]
 	mov	[bp - 0x16], ax
-	mov	si, [0x8ef6]
+	mov	si, [g_8EF6]
 	mov	cx, [es:si + 0x1216]
 	mov	[bp - 0x1c], cx
 	mov	cx, [es:bx + 0x12]
@@ -989,21 +989,21 @@ F008_0A84:
 	push	si
 	cmp	word [bp + 0x6], 0x0
 	jnz	short .1
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	mov	ax, [es:bx + 0x1204]
 	mov	dx, [es:bx + 0x1206]
 	jmp	short .2
 .1:
 	imul	bx, [bp + 0x6], 0x24
-	add	bx, [0x8ef6]
-	mov	es, [0x8ef8]
+	add	bx, [g_8EF6]
+	mov	es, [g_8EF8]
 	mov	ax, [es:bx - 0x16]
 	mov	dx, [es:bx - 0x14]
 	add	ax, [es:bx - 0xe]
 	adc	dx, [es:bx - 0xc]
 .2:
 	imul	si, [bp + 0x6], 0x24
-	mov	bx, [0x8ef6]
+	mov	bx, [g_8EF6]
 	mov	[es:bx + si + 0xe], ax
 	mov	[es:bx + si + 0x10], dx
 	push	dx
@@ -1014,14 +1014,14 @@ F008_0A84:
 	add	sp, 0x6
 	mov	[bp - 0x4], ax
 	mov	[bp - 0x2], dx
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	mov	word [es:bx + si + 0x22], 0x1
 	mov	ax, [bp - 0x4]
 	mov	dx, [bp - 0x2]
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	add	[es:bx + 0x120c], ax
 	adc	[es:bx + 0x120e], dx
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	inc	word [es:bx + 0x1212]
 	pop	si
 	leave
@@ -1073,7 +1073,7 @@ F008_0B4C:
 	cmp	word [bp - 0x2], 0x80
 	jnl	short .3
 	imul	si, [bp - 0x2], 0x24
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	cmp	word [es:bx + si + 0x22], 0x0
 	jnz	short .1
 	mov	ax, [bp - 0x2]
@@ -1102,7 +1102,7 @@ F008_0B86:
 	cmp	word [bp - 0x2], 0x80
 	jnl	short .3
 	imul	si, [bp - 0x2], 0x24
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	cmp	word [es:bx + si + 0x22], 0x1
 	jnz	short .1
 	mov	ax, [bp - 0x2]
@@ -1129,8 +1129,8 @@ F008_0BC0:
 	cmp	word [bp - 0x2], 0x80
 	jnl	short .3
 	imul	ax, [bp - 0x2], 0x24
-	add	ax, [0x8ef6]
-	mov	dx, [0x8ef8]
+	add	ax, [g_8EF6]
+	mov	dx, [g_8EF8]
 	push	dx
 	push	ax
 	push	ds
@@ -1156,7 +1156,7 @@ F008_0C04:
 	call	0x0000:__chkstk
 	push	si
 	imul	si, [bp + 0x6], 0x24
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	cmp	word [es:bx + si + 0x22], 0x1
 	jnz	short .1
 	mov	ax, 0x1
@@ -1181,7 +1181,7 @@ F008_0C2A:
 	inc	word [bp - 0x2]
 .2:
 	mov	ax, [bp - 0x2]
-	les	bx, [0x8ef2]
+	les	bx, [g_8EF2]
 	cmp	[es:bx + 0x108], ax
 	jng	short .3
 	db	0x8B, 0xC8		; mov cx, ax
@@ -1219,7 +1219,7 @@ F008_0C76:
 	add	sp, 0x4
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .2
-	les	bx, [0x8ef2]
+	les	bx, [g_8EF2]
 	mov	ax, [es:bx + 0x108]
 	inc	word [es:bx + 0x108]
 	push	0xd
@@ -1230,8 +1230,8 @@ F008_0C76:
 	db	0x03, 0xC1		; add ax, cx
 	shl	ax, byte 0x2
 	db	0x03, 0xC1		; add ax, cx
-	add	ax, [0x8ef2]
-	mov	dx, [0x8ef4]
+	add	ax, [g_8EF2]
+	mov	dx, [g_8EF4]
 	push	dx
 	push	ax
 	call	0x03A3:CopyStrNFar
@@ -1252,11 +1252,11 @@ F008_0C76:
 	push	word [bp - 0x4]
 	push	cs
 	call	F008_0942
-	les	bx, [0x8ef2]
+	les	bx, [g_8EF2]
 	add	[es:bx + 0x104], ax
 	adc	[es:bx + 0x106], dx
 .1:
-	les	bx, [0x8ef2]
+	les	bx, [g_8EF2]
 	inc	word [es:bx + 0x10a]
 .2:
 	leave
@@ -1279,8 +1279,8 @@ F008_0D00:
 	jl	short .3
 	imul	bx, [bp - 0x2], 0x24
 	db	0x8B, 0xC3		; mov ax, bx
-	add	bx, [0x8ef6]
-	mov	es, [0x8ef8]
+	add	bx, [g_8EF6]
+	mov	es, [g_8EF8]
 	cmp	word [es:bx + 0x22], 0x1
 	jnz	short .1
 	push	es
@@ -1291,9 +1291,9 @@ F008_0D00:
 	add	sp, 0x4
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .1
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	mov	[es:bx + si + 0x22], ax
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	mov	ax, [es:bx + si + 0x16]
 	mov	dx, [es:bx + si + 0x18]
 	sub	[es:bx + 0x120c], ax
@@ -1321,8 +1321,8 @@ F008_0D6C:
 	jnz	short .2
 	jmp	near .5
 .2:
-	mov	ax, [0x768]
-	mov	dx, [0x76a]
+	mov	ax, [g_0768]
+	mov	dx, [g_076A]
 	cmp	[bp + 0x10], dx
 	jc	short .3
 	ja	short .4
@@ -1341,8 +1341,8 @@ F008_0D6C:
 	push	word [bp - 0x8]
 	push	dx
 	push	ax
-	push	word [0x8efc]
-	push	word [0x8efa]
+	push	word [g_8EFC]
+	push	word [g_8EFA]
 	call	0x0000:_fmemmove
 	add	sp, 0xa
 	push	word [bp + 0x8]
@@ -1350,8 +1350,8 @@ F008_0D6C:
 	call	0x03A3:EmsMapFrame
 	add	sp, 0x4
 	push	word [bp - 0x8]
-	push	word [0x8efc]
-	push	word [0x8efa]
+	push	word [g_8EFC]
+	push	word [g_8EFA]
 	push	dx
 	push	ax
 	call	0x0000:_fmemmove
@@ -1517,15 +1517,15 @@ F008_0F4A:
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[bp - 0xc], ax
 	mov	[bp - 0x6], ax
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	mov	ax, [es:bx + 0x1208]
 	mov	dx, [es:bx + 0x120a]
 	mov	[bp - 0x4], ax
 	mov	[bp - 0x2], dx
-	les	si, [0x8ef2]
+	les	si, [g_8EF2]
 	mov	cx, [es:si + 0x104]
 	mov	bx, [es:si + 0x106]
-	les	si, [0x8ef6]
+	les	si, [g_8EF6]
 	add	cx, [es:si + 0x120c]
 	adc	bx, [es:si + 0x120e]
 	db	0x3B, 0xDA		; cmp bx, dx
@@ -1536,10 +1536,10 @@ F008_0F4A:
 .1:
 	push	cs
 	call	F008_0D00
-	les	bx, [0x8ef2]
+	les	bx, [g_8EF2]
 	mov	ax, [es:bx + 0x104]
 	mov	dx, [es:bx + 0x106]
-	les	bx, [0x8ef6]
+	les	bx, [g_8EF6]
 	add	ax, [es:bx + 0x120c]
 	adc	dx, [es:bx + 0x120e]
 	cmp	dx, [bp - 0x2]
@@ -1620,7 +1620,7 @@ F008_0FEC:
 	jnz	short .3
 	mov	[bp - 0x8], cx
 .3:
-	mov	es, [0x8b12]
+	mov	es, [g_8B12]
 	mov	bx, [bp - 0x6]
 	shl	bx, byte 0x2
 	push	word [es:bx + 0xba]
@@ -1629,7 +1629,7 @@ F008_0FEC:
 	push	word [bp + 0x8]
 	call	0x0000:_fstrlen
 	add	sp, 0x8
-	mov	es, [0x8b12]
+	mov	es, [g_8B12]
 	mov	ax, [bp - 0x4]
 	add	[bp - 0x8], ax
 	mov	bx, [bp - 0x8]
@@ -1647,20 +1647,20 @@ F008_109C:
 	jmp	short .6
 	db	0x90
 .1:
-	push	word 0x7a2
-	push	word 0x7a6
+	push	str_Off
+	push	str_2minsS
 	jmp	short .5
 .2:
-	push	word 0x7af
-	push	word 0x7b3
+	push	str_Off_2
+	push	str_5minsS
 	jmp	short .5
 .3:
-	push	word 0x7bc
-	push	word 0x7c0
+	push	str_Off_3
+	push	str_10minsS
 	jmp	short .5
 .4:
-	push	word 0x7ca
-	push	word 0x7ce
+	push	str_Off_4
+	push	str_GamemisS
 .5:
 	push	word [bp + 0x8]
 	call	0x0000:_sprintf
@@ -1690,7 +1690,7 @@ F008_10EC:
 	jmp	short .9
 	db	0x90
 .1:
-	push	word 0x7d9
+	push	str_SmytheBar
 .2:
 	push	word [bp + 0x6]
 	call	0x0000:_sprintf
@@ -1699,19 +1699,19 @@ F008_10EC:
 	jmp	short F008_10ECJumpTable.1
 	db	0x90
 .3:
-	push	word 0x7e4
+	push	str_NorrisBar
 	jmp	short .2
 	db	0x90
 .4:
-	push	word 0x7ef
+	push	str_AdamsBar
 	jmp	short .2
 	db	0x90
 .5:
-	push	word 0x7f9
+	push	str_PatrickBar
 	jmp	short .2
 	db	0x90
 .6:
-	push	word 0x805
+	push	str_CampbellBar
 .7:
 	push	word [bp + 0x6]
 	call	0x0000:_sprintf
@@ -1720,7 +1720,7 @@ F008_10EC:
 	jmp	short F008_10ECJumpTable.1
 	db	0x90
 .8:
-	push	word 0x812
+	push	str_WalesBar
 	jmp	short .7
 	db	0x90
 .9:
@@ -1749,7 +1749,7 @@ F008_10ECJumpTable:
 	test	byte [bp + 0x8], 0xc
 	jz	short .2
 	mov	word [bp - 0x2], 0x0
-	push	word 0x81c
+	push	str_StanleyBar
 	push	word [bp + 0x6]
 	call	0x0000:_sprintf
 .2:
@@ -1874,7 +1874,7 @@ F008_128A:
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, 0x8
 	call	0x0000:__chkstk
-	cmp	word [0x76c], 0x0
+	cmp	word [g_076C], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
@@ -1893,17 +1893,17 @@ F008_128A:
 	call	F008_0174
 	push	cs
 	call	F008_0292
-	push	word 0x828
+	push	str_EaNhlInt
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
 	push	cs
 	call	F008_0FDC
-	push	word 0x833
+	push	str_EaNhlInt_2
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	les	bx, [0x8eea]
+	les	bx, [g_8EEA]
 	mov	word [es:bx + 0x32], 0x1
 	lea	ax, [bp - 0x8]
 	push	ax
@@ -1917,7 +1917,7 @@ F008_12EC:
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, 0x8
 	call	0x0000:__chkstk
-	cmp	word [0x76c], 0x0
+	cmp	word [g_076C], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
@@ -1936,25 +1936,25 @@ F008_12EC:
 	call	F008_0174
 	push	cs
 	call	F008_0292
-	push	word 0x6b8
+	push	str_ImrbarrInt
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x6c4
+	push	str_GoodniteInt
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
 	push	cs
 	call	F008_0FDC
-	push	word 0x6b8
+	push	str_ImrbarrInt
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x6c4
+	push	str_GoodniteInt
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	les	bx, [0x8eea]
+	les	bx, [g_8EEA]
 	mov	word [es:bx + 0x32], 0x1
 	lea	ax, [bp - 0x8]
 	push	ax
@@ -1968,7 +1968,7 @@ F008_1362:
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, 0x8
 	call	0x0000:__chkstk
-	cmp	word [0x76c], 0x0
+	cmp	word [g_076C], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
@@ -1987,17 +1987,17 @@ F008_1362:
 	call	F008_0174
 	push	cs
 	call	F008_0292
-	push	word 0x6d2
+	push	str_LineupsInt
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
 	push	cs
 	call	F008_0FDC
-	push	word 0x6d2
+	push	str_LineupsInt
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	les	bx, [0x8eea]
+	les	bx, [g_8EEA]
 	mov	word [es:bx + 0x32], 0x1
 	lea	ax, [bp - 0x8]
 	push	ax
@@ -2011,7 +2011,7 @@ F008_13C4:
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, 0x8
 	call	0x0000:__chkstk
-	cmp	word [0x76c], 0x0
+	cmp	word [g_076C], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
@@ -2030,17 +2030,17 @@ F008_13C4:
 	call	F008_0174
 	push	cs
 	call	F008_0292
-	push	word 0x83e
+	push	str_ElsenhlInt
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
 	push	cs
 	call	F008_0FDC
-	push	word 0x84a
+	push	str_ElsenhlInt_2
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	les	bx, [0x8eea]
+	les	bx, [g_8EEA]
 	mov	word [es:bx + 0x32], 0x1
 	lea	ax, [bp - 0x8]
 	push	ax
@@ -2054,7 +2054,7 @@ F008_1426:
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, 0x32
 	call	0x0000:__chkstk
-	cmp	word [0x76c], 0x0
+	cmp	word [g_076C], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
@@ -2069,23 +2069,23 @@ F008_1426:
 	push	ax
 	call	0x03A3:EmsSaveMap
 	add	sp, 0x2
-	push	word 0x856
+	push	str_Rnk
 	push	word [bp + 0x6]
-	push	word 0x54a
+	push	str_SS
 	lea	ax, [bp - 0x16]
 	push	ax
 	call	0x0000:_sprintf
 	add	sp, 0x8
-	push	word 0x85a
+	push	str_Awa
 	push	word [bp + 0x8]
-	push	word 0x54a
+	push	str_SS
 	lea	ax, [bp - 0x24]
 	push	ax
 	call	0x0000:_sprintf
 	add	sp, 0x8
-	push	word 0x85e
+	push	str_Hom
 	push	word [bp + 0xa]
-	push	word 0x54a
+	push	str_SS
 	lea	ax, [bp - 0x32]
 	push	ax
 	call	0x0000:_sprintf
@@ -2094,7 +2094,7 @@ F008_1426:
 	call	F008_0174
 	push	cs
 	call	F008_0292
-	push	word 0x6f8
+	push	str_TakeynowBar
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
@@ -2103,11 +2103,11 @@ F008_1426:
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x706
+	push	str_HighliteBar
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x690
+	push	str_GamebtwnBar
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
@@ -2116,7 +2116,7 @@ F008_1426:
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x64a
+	push	str_AndBar
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
@@ -2127,7 +2127,7 @@ F008_1426:
 	add	sp, 0x2
 	push	cs
 	call	F008_0FDC
-	push	word 0x6f8
+	push	str_TakeynowBar
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
@@ -2136,11 +2136,11 @@ F008_1426:
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x706
+	push	str_HighliteBar
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x690
+	push	str_GamebtwnBar
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
@@ -2149,7 +2149,7 @@ F008_1426:
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x64a
+	push	str_AndBar
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
@@ -2158,7 +2158,7 @@ F008_1426:
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	les	bx, [0x8eea]
+	les	bx, [g_8EEA]
 	mov	word [es:bx + 0x32], 0x1
 	lea	ax, [bp - 0x8]
 	push	ax
@@ -2171,9 +2171,9 @@ F008_1426:
 F008_1546:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
-	mov	ax, 0x4e
+	mov	ax, str_Chi
 	call	0x0000:__chkstk
-	cmp	word [0x76c], 0x0
+	cmp	word [g_076C], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
@@ -2188,9 +2188,9 @@ F008_1546:
 	push	ax
 	call	0x03A3:EmsSaveMap
 	add	sp, 0x2
-	push	word 0x862
+	push	str_Awa_2
 	push	word [bp + 0x6]
-	push	word 0x54a
+	push	str_SS
 	lea	ax, [bp - 0x16]
 	push	ax
 	call	0x0000:_sprintf
@@ -2201,10 +2201,10 @@ F008_1546:
 	push	cs
 	call	F008_0FEC
 	add	sp, 0x4
-	push	word 0x866
+	push	str_Bar
 	lea	ax, [bp - 0x23]
 	push	ax
-	push	word 0x54a
+	push	str_SS
 	lea	ax, [bp - 0x40]
 	push	ax
 	call	0x0000:_sprintf
@@ -2222,7 +2222,7 @@ F008_1546:
 	call	F008_0174
 	cmp	word [bp + 0xe], 0x0
 	jz	short .3
-	push	word 0x714
+	push	str_OvertimeBar
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
@@ -2232,11 +2232,11 @@ F008_1546:
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x722
+	push	str_HavewonBar
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x65e
+	push	str_GamenumBar
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
@@ -2252,12 +2252,12 @@ F008_1546:
 	add	sp, 0x2
 	cmp	word [bp - 0x32], 0x1
 	jnz	short .4
-	push	word 0x62c
+	push	str_ConfBar
 	jmp	short .5
 .4:
 	cmp	word [bp - 0x32], 0x2
 	jnz	short .6
-	push	word 0x61e
+	push	str_DivisionBar
 .5:
 	push	cs
 	call	F008_0C76
@@ -2265,7 +2265,7 @@ F008_1546:
 .6:
 	cmp	word [bp + 0xc], 0x1
 	jnz	short .7
-	push	word 0x640
+	push	str_SemiBar
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
@@ -2274,7 +2274,7 @@ F008_1546:
 	cmp	word [bp + 0xc], 0x2
 	jnz	short .9
 .8:
-	push	word 0x636
+	push	str_FinalBar
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
@@ -2283,7 +2283,7 @@ F008_1546:
 	call	F008_0FDC
 	cmp	word [bp + 0xe], 0x0
 	jz	short .10
-	push	word 0x714
+	push	str_OvertimeBar
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
@@ -2293,11 +2293,11 @@ F008_1546:
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x722
+	push	str_HavewonBar
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x65e
+	push	str_GamenumBar
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
@@ -2313,12 +2313,12 @@ F008_1546:
 	add	sp, 0x2
 	cmp	word [bp - 0x32], 0x1
 	jnz	short .11
-	push	word 0x62c
+	push	str_ConfBar
 	jmp	short .12
 .11:
 	cmp	word [bp - 0x32], 0x2
 	jnz	short .13
-	push	word 0x61e
+	push	str_DivisionBar
 .12:
 	push	cs
 	call	F008_118E
@@ -2326,7 +2326,7 @@ F008_1546:
 .13:
 	cmp	word [bp + 0xc], 0x1
 	jnz	short .14
-	push	word 0x640
+	push	str_SemiBar
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
@@ -2335,12 +2335,12 @@ F008_1546:
 	cmp	word [bp + 0xc], 0x2
 	jnz	short .16
 .15:
-	push	word 0x636
+	push	str_FinalBar
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
 .16:
-	les	bx, [0x8eea]
+	les	bx, [g_8EEA]
 	mov	word [es:bx + 0x32], 0x1
 	lea	ax, [bp - 0x8]
 	push	ax
@@ -2355,7 +2355,7 @@ F008_16E2:
 	mov	ax, 0x26
 	call	0x0000:__chkstk
 	mov	word [bp - 0x26], 0x0
-	cmp	word [0x76c], 0x0
+	cmp	word [g_076C], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
@@ -2372,7 +2372,7 @@ F008_16E2:
 	call	0x03A3:EmsSaveMap
 	add	sp, 0x2
 	push	0xd
-	mov	es, [0x8b12]
+	mov	es, [g_8B12]
 	mov	bx, [bp + 0x6]
 	shl	bx, byte 0x2
 	push	word [es:bx + 0x160]
@@ -2382,10 +2382,10 @@ F008_16E2:
 	push	ax
 	call	0x03A3:CopyStrNFar
 	add	sp, 0xa
-	push	word 0x86a
+	push	str_Bar_2
 	lea	ax, [bp - 0x16]
 	push	ax
-	push	word 0x54a
+	push	str_SS
 	lea	ax, [bp - 0x24]
 	push	ax
 	call	0x0000:_sprintf
@@ -2394,13 +2394,13 @@ F008_16E2:
 	call	F008_0174
 	push	cs
 	call	F008_0292
-	push	word 0x72e
+	push	str_ScoringBar
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
 	cmp	word [bp + 0xa], 0x0
 	jz	short .3
-	push	word 0x73a
+	push	str_ThegameBar
 	jmp	short .7
 .3:
 	lea	ax, [bp - 0x24]
@@ -2412,29 +2412,29 @@ F008_16E2:
 	jz	short .6
 	cmp	word [bp + 0x6], 0x0
 	jz	short .4
-	push	word 0x746
+	push	str_OtBar
 	jmp	short .5
 .4:
-	push	word 0x74e
+	push	str_TheotBar
 .5:
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
 .6:
-	push	word 0x678
+	push	str_PeriodBar
 .7:
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
 	push	cs
 	call	F008_0FDC
-	push	word 0x72e
+	push	str_ScoringBar
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
 	cmp	word [bp + 0xa], 0x0
 	jz	short .8
-	push	word 0x73a
+	push	str_ThegameBar
 	jmp	short .12
 	db	0x90
 .8:
@@ -2447,21 +2447,21 @@ F008_16E2:
 	jz	short .11
 	cmp	word [bp + 0x6], 0x0
 	jz	short .9
-	push	word 0x746
+	push	str_OtBar
 	jmp	short .10
 .9:
-	push	word 0x74e
+	push	str_TheotBar
 .10:
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
 .11:
-	push	word 0x678
+	push	str_PeriodBar
 .12:
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	les	bx, [0x8eea]
+	les	bx, [g_8EEA]
 	mov	word [es:bx + 0x32], 0x1
 	lea	ax, [bp - 0x8]
 	push	ax
@@ -2475,7 +2475,7 @@ F008_17FA:
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, 0x32
 	call	0x0000:__chkstk
-	cmp	word [0x76c], 0x0
+	cmp	word [g_076C], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
@@ -2490,23 +2490,23 @@ F008_17FA:
 	push	ax
 	call	0x03A3:EmsSaveMap
 	add	sp, 0x2
-	push	word 0x86e
+	push	str_Rnk_2
 	push	word [bp + 0x6]
-	push	word 0x54a
+	push	str_SS
 	lea	ax, [bp - 0x16]
 	push	ax
 	call	0x0000:_sprintf
 	add	sp, 0x8
-	push	word 0x872
+	push	str_Awa_3
 	push	word [bp + 0x8]
-	push	word 0x54a
+	push	str_SS
 	lea	ax, [bp - 0x24]
 	push	ax
 	call	0x0000:_sprintf
 	add	sp, 0x8
-	push	word 0x876
+	push	str_Hom_2
 	push	word [bp + 0xa]
-	push	word 0x54a
+	push	str_SS
 	lea	ax, [bp - 0x32]
 	push	ax
 	call	0x0000:_sprintf
@@ -2515,7 +2515,7 @@ F008_17FA:
 	call	F008_0174
 	push	cs
 	call	F008_0292
-	push	word 0x684
+	push	str_TonightBar
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
@@ -2524,11 +2524,11 @@ F008_17FA:
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x66a
+	push	str_EasportsBar
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x690
+	push	str_GamebtwnBar
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
@@ -2537,7 +2537,7 @@ F008_17FA:
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x64a
+	push	str_AndBar
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
@@ -2548,7 +2548,7 @@ F008_17FA:
 	add	sp, 0x2
 	push	cs
 	call	F008_0FDC
-	push	word 0x684
+	push	str_TonightBar
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
@@ -2557,11 +2557,11 @@ F008_17FA:
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x66a
+	push	str_EasportsBar
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x690
+	push	str_GamebtwnBar
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
@@ -2570,7 +2570,7 @@ F008_17FA:
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x64a
+	push	str_AndBar
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
@@ -2579,7 +2579,7 @@ F008_17FA:
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	les	bx, [0x8eea]
+	les	bx, [g_8EEA]
 	mov	word [es:bx + 0x32], 0x1
 	lea	ax, [bp - 0x8]
 	push	ax
@@ -2594,7 +2594,7 @@ F008_191A:
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, 0x6a
 	call	0x0000:__chkstk
-	cmp	word [0x76c], 0x0
+	cmp	word [g_076C], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
@@ -2609,23 +2609,23 @@ F008_191A:
 	push	ax
 	call	0x03A3:EmsSaveMap
 	add	sp, 0x2
-	push	word 0x87a
+	push	str_Rnk_3
 	push	word [bp + 0x6]
-	push	word 0x54a
+	push	str_SS
 	lea	ax, [bp - 0x16]
 	push	ax
 	call	0x0000:_sprintf
 	add	sp, 0x8
-	push	word 0x87e
+	push	str_Awa_4
 	push	word [bp + 0x8]
-	push	word 0x54a
+	push	str_SS
 	lea	ax, [bp - 0x24]
 	push	ax
 	call	0x0000:_sprintf
 	add	sp, 0x8
-	push	word 0x882
+	push	str_Hom_3
 	push	word [bp + 0xa]
-	push	word 0x54a
+	push	str_SS
 	lea	ax, [bp - 0x4c]
 	push	ax
 	call	0x0000:_sprintf
@@ -2636,10 +2636,10 @@ F008_191A:
 	push	cs
 	call	F008_0FEC
 	add	sp, 0x4
-	push	word 0x886
+	push	str_Bar_3
 	lea	ax, [bp - 0x31]
 	push	ax
-	push	word 0x54a
+	push	str_SS
 	lea	ax, [bp - 0x5c]
 	push	ax
 	call	0x0000:_sprintf
@@ -2655,7 +2655,7 @@ F008_191A:
 	call	F008_0174
 	push	cs
 	call	F008_0292
-	push	word 0x684
+	push	str_TonightBar
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
@@ -2664,15 +2664,15 @@ F008_191A:
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x66a
+	push	str_EasportsBar
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x65e
+	push	str_GamenumBar
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x612
+	push	str_NumberBar
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
@@ -2688,12 +2688,12 @@ F008_191A:
 	add	sp, 0x2
 	cmp	word [bp - 0x4e], 0x1
 	jnz	short .3
-	push	word 0x62c
+	push	str_ConfBar
 	jmp	short .4
 .3:
 	cmp	word [bp - 0x4e], 0x2
 	jnz	short .5
-	push	word 0x61e
+	push	str_DivisionBar
 .4:
 	push	cs
 	call	F008_0C76
@@ -2701,7 +2701,7 @@ F008_191A:
 .5:
 	cmp	word [bp + 0x10], 0x1
 	jnz	short .6
-	push	word 0x640
+	push	str_SemiBar
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
@@ -2710,12 +2710,12 @@ F008_191A:
 	cmp	word [bp + 0x10], 0x2
 	jnz	short .8
 .7:
-	push	word 0x636
+	push	str_FinalBar
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
 .8:
-	push	word 0x652
+	push	str_BetweenBar
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
@@ -2724,7 +2724,7 @@ F008_191A:
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x64a
+	push	str_AndBar
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
@@ -2735,7 +2735,7 @@ F008_191A:
 	add	sp, 0x2
 	push	cs
 	call	F008_0FDC
-	push	word 0x684
+	push	str_TonightBar
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
@@ -2744,15 +2744,15 @@ F008_191A:
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x66a
+	push	str_EasportsBar
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x65e
+	push	str_GamenumBar
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x612
+	push	str_NumberBar
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
@@ -2768,12 +2768,12 @@ F008_191A:
 	add	sp, 0x2
 	cmp	word [bp - 0x4e], 0x1
 	jnz	short .9
-	push	word 0x62c
+	push	str_ConfBar
 	jmp	short .10
 .9:
 	cmp	word [bp - 0x4e], 0x2
 	jnz	short .11
-	push	word 0x61e
+	push	str_DivisionBar
 .10:
 	push	cs
 	call	F008_118E
@@ -2781,7 +2781,7 @@ F008_191A:
 .11:
 	cmp	word [bp + 0x10], 0x1
 	jnz	short .12
-	push	word 0x640
+	push	str_SemiBar
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
@@ -2790,12 +2790,12 @@ F008_191A:
 	cmp	word [bp + 0x10], 0x2
 	jnz	short .14
 .13:
-	push	word 0x636
+	push	str_FinalBar
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
 .14:
-	push	word 0x652
+	push	str_BetweenBar
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
@@ -2804,7 +2804,7 @@ F008_191A:
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x64a
+	push	str_AndBar
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
@@ -2813,7 +2813,7 @@ F008_191A:
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	les	bx, [0x8eea]
+	les	bx, [g_8EEA]
 	mov	word [es:bx + 0x32], 0x1
 	lea	ax, [bp - 0x8]
 	push	ax
@@ -2827,7 +2827,7 @@ F008_1B3C:
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, 0xa0
 	call	0x0000:__chkstk
-	cmp	word [0x76c], 0x0
+	cmp	word [g_076C], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
@@ -2842,9 +2842,9 @@ F008_1B3C:
 	push	ax
 	call	0x03A3:EmsSaveMap
 	add	sp, 0x2
-	push	word 0x88a
+	push	str_Cty
 	push	word [bp + 0x6]
-	push	word 0x54a
+	push	str_SS
 	lea	ax, [bp - 0x6a]
 	push	ax
 	call	0x0000:_sprintf
@@ -2855,18 +2855,18 @@ F008_1B3C:
 	push	cs
 	call	F008_0FEC
 	add	sp, 0x4
-	push	word 0x88e
+	push	str_Bru
 	lea	ax, [bp - 0x84]
 	push	ax
-	push	word 0x54a
+	push	str_SS
 	lea	cx, [bp - 0x92]
 	push	cx
 	call	0x0000:_sprintf
 	add	sp, 0x8
-	push	word 0x892
+	push	str_Bru_2
 	lea	ax, [bp - 0x77]
 	push	ax
-	push	word 0x54a
+	push	str_SS
 	lea	cx, [bp - 0xa0]
 	push	cx
 	call	0x0000:_sprintf
@@ -2877,9 +2877,9 @@ F008_1B3C:
 	push	cs
 	call	F008_109C
 	add	sp, 0x4
-	push	word 0x896
+	push	str_Off_5
 	push	word [bp + 0xc]
-	push	word 0x54a
+	push	str_SS
 	lea	ax, [bp - 0x40]
 	push	ax
 	call	0x0000:_sprintf
@@ -2890,18 +2890,18 @@ F008_1B3C:
 	push	cs
 	call	F008_0FEC
 	add	sp, 0x4
-	push	word 0x89a
+	push	str_Bru_3
 	lea	ax, [bp - 0x84]
 	push	ax
-	push	word 0x54a
+	push	str_SS
 	lea	cx, [bp - 0x4e]
 	push	cx
 	call	0x0000:_sprintf
 	add	sp, 0x8
-	push	word 0x89e
+	push	str_Bru_4
 	lea	ax, [bp - 0x77]
 	push	ax
-	push	word 0x54a
+	push	str_SS
 	lea	cx, [bp - 0x5c]
 	push	cx
 	call	0x0000:_sprintf
@@ -2912,18 +2912,18 @@ F008_1B3C:
 	push	cs
 	call	F008_0FEC
 	add	sp, 0x4
-	push	word 0x8a2
+	push	str_Bru_5
 	lea	ax, [bp - 0x84]
 	push	ax
-	push	word 0x54a
+	push	str_SS
 	lea	ax, [bp - 0xe]
 	push	ax
 	call	0x0000:_sprintf
 	add	sp, 0x8
-	push	word 0x8a6
+	push	str_Bru_6
 	lea	ax, [bp - 0x77]
 	push	ax
-	push	word 0x54a
+	push	str_SS
 	lea	ax, [bp - 0x24]
 	push	ax
 	call	0x0000:_sprintf
@@ -2937,11 +2937,11 @@ F008_1B3C:
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x5ae
+	push	str_PenaltyMsc
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x5e8
+	push	str_NumberMsc
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
@@ -2975,7 +2975,7 @@ F008_1B3C:
 	add	sp, 0x2
 	cmp	word [bp + 0x12], 0x0
 	jz	short .8
-	push	word 0x558
+	push	str_AtMsc
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
@@ -2993,18 +2993,18 @@ F008_1B3C:
 	add	sp, 0x2
 	cmp	word [bp + 0xe], 0x1
 	jnz	short .3
-	push	word 0x57e
+	push	str_MinuteMsc
 	jmp	short .4
 	db	0x90, 0x90
 .3:
-	push	word 0x58a
+	push	str_MinutesMsc
 .4:
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
 	cmp	word [bp + 0x10], 0x0
 	jz	short .5
-	push	word 0x560
+	push	str_AndMsc
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
@@ -3023,11 +3023,11 @@ F008_1B3C:
 	add	sp, 0x2
 	cmp	word [bp + 0x10], 0x1
 	jnz	short .6
-	push	word 0x596
+	push	str_SecondMsc
 	jmp	short .7
 	db	0x90
 .6:
-	push	word 0x5a2
+	push	str_SecondsMsc
 .7:
 	push	cs
 	call	F008_0C76
@@ -3040,11 +3040,11 @@ F008_1B3C:
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x5ae
+	push	str_PenaltyMsc
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x5e8
+	push	str_NumberMsc
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
@@ -3078,7 +3078,7 @@ F008_1B3C:
 	add	sp, 0x2
 	cmp	word [bp + 0x12], 0x0
 	jz	short .14
-	push	word 0x558
+	push	str_AtMsc
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
@@ -3096,18 +3096,18 @@ F008_1B3C:
 	add	sp, 0x2
 	cmp	word [bp + 0xe], 0x1
 	jnz	short .9
-	push	word 0x57e
+	push	str_MinuteMsc
 	jmp	short .10
 	db	0x90, 0x90
 .9:
-	push	word 0x58a
+	push	str_MinutesMsc
 .10:
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
 	cmp	word [bp + 0x10], 0x0
 	jz	short .11
-	push	word 0x560
+	push	str_AndMsc
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
@@ -3126,17 +3126,17 @@ F008_1B3C:
 	add	sp, 0x2
 	cmp	word [bp + 0x10], 0x1
 	jnz	short .12
-	push	word 0x596
+	push	str_SecondMsc
 	jmp	short .13
 	db	0x90
 .12:
-	push	word 0x5a2
+	push	str_SecondsMsc
 .13:
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
 .14:
-	les	bx, [0x8eea]
+	les	bx, [g_8EEA]
 	mov	word [es:bx + 0x32], 0x1
 	lea	ax, [bp - 0x16]
 	push	ax
@@ -3151,7 +3151,7 @@ F008_1E44:
 	mov	ax, 0x72
 	call	0x0000:__chkstk
 	mov	word [bp - 0x20], 0x0
-	cmp	word [0x76c], 0x0
+	cmp	word [g_076C], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
@@ -3202,15 +3202,15 @@ F008_1E44:
 .6:
 	mov	word [bp - 0x20], 0x1
 .7:
-	push	word 0x8aa
+	push	str_Cty_2
 	push	word [bp + 0x6]
-	push	word 0x54a
+	push	str_SS
 	lea	ax, [bp - 0x2e]
 	push	ax
 	call	0x0000:_sprintf
 	add	sp, 0x8
 	push	0xd
-	mov	es, [0x8b12]
+	mov	es, [g_8B12]
 	mov	bx, [bp + 0x8]
 	shl	bx, byte 0x2
 	push	word [es:bx + 0x16c]
@@ -3220,10 +3220,10 @@ F008_1E44:
 	push	ax
 	call	0x03A3:CopyStrNFar
 	add	sp, 0xa
-	push	word 0x8ae
+	push	str_Msc
 	lea	ax, [bp - 0x1a]
 	push	ax
-	push	word 0x54a
+	push	str_SS
 	lea	ax, [bp - 0x56]
 	push	ax
 	call	0x0000:_sprintf
@@ -3234,18 +3234,18 @@ F008_1E44:
 	push	cs
 	call	F008_0FEC
 	add	sp, 0x4
-	push	word 0x8b2
+	push	str_Bru_7
 	lea	ax, [bp - 0x48]
 	push	ax
-	push	word 0x54a
+	push	str_SS
 	lea	ax, [bp - 0x64]
 	push	ax
 	call	0x0000:_sprintf
 	add	sp, 0x8
-	push	word 0x8b6
+	push	str_Bru_8
 	lea	ax, [bp - 0x3b]
 	push	ax
-	push	word 0x54a
+	push	str_SS
 	lea	ax, [bp - 0x72]
 	push	ax
 	call	0x0000:_sprintf
@@ -3254,7 +3254,7 @@ F008_1E44:
 	call	F008_0292
 	push	cs
 	call	F008_0174
-	push	word 0x758
+	push	str_TonightMsc
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
@@ -3265,10 +3265,10 @@ F008_1E44:
 	add	sp, 0x2
 	cmp	word [bp - 0x20], 0x0
 	jz	short .8
-	push	word 0x568
+	push	str_FromtheMsc
 	jmp	short .9
 .8:
-	push	word 0x574
+	push	str_FromMsc
 .9:
 	push	cs
 	call	F008_0C76
@@ -3282,7 +3282,7 @@ F008_1E44:
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x5e8
+	push	str_NumberMsc
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
@@ -3298,7 +3298,7 @@ F008_1E44:
 	add	sp, 0x2
 	push	cs
 	call	F008_0FDC
-	push	word 0x758
+	push	str_TonightMsc
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
@@ -3309,11 +3309,11 @@ F008_1E44:
 	add	sp, 0x2
 	cmp	word [bp - 0x20], 0x0
 	jz	short .10
-	push	word 0x568
+	push	str_FromtheMsc
 	jmp	short .11
 	db	0x90
 .10:
-	push	word 0x574
+	push	str_FromMsc
 .11:
 	push	cs
 	call	F008_118E
@@ -3327,7 +3327,7 @@ F008_1E44:
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x5e8
+	push	str_NumberMsc
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
@@ -3341,7 +3341,7 @@ F008_1E44:
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	les	bx, [0x8eea]
+	les	bx, [g_8EEA]
 	mov	word [es:bx + 0x32], 0x1
 	lea	ax, [bp - 0x8]
 	push	ax
@@ -3354,9 +3354,9 @@ F008_1E44:
 F008_2032:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
-	mov	ax, 0x84
+	mov	ax, str_Stl
 	call	0x0000:__chkstk
-	cmp	word [0x76c], 0x0
+	cmp	word [g_076C], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
@@ -3371,9 +3371,9 @@ F008_2032:
 	push	ax
 	call	0x03A3:EmsSaveMap
 	add	sp, 0x2
-	push	word 0x8ba
+	push	str_Cty_3
 	push	word [bp + 0x6]
-	push	word 0x54a
+	push	str_SS
 	lea	ax, [bp - 0x40]
 	push	ax
 	call	0x0000:_sprintf
@@ -3384,18 +3384,18 @@ F008_2032:
 	push	cs
 	call	F008_0FEC
 	add	sp, 0x4
-	push	word 0x8be
+	push	str_Bru_9
 	lea	ax, [bp - 0x5a]
 	push	ax
-	push	word 0x54a
+	push	str_SS
 	lea	cx, [bp - 0x68]
 	push	cx
 	call	0x0000:_sprintf
 	add	sp, 0x8
-	push	word 0x8c2
+	push	str_Bru_10
 	lea	ax, [bp - 0x4d]
 	push	ax
-	push	word 0x54a
+	push	str_SS
 	lea	cx, [bp - 0x76]
 	push	cx
 	call	0x0000:_sprintf
@@ -3406,18 +3406,18 @@ F008_2032:
 	push	cs
 	call	F008_0FEC
 	add	sp, 0x4
-	push	word 0x8c6
+	push	str_Bru_11
 	lea	ax, [bp - 0x5a]
 	push	ax
-	push	word 0x54a
+	push	str_SS
 	lea	cx, [bp - 0x84]
 	push	cx
 	call	0x0000:_sprintf
 	add	sp, 0x8
-	push	word 0x8ca
+	push	str_Bru_12
 	lea	ax, [bp - 0x4d]
 	push	ax
-	push	word 0x54a
+	push	str_SS
 	lea	cx, [bp - 0xe]
 	push	cx
 	call	0x0000:_sprintf
@@ -3428,18 +3428,18 @@ F008_2032:
 	push	cs
 	call	F008_0FEC
 	add	sp, 0x4
-	push	word 0x8ce
+	push	str_Bru_13
 	lea	ax, [bp - 0x5a]
 	push	ax
-	push	word 0x54a
+	push	str_SS
 	lea	ax, [bp - 0x1c]
 	push	ax
 	call	0x0000:_sprintf
 	add	sp, 0x8
-	push	word 0x8d2
+	push	str_Bru_14
 	lea	ax, [bp - 0x4d]
 	push	ax
-	push	word 0x54a
+	push	str_SS
 	lea	ax, [bp - 0x2a]
 	push	ax
 	call	0x0000:_sprintf
@@ -3453,15 +3453,15 @@ F008_2032:
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x5ba
+	push	str_GoalsMsc
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x550
+	push	str_ByMsc
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x5e8
+	push	str_NumberMsc
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
@@ -3481,15 +3481,15 @@ F008_2032:
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x5c4
+	push	str_AssistedMsc
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x550
+	push	str_ByMsc
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x5e8
+	push	str_NumberMsc
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
@@ -3510,11 +3510,11 @@ F008_2032:
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x560
+	push	str_AndMsc
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x5e8
+	push	str_NumberMsc
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
@@ -3536,15 +3536,15 @@ F008_2032:
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x5ba
+	push	str_GoalsMsc
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x550
+	push	str_ByMsc
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x5e8
+	push	str_NumberMsc
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
@@ -3564,15 +3564,15 @@ F008_2032:
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x5c4
+	push	str_AssistedMsc
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x550
+	push	str_ByMsc
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x5e8
+	push	str_NumberMsc
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
@@ -3593,11 +3593,11 @@ F008_2032:
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x560
+	push	str_AndMsc
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x5e8
+	push	str_NumberMsc
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
@@ -3612,7 +3612,7 @@ F008_2032:
 	call	F008_118E
 	add	sp, 0x2
 .6:
-	les	bx, [0x8eea]
+	les	bx, [g_8EEA]
 	mov	word [es:bx + 0x32], 0x1
 	lea	ax, [bp - 0x32]
 	push	ax
@@ -3626,7 +3626,7 @@ F008_22C0:
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, 0x8
 	call	0x0000:__chkstk
-	cmp	word [0x76c], 0x0
+	cmp	word [g_076C], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
@@ -3645,17 +3645,17 @@ F008_22C0:
 	call	F008_0292
 	push	cs
 	call	F008_0174
-	push	word 0x5d2
+	push	str_OneminMsc
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
 	push	cs
 	call	F008_0FDC
-	push	word 0x5d2
+	push	str_OneminMsc
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	les	bx, [0x8eea]
+	les	bx, [g_8EEA]
 	mov	word [es:bx + 0x32], 0x1
 	lea	ax, [bp - 0x8]
 	push	ax
@@ -3667,7 +3667,7 @@ F008_22C0:
 F008_2322:
 	db	0x33, 0xC0		; xor ax, ax
 	call	0x0000:__chkstk
-	cmp	word [0x76c], 0x0
+	cmp	word [g_076C], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
@@ -3683,7 +3683,7 @@ F008_2322:
 	push	cs
 	call	F008_0174
 	push	0x0
-	push	word 0x8d6
+	push	str_Xrbarr2Viv
 	push	cs
 	call	F008_0664
 	add	sp, 0x4
@@ -3695,7 +3695,7 @@ F008_2354:
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, 0x1c
 	call	0x0000:__chkstk
-	cmp	word [0x76c], 0x0
+	cmp	word [g_076C], 0x0
 	jnz	short .2
 .1:
 	db	0x2B, 0xC0		; sub ax, ax
@@ -3711,25 +3711,25 @@ F008_2354:
 	push	cs
 	call	F008_0174
 	push	0x1a
-	push	word 0x8e2
+	push	str_Xbruce2Viv
 	push	cs
 	call	F008_0664
 	add	sp, 0x4
-	push	word 0x8ee
+	push	str_Cty_4
 	push	word [bp + 0x6]
-	push	word 0x54a
+	push	str_SS
 	lea	ax, [bp - 0xe]
 	push	ax
 	call	0x0000:_sprintf
 	add	sp, 0x8
-	push	word 0x8f2
+	push	str_Cty_5
 	push	word [bp + 0x8]
-	push	word 0x54a
+	push	str_SS
 	lea	ax, [bp - 0x1c]
 	push	ax
 	call	0x0000:_sprintf
 	add	sp, 0x8
-	push	word 0x5d2
+	push	str_OneminMsc
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
@@ -3743,15 +3743,15 @@ F008_2354:
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x5ba
+	push	str_GoalsMsc
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x5ae
+	push	str_PenaltyMsc
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x5e8
+	push	str_NumberMsc
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
@@ -3759,35 +3759,35 @@ F008_2354:
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x5de
+	push	str_2minsOff
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x5c4
+	push	str_AssistedMsc
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x550
+	push	str_ByMsc
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x558
+	push	str_AtMsc
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x58a
+	push	str_MinutesMsc
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x560
+	push	str_AndMsc
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x5a2
+	push	str_SecondsMsc
 	push	cs
 	call	F008_0C76
 	add	sp, 0x2
-	push	word 0x5d2
+	push	str_OneminMsc
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
@@ -3801,15 +3801,15 @@ F008_2354:
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x5ba
+	push	str_GoalsMsc
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x5ae
+	push	str_PenaltyMsc
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x5e8
+	push	str_NumberMsc
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
@@ -3817,27 +3817,27 @@ F008_2354:
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x5de
+	push	str_2minsOff
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x5c4
+	push	str_AssistedMsc
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x550
+	push	str_ByMsc
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x558
+	push	str_AtMsc
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x58a
+	push	str_MinutesMsc
 	push	cs
 	call	F008_118E
 	add	sp, 0x2
-	push	word 0x560
+	push	str_AndMsc
 	push	cs
 	call	F008_118E
 	db	0x83

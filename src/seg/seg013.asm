@@ -10,7 +10,7 @@ F013_0006:
 	enter	0x2a, 0x0
 	push	di
 	push	si
-	cmp	word [0x1b4], 0x0
+	cmp	word [g_01B4], 0x0
 	jz	short .1
 	jmp	near .9
 .1:
@@ -28,9 +28,9 @@ F013_0006:
 	retf
 	db	0x90
 .2:
-	mov	es, [0x8b14]
+	mov	es, [g_8B14]
 	or	byte [es:0x55], 0x80
-	or	byte [0x1b7], 0x80
+	or	byte [g_01B7], 0x80
 	push	es
 	push	strict word 0x0
 	call	0x1B35:OvlThunk100
@@ -62,12 +62,12 @@ F013_0006:
 	add	sp, 0x2
 .4:
 	push	0x0
-	push	word 0x908
+	push	str_GsummaryDb
 	call	0x149D:F032_0002
 	add	sp, 0x4
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x2], dx
-	push	word 0x914
+	push	str_GsummaryDb_2
 	call	0x03A3:FileSizeMsg
 	add	sp, 0x2
 	push	dx
@@ -185,7 +185,7 @@ F013_0006:
 	rep	movsw
 	db	0x13, 0xC9		; adc cx, cx
 	rep	movsb
-	mov	di, 0x92e
+	mov	di, str_GameSav
 	lea	si, [bp - 0x26]
 	mov	cx, 0xffff
 	db	0x33, 0xC0		; xor ax, ax
@@ -214,7 +214,7 @@ F013_0006:
 	call	0x0F4A:F022_03E4
 	add	sp, 0x2
 .10:
-	cmp	word [0x1b4], 0x2
+	cmp	word [g_01B4], 0x2
 	jnz	short .11
 	push	0x0
 	push	0x0
@@ -229,9 +229,9 @@ F013_0006:
 	push	-0x1
 	call	0x0D90:F020_0FC8
 	add	sp, 0x16
-	mov	es, [0x8b16]
+	mov	es, [g_8B16]
 	or	byte [es:0x119], 0x80
-	or	byte [0x1b7], 0x80
+	or	byte [g_01B7], 0x80
 	push	es
 	push	word 0xc4
 	call	0x1B35:OvlThunk100
@@ -254,9 +254,9 @@ F013_0006:
 	push	-0x1
 	call	0x0D90:F020_0FC8
 	add	sp, 0x16
-	mov	es, [0x8b18]
+	mov	es, [g_8B18]
 	or	byte [es:0xb7], 0x80
-	or	byte [0x1b7], 0x80
+	or	byte [g_01B7], 0x80
 	push	es
 	push	strict word 0x62
 	call	0x1B35:OvlThunk100
@@ -274,11 +274,11 @@ F013_0006:
 	push	word [bp - 0x28]
 	push	word [bp - 0x2a]
 	push	ds
-	push	word 0x93a
+	push	str_Sav
 	push	ds
-	push	word 0x93f
+	push	str_Db
 	push	ds
-	push	word 0x943
+	push	str_Gsummary
 	call	0x0CD1:F015_051E
 	add	sp, 0x14
 	db	0x0B, 0xC0		; or ax, ax

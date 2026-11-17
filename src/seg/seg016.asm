@@ -21,9 +21,9 @@ F016_0024:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, [bp + 0x6]
-	mov	[0x998], ax
+	mov	[g_0998], ax
 	mov	ax, [bp + 0x8]
-	mov	[0x99a], ax
+	mov	[g_099A], ax
 	leave
 	retf
 	db	0x90
@@ -47,7 +47,7 @@ F016_0036:
 	and	di, -0x40
 	add	di, 0x40
 	db	0x8B, 0xC7		; mov ax, di
-	les	bx, [0x6d4e]
+	les	bx, [g_6D4E]
 	mov	dx, [es:bx + 0xe]
 	inc	dx
 	db	0x2B, 0xDB		; sub bx, bx
@@ -123,8 +123,8 @@ F016_00E4:
 	sar	ax, 1
 	db	0x8B, 0xCE		; mov cx, si
 	db	0x8B, 0xF0		; mov si, ax
-	mov	ax, [0x99a]
-	les	bx, [0x6d4e]
+	mov	ax, [g_099A]
+	les	bx, [g_6D4E]
 	mov	[es:bx], ax
 	push	di
 	push	cx
@@ -137,8 +137,8 @@ F016_00E4:
 	mov	[bp - 0x54], di
 	call	0x0FA0:F026_0246
 	add	sp, 0x8
-	mov	ax, [0x998]
-	les	bx, [0x6d4e]
+	mov	ax, [g_0998]
+	les	bx, [g_6D4E]
 	mov	[es:bx], ax
 	push	word [bp - 0x54]
 	push	word [bp - 0x56]
@@ -157,8 +157,8 @@ F016_0166:
 	push	si
 	mov	di, [bp + 0x8]
 	mov	si, [bp + 0xa]
-	mov	ax, [0x99a]
-	les	bx, [0x6d4e]
+	mov	ax, [g_099A]
+	les	bx, [g_6D4E]
 	mov	[es:bx], ax
 	mov	ax, [bp + 0xc]
 	push	ax
@@ -172,8 +172,8 @@ F016_0166:
 	mov	[bp - 0x2], ax
 	call	0x0FA0:F026_0246
 	add	sp, 0x8
-	mov	ax, [0x998]
-	les	bx, [0x6d4e]
+	mov	ax, [g_0998]
+	les	bx, [g_6D4E]
 	mov	[es:bx], ax
 	push	word [bp - 0x2]
 	push	word [bp - 0x4]
@@ -191,18 +191,18 @@ F016_01B8:
 	db	0x8B, 0xEC		; mov bp, sp
 	push	di
 	push	si
-	mov	ax, [0x99a]
-	les	bx, [0x6d4e]
+	mov	ax, [g_099A]
+	les	bx, [g_6D4E]
 	mov	[es:bx], ax
 	db	0x2B, 0xF6		; sub si, si
 	mov	di, [bp + 0xa]
 .1:
 	push	word [bp + 0xc]
 	push	di
-	mov	ax, [si + 0x9a4]
+	mov	ax, [si + g_09A4]
 	add	ax, [bp + 0x8]
 	push	ax
-	mov	ax, [si + 0x99c]
+	mov	ax, [si + g_099C]
 	add	ax, [bp + 0x6]
 	push	ax
 	call	0x0FA0:F026_0246
@@ -211,8 +211,8 @@ F016_01B8:
 	inc	si
 	cmp	si, 0x8
 	jl	short .1
-	mov	ax, [0x998]
-	les	bx, [0x6d4e]
+	mov	ax, [g_0998]
+	les	bx, [g_6D4E]
 	mov	[es:bx], ax
 	push	word [bp + 0xc]
 	push	di

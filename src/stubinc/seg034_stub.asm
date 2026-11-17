@@ -8,4 +8,6 @@ F022_03E4		equ	0x3E4
 ResizeRec		equ	0x86A
 FindRec		equ	0x944
 CpuProbe		equ	0x28DA
+str_ThisProgramRequiresAn80286		equ	0x64AE
+Cpu286		equ	0x763A
 %include "seg/seg034.asm"

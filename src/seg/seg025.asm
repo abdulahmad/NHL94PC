@@ -10,35 +10,35 @@ F025_0000:
 	db	0x90
 
 F025_000E:
-	cmp	word [0xa3e], 0x0
+	cmp	word [g_0A3E], 0x0
 	jz	short .1
 	call	0x0C15:F011_000E
-	mov	word [0xa3e], 0x0
+	mov	word [g_0A3E], 0x0
 .1:
-	mov	es, [0x8b1e]
+	mov	es, [g_8B1E]
 	cmp	word [es:0x0], 0x0
 	jz	short .2
 	call	0x0837:0x10
 	call	0x0837:NullFar
 	call	0x0837:0x10
-	mov	es, [0x8b1e]
+	mov	es, [g_8B1E]
 	mov	word [es:0x0], 0x0
 .2:
-	cmp	word [0x508], 0x0
+	cmp	word [g_0508], 0x0
 	jnz	short .3
 	db	0x2B, 0xC0		; sub ax, ax
 	retf
 .3:
-	dec	word [0x508]
-	mov	al, [0x50a]
+	dec	word [g_0508]
+	mov	al, [g_050A]
 	inc	al
 	and	ax, strict word 0x1f
-	mov	[0x50a], ax
+	mov	[g_050A], ax
 	shl	ax, byte 0x3
 	add	ax, 0xaed0
 	retf
 
 F025_0066:
-	mov	word [0x50a], 0x1f
+	mov	word [g_050A], 0x1f
 	db	0x2B, 0xC0		; sub ax, ax
 	db	0xA3, 0x08

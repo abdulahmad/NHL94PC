@@ -37,8 +37,8 @@ F020_0000:
 	mov	ax, 0xbaf
 	mov	dx, 0x3701
 .2:
-	mov	[0xb2d0], ax
-	mov	[0xb2d2], dx
+	mov	[g_B2D0], ax
+	mov	[g_B2D2], dx
 	mov	ax, [bp - 0x2]
 	leave
 	retf
@@ -118,7 +118,7 @@ F020_00E6:
 	jnl	short .1
 	lea	si, [di + 0x10]
 .1:
-	les	bx, [0x6d4e]
+	les	bx, [g_6D4E]
 	mov	ax, [es:bx + 0xe]
 	add	ax, strict word 0x9
 	shl	ax, 1
@@ -143,13 +143,13 @@ F020_00E6:
 	push	cs
 	call	F020_0E7A
 	add	sp, 0x8
-	push	word [0x9f6]
-	push	word [0x9f4]
+	push	word [g_09F6]
+	push	word [g_09F4]
 	call	0x0D39:F016_0024
 	add	sp, 0x4
-	push	word [0x9f2]
-	push	word [0x9f0]
-	push	word [0x9ee]
+	push	word [g_09F2]
+	push	word [g_09F0]
+	push	word [g_09EE]
 	push	word [bp - 0x2]
 	push	si
 	push	word [bp - 0x6]
@@ -157,8 +157,8 @@ F020_00E6:
 	push	cs
 	call	F020_0060
 	add	sp, 0xe
-	mov	ax, [0x9f4]
-	mov	dx, [0x9f6]
+	mov	ax, [g_09F4]
+	mov	dx, [g_09F6]
 	call	0x03A3:0xC56
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
@@ -179,9 +179,9 @@ F020_00E6:
 	push	ax
 	call	0x0D39:F016_0166
 	add	sp, 0x8
-	push	word [0x9f0]
-	push	word [0x9f2]
-	push	word [0x9f6]
+	push	word [g_09F0]
+	push	word [g_09F2]
+	push	word [g_09F6]
 	push	0x9
 	push	di
 	mov	ax, [bp - 0x6]
@@ -198,8 +198,8 @@ F020_00E6:
 	push	cs
 	call	F020_0060
 	add	sp, 0xe
-	mov	ax, [0x9f4]
-	mov	dx, [0x9f6]
+	mov	ax, [g_09F4]
+	mov	dx, [g_09F6]
 	call	0x03A3:0xC56
 	mov	[bp - 0xa], di
 .2:
@@ -341,12 +341,12 @@ F020_032A:
 	mov	ax, [bp + 0x6]
 	cmp	[bp + 0x8], ax
 	jnz	short .1
-	mov	si, [0x9f6]
-	mov	cx, [0x9f4]
+	mov	si, [g_09F6]
+	mov	cx, [g_09F4]
 	jmp	short .2
 .1:
-	mov	si, [0x9f4]
-	mov	cx, [0x9f6]
+	mov	si, [g_09F4]
+	mov	cx, [g_09F6]
 .2:
 	db	0x8B, 0xC6		; mov ax, si
 	db	0x8B, 0xD1		; mov dx, cx
@@ -373,7 +373,7 @@ F020_0354:
 	cmp	word [bp + 0x10], 0x0
 	jng	short .3
 	mov	[bp - 0x10], dx
-	les	si, [0x6d4e]
+	les	si, [g_6D4E]
 	mov	cx, [es:si + 0xe]
 	db	0x8B, 0xC1		; mov ax, cx
 	db	0x03, 0xCB		; add cx, bx
@@ -420,7 +420,7 @@ F020_03D6:
 	push	si
 	mov	di, [bp + 0x12]
 	mov	si, [bp + 0xa]
-	les	bx, [0x6d4e]
+	les	bx, [g_6D4E]
 	mov	ax, [es:bx + 0xe]
 	inc	ax
 	inc	ax
@@ -439,16 +439,16 @@ F020_03D6:
 	les	bx, [bp + 0x1a]
 	cmp	byte [es:bx + di], 0x0
 	jz	short .1
-	mov	cx, [0x9ee]
+	mov	cx, [g_09EE]
 	jmp	short .3
 .1:
 	cmp	[bp + 0x14], di
 	jnz	short .2
-	mov	cx, [0x9f4]
+	mov	cx, [g_09F4]
 	jmp	short .3
 	db	0x90
 .2:
-	mov	cx, [0x9f6]
+	mov	cx, [g_09F6]
 .3:
 	push	cx
 	push	word [bp - 0x2]
@@ -1052,15 +1052,15 @@ F020_0A3C:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	mov	ax, [bp + 0x6]
-	mov	[0x9ee], ax
+	mov	[g_09EE], ax
 	mov	ax, [bp + 0x8]
-	mov	[0x9f0], ax
+	mov	[g_09F0], ax
 	mov	ax, [bp + 0xa]
-	mov	[0x9f2], ax
+	mov	[g_09F2], ax
 	mov	ax, [bp + 0xc]
-	mov	[0x9f4], ax
+	mov	[g_09F4], ax
 	mov	ax, [bp + 0xe]
-	mov	[0x9f6], ax
+	mov	[g_09F6], ax
 	leave
 	retf
 	db	0x90
@@ -1181,16 +1181,16 @@ F020_0B4C:
 	mov	es, [bp + 0x8]
 	cmp	word [es:si + 0x8], 0x0
 	jz	short .1
-	mov	ax, [0x9f2]
-	xor	[0x9f0], ax
-	mov	ax, [0x9f0]
-	xor	[0x9f2], ax
-	xor	ax, [0x9f2]
-	mov	[0x9f0], ax
+	mov	ax, [g_09F2]
+	xor	[g_09F0], ax
+	mov	ax, [g_09F0]
+	xor	[g_09F2], ax
+	xor	ax, [g_09F2]
+	mov	[g_09F0], ax
 .1:
-	push	word [0x9f2]
-	push	word [0x9f0]
-	push	word [0x9ee]
+	push	word [g_09F2]
+	push	word [g_09F0]
+	push	word [g_09EE]
 	push	word [es:si + 0x6]
 	push	word [es:si + 0x4]
 	push	word [es:si + 0x2]
@@ -1202,12 +1202,12 @@ F020_0B4C:
 	mov	es, di
 	cmp	word [es:si + 0x8], 0x0
 	jz	short .2
-	mov	ax, [0x9f2]
-	xor	[0x9f0], ax
-	mov	ax, [0x9f0]
-	xor	[0x9f2], ax
-	xor	ax, [0x9f2]
-	mov	[0x9f0], ax
+	mov	ax, [g_09F2]
+	xor	[g_09F0], ax
+	mov	ax, [g_09F0]
+	xor	[g_09F2], ax
+	xor	ax, [g_09F2]
+	mov	[g_09F0], ax
 .2:
 	mov	es, [bp + 0x8]
 	mov	ax, [es:si + 0xe]
@@ -1217,7 +1217,7 @@ F020_0B4C:
 	push	word [es:si + 0xc]
 	mov	ax, [es:si + 0x6]
 	mov	cx, es
-	les	bx, [0x6d4e]
+	les	bx, [g_6D4E]
 	sub	ax, [es:bx + 0xe]
 	cwd
 	db	0x2B, 0xC2		; sub ax, dx
@@ -1295,9 +1295,9 @@ F020_0C76:
 	mov	di, [es:si]
 	mov	ax, [es:si + 0x2]
 	mov	[bp - 0x2], ax
-	push	word [0x9f2]
-	push	word [0x9f0]
-	push	word [0x9ee]
+	push	word [g_09F2]
+	push	word [g_09F0]
+	push	word [g_09EE]
 	push	word [es:si + 0x6]
 	push	word [es:si + 0x4]
 	push	ax
@@ -1310,12 +1310,12 @@ F020_0C76:
 	les	bx, [bp - 0x6]
 	cmp	word [es:bx + 0x16], 0x0
 	jz	short .1
-	mov	ax, [0x9f2]
-	xor	[0x9f0], ax
-	mov	ax, [0x9f0]
-	xor	[0x9f2], ax
-	xor	ax, [0x9f2]
-	mov	[0x9f0], ax
+	mov	ax, [g_09F2]
+	xor	[g_09F0], ax
+	mov	ax, [g_09F0]
+	xor	[g_09F2], ax
+	xor	ax, [g_09F2]
+	mov	[g_09F0], ax
 .1:
 	mov	es, [bp + 0x8]
 	mov	ax, [es:si + 0x8]
@@ -1326,9 +1326,9 @@ F020_0C76:
 	inc	ax
 	inc	ax
 	add	[bp - 0x2], ax
-	push	word [0x9f2]
-	push	word [0x9f0]
-	push	word [0x9ee]
+	push	word [g_09F2]
+	push	word [g_09F0]
+	push	word [g_09EE]
 	push	word [es:si + 0xe]
 	push	word [es:si + 0xc]
 	push	word [bp - 0x2]
@@ -1340,12 +1340,12 @@ F020_0C76:
 	mov	es, di
 	cmp	word [es:si + 0x16], 0x0
 	jz	short .2
-	mov	ax, [0x9f2]
-	xor	[0x9f0], ax
-	mov	ax, [0x9f0]
-	xor	[0x9f2], ax
-	xor	ax, [0x9f2]
-	mov	[0x9f0], ax
+	mov	ax, [g_09F2]
+	xor	[g_09F0], ax
+	mov	ax, [g_09F0]
+	xor	[g_09F2], ax
+	xor	ax, [g_09F2]
+	mov	[g_09F0], ax
 .2:
 	pop	si
 	pop	di
@@ -1563,22 +1563,22 @@ F020_0E7A:
 	retf
 
 F020_0F22:
-	mov	ax, [0x9fc]
-	or	ax, [0x9fa]
+	mov	ax, [g_09FC]
+	or	ax, [g_09FA]
 	jz	short .1
-	push	word [0xb2ce]
-	push	word [0xb2cc]
-	push	word [0x9fc]
-	push	word [0x9fa]
+	push	word [g_B2CE]
+	push	word [g_B2CC]
+	push	word [g_09FC]
+	push	word [g_09FA]
 	call	0x0FEF:F028_04B5
 	add	sp, 0x8
-	push	word [0x9fc]
-	push	word [0x9fa]
+	push	word [g_09FC]
+	push	word [g_09FA]
 	call	0x06E1:FindUnlink
 	add	sp, 0x4
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0x9fc], ax
-	mov	[0x9fa], ax
+	mov	[g_09FC], ax
+	mov	[g_09FA], ax
 .1:
 	retf
 
@@ -1640,7 +1640,7 @@ F020_0FC8:
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[bp - 0x1a], ax
 	mov	[bp - 0x18], ax
-	les	bx, [0x6d4e]
+	les	bx, [g_6D4E]
 	mov	ax, [es:bx + 0xe]
 	inc	ax
 	inc	ax
@@ -1728,9 +1728,9 @@ F020_0FC8:
 	push	cs
 	call	F020_0E7A
 	add	sp, 0x8
-	push	word [0x9f2]
-	push	word [0x9f0]
-	push	word [0x9ee]
+	push	word [g_09F2]
+	push	word [g_09F0]
+	push	word [g_09EE]
 	push	word [bp - 0x18]
 	push	word [bp - 0x1a]
 	push	si
@@ -1740,8 +1740,8 @@ F020_0FC8:
 	add	sp, 0xe
 	lea	ax, [si + 0x8]
 	mov	[bp - 0x8], ax
-	push	word [0x9f6]
-	push	word [0x9f4]
+	push	word [g_09F6]
+	push	word [g_09F4]
 	call	0x0D39:F016_0024
 	add	sp, 0x4
 	mov	word [bp - 0x10], 0x0
@@ -2130,5 +2130,5 @@ F020_1260:
 	retf
 
 F020_14B8:
-	mov	word [0xb2d4], 0xffff
+	mov	word [g_B2D4], 0xffff
 	db	0x2B, 0xC0		; sub ax, ax

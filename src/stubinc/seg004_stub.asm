@@ -6,4 +6,11 @@ CopyFar		equ	0x276
 LongShlAt		equ	0x1270
 _fmemchr		equ	0x135C
 RetOnly		equ	0x1398
+MapLo		equ	0x8ED6
+MapHi		equ	0x8ED8
+OutPtr		equ	0x8EDA
+InPtr		equ	0x8EDE
+MapPair		equ	0x8EE2
+BitBuf		equ	0x8EE4
+BitCount		equ	0x8EE8
 %include "seg/seg004.asm"

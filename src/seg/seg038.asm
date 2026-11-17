@@ -66,14 +66,14 @@ F038_0006:
 	mov	[es:bx + 0x12], di
 	mov	[es:bx], ax
 	mov	[es:bx + 0x2], cx
-	mov	ax, [0x2bc]
+	mov	ax, [BufPtr]
 	mov	[bp - 0x2], ax
 	db	0x8B, 0xD8		; mov bx, ax
 	mov	[bp - 0x8], si
 	db	0x8B, 0xD7		; mov dx, di
 	mov	es, [bp - 0xa]
 .1:
-	cmp	[0xae9c], bx
+	cmp	[ChainIdx], bx
 	jna	short .4
 	mov	cx, [bx]
 	db	0x3B, 0xCA		; cmp cx, dx
@@ -101,8 +101,8 @@ F038_0006:
 	mov	dx, es
 	jmp	near .13
 .4:
-	mov	cx, [0x2bc]
-	mov	dx, [0xae9c]
+	mov	cx, [BufPtr]
+	mov	dx, [ChainIdx]
 	mov	di, [bp - 0x1c]
 .5:
 	db	0x3B, 0xCA		; cmp cx, dx
@@ -165,7 +165,7 @@ F038_0006:
 	mov	dx, [bp - 0xa]
 	jmp	short .13
 .12:
-	push	word 0x7416
+	push	str_OutOfRowSpace
 	call	0x0F4A:F022_03E4
 	pop	bx
 .13:
@@ -283,9 +283,9 @@ F038_019C:
 	db	0x03, 0xC8		; add cx, ax
 	mov	[bp - 0x4], cx
 	mov	[es:bx + 0x8], cx
-	mov	ax, [0x2bc]
+	mov	ax, [BufPtr]
 	db	0x8B, 0xD8		; mov bx, ax
-	mov	cx, [0xae9c]
+	mov	cx, [ChainIdx]
 	mov	[bp - 0x8], di
 .1:
 	db	0x3B, 0xD9		; cmp bx, cx
@@ -316,7 +316,7 @@ F038_019C:
 	mov	dx, es
 	jmp	short .13
 .4:
-	mov	bx, [0x2bc]
+	mov	bx, [BufPtr]
 	mov	di, [bp - 0x6]
 .5:
 	db	0x3B, 0xD9		; cmp bx, cx
@@ -373,7 +373,7 @@ F038_019C:
 	mov	dx, [bp - 0xa]
 	jmp	short .13
 .12:
-	push	word 0x7559
+	push	str_OutOfRowSpace_2
 	call	0x0F4A:F022_03E4
 	pop	bx
 .13:

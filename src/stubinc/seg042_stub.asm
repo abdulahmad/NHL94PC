@@ -26,4 +26,16 @@ __aFlshl		equ	0x1258
 ConPrint		equ	0x17CA
 F028_472A		equ	0x472A
 F028_4782		equ	0x4782
+g_76DE		equ	0x76DE
+str_Qns		equ	0x7730
+str_Pns		equ	0x7735
+str_Qvs		equ	0x773A
+str_Pvs		equ	0x773F
+str_Qes		equ	0x7744
+str_Pes		equ	0x7749
+str_Esh		equ	0x774E
+str_Vsh		equ	0x7753
+str_Mga		equ	0x7758
+str_LoadshapeblockaNoMemoryForMcgatovga		equ	0x775D
+str_LoadshapeblockaNoMemoryForMcgatovga_2		equ	0x7788
 %include "seg/seg042.asm"

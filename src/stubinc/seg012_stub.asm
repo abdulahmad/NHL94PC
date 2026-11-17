@@ -4,4 +4,5 @@
 	org	0x0
 F025_000E		equ	0xE
 ReadCallCount		equ	0x1A0E
+g_B08E		equ	0xB08E
 %include "seg/seg012.asm"

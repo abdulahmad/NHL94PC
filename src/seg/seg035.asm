@@ -16,7 +16,7 @@ F035_000C:
 	les	bx, [bp + 0x6]
 	mov	cx, [es:bx + 0xa]
 	sub	cx, 0x4
-	mov	si, [0x2bc]
+	mov	si, [BufPtr]
 	mov	word [bp - 0x4], 0x0
 	mov	di, [bp - 0x4]
 	jmp	short .2
@@ -32,7 +32,7 @@ F035_000C:
 	jc	short .1
 	db	0x3B, 0xCE		; cmp cx, si
 	jz	short .3
-	push	word 0x6d28
+	push	str_RowSpaceCorrupted
 	call	0x0F4A:F022_03E4
 	pop	bx
 .3:
@@ -43,7 +43,7 @@ F035_000C:
 	shl	dx, 1
 	db	0x03, 0xD6		; add dx, si
 	add	dx, 0x4
-	cmp	dx, [0xae9c]
+	cmp	dx, [ChainIdx]
 	jnc	short .4
 	db	0x8B, 0xDA		; mov bx, dx
 	cmp	word [bx + 0x2], 0x0

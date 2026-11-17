@@ -9,6 +9,8 @@ F034_0030		equ	0x30
 F015_003E		equ	0x3E
 F025_0066		equ	0x66
 F028_01A6		equ	0x1A6
+g_01B4		equ	0x1B4
+g_01B7		equ	0x1B7
 F022_03E4		equ	0x3E4
 F015_040C		equ	0x40C
 F015_041E		equ	0x41E
@@ -18,6 +20,12 @@ FileSizeMsg		equ	0x4EF
 F015_051E		equ	0x51E
 F028_073D		equ	0x73D
 FindFarMsg		equ	0x847
+str_GsummaryDb		equ	0x908
+str_GsummaryDb_2		equ	0x914
+str_GameSav		equ	0x92E
+str_Sav		equ	0x93A
+str_Db		equ	0x93F
+str_Gsummary		equ	0x943
 FindUnlink		equ	0x99A
 F020_0A3C		equ	0xA3C
 F028_0C45		equ	0xC45
@@ -37,4 +45,7 @@ OvlThunk99		equ	0x23CD
 OvlThunk100		equ	0x23D7
 OvlThunk101		equ	0x23E1
 OvlThunk102		equ	0x23EB
+g_8B14		equ	0x8B14
+g_8B16		equ	0x8B16
+g_8B18		equ	0x8B18
 %include "seg/seg013.asm"

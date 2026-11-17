@@ -64,7 +64,7 @@ F007_0006:
 	jz	short .8
 	or	si, 0xa
 .8:
-	mov	al, [si + 0x530]
+	mov	al, [si + g_0530]
 	cbw
 	db	0x8B, 0xF0		; mov si, ax
 	push	0x52
@@ -137,7 +137,7 @@ F007_0120:
 	mov	di, [bp + 0x6]
 	db	0x8B, 0xDF		; mov bx, di
 	shl	bx, 1
-	cmp	word [bx + 0x51e], 0x0
+	cmp	word [bx + g_051E], 0x0
 	jnz	short .1
 	mov	ax, 0x8
 	pop	si
@@ -148,16 +148,16 @@ F007_0120:
 	db	0x0B, 0xFF		; or di, di
 	jz	short .2
 	mov	cl, 0x8
-	mov	si, [0xb06a]
+	mov	si, [g_B06A]
 	sar	si, cl
 	jmp	short .3
 .2:
-	mov	si, [0xb06a]
+	mov	si, [g_B06A]
 	and	si, 0xff
 .3:
 	db	0x8B, 0xDE		; mov bx, si
 	and	bx, 0xf
-	mov	al, [bx + 0x530]
+	mov	al, [bx + g_0530]
 	cbw
 	db	0x8B, 0xD0		; mov dx, ax
 	db	0x8B, 0xC6		; mov ax, si
@@ -191,21 +191,21 @@ F007_0120:
 F007_018A:
 	push	di
 	push	si
-	call	far [0x6418]
-	mov	ax, [0x6422]
+	call	far [g_6418]
+	mov	ax, [MouseX]
 	sub	ax, 0xa0
-	mov	dx, [0x6422]
+	mov	dx, [MouseX]
 	sub	dx, 0xa0
 	call	0x03A3:ImulRegs
 	db	0x8B
 
 F007_01A4:
 	enter	0x64b8, 0x0
-	mov	bx, [0x6424]
+	mov	bx, [MouseY]
 	db	0x2B, 0xC3		; sub ax, bx
 	db	0x8B, 0xDA		; mov bx, dx
 	mov	dx, 0x64
-	mov	si, [0x6424]
+	mov	si, [MouseY]
 	db	0x2B, 0xD6		; sub dx, si
 	db	0x8B, 0xF1		; mov si, cx
 	db	0x8B, 0xFB		; mov di, bx
@@ -222,17 +222,17 @@ F007_01A4:
 	jmp	short .3
 	db	0x90
 .2:
-	mov	ax, [0x6422]
+	mov	ax, [MouseX]
 	sub	ax, 0xa0
 	mov	dx, 0x64
-	mov	cx, [0x6424]
+	mov	cx, [MouseY]
 	db	0x2B, 0xD1		; sub dx, cx
 	call	0x0D5F:F017_0089
 	db	0x8B, 0xF0		; mov si, ax
 .3:
-	test	byte [0x6426], 0x1
+	test	byte [MouseBtn], 0x1
 	jz	short .4
-	test	byte [0x6426], 0x2
+	test	byte [MouseBtn], 0x2
 	jz	short .4
 	or	si, 0x40
 	db	0x8B, 0xC6		; mov ax, si
@@ -240,7 +240,7 @@ F007_01A4:
 	pop	di
 	retf
 .4:
-	test	byte [0x6426], 0x1
+	test	byte [MouseBtn], 0x1
 	jz	short .5
 	or	si, 0x10
 	db	0x8B, 0xC6		; mov ax, si
@@ -249,7 +249,7 @@ F007_01A4:
 	retf
 	db	0x90
 .5:
-	test	byte [0x6426], 0x2
+	test	byte [MouseBtn], 0x2
 	jz	short .6
 	or	si, 0x20
 .6:
@@ -264,13 +264,13 @@ F007_0224:
 	db	0x8B, 0xEC		; mov bp, sp
 	push	si
 	mov	si, [bp + 0x6]
-	cmp	byte [si + 0x52c], 0x8
+	cmp	byte [si + g_052C], 0x8
 	jnz	short .1
 	push	cs
 	call	F007_0006
 	jmp	short .6
 .1:
-	cmp	byte [si + 0x52c], 0x2
+	cmp	byte [si + g_052C], 0x2
 	jnz	short .3
 	push	0x0
 .2:
@@ -279,13 +279,13 @@ F007_0224:
 	add	sp, 0x2
 	jmp	short .6
 .3:
-	cmp	byte [si + 0x52c], 0x4
+	cmp	byte [si + g_052C], 0x4
 	jnz	short .4
 	push	0x1
 	jmp	short .2
 	db	0x90
 .4:
-	cmp	byte [si + 0x52c], 0x1
+	cmp	byte [si + g_052C], 0x1
 	jnz	short .5
 	push	cs
 	call	F007_018A
@@ -437,23 +437,23 @@ F007_026E:
 	jz	short .16
 	mov	byte [bp - 0x1], 0x13
 .16:
-	cmp	byte [0x52e], 0x0
+	cmp	byte [g_052E], 0x0
 	jz	short .18
 	mov	al, [bp - 0x1]
 	cbw
-	mov	cl, [0x52e]
+	mov	cl, [g_052E]
 	db	0x2A, 0xED		; sub ch, ch
 	db	0x3B, 0xC1		; cmp ax, cx
 	jnz	short .17
 	mov	[bp - 0x1], ch
 	jmp	short .19
 .17:
-	mov	byte [0x52e], 0x0
+	mov	byte [g_052E], 0x0
 	jmp	short .19
 	db	0x90
 .18:
 	mov	al, [bp - 0x1]
-	mov	[0x52e], al
+	mov	[g_052E], al
 .19:
 	cmp	byte [bp - 0x1], 0x0
 	jz	short .20
@@ -472,34 +472,34 @@ F007_03FE:
 	jnz	short .1
 	db	0xE9, 0x8D, 0x00		; jmp 0x498
 .1:
-	cmp	word [0x524], 0x0
+	cmp	word [g_0524], 0x0
 	jnz	short .2
 	db	0xE9, 0x83, 0x00		; jmp 0x498
 .2:
-	cmp	word [0x522], 0x3e8
+	cmp	word [g_0522], 0x3e8
 	jnl	short .3
-	inc	word [0x522]
+	inc	word [g_0522]
 .3:
-	mov	ax, [0x52a]
-	dec	word [0x52a]
+	mov	ax, [g_052A]
+	dec	word [g_052A]
 	db	0x0B, 0xC0		; or ax, ax
 	db	0x75, 0x6C		; jnz 0x498
-	mov	word [0x52a], 0x4
-	cmp	word [0x528], 0x32
+	mov	word [g_052A], 0x4
+	cmp	word [g_0528], 0x32
 	db	0x7D, 0x5F		; jnl 0x498
-	mov	ax, [0x528]
-	add	ax, [0x526]
+	mov	ax, [g_0528]
+	add	ax, [g_0526]
 	mov	cx, 0x32
 	cwd
 	idiv	cx
 	db	0x8B, 0xF2		; mov si, dx
-	test	byte [0x52c], 0x6
+	test	byte [g_052C], 0x6
 	jnz	short .4
-	test	byte [0x52d], 0x6
+	test	byte [g_052D], 0x6
 	jz	short .5
 .4:
 	call	0x03A3:PollSticks
-	mov	[0xb06a], ax
+	mov	[g_B06A], ax
 .5:
 	db	0x8B, 0xC6		; mov ax, si
 	shl	si, 1

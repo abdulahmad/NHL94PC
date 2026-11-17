@@ -9,11 +9,11 @@ F010_0006:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ax
-	mov	ax, [0x2a02]
+	mov	ax, [g_2A02]
 	mov	dx, 0xe62d
 	call	0x03A3:MulRegs
 	db	0x8B, 0xD8		; mov bx, ax
-	mov	ax, [0x2a00]
+	mov	ax, [g_2A00]
 	db	0x8B, 0xC8		; mov cx, ax
 	mov	dx, 0xbb40
 	call	0x03A3:MulRegs
@@ -24,6 +24,6 @@ F010_0006:
 	db	0x03, 0xD3		; add dx, bx
 	add	ax, strict word 0x1
 	adc	dx, 0x0
-	mov	[0x2a00], ax
-	mov	[0x2a02], dx
+	mov	[g_2A00], ax
+	mov	[g_2A02], dx
 	db	0x8A

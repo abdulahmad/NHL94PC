@@ -18,45 +18,45 @@ F048_000C:
 	les	si, [bp + 0x4]
 	mov	al, [es:bx + si]
 	db	0x2A, 0xE4		; sub ah, ah
-	mov	dx, [0x8f5a]
+	mov	dx, [g_8F5A]
 	db	0x8B, 0xFB		; mov di, bx
 	call	0x03A3:0x28C6
-	mov	[0x8f60], ax
+	mov	[g_8F60], ax
 	mov	es, [bp + 0x6]
 	db	0x03, 0xFE		; add di, si
 	mov	al, [es:di + 0x1]
 	db	0x2A, 0xE4		; sub ah, ah
-	mov	dx, [0x8f5c]
+	mov	dx, [g_8F5C]
 	mov	si, es
 	call	0x03A3:0x28C6
-	mov	[0x8f62], ax
+	mov	[g_8F62], ax
 	mov	es, si
 	lea	bx, [di + 0x1]
 	mov	al, [es:bx + 0x1]
 	db	0x2A, 0xE4		; sub ah, ah
-	mov	dx, [0x8f5e]
+	mov	dx, [g_8F5E]
 	call	0x03A3:0x28C6
-	mov	[0x8f64], ax
+	mov	[g_8F64], ax
 	db	0x8B, 0xD8		; mov bx, ax
-	cmp	word [0x8f66], 0x0
+	cmp	word [g_8F66], 0x0
 	jz	short .1
-	mov	ax, [0x8f62]
-	add	ax, [0x8f60]
+	mov	ax, [g_8F62]
+	add	ax, [g_8F60]
 	db	0x03, 0xC3		; add ax, bx
 	mov	cx, 0x3
 	cwd
 	idiv	cx
 	db	0x8B, 0xD8		; mov bx, ax
-	mov	[0x8f62], bx
-	mov	[0x8f60], bx
+	mov	[g_8F62], bx
+	mov	[g_8F60], bx
 .1:
-	cmp	word [0x8f62], 0x3f
+	cmp	word [g_8F62], 0x3f
 	jng	short .2
-	mov	word [0x8f62], 0x3f
+	mov	word [g_8F62], 0x3f
 .2:
-	cmp	word [0x8f60], 0x3f
+	cmp	word [g_8F60], 0x3f
 	jg	short .3
-	mov	di, [0x8f60]
+	mov	di, [g_8F60]
 	jmp	short .4
 .3:
 	mov	di, 0x3f
@@ -65,43 +65,43 @@ F048_000C:
 	jng	short .5
 	mov	bx, 0x3f
 .5:
-	cmp	word [0x8f66], 0x0
+	cmp	word [g_8F66], 0x0
 	jz	short .6
-	mov	ax, [0x8f62]
+	mov	ax, [g_8F62]
 	db	0x03, 0xC3		; add ax, bx
 	db	0x03, 0xC7		; add ax, di
 	mov	cx, 0x3
 	cwd
 	idiv	cx
 	db	0x8B, 0xD8		; mov bx, ax
-	mov	[0x8f62], bx
+	mov	[g_8F62], bx
 	db	0x8B, 0xFB		; mov di, bx
 .6:
-	mov	[0x8f60], di
-	mov	[0x8f64], bx
+	mov	[g_8F60], di
+	mov	[g_8F64], bx
 	mov	word [bp - 0x8], 0x270f
 	mov	ax, [bp + 0x4]
 	db	0x8B, 0xD6		; mov dx, si
 	db	0x8B, 0xC8		; mov cx, ax
-	mov	[0x8f58], dx
+	mov	[g_8F58], dx
 	mov	word [bp - 0x6], 0x0
-	mov	[0x8f56], cx
+	mov	[g_8F56], cx
 	db	0x8B, 0xF0		; mov si, ax
 	mov	bx, [bp - 0x6]
 	jmp	short .12
 .7:
-	mov	es, [0x8d0c]
+	mov	es, [g_8D0C]
 	cmp	byte [es:bx + 0x100], 0x0
 	jnz	short .8
 	add	si, 0x3
 	jmp	short .11
 .8:
-	mov	es, [0x8f58]
+	mov	es, [g_8F58]
 	db	0x8B, 0xFE		; mov di, si
 	inc	si
 	mov	al, [es:di]
 	db	0x2A, 0xE4		; sub ah, ah
-	sub	ax, [0x8f60]
+	sub	ax, [g_8F60]
 	neg	ax
 	db	0x8B, 0xC8		; mov cx, ax
 	imul	cx
@@ -117,7 +117,7 @@ F048_000C:
 	inc	si
 	mov	al, [es:di]
 	db	0x2A, 0xE4		; sub ah, ah
-	sub	ax, [0x8f62]
+	sub	ax, [g_8F62]
 	neg	ax
 	db	0x8B, 0xC8		; mov cx, ax
 	imul	cx
@@ -133,7 +133,7 @@ F048_000C:
 	inc	si
 	mov	al, [es:di]
 	db	0x2A, 0xE4		; sub ah, ah
-	sub	ax, [0x8f64]
+	sub	ax, [g_8F64]
 	neg	ax
 	db	0x8B, 0xC8		; mov cx, ax
 	imul	cx
@@ -151,7 +151,7 @@ F048_000C:
 	jnl	short .13
 	jmp	near .7
 .13:
-	mov	[0x8f56], si
+	mov	[g_8F56], si
 	mov	al, [bp - 0x9]
 	pop	si
 	pop	di
@@ -165,17 +165,17 @@ F048_0180:
 	push	di
 	push	si
 	mov	ax, [bp + 0x6]
-	mov	[0x8f5a], ax
+	mov	[g_8F5A], ax
 	mov	ax, [bp + 0x8]
-	mov	[0x8f5c], ax
+	mov	[g_8F5C], ax
 	mov	ax, [bp + 0xa]
-	mov	[0x8f5e], ax
+	mov	[g_8F5E], ax
 	db	0x33, 0xF6		; xor si, si
-	mov	[0x8f66], si
+	mov	[g_8F66], si
 	mov	di, [bp + 0x10]
 	jmp	short .3
 .1:
-	mov	es, [0x8d0e]
+	mov	es, [g_8D0E]
 	db	0x26, 0x80, 0xBC, 0x00, 0x00, 0x00		; cmp byte [es:si + 0x0], 0x0
 	jz	short .2
 	push	si
@@ -224,13 +224,13 @@ F048_01E8:
 	db	0x8B, 0xD9		; mov bx, cx
 	db	0x03, 0xDE		; add bx, si
 	mov	al, [es:bx]
-	mov	es, [0x8d0e]
+	mov	es, [g_8D0E]
 	db	0x26, 0x88, 0x84, 0x00, 0x00		; mov [es:si + 0x0], al
 	mov	es, [bp + 0xc]
 	db	0x8B, 0xDF		; mov bx, di
 	db	0x03, 0xDE		; add bx, si
 	mov	al, [es:bx]
-	mov	es, [0x8d0e]
+	mov	es, [g_8D0E]
 	mov	[es:si + 0x100], al
 	inc	si
 .2:

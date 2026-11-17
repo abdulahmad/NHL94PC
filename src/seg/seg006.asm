@@ -16,12 +16,12 @@ F006_0008:
 	jmp	near .11
 .1:
 	db	0x2B, 0xF6		; sub si, si
-	dec	word [0x50e]
+	dec	word [g_050E]
 	jz	short .2
 	jmp	near .11
 .2:
-	mov	word [0x50e], 0x5
-	test	byte [0xaece], 0x1
+	mov	word [g_050E], 0x5
+	test	byte [g_AECE], 0x1
 	jz	short .3
 	lea	ax, [bp - 0x8]
 	push	ax
@@ -32,9 +32,9 @@ F006_0008:
 .3:
 	db	0x0B, 0xF6		; or si, si
 	jnz	short .5
-	test	byte [0xaece], 0x2
+	test	byte [g_AECE], 0x2
 	jnz	short .4
-	test	byte [0xaece], 0x4
+	test	byte [g_AECE], 0x4
 	jz	short .5
 .4:
 	lea	ax, [bp - 0x8]
@@ -46,7 +46,7 @@ F006_0008:
 .5:
 	db	0x0B, 0xF6		; or si, si
 	jnz	short .6
-	test	byte [0xaece], 0x8
+	test	byte [g_AECE], 0x8
 	jz	short .6
 	lea	ax, [bp - 0x8]
 	push	ax
@@ -58,8 +58,8 @@ F006_0008:
 	db	0x0B, 0xF6		; or si, si
 	jnz	short .7
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0xafd0], ax
-	mov	[0xafd2], ax
+	mov	[g_AFD0], ax
+	mov	[g_AFD2], ax
 	pop	si
 	pop	di
 	leave
@@ -68,26 +68,26 @@ F006_0008:
 	cmp	word [bp - 0x8], 0x1
 	jnz	short .8
 	db	0x2B, 0xC0		; sub ax, ax
-	mov	[0xafd0], ax
-	mov	[0xafd2], ax
+	mov	[g_AFD0], ax
+	mov	[g_AFD2], ax
 	jmp	short .10
 .8:
 	mov	al, [bp - 0x5]
 	db	0x2A, 0xE4		; sub ah, ah
-	cmp	ax, [0xafd0]
+	cmp	ax, [g_AFD0]
 	jnz	short .9
-	inc	word [0xafd2]
+	inc	word [g_AFD2]
 	jmp	short .10
 	db	0x90
 .9:
-	mov	word [0xafd2], 0x0
+	mov	word [g_AFD2], 0x0
 	mov	al, [bp - 0x5]
 	db	0x2A, 0xE4		; sub ah, ah
-	mov	[0xafd0], ax
+	mov	[g_AFD0], ax
 .10:
-	cmp	word [0x508], 0x20
+	cmp	word [g_0508], 0x20
 	jz	short .11
-	mov	bx, [0x50c]
+	mov	bx, [g_050C]
 	shl	bx, byte 0x3
 	lea	di, [bx - 0x5130]
 	lea	si, [bp - 0x8]
@@ -97,11 +97,11 @@ F006_0008:
 	movsw
 	movsw
 	movsw
-	mov	al, [0x50c]
+	mov	al, [g_050C]
 	inc	al
 	and	ax, strict word 0x1f
-	mov	[0x50c], ax
-	inc	word [0x508]
+	mov	[g_050C], ax
+	inc	word [g_0508]
 .11:
 	pop	si
 	pop	di
@@ -118,13 +118,13 @@ F006_00E6:
 	push	ax
 	call	0x03A3:MouseRead
 	add	sp, 0x6
-	mov	ax, [0x510]
+	mov	ax, [g_0510]
 	cmp	[bp - 0x6], ax
 	jnz	short .1
-	mov	ax, [0x516]
+	mov	ax, [g_0516]
 	cmp	[bp - 0x4], ax
 	jnz	short .1
-	mov	ax, [0x518]
+	mov	ax, [g_0518]
 	cmp	[bp - 0x2], ax
 	jnz	short .1
 	db	0x2B, 0xC0		; sub ax, ax
@@ -132,12 +132,12 @@ F006_00E6:
 	retf
 .1:
 	mov	ax, [bp - 0x4]
-	mov	[0x516], ax
+	mov	[g_0516], ax
 	mov	ax, [bp - 0x2]
-	mov	[0x518], ax
+	mov	[g_0518], ax
 	mov	bx, [bp + 0x6]
 	mov	word [bx], 0x1
-	cmp	word [0x510], 0x0
+	cmp	word [g_0510], 0x0
 	jz	short .2
 	cmp	word [bp - 0x6], 0x0
 	jnz	short .2
@@ -161,7 +161,7 @@ F006_00E6:
 	push	word [bp - 0x4]
 	call	0x03A3:MouseMove
 	mov	ax, [bp - 0x6]
-	mov	[0x510], ax
+	mov	[g_0510], ax
 	mov	ax, 0x1
 	leave
 	retf
@@ -173,7 +173,7 @@ F006_0174:
 	db	0x8B, 0xF0		; mov si, ax
 	and	si, 0xff
 	jnz	short .1
-	cmp	word [0x512], 0x0
+	cmp	word [g_0512], 0x0
 	jnz	short .1
 	db	0x2B, 0xC0		; sub ax, ax
 	pop	si
@@ -189,17 +189,17 @@ F006_0174:
 	db	0x1A, 0xC0		; sbb al, al
 	inc	al
 	mov	[bx + 0x2], al
-	cmp	word [0x512], 0x0
+	cmp	word [g_0512], 0x0
 	jz	short .2
 	cmp	word [bp - 0x2], 0x0
 	jnz	short .2
 	add	byte [bx + 0x2], 0x2
-	mov	word [0x512], 0x0
+	mov	word [g_0512], 0x0
 	jmp	short .3
 .2:
 	cmp	word [bp - 0x2], 0x0
 	jz	short .3
-	mov	word [0x512], 0x1
+	mov	word [g_0512], 0x1
 .3:
 	db	0x8B, 0xC6		; mov ax, si
 	and	al, 0xf
@@ -295,14 +295,14 @@ F006_01DE:
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .11
 	or	byte [si + 0x2], 0x1
-	mov	word [0x514], 0x1
+	mov	word [g_0514], 0x1
 	jmp	short .12
 	db	0x90
 .11:
-	cmp	word [0x514], 0x0
+	cmp	word [g_0514], 0x0
 	jz	short .12
 	or	byte [si + 0x2], 0x2
-	mov	word [0x514], 0x0
+	mov	word [g_0514], 0x0
 .12:
 	call	0x03A3:KeyJump
 	db	0x0B, 0xC0		; or ax, ax
