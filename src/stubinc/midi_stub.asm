@@ -4,4 +4,5 @@
 	org	0x0
 SaveGameNameDialog.13		equ	0x78D
 QueueMidiBytes		equ	0x934
+FindUnlink		equ	0x99A
 %include "pc/sound/midi.asm"

@@ -1,5 +1,6 @@
 ; Polls the mouse, joysticks and keyboard and queues an event for each change.
-        db 0x06, 0x00, 0x00
+        db (_exit - MscRuntimeStart) >> 8       ; the rest of call 0x0000:_exit from the segment before
+        dw 0x0000
         pop si
         pop di
         leave

@@ -3,6 +3,7 @@
 	bits	16
 	org	0x0
 exhstate		equ	0x0
+MscRuntimeStart		equ	0x0
 LoadRawHeader		equ	0x2
 LoadPackedHeader		equ	0x8
 NullFar		equ	0xC
@@ -16,8 +17,8 @@ CalibrateRightStick		equ	0x244
 GetPaletteFar		equ	0x366
 InitGraphics		equ	0x39A
 OpenReadShared		equ	0x3D6
-HookCrit		equ	0x3E4
 FatalError		equ	0x3E4
+HookCrit		equ	0x3E4
 CloseHandlePtr		equ	0x41E
 str_InsufficientConventionalMemoryAvaila		equ	0x42E
 ReadAtOffset		equ	0x442

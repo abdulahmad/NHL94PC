@@ -2,6 +2,7 @@
 ;	(written by tools/make_stubs.py from the overlay builds).
 AddHumanTeam		equ	0x8	; LP.OVL
 BuildDefaultLines		equ	0x102	; AI.OVL
+BuildEventLines		equ	0x478	; AI.OVL
 BuildSeasonTitle		equ	0x47C	; STATS.OVL
 CalGoalieStatsScreen		equ	0x28E	; STATS.OVL
 CalNextMonth		equ	0x4C4	; LP.OVL

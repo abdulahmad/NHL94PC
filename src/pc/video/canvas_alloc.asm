@@ -1,5 +1,5 @@
 ; Allocates a drawing canvas (linear or planar).
-        db 0x08, 0x15
+        dw 0x1508                               ; the rest of call 0x1508:CalibrateStick from the segment before
         add sp, 0x8
         retf
 

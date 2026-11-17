@@ -7,8 +7,8 @@ FontPaper		equ	0x2
 LargestFreeBlock		equ	0x4
 FontX		equ	0x8
 FontY		equ	0xA
-BiosEquipment		equ	0x10
 FontAdvance		equ	0x10
+BiosEquipment		equ	0x10
 FontProportional		equ	0x14
 AskExitToDos		equ	0x224
 EmsMapCache		equ	0x24C

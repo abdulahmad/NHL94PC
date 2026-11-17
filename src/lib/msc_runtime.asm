@@ -3,6 +3,8 @@
 ; helpers, and the floating-point emulator. __astart jumps to MscStartup.
 
 ; Sixteen zero bytes. The first routine starts on the next paragraph.
+MscRuntimeStart:                                ; offset 0 of this segment; code in other segments splits a
+                                                ; label here with label - MscRuntimeStart
         db 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 
 ; VGA ports and the graphics window.

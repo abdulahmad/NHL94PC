@@ -6,7 +6,8 @@
 ; variable there).
 PspTermVector	equ	0x0A
 RtlInputBuf	equ	0x50
-        db 0x23, 0x05, 0x00
+        db 0x23                                 ; the rest of jmp 0x2352:BuildEventLines (BuildEventLinesThunk)
+        dw 5                                    ; AI.OVL
 
 ;-----------------------------------------------------------------------------
 ; RtlSectionHook                                             1DE4:0003  RTLink

@@ -376,4 +376,4 @@ _main:
 
 ; The far call continues in the next segment. Those bytes complete it as
 ; a call to _exit.
-        db 0x9A, 0x87
+        db 0x9A, (_exit - MscRuntimeStart) & 0xFF ; call 0x0000:_exit, finished in the next segment

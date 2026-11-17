@@ -130,6 +130,10 @@ def ovl_entries(own, vals):
             cur = m.group(1)
         m = re.match(r'^\s+jmp 0x[0-9A-F]{4}:(\w+)', l)
         ov = re.search(r'; (\w+)\.OVL', L[i + 1]) if i + 1 < len(L) else None
+        if not m:
+            # a far jump split across the segment end: db 0xEA, then dw Routine ; NAME.OVL
+            m = re.match(r'^\s+dw (\w+)\s*;', l) if re.match(r'^\s+db 0xEA\b', L[i - 1]) else None
+            ov = re.search(r'; (\w+)\.OVL', l) if m else ov
         if m and cur and ov and m.group(1) == cur:
             v = own.get(ov.group(1).lower(), {}).get(cur)
             if v is None:

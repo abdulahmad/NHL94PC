@@ -1936,7 +1936,11 @@ str_Presidents:                                 ; string 'Presidents'
 str_ConnSmythe:                                 ; string 'Conn Smythe'
         db 'Conn Smythe', 0x00
 str_EaSportsCup:                                ; string 'EA Sports Cup'
-        db 'EA Sports Cup', 0x00, 'Season', 0x00, 'Playoff', 0x00, 0x00
+        db 'EA Sports Cup', 0x00
+str_SeasonTitle:                                ; string 'Season'
+        db 'Season', 0x00
+str_PlayoffTitle:                               ; string 'Playoff'
+        db 'Playoff', 0x00, 0x00
         dw str_Tropback
         dw str_Trophies
 AwardMsgIds:                                    ; message numbers of the award names (AwardsCeremony); used by
@@ -2014,26 +2018,30 @@ AwardKinds:                                     ; kind of each award (0 skater, 
 AwardsPending:                                  ; 1 while the awards are still to be picked; used by LP
         db 0x01
 AwardWinner:                                    ; winner record pointer of the first award; used by LP
-        db 0x0E, 0xCA
+        dw AwardScores + 0x208
 AwardWinner2:                                   ; winner pointer of award 2; used by LP
-        db 0x3E, 0xCA
+        dw AwardScores + 0x238
 AwardWinner3:                                   ; winner pointer of award 3; used by LP
-        db 0x6E, 0xCA
+        dw AwardScores + 0x268
 AwardWinner4:                                   ; winner pointer of award 4; used by LP
-        db 0x9E, 0xCA
+        dw AwardScores + 0x298
 AwardWinner5:                                   ; winner pointer of award 5; used by LP
-        db 0xCE, 0xCA
+        dw AwardScores + 0x2C8
 AwardWinner6:                                   ; winner pointer of award 6; used by LP
-        db 0x04, 0xCB
+        dw AwardScores + 0x2FE
 AwardWinner7:                                   ; winner pointer of award 7; used by LP
-        db 0x3A, 0xCB
+        dw AwardScores + 0x334
         db 0x00, 0x00
 AwardWinner8:                                   ; winner pointer of award 8; used by LP
-        db 0x6A, 0xCB
+        dw AwardScores + 0x364
 AwardWinner9:                                   ; winner pointer of award 9; used by LP
-        db 0x9A, 0xCB
+        dw AwardScores + 0x394
 AwardTitlePtrs:                                 ; award title text pointers; used by LP
-        db 0x18, 0x1C, 0x1F, 0x1C, 0x25, 0x64, 0x00, 0x00
+        dw str_SeasonTitle
+        dw str_PlayoffTitle
+str_D_5:                                        ; string '%d'
+        db '%d', 0x00
+        db 0x00
 str_D02d_2:                                     ; string '%d.%02d'; used by LP
         db '%d.%02d', 0x00
 str_D01d:                                       ; string '%d.%01d'; used by LP

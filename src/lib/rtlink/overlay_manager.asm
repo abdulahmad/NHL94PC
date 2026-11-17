@@ -4174,4 +4174,6 @@ ReplayRecordResetThunk:
 ;-----------------------------------------------------------------------------
 BuildEventLinesThunk:
         call LoadFromThunk
-        db 0xEA, 0x78, 0x04, 0x52               ; far jump continues in the RTLink runtime
+        db 0xEA                                 ; insn: jmp 0x2352:BuildEventLines, finished in the next segment
+        dw BuildEventLines                      ; AI.OVL
+        db 0x52

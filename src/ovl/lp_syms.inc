@@ -536,6 +536,7 @@ str_Crests4_6		equ	0x1766
 str_CrestsBin		equ	0x176E
 str_D01d		equ	0x1D14
 str_D02d_2		equ	0x1D0C
+str_D_5		equ	0x1D08
 str_Db_2		equ	0xBAF
 str_Dot		equ	0xBF4
 str_DriveColon		equ	0xBFA

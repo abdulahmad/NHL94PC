@@ -1003,4 +1003,4 @@ SaveGameNameDialog:
         add sp, 0x4
         push word [bp - 0x5e]
         push word [bp - 0x60]
-        db 0x9A
+        db 0x9A                                 ; insn: call 0x06E1:FindUnlink, finished in the next segment

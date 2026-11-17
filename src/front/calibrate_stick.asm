@@ -244,4 +244,5 @@ CalibrateRightStick:
         push 0x1
         push 0x8
         push 0x2
-        db 0x9A, 0x04, 0x00
+        db 0x9A                                 ; insn: call 0x1508:CalibrateStick, finished in the next segment
+        dw CalibrateStick

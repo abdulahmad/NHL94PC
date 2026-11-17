@@ -917,7 +917,7 @@ ShowAwardScreens:
         add sp, 0x8
         mov bx, [bp - 0x26]
         push word [bx]
-        push word 0x1d08
+        push word str_D_5
         mov ax, [bp - 0x64]
         add ax, strict word 0x8
         push ax
@@ -926,7 +926,7 @@ ShowAwardScreens:
         add sp, 0x8
         mov bx, [bp - 0x26]
         push word [bx + 0xc]
-        push word 0x1d08
+        push word str_D_5
         mov ax, [bp - 0x64]
         add ax, strict word 0x10
         push ax
@@ -953,7 +953,7 @@ ShowAwardScreens:
         add sp, 0xa
         mov bx, [bp - 0x26]
         push word [bx + 0x2]
-        push word 0x1d08
+        push word str_D_5
         mov ax, [bp - 0x64]
         add ax, strict word 0x20
         push ax
@@ -962,7 +962,7 @@ ShowAwardScreens:
         add sp, 0x8
         mov bx, [bp - 0x26]
         push word [bx + 0x4]
-        push word 0x1d08
+        push word str_D_5
         mov ax, [bp - 0x64]
         add ax, strict word 0x28
         push ax
@@ -973,7 +973,7 @@ ShowAwardScreens:
         jnz short .6
         mov bx, [bp - 0x26]
         push word [bx + 0x6]
-        push word 0x1d08
+        push word str_D_5
         mov ax, [bp - 0x64]
         add ax, strict word 0x30
         push ax
@@ -983,7 +983,7 @@ ShowAwardScreens:
 .6:
         mov bx, [bp - 0x26]
         push word [bx + 0x8]
-        push word 0x1d08
+        push word str_D_5
         mov ax, [bp - 0x64]
         add ax, strict word 0x38
         push ax
@@ -992,7 +992,7 @@ ShowAwardScreens:
         add sp, 0x8
         mov bx, [bp - 0x26]
         push word [bx + 0xa]
-        push word 0x1d08
+        push word str_D_5
         mov ax, [bp - 0x64]
         add ax, strict word 0x40
         push ax
@@ -1001,7 +1001,7 @@ ShowAwardScreens:
         add sp, 0x8
         mov bx, [bp - 0x26]
         push word [bx + 0x12]
-        push word 0x1d08
+        push word str_D_5
         mov ax, [bp - 0x64]
         add ax, strict word 0x48
         push ax
@@ -1164,7 +1164,7 @@ ShowAwardScreens:
         add sp, 0x8
         mov bx, [bp - 0x70]
         push word [bx]
-        push word 0x1d08
+        push word str_D_5
         mov ax, [bp - 0x64]
         add ax, strict word 0x8
         push ax
@@ -1173,7 +1173,7 @@ ShowAwardScreens:
         add sp, 0x8
         mov bx, [bp - 0x70]
         push word [bx + 0x2]
-        push word 0x1d08
+        push word str_D_5
         mov ax, [bp - 0x64]
         add ax, strict word 0x10
         push ax
@@ -1182,7 +1182,7 @@ ShowAwardScreens:
         add sp, 0x8
         mov bx, [bp - 0x70]
         push word [bx + 0x4]
-        push word 0x1d08
+        push word str_D_5
         mov ax, [bp - 0x64]
         add ax, strict word 0x18
         push ax
@@ -1191,7 +1191,7 @@ ShowAwardScreens:
         add sp, 0x8
         mov bx, [bp - 0x70]
         push word [bx + 0x6]
-        push word 0x1d08
+        push word str_D_5
         mov ax, [bp - 0x64]
         add ax, strict word 0x20
         push ax
@@ -1200,7 +1200,7 @@ ShowAwardScreens:
         add sp, 0x8
         mov bx, [bp - 0x70]
         push word [bx + 0xc]
-        push word 0x1d08
+        push word str_D_5
         mov ax, [bp - 0x64]
         add ax, strict word 0x28
         push ax
@@ -1209,7 +1209,7 @@ ShowAwardScreens:
         add sp, 0x8
         mov bx, [bp - 0x70]
         push word [bx + 0x10]
-        push word 0x1d08
+        push word str_D_5
         mov ax, [bp - 0x64]
         add ax, strict word 0x30
         push ax
@@ -1218,7 +1218,7 @@ ShowAwardScreens:
         add sp, 0x8
         mov bx, [bp - 0x70]
         push word [bx + 0x8]
-        push word 0x1d08
+        push word str_D_5
         mov ax, [bp - 0x64]
         add ax, strict word 0x38
         push ax
@@ -1227,7 +1227,7 @@ ShowAwardScreens:
         add sp, 0x8
         mov bx, [bp - 0x70]
         push word [bx + 0xa]
-        push word 0x1d08
+        push word str_D_5
         mov ax, [bp - 0x64]
         add ax, strict word 0x40
         push ax
@@ -1236,7 +1236,7 @@ ShowAwardScreens:
         add sp, 0x8
         mov bx, [bp - 0x70]
         push word [bx + 0xe]
-        push word 0x1d08
+        push word str_D_5
         mov ax, [bp - 0x64]
         add ax, strict word 0x48
         push ax

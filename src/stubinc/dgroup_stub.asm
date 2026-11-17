@@ -104,4 +104,5 @@ FarZero		equ	0x2976
 NullGameHookThunk		equ	0x2A49
 DrawRleFlipRemapAt		equ	0x2D5F
 DrawRleTransRemapFastAt		equ	0x2FBB
+AwardScores		equ	0xC806
 %include "data/dgroup.asm"

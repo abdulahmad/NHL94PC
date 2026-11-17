@@ -3,6 +3,7 @@
 	bits	16
 	org	0x0
 ReadKeyEventHit		equ	0x0
+MscRuntimeStart		equ	0x0
 InputQueueCount		equ	0x508
 InputQueueTail		equ	0x50C
 PollCountdown		equ	0x50E
@@ -11,6 +12,7 @@ StickEnabled		equ	0x512
 KeysEnabled		equ	0x514
 MousePosX		equ	0x516
 MousePosY		equ	0x518
+_exit		equ	0x687
 SsIsDs		equ	0xE11
 PollSticks		equ	0x1120
 KeyDown		equ	0x16C1

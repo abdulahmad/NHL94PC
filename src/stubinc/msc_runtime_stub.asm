@@ -4,8 +4,8 @@
 	org	0x0
 NullStartup4		equ	0x4
 NullStartup6		equ	0x6
-_main		equ	0x8
 SpillRet		equ	0x8
+_main		equ	0x8
 ScreenRowStride		equ	0x8FC
 CurPage		equ	0x74DC
 TopOfStack		equ	0x8516
