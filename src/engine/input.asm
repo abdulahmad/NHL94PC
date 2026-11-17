@@ -132,7 +132,7 @@ lineinput:
         mov bx, [bp - 0x4]
         mov bx, [bx + lcgroup]
         shl bx, 1
-        mov ax, [bx + g_5AF6]
+        mov ax, [bx + LineChoiceKeys]
         mov bx, [bp - 0x4]
         mov [bx + lcgroup], ax
         mov word [bx + lcsel], 0x1
@@ -152,7 +152,7 @@ lineinput:
 .6:
         test byte [di + 0x44], 0x8
         jz short .7
-        cmp word [g_5BF4], 0x0
+        cmp word [playsuspended], 0x0
         jnz short .7
         test byte [di + 0x44], 0x20
         jnz short .7
@@ -447,8 +447,8 @@ doinput:
         jmp short .5
         db 0x90
 .7:
-        mov bx, [g_BC2A]
-        cmp byte [bx + g_BC2C], 0x1c
+        mov bx, [puck_1C]
+        cmp byte [bx + puckasslist], 0x1c
         jnz short .9
         test byte [regd1], 0x10
         jnz short .8
@@ -701,7 +701,7 @@ doinput:
         call 0x28BB:burst
         jmp near .5
 .51:
-        cmp word [g_5BF4], 0x0
+        cmp word [playsuspended], 0x0
         jnz short .54
 .52:
         push word [regd0]
@@ -745,7 +745,7 @@ getlchoice:
         shl ax, byte 0x2
         add [regd0], ax
         mov bx, [regd0]
-        mov al, [bx + g_5B06]
+        mov al, [bx + lchoicetab_m1]
         cbw
         mov [regd0], ax
         pop si
@@ -1023,10 +1023,10 @@ assonetimer:
 .11:
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        mov al, [bx + g_5B67]
+        mov al, [bx + OneTimerDirs2]
         cbw
         mov [regd1], ax
-        mov al, [bx + g_5B66]
+        mov al, [bx + OneTimerDirs]
         cbw
         mov [regd0], ax
         test byte [si + 0x49], 0x8

@@ -15,7 +15,7 @@ ReturnZeroFar:
 
 ;-----------------------------------------------------------------------------
 ; SetScrollCell                                              1F29:0006  94 PC
-; Sets the scroll position in 8-pixel cells (g_B096/g_B098), returns nonzero when it moved.
+; Sets the scroll position in 8-pixel cells (viewcellx/viewcelly), returns nonzero when it moved.
 ;
 ; Takes 2 words of stack arguments. Calls VgaCopyRows, VgaRedrawScroll. Far routine (retf).
 ;-----------------------------------------------------------------------------
@@ -33,7 +33,7 @@ SetScrollCell:
         db 0x33, 0xC2                           ; insn: xor ax, dx
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         db 0x8B, 0xD0                           ; insn: mov dx, ax
-        sub ax, [g_B096]
+        sub ax, [viewcellx]
         mov [bp - 0x4], ax
         mov ax, [bp + 0x8]
         db 0x8B, 0xDA                           ; insn: mov bx, dx
@@ -44,18 +44,18 @@ SetScrollCell:
         db 0x33, 0xC2                           ; insn: xor ax, dx
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         db 0x8B, 0xF8                           ; insn: mov di, ax
-        sub di, [g_B098]
-        mov [g_B096], bx
-        mov [g_B098], ax
+        sub di, [viewcelly]
+        mov [viewcellx], bx
+        mov [viewcelly], ax
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         mov cx, 0x8
         cwd
         idiv cx
-        mov [g_B094], dx
+        mov [TextOverlaySeg], dx
         mov ax, [bp + 0x8]
         cwd
         idiv cx
-        mov [g_B092], dx
+        mov [TextOverlayPtr], dx
         cmp di, 0x16
         jl short .1
         jmp near .8
@@ -70,18 +70,18 @@ SetScrollCell:
         db 0x2B, 0xF7                           ; insn: sub si, di
         js short .9
 .3:
-        cmp word [g_B0C2], 0x0
+        cmp word [scrolldelay], 0x0
         jz short .4
-        dec word [g_B0C2]
+        dec word [scrolldelay]
         jmp short .5
         db 0x90, 0x90
 .4:
-        mov word [g_B0C2], 0x15
+        mov word [scrolldelay], 0x15
 .5:
-        imul ax, [g_B0C2], word 0x300
+        imul ax, [scrolldelay], word 0x300
         sub ax, 0x7960
         push ax
-        mov ax, [g_B098]
+        mov ax, [viewcelly]
         db 0x03, 0xC6                           ; insn: add ax, si
         push ax
         push 0x16
@@ -94,17 +94,17 @@ SetScrollCell:
 .6:
         db 0x0B, 0xFF                           ; insn: or di, di
         jng short .9
-        mov ax, [g_B0C2]
+        mov ax, [scrolldelay]
         db 0x03, 0xC7                           ; insn: add ax, di
         mov cx, 0x16
         cwd
         idiv cx
-        mov [g_B0C2], dx
+        mov [scrolldelay], dx
         db 0x2B, 0xF6                           ; insn: sub si, si
         db 0x0B, 0xFF                           ; insn: or di, di
         jng short .9
 .7:
-        mov ax, [g_B0C2]
+        mov ax, [scrolldelay]
         db 0x2B, 0xC6                           ; insn: sub ax, si
         add ax, strict word 0x15
         mov cx, 0x16
@@ -113,7 +113,7 @@ SetScrollCell:
         imul ax, dx, word 0x300
         sub ax, 0x7960
         push ax
-        mov ax, [g_B098]
+        mov ax, [viewcelly]
         db 0x2B, 0xC6                           ; insn: sub ax, si
         add ax, strict word 0x15
         push ax
@@ -159,7 +159,7 @@ VgaCopyRows:
         mov di, [bp + 0x8]
         db 0x8B, 0xC7                           ; insn: mov ax, di
         db 0x8B, 0xCF                           ; insn: mov cx, di
-        imul word [g_B09C]
+        imul word [RinkRowBytes]
         shl ax, 1
         add ax, [RinkTilesPtr]
         mov dx, [RinkTilesSeg]
@@ -168,7 +168,7 @@ VgaCopyRows:
         mov [bp - 0x8], dx
         db 0x8B, 0xC7                           ; insn: mov ax, di
         add ax, [bp + 0x6]
-        imul word [g_B09C]
+        imul word [RinkRowBytes]
         shl ax, 1
         add ax, [RinkTilesPtr]
         mov dx, [RinkTilesSeg]
@@ -256,12 +256,12 @@ VgaRedrawScroll:
         enter 0xe, 0x0
         push di
         push si
-        mov ax, [g_B09C]
-        imul word [g_B098]
+        mov ax, [RinkRowBytes]
+        imul word [viewcelly]
         db 0x8B, 0xF0                           ; insn: mov si, ax
         add si, 0x3
         mov word [bp - 0x6], 0x86a0
-        mov word [g_B0C2], 0x0
+        mov word [scrolldelay], 0x0
         mov ax, 0x5
         mov dx, 0x3ce
         out dx, al

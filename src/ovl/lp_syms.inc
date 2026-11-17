@@ -226,6 +226,7 @@ _rand		equ	0x1012
 _sprintf		equ	0xD74
 awscore		equ	0xB444
 awtmgoalie		equ	0xB45C
+awtmteamrec		equ	0xB4F6
 curperiod		equ	0xBFFE
 dlgAskExport		equ	0x549
 dlgExportButtons		equ	0x4E5
@@ -241,10 +242,6 @@ dlgNewFloppy		equ	0x756
 dlgPlayLeagueGame		equ	0x9C8
 dlgReplaceLeague		equ	0x2A0
 dlgWhichSchedule		equ	0x303
-g_B364		equ	0xB364
-g_B366		equ	0xB366
-g_B36A		equ	0xB36A
-g_B4F6		equ	0xB4F6
 g_C000		equ	0xC000
 g_C020		equ	0xC020
 g_C040		equ	0xC040
@@ -311,6 +308,9 @@ g_E367		equ	0xE367
 g_E36B		equ	0xE36B
 gameopts		equ	0x21CC
 goaliestatscb		equ	0x21C6
+hmpenmins		equ	0xB36A
+hmppchances		equ	0xB366
+hmppgoals		equ	0xB364
 hmscore		equ	0xB36E
 hmtmgoalie		equ	0xB386
 hmtmlines		equ	0xB420

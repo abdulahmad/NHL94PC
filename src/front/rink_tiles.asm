@@ -124,9 +124,9 @@ LoadRinkTiles:
         mov [bp - 0x4], dx
         les bx, [RinkTilesPtr]
         mov ax, [es:bx + 0x2]
-        mov [g_B09A], ax
+        mov [RinkMapWidth], ax
         mov ax, [es:bx]
-        mov [g_B09C], ax
+        mov [RinkRowBytes], ax
         push word [bp - 0x22]
         push word [bp - 0x2]
         db 0x8B, 0xC2                           ; insn: mov ax, dx
@@ -142,7 +142,7 @@ LoadRinkTiles:
         push di
         call 0x06E1:FindUnlink
         add sp, 0x4
-        mov ax, [g_B09A]
+        mov ax, [RinkMapWidth]
         sub ax, strict word 0xf
         shl ax, byte 0x2
         db 0x8B, 0xC8                           ; insn: mov cx, ax
@@ -152,13 +152,13 @@ LoadRinkTiles:
         sar ax, byte 0x3
         db 0x33, 0xC2                           ; insn: xor ax, dx
         db 0x2B, 0xC2                           ; insn: sub ax, dx
-        mov [g_B098], ax
+        mov [viewcelly], ax
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         mov cx, 0x8
         cwd
         idiv cx
-        mov [g_B092], dx
-        mov ax, [g_B09C]
+        mov [TextOverlayPtr], dx
+        mov ax, [RinkRowBytes]
         shl ax, byte 0x2
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         cwd
@@ -168,11 +168,11 @@ LoadRinkTiles:
         db 0x33, 0xC2                           ; insn: xor ax, dx
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         sub ax, strict word 0x14
-        mov [g_B096], ax
+        mov [viewcellx], ax
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         cwd
         idiv cx
-        mov [g_B094], dx
+        mov [TextOverlaySeg], dx
         push cs
         call DrawRinkBackground
         cmp word [CurPage], 0x1
@@ -362,12 +362,12 @@ DrawRinkBackground:
         enter 0xe, 0x0
         push di
         push si
-        mov ax, [g_B09C]
-        imul word [g_B098]
+        mov ax, [RinkRowBytes]
+        imul word [viewcelly]
         db 0x8B, 0xF0                           ; insn: mov si, ax
         add si, 0x3
         mov word [bp - 0x6], 0x86a0
-        mov word [g_B0C2], 0x0
+        mov word [scrolldelay], 0x0
         mov ax, 0x5
         mov dx, 0x3ce
         out dx, al

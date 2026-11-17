@@ -130,9 +130,9 @@ PlayRandomHighlight:
         db 0x2B, 0xDB                           ; insn: sub bx, bx
         db 0x8B, 0xD3                           ; insn: mov dx, bx
 .1:
-        cmp word [bx + g_B09E], 0x5
+        cmp word [bx + otherscoresb], 0x5
         jl short .2
-        mov ax, [bx + g_B09E]
+        mov ax, [bx + otherscoresb]
         cmp [bx + g_D9FA], ax
         jz short .2
         db 0x8B, 0xCA                           ; insn: mov cx, dx
@@ -179,12 +179,12 @@ PlayRandomHighlight:
         db 0x8B, 0xDE                           ; insn: mov bx, si
         shl bx, 1
         mov [bp - 0x8], bx
-        mov al, [bx + g_B0AA]
+        mov al, [bx + otherscorehome]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         mov [bp - 0x4], ax
-        mov al, [bx + g_B0AB]
+        mov al, [bx + otherscorehome_b1]
         mov [bp - 0x6], ax
-        mov di, [bx + g_B09E]
+        mov di, [bx + otherscoresb]
         cmp di, 0x5
         jl short .6
         dec word [bp - 0x4]
@@ -194,10 +194,10 @@ PlayRandomHighlight:
         call 0x2137:LoadArenaJingles
         call 0x0EDC:LoadStudioSpeech
         mov bx, [bp - 0x8]
-        mov al, [bx + g_B0B7]
+        mov al, [bx + otherscores]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
-        mov al, [bx + g_B0B6]
+        mov al, [bx + otherscoreaway]
         push ax
         call 0x0EDC:AnnounceHighlightMatchup
         add sp, 0x4
@@ -207,10 +207,10 @@ PlayRandomHighlight:
         lea ax, [bp - 0x4]
         push ax
         mov bx, [bp - 0x8]
-        mov al, [bx + g_B0B7]
+        mov al, [bx + otherscores]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
-        mov al, [bx + g_B0B6]
+        mov al, [bx + otherscoreaway]
         push ax
         call 0x1B35:StartHL2Thunk
         add sp, 0xa
@@ -225,21 +225,21 @@ PlayRandomHighlight:
         call 0x0EDC:LoadPlayByPlaySpeech
         add sp, 0x4
         mov bx, [bp - 0x8]
-        cmp word [bx + g_B09E], 0x4
+        cmp word [bx + otherscoresb], 0x4
         jg short .7
         mov al, [bp - 0x4]
-        mov [bx + g_B0AA], al
+        mov [bx + otherscorehome], al
         mov al, [bp - 0x6]
-        mov [bx + g_B0AB], al
-        cmp word [bx + g_B09E], 0x4
+        mov [bx + otherscorehome_b1], al
+        cmp word [bx + otherscoresb], 0x4
         jnz short .7
         mov bx, [bp - 0x8]
-        mov word [bx + g_B09E], 0x5
+        mov word [bx + otherscoresb], 0x5
 .7:
         db 0x2B, 0xDB                           ; insn: sub bx, bx
         mov [bp - 0x2], di
 .8:
-        mov ax, [bx + g_B09E]
+        mov ax, [bx + otherscoresb]
         mov [bx + g_D9FA], ax
         inc bx
         inc bx
@@ -305,7 +305,7 @@ EndGameScreens:
         add sp, 0x4
         db 0x2B, 0xF6                           ; insn: sub si, si
 .4:
-        mov ax, [si + g_B09E]
+        mov ax, [si + otherscoresb]
         mov [si + g_D9FA], ax
         inc si
         inc si

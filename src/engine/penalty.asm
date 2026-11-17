@@ -365,7 +365,7 @@ InProgress:
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, byte 0x7
-        cmp word [bx + g_B528], 0x0
+        cmp word [bx + sortobj0_position], 0x0
         jl short .13
         jmp near .35
 .13:
@@ -413,8 +413,8 @@ InProgress:
         jnz short .16
         and byte [gmode], 0xfb
         mov word [bp - 0x6], 0xbc0e
-        mov bx, [g_BC2A]
-        mov al, [bx + g_BC2C]
+        mov bx, [puck_1C]
+        mov al, [bx + puckasslist]
         cbw
         db 0x8B, 0xD0                           ; insn: mov dx, ax
         cmp ax, strict word 0x1b
@@ -1417,7 +1417,7 @@ PenGoalStuff:
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, byte 0x7
-        and byte [bx + g_B553], 0xef
+        and byte [bx + sortobj0_pflags2], 0xef
 .11:
         db 0x2A, 0xC0                           ; insn: sub al, al
         mov [si], al

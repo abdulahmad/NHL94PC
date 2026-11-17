@@ -327,41 +327,41 @@ StartHL2:
         jmp near .11
         db 0x90
 .14:
-        mov word [g_BC36], 0x78
+        mov word [pucktemp2], 0x78
         mov ax, 0x14
         call 0x0C11:randomd0
         sub ax, strict word 0xa
-        mov [g_BC10], ax
+        mov [puckXpos2], ax
         mov ax, 0x14
         call 0x0C11:randomd0
         sub ax, strict word 0xa
-        mov [puckstruct], ax
-        mov word [g_BC18], 0x0
+        mov [puckYpos2], ax
+        mov word [puckZpos2], 0x0
         mov ax, 0x7d0
         call 0x0C11:randomd0
         sub ax, 0x3e8
-        mov [g_BC1A], ax
+        mov [puckXvel], ax
         mov ax, 0x7d0
         call 0x0C11:randomd0
         sub ax, 0x3e8
-        mov [g_BC1C], ax
-        mov word [g_BC20], 0x18a
-        mov word [g_BC56], 0x0
+        mov [puckYvel], ax
+        mov word [puckframe], 0x18a
+        mov word [puck_48], 0x0
         push 0x18
         push word 0xbc0e
         call 0x1E7E:assreplace
         add sp, 0x4
-        mov word [g_BCA0], 0x189
-        mov word [g_BCD6], 0x0
+        mov word [doorframe], 0x189
+        mov word [door_48], 0x0
         push 0x19
         push word 0xbc8e
         call 0x1E7E:assreplace
         add sp, 0x4
-        mov word [g_BD10], 0xff88
+        mov word [refXpos2], 0xff88
         mov word [refYpos2], 0x0
-        mov word [g_BD44], 0x2
+        mov word [ref_36], 0x2
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_BD1C], ax
+        mov [refYvel], ax
         mov [refXvel], ax
         push 0x1f
         mov ax, 0xbd0e

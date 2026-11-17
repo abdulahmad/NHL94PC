@@ -36,6 +36,8 @@ FindUnlink		equ	0x99A
 FlushGSumQueueThunk		equ	0x29B3
 FlushInputEvents		equ	0x66
 FlushKeys		equ	0x1724
+FrameTable		equ	0x91D0
+FrameTableSeg		equ	0x91D2
 FreeGameMemoryThunk		equ	0x2995
 GSummaryPathThunk		equ	0x2A17
 GamePalette		equ	0xB352
@@ -73,6 +75,7 @@ PlayArenaJingle		equ	0x656
 PlayPauseSample		equ	0x532
 PutGSumTailThunk		equ	0x29DB
 ReleaseAllVoices		equ	0x1028
+RinkRowBytes		equ	0xB09C
 RinkTilesPtr		equ	0x8FE
 RinkTilesSeg		equ	0x900
 RunDeferredCallsThunk		equ	0x29D1
@@ -94,6 +97,8 @@ TeamNameClips		equ	0x1E0
 TeamPalette1		equ	0xB0C4
 TeamPalette2		equ	0xB1C4
 TeamPalette768		equ	0xA8E
+TextOverlayPtr		equ	0xB092
+TextOverlaySeg		equ	0xB094
 UpdateHudPanelThunk		equ	0x29E5
 UseCharSeg		equ	0xCB8
 UseOffscreenCanvas		equ	0x137E
@@ -115,14 +120,6 @@ exitgame		equ	0x48BE
 fadeinpending		equ	0x49F4
 frameaccum		equ	0xD6D0
 framesync		equ	0x4B02
-g_91D0		equ	0x91D0
-g_91D2		equ	0x91D2
-g_B092		equ	0xB092
-g_B094		equ	0xB094
-g_B096		equ	0xB096
-g_B098		equ	0xB098
-g_B09C		equ	0xB09C
-g_B0C2		equ	0xB0C2
 g_CFFC		equ	0xCFFC
 g_CFFE		equ	0xCFFE
 g_D014		equ	0xD014
@@ -158,6 +155,7 @@ lcline		equ	0xD470
 lctimer		equ	0xD472
 replayptr		equ	0x2986
 replayseg		equ	0x2988
+scrolldelay		equ	0xB0C2
 segDbFiles17		equ	0x8C8A
 sflags		equ	0x29BC
 shownumbers		equ	0x48B8
@@ -167,4 +165,6 @@ str_HomepalsBin_2		equ	0x4A68
 str_Pal_12		equ	0x4A8A
 str_Qpp		equ	0xBD0
 str_Rinkpal_2		equ	0x4A82
+viewcellx		equ	0xB096
+viewcelly		equ	0xB098
 viewscrollx		equ	0xD6CC

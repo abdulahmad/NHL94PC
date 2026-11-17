@@ -761,8 +761,8 @@ DrawHudPanel:
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov [bp - 0x2], dx
         mov al, 0x67
-        mov [g_B207], al
-        mov [g_B107], al
+        mov [PanelText2], al
+        mov [PanelText], al
         push ds
         push strict word TeamPalette2
         call 0x0FEF:SetRemapTable
@@ -800,8 +800,8 @@ DrawHudPanel:
         call 0x0FEF:DrawRleTransRemapAt
         add sp, 0x8
         mov al, 0x43
-        mov [g_B207], al
-        mov [g_B107], al
+        mov [PanelText2], al
+        mov [PanelText], al
         push di
         push si
         call 0x06E1:FindUnlink

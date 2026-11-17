@@ -191,7 +191,7 @@ updatereplay:
         mov al, [bx]
         les bx, [g_D014]
         mov [es:bx], al
-        mov al, [g_BC98]
+        mov al, [doorZpos2]
         inc word [g_D014]
         les bx, [g_D014]
         mov [es:bx], al

@@ -1920,7 +1920,7 @@ SaveHilightFile:
         db 0x13, 0xC9                           ; insn: adc cx, cx
         rep movsb
         imul bx, [bp + 0x6], word 0x2e8
-        lea di, [bx + g_9F80]
+        lea di, [bx + GameTeamRecs]
         lea si, [bp - 0x2a]
         mov cx, 0xffff
         db 0x33, 0xC0                           ; insn: xor ax, ax

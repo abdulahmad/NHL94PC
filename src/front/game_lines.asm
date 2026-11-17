@@ -417,7 +417,7 @@ GameLineEditorLoop:
         db 0x2A, 0xED                           ; insn: sub ch, ch
         db 0x03, 0xC1                           ; insn: add ax, cx
         imul si, ax, 0x28
-        mov al, [si + g_A556]
+        mov al, [si + hmrosterjersey]
         db 0x8B, 0xF3                           ; insn: mov si, bx
         mov [bp + si - 0x88], al
         jmp short .11
@@ -3873,7 +3873,7 @@ MenuUseOriginalLines:
         db 0x2A, 0xED                           ; insn: sub ch, ch
         db 0x03, 0xC1                           ; insn: add ax, cx
         imul bx, ax, 0x28
-        mov al, [bx + g_A556]
+        mov al, [bx + hmrosterjersey]
         mov bx, [bp + 0x6]
         mov [bx + si], al
         jmp short .3
@@ -3973,7 +3973,7 @@ MenuUseDefaultLines:
         db 0x2A, 0xED                           ; insn: sub ch, ch
         db 0x03, 0xC1                           ; insn: add ax, cx
         imul bx, ax, 0x28
-        mov al, [bx + g_A556]
+        mov al, [bx + hmrosterjersey]
         mov bx, [bp + 0x6]
         mov [bx + si], al
         jmp short .3
@@ -4250,13 +4250,13 @@ WriteTeamLines:
         mov al, [bp + 0xa]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         imul bx, ax, word 0x2e8
-        lea di, [bx + g_A03C]
+        lea di, [bx + HomeLinesRec]
         lea si, [bp - 0x254]
         mov ax, ds
         mov es, ax
         mov cx, 0x18
         rep movsw
-        lea di, [bx + g_A06C]
+        lea di, [bx + TeamLinesRecs]
         lea si, [bp - 0x224]
         mov cx, 0x18
         rep movsw
@@ -4496,13 +4496,13 @@ WriteTeamLines2:
         mov al, [bp + 0xa]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         imul bx, ax, word 0x2e8
-        lea di, [bx + g_A03C]
+        lea di, [bx + HomeLinesRec]
         lea si, [bp - 0x254]
         mov ax, ds
         mov es, ax
         mov cx, 0x18
         rep movsw
-        lea di, [bx + g_A06C]
+        lea di, [bx + TeamLinesRecs]
         lea si, [bp - 0x224]
         mov cx, 0x18
         rep movsw

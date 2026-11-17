@@ -49,14 +49,14 @@ FadePaletteIn:
         db 0x8B, 0xC7                           ; insn: mov ax, di
         db 0x8B, 0xCF                           ; insn: mov cx, di
         dec al
-        mov [g_62E5], al
+        mov [FadeInStep], al
         inc cl
-        mov [g_62E8], cl
+        mov [FadeInCount], cl
         mov si, [bp + 0x6]
-        mov al, [si + g_62E4]
+        mov al, [si + FadeInSteps]
         cbw
         db 0x8B, 0xD0                           ; insn: mov dx, ax
-        mov al, [si + g_62E8]
+        mov al, [si + FadeInCount]
         cbw
         db 0x3B, 0xD0                           ; insn: cmp dx, ax
         jz short .6
@@ -86,10 +86,10 @@ FadePaletteIn:
         push strict word 0x0
         call 0x3349:SetPaletteVsync
         add sp, 0x4
-        mov al, [si + g_62E6]
+        mov al, [si + FadeInSteps2]
         cbw
         add [bp - 0x2], ax
-        mov al, [si + g_62E8]
+        mov al, [si + FadeInCount]
         cbw
         cmp [bp - 0x2], ax
         jnz short .4

@@ -179,7 +179,7 @@ FadeRandomBlocks2:
 .7:
         db 0x8B, 0xDE                           ; insn: mov bx, si
         shl bx, byte 0x3
-        cmp byte [bx + di + g_8EFE], 0x0
+        cmp byte [bx + di + RandomBlockDone], 0x0
         jz short .9
         inc si
         cmp [bp - 0x8], si
@@ -208,7 +208,7 @@ FadeRandomBlocks2:
         add sp, 0x8
         shl si, byte 0x3
         mov bx, [bp - 0x4]
-        mov byte [bx + si + g_8EFE], 0x1
+        mov byte [bx + si + RandomBlockDone], 0x1
 .10:
         call 0x03A3:WaitDeadlineNoEoi
         dec word [bp - 0xe]

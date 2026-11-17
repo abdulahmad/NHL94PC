@@ -603,7 +603,7 @@ BuildEventLines:
         add cx, 0xa558
         push cx
         db 0x8B, 0xD8                           ; insn: mov bx, ax
-        mov al, [bx + g_A556]
+        mov al, [bx + hmrosterjersey]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push word 0x5801
@@ -637,7 +637,7 @@ BuildEventLines:
         add cx, 0xa558
         push cx
         db 0x8B, 0xD8                           ; insn: mov bx, ax
-        mov al, [bx + g_A556]
+        mov al, [bx + hmrosterjersey]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push word 0x5817
@@ -663,7 +663,7 @@ BuildEventLines:
         add cx, 0xa558
         push cx
         db 0x8B, 0xD8                           ; insn: mov bx, ax
-        mov al, [bx + g_A556]
+        mov al, [bx + hmrosterjersey]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push word 0x5819
@@ -708,7 +708,7 @@ BuildEventLines:
         add cx, 0xa558
         push cx
         db 0x8B, 0xD8                           ; insn: mov bx, ax
-        mov al, [bx + g_A556]
+        mov al, [bx + hmrosterjersey]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push word 0x5830
@@ -794,7 +794,7 @@ BuildEventLines:
         add cx, 0xa558
         push cx
         db 0x8B, 0xD8                           ; insn: mov bx, ax
-        mov al, [bx + g_A556]
+        mov al, [bx + hmrosterjersey]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push word 0x5861
@@ -992,12 +992,12 @@ PostPenaltyEvent:
         push word [bp + 0xe]
         mov bx, [bp + 0xa]
         shl bx, 1
-        push word [bx + g_58E2]
+        push word [bx + PenaltyNamePtrs]
         push word [bp + 0xc]
         imul ax, [bp + 0x6], 0x1c
         add ax, [bp + 0x8]
         imul bx, ax, 0x28
-        mov al, [bx + g_A556]
+        mov al, [bx + hmrosterjersey]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         shl si, 1

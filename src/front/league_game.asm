@@ -2575,15 +2575,15 @@ PostGameToTeamDb:
         imul di, ax, word 0xd6
         mov ax, [di + hmscore]
         add [si + 0x6], ax
-        mov ax, [bx + g_B366]
+        mov ax, [bx + hmppchances]
         add [si + 0xa], ax
-        mov ax, [bx + g_B364]
+        mov ax, [bx + hmppgoals]
         add [si + 0x8], ax
-        mov ax, [di + g_B366]
+        mov ax, [di + hmppchances]
         add [si + 0xe], ax
-        mov ax, [di + g_B364]
+        mov ax, [di + hmppgoals]
         add [si + 0xc], ax
-        mov ax, [di + g_B36A]
+        mov ax, [di + hmpenmins]
         add [si + 0x10], ax
         mov word [bp - 0x3b0], 0x0
         jmp short .19
@@ -2680,7 +2680,7 @@ PostGameToTeamDb:
         mov [bp - 0x6], al
         mov si, [awtmgoalie]
         and si, 0x1
-        mov bx, [g_B4F6]
+        mov bx, [awtmteamrec]
         mov al, [bx + si + 0x24]
         mov [bp - 0x5], al
 .24:

@@ -795,8 +795,8 @@ CreatePlayoffs:
         push ax
         call 0x14B8:LoadPackedHeader
         add sp, 0x4
-        mov [g_AE94], ax
-        mov [g_AE96], dx
+        mov [POTreeBuf], ax
+        mov [POTreeBufSeg], dx
         push strict word str_Desk_16
         push dx
         push ax
@@ -806,8 +806,8 @@ CreatePlayoffs:
         push ax
         call 0x0FEF:DrawRleBody
         add sp, 0x4
-        push word [g_AE96]
-        push word [g_AE94]
+        push word [POTreeBufSeg]
+        push word [POTreeBuf]
         call 0x06E1:FindUnlink
         add sp, 0x4
         push 0x5
@@ -5578,8 +5578,8 @@ PlayoffModeLoop:
         push ax
         call 0x14B8:LoadPackedHeader
         add sp, 0x4
-        mov [g_AE94], ax
-        mov [g_AE96], dx
+        mov [POTreeBuf], ax
+        mov [POTreeBufSeg], dx
         push strict word str_Desk_15
         push dx
         push ax
@@ -5589,8 +5589,8 @@ PlayoffModeLoop:
         push ax
         call 0x0FEF:DrawRleBody
         add sp, 0x4
-        push word [g_AE96]
-        push word [g_AE94]
+        push word [POTreeBufSeg]
+        push word [POTreeBuf]
         call 0x06E1:FindUnlink
         add sp, 0x4
         push 0x5

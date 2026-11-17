@@ -32,12 +32,12 @@ PickOtherGames:
         jnz short .5
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        mov al, [bx + g_B0B6]
+        mov al, [bx + otherscoreaway]
         mov bx, [bp - 0x4]
         shl bx, 1
-        cmp [bx + g_B0B6], al
+        cmp [bx + otherscoreaway], al
         jz short .2
-        cmp [bx + g_B0B7], al
+        cmp [bx + otherscores], al
         jnz short .3
 .2:
         mov word [bp - 0x8], 0xffff
@@ -59,8 +59,8 @@ PickOtherGames:
         idiv cx
         mov bx, [bp - 0x2]
         shl bx, 1
-        mov [bx + g_B0B7], dl
-        mov al, [bx + g_B0B6]
+        mov [bx + otherscores], dl
+        mov al, [bx + otherscoreaway]
         db 0x3A, 0xD0                           ; insn: cmp dl, al
         jz short .7
         mov al, [bp + 0x6]
@@ -80,12 +80,12 @@ PickOtherGames:
         jnz short .13
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        mov al, [bx + g_B0B7]
+        mov al, [bx + otherscores]
         mov bx, [bp - 0x4]
         shl bx, 1
-        cmp [bx + g_B0B6], al
+        cmp [bx + otherscoreaway], al
         jz short .10
-        cmp [bx + g_B0B7], al
+        cmp [bx + otherscores], al
         jnz short .11
 .10:
         mov word [bp - 0x8], 0xffff
@@ -104,10 +104,10 @@ PickOtherGames:
         jnl short .18
         mov bx, [bp - 0x2]
         shl bx, 1
-        mov word [bx + g_B09E], 0x0
+        mov word [bx + otherscoresb], 0x0
         db 0x2A, 0xC0                           ; insn: sub al, al
-        mov [bx + g_B0AA], al
-        mov [bx + g_B0AB], al
+        mov [bx + otherscorehome], al
+        mov [bx + otherscorehome_b1], al
 .15:
         mov word [bp - 0x8], 0x0
         call 0x0000:_rand
@@ -116,7 +116,7 @@ PickOtherGames:
         idiv cx
         mov bx, [bp - 0x2]
         shl bx, 1
-        mov [bx + g_B0B6], dl
+        mov [bx + otherscoreaway], dl
         mov al, [bp + 0x6]
         db 0x3A, 0xD0                           ; insn: cmp dl, al
         jz short .16
@@ -124,7 +124,7 @@ PickOtherGames:
         db 0x3A, 0xD0                           ; insn: cmp dl, al
         jz short .16
         mov al, [bp - 0x6]
-        mov bl, [bx + g_B0B6]
+        mov bl, [bx + otherscoreaway]
         db 0x2A, 0xFF                           ; insn: sub bh, bh
         cmp [bx + OtherGamesTable], al
         jna short .17
@@ -159,14 +159,14 @@ UpdateOtherScores:
         jng short .6
         mov bx, [bp - 0x2]
         shl bx, 1
-        inc byte [bx + g_B0AB]
+        inc byte [bx + otherscorehome_b1]
 .2:
-        mov word [bx + g_B09E], 0x5
+        mov word [bx + otherscoresb], 0x5
         jmp short .6
 .3:
         mov bx, [bp - 0x2]
         shl bx, 1
-        mov word [bx + g_B09E], 0x6
+        mov word [bx + otherscoresb], 0x6
         jmp short .6
         db 0x90
 .4:
@@ -174,30 +174,30 @@ UpdateOtherScores:
         jnz short .5
         mov bx, [bp - 0x2]
         shl bx, 1
-        cmp word [bx + g_B09E], 0x4
+        cmp word [bx + otherscoresb], 0x4
         jz short .2
 .5:
         mov bx, [bp - 0x2]
         shl bx, 1
-        cmp word [bx + g_B09E], 0x3
+        cmp word [bx + otherscoresb], 0x3
         jnl short .6
         mov ax, [bp - 0x6]
-        cmp [bx + g_B09E], ax
+        cmp [bx + otherscoresb], ax
         jz short .6
-        mov [bx + g_B09E], ax
+        mov [bx + otherscoresb], ax
         db 0x8B, 0xF3                           ; insn: mov si, bx
         call 0x0000:_rand
         and ah, 0x7f
         mov cx, 0x3
         cwd
         idiv cx
-        add [si + g_B0AA], dl
+        add [si + otherscorehome], dl
         call 0x0000:_rand
         and ah, 0x7f
         mov cx, 0x3
         cwd
         idiv cx
-        add [si + g_B0AB], dl
+        add [si + otherscorehome_b1], dl
 .6:
         inc word [bp - 0x6]
 .7:
@@ -208,10 +208,10 @@ UpdateOtherScores:
         jnz short .4
         mov bx, [bp - 0x2]
         shl bx, 1
-        mov al, [bx + g_B0AB]
-        cmp [bx + g_B0AA], al
+        mov al, [bx + otherscorehome_b1]
+        cmp [bx + otherscorehome], al
         jnz short .3
-        mov word [bx + g_B09E], 0x4
+        mov word [bx + otherscoresb], 0x4
         db 0x8B, 0xF3                           ; insn: mov si, bx
         call 0x0000:_rand
         and ah, 0x7f
@@ -222,8 +222,8 @@ UpdateOtherScores:
         jg short .8
         jmp near .1
 .8:
-        inc byte [si + g_B0AA]
-        mov word [si + g_B09E], 0x5
+        inc byte [si + otherscorehome]
+        mov word [si + otherscoresb], 0x5
         jmp short .6
         db 0x90
 .9:
@@ -237,7 +237,7 @@ UpdateOtherScores:
         mov bx, [bp - 0x2]
         shl bx, 1
         db 0x8B, 0xCB                           ; insn: mov cx, bx
-        mov bl, [bx + g_B0B6]
+        mov bl, [bx + otherscoreaway]
         db 0x2A, 0xFF                           ; insn: sub bh, bh
         mov dl, [bx + OtherGamesTable]
         db 0x2A, 0xF6                           ; insn: sub dh, dh
@@ -245,9 +245,9 @@ UpdateOtherScores:
         add ax, [bp + 0x6]
         mov [bp - 0x4], ax
         db 0x8B, 0xD9                           ; insn: mov bx, cx
-        cmp ax, [bx + g_B09E]
+        cmp ax, [bx + otherscoresb]
         jl short .9
-        mov ax, [bx + g_B09E]
+        mov ax, [bx + otherscoresb]
         mov [bp - 0x6], ax
         jmp near .7
 .11:
@@ -560,7 +560,7 @@ ShowTeamStats:
         push cs
         call CenterShadowText
         add sp, 0x8
-        push word [di + g_B362]
+        push word [di + hmshots]
         push word 0x4e99
         lea ax, [bp - 0x3c]
         push ax
@@ -574,8 +574,8 @@ ShowTeamStats:
         push cs
         call CenterShadowText
         add sp, 0x8
-        push word [di + g_B366]
-        push word [di + g_B364]
+        push word [di + hmppchances]
+        push word [di + hmppgoals]
         push strict word str_DD_2
         lea ax, [bp - 0x3c]
         push ax
@@ -589,8 +589,8 @@ ShowTeamStats:
         push cs
         call CenterShadowText
         add sp, 0x8
-        push word [di + g_B36A]
-        push word [di + g_B368]
+        push word [di + hmpenmins]
+        push word [di + hmpenalties]
         push strict word str_DD
         lea ax, [bp - 0x3c]
         push ax
@@ -604,7 +604,7 @@ ShowTeamStats:
         push cs
         call CenterShadowText
         add sp, 0x8
-        push word [di + g_B370]
+        push word [di + hmfaceoffs]
         push word 0x4ea8
         lea ax, [bp - 0x3c]
         push ax
@@ -618,7 +618,7 @@ ShowTeamStats:
         push cs
         call CenterShadowText
         add sp, 0x8
-        push word [di + g_B372]
+        push word [di + hmchecks]
         push word 0x4eab
         lea ax, [bp - 0x3c]
         push ax
@@ -632,7 +632,7 @@ ShowTeamStats:
         push cs
         call CenterShadowText
         add sp, 0x8
-        mov ax, [di + g_B36C]
+        mov ax, [di + hmattacktime]
         mov cx, 0x3c
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         cwd
@@ -658,14 +658,14 @@ ShowTeamStats:
         add sp, 0x8
         mov word [bp - 0x4c], 0xb0
         mov word [bp - 0x1e], 0x0
-        cmp word [di + g_B374], 0x0
+        cmp word [di + hmpassatt], 0x0
         jz short .6
-        mov ax, [di + g_B374]
+        mov ax, [di + hmpassatt]
         cwd
         push dx
         push ax
         mov ax, 0x64
-        imul word [di + g_B376]
+        imul word [di + hmpasscmp]
         push dx
         push ax
         call 0x0000:__aFldiv
@@ -673,8 +673,8 @@ ShowTeamStats:
 .6:
         push word [bp - 0x1e]
         imul bx, [bp - 0x4e], word 0xd6
-        push word [bx + g_B374]
-        push word [bx + g_B376]
+        push word [bx + hmpassatt]
+        push word [bx + hmpasscmp]
         push strict word str_DDD
         lea ax, [bp - 0x3c]
         push ax

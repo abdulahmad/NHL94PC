@@ -481,15 +481,15 @@ ShowGameSummary:
 .32:
         mov bx, [bp - 0x15e]
         shl bx, 1
-        mov al, [bx + g_B0B6]
+        mov al, [bx + otherscoreaway]
         mov [bp - 0x164], al
-        mov al, [bx + g_B0B7]
+        mov al, [bx + otherscores]
         mov [bp - 0x163], al
-        mov al, [bx + g_B09E]
+        mov al, [bx + otherscoresb]
         mov [bp - 0x46], al
-        mov al, [bx + g_B0AA]
+        mov al, [bx + otherscorehome]
         mov [bp - 0x9e], al
-        mov al, [bx + g_B0AB]
+        mov al, [bx + otherscorehome_b1]
         mov [bp - 0x9d], al
         cmp word [bp - 0x738], 0x0
         jnz short .33
@@ -774,8 +774,8 @@ ShowGameSummary:
         imul ax, [bp - 0x73a], word 0xba
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, byte 0x2
-        mov ax, [bx + g_9FCC]
-        mov dx, [bx + g_9FCE]
+        mov ax, [bx + GamePlayerNames]
+        mov dx, [bx + GamePlayerNamesSeg]
         mov [bp - 0x744], ax
         mov [bp - 0x742], dx
         push dx

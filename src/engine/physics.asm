@@ -390,7 +390,7 @@ checkcheck:
         or byte [si + 0x44], 0x20
         mov bx, [bp - 0x2]
         shl bx, 1
-        mov ax, [bx + g_5A2C]
+        mov ax, [bx + CheckAnims]
         db 0x8B, 0xDE                           ; insn: mov bx, si
         call 0x2E42:SetSPA
         cmp word [di + 0x1a], 0x0
@@ -3623,7 +3623,7 @@ puckgoalie:
 .6:
         mov cl, [regd2]
         mov bx, [si + 0x12]
-        mov al, [bx + g_58A6]
+        mov al, [bx + GoalieSaveSides]
         shr al, cl
         db 0x8A, 0xD0                           ; insn: mov dl, al
         and dx, 0x3
@@ -4485,7 +4485,7 @@ doshot:
 .9:
         mov bx, [passdir]
         shl bx, byte 0x2
-        mov ax, [bx + g_5AD0]
+        mov ax, [bx + ShotSpeeds]
         db 0x8B, 0xCB                           ; insn: mov cx, bx
         mov bx, [puckx]
         sub ax, [bx]

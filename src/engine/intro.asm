@@ -198,12 +198,12 @@ PreGameIntro:
         jz short .11
         jmp near .3
 .11:
-        mov word [g_BC36], 0x78
-        mov word [g_BC10], 0xc8
-        mov word [puckstruct], 0xfed4
+        mov word [pucktemp2], 0x78
+        mov word [puckXpos2], 0xc8
+        mov word [puckYpos2], 0xfed4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_BC1A], ax
-        mov [g_BC1C], ax
+        mov [puckXvel], ax
+        mov [puckYvel], ax
         push 0x1a
         push word 0xbc0e
         call 0x1E7E:assreplace
@@ -211,23 +211,23 @@ PreGameIntro:
         mov ax, [bp - 0xc]
         mov [reftemp1], ax
         mov ax, 0x8e
-        mov [g_BD10], ax
+        mov [refXpos2], ax
         mov [reftemp3], ax
         mov ax, 0x2
         call 0x0C11:randomd0
-        add [g_BD10], ax
+        add [refXpos2], ax
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [refYpos2], ax
-        mov [g_BD3A], ax
-        mov word [g_BD44], 0x4
-        mov [g_BD1C], ax
+        mov [reftemp4], ax
+        mov word [ref_36], 0x4
+        mov [refYvel], ax
         mov [refXvel], ax
         mov ax, [bp - 0x8]
-        mov [g_BD3C], ax
-        lea bx, [g_BD0E]
+        mov [reftemp5], ax
+        lea bx, [refstruct]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         call 0x2E42:SetSPA
-        mov word [g_BD20], 0x289
+        mov word [refframe], 0x289
         push 0x26
         push word 0xbd0e
         call 0x1E7E:assreplace
@@ -783,7 +783,7 @@ StarEligible:
         imul bx, [bp + 0x6], 0x6b
         add bx, [bp + 0x8]
         shl bx, 1
-        cmp word [bx + g_B3C6], -0x1
+        cmp word [bx + hmtmpdst], -0x1
         jnl short .2
 .1:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -1159,7 +1159,7 @@ PickThreeStars:
         mov bl, [AnnouncerFlags]
         and bx, 0xc
         shr bl, byte 0x2
-        mov al, [bx + g_5B9E]
+        mov al, [bx + StarPoints]
         cbw
         mov bx, [bp - 0x4]
         db 0x8B, 0xCB                           ; insn: mov cx, bx
@@ -1338,7 +1338,7 @@ PickThreeStars:
         and bx, 0xc
         shr bl, byte 0x2
         db 0x8B, 0xF8                           ; insn: mov di, ax
-        mov al, [bx + g_5BA2]
+        mov al, [bx + StarPoints2]
         cbw
         cmp [es:si + 0x76a], ax
         jl short .24
@@ -1518,39 +1518,39 @@ StartThreeStars:
         add si, 0x80
         dec di
         jnz short .3
-        mov word [g_BC36], 0x78
-        mov word [g_BC10], 0xc8
-        mov word [puckstruct], 0xfed4
+        mov word [pucktemp2], 0x78
+        mov word [puckXpos2], 0xc8
+        mov word [puckYpos2], 0xfed4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_BC1A], ax
-        mov [g_BC1C], ax
+        mov [puckXvel], ax
+        mov [puckYvel], ax
         push 0x1a
         push word 0xbc0e
         call 0x1E7E:assreplace
         add sp, 0x4
-        mov word [g_BCB6], 0x78
-        mov word [g_BC90], 0xc8
-        mov word [g_BC94], 0xfed4
+        mov word [doortemp2], 0x78
+        mov word [doorXpos2], 0xc8
+        mov word [doorYpos2], 0xfed4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_BC9A], ax
-        mov [g_BC9C], ax
+        mov [doorXvel], ax
+        mov [doorYvel], ax
         push 0x19
         push word 0xbc8e
         call 0x1E7E:assreplace
         add sp, 0x4
         mov word [reftemp1], 0x0
         mov ax, 0xff38
-        mov [g_BD10], ax
+        mov [refXpos2], ax
         mov [reftemp3], ax
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [refYpos2], ax
-        mov [g_BD3A], ax
-        mov [g_BD1C], ax
+        mov [reftemp4], ax
+        mov [refYvel], ax
         mov [refXvel], ax
-        lea bx, [g_BD0E]
+        lea bx, [refstruct]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         call 0x2E42:SetSPA
-        mov word [g_BD20], 0xffff
+        mov word [refframe], 0xffff
         push 0x15
         push word 0xbd0e
         call 0x1E7E:assreplace
@@ -1938,7 +1938,7 @@ assthreestars:
         mov di, [bx + starpl]
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        push word [bx + g_5BEE]
+        push word [bx + StarNamePtrs]
         push strict word str_SStar_2
         push word 0xd506
         call 0x0000:_sprintf
@@ -2054,7 +2054,7 @@ assthreestars:
         mov si, [bx + starpl]
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        push word [bx + g_5BEE]
+        push word [bx + StarNamePtrs]
         push strict word str_SStar
         push word 0xd506
         call 0x0000:_sprintf
@@ -2159,7 +2159,7 @@ assthreestars:
         imul si, [bp - 0x2], 0x6b
         add si, [bp - 0x4]
         shl si, 1
-        mov word [si + g_B38E], 0x300
+        mov word [si + hmtmpde], 0x300
         push word [bp - 0x4]
         push bx
         call 0x2E42:setplayer
@@ -2215,14 +2215,14 @@ assboxenter:
 .2:
         cmp word [si + 0x26], 0x64
         jnz short .4
-        cmp word [g_BCB4], 0x64
+        cmp word [doortemp1], 0x64
         jz short .3
         jmp near .10
 .3:
-        mov word [g_BCB4], 0xc8
-        mov byte [g_BCD4], 0x0
-        or byte [g_BCD2], 0x20
-        lea bx, [g_BC8E]
+        mov word [doortemp1], 0xc8
+        mov byte [doorpflags3], 0x0
+        or byte [doorpflags], 0x20
+        lea bx, [doorstruct]
         mov ax, 0xea9
         call 0x2E42:SetSPA
         and byte [si + 0x49], 0xf7

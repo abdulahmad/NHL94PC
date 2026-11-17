@@ -57,11 +57,11 @@ DrawSpriteNumber:
         mov ax, [bp + 0xa]
         mov [bp - 0x2], ax
         mov si, 0x18
-        sub si, [g_B096]
+        sub si, [viewcellx]
         shl si, byte 0x3
         add si, [bp + 0x6]
         mov di, 0x14d
-        mov ax, [g_B098]
+        mov ax, [viewcelly]
         shl ax, byte 0x3
         db 0x2B, 0xF8                           ; insn: sub di, ax
         sub di, [bp + 0x8]
@@ -147,8 +147,8 @@ DrawFrameSprite:
         jnl short .1
         db 0x8B, 0xDE                           ; insn: mov bx, si
         shl bx, byte 0x2
-        mov ax, [bx + g_91D0]
-        mov dx, [bx + g_91D2]
+        mov ax, [bx + FrameTable]
+        mov dx, [bx + FrameTableSeg]
         mov [bp - 0x4], ax
         mov [bp - 0x2], dx
         db 0x0B, 0xD0                           ; insn: or dx, ax
@@ -157,12 +157,12 @@ DrawFrameSprite:
         push word [bp + 0xe]
         push word [bp + 0xc]
         mov ax, 0x28
-        sub ax, [g_B098]
+        sub ax, [viewcelly]
         shl ax, byte 0x3
         sub ax, [bp + 0xa]
         push ax
         mov ax, 0x18
-        sub ax, [g_B096]
+        sub ax, [viewcellx]
         shl ax, byte 0x3
         add ax, [bp + 0x8]
         push ax
@@ -185,12 +185,12 @@ DrawRinkEndArt:
         push 0x0
         push -0x1
         push 0x0
-        mov ax, [g_B098]
+        mov ax, [viewcelly]
         shl ax, byte 0x3
         sub ax, 0x225
         neg ax
         push ax
-        mov ax, [g_B096]
+        mov ax, [viewcellx]
         shl ax, byte 0x3
         sub ax, strict word 0x22
         neg ax

@@ -107,7 +107,7 @@ DrawSoundCardOpts:
         call 0x0FEF:GetPaletteFar
         add sp, 0x8
         mov ax, [SoundOptions]
-        mov [g_B35E], ax
+        mov [editopts], ax
         db 0x2B, 0xF6                           ; insn: sub si, si
 .1:
         mov al, 0x3f
@@ -130,7 +130,7 @@ DrawSoundCardOpts:
         db 0x8B, 0xCE                           ; insn: mov cx, si
         mov ax, 0x1
         shl ax, cl
-        test [g_B35E], ax
+        test [editopts], ax
         jnz short .3
         inc si
         cmp si, 0x7
@@ -255,7 +255,7 @@ RedrawSoundCardOpts:
         db 0x8B, 0xCF                           ; insn: mov cx, di
         mov ax, 0x1
         shl ax, cl
-        test [g_B35E], ax
+        test [editopts], ax
         jz short .2
         mov al, 0x17
         mov [si], al
@@ -435,7 +435,7 @@ SoundCardDlgLoop:
         mov ax, 0x1
         shl ax, cl
         mov [bp - 0xc], ax
-        test [g_B35E], ax
+        test [editopts], ax
         jnz short .13
         test [sndcardmissing], ax
         jz short .13
@@ -471,17 +471,17 @@ SoundCardDlgLoop:
         push 0xb
         call 0x0D90:SetDialogColors
         add sp, 0xa
-        push word [g_B35E]
+        push word [editopts]
         push cs
         call SetSoundDevice
         add sp, 0x2
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .16
-        mov ax, [g_B35E]
+        mov ax, [editopts]
         xor [sndcardmissing], ax
         mov ax, [SoundOptions]
 .11:
-        mov [g_B35E], ax
+        mov [editopts], ax
 .12:
         push cs
         call RedrawSoundCardOpts
@@ -498,7 +498,7 @@ SoundCardDlgLoop:
         leave
         retf
 .16:
-        mov ax, [g_B35E]
+        mov ax, [editopts]
         mov [SoundOptions], ax
 .17:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -1058,7 +1058,7 @@ SetSoundDevice:
 .27:
         mov ax, [bp + 0x6]
         mov [SoundOptions], ax
-        mov [g_B35E], ax
+        mov [editopts], ax
         push ds
         push strict word str_Cfg_3
         push ds

@@ -148,7 +148,7 @@ checkwindow:
         jmp near .30
 .19:
         mov word [bp - 0x8], 0xbd0e
-        mov ax, [g_BD10]
+        mov ax, [refXpos2]
         mov [xc1], ax
         mov ax, [refYpos2]
         mov [yc1], ax
@@ -557,13 +557,13 @@ DrawTextOverlay:
         enter 0x14, 0x0
         push di
         push si
-        mov ax, [g_B094]
+        mov ax, [TextOverlaySeg]
         mov cx, 0x2
         cwd
         idiv cx
         db 0x8B, 0xDA                           ; insn: mov bx, dx
         shl bx, 1
-        mov ax, [g_B092]
+        mov ax, [TextOverlayPtr]
         cwd
         idiv cx
         db 0x03, 0xDA                           ; insn: add bx, dx
@@ -624,14 +624,14 @@ DrawTextOverlay:
         db 0x33, 0xC2                           ; insn: xor ax, dx
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         mov [bp - 0xa], ax
-        mov si, [g_B094]
+        mov si, [TextOverlaySeg]
         db 0x2B, 0xF0                           ; insn: sub si, ax
         add si, 0x4a
         cmp word [gsp], 0x4
         jnz short .5
         add si, 0xac
 .5:
-        mov ax, [g_B092]
+        mov ax, [TextOverlayPtr]
         sub ax, [bp - 0x4]
         add ax, strict word 0x32
         mov cx, [bp - 0x4]
@@ -645,7 +645,7 @@ DrawTextOverlay:
         db 0x03, 0xD0                           ; insn: add dx, ax
         call 0x0FEF:SetClipRectRegs
 .6:
-        mov si, [g_B094]
+        mov si, [TextOverlaySeg]
         add si, 0xc
         cmp word [gsp], 0x4
         jnz short .7
@@ -653,7 +653,7 @@ DrawTextOverlay:
 .7:
         lea ax, [si + 0x7b]
         mov [bp - 0x8], ax
-        mov ax, [g_B092]
+        mov ax, [TextOverlayPtr]
         add ax, strict word 0xc
         mov [bp - 0x14], ax
         add ax, strict word 0x4b
@@ -1206,22 +1206,22 @@ DrawCallBanner:
         enter 0xe, 0x0
         push di
         push si
-        mov ax, [g_B094]
+        mov ax, [TextOverlaySeg]
         mov cx, 0x2
         cwd
         idiv cx
         db 0x8B, 0xDA                           ; insn: mov bx, dx
         shl bx, 1
-        mov ax, [g_B092]
+        mov ax, [TextOverlayPtr]
         cwd
         idiv cx
         db 0x03, 0xDA                           ; insn: add bx, dx
         shl bx, 1
         mov ax, [bx + BannerColours]
         mov [bp - 0x8], ax
-        mov si, [g_B094]
+        mov si, [TextOverlaySeg]
         add si, 0xc
-        mov ax, [g_B092]
+        mov ax, [TextOverlayPtr]
         add ax, 0x95
         db 0x8B, 0xF8                           ; insn: mov di, ax
         add ax, strict word 0x9
@@ -1467,7 +1467,7 @@ SetTeamGoalie:
         db 0x33, 0xC6                           ; insn: xor ax, si
         jz short .5
         mov bx, [bp - 0x2]
-        or byte [bx + g_B387], 0xff
+        or byte [bx + hmtmgoalie_b1], 0xff
 .5:
         mov bx, [bp - 0x2]
         cmp word [bx + hmtmgoalie], 0x0

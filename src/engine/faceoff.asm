@@ -113,7 +113,7 @@ TakePlayerFromBox:
         imul bx, [bp - 0x4], 0x6b
         db 0x03, 0xD9                           ; insn: add bx, cx
         shl bx, 1
-        mov word [bx + g_B3C6], 0xfffe
+        mov word [bx + hmtmpdst], 0xfffe
         pop si
         pop di
         leave
@@ -625,7 +625,7 @@ puckfaceoff:
         mov bx, [bx + 0x4]
         mov [regd1], bx
         shl bx, byte 0x7
-        test byte [bx + g_B553], 0x8
+        test byte [bx + sortobj0_pflags2], 0x8
         jnz short .17
         mov bx, [bp + si - 0x6]
         mov byte [bx + 0x1], 0xff
@@ -905,26 +905,26 @@ puckfaceoff2:
         mov bx, [puckc]
         mov byte [bx], 0xff
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_BB1A], ax
-        mov [g_BB1C], ax
-        mov [g_BB10], ax
-        mov word [g_BB14], 0xec
-        mov [g_BB9A], ax
-        mov [g_BB9C], ax
-        mov [g_BB90], ax
-        mov word [g_BB94], 0xff14
+        mov [sortobj12_Xvel], ax
+        mov [sortobj12_Yvel], ax
+        mov [sortobj12_Xpos2], ax
+        mov word [sortobj12_Ypos2], 0xec
+        mov [sortobj13_Xvel], ax
+        mov [sortobj13_Yvel], ax
+        mov [sortobj13_Xpos2], ax
+        mov word [sortobj13_Ypos2], 0xff14
         mov [RefPen], ax
         mov word [penaltysc], 0xffff
         mov ax, [fox]
         mov [ltx], ax
         mov ax, [foy]
         mov [lty], ax
-        mov word [g_BCA0], 0x189
+        mov word [doorframe], 0x189
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_BCC6], ax
-        mov [g_BCD6], ax
-        mov [g_BC56], ax
-        mov word [g_BC20], 0x18a
+        mov [door_38], ax
+        mov [door_48], ax
+        mov [puck_48], ax
+        mov word [puckframe], 0x18a
         and byte [sflags], 0xbf
         call 0x226F:checkwindow
         call 0x2E42:ResetBench
@@ -1188,10 +1188,10 @@ puckfaceoff2:
         mov word [bp - 0x8], 0xbd0e
         cmp word [fox], 0x0
         jg short .44
-        mov word [g_BD44], 0x2
+        mov word [ref_36], 0x2
         mov ax, [fox]
         sub ax, strict word 0xf
-        mov [g_BD10], ax
+        mov [refXpos2], ax
         jmp short .45
         db 0x90
 .44:
@@ -1277,7 +1277,7 @@ puckfaceoff2:
         js short .53
         cmp word [bx + 0x26], 0x11
         jnz short .52
-        lea bx, [g_BD0E]
+        lea bx, [refstruct]
         mov ax, 0xc43
         call 0x2E42:SetSPA
 .52:

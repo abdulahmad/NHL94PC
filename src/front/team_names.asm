@@ -18,7 +18,7 @@ SetTeamNameText:
         push si
         mov word [bp - 0x8], HomeTeamMenuText
         mov word [bp - 0x6], 0x3448
-        mov al, [g_AE34]
+        mov al, [HomeTeamAbbr]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         imul si, ax, 0x28
         add si, 0xa550
@@ -75,7 +75,7 @@ SetTeamNameText:
         mov [bp - 0x2a], es
         call 0x0000:_fstrcpy
         add sp, 0x8
-        mov al, [g_AE35]
+        mov al, [HomeTeamAbbr_b1]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         imul si, ax, 0x28
         add si, 0xa550
@@ -164,7 +164,7 @@ SetTeamNameText:
         mov byte [es:bx], 0x1
         mov word [bp - 0x8], VisitorTeamMenuText
         mov word [bp - 0x6], 0x3448
-        mov al, [g_AE64]
+        mov al, [AwayTeamAbbr]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         imul si, ax, 0x28
         add si, 0xa9b0
@@ -221,7 +221,7 @@ SetTeamNameText:
         mov [bp - 0x2e], es
         call 0x0000:_fstrcpy
         add sp, 0x8
-        mov al, [g_AE65]
+        mov al, [AwayTeamAbbr_b1]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         imul si, ax, 0x28
         add si, 0xa9b0

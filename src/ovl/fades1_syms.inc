@@ -4,7 +4,7 @@ CurPage		equ	0x74DC
 DGROUP		equ	0x45C9
 SetDeadline.regs		equ	0x1A6E
 UseCurrentPage		equ	0x1A6
+VenetianRowBytes		equ	0x74FA
 WaitDeadlineNoEoi		equ	0x1A84
-g_74FA		equ	0x74FA
 segDgroup12		equ	0x8CE8
 segDgroup13		equ	0x8CEA

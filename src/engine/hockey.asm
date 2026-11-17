@@ -850,10 +850,10 @@ GetHot:
         cmp si, 0x288
         jg short .1
         shl si, 1
-        mov al, [si + g_5BF6]
+        mov al, [si + HotList_m1]
         cbw
         mov [regd0], ax
-        mov al, [si + g_5BF7]
+        mov al, [si + HotList]
         cbw
         mov [regd1], ax
 .1:
@@ -1329,7 +1329,7 @@ Goal:
         call 0x0000:__chkstk
         push si
         mov word [bp - 0xc], 0xbc0e
-        cmp word [puckstruct], 0x0
+        cmp word [puckYpos2], 0x0
         jnl short .1
         mov ax, 0x1
         jmp short .2
@@ -1856,7 +1856,7 @@ Setplass:
         jl short .1
         cmp si, 0x6
         jg short .1
-        mov al, [si + g_6106]
+        mov al, [si + Setplass_alist]
         cbw
         push ax
         push di
@@ -2387,32 +2387,32 @@ clearteams:
         mov [hmtmextra], ax
         mov [awtmextra], ax
         mov al, 0xff
-        mov [g_B3FE], al
-        mov [g_B4D4], al
-        mov word [g_B436], 0xb50e
+        mov [hmtmpbox_m1], al
+        mov [awtmpbox_m1], al
+        mov word [hmtmptrs], 0xb50e
         mov word [hmtmsort], HomeSortObjs
         mov word [hmtmplattr], 0x3a0b
-        mov word [g_B426], HomeGlAttr
-        mov word [g_B428], 0x3a0b
+        mov word [hmtmglattr], HomeGlAttr
+        mov word [hmtmglattrseg], 0x3a0b
         mov word [hmtmlines], 0xae10
-        mov word [g_B42A], HomePlStats
-        mov word [g_B42C], 0x3a0b
+        mov word [hmtmplstats], HomePlStats
+        mov word [hmtmplstatsseg], 0x3a0b
         mov word [hmtmglstats], HomeGlStats
         mov word [hmtmroster], 0x3a0b
-        mov word [g_B432], 0xa550
+        mov word [hmtmrosterptr], 0xa550
         mov word [hmtmptrF2], 0x9f80
         mov word [g_B50C], 0xb80e
         mov word [awtmsort], AwaySortObjs
-        mov word [g_B4FA], 0x3a0b
+        mov word [awtmglattrseg], 0x3a0b
         mov word [awtmglattr], AwayGlAttr
         mov word [awtmlines], 0x3a0b
-        mov word [g_B4F6], 0xae40
+        mov word [awtmteamrec], 0xae40
         mov word [awtmplstats], AwayPlStats
         mov word [awtmglstats], 0x3a0b
-        mov word [g_B504], AwayGlStats
-        mov word [g_B506], 0x3a0b
+        mov word [awtmglstatsptr], AwayGlStats
+        mov word [awtmglstatsseg], 0x3a0b
         mov word [awtmptrF2], 0xa9b0
-        mov word [g_B50A], 0xa268
+        mov word [awtmroster], 0xa268
         retf
         db 0x90
 
@@ -2442,7 +2442,7 @@ restoreteams:
         mov bl, [si - 0x28]
         db 0x2A, 0xFF                           ; insn: sub bh, bh
         shl bx, 1
-        mov ax, [bx + g_610E]
+        mov ax, [bx + RestoreTeamTable]
         inc di
         inc di
         mov [di - 0x2], ax
@@ -2643,13 +2643,13 @@ defaultsprites_0:
         jz short .6
         jmp near .1
 .6:
-        mov word [g_BD44], 0x2
-        mov byte [g_BD58], 0x7
+        mov word [ref_36], 0x2
+        mov byte [ref_4A], 0x7
         mov al, 0xf
-        mov [g_BD59], al
-        mov [g_BD5A], al
+        mov [ref_4B], al
+        mov [ref_4C], al
         mov ax, 0xffff
-        mov [g_BD28], ax
+        mov [refposition], ax
         mov [RefStep], ax
         push cs
         call SprSort
@@ -2757,10 +2757,10 @@ SetPlList:
 .5:
         db 0x8B, 0xDA                           ; insn: mov bx, dx
         shl bx, 1
-        mov bx, [bx + g_6120]
+        mov bx, [bx + PlListOffsets]
         db 0x03, 0xD8                           ; insn: add bx, ax
 .6:
-        mov al, [bx + g_612E]
+        mov al, [bx + PlListSlots]
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         mov al, [bx + di]
@@ -2785,7 +2785,7 @@ SetPlList:
 .10:
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        mov bx, [bx + g_6120]
+        mov bx, [bx + PlListOffsets]
         add bx, [bp - 0xe]
         jmp short .6
         db 0x90
@@ -2830,7 +2830,7 @@ SetPlList:
 .15:
         mov bx, [bp - 0xa]
         shl bx, 1
-        mov si, [bx + g_6120]
+        mov si, [bx + PlListOffsets]
         add si, 0x612e
 .16:
         lodsb
@@ -3369,7 +3369,7 @@ updateplayers:
         call 0x0000:__chkstk
         push di
         push si
-        mov bx, [refposition]
+        mov bx, [ref_1C]
         mov al, [bx + refasslist]
         cbw
         db 0x8B, 0xD0                           ; insn: mov dx, ax
@@ -3396,10 +3396,10 @@ updateplayers:
         cmp word [ovltimer], 0x100
         jl short .2
 .1:
-        mov word [g_5BF4], 0x1
+        mov word [playsuspended], 0x1
         jmp short .3
 .2:
-        mov word [g_5BF4], 0x0
+        mov word [playsuspended], 0x0
 .3:
         mov si, 0xb50e
         mov di, 0x11
@@ -3871,7 +3871,7 @@ DrawRinkOverlays:
         mov [bp - 0xa], ax
         mov ax, [c2playernum]
         mov [bp - 0xc], ax
-        cmp word [g_5BF4], 0x0
+        cmp word [playsuspended], 0x0
         jz short .1
         mov ax, 0xffff
         mov [bp - 0xc], ax
@@ -3952,7 +3952,7 @@ DrawRinkOverlays:
         mov es, [segDgroup11]
         mov ax, [es:0x74f4]
         mov [bp - 0x28], ax
-        mov ax, [g_B098]
+        mov ax, [viewcelly]
         shl ax, byte 0x3
         sub ax, 0x244
         neg ax
@@ -3979,21 +3979,21 @@ DrawRinkOverlays:
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, byte 0x7
-        mov ax, [bx + g_B514]
+        mov ax, [bx + sortobj0_Ypos2]
         mov [bp - 0xe], ax
 .12:
         cmp word [bp - 0xa], 0x0
         jl short .13
         mov bx, [bp - 0xa]
         shl bx, byte 0x7
-        mov ax, [bx + g_B514]
+        mov ax, [bx + sortobj0_Ypos2]
         mov [bp - 0x12], ax
 .13:
         cmp word [bp - 0xc], 0x0
         jl short .14
         mov bx, [bp - 0xc]
         shl bx, byte 0x7
-        mov ax, [bx + g_B514]
+        mov ax, [bx + sortobj0_Ypos2]
         mov [bp - 0x10], ax
 .14:
         lea ax, [bp - 0x8]
@@ -4153,12 +4153,12 @@ DrawRinkOverlays:
         jmp short .29
 .33:
         mov word [bp - 0x26], 0xbc8e
-        cmp word [g_BCA0], 0x284
+        cmp word [doorframe], 0x284
         jl short .36
-        cmp word [g_BCA0], 0x288
+        cmp word [doorframe], 0x288
         jg short .36
         push 0x0
-        cmp word [g_BC90], 0x0
+        cmp word [doorXpos2], 0x0
         jnl short .34
         mov ax, 0x1
         jmp short .35
@@ -4167,9 +4167,9 @@ DrawRinkOverlays:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
 .35:
         push ax
-        push word [g_BC94]
-        push word [g_BC90]
-        push word [g_BCA0]
+        push word [doorYpos2]
+        push word [doorXpos2]
+        push word [doorframe]
         jmp short .39
         db 0x90
 .36:
@@ -4383,7 +4383,7 @@ DrawRinkOverlays:
         add ax, [bx]
         push ax
         push cx
-        push word [g_BC20]
+        push word [puckframe]
         call 0x1E7E:DrawFrameSprite
         add sp, 0xa
 .60:
@@ -4401,17 +4401,17 @@ DrawRinkOverlays:
         call 0x1E7E:DrawRinkEndArt
 .62:
         mov word [bp - 0x26], 0xbc8e
-        cmp word [g_BC94], 0x0
+        cmp word [doorYpos2], 0x0
         jnl short .63
-        cmp word [g_BCA0], 0x22a
+        cmp word [doorframe], 0x22a
         jl short .63
-        cmp word [g_BCA0], 0x237
+        cmp word [doorframe], 0x237
         jg short .63
         push 0x0
         push 0x0
-        push word [g_BC94]
-        push word [g_BC90]
-        push word [g_BCA0]
+        push word [doorYpos2]
+        push word [doorXpos2]
+        push word [doorframe]
         call 0x1E7E:DrawFrameSprite
         add sp, 0xa
 .63:
@@ -4422,13 +4422,13 @@ DrawRinkOverlays:
         cmp byte [bx], 0x0
         jnl short .66
         mov word [bp - 0x26], 0xbc0e
-        cmp word [g_BC18], 0x0
+        cmp word [puckZpos2], 0x0
         jnz short .64
         push 0x0
         push 0x0
-        push word [puckstruct]
-        push word [g_BC10]
-        push word [g_BC20]
+        push word [puckYpos2]
+        push word [puckXpos2]
+        push word [puckframe]
         jmp short .65
 .64:
         mov bx, [bp - 0x26]
@@ -4478,7 +4478,7 @@ DrawRinkOverlays:
         jnz short .70
         jmp near .80
 .70:
-        cmp word [g_5BF4], 0x0
+        cmp word [playsuspended], 0x0
         jz short .71
         jmp near .80
 .71:
@@ -4550,9 +4550,9 @@ DrawRinkOverlays:
 .77:
         mov bx, [bp - 0x22]
         shl bx, byte 0x7
-        mov ax, [bx + g_B510]
+        mov ax, [bx + sortobj0_Xpos2]
         add [bp - 0x14], ax
-        mov ax, [bx + g_B514]
+        mov ax, [bx + sortobj0_Ypos2]
         add [bp - 0x20], ax
         cmp word [bp - 0x2], 0x4
         jng short .78
@@ -4569,7 +4569,7 @@ DrawRinkOverlays:
         push word [bp - 0x14]
         mov bx, [bp - 0x2]
         shl bx, 1
-        push word [bx + g_61B8]
+        push word [bx + RinkOverlayFrames3]
         call 0x1E7E:DrawFrameSprite
         add sp, 0xa
 .80:
@@ -4688,8 +4688,8 @@ clockcont_0:
         mov [c1playernum], ax
         mov bx, [puckc]
         mov byte [bx], 0xff
-        mov bx, [g_BC2A]
-        cmp byte [bx + g_BC2C], 0x18
+        mov bx, [puck_1C]
+        cmp byte [bx + puckasslist], 0x18
         jnz short .8
         push 0x1a
         push word 0xbc0e

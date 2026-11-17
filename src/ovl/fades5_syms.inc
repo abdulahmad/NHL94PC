@@ -1,10 +1,10 @@
+BlockSweepDX		equ	0x62EA
+BlockSweepDY		equ	0x62EE
+BlockSweepOrder		equ	0x62F2
 CopyFadeRect		equ	0x5E
 SetDeadline.regs		equ	0x1A6E
 UseCurrentPage		equ	0x1A6
 WaitDeadlineNoEoi		equ	0x1A84
-g_62EA		equ	0x62EA
-g_62EE		equ	0x62EE
-g_62F2		equ	0x62F2
 g_DF6A		equ	0xDF6A
 g_DF6C		equ	0xDF6C
 g_DF6E		equ	0xDF6E

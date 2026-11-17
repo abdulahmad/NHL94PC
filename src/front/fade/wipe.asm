@@ -13,13 +13,13 @@ FadeWipe:
         mov si, [bp + 0x6]
         db 0x8B, 0xDE                           ; insn: mov bx, si
         shl bx, 1
-        mov ax, [bx + g_62A0]
+        mov ax, [bx + WipeDirX]
         mov [bp - 0x10], ax
-        mov ax, [bx + g_62A8]
+        mov ax, [bx + WipeDirY]
         mov [bp - 0x12], ax
-        mov ax, [bx + g_62B0]
+        mov ax, [bx + WipeDirX2]
         mov [bp - 0x2e], ax
-        mov ax, [bx + g_62B8]
+        mov ax, [bx + WipeDirY2]
         mov [bp - 0x2c], ax
         cmp si, 0x3
         jng short .1

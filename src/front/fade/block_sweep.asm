@@ -35,10 +35,10 @@ FadeBlockSweep:
         idiv cx
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov bx, [bp + 0x6]
-        mov al, [bx + g_62EA]
+        mov al, [bx + BlockSweepDX]
         cbw
         db 0x8B, 0xF0                           ; insn: mov si, ax
-        mov al, [bx + g_62F2]
+        mov al, [bx + BlockSweepOrder]
         cbw
         db 0x3B, 0xF0                           ; insn: cmp si, ax
         jnz short .1
@@ -180,10 +180,10 @@ FadeBlockSweep:
 .17:
         call 0x03A3:WaitDeadlineNoEoi
         mov bx, [bp + 0x6]
-        mov al, [bx + g_62EE]
+        mov al, [bx + BlockSweepDY]
         cbw
         db 0x03, 0xF0                           ; insn: add si, ax
-        mov al, [bx + g_62F2]
+        mov al, [bx + BlockSweepOrder]
         cbw
         db 0x3B, 0xF0                           ; insn: cmp si, ax
         jz short .18

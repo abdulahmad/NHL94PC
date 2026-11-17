@@ -216,9 +216,9 @@ SportsDesk:
         push word [bp - 0x62]
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
-        mov ax, [g_B092]
+        mov ax, [TextOverlayPtr]
         mov [bp - 0x42], ax
-        mov ax, [g_B094]
+        mov ax, [TextOverlaySeg]
         mov [bp - 0x6a], ax
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [bp - 0x78], ax
@@ -227,8 +227,8 @@ SportsDesk:
         mov [bp - 0x7e], ax
         mov [bp - 0x38], ax
         mov [bp - 0x3a], ax
-        mov [g_B092], ax
-        mov [g_B094], ax
+        mov [TextOverlayPtr], ax
+        mov [TextOverlaySeg], ax
         call 0x0000:VgaPageFlip
         push word 0x3860
         push word 0xb00
@@ -236,9 +236,9 @@ SportsDesk:
         call 0x0000:VgaCopyBytes
         add sp, 0x6
         mov ax, [bp - 0x42]
-        mov [g_B092], ax
+        mov [TextOverlayPtr], ax
         mov ax, [bp - 0x6a]
-        mov [g_B094], ax
+        mov [TextOverlaySeg], ax
         push 0x10
         lea ax, [bp - 0x390]
         push ss
@@ -368,9 +368,9 @@ SportsDesk:
         call 0x03A3:MouseRange
         add sp, 0x8
         mov ax, [bp - 0x42]
-        mov [g_B092], ax
+        mov [TextOverlayPtr], ax
         mov ax, [bp - 0x6a]
-        mov [g_B094], ax
+        mov [TextOverlaySeg], ax
         mov word [deferpending], 0x0
         push word [bp - 0x76]
         push word [bp - 0x72]
@@ -603,9 +603,9 @@ SportsDesk:
         call 0x03A3:MouseRange
         add sp, 0x8
         mov ax, [bp - 0x42]
-        mov [g_B092], ax
+        mov [TextOverlayPtr], ax
         mov ax, [bp - 0x6a]
-        mov [g_B094], ax
+        mov [TextOverlaySeg], ax
         mov word [deferpending], 0x0
         push word [bp - 0x76]
         push word [bp - 0x72]
@@ -1291,8 +1291,8 @@ DeskReloadGame:
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov [bp - 0x10], dx
         mov al, 0x11
-        mov [g_B207], al
-        mov [g_B107], al
+        mov [PanelText2], al
+        mov [PanelText], al
         push ds
         push strict word TeamPalette2
         call 0x0FEF:SetRemapTable
@@ -1328,8 +1328,8 @@ DeskReloadGame:
         call 0x0FEF:DrawRleTransRemapAt
         add sp, 0x8
         mov al, 0x43
-        mov [g_B207], al
-        mov [g_B107], al
+        mov [PanelText2], al
+        mov [PanelText], al
         push word [bp - 0x10]
         push si
         call 0x06E1:FindUnlink

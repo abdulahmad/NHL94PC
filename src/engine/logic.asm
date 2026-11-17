@@ -642,24 +642,24 @@ asswingo:
 .14:
         mov [si + 0x2e], di
         shl di, 1
-        mov ax, [di + g_594C]
+        mov ax, [di + asswingo_dedata_xrand]
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         shl ax, 1
         mov [bp - 0x6], cx
         call 0x0C11:randomd0
-        mov cx, [di + g_594A]
+        mov cx, [di + asswingo_dedata]
         sub cx, [bp - 0x6]
         mov dl, [si + 0x4d]
         db 0x2A, 0xF6                           ; insn: sub dh, dh
         db 0x03, 0xCA                           ; insn: add cx, dx
         db 0x03, 0xC1                           ; insn: add ax, cx
         mov [si + 0x2a], ax
-        mov ax, [di + g_5950]
+        mov ax, [di + asswingo_dedata_yrand]
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         shl ax, 1
         mov [bp - 0x8], cx
         call 0x0C11:randomd0
-        mov cx, [di + g_594E]
+        mov cx, [di + asswingo_dedata_y]
         sub cx, [bp - 0x8]
         db 0x03, 0xC1                           ; insn: add ax, cx
         mov [si + 0x2c], ax
@@ -1064,8 +1064,8 @@ assscore:
         cmp ax, [si + 0x5e]
         jnz short .1
         mov byte [bx], 0xff
-        mov bx, [g_BC2A]
-        cmp byte [bx + g_BC2C], 0x18
+        mov bx, [puck_1C]
+        cmp byte [bx + puckasslist], 0x18
         jnz short .1
         push 0x1a
         push word 0xbc0e
@@ -4114,13 +4114,13 @@ Endfaceoff:
 .4:
         mov bx, [bp - 0x4]
         shl bx, byte 0x7
-        mov al, [bx + g_B555]
+        mov al, [bx + sortobj0_47]
         cbw
         imul bx, ax, 0x14
         mov es, [segWorkBuffer59]
         db 0x8B, 0xF7                           ; insn: mov si, di
         shl si, byte 0x7
-        mov al, [si + g_B555]
+        mov al, [si + sortobj0_47]
         cbw
         imul si, ax, 0x14
         mov al, [es:si + 0x207]
@@ -4199,7 +4199,7 @@ Endfaceoff:
         push word 0xbd0e
         call 0x1E7E:assreplace
         add sp, 0x4
-        cmp word [g_BD10], 0x0
+        cmp word [refXpos2], 0x0
         jng short .11
         mov ax, 0x500
         jmp short .12
@@ -5627,14 +5627,14 @@ assrefgoalpa:
         jz short .7
         jmp near .52
 .7:
-        mov al, [g_B07A]
+        mov al, [goalevent_b1]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         mov [bp - 0xa], ax
-        mov al, [g_B07B]
+        mov al, [goalevent_b2]
         mov [bp - 0x2], ax
-        mov al, [g_B07C]
+        mov al, [goalevent_b3]
         mov [bp - 0x4], ax
-        mov cl, [g_B07D]
+        mov cl, [goalevent_text]
         db 0x2A, 0xED                           ; insn: sub ch, ch
         mov [bp - 0x8], cx
         mov word [bp - 0xc], 0x0
@@ -5667,18 +5667,18 @@ assrefgoalpa:
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         add ax, [bp - 0x8]
         imul bx, ax, 0x28
-        mov al, [bx + g_A556]
+        mov al, [bx + hmrosterjersey]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         add cx, [bp - 0x4]
         imul bx, cx, 0x28
-        mov cl, [bx + g_A556]
+        mov cl, [bx + hmrosterjersey]
         db 0x2A, 0xED                           ; insn: sub ch, ch
         push cx
         add ax, [bp - 0x2]
         imul bx, ax, 0x28
-        mov al, [bx + g_A556]
+        mov al, [bx + hmrosterjersey]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push word [bp - 0xc]

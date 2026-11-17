@@ -465,12 +465,12 @@ DrawReplayFrame:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
 .10:
         push ax
-        mov ax, [g_B098]
+        mov ax, [viewcelly]
         shl ax, byte 0x3
         sub ax, [bp - 0x28]
         neg ax
         push ax
-        mov ax, [g_B096]
+        mov ax, [viewcellx]
         shl ax, byte 0x3
         sub ax, [bp - 0x26]
         neg ax
@@ -540,7 +540,7 @@ DrawReplayFrame:
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
         mov es, [segAnimSequences1]
-        mov cx, [g_B096]
+        mov cx, [viewcellx]
         shl cx, byte 0x3
         sub cx, [es:bx + 0xf8]
         neg cx
@@ -549,7 +549,7 @@ DrawReplayFrame:
         inc bx
         mov [bp - 0x20], bx
         shl bx, 1
-        mov ax, [g_B098]
+        mov ax, [viewcelly]
         shl ax, byte 0x3
         sub ax, [es:bx + 0xf8]
         neg ax
@@ -591,11 +591,11 @@ DrawReplayFrame:
 .20:
         mov ax, 0x12d
 .21:
-        mov cx, [g_B098]
+        mov cx, [viewcelly]
         shl cx, byte 0x3
         db 0x2B, 0xC1                           ; insn: sub ax, cx
         push ax
-        mov ax, [g_B096]
+        mov ax, [viewcellx]
         shl ax, byte 0x3
         sub ax, strict word 0x4
         neg ax
@@ -638,11 +638,11 @@ DrawReplayFrame:
 .26:
         mov ax, 0x12d
 .27:
-        mov cx, [g_B098]
+        mov cx, [viewcelly]
         shl cx, byte 0x3
         db 0x2B, 0xC1                           ; insn: sub ax, cx
         push ax
-        mov ax, [g_B096]
+        mov ax, [viewcellx]
         shl ax, byte 0x3
         sub ax, strict word 0x4
         neg ax
@@ -686,7 +686,7 @@ DrawReplayFrame:
         mov es, [segDgroup9]
         mov ax, [es:0x74f4]
         mov [bp - 0x22], ax
-        mov ax, [g_B098]
+        mov ax, [viewcelly]
         shl ax, byte 0x3
         sub ax, 0x244
         neg ax

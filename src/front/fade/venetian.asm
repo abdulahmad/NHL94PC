@@ -18,7 +18,7 @@ FadeVenetian:
 .1:
         mov ax, DGROUP
         mov es, ax
-        mov ax, [es:g_74FA]
+        mov ax, [es:VenetianRowBytes]
         mov [bp - 0xa], ax
         mov bx, [es:ClipBottomY]
         lea ax, [bx + 0x7]

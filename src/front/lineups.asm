@@ -188,8 +188,8 @@ ShowStartingLineups:
         imul bx, [bp - 0xca], word 0xba
         add bx, [bp - 0xd4]
         shl bx, byte 0x2
-        mov ax, [bx + g_9FCC]
-        mov dx, [bx + g_9FCE]
+        mov ax, [bx + GamePlayerNames]
+        mov dx, [bx + GamePlayerNamesSeg]
         mov [bp - 0xe0], ax
         mov [bp - 0xde], dx
         cmp ax, strict word 0xffff

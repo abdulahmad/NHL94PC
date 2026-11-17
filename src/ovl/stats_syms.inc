@@ -72,6 +72,7 @@ ReadEntry6		equ	0x61C
 ReadTeamNamesThunk		equ	0x2643
 SaveCharTab		equ	0xC7A
 SeasonTitlePtr		equ	0x94
+SeasonTitleSegs		equ	0x8C36
 SetClipRectRegs		equ	0x8F
 SetPaletteFar		equ	0x344C
 SetRemapTable		equ	0x442
@@ -143,7 +144,6 @@ _sprintf		equ	0xD74
 cddriveptr		equ	0xCFD2
 exhstate_name		equ	0x2
 fileoncd		equ	0xCFD0
-g_8C36		equ	0x8C36
 g_C040		equ	0xC040
 g_C044		equ	0xC044
 g_C048		equ	0xC048

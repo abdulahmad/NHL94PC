@@ -91,7 +91,7 @@ LoadGameTeams:
         push -0x1
         push -0x1
         push ds
-        push strict word g_9F80
+        push strict word GameTeamRecs
         push word [bp - 0x4]
         call 0x0CD1:ReadAtOffset
         add sp, 0xc
@@ -166,7 +166,7 @@ LoadGameTeams:
         push -0x1
         push -0x1
         push ds
-        push strict word g_A268
+        push strict word GameRosterRecs
         push word [bp - 0x4]
         call 0x0CD1:ReadAtOffset
         add sp, 0xc
@@ -288,19 +288,19 @@ LoadGameTeams:
 .16:
         db 0x2B, 0xF6                           ; insn: sub si, si
 .17:
-        cmp byte [si + g_AE38], 0x64
+        cmp byte [si + HomeTeamColours], 0x64
         jz short .18
-        mov al, [si + g_AE38]
+        mov al, [si + HomeTeamColours]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         imul bx, ax, 0x28
         mov byte [bx + hmroster], 0x2
 .18:
-        cmp byte [si + g_AE68], 0x64
+        cmp byte [si + AwayTeamColours], 0x64
         jz short .19
-        mov al, [si + g_AE68]
+        mov al, [si + AwayTeamColours]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         imul bx, ax, 0x28
-        mov byte [bx + g_A9B0], 0x2
+        mov byte [bx + GamePlayerFlags], 0x2
 .19:
         inc si
         cmp si, 0x8
@@ -1190,14 +1190,14 @@ BuildTeamRoster:
 GSummaryPath:
         push di
         push si
-        mov byte [g_AE70], 0x0
+        mov byte [gsummarypath], 0x0
         mov es, [segTeamChoiceText53]
         cmp byte [es:0xe53], 0x0
         jz short .1
         push word 0x3701
         push strict word CurLeagueName
         push ds
-        push strict word g_AE70
+        push strict word gsummarypath
         call 0x0000:_fstrcpy
         add sp, 0x8
         mov di, 0x50b8

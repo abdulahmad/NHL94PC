@@ -50,7 +50,7 @@ SetRinkObject:
         imul si
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        mov es, [g_8CE2]
+        mov es, [AnimSeqSegs]
         mov cx, [es:bx + 0xf8]
         add di, 0xd1ae
         mov [di + 0x6], cx
@@ -249,7 +249,7 @@ DecayCrowdLevel:
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         add bx, [si + 0xa]
-        mov es, [g_8CE2]
+        mov es, [AnimSeqSegs]
         db 0x26, 0x8A, 0x87, 0x00, 0x00         ; insn: mov al, [es:bx + 0x0]
         mov [si + 0x4], al
         jmp near .21
@@ -260,7 +260,7 @@ DecayCrowdLevel:
         call 0x0C11:randomd0
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .16
-        mov es, [g_8CE2]
+        mov es, [AnimSeqSegs]
         mov bx, [si + 0xa]
         db 0x26, 0x8A, 0x87, 0x01, 0x00         ; insn: mov al, [es:bx + 0x1]
         mov [si + 0x4], al
@@ -360,12 +360,12 @@ DrawRinkObjects:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
 .3:
         push ax
-        mov ax, [g_B098]
+        mov ax, [viewcelly]
         shl ax, byte 0x3
         sub ax, [si + 0x8]
         neg ax
         push ax
-        mov ax, [g_B096]
+        mov ax, [viewcellx]
         shl ax, byte 0x3
         sub ax, [si + 0x6]
         neg ax
@@ -394,12 +394,12 @@ DrawRinkObjects:
         cbw
         mov [bp - 0x2], ax
 .7:
-        mov ax, [g_B096]
+        mov ax, [viewcellx]
         shl ax, byte 0x3
         sub ax, [si + 0x6]
         neg ax
         mov [bp - 0x4], ax
-        mov ax, [g_B098]
+        mov ax, [viewcelly]
         shl ax, byte 0x3
         sub ax, [si + 0x8]
         neg ax
@@ -412,14 +412,14 @@ DrawRinkObjects:
         push 0x0
         push di
         push 0x0
-        mov ax, [g_B098]
+        mov ax, [viewcelly]
         shl ax, byte 0x3
         db 0x8B, 0xDF                           ; insn: mov bx, di
         shl bx, 1
-        sub ax, [bx + g_61CA]
+        sub ax, [bx + RinkObjectXOffsets]
         neg ax
         push ax
-        mov ax, [g_B096]
+        mov ax, [viewcellx]
         shl ax, byte 0x3
         sub ax, strict word 0x4
         neg ax
@@ -448,14 +448,14 @@ DrawRinkObjects:
         push di
         push -0x1
         push di
-        mov ax, [g_B098]
+        mov ax, [viewcelly]
         shl ax, byte 0x3
         db 0x8B, 0xDF                           ; insn: mov bx, di
         shl bx, 1
-        sub ax, [bx + g_61CA]
+        sub ax, [bx + RinkObjectXOffsets]
         neg ax
         push ax
-        mov ax, [g_B096]
+        mov ax, [viewcellx]
         shl ax, byte 0x3
         sub ax, strict word 0x4
         neg ax
@@ -469,13 +469,13 @@ DrawRinkObjects:
         test byte [gmode], 0x80
         jz short .12
         mov word [bp - 0x2], 0xbc8e
-        cmp word [g_BCA0], 0x362
+        cmp word [doorframe], 0x362
         jl short .12
         push 0x0
         push 0x0
-        push word [g_BC94]
-        push word [g_BC90]
-        push word [g_BCA0]
+        push word [doorYpos2]
+        push word [doorXpos2]
+        push word [doorframe]
         call 0x1E7E:DrawFrameSprite
         add sp, 0xa
 .12:

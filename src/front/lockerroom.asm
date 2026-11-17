@@ -560,23 +560,23 @@ DrawLockerRoom:
         inc si
         cmp si, 0x100
         jl short .17
-        mov byte [g_B1D4], 0x2c
-        mov byte [g_B1D5], 0x1
-        mov byte [g_B1CB], 0x2f
-        mov byte [g_B1D7], 0x32
-        mov byte [g_B1D8], 0x3a
-        mov byte [g_B20D], 0x19
-        mov byte [g_B1DA], 0x51
-        mov byte [g_B224], 0x18
-        mov byte [g_B1C9], 0x7f
+        mov byte [LockerText3], 0x2c
+        mov byte [LockerText4], 0x1
+        mov byte [LockerText2], 0x2f
+        mov byte [LockerText5], 0x32
+        mov byte [LockerText6], 0x3a
+        mov byte [LockerText8], 0x19
+        mov byte [LockerText7], 0x51
+        mov byte [LockerText11], 0x18
+        mov byte [LockerText1], 0x7f
         mov al, 0x6d
-        mov [g_B215], al
-        mov [g_B2BF], al
+        mov [LockerText10], al
+        mov [LockerText12], al
         mov al, 0x6e
-        mov [g_B214], al
-        mov [g_B2C0], al
-        mov byte [g_B2C1], 0x70
-        mov byte [g_B2C2], 0x58
+        mov [LockerText9], al
+        mov [LockerText13], al
+        mov byte [LockerText14], 0x70
+        mov byte [LockerText15], 0x58
         push ds
         push strict word TeamPalette2
         call 0x0FEF:SetRemapTable

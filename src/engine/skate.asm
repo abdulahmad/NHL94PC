@@ -1071,8 +1071,8 @@ playeracc:
 .5:
         mov bx, [regd2]
         shl bx, byte 0x2
-        mov ax, [bx + g_590A]
-        mov dx, [bx + g_590C]
+        mov ax, [bx + AccelFactors]
+        mov dx, [bx + AccelFactors2]
         mov [regd2], ax
         mov [g_D6BA], dx
         test byte [si + 0x45], 0x40

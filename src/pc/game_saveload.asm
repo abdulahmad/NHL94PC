@@ -83,7 +83,7 @@ SaveGameState:
         push -0x1
         push -0x1
         push ds
-        push strict word g_AE10
+        push strict word HomeTeamRec
         push word [bp + 0x6]
         call 0x0CD1:WriteAtOffset
         add sp, 0xc
@@ -97,7 +97,7 @@ SaveGameState:
         push -0x1
         push -0x1
         push ds
-        push strict word g_AE40
+        push strict word AwayTeamRec
         push word [bp + 0x6]
         call 0x0CD1:WriteAtOffset
         add sp, 0xc
@@ -1061,7 +1061,7 @@ LoadGameState:
         push -0x1
         push -0x1
         push ds
-        push strict word g_AE10
+        push strict word HomeTeamRec
         push word [bp + 0x6]
         call 0x0CD1:ReadAtOffset
         add sp, 0xc
@@ -1075,7 +1075,7 @@ LoadGameState:
         push -0x1
         push -0x1
         push ds
-        push strict word g_AE40
+        push strict word AwayTeamRec
         push word [bp + 0x6]
         call 0x0CD1:ReadAtOffset
         add sp, 0xc
@@ -2104,29 +2104,29 @@ LoadGameState:
         mov word [fadeinpending], 0x1
         mov word [hmtmsort], HomeSortObjs
         mov word [hmtmplattr], 0x3a0b
-        mov word [g_B426], HomeGlAttr
-        mov word [g_B428], 0x3a0b
+        mov word [hmtmglattr], HomeGlAttr
+        mov word [hmtmglattrseg], 0x3a0b
         mov word [hmtmlines], 0xae10
-        mov word [g_B42A], HomePlStats
-        mov word [g_B42C], 0x3a0b
+        mov word [hmtmplstats], HomePlStats
+        mov word [hmtmplstatsseg], 0x3a0b
         mov word [hmtmglstats], HomeGlStats
         mov word [hmtmroster], 0x3a0b
-        mov word [g_B432], 0xa550
+        mov word [hmtmrosterptr], 0xa550
         mov word [hmtmptrF2], 0x9f80
         mov word [g_B50C], 0xb80e
         mov word [awtmsort], AwaySortObjs
-        mov word [g_B4FA], 0x3a0b
+        mov word [awtmglattrseg], 0x3a0b
         mov word [awtmglattr], AwayGlAttr
         mov word [awtmlines], 0x3a0b
-        mov word [g_B4F6], 0xae40
+        mov word [awtmteamrec], 0xae40
         mov word [awtmplstats], AwayPlStats
         mov word [awtmglstats], 0x3a0b
-        mov word [g_B504], AwayGlStats
-        mov word [g_B506], 0x3a0b
+        mov word [awtmglstatsptr], AwayGlStats
+        mov word [awtmglstatsseg], 0x3a0b
         mov word [awtmptrF2], 0xa9b0
-        mov word [g_B50A], 0xa268
+        mov word [awtmroster], 0xa268
         mov ax, 0xb50e
-        mov [g_B436], ax
+        mov [hmtmptrs], ax
         mov [bp - 0x130], ax
         mov word [bp - 0xaa], 0x0
         jmp short .50

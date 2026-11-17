@@ -196,7 +196,7 @@ MenuOpenSaved:
         push -0x1
         push -0x1
         push ds
-        push strict word g_B0B6
+        push strict word otherscoreaway
         push word [bp - 0x4]
         call 0x0CD1:ReadAtOffset
         add sp, 0xc
@@ -210,7 +210,7 @@ MenuOpenSaved:
         push -0x1
         push -0x1
         push ds
-        push strict word g_B0AA
+        push strict word otherscorehome
         push word [bp - 0x4]
         call 0x0CD1:ReadAtOffset
         add sp, 0xc
@@ -224,7 +224,7 @@ MenuOpenSaved:
         push -0x1
         push -0x1
         push ds
-        push strict word g_B09E
+        push strict word otherscoresb
         push word [bp - 0x4]
         call 0x0CD1:ReadAtOffset
         add sp, 0xc

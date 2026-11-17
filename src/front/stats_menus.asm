@@ -52,7 +52,7 @@ SetupStatsMenus:
         mov si, [bp - 0x4]
         jmp near .30
 .7:
-        mov es, [g_8C36]
+        mov es, [SeasonTitleSegs]
         mov word [es:0xde], strict word OverlayThunks
         mov word [es:0xe0], 0x1b35
         mov word [es:0xf4], strict word StatsSelLeaguePlayoffsThunk
@@ -87,7 +87,7 @@ SetupStatsMenus:
         mov [es:bx], al
         les bx, [bp - 0x10]
         mov [es:bx], al
-        mov es, [g_8C36]
+        mov es, [SeasonTitleSegs]
         mov [es:0x13], al
         mov [es:0x0], al
         mov word [statsseason], 0x1
@@ -107,7 +107,7 @@ SetupStatsMenus:
         mov [es:bx], al
         les bx, [bp - 0xc]
         mov [es:bx], al
-        mov es, [g_8C36]
+        mov es, [SeasonTitleSegs]
         mov [es:0x13], al
         mov [es:0x0], al
         mov word [statsseason], 0x1
@@ -131,7 +131,7 @@ SetupStatsMenus:
         mov [es:bx], al
         les bx, [bp - 0xc]
         mov [es:bx], al
-        mov es, [g_8C36]
+        mov es, [SeasonTitleSegs]
         mov [es:0x13], al
         mov [es:0x0], al
         mov word [statsseason], 0x1
@@ -152,7 +152,7 @@ SetupStatsMenus:
         mov si, 0x7
         jmp near .30
 .16:
-        mov es, [g_8C36]
+        mov es, [SeasonTitleSegs]
         cmp byte [es:0x0], 0x2
         jnz short .18
         cmp byte [es:0x13], 0x2
@@ -181,7 +181,7 @@ SetupStatsMenus:
         jmp near .30
         db 0x90
 .19:
-        mov es, [g_8C36]
+        mov es, [SeasonTitleSegs]
         mov word [es:0xde], strict word StatsSelPlayoffModeThunk
         mov word [es:0xe0], 0x1b35
         mov ax, 0x5b
@@ -204,11 +204,11 @@ SetupStatsMenus:
         les bx, [bp - 0x14]
         mov byte [es:bx], 0x1
         mov al, 0x2
-        mov es, [g_8C36]
+        mov es, [SeasonTitleSegs]
         mov [es:0x3d], al
         les bx, [bp - 0xc]
         mov [es:bx], al
-        mov es, [g_8C36]
+        mov es, [SeasonTitleSegs]
         mov [es:0x13], al
         mov [es:0x0], al
         mov word [statsseason], 0x1
@@ -229,7 +229,7 @@ SetupStatsMenus:
         jmp near .30
         db 0x90
 .23:
-        mov es, [g_8C36]
+        mov es, [SeasonTitleSegs]
         mov word [es:0xde], strict word OverlayThunks
         mov word [es:0xe0], 0x1b35
         mov word [es:0xf4], strict word StatsSelLeaguePlayoffsThunk
@@ -265,7 +265,7 @@ SetupStatsMenus:
         mov [es:bx], al
         les bx, [bp - 0xc]
         mov [es:bx], al
-        mov es, [g_8C36]
+        mov es, [SeasonTitleSegs]
         mov [es:0x13], al
         mov [es:0x0], al
         mov word [statsseason], 0x1
@@ -284,7 +284,7 @@ SetupStatsMenus:
         mov [es:bx], al
         les bx, [bp - 0x10]
         mov [es:bx], al
-        mov es, [g_8C36]
+        mov es, [SeasonTitleSegs]
         mov [es:0x13], al
         mov [es:0x0], al
         mov word [statsseason], 0x1
@@ -306,13 +306,13 @@ SetupStatsMenus:
 .30:
         cmp si, 0x4
         jnz short .31
-        mov es, [g_8C36]
+        mov es, [SeasonTitleSegs]
         mov word [es:0x94], 0x78
         mov byte [es:0x88], 0x0
         jmp short .32
         db 0x90
 .31:
-        mov es, [g_8C36]
+        mov es, [SeasonTitleSegs]
         mov word [es:0x94], 0x9b
         mov byte [es:0x88], 0x2d
 .32:
@@ -337,7 +337,7 @@ SetupStatsMenus:
         mov ax, DGROUP
         mov ds, ax
 .34:
-        mov es, [g_8C36]
+        mov es, [SeasonTitleSegs]
         imul bx, si, 0x16
         inc word [es:bx + 0x80]
         db 0x8B, 0xC6                           ; insn: mov ax, si

@@ -63,7 +63,7 @@ FadePlaneBands:
         mov word [bp - 0x22], 0xb
 .5:
         mov bx, [bp - 0x22]
-        mov al, [bx + g_62C0]
+        mov al, [bx + PlaneBandPattern]
         cbw
         mov [bp - 0x28], ax
         imul word [bp - 0x20]

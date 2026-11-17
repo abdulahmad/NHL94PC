@@ -188,7 +188,7 @@ PlayTitleMovies:
         imul ax, [bp + 0x6], 0x1c
         add ax, [bp + 0x8]
         imul bx, ax, 0x28
-        mov al, [bx + g_A556]
+        mov al, [bx + hmrosterjersey]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         mov es, [segWorkBuffer52]
         mov bx, [bp + 0x6]

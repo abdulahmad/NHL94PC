@@ -783,7 +783,7 @@ PickForLineSlot:
 .2:
         mov [bp - 0xc], ax
         mov bx, [bp + 0x8]
-        mov al, [bx + g_622A]
+        mov al, [bx + lineslotgroups]
         cbw
         mov [bp - 0x4], ax
         mov [bp - 0xa], ax
@@ -792,16 +792,16 @@ PickForLineSlot:
         inc word [bp - 0xa]
 .4:
         mov bx, [bp - 0xa]
-        mov al, [bx + g_61D8]
+        mov al, [bx + lineslotgroupstart]
         cbw
         cmp ax, [bp + 0x8]
         jnz short .3
 .5:
         inc word [bp - 0xa]
         mov bx, [bp - 0xa]
-        cmp byte [bx + g_61D8], 0x0
+        cmp byte [bx + lineslotgroupstart], 0x0
         jl short .7
-        mov al, [bx + g_61D8]
+        mov al, [bx + lineslotgroupstart]
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         mov si, [bp - 0xc]
@@ -1060,7 +1060,7 @@ PickForLineSlot:
         inc word [bp - 0xa]
 .42:
         mov bx, [bp - 0xa]
-        mov al, [bx + g_61D8]
+        mov al, [bx + lineslotgroupstart]
         cbw
         cmp ax, [bp + 0x8]
         jnz short .40

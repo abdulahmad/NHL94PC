@@ -1161,7 +1161,7 @@ DrawControlsOpts:
         mov [bp - 0xa], al
         mov [bp - 0xb], al
         mov [bp - 0xc], al
-        mov word [g_B35E], 0x0
+        mov word [editopts], 0x0
         mov al, [InputFlags]
         and ax, strict word 0x8
         shr al, byte 0x3
@@ -1181,7 +1181,7 @@ DrawControlsOpts:
         db 0x0B, 0xC1                           ; insn: or ax, cx
         shl ax, byte 0x2
         or ax, 0x1c3
-        mov [g_B360], ax
+        mov [editctlopts], ax
         cmp si, 0x1
         db 0x1B, 0xDB                           ; insn: sbb bx, bx
         neg bx
@@ -1192,7 +1192,7 @@ DrawControlsOpts:
         jz short .3
         shl ax, byte 0x2
         not ax
-        and [g_B360], ax
+        and [editctlopts], ax
 .3:
         db 0x8B, 0xDE                           ; insn: mov bx, si
         shl bx, 1
@@ -1201,13 +1201,13 @@ DrawControlsOpts:
         jnl short .5
         cmp word [bx + ctl1team], -0x1
         jnz short .4
-        mov word [g_B35E], 0x41
+        mov word [editopts], 0x41
         jmp short .6
         db 0x90
 .4:
         cmp word [bx + ctl1team], -0x2
         jnz short .6
-        mov word [g_B35E], 0x42
+        mov word [editopts], 0x42
         jmp short .6
         db 0x90
 .5:
@@ -1215,14 +1215,14 @@ DrawControlsOpts:
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         inc ax
         inc ax
-        mov [g_B35E], ax
+        mov [editopts], ax
         mov ax, [bx + ctl1dev]
         shl ax, byte 0x2
-        test [g_B360], ax
+        test [editctlopts], ax
         jz short .6
         mov ax, [bx + ctl1dev]
         shl ax, byte 0x2
-        or [g_B35E], ax
+        or [editopts], ax
 .6:
         db 0x2B, 0xF6                           ; insn: sub si, si
 .7:
@@ -1254,7 +1254,7 @@ DrawControlsOpts:
         db 0x8B, 0xCA                           ; insn: mov cx, dx
         mov ax, 0x1
         shl ax, cl
-        test [g_B35E], ax
+        test [editopts], ax
         jz short .9
         mov al, 0x17
         mov [si], al
@@ -1276,7 +1276,7 @@ DrawControlsOpts:
         db 0x8B, 0xCA                           ; insn: mov cx, dx
         mov ax, 0x1
         shl ax, cl
-        test [g_B360], ax
+        test [editctlopts], ax
         jnz short .11
         mov al, 0x17
         mov [si], al
@@ -1376,7 +1376,7 @@ DrawCtlBoxes:
         db 0x8B, 0xCF                           ; insn: mov cx, di
         mov ax, 0x1
         shl ax, cl
-        test [g_B35E], ax
+        test [editopts], ax
         jz short .2
         mov al, 0x17
         mov [si], al
@@ -1600,11 +1600,11 @@ ControlsDlgLoop:
         mov ax, 0x1
         shl ax, cl
         mov [bp - 0x10], ax
-        test [g_B35E], ax
+        test [editopts], ax
         jz short .18
         jmp near .31
 .18:
-        mov ax, [g_B360]
+        mov ax, [editctlopts]
         test [bp - 0x10], ax
         jnz short .19
         jmp near .31
@@ -1638,47 +1638,47 @@ ControlsDlgLoop:
         jmp short .30
         db 0x90
 .22:
-        mov ax, [g_B35E]
+        mov ax, [editopts]
         and al, 0xfd
         or al, 0x1
         jmp short .29
         db 0x90
 .23:
-        mov ax, [g_B35E]
+        mov ax, [editopts]
         and al, 0xfe
         or al, 0x2
         jmp short .29
         db 0x90
 .24:
-        mov ax, [g_B35E]
+        mov ax, [editopts]
         and al, 0x87
         or al, 0x4
         jmp short .29
         db 0x90
 .25:
-        mov ax, [g_B35E]
+        mov ax, [editopts]
         and al, 0x8b
         or al, 0x8
         jmp short .29
         db 0x90
 .26:
-        mov ax, [g_B35E]
+        mov ax, [editopts]
         and al, 0x93
         or al, 0x10
         jmp short .29
         db 0x90
 .27:
-        mov ax, [g_B35E]
+        mov ax, [editopts]
         and al, 0xa3
         or al, 0x20
         jmp short .29
         db 0x90
 .28:
-        mov ax, [g_B35E]
+        mov ax, [editopts]
         and al, 0xc3
         or al, 0x40
 .29:
-        mov [g_B35E], ax
+        mov [editopts], ax
 .30:
         push cs
         call DrawCtlBoxes
@@ -1698,13 +1698,13 @@ ControlsDlgLoop:
         db 0x90
 .34:
         mov bx, [bp + 0x6]
-        mov ax, [g_B35E]
+        mov ax, [editopts]
         sar ax, byte 0x2
         db 0x8B, 0xF3                           ; insn: mov si, bx
         shl si, 1
         mov [bp - 0x14], si
         mov [si + ctl1dev], ax
-        cmp word [g_B35E], 0x41
+        cmp word [editopts], 0x41
         jnz short .39
         mov si, [bp - 0x14]
         mov word [si + ctl1team], 0xffff
@@ -1731,7 +1731,7 @@ ControlsDlgLoop:
         jmp short .36
         db 0x90
 .39:
-        cmp word [g_B35E], 0x42
+        cmp word [editopts], 0x42
         jnz short .40
         mov si, [bp - 0x14]
         mov word [si + ctl1team], 0xfffe
@@ -1750,7 +1750,7 @@ ControlsDlgLoop:
         jmp short .43
         db 0x90
 .40:
-        test byte [g_B35E], 0x1
+        test byte [editopts], 0x1
         jz short .41
         mov ax, [HomeTeamNum]
         mov si, [bp - 0x14]
