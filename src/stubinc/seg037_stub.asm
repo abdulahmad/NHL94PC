@@ -5,7 +5,6 @@
 F039_0002		equ	0x2
 F035_000C		equ	0xC
 F028_0048		equ	0x48
-str_Asw		equ	0xAA
 F028_00B9		equ	0xB9
 F028_0136		equ	0x136
 F038_019C		equ	0x19C
@@ -27,11 +26,6 @@ F028_4262		equ	0x4262
 TickSkip		equ	0x6DB2
 g_6F10		equ	0x6F10
 g_6F22		equ	0x6F22
-str_CalibrateYourJoystickByUsing		equ	0x6F34
-str_ToMoveTheJoystickPosition		equ	0x6F58
-str_BelowToAllSquares		equ	0x6F80
-str_PressJoystickButtonWhenComplete		equ	0x6F96
-str_PressAnyKeyToIgnore		equ	0x6FBA
 str_LeftJoystick		equ	0x6FDB
 str_RightJoystick		equ	0x6FE9
 JoyOn		equ	0x7308

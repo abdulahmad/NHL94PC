@@ -12,7 +12,7 @@ F025_0000:
 F025_000E:
 	cmp	word [g_0A3E], 0x0
 	jz	short .1
-	call	0x0C15:F011_000E
+	call	0x0C15:NullFar2
 	mov	word [g_0A3E], 0x0
 .1:
 	mov	es, [g_8B1E]

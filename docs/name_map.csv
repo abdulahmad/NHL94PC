@@ -973,3 +973,49 @@ seg008:2322,OpenStudioSpeech,F008_2322,new,medium,opens xrbarr2.viv,src/seg/seg0
 seg008:2354,OpenPlayByPlaySpeech,F008_2354,new,medium,opens xbruce2.viv and wants its penalty and goal clips,src/seg/seg008.asm
 _fstrcpy,_fstrcspn,_fstrcpy,MSC,high,builds a 256-bit set of the second string and returns the index of the first character of the first string in it (it was named _fstrcpy),src/seg/seg000.asm
 _fstrlen,_fstrcpy,_fstrlen,MSC,high,copies the far string at [bp+0Ah] to [bp+6] and returns the destination (it was named _fstrlen),src/seg/seg000.asm
+seg009:000E,InputInit,F009_000E,new,high,"HookKbd, timer slot for PollInputEvents, cursor handler = EventToCursor; once",src/seg/seg009.asm
+seg009:004C,InputShutdown,F009_004C,new,high,frees the PollInputEvents timer slot,src/seg/seg009.asm
+seg009:0070,EventToCursor,F009_0070,new,high,"mouse event sets the cursor; key and stick events move it, faster with the repeat count; clamps to 320x200",src/seg/seg009.asm
+seg010:0000,InputTail,F010_0000,new,low,"sub ah, ah / retf at the start of the paragraph (end of the routine before)",src/seg/seg010.asm
+seg010:0006,RandomRange,F010_0006,new,high,"32-bit linear congruential step (multiplier BB40E62Dh, +1) on RandSeed, result scaled to the range",src/seg/seg010.asm
+seg011:000E,NullFar2,F011_000E,new,high,a lone retf,src/seg/seg011.asm
+seg012:0000,WaitButtonTimed,F012_0000,new,medium,"reads events through CursorHandler until a click, a double click or the time runs out",src/seg/seg012.asm
+seg014:000A,MidiControl,F014_000A,new,high,B0h,src/seg/seg014.asm
+seg014:0032,MidiPitchBend,F014_0032,new,high,E0h,src/seg/seg014.asm
+seg014:005A,MidiProgramNoteOn,F014_005A,new,high,C0h,src/seg/seg014.asm
+seg014:00B4,MidiNoteOff,F014_00B4,new,high,80h,src/seg/seg014.asm
+seg015:000C,FileExists,F015_000C,new,high,open for reading succeeds,src/seg/seg015.asm
+seg015:003E,BuildPathFar,F015_003E,new,high,"directory, backslash, name and extension into a far buffer",src/seg/seg015.asm
+seg015:00C2,DeleteMatching,F015_00C2,new,high,finds every file of a pattern in a directory and unlinks it,src/seg/seg015.asm
+seg015:0258,RemoveDirTree,F015_0258,new,high,"unlinks every file in a directory, then rmdir",src/seg/seg015.asm
+seg015:03D6,OpenReadShared,F015_03D6,new,high,"_dos_open mode 40h (read, deny none)",src/seg/seg015.asm
+seg015:03E8,OpenWriteShared,F015_03E8,new,high,_dos_open mode 41h,src/seg/seg015.asm
+seg015:03FA,OpenReadWriteShared,F015_03FA,new,high,_dos_open mode 42h,src/seg/seg015.asm
+seg015:040C,CreateFileNormal,F015_040C,new,high,_dos_creat attribute 0,src/seg/seg015.asm
+seg015:041E,CloseHandlePtr,F015_041E,new,high,closes the handle a pointer holds and stores -1,src/seg/seg015.asm
+seg015:0442,ReadAtOffset,F015_0442,new,high,seek to a long offset then read; returns 0 or an error,src/seg/seg015.asm
+seg015:0496,WriteAtOffset,F015_0496,new,high,seek to a long offset then write; returns 0 or an error,src/seg/seg015.asm
+seg015:04EA,ReadRecord52,F015_04EA,new,medium,ReadAtOffset of 34h bytes,src/seg/seg015.asm
+seg015:0504,WriteRecord52,F015_0504,new,medium,WriteAtOffset of 34h bytes,src/seg/seg015.asm
+seg015:051E,CopyFileByName,F015_051E,new,high,"opens the source, creates the target, copies in 1 KB pieces",src/seg/seg015.asm
+seg015:0602,ReadRecord48,F015_0602,new,medium,ReadAtOffset of 30h bytes,src/seg/seg015.asm
+seg015:061C,ReadEntry6,F015_061C,new,medium,6-byte entry n at 2 + 6n,src/seg/seg015.asm
+seg015:0640,ReadEntry744,F015_0640,new,medium,2E8h-byte entry n,src/seg/seg015.asm
+seg015:065E,ReadEntry12,F015_065E,new,medium,12-byte entry n,src/seg/seg015.asm
+seg016:0000,NullFar3,F016_0000,new,high,a lone retf,src/seg/seg016.asm
+seg016:0002,TextWidthFar,F016_0002,new,high,copies a far string and returns TextWidthAll of it,src/seg/seg016.asm
+seg016:0024,SetTextColors,F016_0024,new,high,text colour and shadow colour,src/seg/seg016.asm
+seg016:0036,DrawShadowTextBuffered,F016_0036,new,medium,"draws a shadowed string into an off-screen block 64-pixel aligned, then blits it",src/seg/seg016.asm
+seg016:00E4,DrawShadowTextCentered,F016_00E4,new,high,"x = (320 - width) / 2; shadow at +1,+1 then the text",src/seg/seg016.asm
+seg016:0166,DrawShadowText,F016_0166,new,high,"shadow at +1,+1 in the shadow colour, then the text",src/seg/seg016.asm
+seg016:01B8,DrawOutlineText,F016_01B8,new,high,"the string at the four outline offsets in the shadow colour, then the text",src/seg/seg016.asm
+seg016:0210,DrawShadowTextF,F016_0210,new,high,"_sprintf with one argument, then DrawShadowText",src/seg/seg016.asm
+seg016:0238,DrawShadowTextF2,F016_0238,new,high,"_sprintf with two arguments, then DrawShadowText",src/seg/seg016.asm
+seg017:0000,NullFar4,F017_0000,new,high,a lone retf,src/seg/seg017.asm
+seg017:0002,SqrtLong,F017_0002,new,high,Newton iteration on a long with __aFldiv,src/seg/seg017.asm
+seg017:0089,VectorToDir8,F017_0089,new,high,"direction 0..7 from the signs and the ratio of dx, dy; 8 for no vector",src/seg/seg017.asm
+seg018:000A,HookDivideError,F018_000A,new,high,"saves INT 0, points it at DivideHandler, registers UnhookDivideError",src/seg/seg018.asm
+seg018:004B,UnhookDivideError,F018_004B,new,high,restores INT 0,src/seg/seg018.asm
+seg018:005C,DivideHandler,F018_005C,new,high,INT 0 handler: steps the return address over the faulting divide,src/seg/seg018.asm
+seg026:0246,DrawTextFar,F026_0246,new,high,copies a far string to the stack and calls DrawText,src/seg/seg026.asm
+seg026:028E,DrawTextFar2,F026_028E,new,medium,the same with the second text routine,src/seg/seg026.asm

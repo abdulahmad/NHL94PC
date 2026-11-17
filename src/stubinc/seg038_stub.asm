@@ -12,7 +12,5 @@ __aFlmul		equ	0x1226
 __aFlshl		equ	0x1258
 __aFlsar		equ	0x1264
 FillFarZero		equ	0x1E5F
-str_OutOfRowSpace		equ	0x7416
-str_OutOfRowSpace_2		equ	0x7559
 ChainIdx		equ	0xAE9C
 %include "seg/seg038.asm"

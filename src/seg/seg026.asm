@@ -40,7 +40,7 @@ F026_000E:
 	add	ax, strict word 0x3
 	push	ax
 	push	cs
-	call	F026_0246
+	call	DrawTextFar
 	add	sp, 0x8
 	add	si, 0x16
 	mov	ax, [bp - 0x2]
@@ -128,7 +128,7 @@ F026_00A4:
 	add	ax, strict word 0x3
 	push	ax
 	push	cs
-	call	F026_0246
+	call	DrawTextFar
 	add	sp, 0x8
 	cmp	si, 0x1
 	jng	short .6
@@ -170,7 +170,7 @@ F026_00A4:
 	add	ax, strict word 0x3
 	push	ax
 	push	cs
-	call	F026_0246
+	call	DrawTextFar
 	add	sp, 0x8
 	add	si, 0x16
 	mov	ax, [bp - 0xa]
@@ -245,7 +245,7 @@ F026_01BA:
 	leave
 	retf
 
-F026_0246:
+DrawTextFar:
 	enter	0x50, 0x0
 	push	di
 	push	si
@@ -280,7 +280,7 @@ F026_0246:
 	leave
 	retf
 
-F026_028E:
+DrawTextFar2:
 	enter	0x50, 0x0
 	push	di
 	push	si
@@ -372,7 +372,7 @@ F026_02D6:
 	lea	ax, [di + 0x2]
 	push	ax
 	push	cs
-	call	F026_0246
+	call	DrawTextFar
 	add	sp, 0x8
 	pop	si
 	pop	di
@@ -436,7 +436,7 @@ F026_036A:
 	lea	ax, [di + 0x2]
 	push	ax
 	push	cs
-	call	F026_0246
+	call	DrawTextFar
 	add	sp, 0x8
 	pop	si
 	pop	di

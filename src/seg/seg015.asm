@@ -6,7 +6,7 @@
 	retf
 	db	0x90
 
-F015_000C:
+FileExists:
 	enter	0x2, 0x0
 	push	si
 	mov	word [bp - 0x2], 0xffff
@@ -15,7 +15,7 @@ F015_000C:
 	push	ax
 	push	word [bp + 0x6]
 	push	cs
-	call	F015_03D6
+	call	OpenReadShared
 	add	sp, 0x4
 	db	0x0B, 0xC0		; or ax, ax
 	jnz	short .1
@@ -24,7 +24,7 @@ F015_000C:
 	lea	ax, [bp - 0x2]
 	push	ax
 	push	cs
-	call	F015_041E
+	call	CloseHandlePtr
 	add	sp, 0x2
 	db	0x8B, 0xC6		; mov ax, si
 	pop	si
@@ -32,7 +32,7 @@ F015_000C:
 	retf
 	db	0x90
 
-F015_003E:
+BuildPathFar:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	di
@@ -92,7 +92,7 @@ F015_003E:
 	retf
 	db	0x90
 
-F015_00C2:
+DeleteMatching:
 	enter	0x52, 0x0
 	push	di
 	push	si
@@ -278,7 +278,7 @@ F015_00C2:
 	retf
 	db	0x90
 
-F015_0258:
+RemoveDirTree:
 	enter	0x52, 0x0
 	push	di
 	push	si
@@ -447,7 +447,7 @@ F015_0258:
 	leave
 	retf
 
-F015_03D6:
+OpenReadShared:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	word [bp + 0x8]
@@ -457,7 +457,7 @@ F015_03D6:
 	leave
 	retf
 
-F015_03E8:
+OpenWriteShared:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	word [bp + 0x8]
@@ -467,7 +467,7 @@ F015_03E8:
 	leave
 	retf
 
-F015_03FA:
+OpenReadWriteShared:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	word [bp + 0x8]
@@ -477,7 +477,7 @@ F015_03FA:
 	leave
 	retf
 
-F015_040C:
+CreateFileNormal:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	word [bp + 0x8]
@@ -487,7 +487,7 @@ F015_040C:
 	leave
 	retf
 
-F015_041E:
+CloseHandlePtr:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	di
@@ -508,7 +508,7 @@ F015_041E:
 	leave
 	retf
 
-F015_0442:
+ReadAtOffset:
 	enter	0x2, 0x0
 	push	si
 	db	0x2B, 0xF6		; sub si, si
@@ -547,7 +547,7 @@ F015_0442:
 	retf
 	db	0x90
 
-F015_0496:
+WriteAtOffset:
 	enter	0x2, 0x0
 	push	si
 	db	0x2B, 0xF6		; sub si, si
@@ -586,7 +586,7 @@ F015_0496:
 	retf
 	db	0x90
 
-F015_04EA:
+ReadRecord52:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	0x34
@@ -596,11 +596,11 @@ F015_04EA:
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	push	cs
-	call	F015_0442
+	call	ReadAtOffset
 	leave
 	retf
 
-F015_0504:
+WriteRecord52:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	0x34
@@ -610,11 +610,11 @@ F015_0504:
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	push	cs
-	call	F015_0496
+	call	WriteAtOffset
 	leave
 	retf
 
-F015_051E:
+CopyFileByName:
 	enter	0x448, 0x0
 	push	di
 	push	si
@@ -632,14 +632,14 @@ F015_051E:
 	push	ss
 	push	ax
 	push	cs
-	call	F015_003E
+	call	BuildPathFar
 	add	sp, 0x10
 	lea	ax, [bp - 0x6]
 	push	ax
 	lea	ax, [bp - 0x28]
 	push	ax
 	push	cs
-	call	F015_03D6
+	call	OpenReadShared
 	add	sp, 0x4
 	db	0x8B, 0xF0		; mov si, ax
 	db	0x0B, 0xF6		; or si, si
@@ -655,14 +655,14 @@ F015_051E:
 	push	ss
 	push	ax
 	push	cs
-	call	F015_003E
+	call	BuildPathFar
 	add	sp, 0x10
 	lea	ax, [bp - 0x4]
 	push	ax
 	lea	ax, [bp - 0x48]
 	push	ax
 	push	cs
-	call	F015_040C
+	call	CreateFileNormal
 	add	sp, 0x4
 	db	0x8B, 0xF0		; mov si, ax
 .1:
@@ -706,12 +706,12 @@ F015_051E:
 	lea	ax, [bp - 0x4]
 	push	ax
 	push	cs
-	call	F015_041E
+	call	CloseHandlePtr
 	add	sp, 0x2
 	lea	ax, [bp - 0x6]
 	push	ax
 	push	cs
-	call	F015_041E
+	call	CloseHandlePtr
 	add	sp, 0x2
 	db	0x8B, 0xC6		; mov ax, si
 	pop	si
@@ -720,7 +720,7 @@ F015_051E:
 	retf
 	db	0x90
 
-F015_0602:
+ReadRecord48:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	0x30
@@ -730,11 +730,11 @@ F015_0602:
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	push	cs
-	call	F015_0442
+	call	ReadAtOffset
 	leave
 	retf
 
-F015_061C:
+ReadEntry6:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	0x6
@@ -752,11 +752,11 @@ F015_061C:
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	push	cs
-	call	F015_0442
+	call	ReadAtOffset
 	leave
 	retf
 
-F015_0640:
+ReadEntry744:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	word 0x2e8
@@ -767,12 +767,12 @@ F015_0640:
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	push	cs
-	call	F015_0442
+	call	ReadAtOffset
 	leave
 	retf
 	db	0x90
 
-F015_065E:
+ReadEntry12:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	0xc
@@ -788,5 +788,5 @@ F015_065E:
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
 	push	cs
-	call	F015_0442
+	call	ReadAtOffset
 	leave

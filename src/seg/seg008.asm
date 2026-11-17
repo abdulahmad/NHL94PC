@@ -201,7 +201,7 @@ InitSpeechBank:
 	push	str_Que
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
-	push	str_Speechbuf
+	push	word 0x76e
 	call	0x14DB:F034_0013
 	add	sp, 0x8
 	les	bx, [g_8EF6]
@@ -288,7 +288,7 @@ SpeechInit:
 	push	0x0
 	push	0x0
 	push	0x34
-	push	str_Sentence
+	push	word 0x778
 	call	0x14DB:F034_0030
 	db	0x8B, 0xE5		; mov sp, bp
 	mov	[g_8EEA], ax
@@ -298,7 +298,7 @@ SpeechInit:
 	push	0x0
 	push	0x0
 	push	word 0x122c
-	push	str_SpeechBank
+	push	word 0x781
 	call	0x14DB:F034_0030
 	db	0x8B, 0xE5		; mov sp, bp
 	mov	[g_8EF6], ax
@@ -311,7 +311,7 @@ SpeechInit:
 	push	0x0
 	push	0x0
 	push	word 0x10c
-	push	str_SampleMemMan
+	push	word 0x78d
 	call	0x14DB:F034_0030
 	db	0x8B, 0xE5		; mov sp, bp
 	mov	[g_8EF2], ax
@@ -439,7 +439,7 @@ MakePauseSample:
 	push	str_Que
 	push	0x0
 	push	word 0x100
-	push	str_Pause
+	push	word 0x79c
 	call	0x14DB:F034_0013
 	add	sp, 0x8
 	mov	[bp - 0x10], ax
@@ -2185,7 +2185,7 @@ SayHighlightMatchup:
 SayPlayoffResult:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
-	mov	ax, str_Chi
+	mov	ax, 0x4e
 	call	0x0000:__chkstk
 	cmp	word [g_076C], 0x0
 	jnz	short .2
@@ -3368,7 +3368,7 @@ SayPlayerFrom:
 SayGoal:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
-	mov	ax, str_Stl
+	mov	ax, 0x84
 	call	0x0000:__chkstk
 	cmp	word [g_076C], 0x0
 	jnz	short .2

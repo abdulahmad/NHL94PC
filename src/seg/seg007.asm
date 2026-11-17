@@ -226,7 +226,7 @@ MouseToPad:
 	mov	dx, 0x64
 	mov	cx, [MouseY]
 	db	0x2B, 0xD1		; sub dx, cx
-	call	0x0D5F:F017_0089
+	call	0x0D5F:VectorToDir8
 	db	0x8B, 0xF0		; mov si, ax
 .3:
 	test	byte [MouseBtn], 0x1

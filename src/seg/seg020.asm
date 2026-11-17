@@ -104,11 +104,11 @@ F020_00E6:
 	enter	0xc, 0x0
 	push	di
 	push	si
-	call	0x0BFE:F009_004C
+	call	0x0BFE:InputShutdown
 	call	0x0FEF:F028_01A6
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
-	call	0x0D39:F016_0002
+	call	0x0D39:TextWidthFar
 	add	sp, 0x4
 	db	0x8B, 0xF0		; mov si, ax
 	add	si, 0x10
@@ -145,7 +145,7 @@ F020_00E6:
 	add	sp, 0x8
 	push	word [g_09F6]
 	push	word [g_09F4]
-	call	0x0D39:F016_0024
+	call	0x0D39:SetTextColors
 	add	sp, 0x4
 	push	word [g_09F2]
 	push	word [g_09F0]
@@ -167,7 +167,7 @@ F020_00E6:
 	push	ax
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
-	call	0x0D39:F016_0002
+	call	0x0D39:TextWidthFar
 	add	sp, 0x4
 	db	0x8B, 0xC8		; mov cx, ax
 	db	0x8B, 0xC6		; mov ax, si
@@ -177,7 +177,7 @@ F020_00E6:
 	sar	ax, 1
 	add	ax, [bp - 0xc]
 	push	ax
-	call	0x0D39:F016_0166
+	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	word [g_09F0]
 	push	word [g_09F2]
@@ -326,7 +326,7 @@ F020_00E6:
 	call	0x0F99:F025_0066
 	push	cs
 	call	F020_0F22
-	call	0x0BFE:F009_000E
+	call	0x0BFE:InputInit
 	db	0x8B, 0xC7		; mov ax, di
 	pop	si
 	pop	di
@@ -472,7 +472,7 @@ F020_03D6:
 .4:
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
-	call	0x0D39:F016_0002
+	call	0x0D39:TextWidthFar
 	add	sp, 0x4
 	sub	ax, [bp + 0xe]
 	neg	ax
@@ -481,7 +481,7 @@ F020_03D6:
 .5:
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
-	call	0x0D39:F016_0002
+	call	0x0D39:TextWidthFar
 	add	sp, 0x4
 	sub	ax, [bp + 0xe]
 	neg	ax
@@ -497,7 +497,7 @@ F020_03D6:
 	inc	ax
 	push	ax
 	push	si
-	call	0x0FA0:F026_0246
+	call	0x0FA0:DrawTextFar
 	add	sp, 0x8
 	pop	si
 	pop	di
@@ -568,7 +568,7 @@ F020_04FA:
 .2:
 	push	word [bp + 0xe]
 	push	word [bp + 0xc]
-	call	0x0D39:F016_0002
+	call	0x0D39:TextWidthFar
 	add	sp, 0x4
 	mov	[bp - 0x18], ax
 	mov	word [bp - 0x30], 0x0
@@ -585,7 +585,7 @@ F020_04FA:
 	les	si, [bp + 0x6]
 	push	word [es:bx + si + 0x2]
 	push	word [es:bx + si]
-	call	0x0D39:F016_0002
+	call	0x0D39:TextWidthFar
 	add	sp, 0x4
 	mov	[bp - 0x10], ax
 	cmp	ax, [bp - 0x18]
@@ -605,7 +605,7 @@ F020_04FA:
 .7:
 	push	word [bp + 0xe]
 	push	word [bp + 0xc]
-	call	0x0D39:F016_0002
+	call	0x0D39:TextWidthFar
 	add	sp, 0x4
 	mov	[bp - 0x10], ax
 	les	bx, [0x6d4e]
@@ -707,7 +707,7 @@ F020_04FA:
 	add	sp, 0xe
 	push	word [0x9f6]
 	push	word [0x9f4]
-	call	0x0D39:F016_0024
+	call	0x0D39:SetTextColors
 	add	sp, 0x4
 	push	word [bp + 0xe]
 	push	word [bp + 0xc]
@@ -721,7 +721,7 @@ F020_04FA:
 	sar	ax, 1
 	add	ax, [bp - 0x2a]
 	push	ax
-	call	0x0D39:F016_0166
+	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	push	word [0x9f0]
 	push	word [0x9f2]
@@ -1033,7 +1033,7 @@ F020_0A12:
 	mov	di, [bp + 0xa]
 	push	word [bp + 0x8]
 	push	word [bp + 0x6]
-	call	0x0D39:F016_0002
+	call	0x0D39:TextWidthFar
 	add	sp, 0x4
 	db	0x8B, 0xF0		; mov si, ax
 	cmp	[di], si
@@ -1228,7 +1228,7 @@ F020_0B4C:
 	push	word [es:si + 0xe]
 	push	word [es:si + 0xc]
 	db	0x8B, 0xF9		; mov di, cx
-	call	0x0D39:F016_0002
+	call	0x0D39:TextWidthFar
 	add	sp, 0x4
 	mov	es, di
 	sub	ax, [es:si + 0x4]
@@ -1238,7 +1238,7 @@ F020_0B4C:
 	sar	ax, 1
 	add	ax, [es:si]
 	push	ax
-	call	0x0D39:F016_0166
+	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 .3:
 	pop	si
@@ -1742,7 +1742,7 @@ F020_0FC8:
 	mov	[bp - 0x8], ax
 	push	word [g_09F6]
 	push	word [g_09F4]
-	call	0x0D39:F016_0024
+	call	0x0D39:SetTextColors
 	add	sp, 0x4
 	mov	word [bp - 0x10], 0x0
 	mov	[bp - 0x14], si
@@ -1762,7 +1762,7 @@ F020_0FC8:
 	mov	es, [bp - 0xa]
 	push	word [es:si + 0x2]
 	push	word [es:si]
-	call	0x0D39:F016_0002
+	call	0x0D39:TextWidthFar
 	add	sp, 0x4
 	sub	ax, [bp - 0x1a]
 	neg	ax
@@ -1776,7 +1776,7 @@ F020_0FC8:
 	push	di
 	add	ax, [bp - 0x12]
 	push	ax
-	call	0x0D39:F016_0166
+	call	0x0D39:DrawShadowText
 	add	sp, 0x8
 	add	di, [bp - 0x16]
 	add	si, 0x4

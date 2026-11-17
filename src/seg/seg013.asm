@@ -40,7 +40,7 @@ F013_0006:
 	push	ax
 	lea	ax, [bp - 0x26]
 	push	ax
-	call	0x0CD1:F015_040C
+	call	0x0CD1:CreateFileNormal
 	add	sp, 0x4
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .3
@@ -54,7 +54,7 @@ F013_0006:
 	push	word 0x3415
 	push	strict word 0x0
 	push	word [bp - 0x6]
-	call	0x0CD1:F015_0496
+	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .4
@@ -63,12 +63,12 @@ F013_0006:
 	add	sp, 0x2
 .4:
 	push	0x0
-	push	str_GsummaryDb
+	push	word 0x908
 	call	0x149D:F032_0002
 	add	sp, 0x4
 	db	0x8B, 0xF0		; mov si, ax
 	mov	[bp - 0x2], dx
-	push	str_GsummaryDb_2
+	push	word 0x914
 	call	0x03A3:FileSizeMsg
 	add	sp, 0x2
 	push	dx
@@ -78,7 +78,7 @@ F013_0006:
 	push	word [bp - 0x2]
 	push	si
 	push	word [bp - 0x6]
-	call	0x0CD1:F015_0496
+	call	0x0CD1:WriteAtOffset
 	add	sp, 0xe
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .5
@@ -97,7 +97,7 @@ F013_0006:
 	push	ds
 	push	word 0xb0b6
 	push	word [bp - 0x6]
-	call	0x0CD1:F015_0496
+	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .6
@@ -111,7 +111,7 @@ F013_0006:
 	push	ds
 	push	word 0xb0aa
 	push	word [bp - 0x6]
-	call	0x0CD1:F015_0496
+	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .7
@@ -125,7 +125,7 @@ F013_0006:
 	push	ds
 	push	word 0xb09e
 	push	word [bp - 0x6]
-	call	0x0CD1:F015_0496
+	call	0x0CD1:WriteAtOffset
 	add	sp, 0xc
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .8
@@ -138,7 +138,7 @@ F013_0006:
 	add	sp, 0x2
 	lea	ax, [bp - 0x6]
 	push	ax
-	call	0x0CD1:F015_041E
+	call	0x0CD1:CloseHandlePtr
 	add	sp, 0x2
 	pop	si
 	pop	di
@@ -207,7 +207,7 @@ F013_0006:
 	push	ax
 	lea	ax, [bp - 0x26]
 	push	ax
-	call	0x0CD1:F015_040C
+	call	0x0CD1:CreateFileNormal
 	add	sp, 0x4
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .10
@@ -268,7 +268,7 @@ F013_0006:
 	add	sp, 0x2
 	lea	ax, [bp - 0x6]
 	push	ax
-	call	0x0CD1:F015_041E
+	call	0x0CD1:CloseHandlePtr
 	add	sp, 0x2
 	push	word [bp - 0x28]
 	push	word [bp - 0x2a]
@@ -279,8 +279,8 @@ F013_0006:
 	push	ds
 	push	str_Db
 	push	ds
-	push	str_Gsummary
-	call	0x0CD1:F015_051E
+	push	word 0x943
+	call	0x0CD1:CopyFileByName
 	add	sp, 0x14
 	db	0x0B, 0xC0		; or ax, ax
 	jz	short .13
@@ -361,7 +361,7 @@ F013_02E2:
 	lea	ax, [bp - 0x1c]
 	push	ss
 	push	ax
-	call	0x0CD1:F015_003E
+	call	0x0CD1:BuildPathFar
 	add	sp, 0x10
 	push	word 0x960
 	push	0x0

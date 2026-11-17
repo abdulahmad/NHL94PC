@@ -32,7 +32,7 @@ F035_000C:
 	jc	short .1
 	db	0x3B, 0xCE		; cmp cx, si
 	jz	short .3
-	push	str_RowSpaceCorrupted
+	push	word 0x6d28
 	call	0x0F4A:F022_03E4
 	pop	bx
 .3:

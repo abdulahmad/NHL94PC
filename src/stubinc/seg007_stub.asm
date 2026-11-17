@@ -2,7 +2,7 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
-F017_0089		equ	0x89
+VectorToDir8		equ	0x89
 g_051E		equ	0x51E
 g_0522		equ	0x522
 g_0524		equ	0x524

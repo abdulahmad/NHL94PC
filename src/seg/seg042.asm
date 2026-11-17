@@ -436,11 +436,11 @@ F042_0134:
 	jnz	short .29
 	cmp	[bp + 0xa], ax
 	jz	short .28
-	push	str_LoadshapeblockaNoMemoryForMcgatovga
+	push	word 0x775d
 	call	0x0F4A:F022_03E4
 	pop	bx
 .28:
-	push	str_LoadshapeblockaNoMemoryForMcgatovga_2
+	push	word 0x7788
 	call	0x03A3:ConPrint
 	pop	bx
 	push	word [bp - 0x6]

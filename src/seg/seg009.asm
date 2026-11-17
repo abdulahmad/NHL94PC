@@ -7,7 +7,7 @@
 	leave
 	retf
 
-F009_000E:
+InputInit:
 	cmp	word [g_08F6], 0x0
 	jz	short .1
 	db	0x2B, 0xC0		; sub ax, ax
@@ -18,23 +18,23 @@ F009_000E:
 	mov	[g_08FA], ax
 	mov	[g_08F8], ax
 	mov	word [g_08F6], 0x1
-	push	str_Sav
+	push	word 0x93a
 	push	strict word 0x8
 	call	0x03A3:AllocSlot
 	add	sp, 0x4
 	call	0x0F99:F025_0066
-	mov	word [g_B08E], str_Nyr
+	mov	word [g_B08E], 0x70
 	mov	word [g_B090], 0xbfe
 	retf
 	db	0x90
 
-F009_004C:
+InputShutdown:
 	cmp	word [g_08F6], 0x0
 	jz	short .1
 	db	0x2B, 0xC0		; sub ax, ax
 	mov	[g_08FA], ax
 	mov	[g_08F8], ax
-	push	str_Sav
+	push	word 0x93a
 	push	strict word 0x8
 	call	0x03A3:FreeSlot
 	add	sp, 0x4
@@ -42,7 +42,7 @@ F009_004C:
 .1:
 	retf
 
-F009_0070:
+EventToCursor:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	di

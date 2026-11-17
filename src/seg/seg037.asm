@@ -81,23 +81,23 @@ F037_0004:
 	cwd
 	call	0x03A3:0xC56
 	push	0x23
-	push	str_CalibrateYourJoystickByUsing
+	push	word 0x6f34
 	call	0x1567:F039_0002
 	add	sp, 0x4
 	push	0x2d
-	push	str_ToMoveTheJoystickPosition
+	push	word 0x6f58
 	call	0x1567:F039_0002
 	add	sp, 0x4
 	push	0x37
-	push	str_BelowToAllSquares
+	push	word 0x6f80
 	call	0x1567:F039_0002
 	add	sp, 0x4
 	push	word 0xb4
-	push	str_PressJoystickButtonWhenComplete
+	push	word 0x6f96
 	call	0x1567:F039_0002
 	add	sp, 0x4
 	push	word 0xbe
-	push	str_PressAnyKeyToIgnore
+	push	word 0x6fba
 	call	0x1567:F039_0002
 	add	sp, 0x4
 	push	0xf
@@ -111,7 +111,7 @@ F037_0004:
 	push	0x5b
 	push	0x1
 	push	0x46
-	push	str_Asw
+	push	word 0xaa
 	call	0x0FEF:F028_0136
 	add	sp, 0xa
 	push	0xf

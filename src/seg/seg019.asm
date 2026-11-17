@@ -121,7 +121,7 @@ F019_000C:
 	lea	ax, [bp - 0x24]
 	push	ss
 	push	ax
-	call	0x0CD1:F015_003E
+	call	0x0CD1:BuildPathFar
 	add	sp, 0x10
 	push	word 0x9e8
 	push	0x0

@@ -92,14 +92,14 @@ F021_0002:
 	mov	al, [g_106E]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
-	call	0x0CC4:F014_000A
+	call	0x0CC4:MidiControl
 	add	sp, 0x6
 	push	0x24
 	push	0x8
 	mov	al, [g_106E]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
-	call	0x0CC4:F014_00B4
+	call	0x0CC4:MidiNoteOff
 	jmp	short .15
 	db	0x90
 .14:
@@ -113,14 +113,14 @@ F021_0002:
 	mov	al, [g_106E]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
-	call	0x0CC4:F014_005A
+	call	0x0CC4:MidiProgramNoteOn
 	add	sp, 0x8
 	push	0x40
 	push	0x8
 	mov	al, [g_106E]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
-	call	0x0CC4:F014_0032
+	call	0x0CC4:MidiPitchBend
 .15:
 	add	sp, 0x6
 .16:
@@ -131,7 +131,7 @@ F021_0002:
 	mov	al, [g_106E]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
-	call	0x0CC4:F014_000A
+	call	0x0CC4:MidiControl
 	add	sp, 0x6
 	cmp	si, 0x7f
 	jnl	short .17
@@ -141,7 +141,7 @@ F021_0002:
 	cmp	si, 0x7f
 	jl	short .18
 	mov	ax, 0x6
-	call	0x0C11:F010_0006
+	call	0x0C11:RandomRange
 	jmp	short .19
 	db	0x90
 .18:
@@ -155,7 +155,7 @@ F021_0002:
 	mov	al, [g_106E]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
-	call	0x0CC4:F014_0032
+	call	0x0CC4:MidiPitchBend
 	add	sp, 0x6
 .20:
 	mov	[g_0A1A], si
@@ -169,7 +169,7 @@ F021_0002:
 	mov	al, [g_106E]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
-	call	0x0CC4:F014_005A
+	call	0x0CC4:MidiProgramNoteOn
 	add	sp, 0x8
 .21:
 	push	di
@@ -177,7 +177,7 @@ F021_0002:
 	mov	al, [g_106E]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
-	call	0x0CC4:F014_000A
+	call	0x0CC4:MidiControl
 	add	sp, 0x6
 	db	0x8B, 0xC7		; mov ax, di
 	mov	cx, 0x3
@@ -195,7 +195,7 @@ F021_0002:
 	cmp	ax, strict word 0xfff6
 	jnz	short .22
 	mov	ax, 0x6
-	call	0x0C11:F010_0006
+	call	0x0C11:RandomRange
 	db	0x03, 0xF0		; add si, ax
 .22:
 	push	si
@@ -203,7 +203,7 @@ F021_0002:
 	mov	al, [g_106E]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
-	call	0x0CC4:F014_0032
+	call	0x0CC4:MidiPitchBend
 	add	sp, 0x6
 	mov	[g_0A1C], di
 .23:
@@ -224,14 +224,14 @@ F021_01DC:
 	mov	al, [g_106E]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
-	call	0x0CC4:F014_000A
+	call	0x0CC4:MidiControl
 	add	sp, 0x6
 	push	0x24
 	push	0x8
 	mov	al, [g_106E]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
-	call	0x0CC4:F014_00B4
+	call	0x0CC4:MidiNoteOff
 	add	sp, 0x6
 	mov	word [g_0A1A], 0x0
 .1:
@@ -242,14 +242,14 @@ F021_01DC:
 	mov	al, [g_106E]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
-	call	0x0CC4:F014_000A
+	call	0x0CC4:MidiControl
 	add	sp, 0x6
 	push	0x24
 	push	0x7
 	mov	al, [g_106E]
 	db	0x2A, 0xE4		; sub ah, ah
 	push	ax
-	call	0x0CC4:F014_00B4
+	call	0x0CC4:MidiNoteOff
 	add	sp, 0x6
 	mov	word [g_0A1C], 0x0
 .2:

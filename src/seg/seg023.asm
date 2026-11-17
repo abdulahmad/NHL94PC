@@ -34,7 +34,7 @@ F023_0008:
 	add	sp, 0x8
 	push	word [bp + 0x8]
 	push	si
-	call	0x0D39:F016_0002
+	call	0x0D39:TextWidthFar
 	add	sp, 0x4
 	cmp	ax, [bp + 0x12]
 	jng	short .3
@@ -64,7 +64,7 @@ F023_0008:
 .3:
 	push	word [bp + 0x8]
 	push	si
-	call	0x0D39:F016_0002
+	call	0x0D39:TextWidthFar
 	add	sp, 0x4
 	cmp	ax, [bp + 0x12]
 	jng	short .5
@@ -81,7 +81,7 @@ F023_0008:
 	mov	byte [es:bx - 0x1], 0x0
 	push	ax
 	push	si
-	call	0x0D39:F016_0002
+	call	0x0D39:TextWidthFar
 	add	sp, 0x4
 	db	0x3B, 0xC7		; cmp ax, di
 	jg	short .4

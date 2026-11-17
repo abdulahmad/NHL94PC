@@ -140,7 +140,7 @@ def collect(flow, funcs):
                 d = op.mem.disp & 0xFFFF
                 if op.mem.base == 0 and op.mem.index == 0 and d >= 0x40:
                     mem[d].add(op.size)
-                elif op.mem.base in (x86.X86_REG_BX, x86.X86_REG_SI, x86.X86_REG_DI) and d >= 0x100 and op.mem.base != x86.X86_REG_BP:
+                elif op.mem.base in (x86.X86_REG_BX, x86.X86_REG_SI, x86.X86_REG_DI) and d >= 0x100 and d < DG_SIZE:
                     mem[d].add(0)
             if op.type == x86.X86_OP_IMM and ins.id in (x86.X86_INS_PUSH, x86.X86_INS_MOV) and ins.size >= 3:
                 v = op.imm & 0xFFFF

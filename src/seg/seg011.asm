@@ -8,6 +8,6 @@
 	retf
 	db	0x00
 
-F011_000E:
+NullFar2:
 	retf
 	db	0x90

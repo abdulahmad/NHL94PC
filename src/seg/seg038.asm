@@ -165,7 +165,7 @@ F038_0006:
 	mov	dx, [bp - 0xa]
 	jmp	short .13
 .12:
-	push	str_OutOfRowSpace
+	push	word 0x7416
 	call	0x0F4A:F022_03E4
 	pop	bx
 .13:
@@ -373,7 +373,7 @@ F038_019C:
 	mov	dx, [bp - 0xa]
 	jmp	short .13
 .12:
-	push	str_OutOfRowSpace_2
+	push	word 0x7559
 	call	0x0F4A:F022_03E4
 	pop	bx
 .13:

@@ -7,7 +7,7 @@ SegStart_0D6B1:
 	retf
 	db	0x00, 0x00
 
-F018_000A:
+HookDivideError:
 	cmp	word [0x9bc], 0x0
 	jnz	short .1
 	cmp	word [0x9be], 0x0
@@ -35,7 +35,7 @@ F018_000A:
 	add	sp, 0x4
 	retf
 
-F018_004B:
+UnhookDivideError:
 	push	ds
 	mov	dx, [0x9be]
 	mov	ds, [0x9bc]
@@ -45,7 +45,7 @@ F018_004B:
 	pop	ds
 	retf
 
-F018_005C:
+DivideHandler:
 	push	bp
 	db	0x8B, 0xEC		; mov bp, sp
 	push	ds

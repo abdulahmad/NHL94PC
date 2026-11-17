@@ -4,9 +4,7 @@
 	org	0x0
 F034_0013		equ	0x13
 F034_0030		equ	0x30
-str_Chi		equ	0x4E
 str_Que		equ	0x80
-str_Stl		equ	0x84
 F051_0178		equ	0x178
 EmsMapFrame		equ	0x192
 EmsSaveMap		equ	0x1B9
@@ -59,11 +57,6 @@ g_0766		equ	0x766
 g_0768		equ	0x768
 g_076A		equ	0x76A
 g_076C		equ	0x76C
-str_Speechbuf		equ	0x76E
-str_Sentence		equ	0x778
-str_SpeechBank		equ	0x781
-str_SampleMemMan		equ	0x78D
-str_Pause		equ	0x79C
 str_Off		equ	0x7A2
 str_2minsS		equ	0x7A6
 str_Off_2		equ	0x7AF

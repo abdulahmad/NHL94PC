@@ -3,7 +3,7 @@
 	add	sp, 0x4
 	db	0xE9, 0x63, 0xFD		; jmp 0xfd6d
 
-F014_000A:
+MidiControl:
 	enter	0x4, 0x0
 	mov	al, [bp + 0x8]
 	or	al, 0xb0
@@ -21,7 +21,7 @@ F014_000A:
 	retf
 	db	0x90
 
-F014_0032:
+MidiPitchBend:
 	enter	0x4, 0x0
 	mov	al, [bp + 0x8]
 	or	al, 0xe0
@@ -39,7 +39,7 @@ F014_0032:
 	retf
 	db	0x90
 
-F014_005A:
+MidiProgramNoteOn:
 	enter	0xa, 0x0
 	push	di
 	push	si
@@ -78,7 +78,7 @@ F014_005A:
 	leave
 	retf
 
-F014_00B4:
+MidiNoteOff:
 	enter	0x4, 0x0
 	mov	al, [bp + 0x8]
 	or	al, 0x80

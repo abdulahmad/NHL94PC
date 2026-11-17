@@ -4,7 +4,7 @@
 	org	0x0
 F032_0002		equ	0x2
 F033_0008		equ	0x8
-F015_003E		equ	0x3E
+BuildPathFar		equ	0x3E
 FindFarMsg		equ	0x847
 FindUnlink		equ	0x99A
 F028_344C		equ	0x344C

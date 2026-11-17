@@ -6,7 +6,7 @@ F035_000C		equ	0xC
 F028_0048		equ	0x48
 F028_00B4		equ	0xB4
 F038_019C		equ	0x19C
-F026_0246		equ	0x246
+DrawTextFar		equ	0x246
 g_0998		equ	0x998
 g_099A		equ	0x99A
 g_099C		equ	0x99C

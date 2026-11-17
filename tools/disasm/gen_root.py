@@ -511,12 +511,12 @@ def subst_data(items, s, funcs):
         if it[0] not in ('ins',):
             continue
         lin = it[1]
-        i = bisect.bisect_right(starts, lin) - 1
-        if i >= 0 and starts[i] in DATA['unsafe']:
-            continue
         t = it[2]
         if (lin + 1) in RELOC and re.search(r'\b0x45c9\b', t):
             it[2] = re.sub(r'\b0x45c9\b', 'DGROUP', t)
+            continue
+        i = bisect.bisect_right(starts, lin) - 1
+        if i >= 0 and starts[i] in DATA['unsafe']:
             continue
         if re.search(r'\b(es|cs):', t):
             continue
@@ -529,9 +529,11 @@ def subst_data(items, s, funcs):
                 if v >= 0x40 and v in dg:
                     return '[' + (mm.group(1) + ':' if mm.group(1) else '') + dg[v] + ']'
                 return m.group(0)
-            mm = re.fullmatch(r'((?:bx|si|di)(?: \+ (?:si|di))?) \+ 0x([0-9a-f]+)', inner)
+            mm = re.fullmatch(r'((?:bx|si|di)(?: \+ (?:si|di))?) ([+-]) 0x([0-9a-f]+)', inner)
             if mm:
-                v = int(mm.group(2), 16)
+                v = int(mm.group(3), 16)
+                if mm.group(2) == '-':
+                    v = (-v) & 0xFFFF
                 if v >= 0x100 and v in dg:
                     return f'[{mm.group(1)} + {dg[v]}]'
             return m.group(0)

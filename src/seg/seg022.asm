@@ -10,7 +10,7 @@ F022_0004:
 	push	str_Que
 	push	0x0
 	push	word 0xb00
-	push	str_Plane0
+	push	word 0xa1e
 	call	0x14DB:F034_0013
 	add	sp, 0x8
 	mov	[g_B34E], ax
@@ -18,7 +18,7 @@ F022_0004:
 	push	str_Que
 	push	0x0
 	push	word 0xb00
-	push	str_Plane1
+	push	word 0xa26
 	call	0x14DB:F034_0013
 	add	sp, 0x8
 	mov	[g_B352], ax
@@ -26,7 +26,7 @@ F022_0004:
 	push	str_Que
 	push	0x0
 	push	word 0xb00
-	push	str_Plane2
+	push	word 0xa2e
 	call	0x14DB:F034_0013
 	add	sp, 0x8
 	mov	[g_B356], ax
@@ -34,7 +34,7 @@ F022_0004:
 	push	str_Que
 	push	0x0
 	push	word 0xb00
-	push	str_Plane3
+	push	word 0xa36
 	call	0x14DB:F034_0013
 	add	sp, 0x8
 	mov	[g_B35A], ax
@@ -350,7 +350,7 @@ F022_0224:
 	push	word 0xc8
 	push	word 0x140
 	push	word 0xb0
-	push	str_Quebec
+	push	word 0x148
 	call	0x0FEF:F028_3804
 	add	sp, 0xe
 	call	0x0FEF:F028_11B1

@@ -2,18 +2,18 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
-F016_0002		equ	0x2
+TextWidthFar		equ	0x2
 F028_000C		equ	0xC
-F009_000E		equ	0xE
+InputInit		equ	0xE
 F025_000E		equ	0xE
-F016_0024		equ	0x24
+SetTextColors		equ	0x24
 F034_0030		equ	0x30
-F009_004C		equ	0x4C
+InputShutdown		equ	0x4C
 F025_0066		equ	0x66
 F028_0136		equ	0x136
-F016_0166		equ	0x166
+DrawShadowText		equ	0x166
 F028_01A6		equ	0x1A6
-F026_0246		equ	0x246
+DrawTextFar		equ	0x246
 F028_04B5		equ	0x4B5
 FindUnlink		equ	0x99A
 g_09EE		equ	0x9EE

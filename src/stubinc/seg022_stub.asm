@@ -5,15 +5,10 @@
 F034_0013		equ	0x13
 str_Que		equ	0x80
 F028_00B4		equ	0xB4
-str_Quebec		equ	0x148
 EmsMapFrame		equ	0x192
 F028_01A6		equ	0x1A6
 FindUnlink		equ	0x99A
 UnlinkRec		equ	0x9B2
-str_Plane0		equ	0xA1E
-str_Plane1		equ	0xA26
-str_Plane2		equ	0xA2E
-str_Plane3		equ	0xA36
 F028_10A7		equ	0x10A7
 F028_118C		equ	0x118C
 F028_11B1		equ	0x11B1

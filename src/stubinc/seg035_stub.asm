@@ -5,6 +5,5 @@
 BufPtr		equ	0x2BC
 F022_03E4		equ	0x3E4
 FindUnlink		equ	0x99A
-str_RowSpaceCorrupted		equ	0x6D28
 ChainIdx		equ	0xAE9C
 %include "seg/seg035.asm"
