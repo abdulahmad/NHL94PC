@@ -1,5 +1,4 @@
-; Far data, paragraph 35F3h, 336 bytes: highlight replay messages. The EXE's own code does not use it
-; (the overlays probably do).
+; Far data, paragraph 35F3h, 336 bytes: highlight replay messages. Used by SelectHilight.
 str_ThereAreNoHilights:                         ; string 'There are no hilights!'
         db 'There are no hilights!', 0x00
 msgThereAreNoHilights:                          ; message list of 1 far string pointer: 'There are no

@@ -1,5 +1,4 @@
-; Far data, paragraph 38F0h, 96 bytes: messages for saving highlights. The EXE's own code does not use it
-; (the overlays probably do).
+; Far data, paragraph 38F0h, 96 bytes: messages for saving highlights. Used by ReplaySaveHilight.
 str_InsufficientDiskSpaceTo:                    ; string 'Insufficient disk space to'
         db 'Insufficient disk space to', 0x00
 str_SaveHilights:                               ; string 'save hilights.'

@@ -1,5 +1,4 @@
-; Far data, paragraph 36B8h, 976 bytes: play-off messages. The EXE's own code does not use it
-; (the overlays probably do).
+; Far data, paragraph 36B8h, 976 bytes: play-off messages. Used by MENUS.
 str_ThereIsAlreadyAPlay:                        ; string 'There is already a Play-Off with that name!'
         db 'There is already a Play-Off with that name!', 0x00
 str_DoYouWantToReplace:                         ; string 'Do you want to replace it with a new Play-Off?'

@@ -200,7 +200,6 @@ PlayHilightThunk		equ	0x2413
 PlayJingle		equ	0x5F8
 PlayLeagueGameThunk		equ	0x262F
 PlayerStatsMenuBar		equ	0x164A
-PlayoffDialogHitRects		equ	0x0
 PlayoffModeLoopThunk		equ	0x203F
 PlayoffTreeMenuBar		equ	0x19BA
 PostGameToTeamDbThunk		equ	0x24B3
@@ -259,6 +258,7 @@ SongSlots		equ	0xF72
 SortCords		equ	0xB50E
 SoundDevChoice		equ	0x106D
 SoundDevTable		equ	0x1070
+SoundDialogHitRects		equ	0x0
 SoundDriverLoaded		equ	0xFBA
 SoundDrvBuf		equ	0xC1F0
 SoundDrvBufSeg		equ	0xC1F2

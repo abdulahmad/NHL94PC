@@ -1,5 +1,4 @@
-; Far data, paragraph 3680h, 416 bytes: a character mapping table. The EXE's own code does not use it
-; (the overlays probably do).
+; Far data, paragraph 3680h, 416 bytes: a character mapping table. Used by LP, MENUS.
 JerseyRemapTable:                               ; 128-byte colour remap table for jersey numbers
                                                 ; (MakeJerseyShape, SetRemapTable); used by LP, MENUS
         db 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F

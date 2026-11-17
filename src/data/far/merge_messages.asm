@@ -1,5 +1,4 @@
-; Far data, paragraph 3836h, 336 bytes: messages for merging databases. The EXE's own code does not use it
-; (the overlays probably do).
+; Far data, paragraph 3836h, 336 bytes: messages for merging databases. Used by LP.
 str_TheDatabasesCanOnlyBe:                      ; string 'The databases can only be merged'
         db 'The databases can only be merged', 0x00
 str_OnTheMasterCopyOf:                          ; string 'on the master copy of the league'

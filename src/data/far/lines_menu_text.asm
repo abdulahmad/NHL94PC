@@ -1,5 +1,4 @@
-; Far data, paragraph 38AFh, 224 bytes: the lines menu text. The EXE's own code does not use it
-; (the overlays probably do).
+; Far data, paragraph 38AFh, 224 bytes: the lines menu text. Used by ShowMatchupScreen.
 str_AwayLines:                                  ; string 'Away lines'
         db 'Away lines', 0x00
 str_Play:                                       ; string 'Play'

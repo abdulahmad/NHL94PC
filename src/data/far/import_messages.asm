@@ -1,5 +1,5 @@
-; Far data, paragraph 3821h, 96 bytes: messages for importing databases. The EXE's own code does not use it
-; (the overlays probably do).
+; Far data, paragraph 3821h, 96 bytes: messages for importing databases. Used by ExportTeamToFloppy,
+; ImportMasterLeague.
 str_ImportingMasterDatabases:                   ; string 'Importing Master Databases.'
         db 'Importing Master Databases.', 0x00
 msgImportingMasterDatabases:                    ; message list of 1 far string pointer: 'Importing Master

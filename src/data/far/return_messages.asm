@@ -1,5 +1,4 @@
-; Far data, paragraph 36F5h, 192 bytes: "returning to" messages. The EXE's own code does not use it
-; (the overlays probably do).
+; Far data, paragraph 36F5h, 192 bytes: "returning to" messages. Used by DeskExitGame, DeskReturnConfirm.
 str_ReturningToSportsCentral:                   ; string 'Returning to sports central'
         db 'Returning to sports central', 0x00
 str_ReturningToTheLeagueCalendar:               ; string 'Returning to the league calendar'

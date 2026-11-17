@@ -3,6 +3,7 @@
 	bits	16
 	org	0x0
 SortPairsTail		equ	0x0
+str_Score		equ	0x0
 str_Shots_5		equ	0x6
 str_PowerPlay_3		equ	0xC
 str_Penalties_2		equ	0x17

@@ -1,5 +1,4 @@
-; Far data, paragraph 3448h, 6656 bytes: menu titles and items. The EXE's own code does not use it
-; (the overlays probably do).
+; Far data, paragraph 3448h, 6656 bytes: menu titles and items. Used by AI, INIT, LP, MENUS, STATS.
 str_File:                                       ; string 'File'
         db 'File', 0x00
 str_Game_10:                                    ; string 'Game'

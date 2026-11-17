@@ -1,5 +1,4 @@
-; Far data, paragraph 384Bh, 384 bytes: season titles. The EXE's own code does not use it
-; (the overlays probably do).
+; Far data, paragraph 384Bh, 384 bytes: season titles. Used by STATS.
 titleSeason:                                    ; flag byte and ' 92 - 93 Season' title of the statistics menu
         db 0x01, 0x20, 0x27, '92 - ', 0x27, '93 Season', 0x00
 titlePlayoffs:                                  ; flag byte and ' 92 - 93 Play-Offs' title of the statistics

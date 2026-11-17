@@ -1,5 +1,4 @@
-; Far data, paragraph 3608h, 1920 bytes: the credits text. The EXE's own code does not use it
-; (the overlays probably do).
+; Far data, paragraph 3608h, 1920 bytes: the credits text. Used by GoodnightScreen.
 str_HannoLemke:                                 ; string 'Hanno Lemke'
         db 'Hanno Lemke', 0x00
 str_RobertPenner:                               ; string 'Robert Penner'

@@ -3775,8 +3775,8 @@ ovlseq:                                         ; text overlay sequence; used by
         db 0xFF, 0xFF
 ovlstep:                                        ; text overlay step; used by AI, INIT
         db 0xFF, 0xFF
-ovlartnames:                                    ; .QPP art file name of each text overlay sequence (ovlseq); used
-                                                ; by AI, INIT
+ovlartnames:                                    ; .QPP art file name of each text overlay sequence (ovlseq);
+                                                ; used by AI, INIT
         dw str_Fanom
         dw str_Goal
         dw str_Clap
@@ -3789,8 +3789,8 @@ ovlscripts:                                     ; far pointer to the step script
         dw OvlScriptClap, 0x3863
         dw OvlScriptUflag, 0x3863
         dw OvlScriptCflag, 0x3863
-ovlseqtimed:                                    ; set for the overlay sequences that get the 258h ovltimer; used
-                                                ; by AI
+ovlseqtimed:                                    ; set for the overlay sequences that get the 258h ovltimer;
+                                                ; used by AI
         db 0x01, 0x00, 0x01, 0x01, 0x01
         db 0x00
 goalienotebits:                                 ; goalie note bits (3Fh all done); used by AI, INIT
@@ -4090,9 +4090,9 @@ str_DDD:                                        ; string '%d/%d (%d%%)'; used by
         db '%d/%d (%d%%)', 0x00, 0x00
 TeamStatsLabels:                                ; message list of 4 far string pointers: 'Score / Shots /
                                                 ; Power play / Penalties'; used by INIT
-        db 0x00, 0x00
+        dw str_Score
 TeamStatsLabelPtrs:                             ; label pointers of the team stats summary; used by INIT
-        db 0xEB, 0x38
+        dw 0x38EB
         dw str_Shots_5, 0x38EB
         dw str_PowerPlay_3, 0x38EB
         dw str_Penalties_2, 0x38EB

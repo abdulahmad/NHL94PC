@@ -1,5 +1,5 @@
-; Far data, paragraph 38EBh, 80 bytes: statistic names. The EXE's own code does not use it
-; (the overlays probably do).
+; Far data, paragraph 38EBh, 80 bytes: statistic names. Pointed to by TeamStatsLabelPtrs.
+str_Score:                                      ; string 'Score'
         db 'Score', 0x00
 str_Shots_5:                                    ; string 'Shots'
         db 'Shots', 0x00

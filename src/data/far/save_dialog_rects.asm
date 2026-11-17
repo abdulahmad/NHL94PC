@@ -1,5 +1,4 @@
-; Far data, paragraph 35EEh, 80 bytes: save dialog rectangles. The EXE's own code does not use it
-; (the overlays probably do).
+; Far data, paragraph 35EEh, 80 bytes: controls dialog boxes. Used by CtlDlgHitTest, DrawControlsDlg.
 ControlsDlgTopBox:                              ; box (x1, y1, x2, y2) of the upper controls dialog field
         db 0x09, 0x00, 0x11, 0x00, 0x5B, 0x00, 0x1B, 0x00
 ControlsDlgBottomBox:                           ; box (x1, y1, x2, y2) of the lower controls dialog field

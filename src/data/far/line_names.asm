@@ -1,5 +1,4 @@
-; Far data, paragraph 38BDh, 736 bytes: line names for each team (BOS1 ...). The EXE's own code does not use
-; it (the overlays probably do).
+; Far data, paragraph 38BDh, 736 bytes: line names for each team (BOS1 ...). Used by LoadArenaJingles.
 str_Bos1:                                       ; string 'BOS1'
         db 'BOS1', 0x00
 str_Bos2:                                       ; string 'BOS2'
