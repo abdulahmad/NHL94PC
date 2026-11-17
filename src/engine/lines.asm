@@ -188,22 +188,22 @@ BuildDefaultLines:
         jnz short .4
         jmp near .5
 .4:
-        mov al, [es:si + 0x1]
+        mov al, [es:si + HomeSortObjs + 0x1]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
-        mov dl, [es:si + 0xd]
+        mov dl, [es:si + HomeSortObjs + 0xD]
         db 0x2A, 0xF6                           ; insn: sub dh, dh
-        mov bl, [es:si + 0xa]
+        mov bl, [es:si + HomeSortObjs + 0xA]
         db 0x2A, 0xFF                           ; insn: sub bh, bh
         mov [bp - 0xdc], ax
-        mov al, [es:si + 0x9]
+        mov al, [es:si + HomeSortObjs + 0x9]
         mov [bp - 0xde], ax
-        mov al, [es:si + 0x6]
+        mov al, [es:si + HomeSortObjs + 0x6]
         mov [bp - 0xe0], ax
-        mov al, [es:si + 0x4]
+        mov al, [es:si + HomeSortObjs + 0x4]
         mov [bp - 0xe2], ax
-        mov al, [es:si + 0x3]
+        mov al, [es:si + HomeSortObjs + 0x3]
         mov [bp - 0xe4], ax
-        mov al, [es:si + 0x2]
+        mov al, [es:si + HomeSortObjs + 0x2]
         mov [bp - 0xe6], ax
         mov al, [bp - 0xe4]
         add ax, [bp - 0xe6]
@@ -223,24 +223,24 @@ BuildDefaultLines:
         db 0x03, 0xC2                           ; insn: add ax, dx
         add ax, [bp - 0xdc]
         mov [bp + di - 0x76], ax
-        mov al, [es:si + 0x1]
+        mov al, [es:si + HomeSortObjs + 0x1]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
-        mov dl, [es:si + 0xd]
-        mov bl, [es:si + 0xc]
+        mov dl, [es:si + HomeSortObjs + 0xD]
+        mov bl, [es:si + HomeSortObjs + 0xC]
         mov [bp - 0xee], ax
-        mov al, [es:si + 0xb]
+        mov al, [es:si + HomeSortObjs + 0xB]
         mov [bp - 0xf0], ax
-        mov al, [es:si + 0x9]
+        mov al, [es:si + HomeSortObjs + 0x9]
         mov [bp - 0xf2], ax
-        mov al, [es:si + 0x6]
+        mov al, [es:si + HomeSortObjs + 0x6]
         mov [bp - 0xf4], ax
-        mov al, [es:si + 0x5]
+        mov al, [es:si + HomeSortObjs + 0x5]
         mov [bp - 0xf6], ax
-        mov al, [es:si + 0x4]
+        mov al, [es:si + HomeSortObjs + 0x4]
         mov [bp - 0xf8], ax
-        mov al, [es:si + 0x3]
+        mov al, [es:si + HomeSortObjs + 0x3]
         mov [bp - 0xfa], ax
-        mov al, [es:si + 0x2]
+        mov al, [es:si + HomeSortObjs + 0x2]
         mov [bp - 0xfc], ax
         mov al, [bp - 0xfa]
         add ax, [bp - 0xfc]

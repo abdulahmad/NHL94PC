@@ -64,7 +64,7 @@ DrawCalendarDay:
         call 0x0000:_fmemcpy
         add sp, 0xa
         mov es, [segWorkBuffer19]
-        mov byte [es:hilightrec_frames + 0xA1B9], 0x79
+        mov byte [es:MenuRemap + 0x43], 0x79
         push word 0x3a0b
         push strict word MenuRemap
         call 0x0FEF:SetRemapTable
@@ -142,8 +142,8 @@ DrawCalendarDay:
         mov es, [segTeamChoiceText28]
         mov bx, [bp + 0x6]
         shl bx, byte 0x2
-        push word [es:bx + msgThereAreNoHilights + 0xE0E]
-        push word [es:bx + msgThereAreNoHilights + 0xE0C]
+        push word [es:bx + str_Nhlhockey + 0x62]
+        push word [es:bx + str_Nhlhockey + 0x60]
         lea ax, [bp - 0x44]
         push ss
         push ax
@@ -284,7 +284,7 @@ DrawCalendarDay:
         call 0x0000:_fmemcpy
         add sp, 0xa
         mov es, [segWorkBuffer19]
-        mov byte [es:hilightrec_frames + 0xA1B9], 0x79
+        mov byte [es:MenuRemap + 0x43], 0x79
         push word 0x3a0b
         push strict word MenuRemap
         call 0x0FEF:SetRemapTable
@@ -880,8 +880,8 @@ CalendarScreen:
         push word [bp + 0xc]
         push word [bp + 0xa]
         mov es, [segTeamChoiceText29]
-        push word [es:msgThereAreNoHilights + 0xB6F]
-        push word [es:msgThereAreNoHilights + 0xB6D]
+        push word [es:msgThereIsASavedGame + 0x54]
+        push word [es:msgThereIsASavedGame + 0x52]
         push word [bp + 0x8]
         push word [bp + 0x6]
         lea ax, [bp - 0x4c]
@@ -1068,19 +1068,19 @@ CalendarScreen:
         jnz short .19
         mov es, [segTeamChoiceText30]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:msgThereAreNoHilights + 0xF7F], ax
-        mov [es:msgThereAreNoHilights + 0xF7D], ax
+        mov [es:CalNextMonthSeg], ax
+        mov [es:CalNextMonthFn], ax
         jmp short .20
 .19:
         mov es, [segTeamChoiceText30]
-        mov word [es:msgThereAreNoHilights + 0xF7D], strict word CalNextMonthThunk
-        mov word [es:msgThereAreNoHilights + 0xF7F], 0x1b35
+        mov word [es:CalNextMonthFn], strict word CalNextMonthThunk
+        mov word [es:CalNextMonthSeg], 0x1b35
 .20:
         cmp word [calmonth], 0x9
         jnz short .21
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:0xfac], ax
-        mov [es:0xfaa], ax
+        mov [es:CalPrevMonthSeg], ax
+        mov [es:CalPrevMonthFn], ax
         jmp short .22
         db 0x90
 .21:
@@ -2160,8 +2160,8 @@ CheckLeagueDiskSync:
         add sp, 0xc
         lea ax, [bp - 0xaa]
         mov es, [segTeamChoiceText32]
-        mov [es:msgThereAreNoHilights + 0x187], ax
-        mov [es:msgThereAreNoHilights + 0x189], ss
+        mov [es:msgInsertDiskFor + 0x4], ax
+        mov [es:msgInsertDiskFor + 0x6], ss
         push -0x1
         push word [bp - 0xc]
         push di
@@ -2288,8 +2288,8 @@ CheckLeagueDiskSync:
         db 0x03, 0xD8                           ; insn: add bx, ax
         mov byte [bx], 0x0
         mov es, [segTeamChoiceText31]
-        mov [es:msgThereAreNoHilights + 0x5C2], ax
-        mov [es:msgThereAreNoHilights + 0x5C4], ss
+        mov [es:msgTheLeague + 0x4], ax
+        mov [es:msgTheLeague + 0x6], ss
         mov ax, [bp - 0xc]
         push ax
         push di
@@ -2300,8 +2300,8 @@ CheckLeagueDiskSync:
         add sp, 0x8
         lea ax, [bp - 0x1e]
         mov es, [segTeamChoiceText31]
-        mov [es:msgThereAreNoHilights + 0x5CA], ax
-        mov [es:msgThereAreNoHilights + 0x5CC], ss
+        mov [es:msgTheLeague + 0xC], ax
+        mov [es:msgTheLeague + 0xE], ss
         lea ax, [bp - 0x6]
         push ax
         lea cx, [bp - 0x8]
@@ -2434,8 +2434,8 @@ PostGameToTeamDb:
         push word [bp + 0xc]
         push word [bp + 0xa]
         mov es, [segTeamChoiceText29]
-        push word [es:msgThereAreNoHilights + 0xB67]
-        push word [es:msgThereAreNoHilights + 0xB65]
+        push word [es:msgThereIsASavedGame + 0x4C]
+        push word [es:msgThereIsASavedGame + 0x4A]
         push word [bp + 0x8]
         push word [bp + 0x6]
         lea ax, [bp - 0x3c]
@@ -2455,8 +2455,8 @@ PostGameToTeamDb:
         push word [bp + 0xc]
         push word [bp + 0xa]
         mov es, [segTeamChoiceText29]
-        push word [es:msgThereAreNoHilights + 0xB57]
-        push word [es:msgThereAreNoHilights + 0xB55]
+        push word [es:msgThereIsASavedGame + 0x3C]
+        push word [es:msgThereIsASavedGame + 0x3A]
         push word [bp + 0x8]
         push word [bp + 0x6]
         lea ax, [bp - 0x3c]
@@ -2477,8 +2477,8 @@ PostGameToTeamDb:
         push word [bp + 0xc]
         push word [bp + 0xa]
         mov es, [segTeamChoiceText29]
-        push word [es:msgThereAreNoHilights + 0xB6B]
-        push word [es:msgThereAreNoHilights + 0xB69]
+        push word [es:msgThereIsASavedGame + 0x50]
+        push word [es:msgThereIsASavedGame + 0x4E]
         push word [bp + 0x8]
         push word [bp + 0x6]
         lea ax, [bp - 0x3c]
@@ -3043,14 +3043,14 @@ PostGameToTeamDb:
 .68:
         mov bx, [bp - 0x1a]
         inc word [bx]
-        mov ax, [es:si + 0x768]
+        mov ax, [es:si + HomeGlStats]
         mov cx, 0x3c
         cwd
         idiv cx
         add [bx + 0xc], ax
-        mov ax, [es:si + 0x76a]
+        mov ax, [es:si + HomeGlStats_w2]
         add [bx + 0x12], ax
-        mov ax, [es:si + 0x76c]
+        mov ax, [es:si + HomeGlStats_w4]
         add [bx + 0xe], ax
         mov si, [bp + 0x10]
         mov al, [bp + si - 0x6]
@@ -3185,7 +3185,7 @@ PlayLeagueGame:
         mov [bp - 0x1a], si
         mov byte [bp + si - 0x6a], 0x0
         mov es, [segWorkBuffer23]
-        test byte [es:hilightrec_frames + 0x9E88], 0xc
+        test byte [es:leagueinfo_w4], 0xc
         jnz short .5
         jmp near .10
 .5:
@@ -3205,12 +3205,12 @@ PlayLeagueGame:
         call 0x0D90:SetDialogColors
         add sp, 0xa
         mov es, [segWorkBuffer23]
-        test byte [es:hilightrec_frames + 0x9E88], 0x8
+        test byte [es:leagueinfo_w4], 0x8
         jz short .6
         lea ax, [bp - 0x6a]
         mov es, [segTeamChoiceText33]
-        mov [es:msgThereAreNoHilights + 0x9A1], ax
-        mov [es:msgThereAreNoHilights + 0x9A3], ss
+        mov [es:dlgMergeFirst + 0xA5], ax
+        mov [es:dlgMergeFirst + 0xA7], ss
         push -0x1
         lea ax, [bp - 0x54]
         push ax
@@ -3227,8 +3227,8 @@ PlayLeagueGame:
 .6:
         lea ax, [bp - 0x6a]
         mov es, [segTeamChoiceText34]
-        mov [es:msgThereAreNoHilights + 0x8F0], ax
-        mov [es:msgThereAreNoHilights + 0x8F2], ss
+        mov [es:msgMasterDatabasesFor + 0x58], ax
+        mov [es:msgMasterDatabasesFor + 0x5A], ss
         push -0x1
         lea ax, [bp - 0x54]
         push ax
@@ -3249,7 +3249,7 @@ PlayLeagueGame:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .9
         mov es, [segWorkBuffer23]
-        test byte [es:hilightrec_frames + 0x9E88], 0x8
+        test byte [es:leagueinfo_w4], 0x8
         jz short .8
         call 0x2CB7:MergeLeagueFiles
 .8:
@@ -3264,8 +3264,8 @@ PlayLeagueGame:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText29]
-        push word [es:msgThereAreNoHilights + 0xB67]
-        push word [es:msgThereAreNoHilights + 0xB65]
+        push word [es:msgThereIsASavedGame + 0x4C]
+        push word [es:msgThereIsASavedGame + 0x4A]
         push word 0x3701
         push strict word CurLeagueName
         lea ax, [bp - 0x40]
@@ -3390,7 +3390,7 @@ PlayLeagueGame:
         call 0x0000:_fstrcpy
         add sp, 0x8
         mov es, [segWorkBuffer24]
-        cmp word [es:hilightrec_frames + 0x9E86], 0x1
+        cmp word [es:leagueinfo_w2], 0x1
         jz short .21
         cmp word [bp - 0x48], 0x0
         jnz short .22
@@ -3417,8 +3417,8 @@ PlayLeagueGame:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText29]
-        push word [es:msgThereAreNoHilights + 0xB67]
-        push word [es:msgThereAreNoHilights + 0xB65]
+        push word [es:msgThereIsASavedGame + 0x4C]
+        push word [es:msgThereIsASavedGame + 0x4A]
         push word 0x3701
         push strict word CurLeagueName
         lea ax, [bp - 0x40]
@@ -3505,8 +3505,8 @@ PlayLeagueGame:
         push word 0x3701
         push strict word str_Xx_2
         mov es, [segTeamChoiceText29]
-        push word [es:msgThereAreNoHilights + 0xB6F]
-        push word [es:msgThereAreNoHilights + 0xB6D]
+        push word [es:msgThereIsASavedGame + 0x54]
+        push word [es:msgThereIsASavedGame + 0x52]
         push ds
         push strict word savleague
         lea ax, [bp - 0x40]
@@ -3622,8 +3622,8 @@ PlayLeagueGame:
         push word 0x3701
         push strict word str_Xx
         mov es, [segTeamChoiceText29]
-        push word [es:msgThereAreNoHilights + 0xB6F]
-        push word [es:msgThereAreNoHilights + 0xB6D]
+        push word [es:msgThereIsASavedGame + 0x54]
+        push word [es:msgThereIsASavedGame + 0x52]
         push ds
         push strict word savleague2
         lea ax, [bp - 0x40]
@@ -3887,7 +3887,7 @@ PlayLeagueGame:
         call 0x0FEF:SetStartPage
         add sp, 0x2
         mov es, [segDbFiles13]
-        cmp word [es:0x126], 0x1
+        cmp word [es:lgstate_w5A + 0x8], 0x1
         jnz short .59
         mov al, [hmscore]
         mov [lgschedrec_b4], al
@@ -3896,14 +3896,14 @@ PlayLeagueGame:
         jmp short .59
 .58:
         mov es, [segDbFiles13]
-        mov word [es:0x126], 0x2
+        mov word [es:lgstate_w5A + 0x8], 0x2
 .59:
         cmp word [bp - 0x5c], 0x0
         jz short .60
         jmp near .91
 .60:
         mov es, [segDbFiles13]
-        cmp word [es:0x126], 0x1
+        cmp word [es:lgstate_w5A + 0x8], 0x1
         jz short .61
         jmp near .91
 .61:
@@ -4028,8 +4028,8 @@ PlayLeagueGame:
         push word 0x3701
         push strict word str_Xx_2
         mov es, [segTeamChoiceText29]
-        push word [es:msgThereAreNoHilights + 0xB6F]
-        push word [es:msgThereAreNoHilights + 0xB6D]
+        push word [es:msgThereIsASavedGame + 0x54]
+        push word [es:msgThereIsASavedGame + 0x52]
         push ds
         push strict word savleague
         lea ax, [bp - 0x40]
@@ -4051,8 +4051,8 @@ PlayLeagueGame:
         push word 0x3701
         push strict word str_Xx
         mov es, [segTeamChoiceText29]
-        push word [es:msgThereAreNoHilights + 0xB6F]
-        push word [es:msgThereAreNoHilights + 0xB6D]
+        push word [es:msgThereIsASavedGame + 0x54]
+        push word [es:msgThereIsASavedGame + 0x52]
         push ds
         push strict word savleague2
         lea ax, [bp - 0x40]
@@ -4226,8 +4226,8 @@ PlayLeagueGame:
         push word 0x3701
         push strict word str_Xx_2
         mov es, [segTeamChoiceText29]
-        push word [es:msgThereAreNoHilights + 0xB67]
-        push word [es:msgThereAreNoHilights + 0xB65]
+        push word [es:msgThereIsASavedGame + 0x4C]
+        push word [es:msgThereIsASavedGame + 0x4A]
         push ds
         push strict word savleague
         lea ax, [bp - 0x40]
@@ -4266,8 +4266,8 @@ PlayLeagueGame:
         push word 0x3701
         push strict word str_Xx
         mov es, [segTeamChoiceText29]
-        push word [es:msgThereAreNoHilights + 0xB67]
-        push word [es:msgThereAreNoHilights + 0xB65]
+        push word [es:msgThereIsASavedGame + 0x4C]
+        push word [es:msgThereIsASavedGame + 0x4A]
         push ds
         push strict word savleague2
         lea ax, [bp - 0x40]

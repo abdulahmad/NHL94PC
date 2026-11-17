@@ -28,8 +28,8 @@ PickAwardWinners:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText47]
-        push word [es:msgThereAreNoHilights + 0xB67]
-        push word [es:msgThereAreNoHilights + 0xB65]
+        push word [es:msgThereIsASavedGame + 0x4C]
+        push word [es:msgThereIsASavedGame + 0x4A]
         push word 0x3701
         push strict word CurLeagueName
         lea ax, [bp - 0x5a]
@@ -50,8 +50,8 @@ PickAwardWinners:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText47]
-        push word [es:msgThereAreNoHilights + 0xB67]
-        push word [es:msgThereAreNoHilights + 0xB65]
+        push word [es:msgThereIsASavedGame + 0x4C]
+        push word [es:msgThereIsASavedGame + 0x4A]
         push word 0x3701
         push strict word CurLeagueName
         lea ax, [bp - 0x5a]
@@ -72,8 +72,8 @@ PickAwardWinners:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText47]
-        push word [es:msgThereAreNoHilights + 0xB57]
-        push word [es:msgThereAreNoHilights + 0xB55]
+        push word [es:msgThereIsASavedGame + 0x3C]
+        push word [es:msgThereIsASavedGame + 0x3A]
         push word 0x3701
         push strict word CurLeagueName
         lea ax, [bp - 0x5a]
@@ -94,8 +94,8 @@ PickAwardWinners:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText47]
-        push word [es:msgThereAreNoHilights + 0xB6B]
-        push word [es:msgThereAreNoHilights + 0xB69]
+        push word [es:msgThereIsASavedGame + 0x50]
+        push word [es:msgThereIsASavedGame + 0x4E]
         push word 0x3701
         push strict word CurLeagueName
         lea ax, [bp - 0x5a]

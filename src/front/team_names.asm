@@ -23,8 +23,8 @@ SetTeamNameText:
         imul si, ax, 0x28
         add si, 0xa550
         mov es, [segMenuText38]
-        push word [es:RtlShowMessage + 0xDFD]
-        push word [es:RtlShowMessage + 0xDFB]
+        push word [es:HomeTeamMenuText + 0xA]
+        push word [es:HomeTeamMenuText + 0x8]
         lea ax, [bp - 0x28]
         push ss
         push ax
@@ -64,12 +64,12 @@ SetTeamNameText:
         add ax, strict word 0x5
         mov bx, 0x12f0
         mov es, [segMenuText38]
-        mov [es:bx + RtlSectionHook + 0x1], ax
+        mov [es:bx + 0x4], ax
         lea ax, [bp - 0x28]
         push ss
         push ax
-        push word [es:bx + RtlWriteHex + 0x5]
-        push word [es:bx + RtlWriteHex + 0x3]
+        push word [es:bx + 0xa]
+        push word [es:bx + 0x8]
         db 0x8B, 0xFB                           ; insn: mov di, bx
         mov [bp - 0x2c], di
         mov [bp - 0x2a], es
@@ -121,12 +121,12 @@ SetTeamNameText:
         add ax, strict word 0x5
         mov bx, 0x12f0
         mov es, [segMenuText38]
-        mov [es:bx + RtlHexWord + 0x3], ax
+        mov [es:bx + 0x1a], ax
         lea ax, [bp - 0x28]
         push ss
         push ax
-        push word [es:bx + RtlHexByte + 0x2]
-        push word [es:bx + RtlHexByte]
+        push word [es:bx + 0x20]
+        push word [es:bx + 0x1e]
         db 0x8B, 0xF3                           ; insn: mov si, bx
         mov di, es
         call 0x0000:_fstrcpy
@@ -146,20 +146,20 @@ SetTeamNameText:
 .5:
         mov bx, 0x12f0
         mov es, [segMenuText38]
-        mov ax, [es:bx + RtlHexWord + 0x3]
-        mov [es:bx + RtlHexDigit + 0x5], ax
-        mov [es:bx + RtlSectionHook + 0x1], ax
+        mov ax, [es:bx + 0x1a]
+        mov [es:bx + 0x30], ax
+        mov [es:bx + 0x4], ax
 .6:
         cmp word [hmtmgoalie], 0x0
         jnl short .7
         mov es, [segMenuText38]
-        les bx, [es:0x1324]
+        les bx, [es:HomeTeamMenuText + 0x34]
         jmp short .8
         db 0x90
 .7:
         mov es, [segMenuText38]
         imul bx, [hmtmgoalie], 0x16
-        les bx, [es:bx + 0x12f8]
+        les bx, [es:bx + HomeTeamMenuText + 0x8]
 .8:
         mov byte [es:bx], 0x1
         mov word [bp - 0x8], VisitorTeamMenuText
@@ -169,8 +169,8 @@ SetTeamNameText:
         imul si, ax, 0x28
         add si, 0xa9b0
         mov es, [segMenuText39]
-        push word [es:RtlShowMessage + 0xE3F]
-        push word [es:RtlShowMessage + 0xE3D]
+        push word [es:VisitorTeamMenuText + 0xA]
+        push word [es:VisitorTeamMenuText + 0x8]
         lea ax, [bp - 0x28]
         push ss
         push ax
@@ -210,12 +210,12 @@ SetTeamNameText:
         add ax, strict word 0x5
         mov bx, 0x1332
         mov es, [segMenuText39]
-        mov [es:bx + RtlSectionHook + 0x1], ax
+        mov [es:bx + 0x4], ax
         lea ax, [bp - 0x28]
         push ss
         push ax
-        push word [es:bx + RtlWriteHex + 0x5]
-        push word [es:bx + RtlWriteHex + 0x3]
+        push word [es:bx + 0xa]
+        push word [es:bx + 0x8]
         db 0x8B, 0xFB                           ; insn: mov di, bx
         mov [bp - 0x30], di
         mov [bp - 0x2e], es
@@ -267,12 +267,12 @@ SetTeamNameText:
         add ax, strict word 0x5
         mov bx, 0x1332
         mov es, [segMenuText39]
-        mov [es:bx + RtlHexWord + 0x3], ax
+        mov [es:bx + 0x1a], ax
         lea ax, [bp - 0x28]
         push ss
         push ax
-        push word [es:bx + RtlHexByte + 0x2]
-        push word [es:bx + RtlHexByte]
+        push word [es:bx + 0x20]
+        push word [es:bx + 0x1e]
         db 0x8B, 0xF3                           ; insn: mov si, bx
         mov di, es
         call 0x0000:_fstrcpy
@@ -292,20 +292,20 @@ SetTeamNameText:
 .13:
         mov bx, 0x1332
         mov es, [segMenuText39]
-        mov ax, [es:bx + RtlHexWord + 0x3]
-        mov [es:bx + RtlHexDigit + 0x5], ax
-        mov [es:bx + RtlSectionHook + 0x1], ax
+        mov ax, [es:bx + 0x1a]
+        mov [es:bx + 0x30], ax
+        mov [es:bx + 0x4], ax
 .14:
         cmp word [awtmgoalie], 0x0
         jnl short .15
         mov es, [segMenuText39]
-        les bx, [es:0x1366]
+        les bx, [es:VisitorTeamMenuText + 0x34]
         jmp short .16
         db 0x90
 .15:
         mov es, [segMenuText39]
         imul bx, [awtmgoalie], 0x16
-        les bx, [es:bx + 0x133a]
+        les bx, [es:bx + VisitorTeamMenuText + 0x8]
 .16:
         mov byte [es:bx], 0x1
         pop si
@@ -323,34 +323,34 @@ ClearTeamNameText:
         push word 0x3448
         push strict word TeamNameTemplate
         mov es, [segMenuText38]
-        push word [es:RtlShowMessage + 0xDFD]
-        push word [es:RtlShowMessage + 0xDFB]
+        push word [es:HomeTeamMenuText + 0xA]
+        push word [es:HomeTeamMenuText + 0x8]
         call 0x0000:_fstrcpy
         add sp, 0x8
         push word 0x3448
         push strict word TeamNameTemplate
         mov es, [segMenuText38]
-        push word [es:RtlShowMessage + 0xE13]
-        push word [es:RtlShowMessage + 0xE11]
+        push word [es:HomeTeamMenuText + 0x20]
+        push word [es:HomeTeamMenuText + 0x1E]
         call 0x0000:_fstrcpy
         add sp, 0x8
         mov es, [segMenuText38]
-        les bx, [es:0x1324]
+        les bx, [es:HomeTeamMenuText + 0x34]
         mov byte [es:bx], 0x2
         push word 0x3448
         push strict word TeamNameTemplate
         mov es, [segMenuText39]
-        push word [es:RtlShowMessage + 0xE3F]
-        push word [es:RtlShowMessage + 0xE3D]
+        push word [es:VisitorTeamMenuText + 0xA]
+        push word [es:VisitorTeamMenuText + 0x8]
         call 0x0000:_fstrcpy
         add sp, 0x8
         push word 0x3448
         push strict word TeamNameTemplate
         mov es, [segMenuText39]
-        push word [es:RtlShowMessage + 0xE55]
-        push word [es:RtlShowMessage + 0xE53]
+        push word [es:VisitorTeamMenuText + 0x20]
+        push word [es:VisitorTeamMenuText + 0x1E]
         call 0x0000:_fstrcpy
         add sp, 0x8
         mov es, [segMenuText39]
-        les bx, [es:0x1366]
+        les bx, [es:VisitorTeamMenuText + 0x34]
         mov byte [es:bx], 0x2

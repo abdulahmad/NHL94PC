@@ -235,7 +235,7 @@ MenuOpenSaved:
         add sp, 0x2
 .15:
         mov es, [segDbFiles1]
-        and byte [es:0x55], 0x7f
+        and byte [es:exhstate_name + 0x53], 0x7f
         lea ax, [bp - 0x4]
         push ax
         call 0x2E70:MenuNewExhibition
@@ -313,20 +313,20 @@ MenuOpenSaved:
         add sp, 0x2
 .19:
         mov es, [segDbFiles2]
-        and byte [es:0xb7], 0x7f
+        and byte [es:postate_b55], 0x7f
         lea ax, [bp - 0x4]
         push ax
         call 0x1B35:PlayoffModeLoopThunk
         add sp, 0x2
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov es, [segDbFiles2]
-        test byte [es:0xb7], 0x80
+        test byte [es:postate_b55], 0x80
 .20:
         jz short .21
         jmp near .16
 .21:
         mov es, [segDbFiles3]
-        cmp word [es:0x126], 0x1
+        cmp word [es:lgstate_w5A + 0x8], 0x1
         jz short .22
         jmp near .16
 .22:
@@ -398,14 +398,14 @@ MenuOpenSaved:
         add sp, 0x2
 .25:
         mov es, [segDbFiles4]
-        and byte [es:0x119], 0x7f
+        and byte [es:lgstate_name + 0x53], 0x7f
         lea ax, [bp - 0x4]
         push ax
         call 0x1B35:MenuNextLeagueGameThunk
         add sp, 0x2
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov es, [segDbFiles4]
-        test byte [es:0x119], 0x80
+        test byte [es:lgstate_name + 0x53], 0x80
         jmp near .20
 .26:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -2057,14 +2057,14 @@ DeleteSavedGame:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .7
         mov es, [segDbFiles4]
-        mov byte [es:0xc6], 0x0
+        mov byte [es:lgstate_name], 0x0
         mov es, [segMenuText7]
-        mov [es:RtlShowMessage + 0x671], ax
-        mov [es:RtlShowMessage + 0x66F], ax
-        mov [es:RtlShowMessage + 0x687], ax
-        mov [es:RtlShowMessage + 0x685], ax
-        mov [es:RtlShowMessage + 0x6A1], ax
-        mov [es:RtlShowMessage + 0x69F], ax
+        mov [es:TeamNameTemplate + 0x903], ax
+        mov [es:TeamNameTemplate + 0x901], ax
+        mov [es:TeamNameTemplate + 0x919], ax
+        mov [es:TeamNameTemplate + 0x917], ax
+        mov [es:TeamNameTemplate + 0x933], ax
+        mov [es:TeamNameTemplate + 0x931], ax
         jmp short .8
 .7:
         push word 0x3415
@@ -2077,14 +2077,14 @@ DeleteSavedGame:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .8
         mov es, [segDbFiles2]
-        mov byte [es:0x64], 0x0
+        mov byte [es:postate_name], 0x0
         mov es, [segMenuText7]
-        mov [es:RtlShowMessage + 0x6DF], ax
-        mov [es:RtlShowMessage + 0x6DD], ax
-        mov [es:RtlShowMessage + 0x6F5], ax
-        mov [es:RtlShowMessage + 0x6F3], ax
-        mov [es:RtlShowMessage + 0x70B], ax
-        mov [es:RtlShowMessage + 0x709], ax
+        mov [es:TeamNameTemplate + 0x971], ax
+        mov [es:TeamNameTemplate + 0x96F], ax
+        mov [es:TeamNameTemplate + 0x987], ax
+        mov [es:TeamNameTemplate + 0x985], ax
+        mov [es:TeamNameTemplate + 0x99D], ax
+        mov [es:TeamNameTemplate + 0x99B], ax
 .8:
         lea ax, [bp - 0x28]
         push ax
@@ -2319,7 +2319,7 @@ SelectSavedFile:
         call 0x2E70:LoadModeState
         add sp, 0x4
         mov es, [segDbFiles1]
-        mov ax, [es:0x50]
+        mov ax, [es:exhstate_name + 0x4E]
         mov [bp - 0x16], ax
         cmp ax, strict word 0x18
         jnl short .4
@@ -2342,7 +2342,7 @@ SelectSavedFile:
         call 0x03A3:CopyStrNFar
         add sp, 0xa
         mov es, [segDbFiles1]
-        mov ax, [es:0x52]
+        mov ax, [es:exhstate_name + 0x50]
         mov [bp - 0x18], ax
         cmp ax, strict word 0x18
         jnl short .6
@@ -2409,12 +2409,12 @@ SelectSavedFile:
         add sp, 0x8
         mov [bp - 0x2], ax
         mov es, [segMenuText7]
-        mov word [es:RtlShowMessage + 0x6DD], strict word PlayoffModeLoopThunk
-        mov word [es:RtlShowMessage + 0x6DF], 0x1b35
-        mov word [es:RtlShowMessage + 0x6F3], strict word EditPlayoffSettingsThunk
-        mov word [es:RtlShowMessage + 0x6F5], 0x1b35
-        mov word [es:RtlShowMessage + 0x709], strict word MenuPlayoffHilightsThunk
-        mov word [es:RtlShowMessage + 0x70B], 0x1b35
+        mov word [es:TeamNameTemplate + 0x96F], strict word PlayoffModeLoopThunk
+        mov word [es:TeamNameTemplate + 0x971], 0x1b35
+        mov word [es:TeamNameTemplate + 0x985], strict word EditPlayoffSettingsThunk
+        mov word [es:TeamNameTemplate + 0x987], 0x1b35
+        mov word [es:TeamNameTemplate + 0x99B], strict word MenuPlayoffHilightsThunk
+        mov word [es:TeamNameTemplate + 0x99D], 0x1b35
         lea ax, [bp - 0x14]
         push ss
         push ax
@@ -2483,12 +2483,12 @@ SelectSavedFile:
         add sp, 0x8
         mov [bp - 0x2], ax
         mov es, [segMenuText7]
-        mov word [es:RtlShowMessage + 0x66F], strict word MenuExportDbsThunk
-        mov word [es:RtlShowMessage + 0x671], 0x1b35
-        mov word [es:RtlShowMessage + 0x685], strict word MenuNextLeagueGameThunk
-        mov word [es:RtlShowMessage + 0x687], 0x1b35
-        mov word [es:RtlShowMessage + 0x69F], 0xd86
-        mov word [es:RtlShowMessage + 0x6A1], 0x3448
+        mov word [es:TeamNameTemplate + 0x901], strict word MenuExportDbsThunk
+        mov word [es:TeamNameTemplate + 0x903], 0x1b35
+        mov word [es:TeamNameTemplate + 0x917], strict word MenuNextLeagueGameThunk
+        mov word [es:TeamNameTemplate + 0x919], 0x1b35
+        mov word [es:TeamNameTemplate + 0x931], 0xd86
+        mov word [es:TeamNameTemplate + 0x933], 0x3448
 .10:
         mov ax, [bp - 0x2]
         pop si

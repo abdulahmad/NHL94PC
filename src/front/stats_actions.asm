@@ -58,9 +58,9 @@ StatsSelNhlSeason:
         mov byte [es:0x0], 0x1
         mov al, 0x2
         mov es, [segSeasonTitles7]
-        mov [es:0x5b], al
+        mov [es:str_WwwwwwwwSeasonPlayOffs + 0x1B], al
         mov es, [segSeasonTitles8]
-        mov [es:0x3d], al
+        mov [es:str_WwwwwwwwSeason + 0x11], al
         mov es, [segSeasonTitles9]
         mov [es:0x29], al
         mov es, [segSeasonTitles10]
@@ -93,7 +93,7 @@ StatsSelNhlSeason:
         call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         mov es, [segWorkBuffer41]
-        mov word [es:hilightrec_frames + 0xA27A], 0xffff
+        mov word [es:dlgJerseyConflict + 0x4], 0xffff
         push word [statscategory]
         call far [statsredrawcb]
         add sp, 0x2
@@ -126,9 +126,9 @@ StatsSelNhlPlayoffs:
         mov byte [es:0x13], 0x1
         mov al, 0x2
         mov es, [segSeasonTitles7]
-        mov [es:0x5b], al
+        mov [es:str_WwwwwwwwSeasonPlayOffs + 0x1B], al
         mov es, [segSeasonTitles8]
-        mov [es:0x3d], al
+        mov [es:str_WwwwwwwwSeason + 0x11], al
         mov es, [segSeasonTitles9]
         mov [es:0x29], al
         mov es, [segSeasonTitles6]
@@ -161,7 +161,7 @@ StatsSelNhlPlayoffs:
         call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         mov es, [segWorkBuffer41]
-        mov word [es:hilightrec_frames + 0xA27A], 0xffff
+        mov word [es:dlgJerseyConflict + 0x4], 0xffff
         push word [statscategory]
         call far [statsredrawcb]
         add sp, 0x2
@@ -194,9 +194,9 @@ StatsSelLeague:
         mov byte [es:0x29], 0x1
         mov al, 0x2
         mov es, [segSeasonTitles7]
-        mov [es:0x5b], al
+        mov [es:str_WwwwwwwwSeasonPlayOffs + 0x1B], al
         mov es, [segSeasonTitles8]
-        mov [es:0x3d], al
+        mov [es:str_WwwwwwwwSeason + 0x11], al
         mov es, [segSeasonTitles10]
         mov [es:0x13], al
         mov es, [segSeasonTitles6]
@@ -229,7 +229,7 @@ StatsSelLeague:
         call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         mov es, [segWorkBuffer41]
-        mov word [es:hilightrec_frames + 0xA27A], 0xffff
+        mov word [es:dlgJerseyConflict + 0x4], 0xffff
         push word [statscategory]
         call far [statsredrawcb]
         add sp, 0x2
@@ -267,10 +267,10 @@ StatsSelLeaguePlayoffs:
         jmp near .4
 .1:
         mov es, [segSeasonTitles8]
-        mov byte [es:0x3d], 0x1
+        mov byte [es:str_WwwwwwwwSeason + 0x11], 0x1
         mov al, 0x2
         mov es, [segSeasonTitles7]
-        mov [es:0x5b], al
+        mov [es:str_WwwwwwwwSeasonPlayOffs + 0x1B], al
         mov es, [segSeasonTitles9]
         mov [es:0x29], al
         mov es, [segSeasonTitles10]
@@ -305,7 +305,7 @@ StatsSelLeaguePlayoffs:
         call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         mov es, [segWorkBuffer41]
-        mov word [es:hilightrec_frames + 0xA27A], 0xffff
+        mov word [es:dlgJerseyConflict + 0x4], 0xffff
         push word [statscategory]
         call far [statsredrawcb]
         add sp, 0x2
@@ -343,10 +343,10 @@ StatsSelPlayoffMode:
         jmp near .4
 .1:
         mov es, [segSeasonTitles7]
-        mov byte [es:0x5b], 0x1
+        mov byte [es:str_WwwwwwwwSeasonPlayOffs + 0x1B], 0x1
         mov al, 0x2
         mov es, [segSeasonTitles8]
-        mov [es:0x3d], al
+        mov [es:str_WwwwwwwwSeason + 0x11], al
         mov es, [segSeasonTitles9]
         mov [es:0x29], al
         mov es, [segSeasonTitles10]
@@ -381,7 +381,7 @@ StatsSelPlayoffMode:
         call 0x1B35:FadePaletteInThunk
         add sp, 0x8
         mov es, [segWorkBuffer41]
-        mov word [es:hilightrec_frames + 0xA27A], 0xffff
+        mov word [es:dlgJerseyConflict + 0x4], 0xffff
         push word [statscategory]
         call far [statsredrawcb]
         add sp, 0x2

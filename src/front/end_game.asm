@@ -486,4 +486,4 @@ IntermissionScreens:
         call 0x1B35:SportsDeskThunk
         add sp, 0x2
         mov es, [segDbFiles20]
-        mov word [es:0x126], 0x1
+        mov word [es:lgstate_w5A + 0x8], 0x1

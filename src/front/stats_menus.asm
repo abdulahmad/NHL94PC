@@ -14,12 +14,12 @@ SetupStatsMenus:
         db 0x0B, 0xC9                           ; insn: or cx, cx
         jnz short .3
         mov es, [segDbFiles15]
-        mov al, [es:0x64]
+        mov al, [es:postate_name]
         mov [bp - 0x8], al
         db 0x0A, 0xC0                           ; insn: or al, al
         jz short .1
         mov es, [segDbFiles16]
-        cmp byte [es:0xc6], 0x0
+        cmp byte [es:lgstate_name], 0x0
         jnz short .3
 .1:
         cmp byte [bp - 0x8], 0x0
@@ -29,7 +29,7 @@ SetupStatsMenus:
         db 0x90
 .2:
         mov es, [segDbFiles16]
-        cmp byte [es:0xc6], 0x1
+        cmp byte [es:lgstate_name], 0x1
         db 0x1B, 0xC9                           ; insn: sbb cx, cx
         and cl, 0xfe
         add cx, 0x3
@@ -342,27 +342,27 @@ SetupStatsMenus:
         inc word [es:bx + 0x80]
         db 0x8B, 0xC6                           ; insn: mov ax, si
         mov es, [segTeamChoiceText48]
-        mov [es:msgThereAreNoHilights + 0x11BE], al
+        mov [es:TradeStatsMenuBar + 0x2A], al
         mov es, [segMenuText22]
-        mov [es:RtlShowMessage + 0x1463], al
+        mov [es:GoalieStatsMenuBar + 0xDA], al
         mov es, [segMenuText23]
-        mov [es:RtlShowMessage + 0x13B3], al
+        mov [es:GoalieStatsMenuBar + 0x2A], al
         mov es, [segMenuText24]
-        mov [es:RtlShowMessage + 0x1371], al
+        mov [es:SkaterStatsMenuBar + 0x2A], al
         mov es, [segMenuText25]
-        mov [es:RtlShowMessage + 0x132F], al
+        mov [es:TeamStatsMenuBar + 0x2A], al
         mov es, [segMenuText26]
-        mov [es:RtlShowMessage + 0x1303], al
+        mov [es:StandingsMenuBar2 + 0x2A], al
         mov es, [segMenuText27]
-        mov [es:RtlShowMessage + 0x12D7], al
+        mov [es:StandingsRosterMenuBar + 0x40], al
         mov es, [segMenuText28]
-        mov [es:RtlShowMessage + 0x1211], al
+        mov [es:standingsmenubar + 0x40], al
         mov es, [segMenuText29]
-        mov [es:RtlShowMessage + 0x1177], al
+        mov [es:PlayerStatsMenuBar + 0x2A], al
         mov es, [segMenuText30]
-        mov [es:RtlShowMessage + 0xC0D], al
+        mov [es:DeskMenuBar + 0x3C6], al
         mov es, [segMenuText31]
-        mov [es:RtlShowMessage + 0x7ED], al
+        mov [es:TeamNameTemplate + 0xA7F], al
         pop si
         pop di
         leave
@@ -423,7 +423,7 @@ BuildSeasonTitle:
         add sp, 0x4
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         mov es, [segDbFiles16]
-        mov byte [es:bx + 0xc6], 0x0
+        mov byte [es:bx + lgstate_name], 0x0
         push word [bp - 0x6]
         push word [bp - 0x8]
         push word 0x384b
@@ -456,7 +456,7 @@ BuildSeasonTitle:
         call 0x0000:_fstrcpy
         add sp, 0x8
         mov es, [segDbFiles16]
-        mov byte [es:si + 0xc6], 0x2e
+        mov byte [es:si + lgstate_name], 0x2e
 .2:
         pop si
         leave
@@ -558,29 +558,29 @@ SetStatsMenuTextJumpTable:                      ; jump table of SetStatsMenuText
 .8:
         mov ax, [bp - 0x8]
         mov es, [segMenuText32]
-        mov [es:RtlShowMessage + 0x1273], cx
-        mov [es:RtlShowMessage + 0x1275], ax
+        mov [es:standingsmenubar + 0xA2], cx
+        mov [es:standingsmenubar + 0xA4], ax
         mov es, [segMenuText33]
-        mov [es:RtlShowMessage + 0x1231], cx
-        mov [es:RtlShowMessage + 0x1233], ax
+        mov [es:standingsmenubar + 0x60], cx
+        mov [es:standingsmenubar + 0x62], ax
         mov es, [segMenuText34]
-        mov [es:RtlShowMessage + 0x11AD], cx
-        mov [es:RtlShowMessage + 0x11AF], ax
+        mov [es:PlayerStatsMenuBar + 0x60], cx
+        mov [es:PlayerStatsMenuBar + 0x62], ax
         mov es, [segMenuText35]
-        mov [es:RtlShowMessage + 0x1181], cx
-        mov [es:RtlShowMessage + 0x1183], ax
+        mov [es:PlayerStatsMenuBar + 0x34], cx
+        mov [es:PlayerStatsMenuBar + 0x36], ax
         mov es, [segMenuText34]
-        mov [es:RtlShowMessage + 0x11A9], bx
+        mov [es:PlayerStatsMenuBar + 0x5C], bx
         mov es, [segMenuText35]
-        mov [es:RtlShowMessage + 0x117D], bx
+        mov [es:PlayerStatsMenuBar + 0x30], bx
         cmp bx, 0x4f
         jnl short .9
         mov bx, 0x4f
 .9:
         mov es, [segMenuText32]
-        mov [es:RtlShowMessage + 0x126F], bx
-        mov [es:RtlShowMessage + 0x1259], bx
-        mov [es:RtlShowMessage + 0x1243], bx
+        mov [es:standingsmenubar + 0x9E], bx
+        mov [es:standingsmenubar + 0x88], bx
+        mov [es:standingsmenubar + 0x72], bx
         mov es, [segMenuText33]
-        mov [es:RtlShowMessage + 0x122D], bx
-        mov [es:RtlShowMessage + 0x1217], bx
+        mov [es:standingsmenubar + 0x5C], bx
+        mov [es:standingsmenubar + 0x46], bx

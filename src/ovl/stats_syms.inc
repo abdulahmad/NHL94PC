@@ -8,6 +8,7 @@ CopyStrNFar		equ	0xBBC
 CurPage		equ	0x74DC
 DGROUP		equ	0x45C9
 DbSaveMode		equ	0x1B4
+DeskMenuBar		equ	0xD44
 DialogData		equ	0xAE98
 DialogDataSeg		equ	0xAE9A
 DrawLine		equ	0xC
@@ -64,13 +65,14 @@ MouseRange		equ	0x1BCD
 OpenReadShared		equ	0x3D6
 OverlayThunks		equ	0x1FEF
 POTeamName1		equ	0xAC30
+PageTable		equ	0x7570
+PlayerStatsMenuBar		equ	0x164A
 PoStandingsMode		equ	0x8C6E
 PutBlockAt		equ	0x4B5
 RawBase		equ	0x1532
 ReadAtOffset		equ	0x442
 ReadEntry6		equ	0x61C
 ReadTeamNamesThunk		equ	0x2643
-RtlShowMessage		equ	0x4FD
 SaveCharTab		equ	0xC7A
 SeasonTitlePtr		equ	0x94
 SeasonTitleSegs		equ	0x8C36
@@ -103,6 +105,7 @@ StatsDbNames3		equ	0x1FAA
 StatsScreenPalette		equ	0xB052
 StatsSelLeaguePlayoffsThunk		equ	0x1FF9
 StatsSelPlayoffModeThunk		equ	0x2003
+TeamNameTemplate		equ	0x26B
 TeamStatsCmps		equ	0x25B0
 TeamStatsCmpsSeg		equ	0x25B2
 TeamStatsHead1		equ	0x268A
@@ -111,6 +114,7 @@ TeamStatsHead3		equ	0x268E
 TeamStatsHeads		equ	0x2690
 TeamStatsMenuBar		equ	0x1802
 TeamStatsTitles		equ	0x2680
+TradeStatsMenuBar		equ	0x11AB
 UnlinkRec		equ	0x9B2
 UseCharSeg		equ	0xCB8
 UseCurrentPage		equ	0x1A6
@@ -143,13 +147,13 @@ _qsort		equ	0xEAA
 _read		equ	0xA02
 _sprintf		equ	0xD74
 cddriveptr		equ	0xCFD2
+dlgJerseyConflict		equ	0xB04C
 exhstate_name		equ	0x2
 fileoncd		equ	0xCFD0
 goaliestatscb		equ	0x21C6
-hilightrec_frames		equ	0xDD6
 leaguestatsmode		equ	0xC052
 lgstate_name		equ	0xC6
-msgThereAreNoHilights		equ	0x17
+msgThereIsASavedGame		equ	0xB32
 playofftree		equ	0xC204
 postate_name		equ	0x64
 rosterfilter		equ	0xCF1D

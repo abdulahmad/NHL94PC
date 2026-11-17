@@ -1,6 +1,7 @@
 CanvasRowBytes		equ	0x74F6
 ClipBottomY		equ	0x74F4
 CurPage		equ	0x74DC
+PageTable		equ	0x7570
 PlaneBandPattern		equ	0x62C0
 SetDeadline.regs		equ	0x1A6E
 UseCurrentPage		equ	0x1A6

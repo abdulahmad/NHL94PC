@@ -44,14 +44,14 @@ SportsDesk:
         jz short .1
         mov es, [segMenuText14]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:RtlShowMessage + 0xCA1], ax
-        mov [es:RtlShowMessage + 0xC9F], ax
+        mov [es:DeskMenuBar + 0x45A], ax
+        mov [es:DeskMenuBar + 0x458], ax
         jmp short .2
         db 0x90
 .1:
         mov es, [segMenuText14]
-        mov word [es:RtlShowMessage + 0xC9F], strict word DeskGoToReplay
-        mov word [es:RtlShowMessage + 0xCA1], 0x2cf8
+        mov word [es:DeskMenuBar + 0x458], strict word DeskGoToReplay
+        mov word [es:DeskMenuBar + 0x45A], 0x2cf8
 .2:
         lea ax, [bp - 0x76]
         push ax
@@ -315,10 +315,10 @@ SportsDesk:
         mov es, [segDbFiles9]
         mov bx, [HomeTeamNum]
         shl bx, 1
-        mov ax, [es:bx + 0x128]
+        mov ax, [es:bx + POSeedTable]
         mov bx, [VisTeamNum]
         shl bx, 1
-        or ax, [es:bx + 0x128]
+        or ax, [es:bx + POSeedTable]
         mov [bp - 0x44], ax
         mov word [bp - 0x6c], 0x1
         mov es, [segWorkBuffer2]
@@ -329,7 +329,7 @@ SportsDesk:
         push word [bp - 0x74]
         push word [bp - 0x6c]
         push ax
-        mov ax, [es:0x78c]
+        mov ax, [es:AwayGlStats + 0x12]
         sub ax, 0x3f0
         mov cx, 0x7
         cwd
@@ -635,7 +635,7 @@ SportsDesk:
         jmp near .18
 .36:
         mov es, [segDbFiles10]
-        mov word [es:0x126], 0x2
+        mov word [es:lgstate_w5A + 0x8], 0x2
         jmp near .18
         db 0x90
 .37:
@@ -1465,22 +1465,22 @@ DeskReturnConfirm:
         db 0x90
 .1:
         mov es, [segReturnMessages1]
-        mov word [es:0xb3], 0x0
-        mov word [es:0xb5], 0x36f5
+        mov word [es:dlgReturnMessages], 0x0
+        mov word [es:dlgReturnMessages + 0x2], 0x36f5
         jmp short .4
 .2:
         mov es, [segReturnMessages1]
-        mov word [es:0xb3], 0x3d
-        mov word [es:0xb5], 0x36f5
+        mov word [es:dlgReturnMessages], 0x3d
+        mov word [es:dlgReturnMessages + 0x2], 0x36f5
         jmp short .4
 .3:
         mov es, [segReturnMessages1]
-        mov word [es:0xb3], 0x1c
-        mov word [es:0xb5], 0x36f5
+        mov word [es:dlgReturnMessages], 0x1c
+        mov word [es:dlgReturnMessages + 0x2], 0x36f5
 .4:
         mov es, [segReturnMessages1]
-        mov word [es:0xbb], 0x87
-        mov word [es:0xbd], 0x36f5
+        mov word [es:dlgReturnMessages + 0x8], 0x87
+        mov word [es:dlgReturnMessages + 0xA], 0x36f5
         push 0x0
         push 0x11
         push 0x5
@@ -1540,10 +1540,10 @@ DeskExitGame:
         call 0x03A3:MouseRead
         add sp, 0x6
         mov es, [segReturnMessages1]
-        mov word [es:0xb3], 0x5b
-        mov word [es:0xb5], 0x36f5
-        mov word [es:0xbb], 0x9e
-        mov word [es:0xbd], 0x36f5
+        mov word [es:dlgReturnMessages], 0x5b
+        mov word [es:dlgReturnMessages + 0x2], 0x36f5
+        mov word [es:dlgReturnMessages + 0x8], 0x9e
+        mov word [es:dlgReturnMessages + 0xA], 0x36f5
         push 0x0
         push 0x11
         push 0x5
@@ -2135,13 +2135,13 @@ DeskHomeGoalie1:
         call 0x1B35:SetTeamGoalieThunk
         add sp, 0x4
         mov es, [segMenuText15]
-        les bx, [es:0x12f8]
+        les bx, [es:HomeTeamMenuText + 0x8]
         mov byte [es:bx], 0x1
         mov es, [segMenuText15]
-        les bx, [es:0x130e]
+        les bx, [es:HomeTeamMenuText + 0x1E]
         mov byte [es:bx], 0x2
         mov es, [segMenuText15]
-        les bx, [es:0x1324]
+        les bx, [es:HomeTeamMenuText + 0x34]
         mov byte [es:bx], 0x2
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         retf
@@ -2158,13 +2158,13 @@ DeskHomeGoalie2:
         call 0x1B35:SetTeamGoalieThunk
         add sp, 0x4
         mov es, [segMenuText15]
-        les bx, [es:0x12f8]
+        les bx, [es:HomeTeamMenuText + 0x8]
         mov byte [es:bx], 0x2
         mov es, [segMenuText15]
-        les bx, [es:0x130e]
+        les bx, [es:HomeTeamMenuText + 0x1E]
         mov byte [es:bx], 0x1
         mov es, [segMenuText15]
-        les bx, [es:0x1324]
+        les bx, [es:HomeTeamMenuText + 0x34]
         mov byte [es:bx], 0x2
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         retf
@@ -2181,13 +2181,13 @@ DeskHomeGoalieNone:
         call 0x1B35:SetTeamGoalieThunk
         add sp, 0x4
         mov es, [segMenuText15]
-        les bx, [es:0x12f8]
+        les bx, [es:HomeTeamMenuText + 0x8]
         mov byte [es:bx], 0x2
         mov es, [segMenuText15]
-        les bx, [es:0x130e]
+        les bx, [es:HomeTeamMenuText + 0x1E]
         mov byte [es:bx], 0x2
         mov es, [segMenuText15]
-        les bx, [es:0x1324]
+        les bx, [es:HomeTeamMenuText + 0x34]
         mov byte [es:bx], 0x1
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         retf
@@ -2204,13 +2204,13 @@ DeskAwayGoalie1:
         call 0x1B35:SetTeamGoalieThunk
         add sp, 0x4
         mov es, [segMenuText16]
-        les bx, [es:0x133a]
+        les bx, [es:VisitorTeamMenuText + 0x8]
         mov byte [es:bx], 0x1
         mov es, [segMenuText16]
-        les bx, [es:0x1350]
+        les bx, [es:VisitorTeamMenuText + 0x1E]
         mov byte [es:bx], 0x2
         mov es, [segMenuText16]
-        les bx, [es:0x1366]
+        les bx, [es:VisitorTeamMenuText + 0x34]
         mov byte [es:bx], 0x2
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         retf
@@ -2227,13 +2227,13 @@ DeskAwayGoalie2:
         call 0x1B35:SetTeamGoalieThunk
         add sp, 0x4
         mov es, [segMenuText16]
-        les bx, [es:0x133a]
+        les bx, [es:VisitorTeamMenuText + 0x8]
         mov byte [es:bx], 0x2
         mov es, [segMenuText16]
-        les bx, [es:0x1350]
+        les bx, [es:VisitorTeamMenuText + 0x1E]
         mov byte [es:bx], 0x1
         mov es, [segMenuText16]
-        les bx, [es:0x1366]
+        les bx, [es:VisitorTeamMenuText + 0x34]
         mov byte [es:bx], 0x2
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         retf
@@ -2250,10 +2250,10 @@ DeskAwayGoalieNone:
         call 0x1B35:SetTeamGoalieThunk
         add sp, 0x4
         mov es, [segMenuText16]
-        les bx, [es:0x133a]
+        les bx, [es:VisitorTeamMenuText + 0x8]
         mov byte [es:bx], 0x2
         mov es, [segMenuText16]
-        les bx, [es:0x1350]
+        les bx, [es:VisitorTeamMenuText + 0x1E]
         mov byte [es:bx], 0x2
         mov es, [segMenuText16]
-        les bx, [es:0x1366]
+        les bx, [es:VisitorTeamMenuText + 0x34]

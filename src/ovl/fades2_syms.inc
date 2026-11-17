@@ -4,6 +4,7 @@ ClipLeftX		equ	0x74FC
 ClipRightX		equ	0x74FE
 ClipTopY		equ	0x74F2
 CurPage		equ	0x74DC
+PageTable		equ	0x7570
 UseCurrentPage		equ	0x1A6
 VenetianRowBytes		equ	0x74FA
 WipeDirX		equ	0x62A0

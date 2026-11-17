@@ -414,8 +414,8 @@ MergeTeamDbs:
         push word [bp - 0xa58]
         push word [bp - 0xa5a]
         mov es, [segTeamChoiceText43]
-        push word [es:msgThereAreNoHilights + 0xB57]
-        push word [es:msgThereAreNoHilights + 0xB55]
+        push word [es:msgThereIsASavedGame + 0x3C]
+        push word [es:msgThereIsASavedGame + 0x3A]
         push word [bp + 0x8]
         push di
         lea ax, [bp - 0x38]
@@ -436,8 +436,8 @@ MergeTeamDbs:
         push word [bp - 0xa58]
         push word [bp - 0xa5a]
         mov es, [segTeamChoiceText43]
-        push word [es:msgThereAreNoHilights + 0xB6B]
-        push word [es:msgThereAreNoHilights + 0xB69]
+        push word [es:msgThereIsASavedGame + 0x50]
+        push word [es:msgThereIsASavedGame + 0x4E]
         mov ax, [bp + 0x8]
         push ax
         push di
@@ -459,8 +459,8 @@ MergeTeamDbs:
         push word [bp + 0x14]
         push word [bp + 0x12]
         mov es, [segTeamChoiceText43]
-        push word [es:msgThereAreNoHilights + 0xB6B]
-        push word [es:msgThereAreNoHilights + 0xB69]
+        push word [es:msgThereIsASavedGame + 0x50]
+        push word [es:msgThereIsASavedGame + 0x4E]
         push word [bp + 0xc]
         push word [bp + 0xa]
         lea ax, [bp - 0x38]
@@ -481,8 +481,8 @@ MergeTeamDbs:
         push word [bp + 0x18]
         push word [bp + 0x16]
         mov es, [segTeamChoiceText43]
-        push word [es:msgThereAreNoHilights + 0xB6B]
-        push word [es:msgThereAreNoHilights + 0xB69]
+        push word [es:msgThereIsASavedGame + 0x50]
+        push word [es:msgThereIsASavedGame + 0x4E]
         push word [bp + 0x10]
         push word [bp + 0xe]
         lea ax, [bp - 0x38]
@@ -805,8 +805,8 @@ MergeScheduleDb:
         push word [bp + 0x10]
         push word [bp + 0xe]
         mov es, [segTeamChoiceText43]
-        push word [es:msgThereAreNoHilights + 0xB6F]
-        push word [es:msgThereAreNoHilights + 0xB6D]
+        push word [es:msgThereIsASavedGame + 0x54]
+        push word [es:msgThereIsASavedGame + 0x52]
         push word [bp + 0x8]
         push word [bp + 0x6]
         lea ax, [bp - 0x30]
@@ -826,8 +826,8 @@ MergeScheduleDb:
         push word [bp + 0x14]
         push word [bp + 0x12]
         mov es, [segTeamChoiceText43]
-        push word [es:msgThereAreNoHilights + 0xB6F]
-        push word [es:msgThereAreNoHilights + 0xB6D]
+        push word [es:msgThereIsASavedGame + 0x54]
+        push word [es:msgThereIsASavedGame + 0x52]
         push word [bp + 0xc]
         push word [bp + 0xa]
         lea ax, [bp - 0x30]
@@ -1016,8 +1016,8 @@ LocateTeamDbCopy:
         mov ax, [bp + 0xc]
         mov dx, [bp + 0xe]
         mov es, [segTeamChoiceText44]
-        mov [es:msgThereAreNoHilights + 0x703], ax
-        mov [es:msgThereAreNoHilights + 0x705], dx
+        mov [es:msgThatFloppyDiskHasAn + 0x8], ax
+        mov [es:msgThatFloppyDiskHasAn + 0xA], dx
         lea ax, [bp - 0x4]
         push ax
         lea cx, [bp - 0x6]
@@ -1137,11 +1137,11 @@ UpdateTeamDbs:
         db 0x0B, 0xF6                           ; insn: or si, si
         jnz short .2
         mov es, [segWorkBuffer35]
-        cmp [es:hilightrec_frames + 0x9E8A], si
+        cmp [es:leagueinfo_w6], si
         jz short .2
         mov es, [segTeamChoiceText45]
-        mov [es:msgThereAreNoHilights + 0xB1F], ax
-        mov [es:msgThereAreNoHilights + 0xB21], ss
+        mov [es:msgThereIsASavedGame + 0x4], ax
+        mov [es:msgThereIsASavedGame + 0x6], ss
         lea ax, [bp - 0x2]
         push ax
         lea cx, [bp - 0x4]
@@ -1226,10 +1226,10 @@ UpdateTeamDbs:
 .6:
         lea ax, [bp - 0x18]
         mov es, [segTeamChoiceText46]
-        mov [es:msgThereAreNoHilights + 0x84F], ax
-        mov [es:msgThereAreNoHilights + 0x851], ss
-        mov word [es:msgThereAreNoHilights + 0x853], 0x84d
-        mov word [es:msgThereAreNoHilights + 0x855], 0x3701
+        mov [es:msgTheLeague3 + 0x4], ax
+        mov [es:msgTheLeague3 + 0x6], ss
+        mov word [es:msgTheLeague3 + 0x8], 0x84d
+        mov word [es:msgTheLeague3 + 0xA], 0x3701
         lea ax, [bp - 0x2]
         push ax
         lea cx, [bp - 0x4]
@@ -1381,12 +1381,12 @@ MergeLeagueFiles:
         mov [bp - 0x6], si
         mov byte [bp + si - 0x4e], 0x0
         mov es, [segWorkBuffer35]
-        cmp word [es:hilightrec_frames + 0x9E8A], 0x0
+        cmp word [es:leagueinfo_w6], 0x0
         jz short .3
         lea ax, [bp - 0x4e]
         mov es, [segTeamChoiceText45]
-        mov [es:msgThereAreNoHilights + 0xB1F], ax
-        mov [es:msgThereAreNoHilights + 0xB21], ss
+        mov [es:msgThereIsASavedGame + 0x4], ax
+        mov [es:msgThereIsASavedGame + 0x6], ss
         lea ax, [bp - 0x3e]
         push ax
         lea cx, [bp - 0x38]
@@ -1409,14 +1409,14 @@ MergeLeagueFiles:
         jmp near .33
 .3:
         mov es, [segWorkBuffer36]
-        imul bx, [es:hilightrec_frames + 0x9E84], 0x1e
+        imul bx, [es:leagueinfo], 0x1e
         mov es, [segWorkBuffer37]
         cmp byte [es:bx - 0x5388], 0x2
         jnz short .4
         lea ax, [bp - 0x4e]
         mov es, [segMergeMessages1]
-        mov [es:TradeRemapTable + 0xF], ax
-        mov [es:TradeRemapTable + 0x11], ss
+        mov [es:msgTheMasterControllerForThe + 0x4], ax
+        mov [es:msgTheMasterControllerForThe + 0x6], ss
         lea ax, [bp - 0x3e]
         push ax
         lea cx, [bp - 0x38]
@@ -1443,8 +1443,8 @@ MergeLeagueFiles:
         jz short .5
         lea ax, [bp - 0x4e]
         mov es, [segMergeMessages1]
-        mov [es:JerseyRemapTable + 0x4A], ax
-        mov [es:JerseyRemapTable + 0x4C], ss
+        mov [es:msgTheDatabasesCanOnlyBe + 0x8], ax
+        mov [es:msgTheDatabasesCanOnlyBe + 0xA], ss
         lea ax, [bp - 0x3e]
         push ax
         lea cx, [bp - 0x38]
@@ -1467,7 +1467,7 @@ MergeLeagueFiles:
         jmp near .33
 .5:
         mov es, [segWorkBuffer38]
-        test byte [es:hilightrec_frames + 0x9E88], 0x4
+        test byte [es:leagueinfo_w4], 0x4
         jz short .6
         jmp near .32
 .6:
@@ -1495,7 +1495,7 @@ MergeLeagueFiles:
         cmp word [bp - 0x52], 0x0
         jnz short .8
         mov es, [segWorkBuffer36]
-        push word [es:hilightrec_frames + 0x9E84]
+        push word [es:leagueinfo]
         push strict word str_02d_2
         lea ax, [bp - 0x2e]
         push ax
@@ -1520,7 +1520,7 @@ MergeLeagueFiles:
         push word 0x3701
         push strict word CurLeagueName
         mov es, [segWorkBuffer36]
-        push word [es:hilightrec_frames + 0x9E84]
+        push word [es:leagueinfo]
         push word 0x3a0b
         push strict word leagueinfo_teams
         push cs
@@ -1633,7 +1633,7 @@ MergeLeagueFiles:
         jnz short .16
         mov ax, [bp - 0x40]
         mov es, [segWorkBuffer36]
-        cmp [es:hilightrec_frames + 0x9E84], ax
+        cmp [es:leagueinfo], ax
         jz short .16
         push ax
         push word 0x3701
@@ -1708,7 +1708,7 @@ MergeLeagueFiles:
         jz short .20
 .19:
         mov es, [segWorkBuffer38]
-        mov word [es:hilightrec_frames + 0x9E88], 0x4
+        mov word [es:leagueinfo_w4], 0x4
         push 0x2
         push 0x0
         push 0x13
@@ -1726,7 +1726,7 @@ MergeLeagueFiles:
         cmp word [bp - 0x52], 0x0
         jnz short .21
         mov es, [segWorkBuffer38]
-        mov word [es:hilightrec_frames + 0x9E88], 0x8
+        mov word [es:leagueinfo_w4], 0x8
         push 0x2
         push 0x0
         push 0x13
@@ -1753,8 +1753,8 @@ MergeLeagueFiles:
         push word 0x3701
         push strict word str_Xx
         mov es, [segTeamChoiceText43]
-        push word [es:msgThereAreNoHilights + 0xB67]
-        push word [es:msgThereAreNoHilights + 0xB65]
+        push word [es:msgThereIsASavedGame + 0x4C]
+        push word [es:msgThereIsASavedGame + 0x4A]
         call 0x0CD1:CopyFileByName
         add sp, 0x14
         mov [bp - 0x52], ax
@@ -1770,8 +1770,8 @@ MergeLeagueFiles:
         push word 0x3701
         push strict word str_Xx
         mov es, [segTeamChoiceText43]
-        push word [es:msgThereAreNoHilights + 0xB6B]
-        push word [es:msgThereAreNoHilights + 0xB69]
+        push word [es:msgThereIsASavedGame + 0x50]
+        push word [es:msgThereIsASavedGame + 0x4E]
         call 0x0CD1:CopyFileByName
         add sp, 0x14
         mov [bp - 0x52], ax
@@ -1787,8 +1787,8 @@ MergeLeagueFiles:
         push word 0x3701
         push strict word str_Xx
         mov es, [segTeamChoiceText43]
-        push word [es:msgThereAreNoHilights + 0xB6F]
-        push word [es:msgThereAreNoHilights + 0xB6D]
+        push word [es:msgThereIsASavedGame + 0x54]
+        push word [es:msgThereIsASavedGame + 0x52]
         call 0x0CD1:CopyFileByName
         add sp, 0x14
         mov [bp - 0x52], ax
@@ -1799,8 +1799,8 @@ MergeLeagueFiles:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText43]
-        push word [es:msgThereAreNoHilights + 0xB6F]
-        push word [es:msgThereAreNoHilights + 0xB6D]
+        push word [es:msgThereIsASavedGame + 0x54]
+        push word [es:msgThereIsASavedGame + 0x52]
         push word 0x3701
         push strict word CurLeagueName
         lea ax, [bp - 0x2a]
@@ -1864,7 +1864,7 @@ MergeLeagueFiles:
         cmp word [bp - 0x52], 0x0
         jnz short .29
         mov es, [segWorkBuffer38]
-        mov word [es:hilightrec_frames + 0x9E88], 0x4
+        mov word [es:leagueinfo_w4], 0x4
         push 0x2
         push 0x0
         push 0x13
@@ -1891,7 +1891,7 @@ MergeLeagueFiles:
         cmp word [bp - 0x52], 0x4
         jnz short .31
         mov es, [segWorkBuffer38]
-        cmp word [es:hilightrec_frames + 0x9E88], 0x8
+        cmp word [es:leagueinfo_w4], 0x8
         jz short .30
         jmp near .34
 .30:
@@ -1926,10 +1926,10 @@ MergeLeagueFiles:
 .32:
         lea ax, [bp - 0x4e]
         mov es, [segTeamChoiceText46]
-        mov [es:msgThereAreNoHilights + 0x84F], ax
-        mov [es:msgThereAreNoHilights + 0x851], ss
-        mov word [es:msgThereAreNoHilights + 0x853], 0x83a
-        mov word [es:msgThereAreNoHilights + 0x855], 0x3701
+        mov [es:msgTheLeague3 + 0x4], ax
+        mov [es:msgTheLeague3 + 0x6], ss
+        mov word [es:msgTheLeague3 + 0x8], 0x83a
+        mov word [es:msgTheLeague3 + 0xA], 0x3701
         lea ax, [bp - 0x3e]
         push ax
         lea cx, [bp - 0x38]
@@ -1982,12 +1982,12 @@ MergeUpdateDbs:
         call MergeLeagueFiles
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov es, [segWorkBuffer35]
-        cmp word [es:hilightrec_frames + 0x9E8A], 0x0
+        cmp word [es:leagueinfo_w6], 0x0
         jz short .1
         jmp near .5
 .1:
         mov es, [segWorkBuffer36]
-        imul bx, [es:hilightrec_frames + 0x9E84], 0x1e
+        imul bx, [es:leagueinfo], 0x1e
         mov es, [segWorkBuffer37]
         cmp byte [es:bx - 0x5388], 0x2
         jnz short .2
@@ -2159,7 +2159,7 @@ RebuildLeagueDbs:
         push word [bp - 0x34]
         push word [bp - 0x36]
         mov es, [segWorkBuffer36]
-        push word [es:hilightrec_frames + 0x9E84]
+        push word [es:leagueinfo]
         call 0x28A8:AskMasterPassword
         add sp, 0xa
         db 0x8B, 0xF0                           ; insn: mov si, ax

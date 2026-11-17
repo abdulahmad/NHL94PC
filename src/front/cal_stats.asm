@@ -682,14 +682,14 @@ CalStandingsMenu:
         db 0x90
 .8:
         mov es, [segWorkBuffer43]
-        mov word [es:hilightrec_frames + 0xA27A], 0x0
+        mov word [es:dlgJerseyConflict + 0x4], 0x0
         push word 0xcf1a
         mov ax, strict word GoalieStatsCard
         mov dx, 0x20f4
         jmp short .10
 .9:
         mov es, [segWorkBuffer43]
-        mov word [es:hilightrec_frames + 0xA27A], 0x0
+        mov word [es:dlgJerseyConflict + 0x4], 0x0
         push word 0xcf1a
         mov ax, strict word SkaterStatsCard
         mov dx, 0x23d5

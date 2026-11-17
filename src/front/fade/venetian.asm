@@ -84,7 +84,7 @@ FadeVenetian:
         db 0x1B, 0xDB                           ; insn: sbb bx, bx
         neg bx
         shl bx, byte 0x2
-        les bx, [es:bx + 0x7570]
+        les bx, [es:bx + PageTable]
         mov cx, [es:bx]
         mov dx, [es:bx + 0x2]
         mov [bp - 0x2c], cx
@@ -92,7 +92,7 @@ FadeVenetian:
         mov es, [segDgroup13]
         mov bx, [CurPage]
         shl bx, byte 0x2
-        les bx, [es:bx + 0x7570]
+        les bx, [es:bx + PageTable]
         mov cx, [es:bx]
         mov dx, [es:bx + 0x2]
         mov [bp - 0x30], cx

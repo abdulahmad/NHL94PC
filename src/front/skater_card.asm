@@ -233,7 +233,7 @@ SkaterStatsCard:
         cmp bx, 0x100
         jl short .5
         mov es, [segWorkBuffer44]
-        cmp word [es:hilightrec_frames + 0xA27A], 0x0
+        cmp word [es:dlgJerseyConflict + 0x4], 0x0
         jz short .6
         push word 0xb4
         push word [bp - 0x10]

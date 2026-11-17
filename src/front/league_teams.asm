@@ -96,14 +96,14 @@ AddHumanTeam:
         call 0x0D90:SetDialogColors
         add sp, 0xa
         mov es, [segWorkBuffer3]
-        cmp word [es:hilightrec_frames + 0x9E8A], 0x0
+        cmp word [es:leagueinfo_w6], 0x0
         jnz short .4
         jmp near .14
 .4:
         lea ax, [bp - 0x1a]
         mov es, [segTeamChoiceText2]
-        mov [es:msgThereAreNoHilights + 0xB1F], ax
-        mov [es:msgThereAreNoHilights + 0xB21], ss
+        mov [es:msgThereIsASavedGame + 0x4], ax
+        mov [es:msgThereIsASavedGame + 0x6], ss
         push -0x1
         lea ax, [bp - 0x2]
         push ax
@@ -206,8 +206,8 @@ AddHumanTeam:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText4]
-        push word [es:msgThereAreNoHilights + 0xB67]
-        push word [es:msgThereAreNoHilights + 0xB65]
+        push word [es:msgThereIsASavedGame + 0x4C]
+        push word [es:msgThereIsASavedGame + 0x4A]
         push word [bp - 0x3c]
         push word [bp - 0x3e]
         lea ax, [bp - 0x3a]
@@ -249,13 +249,13 @@ AddHumanTeam:
         push word 0x3a0b
         push strict word leagueinfo_tail
         mov es, [segWorkBuffer3]
-        push word [es:hilightrec_frames + 0x9E8A]
+        push word [es:leagueinfo_w6]
         mov es, [segWorkBuffer4]
-        push word [es:hilightrec_frames + 0x9E88]
+        push word [es:leagueinfo_w4]
         mov es, [bp - 0x44]
         push word [es:bx]
         mov es, [segWorkBuffer6]
-        push word [es:hilightrec_frames + 0x9E84]
+        push word [es:leagueinfo]
         push word 0x3a0b
         push strict word leagueinfo_password
         push word 0x3a0b
@@ -271,14 +271,14 @@ AddHumanTeam:
         db 0x90
 .14:
         mov es, [segWorkBuffer4]
-        test byte [es:hilightrec_frames + 0x9E88], 0x4
+        test byte [es:leagueinfo_w4], 0x4
         jz short .15
         jmp near .6
 .15:
         lea ax, [bp - 0x1a]
         mov es, [segTeamChoiceText3]
-        mov [es:msgThereAreNoHilights + 0x89C], ax
-        mov [es:msgThereAreNoHilights + 0x89E], ss
+        mov [es:msgMasterDatabasesFor + 0x4], ax
+        mov [es:msgMasterDatabasesFor + 0x6], ss
         push -0x1
         lea ax, [bp - 0x2]
         push ax
@@ -416,14 +416,14 @@ RemoveHumanTeam:
         call 0x0D90:SetDialogColors
         add sp, 0xa
         mov es, [segWorkBuffer3]
-        cmp word [es:hilightrec_frames + 0x9E8A], 0x0
+        cmp word [es:leagueinfo_w6], 0x0
         jnz short .4
         jmp near .14
 .4:
         lea ax, [bp - 0x1a]
         mov es, [segTeamChoiceText2]
-        mov [es:msgThereAreNoHilights + 0xB1F], ax
-        mov [es:msgThereAreNoHilights + 0xB21], ss
+        mov [es:msgThereIsASavedGame + 0x4], ax
+        mov [es:msgThereIsASavedGame + 0x6], ss
         push -0x1
         lea ax, [bp - 0x2]
         push ax
@@ -526,8 +526,8 @@ RemoveHumanTeam:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText4]
-        push word [es:msgThereAreNoHilights + 0xB67]
-        push word [es:msgThereAreNoHilights + 0xB65]
+        push word [es:msgThereIsASavedGame + 0x4C]
+        push word [es:msgThereIsASavedGame + 0x4A]
         push word [bp - 0x3c]
         push word [bp - 0x3e]
         lea ax, [bp - 0x3a]
@@ -569,13 +569,13 @@ RemoveHumanTeam:
         push word 0x3a0b
         push strict word leagueinfo_tail
         mov es, [segWorkBuffer3]
-        push word [es:hilightrec_frames + 0x9E8A]
+        push word [es:leagueinfo_w6]
         mov es, [segWorkBuffer4]
-        push word [es:hilightrec_frames + 0x9E88]
+        push word [es:leagueinfo_w4]
         mov es, [bp - 0x44]
         push word [es:bx]
         mov es, [segWorkBuffer6]
-        push word [es:hilightrec_frames + 0x9E84]
+        push word [es:leagueinfo]
         push word 0x3a0b
         push strict word leagueinfo_password
         push word 0x3a0b
@@ -591,14 +591,14 @@ RemoveHumanTeam:
         db 0x90
 .14:
         mov es, [segWorkBuffer4]
-        test byte [es:hilightrec_frames + 0x9E88], 0x4
+        test byte [es:leagueinfo_w4], 0x4
         jz short .15
         jmp near .6
 .15:
         lea ax, [bp - 0x1a]
         mov es, [segTeamChoiceText3]
-        mov [es:msgThereAreNoHilights + 0x89C], ax
-        mov [es:msgThereAreNoHilights + 0x89E], ss
+        mov [es:msgMasterDatabasesFor + 0x4], ax
+        mov [es:msgMasterDatabasesFor + 0x6], ss
         push -0x1
         lea ax, [bp - 0x2]
         push ax

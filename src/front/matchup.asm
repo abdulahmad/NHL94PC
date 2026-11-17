@@ -207,8 +207,8 @@ ShowMatchupScreen:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText50]
-        push word [es:msgThereAreNoHilights + 0xB67]
-        push word [es:msgThereAreNoHilights + 0xB65]
+        push word [es:msgThereIsASavedGame + 0x4C]
+        push word [es:msgThereIsASavedGame + 0x4A]
         push word 0x3701
         push strict word CurLeagueName
         lea ax, [bp - 0x58]
@@ -374,16 +374,16 @@ ShowMatchupScreen:
         mov es, [segLinesMenuText1]
         mov bx, [bp - 0x66]
         shl bx, byte 0x2
-        push word [es:bx + 0xbe]
-        push word [es:bx + 0xbc]
+        push word [es:bx + MatchupMenu + 0x9C]
+        push word [es:bx + MatchupMenu + 0x9A]
         les si, [FontPtr]
         mov ax, [es:si + 0xe]
         imul word [bp - 0x66]
         add ax, strict word 0x1e
         push ax
         mov es, [segLinesMenuText1]
-        push word [es:bx + 0xbe]
-        push word [es:bx + 0xbc]
+        push word [es:bx + MatchupMenu + 0x9C]
+        push word [es:bx + MatchupMenu + 0x9A]
         call 0x0D39:TextWidthFar
         add sp, 0x4
         sub ax, 0x140
@@ -498,11 +498,11 @@ ShowMatchupScreen:
         call 0x03A3:UseCharSeg
         add sp, 0x4
         mov es, [segMenuText37]
-        mov ax, [es:RtlShowMessage + 0xC75]
-        or ax, [es:RtlShowMessage + 0xC73]
+        mov ax, [es:DeskMenuBar + 0x42E]
+        or ax, [es:DeskMenuBar + 0x42C]
         jnz short .10
-        mov ax, [es:RtlShowMessage + 0xC8B]
-        or ax, [es:RtlShowMessage + 0xC89]
+        mov ax, [es:DeskMenuBar + 0x444]
+        or ax, [es:DeskMenuBar + 0x442]
         jnz short .10
         mov word [bp - 0x650], 0x2
 .9:
@@ -629,11 +629,11 @@ ShowMatchupScreen:
         mov bl, [bp + 0x8]
         db 0x2A, 0xFF                           ; insn: sub bh, bh
         shl bx, 1
-        mov ax, [es:bx + 0x128]
+        mov ax, [es:bx + POSeedTable]
         mov bl, [bp + 0x6]
         db 0x2A, 0xFF                           ; insn: sub bh, bh
         shl bx, 1
-        or ax, [es:bx + 0x128]
+        or ax, [es:bx + POSeedTable]
         mov [bp - 0x32], ax
         mov word [bp - 0x63a], 0x1
         mov es, [segWorkBuffer45]
@@ -643,7 +643,7 @@ ShowMatchupScreen:
 .16:
         push word [bp - 0x63a]
         push ax
-        mov ax, [es:0x78c]
+        mov ax, [es:AwayGlStats + 0x12]
         sub ax, 0x3f0
         mov cx, 0x7
         cwd
@@ -732,8 +732,8 @@ ShowMatchupScreen:
         jmp near .37
 .25:
         mov es, [segMenuText37]
-        mov cx, [es:RtlShowMessage + 0xC8B]
-        or cx, [es:RtlShowMessage + 0xC89]
+        mov cx, [es:DeskMenuBar + 0x444]
+        or cx, [es:DeskMenuBar + 0x442]
         jz short .26
         jmp near .34
 .26:

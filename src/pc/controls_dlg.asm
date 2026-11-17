@@ -784,10 +784,10 @@ ControlsDlgPlayoff:
         push di
         push si
         mov es, [segDgroup1]
-        les bx, [es:0x7570]
+        les bx, [es:PageTable]
         mov di, [es:bx]
         mov es, [segDgroup1]
-        les bx, [es:0x7574]
+        les bx, [es:PageTableSeg + 0x2]
         mov si, [es:bx]
         call 0x0FEF:GetPage
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -1425,10 +1425,10 @@ ControlsDlgLoop:
         push di
         push si
         mov es, [segDgroup1]
-        les bx, [es:0x7570]
+        les bx, [es:PageTable]
         mov si, [es:bx]
         mov es, [segDgroup1]
-        les bx, [es:0x7574]
+        les bx, [es:PageTableSeg + 0x2]
         mov ax, [es:bx]
         mov [bp - 0x4], ax
         cmp word [PlayoffDlgY], 0x50

@@ -328,7 +328,7 @@ TitleScreen:
         mov [bp - 0x22], ax
         push word 0x3f00
         mov es, [segDgroup2]
-        les bx, [es:0x7570]
+        les bx, [es:PageTable]
         push word [es:bx]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [bp - 0x2], ax
@@ -337,7 +337,7 @@ TitleScreen:
         add sp, 0x6
         push word 0x3f00
         mov es, [segDgroup2]
-        les bx, [es:0x7574]
+        les bx, [es:PageTableSeg + 0x2]
         push word [es:bx]
         push 0x0
         call 0x0000:VgaCopyBytes
@@ -367,7 +367,7 @@ TitleScreen:
         db 0x1B, 0xDB                           ; insn: sbb bx, bx
         neg bx
         shl bx, byte 0x2
-        les bx, [es:bx + 0x7570]
+        les bx, [es:bx + PageTable]
         push word [es:bx]
         push 0x0
         call 0x0000:VgaCopyRect
@@ -713,12 +713,12 @@ GoodnightScreen:
         mov es, [segCredits1]
         mov si, [bp - 0x66]
         shl si, byte 0x2
-        mov ax, [es:si + TeamNameTemplate + 0x364]
-        or ax, [es:si + TeamNameTemplate + 0x362]
+        mov ax, [es:si + 0x5cf]
+        or ax, [es:si + 0x5cd]
         jz short .8
         mov [bp - 0x64], bx
-        push word [es:si + TeamNameTemplate + 0x364]
-        push word [es:si + TeamNameTemplate + 0x362]
+        push word [es:si + 0x5cf]
+        push word [es:si + 0x5cd]
         call 0x0D39:TextWidthFar
         add sp, 0x4
         sub ax, 0x140
@@ -728,8 +728,8 @@ GoodnightScreen:
         sar ax, 1
         mov [bp - 0x50], ax
         mov es, [segCredits1]
-        push word [es:si + TeamNameTemplate + 0x364]
-        push word [es:si + TeamNameTemplate + 0x362]
+        push word [es:si + 0x5cf]
+        push word [es:si + 0x5cd]
         push word [bp - 0x64]
         push ax
         call 0x0D39:DrawShadowTextBuffered

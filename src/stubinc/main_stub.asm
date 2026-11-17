@@ -2,6 +2,7 @@
 ;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
+exhstate_name		equ	0x2
 LoadRawHeader		equ	0x2
 LoadPackedHeader		equ	0x8
 NullFar		equ	0xC
@@ -15,8 +16,8 @@ CalibrateRightStick		equ	0x244
 GetPaletteFar		equ	0x366
 InitGraphics		equ	0x39A
 OpenReadShared		equ	0x3D6
-FatalError		equ	0x3E4
 HookCrit		equ	0x3E4
+FatalError		equ	0x3E4
 CloseHandlePtr		equ	0x41E
 ReadAtOffset		equ	0x442
 StickPresent		equ	0x51E

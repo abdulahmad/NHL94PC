@@ -50,7 +50,7 @@ MenuLeagueSettingsEdit:
         mov es, [segDgroup4]
         mov bx, [CurPage]
         shl bx, byte 0x2
-        les bx, [es:bx + 0x7570]
+        les bx, [es:bx + PageTable]
         push word [es:bx]
         call 0x0000:VgaCopyBytes
         add sp, 0x6
@@ -60,12 +60,12 @@ MenuLeagueSettingsEdit:
         db 0x1B, 0xDB                           ; insn: sbb bx, bx
         neg bx
         shl bx, byte 0x2
-        les bx, [es:bx + 0x7570]
+        les bx, [es:bx + PageTable]
         push word [es:bx]
         mov bx, [CurPage]
         shl bx, byte 0x2
         mov es, [segDgroup4]
-        les bx, [es:bx + 0x7570]
+        les bx, [es:bx + PageTable]
         push word [es:bx]
         call 0x0000:VgaCopyBytes
         add sp, 0x6

@@ -106,6 +106,8 @@ GetPaletteFar		equ	0x366
 HeapSizeHi		equ	0xAE92
 HeapSizeLo		equ	0xAE90
 HomeGlStats		equ	0x768
+HomeGlStats_w2		equ	0x76A
+HomeGlStats_w4		equ	0x76C
 HomePlStats		equ	0x448
 HomePlStats_w2		equ	0x44A
 HomeTeam		equ	0x21D0
@@ -171,7 +173,6 @@ ReadRecord52		equ	0x4EA
 RemoveDirTree		equ	0x258
 RestoreUnderBox		equ	0xF22
 RosterScreenThunk		equ	0x2459
-RtlShowMessage		equ	0x4FD
 SaveCharTab		equ	0xC7A
 SaveUnderOff		equ	0x9FA
 SaveUnderSeg		equ	0x9FC
@@ -202,6 +203,7 @@ SoundDevTable		equ	0x1070
 SoundOptions		equ	0x1C6
 StatsMenuLoopThunk		equ	0x246D
 StopJingle		equ	0x5B8
+TeamNameTemplate		equ	0x26B
 TeamPalette1		equ	0xB0C4
 TeamPalette2		equ	0xB1C4
 TextWidth		equ	0xBFA
@@ -218,6 +220,7 @@ UseCurrentPage		equ	0x1A6
 UseOtherPage		equ	0x118C
 VisTeam		equ	0x21CE
 VisTeamNum		equ	0x29CC
+VisitorTeamMenuText		equ	0x1332
 WaitButtonTimed		equ	0x0
 WaitJingle		equ	0x640
 WaitRetrace		equ	0x34A7
@@ -281,7 +284,6 @@ floppydrive		equ	0xC276
 floppyok		equ	0xC278
 gameopts		equ	0x21CC
 goaliestatscb		equ	0x21C6
-hilightrec_frames		equ	0xDD6
 hmpenmins		equ	0xB36A
 hmppchances		equ	0xB366
 hmppgoals		equ	0xB364
@@ -310,6 +312,8 @@ lgschedrec_b3		equ	0xC29D
 lgschedrec_b4		equ	0xC29E
 lgschedrec_b5		equ	0xC29F
 lgstate		equ	0xC4
+lgstate_name		equ	0xC6
+lgstate_w5A		equ	0x11E
 menucbfn		equ	0x21D2
 menucbseg		equ	0x21D4
 mergestate		equ	0xC7A0
@@ -346,7 +350,6 @@ msgTheLeague3		equ	0x862
 msgTheMasterControllerForThe		equ	0x8B
 msgThePasswordWasEnteredDifferently		equ	0xAEA
 msgTheTradingDeadlineHasPassed		equ	0x9A
-msgThereAreNoHilights		equ	0x17
 msgThereIsASavedGame		equ	0xB32
 msgThereIsAlreadyALeague		equ	0x298
 msgThereIsOnlyOneHuman		equ	0xD4

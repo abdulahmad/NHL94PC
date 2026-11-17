@@ -1192,7 +1192,7 @@ GSummaryPath:
         push si
         mov byte [gsummarypath], 0x0
         mov es, [segTeamChoiceText53]
-        cmp byte [es:msgThereAreNoHilights + 0xE3C], 0x0
+        cmp byte [es:CurLeagueName], 0x0
         jz short .1
         push word 0x3701
         push strict word CurLeagueName

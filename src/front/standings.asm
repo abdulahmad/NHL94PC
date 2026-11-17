@@ -223,8 +223,8 @@ StandingsScreen:
         push di
         push si
         mov es, [segMenuText36]
-        mov word [es:RtlShowMessage + 0x11C7], strict word StandingsActRoster2
-        mov word [es:RtlShowMessage + 0x11C9], 0x2248
+        mov word [es:PlayerStatsMenuBar + 0x7A], strict word StandingsActRoster2
+        mov word [es:PlayerStatsMenuBar + 0x7C], 0x2248
         push 0x0
         push strict word str_EasnFnt
         call 0x149D:LoadRawHeader
@@ -815,12 +815,12 @@ DrawStandingsPage:
         db 0x1B, 0xDB                           ; insn: sbb bx, bx
         neg bx
         shl bx, byte 0x2
-        les bx, [es:bx + 0x7570]
+        les bx, [es:bx + PageTable]
         push word [es:bx]
         mov bx, [CurPage]
         shl bx, byte 0x2
         mov es, [segDgroup7]
-        les bx, [es:bx + 0x7570]
+        les bx, [es:bx + PageTable]
         push word [es:bx]
         call 0x0000:VgaCopyBytes
         add sp, 0x6
@@ -1174,8 +1174,8 @@ ShowSeasonStandings:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText49]
-        push word [es:msgThereAreNoHilights + 0xB67]
-        push word [es:msgThereAreNoHilights + 0xB65]
+        push word [es:msgThereIsASavedGame + 0x4C]
+        push word [es:msgThereIsASavedGame + 0x4A]
         push word 0x3861
         push strict word 0x0
         lea ax, [bp - 0x30]
@@ -1576,8 +1576,8 @@ LoadLeagueSchedule:
         push word 0x3701
         push strict word str_Db_2
         mov es, [segTeamChoiceText49]
-        push word [es:msgThereAreNoHilights + 0xB6F]
-        push word [es:msgThereAreNoHilights + 0xB6D]
+        push word [es:msgThereIsASavedGame + 0x54]
+        push word [es:msgThereIsASavedGame + 0x52]
         jmp short .2
 .1:
         push word 0x3701
@@ -1726,8 +1726,8 @@ ShowPlayoffStandings:
         mov dx, 0x2248
 .10:
         mov es, [segMenuText36]
-        mov [es:RtlShowMessage + 0x11C7], ax
-        mov [es:RtlShowMessage + 0x11C9], dx
+        mov [es:PlayerStatsMenuBar + 0x7A], ax
+        mov [es:PlayerStatsMenuBar + 0x7C], dx
         push cs
         call DrawStandingsPage
         pop si

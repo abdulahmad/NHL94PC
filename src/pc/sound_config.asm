@@ -1132,8 +1132,8 @@ SetSoundDevice:
         jmp short .37
 .36:
         mov es, [segPlayoffDialogRects1]
-        mov word [es:0x7b], 0x5f
-        mov word [es:0x7d], 0x36a8
+        mov word [es:msgCouldNotFindA + 0x4], 0x5f
+        mov word [es:msgCouldNotFindA + 0x6], 0x36a8
 .37:
         lea ax, [bp - 0x28]
         push ax
@@ -1182,14 +1182,14 @@ SetSoundDevice:
         db 0x90
 .40:
         mov es, [segPlayoffDialogRects1]
-        mov word [es:0x7b], 0x6c
-        mov word [es:0x7d], 0x36a8
+        mov word [es:msgCouldNotFindA + 0x4], 0x6c
+        mov word [es:msgCouldNotFindA + 0x6], 0x36a8
         jmp near .37
         db 0x90
 .41:
         mov es, [segPlayoffDialogRects1]
-        mov word [es:0x7b], 0x72
-        mov word [es:0x7d], 0x36a8
+        mov word [es:msgCouldNotFindA + 0x4], 0x72
+        mov word [es:msgCouldNotFindA + 0x6], 0x36a8
         jmp near .37
         db 0x90
 .42:

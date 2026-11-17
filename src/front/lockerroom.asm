@@ -514,10 +514,10 @@ DrawLockerRoom:
         mov es, [segDbFiles5]
         mov bx, [VisTeamNum]
         shl bx, 1
-        mov bx, [es:bx + 0x128]
+        mov bx, [es:bx + POSeedTable]
         mov si, [HomeTeamNum]
         shl si, 1
-        or bx, [es:si + 0x128]
+        or bx, [es:si + POSeedTable]
         shl bx, 1
         mov bx, [bx + LockerItemTable]
         shl bx, 1
@@ -1309,10 +1309,10 @@ LockerRoomLoop:
         mov es, [segDbFiles5]
         mov bx, [bp - 0x318]
         shl bx, 1
-        mov ax, [es:bx + 0x128]
+        mov ax, [es:bx + POSeedTable]
         mov bx, [bp - 0x14]
         shl bx, 1
-        or ax, [es:bx + 0x128]
+        or ax, [es:bx + POSeedTable]
         push ax
         push word [bp - 0x318]
         push 0x0
@@ -1372,10 +1372,10 @@ LockerRoomLoop:
         mov es, [segDbFiles5]
         mov bx, [bp - 0x318]
         shl bx, 1
-        mov ax, [es:bx + 0x128]
+        mov ax, [es:bx + POSeedTable]
         mov bx, [bp - 0x14]
         shl bx, 1
-        or ax, [es:bx + 0x128]
+        or ax, [es:bx + POSeedTable]
         push ax
         push word [bp - 0x14]
         push 0x1
@@ -1433,7 +1433,7 @@ LockerRoomLoop:
         call 0x03A3:CopyStrNFar
         add sp, 0xa
         mov es, [segMenuText8]
-        mov byte [es:RtlSetHandler + 0x25], 0x20
+        mov byte [es:str_Mtl_2 + 0x2], 0x20
         jmp short .39
         db 0x90
 .37:
@@ -1470,7 +1470,7 @@ LockerRoomLoop:
         call 0x03A3:CopyStrNFar
         add sp, 0xa
         mov es, [segMenuText8]
-        mov byte [es:RtlSetHandler + 0x1E], 0x20
+        mov byte [es:str_LaAtMtl + 0x2], 0x20
         jmp short .43
         db 0x90
 .41:

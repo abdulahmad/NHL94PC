@@ -1148,11 +1148,11 @@ PickThreeStars:
         mov word [bp - 0x6], 0x1
 .10:
         imul bx, [bp - 0x4], 0x12
-        mov ax, [es:bx + 0x76a]
-        cmp [es:bx + 0x776], ax
+        mov ax, [es:bx + HomeGlStats_w2]
+        cmp [es:bx + HomeGlStats_w4 + 0xA], ax
         jng short .11
-        mov ax, [es:bx + 0x770]
-        cmp [es:bx + 0x776], ax
+        mov ax, [es:bx + HomeGlStats_w4 + 0x4]
+        cmp [es:bx + HomeGlStats_w4 + 0xA], ax
         jng short .11
         mov word [bp - 0x6], 0x2
 .11:
@@ -1170,7 +1170,7 @@ PickThreeStars:
         shl bx, 1
         db 0x03, 0xD9                           ; insn: add bx, cx
         shl bx, 1
-        cmp [es:bx + 0x76a], ax
+        cmp [es:bx + HomeGlStats_w2], ax
         jng short .12
         mov ax, [bp - 0x6]
         add ax, strict word 0x19
@@ -1212,13 +1212,13 @@ PickThreeStars:
         mov es, ax
         cmp word [es:bx], 0x0
         jnz short .18
-        cmp word [es:bx + 0x2], 0x0
+        cmp word [es:bx + HomeSortObjs + 0x2], 0x0
         jnz short .18
-        cmp word [es:bx + 0x4], 0x0
+        cmp word [es:bx + HomeSortObjs + 0x4], 0x0
         jnz short .18
-        cmp word [es:bx + 0x6], 0x0
+        cmp word [es:bx + HomeSortObjs + 0x6], 0x0
         jnz short .18
-        cmp word [es:bx + 0xe], 0x0
+        cmp word [es:bx + HomeSortObjs + 0xE], 0x0
         jnz short .18
 .15:
         inc word [bp - 0x4]

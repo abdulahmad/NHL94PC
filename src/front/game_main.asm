@@ -839,7 +839,7 @@ Gameloop:
         call 0x1B35:SportsDeskThunk
         add sp, 0x2
         mov es, [segDbFiles17]
-        cmp word [es:0x126], 0x2
+        cmp word [es:lgstate_w5A + 0x8], 0x2
         jnz short .15
         jmp near .27
 .15:
@@ -877,7 +877,7 @@ Gameloop:
         mov word [PadRepeatOn], 0x0
         call 0x1B35:PeriodOverThunk
         mov es, [segDbFiles17]
-        cmp word [es:0x126], 0x2
+        cmp word [es:lgstate_w5A + 0x8], 0x2
         jnz short .21
         jmp near .27
 .21:
@@ -924,7 +924,7 @@ Gameloop:
         call 0x1B35:StartThreeStarsThunk
         call 0x1B35:IntermissionScreensThunk
         mov es, [segDbFiles17]
-        mov word [es:0x126], 0x1
+        mov word [es:lgstate_w5A + 0x8], 0x1
 .27:
         call 0x1B35:FreeGameMemoryThunk
         pop si
@@ -1002,12 +1002,12 @@ PlayGame:
         jz short .10
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov es, [segDbFiles17]
-        mov [es:0x126], ax
+        mov [es:lgstate_w5A + 0x8], ax
         push ax
         call 0x1B35:SportsDeskThunk
         add sp, 0x2
         mov es, [segDbFiles17]
-        cmp word [es:0x126], 0x2
+        cmp word [es:lgstate_w5A + 0x8], 0x2
         jnz short .6
         call 0x1B35:FreeGameMemoryThunk
         pop si
@@ -1030,7 +1030,7 @@ PlayGame:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnl short .9
         mov es, [segDbFiles17]
-        mov word [es:0x126], 0x2
+        mov word [es:lgstate_w5A + 0x8], 0x2
         call 0x1B35:FreeGameMemoryThunk
         mov ax, 0xffff
         pop si
@@ -1043,7 +1043,7 @@ PlayGame:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [introskipped], ax
         mov es, [segDbFiles17]
-        mov [es:0x126], ax
+        mov [es:lgstate_w5A + 0x8], ax
         call 0x1B35:joyq_flushThunk
         push cs
         call Gameloop
@@ -1051,7 +1051,7 @@ PlayGame:
         cmp word [DbSaveMode], 0x0
         jz short .11
         mov es, [segDbFiles17]
-        cmp word [es:0x126], 0x1
+        cmp word [es:lgstate_w5A + 0x8], 0x1
         jnz short .11
         and byte [AnnouncerFlags], 0x7f
         push word 0x3701

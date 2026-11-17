@@ -88,6 +88,7 @@ GetInputEvent		equ	0xE
 GetPage		equ	0x11B1
 GetPaletteFar		equ	0x366
 GetPixel		equ	0x12DA
+GoalieStatsMenuBar		equ	0x1886
 HeapSizeHi		equ	0xAE92
 HeapSizeLo		equ	0xAE90
 HomeLinesRec		equ	0xA03C
@@ -137,6 +138,7 @@ LockerText7		equ	0xB1DA
 LockerText8		equ	0xB20D
 LockerText9		equ	0xB214
 LockerTextPtrs		equ	0x1138
+MatchupLinesMenu		equ	0x14D4
 MemBlock1Off		equ	0xAEB2
 MemBlock1Seg		equ	0xAEB4
 MenuExportDbsThunk		equ	0x2049
@@ -203,8 +205,6 @@ RestoreVgaPlanes		equ	0x224
 RinkEndArt		equ	0xC25C
 RinkEndArtSeg		equ	0xC25E
 RosterScreenThunk		equ	0x2459
-RtlSetHandler		equ	0xF4
-RtlShowMessage		equ	0x4FD
 SaveCharTab		equ	0xC7A
 SaveVgaPlanes		equ	0x4
 SavedGameNames		equ	0xA6D8
@@ -278,6 +278,7 @@ TitleJingle2		equ	0xBD92
 TitleJingle2Seg		equ	0xBD94
 TitleJingleSeg		equ	0xBD90
 TradePlayersThunk		equ	0x2607
+TradeRemapTable		equ	0x80
 UnloadSong		equ	0x7FE
 UpdateTeamDbsThunk		equ	0x2611
 UseCharSeg		equ	0xCB8
@@ -399,6 +400,7 @@ msgGeneratingTheFinalResults		equ	0x12D4
 msgInitializingTheMt32CardPlease		equ	0xAC
 msgTeamEliminatedFromPlayoffs		equ	0x12BC
 msgThereAreNoHilights		equ	0x17
+msgThereIsASavedGame		equ	0xB32
 msgThereIsAlreadyAPlay		equ	0x5B
 msgYourTeamHasBeenEliminated		equ	0x12AC
 musicslot		equ	0x8B76

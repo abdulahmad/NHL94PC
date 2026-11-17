@@ -148,6 +148,7 @@ joyq_popThunk		equ	0x2945
 joyrec		equ	0x4B04
 lcline		equ	0xD470
 lctimer		equ	0xD472
+lgstate_w5A		equ	0x11E
 mousex		equ	0xD60E
 mousey		equ	0xD610
 ovltimer2		equ	0xD6CE

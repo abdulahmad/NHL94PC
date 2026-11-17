@@ -45,6 +45,7 @@ CurLeagueName		equ	0xE53
 CurPage		equ	0x74DC
 DGROUP		equ	0x45C9
 DbSaveMode		equ	0x1B4
+DeskMenuBar		equ	0xD44
 DeskRedrawPage		equ	0x4B20
 DeskRedrawPage2		equ	0x4B22
 DialogBackColor		equ	0x9EE
@@ -187,6 +188,7 @@ OverlayFramesSeg		equ	0xD632
 OverlayGfx		equ	0xD62C
 OverlayGfxSeg		equ	0xD62E
 PBnum		equ	0xD6C6
+POSeedTable		equ	0x128
 PadRepeatOn		equ	0x524
 PadStates		equ	0x52C
 PadStates2		equ	0x52D
@@ -247,12 +249,6 @@ RinkOverlayFrames2		equ	0x4A2C
 RinkRowBytes		equ	0xB09C
 RinkTilesPtr		equ	0x8FE
 RinkTilesSeg		equ	0x900
-RtlHexByte		equ	0x1E
-RtlHexDigit		equ	0x2B
-RtlHexWord		equ	0x17
-RtlSectionHook		equ	0x3
-RtlShowMessage		equ	0x4FD
-RtlWriteHex		equ	0x5
 SaveCharTab		equ	0xC7A
 SaveModeStateThunk		equ	0x249F
 SaveVgaPlanes		equ	0x4
@@ -494,6 +490,7 @@ lcstate2		equ	0x48E0
 lctime		equ	0x48DE
 lctimer		equ	0xD472
 lgstate		equ	0xC4
+lgstate_w5A		equ	0x11E
 lj1		equ	0xD620
 lj2		equ	0xD622
 ltack		equ	0x4A50
@@ -502,7 +499,7 @@ lty		equ	0xD628
 mousex		equ	0xD60E
 mousey		equ	0xD610
 msgInsufficientDiskSpaceToSave		equ	0x45
-msgThereAreNoHilights		equ	0x17
+msgThereIsASavedGame		equ	0xB32
 objylist		equ	0xD496
 onetimerflag		equ	0x4A66
 otherscoreaway		equ	0xB0B6

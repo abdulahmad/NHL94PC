@@ -538,7 +538,7 @@ GetSeasonTitle:
         jmp short .1
 .4:
         mov es, [segSeasonTitles4]
-        cmp byte [es:0x3d], 0x1
+        cmp byte [es:str_WwwwwwwwSeason + 0x11], 0x1
         jnz short .5
         mov ax, 0x3f
         mov cx, 0x384b
@@ -547,7 +547,7 @@ GetSeasonTitle:
         mov si, [bp - 0xa]
         mov di, [bp - 0x6]
         mov es, [segSeasonTitles5]
-        cmp byte [es:0x5b], 0x1
+        cmp byte [es:str_WwwwwwwwSeasonPlayOffs + 0x1B], 0x1
         jnz short .7
         mov ax, 0x5d
         mov cx, 0x384b

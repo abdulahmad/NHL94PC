@@ -1,6 +1,7 @@
 ClipBottomY		equ	0x74F4
 ClipTopY		equ	0x74F2
 CurPage		equ	0x74DC
+PageTable		equ	0x7570
 RandLfsrByte		equ	0x36
 VenetianRowBytes		equ	0x74FA
 segDgroup22		equ	0x8CFC

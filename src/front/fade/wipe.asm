@@ -81,7 +81,7 @@ FadeWipe:
         db 0x1B, 0xDB                           ; insn: sbb bx, bx
         neg bx
         shl bx, byte 0x2
-        les bx, [es:bx + 0x7570]
+        les bx, [es:bx + PageTable]
         mov ax, [es:bx]
         mov dx, [es:bx + 0x2]
         mov [bp - 0x32], ax
@@ -89,7 +89,7 @@ FadeWipe:
         mov es, [segDgroup15]
         mov bx, [CurPage]
         shl bx, byte 0x2
-        les bx, [es:bx + 0x7570]
+        les bx, [es:bx + PageTable]
         mov ax, [es:bx]
         mov dx, [es:bx + 0x2]
         mov [bp - 0x36], ax

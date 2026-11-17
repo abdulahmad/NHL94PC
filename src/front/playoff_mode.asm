@@ -114,14 +114,14 @@ MenuPlayoffHilights:
         call 0x0000:VgaCopyBytes
         add sp, 0x6
         mov es, [segMenuText9]
-        mov ax, [es:RtlShowMessage + 0x849]
-        add ax, [es:RtlShowMessage + 0x84D]
+        mov ax, [es:DeskMenuBar + 0x2]
+        add ax, [es:DeskMenuBar + 0x6]
         cwd
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         sar ax, 1
         push ax
-        mov ax, [es:RtlShowMessage + 0x84B]
-        add ax, [es:RtlShowMessage + 0x847]
+        mov ax, [es:DeskMenuBar + 0x4]
+        add ax, [es:DeskMenuBar]
         cwd
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         sar ax, 1
@@ -154,14 +154,14 @@ MenuPlayoffHilights:
         retf
 .3:
         mov es, [segMenuText9]
-        mov ax, [es:RtlShowMessage + 0x849]
-        add ax, [es:RtlShowMessage + 0x84D]
+        mov ax, [es:DeskMenuBar + 0x2]
+        add ax, [es:DeskMenuBar + 0x6]
         cwd
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         sar ax, 1
         push ax
-        mov ax, [es:RtlShowMessage + 0x84B]
-        add ax, [es:RtlShowMessage + 0x847]
+        mov ax, [es:DeskMenuBar + 0x4]
+        add ax, [es:DeskMenuBar]
         cwd
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         sar ax, 1
@@ -405,18 +405,18 @@ CreatePlayoffs:
         mov word [es:postate_w5A], 0x10
 .9:
         mov es, [segDbFiles6]
-        cmp word [es:0xbc], 0x10
+        cmp word [es:postate_w5A], 0x10
         jz short .10
         mov ax, 0x9
         jmp short .11
 .10:
         mov ax, 0xffff
 .11:
-        mov [es:0xb8], ax
-        mov word [es:0xbe], 0x10
-        mov word [es:0xba], 0xfffe
-        mov word [es:0xc0], 0x0
-        mov word [es:0xc2], 0x1
+        mov [es:postate_b55 + 0x1], ax
+        mov word [es:postate_w5A + 0x2], 0x10
+        mov word [es:postate_b55 + 0x3], 0xfffe
+        mov word [es:postate_w5A + 0x4], 0x0
+        mov word [es:postate_w5A + 0x6], 0x1
         push es
         push strict word 0x62
         call 0x2E70:LoadModeState
@@ -737,12 +737,12 @@ CreatePlayoffs:
         call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
         mov es, [segMenuText10]
-        mov word [es:RtlShowMessage + 0x6DD], strict word PlayoffModeLoopThunk
-        mov word [es:RtlShowMessage + 0x6DF], 0x1b35
-        mov word [es:RtlShowMessage + 0x6F3], strict word EditPlayoffSettingsThunk
-        mov word [es:RtlShowMessage + 0x6F5], 0x1b35
-        mov word [es:RtlShowMessage + 0x709], strict word MenuPlayoffHilightsThunk
-        mov word [es:RtlShowMessage + 0x70B], 0x1b35
+        mov word [es:TeamNameTemplate + 0x96F], strict word PlayoffModeLoopThunk
+        mov word [es:TeamNameTemplate + 0x971], 0x1b35
+        mov word [es:TeamNameTemplate + 0x985], strict word EditPlayoffSettingsThunk
+        mov word [es:TeamNameTemplate + 0x987], 0x1b35
+        mov word [es:TeamNameTemplate + 0x99B], strict word MenuPlayoffHilightsThunk
+        mov word [es:TeamNameTemplate + 0x99D], 0x1b35
         mov word [LeagueSetChoice], 0x0
 .25:
         push word [bp - 0x3e]
@@ -1178,7 +1178,7 @@ POPickConfTeams:
         mov es, [segDbFiles7]
         mov bx, [HomeTeamNum]
         shl bx, 1
-        cmp [es:bx + 0x128], ax
+        cmp [es:bx + POSeedTable], ax
         jnz short .3
         db 0x2B, 0xFF                           ; insn: sub di, di
         mov bx, [bp + 0xa]
@@ -1205,7 +1205,7 @@ POPickConfTeams:
         mov es, [segDbFiles7]
         mov bx, [VisTeamNum]
         shl bx, 1
-        cmp [es:bx + 0x128], ax
+        cmp [es:bx + POSeedTable], ax
         jz short .4
         mov si, [bp - 0x4]
         jmp short .7
@@ -1436,10 +1436,10 @@ POCreateSchedule:
         mov es, [segDbFiles7]
         mov bx, [VisTeamNum]
         shl bx, 1
-        mov ax, [es:bx + 0x128]
+        mov ax, [es:bx + POSeedTable]
         mov bx, [HomeTeamNum]
         shl bx, 1
-        cmp [es:bx + 0x128], ax
+        cmp [es:bx + POSeedTable], ax
         jnz short .3
         jmp near .6
 .3:
@@ -1470,19 +1470,19 @@ POCreateSchedule:
         mov es, [segDbFiles7]
         mov bx, [HomeTeamNum]
         shl bx, 1
-        mov ax, [es:bx + 0x128]
+        mov ax, [es:bx + POSeedTable]
         cmp ax, strict word 0x3
         jnl short .4
         mov bx, [VisTeamNum]
         shl bx, 1
-        cmp word [es:bx + 0x128], 0x3
+        cmp word [es:bx + POSeedTable], 0x3
         jg short .5
 .4:
         cmp ax, strict word 0x3
         jng short .6
         mov bx, [VisTeamNum]
         shl bx, 1
-        cmp word [es:bx + 0x128], 0x3
+        cmp word [es:bx + POSeedTable], 0x3
         jnl short .6
 .5:
         push word [VisTeamNum]
@@ -1689,7 +1689,7 @@ POInitSchedule:
         mov es, [segDbFiles7]
         mov si, [bx]
         shl si, 1
-        cmp word [es:si + 0x128], 0x1
+        cmp word [es:si + POSeedTable], 0x1
         jnz short .7
         mov ax, [bx]
         inc di
@@ -1727,7 +1727,7 @@ POInitSchedule:
         mov es, [segDbFiles7]
         mov bx, [si]
         shl bx, 1
-        cmp word [es:bx + 0x128], 0x2
+        cmp word [es:bx + POSeedTable], 0x2
         jnz short .9
         mov ax, [si]
         inc di
@@ -1765,7 +1765,7 @@ POInitSchedule:
         mov es, [segDbFiles7]
         mov bx, [si]
         shl bx, 1
-        cmp word [es:bx + 0x128], 0x4
+        cmp word [es:bx + POSeedTable], 0x4
         jnz short .11
         mov ax, [si]
         inc di
@@ -1803,7 +1803,7 @@ POInitSchedule:
         mov es, [segDbFiles7]
         mov bx, [si]
         shl bx, 1
-        cmp word [es:bx + 0x128], 0x8
+        cmp word [es:bx + POSeedTable], 0x8
         jnz short .13
         mov ax, [si]
         inc di
@@ -2774,8 +2774,8 @@ POSimSeriesTeamWins:
         push cx
         push ax
         mov es, [segTeamChoiceText1]
-        push word [es:msgThereAreNoHilights + 0xB67]
-        push word [es:msgThereAreNoHilights + 0xB65]
+        push word [es:msgThereIsASavedGame + 0x4C]
+        push word [es:msgThereIsASavedGame + 0x4A]
         push 0x0
         push 0x0
         lea ax, [bp - 0x28]
@@ -2798,8 +2798,8 @@ POSimSeriesTeamWins:
         push word [bp - 0x2a]
         push word [bp - 0x2c]
         mov es, [segTeamChoiceText1]
-        push word [es:msgThereAreNoHilights + 0xB63]
-        push word [es:msgThereAreNoHilights + 0xB61]
+        push word [es:msgThereIsASavedGame + 0x48]
+        push word [es:msgThereIsASavedGame + 0x46]
         push 0x0
         push 0x0
         lea ax, [bp - 0x28]
@@ -2924,8 +2924,8 @@ POSimSeries:
         push cx
         push ax
         mov es, [segTeamChoiceText1]
-        push word [es:msgThereAreNoHilights + 0xB67]
-        push word [es:msgThereAreNoHilights + 0xB65]
+        push word [es:msgThereIsASavedGame + 0x4C]
+        push word [es:msgThereIsASavedGame + 0x4A]
         push 0x0
         push 0x0
         lea ax, [bp - 0x2a]
@@ -2948,8 +2948,8 @@ POSimSeries:
         push word [bp - 0x2c]
         push word [bp - 0x2e]
         mov es, [segTeamChoiceText1]
-        push word [es:msgThereAreNoHilights + 0xB63]
-        push word [es:msgThereAreNoHilights + 0xB61]
+        push word [es:msgThereIsASavedGame + 0x48]
+        push word [es:msgThereIsASavedGame + 0x46]
         push 0x0
         push 0x0
         lea ax, [bp - 0x2a]
@@ -4217,8 +4217,8 @@ POAfterGame:
         mov word [bp - 0xc], 0xf
         mov es, [segMenuText11]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:RtlShowMessage + 0x13D9], ax
-        mov [es:RtlShowMessage + 0x13D7], ax
+        mov [es:GoalieStatsMenuBar + 0x50], ax
+        mov [es:GoalieStatsMenuBar + 0x4E], ax
         les bx, [bp + 0x6]
         mov word [es:bx + 0x20], 0x69
         push word [bp + 0x8]
@@ -4410,8 +4410,8 @@ POAfterGameJumpTable:                           ; jump table of POAfterGame: 15 
         mov word [es:bx + 0x20], 0x69
         mov es, [segMenuText11]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:RtlShowMessage + 0x13D9], ax
-        mov [es:RtlShowMessage + 0x13D7], ax
+        mov [es:GoalieStatsMenuBar + 0x50], ax
+        mov [es:GoalieStatsMenuBar + 0x4E], ax
         push word [bp + 0x8]
         push word [bp + 0x6]
         push cs
@@ -4783,7 +4783,7 @@ PlayoffModeLoop:
         call LoadScheduleDB
         add sp, 0x2
         mov es, [segDbFiles8]
-        cmp word [es:0x126], 0x1
+        cmp word [es:lgstate_w5A + 0x8], 0x1
         jz short .3
         jmp near .5
 .3:
@@ -4825,7 +4825,7 @@ PlayoffModeLoop:
         call 0x0000:_unlink
         add sp, 0x2
         mov es, [segDbFiles6]
-        and byte [es:0xb7], 0x7f
+        and byte [es:postate_b55], 0x7f
         and byte [AnnouncerFlags], 0x7f
 .4:
         push word [bp - 0x3a]
@@ -5049,15 +5049,15 @@ PlayoffModeLoop:
         cmp ax, strict word 0xf
         jnl short .13
         mov es, [segMenuText11]
-        mov word [es:RtlShowMessage + 0x13D7], strict word POMenuResult4Thunk
-        mov word [es:RtlShowMessage + 0x13D9], 0x1b35
+        mov word [es:GoalieStatsMenuBar + 0x4E], strict word POMenuResult4Thunk
+        mov word [es:GoalieStatsMenuBar + 0x50], 0x1b35
         jmp short .14
         db 0x90
 .13:
         mov es, [segMenuText11]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [es:RtlShowMessage + 0x13D9], ax
-        mov [es:RtlShowMessage + 0x13D7], ax
+        mov [es:GoalieStatsMenuBar + 0x50], ax
+        mov [es:GoalieStatsMenuBar + 0x4E], ax
 .14:
         cmp word [bp - 0x2a], 0xf
         jl short .15
@@ -5326,7 +5326,7 @@ PlayoffModeLoop:
         call LoadScheduleDB
         add sp, 0x2
         mov es, [segDbFiles8]
-        cmp word [es:0x126], 0x1
+        cmp word [es:lgstate_w5A + 0x8], 0x1
         jnz short .26
         test byte [bp - 0x38], 0x4
         jnz short .26
@@ -6743,12 +6743,12 @@ DrawPlayoffTree:
         db 0x1B, 0xDB                           ; insn: sbb bx, bx
         neg bx
         shl bx, byte 0x2
-        les bx, [es:bx + 0x7570]
+        les bx, [es:bx + PageTable]
         push word [es:bx]
         mov bx, [CurPage]
         shl bx, byte 0x2
         mov es, [segDgroup3]
-        les bx, [es:bx + 0x7570]
+        les bx, [es:bx + PageTable]
         push word [es:bx]
         call 0x0000:VgaCopyBytes
         add sp, 0x6
