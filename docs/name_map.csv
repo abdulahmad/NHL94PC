@@ -2303,3 +2303,31 @@ Init_26D2_03F2,DrawReplayFrame,Init_26D2_03F2,new,medium,"draws the sorted sprit
 Init_278C_0006,SaveGameState,Init_278C_0006,95 PC,high,'Error Saving Game',src/ovl/init/init_16.asm
 Init_278C_09C8,LoadGameState,Init_278C_09C8,95 PC,high,'Error Loading Game',src/ovl/init/init_16.asm
 Init_28FA_0004,LoadReplayGadgets,Init_28FA_0004,new,high,"gad1, gadget5, gg%02d, HILIGHT.FNT",src/ovl/init/init_17.asm
+Movie_3349_0000,PlanarToLinear,Movie_3349_0000,new,high,interleaves the four planes of a block into a linear buffer,src/ovl/movie/movie_00.asm
+Movie_3349_006E,PlanarToLinearKey,Movie_3349_006E,new,high,"same, turning the key colour into 0xFF",src/ovl/movie/movie_00.asm
+Movie_3357_0002,PlanarToLinearKeyTail,Movie_3357_0002,new,high,loop tail of PlanarToLinearKey (jumps back into it),src/ovl/movie/movie_01.asm
+Movie_3357_0006,MviSeek,Movie_3357_0006,new,high,int 21h AX=4200h on the movie handle,src/ovl/movie/movie_01.asm
+Movie_3357_0026,MviParseHeader,Movie_3357_0026,new,high,"reads the movie header, palette and allocates the frame canvases",src/ovl/movie/movie_01.asm
+Movie_3357_0192,MviOpen,Movie_3357_0192,new,high,"'A MVI' check, DATABUFFER, opens the file",src/ovl/movie/movie_01.asm
+Movie_3357_030E,MviClose,Movie_3357_030E,new,high,closes the file and frees buffers and canvases,src/ovl/movie/movie_01.asm
+Movie_3357_038C,MviRewind,Movie_3357_038C,new,medium,seeks back to the first frame,src/ovl/movie/movie_01.asm
+Movie_3357_03D2,MviRestart,Movie_3357_03D2,new,medium,rewinds and shows the first frame,src/ovl/movie/movie_01.asm
+Movie_3357_0408,MviDrawFrame,Movie_3357_0408,new,medium,draws the decoded frame blocks,src/ovl/movie/movie_01.asm
+Movie_3357_06C8,MviNextFrame,Movie_3357_06C8,new,medium,reads and decodes the next frame,src/ovl/movie/movie_01.asm
+Fades_3349_0000,SetPaletteVsync,Fades_3349_0000,new,high,waits for retrace and sets the palette in halves,src/ovl/fades/fades_00.asm
+Fades_3349_0036,RandLfsrByte,Fades_3349_0036,new,high,8-bit LFSR step (taps 0xB8),src/ovl/fades/fades_00.asm
+Fades_3349_005E,CopyFadeRect,Fades_3349_005E,new,high,copies a rectangle of the new page clipped to the fade area,src/ovl/fades/fades_00.asm
+Fades1_3358_0000,FadeVenetian,Fades1_3358_0000,new,high,"copies every eighth row, eight passes",src/ovl/fades1/fades1_00.asm
+Fades2_3358_0000,FadeWipe,Fades2_3358_0000,new,medium,wipe from one of four sides,src/ovl/fades2/fades2_00.asm
+Fades3_3358_0000,FadePlaneBands,Fades3_3358_0000,new,medium,plane-by-plane bands from a pattern table,src/ovl/fades3/fades3_00.asm
+Fades4_3358_0000,FadePaletteIn,Fades4_3358_0000,new,high,palette fade in steps,src/ovl/fades4/fades4_00.asm
+Fades5_3358_0000,FadeBlockSweep,Fades5_3358_0000,new,medium,40x35 blocks swept in a pattern,src/ovl/fades5/fades5_00.asm
+Fades6_3358_0000,FadeSlideStrips,Fades6_3358_0000,new,medium,alternate 8-pixel strips slide in,src/ovl/fades6/fades6_00.asm
+Fades7_3358_0000,FadeSplitCenter,Fades7_3358_0000,new,medium,strips open from the centre,src/ovl/fades7/fades7_00.asm
+Fades8_3358_0000,FadeRandomBlocks,Fades8_3358_0000,new,high,blocks in LFSR order,src/ovl/fades8/fades8_00.asm
+Fades8_3358_00D4,FadeRandomBlocks2,Fades8_3358_00D4,new,medium,random blocks with a shuffle table,src/ovl/fades8/fades8_00.asm
+Fades9_3358_0000,FadeDissolve,Fades9_3358_0000,new,high,bytes in LFSR order across the planes,src/ovl/fades9/fades9_00.asm
+Fades10_3358_0000,FadeSampleRect,Fades10_3358_0000,new,medium,clips a rectangle to the fade area and samples its centre pixel,src/ovl/fades10/fades10_00.asm
+Fades10_3358_0070,FadeBoxGrow,Fades10_3358_0070,new,medium,filled boxes grow from the centre,src/ovl/fades10/fades10_00.asm
+Fades11_3358_0000,FadeDirectional,Fades11_3358_0000,new,medium,sweep in one of eight directions,src/ovl/fades11/fades11_00.asm
+Fades12_3358_0000,FadeZoomRect,Fades12_3358_0000,new,medium,grows or shrinks from a rectangle,src/ovl/fades12/fades12_00.asm
