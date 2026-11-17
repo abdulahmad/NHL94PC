@@ -1,8 +1,9 @@
 # TODO
 
-- Done: seg056 (resident RTLink manager, `__astart`, overlay thunks). seg057 was the thunk tail and is part of seg056.
-- seg000 through seg005 are source. seg005 was already source. seg004 is source (`LoadBlock` and the unpackers). Next incbin segment is seg006. seg007 is not started. Overlays are not started.
-- Merge the remaining false split when that segment is disassembled: `seg011` into `seg010`. See `docs/HANDOFF.md`.
-- The bytes after the load module are one RTLink segment (relocation list, then the image). The `ovl_*` files are arbitrary 4KB cuts of it. Reslice them to that structure when that area becomes source. Do not disassemble the external `.OVL` files in this repo; they are loaded, not linked into `HOCKEY.EXE`.
+- Overlays: the external `.OVL` files (the game logic) are not disassembled. Do not add them to this build; they are
+  loaded, not linked into `HOCKEY.EXE`.
+- The bytes after the load module are one RTLink segment (relocation list, then the image). The `ovl_*` files are
+  arbitrary 4KB cuts of it. Reslice them to that structure when that area becomes source.
+- `seg011` (`pc/null_far2.asm`) is a false split of the file before (`pc/random.asm`); merge them when convenient.
 - Relocation table as source once the words it points to are labelled.
-- Name EACLIB functions from their error-string xrefs.
+- Open questions on names: `docs/HANDOFF.md`, "Unsure / open".

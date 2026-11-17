@@ -20,8 +20,10 @@ rule in the same commit as the fix that confirmed it, newest last: `- YYYY-MM-DD
 ## This repo
 
 - Names: the 94G name when the body matches. Parts taken from the SNES ports use the 93S or 94S name. A DOS job uses the 95PC name for the same job, else MSC/EACLIB names from the error strings.
-- Layout: alignment of files waits until the overlays are disassembled.
+- Layout: the 95 PC layout: `src/pc` for DOS-only code, `src/front` for the front end, `src/lib` for libraries, `src/data` for DGROUP and far data; files named by topic. Alignment with the Genesis files waits until the overlays are disassembled.
 
 ## Learned
 
 - 2026-11-04 contributing: CONTRIBUTING.md must not contradict History: lineage lives only in the name history file, never in source comments. (CONTRIBUTING rewrite vs RULES History row)
+- 2026-11-17 labels: an immediate that equals a DGROUP address is not always a pointer; check before writing it as a label (`push str_Que` was the constant 80h, `mov ax, str_Nyi` was 6Ch). (comment pass, string users that made no sense)
+- 2026-11-17 far calls: never let a label replace the segment word of a far call, even when its value matches; the segment is a relocated number. (`call UnhookKbd.1:0x224` from the localize pass)

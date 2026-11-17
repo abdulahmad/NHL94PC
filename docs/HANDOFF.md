@@ -1,23 +1,16 @@
 # Handoff
 
-## Now
+## Now (2026-11-17)
 
-- Stage / unit: CONTRIBUTING.md rewrite (stay on the cleanup branch; lineage in `docs/name_map.csv` only).
-- Branch: `claude/project-thread-ggw7zu`
-- Last check: docs-only
-- Next: do not merge to main. Disassembly still stopped after seg004 (next incbin is seg006).
-- Open PRs: (this unit)
-
-## Stop (2026-10-31)
-
-Disassembly stopped after seg004. The next work is seg006, not a later segment.
-
-- Source through seg004: `seg000`, `seg001`, `seg002`, `seg003`, and `seg004` are source. `seg005` was already source and was not edited in this run. `seg056` is source (the resident RTLink manager and the overlay thunks). The MZ header fields are source. Nothing in those files is incbin.
-- Next incbin segment: `seg006`, file offset `0x0AFA0`, 752 bytes, paragraph `0x093A`. Its dump is `lst/dump/seg006.lst`. Do not start `seg007` until `seg006` is source.
-- Instruction check: `lst/dump/segNNN.lst`. The dump is the bytes. Names come from the rules below, not from the dump.
-- Overlays are not started. The external `.OVL` files are not disassembled. The `ovl_*` slices were not resliced.
-- Full build MATCH (SHA-1 `d94450ddff26528bddac6646c234277076fd36cb`, 244,854 bytes); `tools/verify_all.sh` MATCH.
-- `seg011` is still a false split (merge into `seg010` when `seg010` is disassembled).
+- Stage: done. The whole EXE is source: every routine and variable is named and commented, the files are in the
+  topic folders (`src/pc`, `src/front`, `src/lib`, `src/data`), and the build is MATCH (SHA-1
+  `d94450ddff26528bddac6646c234277076fd36cb`, 244,854 bytes); `tools/verify_all.sh` MATCH.
+- Branch: work on a branch, PR to `main` (`main` is the working branch).
+- Checks: `tools/format_asm.py --check` reports nothing, `tools/check_comments.py` prints `comments OK`.
+- Maps: `docs/cleanup/names94_*.txt` (every rename batch), `docs/cleanup/files_94pc.txt` (old segment to file).
+- Next: the external `.OVL` overlays (the game logic) are not disassembled. The `ovl_*` slices of the RTLink segment
+  after the load module are still incbin.
+- Segment numbers in the sections below are the old names; `docs/cleanup/files_94pc.txt` gives each one's file.
 
 ## Naming
 
@@ -243,13 +236,13 @@ The spill at the start of seg001 finishes `test bx, 8`, then `pop bp` / `ret 0xe
 - `InitRuntime` does the divide-handler install, the `_C_FILE_INFO` inherit, the `_osfile` device bits and `_initterm`. It is one far function. The MSC library symbol for that whole function was not confirmed.
 - `_initterm` here walks the far-pointer table from the top down. Later MSC `_initterm` walks upward. The name is the job; the direction is this copy's.
 - `FpFail` is `mov ax, 2` then a jump to `AmsgExit`. That is the R6002 path. The public name is not confirmed.
-- `JumpAhead` is `jmp near _atol`.
+- `_atoi` (was `JumpAhead`) is `jmp near _atol`: in this model `atoi` is `atol`.
 - `StrIndexInSet` returns an index, not a pointer, so it is not named `_strpbrk`.
 - `EmulatedFloat` uses the floating-point emulator interrupts. The operation it performs is not named.
-- `CallArg` calls through a pointer argument. The library symbol is not confirmed.
+- `CallArg` calls the far routine in its last argument once per array element (probably a library sort's step). The library symbol is not confirmed.
 - seg056:0x0D00 (four zero bytes) and seg056:0x0D10 through 0x0D20 are not read by this segment. The byte at 0x0B71 is not read either.
 - The seg058 routines called from seg056 (`RtlSectionHook`, `RtlWriteText`, `RtlSaveVectors`, `RtlSetHandler`, `RtlAfterFiles`,
-  `RtlBeforeClose`, `RtlFindFile`, `RtlExePath`) are named from the call sites. seg058 is still incbin. Its first three bytes finish
+  `RtlBeforeClose`, `RtlFindFile`, `RtlExePath`) are named from the call sites. seg058 (`lib/rtlink/rtl_runtime.asm`) is source. Its first three bytes finish
   `OvlThunk281`; `stc` / `retf` is at seg058:0003.
 - Flag bit `0x20` selects the other read path (`call 0:0` in `LoadSection`). None of these 21 records has that bit set, and the far call is stored as zeros.
 - `ReturnBytePtr` is written from the reload return hook; what that byte represents is not pinned down.
