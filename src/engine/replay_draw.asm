@@ -142,7 +142,7 @@ ReplayStep:
         shl bx, 1
         mov [bx + rpl_x], ax
         push 0xa
-        push word 0xd66c
+        push word regd0
         call 0x0000:LongSarAt
         mov ax, [regd0]
         and ah, 0x3
@@ -156,7 +156,7 @@ ReplayStep:
         shl bx, 1
         mov [bx + rpl_y], ax
         push 0xa
-        push word 0xd66c
+        push word regd0
         call 0x0000:LongSarAt
         mov ax, [regd0]
         and ah, 0x3
@@ -368,7 +368,7 @@ ReplayStep:
         inc word [bp - 0x2a]
         cmp word [bp - 0x2a], 0x11
         jl short .39
-        push word 0xdc08
+        push word rpl_words2
         lea ax, [bp - 0x28]
         push ax
         push 0x11

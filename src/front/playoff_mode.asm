@@ -130,7 +130,7 @@ MenuPlayoffHilights:
         push word [DialogData]
         call 0x0FEF:DrawRleTransAt
         add sp, 0x8
-        mov word [PlayoffDlgY], 0x50
+        mov word [ScreenRowStride], 0x50
         push 0x10
         push strict word str_Pal_66
         push di
@@ -199,7 +199,7 @@ CreatePlayoffs:
         call 0x2E70:SaveModeState
         add sp, 0x4
         call 0x0FEF:UseOtherPage
-        mov ax, 0xbd0
+        mov ax, str_Qpp
         mov cx, 0x3701
         mov [bp - 0x90], ax
         mov [bp - 0x8e], cx
@@ -529,7 +529,7 @@ CreatePlayoffs:
         db 0x13, 0xC9                           ; insn: adc cx, cx
         rep movsb
         mov di, 0xc000
-        mov si, 0xc020
+        mov si, AwayTeamDbName
         mov cx, 0xffff
         repne scasb
         not cx
@@ -2767,7 +2767,7 @@ POSimSeriesTeamWins:
         mov cx, 0x1
         lea di, [bp - 0x3]
         rep stosb
-        mov ax, 0xbaf
+        mov ax, str_Db_2
         mov cx, 0x3701
         mov [bp - 0x2c], ax
         mov [bp - 0x2a], cx
@@ -2917,7 +2917,7 @@ POSimSeries:
         mov al, [es:bx + 0x2]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         mov [bp - 0x4], ax
-        mov ax, 0xbaf
+        mov ax, str_Db_2
         mov cx, 0x3701
         mov [bp - 0x2e], ax
         mov [bp - 0x2c], cx
@@ -4268,7 +4268,7 @@ POAfterGameJumpTable:                           ; jump table of POAfterGame: 15 
         push 0x0
         push strict word str_Tied_3
         push word [POResultFmt]
-        push word 0xc1f4
+        push word POTitleText
         call 0x0000:_sprintf
         add sp, 0xa
         push ds
@@ -4343,7 +4343,7 @@ POAfterGameJumpTable:                           ; jump table of POAfterGame: 15 
         push word [bx + TeamNameClips]
 .7:
         push word [POResultFmt]
-        push word 0xc1f4
+        push word POTitleText
         call 0x0000:_sprintf
         add sp, 0xa
         push ds
@@ -4776,7 +4776,7 @@ PlayoffModeLoop:
         mov word [HomeTeam], 0x1b35
         mov word [menucbfn], 0x219d
         mov word [menucbseg], 0x1b35
-        mov word [PlayoffDlgY], 0x50
+        mov word [ScreenRowStride], 0x50
         lea ax, [bp - 0x3c]
         push ax
         push cs
@@ -5107,7 +5107,7 @@ PlayoffModeLoop:
         push word [bx + TeamNameClips]
 .19:
         push word [POResultFmt]
-        push word 0xc1f4
+        push word POTitleText
         call 0x0000:_sprintf
         add sp, 0xa
         push ds
@@ -5319,7 +5319,7 @@ PlayoffModeLoop:
         mov word [menucbfn], 0x219d
         mov word [menucbseg], 0x1b35
 .25:
-        mov word [PlayoffDlgY], 0x50
+        mov word [ScreenRowStride], 0x50
         lea ax, [bp - 0x3c]
         push ax
         push cs

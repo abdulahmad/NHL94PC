@@ -19,7 +19,7 @@ CheckMasterPassword:
         push di
         push si
         push 0x2
-        mov ax, 0xe53
+        mov ax, CurLeagueName
         mov cx, 0x3701
         mov [bp - 0x1c], ax
         mov [bp - 0x1a], cx

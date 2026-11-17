@@ -9,6 +9,7 @@ CurPage		equ	0x74DC
 DGROUP		equ	0x45C9
 DbFileNameList		equ	0xB6C
 DbSaveMode		equ	0x1B4
+DeskTitleText		equ	0xC242
 DialogData		equ	0xAE98
 DialogDataSeg		equ	0xAE9A
 DrawLine		equ	0xC
@@ -64,6 +65,7 @@ MousePosFn		equ	0x6418
 MouseRange		equ	0x1BCD
 OpenReadShared		equ	0x3D6
 POTeamName1		equ	0xAC30
+POTreeRows		equ	0xC224
 PageTable		equ	0x7570
 PoStandingsMode		equ	0x8C6E
 PutBlockAt		equ	0x4B5

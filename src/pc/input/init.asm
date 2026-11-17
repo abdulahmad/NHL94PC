@@ -23,7 +23,7 @@ InputInit:
         mov [MouseRangeY], ax
         mov [MouseRangeX], ax
         mov word [InputInstalled], 0x1
-        push word 0x93a
+        push word str_Sav
         push strict word 0x8
         call 0x03A3:AllocSlot
         add sp, 0x4
@@ -43,7 +43,7 @@ InputShutdown:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [MouseRangeY], ax
         mov [MouseRangeX], ax
-        push word 0x93a
+        push word str_Sav
         push strict word 0x8
         call 0x03A3:FreeSlot
         add sp, 0x4

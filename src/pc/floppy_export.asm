@@ -832,7 +832,7 @@ ImportMasterLeague:
         push strict word str_Id
         push word 0x3701
         push strict word str_Player
-        mov ax, 0xbfa
+        mov ax, str_DriveColon
         mov cx, 0x3701
         mov [bp - 0x6c], ax
         mov [bp - 0x6a], cx
@@ -889,7 +889,7 @@ ImportMasterLeague:
         call 0x22D3:ReadLeagueInfo
         add sp, 0x20
         db 0x8B, 0xF0                           ; insn: mov si, ax
-        mov ax, 0xe53
+        mov ax, CurLeagueName
         mov cx, 0x3701
         mov [bp - 0x70], ax
         mov [bp - 0x6e], cx
@@ -2133,7 +2133,7 @@ ExportDbs:
         push di
         push si
         push 0x3
-        mov ax, 0xe53
+        mov ax, CurLeagueName
         mov cx, 0x3701
         mov [bp - 0x52], ax
         mov [bp - 0x50], cx
@@ -2422,7 +2422,7 @@ ExportDbs:
         lea ax, [bp - 0x20]
         push ss
         push ax
-        mov ax, 0xbe4
+        mov ax, str_Xx_2
         mov cx, 0x3701
         mov [bp - 0x58], ax
         mov [bp - 0x56], cx
@@ -2432,7 +2432,7 @@ ExportDbs:
         add sp, 0x8
         cmp word [bp - 0x4], 0x0
         jz short .19
-        mov ax, 0xbaf
+        mov ax, str_Db_2
         mov cx, 0x3701
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov [bp - 0xe], cx

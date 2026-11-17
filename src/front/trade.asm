@@ -815,7 +815,7 @@ ExecuteTrade:
         push 0x7c
         call 0x0D90:SetDialogColors
         add sp, 0xa
-        mov ax, 0xbaf
+        mov ax, str_Db_2
         mov cx, 0x3701
         mov [bp - 0x670], ax
         mov [bp - 0x66e], cx
@@ -1146,7 +1146,7 @@ ExecuteTrade:
         call 0x0000:_fstrcat
         add sp, 0x8
         mov di, 0xc000
-        mov si, 0xc020
+        mov si, AwayTeamDbName
         push ds
         pop es
         mov cx, 0xffff
@@ -1166,7 +1166,7 @@ ExecuteTrade:
         push 0x3
         push word 0x3448
         push strict word TradeLinesMenu
-        push word 0xae10
+        push word HomeTeamRec
         push 0x0
         call 0x1B35:GameLineEditorThunk
         add sp, 0xa
@@ -1197,7 +1197,7 @@ ExecuteTrade:
         push 0x3
         push word 0x3448
         push strict word TradeLinesMenu
-        push word 0xae40
+        push word AwayTeamRec
         push 0x1
         call 0x1B35:GameLineEditorThunk
         add sp, 0xa
@@ -2527,8 +2527,8 @@ TradeScreenLoop:
         add sp, 0x8
         lea ax, [bp - 0xa2]
         push ax
-        push word 0xc79a
-        push word 0xc796
+        push word tradecursor
+        push word tradescroll
         push word [bp - 0x7a]
         push word [bp - 0x1e]
         push cs
@@ -3296,14 +3296,14 @@ TradeScreen:
         push strict word TradeRosterCmp
         push 0x16
         push 0x1c
-        push word 0xc2c2
+        push word traderows
         call 0x0000:_qsort
         add sp, 0xa
         push word 0x2a57
         push strict word TradeRosterCmp
         push 0x16
         push 0x1c
-        push word 0xc52a
+        push word traderoster
         call 0x0000:_qsort
         add sp, 0xa
         push word [bp + 0x12]

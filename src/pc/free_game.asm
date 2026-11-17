@@ -76,7 +76,7 @@ FreeGameMemory:
         push word [HeapSizeLo]
         call 0x03A3:UseCharSeg
         add sp, 0x4
-        mov word [PlayoffDlgY], 0x50
+        mov word [ScreenRowStride], 0x50
         retf
         db 0x90
 

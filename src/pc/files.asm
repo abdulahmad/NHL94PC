@@ -62,7 +62,7 @@ BuildPathFar:
         call 0x0000:_fstrcpy
         add sp, 0x8
         push word 0x3701                        ; segment of the team choice text far data
-        push word 0xbaa
+        push word str_Backslash
         push word [bp + 0x8]
         push si
         call 0x0000:_fstrcat
@@ -123,7 +123,7 @@ DeleteMatching:
         rep movsw
         db 0x13, 0xC9                           ; insn: adc cx, cx
         rep movsb
-        mov ax, 0xbaa
+        mov ax, str_Backslash
         mov cx, 0x3701                          ; segment of the team choice text far data
         mov [bp - 0x52], ax
         mov [bp - 0x50], cx
@@ -154,7 +154,7 @@ DeleteMatching:
         db 0x13, 0xC9                           ; insn: adc cx, cx
         rep movsb
         push word 0x3701                        ; segment of the team choice text far data
-        push word 0xbf4
+        push word str_Dot
         lea ax, [bp - 0x22]
         push ss
         push ax
@@ -313,7 +313,7 @@ RemoveDirTree:
         rep movsw
         db 0x13, 0xC9                           ; insn: adc cx, cx
         rep movsb
-        mov ax, 0xbaa
+        mov ax, str_Backslash
         mov cx, 0x3701                          ; segment of the team choice text far data
         mov [bp - 0x52], ax
         mov [bp - 0x50], cx
@@ -325,21 +325,21 @@ RemoveDirTree:
         call 0x0000:_fstrcat
         add sp, 0x8
         push word 0x3701                        ; segment of the team choice text far data
-        push word 0xba8
+        push word str_Star
         lea ax, [bp - 0x22]
         push ss
         push ax
         call 0x0000:_fstrcat
         add sp, 0x8
         push word 0x3701                        ; segment of the team choice text far data
-        push word 0xbf4
+        push word str_Dot
         lea ax, [bp - 0x22]
         push ss
         push ax
         call 0x0000:_fstrcat
         add sp, 0x8
         push word 0x3701                        ; segment of the team choice text far data
-        push word 0xba8
+        push word str_Star
         lea ax, [bp - 0x22]
         push ss
         push ax

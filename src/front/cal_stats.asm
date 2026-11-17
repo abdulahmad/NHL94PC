@@ -417,7 +417,7 @@ CalStandingsScreen:
         mov [StandingsGfx2], ax
         mov [StandingsGfx2Seg], dx
 .3:
-        push word 0xcee8
+        push word standingstab
         push word [statsteambuf]
         push word [statsteambufseg]
         call 0x24E6:ShowStandingsTable
@@ -444,7 +444,7 @@ CalStandingsScreen:
         push strict word standingsmenubar
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
-        push word 0xcee8
+        push word standingstab
         push word [statsteambuf]
         push word [statsteambufseg]
         call 0x24E6:StandingsScreen
@@ -683,14 +683,14 @@ CalStandingsMenu:
 .8:
         mov es, [segWorkBuffer43]
         mov word [es:dlgJerseyConflict + 0x4], 0x0
-        push word 0xcf1a
+        push word statscardteam
         mov ax, strict word GoalieStatsCard
         mov dx, 0x20f4
         jmp short .10
 .9:
         mov es, [segWorkBuffer43]
         mov word [es:dlgJerseyConflict + 0x4], 0x0
-        push word 0xcf1a
+        push word statscardteam
         mov ax, strict word SkaterStatsCard
         mov dx, 0x23d5
 .10:

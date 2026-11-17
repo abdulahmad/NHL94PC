@@ -38,7 +38,7 @@ EasnTeamStatsScreen:
         push strict word TeamStatsMenuBar
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
-        mov ax, 0xbd0
+        mov ax, str_Qpp
         mov cx, 0x3701
         mov [bp - 0x312], ax
         mov [bp - 0x310], cx
@@ -207,7 +207,7 @@ EasnSkaterStatsScreen:
         push strict word SkaterStatsMenuBar
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
-        mov ax, 0xbd0
+        mov ax, str_Qpp
         mov cx, 0x3701
         mov [bp - 0x312], ax
         mov [bp - 0x310], cx
@@ -376,7 +376,7 @@ EasnGoalieStatsScreen:
         push strict word GoalieStatsMenuBar
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
-        mov ax, 0xbd0
+        mov ax, str_Qpp
         mov cx, 0x3701
         mov [bp - 0x312], ax
         mov [bp - 0x310], cx
@@ -554,7 +554,7 @@ EasnStandingsScreen:
         mov [StandingsGfx2], ax
         mov [StandingsGfx2Seg], dx
 .3:
-        push word 0xcee8
+        push word standingstab
         push word [statsteambuf]
         push word [statsteambufseg]
         call 0x24E6:ShowStandingsTable
@@ -581,7 +581,7 @@ EasnStandingsScreen:
         push strict word standingsmenubar
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
-        push word 0xcee8
+        push word standingstab
         push word [statsteambuf]
         push word [statsteambufseg]
         call 0x24E6:StandingsScreen
@@ -820,14 +820,14 @@ EasnStandingsMenu:
 .8:
         mov es, [segWorkBuffer42]
         mov word [es:dlgJerseyConflict + 0x4], 0x0
-        push word 0xcf1a
+        push word statscardteam
         mov ax, strict word GoalieStatsCard
         mov dx, 0x20f4
         jmp short .10
 .9:
         mov es, [segWorkBuffer42]
         mov word [es:dlgJerseyConflict + 0x4], 0x0
-        push word 0xcf1a
+        push word statscardteam
         mov ax, strict word SkaterStatsCard
         mov dx, 0x23d5
 .10:

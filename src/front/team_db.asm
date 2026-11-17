@@ -106,7 +106,7 @@ LoadGameTeams:
         call 0x0CD1:CloseHandlePtr
         add sp, 0x2
         push strict word str_Teams
-        push word 0xc020
+        push word AwayTeamDbName
         lea ax, [bp - 0x2c]
         push ax
         call 0x0000:_sprintf
@@ -226,7 +226,7 @@ LoadGameTeams:
 .13:
         lea ax, [bp - 0xc]
         push ax
-        push word 0xc020
+        push word AwayTeamDbName
         lea cx, [bp - 0x6]
         push cx
         lea dx, [bp - 0x8]
@@ -275,7 +275,7 @@ LoadGameTeams:
 .15:
         mov ax, 0xae10
         db 0x8B, 0xF8                           ; insn: mov di, ax
-        mov si, 0xa03c
+        mov si, HomeLinesRec
         push ds
         pop es
         mov cx, 0x18
@@ -311,7 +311,7 @@ LoadGameTeams:
         dec bx
         jnz short .30
 .20:
-        mov si, 0xb652
+        mov si, GameTeamName1
         mov cx, [bp - 0x2]
         mov ax, 0x3a0b
         mov ds, ax
@@ -403,7 +403,7 @@ CreateGSummaryDb:
         call GSummaryPath
         lea ax, [bp - 0x8]
         push ax
-        push word 0xae70
+        push word gsummarypath
         call 0x0CD1:CreateFileNormal
         add sp, 0x4
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -494,7 +494,7 @@ CreateGSummaryDb:
         mov bx, [bp - 0x4]
         push ds
         db 0x8B, 0xFB                           ; insn: mov di, bx
-        mov si, 0x768
+        mov si, SpeechMemOff
         mov ds, ax
         movsw
         movsw
@@ -1201,7 +1201,7 @@ GSummaryPath:
         call 0x0000:_fstrcpy
         add sp, 0x8
         mov di, 0x50b8
-        mov si, 0xae70
+        mov si, gsummarypath
         push ds
         pop es
         mov cx, 0xffff
@@ -1221,7 +1221,7 @@ GSummaryPath:
         rep movsb
 .1:
         mov di, str_GsummaryDb_3
-        mov si, 0xae70
+        mov si, gsummarypath
         push ds
         pop es
         mov cx, 0xffff

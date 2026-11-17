@@ -15,7 +15,7 @@ SaveVgaPlanes:
         push 0x80
         push 0x0
         push word 0xb00
-        push word 0xa1e
+        push word str_Plane0
         call 0x14DB:InsertRecWrap
         add sp, 0x8
         mov [VgaSave0Off], ax
@@ -23,7 +23,7 @@ SaveVgaPlanes:
         push 0x80
         push 0x0
         push word 0xb00
-        push word 0xa26
+        push word str_Plane1
         call 0x14DB:InsertRecWrap
         add sp, 0x8
         mov [VgaSave1Off], ax
@@ -31,7 +31,7 @@ SaveVgaPlanes:
         push 0x80
         push 0x0
         push word 0xb00
-        push word 0xa2e
+        push word str_Plane2
         call 0x14DB:InsertRecWrap
         add sp, 0x8
         mov [VgaSave2Off], ax
@@ -39,7 +39,7 @@ SaveVgaPlanes:
         push 0x80
         push 0x0
         push word 0xb00
-        push word 0xa36
+        push word str_Plane3
         call 0x14DB:InsertRecWrap
         add sp, 0x8
         mov [VgaSave3Off], ax
@@ -160,7 +160,7 @@ SaveVgaPlanes:
         push word 0xc7
         call 0x0FEF:SetStartPage
         add sp, 0x2
-        mov bx, 0x7570
+        mov bx, PageTable
         mov es, [DgroupSegB]
         mov [bp - 0x6], bx
         mov [bp - 0x4], es
@@ -337,7 +337,7 @@ RestoreVgaPlanes:
         push word 0xa8
         call 0x0FEF:SetStartPage
         add sp, 0x2
-        mov bx, 0x7570
+        mov bx, PageTable
         mov es, [DgroupSegB]
         mov [bp - 0x6], bx
         mov [bp - 0x4], es

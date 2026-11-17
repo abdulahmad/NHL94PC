@@ -92,7 +92,7 @@ GameLineEditor:
         push strict word GameRosterCmp
         push 0x16
         push 0x1c
-        push word 0xbd96
+        push word gmrosterpos
         call 0x0000:_qsort
         add sp, 0xa
         push word [bp - 0x30]
@@ -2037,7 +2037,7 @@ LineEdHitTest:
         cmp di, 0xe0
         jnl short .5
         db 0x2B, 0xC9                           ; insn: sub cx, cx
-        mov bx, 0x100
+        mov bx, LineSlotPoints
         mov ax, 0x3680
         mov ds, ax
 .1:
@@ -2106,7 +2106,7 @@ LoadGameRoster:
         push di
         push si
         db 0x2B, 0xD2                           ; insn: sub dx, dx
-        mov bx, 0xbd98
+        mov bx, gmrosterslot
 .1:
         add bx, 0x16
         mov [bx - 0x16], dl
@@ -2419,7 +2419,7 @@ DrawGameLineJerseys:
         jmp near .7
 .11:
         mov word [bp - 0x2], 0x1d
-        mov si, 0xbd98
+        mov si, gmrosterslot
         mov al, 0x1c
         mul byte [bp + 0xc]
         mov [bp - 0xa], ax
@@ -3139,7 +3139,7 @@ LoadJerseyColours:
         mov [es:di + 0x26f], al
         mov cx, [bp - 0xa]
         add cx, 0xc0
-        mov si, 0x80
+        mov si, TradeRemapTable
         mov ds, [bp - 0x8]
         mov ax, 0x3680
         mov es, ax
@@ -3457,7 +3457,7 @@ CheckGameRosterComplete:
         jl short .1
         jmp near .24
 .1:
-        mov si, 0xbd98
+        mov si, gmrosterslot
         mov al, 0x1c
         mul byte [bp + 0x6]
         mov [bp - 0x7c], ax
@@ -4047,7 +4047,7 @@ WriteTeamLines:
         cmp byte [bp + 0xa], 0x0
         jz short .2
         push strict word str_Teams_7
-        push word 0xc020
+        push word AwayTeamDbName
         jmp short .3
 .2:
         push strict word str_Teams_6
@@ -4301,7 +4301,7 @@ WriteTeamLines2:
         cmp byte [bp + 0xa], 0x0
         jz short .2
         push strict word str_Teams_5
-        push word 0xc020
+        push word AwayTeamDbName
         jmp short .3
 .2:
         push strict word str_Teams_4

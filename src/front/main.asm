@@ -93,7 +93,7 @@ _main:
         push 0
         call 0x0FEF:SetStartPage
         add sp, 2
-        mov bx, 0x7570
+        mov bx, PageTable
         mov es, word [DgroupSegA]
         mov word [bp-0x24], bx
         mov word [bp-0x22], es

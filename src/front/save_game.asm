@@ -62,7 +62,7 @@ SaveGame:
         push -0x1
         push -0x1
         push word 0x3415                        ; segment of the db files far data
-        push strict word 0x0
+        push strict word exhstate
         push word [bp - 0x6]
         call 0x0CD1:WriteAtOffset
         add sp, 0xc
@@ -73,12 +73,12 @@ SaveGame:
         add sp, 0x2
 .4:
         push 0x0
-        push word 0x908
+        push word str_GsummaryDb
         call 0x149D:LoadRawHeader
         add sp, 0x4
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov [bp - 0x2], dx
-        push word 0x914
+        push word str_GsummaryDb_2
         call 0x03A3:FileSizeMsg
         add sp, 0x2
         push dx
@@ -105,7 +105,7 @@ SaveGame:
         push -0x1
         push -0x1
         push ds
-        push word 0xb0b6
+        push word otherscoreaway
         push word [bp - 0x6]
         call 0x0CD1:WriteAtOffset
         add sp, 0xc
@@ -119,7 +119,7 @@ SaveGame:
         push -0x1
         push -0x1
         push ds
-        push word 0xb0aa
+        push word otherscorehome
         push word [bp - 0x6]
         call 0x0CD1:WriteAtOffset
         add sp, 0xc
@@ -133,7 +133,7 @@ SaveGame:
         push -0x1
         push -0x1
         push ds
-        push word 0xb09e
+        push word otherscoresb
         push word [bp - 0x6]
         call 0x0CD1:WriteAtOffset
         add sp, 0xc
@@ -166,7 +166,7 @@ SaveGame:
         push 0xb
         call 0x0D90:SetDialogColors
         add sp, 0xa
-        mov ax, 0xe53
+        mov ax, CurLeagueName
         mov cx, 0x3701                          ; segment of the team choice text far data
         mov [bp - 0x2a], ax
         mov [bp - 0x28], cx
@@ -289,7 +289,7 @@ SaveGame:
         push ds
         push str_Db
         push ds
-        push word 0x943
+        push word str_Gsummary
         call 0x0CD1:CopyFileByName
         add sp, 0x14
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -326,7 +326,7 @@ SaveGameNameDialog:
         cwd
         push dx
         push ax
-        push word 0x94f
+        push word str_Pointer
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0xc], ax
@@ -367,7 +367,7 @@ SaveGameNameDialog:
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8
         push word 0x3701                        ; segment of the team choice text far data
-        push word 0xbd0
+        push word str_Qpp
         push ds
         push str_Savegame
         push 0x0
@@ -403,7 +403,7 @@ SaveGameNameDialog:
         cwd
         push dx
         push ax
-        push word 0x965
+        push word str_Dialog
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x6], ax
@@ -547,7 +547,7 @@ SaveGameNameDialog:
         cwd
         push dx
         push ax
-        push word 0x976
+        push word str_Dialog_2
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x6], ax
@@ -861,7 +861,7 @@ SaveGameNameDialog:
         cwd
         push dx
         push ax
-        push word 0x987
+        push word str_Dialog_3
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x6], ax
@@ -926,7 +926,7 @@ SaveGameNameDialog:
         jnz short .19
 .21:
         push bx
-        push word 0x98e
+        push word str_D
         call 0x03A3:ConPrint
         add sp, 0x4
         mov bx, [bp - 0x28]

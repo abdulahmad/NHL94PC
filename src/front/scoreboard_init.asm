@@ -57,19 +57,19 @@ LoadScoreboardArt:
         add sp, 0x4
         mov [ScoreboardArt], ax
         mov [ScoreboardArtSeg], dx
-        push word 0xdaa2
+        push word ScoreDigits
         push strict word str_0000000100020003000400050006000700080009000
         push dx
         push ax
         call 0x03A3:FindFarList
         add sp, 0x8
-        push word 0xda76
+        push word ClockDigits
         push strict word str_1000100110021003100410051006100710081009100
         push word [ScoreboardArtSeg]
         push word [ScoreboardArt]
         call 0x03A3:FindFarList
         add sp, 0x8
-        push word 0xda4a
+        push word PenaltyShapes
         push strict word str_2000200120022003200420052006200720082009200
         push word [ScoreboardArtSeg]
         push word [ScoreboardArt]
@@ -101,6 +101,6 @@ LoadScoreboardArt:
         add sp, 0x6
         mov [PanelClockShape], ax
         mov [PanelClockShapeSeg], dx
-        push word 0xda0a
+        push word PanelShapes
         push strict word str_Lin1lin2lin3lin4pp1Pp2Pk1
         push word [ScoreboardArtSeg]

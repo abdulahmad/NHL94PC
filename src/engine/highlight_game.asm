@@ -74,13 +74,13 @@ StartHL2:
         mov ax, [CrowdState]
         mov [bp - 0xf8], ax
         lea di, [bp - 0x62]
-        mov si, 0xae10
+        mov si, HomeTeamRec
         mov ax, ss
         mov es, ax
         mov cx, 0x18
         rep movsw
         lea di, [bp - 0x30]
-        mov si, 0xae40
+        mov si, AwayTeamRec
         mov cx, 0x18
         rep movsw
         push word 0x3a0b
@@ -237,13 +237,13 @@ StartHL2:
         mov [yc1], ax
         mov [xc1], ax
         call 0x2E42:ResetBench
-        push word 0xb362
+        push word hmshots
         call 0x2E42:reenergizeteam
         add sp, 0x2
-        push word 0xb362
+        push word hmshots
         call 0x2E42:setpersonel
         add sp, 0x2
-        push word 0xb362
+        push word hmshots
         call 0x2E42:forcepldata
         add sp, 0x2
         mov ax, 0xffff
@@ -354,7 +354,7 @@ StartHL2:
         mov word [doorframe], 0x189
         mov word [door_48], 0x0
         push 0x19
-        push word 0xbc8e
+        push word doorstruct
         call 0x1E7E:assreplace
         add sp, 0x4
         mov word [refXpos2], 0xff88
@@ -710,7 +710,7 @@ StartHL2:
         mov [lcgroup], ax
         mov [RefStep], ax
         push 0x1e
-        push word 0xbd0e
+        push word refstruct
         call 0x1E7E:assreplace
         add sp, 0x4
         call 0x327B:ClearPenaltyBuffer

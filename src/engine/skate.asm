@@ -1078,7 +1078,7 @@ playeracc:
         test byte [si + 0x45], 0x40
         jz short .6
         push 0x3
-        push word 0xd6b8
+        push word regd2
         call 0x0000:LongSarAt
 .6:
         mov ax, [regd2]

@@ -14,6 +14,7 @@ AwayGlAttr		equ	0x418
 AwayGlStats		equ	0x77A
 AwayPlStats		equ	0x5D8
 AwaySortObjs		equ	0x1F4
+AwayTeamRec		equ	0xAE40
 BannerColours		equ	0x567A
 BuildPathFar		equ	0x3E
 CallCountStep		equ	0x1A2C
@@ -88,6 +89,7 @@ HomePlStats		equ	0x448
 HomePlStats_w2		equ	0x44A
 HomeSortObjs		equ	0x0
 HomeTeamNum		equ	0x29CA
+HomeTeamRec		equ	0xAE10
 HookKbd		equ	0x149E
 HotList		equ	0x5BF7
 HotList_m1		equ	0x5BF6
@@ -146,6 +148,7 @@ PadRepeatStep		equ	0x526
 PadRepeatTimer		equ	0x52A
 PadStates		equ	0x52C
 PadStates2		equ	0x52D
+PageTable		equ	0x7570
 PanelClockShape		equ	0xDA2A
 PanelClockShapeSeg		equ	0xDA2C
 PanelScoreShape		equ	0xDA2E
@@ -394,6 +397,7 @@ goaliesave_saveanim_m2		equ	0x598C
 gsp		equ	0x29DA
 gsumcount		equ	0x1CE
 gsumheader		equ	0x1C8
+gsummarypath		equ	0xAE70
 gsumqcount		equ	0x5772
 gsumqueue		equ	0xDC72
 gsumtail		equ	0x1D4
@@ -421,6 +425,7 @@ hmroster		equ	0xA550
 hmrosterjersey		equ	0xA556
 hmrosterpos		equ	0xA557
 hmscore		equ	0xB36E
+hmshots		equ	0xB362
 hmtmap		equ	0xB384
 hmtmcoach_d2		equ	0xB41A
 hmtmcoach_d3		equ	0xB41B
@@ -541,6 +546,7 @@ puck_1C		equ	0xBC2A
 puck_48		equ	0xBC56
 puckasslist		equ	0xBC2C
 puckc		equ	0x2996
+puckcross		equ	0xD616
 puckfaceoff2_ptab		equ	0x49BC
 puckfaceoff2_ptab_y		equ	0x49BE
 puckframe		equ	0xBC20

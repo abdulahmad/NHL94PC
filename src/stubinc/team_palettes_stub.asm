@@ -7,8 +7,12 @@ LoadPackedHeader		equ	0x8
 BuildPathFar		equ	0x3E
 FindFarMsg		equ	0x847
 FindUnlink		equ	0x99A
+str_HomepalsBin		equ	0x9C6
+str_AwaypalsBin		equ	0x9D3
 str_Rinkpal		equ	0x9E0
 str_Pal		equ	0x9E8
+TeamPalette768		equ	0xA8E
+str_Qpp		equ	0xBD0
 SetPaletteFar		equ	0x344C
 DGROUP		equ	0x45C9
 TeamPalette1		equ	0xB0C4

@@ -482,7 +482,7 @@ SeqStepTrackJumpTable:                          ; word; used by SeqStepTrack
         mov es, [bp + 0x8]
         mov [es:si + 0x4d], al
         push ds
-        push word 0x8f68
+        push word MidiMsg
         push 0x2
 .8:
         mov es, [bp + 0x8]
@@ -749,7 +749,7 @@ SendController:
         mov al, [bp + 0xc]
         mov [MidiMsg2], al
         push ds
-        push word 0x8f68
+        push word MidiMsg
         push 0x3
         mov es, [bp + 0x8]
         mov al, [es:si + 0x4d]
@@ -783,7 +783,7 @@ SendVoiceNoteOff:
         mov [MidiMsg1], al
         mov byte [MidiMsg2], 0x0
         push ds
-        push word 0x8f68
+        push word MidiMsg
         push 0x3
         mov al, [es:si + 0x7]
         push ax
@@ -865,7 +865,7 @@ SendPitchBend:
         and al, 0x7f
         mov [MidiMsg2], al
         push ds
-        push word 0x8f68
+        push word MidiMsg
         push 0x3
         mov al, [es:si + 0x4d]
         push ax
@@ -941,7 +941,7 @@ AllocVoice:
         cmp byte [bp + 0x12], 0xff
         jz short .7
         push ds
-        push word 0x8f68
+        push word MidiMsg
         push 0x3
         mov al, [bp + 0x10]
         push ax
@@ -950,7 +950,7 @@ AllocVoice:
         jmp short .8
 .7:
         push 0x3
-        push word 0x8f68
+        push word MidiMsg
         mov al, [bp + 0x10]
         push ax
         call 0x1630:QueueMidiBytes
@@ -1087,7 +1087,7 @@ SendProgramChange:
         mov al, [bp + 0xa]
         mov [MidiMsg1], al
         push ds
-        push word 0x8f68
+        push word MidiMsg
         push 0x2
         mov al, [bp + 0x6]
         push ax
@@ -1114,7 +1114,7 @@ SendPan:
         mov al, [bp + 0xa]
         mov [MidiMsg2], al
         push ds
-        push word 0x8f68
+        push word MidiMsg
         push 0x3
         mov al, [bp + 0x6]
         push ax
@@ -1142,7 +1142,7 @@ SendVolume:
         mov al, [bp + 0xa]
         mov [MidiMsg2], al
         push ds
-        push word 0x8f68
+        push word MidiMsg
         push 0x3
         mov al, [bp + 0x6]
         push ax

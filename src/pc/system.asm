@@ -2254,7 +2254,7 @@ AllocSlot:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov cx, 8
-        mov bx, 0x6db4
+        mov bx, SlotTab
 .1:
         cmp word [bx + 2], 0
         je short .2
@@ -7420,7 +7420,7 @@ AngleTab:
         jne short .3
         db 0x03, 0xC0                           ; insn: add ax, ax
         db 0x8B, 0xD8                           ; insn: mov bx, ax
-        mov ax, word [bx + Sin0]
+        mov ax, word [bx + SinTable]            ; first quadrant: SinTable[angle]
         retf
 .1:
         dec ah
@@ -7428,19 +7428,19 @@ AngleTab:
         neg ax
         db 0x03, 0xC0                           ; insn: add ax, ax
         db 0x8B, 0xD8                           ; insn: mov bx, ax
-        mov ax, word [bx + Sin1]
+        mov ax, word [bx + SinTable + 0x200]    ; BX = -2*angle: SinTable[256 - angle]
         retf
 .2:
         db 0x03, 0xC0                           ; insn: add ax, ax
         db 0x8B, 0xD8                           ; insn: mov bx, ax
-        mov ax, word [bx + Sin2]
+        mov ax, word [bx + SinTable - 0x200]    ; BX = 200h + 2*angle: SinTable[angle]
         neg ax
         retf
 .3:
         neg ax
         db 0x03, 0xC0                           ; insn: add ax, ax
         db 0x8B, 0xD8                           ; insn: mov bx, ax
-        mov ax, word [bx + Sin3]
+        mov ax, word [bx + SinTable + 0x800]    ; BX = -(600h + 2*angle): SinTable[256 - angle]
         neg ax
         retf
         db 0

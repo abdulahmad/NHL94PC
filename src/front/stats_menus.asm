@@ -59,19 +59,19 @@ SetupStatsMenus:
         mov word [es:itemLeagueSeasonPlayoffs + 0xC], 0x1b35
         mov word [es:itemLeaguePlayoffs + 0xA], strict word StatsSelPlayoffModeThunk
         mov word [es:itemLeaguePlayoffs + 0xC], 0x1b35
-        mov ax, 0x29
+        mov ax, titleLeagueSeason
         mov cx, 0x384b
         mov [es:itemLeagueSeason + 0x6], ax
         mov [es:itemLeagueSeason + 0x8], cx
         mov [bp - 0xc], ax
         mov [bp - 0xa], cx
-        mov dx, 0x3d
+        mov dx, titleLeagueSeasonPlayoffs
         mov bx, 0x384b
         mov [bp - 0x10], dx
         mov [bp - 0xe], bx
         mov [es:itemLeagueSeasonPlayoffs + 0x6], dx
         mov [es:itemLeagueSeasonPlayoffs + 0x8], bx
-        mov dx, 0x5b
+        mov dx, titleLeaguePlayoffs
         mov bx, 0x384b
         mov [bp - 0x14], dx
         mov [bp - 0x12], bx
@@ -184,7 +184,7 @@ SetupStatsMenus:
         mov es, [SeasonTitleSegs]
         mov word [es:itemLeagueSeason + 0xA], strict word StatsSelPlayoffModeThunk
         mov word [es:itemLeagueSeason + 0xC], 0x1b35
-        mov ax, 0x5b
+        mov ax, titleLeaguePlayoffs
         mov cx, 0x384b
         mov [bp - 0x14], ax
         mov [bp - 0x12], cx
@@ -234,13 +234,13 @@ SetupStatsMenus:
         mov word [es:itemLeagueSeason + 0xC], 0x1b35
         mov word [es:itemLeagueSeasonPlayoffs + 0xA], strict word StatsSelLeaguePlayoffsThunk
         mov word [es:itemLeagueSeasonPlayoffs + 0xC], 0x1b35
-        mov ax, 0x29
+        mov ax, titleLeagueSeason
         mov cx, 0x384b
         mov [bp - 0xc], ax
         mov [bp - 0xa], cx
         mov [es:itemLeagueSeason + 0x6], ax
         mov [es:itemLeagueSeason + 0x8], cx
-        mov ax, 0x3d
+        mov ax, titleLeagueSeasonPlayoffs
         mov cx, 0x384b
         mov [bp - 0x10], ax
         mov [bp - 0xe], cx

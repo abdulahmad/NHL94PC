@@ -138,7 +138,7 @@ GoalieStatsCard:
         lea ax, [bp - 0x1e]
         push ax
         push strict word str_EmbS
-        push word 0xcfd4
+        push word statstext
         call 0x0000:_sprintf
         add sp, 0x6
         push word 0x3701
@@ -327,10 +327,10 @@ GoalieStatsCard:
         push 0x40
         call 0x0D39:SetTextColors
         add sp, 0x4
-        push word 0xcf2d
-        push word 0xcf1d
+        push word rosterfilter2
+        push word rosterfilter
         push strict word str_SS_4
-        push word 0xcfd4
+        push word statstext
         call 0x0000:_sprintf
         add sp, 0x8
         push ds
@@ -342,7 +342,7 @@ GoalieStatsCard:
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push strict word str_DGoalie
-        push word 0xcfd4
+        push word statstext
         call 0x0000:_sprintf
         add sp, 0x6
         push ds

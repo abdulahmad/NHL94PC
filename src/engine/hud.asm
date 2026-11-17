@@ -499,7 +499,7 @@ LoadTeamPPV:
         add sp, 0x4
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jng short .2
-        mov di, 0xd630
+        mov di, OverlayFrames
         mov si, [bp - 0x2]
 .1:
         push si
@@ -879,7 +879,7 @@ DrawTextOverlay:
         cmp byte [textline3], 0x0
         jz short .27
         push di
-        push word 0xd4b8
+        push word textline3
         call 0x03A3:TextWidthAll
         add sp, 0x2
         cwd
@@ -888,7 +888,7 @@ DrawTextOverlay:
         db 0x8B, 0xCE                           ; insn: mov cx, si
         db 0x2B, 0xC8                           ; insn: sub cx, ax
         push cx
-        push word 0xd4b8
+        push word textline3
         call 0x0FEF:DrawText
         add sp, 0x6
 .27:
@@ -897,7 +897,7 @@ DrawTextOverlay:
         mov ax, [bp - 0x4]
         add [bp - 0x2], ax
         push word [bp - 0x2]
-        push word 0xd506
+        push word textline1
         call 0x03A3:TextWidthAll
         add sp, 0x2
         cwd
@@ -906,7 +906,7 @@ DrawTextOverlay:
         db 0x8B, 0xCE                           ; insn: mov cx, si
         db 0x2B, 0xC8                           ; insn: sub cx, ax
         push cx
-        push word 0xd506
+        push word textline1
         call 0x0FEF:DrawText
         add sp, 0x6
 .28:
@@ -915,7 +915,7 @@ DrawTextOverlay:
         mov ax, [bp - 0x4]
         add [bp - 0x2], ax
         push word [bp - 0x2]
-        push word 0xd542
+        push word textline2
         call 0x03A3:TextWidthAll
         add sp, 0x2
         cwd
@@ -924,7 +924,7 @@ DrawTextOverlay:
         db 0x8B, 0xCE                           ; insn: mov cx, si
         db 0x2B, 0xC8                           ; insn: sub cx, ax
         push cx
-        push word 0xd542
+        push word textline2
         call 0x0FEF:DrawText
         add sp, 0x6
 .29:
@@ -933,7 +933,7 @@ DrawTextOverlay:
         mov ax, [bp - 0x4]
         add [bp - 0x2], ax
         push word [bp - 0x2]
-        push word 0xd57e
+        push word textline4
         call 0x03A3:TextWidthAll
         add sp, 0x2
         cwd
@@ -942,7 +942,7 @@ DrawTextOverlay:
         db 0x8B, 0xCE                           ; insn: mov cx, si
         db 0x2B, 0xC8                           ; insn: sub cx, ax
         push cx
-        push word 0xd57e
+        push word textline4
         call 0x0FEF:DrawText
         add sp, 0x6
 .30:
@@ -951,7 +951,7 @@ DrawTextOverlay:
         mov ax, [bp - 0x4]
         add ax, [bp - 0x2]
         push ax
-        push word 0xd5ba
+        push word textline5
         call 0x03A3:TextWidthAll
         add sp, 0x2
         cwd
@@ -960,7 +960,7 @@ DrawTextOverlay:
         db 0x8B, 0xCE                           ; insn: mov cx, si
         db 0x2B, 0xC8                           ; insn: sub cx, ax
         push cx
-        push word 0xd5ba
+        push word textline5
         call 0x0FEF:DrawText
         add sp, 0x6
 .31:
@@ -975,7 +975,7 @@ DrawTextOverlay:
         cmp byte [textline3], 0x0
         jz short .32
         push di
-        push word 0xd4b8
+        push word textline3
         call 0x03A3:TextWidthAll
         add sp, 0x2
         cwd
@@ -984,7 +984,7 @@ DrawTextOverlay:
         db 0x8B, 0xCE                           ; insn: mov cx, si
         db 0x2B, 0xC8                           ; insn: sub cx, ax
         push cx
-        push word 0xd4b8
+        push word textline3
         call 0x0FEF:DrawText
         add sp, 0x6
 .32:
@@ -993,7 +993,7 @@ DrawTextOverlay:
         mov ax, [bp - 0x4]
         add [bp - 0x2], ax
         push word [bp - 0x2]
-        push word 0xd506
+        push word textline1
         call 0x03A3:TextWidthAll
         add sp, 0x2
         cwd
@@ -1002,7 +1002,7 @@ DrawTextOverlay:
         db 0x8B, 0xCE                           ; insn: mov cx, si
         db 0x2B, 0xC8                           ; insn: sub cx, ax
         push cx
-        push word 0xd506
+        push word textline1
         call 0x0FEF:DrawText
         add sp, 0x6
 .33:
@@ -1011,7 +1011,7 @@ DrawTextOverlay:
         mov ax, [bp - 0x4]
         add [bp - 0x2], ax
         push word [bp - 0x2]
-        push word 0xd542
+        push word textline2
         call 0x03A3:TextWidthAll
         add sp, 0x2
         cwd
@@ -1020,7 +1020,7 @@ DrawTextOverlay:
         db 0x8B, 0xCE                           ; insn: mov cx, si
         db 0x2B, 0xC8                           ; insn: sub cx, ax
         push cx
-        push word 0xd542
+        push word textline2
         call 0x0FEF:DrawText
         add sp, 0x6
 .34:
@@ -1029,7 +1029,7 @@ DrawTextOverlay:
         mov ax, [bp - 0x4]
         add [bp - 0x2], ax
         push word [bp - 0x2]
-        push word 0xd57e
+        push word textline4
         call 0x03A3:TextWidthAll
         add sp, 0x2
         cwd
@@ -1038,7 +1038,7 @@ DrawTextOverlay:
         db 0x8B, 0xCE                           ; insn: mov cx, si
         db 0x2B, 0xC8                           ; insn: sub cx, ax
         push cx
-        push word 0xd57e
+        push word textline4
         call 0x0FEF:DrawText
         add sp, 0x6
 .35:
@@ -1047,7 +1047,7 @@ DrawTextOverlay:
         mov ax, [bp - 0x4]
         add ax, [bp - 0x2]
         push ax
-        push word 0xd5ba
+        push word textline5
         call 0x03A3:TextWidthAll
         add sp, 0x2
         cwd
@@ -1055,7 +1055,7 @@ DrawTextOverlay:
         sar ax, 1
         db 0x2B, 0xF0                           ; insn: sub si, ax
         push si
-        push word 0xd5ba
+        push word textline5
         call 0x0FEF:DrawText
         add sp, 0x6
 .36:

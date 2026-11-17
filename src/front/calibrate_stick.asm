@@ -91,23 +91,23 @@ CalibrateStick:
         cwd
         call 0x03A3:SetCharPtr.regs
         push 0x23
-        push word 0x6f34
+        push word str_CalibrateYourJoystickByUsing
         call 0x1567:DrawTextCenteredClip
         add sp, 0x4
         push 0x2d
-        push word 0x6f58
+        push word str_ToMoveTheJoystickPosition
         call 0x1567:DrawTextCenteredClip
         add sp, 0x4
         push 0x37
-        push word 0x6f80
+        push word str_BelowToAllSquares
         call 0x1567:DrawTextCenteredClip
         add sp, 0x4
         push word 0xb4
-        push word 0x6f96
+        push word str_PressJoystickButtonWhenComplete
         call 0x1567:DrawTextCenteredClip
         add sp, 0x4
         push word 0xbe
-        push word 0x6fba
+        push word str_PressAnyKeyToIgnore
         call 0x1567:DrawTextCenteredClip
         add sp, 0x4
         push 0xf

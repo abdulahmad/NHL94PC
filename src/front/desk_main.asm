@@ -21,7 +21,7 @@ MainDeskLoop:
         push ax
         call 0x1B35:SetStatsMenuTextThunk
         add sp, 0x2
-        mov ax, 0xd44
+        mov ax, DeskMenuBar
         mov cx, 0x3448
         mov [bp - 0x68], ax
         mov [bp - 0x66], cx
@@ -144,7 +144,7 @@ MainDeskLoop:
         push word [DialogData]
         call 0x0FEF:DrawRleTransAt
         add sp, 0x8
-        mov word [PlayoffDlgY], 0x50
+        mov word [ScreenRowStride], 0x50
         push strict word str_Pal_50
         push word [bp - 0x24]
         push word [bp - 0x26]
@@ -1600,7 +1600,7 @@ MenuNewExhibition:
         push 0x0
         call 0x0FEF:SetStartPage
         add sp, 0x2
-        mov bx, 0x7570
+        mov bx, PageTable
         mov es, [musicslot]
         mov [bp - 0x16], bx
         mov [bp - 0x14], es
@@ -1691,7 +1691,7 @@ MenuNewExhibition:
         push word [DialogData]
         call 0x0FEF:DrawRleTransAt
         add sp, 0x8
-        mov word [PlayoffDlgY], 0x50
+        mov word [ScreenRowStride], 0x50
         push 0x10
         push strict word str_Pal_48
         push di
@@ -3134,7 +3134,7 @@ MenuLeagueHilights:
         push word [DialogData]
         call 0x0FEF:DrawRleTransAt
         add sp, 0x8
-        mov word [PlayoffDlgY], 0x50
+        mov word [ScreenRowStride], 0x50
         push 0x10
         push strict word str_Pal_46
         push di

@@ -574,7 +574,7 @@ SetLeagueSetImage:
         call 0x0FEF:SetRemapTable
         add sp, 0x4
         call 0x0FEF:UseOffscreenCanvas
-        mov ax, 0xbd0
+        mov ax, str_Qpp
         mov cx, 0x3701
         mov [bp - 0x112], ax
         mov [bp - 0x110], cx

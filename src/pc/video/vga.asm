@@ -1,5 +1,21 @@
 ; The VGA graphics library: canvases and clipping, lines and rectangles, RLE and block shapes,
 ; palettes, retrace waits and the screen pages.
+
+; Fields of the font header at offset 0 of the font segment (CharSeg); the text routines address them
+; through ds. FontCharTable is the table of glyph offsets, one word per character.
+FontInk		equ	0x00
+FontPaper	equ	0x02
+FontLeft	equ	0x04
+FontRight	equ	0x06
+FontX		equ	0x08
+FontY		equ	0x0A
+FontRowBytes	equ	0x0C
+FontHeight	equ	0x0E
+FontAdvance	equ	0x10
+FontLineStep	equ	0x12
+FontProportional equ	0x14
+FontCharTable	equ	0x16
+
         call 0x0FEF:DrawText
         add sp, 0x6
         pop si
@@ -257,9 +273,9 @@ DrawText:
         push di
         mov ds, [CharSeg]
         mov ax, [bp + 0x8]
-        mov [0x8], ax
+        mov [FontX], ax
         mov ax, [bp + 0xa]
-        mov [0xa], ax
+        mov [FontY], ax
         jmp short DrawTextAt.1
 
 ;-----------------------------------------------------------------------------
@@ -286,7 +302,7 @@ DrawTextAt:
         inc word [bp + 0x6]
         db 0x32, 0xFF                           ; insn: xor bh, bh
         db 0x03, 0xDB                           ; insn: add bx, bx
-        add bx, 0x16
+        add bx, FontCharTable
         mov si, [bx]
         cmp si, 0x0
         jnz short .5
@@ -295,10 +311,10 @@ DrawTextAt:
         cmp al, 0xa
         jnz short .2
 .3:
-        mov ax, [0x4]
-        mov [0x8], ax
-        mov ax, [0x12]
-        add [0xa], ax
+        mov ax, [FontLeft]
+        mov [FontX], ax
+        mov ax, [FontLineStep]
+        add [FontY], ax
         jmp short .2
 .4:
         pop di
@@ -307,19 +323,19 @@ DrawTextAt:
         leave
         retf
 .5:
-        mov ax, [0x8]
+        mov ax, [FontX]
         mov [bp - 0x2], ax
-        cmp byte [0x14], 0x0
+        cmp byte [FontProportional], 0x0
         jz short .6
         mov al, [si]
         db 0x32, 0xE4                           ; insn: xor ah, ah
         inc si
-        mov [0x10], ax
+        mov [FontAdvance], ax
         add ax, 0x7
         shr ax, 1
         shr ax, 1
         shr ax, 1
-        mov [0xc], al
+        mov [FontRowBytes], al
 .6:
         mov [bp - 0xc], si
         mov ax, [bp - 0x2]
@@ -342,17 +358,17 @@ DrawTextAt:
         mov al, 0x2
         out dx, ax
         mov dx, [bp - 0x8]
-        mov al, [0x0]
-        mov ah, [0x2]
-        mov cx, [0xe]
+        mov al, [FontInk]
+        mov ah, [FontPaper]
+        mov cx, [FontHeight]
         mov [bp - 0x4], cx
-        mov bx, [0xa]
+        mov bx, [FontY]
         db 0x03, 0xDB                           ; insn: add bx, bx
         add bx, [ss:CanvasRows]
 .9:
         mov di, [ss:bx]
         add di, [bp - 0x6]
-        mov cl, [0xc]
+        mov cl, [FontRowBytes]
 .10:
         mov ch, [si]
         inc si
@@ -380,8 +396,8 @@ DrawTextAt:
         mov [bp - 0x9], ah
         jmp short .8
 .14:
-        mov ax, [0x10]
-        add [0x8], ax
+        mov ax, [FontAdvance]
+        add [FontX], ax
         jmp near .2
 .15:
         inc di
@@ -399,17 +415,17 @@ DrawTextAt:
         mov dx, 0x8008
 .18:
         mov si, [bp - 0xc]
-        mov al, [0x0]
-        mov ah, [0x2]
-        mov cx, [0xe]
+        mov al, [FontInk]
+        mov ah, [FontPaper]
+        mov cx, [FontHeight]
         mov [bp - 0x4], cx
-        mov bx, [0xa]
+        mov bx, [FontY]
         db 0x03, 0xDB                           ; insn: add bx, bx
         add bx, [ss:CanvasRows]
 .19:
         mov di, [ss:bx]
         add di, [bp - 0x6]
-        mov cl, [0xc]
+        mov cl, [FontRowBytes]
 .20:
         mov ch, [si]
         inc si
@@ -610,7 +626,7 @@ SetRemapTable:
         push di
         mov ax, ds
         mov es, ax
-        mov di, 0x730a
+        mov di, RemapTable
         lds si, [bp + 0x6]
         cld
         mov cx, 0x80
@@ -632,7 +648,7 @@ GetRemapTable:
         push si
         push di
         les di, [bp + 0x6]
-        mov si, 0x730a
+        mov si, RemapTable
         cld
         mov cx, 0x80
         rep movsw
@@ -656,7 +672,7 @@ SetRemapRange:
         lds si, [bp + 0xa]
         mov ax, ss
         mov es, ax
-        mov di, 0x730a
+        mov di, RemapTable
         add di, [bp + 0x6]
         cld
         rep movsb
@@ -1934,9 +1950,9 @@ DrawText2:
         mov [bp + 0x6], ax
         mov ds, [CharSeg]
         mov ax, [bp + 0x8]
-        mov [0x8], ax
+        mov [FontX], ax
         mov ax, [bp + 0xa]
-        mov [0xa], ax
+        mov [FontY], ax
         jmp short DrawChar.1
 
 ;-----------------------------------------------------------------------------
@@ -1952,9 +1968,9 @@ DrawChar:
         push di
         mov ds, [CharSeg]
         mov ax, [bp + 0x8]
-        mov [0x8], ax
+        mov [FontX], ax
         mov ax, [bp + 0xa]
-        mov [0xa], ax
+        mov [FontY], ax
         jmp short .1
         db 0x00, 0x80, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC, 0xFE, 0xFF, 0x55, 0x8B, 0xEC, 0x83, 0xC4, 0xF0, 0x1E, 0x56, 0x57
         db 0x8E, 0x1E, 0x50, 0x6D
@@ -1970,7 +1986,7 @@ DrawChar:
         inc word [bp + 0x6]
         db 0x32, 0xFF                           ; insn: xor bh, bh
         db 0x03, 0xDB                           ; insn: add bx, bx
-        add bx, 0x16
+        add bx, FontCharTable
         mov si, [bx]
         cmp si, 0x0
         jnz short .5
@@ -1979,10 +1995,10 @@ DrawChar:
         cmp al, 0xa
         jnz short .2
 .3:
-        mov ax, [0x4]
-        mov [0x8], ax
-        mov ax, [0x12]
-        add [0xa], ax
+        mov ax, [FontLeft]
+        mov [FontX], ax
+        mov ax, [FontLineStep]
+        add [FontY], ax
         jmp short .2
 .4:
         pop di
@@ -1991,19 +2007,19 @@ DrawChar:
         leave
         retf
 .5:
-        mov ax, [0x8]
+        mov ax, [FontX]
         mov [bp - 0x2], ax
-        cmp byte [0x14], 0x0
+        cmp byte [FontProportional], 0x0
         jz short .6
         mov al, [si]
         db 0x32, 0xE4                           ; insn: xor ah, ah
         inc si
-        mov [0x10], ax
+        mov [FontAdvance], ax
         add ax, 0x7
         shr ax, 1
         shr ax, 1
         shr ax, 1
-        mov [0xc], al
+        mov [FontRowBytes], al
 .6:
         mov [bp - 0xc], si
         mov ax, [bp - 0x2]
@@ -2026,23 +2042,23 @@ DrawChar:
         mov al, 0x2
         out dx, ax
         mov dx, [bp - 0x8]
-        mov al, [0x0]
-        mov ah, [0x2]
-        mov cx, [0xe]
+        mov al, [FontInk]
+        mov ah, [FontPaper]
+        mov cx, [FontHeight]
         mov [bp - 0x4], cx
-        mov bx, [0xa]
+        mov bx, [FontY]
         db 0x03, 0xDB                           ; insn: add bx, bx
         add bx, [ss:CanvasRows]
 .9:
         mov di, [ss:bx]
         add di, [bp - 0x6]
-        mov cl, [0xc]
+        mov cl, [FontRowBytes]
 .10:
         push bx
         mov bx, 0x8
         cmp cl, 0x1
         jnz short .11
-        mov bx, [0x10]
+        mov bx, [FontAdvance]
         dec bx
         and bx, 0x7
         inc bx
@@ -2076,8 +2092,8 @@ DrawChar:
         mov [bp - 0x9], ah
         jmp short .8
 .15:
-        mov ax, [0x10]
-        add [0x8], ax
+        mov ax, [FontAdvance]
+        add [FontX], ax
         jmp near .2
 .16:
         add di, 0x2
@@ -2107,23 +2123,23 @@ DrawChar:
         mov dx, 0x8008
 .21:
         mov si, [bp - 0xc]
-        mov al, [0x0]
-        mov ah, [0x2]
-        mov cx, [0xe]
+        mov al, [FontInk]
+        mov ah, [FontPaper]
+        mov cx, [FontHeight]
         mov [bp - 0x4], cx
-        mov bx, [0xa]
+        mov bx, [FontY]
         db 0x03, 0xDB                           ; insn: add bx, bx
         add bx, [ss:CanvasRows]
 .22:
         mov di, [ss:bx]
         add di, [bp - 0x6]
-        mov cl, [0xc]
+        mov cl, [FontRowBytes]
 .23:
         push bx
         mov bx, 0x8
         cmp cl, 0x1
         jnz short .24
-        mov bx, [0x10]
+        mov bx, [FontAdvance]
         dec bx
         and bx, 0x7
         inc bx

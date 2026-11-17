@@ -1341,7 +1341,7 @@ ShowSeasonStandings:
         jnl short .19
         jmp near .4
 .19:
-        mov bx, 0xc224
+        mov bx, POTreeRows
         mov di, 0xc208
         mov dx, [bp - 0x2]
 .20:
@@ -1660,7 +1660,7 @@ ShowPlayoffStandings:
         lea ax, [di + 0x2]
         db 0x8B, 0xF8                           ; insn: mov di, ax
 .2:
-        mov si, 0xc204
+        mov si, playofftree
         mov cx, [bp - 0x2]
         mov es, [bp - 0x6]
 .3:

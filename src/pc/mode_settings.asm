@@ -93,7 +93,7 @@ MenuModeSettings:
         mov [lcsel], ax
         mov [hudredraw], ax
         mov [lcboxon], ax
-        mov bx, 0xb553
+        mov bx, sortobj0_pflags2
 .5:
         and byte [bx], 0xf7
         add bx, 0x80

@@ -54,7 +54,7 @@ PlayHilight:
         mov [replayrecptr], ax
         mov [replayrecseg], dx
         db 0x2B, 0xFF                           ; insn: sub di, di
-        mov si, 0xa556
+        mov si, hmrosterjersey
 .1:
         mov al, [es:di + hilightrec_home]
         mov [si], al
@@ -157,7 +157,7 @@ PlayHilight:
         push 0x0
         call 0x0FEF:SetStartPage
         add sp, 0x2
-        mov bx, 0x7570
+        mov bx, PageTable
         mov es, [segDgroup10]
         mov [bp - 0x304], bx
         mov [bp - 0x302], es

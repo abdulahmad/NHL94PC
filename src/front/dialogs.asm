@@ -39,7 +39,7 @@ AskYesNo:
         jmp short .2
         db 0x90
 .1:
-        mov ax, 0xbaf
+        mov ax, str_Db_2
         mov dx, 0x3701                          ; segment of the team choice text far data
 .2:
         mov [YesNoText], ax
@@ -714,7 +714,7 @@ ListDialog:
         call SaveUnderBox
         add sp, 0x8
         push word 0x35ec                        ; segment of the list dialog data far data
-        push strict word 0x0
+        push strict word ListDlgScrollBar
         push cs
         call DrawScrollBar
         add sp, 0x4
@@ -794,7 +794,7 @@ ListDialog:
         cwd
         push dx
         push ax
-        push word 0x9fe
+        push word str_Pointer_2
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0xc], ax
@@ -991,7 +991,7 @@ ListDialog:
         push word [bp - 0x8]
         push 0x1
         push word 0x35ec                        ; segment of the list dialog data far data
-        push strict word 0x0
+        push strict word ListDlgScrollBar
         push cs
         call ScrollBarDrag
         add sp, 0xc
@@ -1574,7 +1574,7 @@ SaveUnderBox:
         adc dx, 0x0
         push dx
         push ax
-        push word 0xa06
+        push word str_Dbox
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [SaveUnderOff], ax
@@ -2002,7 +2002,7 @@ MessageBoxLoop:
         cwd
         push dx
         push ax
-        push word 0xa0b
+        push word str_Pointer_3
         call 0x14DB:AllocRecData
         add sp, 0x8
         mov [bp - 0x18], ax

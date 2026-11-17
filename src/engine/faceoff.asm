@@ -25,7 +25,7 @@ DrawPanelPenaltiesTail:
 SetPenaltyStrength:
         enter 0xa, 0x0
         push di
-        mov bx, 0xb362
+        mov bx, hmshots
         mov dx, 0xb828
 .1:
         mov cx, 0x6
@@ -530,7 +530,7 @@ puckfaceoff:
         call 0x28BB:ReturnGoalies
         test byte [CrowdState], 0x4
         jnz short .7
-        push word 0xb362
+        push word hmshots
         call 0x2E42:setpersonel
         add sp, 0x2
         push word 0xb438
@@ -598,7 +598,7 @@ puckfaceoff:
         cmp [cont2team], ax
         jz short .13
         push word 0xb438
-        push word 0xb362
+        push word hmshots
         call 0x2E42:CompLine
         add sp, 0x4
         push word 0xb438
@@ -688,11 +688,11 @@ puckfaceoff:
         jz short .21
         cmp word [cont2team], 0x1
         jz short .21
-        push word 0xb362
+        push word hmshots
         push word 0xb438
         call 0x2E42:CompLine
         add sp, 0x4
-        push word 0xb362
+        push word hmshots
         call 0x2E42:setpersonel
         add sp, 0x2
         push 0x0
@@ -928,10 +928,10 @@ puckfaceoff2:
         and byte [sflags], 0xbf
         call 0x226F:checkwindow
         call 0x2E42:ResetBench
-        push word 0xb362
+        push word hmshots
         call 0x2E42:setpersonel
         add sp, 0x2
-        push word 0xb362
+        push word hmshots
         call 0x2E42:forcepldata
         add sp, 0x2
         push word 0xb438

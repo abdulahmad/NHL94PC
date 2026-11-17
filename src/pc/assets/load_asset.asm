@@ -26,7 +26,7 @@ BuildShapeBank:
         add sp, 0x4
         push dx
         push ax
-        push word 0x76d6
+        push word str_Vgabuf
         call 0x14DB:AllocRecData0
         add sp, 0x8
         mov [bp - 0x12], ax
@@ -426,7 +426,7 @@ LoadAssetMode:
         push si
         call 0x06E1:UnlinkRec
         add sp, 0x4
-        push word 0x76f2
+        push word IdentityRemap
         les bx, [bp - 0x82]
         push word [es:bx + 0x2]
         push word [es:bx]
@@ -451,11 +451,11 @@ LoadAssetMode:
         jnz short .29
         cmp [bp + 0xa], ax
         jz short .28
-        push word 0x775d
+        push word str_LoadshapeblockaNoMemoryForMcgatovga
         call 0x0F4A:FatalError
         pop bx
 .28:
-        push word 0x7788
+        push word str_LoadshapeblockaNoMemoryForMcgatovga_2
         call 0x03A3:ConPrint
         pop bx
         push word [bp - 0x6]

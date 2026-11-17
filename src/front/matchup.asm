@@ -751,7 +751,7 @@ ShowMatchupScreen:
         push 0x3
         push word 0x3448
         push strict word MatchupLinesMenu
-        push word 0xae40
+        push word AwayTeamRec
         push 0x1
         call 0x1B35:GameLineEditorThunk
         add sp, 0xa
@@ -812,7 +812,7 @@ ShowMatchupScreen:
         push 0x3
         push word 0x3448
         push strict word MatchupLinesMenu
-        push word 0xae10
+        push word HomeTeamRec
         push 0x0
         call 0x1B35:GameLineEditorThunk
         add sp, 0xa

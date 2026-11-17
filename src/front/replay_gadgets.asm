@@ -106,7 +106,7 @@ LoadReplayGadgets:
         jl short .1
         mov word [ReplayGadgets], 0xd2e0
         mov word [bp - 0x8], 0x0
-        mov si, 0xdadc
+        mov si, ReplayGadgetsSeg
         lea di, [bp - 0x90]
 .6:
         push word [bp - 0x8]

@@ -70,7 +70,7 @@ LoadPPVFiles:
         jmp near .6
 .1:
         db 0x2B, 0xF6                           ; insn: sub si, si
-        mov di, 0x4a56
+        mov di, photobankf
 .2:
         db 0x8B, 0xC6                           ; insn: mov ax, si
         mov cx, 0x2
@@ -119,7 +119,7 @@ LoadPPVFiles:
         cmp di, 0x4a62
         jc short .2
         db 0x2B, 0xFF                           ; insn: sub di, di
-        mov si, 0xd2c6
+        mov si, SpriteFrames
 .5:
         push di
         push strict word str_04d_3
@@ -270,7 +270,7 @@ LoadGameGfx:
         push word 0xa8
         call 0x0FEF:SetStartPage
         add sp, 0x2
-        mov bx, 0x7570
+        mov bx, PageTable
         mov es, [segDgroup8]
         mov [bp - 0x1c], bx
         mov [bp - 0x1a], es
@@ -300,7 +300,7 @@ LoadGameGfx:
         call 0x0FEF:ClearClipRect
         add sp, 0x2
         call 0x0FEF:UseCurrentPage
-        mov word [PlayoffDlgY], 0x52
+        mov word [ScreenRowStride], 0x52
         call 0x28FA:LoadReplayGadgets
         push word 0x3701
         push strict word str_Qpp
@@ -321,7 +321,7 @@ LoadGameGfx:
         mov [GameGfx], ax
         mov [GameGfxSeg], dx
         db 0x2B, 0xFF                           ; insn: sub di, di
-        mov si, 0xd6d8
+        mov si, NumberSprites
 .2:
         push di
         push strict word str_04d_2
@@ -669,7 +669,7 @@ ResetGameVars:
         mov [injurystop], ax
         mov [refhitcount], ax
         mov [crowdheat], ax
-        mov si, 0xd1ae
+        mov si, rinkobjs
 .1:
         mov word [si], 0xffff
         mov ax, 0x28
@@ -679,7 +679,7 @@ ResetGameVars:
         add si, 0xe
         cmp si, 0xd2c6
         jc short .1
-        mov bx, 0xd9da
+        mov bx, rinkobjused
 .2:
         inc bx
         inc bx

@@ -26,12 +26,12 @@ LoadTeamPalettes:
         enter 0x28, 0x0
         push di
         push si
-        mov ax, 0xa8e
+        mov ax, TeamPalette768
         mov cx, 0x3a0b                          ; segment of the work buffer far data
         mov [bp - 0xa], ax
         mov [bp - 0x8], cx
         push 0x0
-        push word 0x9c6
+        push word str_HomepalsBin
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0x28], ax
@@ -72,7 +72,7 @@ LoadTeamPalettes:
         call 0x06E1:FindUnlink
         add sp, 0x4
         push 0x0
-        push word 0x9d3
+        push word str_AwaypalsBin
         call 0x149D:LoadRawHeader
         add sp, 0x4
         mov [bp - 0x28], ax
@@ -123,7 +123,7 @@ LoadTeamPalettes:
         call 0x06E1:FindUnlink
         add sp, 0x4
         push word 0x3701                        ; segment of the team choice text far data
-        push word 0xbd0
+        push word str_Qpp
         push ds
         push str_Rinkpal
         push 0x0
@@ -178,7 +178,7 @@ LoadTeamPalettes:
         call 0x06E1:FindUnlink
         add sp, 0x4
         push word 0x3a0b                        ; segment of the work buffer far data
-        push word 0xa8e
+        push word TeamPalette768
         push word 0x100
         push 0x0
         call 0x0FEF:SetPaletteFar

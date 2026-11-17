@@ -1,0 +1,67 @@
+# C runtime pass: emulator calls re-decoded, constant tables and routines the old listing left as data, heap and float
+# routines renamed from what they do (the earlier names guessed "emulator helper"), runtime variables as labels.
+FpConvert _nmalloc | MSC | high | renamed from what the routine does
+JmpFpConvert _malloc | MSC | high | renamed from what the routine does
+FpPush HeapSearch | MSC | high | renamed from what the routine does
+FpPop HeapGrow | MSC | high | renamed from what the routine does
+AdjustStack _nfree | MSC | high | renamed from what the routine does
+SkipSpace atof | MSC | high | renamed from what the routine does
+FpScale _fltin | MSC | high | renamed from what the routine does
+FpExec DoubleToDigits | MSC | high | renamed from what the routine does
+FpDecode ScalePow10 | MSC | high | renamed from what the routine does
+FpRound TenByteMul | MSC | high | renamed from what the routine does
+FpPack StrToTenByte | MSC | high | renamed from what the routine does
+FpCall StrToDouble | MSC | high | renamed from what the routine does
+Sin0 SinTable | MSC | high | renamed from what the routine does
+seg000:279E _flushall | MSC | high | mov ax,1 / push / call FlushAll / retf: the far C _flushall, left as data before
+seg000:18A6 OutputStates | MSC | high | jmp word [cs:bx+OutputStates] in _output: eight state handlers
+seg000:29AE FpTenthA | new | high | ten-byte 0.1 (CDCC..FB3F)
+seg000:29B8 FpTenthB | new | high | twelve-byte 0.1, pushed as CS:FpTenthB by HexConvert for TenByteMul
+seg000:2C85 FpAlmostOne | new | high | ten-byte 0.99999...; loaded by DoubleToDigits ([cs:bx] through int 3Ch with segment bits 10 = CS)
+seg000:2C8F FpTenth | new | high | ten-byte 0.1; DoubleToDigits multiplies by it when the estimate is one too high
+seg000:2E18 Pow10Table | new | high | 29 twelve-byte powers of ten; ScalePow10 starts at Pow10Table - 8*12 and adds 7*12 per octal digit
+seg000:2F74 Pow10Neg | new | high | 29 twelve-byte powers of 0.1 for ScalePow10
+seg000:3761 Pow10Near | new | high | 19 ten-byte powers of ten for ScalePow10Near
+seg000:381F Pow10NearNeg | new | high | 19 ten-byte powers of 0.1 for ScalePow10Near
+seg000:38DD ScalePow10Near | new | high | called by DoubleToDigits; was left as data at the end of the table blob
+seg000:2C3C _nfree | MSC | high | marks the block free (or byte [bx-2],1) and lowers the rover of NearHeapDesc
+seg000:27F8 atof | MSC | high | skips CharTypes space characters, _fltin, copies the double to FloatAccum, returns its address
+g_8268 SinTable | new | high | 257 words, 0 to 4000h; SinLookup / CosLookup index it from four quadrant bases (the old Sin0 to Sin3 were those bases)
+g_851C NearHeapDesc | MSC | high | mov bx, NearHeapDesc before HeapSearch in _nmalloc; [si+6] start, [si+8] rover
+g_8552 _umaskval | MSC | high | not ax and the mode in the open routine
+g_868E str_ColonSpace | MSC | high | ': ' written by perror
+g_8691 str_Newline | MSC | high | line feed written by perror
+g_869A FltCvtInit | MSC | high | 12 words copied over FltCvtFn
+g_86B6 DosErrnoTable | MSC | high | xlat table in DosMapErr
+g_86CA _iob | MSC | high | FILE table, 8 bytes each; FlushAll walks it to LastStream
+g_86D2 _iob_stdout | MSC | high | second FILE; printf passes it to _output
+g_86DA _iob_stderr | MSC | high | third FILE
+g_86EA _iob_stdprn | MSC | high | fifth FILE
+g_880C StdoutBuf | MSC | high | _stbuf buffer word for stdout
+g_880E StderrBuf | MSC | high | _stbuf buffer word for stderr
+g_8810 StdprnBuf | MSC | high | _stbuf buffer word for stdprn
+g_8812 OutputClassTable | MSC | high | _output: sub al,20h / cmp al,58h / xlat
+g_886B str_Null | MSC | high | '(null)'
+g_8874 _fmode | MSC | high | test byte [_fmode+1],80h (O_BINARY) in open
+g_89C8 SysErrList | MSC | high | sys_errlist, 38 near pointers; perror indexes it
+g_8A14 SysNerr | MSC | high | sys_nerr = 25h
+g_8A22 FpErrDigits | MSC | high | two-digit codes for the M61xx message
+g_8A3A FpErrMsg | MSC | high | counted 'M61xx'
+g_8A40 FpErrCode | MSC | high | floating-point error number in FpError
+g_8A5E FltResult | new | medium | result block of HexConvert
+g_8A66 FltValue | new | medium | double copied by HexConvert
+g_8A6E FltDigits | new | medium | digit buffer of HexConvert
+g_8A82 CvtWork | new | high | ten-byte work value of DoubleToDigits
+g_8A8E CvtDigitCount | new | high | digit count of DoubleToDigits
+g_8A8F CvtDigits | new | high | digits of DoubleToDigits
+g_8AB9 FpStatusWord | new | high | fnstsw target; test byte [FpStatusByte],41h reads its high byte
+g_8B00 InitTable | MSC | high | _initterm span InitTable..InitTable (empty), then InitTable..PreTermTable
+g_8B04 PreTermTable | MSC | high | _initterm span in ExitCommon
+g_8B08 TermTable | MSC | high | empty _initterm span in ExitCommon
+g_8D16 FpZero | new | high | double 0.0 for FloatLoad
+g_8D26 NmsgTable | MSC | high | runtime message table after <<NMSG>>
+g_90A0 FloatAccum | MSC | high | atof result
+g_90B0 FltInValue | MSC | high | double of the _fltin block
+g_90B8 AtexitTable | MSC | high | _initterm span AtexitTable..AtexitTableEnd in ExitCommon
+g_9138 AtexitTableEnd | MSC | high | cmp bx, AtexitTableEnd in atexit
+g_E370 StackBottom | MSC | high | EXE header SS 5400h = DGROUP + E37h paragraphs, SP 1800h

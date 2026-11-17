@@ -66,7 +66,7 @@ DrawLockerRoom:
         push di
         push si
         call 0x0FEF:UseOtherPage
-        mov ax, 0xbd0
+        mov ax, str_Qpp
         mov cx, 0x3701
         mov [bp - 0x624], ax
         mov [bp - 0x622], cx

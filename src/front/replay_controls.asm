@@ -502,7 +502,7 @@ PickNearestPlayer:
         mov word [bp - 0x8], 0x2710
         mov word [bp - 0x6], 0x0
         db 0x2B, 0xFF                           ; insn: sub di, di
-        mov si, 0xdb50
+        mov si, rpl_y
 .1:
         cmp si, 0xdb68
         jc short .2
@@ -582,8 +582,8 @@ ReplayControlLoop:
         mov [bp - 0x2], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .2
-        push word 0xdad4
-        push word 0xdad2
+        push word replaymousey
+        push word replaymousex
         push ax
         call far [HotKeyFn]
         add sp, 0x6
@@ -1243,7 +1243,7 @@ ReplaySaveHilight:
         call 0x0FEF:SetClipRectRegs
         call 0x0F99:FlushInputEvents
         push word 0x1858
-        push word 0x99c
+        push word OutlineDx
         push word 0x2306
         call 0x0000:VgaCopyBytes
         add sp, 0x6
@@ -1275,8 +1275,8 @@ ReplaySaveHilight:
         mov di, [replaymousex]
         mov si, [replaymousey]
         mov cx, [bp - 0x2]
-        push word 0xdad4
-        push word 0xdad2
+        push word replaymousey
+        push word replaymousex
         push cx
         call far [HotKeyFn]
         add sp, 0x6
@@ -1344,7 +1344,7 @@ ReplaySaveHilight:
         cwd
         call 0x03A3:SetDeadline.regs
         push word 0x1858
-        push word 0x99c
+        push word OutlineDx
         push word 0x2306
         call 0x0000:VgaCopyBytes
         add sp, 0x6
@@ -1806,7 +1806,7 @@ HilightSaveToDlg:
         call 0x0FEF:DrawText
         add sp, 0x6
         push word 0x1858
-        push word 0x99c
+        push word OutlineDx
         push word 0x2306
         call 0x0000:VgaCopyBytes
         add sp, 0x6
@@ -1883,7 +1883,7 @@ SaveHilightFile:
         mov [es:hilightrec_w46], ax
         mov [es:hilightrec_frames], dx
         db 0x2B, 0xFF                           ; insn: sub di, di
-        mov si, 0xa556
+        mov si, hmrosterjersey
 .3:
         mov al, [si]
         mov [es:di + hilightrec_home], al

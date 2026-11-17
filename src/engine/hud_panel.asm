@@ -253,11 +253,11 @@ PanelAddPenalty:
         mov [hudlinegroup], ax
         db 0x0B, 0xC9                           ; insn: or cx, cx
         jz short .1
-        mov bx, 0x55ac
+        mov bx, hudpenaway
         jmp short .2
         db 0x90
 .1:
-        mov bx, 0x556c
+        mov bx, hudpenhome
 .2:
         db 0x2B, 0xD2                           ; insn: sub dx, dx
 .3:
@@ -300,10 +300,10 @@ PanelRemovePenalty:
         push di
         cmp word [bp + 0x6], 0x0
         jz short .1
-        mov bx, 0x55ac
+        mov bx, hudpenaway
         jmp short .2
 .1:
-        mov bx, 0x556c
+        mov bx, hudpenhome
 .2:
         db 0x2B, 0xFF                           ; insn: sub di, di
         db 0x2B, 0xD2                           ; insn: sub dx, dx
@@ -356,22 +356,22 @@ UpdateHudPanel:
         test byte [gmode], 0x10
         jnz short .2
         push word [panelhund]
-        push word 0x556c
+        push word hudpenhome
         push cs
         call TickPanelPenalties
         add sp, 0x4
         push word [panelhund]
-        push word 0x55ac
+        push word hudpenaway
         push cs
         call TickPanelPenalties
         add sp, 0x4
 .2:
-        push word 0x5550
+        push word HudBarLevels2
         push 0x0
         push cs
         call GetLineEnergies
         add sp, 0x4
-        push word 0x5540
+        push word HudBarLevels
         push 0x1
         push cs
         call GetLineEnergies
@@ -411,10 +411,10 @@ UpdateHudPanel:
         mov word [hudhomeredraw], 0x1
 .3:
         push 0x4a
-        push word 0x5550
+        push word HudBarLevels2
         push word [hudhomeline]
         push word 0xda32
-        push word 0x5648
+        push word hudlineaway
         push cs
         call DrawLineGroupBars
         add sp, 0xa
@@ -443,7 +443,7 @@ UpdateHudPanel:
         mov word [hudclockredraw], 0x1
 .7:
         push 0x48
-        push word 0x556c
+        push word hudpenhome
         push cs
         call DrawPanelPenalties
         add sp, 0x4
@@ -460,7 +460,7 @@ UpdateHudPanel:
         mov word [hudscoreredraw], 0x1
 .9:
         push word 0xbf
-        push word 0x55ac
+        push word hudpenaway
         push cs
         call DrawPanelPenalties
         add sp, 0x4
@@ -469,10 +469,10 @@ UpdateHudPanel:
         db 0x90
 .10:
         push word 0xc1
-        push word 0x5540
+        push word HudBarLevels
         push word [hudlinehome]
         push word 0xda3e
-        push word 0x564a
+        push word hudlinegroup
         push cs
         call DrawLineGroupBars
         add sp, 0xa

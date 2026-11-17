@@ -56,6 +56,11 @@ SpeechSampleBusy		equ	0x766
 SpeechMemOff		equ	0x768
 SpeechMemSeg		equ	0x76A
 SpeechOn		equ	0x76C
+str_Speechbuf		equ	0x76E
+str_Sentence		equ	0x778
+str_SpeechBank		equ	0x781
+str_SampleMemMan		equ	0x78D
+str_Pause		equ	0x79C
 str_Off		equ	0x7A2
 str_2minsS		equ	0x7A6
 str_Off_2		equ	0x7AF

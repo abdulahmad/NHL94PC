@@ -257,7 +257,7 @@ updatereplay:
         add si, 0x1c
         cmp si, 0xd2c9
         jc short .11
-        mov bx, 0xd1ae
+        mov bx, rinkobjs
         mov es, [replayrecseg]
 .12:
         mov al, [bx]

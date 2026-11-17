@@ -26,7 +26,9 @@ __aFlshl		equ	0x1258
 ConPrint		equ	0x17CA
 RemapShapeBank		equ	0x472A
 ConvertShapeBank		equ	0x4782
+str_Vgabuf		equ	0x76D6
 AssetExtList		equ	0x76DE
+IdentityRemap		equ	0x76F2
 str_Qns		equ	0x7730
 str_Pns		equ	0x7735
 str_Qvs		equ	0x773A
@@ -36,4 +38,6 @@ str_Pes		equ	0x7749
 str_Esh		equ	0x774E
 str_Vsh		equ	0x7753
 str_Mga		equ	0x7758
+str_LoadshapeblockaNoMemoryForMcgatovga		equ	0x775D
+str_LoadshapeblockaNoMemoryForMcgatovga_2		equ	0x7788
 %include "pc/assets/load_asset.asm"

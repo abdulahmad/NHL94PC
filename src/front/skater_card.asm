@@ -141,7 +141,7 @@ SkaterStatsCard:
         lea ax, [bp - 0x1e]
         push ax
         push strict word str_EmbS
-        push word 0xcfd4
+        push word statstext
         call 0x0000:_sprintf
         add sp, 0x6
         push word 0x3701
@@ -330,10 +330,10 @@ SkaterStatsCard:
         push 0x40
         call 0x0D39:SetTextColors
         add sp, 0x4
-        push word 0xcf2d
-        push word 0xcf1d
+        push word rosterfilter2
+        push word rosterfilter
         push strict word str_SS_3
-        push word 0xcfd4
+        push word statstext
         call 0x0000:_sprintf
         add sp, 0x8
         push ds
@@ -345,7 +345,7 @@ SkaterStatsCard:
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push strict word str_D_4
-        push word 0xcfd4
+        push word statstext
         call 0x0000:_sprintf
         add sp, 0x6
         mov al, [statsplayer]
@@ -375,7 +375,7 @@ SkaterStatsCard:
 .13:
         mov di, str_RightWing
 .14:
-        mov si, 0xcfd4
+        mov si, statstext
         push ds
         pop es
         mov cx, 0xffff

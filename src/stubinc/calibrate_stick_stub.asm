@@ -27,6 +27,11 @@ CopyPlanesRect		equ	0x4262
 TickSkip		equ	0x6DB2
 CalibTargetX		equ	0x6F10
 CalibTargetY		equ	0x6F22
+str_CalibrateYourJoystickByUsing		equ	0x6F34
+str_ToMoveTheJoystickPosition		equ	0x6F58
+str_BelowToAllSquares		equ	0x6F80
+str_PressJoystickButtonWhenComplete		equ	0x6F96
+str_PressAnyKeyToIgnore		equ	0x6FBA
 str_LeftJoystick		equ	0x6FDB
 str_RightJoystick		equ	0x6FE9
 JoyOn		equ	0x7308

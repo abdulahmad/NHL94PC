@@ -1090,7 +1090,7 @@ CalendarScreen:
         mov ax, [calmonth]
         mov [bp - 0x5e], ax
         call 0x0FEF:UseCurrentPage
-        mov ax, 0xfdf
+        mov ax, CalendarMenuBar
         mov cx, 0x3701
         mov [bp - 0xd6], ax
         mov [bp - 0xd4], cx
@@ -3314,7 +3314,7 @@ PlayLeagueGame:
         jnz short .15
         cmp word [lghometeam], 0x0
         jnl short .15
-        push word 0xc2a6
+        push word lghometeam
         push word 0x3701
         push strict word str_SelectATeamToPlay
         push 0x8

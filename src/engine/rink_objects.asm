@@ -344,7 +344,7 @@ DrawRinkObjects:
         enter 0x6, 0x0
         push di
         push si
-        mov si, 0xd1ae
+        mov si, rinkobjs
         mov di, 0x12
 .1:
         cmp word [si], 0x0

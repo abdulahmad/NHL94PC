@@ -35,6 +35,7 @@ AwardWinner9		equ	0x1D02
 AwardsPending		equ	0x1CEF
 AwayGlStats		equ	0x77A
 AwayTeamDbName		equ	0xC020
+AwayTeamRec		equ	0xAE40
 BuildPathFar		equ	0x3E
 BuildSeasonTitleThunk		equ	0x2481
 CalNextMonthFn		equ	0xF94
@@ -114,6 +115,7 @@ HomePlStats_w2		equ	0x44A
 HomeTeam		equ	0x21D0
 HomeTeamDbName		equ	0xC000
 HomeTeamNum		equ	0x29CA
+HomeTeamRec		equ	0xAE10
 HotKeyFn		equ	0xB08E
 InitMenuRemapThunk		equ	0x2463
 InputInit		equ	0xE
@@ -123,6 +125,7 @@ ItemTextColor		equ	0x9F4
 JerseyDigitGlyphs		equ	0x1994
 JerseyRemapTable		equ	0x0
 KeyJump		equ	0x16EB
+KeysEnabled		equ	0x514
 LeagueTeamNames		equ	0xAA38
 ListDialog		equ	0x4FA
 LoadCharTab		equ	0xC9C

@@ -137,7 +137,7 @@ SetTeamNameText:
         jng short .5
         mov ax, 0x3448
         mov es, ax
-        mov bx, 0x12f0
+        mov bx, HomeTeamMenuText
         mov ax, [es:bx + 0x4]
         mov [es:bx + 0x30], ax
         mov [es:bx + 0x1a], ax
@@ -283,7 +283,7 @@ SetTeamNameText:
         jng short .13
         mov ax, 0x3448
         mov es, ax
-        mov bx, 0x1332
+        mov bx, VisitorTeamMenuText
         mov ax, [es:bx + 0x4]
         mov [es:bx + 0x30], ax
         mov [es:bx + 0x1a], ax

@@ -74,12 +74,12 @@ DrawTextFmt:
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push word [bp + 0xc]
         push word [bp + 0xa]
-        push word 0xcfd4
+        push word statstext
         call 0x0000:_sprintf
         db 0x8B, 0xE5                           ; insn: mov sp, bp
         push word [bp + 0x8]
         push word [bp + 0x6]
-        push word 0xcfd4
+        push word statstext
         call 0x0FEF:DrawText
         leave
         retf
@@ -97,12 +97,12 @@ DrawTextFmt2:
         push word [bp + 0xe]
         push word [bp + 0xc]
         push word [bp + 0xa]
-        push word 0xcfd4
+        push word statstext
         call 0x0000:_sprintf
         db 0x8B, 0xE5                           ; insn: mov sp, bp
         push word [bp + 0x8]
         push word [bp + 0x6]
-        push word 0xcfd4
+        push word statstext
         call 0x0FEF:DrawText
         leave
         retf

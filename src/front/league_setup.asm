@@ -283,7 +283,7 @@ DrawTeamGrid:
         push word 0x80
         call 0x0FEF:SetPaletteFar
         add sp, 0x8
-        mov si, 0x5604
+        mov si, CrestShapeNames
         lea ax, [bp - 0xc8]
         mov [bp - 0x2], ax
         mov [bp - 0x12], di

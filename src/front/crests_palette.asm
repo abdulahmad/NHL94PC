@@ -60,7 +60,7 @@ LoadCrestsPalette:
         add sp, 0x4
         push strict word str_Pal_30
         push 0x0
-        push word 0xc242
+        push word DeskTitleText
         call 0x14B8:LoadPackedHeader
         add sp, 0x4
         db 0x8B, 0xF8                           ; insn: mov di, ax

@@ -139,13 +139,22 @@ StrBufFlag:                                     ; sprintf string stream: flags; 
         resb 2
 FloatArgPtr:                                    ; float argument being formatted; used by FloatBuf,
                                                 ; FloatWidth, FormatOne
-        resb 10
-FltOutFlags:                                    ; float output flags; used by FpScale
+        resb 2
+FloatAccum:                                     ; the double atof returns (its address in AX)
+        resb 8
+FltOutFlags:                                    ; FLT block of _fltin: flags; used by _fltin
         resb 1
-FltOutFlags1:                                   ; float output flags, high byte; used by FpScale
+FltOutFlags1:                                   ; FLT block of _fltin: flags, high byte
         resb 1
-FltOutExp:                                      ; float output exponent; used by FpScale
-        resb 294
+FltOutExp:                                      ; FLT block of _fltin: characters converted
+        resb 6
+FltInValue:                                     ; FLT block of _fltin: the double
+        resb 8
+AtexitTable:                                    ; atexit and onexit functions (32 far pointers), run by
+                                                ; ExitCommon
+        resb 128
+AtexitTableEnd:                                 ; end of AtexitTable; atexit compares AtexitPtr with it
+        resb 152
 FrameTable:                                     ; frame pointer table (offset words) built by IndexPPVFrames;
                                                 ; used by GAME
         resb 2
@@ -1611,4 +1620,8 @@ savedbyte4:                                     ; saved game byte; used by INIT
 savedbyte5:                                     ; saved game byte; used by INIT
         resb 1
 lgflags:                                        ; league flags and buffers; used by LP, MENUS
-        resb 6149
+        resb 5
+StackBottom:                                    ; the 1800h-byte startup stack (the EXE header puts SS here,
+                                                ; SP
+                                                ; 1800h); MscStartup moves it into DGROUP
+        resb 0x1800

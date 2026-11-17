@@ -42,7 +42,7 @@ FreeCanvas:
         jc short .1
         db 0x3B, 0xCE                           ; insn: cmp cx, si
         jz short .3
-        push word 0x6d28
+        push word str_RowSpaceCorrupted
         call 0x0F4A:FatalError
         pop bx
 .3:

@@ -4,6 +4,7 @@
 	org	0x0
 TextWidthFar		equ	0x2
 _exit		equ	0x687
+str_Space		equ	0xBA6
 _fstrlen		equ	0x1398
 _fstrcpy		equ	0x13DA
 _fstrcat		equ	0x1410

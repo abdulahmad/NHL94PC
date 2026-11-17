@@ -54,7 +54,7 @@ SortPlayersByPos:
         inc si
         cmp si, 0x32
         jl short .1
-        push word 0xdf32
+        push word possort
         push word 0xdf00
         push 0x19
         call 0x14F6:SortPairs - 0x90
@@ -123,7 +123,7 @@ SortNonDefPlayers:
         inc si
         cmp si, 0x32
         jl short .1
-        push word 0xdf32
+        push word possort
         push word 0xdf00
         push 0x19
         call 0x14F6:SortPairs - 0x90
@@ -403,10 +403,10 @@ BuildDefaultLines:
         jl short .8
         cmp word [bp - 0xc], 0x0
         jz short .9
-        mov di, 0xae40
+        mov di, AwayTeamRec
         jmp short .10
 .9:
-        mov di, 0xae10
+        mov di, HomeTeamRec
 .10:
         mov dx, 0x12
         mov si, [bp - 0xa]
@@ -1186,10 +1186,10 @@ PickGoalie:
         mov di, [bp + 0x6]
         db 0x0B, 0xFF                           ; insn: or di, di
         jz short .1
-        mov si, 0xae40
+        mov si, AwayTeamRec
         jmp short .2
 .1:
-        mov si, 0xae10
+        mov si, HomeTeamRec
 .2:
         cmp word [bp + 0x8], 0x24
         jnz short .3
@@ -1385,11 +1385,11 @@ RefillLineSlots:
         mov di, [bp + 0xc]
         cmp word [bp + 0x6], 0x0
         jz short .1
-        mov bx, 0xae40
+        mov bx, AwayTeamRec
         jmp short .2
         db 0x90
 .1:
-        mov bx, 0xae10
+        mov bx, HomeTeamRec
 .2:
         mov [bp - 0x2], bx
         add bx, [bp + 0x8]

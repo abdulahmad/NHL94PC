@@ -598,7 +598,7 @@ ScanSavedGames:
         push strict word CmpFileNames
         push 0x4
         push word [savedcount1]
-        push word 0xc05c
+        push word savednames1
         call 0x0000:_qsort
         add sp, 0xa
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -661,7 +661,7 @@ ScanSavedGames:
         push strict word CmpFileNames
         push 0x4
         push word [savedcount3]
-        push word 0xc16c
+        push word savednames3
         call 0x0000:_qsort
         add sp, 0xa
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -725,7 +725,7 @@ ScanSavedGames:
         push strict word CmpFileNames
         push 0x4
         push word [savedcount2]
-        push word 0xc0e4
+        push word savednames2
         call 0x0000:_qsort
         add sp, 0xa
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -2099,7 +2099,7 @@ DeleteSavedGame:
         lea ax, [bp - 0x46]
         push ax
         push 0x0
-        push word 0xf10
+        push word str_AllFiles
         call 0x0000:_dos_findfirst
         add sp, 0x6
         db 0x0B, 0xC0                           ; insn: or ax, ax

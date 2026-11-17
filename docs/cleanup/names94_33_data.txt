@@ -135,7 +135,7 @@ g_01D6 gsumtail_goals1 | new | medium | game summary tail: goals of the first te
 g_01D7 gsumtail_shots1 | new | medium | game summary tail: shots of the first team (ChkShotStat)
 g_01D8 gsumtail_goals2 | new | medium | game summary tail: goals of the second team
 g_01D9 gsumtail_shots2 | new | medium | game summary tail: shots of the second team
-g_08FC PlayoffDlgY | new | medium | dialog row value set to 50h / 52h by the playoff and controls screens
+g_08FC ScreenRowStride | new | medium | dialog row value set to 50h / 52h by the playoff and controls screens
 g_08FE RinkTilesPtr | new | medium | far pointer (offset) to the loaded rink tiles
 g_0900 RinkTilesSeg | new | medium | its segment
 g_0EDC FileDlgSpecs | new | medium | file dialog table: pointers to the file patterns per dialog

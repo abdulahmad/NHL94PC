@@ -68,13 +68,13 @@ PreGameIntro:
         mov [curperiod], ax
         mov [c2playernum], ax
         mov [c1playernum], ax
-        push word 0xb362
+        push word hmshots
         call 0x2E42:reenergizeteam
         add sp, 0x2
-        push word 0xb362
+        push word hmshots
         call 0x2E42:setpersonel
         add sp, 0x2
-        push word 0xb362
+        push word hmshots
         call 0x2E42:forcepldata
         add sp, 0x2
         push word 0xb438
@@ -229,7 +229,7 @@ PreGameIntro:
         call 0x2E42:SetSPA
         mov word [refframe], 0x289
         push 0x26
-        push word 0xbd0e
+        push word refstruct
         call 0x1E7E:assreplace
         add sp, 0x4
         mov word [RefStep], 0x0
@@ -736,7 +736,7 @@ AddStar:
         db 0x2B, 0xD2                           ; insn: sub dx, dx
         db 0x0B, 0xFF                           ; insn: or di, di
         jng short .4
-        mov bx, 0xc2b6
+        mov bx, startm
         mov cx, [bp + 0x8]
 .1:
         cmp [bx], cx
@@ -1535,7 +1535,7 @@ StartThreeStars:
         mov [doorXvel], ax
         mov [doorYvel], ax
         push 0x19
-        push word 0xbc8e
+        push word doorstruct
         call 0x1E7E:assreplace
         add sp, 0x4
         mov word [reftemp1], 0x0
@@ -1552,7 +1552,7 @@ StartThreeStars:
         call 0x2E42:SetSPA
         mov word [refframe], 0xffff
         push 0x15
-        push word 0xbd0e
+        push word refstruct
         call 0x1E7E:assreplace
         add sp, 0x4
         mov word [RefStep], 0x0
@@ -1940,7 +1940,7 @@ assthreestars:
         shl bx, 1
         push word [bx + StarNamePtrs]
         push strict word str_SStar_2
-        push word 0xd506
+        push word textline1
         call 0x0000:_sprintf
         add sp, 0x6
         push word 0x5be4
@@ -1953,7 +1953,7 @@ assthreestars:
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         add cx, 0xa558
         push cx
-        mov bx, 0xa556
+        mov bx, hmrosterjersey
         db 0x03, 0xD8                           ; insn: add bx, ax
         mov [bp - 0x8], bx
         mov al, [bx]
@@ -1962,7 +1962,7 @@ assthreestars:
         imul ax, si, word 0x2e8
         add ax, 0x9f80
         push ax
-        push word 0xd542
+        push word textline2
         call 0x2352:FormatPlayerName
         add sp, 0xc
         db 0x0B, 0xF6                           ; insn: or si, si
@@ -2056,7 +2056,7 @@ assthreestars:
         shl bx, 1
         push word [bx + StarNamePtrs]
         push strict word str_SStar
-        push word 0xd506
+        push word textline1
         call 0x0000:_sprintf
         add sp, 0x6
         push word 0x5bed
@@ -2069,7 +2069,7 @@ assthreestars:
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         add cx, 0xa558
         push cx
-        mov bx, 0xa556
+        mov bx, hmrosterjersey
         db 0x03, 0xD8                           ; insn: add bx, ax
         mov [bp - 0x8], bx
         mov al, [bx]
@@ -2078,7 +2078,7 @@ assthreestars:
         imul ax, di, word 0x2e8
         add ax, 0x9f80
         push ax
-        push word 0xd542
+        push word textline2
         call 0x2352:FormatPlayerName
         add sp, 0xc
         db 0x0B, 0xFF                           ; insn: or di, di

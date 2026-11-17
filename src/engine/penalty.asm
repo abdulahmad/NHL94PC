@@ -200,7 +200,7 @@ SetPA:
         mov ax, 0x20
 .2:
         push ax
-        push word 0xbd0e
+        push word refstruct
         call 0x1E7E:assreplace
 .3:
         leave
@@ -233,7 +233,7 @@ InProgress:
         mov di, 0x1
         cmp byte [PenBuf_b2], 0x0
         jz short .5
-        mov bx, 0xd678
+        mov bx, PenBuf_b2
 .4:
         inc di
         inc bx
@@ -386,7 +386,7 @@ InProgress:
         jl short .15
         jmp near .35
 .15:
-        mov di, 0xb362
+        mov di, hmshots
         mov word [bp - 0x6], 0x2
 .16:
         mov cx, 0x6
@@ -568,7 +568,7 @@ InProgress:
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push strict word str_ServedByD
-        push word 0xd5ba
+        push word textline5
         call 0x0000:_sprintf
         add sp, 0x6
 .29:
@@ -665,7 +665,7 @@ chkprogress:
         and byte [gmode], 0xf7
         db 0x2B, 0xFF                           ; insn: sub di, di
         mov [refsignal], di
-        mov si, 0xd674
+        mov si, regd1_w2
 .6:
         inc si
         inc si
@@ -806,7 +806,7 @@ Stop4Pen:
         mov [fox], ax
         mov word [foy], 0xff48
 .13:
-        mov si, 0xd677
+        mov si, PenBuf_pl
         mov dx, [bp + 0x6]
 .14:
         mov al, [si]
@@ -875,7 +875,7 @@ checkfornewpen:
         jnz short .3
         jmp near .15
 .3:
-        mov si, 0xd677
+        mov si, PenBuf_pl
 .4:
         mov al, [si - 0x1]
         mov [bp - 0x1], al
@@ -1060,7 +1060,7 @@ chkatop:
         jmp short .5
         db 0x90
 .4:
-        mov bx, 0xb362
+        mov bx, hmshots
 .5:
         inc word [bx + 0xa]
 .6:
@@ -1232,7 +1232,7 @@ updatepentime:
         or byte [sflags3], 0x40
         push cs
         call chkatop
-        push word 0xb362
+        push word hmshots
         push cs
         call updatepentime_ut
         add sp, 0x2
@@ -1278,7 +1278,7 @@ UpdatePowerPlayFlags:
 .1:
         db 0x0B, 0xD2                           ; insn: or dx, dx
         jng short .2
-        mov bx, 0xb362
+        mov bx, hmshots
         test byte [gmode2], 0x40
         jz short .3
         and byte [gmode2], 0x9f
@@ -1323,7 +1323,7 @@ UpdatePowerPlayFlags:
 ;-----------------------------------------------------------------------------
 ClearPenaltyBuffer:
         push si
-        mov si, 0xd677
+        mov si, PenBuf_pl
 .1:
         db 0x2A, 0xC0                           ; insn: sub al, al
         mov [si], al

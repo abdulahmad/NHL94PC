@@ -540,7 +540,7 @@ seg000:1E22,ScanFloat,,new,medium,"Classifies a character and looks for an expon
 seg000:1E8A,ScanPoint,,new,medium,"Scans for a decimal point",src/seg/seg000.asm
 seg000:272A,fflush,,MSC,high,"Null argument flushes every open FILE. Otherwise flushes that FILE",src/seg/seg000.asm
 seg000:27A6,FlushAll,,new,high,"Walks the FILE table and fflushs each open one",src/seg/seg000.asm
-seg000:27F2,JmpFpConvert,,new,high,"Far jump to the floating-point convert routine that is still ahead in this segment",src/seg/seg000.asm
+seg000:27F2,_malloc,,MSC,high,"Far jump to _nmalloc",src/seg/seg000.asm
 seg000:2312,FpError,,new,high,"Prints the runtime banner and a floating-point message, then _exit",src/seg/seg000.asm
 seg000:291C,_memmove,,MSC,high,"Near copy that runs backward when the ranges overlap",src/seg/seg000.asm
 seg000:2964,_memset,,MSC,high,"Fills with stosw of the repeated byte",src/seg/seg000.asm
@@ -548,16 +548,16 @@ seg000:2992,WriteCounted,,new,high,"First byte is a count. Writes that many foll
 seg000:28AE,StoreOne,,new,medium,"Stores 1 through a far pointer and returns 0",src/seg/seg000.asm
 seg000:28C5,StoreZero,,new,medium,"Stores 0 through a far pointer",src/seg/seg000.asm
 seg000:28E3,StoreWord,,new,medium,"Stores a word through a far pointer",src/seg/seg000.asm
-seg000:2C5D,FpConvert,,new,high,"Exponent check against -24, then the convert helpers. JmpFpConvert lands here. Out of range returns zero",src/seg/seg000.asm
-seg000:2C99,FpExec,,new,high,"Emulator body. INT 34h-3Dh are the coprocessor escapes. Constant tables sit between the routines",src/seg/seg000.asm
-seg000:30D0,FpDecode,,new,medium,"Emulator helper reached after the first constant table",src/seg/seg000.asm
-seg000:31A5,FpRound,,new,medium,"Emulator helper",src/seg/seg000.asm
-seg000:332A,FpPack,,new,medium,"Emulator helper called while formatting a float",src/seg/seg000.asm
-seg000:3592,FpScale,,new,medium,"Emulator helper that scales a value",src/seg/seg000.asm
-seg000:35E8,FpPush,,new,medium,"Called by FpConvert to push a value",src/seg/seg000.asm
-seg000:3664,FpPop,,new,medium,"Called by FpConvert when the first push does not fit",src/seg/seg000.asm
+seg000:2C5D,_nmalloc,,MSC,high,"Size check against -24 (0FFE8h), rounds up to even, then HeapSearch in NearHeapDesc; HeapGrow when no block fits; zero on failure",src/seg/seg000.asm
+seg000:2C99,DoubleToDigits,,new,high,"Copies the double to CvtWork, handles zero, NaN and infinity, estimates the decimal exponent (4D10h = log10 2), scales by ScalePow10Near, writes 16 digits to CvtDigits",src/seg/seg000.asm
+seg000:30D0,ScalePow10,,new,high,"Multiplies a ten-byte real by 10^DI, one octal digit at a time, from Pow10Table / Pow10Neg (12-byte entries)",src/seg/seg000.asm
+seg000:31A5,TenByteMul,,new,medium,"Software multiply of two ten-byte reals (sign xor, exponent add, 64-bit mantissa product)",src/seg/seg000.asm
+seg000:332A,StrToTenByte,,new,medium,"Parses a decimal string (blanks, sign, digits, point, exponent) into a ten-byte real; called by StrToDouble",src/seg/seg000.asm
+seg000:3592,_fltin,,MSC,high,"Converts a string to a double through StrToDouble; fills the FLT block at FltOutFlags (flags, length, value in FltInValue) and returns its address",src/seg/seg000.asm
+seg000:35E8,HeapSearch,,new,high,"Walks the near heap blocks of the descriptor in BX for a free block of CX bytes, merging free neighbours",src/seg/seg000.asm
+seg000:3664,HeapGrow,,new,high,"Grows the near heap through DOS when HeapSearch finds nothing",src/seg/seg000.asm
 seg000:391C,FpFormat,,new,medium,"Walks a far digit string at the end of the emulator",src/seg/seg000.asm
-seg000:39D6,FpCall,,new,medium,"Called from FpScale",src/seg/seg000.asm
+seg000:39D6,StrToDouble,,new,medium,"StrToTenByte, then rounds to a double on the emulator with the precision control saved and restored; called from _fltin",src/seg/seg000.asm
 DGROUP:024C,EmsMapCache,,new,high,"Four words. Each is the logical page last mapped on that physical page. The high bit marks it stale",src/seg/seg001.asm
 DGROUP:0254,EmsWindowOff,,new,high,"Added to the offset within the page when EmsMapRange returns a pointer",src/seg/seg001.asm
 DGROUP:025C,EmsOutPtr,,new,high,"Far pointer EmsInit writes the allocated size through",src/seg/seg001.asm
@@ -1741,7 +1741,7 @@ g_86B2,MsgBannerHook,g_86B2,new,medium,far routine called before a runtime messa
 g_86B4,MsgBannerHookSeg,g_86B4,new,medium,its segment,src/data/dgroup.asm
 g_876A,StreamExtra,g_876A,new,medium,extra stream records for the standard buffers,src/data/dgroup.asm
 g_880A,LastStream,g_880A,new,medium,last stream record,src/data/dgroup.asm
-g_8871,CflushCount,g_8871,new,medium,stream flush count,src/data/dgroup.asm
+g_8871,NullStrLen,g_8871,new,medium,"length of str_Null (6), read by _output for a null %s",src/data/dgroup.asm
 g_8876,FltCvtFn,g_8876,new,medium,float conversion routine,src/data/dgroup.asm
 g_887A,CropZerosFn,g_887A,new,medium,drops trailing zeros,src/data/dgroup.asm
 g_8882,ForceDecPtFn,g_8882,new,medium,forces a decimal point,src/data/dgroup.asm
@@ -1750,8 +1750,8 @@ g_8A1C,FloatMode,g_8A1C,new,medium,float format mode,src/data/dgroup.asm
 g_8A1E,FloatPrecision,g_8A1E,new,medium,float precision,src/data/dgroup.asm
 g_8A20,FloatFlag,g_8A20,new,medium,float format flag,src/data/dgroup.asm
 g_8ABA,FpStatusByte,g_8ABA,new,medium,floating-point status byte,src/data/dgroup.asm
-g_8ABB,FpStatusPad,g_8ABB,new,medium,byte after FpStatusByte,src/data/dgroup.asm
-g_8ABD,FpConstTable,g_8ABD,new,medium,floating-point constants,src/data/dgroup.asm
+g_8ABB,FpSavedCw,g_8ABB,new,medium,"coprocessor control word saved by DoubleToDigits (fnstcw)",src/data/dgroup.asm
+g_8ABD,FpRoundCw,g_8ABD,new,medium,"control word 1332h; DoubleToDigits copies the mask bits of FpSavedCw into it and loads it (fldcw)",src/data/dgroup.asm
 g_8AE2,InitHook,g_8AE2,new,medium,near startup hook (0 skips),src/data/dgroup.asm
 g_8AE4,DebugSignature,g_8AE4,new,medium,D6D6h when a debugger hook is present,src/data/dgroup.asm
 g_8AE6,DebugWriteHook,g_8AE6,new,medium,debugger write hook,src/data/dgroup.asm
@@ -3455,7 +3455,7 @@ g_01D6,gsumtail_goals1,g_01D6,new,medium,game summary tail: goals of the first t
 g_01D7,gsumtail_shots1,g_01D7,new,medium,game summary tail: shots of the first team (ChkShotStat),src/data/dgroup.asm
 g_01D8,gsumtail_goals2,g_01D8,new,medium,game summary tail: goals of the second team,src/data/dgroup.asm
 g_01D9,gsumtail_shots2,g_01D9,new,medium,game summary tail: shots of the second team,src/data/dgroup.asm
-g_08FC,PlayoffDlgY,g_08FC,new,medium,dialog row value set to 50h / 52h by the playoff and controls screens,src/data/dgroup.asm
+g_08FC,ScreenRowStride,g_08FC,new,medium,bytes per row of the planar screen (50h or 52h),src/data/dgroup.asm
 g_08FE,RinkTilesPtr,g_08FE,new,medium,far pointer (offset) to the loaded rink tiles,src/data/dgroup.asm
 g_0900,RinkTilesSeg,g_0900,new,medium,its segment,src/data/dgroup.asm
 g_0EDC,FileDlgSpecs,g_0EDC,new,medium,file dialog table: pointers to the file patterns per dialog,src/data/dgroup.asm
@@ -4381,3 +4381,55 @@ g_E36A,savedbyte5,g_E36A,new,medium,saved game byte,src/data/dgroup_bss.asm
 g_E36B,lgflags,g_E36B,new,medium,league flags and buffers,src/data/dgroup_bss.asm
 g_D4F4,OOlist,g_D4F4,95 PC,medium,sorted object order list,src/data/dgroup_bss.asm
 g_D4F4,OOlist,g_D4F4,95 PC,medium,sorted object order list; OOlist_m1 and OOlist_b1 are its neighbours,src/data/dgroup_bss.asm
+seg000:279E,_flushall,seg000:279E,MSC,high,"mov ax,1 / push / call FlushAll / retf: the far C _flushall, left as data before",src/lib/msc_runtime.asm
+seg000:18A6,OutputStates,seg000:18A6,MSC,high,jmp word [cs:bx+OutputStates] in _output: eight state handlers,src/lib/msc_runtime.asm
+seg000:29AE,FpTenthA,seg000:29AE,new,high,ten-byte 0.1 (CDCC..FB3F),src/lib/msc_runtime.asm
+seg000:29B8,FpTenthB,seg000:29B8,new,high,"twelve-byte 0.1, pushed as CS:FpTenthB by HexConvert for TenByteMul",src/lib/msc_runtime.asm
+seg000:2C85,FpAlmostOne,seg000:2C85,new,high,ten-byte 0.99999...; loaded by DoubleToDigits ([cs:bx] through int 3Ch with segment bits 10 = CS),src/lib/msc_runtime.asm
+seg000:2C8F,FpTenth,seg000:2C8F,new,high,ten-byte 0.1; DoubleToDigits multiplies by it when the estimate is one too high,src/lib/msc_runtime.asm
+seg000:2E18,Pow10Table,seg000:2E18,new,high,29 twelve-byte powers of ten; ScalePow10 starts at Pow10Table - 8*12 and adds 7*12 per octal digit,src/lib/msc_runtime.asm
+seg000:2F74,Pow10Neg,seg000:2F74,new,high,29 twelve-byte powers of 0.1 for ScalePow10,src/lib/msc_runtime.asm
+seg000:3761,Pow10Near,seg000:3761,new,high,19 ten-byte powers of ten for ScalePow10Near,src/lib/msc_runtime.asm
+seg000:381F,Pow10NearNeg,seg000:381F,new,high,19 ten-byte powers of 0.1 for ScalePow10Near,src/lib/msc_runtime.asm
+seg000:38DD,ScalePow10Near,seg000:38DD,new,high,called by DoubleToDigits; was left as data at the end of the table blob,src/lib/msc_runtime.asm
+seg000:2C3C,_nfree,seg000:2C3C,MSC,high,"marks the block free (or byte [bx-2],1) and lowers the rover of NearHeapDesc",src/lib/msc_runtime.asm
+seg000:27F8,atof,seg000:27F8,MSC,high,"skips CharTypes space characters, _fltin, copies the double to FloatAccum, returns its address",src/lib/msc_runtime.asm
+g_8268,SinTable,g_8268,new,high,"257 words, 0 to 4000h; SinLookup / CosLookup index it from four quadrant bases (the old Sin0 to Sin3 were those bases)",src/data/dgroup.asm
+g_851C,NearHeapDesc,g_851C,MSC,high,"mov bx, NearHeapDesc before HeapSearch in _nmalloc; [si+6] start, [si+8] rover",src/data/dgroup.asm
+g_8552,_umaskval,g_8552,MSC,high,not ax and the mode in the open routine,src/data/dgroup.asm
+g_868E,str_ColonSpace,g_868E,MSC,high,': ' written by perror,src/data/dgroup.asm
+g_8691,str_Newline,g_8691,MSC,high,line feed written by perror,src/data/dgroup.asm
+g_869A,FltCvtInit,g_869A,MSC,high,12 words copied over FltCvtFn,src/data/dgroup.asm
+g_86B6,DosErrnoTable,g_86B6,MSC,high,xlat table in DosMapErr,src/data/dgroup.asm
+g_86CA,_iob,g_86CA,MSC,high,"FILE table, 8 bytes each; FlushAll walks it to LastStream",src/data/dgroup.asm
+g_86D2,_iob_stdout,g_86D2,MSC,high,second FILE; printf passes it to _output,src/data/dgroup.asm
+g_86DA,_iob_stderr,g_86DA,MSC,high,third FILE,src/data/dgroup.asm
+g_86EA,_iob_stdprn,g_86EA,MSC,high,fifth FILE,src/data/dgroup.asm
+g_880C,StdoutBuf,g_880C,MSC,high,_stbuf buffer word for stdout,src/data/dgroup.asm
+g_880E,StderrBuf,g_880E,MSC,high,_stbuf buffer word for stderr,src/data/dgroup.asm
+g_8810,StdprnBuf,g_8810,MSC,high,_stbuf buffer word for stdprn,src/data/dgroup.asm
+g_8812,OutputClassTable,g_8812,MSC,high,"_output: sub al,20h / cmp al,58h / xlat",src/data/dgroup.asm
+g_886B,str_Null,g_886B,MSC,high,'(null)',src/data/dgroup.asm
+g_8874,_fmode,g_8874,MSC,high,"test byte [_fmode+1],80h (O_BINARY) in open",src/data/dgroup.asm
+g_89C8,SysErrList,g_89C8,MSC,high,"sys_errlist, 38 near pointers; perror indexes it",src/data/dgroup.asm
+g_8A14,SysNerr,g_8A14,MSC,high,sys_nerr = 25h,src/data/dgroup.asm
+g_8A22,FpErrDigits,g_8A22,MSC,high,two-digit codes for the M61xx message,src/data/dgroup.asm
+g_8A3A,FpErrMsg,g_8A3A,MSC,high,counted 'M61xx',src/data/dgroup.asm
+g_8A40,FpErrCode,g_8A40,MSC,high,floating-point error number in FpError,src/data/dgroup.asm
+g_8A5E,FltResult,g_8A5E,new,medium,result block of HexConvert,src/data/dgroup.asm
+g_8A66,FltValue,g_8A66,new,medium,double copied by HexConvert,src/data/dgroup.asm
+g_8A6E,FltDigits,g_8A6E,new,medium,digit buffer of HexConvert,src/data/dgroup.asm
+g_8A82,CvtWork,g_8A82,new,high,ten-byte work value of DoubleToDigits,src/data/dgroup.asm
+g_8A8E,CvtDigitCount,g_8A8E,new,high,digit count of DoubleToDigits,src/data/dgroup.asm
+g_8A8F,CvtDigits,g_8A8F,new,high,digits of DoubleToDigits,src/data/dgroup.asm
+g_8AB9,FpStatusWord,g_8AB9,new,high,"fnstsw target; test byte [FpStatusByte],41h reads its high byte",src/data/dgroup.asm
+g_8B00,InitTable,g_8B00,MSC,high,"_initterm span InitTable..InitTable (empty), then InitTable..PreTermTable",src/data/dgroup.asm
+g_8B04,PreTermTable,g_8B04,MSC,high,_initterm span in ExitCommon,src/data/dgroup.asm
+g_8B08,TermTable,g_8B08,MSC,high,empty _initterm span in ExitCommon,src/data/dgroup.asm
+g_8D16,FpZero,g_8D16,new,high,double 0.0 for FloatLoad,src/data/dgroup.asm
+g_8D26,NmsgTable,g_8D26,MSC,high,runtime message table after <<NMSG>>,src/data/dgroup.asm
+g_90A0,FloatAccum,g_90A0,MSC,high,atof result,src/data/dgroup_bss.asm
+g_90B0,FltInValue,g_90B0,MSC,high,double of the _fltin block,src/data/dgroup_bss.asm
+g_90B8,AtexitTable,g_90B8,MSC,high,_initterm span AtexitTable..AtexitTableEnd in ExitCommon,src/data/dgroup_bss.asm
+g_9138,AtexitTableEnd,g_9138,MSC,high,"cmp bx, AtexitTableEnd in atexit",src/data/dgroup_bss.asm
+g_E370,StackBottom,g_E370,MSC,high,"EXE header SS 5400h = DGROUP + E37h paragraphs, SP 1800h",src/data/dgroup_bss.asm

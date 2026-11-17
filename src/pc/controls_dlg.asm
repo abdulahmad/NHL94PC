@@ -278,11 +278,11 @@ ReassignCtlPlayer:
         push si
         cmp word [bp + 0x6], 0x0
         jz short .1
-        mov bx, 0x29c8
+        mov bx, cont2team
         mov dx, 0x29c4
         jmp short .2
 .1:
-        mov bx, 0x29c6
+        mov bx, cont1team
         mov dx, 0x29c2
 .2:
         cmp word [bx], 0x0
@@ -478,7 +478,7 @@ ClearCtlBlink:
         jmp short .10
         db 0x90
 .4:
-        mov bx, 0xb553
+        mov bx, sortobj0_pflags2
 .5:
         and byte [bx], 0xf7
         add bx, 0x80
@@ -972,7 +972,7 @@ DrawControlsDlg:
         add sp, 0x2
 .4:
         push word 0x2e8
-        push word 0x9f80
+        push word GameTeamRecs
         push si
         call 0x0000:_read
         add sp, 0x6
@@ -997,7 +997,7 @@ DrawControlsDlg:
         add sp, 0x2
 .6:
         push word 0x2e8
-        push word 0xa268
+        push word GameRosterRecs
         push si
         call 0x0000:_read
         add sp, 0x6
@@ -1315,7 +1315,7 @@ CtlDlgHitTest:
         sub di, 0xa
         sub word [bp + 0x8], 0xa
         db 0x2B, 0xC9                           ; insn: sub cx, cx
-        mov bx, 0x0
+        mov bx, ControlsDlgTopBox
         mov [bp + 0x6], di
         mov ax, 0x35ee
         mov ds, ax
@@ -1431,7 +1431,7 @@ ControlsDlgLoop:
         les bx, [es:PageTableSeg + 0x2]
         mov ax, [es:bx]
         mov [bp - 0x4], ax
-        cmp word [PlayoffDlgY], 0x50
+        cmp word [ScreenRowStride], 0x50
         jnz short .1
         mov ax, 0xc8
         jmp short .2

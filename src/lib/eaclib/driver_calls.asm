@@ -80,7 +80,7 @@ LoadSoundDriver:
         push word [bp - 0x2]
         push word [bp - 0x4]
         push word 0x16f2
-        push word 0x8be
+        push word str_Bru_9
         push word 0x16f2
         push word 0x87c
         imul bx, [DriverCount], 0x38

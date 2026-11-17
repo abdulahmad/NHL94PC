@@ -106,7 +106,7 @@ SportsDesk:
         call 0x0FEF:UseOtherPage
         push word [bp + 0x6]
         push strict word str_Eadesk1d
-        push word 0xc242
+        push word DeskTitleText
         call 0x0000:_sprintf
         add sp, 0x6
         push word 0x3701
@@ -117,7 +117,7 @@ SportsDesk:
         add sp, 0x8
         push strict word str_Desk_14
         push 0x0
-        push word 0xc242
+        push word DeskTitleText
         call 0x14B8:LoadPackedHeader
         add sp, 0x4
         mov [bp - 0x2a], ax
@@ -664,7 +664,7 @@ SportsDesk:
         call 0x0FEF:UseCurrentPage
         push strict word str_Desk_13
         push 0x0
-        push word 0xc242
+        push word DeskTitleText
         call 0x14B8:LoadPackedHeader
         add sp, 0x4
         mov [bp - 0x2a], ax
@@ -1591,7 +1591,7 @@ DeskExitGame:
         push 0x0
         call 0x0FEF:SetStartPage
         add sp, 0x2
-        mov bx, 0x7570
+        mov bx, PageTable
         mov es, [segDgroup5]
         mov [bp - 0x30a], bx
         mov [bp - 0x308], es
@@ -1767,7 +1767,7 @@ DeskHomeLines:
         push 0x2
         push word 0x3448
         push strict word DeskLinesMenu
-        push word 0xae10
+        push word HomeTeamRec
         push 0x0
         call 0x2047:GameLineEditor
         add sp, 0xa
@@ -1860,7 +1860,7 @@ DeskVisitorLines:
         push 0x2
         push word 0x3448
         push strict word DeskLinesMenu
-        push word 0xae40
+        push word AwayTeamRec
         push 0x1
         call 0x2047:GameLineEditor
         add sp, 0xa

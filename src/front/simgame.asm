@@ -138,7 +138,7 @@ SimulateGame:
         mov [bp + si - 0x14a], dx
         push 0x0
         push 0x0
-        push word 0x514
+        push word KeysEnabled
         push word 0x1873
         call 0x14DB:AllocRecData
         add sp, 0x8

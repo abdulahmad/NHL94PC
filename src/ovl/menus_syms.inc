@@ -8,6 +8,7 @@ AnnouncerFlags		equ	0x1B7
 AskYesNo		equ	0x0
 AwayGlStats		equ	0x77A
 AwayTeamDbName		equ	0xC020
+AwayTeamRec		equ	0xAE40
 BuildPathFar		equ	0x3E
 BuildSeasonTitleThunk		equ	0x2481
 CallCountStep		equ	0x1A2C
@@ -88,7 +89,9 @@ FontPtr		equ	0x6D4E
 FormatCall		equ	0x988
 FreePPVFilesThunk		equ	0x2567
 GameDressPlayerThunk		equ	0x202B
+GameRosterRecs		equ	0xA268
 GameScratchPlayerThunk		equ	0x2085
+GameTeamRecs		equ	0x9F80
 GetBlockAt		equ	0x11DD
 GetInputEvent		equ	0xE
 GetPage		equ	0x11B1
@@ -101,6 +104,7 @@ HomeTeam		equ	0x21D0
 HomeTeamDbName		equ	0xC000
 HomeTeamMenuText		equ	0x12F0
 HomeTeamNum		equ	0x29CA
+HomeTeamRec		equ	0xAE10
 HotKeyFn		equ	0xB08E
 ImportDbsThunk		equ	0x2625
 ImulRegs		equ	0x9CA
@@ -192,7 +196,6 @@ PlayHilightThunk		equ	0x2413
 PlayJingle		equ	0x5F8
 PlayLeagueGameThunk		equ	0x262F
 PlayerStatsMenuBar		equ	0x164A
-PlayoffDlgY		equ	0x8FC
 PlayoffModeLoopThunk		equ	0x203F
 PlayoffTreeMenuBar		equ	0x19BA
 PostGameToTeamDbThunk		equ	0x24B3
@@ -215,6 +218,7 @@ SaveVgaPlanes		equ	0x4
 SavedGameNames		equ	0xA6D8
 ScoreboardArt		equ	0xC258
 ScoreboardArtSeg		equ	0xC25A
+ScreenRowStride		equ	0x8FC
 SendPatches		equ	0x3E4
 SetCharPtr.regs		equ	0xC56
 SetClipRectRegs		equ	0x8F
@@ -511,6 +515,7 @@ segWorkBuffer2		equ	0x8B62
 setpersonelThunk		equ	0x2409
 skaterstatscb		equ	0x21C4
 sndcardmissing		equ	0x1C4
+sortobj0_pflags2		equ	0xB553
 standingscb		equ	0x21C8
 standingsmenucb		equ	0x21CA
 statscategory		equ	0x21B8
@@ -537,6 +542,7 @@ str_AdtitleCfg		equ	0xB70
 str_AdtitleCfg_2		equ	0xAD4
 str_AdtitleKms		equ	0xB64
 str_AdtitleKms_2		equ	0xAC8
+str_AllFiles		equ	0xF10
 str_Alls03		equ	0xB22
 str_Attackers		equ	0xCDC
 str_AwaypalsBin_3		equ	0x1524

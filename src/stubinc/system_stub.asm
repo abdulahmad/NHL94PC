@@ -167,8 +167,5 @@ VidRows		equ	0x77C6
 AtanByte		equ	0x77D0
 LineStepLimit		equ	0x78D2
 LineStepTable		equ	0x78D4
-Sin2		equ	0x8068
-Sin0		equ	0x8268
-Sin1		equ	0x8468
-Sin3		equ	0x8A68
+SinTable		equ	0x8268
 %include "pc/system.asm"

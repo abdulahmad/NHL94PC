@@ -46,6 +46,7 @@ ReloadSoundConfigThunk		equ	0x20E9
 LoadModeStateThunk		equ	0x20F3
 GoodnightScreenThunk		equ	0x20FD
 AllocCanvases		equ	0x3804
+PageTable		equ	0x7570
 Pot1X		equ	0x75D6
 Pot1Y		equ	0x75D8
 Pot2X		equ	0x75DA

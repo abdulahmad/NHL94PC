@@ -54,7 +54,7 @@ RunDeferredCalls:
         db 0x2B, 0xFF                           ; insn: sub di, di
         cmp [defercount], di
         jng short .2
-        mov si, 0xdc38
+        mov si, defertab_fn
 .1:
         push word [si - 0x2]
         push word [si - 0x4]
@@ -87,7 +87,7 @@ AppendGSumRecord:
         inc word [gsumcount]
         lea ax, [bp - 0x2]
         push ax
-        push word 0xae70
+        push word gsummarypath
         call 0x0CD1:OpenReadWriteShared
         add sp, 0x4
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -181,7 +181,7 @@ FlushGSumQueue:
         db 0x2B, 0xFF                           ; insn: sub di, di
         cmp [gsumqcount], di
         jng short .2
-        mov si, 0xdc72
+        mov si, gsumqueue
 .1:
         push si
         push cs
@@ -207,7 +207,7 @@ PutGSumHeader:
         enter 0x2, 0x0
         lea ax, [bp - 0x2]
         push ax
-        push word 0xae70
+        push word gsummarypath
         call 0x0CD1:OpenReadWriteShared
         add sp, 0x4
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -247,7 +247,7 @@ PutGSumTail:
         enter 0x2, 0x0
         lea ax, [bp - 0x2]
         push ax
-        push word 0xae70
+        push word gsummarypath
         call 0x0CD1:OpenReadWriteShared
         add sp, 0x4
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -300,7 +300,7 @@ WriteGSumHeader:
         inc word [gsumcount]
         lea ax, [bp - 0x2]
         push ax
-        push word 0xae70
+        push word gsummarypath
         call 0x0CD1:OpenReadWriteShared
         add sp, 0x4
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -538,7 +538,7 @@ BuildEventLines:
         mov al, [curevent_b7]
         push ax
         push strict word str_02d02dS
-        push word 0xd4b8
+        push word textline3
         call 0x0000:_sprintf
         add sp, 0xa
         mov al, [curevent_b2]
@@ -607,7 +607,7 @@ BuildEventLines:
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push word 0x5801
-        push word 0xd506
+        push word textline1
         push cs
         call FormatPlayerName
         add sp, 0xc
@@ -617,14 +617,14 @@ BuildEventLines:
         cmp si, 0xff
         jnz short .6
         push strict word str_Unassisted
-        push word 0xd542
+        push word textline2
         call 0x0000:_sprintf
         add sp, 0x4
         jmp short .7
         db 0x90
 .6:
         push strict word str_Assists
-        push word 0xd542
+        push word textline2
         call 0x0000:_sprintf
         add sp, 0x4
         push word 0x5816
@@ -641,7 +641,7 @@ BuildEventLines:
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push word 0x5817
-        push word 0xd57e
+        push word textline4
         push cs
         call FormatPlayerName
         add sp, 0xc
@@ -667,7 +667,7 @@ BuildEventLines:
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push word 0x5819
-        push word 0xd5ba
+        push word textline5
         push cs
         call FormatPlayerName
         add sp, 0xc
@@ -694,7 +694,7 @@ BuildEventLines:
         mov al, [curevent_b6]
         push ax
         push strict word str_02d02dSPenalty
-        push word 0xd4b8
+        push word textline3
         call 0x0000:_sprintf
         add sp, 0xa
         push word 0x582f
@@ -712,7 +712,7 @@ BuildEventLines:
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push word 0x5830
-        push word 0xd506
+        push word textline1
         push cs
         call FormatPlayerName
         add sp, 0xc
@@ -721,7 +721,7 @@ BuildEventLines:
         shl bx, 1
         mov si, [bx + EventFmtPtrs]
         db 0x8B, 0xFE                           ; insn: mov di, si
-        mov si, 0xd542
+        mov si, textline2
         push ds
         pop es
         mov cx, 0xffff
@@ -751,7 +751,7 @@ BuildEventLines:
 .11:
         push ax
         push strict word str_DMinutes
-        push word 0xd57e
+        push word textline4
         call 0x0000:_sprintf
         add sp, 0x6
         pop si
@@ -780,7 +780,7 @@ BuildEventLines:
         mov al, [curevent_b5]
         push ax
         push strict word str_02d02dSInjury
-        push word 0xd4b8
+        push word textline3
         call 0x0000:_sprintf
         add sp, 0xa
         push word 0x5860
@@ -798,7 +798,7 @@ BuildEventLines:
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push word 0x5861
-        push word 0xd506
+        push word textline1
         push cs
         call FormatPlayerName
         add sp, 0xc
@@ -810,7 +810,7 @@ BuildEventLines:
 .13:
         push strict word str_GoneFor1Period
 .14:
-        push word 0xd542
+        push word textline2
         call 0x0000:_sprintf
         add sp, 0x4
 .15:
@@ -871,7 +871,7 @@ PostGoalEvent:
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, byte 0x2
         lea di, [bx + gsumqueue]
-        mov si, 0xb06c
+        mov si, curevent
         mov ax, ds
         mov es, ax
         mov cx, 0x6
@@ -902,7 +902,7 @@ PostGoalEvent:
         mov word [PadRepeatOn], 0x0
         mov ax, 0xb078
         db 0x8B, 0xF8                           ; insn: mov di, ax
-        mov si, 0xb06c
+        mov si, curevent
         push ds
         pop es
         mov cx, 0x6
@@ -955,7 +955,7 @@ PostPenaltyEvent:
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, byte 0x2
         lea di, [bx + gsumqueue]
-        mov si, 0xb06c
+        mov si, curevent
         mov ax, ds
         mov es, ax
         mov cx, 0x6
@@ -1050,7 +1050,7 @@ PostInjuryEvent:
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, byte 0x2
         lea di, [bx + gsumqueue]
-        mov si, 0xb06c
+        mov si, curevent
         mov ax, ds
         mov es, ax
         mov cx, 0x6

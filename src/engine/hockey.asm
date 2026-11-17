@@ -51,7 +51,7 @@ SprSort:
         call 0x0000:__chkstk
         push di
         push si
-        mov bx, 0xd474
+        mov bx, objxlist
         mov di, 0xb50e
         mov dx, 0x11
 .1:
@@ -70,7 +70,7 @@ SprSort:
         jnz short .1
 .4:
         mov byte [bp - 0x5], 0x0
-        mov si, 0xd4f4
+        mov si, OOlist
         db 0x2B, 0xD2                           ; insn: sub dx, dx
         mov word [bp - 0x4], 0x10
 .5:
@@ -642,7 +642,7 @@ TeamLineEnergy:
         jmp short .2
         db 0x90
 .1:
-        mov di, 0xb362
+        mov di, hmshots
 .2:
         push di
         push cs
@@ -665,7 +665,7 @@ findpc:
         call 0x0000:__chkstk
         push di
         push si
-        mov di, 0xd616
+        mov di, puckcross
         mov word [bp - 0x4], 0xe8
         mov si, 0xa0
         mov word [bp - 0x6], 0x2
@@ -2373,7 +2373,7 @@ reenergizeteam:
 clearteams:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
-        mov bx, 0xb362
+        mov bx, hmshots
         mov dx, 0x1ac
 .1:
         inc bx
@@ -2429,7 +2429,7 @@ restoreteams:
         call 0x0000:__chkstk
         push di
         push si
-        mov bx, 0xb362
+        mov bx, hmshots
         mov word [bp - 0x4], 0x2
 .1:
         mov word [bx + 0x22], 0x6
@@ -3185,7 +3185,7 @@ RestoreBenchEnergy:
         push di
         test byte [CrowdState], 0x4
         jz short .4
-        mov di, 0xb362
+        mov di, hmshots
         mov cx, 0x2
 .1:
         mov dx, 0x1b
@@ -3321,7 +3321,7 @@ periodicevents:
         jz short .8
         mov word [bp - 0x2], 0x0
         mov cx, 0xb362
-        mov di, 0x48ca
+        mov di, energywarnteam
 .4:
         db 0x8B, 0xD9                           ; insn: mov bx, cx
         mov bx, [bx + 0xd4]
@@ -4729,7 +4729,7 @@ clockcont_0:
 .14:
         or byte [gmode], 0x80
         push 0x2b
-        push word 0xbc8e
+        push word doorstruct
         call 0x1E7E:assinsert
         add sp, 0x4
         mov word [bp - 0x8], 0x9c40
@@ -5021,7 +5021,7 @@ SetupTeamForIntermission:
         push si
         push cs
         call ResetBench
-        mov si, 0xb362
+        mov si, hmshots
         mov di, 0xb438
         mov word [bp - 0x2], 0x2
 .1:
@@ -5046,7 +5046,7 @@ SetupTeamForIntermission:
         mov word [si + 0x16], 0x6
 .3:
         mov si, 0xb438
-        mov di, 0xb362
+        mov di, hmshots
         dec word [bp - 0x2]
         jnz short .1
         pop si
@@ -5066,7 +5066,7 @@ Intermission:
         push si
         push cs
         call SetupTeamForIntermission
-        mov si, 0xb510
+        mov si, sortobj0_Xpos2
 .1:
         add si, 0x80
         mov word [si - 0x80], 0x0
@@ -5160,7 +5160,7 @@ ResetBench:
         push di
         push si
         db 0x2B, 0xC9                           ; insn: sub cx, cx
-        mov bx, 0xb362
+        mov bx, hmshots
 .1:
         db 0x8B, 0xF1                           ; insn: mov si, cx
         mov byte [si + PBnum], 0x0
@@ -5217,7 +5217,7 @@ resetplstuff:
         call 0x0000:__chkstk
         push di
         push si
-        mov bx, 0xb362
+        mov bx, hmshots
         mov word [bp - 0x4], 0x2
 .1:
         and byte [bx + 0x2a], 0xef
@@ -5277,11 +5277,11 @@ StartGame:
 forceteams:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
-        push word 0xb362
+        push word hmshots
         push cs
         call setpersonel
         add sp, 0x2
-        push word 0xb362
+        push word hmshots
         push cs
         call forcepldata
         add sp, 0x2

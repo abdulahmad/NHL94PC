@@ -316,21 +316,21 @@ RosterScreen:
         push strict word CmpPoints
         push 0x2
         push word [bp - 0x3e2]
-        push word 0xcf80
+        push word rosterrowptrs
         call 0x0000:_qsort
         add sp, 0xa
         push word 0x2095
         push strict word CmpGAA
         push 0x2
         push word [bp - 0x360]
-        push word 0xcfbc
+        push word rosterrowptrs2
         call 0x0000:_qsort
         add sp, 0xa
         call 0x0FEF:UseOffscreenCanvas
         lea ax, [bp - 0x2e8]
         push ax
         push strict word str_EmbS
-        push word 0xcfd4
+        push word statstext
         call 0x0000:_sprintf
         add sp, 0x6
         push word 0x3701
@@ -399,7 +399,7 @@ RosterScreen:
         lea ax, [bp - 0x2e3]
         push ax
         push strict word str_SRoster
-        push word 0xcfd4
+        push word statstext
         call 0x0000:_sprintf
         add sp, 0x6
         push ds
@@ -557,7 +557,7 @@ RosterScreen:
         cbw
         push ax
         push word 0x2434
-        push word 0xcfd4
+        push word statstext
         call 0x0000:_sprintf
         add sp, 0x6
         push ds
@@ -821,7 +821,7 @@ RosterScreen:
         cbw
         push ax
         push word 0x2469
-        push word 0xcfd4
+        push word statstext
         call 0x0000:_sprintf
         add sp, 0x6
         push ds

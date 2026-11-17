@@ -1434,7 +1434,7 @@ ShowAwardScreens:
         jz short .20
         jmp near .1
 .20:
-        push word 0xcc05
+        push word AwardText
         call 0x03A3:TextWidthAll
         add sp, 0x2
         sub ax, strict word 0x71
@@ -2023,7 +2023,7 @@ AwardsCeremony:
         jl short .8
 .9:
         mov di, 0x1c54
-        mov si, 0xc7fa
+        mov si, AwardFrames3
 .10:
         cmp word [bp - 0x10], 0x0
         jnz short .11

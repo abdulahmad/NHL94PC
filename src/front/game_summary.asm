@@ -393,7 +393,7 @@ ShowGameSummary:
         add sp, 0x8
         lea ax, [bp - 0x12]
         push ax
-        push word 0xc020
+        push word AwayTeamDbName
         lea ax, [bp - 0xf2]
         push ax
         call 0x0000:_sprintf

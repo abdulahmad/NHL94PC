@@ -162,7 +162,7 @@ file layout. The 94 load path above is from this EXE and `lst/game/`.
 
 ## seg000 floating-point emulator
 
-`FpConvert` turns a floating value into an integer, or zero when the exponent is out of range. `JmpFpConvert` jumps to it. `FpExec` is the emulator body: interrupts 34h through 3Dh stand in for the coprocessor. The long runs of zeros and `40h` bytes between those routines are the constant tables, left as data.
+`_nmalloc` is the C near allocator; `_malloc` jumps to it. `DoubleToDigits` turns a double into sixteen decimal digits for `printf`; `ScalePow10` and `ScalePow10Near` multiply by a power of ten from the tables `Pow10Table`, `Pow10Neg`, `Pow10Near` and `Pow10NearNeg`. Floating-point instructions are emulator calls: interrupts 34h through 3Bh stand for the escape opcodes D8h to DFh, 3Ch for an escape with a segment override and 3Dh for fwait, each followed by the rest of the instruction as `db` bytes.
 
 ## seg000 number helpers
 

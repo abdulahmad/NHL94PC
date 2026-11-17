@@ -28,6 +28,10 @@ _fmemcpy		equ	0x12B8
 _fmemset		equ	0x1456
 RawBase		equ	0x1532
 DGROUP		equ	0x45C9
+MouseRatioShift		equ	0x642E
+str_Track		equ	0x846E
+str_Parts		equ	0x8474
+str_Seqdat		equ	0x847A
 str_BankDPat		equ	0x8481
 str_TimbDTim		equ	0x848C
 SfxChannel		equ	0x8498

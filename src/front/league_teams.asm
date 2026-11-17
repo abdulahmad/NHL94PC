@@ -25,7 +25,7 @@ AddHumanTeam:
         push si
         mov byte [lgflags], 0x0
         push 0x2
-        mov ax, 0xe53
+        mov ax, CurLeagueName
         mov cx, 0x3701
         mov [bp - 0x3e], ax
         mov [bp - 0x3c], cx
@@ -345,7 +345,7 @@ RemoveHumanTeam:
         push si
         mov byte [lgflags], 0x0
         push 0x2
-        mov ax, 0xe53
+        mov ax, CurLeagueName
         mov cx, 0x3701
         mov [bp - 0x3e], ax
         mov [bp - 0x3c], cx

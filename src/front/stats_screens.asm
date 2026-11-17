@@ -707,7 +707,7 @@ GameStandingsScreen:
         jz short .4
         call 0x0FEF:CopyPlane
 .4:
-        push word 0xcee8
+        push word standingstab
         push word [statsteambuf]
         push word [statsteambufseg]
         call 0x24E6:ShowStandingsTable
@@ -739,7 +739,7 @@ GameStandingsScreen:
         push strict word standingsmenubar
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
-        push word 0xcee8
+        push word standingstab
         push word [statsteambuf]
         push word [statsteambufseg]
         call 0x24E6:StandingsScreen
@@ -922,7 +922,7 @@ GameStandingsMenu:
         push word 0xc7
         call 0x0FEF:SetStartPage
         add sp, 0x2
-        mov bx, 0x7570
+        mov bx, PageTable
         mov es, [PoStandingsMode]
         mov [bp - 0x324], bx
         mov [bp - 0x322], es
@@ -1167,14 +1167,14 @@ GameStandingsMenu:
 .12:
         mov es, [segWorkBuffer40]
         mov word [es:dlgJerseyConflict + 0x4], 0x0
-        push word 0xcf1a
+        push word statscardteam
         mov ax, strict word GoalieStatsCard
         mov dx, 0x20f4
         jmp short .14
 .13:
         mov es, [segWorkBuffer40]
         mov word [es:dlgJerseyConflict + 0x4], 0x0
-        push word 0xcf1a
+        push word statscardteam
         mov ax, strict word SkaterStatsCard
         mov dx, 0x23d5
 .14:

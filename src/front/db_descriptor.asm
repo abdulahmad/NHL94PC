@@ -16,11 +16,11 @@ UseDbDescriptor:
         retf
 .1:
         push word 0x3415                        ; segment of the db files far data
-        push strict word 0x0
+        push strict word exhstate
         db 0xEB, 0x0E                           ; insn: jmp short 0x24
 .2:
         push word 0x3415                        ; segment of the db files far data
-        push strict word 0x62
+        push strict word postate
         db 0xEB, 0x06                           ; insn: jmp short 0x24
 .3:
         db 0x68, 0x15

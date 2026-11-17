@@ -169,7 +169,7 @@ AllocLinearCanvas:
         mov dx, [bp - 0xa]
         jmp short .13
 .12:
-        push word 0x7416
+        push word str_OutOfRowSpace
         call 0x0F4A:FatalError
         pop bx
 .13:
@@ -381,7 +381,7 @@ AllocCanvas:
         mov dx, [bp - 0xa]
         jmp short .13
 .12:
-        push word 0x7559
+        push word str_OutOfRowSpace_2
         call 0x0F4A:FatalError
         pop bx
 .13:

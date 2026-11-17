@@ -339,7 +339,7 @@ MergeTeamDbs:
         mov [bp - 0x10], ax
         mov [bp - 0xc], ax
         mov [bp - 0xe], ax
-        mov ax, 0xbaf
+        mov ax, str_Db_2
         mov cx, 0x3701
         mov [bp - 0xa5a], ax
         mov [bp - 0xa58], cx
@@ -1085,7 +1085,7 @@ UpdateTeamDbs:
         call 0x0D90:SetDialogColors
         add sp, 0xa
         push 0x2
-        mov ax, 0xe53
+        mov ax, CurLeagueName
         mov cx, 0x3701
         mov [bp - 0x3c], ax
         mov [bp - 0x3a], cx
@@ -1700,7 +1700,7 @@ MergeLeagueFiles:
 .18:
         cmp word [bp - 0x52], 0x0
         jnz short .20
-        mov ax, 0xe53
+        mov ax, CurLeagueName
         mov cx, 0x3701
         cmp ax, [bp - 0x36]
         jnz short .19
@@ -2095,7 +2095,7 @@ RebuildLeagueDbs:
         add sp, 0xa
         mov si, [bp - 0x2]
         push 0x2
-        mov ax, 0xe53
+        mov ax, CurLeagueName
         mov cx, 0x3701
         mov [bp - 0x32], ax
         mov [bp - 0x30], cx
@@ -2120,7 +2120,7 @@ RebuildLeagueDbs:
         push strict word leagueinfo
         push word 0x3a0b
         push strict word leagueinfo_password
-        mov ax, 0xac62
+        mov ax, leagueinfo_teams
         mov cx, 0x3a0b
         mov [bp - 0x36], ax
         mov [bp - 0x34], cx

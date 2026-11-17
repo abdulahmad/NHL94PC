@@ -1878,7 +1878,7 @@ LeadersScreenJumpTable:                         ; jump table of LeadersScreen: 1
         cbw
         push ax
         push word 0x28da
-        push word 0xcfd4
+        push word statstext
         call 0x0000:_sprintf
         add sp, 0x6
         push ds

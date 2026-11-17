@@ -3711,11 +3711,11 @@ assfaceoffpl:
 .3:
         mov word [si + 0x2e], 0x28
 .4:
-        mov di, 0xd602
+        mov di, fofdata2
         mov al, [si + 0x44]
         and al, 0x40
         jz short .5
-        mov di, 0xd606
+        mov di, fofdata_w2
 .5:
         cmp word [si + 0x12], 0x169
         jz short .8
@@ -3956,7 +3956,7 @@ RequestLineChange:
         jmp short .2
         db 0x90
 .1:
-        mov bx, 0xb362
+        mov bx, hmshots
 .2:
         mov ax, [bx + 0x16]
         mov bx, [bp - 0x2]
@@ -4196,7 +4196,7 @@ Endfaceoff:
         call 0x1E7E:assreplace
         add sp, 0x4
         push 0x1f
-        push word 0xbd0e
+        push word refstruct
         call 0x1E7E:assreplace
         add sp, 0x4
         cmp word [refXpos2], 0x0
@@ -5452,7 +5452,7 @@ assrefsignal:
         jmp short .8
         db 0x90
 .7:
-        mov di, 0xb362
+        mov di, hmshots
 .8:
         mov ax, [gameclock2]
         sub ax, [gameclock]

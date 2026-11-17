@@ -96,7 +96,7 @@ CreateNewLeague:
         lea ax, [bp - 0x1c]
         push ss
         push ax
-        mov ax, 0xe53
+        mov ax, CurLeagueName
         mov cx, 0x3701
         mov [bp - 0x6c], ax
         mov [bp - 0x6a], cx
@@ -215,7 +215,7 @@ CreateNewLeague:
         push word 0x3701
         push strict word str_SelectHumanControlledTeams
         push 0x1
-        mov cx, 0xac62
+        mov cx, leagueinfo_teams
         mov dx, 0x3a0b
         mov [bp - 0x70], cx
         mov [bp - 0x6e], dx

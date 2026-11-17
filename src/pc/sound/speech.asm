@@ -223,7 +223,7 @@ InitSpeechBank:
         push 0x80
         push word [bp + 0x8]
         push word [bp + 0x6]
-        push word 0x76e
+        push word str_Speechbuf
         call 0x14DB:InsertRecWrap
         add sp, 0x8
         les bx, [SpeechBank]
@@ -319,7 +319,7 @@ SpeechInit:
         push 0x0
         push 0x0
         push 0x34
-        push word 0x778
+        push word str_Sentence
         call 0x14DB:AllocRecData
         db 0x8B, 0xE5                           ; insn: mov sp, bp
         mov [SentencePtr], ax
@@ -329,7 +329,7 @@ SpeechInit:
         push 0x0
         push 0x0
         push word 0x122c
-        push word 0x781
+        push word str_SpeechBank
         call 0x14DB:AllocRecData
         db 0x8B, 0xE5                           ; insn: mov sp, bp
         mov [SpeechBank], ax
@@ -342,7 +342,7 @@ SpeechInit:
         push 0x0
         push 0x0
         push word 0x10c
-        push word 0x78d
+        push word str_SampleMemMan
         call 0x14DB:AllocRecData
         db 0x8B, 0xE5                           ; insn: mov sp, bp
         mov [WantedList], ax
@@ -494,7 +494,7 @@ MakePauseSample:
         push 0x80
         push 0x0
         push word 0x100
-        push word 0x79c
+        push word str_Pause
         call 0x14DB:InsertRecWrap
         add sp, 0x8
         mov [bp - 0x10], ax

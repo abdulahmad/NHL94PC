@@ -786,7 +786,7 @@ PlayJingle:
         mov word [JingleTempo], 0x14
         mov byte [JinglePan], 0x0
         push ds
-        push word 0xb2d6
+        push word ArenaJingleArg1
         call 0x16F2:StartSong
         mov [JingleHandle], ax
         mov [JingleHandleHi], dx

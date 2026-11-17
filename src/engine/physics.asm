@@ -1207,7 +1207,7 @@ GetLowestPen:
         jmp near .10
 .2:
         mov dx, 0xb438
-        mov bx, 0xb362
+        mov bx, hmshots
 .3:
         db 0x2B, 0xC9                           ; insn: sub cx, cx
         mov [bp - 0x6], cx
@@ -2355,7 +2355,7 @@ ChkOffsides:
         jnz short .1
         jmp near .27
 .1:
-        mov di, 0xb362
+        mov di, hmshots
         mov cx, 0x2
 .2:
         test byte [di + 0x2a], 0x10
@@ -2396,7 +2396,7 @@ ChkOffsides:
         mov word [regd0], 0x54
         test byte [gmode], 0x2
         jnz short .9
-        mov di, 0xb362
+        mov di, hmshots
 .9:
         mov si, [di + 0xd4]
         cmp word [lasttouch], 0x6
@@ -2455,7 +2455,7 @@ ChkOffsides:
         mov di, 0xb438
         jmp short .20
 .19:
-        mov di, 0xb362
+        mov di, hmshots
 .20:
         mov si, [di + 0xd4]
         cmp word [lasttouch], 0x6
@@ -3064,7 +3064,7 @@ FallDown:
         call 0x327B:AddPenalty2
         add sp, 0x4
         db 0x2B, 0xD2                           ; insn: sub dx, dx
-        mov di, 0xd676
+        mov di, PenBuf
         db 0x8B, 0xF2                           ; insn: mov si, dx
 .33:
         cmp byte [di], 0x0
@@ -5687,7 +5687,7 @@ checkcx:
         jmp near .19
 .8:
         push 0x4
-        push word 0xd672
+        push word regd1
         call 0x0000:LongSarAt
         cmp word [si + 0x5e], 0x10
         jz short .9
@@ -5992,7 +5992,7 @@ ChkGoalies:
         jz short .1
         jmp near .7
 .1:
-        mov si, 0xb362
+        mov si, hmshots
         mov cx, 0xb438
         db 0x2B, 0xFF                           ; insn: sub di, di
         mov [bp - 0x2], di
@@ -6074,7 +6074,7 @@ ReturnGoalies:
         enter 0x4, 0x0
         push di
         push si
-        mov si, 0xb362
+        mov si, hmshots
         mov word [bp - 0x4], 0xb438
         db 0x2B, 0xFF                           ; insn: sub di, di
         mov [bp - 0x2], di
