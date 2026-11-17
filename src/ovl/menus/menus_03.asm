@@ -7,12 +7,12 @@ Menus_2037_0000:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .1
         mov es, [g_8B28]
-        mov word [es:0x1170], 0x2035
+        mov word [es:0x1170], strict word OvlThunk7
         mov word [es:0x1172], 0x1b35
         mov [es:0x1188], ax
         mov [es:0x1186], ax
         mov es, [g_8B2A]
-        mov word [es:0x10ae], 0x12f0
+        mov word [es:0x10ae], strict word f_3448_12F0
         mov word [es:0x10b0], 0x3448
         jmp near .7
 .1:
@@ -20,13 +20,13 @@ Menus_2037_0000:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [es:0x1172], ax
         mov [es:0x1170], ax
-        mov word [es:0x1186], 0x2099
+        mov word [es:0x1186], strict word OvlThunk17
         mov word [es:0x1188], 0x1b35
         mov es, [g_8B2A]
         mov [es:0x10b0], ax
         mov [es:0x10ae], ax
 .2:
-        mov word [es:0x10c4], 0x1332
+        mov word [es:0x10c4], strict word f_3448_1332
         mov word [es:0x10c6], 0x3448
         retf
         db 0x90
@@ -36,10 +36,10 @@ Menus_2037_0000:
         cmp word [g_01BA], -0x1
         jz short .4
         mov es, [g_8B28]
-        mov word [es:0x1170], 0x2035
+        mov word [es:0x1170], strict word OvlThunk7
         mov word [es:0x1172], 0x1b35
         mov es, [g_8B2A]
-        mov word [es:0x10ae], 0x12f0
+        mov word [es:0x10ae], strict word f_3448_12F0
         mov word [es:0x10b0], 0x3448
         jmp short .5
 .4:
@@ -56,7 +56,7 @@ Menus_2037_0000:
         cmp word [g_01BA], -0x2
         jz short .6
         mov es, [g_8B28]
-        mov word [es:0x1186], 0x2099
+        mov word [es:0x1186], strict word OvlThunk17
         mov word [es:0x1188], 0x1b35
         mov es, [g_8B2A]
         jmp near .2

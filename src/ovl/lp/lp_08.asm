@@ -320,7 +320,7 @@ Lp_22D3_0262:
         cmp si, 0x4
         jl short .3
         push word 0x16f2
-        push word 0x308
+        push strict word ShutdownSequencer
         call 0x03A3:OnexitThunk
         add sp, 0x4
         push 0x0

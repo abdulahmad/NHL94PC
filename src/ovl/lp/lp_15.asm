@@ -1582,7 +1582,7 @@ Lp_2A57_0EF8:
         mov [bx + si], ax
         mov word [bp - 0x2], 0x1
         mov es, [g_8C0E]
-        mov word [es:0x1109], 0x2021
+        mov word [es:0x1109], strict word OvlThunk5
         mov word [es:0x110b], 0x1b35
 .8:
         mov ax, [bp - 0x2]
@@ -2571,7 +2571,7 @@ Lp_2A57_10C0:
         mov [bp + si - 0x75], al
         mov word [bp - 0x78], 0xffff
         mov es, [g_8C0E]
-        mov word [es:0x1109], 0x2021
+        mov word [es:0x1109], strict word OvlThunk5
         mov word [es:0x110b], 0x1b35
         jmp near .84
 .67:
@@ -3193,14 +3193,14 @@ Lp_2A57_1F96:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .3
         push word 0x2a57
-        push strict word str_Playoff_2
+        push strict word Lp_2A57_1F1C
         push 0x16
         push 0x1c
         push word 0xc2c2
         call 0x0000:CallArg
         add sp, 0xa
         push word 0x2a57
-        push strict word str_Playoff_2
+        push strict word Lp_2A57_1F1C
         push 0x16
         push 0x1c
         push word 0xc52a

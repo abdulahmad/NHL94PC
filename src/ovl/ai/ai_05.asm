@@ -396,7 +396,7 @@ assleavebox:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .15
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, str_Pstat_6
+        mov ax, 0xd97
         call 0x2E42:SetSPA
         or byte [si + 0x44], 0x20
         pop si

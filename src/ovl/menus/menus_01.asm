@@ -166,7 +166,7 @@ Menus_1F4F_00D0:
         jmp near .22
 .4:
         push word 0x1f4f
-        push strict word 0xe
+        push strict word Menus_1F4F_000E
         push 0x2
         push si
         lea ax, [bp - 0x94]

@@ -250,7 +250,7 @@ doplayeracc:
         mov cx, 0xabb
         jmp short .29
 .23:
-        mov cx, str_Shrt_2
+        mov cx, 0xbab
         jmp short .29
         db 0x90
 .24:

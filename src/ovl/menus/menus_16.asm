@@ -1751,9 +1751,9 @@ Menus_2E70_11EC:
         call 0x1B35:OvlThunk116
         add sp, 0x2
         mov es, [g_8B7A]
-        mov word [es:0xb6c], 0x2049
+        mov word [es:0xb6c], strict word OvlThunk9
         mov word [es:0xb6e], 0x1b35
-        mov word [es:0xb82], 0x2071
+        mov word [es:0xb82], strict word OvlThunk13
         mov word [es:0xb84], 0x1b35
         mov word [es:0xb9c], 0xd86
         mov word [es:0xb9e], 0x3448

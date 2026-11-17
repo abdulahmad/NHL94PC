@@ -114,7 +114,7 @@ assdefo:
         add [g_D66C], ax
 .18:
         push word 0x1b35
-        push word 0x20a3
+        push strict word OvlThunk18
         push si
         call 0x2425:skateto
         add sp, 0x6
@@ -341,7 +341,7 @@ assdefd:
         mov ax, [di + 0x2c]
         mov [g_D672], ax
         push word 0x1b35
-        push word 0x20a3
+        push strict word OvlThunk18
         push di
         call 0x2425:skateto
         add sp, 0x6
@@ -650,7 +650,7 @@ asswingo:
         neg word [g_D672]
 .17:
         push word 0x1b35
-        push word 0x20a3
+        push strict word OvlThunk18
         push si
         call 0x2425:skateto
         add sp, 0x6
@@ -902,7 +902,7 @@ asscentero:
         neg word [g_D672]
 .16:
         push word 0x1b35
-        push word 0x20a3
+        push strict word OvlThunk18
         push si
         call 0x2425:skateto
         add sp, 0x6
@@ -961,7 +961,7 @@ assstanley:
         mov bx, [si + 0x60]
         mov word [bx + di + 0x2c], 0x300
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, str_EaNhlInt_2
+        mov ax, 0x833
         call 0x2E42:SetSPA
 .3:
         mov ax, [si + 0x2a]
@@ -1734,7 +1734,7 @@ assbench:
         jnz short .21
         cmp word [si + 0x1a], 0x0
         jz short .21
-        mov ax, 0x20a3
+        mov ax, strict word OvlThunk18
         mov dx, 0x1b35
         jmp short .22
 .21:
@@ -1947,7 +1947,7 @@ assgoalie:
         mov word [g_D672], 0xff3c
 .7:
         push word 0x1b35
-        push word 0x20ad
+        push strict word OvlThunk19
         push bx
         call 0x2425:skateto
         add sp, 0x6
@@ -2770,7 +2770,7 @@ asspuckc:
         mov [si + 0x2a], ax
 .13:
         push word 0x1b35
-        push word 0x20b7
+        push strict word OvlThunk20
         push si
         call 0x2425:skateto
         add sp, 0x6
@@ -4512,7 +4512,7 @@ assreffollow:
         mov ax, [si + 0x2c]
         mov [g_D672], ax
         push word 0x1b35
-        push word 0x20c1
+        push strict word OvlThunk21
         push si
         call 0x2425:skateto
         add sp, 0x6
@@ -4786,7 +4786,7 @@ SkateToSpot:
 .34:
         cmp word [bp - 0x6], 0x0
         jng short .35
-        mov ax, str_SemiBar
+        mov ax, 0x640
         jmp short .36
 .35:
         mov ax, 0xf9c0
@@ -4819,7 +4819,7 @@ SkateToSpot:
 .40:
         cmp word [bp - 0x8], 0x0
         jng short .41
-        mov ax, str_SemiBar
+        mov ax, 0x640
         jmp short .42
 .41:
         mov ax, 0xf9c0

@@ -569,7 +569,7 @@ Menus_23A3_0516:
         jz short .1
 .4:
         push word 0x23a3
-        push word 0x4fc
+        push strict word Menus_23A3_04FC
         push 0x4
         push word [g_C054]
         push word 0xc05c
@@ -632,7 +632,7 @@ Menus_23A3_0516:
         jz short .7
 .10:
         push word 0x23a3
-        push word 0x4fc
+        push strict word Menus_23A3_04FC
         push 0x4
         push word [g_C164]
         push word 0xc16c
@@ -696,7 +696,7 @@ Menus_23A3_0516:
         jz short .13
 .16:
         push word 0x23a3
-        push word 0x4fc
+        push strict word Menus_23A3_04FC
         push 0x4
         push word [g_C0DC]
         push word 0xc0e4
@@ -2336,11 +2336,11 @@ Menus_23A3_1518:
         add sp, 0x8
         mov [bp - 0x2], ax
         mov es, [g_8B40]
-        mov word [es:0xbda], 0x203f
+        mov word [es:0xbda], strict word OvlThunk8
         mov word [es:0xbdc], 0x1b35
-        mov word [es:0xbf0], 0x2053
+        mov word [es:0xbf0], strict word OvlThunk10
         mov word [es:0xbf2], 0x1b35
-        mov word [es:0xc06], 0x205d
+        mov word [es:0xc06], strict word OvlThunk11
         mov word [es:0xc08], 0x1b35
         lea ax, [bp - 0x14]
         push ss
@@ -2410,9 +2410,9 @@ Menus_23A3_1518:
         add sp, 0x8
         mov [bp - 0x2], ax
         mov es, [g_8B40]
-        mov word [es:0xb6c], 0x2049
+        mov word [es:0xb6c], strict word OvlThunk9
         mov word [es:0xb6e], 0x1b35
-        mov word [es:0xb82], 0x2071
+        mov word [es:0xb82], strict word OvlThunk13
         mov word [es:0xb84], 0x1b35
         mov word [es:0xb9c], 0xd86
         mov word [es:0xb9e], 0x3448

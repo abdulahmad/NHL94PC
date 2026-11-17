@@ -312,7 +312,7 @@ Lp_2CB7_02F6:
         mov [bp - 0xa58], cx
         push cx
         push ax
-        mov bx, str_RockditiKms
+        mov bx, 0xb7c
         mov es, [g_8C1E]
         mov [bp - 0xa5e], bx
         mov [bp - 0xa5c], es

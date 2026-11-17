@@ -204,7 +204,7 @@ Stats_24E6_01BE:
         push di
         push si
         mov es, [g_8C84]
-        mov word [es:0x16c4], 0x64c
+        mov word [es:0x16c4], strict word Stats_2248_064C
         mov word [es:0x16c6], 0x2248
         push 0x0
         push strict word str_EasnFnt
@@ -316,7 +316,7 @@ Stats_24E6_01BE:
         call 0x0000:_close
         add sp, 0x2
         push word 0x24e6
-        push strict word 0x0
+        push strict word Stats_24E6_0000
         push 0x2
         push 0x18
         push di
@@ -1651,7 +1651,7 @@ Stats_24E6_0EC2:
         cwd
         jmp short .10
 .9:
-        mov ax, 0x64c
+        mov ax, strict word Stats_2248_064C
         mov dx, 0x2248
 .10:
         mov es, [g_8C84]

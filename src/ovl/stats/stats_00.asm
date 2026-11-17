@@ -47,11 +47,11 @@ Stats_1E45_0000:
         jmp near .30
 .7:
         mov es, [g_8C36]
-        mov word [es:0xde], 0x1fef
+        mov word [es:0xde], strict word OverlayThunks
         mov word [es:0xe0], 0x1b35
-        mov word [es:0xf4], 0x1ff9
+        mov word [es:0xf4], strict word OvlThunk1
         mov word [es:0xf6], 0x1b35
-        mov word [es:0x120], 0x2003
+        mov word [es:0x120], strict word OvlThunk2
         mov word [es:0x122], 0x1b35
         mov ax, 0x29
         mov cx, 0x384b
@@ -176,7 +176,7 @@ Stats_1E45_0000:
         db 0x90
 .19:
         mov es, [g_8C36]
-        mov word [es:0xde], 0x2003
+        mov word [es:0xde], strict word OvlThunk2
         mov word [es:0xe0], 0x1b35
         mov ax, 0x5b
         mov cx, 0x384b
@@ -224,9 +224,9 @@ Stats_1E45_0000:
         db 0x90
 .23:
         mov es, [g_8C36]
-        mov word [es:0xde], 0x1fef
+        mov word [es:0xde], strict word OverlayThunks
         mov word [es:0xe0], 0x1b35
-        mov word [es:0xf4], 0x1ff9
+        mov word [es:0xf4], strict word OvlThunk1
         mov word [es:0xf6], 0x1b35
         mov ax, 0x29
         mov cx, 0x384b

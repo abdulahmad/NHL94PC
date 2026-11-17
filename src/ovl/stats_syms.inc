@@ -48,7 +48,10 @@ MouseMove		equ	0x1B03
 MousePosFn		equ	0x6418
 MouseRange		equ	0x1BCD
 OpenReadShared		equ	0x3D6
+OverlayThunks		equ	0x1FEF
+OvlThunk1		equ	0x1FF9
 OvlThunk162		equ	0x2643
+OvlThunk2		equ	0x2003
 OvlThunk23		equ	0x20D5
 PutBlockAt		equ	0x4B5
 RawBase		equ	0x1532

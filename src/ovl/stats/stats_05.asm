@@ -1085,8 +1085,8 @@ Stats_215A_079E:
 .11:
         mov word [g_C050], 0x0
         push word [g_21B8]
-        mov ax, 0x6a
-        mov dx, str_Min
+        mov ax, strict word Stats_2446_006A
+        mov dx, 0x2446
         mov [g_21BC], ax
         mov [g_21BE], dx
         mov [bp - 0x326], dx
@@ -1117,14 +1117,14 @@ Stats_215A_079E:
         mov es, [g_8C70]
         mov word [es:0xb050], 0x0
         push word 0xcf1a
-        mov ax, 0x0
+        mov ax, strict word Stats_20F4_0000
         mov dx, 0x20f4
         jmp short .14
 .13:
         mov es, [g_8C70]
         mov word [es:0xb050], 0x0
         push word 0xcf1a
-        mov ax, 0x2
+        mov ax, strict word Stats_23D5_0002
         mov dx, 0x23d5
 .14:
         mov [g_21BC], ax

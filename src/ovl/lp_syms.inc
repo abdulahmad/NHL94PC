@@ -92,6 +92,7 @@ OvlThunk116		equ	0x2477
 OvlThunk117		equ	0x2481
 OvlThunk119		equ	0x2495
 OvlThunk127		equ	0x24E5
+OvlThunk13		equ	0x2071
 OvlThunk132		equ	0x2517
 OvlThunk134		equ	0x252B
 OvlThunk135		equ	0x2535
@@ -100,6 +101,10 @@ OvlThunk173		equ	0x26B1
 OvlThunk174		equ	0x26BB
 OvlThunk23		equ	0x20D5
 OvlThunk26		equ	0x20F3
+OvlThunk3		equ	0x200D
+OvlThunk4		equ	0x2017
+OvlThunk5		equ	0x2021
+OvlThunk9		equ	0x2049
 PlayJingle		equ	0x5F8
 PutBlock		equ	0x492
 PutBlockAt		equ	0x4B5
@@ -125,6 +130,7 @@ SetPaletteFar		equ	0x344C
 SetRemapTable		equ	0x442
 SetStartPage		equ	0x1320
 SetTextColors		equ	0x24
+ShutdownSequencer		equ	0x308
 SoundOptions		equ	0x1C6
 StopJingle		equ	0x5B8
 TeamPalette1		equ	0xB0C4
@@ -590,7 +596,6 @@ str_Pim_3		equ	0x1D67
 str_Pinfo		equ	0xB88
 str_Plaque		equ	0x1AC2
 str_Player		equ	0xB8E
-str_Playoff_2		equ	0x1F1C
 str_Plst		equ	0x1779
 str_Pnt2_10		equ	0x1783
 str_Pnt2_7		equ	0x198A
@@ -611,7 +616,6 @@ str_Pstat_5		equ	0x1A35
 str_Pt_3		equ	0x1D64
 str_Ptls		equ	0x177E
 str_Qpp		equ	0xBD0
-str_RockditiKms		equ	0xB7C
 str_S		equ	0xBAC
 str_S1Fnt_5		equ	0x1DDC
 str_SS_5		equ	0x1D36

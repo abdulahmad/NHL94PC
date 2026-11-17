@@ -35,7 +35,7 @@ Menus_2CF8_000E:
         db 0x90
 .1:
         mov es, [g_8B60]
-        mov word [es:0x119c], 0x1206
+        mov word [es:0x119c], strict word Menus_2CF8_1206
         mov word [es:0x119e], 0x2cf8
 .2:
         lea ax, [bp - 0x76]

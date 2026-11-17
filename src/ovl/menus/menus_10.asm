@@ -706,11 +706,11 @@ Menus_26D4_0180:
         call 0x1B35:OvlThunk116
         add sp, 0x2
         mov es, [g_8B4E]
-        mov word [es:0xbda], 0x203f
+        mov word [es:0xbda], strict word OvlThunk8
         mov word [es:0xbdc], 0x1b35
-        mov word [es:0xbf0], 0x2053
+        mov word [es:0xbf0], strict word OvlThunk10
         mov word [es:0xbf2], 0x1b35
-        mov word [es:0xc06], 0x205d
+        mov word [es:0xc06], strict word OvlThunk11
         mov word [es:0xc08], 0x1b35
         mov word [g_11D8], 0x0
 .25:
@@ -4890,7 +4890,7 @@ Menus_26D4_2A80:
         cmp ax, strict word 0xf
         jnl short .13
         mov es, [g_8B52]
-        mov word [es:0x18d4], 0x2067
+        mov word [es:0x18d4], strict word OvlThunk12
         mov word [es:0x18d6], 0x1b35
         jmp short .14
         db 0x90

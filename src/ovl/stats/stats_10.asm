@@ -299,14 +299,14 @@ Stats_2446_006A:
         call 0x0000:_close
         add sp, 0x2
         push word 0x2095
-        push word 0xc0
+        push strict word Stats_2095_00C0
         push 0x2
         push word [bp - 0x3e2]
         push word 0xcf80
         call 0x0000:CallArg
         add sp, 0xa
         push word 0x2095
-        push word 0x180
+        push strict word Stats_2095_0180
         push 0x2
         push word [bp - 0x360]
         push word 0xcfbc

@@ -1020,7 +1020,7 @@ Lp_25B2_06D6:
         jmp short .20
 .19:
         mov es, [g_8BDC]
-        mov word [es:0xf94], 0x200d
+        mov word [es:0xf94], strict word OvlThunk3
         mov word [es:0xf96], 0x1b35
 .20:
         cmp word [g_C270], 0x9
@@ -1031,7 +1031,7 @@ Lp_25B2_06D6:
         jmp short .22
         db 0x90
 .21:
-        mov word [es:0xfaa], 0x2017
+        mov word [es:0xfaa], strict word OvlThunk4
         mov word [es:0xfac], 0x1b35
 .22:
         mov ax, [g_C270]

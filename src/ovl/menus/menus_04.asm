@@ -81,7 +81,7 @@ Menus_2047_0008:
         call Menus_2047_1640
         add sp, 0x2
         push word 0x2047
-        push word 0x13a
+        push strict word Menus_2047_013A
         push 0x16
         push 0x1c
         push word 0xbd96
@@ -328,9 +328,9 @@ Menus_2047_01B2:
         add al, 0x60
         mov [bp - 0x3a], al
         mov es, [g_8B2E]
-        mov word [es:0x15bc], 0x2a60
+        mov word [es:0x15bc], strict word Menus_2047_2A60
         mov word [es:0x15be], 0x2047
-        mov ax, 0x208f
+        mov ax, strict word OvlThunk16
         mov dx, 0x1b35
         mov es, [g_8B30]
         mov [es:0x1538], ax
@@ -338,7 +338,7 @@ Menus_2047_01B2:
         mov es, [g_8B32]
         mov [es:0x1404], ax
         mov [es:0x1406], dx
-        mov ax, 0x207b
+        mov ax, strict word OvlThunk14
         mov dx, 0x1b35
         mov es, [g_8B30]
         mov [es:0x157a], ax
@@ -1377,9 +1377,9 @@ Menus_2047_01B2:
         jmp short .90
 .92:
         mov es, [g_8B2E]
-        mov word [es:0x15bc], 0x2a60
+        mov word [es:0x15bc], strict word Menus_2047_2A60
         mov word [es:0x15be], 0x2047
-        mov ax, 0x208f
+        mov ax, strict word OvlThunk16
         mov dx, 0x1b35
         mov es, [g_8B30]
         mov [es:0x1538], ax
@@ -1387,7 +1387,7 @@ Menus_2047_01B2:
         mov es, [g_8B32]
         mov [es:0x1404], ax
         mov [es:0x1406], dx
-        mov ax, 0x207b
+        mov ax, strict word OvlThunk14
         mov dx, 0x1b35
         mov es, [g_8B30]
         mov [es:0x157a], ax
@@ -1937,9 +1937,9 @@ Menus_2047_01B2:
         add sp, 0xc
 .152:
         mov es, [g_8B2C]
-        mov word [es:0x145c], 0x202b
+        mov word [es:0x145c], strict word OvlThunk6
         mov word [es:0x145e], 0x1b35
-        mov word [es:0x1472], 0x2085
+        mov word [es:0x1472], strict word OvlThunk15
         mov word [es:0x1474], 0x1b35
         mov al, 0x1c
         mul byte [bp + 0xc]
@@ -3744,9 +3744,9 @@ Menus_2047_25F2:
         call Menus_2047_248A
         add sp, 0x4
         mov es, [g_8B2E]
-        mov word [es:0x15bc], 0x2a60
+        mov word [es:0x15bc], strict word Menus_2047_2A60
         mov word [es:0x15be], 0x2047
-        mov ax, 0x208f
+        mov ax, strict word OvlThunk16
         mov dx, 0x1b35
         mov es, [g_8B30]
         mov [es:0x1538], ax
@@ -3754,7 +3754,7 @@ Menus_2047_25F2:
         mov es, [g_8B32]
         mov [es:0x1404], ax
         mov [es:0x1406], dx
-        mov ax, 0x207b
+        mov ax, strict word OvlThunk14
         mov dx, 0x1b35
         mov es, [g_8B30]
         mov [es:0x157a], ax
@@ -3838,9 +3838,9 @@ Menus_2047_2706:
         call Menus_2047_248A
         add sp, 0x4
         mov es, [g_8B2E]
-        mov word [es:0x15bc], 0x2a60
+        mov word [es:0x15bc], strict word Menus_2047_2A60
         mov word [es:0x15be], 0x2047
-        mov ax, 0x208f
+        mov ax, strict word OvlThunk16
         mov dx, 0x1b35
         mov es, [g_8B30]
         mov [es:0x1538], ax
@@ -3848,7 +3848,7 @@ Menus_2047_2706:
         mov es, [g_8B32]
         mov [es:0x1404], ax
         mov [es:0x1406], dx
-        mov ax, 0x207b
+        mov ax, strict word OvlThunk14
         mov dx, 0x1b35
         mov es, [g_8B30]
         mov [es:0x157a], ax
@@ -4697,9 +4697,9 @@ Menus_2047_2FA4:
         cmp si, 0x28
         jl short .1
         mov es, [g_8B2E]
-        mov word [es:0x15bc], 0x2a60
+        mov word [es:0x15bc], strict word Menus_2047_2A60
         mov word [es:0x15be], 0x2047
-        mov ax, 0x208f
+        mov ax, strict word OvlThunk16
         mov dx, 0x1b35
         mov es, [g_8B30]
         mov [es:0x1538], ax
@@ -4707,7 +4707,7 @@ Menus_2047_2FA4:
         mov es, [g_8B32]
         mov [es:0x1404], ax
         mov [es:0x1406], dx
-        mov ax, 0x207b
+        mov ax, strict word OvlThunk14
         mov dx, 0x1b35
         mov es, [g_8B30]
         mov [es:0x157a], ax

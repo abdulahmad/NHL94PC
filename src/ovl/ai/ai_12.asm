@@ -1191,7 +1191,7 @@ PickThreeStars:
         jmp short .15
 .19:
         push word 0x2cd2
-        push word 0x7dc
+        push strict word StarCompare
         push 0x2
         push word [bp - 0x70]
         lea ax, [bp - 0x6e]

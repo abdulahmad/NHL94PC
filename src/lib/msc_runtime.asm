@@ -2245,8 +2245,8 @@ atexit:
 
 ;-----------------------------------------------------------------------------
 ; CallArg                                                       0000:0EAA  MSC
-; Call the far routine in the last argument once for each element of a near array (array, count, element size,
-; routine); does nothing for a count of 0 or 1. Probably the swap or compare step of a library sort.
+; MSC qsort (array, count, element size, far compare routine): returns at once when the array is already in
+; order, otherwise sorts it in place with a quicksort whose partition stack is checked against _stackavail.
 ;-----------------------------------------------------------------------------
 CallArg:
         push bp

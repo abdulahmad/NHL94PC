@@ -2682,7 +2682,7 @@ FallDown:
 .8:
         or byte [si + 0x44], 0x20
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, str_2222
+        mov ax, 0xb13
         call 0x2E42:SetSPA
         cmp word [CrowdSound], 0x3e8
         jg short .9
@@ -2842,7 +2842,7 @@ FallDown:
         jmp near .36
 .28:
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, str_Pointer_3
+        mov ax, 0xa0b
         call 0x2E42:SetSPA
         push si
         push cs
@@ -3929,11 +3929,11 @@ deflect:
         mov si, [bp + 0x6]
         mov bx, [g_2996]
         mov byte [bx], 0xff
-        mov ax, str_Wittle06Fnt_2
+        mov ax, 0x2000
         call 0x0C11:randomd0
         sub ax, 0x1000
         mov [si + 0xe], ax
-        mov ax, str_Wittle06Fnt_2
+        mov ax, 0x2000
         call 0x0C11:randomd0
         sub ax, 0x1000
         mov [si + 0xc], ax
@@ -4359,7 +4359,7 @@ doshot:
         call 0x03A3:DivWords.regs
         mov [bp - 0x6], ax
         db 0x8B, 0xC6                           ; insn: mov ax, si
-        mov dx, str_S1Fnt_6
+        mov dx, 0xb33
         call 0x03A3:MulRegs
         mov bx, [g_29A6]
         call 0x03A3:DivWords.regs
@@ -4370,7 +4370,7 @@ doshot:
         jmp short .25
         db 0x90
 .24:
-        mov dx, str_Game_4
+        mov dx, 0x1800
 .25:
         mov bx, [g_2994]
         mov [bx], dx
@@ -4893,11 +4893,11 @@ checkgoal:
 .23:
         mov ax, [g_D66C]
         mov [si + 0xe], ax
-        mov ax, str_Wittle06Fnt_2
+        mov ax, 0x2000
         call 0x0C11:randomd0
         sub ax, 0x1000
         mov [si + 0xc], ax
-        mov ax, str_Wittle06Fnt_2
+        mov ax, 0x2000
         call 0x0C11:randomd0
         sub ax, 0x1000
         mov [si + 0x10], ax

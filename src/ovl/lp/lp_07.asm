@@ -810,7 +810,7 @@ Lp_2139_08C6:
         push strict word str_Id
         push word 0x3701
         push strict word str_Player
-        mov ax, str_C2dS_6
+        mov ax, 0xbfa
         mov cx, 0x3701
         mov [bp - 0x6c], ax
         mov [bp - 0x6a], cx
@@ -2051,9 +2051,9 @@ Lp_2139_1430:
         call 0x1B35:OvlThunk116
         add sp, 0x2
         mov es, [g_8BBC]
-        mov word [es:0xb6c], 0x2049
+        mov word [es:0xb6c], strict word OvlThunk9
         mov word [es:0xb6e], 0x1b35
-        mov word [es:0xb82], 0x2071
+        mov word [es:0xb82], strict word OvlThunk13
         mov word [es:0xb84], 0x1b35
         mov word [es:0xb9c], 0xd86
         mov word [es:0xb9e], 0x3448
