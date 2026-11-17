@@ -12,7 +12,7 @@ CmpConfStandings:
         push si
         mov di, [bp + 0x6]
         imul ax, [di], 0x1a
-        add ax, [g_C04C]
+        add ax, [statsteambufseg]
         mov dx, [statsteambuf]
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         db 0x8B, 0xF1                           ; insn: mov si, cx
@@ -20,7 +20,7 @@ CmpConfStandings:
         db 0x8B, 0xC2                           ; insn: mov ax, dx
         mov bx, [bp + 0x8]
         imul dx, [bx], 0x1a
-        add dx, [g_C04C]
+        add dx, [statsteambufseg]
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         mov [bp - 0x8], dx
         mov [bp - 0x6], bx
@@ -368,13 +368,13 @@ StandingsScreen:
         call 0x03A3:FindFarMsg
         add sp, 0x6
         mov [statsbgshapes], ax
-        mov [g_C2B4], dx
+        mov [statsbgseg], dx
         push word 0xc8
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov dx, 0x140
         mov bx, 0xa
         call 0x0FEF:SetClipRectRegs
-        push word [g_C2B4]
+        push word [statsbgseg]
         push word [statsbgshapes]
         call 0x0FEF:DrawRleTransBody
         add sp, 0x4
@@ -831,13 +831,13 @@ DrawStandingsPage:
         call 0x03A3:FindFarMsg
         add sp, 0x6
         mov [statsbgshapes], ax
-        mov [g_C2B4], dx
+        mov [statsbgseg], dx
         push word 0xc8
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov dx, 0x140
         mov bx, 0xa
         call 0x0FEF:SetClipRectRegs
-        push word [g_C2B4]
+        push word [statsbgseg]
         push word [statsbgshapes]
         call 0x0FEF:DrawRleTransBody
         add sp, 0x4
@@ -1305,7 +1305,7 @@ ShowSeasonStandings:
 .12:
         mov al, [bp - 0xe]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
-        mov [g_C240], ax
+        mov [standingsrank], ax
         mov word [bp - 0x2], 0x7
 .13:
         cmp di, 0x4
@@ -1333,7 +1333,7 @@ ShowSeasonStandings:
 .17:
         mov al, [bp - 0xd]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
-        mov [g_C240], ax
+        mov [standingsrank], ax
         mov word [bp - 0x2], 0x7
 .18:
         inc word [bp - 0x2]
@@ -1383,19 +1383,19 @@ ShowSeasonStandings:
         add di, 0x8
         cmp di, 0xc238
         jc short .23
-        mov ax, [g_C238]
-        cmp [g_C23C], ax
+        mov ax, [standingsteam]
+        cmp [standingskey], ax
         jz short .26
-        mov ax, [g_C23C]
-        cmp [g_C23A], ax
+        mov ax, [standingskey]
+        cmp [standingsprev], ax
         jnz short .27
 .26:
-        mov ax, [g_C23E]
-        xor [g_C23C], ax
-        mov ax, [g_C23C]
-        xor [g_C23E], ax
-        xor ax, [g_C23E]
-        mov [g_C23C], ax
+        mov ax, [standingskey2]
+        xor [standingskey], ax
+        mov ax, [standingskey]
+        xor [standingskey2], ax
+        xor ax, [standingskey2]
+        mov [standingskey], ax
 .27:
         cmp word [bp - 0x4], 0x0
         jnz short .28

@@ -133,7 +133,7 @@ PlayRandomHighlight:
         cmp word [bx + otherscoresb], 0x5
         jl short .2
         mov ax, [bx + otherscoresb]
-        cmp [bx + g_D9FA], ax
+        cmp [bx + hilightslots], ax
         jz short .2
         db 0x8B, 0xCA                           ; insn: mov cx, dx
         mov ax, 0x1
@@ -240,7 +240,7 @@ PlayRandomHighlight:
         mov [bp - 0x2], di
 .8:
         mov ax, [bx + otherscoresb]
-        mov [bx + g_D9FA], ax
+        mov [bx + hilightslots], ax
         inc bx
         inc bx
         cmp bx, 0xc
@@ -268,12 +268,12 @@ EndGameScreens:
         call 0x1B35:PutGSumTailThunk
 .1:
         call 0x256C:FreePPVFiles
-        push word [g_C25E]
-        push word [g_C25C]
+        push word [RinkEndArtSeg]
+        push word [RinkEndArt]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        push word [g_C25A]
-        push word [g_C258]
+        push word [ScoreboardArtSeg]
+        push word [ScoreboardArt]
         call 0x06E1:FindUnlink
         add sp, 0x4
         call 0x2137:FreeArenaJingles
@@ -306,7 +306,7 @@ EndGameScreens:
         db 0x2B, 0xF6                           ; insn: sub si, si
 .4:
         mov ax, [si + otherscoresb]
-        mov [si + g_D9FA], ax
+        mov [si + hilightslots], ax
         inc si
         inc si
         cmp si, 0xc
@@ -392,12 +392,12 @@ IntermissionScreens:
         call 0x1B35:PutGSumTailThunk
         call 0x1B35:PutGSumHeaderThunk
         call 0x256C:FreePPVFiles
-        push word [g_C25E]
-        push word [g_C25C]
+        push word [RinkEndArtSeg]
+        push word [RinkEndArt]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        push word [g_C25A]
-        push word [g_C258]
+        push word [ScoreboardArtSeg]
+        push word [ScoreboardArt]
         call 0x06E1:FindUnlink
         add sp, 0x4
         call 0x2137:FreeArenaJingles

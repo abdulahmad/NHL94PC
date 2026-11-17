@@ -22,23 +22,23 @@ FadeDirectional:
         call 0x0FEF:UseCurrentPage
         mov es, [segDgroup25]
         mov ax, [es:0x74fc]
-        mov [g_DF6A], ax
+        mov [fadex], ax
         mov ax, [es:0x74fe]
-        mov [g_DF6C], ax
+        mov [fadey], ax
         mov ax, [es:0x74f2]
-        mov [g_DF6E], ax
+        mov [fadew], ax
         mov cx, [es:0x74f4]
-        mov [g_DF70], cx
+        mov [fadeh], cx
         mov dx, [es:0x74fa]
         mov [bp - 0x1e], dx
         db 0x8B, 0xF9                           ; insn: mov di, cx
         db 0x2B, 0xF8                           ; insn: sub di, ax
         cmp word [bp + 0x6], 0x0
         jnz short .3
-        mov ax, [g_DF6A]
+        mov ax, [fadex]
         mov [bp - 0xc], ax
         mov [bp - 0x4], ax
-        mov ax, [g_DF6C]
+        mov ax, [fadey]
         mov [bp - 0xe], ax
         mov [bp - 0x8], ax
         db 0x8B, 0xC1                           ; insn: mov ax, cx
@@ -54,13 +54,13 @@ FadeDirectional:
 .3:
         cmp word [bp + 0x6], 0x1
         jnz short .5
-        mov ax, [g_DF6A]
+        mov ax, [fadex]
         mov [bp - 0xc], ax
         mov [bp - 0x4], ax
-        mov ax, [g_DF6C]
+        mov ax, [fadey]
         mov [bp - 0xe], ax
         mov [bp - 0x8], ax
-        mov ax, [g_DF6E]
+        mov ax, [fadew]
         mov [bp - 0x16], ax
         mov [bp - 0xa], ax
         mov [bp - 0x10], ax
@@ -77,14 +77,14 @@ FadeDirectional:
 .5:
         cmp word [bp + 0x6], 0x2
         jnz short .7
-        mov bx, [g_DF6C]
+        mov bx, [fadey]
         mov [bp - 0x8], bx
         mov [bp - 0xc], bx
         mov [bp - 0x4], bx
-        mov ax, [g_DF6E]
+        mov ax, [fadew]
         mov [bp - 0x10], ax
         mov [bp - 0x6], ax
-        mov ax, [g_DF70]
+        mov ax, [fadeh]
         mov [bp - 0x16], ax
         mov [bp - 0xa], ax
         mov word [bp - 0x1a], 0xfff8
@@ -107,14 +107,14 @@ FadeDirectional:
 .7:
         cmp word [bp + 0x6], 0x3
         jnz short .8
-        mov bx, [g_DF6A]
+        mov bx, [fadex]
         mov [bp - 0x8], bx
         mov [bp - 0xc], bx
         mov [bp - 0x4], bx
-        mov ax, [g_DF6E]
+        mov ax, [fadew]
         mov [bp - 0x10], ax
         mov [bp - 0x6], ax
-        mov ax, [g_DF70]
+        mov ax, [fadeh]
         mov [bp - 0x16], ax
         mov [bp - 0xa], ax
         mov word [bp - 0x18], 0x8
@@ -127,8 +127,8 @@ FadeDirectional:
 .8:
         cmp word [bp + 0x6], 0x4
         jnz short .9
-        mov ax, [g_DF6C]
-        add ax, [g_DF6A]
+        mov ax, [fadey]
+        add ax, [fadex]
         cwd
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         sar ax, 1
@@ -137,10 +137,10 @@ FadeDirectional:
         mov [bp - 0x4], bx
         mov [bp - 0xe], bx
         mov [bp - 0x8], bx
-        mov ax, [g_DF6E]
+        mov ax, [fadew]
         mov [bp - 0x10], ax
         mov [bp - 0x6], ax
-        mov ax, [g_DF70]
+        mov ax, [fadeh]
         mov [bp - 0x16], ax
         mov [bp - 0xa], ax
         mov word [bp - 0x1a], 0xfff8
@@ -165,16 +165,16 @@ FadeDirectional:
 .9:
         cmp word [bp + 0x6], 0x5
         jnz short .10
-        mov ax, [g_DF6C]
+        mov ax, [fadey]
         mov [bp - 0xc], ax
         mov [bp - 0x4], ax
-        mov ax, [g_DF6A]
+        mov ax, [fadex]
         mov [bp - 0xe], ax
         mov [bp - 0x8], ax
-        mov ax, [g_DF6E]
+        mov ax, [fadew]
         mov [bp - 0x10], ax
         mov [bp - 0x6], ax
-        mov ax, [g_DF70]
+        mov ax, [fadeh]
         mov [bp - 0x16], ax
         mov [bp - 0xa], ax
         mov word [bp - 0x1a], 0xfff8
@@ -198,14 +198,14 @@ FadeDirectional:
 .10:
         cmp word [bp + 0x6], 0x6
         jnz short .11
-        mov ax, [g_DF6A]
+        mov ax, [fadex]
         mov [bp - 0xc], ax
         mov [bp - 0x4], ax
-        mov ax, [g_DF6C]
+        mov ax, [fadey]
         mov [bp - 0xe], ax
         mov [bp - 0x8], ax
-        mov ax, [g_DF70]
-        add ax, [g_DF6E]
+        mov ax, [fadeh]
+        add ax, [fadew]
         cwd
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         sar ax, 1
@@ -217,16 +217,16 @@ FadeDirectional:
 .11:
         cmp word [bp + 0x6], 0x7
         jnz short .15
-        mov ax, [g_DF6A]
+        mov ax, [fadex]
         mov [bp - 0xc], ax
         mov [bp - 0x4], ax
-        mov ax, [g_DF6C]
+        mov ax, [fadey]
         mov [bp - 0xe], ax
         mov [bp - 0x8], ax
-        mov ax, [g_DF70]
+        mov ax, [fadeh]
         mov [bp - 0x10], ax
         mov [bp - 0x6], ax
-        mov ax, [g_DF6E]
+        mov ax, [fadew]
         mov [bp - 0x16], ax
         mov [bp - 0xa], ax
 .12:

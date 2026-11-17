@@ -171,7 +171,7 @@ ForceStartLineup:
         cmp word [gsp], 0x0
         jnz short .1
         mov ax, [gameclock]
-        cmp [g_D1AC], ax
+        cmp [gameclock2], ax
         jnz short .1
         cmp word [clockticks], 0x0
         jnz short .1
@@ -589,7 +589,7 @@ puckfaceoff:
         add sp, 0x4
 .12:
         mov word [regd0], 0x2
-        mov word [g_D66E], 0x0
+        mov word [regd0_w2], 0x0
         test byte [CrowdState], 0x4
         jz short .13
         mov ax, [regd0]
@@ -757,7 +757,7 @@ puckfaceoff2:
         cmp word [clockticks], 0x0
         jnz short .2
         mov ax, [gameclock]
-        cmp [g_D1AC], ax
+        cmp [gameclock2], ax
         jz short .5
 .2:
         cmp word [RefStep], 0x0
@@ -780,16 +780,16 @@ puckfaceoff2:
         jz short .6
         cmp word [ovlseq], -0x1
         jz short .6
-        push word [g_D62E]
-        push word [g_D62C]
+        push word [OverlayGfxSeg]
+        push word [OverlayGfx]
         call 0x06E1:FindUnlink
         add sp, 0x4
 .6:
         mov ax, [PadRepeatOn]
-        mov [g_D46A], ax
+        mov [gameframe], ax
         mov word [PadRepeatOn], 0x0
         call 0x2352:FlushGSumQueue
-        mov ax, [g_D46A]
+        mov ax, [gameframe]
         mov [PadRepeatOn], ax
         mov ax, 0xffff
         mov [bannermsg], ax
@@ -812,7 +812,7 @@ puckfaceoff2:
         jmp near .12
 .8:
         mov ax, [gameclock]
-        cmp [g_D1AC], ax
+        cmp [gameclock2], ax
         jz short .9
         jmp near .12
 .9:
@@ -831,8 +831,8 @@ puckfaceoff2:
         mov [injurystop], ax
         mov [refsignal], ax
         mov al, 0xff
-        mov [g_D619], al
-        mov [g_D61D], al
+        mov [GoalState_m5], al
+        mov [GoalState_m1], al
         and byte [gmode2], 0x7d
         or byte [gmode2], 0x5
         mov ax, 0xffff
@@ -1241,7 +1241,7 @@ puckfaceoff2:
         cmp word [cont2team], 0x0
         jz short .49
         mov word [regd4], 0x2
-        mov word [g_D6CA], 0x0
+        mov word [regd4_w2], 0x0
         push word [regd4]
         push word [bp + 0x6]
         call 0x2E42:changeplayer
@@ -1254,16 +1254,16 @@ puckfaceoff2:
         mov bx, [bp + 0x6]
         mov [bx + 0x26], ax
         mov word [fofdata2], 0x1
-        mov word [g_D606], 0x4
-        mov word [g_D608], 0xa800
-        mov word [g_D60A], 0x7
+        mov word [fofdata_w2], 0x4
+        mov word [fofdata_w4], 0xa800
+        mov word [fofdata_w6], 0x7
         mov ax, 0x8000
-        mov [g_D604], ax
-        mov [g_D60C], ax
+        mov [fofdata], ax
+        mov [fofdata_w8], ax
         test byte [gmode], 0x2
         jnz short .50
-        mov word [g_D604], 0x8800
-        mov word [g_D608], 0xa000
+        mov word [fofdata], 0x8800
+        mov word [fofdata_w4], 0xa000
 .50:
         mov ax, 0xffff
         mov [fodir2], ax
@@ -1292,7 +1292,7 @@ puckfaceoff2:
         jg short .54
         sub ax, strict word 0xa
         neg ax
-        mov [g_D60A], ax
+        mov [fofdata_w6], ax
         pop si
         leave
         retf
@@ -1565,7 +1565,7 @@ asstakeposition:
         call 0x0D5F:VectorToDir8
         cwd
         mov [regd2], ax
-        mov [g_D6BA], dx
+        mov [regd2_w2], dx
         cmp word [si + 0x1a], 0x0
         jnz short .22
         cmp ax, strict word 0x2

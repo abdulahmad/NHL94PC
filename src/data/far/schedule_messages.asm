@@ -2,7 +2,8 @@
 ; (the overlays probably do).
         db 'Generating random schedule.'
         db 0x00, 'Please wait.', 0x00
-msgGeneratingRandomSchedulePleaseWait:                                    ; used by LP (to name)
+msgGeneratingRandomSchedulePleaseWait:          ; message list of 2 far string pointers: 'Generating random
+                                                ; schedule. / Please wait.'; used by LP
         db 0x00, 0x00
         db 0x27, 0x38, 0x1C, 0x00
         db 0x27, 0x38, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00

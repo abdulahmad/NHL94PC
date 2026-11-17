@@ -1319,7 +1319,7 @@ MergeLeagueFiles:
         call 0x2305:LeagueCheckStub
         add sp, 0x6
         mov [bp - 0x52], ax
-        mov byte [g_E36B], 0x0
+        mov byte [lgflags], 0x0
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .1
         jmp near .34
@@ -1358,7 +1358,7 @@ MergeLeagueFiles:
         push ax
         call 0x0CD1:FileExists
         add sp, 0x2
-        mov [g_C7A0], ax
+        mov [mergestate], ax
         cmp word [bp - 0x52], 0x0
         jz short .2
         jmp near .34
@@ -1439,7 +1439,7 @@ MergeLeagueFiles:
         jmp near .33
         db 0x90
 .4:
-        cmp word [g_C7A0], 0x0
+        cmp word [mergestate], 0x0
         jz short .5
         lea ax, [bp - 0x4e]
         mov es, [segMergeMessages1]
@@ -1962,7 +1962,7 @@ MergeLeagueFiles:
         push 0x2a
         call 0x0D90:SetDialogColors
         add sp, 0xa
-        mov al, [g_E36B]
+        mov al, [lgflags]
         cbw
         pop si
         leave
@@ -1993,7 +1993,7 @@ MergeUpdateDbs:
         jnz short .2
         jmp near .5
 .2:
-        cmp word [g_C7A0], 0x0
+        cmp word [mergestate], 0x0
         jz short .3
         jmp near .5
 .3:

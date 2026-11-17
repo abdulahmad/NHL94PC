@@ -244,14 +244,14 @@ LoadRinkEndArt:
         push ax
         call 0x14B8:LoadPackedHeader
         add sp, 0x4
-        mov [g_C25C], ax
-        mov [g_C25E], dx
+        mov [RinkEndArt], ax
+        mov [RinkEndArtSeg], dx
         push strict word str_0000_2
         push dx
         push ax
         call 0x03A3:FindFarMsg
-        mov [g_D71C], ax
-        mov [g_D71E], dx
+        mov [RinkEndFrames], ax
+        mov [RinkEndFramesSeg], dx
         leave
         retf
         db 0x90
@@ -318,8 +318,8 @@ LoadGameGfx:
         push ax
         call 0x14B8:LoadPackedHeader
         add sp, 0x4
-        mov [g_D6D4], ax
-        mov [g_D6D6], dx
+        mov [GameGfx], ax
+        mov [GameGfxSeg], dx
         db 0x2B, 0xFF                           ; insn: sub di, di
         mov si, 0xd6d8
 .2:
@@ -331,8 +331,8 @@ LoadGameGfx:
         add sp, 0x6
         lea ax, [bp - 0xa]
         push ax
-        push word [g_D6D6]
-        push word [g_D6D4]
+        push word [GameGfxSeg]
+        push word [GameGfx]
         call 0x03A3:FindFarMsg
         add sp, 0x6
         add si, 0x4
@@ -343,8 +343,8 @@ LoadGameGfx:
         jc short .2
         push word 0xd700
         push strict word str_000g000d000d000l000c000r000x
-        push word [g_D6D6]
-        push word [g_D6D4]
+        push word [GameGfxSeg]
+        push word [GameGfx]
         call 0x03A3:FindFarList
         add sp, 0x8
         call 0x251E:InitScoreboard
@@ -632,8 +632,8 @@ ResetGameVars:
         mov [energywarnteam], ax
         mov [lctimer], ax
         mov [lcline], ax
-        mov [g_D46E], ax
-        mov [g_D46C], ax
+        mov [controlled2], ax
+        mov [controlled], ax
         mov ax, 0xffff
         mov [ovltimer], ax
         mov [penaltysc], ax
@@ -644,10 +644,10 @@ ResetGameVars:
         mov [ovlstep], ax
         mov [ovlseq], ax
         db 0x2A, 0xC0                           ; insn: sub al, al
-        mov [g_D663], al
-        mov [g_D662], al
-        mov [g_D661], al
-        mov [g_D660], al
+        mov [gamevar2], al
+        mov [gamevar1], al
+        mov [scorerflags2], al
+        mov [scorerflags], al
         mov [textline5], al
         mov [textline4], al
         mov [textline2], al
@@ -663,12 +663,12 @@ ResetGameVars:
         mov [lcgroup], ax
         mov [lcstate], ax
         mov [lcchoice], ax
-        mov [g_D610], ax
-        mov [g_D60E], ax
+        mov [mousey], ax
+        mov [mousex], ax
         mov [bannertimer], ax
         mov [injurystop], ax
         mov [refhitcount], ax
-        mov [g_D6C4], ax
+        mov [crowdheat], ax
         mov si, 0xd1ae
 .1:
         mov word [si], 0xffff
@@ -687,16 +687,16 @@ ResetGameVars:
         cmp bx, 0xd9fa
         jc short .2
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_D66A], ax
-        mov [g_D666], ax
-        mov [g_D664], ax
-        mov [g_D00A], ax
-        mov [g_D004], ax
-        mov [g_D6BE], ax
-        mov [g_D6BC], ax
-        mov [g_D012], ax
-        mov [g_D010], ax
-        mov word [g_D670], 0xffff
+        mov [gamevar5], ax
+        mov [gamevar4], ax
+        mov [gamevar3], ax
+        mov [crowdcount], ax
+        mov [crowdtimer], ax
+        mov [gamevar8], ax
+        mov [gamevar7], ax
+        mov [crowdsumhi], ax
+        mov [crowdsum], ax
+        mov word [gamevar6], 0xffff
         call 0x1B35:StartGameThunk
         mov word [curperiod], 0x1
         cmp byte [PadStates], 0x1
@@ -717,5 +717,5 @@ ResetGameVars:
         mov [hudhundaccum], ax
         mov [frameaccum], ax
         mov [PadRepeatOn], ax
-        mov [g_D46A], ax
+        mov [gameframe], ax
         call 0x1B35:joyq_flushThunk

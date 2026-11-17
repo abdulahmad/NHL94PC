@@ -867,7 +867,7 @@ AdvancePlayoffs:
         add sp, 0xc
         mov [bp - 0x18], ax
         call 0x2E46:AwardsCeremony
-        mov byte [g_E36B], 0xff
+        mov byte [lgflags], 0xff
         mov ax, [bp - 0x18]
         leave
         retf
@@ -1815,7 +1815,7 @@ UpdatePlayoffSeries:
         add sp, 0x12
         mov [bp - 0x16], ax
         call 0x2E46:AwardsCeremony
-        mov byte [g_E36B], 0xff
+        mov byte [lgflags], 0xff
 .26:
         cmp word [bp - 0x16], 0x0
         jnz short .27
@@ -1849,7 +1849,7 @@ UpdateSeasonSchedule:
         mov [bp - 0x2], ax
         mov [bp - 0x4], ax
         mov [bp - 0x26], ax
-        mov byte [g_E36B], 0x0
+        mov byte [lgflags], 0x0
         push word [bp + 0xc]
         push word [bp + 0xa]
         mov es, [segTeamChoiceText35]

@@ -45,7 +45,7 @@ SetRinkObject:
         db 0x8B, 0xCA                           ; insn: mov cx, dx
         mov ax, 0x1
         shl ax, cl
-        or [bx + g_D9DA], ax
+        or [bx + rinkobjused], ax
         mov ax, 0x3
         imul si
         db 0x8B, 0xD8                           ; insn: mov bx, ax
@@ -193,7 +193,7 @@ DecayCrowdLevel:
         db 0x8B, 0xCB                           ; insn: mov cx, bx
         mov ax, 0x1
         shl ax, cl
-        test [di + g_D9DA], ax
+        test [di + rinkobjused], ax
         jz short .12
 .10:
         inc si
@@ -218,7 +218,7 @@ DecayCrowdLevel:
         db 0x8B, 0xCB                           ; insn: mov cx, bx
         mov ax, 0x1
         shl ax, cl
-        test [di + g_D9DA], ax
+        test [di + rinkobjused], ax
         jnz short .10
 .12:
         push si
@@ -287,7 +287,7 @@ DecayCrowdLevel:
         mov ax, 0x1
         shl ax, cl
         not ax
-        and [di + g_D9DA], ax
+        and [di + rinkobjused], ax
         mov word [si], 0xffff
         mov ax, 0x3e8
         sub ax, [CrowdSound]
@@ -374,8 +374,8 @@ DrawRinkObjects:
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, byte 0x2
-        push word [bx + g_D2C8]
-        push word [bx + g_D2C6]
+        push word [bx + SpriteFramesSeg]
+        push word [bx + SpriteFrames]
         call 0x1F54:DrawSpriteClipped
         add sp, 0xe
 .4:
@@ -424,8 +424,8 @@ DrawRinkObjects:
         sub ax, strict word 0x4
         neg ax
         push ax
-        push word [g_D448]
-        push word [g_D446]
+        push word [NumberFramesSeg]
+        push word [NumberFrames]
         call 0x1F54:DrawSpriteClipped
         add sp, 0xe
 .9:
@@ -438,8 +438,8 @@ DrawRinkObjects:
         push word [bp - 0x4]
         mov bx, [bp - 0x2]
         shl bx, byte 0x2
-        push word [bx + g_D2C8]
-        push word [bx + g_D2C6]
+        push word [bx + SpriteFramesSeg]
+        push word [bx + SpriteFrames]
         call 0x1F54:DrawSpriteClipped
         add sp, 0xe
 .10:
@@ -460,8 +460,8 @@ DrawRinkObjects:
         sub ax, strict word 0x4
         neg ax
         push ax
-        push word [g_D458]
-        push word [g_D456]
+        push word [NumberFrames2Seg]
+        push word [NumberFrames2]
         call 0x1F54:DrawSpriteClipped
         add sp, 0xe
         jmp short .12

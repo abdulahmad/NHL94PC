@@ -457,7 +457,7 @@ asswingd:
 .12:
         cwd
         mov [regd0], ax
-        mov [g_D66E], dx
+        mov [regd0_w2], dx
         mov word [regd1], 0x8e
         mov word [regd2], 0x44
         test byte [si + 0x44], 0x80
@@ -1446,20 +1446,20 @@ asspenalty:
         cbw
         mov [regd1], ax
         mov word [regd0], 0xfff5
-        mov word [g_D66E], 0xffff
+        mov word [regd0_w2], 0xffff
         jmp short .7
 .6:
-        mov al, [g_D6C7]
+        mov al, [PBnum_b1]
         cbw
         mov [regd1], ax
         mov word [regd0], 0xb
-        mov word [g_D66E], 0x0
+        mov word [regd0_w2], 0x0
 .7:
         and word [regd1], 0xf
         cmp word [regd1], 0x2
         jng short .8
         mov word [regd1], 0x2
-        mov word [g_D674], 0x0
+        mov word [regd1_w2], 0x0
 .8:
         add word [regd1], 0x3
         mov ax, [regd1]
@@ -1575,7 +1575,7 @@ assdopen:
         inc byte [PBnum]
         jmp short .2
 .1:
-        inc byte [g_D6C7]
+        inc byte [PBnum_b1]
 .2:
         mov byte [bx + 0x1b], 0xff
         mov word [bx + 0x12], 0xffff
@@ -1619,8 +1619,8 @@ assepen:
         jmp short .5
         db 0x90
 .3:
-        dec byte [g_D6C7]
-        mov al, [g_D6C7]
+        dec byte [PBnum_b1]
+        mov al, [PBnum_b1]
         cmp al, 0x2
         jng short .4
         mov al, 0x2
@@ -2299,7 +2299,7 @@ assgoalie:
         jng short .37
         mov word [CrowdSound], 0x4b0
 .37:
-        add word [g_D6C4], 0xa
+        add word [crowdheat], 0xa
         pop si
         leave
         retf
@@ -2631,7 +2631,7 @@ assgoalie:
         jng short .72
         mov word [CrowdSound], 0x3e8
 .72:
-        add word [g_D6C4], 0xa
+        add word [crowdheat], 0xa
 .73:
         mov bx, [bp - 0x6]
         mov ax, [bx]
@@ -3179,7 +3179,7 @@ assnearest:
         mov ax, [bx + 0x6]
         mov [bp - 0x2], ax
         mov word [regd2], 0xffff
-        mov word [g_D6BA], 0xffff
+        mov word [regd2_w2], 0xffff
         mov word [regd4], 0x6
         cmp word [bx + 0x5e], 0x6
         jl short .10
@@ -3252,7 +3252,7 @@ assnearest:
         db 0x8B, 0xD0                           ; insn: mov dx, ax
         call 0x03A3:ImulRegs
         mov [regd0], ax
-        mov [g_D66E], dx
+        mov [regd0_w2], dx
         mov bx, [puckvy]
         mov ax, [bx]
         sar ax, byte 0x6
@@ -3266,23 +3266,23 @@ assnearest:
         db 0x8B, 0xD0                           ; insn: mov dx, ax
         call 0x03A3:ImulRegs
         mov [regd1], ax
-        mov [g_D674], dx
+        mov [regd1_w2], dx
         mov ax, [regd2]
-        mov dx, [g_D6BA]
+        mov dx, [regd2_w2]
         mov cx, [regd1]
-        mov bx, [g_D674]
+        mov bx, [regd1_w2]
         add [regd0], cx
-        adc [g_D66E], bx
-        cmp [g_D66E], dx
+        adc [regd0_w2], bx
+        cmp [regd0_w2], dx
         ja short .21
         jc short .20
         cmp [regd0], ax
         ja short .21
 .20:
         mov ax, [regd0]
-        mov dx, [g_D66E]
+        mov dx, [regd0_w2]
         mov [regd2], ax
-        mov [g_D6BA], dx
+        mov [regd2_w2], dx
         mov ax, [bp - 0x8]
         mov [bp - 0xa], ax
 .21:
@@ -3291,10 +3291,10 @@ assnearest:
         jz short .22
         jmp near .12
 .22:
-        cmp word [g_D6BA], 0x0
+        cmp word [regd2_w2], 0x0
         jl short .24
         mov ax, [regd2]
-        mov dx, [g_D6BA]
+        mov dx, [regd2_w2]
         mov bx, [bp - 0xc]
         mov [bx + 0x26], ax
         mov [bx + 0x28], dx
@@ -3323,7 +3323,7 @@ assnearest:
         jmp near .50
 .25:
         mov word [regd1], 0x2
-        mov word [g_D674], 0x0
+        mov word [regd1_w2], 0x0
         cmp word [regd2], 0x190
         jng short .28
         cmp word [regd2], 0xe10
@@ -3406,7 +3406,7 @@ assnearest:
         test al, 0x40
         jz short .32
         add word [regd1], 0x4
-        adc word [g_D674], 0x0
+        adc word [regd1_w2], 0x0
 .32:
         cmp word [regd1], 0x0
         jnl short .33
@@ -3808,8 +3808,8 @@ pucknorm:
         mov word [si + 0x26], 0x0
         mov word [si + 0x28], 0x78
 .1:
-        dec word [g_D618]
-        dec word [g_D61C]
+        dec word [GoalState_m6]
+        dec word [GoalState_m2]
         dec word [si + 0x26]
         jns short .2
         add word [si + 0x26], 0x5
@@ -4083,7 +4083,7 @@ Endfaceoff:
         mov bx, [fofdata2]
         mov al, [bx + Endfaceoff_ftab_m1]
         cbw
-        mov bx, [g_D606]
+        mov bx, [fofdata_w2]
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         mov al, [bx + Endfaceoff_ftab_m1]
         cbw
@@ -4133,11 +4133,11 @@ Endfaceoff:
         call 0x0C11:randomd0
         cmp ax, [regd2]
         jnl short .5
-        mov dx, [g_D608]
+        mov dx, [fofdata_w4]
         mov [lasttouch], di
         jmp short .6
 .5:
-        mov dx, [g_D604]
+        mov dx, [fofdata]
         mov ax, [bp - 0x4]
         mov [lasttouch], ax
 .6:
@@ -4433,7 +4433,7 @@ a2touchpuck:
         db 0x33, 0xC1                           ; insn: xor ax, cx
         jz short .8
         push 0x6
-        mov al, [g_D62B]
+        mov al, [iflags_b1]
         cbw
         shl ax, byte 0x7
         add ax, 0xb50e
@@ -4447,7 +4447,7 @@ a2touchpuck:
 .8:
         mov byte [iflags], 0x0
         mov al, [si + 0x5e]
-        mov [g_D62B], al
+        mov [iflags_b1], al
         mov bx, [pucky]
         mov ax, [bx]
         mov [regd0], ax
@@ -5147,7 +5147,7 @@ CrowdOnStoppage:
         jz short .3
         jmp near .14
 .3:
-        mov ax, [g_D1AC]
+        mov ax, [gameclock2]
         sar ax, 1
         cmp ax, [gameclock]
         jng short .4
@@ -5163,9 +5163,9 @@ CrowdOnStoppage:
         cmp word [gsp], 0x2
         jnz short .5
         mov ax, [gameclock]
-        cmp [g_D668], ax
+        cmp [stoppagetime], ax
         jl short .5
-        mov word [g_D668], 0xffff
+        mov word [stoppagetime], 0xffff
         push 0x5
         jmp near .13
         db 0x90
@@ -5332,7 +5332,7 @@ assrefwhistle:
         mov ax, 0xa5b
         call 0x2E42:SetSPA
         mov word [regd2], 0x2
-        mov word [g_D6BA], 0x0
+        mov word [regd2_w2], 0x0
         mov ax, [regd2]
         cmp [si + 0x36], ax
         jz short .16
@@ -5454,7 +5454,7 @@ assrefsignal:
 .7:
         mov di, 0xb362
 .8:
-        mov ax, [g_D1AC]
+        mov ax, [gameclock2]
         sub ax, [gameclock]
         mov [bp - 0x2], ax
         cmp word [di + 0x20], 0x0
@@ -5661,7 +5661,7 @@ assrefgoalpa:
         mov [bp - 0x6], ax
 .12:
         mov ax, [PadRepeatOn]
-        mov [g_D46A], ax
+        mov [gameframe], ax
         mov word [PadRepeatOn], 0x0
         imul ax, [bp - 0xa], 0x1c
         db 0x8B, 0xC8                           ; insn: mov cx, ax
@@ -5687,7 +5687,7 @@ assrefgoalpa:
         push word [bx + TeamNameClips]
         call 0x0EDC:AnnounceGoal
         add sp, 0xa
-        mov ax, [g_D46A]
+        mov ax, [gameframe]
         mov [PadRepeatOn], ax
         mov byte [goalevent], 0xff
         cmp word [gsp], 0x3
@@ -6251,7 +6251,7 @@ assrefdrop:
 .11:
         cwd
         mov [regd2], ax
-        mov [g_D6BA], dx
+        mov [regd2_w2], dx
         cmp [si + 0x36], ax
         jz short .14
         mov al, [regd2]
@@ -6398,7 +6398,7 @@ assrefgoalline:
         call 0x0D5F:VectorToDir8
         cwd
         mov [regd2], ax
-        mov [g_D6BA], dx
+        mov [regd2_w2], dx
         cmp [si + 0x36], ax
         jz short .12
         mov al, [regd2]

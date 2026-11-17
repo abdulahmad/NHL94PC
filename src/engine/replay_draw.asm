@@ -21,8 +21,8 @@ ReplayStep:
         jnl short .1
         jmp near .12
 .1:
-        mov ax, [g_D018]
-        mov dx, [g_D01A]
+        mov ax, [replayplay]
+        mov dx, [replayplayseg]
         mov [bp - 0x4], ax
         mov [bp - 0x2], dx
 .2:
@@ -32,24 +32,24 @@ ReplayStep:
         mov ax, [replayptr]
         mov dx, [replayseg]
         sub ax, 0x6a00
-        add word [g_D018], 0x80
-        cmp ax, [g_D018]
+        add word [replayplay], 0x80
+        cmp ax, [replayplay]
         jnz short .3
-        cmp dx, [g_D01A]
+        cmp dx, [replayplayseg]
         jnz short .3
         test byte [sflags], 0x10
         jz short .4
         mov ax, [replayptr]
-        mov [g_D018], ax
+        mov [replayplay], ax
 .3:
-        mov ax, [g_D014]
-        mov dx, [g_D016]
-        cmp [g_D018], ax
+        mov ax, [replayrecptr]
+        mov dx, [replayrecseg]
+        cmp [replayplay], ax
         jnz short .7
-        cmp [g_D01A], dx
+        cmp [replayplayseg], dx
         jnz short .7
 .4:
-        sub word [g_D018], 0x80
+        sub word [replayplay], 0x80
 .5:
         mov word [bp + 0x6], 0xffff
 .6:
@@ -61,12 +61,12 @@ ReplayStep:
         jz short .2
         mov ax, [bp - 0x4]
         mov dx, [bp - 0x2]
-        cmp [g_D018], ax
+        cmp [replayplay], ax
         jnz short .8
-        cmp [g_D01A], dx
+        cmp [replayplayseg], dx
         jz short .2
 .8:
-        les bx, [g_D018]
+        les bx, [replayplay]
         mov al, [es:bx + 0x58]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         mov [bp - 0x2a], ax
@@ -76,7 +76,7 @@ ReplayStep:
         call 0x0EDC:PlaySoundEffect
         add sp, 0x2
 .9:
-        les bx, [g_D018]
+        les bx, [replayplay]
         mov al, [es:bx + 0x59]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         mov [bp - 0x2a], ax
@@ -89,13 +89,13 @@ ReplayStep:
         add sp, 0x2
         jmp near .2
 .11:
-        sub word [g_D018], 0x80
+        sub word [replayplay], 0x80
 .12:
         cmp word [bp + 0x6], 0x0
         jnl short .6
         inc word [bp + 0x6]
-        mov ax, [g_D018]
-        mov dx, [g_D01A]
+        mov ax, [replayplay]
+        mov dx, [replayplayseg]
         cmp [replayptr], ax
         jnz short .14
         cmp [replayseg], dx
@@ -107,14 +107,14 @@ ReplayStep:
         mov ax, [replayptr]
         mov dx, [replayseg]
         sub ax, 0x6a00
-        mov [g_D018], ax
-        mov [g_D01A], dx
+        mov [replayplay], ax
+        mov [replayplayseg], dx
 .14:
-        mov ax, [g_D014]
-        mov dx, [g_D016]
-        cmp [g_D018], ax
+        mov ax, [replayrecptr]
+        mov dx, [replayrecseg]
+        cmp [replayplay], ax
         jnz short .11
-        cmp [g_D01A], dx
+        cmp [replayplayseg], dx
         jnz short .11
         jmp near .5
         db 0x90
@@ -125,12 +125,12 @@ ReplayStep:
         jl short .17
         jmp near .21
 .17:
-        les bx, [g_D018]
-        add word [g_D018], 0x4
+        les bx, [replayplay]
+        add word [replayplay], 0x4
         mov ax, [es:bx]
         mov dx, [es:bx + 0x2]
         mov [regd0], ax
-        mov [g_D66E], dx
+        mov [regd0_w2], dx
         and ah, 0x3
         mov [regd1], ax
         test ah, 0x2
@@ -140,7 +140,7 @@ ReplayStep:
 .18:
         mov bx, [bp - 0x2a]
         shl bx, 1
-        mov [bx + g_DB2E], ax
+        mov [bx + rpl_x], ax
         push 0xa
         push word 0xd66c
         call 0x0000:LongSarAt
@@ -154,7 +154,7 @@ ReplayStep:
 .19:
         mov bx, [bp - 0x2a]
         shl bx, 1
-        mov [bx + g_DB50], ax
+        mov [bx + rpl_y], ax
         push 0xa
         push word 0xd66c
         call 0x0000:LongSarAt
@@ -168,24 +168,24 @@ ReplayStep:
         mov ax, [regd1]
         mov bx, [bp - 0x2a]
         shl bx, 1
-        mov [bx + g_DB72], ax
-        mov ah, [g_D66D]
+        mov [bx + rpl_frame], ax
+        mov ah, [regd0_b1]
         and ax, 0x400
         cmp ax, strict word 0x1
         db 0x1A, 0xC0                           ; insn: sbb al, al
         inc al
         mov bx, [bp - 0x2a]
-        mov [bx + g_DB94], al
+        mov [bx + rpl_flags], al
         jmp near .15
 .21:
         mov word [bp - 0x2a], 0x0
-        mov es, [g_D01A]
+        mov es, [replayplayseg]
 .22:
-        mov bx, [g_D018]
-        inc word [g_D018]
+        mov bx, [replayplay]
+        inc word [replayplay]
         mov al, [es:bx]
         mov bx, [bp - 0x2a]
-        mov [bx + g_DBA5], al
+        mov [bx + rpl_jerseys], al
         inc word [bp - 0x2a]
         cmp word [bp - 0x2a], 0xc
         jl short .22
@@ -196,7 +196,7 @@ ReplayStep:
         mov al, [regd1]
         mov bx, [bp - 0x2a]
         shl bx, 1
-        mov [bx + g_DBB1], al
+        mov [bx + rpl_puckowner], al
 .24:
         mov al, [regd0]
         sar al, byte 0x4
@@ -212,13 +212,13 @@ ReplayStep:
 .26:
         mov bx, [bp - 0x2a]
         shl bx, 1
-        mov [bx + g_DBB2], al
+        mov [bx + rpl_bytes], al
         inc word [bp - 0x2a]
 .27:
         cmp word [bp - 0x2a], 0x6
         jnl short .28
-        les bx, [g_D018]
-        inc word [g_D018]
+        les bx, [replayplay]
+        inc word [replayplay]
         mov al, [es:bx]
         mov [regd0], al
         and al, 0xf
@@ -227,25 +227,25 @@ ReplayStep:
         jnz short .23
         mov bx, [bp - 0x2a]
         shl bx, 1
-        mov byte [bx + g_DBB1], 0xff
+        mov byte [bx + rpl_puckowner], 0xff
         jmp short .24
 .28:
-        les bx, [g_D018]
-        inc word [g_D018]
+        les bx, [replayplay]
+        inc word [replayplay]
         mov al, [es:bx]
         cbw
-        mov [g_DBBE], ax
-        mov bx, [g_D018]
-        inc word [g_D018]
+        mov [rpl_camx], ax
+        mov bx, [replayplay]
+        inc word [replayplay]
         mov al, [es:bx]
         cbw
-        mov [g_DBC0], ax
-        add word [g_D018], 0x2
-        mov bx, [g_D018]
+        mov [rpl_word], ax
+        add word [replayplay], 0x2
+        mov bx, [replayplay]
         mov al, [es:bx]
         mov [regd0], al
         lea ax, [bx + 0x1]
-        mov [g_D018], ax
+        mov [replayplay], ax
         mov al, [regd0]
         and al, 0xf
         mov [regd1], al
@@ -257,7 +257,7 @@ ReplayStep:
 .29:
         mov al, [regd1]
 .30:
-        mov [g_DBC2], al
+        mov [rpl_b1], al
         mov al, [regd0]
         sar al, byte 0x4
         and al, 0xf
@@ -270,58 +270,58 @@ ReplayStep:
 .31:
         mov al, [regd1]
 .32:
-        mov [g_DBC3], al
-        mov bx, [g_D018]
-        inc word [g_D018]
+        mov [rpl_b2], al
+        mov bx, [replayplay]
+        inc word [replayplay]
         mov al, [es:bx]
-        mov [g_DBC4], al
-        mov bx, [g_D018]
-        inc word [g_D018]
+        mov [rpl_b3], al
+        mov bx, [replayplay]
+        inc word [replayplay]
         mov al, [es:bx]
         mov [regd0], al
         and al, 0xf
-        mov [g_DBC5], al
+        mov [rpl_b4], al
         mov al, [regd0]
         sar al, byte 0x4
         and al, 0xf
-        mov [g_DBC6], al
-        mov bx, [g_D018]
-        inc word [g_D018]
+        mov [rpl_b5], al
+        mov bx, [replayplay]
+        inc word [replayplay]
         mov al, [es:bx]
         cbw
-        mov [g_DBC8], ax
+        mov [rpl_w1], ax
         mov [camx], ax
-        mov bx, [g_D018]
+        mov bx, [replayplay]
         mov ax, [es:bx]
-        mov [g_DBCA], ax
+        mov [rpl_w2], ax
         mov [camy], ax
-        add word [g_D018], 0x2
-        mov bx, [g_D018]
+        add word [replayplay], 0x2
+        mov bx, [replayplay]
         mov ax, [es:bx]
         mov [CrowdSound], ax
         lea ax, [bx + 0x2]
-        mov [g_D018], ax
+        mov [replayplay], ax
         mov word [bp - 0x2a], 0x0
-        mov es, [g_D01A]
+        mov es, [replayplayseg]
 .33:
-        mov bx, [g_D018]
-        inc word [g_D018]
+        mov bx, [replayplay]
+        inc word [replayplay]
         mov al, [es:bx]
         mov [regd0], al
         shr al, byte 0x4
         mov bx, [bp - 0x2a]
         shl bx, 1
-        mov [bx + g_DBF4], al
+        mov [bx + rpl_b6], al
         mov al, [regd0]
         and al, 0xf
-        mov [bx + g_DBF5], al
+        mov [bx + rpl_b7], al
         inc word [bp - 0x2a]
         cmp word [bp - 0x2a], 0xa
         jl short .33
         mov word [bp - 0x2a], 0x0
 .34:
-        les bx, [g_D018]
-        inc word [g_D018]
+        les bx, [replayplay]
+        inc word [replayplay]
         mov al, [es:bx]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         mov [regd0], ax
@@ -332,17 +332,17 @@ ReplayStep:
         mov ax, [regd0]
         mov bx, [bp - 0x2a]
         shl bx, 1
-        mov [bx + g_DBCC], ax
+        mov [bx + rpl_words], ax
         inc word [bp - 0x2a]
         cmp word [bp - 0x2a], 0x14
         jl short .34
         cmp word [bp + 0x8], 0x0
         jz short .37
-        mov ax, [g_D014]
-        mov dx, [g_D016]
-        cmp [g_D018], ax
+        mov ax, [replayrecptr]
+        mov dx, [replayrecseg]
+        cmp [replayplay], ax
         jnz short .36
-        cmp [g_D01A], dx
+        cmp [replayplayseg], dx
         jz short .37
 .36:
         mov ax, [bp - 0x6]
@@ -355,16 +355,16 @@ ReplayStep:
 .37:
         call 0x0EDC:CrowdNoiseOff
 .38:
-        sub word [g_D018], 0x80
+        sub word [replayplay], 0x80
         mov word [bp - 0x2a], 0x0
 .39:
         mov bx, [bp - 0x2a]
         shl bx, 1
-        mov ax, [bx + g_DB50]
+        mov ax, [bx + rpl_y]
         db 0x8B, 0xF3                           ; insn: mov si, bx
         mov [bp + si - 0x28], ax
         mov ax, [bp - 0x2a]
-        mov [bx + g_DC08], ax
+        mov [bx + rpl_words2], ax
         inc word [bp - 0x2a]
         cmp word [bp - 0x2a], 0x11
         jl short .39
@@ -420,7 +420,7 @@ DrawReplayFrame:
         add sp, 0xa
         inc word [bp - 0x1e]
 .3:
-        mov al, [g_DBC5]
+        mov al, [rpl_b4]
         cbw
         cmp ax, [bp - 0x1e]
         jg short .2
@@ -429,7 +429,7 @@ DrawReplayFrame:
         jng short .8
         cmp word [camy], 0xb1
         jnl short .8
-        mov al, [g_DBC6]
+        mov al, [rpl_b5]
         cbw
         dec ax
         cmp ax, strict word 0x2
@@ -477,8 +477,8 @@ DrawReplayFrame:
         push ax
         mov bx, [bp - 0x24]
         shl bx, byte 0x2
-        push word [bx + g_D2C8]
-        push word [bx + g_D2C6]
+        push word [bx + SpriteFramesSeg]
+        push word [bx + SpriteFrames]
         call 0x1F54:DrawSpriteClipped
         add sp, 0xe
 .11:
@@ -488,7 +488,7 @@ DrawReplayFrame:
         jnl short .14
         mov bx, [bp - 0x1e]
         shl bx, 1
-        mov ax, [bx + g_DBCC]
+        mov ax, [bx + rpl_words]
         mov [bp - 0x20], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jl short .11
@@ -510,7 +510,7 @@ DrawReplayFrame:
         mov [bp - 0x20], ax
         mov bx, [bp - 0x1e]
         db 0x8B, 0xF0                           ; insn: mov si, ax
-        mov al, [bx + g_DBF4]
+        mov al, [bx + rpl_b6]
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl si, 1
@@ -555,7 +555,7 @@ DrawReplayFrame:
         neg ax
         mov [bp - 0x1c], ax
         mov bx, [bp - 0x1e]
-        mov al, [bx + g_DBF4]
+        mov al, [bx + rpl_b6]
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         mov si, [bp - 0x20]
@@ -600,8 +600,8 @@ DrawReplayFrame:
         sub ax, strict word 0x4
         neg ax
         push ax
-        push word [g_D448]
-        push word [g_D446]
+        push word [NumberFramesSeg]
+        push word [NumberFrames]
         call 0x1F54:DrawSpriteClipped
         add sp, 0xe
 .22:
@@ -621,8 +621,8 @@ DrawReplayFrame:
         push word [bp - 0x10]
         mov bx, [bp - 0x2]
         shl bx, byte 0x2
-        push word [bx + g_D2C8]
-        push word [bx + g_D2C6]
+        push word [bx + SpriteFramesSeg]
+        push word [bx + SpriteFrames]
         call 0x1F54:DrawSpriteClipped
         add sp, 0xe
 .25:
@@ -647,21 +647,21 @@ DrawReplayFrame:
         sub ax, strict word 0x4
         neg ax
         push ax
-        push word [g_D458]
-        push word [g_D456]
+        push word [NumberFrames2Seg]
+        push word [NumberFrames2]
         call 0x1F54:DrawSpriteClipped
         add sp, 0xe
         jmp short .29
         db 0x90
 .28:
-        mov ax, [g_DB90]
+        mov ax, [rpl_door]
         mov [bp - 0x2], ax
         cmp ax, 0x362
         jl short .29
         push 0x0
         push 0x0
-        push word [g_DB6E]
-        push word [g_DB4C]
+        push word [rpl_shadow]
+        push word [rpl_puckframe]
         push ax
         call 0x1E7E:DrawFrameSprite
         add sp, 0xa
@@ -672,7 +672,7 @@ DrawReplayFrame:
         jl short .32
         mov bx, [bp - 0x1e]
         shl bx, 1
-        mov ax, [bx + g_DBCC]
+        mov ax, [bx + rpl_words]
         mov [bp - 0x20], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jl short .31
@@ -706,31 +706,31 @@ DrawReplayFrame:
         inc word [bp - 0x1e]
         cmp word [bp - 0x1e], 0x3
         jl short .34
-        cmp byte [g_DBC4], 0xff
+        cmp byte [rpl_b3], 0xff
         jz short .35
-        mov al, [g_DBC4]
+        mov al, [rpl_b3]
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        mov ax, [bx + g_DB50]
+        mov ax, [bx + rpl_y]
         mov [bp - 0xa], ax
 .35:
-        cmp byte [g_DBC2], 0x0
+        cmp byte [rpl_b1], 0x0
         jl short .36
-        mov al, [g_DBC2]
+        mov al, [rpl_b1]
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        mov ax, [bx + g_DB50]
+        mov ax, [bx + rpl_y]
         mov [bp - 0xe], ax
 .36:
-        cmp byte [g_DBC3], 0x0
+        cmp byte [rpl_b2], 0x0
         jl short .37
-        mov al, [g_DBC3]
+        mov al, [rpl_b2]
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        mov ax, [bx + g_DB50]
+        mov ax, [bx + rpl_y]
         mov [bp - 0xc], ax
 .37:
         lea ax, [bp - 0x8]
@@ -745,11 +745,11 @@ DrawReplayFrame:
 .38:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .39
-        mov al, [g_DBC3]
+        mov al, [rpl_b2]
         jmp short .40
         db 0x90
 .39:
-        mov al, [g_DBC2]
+        mov al, [rpl_b1]
 .40:
         cbw
         mov [bp - 0x2], ax
@@ -759,13 +759,13 @@ DrawReplayFrame:
 .41:
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        cmp word [bx + g_DB72], -0x1
+        cmp word [bx + rpl_frame], -0x1
         jnz short .42
         jmp near .51
 .42:
-        mov ax, [bx + g_DB2E]
+        mov ax, [bx + rpl_x]
         mov [bp - 0x10], ax
-        mov ax, [bx + g_DB50]
+        mov ax, [bx + rpl_y]
         mov [bp - 0x1c], ax
         mov word [bp - 0x2], 0x0
         mov ax, [bp + 0x8]
@@ -863,28 +863,28 @@ DrawReplayFrame:
         jz short .53
         jmp near .38
 .53:
-        cmp byte [g_DBC4], 0xff
+        cmp byte [rpl_b3], 0xff
         jz short .51
         push 0x0
         push 0x0
-        mov al, [g_DBC4]
+        mov al, [rpl_b3]
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        push word [bx + g_DB50]
-        push word [bx + g_DB2E]
+        push word [bx + rpl_y]
+        push word [bx + rpl_x]
         push word [RinkOverlayFrames2]
         jmp short .50
 .54:
         mov word [bp - 0x1e], 0xf
-        mov ax, [g_DB90]
+        mov ax, [rpl_door]
         mov [bp - 0x2], ax
         cmp ax, 0x284
         jl short .57
         cmp ax, 0x288
         jg short .57
         push 0x0
-        cmp word [g_DB4C], 0x0
+        cmp word [rpl_puckframe], 0x0
         jnl short .55
         mov ax, 0x1
         jmp short .56
@@ -893,21 +893,21 @@ DrawReplayFrame:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
 .56:
         push ax
-        push word [g_DB6E]
-        push word [g_DB4C]
+        push word [rpl_shadow]
+        push word [rpl_puckframe]
         jmp short .60
         db 0x90
 .57:
         cmp word [bp - 0x2], 0x189
         jnz short .58
-        cmp word [g_DBBE], 0xff00
+        cmp word [rpl_camx], 0xff00
         jng short .58
-        cmp byte [g_DBC4], 0x10
+        cmp byte [rpl_b3], 0x10
         jnz short .59
 .58:
         mov bx, [bp - 0x1e]
         shl bx, 1
-        cmp word [bx + g_DB50], 0x0
+        cmp word [bx + rpl_y], 0x0
         jl short .61
         cmp word [bp - 0x2], 0x22a
         jl short .61
@@ -918,31 +918,31 @@ DrawReplayFrame:
         push 0x0
         mov bx, [bp - 0x1e]
         shl bx, 1
-        push word [bx + g_DB50]
-        push word [bx + g_DB2E]
+        push word [bx + rpl_y]
+        push word [bx + rpl_x]
 .60:
         push word [bp - 0x2]
         call 0x1E7E:DrawFrameSprite
         add sp, 0xa
 .61:
         mov word [bp - 0x1e], 0xe
-        cmp byte [g_DBC4], 0x10
+        cmp byte [rpl_b3], 0x10
         jz short .62
-        cmp word [g_DBBE], 0x0
+        cmp word [rpl_camx], 0x0
         jl short .62
         push 0x0
         push 0x0
-        mov ax, [g_DBBE]
+        mov ax, [rpl_camx]
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         shl ax, 1
         db 0x03, 0xC1                           ; insn: add ax, cx
         cwd
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         sar ax, 1
-        add ax, [g_DB6C]
+        add ax, [rpl_pucky]
         push ax
-        push word [g_DB4A]
-        push word [g_DB8E]
+        push word [rpl_puckx]
+        push word [rpl_reff]
         call 0x1E7E:DrawFrameSprite
         add sp, 0xa
 .62:
@@ -952,7 +952,7 @@ DrawReplayFrame:
 .63:
         push 0x0
         push 0x0
-        mov ax, [g_DBBE]
+        mov ax, [rpl_camx]
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         shl ax, 1
         db 0x03, 0xC1                           ; insn: add ax, cx
@@ -961,11 +961,11 @@ DrawReplayFrame:
         sar ax, 1
         mov bx, [bp - 0x1e]
         shl bx, 1
-        add ax, [bx + g_DB50]
+        add ax, [bx + rpl_y]
         push ax
 .64:
-        push word [bx + g_DB2E]
-        push word [bx + g_DB72]
+        push word [bx + rpl_x]
+        push word [bx + rpl_frame]
         call 0x1E7E:DrawFrameSprite
         add sp, 0xa
 .65:
@@ -977,25 +977,25 @@ DrawReplayFrame:
 .67:
         mov bx, [bp - 0x20]
         shl bx, 1
-        mov ax, [bx + g_DC08]
+        mov ax, [bx + rpl_words2]
         mov [bp - 0x1e], ax
         cmp ax, strict word 0xf
         jz short .65
         cmp ax, strict word 0xe
         jnz short .70
-        cmp byte [g_DBC4], 0xff
+        cmp byte [rpl_b3], 0xff
         jnz short .65
-        cmp word [g_DBBE], 0x0
+        cmp word [rpl_camx], 0x0
         jng short .65
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        cmp word [bx + g_DB50], 0xe8
+        cmp word [bx + rpl_y], 0xe8
         jnl short .65
-        cmp word [bx + g_DB50], 0xff18
+        cmp word [bx + rpl_y], 0xff18
         jg short .63
-        cmp word [bx + g_DB50], 0xff10
+        cmp word [bx + rpl_y], 0xff10
         jl short .63
-        mov ax, [bx + g_DB2E]
+        mov ax, [bx + rpl_x]
         cwd
         db 0x33, 0xC2                           ; insn: xor ax, dx
         db 0x2B, 0xC2                           ; insn: sub ax, dx
@@ -1003,7 +1003,7 @@ DrawReplayFrame:
         jng short .68
         jmp near .63
 .68:
-        cmp word [g_DBBE], 0xd
+        cmp word [rpl_camx], 0xd
         jl short .69
         jmp near .63
 .69:
@@ -1013,38 +1013,38 @@ DrawReplayFrame:
         cmp ax, strict word 0xc
         jnl short .71
         db 0x8B, 0xD8                           ; insn: mov bx, ax
-        cmp byte [bx + g_DBB1], 0x0
+        cmp byte [bx + rpl_puckowner], 0x0
         jl short .65
 .71:
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        cmp word [bx + g_DB72], -0x1
+        cmp word [bx + rpl_frame], -0x1
         jz short .76
         cmp ax, strict word 0xc
         jnl short .76
-        cmp byte [g_DBC4], 0xff
+        cmp byte [rpl_b3], 0xff
         jz short .72
-        mov al, [g_DBC4]
+        mov al, [rpl_b3]
         cbw
         cmp ax, [bp - 0x1e]
         jz short .73
 .72:
-        mov al, [g_DBC2]
+        mov al, [rpl_b1]
         cbw
         cmp ax, [bp - 0x1e]
         jz short .73
-        mov al, [g_DBC3]
+        mov al, [rpl_b2]
         cbw
         cmp ax, [bp - 0x1e]
         jz short .73
         mov ax, [bp - 0x1e]
-        cmp [g_DB22], ax
+        cmp [replayfollow], ax
         jz short .73
         cmp [replaymode], ax
         jnz short .74
 .73:
         mov bx, [bp - 0x1e]
-        mov al, [bx + g_DBB1]
+        mov al, [bx + rpl_puckowner]
         cbw
         push ax
         jmp short .75
@@ -1054,12 +1054,12 @@ DrawReplayFrame:
         push -0x1
         db 0x8B, 0xD8                           ; insn: mov bx, ax
 .75:
-        mov al, [bx + g_DBA5]
+        mov al, [bx + rpl_jerseys]
         cbw
         push ax
         shl bx, 1
-        push word [bx + g_DB50]
-        push word [bx + g_DB2E]
+        push word [bx + rpl_y]
+        push word [bx + rpl_x]
         call 0x1E7E:DrawSpriteNumber
         add sp, 0x8
 .76:
@@ -1072,39 +1072,39 @@ DrawReplayFrame:
 .78:
         push ax
         mov bx, [bp - 0x1e]
-        mov al, [bx + g_DB94]
+        mov al, [bx + rpl_flags]
         cbw
         push ax
         shl bx, 1
-        push word [bx + g_DB50]
+        push word [bx + rpl_y]
         jmp near .64
         db 0x90
 .79:
-        cmp word [g_DB6C], 0xff18
+        cmp word [rpl_pucky], 0xff18
         jg short .80
-        cmp word [g_DB6C], 0xff14
+        cmp word [rpl_pucky], 0xff14
         jl short .80
-        mov ax, [g_DB4A]
+        mov ax, [rpl_puckx]
         cwd
         db 0x33, 0xC2                           ; insn: xor ax, dx
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         cmp ax, strict word 0x14
         jg short .80
-        cmp word [g_DBBE], 0xd
+        cmp word [rpl_camx], 0xd
         jl short .80
         push 0x0
         push 0x0
-        mov ax, [g_DBBE]
+        mov ax, [rpl_camx]
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         shl ax, 1
         db 0x03, 0xC1                           ; insn: add ax, cx
         cwd
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         sar ax, 1
-        add ax, [g_DB6C]
+        add ax, [rpl_pucky]
         push ax
-        push word [g_DB4A]
-        push word [g_DB8E]
+        push word [rpl_puckx]
+        push word [rpl_reff]
         call 0x1E7E:DrawFrameSprite
         add sp, 0xa
 .80:
@@ -1122,39 +1122,39 @@ DrawReplayFrame:
         call 0x1E7E:DrawRinkEndArt
 .82:
         mov word [bp - 0x1e], 0xf
-        cmp word [g_DB6E], 0x0
+        cmp word [rpl_shadow], 0x0
         jnl short .83
-        cmp word [g_DB90], 0x22a
+        cmp word [rpl_door], 0x22a
         jl short .83
-        cmp word [g_DB90], 0x237
+        cmp word [rpl_door], 0x237
         jg short .83
         push 0x0
         push 0x0
-        push word [g_DB6E]
-        push word [g_DB4C]
-        push word [g_DB90]
+        push word [rpl_shadow]
+        push word [rpl_puckframe]
+        push word [rpl_door]
         call 0x1E7E:DrawFrameSprite
         add sp, 0xa
 .83:
         mov word [bp - 0x1e], 0xe
-        cmp word [g_DB6C], 0xfef8
+        cmp word [rpl_pucky], 0xfef8
         jnl short DrawReplayFrameTail + 0xBA0
-        cmp byte [g_DBC4], 0xff
+        cmp byte [rpl_b3], 0xff
         jnz short DrawReplayFrameTail + 0xBA0
-        cmp word [g_DBBE], 0x0
+        cmp word [rpl_camx], 0x0
         jl short DrawReplayFrameTail + 0xBA0
         push 0x0
         push 0x0
-        mov ax, [g_DBBE]
+        mov ax, [rpl_camx]
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         shl ax, 1
         db 0x03, 0xC1                           ; insn: add ax, cx
         cwd
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         sar ax, 1
-        add ax, [g_DB6C]
+        add ax, [rpl_pucky]
         push ax
-        push word [g_DB4A]
-        push word [g_DB8E]
+        push word [rpl_puckx]
+        push word [rpl_reff]
         call 0x1E7E:DrawFrameSprite
         add sp, 0xa

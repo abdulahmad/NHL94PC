@@ -1302,11 +1302,11 @@ GameLineEditorLoop:
         jmp near .93
 .84:
         imul bx, [bp - 0x92], 0x16
-        cmp byte [bx + g_BD96], 0x43
+        cmp byte [bx + gmrosterpos], 0x43
         jz short .85
-        cmp byte [bx + g_BD96], 0x4c
+        cmp byte [bx + gmrosterpos], 0x4c
         jz short .85
-        cmp byte [bx + g_BD96], 0x52
+        cmp byte [bx + gmrosterpos], 0x52
         jz short .85
         jmp near .92
 .85:
@@ -1426,7 +1426,7 @@ GameLineEditorLoop:
         jmp near .102
 .94:
         imul bx, [bp - 0x92], 0x16
-        cmp byte [bx + g_BD96], 0x44
+        cmp byte [bx + gmrosterpos], 0x44
         jnz short .92
         mov ax, [bp - 0x6]
         sub ax, strict word 0xc
@@ -1519,7 +1519,7 @@ GameLineEditorLoop:
         jmp near .113
 .103:
         imul bx, [bp - 0x92], 0x16
-        cmp byte [bx + g_BD96], 0x47
+        cmp byte [bx + gmrosterpos], 0x47
         jnz short .104
         jmp near .92
 .104:
@@ -1624,7 +1624,7 @@ GameLineEditorLoop:
         jmp near .123
 .114:
         imul bx, [bp - 0x92], 0x16
-        cmp byte [bx + g_BD96], 0x47
+        cmp byte [bx + gmrosterpos], 0x47
         jnz short .115
         jmp near .92
 .115:
@@ -1722,7 +1722,7 @@ GameLineEditorLoop:
         jmp near .133
 .124:
         imul bx, [bp - 0x92], 0x16
-        cmp byte [bx + g_BD96], 0x47
+        cmp byte [bx + gmrosterpos], 0x47
         jz short .125
         jmp near .92
 .125:
@@ -1793,7 +1793,7 @@ GameLineEditorLoop:
         db 0x90
 .133:
         imul bx, [bp - 0x92], 0x16
-        cmp byte [bx + g_BD96], 0x47
+        cmp byte [bx + gmrosterpos], 0x47
         jnz short .134
         jmp near .92
 .134:
@@ -1944,7 +1944,7 @@ GameLineEditorLoop:
         mov al, [bx + gmrosterjersey]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
-        mov al, [bx + g_BD96]
+        mov al, [bx + gmrosterpos]
         push ax
         push strict word str_C2dS_8
         mov ax, [bp - 0x92]
@@ -1990,7 +1990,7 @@ GameLineEditorLoop:
         mov al, [bx + gmrosterjersey]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
-        mov al, [bx + g_BD96]
+        mov al, [bx + gmrosterpos]
         push ax
         push strict word str_C2dS_7
         mov ax, [bp - 0x92]
@@ -2152,7 +2152,7 @@ LoadGameRoster:
         mov bx, [bp - 0x8]
         cmp word [bx + 0x2], 0x0
         jnl short .5
-        mov byte [di + g_BD96], 0x0
+        mov byte [di + gmrosterpos], 0x0
         jmp near .11
         db 0x90
 .5:
@@ -2199,13 +2199,13 @@ LoadGameRoster:
         add sp, 0x2
 .9:
         mov al, [bp - 0x8a]
-        mov [di + g_BD96], al
+        mov [di + gmrosterpos], al
         mov al, [bp - 0x8b]
         mov [di + gmrosterjersey], al
         mov al, [bp - 0x89]
-        mov [di + g_BD99], al
-        mov byte [di + g_BD9A], 0x2e
-        mov byte [di + g_BD9B], 0x20
+        mov [di + gmrosterjersey_b2], al
+        mov byte [di + gmrosterdot], 0x2e
+        mov byte [di + gmrosterspace], 0x20
         db 0x2B, 0xD2                           ; insn: sub dx, dx
         mov [bp - 0x2], dx
         mov [bp - 0x4], di
@@ -2214,7 +2214,7 @@ LoadGameRoster:
         mov al, [bp + si - 0x79]
         db 0x8B, 0xDF                           ; insn: mov bx, di
         db 0x03, 0xDE                           ; insn: add bx, si
-        mov [bx + g_BD9C], al
+        mov [bx + gmrostername], al
         inc si
         cmp si, 0x10
         jl short .10
@@ -2235,7 +2235,7 @@ LoadGameRoster:
         mov bx, [bp - 0x8]
         cmp word [bx + 0x2], 0x0
         jnl short .14
-        mov byte [di + g_BFBC], 0x0
+        mov byte [di + gmroster2pos], 0x0
         jmp near .20
         db 0x90
 .14:
@@ -2281,13 +2281,13 @@ LoadGameRoster:
         add sp, 0x2
 .18:
         mov al, [bp - 0x8a]
-        mov [di + g_BFBC], al
+        mov [di + gmroster2pos], al
         mov al, [bp - 0x8b]
-        mov [di + g_BFBD], al
+        mov [di + gmroster2jersey], al
         mov al, [bp - 0x89]
-        mov [di + g_BFBF], al
-        mov byte [di + g_BFC0], 0x2e
-        mov byte [di + g_BFC1], 0x20
+        mov [di + gmroster2init], al
+        mov byte [di + gmroster2dot], 0x2e
+        mov byte [di + gmroster2space], 0x20
         db 0x2B, 0xD2                           ; insn: sub dx, dx
         mov [bp - 0x2], dx
         mov [bp - 0x4], di
@@ -2296,7 +2296,7 @@ LoadGameRoster:
         mov al, [bp + si - 0x79]
         db 0x8B, 0xDF                           ; insn: mov bx, di
         db 0x03, 0xDE                           ; insn: add bx, si
-        mov [bx + g_BFC2], al
+        mov [bx + gmroster2name], al
         inc si
         cmp si, 0x10
         jl short .19
@@ -4530,7 +4530,7 @@ MenuGameShowPlayerStats:
         push si
         mov ax, 0x1
         mov [leaguestatsmode], ax
-        mov [g_C050], ax
+        mov [statsrosterteam], ax
         mov word [statsredrawcb], 0x2459
         mov word [statsmenucbseg], 0x1b35
         cmp byte [bp + 0xa], 0x0
@@ -4547,7 +4547,7 @@ MenuGameShowPlayerStats:
         push strict word str_Tstat_4
         call 0x14DB:AllocRecData
         add sp, 0x8
-        mov [g_C04C], ax
+        mov [statsteambufseg], ax
         mov [statsteambuf], dx
         push 0x0
         push 0x0
@@ -4555,7 +4555,7 @@ MenuGameShowPlayerStats:
         push strict word str_Keys_6
         call 0x14DB:AllocRecData
         add sp, 0x8
-        mov [g_C048], ax
+        mov [statsplayerbufseg], ax
         mov [statsplayerbuf], dx
         push 0x0
         push 0x0
@@ -4563,7 +4563,7 @@ MenuGameShowPlayerStats:
         push strict word str_Pstat_6
         call 0x14DB:AllocRecData
         add sp, 0x8
-        mov [g_C044], ax
+        mov [statsskaterbufseg], ax
         mov [statsskaterbuf], dx
         push 0x0
         push 0x0
@@ -4571,7 +4571,7 @@ MenuGameShowPlayerStats:
         push strict word str_Gstat_6
         call 0x14DB:AllocRecData
         add sp, 0x8
-        mov [g_C040], ax
+        mov [statsgoaliebufseg], ax
         mov [statsgoaliebuf], dx
         push 0x1
         call 0x1B35:InitMenuRemapThunk
@@ -4695,30 +4695,30 @@ MenuGameShowPlayerStats:
         mov [statsmenucbseg], ax
         mov [statsredrawcb], ax
         push word [statsteambuf]
-        push word [g_C04C]
+        push word [statsteambufseg]
         call 0x06E1:FindUnlink
         add sp, 0x4
         push word [statsgoaliebuf]
-        push word [g_C040]
+        push word [statsgoaliebufseg]
         call 0x06E1:FindUnlink
         add sp, 0x4
         push word [statsskaterbuf]
-        push word [g_C044]
+        push word [statsskaterbufseg]
         call 0x06E1:FindUnlink
         add sp, 0x4
         push word [statsplayerbuf]
-        push word [g_C048]
+        push word [statsplayerbufseg]
         call 0x06E1:FindUnlink
         add sp, 0x4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [statsplayerbuf], ax
-        mov [g_C048], ax
+        mov [statsplayerbufseg], ax
         mov [statsteambuf], ax
-        mov [g_C04C], ax
+        mov [statsteambufseg], ax
         mov [statsgoaliebuf], ax
-        mov [g_C040], ax
+        mov [statsgoaliebufseg], ax
         mov [statsskaterbuf], ax
-        mov [g_C044], ax
+        mov [statsskaterbufseg], ax
         push word [bp + 0x1a]
         push word [bp + 0x18]
         push word [bp + 0x16]
@@ -4769,7 +4769,7 @@ MenuGameShowPlayerStats:
         mov al, [bx + gmrosterjersey]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
-        mov al, [bx + g_BD96]
+        mov al, [bx + gmrosterpos]
         push ax
         push strict word str_C2dS_5
         mov ax, [si]
@@ -4910,7 +4910,7 @@ GameScratchPlayer:
         mov al, [bx + gmrosterjersey]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
-        mov al, [bx + g_BD96]
+        mov al, [bx + gmrosterpos]
         push ax
         push strict word str_C2dS_4
         mov ax, [di]
@@ -4968,7 +4968,7 @@ GameDressPlayer:
         mov al, [bx + gmrosterjersey]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
-        mov al, [bx + g_BD96]
+        mov al, [bx + gmrosterpos]
         push ax
         push strict word str_C2dS_3
         mov ax, [si]

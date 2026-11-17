@@ -16,8 +16,8 @@ PlayTitleMovies:
         enter 0x30, 0x0
         push si
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_DA08], ax
-        mov [g_DA06], ax
+        mov [MovieBufSeg], ax
+        mov [MovieBuf], ax
         mov [bp - 0x22], ax
         mov [bp - 0x24], ax
         cmp [bp + 0xa], ax
@@ -115,10 +115,10 @@ PlayTitleMovies:
         push ax
         call 0x1B35:MviOpenThunk
         add sp, 0x8
-        mov [g_DA06], ax
-        mov [g_DA08], dx
+        mov [MovieBuf], ax
+        mov [MovieBufSeg], dx
         db 0x8B, 0xC2                           ; insn: mov ax, dx
-        or ax, [g_DA06]
+        or ax, [MovieBuf]
         jz short .8
         jmp near .21
 .8:
@@ -418,13 +418,13 @@ PlayMovie:
         mov ax, 0x1
         mov [DeskRedrawPage2], ax
         mov [DeskRedrawPage], ax
-        mov ax, [g_DA08]
-        or ax, [g_DA06]
+        mov ax, [MovieBufSeg]
+        or ax, [MovieBuf]
         jnz short .1
         jmp near .3
 .1:
         push 0x0
-        les bx, [g_DA06]
+        les bx, [MovieBuf]
         mov ax, [es:bx + 0x18]
         imul word [es:bx + 0x1a]
         add ax, strict word 0x12
@@ -445,7 +445,7 @@ PlayMovie:
         mov cx, 0x9
         rep movsw
         pop ds
-        les bx, [g_DA06]
+        les bx, [MovieBuf]
         mov ax, [es:bx + 0x18]
         cwd
         db 0x33, 0xC2                           ; insn: xor ax, dx
@@ -455,7 +455,7 @@ PlayMovie:
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         les bx, [bp - 0x4]
         mov [es:bx], ax
-        les si, [g_DA06]
+        les si, [MovieBuf]
         mov ax, [es:si + 0x1a]
         les bx, [bp - 0x4]
         mov [es:bx + 0x2], ax
@@ -465,8 +465,8 @@ PlayMovie:
         push 0x0
         push 0x32
         push 0x5
-        push word [g_DA08]
-        push word [g_DA06]
+        push word [MovieBufSeg]
+        push word [MovieBuf]
         call 0x1B35:MviNextFrameThunk
         add sp, 0xa
         push dx
@@ -479,7 +479,7 @@ PlayMovie:
         push word [bp - 0x4]
         call 0x0FEF:PutBlockAt
         add sp, 0x8
-        les bx, [g_DA06]
+        les bx, [MovieBuf]
         mov ax, [es:bx + 0x12]
         cwd
         push dx
@@ -489,7 +489,7 @@ PlayMovie:
         call 0x0000:__aFldiv
         call 0x03A3:SetDeadline.regs
         call 0x03A3:WaitDeadlineNoEoi
-        les bx, [g_DA06]
+        les bx, [MovieBuf]
         cmp word [es:bx + 0x20], 0x0
         jnz short .2
         mov ax, [es:bx + 0x12]
@@ -508,8 +508,8 @@ PlayMovie:
         adc dx, 0x0
         call 0x03A3:SetDeadline.regs
         call 0x03A3:WaitDeadlineNoEoi
-        push word [g_DA08]
-        push word [g_DA06]
+        push word [MovieBufSeg]
+        push word [MovieBuf]
         call 0x1B35:MviCloseThunk
         add sp, 0x4
         push word [bp - 0x2]

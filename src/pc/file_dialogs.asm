@@ -70,7 +70,7 @@ MenuOpenSaved:
         mov bx, [lgfiles]
         shl bx, byte 0x2
         push word [bx + lgfilenames]
-        push word [bx + g_C0E4]
+        push word [bx + savednames2]
         lea ax, [bp - 0x34]
         push ss
         push ax
@@ -272,10 +272,10 @@ MenuOpenSaved:
         push 0x2
         call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
-        mov bx, [g_C166]
+        mov bx, [savedsel3]
         shl bx, byte 0x2
-        push word [bx + g_C16E]
-        push word [bx + g_C16C]
+        push word [bx + savednames3seg]
+        push word [bx + savednames3]
         lea ax, [bp - 0x34]
         push ss
         push ax
@@ -357,10 +357,10 @@ MenuOpenSaved:
         push 0x3
         call 0x1B35:SetupStatsMenusThunk
         add sp, 0x2
-        mov bx, [g_C056]
+        mov bx, [savedsel1]
         shl bx, byte 0x2
-        push word [bx + g_C05E]
-        push word [bx + g_C05C]
+        push word [bx + savednames1seg]
+        push word [bx + savednames1]
         lea ax, [bp - 0x34]
         push ss
         push ax
@@ -465,21 +465,21 @@ DrawFileDlgTabs:
         jmp short .6
         db 0x90
 .2:
-        test byte [g_C1EE], 0x80
+        test byte [fdlgflags], 0x80
         jnz short .3
         mov al, 0x17
         mov [bp - 0x19], al
         mov [bp - 0x1a], al
         mov [bp - 0x1b], al
 .3:
-        test byte [g_C1EE], 0x40
+        test byte [fdlgflags], 0x40
         jnz short .4
         mov al, 0x17
         mov [bp - 0x1c], al
         mov [bp - 0x1d], al
         mov [bp - 0x1e], al
 .4:
-        test byte [g_C1EE], 0x20
+        test byte [fdlgflags], 0x20
         jnz short .5
         mov al, 0x17
         mov [bp - 0x1f], al
@@ -550,7 +550,7 @@ ScanSavedGames:
         push di
         push si
         db 0x2B, 0xFF                           ; insn: sub di, di
-        mov [g_C054], di
+        mov [savedcount1], di
         lea ax, [bp - 0x2c]
         push ax
         push 0x10
@@ -565,10 +565,10 @@ ScanSavedGames:
         mov es, ax
         db 0x8B, 0xC7                           ; insn: mov ax, di
         add ax, 0xa6d8
-        mov bx, [g_C054]
+        mov bx, [savedcount1]
         shl bx, byte 0x2
-        mov [bx + g_C05C], ax
-        mov [bx + g_C05E], es
+        mov [bx + savednames1], ax
+        mov [bx + savednames1seg], es
         db 0x2B, 0xF6                           ; insn: sub si, si
 .2:
         cmp byte [bp + si - 0xe], 0x0
@@ -584,8 +584,8 @@ ScanSavedGames:
 .3:
         mov byte [es:di + SavedGameNames], 0x0
         inc di
-        inc word [g_C054]
-        cmp word [g_C054], 0x20
+        inc word [savedcount1]
+        cmp word [savedcount1], 0x20
         jnl short .4
         lea ax, [bp - 0x2c]
         push ax
@@ -597,23 +597,23 @@ ScanSavedGames:
         push word 0x23a3
         push strict word CmpFileNames
         push 0x4
-        push word [g_C054]
+        push word [savedcount1]
         push word 0xc05c
         call 0x0000:_qsort
         add sp, 0xa
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_C058], ax
-        mov [g_C056], ax
-        cmp word [g_C054], 0x6
+        mov [savedtop1], ax
+        mov [savedsel1], ax
+        cmp word [savedcount1], 0x6
         jl short .5
-        mov word [g_C05A], 0x5
+        mov word [savedrows1], 0x5
         jmp short .6
 .5:
-        mov ax, [g_C054]
+        mov ax, [savedcount1]
         dec ax
-        mov [g_C05A], ax
+        mov [savedrows1], ax
 .6:
-        mov word [g_C164], 0x0
+        mov word [savedcount3], 0x0
         lea ax, [bp - 0x2c]
         push ax
         push 0x10
@@ -626,10 +626,10 @@ ScanSavedGames:
 .7:
         db 0x8B, 0xC7                           ; insn: mov ax, di
         add ax, 0xa6d8
-        mov bx, [g_C164]
+        mov bx, [savedcount3]
         shl bx, byte 0x2
-        mov [bx + g_C16C], ax
-        mov word [bx + g_C16E], 0x3a0b
+        mov [bx + savednames3], ax
+        mov word [bx + savednames3seg], 0x3a0b
         db 0x2B, 0xF6                           ; insn: sub si, si
         mov ax, 0x3a0b
         mov es, ax
@@ -647,8 +647,8 @@ ScanSavedGames:
 .9:
         mov byte [es:di + SavedGameNames], 0x0
         inc di
-        inc word [g_C164]
-        cmp word [g_C164], 0x20
+        inc word [savedcount3]
+        cmp word [savedcount3], 0x20
         jnl short .10
         lea ax, [bp - 0x2c]
         push ax
@@ -660,24 +660,24 @@ ScanSavedGames:
         push word 0x23a3
         push strict word CmpFileNames
         push 0x4
-        push word [g_C164]
+        push word [savedcount3]
         push word 0xc16c
         call 0x0000:_qsort
         add sp, 0xa
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_C168], ax
-        mov [g_C166], ax
-        cmp word [g_C164], 0x6
+        mov [savedtop3], ax
+        mov [savedsel3], ax
+        cmp word [savedcount3], 0x6
         jl short .11
-        mov word [g_C16A], 0x5
+        mov word [savedrows3], 0x5
         jmp short .12
         db 0x90
 .11:
-        mov ax, [g_C164]
+        mov ax, [savedcount3]
         dec ax
-        mov [g_C16A], ax
+        mov [savedrows3], ax
 .12:
-        mov word [g_C0DC], 0x0
+        mov word [savedcount2], 0x0
         lea ax, [bp - 0x2c]
         push ax
         push 0x0
@@ -690,9 +690,9 @@ ScanSavedGames:
 .13:
         db 0x8B, 0xC7                           ; insn: mov ax, di
         add ax, 0xa6d8
-        mov bx, [g_C0DC]
+        mov bx, [savedcount2]
         shl bx, byte 0x2
-        mov [bx + g_C0E4], ax
+        mov [bx + savednames2], ax
         mov word [bx + lgfilenames], 0x3a0b
         db 0x2B, 0xF6                           ; insn: sub si, si
         mov ax, 0x3a0b
@@ -711,8 +711,8 @@ ScanSavedGames:
 .15:
         mov byte [es:di + SavedGameNames], 0x0
         inc di
-        inc word [g_C0DC]
-        cmp word [g_C0DC], 0x20
+        inc word [savedcount2]
+        cmp word [savedcount2], 0x20
         jnl short .16
         lea ax, [bp - 0x2c]
         push ax
@@ -724,25 +724,25 @@ ScanSavedGames:
         push word 0x23a3
         push strict word CmpFileNames
         push 0x4
-        push word [g_C0DC]
+        push word [savedcount2]
         push word 0xc0e4
         call 0x0000:_qsort
         add sp, 0xa
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_C0E0], ax
+        mov [savedtop2], ax
         mov [lgfiles], ax
-        cmp word [g_C0DC], 0x6
+        cmp word [savedcount2], 0x6
         jl short .17
-        mov word [g_C0E2], 0x5
+        mov word [savedrows2], 0x5
         pop si
         pop di
         leave
         retf
         db 0x90
 .17:
-        mov ax, [g_C0DC]
+        mov ax, [savedcount2]
         dec ax
-        mov [g_C0E2], ax
+        mov [savedrows2], ax
 .18:
         pop si
         pop di
@@ -831,28 +831,28 @@ DrawFileDlg:
         push si
         call 0x06E1:FindUnlink
         add sp, 0x4
-        mov word [g_C1EE], 0x10
+        mov word [fdlgflags], 0x10
         mov word [fdlgtab], 0xffff
-        cmp word [g_C054], 0x0
+        cmp word [savedcount1], 0x0
         jz short .1
-        mov word [g_C1EE], 0x90
+        mov word [fdlgflags], 0x90
         mov word [fdlgtab], 0x2
 .1:
-        cmp word [g_C164], 0x0
+        cmp word [savedcount3], 0x0
         jz short .2
-        or byte [g_C1EE], 0x40
+        or byte [fdlgflags], 0x40
         mov word [fdlgtab], 0x1
 .2:
-        cmp word [g_C0DC], 0x0
+        cmp word [savedcount2], 0x0
         jz short .3
-        or byte [g_C1EE], 0x20
+        or byte [fdlgflags], 0x20
         mov word [fdlgtab], 0x0
 .3:
         cmp word [fdlgtab], 0x0
         jnl short .4
         jmp near DrawFileDlgJumpTable.7
 .4:
-        or word [g_C1EE], 0x20c
+        or word [fdlgflags], 0x20c
         mov ax, 0x11
         mov dx, 0xff
         call 0x03A3:SetCharPtr.regs
@@ -915,7 +915,7 @@ DrawFileDlg:
         jg short .7
         jmp near .8
 .7:
-        or word [g_C1EE], 0xff03
+        or word [fdlgflags], 0xff03
         mov es, [segDialogRects1]
         mov ax, [es:0x40]
         add ax, strict word 0xa
@@ -990,17 +990,17 @@ DrawFileDlgJumpTable:                           ; jump table of DrawFileDlg: 6 c
         dw .2
         dw .1
 .1:
-        or byte [g_C1EF], 0x80
+        or byte [fdlgflags2], 0x80
 .2:
-        or byte [g_C1EF], 0x40
+        or byte [fdlgflags2], 0x40
 .3:
-        or byte [g_C1EF], 0x20
+        or byte [fdlgflags2], 0x20
 .4:
-        or byte [g_C1EF], 0x10
+        or byte [fdlgflags2], 0x10
 .5:
-        or byte [g_C1EF], 0x8
+        or byte [fdlgflags2], 0x8
 .6:
-        or byte [g_C1EF], 0x4
+        or byte [fdlgflags2], 0x4
 .7:
         pop si
         pop di
@@ -1266,21 +1266,21 @@ DrawFileDlgList:
         mov bx, [bp + 0x6]
         cmp word [bx], 0x6
         jg short DrawFileDlgListJumpTable.1
-        and word [g_C1EE], 0x6fc
+        and word [fdlgflags], 0x6fc
         mov ax, [bx]
         jmp short .17
 .11:
-        or byte [g_C1EF], 0x80
+        or byte [fdlgflags2], 0x80
 .12:
-        or byte [g_C1EF], 0x40
+        or byte [fdlgflags2], 0x40
 .13:
-        or byte [g_C1EF], 0x20
+        or byte [fdlgflags2], 0x20
 .14:
-        or byte [g_C1EF], 0x10
+        or byte [fdlgflags2], 0x10
 .15:
-        or byte [g_C1EF], 0x8
+        or byte [fdlgflags2], 0x8
 .16:
-        or byte [g_C1EF], 0x4
+        or byte [fdlgflags2], 0x4
         jmp near DrawFileDlgListJumpTable.2
         db 0x90
 .17:
@@ -1301,7 +1301,7 @@ DrawFileDlgListJumpTable:                       ; jump table of DrawFileDlgList:
         dw DrawFileDlgList.12
         dw DrawFileDlgList.11
 .1:
-        or word [g_C1EE], 0xf903
+        or word [fdlgflags], 0xf903
         mov es, [segDialogRects1]
         mov ax, [es:0x40]
         add ax, strict word 0xa
@@ -1538,7 +1538,7 @@ RunFileDlg:
         jnz short .10
         jmp near .29
 .10:
-        test byte [g_C1EF], 0x1
+        test byte [fdlgflags2], 0x1
         jnz short .11
         jmp near .29
 .11:
@@ -1748,7 +1748,7 @@ RunFileDlg:
         mov ax, 0x1
         shl ax, cl
         mov [bp - 0xa], ax
-        test [g_C1EE], ax
+        test [fdlgflags], ax
         jz short .42
         cmp ax, strict word 0x10
         jnz short .35
@@ -2211,35 +2211,35 @@ DeleteSavedGame:
         jmp short .25
         db 0x90
 .22:
-        and byte [g_C1EE], 0xdf
+        and byte [fdlgflags], 0xdf
         jmp short .25
         db 0x90
 .23:
-        and byte [g_C1EE], 0xbf
+        and byte [fdlgflags], 0xbf
         jmp short .25
         db 0x90
 .24:
-        and byte [g_C1EE], 0x7f
+        and byte [fdlgflags], 0x7f
 .25:
-        cmp word [g_C0DC], 0x0
+        cmp word [savedcount2], 0x0
         jz short .26
         mov word [fdlgtab], 0x0
         jmp short .29
 .26:
-        cmp word [g_C164], 0x0
+        cmp word [savedcount3], 0x0
         jz short .27
         mov word [fdlgtab], 0x1
         jmp short .29
         db 0x90
 .27:
-        cmp word [g_C054], 0x0
+        cmp word [savedcount1], 0x0
         jz short .28
         mov word [fdlgtab], 0x2
         jmp short .29
         db 0x90
 .28:
         mov word [fdlgtab], 0xffff
-        and byte [g_C1EE], 0xf3
+        and byte [fdlgflags], 0xf3
 .29:
         push cs
         call DrawFileDlgTabs
@@ -2281,7 +2281,7 @@ SelectSavedFile:
         mov bx, [lgfiles]
         shl bx, byte 0x2
         push word [bx + lgfilenames]
-        push word [bx + g_C0E4]
+        push word [bx + savednames2]
         lea ax, [bp - 0x14]
         push ss
         push ax
@@ -2371,10 +2371,10 @@ SelectSavedFile:
         retf
         db 0x90
 .8:
-        mov bx, [g_C166]
+        mov bx, [savedsel3]
         shl bx, byte 0x2
-        push word [bx + g_C16E]
-        push word [bx + g_C16C]
+        push word [bx + savednames3seg]
+        push word [bx + savednames3]
         lea ax, [bp - 0x14]
         push ss
         push ax
@@ -2445,10 +2445,10 @@ SelectSavedFile:
         jmp near .10
         db 0x90
 .9:
-        mov bx, [g_C056]
+        mov bx, [savedsel1]
         shl bx, byte 0x2
-        push word [bx + g_C05E]
-        push word [bx + g_C05C]
+        push word [bx + savednames1seg]
+        push word [bx + savednames1]
         lea ax, [bp - 0x14]
         push ss
         push ax

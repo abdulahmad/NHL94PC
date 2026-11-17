@@ -44,13 +44,13 @@ GoalieStatsCard:
         push 0x0
         cmp word [statsseason], 0x0
         jnz short .1
-        mov ax, [g_CF42]
-        mov dx, [g_CF44]
+        mov ax, [statscardrec]
+        mov dx, [statscardrecseg]
         jmp short .2
         db 0x90
 .1:
-        mov ax, [g_CF46]
-        mov dx, [g_CF48]
+        mov ax, [statscardrec2]
+        mov dx, [statscardrec2seg]
 .2:
         push dx
         push ax
@@ -84,8 +84,8 @@ GoalieStatsCard:
         add sp, 0x4
         db 0x8B, 0xF0                           ; insn: mov si, ax
         push 0x0
-        push word [g_CF40]
-        push word [g_CF3E]
+        push word [statsfileposhi]
+        push word [statsfilepos]
         push si
         call 0x0000:_lseek
         add sp, 0x8
@@ -116,7 +116,7 @@ GoalieStatsCard:
         add sp, 0x4
         db 0x8B, 0xF0                           ; insn: mov si, ax
         push 0x0
-        mov al, [g_CF1A]
+        mov al, [statscardteam]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         mov cx, 0x4c
         mul cx
@@ -144,7 +144,7 @@ GoalieStatsCard:
         push word 0x3701
         push strict word str_Qpp
         push ds
-        push strict word g_CFD4
+        push strict word statstext
         push 0x0
         push 0x0
         lea ax, [bp - 0x6a]
@@ -165,13 +165,13 @@ GoalieStatsCard:
         call 0x03A3:FindFarMsg
         add sp, 0x6
         mov [statsbgshapes], ax
-        mov [g_C2B4], dx
+        mov [statsbgseg], dx
         push word 0xc8
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov dx, 0x140
         mov bx, 0xa
         call 0x0FEF:SetClipRectRegs
-        push word [g_C2B4]
+        push word [statsbgseg]
         push word [statsbgshapes]
         call 0x0FEF:DrawRleTransBody
         add sp, 0x4
@@ -184,7 +184,7 @@ GoalieStatsCard:
         push word [fileoncd]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        cmp byte [g_CF4A], 0x0
+        cmp byte [statscardgoalie], 0x0
         jnz short .3
         jmp near .9
 .3:
@@ -211,7 +211,7 @@ GoalieStatsCard:
         call 0x2095:LoadPhotoShape
         add sp, 0x4
         mov [statsbgshapes], ax
-        mov [g_C2B4], dx
+        mov [statsbgseg], dx
         db 0x8B, 0xC2                           ; insn: mov ax, dx
         or ax, [statsbgshapes]
         jnz short .4
@@ -279,12 +279,12 @@ GoalieStatsCard:
         inc si
         cmp si, 0x3c
         jl short .8
-        push word [g_C2B4]
+        push word [statsbgseg]
         push word [statsbgshapes]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        mov ax, [g_CF4A]
-        mov dx, [g_CF4C]
+        mov ax, [statscardgoalie]
+        mov dx, [statscardrec3]
         mov [bp - 0x18], ax
         mov [bp - 0x16], dx
         mov byte [bp - 0x13], 0x0
@@ -295,7 +295,7 @@ GoalieStatsCard:
         call 0x2095:LoadPhotoShape
         add sp, 0x4
         mov [statsbgshapes], ax
-        mov [g_C2B4], dx
+        mov [statsbgseg], dx
         db 0x8B, 0xC2                           ; insn: mov ax, dx
         or ax, [statsbgshapes]
         jz short .9
@@ -306,11 +306,11 @@ GoalieStatsCard:
         add sp, 0x4
         push 0x14
         push 0x24
-        push word [g_C2B4]
+        push word [statsbgseg]
         push word [statsbgshapes]
         call 0x0FEF:DrawRawTransRemapAt
         add sp, 0x8
-        push word [g_C2B4]
+        push word [statsbgseg]
         push word [statsbgshapes]
         call 0x06E1:FindUnlink
         add sp, 0x4
@@ -334,11 +334,11 @@ GoalieStatsCard:
         call 0x0000:_sprintf
         add sp, 0x8
         push ds
-        push strict word g_CFD4
+        push strict word statstext
         push 0x28
         call 0x0D39:DrawShadowTextCentered
         add sp, 0x6
-        mov al, [g_CF1B]
+        mov al, [statscardplayer]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
         push strict word str_DGoalie
@@ -346,7 +346,7 @@ GoalieStatsCard:
         call 0x0000:_sprintf
         add sp, 0x6
         push ds
-        push strict word g_CFD4
+        push strict word statstext
         push 0x30
         call 0x0D39:DrawShadowTextCentered
         add sp, 0x6

@@ -128,7 +128,7 @@ CheckMasterPassword:
         jz short .7
         jmp near .9
 .7:
-        cmp byte [g_E36B], 0x0
+        cmp byte [lgflags], 0x0
         jz short .8
         push si
         call 0x0FEF:ClearClipRect
@@ -183,7 +183,7 @@ CheckMasterPassword:
         call 0x28A8:AskMasterPassword
         add sp, 0xa
         db 0x8B, 0xF0                           ; insn: mov si, ax
-        cmp byte [g_E36B], 0x0
+        cmp byte [lgflags], 0x0
         jz short .9
         push 0x0
         call 0x0FEF:ClearClipRect

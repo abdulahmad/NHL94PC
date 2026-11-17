@@ -45,8 +45,8 @@ DrawPanelScore:
         push 0x4
         push word 0xff
         shl di, byte 0x2
-        push word [di + g_DAA4]
-        push word [di + g_DAA2]
+        push word [di + ScoreDigitsSeg]
+        push word [di + ScoreDigits]
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8
         push 0x4
@@ -68,8 +68,8 @@ DrawPanelScore:
         push 0x4
         push 0x2e
         shl di, byte 0x2
-        push word [di + g_DAA4]
-        push word [di + g_DAA2]
+        push word [di + ScoreDigitsSeg]
+        push word [di + ScoreDigits]
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8
         push 0x4
@@ -81,8 +81,8 @@ DrawPanelScore:
         idiv cx
         db 0x8B, 0xDA                           ; insn: mov bx, dx
         shl bx, byte 0x2
-        push word [bx + g_DAA4]
-        push word [bx + g_DAA2]
+        push word [bx + ScoreDigitsSeg]
+        push word [bx + ScoreDigits]
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8
         call 0x0FEF:UseOtherPage
@@ -198,8 +198,8 @@ DrawPanelLine:
         push 0x2a
 .22:
         shl si, byte 0x2
-        push word [si + g_DA0C]
-        push word [si + g_DA0A]
+        push word [si + PanelShapes_b2]
+        push word [si + PanelShapes]
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8
         call 0x0FEF:UseOtherPage
@@ -436,8 +436,8 @@ UpdateHudPanel:
 .6:
         cmp word [hudclockredraw], 0x0
         jnz short .7
-        push word [g_DA2C]
-        push word [g_DA2A]
+        push word [PanelClockShapeSeg]
+        push word [PanelClockShape]
         call 0x0FEF:DrawRleTransFastHere
         add sp, 0x4
         mov word [hudclockredraw], 0x1
@@ -453,8 +453,8 @@ UpdateHudPanel:
 .8:
         cmp word [hudscoreredraw], 0x0
         jnz short .9
-        push word [g_DA30]
-        push word [g_DA2E]
+        push word [PanelScoreShapeSeg]
+        push word [PanelScoreShape]
         call 0x0FEF:DrawRleTransFastHere
         add sp, 0x4
         mov word [hudscoreredraw], 0x1
@@ -494,7 +494,7 @@ DrawPanelClock:
         push 0x3
         push word 0xaa
         push word [clockcolon]
-        push word [g_DA9E]
+        push word [ClockColonShape]
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8
         cmp word [hudclocksec], 0xa
@@ -502,7 +502,7 @@ DrawPanelClock:
         push 0x3
         push word 0x8c
         push word [clockcolon]
-        push word [g_DA9E]
+        push word [ClockColonShape]
         jmp short .3
         db 0x90
 .2:
@@ -514,8 +514,8 @@ DrawPanelClock:
         idiv cx
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, byte 0x2
-        push word [bx + g_DA78]
-        push word [bx + g_DA76]
+        push word [bx + ClockDigitsSeg]
+        push word [bx + ClockDigits]
 .3:
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8
@@ -527,8 +527,8 @@ DrawPanelClock:
         idiv cx
         db 0x8B, 0xDA                           ; insn: mov bx, dx
         shl bx, byte 0x2
-        push word [bx + g_DA78]
-        push word [bx + g_DA76]
+        push word [bx + ClockDigitsSeg]
+        push word [bx + ClockDigits]
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8
         push 0x3
@@ -546,7 +546,7 @@ DrawPanelClock:
         push 0x3
         push word 0x8c
         push word [clockcolon]
-        push word [g_DA9E]
+        push word [ClockColonShape]
         jmp short .6
 .5:
         push 0x3
@@ -557,8 +557,8 @@ DrawPanelClock:
         idiv cx
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, byte 0x2
-        push word [bx + g_DA78]
-        push word [bx + g_DA76]
+        push word [bx + ClockDigitsSeg]
+        push word [bx + ClockDigits]
 .6:
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8
@@ -570,8 +570,8 @@ DrawPanelClock:
         idiv cx
         db 0x8B, 0xDA                           ; insn: mov bx, dx
         shl bx, byte 0x2
-        push word [bx + g_DA78]
-        push word [bx + g_DA76]
+        push word [bx + ClockDigitsSeg]
+        push word [bx + ClockDigits]
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8
         push 0x3
@@ -582,8 +582,8 @@ DrawPanelClock:
         idiv cx
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, byte 0x2
-        push word [bx + g_DA78]
-        push word [bx + g_DA76]
+        push word [bx + ClockDigitsSeg]
+        push word [bx + ClockDigits]
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8
         push 0x3
@@ -595,8 +595,8 @@ DrawPanelClock:
         db 0x8B, 0xDA                           ; insn: mov bx, dx
 .7:
         shl bx, byte 0x2
-        push word [bx + g_DA78]
-        push word [bx + g_DA76]
+        push word [bx + ClockDigitsSeg]
+        push word [bx + ClockDigits]
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8
         mov ax, [hudclockmin]
@@ -810,16 +810,16 @@ DrawHudPanel:
         push 0x2a
         mov bx, [hudhomeline]
         shl bx, byte 0x2
-        push word [bx + g_DA0C]
-        push word [bx + g_DA0A]
+        push word [bx + PanelShapes_b2]
+        push word [bx + PanelShapes]
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8
         push 0x14
         push word 0xfb
         mov bx, [hudlinehome]
         shl bx, byte 0x2
-        push word [bx + g_DA0C]
-        push word [bx + g_DA0A]
+        push word [bx + PanelShapes_b2]
+        push word [bx + PanelShapes]
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8
         pop si
@@ -880,7 +880,7 @@ DrawPanelClockDigits:
         push 0x3
         push word 0xaa
         push word [clockcolon]
-        push word [g_DA9E]
+        push word [ClockColonShape]
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8
 .2:
@@ -904,7 +904,7 @@ DrawPanelClockDigits:
         push 0x3
         push word 0x8c
         push word [clockcolon]
-        push word [g_DA9E]
+        push word [ClockColonShape]
         jmp short .5
 .4:
         push 0x3
@@ -915,8 +915,8 @@ DrawPanelClockDigits:
         idiv cx
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, byte 0x2
-        push word [bx + g_DA78]
-        push word [bx + g_DA76]
+        push word [bx + ClockDigitsSeg]
+        push word [bx + ClockDigits]
 .5:
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8
@@ -938,8 +938,8 @@ DrawPanelClockDigits:
         idiv cx
         db 0x8B, 0xDA                           ; insn: mov bx, dx
         shl bx, byte 0x2
-        push word [bx + g_DA78]
-        push word [bx + g_DA76]
+        push word [bx + ClockDigitsSeg]
+        push word [bx + ClockDigits]
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8
 .7:
@@ -986,7 +986,7 @@ DrawPanelClockDigits:
         push 0x3
         push word 0x8c
         push word [clockcolon]
-        push word [g_DA9E]
+        push word [ClockColonShape]
         jmp short .12
 .11:
         push 0x3
@@ -997,8 +997,8 @@ DrawPanelClockDigits:
         idiv cx
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, byte 0x2
-        push word [bx + g_DA78]
-        push word [bx + g_DA76]
+        push word [bx + ClockDigitsSeg]
+        push word [bx + ClockDigits]
 .12:
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8
@@ -1020,8 +1020,8 @@ DrawPanelClockDigits:
         idiv cx
         db 0x8B, 0xDA                           ; insn: mov bx, dx
         shl bx, byte 0x2
-        push word [bx + g_DA78]
-        push word [bx + g_DA76]
+        push word [bx + ClockDigitsSeg]
+        push word [bx + ClockDigits]
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8
 .14:
@@ -1046,8 +1046,8 @@ DrawPanelClockDigits:
         idiv cx
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, byte 0x2
-        push word [bx + g_DA78]
-        push word [bx + g_DA76]
+        push word [bx + ClockDigitsSeg]
+        push word [bx + ClockDigits]
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8
 .15:
@@ -1069,8 +1069,8 @@ DrawPanelClockDigits:
         db 0x8B, 0xDA                           ; insn: mov bx, dx
 .16:
         shl bx, byte 0x2
-        push word [bx + g_DA78]
-        push word [bx + g_DA76]
+        push word [bx + ClockDigitsSeg]
+        push word [bx + ClockDigits]
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8
 .17:
@@ -1458,8 +1458,8 @@ DrawPanelPenalties:
         mov ax, [bp + 0x8]
         add ax, strict word 0xa
         push ax
-        push word [g_DA74]
-        push word [g_DA72]
+        push word [PenaltyShapeSeg]
+        push word [PenaltyShape]
         jmp short .4
 .3:
         push si
@@ -1472,8 +1472,8 @@ DrawPanelPenalties:
         idiv cx
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, byte 0x2
-        push word [bx + g_DA4C]
-        push word [bx + g_DA4A]
+        push word [bx + PenaltyShapesSeg]
+        push word [bx + PenaltyShapes]
 .4:
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8
@@ -1487,8 +1487,8 @@ DrawPanelPenalties:
         idiv cx
         db 0x8B, 0xDA                           ; insn: mov bx, dx
         shl bx, byte 0x2
-        push word [bx + g_DA4C]
-        push word [bx + g_DA4A]
+        push word [bx + PenaltyShapesSeg]
+        push word [bx + PenaltyShapes]
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8
         cmp word [di + 0x2], 0xa
@@ -1497,8 +1497,8 @@ DrawPanelPenalties:
         mov ax, [bp + 0x8]
         add ax, strict word 0x1b
         push ax
-        push word [g_DA74]
-        push word [g_DA72]
+        push word [PenaltyShapeSeg]
+        push word [PenaltyShape]
         jmp short .6
 .5:
         push si
@@ -1511,8 +1511,8 @@ DrawPanelPenalties:
         idiv cx
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, byte 0x2
-        push word [bx + g_DA4C]
-        push word [bx + g_DA4A]
+        push word [bx + PenaltyShapesSeg]
+        push word [bx + PenaltyShapes]
 .6:
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8
@@ -1526,8 +1526,8 @@ DrawPanelPenalties:
         idiv cx
         db 0x8B, 0xDA                           ; insn: mov bx, dx
         shl bx, byte 0x2
-        push word [bx + g_DA4C]
-        push word [bx + g_DA4A]
+        push word [bx + PenaltyShapesSeg]
+        push word [bx + PenaltyShapes]
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8
         push si
@@ -1540,8 +1540,8 @@ DrawPanelPenalties:
         idiv cx
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, byte 0x2
-        push word [bx + g_DA4C]
-        push word [bx + g_DA4A]
+        push word [bx + PenaltyShapesSeg]
+        push word [bx + PenaltyShapes]
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8
         push si
@@ -1554,8 +1554,8 @@ DrawPanelPenalties:
         idiv cx
         db 0x8B, 0xDA                           ; insn: mov bx, dx
         shl bx, byte 0x2
-        push word [bx + g_DA4C]
-        push word [bx + g_DA4A]
+        push word [bx + PenaltyShapesSeg]
+        push word [bx + PenaltyShapes]
         jmp near .8
         db 0x90
 .7:
@@ -1563,48 +1563,48 @@ DrawPanelPenalties:
         mov ax, [bp + 0x8]
         add ax, strict word 0xa
         push ax
-        push word [g_DA74]
-        push word [g_DA72]
+        push word [PenaltyShapeSeg]
+        push word [PenaltyShape]
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8
         push si
         mov ax, [bp + 0x8]
         add ax, strict word 0x10
         push ax
-        push word [g_DA74]
-        push word [g_DA72]
+        push word [PenaltyShapeSeg]
+        push word [PenaltyShape]
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8
         push si
         mov ax, [bp + 0x8]
         add ax, strict word 0x1b
         push ax
-        push word [g_DA74]
-        push word [g_DA72]
+        push word [PenaltyShapeSeg]
+        push word [PenaltyShape]
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8
         push si
         mov ax, [bp + 0x8]
         add ax, strict word 0x21
         push ax
-        push word [g_DA74]
-        push word [g_DA72]
+        push word [PenaltyShapeSeg]
+        push word [PenaltyShape]
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8
         push si
         mov ax, [bp + 0x8]
         add ax, strict word 0x2a
         push ax
-        push word [g_DA74]
-        push word [g_DA72]
+        push word [PenaltyShapeSeg]
+        push word [PenaltyShape]
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8
         push si
         mov ax, [bp + 0x8]
         add ax, strict word 0x30
         push ax
-        push word [g_DA74]
-        push word [g_DA72]
+        push word [PenaltyShapeSeg]
+        push word [PenaltyShape]
 .8:
         call 0x0FEF:DrawRleTransFastAt
         add sp, 0x8

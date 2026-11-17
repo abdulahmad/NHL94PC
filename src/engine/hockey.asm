@@ -83,22 +83,22 @@ SprSort:
         mov [bp - 0x2], ax
         db 0x8B, 0xDF                           ; insn: mov bx, di
         shl bx, 1
-        mov cx, [bx + g_D474]
+        mov cx, [bx + objxlist]
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        cmp [bx + g_D474], cx
+        cmp [bx + objxlist], cx
         jnl short .6
         db 0x8B, 0xC7                           ; insn: mov ax, di
         mov [si], al
         mov al, [bp - 0x2]
         mov [si - 0x1], al
         shl di, 1
-        mov [di + g_D496], dx
+        mov [di + objylist], dx
         db 0x8B, 0xC2                           ; insn: mov ax, dx
         dec ax
         mov bx, [bp - 0x2]
         shl bx, 1
-        mov [bx + g_D496], ax
+        mov [bx + objylist], ax
         mov byte [bp - 0x5], 0x1
 .6:
         dec word [bp - 0x4]
@@ -312,7 +312,7 @@ AvgCline:
         mov bx, [bp + 0x6]
         mov si, [bx + 0xd4]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_D66E], ax
+        mov [regd0_w2], ax
         mov [regd0], ax
         db 0x2B, 0xFF                           ; insn: sub di, di
         mov cx, 0x6
@@ -336,7 +336,7 @@ AvgCline:
         jz short .3
         db 0x8B, 0xDF                           ; insn: mov bx, di
         mov ax, [regd0]
-        mov dx, [g_D66E]
+        mov dx, [regd0_w2]
         call 0x03A3:DivWords.regs
         mov [regd0], ax
 .3:
@@ -1404,8 +1404,8 @@ Goal:
         mov word [bx + 0x10], 0x600
         mov word [bx + 0xa], 0x0
         mov al, 0xff
-        mov [g_D619], al
-        mov [g_D61D], al
+        mov [GoalState_m5], al
+        mov [GoalState_m1], al
         or byte [bx + 0x44], 0x4
         test byte [gmode], 0x1
         jz short .12
@@ -1478,10 +1478,10 @@ Goal:
 .21:
         cmp word [bp - 0x2], 0x1
         jnz short .22
-        add word [g_D6C4], 0xa
+        add word [crowdheat], 0xa
         jmp short .23
 .22:
-        add word [g_D6C4], 0x1e
+        add word [crowdheat], 0x1e
 .23:
         mov bx, [bp - 0x10]
         mov ax, [bx + 0x22]
@@ -1690,8 +1690,8 @@ Goal:
         mov word [bx + 0x10], 0x600
         mov word [bx + 0xa], 0x0
         mov al, 0xff
-        mov [g_D619], al
-        mov [g_D61D], al
+        mov [GoalState_m5], al
+        mov [GoalState_m1], al
         or byte [bx + 0x44], 0x4
         push 0x1a
         push bx
@@ -1961,7 +1961,7 @@ setplayer:
         cmp word [gsp], 0x2
         jg short .10
         jnz short .14
-        mov ax, [g_D1AC]
+        mov ax, [gameclock2]
         sar ax, 1
         cmp ax, [gameclock]
         jng short .14
@@ -2401,7 +2401,7 @@ clearteams:
         mov word [hmtmroster], 0x3a0b
         mov word [hmtmrosterptr], 0xa550
         mov word [hmtmptrF2], 0x9f80
-        mov word [g_B50C], 0xb80e
+        mov word [SortCords_m2], 0xb80e
         mov word [awtmsort], AwaySortObjs
         mov word [awtmglattrseg], 0x3a0b
         mov word [awtmglattr], AwayGlAttr
@@ -2492,12 +2492,12 @@ ResetClock:
         call GetPeriodTime
         mov [gameclock], ax
         mov word [clockticks], 0x0
-        mov [g_D1AC], ax
+        mov [gameclock2], ax
         sar ax, 1
         call 0x0C11:randomd0
         sub ax, [gameclock]
         neg ax
-        mov [g_D668], ax
+        mov [stoppagetime], ax
         or byte [gmode], 0x1
         retf
         db 0x90
@@ -3073,8 +3073,8 @@ StartPer:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_D46E], ax
-        mov [g_D46C], ax
+        mov [controlled2], ax
+        mov [controlled], ax
         push cs
         call InitCoachModes
         push cs
@@ -3130,15 +3130,15 @@ StartPer:
         and byte [sflags], 0xaf
         mov ax, [replayptr]
         mov dx, [replayseg]
-        mov [g_D014], ax
-        mov [g_D016], dx
+        mov [replayrecptr], ax
+        mov [replayrecseg], dx
         call 0x2038:ReplayRecordReset
         mov word [lastsfx], 0xffff
         push cs
         call DoGameFrame
         push cs
         call DoGameFrame
-        mov word [g_D6C4], 0x10
+        mov word [crowdheat], 0x10
         cmp word [gsp], 0x2
         jnl short .7
         or byte [sflags3], 0x80
@@ -3220,20 +3220,20 @@ updatecrowdf:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
         push si
-        mov ax, [g_D004]
-        cmp [g_D6C4], ax
+        mov ax, [crowdtimer]
+        cmp [crowdheat], ax
         jng short .1
-        mov ax, [g_D6C4]
-        mov [g_D004], ax
+        mov ax, [crowdheat]
+        mov [crowdtimer], ax
 .1:
-        mov ax, [g_D6C4]
+        mov ax, [crowdheat]
         cwd
-        add [g_D010], ax
-        adc [g_D012], dx
-        inc word [g_D00A]
-        dec word [g_D6C4]
+        add [crowdsum], ax
+        adc [crowdsumhi], dx
+        inc word [crowdcount]
+        dec word [crowdheat]
         jns short .2
-        mov word [g_D6C4], 0x0
+        mov word [crowdheat], 0x0
 .2:
         test byte [gmode], 0x1
         jz short .6
@@ -3477,7 +3477,7 @@ updateplayers:
 .11:
         db 0x2B, 0xD2                           ; insn: sub dx, dx
         mov [regd2], ax
-        mov [g_D6BA], dx
+        mov [regd2_w2], dx
         mov ax, [si + 0xc]
         mov [regd0], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -3487,7 +3487,7 @@ updateplayers:
         cmp [regd0], dx
         jnz short .12
         mov word [regd0], 0x1
-        mov [g_D66E], dx
+        mov [regd0_w2], dx
 .12:
         mov ax, [regd0]
         sub [si + 0xc], ax
@@ -3501,7 +3501,7 @@ updateplayers:
         cmp [regd0], dx
         jnz short .14
         mov word [regd0], 0x1
-        mov [g_D66E], dx
+        mov [regd0_w2], dx
 .14:
         mov ax, [regd0]
         sub [si + 0xe], ax
@@ -3540,7 +3540,7 @@ updateplayers:
         mov ax, [regd4]
         call 0x03A3:ImulRegs
         mov [regd0], ax
-        mov [g_D66E], dx
+        mov [regd0_w2], dx
         add [si + 0x8], ax
         adc [si + 0xa], dx
         cmp word [si + 0xa], 0x0
@@ -3816,21 +3816,21 @@ cleargamevars:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_D00E], ax
-        mov [g_D00C], ax
-        mov [g_D008], ax
+        mov [cleared2], ax
+        mov [cleared1], ax
+        mov [lastgoaly], ax
         mov [LastShooterTeam], ax
-        mov [g_D002], ax
+        mov [lastgoalx], ax
         mov [regd5], ax
-        mov [g_D6CA], ax
+        mov [regd4_w2], ax
         mov [regd4], ax
-        mov [g_D6C2], ax
+        mov [regd3_w2], ax
         mov [regd3], ax
-        mov [g_D6BA], ax
+        mov [regd2_w2], ax
         mov [regd2], ax
-        mov [g_D674], ax
+        mov [regd1_w2], ax
         mov [regd1], ax
-        mov [g_D66E], ax
+        mov [regd0_w2], ax
         mov [regd0], ax
         mov word [lastsfx], 0xffff
         db 0x2A, 0xC0                           ; insn: sub al, al
@@ -3916,7 +3916,7 @@ DrawRinkOverlays:
         jng short .9
         cmp word [camy], 0xb1
         jnl short .9
-        mov al, [g_D6C7]
+        mov al, [PBnum_b1]
         cbw
         dec ax
         cmp ax, strict word 0x2
@@ -4262,7 +4262,7 @@ DrawRinkOverlays:
         jmp near .59
 .48:
         mov bx, [bp - 0x22]
-        mov al, [bx + g_D4F4]
+        mov al, [bx + OOlist]
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, byte 0x7
@@ -4664,7 +4664,7 @@ clockcont_0:
         jng short .3
         mov word [CrowdSound], 0x4b0
 .3:
-        add word [g_D6C4], 0x28
+        add word [crowdheat], 0x28
         or byte [gmode], 0x41
         mov word [regd2], 0x0
 .4:
@@ -4872,7 +4872,7 @@ clockcont_0:
         jnl short .31
         mov word [CrowdSound], 0x320
 .31:
-        add word [g_D6C4], 0x28
+        add word [crowdheat], 0x28
         or byte [gmode], 0x41
         push 0x2
         push si
@@ -4924,10 +4924,10 @@ ClockTick:
         cmp word [gameclock], 0x3c
         jnz short .6
         mov ax, [PadRepeatOn]
-        mov [g_D46A], ax
+        mov [gameframe], ax
         mov word [PadRepeatOn], 0x0
         call 0x0EDC:AnnounceOneMinute
-        mov ax, [g_D46A]
+        mov ax, [gameframe]
         mov [PadRepeatOn], ax
 .6:
         mov ax, [gameclock]

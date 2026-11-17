@@ -4,7 +4,9 @@
         db 0x00, 'save hilights.', 0x00
         db 'Current hilight not saved.'
         db 0x00
-msgInsufficientDiskSpaceToSave:                                    ; used by INIT (to name)
+msgInsufficientDiskSpaceToSave:                 ; message list of 3 far string pointers: 'Insufficient disk
+                                                ; space to / save hilights. / Current hilight not saved.';
+                                                ; used by INIT
         db 0x00, 0x00, 0xF0, 0x38, 0x1B, 0x00, 0xF0, 0x38
         db 0x2A, 0x00, 0xF0, 0x38, 0x00, 0x00, 0x00
         db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00

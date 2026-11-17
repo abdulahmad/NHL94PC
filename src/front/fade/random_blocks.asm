@@ -19,13 +19,13 @@ FadeRandomBlocks:
         call 0x0FEF:UseCurrentPage
         mov es, [segDgroup21]
         mov ax, [es:0x74fc]
-        mov [g_DF6A], ax
+        mov [fadex], ax
         mov ax, [es:0x74fe]
-        mov [g_DF6C], ax
+        mov [fadey], ax
         mov ax, [es:0x74f2]
-        mov [g_DF6E], ax
+        mov [fadew], ax
         mov cx, [es:0x74f4]
-        mov [g_DF70], cx
+        mov [fadeh], cx
         db 0x8B, 0xD0                           ; insn: mov dx, ax
         mov ax, [es:0x74fa]
         db 0x03, 0xC7                           ; insn: add ax, di
@@ -106,13 +106,13 @@ FadeRandomBlocks2:
         call 0x0FEF:UseCurrentPage
         mov es, [segDgroup21]
         mov ax, [es:0x74fc]
-        mov [g_DF6A], ax
+        mov [fadex], ax
         mov ax, [es:0x74fe]
-        mov [g_DF6C], ax
+        mov [fadey], ax
         mov ax, [es:0x74f2]
-        mov [g_DF6E], ax
+        mov [fadew], ax
         mov cx, [es:0x74f4]
-        mov [g_DF70], cx
+        mov [fadeh], cx
         mov ax, [es:0x74fa]
         add ax, strict word 0x1f
         cwd
@@ -123,7 +123,7 @@ FadeRandomBlocks2:
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         mov [bp - 0x8], ax
         db 0x8B, 0xC1                           ; insn: mov ax, cx
-        sub ax, [g_DF6E]
+        sub ax, [fadew]
         add ax, strict word 0x1b
         mov cx, 0x1c
         cwd

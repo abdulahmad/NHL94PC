@@ -34,7 +34,7 @@ SortPlayersByPos:
         db 0x8B, 0xD6                           ; insn: mov dx, si
         mov cx, [bp - 0x8]
 .1:
-        mov [si + g_DF32], dx
+        mov [si + possort], dx
         mov al, [di]
         cmp [bp + 0xc], al
         jz short .2
@@ -65,7 +65,7 @@ SortPlayersByPos:
 .4:
         cmp word [di + lineslotmark], 0x0
         jl short .5
-        mov al, [di + g_DF32]
+        mov al, [di + possort]
         db 0x8B, 0xDA                           ; insn: mov bx, dx
         mov [bx + si], al
         jmp short .6
@@ -104,7 +104,7 @@ SortNonDefPlayers:
         db 0x8B, 0xD6                           ; insn: mov dx, si
         mov cx, [bp - 0x8]
 .1:
-        mov [si + g_DF32], dx
+        mov [si + possort], dx
         cmp byte [di], 0x44
         jnz short .2
         mov ax, 0xffff
@@ -134,7 +134,7 @@ SortNonDefPlayers:
 .4:
         cmp word [di + lineslotmark], 0x0
         jl short .5
-        mov al, [di + g_DF32]
+        mov al, [di + possort]
         db 0x8B, 0xDA                           ; insn: mov bx, dx
         mov [bx + si], al
         jmp short .6
@@ -1857,7 +1857,7 @@ NormalizeDressFlags:
         db 0x2A, 0xC0                           ; insn: sub al, al
 .3:
         mov [si + dressflags], al
-        cmp byte [si + g_DEE7], 0x1
+        cmp byte [si + dressflags_aw], 0x1
         jnz short .4
         mov al, 0x1
         jmp short .5
@@ -1865,7 +1865,7 @@ NormalizeDressFlags:
 .4:
         db 0x2A, 0xC0                           ; insn: sub al, al
 .5:
-        mov [si + g_DEE7], al
+        mov [si + dressflags_aw], al
         inc si
         cmp si, 0x19
         jl short .1

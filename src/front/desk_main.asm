@@ -878,7 +878,7 @@ SaveModeState:
         call 0x0000:_fstrcpy
         add sp, 0x8
         push ds
-        push strict word g_C000
+        push strict word HomeTeamDbName
         mov ax, [bp - 0x4]
         mov dx, [bp - 0x2]
         add ax, strict word 0xf
@@ -887,7 +887,7 @@ SaveModeState:
         call 0x0000:_fstrcpy
         add sp, 0x8
         push ds
-        push strict word g_C020
+        push strict word AwayTeamDbName
         mov ax, [bp - 0x4]
         mov dx, [bp - 0x2]
         add ax, strict word 0x2f
@@ -947,7 +947,7 @@ LoadModeState:
         push dx
         push ax
         push ds
-        push strict word g_C000
+        push strict word HomeTeamDbName
         call 0x0000:_fstrcpy
         add sp, 0x8
         mov ax, [bp - 0x4]
@@ -956,7 +956,7 @@ LoadModeState:
         push dx
         push ax
         push ds
-        push strict word g_C020
+        push strict word AwayTeamDbName
         call 0x0000:_fstrcpy
         add sp, 0x8
         les bx, [bp - 0x4]
@@ -1257,7 +1257,7 @@ WriteModeState:
         call 0x0000:_fstrcpy
         add sp, 0x8
         push ds
-        push strict word g_C000
+        push strict word HomeTeamDbName
         mov ax, [bp + 0x6]
         mov dx, [bp + 0x8]
         add ax, strict word 0xf
@@ -1266,7 +1266,7 @@ WriteModeState:
         call 0x0000:_fstrcpy
         add sp, 0x8
         push ds
-        push strict word g_C020
+        push strict word AwayTeamDbName
         mov ax, [bp + 0x6]
         mov dx, [bp + 0x8]
         add ax, strict word 0x2f
@@ -2220,7 +2220,7 @@ MenuLeagueSettings:
         jnz short .1
         mov si, 0xffff
 .1:
-        cmp byte [g_E36B], 0x0
+        cmp byte [lgflags], 0x0
         jnz short .2
         jmp near .4
 .2:

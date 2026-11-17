@@ -2,7 +2,8 @@
 ; (the overlays probably do).
         db 'There are no hilights!'
         db 0x00
-msgThereAreNoHilights:                                    ; used by MENUS (to name)
+msgThereAreNoHilights:                          ; message list of 1 far string pointer: 'There are no
+                                                ; hilights!'; used by MENUS
         db 0x00, 0x00, 0xF3, '5There is not enogh space on'
         db 0x00, 'the floppy disk for the hilights!'
         db 0x00, 'Select less hilights or get another disk.'

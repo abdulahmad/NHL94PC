@@ -3,26 +3,31 @@
         db 'There is already a Play-Off with that name!'
         db 0x00, 'Do you want to replace it with a new Play-Off?'
         db 0x00
-msgThereIsAlreadyAPlay:                                    ; used by MENUS (to name)
+msgThereIsAlreadyAPlay:                         ; message list of 2 far string pointers: 'There is already a
+                                                ; Play-Off with that name! / Do you want to replace it with a
+                                                ; new Play-Off?'; used by MENUS
         db 0x00, 0x00, 0xB8, 0x36, 0x2C, 0x00, 0xB8
         db '6Your team has been eliminated'
         db 0x00, 'from the play-offs. Do you'
         db 0x00, 'wish to see the final results'
         db 0x00, 'of the play-offs?'
         db 0x00, 'The '
-EliminatedTeamText:                                    ; used by MENUS (to name)
+EliminatedTeamText:                             ; text buffer for the eliminated team name in
+                                                ; msgTeamEliminatedFromPlayoffs; used by MENUS
         db '....,....,....,....,.'
         db 0x00, 'have been eliminated from'
         db 0x00, 'the play-offs.', 0x00
         db 'The '
-EliminatedTeamText2:                                    ; used by MENUS (to name)
+EliminatedTeamText2:                            ; second team name buffer of the elimination message; used by
+                                                ; MENUS
         db '.....................'
         db 0x00, 'will continue to the next'
         db 0x00, 'series.', 0x00
         db 'YES', 0x00
         db 'NO', 0x00, 'Generating the final results.'
         db 0x00
-dlgReturnConfirm:                                    ; used by MENUS (to name)
+dlgReturnConfirm:                               ; MessageBox definition used by DeleteSavedGame,
+                                                ; DeskReturnConfirm, DeskExitGame; used by MENUS
         db 0x08, 0x00, 0x28, 0x00, 0x15, 0x00, 0x0A, 0x00
         db 0x00, 0x00, 0x05, 0x00
         db 0x4F, 0x01, 0xB8, 0x36, 0xF8, 0xFF, 0x28, 0x00, 0x15, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x06, 0x00

@@ -1,6 +1,6 @@
 ; Puts the team names into the menu text, or blanks them (INIT.OVL)
 ; The first bytes finish the last routine of scoreboard_init.asm.
-        push word [g_C258]
+        push word [ScoreboardArt]
         call 0x03A3:FindFarList
         leave
         retf

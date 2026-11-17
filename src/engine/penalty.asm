@@ -11,7 +11,7 @@ GetPeriodTimeRemaining:
         shl ah, byte 0x6
         db 0x2A, 0xC0                           ; insn: sub al, al
         sub ax, [gameclock]
-        add ax, [g_D1AC]
+        add ax, [gameclock2]
         retf
 
 ;-----------------------------------------------------------------------------
@@ -118,7 +118,7 @@ AddPenalty2:
         mov bx, [bp + 0x6]
         test byte [bx + 0x44], 0x40
         jz short .5
-        add word [g_D6C4], 0x14
+        add word [crowdheat], 0x14
         push 0x7d
         jmp short .6
         db 0x90
@@ -231,7 +231,7 @@ InProgress:
         jmp near .14
 .3:
         mov di, 0x1
-        cmp byte [g_D678], 0x0
+        cmp byte [PenBuf_b2], 0x0
         jz short .5
         mov bx, 0xd678
 .4:
@@ -322,7 +322,7 @@ InProgress:
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         neg ax
         push ax
-        mov ax, [g_D1AC]
+        mov ax, [gameclock2]
         sub ax, [gameclock]
         mov cx, 0x3c
         db 0x8B, 0xD8                           ; insn: mov bx, ax
@@ -479,7 +479,7 @@ InProgress:
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         neg ax
         push ax
-        mov ax, [g_D1AC]
+        mov ax, [gameclock2]
         sub ax, [gameclock]
         mov cx, 0x3c
         db 0x8B, 0xD8                           ; insn: mov bx, ax
@@ -1117,9 +1117,9 @@ updatepentime_ut:
         mov ax, 0x2
         cwd
         mov [regd1], ax
-        mov [g_D674], dx
+        mov [regd1_w2], dx
         mov [regd3], ax
-        mov [g_D6C2], dx
+        mov [regd3_w2], dx
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [bp - 0x4], ax
         mov [bp - 0x2], ax

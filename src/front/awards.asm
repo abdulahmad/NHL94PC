@@ -150,7 +150,7 @@ PickAwardWinners:
         cmp [bp - 0x3c2], ax
         jnz short .9
         mov al, [bp - 0x357]
-        cmp [g_CC29], al
+        cmp [AwardCandidates], al
         jnc short .9
 .8:
         mov ax, 0xcc00
@@ -660,8 +660,8 @@ ShowAwardScreens:
         push di
         push si
         call 0x0F99:FlushInputEvents
-        push word [g_C7A4]
-        push word [g_C7A2]
+        push word [AwardRawB]
+        push word [AwardRawA]
         call 0x06E1:RawBase
         add sp, 0x4
         mov [bp - 0x30], ax
@@ -774,7 +774,7 @@ ShowAwardScreens:
         call 0x0D39:DrawShadowText
         add sp, 0x8
         mov al, 0x15
-        mul byte [si + g_C806]
+        mul byte [si + AwardScores]
         add ax, 0xaa38
         push word 0x3a0b
         push ax
@@ -1280,8 +1280,8 @@ ShowAwardScreens:
         push word [bp - 0x6e]
         mov bx, [bp - 0x2a]
         shl bx, byte 0x2
-        push word [bx + g_C7FC]
-        push word [bx + g_C7FA]
+        push word [bx + AwardFrames3Seg]
+        push word [bx + AwardFrames3]
         call 0x03A3:EmsMapFrame
         add sp, 0x4
         mov [bp - 0x1e], ax
@@ -1361,8 +1361,8 @@ ShowAwardScreens:
         call 0x0FEF:ClearClipRect
         add sp, 0x2
         push strict word str_Scrn_2
-        push word [g_C7A4]
-        push word [g_C7A2]
+        push word [AwardRawB]
+        push word [AwardRawA]
         call 0x06E1:RawBase
         add sp, 0x4
         mov [bp - 0x30], ax
@@ -1385,8 +1385,8 @@ ShowAwardScreens:
         add sp, 0x4
         mov bx, [bp - 0x66]
         shl bx, byte 0x2
-        push word [bx + g_C7D4]
-        push word [bx + g_C7D2]
+        push word [bx + AwardFrames2Seg]
+        push word [bx + AwardFrames2]
         db 0x8B, 0xF3                           ; insn: mov si, bx
         call 0x03A3:EmsMapFrame
         add sp, 0x4
@@ -1396,8 +1396,8 @@ ShowAwardScreens:
         push ax
         call 0x0FEF:DrawRleTransBody
         add sp, 0x4
-        push word [si + g_C7AC]
-        push word [si + g_C7AA]
+        push word [si + AwardFramesSeg]
+        push word [si + AwardFrames]
         call 0x03A3:EmsMapFrame
         add sp, 0x4
         mov [bp - 0x1e], ax
@@ -1444,7 +1444,7 @@ ShowAwardScreens:
         sar ax, 1
         mov [bp - 0x62], ax
         push ds
-        push strict word g_CC05
+        push strict word AwardText
         push word [bp - 0x64]
         add ax, 0xc4
         push ax
@@ -1678,7 +1678,7 @@ DrawAwardsSummary:
         cmp byte [bx + AwardKinds], 0x2
         jnz short .3
         push ds
-        push strict word g_CC05
+        push strict word AwardText
         jmp short .4
 .3:
         push 0x6e
@@ -1990,8 +1990,8 @@ AwardsCeremony:
 .8:
         cmp word [bp - 0x10], 0x0
         jnz short .9
-        push word [g_C7A4]
-        push word [g_C7A2]
+        push word [AwardRawB]
+        push word [AwardRawA]
         call 0x06E1:RawBase
         add sp, 0x4
         mov [bp - 0x4], ax
@@ -2001,10 +2001,10 @@ AwardsCeremony:
         push ax
         call 0x03A3:LookupMsg
         add sp, 0x6
-        mov [di + g_C7D2], ax
-        mov [di + g_C7D4], dx
-        push word [g_C7A8]
-        push word [g_C7A6]
+        mov [di + AwardFrames2], ax
+        mov [di + AwardFrames2Seg], dx
+        push word [AwardRawD]
+        push word [AwardRawC]
         call 0x06E1:RawBase
         add sp, 0x4
         mov [bp - 0x4], ax
@@ -2014,8 +2014,8 @@ AwardsCeremony:
         push ax
         call 0x03A3:LookupMsg
         add sp, 0x6
-        mov [di + g_C7AA], ax
-        mov [di + g_C7AC], dx
+        mov [di + AwardFrames], ax
+        mov [di + AwardFramesSeg], dx
         inc si
         inc si
         add di, 0x4
@@ -2027,8 +2027,8 @@ AwardsCeremony:
 .10:
         cmp word [bp - 0x10], 0x0
         jnz short .11
-        push word [g_C7A4]
-        push word [g_C7A2]
+        push word [AwardRawB]
+        push word [AwardRawA]
         call 0x06E1:RawBase
         add sp, 0x4
         mov [bp - 0x4], ax
@@ -2080,8 +2080,8 @@ AwardsCeremony:
         call 0x0FEF:ClearClipRect
         add sp, 0x2
         push strict word str_Pal_31
-        push word [g_C7A4]
-        push word [g_C7A2]
+        push word [AwardRawB]
+        push word [AwardRawA]
         call 0x06E1:RawBase
         add sp, 0x4
         push dx

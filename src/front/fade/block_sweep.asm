@@ -14,13 +14,13 @@ FadeBlockSweep:
         call 0x0FEF:UseCurrentPage
         mov es, [segDgroup18]
         mov ax, [es:0x74fc]
-        mov [g_DF6A], ax
+        mov [fadex], ax
         mov ax, [es:0x74fe]
-        mov [g_DF6C], ax
+        mov [fadey], ax
         mov ax, [es:0x74f2]
-        mov [g_DF6E], ax
+        mov [fadew], ax
         mov cx, [es:0x74f4]
-        mov [g_DF70], cx
+        mov [fadeh], cx
         mov ax, [es:0x74fa]
         add ax, strict word 0x27
         mov bx, 0x28
@@ -28,7 +28,7 @@ FadeBlockSweep:
         idiv bx
         mov [bp - 0xe], ax
         db 0x8B, 0xC1                           ; insn: mov ax, cx
-        sub ax, [g_DF6E]
+        sub ax, [fadew]
         add ax, strict word 0x22
         mov cx, 0x23
         cwd

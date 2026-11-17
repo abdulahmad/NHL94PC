@@ -379,10 +379,10 @@ CreateGSummaryDb:
         push di
         push si
         mov al, [bp + 0x8]
-        mov [g_E367], al
+        mov [savedteam2], al
         mov word [curperiod], 0xffff
         mov cl, [bp + 0x6]
-        mov [g_E366], cl
+        mov [savedteam1], cl
         mov [gsumheader_b2], cl
         mov [gsumheader_b3], al
         mov al, [HomeTeamNum]
@@ -950,17 +950,17 @@ BuildTeamRoster:
         mov [si], al
         jmp short .10
 .5:
-        mov al, [g_E366]
+        mov al, [savedteam1]
         cmp [bp - 0x66], al
         jna short .7
 .6:
         mov al, 0x1
         jmp short .9
 .7:
-        mov al, [g_E366]
+        mov al, [savedteam1]
         cmp [bp - 0x66], al
         jc short .8
-        mov al, [g_E367]
+        mov al, [savedteam2]
         cmp [bp - 0x65], al
         ja short .6
 .8:
@@ -1136,7 +1136,7 @@ BuildTeamRoster:
         mov [si], al
         jmp short .27
 .22:
-        mov al, [g_E366]
+        mov al, [savedteam1]
         cmp [bp - 0xc8], al
         jna short .24
 .23:
@@ -1144,10 +1144,10 @@ BuildTeamRoster:
         jmp short .26
         db 0x90
 .24:
-        mov al, [g_E366]
+        mov al, [savedteam1]
         cmp [bp - 0xc8], al
         jc short .25
-        mov al, [g_E367]
+        mov al, [savedteam2]
         cmp [bp - 0xc7], al
         ja short .23
 .25:

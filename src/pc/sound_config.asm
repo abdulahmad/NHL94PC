@@ -525,13 +525,13 @@ SetSoundDevice:
         cmp word [SoundOptions], 0x2
         jnz short .1
         call 0x09B2:SpeechShutdown
-        push word [g_C1F2]
-        push word [g_C1F0]
+        push word [SoundDrvBufSeg]
+        push word [SoundDrvBuf]
         call 0x06E1:FindUnlink
         add sp, 0x4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_C1F2], ax
-        mov [g_C1F0], ax
+        mov [SoundDrvBufSeg], ax
+        mov [SoundDrvBuf], ax
 .1:
         call 0x16F2:ShutdownSequencer
         mov ax, 0x64
@@ -1234,8 +1234,8 @@ SetSoundDevice:
         push strict word str_Emmcopybuf
         call 0x14DB:AllocRecData
         add sp, 0x8
-        mov [g_C1F0], ax
-        mov [g_C1F2], dx
+        mov [SoundDrvBuf], ax
+        mov [SoundDrvBufSeg], dx
         push 0x0
         push word 0x400
         push dx

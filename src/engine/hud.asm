@@ -470,7 +470,7 @@ LoadTeamPPV:
         push si
         mov si, [bp + 0x6]
         mov ax, [PadRepeatOn]
-        mov [g_D46A], ax
+        mov [gameframe], ax
         mov word [PadRepeatOn], 0x0
         push word 0x3701
         push strict word str_Qpp
@@ -490,8 +490,8 @@ LoadTeamPPV:
         push ax
         call 0x14B8:LoadPackedHeader
         add sp, 0x4
-        mov [g_D62C], ax
-        mov [g_D62E], dx
+        mov [OverlayGfx], ax
+        mov [OverlayGfxSeg], dx
         mov word [bp - 0x2], 0x0
         push dx
         push ax
@@ -510,15 +510,15 @@ LoadTeamPPV:
         add sp, 0x6
         lea ax, [bp - 0x12]
         push ax
-        push word [g_D62E]
-        push word [g_D62C]
+        push word [OverlayGfxSeg]
+        push word [OverlayGfx]
         call 0x03A3:FindFarMsg
         add sp, 0x6
         add di, 0x4
         mov [di - 0x4], ax
         mov [di - 0x2], dx
-        push word [g_D62E]
-        push word [g_D62C]
+        push word [OverlayGfxSeg]
+        push word [OverlayGfx]
         call 0x03A3:TableCount
         add sp, 0x4
         inc si
@@ -526,16 +526,16 @@ LoadTeamPPV:
         jg short .1
         mov si, [bp + 0x6]
 .2:
-        mov ax, [g_D46A]
+        mov ax, [gameframe]
         mov [PadRepeatOn], ax
         mov [ovlseq], si
         shl si, byte 0x2
         mov ax, [si + TeamPPVSizes]
         mov dx, [si + TeamPPVSizes2]
-        mov [g_D65C], ax
-        mov [g_D65E], dx
-        mov word [g_D658], 0xc
-        mov word [g_D65A], 0x1
+        mov [overlayscript], ax
+        mov [overlayscriptseg], dx
+        mov word [overlaytimer], 0xc
+        mov word [overlaystate], 0x1
         mov es, dx
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         mov al, [es:bx + 0x1]
@@ -747,8 +747,8 @@ DrawTextOverlay:
         push si
         mov bx, [ovlstep]
         shl bx, byte 0x2
-        push word [bx + g_D632]
-        push word [bx + g_D630]
+        push word [bx + OverlayFramesSeg]
+        push word [bx + OverlayFrames]
         call 0x1F54:DrawSpriteClipped
         add sp, 0xe
         cmp word [ovlseq], 0x0
@@ -1109,23 +1109,23 @@ UpdateTextOverlay:
         jnl short .7
         cmp word [CrowdSound], 0x5dc
         jnl short .7
-        cmp word [g_D65A], 0x1
+        cmp word [overlaystate], 0x1
         jnz short .3
         cmp word [CrowdSound], 0x280
         jnl short .3
         mov word [CrowdSound], 0x280
 .3:
-        cmp word [g_D65A], 0x1
+        cmp word [overlaystate], 0x1
         jl short .4
-        cmp word [g_D65A], 0x5
+        cmp word [overlaystate], 0x5
         jl short .6
 .4:
-        cmp word [g_D65A], 0x7
+        cmp word [overlaystate], 0x7
         jng short .5
-        cmp word [g_D65A], 0xd
+        cmp word [overlaystate], 0xd
         jl short .6
 .5:
-        cmp word [g_D65A], 0x10
+        cmp word [overlaystate], 0x10
         jng short .7
 .6:
         add word [CrowdSound], 0x8
@@ -1134,20 +1134,20 @@ UpdateTextOverlay:
         jnz short .11
         cmp word [ovlseq], -0x1
         jz short .11
-        mov ax, [g_D65E]
-        or ax, [g_D65C]
+        mov ax, [overlayscriptseg]
+        or ax, [overlayscript]
         jz short .11
-        dec word [g_D658]
+        dec word [overlaytimer]
         js short .8
         jmp near .14
 .8:
-        les bx, [g_D65C]
+        les bx, [overlayscript]
         mov al, [es:bx]
         cbw
-        cmp ax, [g_D65A]
+        cmp ax, [overlaystate]
         jnz short .10
-        push word [g_D62E]
-        push word [g_D62C]
+        push word [OverlayGfxSeg]
+        push word [OverlayGfx]
         call 0x06E1:FindUnlink
         add sp, 0x4
         mov bx, [ovlseq]
@@ -1159,17 +1159,17 @@ UpdateTextOverlay:
         mov [ovlstep], ax
         mov [ovlseq], ax
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_D65E], ax
-        mov [g_D65C], ax
+        mov [overlayscriptseg], ax
+        mov [overlayscript], ax
         pop si
         retf
 .10:
-        inc word [g_D65A]
-        mov si, [g_D65A]
+        inc word [overlaystate]
+        mov si, [overlaystate]
         mov al, [es:bx + si]
         cbw
         mov [ovlstep], ax
-        mov word [g_D658], 0xc
+        mov word [overlaytimer], 0xc
         pop si
         retf
         db 0x90

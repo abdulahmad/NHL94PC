@@ -12,37 +12,45 @@
         db 0x30, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x06, 0x00
         db 0x52, 0x00, 0x01, '7All the teams are already human'
         db 0x00
-msgAllTheTeamsAreAlready:                                    ; used by LP (to name)
+msgAllTheTeamsAreAlready:                       ; message list of 1 far string pointer: 'All the teams are
+                                                ; already human'; used by LP
         db 0x87, 0x00, 0x01, '7There is only one human'
         db 0x00, 'controlled team!'
         db 0x00
-msgThereIsOnlyOneHuman:                                    ; used by LP (to name)
+msgThereIsOnlyOneHuman:                         ; message list of 2 far string pointers: 'There is only one
+                                                ; human / controlled team!'; used by LP
         db 0xAB, 0x00, 0x01, 0x37, 0xC3, 0x00, 0x01
         db '7Can not read databases in the league'
         db 0x00
-msgCanNotReadDatabasesIn:                                    ; used by LP (to name)
+msgCanNotReadDatabasesIn:                       ; message list of 1 far string pointer: 'Can not read
+                                                ; databases in the league'; used by LP
         db 0xDC, 0x00, 0x01, 0x37, 0x00, 0x00, 0x00, 0x00
         db 'That name has already been used!'
         db 0x00
-msgThatNameHasAlreadyBeen:                                    ; used by LP (to name)
+msgThatNameHasAlreadyBeen:                      ; message list of 1 far string pointer: 'That name has already
+                                                ; been used!'; used by LP
         db 0x09, 0x01, 0x01, '7Disk Error', 0x00
         db 'Abort, Retry or Ignore'
         db 0x00, 0x2E, 0x01, 0x01, 0x37, 0x39, 0x01, 0x01, '7That floppy disk is not for'
         db 0x00, 'Insert disk for'
         db 0x00, 'in any drive.', 0x00
-msgThatFloppyDiskIsNot:                                    ; used by LP (to name)
+msgThatFloppyDiskIsNot:                         ; message list of 1 far string pointer: 'That floppy disk is
+                                                ; not for'; used by LP
         db 0x58, 0x01, 0x01, 0x37, 0x00, 0x00, 0x00, 0x00
-msgInsertDiskFor:                                    ; used by LP (to name)
+msgInsertDiskFor:                               ; message list of 1 far string pointer: 'Insert disk for';
+                                                ; used by LP
         db 0x74, 0x01, 0x01, 0x37, 0x00, 0x00, 0x00, 0x00, 0x84, 0x01, 0x01, '7That disk is for'
         db 0x00
 str_FromTheLeague:                              ; string ' from the league '; used by LP
         db ' from the league '
         db 0x00, 'Are you sure you want to overwrite it?'
         db 0x00
-msgThatDiskIsFor:                                    ; used by LP (to name)
+msgThatDiskIsFor:                               ; message list of 1 far string pointer: 'That disk is for';
+                                                ; used by LP
         db 0xA6, 0x01, 0x01, 0x37, 0x00, 0x00, 0x00, 0x00
         db 0xC9, 0x01, 0x01, 0x37
-dlgInsertDisk:                                    ; used by LP (to name)
+dlgInsertDisk:                                  ; MessageBox definition used by ExportTeamToFloppy and
+                                                ; CopyHumanTeamDBs; used by LP
         db 0x08, 0x00
         db 0x28, 0x00, 0x30, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x01, 0x37, 0xF8, 0xFF, 0x28
         db 0x00, 0x30, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x06, 0x00, 0x04, 0x00, 0x01, '7 from the '
@@ -50,32 +58,40 @@ dlgInsertDisk:                                    ; used by LP (to name)
         db 0x00, 0x27, 0x02, 0x01, '7There is already a league with that name!'
         db 0x00, 'Do you want to replace it with a new league?'
         db 0x00
-msgThereIsAlreadyALeague:                                    ; used by LP (to name)
+msgThereIsAlreadyALeague:                       ; message list of 2 far string pointers: 'There is already a
+                                                ; league with that name! / Do you want to replace it with a
+                                                ; new league?'; used by LP
         db 0x41, 0x02, 0x01, 0x37, 0x6B, 0x02, 0x01, 0x37
-dlgReplaceLeague:                                    ; used by LP, MENUS (to name)
+dlgReplaceLeague:                               ; MessageBox definition used by CreateNewLeague and
+                                                ; CreatePlayoffs; used by LP, MENUS
         db 0x08, 0x00, 0x1E, 0x00, 0x14, 0x00, 0x0A
         db 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x01, 0x37, 0xF8, 0xFF, 0x1E, 0x00, 0x14, 0x00, 0x0A
         db 0x00, 0x00, 0x00, 0x06, 0x00, 0x04, 0x00, 0x01, '7  Which schedule do you want to use?  '
         db 0x00, 0x27, '92 - ', 0x27, '93 Season'
         db 0x00, 'Random', 0x00
-msgWhichScheduleDoYouWant:                                    ; used by LP (to name)
+msgWhichScheduleDoYouWant:                      ; message list of 1 far string pointer: '  Which schedule do
+                                                ; you want to use?  '; used by LP
         db 0xC0, 0x02, 0x01, 0x37
-dlgWhichSchedule:                                    ; used by LP (to name)
+dlgWhichSchedule:                               ; MessageBox definition asking which schedule to use
+                                                ; (CreateNewLeague); used by LP
         db 0x08, 0x00, 0x18, 0x00
         db 0x50, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x05, 0x00, 0xE7, 0x02, 0x01, 0x37, 0xF8, 0xFF, 0x18, 0x00
         db 0x50, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x06, 0x00, 0xF8, 0x02, 0x01, '7Error while updating database!'
         db 0x00
-msgErrorWhileUpdatingDatabase:                                    ; used by LP (to name)
+msgErrorWhileUpdatingDatabase:                  ; message list of 1 far string pointer: 'Error while updating
+                                                ; database!'; used by LP
         db 0x23, 0x03, 0x01, '7Error while creating league!'
         db 0x00
-msgErrorWhileCreatingLeague:                                    ; used by LP (to name)
+msgErrorWhileCreatingLeague:                    ; message list of 1 far string pointer: 'Error while creating
+                                                ; league!'; used by LP
         db 0x46, 0x03, 0x01, '7Error while trading players!'
         db 0x00
-msgErrorWhileTradingPlayers:                                    ; used by LP (to name)
+msgErrorWhileTradingPlayers:                    ; message list of 1 far string pointer: 'Error while trading
+                                                ; players!'; used by LP
         db 0x67, 0x03, 0x01, '7Do you really want to remove'
         db 0x00, 0x88, 0x03, 0x01, 0x37, 0x00, 0x00, 0x00
         db 0x00
-dlgLeagueTeamSelect:                                    ; used by LP (to name)
+dlgLeagueTeamSelect:                            ; MessageBox definition used by LeagueTeamSelect; used by LP
         db 0x08, 0x00, 0x1E, 0x00, 0x14, 0x00, 0x0A
         db 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x01, 0x37, 0xF8, 0xFF, 0x1E, 0x00, 0x14, 0x00, 0x0A
         db 0x00, 0x00, 0x00, 0x06, 0x00, 0x04, 0x00, 0x01
@@ -88,31 +104,36 @@ str_SelectATeamToExport:                        ; string 'Select a team to expor
         db 0x00, 'Put disk with league to'
         db 0x00, 'import in any drive.'
         db 0x00
-msgPutDiskWithLeagueTo:                                    ; used by LP (to name)
+msgPutDiskWithLeagueTo:                         ; message list of 2 far string pointers: 'Put disk with league
+                                                ; to / import in any drive.'; used by LP
         db 0xFD, 0x03, 0x01, 0x37, 0x15, 0x04, 0x01
         db '7Error while importing league!'
         db 0x00
-msgErrorWhileImportingLeague:                                    ; used by LP (to name)
+msgErrorWhileImportingLeague:                   ; message list of 1 far string pointer: 'Error while importing
+                                                ; league!'; used by LP
         db 0x32, 0x04, 0x01, '7Error while exporting league!'
         db 0x00, 0x54, 0x04, 0x01, '7Incorrect password!'
         db 0x00
-msgIncorrectPassword:                                    ; used by LP (to name)
+msgIncorrectPassword:                           ; message list of 1 far string pointer: 'Incorrect password!';
+                                                ; used by LP
         db 0x76, 0x04, 0x01, 0x37
 str_WhoWillControlTheLeague:                    ; string 'Who will control the league?'; used by LP
         db 'Who will control the league?'
         db 0x00, 'has not been imported for'
         db 0x00, 'Do you want to force an export?'
         db 0x00
-dlgExportButtons:                                    ; used by LP (to name)
+dlgExportButtons:                               ; button list of the export dialogs (ExportTeamToFloppy,
+                                                ; ExportDbs); used by LP
         db 0x00, 0x00, 0x00, 0x00, 0xAB, 0x04, 0x01, 0x37
         db 0x00, 0x00, 0x00, 0x00, 0xC5, 0x04, 0x01, 0x37
-dlgExportToFloppy:                                    ; used by LP (to name)
+dlgExportToFloppy:                              ; MessageBox definition 'Do you want to export to a floppy
+                                                ; disk?'; used by LP
         db 0x08, 0x00, 0x3C, 0x00, 0x14, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x01, 0x37
         db 0xF8, 0xFF, 0x3C, 0x00, 0x14, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x06, 0x00, 0x04, 0x00, 0x01, '7Do you want to export'
         db 0x00, 'to a floppy disk?'
         db 0x00, 0x15, 0x05, 0x01, 0x37, 0x00, 0x00, 0x00, 0x00
         db 0x2B, 0x05, 0x01, 0x37
-dlgAskExport:                                    ; used by LP (to name)
+dlgAskExport:                                   ; MessageBox definition used by AskExportToFloppy; used by LP
         db 0x08, 0x00
         db 0x22, 0x00, 0x30, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x01, 0x37, 0xF8, 0xFF, 0x22
         db 0x00, 0x30, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x06, 0x00, 0x04, 0x00, 0x01, '7The league'
@@ -120,79 +141,90 @@ dlgAskExport:                                    ; used by LP (to name)
         db 0x00, 'must be imported from the disk for'
         db 0x00, 'must be exported to the disk for'
         db 0x00
-msgTheLeague:                                    ; used by LP (to name)
+msgTheLeague:                                   ; message list of 1 far string pointer: 'The league'; used by
+                                                ; LP
         db 0x69, 0x05, 0x01, 0x37, 0x00, 0x00, 0x00, 0x00
         db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
         db 0x00, 0x74, 0x05, 0x01, '7The league', 0x00
         db 'already exists for'
         db 0x00
-msgTheLeague2:                                    ; used by LP (to name)
+msgTheLeague2:                                  ; message list of 1 far string pointer: 'The league'; used by
+                                                ; LP
         db 0xE9, 0x05, 0x01, 0x37, 0x00, 0x00, 0x00, 0x00
         db 0xF4, 0x05, 0x01, 0x37, 0x00, 0x00, 0x00
         db 0x00, 'has not been exported for the league'
         db 0x00
-dlgImportTeam:                                    ; used by LP (to name)
+dlgImportTeam:                                  ; dialog record used by ImportPlayerTeam; used by LP
         db 0x00, 0x00, 0x00, 0x00, 0x17, 0x06, 0x01, 0x37
         db 0x00, 0x00, 0x00, 0x00
         db 'is in a save game in the league'
         db 0x00, 'and can not be imported until'
         db 0x00, 'the game is finished!'
         db 0x00
-dlgImportTeam2:                                    ; used by LP (to name)
+dlgImportTeam2:                                 ; MessageBox definition used by ImportPlayerTeam; used by LP
         db 0x00, 0x00, 0x00, 0x00
         db 0x48, 0x06, 0x01, 0x37, 0x00, 0x00, 0x00, 0x00
         db 0x68, 0x06, 0x01, 0x37, 0x86, 0x06, 0x01, '7Copying databases for'
         db 0x00, 0xB0, 0x06, 0x01, 0x37, 0x00, 0x00, 0x00, 0x00
         db 'Creating league.'
         db 0x00
-msgCreatingLeague:                                    ; used by LP (to name)
+msgCreatingLeague:                              ; message list of 1 far string pointer: 'Creating league.';
+                                                ; used by LP
         db 0xCE, 0x06, 0x01, '7That floppy disk has an'
         db 0x00, 'old copy of the league'
         db 0x00
-msgThatFloppyDiskHasAn:                                    ; used by LP (to name)
+msgThatFloppyDiskHasAn:                         ; message list of 2 far string pointers: 'That floppy disk has
+                                                ; an / old copy of the league'; used by LP
         db 0xE3, 0x06, 0x01, 0x37, 0xFB, 0x06, 0x01, 0x37
         db 0x00, 0x00, 0x00, 0x00
         db 'Are you sure you want to'
         db 0x00, 'use a new floppy disk?'
         db 0x00
-msgAreYouSureYouWant:                                    ; used by LP (to name)
+msgAreYouSureYouWant:                           ; message list of 2 far string pointers: 'Are you sure you
+                                                ; want to / use a new floppy disk?'; used by LP
         db 0x1E, 0x07, 0x01, 0x37, 0x37, 0x07, 0x01, 0x37
-dlgNewFloppy:                                    ; used by LP (to name)
+dlgNewFloppy:                                   ; MessageBox definition used by ExportTeamToFloppy; used by LP
         db 0x08, 0x00, 0x1E, 0x00, 0x14, 0x00, 0x0A
         db 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x01, 0x37, 0xF8, 0xFF, 0x1E, 0x00, 0x14, 0x00, 0x0A
         db 0x00, 0x00, 0x00, 0x06, 0x00, 0x04, 0x00, 0x01, '7Import master copy of league or'
         db 0x00, 'import for player on floppy disk?'
         db 0x00, 'Master', 0x00
         db 'Player', 0x00
-msgImportMasterCopyOfLeague:                                    ; used by LP (to name)
+msgImportMasterCopyOfLeague:                    ; message list of 2 far string pointers: 'Import master copy
+                                                ; of league or / import for player on floppy disk?'; used by
+                                                ; LP
         db 0x76, 0x07, 0x01, 0x37, 0x96, 0x07, 0x01, 0x37
-dlgImportChoice:                                    ; used by LP (to name)
+dlgImportChoice:                                ; MessageBox definition used by ImportDbs; used by LP
         db 0x08, 0x00, 0x1E, 0x00
         db 0x30, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x05, 0x00, 0xB8, 0x07, 0x01, 0x37, 0xF8, 0xFF, 0x1E, 0x00
         db 0x30, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x06, 0x00, 0xBF, 0x07, 0x01, '7Can not import master league!'
         db 0x00, 'The league already exists!'
         db 0x00
-msgCanNotImportMasterLeague:                                    ; used by LP (to name)
+msgCanNotImportMasterLeague:                    ; message list of 2 far string pointers: 'Can not import
+                                                ; master league! / The league already exists!'; used by LP
         db 0xEE, 0x07, 0x01, 0x37, 0x0C, 0x08, 0x01
         db '7The league'
         db 0x00, 'is already merged.'
         db 0x00, 'has not been merged.'
         db 0x00
-msgTheLeague3:                                    ; used by LP (to name)
+msgTheLeague3:                                  ; message list of 1 far string pointer: 'The league'; used by
+                                                ; LP
         db 0x2F, 0x08, 0x01, 0x37, 0x00, 0x00, 0x00, 0x00
         db 0x00, 0x00, 0x00, 0x00
         db 'Master databases for'
         db 0x00, 'must be merged first!'
         db 0x00, 'Do you want to merge?'
         db 0x00
-msgMasterDatabasesFor:                                    ; used by LP (to name)
+msgMasterDatabasesFor:                          ; message list of 1 far string pointer: 'Master databases
+                                                ; for'; used by LP
         db 0x6E, 0x08, 0x01, 0x37, 0x00, 0x00, 0x00, 0x00
         db 0x83, 0x08, 0x01, 0x37, 0x99, 0x08, 0x01
         db '7Players databases for'
         db 0x00, 'must be updated first!'
         db 0x00, 'Do you want to update?'
         db 0x00, 0xBF, 0x08, 0x01, 0x37, 0x00, 0x00, 0x00, 0x00, 0xD5, 0x08, 0x01, 0x37, 0xEC, 0x08, 0x01, 0x37
-dlgMergeFirst:                                    ; used by LP (to name)
+dlgMergeFirst:                                  ; MessageBox definition 'Master databases for ... must be
+                                                ; completely merged'; used by LP
         db 0x08, 0x00, 0x2E, 0x00
         db 0x28, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x01, 0x37, 0xF8, 0xFF, 0x2E, 0x00
         db 0x28, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x06, 0x00, 0x04, 0x00, 0x01, '7Master databases for'
@@ -202,35 +234,43 @@ dlgMergeFirst:                                    ; used by LP (to name)
         db 0x00, 0x33, 0x09, 0x01, 0x37, 0x00, 0x00, 0x00, 0x00
         db 0x48, 0x09, 0x01, 0x37, 0x66, 0x09, 0x01, 0x37
         db 0x8F, 0x09, 0x01, 0x37
-dlgPlayLeagueGame:                                    ; used by LP (to name)
+dlgPlayLeagueGame:                              ; dialog record used by PlayLeagueGame; used by LP
         db 0x08, 0x00
         db 0x36, 0x00, 0x28, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x01, 0x37, 0xF8, 0xFF, 0x36
         db 0x00, 0x28, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x06, 0x00, 0x04, 0x00, 0x01, '7Merging players to master database.'
         db 0x00
-msgMergingPlayersToMasterDatabase:                                    ; used by LP (to name)
+msgMergingPlayersToMasterDatabase:              ; message list of 1 far string pointer: 'Merging players to
+                                                ; master database.'; used by LP
         db 0xE8, 0x09, 0x01, '7Updating schedule.'
         db 0x00
-msgUpdatingSchedule:                                    ; used by LP (to name)
+msgUpdatingSchedule:                            ; message list of 1 far string pointer: 'Updating schedule.';
+                                                ; used by LP
         db 0x10, 0x0A, 0x01, '7Please put a floppy disk in any drive.'
         db 0x00
-msgPleasePutAFloppyDisk:                                    ; used by LP (to name)
+msgPleasePutAFloppyDisk:                        ; message list of 1 far string pointer: 'Please put a floppy
+                                                ; disk in any drive.'; used by LP
         db 0x27, 0x0A, 0x01, '7Use floppy drive A or B?'
         db 0x00
-msgUseFloppyDriveAOr:                                    ; used by LP (to name)
+msgUseFloppyDriveAOr:                           ; message list of 1 far string pointer: 'Use floppy drive A or
+                                                ; B?'; used by LP
         db 0x52, 0x0A, 0x01, '7The first team selected to'
         db 0x00, 'play must be imported!'
         db 0x00
-msgTheFirstTeamSelectedTo:                                    ; used by LP (to name)
+msgTheFirstTeamSelectedTo:                      ; message list of 2 far string pointers: 'The first team
+                                                ; selected to / play must be imported!'; used by LP
         db 0x6F, 0x0A, 0x01, 0x37, 0x8A, 0x0A, 0x01
         db '7The password was entered differently'
         db 0x00, 'the second time! Try again.'
         db 0x00
-msgThePasswordWasEnteredDifferently:                                    ; used by LP (to name)
+msgThePasswordWasEnteredDifferently:            ; message list of 2 far string pointers: 'The password was
+                                                ; entered differently / the second time! Try again.'; used by
+                                                ; LP
         db 0xA9, 0x0A, 0x01, 0x37, 0xCE, 0x0A, 0x01
         db '7There is a saved game in the league'
         db 0x00, 'which must be played first!'
         db 0x00
-msgThereIsASavedGame:                                    ; used by LP (to name)
+msgThereIsASavedGame:                           ; message list of 1 far string pointer: 'There is a saved game
+                                                ; in the league'; used by LP
         db 0xF2, 0x0A, 0x01, 0x37, 0x00, 0x00, 0x00, 0x00
         db 0x16, 0x0B, 0x01, '7KEY'
         db 0x00, 'CAREER', 0x00
@@ -252,11 +292,13 @@ str_Lssched:                                    ; string 'LSSCHED'; used by STAT
         db 'PGS', 0x00
 str_Game:                                       ; string 'GAME'; used by LP
         db 'GAME', 0x00
-str_Space:                                    ; used by LP (to name)
+str_Space:                                      ; string ' ' appended by FixJerseyConflict; used by LP
         db 0x20, 0x00
-str_Star:                                    ; used by LP, MENUS (to name)
+str_Star:                                       ; string '*' used by BuildLeagueList and SelectHilight; used
+                                                ; by LP, MENUS
         db 0x2A, 0x00
-str_Backslash:                                    ; used by LP (to name)
+str_Backslash:                                  ; string '\' appended by MakeTeamDbFmt and ExecuteTrade; used
+                                                ; by LP
         db 0x5C, 0x00
 str_S:                                          ; string '%s'; used by LP
         db 0x25, 0x73, 0x00
@@ -287,11 +329,13 @@ str_Xx:                                         ; string '.xx'; used by LP
 str_Lp:                                         ; string '.LP'; used by LP
         db '.LP', 0x00
         db '.SP', 0x00
-str_Dot:                                    ; used by LP, MENUS (to name)
+str_Dot:                                        ; string '.' searched for by the import and export code; used
+                                                ; by LP, MENUS
         db 0x2E, 0x00
 str_Id:                                         ; string '.ID'; used by LP
         db '.ID', 0x00
-str_DriveColon:                                    ; used by LP (to name)
+str_DriveColon:                                 ; string '?:' (drive letter is patched in) used for floppy
+                                                ; paths; used by LP
         db 0x3F, 0x3A, 0x00
 str_SelectHumanControlledTeams:                 ; string 'Select human controlled teams'; used by LP
         db 'Select human controlled teams'
@@ -331,7 +375,8 @@ str_EnterMasterControllerPassword:              ; string 'Enter master controlle
         db 0x00
 str_VerifyMasterControllerPassword:             ; string 'Verify master controller password for '; used by LP
         db 'Verify master controller password for '
-PasswordKey:                                    ; used by LP (to name)
+PasswordKey:                                    ; key bytes EncryptPassword mixes into the password; used by
+                                                ; LP
         db 0x00
 str_Nhlhockey:                                  ; string 'NHLHockey'; used by LP
         db 'NHLHockey', 0x00
@@ -350,7 +395,8 @@ str_Nhlhockey:                                  ; string 'NHLHockey'; used by LP
         db 0xDE, 0x0D, 0x01, 0x37, 0xE4, 0x0D, 0x01, 0x37, 0xEA, 0x0D, 0x01, 0x37, 0xEE, 0x0D, 0x01, 0x37
         db 0xF3, 0x0D, 0x01, 0x37, 0xF8, 0x0D, 0x01, 0x37, 0xFF, 0x0D, 0x01, 0x37, 0x09, 0x0E, 0x01, 0x37
         db 0x11, 0x0E, 0x01, 0x37, 0x1A, 0x0E, 0x01, 0x37
-CurLeagueName:                                    ; used by GAME, INIT, LP, MENUS (to name)
+CurLeagueName:                                  ; name of the current league (13 bytes), read and copied by
+                                                ; the league code; used by GAME, INIT, LP, MENUS
         db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
         db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
         db 0x63, 0x00, 0x08, 0x00, 0xE8, 0x04, 0x48, 0x34, 0x00, 0x00, 0x00, 0x00, 0x90, 0x00
@@ -378,16 +424,18 @@ CurLeagueName:                                    ; used by GAME, INIT, LP, MENU
         db 0x00, 0x00, 0x00, 0x00, 0x00
         db 0x7A, 0x00, 0x08, 0x00
         db 0x55, 0x0F, 0x01, 0x37
-CalNextMonthFn:                                    ; used by LP (to name)
+CalNextMonthFn:                                 ; far routine offset of the calendar's next-month button; used
+                                                ; by LP
         db 0x0D, 0x20
-CalNextMonthSeg:                                    ; used by LP (to name)
+CalNextMonthSeg:                                ; its segment; used by LP
         db 0x35, 0x1B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
         db 0x00, 0x00
         db 0x09, 0x00, 0x7A, 0x00, 0x10, 0x00
         db 0x60, 0x0F, 0x01, 0x37
-CalPrevMonthFn:                                    ; used by LP (to name)
+CalPrevMonthFn:                                 ; far routine offset of the calendar's previous-month button;
+                                                ; used by LP
         db 0x17, 0x20
-CalPrevMonthSeg:                                    ; used by LP (to name)
+CalPrevMonthSeg:                                ; its segment; used by LP
         db 0x35, 0x1B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
         db 0x00, 0x00
         db 0x11, 0x00, 0x7A, 0x00, 0x19, 0x00
@@ -395,7 +443,7 @@ CalPrevMonthSeg:                                    ; used by LP (to name)
         db 'Play', 0x00
         db 'Game', 0x00
         db 'Statistics', 0x00
-CalendarMenuBar:                                    ; used by LP (to name)
+CalendarMenuBar:                                ; menu bar of the calendar screen; used by LP
         db 0x00, 0x00, 0x00, 0x00, 0x16
         db 0x00, 0x09, 0x00, 0xCA, 0x0F, 0x01, 0x37, 0x00, 0x00, 0x00, 0x00, 0x88, 0x0F, 0x01, 0x37, 0x03
         db 0x00, 0x17, 0x00, 0x00, 0x00
@@ -434,7 +482,7 @@ CalendarMenuBar:                                    ; used by LP (to name)
         db 0x00, 0x00, 'Trade', 0x00
         db 'Player Statistics'
         db 0x00
-TradeMenu:                                    ; used by LP (to name)
+TradeMenu:                                      ; menu record used by TradePlayers; used by LP
         db 0x60, 0x00, 0x00, 0x00, 0x83, 0x00, 0x09, 0x00
         db 0x4B, 0x11, 0x01, 0x37, 0x00, 0x00, 0x00, 0x00, 0x1F, 0x11, 0x01, 0x37, 0x02, 0x00, 0x84, 0x00
         db 0x00, 0x00, 0xDF, 0x00, 0x09, 0x00
@@ -442,7 +490,7 @@ TradeMenu:                                    ; used by LP (to name)
         db 'Trade', 0x00, 0x00, 0x00, 0x00, 0x00
         db 0x32, 0x00, 0x09, 0x00, 0x8F, 0x11, 0x01, '7i#5', 0x1B, 0x00, 0x00, 0x00, 0x00
         db 0x00, 0x00
-TradeStatsMenuBar:                                    ; used by LP (to name)
+TradeStatsMenuBar:                              ; menu bar of the trade stats view; used by LP
         db 0x00, 0x00, 0x00, 0x00
         db 0x35, 0x00, 0x09, 0x00, 0xF6, 0x08, 0x48, 0x34, 0x00, 0x00, 0x00, 0x00, 0x95, 0x11, 0x01, 0x37
         db 0x01, 0x00, 0x36, 0x00, 0x00, 0x00

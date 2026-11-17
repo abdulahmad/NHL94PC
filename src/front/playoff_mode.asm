@@ -4272,7 +4272,7 @@ POAfterGameJumpTable:                           ; jump table of POAfterGame: 15 
         call 0x0000:_sprintf
         add sp, 0xa
         push ds
-        push strict word g_C1F4
+        push strict word POTitleText
         push word 0x3a0b
         push strict word POTeamName2
         call 0x0000:_fstrcpy
@@ -4283,7 +4283,7 @@ POAfterGameJumpTable:                           ; jump table of POAfterGame: 15 
 .2:
         mov bx, [bp - 0xc]
         shl bx, 1
-        mov word [bx + g_C224], 0x19
+        mov word [bx + POTreeRows], 0x19
         jmp near .8
         db 0x90
 .3:
@@ -4347,7 +4347,7 @@ POAfterGameJumpTable:                           ; jump table of POAfterGame: 15 
         call 0x0000:_sprintf
         add sp, 0xa
         push ds
-        push strict word g_C1F4
+        push strict word POTitleText
         push word 0x3a0b
         push strict word POTeamName2
         call 0x0000:_fstrcpy
@@ -4918,7 +4918,7 @@ PlayoffModeLoop:
         shl si, 1
         mov [si + playofftree], ax
         mov al, [es:bx + 0x3]
-        mov [si + g_C206], ax
+        mov [si + POTreeSlots], ax
         add word [bp - 0x28], 0x2
         add word [bp - 0x30], 0x2a
         cmp word [bp - 0x28], 0x10
@@ -5111,14 +5111,14 @@ PlayoffModeLoop:
         call 0x0000:_sprintf
         add sp, 0xa
         push ds
-        push strict word g_C1F4
+        push strict word POTitleText
         push word 0x3a0b
         push strict word POTeamName2
         call 0x0000:_fstrcpy
         add sp, 0x8
         mov bx, [bp - 0x2a]
         shl bx, 1
-        mov word [bx + g_C224], 0x19
+        mov word [bx + POTreeRows], 0x19
 .20:
         push cs
         call DrawPlayoffTree

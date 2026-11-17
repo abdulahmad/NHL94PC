@@ -65,7 +65,7 @@ InitMenuRemap:
 
 ;-----------------------------------------------------------------------------
 ; DrawTextFmt                                                2095:0076  94 PC
-; Sprintf with one argument into g_CFD4, then DrawText.
+; Sprintf with one argument into statstext, then DrawText.
 ;
 ; Takes 4 words of stack arguments. Calls _sprintf, DrawText. Far routine (retf).
 ;-----------------------------------------------------------------------------
@@ -122,13 +122,13 @@ CmpPoints:
         jnz short .1
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         mov dx, [ss:statsskaterbuf]
         jmp short .2
 .1:
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         mov dx, [ss:statsskaterbuf]
         add ax, strict word 0x12
 .2:
@@ -138,12 +138,12 @@ CmpPoints:
         jnz short .3
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         jmp short .4
 .3:
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         mov dx, [ss:statsskaterbuf]
         add ax, strict word 0x12
 .4:
@@ -206,13 +206,13 @@ CmpGAA:
         jnz short .1
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x36
-        add ax, [ss:g_C040]
+        add ax, [ss:statsgoaliebufseg]
         mov dx, [ss:statsgoaliebuf]
         jmp short .2
 .1:
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x36
-        add ax, [ss:g_C040]
+        add ax, [ss:statsgoaliebufseg]
         mov dx, [ss:statsgoaliebuf]
         add ax, strict word 0x16
 .2:
@@ -222,12 +222,12 @@ CmpGAA:
         jnz short .3
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x36
-        add ax, [ss:g_C040]
+        add ax, [ss:statsgoaliebufseg]
         jmp short .4
 .3:
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x36
-        add ax, [ss:g_C040]
+        add ax, [ss:statsgoaliebufseg]
         mov dx, [ss:statsgoaliebuf]
         add ax, strict word 0x16
 .4:

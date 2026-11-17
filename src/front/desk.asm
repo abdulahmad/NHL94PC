@@ -67,12 +67,12 @@ SportsDesk:
         cmp [bp + 0x6], ax
         jnz short .3
         call 0x1B35:FreePPVFilesThunk
-        push word [g_C25E]
-        push word [g_C25C]
+        push word [RinkEndArtSeg]
+        push word [RinkEndArt]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        push word [g_C25A]
-        push word [g_C258]
+        push word [ScoreboardArtSeg]
+        push word [ScoreboardArt]
         call 0x06E1:FindUnlink
         add sp, 0x4
         lea ax, [bp - 0x390]
@@ -112,7 +112,7 @@ SportsDesk:
         push word 0x3701
         push strict word str_Qpp
         push ds
-        push strict word g_C242
+        push strict word DeskTitleText
         call 0x0000:_fstrcat
         add sp, 0x8
         push strict word str_Desk_14
@@ -1684,12 +1684,12 @@ DeskGoToReplay:
         call 0x03A3:UseCharSeg
         add sp, 0x4
         call 0x1B35:FreePPVFilesThunk
-        push word [g_C25E]
-        push word [g_C25C]
+        push word [RinkEndArtSeg]
+        push word [RinkEndArt]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        push word [g_C25A]
-        push word [g_C258]
+        push word [ScoreboardArtSeg]
+        push word [ScoreboardArt]
         call 0x06E1:FindUnlink
         mov ax, 0x1
         mov [DeskRedrawPage2], ax

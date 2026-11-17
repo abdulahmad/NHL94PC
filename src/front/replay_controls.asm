@@ -26,24 +26,24 @@ InstantReplay:
         cmp word [ctl2team], 0x0
         jnl short .2
 .1:
-        mov word [g_DB16], 0x1
+        mov word [replaysaved], 0x1
         jmp short .3
         db 0x90
 .2:
-        mov word [g_DB16], 0x0
+        mov word [replaysaved], 0x0
 .3:
-        mov word [g_DB28], 0x44
-        mov word [g_DB2A], 0x8
-        mov word [g_DAD2], 0x118
-        mov word [g_DAD4], 0xb6
+        mov word [replaybutton], 0x44
+        mov word [replaystep], 0x8
+        mov word [replaymousex], 0x118
+        mov word [replaymousey], 0xb6
         push word 0xbb
         push word 0x140
         push 0x0
         push 0x0
         call 0x03A3:MouseRange
         add sp, 0x8
-        push word [g_DAD4]
-        push word [g_DAD2]
+        push word [replaymousey]
+        push word [replaymousex]
         call 0x03A3:MouseMove
         add sp, 0x4
         push word 0x3a0b
@@ -91,24 +91,24 @@ InstantReplay:
         push word 0x470
         call 0x0000:VgaCopyFromPitch
         add sp, 0x8
-        push word [g_DAEA]
-        push word [g_DAE8]
+        push word [ReplayPanels]
+        push word [ReplayPanelSeg]
         push word [ReplayGadgetRect2]
-        push word [g_DAE6]
+        push word [ReplayPanel]
         call 0x0000:VgaCopyToPitch
         add sp, 0x8
-        push word [g_DB02]
-        push word [g_DB00]
+        push word [ReplayPointers]
+        push word [ReplayPointerSeg]
         push word [ReplayGadgetRect3]
-        push word [g_DAFE]
+        push word [ReplayPointer]
         call 0x0000:VgaCopyToPitch
         add sp, 0x8
-        cmp word [g_DB16], 0x0
+        cmp word [replaysaved], 0x0
         jz short .5
-        push word [g_DB14]
-        push word [g_DB12]
+        push word [ReplayBack2]
+        push word [ReplayBackSeg]
         push word [ReplayPointerRect]
-        push word [g_DB10]
+        push word [ReplayBack]
         call 0x0000:VgaCopyToPitch
         add sp, 0x8
 .5:
@@ -118,10 +118,10 @@ InstantReplay:
         mov dx, 0x140
         db 0x2B, 0xDB                           ; insn: sub bx, bx
         call 0x0FEF:SetClipRectRegs
-        mov ax, [g_DAD4]
+        mov ax, [replaymousey]
         sub ax, 0xa8
         push ax
-        push word [g_DAD2]
+        push word [replaymousex]
         push word [DialogDataSeg]
         push word [DialogData]
         call 0x0FEF:DrawRleTransAt
@@ -135,21 +135,21 @@ InstantReplay:
         mov [bp - 0x6], ax
         mov ax, [viewscrollx]
         mov [bp - 0x2], ax
-        mov ax, [g_D6CE]
+        mov ax, [ovltimer2]
         mov [bp - 0x4], ax
         mov ax, [CrowdSound]
         mov [bp - 0xa], ax
         mov ax, 0xffff
         mov [replaymode], ax
-        mov [g_DB22], ax
-        mov [g_DB24], ax
+        mov [replayfollow], ax
+        mov [replayfollow2], ax
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_DB18], ax
-        mov [g_DB26], ax
-        mov [g_DAD6], ax
+        mov [replayplaying], ax
+        mov [replayfwd], ax
+        mov [replaydx], ax
         call 0x1B35:ReplayFirstFrameThunk
-        mov [g_D018], ax
-        mov [g_D01A], dx
+        mov [replayplay], ax
+        mov [replayplayseg], dx
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [bp - 0xc], ax
         push ax
@@ -171,22 +171,22 @@ InstantReplay:
 .7:
         mov ax, 0xec
         sub ax, [camy]
-        mov [g_D6CE], ax
+        mov [ovltimer2], ax
         cmp ax, 0x1a8
         jng short .8
-        mov word [g_D6CE], 0x1a8
+        mov word [ovltimer2], 0x1a8
 .8:
-        cmp word [g_D6CE], 0x0
+        cmp word [ovltimer2], 0x0
         jnl short .9
-        mov word [g_D6CE], 0x0
+        mov word [ovltimer2], 0x0
 .9:
-        push word [g_D6CE]
+        push word [ovltimer2]
         push word [viewscrollx]
         call 0x1F54:FlushDirtyRects
         add sp, 0x4
         call 0x0FEF:UseOtherPage
         mov ax, 0x140
-        sub ax, [g_D6CE]
+        sub ax, [ovltimer2]
         push ax
         mov ax, [viewscrollx]
         sub ax, 0xc0
@@ -211,17 +211,17 @@ InstantReplay:
         shl ax, 1
         db 0x03, 0xC1                           ; insn: add ax, cx
         shl ax, 1
-        add [g_DAD6], ax
-        mov ax, [g_DAD6]
+        add [replaydx], ax
+        mov ax, [replaydx]
         mov cx, 0x14
         cwd
         idiv cx
         mov [bp - 0xc], ax
-        mov ax, [g_DAD6]
+        mov ax, [replaydx]
         cwd
         idiv cx
-        mov [g_DAD6], dx
-        mov al, [g_DB28]
+        mov [replaydx], dx
+        mov al, [replaybutton]
         and al, 0x3f
         cmp al, 0x10
         jnz short .11
@@ -236,11 +236,11 @@ InstantReplay:
         call 0x26D2:ReplayStep
         add sp, 0x4
         mov [bp - 0xc], ax
-        cmp word [g_DB18], 0x0
+        cmp word [replayplaying], 0x0
         jz short .17
-        mov ax, [g_DB1C]
+        mov ax, [replayend]
         mov [camy], ax
-        mov ax, [g_DB1A]
+        mov ax, [replaystart]
         mov [camx], ax
         cmp ax, strict word 0x20
         jng short .13
@@ -263,18 +263,18 @@ InstantReplay:
         mov word [camy], 0xff44
 .16:
         mov ax, [camx]
-        mov [g_DB1A], ax
+        mov [replaystart], ax
         mov ax, [camy]
-        mov [g_DB1C], ax
+        mov [replayend], ax
         jmp short .21
 .17:
         cmp word [replaymode], 0x0
         jl short .21
         mov bx, [replaymode]
         shl bx, 1
-        mov ax, [bx + g_DB2E]
+        mov ax, [bx + rpl_x]
         mov [camx], ax
-        mov cx, [bx + g_DB50]
+        mov cx, [bx + rpl_y]
         mov [camy], cx
         cmp ax, strict word 0x20
         jng short .18
@@ -309,43 +309,43 @@ InstantReplay:
 .23:
         mov ax, 0xec
         sub ax, [camy]
-        mov [g_D6CE], ax
+        mov [ovltimer2], ax
         cmp ax, 0x1a8
         jng short .24
-        mov word [g_D6CE], 0x1a8
+        mov word [ovltimer2], 0x1a8
 .24:
-        cmp word [g_D6CE], 0x0
+        cmp word [ovltimer2], 0x0
         jnl short .25
-        mov word [g_D6CE], 0x0
+        mov word [ovltimer2], 0x0
 .25:
-        push word [g_D6CE]
+        push word [ovltimer2]
         push word [viewscrollx]
         call 0x1F54:FlushDirtyRects
         add sp, 0x4
         call 0x0FEF:UseOtherPage
         mov ax, 0x140
-        sub ax, [g_D6CE]
+        sub ax, [ovltimer2]
         push ax
         mov ax, [viewscrollx]
         sub ax, 0xc0
         push ax
         call 0x26D2:DrawReplayFrame
         add sp, 0x4
-        cmp word [g_DAD4], 0xa8
+        cmp word [replaymousey], 0xa8
         jl short .26
         jmp near .29
 .26:
-        cmp word [g_DB22], -0x1
+        cmp word [replayfollow], -0x1
         jnz short .27
-        mov word [g_DB24], 0xffff
-        mov ax, [g_DAD2]
+        mov word [replayfollow2], 0xffff
+        mov ax, [replaymousex]
         add ax, [camx]
         sub ax, 0xa0
         mov [replayptrx], ax
         mov cx, [camy]
-        sub cx, [g_DAD4]
+        sub cx, [replaymousey]
         add cx, 0x54
-        mov [g_DB20], cx
+        mov [replaypick], cx
         push 0x0
         push 0x0
         inc cx
@@ -359,40 +359,40 @@ InstantReplay:
 .27:
         push 0x1
         push 0x0
-        mov bx, [g_DB22]
+        mov bx, [replayfollow]
         shl bx, 1
-        mov ax, [bx + g_DB50]
+        mov ax, [bx + rpl_y]
         inc ax
         push ax
-        mov ax, [bx + g_DB2E]
+        mov ax, [bx + rpl_x]
         inc ax
         push ax
         push word 0x188
         call 0x1E7E:DrawFrameSprite
         add sp, 0xa
-        mov ax, [g_DB22]
-        cmp [g_DB24], ax
+        mov ax, [replayfollow]
+        cmp [replayfollow2], ax
         jz short .29
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        mov ax, [bx + g_DB2E]
+        mov ax, [bx + rpl_x]
         sub ax, [camx]
         add ax, 0xa0
-        mov [g_DAD2], ax
+        mov [replaymousex], ax
         mov ax, [camy]
-        sub ax, [bx + g_DB50]
+        sub ax, [bx + rpl_y]
         add ax, strict word 0x54
-        mov [g_DAD4], ax
+        mov [replaymousey], ax
         cmp ax, 0xa7
         jng short .28
-        mov word [g_DAD4], 0xa7
+        mov word [replaymousey], 0xa7
 .28:
-        push word [g_DAD4]
-        push word [g_DAD2]
+        push word [replaymousey]
+        push word [replaymousex]
         call 0x03A3:MouseMove
         add sp, 0x4
-        mov ax, [g_DB22]
-        mov [g_DB24], ax
+        mov ax, [replayfollow]
+        mov [replayfollow2], ax
 .29:
         call 0x0000:VgaPageFlip
         call 0x03A3:CallCountStep
@@ -418,7 +418,7 @@ InstantReplay:
         mov ax, [bp - 0x2]
         mov [viewscrollx], ax
         mov ax, [bp - 0x4]
-        mov [g_D6CE], ax
+        mov [ovltimer2], ax
         mov ax, [bp - 0xa]
         mov [CrowdSound], ax
         mov [Crowdlevel], ax
@@ -568,11 +568,11 @@ PickNearestPlayer:
 ReplayControlLoop:
         enter 0x14, 0x0
         push si
-        mov ax, [g_DB28]
+        mov ax, [replaybutton]
         mov [bp - 0x4], ax
-        mov ax, [g_DAD2]
+        mov ax, [replaymousex]
         mov [bp - 0xe], ax
-        mov ax, [g_DAD4]
+        mov ax, [replaymousey]
         mov [bp - 0x10], ax
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [bp - 0x12], ax
@@ -593,41 +593,41 @@ ReplayControlLoop:
 .2:
         test byte [bp - 0x14], 0x1
         jz short .3
-        mov word [g_DB26], 0x1
+        mov word [replayfwd], 0x1
         jmp short .4
 .3:
         test byte [bp - 0x14], 0x2
         jz short .4
-        mov word [g_DB26], 0x0
+        mov word [replayfwd], 0x0
 .4:
-        cmp word [g_DB26], 0x0
+        cmp word [replayfwd], 0x0
         jz short .5
         lea ax, [bp - 0x8]
         push ax
-        push word [g_DAD4]
-        push word [g_DAD2]
+        push word [replaymousey]
+        push word [replaymousex]
         push cs
         call GadgetHitTest
         add sp, 0x6
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .5
-        cmp word [g_DB16], 0x0
+        cmp word [replaysaved], 0x0
         jz short .12
         cmp word [bp - 0x8], 0x7
         jnz short .12
 .5:
         mov word [bp - 0x8], 0x0
 .6:
-        cmp word [g_DAD4], 0xa8
+        cmp word [replaymousey], 0xa8
         jnl short .7
-        mov ax, [g_DAD2]
+        mov ax, [replaymousex]
         add ax, [camx]
         sub ax, 0xa0
         mov [replayptrx], ax
         mov ax, [camy]
-        sub ax, [g_DAD4]
+        sub ax, [replaymousey]
         add ax, strict word 0x54
-        mov [g_DB20], ax
+        mov [replaypick], ax
 .7:
         mov ax, [bp - 0x8]
         cmp ax, strict word 0x10
@@ -659,22 +659,22 @@ ReplayControlLoop:
         jmp short .6
         db 0x90
 .13:
-        mov al, [g_DB28]
+        mov al, [replaybutton]
         and ax, strict word 0x40
         or al, 0x4
-        mov [g_DB28], ax
+        mov [replaybutton], ax
 .14:
         mov word [bp - 0x12], 0x0
 .15:
-        mov ax, [g_DB28]
+        mov ax, [replaybutton]
         cmp [bp - 0x4], ax
         jz short .16
         jmp near .62
 .16:
         mov ax, [bp - 0xe]
-        cmp [g_DAD2], ax
+        cmp [replaymousex], ax
         jnz short .17
-        mov ax, [g_DAD4]
+        mov ax, [replaymousey]
         cmp [bp - 0x10], ax
         jnz short .17
         jmp near .66
@@ -687,99 +687,99 @@ ReplayControlLoop:
         jmp near .58
         db 0x90
 .19:
-        mov al, [g_DB28]
+        mov al, [replaybutton]
         and al, 0x3f
         cmp al, 0x10
         jz short .20
-        mov word [g_DAD6], 0x0
+        mov word [replaydx], 0x0
 .20:
-        mov al, [g_DB28]
+        mov al, [replaybutton]
         and ax, strict word 0x40
         or al, 0x10
-        mov [g_DB28], ax
+        mov [replaybutton], ax
         jmp near .48
         db 0x90
 .21:
-        mov al, [g_DB28]
+        mov al, [replaybutton]
         and ax, strict word 0x54
         or al, 0x1
-        mov [g_DB28], ax
+        mov [replaybutton], ax
         mov bx, [bp + 0x6]
         mov ax, [bx]
         shl ax, byte 0x2
         neg ax
         jmp near .49
 .22:
-        mov al, [g_DB28]
+        mov al, [replaybutton]
         and ax, strict word 0x54
         or al, 0x20
-        mov [g_DB28], ax
+        mov [replaybutton], ax
         mov bx, [bp + 0x6]
         mov ax, [bx]
         shl ax, byte 0x2
         jmp near .49
 .23:
-        test byte [g_DB28], 0x2
+        test byte [replaybutton], 0x2
         jz short .25
         mov bx, [bp + 0x6]
         mov ax, [bx]
-        add [g_DAD8], ax
-        cmp word [g_DAD8], 0x5
+        add [replayspeed], ax
+        cmp word [replayspeed], 0x5
         jnl short .24
         mov word [bp - 0x12], 0x0
         jmp short .26
 .24:
-        sub word [g_DAD8], 0x5
+        sub word [replayspeed], 0x5
         mov word [bp - 0x12], 0xffff
         jmp short .26
 .25:
-        mov word [g_DAD8], 0x0
+        mov word [replayspeed], 0x0
         mov word [bp - 0x12], 0xffff
-        mov word [g_DAD6], 0xfff2
+        mov word [replaydx], 0xfff2
 .26:
-        mov al, [g_DB28]
+        mov al, [replaybutton]
         and ax, strict word 0x40
         or al, 0x6
 .27:
-        mov [g_DB28], ax
+        mov [replaybutton], ax
         jmp near .15
         db 0x90
 .28:
-        test byte [g_DB28], 0x8
+        test byte [replaybutton], 0x8
         jz short .30
         mov bx, [bp + 0x6]
         mov ax, [bx]
-        add [g_DAD8], ax
-        cmp word [g_DAD8], 0x5
+        add [replayspeed], ax
+        cmp word [replayspeed], 0x5
         jnl short .29
         mov word [bp - 0x12], 0x0
         jmp short .31
 .29:
-        sub word [g_DAD8], 0x5
+        sub word [replayspeed], 0x5
         mov word [bp - 0x12], 0x1
         jmp short .31
 .30:
-        mov word [g_DAD8], 0x0
+        mov word [replayspeed], 0x0
         mov word [bp - 0x12], 0x1
-        mov word [g_DAD6], 0xe
+        mov word [replaydx], 0xe
 .31:
-        mov al, [g_DB28]
+        mov al, [replaybutton]
         and ax, strict word 0x40
         or al, 0xc
         jmp short .27
         db 0x90
 .32:
-        or byte [g_DB28], 0x40
+        or byte [replaybutton], 0x40
         mov ax, 0xffff
-        mov [g_DB22], ax
-        mov [g_DB24], ax
+        mov [replayfollow], ax
+        mov [replayfollow2], ax
         mov [replaymode], ax
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_DB18], ax
+        mov [replayplaying], ax
         jmp near .49
         db 0x90
 .33:
-        mov al, [g_DB28]
+        mov al, [replaybutton]
         and ax, strict word 0x40
         or al, 0x84
         jmp short .27
@@ -790,90 +790,90 @@ ReplayControlLoop:
         retf
         db 0x90
 .35:
-        cmp word [g_DAD2], -0x20
+        cmp word [replaymousex], -0x20
         jnl short .36
-        mov word [g_DAD2], 0xffe0
+        mov word [replaymousex], 0xffe0
 .36:
-        cmp word [g_DAD4], 0xec
+        cmp word [replaymousey], 0xec
         jng short .37
-        mov word [g_DAD4], 0xec
+        mov word [replaymousey], 0xec
         jmp short .38
         db 0x90
 .37:
-        cmp word [g_DAD4], 0xff44
+        cmp word [replaymousey], 0xff44
         jnl short .38
-        mov word [g_DAD4], 0xff44
+        mov word [replaymousey], 0xff44
 .38:
-        mov ax, [g_DB1A]
-        sub ax, [g_DAD2]
+        mov ax, [replaystart]
+        sub ax, [replaymousex]
         add ax, 0xa0
-        mov [g_DAD2], ax
+        mov [replaymousex], ax
         mov ax, 0x54
-        sub ax, [g_DB1C]
-        add [g_DAD4], ax
-        cmp word [g_DAD4], 0xa7
+        sub ax, [replayend]
+        add [replaymousey], ax
+        cmp word [replaymousey], 0xa7
         jng short .39
-        mov word [g_DAD4], 0xa7
+        mov word [replaymousey], 0xa7
 .39:
-        push word [g_DAD4]
-        push word [g_DAD2]
+        push word [replaymousey]
+        push word [replaymousex]
         call 0x03A3:MouseMove
         add sp, 0x4
         jmp near .46
         db 0x90
 .40:
-        mov word [g_DB18], 0x0
+        mov word [replayplaying], 0x0
         mov [replaymode], ax
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        mov ax, [bx + g_DB2E]
-        mov [g_DAD2], ax
-        mov cx, [bx + g_DB50]
-        mov [g_DAD4], cx
+        mov ax, [bx + rpl_x]
+        mov [replaymousex], ax
+        mov cx, [bx + rpl_y]
+        mov [replaymousey], cx
         cmp ax, strict word 0x20
         jng short .41
-        mov word [g_DAD2], 0x20
+        mov word [replaymousex], 0x20
         jmp short .42
         db 0x90
 .41:
         cmp ax, strict word 0xffe0
         jnl short .42
-        mov word [g_DAD2], 0xffe0
+        mov word [replaymousex], 0xffe0
 .42:
-        cmp word [g_DAD4], 0xec
+        cmp word [replaymousey], 0xec
         jng short .43
-        mov word [g_DAD4], 0xec
+        mov word [replaymousey], 0xec
         jmp short .44
         db 0x90
 .43:
-        cmp word [g_DAD4], 0xff44
+        cmp word [replaymousey], 0xff44
         jnl short .44
-        mov word [g_DAD4], 0xff44
+        mov word [replaymousey], 0xff44
 .44:
-        mov bx, [g_DB22]
+        mov bx, [replayfollow]
         shl bx, 1
-        mov ax, [bx + g_DB2E]
-        sub ax, [g_DAD2]
+        mov ax, [bx + rpl_x]
+        sub ax, [replaymousex]
         add ax, 0xa0
-        mov [g_DAD2], ax
+        mov [replaymousex], ax
         mov ax, 0x54
-        sub ax, [bx + g_DB50]
-        add [g_DAD4], ax
-        cmp word [g_DAD4], 0xa7
+        sub ax, [bx + rpl_y]
+        add [replaymousey], ax
+        cmp word [replaymousey], 0xa7
         jng short .45
-        mov word [g_DAD4], 0xa7
+        mov word [replaymousey], 0xa7
 .45:
-        push word [g_DAD4]
-        push word [g_DAD2]
+        push word [replaymousey]
+        push word [replaymousex]
         call 0x03A3:MouseMove
         add sp, 0x4
-        mov ax, [g_DB22]
-        mov [g_DB24], ax
+        mov ax, [replayfollow]
+        mov [replayfollow2], ax
 .46:
-        and word [g_DB28], 0x14
+        and word [replaybutton], 0x14
 .47:
-        and word [g_DB28], 0x54
-        test byte [g_DB28], 0x10
+        and word [replaybutton], 0x54
+        test byte [replaybutton], 0x10
         jnz short .48
         jmp near .14
 .48:
@@ -899,34 +899,34 @@ ReplayControlLoop:
         jnz short .54
         jmp near .34
 .54:
-        cmp word [g_DAD4], 0xa8
+        cmp word [replaymousey], 0xa8
         jnl short .47
-        push word [g_DB20]
+        push word [replaypick]
         push word [replayptrx]
         push cs
         call PickNearestPlayer
         add sp, 0x4
-        mov [g_DB22], ax
+        mov [replayfollow], ax
         test byte [bp - 0x14], 0x2
         jz short .47
         cmp ax, strict word 0xffff
         jz short .55
         jmp near .40
 .55:
-        mov word [g_DB18], 0x1
-        mov [g_DB24], ax
+        mov word [replayplaying], 0x1
+        mov [replayfollow2], ax
         mov [replaymode], ax
         mov ax, [replayptrx]
-        mov [g_DB1A], ax
-        mov cx, [g_DB20]
-        mov [g_DB1C], cx
-        mov [g_DAD2], ax
-        mov [g_DAD4], cx
+        mov [replaystart], ax
+        mov cx, [replaypick]
+        mov [replayend], cx
+        mov [replaymousex], ax
+        mov [replaymousey], cx
         cmp ax, strict word 0x20
         jg short .56
         jmp near .35
 .56:
-        mov word [g_DAD2], 0x20
+        mov word [replaymousex], 0x20
         jmp near .36
 .57:
         cmp word [bp - 0xe], 0x0
@@ -973,74 +973,74 @@ ReplayControlLoop:
         mov cl, [bp - 0x8]
         mov ax, 0x1
         shl ax, cl
-        test [g_DB28], ax
+        test [replaybutton], ax
         jz short .64
         mov bx, [bp - 0x8]
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         shl bx, 1
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, 1
-        push word [bx + g_DADE]
-        push word [bx + g_DADC]
+        push word [bx + ReplayGadgets2]
+        push word [bx + ReplayGadgetsSeg]
         db 0x8B, 0xF0                           ; insn: mov si, ax
         shl si, byte 0x2
         db 0x03, 0xF0                           ; insn: add si, ax
         shl si, 1
         push word [si + ReplayGadgetRects]
-        push word [bx + g_DADA]
+        push word [bx + ReplayGadgets]
         call 0x0000:VgaCopyToPitch
         add sp, 0x8
 .64:
         inc word [bp - 0x8]
         cmp word [bp - 0x8], 0x9
         jl short .63
-        cmp word [g_DB16], 0x0
+        cmp word [replaysaved], 0x0
         jz short .66
-        push word [g_DB14]
-        push word [g_DB12]
+        push word [ReplayBack2]
+        push word [ReplayBackSeg]
         push word [ReplayPointerRect]
-        push word [g_DB10]
+        push word [ReplayBack]
 .65:
         call 0x0000:VgaCopyToPitch
         add sp, 0x8
 .66:
         mov ax, [bp - 0xe]
-        cmp [g_DAD2], ax
+        cmp [replaymousex], ax
         jnz short .67
-        mov ax, [g_DAD4]
+        mov ax, [replaymousey]
         cmp [bp - 0x10], ax
         jnz short .67
-        mov ax, [g_DB28]
+        mov ax, [replaybutton]
         cmp [bp - 0x4], ax
         jnz short .67
         jmp near .74
 .67:
-        cmp word [g_DAD2], 0x12c
+        cmp word [replaymousex], 0x12c
         jng short .68
         mov word [bp - 0xe], 0x12c
         jmp short .70
         db 0x90
 .68:
-        cmp word [g_DAD2], 0x0
+        cmp word [replaymousex], 0x0
         jnl short .69
         mov word [bp - 0xe], 0x0
         jmp short .70
 .69:
-        mov ax, [g_DAD2]
+        mov ax, [replaymousex]
         mov [bp - 0xe], ax
 .70:
-        cmp word [g_DAD4], 0x0
+        cmp word [replaymousey], 0x0
         jnl short .71
         mov word [bp - 0x10], 0x0
         jmp short .73
 .71:
-        cmp word [g_DAD4], 0xb5
+        cmp word [replaymousey], 0xb5
         jng short .72
         mov word [bp - 0x10], 0xb5
         jmp short .73
         db 0x90
 .72:
-        mov ax, [g_DAD4]
+        mov ax, [replaymousey]
         mov [bp - 0x10], ax
 .73:
         cmp word [bp - 0x10], 0xa8
@@ -1068,16 +1068,16 @@ ReplayControlLoop:
         mov dx, 0x140
         db 0x2B, 0xDB                           ; insn: sub bx, bx
         call 0x0FEF:SetClipRectRegs
-        mov ax, [g_DAD4]
+        mov ax, [replaymousey]
         sub ax, 0xa8
         push ax
-        push word [g_DAD2]
+        push word [replaymousex]
         push word [DialogDataSeg]
         push word [DialogData]
         call 0x0FEF:DrawRleTransAt
         add sp, 0x8
 .74:
-        test byte [g_DB28], 0x80
+        test byte [replaybutton], 0x80
         jnz short .75
         jmp near .77
 .75:
@@ -1085,7 +1085,7 @@ ReplayControlLoop:
         push word 0xc8a0
         call 0x0000:VgaCopyBlock
         add sp, 0x4
-        mov word [g_DB26], 0x0
+        mov word [replayfwd], 0x0
         push word [bp - 0x10]
         push word [bp - 0xe]
         push word 0xaa0
@@ -1093,7 +1093,7 @@ ReplayControlLoop:
         call ReplaySaveHilight
         add sp, 0x6
         call 0x0F99:FlushInputEvents
-        mov word [g_DB28], 0x4
+        mov word [replaybutton], 0x4
         call 0x0FEF:UseOffscreenCanvas
         push 0x1e
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -1104,10 +1104,10 @@ ReplayControlLoop:
         push word 0xc8a0
         call 0x0000:VgaCopyBlock
         add sp, 0x4
-        push word [g_DAEA]
-        push word [g_DAE8]
+        push word [ReplayPanels]
+        push word [ReplayPanelSeg]
         push word [ReplayGadgetRect2]
-        push word [g_DAE6]
+        push word [ReplayPanel]
         call 0x0000:VgaCopyToPitch
         add sp, 0x8
         push 0x12
@@ -1127,19 +1127,19 @@ ReplayControlLoop:
         push cx
         call 0x0000:VgaCopyFromPitch
         add sp, 0x8
-        cmp word [g_DB16], 0x0
+        cmp word [replaysaved], 0x0
         jz short .76
-        push word [g_DB14]
-        push word [g_DB12]
+        push word [ReplayBack2]
+        push word [ReplayBackSeg]
         push word [ReplayPointerRect]
-        push word [g_DB10]
+        push word [ReplayBack]
         call 0x0000:VgaCopyToPitch
         add sp, 0x8
 .76:
-        mov ax, [g_DAD4]
+        mov ax, [replaymousey]
         sub ax, 0xa8
         push ax
-        push word [g_DAD2]
+        push word [replaymousex]
         push word [DialogDataSeg]
         push word [DialogData]
         call 0x0FEF:DrawRleTransAt
@@ -1232,9 +1232,9 @@ ReplaySaveHilight:
         add sp, 0x8
         push cs
         call HilightSaveToDlg
-        mov word [g_DB2C], 0x3
-        mov word [g_DAD2], 0xa0
-        mov word [g_DAD4], 0x64
+        mov word [replaysavestate], 0x3
+        mov word [replaymousex], 0xa0
+        mov word [replaymousey], 0x64
         call 0x0FEF:UseOffscreenCanvas
         push 0x6a
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -1272,8 +1272,8 @@ ReplaySaveHilight:
         db 0x0B, 0xF6                           ; insn: or si, si
         jz short .4
         mov [bp - 0x2], si
-        mov di, [g_DAD2]
-        mov si, [g_DAD4]
+        mov di, [replaymousex]
+        mov si, [replaymousey]
         mov cx, [bp - 0x2]
         push word 0xdad4
         push word 0xdad2
@@ -1283,37 +1283,37 @@ ReplaySaveHilight:
         mov [bp - 0x4], ax
         test al, 0x2
         jz short .9
-        cmp word [g_DAD2], 0x4e
+        cmp word [replaymousex], 0x4e
         jl short .8
-        cmp word [g_DAD2], 0xd8
+        cmp word [replaymousex], 0xd8
         jg short .8
-        cmp word [g_DAD4], 0x23
+        cmp word [replaymousey], 0x23
         jl short .5
-        cmp word [g_DAD4], 0x31
+        cmp word [replaymousey], 0x31
         jg short .5
-        mov word [g_DB2C], 0x0
+        mov word [replaysavestate], 0x0
         jmp short .9
         db 0x90, 0x90
 .5:
-        cmp word [g_DAD4], 0x34
+        cmp word [replaymousey], 0x34
         jl short .6
-        cmp word [g_DAD4], 0x42
+        cmp word [replaymousey], 0x42
         jg short .6
-        mov word [g_DB2C], 0x1
+        mov word [replaysavestate], 0x1
         jmp short .9
 .6:
-        cmp word [g_DAD4], 0x45
+        cmp word [replaymousey], 0x45
         jl short .7
-        cmp word [g_DAD4], 0x53
+        cmp word [replaymousey], 0x53
         jg short .7
-        mov word [g_DB2C], 0x2
+        mov word [replaysavestate], 0x2
         jmp short .9
 .7:
-        cmp word [g_DAD4], 0x56
+        cmp word [replaymousey], 0x56
         jl short .8
-        cmp word [g_DAD4], 0x64
+        cmp word [replaymousey], 0x64
         jg short .8
-        mov word [g_DB2C], 0x3
+        mov word [replaysavestate], 0x3
         jmp short .9
 .8:
         mov word [bp - 0x4], 0x0
@@ -1324,14 +1324,14 @@ ReplaySaveHilight:
         push word [bp - 0xc]
         call 0x0FEF:PutBlockAt
         add sp, 0x8
-        push word [g_DAD4]
-        push word [g_DAD2]
+        push word [replaymousey]
+        push word [replaymousex]
         push word [bp - 0xa]
         push word [bp - 0xc]
         call 0x0FEF:GetBlockAt
         add sp, 0x8
-        push word [g_DAD4]
-        push word [g_DAD2]
+        push word [replaymousey]
+        push word [replaymousex]
         push word [DialogDataSeg]
         push word [DialogData]
         call 0x0FEF:DrawRleTransAt
@@ -1355,7 +1355,7 @@ ReplaySaveHilight:
         db 0x2B, 0xDB                           ; insn: sub bx, bx
         call 0x0FEF:SetClipRectRegs
         push 0x10
-        imul ax, [g_DB2C], 0x11
+        imul ax, [replaysavestate], 0x11
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         add ax, strict word 0x31
         push ax
@@ -1366,7 +1366,7 @@ ReplaySaveHilight:
         call 0x0FEF:DrawLine
         add sp, 0xa
         push 0x10
-        imul ax, [g_DB2C], 0x11
+        imul ax, [replaysavestate], 0x11
         add ax, strict word 0x23
         push ax
         push word 0xd8
@@ -1375,7 +1375,7 @@ ReplaySaveHilight:
         call 0x0FEF:DrawLine
         add sp, 0xa
         push 0x16
-        imul ax, [g_DB2C], 0x11
+        imul ax, [replaysavestate], 0x11
         add ax, strict word 0x31
         push ax
         push word 0xd8
@@ -1384,7 +1384,7 @@ ReplaySaveHilight:
         call 0x0FEF:DrawLine
         add sp, 0xa
         push 0x16
-        imul ax, [g_DB2C], 0x11
+        imul ax, [replaysavestate], 0x11
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         add ax, strict word 0x31
         push ax
@@ -1395,26 +1395,26 @@ ReplaySaveHilight:
         call 0x0FEF:DrawLine
         add sp, 0xa
         push 0x13
-        imul ax, [g_DB2C], 0x11
+        imul ax, [replaysavestate], 0x11
         add ax, strict word 0x23
         push ax
         push word 0xd8
         call 0x0FEF:PutPixel
         add sp, 0x6
         push 0x13
-        imul ax, [g_DB2C], 0x11
+        imul ax, [replaysavestate], 0x11
         add ax, strict word 0x31
         push ax
         push 0x4e
         call 0x0FEF:PutPixel
         add sp, 0x6
-        push word [g_DAD4]
-        push word [g_DAD2]
+        push word [replaymousey]
+        push word [replaymousex]
         push word [DialogDataSeg]
         push word [DialogData]
         call 0x0FEF:DrawRleTransAt
         add sp, 0x8
-        mov ax, [g_DB2C]
+        mov ax, [replaysavestate]
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .11
         dec ax
@@ -1455,8 +1455,8 @@ ReplaySaveHilight:
         push cs
         call ShowCurrentPage
         mov ax, [bp + 0x8]
-        mov [g_DAD2], ax
-        mov [g_DAD4], di
+        mov [replaymousex], ax
+        mov [replaymousey], di
         push di
         push ax
         call 0x03A3:MouseMove
@@ -1584,8 +1584,8 @@ HilightSaveToDlg:
         push ax
         call 0x03A3:SaveCharTab
         add sp, 0x2
-        push word [g_DAD0]
-        push word [g_DACE]
+        push word [ReplayFontSeg]
+        push word [ReplayFont]
         call 0x03A3:UseCharSeg
         add sp, 0x4
         cmp word [CurPage], 0x0
@@ -1849,7 +1849,7 @@ SaveHilightFile:
         cmp ax, [bp - 0x8]
         jna short .2
         mov ax, 0x1
-        mov [g_DB16], ax
+        mov [replaysaved], ax
         pop si
         pop di
         leave
@@ -1858,9 +1858,9 @@ SaveHilightFile:
 .2:
         mov ax, 0x3a0b
         mov es, ax
-        mov al, [g_E366]
+        mov al, [savedteam1]
         mov [es:hilightrec], al
-        mov al, [g_E367]
+        mov al, [savedteam2]
         mov [es:hilightrec_b1], al
         mov al, [HomeTeamNum]
         mov [es:hilightrec_b2], al
@@ -1876,8 +1876,8 @@ SaveHilightFile:
         mov [es:hilightrec_w42], ax
         mov ax, [sflags]
         mov [es:hilightrec_w44], ax
-        mov ax, [g_D014]
-        mov dx, [g_D016]
+        mov ax, [replayrecptr]
+        mov dx, [replayrecseg]
         sub ax, [replayptr]
         sbb dx, [replayseg]
         mov [es:hilightrec_w46], ax

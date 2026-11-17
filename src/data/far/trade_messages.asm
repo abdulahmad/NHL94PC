@@ -6,12 +6,15 @@
         db 0x78, 0x00, 'There must be an equal'
         db 0x00, 'number of players selected'
         db 0x00, 'on both teams!', 0x00
-msgThereMustBeAnEqual:                                    ; used by LP (to name)
+msgThereMustBeAnEqual:                          ; message list of 3 far string pointers: 'There must be an
+                                                ; equal / number of players selected / on both teams!'; used
+                                                ; by LP
         db 0x10, 0x00, 0x2B, 0x38, 0x27, 0x00
         db '+8B', 0x00
         db '+8The trading deadline has passed!'
         db 0x00, 'No more trading is allowed!'
         db 0x00
-msgTheTradingDeadlineHasPassed:                                    ; used by LP (to name)
+msgTheTradingDeadlineHasPassed:                 ; message list of 2 far string pointers: 'The trading deadline
+                                                ; has passed! / No more trading is allowed!'; used by LP
         db 0x5D, 0x00, '+8~', 0x00
         db '+8', 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00

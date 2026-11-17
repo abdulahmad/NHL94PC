@@ -21,22 +21,22 @@ QueueDeferredCall:
         mov ax, [bp + 0x6]
         mov dx, [bp + 0x8]
         imul bx, [defercount], 0x12
-        mov [bx + g_DC38], ax
-        mov [bx + g_DC3A], dx
+        mov [bx + defertab_fn], ax
+        mov [bx + defertab_seg], dx
         mov ax, [bp + 0xa]
-        mov [bx + g_DC2A], ax
+        mov [bx + defertab_a1], ax
         mov ax, [bp + 0xc]
-        mov [bx + g_DC2C], ax
+        mov [bx + defertab_a2], ax
         mov ax, [bp + 0xe]
-        mov [bx + g_DC2E], ax
+        mov [bx + defertab_a3], ax
         mov ax, [bp + 0x10]
-        mov [bx + g_DC30], ax
+        mov [bx + defertab_a4], ax
         mov ax, [bp + 0x12]
-        mov [bx + g_DC32], ax
+        mov [bx + defertab_a5], ax
         mov ax, [bp + 0x14]
-        mov [bx + g_DC34], ax
+        mov [bx + defertab_a6], ax
         mov ax, [bp + 0x16]
-        mov [bx + g_DC36], ax
+        mov [bx + defertab_a7], ax
         inc word [defercount]
         leave
         retf
@@ -577,7 +577,7 @@ BuildEventLines:
         db 0x03, 0xDE                           ; insn: add bx, si
         db 0x8B, 0xC3                           ; insn: mov ax, bx
         shl bx, byte 0x3
-        mov cx, [bx + g_D020]
+        mov cx, [bx + plstatsoff3]
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, byte 0x4
         add cx, [es:bx + 0x448]
@@ -870,7 +870,7 @@ PostGoalEvent:
         shl bx, 1
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, byte 0x2
-        lea di, [bx + g_DC72]
+        lea di, [bx + gsumqueue]
         mov si, 0xb06c
         mov ax, ds
         mov es, ax
@@ -898,7 +898,7 @@ PostGoalEvent:
         call BuildEventLines
         call 0x226F:CloseTextOverlay
         mov ax, [PadRepeatOn]
-        mov [g_D46A], ax
+        mov [gameframe], ax
         mov word [PadRepeatOn], 0x0
         mov ax, 0xb078
         db 0x8B, 0xF8                           ; insn: mov di, ax
@@ -907,7 +907,7 @@ PostGoalEvent:
         pop es
         mov cx, 0x6
         rep movsw
-        mov ax, [g_D46A]
+        mov ax, [gameframe]
         mov [PadRepeatOn], ax
         pop si
         pop di
@@ -954,7 +954,7 @@ PostPenaltyEvent:
         shl bx, 1
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, byte 0x2
-        lea di, [bx + g_DC72]
+        lea di, [bx + gsumqueue]
         mov si, 0xb06c
         mov ax, ds
         mov es, ax
@@ -969,7 +969,7 @@ PostPenaltyEvent:
         call BuildEventLines
         call 0x226F:CloseTextOverlay
         mov ax, [PadRepeatOn]
-        mov [g_D46A], ax
+        mov [gameframe], ax
         mov word [PadRepeatOn], 0x0
         cmp word [CrowdSound], 0x190
         jng short .3
@@ -1004,7 +1004,7 @@ PostPenaltyEvent:
         push word [si + TeamNameClips]
         call 0x0EDC:AnnouncePenalty
         add sp, 0xe
-        mov ax, [g_D46A]
+        mov ax, [gameframe]
         mov [PadRepeatOn], ax
         pop si
         pop di
@@ -1049,7 +1049,7 @@ PostInjuryEvent:
         shl bx, 1
         db 0x03, 0xD8                           ; insn: add bx, ax
         shl bx, byte 0x2
-        lea di, [bx + g_DC72]
+        lea di, [bx + gsumqueue]
         mov si, 0xb06c
         mov ax, ds
         mov es, ax
@@ -1109,11 +1109,11 @@ ChkScorerMilestone:
 .3:
         db 0x8B, 0xD9                           ; insn: mov bx, cx
         shl bx, 1
-        cmp byte [bx + g_D660], 0x0
+        cmp byte [bx + scorerflags], 0x0
         jz short .4
         db 0x8B, 0xD9                           ; insn: mov bx, cx
         shl bx, 1
-        cmp byte [bx + g_D661], 0x0
+        cmp byte [bx + scorerflags2], 0x0
         jz short .4
         jmp near .29
 .4:
@@ -1160,8 +1160,8 @@ ChkScorerMilestone:
         mov si, [bp - 0xa]
         shl si, byte 0x3
         mov [bp - 0xe], si
-        mov ax, [si + g_D020]
-        add ax, [si + g_D01C]
+        mov ax, [si + plstatsoff3]
+        add ax, [si + plstatsoff]
         db 0x03, 0xC3                           ; insn: add ax, bx
         dec ax
         jnz short .10
@@ -1169,7 +1169,7 @@ ChkScorerMilestone:
         mov si, 0x1
         jmp near .16
 .10:
-        add bx, [si + g_D020]
+        add bx, [si + plstatsoff3]
         cmp bx, 0x32
         jl short .11
         db 0x8B, 0xC3                           ; insn: mov ax, bx
@@ -1181,7 +1181,7 @@ ChkScorerMilestone:
         mov word [bp - 0x6], 0x2
         jmp short .6
 .11:
-        mov ax, [si + g_D022]
+        mov ax, [si + plstatsrecs]
         add [bp - 0x4], ax
         cmp word [bp - 0x4], 0x64
         jl short .12
@@ -1195,7 +1195,7 @@ ChkScorerMilestone:
         jmp short .7
         db 0x90
 .12:
-        add bx, [si + g_D01C]
+        add bx, [si + plstatsoff]
         cmp bx, 0x64
         jl short .13
         db 0x8B, 0xC3                           ; insn: mov ax, bx
@@ -1210,7 +1210,7 @@ ChkScorerMilestone:
 .13:
         mov si, [bp - 0x4]
         mov bx, [bp - 0xe]
-        add si, [bx + g_D01E]
+        add si, [bx + plstatsoff2]
         cmp si, 0x64
         jl short .16
         db 0x8B, 0xC6                           ; insn: mov ax, si
@@ -1225,7 +1225,7 @@ ChkScorerMilestone:
         mov si, [bp - 0xa]
         shl si, byte 0x3
         mov [bp - 0xe], si
-        add bx, [si + g_D020]
+        add bx, [si + plstatsoff3]
         cmp bx, 0xa
         jl short .15
         db 0x8B, 0xC3                           ; insn: mov ax, bx
@@ -1239,7 +1239,7 @@ ChkScorerMilestone:
 .15:
         mov si, [bp - 0x4]
         mov bx, [bp - 0xe]
-        add si, [bx + g_D022]
+        add si, [bx + plstatsrecs]
         cmp si, 0x14
         jl short .16
         db 0x8B, 0xC6                           ; insn: mov ax, si
@@ -1281,7 +1281,7 @@ ChkScorerMilestone:
         mov bx, [bp - 0xa]
         shl bx, byte 0x3
         mov [bp - 0xe], bx
-        add si, [bx + g_D022]
+        add si, [bx + plstatsrecs]
         cmp si, 0x64
         jl short .21
         db 0x8B, 0xC6                           ; insn: mov ax, si
@@ -1293,7 +1293,7 @@ ChkScorerMilestone:
         mov word [bp - 0x6], 0x4
         jmp short .23
 .21:
-        add si, [bx + g_D01E]
+        add si, [bx + plstatsoff2]
         cmp si, 0x64
         jl short .23
         db 0x8B, 0xC6                           ; insn: mov ax, si
@@ -1307,7 +1307,7 @@ ChkScorerMilestone:
 .22:
         mov bx, [bp - 0xa]
         shl bx, byte 0x3
-        add si, [bx + g_D022]
+        add si, [bx + plstatsrecs]
         cmp si, 0x14
         jl short .23
         db 0x8B, 0xC6                           ; insn: mov ax, si
@@ -1342,7 +1342,7 @@ ChkScorerMilestone:
         mov bx, [bp - 0xa]
         shl bx, byte 0x3
         mov [bp - 0xe], bx
-        add si, [bx + g_D022]
+        add si, [bx + plstatsrecs]
         cmp si, 0x64
         jl short .26
         db 0x8B, 0xC6                           ; insn: mov ax, si
@@ -1355,7 +1355,7 @@ ChkScorerMilestone:
         jmp short .28
         db 0x90
 .26:
-        add si, [bx + g_D01E]
+        add si, [bx + plstatsoff2]
         cmp si, 0x64
         jl short .28
         db 0x8B, 0xC6                           ; insn: mov ax, si
@@ -1369,7 +1369,7 @@ ChkScorerMilestone:
 .27:
         mov bx, [bp - 0xa]
         shl bx, byte 0x3
-        add si, [bx + g_D022]
+        add si, [bx + plstatsrecs]
         cmp si, 0x14
         jl short .28
         db 0x8B, 0xC6                           ; insn: mov ax, si

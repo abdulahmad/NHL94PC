@@ -47,8 +47,8 @@ TitleScreen:
         push strict word str_MttitleKms_2
         call 0x149D:LoadRawHeader
         add sp, 0x4
-        mov [g_BD8E], ax
-        mov [g_BD90], dx
+        mov [TitleJingle], ax
+        mov [TitleJingleSeg], dx
         push 0x0
         push strict word str_MttitleCfg_2
         jmp short .3
@@ -58,19 +58,19 @@ TitleScreen:
         push strict word str_AdtitleKms_2
         call 0x149D:LoadRawHeader
         add sp, 0x4
-        mov [g_BD8E], ax
-        mov [g_BD90], dx
+        mov [TitleJingle], ax
+        mov [TitleJingleSeg], dx
         push 0x0
         push strict word str_AdtitleCfg_2
 .3:
         call 0x149D:LoadRawHeader
         add sp, 0x4
-        mov [g_BD92], ax
-        mov [g_BD94], dx
+        mov [TitleJingle2], ax
+        mov [TitleJingle2Seg], dx
         push dx
         push ax
-        push word [g_BD90]
-        push word [g_BD8E]
+        push word [TitleJingleSeg]
+        push word [TitleJingle]
         call 0x0EDC:PlayJingle
         add sp, 0x8
         push word 0x3701
@@ -470,10 +470,10 @@ TitleScreen:
         add sp, 0x4
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .10
-        push word [g_BD94]
-        push word [g_BD92]
-        push word [g_BD90]
-        push word [g_BD8E]
+        push word [TitleJingle2Seg]
+        push word [TitleJingle2]
+        push word [TitleJingleSeg]
+        push word [TitleJingle]
         call 0x0EDC:PlayJingle
         add sp, 0x8
 .10:
@@ -498,12 +498,12 @@ TitleScreen:
         call 0x06E1:FindUnlink
         add sp, 0x4
         call 0x0EDC:StopJingle
-        push word [g_BD94]
-        push word [g_BD92]
+        push word [TitleJingle2Seg]
+        push word [TitleJingle2]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        push word [g_BD90]
-        push word [g_BD8E]
+        push word [TitleJingleSeg]
+        push word [TitleJingle]
         call 0x06E1:FindUnlink
         add sp, 0x4
         call 0x0FEF:UseCurrentPage

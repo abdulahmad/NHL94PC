@@ -363,7 +363,7 @@ GameTeamStatsScreen:
         call 0x03A3:FindFarMsg
         add sp, 0x6
         mov [statsbgshapes], ax
-        mov [g_C2B4], dx
+        mov [statsbgseg], dx
         add ax, strict word 0x10
         push dx
         push ax
@@ -485,7 +485,7 @@ GameSkaterStatsScreen:
         call 0x03A3:FindFarMsg
         add sp, 0x6
         mov [statsbgshapes], ax
-        mov [g_C2B4], dx
+        mov [statsbgseg], dx
         add ax, strict word 0x10
         push dx
         push ax
@@ -607,7 +607,7 @@ GameGoalieStatsScreen:
         call 0x03A3:FindFarMsg
         add sp, 0x6
         mov [statsbgshapes], ax
-        mov [g_C2B4], dx
+        mov [statsbgseg], dx
         add ax, strict word 0x10
         push dx
         push ax
@@ -709,7 +709,7 @@ GameStandingsScreen:
 .4:
         push word 0xcee8
         push word [statsteambuf]
-        push word [g_C04C]
+        push word [statsteambufseg]
         call 0x24E6:ShowStandingsTable
         add sp, 0x6
         push 0x42
@@ -741,7 +741,7 @@ GameStandingsScreen:
         add sp, 0xc
         push word 0xcee8
         push word [statsteambuf]
-        push word [g_C04C]
+        push word [statsteambufseg]
         call 0x24E6:StandingsScreen
         add sp, 0x6
         push 0x0
@@ -973,7 +973,7 @@ GameStandingsMenu:
         push strict word str_Tstat_3
         call 0x14DB:AllocRecData
         add sp, 0x8
-        mov [g_C04C], ax
+        mov [statsteambufseg], ax
         mov [statsteambuf], dx
         push 0x0
         push 0x0
@@ -981,7 +981,7 @@ GameStandingsMenu:
         push strict word str_Keys_4
         call 0x14DB:AllocRecData
         add sp, 0x8
-        mov [g_C048], ax
+        mov [statsplayerbufseg], ax
         mov [statsplayerbuf], dx
         push 0x0
         push 0x0
@@ -989,7 +989,7 @@ GameStandingsMenu:
         push strict word str_Pstat_4
         call 0x14DB:AllocRecData
         add sp, 0x8
-        mov [g_C044], ax
+        mov [statsskaterbufseg], ax
         mov [statsskaterbuf], dx
         push 0x0
         push 0x0
@@ -997,7 +997,7 @@ GameStandingsMenu:
         push strict word str_Gstat_4
         call 0x14DB:AllocRecData
         add sp, 0x8
-        mov [g_C040], ax
+        mov [statsgoaliebufseg], ax
         mov [statsgoaliebuf], dx
         push 0x0
         call far [VisTeam]
@@ -1010,7 +1010,7 @@ GameStandingsMenu:
         push strict word standingsmenubar
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
-        mov ax, [g_CEE8]
+        mov ax, [standingstab]
         mov [statsmenusel], ax
         push word 0x3701
         push strict word str_Qpp
@@ -1036,7 +1036,7 @@ GameStandingsMenu:
         call 0x03A3:FindFarMsg
         add sp, 0x6
         mov [statsbgshapes], ax
-        mov [g_C2B4], dx
+        mov [statsbgseg], dx
         add ax, strict word 0x10
         push dx
         push ax
@@ -1134,7 +1134,7 @@ GameStandingsMenu:
         jmp near .16
         db 0x90
 .11:
-        mov word [g_C050], 0x0
+        mov word [statsrosterteam], 0x0
         push word [statscategory]
         mov ax, strict word RosterScreen
         mov dx, 0x2446
@@ -1382,27 +1382,27 @@ GameStandingsMenu:
         call 0x20E4:LoadCrestsPalette
         call 0x2248:FreeStandingsGfx
         push word [statsteambuf]
-        push word [g_C04C]
+        push word [statsteambufseg]
         call 0x06E1:FindUnlink
         add sp, 0x4
         push word [statsgoaliebuf]
-        push word [g_C040]
+        push word [statsgoaliebufseg]
         call 0x06E1:FindUnlink
         add sp, 0x4
         push word [statsskaterbuf]
-        push word [g_C044]
+        push word [statsskaterbufseg]
         call 0x06E1:FindUnlink
         add sp, 0x4
         push word [statsplayerbuf]
-        push word [g_C048]
+        push word [statsplayerbufseg]
         call 0x06E1:FindUnlink
         add sp, 0x4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [statsplayerbuf], ax
-        mov [g_C048], ax
+        mov [statsplayerbufseg], ax
         mov [statsteambuf], ax
-        mov [g_C04C], ax
+        mov [statsteambufseg], ax
         mov [statsgoaliebuf], ax
-        mov [g_C040], ax
+        mov [statsgoaliebufseg], ax
         mov [statsskaterbuf], ax
-        mov [g_C044], ax
+        mov [statsskaterbufseg], ax

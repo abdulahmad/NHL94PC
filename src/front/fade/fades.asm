@@ -77,32 +77,32 @@ CopyFadeRect:
         db 0x03, 0xCA                           ; insn: add cx, dx
         mov si, [bp + 0xc]
         db 0x03, 0xF7                           ; insn: add si, di
-        cmp [g_DF6C], dx
+        cmp [fadey], dx
         jng short .5
-        cmp [g_DF70], di
+        cmp [fadeh], di
         jng short .5
-        cmp [g_DF6A], cx
+        cmp [fadex], cx
         jg short .5
-        cmp [g_DF6E], si
+        cmp [fadew], si
         jg short .5
-        cmp [g_DF6A], dx
+        cmp [fadex], dx
         jng short .1
-        mov ax, [g_DF6A]
+        mov ax, [fadex]
         mov [bp + 0x6], ax
 .1:
-        cmp [g_DF6E], di
+        cmp [fadew], di
         jng short .2
-        mov di, [g_DF6E]
+        mov di, [fadew]
 .2:
         mov [bp - 0x2], cx
-        cmp [g_DF6C], cx
+        cmp [fadey], cx
         jnl short .3
-        mov ax, [g_DF6C]
+        mov ax, [fadey]
         mov [bp - 0x2], ax
 .3:
-        cmp [g_DF70], si
+        cmp [fadeh], si
         jnl short .4
-        mov si, [g_DF70]
+        mov si, [fadeh]
 .4:
         call 0x0FEF:UseCurrentPage
         push 0x0

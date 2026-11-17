@@ -15,20 +15,20 @@ FreeGameMemory:
         call 0x1B35:GameOverThunk
         cmp word [ovlseq], -0x1
         jz short .1
-        push word [g_D62E]
-        push word [g_D62C]
+        push word [OverlayGfxSeg]
+        push word [OverlayGfx]
         call 0x06E1:FindUnlink
         add sp, 0x4
 .1:
         call 0x2137:FreeArenaJingles
         push cs
         call FreePlayerFrames
-        push word [g_C25E]
-        push word [g_C25C]
+        push word [RinkEndArtSeg]
+        push word [RinkEndArt]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        push word [g_D6D6]
-        push word [g_D6D4]
+        push word [GameGfxSeg]
+        push word [GameGfx]
         call 0x06E1:FindUnlink
         add sp, 0x4
         push word [RinkTilesSeg]
@@ -38,24 +38,24 @@ FreeGameMemory:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [RinkTilesSeg], ax
         mov [RinkTilesPtr], ax
-        push word [g_C25A]
-        push word [g_C258]
+        push word [ScoreboardArtSeg]
+        push word [ScoreboardArt]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        push word [g_DAD0]
-        push word [g_DACE]
+        push word [ReplayFontSeg]
+        push word [ReplayFont]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        mov ax, [g_CFFE]
-        or ax, [g_CFFC]
+        mov ax, [cupseriesseg]
+        or ax, [cupseries]
         jz short .2
-        push word [g_CFFE]
-        push word [g_CFFC]
+        push word [cupseriesseg]
+        push word [cupseries]
         call 0x06E1:FindUnlink
         add sp, 0x4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [g_CFFE], ax
-        mov [g_CFFC], ax
+        mov [cupseriesseg], ax
+        mov [cupseries], ax
 .2:
         call 0x0D6B:UnhookDivideError
         mov word [PadRepeatOn], 0x0

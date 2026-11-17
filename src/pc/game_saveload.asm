@@ -446,12 +446,12 @@ SaveGameState:
         mov ax, [hudredraw]
         mov bx, [bp - 0x2]
         mov [bx], ax
-        mov ax, [g_D46C]
+        mov ax, [controlled]
         inc bx
         inc bx
         mov [bp - 0x2], bx
         mov [bx], ax
-        mov ax, [g_D46E]
+        mov ax, [controlled2]
         inc bx
         inc bx
         mov [bp - 0x2], bx
@@ -466,22 +466,22 @@ SaveGameState:
         inc bx
         mov [bp - 0x2], bx
         mov [bx], ax
-        mov ax, [g_D60E]
+        mov ax, [mousex]
         inc bx
         inc bx
         mov [bp - 0x2], bx
         mov [bx], ax
-        mov ax, [g_D610]
+        mov ax, [mousey]
         inc bx
         inc bx
         mov [bp - 0x2], bx
         mov [bx], ax
         lea ax, [bx + 0x2]
         mov [bp - 0x2], ax
-        mov ax, [g_D612]
+        mov ax, [savedword1]
         mov bx, [bp - 0x2]
         mov [bx], ax
-        mov ax, [g_D614]
+        mov ax, [savedword2]
         inc bx
         inc bx
         mov [bp - 0x2], bx
@@ -496,24 +496,24 @@ SaveGameState:
         inc bx
         mov [bp - 0x2], bx
         mov [bx], ax
-        mov ax, [g_D664]
+        mov ax, [gamevar3]
         inc bx
         inc bx
         mov [bp - 0x2], bx
         mov [bx], ax
-        mov ax, [g_D666]
+        mov ax, [gamevar4]
         inc bx
         inc bx
         mov [bp - 0x2], bx
         mov [bx], ax
-        mov ax, [g_D668]
+        mov ax, [stoppagetime]
         inc bx
         inc bx
         mov [bp - 0x2], bx
         mov [bx], ax
         lea ax, [bx + 0x2]
         mov [bp - 0x2], ax
-        mov ax, [g_D66A]
+        mov ax, [gamevar5]
         mov bx, [bp - 0x2]
         mov [bx], ax
         mov ax, [ltack]
@@ -526,7 +526,7 @@ SaveGameState:
         inc bx
         mov [bp - 0x2], bx
         mov [bx], ax
-        mov ax, [g_D670]
+        mov ax, [gamevar6]
         inc bx
         inc bx
         mov [bp - 0x2], bx
@@ -536,32 +536,32 @@ SaveGameState:
         inc bx
         mov [bp - 0x2], bx
         mov [bx], ax
-        mov ax, [g_D6BC]
+        mov ax, [gamevar7]
         inc bx
         inc bx
         mov [bp - 0x2], bx
         mov [bx], ax
-        mov ax, [g_D6BE]
+        mov ax, [gamevar8]
         inc bx
         inc bx
         mov [bp - 0x2], bx
         mov [bx], ax
         lea ax, [bx + 0x2]
         mov [bp - 0x2], ax
-        mov ax, [g_D6C4]
+        mov ax, [crowdheat]
         mov bx, [bp - 0x2]
         mov [bx], ax
-        mov ax, [g_D004]
+        mov ax, [crowdtimer]
         inc bx
         inc bx
         mov [bp - 0x2], bx
         mov [bx], ax
-        mov ax, [g_D00A]
+        mov ax, [crowdcount]
         inc bx
         inc bx
         mov [bp - 0x2], bx
         mov [bx], ax
-        mov ax, [g_D010]
+        mov ax, [crowdsum]
         inc bx
         inc bx
         mov [bp - 0x2], bx
@@ -621,11 +621,11 @@ SaveGameState:
         mov bx, [bp - 0x2]
         add word [bp - 0x2], 0x2
         mov [bx], ax
-        mov ax, [g_D660]
+        mov ax, [scorerflags]
         mov bx, [bp - 0x2]
         add word [bp - 0x2], 0x2
         mov [bx], ax
-        mov ax, [g_D662]
+        mov ax, [gamevar1]
         mov bx, [bp - 0x2]
         add word [bp - 0x2], 0x2
         mov [bx], ax
@@ -633,18 +633,18 @@ SaveGameState:
         mov bx, [bp - 0x2]
         add word [bp - 0x2], 0x2
         mov [bx], ax
-        mov al, [g_E366]
+        mov al, [savedteam1]
         mov bx, [bp - 0x2]
         mov [bx], al
-        mov al, [g_E367]
+        mov al, [savedteam2]
         mov [bx + 0x1], al
-        mov al, [g_E368]
+        mov al, [savedbyte3]
         add word [bp - 0x2], 0x2
         mov bx, [bp - 0x2]
         mov [bx], al
-        mov al, [g_E369]
+        mov al, [savedbyte4]
         mov [bx + 0x1], al
-        mov al, [g_E36A]
+        mov al, [savedbyte5]
         inc bx
         inc bx
         mov [bp - 0x2], bx
@@ -713,11 +713,11 @@ SaveGameState:
         mov bx, [bp - 0x2]
         add word [bp - 0x2], 0x2
         mov [bx], ax
-        mov ax, [g_D658]
+        mov ax, [overlaytimer]
         mov bx, [bp - 0x2]
         add word [bp - 0x2], 0x2
         mov [bx], ax
-        mov ax, [g_D65A]
+        mov ax, [overlaystate]
         mov bx, [bp - 0x2]
         add word [bp - 0x2], 0x2
         mov [bx], ax
@@ -1443,12 +1443,12 @@ LoadGameState:
         inc bx
         mov [bp - 0x2], bx
         mov ax, [bx]
-        mov [g_D46C], ax
+        mov [controlled], ax
         inc bx
         inc bx
         mov [bp - 0x2], bx
         mov ax, [bx]
-        mov [g_D46E], ax
+        mov [controlled2], ax
         inc bx
         inc bx
         mov [bp - 0x2], bx
@@ -1463,22 +1463,22 @@ LoadGameState:
         inc bx
         mov [bp - 0x2], bx
         mov ax, [bx]
-        mov [g_D60E], ax
+        mov [mousex], ax
         inc bx
         inc bx
         mov [bp - 0x2], bx
         mov ax, [bx]
-        mov [g_D610], ax
+        mov [mousey], ax
         lea ax, [bx + 0x2]
         mov [bp - 0x2], ax
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         mov ax, [bx]
-        mov [g_D612], ax
+        mov [savedword1], ax
         inc bx
         inc bx
         mov [bp - 0x2], bx
         mov ax, [bx]
-        mov [g_D614], ax
+        mov [savedword2], ax
         inc bx
         inc bx
         mov [bp - 0x2], bx
@@ -1493,22 +1493,22 @@ LoadGameState:
         inc bx
         mov [bp - 0x2], bx
         mov ax, [bx]
-        mov [g_D664], ax
+        mov [gamevar3], ax
         inc bx
         inc bx
         mov [bp - 0x2], bx
         mov ax, [bx]
-        mov [g_D666], ax
+        mov [gamevar4], ax
         inc bx
         inc bx
         mov [bp - 0x2], bx
         mov ax, [bx]
-        mov [g_D668], ax
+        mov [stoppagetime], ax
         lea ax, [bx + 0x2]
         mov [bp - 0x2], ax
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         mov ax, [bx]
-        mov [g_D66A], ax
+        mov [gamevar5], ax
         inc bx
         inc bx
         mov [bp - 0x2], bx
@@ -1523,7 +1523,7 @@ LoadGameState:
         inc bx
         mov [bp - 0x2], bx
         mov ax, [bx]
-        mov [g_D670], ax
+        mov [gamevar6], ax
         inc bx
         inc bx
         mov [bp - 0x2], bx
@@ -1534,34 +1534,34 @@ LoadGameState:
         inc bx
         mov [bp - 0x2], bx
         mov ax, [bx]
-        mov [g_D6BC], ax
+        mov [gamevar7], ax
         inc bx
         inc bx
         mov [bp - 0x2], bx
         mov ax, [bx]
-        mov [g_D6BE], ax
+        mov [gamevar8], ax
         lea ax, [bx + 0x2]
         mov [bp - 0x2], ax
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         mov ax, [bx]
-        mov [g_D6C4], ax
+        mov [crowdheat], ax
         inc bx
         inc bx
         mov [bp - 0x2], bx
         mov ax, [bx]
-        mov [g_D004], ax
+        mov [crowdtimer], ax
         inc bx
         inc bx
         mov [bp - 0x2], bx
         mov ax, [bx]
-        mov [g_D00A], ax
+        mov [crowdcount], ax
         inc bx
         inc bx
         mov [bp - 0x2], bx
         mov ax, [bx]
         cwd
-        mov [g_D010], ax
-        mov [g_D012], dx
+        mov [crowdsum], ax
+        mov [crowdsumhi], dx
         inc bx
         inc bx
         mov [bp - 0x2], bx
@@ -1620,31 +1620,31 @@ LoadGameState:
         mov bx, [bp - 0x2]
         add word [bp - 0x2], 0x2
         mov ax, [bx]
-        mov [g_D660], ax
+        mov [scorerflags], ax
         mov bx, [bp - 0x2]
         add word [bp - 0x2], 0x2
         mov ax, [bx]
-        mov [g_D662], ax
+        mov [gamevar1], ax
         mov bx, [bp - 0x2]
         add word [bp - 0x2], 0x2
         mov ax, [bx]
         mov [DbSaveMode], ax
         mov bx, [bp - 0x2]
         mov al, [bx]
-        mov [g_E366], al
+        mov [savedteam1], al
         mov al, [bx + 0x1]
-        mov [g_E367], al
+        mov [savedteam2], al
         add word [bp - 0x2], 0x2
         mov bx, [bp - 0x2]
         mov al, [bx]
-        mov [g_E368], al
+        mov [savedbyte3], al
         mov al, [bx + 0x1]
-        mov [g_E369], al
+        mov [savedbyte4], al
         inc bx
         inc bx
         mov [bp - 0x2], bx
         mov al, [bx]
-        mov [g_E36A], al
+        mov [savedbyte5], al
         mov al, [bx + 0x1]
         cbw
         mov [onetimerflag], ax
@@ -1671,7 +1671,7 @@ LoadGameState:
 .14:
         mov bx, [bp - 0xaa]
         shl bx, 1
-        mov word [bx + g_D9DA], 0x0
+        mov word [bx + rinkobjused], 0x0
         inc word [bp - 0xaa]
         cmp word [bp - 0xaa], 0x10
         jl short .14
@@ -1708,7 +1708,7 @@ LoadGameState:
         db 0x8B, 0xCE                           ; insn: mov cx, si
         mov ax, 0x1
         shl ax, cl
-        or [di + g_D9DA], ax
+        or [di + rinkobjused], ax
         mov si, [bp - 0x2]
         add word [bp - 0x2], 0x2
         mov ax, [si]
@@ -1761,11 +1761,11 @@ LoadGameState:
         mov bx, [bp - 0x2]
         add word [bp - 0x2], 0x2
         mov ax, [bx]
-        mov [g_D658], ax
+        mov [overlaytimer], ax
         mov bx, [bp - 0x2]
         add word [bp - 0x2], 0x2
         mov ax, [bx]
-        mov [g_D65A], ax
+        mov [overlaystate], ax
         cmp word [ovlseq], -0x1
         jnz short .18
         jmp near .22
@@ -1792,25 +1792,25 @@ LoadGameState:
         push ax
         call 0x14B8:LoadPackedHeader
         add sp, 0x4
-        mov [g_D62C], ax
-        mov [g_D62E], dx
+        mov [OverlayGfx], ax
+        mov [OverlayGfxSeg], dx
         mov word [bp - 0xaa], 0x0
         jmp short .21
         db 0x90
 .20:
         push word [bp - 0xaa]
-        push word [g_D62E]
-        push word [g_D62C]
+        push word [OverlayGfxSeg]
+        push word [OverlayGfx]
         call 0x03A3:TableAt
         add sp, 0x6
         mov bx, [bp - 0xaa]
         shl bx, byte 0x2
-        mov [bx + g_D630], ax
-        mov [bx + g_D632], dx
+        mov [bx + OverlayFrames], ax
+        mov [bx + OverlayFramesSeg], dx
         inc word [bp - 0xaa]
 .21:
-        push word [g_D62E]
-        push word [g_D62C]
+        push word [OverlayGfxSeg]
+        push word [OverlayGfx]
         call 0x03A3:TableCount
         add sp, 0x4
         cmp ax, [bp - 0xaa]
@@ -1819,8 +1819,8 @@ LoadGameState:
         shl bx, byte 0x2
         mov ax, [bx + TeamPPVSizes]
         mov dx, [bx + TeamPPVSizes2]
-        mov [g_D65C], ax
-        mov [g_D65E], dx
+        mov [overlayscript], ax
+        mov [overlayscriptseg], dx
 .22:
         push 0x42
         push -0x1
@@ -2044,7 +2044,7 @@ LoadGameState:
         add sp, 0x4
 .41:
         call 0x1B35:GetPeriodTimeThunk
-        mov [g_D1AC], ax
+        mov [gameclock2], ax
         push 0x1
         call 0x2425:LoadGameTeams
         add sp, 0x2
@@ -2097,8 +2097,8 @@ LoadGameState:
         call 0x1B35:BuildEventLinesThunk
         mov ax, [replayptr]
         mov dx, [replayseg]
-        mov [g_D014], ax
-        mov [g_D016], dx
+        mov [replayrecptr], ax
+        mov [replayrecseg], dx
         call 0x1B35:ReplayRecordResetThunk
         and byte [sflags], 0xef
         mov word [fadeinpending], 0x1
@@ -2113,7 +2113,7 @@ LoadGameState:
         mov word [hmtmroster], 0x3a0b
         mov word [hmtmrosterptr], 0xa550
         mov word [hmtmptrF2], 0x9f80
-        mov word [g_B50C], 0xb80e
+        mov word [SortCords_m2], 0xb80e
         mov word [awtmsort], AwaySortObjs
         mov word [awtmglattrseg], 0x3a0b
         mov word [awtmglattr], AwayGlAttr
@@ -2157,10 +2157,10 @@ LoadGameState:
         mov [bx + 0x6e], dx
         mov al, [bp - 0xaa]
         mov bx, [bp - 0xaa]
-        mov [bx + g_D4F4], al
+        mov [bx + OOlist], al
         shl bx, 1
         mov ax, [bp - 0xaa]
-        mov [bx + g_D496], ax
+        mov [bx + objylist], ax
         inc word [bp - 0xaa]
         add word [bp - 0x130], 0x80
 .50:

@@ -8,6 +8,7 @@
         db 0x00, 'Do you wish to return?'
         db 0x00, 'Do you wish to exit?'
         db 0x00
-dlgReturnMessages:                                    ; used by MENUS (to name)
+dlgReturnMessages:                              ; MessageBox definition with the 'returning to' messages; used
+                                                ; by MENUS
         db 0x00, 0x00, 0x00, 0x00
         db 0x6C, 0x00, 0xF5, 0x36, 0x00, 0x00, 0x00, 0x00, 0x00

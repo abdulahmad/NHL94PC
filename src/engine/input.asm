@@ -13,7 +13,7 @@ joyq_pop:
         cmp word [PadRepeatDelay], 0x0
         jng short .2
         mov ax, [PadRepeatOn]
-        mov [g_D46A], ax
+        mov [gameframe], ax
         mov word [PadRepeatOn], 0x0
         dec word [PadRepeatDelay]
         inc word [PadRepeatStep]
@@ -394,7 +394,7 @@ doinput:
         inc di
         db 0x8B, 0xDF                           ; insn: mov bx, di
         shl bx, 1
-        cmp word [bx + g_D46C], 0x0
+        cmp word [bx + controlled], 0x0
         jz short .4
         mov ax, [cont1team]
         cmp [cont2team], ax
@@ -424,7 +424,7 @@ doinput:
         mov [bx + lcboxon], ax
 .3:
         shl di, 1
-        mov word [di + g_D46C], 0x0
+        mov word [di + controlled], 0x0
 .4:
         test byte [gmode2], 0x1
         jz short .6

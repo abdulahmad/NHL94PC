@@ -29,9 +29,9 @@ PlayHilight:
         mov ax, 0x3a0b
         mov es, ax
         mov al, [es:hilightrec]
-        mov [g_E366], al
+        mov [savedteam1], al
         mov al, [es:hilightrec_b1]
-        mov [g_E367], al
+        mov [savedteam2], al
         mov al, [es:hilightrec_b2]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         mov [HomeTeamNum], ax
@@ -51,8 +51,8 @@ PlayHilight:
         mov dx, [es:hilightrec_frames]
         add ax, [replayptr]
         adc dx, [replayseg]
-        mov [g_D014], ax
-        mov [g_D016], dx
+        mov [replayrecptr], ax
+        mov [replayrecseg], dx
         db 0x2B, 0xFF                           ; insn: sub di, di
         mov si, 0xa556
 .1:
@@ -119,20 +119,20 @@ PlayHilight:
         add sp, 0x4
         call 0x1B35:FreeArenaJinglesThunk
         call 0x1B35:FreePlayerFramesThunk
-        push word [g_C25E]
-        push word [g_C25C]
+        push word [RinkEndArtSeg]
+        push word [RinkEndArt]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        push word [g_C25A]
-        push word [g_C258]
+        push word [ScoreboardArtSeg]
+        push word [ScoreboardArt]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        push word [g_D6D6]
-        push word [g_D6D4]
+        push word [GameGfxSeg]
+        push word [GameGfx]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        push word [g_DAD0]
-        push word [g_DACE]
+        push word [ReplayFontSeg]
+        push word [ReplayFont]
         call 0x06E1:FindUnlink
         add sp, 0x4
         push word [RinkTilesSeg]

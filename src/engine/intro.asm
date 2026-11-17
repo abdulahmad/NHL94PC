@@ -58,7 +58,7 @@ PreGameIntro:
         cwd
         add [seed], ax
         adc [rngseed], dx
-        mov word [g_DCD8], 0x708
+        mov word [introtimers], 0x708
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [foy], ax
         mov [fox], ax
@@ -275,7 +275,7 @@ ThreeStarsLoop:
         call 0x03A3:CallCountStep
         mov word [PadRepeatOn], 0x1
         mov word [framesync], 0x0
-        cmp word [g_DCD8], 0x0
+        cmp word [introtimers], 0x0
         jnz short .1
         jmp near .10
 .1:
@@ -300,9 +300,9 @@ ThreeStarsLoop:
         push si
         call 0x1E7E:RunGameFrames
         add sp, 0x2
-        sub [g_DCD8], si
+        sub [introtimers], si
         jns short .2
-        mov word [g_DCD8], 0x0
+        mov word [introtimers], 0x0
 .2:
         mov ax, [camx]
         add ax, strict word 0x20
@@ -317,22 +317,22 @@ ThreeStarsLoop:
 .4:
         mov ax, 0xec
         sub ax, [camy]
-        mov [g_D6CE], ax
+        mov [ovltimer2], ax
         cmp ax, 0x1a8
         jng short .5
-        mov word [g_D6CE], 0x1a8
+        mov word [ovltimer2], 0x1a8
 .5:
-        cmp word [g_D6CE], 0x0
+        cmp word [ovltimer2], 0x0
         jnl short .6
-        mov word [g_D6CE], 0x0
+        mov word [ovltimer2], 0x0
 .6:
-        push word [g_D6CE]
+        push word [ovltimer2]
         push word [viewscrollx]
         call 0x1F54:FlushDirtyRects
         add sp, 0x4
         call 0x0FEF:UseOtherPage
         mov ax, 0x140
-        sub ax, [g_D6CE]
+        sub ax, [ovltimer2]
         push ax
         mov ax, [viewscrollx]
         sub ax, 0xc0
@@ -343,7 +343,7 @@ ThreeStarsLoop:
         cmp word [fadeinpending], 0x0
         jz short .7
         mov ax, [PadRepeatOn]
-        mov [g_D46A], ax
+        mov [gameframe], ax
         push 0x10
         push word 0x3a0b
         push strict word TeamPalette768
@@ -353,7 +353,7 @@ ThreeStarsLoop:
         call 0x1E7E:FadePalette
         add sp, 0x8
         mov word [fadeinpending], 0x0
-        mov ax, [g_D46A]
+        mov ax, [gameframe]
         mov [PadRepeatOn], ax
 .7:
         push si
@@ -368,7 +368,7 @@ ThreeStarsLoop:
         test byte [regd1], 0x30
         jnz short .9
         call 0x03A3:WaitDeadlineNoEoi
-        cmp word [g_DCD8], 0x0
+        cmp word [introtimers], 0x0
         jz short .8
         jmp near .1
 .8:
@@ -381,8 +381,8 @@ ThreeStarsLoop:
         mov word [PadRepeatOn], 0x0
         cmp word [ovlseq], -0x1
         jz short .11
-        push word [g_D62E]
-        push word [g_D62C]
+        push word [OverlayGfxSeg]
+        push word [OverlayGfx]
         call 0x06E1:FindUnlink
         add sp, 0x4
         mov word [ovlseq], 0xffff
@@ -517,7 +517,7 @@ assintroline:
 .1:
         cmp word [si + 0x2e], -0x64
         jnz short .5
-        cmp word [g_DCD8], 0xa
+        cmp word [introtimers], 0xa
         jg short .2
         jmp near .23
 .2:
@@ -530,7 +530,7 @@ assintroline:
         add bx, 0x80
         cmp bx, 0xbb3c
         jc short .3
-        mov word [g_DCD8], 0xa
+        mov word [introtimers], 0xa
         pop si
         pop di
         leave
@@ -656,7 +656,7 @@ assintroline:
         call 0x0D5F:VectorToDir8
         cwd
         mov [regd2], ax
-        mov [g_D6BA], dx
+        mov [regd2_w2], dx
         cmp [si + 0x36], ax
         jz short .18
         mov al, [regd2]
@@ -1461,12 +1461,12 @@ StartThreeStars:
         mov [lcsel], ax
         mov [lcrequestteam], ax
         mov [energywarnteam], ax
-        mov [g_D46E], ax
-        mov [g_D46C], ax
+        mov [controlled2], ax
+        mov [controlled], ax
         cmp word [ovlseq], -0x1
         jz short .2
-        push word [g_D62E]
-        push word [g_D62C]
+        push word [OverlayGfxSeg]
+        push word [OverlayGfx]
         call 0x06E1:FindUnlink
         add sp, 0x4
 .2:
@@ -1475,7 +1475,7 @@ StartThreeStars:
         mov [gameover], ax
         or byte [gmode], 0x1
         and byte [gmode], 0x7f
-        mov word [g_DCD8], 0x2ee0
+        mov word [introtimers], 0x2ee0
         mov ax, 0xffff
         mov [bannermsg], ax
         mov [ovlstep], ax
@@ -1489,7 +1489,7 @@ StartThreeStars:
         mov [textline2], al
         mov [textline1], al
         mov [textline3], al
-        mov [g_D6C7], al
+        mov [PBnum_b1], al
         mov [PBnum], al
         mov si, 0xb50e
         mov di, 0xc
@@ -2000,7 +2000,7 @@ assthreestars:
         mov bx, [bp + 0x6]
         cmp word [bx + 0x26], 0x3
         jnz short .10
-        mov word [g_DCD8], 0x0
+        mov word [introtimers], 0x0
         mov ax, 0x1
         mov [exitgame], ax
         mov [gameover], ax

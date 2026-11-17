@@ -69,7 +69,7 @@ CalTeamStatsScreen:
         call 0x03A3:FindFarMsg
         add sp, 0x6
         mov [statsbgshapes], ax
-        mov [g_C2B4], dx
+        mov [statsbgseg], dx
         push 0x10
         lea ax, [bp - 0x30e]
         push ss
@@ -82,7 +82,7 @@ CalTeamStatsScreen:
         add sp, 0x2
         push 0x10
         mov ax, [statsbgshapes]
-        mov dx, [g_C2B4]
+        mov dx, [statsbgseg]
         add ax, strict word 0x10
         push dx
         push ax
@@ -190,7 +190,7 @@ CalSkaterStatsScreen:
         call 0x03A3:FindFarMsg
         add sp, 0x6
         mov [statsbgshapes], ax
-        mov [g_C2B4], dx
+        mov [statsbgseg], dx
         push 0x10
         lea ax, [bp - 0x30e]
         push ss
@@ -203,7 +203,7 @@ CalSkaterStatsScreen:
         add sp, 0x2
         push 0x10
         mov ax, [statsbgshapes]
-        mov dx, [g_C2B4]
+        mov dx, [statsbgseg]
         add ax, strict word 0x10
         push dx
         push ax
@@ -311,7 +311,7 @@ CalGoalieStatsScreen:
         call 0x03A3:FindFarMsg
         add sp, 0x6
         mov [statsbgshapes], ax
-        mov [g_C2B4], dx
+        mov [statsbgseg], dx
         push 0x10
         lea ax, [bp - 0x30e]
         push ss
@@ -324,7 +324,7 @@ CalGoalieStatsScreen:
         add sp, 0x2
         push 0x10
         mov ax, [statsbgshapes]
-        mov dx, [g_C2B4]
+        mov dx, [statsbgseg]
         add ax, strict word 0x10
         push dx
         push ax
@@ -419,7 +419,7 @@ CalStandingsScreen:
 .3:
         push word 0xcee8
         push word [statsteambuf]
-        push word [g_C04C]
+        push word [statsteambufseg]
         call 0x24E6:ShowStandingsTable
         add sp, 0x6
         push 0x42
@@ -446,7 +446,7 @@ CalStandingsScreen:
         add sp, 0xc
         push word 0xcee8
         push word [statsteambuf]
-        push word [g_C04C]
+        push word [statsteambufseg]
         call 0x24E6:StandingsScreen
         add sp, 0x6
         push 0x0
@@ -511,7 +511,7 @@ CalStandingsMenu:
         push strict word str_Tstat
         call 0x14DB:AllocRecData
         add sp, 0x8
-        mov [g_C04C], ax
+        mov [statsteambufseg], ax
         mov [statsteambuf], dx
         push 0x0
         push 0x0
@@ -519,7 +519,7 @@ CalStandingsMenu:
         push strict word str_Keys_2
         call 0x14DB:AllocRecData
         add sp, 0x8
-        mov [g_C048], ax
+        mov [statsplayerbufseg], ax
         mov [statsplayerbuf], dx
         push 0x0
         push 0x0
@@ -527,7 +527,7 @@ CalStandingsMenu:
         push strict word str_Pstat_2
         call 0x14DB:AllocRecData
         add sp, 0x8
-        mov [g_C044], ax
+        mov [statsskaterbufseg], ax
         mov [statsskaterbuf], dx
         push 0x0
         push 0x0
@@ -535,7 +535,7 @@ CalStandingsMenu:
         push strict word str_Gstat_2
         call 0x14DB:AllocRecData
         add sp, 0x8
-        mov [g_C040], ax
+        mov [statsgoaliebufseg], ax
         mov [statsgoaliebuf], dx
         push 0x0
         call far [VisTeam]
@@ -548,7 +548,7 @@ CalStandingsMenu:
         push strict word standingsmenubar
         call 0x0FA0:DrawMenuBar
         add sp, 0xc
-        mov ax, [g_CEE8]
+        mov ax, [standingstab]
         mov [statsmenusel], ax
         push word 0x3701
         push strict word str_Qpp
@@ -574,7 +574,7 @@ CalStandingsMenu:
         call 0x03A3:FindFarMsg
         add sp, 0x6
         mov [statsbgshapes], ax
-        mov [g_C2B4], dx
+        mov [statsbgseg], dx
         push 0x10
         add ax, strict word 0x10
         push dx
@@ -650,7 +650,7 @@ CalStandingsMenu:
         call 0x0FEF:UseOffscreenCanvas
         jmp near .12
 .7:
-        mov word [g_C050], 0x0
+        mov word [statsrosterteam], 0x0
         push word [statscategory]
         mov ax, strict word RosterScreen
         mov dx, 0x2446
@@ -727,30 +727,30 @@ CalStandingsMenu:
 .13:
         call 0x2248:FreeStandingsGfx
         push word [statsteambuf]
-        push word [g_C04C]
+        push word [statsteambufseg]
         call 0x06E1:FindUnlink
         add sp, 0x4
         push word [statsgoaliebuf]
-        push word [g_C040]
+        push word [statsgoaliebufseg]
         call 0x06E1:FindUnlink
         add sp, 0x4
         push word [statsskaterbuf]
-        push word [g_C044]
+        push word [statsskaterbufseg]
         call 0x06E1:FindUnlink
         add sp, 0x4
         push word [statsplayerbuf]
-        push word [g_C048]
+        push word [statsplayerbufseg]
         call 0x06E1:FindUnlink
         add sp, 0x4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [statsplayerbuf], ax
-        mov [g_C048], ax
+        mov [statsplayerbufseg], ax
         mov [statsteambuf], ax
-        mov [g_C04C], ax
+        mov [statsteambufseg], ax
         mov [statsgoaliebuf], ax
-        mov [g_C040], ax
+        mov [statsgoaliebufseg], ax
         mov [statsskaterbuf], ax
-        mov [g_C044], ax
+        mov [statsskaterbufseg], ax
         mov [statsmenucbseg], ax
         mov [statsredrawcb], ax
         db 0x2B, 0xF6                           ; insn: sub si, si

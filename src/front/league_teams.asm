@@ -23,7 +23,7 @@ AddHumanTeam:
         enter 0x46, 0x0
         push di
         push si
-        mov byte [g_E36B], 0x0
+        mov byte [lgflags], 0x0
         push 0x2
         mov ax, 0xe53
         mov cx, 0x3701
@@ -126,7 +126,7 @@ AddHumanTeam:
         jz short .7
         jmp near .1
 .7:
-        cmp byte [g_E36B], 0x0
+        cmp byte [lgflags], 0x0
         jnz short .8
         jmp near .9
 .8:
@@ -343,7 +343,7 @@ RemoveHumanTeam:
         enter 0x46, 0x0
         push di
         push si
-        mov byte [g_E36B], 0x0
+        mov byte [lgflags], 0x0
         push 0x2
         mov ax, 0xe53
         mov cx, 0x3701
@@ -446,7 +446,7 @@ RemoveHumanTeam:
         jz short .7
         jmp near .1
 .7:
-        cmp byte [g_E36B], 0x0
+        cmp byte [lgflags], 0x0
         jnz short .8
         jmp near .9
 .8:

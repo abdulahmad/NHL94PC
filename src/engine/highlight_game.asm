@@ -99,7 +99,7 @@ StartHL2:
         and byte [CrowdState], 0xe4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [gameover], ax
-        mov [g_D6C4], ax
+        mov [crowdheat], ax
         mov ax, [bp + 0x6]
         mov [HomeTeamNum], ax
         mov ax, [bp + 0x8]
@@ -194,7 +194,7 @@ StartHL2:
         mov [sflags], ax
         mov word [gmode2], 0x4
         db 0x2A, 0xC0                           ; insn: sub al, al
-        mov [g_D62B], al
+        mov [iflags_b1], al
         mov [iflags], al
         mov ax, 0xffff
         mov [passplayer], ax
@@ -208,8 +208,8 @@ StartHL2:
         mov [SortPending], ax
         cmp word [ovlseq], -0x1
         jz short .9
-        push word [g_D62E]
-        push word [g_D62C]
+        push word [OverlayGfxSeg]
+        push word [OverlayGfx]
         call 0x06E1:FindUnlink
         add sp, 0x4
 .9:
@@ -226,8 +226,8 @@ StartHL2:
         mov [CrowdSound], ax
         mov [Crowdlevel], ax
         mov ax, 0xffff
-        mov [g_D61C], ax
-        mov [g_D618], ax
+        mov [GoalState_m2], ax
+        mov [GoalState_m6], ax
         call 0x2E42:setupice
         call 0x2E42:SprSortVert
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -424,22 +424,22 @@ StartHL2:
 .18:
         mov ax, 0xec
         sub ax, [camy]
-        mov [g_D6CE], ax
+        mov [ovltimer2], ax
         cmp ax, 0x1a8
         jng short .19
-        mov word [g_D6CE], 0x1a8
+        mov word [ovltimer2], 0x1a8
 .19:
-        cmp word [g_D6CE], 0x0
+        cmp word [ovltimer2], 0x0
         jnl short .20
-        mov word [g_D6CE], 0x0
+        mov word [ovltimer2], 0x0
 .20:
-        push word [g_D6CE]
+        push word [ovltimer2]
         push word [viewscrollx]
         call 0x1F54:FlushDirtyRects
         add sp, 0x4
         call 0x0FEF:UseOtherPage
         mov ax, 0x140
-        sub ax, [g_D6CE]
+        sub ax, [ovltimer2]
         push ax
         mov ax, [viewscrollx]
         sub ax, 0xc0
@@ -449,7 +449,7 @@ StartHL2:
         cmp word [fadeinpending], 0x0
         jz short .21
         mov ax, [PadRepeatOn]
-        mov [g_D46A], ax
+        mov [gameframe], ax
         push word 0x3a0b
         push strict word GamePalette
         push word 0x100
@@ -464,7 +464,7 @@ StartHL2:
         push 0x1
         call 0x1E7E:FadePalette
         add sp, 0x8
-        mov ax, [g_D46A]
+        mov ax, [gameframe]
         mov [PadRepeatOn], ax
 .21:
         push word [bp - 0xf2]
@@ -495,7 +495,7 @@ StartHL2:
         cmp word [fadeinpending], 0x0
         jz short .23
         mov ax, [PadRepeatOn]
-        mov [g_D46A], ax
+        mov [gameframe], ax
         push 0x10
         push word 0x3a0b
         push strict word TeamPalette768
@@ -505,7 +505,7 @@ StartHL2:
         call 0x1E7E:FadePalette
         add sp, 0x8
         mov word [fadeinpending], 0x0
-        mov ax, [g_D46A]
+        mov ax, [gameframe]
         mov [PadRepeatOn], ax
 .23:
         cmp word [framesync], 0x0
@@ -514,8 +514,8 @@ StartHL2:
         mov word [PadRepeatOn], 0x0
         cmp word [ovlseq], -0x1
         jz short .25
-        push word [g_D62E]
-        push word [g_D62C]
+        push word [OverlayGfxSeg]
+        push word [OverlayGfx]
         call 0x06E1:FindUnlink
         add sp, 0x4
 .25:
@@ -664,12 +664,12 @@ StartHL2:
         call 0x1E64:LoadTeamPalette
         add sp, 0x8
         call 0x1B35:FreePPVFilesThunk
-        push word [g_C25E]
-        push word [g_C25C]
+        push word [RinkEndArtSeg]
+        push word [RinkEndArt]
         call 0x06E1:FindUnlink
         add sp, 0x4
-        push word [g_C25A]
-        push word [g_C258]
+        push word [ScoreboardArtSeg]
+        push word [ScoreboardArt]
         call 0x06E1:FindUnlink
         add sp, 0x4
         cmp word [HomeTeamNum], 0x18
@@ -691,8 +691,8 @@ StartHL2:
         push word [HomeTeamNum]
         call 0x2083:DrawHudPanel
         add sp, 0x8
-        push word [g_C25A]
-        push word [g_C258]
+        push word [ScoreboardArtSeg]
+        push word [ScoreboardArt]
         call 0x06E1:FindUnlink
         add sp, 0x4
         mov word [fadeinpending], 0x1

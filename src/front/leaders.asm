@@ -20,14 +20,14 @@ CmpGoals:
         jnz short .1
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         mov dx, [ss:statsskaterbuf]
         jmp short .2
         db 0x90
 .1:
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         mov dx, [ss:statsskaterbuf]
         add ax, strict word 0x12
 .2:
@@ -37,7 +37,7 @@ CmpGoals:
         jnz short .3
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         mov ds, dx
         mov [bp - 0x2], ds
@@ -45,7 +45,7 @@ CmpGoals:
 .3:
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         mov dx, [ss:statsskaterbuf]
         add ax, strict word 0x12
         db 0x8B, 0xD8                           ; insn: mov bx, ax
@@ -112,14 +112,14 @@ CmpAssists:
         jnz short .1
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         mov dx, [ss:statsskaterbuf]
         jmp short .2
         db 0x90
 .1:
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         mov dx, [ss:statsskaterbuf]
         add ax, strict word 0x12
 .2:
@@ -129,7 +129,7 @@ CmpAssists:
         jnz short .3
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         mov ds, dx
         mov [bp - 0x2], ds
@@ -137,7 +137,7 @@ CmpAssists:
 .3:
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         mov dx, [ss:statsskaterbuf]
         add ax, strict word 0x12
         db 0x8B, 0xD8                           ; insn: mov bx, ax
@@ -200,14 +200,14 @@ CmpPPGoals:
         jnz short .1
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         mov dx, [ss:statsskaterbuf]
         jmp short .2
         db 0x90
 .1:
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         mov dx, [ss:statsskaterbuf]
         add ax, strict word 0x12
 .2:
@@ -217,7 +217,7 @@ CmpPPGoals:
         jnz short .3
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         mov ds, dx
         mov [bp - 0x2], ds
@@ -225,7 +225,7 @@ CmpPPGoals:
 .3:
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         mov dx, [ss:statsskaterbuf]
         add ax, strict word 0x12
         db 0x8B, 0xD8                           ; insn: mov bx, ax
@@ -299,14 +299,14 @@ CmpSHGoals:
         jnz short .1
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         mov dx, [ss:statsskaterbuf]
         jmp short .2
         db 0x90
 .1:
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         mov dx, [ss:statsskaterbuf]
         add ax, strict word 0x12
 .2:
@@ -316,7 +316,7 @@ CmpSHGoals:
         jnz short .3
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         mov ds, dx
         mov [bp - 0x2], ds
@@ -324,7 +324,7 @@ CmpSHGoals:
 .3:
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         mov dx, [ss:statsskaterbuf]
         add ax, strict word 0x12
         db 0x8B, 0xD8                           ; insn: mov bx, ax
@@ -398,14 +398,14 @@ CmpPlusMinus:
         jnz short .1
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         mov dx, [ss:statsskaterbuf]
         jmp short .2
         db 0x90
 .1:
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         mov dx, [ss:statsskaterbuf]
         add ax, strict word 0x12
 .2:
@@ -415,7 +415,7 @@ CmpPlusMinus:
         jnz short .3
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         mov ds, dx
         mov [bp - 0x2], ds
@@ -423,7 +423,7 @@ CmpPlusMinus:
 .3:
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         mov dx, [ss:statsskaterbuf]
         add ax, strict word 0x12
         db 0x8B, 0xD8                           ; insn: mov bx, ax
@@ -490,14 +490,14 @@ CmpPIM:
         jnz short .1
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         mov dx, [ss:statsskaterbuf]
         jmp short .2
         db 0x90
 .1:
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         mov dx, [ss:statsskaterbuf]
         add ax, strict word 0x12
 .2:
@@ -507,7 +507,7 @@ CmpPIM:
         jnz short .3
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         mov ds, dx
         mov [bp - 0x2], ds
@@ -515,7 +515,7 @@ CmpPIM:
 .3:
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x30
-        add ax, [ss:g_C044]
+        add ax, [ss:statsskaterbufseg]
         mov dx, [ss:statsskaterbuf]
         add ax, strict word 0x12
         db 0x8B, 0xD8                           ; insn: mov bx, ax
@@ -590,12 +590,12 @@ CmpShootPct:
         mov si, [si]
         mov [bp - 0xc], si
         shl si, 1
-        add si, [g_CFC8]
-        mov es, [g_CFCA]
+        add si, [statsrecs]
+        mov es, [statsrecsseg]
         mov ax, [es:si]
         mov si, [bx]
         shl si, 1
-        add si, [g_CFC8]
+        add si, [statsrecs]
         mov cx, [es:si]
         db 0x3B, 0xC1                           ; insn: cmp ax, cx
         jz short .1
@@ -609,12 +609,12 @@ CmpShootPct:
         cmp word [statscontext], 0x0
         jnz short .2
         imul ax, [bx], 0x30
-        add ax, [g_C044]
+        add ax, [statsskaterbufseg]
         mov dx, [statsskaterbuf]
         jmp short .3
 .2:
         imul ax, [bx], 0x30
-        add ax, [g_C044]
+        add ax, [statsskaterbufseg]
         mov dx, [statsskaterbuf]
         add ax, strict word 0x12
 .3:
@@ -623,11 +623,11 @@ CmpShootPct:
         cmp word [statscontext], 0x0
         jnz short .4
         imul ax, [bp - 0xc], 0x30
-        add ax, [g_C044]
+        add ax, [statsskaterbufseg]
         jmp short .5
 .4:
         imul ax, [bp - 0xc], 0x30
-        add ax, [g_C044]
+        add ax, [statsskaterbufseg]
         mov dx, [statsskaterbuf]
         add ax, strict word 0x12
 .5:
@@ -695,14 +695,14 @@ CmpGoalieWins:
         jnz short .1
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x36
-        add ax, [ss:g_C040]
+        add ax, [ss:statsgoaliebufseg]
         mov dx, [ss:statsgoaliebuf]
         jmp short .2
         db 0x90
 .1:
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x36
-        add ax, [ss:g_C040]
+        add ax, [ss:statsgoaliebufseg]
         mov dx, [ss:statsgoaliebuf]
         add ax, strict word 0x16
 .2:
@@ -712,7 +712,7 @@ CmpGoalieWins:
         jnz short .3
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x36
-        add ax, [ss:g_C040]
+        add ax, [ss:statsgoaliebufseg]
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         mov ds, dx
         mov [bp - 0x2], ds
@@ -720,7 +720,7 @@ CmpGoalieWins:
 .3:
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x36
-        add ax, [ss:g_C040]
+        add ax, [ss:statsgoaliebufseg]
         mov dx, [ss:statsgoaliebuf]
         add ax, strict word 0x16
         db 0x8B, 0xD8                           ; insn: mov bx, ax
@@ -822,14 +822,14 @@ CmpSavePct:
         jnz short .1
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x36
-        add ax, [ss:g_C040]
+        add ax, [ss:statsgoaliebufseg]
         mov dx, [ss:statsgoaliebuf]
         jmp short .2
         db 0x90
 .1:
         mov bx, [bp + 0x6]
         imul ax, [ss:bx], 0x36
-        add ax, [ss:g_C040]
+        add ax, [ss:statsgoaliebufseg]
         mov dx, [ss:statsgoaliebuf]
         add ax, strict word 0x16
 .2:
@@ -839,7 +839,7 @@ CmpSavePct:
         jnz short .3
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x36
-        add ax, [ss:g_C040]
+        add ax, [ss:statsgoaliebufseg]
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         mov ds, dx
         mov [bp - 0x2], ds
@@ -847,7 +847,7 @@ CmpSavePct:
 .3:
         mov si, [bp + 0x8]
         imul ax, [ss:si], 0x36
-        add ax, [ss:g_C040]
+        add ax, [ss:statsgoaliebufseg]
         mov dx, [ss:statsgoaliebuf]
         add ax, strict word 0x16
         db 0x8B, 0xD8                           ; insn: mov bx, ax
@@ -937,7 +937,7 @@ LeadersScreen:
         push strict word str_Keys
         call 0x14DB:AllocRecData
         add sp, 0x8
-        mov [g_C048], ax
+        mov [statsplayerbufseg], ax
         mov [statsplayerbuf], dx
         cmp word [bp + 0x6], 0x8
         jnl short .1
@@ -947,7 +947,7 @@ LeadersScreen:
         push strict word str_Pstat
         call 0x14DB:AllocRecData
         add sp, 0x8
-        mov [g_C044], ax
+        mov [statsskaterbufseg], ax
         mov [statsskaterbuf], dx
         jmp short .2
 .1:
@@ -957,7 +957,7 @@ LeadersScreen:
         push strict word str_Gstat
         call 0x14DB:AllocRecData
         add sp, 0x8
-        mov [g_C040], ax
+        mov [statsgoaliebufseg], ax
         mov [statsgoaliebuf], dx
 .2:
         cmp word [bp + 0x6], 0x7
@@ -968,8 +968,8 @@ LeadersScreen:
         push strict word str_Addsort
         call 0x14DB:AllocRecData
         add sp, 0x8
-        mov [g_CFC8], ax
-        mov [g_CFCA], dx
+        mov [statsrecs], ax
+        mov [statsrecsseg], dx
 .3:
         cmp word [bp + 0x6], 0x8
         jz short .4
@@ -1178,7 +1178,7 @@ LeadersScreen:
         jmp near .48
 .25:
         imul bx, [bp - 0x1e4], 0x36
-        les si, [g_C040]
+        les si, [statsgoaliebufseg]
         lea di, [bx + si]
         lea si, [bp - 0xa6]
         mov cx, 0x1b
@@ -1203,7 +1203,7 @@ LeadersScreen:
         jnl short .28
 .27:
         imul bx, [bp - 0x1e4], 0x34
-        les si, [g_C048]
+        les si, [statsplayerbufseg]
         lea di, [bx + si]
         lea si, [bp - 0x1b2]
         mov cx, 0x1a
@@ -1220,13 +1220,13 @@ LeadersScreen:
         mov ax, [bp + si - 0x1e4]
         mov [bp - 0x1b6], ax
         imul bx, ax, 0x34
-        les si, [g_C048]
+        les si, [statsplayerbufseg]
         lea di, [bx + si]
         lea si, [bp - 0x1b2]
         mov cx, 0x1a
         rep movsw
         imul bx, [bp - 0x1b6], 0x36
-        les si, [g_C040]
+        les si, [statsgoaliebufseg]
         lea di, [bx + si]
         lea si, [bp - 0xa6]
         mov cx, 0x1b
@@ -1292,7 +1292,7 @@ LeadersScreen:
         jmp near .48
 .38:
         imul bx, [bp - 0x1e4], 0x30
-        les si, [g_C044]
+        les si, [statsskaterbufseg]
         lea di, [bx + si]
         lea si, [bp - 0x214]
         mov cx, 0x18
@@ -1336,14 +1336,14 @@ LeadersScreen:
         call 0x0000:__aFldiv
         mov bx, [bp - 0x1e4]
         shl bx, 1
-        les si, [g_CFC8]
+        les si, [statsrecs]
         mov [es:bx + si], ax
         jmp short .44
         db 0x90
 .43:
         mov bx, [bp - 0x1e4]
         shl bx, 1
-        les si, [g_CFC8]
+        les si, [statsrecs]
         mov word [es:bx + si], 0x0
 .44:
         cmp word [bp - 0x1e4], 0x14
@@ -1370,13 +1370,13 @@ LeadersScreen:
         mov ax, [bp + si - 0x1e4]
         mov [bp - 0x1b6], ax
         imul bx, ax, 0x34
-        les si, [g_C048]
+        les si, [statsplayerbufseg]
         lea di, [bx + si]
         lea si, [bp - 0x1b2]
         mov cx, 0x1a
         rep movsw
         imul bx, [bp - 0x1b6], 0x30
-        les si, [g_C044]
+        les si, [statsskaterbufseg]
         lea di, [bx + si]
         lea si, [bp - 0x214]
         mov cx, 0x18
@@ -1385,7 +1385,7 @@ LeadersScreen:
         jnz short .47
         mov bx, [bp - 0x1e4]
         shl bx, 1
-        les si, [g_CFC8]
+        les si, [statsrecs]
         mov ax, [es:bx + si]
         mov bx, [bp - 0x1b6]
         shl bx, 1
@@ -1460,13 +1460,13 @@ LeadersScreen:
         call 0x03A3:FindFarMsg
         add sp, 0x6
         mov [statsbgshapes], ax
-        mov [g_C2B4], dx
+        mov [statsbgseg], dx
         push word 0xc8
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov dx, 0x140
         mov bx, 0xa
         call 0x0FEF:SetClipRectRegs
-        push word [g_C2B4]
+        push word [statsbgseg]
         push word [statsbgshapes]
         call 0x0FEF:DrawRleTransBody
         add sp, 0x4
@@ -1601,8 +1601,8 @@ LeadersScreen:
         add sp, 0x4
         cmp word [bp + 0x6], 0x7
         jnz short .53
-        push word [g_CFCA]
-        push word [g_CFC8]
+        push word [statsrecsseg]
+        push word [statsrecs]
         call 0x06E1:FindUnlink
         add sp, 0x4
 .53:
@@ -1611,7 +1611,7 @@ LeadersScreen:
         jmp near LeadersScreenJumpTable.7
 .54:
         push word [statsskaterbuf]
-        push word [g_C044]
+        push word [statsskaterbufseg]
         jmp near LeadersScreenJumpTable.8
         db 0x90
 .55:
@@ -1620,7 +1620,7 @@ LeadersScreen:
         db 0x90
 .56:
         imul bx, [bp - 0x1b6], 0x30
-        add bx, [g_C044]
+        add bx, [statsskaterbufseg]
         mov es, [statsskaterbuf]
         add bx, 0x12
 .57:
@@ -1656,12 +1656,12 @@ LeadersScreen:
         cmp word [statscontext], 0x0
         jnz short .59
         imul bx, [bp - 0x1b6], 0x36
-        add bx, [g_C040]
+        add bx, [statsgoaliebufseg]
         mov es, [statsgoaliebuf]
         jmp short .60
 .59:
         imul bx, [bp - 0x1b6], 0x36
-        add bx, [g_C040]
+        add bx, [statsgoaliebufseg]
         mov es, [statsgoaliebuf]
         add bx, 0x16
 .60:
@@ -1716,7 +1716,7 @@ LeadersScreen:
         add sp, 0x8
         mov bx, [bp - 0x1b6]
         shl bx, 1
-        les si, [g_CFC8]
+        les si, [statsrecs]
         mov ax, [es:bx + si]
         mov cx, 0xa
         db 0x8B, 0xD8                           ; insn: mov bx, ax
@@ -1863,7 +1863,7 @@ LeadersScreenJumpTable:                         ; jump table of LeadersScreen: 1
         mov ax, [bp + si - 0x1e2]
         mov [bp - 0x1b6], ax
         imul ax, ax, 0x34
-        add ax, [g_C048]
+        add ax, [statsplayerbufseg]
         mov dx, [statsplayerbuf]
         push ds
         lea di, [bp - 0x1b2]
@@ -1882,7 +1882,7 @@ LeadersScreenJumpTable:                         ; jump table of LeadersScreen: 1
         call 0x0000:_sprintf
         add sp, 0x6
         push ds
-        push strict word g_CFD4
+        push strict word statstext
         push word [bp - 0x17a]
         push 0x5
         call 0x0D39:DrawShadowText
@@ -1906,11 +1906,11 @@ LeadersScreenJumpTable:                         ; jump table of LeadersScreen: 1
         push ss
         push ax
         push ds
-        push strict word g_CFD4
+        push strict word statstext
         call 0x0F89:FitNameToWidth
         add sp, 0xe
         push ds
-        push strict word g_CFD4
+        push strict word statstext
         push word [bp - 0x17a]
         push 0x28
         call 0x0D39:DrawShadowText
@@ -1967,18 +1967,18 @@ LeadersScreenJumpTable:                         ; jump table of LeadersScreen: 1
         jmp near LeadersScreen.56
 .6:
         imul bx, [bp - 0x1b6], 0x30
-        add bx, [g_C044]
+        add bx, [statsskaterbufseg]
         mov es, [statsskaterbuf]
         jmp near LeadersScreen.57
         db 0x90
 .7:
         push word [statsgoaliebuf]
-        push word [g_C040]
+        push word [statsgoaliebufseg]
 .8:
         call 0x06E1:FindUnlink
         add sp, 0x4
         push word [statsplayerbuf]
-        push word [g_C048]
+        push word [statsplayerbufseg]
         call 0x06E1:FindUnlink
         add sp, 0x4
         pop si

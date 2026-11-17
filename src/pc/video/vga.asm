@@ -228,7 +228,7 @@ FillRect:
 
 ;-----------------------------------------------------------------------------
 ; UseCurrentPage                                              0FEF:01A6  94 PC
-; Points CurCanvas at the page in g_74DC.
+; Points CurCanvas at the page in CurPage.
 ;-----------------------------------------------------------------------------
 UseCurrentPage:
         mov bx, [CurPage]
@@ -2338,7 +2338,7 @@ UseOtherPage:
 
 ;-----------------------------------------------------------------------------
 ; GetPage                                                     0FEF:11B1  94 PC
-; Returns g_74DC.
+; Returns CurPage.
 ;-----------------------------------------------------------------------------
 GetPage:
         mov ax, [CurPage]
@@ -7740,7 +7740,7 @@ ClearScreenColor:
 
 ;-----------------------------------------------------------------------------
 ; DrawScaledColor                                             0FEF:3AA8  94 PC
-; Sets g_7664/g_7666 then enters DrawScaled.
+; Sets ScaleColor/ScaleMode then enters DrawScaled.
 ;-----------------------------------------------------------------------------
 DrawScaledColor:
         push bp

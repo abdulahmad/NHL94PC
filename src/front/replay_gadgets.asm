@@ -104,7 +104,7 @@ LoadReplayGadgets:
         inc di
         cmp di, 0x4
         jl short .1
-        mov word [g_DADA], 0xd2e0
+        mov word [ReplayGadgets], 0xd2e0
         mov word [bp - 0x8], 0x0
         mov si, 0xdadc
         lea di, [bp - 0x90]
@@ -156,9 +156,9 @@ LoadReplayGadgets:
         mov [bp - 0x6c], bx
         mov [bp - 0x6a], es
         mov ax, [es:bx]
-        mov [g_DB12], ax
+        mov [ReplayBackSeg], ax
         mov ax, [es:bx + 0x2]
-        mov [g_DB14], ax
+        mov [ReplayBack2], ax
         mov word [bp - 0x12], 0xdada
         lea di, [bp - 0x90]
         mov al, [bp - 0xf]
@@ -250,8 +250,8 @@ LoadReplayGadgets:
         push strict word str_HilightFnt
         call 0x149D:LoadRawHeader
         add sp, 0x4
-        mov [g_DACE], ax
-        mov [g_DAD0], dx
+        mov [ReplayFont], ax
+        mov [ReplayFontSeg], dx
         pop si
         pop di
         leave
