@@ -1,5 +1,5 @@
-;	Segment build for seg/seg048.asm: sets its origin and the outside labels it uses, then includes the file on its own
-;	for checking against the EXE (tools/verify_segment.py seg048).
+;	Segment build for seg/seg048.asm: sets its origin and the outside labels it uses (their values in the
+;	full build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).
 	bits	16
 	org	0x0
 %include "seg/seg048.asm"
