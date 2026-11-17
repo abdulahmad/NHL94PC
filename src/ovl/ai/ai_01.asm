@@ -3,7 +3,7 @@
         mov word [PadRepeatOn], 0x0
         retf
 
-Ai_1FAA_000E:
+StartHL2:
         enter 0xfc, 0x0
         push di
         push si
@@ -85,7 +85,7 @@ Ai_1FAA_000E:
         push 0x1
         call 0x1E7E:Game_1E7E_04C0
         add sp, 0x8
-        call 0x2352:Ai_2352_0174
+        call 0x2352:FlushGSumQueue
         and byte [CrowdState], 0xe4
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [g_48C0], ax
@@ -226,7 +226,7 @@ Ai_1FAA_000E:
         mov [g_29B0], ax
         mov [g_29AE], ax
         mov [g_29AC], ax
-        call 0x2E42:Ai_2E42_2E40
+        call 0x2E42:ResetBench
         push word 0xb362
         call 0x2E42:reenergizeteam
         add sp, 0x2
@@ -234,7 +234,7 @@ Ai_1FAA_000E:
         call 0x2E42:setpersonel
         add sp, 0x2
         push word 0xb362
-        call 0x2E42:Ai_2E42_05E2
+        call 0x2E42:forcepldata
         add sp, 0x2
         mov ax, 0xffff
         mov [g_B382], ax
@@ -247,13 +247,13 @@ Ai_1FAA_000E:
         call 0x2E42:setpersonel
         add sp, 0x2
         push word 0xb438
-        call 0x2E42:Ai_2E42_05E2
+        call 0x2E42:forcepldata
         add sp, 0x2
         mov ax, 0xffff
         mov [g_B458], ax
         mov [g_B456], ax
         mov [g_B454], ax
-        call 0x2E42:Ai_2E42_2EAC
+        call 0x2E42:resetplstuff
         mov word [bp - 0xf6], 0xb50e
         mov word [bp - 0xf0], 0x0
         jmp short .12
@@ -361,7 +361,7 @@ Ai_1FAA_000E:
         add sp, 0x4
         call 0x2E42:DoGameFrame
         call 0x2E42:DoGameFrame
-        call 0x2E42:Ai_2E42_0026
+        call 0x2E42:SprSort
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [bp - 0x64], ax
         mov [g_D6D2], ax
@@ -628,7 +628,7 @@ Ai_1FAA_000E:
         push 0x4
         call 0x1B35:OvlThunk173
         add sp, 0x2
-        call 0x2E42:Ai_2E42_2D88
+        call 0x2E42:Intermission
         mov byte [g_29BB], 0x0
         mov byte [g_29BB], 0x1
         test byte [g_29DA], 0x1
@@ -703,7 +703,7 @@ Ai_1FAA_000E:
         push word 0xbd0e
         call 0x1E7E:Game_1E7E_0A5C
         add sp, 0x4
-        call 0x327B:Ai_327B_0B2C
+        call 0x327B:ClearPenaltyBuffer
         mov word [g_29CE], 0xffff
         call 0x2C24:joyq_flush
         cmp word [g_4B02], 0x0

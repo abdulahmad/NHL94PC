@@ -7,7 +7,7 @@ SegStart_11DE3:
         retf
         db 0x90
 
-Ai_317A_0008:
+SortPlayersByPos:
         enter 0x8, 0x0
         push di
         push si
@@ -71,7 +71,7 @@ Ai_317A_0008:
         retf
         db 0x90
 
-Ai_317A_0086:
+SortNonDefPlayers:
         enter 0x8, 0x0
         push di
         push si
@@ -268,7 +268,7 @@ BuildDefaultLines:
         push ax
         push word [bp - 0xc]
         push cs
-        call Ai_317A_0008
+        call SortPlayersByPos
         add sp, 0x8
         push 0x52
         lea ax, [bp + di - 0x76]
@@ -278,7 +278,7 @@ BuildDefaultLines:
         push ax
         push word [bp - 0xc]
         push cs
-        call Ai_317A_0008
+        call SortPlayersByPos
         add sp, 0x8
         push 0x4c
         lea ax, [bp + di - 0x76]
@@ -288,7 +288,7 @@ BuildDefaultLines:
         push ax
         push word [bp - 0xc]
         push cs
-        call Ai_317A_0008
+        call SortPlayersByPos
         add sp, 0x8
         push 0x43
         lea ax, [bp + di - 0x76]
@@ -298,7 +298,7 @@ BuildDefaultLines:
         push ax
         push word [bp - 0xc]
         push cs
-        call Ai_317A_0008
+        call SortPlayersByPos
         add sp, 0x8
         push 0x44
         lea ax, [bp + di - 0xda]
@@ -308,7 +308,7 @@ BuildDefaultLines:
         push ax
         push word [bp - 0xc]
         push cs
-        call Ai_317A_0008
+        call SortPlayersByPos
         add sp, 0x8
         push 0x52
         lea ax, [bp + di - 0xda]
@@ -318,7 +318,7 @@ BuildDefaultLines:
         push ax
         push word [bp - 0xc]
         push cs
-        call Ai_317A_0008
+        call SortPlayersByPos
         add sp, 0x8
         push 0x4c
         lea ax, [bp + di - 0xda]
@@ -328,7 +328,7 @@ BuildDefaultLines:
         push ax
         push word [bp - 0xc]
         push cs
-        call Ai_317A_0008
+        call SortPlayersByPos
         add sp, 0x8
         push 0x43
         lea ax, [bp + di - 0xda]
@@ -338,7 +338,7 @@ BuildDefaultLines:
         push ax
         push word [bp - 0xc]
         push cs
-        call Ai_317A_0008
+        call SortPlayersByPos
         add sp, 0x8
         lea ax, [bp + di - 0x76]
         push ax
@@ -347,7 +347,7 @@ BuildDefaultLines:
         push ax
         push word [bp - 0xc]
         push cs
-        call Ai_317A_0086
+        call SortNonDefPlayers
         add sp, 0x6
         lea ax, [bp + di - 0xda]
         push ax
@@ -356,7 +356,7 @@ BuildDefaultLines:
         push ax
         push word [bp - 0xc]
         push cs
-        call Ai_317A_0086
+        call SortNonDefPlayers
         add sp, 0x6
         mov word [bp - 0x6], 0x0
         mov ax, [bp - 0xe]

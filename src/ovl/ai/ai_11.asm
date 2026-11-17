@@ -168,7 +168,7 @@ faceoffinput:
         jns short .6
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0x7f1
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         pop si
         leave
         retf
@@ -185,7 +185,7 @@ faceoffinput:
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0xd05
 .5:
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         mov word [si + 0x2e], 0xffff
 .6:
         pop si
@@ -202,7 +202,7 @@ Acheck:
         jnz short .1
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0x873
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
 .1:
         mov dx, [si + 0x6]
         mov bx, [bp + 0x8]
@@ -221,7 +221,7 @@ Acheck:
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0x639
 .4:
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         pop si
         leave
         retf
@@ -237,7 +237,7 @@ Holdplayer:
         jnz short .1
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0x873
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
 .1:
         mov ax, [si + 0x14]
         shl ax, byte 0x7
@@ -504,7 +504,7 @@ doinput:
 .29:
         push ax
         push word [di + 0x5e]
-        call 0x2E42:Ai_2E42_01DE
+        call 0x2E42:restorepl
         add sp, 0x4
         mov [g_29C2], ax
         jmp near .49
@@ -575,7 +575,7 @@ doinput:
 .40:
         push word [bp + 0x8]
         push si
-        call 0x2E42:Ai_2E42_00B2
+        call 0x2E42:changeplayer
         jmp near .53
         db 0x90
 .41:
@@ -628,7 +628,7 @@ doinput:
         jz short .49
         push ax
         push word [di + 0x5e]
-        call 0x2E42:Ai_2E42_01DE
+        call 0x2E42:restorepl
         add sp, 0x4
         mov [g_29C4], ax
 .49:
@@ -901,7 +901,7 @@ assonetimer:
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0xe2b
 .8:
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         pop si
         pop di
         leave

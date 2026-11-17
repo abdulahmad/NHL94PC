@@ -949,7 +949,7 @@ assstanley:
         mov byte [si + 0x46], 0x0
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0xecb
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         mov word [g_29CE], 0x100
 .2:
         cmp word [si + 0x38], 0x0
@@ -962,7 +962,7 @@ assstanley:
         mov word [bx + di + 0x2c], 0x300
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, str_EaNhlInt_2
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
 .3:
         mov ax, [si + 0x2a]
         sub ax, [si + 0x2]
@@ -1090,7 +1090,7 @@ assscore:
 .12:
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, [g_D672]
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         pop si
         leave
         retf
@@ -1148,7 +1148,7 @@ asseben:
         and ax, 0x574
         add ax, 0x7a1
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         pop si
         leave
         retf
@@ -1199,7 +1199,7 @@ assleaveice:
         mov [g_D6C8], ax
         push ax
         push si
-        call 0x2E42:Ai_2E42_00B2
+        call 0x2E42:changeplayer
         add sp, 0x4
 .5:
         mov word [si + 0x28], 0x8
@@ -1245,7 +1245,7 @@ assleaveice:
         add ax, 0x289
         mov [g_D672], ax
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         or byte [si + 0x44], 0x4
         cmp word [si + 0x36], 0x4
         jz short .12
@@ -1278,7 +1278,7 @@ assleaveice:
         and ax, 0x56e
         add ax, 0x7bf
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         or byte [si + 0x44], 0x20
         mov word [si + 0x26], 0x64
         cmp word [g_29DA], 0x4
@@ -1355,7 +1355,7 @@ asspenalty:
         mov [g_D6C8], ax
         push ax
         push si
-        call 0x2E42:Ai_2E42_00B2
+        call 0x2E42:changeplayer
         add sp, 0x4
 .5:
         mov word [si + 0x28], 0x8
@@ -1416,7 +1416,7 @@ asspenalty:
         or byte [si + 0x44], 0x4
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0x289
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         mov word [g_D6B8], 0x4
         cmp word [si + 0x36], 0x4
         jz short .15
@@ -1447,7 +1447,7 @@ asspenalty:
         mov word [si + 0x36], 0x2
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0x7a1
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         and byte [si + 0x45], 0xef
         mov bx, [si + 0x60]
         cmp word [bx + 0x22], 0x4
@@ -1549,8 +1549,8 @@ assepen:
         or byte [si + 0x44], 0x20
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0x7bf
-        call 0x2E42:Ai_2E42_0012
-        call 0x2E42:Ai_2E42_0026
+        call 0x2E42:SetSPA
+        call 0x2E42:SprSort
         pop si
         leave
         retf
@@ -1681,7 +1681,7 @@ assbench:
         add ax, 0x289
         mov [g_D672], ax
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         or byte [si + 0x44], 0x4
         cmp word [si + 0x36], 0x4
         jz short .16
@@ -1714,7 +1714,7 @@ assbench:
         and ax, 0x56e
         add ax, 0x7bf
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         or byte [si + 0x44], 0x20
         mov word [si + 0x26], 0x64
         pop si
@@ -1972,7 +1972,7 @@ assgoalie:
         mov ax, 0x1
 .11:
         mov [bp - 0x2], ax
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         test byte [g_29BB], 0x1
         jz short .12
         jmp near .81
@@ -2176,7 +2176,7 @@ assgoalie:
         mov [bx + 0x36], ax
         mov word [bx + 0x3e], 0x8
         mov ax, 0x181
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         mov bx, [bp + 0x6]
         or byte [bx + 0x45], 0x2
         cmp word [CrowdSound], 0x4b0
@@ -2510,7 +2510,7 @@ assgoalie:
 .71:
         mov bx, [bp + 0x6]
         mov ax, [g_D672]
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         cmp word [CrowdSound], 0x3e8
         jg short .72
         add word [CrowdSound], 0x96
@@ -3097,7 +3097,7 @@ assnearest:
         mov [bp - 0x2], ax
 .19:
         push word [bp - 0x8]
-        call 0x2E42:Ai_2E42_065C
+        call 0x2E42:GetHot
         add sp, 0x2
         mov bx, [g_298C]
         mov ax, [bx]
@@ -3540,7 +3540,7 @@ assfaceoffpl:
         mov [si + 0x12], ax
         db 0x8B, 0xDE                           ; insn: mov bx, si
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         test byte [si + 0x44], 0x40
         jz short .3
         mov ax, 0xa
@@ -3623,7 +3623,7 @@ assfaceoffpl:
 .14:
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
 .15:
         pop si
         pop di
@@ -3648,7 +3648,7 @@ pucknorm:
         jns short .2
         add word [si + 0x26], 0x5
         push si
-        call 0x2E42:Ai_2E42_04F2
+        call 0x2E42:findpc
         add sp, 0x2
 .2:
         mov bx, [g_2996]
@@ -3665,7 +3665,7 @@ pucknorm:
         call a2touchpuck
         add sp, 0x2
         push di
-        call 0x2E42:Ai_2E42_065C
+        call 0x2E42:GetHot
         add sp, 0x2
         mov ax, [di + 0x2]
         sub ax, [si + 0x2]
@@ -4038,7 +4038,7 @@ a2offsides:
         jnz short .1
         push 0x8
         push si
-        call 0x327B:Ai_327B_0012
+        call 0x327B:AddPenalty
         add sp, 0x4
         mov ax, 0x1
         pop si
@@ -4187,7 +4187,7 @@ a2touchpuck:
         jz short .7
         push 0x17
         push si
-        call 0x327B:Ai_327B_0012
+        call 0x327B:AddPenalty
         add sp, 0x4
 .7:
         test byte [g_D62A], 0x4
@@ -4214,7 +4214,7 @@ a2touchpuck:
         shl ax, byte 0x7
         add ax, 0xb50e
         push ax
-        call 0x327B:Ai_327B_0012
+        call 0x327B:AddPenalty
         add sp, 0x4
         pop si
         pop di
@@ -4306,7 +4306,7 @@ puckflip:
         mov word [si + 0x3c], 0xffff
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0x239
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         pop si
         leave
         retf
@@ -4339,7 +4339,7 @@ assrefatdot:
         mov [si + 0x36], ax
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0xc57
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         and byte [si + 0x44], 0xfb
         and byte [si + 0x45], 0xdf
 .4:
@@ -4399,7 +4399,7 @@ assreffollow:
         and byte [si + 0x44], 0xfd
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0xa5b
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
 .3:
         mov bx, [g_298A]
         mov ax, [bx]
@@ -4782,7 +4782,7 @@ SkateToSpot:
         db 0x8B, 0xDE                           ; insn: mov bx, si
         db 0x8B, 0xC7                           ; insn: mov ax, di
 .33:
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
 .34:
         cmp word [bp - 0x6], 0x0
         jng short .35
@@ -4815,7 +4815,7 @@ SkateToSpot:
         db 0x8B, 0xC7                           ; insn: mov ax, di
         db 0x8B, 0xDE                           ; insn: mov bx, si
 .39:
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
 .40:
         cmp word [bp - 0x8], 0x0
         jng short .41
@@ -5021,7 +5021,7 @@ assrefwhistle:
         mov [si + 0x32], ax
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0xa5b
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         push cs
         call CrowdOnStoppage
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -5056,7 +5056,7 @@ assrefwhistle:
         add word [si + 0x26], 0x8
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0xa5b
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         mov word [g_D6B8], 0x2
         mov word [g_D6BA], 0x0
         mov ax, [g_D6B8]
@@ -5105,7 +5105,7 @@ assrefwhistle:
         or byte [si + 0x44], 0x20
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0xc1b
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         push 0x22
         jmp short .13
 .17:
@@ -5252,7 +5252,7 @@ assrefsignal:
         add word [si + 0x26], 0x8
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0xa5b
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         mov bx, [g_29D6]
         shl bx, 1
         mov ax, [bx + g_59C6]
@@ -5285,7 +5285,7 @@ assrefsignal:
         shl bx, 1
         mov ax, [bx + g_59F8]
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         jmp near .13
 .21:
         mov ax, [si + 0x2a]
@@ -5330,7 +5330,7 @@ assrefgoalpa:
         jmp near .14
 .5:
         mov ax, 0xa5b
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         cmp word [g_49F0], 0xec
         jnl short .6
         jmp near .52
@@ -5415,7 +5415,7 @@ assrefgoalpa:
         cmp byte [g_D676], 0x0
         jz short .15
         mov ax, 0xa5b
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         mov word [g_29D4], 0xffff
         pop si
         pop di
@@ -5492,7 +5492,7 @@ assrefgoalpa:
         mov [bx + 0x30], ax
         mov [bx + 0x32], ax
         mov ax, 0xa5b
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         cmp word [g_29D6], 0x4
         jnz short .30
         call 0x2352:QueueGoalieNote
@@ -5769,7 +5769,7 @@ assrefgoalpa:
         mov bx, [bp + 0x6]
         add word [bx + 0x26], 0x8
         mov ax, 0xa5b
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         mov bx, [g_298A]
         mov ax, [bx]
         mov bx, [bp + 0x6]
@@ -5825,7 +5825,7 @@ assrefgoalpa:
         mov bx, [bp + 0x6]
         or byte [bx + 0x44], 0x20
         mov ax, 0xc03
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         push 0x22
         jmp near .17
         db 0x90
@@ -5891,7 +5891,7 @@ assrefdrop:
         mov word [bx], 0xff9c
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0xa5b
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
 .4:
         mov ax, [si + 0x6]
         sub ax, [si + 0x2c]
@@ -5945,7 +5945,7 @@ assrefdrop:
         add word [si + 0x26], 0x8
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0xa5b
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         cmp word [g_29B2], 0x0
         jng short .10
         mov ax, 0x6
@@ -6088,7 +6088,7 @@ assrefgoalline:
         add word [si + 0x26], 0x8
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0xa5b
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         mov ax, [si + 0x2]
         neg ax
         mov dx, [si + 0x2c]
@@ -6125,7 +6125,7 @@ assrefgoalline:
         or byte [si + 0x44], 0x20
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0xc1b
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         push 0x20
         push si
         call 0x1E7E:Game_1E7E_0A5C

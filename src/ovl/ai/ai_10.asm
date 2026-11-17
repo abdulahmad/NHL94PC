@@ -8,7 +8,7 @@ Sweepcheck:
         or byte [si + 0x44], 0x20
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0x589
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         pop si
         leave
         retf
@@ -58,7 +58,7 @@ burst:
         or byte [si + 0x44], 0x20
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0x621
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         pop si
         pop di
         leave
@@ -353,7 +353,7 @@ checkcheck:
         shl bx, 1
         mov ax, [bx + g_5A2C]
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         cmp word [di + 0x1a], 0x0
         jnz short .8
         jmp near .24
@@ -426,7 +426,7 @@ checkcheck:
         add ax, strict word 0xc
         push ax
         push si
-        call 0x327B:Ai_327B_0012
+        call 0x327B:AddPenalty
         jmp near .23
         db 0x90
 .16:
@@ -489,7 +489,7 @@ checkcheck:
         push ax
 .20:
         push si
-        call 0x327B:Ai_327B_0012
+        call 0x327B:AddPenalty
         add sp, 0x4
 .21:
         push di
@@ -679,7 +679,7 @@ checkint:
         jnz short .6
         push 0x11
         push si
-        call 0x327B:Ai_327B_0012
+        call 0x327B:AddPenalty
         add sp, 0x4
 .6:
         db 0x8B, 0xD6                           ; insn: mov dx, si
@@ -828,7 +828,7 @@ checkpuckcoll_ccx:
         jmp near .13
 .8:
         push di
-        call 0x2E42:Ai_2E42_065C
+        call 0x2E42:GetHot
         add sp, 0x2
         mov ax, [di + 0x2]
         sub ax, [si + 0x2]
@@ -1266,7 +1266,7 @@ chk4lc:
 .7:
         db 0x8B, 0xF2                           ; insn: mov si, dx
         push di
-        call 0x2E42:Ai_2E42_022A
+        call 0x2E42:AvgCline
         add sp, 0x2
         cmp word [g_29DC], 0xf
         jl short .12
@@ -1293,7 +1293,7 @@ chk4lc:
 .11:
         push di
         push word [bp - 0x4]
-        call 0x2E42:Ai_2E42_0286
+        call 0x2E42:CompLine
         add sp, 0x4
         push di
         call 0x2E42:setpersonel
@@ -1516,7 +1516,7 @@ dopass:
 .21:
         db 0x8B, 0xC7                           ; insn: mov ax, di
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         or byte [si + 0x44], 0x20
         mov bx, [g_2994]
         cmp byte [bx + 0x1], 0x6
@@ -1602,7 +1602,7 @@ passtoa0:
         call 0x1E7E:Game_1E7E_0A74
         add sp, 0x4
         push si
-        call 0x2E42:Ai_2E42_065C
+        call 0x2E42:GetHot
         add sp, 0x2
         mov ax, [si + 0x2]
         mov bx, [g_298A]
@@ -1782,7 +1782,7 @@ passtoa0:
         mov [bx + 0x2c], ax
         mov ax, [g_D66C]
         mov dx, [g_D66E]
-        call 0x2E42:Ai_2E42_000A
+        call 0x2E42:ToFixed
         imul bx, si, 0x78
         db 0x8B, 0xF3                           ; insn: mov si, bx
         call 0x03A3:IdivWords.regs
@@ -1790,7 +1790,7 @@ passtoa0:
         mov [bx], ax
         mov ax, [g_D672]
         mov dx, [g_D674]
-        call 0x2E42:Ai_2E42_000A
+        call 0x2E42:ToFixed
         db 0x8B, 0xDE                           ; insn: mov bx, si
         call 0x03A3:IdivWords.regs
         mov bx, [g_2990]
@@ -2683,7 +2683,7 @@ FallDown:
         or byte [si + 0x44], 0x20
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, str_2222
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         cmp word [CrowdSound], 0x3e8
         jg short .9
         add word [CrowdSound], 0x1f4
@@ -2769,7 +2769,7 @@ FallDown:
         or byte [si + 0x44], 0x20
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         mov bx, [si + 0x1c]
         cmp byte [bx + si + 0x1e], 0x12
         jnz short .17
@@ -2843,7 +2843,7 @@ FallDown:
 .28:
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, str_Pointer_3
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         push si
         push cs
         call setInjuryType
@@ -2994,7 +2994,7 @@ Bcheck:
         jg short .2
         push 0x10
         push di
-        call 0x327B:Ai_327B_0012
+        call 0x327B:AddPenalty
         add sp, 0x4
 .2:
         mov byte [g_29BA], 0xff
@@ -3063,7 +3063,7 @@ holdcheck:
         or byte [si + 0x44], 0x20
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0x669
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         or byte [di + 0x44], 0x20
         cmp word [di + 0x38], 0x639
         jnz short .7
@@ -3073,7 +3073,7 @@ holdcheck:
         mov ax, 0x88b
 .8:
         db 0x8B, 0xDF                           ; insn: mov bx, di
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         push di
         push cs
         call checkagr
@@ -3090,7 +3090,7 @@ holdcheck:
 .10:
         push ax
         push di
-        call 0x327B:Ai_327B_0012
+        call 0x327B:AddPenalty
         add sp, 0x4
 .11:
         mov byte [g_29BA], 0xff
@@ -3132,7 +3132,7 @@ puckbody:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .3
         push di
-        call 0x2E42:Ai_2E42_065C
+        call 0x2E42:GetHot
         add sp, 0x2
 .3:
         mov ax, [si + 0xc]
@@ -3204,7 +3204,7 @@ puckbody:
         or byte [di + 0x44], 0x20
         db 0x8B, 0xDF                           ; insn: mov bx, di
         mov ax, 0x84b
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
 .9:
         pop si
         pop di
@@ -3535,7 +3535,7 @@ puckgoalie:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .17
         push si
-        call 0x2E42:Ai_2E42_065C
+        call 0x2E42:GetHot
         add sp, 0x2
 .17:
         mov al, [g_D66C]
@@ -3846,7 +3846,7 @@ SetShotMode:
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0x3f9
 .2:
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         pop si
         leave
         retf
@@ -4444,7 +4444,7 @@ checkcoll:
         cmp word [di + 0x5e], 0xb
         jg short .2
         push di
-        call 0x2E42:Ai_2E42_065C
+        call 0x2E42:GetHot
         add sp, 0x2
         mov ax, 0x1
         mov [g_299C], ax
@@ -5169,7 +5169,7 @@ wallcollb:
         sar word [si + 0xe], 1
         lea bx, [si + 0x80]
         mov ax, 0x821
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         cmp word [si + 0x2], 0x0
         jl short .4
         mov ax, 0x3f

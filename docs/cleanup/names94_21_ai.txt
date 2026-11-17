@@ -1,0 +1,48 @@
+# AI.OVL, second batch: routines checked against the 95 PC description by reading the code.
+Ai_1FAA_000E StartHL2 | 95 PC | high | (home, vis, &hsc, &asc, period): the highlight game the INIT overlay runs after AnnounceHighlightMatchup
+Ai_2038_0008 ReplayRecordReset | 95 PC | high | replay tick counter = 1, recorded sfx word = -1
+Ai_2038_0016 ReplayFirstFrame | 95 PC | high | oldest replay frame: the record pointer when the buffer has wrapped, else the buffer start
+Ai_2038_002E ReplayPrevFrame | 94G replay94.asm | high | record pointer - 80h, or the last frame of the buffer
+Ai_2038_0060 updatereplay | 94G replay94.asm | high | DoGameFrame's last call; records a frame every 2nd tick
+Ai_2062_000E PlayHilight | 95 PC | high | restores teams and clock from the saved highlight record, runs InstantReplay
+Ai_2352_000E QueueDeferredCall | 95 PC | high | stores a far routine and 7 argument words in an 18-byte queue entry
+Ai_2352_005C RunDeferredCalls | 95 PC | high | calls each queued far routine with its arguments, empties the queue
+Ai_2352_0096 AppendGSumRecord | 95 PC | high | bumps the game summary count, rewrites the header, appends the record
+Ai_2352_0174 FlushGSumQueue | 95 PC | high | AppendGSumRecord for each queued 12-byte record, then clears the count
+Ai_2352_019C PutGSumHeader | new | high | opens the game summary file and writes the 12-byte header at the start (95 reads it instead)
+Ai_2352_01EE PutGSumTail | new | high | seeks to end - 12 and writes the 12-byte tail record
+Ai_2352_0260 WriteGSumHeader | 95 PC | high | bumps the record count, writes the header at 0 and the tail at the end
+Ai_2CD2_0008 PreGameIntro | 95 PC | high | arena jingle, big-screen animation (LoadTeamPPV), puts the players on the ice
+Ai_2CD2_02DA ThreeStarsLoop | 95 PC | high | the timed frame loop StartPreGame and StartThreeStars end with
+Ai_2CD2_0496 StartPreGame | 95 PC | high | 0 in demo mode; else PreGameIntro unless the argument is set, CrowdReset, ThreeStarsLoop
+Ai_2E42_000A ToFixed | 95 PC | high | DX:AX words swapped: a value in AX comes back as AX << 16; passtoa0 uses it
+Ai_2E42_0012 SetSPA | 94G logic94.asm | high | new animation in AX for the player in BX: SPAnum 0, SPAcnt -1
+Ai_2E42_0026 SprSort | 93G hockey93_06.asm | high | copies each sort object's y (x when the flag is set) and bubble sorts
+Ai_2E42_00B2 changeplayer | 93G logic93_1.asm | high | human control moves to the teammate nearest the puck; restorepl for the old one
+Ai_2E42_01DE restorepl | 93G logic93_1.asm | high | (new, old): the old player gets his assignment back
+Ai_2E42_022A AvgCline | 94G penalty94.asm | high | average energy of the current line's skaters
+Ai_2E42_0286 CompLine | 93G logic93_3.asm | high | the computer's line choice by the strength difference; calls getlinee
+Ai_2E42_0444 getlinee | 94G penalty94.asm | high | compares line energies for CompLine
+Ai_2E42_04F2 findpc | 94G logic94.asm | high | where the puck crosses each goal line; pucknorm calls it
+Ai_2E42_05E2 forcepldata | 94G collide94.asm | high | forceteams calls it per team after setpersonel
+Ai_2E42_065C GetHot | 94G logic94.asm | high | hot spot of the player's frame from the HotList table, mirrored by the facing flags
+Ai_2E42_2D00 GameOver | 93G hockey93_06.asm | high | sets the main loop's game-over request
+Ai_2E42_2D16 SetExitGame | 95 PC | high | sets the main loop's exit request
+Ai_2E42_2D2C SetupTeamForIntermission | 93G penalty93_2.asm | high | ResetBench, reenergizeteam both teams, line by score difference
+Ai_2E42_2D88 Intermission | 93G penalty93_2.asm | high | SetupTeamForIntermission, clears the sort entries
+Ai_2E42_2DA8 PeriodOver_sp | 94G setup94.asm | high | period 4 ends the game, else Intermission, StartPer, SetPenaltyStrength
+Ai_2E42_2DD6 PeriodOver | 93G hockey93_06.asm | high | next period, overtime or game over
+Ai_2E42_2E40 ResetBench | 94G collide94.asm | high | 95 order; SetupTeamForIntermission calls it
+Ai_2E42_2EAC resetplstuff | 94G setup94.asm | high | 95 order
+Ai_2E42_2F00 StartGame | 93G hockey93_01.asm | high | cleargamevars, clearteams, period 0, restoreteams, PeriodOver_sp
+Ai_2E42_2F1E forceteams | 95 PC | high | setpersonel and forcepldata for both teams
+Ai_317A_0008 SortPlayersByPos | 95 PC | high | sorts the 25 roster players of one position (SortPairs)
+Ai_317A_0086 SortNonDefPlayers | 95 PC | high | sorts the 25 roster players that are not defencemen
+Ai_327B_0000 GetPeriodTimeRemaining | 94G collide94.asm | high | (period << 14) - clock + the time base
+Ai_327B_0012 AddPenalty | 94G penalty94.asm | high | calls AddPenalty2 unless the clock is stopped or the crowd state forbids it
+Ai_327B_0550 chkprogress | 93G penalty93_1.asm | high | the penalty countdown; InProgress when it runs out
+Ai_327B_0A70 updatepentime | 93G penalty93_1.asm | high | every 18h ticks chkatop and updatepentime_ut for both teams
+Ai_327B_0AA6 PenaltyManager | 93G penalty93_1.asm | high | updatepentime, checkfornewpen, chkprogress
+Ai_327B_0B2C ClearPenaltyBuffer | 93G penalty93_1.asm | high | clears the 32 byte pairs of the penalty buffer
+Ai_327B_0B42 PenGoalStuff | 94G penalty94.asm | high | after a goal drops the scored-on team's finished minor penalties
+Ai_327B_0CD8 PenaltyStub | new | medium | a lone retf after PenGoalStuff; nothing calls it

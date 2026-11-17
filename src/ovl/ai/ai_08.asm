@@ -64,7 +64,7 @@ doplayeracc:
 .8:
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         pop si
         pop di
         leave
@@ -283,7 +283,7 @@ doplayeracc:
 .30:
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         cmp word [g_D6C0], 0x2
         jna short .34
         test byte [si + 0x44], 0x10
@@ -778,7 +778,7 @@ skatetopuck:
         mov ax, [g_D672]
         mov [bp - 0x2], ax
         push si
-        call 0x2E42:Ai_2E42_065C
+        call 0x2E42:GetHot
         add sp, 0x2
         mov al, [si + 0xd]
         cbw
@@ -1437,7 +1437,7 @@ dostop:
 .9:
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
 .10:
         push si
         push cs
@@ -1507,7 +1507,7 @@ goalieacc:
         jnz short .4
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0x1
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         pop si
         leave
         retf
@@ -1526,7 +1526,7 @@ goalieacc:
 .3:
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0x1f1
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         push word [si + 0x36]
         push si
         push cs
@@ -1609,7 +1609,7 @@ noturn0:
 .10:
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         pop si
         leave
         retf
@@ -1660,7 +1660,7 @@ noturn0:
         jnz short .18
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
 .18:
         test byte [si + 0x44], 0x10
         jz short .19

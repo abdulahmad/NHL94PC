@@ -8,7 +8,7 @@ SegStart_03B6A:
         leave
         retf
 
-Ai_2352_000E:
+QueueDeferredCall:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, [bp + 0x6]
@@ -35,7 +35,7 @@ Ai_2352_000E:
         retf
         db 0x90
 
-Ai_2352_005C:
+RunDeferredCalls:
         push di
         push si
         db 0x2B, 0xFF                           ; insn: sub di, di
@@ -62,7 +62,7 @@ Ai_2352_005C:
         pop di
         retf
 
-Ai_2352_0096:
+AppendGSumRecord:
         enter 0x2, 0x0
         inc word [g_01CE]
         lea ax, [bp - 0x2]
@@ -149,7 +149,7 @@ Ai_2352_0096:
         retf
         db 0x90
 
-Ai_2352_0174:
+FlushGSumQueue:
         push di
         push si
         db 0x2B, 0xFF                           ; insn: sub di, di
@@ -159,7 +159,7 @@ Ai_2352_0174:
 .1:
         push si
         push cs
-        call Ai_2352_0096
+        call AppendGSumRecord
         add sp, 0x2
         add si, 0xc
         inc di
@@ -171,7 +171,7 @@ Ai_2352_0174:
         pop di
         retf
 
-Ai_2352_019C:
+PutGSumHeader:
         enter 0x2, 0x0
         lea ax, [bp - 0x2]
         push ax
@@ -205,7 +205,7 @@ Ai_2352_019C:
         retf
         db 0x90
 
-Ai_2352_01EE:
+PutGSumTail:
         enter 0x2, 0x0
         lea ax, [bp - 0x2]
         push ax
@@ -251,7 +251,7 @@ Ai_2352_01EE:
         retf
         db 0x90
 
-Ai_2352_0260:
+WriteGSumHeader:
         enter 0x2, 0x0
         inc word [g_01CE]
         lea ax, [bp - 0x2]
@@ -1304,7 +1304,7 @@ ChkScorerMilestone:
         push word 0x1b35
         push word 0x2a85
         push cs
-        call Ai_2352_000E
+        call QueueDeferredCall
         add sp, 0x12
         mov word [g_563A], 0x1
         mov word [g_49F0], 0xffff
@@ -1365,7 +1365,7 @@ QueueGoalieNote:
         push word 0x1b35
         push word 0x2a7b
         push cs
-        call Ai_2352_000E
+        call QueueDeferredCall
         add sp, 0x12
         mov ax, 0x1
         mov [g_563A], ax

@@ -81,7 +81,7 @@ TakePlayerFromBox:
         mov word [si + 0x36], 0x4
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0x7bf
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         or byte [si + 0x44], 0x20
         mov word [si + 0x26], 0x5a
         mov [si + 0x2e], di
@@ -145,7 +145,7 @@ ForceStartLineup:
         imul ax, [bp + 0x6], word 0xd6
         add ax, 0xb362
         push ax
-        call 0x2E42:Ai_2E42_05E2
+        call 0x2E42:forcepldata
 .1:
         leave
         retf
@@ -314,7 +314,7 @@ assleavebox:
         add ax, 0x289
         mov [g_D672], ax
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         or byte [si + 0x44], 0x4
         cmp word [si + 0x36], 0x6
         jz short .10
@@ -347,7 +347,7 @@ assleavebox:
         mov word [si + 0x26], 0x64
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0x289
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         push si
         push cs
         call TakePlayerFromBox
@@ -397,7 +397,7 @@ assleavebox:
         jnz short .15
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, str_Pstat_6
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         or byte [si + 0x44], 0x20
         pop si
         pop di
@@ -409,7 +409,7 @@ assleavebox:
         jnz short .16
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0x289
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
 .16:
         pop si
         pop di
@@ -539,7 +539,7 @@ puckfaceoff:
         jz short .13
         push word 0xb438
         push word 0xb362
-        call 0x2E42:Ai_2E42_0286
+        call 0x2E42:CompLine
         add sp, 0x4
         push word 0xb438
         call 0x2E42:setpersonel
@@ -574,7 +574,7 @@ puckfaceoff:
         mov [si + g_48E2], ax
         jmp short .18
 .16:
-        call 0x2E42:Ai_2E42_2D16
+        call 0x2E42:SetExitGame
         pop si
         pop di
         leave
@@ -630,7 +630,7 @@ puckfaceoff:
         jz short .21
         push word 0xb362
         push word 0xb438
-        call 0x2E42:Ai_2E42_0286
+        call 0x2E42:CompLine
         add sp, 0x4
         push word 0xb362
         call 0x2E42:setpersonel
@@ -721,7 +721,7 @@ puckfaceoff2:
         mov ax, [PadRepeatOn]
         mov [g_D46A], ax
         mov word [PadRepeatOn], 0x0
-        call 0x2352:Ai_2352_0174
+        call 0x2352:FlushGSumQueue
         mov ax, [g_D46A]
         mov [PadRepeatOn], ax
         mov ax, 0xffff
@@ -860,20 +860,20 @@ puckfaceoff2:
         mov word [g_BC20], 0x18a
         and byte [g_29BC], 0xbf
         call 0x226F:checkwindow
-        call 0x2E42:Ai_2E42_2E40
+        call 0x2E42:ResetBench
         push word 0xb362
         call 0x2E42:setpersonel
         add sp, 0x2
         push word 0xb362
-        call 0x2E42:Ai_2E42_05E2
+        call 0x2E42:forcepldata
         add sp, 0x2
         push word 0xb438
         call 0x2E42:setpersonel
         add sp, 0x2
         push word 0xb438
-        call 0x2E42:Ai_2E42_05E2
+        call 0x2E42:forcepldata
         add sp, 0x2
-        call 0x2E42:Ai_2E42_2EAC
+        call 0x2E42:resetplstuff
         mov word [bp - 0x8], 0xb50e
         mov word [g_D6B8], 0xc
 .19:
@@ -1109,7 +1109,7 @@ puckfaceoff2:
         and byte [bx + 0x45], 0xfb
         and byte [bx + 0x44], 0xdf
         mov ax, [g_D672]
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
 .42:
         mov bx, [bp - 0x8]
         and byte [bx + 0x45], 0x7f
@@ -1157,8 +1157,8 @@ puckfaceoff2:
         mov [bx + 0xe], ax
         and byte [bx + 0x44], 0xdf
         mov ax, 0xc57
-        call 0x2E42:Ai_2E42_0012
-        call 0x2E42:Ai_2E42_0026
+        call 0x2E42:SetSPA
+        call 0x2E42:SprSort
         mov ax, 0xffff
         mov [g_29C2], ax
         mov [g_29C4], ax
@@ -1168,7 +1168,7 @@ puckfaceoff2:
         mov [g_D6C8], ax
         push ax
         push word [bp + 0x6]
-        call 0x2E42:Ai_2E42_00B2
+        call 0x2E42:changeplayer
         add sp, 0x4
 .48:
         cmp word [g_29C8], 0x0
@@ -1177,7 +1177,7 @@ puckfaceoff2:
         mov word [g_D6CA], 0x0
         push word [g_D6C8]
         push word [bp + 0x6]
-        call 0x2E42:Ai_2E42_00B2
+        call 0x2E42:changeplayer
         add sp, 0x4
 .49:
         call 0x2C24:CenterMouse
@@ -1212,7 +1212,7 @@ puckfaceoff2:
         jnz short .52
         lea bx, [g_BD0E]
         mov ax, 0xc43
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
 .52:
         mov bx, [bp + 0x6]
         cmp word [bx + 0x26], 0x0
@@ -1417,7 +1417,7 @@ asstakeposition:
         and ax, 0xfe10
         add ax, 0x289
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
 .14:
         mov ax, [si + 0x6]
         sub ax, [si + 0x2c]
@@ -1476,7 +1476,7 @@ asstakeposition:
         and ax, 0xfe10
         add ax, 0x289
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         mov ax, [g_29B2]
         sub ax, [si + 0x2]
         mov dx, [g_29B4]

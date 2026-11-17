@@ -8,7 +8,7 @@ SegStart_00C61:
         leave
         retf
 
-Ai_2062_000E:
+PlayHilight:
         enter 0x304, 0x0
         push di
         push si

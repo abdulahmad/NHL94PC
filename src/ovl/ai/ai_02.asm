@@ -8,13 +8,13 @@ SegStart_009C2:
         leave
         retf
 
-Ai_2038_0008:
+ReplayRecordReset:
         mov word [g_547E], 0x1
         mov word [g_5480], 0xffff
         retf
         db 0x90
 
-Ai_2038_0016:
+ReplayFirstFrame:
         test byte [g_29BC], 0x10
         jnz short .1
         mov ax, [g_2986]
@@ -26,7 +26,7 @@ Ai_2038_0016:
         mov dx, [g_D016]
         retf
 
-Ai_2038_002E:
+ReplayPrevFrame:
         mov ax, [g_D014]
         mov dx, [g_D016]
         cmp [g_2986], ax
@@ -48,7 +48,7 @@ Ai_2038_002E:
         sub ax, 0x80
         retf
 
-Ai_2038_0060:
+updatereplay:
         enter 0x4, 0x0
         push di
         push si
@@ -65,7 +65,7 @@ Ai_2038_0060:
         test byte [g_29BE], 0x4
         jz short .3
         push cs
-        call Ai_2038_002E
+        call ReplayPrevFrame
         mov [g_D014], ax
         mov [g_D016], dx
 .3:

@@ -2172,3 +2172,50 @@ Ai_327B_0904,chkatop,Ai_327B_0904,94G penalty94.asm,high,95 order,src/ovl/ai/ai_
 Ai_327B_0946,updatepentime_ut_chk,Ai_327B_0946,95 PC,high,95 order,src/ovl/ai/ai_16.asm
 Ai_327B_0982,updatepentime_ut,Ai_327B_0982,94G penalty94.asm,high,95 order,src/ovl/ai/ai_16.asm
 Ai_327B_0AB4,UpdatePowerPlayFlags,Ai_327B_0AB4,95 PC,high,95 order,src/ovl/ai/ai_16.asm
+Ai_1FAA_000E,StartHL2,Ai_1FAA_000E,95 PC,high,"(home, vis, &hsc, &asc, period): the highlight game the INIT overlay runs after AnnounceHighlightMatchup",src/ovl/ai/ai_01.asm
+Ai_2038_0008,ReplayRecordReset,Ai_2038_0008,95 PC,high,"replay tick counter = 1, recorded sfx word = -1",src/ovl/ai/ai_02.asm
+Ai_2038_0016,ReplayFirstFrame,Ai_2038_0016,95 PC,high,"oldest replay frame: the record pointer when the buffer has wrapped, else the buffer start",src/ovl/ai/ai_02.asm
+Ai_2038_002E,ReplayPrevFrame,Ai_2038_002E,94G replay94.asm,high,"record pointer - 80h, or the last frame of the buffer",src/ovl/ai/ai_02.asm
+Ai_2038_0060,updatereplay,Ai_2038_0060,94G replay94.asm,high,DoGameFrame's last call; records a frame every 2nd tick,src/ovl/ai/ai_02.asm
+Ai_2062_000E,PlayHilight,Ai_2062_000E,95 PC,high,"restores teams and clock from the saved highlight record, runs InstantReplay",src/ovl/ai/ai_03.asm
+Ai_2352_000E,QueueDeferredCall,Ai_2352_000E,95 PC,high,stores a far routine and 7 argument words in an 18-byte queue entry,src/ovl/ai/ai_07.asm
+Ai_2352_005C,RunDeferredCalls,Ai_2352_005C,95 PC,high,"calls each queued far routine with its arguments, empties the queue",src/ovl/ai/ai_07.asm
+Ai_2352_0096,AppendGSumRecord,Ai_2352_0096,95 PC,high,"bumps the game summary count, rewrites the header, appends the record",src/ovl/ai/ai_07.asm
+Ai_2352_0174,FlushGSumQueue,Ai_2352_0174,95 PC,high,"AppendGSumRecord for each queued 12-byte record, then clears the count",src/ovl/ai/ai_07.asm
+Ai_2352_019C,PutGSumHeader,Ai_2352_019C,new,high,opens the game summary file and writes the 12-byte header at the start (95 reads it instead),src/ovl/ai/ai_07.asm
+Ai_2352_01EE,PutGSumTail,Ai_2352_01EE,new,high,seeks to end - 12 and writes the 12-byte tail record,src/ovl/ai/ai_07.asm
+Ai_2352_0260,WriteGSumHeader,Ai_2352_0260,95 PC,high,"bumps the record count, writes the header at 0 and the tail at the end",src/ovl/ai/ai_07.asm
+Ai_2CD2_0008,PreGameIntro,Ai_2CD2_0008,95 PC,high,"arena jingle, big-screen animation (LoadTeamPPV), puts the players on the ice",src/ovl/ai/ai_12.asm
+Ai_2CD2_02DA,ThreeStarsLoop,Ai_2CD2_02DA,95 PC,high,the timed frame loop StartPreGame and StartThreeStars end with,src/ovl/ai/ai_12.asm
+Ai_2CD2_0496,StartPreGame,Ai_2CD2_0496,95 PC,high,"0 in demo mode; else PreGameIntro unless the argument is set, CrowdReset, ThreeStarsLoop",src/ovl/ai/ai_12.asm
+Ai_2E42_000A,ToFixed,Ai_2E42_000A,95 PC,high,DX:AX words swapped: a value in AX comes back as AX << 16; passtoa0 uses it,src/ovl/ai/ai_13.asm
+Ai_2E42_0012,SetSPA,Ai_2E42_0012,94G logic94.asm,high,"new animation in AX for the player in BX: SPAnum 0, SPAcnt -1",src/ovl/ai/ai_13.asm
+Ai_2E42_0026,SprSort,Ai_2E42_0026,93G hockey93_06.asm,high,copies each sort object's y (x when the flag is set) and bubble sorts,src/ovl/ai/ai_13.asm
+Ai_2E42_00B2,changeplayer,Ai_2E42_00B2,93G logic93_1.asm,high,human control moves to the teammate nearest the puck; restorepl for the old one,src/ovl/ai/ai_13.asm
+Ai_2E42_01DE,restorepl,Ai_2E42_01DE,93G logic93_1.asm,high,"(new, old): the old player gets his assignment back",src/ovl/ai/ai_13.asm
+Ai_2E42_022A,AvgCline,Ai_2E42_022A,94G penalty94.asm,high,average energy of the current line's skaters,src/ovl/ai/ai_13.asm
+Ai_2E42_0286,CompLine,Ai_2E42_0286,93G logic93_3.asm,high,the computer's line choice by the strength difference; calls getlinee,src/ovl/ai/ai_13.asm
+Ai_2E42_0444,getlinee,Ai_2E42_0444,94G penalty94.asm,high,compares line energies for CompLine,src/ovl/ai/ai_13.asm
+Ai_2E42_04F2,findpc,Ai_2E42_04F2,94G logic94.asm,high,where the puck crosses each goal line; pucknorm calls it,src/ovl/ai/ai_13.asm
+Ai_2E42_05E2,forcepldata,Ai_2E42_05E2,94G collide94.asm,high,forceteams calls it per team after setpersonel,src/ovl/ai/ai_13.asm
+Ai_2E42_065C,GetHot,Ai_2E42_065C,94G logic94.asm,high,"hot spot of the player's frame from the HotList table, mirrored by the facing flags",src/ovl/ai/ai_13.asm
+Ai_2E42_2D00,GameOver,Ai_2E42_2D00,93G hockey93_06.asm,high,sets the main loop's game-over request,src/ovl/ai/ai_13.asm
+Ai_2E42_2D16,SetExitGame,Ai_2E42_2D16,95 PC,high,sets the main loop's exit request,src/ovl/ai/ai_13.asm
+Ai_2E42_2D2C,SetupTeamForIntermission,Ai_2E42_2D2C,93G penalty93_2.asm,high,"ResetBench, reenergizeteam both teams, line by score difference",src/ovl/ai/ai_13.asm
+Ai_2E42_2D88,Intermission,Ai_2E42_2D88,93G penalty93_2.asm,high,"SetupTeamForIntermission, clears the sort entries",src/ovl/ai/ai_13.asm
+Ai_2E42_2DA8,PeriodOver_sp,Ai_2E42_2DA8,94G setup94.asm,high,"period 4 ends the game, else Intermission, StartPer, SetPenaltyStrength",src/ovl/ai/ai_13.asm
+Ai_2E42_2DD6,PeriodOver,Ai_2E42_2DD6,93G hockey93_06.asm,high,"next period, overtime or game over",src/ovl/ai/ai_13.asm
+Ai_2E42_2E40,ResetBench,Ai_2E42_2E40,94G collide94.asm,high,95 order; SetupTeamForIntermission calls it,src/ovl/ai/ai_13.asm
+Ai_2E42_2EAC,resetplstuff,Ai_2E42_2EAC,94G setup94.asm,high,95 order,src/ovl/ai/ai_13.asm
+Ai_2E42_2F00,StartGame,Ai_2E42_2F00,93G hockey93_01.asm,high,"cleargamevars, clearteams, period 0, restoreteams, PeriodOver_sp",src/ovl/ai/ai_13.asm
+Ai_2E42_2F1E,forceteams,Ai_2E42_2F1E,95 PC,high,setpersonel and forcepldata for both teams,src/ovl/ai/ai_13.asm
+Ai_317A_0008,SortPlayersByPos,Ai_317A_0008,95 PC,high,sorts the 25 roster players of one position (SortPairs),src/ovl/ai/ai_15.asm
+Ai_317A_0086,SortNonDefPlayers,Ai_317A_0086,95 PC,high,sorts the 25 roster players that are not defencemen,src/ovl/ai/ai_15.asm
+Ai_327B_0000,GetPeriodTimeRemaining,Ai_327B_0000,94G collide94.asm,high,(period << 14) - clock + the time base,src/ovl/ai/ai_16.asm
+Ai_327B_0012,AddPenalty,Ai_327B_0012,94G penalty94.asm,high,calls AddPenalty2 unless the clock is stopped or the crowd state forbids it,src/ovl/ai/ai_16.asm
+Ai_327B_0550,chkprogress,Ai_327B_0550,93G penalty93_1.asm,high,the penalty countdown; InProgress when it runs out,src/ovl/ai/ai_16.asm
+Ai_327B_0A70,updatepentime,Ai_327B_0A70,93G penalty93_1.asm,high,every 18h ticks chkatop and updatepentime_ut for both teams,src/ovl/ai/ai_16.asm
+Ai_327B_0AA6,PenaltyManager,Ai_327B_0AA6,93G penalty93_1.asm,high,"updatepentime, checkfornewpen, chkprogress",src/ovl/ai/ai_16.asm
+Ai_327B_0B2C,ClearPenaltyBuffer,Ai_327B_0B2C,93G penalty93_1.asm,high,clears the 32 byte pairs of the penalty buffer,src/ovl/ai/ai_16.asm
+Ai_327B_0B42,PenGoalStuff,Ai_327B_0B42,94G penalty94.asm,high,after a goal drops the scored-on team's finished minor penalties,src/ovl/ai/ai_16.asm
+Ai_327B_0CD8,PenaltyStub,Ai_327B_0CD8,new,medium,a lone retf after PenGoalStuff; nothing calls it,src/ovl/ai/ai_16.asm

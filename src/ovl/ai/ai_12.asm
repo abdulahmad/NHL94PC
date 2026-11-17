@@ -5,7 +5,7 @@ SegStart_0D364:
         retf
         db 0x90
 
-Ai_2CD2_0008:
+PreGameIntro:
         enter 0x12, 0x0
         push di
         push si
@@ -61,7 +61,7 @@ Ai_2CD2_0008:
         call 0x2E42:setpersonel
         add sp, 0x2
         push word 0xb362
-        call 0x2E42:Ai_2E42_05E2
+        call 0x2E42:forcepldata
         add sp, 0x2
         push word 0xb438
         call 0x2E42:reenergizeteam
@@ -70,9 +70,9 @@ Ai_2CD2_0008:
         call 0x2E42:setpersonel
         add sp, 0x2
         push word 0xb438
-        call 0x2E42:Ai_2E42_05E2
+        call 0x2E42:forcepldata
         add sp, 0x2
-        call 0x2E42:Ai_2E42_2EAC
+        call 0x2E42:resetplstuff
         mov word [bp - 0x6], 0xba8e
         mov word [bp - 0xa], 0x2
         mov [bp - 0xc], si
@@ -112,7 +112,7 @@ Ai_2CD2_0008:
         mov [di + 0x36], ax
         db 0x8B, 0xDF                           ; insn: mov bx, di
         mov ax, 0x99
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         jmp near .9
 .6:
         mov ax, 0x5
@@ -167,7 +167,7 @@ Ai_2CD2_0008:
         mov [di + 0x2e], ax
         db 0x8B, 0xDF                           ; insn: mov bx, di
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         mov word [di + 0x12], 0x171
 .9:
         push 0x25
@@ -212,7 +212,7 @@ Ai_2CD2_0008:
         mov [g_BD3C], ax
         lea bx, [g_BD0E]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         mov word [g_BD20], 0x289
         push 0x26
         push word 0xbd0e
@@ -222,7 +222,7 @@ Ai_2CD2_0008:
         or byte [g_29BC], 0x40
         call 0x2E42:DoGameFrame
         call 0x2E42:DoGameFrame
-        call 0x2E42:Ai_2E42_0026
+        call 0x2E42:SprSort
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [g_D6D0], ax
         mov [g_4B00], ax
@@ -249,7 +249,7 @@ Ai_2CD2_0008:
         retf
         db 0x90
 
-Ai_2CD2_02DA:
+ThreeStarsLoop:
         push si
         call 0x03A3:CallCountStep
         mov word [PadRepeatOn], 0x1
@@ -394,7 +394,7 @@ Ai_2CD2_02DA:
         pop si
         retf
 
-Ai_2CD2_0496:
+StartPreGame:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         cmp word [g_4A62], 0x0
@@ -406,11 +406,11 @@ Ai_2CD2_0496:
         cmp word [bp + 0x6], 0x0
         jnz short .2
         push cs
-        call Ai_2CD2_0008
+        call PreGameIntro
 .2:
         call 0x0EDC:CrowdReset
         push cs
-        call Ai_2CD2_02DA
+        call ThreeStarsLoop
         leave
         retf
         db 0x90
@@ -451,7 +451,7 @@ assintrostand:
         shl bx, 1
         mov ax, [bx + g_5B94]
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         or byte [si + 0x45], 0x2
         pop si
         leave
@@ -528,7 +528,7 @@ assintroline:
         and ax, strict word 0x18
         add ax, 0xdab
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         or byte [si + 0x45], 0x2
         pop si
         pop di
@@ -549,7 +549,7 @@ assintroline:
         mov [si + 0x32], ax
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0xa5b
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         mov word [g_29AE], 0x0
         mov word [g_29D4], 0x1
         mov word [CrowdSound], 0x320
@@ -608,7 +608,7 @@ assintroline:
         add word [si + 0x26], 0x8
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0xa5b
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         mov ax, [si + 0x2]
         neg ax
         mov dx, [si + 0x6]
@@ -645,7 +645,7 @@ assintroline:
         mov word [si + 0x2e], 0xff9c
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0xc57
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         pop si
         pop di
         leave
@@ -1438,7 +1438,7 @@ StartThreeStars:
         mov [si + 0x43], al
         db 0x8B, 0xDE                           ; insn: mov bx, si
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         push 0x0
         push si
         call 0x1E7E:Game_1E7E_0A5C
@@ -1478,7 +1478,7 @@ StartThreeStars:
         mov [g_BD1A], ax
         lea bx, [g_BD0E]
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         mov word [g_BD20], 0xffff
         push 0x15
         push word 0xbd0e
@@ -1488,7 +1488,7 @@ StartThreeStars:
         or byte [g_29BC], 0x40
         call 0x2E42:DoGameFrame
         call 0x2E42:DoGameFrame
-        call 0x2E42:Ai_2E42_0026
+        call 0x2E42:SprSort
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [g_D6D0], ax
         mov [g_4B00], ax
@@ -1502,7 +1502,7 @@ StartThreeStars:
         mov [g_29AE], ax
         call 0x226F:CloseTextOverlay
         push cs
-        call Ai_2CD2_02DA
+        call ThreeStarsLoop
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnl short .4
         mov word [CrowdSound], 0x0
@@ -1560,7 +1560,7 @@ MoveInDir:
         jnz short .6
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0x289
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         pop si
         leave
         retf
@@ -1578,7 +1578,7 @@ MoveInDir:
 .4:
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0x2e9
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         push word [si + 0x36]
         push si
         call 0x2425:playeracc
@@ -1766,7 +1766,7 @@ assstarskate:
         or byte [si + 0x44], 0x20
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0x731
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         pop si
         pop di
         leave
@@ -2120,7 +2120,7 @@ assboxenter:
         or byte [g_BCD2], 0x20
         lea bx, [g_BC8E]
         mov ax, 0xea9
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         and byte [si + 0x49], 0xf7
         mov word [si + 0x12], 0x165
         mov word [si + 0x36], 0x2
@@ -2128,7 +2128,7 @@ assboxenter:
         or byte [si + 0x44], 0x20
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0xe83
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         mov al, [si + 0x47]
         cbw
         db 0x8B, 0xF8                           ; insn: mov di, ax
@@ -2180,7 +2180,7 @@ assboxenter:
         mov [si + 0xc], ax
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0x289
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
         or byte [si + 0x44], 0x4
         cmp word [si + 0x36], 0x6
         jz short .8
@@ -2266,7 +2266,7 @@ assbenchside:
         mov word [si + 0x12], 0x362
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0xe97
-        call 0x2E42:Ai_2E42_0012
+        call 0x2E42:SetSPA
 .4:
         cmp word [si + 0x26], 0x64
         jnl short .6
