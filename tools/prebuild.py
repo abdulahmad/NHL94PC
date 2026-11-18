@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# prebuild.py: run before every build (build.sh, tools/verify_all.sh, tools/verify_segment.py).
+# prebuild.py: run before every build (build.sh, tools/verify_all.sh).
 # The EXE must be present (and the right version); then makes sure Extracted/ is complete and runs tools/extract.py if
 # it is not. If the EXE is missing or wrong, stops with the folder, usual file name, SHA-1, CRC32 and size it must have.
 import json, os, subprocess, sys

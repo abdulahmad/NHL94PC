@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-# make_stubs.py: rewrite src/stubinc/<seg>_stub.asm for every segment so it builds on its own. The labels a segment
-# uses from other segments are set with equ to their value in the full build (read from a NASM map of the full build).
-#   python3 tools/make_stubs.py          (run after a change that adds or renames a label used across segments)
+# make_ovl_syms.py: rewrite src/ovl/<name>_syms.inc and src/lib/rtlink/ovl_entries.inc. The labels an overlay
+# uses from the EXE are set with equ to their value in the full build (read from a NASM map of the full build).
+#   python3 tools/make_ovl_syms.py          (run after a change that adds or renames a label used across segments)
 import json, os, re, subprocess, sys, tempfile
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 SEGMAP = json.load(open(os.path.join(ROOT, 'segmap.json')))
@@ -32,33 +32,6 @@ def full_map():
 
 def main():
     vals = full_map()
-    d = tempfile.mkdtemp()
-    for s in SEGMAP['segments']:
-        stub = os.path.join(ROOT, 'src', 'stubinc', s['name'] + '_stub.asm')
-        org = 0
-        need = {}
-        for _ in range(10):
-            body = [f';\tSegment build for {s["file"]}: sets its origin and the outside labels it uses (their values in the',
-                    f';\tfull build; written by tools/make_stubs.py), then includes the file on its own (tools/verify_segment.py).',
-                    '\tbits\t16', f'\torg\t0x{org:X}']
-            for n in sorted(need, key=lambda k: need[k]):
-                body.append(f'{n}\t\tequ\t0x{need[n]:X}')
-            body.append(f'%include "{s["file"]}"')
-            open(stub, 'w').write('\n'.join(body) + '\n')
-            r = subprocess.run(['nasm', '-f', 'bin', '-I', 'src/', '-o', os.path.join(d, 'o'), stub], cwd=ROOT,
-                               capture_output=True, text=True)
-            miss = set(re.findall(r"symbol `([^']+)' not defined", r.stderr))
-            if not r.returncode:
-                break
-            if not miss:
-                sys.exit(f'{s["name"]}: {r.stderr}')
-            for m in miss:
-                if m not in vals:
-                    sys.exit(f'{s["name"]}: {m} not in the full build')
-                need[m] = vals[m][1]
-        else:
-            sys.exit(f'{s["name"]}: stub did not converge')
-    print('stubs written')
     ovl_syms(vals)
 
 
@@ -140,7 +113,7 @@ def ovl_entries(own, vals):
                 sys.exit(f'ovl_entries: {cur} not found in {ov.group(1)}.OVL')
             rows[cur] = (v, ov.group(1))
     out = [';\tOverlay routines the thunks of overlay_manager.asm jump to: their offsets in the overlay',
-           ';\t(written by tools/make_stubs.py from the overlay builds).']
+           ';\t(written by tools/make_ovl_syms.py from the overlay builds).']
     out += [f'{n}\t\tequ\t0x{v:X}\t; {o}.OVL' for n, (v, o) in sorted(rows.items())]
     open(os.path.join(ROOT, 'src', 'lib', 'rtlink', 'ovl_entries.inc'), 'w').write('\n'.join(out) + '\n')
     print('overlay entry points written')

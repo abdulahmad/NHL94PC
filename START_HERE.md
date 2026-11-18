@@ -23,7 +23,7 @@ NASM 2.15+ (`apt install nasm` / `brew install nasm`) and Python 3. If the EXE i
 
 Every byte of `HOCKEY.EXE` is source: every routine and variable is named and commented, in the folders described in
 `CONTRIBUTING.md`. The files are kept by hand (the generator that first wrote them is in `tools/archive/`).
-For a change: edit, `./build.sh` (MATCH), `python3 tools/make_stubs.py` when a label used across files changed,
+For a change: edit, `./build.sh` (MATCH), `python3 tools/make_ovl_syms.py` when a label used across files changed,
 `sh tools/verify_all.sh`, `python3 tools/format_asm.py --check`, `python3 tools/check_comments.py`, commit, push,
 open a PR to `main`, update `docs/HANDOFF.md`. The overlays (the game logic) are source too: `src/ovl/<name>.asm`
 lists each one's files and `./build.sh` checks them.

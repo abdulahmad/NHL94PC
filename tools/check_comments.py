@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """check_comments.py - checks the comment rules in CONTRIBUTING.md ("Comments") on the .asm sources.
 
-  python3 tools/check_comments.py [--summary] [--rule R[,R...]] [FILE...]   (default: every file under src/ but stubinc)
+  python3 tools/check_comments.py [--summary] [--rule R[,R...]] [FILE...]   (default: every file under src/)
 
 Rules (the name in brackets is what --rule takes):
   [width]    no line that carries a comment is wider than 110 columns (data lines such as `db ...  ; insn:` aside)

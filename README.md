@@ -14,8 +14,7 @@
   NASM build is byte-identical to the retail EXE and to each retail overlay. Every routine and variable has a name and
   a comment, labels stand where the code uses addresses (including far pointers in data and jumps across segment
   ends), and every file is named by topic (`src/engine`, `src/front`, `src/pc`, `src/lib`, `src/data`).
-- Every EXE file also builds on its own from its stub (`src/stubinc/<name>_stub.asm`), and every overlay from
-  `src/ovl/<name>_build.asm`.
+- Every overlay also builds on its own from `src/ovl/<name>_build.asm`.
 - This is a **disassembly only**: labelled 16-bit x86 assembly that reassembles byte-identical. There is no C decompilation.
 
 **AI agent or new contributor: start with [START_HERE.md](START_HERE.md).**
@@ -36,15 +35,13 @@ NHL '94 PC is based on [NHLPA93SNES](https://github.com/abdulahmad/NHLPA93SNES) 
 
 - `src/hockey94pc.asm` includes the whole file in order: `section header` (MZ header), one `section <name> align=16 vstart=0` per MZ segment, named after its file (labels are offsets inside the segment, as the 16-bit code uses them), then `section overlay` (bytes after the load module).
 - `src/engine/` the game logic (from the overlays), `src/pc/` DOS-only code, `src/front/` the front end, `src/lib/` the Microsoft C, EACLIB and RTLink libraries, `src/data/` DGROUP and the far data. `docs/cleanup/files_94pc.txt` maps the old EXE segment numbers to files, `docs/cleanup/files_94pc_ovl.txt` the overlay segments.
-- `src/ovl/<name>.asm` builds one overlay: its relocation table, then its segment files in load order. `src/ovl/<name>_syms.inc` (written by `tools/make_stubs.py`) gives it the EXE labels it uses; `ovlmap.json` lists the overlays.
+- `src/ovl/<name>.asm` builds one overlay: its relocation table, then its segment files in load order. `src/ovl/<name>_syms.inc` (written by `tools/make_ovl_syms.py`) gives it the EXE labels it uses; `ovlmap.json` lists the overlays.
 - `segmap.json` lists every segment: name, file offset, size, source file, and the paragraph of the MZ segment.
-- `src/stubinc/<segment>_stub.asm` builds one segment on its own: `bits 16`, `org`, outside labels as equates, then the segment file.
 - `tools/prebuild.py` checks the EXE (SHA-1, CRC32, size) and runs `tools/extract.py` (cuts it into `Extracted/segments/`, gitignored).
-- `tools/verify_segment.py <segment>` (or `tools/verify_segment.sh`) builds one segment from its stub and compares it, and the full build's range, with the EXE; `--all` for every segment. `tools/verify_all.sh` is the clean check.
 
 ## Build
 
-Needs NASM 2.15+ and Python 3. `./build.sh` ends with `MATCH output/HOCKEY.EXE and the 20 overlays` (the overlays are compared with the retail files in `lst/game/`). Run `python3 tools/make_stubs.py` after changing a label that another file or an overlay uses. `sh tools/verify_all.sh` deletes `output/` and `Extracted/`, rebuilds, checks every segment, last line MATCH.
+Needs NASM 2.15+ and Python 3. `./build.sh` ends with `MATCH output/HOCKEY.EXE and the 20 overlays` (the overlays are compared with the retail files in `lst/game/`). Run `python3 tools/make_ovl_syms.py` after changing a label that another file or an overlay uses. `sh tools/verify_all.sh` deletes `output/` and `Extracted/`, rebuilds, checks every segment, last line MATCH.
 
 ## AI assistance
 

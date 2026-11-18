@@ -2,7 +2,7 @@
 """format_asm.py - lay out the .asm sources the way CONTRIBUTING.md ("Comments", Layout) asks. Text only: the bytes
 NASM makes stay the same, so the build must still MATCH after a run.
 
-  python3 tools/format_asm.py [--check] [FILE...]      (default: every .asm file under src/ but src/stubinc/)
+  python3 tools/format_asm.py [--check] [FILE...]      (default: every .asm file under src/)
 
 What it does to each line:
   * labels, comment lines, % lines, bits/org/section and equ lines start in column 0
@@ -113,8 +113,7 @@ def fmt(text):
 
 def files(args):
     if args: return [os.path.abspath(a) for a in args]
-    return sorted(f for f in glob.glob(os.path.join(SRC, '**', '*.asm'), recursive=True)
-                  if os.sep + 'stubinc' + os.sep not in f)
+    return sorted(glob.glob(os.path.join(SRC, '**', '*.asm'), recursive=True))
 
 
 def main(argv):
