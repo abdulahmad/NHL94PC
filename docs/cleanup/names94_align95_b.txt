@@ -1,0 +1,39 @@
+AnnounceOneMinute PaOneMinuteLeft | 95 PC | high | guarded SayOneMinuteLeft; same job and guards as 95 PC
+AnnouncerBusy PaSpeechBusy | 95 PC | medium | speech on and SpeechBusy; same as 95 PC
+AnnounceGoal PaGoal | 95 PC | high | guarded SayGoal; same as 95 PC
+AnnouncePenalty PaPenalty | 95 PC | high | guarded SayPenalty; same as 95 PC
+AnnounceTonightsGame PaTonightIntro | 95 PC | high | guarded SayTonightIntro (same clips); same as 95 PC
+AnnouncePeriodSummary PaScoringPeriod | 95 PC | high | guarded SayScoringPeriod (same clips); same as 95 PC
+AnnounceIntro PaNhlIntro | 95 PC | high | guarded SayNhlIntro; same as 95 PC
+AnnounceGoodnight PaGoodnight | 95 PC | high | guarded SayGoodnight; same as 95 PC
+AnnounceLineups PaLineups | 95 PC | high | guarded SayLineups; same as 95 PC
+AnnounceElseAroundNhl PaElseNhl | 95 PC | high | guarded SayElseNhl; same as 95 PC
+AnnounceHighlightMatchup PaHighlightIntro | 95 PC | high | guarded SayHighlightIntro (same clips); same as 95 PC
+AnnouncePlayoffResult PaPlayoffResult | 95 PC | high | guarded SayPlayoffResult; same as 95 PC
+AnnounceTonightsPlayoffGame PaPlayoffTonight | 95 PC | high | guarded SayPlayoffTonight (same clips); same as 95 PC
+SayTonightsGame SayTonightIntro | 95 PC | high | same clip sequence (tonight, easports, game between) as 95 PC
+SayHighlightMatchup SayHighlightIntro | 95 PC | high | same clip sequence (take you now, highlight, game between) as 95 PC
+SayTonightsPlayoffGame SayPlayoffTonight | 95 PC | high | same clip sequence (tonight, easports, game number) as 95 PC
+SayPeriodSummary SayScoringPeriod | 95 PC | high | same clips (period, scoring, the game) as 95 PC
+ItemColors SetListItemColors | 95 PC | high | swaps the item text and select colours when the item is the selected one; same as 95 PC
+SetPaletteVsync SetPalette768 | 95 PC | high | sets 768 palette bytes in two halves, waiting for retrace before each; same as 95 PC
+DrawFrameBox DrawMenuBox | 95 PC | high | filled rectangle with light and dark edges; same as 95 PC
+AddScorerPair SimAddPair | 95 PC | high | appends a (player, assist) pair when fewer than four; same body as 95 PC
+StrNotPrefixFar StrPrefixDiffers | 95 PC | medium | 1 when the first string differs from the start of the second; same loop as 95 PC
+MessageBoxLoop RunMessageBox | 95 PC | medium | input loop of the message box (pointer sprite record, mouse); same as 95 PC
+ClearSpeechClip ClearSpeechSlot | 95 PC | high | zeroes one clip entry; same as 95 PC
+InitSpeechBank InitSpeechSlots | 95 PC | high | clears the clip slots and reserves the speechbuf block; same as 95 PC
+ResetWantedSamples ResetSampleReq | 95 PC | high | clears the wanted sample list; same as 95 PC
+StopSpeech SpeechStopQueue | 95 PC | high | clears playing and sets the hold delay from the bank; same as 95 PC
+StrSameNoCaseFar StrEqNoCase | 95 PC | high | compares two strings ignoring case (and DFh); same as 95 PC
+InputShutdown InputRemove | 95 PC | high | frees the input poll timer slot; same as 95 PC
+EventToCursor EventToPointer | 95 PC | high | mouse sets the pointer, keys and stick move it with a repeat step; same as 95 PC
+StickToPad ReadJoyPad | 95 PC | high | stick bits to a pad direction and buttons; same as 95 PC
+ReadPadDevice ReadControllerPad | 95 PC | high | pad of one player from its input device; same as 95 PC
+ReadMouseEvent PollMouseEvent | 95 PC | high | mouse event from position and button change; same as 95 PC
+ReadStickEvent PollJoystickEvent | 95 PC | high | joystick event from direction and fire bits; same as 95 PC
+ReadKeyEvent PollKeyboardEvent | 95 PC | high | keyboard event from arrows, keypad, space, enter; same as 95 PC
+PollInputEvents InputPollTick | 95 PC | high | timer callback that polls mouse, stick and keys every fifth tick; same as 95 PC
+PadTimerTick SampleInputTick | 95 PC | high | timer callback that records both players' pads; same as 95 PC
+FindFreeClip FindFreeSpeechSlot | 95 PC | medium | first speech slot that is not loaded; same as 95 PC
+FindLoadedClip FindLoadedSpeechSlot | 95 PC | medium | first loaded speech slot; same as 95 PC

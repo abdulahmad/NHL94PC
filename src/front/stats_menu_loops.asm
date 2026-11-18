@@ -4,12 +4,12 @@
         retf
 
 ;-----------------------------------------------------------------------------
-; StrNotPrefixFar                                            1EAE:0002  94 PC
+; StrPrefixDiffers                                            1EAE:0002  94 PC
 ; 1 when the first far string differs from the start of the second.
 ;
 ; Takes 4 words of stack arguments. Far routine (retf).
 ;-----------------------------------------------------------------------------
-StrNotPrefixFar:
+StrPrefixDiffers:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -1835,7 +1835,7 @@ StandingsMenuLoop:
 ; RosterMenuLoop                                             1EAE:12F6  94 PC
 ; Menu loop with the roster row cursor.
 ;
-; Takes 6 words of stack arguments. Calls FindFarMsg, AllocRecData, StrNotPrefixFar, XorRectRegs,
+; Takes 6 words of stack arguments. Calls FindFarMsg, AllocRecData, StrPrefixDiffers, XorRectRegs,
 ; GetBlockAt, DrawRleTransAt, MouseRange, MouseMove and others. Far routine (retf).
 ;-----------------------------------------------------------------------------
 RosterMenuLoop:
@@ -1963,7 +1963,7 @@ RosterMenuLoop:
         push ds
         push strict word rosterfilter
         push cs
-        call StrNotPrefixFar
+        call StrPrefixDiffers
         add sp, 0x8
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .2
@@ -1976,7 +1976,7 @@ RosterMenuLoop:
         push ds
         push strict word rosterfilter2
         push cs
-        call StrNotPrefixFar
+        call StrPrefixDiffers
         add sp, 0x8
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .2
@@ -2009,7 +2009,7 @@ RosterMenuLoop:
         push ds
         push strict word rosterfilter
         push cs
-        call StrNotPrefixFar
+        call StrPrefixDiffers
         add sp, 0x8
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .6
@@ -2022,7 +2022,7 @@ RosterMenuLoop:
         push ds
         push strict word rosterfilter2
         push cs
-        call StrNotPrefixFar
+        call StrPrefixDiffers
         add sp, 0x8
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .6
@@ -2315,7 +2315,7 @@ RosterMenuLoop:
         push ds
         push strict word rosterfilter
         push cs
-        call StrNotPrefixFar
+        call StrPrefixDiffers
         add sp, 0x8
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .26
@@ -2328,7 +2328,7 @@ RosterMenuLoop:
         push ds
         push strict word rosterfilter2
         push cs
-        call StrNotPrefixFar
+        call StrPrefixDiffers
         add sp, 0x8
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .26
@@ -2361,7 +2361,7 @@ RosterMenuLoop:
         push ds
         push strict word rosterfilter
         push cs
-        call StrNotPrefixFar
+        call StrPrefixDiffers
         add sp, 0x8
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .30
@@ -2374,7 +2374,7 @@ RosterMenuLoop:
         push ds
         push strict word rosterfilter2
         push cs
-        call StrNotPrefixFar
+        call StrPrefixDiffers
         add sp, 0x8
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .30

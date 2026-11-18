@@ -446,7 +446,7 @@ ShowGameSummary:
         add sp, 0x8
         cmp word [bp - 0x73c], 0x0
         jz short .26
-        call 0x0EDC:AnnounceElseAroundNhl
+        call 0x0EDC:PaElseNhl
         mov word [bp - 0x73c], 0x0
 .26:
         call 0x0FEF:CopyPlane
@@ -1061,7 +1061,7 @@ ShowGameSummary:
 .71:
         push 0x0
 .72:
-        call 0x0EDC:AnnouncePeriodSummary
+        call 0x0EDC:PaScoringPeriod
         add sp, 0x6
 .73:
         mov word [bp - 0x15e], 0x0
@@ -1945,7 +1945,7 @@ ShowGameSummary:
         push -0x1
         push 0x0
 .137:
-        call 0x0EDC:AnnouncePeriodSummary
+        call 0x0EDC:PaScoringPeriod
         add sp, 0x6
 .138:
         cmp word [bp - 0x738], 0x0

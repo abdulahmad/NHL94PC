@@ -8,11 +8,11 @@
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; PollInputEvents                                             093A:0008  94 PC
+; InputPollTick                                             093A:0008  94 PC
 ; Every 5th call reads mouse, sticks and keys per the device bits and queues
 ; an 8-byte event (32 entries).
 ;-----------------------------------------------------------------------------
-PollInputEvents:
+InputPollTick:
         enter 0x8, 0x0
         push di
         push si
@@ -32,7 +32,7 @@ PollInputEvents:
         lea ax, [bp - 0x8]
         push ax
         push cs
-        call ReadMouseEvent
+        call PollMouseEvent
         add sp, 0x2
         db 0x8B, 0xF0                           ; insn: mov si, ax
 .3:
@@ -46,7 +46,7 @@ PollInputEvents:
         lea ax, [bp - 0x8]
         push ax
         push cs
-        call ReadStickEvent
+        call PollJoystickEvent
         add sp, 0x2
         db 0x8B, 0xF0                           ; insn: mov si, ax
 .5:
@@ -57,7 +57,7 @@ PollInputEvents:
         lea ax, [bp - 0x8]
         push ax
         push cs
-        call ReadKeyEvent
+        call PollKeyboardEvent
         add sp, 0x2
         db 0x8B, 0xF0                           ; insn: mov si, ax
 .6:
@@ -115,11 +115,11 @@ PollInputEvents:
         retf
 
 ;-----------------------------------------------------------------------------
-; ReadMouseEvent                                              093A:00E6  94 PC
+; PollMouseEvent                                              093A:00E6  94 PC
 ; MouseRead, compares with the last buttons and position, fills the event,
 ; MouseMove.
 ;-----------------------------------------------------------------------------
-ReadMouseEvent:
+PollMouseEvent:
         enter 0x6, 0x0
         lea ax, [bp - 0x2]
         push ax
@@ -178,10 +178,10 @@ ReadMouseEvent:
         retf
 
 ;-----------------------------------------------------------------------------
-; ReadStickEvent                                              093A:0174  94 PC
+; PollJoystickEvent                                              093A:0174  94 PC
 ; PollSticks bits to an event (fire edge and direction).
 ;-----------------------------------------------------------------------------
-ReadStickEvent:
+PollJoystickEvent:
         enter 0x2, 0x0
         push si
         call 0x03A3:PollSticks
@@ -226,11 +226,11 @@ ReadStickEvent:
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; ReadKeyEvent                                                093A:01DE  94 PC
+; PollKeyboardEvent                                                093A:01DE  94 PC
 ; Keypad/arrow scan codes to direction bits, Space/Esc/Enter to buttons,
 ; KeyJump.
 ;-----------------------------------------------------------------------------
-ReadKeyEvent:
+PollKeyboardEvent:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push si

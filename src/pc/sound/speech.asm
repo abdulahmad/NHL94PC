@@ -3,9 +3,9 @@
 
 ;-----------------------------------------------------------------------------
 ; PadTimerTickTail                                            09B2:0000  94 PC
-; The last instructions of PadTimerTick, in the next paragraph.
+; The last instructions of SampleInputTick, in the next paragraph.
 ;-----------------------------------------------------------------------------
-PadTimerTickTail:                               ; end of PadTimerTick
+PadTimerTickTail:                               ; end of SampleInputTick
         db 0xFD                                 ; last byte of the call to ReadHotKeys in the segment before
         add sp, 0x2
         inc word [PadRepeatDelay]
@@ -130,10 +130,10 @@ SpeechTimerTick:
         retf
 
 ;-----------------------------------------------------------------------------
-; ClearSpeechClip                                             09B2:013A  94 PC
+; ClearSpeechSlot                                             09B2:013A  94 PC
 ; Zeroes one 24h-byte clip entry.
 ;-----------------------------------------------------------------------------
-ClearSpeechClip:
+ClearSpeechSlot:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         db 0x33, 0xC0                           ; insn: xor ax, ax
@@ -192,10 +192,10 @@ ResetSentence:
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; InitSpeechBank                                              09B2:01D8  94 PC
+; InitSpeechSlots                                              09B2:01D8  94 PC
 ; Clears the 128 clips and reserves the speechbuf memory block.
 ;-----------------------------------------------------------------------------
-InitSpeechBank:
+InitSpeechSlots:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, 0x2
@@ -208,7 +208,7 @@ InitSpeechBank:
         push dx
         push ax
         push cs
-        call ClearSpeechClip
+        call ClearSpeechSlot
         add sp, 0x4
         inc word [bp - 0x2]
         cmp word [bp - 0x2], 0x80
@@ -251,10 +251,10 @@ InitSpeechBank:
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; ResetWantedSamples                                          09B2:0292  94 PC
+; ResetSampleReq                                          09B2:0292  94 PC
 ; Clears the 20 wanted sample names and their total size.
 ;-----------------------------------------------------------------------------
-ResetWantedSamples:
+ResetSampleReq:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, 0x2
@@ -337,7 +337,7 @@ SpeechInit:
         push word [bp + 0xa]
         push word [bp + 0x8]
         push cs
-        call InitSpeechBank
+        call InitSpeechSlots
         db 0x8B, 0xE5                           ; insn: mov sp, bp
         push 0x0
         push 0x0
@@ -348,7 +348,7 @@ SpeechInit:
         mov [WantedList], ax
         mov [WantedListSeg], dx
         push cs
-        call ResetWantedSamples
+        call ResetSampleReq
         push word 0x9b2
         push strict word 0xa
         call 0x03A3:AllocSlot
@@ -460,10 +460,10 @@ SpeechIdle:
         retf
 
 ;-----------------------------------------------------------------------------
-; StopSpeech                                                  09B2:047A  94 PC
+; SpeechStopQueue                                                  09B2:047A  94 PC
 ; Clears playing and sets the wait from the bank.
 ;-----------------------------------------------------------------------------
-StopSpeech:
+SpeechStopQueue:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
         push si
@@ -701,7 +701,7 @@ OpenSpeechFile:
         push ds
         push word [bp + 0x6]
         push cs
-        call StrSameNoCaseFar
+        call StrEqNoCase
         add sp, 0x8
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .2
@@ -938,7 +938,7 @@ OpenSpeechFile:
         push dx
         push ax
         push cs
-        call ClearSpeechClip
+        call ClearSpeechSlot
         add sp, 0x4
         inc word [bp - 0x1e]
 .11:
@@ -1131,10 +1131,10 @@ LoadClipToBank:
         retf
 
 ;-----------------------------------------------------------------------------
-; StrSameNoCaseFar                                            09B2:0B0E  94 PC
+; StrEqNoCase                                            09B2:0B0E  94 PC
 ; Compares two far strings ignoring case (xor and DFh).
 ;-----------------------------------------------------------------------------
-StrSameNoCaseFar:
+StrEqNoCase:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, 0x8
@@ -1166,10 +1166,10 @@ StrSameNoCaseFar:
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; FindFreeClip                                                09B2:0B4C  94 PC
+; FindFreeSpeechSlot                                                09B2:0B4C  94 PC
 ; First clip slot from the index that is not loaded.
 ;-----------------------------------------------------------------------------
-FindFreeClip:
+FindFreeSpeechSlot:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, 0x2
@@ -1199,10 +1199,10 @@ FindFreeClip:
         retf
 
 ;-----------------------------------------------------------------------------
-; FindLoadedClip                                              09B2:0B86  94 PC
+; FindLoadedSpeechSlot                                              09B2:0B86  94 PC
 ; First loaded clip slot from the index.
 ;-----------------------------------------------------------------------------
-FindLoadedClip:
+FindLoadedSpeechSlot:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, 0x2
@@ -1255,7 +1255,7 @@ FindClipByName:
         push ds
         push word [bp + 0x6]
         push cs
-        call StrSameNoCaseFar
+        call StrEqNoCase
         add sp, 0x8
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .1
@@ -1322,7 +1322,7 @@ SampleIsWanted:
         push word [bp + 0x8]
         push word [bp + 0x6]
         push cs
-        call StrSameNoCaseFar
+        call StrEqNoCase
         add sp, 0x8
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .1
@@ -1623,7 +1623,7 @@ CompactSpeechBank:
         call 0x0000:__chkstk
         push 0x0
         push cs
-        call FindFreeClip
+        call FindFreeSpeechSlot
         add sp, 0x2
         mov [bp - 0x4], ax
         inc ax
@@ -1639,13 +1639,13 @@ CompactSpeechBank:
         add sp, 0x4
         push word [bp - 0x4]
         push cs
-        call FindFreeClip
+        call FindFreeSpeechSlot
         add sp, 0x2
         mov [bp - 0x4], ax
         push ax
 .2:
         push cs
-        call FindLoadedClip
+        call FindLoadedSpeechSlot
         add sp, 0x2
         mov [bp - 0x2], ax
 .3:
@@ -1977,7 +1977,7 @@ QueueClip:
 .4:
         push 0x0
         push cs
-        call FindFreeClip
+        call FindFreeSpeechSlot
         add sp, 0x2
         mov [bp - 0x2], ax
         inc ax
@@ -2068,7 +2068,7 @@ SayNhlIntro:
         push cs
         call ResetSentence
         push cs
-        call ResetWantedSamples
+        call ResetSampleReq
         push str_EaNhlInt
         push cs
         call WantSample
@@ -2115,7 +2115,7 @@ SayGoodnight:
         push cs
         call ResetSentence
         push cs
-        call ResetWantedSamples
+        call ResetSampleReq
         push str_ImrbarrInt
         push cs
         call WantSample
@@ -2170,7 +2170,7 @@ SayLineups:
         push cs
         call ResetSentence
         push cs
-        call ResetWantedSamples
+        call ResetSampleReq
         push str_LineupsInt
         push cs
         call WantSample
@@ -2217,7 +2217,7 @@ SayElseNhl:
         push cs
         call ResetSentence
         push cs
-        call ResetWantedSamples
+        call ResetSampleReq
         push str_ElsenhlInt
         push cs
         call WantSample
@@ -2238,10 +2238,10 @@ SayElseNhl:
         retf
 
 ;-----------------------------------------------------------------------------
-; SayHighlightMatchup                                         09B2:1426  94 PC
+; SayHighlightIntro                                         09B2:1426  94 PC
 ; Takeynow, highlite, gamebtwn, home and away teams.
 ;-----------------------------------------------------------------------------
-SayHighlightMatchup:
+SayHighlightIntro:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, 0x32
@@ -2285,7 +2285,7 @@ SayHighlightMatchup:
         push cs
         call ResetSentence
         push cs
-        call ResetWantedSamples
+        call ResetSampleReq
         push str_TakeynowBar
         push cs
         call WantSample
@@ -2413,7 +2413,7 @@ SayPlayoffResult:
         add sp, 0x4
         mov [bp - 0x32], ax
         push cs
-        call ResetWantedSamples
+        call ResetSampleReq
         push cs
         call ResetSentence
         cmp word [bp + 0xe], 0x0
@@ -2546,10 +2546,10 @@ SayPlayoffResult:
         retf
 
 ;-----------------------------------------------------------------------------
-; SayPeriodSummary                                            09B2:16E2  94 PC
+; SayScoringPeriod                                            09B2:16E2  94 PC
 ; Period, ot, scoring, thegame, theot.
 ;-----------------------------------------------------------------------------
-SayPeriodSummary:
+SayScoringPeriod:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, 0x26
@@ -2593,7 +2593,7 @@ SayPeriodSummary:
         push cs
         call ResetSentence
         push cs
-        call ResetWantedSamples
+        call ResetSampleReq
         push str_ScoringBar
         push cs
         call WantSample
@@ -2671,10 +2671,10 @@ SayPeriodSummary:
         retf
 
 ;-----------------------------------------------------------------------------
-; SayTonightsGame                                             09B2:17FA  94 PC
+; SayTonightIntro                                             09B2:17FA  94 PC
 ; Easports, tonight, gamebtwn, the two teams.
 ;-----------------------------------------------------------------------------
-SayTonightsGame:
+SayTonightIntro:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, 0x32
@@ -2718,7 +2718,7 @@ SayTonightsGame:
         push cs
         call ResetSentence
         push cs
-        call ResetWantedSamples
+        call ResetSampleReq
         push str_TonightBar
         push cs
         call WantSample
@@ -2794,10 +2794,10 @@ SayTonightsGame:
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; SayTonightsPlayoffGame                                      09B2:191A  94 PC
+; SayPlayoffTonight                                      09B2:191A  94 PC
 ; Easports, tonight, between, division/conf/final, game number.
 ;-----------------------------------------------------------------------------
-SayTonightsPlayoffGame:
+SayPlayoffTonight:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, 0x6a
@@ -2862,7 +2862,7 @@ SayTonightsPlayoffGame:
         push cs
         call ResetSentence
         push cs
-        call ResetWantedSamples
+        call ResetSampleReq
         push str_TonightBar
         push cs
         call WantSample
@@ -3141,7 +3141,7 @@ SayPenalty:
         call 0x0000:_sprintf
         add sp, 0x8
         push cs
-        call ResetWantedSamples
+        call ResetSampleReq
         push cs
         call ResetSentence
         lea ax, [bp - 0x6a]
@@ -3467,7 +3467,7 @@ SayPlayerFrom:
         call 0x0000:_sprintf
         add sp, 0x8
         push cs
-        call ResetWantedSamples
+        call ResetSampleReq
         push cs
         call ResetSentence
         push str_TonightMsc
@@ -3665,7 +3665,7 @@ SayGoal:
         call 0x0000:_sprintf
         add sp, 0x8
         push cs
-        call ResetWantedSamples
+        call ResetSampleReq
         push cs
         call ResetSentence
         lea ax, [bp - 0x40]
@@ -3866,7 +3866,7 @@ SayOneMinuteLeft:
         call 0x03A3:EmsSaveMap
         add sp, 0x2
         push cs
-        call ResetWantedSamples
+        call ResetSampleReq
         push cs
         call ResetSentence
         push str_OneminMsc
@@ -3907,7 +3907,7 @@ OpenStudioSpeech:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .1
         push cs
-        call ResetWantedSamples
+        call ResetSampleReq
         push cs
         call ResetSentence
         push 0x0
@@ -3939,7 +3939,7 @@ OpenPlayByPlaySpeech:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .1
         push cs
-        call ResetWantedSamples
+        call ResetSampleReq
         push cs
         call ResetSentence
         push 0x1a

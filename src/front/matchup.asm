@@ -621,7 +621,7 @@ ShowMatchupScreen:
         push ax
         mov al, [bp + 0x6]
         push ax
-        call 0x0EDC:AnnounceTonightsGame
+        call 0x0EDC:PaTonightIntro
         add sp, 0x4
         jmp short .17
 .15:
@@ -655,7 +655,7 @@ ShowMatchupScreen:
         push ax
         mov al, [bp + 0x6]
         push ax
-        call 0x0EDC:AnnounceTonightsPlayoffGame
+        call 0x0EDC:PaPlayoffTonight
         add sp, 0xa
 .17:
         db 0x2B, 0xC0                           ; insn: sub ax, ax

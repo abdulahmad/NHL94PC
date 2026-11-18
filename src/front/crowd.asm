@@ -318,10 +318,10 @@ CrowdNoiseReset:
         retf
 
 ;-----------------------------------------------------------------------------
-; AnnounceOneMinute                                           0EDC:02A6  94 PC
+; PaOneMinuteLeft                                           0EDC:02A6  94 PC
 ; Digital sound with speech on: pause, SayOneMinuteLeft.
 ;-----------------------------------------------------------------------------
-AnnounceOneMinute:
+PaOneMinuteLeft:
         cmp word [SoundOptions], 0x2
         jnz short .1
         test byte [AnnouncerFlags], 0x1
@@ -333,10 +333,10 @@ AnnounceOneMinute:
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; AnnouncerBusy                                               0EDC:02C0  94 PC
+; PaSpeechBusy                                               0EDC:02C0  94 PC
 ; Digital sound with speech on and SpeechBusy.
 ;-----------------------------------------------------------------------------
-AnnouncerBusy:
+PaSpeechBusy:
         cmp word [SoundOptions], 0x2
         jnz short .1
         test byte [AnnouncerFlags], 0x1
@@ -363,7 +363,7 @@ PlaySoundEffect:
         mov si, [bp + 0x6]
         mov [lastsfx], si
         push cs
-        call AnnouncerBusy
+        call PaSpeechBusy
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .1
         cmp si, 0x9c
@@ -433,10 +433,10 @@ PlaySoundEffect:
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; AnnounceGoal                                                0EDC:0394  94 PC
+; PaGoal                                                0EDC:0394  94 PC
 ; Pause, SayGoal.
 ;-----------------------------------------------------------------------------
-AnnounceGoal:
+PaGoal:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         cmp word [SoundOptions], 0x2
@@ -475,10 +475,10 @@ AnnouncePlayerFrom:
         retf
 
 ;-----------------------------------------------------------------------------
-; AnnouncePenalty                                             0EDC:03E6  94 PC
+; PaPenalty                                             0EDC:03E6  94 PC
 ; Pause, SayPenalty.
 ;-----------------------------------------------------------------------------
-AnnouncePenalty:
+PaPenalty:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         cmp word [SoundOptions], 0x2
@@ -499,10 +499,10 @@ AnnouncePenalty:
         retf
 
 ;-----------------------------------------------------------------------------
-; AnnounceTonightsGame                                        0EDC:0418  94 PC
-; Team names from TeamAbbrevs, SayTonightsGame.
+; PaTonightIntro                                        0EDC:0418  94 PC
+; Team names from TeamAbbrevs, SayTonightIntro.
 ;-----------------------------------------------------------------------------
-AnnounceTonightsGame:
+PaTonightIntro:
         enter 0x2, 0x0
         push di
         push si
@@ -534,7 +534,7 @@ AnnounceTonightsGame:
         mov bx, [bp - 0x2]
         shl bx, 1
         push word [bx + TeamNameClips]
-        call 0x09B2:SayTonightsGame
+        call 0x09B2:SayTonightIntro
         add sp, 0x6
 .4:
         pop si
@@ -543,10 +543,10 @@ AnnounceTonightsGame:
         retf
 
 ;-----------------------------------------------------------------------------
-; AnnouncePeriodSummary                                       0EDC:046E  94 PC
-; SayPeriodSummary.
+; PaScoringPeriod                                       0EDC:046E  94 PC
+; SayScoringPeriod.
 ;-----------------------------------------------------------------------------
-AnnouncePeriodSummary:
+PaScoringPeriod:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         cmp word [SoundOptions], 0x2
@@ -556,17 +556,17 @@ AnnouncePeriodSummary:
         push word [bp + 0xa]
         push word [bp + 0x8]
         push word [bp + 0x6]
-        call 0x09B2:SayPeriodSummary
+        call 0x09B2:SayScoringPeriod
 .1:
         leave
         retf
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; AnnounceIntro                                               0EDC:0490  94 PC
+; PaNhlIntro                                               0EDC:0490  94 PC
 ; SayNhlIntro.
 ;-----------------------------------------------------------------------------
-AnnounceIntro:
+PaNhlIntro:
         cmp word [SoundOptions], 0x2
         jnz short .1
         test byte [AnnouncerFlags], 0x1
@@ -576,10 +576,10 @@ AnnounceIntro:
         retf
 
 ;-----------------------------------------------------------------------------
-; AnnounceGoodnight                                           0EDC:04A4  94 PC
+; PaGoodnight                                           0EDC:04A4  94 PC
 ; SayGoodnight.
 ;-----------------------------------------------------------------------------
-AnnounceGoodnight:
+PaGoodnight:
         cmp word [SoundOptions], 0x2
         jnz short .1
         test byte [AnnouncerFlags], 0x1
@@ -589,10 +589,10 @@ AnnounceGoodnight:
         retf
 
 ;-----------------------------------------------------------------------------
-; AnnounceLineups                                             0EDC:04B8  94 PC
+; PaLineups                                             0EDC:04B8  94 PC
 ; SayLineups.
 ;-----------------------------------------------------------------------------
-AnnounceLineups:
+PaLineups:
         cmp word [SoundOptions], 0x2
         jnz short .1
         test byte [AnnouncerFlags], 0x1
@@ -602,10 +602,10 @@ AnnounceLineups:
         retf
 
 ;-----------------------------------------------------------------------------
-; AnnounceElseAroundNhl                                       0EDC:04CC  94 PC
+; PaElseNhl                                       0EDC:04CC  94 PC
 ; SayElseNhl.
 ;-----------------------------------------------------------------------------
-AnnounceElseAroundNhl:
+PaElseNhl:
         cmp word [SoundOptions], 0x2
         jnz short .1
         test byte [AnnouncerFlags], 0x1
@@ -615,10 +615,10 @@ AnnounceElseAroundNhl:
         retf
 
 ;-----------------------------------------------------------------------------
-; AnnounceHighlightMatchup                                    0EDC:04E0  94 PC
-; SayHighlightMatchup.
+; PaHighlightIntro                                    0EDC:04E0  94 PC
+; SayHighlightIntro.
 ;-----------------------------------------------------------------------------
-AnnounceHighlightMatchup:
+PaHighlightIntro:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push si
@@ -633,7 +633,7 @@ AnnounceHighlightMatchup:
         shl bx, 1
         push word [bx + TeamNameClips]
         push word [si + TeamNameClips]
-        call 0x09B2:SayHighlightMatchup
+        call 0x09B2:SayHighlightIntro
         add sp, 0x6
 .1:
         pop si
@@ -642,10 +642,10 @@ AnnounceHighlightMatchup:
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; AnnouncePlayoffResult                                       0EDC:0514  94 PC
+; PaPlayoffResult                                       0EDC:0514  94 PC
 ; SayPlayoffResult.
 ;-----------------------------------------------------------------------------
-AnnouncePlayoffResult:
+PaPlayoffResult:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         cmp word [SoundOptions], 0x2
@@ -666,10 +666,10 @@ AnnouncePlayoffResult:
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; AnnounceTonightsPlayoffGame                                 0EDC:0542  94 PC
-; SayTonightsPlayoffGame.
+; PaPlayoffTonight                                 0EDC:0542  94 PC
+; SayPlayoffTonight.
 ;-----------------------------------------------------------------------------
-AnnounceTonightsPlayoffGame:
+PaPlayoffTonight:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push si
@@ -687,7 +687,7 @@ AnnounceTonightsPlayoffGame:
         shl bx, 1
         push word [bx + TeamNameClips]
         push word [si + TeamNameClips]
-        call 0x09B2:SayTonightsPlayoffGame
+        call 0x09B2:SayPlayoffTonight
         add sp, 0xc
 .1:
         pop si

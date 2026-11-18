@@ -4,11 +4,11 @@ AddDirtyRect		equ	0x3FE
 AddrFlag0		equ	0x489
 AllocCanvases		equ	0x3804
 AnimSeqSegs		equ	0x8CE2
-AnnounceGoal		equ	0x394
-AnnounceOneMinute		equ	0x2A6
-AnnouncePenalty		equ	0x3E6
+PaGoal		equ	0x394
+PaOneMinuteLeft		equ	0x2A6
+PaPenalty		equ	0x3E6
 AnnouncePlayerFrom		equ	0x3C0
-AnnouncerBusy		equ	0x2C0
+PaSpeechBusy		equ	0x2C0
 AnnouncerFlags		equ	0x1B7
 AwayGlAttr		equ	0x418
 AwayGlStats		equ	0x77A
@@ -220,7 +220,7 @@ StarNamePtrs		equ	0x5BEE
 StarPoints		equ	0x5B9E
 StarPoints2		equ	0x5BA2
 StopJingle		equ	0x5B8
-StopSpeech		equ	0x47A
+SpeechStopQueue		equ	0x47A
 TableCount		equ	0xAEC
 TeamNameClips		equ	0x1E0
 TeamPalette1		equ	0xB0C4

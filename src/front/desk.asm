@@ -337,7 +337,7 @@ SportsDesk:
         inc dx
         push dx
         push word [bp - 0x3e]
-        call 0x0EDC:AnnouncePlayoffResult
+        call 0x0EDC:PaPlayoffResult
         add sp, 0xa
 .15:
         cmp word [bp - 0x70], 0x0
@@ -356,7 +356,7 @@ SportsDesk:
         mov [DeskRedrawPage2], ax
         mov [DeskRedrawPage], ax
         call 0x0F99:FlushInputEvents
-        call 0x0BFE:InputShutdown
+        call 0x0BFE:InputRemove
         lea ax, [bp - 0x1e]
         push ax
         call 0x03A3:LoadCharTab
@@ -591,7 +591,7 @@ SportsDesk:
         jmp near .37
 .35:
         call 0x0F99:FlushInputEvents
-        call 0x0BFE:InputShutdown
+        call 0x0BFE:InputRemove
         lea ax, [bp - 0x1e]
         push ax
         call 0x03A3:LoadCharTab

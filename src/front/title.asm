@@ -270,7 +270,7 @@ TitleScreen:
         push si
         call 0x06E1:FindUnlink
         add sp, 0x4
-        call 0x0EDC:AnnounceIntro
+        call 0x0EDC:PaNhlIntro
         call 0x0FEF:UseCurrentPage
         call 0x0FEF:CopyPlane
         push word 0x3701
@@ -517,7 +517,7 @@ TitleScreen:
 
 ;-----------------------------------------------------------------------------
 ; GoodnightScreen                                            1F9D:0580  94 PC
-; Exit screen with AnnounceGoodnight.
+; Exit screen with PaGoodnight.
 ;
 ; Calls LoadStudioSpeech, FlushInputEvents, LoadRawHeader, SaveCharTab, UseCharSeg, SetTextColors,
 ; BuildPathFar, LoadPackedHeader and others. Far routine (retf).
@@ -653,7 +653,7 @@ GoodnightScreen:
         push 0x0
         call 0x1B35:FadePaletteInThunk
         add sp, 0x8
-        call 0x0EDC:AnnounceGoodnight
+        call 0x0EDC:PaGoodnight
         mov word [bp - 0x62], 0x0
         les bx, [FontPtr]
         mov ax, 0x69
@@ -844,7 +844,7 @@ GoodnightScreen:
         jmp near .9
         db 0x90
 .22:
-        call 0x09B2:StopSpeech
+        call 0x09B2:SpeechStopQueue
         push 0x10
         mov ax, [bp - 0x76]
         mov dx, [bp - 0x74]

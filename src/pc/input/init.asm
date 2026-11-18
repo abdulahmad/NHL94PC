@@ -9,7 +9,7 @@
 
 ;-----------------------------------------------------------------------------
 ; InputInit                                                   0BFE:000E  94 PC
-; HookKbd, timer slot for PollInputEvents, cursor handler = EventToCursor;
+; HookKbd, timer slot for InputPollTick, cursor handler = EventToPointer;
 ; once.
 ;-----------------------------------------------------------------------------
 InputInit:
@@ -34,10 +34,10 @@ InputInit:
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; InputShutdown                                               0BFE:004C  94 PC
-; Frees the PollInputEvents timer slot.
+; InputRemove                                               0BFE:004C  94 PC
+; Frees the InputPollTick timer slot.
 ;-----------------------------------------------------------------------------
-InputShutdown:
+InputRemove:
         cmp word [InputInstalled], 0x0
         jz short .1
         db 0x2B, 0xC0                           ; insn: sub ax, ax
@@ -52,11 +52,11 @@ InputShutdown:
         retf
 
 ;-----------------------------------------------------------------------------
-; EventToCursor                                               0BFE:0070  94 PC
+; EventToPointer                                               0BFE:0070  94 PC
 ; Mouse event sets the cursor; key and stick events move it, faster with the
 ; repeat count; clamps to 320x200.
 ;-----------------------------------------------------------------------------
-EventToCursor:
+EventToPointer:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di

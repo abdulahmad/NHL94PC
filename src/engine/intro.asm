@@ -403,14 +403,14 @@ ThreeStarsLoop:
         add sp, 0x8
         call 0x0EDC:CrowdFadeOut
         call 0x0EDC:StopJingle
-        call 0x09B2:StopSpeech
+        call 0x09B2:SpeechStopQueue
         mov word [framesync], 0x0
         mov ax, 0xffff
         pop si
         retf
 .12:
         call 0x0EDC:StopJingle
-        call 0x09B2:StopSpeech
+        call 0x09B2:SpeechStopQueue
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         pop si
         retf
@@ -2334,7 +2334,7 @@ assboxenter:
 ; assbenchside                                               2CD2:1640  94 PC
 ; Assignment: places the bench-side sprite when the camera is at the boards.
 ;
-; Takes 1 word of stack arguments. Calls puckshadow, AnnouncerBusy, SetSPA, randomd0. Far routine
+; Takes 1 word of stack arguments. Calls puckshadow, PaSpeechBusy, SetSPA, randomd0. Far routine
 ; (retf).
 ;-----------------------------------------------------------------------------
 assbenchside:
@@ -2347,7 +2347,7 @@ assbenchside:
         push si
         call 0x28BB:puckshadow
         add sp, 0x2
-        call 0x0EDC:AnnouncerBusy
+        call 0x0EDC:PaSpeechBusy
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .1
         jmp near assbenchsideTail + 0x1700

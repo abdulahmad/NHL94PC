@@ -119,7 +119,7 @@ HomeTeamRec		equ	0xAE10
 HotKeyFn		equ	0xB08E
 InitMenuRemapThunk		equ	0x2463
 InputInit		equ	0xE
-InputShutdown		equ	0x4C
+InputRemove		equ	0x4C
 ItemSelectColor		equ	0x9F6
 ItemTextColor		equ	0x9F4
 JerseyDigitGlyphs		equ	0x1994

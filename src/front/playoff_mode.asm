@@ -5282,7 +5282,7 @@ PlayoffModeLoop:
         call 0x1B35:ShowMatchupScreenThunk
         add sp, 0x4
         mov [bp - 0x38], ax
-        call 0x0BFE:InputShutdown
+        call 0x0BFE:InputRemove
         jmp short .23
 .22:
         mov word [bp - 0x38], 0x0

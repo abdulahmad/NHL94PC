@@ -117,7 +117,7 @@ NumberEntryDialog:
         enter 0xc, 0x0
         push di
         push si
-        call 0x0BFE:InputShutdown
+        call 0x0BFE:InputRemove
         call 0x0FEF:UseCurrentPage
         push word [bp + 0x8]
         push word [bp + 0x6]
@@ -348,10 +348,10 @@ NumberEntryDialog:
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; ItemColors                                                  0D90:032A  94 PC
+; SetListItemColors                                                  0D90:032A  94 PC
 ; Picks the normal or highlight colour pair for a list row.
 ;-----------------------------------------------------------------------------
-ItemColors:
+SetListItemColors:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push si
@@ -485,7 +485,7 @@ DrawListRow:
         push word [bp + 0x14]
         push di
         push cs
-        call ItemColors
+        call SetListItemColors
         add sp, 0x4
         mov ax, [bp + 0x16]
         dec ax
@@ -1926,7 +1926,7 @@ MessageBox:
         push word [bp + 0x18]
         push word [bp + 0x16]
         push cs
-        call MessageBoxLoop
+        call RunMessageBox
         add sp, 0xa
         mov [bp - 0x4], ax
         push cs
@@ -1983,10 +1983,10 @@ MessageBox:
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; MessageBoxLoop                                              0D90:1260  94 PC
+; RunMessageBox                                              0D90:1260  94 PC
 ; Input loop of MessageBox (mouse, keys, highlight).
 ;-----------------------------------------------------------------------------
-MessageBoxLoop:
+RunMessageBox:
         enter 0x18, 0x0
         push di
         push si

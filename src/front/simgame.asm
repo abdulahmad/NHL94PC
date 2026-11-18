@@ -22,12 +22,12 @@ RandMod:
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; AddScorerPair                                              23AD:0016  94 PC
+; SimAddPair                                              23AD:0016  94 PC
 ; Appends a (player, assist) pair, at most four.
 ;
 ; Takes 4 words of stack arguments. Far routine (retf).
 ;-----------------------------------------------------------------------------
-AddScorerPair:
+SimAddPair:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -2378,7 +2378,7 @@ SimulateGame:
         lea ax, [bp - 0x16a]
         push ax
         push cs
-        call AddScorerPair
+        call SimAddPair
         add sp, 0x8
 .170:
         les bx, [bp - 0x1dc]
@@ -2399,7 +2399,7 @@ SimulateGame:
         lea ax, [bp - 0x16a]
         push ax
         push cs
-        call AddScorerPair
+        call SimAddPair
         add sp, 0x8
 .171:
         mov word [bp - 0x164], 0x0
@@ -2485,7 +2485,7 @@ SimulateGame:
         lea ax, [bp - 0x16a]
         push ax
         push cs
-        call AddScorerPair
+        call SimAddPair
         add sp, 0x8
 .183:
         mov al, 0xff
@@ -2539,7 +2539,7 @@ SimulateGame:
         lea ax, [bp - 0x16a]
         push ax
         push cs
-        call AddScorerPair
+        call SimAddPair
         add sp, 0x8
 .190:
         mov al, 0xff
@@ -2593,7 +2593,7 @@ SimulateGame:
         lea ax, [bp - 0x16a]
         push ax
         push cs
-        call AddScorerPair
+        call SimAddPair
         add sp, 0x8
 .197:
         mov word [bp - 0x164], 0x0
