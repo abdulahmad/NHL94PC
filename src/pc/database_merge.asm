@@ -1068,7 +1068,7 @@ LocateTeamDbCopy:
 ; UpdateTeamDbs                                              2CB7:09FA  94 PC
 ; Update after an import.
 ;
-; Calls SetDialogColors, LeagueCheckStub, ReadLeagueInfo, _fstrcpy, _fstrcspn, MouseRead, MessageBox,
+; Calls SetDialogColors, LeagueCheckAlwaysZero, ReadLeagueInfo, _fstrcpy, _fstrcspn, MouseRead, MessageBox,
 ; BuildPathFar and others. Far routine (retf).
 ;-----------------------------------------------------------------------------
 UpdateTeamDbs:
@@ -1091,7 +1091,7 @@ UpdateTeamDbs:
         mov [bp - 0x3a], cx
         push cx
         push ax
-        call 0x2305:LeagueCheckStub
+        call 0x2305:LeagueCheckAlwaysZero
         add sp, 0x6
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .1
@@ -1296,7 +1296,7 @@ UpdateTeamDbs:
 ; MergeLeagueFiles                                           2CB7:0C28  94 PC
 ; Merges every returned team.
 ;
-; Calls SetDialogColors, LeagueCheckStub, ReadLeagueInfo, BuildPathFar, FileExists, _fstrcpy,
+; Calls SetDialogColors, LeagueCheckAlwaysZero, ReadLeagueInfo, BuildPathFar, FileExists, _fstrcpy,
 ; _fstrcspn, MouseRead and others. Far routine (retf).
 ;-----------------------------------------------------------------------------
 MergeLeagueFiles:
@@ -1316,7 +1316,7 @@ MergeLeagueFiles:
         push 0x2
         push word 0x3701
         push strict word CurLeagueName
-        call 0x2305:LeagueCheckStub
+        call 0x2305:LeagueCheckAlwaysZero
         add sp, 0x6
         mov [bp - 0x52], ax
         mov byte [lgflags], 0x0
@@ -2078,7 +2078,7 @@ MergeUpdateDbs:
 ; RebuildLeagueDbs                                           2CB7:1442  94 PC
 ; Rebuilds the league dbs.
 ;
-; Calls SetDialogColors, LeagueCheckStub, ReadLeagueInfo, AskTeamPassword, AskMasterPassword,
+; Calls SetDialogColors, LeagueCheckAlwaysZero, ReadLeagueInfo, AskTeamPassword, AskMasterPassword,
 ; BuildPathFar, OpenReadWriteShared, ReadAtOffset and others.
 ;-----------------------------------------------------------------------------
 RebuildLeagueDbs:
@@ -2101,7 +2101,7 @@ RebuildLeagueDbs:
         mov [bp - 0x30], cx
         push cx
         push ax
-        call 0x2305:LeagueCheckStub
+        call 0x2305:LeagueCheckAlwaysZero
         add sp, 0x6
         db 0x8B, 0xF8                           ; insn: mov di, ax
         db 0x0B, 0xFF                           ; insn: or di, di

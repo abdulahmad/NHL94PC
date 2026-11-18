@@ -1,0 +1,16 @@
+LeagueCheckStub LeagueCheckAlwaysZero | 95 PC | medium | returns 0: the league-path check (empty in the shipped game); same routine as NHL 95 PC LeagueCheckAlwaysZero
+PenaltyStub PenGoalStuffTail | new | high | a lone retf (and one pad byte) right after PenGoalStuff; nothing calls it
+RtlStubCx RtlReturnCxMinusOne | RTLink | high | RTLink far routine that returns CX = -1
+RtlStubZero RtlReturnZero | RTLink | high | RTLink far routine that returns 0 in DX:AX
+SeqStubLong0 SeqZeroLongAfterShutdown | EACLIB | high | sequencer routine that returns 0 in DX:AX; sits after ShutdownSequencer
+SeqStubWord0 SeqZeroWordAfterShutdown | EACLIB | high | sequencer routine that returns 0 in AX; sits after ShutdownSequencer
+SeqStubLong1 SeqZeroLongAfterUnload | EACLIB | high | sequencer routine that returns 0 in DX:AX; sits after UnloadSong
+SeqStubWord1 SeqZeroWordAfterUnload | EACLIB | high | sequencer routine that returns 0 in AX; sits after UnloadSong
+SeqStubLong2 SeqZeroLongAfterRestart | EACLIB | high | sequencer routine that returns 0 in DX:AX; sits after RestartSong and is called once
+DrvStub1 DrvEmptyCallBeforeInit | EACLIB | high | empty driver call, called once by the sequencer; sits before DrvInit
+DrvStub2 DrvEmptyCallA | EACLIB | high | first of six empty driver calls after DrvLoadBank
+DrvStub3 DrvEmptyCallB | EACLIB | high | second of six empty driver calls after DrvLoadBank
+DrvStub4 DrvEmptyCallC | EACLIB | high | third of six empty driver calls after DrvLoadBank
+DrvStub5 DrvEmptyCallD | EACLIB | high | fourth of six empty driver calls after DrvLoadBank
+DrvStub6 DrvEmptyCallE | EACLIB | high | fifth of six empty driver calls after DrvLoadBank
+DrvStub7 DrvEmptyCallF | EACLIB | high | sixth of six empty driver calls after DrvLoadBank

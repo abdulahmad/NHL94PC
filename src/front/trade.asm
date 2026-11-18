@@ -3348,7 +3348,7 @@ TradeScreen:
 ; TradePlayers                                               2A57:2152  94 PC
 ; 'Select two teams for trading players'
 ;
-; Calls LeagueCheckStub, ReadLeagueInfo, SetDialogColors, MouseRead, _fstrcpy, _fstrcspn, MessageBox,
+; Calls LeagueCheckAlwaysZero, ReadLeagueInfo, SetDialogColors, MouseRead, _fstrcpy, _fstrcspn, MessageBox,
 ; MergeLeagueFiles and others.
 ;-----------------------------------------------------------------------------
 TradePlayers:
@@ -3363,7 +3363,7 @@ TradePlayers:
         push 0x2
         push word 0x3701
         push strict word CurLeagueName
-        call 0x2305:LeagueCheckStub
+        call 0x2305:LeagueCheckAlwaysZero
         add sp, 0x6
         mov [bp - 0x3e], ax
 .1:

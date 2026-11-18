@@ -11,7 +11,7 @@
 ; CheckMasterPassword                                        2305:000C  94 PC
 ; Master password check.
 ;
-; Calls LeagueCheckStub, ReadLeagueInfo, _fstrcpy, _fstrcspn, SetDialogColors, MouseRead, MessageBox,
+; Calls LeagueCheckAlwaysZero, ReadLeagueInfo, _fstrcpy, _fstrcspn, SetDialogColors, MouseRead, MessageBox,
 ; MergeLeagueFiles and others. Far routine (retf).
 ;-----------------------------------------------------------------------------
 CheckMasterPassword:
@@ -26,7 +26,7 @@ CheckMasterPassword:
         push cx
         push ax
         push cs
-        call LeagueCheckStub
+        call LeagueCheckAlwaysZero
         add sp, 0x6
         db 0x8B, 0xF0                           ; insn: mov si, ax
 .1:
@@ -487,12 +487,12 @@ BuildLeagueList:
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; LeagueCheckStub                                            2305:044C  94 PC
+; LeagueCheckAlwaysZero                                            2305:044C  94 PC
 ; Empty check routine.
 ;
 ; Far routine (retf).
 ;-----------------------------------------------------------------------------
-LeagueCheckStub:
+LeagueCheckAlwaysZero:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         retf
         db 0x90
