@@ -7,7 +7,7 @@ This repo is a disassembly only: labelled 16-bit x86 assembly (NASM) that reasse
 ## Hard rules
 
 - Never change an EXE byte. Every commit must build to MATCH (SHA-1 `d94450ddff26528bddac6646c234277076fd36cb`).
-- `lst/HOCKEY.EXE` is committed for now (temporary). Never commit anything else from the game (`.INT`, `.OVL`, data), `Extracted/`, `output/` or patches.
+- `lst/HOCKEY.EXE` and `lst/game/` are your own copies of the game (gitignored, not in the repo). Never commit them or anything else from the game (`.INT`, `.OVL`, data), `Extracted/`, `output/` or patches.
 - Never force-push, never rewrite pushed history, never push a commit that does not MATCH. Small commits.
 - No macros. No address where a label works.
 
