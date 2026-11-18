@@ -922,7 +922,7 @@ ModeSetEditLoop:
         xor al, [CrowdState]
         and ax, 0x80
         xor [CrowdState], ax
-        call 0x0EDC:CrowdReset
+        call 0x0EDC:CrowdNoiseReset
         jmp short .24
         db 0x90
 .23:

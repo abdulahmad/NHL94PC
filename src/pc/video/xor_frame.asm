@@ -1,4 +1,4 @@
-; XorFrame: draws a frame with XOR so drawing it again removes it.
+; XorRectOutline: draws a frame with XOR so drawing it again removes it.
 
 ;-----------------------------------------------------------------------------
 ; SortPairsTail                                               1500:0000  94 PC
@@ -18,10 +18,10 @@ SortPairsTail:                                  ; end of SortPairs
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; XorFrame                                                    1500:000E  94 PC
+; XorRectOutline                                                    1500:000E  94 PC
 ; XORs a rectangle outline with four XorRect calls.
 ;-----------------------------------------------------------------------------
-XorFrame:
+XorRectOutline:
         enter 0x2, 0x0
         push di
         push si

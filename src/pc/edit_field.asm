@@ -95,7 +95,7 @@ DrawEditCursor:
 ; DrawEditText                                               1E45:00C6  94 PC
 ; Draws the edit field text, clipped.
 ;
-; Takes 1 word of stack arguments. Calls TextWidthAll, DrawChar, FillRectClip. Far routine (retf).
+; Takes 1 word of stack arguments. Calls TextWidthAll, DrawChar, FillRectClipped. Far routine (retf).
 ;-----------------------------------------------------------------------------
 DrawEditText:
         enter 0x8, 0x0
@@ -264,7 +264,7 @@ DrawEditText:
         push word [edity]
         add si, [editx]
         push si
-        call 0x0FEF:FillRectClip
+        call 0x0FEF:FillRectClipped
         add sp, 0xa
 .13:
         pop si

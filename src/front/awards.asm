@@ -771,7 +771,7 @@ ShowAwardScreens:
         mov cx, [bp - 0x62]
         add cx, 0xc4
         push cx
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         mov al, 0x15
         mul byte [si + AwardScores]
@@ -801,7 +801,7 @@ ShowAwardScreens:
         mov ax, [bp - 0x62]
         add ax, 0xc4
         push ax
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         mov word [bp - 0x62], 0xcc
         add word [bp - 0x64], 0x14
@@ -816,7 +816,7 @@ ShowAwardScreens:
         add ax, strict word 0x8
         push ax
         push word 0xcc
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Min_3
@@ -824,7 +824,7 @@ ShowAwardScreens:
         add ax, strict word 0x10
         push ax
         push word [bp - 0x62]
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Gaa_3
@@ -832,7 +832,7 @@ ShowAwardScreens:
         add ax, strict word 0x18
         push ax
         push word [bp - 0x62]
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_AwardsW
@@ -840,7 +840,7 @@ ShowAwardScreens:
         add ax, strict word 0x20
         push ax
         push word [bp - 0x62]
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_AwardsL
@@ -848,7 +848,7 @@ ShowAwardScreens:
         add ax, strict word 0x28
         push ax
         push word [bp - 0x62]
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_AwardsT
@@ -856,7 +856,7 @@ ShowAwardScreens:
         add ax, strict word 0x30
         push ax
         push word [bp - 0x62]
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_So_2
@@ -864,7 +864,7 @@ ShowAwardScreens:
         add ax, strict word 0x38
         push ax
         push word [bp - 0x62]
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_En_2
@@ -872,7 +872,7 @@ ShowAwardScreens:
         add ax, strict word 0x40
         push ax
         push word [bp - 0x62]
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Shots_4
@@ -880,7 +880,7 @@ ShowAwardScreens:
         add ax, strict word 0x48
         push ax
         push word [bp - 0x62]
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Pct_6
@@ -888,7 +888,7 @@ ShowAwardScreens:
         add ax, strict word 0x50
         push ax
         push word [bp - 0x62]
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         mov bx, [bp - 0x66]
         shl bx, 1
@@ -913,7 +913,7 @@ ShowAwardScreens:
         mov ax, [bp - 0x62]
         sub ax, strict word 0xe
         push ax
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         mov bx, [bp - 0x26]
         push word [bx]
@@ -1042,7 +1042,7 @@ ShowAwardScreens:
         add ax, strict word 0x8
         push ax
         push word [bp - 0x62]
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_AwardsG
@@ -1050,7 +1050,7 @@ ShowAwardScreens:
         add ax, strict word 0x10
         push ax
         push word [bp - 0x62]
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_AwardsA
@@ -1058,7 +1058,7 @@ ShowAwardScreens:
         add ax, strict word 0x18
         push ax
         push word [bp - 0x62]
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Pt_3
@@ -1066,7 +1066,7 @@ ShowAwardScreens:
         add ax, strict word 0x20
         push ax
         push word [bp - 0x62]
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Pim_3
@@ -1074,7 +1074,7 @@ ShowAwardScreens:
         add ax, strict word 0x28
         push ax
         push word [bp - 0x62]
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_PlusMinus
@@ -1082,7 +1082,7 @@ ShowAwardScreens:
         add ax, strict word 0x30
         push ax
         push word [bp - 0x62]
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Ppg_2
@@ -1090,7 +1090,7 @@ ShowAwardScreens:
         add ax, strict word 0x38
         push ax
         push word [bp - 0x62]
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Shg_2
@@ -1098,7 +1098,7 @@ ShowAwardScreens:
         add ax, strict word 0x40
         push ax
         push word [bp - 0x62]
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Shots_3
@@ -1106,7 +1106,7 @@ ShowAwardScreens:
         add ax, strict word 0x48
         push ax
         push word [bp - 0x62]
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Pct_5
@@ -1114,7 +1114,7 @@ ShowAwardScreens:
         add ax, strict word 0x50
         push ax
         push word [bp - 0x62]
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         mov bx, [bp - 0x66]
         shl bx, 1
@@ -1160,7 +1160,7 @@ ShowAwardScreens:
         mov ax, [bp - 0x62]
         sub ax, strict word 0xe
         push ax
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         mov bx, [bp - 0x70]
         push word [bx]
@@ -1426,7 +1426,7 @@ ShowAwardScreens:
         mov ax, [bp - 0x62]
         add ax, 0xc4
         push ax
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         add word [bp - 0x64], 0xa
         mov bx, [bp - 0x66]
@@ -1448,7 +1448,7 @@ ShowAwardScreens:
         push word [bp - 0x64]
         add ax, 0xc4
         push ax
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
 .21:
         push word 0xc8
@@ -1672,7 +1672,7 @@ DrawAwardsSummary:
         mov di, [bp - 0x8]
         push di
         push 0xa
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         mov bx, [bp - 0x4]
         cmp byte [bx + AwardKinds], 0x2
@@ -1697,7 +1697,7 @@ DrawAwardsSummary:
         push ax
         push di
         push 0x5a
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         mov al, 0x15
         mul byte [si - 0x13]
@@ -1707,7 +1707,7 @@ DrawAwardsSummary:
 .4:
         push di
         push word 0xc8
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         add si, 0x34
         add word [bp - 0x6], 0x2

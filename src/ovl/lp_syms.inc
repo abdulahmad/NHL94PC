@@ -65,7 +65,7 @@ DialogData		equ	0xAE98
 DialogDataSeg		equ	0xAE9A
 DrawChar		equ	0xE85
 DrawDlgFrameThunk		equ	0x2445
-DrawFrame		equ	0x4
+DrawFrameClipped		equ	0x4
 DrawLine		equ	0xC
 DrawMenuBar		equ	0xE
 DrawMenuItem		equ	0x2D6
@@ -78,7 +78,7 @@ DrawRleTransAt		equ	0x1857
 DrawRleTransBody		equ	0x1874
 DrawRleTransRemapAt		equ	0x2183
 DrawRleTransRemapFastAt		equ	0x2FBB
-DrawShadowText		equ	0x166
+PrintShadowText		equ	0x166
 DrawShadowTextCentered		equ	0xE4
 DrawShadowTextF		equ	0x210
 DrawShadowTextF2		equ	0x238
@@ -91,7 +91,7 @@ FadeZoomRectThunk		equ	0x26BB
 FatalError		equ	0x3E4
 FileExists		equ	0xC
 FillRect		equ	0x136
-FillRectClip		equ	0xDE
+FillRectClipped		equ	0xDE
 FindFarMsg		equ	0x847
 FindPath		equ	0x5EA
 FindUnlink		equ	0x99A
@@ -234,7 +234,7 @@ WaitTimerRetrace.calibrated		equ	0x342F
 WriteAtOffset		equ	0x496
 WriteModeStateThunk		equ	0x23D7
 WriteRecord52		equ	0x504
-XorFrame		equ	0xE
+XorRectOutline		equ	0xE
 XorRect		equ	0x352C
 YesNoText		equ	0xB2D0
 YesNoTextSeg		equ	0xB2D2

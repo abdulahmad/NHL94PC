@@ -260,7 +260,7 @@ UpdateOtherScores:
 ; CenterShadowText                                           2306:024E  94 PC
 ; Centres a line of shadowed text on the 320-pixel screen.
 ;
-; Takes 4 words of stack arguments. Calls TextWidthFar, DrawShadowText. Far routine (retf).
+; Takes 4 words of stack arguments. Calls TextWidthFar, PrintShadowText. Far routine (retf).
 ;-----------------------------------------------------------------------------
 CenterShadowText:
         enter 0x2, 0x0
@@ -297,7 +297,7 @@ CenterShadowText:
         push word [bp + 0xa]
         push word [bp + 0x8]
         push word [bp + 0x6]
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         leave
         retf
 
@@ -473,7 +473,7 @@ ShowTeamStats:
         push word [si + TeamStatsLabels]
         push word [bp - 0x4c]
         push ax
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         add word [bp - 0x4c], 0x10
         inc word [bp - 0x4e]
@@ -541,7 +541,7 @@ ShowTeamStats:
         add di, 0x20
         mov [bp - 0x42], di
         push di
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         mov [bp - 0x42], si
         imul bx, [bp - 0x4e], word 0xd6

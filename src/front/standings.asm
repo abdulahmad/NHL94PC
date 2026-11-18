@@ -416,13 +416,13 @@ StandingsScreen:
         push strict word str_CampbellConference_2
         push 0x19
         push 0x5
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_WalesConference_2
         push 0x19
         push word 0xa5
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         mov word [bp - 0x10], 0x1c
         mov word [bp - 0x2], 0xffff
@@ -456,7 +456,7 @@ StandingsScreen:
         push word [bx + StandingsHeadPtrs]
         push cx
         push ax
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Team_2
@@ -464,7 +464,7 @@ StandingsScreen:
         mov ax, [bp - 0x10]
         push ax
         push word [bp - 0x16]
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Gp_3
@@ -472,7 +472,7 @@ StandingsScreen:
         mov ax, [bp - 0x16]
         add ax, strict word 0x32
         push ax
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_W
@@ -480,7 +480,7 @@ StandingsScreen:
         mov ax, [bp - 0x16]
         add ax, strict word 0x3c
         push ax
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_L
@@ -488,7 +488,7 @@ StandingsScreen:
         mov ax, [bp - 0x16]
         add ax, strict word 0x46
         push ax
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_T
@@ -496,7 +496,7 @@ StandingsScreen:
         mov ax, [bp - 0x16]
         add ax, strict word 0x50
         push ax
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Gf
@@ -504,7 +504,7 @@ StandingsScreen:
         mov ax, [bp - 0x16]
         add ax, strict word 0x5a
         push ax
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Ga
@@ -512,7 +512,7 @@ StandingsScreen:
         mov ax, [bp - 0x16]
         add ax, strict word 0x69
         push ax
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_P
@@ -520,7 +520,7 @@ StandingsScreen:
         mov ax, [bp - 0x16]
         add ax, strict word 0x78
         push ax
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Pct
@@ -528,7 +528,7 @@ StandingsScreen:
         mov ax, [bp - 0x16]
         add ax, 0x87
         push ax
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         mov ax, [bp - 0x10]
         add ax, strict word 0x7
@@ -555,7 +555,7 @@ StandingsScreen:
         push ax
         push word [bp - 0x10]
         push word [bp - 0x16]
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         mov al, [bp - 0x5e]
         db 0x2A, 0xE4                           ; insn: sub ah, ah

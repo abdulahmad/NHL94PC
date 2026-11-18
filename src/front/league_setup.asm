@@ -74,7 +74,7 @@ TeamGridCellAt:
 ; Crest and name of one grid cell.
 ;
 ; Takes 6 words of stack arguments. Calls SetTextColors, SetClipRectRegs, DrawRleTransAt,
-; TextWidthFar, DrawShadowText. Far routine (retf).
+; TextWidthFar, PrintShadowText. Far routine (retf).
 ;-----------------------------------------------------------------------------
 DrawTeamGridCell:
         enter 0x8, 0x0
@@ -135,7 +135,7 @@ DrawTeamGridCell:
         sar ax, 1
         db 0x03, 0xC6                           ; insn: add ax, si
         push ax
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
 .3:
         inc word [bp - 0x2]
@@ -159,7 +159,7 @@ DrawTeamGridCell:
 ; FrameTeamGridCell                                          1F31:0150  94 PC
 ; Frame / XOR frame round a grid cell.
 ;
-; Takes 3 words of stack arguments. Calls XorFrame, DrawFrame. Far routine (retf).
+; Takes 3 words of stack arguments. Calls XorRectOutline, DrawFrameClipped. Far routine (retf).
 ;-----------------------------------------------------------------------------
 FrameTeamGridCell:
         enter 0xe, 0x0
@@ -190,7 +190,7 @@ FrameTeamGridCell:
         push di
         push word [bp - 0x2]
         push si
-        call 0x1500:XorFrame
+        call 0x1500:XorRectOutline
         jmp short .4
 .3:
         push 0x0
@@ -198,7 +198,7 @@ FrameTeamGridCell:
         push di
         push word [bp - 0x2]
         push si
-        call 0x1484:DrawFrame
+        call 0x1484:DrawFrameClipped
 .4:
         add sp, 0xa
 .5:

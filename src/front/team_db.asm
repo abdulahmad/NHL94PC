@@ -371,7 +371,7 @@ LoadGameTeams:
 ; CreateGSummaryDb                                           2425:0374  94 PC
 ; Writes the gsummary.db header for a new game, then loads the teams.
 ;
-; Takes 2 words of stack arguments. Calls LoadCupFinalSeries, GSummaryPath, CreateFileNormal,
+; Takes 2 words of stack arguments. Calls LoadCupFinalSeries, MakeGSummaryPath, CreateFileNormal,
 ; FatalError, WriteAtOffset, CloseHandlePtr, LoadGameTeams. Far routine (retf).
 ;-----------------------------------------------------------------------------
 CreateGSummaryDb:
@@ -400,7 +400,7 @@ CreateGSummaryDb:
         call 0x1E45:LoadCupFinalSeries
 .1:
         push cs
-        call GSummaryPath
+        call MakeGSummaryPath
         lea ax, [bp - 0x8]
         push ax
         push word gsummarypath
@@ -1182,12 +1182,12 @@ BuildTeamRoster:
         retf
 
 ;-----------------------------------------------------------------------------
-; GSummaryPath                                               2425:0B20  94 PC
+; MakeGSummaryPath                                               2425:0B20  94 PC
 ; Builds the gsummary.db path.
 ;
 ; Calls _fstrcpy.
 ;-----------------------------------------------------------------------------
-GSummaryPath:
+MakeGSummaryPath:
         push di
         push si
         mov byte [gsummarypath], 0x0

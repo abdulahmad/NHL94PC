@@ -372,9 +372,9 @@ PadStates:                                      ; state byte per pad; used by Re
         db 0x08
 PadStates2:                                     ; second pad's state byte; used by PadTimerTick
         db 0x02
-HotKeyPending:                                  ; hot key waiting to be read; used by ReadHotKey
+HotKeyPending:                                  ; hot key waiting to be read; used by ReadHotKeys
         db 0x00, 0x00
-KeyPadMap:                                      ; keys to pad bits; used by KeysToPad, StickToPad
+KeyPadMap:                                      ; keys to pad bits; used by ReadKeyboardPad, StickToPad
         db 0x08, 0x00, 0x04, 0x08, 0x02, 0x01, 0x03, 0x02, 0x06, 0x07, 0x05, 0x06, 0x08, 0x00, 0x04, 0x08, 'pause.msc'
         db 0x00
 str_SS:                                         ; string '%s.%s'; used by SayHighlightMatchup,
@@ -484,7 +484,7 @@ str_TonightMsc:                                 ; string 'tonight.msc'; used by 
 SpeechTickCount:                                ; speech timer ticks; used by SpeechTimerTick, SpeechInit
         dw 0x0000
 SpeechSampleBusy:                               ; a sample is playing; used by SpeechTimerTick, SpeechInit,
-                                                ; SpeechShutdown ...
+                                                ; ShutdownSpeech ...
         db 0x00, 0x00
 SpeechMemOff:                                   ; speech memory block, offset; used by SpeechInit,
                                                 ; MoveMemBlock
@@ -493,7 +493,7 @@ SpeechMemSeg:                                   ; speech memory block, segment; 
                                                 ; MoveMemBlock
         dw 0x0000
 SpeechOn:                                       ; speech system initialised; used by SpeechTimerTick,
-                                                ; SpeechInit, SpeechShutdown ...
+                                                ; SpeechInit, ShutdownSpeech ...
         dw 0x0000
 str_Speechbuf:                                  ; string 'speechbuf'; used by InitSpeechBank
         db 'speechbuf', 0x00
@@ -535,14 +535,14 @@ str_WalesBar:                                   ; string 'wales.bar'; used by Di
         db 'wales.bar', 0x00
 str_StanleyBar:                                 ; string 'stanley.bar'; used by DivisionSampleName
         db 'stanley.bar', 0x00
-str_EaNhlInt:                                   ; string 'ea_nhl.int'; used by SayEaNhlIntro
+str_EaNhlInt:                                   ; string 'ea_nhl.int'; used by SayNhlIntro
         db 'ea_nhl.int', 0x00
-str_EaNhlInt_2:                                 ; string 'ea_nhl.int'; used by SayEaNhlIntro
+str_EaNhlInt_2:                                 ; string 'ea_nhl.int'; used by SayNhlIntro
 str_EaNhlInt_3:                                 ; string 'ea_nhl.int'; used by AI
         db 'ea_nhl.int', 0x00
-str_ElsenhlInt:                                 ; string 'elsenhl.int'; used by SayElseAroundNhl
+str_ElsenhlInt:                                 ; string 'elsenhl.int'; used by SayElseNhl
         db 'elsenhl.int', 0x00
-str_ElsenhlInt_2:                               ; string 'elsenhl.int'; used by SayElseAroundNhl
+str_ElsenhlInt_2:                               ; string 'elsenhl.int'; used by SayElseNhl
         db 'elsenhl.int', 0x00
 str_Rnk:                                        ; string 'rnk'; used by SayHighlightMatchup
         db 'rnk', 0x00
@@ -649,35 +649,35 @@ str_Db:                                         ; string '.db'; used by SaveGame
 str_Gsummary:                                   ; string 'gsummary'; used by SaveGame
         db 'gsummary', 0x00
         db 'A3', 0x00
-str_Pointer:                                    ; string 'pointer'; used by SaveGameNameDialog
+str_Pointer:                                    ; string 'pointer'; used by SaveGameNameDlg
         db 'pointer', 0x00
-str_Savegame:                                   ; string 'savegame'; used by SaveGameNameDialog
+str_Savegame:                                   ; string 'savegame'; used by SaveGameNameDlg
         db 'savegame', 0x00
-str_Prmt:                                       ; string 'prmt'; used by SaveGameNameDialog
+str_Prmt:                                       ; string 'prmt'; used by SaveGameNameDlg
         db 'prmt', 0x00
-str_Dialog:                                     ; string 'dialog'; used by SaveGameNameDialog
+str_Dialog:                                     ; string 'dialog'; used by SaveGameNameDlg
         db 'dialog', 0x00
-str_Nhl:                                        ; string '.nhl'; used by SaveGameNameDialog
+str_Nhl:                                        ; string '.nhl'; used by SaveGameNameDlg
         db '.nhl', 0x00
-str_Err1:                                       ; string 'err1'; used by SaveGameNameDialog
+str_Err1:                                       ; string 'err1'; used by SaveGameNameDlg
         db 'err1', 0x00
-str_Dialog_2:                                   ; string 'dialog'; used by SaveGameNameDialog
+str_Dialog_2:                                   ; string 'dialog'; used by SaveGameNameDlg
         db 'dialog', 0x00
-str_Nhl_2:                                      ; string '.nhl'; used by SaveGameNameDialog
+str_Nhl_2:                                      ; string '.nhl'; used by SaveGameNameDlg
         db '.nhl', 0x00
-str_Prmt_2:                                     ; string 'prmt'; used by SaveGameNameDialog
+str_Prmt_2:                                     ; string 'prmt'; used by SaveGameNameDlg
         db 'prmt', 0x00
-str_Dialog_3:                                   ; string 'dialog'; used by SaveGameNameDialog
+str_Dialog_3:                                   ; string 'dialog'; used by SaveGameNameDlg
         db 'dialog', 0x00
-str_D:                                          ; string '%d\n'; used by SaveGameNameDialog
+str_D:                                          ; string '%d\n'; used by SaveGameNameDlg
         db 0x25, 0x64, 0x0A, 0x00
-str_Nhl_3:                                      ; string '.nhl'; used by SaveGameNameDialog
+str_Nhl_3:                                      ; string '.nhl'; used by SaveGameNameDlg
         db '.nhl', 0x00, 0x00
 TextColor:                                      ; text colour for the shadow and outline text; used by
-                                                ; SetTextColors, DrawShadowTextCentered, DrawShadowText ...
+                                                ; SetTextColors, DrawShadowTextCentered, PrintShadowText ...
         dw 0x000F
 ShadowColor:                                    ; shadow colour; used by SetTextColors,
-                                                ; DrawShadowTextCentered, DrawShadowText ...
+                                                ; DrawShadowTextCentered, PrintShadowText ...
         dw 0x0000
 OutlineDx:                                      ; x offsets of the outline passes; used by DrawOutlineText
         db 0xFF, 0xFF, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00
@@ -736,13 +736,13 @@ JingleHandleHi:                                 ; playing jingle, high word; use
                                                 ; WaitJingle
         dw 0xFFFF
 Crowdlevel:                                     ; crowd noise level the crowd update ramps; used by
-                                                ; Crowd_Noise, CrowdReset
+                                                ; Crowd_Noise, CrowdNoiseReset
         dw 0x0000
 CrowdTarget:                                    ; crowd level being faded to; used by Crowd_Noise,
-                                                ; CrowdNoiseOff, CrowdReset
+                                                ; CrowdNoiseOff, CrowdNoiseReset
         dw 0x0000
 CrowdFade:                                      ; crowd fade step; used by Crowd_Noise, CrowdNoiseOff,
-                                                ; CrowdReset
+                                                ; CrowdNoiseReset
         dw 0x0000
 str_Plane0:                                     ; string 'Plane 0'; used by SaveVgaPlanes
         db 'Plane 0', 0x00
@@ -5079,7 +5079,7 @@ MouseReadFn:                                    ; far routine: read the mouse; u
 MouseReadFnSeg:                                 ; segment of MouseReadFn; used by MouseOpen
         dw 0x03A3
 MousePosFn:                                     ; far routine: mouse position; used by AskYesNoBox,
-                                                ; MouseToPad, MouseOpen
+                                                ; ReadMousePad, MouseOpen
         db 0x34, 0x07
 MousePosFnSeg:                                  ; segment of MousePosFn; used by MouseOpen
         db 0xA3, 0x03
@@ -5089,12 +5089,12 @@ MouseOn:                                        ; 0 means no mouse. 1 and 2 sele
                                                 ; ...
         dw 0x0000
 MouseX:                                         ; last X stored by MouseMove and MouseSample, before the
-                                                ; shift; used by MouseToPad, MouseMove, MouseSample
+                                                ; shift; used by ReadMousePad, MouseMove, MouseSample
         dw 0x0000
 MouseY:                                         ; last Y stored by MouseMove and MouseSample, before the
-                                                ; shift; used by MouseToPad, MouseMove, MouseSample
+                                                ; shift; used by ReadMousePad, MouseMove, MouseSample
         dw 0x0000
-MouseBtn:                                       ; last button word from INT 33h AX=3; used by MouseToPad,
+MouseBtn:                                       ; last button word from INT 33h AX=3; used by ReadMousePad,
                                                 ; MouseSample
         db 0x00, 0x00
 MouseXShift:                                    ; shift applied to X between screen units and mouse units. 1
@@ -5219,9 +5219,9 @@ str_PressAnyKeyToIgnore:                        ; string 'Press any key to ignor
                                                 ; CalibrateStick
         db 'Press any key to ignore joystick'
         db 0x00
-str_LeftJoystick:                               ; string 'LEFT JOYSTICK'; used by CalibrateLeftStick
+str_LeftJoystick:                               ; string 'LEFT JOYSTICK'; used by CalLeftJoystick
         db 'LEFT JOYSTICK', 0x00
-str_RightJoystick:                              ; string 'RIGHT JOYSTICK'; used by CalibrateRightStick
+str_RightJoystick:                              ; string 'RIGHT JOYSTICK'; used by CalRightJoystick
         db 'RIGHT JOYSTICK', 0x00
 JoyX:                                           ; axis count from game port bit 0; used by PollJoy, JoyScaleX
         db 0x00, 0x00
@@ -7049,7 +7049,7 @@ segWorkBuffer57:                                ; segment constant 3A0Bh (work_b
                                                 ; BuildTeamRoster; used by INIT
         db 0x0B, 0x3A
 segTeamChoiceText53:                            ; segment constant 3701h (team_choice_text) loaded into es by
-                                                ; GSummaryPath; used by INIT
+                                                ; MakeGSummaryPath; used by INIT
         db 0x01, 0x37
 segMenuText38:                                  ; segment constant 3448h (menu_text) loaded into es by
                                                 ; ClearTeamNameText, SetTeamNameText; used by INIT

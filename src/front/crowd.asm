@@ -307,10 +307,10 @@ CrowdFadeOut:
         retf
 
 ;-----------------------------------------------------------------------------
-; CrowdReset                                                  0EDC:029A  94 PC
+; CrowdNoiseReset                                                  0EDC:029A  94 PC
 ; Crowd level and both note states to 0.
 ;-----------------------------------------------------------------------------
-CrowdReset:
+CrowdNoiseReset:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [Crowdlevel], ax
         mov [CrowdTarget], ax
@@ -564,14 +564,14 @@ AnnouncePeriodSummary:
 
 ;-----------------------------------------------------------------------------
 ; AnnounceIntro                                               0EDC:0490  94 PC
-; SayEaNhlIntro.
+; SayNhlIntro.
 ;-----------------------------------------------------------------------------
 AnnounceIntro:
         cmp word [SoundOptions], 0x2
         jnz short .1
         test byte [AnnouncerFlags], 0x1
         jz short .1
-        call 0x09B2:SayEaNhlIntro
+        call 0x09B2:SayNhlIntro
 .1:
         retf
 
@@ -603,14 +603,14 @@ AnnounceLineups:
 
 ;-----------------------------------------------------------------------------
 ; AnnounceElseAroundNhl                                       0EDC:04CC  94 PC
-; SayElseAroundNhl.
+; SayElseNhl.
 ;-----------------------------------------------------------------------------
 AnnounceElseAroundNhl:
         cmp word [SoundOptions], 0x2
         jnz short .1
         test byte [AnnouncerFlags], 0x1
         jz short .1
-        call 0x09B2:SayElseAroundNhl
+        call 0x09B2:SayElseNhl
 .1:
         retf
 

@@ -377,7 +377,7 @@ ShowStartingLineups:
         add ax, strict word 0xa
         mov [bp - 0x9c], ax
         push ax
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
 .17:
         inc word [bp - 0xd4]
@@ -544,7 +544,7 @@ ShowStartingLineups:
         add ax, strict word 0x14
         mov [bp - 0x9c], ax
         push ax
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
 .26:
         inc word [bp - 0xd4]
@@ -695,7 +695,7 @@ ShowStartingLineups:
         push ax
         push word [bp - 0xc8]
         push 0x14
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         add si, [bp - 0x2]
         imul bx, si, 0x28
@@ -705,7 +705,7 @@ ShowStartingLineups:
         push strict word str_Injured_2
         push word [bp - 0xc8]
         push word 0xc8
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
 .34:
         les bx, [FontPtr]

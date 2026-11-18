@@ -2314,131 +2314,131 @@ LockerRoomScreenThunk:
         dw 0                                    ; MENUS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuSavePctLeadersThunk                                    1B35:21D9  RTLink
-; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuSavePctLeaders.
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to StatsMenuSavePct.
 ;-----------------------------------------------------------------------------
 MenuSavePctLeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:MenuSavePctLeaders           ; load paragraph, relocated
+        jmp 0x2248:StatsMenuSavePct             ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuWinsLeadersThunk                                       1B35:21E3  RTLink
-; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuWinsLeaders.
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to StatsMenuGoalieWins.
 ;-----------------------------------------------------------------------------
 MenuWinsLeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:MenuWinsLeaders              ; load paragraph, relocated
+        jmp 0x2248:StatsMenuGoalieWins          ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuGAALeadersThunk                                        1B35:21ED  RTLink
-; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuGAALeaders.
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to StatsMenuGAA.
 ;-----------------------------------------------------------------------------
 MenuGAALeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:MenuGAALeaders               ; load paragraph, relocated
+        jmp 0x2248:StatsMenuGAA                 ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuShootPctLeadersThunk                                   1B35:21F7  RTLink
-; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuShootPctLeaders.
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to StatsMenuShootPct.
 ;-----------------------------------------------------------------------------
 MenuShootPctLeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:MenuShootPctLeaders          ; load paragraph, relocated
+        jmp 0x2248:StatsMenuShootPct            ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuPIMLeadersThunk                                        1B35:2201  RTLink
-; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuPIMLeaders.
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to StatsMenuPIM.
 ;-----------------------------------------------------------------------------
 MenuPIMLeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:MenuPIMLeaders               ; load paragraph, relocated
+        jmp 0x2248:StatsMenuPIM                 ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuPlusMinusLeadersThunk                                  1B35:220B  RTLink
-; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuPlusMinusLeaders.
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to StatsMenuPlusMinus.
 ;-----------------------------------------------------------------------------
 MenuPlusMinusLeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:MenuPlusMinusLeaders         ; load paragraph, relocated
+        jmp 0x2248:StatsMenuPlusMinus           ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuSHGoalLeadersThunk                                     1B35:2215  RTLink
-; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuSHGoalLeaders.
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to StatsMenuSHGoals.
 ;-----------------------------------------------------------------------------
 MenuSHGoalLeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:MenuSHGoalLeaders            ; load paragraph, relocated
+        jmp 0x2248:StatsMenuSHGoals             ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuPPGoalLeadersThunk                                     1B35:221F  RTLink
-; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuPPGoalLeaders.
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to StatsMenuPPGoals.
 ;-----------------------------------------------------------------------------
 MenuPPGoalLeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:MenuPPGoalLeaders            ; load paragraph, relocated
+        jmp 0x2248:StatsMenuPPGoals             ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuAssistLeadersThunk                                     1B35:2229  RTLink
-; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuAssistLeaders.
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to StatsMenuAssists.
 ;-----------------------------------------------------------------------------
 MenuAssistLeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:MenuAssistLeaders            ; load paragraph, relocated
+        jmp 0x2248:StatsMenuAssists             ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuGoalLeadersThunk                                       1B35:2233  RTLink
-; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuGoalLeaders.
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to StatsMenuGoals.
 ;-----------------------------------------------------------------------------
 MenuGoalLeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:MenuGoalLeaders              ; load paragraph, relocated
+        jmp 0x2248:StatsMenuGoals               ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuPointLeadersThunk                                      1B35:223D  RTLink
-; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuPointLeaders.
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to StatsMenuPoints.
 ;-----------------------------------------------------------------------------
 MenuPointLeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:MenuPointLeaders             ; load paragraph, relocated
+        jmp 0x2248:StatsMenuPoints              ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuTeamPenaltiesThunk                                     1B35:2247  RTLink
-; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuTeamPenalties.
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to StatsMenuTeamPenalties.
 ;-----------------------------------------------------------------------------
 MenuTeamPenaltiesThunk:
         call LoadFromThunk
-        jmp 0x2248:MenuTeamPenalties            ; load paragraph, relocated
+        jmp 0x2248:StatsMenuTeamPenalties       ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuTeamPKThunk                                            1B35:2251  RTLink
-; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuTeamPK.
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to StatsMenuPenaltyKilling.
 ;-----------------------------------------------------------------------------
 MenuTeamPKThunk:
         call LoadFromThunk
-        jmp 0x2248:MenuTeamPK                   ; load paragraph, relocated
+        jmp 0x2248:StatsMenuPenaltyKilling      ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuTeamPPThunk                                            1B35:225B  RTLink
-; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuTeamPP.
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to StatsMenuPowerPlay.
 ;-----------------------------------------------------------------------------
 MenuTeamPPThunk:
         call LoadFromThunk
-        jmp 0x2248:MenuTeamPP                   ; load paragraph, relocated
+        jmp 0x2248:StatsMenuPowerPlay           ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuTeamDefenseThunk                                       1B35:2265  RTLink
-; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuTeamDefense.
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to StatsMenuTeamDefense.
 ;-----------------------------------------------------------------------------
 MenuTeamDefenseThunk:
         call LoadFromThunk
-        jmp 0x2248:MenuTeamDefense              ; load paragraph, relocated
+        jmp 0x2248:StatsMenuTeamDefense         ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuTeamScoringThunk                                       1B35:226F  RTLink
-; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to MenuTeamScoring.
+; Overlay thunk: loads STATS.OVL (LoadFromThunk), then far-jumps to StatsMenuTeamScoring.
 ;-----------------------------------------------------------------------------
 MenuTeamScoringThunk:
         call LoadFromThunk
-        jmp 0x2248:MenuTeamScoring              ; load paragraph, relocated
+        jmp 0x2248:StatsMenuTeamScoring         ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; DeskExitGameThunk                                          1B35:2279  RTLink
@@ -4002,11 +4002,11 @@ SetupGameThunk:
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
 ; GSummaryPathThunk                                          1B35:2A17  RTLink
-; Overlay thunk: loads INIT.OVL (LoadFromThunk), then far-jumps to GSummaryPath.
+; Overlay thunk: loads INIT.OVL (LoadFromThunk), then far-jumps to MakeGSummaryPath.
 ;-----------------------------------------------------------------------------
 GSummaryPathThunk:
         call LoadFromThunk
-        jmp 0x2425:GSummaryPath                 ; load paragraph, relocated
+        jmp 0x2425:MakeGSummaryPath             ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
 ; SetupTeamLinesThunk                                        1B35:2A21  RTLink

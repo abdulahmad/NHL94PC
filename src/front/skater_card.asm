@@ -403,61 +403,61 @@ SkaterStatsCard:
         push strict word str_Gp_6
         push 0x50
         push 0x3c
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_G_2
         push 0x50
         push 0x50
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_A_2
         push 0x50
         push 0x64
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Pt_2
         push 0x50
         push 0x78
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Pim_2
         push 0x50
         push word 0x8c
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_PlusMinus2
         push 0x50
         push word 0xa0
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Ppg
         push 0x50
         push word 0xbe
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Shg
         push 0x50
         push word 0xd2
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Shots_2
         push 0x50
         push word 0xe6
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Pct_3
         push 0x50
         push word 0x104
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         mov di, 0x59
         lea ax, [bp - 0x96]
@@ -470,7 +470,7 @@ SkaterStatsCard:
         push word [bx]
         push di
         push 0x14
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push word [si]
         push strict word str_2d
@@ -573,7 +573,7 @@ SkaterStatsCard:
         push strict word str_Career
         push di
         push 0x14
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         mov ax, [bp - 0x82]
         add ax, [bp - 0x72]
@@ -616,7 +616,7 @@ SkaterStatsCard:
         lea di, [di + 0xa]
         push di
         push 0xa
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         lea bx, [bp - 0x32]
         mov [bp - 0x2], bx
@@ -632,7 +632,7 @@ SkaterStatsCard:
 .22:
         push di
         push word 0x82
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         add di, 0x7
         db 0x2B, 0xF6                           ; insn: sub si, si
@@ -652,7 +652,7 @@ SkaterStatsCard:
         mov ax, [bp - 0x8]
         add ax, strict word 0xa
         push ax
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         mov al, [si + SkaterCardCols]
         cbw

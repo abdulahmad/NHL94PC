@@ -27,7 +27,7 @@ CreditLines		equ	0x5CD
 CrestShapeNames		equ	0x5604
 CrowdChannel		equ	0x106E
 CrowdNoiseOff		equ	0x1DC
-CrowdReset		equ	0x29A
+CrowdNoiseReset		equ	0x29A
 CrowdState		equ	0x1B6
 CurLeagueName		equ	0xE53
 CurPage		equ	0x74DC
@@ -264,7 +264,7 @@ SoundDrvBuf		equ	0xC1F0
 SoundDrvBufSeg		equ	0xC1F2
 SoundOptions		equ	0x1C6
 SpeechInit		equ	0x2F0
-SpeechShutdown		equ	0x39E
+ShutdownSpeech		equ	0x39E
 SportsDeskMenu1		equ	0x11FE
 SportsDeskMenu2		equ	0x12AE
 StandingsGfx1		equ	0x21B0

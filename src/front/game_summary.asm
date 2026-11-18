@@ -442,7 +442,7 @@ ShowGameSummary:
         push ax
         push word [bp - 0x15c]
         push word 0xb4
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         cmp word [bp - 0x73c], 0x0
         jz short .26
@@ -592,7 +592,7 @@ ShowGameSummary:
         push ax
         push 0x50
         push 0x14
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         mov al, [bp - 0x9d]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
@@ -607,7 +607,7 @@ ShowGameSummary:
         push ax
         push 0x50
         push word 0x82
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         lea ax, [bp - 0x71a]
         push ss
@@ -622,7 +622,7 @@ ShowGameSummary:
         push ax
         push 0x60
         push 0x14
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         mov al, [bp - 0x9e]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
@@ -637,7 +637,7 @@ ShowGameSummary:
         push ax
         push 0x60
         push word 0x82
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         mov word [bp - 0x15c], 0x58
         mov al, [bp - 0x46]
@@ -805,7 +805,7 @@ ShowGameSummary:
         push ax
         push word [bp - 0x15c]
         push 0x14
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         imul ax, [bp - 0x73a], 0x1c
         add ax, [bp - 0x2]
@@ -816,7 +816,7 @@ ShowGameSummary:
         push strict word str_Injured
         push word [bp - 0x15c]
         push word 0xc8
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
 .48:
         les bx, [FontPtr]
@@ -1176,7 +1176,7 @@ ShowGameSummary:
         push ax
         push word [bp - 0x15c]
         push 0x14
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push 0x64
         lea ax, [bp - 0x145]
@@ -1300,7 +1300,7 @@ ShowGameSummary:
         push ax
         push word [bp - 0x15c]
         push 0x38
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         mov byte [bp - 0x66], 0xff
         les bx, [bp - 0x40]
@@ -1319,7 +1319,7 @@ ShowGameSummary:
         push ax
         push word [bp - 0x15c]
         push word 0xfa
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         les bx, [FontPtr]
         mov ax, [es:bx + 0xe]
@@ -1432,7 +1432,7 @@ ShowGameSummary:
         push ax
         push word [bp - 0x15c]
         push 0x38
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
 .99:
         les bx, [FontPtr]
@@ -1497,7 +1497,7 @@ ShowGameSummary:
         push ax
         push word [bp - 0x15c]
         push 0x5
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         les bx, [bp - 0x74c]
         mov al, [es:bx + 0x1]
@@ -1591,7 +1591,7 @@ ShowGameSummary:
         push ax
         push word [bp - 0x15c]
         push 0x28
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         les bx, [bp - 0x74c]
         mov al, [es:bx + 0x6]
@@ -1609,7 +1609,7 @@ ShowGameSummary:
         push ax
         push word [bp - 0x15c]
         push word 0x113
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         mov byte [bp - 0x758], 0xff
         jmp near .99
@@ -1691,7 +1691,7 @@ ShowGameSummary:
         neg ax
         mov [bp - 0xfa], ax
         push ax
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         mov al, [bp - 0x2b]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
@@ -1714,7 +1714,7 @@ ShowGameSummary:
         mov ax, 0xa4
         mov [bp - 0xfa], ax
         push ax
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
 .116:
         cmp word [bp - 0x748], 0x0
@@ -1778,7 +1778,7 @@ ShowGameSummary:
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         sar ax, 1
         push ax
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
 .123:
         cmp byte [bp - 0x758], 0x0
@@ -1798,7 +1798,7 @@ ShowGameSummary:
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         sar ax, 1
         push ax
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
 .124:
         mov al, [bp - 0x46]

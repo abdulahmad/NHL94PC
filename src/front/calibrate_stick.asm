@@ -3,9 +3,9 @@
 
 ;-----------------------------------------------------------------------------
 ; XorFrameTail                                                1508:0000  94 PC
-; End of XorFrame.
+; End of XorRectOutline.
 ;-----------------------------------------------------------------------------
-XorFrameTail:                                   ; end of XorFrame
+XorFrameTail:                                   ; end of XorRectOutline
         pop si
         pop di
         leave
@@ -223,10 +223,10 @@ CalibrateStick:
         retf
 
 ;-----------------------------------------------------------------------------
-; CalibrateLeftStick                                          1508:0232  94 PC
+; CalLeftJoystick                                          1508:0232  94 PC
 ; CalibrateStick with the "Left Joystick" title.
 ;-----------------------------------------------------------------------------
-CalibrateLeftStick:
+CalLeftJoystick:
         push str_LeftJoystick
         push 0x0
         push 0x0
@@ -236,10 +236,10 @@ CalibrateLeftStick:
         retf
 
 ;-----------------------------------------------------------------------------
-; CalibrateRightStick                                         1508:0244  94 PC
+; CalRightJoystick                                         1508:0244  94 PC
 ; CalibrateStick with the "Right Joystick" title.
 ;-----------------------------------------------------------------------------
-CalibrateRightStick:
+CalRightJoystick:
         push str_RightJoystick
         push 0x1
         push 0x8

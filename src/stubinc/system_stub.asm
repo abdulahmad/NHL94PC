@@ -23,7 +23,7 @@ _exit		equ	0x687
 _sprintf		equ	0xD74
 _onexit		equ	0xE78
 DrawChar		equ	0xE85
-ClearScreenColor		equ	0x3A84
+ClearScreenColour		equ	0x3A84
 DGROUP		equ	0x45C9
 EndMark		equ	0x62F6
 CritOld		equ	0x62FA

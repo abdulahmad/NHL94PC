@@ -6,7 +6,7 @@
 ; The last instructions of PadTimerTick, in the next paragraph.
 ;-----------------------------------------------------------------------------
 PadTimerTickTail:                               ; end of PadTimerTick
-        db 0xFD                                 ; last byte of the call to ReadHotKey in the segment before
+        db 0xFD                                 ; last byte of the call to ReadHotKeys in the segment before
         add sp, 0x2
         inc word [PadRepeatDelay]
 .1:
@@ -359,10 +359,10 @@ SpeechInit:
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; SpeechShutdown                                              09B2:039E  94 PC
+; ShutdownSpeech                                              09B2:039E  94 PC
 ; Frees the timer slot, the sound channel and the three blocks.
 ;-----------------------------------------------------------------------------
-SpeechShutdown:
+ShutdownSpeech:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
         cmp word [SpeechOn], 0x0
@@ -591,10 +591,10 @@ PlayPauseSample:
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; SwapWordBytes                                               09B2:05B6  94 PC
+; SwapBytes16                                               09B2:05B6  94 PC
 ; Swaps the two bytes of a word (big-endian file fields).
 ;-----------------------------------------------------------------------------
-SwapWordBytes:
+SwapBytes16:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, 0x4
@@ -753,7 +753,7 @@ OpenSpeechFile:
         add sp, 0xa
         push word [bp - 0x24]
         push cs
-        call SwapWordBytes
+        call SwapBytes16
         add sp, 0x2
         les bx, [SpeechBank]
         mov [es:bx + 0x1226], ax
@@ -768,7 +768,7 @@ OpenSpeechFile:
         add sp, 0xa
         push word [bp - 0x12]
         push cs
-        call SwapWordBytes
+        call SwapBytes16
         add sp, 0x2
         les bx, [SpeechBank]
         mov [es:bx + 0x1228], ax
@@ -783,7 +783,7 @@ OpenSpeechFile:
         add sp, 0xa
         push word [bp - 0x2]
         push cs
-        call SwapWordBytes
+        call SwapBytes16
         add sp, 0x2
         les bx, [SpeechBank]
         mov [es:bx + 0x122a], ax
@@ -889,7 +889,7 @@ OpenSpeechFile:
         add sp, 0xa
         push word [bp - 0x14]
         push cs
-        call SwapWordBytes
+        call SwapBytes16
         add sp, 0x2
         sub ax, strict word 0x5
         mov [bp - 0x14], ax
@@ -2042,10 +2042,10 @@ QueueClip:
         jmp near .3
 
 ;-----------------------------------------------------------------------------
-; SayEaNhlIntro                                               09B2:128A  94 PC
+; SayNhlIntro                                               09B2:128A  94 PC
 ; Ea_nhl.int.
 ;-----------------------------------------------------------------------------
-SayEaNhlIntro:
+SayNhlIntro:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, 0x8
@@ -2191,10 +2191,10 @@ SayLineups:
         retf
 
 ;-----------------------------------------------------------------------------
-; SayElseAroundNhl                                            09B2:13C4  94 PC
+; SayElseNhl                                            09B2:13C4  94 PC
 ; Elsenhl.int.
 ;-----------------------------------------------------------------------------
-SayElseAroundNhl:
+SayElseNhl:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         mov ax, 0x8

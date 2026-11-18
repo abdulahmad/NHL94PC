@@ -1571,7 +1571,7 @@ ReplaySaveHilight:
 ; HilightSaveToDlg                                           2581:105A  94 PC
 ; 'Save To' 'Hilights Reel' panel.
 ;
-; Calls SaveCharTab, UseCharSeg, VgaCopyBytes, VgaPageFlip, UseOtherPage, FillRect, DrawFrame,
+; Calls SaveCharTab, UseCharSeg, VgaCopyBytes, VgaPageFlip, UseOtherPage, FillRect, DrawFrameClipped,
 ; DrawLine and others. Far routine (retf).
 ;-----------------------------------------------------------------------------
 HilightSaveToDlg:
@@ -1610,14 +1610,14 @@ HilightSaveToDlg:
         push word 0x13e
         push 0x4c
         push 0x1
-        call 0x1484:DrawFrame
+        call 0x1484:DrawFrameClipped
         add sp, 0xa
         push 0x10
         push word 0x96
         push word 0x13d
         push 0x4d
         push 0x2
-        call 0x1484:DrawFrame
+        call 0x1484:DrawFrameClipped
         add sp, 0xa
         mov word [bp - 0x2], 0x4e
         mov si, 0x50

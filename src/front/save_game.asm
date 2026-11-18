@@ -28,7 +28,7 @@ SaveGame:
         lea ax, [bp - 0x26]
         push ax
         push cs
-        call SaveGameNameDialog
+        call SaveGameNameDlg
         add sp, 0x2
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .2
@@ -307,10 +307,10 @@ SaveGame:
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; SaveGameNameDialog                                          0C22:02E2  94 PC
+; SaveGameNameDlg                                          0C22:02E2  94 PC
 ; Asks for the save name (file list, text entry) before SaveGame.
 ;-----------------------------------------------------------------------------
-SaveGameNameDialog:
+SaveGameNameDlg:
         enter 0x62, 0x0
         push di
         push si

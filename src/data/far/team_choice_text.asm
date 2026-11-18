@@ -1,5 +1,5 @@
 ; Far data, paragraph 3701h, 4608 bytes: team choice and option text. Used by AskYesNo, FitNameToWidth,
-; SaveGame, SaveGameNameDialog ....
+; SaveGame, SaveGameNameDlg ....
 str_Yes_2:                                      ; string 'Yes'
         db 'Yes', 0x00
 str_No_5:                                       ; string 'No'

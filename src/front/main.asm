@@ -141,7 +141,7 @@ _main:
 .8:
         or byte [InputFlags], 2
         call 0x03A3:InitStick1
-        call 0x1508:CalibrateLeftStick
+        call 0x1508:CalLeftJoystick
         mov word [StickPresent], 1
 .9:
         test byte [PotButtons], 0xc
@@ -153,7 +153,7 @@ _main:
 .10:
         or byte [InputFlags], 4
         call 0x03A3:InitStick2
-        call 0x1508:CalibrateRightStick
+        call 0x1508:CalRightJoystick
         mov word [StickPresent2], 1
 .11:
         call 0x0BFE:InputInit

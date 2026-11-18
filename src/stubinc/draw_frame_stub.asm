@@ -3,5 +3,5 @@
 	bits	16
 	org	0x0
 DrawFrameTail		equ	0x0
-FillRectClip		equ	0xDE
+FillRectClipped		equ	0xDE
 %include "pc/video/draw_frame.asm"

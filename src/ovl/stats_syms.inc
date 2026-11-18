@@ -20,7 +20,7 @@ DrawMenuPanel		equ	0xA4
 DrawRawTransRemapAt		equ	0x1EE9
 DrawRleTransAt		equ	0x1857
 DrawRleTransBody		equ	0x1874
-DrawShadowText		equ	0x166
+PrintShadowText		equ	0x166
 DrawShadowTextBuffered		equ	0x36
 DrawShadowTextCentered		equ	0xE4
 DrawShadowTextF		equ	0x210
