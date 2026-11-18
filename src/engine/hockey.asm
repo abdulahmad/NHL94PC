@@ -3676,7 +3676,7 @@ updateanim:
 .4:
         mov dx, [si + 0x38]
         shl dx, 1
-        add dx, 0x2b02
+        add dx, strict word SPAlist
         db 0x8B, 0xFA                           ; insn: mov di, dx
         mov ah, [di + 0x1]
         and ax, 0x8000

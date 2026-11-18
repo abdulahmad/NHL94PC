@@ -197,6 +197,7 @@ RinkTilesPtr		equ	0x8FE
 RinkTilesSeg		equ	0x900
 RockTuneIds		equ	0x5B90
 RunGameFrames		equ	0x404
+SPAlist		equ	0x2B02
 ScoreDigits		equ	0xDAA2
 ScoreDigitsSeg		equ	0xDAA4
 ScoreboardArt		equ	0xC258
