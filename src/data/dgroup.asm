@@ -4845,8 +4845,8 @@ asscentero_dedata_yrand:                        ; centre attack spots: random y 
 assscore_dancecnt:                              ; goal celebration counter; used by AI
         db 0x00, 0x00
 goaliesave_saveanim_m2:                         ; goalie save animations, entry before the table; used by AI
-        db 0xB1, 0x00, 0xC9, 0x00
-        db 0x31, 0x01, 0x59, 0x01, 0x01, 0x01, 0x19, 0x01
+        dw SPAno(SPAgglover), SPAno(SPAgglovel)
+        dw SPAno(SPAgstackr), SPAno(SPAgstackl), SPAno(SPAgstickr), SPAno(SPAgstickl)
 asspuckc_postab2:                               ; puck carrier target spots, x; used by AI
         db 0x92, 0xFF
 asspuckc_postab2_y:                             ; puck carrier target spots, y; used by AI
@@ -4865,17 +4865,19 @@ refsigdir:                                      ; referee signal directions; use
         db 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
 refsigspa_m2:                                   ; referee signal animations, entry before the table; used by
                                                 ; AI
-        db 0x00, 0x00
-        times 16 db 0
-        db 0x63, 0x0C, 0x00, 0x00
-        db 0x73, 0x0C, 0x8B, 0x0C, 0x63, 0x0C, 0x9B, 0x0C, 0xAB, 0x0C, 0xBB, 0x0C, 0xCB, 0x0C, 0xD9, 0x0C
-        db 0xE7, 0x0C, 0xF5, 0x0C, 0x00, 0x00, 0x00, 0x00
-        db 0x00, 0x00, 0x00, 0x00
+        dw 0
+        times 8 dw 0
+        dw SPAno(SPArefrough), 0
+        dw SPAno(SPAC73), SPAno(SPAC8B), SPAno(SPArefrough), SPAno(SPAC9B), SPAno(SPACAB), SPAno(SPACBB)
+        dw SPAno(SPACCB), SPAno(SPACD9), SPAno(SPACE7), SPAno(SPACF5), 0, 0
+        dw 0, 0
 nethit:                                         ; net hit table; used by AI
         db 0x00, 0x00
 CheckAnims:                                     ; check animation table of checkcheck; used by AI
-        db 0xC1, 0x05
-        db 0xD9, 0x05, 0x09, 0x06, 0x09, 0x06, 0x09, 0x06, 0xF1, 0x05, 0xF1, 0x05, 0xC1, 0x05, 0x55, 0x9D, 0x67, 0x55
+        dw SPAno(SPAshoulderchkl)
+        dw SPAno(SPAshoulderchkr), SPAno(SPAhipchkr), SPAno(SPAhipchkr), SPAno(SPAhipchkr), SPAno(SPAhipchkl)
+        dw SPAno(SPAhipchkl), SPAno(SPAshoulderchkl)
+        db 0x55, 0x9D, 0x67, 0x55
         db 0x9D, 0x67, 0x55, 0x9D, 0x67, 0x55, 0x9D, 0x67, 0x55, 0x9D, 0x67, 0x55, 0x9D, 0x67, 0x55, 0x9D, 0x67, 0x55
         db 0x9D, 'gUUUUUUUUUUUUUUUUU'
         db 0xF0, 0x55, 0xF0, 0x55, 0xF0, 0x55, 0xF0, 0x55, 0xF0, 0x55, 0xF0, 0x55, 0xF0, 0x55, 0xF0, 0x55
@@ -4916,8 +4918,7 @@ teamrocktune:                                   ; rock tune per team; used by AI
 RockTuneIds:                                    ; rock tune numbers; used by AI
         db 0xFE, 0x01, 0x3A, 0x02
 introstandanims_m2:                             ; intro stand animations, entry before the table; used by AI
-        db 0x67, 0x0D, 0x7B, 0x0D, 0x57, 0x0D, 0x89, 0x0D
-        db 0x45, 0x0D
+        dw SPAno(SPAD67), SPAno(SPAD7B), SPAno(SPAD57), SPAno(SPAD89), SPAno(SPAanthem1)
 StarPoints:                                     ; points per stat for the three stars; used by AI
         db 0x0A, 0x0F
         db 0x14, 0x00
