@@ -2318,7 +2318,7 @@ LockerRoomScreenThunk:
 ;-----------------------------------------------------------------------------
 MenuSavePctLeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:StatsMenuSavePct           ; load paragraph, relocated
+        jmp 0x2248:StatsMenuSavePct             ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuWinsLeadersThunk                                       1B35:21E3  RTLink
@@ -2326,7 +2326,7 @@ MenuSavePctLeadersThunk:
 ;-----------------------------------------------------------------------------
 MenuWinsLeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:StatsMenuGoalieWins              ; load paragraph, relocated
+        jmp 0x2248:StatsMenuGoalieWins          ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuGAALeadersThunk                                        1B35:21ED  RTLink
@@ -2334,7 +2334,7 @@ MenuWinsLeadersThunk:
 ;-----------------------------------------------------------------------------
 MenuGAALeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:StatsMenuGAA               ; load paragraph, relocated
+        jmp 0x2248:StatsMenuGAA                 ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuShootPctLeadersThunk                                   1B35:21F7  RTLink
@@ -2342,7 +2342,7 @@ MenuGAALeadersThunk:
 ;-----------------------------------------------------------------------------
 MenuShootPctLeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:StatsMenuShootPct          ; load paragraph, relocated
+        jmp 0x2248:StatsMenuShootPct            ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuPIMLeadersThunk                                        1B35:2201  RTLink
@@ -2350,7 +2350,7 @@ MenuShootPctLeadersThunk:
 ;-----------------------------------------------------------------------------
 MenuPIMLeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:StatsMenuPIM               ; load paragraph, relocated
+        jmp 0x2248:StatsMenuPIM                 ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuPlusMinusLeadersThunk                                  1B35:220B  RTLink
@@ -2358,7 +2358,7 @@ MenuPIMLeadersThunk:
 ;-----------------------------------------------------------------------------
 MenuPlusMinusLeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:StatsMenuPlusMinus         ; load paragraph, relocated
+        jmp 0x2248:StatsMenuPlusMinus           ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuSHGoalLeadersThunk                                     1B35:2215  RTLink
@@ -2366,7 +2366,7 @@ MenuPlusMinusLeadersThunk:
 ;-----------------------------------------------------------------------------
 MenuSHGoalLeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:StatsMenuSHGoals            ; load paragraph, relocated
+        jmp 0x2248:StatsMenuSHGoals             ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuPPGoalLeadersThunk                                     1B35:221F  RTLink
@@ -2374,7 +2374,7 @@ MenuSHGoalLeadersThunk:
 ;-----------------------------------------------------------------------------
 MenuPPGoalLeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:StatsMenuPPGoals            ; load paragraph, relocated
+        jmp 0x2248:StatsMenuPPGoals             ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuAssistLeadersThunk                                     1B35:2229  RTLink
@@ -2382,7 +2382,7 @@ MenuPPGoalLeadersThunk:
 ;-----------------------------------------------------------------------------
 MenuAssistLeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:StatsMenuAssists            ; load paragraph, relocated
+        jmp 0x2248:StatsMenuAssists             ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuGoalLeadersThunk                                       1B35:2233  RTLink
@@ -2390,7 +2390,7 @@ MenuAssistLeadersThunk:
 ;-----------------------------------------------------------------------------
 MenuGoalLeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:StatsMenuGoals              ; load paragraph, relocated
+        jmp 0x2248:StatsMenuGoals               ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuPointLeadersThunk                                      1B35:223D  RTLink
@@ -2398,7 +2398,7 @@ MenuGoalLeadersThunk:
 ;-----------------------------------------------------------------------------
 MenuPointLeadersThunk:
         call LoadFromThunk
-        jmp 0x2248:StatsMenuPoints             ; load paragraph, relocated
+        jmp 0x2248:StatsMenuPoints              ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuTeamPenaltiesThunk                                     1B35:2247  RTLink
@@ -2406,7 +2406,7 @@ MenuPointLeadersThunk:
 ;-----------------------------------------------------------------------------
 MenuTeamPenaltiesThunk:
         call LoadFromThunk
-        jmp 0x2248:StatsMenuTeamPenalties            ; load paragraph, relocated
+        jmp 0x2248:StatsMenuTeamPenalties       ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuTeamPKThunk                                            1B35:2251  RTLink
@@ -2414,7 +2414,7 @@ MenuTeamPenaltiesThunk:
 ;-----------------------------------------------------------------------------
 MenuTeamPKThunk:
         call LoadFromThunk
-        jmp 0x2248:StatsMenuPenaltyKilling                   ; load paragraph, relocated
+        jmp 0x2248:StatsMenuPenaltyKilling      ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuTeamPPThunk                                            1B35:225B  RTLink
@@ -2422,7 +2422,7 @@ MenuTeamPKThunk:
 ;-----------------------------------------------------------------------------
 MenuTeamPPThunk:
         call LoadFromThunk
-        jmp 0x2248:StatsMenuPowerPlay                   ; load paragraph, relocated
+        jmp 0x2248:StatsMenuPowerPlay           ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuTeamDefenseThunk                                       1B35:2265  RTLink
@@ -2430,7 +2430,7 @@ MenuTeamPPThunk:
 ;-----------------------------------------------------------------------------
 MenuTeamDefenseThunk:
         call LoadFromThunk
-        jmp 0x2248:StatsMenuTeamDefense              ; load paragraph, relocated
+        jmp 0x2248:StatsMenuTeamDefense         ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; MenuTeamScoringThunk                                       1B35:226F  RTLink
@@ -2438,7 +2438,7 @@ MenuTeamDefenseThunk:
 ;-----------------------------------------------------------------------------
 MenuTeamScoringThunk:
         call LoadFromThunk
-        jmp 0x2248:StatsMenuTeamScoring              ; load paragraph, relocated
+        jmp 0x2248:StatsMenuTeamScoring         ; load paragraph, relocated
         dw 2                                    ; STATS.OVL
 ;-----------------------------------------------------------------------------
 ; DeskExitGameThunk                                          1B35:2279  RTLink
@@ -4006,7 +4006,7 @@ SetupGameThunk:
 ;-----------------------------------------------------------------------------
 GSummaryPathThunk:
         call LoadFromThunk
-        jmp 0x2425:MakeGSummaryPath                 ; load paragraph, relocated
+        jmp 0x2425:MakeGSummaryPath             ; load paragraph, relocated
         dw 4                                    ; INIT.OVL
 ;-----------------------------------------------------------------------------
 ; SetupTeamLinesThunk                                        1B35:2A21  RTLink

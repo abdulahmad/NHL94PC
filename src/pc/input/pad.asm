@@ -556,4 +556,4 @@ PadTimerTick:
         add si, PadReadings + 2
         push si
         push cs
-        db 0xE8, (ReadHotKeys - ($ + 3)) & 0xFF  ; call near ReadHotKeys: the last byte is in the next segment
+        db 0xE8, (ReadHotKeys - ($ + 3)) & 0xFF ; call near ReadHotKeys: the last byte is in the next segment
