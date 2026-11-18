@@ -119,10 +119,10 @@ LoadSoundDriver:
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; DrvStub1                                                   1844:0110  EACLIB
+; DrvEmptyCallBeforeInit                                                   1844:0110  EACLIB
 ; Empty driver call.
 ;-----------------------------------------------------------------------------
-DrvStub1:
+DrvEmptyCallBeforeInit:
         push ds
         mov ax, DGROUP
         mov ds, ax
@@ -288,10 +288,10 @@ DrvLoadBank:
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; DrvStub2                                                   1844:01FE  EACLIB
+; DrvEmptyCallA                                                   1844:01FE  EACLIB
 ; Empty driver call.
 ;-----------------------------------------------------------------------------
-DrvStub2:
+DrvEmptyCallA:
         push ds
         mov ax, DGROUP
         mov ds, ax
@@ -299,10 +299,10 @@ DrvStub2:
         retf
 
 ;-----------------------------------------------------------------------------
-; DrvStub3                                                   1844:0206  EACLIB
+; DrvEmptyCallB                                                   1844:0206  EACLIB
 ; Empty driver call.
 ;-----------------------------------------------------------------------------
-DrvStub3:
+DrvEmptyCallB:
         push ds
         mov ax, DGROUP
         mov ds, ax
@@ -310,10 +310,10 @@ DrvStub3:
         retf
 
 ;-----------------------------------------------------------------------------
-; DrvStub4                                                   1844:020E  EACLIB
+; DrvEmptyCallC                                                   1844:020E  EACLIB
 ; Empty driver call.
 ;-----------------------------------------------------------------------------
-DrvStub4:
+DrvEmptyCallC:
         push ds
         mov ax, DGROUP
         mov ds, ax
@@ -321,10 +321,10 @@ DrvStub4:
         retf
 
 ;-----------------------------------------------------------------------------
-; DrvStub5                                                   1844:0216  EACLIB
+; DrvEmptyCallD                                                   1844:0216  EACLIB
 ; Empty driver call.
 ;-----------------------------------------------------------------------------
-DrvStub5:
+DrvEmptyCallD:
         push ds
         mov ax, DGROUP
         mov ds, ax
@@ -332,10 +332,10 @@ DrvStub5:
         retf
 
 ;-----------------------------------------------------------------------------
-; DrvStub6                                                   1844:021E  EACLIB
+; DrvEmptyCallE                                                   1844:021E  EACLIB
 ; Empty driver call.
 ;-----------------------------------------------------------------------------
-DrvStub6:
+DrvEmptyCallE:
         push ds
         mov ax, DGROUP
         mov ds, ax
@@ -343,10 +343,10 @@ DrvStub6:
         retf
 
 ;-----------------------------------------------------------------------------
-; DrvStub7                                                   1844:0226  EACLIB
+; DrvEmptyCallF                                                   1844:0226  EACLIB
 ; Empty driver call.
 ;-----------------------------------------------------------------------------
-DrvStub7:
+DrvEmptyCallF:
         push ds
         mov ax, DGROUP
         mov ds, ax

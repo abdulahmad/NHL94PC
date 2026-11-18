@@ -16,7 +16,7 @@ ClearPlayerFromLinesTail:
 ; AddHumanTeam                                               1ECB:0008  94 PC
 ; 'Select new human controlled team'
 ;
-; Calls LeagueCheckStub, ReadLeagueInfo, _fstrcpy, _fstrcspn, MouseRead, SetDialogColors, MessageBox,
+; Calls LeagueCheckAlwaysZero, ReadLeagueInfo, _fstrcpy, _fstrcspn, MouseRead, SetDialogColors, MessageBox,
 ; ClearClipRect and others. Far routine (retf).
 ;-----------------------------------------------------------------------------
 AddHumanTeam:
@@ -31,7 +31,7 @@ AddHumanTeam:
         mov [bp - 0x3c], cx
         push cx
         push ax
-        call 0x2305:LeagueCheckStub
+        call 0x2305:LeagueCheckAlwaysZero
         add sp, 0x6
         db 0x8B, 0xF8                           ; insn: mov di, ax
 .1:
@@ -336,7 +336,7 @@ AddHumanTeam:
 ; RemoveHumanTeam                                            1ECB:0332  94 PC
 ; 'Select human controlled team to remove'
 ;
-; Calls LeagueCheckStub, ReadLeagueInfo, _fstrcpy, _fstrcspn, MouseRead, SetDialogColors, MessageBox,
+; Calls LeagueCheckAlwaysZero, ReadLeagueInfo, _fstrcpy, _fstrcspn, MouseRead, SetDialogColors, MessageBox,
 ; ClearClipRect and others. Far routine (retf).
 ;-----------------------------------------------------------------------------
 RemoveHumanTeam:
@@ -351,7 +351,7 @@ RemoveHumanTeam:
         mov [bp - 0x3c], cx
         push cx
         push ax
-        call 0x2305:LeagueCheckStub
+        call 0x2305:LeagueCheckAlwaysZero
         add sp, 0x6
         db 0x8B, 0xF8                           ; insn: mov di, ax
 .1:

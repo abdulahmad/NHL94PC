@@ -1297,8 +1297,8 @@ seg050:00EC,SetupSongTracksEms,F050_00EC,new,low,SetupSongTracks for a song held
 seg050:01DE,ResetSequencer,F050_01DE,new,medium,clears the 24 track slots and 32 voice records,src/seg/seg050.asm
 seg050:0280,InitSequencer,F050_0280,new,medium,"allocates the slot, voice and queue tables and hooks the timer",src/seg/seg050.asm
 seg050:0308,ShutdownSequencer,F050_0308,new,medium,"frees the timer slot, shuts every driver down and frees the tables",src/seg/seg050.asm
-seg050:036C,SeqStubLong0,F050_036C,new,high,returns 0 in DX:AX,src/seg/seg050.asm
-seg050:0378,SeqStubWord0,F050_0378,new,high,returns 0,src/seg/seg050.asm
+seg050:036C,SeqZeroLongAfterShutdown,F050_036C,new,high,returns 0 in DX:AX,src/seg/seg050.asm
+seg050:0378,SeqZeroWordAfterShutdown,F050_0378,new,high,returns 0,src/seg/seg050.asm
 seg050:0382,LoadBankNumber,F050_0382,new,medium,"formats ""bank%d.pat"" and loads it",src/seg/seg050.asm
 seg050:03A8,LoadPatchBank,F050_03A8,new,medium,loads a patch bank file and keeps its pointer,src/seg/seg050.asm
 seg050:03C8,FreeSongData,F050_03C8,new,medium,"unlinks a song record, returns 0",src/seg/seg050.asm
@@ -1311,8 +1311,8 @@ seg050:077E,LoadSong,F050_077E,new,low,LoadSongMode by number,src/seg/seg050.asm
 seg050:079C,LoadSongBuf,F050_079C,new,low,LoadSongMode by number into a buffer,src/seg/seg050.asm
 seg050:07BC,RemoveLoadedSong,F050_07BC,new,medium,clears a song pointer from the 10 entries,src/seg/seg050.asm
 seg050:07FE,UnloadSong,F050_07FE,new,medium,removes and frees a song and its parts,src/seg/seg050.asm
-seg050:0866,SeqStubLong1,F050_0866,new,high,returns 0 in DX:AX,src/seg/seg050.asm
-seg050:0872,SeqStubWord1,F050_0872,new,high,returns 0,src/seg/seg050.asm
+seg050:0866,SeqZeroLongAfterUnload,F050_0866,new,high,returns 0 in DX:AX,src/seg/seg050.asm
+seg050:0872,SeqZeroWordAfterUnload,F050_0872,new,high,returns 0,src/seg/seg050.asm
 seg050:087C,GetPatch,F050_087C,new,medium,address of a 20-byte patch record in the bank,src/seg/seg050.asm
 seg050:08BE,GetPatchData,F050_08BE,new,medium,the data pointer of a patch record,src/seg/seg050.asm
 seg050:08F0,InitVoiceLists,F050_08F0,new,low,links the voice records into lists,src/seg/seg050.asm
@@ -1323,7 +1323,7 @@ seg050:0B58,FindFreeChannel,F050_0B58,new,medium,first of 16 MIDI channels allow
 seg050:0B8C,FindFreeTrackSlot,F050_0B8C,new,medium,first unused of the 24 track slots,src/seg/seg050.asm
 seg050:0BC6,StartSong,F050_0BC6,new,medium,"starts a song in free slots, returns a new handle",src/seg/seg050.asm
 seg050:0DD6,RestartSong,F050_0DD6,new,low,StartSong and copies settings to its slots,src/seg/seg050.asm
-seg050:0E58,SeqStubLong2,F050_0E58,new,high,returns 0 in DX:AX,src/seg/seg050.asm
+seg050:0E58,SeqZeroLongAfterRestart,F050_0E58,new,high,returns 0 in DX:AX,src/seg/seg050.asm
 seg050:0E64,PlayPatchNote,F050_0E64,new,medium,plays a sound effect patch (id below 100h) on a free voice,src/seg/seg050.asm
 seg050:0FB8,PlayPatch,F050_0FB8,new,medium,PlayPatchNote with default note,src/seg/seg050.asm
 seg050:0FD4,PlaySound,F050_0FD4,new,medium,"id below 100h plays a patch, otherwise prepares and starts a song",src/seg/seg050.asm
@@ -1350,7 +1350,7 @@ seg050:1496,ReadDwordBE,F050_1496,new,medium,reads a dword stored high byte firs
 seg050:14E8,CopyEventBytes,F050_14E8,new,low,copies bytes of an event record,src/seg/seg050.asm
 seg051:0000,CopyEventBytesTail,F051_0000,new,low,end of CopyEventBytes,src/seg/seg051.asm
 seg051:000E,LoadSoundDriver,F051_000E,new,high,"loads a driver from the game folder or c:\eaclib, ""Couldn't resolve sound driver""",src/seg/seg051.asm
-seg051:0110,DrvStub1,F051_0110,new,high,empty driver call,src/seg/seg051.asm
+seg051:0110,DrvEmptyCallBeforeInit,F051_0110,new,high,empty driver call,src/seg/seg051.asm
 seg051:0118,DrvInit,F051_0118,new,medium,driver table entry +0,src/seg/seg051.asm
 seg051:0130,DrvCall04,F051_0130,new,low,driver table entry +4,src/seg/seg051.asm
 seg051:014E,DrvCall08,F051_014E,new,low,driver table entry +8,src/seg/seg051.asm
@@ -1359,12 +1359,12 @@ seg051:0190,DrvCall10,F051_0190,new,low,driver table entry +10h,src/seg/seg051.a
 seg051:01A8,DrvService,F051_01A8,new,medium,"driver table entry +14h, called from SeqService",src/seg/seg051.asm
 seg051:01C0,DrvNeedsService,F051_01C0,new,medium,"driver table entry +18h, asked before DrvService",src/seg/seg051.asm
 seg051:01DC,DrvLoadBank,F051_01DC,new,low,"driver table entry +1Ch, called before loading a song",src/seg/seg051.asm
-seg051:01FE,DrvStub2,F051_01FE,new,high,empty driver call,src/seg/seg051.asm
-seg051:0206,DrvStub3,F051_0206,new,high,empty driver call,src/seg/seg051.asm
-seg051:020E,DrvStub4,F051_020E,new,high,empty driver call,src/seg/seg051.asm
-seg051:0216,DrvStub5,F051_0216,new,high,empty driver call,src/seg/seg051.asm
-seg051:021E,DrvStub6,F051_021E,new,high,empty driver call,src/seg/seg051.asm
-seg051:0226,DrvStub7,F051_0226,new,high,empty driver call,src/seg/seg051.asm
+seg051:01FE,DrvEmptyCallA,F051_01FE,new,high,empty driver call,src/seg/seg051.asm
+seg051:0206,DrvEmptyCallB,F051_0206,new,high,empty driver call,src/seg/seg051.asm
+seg051:020E,DrvEmptyCallC,F051_020E,new,high,empty driver call,src/seg/seg051.asm
+seg051:0216,DrvEmptyCallD,F051_0216,new,high,empty driver call,src/seg/seg051.asm
+seg051:021E,DrvEmptyCallE,F051_021E,new,high,empty driver call,src/seg/seg051.asm
+seg051:0226,DrvEmptyCallF,F051_0226,new,high,empty driver call,src/seg/seg051.asm
 seg051:022E,DrvSendMidi,F051_022E,new,medium,"driver table entry +2Ch, note messages get a transpose of 18h",src/seg/seg051.asm
 seg051:0274,DrvLinearToFar,F051_0274,new,medium,callback for drivers: LinearToFarRegs,src/seg/seg051.asm
 seg051:028C,DrvEmsMap,F051_028C,new,medium,callback for drivers: EmsMapFrame,src/seg/seg051.asm
@@ -1470,8 +1470,8 @@ seg058:01D3,RtlCallHandlersFar,F058_01D3,rtlink,medium,far entry to RtlCallHandl
 seg058:01D7,RtlTerminate,F058_01D7,rtlink,medium,"terminate hook: runs flag 2 callbacks, restores the vector and chains",src/seg/seg058.asm
 seg058:0203,RtlCallHandlers,F058_0203,rtlink,medium,calls every registered callback whose mask matches AL,src/seg/seg058.asm
 seg058:0224,RtlBeforeClose,F058_0224,rtlink,medium,stub returning -1,src/seg/seg058.asm
-seg058:0228,RtlStubCx,F058_0228,rtlink,high,returns CX = -1,src/seg/seg058.asm
-seg058:022C,RtlStubZero,F058_022C,rtlink,high,returns 0 in DX:AX,src/seg/seg058.asm
+seg058:0228,RtlReturnCxMinusOne,F058_0228,rtlink,high,returns CX = -1,src/seg/seg058.asm
+seg058:022C,RtlReturnZero,F058_022C,rtlink,high,returns 0 in DX:AX,src/seg/seg058.asm
 seg058:02A1,RtlGetEnv,F058_02A1,rtlink,medium,finds a variable in the environment block,src/seg/seg058.asm
 seg058:02FD,RtlFindFile,F058_02FD,rtlink,medium,"tries a file by a search spec of letters C, E, P and A (current dir, EXE dir, PATH, as given)",src/seg/seg058.asm
 seg058:0332,RtlFindFileStep,F058_0332,rtlink,medium,one RtlFindFile try,src/seg/seg058.asm
@@ -2218,7 +2218,7 @@ Ai_327B_0A70,updatepentime,Ai_327B_0A70,93G penalty93_1.asm,high,every 18h ticks
 Ai_327B_0AA6,PenaltyManager,Ai_327B_0AA6,93G penalty93_1.asm,high,"updatepentime, checkfornewpen, chkprogress",src/engine/penalty.asm
 Ai_327B_0B2C,ClearPenaltyBuffer,Ai_327B_0B2C,93G penalty93_1.asm,high,clears the 32 byte pairs of the penalty buffer,src/engine/penalty.asm
 Ai_327B_0B42,PenGoalStuff,Ai_327B_0B42,94G penalty94.asm,high,after a goal drops the scored-on team's finished minor penalties,src/engine/penalty.asm
-Ai_327B_0CD8,PenaltyStub,Ai_327B_0CD8,new,medium,a lone retf after PenGoalStuff; nothing calls it,src/engine/penalty.asm
+Ai_327B_0CD8,PenGoalStuffTail,Ai_327B_0CD8,new,medium,a lone retf after PenGoalStuff; nothing calls it,src/engine/penalty.asm
 Game_1E45_0000,LoadCupFinalSeries,Game_1E45_0000,new,medium,allocs 0x2A-byte series record from the db file when both teams are playoff teams,src/front/cup_final.asm
 Game_1E45_00C2,IsCupClinched,Game_1E45_00C2,new,medium,"appends the game score to the series list, 1 when CupSeriesWinner decides it",src/front/cup_final.asm
 Game_1E45_015E,CupSeriesWinner,Game_1E45_015E,new,medium,counts wins per side in the series list against games to win,src/front/cup_final.asm
@@ -2465,7 +2465,7 @@ Lp_22D3_0262,ReloadSoundConfig,Lp_22D3_0262,new,medium,rereads the sound .CFG an
 Lp_2305_000C,CheckMasterPassword,Lp_2305_000C,95 PC,high,master password check,src/front/league_list.asm
 Lp_2305_0214,FmtFromLeague,Lp_2305_0214,95 PC,high,'<name> from the league <league>',src/front/league_list.asm
 Lp_2305_0282,BuildLeagueList,Lp_2305_0282,95 PC,high,lists the *.LP leagues,src/front/league_list.asm
-Lp_2305_044C,LeagueCheckStub,Lp_2305_044C,95 PC,high,empty check,src/front/league_list.asm
+Lp_2305_044C,LeagueCheckAlwaysZero,Lp_2305_044C,95 PC,high,empty check,src/front/league_list.asm
 Lp_2305_0450,GetLeagueId,Lp_2305_0450,95 PC,high,league id from PLAYER.ID,src/front/league_list.asm
 Lp_2305_04DC,WriteLeagueInfo,Lp_2305_04DC,95 PC,high,writes PINFO.DB,src/front/league_list.asm
 Lp_2305_05E8,MsgCopyingDatabases,Lp_2305_05E8,95 PC,high,'copying databases' message,src/front/league_list.asm

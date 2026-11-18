@@ -3109,7 +3109,7 @@ PostGameToTeamDb:
 ; PlayLeagueGame                                             25B2:208A  94 PC
 ; 'Select a team to play.'
 ;
-; Takes 2 words of stack arguments. Calls LoadLeagueGameRef, LeagueCheckStub, ReadLeagueInfo,
+; Takes 2 words of stack arguments. Calls LoadLeagueGameRef, LeagueCheckAlwaysZero, ReadLeagueInfo,
 ; _fstrcpy, _fstrcspn, MouseRead, SetDialogColors, MessageBox and others.
 ;-----------------------------------------------------------------------------
 PlayLeagueGame:
@@ -3136,7 +3136,7 @@ PlayLeagueGame:
         push 0x3
         push word 0x3701
         push strict word CurLeagueName
-        call 0x2305:LeagueCheckStub
+        call 0x2305:LeagueCheckAlwaysZero
         add sp, 0x6
         mov [bp - 0x5c], ax
 .2:

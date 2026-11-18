@@ -1525,11 +1525,11 @@ PenGoalStuff:
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; PenaltyStub                                                327B:0CD8  94 PC
+; PenGoalStuffTail                                                327B:0CD8  94 PC
 ; A lone retf after PenGoalStuff; nothing calls it.
 ;
 ; Far routine (retf).
 ;-----------------------------------------------------------------------------
-PenaltyStub:
+PenGoalStuffTail:
         retf
         db 0x90

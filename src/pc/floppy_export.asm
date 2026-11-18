@@ -2125,7 +2125,7 @@ ImportDbs:
 ; ExportDbs                                                  2139:15EC  94 PC
 ; 'Select a team to export.'
 ;
-; Calls LeagueCheckStub, ReadLeagueInfo, _fstrcpy, _fstrcspn, SetDialogColors, MouseRead, MessageBox,
+; Calls LeagueCheckAlwaysZero, ReadLeagueInfo, _fstrcpy, _fstrcspn, SetDialogColors, MouseRead, MessageBox,
 ; UpdateTeamDbs and others. Far routine (retf).
 ;-----------------------------------------------------------------------------
 ExportDbs:
@@ -2139,7 +2139,7 @@ ExportDbs:
         mov [bp - 0x50], cx
         push cx
         push ax
-        call 0x2305:LeagueCheckStub
+        call 0x2305:LeagueCheckAlwaysZero
         add sp, 0x6
         db 0x8B, 0xF0                           ; insn: mov si, ax
 .1:

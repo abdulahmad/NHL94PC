@@ -328,18 +328,18 @@ RtlBeforeClose:
         retf
 
 ;-----------------------------------------------------------------------------
-; RtlStubCx                                                  1DE4:0228  RTLink
+; RtlReturnCxMinusOne                                                  1DE4:0228  RTLink
 ; Returns CX = -1.
 ;-----------------------------------------------------------------------------
-RtlStubCx:
+RtlReturnCxMinusOne:
         mov cx, 0xffff
         retf
 
 ;-----------------------------------------------------------------------------
-; RtlStubZero                                                1DE4:022C  RTLink
+; RtlReturnZero                                                1DE4:022C  RTLink
 ; Returns 0 in DX:AX.
 ;-----------------------------------------------------------------------------
-RtlStubZero:
+RtlReturnZero:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         db 0x8B, 0xD0                           ; insn: mov dx, ax
         retf

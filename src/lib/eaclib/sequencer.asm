@@ -387,10 +387,10 @@ ShutdownSequencer:
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; SeqStubLong0                                               16F2:036C  EACLIB
+; SeqZeroLongAfterShutdown                                               16F2:036C  EACLIB
 ; Returns 0 in DX:AX.
 ;-----------------------------------------------------------------------------
-SeqStubLong0:
+SeqZeroLongAfterShutdown:
         push ds
         mov ax, DGROUP
         mov ds, ax
@@ -401,10 +401,10 @@ SeqStubLong0:
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; SeqStubWord0                                               16F2:0378  EACLIB
+; SeqZeroWordAfterShutdown                                               16F2:0378  EACLIB
 ; Returns 0.
 ;-----------------------------------------------------------------------------
-SeqStubWord0:
+SeqZeroWordAfterShutdown:
         push ds
         mov ax, DGROUP
         mov ds, ax
@@ -1006,10 +1006,10 @@ UnloadSong:
         retf
 
 ;-----------------------------------------------------------------------------
-; SeqStubLong1                                               16F2:0866  EACLIB
+; SeqZeroLongAfterUnload                                               16F2:0866  EACLIB
 ; Returns 0 in DX:AX.
 ;-----------------------------------------------------------------------------
-SeqStubLong1:
+SeqZeroLongAfterUnload:
         push ds
         mov ax, DGROUP
         mov ds, ax
@@ -1020,10 +1020,10 @@ SeqStubLong1:
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; SeqStubWord1                                               16F2:0872  EACLIB
+; SeqZeroWordAfterUnload                                               16F2:0872  EACLIB
 ; Returns 0.
 ;-----------------------------------------------------------------------------
-SeqStubWord1:
+SeqZeroWordAfterUnload:
         push ds
         mov ax, DGROUP
         mov ds, ax
@@ -1587,7 +1587,7 @@ StartSong:
         mov al, [es:si + 0x4c]
         push ax
         push 0x0
-        call 0x1844:DrvStub1
+        call 0x1844:DrvEmptyCallBeforeInit
         add sp, 0x8
         les bx, [bp - 0x1c]
         mov al, [es:bx + 0x14]
@@ -1702,10 +1702,10 @@ RestartSong:
         retf
 
 ;-----------------------------------------------------------------------------
-; SeqStubLong2                                               16F2:0E58  EACLIB
+; SeqZeroLongAfterRestart                                               16F2:0E58  EACLIB
 ; Returns 0 in DX:AX.
 ;-----------------------------------------------------------------------------
-SeqStubLong2:
+SeqZeroLongAfterRestart:
         push ds
         mov ax, DGROUP
         mov ds, ax
@@ -1892,7 +1892,7 @@ PlaySound:
         call 0x16F2:PlayPatch
         jmp short .4
 .1:
-        call 0x16F2:SeqStubLong2
+        call 0x16F2:SeqZeroLongAfterRestart
         db 0x8B, 0xF0                           ; insn: mov si, ax
         mov [bp - 0x2], dx
         db 0x0B, 0xD0                           ; insn: or dx, ax

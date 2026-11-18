@@ -7,7 +7,7 @@ AllocRecData		equ	0x30
 SeqService		equ	0x3C
 LoadRaw		equ	0x58
 LoadFileCached		equ	0xA0
-DrvStub1		equ	0x110
+DrvEmptyCallBeforeInit		equ	0x110
 DrvShutdown		equ	0x178
 EmsMapFrame		equ	0x192
 DrvLoadBank		equ	0x1DC
