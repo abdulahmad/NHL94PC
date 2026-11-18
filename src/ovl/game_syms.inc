@@ -12,7 +12,7 @@ ClockTickThunk		equ	0x2959
 CloseHandlePtr		equ	0x41E
 CrowdFadeOut		equ	0x24E
 CrowdNoiseOff		equ	0x1DC
-CrowdNoiseUpdate		equ	0x2
+Crowd_Noise		equ	0x2
 CrowdReset		equ	0x29A
 CrowdState		equ	0x1B6
 CurLeagueName		equ	0xE53

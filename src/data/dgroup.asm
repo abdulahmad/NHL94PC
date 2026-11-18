@@ -118,7 +118,7 @@ DbSaveMode:                                     ; 0/2 mode checked by SaveGame a
                                                 ; UseDbDescriptor, SaveGame
         dw 0x0000
 CrowdState:                                     ; bit 80h tested by the crowd routines; used by
-                                                ; CrowdNoiseUpdate, CrowdNoiseOff, CrowdFadeOut
+                                                ; Crowd_Noise, CrowdNoiseOff, CrowdFadeOut
         db 0xFF
 AnnouncerFlags:                                 ; bit 80h set while the announcer talks; used by
                                                 ; AnnounceOneMinute, AnnouncerBusy, AnnounceGoal ...
@@ -143,7 +143,7 @@ sndcardmissing:                                 ; sound card dialog: a set bit g
                                                 ; MENUS
         db 0x7F, 0x00
 SoundOptions:                                   ; bits 2 and 8 gate crowd and effects; used by
-                                                ; CrowdNoiseUpdate, CrowdNoiseOff, CrowdFadeOut ...
+                                                ; Crowd_Noise, CrowdNoiseOff, CrowdFadeOut ...
         db 0x10, 0x00
 gsumheader:                                     ; header of the game summary file; used by AI, INIT
         db 0x00, 0x00
@@ -736,12 +736,12 @@ JingleHandleHi:                                 ; playing jingle, high word; use
                                                 ; WaitJingle
         dw 0xFFFF
 Crowdlevel:                                     ; crowd noise level the crowd update ramps; used by
-                                                ; CrowdNoiseUpdate, CrowdReset
+                                                ; Crowd_Noise, CrowdReset
         dw 0x0000
-CrowdTarget:                                    ; crowd level being faded to; used by CrowdNoiseUpdate,
+CrowdTarget:                                    ; crowd level being faded to; used by Crowd_Noise,
                                                 ; CrowdNoiseOff, CrowdReset
         dw 0x0000
-CrowdFade:                                      ; crowd fade step; used by CrowdNoiseUpdate, CrowdNoiseOff,
+CrowdFade:                                      ; crowd fade step; used by Crowd_Noise, CrowdNoiseOff,
                                                 ; CrowdReset
         dw 0x0000
 str_Plane0:                                     ; string 'Plane 0'; used by SaveVgaPlanes
@@ -1152,7 +1152,7 @@ str_Emmcopybuf:                                 ; string 'emmcopybuf'; used by M
         db 'emmcopybuf', 0x00
 SoundDevChoice:                                 ; sound device byte kept by SetSoundDevice; used by MENUS
         db 0x00
-CrowdChannel:                                   ; crowd noise channel; used by CrowdNoiseUpdate, CrowdNoiseOff
+CrowdChannel:                                   ; crowd noise channel; used by Crowd_Noise, CrowdNoiseOff
         db 0x00, 0x00
 SoundDevTable:                                  ; sound device table (device bit, driver ...) searched by
                                                 ; SetSoundDevice; used by LP, MENUS
@@ -3848,7 +3848,7 @@ ltack:                                          ; last touch for icing; used by 
         db 0x00, 0x00
 lastsfx:                                        ; last sound effect played; used by PlaySoundEffect
         dw 0xFFFF
-CrowdSound:                                     ; crowd sound handle; used by CrowdNoiseUpdate, CrowdFadeOut,
+CrowdSound:                                     ; crowd sound handle; used by Crowd_Noise, CrowdFadeOut,
                                                 ; PlaySoundEffect
         times 2 db 0
 photobankf:                                     ; PPV file pointer 1; used by INIT

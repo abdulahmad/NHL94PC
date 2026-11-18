@@ -357,7 +357,7 @@ ThreeStarsLoop:
         mov [PadRepeatOn], ax
 .7:
         push si
-        call 0x0EDC:CrowdNoiseUpdate
+        call 0x0EDC:Crowd_Noise
         add sp, 0x2
         cmp word [framesync], 0x0
         jnz short .10

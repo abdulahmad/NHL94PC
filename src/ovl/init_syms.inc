@@ -39,7 +39,7 @@ CopyPlane		equ	0x10A7
 CreateFileNormal		equ	0x40C
 CrestShapeNames		equ	0x5604
 CrowdNoiseOff		equ	0x1DC
-CrowdNoiseUpdate		equ	0x2
+Crowd_Noise		equ	0x2
 CrowdSound		equ	0x4A54
 CrowdState		equ	0x1B6
 Crowdlevel		equ	0xA18

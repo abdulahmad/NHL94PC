@@ -30,7 +30,7 @@ ClockDigitsSeg		equ	0xDA78
 CloseHandlePtr		equ	0x41E
 CrestShapeNames		equ	0x5604
 CrowdFadeOut		equ	0x24E
-CrowdNoiseUpdate		equ	0x2
+Crowd_Noise		equ	0x2
 CrowdReset		equ	0x29A
 CrowdSound		equ	0x4A54
 CrowdState		equ	0x1B6
