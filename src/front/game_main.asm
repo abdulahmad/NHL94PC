@@ -760,7 +760,7 @@ Gameloop:
         mov [PadRepeatOn], ax
 .7:
         push si
-        call 0x0EDC:CrowdNoiseUpdate
+        call 0x0EDC:Crowd_Noise
         add sp, 0x2
         call 0x0000:VgaPageFlip
         mov ax, [hudhundaccum]

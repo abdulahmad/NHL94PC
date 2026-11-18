@@ -1,0 +1,1 @@
+CrowdNoiseUpdate Crowd_Noise | 94G | medium | same job as the 94G Crowd_Noise (95 PC keeps that name): eases the crowd level each frame and drives the MIDI crowd notes

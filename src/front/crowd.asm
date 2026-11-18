@@ -10,11 +10,11 @@ MessageBoxResetTail:                            ; end of MessageBoxReset
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; CrowdNoiseUpdate                                            0EDC:0002  94 PC
+; Crowd_Noise                                            0EDC:0002  94 PC
 ; Eases the crowd level toward CrowdTarget and drives the MIDI crowd notes
 ; (volume, pitch).
 ;-----------------------------------------------------------------------------
-CrowdNoiseUpdate:
+Crowd_Noise:
         enter 0x2, 0x0
         push di
         push si
@@ -293,7 +293,7 @@ CrowdFadeOut:
 .2:
         push 0x2
         push cs
-        call CrowdNoiseUpdate
+        call Crowd_Noise
         add sp, 0x2
         call 0x03A3:WaitDeadlineNoEoi
         cmp word [CrowdSound], 0x0

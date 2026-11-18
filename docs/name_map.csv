@@ -1046,7 +1046,7 @@ seg020:0FC8,MessageBox,F020_0FC8,new,high,box with text lines and buttons; retur
 seg020:1260,MessageBoxLoop,F020_1260,new,medium,"input loop of MessageBox (mouse, keys, highlight)",src/seg/seg020.asm
 seg020:14B8,MessageBoxReset,F020_14B8,new,low,sets the last button to -1,src/seg/seg020.asm
 seg021:0000,MessageBoxResetTail,F021_0000,new,high,"end of MessageBoxReset spilling into this paragraph (was taken for a lone retf)",src/seg/seg021.asm
-seg021:0002,CrowdNoiseUpdate,F021_0002,new,high,"eases the crowd level toward CrowdTarget and drives the MIDI crowd notes (volume, pitch)",src/seg/seg021.asm
+seg021:0002,Crowd_Noise,F021_0002,new,high,"eases the crowd level toward CrowdTarget and drives the MIDI crowd notes (volume, pitch)",src/seg/seg021.asm
 seg021:01DC,CrowdNoiseOff,F021_01DC,new,high,note off and volume 0 on the two crowd channels,src/seg/seg021.asm
 seg021:024E,CrowdFadeOut,F021_024E,new,high,lowers CrowdTarget step by step to silence,src/seg/seg021.asm
 seg021:029A,CrowdReset,F021_029A,new,high,crowd level and both note states to 0,src/seg/seg021.asm

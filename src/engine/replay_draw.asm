@@ -9,7 +9,7 @@
 ; ReplayStep                                                 26D2:000A  94 PC
 ; Steps the replay one frame.
 ;
-; Takes 2 words of stack arguments. Calls PlaySoundEffect, LongSarAt, CrowdNoiseUpdate, CrowdNoiseOff.
+; Takes 2 words of stack arguments. Calls PlaySoundEffect, LongSarAt, Crowd_Noise, CrowdNoiseOff.
 ; Far routine (retf).
 ;-----------------------------------------------------------------------------
 ReplayStep:
@@ -348,7 +348,7 @@ ReplayStep:
         mov ax, [bp - 0x6]
         shl ax, 1
         push ax
-        call 0x0EDC:CrowdNoiseUpdate
+        call 0x0EDC:Crowd_Noise
         add sp, 0x2
         jmp short .38
         db 0x90
