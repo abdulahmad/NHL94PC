@@ -11,4 +11,4 @@ A bit-perfect disassembly (no decompilation) of NHL Hockey ('94) for DOS, assemb
 - Comments: no IDA artefacts (`sub_`, `loc_`), no hardcoded addresses in comments; every procedure gets a header comment (what, args, result).
 - No macros. Labels instead of addresses wherever NASM can compute them.
 - Comment layout as in NHL94SNES CONTRIBUTING.md (tabs, trailing comments at column 36, 110 columns).
-- Do not commit game files other than `lst/HOCKEY.EXE` (temporary), `Extracted/`, `output/`, `*.lst` or patches.
+- Do not commit game files (`lst/HOCKEY.EXE` and `lst/game/` are your own copies), `Extracted/`, `output/`, `*.lst` or patches.

@@ -1,5 +1,5 @@
-# Game files: only the retail EXE in lst/ is committed (temporary, for convenience; it leaves the repo later). The build finds
-# it by SHA-1 and size. Never commit patches or other game files.
+# Game files: never committed. Your own retail EXE goes at lst/HOCKEY.EXE and your own game folder at lst/game/
+# (the build checks them by SHA-1 and size). Never commit patches or other game files.
 *.exe
 *.EXE
 *.int
@@ -23,13 +23,8 @@ __pycache__/
 *.pyc
 *.log
 .DS_Store
-!lst/HOCKEY.EXE
-!lst/dump/
-!lst/dump/**
-
-# Retail game folder (temporary, like the EXE)
-!lst/game/
-!lst/game/**
+lst/game/
+lst/dump/
 
 # SDL2 port: third-party code fetched by port/fetch-deps.sh
 port/third_party/
