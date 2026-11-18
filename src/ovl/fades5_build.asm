@@ -1,4 +1,5 @@
 ; Builds FADES5.OVL on its own: the outside labels it uses (from tools/make_stubs.py), then the overlay.
 bits 16
+%include "spa94.inc"
 %include "ovl/fades5_syms.inc"
 %include "ovl/fades5.asm"

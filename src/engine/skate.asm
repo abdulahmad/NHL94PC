@@ -23,7 +23,7 @@ doplayeracc:
         mov al, [si + 0x44]
         and al, 0x10
         jz short .2
-        mov cx, 0x529
+        mov cx, SPAno(SPAglideback)
         jmp short .6
 .2:
         cmp word [si + 0x5e], 0x10
@@ -37,15 +37,15 @@ doplayeracc:
         test byte [gmode], 0x8
         jnz short .4
 .3:
-        mov cx, 0xa5b
+        mov cx, SPAno(SPArefglide)
         jmp short .6
         db 0x90
 .4:
-        mov cx, 0xb4b
+        mov cx, SPAno(SPAarmupglide)
         jmp short .6
         db 0x90
 .5:
-        mov cx, 0x289
+        mov cx, SPAno(SPAglide)
 .6:
         and word [bp + 0x8], 0xf
         cmp word [bp + 0x8], 0x7
@@ -254,14 +254,14 @@ doplayeracc:
         test byte [gmode], 0x8
         jnz short .23
 .22:
-        mov cx, 0xabb
+        mov cx, SPAno(SPArefturnl)
         jmp short .29
 .23:
-        mov cx, 0xbab
+        mov cx, SPAno(SPAarmupturnl)
         jmp short .29
         db 0x90
 .24:
-        mov cx, 0x331
+        mov cx, SPAno(SPAturnl)
         jmp short .29
         db 0x90
 .25:
@@ -276,15 +276,15 @@ doplayeracc:
         test byte [gmode], 0x8
         jnz short .27
 .26:
-        mov cx, 0xad3
+        mov cx, SPAno(SPArefturnr)
         jmp short .29
         db 0x90
 .27:
-        mov cx, 0xbc3
+        mov cx, SPAno(SPAarmupturnr)
         jmp short .29
         db 0x90
 .28:
-        mov cx, 0x349
+        mov cx, SPAno(SPAturnr)
 .29:
         or byte [si + 0x45], 0x2
 .30:
@@ -1460,15 +1460,15 @@ dostop:
         test byte [gmode], 0x8
         jnz short .3
 .2:
-        mov cx, 0xaeb
+        mov cx, SPAno(SPArefstop)
         jmp short .9
         db 0x90, 0x90
 .3:
-        mov cx, 0xbdb
+        mov cx, SPAno(SPAarmupstop)
         jmp short .9
         db 0x90
 .4:
-        mov cx, 0x361
+        mov cx, SPAno(SPAstop)
         jmp short .9
         db 0x90
 .5:
@@ -1483,15 +1483,15 @@ dostop:
         test byte [gmode], 0x8
         jnz short .7
 .6:
-        mov cx, 0xa5b
+        mov cx, SPAno(SPArefglide)
         jmp short .9
         db 0x90
 .7:
-        mov cx, 0xb4b
+        mov cx, SPAno(SPAarmupglide)
         jmp short .9
         db 0x90
 .8:
-        mov cx, 0x289
+        mov cx, SPAno(SPAglide)
 .9:
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         db 0x8B, 0xDE                           ; insn: mov bx, si
@@ -1595,7 +1595,7 @@ goalieacc:
         mov [si + 0x36], dx
 .3:
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0x1f1
+        mov ax, SPAno(SPAgskate)
         call 0x2E42:SetSPA
         push word [si + 0x36]
         push si
@@ -1660,7 +1660,7 @@ noturn0:
         and word [si + 0x36], 0x7
         test byte [si + 0x44], 0x10
         jz short .6
-        mov cx, 0x529
+        mov cx, SPAno(SPAglideback)
         jmp short .10
 .6:
         cmp word [si + 0x5e], 0x10
@@ -1674,15 +1674,15 @@ noturn0:
         test byte [gmode], 0x8
         jnz short .8
 .7:
-        mov cx, 0xa5b
+        mov cx, SPAno(SPArefglide)
         jmp short .10
         db 0x90
 .8:
-        mov cx, 0xb4b
+        mov cx, SPAno(SPAarmupglide)
         jmp short .10
         db 0x90
 .9:
-        mov cx, 0x289
+        mov cx, SPAno(SPAglide)
 .10:
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         db 0x8B, 0xDE                           ; insn: mov bx, si
@@ -1705,11 +1705,11 @@ noturn0:
         test byte [gmode], 0x8
         jnz short .13
 .12:
-        mov cx, 0xa73
+        mov cx, SPAno(SPArefskate)
         jmp short .17
         db 0x90
 .13:
-        mov cx, 0xb63
+        mov cx, SPAno(SPAarmupskate)
         jmp short .17
         db 0x90
 .14:
@@ -1718,7 +1718,7 @@ noturn0:
         cbw
         cmp ax, [si + 0x5e]
         jnz short .15
-        mov cx, 0x2a1
+        mov cx, SPAno(SPAskatewp)
         jmp short .17
         db 0x90
 .15:
@@ -1727,7 +1727,7 @@ noturn0:
         cmp al, 0x1
         db 0x1B, 0xC9                           ; insn: sbb cx, cx
         and cx, 0xfa16
-        add cx, 0x8d3
+        add cx, SPAno(SPAstumble)
         jmp short .17
         db 0x90
 .16:

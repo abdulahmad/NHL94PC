@@ -13,7 +13,7 @@ Sweepcheck:
         mov si, [bp + 0x6]
         or byte [si + 0x44], 0x20
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0x589
+        mov ax, SPAno(SPAsweepchk)
         call 0x2E42:SetSPA
         pop si
         leave
@@ -69,7 +69,7 @@ burst:
         add [si + 0xe], ax
         or byte [si + 0x44], 0x20
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0x621
+        mov ax, SPAno(SPAburst)
         call 0x2E42:SetSPA
         pop si
         pop di
@@ -344,15 +344,15 @@ checkcheck:
         mov si, [bp + 0x6]
         mov di, [bp + 0x8]
 .1:
-        cmp word [di + 0x38], 0x639
+        cmp word [di + 0x38], SPAno(SPAHold)
         jnz short .2
         jmp near .22
 .2:
-        cmp word [di + 0x38], 0x873
+        cmp word [di + 0x38], SPAno(SPAhook)
         jnz short .3
         jmp near .22
 .3:
-        cmp word [di + 0x38], 0x589
+        cmp word [di + 0x38], SPAno(SPAsweepchk)
         jnz short .4
         push di
         push si
@@ -361,7 +361,7 @@ checkcheck:
         jmp near .23
         db 0x90
 .4:
-        cmp word [si + 0x38], 0x621
+        cmp word [si + 0x38], SPAno(SPAburst)
         jz short .5
         jmp near .24
 .5:
@@ -1593,7 +1593,7 @@ dopass:
         jz short .19
         neg word [bx]
 .19:
-        mov di, 0x1b9
+        mov di, SPAno(SPAgswing)
         jmp short .21
 .20:
         mov bx, [puckvx]
@@ -2822,35 +2822,35 @@ FallDown:
         jmp near .42
 .2:
         mov dx, [si + 0x38]
-        cmp dx, 0xa0b
+        cmp dx, SPAno(SPAinjury1)
         jnz short .3
         jmp near .42
 .3:
-        cmp dx, 0x8d3
+        cmp dx, SPAno(SPAstumble)
         jnz short .4
         jmp near .42
 .4:
-        cmp dx, 0x681
+        cmp dx, SPAno(SPAfallfwd)
         jnz short .5
         jmp near .42
 .5:
-        cmp dx, 0x6d9
+        cmp dx, SPAno(SPAfallback)
         jnz short .6
         jmp near .42
 .6:
-        cmp dx, 0x993
+        cmp dx, SPAno(SPAflip)
         jnz short .7
         jmp near .42
 .7:
         cmp word [si + 0x5e], 0x10
         jnz short .10
-        cmp dx, 0xb13
+        cmp dx, SPAno(SPAreffallback)
         jnz short .8
         jmp near .42
 .8:
         or byte [si + 0x44], 0x20
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0xb13
+        mov ax, SPAno(SPAreffallback)
         call 0x2E42:SetSPA
         cmp word [CrowdSound], 0x3e8
         jg short .9
@@ -2875,7 +2875,7 @@ FallDown:
         cmp ax, [si + 0x18]
         jng short .11
         mov word [si + 0x40], 0x3c
-        mov cx, 0x8d3
+        mov cx, SPAno(SPAstumble)
         mov di, [bp + 0x6]
         jmp near .16
 .11:
@@ -2915,7 +2915,7 @@ FallDown:
         jc short .14
         cmp word [di + 0x5e], 0xb
         jg short .14
-        mov word [bp - 0x2], 0x993
+        mov word [bp - 0x2], SPAno(SPAflip)
         mov al, [di + 0x44]
         and al, 0x40
         cmp al, 0x1
@@ -2928,11 +2928,11 @@ FallDown:
         jmp short .16
         db 0x90
 .14:
-        mov cx, 0x681
+        mov cx, SPAno(SPAfallfwd)
         jmp short .16
         db 0x90
 .15:
-        mov cx, 0x6d9
+        mov cx, SPAno(SPAfallback)
 .16:
         or byte [si + 0x44], 0x20
         db 0x8B, 0xC1                           ; insn: mov ax, cx
@@ -2975,7 +2975,7 @@ FallDown:
         jz short .22
         jmp near .36
 .22:
-        cmp word [si + 0x38], 0x6d9
+        cmp word [si + 0x38], SPAno(SPAfallback)
         jz short .23
         jmp near .36
 .23:
@@ -3010,7 +3010,7 @@ FallDown:
         jmp near .36
 .28:
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0xa0b
+        mov ax, SPAno(SPAinjury1)
         call 0x2E42:SetSPA
         push si
         push cs
@@ -3247,7 +3247,7 @@ holdcheck:
         mov ax, 0x669
         call 0x2E42:SetSPA
         or byte [di + 0x44], 0x20
-        cmp word [di + 0x38], 0x639
+        cmp word [di + 0x38], SPAno(SPAHold)
         jnz short .7
         mov ax, 0x651
         jmp short .8
@@ -3337,7 +3337,7 @@ puckbody:
         add sp, 0x2
         cmp word [si + 0xa], 0x8
         jg short .5
-        cmp word [di + 0x38], 0x84b
+        cmp word [di + 0x38], SPAno(SPAcatch)
         jnz short .4
         jmp near .9
 .4:
@@ -3380,7 +3380,7 @@ puckbody:
         call FallDown
         add sp, 0x4
 .7:
-        cmp word [di + 0x38], 0x84b
+        cmp word [di + 0x38], SPAno(SPAcatch)
         jz short .8
         push word [bp - 0x2]
         call 0x0EDC:PlaySoundEffect
@@ -3392,7 +3392,7 @@ puckbody:
         jz short .9
         or byte [di + 0x44], 0x20
         db 0x8B, 0xDF                           ; insn: mov bx, di
-        mov ax, 0x84b
+        mov ax, SPAno(SPAcatch)
         call 0x2E42:SetSPA
 .9:
         pop si
@@ -3475,7 +3475,7 @@ puckshadow:
 .2:
         cmp word [bx + 0x12], -0x1
         jz short .3
-        cmp word [bx + 0x38], 0x7fd
+        cmp word [bx + 0x38], SPAno(SPAsiren)
         jnz short .3
         mov word [bx + 0x2], 0x0
         mov word [bx + 0x6], 0x122
@@ -3548,7 +3548,7 @@ puckglue:
         jnz short .6
         push cs
         call ChkShotStat
-        cmp word [si + 0x38], 0x181
+        cmp word [si + 0x38], SPAno(SPAgdive)
         jnz short .5
         mov word [si + 0x2e], 0x5
         jmp short .6
@@ -3682,7 +3682,7 @@ puckgoalie:
         mov bx, [puckc]
         cmp byte [bx], 0x0
         jnl short .15
-        cmp word [si + 0x38], 0x181
+        cmp word [si + 0x38], SPAno(SPAgdive)
         jnz short .14
         jmp near .16
 .14:
@@ -4386,9 +4386,9 @@ doshot:
         cbw
         cmp ax, [si + 0x5e]
         jz short .1
-        cmp word [si + 0x38], 0xdd3
+        cmp word [si + 0x38], SPAno(SPAonetimef)
         jz short .1
-        cmp word [si + 0x38], 0xe2b
+        cmp word [si + 0x38], SPAno(SPAonetimeb)
         jz short .1
         push word 0x99
         jmp near .27
@@ -4396,7 +4396,7 @@ doshot:
         or byte [gmode2], 0x10
         cmp word [si + 0x38], 0x491
         jz short .2
-        cmp word [si + 0x38], 0xe2b
+        cmp word [si + 0x38], SPAno(SPAonetimeb)
         jz short .2
         mov word [bp - 0x8], 0xaa
         jmp short .3
@@ -5467,7 +5467,7 @@ wallcollb:
         jl short .1
         sar word [si + 0xe], 1
         lea bx, [si + 0x80]
-        mov ax, 0x821
+        mov ax, SPAno(SPAbglass)
         call 0x2E42:SetSPA
         cmp word [si + 0x2], 0x0
         jl short .4

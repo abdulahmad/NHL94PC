@@ -1699,7 +1699,7 @@ Goal:
         add sp, 0x4
         mov bx, [bp - 0xc]
         add bx, 0x80
-        mov ax, 0x7fd
+        mov ax, SPAno(SPAsiren)
         push cs
         call SetSPA
         push 0x7
@@ -3460,7 +3460,7 @@ updateplayers:
         mov es, dx
         inc word [es:bx - 0x96]
 .8:
-        cmp word [si + 0x38], 0xa0b
+        cmp word [si + 0x38], SPAno(SPAinjury1)
         jnz short .9
         jmp near .20
 .9:
@@ -5229,7 +5229,7 @@ resetplstuff:
         cmp word [si + 0x1a], 0x0
         jl short .3
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0x289
+        mov ax, SPAno(SPAglide)
         push cs
         call SetSPA
         db 0x2B, 0xC0                           ; insn: sub ax, ax
