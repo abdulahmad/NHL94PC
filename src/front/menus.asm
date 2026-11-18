@@ -34,7 +34,7 @@ DrawMenuBar:
         push 0x0
         push word [es:si]
         push cs
-        call DrawFrameBox
+        call DrawMenuBox
         add sp, 0xe
         mov es, [bp - 0x2]
         push word [es:si + 0xa]
@@ -65,7 +65,7 @@ DrawMenuBar:
         inc ax
         push ax
         push cs
-        call DrawFrameBox
+        call DrawMenuBox
         add sp, 0xe
         pop si
         pop di
@@ -105,7 +105,7 @@ DrawMenuPanel:
         add ax, [bp + 0xc]
         push ax
         push cs
-        call DrawFrameBox
+        call DrawMenuBox
         add sp, 0xe
         les bx, [bp - 0x10]
         mov ax, [es:bx + 0xe]
@@ -191,10 +191,10 @@ DrawMenuPanel:
         retf
 
 ;-----------------------------------------------------------------------------
-; DrawFrameBox                                                0FA0:01BA  94 PC
+; DrawMenuBox                                                0FA0:01BA  94 PC
 ; Filled rectangle with a light and a dark edge.
 ;-----------------------------------------------------------------------------
-DrawFrameBox:
+DrawMenuBox:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di

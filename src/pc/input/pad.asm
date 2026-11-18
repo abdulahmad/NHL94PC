@@ -2,7 +2,7 @@
 
 ;-----------------------------------------------------------------------------
 ; ReadKeyEventHit                                             0969:0000  94 PC
-; Tail of ReadKeyEvent in the next paragraph: return 1.
+; Tail of PollKeyboardEvent in the next paragraph: return 1.
 ;-----------------------------------------------------------------------------
 ReadKeyEventHit:
         mov ax, 0x1
@@ -140,11 +140,11 @@ ReadKeyboardPad:
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; StickToPad                                                  0969:0120  94 PC
+; ReadJoyPad                                                  0969:0120  94 PC
 ; Stick bits (low or high byte of StickPollBits) to pad direction and
 ; buttons.
 ;-----------------------------------------------------------------------------
-StickToPad:
+ReadJoyPad:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -278,11 +278,11 @@ ReadMousePad:
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; ReadPadDevice                                               0969:0224  94 PC
+; ReadControllerPad                                               0969:0224  94 PC
 ; Pad of one player from the device in PadDevice (8 keys, 2 stick 1, 4 stick
 ; 2, 1 mouse).
 ;-----------------------------------------------------------------------------
-ReadPadDevice:
+ReadControllerPad:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push si
@@ -298,7 +298,7 @@ ReadPadDevice:
         push 0x0
 .2:
         push cs
-        call StickToPad
+        call ReadJoyPad
         add sp, 0x2
         jmp short .6
 .3:
@@ -494,11 +494,11 @@ ReadHotKeys:
         retf
 
 ;-----------------------------------------------------------------------------
-; PadTimerTick                                                0969:03FE  94 PC
+; SampleInputTick                                                0969:03FE  94 PC
 ; Timer slot: every 4th tick records both players' pads into the 50-entry pad
 ; ring.
 ;-----------------------------------------------------------------------------
-PadTimerTick:
+SampleInputTick:
         push si
         call 0x03A3:SsIsDs
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -543,7 +543,7 @@ PadTimerTick:
         push 0x0
         db 0x8B, 0xF0                           ; insn: mov si, ax
         push cs
-        call ReadPadDevice
+        call ReadControllerPad
         add sp, 0x4
         db 0x8B, 0xC6                           ; insn: mov ax, si
         add si, PadReadings + 1
@@ -551,7 +551,7 @@ PadTimerTick:
         push 0x1
         db 0x8B, 0xF0                           ; insn: mov si, ax
         push cs
-        call ReadPadDevice
+        call ReadControllerPad
         add sp, 0x4
         add si, PadReadings + 2
         push si

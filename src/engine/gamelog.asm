@@ -918,7 +918,7 @@ PostGoalEvent:
 ; PostPenaltyEvent                                           2352:083E  94 PC
 ; Event type 2.
 ;
-; Takes 7 words of stack arguments. Calls BuildEventLines, CloseTextOverlay, AnnouncePenalty. Far
+; Takes 7 words of stack arguments. Calls BuildEventLines, CloseTextOverlay, PaPenalty. Far
 ; routine (retf).
 ;-----------------------------------------------------------------------------
 PostPenaltyEvent:
@@ -1002,7 +1002,7 @@ PostPenaltyEvent:
         push ax
         shl si, 1
         push word [si + TeamNameClips]
-        call 0x0EDC:AnnouncePenalty
+        call 0x0EDC:PaPenalty
         add sp, 0xe
         mov ax, [gameframe]
         mov [PadRepeatOn], ax

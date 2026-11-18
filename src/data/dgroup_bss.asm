@@ -32,17 +32,17 @@ PauseSampleOff:                                 ; silent sample, offset; used by
 PauseSampleSeg:                                 ; silent sample, segment; used by MakePauseSample,
                                                 ; PlayPauseSample
         resb 2
-WantedList:                                     ; samples wanted, offset; used by ResetWantedSamples,
+WantedList:                                     ; samples wanted, offset; used by ResetSampleReq,
                                                 ; SpeechInit, ShutdownSpeech ...
         resb 2
-WantedListSeg:                                  ; samples wanted, segment; used by ResetWantedSamples,
+WantedListSeg:                                  ; samples wanted, segment; used by ResetSampleReq,
                                                 ; SpeechInit, ShutdownSpeech ...
         resb 2
 SpeechBank:                                     ; speech bank, offset; used by SpeechTimerTick,
-                                                ; InitSpeechBank, SpeechInit ...
+                                                ; InitSpeechSlots, SpeechInit ...
         resb 2
 SpeechBankSeg:                                  ; speech bank, segment; used by SpeechTimerTick,
-                                                ; InitSpeechBank, SpeechInit ...
+                                                ; InitSpeechSlots, SpeechInit ...
         resb 2
 MoveBlockOff:                                   ; moveMemBlock target, offset; used by SpeechInit,
                                                 ; MoveMemBlock
@@ -236,10 +236,10 @@ POTreeBuf:                                      ; far pointer (offset) to the pl
 POTreeBufSeg:                                   ; its segment; used by MENUS
         resb 2
 DialogData:                                     ; dialog data, offset; used by ListDialog, SaveUnderBox,
-                                                ; MessageBoxLoop ...
+                                                ; RunMessageBox ...
         resb 2
 DialogDataSeg:                                  ; dialog data, segment; used by ListDialog, SaveUnderBox,
-                                                ; MessageBoxLoop ...
+                                                ; RunMessageBox ...
         resb 2
 ChainIdx:                                       ; word; used by MakeChain, AllocLinearCanvas, AllocCanvas ...
         resb 2
@@ -279,18 +279,18 @@ MemBlock3Off:                                   ; memory block 3, offset; used b
 MemBlock3Seg:                                   ; memory block 3, segment; used by DrawCallBanner,
                                                 ; DrawTextOverlay
         resb 18
-InputFlags:                                     ; input device flags; used by PollInputEvents
+InputFlags:                                     ; input device flags; used by InputPollTick
         resb 2
-InputQueue:                                     ; input event queue; used by PollInputEvents
+InputQueue:                                     ; input event queue; used by InputPollTick
         resb 256
-CursorX:                                        ; cursor x; used by PollInputEvents
+CursorX:                                        ; cursor x; used by InputPollTick
         resb 2
-CursorY:                                        ; cursor y; used by EventToCursor, PollInputEvents
+CursorY:                                        ; cursor y; used by EventToPointer, InputPollTick
         resb 2
 PadReadings:                                    ; 3 bytes a pad (stick, buttons, hot key) filled by
-                                                ; ReadPadDevice
+                                                ; ReadControllerPad
         resb 150
-PadStatePtr:                                    ; pad state being updated; used by StickToPad, PadTimerTick
+PadStatePtr:                                    ; pad state being updated; used by ReadJoyPad, SampleInputTick
         resb 2
 curevent:                                       ; current game summary event record; used by AI, INIT
         resb 2
@@ -325,7 +325,7 @@ goalevent_b3:                                   ; second assist jersey; used by 
 goalevent_text:                                 ; team abbreviation of the goal event; used by AI
         resb 17
 HotKeyFn:                                       ; far routine for hot keys; used by ListDialog,
-                                                ; MessageBoxLoop, SaveGameNameDlg ...
+                                                ; RunMessageBox, SaveGameNameDlg ...
         resb 2
 HotKeyFnSeg:                                    ; its segment; used by InputInit
         resb 2

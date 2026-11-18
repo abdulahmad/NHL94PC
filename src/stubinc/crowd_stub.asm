@@ -33,11 +33,11 @@ SayNhlIntro		equ	0x128A
 SayGoodnight		equ	0x12EC
 SayLineups		equ	0x1362
 SayElseNhl		equ	0x13C4
-SayHighlightMatchup		equ	0x1426
+SayHighlightIntro		equ	0x1426
 SayPlayoffResult		equ	0x1546
-SayPeriodSummary		equ	0x16E2
-SayTonightsGame		equ	0x17FA
-SayTonightsPlayoffGame		equ	0x191A
+SayScoringPeriod		equ	0x16E2
+SayTonightIntro		equ	0x17FA
+SayPlayoffTonight		equ	0x191A
 SetDeadline.regs		equ	0x1A6E
 WaitDeadlineNoEoi		equ	0x1A84
 SayPenalty		equ	0x1B3C

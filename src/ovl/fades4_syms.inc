@@ -4,4 +4,4 @@ FadeInCount		equ	0x62E8
 FadeInStep		equ	0x62E5
 FadeInSteps		equ	0x62E4
 FadeInSteps2		equ	0x62E6
-SetPaletteVsync		equ	0x0
+SetPalette768		equ	0x0

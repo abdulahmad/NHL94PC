@@ -1,9 +1,9 @@
 AddHumanTeamThunk		equ	0x25CB
 AllocCanvases		equ	0x3804
 AllocRecData		equ	0x30
-AnnounceGoodnight		equ	0x4A4
-AnnounceIntro		equ	0x490
-AnnouncePlayoffResult		equ	0x514
+PaGoodnight		equ	0x4A4
+PaNhlIntro		equ	0x490
+PaPlayoffResult		equ	0x514
 AnnouncerFlags		equ	0x1B7
 AskYesNo		equ	0x0
 AwayGlStats		equ	0x77A
@@ -114,7 +114,7 @@ InitMenuRemapThunk		equ	0x2463
 InitSequencer		equ	0x280
 InputFlags		equ	0xAECE
 InputInit		equ	0xE
-InputShutdown		equ	0x4C
+InputRemove		equ	0x4C
 InstantReplayThunk		equ	0x2599
 JerseyDigitGlyphsMenus		equ	0xDD0
 JerseyRemapTable		equ	0x0
@@ -278,7 +278,7 @@ StandingsSlots		equ	0x2488
 StatsMenuLoopThunk		equ	0x246D
 StatsPalette		equ	0xA3D8
 StopJingle		equ	0x5B8
-StopSpeech		equ	0x47A
+SpeechStopQueue		equ	0x47A
 StrIndexInSet		equ	0xE10
 TeamLinesRecs		equ	0xA06C
 TeamNameClips		equ	0x1E0

@@ -46,7 +46,7 @@ HeapSizeHi		equ	0xAE92
 HeapSizeLo		equ	0xAE90
 HomeTeamNum		equ	0x29CA
 InputInit		equ	0xE
-InputShutdown		equ	0x4C
+InputRemove		equ	0x4C
 InstantReplayThunk		equ	0x2599
 IntermissionScreensThunk		equ	0x299F
 KeyDown		equ	0x16C1
@@ -98,7 +98,7 @@ SportsDeskThunk		equ	0x255D
 SpriteBlitFns		equ	0x4B24
 StartThreeStarsThunk		equ	0x29A9
 StopJingle		equ	0x5B8
-StopSpeech		equ	0x47A
+SpeechStopQueue		equ	0x47A
 TeamNameClips		equ	0x1E0
 TeamPalette1		equ	0xB0C4
 TeamPalette2		equ	0xB1C4

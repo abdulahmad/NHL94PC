@@ -4,7 +4,7 @@
 ; FadePaletteIn                                              3358:0000  94 PC
 ; Palette fade in steps.
 ;
-; Takes 4 words of stack arguments. Calls SetPaletteVsync, ClearClipRect. Far routine (retf).
+; Takes 4 words of stack arguments. Calls SetPalette768, ClearClipRect. Far routine (retf).
 ;-----------------------------------------------------------------------------
 FadePaletteIn:
         enter 0x2, 0x0
@@ -17,7 +17,7 @@ FadePaletteIn:
         jnz short .1
         push word [bp + 0xa]
         push word [bp + 0x8]
-        call 0x3349:SetPaletteVsync
+        call 0x3349:SetPalette768
         add sp, 0x4
         pop si
         pop di
@@ -36,7 +36,7 @@ FadePaletteIn:
         mov ds, ax
         push word 0x3946
         push strict word 0x0
-        call 0x3349:SetPaletteVsync
+        call 0x3349:SetPalette768
         add sp, 0x4
         push 0x0
         call 0x0FEF:ClearClipRect
@@ -84,7 +84,7 @@ FadePaletteIn:
         mov si, [bp + 0x6]
         push word 0x3946
         push strict word 0x0
-        call 0x3349:SetPaletteVsync
+        call 0x3349:SetPalette768
         add sp, 0x4
         mov al, [si + FadeInSteps2]
         cbw

@@ -120,7 +120,7 @@ ReturnZeroInit2:
 ; PlayRandomHighlight                                        237D:00FA  94 PC
 ; Studio highlight of another game.
 ;
-; Calls randomd0, LoadArenaJingles, LoadStudioSpeech, AnnounceHighlightMatchup, StartHL2Thunk,
+; Calls randomd0, LoadArenaJingles, LoadStudioSpeech, PaHighlightIntro, StartHL2Thunk,
 ; FreeArenaJingles, LoadPlayByPlaySpeech. Far routine (retf).
 ;-----------------------------------------------------------------------------
 PlayRandomHighlight:
@@ -199,7 +199,7 @@ PlayRandomHighlight:
         push ax
         mov al, [bx + otherscoreaway]
         push ax
-        call 0x0EDC:AnnounceHighlightMatchup
+        call 0x0EDC:PaHighlightIntro
         add sp, 0x4
         push di
         lea ax, [bp - 0x6]
@@ -290,7 +290,7 @@ EndGameScreens:
         call 0x21A1:ShowGameSummary
         add sp, 0x8
         db 0x8B, 0xF8                           ; insn: mov di, ax
-        call 0x0BFE:InputShutdown
+        call 0x0BFE:InputRemove
         call 0x0F4A:RestoreVgaPlanes
         cmp word [DbSaveMode], 0x0
         jz short .3
@@ -358,7 +358,7 @@ EndGameScreens:
         push 0x20
         call 0x21A1:ShowGameSummary
         add sp, 0x8
-        call 0x0BFE:InputShutdown
+        call 0x0BFE:InputRemove
         call 0x0F4A:RestoreVgaPlanes
 .7:
         mov word [exitgame], 0xffff
@@ -434,7 +434,7 @@ IntermissionScreens:
         call 0x21A1:ShowGameSummary
         add sp, 0x8
         db 0x8B, 0xF0                           ; insn: mov si, ax
-        call 0x0BFE:InputShutdown
+        call 0x0BFE:InputRemove
         call 0x0F4A:RestoreVgaPlanes
         cmp word [DbSaveMode], 0x0
         jnz short .1
@@ -478,7 +478,7 @@ IntermissionScreens:
         push 0x20
         call 0x21A1:ShowGameSummary
         add sp, 0x8
-        call 0x0BFE:InputShutdown
+        call 0x0BFE:InputRemove
         call 0x0F4A:RestoreVgaPlanes
 .1:
         call 0x2137:LoadArenaJingles

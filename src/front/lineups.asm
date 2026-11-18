@@ -7,7 +7,7 @@
 
 ;-----------------------------------------------------------------------------
 ; ShowStartingLineups                                        20A8:0004  94 PC
-; Lineup screen with crests, AnnounceLineups, injured players.
+; Lineup screen with crests, PaLineups, injured players.
 ;
 ; Takes 3 words of stack arguments. Calls FlushInputEvents, UseCurrentPage, ClearClipRect,
 ; SetPaletteFar, BuildPathFar, LoadPackedHeader, FindFarMsg, FindFarList and others.
@@ -227,7 +227,7 @@ ShowStartingLineups:
         add sp, 0x2
         mov word [bp - 0x2e], HomeTeamRec
         mov word [bp - 0x2c], AwayTeamRec
-        call 0x0EDC:AnnounceLineups
+        call 0x0EDC:PaLineups
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [bp - 0x3a], ax
         mov [bp - 0xd2], ax

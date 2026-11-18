@@ -907,29 +907,29 @@ seg004:095C,AddCopy,,new,high,"Words 62FBh and 66FBh. Writes each input byte plu
 seg004:0AAA,LoadBlock,,new,high,"Picks Unpack, Expand, AddCopy, or CopyFar from the type byte. An unknown type can call seg022",src/seg/seg004.asm
 seg004:0BD8,LoadReport,,new,high,"LoadBlock with the report flag set",src/seg/seg004.asm
 seg004:0BF6,LoadQuiet,,new,high,"LoadBlock with the report flag clear. The near call finishes in seg005",src/seg/seg004.asm
-seg006:0008,PollInputEvents,F006_0008,new,high,"every 5th call reads mouse, sticks and keys per the device bits and queues an 8-byte event (32 entries)",src/seg/seg006.asm
-seg006:00E6,ReadMouseEvent,F006_00E6,new,high,"MouseRead, compares with the last buttons and position, fills the event, MouseMove",src/seg/seg006.asm
-seg006:0174,ReadStickEvent,F006_0174,new,high,PollSticks bits to an event (fire edge and direction),src/seg/seg006.asm
-seg006:01DE,ReadKeyEvent,F006_01DE,new,high,"keypad/arrow scan codes to direction bits, Space/Esc/Enter to buttons, KeyJump",src/seg/seg006.asm
-seg007:0000,ReadKeyEventHit,F007_0000,new,medium,tail of ReadKeyEvent in the next paragraph: return 1,src/seg/seg007.asm
+seg006:0008,InputPollTick,F006_0008,new,high,"every 5th call reads mouse, sticks and keys per the device bits and queues an 8-byte event (32 entries)",src/seg/seg006.asm
+seg006:00E6,PollMouseEvent,F006_00E6,new,high,"MouseRead, compares with the last buttons and position, fills the event, MouseMove",src/seg/seg006.asm
+seg006:0174,PollJoystickEvent,F006_0174,new,high,PollSticks bits to an event (fire edge and direction),src/seg/seg006.asm
+seg006:01DE,PollKeyboardEvent,F006_01DE,new,high,"keypad/arrow scan codes to direction bits, Space/Esc/Enter to buttons, KeyJump",src/seg/seg006.asm
+seg007:0000,ReadKeyEventHit,F007_0000,new,medium,tail of PollKeyboardEvent in the next paragraph: return 1,src/seg/seg007.asm
 seg007:0006,ReadKeyboardPad,F007_0006,new,high,"arrow and keypad scan codes through DirBitsToPad, Ins/Enter/Alt/Space to pad buttons",src/seg/seg007.asm
-seg007:0120,StickToPad,F007_0120,new,high,stick bits (low or high byte of StickPollBits) to pad direction and buttons,src/seg/seg007.asm
+seg007:0120,ReadJoyPad,F007_0120,new,high,stick bits (low or high byte of StickPollBits) to pad direction and buttons,src/seg/seg007.asm
 seg007:018A,ReadMousePad,F007_018A,new,high,"mouse offset from the centre (160,100) to a direction when far enough, buttons to pad buttons",src/seg/seg007.asm
-seg007:0224,ReadPadDevice,F007_0224,new,high,"pad of one player from the device in PadDevice (8 keys, 2 stick 1, 4 stick 2, 1 mouse)",src/seg/seg007.asm
+seg007:0224,ReadControllerPad,F007_0224,new,high,"pad of one player from the device in PadDevice (8 keys, 2 stick 1, 4 stick 2, 1 mouse)",src/seg/seg007.asm
 seg007:026E,ReadHotKeys,F007_026E,new,high,"Esc, Ctrl+S, Ctrl+M, F1-F10, Tab and R with a repeat guard; bit 7 set on a new key",src/seg/seg007.asm
-seg007:03FE,PadTimerTick,F007_03FE,new,high,timer slot: every 4th tick records both players' pads into the 50-entry pad ring,src/seg/seg007.asm
-seg008:0000,PadTimerTickTail,F008_0000,new,medium,"the last instructions of PadTimerTick, in the next paragraph",src/seg/seg008.asm
+seg007:03FE,SampleInputTick,F007_03FE,new,high,timer slot: every 4th tick records both players' pads into the 50-entry pad ring,src/seg/seg007.asm
+seg008:0000,PadTimerTickTail,F008_0000,new,medium,"the last instructions of SampleInputTick, in the next paragraph",src/seg/seg008.asm
 seg008:000A,SpeechTimerTick,F008_000A,new,high,"timer slot: when the wait runs out, plays the next clip of the sentence on the other buffer",src/seg/seg008.asm
-seg008:013A,ClearSpeechClip,F008_013A,new,high,zeroes one 24h-byte clip entry,src/seg/seg008.asm
+seg008:013A,ClearSpeechSlot,F008_013A,new,high,zeroes one 24h-byte clip entry,src/seg/seg008.asm
 seg008:0174,ResetSentence,F008_0174,new,high,"20 empty clip slots, count, position, wait and playing cleared",src/seg/seg008.asm
-seg008:01D8,InitSpeechBank,F008_01D8,new,high,clears the 128 clips and reserves the speechbuf memory block,src/seg/seg008.asm
-seg008:0292,ResetWantedSamples,F008_0292,new,high,clears the 20 wanted sample names and their total size,src/seg/seg008.asm
+seg008:01D8,InitSpeechSlots,F008_01D8,new,high,clears the 128 clips and reserves the speechbuf memory block,src/seg/seg008.asm
+seg008:0292,ResetSampleReq,F008_0292,new,high,clears the 20 wanted sample names and their total size,src/seg/seg008.asm
 seg008:02F0,SpeechInit,F008_02F0,new,high,"allocates Sentence, SpeechBank and SampleMemMan, the pause sample, the timer slot",src/seg/seg008.asm
 seg008:039E,ShutdownSpeech,F008_039E,new,high,"frees the timer slot, the sound channel and the three blocks",src/seg/seg008.asm
 seg008:0414,SpeechIsReady,F008_0414,new,high,returns SpeechOn,src/seg/seg008.asm
 seg008:042A,SpeechBusy,F008_042A,new,high,"playing flag, else the wait count",src/seg/seg008.asm
 seg008:0452,SpeechIdle,F008_0452,new,high,"ready, not playing and no wait",src/seg/seg008.asm
-seg008:047A,StopSpeech,F008_047A,new,medium,clears playing and sets the wait from the bank,src/seg/seg008.asm
+seg008:047A,SpeechStopQueue,F008_047A,new,medium,clears playing and sets the wait from the bank,src/seg/seg008.asm
 seg008:04AE,MakePauseSample,F008_04AE,new,high,256-byte silent sample in a memory block,src/seg/seg008.asm
 seg008:0532,PlayPauseSample,F008_0532,new,high,queues the pause sample on both sound buffers,src/seg/seg008.asm
 seg008:05B6,SwapBytes16,F008_05B6,new,high,swaps the two bytes of a word (big-endian file fields),src/seg/seg008.asm
@@ -939,9 +939,9 @@ seg008:0664,OpenSpeechFile,F008_0664,new,high,"opens a speech file, reads its cl
 seg008:0942,ClipLength,F008_0942,new,high,"size of a clip, 0 for -1",src/seg/seg008.asm
 seg008:096E,LoadClipData,F008_096E,new,high,reads one clip from the file into memory and undoes its delta coding,src/seg/seg008.asm
 seg008:0A84,LoadClipToBank,F008_0A84,new,high,puts a clip after the previous one in the bank and marks it loaded,src/seg/seg008.asm
-seg008:0B0E,StrSameNoCaseFar,F008_0B0E,new,high,compares two far strings ignoring case (xor and DFh),src/seg/seg008.asm
-seg008:0B4C,FindFreeClip,F008_0B4C,new,high,first clip slot from the index that is not loaded,src/seg/seg008.asm
-seg008:0B86,FindLoadedClip,F008_0B86,new,high,first loaded clip slot from the index,src/seg/seg008.asm
+seg008:0B0E,StrEqNoCase,F008_0B0E,new,high,compares two far strings ignoring case (xor and DFh),src/seg/seg008.asm
+seg008:0B4C,FindFreeSpeechSlot,F008_0B4C,new,high,first clip slot from the index that is not loaded,src/seg/seg008.asm
+seg008:0B86,FindLoadedSpeechSlot,F008_0B86,new,high,first loaded clip slot from the index,src/seg/seg008.asm
 seg008:0BC0,FindClipByName,F008_0BC0,new,high,"clip index of a name, or -1",src/seg/seg008.asm
 seg008:0C04,ClipIsLoaded,F008_0C04,new,high,clip state is 1,src/seg/seg008.asm
 seg008:0C2A,SampleIsWanted,F008_0C2A,new,high,name is in the wanted list,src/seg/seg008.asm
@@ -960,11 +960,11 @@ seg008:128A,SayNhlIntro,F008_128A,new,high,ea_nhl.int,src/seg/seg008.asm
 seg008:12EC,SayGoodnight,F008_12EC,new,high,"goodnite.int, imrbarr.int",src/seg/seg008.asm
 seg008:1362,SayLineups,F008_1362,new,high,lineups.int,src/seg/seg008.asm
 seg008:13C4,SayElseNhl,F008_13C4,new,medium,elsenhl.int,src/seg/seg008.asm
-seg008:1426,SayHighlightMatchup,F008_1426,new,high,"takeynow, highlite, gamebtwn, home and away teams",src/seg/seg008.asm
+seg008:1426,SayHighlightIntro,F008_1426,new,high,"takeynow, highlite, gamebtwn, home and away teams",src/seg/seg008.asm
 seg008:1546,SayPlayoffResult,F008_1546,new,high,"havewon, division/conf/semi/final, game number, overtime",src/seg/seg008.asm
-seg008:16E2,SayPeriodSummary,F008_16E2,new,high,"period, ot, scoring, thegame, theot",src/seg/seg008.asm
-seg008:17FA,SayTonightsGame,F008_17FA,new,high,"easports, tonight, gamebtwn, the two teams",src/seg/seg008.asm
-seg008:191A,SayTonightsPlayoffGame,F008_191A,new,high,"easports, tonight, between, division/conf/final, game number",src/seg/seg008.asm
+seg008:16E2,SayScoringPeriod,F008_16E2,new,high,"period, ot, scoring, thegame, theot",src/seg/seg008.asm
+seg008:17FA,SayTonightIntro,F008_17FA,new,high,"easports, tonight, gamebtwn, the two teams",src/seg/seg008.asm
+seg008:191A,SayPlayoffTonight,F008_191A,new,high,"easports, tonight, between, division/conf/final, game number",src/seg/seg008.asm
 seg008:1B3C,SayPenalty,F008_1B3C,new,high,"penalty.msc, number, at minute/second, off",src/seg/seg008.asm
 seg008:1E44,SayPlayerFrom,F008_1E44,new,medium,"number, from/fromthe, team city, tonight.msc",src/seg/seg008.asm
 seg008:2032,SayGoal,F008_2032,new,high,"goals.msc, by, number, assisted, and",src/seg/seg008.asm
@@ -973,9 +973,9 @@ seg008:2322,OpenStudioSpeech,F008_2322,new,medium,opens xrbarr2.viv,src/seg/seg0
 seg008:2354,OpenPlayByPlaySpeech,F008_2354,new,medium,opens xbruce2.viv and wants its penalty and goal clips,src/seg/seg008.asm
 _fstrcpy,_fstrcspn,_fstrcpy,MSC,high,builds a 256-bit set of the second string and returns the index of the first character of the first string in it (it was named _fstrcpy),src/seg/seg000.asm
 _fstrlen,_fstrcpy,_fstrlen,MSC,high,copies the far string at [bp+0Ah] to [bp+6] and returns the destination (it was named _fstrlen),src/seg/seg000.asm
-seg009:000E,InputInit,F009_000E,new,high,"HookKbd, timer slot for PollInputEvents, cursor handler = EventToCursor; once",src/seg/seg009.asm
-seg009:004C,InputShutdown,F009_004C,new,high,frees the PollInputEvents timer slot,src/seg/seg009.asm
-seg009:0070,EventToCursor,F009_0070,new,high,"mouse event sets the cursor; key and stick events move it, faster with the repeat count; clamps to 320x200",src/seg/seg009.asm
+seg009:000E,InputInit,F009_000E,new,high,"HookKbd, timer slot for InputPollTick, cursor handler = EventToPointer; once",src/seg/seg009.asm
+seg009:004C,InputRemove,F009_004C,new,high,frees the InputPollTick timer slot,src/seg/seg009.asm
+seg009:0070,EventToPointer,F009_0070,new,high,"mouse event sets the cursor; key and stick events move it, faster with the repeat count; clamps to 320x200",src/seg/seg009.asm
 seg010:0000,InputTail,F010_0000,new,low,"sub ah, ah / retf at the start of the paragraph (end of the routine before)",src/seg/seg010.asm
 seg010:0006,RandomRange,F010_0006,new,high,"32-bit linear congruential step (multiplier BB40E62Dh, +1) on RandSeed, result scaled to the range",src/seg/seg010.asm
 seg011:000E,NullEventHook,F011_000E,new,high,a lone retf,src/seg/seg011.asm
@@ -1026,7 +1026,7 @@ seg019:000C,LoadTeamPalettes,F019_000C,new,high,"home and away palette parts (1C
 seg020:0000,AskYesNo,F020_0000,new,medium,two-button message box at the mouse; keeps the answer string,src/seg/seg020.asm
 seg020:0060,DrawBevelBox,F020_0060,new,high,filled rectangle and four edge lines in a light and a dark colour,src/seg/seg020.asm
 seg020:00E6,NumberEntryDialog,F020_00E6,new,medium,text entry box read back with atol,src/seg/seg020.asm
-seg020:032A,ItemColors,F020_032A,new,medium,picks the normal or highlight colour pair for a list row,src/seg/seg020.asm
+seg020:032A,SetListItemColors,F020_032A,new,medium,picks the normal or highlight colour pair for a list row,src/seg/seg020.asm
 seg020:0354,ListHitTest,F020_0354,new,medium,list row under the cursor,src/seg/seg020.asm
 seg020:03D6,DrawListRow,F020_03D6,new,medium,one list row with its colours,src/seg/seg020.asm
 seg020:049A,DrawListRows,F020_049A,new,medium,the visible rows,src/seg/seg020.asm
@@ -1043,28 +1043,28 @@ seg020:0E7A,SaveUnderBox,F020_0E7A,new,high,allocates a block and saves the scre
 seg020:0F22,RestoreUnderBox,F020_0F22,new,high,puts the saved screen back and frees the block,src/seg/seg020.asm
 seg020:0F5C,GrowToItemBox,F020_0F5C,new,medium,widens and heightens a box to fit an item rectangle,src/seg/seg020.asm
 seg020:0FC8,MessageBox,F020_0FC8,new,high,box with text lines and buttons; returns the button chosen,src/seg/seg020.asm
-seg020:1260,MessageBoxLoop,F020_1260,new,medium,"input loop of MessageBox (mouse, keys, highlight)",src/seg/seg020.asm
+seg020:1260,RunMessageBox,F020_1260,new,medium,"input loop of MessageBox (mouse, keys, highlight)",src/seg/seg020.asm
 seg020:14B8,MessageBoxReset,F020_14B8,new,low,sets the last button to -1,src/seg/seg020.asm
 seg021:0000,MessageBoxResetTail,F021_0000,new,high,"end of MessageBoxReset spilling into this paragraph (was taken for a lone retf)",src/seg/seg021.asm
 seg021:0002,Crowd_Noise,F021_0002,new,high,"eases the crowd level toward CrowdTarget and drives the MIDI crowd notes (volume, pitch)",src/seg/seg021.asm
 seg021:01DC,CrowdNoiseOff,F021_01DC,new,high,note off and volume 0 on the two crowd channels,src/seg/seg021.asm
 seg021:024E,CrowdFadeOut,F021_024E,new,high,lowers CrowdTarget step by step to silence,src/seg/seg021.asm
 seg021:029A,CrowdNoiseReset,F021_029A,new,high,crowd level and both note states to 0,src/seg/seg021.asm
-seg021:02A6,AnnounceOneMinute,F021_02A6,new,high,"digital sound with speech on: pause, SayOneMinuteLeft",src/seg/seg021.asm
-seg021:02C0,AnnouncerBusy,F021_02C0,new,high,digital sound with speech on and SpeechBusy,src/seg/seg021.asm
+seg021:02A6,PaOneMinuteLeft,F021_02A6,new,high,"digital sound with speech on: pause, SayOneMinuteLeft",src/seg/seg021.asm
+seg021:02C0,PaSpeechBusy,F021_02C0,new,high,digital sound with speech on and SpeechBusy,src/seg/seg021.asm
 seg021:02E0,PlaySoundEffect,F021_02E0,new,high,sound effect by number; 7Dh raises the crowd; skipped while the announcer talks,src/seg/seg021.asm
-seg021:0394,AnnounceGoal,F021_0394,new,high,"pause, SayGoal",src/seg/seg021.asm
+seg021:0394,PaGoal,F021_0394,new,high,"pause, SayGoal",src/seg/seg021.asm
 seg021:03C0,AnnouncePlayerFrom,F021_03C0,new,high,"pause, SayPlayerFrom",src/seg/seg021.asm
-seg021:03E6,AnnouncePenalty,F021_03E6,new,high,"pause, SayPenalty",src/seg/seg021.asm
-seg021:0418,AnnounceTonightsGame,F021_0418,new,high,"team names from TeamAbbrevs, SayTonightsGame",src/seg/seg021.asm
-seg021:046E,AnnouncePeriodSummary,F021_046E,new,high,SayPeriodSummary,src/seg/seg021.asm
-seg021:0490,AnnounceIntro,F021_0490,new,high,SayNhlIntro,src/seg/seg021.asm
-seg021:04A4,AnnounceGoodnight,F021_04A4,new,high,SayGoodnight,src/seg/seg021.asm
-seg021:04B8,AnnounceLineups,F021_04B8,new,high,SayLineups,src/seg/seg021.asm
-seg021:04CC,AnnounceElseAroundNhl,F021_04CC,new,high,SayElseNhl,src/seg/seg021.asm
-seg021:04E0,AnnounceHighlightMatchup,F021_04E0,new,high,SayHighlightMatchup,src/seg/seg021.asm
-seg021:0514,AnnouncePlayoffResult,F021_0514,new,high,SayPlayoffResult,src/seg/seg021.asm
-seg021:0542,AnnounceTonightsPlayoffGame,F021_0542,new,high,SayTonightsPlayoffGame,src/seg/seg021.asm
+seg021:03E6,PaPenalty,F021_03E6,new,high,"pause, SayPenalty",src/seg/seg021.asm
+seg021:0418,PaTonightIntro,F021_0418,new,high,"team names from TeamAbbrevs, SayTonightIntro",src/seg/seg021.asm
+seg021:046E,PaScoringPeriod,F021_046E,new,high,SayScoringPeriod,src/seg/seg021.asm
+seg021:0490,PaNhlIntro,F021_0490,new,high,SayNhlIntro,src/seg/seg021.asm
+seg021:04A4,PaGoodnight,F021_04A4,new,high,SayGoodnight,src/seg/seg021.asm
+seg021:04B8,PaLineups,F021_04B8,new,high,SayLineups,src/seg/seg021.asm
+seg021:04CC,PaElseNhl,F021_04CC,new,high,SayElseNhl,src/seg/seg021.asm
+seg021:04E0,PaHighlightIntro,F021_04E0,new,high,SayHighlightIntro,src/seg/seg021.asm
+seg021:0514,PaPlayoffResult,F021_0514,new,high,SayPlayoffResult,src/seg/seg021.asm
+seg021:0542,PaPlayoffTonight,F021_0542,new,high,SayPlayoffTonight,src/seg/seg021.asm
 seg021:057E,LoadStudioSpeech,F021_057E,new,high,OpenStudioSpeech until it succeeds,src/seg/seg021.asm
 seg021:0594,LoadPlayByPlaySpeech,F021_0594,new,high,OpenPlayByPlaySpeech until it succeeds,src/seg/seg021.asm
 seg021:05B8,StopJingle,F021_05B8,new,high,stops the digital sample playing in JingleHandle,src/seg/seg021.asm
@@ -1082,7 +1082,7 @@ seg025:000E,GetInputEvent,F025_000E,new,high,"runs pending hooks, then pops the 
 seg025:0066,FlushInputEvents,F025_0066,new,high,empties the event queue,src/seg/seg025.asm
 seg026:000E,DrawMenuBar,F026_000E,new,high,menu titles in boxes across the top line,src/seg/seg026.asm
 seg026:00A4,DrawMenuPanel,F026_00A4,new,medium,an open menu's items,src/seg/seg026.asm
-seg026:01BA,DrawFrameBox,F026_01BA,new,high,filled rectangle with a light and a dark edge,src/seg/seg026.asm
+seg026:01BA,DrawMenuBox,F026_01BA,new,high,filled rectangle with a light and a dark edge,src/seg/seg026.asm
 seg026:02D6,DrawMenuItem,F026_02D6,new,medium,one item in the normal colour,src/seg/seg026.asm
 seg026:036A,DrawMenuItemHilite,F026_036A,new,medium,one item in the highlight colour,src/seg/seg026.asm
 seg026:03FE,MenuHitTest,F026_03FE,new,high,menu and item under a point,src/seg/seg026.asm
@@ -1513,7 +1513,7 @@ g_0516,MousePosX,g_0516,new,medium,last mouse x,src/data/dgroup.asm
 g_0518,MousePosY,g_0518,new,medium,last mouse y,src/data/dgroup.asm
 g_051E,StickPresent,g_051E,new,medium,joystick 1 present,src/data/dgroup.asm
 g_0520,StickPresent2,g_0520,new,medium,joystick 2 present,src/data/dgroup.asm
-g_0522,PadTickCount,g_0522,new,medium,timer ticks counted by PadTimerTick (wraps at 1000),src/data/dgroup.asm
+g_0522,PadTickCount,g_0522,new,medium,timer ticks counted by SampleInputTick (wraps at 1000),src/data/dgroup.asm
 g_0524,PadRepeatOn,g_0524,new,medium,key repeat active,src/data/dgroup.asm
 g_0526,PadRepeatStep,g_0526,new,medium,repeat interval,src/data/dgroup.asm
 g_0528,PadRepeatDelay,g_0528,new,medium,first repeat delay,src/data/dgroup.asm
@@ -2172,7 +2172,7 @@ Ai_327B_0904,chkatop,Ai_327B_0904,94G penalty94.asm,high,95 order,src/engine/pen
 Ai_327B_0946,updatepentime_ut_chk,Ai_327B_0946,95 PC,high,95 order,src/engine/penalty.asm
 Ai_327B_0982,updatepentime_ut,Ai_327B_0982,94G penalty94.asm,high,95 order,src/engine/penalty.asm
 Ai_327B_0AB4,UpdatePowerPlayFlags,Ai_327B_0AB4,95 PC,high,95 order,src/engine/penalty.asm
-Ai_1FAA_000E,StartHL2,Ai_1FAA_000E,95 PC,high,"(home, vis, &hsc, &asc, period): the highlight game the INIT overlay runs after AnnounceHighlightMatchup",src/engine/highlight_game.asm
+Ai_1FAA_000E,StartHL2,Ai_1FAA_000E,95 PC,high,"(home, vis, &hsc, &asc, period): the highlight game the INIT overlay runs after PaHighlightIntro",src/engine/highlight_game.asm
 Ai_2038_0008,ReplayRecordReset,Ai_2038_0008,95 PC,high,"replay tick counter = 1, recorded sfx word = -1",src/engine/replay.asm
 Ai_2038_0016,ReplayFirstFrame,Ai_2038_0016,95 PC,high,"oldest replay frame: the record pointer when the buffer has wrapped, else the buffer start",src/engine/replay.asm
 Ai_2038_002E,ReplayPrevFrame,Ai_2038_002E,94G replay94.asm,high,"record pointer - 80h, or the last frame of the buffer",src/engine/replay.asm
@@ -2257,7 +2257,7 @@ Init_1F9C_04A0,SetupGame,Init_1F9C_04A0,95 PC,medium,"lines, crowd, faceoff setu
 Init_1F9C_056A,ResetGameVars,Init_1F9C_056A,95 PC,medium,"clears clock, score and game state",src/pc/assets/game_gfx.asm
 Init_2007_0002,DrawBevelBoxInit,Init_2007_0002,new,high,box with DialogLight/Dark edges,src/front/matchup.asm
 Init_2007_01BC,ShowMatchupScreen,Init_2007_01BC,new,high,"pre-game ""%s at %s"" arena screen",src/front/matchup.asm
-Init_20A8_0004,ShowStartingLineups,Init_20A8_0004,new,high,"lineup screen with crests, AnnounceLineups, injured players",src/front/lineups.asm
+Init_20A8_0004,ShowStartingLineups,Init_20A8_0004,new,high,"lineup screen with crests, PaLineups, injured players",src/front/lineups.asm
 Init_2137_0004,LoadArenaJingles,Init_2137_0004,new,high,loads the arena organ .KMS/.CFG jingles,src/pc/sound/arena_jingles.asm
 Init_2137_03D6,FreeArenaJingles,Init_2137_03D6,new,high,frees the four jingle buffers,src/pc/sound/arena_jingles.asm
 Init_2185_0000,DrawPeriodTitle,Init_2185_0000,new,high,'First Period' .. 'Overtime Period %d' banner,src/front/period_title.asm
@@ -2314,7 +2314,7 @@ Movie_3357_038C,MviRewind,Movie_3357_038C,new,medium,seeks back to the first fra
 Movie_3357_03D2,MviRestart,Movie_3357_03D2,new,medium,rewinds and shows the first frame,src/lib/mvi_player.asm
 Movie_3357_0408,MviDrawFrame,Movie_3357_0408,new,medium,draws the decoded frame blocks,src/lib/mvi_player.asm
 Movie_3357_06C8,MviNextFrame,Movie_3357_06C8,new,medium,reads and decodes the next frame,src/lib/mvi_player.asm
-Fades_3349_0000,SetPaletteVsync,Fades_3349_0000,new,high,waits for retrace and sets the palette in halves,src/front/fade/fades.asm
+Fades_3349_0000,SetPalette768,Fades_3349_0000,new,high,waits for retrace and sets the palette in halves,src/front/fade/fades.asm
 Fades_3349_0036,RandLfsrByte,Fades_3349_0036,new,high,8-bit LFSR step (taps 0xB8),src/front/fade/fades.asm
 Fades_3349_005E,CopyFadeRect,Fades_3349_005E,new,high,copies a rectangle of the new page clipped to the fade area,src/front/fade/fades.asm
 Fades1_3358_0000,FadeVenetian,Fades1_3358_0000,new,high,"copies every eighth row, eight passes",src/front/fade/venetian.asm
@@ -2335,7 +2335,7 @@ Stats_1E45_0000,SetupStatsMenus,Stats_1E45_0000,new,medium,fills the stats menu 
 Stats_1E45_047C,BuildSeasonTitle,Stats_1E45_047C,new,high,"'"" Season' / '"" Play-Offs' / '"" Season Play-Offs' title strings",src/front/stats_menus.asm
 Stats_1E45_0576,SplitFileExt,Stats_1E45_0576,95 PC,high,cuts a file name at its '.',src/front/stats_menus.asm
 Stats_1E45_0598,SetStatsMenuText,Stats_1E45_0598,new,medium,switch on the context (0..5) choosing the menu text pointers,src/front/stats_menus.asm
-Stats_1EAE_0002,StrNotPrefixFar,Stats_1EAE_0002,new,high,1 when the first far string differs from the start of the second,src/front/stats_menu_loops.asm
+Stats_1EAE_0002,StrPrefixDiffers,Stats_1EAE_0002,new,high,1 when the first far string differs from the start of the second,src/front/stats_menu_loops.asm
 Stats_1EAE_0044,StatsMenuLoop,Stats_1EAE_0044,new,high,"pointer menu loop over a menu bar (pnt2/pntr, menubuff)",src/front/stats_menu_loops.asm
 Stats_1EAE_07B6,StandingsMenuLoop,Stats_1EAE_07B6,new,high,"menu loop with the standings team cursor (XorRect, TeamFromMouse)",src/front/stats_menu_loops.asm
 Stats_1EAE_12F6,RosterMenuLoop,Stats_1EAE_12F6,new,high,menu loop with the roster row cursor,src/front/stats_menu_loops.asm
@@ -2471,7 +2471,7 @@ Lp_2305_04DC,WriteLeagueInfo,Lp_2305_04DC,95 PC,high,writes PINFO.DB,src/front/l
 Lp_2305_05E8,MsgCopyingDatabases,Lp_2305_05E8,95 PC,high,'copying databases' message,src/front/league_list.asm
 Lp_2305_061C,CopyHumanTeamDBs,Lp_2305_061C,95 PC,high,copies the human teams' dbs,src/front/league_list.asm
 Lp_23AD_0002,RandMod,Lp_23AD_0002,new,high,positive rand() modulo the argument,src/front/simgame.asm
-Lp_23AD_0016,AddScorerPair,Lp_23AD_0016,new,medium,"appends a (player, assist) pair, at most four",src/front/simgame.asm
+Lp_23AD_0016,SimAddPair,Lp_23AD_0016,new,medium,"appends a (player, assist) pair, at most four",src/front/simgame.asm
 Lp_23AD_0046,SimulateGame,Lp_23AD_0046,95 PC,high,simulates one league game and posts the stats,src/front/simgame.asm
 Lp_25B2_000A,DrawCalendarDay,Lp_25B2_000A,95 PC,high,one calendar day: Home/Away game,src/front/league_game.asm
 Lp_25B2_04C4,CalNextMonth,Lp_25B2_04C4,95 PC,high,menu item: next month,src/front/league_game.asm
@@ -2556,7 +2556,7 @@ Menus_1F4F_0086,FormatHilightDesc,Menus_1F4F_0086,95 PC,high,"'%d %d, %s vs %s, 
 Menus_1F4F_00D0,SelectHilight,Menus_1F4F_00D0,95 PC,high,"'Select a team', 'Select a hilight' (.HI files)",src/front/highlights.asm
 Menus_1F4F_0440,ViewHilights,Menus_1F4F_0440,95 PC,high,loads and plays a saved highlight,src/front/highlights.asm
 Menus_1F9D_000C,TitleScreen,Menus_1F9D_000C,95 PC,high,"EA open, title movie, copyright",src/front/title.asm
-Menus_1F9D_0580,GoodnightScreen,Menus_1F9D_0580,new,high,exit screen with AnnounceGoodnight,src/front/title.asm
+Menus_1F9D_0580,GoodnightScreen,Menus_1F9D_0580,new,high,exit screen with PaGoodnight,src/front/title.asm
 Menus_2037_0000,SetSideControls,Menus_2037_0000,95 PC,high,sets the controls menu items for the human side(s),src/front/side_controls.asm
 Menus_2047_0008,GameLineEditor,Menus_2047_0008,95 PC,high,"in-game line editor ('linedit.fnt', 'lineditp')",src/front/game_lines.asm
 Menus_2047_013A,GameRosterCmp,Menus_2047_013A,95 PC,high,qsort comparator of roster rows,src/front/game_lines.asm
@@ -4519,7 +4519,7 @@ dgroup_bss:9046,DriverFileName,,new,medium,'c:\eaclib\' path of the sound driver
 dgroup_bss:9140,PPVFiles,,new,medium,far pointers to the 18 loaded PPV files (LoadPlayerFrames); the 72 bytes after them are not used,src/data/dgroup_bss.asm
 dgroup_bss:AE9C,ChainIdx,,new,medium,word,src/data/dgroup_bss.asm
 dgroup_bss:AE9E,ChainPtr,,new,medium,word,src/data/dgroup_bss.asm
-dgroup_bss:AFD4,PadReadings,,new,medium,"3 bytes a pad (stick, buttons, hot key) filled by ReadPadDevice",src/data/dgroup_bss.asm
+dgroup_bss:AFD4,PadReadings,,new,medium,"3 bytes a pad (stick, buttons, hot key) filled by ReadControllerPad",src/data/dgroup_bss.asm
 dgroup_bss:B438,awshots,,new,medium,away shots; the away team stats start here,src/data/dgroup_bss.asm
 dgroup_bss:B43A,awppgoals,,new,medium,away power play goals,src/data/dgroup_bss.asm
 dgroup_bss:B43C,awppchances,,new,medium,away power play chances,src/data/dgroup_bss.asm

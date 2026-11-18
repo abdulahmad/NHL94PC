@@ -3847,7 +3847,7 @@ PlayLeagueGame:
         mov word [HomeTeam], 0x1b35
         mov word [menucbfn], 0x232d
         mov word [menucbseg], 0x1b35
-        call 0x0BFE:InputShutdown
+        call 0x0BFE:InputRemove
         push word [bp + 0x6]
         call 0x1B35:PlayGameThunk
         add sp, 0x2

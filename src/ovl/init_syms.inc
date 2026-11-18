@@ -1,11 +1,11 @@
 AllocCanvases		equ	0x3804
 AllocRecData		equ	0x30
-AnnounceElseAroundNhl		equ	0x4CC
-AnnounceHighlightMatchup		equ	0x4E0
-AnnounceLineups		equ	0x4B8
-AnnouncePeriodSummary		equ	0x46E
-AnnounceTonightsGame		equ	0x418
-AnnounceTonightsPlayoffGame		equ	0x542
+PaElseNhl		equ	0x4CC
+PaHighlightIntro		equ	0x4E0
+PaLineups		equ	0x4B8
+PaScoringPeriod		equ	0x46E
+PaTonightIntro		equ	0x418
+PaPlayoffTonight		equ	0x542
 AnnouncerFlags		equ	0x1B7
 ArenaJingleA		equ	0xB2EE
 ArenaJingleASeg		equ	0xB2F0
@@ -135,7 +135,7 @@ HookDivideError		equ	0xA
 HotKeyFn		equ	0xB08E
 ImulRegs		equ	0x9CA
 InputInit		equ	0xE
-InputShutdown		equ	0x4C
+InputRemove		equ	0x4C
 JingleBuf1		equ	0xB2F2
 JingleBuf1Seg		equ	0xB2F4
 JingleBuf2		equ	0xB2F6

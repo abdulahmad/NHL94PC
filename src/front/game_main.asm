@@ -236,7 +236,7 @@ WaitKeyRelease:
 ; Jump table on in-game hot keys.
 ;
 ; Takes 1 word of stack arguments. Calls GetPaletteFar, FadePalette, CrowdFadeOut, PlayPauseSample,
-; ReleaseAllVoices, StopSpeech, StopJingle, InputInit and others. Far routine (retf).
+; ReleaseAllVoices, SpeechStopQueue, StopJingle, InputInit and others. Far routine (retf).
 ;-----------------------------------------------------------------------------
 HandleHotKey:
         enter 0x2, 0x0
@@ -351,14 +351,14 @@ HandleHotKeyJumpTable:                          ; jump table of HandleHotKey: 18
 .8:
         call 0x16F2:ReleaseAllVoices
 .9:
-        call 0x09B2:StopSpeech
+        call 0x09B2:SpeechStopQueue
         call 0x0EDC:StopJingle
         call 0x0BFE:InputInit
         push 0x1
         call 0x1B35:InstantReplayThunk
         add sp, 0x2
         call 0x0F99:FlushInputEvents
-        call 0x0BFE:InputShutdown
+        call 0x0BFE:InputRemove
         cmp byte [PadStates], 0x1
         jz short .10
         cmp byte [PadStates2], 0x1
@@ -828,7 +828,7 @@ Gameloop:
         call 0x16F2:ReleaseAllVoices
 .14:
         call 0x0EDC:StopJingle
-        call 0x09B2:StopSpeech
+        call 0x09B2:SpeechStopQueue
         call 0x1B35:FlushGSumQueueThunk
         call 0x1B35:PutGSumTailThunk
         push word [HeapSizeHi]

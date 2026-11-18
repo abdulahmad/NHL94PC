@@ -1,12 +1,12 @@
 ; Shared fade helpers: palette set and rectangle copy (FADES.OVL)
 
 ;-----------------------------------------------------------------------------
-; SetPaletteVsync                                            3349:0000  94 PC
+; SetPalette768                                            3349:0000  94 PC
 ; Waits for retrace and sets the palette in halves.
 ;
 ; Takes 2 words of stack arguments. Calls WaitRetrace, SetPaletteFar. Far routine (retf).
 ;-----------------------------------------------------------------------------
-SetPaletteVsync:
+SetPalette768:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di

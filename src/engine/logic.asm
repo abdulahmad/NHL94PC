@@ -5589,7 +5589,7 @@ assrefsignal:
 ; assrefgoalpa                                               2519:31E4  94 PC
 ; Referee assignment: after a goal, has the announcer call the scorer and assists.
 ;
-; Takes 1 word of stack arguments. Calls SetSPA, AnnounceGoal, assreplace, PenShotAssign,
+; Takes 1 word of stack arguments. Calls SetSPA, PaGoal, assreplace, PenShotAssign,
 ; QueueGoalieNote, CrowdOnStoppage, ChkScorerMilestone, VectorToDir8 and others. Far routine (retf).
 ;-----------------------------------------------------------------------------
 assrefgoalpa:
@@ -5685,7 +5685,7 @@ assrefgoalpa:
         mov bx, [bp - 0x6]
         shl bx, 1
         push word [bx + TeamNameClips]
-        call 0x0EDC:AnnounceGoal
+        call 0x0EDC:PaGoal
         add sp, 0xa
         mov ax, [gameframe]
         mov [PadRepeatOn], ax
@@ -6140,7 +6140,7 @@ assrefgoalpa:
 ; assrefdrop                                                 2519:3762  94 PC
 ; Referee assignment: skates to the faceoff spot and holds the puck for the drop.
 ;
-; Takes 1 word of stack arguments. Calls SetSPA, ImulRegs, AnnouncerBusy, assreplace, SkateToSpot. Far
+; Takes 1 word of stack arguments. Calls SetSPA, ImulRegs, PaSpeechBusy, assreplace, SkateToSpot. Far
 ; routine (retf).
 ;-----------------------------------------------------------------------------
 assrefdrop:
@@ -6276,7 +6276,7 @@ assrefdrop:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [si + 0xe], ax
         mov [si + 0xc], ax
-        call 0x0EDC:AnnouncerBusy
+        call 0x0EDC:PaSpeechBusy
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .16
         cmp word [ovlseq], -0x1

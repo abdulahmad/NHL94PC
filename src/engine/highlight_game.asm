@@ -7,7 +7,7 @@
 ;-----------------------------------------------------------------------------
 ; StartHL2                                                   1FAA:000E  94 PC
 ; (home, vis, &hsc, &asc, period): the highlight game the INIT overlay runs after
-; AnnounceHighlightMatchup.
+; PaHighlightIntro.
 ;
 ; Takes 6 words of stack arguments. Calls GetPaletteFar, FadePalette, FlushGSumQueue,
 ; LoadGameTeamsThunk, LoadTeamPalette, LoadRinkTilesThunk, LoadScoreboardArtThunk, LoadRinkEndArtThunk

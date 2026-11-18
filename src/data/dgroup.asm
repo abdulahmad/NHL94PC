@@ -121,7 +121,7 @@ CrowdState:                                     ; bit 80h tested by the crowd ro
                                                 ; Crowd_Noise, CrowdNoiseOff, CrowdFadeOut
         db 0xFF
 AnnouncerFlags:                                 ; bit 80h set while the announcer talks; used by
-                                                ; AnnounceOneMinute, AnnouncerBusy, AnnounceGoal ...
+                                                ; PaOneMinuteLeft, PaSpeechBusy, PaGoal ...
         db 0x7B
 ctl1team:                                       ; team of controller 1 (-1 none, -2 eliminated); used by AI,
                                                 ; INIT, MENUS
@@ -174,8 +174,8 @@ gsumtail_shots2:                                ; game summary tail: shots of th
                                                 ; INIT
         db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 TeamNameClips:                                  ; speech clip per team, indexed by team; used by
-                                                ; AnnounceTonightsGame, AnnounceHighlightMatchup,
-                                                ; AnnouncePlayoffResult ...
+                                                ; PaTonightIntro, PaHighlightIntro,
+                                                ; PaPlayoffResult ...
         dw str_Bos
         dw str_Buf
         dw str_Cgy
@@ -334,51 +334,54 @@ str_Temp:                                       ; string 'temp'; not used by the
 str_Temp_2:                                     ; string 'temp'; not used by the EXE or the overlays
         db 'temp', 0x00
 InputQueueCount:                                ; events waiting (at most 32); used by GetInputEvent,
-                                                ; PollInputEvents
+                                                ; InputPollTick
         dw 0x0000
 InputQueueHead:                                 ; next event to read; used by GetInputEvent, FlushInputEvents
         dw 0x001F
-InputQueueTail:                                 ; next free event slot; used by PollInputEvents
+InputQueueTail:                                 ; next free event slot; used by InputPollTick
         dw 0x0000
 PollCountdown:                                  ; polls until the next device read (reset to 5); used by
-                                                ; PollInputEvents
+                                                ; InputPollTick
         dw 0x000A
-MouseEnabled:                                   ; mouse read when non-zero; used by ReadMouseEvent
+MouseEnabled:                                   ; mouse read when non-zero; used by PollMouseEvent
         dw 0x0000
-StickEnabled:                                   ; joysticks read when non-zero; used by ReadStickEvent
+StickEnabled:                                   ; joysticks read when non-zero; used by PollJoystickEvent
         dw 0x0000
-KeysEnabled:                                    ; keyboard read when non-zero; used by ReadKeyEvent
+KeysEnabled:                                    ; keyboard read when non-zero; used by PollKeyboardEvent
         dw 0x0000
-MousePosX:                                      ; last mouse x; used by EventToCursor, ReadMouseEvent
+MousePosX:                                      ; last mouse x; used by EventToPointer, PollMouseEvent
         dw 0x0000
-MousePosY:                                      ; last mouse y; used by EventToCursor, ReadMouseEvent
+MousePosY:                                      ; last mouse y; used by EventToPointer, PollMouseEvent
         db 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-StickPresent:                                   ; joystick 1 present; used by StickToPad
+StickPresent:                                   ; joystick 1 present; used by ReadJoyPad
         dw 0x0000
 StickPresent2:                                  ; joystick 2 present; not used by the EXE or the overlays
         dw 0x0000
-PadTickCount:                                   ; timer ticks counted by PadTimerTick (wraps at 1000); used by
-                                                ; PadTimerTick
+PadTickCount:                                   ; timer ticks counted by SampleInputTick (wraps at 1000);
+                                                ; used by
+                                                ; SampleInputTick
         dw 0x0000
-PadRepeatOn:                                    ; key repeat active; used by PadTimerTick
+PadRepeatOn:                                    ; key repeat active; used by SampleInputTick
         dw 0x0000
-PadRepeatStep:                                  ; repeat interval; used by PadTimerTick
+PadRepeatStep:                                  ; repeat interval; used by SampleInputTick
         dw 0x0000
-PadRepeatDelay:                                 ; first repeat delay; used by PadTimerTick, PadTimerTickTail
+PadRepeatDelay:                                 ; first repeat delay; used by SampleInputTick,
+                                                ; PadTimerTickTail
         dw 0x0000
-PadRepeatTimer:                                 ; ticks left before the next repeat; used by PadTimerTick
+PadRepeatTimer:                                 ; ticks left before the next repeat; used by SampleInputTick
         dw 0x0000
-PadStates:                                      ; state byte per pad; used by ReadPadDevice, PadTimerTick
+PadStates:                                      ; state byte per pad; used by ReadControllerPad,
+                                                ; SampleInputTick
         db 0x08
-PadStates2:                                     ; second pad's state byte; used by PadTimerTick
+PadStates2:                                     ; second pad's state byte; used by SampleInputTick
         db 0x02
 HotKeyPending:                                  ; hot key waiting to be read; used by ReadHotKeys
         db 0x00, 0x00
-KeyPadMap:                                      ; keys to pad bits; used by ReadKeyboardPad, StickToPad
+KeyPadMap:                                      ; keys to pad bits; used by ReadKeyboardPad, ReadJoyPad
         db 0x08, 0x00, 0x04, 0x08, 0x02, 0x01, 0x03, 0x02, 0x06, 0x07, 0x05, 0x06, 0x08, 0x00, 0x04, 0x08, 'pause.msc'
         db 0x00
-str_SS:                                         ; string '%s.%s'; used by SayHighlightMatchup,
-                                                ; SayPlayoffResult, SayPeriodSummary ...
+str_SS:                                         ; string '%s.%s'; used by SayHighlightIntro,
+                                                ; SayPlayoffResult, SayScoringPeriod ...
         db '%s.%s', 0x00
 str_ByMsc:                                      ; string 'by.msc'; used by SayGoal, OpenPlayByPlaySpeech
         db 'by.msc', 0x00, 0x00
@@ -419,39 +422,39 @@ str_NumberMsc:                                  ; string 'number.msc'; used by S
         db 'easports.int', 0x00, 0x00
         db 'nhl.int', 0x00
         db 'of.bar', 0x00, 0x00
-str_NumberBar:                                  ; string 'number.bar'; used by SayTonightsPlayoffGame
+str_NumberBar:                                  ; string 'number.bar'; used by SayPlayoffTonight
         db 'number.bar', 0x00, 0x00
 str_DivisionBar:                                ; string 'division.bar'; used by SayPlayoffResult,
-                                                ; SayTonightsPlayoffGame
+                                                ; SayPlayoffTonight
         db 'division.bar', 0x00, 0x00
 str_ConfBar:                                    ; string 'conf.bar'; used by SayPlayoffResult,
-                                                ; SayTonightsPlayoffGame
+                                                ; SayPlayoffTonight
         db 'conf.bar', 0x00, 0x00
 str_FinalBar:                                   ; string 'final.bar'; used by SayPlayoffResult,
-                                                ; SayTonightsPlayoffGame
+                                                ; SayPlayoffTonight
         db 'final.bar', 0x00
 str_SemiBar:                                    ; string 'semi.bar'; used by SayPlayoffResult,
-                                                ; SayTonightsPlayoffGame
+                                                ; SayPlayoffTonight
 str_SemiBar_2:                                  ; string 'semi.bar'; used by AI
         db 'semi.bar', 0x00, 0x00
-str_AndBar:                                     ; string 'and.bar'; used by SayHighlightMatchup,
-                                                ; SayTonightsGame, SayTonightsPlayoffGame
+str_AndBar:                                     ; string 'and.bar'; used by SayHighlightIntro,
+                                                ; SayTonightIntro, SayPlayoffTonight
         db 'and.bar', 0x00
-str_BetweenBar:                                 ; string 'between.bar'; used by SayTonightsPlayoffGame
+str_BetweenBar:                                 ; string 'between.bar'; used by SayPlayoffTonight
         db 'between.bar', 0x00
 str_GamenumBar:                                 ; string 'gamenum.bar'; used by SayPlayoffResult,
-                                                ; SayTonightsPlayoffGame
+                                                ; SayPlayoffTonight
         db 'gamenum.bar', 0x00
-str_EasportsBar:                                ; string 'easports.bar'; used by SayTonightsGame,
-                                                ; SayTonightsPlayoffGame
+str_EasportsBar:                                ; string 'easports.bar'; used by SayTonightIntro,
+                                                ; SayPlayoffTonight
         db 'easports.bar', 0x00, 0x00
-str_PeriodBar:                                  ; string 'period.bar'; used by SayPeriodSummary
+str_PeriodBar:                                  ; string 'period.bar'; used by SayScoringPeriod
         db 'period.bar', 0x00, 0x00
-str_TonightBar:                                 ; string 'tonight.bar'; used by SayTonightsGame,
-                                                ; SayTonightsPlayoffGame
+str_TonightBar:                                 ; string 'tonight.bar'; used by SayTonightIntro,
+                                                ; SayPlayoffTonight
         db 'tonight.bar', 0x00
-str_GamebtwnBar:                                ; string 'gamebtwn.bar'; used by SayHighlightMatchup,
-                                                ; SayTonightsGame
+str_GamebtwnBar:                                ; string 'gamebtwn.bar'; used by SayHighlightIntro,
+                                                ; SayTonightIntro
         db 'gamebtwn.bar', 0x00, 0x00
         db 'presents.int', 0x00, 0x00
         db 'hockey.int', 0x00, 0x00
@@ -463,21 +466,21 @@ str_LineupsInt:                                 ; string 'lineups.int'; used by 
         db 'lineups.int', 0x00
         db 'elsewher.int', 0x00, 0x00
         db 'tonight.int', 0x00
-str_TakeynowBar:                                ; string 'takeynow.bar'; used by SayHighlightMatchup
+str_TakeynowBar:                                ; string 'takeynow.bar'; used by SayHighlightIntro
         db 'takeynow.bar', 0x00, 0x00
-str_HighliteBar:                                ; string 'highlite.bar'; used by SayHighlightMatchup
+str_HighliteBar:                                ; string 'highlite.bar'; used by SayHighlightIntro
         db 'highlite.bar', 0x00, 0x00
 str_OvertimeBar:                                ; string 'overtime.bar'; used by SayPlayoffResult
         db 'overtime.bar', 0x00, 0x00
 str_HavewonBar:                                 ; string 'havewon.bar'; used by SayPlayoffResult
         db 'havewon.bar', 0x00
-str_ScoringBar:                                 ; string 'scoring.bar'; used by SayPeriodSummary
+str_ScoringBar:                                 ; string 'scoring.bar'; used by SayScoringPeriod
         db 'scoring.bar', 0x00
-str_ThegameBar:                                 ; string 'thegame.bar'; used by SayPeriodSummary
+str_ThegameBar:                                 ; string 'thegame.bar'; used by SayScoringPeriod
         db 'thegame.bar', 0x00
-str_OtBar:                                      ; string 'ot.bar'; used by SayPeriodSummary
+str_OtBar:                                      ; string 'ot.bar'; used by SayScoringPeriod
         db 'ot.bar', 0x00, 0x00
-str_TheotBar:                                   ; string 'theot.bar'; used by SayPeriodSummary
+str_TheotBar:                                   ; string 'theot.bar'; used by SayScoringPeriod
         db 'theot.bar', 0x00
 str_TonightMsc:                                 ; string 'tonight.msc'; used by SayPlayerFrom
         db 'tonight.msc', 0x00
@@ -495,7 +498,7 @@ SpeechMemSeg:                                   ; speech memory block, segment; 
 SpeechOn:                                       ; speech system initialised; used by SpeechTimerTick,
                                                 ; SpeechInit, ShutdownSpeech ...
         dw 0x0000
-str_Speechbuf:                                  ; string 'speechbuf'; used by InitSpeechBank
+str_Speechbuf:                                  ; string 'speechbuf'; used by InitSpeechSlots
         db 'speechbuf', 0x00
 str_Sentence:                                   ; string 'sentence'; used by SpeechInit
         db 'sentence', 0x00
@@ -544,31 +547,31 @@ str_ElsenhlInt:                                 ; string 'elsenhl.int'; used by 
         db 'elsenhl.int', 0x00
 str_ElsenhlInt_2:                               ; string 'elsenhl.int'; used by SayElseNhl
         db 'elsenhl.int', 0x00
-str_Rnk:                                        ; string 'rnk'; used by SayHighlightMatchup
+str_Rnk:                                        ; string 'rnk'; used by SayHighlightIntro
         db 'rnk', 0x00
-str_Awa:                                        ; string 'awa'; used by SayHighlightMatchup
+str_Awa:                                        ; string 'awa'; used by SayHighlightIntro
         db 'awa', 0x00
-str_Hom:                                        ; string 'hom'; used by SayHighlightMatchup
+str_Hom:                                        ; string 'hom'; used by SayHighlightIntro
         db 'hom', 0x00
 str_Awa_2:                                      ; string 'awa'; used by SayPlayoffResult
         db 'awa', 0x00
 str_Bar:                                        ; string 'bar'; used by SayPlayoffResult
         db 'bar', 0x00
-str_Bar_2:                                      ; string 'bar'; used by SayPeriodSummary
+str_Bar_2:                                      ; string 'bar'; used by SayScoringPeriod
         db 'bar', 0x00
-str_Rnk_2:                                      ; string 'rnk'; used by SayTonightsGame
+str_Rnk_2:                                      ; string 'rnk'; used by SayTonightIntro
         db 'rnk', 0x00
-str_Awa_3:                                      ; string 'awa'; used by SayTonightsGame
+str_Awa_3:                                      ; string 'awa'; used by SayTonightIntro
         db 'awa', 0x00
-str_Hom_2:                                      ; string 'hom'; used by SayTonightsGame
+str_Hom_2:                                      ; string 'hom'; used by SayTonightIntro
         db 'hom', 0x00
-str_Rnk_3:                                      ; string 'rnk'; used by SayTonightsPlayoffGame
+str_Rnk_3:                                      ; string 'rnk'; used by SayPlayoffTonight
         db 'rnk', 0x00
-str_Awa_4:                                      ; string 'awa'; used by SayTonightsPlayoffGame
+str_Awa_4:                                      ; string 'awa'; used by SayPlayoffTonight
         db 'awa', 0x00
-str_Hom_3:                                      ; string 'hom'; used by SayTonightsPlayoffGame
+str_Hom_3:                                      ; string 'hom'; used by SayPlayoffTonight
         db 'hom', 0x00
-str_Bar_3:                                      ; string 'bar'; used by SayTonightsPlayoffGame
+str_Bar_3:                                      ; string 'bar'; used by SayPlayoffTonight
         db 'bar', 0x00
 str_Cty:                                        ; string 'cty'; used by SayPenalty
         db 'cty', 0x00
@@ -616,12 +619,12 @@ str_Cty_4:                                      ; string 'cty'; used by OpenPlay
         db 'cty', 0x00
 str_Cty_5:                                      ; string 'cty'; used by OpenPlayByPlaySpeech
         db 'cty', 0x00
-InputInstalled:                                 ; input hooks installed; used by InputInit, InputShutdown
+InputInstalled:                                 ; input hooks installed; used by InputInit, InputRemove
         dw 0x0000
-MouseRangeX:                                    ; mouse range in x; used by InputInit, InputShutdown,
-                                                ; EventToCursor
+MouseRangeX:                                    ; mouse range in x; used by InputInit, InputRemove,
+                                                ; EventToPointer
         dw 0x0000
-MouseRangeY:                                    ; mouse range in y; used by InputInit, InputShutdown
+MouseRangeY:                                    ; mouse range in y; used by InputInit, InputRemove
         db 0x00, 0x00
 ScreenRowStride:                                ; bytes per row of the planar screen: 50h, or 52h on the wide
                                                 ; screens; used by INIT, MENUS
@@ -711,10 +714,10 @@ DialogDarkColor:                                ; dialog bevel dark colour; used
                                                 ; ListDialog, SetDialogColors ...
         dw 0x0017
 ItemTextColor:                                  ; list item text colour; used by NumberEntryDialog,
-                                                ; ItemColors, DrawListRow ...
+                                                ; SetListItemColors, DrawListRow ...
         dw 0x003F
 ItemSelectColor:                                ; selected list item colour; used by NumberEntryDialog,
-                                                ; ItemColors, DrawListRow ...
+                                                ; SetListItemColors, DrawListRow ...
         db 0x00, 0x00, 0x00, 0x00
 SaveUnderOff:                                   ; saved screen under a box, offset; used by SaveUnderBox,
                                                 ; RestoreUnderBox
@@ -726,7 +729,7 @@ str_Pointer_2:                                  ; string 'Pointer'; used by List
         db 'Pointer', 0x00
 str_Dbox:                                       ; string 'DBOX'; used by SaveUnderBox
         db 'DBOX', 0x00
-str_Pointer_3:                                  ; string 'Pointer'; used by MessageBoxLoop
+str_Pointer_3:                                  ; string 'Pointer'; used by RunMessageBox
 str_Pointer_15:                                 ; string 'Pointer'; used by AI
         db 'Pointer', 0x00, 0x00
 JingleHandle:                                   ; playing jingle, low word (-1 for none); used by StopJingle,
@@ -6421,7 +6424,7 @@ CentisPerSample:                                ; the double 1/110.25: a sample 
                                                 ; of a second; used by the speech bank loader
         db 0xA5, 0x04, 0xB8, 0x5B, 0x72, 0x93, 0x82, 0x3F
 NumberWordsSeg:                                 ; paragraph of number_words; used by NumberSampleNames,
-                                                ; SayPeriodSummary, SayPlayerFrom
+                                                ; SayScoringPeriod, SayPlayerFrom
         dw 0x342F
 DbFilesSeg:                                     ; paragraph of db_files; used by SaveGame
         dw 0x3415

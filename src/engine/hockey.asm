@@ -4889,7 +4889,7 @@ clockcont_0:
 ; ClockTick                                                  2E42:2C30  94 PC
 ; Counts the game clock down from the main loop: the one-minute horn and the coach modes each second.
 ;
-; Calls __chkstk, PlaySoundEffect, AnnounceOneMinute, UpdateCoachModes. Far routine (retf).
+; Calls __chkstk, PlaySoundEffect, PaOneMinuteLeft, UpdateCoachModes. Far routine (retf).
 ;-----------------------------------------------------------------------------
 ClockTick:
         db 0x33, 0xC0                           ; insn: xor ax, ax
@@ -4926,7 +4926,7 @@ ClockTick:
         mov ax, [PadRepeatOn]
         mov [gameframe], ax
         mov word [PadRepeatOn], 0x0
-        call 0x0EDC:AnnounceOneMinute
+        call 0x0EDC:PaOneMinuteLeft
         mov ax, [gameframe]
         mov [PadRepeatOn], ax
 .6:

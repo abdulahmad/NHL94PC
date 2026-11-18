@@ -347,7 +347,7 @@ MainDeskLoop:
         cmp word [bp - 0x8c], 0x1
         jnz short .17
         call 0x0F99:FlushInputEvents
-        call 0x0BFE:InputShutdown
+        call 0x0BFE:InputRemove
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         pop si
         pop di
@@ -1482,7 +1482,7 @@ CopyGameSettings:
 ; New exhibition game.
 ;
 ; Takes 1 word of stack arguments. Calls SetupControllersThunk, CreateGSummaryDbThunk,
-; ShowMatchupScreenThunk, InputShutdown, SetupStatsMenusThunk, AllocRecData, GetPaletteFar,
+; ShowMatchupScreenThunk, InputRemove, SetupStatsMenusThunk, AllocRecData, GetPaletteFar,
 ; FadePaletteInThunk and others. Far routine (retf).
 ;-----------------------------------------------------------------------------
 MenuNewExhibition:
@@ -1515,7 +1515,7 @@ MenuNewExhibition:
         call 0x1B35:ShowMatchupScreenThunk
         add sp, 0x4
         db 0x8B, 0xF0                           ; insn: mov si, ax
-        call 0x0BFE:InputShutdown
+        call 0x0BFE:InputRemove
 .1:
         db 0x8B, 0xC6                           ; insn: mov ax, si
         test al, 0x4

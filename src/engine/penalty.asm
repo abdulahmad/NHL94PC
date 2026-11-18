@@ -210,7 +210,7 @@ SetPA:
 ; InProgress                                                 327B:018A  94 PC
 ; Referee penalty call in progress: messages, statistics and penalty information.
 ;
-; Calls AnnouncerBusy, assreplace, PostPenaltyEvent, PanelAddPenalty, _sprintf, SetPA. Far routine
+; Calls PaSpeechBusy, assreplace, PostPenaltyEvent, PanelAddPenalty, _sprintf, SetPA. Far routine
 ; (retf).
 ;-----------------------------------------------------------------------------
 InProgress:
@@ -221,7 +221,7 @@ InProgress:
         jnz short .1
         jmp near .35
 .1:
-        call 0x0EDC:AnnouncerBusy
+        call 0x0EDC:PaSpeechBusy
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .2
         jmp near .35

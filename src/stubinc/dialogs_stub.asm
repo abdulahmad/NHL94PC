@@ -9,7 +9,7 @@ InputInit		equ	0xE
 GetInputEvent		equ	0xE
 SetTextColors		equ	0x24
 AllocRecData		equ	0x30
-InputShutdown		equ	0x4C
+InputRemove		equ	0x4C
 msgCustomOrOriginal		equ	0x5B
 FlushInputEvents		equ	0x66
 btnsCustomOriginal		equ	0x67
