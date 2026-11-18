@@ -499,7 +499,7 @@ PlacePlayersAtStart:
         shl bx, byte 0x2
         db 0x03, 0xD8                           ; insn: add bx, ax
         mov [si + 0x12], bx
-        mov word [regd1], 0x289
+        mov word [regd1], SPAno(SPAglide)
 .14:
         and byte [si + 0x45], 0xfb
         and byte [si + 0x44], 0xdf

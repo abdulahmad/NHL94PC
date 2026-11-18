@@ -8,6 +8,7 @@
 bits	16
 
 section header start=0
+%include "spa94.inc"
 %include "header/mz_header.asm"
 
 section msc_runtime follows=header align=16 vstart=0

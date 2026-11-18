@@ -1076,7 +1076,7 @@ def write_top():
     if not os.path.exists(syms):
         open(syms, 'w').write('')
     open(b, 'w').write(f'; Builds {OV["name"]}.OVL on its own: the outside labels it uses (from tools/make_stubs.py), then the overlay.\n'
-                       f'        bits 16\n%include "ovl/{lo}_syms.inc"\n%include "ovl/{lo}.asm"\n')
+                       f'        bits 16\n%include "spa94.inc"\n%include "ovl/{lo}_syms.inc"\n%include "ovl/{lo}.asm"\n')
 
 
 if __name__ == '__main__':

@@ -198,7 +198,7 @@ faceoffinput:
         dec word [si + 0x2e]
         jns short .6
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0x7f1
+        mov ax, SPAno(SPAfaceoffr)
         call 0x2E42:SetSPA
         pop si
         leave
@@ -210,7 +210,7 @@ faceoffinput:
         jnl short .4
         or byte [si + 0x44], 0x20
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0x7dd
+        mov ax, SPAno(SPAfaceoff)
         jmp short .5
 .4:
         db 0x8B, 0xDE                           ; insn: mov bx, si
@@ -238,7 +238,7 @@ Acheck:
         cmp word [si + 0x18], 0x0
         jnz short .1
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0x873
+        mov ax, SPAno(SPAhook)
         call 0x2E42:SetSPA
 .1:
         mov dx, [si + 0x6]
@@ -251,12 +251,12 @@ Acheck:
         db 0x0B, 0xD2                           ; insn: or dx, dx
         jnl short .3
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0x873
+        mov ax, SPAno(SPAhook)
         jmp short .4
         db 0x90
 .3:
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0x639
+        mov ax, SPAno(SPAHold)
 .4:
         call 0x2E42:SetSPA
         pop si
@@ -279,7 +279,7 @@ Holdplayer:
         cmp word [si + 0x18], 0x0
         jnz short .1
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0x873
+        mov ax, SPAno(SPAhook)
         call 0x2E42:SetSPA
 .1:
         mov ax, [si + 0x14]
@@ -945,11 +945,11 @@ assonetimer:
         jnz short .3
         jmp near .24
 .3:
-        cmp word [si + 0x38], 0xdd3
+        cmp word [si + 0x38], SPAno(SPAonetimef)
         jnz short .4
         jmp near .10
 .4:
-        cmp word [si + 0x38], 0xe2b
+        cmp word [si + 0x38], SPAno(SPAonetimeb)
         jnz short .5
         jmp near .10
 .5:
@@ -998,7 +998,7 @@ assonetimer:
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .9
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0xe2b
+        mov ax, SPAno(SPAonetimeb)
 .8:
         call 0x2E42:SetSPA
         pop si
@@ -1007,7 +1007,7 @@ assonetimer:
         retf
 .9:
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0xdd3
+        mov ax, SPAno(SPAonetimef)
         jmp short .8
         db 0x90
 .10:

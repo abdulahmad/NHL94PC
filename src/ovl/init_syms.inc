@@ -822,3 +822,5 @@ viewscrollx		equ	0xD6CC
 xc1		equ	0x29AC
 yc1		equ	0x29AE
 yleader		equ	0x29B0
+SPAglide		equ	0x3014
+SPAlist		equ	0x2B02

@@ -1002,7 +1002,7 @@ assstanley:
         mov [si + 0x26], ax
         mov byte [si + 0x46], 0x0
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0xecb
+        mov ax, SPAno(SPAstansk)
         call 0x2E42:SetSPA
         mov word [PenCntDwn], 0x100
 .2:
@@ -1015,7 +1015,7 @@ assstanley:
         mov bx, [si + 0x60]
         mov word [bx + di + 0x2c], 0x300
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0x833
+        mov ax, SPAno(SPAstanley)
         call 0x2E42:SetSPA
 .3:
         mov ax, [si + 0x2a]
@@ -1119,14 +1119,14 @@ assscore:
         dec word [si + 0x26]
         jns short .13
         or byte [si + 0x44], 0x20
-        mov word [regd1], 0x731
+        mov word [regd1], SPAno(SPAcelebrate)
         mov ax, 0x78
         call 0x0C11:randomd0
         mov [si + 0x26], ax
         mov ax, [shotplayer]
         cmp [si + 0x5e], ax
         jnz short .12
-        mov word [regd1], 0x769
+        mov word [regd1], SPAno(SPApump)
         cmp word [assscore_dancecnt], 0x0
         jz short .11
         cmp word [assscore_dancecnt], 0x3
@@ -1213,7 +1213,7 @@ asseben:
         cmp word [si + 0x1a], 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         and ax, 0x574
-        add ax, 0x7a1
+        add ax, SPAno(SPAwallright)
         db 0x8B, 0xDE                           ; insn: mov bx, si
         call 0x2E42:SetSPA
         pop si
@@ -1316,7 +1316,7 @@ assleaveice:
         cmp word [si + 0x1a], 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         and ax, 0xfd78
-        add ax, 0x289
+        add ax, SPAno(SPAglide)
         mov [regd1], ax
         db 0x8B, 0xDE                           ; insn: mov bx, si
         call 0x2E42:SetSPA
@@ -1350,7 +1350,7 @@ assleaveice:
         cmp word [si + 0x1a], 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         and ax, 0x56e
-        add ax, 0x7bf
+        add ax, SPAno(SPAwallleft)
         db 0x8B, 0xDE                           ; insn: mov bx, si
         call 0x2E42:SetSPA
         or byte [si + 0x44], 0x20
@@ -1496,7 +1496,7 @@ asspenalty:
         add word [si + 0x26], 0x8
         or byte [si + 0x44], 0x4
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0x289
+        mov ax, SPAno(SPAglide)
         call 0x2E42:SetSPA
         mov word [regd2], 0x4
         cmp word [si + 0x36], 0x4
@@ -1527,7 +1527,7 @@ asspenalty:
         or byte [si + 0x44], 0x20
         mov word [si + 0x36], 0x2
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0x7a1
+        mov ax, SPAno(SPAwallright)
         call 0x2E42:SetSPA
         and byte [si + 0x45], 0xef
         mov bx, [si + 0x60]
@@ -1641,7 +1641,7 @@ assepen:
         mov word [si + 0x36], 0x2
         or byte [si + 0x44], 0x20
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0x7bf
+        mov ax, SPAno(SPAwallleft)
         call 0x2E42:SetSPA
         call 0x2E42:SprSort
         pop si
@@ -1778,7 +1778,7 @@ assbench:
         cmp word [si + 0x1a], 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         and ax, 0xfd78
-        add ax, 0x289
+        add ax, SPAno(SPAglide)
         mov [regd1], ax
         db 0x8B, 0xDE                           ; insn: mov bx, si
         call 0x2E42:SetSPA
@@ -1812,7 +1812,7 @@ assbench:
         cmp word [si + 0x1a], 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         and ax, 0x56e
-        add ax, 0x7bf
+        add ax, SPAno(SPAwallleft)
         db 0x8B, 0xDE                           ; insn: mov bx, si
         call 0x2E42:SetSPA
         or byte [si + 0x44], 0x20
@@ -2288,7 +2288,7 @@ assgoalie:
         mov bx, [bp + 0x6]
         mov [bx + 0x36], ax
         mov word [bx + 0x3e], 0x8
-        mov ax, 0x181
+        mov ax, SPAno(SPAgdive)
         call 0x2E42:SetSPA
         mov bx, [bp + 0x6]
         or byte [bx + 0x45], 0x2
@@ -2612,14 +2612,14 @@ assgoalie:
         shl bx, 1
         mov ax, [bx + goaliesave_saveanim_m2]
         mov [regd1], ax
-        cmp ax, 0xc9
+        cmp ax, SPAno(SPAgglovel)
         jnz short .71
         and word [regd3], 0x3
         jz short .71
         mov bx, [bp + 0x6]
         cmp byte [bx + 0x56], 0xb
         jc short .71
-        mov word [regd1], 0xe1
+        mov word [regd1], SPAno(SPAgglovel2)
 .71:
         mov bx, [bp + 0x6]
         mov ax, [regd1]
@@ -3769,7 +3769,7 @@ assfaceoffpl:
         cmp word [pucktemp1], 0x11
         jnl short .12
         or byte [si + 0x44], 0x20
-        mov cx, 0x7dd
+        mov cx, SPAno(SPAfaceoff)
         jmp short .14
 .12:
         mov cx, 0xd05
@@ -3778,7 +3778,7 @@ assfaceoffpl:
 .13:
         dec word [si + 0x2e]
         jns short .15
-        mov cx, 0x7f1
+        mov cx, SPAno(SPAfaceoffr)
 .14:
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         db 0x8B, 0xDE                           ; insn: mov bx, si
@@ -4547,7 +4547,7 @@ puckflip:
         mov [si + 0x36], ax
         mov word [si + 0x3c], 0xffff
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0x239
+        mov ax, SPAno(SPApflip)
         call 0x2E42:SetSPA
         pop si
         leave
@@ -4586,7 +4586,7 @@ assrefatdot:
 .3:
         mov [si + 0x36], ax
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0xc57
+        mov ax, SPAno(SPAreffowait)
         call 0x2E42:SetSPA
         and byte [si + 0x44], 0xfb
         and byte [si + 0x45], 0xdf
@@ -4652,7 +4652,7 @@ assreffollow:
         jz short .3
         and byte [si + 0x44], 0xfd
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0xa5b
+        mov ax, SPAno(SPArefglide)
         call 0x2E42:SetSPA
 .3:
         mov bx, [puckx]
@@ -5006,19 +5006,19 @@ SkateToSpot:
 .28:
         cmp word [si + 0x5e], 0x10
         jnz short .29
-        mov di, 0xa5b
-        mov word [bp - 0x2], 0xa73
+        mov di, SPAno(SPArefglide)
+        mov word [bp - 0x2], SPAno(SPArefskate)
         jmp short .31
         db 0x90
 .29:
         cmp word [si + 0x1a], 0x0
         jnz short .30
         mov di, 0x99
-        mov word [bp - 0x2], 0x1f1
+        mov word [bp - 0x2], SPAno(SPAgskate)
         jmp short .31
 .30:
-        mov di, 0x289
-        mov word [bp - 0x2], 0x2e9
+        mov di, SPAno(SPAglide)
+        mov word [bp - 0x2], SPAno(SPAskate)
 .31:
         cmp word [bp - 0xa], 0x8
         jl short .37
@@ -5294,7 +5294,7 @@ assrefwhistle:
         mov [si + 0x30], ax
         mov [si + 0x32], ax
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0xa5b
+        mov ax, SPAno(SPArefglide)
         call 0x2E42:SetSPA
         push cs
         call CrowdOnStoppage
@@ -5329,7 +5329,7 @@ assrefwhistle:
 .10:
         add word [si + 0x26], 0x8
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0xa5b
+        mov ax, SPAno(SPArefglide)
         call 0x2E42:SetSPA
         mov word [regd2], 0x2
         mov word [regd2_w2], 0x0
@@ -5378,7 +5378,7 @@ assrefwhistle:
         jnz short .18
         or byte [si + 0x44], 0x20
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0xc1b
+        mov ax, SPAno(SPArefpointgoa)
         call 0x2E42:SetSPA
         push 0x22
         jmp short .13
@@ -5532,7 +5532,7 @@ assrefsignal:
 .17:
         add word [si + 0x26], 0x8
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0xa5b
+        mov ax, SPAno(SPArefglide)
         call 0x2E42:SetSPA
         mov bx, [RefPen]
         shl bx, 1
@@ -5617,7 +5617,7 @@ assrefgoalpa:
         jl short .5
         jmp near .14
 .5:
-        mov ax, 0xa5b
+        mov ax, SPAno(SPArefglide)
         call 0x2E42:SetSPA
         cmp word [ovltimer], 0xec
         jnl short .6
@@ -5702,7 +5702,7 @@ assrefgoalpa:
 .14:
         cmp byte [PenBuf], 0x0
         jz short .15
-        mov ax, 0xa5b
+        mov ax, SPAno(SPArefglide)
         call 0x2E42:SetSPA
         mov word [RefStep], 0xffff
         pop si
@@ -5779,7 +5779,7 @@ assrefgoalpa:
         or byte [bx + 0x45], 0x20
         mov [bx + 0x30], ax
         mov [bx + 0x32], ax
-        mov ax, 0xa5b
+        mov ax, SPAno(SPArefglide)
         call 0x2E42:SetSPA
         cmp word [RefPen], 0x4
         jnz short .30
@@ -6056,7 +6056,7 @@ assrefgoalpa:
 .46:
         mov bx, [bp + 0x6]
         add word [bx + 0x26], 0x8
-        mov ax, 0xa5b
+        mov ax, SPAno(SPArefglide)
         call 0x2E42:SetSPA
         mov bx, [puckx]
         mov ax, [bx]
@@ -6112,7 +6112,7 @@ assrefgoalpa:
 .50:
         mov bx, [bp + 0x6]
         or byte [bx + 0x44], 0x20
-        mov ax, 0xc03
+        mov ax, SPAno(SPArefpickup)
         call 0x2E42:SetSPA
         push 0x22
         jmp near .17
@@ -6185,7 +6185,7 @@ assrefdrop:
         mov bx, [puckz]
         mov word [bx], 0xff9c
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0xa5b
+        mov ax, SPAno(SPArefglide)
         call 0x2E42:SetSPA
 .4:
         mov ax, [si + 0x6]
@@ -6239,7 +6239,7 @@ assrefdrop:
 .9:
         add word [si + 0x26], 0x8
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0xa5b
+        mov ax, SPAno(SPArefglide)
         call 0x2E42:SetSPA
         cmp word [fox], 0x0
         jng short .10
@@ -6389,7 +6389,7 @@ assrefgoalline:
 .9:
         add word [si + 0x26], 0x8
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0xa5b
+        mov ax, SPAno(SPArefglide)
         call 0x2E42:SetSPA
         mov ax, [si + 0x2]
         neg ax
@@ -6426,7 +6426,7 @@ assrefgoalline:
         mov [si + 0xc], ax
         or byte [si + 0x44], 0x20
         db 0x8B, 0xDE                           ; insn: mov bx, si
-        mov ax, 0xc1b
+        mov ax, SPAno(SPArefpointgoa)
         call 0x2E42:SetSPA
         push 0x20
         push si
