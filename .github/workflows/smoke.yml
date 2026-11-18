@@ -1,0 +1,43 @@
+# Smoke test (project files smoke-test/plan.md): HOCKEY.EXE and the 20 overlays still rebuild byte for byte (build.sh says MATCH).
+# Needs the retail EXE from the private vault (VAULT_TOKEN secret); without it only the no-retail-files check runs.
+name: smoke
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '47 9 * * *'
+jobs:
+  static:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: no retail files in the repo
+        run: |
+          bad=$(git ls-files -s | awk '$1!="120000"{print $4}' | grep -iE '\.(sfc|smc|bin|iso|gen|wad|cmv|exe)$' | grep -viE '^(tools|third_party|ext)/' | while read -r f; do s=$(stat -c %s "$f" 2>/dev/null || echo 0); [ "$s" -gt 200000 ] && echo "$f"; done || true)
+          [ -z "$bad" ] || { echo "$bad"; exit 1; }
+  match:
+    runs-on: ubuntu-latest
+    env:
+      VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
+    steps:
+      - name: skip without vault access
+        if: env.VAULT_TOKEN == ''
+        run: echo "VAULT_TOKEN not set, MATCH check skipped"
+      - uses: actions/checkout@v4
+        if: env.VAULT_TOKEN != ''
+      - uses: actions/checkout@v4
+        if: env.VAULT_TOKEN != ''
+        with:
+          repository: abdulahmad/EA-NHL-Disassembly-Project
+          token: ${{ secrets.VAULT_TOKEN }}
+          path: vault
+          sparse-checkout: NHL94-PC/HOCKEY.EXE
+          sparse-checkout-cone-mode: false
+      - name: build and compare
+        if: env.VAULT_TOKEN != ''
+        run: |
+          sudo apt-get update -q && sudo apt-get install -y -q nasm python3
+          cp vault/NHL94-PC/HOCKEY.EXE ./HOCKEY.EXE
+          ./build.sh 2>&1 | tee build.log
+          tail -1 build.log | grep -q '^MATCH'
