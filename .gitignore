@@ -25,3 +25,6 @@ __pycache__/
 .DS_Store
 lst/game/
 lst/dump/
+
+# SDL2 port: third-party code fetched by port/fetch-deps.sh
+port/third_party/
