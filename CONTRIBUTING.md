@@ -89,4 +89,4 @@ Layout (`tools/format_asm.py` does it):
 
 ## Files
 
-- Do not commit game files other than `lst/HOCKEY.EXE` (temporary), nor `Extracted/`, `output/`, `*.lst` or patches.
+- Do not commit game files (`lst/HOCKEY.EXE` and `lst/game/` are your own copies), nor `Extracted/`, `output/`, `*.lst` or patches.

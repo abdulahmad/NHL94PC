@@ -2,9 +2,9 @@
 
 > **🤝 Making a mod, hack, port or other derivative work from this repo? You must credit me and everyone credited in this repo, clearly, in your own repo and in every release. See [Credits and derivative works](#credits-and-derivative-works).**
 
-> **Temporary:** the retail HOCKEY.EXE is committed in `lst/` for convenience while the repo is young. It will be removed as the repo gets closer to final; after that you supply your own copy (the build finds it by SHA-1 and size, any file name, and tells you exactly what it needs when it is missing). Patch files are never committed.
+> **📀 Game files are not included.** Copy `HOCKEY.EXE` from your own NHL 94 install to `lst/HOCKEY.EXE`, and the whole install folder (the `.OVL` overlays and data files) to `lst/game/`. Both are gitignored; the build checks them by SHA-1 and size and tells you exactly what it needs when one is missing. Patch files are never committed.
 
-> **📀 The other game files are still needed to run the game.** This repo builds `HOCKEY.EXE` and the 20 `.OVL` overlays. The data files (`*.INT`, `*.CFG`, `*.MAP`, `*.BIN`, `*.PPV` ...) are not built here; the retail game folder is in `lst/game/` for now (temporary, like the EXE), and the overlay build compares against the `.OVL` files there.
+> **📀 The other game files are still needed to run the game.** This repo builds `HOCKEY.EXE` and the 20 `.OVL` overlays. The data files (`*.INT`, `*.CFG`, `*.MAP`, `*.BIN`, `*.PPV` ...) are not built here; your own copy of the game folder goes in `lst/game/` (not in the repo), and the overlay build compares against the `.OVL` files there.
 
 ## 🚧 Current Status
 

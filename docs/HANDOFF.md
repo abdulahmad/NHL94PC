@@ -32,7 +32,7 @@
 - Microsoft C medium model (far code, near data): "MS Run-Time Library - Copyright (c) 1990, Microsoft Corp", R6000-R6009 messages, "This program requires an
   80286". Linked with RTLink/Plus ("Internal error in .RTLink(R)/Plus run-time code" is in seg058).
 - EACLIB error strings (`initmemman`, `reservemem`, `findmemblock`, `getmemblock`, `unpacka`) are in this EXE too: anchors for names.
-- `lst/game/` has the external overlays and the data files for now (temporary, same as the EXE). Overlay files read for this map:
+- `lst/game/` is your own copy of the game folder (external overlays and data files; not in the repo). Overlay files read for this map:
   `AI.OVL`, `INIT.OVL`, `GAME.OVL`, `MENUS.OVL`, `STATS.OVL`, `LP.OVL`, `MOVIE.OVL`, `FADES.OVL`, `FADES1.OVL` through `FADES12.OVL`.
 
 ## seg000–seg058 boundaries
