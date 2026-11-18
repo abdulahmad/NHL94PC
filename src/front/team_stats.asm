@@ -1087,7 +1087,7 @@ TeamStatsScreen:
         mov [bp - 0xd2], ax
         push ax
         push word 0xaa
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         mov bx, [bp + 0x6]
         shl bx, byte 0x3
@@ -1096,13 +1096,13 @@ TeamStatsScreen:
         push 0x14
         push word 0xc3
         db 0x8B, 0xF3                           ; insn: mov si, bx
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push word [si + TeamStatsHead2]
         push 0x14
         push word 0xdc
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         cmp word [statscontext], 0x0
         jz short .26
@@ -1117,7 +1117,7 @@ TeamStatsScreen:
         push word [bx + TeamStatsHead3]
         push word [bp - 0xd2]
         push word 0xf5
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
 .27:
         mov bx, [bp + 0x6]
@@ -1126,7 +1126,7 @@ TeamStatsScreen:
         push word [bx + TeamStatsHeads]
         push word [bp - 0xd2]
         push word 0x10e
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         mov word [bp - 0x40], 0x1
         add word [bp - 0xd2], 0xa
@@ -1191,7 +1191,7 @@ TeamStatsScreen:
         push ax
         push word [bp - 0xd2]
         push 0x37
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         mov bx, [bp - 0xc8]
         mov al, [bx]

@@ -12,8 +12,8 @@ AllocRecData		equ	0x30
 BuildPathFar		equ	0x3E
 InitHeap		equ	0xDB
 EmsInit		equ	0xE7
-CalibrateLeftStick		equ	0x232
-CalibrateRightStick		equ	0x244
+CalLeftJoystick		equ	0x232
+CalRightJoystick		equ	0x244
 GetPaletteFar		equ	0x366
 InitGraphics		equ	0x39A
 OpenReadShared		equ	0x3D6

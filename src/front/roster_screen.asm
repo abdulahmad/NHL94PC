@@ -411,61 +411,61 @@ RosterScreen:
         push strict word str_Pos_3
         push 0x11
         push 0xa
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_No_3
         push 0x11
         push 0x21
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Name_2
         push 0x11
         push 0x30
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Gp_5
         push 0x11
         push word 0x87
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_G
         push 0x11
         push word 0x9b
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_A
         push 0x11
         push word 0xaf
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Pt
         push 0x11
         push word 0xc3
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Shots
         push 0x11
         push word 0xd7
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Pim
         push 0x11
         push word 0xf4
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_PlusMinus3
         push 0x11
         push word 0x108
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         mov word [bp - 0x370], 0x18
         mov word [bp - 0x372], 0x0
@@ -564,7 +564,7 @@ RosterScreen:
         push strict word statstext
         push word [bp - 0x370]
         push 0xa
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         cmp byte [bp - 0x3a5], 0x64
         jnc short .21
@@ -592,7 +592,7 @@ RosterScreen:
         push strict word statstext
         push word [bp - 0x370]
         push 0x30
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         cmp word [statscontext], 0x0
         jz short .22
@@ -609,49 +609,49 @@ RosterScreen:
         mov ax, [bp - 0x370]
         push ax
         push 0xa
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_No_2
         push word [bp - 0x370]
         push 0x21
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Name
         push word [bp - 0x370]
         push 0x30
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Gp_4
         push word [bp - 0x370]
         push word 0x87
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Min
         push word [bp - 0x370]
         push word 0x9b
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Gaa
         push word [bp - 0x370]
         push word 0xaf
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_W_2
         push word [bp - 0x370]
         push word 0xc8
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_L_2
         push word [bp - 0x370]
         push word 0xd7
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         cmp word [statscontext], 0x0
         jnz short .24
@@ -659,26 +659,26 @@ RosterScreen:
         push strict word str_T_2
         push word [bp - 0x370]
         push word 0xe6
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
 .24:
         push ds
         push strict word str_Ga_2
         push word [bp - 0x370]
         push word 0xf5
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Sa
         push word [bp - 0x370]
         push word 0x107
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Pct_2
         push word [bp - 0x370]
         push word 0x120
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         add word [bp - 0x370], 0x7
         mov word [bp - 0x372], 0x0
@@ -828,7 +828,7 @@ RosterScreen:
         push strict word statstext
         push word [bp - 0x370]
         push 0xa
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         cmp byte [bp - 0x3a5], 0x64
         jnc short .32
@@ -856,7 +856,7 @@ RosterScreen:
         push strict word statstext
         push word [bp - 0x370]
         push 0x30
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         cmp word [statscontext], 0x0
         jz short .33

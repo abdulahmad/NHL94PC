@@ -1,7 +1,7 @@
 ; MIDI output: controller, pitch bend, program change with note on, and note off messages.
         dw FindUnlink, 0x06E1                   ; the rest of call 0x06E1:FindUnlink from the segment before
         add sp, 0x4
-        jmp near SaveGameNameDialog.13 - 0xA20
+        jmp near SaveGameNameDlg.13 - 0xA20
 
 ;-----------------------------------------------------------------------------
 ; MidiControl                                                 0CC4:000A  94 PC

@@ -1504,31 +1504,31 @@ LeadersScreen:
         mov [bp - 0x17a], ax
         push ax
         push 0x5
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_No
         push 0x14
         push 0x19
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Player_2
         push 0x14
         push 0x28
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Team
         push 0x14
         push 0x7d
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Gp
         push 0x14
         push word 0xb9
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         mov bx, [bp + 0x6]
         db 0x8B, 0xC3                           ; insn: mov ax, bx
@@ -1540,19 +1540,19 @@ LeadersScreen:
         push 0x14
         push word 0xcd
         db 0x8B, 0xF3                           ; insn: mov si, bx
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push word [si + LeaderHead2]
         push 0x14
         push word 0xe6
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push word [si + LeaderHead3]
         push 0x14
         push word 0xfa
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         cmp word [bp + 0x6], 0x9
         jnz short .50
@@ -1568,7 +1568,7 @@ LeadersScreen:
         push word [bx + LeaderHead4]
         push word [bp - 0x17a]
         push word 0x10e
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
 .51:
         mov bx, [bp + 0x6]
@@ -1580,7 +1580,7 @@ LeadersScreen:
         push word [bx + LeaderHeads]
         push word [bp - 0x17a]
         push word 0x127
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         add word [bp - 0x17a], 0xa
         cmp word [bp - 0x1e4], 0x0
@@ -1885,7 +1885,7 @@ LeadersScreenJumpTable:                         ; jump table of LeadersScreen: 1
         push strict word statstext
         push word [bp - 0x17a]
         push 0x5
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         cmp byte [bp - 0x1b1], 0x64
         jnc short .4
@@ -1913,7 +1913,7 @@ LeadersScreenJumpTable:                         ; jump table of LeadersScreen: 1
         push strict word statstext
         push word [bp - 0x17a]
         push 0x28
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push 0x0
         push 0x0
@@ -1956,7 +1956,7 @@ LeadersScreenJumpTable:                         ; jump table of LeadersScreen: 1
         push ax
         push word [bp - 0x17a]
         push 0x7d
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         cmp word [bp + 0x6], 0x8
         jl short .5

@@ -1,7 +1,7 @@
-; LargestFreeBlock: the biggest free DOS block. The first bytes finish DrawFrame.
+; LargestFreeBlock: the biggest free DOS block. The first bytes finish DrawFrameClipped.
 ;-----------------------------------------------------------------------------
 ; DrawFrameTail                                               148B:0000  94 PC
-; End of DrawFrame, which starts in the file before.
+; End of DrawFrameClipped, which starts in the file before.
 ;-----------------------------------------------------------------------------
 DrawFrameTail:
         pop si

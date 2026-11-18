@@ -399,7 +399,7 @@ HandleHotKeyJumpTable:                          ; jump table of HandleHotKey: 18
         xor [CrowdState], ax
         test byte [CrowdState], 0x80
         jz short .23
-        call 0x0EDC:CrowdReset
+        call 0x0EDC:CrowdNoiseReset
         call 0x16F2:SfxOn
         jmp short .23
 .16:
@@ -996,7 +996,7 @@ PlayGame:
         call 0x1B35:SetupTeamLinesThunk
         add sp, 0x2
         call 0x1B35:GSummaryPathThunk
-        call 0x0EDC:CrowdReset
+        call 0x0EDC:CrowdNoiseReset
         call 0x1B35:SetTeamNameTextThunk
         cmp word [exitgame], -0x1
         jz short .10

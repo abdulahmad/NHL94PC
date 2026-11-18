@@ -417,9 +417,9 @@ ThreeStarsLoop:
 
 ;-----------------------------------------------------------------------------
 ; StartPreGame                                               2CD2:0496  94 PC
-; 0 in demo mode; else PreGameIntro unless the argument is set, CrowdReset, ThreeStarsLoop.
+; 0 in demo mode; else PreGameIntro unless the argument is set, CrowdNoiseReset, ThreeStarsLoop.
 ;
-; Takes 1 word of stack arguments. Calls PreGameIntro, CrowdReset, ThreeStarsLoop. Far routine (retf).
+; Takes 1 word of stack arguments. Calls PreGameIntro, CrowdNoiseReset, ThreeStarsLoop. Far routine (retf).
 ;-----------------------------------------------------------------------------
 StartPreGame:
         push bp
@@ -435,7 +435,7 @@ StartPreGame:
         push cs
         call PreGameIntro
 .2:
-        call 0x0EDC:CrowdReset
+        call 0x0EDC:CrowdNoiseReset
         push cs
         call ThreeStarsLoop
         leave

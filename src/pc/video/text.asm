@@ -91,7 +91,7 @@ DrawShadowTextBuffered:
         push 0x0
         push 0x0
         push cs
-        call DrawShadowText
+        call PrintShadowText
         add sp, 0x8
         lea ax, [bp - 0x40]
         push ax
@@ -175,10 +175,10 @@ DrawShadowTextCentered:
         retf
 
 ;-----------------------------------------------------------------------------
-; DrawShadowText                                              0D39:0166  94 PC
+; PrintShadowText                                              0D39:0166  94 PC
 ; Shadow at +1,+1 in the shadow colour, then the text.
 ;-----------------------------------------------------------------------------
-DrawShadowText:
+PrintShadowText:
         enter 0x4, 0x0
         push di
         push si
@@ -259,7 +259,7 @@ DrawOutlineText:
 
 ;-----------------------------------------------------------------------------
 ; DrawShadowTextF                                             0D39:0210  94 PC
-; _sprintf with one argument, then DrawShadowText.
+; _sprintf with one argument, then PrintShadowText.
 ;-----------------------------------------------------------------------------
 DrawShadowTextF:
         enter 0x52, 0x0
@@ -275,14 +275,14 @@ DrawShadowTextF:
         push word [bp + 0x8]
         push word [bp + 0x6]
         push cs
-        call DrawShadowText
+        call PrintShadowText
         leave
         retf
         db 0x90
 
 ;-----------------------------------------------------------------------------
 ; DrawShadowTextF2                                            0D39:0238  94 PC
-; _sprintf with two arguments, then DrawShadowText.
+; _sprintf with two arguments, then PrintShadowText.
 ;-----------------------------------------------------------------------------
 DrawShadowTextF2:
         enter 0x52, 0x0
@@ -299,4 +299,4 @@ DrawShadowTextF2:
         push word [bp + 0x8]
         push word [bp + 0x6]
         push cs
-        call DrawShadowText
+        call PrintShadowText

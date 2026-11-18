@@ -14,7 +14,7 @@ msgCustomOrOriginal		equ	0x5B
 FlushInputEvents		equ	0x66
 btnsCustomOriginal		equ	0x67
 FillRect		equ	0x136
-DrawShadowText		equ	0x166
+PrintShadowText		equ	0x166
 UseCurrentPage		equ	0x1A6
 DrawTextFar		equ	0x246
 PutBlockAt		equ	0x4B5

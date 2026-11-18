@@ -24,7 +24,7 @@ SentencePtr:                                    ; current speech sentence; used 
                                                 ; ResetSentence, SpeechInit ...
         resb 2
 SentenceSeg:                                    ; its segment; used by ResetSentence, SpeechInit,
-                                                ; SpeechShutdown ...
+                                                ; ShutdownSpeech ...
         resb 2
 PauseSampleOff:                                 ; silent sample, offset; used by MakePauseSample,
                                                 ; PlayPauseSample
@@ -33,10 +33,10 @@ PauseSampleSeg:                                 ; silent sample, segment; used b
                                                 ; PlayPauseSample
         resb 2
 WantedList:                                     ; samples wanted, offset; used by ResetWantedSamples,
-                                                ; SpeechInit, SpeechShutdown ...
+                                                ; SpeechInit, ShutdownSpeech ...
         resb 2
 WantedListSeg:                                  ; samples wanted, segment; used by ResetWantedSamples,
-                                                ; SpeechInit, SpeechShutdown ...
+                                                ; SpeechInit, ShutdownSpeech ...
         resb 2
 SpeechBank:                                     ; speech bank, offset; used by SpeechTimerTick,
                                                 ; InitSpeechBank, SpeechInit ...
@@ -224,7 +224,7 @@ AwayTeamAbbr_b1:                                ; rest of the away team abbrevia
         resb 3
 AwayTeamColours:                                ; away team colour bytes; used by INIT
         resb 8
-gsummarypath:                                   ; path of gsummary.db (GSummaryPath); used by INIT
+gsummarypath:                                   ; path of gsummary.db (MakeGSummaryPath); used by INIT
         resb 32
 HeapSizeLo:                                     ; heap size, low word; used by AI, GAME, INIT, LP, MENUS
         resb 2
@@ -325,7 +325,7 @@ goalevent_b3:                                   ; second assist jersey; used by 
 goalevent_text:                                 ; team abbreviation of the goal event; used by AI
         resb 17
 HotKeyFn:                                       ; far routine for hot keys; used by ListDialog,
-                                                ; MessageBoxLoop, SaveGameNameDialog ...
+                                                ; MessageBoxLoop, SaveGameNameDlg ...
         resb 2
 HotKeyFnSeg:                                    ; its segment; used by InputInit
         resb 2

@@ -912,11 +912,11 @@ seg006:00E6,ReadMouseEvent,F006_00E6,new,high,"MouseRead, compares with the last
 seg006:0174,ReadStickEvent,F006_0174,new,high,PollSticks bits to an event (fire edge and direction),src/seg/seg006.asm
 seg006:01DE,ReadKeyEvent,F006_01DE,new,high,"keypad/arrow scan codes to direction bits, Space/Esc/Enter to buttons, KeyJump",src/seg/seg006.asm
 seg007:0000,ReadKeyEventHit,F007_0000,new,medium,tail of ReadKeyEvent in the next paragraph: return 1,src/seg/seg007.asm
-seg007:0006,KeysToPad,F007_0006,new,high,"arrow and keypad scan codes through DirBitsToPad, Ins/Enter/Alt/Space to pad buttons",src/seg/seg007.asm
+seg007:0006,ReadKeyboardPad,F007_0006,new,high,"arrow and keypad scan codes through DirBitsToPad, Ins/Enter/Alt/Space to pad buttons",src/seg/seg007.asm
 seg007:0120,StickToPad,F007_0120,new,high,stick bits (low or high byte of StickPollBits) to pad direction and buttons,src/seg/seg007.asm
-seg007:018A,MouseToPad,F007_018A,new,high,"mouse offset from the centre (160,100) to a direction when far enough, buttons to pad buttons",src/seg/seg007.asm
+seg007:018A,ReadMousePad,F007_018A,new,high,"mouse offset from the centre (160,100) to a direction when far enough, buttons to pad buttons",src/seg/seg007.asm
 seg007:0224,ReadPadDevice,F007_0224,new,high,"pad of one player from the device in PadDevice (8 keys, 2 stick 1, 4 stick 2, 1 mouse)",src/seg/seg007.asm
-seg007:026E,ReadHotKey,F007_026E,new,high,"Esc, Ctrl+S, Ctrl+M, F1-F10, Tab and R with a repeat guard; bit 7 set on a new key",src/seg/seg007.asm
+seg007:026E,ReadHotKeys,F007_026E,new,high,"Esc, Ctrl+S, Ctrl+M, F1-F10, Tab and R with a repeat guard; bit 7 set on a new key",src/seg/seg007.asm
 seg007:03FE,PadTimerTick,F007_03FE,new,high,timer slot: every 4th tick records both players' pads into the 50-entry pad ring,src/seg/seg007.asm
 seg008:0000,PadTimerTickTail,F008_0000,new,medium,"the last instructions of PadTimerTick, in the next paragraph",src/seg/seg008.asm
 seg008:000A,SpeechTimerTick,F008_000A,new,high,"timer slot: when the wait runs out, plays the next clip of the sentence on the other buffer",src/seg/seg008.asm
@@ -925,14 +925,14 @@ seg008:0174,ResetSentence,F008_0174,new,high,"20 empty clip slots, count, positi
 seg008:01D8,InitSpeechBank,F008_01D8,new,high,clears the 128 clips and reserves the speechbuf memory block,src/seg/seg008.asm
 seg008:0292,ResetWantedSamples,F008_0292,new,high,clears the 20 wanted sample names and their total size,src/seg/seg008.asm
 seg008:02F0,SpeechInit,F008_02F0,new,high,"allocates Sentence, SpeechBank and SampleMemMan, the pause sample, the timer slot",src/seg/seg008.asm
-seg008:039E,SpeechShutdown,F008_039E,new,high,"frees the timer slot, the sound channel and the three blocks",src/seg/seg008.asm
+seg008:039E,ShutdownSpeech,F008_039E,new,high,"frees the timer slot, the sound channel and the three blocks",src/seg/seg008.asm
 seg008:0414,SpeechIsReady,F008_0414,new,high,returns SpeechOn,src/seg/seg008.asm
 seg008:042A,SpeechBusy,F008_042A,new,high,"playing flag, else the wait count",src/seg/seg008.asm
 seg008:0452,SpeechIdle,F008_0452,new,high,"ready, not playing and no wait",src/seg/seg008.asm
 seg008:047A,StopSpeech,F008_047A,new,medium,clears playing and sets the wait from the bank,src/seg/seg008.asm
 seg008:04AE,MakePauseSample,F008_04AE,new,high,256-byte silent sample in a memory block,src/seg/seg008.asm
 seg008:0532,PlayPauseSample,F008_0532,new,high,queues the pause sample on both sound buffers,src/seg/seg008.asm
-seg008:05B6,SwapWordBytes,F008_05B6,new,high,swaps the two bytes of a word (big-endian file fields),src/seg/seg008.asm
+seg008:05B6,SwapBytes16,F008_05B6,new,high,swaps the two bytes of a word (big-endian file fields),src/seg/seg008.asm
 seg008:05DE,ReadBe24,F008_05DE,new,high,"reads 3 bytes, big-endian, into a long",src/seg/seg008.asm
 seg008:0634,ReadCString,F008_0634,new,high,reads bytes from a handle until a zero,src/seg/seg008.asm
 seg008:0664,OpenSpeechFile,F008_0664,new,high,"opens a speech file, reads its clip count and each clip's offset, size and name",src/seg/seg008.asm
@@ -956,10 +956,10 @@ seg008:0FEC,NumberSampleNames,F008_0FEC,new,high,names of the tens and ones clip
 seg008:109C,GameLengthSampleName,F008_109C,new,high,"sample for the period length (game mis., 2, 5 or 10 minutes, off)",src/seg/seg008.asm
 seg008:10EC,DivisionSampleName,F008_10EC,new,high,"sample for a division or conference (Adams, Patrick, Norris, Smythe, Campbell, Wales, Stanley)",src/seg/seg008.asm
 seg008:118E,QueueClip,F008_118E,new,high,"appends a clip to the sentence, loading it into the bank when needed",src/seg/seg008.asm
-seg008:128A,SayEaNhlIntro,F008_128A,new,high,ea_nhl.int,src/seg/seg008.asm
+seg008:128A,SayNhlIntro,F008_128A,new,high,ea_nhl.int,src/seg/seg008.asm
 seg008:12EC,SayGoodnight,F008_12EC,new,high,"goodnite.int, imrbarr.int",src/seg/seg008.asm
 seg008:1362,SayLineups,F008_1362,new,high,lineups.int,src/seg/seg008.asm
-seg008:13C4,SayElseAroundNhl,F008_13C4,new,medium,elsenhl.int,src/seg/seg008.asm
+seg008:13C4,SayElseNhl,F008_13C4,new,medium,elsenhl.int,src/seg/seg008.asm
 seg008:1426,SayHighlightMatchup,F008_1426,new,high,"takeynow, highlite, gamebtwn, home and away teams",src/seg/seg008.asm
 seg008:1546,SayPlayoffResult,F008_1546,new,high,"havewon, division/conf/semi/final, game number, overtime",src/seg/seg008.asm
 seg008:16E2,SayPeriodSummary,F008_16E2,new,high,"period, ot, scoring, thegame, theot",src/seg/seg008.asm
@@ -1007,10 +1007,10 @@ seg016:0002,TextWidthFar,F016_0002,new,high,copies a far string and returns Text
 seg016:0024,SetTextColors,F016_0024,new,high,text colour and shadow colour,src/seg/seg016.asm
 seg016:0036,DrawShadowTextBuffered,F016_0036,new,medium,"draws a shadowed string into an off-screen block 64-pixel aligned, then blits it",src/seg/seg016.asm
 seg016:00E4,DrawShadowTextCentered,F016_00E4,new,high,"x = (320 - width) / 2; shadow at +1,+1 then the text",src/seg/seg016.asm
-seg016:0166,DrawShadowText,F016_0166,new,high,"shadow at +1,+1 in the shadow colour, then the text",src/seg/seg016.asm
+seg016:0166,PrintShadowText,F016_0166,new,high,"shadow at +1,+1 in the shadow colour, then the text",src/seg/seg016.asm
 seg016:01B8,DrawOutlineText,F016_01B8,new,high,"the string at the four outline offsets in the shadow colour, then the text",src/seg/seg016.asm
-seg016:0210,DrawShadowTextF,F016_0210,new,high,"_sprintf with one argument, then DrawShadowText",src/seg/seg016.asm
-seg016:0238,DrawShadowTextF2,F016_0238,new,high,"_sprintf with two arguments, then DrawShadowText",src/seg/seg016.asm
+seg016:0210,DrawShadowTextF,F016_0210,new,high,"_sprintf with one argument, then PrintShadowText",src/seg/seg016.asm
+seg016:0238,DrawShadowTextF2,F016_0238,new,high,"_sprintf with two arguments, then PrintShadowText",src/seg/seg016.asm
 seg017:0000,DrawShadowTextF2Tail,F017_0000,new,high,"end of DrawShadowTextF2 spilling into this paragraph (was taken for a lone retf)",src/seg/seg017.asm
 seg017:0002,SqrtLong,F017_0002,new,high,Newton iteration on a long with __aFldiv,src/seg/seg017.asm
 seg017:0089,VectorToDir8,F017_0089,new,high,"direction 0..7 from the signs and the ratio of dx, dy; 8 for no vector",src/seg/seg017.asm
@@ -1020,7 +1020,7 @@ seg018:005C,DivideHandler,F018_005C,new,high,INT 0 handler: steps the return add
 seg026:0246,DrawTextFar,F026_0246,new,high,copies a far string to the stack and calls DrawText,src/seg/seg026.asm
 seg026:028E,DrawTextFar2,F026_028E,new,medium,the same with the second text routine,src/seg/seg026.asm
 seg013:0006,SaveGame,F013_0006,new,high,"writes game.sav (the database record, sizes, three 12-byte records) or copies the .db files to .sav",src/seg/seg013.asm
-seg013:02E2,SaveGameNameDialog,F013_02E2,new,medium,"asks for the save name (file list, text entry) before SaveGame",src/seg/seg013.asm
+seg013:02E2,SaveGameNameDlg,F013_02E2,new,medium,"asks for the save name (file list, text entry) before SaveGame",src/seg/seg013.asm
 seg019:0000,DivideHandlerTail,F019_0000,new,low,the end of DivideHandler (iret) in the next paragraph,src/seg/seg019.asm
 seg019:000C,LoadTeamPalettes,F019_000C,new,high,"home and away palette parts (1C0h bytes a team) and the arena palette, then SetPaletteFar",src/seg/seg019.asm
 seg020:0000,AskYesNo,F020_0000,new,medium,two-button message box at the mouse; keeps the answer string,src/seg/seg020.asm
@@ -1036,7 +1036,7 @@ seg020:0A3C,SetDialogColors,F020_0A3C,new,high,the five dialog colours,src/seg/s
 seg020:0A60,HiliteButton,F020_0A60,new,medium,redraws the old and the new button,src/seg/seg020.asm
 seg020:0B16,DrawButtons,F020_0B16,new,medium,every button of a message box,src/seg/seg020.asm
 seg020:0B4C,DrawButton,F020_0B4C,new,medium,one button: bevel box and centred label,src/seg/seg020.asm
-seg020:0C14,ScrollBarInit,F020_0C14,new,high,"scroll bar position, size and thumb length from the item counts",src/seg/seg020.asm
+seg020:0C14,InitScrollBar,F020_0C14,new,high,"scroll bar position, size and thumb length from the item counts",src/seg/seg020.asm
 seg020:0C76,DrawScrollBar,F020_0C76,new,medium,bar and thumb,src/seg/seg020.asm
 seg020:0D28,ScrollBarDrag,F020_0D28,new,medium,moves the thumb with the mouse and updates the first item,src/seg/seg020.asm
 seg020:0E7A,SaveUnderBox,F020_0E7A,new,high,allocates a block and saves the screen under a box (GetBlock),src/seg/seg020.asm
@@ -1049,7 +1049,7 @@ seg021:0000,MessageBoxResetTail,F021_0000,new,high,"end of MessageBoxReset spill
 seg021:0002,Crowd_Noise,F021_0002,new,high,"eases the crowd level toward CrowdTarget and drives the MIDI crowd notes (volume, pitch)",src/seg/seg021.asm
 seg021:01DC,CrowdNoiseOff,F021_01DC,new,high,note off and volume 0 on the two crowd channels,src/seg/seg021.asm
 seg021:024E,CrowdFadeOut,F021_024E,new,high,lowers CrowdTarget step by step to silence,src/seg/seg021.asm
-seg021:029A,CrowdReset,F021_029A,new,high,crowd level and both note states to 0,src/seg/seg021.asm
+seg021:029A,CrowdNoiseReset,F021_029A,new,high,crowd level and both note states to 0,src/seg/seg021.asm
 seg021:02A6,AnnounceOneMinute,F021_02A6,new,high,"digital sound with speech on: pause, SayOneMinuteLeft",src/seg/seg021.asm
 seg021:02C0,AnnouncerBusy,F021_02C0,new,high,digital sound with speech on and SpeechBusy,src/seg/seg021.asm
 seg021:02E0,PlaySoundEffect,F021_02E0,new,high,sound effect by number; 7Dh raises the crowd; skipped while the announcer talks,src/seg/seg021.asm
@@ -1058,10 +1058,10 @@ seg021:03C0,AnnouncePlayerFrom,F021_03C0,new,high,"pause, SayPlayerFrom",src/seg
 seg021:03E6,AnnouncePenalty,F021_03E6,new,high,"pause, SayPenalty",src/seg/seg021.asm
 seg021:0418,AnnounceTonightsGame,F021_0418,new,high,"team names from TeamAbbrevs, SayTonightsGame",src/seg/seg021.asm
 seg021:046E,AnnouncePeriodSummary,F021_046E,new,high,SayPeriodSummary,src/seg/seg021.asm
-seg021:0490,AnnounceIntro,F021_0490,new,high,SayEaNhlIntro,src/seg/seg021.asm
+seg021:0490,AnnounceIntro,F021_0490,new,high,SayNhlIntro,src/seg/seg021.asm
 seg021:04A4,AnnounceGoodnight,F021_04A4,new,high,SayGoodnight,src/seg/seg021.asm
 seg021:04B8,AnnounceLineups,F021_04B8,new,high,SayLineups,src/seg/seg021.asm
-seg021:04CC,AnnounceElseAroundNhl,F021_04CC,new,high,SayElseAroundNhl,src/seg/seg021.asm
+seg021:04CC,AnnounceElseAroundNhl,F021_04CC,new,high,SayElseNhl,src/seg/seg021.asm
 seg021:04E0,AnnounceHighlightMatchup,F021_04E0,new,high,SayHighlightMatchup,src/seg/seg021.asm
 seg021:0514,AnnouncePlayoffResult,F021_0514,new,high,SayPlayoffResult,src/seg/seg021.asm
 seg021:0542,AnnounceTonightsPlayoffGame,F021_0542,new,high,SayTonightsPlayoffGame,src/seg/seg021.asm
@@ -1094,7 +1094,7 @@ seg028:0064,SetClipRect,F028_0064,new,high,stores left/right/top/bottom into the
 seg028:008F,SetClipRectRegs,F028_008F,new,medium,"same as SetClipRect, arguments in registers",src/seg/seg028.asm
 seg028:00B4,ClearClipRect,F028_00B4,new,medium,fills the clip rectangle with colour 0,src/seg/seg028.asm
 seg028:00B9,ClearClipRectColor,F028_00B9,new,medium,fills the clip rectangle with the given colour,src/seg/seg028.asm
-seg028:00DE,FillRectClip,F028_00DE,new,medium,fills a rectangle clipped to the canvas,src/seg/seg028.asm
+seg028:00DE,FillRectClipped,F028_00DE,new,medium,fills a rectangle clipped to the canvas,src/seg/seg028.asm
 seg028:0136,FillRect,F028_0136,new,medium,fills a rectangle without clipping,src/seg/seg028.asm
 seg028:01A6,UseCurrentPage,F028_01A6,new,medium,points CurCanvas at the page in g_74DC,src/seg/seg028.asm
 seg028:01C6,DrawText,F028_01C6,new,medium,draws a string with the 1-bpp font,src/seg/seg028.asm
@@ -1187,7 +1187,7 @@ seg028:3602,CopyPageToPage,F028_3602,new,low,page copy using a plane jump table,
 seg028:3704,CopyPageRect,F028_3704,new,low,rectangle page copy using a plane jump table,src/seg/seg028.asm
 seg028:3804,AllocCanvases,F028_3804,new,medium,allocates the page and off-screen buffers and fills the canvas records,src/seg/seg028.asm
 seg028:3A59,SetClipRectPlanes,F028_3A59,new,medium,sets the clip rectangle in plane units,src/seg/seg028.asm
-seg028:3A84,ClearScreenColor,F028_3A84,new,medium,fills video memory with a colour,src/seg/seg028.asm
+seg028:3A84,ClearScreenColour,F028_3A84,new,medium,fills video memory with a colour,src/seg/seg028.asm
 seg028:3AA8,DrawScaledColor,F028_3AA8,new,low,sets g_7664/g_7666 then enters DrawScaled,src/seg/seg028.asm
 seg028:3ABB,DrawScaled,F028_3ABB,new,low,pattern or scaled draw,src/seg/seg028.asm
 seg028:3C9A,DrawLineClipped,F028_3C9A,new,medium,line clipped to the canvas,src/seg/seg028.asm
@@ -1211,7 +1211,7 @@ seg028:472A,RemapShapeBank,F028_472A,new,low,remaps every shape in a bank throug
 seg028:4782,ConvertShapeBank,F028_4782,new,low,converts the shapes of a bank in place,src/seg/seg028.asm
 seg028:48D2,FillPolySpans,F028_48D2,new,medium,fills a list of spans,src/seg/seg028.asm
 seg029:0000,FillPolySpansTail,F029_0000,new,high,"end of FillPolySpans spilling into this paragraph (was taken for a lone retf)",src/seg/seg029.asm
-seg029:0004,DrawFrame,F029_0004,new,medium,draws a rectangle outline with four FillRectClip calls,src/seg/seg029.asm
+seg029:0004,DrawFrameClipped,F029_0004,new,medium,draws a rectangle outline with four FillRectClipped calls,src/seg/seg029.asm
 seg030:0004,LargestFreeBlock,F030_0004,new,low,walks the far heap list and returns the largest gap,src/seg/seg030.asm
 seg031:0002,DrawThickLine,F031_0002,new,low,builds a quad around a line from Atan2 and AngleTab,src/seg/seg031.asm
 seg032:0000,DrawThickLineTail,F032_0000,new,high,"end of DrawThickLine spilling into this paragraph (was taken for a lone retf)",src/seg/seg032.asm
@@ -1245,11 +1245,11 @@ seg035:000C,FreeCanvas,F035_000C,new,medium,"drops a canvas buffer's reference c
 seg035:0092,SortPairs,F035_0092,new,medium,shell sort of a key array with a parallel value array,src/seg/seg035.asm
 seg035:00A0,SortPairsPass,F035_00A0,new,medium,SortPairs inner passes,src/seg/seg035.asm
 seg036:0000,SortPairsTail,F036_0000,new,medium,end of SortPairs,src/seg/seg036.asm
-seg036:000E,XorFrame,F036_000E,new,medium,XORs a rectangle outline with four XorRect calls,src/seg/seg036.asm
-seg037:0000,XorFrameTail,F037_0000,new,high,"end of XorFrame spilling into this paragraph (was taken for a lone retf)",src/seg/seg037.asm
+seg036:000E,XorRectOutline,F036_000E,new,medium,XORs a rectangle outline with four XorRect calls,src/seg/seg036.asm
+seg037:0000,XorFrameTail,F037_0000,new,high,"end of XorRectOutline spilling into this paragraph (was taken for a lone retf)",src/seg/seg037.asm
 seg037:0004,CalibrateStick,F037_0004,new,medium,"joystick calibration screen (needs a 64 KB gap, draws the target grid, waits for buttons)",src/seg/seg037.asm
-seg037:0232,CalibrateLeftStick,F037_0232,new,high,"CalibrateStick with the ""Left Joystick"" title",src/seg/seg037.asm
-seg037:0244,CalibrateRightStick,F037_0244,new,high,"CalibrateStick with the ""Right Joystick"" title",src/seg/seg037.asm
+seg037:0232,CalLeftJoystick,F037_0232,new,high,"CalibrateStick with the ""Left Joystick"" title",src/seg/seg037.asm
+seg037:0244,CalRightJoystick,F037_0244,new,high,"CalibrateStick with the ""Right Joystick"" title",src/seg/seg037.asm
 seg038:0006,AllocLinearCanvas,F038_0006,new,medium,allocates w*h+30h bytes and fills a linear canvas record,src/seg/seg038.asm
 seg038:019C,AllocCanvas,F038_019C,new,medium,allocates a planar canvas (width/4 per plane) and fills its record,src/seg/seg038.asm
 seg039:0002,DrawTextCenteredClip,F039_0002,new,medium,centres a string between the clip left and right,src/seg/seg039.asm
@@ -1483,7 +1483,7 @@ seg058:04FD,RtlShowMessage,F058_04FD,rtlink,medium,duplicates stdout/stderr hand
 seg013:0000,WaitButtonTimedTail,F013_0000,new,high,end of WaitButtonTimed in seg012,src/seg/seg013.asm
 SegStart_0D6B1,VectorToDir8Tail,SegStart_0D6B1,new,high,end of VectorToDir8 in seg017,src/seg/seg018.asm
 seg022:0000,PlayArenaJingleTail,F022_0000,new,high,end of PlayArenaJingle in seg021,src/seg/seg022.asm
-SegStart_148B0,DrawFrameTail,SegStart_148B0,new,high,end of DrawFrame in seg029,src/seg/seg030.asm
+SegStart_148B0,DrawFrameTail,SegStart_148B0,new,high,end of DrawFrameClipped in seg029,src/seg/seg030.asm
 SegStart_14B80,LoadRawModeTail,SegStart_14B80,new,high,end of LoadRawMode in seg032,src/seg/seg033.asm
 SegStart_14DB4,ReadPackedSizeTail,SegStart_14DB4,new,high,end of ReadPackedSize in seg033,src/seg/seg034.asm
 SegStart_15ED2,LoadAssetModeTail,SegStart_15ED2,new,high,end of LoadAssetMode in seg042,src/seg/seg043.asm
@@ -2187,7 +2187,7 @@ Ai_2352_01EE,PutGSumTail,Ai_2352_01EE,new,high,seeks to end - 12 and writes the 
 Ai_2352_0260,WriteGSumHeader,Ai_2352_0260,95 PC,high,"bumps the record count, writes the header at 0 and the tail at the end",src/engine/gamelog.asm
 Ai_2CD2_0008,PreGameIntro,Ai_2CD2_0008,95 PC,high,"arena jingle, big-screen animation (LoadTeamPPV), puts the players on the ice",src/engine/intro.asm
 Ai_2CD2_02DA,ThreeStarsLoop,Ai_2CD2_02DA,95 PC,high,the timed frame loop StartPreGame and StartThreeStars end with,src/engine/intro.asm
-Ai_2CD2_0496,StartPreGame,Ai_2CD2_0496,95 PC,high,"0 in demo mode; else PreGameIntro unless the argument is set, CrowdReset, ThreeStarsLoop",src/engine/intro.asm
+Ai_2CD2_0496,StartPreGame,Ai_2CD2_0496,95 PC,high,"0 in demo mode; else PreGameIntro unless the argument is set, CrowdNoiseReset, ThreeStarsLoop",src/engine/intro.asm
 Ai_2E42_000A,ToFixed,Ai_2E42_000A,95 PC,high,DX:AX words swapped: a value in AX comes back as AX << 16; passtoa0 uses it,src/engine/hockey.asm
 Ai_2E42_0012,SetSPA,Ai_2E42_0012,94G logic94.asm,high,"new animation in AX for the player in BX: SPAnum 0, SPAcnt -1",src/engine/hockey.asm
 Ai_2E42_0026,SprSort,Ai_2E42_0026,93G hockey93_06.asm,high,copies each sort object's y (x when the flag is set) and bubble sorts,src/engine/hockey.asm
@@ -2279,7 +2279,7 @@ Init_2425_0374,CreateGSummaryDb,Init_2425_0374,new,high,"writes the gsummary.db 
 Init_2425_04E0,ReadDbBlock,Init_2425_04E0,new,medium,seeks and reads one block of a db file,src/front/team_db.asm
 Init_2425_068A,OpenPlayerDbs,Init_2425_068A,new,high,"opens the key, att, season and career dbs",src/front/team_db.asm
 Init_2425_07EA,BuildTeamRoster,Init_2425_07EA,new,medium,fills the player records of one team from the dbs,src/front/team_db.asm
-Init_2425_0B20,GSummaryPath,Init_2425_0B20,new,high,builds the gsummary.db path,src/front/team_db.asm
+Init_2425_0B20,MakeGSummaryPath,Init_2425_0B20,new,high,builds the gsummary.db path,src/front/team_db.asm
 Init_24DE_0006,LoadRinkTiles,Init_24DE_0006,new,high,"rink.til and rink.map, then draws the first screen",src/front/rink_tiles.asm
 Init_24DE_01E8,PatchRinkMap,Init_24DE_01E8,new,medium,copies a sub-map into the rink map,src/front/rink_tiles.asm
 Init_24DE_033A,DrawRinkBackground,Init_24DE_033A,new,high,VGA latch stamps of the visible rink tiles,src/front/rink_tiles.asm
@@ -2363,22 +2363,22 @@ Stats_2248_00EC,StatsSelNhlPlayoffs,Stats_2248_00EC,95 PC,medium,season menu: NH
 Stats_2248_01B0,StatsSelLeague,Stats_2248_01B0,95 PC,high,season menu: league season,src/front/stats_actions.asm
 Stats_2248_0274,StatsSelLeaguePlayoffs,Stats_2248_0274,95 PC,high,season menu: league playoffs,src/front/stats_actions.asm
 Stats_2248_0350,StatsSelPlayoffMode,Stats_2248_0350,95 PC,high,season menu: playoff mode,src/front/stats_actions.asm
-Stats_2248_042C,MenuTeamScoring,Stats_2248_042C,new,high,team stats sorted by CmpTeamScoring,src/front/stats_actions.asm
-Stats_2248_044E,MenuTeamDefense,Stats_2248_044E,new,high,team stats sorted by CmpTeamDefense,src/front/stats_actions.asm
-Stats_2248_0470,MenuTeamPP,Stats_2248_0470,new,high,team stats sorted by CmpTeamPP,src/front/stats_actions.asm
-Stats_2248_0492,MenuTeamPK,Stats_2248_0492,new,high,team stats sorted by CmpTeamPK,src/front/stats_actions.asm
-Stats_2248_04B4,MenuTeamPenalties,Stats_2248_04B4,new,high,team stats sorted by CmpTeamPenalties,src/front/stats_actions.asm
-Stats_2248_04D6,MenuPointLeaders,Stats_2248_04D6,new,high,leaders 0,src/front/stats_actions.asm
-Stats_2248_04F8,MenuGoalLeaders,Stats_2248_04F8,new,high,leaders 1,src/front/stats_actions.asm
-Stats_2248_051A,MenuAssistLeaders,Stats_2248_051A,new,high,leaders 2,src/front/stats_actions.asm
-Stats_2248_053C,MenuPPGoalLeaders,Stats_2248_053C,new,high,leaders 3,src/front/stats_actions.asm
-Stats_2248_055E,MenuSHGoalLeaders,Stats_2248_055E,new,high,leaders 4,src/front/stats_actions.asm
-Stats_2248_0580,MenuPlusMinusLeaders,Stats_2248_0580,new,high,leaders 5,src/front/stats_actions.asm
-Stats_2248_05A2,MenuPIMLeaders,Stats_2248_05A2,new,high,leaders 6,src/front/stats_actions.asm
-Stats_2248_05C4,MenuShootPctLeaders,Stats_2248_05C4,new,high,leaders 7,src/front/stats_actions.asm
-Stats_2248_05E6,MenuGAALeaders,Stats_2248_05E6,new,high,leaders 8,src/front/stats_actions.asm
-Stats_2248_0608,MenuWinsLeaders,Stats_2248_0608,new,high,leaders 9,src/front/stats_actions.asm
-Stats_2248_062A,MenuSavePctLeaders,Stats_2248_062A,new,high,leaders 10,src/front/stats_actions.asm
+Stats_2248_042C,StatsMenuTeamScoring,Stats_2248_042C,new,high,team stats sorted by CmpTeamScoring,src/front/stats_actions.asm
+Stats_2248_044E,StatsMenuTeamDefense,Stats_2248_044E,new,high,team stats sorted by CmpTeamDefense,src/front/stats_actions.asm
+Stats_2248_0470,StatsMenuPowerPlay,Stats_2248_0470,new,high,team stats sorted by CmpTeamPP,src/front/stats_actions.asm
+Stats_2248_0492,StatsMenuPenaltyKilling,Stats_2248_0492,new,high,team stats sorted by CmpTeamPK,src/front/stats_actions.asm
+Stats_2248_04B4,StatsMenuTeamPenalties,Stats_2248_04B4,new,high,team stats sorted by CmpTeamPenalties,src/front/stats_actions.asm
+Stats_2248_04D6,StatsMenuPoints,Stats_2248_04D6,new,high,leaders 0,src/front/stats_actions.asm
+Stats_2248_04F8,StatsMenuGoals,Stats_2248_04F8,new,high,leaders 1,src/front/stats_actions.asm
+Stats_2248_051A,StatsMenuAssists,Stats_2248_051A,new,high,leaders 2,src/front/stats_actions.asm
+Stats_2248_053C,StatsMenuPPGoals,Stats_2248_053C,new,high,leaders 3,src/front/stats_actions.asm
+Stats_2248_055E,StatsMenuSHGoals,Stats_2248_055E,new,high,leaders 4,src/front/stats_actions.asm
+Stats_2248_0580,StatsMenuPlusMinus,Stats_2248_0580,new,high,leaders 5,src/front/stats_actions.asm
+Stats_2248_05A2,StatsMenuPIM,Stats_2248_05A2,new,high,leaders 6,src/front/stats_actions.asm
+Stats_2248_05C4,StatsMenuShootPct,Stats_2248_05C4,new,high,leaders 7,src/front/stats_actions.asm
+Stats_2248_05E6,StatsMenuGAA,Stats_2248_05E6,new,high,leaders 8,src/front/stats_actions.asm
+Stats_2248_0608,StatsMenuGoalieWins,Stats_2248_0608,new,high,leaders 9,src/front/stats_actions.asm
+Stats_2248_062A,StatsMenuSavePct,Stats_2248_062A,new,high,leaders 10,src/front/stats_actions.asm
 Stats_2248_064C,StandingsActRoster2,Stats_2248_064C,new,high,roster action from the standings cursor,src/front/stats_actions.asm
 Stats_2248_0656,StandingsActPlayer,Stats_2248_0656,new,high,"player card action: goalie card for a 'G', else skater card",src/front/stats_actions.asm
 Stats_2248_066C,FreeStandingsGfx,Stats_2248_066C,new,high,frees the four standings shape records,src/front/stats_actions.asm
@@ -2470,7 +2470,7 @@ Lp_2305_0450,GetLeagueId,Lp_2305_0450,95 PC,high,league id from PLAYER.ID,src/fr
 Lp_2305_04DC,WriteLeagueInfo,Lp_2305_04DC,95 PC,high,writes PINFO.DB,src/front/league_list.asm
 Lp_2305_05E8,MsgCopyingDatabases,Lp_2305_05E8,95 PC,high,'copying databases' message,src/front/league_list.asm
 Lp_2305_061C,CopyHumanTeamDBs,Lp_2305_061C,95 PC,high,copies the human teams' dbs,src/front/league_list.asm
-Lp_23AD_0002,RandomMod,Lp_23AD_0002,new,high,positive rand() modulo the argument,src/front/simgame.asm
+Lp_23AD_0002,RandMod,Lp_23AD_0002,new,high,positive rand() modulo the argument,src/front/simgame.asm
 Lp_23AD_0016,AddScorerPair,Lp_23AD_0016,new,medium,"appends a (player, assist) pair, at most four",src/front/simgame.asm
 Lp_23AD_0046,SimulateGame,Lp_23AD_0046,95 PC,high,simulates one league game and posts the stats,src/front/simgame.asm
 Lp_25B2_000A,DrawCalendarDay,Lp_25B2_000A,95 PC,high,one calendar day: Home/Away game,src/front/league_game.asm
@@ -2774,22 +2774,22 @@ OvlThunk45,MenuP2ControlsExhThunk,OvlThunk45,new,high,overlay thunk: loads MENUS
 OvlThunk46,MenuP1ControlsExhThunk,OvlThunk46,new,high,overlay thunk: loads MENUS.OVL and jumps to MenuP1ControlsExh,src/lib/rtlink/overlay_manager.asm
 OvlThunk47,MenuExhibitionSettingsThunk,OvlThunk47,new,high,overlay thunk: loads MENUS.OVL and jumps to MenuExhibitionSettings,src/lib/rtlink/overlay_manager.asm
 OvlThunk48,LockerRoomScreenThunk,OvlThunk48,new,high,overlay thunk: loads MENUS.OVL and jumps to LockerRoomScreen,src/lib/rtlink/overlay_manager.asm
-OvlThunk49,MenuSavePctLeadersThunk,OvlThunk49,new,high,overlay thunk: loads STATS.OVL and jumps to MenuSavePctLeaders,src/lib/rtlink/overlay_manager.asm
-OvlThunk50,MenuWinsLeadersThunk,OvlThunk50,new,high,overlay thunk: loads STATS.OVL and jumps to MenuWinsLeaders,src/lib/rtlink/overlay_manager.asm
-OvlThunk51,MenuGAALeadersThunk,OvlThunk51,new,high,overlay thunk: loads STATS.OVL and jumps to MenuGAALeaders,src/lib/rtlink/overlay_manager.asm
-OvlThunk52,MenuShootPctLeadersThunk,OvlThunk52,new,high,overlay thunk: loads STATS.OVL and jumps to MenuShootPctLeaders,src/lib/rtlink/overlay_manager.asm
-OvlThunk53,MenuPIMLeadersThunk,OvlThunk53,new,high,overlay thunk: loads STATS.OVL and jumps to MenuPIMLeaders,src/lib/rtlink/overlay_manager.asm
-OvlThunk54,MenuPlusMinusLeadersThunk,OvlThunk54,new,high,overlay thunk: loads STATS.OVL and jumps to MenuPlusMinusLeaders,src/lib/rtlink/overlay_manager.asm
-OvlThunk55,MenuSHGoalLeadersThunk,OvlThunk55,new,high,overlay thunk: loads STATS.OVL and jumps to MenuSHGoalLeaders,src/lib/rtlink/overlay_manager.asm
-OvlThunk56,MenuPPGoalLeadersThunk,OvlThunk56,new,high,overlay thunk: loads STATS.OVL and jumps to MenuPPGoalLeaders,src/lib/rtlink/overlay_manager.asm
-OvlThunk57,MenuAssistLeadersThunk,OvlThunk57,new,high,overlay thunk: loads STATS.OVL and jumps to MenuAssistLeaders,src/lib/rtlink/overlay_manager.asm
-OvlThunk58,MenuGoalLeadersThunk,OvlThunk58,new,high,overlay thunk: loads STATS.OVL and jumps to MenuGoalLeaders,src/lib/rtlink/overlay_manager.asm
-OvlThunk59,MenuPointLeadersThunk,OvlThunk59,new,high,overlay thunk: loads STATS.OVL and jumps to MenuPointLeaders,src/lib/rtlink/overlay_manager.asm
-OvlThunk60,MenuTeamPenaltiesThunk,OvlThunk60,new,high,overlay thunk: loads STATS.OVL and jumps to MenuTeamPenalties,src/lib/rtlink/overlay_manager.asm
-OvlThunk61,MenuTeamPKThunk,OvlThunk61,new,high,overlay thunk: loads STATS.OVL and jumps to MenuTeamPK,src/lib/rtlink/overlay_manager.asm
-OvlThunk62,MenuTeamPPThunk,OvlThunk62,new,high,overlay thunk: loads STATS.OVL and jumps to MenuTeamPP,src/lib/rtlink/overlay_manager.asm
-OvlThunk63,MenuTeamDefenseThunk,OvlThunk63,new,high,overlay thunk: loads STATS.OVL and jumps to MenuTeamDefense,src/lib/rtlink/overlay_manager.asm
-OvlThunk64,MenuTeamScoringThunk,OvlThunk64,new,high,overlay thunk: loads STATS.OVL and jumps to MenuTeamScoring,src/lib/rtlink/overlay_manager.asm
+OvlThunk49,MenuSavePctLeadersThunk,OvlThunk49,new,high,overlay thunk: loads STATS.OVL and jumps to StatsMenuSavePct,src/lib/rtlink/overlay_manager.asm
+OvlThunk50,MenuWinsLeadersThunk,OvlThunk50,new,high,overlay thunk: loads STATS.OVL and jumps to StatsMenuGoalieWins,src/lib/rtlink/overlay_manager.asm
+OvlThunk51,MenuGAALeadersThunk,OvlThunk51,new,high,overlay thunk: loads STATS.OVL and jumps to StatsMenuGAA,src/lib/rtlink/overlay_manager.asm
+OvlThunk52,MenuShootPctLeadersThunk,OvlThunk52,new,high,overlay thunk: loads STATS.OVL and jumps to StatsMenuShootPct,src/lib/rtlink/overlay_manager.asm
+OvlThunk53,MenuPIMLeadersThunk,OvlThunk53,new,high,overlay thunk: loads STATS.OVL and jumps to StatsMenuPIM,src/lib/rtlink/overlay_manager.asm
+OvlThunk54,MenuPlusMinusLeadersThunk,OvlThunk54,new,high,overlay thunk: loads STATS.OVL and jumps to StatsMenuPlusMinus,src/lib/rtlink/overlay_manager.asm
+OvlThunk55,MenuSHGoalLeadersThunk,OvlThunk55,new,high,overlay thunk: loads STATS.OVL and jumps to StatsMenuSHGoals,src/lib/rtlink/overlay_manager.asm
+OvlThunk56,MenuPPGoalLeadersThunk,OvlThunk56,new,high,overlay thunk: loads STATS.OVL and jumps to StatsMenuPPGoals,src/lib/rtlink/overlay_manager.asm
+OvlThunk57,MenuAssistLeadersThunk,OvlThunk57,new,high,overlay thunk: loads STATS.OVL and jumps to StatsMenuAssists,src/lib/rtlink/overlay_manager.asm
+OvlThunk58,MenuGoalLeadersThunk,OvlThunk58,new,high,overlay thunk: loads STATS.OVL and jumps to StatsMenuGoals,src/lib/rtlink/overlay_manager.asm
+OvlThunk59,MenuPointLeadersThunk,OvlThunk59,new,high,overlay thunk: loads STATS.OVL and jumps to StatsMenuPoints,src/lib/rtlink/overlay_manager.asm
+OvlThunk60,MenuTeamPenaltiesThunk,OvlThunk60,new,high,overlay thunk: loads STATS.OVL and jumps to StatsMenuTeamPenalties,src/lib/rtlink/overlay_manager.asm
+OvlThunk61,MenuTeamPKThunk,OvlThunk61,new,high,overlay thunk: loads STATS.OVL and jumps to StatsMenuPenaltyKilling,src/lib/rtlink/overlay_manager.asm
+OvlThunk62,MenuTeamPPThunk,OvlThunk62,new,high,overlay thunk: loads STATS.OVL and jumps to StatsMenuPowerPlay,src/lib/rtlink/overlay_manager.asm
+OvlThunk63,MenuTeamDefenseThunk,OvlThunk63,new,high,overlay thunk: loads STATS.OVL and jumps to StatsMenuTeamDefense,src/lib/rtlink/overlay_manager.asm
+OvlThunk64,MenuTeamScoringThunk,OvlThunk64,new,high,overlay thunk: loads STATS.OVL and jumps to StatsMenuTeamScoring,src/lib/rtlink/overlay_manager.asm
 OvlThunk65,DeskExitGameThunk,OvlThunk65,new,high,overlay thunk: loads MENUS.OVL and jumps to DeskExitGame,src/lib/rtlink/overlay_manager.asm
 OvlThunk66,DeskReturnConfirmThunk,OvlThunk66,new,high,overlay thunk: loads MENUS.OVL and jumps to DeskReturnConfirm,src/lib/rtlink/overlay_manager.asm
 OvlThunk67,DeskBackToGameThunk,OvlThunk67,new,high,overlay thunk: loads MENUS.OVL and jumps to DeskBackToGame,src/lib/rtlink/overlay_manager.asm
@@ -2985,7 +2985,7 @@ OvlThunk256,DrawRinkOverlaysThunk,OvlThunk256,new,high,overlay thunk: loads AI.O
 OvlThunk257,ClearTeamNameTextThunk,OvlThunk257,new,high,overlay thunk: loads INIT.OVL and jumps to ClearTeamNameText,src/lib/rtlink/overlay_manager.asm
 OvlThunk258,SetTeamNameTextThunk,OvlThunk258,new,high,overlay thunk: loads INIT.OVL and jumps to SetTeamNameText,src/lib/rtlink/overlay_manager.asm
 OvlThunk259,SetupGameThunk,OvlThunk259,new,high,overlay thunk: loads INIT.OVL and jumps to SetupGame,src/lib/rtlink/overlay_manager.asm
-OvlThunk260,GSummaryPathThunk,OvlThunk260,new,high,overlay thunk: loads INIT.OVL and jumps to GSummaryPath,src/lib/rtlink/overlay_manager.asm
+OvlThunk260,GSummaryPathThunk,OvlThunk260,new,high,overlay thunk: loads INIT.OVL and jumps to MakeGSummaryPath,src/lib/rtlink/overlay_manager.asm
 OvlThunk261,SetupTeamLinesThunk,OvlThunk261,new,high,overlay thunk: loads AI.OVL and jumps to SetupTeamLines,src/lib/rtlink/overlay_manager.asm
 OvlThunk262,NormalizeDressFlagsThunk,OvlThunk262,new,high,overlay thunk: loads AI.OVL and jumps to NormalizeDressFlags,src/lib/rtlink/overlay_manager.asm
 OvlThunk263,BuildDefaultLinesThunk,OvlThunk263,new,high,overlay thunk: loads AI.OVL and jumps to BuildDefaultLines,src/lib/rtlink/overlay_manager.asm
@@ -3842,7 +3842,7 @@ g_8CB8,segWorkBuffer54,g_8CB8,new,high,segment constant 3A0Bh (work_buffer) load
 g_8CBA,segWorkBuffer55,g_8CBA,new,high,segment constant 3A0Bh (work_buffer) loaded into es by BuildTeamRoster,src/data/dgroup.asm
 g_8CBC,segWorkBuffer56,g_8CBC,new,high,segment constant 3A0Bh (work_buffer) loaded into es by BuildTeamRoster,src/data/dgroup.asm
 g_8CBE,segWorkBuffer57,g_8CBE,new,high,segment constant 3A0Bh (work_buffer) loaded into es by BuildTeamRoster,src/data/dgroup.asm
-g_8CC0,segTeamChoiceText53,g_8CC0,new,high,segment constant 3701h (team_choice_text) loaded into es by GSummaryPath,src/data/dgroup.asm
+g_8CC0,segTeamChoiceText53,g_8CC0,new,high,segment constant 3701h (team_choice_text) loaded into es by MakeGSummaryPath,src/data/dgroup.asm
 g_8CC2,segMenuText38,g_8CC2,new,high,"segment constant 3448h (menu_text) loaded into es by ClearTeamNameText, SetTeamNameText",src/data/dgroup.asm
 g_8CC4,segMenuText39,g_8CC4,new,high,"segment constant 3448h (menu_text) loaded into es by ClearTeamNameText, SetTeamNameText",src/data/dgroup.asm
 g_8CC6,segAnimSequences1,g_8CC6,new,high,segment constant 38F6h (anim_sequences) loaded into es by DrawReplayFrame,src/data/dgroup.asm
@@ -3982,7 +3982,7 @@ g_AE40,AwayTeamRec,g_AE40,new,medium,away team record saved with the game (36 by
 g_AE64,AwayTeamAbbr,g_AE64,new,medium,first byte of the away team abbreviation,src/data/dgroup_bss.asm
 g_AE65,AwayTeamAbbr_b1,g_AE65,new,medium,rest of the away team abbreviation,src/data/dgroup_bss.asm
 g_AE68,AwayTeamColours,g_AE68,new,medium,away team colour bytes,src/data/dgroup_bss.asm
-g_AE70,gsummarypath,g_AE70,new,medium,path of gsummary.db (GSummaryPath),src/data/dgroup_bss.asm
+g_AE70,gsummarypath,g_AE70,new,medium,path of gsummary.db (MakeGSummaryPath),src/data/dgroup_bss.asm
 g_AE94,POTreeBuf,g_AE94,new,medium,far pointer (offset) to the playoff tree buffer,src/data/dgroup_bss.asm
 g_AE96,POTreeBufSeg,g_AE96,new,medium,its segment,src/data/dgroup_bss.asm
 g_B07A,goalevent_b1,g_B07A,new,medium,scorer jersey of the goal event,src/data/dgroup_bss.asm
@@ -4536,7 +4536,7 @@ dialog_rects:0048,FileDlgTitleBox,,new,medium,"box (x1, y1, x2, y2) of the file 
 font_table:0000,FontTable,,new,medium,"font header, character offsets and widths",src/data/far/font_table.asm
 input_event_data:0000,InputEventFlag,,new,medium,word; nonzero makes GetInputEvent run its reset calls and clear it,src/data/far/input_event_data.asm
 lines_menu_text:00B4,itemPenaltyKilling,,new,medium,"menu item record (box, text, handler) of the 'PenaltyKilling' entry",src/data/far/lines_menu_text.asm
-list_dialog_data:0000,ListDlgScrollBar,,new,medium,"scroll bar record (32 bytes) of the list dialog, set up by ListDialog with ScrollBarInit",src/data/far/list_dialog_data.asm
+list_dialog_data:0000,ListDlgScrollBar,,new,medium,"scroll bar record (32 bytes) of the list dialog, set up by ListDialog with InitScrollBar",src/data/far/list_dialog_data.asm
 menu_text:0ADC,itemOpen,,new,medium,"menu item record (box, text, handler, submenu)",src/data/far/menu_text.asm
 menu_text:0B60,itemExportDatabases,,new,medium,"menu item record (box, text, handler) of the 'ExportDatabases' entry",src/data/far/menu_text.asm
 menu_text:0B76,itemNextLeagueGame,,new,medium,"menu item record (box, text, handler) of the 'NextLeagueGame' entry",src/data/far/menu_text.asm

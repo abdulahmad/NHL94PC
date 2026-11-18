@@ -121,7 +121,7 @@ AskYesNoBox:
         push ax
         lea ax, [di + 0x4]
         push ax
-        call 0x1484:DrawFrame
+        call 0x1484:DrawFrameClipped
         add sp, 0xa
         mov ax, 0x3f3f
         mov dx, 0x3f

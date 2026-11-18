@@ -31,7 +31,7 @@ CloseHandlePtr		equ	0x41E
 CrestShapeNames		equ	0x5604
 CrowdFadeOut		equ	0x24E
 Crowd_Noise		equ	0x2
-CrowdReset		equ	0x29A
+CrowdNoiseReset		equ	0x29A
 CrowdSound		equ	0x4A54
 CrowdState		equ	0x1B6
 Crowdlevel		equ	0xA18

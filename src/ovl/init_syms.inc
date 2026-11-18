@@ -56,7 +56,7 @@ DialogData		equ	0xAE98
 DialogDataSeg		equ	0xAE9A
 DialogLightColor		equ	0x9F0
 DrawButtons		equ	0xB16
-DrawFrame		equ	0x4
+DrawFrameClipped		equ	0x4
 DrawFrameSprite		equ	0x120
 DrawHudPanelThunk		equ	0x29BD
 DrawLine		equ	0xC
@@ -68,7 +68,7 @@ DrawRleTransAt		equ	0x1857
 DrawRleTransFast		equ	0x1C4E
 DrawRleTransRemapFastAt		equ	0x2FBB
 DrawRleTransRemapFastBody		equ	0x2FD8
-DrawShadowText		equ	0x166
+PrintShadowText		equ	0x166
 DrawShadowTextCentered		equ	0xE4
 DrawSpriteClipped		equ	0x2
 DrawSpriteNumber		equ	0x60

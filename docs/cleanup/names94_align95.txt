@@ -1,0 +1,35 @@
+SayEaNhlIntro SayNhlIntro | 95 PC | medium | same clip (ea_nhl.int) as 95 PC SayNhlIntro
+SayElseAroundNhl SayElseNhl | 95 PC | high | clip elsenhl.int, same as 95 PC SayElseNhl
+SwapWordBytes SwapBytes16 | 95 PC | high | swaps the two bytes of a word; same as 95 PC SwapBytes16
+ClearScreenColor ClearScreenColour | 95 PC | high | fills the screen with a colour; 95 PC spelling
+FillRectClip FillRectClipped | 95 PC | high | fills a rectangle clipped to the clip window; same as 95 PC
+XorFrame XorRectOutline | 95 PC | high | XORs a rectangle outline as four edges; same as 95 PC
+DrawFrame DrawFrameClipped | 95 PC | high | rectangle outline from four clipped fills; same as 95 PC
+DrawShadowText PrintShadowText | 95 PC | medium | text with a +1,+1 shadow; same job as 95 PC PrintShadowText
+MouseToPad ReadMousePad | 95 PC | high | mouse offset from the screen centre to a direction and buttons; same as 95 PC
+KeysToPad ReadKeyboardPad | 95 PC | high | arrow and keypad scan codes to a direction and buttons; same as 95 PC
+ReadHotKey ReadHotKeys | 95 PC | high | Esc, Ctrl+S, Ctrl+M, F1-F10, Tab, R with a repeat guard; same as 95 PC
+GSummaryPath MakeGSummaryPath | 95 PC | high | builds the gsummary.db path; same as 95 PC
+RandomMod RandMod | 95 PC | high | positive rand() modulo n; same as 95 PC RandMod
+SaveGameNameDialog SaveGameNameDlg | 95 PC | high | save-name dialog before SaveGame; same strings as 95 PC
+ScrollBarInit InitScrollBar | 95 PC | medium | scroll bar position and thumb size; same as 95 PC
+SpeechShutdown ShutdownSpeech | 95 PC | medium | frees the speech timer slot, channel and blocks; same as 95 PC
+CrowdReset CrowdNoiseReset | 95 PC | medium | resets the crowd level and note states; same as 95 PC
+CalibrateLeftStick CalLeftJoystick | 95 PC | medium | calibration screen titled Left Joystick; same as 95 PC
+CalibrateRightStick CalRightJoystick | 95 PC | medium | calibration screen titled Right Joystick; same as 95 PC
+MenuTeamScoring StatsMenuTeamScoring | 95 PC | high | stats menu item, team scoring; same as 95 PC
+MenuTeamDefense StatsMenuTeamDefense | 95 PC | high | stats menu item, team defense; same as 95 PC
+MenuTeamPP StatsMenuPowerPlay | 95 PC | high | stats menu item, team power play; same as 95 PC
+MenuTeamPK StatsMenuPenaltyKilling | 95 PC | high | stats menu item, team penalty killing; same as 95 PC
+MenuTeamPenalties StatsMenuTeamPenalties | 95 PC | high | stats menu item, team penalties; same as 95 PC
+MenuPointLeaders StatsMenuPoints | 95 PC | high | stats menu item, point leaders; same as 95 PC
+MenuGoalLeaders StatsMenuGoals | 95 PC | high | stats menu item, goal leaders; same as 95 PC
+MenuAssistLeaders StatsMenuAssists | 95 PC | high | stats menu item, assist leaders; same as 95 PC
+MenuPPGoalLeaders StatsMenuPPGoals | 95 PC | high | stats menu item, power play goal leaders; same as 95 PC
+MenuSHGoalLeaders StatsMenuSHGoals | 95 PC | high | stats menu item, shorthanded goal leaders; same as 95 PC
+MenuPlusMinusLeaders StatsMenuPlusMinus | 95 PC | high | stats menu item, plus/minus leaders; same as 95 PC
+MenuPIMLeaders StatsMenuPIM | 95 PC | high | stats menu item, penalty minute leaders; same as 95 PC
+MenuShootPctLeaders StatsMenuShootPct | 95 PC | high | stats menu item, shooting percentage leaders; same as 95 PC
+MenuGAALeaders StatsMenuGAA | 95 PC | high | stats menu item, goals against average leaders; same as 95 PC
+MenuWinsLeaders StatsMenuGoalieWins | 95 PC | high | stats menu item, goalie wins leaders; same as 95 PC
+MenuSavePctLeaders StatsMenuSavePct | 95 PC | high | stats menu item, save percentage leaders; same as 95 PC

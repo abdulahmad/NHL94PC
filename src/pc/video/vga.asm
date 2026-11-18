@@ -138,10 +138,10 @@ ClearClipRectColor:
         retf
 
 ;-----------------------------------------------------------------------------
-; FillRectClip                                                0FEF:00DE  94 PC
+; FillRectClipped                                                0FEF:00DE  94 PC
 ; Fills a rectangle clipped to the canvas.
 ;-----------------------------------------------------------------------------
-FillRectClip:
+FillRectClipped:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         add sp, -0x2
@@ -197,9 +197,9 @@ FillRect:
 .1:
         cld
         cmp word [bp + 0xa], 0x0
-        jng short FillRectClip.4
+        jng short FillRectClipped.4
         cmp word [bp + 0xc], 0x0
-        jng short FillRectClip.4
+        jng short FillRectClipped.4
         mov ax, [CanvasSeg]
         cmp ax, VgaMem
         jnz short .3
@@ -7744,10 +7744,10 @@ SetClipRectPlanes:
         retf
 
 ;-----------------------------------------------------------------------------
-; ClearScreenColor                                            0FEF:3A84  94 PC
+; ClearScreenColour                                            0FEF:3A84  94 PC
 ; Fills video memory with a colour.
 ;-----------------------------------------------------------------------------
-ClearScreenColor:
+ClearScreenColour:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di

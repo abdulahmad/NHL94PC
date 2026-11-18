@@ -354,61 +354,61 @@ GoalieStatsCard:
         push strict word str_Gp_7
         push 0x50
         push 0x3c
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Min_2
         push 0x50
         push 0x50
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Gaa_2
         push 0x50
         push 0x64
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_W_3
         push 0x50
         push word 0x82
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_L_5
         push 0x50
         push word 0x96
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_T_3
         push 0x50
         push word 0xaa
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_So
         push 0x50
         push word 0xbe
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_En
         push 0x50
         push word 0xd2
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Sa_2
         push 0x50
         push word 0xe6
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push ds
         push strict word str_Pct_4
         push 0x50
         push word 0x104
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         mov di, 0x59
         lea ax, [bp - 0xa0]
@@ -421,7 +421,7 @@ GoalieStatsCard:
         push word [bx]
         push di
         push 0x14
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push word [si]
         push strict word str_2d
@@ -537,7 +537,7 @@ GoalieStatsCard:
         lea di, [di + 0xa]
         push di
         push 0xa
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         lea bx, [bp - 0x2e]
         mov [bp - 0x2], bx
@@ -553,7 +553,7 @@ GoalieStatsCard:
 .16:
         push di
         push word 0x82
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         add di, 0x7
         db 0x2B, 0xF6                           ; insn: sub si, si
@@ -573,7 +573,7 @@ GoalieStatsCard:
         mov ax, [bp - 0x8]
         add ax, strict word 0xa
         push ax
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         mov al, [si + GoalieCardCols]
         cbw

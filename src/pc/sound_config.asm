@@ -511,7 +511,7 @@ SoundCardDlgLoop:
 ; SetSoundDevice                                             2528:0426  94 PC
 ; Loads the driver, patches and songs ('PCBEEP' .. 'MT32')
 ;
-; Takes 2 words of stack arguments. Calls SpeechShutdown, FindUnlink, ShutdownSequencer,
+; Takes 2 words of stack arguments. Calls ShutdownSpeech, FindUnlink, ShutdownSequencer,
 ; WaitDeadlineNoEoi, UnloadSong, InitSequencer, LoadSoundDriver, LoadRawHeader and others.
 ;-----------------------------------------------------------------------------
 SetSoundDevice:
@@ -524,7 +524,7 @@ SetSoundDevice:
         jz short .2
         cmp word [SoundOptions], 0x2
         jnz short .1
-        call 0x09B2:SpeechShutdown
+        call 0x09B2:ShutdownSpeech
         push word [SoundDrvBufSeg]
         push word [SoundDrvBuf]
         call 0x06E1:FindUnlink

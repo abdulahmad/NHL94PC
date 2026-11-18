@@ -4,12 +4,12 @@
         retf
 
 ;-----------------------------------------------------------------------------
-; RandomMod                                                  23AD:0002  94 PC
+; RandMod                                                  23AD:0002  94 PC
 ; Positive rand() modulo the argument.
 ;
 ; Takes 1 word of stack arguments. Calls _rand. Far routine (retf).
 ;-----------------------------------------------------------------------------
-RandomMod:
+RandMod:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         call 0x0000:_rand
@@ -927,7 +927,7 @@ SimulateGame:
         jnl short .80
         push 0xa
         push cs
-        call RandomMod
+        call RandMod
         add sp, 0x2
         mov [bp - 0x28], ax
         cmp ax, [bp - 0x1ac]
@@ -971,7 +971,7 @@ SimulateGame:
         jnl short .85
         push 0x3
         push cs
-        call RandomMod
+        call RandMod
         add sp, 0x2
         mov [bp - 0x28], ax
         cmp ax, [bp - 0x1ac]
@@ -1586,7 +1586,7 @@ SimulateGame:
 .118:
         push word 0x3e8
         push cs
-        call RandomMod
+        call RandMod
         add sp, 0x2
         mov [bp - 0x28], ax
         cmp word [bp + 0x18], 0x0
@@ -1789,7 +1789,7 @@ SimulateGame:
         mov [bp - 0x166], ah
         push word 0x3e8
         push cs
-        call RandomMod
+        call RandMod
         add sp, 0x2
         mov [bp - 0x28], ax
         cmp ax, 0x320
@@ -2043,7 +2043,7 @@ SimulateGame:
 .145:
         push word 0x3e8
         push cs
-        call RandomMod
+        call RandMod
         add sp, 0x2
         mov [bp - 0x28], ax
         mov si, [bp - 0x164]
@@ -2240,7 +2240,7 @@ SimulateGame:
 .155:
         push word 0x3e8
         push cs
-        call RandomMod
+        call RandMod
         add sp, 0x2
         mov [bp - 0x28], ax
         cmp ax, strict word 0x3c

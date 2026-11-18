@@ -1,4 +1,4 @@
-; DrawFrame: draws a rectangular frame.
+; DrawFrameClipped: draws a rectangular frame.
 
 ;-----------------------------------------------------------------------------
 ; FillPolySpansTail                                           1484:0000  94 PC
@@ -11,10 +11,10 @@ FillPolySpansTail:                              ; end of FillPolySpans
         retf
 
 ;-----------------------------------------------------------------------------
-; DrawFrame                                                   1484:0004  94 PC
-; Draws a rectangle outline with four FillRectClip calls.
+; DrawFrameClipped                                                   1484:0004  94 PC
+; Draws a rectangle outline with four FillRectClipped calls.
 ;-----------------------------------------------------------------------------
-DrawFrame:
+DrawFrameClipped:
         enter 0x2, 0x0
         push di
         push si
@@ -32,14 +32,14 @@ DrawFrame:
         push ax
         push si
         push word [bp + 0x6]
-        call 0x0FEF:FillRectClip
+        call 0x0FEF:FillRectClipped
         add sp, 0xa
         push word [bp + 0xe]
         push 0x1
         push word [bp - 0x2]
         push word [bp + 0xc]
         push word [bp + 0x6]
-        call 0x0FEF:FillRectClip
+        call 0x0FEF:FillRectClipped
         add sp, 0xa
 .1:
         db 0x0B, 0xFF                           ; insn: or di, di
@@ -49,12 +49,12 @@ DrawFrame:
         push 0x1
         push si
         push word [bp + 0x6]
-        call 0x0FEF:FillRectClip
+        call 0x0FEF:FillRectClipped
         add sp, 0xa
         push word [bp + 0xe]
         push di
         push 0x1
         push si
         push word [bp + 0xa]
-        call 0x0FEF:FillRectClip
+        call 0x0FEF:FillRectClipped
         add sp, 0xa

@@ -11,11 +11,11 @@ ReadKeyEventHit:
         retf
 
 ;-----------------------------------------------------------------------------
-; KeysToPad                                                   0969:0006  94 PC
+; ReadKeyboardPad                                                   0969:0006  94 PC
 ; Arrow and keypad scan codes through DirBitsToPad, Ins/Enter/Alt/Space to
 ; pad buttons.
 ;-----------------------------------------------------------------------------
-KeysToPad:
+ReadKeyboardPad:
         push si
         db 0x2B, 0xF6                           ; insn: sub si, si
         push 0x48
@@ -204,11 +204,11 @@ StickToPad:
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; MouseToPad                                                  0969:018A  94 PC
+; ReadMousePad                                                  0969:018A  94 PC
 ; Mouse offset from the centre (160,100) to a direction when far enough,
 ; buttons to pad buttons.
 ;-----------------------------------------------------------------------------
-MouseToPad:
+ReadMousePad:
         push di
         push si
         call far [MousePosFn]
@@ -290,7 +290,7 @@ ReadPadDevice:
         cmp byte [si + PadStates], 0x8
         jnz short .1
         push cs
-        call KeysToPad
+        call ReadKeyboardPad
         jmp short .6
 .1:
         cmp byte [si + PadStates], 0x2
@@ -311,7 +311,7 @@ ReadPadDevice:
         cmp byte [si + PadStates], 0x1
         jnz short .5
         push cs
-        call MouseToPad
+        call ReadMousePad
         jmp short .6
         db 0x90
 .5:
@@ -324,11 +324,11 @@ ReadPadDevice:
         retf
 
 ;-----------------------------------------------------------------------------
-; ReadHotKey                                                  0969:026E  94 PC
+; ReadHotKeys                                                  0969:026E  94 PC
 ; Esc, Ctrl+S, Ctrl+M, F1-F10, Tab and R with a repeat guard; bit 7 set on a
 ; new key.
 ;-----------------------------------------------------------------------------
-ReadHotKey:
+ReadHotKeys:
         enter 0x2, 0x0
         mov byte [bp - 0x1], 0x0
         push 0x1
@@ -556,4 +556,4 @@ PadTimerTick:
         add si, PadReadings + 2
         push si
         push cs
-        db 0xE8, (ReadHotKey - ($ + 3)) & 0xFF  ; call near ReadHotKey: the last byte is in the next segment
+        db 0xE8, (ReadHotKeys - ($ + 3)) & 0xFF  ; call near ReadHotKeys: the last byte is in the next segment

@@ -398,12 +398,12 @@ StatsSelPlayoffMode:
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; MenuTeamScoring                                            2248:042C  94 PC
+; StatsMenuTeamScoring                                            2248:042C  94 PC
 ; Team stats sorted by CmpTeamScoring.
 ;
 ; Calls TeamStatsScreen. Far routine (retf).
 ;-----------------------------------------------------------------------------
-MenuTeamScoring:
+StatsMenuTeamScoring:
         mov word [statscategory], 0x0
         cmp word [leaguestatsmode], 0x0
         jz short .1
@@ -418,12 +418,12 @@ MenuTeamScoring:
         retf
 
 ;-----------------------------------------------------------------------------
-; MenuTeamDefense                                            2248:044E  94 PC
+; StatsMenuTeamDefense                                            2248:044E  94 PC
 ; Team stats sorted by CmpTeamDefense.
 ;
 ; Calls TeamStatsScreen. Far routine (retf).
 ;-----------------------------------------------------------------------------
-MenuTeamDefense:
+StatsMenuTeamDefense:
         mov word [statscategory], 0x1
         cmp word [leaguestatsmode], 0x0
         jz short .1
@@ -438,12 +438,12 @@ MenuTeamDefense:
         retf
 
 ;-----------------------------------------------------------------------------
-; MenuTeamPP                                                 2248:0470  94 PC
+; StatsMenuPowerPlay                                                 2248:0470  94 PC
 ; Team stats sorted by CmpTeamPP.
 ;
 ; Calls TeamStatsScreen. Far routine (retf).
 ;-----------------------------------------------------------------------------
-MenuTeamPP:
+StatsMenuPowerPlay:
         mov word [statscategory], 0x2
         cmp word [leaguestatsmode], 0x0
         jz short .1
@@ -458,12 +458,12 @@ MenuTeamPP:
         retf
 
 ;-----------------------------------------------------------------------------
-; MenuTeamPK                                                 2248:0492  94 PC
+; StatsMenuPenaltyKilling                                                 2248:0492  94 PC
 ; Team stats sorted by CmpTeamPK.
 ;
 ; Calls TeamStatsScreen. Far routine (retf).
 ;-----------------------------------------------------------------------------
-MenuTeamPK:
+StatsMenuPenaltyKilling:
         mov word [statscategory], 0x3
         cmp word [leaguestatsmode], 0x0
         jz short .1
@@ -478,12 +478,12 @@ MenuTeamPK:
         retf
 
 ;-----------------------------------------------------------------------------
-; MenuTeamPenalties                                          2248:04B4  94 PC
+; StatsMenuTeamPenalties                                          2248:04B4  94 PC
 ; Team stats sorted by CmpTeamPenalties.
 ;
 ; Calls TeamStatsScreen. Far routine (retf).
 ;-----------------------------------------------------------------------------
-MenuTeamPenalties:
+StatsMenuTeamPenalties:
         mov word [statscategory], 0x4
         cmp word [leaguestatsmode], 0x0
         jz short .1
@@ -498,12 +498,12 @@ MenuTeamPenalties:
         retf
 
 ;-----------------------------------------------------------------------------
-; MenuPointLeaders                                           2248:04D6  94 PC
+; StatsMenuPoints                                           2248:04D6  94 PC
 ; Menu item: point leaders (leaders table entry 0).
 ;
 ; Calls LeadersScreen. Far routine (retf).
 ;-----------------------------------------------------------------------------
-MenuPointLeaders:
+StatsMenuPoints:
         mov word [statscategory], 0x0
         cmp word [leaguestatsmode], 0x0
         jz short .1
@@ -518,12 +518,12 @@ MenuPointLeaders:
         retf
 
 ;-----------------------------------------------------------------------------
-; MenuGoalLeaders                                            2248:04F8  94 PC
+; StatsMenuGoals                                            2248:04F8  94 PC
 ; Menu item: goal leaders (leaders table entry 1).
 ;
 ; Calls LeadersScreen. Far routine (retf).
 ;-----------------------------------------------------------------------------
-MenuGoalLeaders:
+StatsMenuGoals:
         mov word [statscategory], 0x1
         cmp word [leaguestatsmode], 0x0
         jz short .1
@@ -538,12 +538,12 @@ MenuGoalLeaders:
         retf
 
 ;-----------------------------------------------------------------------------
-; MenuAssistLeaders                                          2248:051A  94 PC
+; StatsMenuAssists                                          2248:051A  94 PC
 ; Menu item: assist leaders (leaders table entry 2).
 ;
 ; Calls LeadersScreen. Far routine (retf).
 ;-----------------------------------------------------------------------------
-MenuAssistLeaders:
+StatsMenuAssists:
         mov word [statscategory], 0x2
         cmp word [leaguestatsmode], 0x0
         jz short .1
@@ -558,12 +558,12 @@ MenuAssistLeaders:
         retf
 
 ;-----------------------------------------------------------------------------
-; MenuPPGoalLeaders                                          2248:053C  94 PC
+; StatsMenuPPGoals                                          2248:053C  94 PC
 ; Menu item: power play goal leaders (leaders table entry 3).
 ;
 ; Calls LeadersScreen. Far routine (retf).
 ;-----------------------------------------------------------------------------
-MenuPPGoalLeaders:
+StatsMenuPPGoals:
         mov word [statscategory], 0x3
         cmp word [leaguestatsmode], 0x0
         jz short .1
@@ -578,12 +578,12 @@ MenuPPGoalLeaders:
         retf
 
 ;-----------------------------------------------------------------------------
-; MenuSHGoalLeaders                                          2248:055E  94 PC
+; StatsMenuSHGoals                                          2248:055E  94 PC
 ; Menu item: shorthanded goal leaders (leaders table entry 4).
 ;
 ; Calls LeadersScreen. Far routine (retf).
 ;-----------------------------------------------------------------------------
-MenuSHGoalLeaders:
+StatsMenuSHGoals:
         mov word [statscategory], 0x4
         cmp word [leaguestatsmode], 0x0
         jz short .1
@@ -598,12 +598,12 @@ MenuSHGoalLeaders:
         retf
 
 ;-----------------------------------------------------------------------------
-; MenuPlusMinusLeaders                                       2248:0580  94 PC
+; StatsMenuPlusMinus                                       2248:0580  94 PC
 ; Menu item: plus/minus leaders (leaders table entry 5).
 ;
 ; Calls LeadersScreen. Far routine (retf).
 ;-----------------------------------------------------------------------------
-MenuPlusMinusLeaders:
+StatsMenuPlusMinus:
         mov word [statscategory], 0x5
         cmp word [leaguestatsmode], 0x0
         jz short .1
@@ -618,12 +618,12 @@ MenuPlusMinusLeaders:
         retf
 
 ;-----------------------------------------------------------------------------
-; MenuPIMLeaders                                             2248:05A2  94 PC
+; StatsMenuPIM                                             2248:05A2  94 PC
 ; Menu item: penalty minutes leaders (leaders table entry 6).
 ;
 ; Calls LeadersScreen. Far routine (retf).
 ;-----------------------------------------------------------------------------
-MenuPIMLeaders:
+StatsMenuPIM:
         mov word [statscategory], 0x6
         cmp word [leaguestatsmode], 0x0
         jz short .1
@@ -638,12 +638,12 @@ MenuPIMLeaders:
         retf
 
 ;-----------------------------------------------------------------------------
-; MenuShootPctLeaders                                        2248:05C4  94 PC
+; StatsMenuShootPct                                        2248:05C4  94 PC
 ; Menu item: shooting percentage leaders (leaders table entry 7).
 ;
 ; Calls LeadersScreen. Far routine (retf).
 ;-----------------------------------------------------------------------------
-MenuShootPctLeaders:
+StatsMenuShootPct:
         mov word [statscategory], 0x7
         cmp word [leaguestatsmode], 0x0
         jz short .1
@@ -658,12 +658,12 @@ MenuShootPctLeaders:
         retf
 
 ;-----------------------------------------------------------------------------
-; MenuGAALeaders                                             2248:05E6  94 PC
+; StatsMenuGAA                                             2248:05E6  94 PC
 ; Menu item: goals against average leaders (leaders table entry 8).
 ;
 ; Calls LeadersScreen. Far routine (retf).
 ;-----------------------------------------------------------------------------
-MenuGAALeaders:
+StatsMenuGAA:
         mov word [statscategory], 0x8
         cmp word [leaguestatsmode], 0x0
         jz short .1
@@ -678,12 +678,12 @@ MenuGAALeaders:
         retf
 
 ;-----------------------------------------------------------------------------
-; MenuWinsLeaders                                            2248:0608  94 PC
+; StatsMenuGoalieWins                                            2248:0608  94 PC
 ; Menu item: goalie wins leaders (leaders table entry 9).
 ;
 ; Calls LeadersScreen. Far routine (retf).
 ;-----------------------------------------------------------------------------
-MenuWinsLeaders:
+StatsMenuGoalieWins:
         mov word [statscategory], 0x9
         cmp word [leaguestatsmode], 0x0
         jz short .1
@@ -698,12 +698,12 @@ MenuWinsLeaders:
         retf
 
 ;-----------------------------------------------------------------------------
-; MenuSavePctLeaders                                         2248:062A  94 PC
+; StatsMenuSavePct                                         2248:062A  94 PC
 ; Menu item: save percentage leaders (leaders table entry 10).
 ;
 ; Calls LeadersScreen. Far routine (retf).
 ;-----------------------------------------------------------------------------
-MenuSavePctLeaders:
+StatsMenuSavePct:
         mov word [statscategory], 0xa
         cmp word [leaguestatsmode], 0x0
         jz short .1

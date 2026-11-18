@@ -64,7 +64,7 @@ FadeSampleRect:
 ; FadeBoxGrow                                                3358:0070  94 PC
 ; Filled boxes grow from the centre.
 ;
-; Takes 1 word of stack arguments. Calls UseCurrentPage, FadeSampleRect, UseOtherPage, FillRectClip,
+; Takes 1 word of stack arguments. Calls UseCurrentPage, FadeSampleRect, UseOtherPage, FillRectClipped,
 ; WaitDeadlineNoEoi, CopyPageRect. Far routine (retf).
 ;-----------------------------------------------------------------------------
 FadeBoxGrow:
@@ -203,7 +203,7 @@ FadeBoxGrow:
         push si
         push word [bp - 0x4]
         push di
-        call 0x0FEF:FillRectClip
+        call 0x0FEF:FillRectClipped
         add sp, 0xa
         add [bp - 0x6], si
         dec word [bp - 0xa]

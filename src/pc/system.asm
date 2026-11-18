@@ -2473,7 +2473,7 @@ ResetText:
         mov word [WantText], 0
         db 0x33, 0xC0                           ; insn: xor ax, ax
         push ax
-        call 0xFEF:ClearScreenColor
+        call 0xFEF:ClearScreenColour
         add sp, 2
         mov ax, 0x40
         mov es, ax
@@ -7526,7 +7526,7 @@ RestoreMode:
         jne short .2
         db 0x33, 0xC0                           ; insn: xor ax, ax
         push ax
-        call 0xFEF:ClearScreenColor
+        call 0xFEF:ClearScreenColour
         add sp, 2
 .2:
         mov ah, 0xb

@@ -29,10 +29,10 @@ _rand		equ	0x1012
 CrowdChannel		equ	0x106E
 StopSong		equ	0x11BA
 SongFinished		equ	0x1226
-SayEaNhlIntro		equ	0x128A
+SayNhlIntro		equ	0x128A
 SayGoodnight		equ	0x12EC
 SayLineups		equ	0x1362
-SayElseAroundNhl		equ	0x13C4
+SayElseNhl		equ	0x13C4
 SayHighlightMatchup		equ	0x1426
 SayPlayoffResult		equ	0x1546
 SayPeriodSummary		equ	0x16E2

@@ -190,7 +190,7 @@ NumberEntryDialog:
         sar ax, 1
         add ax, [bp - 0xc]
         push ax
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push word [DialogLightColor]
         push word [DialogDarkColor]
@@ -696,7 +696,7 @@ ListDialog:
         push strict word 0x0
         db 0x8B, 0xF1                           ; insn: mov si, cx
         push cs
-        call ScrollBarInit
+        call InitScrollBar
         add sp, 0x8
         mov es, [ListDialogDataSeg]
         mov word [es:ListDlgScrollBar + 0x10], 0x0
@@ -754,7 +754,7 @@ ListDialog:
         sar ax, 1
         add ax, [bp - 0x2a]
         push ax
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         push word [DialogLightColor]
         push word [DialogDarkColor]
@@ -1291,7 +1291,7 @@ DrawButton:
         sar ax, 1
         add ax, [es:si]
         push ax
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
 .3:
         pop si
@@ -1301,10 +1301,10 @@ DrawButton:
         db 0x90
 
 ;-----------------------------------------------------------------------------
-; ScrollBarInit                                               0D90:0C14  94 PC
+; InitScrollBar                                               0D90:0C14  94 PC
 ; Scroll bar position, size and thumb length from the item counts.
 ;-----------------------------------------------------------------------------
-ScrollBarInit:
+InitScrollBar:
         push bp
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
@@ -1857,7 +1857,7 @@ MessageBox:
         push di
         add ax, [bp - 0x12]
         push ax
-        call 0x0D39:DrawShadowText
+        call 0x0D39:PrintShadowText
         add sp, 0x8
         add di, [bp - 0x16]
         add si, 0x4
