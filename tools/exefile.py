@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # exefile.py: the retail EXE this build needs, and where it is. It is found in the repo's root folder by its content
 # (size, then SHA-1), so the file can have any name; the usual name is tried first. Used by prebuild.py, extract.py,
-# verify_segment.py and build.sh. Command line: python3 tools/exefile.py   (prints the path, or why it is missing)
+# build.sh. Command line: python3 tools/exefile.py   (prints the path, or why it is missing)
 import hashlib, json, os, sys, zlib
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 SEGMAP = json.load(open(os.path.join(ROOT, 'segmap.json')))

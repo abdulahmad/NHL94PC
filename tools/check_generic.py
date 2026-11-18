@@ -11,7 +11,6 @@ Rules:
   [place]   placeholder names: data/var/unk/unknown/label/func/proc/misc/routine + digits only (data1, func2)
   [file]    a source file or folder named stub_*, sub_*, loc_*, an address, or a number
 Comments are scanned too (a comment that quotes an auto name is a stale name). Exit status 1 when anything is reported.
-Segment build stubs (src/stubinc/*_stub.asm in 94 PC, written by tools/make_stubs.py) are generated linker helpers and skipped.
 Not checked: numeric local labels (.1 .2 inside a routine) and NASM section names (s_<address>, which tools/build reads)."""
 import os, re, sys, collections
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -28,7 +27,6 @@ FILE_BAD = re.compile(r'^(?i:stub|sub|loc|unk|seg|part)[_-]?[0-9A-Fa-f]*$|^(?=\w
 def files():
     for top in ('src', 'port'):
         for d, ds, fs in os.walk(os.path.join(ROOT, top)):
-            ds[:] = [x for x in ds if x != 'stubinc']
             for f in fs:
                 yield d, f
 

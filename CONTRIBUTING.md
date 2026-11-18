@@ -15,7 +15,7 @@ of its README and in every release. Add it first.
 
 - MATCH: `./build.sh` must print MATCH and `sh tools/verify_all.sh` MATCH before every push. A comment-only,
   layout-only or rename-only change must not change a byte.
-- After adding or renaming a label used across files, run `python3 tools/make_stubs.py` (the per-file builds).
+- After adding or renaming a label used across files, run `python3 tools/make_ovl_syms.py` (the overlay builds).
 - `python3 tools/format_asm.py --check` reports nothing, and `python3 tools/check_comments.py` prints `comments OK`.
 - Pairing: after a move or rename, `tools/gate.sh` in nhl-disasm-report; no count may rise.
 - Small commits; never force-push.
@@ -42,7 +42,7 @@ of its README and in every release. Add it first.
 - `src/data/`: DGROUP (`dgroup.asm`, `dgroup_bss.asm`), the far data segments (`far/`), the RTLink relocations.
 - `src/header/`: the MZ header. `src/hockey94pc.asm` includes every file in EXE order; `segmap.json` lists each one.
 - `src/ovl/<name>.asm`: one overlay: its relocation table, then its segment files in load order
-  (`docs/cleanup/files_94pc_ovl.txt`). `src/ovl/<name>_syms.inc` and `_build.asm` are written by `tools/make_stubs.py`.
+  (`docs/cleanup/files_94pc_ovl.txt`). `src/ovl/<name>_syms.inc` and `_build.asm` are written by `tools/make_ovl_syms.py`.
 - Files are named by topic, never by address. One file per linker segment; the section is named after the file.
   `docs/cleanup/files_94pc.txt` maps the old segment numbers to the files.
 - A label in another segment is reached with `Label + delta` (delta = the paragraph distance times 16) for a jump, or

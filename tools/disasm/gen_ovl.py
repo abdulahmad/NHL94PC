@@ -1055,7 +1055,7 @@ def emit(s, flow, funcs, known):
 
 def write_top():
     """src/ovl/<name>.asm: the relocation table, then one section per segment; src/ovl/<name>_build.asm wraps it
-    with the outside labels it uses (src/ovl/<name>_syms.inc, tools/make_stubs.py)"""
+    with the outside labels it uses (src/ovl/<name>_syms.inc, tools/make_ovl_syms.py)"""
     lo = OV['name'].lower()
     d = ovl_bytes(OV)
     out = [f'; {OV["name"]}.OVL: RTLink overlay, loaded at paragraph {OV["para"]:04X}h. Files: docs/cleanup/files_94pc_ovl.txt.',
@@ -1075,7 +1075,7 @@ def write_top():
     syms = os.path.join(ROOT, 'src', 'ovl', lo + '_syms.inc')
     if not os.path.exists(syms):
         open(syms, 'w').write('')
-    open(b, 'w').write(f'; Builds {OV["name"]}.OVL on its own: the outside labels it uses (from tools/make_stubs.py), then the overlay.\n'
+    open(b, 'w').write(f'; Builds {OV["name"]}.OVL on its own: the outside labels it uses (from tools/make_ovl_syms.py), then the overlay.\n'
                        f'        bits 16\n%include "spa94.inc"\n%include "ovl/{lo}_syms.inc"\n%include "ovl/{lo}.asm"\n')
 
 
