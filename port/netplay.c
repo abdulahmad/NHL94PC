@@ -102,9 +102,9 @@ static int unpack(const uint8_t *p, size_t n)
     uint32_t len;
     if (o + 5 > n) break;
     memcpy(&len, p + o + 1, 4);
-    if (k + len > raw) break;
+    if (len > raw - k || p[o] > 1) break;                 /* (written so that it cannot wrap, whatever the size_t) */
     if (p[o] == 0) { memset(flat + k, 0, len); o += 5; }
-    else { if (o + 5 + len > n) break; memcpy(flat + k, p + o + 5, len); o += 5 + len; }
+    else { if (len > n - o - 5) break; memcpy(flat + k, p + o + 5, len); o += 5 + len; }
     k += len;
   }
   if (k != raw) { free(flat); return -1; }
@@ -113,6 +113,7 @@ static int unpack(const uint8_t *p, size_t n)
     cpu->x86.msr = msr; cpu->x86.msr_perm = perm; cpu->x86.default_seg = dseg; cpu->x86.disasm_ptr = dis;   /* (the host's pointers mean nothing here) */
   }
   machine_unblob(flat + at, 512);
+  machine_sanitize();                                   /* (the host's indices made safe: the host is not trusted) */
   free(flat);
   return 0;
 }

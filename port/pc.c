@@ -254,6 +254,8 @@ void pc_init(void)
 }
 
 /* the machine's state (machine_state.c) */
+void pc_sanitize(void) { kq_head = (int)((unsigned)kq_head & 63); kq_tail = (int)((unsigned)kq_tail & 63); }
+
 void pc_state(void (*add)(void *, size_t))
 {
 #define S(v) add(&(v), sizeof (v))

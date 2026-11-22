@@ -23,7 +23,7 @@ volatile int cpu_quit;
 static inline uint8_t *ems_byte(uint32_t a)
 {
   int p = (a - 0xE0000u) >> 14;
-  if (ems_map[p] < 0) return NULL;
+  if (ems_map[p] < 0 || (unsigned)ems_map[p] >= EMS_PAGES) return NULL;   /* (the guest's, or a peer's state's, value: kept inside the pool) */
   return ems + (size_t)ems_map[p] * 16384u + (a & 0x3FFFu);
 }
 
