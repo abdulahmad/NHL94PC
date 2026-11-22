@@ -415,6 +415,8 @@ void input_net(int on)
   net_on = on;
 }
 
+void input_sanitize(void) { if (nk_n < 0 || nk_n > (int)(sizeof nk_prev / sizeof nk_prev[0])) nk_n = 0; }
+
 void input_state(void (*add)(void *, size_t))
 {
   add(&hit_pad.tsc, sizeof hit_pad.tsc); add(&hit_pad.ds, sizeof hit_pad.ds);

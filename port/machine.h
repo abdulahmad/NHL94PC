@@ -128,6 +128,7 @@ struct ob_snap_region;
 int machine_regions(const struct ob_snap_region **out);
 size_t machine_blob(void *buf, size_t cap);
 void machine_unblob(const void *buf, size_t n);
+void machine_sanitize(void);   /* after a state from another machine is put in */
 uint64_t machine_hash(void);
 /* netplay.c */
 int netplay_frame(double now, int *idle);   /* 1: a session has the CPU (it ran a step, or waits); *idle: nothing ran */

@@ -277,6 +277,8 @@ void vga_render(uint8_t *dst, int *pw, int *ph, uint32_t pal[256])
 }
 
 /* the machine's state (machine_state.c) */
+void vga_sanitize(void) { dac_comp %= 3; dac_rcomp %= 3; }
+
 void vga_state(void (*add)(void *, size_t))
 {
 #define S(v) add(&(v), sizeof (v))

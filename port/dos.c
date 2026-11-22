@@ -99,6 +99,19 @@ int host_path(const char *dos, char *out, size_t n, int must_exist)
   return -1;
 }
 
+/* whether the game may create, change, delete or rename the host file at hp: not one a system would run. The game never writes such files,
+ * and the machine's own code and memory can come from another player (online play takes the host's machine as it is), so the emulated DOS
+ * must not be a way to put a program on this computer. */
+static int write_ok(const char *hp)
+{
+  static const char *const bad[] = { "exe", "dll", "com", "bat", "cmd", "scr", "lnk", "pif", "msi", "ps1", "vbs", "vbe", "js", "jse", "wsf", "wsh",
+                                     "hta", "cpl", "sh", "so", "dylib", "app", "reg", "inf", "sys", "drv", "ocx", "py", "jar" };
+  const char *slash = strrchr(hp, '/'), *dot = strrchr(slash ? slash : hp, '.');
+  if (!dot) return 1;
+  for (size_t i = 0; i < sizeof bad / sizeof *bad; i++) if (!strcasecmp(dot + 1, bad[i])) return 0;
+  return 1;
+}
+
 static void read_str(uint16_t seg, uint16_t off, char *buf, size_t n)
 {
   size_t i;
@@ -405,6 +418,7 @@ int dos_int21(void)
   case 0x3C: case 0x5B: {
     read_str(r_ds(), r_dx(), name, sizeof name);
     host_path(name, hp, sizeof hp, 0);
+    if (!write_ok(hp)) { fail(5); return 1; }
     int fd = open(hp, O_RDWR | O_CREAT | O_TRUNC | O_BINARY | (ah == 0x5B ? O_EXCL : 0), 0666);
     LOG("create %s -> %d\n", name, fd);
     if (fd < 0) { fail(err_of(errno)); return 1; }
@@ -417,6 +431,7 @@ int dos_int21(void)
     read_str(r_ds(), r_dx(), name, sizeof name);
     int m = r_al() & 3, fl = m == 0 ? O_RDONLY : m == 1 ? O_WRONLY : O_RDWR;
     if (host_path(name, hp, sizeof hp, 1)) { LOG("open %s: not found\n", name); fail(2); return 1; }
+    if (fl != O_RDONLY && !write_ok(hp)) fl = O_RDONLY;
     int fd = open(hp, fl | O_BINARY);
     if (fd < 0 && fl != O_RDONLY) fd = open(hp, O_RDONLY | O_BINARY);  /* read-only data files */
     LOG("open %s (%d) -> %d\n", name, m, fd);
@@ -455,6 +470,7 @@ int dos_int21(void)
     s_ax(w); ok(); return 1;
   }
   case 0x41: read_str(r_ds(), r_dx(), name, sizeof name); host_path(name, hp, sizeof hp, 0);
+    if (!write_ok(hp)) { fail(5); return 1; }
     if (unlink(hp)) fail(err_of(errno)); else ok(); return 1;
   case 0x42: {
     int h = r_bx();
@@ -555,6 +571,7 @@ int dos_int21(void)
     char to[256], hp2[1200];
     read_str(r_ds(), r_dx(), name, sizeof name); read_str(r_es(), r_di(), to, sizeof to);
     host_path(name, hp, sizeof hp, 1); host_path(to, hp2, sizeof hp2, 0);
+    if (!write_ok(hp) || !write_ok(hp2)) { fail(5); return 1; }
     if (rename(hp, hp2)) fail(err_of(errno)); else ok(); return 1;
   }
   case 0x57: {
@@ -582,6 +599,13 @@ int dos_int2f(void)
 }
 
 /* the machine's state (machine_state.c) */
+void dos_sanitize(void)
+{
+  cwd[sizeof cwd - 1] = 0;
+  for (int i = 0; i < NHANDLES; i++) hname[i][sizeof hname[i] - 1] = 0;
+  for (int i = 0; i < 16; i++) { finds[i].used = finds[i].used != 0; finds[i].dir[sizeof finds[i].dir - 1] = 0; finds[i].pat[sizeof finds[i].pat - 1] = 0; if (finds[i].pos < 0) finds[i].pos = 0; }
+}
+
 void dos_state(void (*add)(void *, size_t))
 {
 #define S(v) add(&(v), sizeof (v))

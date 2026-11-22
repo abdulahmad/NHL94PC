@@ -193,6 +193,7 @@ static int ems_hcount[EMS_HANDLES], ems_hused[EMS_HANDLES];
 static char ems_hname[EMS_HANDLES][8];
 static int ems_saved[EMS_HANDLES][4];
 
+static int ems_page(int p) { return p >= 0 && (unsigned)p < EMS_PAGES ? p : -1; }   /* (a page number the guest gave: in the pool or none) */
 static int ems_free(void) { int n = 0; for (unsigned i = 0; i < EMS_PAGES; i++) if (ems_owner[i] < 0) n++; return n; }
 
 static int ems_grow(int h, int n)
@@ -249,9 +250,9 @@ int ems_int67(void)
   case 0x4E:
     switch (r_al()) {
     case 0: case 2: { if (r_al() == 0 || 1) { uint32_t a = lin(r_es(), r_di()); for (int k = 0; k < 4; k++) wr16(a + k * 2, (uint16_t)ems_map[k]); }
-      if (r_al() == 2) { uint32_t a = lin(r_ds(), r_si()); for (int k = 0; k < 4; k++) ems_map[k] = (int16_t)rd16(a + k * 2); }
+      if (r_al() == 2) { uint32_t a = lin(r_ds(), r_si()); for (int k = 0; k < 4; k++) ems_map[k] = ems_page((int16_t)rd16(a + k * 2)); }
       s_ah(0); return 1; }
-    case 1: { uint32_t a = lin(r_ds(), r_si()); for (int k = 0; k < 4; k++) ems_map[k] = (int16_t)rd16(a + k * 2); s_ah(0); return 1; }
+    case 1: { uint32_t a = lin(r_ds(), r_si()); for (int k = 0; k < 4; k++) ems_map[k] = ems_page((int16_t)rd16(a + k * 2)); s_ah(0); return 1; }
     case 3: s_ax(8); return 1;
     }
     s_ah(0x8F); return 1;
@@ -356,6 +357,20 @@ void bios_init(void)
 }
 
 /* the machine's state (machine_state.c) */
+/* after a state from another machine is put in: every index in it inside its table */
+void bios_sanitize(void)
+{
+  for (unsigned i = 0; i < EMS_PAGES; i++) if (ems_owner[i] < -1 || ems_owner[i] >= EMS_HANDLES) ems_owner[i] = -1;
+  for (int h = 0; h < EMS_HANDLES; h++) {
+    if (ems_hcount[h] < 0 || ems_hcount[h] > (int)(EMS_PAGES / 4)) ems_hcount[h] = 0;
+    ems_hused[h] = ems_hused[h] != 0;
+    ems_hname[h][7] = 0;
+    for (int i = 0; i < (int)(EMS_PAGES / 4); i++) if (ems_hpages[h][i] < 0 || (unsigned)ems_hpages[h][i] >= EMS_PAGES) ems_hpages[h][i] = 0;
+    for (int k = 0; k < 4; k++) ems_saved[h][k] = ems_page(ems_saved[h][k]);
+  }
+  for (int k = 0; k < 4; k++) ems_map[k] = ems_page(ems_map[k]);
+}
+
 void bios_state(void (*add)(void *, size_t))
 {
 #define S(v) add(&(v), sizeof (v))
