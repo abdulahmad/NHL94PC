@@ -90,3 +90,12 @@ Layout (`tools/format_asm.py` does it):
 ## Files
 
 - Do not commit game files (`lst/HOCKEY.EXE` and `lst/game/` are your own copies), nor `Extracted/`, `output/`, `*.lst` or patches.
+
+## Netplay security
+
+Everything that comes over the network is hostile. The rules and a review checklist are in Overbar's
+`port/overbar/docs/NETPLAY_SECURITY.md`; read them before changing netplay, a saved state, a file route or the season code. In short:
+never run, load or write code from network data; a peer never chooses an address; check every length before use
+(`len > size - at`, never `at + len > size`); validate a state before it is applied and clean it after; a peer's names are text, not paths.
+`sh port/overbar/tests/netsec.sh .` must print `netsec ok` (CI runs it in the `netsec` job). When a change adds a network path or a state field,
+add a hostile test for it.
