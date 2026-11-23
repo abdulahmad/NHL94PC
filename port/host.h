@@ -31,8 +31,8 @@ const char *settings_path(void);                       /* the ini file: hockey94
 enum { CMD_REFRESH_60 = 100, CMD_REFRESH_70, CMD_REFRESH_VRR, CMD_VSYNC, CMD_STATS, CMD_HIRES = 200, CMD_LORES = 300, CMD_VSCALE_HI = 400,
        CMD_VSCALE_LO = 410, CMD_POINTER = 500, CMD_MBRIGHT_HI = 600, CMD_MRESET_HI = 610, CMD_MRESET_LO = 611, CMD_MBRIGHT_LO = 620,
        CMD_MSCALE_HI = 640, CMD_MSCALE_LO = 650, CMD_MKHZ = 660, CMD_INPUT = 700, CMD_MFILE = 1000 };
-#define NHIRES_ITEMS 12
-#define NLORES_ITEMS 12
+#define NHIRES_ITEMS 11
+#define NLORES_ITEMS 11
 void video_command(int id);                            /* a menu command (or the ` key) */
 int video_command_checked(int id);
 void video_mister_pick(int cls, int kind, const char *rel);  /* a MiSTer look file chosen from the menu: class 0 hi-res, 1 320x200; kind 0 horizontal filter, 1 vertical, 2 gamma, 3 mask, 4 preset */
