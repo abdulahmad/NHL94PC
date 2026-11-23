@@ -36,7 +36,6 @@ static int hires_mode, lores_mode, vscale_hi, vscale_lo;
 #define NLORES NLORES_ITEMS
 static const char *hires_names[NHIRES] = { "1x", "2x", "3x", "4x", "crt-light", "crt-medium", "crt-strong", "crt-soft", "crt-soft-grille", "mister", "custom" };
 static const char *lores_names[NLORES] = { "3x", "5x", "7x", "11x", "crt-light", "crt-medium", "crt-strong", "crt-soft", "crt-soft-grille", "mister", "custom" };
-static const float scan_strength[3] = { 0.80f, 0.60f, 0.45f };   /* the sigma of the scanline profile: the smaller, the darker the gaps */
 static const char *ptr_names[3] = { "auto", "show", "hide" };
 static int ptr_mode;
 static const char *vscale_names[4] = { "fit", "integer", "overscan", "auto-crop" };
@@ -53,9 +52,6 @@ static const char *vscale_names[4] = { "fit", "integer", "overscan", "auto-crop"
 static struct { char horiz[260], vert[260], gamma[260], mask[260]; int mask_scale; float bright; } mcfg[2];
 static int lores_khz31;                          /* the 320x200 screens: 0 single scan (15 kHz, TV), 1 double scan (31 kHz, VGA) for every CRT look */
 static float c_dark = 0.30f, c_gamma = 1.13f, c_mask = 0.12f, c_sharp = 0.60f;   /* the custom look: in the ini */
-static float m_horiz[2][64][4], m_vert[2][2][256][4], m_gamma[2][256];
-static struct { int res, w, h; float rgb[16 * 16 * 3]; } m_masks[2][8];
-static int m_nmasks[2], m_dirty[2] = { 1, 1 }, m_mask_for = -1, m_class_up = -1;
 static int sharp_pre[2] = { 1, 3 };          /* integer scale before the window fit: hi-res 1x, lo-res 3x by default */
 
 static void mister_defaults(int c)
@@ -63,7 +59,6 @@ static void mister_defaults(int c)
   snprintf(mcfg[c].horiz, sizeof mcfg[c].horiz, "%s", DEF_HORIZ); snprintf(mcfg[c].vert, sizeof mcfg[c].vert, "%s", DEF_VERT);
   snprintf(mcfg[c].gamma, sizeof mcfg[c].gamma, "%s", DEF_GAMMA); snprintf(mcfg[c].mask, sizeof mcfg[c].mask, "%s", DEF_MASK);
   mcfg[c].mask_scale = 1; mcfg[c].bright = 1.0f;
-  m_dirty[c] = 1;
 }
 
 static FILE *open_rel(const char *path)
@@ -79,138 +74,9 @@ static FILE *open_rel(const char *path)
   return f;
 }
 
-/* the numbers of a coefficient file (lines starting with # are comments; the words 10bit and adaptive set flags) */
-static int read_numbers(const char *path, float *vals, int max, int *adaptive, int *tenbit)
-{
-  char line[512];
-  int n = 0;
-  FILE *f = open_rel(path);
-  if (!f) return 0;
-  *adaptive = *tenbit = 0;
-  while (fgets(line, sizeof line, f)) {
-    char *q = line;
-    while (*q == ' ' || *q == '\t') q++;
-    if (*q == '#' || *q == '\n' || *q == '\r' || !*q) continue;
-    if (!strncmp(q, "10bit", 5)) { *tenbit = 1; continue; }
-    if (isalpha((unsigned char)*q)) { if (!strncmp(q, "adaptive", 8)) *adaptive = 1; if (!strncmp(q, "10bit", 5)) *tenbit = 1; continue; }
-    while (*q) {
-      char *e;
-      long v;
-      while (*q && *q != '-' && !isdigit((unsigned char)*q)) q++;
-      if (!*q) break;
-      v = strtol(q, &e, 10);
-      if (e == q) break;
-      if (n < max) vals[n++] = (float)v;
-      q = e;
-    }
-  }
-  fclose(f);
-  return n;
-}
 
-static void load_mask(const char *path, int cls)
-{
-  char line[512];
-  int res = 0, w = 0, h = 0, y = 0, want = 0;
-  FILE *f = open_rel(path);
-  m_nmasks[cls] = 0;
-  if (f) {
-    while (fgets(line, sizeof line, f) && m_nmasks[cls] < 8) {
-      char *q = line;
-      while (*q == ' ' || *q == '\t') q++;
-      if (*q == '#' || *q == '\n' || *q == '\r' || !*q) continue;
-      if (!strncmp(q, "Resolution=", 11)) { res = atoi(q + 11); want = 0; continue; }
-      if (!strncmp(q, "v2", 2)) { want = 1; continue; }
-      if (want == 1) {
-        if (sscanf(q, "%d,%d", &w, &h) != 2 || w < 1 || h < 1 || w > 16 || h > 16) { want = 0; continue; }
-        m_masks[cls][m_nmasks[cls]].res = res; m_masks[cls][m_nmasks[cls]].w = w; m_masks[cls][m_nmasks[cls]].h = h;
-        y = 0; want = 2;
-        continue;
-      }
-      if (want == 2) {                         /* a row of cells: colour (0-7: bit 1 blue, 2 green, 4 red), intensity on, intensity off */
-        for (int x = 0; x < w; x++) {
-          unsigned c = 0, on = 0, off = 0;
-          if (sscanf(q, "%1x%1x%1x", &c, &on, &off) != 3) break;
-          for (int ch = 0; ch < 3; ch++) {
-            int bit = ch == 0 ? 4 : ch == 1 ? 2 : 1;
-            m_masks[cls][m_nmasks[cls]].rgb[(y * w + x) * 3 + ch] = (c & bit) ? 1.0f + on / 16.0f : off / 16.0f;
-          }
-          q = strchr(q, ',');
-          if (!q) break;
-          q++;
-        }
-        if (++y == h) { m_nmasks[cls]++; want = 0; }
-      }
-    }
-    fclose(f);
-  }
-  if (!m_nmasks[cls]) {
-    m_masks[cls][0].res = 0; m_masks[cls][0].w = m_masks[cls][0].h = 1;
-    m_masks[cls][0].rgb[0] = m_masks[cls][0].rgb[1] = m_masks[cls][0].rgb[2] = 1.0f;
-    m_nmasks[cls] = 1;
-  }
-}
 
-static void mister_load(int cls)
-{
-  static float v[2 * 256 * 4 + 16];
-  int n, ad, tb, i, p, k;
-  m_dirty[cls] = 0; m_class_up = -1;
-  n = read_numbers(mcfg[cls].horiz, v, 2 * 256 * 4, &ad, &tb);
-  if (n == 64 * 4 || n == 256 * 4 || n == 2 * 256 * 4) {
-    int phases = n == 64 * 4 ? 64 : 256;
-    for (p = 0; p < 64; p++) {
-      const float *r = v + (size_t)(p * phases / 64) * 4;
-      float sum = r[0] + r[1] + r[2] + r[3];
-      for (k = 0; k < 4; k++) m_horiz[cls][p][k] = sum > 0 ? r[k] / sum : 0;
-    }
-  } else {                                     /* a Gaussian, sigma 0.42 pixels: what GS_Sharpness_060 is */
-    for (p = 0; p < 64; p++) {
-      float sum = 0;
-      for (k = 0; k < 4; k++) { float d = (k - 1) - p / 64.0f; m_horiz[cls][p][k] = expf(-d * d / (2 * 0.42f * 0.42f)); sum += m_horiz[cls][p][k]; }
-      for (k = 0; k < 4; k++) m_horiz[cls][p][k] /= sum;
-    }
-  }
-  n = read_numbers(mcfg[cls].vert, v, 2 * 256 * 4, &ad, &tb);
-  if (n == 2 * 256 * 4 || n == 256 * 4 || n == 64 * 4) {
-    float div = tb ? 256.0f : 128.0f;
-    int phases = n == 64 * 4 ? 64 : 256;
-    for (i = 0; i < 2; i++)
-      for (p = 0; p < 256; p++)
-        for (k = 0; k < 4; k++) m_vert[cls][i][p][k] = v[(((n == 2 * 256 * 4 ? i : 0) * 256) + p * phases / 256) * 4 + k] / div;
-  } else {                                     /* stand-ins: a beam over the two nearest lines, deeper gaps for dark pixels */
-    for (i = 0; i < 2; i++)
-      for (p = 0; p < 256; p++) {
-        float f = p / 256.0f, s = i ? 0.457f : 0.337f, a = i ? 0.97f : 1.1f;
-        m_vert[cls][i][p][0] = m_vert[cls][i][p][3] = 0;
-        m_vert[cls][i][p][1] = a * expf(-powf(f / s, 1.5f));
-        m_vert[cls][i][p][2] = a * expf(-powf((1 - f) / s, 1.5f));
-      }
-  }
-  n = read_numbers(mcfg[cls].gamma, v, 256, &ad, &tb);
-  if (n == 256) for (i = 0; i < 256; i++) m_gamma[cls][i] = v[i] / 255.0f;
-  else for (i = 0; i < 256; i++) m_gamma[cls][i] = mcfg[cls].gamma[0] ? powf(i / 255.0f, 2.5f / 2.2f) : i / 255.0f;
-  load_mask(mcfg[cls].mask, cls);
-}
 
-static void mister_mask_for(int height, int cls)
-{
-  int best = 0;
-  if (height == m_mask_for && cls == m_class_up) return;
-  m_mask_for = height;
-  for (int i = 0; i < m_nmasks[cls]; i++) if (m_masks[cls][i].res <= height && m_masks[cls][i].res >= m_masks[cls][best].res) best = i;
-  ob_gl_mister_mask(m_masks[cls][best].rgb, m_masks[cls][best].w, m_masks[cls][best].h);
-}
-
-static void mister_upload(int cls, int height)
-{
-  if (m_class_up != cls) {
-    ob_gl_mister_tables((const float (*)[4])m_horiz[cls], (const float (*)[256][4])m_vert[cls], m_gamma[cls]);
-    m_class_up = cls;
-    m_mask_for = -1;
-  }
-  mister_mask_for(height, cls);
-}
 
 /* a preset of the MiSTer scaler (an .ini: hfilter, vfilter, sfilter, gamma, mask, maskmode), paths relative to its Filters, Gamma and Shadow_Masks folders */
 static void apply_preset(int cls, const char *rel)
@@ -236,29 +102,6 @@ static void apply_preset(int cls, const char *rel)
   if (!strcmp(gm, "off") || !gm[0]) mcfg[cls].gamma[0] = 0; else snprintf(mcfg[cls].gamma, sizeof mcfg[cls].gamma, "mister/Gamma/%.240s", gm);
   if (!strcmp(mm, "off") || !mk[0]) mcfg[cls].mask[0] = 0; else snprintf(mcfg[cls].mask, sizeof mcfg[cls].mask, "mister/Shadow_Masks/%.240s", mk);
   mcfg[cls].mask_scale = mm[0] >= '1' && mm[0] <= '4' ? mm[0] - '0' : 1;
-}
-
-/* The integer scale taken before the window's bicubic scaling, the width of the scanlines (0: none), how many scanlines there are per source line,
- * and the style: 0 plain or scanlines, 1 a soft CRT (after Timothy Lottes' CRT shader), 2 the same with an aperture grille, 3 MiSTer, 4 custom. */
-static void look(int w, int *pre, float *scan, int *period, int *style)
-{
-  *scan = 0; *period = 1; *style = 0;
-  if (w <= 320) {
-    int m = lores_mode;
-    *pre = m < 4 ? sharp_pre[1] : 3;
-    if (m >= 4) *period = lores_khz31 ? 2 : 1;
-    if (m >= 4 && m < 7) *scan = scan_strength[m - 4];
-    if (m == 7 || m == 8) { *style = m - 6; *pre = 1; }
-    if (m == 9) { *style = 3; *pre = 1; }
-    if (m == 10) { *style = 4; *pre = 3; }
-  } else {
-    int m = hires_mode;
-    *pre = m < 4 ? sharp_pre[0] : 1;
-    if (m >= 4 && m < 7) *scan = scan_strength[m - 4];
-    if (m >= 7 && m < 9) *style = 1 + (m - 7);
-    if (m == 9) *style = 3;
-    if (m == 10) *style = 4;
-  }
 }
 
 const char *settings_path(void)
@@ -390,23 +233,10 @@ void video_mister_pick(int cls, int kind, const char *rel)
 {
   if (kind == 4) apply_preset(cls, rel);
   else snprintf(kind == 0 ? mcfg[cls].horiz : kind == 1 ? mcfg[cls].vert : kind == 2 ? mcfg[cls].gamma : mcfg[cls].mask, 260, "%s", rel);
-  m_dirty[cls] = 1;
   mister_on(cls);
   settings_save();
   menu_sync();
   if (!overbar_busy) overbar_capture_host();
-}
-
-/* A scanline is drawn over `rows` window rows. Its brightest row is the middle one, and the gain keeps the average brightness. */
-static void scan_rows(float sigma, int rows, float *center, float *gain)
-{
-  float sum = 0;
-  if (rows < 1) rows = 1;
-  *center = ((rows - 1) / 2 + 0.5f) / rows;
-  *gain = 1;
-  if (sigma <= 0) return;
-  for (int r = 0; r < rows; r++) { float d = ((r + 0.5f) / rows - *center) / sigma; sum += expf(-d * d); }
-  *gain = rows / sum;
 }
 
 /* Overlay choices land on the same commands as the menu bar. This game is lo-res, so hi-res is left to the bar. */
@@ -445,6 +275,10 @@ static void overbar_capture_host(void)
   h->lores.sharp = ob_sharp_index(sharp_pre[1]);
   h->lores.khz31 = lores_khz31;
   h->hires.ntsc = h->lores.ntsc = ntsc_on;
+  h->hires.c_dark = h->lores.c_dark = c_dark;              /* the custom look (in the ini only) */
+  h->hires.c_gamma = h->lores.c_gamma = c_gamma;
+  h->hires.c_mask = h->lores.c_mask = c_mask;
+  h->hires.c_sharp = h->lores.c_sharp = c_sharp;
   h->hires.mask_scale = mcfg[0].mask_scale;
   h->lores.mask_scale = mcfg[1].mask_scale;
   h->hires.bright = (int)(mcfg[0].bright * 100.0f + 0.5f);
@@ -537,13 +371,11 @@ void video_command(int id)
   else if (id >= CMD_HIRES && id < CMD_HIRES + NHIRES) {
     hires_mode = id - CMD_HIRES; vscale_hi = hires_mode >= 4 ? 3 : 0;
     if (hires_mode < 4) sharp_pre[0] = hires_mode + 1;
-    if (hires_mode == 9) m_dirty[0] = 1;
   }
   else if (id >= CMD_LORES && id < CMD_LORES + NLORES) {
     static const int lo_pre[4] = { 3, 5, 7, 11 };
     lores_mode = id - CMD_LORES; vscale_lo = lores_mode >= 4 ? 3 : 0;
     if (lores_mode < 4) sharp_pre[1] = lo_pre[lores_mode];
-    if (lores_mode == 9) m_dirty[1] = 1;
   }
   else if (id >= CMD_POINTER && id < CMD_POINTER + 3) ptr_mode = id - CMD_POINTER;
   else if (id >= CMD_MBRIGHT_HI && id < CMD_MBRIGHT_HI + 9) { mcfg[0].bright = 0.7f + 0.1f * (id - CMD_MBRIGHT_HI); mister_on(0); }
@@ -635,29 +467,24 @@ static void client_size(int *w, int *h)
 }
 
 /* where the picture sits in the window: the largest 4:3 rectangle, centred, or a whole number of window rows per line (picture height) */
+/* The look Overbar draws this screen with: the game's settings are mirrored into the Overbar host (overbar_capture_host), and Overbar's
+ * one rendering path (ob_render_plan_get, ob_gl_render, ob_render_cpu) does all the scaling and the looks. */
+static const ob_look *cur_look(int w, ob_class *cls)
+{
+  ob_host *h = overbar_client_host();
+  *cls = w <= 320 ? OB_CLASS_LORES : OB_CLASS_HIRES;
+  return *cls == OB_CLASS_LORES ? &h->lores : &h->hires;
+}
+
 void video_view(int *vx, int *vy, int *vw, int *vh)
 {
-  int ww = 960, wh = 720, w, h, vs = mode_w <= 320 ? vscale_lo : vscale_hi;
+  int ww = 960, wh = 720, vs = mode_w <= 320 ? vscale_lo : vscale_hi;
+  ob_class cls;
+  const ob_look *lk = cur_look(mode_w, &cls);
+  ob_render_plan plan;
   if (win) client_size(&ww, &wh);
-  w = ww; h = ww * 3 / 4;
-  if (h > wh) { h = wh; w = wh * 4 / 3; }
-  if (vs) {
-    int pre, period, style, unit, kf, kc, k;
-    float scan;
-    look(mode_w, &pre, &scan, &period, &style);
-    unit = mode_h * (period == 2 ? 2 : 1);
-    kf = wh / unit;
-    if (kf < 1) kf = 1;
-    while (kf > 1 && kf * unit * 4 / 3 > ww) kf--;
-    kc = (wh + unit - 1) / unit;
-    if (kc * unit * 4 / 3 > ww) kc = kf;          /* the rows may be cropped a little (overscan, auto crop), the columns never: too wide is one multiple down */
-    if (kc < kf) kc = kf;
-    if (vs == 1) k = kf;
-    else if (vs == 2) k = kc;
-    else k = (kc * unit - wh <= (mode_w <= 320 ? 6 : 10) * kc * (unit / mode_h)) ? kc : kf;     /* auto crop: at most 6 or 10 of the game's own lines cut off */
-    h = k * unit; w = h * 4 / 3;
-  }
-  *vw = w; *vh = h; *vx = (ww - w) / 2; *vy = (wh - h) / 2;
+  ob_render_plan_get(lk, cls, mode_w, mode_h, ww, wh, &plan);
+  overbar_client_view(mode_w, mode_h, ww, wh, vs, plan.period == 2, vx, vy, vw, vh);
 }
 
 void video_mode_size(int *w, int *h) { *w = mode_w; *h = mode_h; }
@@ -697,6 +524,7 @@ void video_init(int want_gl)
   if (getenv("NHL94_LOOK")) lores_mode = name_index(getenv("NHL94_LOOK"), lores_names, NLORES, lores_mode);   /* a test aid */
   if (getenv("NHL94_PRESET")) { const char *t = getenv("NHL94_PRESET"); apply_preset(t[0] == 'l', t + 2); mister_on(t[0] == 'l'); }
   ob_gl_filter = getenv("NHL94_FILTER");
+  ob_render_set_filter(ob_gl_filter);
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
   if (want_gl && !getenv("NHL94_NOGL") && SDL_strcmp(SDL_GetCurrentVideoDriver(), "dummy")) {
     win = shell_open(base_title, ww, wh, 1);
@@ -771,28 +599,34 @@ void video_present(void)
       SDL_GL_GetDrawableSize(win, &dw, &dh);
       if (ww <= 0 || wh <= 0) return;
       {
-        int pre, period, style, unit, rows;
-        float scan, center, gain;
-        look(w, &pre, &scan, &period, &style);
-        unit = h * (period == 2 ? 2 : 1);
-        rows = (vh * dh / wh + unit / 2) / unit;
-        scan_rows(scan, rows, &center, &gain);
+        ob_class cls;
+        const ob_look *lk = cur_look(w, &cls);
         ob_gl_set_target(dw, dh);
-        ob_gl_set_look(pre, scan, gain, center, period, style);
-        if (style == 3) { int c = w <= 320; if (m_dirty[c]) mister_load(c); mister_upload(c, dh); }
-        ob_gl_set_custom(c_dark, c_gamma, c_mask, c_sharp);
-        ob_gl_set_bright(mcfg[w <= 320].bright, (float)mcfg[w <= 320].mask_scale);
+        ob_gl_render(win, lk, cls, argb, w, h, vx * dw / ww, (wh - vy - vh) * dh / wh, vw * dw / ww, vh * dh / wh);
       }
-      ob_gl_draw(win, argb, w, h, vx * dw / ww, (wh - vy - vh) * dh / wh, vw * dw / ww, vh * dh / wh);
     } else {
       SDL_Rect dst = { vx, vy, vw, vh };
       int ow, oh, ww, wh;
       SDL_GetRendererOutputSize(ren, &ow, &oh); client_size(&ww, &wh);
       if (ww > 0 && wh > 0) { dst.x = vx * ow / ww; dst.y = vy * oh / wh; dst.w = vw * ow / ww; dst.h = vh * oh / wh; }
-      SDL_UpdateTexture(tex, 0, argb, w * 4);
+      static SDL_Texture *rtex;                 /* the software renderer's picture, at the view's size */
+      static int rw, rh;
+      ob_class cls;
+      const ob_look *lk = cur_look(w, &cls);
+      uint32_t *px = NULL;
+      int pw = 0, ph = 0;
       SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
       SDL_RenderClear(ren);
-      SDL_RenderCopy(ren, tex, 0, &dst);
+      if (dst.w > 0 && dst.h > 0 && ob_render_cpu(lk, cls, argb, w, h, w, dst.w, dst.h, &px, &pw, &ph)) {
+        if (!rtex || rw != pw || rh != ph) {
+          if (rtex) SDL_DestroyTexture(rtex);
+          rtex = SDL_CreateTexture(ren, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, pw, ph);
+          rw = pw; rh = ph;
+          if (rtex) SDL_SetTextureScaleMode(rtex, SDL_ScaleModeLinear);
+        }
+      }
+      if (rtex && px && rw == pw && rh == ph) { SDL_UpdateTexture(rtex, 0, px, pw * 4); SDL_RenderCopy(ren, rtex, 0, &dst); }
+      else { SDL_UpdateTexture(tex, 0, argb, w * 4); SDL_RenderCopy(ren, tex, 0, &dst); }
       SDL_RenderPresent(ren);
     }
   }
