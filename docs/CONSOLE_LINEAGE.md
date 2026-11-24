@@ -83,39 +83,104 @@ Faceoffs and other extras; their order wasn't fully mapped, so no field-by-field
 **Verdict:** PC rosters are the 1992-93 rosters the 94 consoles were built from, before expansion, under the full NHL
 licence. They aren't the older NHLPA 93 rosters.
 
+## All-Star teams
+
+The All-Star rosters were compared player by player: the PC's two All-Star records in `TEAMS.DB` / `KEY.DB` against
+the All Stars East / West records in the console team data. Console positions come from the line slots (G, D, or a
+forward slot), the PC's from `KEY.DB`. Names were matched on last name and first initial (the console data abbreviates
+some names). The real 1993 rosters are from the [44th NHL All-Star Game](https://en.wikipedia.org/wiki/44th_National_Hockey_League_All-Star_Game)
+page (Montreal, February 6, 1993).
+
+**93 Genesis = 93 SNES and 94 Genesis = 94 SNES.** The two 93 versions have the same All-Star players in the same order
+with the same rating data (22/22 and 22/22 records identical), and so do the two 94 versions (25/25 and 25/25). (Data)
+
+| | Players (G / D / F) | Same players as PC, East | Same players as PC, West | Both teams |
+|---|---|---|---|---|
+| 93 Genesis | East 22 (3 / 6 / 13), West 22 (3 / 7 / 12) | 11 / 25 | 9 / 25 | **20 / 50 (40%)** |
+| 93 SNES | East 22 (3 / 6 / 13), West 22 (3 / 7 / 12) | 11 / 25 | 9 / 25 | **20 / 50 (40%)** |
+| 94 Genesis | East 25 (3 / 8 / 14), West 25 (3 / 8 / 14) | 21 / 25 | 20 / 25 | **41 / 50 (82%)** |
+| 94 SNES | East 25 (3 / 8 / 14), West 25 (3 / 8 / 14) | 21 / 25 | 20 / 25 | **41 / 50 (82%)** |
+| 94 PC | Wales 25 (3 / 8 / 14), Campbell 25 (3 / 8 / 14) | | | |
+
+Rosters (G; D; F):
+
+- **94 PC, Wales:** G: Patrick Roy, Peter Sidorkiewicz, Craig Billington. D: Ray Bourque, Zarley Zalapski, Brad Marsh, Steve Duchesne, Scott Stevens, Brian Leetch, Kevin Lowe, Al Iafrate. F: Adam Oates, Pat LaFontaine, Alexander Mogilny, Kirk Muller, Joe Sakic, Pierre Turgeon, Mark Messier, Mike Gartner, Mark Recchi, Kevin Stevens, Mario Lemieux, Jaromir Jagr, Rick Tocchet, Peter Bondra.
+- **94 PC, Campbell:** G: Mike Vernon, Ed Belfour, Jon Casey. D: Dave Manson, Randy Carlyle, Chris Chelios, Steve Chiasson, Paul Coffey, Jeff Brown, Garth Butcher, Phil Housley. F: Gary Roberts, Luc Robitaille, Wayne Gretzky, Jari Kurri, Kelly Kisio, Pat Falloon, Pavel Bure, Teemu Selanne, Jeremy Roenick, Steve Yzerman, Mike Modano, Brett Hull, Brian Bradley, Doug Gilmour.
+- **93 Genesis / 93 SNES, All Stars East:** G: Patrick Roy, Mike Richter, Don Beaupre. D: Ray Bourque, Paul Coffey, Brian Leetch, Kevin Hatcher, Eric Desjardins, Scott Stevens. F: Mario Lemieux, Mark Messier, Rod Brindamour, Bryan Trottier, Joe Sakic, Ray Ferraro, John Cullen, Jaromir Jagr, Alexander Mogilny, Owen Nolan, Kevin Stevens, Randy Burridge, Kirk Muller.
+- **93 Genesis / 93 SNES, All Stars West:** G: Ed Belfour, Kirk McLean, Tim Cheveldae. D: Al MacInnis, Chris Chelios, Doug Wilson, Phil Housley, Mark Tinordi, Larry Robinson, Dave Ellett. F: Wayne Gretzky, Jeremy Roenick, Adam Oates, Steve Yzerman, Sergei Fedorov, Brett Hull, Trevor Linden, Theoren Fleury, Luc Robitaille, Gary Roberts, Brian Bellows, Vincent Damphousse.
+- **94 Genesis / 94 SNES, All Stars East:** G: Patrick Roy, Grant Fuhr, Tom Barrasso. D: Larry Murphy, Ray Bourque, Brian Leetch, Steve Duchesne, Al Iafrate, Scott Stevens, Zarley Zalapski, Glen Wesley. F: Mario Lemieux, Mark Messier, Kirk Muller, Adam Oates, Joe Sakic, Pierre Turgeon, Pat LaFontaine, Kevin Stevens, Jaromir Jagr, Peter Bondra, Mike Gartner, Rick Tocchet, Alexander Mogilny, Mark Recchi.
+- **94 Genesis / 94 SNES, All Stars West:** G: Ed Belfour, Tim Cheveldae, Felix Potvin. D: Gary Suter, Jeff Brown, Paul Coffey, Chris Chelios, Phil Housley, Dave Manson, Steve Smith, Steve Chiasson. F: Steve Yzerman, Mike Modano, Jeremy Roenick, Brian Bradley, Doug Gilmour, Wayne Gretzky, Gary Roberts, Luc Robitaille, Theoren Fleury, Brett Hull, Pavel Bure, Teemu Selanne, Pat Falloon, Jari Kurri.
+
+**Against the real 1993 game.** The real game had 49 selected players: the Wales 22 who dressed plus Brian Leetch, Mario
+Lemieux and Mark Messier, who were selected but didn't play, and the Campbell 23 plus Jeff Brown, who was selected but
+replaced by Garth Butcher.
+
+| | Real 1993 selections present | Players not on the real 1993 roster |
+|---|---|---|
+| 94 PC | **49 / 49** (Wales 25 / 25, Campbell 24 / 24) | Pat Falloon (Campbell) |
+| 94 Genesis / 94 SNES | 40 / 49 | East: Grant Fuhr, Tom Barrasso, Larry Murphy, Glen Wesley. West: Tim Cheveldae, Felix Potvin, Theoren Fleury, Gary Suter, Steve Smith, Pat Falloon |
+| 93 Genesis / 93 SNES | 20 / 49 | 24 others, e.g. Mike Richter, Bryan Trottier, Owen Nolan, Kevin Hatcher (East); Kirk McLean, Sergei Fedorov, Trevor Linden, Al MacInnis, Larry Robinson (West) |
+
+**What the 94 consoles changed from the PC list.** They drop nine real selections, mostly the one-per-team and
+commissioner's picks and the backup goalies (East: Brad Marsh, Kevin Lowe, Peter Sidorkiewicz, Craig Billington; West:
+Kelly Kisio, Randy Carlyle, Garth Butcher, Mike Vernon, Jon Casey). In their place they add nine star players who weren't
+on the 1993 roster (Fuhr, Barrasso, Murphy, Wesley; Cheveldae, Potvin, Fleury, Suter, Steve Smith). The other 41 players
+are the same as on PC, including Pat Falloon, who appears in both the PC and the 94 Campbell / West list although he
+wasn't on the real roster. (Data; the reason for Falloon isn't known.)
+
+**The 93 consoles** use a different, older selection. Paul Coffey is on the East and Adam Oates on the West, which fits
+team affiliations from before their February 1992 trades, so these are 1991-92 picks, not the 1993 game. (Data for the
+lists; the dating is an inference.)
+
+**Verdict:** the PC All-Star teams are the real February 1993 All-Star selections, all 49, plus Pat Falloon. Of the
+console games, they line up best with **94 Genesis and 94 SNES (82%, identical to each other)**, against 40% for 93
+Genesis and 93 SNES (also identical to each other). The 94 lists look like the PC list edited toward star players. (Data)
+
 ## Skating and shooting physics
 
-**How units line up.** On both platforms one game-clock second is 24 game steps. The consoles set `jps=24` and subtract
-`jiffy=$10000/jps` each step (`ram93.asm`, `ram94.asm`). The PC's `ClockTick` (2E42:2C30) reloads `clockticks` with 0x18,
-and `RunGameFrames` (1E7E:0404) calls `DoGameFrame` once per tick. So a per-step constant on one platform compares directly
-with the other. The consoles also multiply by d7 (frames since the last step) to catch up; the PC has no such factor.
-Distances are in the same rink units on all three, but the PC rink has a different shape, so the table gives a
-rink-scaled figure where it matters. Everything in this section is **Code** (the routines were read), except where noted.
-94 SNES wasn't traced number by number; the 94 column is 94 Genesis.
+**How units line up.** All five games run the game clock at 24 steps per second: the 93 / 94 Genesis and 93 SNES set
+`jps=24` and subtract `$10000/jps` per step (`ram93.asm`, `ram94.asm`, `ram93s.asm`); 94 SNES subtracts `$0AAA`
+(= $10000/24) per tick (`Gameloop.asm`); the PC's `ClockTick` (2E42:2C30) reloads `clockticks` with 0x18 and
+`RunGameFrames` (1E7E:0404) calls `DoGameFrame` once per tick. So a per-step constant on one platform compares directly
+with the others. All four consoles also scale each step by d7 (video frames since the last step, 60 Hz on NTSC); the
+SNES games pre-compute `velstep` = d7 x 16 and `gravstep` = d7 x 96 once per step. The PC has no d7 factor. Distances are
+in the same rink units everywhere, but the PC rink has a different shape, so rink-scaled figures are given where it
+matters. Everything here is **Code** (the routine was read) unless marked otherwise.
 
-| | 93 Genesis | 94 Genesis | 94 PC |
-|---|---|---|---|
-| **Rink half-size: side boards / end boards / goal line / blue line** | 136 / 298 / 264 / 88 (`checkwallcoll` #$88, #$12A) | Same as 93 | **160 / 264 / 232 / 78** (`checkwallcoll` 28BB:2A54: 0xA0, 0x108; offside 0x4E; icing 0xE8). About 0.886 x the console length and 1.176 x the width |
-| **Position update** | position += velocity x 16 x d7 | x 17 (NTSC) | **x 16, fixed** (`updateplayers` 2E42:1D36) |
-| **Friction** | velocity -= max(1, velocity >> 6); >> 9 with friction off | Same | Same |
-| **Puck gravity** | 96 per step | Not compared | 96 per step |
-| **Acceleration** (`playeracc`) | direction step (200 straight, 141 diagonal) x (32 - weight/8 + agility) >> 5 x d7; goalies add agility + 8 | (64 - weight/4 + agility [+2 crowd boost]) [goalie + agility + 16] / 2 >> 5 x d7; a joypad-controlled puck carrier gets half | **The 93 formula** with direction steps 175 / 124, pre-scaled by (agility + 48) >> 6, then x (agility - weight/8 + 32) [goalie + agility + 8] >> 5 (2425:080C) |
-| **Top speed** | table ((n + 20) x 275)², i.e. 5500-9625; index (speed x energy) >> 12 | Same table; speed 0-30 with a +2 crowd boost, halved, odd values interpolated; a goalie with the puck gets half | **Own table:** square roots exactly 4800 + 220n - n², i.e. 4800-7875; index (energy x speed) >> 12 as in 93; injured players get 1/8. Scaled to the PC rink, the console range is about 4870-8530, so the fastest PC skaters are slower |
-| **Stopping** (`stopna`) | 150 per axis | 150 | 150 (2425:0D44) |
-| **Turn rate** | 0x300 minus speed class, minimum 0x180, steps of 0x10 | Same | Same (`doplayeracc_ftab`) |
-| **Energy drain** (1 call in 128) | -33, plus the signed endurance value above 0xC00 | -33, plus endurance/2 | -33, plus endurance (unsigned), capped at 0x1000 |
-| **Shot power** (`doshot`) | speed x (shot power x energy + 20) x $5249 >> 16; backhand -25% | Shot power halved; one-timers have a minimum speed | **93 structure** (28BB:2630) plus boosts: +2 shot power above 12 when close (under 500), +1 each above 14, 13 and 10 |
-| **Perfect shot** | distance <= 200 and rnd(16 + accuracy) > 14 | Uses accuracy/2; always perfect with the goalie pulled or in a shootout | Same test as 93; accuracy +1 above 14 and +1 above 13 |
-| **Aim error** | ((speed/16 - accuracy + 16) x distance) >> 6, halved inside 250; x capped at 136, y at 60 | Same caps | Same formula; **x cap 160** (136 x 1.176, the rink-width ratio) |
-| **Shot vector** | speed x $44 (68) x d / distance; lift $B33, capped at $1800 | Same, plus a top-shelf lift adjustment | **Multiplier 0x3B (59)**: 59/68 = 0.868, about the rink-length ratio; target y 232 (the PC goal line); lift $B33, cap $1800 |
+| | 93 Genesis | 93 SNES | 94 Genesis | 94 SNES | 94 PC |
+|---|---|---|---|---|---|
+| **Rink half-size: sides / end boards / goal line** | 136 / 298 / 264 (`checkwallcoll` #$88, #$12A) | Same (`checkwallcoll.asm`) | Same | Same; shots aim at y 264 (#$0108) | **160 / 264 / 232** (28BB:2A54: 0xA0, 0x108). 0.886 x the length, 1.176 x the width |
+| **Position update** | velocity x 16 x d7 | velocity x `velstep` (d7 x 16) | x 17 x d7 (NTSC) | x `velstep` (d7 x 16) | **x 16, no d7** (`updateplayers` 2E42:1D36) |
+| **Skating friction** | velocity -= max(1, velocity >> 6) (1.6%); >> 9 with friction off | velocity x table/256 by d7: $F7 at d7=1 (3.5%) ... $DE at d7=10; friction off $FF-$FC | Same as 93G | Table $FD at d7=1 (1.2%) ... $E3; friction off $FF-$FC | **As 93G** (>> 6, >> 9) |
+| **Gravity** | 96 per step | `gravstep` = d7 x 96 | Not compared | `gravstep` = d7 x 96 | 96 per step |
+| **Acceleration base** (`dirtab`) | runspeed 200 (diagonal 141), x d7 | 200 x d7 (`dirtab8F` = 4 x runspeed, then / 4) | 200 x d7 | 200 x d7 | **175 / 124**, pre-scaled by (agility + 48) >> 6 |
+| **Acceleration factor** (weight = rating x 8 on the consoles) | 32 - weight/8 + agility; goalie + agility + 8 | **32 - weight/16** + agility; goalie + agility + 8 (the '92 weight term: half the weight effect) | (64 - weight/4 + agility [+2 crowd]) [goalie + agility + 16] / 2; joypad puck carrier gets half | 32 - weight/8 + **1.5 x agility**; human goalie + 2 x agility + 8; computer goalie / carrier + 8 (minus agility when a pass receiver exists) | **32 - weight/8 + agility**; goalie + agility + 8 (the 93G formula) |
+| **Top-speed table** (speed², shown as speed) | (n + 20) x 275: 5500-9625 | (n + 20) x 266: 5320-9310 | (n + 20) x 275 | (n + 20) x 261: 5220-9135 | 4800 + 220n - n²: **4800-7875** (console 5500-9625 is about 4870-8530 scaled to the PC rink) |
+| **Top-speed index** | (speed x energy) >> 12 | speed x (energy/2 + $800) >> 12: a tired player keeps at least half | speed 0-30, +2 crowd, halved | speed x (energy/2 + $800) >> 12 (energy fixed at $1000 with automatic line changes); goalies -25% | **(energy x speed) >> 12** (93G); injured players 1/8 |
+| **Stopping** (`stopna`) | 150 per axis per step | $70 (112) x d7 | 150 | ($70 + agility) x d7; human goalie halves velocity | **150** (2425:0D44) |
+| **Turn rate** | $300 minus speed class, minimum $180, steps of $10 | Same (`doplayeracc.asm`) | Same | Same | Same (`doplayeracc_ftab`) |
+| **Energy drain** | 1 call in 128: -33, plus endurance above $C00 | **1 in 64**: -33, plus endurance above $C00; only with line changes on | -33, plus endurance/2 | 1 in 64: -33, plus endurance above $C00 | -33, plus endurance, capped at $1000 |
+| **Shot speed** (`doshot`) | speed x (shot power x energy + 20) x **$5249** >> 16; backhand -25% | x **$2570** >> 16 (the error term then uses speed/8 instead of /16); backhand -25% | Shot power halved, $5249; one-timer minimum speed | $2570, backhand -25% | **$5249** (`doshot`, `src/engine/physics.asm`) plus shot-power boosts (+2 above 12 when close, +1 above 14, 13, 10) |
+| **Perfect shot** | distance <= 200 and rnd(16 + accuracy) > 14 | Same (#$C9, #$0F) | accuracy / 2; always with the goalie pulled or in a shootout | Same test as 93 (#$C9, #$0F) | Same as 93; accuracy +1 above 14 and above 13 |
+| **Aim error cap (x / y)** | 136 / 60, halved inside 250 | 136 (`Sideline`) / 60, halved inside 251 | 136 / 60 | 136 / 60, halved inside 251 | **160** / 60 (136 x 1.176, the width ratio) |
+| **Shot vector** | speed x **$44** x d / distance; lift $B33, max $1800 | $44; $B33; $1800 | $44, plus top-shelf lift | $44; $B33; $1800 | **0x3B** (59/68 = 0.868, the length ratio); $B33; $1800 |
 
-**Verdict:** the skating and shooting code is the 93 code, retuned for a wider, shorter rink: same friction, stopping, turn
-rate and gravity, the 93 acceleration and shot formulas, rink-scaled caps, a slower top-speed table and some extra
-rating boosts. None of the 94 changes (halved ratings, crowd speed boost, half acceleration for the puck carrier,
-one-timer speed floor, top-shelf lift) are in it.
+Two things in the SNES rows weren't traced to the end and are marked as open: the $2570 vs $5249 shot-speed factor
+(about 0.45 x) may be balanced by a differently scaled rating (`makepde`) on SNES, and the d7-indexed friction table
+gives a different loss per second only if the SNES steps cover a different number of frames than Genesis. Goalie
+reactions weren't compared.
 
-Two labels in `dgroup.asm` look wrong (not renamed here): `ShotSpeeds` marks a table of shot x-offsets (0, $C, $10, ...,
-the values of 93's `.shotsets`), and `AccelFactors` is the top-speed (speed squared) table.
+**Which console is PC closest to?** **93 Genesis.** The PC matches 93 Genesis on every constant it doesn't rescale for
+its rink: the friction shifts (>> 6 / >> 9), stopping 150, the acceleration factor 32 - weight/8 + agility, the
+top-speed index (energy x speed) >> 12, gravity 96, the turn rate, and the $5249 shot-speed factor. 93 SNES differs on
+friction (a multiply table), stopping ($70 x d7), the weight term (weight/16), the top-speed index (energy/2 + $800) and
+the shot factor ($2570). 94 SNES has those SNES differences plus 1.5 x agility and goalie changes. 94 Genesis has the
+halved ratings, crowd boost, carrier half-acceleration and x 17 position step. None of the 94 changes, Genesis or SNES,
+are in the PC code (Code).
+
+The table called `ShotSpeeds` in `dgroup.asm` is actually the shot x-offset table (0, $C, $10, ..., the values of 93's
+`.shotsets`), and `AccelFactors` is the top-speed table. Both have been renamed across the repos; this page calls them
+the shot x-offset table (formerly `ShotSpeeds`) and the top-speed table (formerly `AccelFactors`).
 
 ## Music and packaging
 
@@ -158,13 +223,14 @@ Hockey" and the cartridge "NHL '94".
 
 The PC game isn't a straight NHLPA 93 port, and it isn't a straight NHL 94 port either:
 
-- **94-like content:** full NHL licence (team names, crests), the 1992-93 rosters the 94 consoles were built from,
+- **94-like content:** full NHL licence (team names, crests), the 1992-93 rosters the 94 consoles were built from, the
+  real 1993 All-Star selections (82% shared with the 94 console All-Star teams),
   Ruehle's 94 organ set (the 94 SNES tunes, 50 of 53 note for note) and the 94 menu music.
 - **94-like gameplay:** fighting is gone, all the way down to the collision routine and the player card. One-timers are
   in, for the player and for the CPU, coded the way NHL 94 SNES does them (receiver swing, forehand / backhand pick). It
   has the 94 SNES goalie wall animations, which no 93 game has.
-- **93-like engine:** skating and shooting are the 93 formulas, retuned for the PC rink, with none of the 94 physics
-  changes. The checking and fall animations are the 93 set. No penalty shots, no shootout, the 93 eight-row team stats,
+- **93-like engine:** skating and shooting are the 93 Genesis formulas, retuned for the PC rink, with none of the 94
+  physics changes (Genesis or SNES). The checking and fall animations are the 93 set. No penalty shots, no shootout, the 93 eight-row team stats,
   two players.
 - **PC-only:** a referee on the ice, anthems, the Stanley Cup presentation, three stars, a league mode, a Faceoffs
   rating, a different rink shape and its own top-speed table.
@@ -177,6 +243,6 @@ consoles.
 
 - A "not found" is a search of this labelled source (names, strings, animation and assignment tables). A feature hidden
   under an unrelated name could still have been missed.
-- Physics compares 93 Genesis, 94 Genesis and PC. 94 SNES and goalie reactions weren't compared number by number.
+- Physics covers all four consoles and the PC; goalie reactions weren't compared, and two SNES points (shot-speed rating scale, friction per second) are open.
 - The PC `ATT.DB` rating order wasn't fully mapped.
 - 94 Genesis and Sega CD music weren't compared note for note; packaging is from Abdul's comparison.
