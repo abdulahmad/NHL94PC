@@ -344,8 +344,8 @@ defertab_fn		equ	0xDC38
 defertab_seg		equ	0xDC3A
 defsort_d		equ	0xDD3E
 demoflag		equ	0x4A62
-dirtab0		equ	0x29E0
-dirtab_x		equ	0x29E2
+dirtab		equ	0x29E0
+dirtab_y		equ	0x29E2
 doorXpos2		equ	0xBC90
 doorXvel		equ	0xBC9A
 doorYpos2		equ	0xBC94

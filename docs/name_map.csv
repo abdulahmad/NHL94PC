@@ -4819,3 +4819,5 @@ g_D46C,lcrequest,controlled,95 PC,high,"per team line-change request flag: Handl
 g_D46E,lcrequest+2,controlled2,95 PC,high,team 2 word of lcrequest (folded into lcrequest+2 as in 95 PC),src/data/dgroup_bss.asm
 g_D470,lcreqchoice,lcline,95 PC,high,"per team requested line choice (key - 3Bh / - 3Fh) passed to lcselect; 95 PC lcreqchoice (95 PC's lcline is the line offered in the box)",src/data/dgroup_bss.asm
 g_D472,lcreqchoice+2,lctimer,95 PC,high,team 2 word of lcreqchoice (folded into lcreqchoice+2 as in 95 PC),src/data/dgroup_bss.asm
+g_29E0,dirtab,dirtab0,93G,high,"start of the direction table of x, y word pairs (93G dirtab); the x column (dopass adds it to Xvel, skate.asm / logic.asm read it first)",src/data/dgroup.asm
+g_29E2,dirtab_y,dirtab_x,95 PC,high,"y column of dirtab (dirtab+2; dopass adds it to Yvel); was named the x column; 95 PC dirtab_y",src/data/dgroup.asm

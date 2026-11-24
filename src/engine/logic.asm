@@ -4176,12 +4176,12 @@ Endfaceoff:
         shl word [regd0], 1
         mov bx, [regd0]
         shl bx, 1
-        mov ax, [bx + dirtab0]
+        mov ax, [bx + dirtab]
         shl ax, byte 0x5
         mov [si + 0xc], ax
         mov bx, [regd0]
         shl bx, 1
-        mov ax, [bx + dirtab_x]
+        mov ax, [bx + dirtab_y]
         shl ax, byte 0x5
         add ax, [regd4]
         mov [si + 0xe], ax
