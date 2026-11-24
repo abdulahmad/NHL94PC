@@ -59,12 +59,12 @@ burst:
         sar word [regd0], byte 0x7
         mov bx, [si + 0x36]
         shl bx, byte 0x2
-        mov ax, [bx + dirtab0]
+        mov ax, [bx + dirtab]
         imul word [regd0]
         add [si + 0xc], ax
         mov bx, [si + 0x36]
         shl bx, byte 0x2
-        mov ax, [bx + dirtab_x]
+        mov ax, [bx + dirtab_y]
         imul word [regd0]
         add [si + 0xe], ax
         or byte [si + 0x44], 0x20
@@ -1534,7 +1534,7 @@ dopass:
         mov si, [bp + 0x6]
         mov bx, [passdir]
         shl bx, byte 0x2
-        mov dx, [bx + dirtab_x]
+        mov dx, [bx + dirtab_y]
         mov ax, [passspeed]
         call 0x03A3:ImulRegs
         db 0x8A, 0xF2                           ; insn: mov dh, dl
@@ -1552,7 +1552,7 @@ dopass:
         mov [bx], ax
         mov bx, [passdir]
         shl bx, byte 0x2
-        mov dx, [bx + dirtab0]
+        mov dx, [bx + dirtab]
         mov ax, [passspeed]
         call 0x03A3:ImulRegs
         db 0x8A, 0xF2                           ; insn: mov dh, dl

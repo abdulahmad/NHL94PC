@@ -944,7 +944,7 @@ playeracc:
         add cx, 0x30
         mov bx, [bp + 0x8]
         shl bx, byte 0x2
-        mov ax, [bx + dirtab0]
+        mov ax, [bx + dirtab]
         imul cx
         cwd
         db 0x33, 0xC2                           ; insn: xor ax, dx
@@ -953,7 +953,7 @@ playeracc:
         db 0x33, 0xC2                           ; insn: xor ax, dx
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         mov [bp - 0x2], ax
-        mov ax, [bx + dirtab_x]
+        mov ax, [bx + dirtab_y]
         imul cx
         cwd
         db 0x33, 0xC2                           ; insn: xor ax, dx

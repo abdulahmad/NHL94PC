@@ -3161,9 +3161,10 @@ gameclock:                                      ; game clock in seconds; used by
         db 0x00, 0x00
 clockticks:                                     ; ticks within the current second; used by AI, GAME, INIT
         db 0x00, 0x00
-dirtab0:                                        ; entry before dirtab; used by AI
+dirtab:                                         ; direction table: x, y word pairs for the 8 directions (x
+                                                ; column; dirtab_y is the y column); used by AI
         db 0x00, 0x00
-dirtab_x:                                       ; x components of the direction table; used by AI
+dirtab_y:                                       ; y components of the direction table (dirtab+2); used by AI
         db 0xAF, 0x00, 0x7C, 0x00
         db 0x7C, 0x00, 0xAF, 0x00, 0x00, 0x00
         db 0x7C, 0x00, 0x84, 0xFF, 0x00, 0x00
