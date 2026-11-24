@@ -3073,8 +3073,8 @@ StartPer:
         db 0x33, 0xC0                           ; insn: xor ax, ax
         call 0x0000:__chkstk
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [controlled2], ax
-        mov [controlled], ax
+        mov [lcrequest+2], ax
+        mov [lcrequest], ax
         push cs
         call InitCoachModes
         push cs
