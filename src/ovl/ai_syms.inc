@@ -308,8 +308,6 @@ coachlinetab		equ	0x49A6
 collflag		equ	0x29BA
 cont1team		equ	0x29C6
 cont2team		equ	0x29C8
-controlled		equ	0xD46C
-controlled2		equ	0xD46E
 crowdcount		equ	0xD00A
 crowdheat		equ	0xD6C4
 crowdsum		equ	0xD010
@@ -497,7 +495,8 @@ lcboxon		equ	0x48E2
 lcchoice		equ	0x48D6
 lcgroup		equ	0x48DA
 lchoicetab_m1		equ	0x5B06
-lcline		equ	0xD470
+lcreqchoice		equ	0xD470
+lcrequest		equ	0xD46C
 lcrequestteam		equ	0x48CC
 lcsel		equ	0x48CE
 lctime		equ	0x48DE
