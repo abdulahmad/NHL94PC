@@ -31,7 +31,7 @@ Confidence levels:
 | **Players per game** | 2 | 94G: up to 4 with 4 Way Play (`fourway94.asm`). 94S: up to 5 with the MultiPlayer 5 multitap. `PlayerSelect` clears and places five pads (`cont1team`-`cont5team`, `ram94s.asm`), and `Multi5Init` / `Multi5ConnectCheck` detect the adaptor. The boxes say 1-4 (94G) and 1-5 (94S, "Hudson Soft Super Multitap") | **2 (not 94-like).** Only `cont1team` / `cont2team` exist; `SetupControllers` (1F9C:0000) sets up two players. The box says "play one or two players head to head" | Code |
 | **Manual goalie toggle** | No pause-menu goalie mode | 94G pause item "Manual Goalie / Auto Goalie" (`period94.asm` ManualGoalieMenu) | **Not found.** The PC menus have Home / Visiting Team Goalie, but that picks which goalie starts. The PC also has PULL GOALIE / RETURN GOALIE, like both consoles | Data |
 | **Hot / cold streaks and scouting text** | 93G and 93S have a pregame scouting report (93G `ScoutingReport`, `hockey93.asm`), as NHL Hockey (92) Genesis already did (`ScoutingReport`, `hockey.asm`; its box lists "scouting reports"); no hot / cold | 94G hot / cold tables (`Create_HotCold_Table`, `HotColdIcon`) feed the ratings | **Not found** | Data (absence) |
-| **Organ music** | Eight songs in all ($30-$37: goal, period start, power play, faceoff, title and so on); no per-team organ tunes and no organ credit | Per-team organ tunes (94G `arena94.asm` `TeamSongs`), credited "Organ Music by Dieter Ruehle" | **The 94 per-team organ set**, loaded from `.KMS` files (`LoadArenaJingles` 2137:0004, `PlayArenaJingle`), credited "Organ Music" / Dieter Ruehle. 50 of its 53 tunes match 94 SNES note for note; see Music and packaging | Code |
+| **Organ music** | Eight songs in all ($30-$37: goal, period start, power play, faceoff, title and so on); no per-team organ tunes and no organ credit | Per-team organ tunes (94G `arena94.asm` `TeamSongs`), credited "Organ Music by Dieter Ruehle" | **The 94 per-team organ set**, loaded from `.KMS` files (`LoadArenaJingles` 2137:0004, `PlayArenaJingle`), credited "Organ Music" / Dieter Ruehle. The manual's credits read "Organ Music: Dieter Ruehle, Michael J. Sokyrka" and "Original Music Composition: Michael J. Sokyrka". 50 of its 53 tunes match 94 SNES note for note; see Music and packaging | Code |
 | **Line changes, energy, injuries, instant replay, pulling the goalie, playoffs** | Yes | Yes | Yes | Present in all of them, so they don't separate 93 from 94 | Data |
 | **Referee on the ice** | No referee animations | No referee animations | **PC-only:** `SPArefglide` ... `SPArefbehind` with penalty signals, and the `assref*` assignments | Code |
 | **Anthem, Stanley Cup presentation, three stars skate** | `SPAstanley` celebration only | `SPAstanley` only | **PC-only:** `SPAanthem1-5`, `SPAgetcup`, `SPAbrcup`, `SPAgvcup`, `SPAstansk`, `assstarskate`, `assthreestars` | Code |
@@ -44,14 +44,14 @@ Box text is marketing, so it is quoted as "the box says". Where the box and the 
 
 | The box says (94 PC floppy) | Code | Confidence |
 |---|---|---|
-| "create a league of your own with up to 24 human participants" | **Matches.** New League asks for the human-controlled teams (`str_SelectHumanControlledTeams`, `LeagueTeamSelect` in `front/new_league.asm`), and the only refusal when adding one is "All the teams are already human" (`front/league_teams.asm`). So any of the 24 teams can be human. Each human team has a password (`AskTeamPassword`), and there is a league master password (`CheckMasterPassword`) | Data; Inferred (no limit below 24 was found) |
+| "create a league of your own with up to 24 human participants" | **Matches.** New League asks for the human-controlled teams (`str_SelectHumanControlledTeams`, `LeagueTeamSelect` in `front/new_league.asm`), and the only refusal when adding one is "All the teams are already human" (`front/league_teams.asm`). So any of the 24 teams can be human. Each human team has a password (`AskTeamPassword`), and there is a league master password (`CheckMasterPassword`). The manual confirms it: "an entire league schedule, with up to twenty four human players controlling the different teams" (League Play) | Data; Manual |
 | "team and player stats in over 15 categories" | **Matches: 16 leader-board sorts plus standings.** Teams have 5 (Scoring, Defense, Penalty Killing, Power Play, Penalties), players 8 (Points, Goals, Assists, Power Play Goals, Shorthanded Goals, Plus/Minus, Penalty Minutes, Shooting Percentage) and goalies 3 (Goals Against Average, Wins, Save Percentage) (`data/far/menu_text.asm`) | Data |
 | "end-of-season awards including Hart, Norris and Ross" | **Matches.** 94 PC has the 10-award list (see the NHL95PC page). No 94 console has season awards, and the 95G and 95S boxes call season mode and its awards "all new in 95". So 94 PC had a season with awards a year before the consoles | Data |
 | "instant replay that saves highlights to a personal highlight reel" | **Matches.** `ReplaySaveHilight` writes highlights to disk ("Insufficient disk space to save hilights.", `data/far/hilight_save_messages.asm`), and the menus have "League Hilights ...", "Play-Off Hilights ..." and "Select a hilight". Instant replay itself is in every game back to NHL Hockey (92) Genesis, whose box lists it too | Data |
-| "simulate the actual 1993 NHL season" (and an 84-game schedule, implied) | **Consistent.** The trade deadline check in `TradePlayers` (`front/trade.asm`) closes trading from March 20 (month 3, day 0x14), in months 4-9, or once 1008 games have been played. 1008 is 24 teams x 84 games / 2, so the full schedule is the 84-game 1992-93 season | Code (the check); Inferred (84 games) |
+| "simulate the actual 1993 NHL season" (and an 84-game schedule, implied) | **Consistent.** The trade deadline check in `TradePlayers` (`front/trade.asm`) closes trading from March 20 (month 3, day 0x14), in months 4-9, or once 1008 games have been played. The manual: "There's a trading deadline that goes into effect on March 20th", and trades are allowed only between human-controlled teams (Trade Players). 1008 is 24 teams x 84 games / 2, so the full schedule is the 84-game 1992-93 season | Code (the check); Inferred (84 games) |
 | "over 70 pieces of digitized organ music" | **Partly.** The game ships 71 `.KMS` songs, but only 53 of them are team organ tunes. The rest are menu and event songs. They are sequenced songs in EA's song format, not digitized recordings. 95 PC is the first PC game with digitized `.IFF` music (see the NHL95PC page). The 94G and 94S boxes also say "over 70". 94G has 72 organ songs, 70 of which its tables can play. 94S has 53, because it merges key and tempo variants (see Music and packaging) | Data |
 | "one-timers (drop a set pass to your big stick at the point)" | **Matches** the one-timer rows above. "Drop a set pass" here means the pass that sets up the one-timer, not a drop-pass move: 94 PC has **no drop pass at all**. `dopass` (`engine/physics.asm`, 28BB:0B96) always either passes to the closest teammate within one 45° step of `passdir`, straight ahead preferred (`passtoa0`), or, with nobody there, sends the puck along `passdir` at the pass speed plus the passer's velocity. No branch leaves the puck behind. 95 PC adds one (`PassLaneChk` / `ScatterPass`, see the NHL95PC page); 95G's is a separate button move | Code |
-| "play one or two players head to head" | **Matches** (Players per game row) | Code |
+| "play one or two players head to head" | **Matches** (Players per game row). The manual also has Two Player Cooperative: two players on the same team against the computer | Code; Manual |
 
 The other 94 boxes, compared with the code:
 
@@ -431,6 +431,19 @@ cartridge says "NHL '94".
 </table>
 
 <!-- 300 px wide copies only; each .svg wraps a small embedded JPEG / PNG. -->
+
+## What the 94 PC manual says
+
+From the public scan of the US manual (archive.org item ea-nhl94-nhl95-nhl96-nhl97-ibm-pc-dos-win-scans), by section:
+
+- **Players:** Head to Head Competition, and Two Player Cooperative: "two players to compete on the same team against
+  the computer".
+- **Lines:** "Each team has four forward lines, three defensive pairs, two penalty killing lines, and two power play
+  lines". Only human-controlled teams can edit lines or remove their goalie.
+- **Replay:** "The replay tape shows the last 25 seconds of the game-play."
+- **League:** up to 24 human players; trades only between human-controlled teams, after merging the league files;
+  trading deadline March 20.
+- **Credits:** "Original Music Composition: Michael J. Sokyrka", "Organ Music: Dieter Ruehle, Michael J. Sokyrka".
 
 ## What this means
 
