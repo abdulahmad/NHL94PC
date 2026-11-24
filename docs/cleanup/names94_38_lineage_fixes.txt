@@ -1,0 +1,7 @@
+# Two data labels renamed to their lineage names after a closer look at what they hold.
+# AccelFactors was the top speed (squared) table that playeracc caps the skater's speed with: 93G/94G/95 PC MaxSpeed.
+# The long entries are read as two words, so the high word (MaxSpeed+2) keeps its own label, MaxSpeed_w2.
+# ShotSpeeds was the shot target offsets per passdir (x word; the z word is shotsetz): 93G .shotsets, 94G/95 PC shotsets.
+AccelFactors MaxSpeed | 95 PC | high | top speed (squared) per leg speed rating; playeracc reads MaxSpeed[d2*4] as a long, 95 PC MaxSpeed
+AccelFactors2 MaxSpeed_w2 | 95 PC | high | high word of each MaxSpeed long (MaxSpeed+2), read with MaxSpeed by playeracc
+ShotSpeeds shotsets | 95 PC | high | x offset of each shot direction (passdir*4, z word at shotsetz); same values as 93G .shotsets
