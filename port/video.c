@@ -603,12 +603,26 @@ static int screen_present(void)
   return 1;
 }
 
+/* pictures drawn and new pictures per second (the stats display), also while a full-window screen is up */
+static void stats_tick(int is_new)
+{
+  static int n_shown, n_changed;
+  double now = host_time();
+  n_shown++; if (is_new) n_changed++;
+  if (now - title_at >= 1.0) {
+    shown = (int)(n_shown / (now - title_at) + 0.5); changed = (int)(n_changed / (now - title_at) + 0.5);
+    n_shown = n_changed = 0; title_at = now;
+    if (osd_on) { cpu_pct = plat_cpu_percent(); gpu_pct = plat_gpu_percent(); }
+    title_refresh();
+  }
+}
+
 void video_present(void)
 {
   int w, h;
   uint32_t hash;
   if (!ren && !use_gl) return;
-  if (ob_screen_up() && screen_present()) return;
+  if (ob_screen_up() && screen_present()) { stats_tick(1); return; }
   fresh = 0;
   hash = render();
   w = mode_w; h = mode_h;
@@ -617,18 +631,8 @@ void video_present(void)
     tex = SDL_CreateTexture(ren, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, w, h);
     tex_w = w; tex_h = h;
   }
-  {                                           /* pictures drawn and new pictures per second (the stats display) */
-    static int n_shown, n_changed;
-    double now = host_time();
-    n_shown++; if (hash != last_hash) n_changed++;
-    last_hash = hash;
-    if (now - title_at >= 1.0) {
-      shown = (int)(n_shown / (now - title_at) + 0.5); changed = (int)(n_changed / (now - title_at) + 0.5);
-      n_shown = n_changed = 0; title_at = now;
-      if (osd_on) { cpu_pct = plat_cpu_percent(); gpu_pct = plat_gpu_percent(); }
-      title_refresh();
-    }
-  }
+  stats_tick(hash != last_hash);
+  last_hash = hash;
   if (!overbar_client_open()) overbar_client_set_class(w <= 320);
   if (overbar_client_open()) overbar_client_draw(argb, w, h, w);
   if (ob_plat_osk_is_open()) ob_plat_osk_draw(argb, w, h, w);
