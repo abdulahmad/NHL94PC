@@ -446,22 +446,22 @@ SaveGameState:
         mov ax, [hudredraw]
         mov bx, [bp - 0x2]
         mov [bx], ax
-        mov ax, [controlled]
+        mov ax, [lcrequest]
         inc bx
         inc bx
         mov [bp - 0x2], bx
         mov [bx], ax
-        mov ax, [controlled2]
+        mov ax, [lcrequest+2]
         inc bx
         inc bx
         mov [bp - 0x2], bx
         mov [bx], ax
-        mov ax, [lcline]
+        mov ax, [lcreqchoice]
         inc bx
         inc bx
         mov [bp - 0x2], bx
         mov [bx], ax
-        mov ax, [lctimer]
+        mov ax, [lcreqchoice+2]
         inc bx
         inc bx
         mov [bp - 0x2], bx
@@ -1443,22 +1443,22 @@ LoadGameState:
         inc bx
         mov [bp - 0x2], bx
         mov ax, [bx]
-        mov [controlled], ax
+        mov [lcrequest], ax
         inc bx
         inc bx
         mov [bp - 0x2], bx
         mov ax, [bx]
-        mov [controlled2], ax
+        mov [lcrequest+2], ax
         inc bx
         inc bx
         mov [bp - 0x2], bx
         mov ax, [bx]
-        mov [lcline], ax
+        mov [lcreqchoice], ax
         inc bx
         inc bx
         mov [bp - 0x2], bx
         mov ax, [bx]
-        mov [lctimer], ax
+        mov [lcreqchoice+2], ax
         inc bx
         inc bx
         mov [bp - 0x2], bx
