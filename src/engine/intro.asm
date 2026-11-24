@@ -1461,8 +1461,8 @@ StartThreeStars:
         mov [lcsel], ax
         mov [lcrequestteam], ax
         mov [energywarnteam], ax
-        mov [controlled2], ax
-        mov [controlled], ax
+        mov [lcrequest+2], ax
+        mov [lcrequest], ax
         cmp word [ovlseq], -0x1
         jz short .2
         push word [OverlayGfxSeg]

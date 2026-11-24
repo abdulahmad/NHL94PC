@@ -1188,13 +1188,14 @@ NumberFrames2Seg:                               ; second number sprite frames; u
         resb 18
 gameframe:                                      ; game frame counter; used by AI, GAME, INIT
         resb 2
-controlled:                                     ; controlled player per controller; used by AI, GAME, INIT
+lcrequest:                                      ; per team: line change requested by number (F1-F4, F5-F8 in
+                                                ; HandleHotKey); doinput hands it to lcselect, then clears it;
+                                                ; used by AI, GAME, INIT
         resb 2
-controlled2:                                    ; second controlled player word; used by AI, GAME, INIT
         resb 2
-lcline:                                         ; line change: line chosen; used by AI, GAME, INIT
+lcreqchoice:                                    ; per team: the requested line choice passed to lcselect; used
+                                                ; by AI, GAME, INIT
         resb 2
-lctimer:                                        ; line change box timer; used by GAME, INIT
         resb 2
 objxlist:                                       ; object x list (34 bytes); used by AI
         resb 34

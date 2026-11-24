@@ -233,7 +233,8 @@ WaitKeyRelease:
 
 ;-----------------------------------------------------------------------------
 ; HandleHotKey                                               1E7E:01DC  94 PC
-; Jump table on in-game hot keys.
+; Jump table on in-game hot keys. F1-F4 / F5-F8 request a line change for team 1 / team 2 (lcrequest,
+; lcreqchoice and their +2 words).
 ;
 ; Takes 1 word of stack arguments. Calls GetPaletteFar, FadePalette, CrowdFadeOut, PlayPauseSample,
 ; ReleaseAllVoices, SpeechStopQueue, StopJingle, InputInit and others. Far routine (retf).
@@ -422,17 +423,17 @@ HandleHotKeyJumpTable:                          ; jump table of HandleHotKey: 18
         call 0x16F2:MusicOff
         jmp short .23
 .18:
-        mov word [controlled], 0x1
+        mov word [lcrequest], 0x1
         mov ax, [bp - 0x2]
         sub ax, strict word 0x3b
-        mov [lcline], ax
+        mov [lcreqchoice], ax
         jmp short .23
         db 0x90
 .19:
-        mov word [controlled2], 0x1
+        mov word [lcrequest+2], 0x1
         mov ax, [bp - 0x2]
         sub ax, strict word 0x3f
-        mov [lctimer], ax
+        mov [lcreqchoice+2], ax
         jmp short .23
         db 0x90
 .20:
@@ -905,8 +906,8 @@ Gameloop:
         add sp, 0x4
 .24:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [controlled2], ax
-        mov [controlled], ax
+        mov [lcrequest+2], ax
+        mov [lcrequest], ax
         mov [deferpending], ax
         mov [inputframes], ax
         mov [exitgame], ax

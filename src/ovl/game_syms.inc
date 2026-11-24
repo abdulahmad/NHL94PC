@@ -120,8 +120,6 @@ _unlink		equ	0x1076
 camx		equ	0x2998
 camy		equ	0x299A
 clockticks		equ	0x29DE
-controlled		equ	0xD46C
-controlled2		equ	0xD46E
 cupseries		equ	0xCFFC
 cupseriesseg		equ	0xCFFE
 curperiod		equ	0xBFFE
@@ -146,8 +144,8 @@ joyq_flushThunk		equ	0x293B
 joyq_peekThunk		equ	0x2963
 joyq_popThunk		equ	0x2945
 joyrec		equ	0x4B04
-lcline		equ	0xD470
-lctimer		equ	0xD472
+lcreqchoice		equ	0xD470
+lcrequest		equ	0xD46C
 lgstate_w5A		equ	0x11E
 mousex		equ	0xD60E
 mousey		equ	0xD610

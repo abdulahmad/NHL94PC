@@ -4815,3 +4815,7 @@ vga:377B,CopyPageRectJumpTable,,new,medium,word,src/pc/video/vga.asm
 vga:3C53,DrawScaledJumpTable,,new,medium,word,src/pc/video/vga.asm
 vga:3CEE,DrawLineClippedJumpTable,,new,medium,word,src/pc/video/vga.asm
 vga:3F22,DrawLineClippedJumpTable2,,new,medium,word,src/pc/video/vga.asm
+g_D46C,lcrequest,controlled,95 PC,high,"per team line-change request flag: HandleHotKey sets it for F1-F4 (team 1) / F5-F8 (team 2 at +2), doinput passes lcreqchoice to lcselect and clears it; 95 PC lcrequest",src/data/dgroup_bss.asm
+g_D46E,lcrequest+2,controlled2,95 PC,high,team 2 word of lcrequest (folded into lcrequest+2 as in 95 PC),src/data/dgroup_bss.asm
+g_D470,lcreqchoice,lcline,95 PC,high,"per team requested line choice (key - 3Bh / - 3Fh) passed to lcselect; 95 PC lcreqchoice (95 PC's lcline is the line offered in the box)",src/data/dgroup_bss.asm
+g_D472,lcreqchoice+2,lctimer,95 PC,high,team 2 word of lcreqchoice (folded into lcreqchoice+2 as in 95 PC),src/data/dgroup_bss.asm

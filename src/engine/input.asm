@@ -394,7 +394,7 @@ doinput:
         inc di
         db 0x8B, 0xDF                           ; insn: mov bx, di
         shl bx, 1
-        cmp word [bx + controlled], 0x0
+        cmp word [bx + lcrequest], 0x0
         jz short .4
         mov ax, [cont1team]
         cmp [cont2team], ax
@@ -411,7 +411,7 @@ doinput:
         db 0x8B, 0xDF                           ; insn: mov bx, di
         shl bx, 1
         mov [bp - 0x2], bx
-        push word [bx + lcline]
+        push word [bx + lcreqchoice]
         push si
         push cs
         call lcselect
@@ -424,7 +424,7 @@ doinput:
         mov [bx + lcboxon], ax
 .3:
         shl di, 1
-        mov word [di + controlled], 0x0
+        mov word [di + lcrequest], 0x0
 .4:
         test byte [gmode2], 0x1
         jz short .6

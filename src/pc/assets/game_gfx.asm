@@ -630,10 +630,10 @@ ResetGameVars:
         mov [lcsel], ax
         mov [lcrequestteam], ax
         mov [energywarnteam], ax
-        mov [lctimer], ax
-        mov [lcline], ax
-        mov [controlled2], ax
-        mov [controlled], ax
+        mov [lcreqchoice+2], ax
+        mov [lcreqchoice], ax
+        mov [lcrequest+2], ax
+        mov [lcrequest], ax
         mov ax, 0xffff
         mov [ovltimer], ax
         mov [penaltysc], ax
@@ -654,7 +654,7 @@ ResetGameVars:
         mov [textline1], al
         mov [textline3], al
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [lcline], ax
+        mov [lcreqchoice], ax
         mov [hudredraw], ax
         mov [lcboxon], ax
         mov [lcstate2], ax
