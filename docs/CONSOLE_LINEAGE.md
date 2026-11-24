@@ -13,26 +13,26 @@ means a string, table or data file shows it but the logic wasn't traced. Written
 
 ## At a glance
 
-"New" means 94 PC has it and those console games don't. "Missing on PC" means those console games have it and
-94 PC doesn't. "PC only" means none of the four console games has it.
+"New" means 94 PC has it and those console games don't. "Missing on 94 PC" means those console games have it and
+94 PC doesn't. "94 PC only" means none of the four console games has it.
 
 | Feature | 93 consoles | 94 consoles |
 |---|---|---|
-| Fighting | Missing on PC | Same (none) |
-| Fighting rating on the card | Missing on PC | Same (none) |
+| Fighting | Missing on 94 PC | Same (none) |
+| Fighting rating on the card | Missing on 94 PC | Same (none) |
 | One-timers | New | Same as 94S |
 | Goalie wall animations | New | Same as 94S |
-| Board, bench, cross-checks | Same (none) | Missing on PC |
-| Penalty shots | Same (none) | Missing on PC |
-| Shootout | Same (none) | Missing on PC |
+| Board, bench, cross-checks | Same (none) | Missing on 94 PC |
+| Penalty shots | Same (none) | Missing on 94 PC |
+| Shootout | Same (none) | Missing on 94 PC |
 | In-game team stats | Same | Different |
-| More than 2 players | Same (none) | Missing on PC |
-| Manual goalie option | Same (none) | Missing on PC |
-| Scouting report, hot / cold | Missing on PC | Missing on PC |
+| More than 2 players | Same (none) | Missing on 94 PC |
+| Manual goalie option | Same (none) | Missing on 94 PC |
+| Scouting report, hot / cold | Missing on 94 PC | Missing on 94 PC |
 | Per-team organ music | New | Same as 94S |
 | Line changes, replay, playoffs | Same | Same |
-| Referee, anthem, cup, three stars | PC only | PC only |
-| League mode, awards | PC only | PC only |
+| Referee, anthem, cup, three stars | 94 PC only | 94 PC only |
+| League mode, awards | 94 PC only | 94 PC only |
 | Teams, rosters, licence | Different | Same season |
 | Skating and shooting | Same formulas | Different |
 | Goalie saves | Same as 93G | Different |
@@ -44,7 +44,7 @@ means a string, table or data file shows it but the logic wasn't traced. Written
   `checkcheck` and nothing else, so even the `checkfight` call is gone. `asstab` has no fight assignments; the slots
   after `asspassrec` hold `assstarskate` / `assthreestars`. The SPA table (`SPAlist`) has no fight animation, and the
   penalty name list has no fighting penalty.
-- **vs 93 consoles: missing on PC.** 93G has `checkfight` (hockey93.asm), the `assfight` / `assfwatch` assignments
+- **vs 93 consoles: missing on 94 PC.** 93G has `checkfight` (hockey93.asm), the `assfight` / `assfwatch` assignments
   (tables93.asm, logic93.asm) and Fighting, Fighting * and Fight Instigator penalties.
 - **vs 94 consoles: same (none).** 94G keeps `checkfight` as a bare `rts` (src/engine/collide94.asm); the fight frames
   are left over and unused.
@@ -55,7 +55,7 @@ means a string, table or data file shows it but the logic wasn't traced. Written
   Passing, Off./Def. Awareness, Aggressiveness, Endurance, then Shoot/Pass Bias and Faceoffs (src/data/dgroup.asm,
   `str_Speed_2` onward; Data). Shoot/Pass Bias isn't new: the 93 and 94 console player records already carry a
   shot/pass decision value, they just don't show it on the card (see Teams and rosters).
-- **vs 93 consoles: missing on PC.** Shown as a `[ Fighting ]` column (93G tables93.asm `PAttribColumns`, 93S
+- **vs 93 consoles: missing on 94 PC.** Shown as a `[ Fighting ]` column (93G tables93.asm `PAttribColumns`, 93S
   src/data/text/PAttribColumns.asm).
 - **vs 94 consoles: same (none).** The list ends at Checking (94G tables94.asm, 94S src/data/text/PAttribColumns.asm).
 
@@ -88,7 +88,7 @@ means a string, table or data file shows it but the logic wasn't traced. Written
   animations exist in `SPAlist`. `checkcheck` (28BB:0284) uses `SPAsweepchk`, `SPAHold`, `SPAhook`, `SPAburst` and the
   `CheckAnims` table.
 - **vs 93 consoles: same.** Their `FallDown` picks from the same five animations.
-- **vs 94 consoles: missing on PC.** 94G's `FallDown` adds `SPAboardfront/back/left/right`, `SPAbenchcheckl/r`,
+- **vs 94 consoles: missing on 94 PC.** 94G's `FallDown` adds `SPAboardfront/back/left/right`, `SPAbenchcheckl/r`,
   `SPAcrosscheck` and `SPAinjuryfall`; 94S has the same family.
 
 ## Penalty shots
@@ -99,7 +99,7 @@ means a string, table or data file shows it but the logic wasn't traced. Written
   their position in 95 PC. The code sends skaters to `asstakeposition` / `assleavebox` / `assbenchwait` after the
   referee's whistle and doesn't look like a penalty shot, so those labels need review.
 - **vs 93 consoles: same (none).**
-- **vs 94 consoles: missing on PC.** `PenShotChk` turns a penalty on a breakaway into a penalty shot; there are
+- **vs 94 consoles: missing on 94 PC.** `PenShotChk` turns a penalty on a breakaway into a penalty shot; there are
   penalty-shot forms of the penalties (94G `PenDatachargeps` etc., tables94.asm) and `BA_PS_flags` (ram94.asm).
 
 ## Shootout
@@ -107,13 +107,13 @@ means a string, table or data file shows it but the logic wasn't traced. Written
 - **94 PC: not found.** No shootout strings or code. The `clockcont_0` header comment (src/engine/hockey.asm) mentions
   "shootout", but no shootout code was found to back it up, so that comment needs review.
 - **vs 93 consoles: same (none).**
-- **vs 94 consoles: missing on PC.** 94G has src/front/shootout94.asm and src/engine/shootoutpath94.asm; 94S the same.
+- **vs 94 consoles: missing on 94 PC.** 94G has src/front/shootout94.asm and src/engine/shootoutpath94.asm; 94S the same.
 
 ## In-game team stats
 
 - **94 PC: the 93 list, in the same order:** Score, Shots, Power play, Penalties, Faceoffs won, Body checks, Attack
-  zone, Passing (src/data/far/stat_names.asm; Data). The PC league stats screens (PP / SH goal leaders etc.) are
-  separate and PC only.
+  zone, Passing (src/data/far/stat_names.asm; Data). The 94 PC league stats screens (PP / SH goal leaders etc.) are
+  separate and 94 PC only.
 - **vs 93 consoles: same.** 8 rows: Score, Shots, Power Play, Penalties, Faceoffs Won, Body Checks, Attack Zone,
   Passing (93G stats93.asm `TeamStatTextTbl`).
 - **vs 94 consoles: different.** 16 rows: adds Shooting Pct, PP Minutes, PP Shots, SH Goals, Breakaways, One-Timers,
@@ -125,26 +125,26 @@ means a string, table or data file shows it but the logic wasn't traced. Written
   src/front/setup_controllers.asm) sets up two players. Two players can share a team: `puckfaceoff`
   (src/engine/faceoff.asm) tests `cont1team` against `cont2team`.
 - **vs 93 consoles: same (two).**
-- **vs 94 Genesis: missing on PC.** Up to 4 with 4 Way Play (src/engine/fourway94.asm).
-- **vs 94 SNES: missing on PC.** Up to 5 with the MultiPlayer 5 multitap: `PlayerSelect`
+- **vs 94 Genesis: missing on 94 PC.** Up to 4 with 4 Way Play (src/engine/fourway94.asm).
+- **vs 94 SNES: missing on 94 PC.** Up to 5 with the MultiPlayer 5 multitap: `PlayerSelect`
   (src/routines/optsetup/PlayerSelect.asm) clears and places five pads (`cont1team`-`cont5team`, ram94s.asm), and
   `Multi5Init` / `Multi5ConnectCheck` detect the adaptor.
 
 ## Manual goalie option
 
-- **94 PC: not found.** The PC menus have Home / Visiting Team Goalie, but that picks which goalie starts. The PC also
+- **94 PC: not found.** The 94 PC menus have Home / Visiting Team Goalie, but that picks which goalie starts. The 94 PC also
   has PULL GOALIE / RETURN GOALIE, like both consoles. (Data)
 - **vs 93 consoles: same (none).** No pause-menu goalie mode.
-- **vs 94 Genesis: missing on PC.** Pause item "Manual Goalie / Auto Goalie" (`ManualGoalieMenu`,
+- **vs 94 Genesis: missing on 94 PC.** Pause item "Manual Goalie / Auto Goalie" (`ManualGoalieMenu`,
   src/engine/period94.asm).
 
 ## Scouting report and hot / cold streaks
 
 - **94 PC: not found.** (Data, absence)
-- **vs 93 consoles: missing on PC.** 93G and 93S have a pregame scouting report (93G `ScoutingReport`, middle93.asm,
+- **vs 93 consoles: missing on 94 PC.** 93G and 93S have a pregame scouting report (93G `ScoutingReport`, middle93.asm,
   called from `Opening4` in hockey93.asm), as NHL Hockey (92) Genesis already did (`ScoutingReport`, hockey.asm). No
   hot / cold.
-- **vs 94 Genesis: missing on PC.** Hot / cold tables (`Create_HotCold_Table`, src/front/scout94.asm; `HotColdIcon`,
+- **vs 94 Genesis: missing on 94 PC.** Hot / cold tables (`Create_HotCold_Table`, src/front/scout94.asm; `HotColdIcon`,
   src/front/logos94.asm) feed the ratings.
 
 ## Organ music
@@ -169,16 +169,16 @@ means a string, table or data file shows it but the logic wasn't traced. Written
 
 ## Referee, anthem, Stanley Cup, three stars
 
-- **94 PC: PC only.** A referee on the ice: `SPArefglide` ... `SPArefbehind` with penalty signals, and the `assref*`
+- **94 PC: 94 PC only.** A referee on the ice: `SPArefglide` ... `SPArefbehind` with penalty signals, and the `assref*`
   assignments. Anthem, cup and three stars: `SPAanthem1-5`, `SPAgetcup`, `SPAbrcup`, `SPAgvcup`, `SPAstansk`,
   `assstarskate`, `assthreestars`.
 - **vs 93 and 94 consoles:** no referee animations; only the `SPAstanley` celebration.
-- Other PC-only bits: a faceoff poke (`SPAfaceoffpoke`), Abuse of Official and Checking from Behind penalties, a
+- Other 94 PC only bits: a faceoff poke (`SPAfaceoffpoke`), Abuse of Official and Checking from Behind penalties, a
   Faceoffs rating, Shoot/Pass Bias shown on the card, mouse / joystick setup. (Data)
 
 ## League mode, stats and awards
 
-- **94 PC: PC only.** New League (src/front/new_league.asm) asks for the human-controlled teams
+- **94 PC: 94 PC only.** New League (src/front/new_league.asm) asks for the human-controlled teams
   (`str_SelectHumanControlledTeams`; the team picker is `LeagueTeamSelect`, src/front/league_setup.asm), and the only
   refusal when adding one is "All the teams are already human" (src/front/league_teams.asm). So any of the 24 teams can
   be human. Each human team has a password (`AskTeamPassword`, src/front/league_password.asm), and there is a league
@@ -194,7 +194,7 @@ means a string, table or data file shows it but the logic wasn't traced. Written
 - Highlights: `ReplaySaveHilight` (src/front/replay_controls.asm) writes highlights to disk ("Insufficient disk space to
   save hilights.", src/data/far/hilight_save_messages.asm), and the menus have "League Hilights ...", "Play-Off
   Hilights ..." and "Select a hilight". Instant replay itself is in every game back to NHL Hockey (92) Genesis.
-- **vs 93 and 94 consoles: PC only.** 94 PC saves league stats and highlights to disk; for the console save RAM see
+- **vs 93 and 94 consoles: 94 PC only.** 94 PC saves league stats and highlights to disk; for the console save RAM see
   Box features.
 
 ## Drop pass
@@ -207,7 +207,7 @@ means a string, table or data file shows it but the logic wasn't traced. Written
 
 ## Teams and rosters
 
-The PC teams and players come from the game's data files: `TEAMS.DB` (26 records of 744 bytes: abbreviation, full name,
+The 94 PC teams and players come from the game's data files: `TEAMS.DB` (26 records of 744 bytes: abbreviation, full name,
 city, then 28 roster slots that point into `KEY.DB`), `KEY.DB` (710 player records of 52 bytes: jersey, position, first
 and last name, pointers to ratings and stats) and `ATT.DB` (20 ratings per player, each 0-15). The console columns come
 from the console team data (`teamdata93.asm` / `teamdata94.asm` and the SNES equivalents) with the player names.
@@ -219,10 +219,10 @@ from the console team data (`teamdata93.asm` / `teamdata94.asm` and the SNES equ
 | **Conference / All-Star names** | East / West | East / West | Campbell / Wales (the 1992-93 conference names) | Data |
 | **Players per team** | 22-25 (Ottawa 17, Tampa Bay 18); 601 in all | 94G 25 (Washington 24, Florida 17, Anaheim 18), 684 in all; 94S 22-25, 653 in all | **26-28** of 28 slots, 3 goalies each; 659 different players on the 24 teams; the All-Star teams have 25 each | Data |
 | **Roster season** | About 1991-92 (no Lindros, Selanne, Potvin, Zamuner) | The 1992-93 rosters, plus Dallas and the June 1993 expansion draft for Anaheim and Florida | **End of 1992-93**: deadline trades in, All-Star teams match the February 1993 game | Data |
-| **Same player on the same team as PC** | 353 of 660 PC roster spots (53%) | 94G 561 (85%), 94S 537 (81%) | (reference) | Data |
+| **Same player on the same team as 94 PC** | 353 of 660 94 PC roster spots (53%) | 94G 561 (85%), 94S 537 (81%) | (reference) | Data |
 | **1993-94 rookies** (Daigle, Pronger, Arnott, Brodeur, Renberg, Niedermayer, Yashin) | Absent | Absent | Absent | Data |
 
-Where some well-known players are (PC / 93 Genesis / 94 Genesis / 94 SNES). 94 Genesis lists some expansion-draft
+Where some well-known players are (94 PC / 93 Genesis / 94 Genesis / 94 SNES). 94 Genesis lists some expansion-draft
 players twice, on the old team and the new one (the "and" rows):
 
 | Player | 94 PC | 93 Genesis | 94 Genesis | 94 SNES |
@@ -232,23 +232,23 @@ players twice, on the old team and the new one (the "and" rows):
 | Dominik Hasek | BUF | CHI | BUF | BUF |
 | Ron Hextall, Steve Duchesne | QUE | PHI | QUE | QUE |
 | Bob Kudelski | OTT | LA | OTT | OTT |
-| Eric Lindros, Teemu Selanne, Felix Potvin, Rob Zamuner | PHI, WPG, TOR, TB | not in the game | same as PC | same as PC |
+| Eric Lindros, Teemu Selanne, Felix Potvin, Rob Zamuner | PHI, WPG, TOR, TB | not in the game | same as 94 PC | same as 94 PC |
 | Mike Modano, Jon Casey | MIN | MIN | DAL | DAL |
 | Scott Mellanby | EDM | EDM | EDM and FLA | FLA |
 | Brian Skrudland | CGY | MTL | CGY and FLA | FLA |
 | Guy Hebert | STL | STL | STL and ANH | ANH |
 
-The PC All-Star teams carry the 1993 game's one-time picks (Campbell: Gretzky, Kisio, Falloon, Bradley; Wales: Marsh,
+The 94 PC All-Star teams carry the 1993 game's one-time picks (Campbell: Gretzky, Kisio, Falloon, Bradley; Wales: Marsh,
 Sidorkiewicz, Zalapski, Duchesne), which is how the roster date was pinned. (Data)
 
 **Ratings.** All three generations store the same 16 four-bit values per player: jersey (two digits), weight, agility
 (leg power), speed, offensive and defensive awareness, shot power, checking, handedness, stickhandling, shot accuracy,
 endurance, shot/pass decision, passing and aggressiveness (Data). The ranges differ: 93 Genesis uses 0-15, 94 Genesis
-mostly 0-6, and PC `ATT.DB` uses 0-15 like 93 (Data). Example, Ray Bourque: 93 Genesis `778FCCCFF1F6F3F5`, 94 Genesis
-`77A5446560556252`, PC `ATT.DB` `01 0a 0d 08 0e 0f 0e 0d 0e 0e 0a 0f 05 0f 04 01 0a 0a 0a 07`. The PC field order is
+mostly 0-6, and 94 PC `ATT.DB` uses 0-15 like 93 (Data). Example, Ray Bourque: 93 Genesis `778FCCCFF1F6F3F5`, 94 Genesis
+`77A5446560556252`, 94 PC `ATT.DB` `01 0a 0d 08 0e 0f 0e 0d 0e 0e 0a 0f 05 0f 04 01 0a 0a 0a 07`. The 94 PC field order is
 mapped in the next table.
 
-**PC `ATT.DB` field order.** Each player has a 20-byte record; `KEY.DB` holds its offset (first of the three dwords at
+**94 PC `ATT.DB` field order.** Each player has a 20-byte record; `KEY.DB` holds its offset (first of the three dwords at
 bytes 36-47; several players can share a record, which is why the file has fewer records than `KEY.DB`). The order comes
 from three places that agree: the player-card column tables in `dgroup.asm` (`SkaterCardCols` = 1, 2, 3, 4, 5, 6, 7, 9,
 10, 11, 12, 13, 14, 0x13 against the Speed ... Faceoffs labels; `GoalieCardCols` = 1-8, 10, 11 against Glove Left ...
@@ -275,27 +275,27 @@ correlation of each byte against the 94 Genesis ratings of the same players (521
 | 15-18 | not shown, not read by `setplayer` | not shown | none clearly (16-18 track offensive awareness, about 0.65) | Unknown |
 | 19 | Faceoffs | not shown | none on consoles; centres average 10.3, wingers 5.7-5.8, defence 3.3 | Code (label), Data (values) |
 
-So the PC keeps every console rating and adds Faceoffs (byte 19), and stores them in the order the card shows them,
+So the 94 PC keeps every console rating and adds Faceoffs (byte 19), and stores them in the order the card shows them,
 not the console nibble order (jersey, weight, agility, speed, awareness, shot power, checking, hand, stickhandling,
 accuracy, endurance, shot/pass, passing, aggressiveness). The jersey number lives in `KEY.DB` instead. Skaters and
 goalies reuse the same byte positions for different ratings, just as the console nibbles do. Bytes 8 (skaters) and
 15-18 have no known use.
 
-**Verdict:** PC rosters are the 1992-93 rosters the 94 consoles were built from, before expansion, under the full NHL
+**Verdict:** 94 PC rosters are the 1992-93 rosters the 94 consoles were built from, before expansion, under the full NHL
 licence. They aren't the older NHLPA 93 rosters.
 
 ## All-Star teams
 
-The All-Star rosters were compared player by player: the PC's two All-Star records in `TEAMS.DB` / `KEY.DB` against
+The All-Star rosters were compared player by player: 94 PC's two All-Star records in `TEAMS.DB` / `KEY.DB` against
 the All Stars East / West records in the console team data. Console positions come from the line slots (G, D, or a
-forward slot), the PC's from `KEY.DB`. Names were matched on last name and first initial (the console data abbreviates
+forward slot), 94 PC's from `KEY.DB`. Names were matched on last name and first initial (the console data abbreviates
 some names). The real 1993 rosters are from the [44th NHL All-Star Game](https://en.wikipedia.org/wiki/44th_National_Hockey_League_All-Star_Game)
 page (Montreal, February 6, 1993).
 
 **93 Genesis = 93 SNES and 94 Genesis = 94 SNES.** The two 93 versions have the same All-Star players in the same order
 with the same rating data (22/22 and 22/22 records identical), and so do the two 94 versions (25/25 and 25/25). (Data)
 
-| | Players (G / D / F) | Same players as PC, East | Same players as PC, West | Both teams |
+| | Players (G / D / F) | Same players as 94 PC, East | Same players as 94 PC, West | Both teams |
 |---|---|---|---|---|
 | 93 Genesis | East 22 (3 / 6 / 13), West 22 (3 / 7 / 12) | 11 / 25 | 9 / 25 | **20 / 50 (40%)** |
 | 93 SNES | East 22 (3 / 6 / 13), West 22 (3 / 7 / 12) | 11 / 25 | 9 / 25 | **20 / 50 (40%)** |
@@ -322,30 +322,30 @@ replaced by Garth Butcher.
 | 94 Genesis / 94 SNES | 40 / 49 | East: Grant Fuhr, Tom Barrasso, Larry Murphy, Glen Wesley. West: Tim Cheveldae, Felix Potvin, Theoren Fleury, Gary Suter, Steve Smith, Pat Falloon |
 | 93 Genesis / 93 SNES | 20 / 49 | 24 others, e.g. Mike Richter, Bryan Trottier, Owen Nolan, Kevin Hatcher (East); Kirk McLean, Sergei Fedorov, Trevor Linden, Al MacInnis, Larry Robinson (West) |
 
-**What the 94 consoles changed from the PC list.** They drop nine real selections, mostly the one-per-team and
+**What the 94 consoles changed from the 94 PC list.** They drop nine real selections, mostly the one-per-team and
 commissioner's picks and the backup goalies (East: Brad Marsh, Kevin Lowe, Peter Sidorkiewicz, Craig Billington; West:
 Kelly Kisio, Randy Carlyle, Garth Butcher, Mike Vernon, Jon Casey). In their place they add nine star players who weren't
 on the 1993 roster (Fuhr, Barrasso, Murphy, Wesley; Cheveldae, Potvin, Fleury, Suter, Steve Smith). The other 41 players
-are the same as on PC, including Pat Falloon, who appears in both the PC and the 94 Campbell / West list although he
+are the same as on 94 PC, including Pat Falloon, who appears in both the 94 PC and the 94 Campbell / West list although he
 wasn't on the real roster. (Data; the reason for Falloon isn't known.)
 
 **The 93 consoles** use a different, older selection. Paul Coffey is on the East and Adam Oates on the West, which fits
 team affiliations from before their February 1992 trades, so these are 1991-92 picks, not the 1993 game. (Data for the
 lists; the dating is an inference.)
 
-**Verdict:** the PC All-Star teams are the real February 1993 All-Star selections, all 49, plus Pat Falloon. Of the
+**Verdict:** the 94 PC All-Star teams are the real February 1993 All-Star selections, all 49, plus Pat Falloon. Of the
 console games, they line up best with **94 Genesis and 94 SNES (82%, identical to each other)**, against 40% for 93
-Genesis and 93 SNES (also identical to each other). The 94 lists look like the PC list edited toward star players. (Data)
+Genesis and 93 SNES (also identical to each other). The 94 lists look like the 94 PC list edited toward star players. (Data)
 
 ## Skating and shooting physics
 
 **How units line up.** All five games run the game clock at 24 steps per second: the 93 / 94 Genesis and 93 SNES set
 `jps=24` and subtract `$10000/jps` per step (`ram93.asm`, `ram94.asm`, `ram93s.asm`); 94 SNES subtracts `$0AAA`
-(= $10000/24) per tick (`Gameloop.asm`); the PC's `ClockTick` (2E42:2C30) reloads `clockticks` with 0x18 and
+(= $10000/24) per tick (`Gameloop.asm`); 94 PC's `ClockTick` (2E42:2C30) reloads `clockticks` with 0x18 and
 `RunGameFrames` (1E7E:0404) calls `DoGameFrame` once per tick. So a per-step constant on one platform compares directly
 with the others. All four consoles also scale each step by d7 (video frames since the last step, 60 Hz on NTSC); the
-SNES games pre-compute `velstep` = d7 x 16 and `gravstep` = d7 x 96 once per step. The PC has no d7 factor. Distances are
-in the same rink units everywhere, but the PC rink has a different shape, so rink-scaled figures are given where it
+SNES games pre-compute `velstep` = d7 x 16 and `gravstep` = d7 x 96 once per step. The 94 PC has no d7 factor. Distances are
+in the same rink units everywhere, but the 94 PC rink has a different shape, so rink-scaled figures are given where it
 matters. Everything here is **Code** (the routine was read) unless marked otherwise.
 
 | | 93 Genesis | 93 SNES | 94 Genesis | 94 SNES | 94 PC |
@@ -357,7 +357,7 @@ matters. Everything here is **Code** (the routine was read) unless marked otherw
 | **Gravity** | 96 per step | `gravstep` = d7 x 96 | Not compared | `gravstep` = d7 x 96 | 96 per step |
 | **Acceleration base** (`dirtab`) | runspeed 200 (diagonal 141), x d7 | 200 x d7 (`dirtab8F` = 4 x runspeed, then / 4) | 200 x d7 | 200 x d7 | **175 / 124**, pre-scaled by (agility + 48) >> 6 |
 | **Acceleration factor** (weight = rating x 8 on the consoles) | 32 - weight/8 + agility; goalie + agility + 8 | **32 - weight/16** + agility; goalie + agility + 8 (the '92 weight term: half the weight effect) | (64 - weight/4 + agility [+2 crowd]) [goalie + agility + 16] / 2; joypad puck carrier gets half | 32 - weight/8 + **1.5 x agility**; human goalie + 2 x agility + 8; computer goalie / carrier + 8 (minus agility when a pass receiver exists) | **32 - weight/8 + agility**; goalie + agility + 8 (the 93G formula) |
-| **Top-speed table** (speed², shown as speed) | (n + 20) x 275: 5500-9625 | (n + 20) x 266: 5320-9310 | (n + 20) x 275 | (n + 20) x 261: 5220-9135 | 4800 + 220n - n²: **4800-7875** (console 5500-9625 is about 4870-8530 scaled to the PC rink) |
+| **Top-speed table** (speed², shown as speed) | (n + 20) x 275: 5500-9625 | (n + 20) x 266: 5320-9310 | (n + 20) x 275 | (n + 20) x 261: 5220-9135 | 4800 + 220n - n²: **4800-7875** (console 5500-9625 is about 4870-8530 scaled to the 94 PC rink) |
 | **Top-speed index** | (speed x energy) >> 12 | speed x (energy/2 + $800) >> 12: a tired player keeps at least half | speed 0-30, +2 crowd, halved | speed x (energy/2 + $800) >> 12 (energy fixed at $1000 with automatic line changes); goalies -25% | **(energy x speed) >> 12** (93G); injured players 1/8 |
 | **Stopping** (`stopna`) | 150 per axis per step | $70 (112) x d7 | 150 | ($70 + agility) x d7; human goalie halves velocity | **150** (2425:0D44) |
 | **Turn rate** | $300 minus speed class, minimum $180, steps of $10 | Same (`doplayeracc.asm`) | Same | Same | Same (`doplayeracc_ftab`) |
@@ -392,8 +392,8 @@ Bounds from the code: 93 SNES hangs if d7 is 10 or more (`updateplayers.asm` `.h
 impossible; both SNES friction tables have 10 entries, for d7 = 1-10. Genesis and 94 SNES do not clamp d7. If play
 stays inside one vblank, d7 is 1.
 
-Genesis (and PC) take 1/64 off once per game step, so the loss per game second depends on d7: 0.69 of the speed is
-left after a game second at one step per frame (d7 = 1), 0.83 at d7 = 2, 0.88 at d7 = 3. The PC always takes 24 steps
+Genesis (and 94 PC) take 1/64 off once per game step, so the loss per game second depends on d7: 0.69 of the speed is
+left after a game second at one step per frame (d7 = 1), 0.83 at d7 = 2, 0.88 at d7 = 3. The 94 PC always takes 24 steps
 per game second, so it matches 93 Genesis at d7 = 1 (0.69). The SNES tables are indexed by d7 instead. 94 SNES is
 tuned so the loss is the same at any of those rates (0.75 left after a game second). 93 SNES has much more friction
 (0.42-0.64 left). The 1-3 range is kept because a missed vblank is possible and the SNES tables go to 10. (Code for
@@ -409,11 +409,11 @@ him and picks a save animation. Everything here is from reading those routines (
 | **Save roll when the puck hits him** | Region = high / low (puck z above 8) x left / right of his facing. Odds = (15 + that region's rating: glove left / glove right high, stick left / stick right low) x the goalie frame's 0-3 value for that region (`.list2`). Save if rnd(odds) >= 8, so 1 - 8 / odds: e.g. rating 8, frame value 1 = 65%, frame value 3 = 88%; value 0 = no save | Region rating + 15 is worked out but not used: no roll. Every touch is a save, except a hard shot (\|vy\| >= $3000) taken 80-169 from the goal line slips through with chance 1 in (182 - distance), and a diving goalie doesn't stop a puck in the air (z >= 2) | Rating + 15 and the frame value (`.list2` / `.list3`) are read, but no roll follows: every touch is a save | Like 93 SNES: rating + 15 read, no roll; dive frames checked against the puck height (#$05) | **The 93 Genesis roll**: odds = (15 + rating) x the frame value from `GoalieSaveSides`, save if rnd(odds) >= 8. But the rating is picked by side only, so it is always the stick-left or stick-right rating (struct bytes 0x53 / 0x55); the glove ratings aren't used here |
 | **Holding a slow loose puck** | $C00 + rnd((2 + puck control) x 512) on x and y | Same | Same base, then doubled (cap $7FFF). Near the crease (\|x\| <= $2C and $D2 < \|y\| <= $10E) and not already in a save animation, that limit is /4, so a slower puck still bounces | Same formula, but the base is $2000 rather than $C00; no doubling and no crease cut | $C00 + rnd((2 + puck control x 5/4) x 512); no doubling, no crease cut |
 | **How often he re-aims** | Every defensive awareness / 4 frames | Same | Same | Timer + defensive awareness / 2 | Same as 93G |
-| **When he starts a save animation** | puckcross frames <= $22 and \|x\| <= $18; the animation starts only when frames <= $C and the puck is still between the goal lines | frames < $14 and \|x\| < $19; the animation starts when frames < $C and \|puck y\| < $109 | Same $22 / $18 / $C as 93G, plus a shootout / puck-in-front-of-the-net path | frames < $23 (so <= $22) and \|x\| < $19; the animation starts when frames < $13. A human goalie can also start a save with A; on a save his speed is halved | Same $22 / $18 / $C as 93G, with the y limit scaled to the PC goal line (\|y\| <= $E8 = 232) |
+| **When he starts a save animation** | puckcross frames <= $22 and \|x\| <= $18; the animation starts only when frames <= $C and the puck is still between the goal lines | frames < $14 and \|x\| < $19; the animation starts when frames < $C and \|puck y\| < $109 | Same $22 / $18 / $C as 93G, plus a shootout / puck-in-front-of-the-net path | frames < $23 (so <= $22) and \|x\| < $19; the animation starts when frames < $13. A human goalie can also start a save with A; on a save his speed is halved | Same $22 / $18 / $C as 93G, with the y limit scaled to the 94 PC goal line (\|y\| <= $E8 = 232) |
 
-So the PC goalie is the 93 Genesis goalie: the only other game with a real save roll, the same odds formula and
-the same save-start timings ($22 / $18 / $C), with the y limit scaled to the PC goal line (`logic.asm` 2466-2557).
-The PC's changes are that only the stick ratings feed the roll (Code, as read; the glove ratings show on the card
+So the 94 PC goalie is the 93 Genesis goalie: the only other game with a real save roll, the same odds formula and
+the same save-start timings ($22 / $18 / $C), with the y limit scaled to the 94 PC goal line (`logic.asm` 2466-2557).
+94 PC's changes are that only the stick ratings feed the roll (Code, as read; the glove ratings show on the card
 and are loaded into the struct, but this routine doesn't use them) and that puck control is scaled by 5/4 in the
 catch-speed limit (`physics.asm` 3704-3726). On 93 SNES and both 94 games a puck that reaches the goalie's body is
 stopped, so saves there come from positioning and the save animations, not a rating roll.
@@ -424,7 +424,7 @@ crease; 94S uses a $2000 base instead of $C00 (no doubling, no crease cut). Save
 `logic93.asm` 2688-2700, 93S 454-476, 94G `logic94.asm` 3678-3686, 94S 624-657). 94 SNES starts the animation
 earlier (frames < $13, not <= $C).
 
-**Which console is PC closest to?** **93 Genesis.** The PC matches 93 Genesis on every constant it doesn't rescale for
+**Which console is 94 PC closest to?** **93 Genesis.** The 94 PC matches 93 Genesis on every constant it doesn't rescale for
 its rink: the friction shifts (>> 6 / >> 9), stopping 150, the acceleration factor 32 - weight/8 + agility, the
 top-speed index (energy x speed) >> 12, gravity 96, the turn rate, the $5249 shot-speed factor and the goalie
 save roll. 93 SNES differs on
@@ -432,40 +432,40 @@ friction (a multiply table, much stronger), stopping ($70 x d7), the weight term
 (energy/2 + $800), shot speed (0.91 x) and goalies (no save roll). 94 SNES has those SNES
 differences (with milder friction) plus 1.5 x agility. 94 Genesis has the halved ratings, crowd boost, carrier
 half-acceleration, x 17 position step and no save roll. None of the 94 changes, Genesis or SNES,
-are in the PC code (Code).
+are in the 94 PC code (Code).
 
-Two PC tables in `dgroup.asm` were misnamed and have been renamed (PR #83): `ShotSpeeds` is now `shotsets` (the shot
+Two 94 PC tables in `dgroup.asm` were misnamed and have been renamed (PR #83): `ShotSpeeds` is now `shotsets` (the shot
 x-offset table: 0, $C, $10, ..., the values of 93's `.shotsets`), and `AccelFactors` / `AccelFactors2` are now
 `MaxSpeed` / `MaxSpeed_w2` (the top-speed table).
 
 ## Rink size, aspect ratio and per-axis scale
 
-The Genesis draws 256 x 224 lines (inside a 256 x 240 frame); the PC draws 320 x 200 with a score bar at the bottom.
+The Genesis draws 256 x 224 lines (inside a 256 x 240 frame); the 94 PC draws 320 x 200 with a score bar at the bottom.
 This section checks whether either platform scaled the rink, or any speed, differently across the rink (x) and along it
 (y): by feet, by pixel aspect ratio, or not at all. The rink scrolls up and down on all of these games, so y is the
 long axis. Everything here is **Code** unless marked.
 
 **One game unit is one pixel, on both axes.** Genesis `find3d` (93G `video93.asm`; the same in 94G `video94.asm` and
 95G `middle95.asm`): screen x = x - Hpos + 128, screen y = 112 - (y - Vpos) - 1.5 x height, and `updatescroll` moves the
-rink plane by Hpos / Vpos one for one. PC `DrawFrameSprite` (1E7E:0120): x + 192 and 320 - y, minus the scroll
+rink plane by Hpos / Vpos one for one. 94 PC `DrawFrameSprite` (1E7E:0120): x + 192 and 320 - y, minus the scroll
 position; `DrawReplayFrame` (26D2:03F2) lifts the puck by 3/2 x its height, as the Genesis does. No routine multiplies
 or shifts y differently from x.
 
 **The physics are the same on both axes, on both platforms.** Friction and the position step (`updateplayers`),
-stopping (150 per axis), the `dirtab` push (200 / 141 on Genesis, 175 / 124 on PC, the same on every axis) and the
+stopping (150 per axis), the `dirtab` push (200 / 141 on Genesis, 175 / 124 on 94 PC, the same on every axis) and the
 top-speed cap (vx² + vy² against `MaxSpeed`: a circle, not an ellipse) treat x and y alike. Distances are true distances: the
-Genesis uses a square root (`Sroot`); the PC uses `SqrtLong` for passes and, for shots, `FoldScale` (03A3:06CA: atan2,
+Genesis uses a square root (`Sroot`); the 94 PC uses `SqrtLong` for passes and, for shots, `FoldScale` (03A3:06CA: atan2,
 then divide by the sine or cosine). The only per-axis numbers are the aim error caps (x 136 on Genesis,
-160 on PC; y 60), and the x cap follows the rink width.
+160 on 94 PC; y 60), and the x cap follows the rink width.
 
 Feet are from the 1992-93 NHL rink: 200 x 85 ft, goal lines 11 ft from the end boards, blue lines 60 ft out from the
 goal lines (a 58 ft neutral zone; NHL Records, historical rule changes). The Genesis y axis is even all along: 2.97
-units per foot to the goal line, 2.93 from goal line to blue line, 3.03 to the blue line, 2.98 to the boards. The PC
+units per foot to the goal line, 2.93 from goal line to blue line, 3.03 to the blue line, 2.98 to the boards. The 94 PC
 gives 2.61, 2.57, 2.69 and 2.64. Genesis values: `Sideline` = $88, `Blueline` = $58, `goalline` = 176 past the blue
-line (`ram93.asm`), end boards #$12A (`checkwallcoll`). PC values: `checkwallcoll` (28BB:2A54) 0xA0 / 0x108 / 0x40,
+line (`ram93.asm`), end boards #$12A (`checkwallcoll`). 94 PC values: `checkwallcoll` (28BB:2A54) 0xA0 / 0x108 / 0x40,
 blue line 0x4E and goal line 0xE8 in `physics.asm` and `logic.asm`.
 
-| | Genesis | PC | PC / Gen |
+| | Genesis | 94 PC | 94 PC / Gen |
 |---|---|---|---|
 | Side boards (x) | ±136 | ±160 | 1.176 |
 | End boards (y) | ±298 | ±264 | 0.886 |
@@ -477,7 +477,7 @@ blue line 0x4E and goal line 0xE8 in `physics.asm` and `logic.asm`.
 | x / y | 1.07 | 1.43 | |
 | One screen shows | 256 x 224 | 320 x 168 | |
 
-**The PC playfield is 320 x 168.** The camera sits at screen row 84 (scroll y = 0xEC - camy, clamped to 0-0x1A8, in
+**The 94 PC playfield is 320 x 168.** The camera sits at screen row 84 (scroll y = 0xEC - camy, clamped to 0-0x1A8, in
 `ThreeStarsLoop` 2CD2:02DA, `StartHL2` 1FAA:000E and `InstantReplay` 2581:000E), and `SetScrollCell`
 (1F29:0006) keeps a ring of 0x16 rows of 8 lines for 21 visible rows. 95 PC states it outright: the zone screen is
 0x140 x 0xA8. The score bar takes the bottom 32 lines.
@@ -490,18 +490,18 @@ across than going up the ice at the same speed.
 
 **94 PC.** It keeps the same per-pixel rule. The rink was redrawn wider and shorter in pixels and the physics stayed
 per pixel. Board to board is exactly 320, the screen width. The length went x 0.886, close to 200 / 224 = 0.893 (the
-PC's 200 lines over the Genesis's 224 drawn lines), not 200 / 240 = 0.833. The width went x 1.176, less than
-320 / 256 = 1.25. On a 4:3 screen (PC pixels 5:6, Genesis 8:7) the rink's shape is nearly the same: width / length
-0.505 on PC and 0.52 on Genesis (the real rink is 0.425). So the premise that the rink keeps its share of the screen
+94 PC's 200 lines over the Genesis's 224 drawn lines), not 200 / 240 = 0.833. The width went x 1.176, less than
+320 / 256 = 1.25. On a 4:3 screen (94 PC pixels 5:6, Genesis 8:7) the rink's shape is nearly the same: width / length
+0.505 on 94 PC and 0.52 on Genesis (the real rink is 0.425). So the premise that the rink keeps its share of the screen
 holds for the shape and the length (within 1%, ignoring the score bar). The width is 6% under the screen ratio. With
-the score bar, one PC screen shows 32% of the rink's length against 38% on the Genesis.
+the score bar, one 94 PC screen shows 32% of the rink's length against 38% on the Genesis.
 
 Speeds were rescaled once, the same on both axes, by about the length ratio: push 175 vs 200 (0.875), top speeds
 4800-7875 vs 5500-9625 (0.87 at the bottom, 0.82 at the top), shot vector 0x3B vs $44 (0.868), and a pass with no
 receiver (built from `dirtab` in `dopass`, 28BB:0B96) 0.875. A pass to a teammate (`passtoa0`, 28BB:0E1A: pass speed
 (passing + 40) x 4 and the $78 time factor, as on the Genesis), friction, gravity and stopping are unchanged. So at top
 speed, skating end to end takes 1.02-1.08 times as many game steps as on the Genesis, and board to board 1.35-1.44
-times. For the same speed a PC skater covers 30% fewer feet across than along (2.64 / 3.76). No per-axis compensation
+times. For the same speed a 94 PC skater covers 30% fewer feet across than along (2.64 / 3.76). No per-axis compensation
 was found, either for feet or for pixel aspect. The 95 PC page has the 95 PC numbers (same rink, faster skating).
 
 Open: speeds are compared per game step. How d7 is produced is now in the friction section above: it is 1 when a
@@ -511,22 +511,22 @@ says why.
 
 ## Music and packaging
 
-**Composer.** "Organ Music" is credited to Dieter Ruehle in the PC credits (`data/far/credits.asm`: `str_OrganMusic`,
+**Composer.** "Organ Music" is credited to Dieter Ruehle in the 94 PC credits (`data/far/credits.asm`: `str_OrganMusic`,
 `str_DieterRuehle`) and in 94 Genesis ('Organ Music by' / 'Dieter Ruehle', `teamdata94.asm`). 93 Genesis has no organ
 credit and no per-team organ tunes, only eight songs ($30-$37). (Data)
 
-**Organ tunes.** The PC game ships 53 team organ files (`BOS1-3.KMS` ... `WINN2.KMS`, loaded by `LoadArenaJingles`). The
-94 SNES game has 53 named organ tunes. The PC files use the same EA song format as the 94 SNES songs, so the notes could
+**Organ tunes.** The 94 PC game ships 53 team organ files (`BOS1-3.KMS` ... `WINN2.KMS`, loaded by `LoadArenaJingles`). The
+94 SNES game has 53 named organ tunes. The 94 PC files use the same EA song format as the 94 SNES songs, so the notes could
 be compared directly (pitch steps and timing on every track):
 
 - 50 PC files match a 94 SNES tune note for note (for example `BUF2` = Sabre Dance, `HART1` = Brass Bonanza, `CHIC1` = Here
   Come the Hawks, `MON2` = Halte la, `SHK2` = Jaws, `PITTS2` = Defense).
 - The other 3 are close but not identical: `PHIL2` vs Buildup [F], `PITTS4` vs Drunken Sailor, `SHK7` vs Hava Nagila
   (same length and tune family, different notes in places).
-- Every PC file sits with the team that uses that tune in 94 SNES (`LA4` = Go Team Go [C], used by LA; `WINN2` = Gypsy
+- Every 94 PC file sits with the team that uses that tune in 94 SNES (`LA4` = Go Team Go [C], used by LA; `WINN2` = Gypsy
   Spain / Charge, used by Winnipeg and Ottawa).
 
-So the whole 94 SNES organ set is in the PC game, 50 of 53 exactly (Code).
+So the whole 94 SNES organ set is in the 94 PC game, 50 of 53 exactly (Code).
 
 **Why 94 Genesis has 72 and 94 SNES 53.** (Code)
 
@@ -542,14 +542,14 @@ So the whole 94 SNES organ set is in the PC game, 50 of 53 exactly (Code).
   70 - 17 = 53. The SNES also gives Anaheim, Florida and the All-Star teams no team songs (`DefaultSongs` instead).
 - 94 PC ships the 94 SNES set (above), so it also has 53 organ tunes.
 
-The Genesis streams use a different format and weren't compared note for note, so "every Genesis tune is on PC"
-isn't claimed (Not checked). This agrees with Abdul's finding from NHL9X Studio that Ruehle's organ music is in the PC
+The Genesis streams use a different format and weren't compared note for note, so "every Genesis tune is on 94 PC"
+isn't claimed (Not checked). This agrees with Abdul's finding from NHL9X Studio that Ruehle's organ music is in the 94 PC
 version.
 
-**Other songs.** Per Abdul's comparison, the PC soundtrack is generally the same as 94 SNES / Genesis. Sega CD wasn't
+**Other songs.** Per Abdul's comparison, the 94 PC soundtrack is generally the same as 94 SNES / Genesis. Sega CD wasn't
 checked here:
 
-| PC song | Per Abdul's comparison | Checked here (notes compared) |
+| 94 PC song | Per Abdul's comparison | Checked here (notes compared) |
 |---|---|---|
 | Awards (`ADAWARDS`) | Genesis / Sega CD main menu music | Matches the 94 Genesis title / menu song ($78) exactly, and the 94 SNES song labelled "PlayoffSong" |
 | Game Summary (`ADSUM`) | Genesis / Sega CD Intermission song and the SNES main menu song | Matches the 94 Genesis end-of-period song ($79) and the 94 SNES song labelled "MenuSong" (both near-exact) |
@@ -557,7 +557,7 @@ checked here:
 
 **Packaging.** Per Abdul's comparison, and visible in the photos below: the 94 PC floppy labels and the 94 Genesis
 cartridge label use the same design: EA Sports banner, NHL logo block, NHL shield and NHLPA logos, red and black layout,
-"© 1993 Electronic Arts". The PC shipped as "NHL Hockey" rather than "NHL '94": the disk says "NHL Hockey" where the
+"© 1993 Electronic Arts". The 94 PC shipped as "NHL Hockey" rather than "NHL '94": the disk says "NHL Hockey" where the
 cartridge says "NHL '94".
 
 <table>
@@ -603,7 +603,7 @@ What the code has for each line on the 94 PC floppy box, and for the other 94 bo
 
 ## What this means
 
-The PC game isn't a straight NHLPA 93 port, and it isn't a straight NHL 94 port either:
+The 94 PC game isn't a straight NHLPA 93 port, and it isn't a straight NHL 94 port either:
 
 - **94-like content:** full NHL licence (team names, crests), the 1992-93 rosters the 94 consoles were built from, the
   real 1993 All-Star selections (82% shared with the 94 console All-Star teams),
@@ -611,10 +611,10 @@ The PC game isn't a straight NHLPA 93 port, and it isn't a straight NHL 94 port 
 - **94-like gameplay:** fighting is gone, all the way down to the collision routine and the player card. One-timers are
   in, for the player and for the CPU, coded the way NHL 94 SNES does them (receiver swing, forehand / backhand pick). It
   has the 94 SNES goalie wall animations, which no 93 game has.
-- **93-like engine:** skating and shooting are the 93 Genesis formulas, retuned for the PC rink, with none of the 94
+- **93-like engine:** skating and shooting are the 93 Genesis formulas, retuned for the 94 PC rink, with none of the 94
   physics changes (Genesis or SNES). The checking and fall animations are the 93 set. No penalty shots, no shootout, the 93 eight-row team stats,
   two players.
-- **PC-only:** a referee on the ice, anthems, the Stanley Cup presentation, three stars, a league mode, a Faceoffs
+- **94 PC only:** a referee on the ice, anthems, the Stanley Cup presentation, three stars, a league mode, a Faceoffs
   rating, a different rink shape and its own top-speed table.
 
 The missing Anaheim and Florida reflect the roster date (end of 1992-93, before expansion), not an NHLPA 93 base. The
