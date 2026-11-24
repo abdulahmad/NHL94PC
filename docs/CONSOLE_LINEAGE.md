@@ -49,8 +49,8 @@ Box text is marketing, so it is quoted as "the box says". Where the box and the 
 | "end-of-season awards including Hart, Norris and Ross" | **Matches.** 94 PC has the 10-award list (see the NHL95PC page). No 94 console has season awards, and the 95G and 95S boxes call season mode and its awards "all new in 95". So 94 PC had a season with awards a year before the consoles | Data |
 | "instant replay that saves highlights to a personal highlight reel" | **Matches.** `ReplaySaveHilight` writes highlights to disk ("Insufficient disk space to save hilights.", `data/far/hilight_save_messages.asm`), and the menus have "League Hilights ...", "Play-Off Hilights ..." and "Select a hilight". Instant replay itself is in every game back to NHL Hockey (92) Genesis, whose box lists it too | Data |
 | "simulate the actual 1993 NHL season" (and an 84-game schedule, implied) | **Consistent.** The trade deadline check in `TradePlayers` (`front/trade.asm`) closes trading from March 20 (month 3, day 0x14), in months 4-9, or once 1008 games have been played. 1008 is 24 teams x 84 games / 2, so the full schedule is the 84-game 1992-93 season | Code (the check); Inferred (84 games) |
-| "over 70 pieces of digitized organ music" | **Partly.** The game ships 71 `.KMS` songs, but only 53 of them are team organ tunes. The rest are menu and event songs. They are sequenced songs in EA's song format, not digitized recordings. 95 PC is the first PC game with digitized `.IFF` music (see the NHL95PC page). The 94G and 94S boxes also say "over 70": 94G lists 72 organ tunes, while 94S has 53 named organ tunes | Data |
-| "one-timers (drop a set pass to your big stick at the point)" | **Matches** the one-timer rows above | Code |
+| "over 70 pieces of digitized organ music" | **Partly.** The game ships 71 `.KMS` songs, but only 53 of them are team organ tunes. The rest are menu and event songs. They are sequenced songs in EA's song format, not digitized recordings. 95 PC is the first PC game with digitized `.IFF` music (see the NHL95PC page). The 94G and 94S boxes also say "over 70". 94G has 72 organ songs, 70 of which its tables can play. 94S has 53, because it merges key and tempo variants (see Music and packaging) | Data |
+| "one-timers (drop a set pass to your big stick at the point)" | **Matches** the one-timer rows above. "Drop a set pass" here means the pass that sets up the one-timer, not a drop-pass move: 94 PC has **no drop pass at all**. `dopass` (`engine/physics.asm`, 28BB:0B96) always either passes to the closest teammate within one 45° step of `passdir`, straight ahead preferred (`passtoa0`), or, with nobody there, sends the puck along `passdir` at the pass speed plus the passer's velocity. No branch leaves the puck behind. 95 PC adds one (`PassLaneChk` / `ScatterPass`, see the NHL95PC page); 95G's is a separate button move | Code |
 | "play one or two players head to head" | **Matches** (Players per game row) | Code |
 
 The other 94 boxes, compared with the code:
@@ -356,9 +356,24 @@ be compared directly (pitch steps and timing on every track):
 - Every PC file sits with the team that uses that tune in 94 SNES (`LA4` = Go Team Go [C], used by LA; `WINN2` = Gypsy
   Spain / Charge, used by Winnipeg and Ottawa).
 
-So the whole 94 SNES organ set is in the PC game, 50 of 53 exactly (Code). 94 Genesis lists 72 organ tunes in
-`sound94.asm`: the same repertoire, with more key and tempo variants and its own set for Anaheim, Florida, Ottawa and
-Winnipeg. The Genesis streams use a different format and weren't compared note for note, so "every Genesis tune is on PC"
+So the whole 94 SNES organ set is in the PC game, 50 of 53 exactly (Code).
+
+**Why 94 Genesis has 72 and 94 SNES 53.** Both boxes say "over 70 pieces of organ music". (Code)
+
+- 94 Genesis has 72 organ songs, `$30`-`$77` (`NHL94_music_001`-`072`, `src/sound/sound94.asm` 15-86). `TeamSongs` and
+  `RandomSongs` (`src/front/arena94.asm` 154-188) use 70 of them. `$62` and `$72` (two Go Team Go [C] versions) are in
+  neither table, so no game plays them. The 94G box is right: 72 exist and 70 play.
+- 94 SNES has 53 (`src/data/sound/Song*.asm`). Its `TeamSongs` has the 94G team order and slots. Matching it to 94G
+  slot by slot (plus `DefaultSongs` to `RandomSongs`) puts every one of the 70 playable 94G songs under exactly one
+  SNES song. 17 are merged: wherever 94G has any of a group of variants (by their titles, the same tune in another key,
+  tempo or length), the SNES plays one song. Here We Go (`$31`, `$3F`,
+  `$4A`, `$54`), O'Malley's Steps (`$3C`, `$4F`, `$71`, `$74`, `$75`), Rally Time (`$33`, `$47`, `$77`), the Mexican Hat
+  Dance (`$3A`, `$3D`, `$45`), and two each for Kalinka, Birthday, La Raspa, Charge, Let's Go [F] and Buildup / Charge.
+  70 - 17 = 53. The SNES also gives Anaheim, Florida and the All-Star teams no team songs (`DefaultSongs` instead).
+  So the 94S box's "over 70" overstates it: the SNES has 53 organ songs.
+- 94 PC ships the 94 SNES set (above), so it also has 53 organ tunes.
+
+The Genesis streams use a different format and weren't compared note for note, so "every Genesis tune is on PC"
 isn't claimed (Not checked). This agrees with Abdul's finding from NHL9X Studio that Ruehle's organ music is in the PC
 version.
 
