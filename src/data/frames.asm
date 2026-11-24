@@ -1,6 +1,6 @@
 ; Sprite animation tables. First the SPF equates: the first frame number of each group of frames in the
 ; player sprite sheet (frame numbers count from 0). Then SPAlist and one sequence per animation, in SPA number
-; order. Part of DGROUP, included by dgroup.asm between asstab and priolist.
+; order. Part of DGROUP, included by dgroup/game_state.asm between asstab and priolist.
 ;
 ; A sequence is a flags word, which is also direction 0's offset (bit 15 set: the animation loops at the end
 ; of its list; clear: updateanim clears SPA there), 7 word offsets for directions 1-7 counted in words from
