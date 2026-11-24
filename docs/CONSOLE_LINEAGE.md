@@ -270,6 +270,75 @@ Two PC tables in `dgroup.asm` were misnamed and have been renamed (PR #83): `Sho
 x-offset table: 0, $C, $10, ..., the values of 93's `.shotsets`), and `AccelFactors` / `AccelFactors2` are now
 `MaxSpeed` / `MaxSpeed_w2` (the top-speed table).
 
+## Rink size, aspect ratio and per-axis scale
+
+The Genesis draws 256 x 224 lines (inside a 256 x 240 frame); the PC draws 320 x 200 with a score bar at the bottom.
+This section checks whether either platform scaled the rink, or any speed, differently across the rink (x) and along it
+(y): by feet, by pixel aspect ratio, or not at all. The rink scrolls up and down on all of these games, so y is the
+long axis. Everything here is **Code** unless marked.
+
+**One game unit is one pixel, on both axes.** Genesis `find3d` (93G `video93.asm`; the same in 94G `video94.asm` and
+95G `middle95.asm`): screen x = x - Hpos + 128, screen y = 112 - (y - Vpos) - 1.5 x height, and `updatescroll` moves the
+rink plane by Hpos / Vpos one for one. PC `DrawFrameSprite` (1E7E:0120): x + 192 and 320 - y, minus the scroll
+position; `DrawReplayFrame` (26D2:03F2) lifts the puck by 3/2 x its height, as the Genesis does. No routine multiplies
+or shifts y differently from x.
+
+**The physics are the same on both axes, on both platforms.** Friction and the position step (`updateplayers`),
+stopping (150 per axis), the `dirtab` push (200 / 141 on Genesis, 175 / 124 on PC, the same on every axis) and the
+top-speed cap (vx² + vy² against `MaxSpeed`: a circle, not an ellipse) treat x and y alike. Distances are true distances: the
+Genesis uses a square root (`Sroot`); the PC uses `SqrtLong` for passes and, for shots, `FoldScale` (03A3:06CA: atan2,
+then divide by the sine or cosine). The only per-axis numbers are the aim error caps (x 136 on Genesis,
+160 on PC; y 60), and the x cap follows the rink width.
+
+| | Genesis | PC | PC / Gen |
+|---|---|---|---|
+| Side boards (x) | ±136 | ±160 | 1.176 |
+| End boards (y) | ±298 | ±264 | 0.886 |
+| Goal lines | ±264 | ±232 | 0.879 |
+| Blue lines | ±88 | ±78 | 0.886 |
+| Corner radius | 64 | 64 | 1 |
+| Units per foot, x | 3.20 | 3.76 | 1.18 |
+| Units per foot, y | 2.98 | 2.64 | 0.89 |
+| x / y | 1.07 | 1.43 | |
+| One screen shows | 256 x 224 | 320 x 168 | |
+
+Feet are from the 1992-93 NHL rink: 200 x 85 ft, goal lines 11 ft from the end boards, blue lines 60 ft out from the
+goal lines (a 58 ft neutral zone; NHL Records, historical rule changes). The Genesis y axis is even all along: 2.97
+units per foot to the goal line, 2.93 from goal line to blue line, 3.03 to the blue line, 2.98 to the boards. The PC
+gives 2.61, 2.57, 2.69 and 2.64. Genesis values: `Sideline` = $88, `Blueline` = $58, `goalline` = 176 past the blue
+line (`ram93.asm`), end boards #$12A (`checkwallcoll`). PC values: `checkwallcoll` (28BB:2A54) 0xA0 / 0x108 / 0x40,
+blue line 0x4E and goal line 0xE8 in `physics.asm` and `logic.asm`.
+
+**The PC playfield is 320 x 168.** The camera sits at screen row 84 (scroll y = 0xEC - camy, clamped to 0-0x1A8, in
+`ThreeStarsLoop` 2CD2:02DA, `StartHL2` 1FAA:000E and `InstantReplay` 2581:000E), and `SetScrollCell`
+(1F29:0006) keeps a ring of 0x16 rows of 8 lines for 21 visible rows. 95 PC states it outright: the zone screen is
+0x140 x 0xA8. The score bar takes the bottom 32 lines.
+
+**Genesis.** The rink is close to true feet along its length (2.98 units per foot) and 7% too wide across (3.20).
+H32 pixels are wide (8:7 on an NTSC TV) and nothing corrects for it, so on a TV the rink looks 23% too wide for its
+length (34% if the 256 x 240 frame is taken to fill 4:3). So the Genesis keeps one scale per pixel, laid out roughly to
+feet in pixels, with no aspect correction and no x / y speed difference. A skater covers about 7% fewer feet going
+across than going up the ice at the same speed.
+
+**94 PC.** It keeps the same per-pixel rule. The rink was redrawn wider and shorter in pixels and the physics stayed
+per pixel. Board to board is exactly 320, the screen width. The length went x 0.886, close to 200 / 224 = 0.893 (the
+PC's 200 lines over the Genesis's 224 drawn lines), not 200 / 240 = 0.833. The width went x 1.176, less than
+320 / 256 = 1.25. On a 4:3 screen (PC pixels 5:6, Genesis 8:7) the rink's shape is nearly the same: width / length
+0.505 on PC and 0.52 on Genesis (the real rink is 0.425). So the premise that the rink keeps its share of the screen
+holds for the shape and the length (within 1%, ignoring the score bar). The width is 6% under the screen ratio. With
+the score bar, one PC screen shows 32% of the rink's length against 38% on the Genesis.
+
+Speeds were rescaled once, the same on both axes, by about the length ratio: push 175 vs 200 (0.875), top speeds
+4800-7875 vs 5500-9625 (0.87 at the bottom, 0.82 at the top), shot vector 0x3B vs $44 (0.868), and a pass with no
+receiver (built from `dirtab` in `dopass`, 28BB:0B96) 0.875. A pass to a teammate (`passtoa0`, 28BB:0E1A: pass speed
+(passing + 40) x 4 and the $78 time factor, as on the Genesis), friction, gravity and stopping are unchanged. So at top
+speed, skating end to end takes 1.02-1.08 times as many game steps as on the Genesis, and board to board 1.35-1.44
+times. For the same speed a PC skater covers 30% fewer feet across than along (2.64 / 3.76). No per-axis compensation
+was found, either for feet or for pixel aspect. The 95 PC page has the 95 PC numbers (same rink, faster skating).
+
+Open: speeds are compared per game step. Frame rates and d7 weren't measured, so these aren't per real second. That
+the length follows 200 / 224 is read from the numbers; no comment or table in the code says why.
+
 ## Music and packaging
 
 **Composer.** "Organ Music" is credited to Dieter Ruehle in the PC credits (`data/far/credits.asm`: `str_OrganMusic`,
