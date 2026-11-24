@@ -1,9 +1,6 @@
 AddHumanTeamThunk		equ	0x25CB
 AllocCanvases		equ	0x3804
 AllocRecData		equ	0x30
-PaGoodnight		equ	0x4A4
-PaNhlIntro		equ	0x490
-PaPlayoffResult		equ	0x514
 AnnouncerFlags		equ	0x1B7
 AskYesNo		equ	0x0
 AwayGlStats		equ	0x77A
@@ -188,6 +185,9 @@ POTreeBuf		equ	0xAE94
 POTreeBufSeg		equ	0xAE96
 POTreeRows		equ	0xC224
 POTreeSlots		equ	0xC206
+PaGoodnight		equ	0x4A4
+PaNhlIntro		equ	0x490
+PaPlayoffResult		equ	0x514
 PadRepeatOn		equ	0x524
 PadStates		equ	0x52C
 PageTable		equ	0x7570
@@ -246,6 +246,7 @@ ShowGameSummaryThunk		equ	0x25A3
 ShowMatchupScreenThunk		equ	0x252B
 ShowTeamStatsThunk		equ	0x25AD
 ShutdownSequencer		equ	0x308
+ShutdownSpeech		equ	0x39E
 SimulateGameThunk		equ	0x24A9
 SongBuf1		equ	0xF66
 SongBuf1Seg		equ	0xF68
@@ -264,7 +265,7 @@ SoundDrvBuf		equ	0xC1F0
 SoundDrvBufSeg		equ	0xC1F2
 SoundOptions		equ	0x1C6
 SpeechInit		equ	0x2F0
-ShutdownSpeech		equ	0x39E
+SpeechStopQueue		equ	0x47A
 SportsDeskMenu1		equ	0x11FE
 SportsDeskMenu2		equ	0x12AE
 StandingsGfx1		equ	0x21B0
@@ -278,7 +279,6 @@ StandingsSlots		equ	0x2488
 StatsMenuLoopThunk		equ	0x246D
 StatsPalette		equ	0xA3D8
 StopJingle		equ	0x5B8
-SpeechStopQueue		equ	0x47A
 StrIndexInSet		equ	0xE10
 TeamLinesRecs		equ	0xA06C
 TeamNameClips		equ	0x1E0

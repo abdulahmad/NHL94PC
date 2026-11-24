@@ -35,7 +35,7 @@ NHL '94 PC is based on [NHLPA93SNES](https://github.com/abdulahmad/NHLPA93SNES) 
 
 - `src/hockey94pc.asm` includes the whole file in order: `section header` (MZ header), one `section <name> align=16 vstart=0` per MZ segment, named after its file (labels are offsets inside the segment, as the 16-bit code uses them), then `section overlay` (bytes after the load module).
 - `src/engine/` the game logic (from the overlays), `src/pc/` DOS-only code, `src/front/` the front end, `src/lib/` the Microsoft C, EACLIB and RTLink libraries, `src/data/` DGROUP and the far data. `docs/cleanup/files_94pc.txt` maps the old EXE segment numbers to files, `docs/cleanup/files_94pc_ovl.txt` the overlay segments.
-- `src/ovl/<name>.asm` builds one overlay: its relocation table, then its segment files in load order. `src/ovl/<name>_syms.inc` (written by `tools/make_ovl_syms.py`) gives it the EXE labels it uses; `ovlmap.json` lists the overlays.
+- `src/ovl/<name>.asm` builds one overlay: its relocation table, then its segment files in load order. `src/ovl/<name>_syms.inc` (written by `tools/make_ovl_syms.py`) gives it the EXE labels it uses (`python3 tools/make_ovl_syms.py --check` fails when the committed files differ from what it writes; `verify_all.sh` and CI run it); `ovlmap.json` lists the overlays.
 - `segmap.json` lists every segment: name, file offset, size, source file, and the paragraph of the MZ segment.
 - `tools/prebuild.py` checks the EXE (SHA-1, CRC32, size) and runs `tools/extract.py` (cuts it into `Extracted/segments/`, gitignored).
 

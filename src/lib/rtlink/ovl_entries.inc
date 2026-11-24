@@ -1,5 +1,5 @@
 ;	Overlay routines the thunks of overlay_manager.asm jump to: their offsets in the overlay
-;	(written by tools/make_stubs.py from the overlay builds).
+;	(written by tools/make_ovl_syms.py from the overlay builds).
 AddHumanTeam		equ	0x8	; LP.OVL
 BuildDefaultLines		equ	0x102	; AI.OVL
 BuildEventLines		equ	0x478	; AI.OVL
@@ -75,7 +75,6 @@ FreeArenaJingles		equ	0x3D6	; INIT.OVL
 FreeGameMemory		equ	0x4	; INIT.OVL
 FreePPVFiles		equ	0xE8	; INIT.OVL
 FreePlayerFrames		equ	0x12E	; INIT.OVL
-MakeGSummaryPath		equ	0xB20	; INIT.OVL
 GameDressPlayer		equ	0x30E6	; MENUS.OVL
 GameGoalieStatsScreen		equ	0x56A	; STATS.OVL
 GameLineEditor		equ	0x8	; MENUS.OVL
@@ -103,14 +102,12 @@ LoadScheduleDB		equ	0x29F2	; MENUS.OVL
 LoadScoreboardArt		equ	0x38	; INIT.OVL
 LockerRoomScreen		equ	0x6	; MENUS.OVL
 MainDeskLoop		equ	0xA	; MENUS.OVL
+MakeGSummaryPath		equ	0xB20	; INIT.OVL
 MenuAddTeam		equ	0x144A	; MENUS.OVL
-StatsMenuAssists		equ	0x51A	; STATS.OVL
 MenuExhibitionSettings		equ	0x8	; MENUS.OVL
 MenuExit		equ	0x964	; MENUS.OVL
 MenuExportDbs		equ	0x2090	; MENUS.OVL
-StatsMenuGAA		equ	0x5E6	; STATS.OVL
 MenuGameShowPlayerStats		equ	0x2C90	; MENUS.OVL
-StatsMenuGoals		equ	0x4F8	; STATS.OVL
 MenuImportDbs		equ	0x2054	; MENUS.OVL
 MenuLeagueHilights		equ	0x1EEC	; MENUS.OVL
 MenuLeagueSettings		equ	0x16DE	; MENUS.OVL
@@ -129,31 +126,18 @@ MenuP1ControlsPlayoff		equ	0x654	; MENUS.OVL
 MenuP2ControlsExh		equ	0xA	; MENUS.OVL
 MenuP2ControlsInGame		equ	0x108	; MENUS.OVL
 MenuP2ControlsPlayoff		equ	0x65E	; MENUS.OVL
-StatsMenuPIM		equ	0x5A2	; STATS.OVL
-StatsMenuPPGoals		equ	0x53C	; STATS.OVL
 MenuPlayoffHilights		equ	0x16	; MENUS.OVL
-StatsMenuPlusMinus		equ	0x580	; STATS.OVL
-StatsMenuPoints		equ	0x4D6	; STATS.OVL
 MenuRebuildDbs		equ	0x18A6	; MENUS.OVL
 MenuRemoveTeam		equ	0x1594	; MENUS.OVL
 MenuReturnToLineEditor		equ	0x2FA0	; MENUS.OVL
-StatsMenuSHGoals		equ	0x55E	; STATS.OVL
-StatsMenuSavePct		equ	0x62A	; STATS.OVL
-StatsMenuShootPct		equ	0x5C4	; STATS.OVL
 MenuShowLeagueSettings		equ	0x19C	; MENUS.OVL
 MenuShowLeagueSettings2		equ	0x2B0	; MENUS.OVL
 MenuSoundSettings		equ	0x4	; MENUS.OVL
-StatsMenuTeamDefense		equ	0x44E	; STATS.OVL
-StatsMenuPenaltyKilling		equ	0x492	; STATS.OVL
-StatsMenuPowerPlay		equ	0x470	; STATS.OVL
-StatsMenuTeamPenalties		equ	0x4B4	; STATS.OVL
-StatsMenuTeamScoring		equ	0x42C	; STATS.OVL
 MenuTradePlayers		equ	0x1BA6	; MENUS.OVL
 MenuUpdateTeamDbs		equ	0x1B6A	; MENUS.OVL
 MenuUseDefaultLines		equ	0x2706	; MENUS.OVL
 MenuUseOriginalLines		equ	0x25F2	; MENUS.OVL
 MenuUseTheseLines		equ	0x252E	; MENUS.OVL
-StatsMenuGoalieWins		equ	0x608	; STATS.OVL
 MergeLeagueFiles		equ	0xC28	; LP.OVL
 MergeUpdateDbs		equ	0x134E	; LP.OVL
 MviClose		equ	0x30E	; MOVIE.OVL
@@ -211,7 +195,23 @@ StartGame		equ	0x2F00	; AI.OVL
 StartHL2		equ	0xE	; AI.OVL
 StartPreGame		equ	0x496	; AI.OVL
 StartThreeStars		equ	0xD46	; AI.OVL
+StatsMenuAssists		equ	0x51A	; STATS.OVL
+StatsMenuGAA		equ	0x5E6	; STATS.OVL
+StatsMenuGoalieWins		equ	0x608	; STATS.OVL
+StatsMenuGoals		equ	0x4F8	; STATS.OVL
 StatsMenuLoop		equ	0x44	; STATS.OVL
+StatsMenuPIM		equ	0x5A2	; STATS.OVL
+StatsMenuPPGoals		equ	0x53C	; STATS.OVL
+StatsMenuPenaltyKilling		equ	0x492	; STATS.OVL
+StatsMenuPlusMinus		equ	0x580	; STATS.OVL
+StatsMenuPoints		equ	0x4D6	; STATS.OVL
+StatsMenuPowerPlay		equ	0x470	; STATS.OVL
+StatsMenuSHGoals		equ	0x55E	; STATS.OVL
+StatsMenuSavePct		equ	0x62A	; STATS.OVL
+StatsMenuShootPct		equ	0x5C4	; STATS.OVL
+StatsMenuTeamDefense		equ	0x44E	; STATS.OVL
+StatsMenuTeamPenalties		equ	0x4B4	; STATS.OVL
+StatsMenuTeamScoring		equ	0x42C	; STATS.OVL
 StatsSelLeague		equ	0x1B0	; STATS.OVL
 StatsSelLeaguePlayoffs		equ	0x274	; STATS.OVL
 StatsSelNhlPlayoffs		equ	0xEC	; STATS.OVL

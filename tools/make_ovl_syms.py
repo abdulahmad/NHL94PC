@@ -2,8 +2,11 @@
 # make_ovl_syms.py: rewrite src/ovl/<name>_syms.inc and src/lib/rtlink/ovl_entries.inc. The labels an overlay
 # uses from the EXE are set with equ to their value in the full build (read from a NASM map of the full build).
 #   python3 tools/make_ovl_syms.py          (run after a change that adds or renames a label used across segments)
+#   python3 tools/make_ovl_syms.py --check  (write nothing; exit 1 when a file differs from what it would write)
+# Rows are sorted by name. NASM is $NASM (default nasm).
 import json, os, re, subprocess, sys, tempfile
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+NASM = os.environ.get('NASM', 'nasm')
 SEGMAP = json.load(open(os.path.join(ROOT, 'segmap.json')))
 
 
@@ -11,7 +14,7 @@ def full_map():
     d = tempfile.mkdtemp()
     w, mp = os.path.join(d, 'w.asm'), os.path.join(d, 'map.txt')
     open(w, 'w').write(f'[map symbols {mp}]\n%include "hockey94pc.asm"\n')
-    r = subprocess.run(['nasm', '-f', 'bin', '-I', 'src/', '-o', os.path.join(d, 'o'), w], cwd=ROOT, capture_output=True, text=True)
+    r = subprocess.run([NASM, '-f', 'bin', '-I', 'src/', '-o', os.path.join(d, 'o'), w], cwd=ROOT, capture_output=True, text=True)
     if r.returncode:
         sys.exit(r.stderr)
     vals, sec = {}, None
@@ -30,9 +33,33 @@ def full_map():
     return vals
 
 
+def outputs():
+    """the files this tool writes"""
+    p = os.path.join(ROOT, 'ovlmap.json')
+    fs = [os.path.join(ROOT, 'src', 'lib', 'rtlink', 'ovl_entries.inc')]
+    if os.path.exists(p):
+        fs += [os.path.join(ROOT, 'src', 'ovl', o['name'].lower() + '_syms.inc') for o in json.load(open(p))['overlays']
+               if os.path.exists(os.path.join(ROOT, 'src', 'ovl', o['name'].lower() + '_build.asm'))]
+    return fs
+
+
 def main():
-    vals = full_map()
-    ovl_syms(vals)
+    check = '--check' in sys.argv[1:]
+    before = {f: open(f).read() for f in outputs() if os.path.exists(f)}
+    try:
+        vals = full_map()
+        ovl_syms(vals)
+        after = {f: open(f).read() if os.path.exists(f) else None for f in outputs()}
+    finally:
+        if check:                                  # put the committed files back
+            for f, t in before.items():
+                open(f, 'w').write(t)
+    if check:
+        bad = [os.path.relpath(f, ROOT) for f in after if after[f] != before.get(f)]
+        for f in bad:
+            print(f'make_ovl_syms --check: {f} is not what make_ovl_syms.py writes')
+        print('make_ovl_syms --check: OK' if not bad else 'make_ovl_syms --check: run python3 tools/make_ovl_syms.py')
+        sys.exit(1 if bad else 0)
 
 
 def ovl_map(lo):
@@ -40,7 +67,7 @@ def ovl_map(lo):
     d = tempfile.mkdtemp()
     w, mp = os.path.join(d, 'w.asm'), os.path.join(d, 'map.txt')
     open(w, 'w').write(f'[map symbols {mp}]\n%include "ovl/{lo}_build.asm"\n')
-    r = subprocess.run(['nasm', '-f', 'bin', '-I', 'src/', '-o', os.path.join(d, 'o'), w], cwd=ROOT, capture_output=True, text=True)
+    r = subprocess.run([NASM, '-f', 'bin', '-I', 'src/', '-o', os.path.join(d, 'o'), w], cwd=ROOT, capture_output=True, text=True)
     if r.returncode:
         return None
     out, sec = {}, None
@@ -72,7 +99,7 @@ def ovl_syms(vals):
             need = {}
             for _ in range(10):
                 open(inc, 'w').write(''.join(f'{n}\t\tequ\t0x{need[n]:X}\n' for n in sorted(need)))
-                r = subprocess.run(['nasm', '-f', 'bin', '-I', 'src/', '-o', os.devnull, f'src/ovl/{lo}_build.asm'], cwd=ROOT,
+                r = subprocess.run([NASM, '-f', 'bin', '-I', 'src/', '-o', os.devnull, f'src/ovl/{lo}_build.asm'], cwd=ROOT,
                                    capture_output=True, text=True)
                 miss = set(re.findall(r"symbol `([^']+)' not defined", r.stderr))
                 if not r.returncode or not miss:
@@ -88,7 +115,8 @@ def ovl_syms(vals):
             m = ovl_map(lo)
             if m:
                 own[lo] = {k: v for k, v in m.items() if k not in need}
-    print('overlay symbols written')
+    if '--check' not in sys.argv[1:]:
+        print('overlay symbols written')
     ovl_entries(own, vals)
 
 
@@ -107,16 +135,19 @@ def ovl_entries(own, vals):
             # a far jump split across the segment end: db 0xEA, then dw Routine ; NAME.OVL
             m = re.match(r'^\s+dw (\w+)\s*;', l) if re.match(r'^\s+db 0xEA\b', L[i - 1]) else None
             ov = re.search(r'; (\w+)\.OVL', l) if m else ov
-        if m and cur and ov and m.group(1) == cur:
-            v = own.get(ov.group(1).lower(), {}).get(cur)
+        if m and cur and ov:                       # the thunk's far jump (its target may have another name)
+            t = m.group(1)
+            v = own.get(ov.group(1).lower(), {}).get(t)
             if v is None:
-                sys.exit(f'ovl_entries: {cur} not found in {ov.group(1)}.OVL')
-            rows[cur] = (v, ov.group(1))
+                sys.exit(f'ovl_entries: {t} ({cur}Thunk) not found in {ov.group(1)}.OVL')
+            rows[t] = (v, ov.group(1))
+            cur = None
     out = [';\tOverlay routines the thunks of overlay_manager.asm jump to: their offsets in the overlay',
            ';\t(written by tools/make_ovl_syms.py from the overlay builds).']
     out += [f'{n}\t\tequ\t0x{v:X}\t; {o}.OVL' for n, (v, o) in sorted(rows.items())]
     open(os.path.join(ROOT, 'src', 'lib', 'rtlink', 'ovl_entries.inc'), 'w').write('\n'.join(out) + '\n')
-    print('overlay entry points written')
+    if '--check' not in sys.argv[1:]:
+        print('overlay entry points written')
 
 
 main()

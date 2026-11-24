@@ -20,7 +20,6 @@ DrawMenuPanel		equ	0xA4
 DrawRawTransRemapAt		equ	0x1EE9
 DrawRleTransAt		equ	0x1857
 DrawRleTransBody		equ	0x1874
-PrintShadowText		equ	0x166
 DrawShadowTextBuffered		equ	0x36
 DrawShadowTextCentered		equ	0xE4
 DrawShadowTextF		equ	0x210
@@ -69,6 +68,7 @@ POTreeRows		equ	0xC224
 POTreeSlots		equ	0xC206
 PageTable		equ	0x7570
 PoStandingsMode		equ	0x8C6E
+PrintShadowText		equ	0x166
 PutBlockAt		equ	0x4B5
 RawBase		equ	0x1532
 ReadAtOffset		equ	0x442
