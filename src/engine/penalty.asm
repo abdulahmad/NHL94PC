@@ -291,16 +291,16 @@ InProgress:
         db 0x8B, 0xF0                           ; insn: mov si, ax
         shl si, byte 0x7
         add si, SortCords
-        mov ax, [si + 0x60]
+        mov ax, [si + tmptr]
         mov [bp - 0x4], ax
         db 0x8B, 0xD8                           ; insn: mov bx, ax
-        mov al, [si + 0x47]
+        mov al, [si + pnum]
         cbw
         mov cx, [bx + 0xd0]
         imul bx, ax, 0x28
         db 0x03, 0xD9                           ; insn: add bx, cx
         mov byte [bx], 0x8
-        mov al, [si + 0x47]
+        mov al, [si + pnum]
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
@@ -312,7 +312,7 @@ InProgress:
         call 0x1E7E:assreplace
         add sp, 0x4
 .11:
-        mov al, [si + 0x47]
+        mov al, [si + pnum]
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
@@ -337,10 +337,10 @@ InProgress:
         mov ax, [bp - 0xc]
         sub ax, strict word 0x9
         push ax
-        mov al, [si + 0x47]
+        mov al, [si + pnum]
         cbw
         push ax
-        mov al, [si + 0x44]
+        mov al, [si + pflags]
         and al, 0x40
         cmp al, 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
@@ -446,13 +446,13 @@ InProgress:
         db 0x8B, 0xF0                           ; insn: mov si, ax
         shl si, byte 0x7
         add si, SortCords
-        mov ax, [si + 0x60]
+        mov ax, [si + tmptr]
         mov [bp - 0x4], ax
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         inc word [bx + 0x6]
         mov bx, [bp - 0x4]
         add [bx + 0x8], di
-        mov al, [si + 0x47]
+        mov al, [si + pnum]
         cbw
         mov [bp - 0xa], ax
         cmp ax, strict word 0x19
@@ -464,10 +464,10 @@ InProgress:
         add [es:bx + 0x4], di
 .22:
         push di
-        mov al, [si + 0x52]
+        mov al, [si + rostnum]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         push ax
-        mov al, [si + 0x44]
+        mov al, [si + pflags]
         and al, 0x40
         cmp al, 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
@@ -494,10 +494,10 @@ InProgress:
         mov ax, [bp - 0xc]
         sub ax, strict word 0x9
         push ax
-        mov al, [si + 0x47]
+        mov al, [si + pnum]
         cbw
         push ax
-        mov al, [si + 0x44]
+        mov al, [si + pflags]
         and al, 0x40
         cmp al, 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
@@ -532,15 +532,15 @@ InProgress:
         db 0x2B, 0xD2                           ; insn: sub dx, dx
         db 0x8B, 0xFB                           ; insn: mov di, bx
 .25:
-        cmp word [si + 0x1a], 0x0
+        cmp word [si + position], 0x0
         jng short .26
-        mov al, [si + 0x47]
+        mov al, [si + pnum]
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
         cmp word [bx + di + 0x64], -0x1
         jnz short .26
-        test byte [si + 0x45], 0x10
+        test byte [si + pflags2], 0x10
         jz short .27
 .26:
         add si, 0x80

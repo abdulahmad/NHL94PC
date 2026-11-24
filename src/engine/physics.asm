@@ -31,21 +31,21 @@ burst:
         push di
         push si
         mov si, [bp + 0x6]
-        mov al, [si + 0x47]
+        mov al, [si + pnum]
         cbw
         db 0x8B, 0xF8                           ; insn: mov di, ax
         shl di, 1
-        mov bx, [si + 0x60]
+        mov bx, [si + tmptr]
         mov ax, [bx + di + 0x2c]
         mov [regd0], ax
         test byte [CrowdState], 0x4
         jz short .2
         sub word [regd0], 0xcc
-        mov al, [si + 0x47]
+        mov al, [si + pnum]
         cbw
         db 0x8B, 0xF8                           ; insn: mov di, ax
         shl di, 1
-        mov bx, [si + 0x60]
+        mov bx, [si + tmptr]
         mov ax, [regd0]
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnl short .1
@@ -57,17 +57,17 @@ burst:
         mov word [regd0], 0x0
 .2:
         sar word [regd0], byte 0x7
-        mov bx, [si + 0x36]
+        mov bx, [si + facedir]
         shl bx, byte 0x2
         mov ax, [bx + dirtab]
         imul word [regd0]
-        add [si + 0xc], ax
-        mov bx, [si + 0x36]
+        add [si + Xvel], ax
+        mov bx, [si + facedir]
         shl bx, byte 0x2
         mov ax, [bx + dirtab_y]
         imul word [regd0]
-        add [si + 0xe], ax
-        or byte [si + 0x44], 0x20
+        add [si + Yvel], ax
+        or byte [si + pflags], 0x20
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, SPAno(SPAburst)
         call 0x2E42:SetSPA
@@ -90,7 +90,7 @@ check4check:
         push di
         push si
         mov di, [bp + 0x6]
-        mov al, [di + 0x58]
+        mov al, [di + checking]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         sub ax, strict word 0x14
         neg ax
@@ -107,7 +107,7 @@ check4check:
         jng short .2
         jmp near .9
 .2:
-        cmp word [di + 0x5e], 0x6
+        cmp word [di + SCnum], 0x6
         jl short .3
         db 0x2B, 0xF6                           ; insn: sub si, si
         jmp short .4
@@ -118,22 +118,22 @@ check4check:
         add si, SortCords
         mov word [regd2], 0x6
 .5:
-        cmp word [si + 0x1a], 0x0
+        cmp word [si + position], 0x0
         jz short .6
-        test byte [si + 0x44], 0x20
+        test byte [si + pflags], 0x20
         jnz short .6
-        test byte [si + 0x45], 0x1
+        test byte [si + pflags2], 0x1
         jnz short .6
-        mov ax, [si + 0x2]
-        sub ax, [di + 0x2]
+        mov ax, [si + Xpos+2]
+        sub ax, [di + Xpos+2]
         mov [regd0], ax
         cwd
         db 0x33, 0xC2                           ; insn: xor ax, dx
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         cmp ax, strict word 0x1e
         jg short .6
-        mov ax, [si + 0x6]
-        sub ax, [di + 0x6]
+        mov ax, [si + Ypos+2]
+        sub ax, [di + Ypos+2]
         mov [regd1], ax
         cwd
         db 0x33, 0xC2                           ; insn: xor ax, dx
@@ -143,7 +143,7 @@ check4check:
         mov ax, [regd0]
         mov dx, [regd1]
         call 0x0D5F:VectorToDir8
-        cmp ax, [di + 0x36]
+        cmp ax, [di + facedir]
         jz short .7
 .6:
         add si, 0x80
@@ -190,16 +190,16 @@ checkagr:
         push di
         push si
         mov di, [bp + 0x6]
-        mov al, [di + 0x56]
+        mov al, [di + aggress]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         mov si, 0x14
         db 0x2B, 0xF0                           ; insn: sub si, ax
         shl si, byte 0x4
-        test byte [di + 0x44], 0x8
+        test byte [di + pflags], 0x8
         jz short .1
         shl si, 1
 .1:
-        mov ax, [di + 0x2]
+        mov ax, [di + Xpos+2]
         mov bx, [puckx]
         sub ax, [bx]
         cwd
@@ -207,7 +207,7 @@ checkagr:
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         cmp ax, strict word 0x28
         jg short .2
-        mov ax, [di + 0x6]
+        mov ax, [di + Ypos+2]
         mov bx, [pucky]
         sub ax, [bx]
         cwd
@@ -221,9 +221,9 @@ checkagr:
         jng short .3
         shl si, byte 0x2
 .3:
-        mov bx, [di + 0x62]
+        mov bx, [di + optmptr]
         mov ax, [bx + 0x22]
-        mov bx, [di + 0x60]
+        mov bx, [di + tmptr]
         sub ax, [bx + 0x22]
         cmp ax, strict word 0x1
         jl short .4
@@ -247,7 +247,7 @@ checkagr:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
 .7:
         mov [bp - 0x6], ax
-        cmp word [di + 0x5e], 0x6
+        cmp word [di + SCnum], 0x6
         jnl short .8
         mov ax, 0x1
         jmp short .9
@@ -277,9 +277,9 @@ FacingBoards:
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push di
         mov bx, [bp + 0x6]
-        mov di, [bx + 0x2]
-        mov cx, [bx + 0x6]
-        mov dx, [bx + 0x36]
+        mov di, [bx + Xpos+2]
+        mov cx, [bx + Ypos+2]
+        mov dx, [bx + facedir]
         cmp di, -0x78
         jnl short .4
         cmp dx, 0x6
@@ -344,15 +344,15 @@ checkcheck:
         mov si, [bp + 0x6]
         mov di, [bp + 0x8]
 .1:
-        cmp word [di + 0x38], SPAno(SPAHold)
+        cmp word [di + SPA], SPAno(SPAHold)
         jnz short .2
         jmp near .22
 .2:
-        cmp word [di + 0x38], SPAno(SPAhook)
+        cmp word [di + SPA], SPAno(SPAhook)
         jnz short .3
         jmp near .22
 .3:
-        cmp word [di + 0x38], SPAno(SPAsweepchk)
+        cmp word [di + SPA], SPAno(SPAsweepchk)
         jnz short .4
         push di
         push si
@@ -361,39 +361,39 @@ checkcheck:
         jmp near .23
         db 0x90
 .4:
-        cmp word [si + 0x38], SPAno(SPAburst)
+        cmp word [si + SPA], SPAno(SPAburst)
         jz short .5
         jmp near .24
 .5:
         test byte [gmode], 0x1
         jz short .6
         mov ax, 0x100
-        mov [si + 0x18], ax
-        mov [di + 0x18], ax
+        mov [si + impact], ax
+        mov [di + impact], ax
 .6:
-        mov ax, [di + 0x2]
-        sub ax, [si + 0x2]
-        mov dx, [di + 0x6]
-        sub dx, [si + 0x6]
+        mov ax, [di + Xpos+2]
+        sub ax, [si + Xpos+2]
+        mov dx, [di + Ypos+2]
+        sub dx, [si + Ypos+2]
         call 0x0D5F:VectorToDir8
         mov [bp - 0x6], ax
         mov al, [bp - 0x6]
         sub al, [si + 0x36]
         and ax, strict word 0x7
         mov [bp - 0x2], ax
-        test byte [si + 0x49], 0x8
+        test byte [si + attribute], 0x8
         jz short .7
         neg ax
         and ax, strict word 0x7
         mov [bp - 0x2], ax
 .7:
-        or byte [si + 0x44], 0x20
+        or byte [si + pflags], 0x20
         mov bx, [bp - 0x2]
         shl bx, 1
         mov ax, [bx + CheckAnims]
         db 0x8B, 0xDE                           ; insn: mov bx, si
         call 0x2E42:SetSPA
-        cmp word [di + 0x1a], 0x0
+        cmp word [di + position], 0x0
         jnz short .8
         jmp near .24
 .8:
@@ -401,7 +401,7 @@ checkcheck:
         jnl short .9
         jmp near .24
 .9:
-        mov al, [si + 0x44]
+        mov al, [si + pflags]
         and al, 0x8
         cmp al, 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
@@ -416,7 +416,7 @@ checkcheck:
 .10:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
 .11:
-        mov cl, [di + 0x44]
+        mov cl, [di + pflags]
         and cl, 0x8
         cmp cl, 0x1
         db 0x1B, 0xC9                           ; insn: sbb cx, cx
@@ -425,24 +425,24 @@ checkcheck:
         jz short .12
         mov word [bp - 0x2], 0x78
 .12:
-        mov al, [di + 0x4a]
+        mov al, [di + weight]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
-        mov cl, [si + 0x4a]
+        mov cl, [si + weight]
         db 0x2A, 0xED                           ; insn: sub ch, ch
         db 0x2B, 0xC1                           ; insn: sub ax, cx
         add ax, [bp - 0x2]
         sar ax, 1
-        sub ax, [di + 0x18]
+        sub ax, [di + impact]
         mov [bp - 0x2], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jng short .16
         call 0x0C11:randomd0
         mov [bp - 0x2], ax
-        mov al, [si + 0x58]
+        mov al, [si + checking]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         cmp ax, [bp - 0x2]
         jnl short .16
-        cmp word [di + 0x5e], 0x10
+        cmp word [di + SCnum], 0x10
         jnz short .13
         jmp near .24
 .13:
@@ -469,9 +469,9 @@ checkcheck:
         jmp near .23
         db 0x90
 .16:
-        cmp word [di + 0x5e], 0x10
+        cmp word [di + SCnum], 0x10
         jnz short .18
-        test byte [si + 0x44], 0x8
+        test byte [si + pflags], 0x8
         jnz short .17
         jmp near .24
 .17:
@@ -485,7 +485,7 @@ checkcheck:
 .18:
         test byte [gmode], 0x10
         jnz short .21
-        cmp word [di + 0x18], 0x23
+        cmp word [di + impact], 0x23
         jng short .19
         mov al, [bp - 0x6]
         sub al, [si + 0x36]
@@ -668,7 +668,7 @@ checkint:
         mov si, [bp + 0x6]
         mov di, [bp + 0x8]
 .1:
-        cmp word [di + 0x1a], 0x0
+        cmp word [di + position], 0x0
         jz short .2
         jmp near .6
 .2:
@@ -679,12 +679,12 @@ checkint:
         mov bx, [puckc]
         mov al, [bx]
         cbw
-        cmp ax, [si + 0x5e]
+        cmp ax, [si + SCnum]
         jz short .4
-        cmp word [si + 0x18], 0x19
+        cmp word [si + impact], 0x19
         jng short .6
 .4:
-        cmp word [si + 0x18], 0x2
+        cmp word [si + impact], 0x2
         jng short .6
         push si
         push di
@@ -696,32 +696,32 @@ checkint:
         mov bx, [puckc]
         mov al, [bx]
         cbw
-        cmp ax, [si + 0x5e]
+        cmp ax, [si + SCnum]
         jnz short .5
         cmp word [lastimpact], 0xa
         jl short .6
 .5:
-        mov ax, [di + 0x6]
+        mov ax, [di + Ypos+2]
         cwd
         db 0x33, 0xC2                           ; insn: xor ax, dx
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         cmp ax, 0xa0
         jl short .6
-        cmp word [si + 0x5e], 0x10
+        cmp word [si + SCnum], 0x10
         jz short .6
-        mov al, [si + 0x47]
+        mov al, [si + pnum]
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        add bx, [si + 0x60]
+        add bx, [si + tmptr]
         cmp word [bx + 0x64], -0x3
         jng short .6
-        cmp word [di + 0x18], 0x1e
+        cmp word [di + impact], 0x1e
         jng short .6
-        test byte [si + 0x45], 0x10
+        test byte [si + pflags2], 0x10
         jnz short .6
         mov ax, 0x14
-        mov cl, [si + 0x56]
+        mov cl, [si + aggress]
         db 0x2A, 0xED                           ; insn: sub ch, ch
         db 0x2B, 0xC1                           ; insn: sub ax, cx
         call 0x0C11:randomd0
@@ -867,15 +867,15 @@ checkpuckcoll_ccx:
         db 0x8B, 0xFE                           ; insn: mov di, si
         shl di, byte 0x7
         add di, SortCords
-        test byte [di + 0x44], 0x4
+        test byte [di + pflags], 0x4
         jz short .3
         jmp near .18
 .3:
-        cmp word [di + 0x3e], 0x0
+        cmp word [di + nopuck], 0x0
         jz short .4
         jmp near .18
 .4:
-        test byte [di + 0x45], 0x4
+        test byte [di + pflags2], 0x4
         jz short .5
         jmp near .12
 .5:
@@ -884,19 +884,19 @@ checkpuckcoll_ccx:
         jmp near .12
 .6:
         mov si, [bp + 0x6]
-        cmp word [si + 0xa], 0x5
+        cmp word [si + Zpos+2], 0x5
         jng short .7
         jmp near .13
 .7:
-        cmp word [si + 0x10], 0x200
+        cmp word [si + Zvel], 0x200
         jng short .8
         jmp near .13
 .8:
         push di
         call 0x2E42:GetHot
         add sp, 0x2
-        mov ax, [di + 0x2]
-        sub ax, [si + 0x2]
+        mov ax, [di + Xpos+2]
+        sub ax, [si + Xpos+2]
         add [regd0], ax
         mov ax, [regd0]
         cwd
@@ -906,8 +906,8 @@ checkpuckcoll_ccx:
         jng short .9
         jmp near .13
 .9:
-        mov ax, [di + 0x6]
-        sub ax, [si + 0x6]
+        mov ax, [di + Ypos+2]
+        sub ax, [si + Ypos+2]
         add [regd1], ax
         mov ax, [regd1]
         cwd
@@ -931,7 +931,7 @@ checkpuckcoll_ccx:
         adc [regd0_w2], dx
         mov word [regd1], 0xc4
         mov word [regd1_w2], 0x0
-        cmp word [si + 0x3e], 0x0
+        cmp word [si + nopuck], 0x0
         jng short .10
         sar word [regd1], byte 0x2
 .10:
@@ -951,9 +951,9 @@ checkpuckcoll_ccx:
 .12:
         mov si, [bp + 0x6]
 .13:
-        cmp word [di + 0x1a], 0x0
+        cmp word [di + position], 0x0
         jnz short .16
-        mov ax, [di + 0x2]
+        mov ax, [di + Xpos+2]
         sub ax, [si + 0x2]
         mov [regd0], ax
         cwd
@@ -963,7 +963,7 @@ checkpuckcoll_ccx:
         jng short .14
         jmp near .18
 .14:
-        mov ax, [di + 0x6]
+        mov ax, [di + Ypos+2]
         sub ax, [si + 0x6]
         mov [regd1], ax
         cwd
@@ -993,7 +993,7 @@ checkpuckcoll_ccx:
         call puckgoalie
         jmp short .17
 .16:
-        mov ax, [di + 0x2]
+        mov ax, [di + Xpos+2]
         sub ax, [si + 0x2]
         mov [regd0], ax
         cwd
@@ -1001,7 +1001,7 @@ checkpuckcoll_ccx:
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         cmp ax, strict word 0x8
         jg short .18
-        mov ax, [di + 0x6]
+        mov ax, [di + Ypos+2]
         sub ax, [si + 0x6]
         mov [regd1], ax
         cwd
@@ -1049,19 +1049,19 @@ checkpuckcoll:
         push di
         push si
         mov di, [bp + 0x6]
-        mov ax, [di + 0x6]
+        mov ax, [di + Ypos+2]
         cwd
         db 0x33, 0xC2                           ; insn: xor ax, dx
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         cmp ax, 0x190
         jng short .1
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [di + 0xe], ax
-        mov [di + 0xc], ax
+        mov [di + Yvel], ax
+        mov [di + Xvel], ax
 .1:
-        cmp word [di + 0xa], 0x10
+        cmp word [di + Zpos+2], 0x10
         jg short .5
-        mov bx, [di + 0x5e]
+        mov bx, [di + SCnum]
         shl bx, 1
         mov si, [bx + objylist]
         cmp si, 0x10
@@ -1073,7 +1073,7 @@ checkpuckcoll:
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
         mov ax, [bx + objxlist]
-        sub ax, [di + 0x6]
+        sub ax, [di + Ypos+2]
         cmp ax, strict word 0x16
         jg short .3
         push word [bp - 0x2]
@@ -1085,7 +1085,7 @@ checkpuckcoll:
         cmp si, 0x10
         jnz short .2
 .3:
-        mov bx, [di + 0x5e]
+        mov bx, [di + SCnum]
         shl bx, 1
         mov si, [bx + objylist]
         db 0x0B, 0xF6                           ; insn: or si, si
@@ -1094,7 +1094,7 @@ checkpuckcoll:
         mov al, [si + OOlist_m1]
         cbw
         mov [bp - 0x2], ax
-        mov cx, [di + 0x6]
+        mov cx, [di + Ypos+2]
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
         sub cx, [bx + objxlist]
@@ -1137,7 +1137,7 @@ CheckBump:
         mov bx, [pucky]
         mov ax, [bx]
         mov bx, [bp + 0x8]
-        sub ax, [bx + 0x6]
+        sub ax, [bx + Ypos+2]
         cwd
         db 0x33, 0xC2                           ; insn: xor ax, dx
         db 0x2B, 0xC2                           ; insn: sub ax, dx
@@ -1162,10 +1162,10 @@ CheckBump:
 .3:
         db 0x8B, 0xD7                           ; insn: mov dx, di
         sar dx, byte 0x2
-        mov [bx + 0xc], dx
+        mov [bx + Xvel], dx
         mov ax, [bp - 0x2]
         sar ax, byte 0x2
-        mov [bx + 0xe], ax
+        mov [bx + Yvel], ax
         db 0x2B, 0xC0                           ; insn: sub ax, ax
         mov [si + 0xc], ax
         mov [si + 0xe], ax
@@ -1311,7 +1311,7 @@ chk4lc:
         mov bx, [pucky]
         mov ax, [bx]
         mov [regd0], ax
-        test byte [si + 0x44], 0x80
+        test byte [si + pflags], 0x80
         jnz short .2
         neg word [regd0]
 .2:
@@ -1329,18 +1329,18 @@ chk4lc:
         jz short .5
         jmp near .12
 .5:
-        test byte [si + 0x45], 0x8
+        test byte [si + pflags2], 0x8
         jz short .6
         jmp near .12
 .6:
-        mov di, [si + 0x60]
-        mov ax, [si + 0x62]
+        mov di, [si + tmptr]
+        mov ax, [si + optmptr]
         mov [bp - 0x4], ax
-        mov bx, [si + 0x60]
+        mov bx, [si + tmptr]
         mov dx, [bx + 0x22]
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         sub dx, [bx + 0x22]
-        mov bx, [si + 0x60]
+        mov bx, [si + tmptr]
         test byte [bx + 0xba], 0x40
         jz short .7
         cmp word [gameclock], 0xf
@@ -1421,22 +1421,22 @@ dopass:
         and byte [sflags], 0xfb
         mov bx, [puckc]
         mov byte [bx], 0xff
-        mov word [si + 0x3e], 0x10
-        mov ax, [si + 0x5e]
+        mov word [si + nopuck], 0x10
+        mov ax, [si + SCnum]
         mov [lastplayer], ax
-        cmp word [si + 0x1a], 0x0
+        cmp word [si + position], 0x0
         jnz short .1
         mov bx, 0x8
         jmp short .2
         db 0x90
 .1:
-        mov bl, [si + 0x51]
+        mov bl, [si + passacc]
         db 0x2A, 0xFF                           ; insn: sub bh, bh
 .2:
         lea ax, [bx + 0x28]
         shl ax, byte 0x2
         mov [passspeed], ax
-        cmp word [si + 0x5e], 0x6
+        cmp word [si + SCnum], 0x6
         jl short .3
         mov ax, 0x6
         jmp short .4
@@ -1456,19 +1456,19 @@ dopass:
         jnz short .6
         jmp near .13
 .6:
-        cmp word [si + 0x1a], 0x0
+        cmp word [si + position], 0x0
         jnz short .7
         jmp near .13
 .7:
-        test byte [si + 0x45], 0x4
+        test byte [si + pflags2], 0x4
         jz short .8
         jmp near .13
 .8:
-        mov ax, [si + 0x2]
+        mov ax, [si + Xpos+2]
         mov bx, [puckx]
         sub ax, [bx]
         mov [bp - 0x8], ax
-        mov cx, [si + 0x6]
+        mov cx, [si + Ypos+2]
         mov bx, [pucky]
         sub cx, [bx]
         mov [bp - 0xa], cx
@@ -1547,7 +1547,7 @@ dopass:
         rcl dx, 1
         mov bx, 0xbb8
         call 0x03A3:IdivWords.regs
-        add ax, [si + 0xe]
+        add ax, [si + Yvel]
         mov bx, [puckvy]
         mov [bx], ax
         mov bx, [passdir]
@@ -1565,7 +1565,7 @@ dopass:
         rcl dx, 1
         mov bx, 0xbb8
         call 0x03A3:IdivWords.regs
-        add ax, [si + 0xc]
+        add ax, [si + Xvel]
         mov bx, [puckvx]
         mov [bx], ax
         mov ax, 0x1000
@@ -1573,7 +1573,7 @@ dopass:
         mov bx, [puckvz]
         mov [bx], ax
 .16:
-        cmp word [si + 0x1a], 0x0
+        cmp word [si + position], 0x0
         jnz short .20
         mov bx, [puckvy]
         cmp word [bx], 0x0
@@ -1584,7 +1584,7 @@ dopass:
 .17:
         db 0x2B, 0xC0                           ; insn: sub ax, ax
 .18:
-        mov cl, [si + 0x44]
+        mov cl, [si + pflags]
         and cl, 0x80
         cmp cl, 0x1
         db 0x1B, 0xC9                           ; insn: sbb cx, cx
@@ -1614,7 +1614,7 @@ dopass:
         db 0x8B, 0xC7                           ; insn: mov ax, di
         db 0x8B, 0xDE                           ; insn: mov bx, si
         call 0x2E42:SetSPA
-        or byte [si + 0x44], 0x20
+        or byte [si + pflags], 0x20
         mov bx, [puckvz]
         cmp byte [bx + 0x1], 0x6
         jl short .22
@@ -1708,10 +1708,10 @@ passtoa0:
         mov si, [bp + 0x6]
         test byte [gmode], 0x10
         jnz short .1
-        mov bx, [si + 0x60]
+        mov bx, [si + tmptr]
         inc word [bx + 0x12]
 .1:
-        mov ax, [si + 0x5e]
+        mov ax, [si + SCnum]
         mov [passplayer], ax
         push 0x13
         push si
@@ -1720,25 +1720,25 @@ passtoa0:
         push si
         call 0x2E42:GetHot
         add sp, 0x2
-        mov ax, [si + 0x2]
+        mov ax, [si + Xpos+2]
         mov bx, [puckx]
         sub ax, [bx]
         add ax, [regd0]
         mov [bp - 0x1a], ax
         sar ax, byte 0x2
         mov [bp - 0x8], ax
-        mov ax, [si + 0x6]
+        mov ax, [si + Ypos+2]
         mov bx, [pucky]
         sub ax, [bx]
         add ax, [regd1]
         mov [bp - 0x1c], ax
         sar ax, byte 0x2
         mov [bp - 0xa], ax
-        mov ax, [si + 0xc]
+        mov ax, [si + Xvel]
         mov dx, 0xf0
         call 0x03A3:ImulRegs
         mov [bp - 0x18], dx
-        mov ax, [si + 0xe]
+        mov ax, [si + Yvel]
         mov dx, 0xf0
         call 0x03A3:ImulRegs
         mov [bp - 0x16], dx
@@ -1930,7 +1930,7 @@ chk4pass:
         mov di, [bp + 0x6]
         cmp word [threat], 0x0
         jnz short .1
-        mov al, [di + 0x53]
+        mov al, [di + spodds]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         add ax, strict word 0x10
         call 0x0C11:randomd0
@@ -1941,11 +1941,11 @@ chk4pass:
         mov ax, 0x6
         call 0x0C11:randomd0
         mov [regd0], ax
-        cmp word [di + 0x5e], 0x6
+        cmp word [di + SCnum], 0x6
         jl short .2
         add word [regd0], 0x6
 .2:
-        cmp word [di + 0x1a], 0x0
+        cmp word [di + position], 0x0
         jz short .3
         mov bx, [puckx]
         mov ax, [bx]
@@ -1964,30 +1964,30 @@ chk4pass:
         jmp near .20
 .3:
         mov ax, [regd0]
-        cmp [di + 0x5e], ax
+        cmp [di + SCnum], ax
         jnz short .4
         jmp near .20
 .4:
         db 0x8B, 0xF0                           ; insn: mov si, ax
         shl si, byte 0x7
         add si, SortCords
-        cmp word [si + 0x1a], 0x0
+        cmp word [si + position], 0x0
         jg short .5
         jmp near .20
 .5:
-        test byte [si + 0x45], 0x4
+        test byte [si + pflags2], 0x4
         jz short .6
         jmp near .20
 .6:
-        test byte [si + 0x44], 0x20
+        test byte [si + pflags], 0x20
         jz short .7
         jmp near .20
 .7:
-        mov ax, [si + 0x6]
+        mov ax, [si + Ypos+2]
         mov [regd0], ax
-        mov ax, [di + 0x6]
+        mov ax, [di + Ypos+2]
         mov [regd1], ax
-        test byte [di + 0x44], 0x80
+        test byte [di + pflags], 0x80
         jnz short .8
         neg word [regd0]
         neg word [regd1]
@@ -2004,7 +2004,7 @@ chk4pass:
 .9:
         test byte [CrowdState], 0x8
         jz short .10
-        test byte [si + 0x45], 0x80
+        test byte [si + pflags2], 0x80
         jz short .10
         cmp word [regd1], -0x4e
         jnl short .10
@@ -2020,11 +2020,11 @@ chk4pass:
         jnl short .11
         jmp near .20
 .11:
-        mov ax, [si + 0x2]
+        mov ax, [si + Xpos+2]
         mov bx, [puckx]
         sub ax, [bx]
         mov [regd1], ax
-        mov ax, [si + 0x6]
+        mov ax, [si + Ypos+2]
         mov bx, [pucky]
         sub ax, [bx]
         mov [regd2], ax
@@ -2158,7 +2158,7 @@ chk4shot:
         mov di, [bp + 0x6]
         test byte [gmode2], 0x20
         jz short .1
-        mov al, [di + 0x44]
+        mov al, [di + pflags]
         xor al, [gmode2]
         test al, 0x40
         jz short .1
@@ -2172,19 +2172,19 @@ chk4shot:
 .1:
         cmp word [gameclock], 0x4
         jnl short .2
-        mov bx, [di + 0x62]
+        mov bx, [di + optmptr]
         mov ax, [bx + 0xc]
-        mov bx, [di + 0x60]
+        mov bx, [di + tmptr]
         cmp [bx + 0xc], ax
         jnl short .2
         jmp near .17
 .2:
-        mov al, [di + 0x53]
+        mov al, [di + spodds]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         sub ax, strict word 0x20
         neg ax
         mov [regd4], ax
-        mov al, [di + 0x44]
+        mov al, [di + pflags]
         and al, 0x80
         cmp al, 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
@@ -2216,7 +2216,7 @@ chk4shot:
         jna short .4
         jmp near .12
 .4:
-        mov bx, [di + 0x62]
+        mov bx, [di + optmptr]
         cmp [bx + 0x24], dx
         jnl short .6
 .5:
@@ -2228,7 +2228,7 @@ chk4shot:
         mov dx, [regd1]
         call 0x0D5F:VectorToDir8
         mov [regd5], ax
-        cmp word [di + 0x5e], 0x6
+        cmp word [di + SCnum], 0x6
         jl short .7
         db 0x2B, 0xF6                           ; insn: sub si, si
         jmp short .8
@@ -2240,17 +2240,17 @@ chk4shot:
         add si, SortCords
         mov word [regd3], 0x6
 .9:
-        cmp word [si + 0x1a], 0x0
+        cmp word [si + position], 0x0
         jnz short .10
-        test byte [si + 0x45], 0x2
+        test byte [si + pflags2], 0x2
         jz short .11
         jmp short .5
 .10:
-        mov ax, [si + 0x2]
+        mov ax, [si + Xpos+2]
         mov bx, [puckx]
         sub ax, [bx]
         mov [regd0], ax
-        mov ax, [si + 0x6]
+        mov ax, [si + Ypos+2]
         mov bx, [pucky]
         sub ax, [bx]
         mov [regd1], ax
@@ -2360,14 +2360,14 @@ ChkOffsides:
 .2:
         test byte [di + 0x2a], 0x10
         jz short .7
-        mov bx, [di + 0xd4]
+        mov bx, [di + tmsort]
         db 0x2B, 0xD2                           ; insn: sub dx, dx
 .3:
-        cmp word [bx + 0x1a], 0x0
+        cmp word [bx + position], 0x0
         jl short .5
-        mov ax, [bx + 0x6]
+        mov ax, [bx + Ypos+2]
         mov [regd0], ax
-        test byte [bx + 0x44], 0x80
+        test byte [bx + pflags], 0x80
         jnz short .4
         neg word [regd0]
 .4:
@@ -2387,9 +2387,9 @@ ChkOffsides:
         loop .2
         mov word [regd0], 0x4a
         mov bx, [bp + 0x6]
-        cmp word [bx + 0x6], 0x4a
+        cmp word [bx + Ypos+2], 0x4a
         jl short .18
-        cmp word [bx + 0x6a], 0x4a
+        cmp word [bx + OldYpos+2], 0x4a
         jl short .8
         jmp near .27
 .8:
@@ -2398,7 +2398,7 @@ ChkOffsides:
         jnz short .9
         mov di, hmshots
 .9:
-        mov si, [di + 0xd4]
+        mov si, [di + tmsort]
         cmp word [lasttouch], 0x6
         jnl short .10
         mov ax, 0x1
@@ -2409,7 +2409,7 @@ ChkOffsides:
 .11:
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov [bp - 0x6], ax
-        cmp word [bx + 0x5e], 0x6
+        cmp word [bx + SCnum], 0x6
         jnl short .12
         mov ax, 0x1
         jmp short .13
@@ -2445,9 +2445,9 @@ ChkOffsides:
 .18:
         mov word [regd0], 0xffb6
         mov ax, [regd0]
-        cmp [bx + 0x6], ax
+        cmp [bx + Ypos+2], ax
         jg short .27
-        cmp [bx + 0x6a], ax
+        cmp [bx + OldYpos+2], ax
         jng short .27
         sub word [regd0], 0xa
         test byte [gmode], 0x2
@@ -2457,7 +2457,7 @@ ChkOffsides:
 .19:
         mov di, hmshots
 .20:
-        mov si, [di + 0xd4]
+        mov si, [di + tmsort]
         cmp word [lasttouch], 0x6
         jnl short .21
         mov ax, 0x1
@@ -2468,7 +2468,7 @@ ChkOffsides:
 .22:
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov [bp - 0x8], ax
-        cmp word [bx + 0x5e], 0x6
+        cmp word [bx + SCnum], 0x6
         jnl short .23
         mov ax, 0x1
         jmp short .24
@@ -2528,16 +2528,16 @@ MarkTwoLinePlayers:
         jnl short .11
         mov dx, 0x6
 .4:
-        cmp word [di + 0x1a], 0x0
+        cmp word [di + position], 0x0
         jl short .5
-        cmp word [di + 0x6], 0x0
+        cmp word [di + Ypos+2], 0x0
         jng short .5
-        or byte [di + 0x45], 0x80
+        or byte [di + pflags2], 0x80
         jmp short .6
 .5:
-        and byte [di + 0x45], 0x7f
+        and byte [di + pflags2], 0x7f
 .6:
-        and byte [bx + 0x45], 0x7f
+        and byte [bx + pflags2], 0x7f
         add di, 0x80
         add bx, 0x80
         dec dx
@@ -2552,15 +2552,15 @@ MarkTwoLinePlayers:
         jl short .11
         mov dx, 0x6
 .8:
-        cmp word [bx + 0x1a], 0x0
+        cmp word [bx + position], 0x0
         jl short .9
-        cmp word [bx + 0x6], 0x0
+        cmp word [bx + Ypos+2], 0x0
         jnl short .9
-        or byte [bx + 0x45], 0x80
+        or byte [bx + pflags2], 0x80
         jmp short .10
         db 0x90
 .9:
-        and byte [bx + 0x45], 0x7f
+        and byte [bx + pflags2], 0x7f
 .10:
         and byte [di + 0x45], 0x7f
         add di, 0x80
@@ -2627,21 +2627,21 @@ ChkShotStat:
         add word [crowdheat], 0xa
         test byte [gmode], 0x10
         jnz short .10
-        mov ax, [si + 0x60]
+        mov ax, [si + tmptr]
         mov [bp - 0x2], ax
-        mov di, [si + 0x62]
+        mov di, [si + optmptr]
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         inc word [bx]
-        test byte [si + 0x44], 0x40
+        test byte [si + pflags], 0x40
         jnz short .7
         inc byte [gsumtail_shots1]
         jmp short .8
 .7:
         inc byte [gsumtail_shots2]
 .8:
-        cmp byte [si + 0x47], 0x19
+        cmp byte [si + pnum], 0x19
         jnl short .9
-        mov al, [si + 0x47]
+        mov al, [si + pnum]
         cbw
         db 0x8B, 0xF0                           ; insn: mov si, ax
         shl si, byte 0x4
@@ -2685,7 +2685,7 @@ setInjuryType:
         push di
         push si
         mov si, [bp + 0x6]
-        or byte [si + 0x45], 0x4
+        or byte [si + pflags2], 0x4
         cmp word [CrowdSound], 0x3e8
         jg short .1
         add word [CrowdSound], 0x12c
@@ -2697,19 +2697,19 @@ setInjuryType:
         push word 0xa1
         call 0x0EDC:PlaySoundEffect
         add sp, 0x2
-        mov ax, [si + 0x2]
+        mov ax, [si + Xpos+2]
         mov [xc1], ax
-        mov ax, [si + 0x6]
+        mov ax, [si + Ypos+2]
         mov [yc1], ax
         mov ax, [camx]
-        cmp [si + 0x2], ax
+        cmp [si + Xpos+2], ax
         jnl short .2
         add word [yc1], 0x32
 .2:
         or byte [sflags], 0x40
-        mov di, [si + 0x60]
+        mov di, [si + tmptr]
         db 0x8B, 0xDF                           ; insn: mov bx, di
-        mov al, [si + 0x47]
+        mov al, [si + pnum]
         cbw
         mov cx, [bx + 0xc0]
         mov dx, [bx + 0xc2]
@@ -2733,12 +2733,12 @@ setInjuryType:
         jng short .5
         cmp word [lastimpact], 0x2d
         jng short .5
-        mov al, [si + 0x47]
+        mov al, [si + pnum]
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
         mov word [bx + di + 0x64], 0xfffc
-        mov al, [si + 0x47]
+        mov al, [si + pnum]
         cbw
         imul bx, ax, 0x28
         add bx, [di + 0xd0]
@@ -2746,12 +2746,12 @@ setInjuryType:
         jmp short .6
         db 0x90
 .5:
-        mov al, [si + 0x47]
+        mov al, [si + pnum]
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
         mov word [bx + di + 0x64], 0xfffd
-        mov al, [si + 0x47]
+        mov al, [si + pnum]
         cbw
         imul bx, ax, 0x28
         mov di, [di + 0xd0]
@@ -2771,10 +2771,10 @@ setInjuryType:
         idiv cx
         push ax
         push word [bp - 0x2]
-        mov al, [si + 0x47]
+        mov al, [si + pnum]
         cbw
         push ax
-        mov al, [si + 0x44]
+        mov al, [si + pflags]
         and al, 0x40
         cmp al, 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
@@ -2782,10 +2782,10 @@ setInjuryType:
         push ax
         call 0x2352:PostInjuryEvent
         add sp, 0xa
-        mov al, [si + 0x47]
+        mov al, [si + pnum]
         cbw
         push ax
-        mov al, [si + 0x44]
+        mov al, [si + pflags]
         and al, 0x40
         cmp al, 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
@@ -2811,17 +2811,17 @@ FallDown:
         push di
         push si
         mov si, [bp + 0x8]
-        cmp word [si + 0x5e], 0xb
+        cmp word [si + SCnum], 0xb
         jng short .1
-        cmp word [si + 0x5e], 0x10
+        cmp word [si + SCnum], 0x10
         jz short .1
         jmp near .42
 .1:
-        test byte [si + 0x45], 0x1
+        test byte [si + pflags2], 0x1
         jz short .2
         jmp near .42
 .2:
-        mov dx, [si + 0x38]
+        mov dx, [si + SPA]
         cmp dx, SPAno(SPAinjury1)
         jnz short .3
         jmp near .42
@@ -2842,13 +2842,13 @@ FallDown:
         jnz short .7
         jmp near .42
 .7:
-        cmp word [si + 0x5e], 0x10
+        cmp word [si + SCnum], 0x10
         jnz short .10
         cmp dx, SPAno(SPAreffallback)
         jnz short .8
         jmp near .42
 .8:
-        or byte [si + 0x44], 0x20
+        or byte [si + pflags], 0x20
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, SPAno(SPAreffallback)
         call 0x2E42:SetSPA
@@ -2867,12 +2867,12 @@ FallDown:
         jmp near .37
         db 0x90
 .10:
-        cmp byte [si + 0x54], 0xc
+        cmp byte [si + stickhand], 0xc
         jc short .11
         mov ax, 0x10
         call 0x0C11:randomd0
         add ax, strict word 0x10
-        cmp ax, [si + 0x18]
+        cmp ax, [si + impact]
         jng short .11
         mov word [si + 0x40], 0x3c
         mov cx, SPAno(SPAstumble)
@@ -2880,19 +2880,19 @@ FallDown:
         jmp near .16
 .11:
         mov di, [bp + 0x6]
-        cmp word [di + 0x1a], 0x0
+        cmp word [di + position], 0x0
         jz short .12
-        mov dx, [di + 0x60]
+        mov dx, [di + tmptr]
         test byte [gmode], 0x11
         jnz short .12
         db 0x8B, 0xDA                           ; insn: mov bx, dx
         inc word [bx + 0x10]
 .12:
-        mov word [si + 0x3e], 0x78
-        mov ax, [di + 0x2]
-        sub ax, [si + 0x2]
-        mov dx, [di + 0x6]
-        sub dx, [si + 0x6]
+        mov word [si + nopuck], 0x78
+        mov ax, [di + Xpos+2]
+        sub ax, [si + Xpos+2]
+        mov dx, [di + Ypos+2]
+        sub dx, [si + Ypos+2]
         call 0x0D5F:VectorToDir8
         mov [bp - 0x2], ax
         mov al, [bp - 0x2]
@@ -2902,7 +2902,7 @@ FallDown:
         mov [bp - 0x2], ax
         cmp ax, strict word 0x2
         jna short .15
-        cmp word [di + 0x5e], 0xe
+        cmp word [di + SCnum], 0xe
         jnz short .13
         cmp ax, strict word 0x3
         jz short .15
@@ -2911,12 +2911,12 @@ FallDown:
 .13:
         test byte [si + 0x36], 0x3
         jnz short .14
-        cmp byte [di + 0x58], 0xa
+        cmp byte [di + checking], 0xa
         jc short .14
-        cmp word [di + 0x5e], 0xb
+        cmp word [di + SCnum], 0xb
         jg short .14
         mov word [bp - 0x2], SPAno(SPAflip)
-        mov al, [di + 0x44]
+        mov al, [di + pflags]
         and al, 0x40
         cmp al, 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
@@ -2934,11 +2934,11 @@ FallDown:
 .15:
         mov cx, SPAno(SPAfallback)
 .16:
-        or byte [si + 0x44], 0x20
+        or byte [si + pflags], 0x20
         db 0x8B, 0xC1                           ; insn: mov ax, cx
         db 0x8B, 0xDE                           ; insn: mov bx, si
         call 0x2E42:SetSPA
-        mov bx, [si + 0x1c]
+        mov bx, [si + assnum]
         cmp byte [bx + si + 0x1e], 0x12
         jnz short .17
         push si
@@ -2960,7 +2960,7 @@ FallDown:
 .19:
         mov al, [bx]
         cbw
-        cmp ax, [si + 0x5e]
+        cmp ax, [si + SCnum]
         jz short .20
         jmp near .40
 .20:
@@ -2975,7 +2975,7 @@ FallDown:
         jz short .22
         jmp near .36
 .22:
-        cmp word [si + 0x38], SPAno(SPAfallback)
+        cmp word [si + SPA], SPAno(SPAfallback)
         jz short .23
         jmp near .36
 .23:
@@ -2983,18 +2983,18 @@ FallDown:
         jz short .24
         jmp near .36
 .24:
-        test byte [si + 0x45], 0x10
+        test byte [si + pflags2], 0x10
         jz short .25
         jmp near .36
 .25:
-        mov al, [si + 0x44]
+        mov al, [si + pflags]
         and al, 0x8
         cmp al, 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         and al, 0xd8
         add ax, 0xc8
         call 0x0C11:randomd0
-        cmp ax, [si + 0x18]
+        cmp ax, [si + impact]
         jng short .26
         jmp near .36
 .26:
@@ -3016,7 +3016,7 @@ FallDown:
         push cs
         call setInjuryType
         add sp, 0x2
-        cmp word [di + 0x1a], 0x0
+        cmp word [di + position], 0x0
         jnz short .29
         jmp near .35
 .29:
@@ -3024,7 +3024,7 @@ FallDown:
         jnz short .30
         jmp near .35
 .30:
-        mov al, [di + 0x44]
+        mov al, [di + pflags]
         and al, 0x40
         cmp al, 0x1
         db 0x1B, 0xDB                           ; insn: sbb bx, bx
@@ -3036,10 +3036,10 @@ FallDown:
         add sp, 0x2
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jz short .35
-        mov ax, [si + 0x2]
-        sub ax, [di + 0x2]
-        mov dx, [si + 0x6]
-        sub dx, [di + 0x6]
+        mov ax, [si + Xpos+2]
+        sub ax, [di + Xpos+2]
+        mov dx, [si + Ypos+2]
+        sub dx, [di + Ypos+2]
         call 0x0D5F:VectorToDir8
         mov [bp - 0x2], ax
         mov al, [bp - 0x2]
@@ -3123,22 +3123,22 @@ Bcheck:
         push di
         push si
         mov si, [bp + 0x6]
-        test byte [si + 0x44], 0x20
+        test byte [si + pflags], 0x20
         jnz short .3
-        cmp word [si + 0x5e], 0x10
+        cmp word [si + SCnum], 0x10
         jz short .3
-        cmp word [si + 0x1a], 0x0
+        cmp word [si + position], 0x0
         jz short .3
-        test byte [si + 0x45], 0x1
+        test byte [si + pflags2], 0x1
         jnz short .3
         mov di, [bp + 0x8]
         test byte [CrowdState], 0x1
         jnz short .1
-        test byte [di + 0x44], 0x8
+        test byte [di + pflags], 0x8
         jz short .1
-        mov al, [di + 0x58]
+        mov al, [di + checking]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
-        mov cl, [si + 0x4b]
+        mov cl, [si + legstr]
         db 0x2A, 0xED                           ; insn: sub ch, ch
         db 0x2B, 0xC1                           ; insn: sub ax, cx
         add ax, strict word 0x10
@@ -3146,10 +3146,10 @@ Bcheck:
         cmp ax, strict word 0xc
         jl short .3
 .1:
-        mov ax, [si + 0x2]
-        sub ax, [di + 0x2]
-        mov dx, [si + 0x6]
-        sub dx, [di + 0x6]
+        mov ax, [si + Xpos+2]
+        sub ax, [di + Xpos+2]
+        mov dx, [si + Ypos+2]
+        sub dx, [di + Ypos+2]
         call 0x0D5F:VectorToDir8
         sub al, [di + 0x36]
         inc al
@@ -3192,27 +3192,27 @@ holdcheck:
         push di
         push si
         mov si, [bp + 0x6]
-        test byte [si + 0x44], 0x20
+        test byte [si + pflags], 0x20
         jz short .1
         jmp near .12
 .1:
-        cmp word [si + 0x5e], 0x10
+        cmp word [si + SCnum], 0x10
         jnz short .2
         jmp near .12
 .2:
-        cmp word [si + 0x1a], 0x0
+        cmp word [si + position], 0x0
         jnz short .3
         jmp near .12
 .3:
-        test byte [si + 0x45], 0x1
+        test byte [si + pflags2], 0x1
         jz short .4
         jmp near .12
 .4:
         mov di, [bp + 0x8]
-        mov ax, [si + 0x2]
-        sub ax, [di + 0x2]
-        mov dx, [si + 0x6]
-        sub dx, [di + 0x6]
+        mov ax, [si + Xpos+2]
+        sub ax, [di + Xpos+2]
+        mov dx, [si + Ypos+2]
+        sub dx, [di + Ypos+2]
         call 0x0D5F:VectorToDir8
         sub al, [di + 0x36]
         inc al
@@ -3224,30 +3224,30 @@ holdcheck:
         mov bx, [puckc]
         mov al, [bx]
         cbw
-        cmp ax, [si + 0x5e]
+        cmp ax, [si + SCnum]
         jnz short .6
         and byte [sflags], 0xf7
 .6:
-        mov ax, [si + 0xc]
-        add ax, [di + 0xc]
+        mov ax, [si + Xvel]
+        add ax, [di + Xvel]
         sar ax, 1
         mov [bp - 0x2], ax
-        mov [si + 0xc], ax
+        mov [si + Xvel], ax
         mov ax, [bp - 0x2]
-        mov [di + 0xc], ax
-        mov ax, [si + 0xe]
-        add ax, [di + 0xe]
+        mov [di + Xvel], ax
+        mov ax, [si + Yvel]
+        add ax, [di + Yvel]
         sar ax, 1
         mov [bp - 0x2], ax
-        mov [si + 0xe], ax
+        mov [si + Yvel], ax
         mov ax, [bp - 0x2]
-        mov [di + 0xe], ax
-        or byte [si + 0x44], 0x20
+        mov [di + Yvel], ax
+        or byte [si + pflags], 0x20
         db 0x8B, 0xDE                           ; insn: mov bx, si
         mov ax, 0x669
         call 0x2E42:SetSPA
-        or byte [di + 0x44], 0x20
-        cmp word [di + 0x38], SPAno(SPAHold)
+        or byte [di + pflags], 0x20
+        cmp word [di + SPA], SPAno(SPAHold)
         jnz short .7
         mov ax, 0x651
         jmp short .8
@@ -3262,7 +3262,7 @@ holdcheck:
         add sp, 0x2
         cmp ax, strict word 0x6
         jg short .11
-        cmp word [di + 0x38], 0x651
+        cmp word [di + SPA], 0x651
         jnz short .9
         mov ax, 0x12
         jmp short .10
@@ -3294,7 +3294,7 @@ puckbody:
         push di
         push si
         mov si, [bp + 0x6]
-        cmp word [si + 0xa], 0x8
+        cmp word [si + Zpos+2], 0x8
         jg short .1
         mov al, [regd0]
         and ax, strict word 0xf
@@ -3304,19 +3304,19 @@ puckbody:
         jmp near .9
 .1:
         mov di, [bp + 0x8]
-        cmp word [di + 0x5e], 0x10
+        cmp word [di + SCnum], 0x10
         jz short .2
         push di
         call 0x2519:a2touchpuck
         add sp, 0x2
 .2:
-        mov word [si + 0x10], 0x0
-        mov word [di + 0x3e], 0x8
-        mov ax, [si + 0x2]
-        sub ax, [di + 0x2]
+        mov word [si + Zvel], 0x0
+        mov word [di + nopuck], 0x8
+        mov ax, [si + Xpos+2]
+        sub ax, [di + Xpos+2]
         mov [regd0], ax
-        mov ax, [si + 0x6]
-        sub ax, [di + 0x6]
+        mov ax, [si + Ypos+2]
+        sub ax, [di + Ypos+2]
         mov [regd1], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .3
@@ -3324,9 +3324,9 @@ puckbody:
         call 0x2E42:GetHot
         add sp, 0x2
 .3:
-        mov ax, [si + 0xc]
+        mov ax, [si + Xvel]
         mov [bp - 0x6], ax
-        mov ax, [si + 0xe]
+        mov ax, [si + Yvel]
         mov [bp - 0x4], ax
         mov al, [regd0]
         mov [si + 0xd], al
@@ -3335,9 +3335,9 @@ puckbody:
         push si
         call 0x2519:puckflip
         add sp, 0x2
-        cmp word [si + 0xa], 0x8
+        cmp word [si + Zpos+2], 0x8
         jg short .5
-        cmp word [di + 0x38], SPAno(SPAcatch)
+        cmp word [di + SPA], SPAno(SPAcatch)
         jnz short .4
         jmp near .9
 .4:
@@ -3380,17 +3380,17 @@ puckbody:
         call FallDown
         add sp, 0x4
 .7:
-        cmp word [di + 0x38], SPAno(SPAcatch)
+        cmp word [di + SPA], SPAno(SPAcatch)
         jz short .8
         push word [bp - 0x2]
         call 0x0EDC:PlaySoundEffect
         add sp, 0x2
 .8:
-        test byte [di + 0x44], 0x20
+        test byte [di + pflags], 0x20
         jnz short .9
-        cmp word [di + 0x5e], 0x10
+        cmp word [di + SCnum], 0x10
         jz short .9
-        or byte [di + 0x44], 0x20
+        or byte [di + pflags], 0x20
         db 0x8B, 0xDF                           ; insn: mov bx, di
         mov ax, SPAno(SPAcatch)
         call 0x2E42:SetSPA
@@ -3452,40 +3452,40 @@ puckshadow:
         db 0x8B, 0xEC                           ; insn: mov bp, sp
         push si
         mov bx, [bp + 0x6]
-        cmp word [bx + 0x12], 0x189
+        cmp word [bx + frame], 0x189
         jnz short .2
         mov si, [puckx]
         mov ax, [si]
-        mov [bx + 0x2], ax
+        mov [bx + Xpos+2], ax
         mov si, [pucky]
         mov ax, [si]
-        mov [bx + 0x6], ax
-        mov word [bx + 0xa], 0x0
+        mov [bx + Ypos+2], ax
+        mov word [bx + Zpos+2], 0x0
         test byte [sflags], 0x80
         jz short .1
-        inc word [bx + 0x2]
+        inc word [bx + Xpos+2]
         pop si
         leave
         retf
 .1:
-        inc word [bx + 0x6]
+        inc word [bx + Ypos+2]
         pop si
         leave
         retf
 .2:
-        cmp word [bx + 0x12], -0x1
+        cmp word [bx + frame], -0x1
         jz short .3
-        cmp word [bx + 0x38], SPAno(SPAsiren)
+        cmp word [bx + SPA], SPAno(SPAsiren)
         jnz short .3
-        mov word [bx + 0x2], 0x0
-        mov word [bx + 0x6], 0x122
-        mov word [bx + 0xa], 0xe
+        mov word [bx + Xpos+2], 0x0
+        mov word [bx + Ypos+2], 0x122
+        mov word [bx + Zpos+2], 0xe
         mov si, [pucky]
         cmp word [si], 0x0
         jnl short .3
         mov word [bx + 0x48], 0x8000
-        mov word [bx + 0x6], 0xfef6
-        dec word [bx + 0xa]
+        mov word [bx + Ypos+2], 0xfef6
+        dec word [bx + Zpos+2]
 .3:
         pop si
         leave
@@ -3505,13 +3505,13 @@ puckglue:
         push di
         push si
         mov si, [bp + 0x6]
-        mov ax, [si + 0x5e]
+        mov ax, [si + SCnum]
         mov [regd0], ax
         mov al, [regd0]
         mov bx, [puckc]
         mov [bx], al
-        mov dx, [si + 0x60]
-        mov di, [si + 0x62]
+        mov dx, [si + tmptr]
+        mov di, [si + optmptr]
         db 0x8B, 0xDF                           ; insn: mov bx, di
         mov byte [bx + 0x1f], 0xff
         mov byte [di + 0x21], 0xff
@@ -3531,7 +3531,7 @@ puckglue:
         jng short .2
         mov word [CrowdSound], 0x3e8
 .2:
-        test byte [si + 0x44], 0x40
+        test byte [si + pflags], 0x40
         jnz short .4
         add word [crowdheat], 0xa
         jmp short .4
@@ -3544,17 +3544,17 @@ puckglue:
         call 0x2C24:PassCompleted
         add sp, 0x2
         and byte [sflags], 0xf3
-        cmp word [si + 0x1a], 0x0
+        cmp word [si + position], 0x0
         jnz short .6
         push cs
         call ChkShotStat
-        cmp word [si + 0x38], SPAno(SPAgdive)
+        cmp word [si + SPA], SPAno(SPAgdive)
         jnz short .5
-        mov word [si + 0x2e], 0x5
+        mov word [si + temp5], 0x5
         jmp short .6
         db 0x90
 .5:
-        mov word [si + 0x2e], 0x8c
+        mov word [si + temp5], 0x8c
 .6:
         push word [regd0]
         call 0x2E42:GiveControl
@@ -3582,7 +3582,7 @@ puckgoalie:
 .1:
         mov di, [bp + 0x6]
         mov word [regd2], 0x0
-        cmp word [di + 0xa], 0x8
+        cmp word [di + Zpos+2], 0x8
         jg short .2
         mov word [regd2], 0x2
 .2:
@@ -3607,22 +3607,22 @@ puckgoalie:
         add [regd2], ax
         test byte [regd2], 0x1
         jz short .4
-        mov al, [si + 0x55]
+        mov al, [si + endurance]
         jmp short .5
         db 0x90
 .4:
-        mov al, [si + 0x53]
+        mov al, [si + spodds]
 .5:
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         add ax, strict word 0xf
         mov [bp - 0x4], ax
         shl word [regd2], 1
-        test byte [si + 0x49], 0x8
+        test byte [si + attribute], 0x8
         jz short .6
         xor byte [regd2], 0x2
 .6:
         mov cl, [regd2]
-        mov bx, [si + 0x12]
+        mov bx, [si + frame]
         mov al, [bx + GoalieSaveSides]
         shr al, cl
         db 0x8A, 0xD0                           ; insn: mov dl, al
@@ -3654,7 +3654,7 @@ puckgoalie:
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         cmp ax, 0xfa0
         jng short .11
-        test byte [si + 0x44], 0x40
+        test byte [si + pflags], 0x40
         jnz short .9
         push 0x7d
         jmp short .10
@@ -3682,11 +3682,11 @@ puckgoalie:
         mov bx, [puckc]
         cmp byte [bx], 0x0
         jnl short .15
-        cmp word [si + 0x38], SPAno(SPAgdive)
+        cmp word [si + SPA], SPAno(SPAgdive)
         jnz short .14
         jmp near .16
 .14:
-        mov al, [si + 0x4f]
+        mov al, [si + shotspd]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         db 0x8B, 0xC8                           ; insn: mov cx, ax
         shl ax, byte 0x2
@@ -3718,9 +3718,9 @@ puckgoalie:
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         cmp ax, [regd0]
         jg short .16
-        test byte [si + 0x45], 0x4
+        test byte [si + pflags2], 0x4
         jnz short .16
-        mov word [di + 0x10], 0x0
+        mov word [di + Zvel], 0x0
         push si
         push cs
         call puckglue
@@ -3738,14 +3738,14 @@ puckgoalie:
         mov [lastplayer], ax
         and byte [sflags], 0xf3
 .16:
-        mov word [di + 0x10], 0x0
-        mov word [si + 0x3e], 0xa
-        mov word [si + 0x2c], 0x4
-        mov ax, [di + 0x2]
-        sub ax, [si + 0x2]
+        mov word [di + Zvel], 0x0
+        mov word [si + nopuck], 0xa
+        mov word [si + temp4], 0x4
+        mov ax, [di + Xpos+2]
+        sub ax, [si + Xpos+2]
         mov [regd0], ax
-        mov ax, [di + 0x6]
-        sub ax, [si + 0x6]
+        mov ax, [di + Ypos+2]
+        sub ax, [si + Ypos+2]
         mov [regd1], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .17
@@ -3780,7 +3780,7 @@ puckstick:
         push di
         push si
         mov si, [bp + 0x8]
-        cmp word [si + 0x1a], 0x0
+        cmp word [si + position], 0x0
         jnz short .2
         test byte [gmode], 0x10
         jz short .1
@@ -3789,7 +3789,7 @@ puckstick:
         push cs
         call ChkShotStat
 .2:
-        and byte [si + 0x44], 0xfe
+        and byte [si + pflags], 0xfe
         mov bx, [puckc]
         mov al, [bx]
         db 0x0A, 0xC0                           ; insn: or al, al
@@ -3802,7 +3802,7 @@ puckstick:
         db 0x8B, 0xF8                           ; insn: mov di, ax
         db 0x8B, 0xDF                           ; insn: mov bx, di
         mov al, [bx + 0x44]
-        xor al, [si + 0x44]
+        xor al, [si + pflags]
         test al, 0x40
         jnz short .4
         jmp near .20
@@ -3815,21 +3815,21 @@ puckstick:
         jna short .6
         jmp near .20
 .6:
-        cmp word [si + 0x1a], 0x0
+        cmp word [si + position], 0x0
         jnz short .7
         jmp near .10
 .7:
-        cmp word [di + 0x1a], 0x0
+        cmp word [di + position], 0x0
         jnz short .8
         jmp near .20
 .8:
-        mov al, [si + 0x47]
+        mov al, [si + pnum]
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        add bx, [si + 0x60]
+        add bx, [si + tmptr]
         mov ax, [bx + 0x2c]
-        mov dl, [si + 0x54]
+        mov dl, [si + stickhand]
         db 0x2A, 0xF6                           ; insn: sub dh, dh
         call 0x03A3:ImulRegs
         db 0x8A, 0xC4                           ; insn: mov al, ah
@@ -3846,13 +3846,13 @@ puckstick:
         sar dx, 1
         rcr ax, 1
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        mov al, [di + 0x47]
+        mov al, [di + pnum]
         cbw
         db 0x8B, 0xD8                           ; insn: mov bx, ax
         shl bx, 1
-        add bx, [di + 0x60]
+        add bx, [di + tmptr]
         mov ax, [bx + 0x2c]
-        mov dl, [di + 0x54]
+        mov dl, [di + stickhand]
         db 0x2A, 0xF6                           ; insn: sub dh, dh
         mov [bp - 0x4], cx
         call 0x03A3:ImulRegs
@@ -3872,9 +3872,9 @@ puckstick:
         sub ax, [bp - 0x4]
         add ax, strict word 0x20
         mov [regd0], ax
-        test byte [di + 0x44], 0x8
+        test byte [di + pflags], 0x8
         jz short .9
-        test byte [si + 0x44], 0x8
+        test byte [si + pflags], 0x8
         jnz short .9
         cwd
         db 0x33, 0xC2                           ; insn: xor ax, dx
@@ -3890,8 +3890,8 @@ puckstick:
         jng short .10
         jmp near .20
 .10:
-        mov dl, [di + 0x54]
-        mov al, [di + 0x47]
+        mov dl, [di + stickhand]
+        mov al, [di + pnum]
         cbw
         db 0x8B, 0xCF                           ; insn: mov cx, di
         db 0x8B, 0xF8                           ; insn: mov di, ax
@@ -3917,14 +3917,14 @@ puckstick:
         rcr ax, 1
         add ax, strict word 0x14
         mov [di + 0x3e], ax
-        mov al, [si + 0x47]
+        mov al, [si + pnum]
         cbw
         db 0x8B, 0xCF                           ; insn: mov cx, di
         db 0x8B, 0xF8                           ; insn: mov di, ax
         shl di, 1
-        mov bx, [si + 0x60]
+        mov bx, [si + tmptr]
         mov ax, [bx + di + 0x2c]
-        mov dl, [si + 0x54]
+        mov dl, [si + stickhand]
         db 0x2A, 0xF6                           ; insn: sub dh, dh
         db 0x8B, 0xF9                           ; insn: mov di, cx
         call 0x03A3:ImulRegs
@@ -3942,13 +3942,13 @@ puckstick:
         sar dx, 1
         rcr ax, 1
         add ax, strict word 0x14
-        mov [si + 0x3e], ax
+        mov [si + nopuck], ax
         mov ax, [di + 0x5e]
         mov [lastplayer], ax
         and byte [sflags], 0xf3
         jmp near .17
 .11:
-        cmp word [si + 0x1a], 0x0
+        cmp word [si + position], 0x0
         jnz short .13
         cmp word [regd0_w2], 0x0
         jz short .12
@@ -3980,7 +3980,7 @@ puckstick:
         mov word [regd1], 0x0
         test byte [gmode2], 0x10
         jnz short .14
-        mov al, [si + 0x54]
+        mov al, [si + stickhand]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         imul ax, ax, word 0x2bc
         mov [regd1], ax
@@ -4000,14 +4000,14 @@ puckstick:
         jnc short .18
 .15:
         mov ax, [passplayer]
-        cmp [si + 0x5e], ax
+        cmp [si + SCnum], ax
         jnz short .16
         mov ax, 0x2
         call 0x0C11:randomd0
         db 0x0B, 0xC0                           ; insn: or ax, ax
         jnz short .18
 .16:
-        mov word [si + 0x3e], 0x8
+        mov word [si + nopuck], 0x8
 .17:
         push word 0x99
         call 0x0EDC:PlaySoundEffect
@@ -4046,17 +4046,17 @@ SetShotMode:
         mov [passdir], ax
         or [sflags], ax
         mov word [regd0], 0x0
-        mov al, [si + 0x44]
+        mov al, [si + pflags]
         and al, 0x80
         cmp al, 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         and ax, 0xfe20
         add ax, 0xf0
         mov [regd1], ax
-        mov ax, [si + 0x2]
+        mov ax, [si + Xpos+2]
         neg ax
         mov dx, [regd1]
-        sub dx, [si + 0x6]
+        sub dx, [si + Ypos+2]
         call 0x0D5F:VectorToDir8
         mov [regd0], ax
         mov word [passspeed], 0xf
@@ -4179,14 +4179,14 @@ deflect:
         mov ax, 0x2000
         call 0x0C11:randomd0
         sub ax, 0x1000
-        mov [si + 0xe], ax
+        mov [si + Yvel], ax
         mov ax, 0x2000
         call 0x0C11:randomd0
         sub ax, 0x1000
-        mov [si + 0xc], ax
+        mov [si + Xvel], ax
         mov ax, 0x1000
         call 0x0C11:randomd0
-        mov [si + 0x10], ax
+        mov [si + Zvel], ax
         mov [regd0], ax
         push si
         call 0x2519:puckflip
@@ -4377,26 +4377,26 @@ doshot:
         push cs
         call shotdiradj
         add sp, 0x2
-        mov ax, [si + 0x5e]
+        mov ax, [si + SCnum]
         mov [shotplayer], ax
         and byte [sflags], 0xf7
-        or byte [si + 0x44], 0x20
+        or byte [si + pflags], 0x20
         mov bx, [puckc]
         mov al, [bx]
         cbw
-        cmp ax, [si + 0x5e]
+        cmp ax, [si + SCnum]
         jz short .1
-        cmp word [si + 0x38], SPAno(SPAonetimef)
+        cmp word [si + SPA], SPAno(SPAonetimef)
         jz short .1
-        cmp word [si + 0x38], SPAno(SPAonetimeb)
+        cmp word [si + SPA], SPAno(SPAonetimeb)
         jz short .1
         push word 0x99
         jmp near .27
 .1:
         or byte [gmode2], 0x10
-        cmp word [si + 0x38], 0x491
+        cmp word [si + SPA], 0x491
         jz short .2
-        cmp word [si + 0x38], SPAno(SPAonetimeb)
+        cmp word [si + SPA], SPAno(SPAonetimeb)
         jz short .2
         mov word [bp - 0x8], 0xaa
         jmp short .3
@@ -4406,17 +4406,17 @@ doshot:
         sar ax, byte 0x2
         sub [passspeed], ax
 .3:
-        mov al, [si + 0x4f]
+        mov al, [si + shotspd]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         db 0x8B, 0xF8                           ; insn: mov di, ax
         cmp di, 0xc
         jng short .4
-        mov ax, [si + 0x2]
+        mov ax, [si + Xpos+2]
         cwd
         db 0x33, 0xC2                           ; insn: xor ax, dx
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        mov ax, [si + 0x6]
+        mov ax, [si + Ypos+2]
         cwd
         db 0x33, 0xC2                           ; insn: xor ax, dx
         db 0x2B, 0xC2                           ; insn: sub ax, dx
@@ -4438,12 +4438,12 @@ doshot:
         jng short .7
         inc di
 .7:
-        mov al, [si + 0x47]
+        mov al, [si + pnum]
         cbw
         db 0x8B, 0xD7                           ; insn: mov dx, di
         db 0x8B, 0xF8                           ; insn: mov di, ax
         shl di, 1
-        mov bx, [si + 0x60]
+        mov bx, [si + tmptr]
         mov ax, [bx + di + 0x2c]
         call 0x03A3:ImulRegs
         db 0x8A, 0xC4                           ; insn: mov al, ah
@@ -4475,11 +4475,11 @@ doshot:
 .8:
         mov bx, [puckc]
         mov byte [bx], 0xff
-        mov word [si + 0x3e], 0x10
-        mov ax, [si + 0x5e]
+        mov word [si + nopuck], 0x10
+        mov ax, [si + SCnum]
         mov [lastplayer], ax
         mov di, 0xe8
-        test byte [si + 0x44], 0x80
+        test byte [si + pflags], 0x80
         jnz short .9
         mov di, 0xff18
 .9:
@@ -4509,7 +4509,7 @@ doshot:
         jz short .11
         jmp near .23
 .11:
-        mov al, [si + 0x50]
+        mov al, [si + shotacc]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         db 0x8B, 0xF8                           ; insn: mov di, ax
         cmp di, 0xe
@@ -4522,7 +4522,7 @@ doshot:
 .13:
         cmp word [bp - 0x4], 0xc8
         jg short .14
-        mov al, [si + 0x50]
+        mov al, [si + shotacc]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         add ax, strict word 0x10
         call 0x0C11:randomd0
@@ -4698,22 +4698,22 @@ checkcoll:
         mov [bp + 0xa], dx
 .1:
         mov di, [bp + 0x6]
-        test byte [di + 0x44], 0x4
+        test byte [di + pflags], 0x4
         jnz short .3
-        mov ax, [di + 0x5a]
+        mov ax, [di + radiusx]
         mov [wcradiusx], ax
-        mov ax, [di + 0x5c]
+        mov ax, [di + radiusy]
         mov [wcradiusy], ax
-        push word [di + 0x6]
-        push word [di + 0x2]
+        push word [di + Ypos+2]
+        push word [di + Xpos+2]
         push di
         push cs
         call checkwallcoll
         add sp, 0x6
-        mov ax, [di + 0x30]
-        or ax, [di + 0x32]
+        mov ax, [di + Wallcos]
+        or ax, [di + Wallsin]
         jnz short .2
-        cmp word [di + 0x5e], 0xb
+        cmp word [di + SCnum], 0xb
         jg short .2
         push di
         call 0x2E42:GetHot
@@ -4721,10 +4721,10 @@ checkcoll:
         mov ax, 0x1
         mov [wcradiusx], ax
         mov [wcradiusy], ax
-        mov ax, [di + 0x6]
+        mov ax, [di + Ypos+2]
         add ax, [regd1]
         push ax
-        mov ax, [di + 0x2]
+        mov ax, [di + Xpos+2]
         add ax, [regd0]
         push ax
         push di
@@ -4741,10 +4741,10 @@ checkcoll:
 .3:
         cmp byte [collflag], 0x0
         jz short .4
-        mov ax, [di + 0x66]
-        mov [di + 0x2], ax
-        mov ax, [di + 0x6a]
-        mov [di + 0x6], ax
+        mov ax, [di + OldXpos+2]
+        mov [di + Xpos+2], ax
+        mov ax, [di + OldYpos+2]
+        mov [di + Ypos+2], ax
         pop si
         pop di
         leave
@@ -5012,16 +5012,16 @@ checkgoal:
         jmp near .27
 .6:
         mov [bp + 0xc], bx
-        cmp word [si + 0x6e], 0xd
+        cmp word [si + OldZpos+2], 0xd
         jl short .8
-        mov ax, [si + 0x6e]
-        mov [si + 0xa], ax
-        cmp word [si + 0x10], 0x0
+        mov ax, [si + OldZpos+2]
+        mov [si + Zpos+2], ax
+        cmp word [si + Zvel], 0x0
         jl short .7
         jmp near .27
 .7:
-        neg word [si + 0x10]
-        sar word [si + 0x10], 1
+        neg word [si + Zvel]
+        sar word [si + Zvel], 1
         pop si
         pop di
         leave
@@ -5030,7 +5030,7 @@ checkgoal:
         mov [bp + 0xa], dx
         db 0x8B, 0xFA                           ; insn: mov di, dx
         mov byte [collflag], 0xff
-        and byte [si + 0x44], 0x7f
+        and byte [si + pflags], 0x7f
         mov bx, [puckc]
         cmp byte [bx], 0x0
         jl short .10
@@ -5053,13 +5053,13 @@ checkgoal:
 .9:
         cmp word [regd1], 0x0
         jnl short .10
-        or byte [si + 0x44], 0x80
+        or byte [si + pflags], 0x80
 .10:
         mov word [regd0], 0xff00
-        mov ax, [si + 0x4]
-        mov dx, [si + 0x6]
-        sub ax, [si + 0x68]
-        sbb dx, [si + 0x6a]
+        mov ax, [si + Ypos]
+        mov dx, [si + Ypos+2]
+        sub ax, [si + OldYpos]
+        sbb dx, [si + OldYpos+2]
         db 0x8A, 0xC4                           ; insn: mov al, ah
         db 0x8A, 0xE2                           ; insn: mov ah, dl
         db 0x8A, 0xD6                           ; insn: mov dl, dh
@@ -5083,9 +5083,9 @@ checkgoal:
         mov ax, [bp + 0xc]
         add [regd5], ax
         mov ax, [si]
-        mov dx, [si + 0x2]
-        sub ax, [si + 0x64]
-        sbb dx, [si + 0x66]
+        mov dx, [si + Xpos+2]
+        sub ax, [si + OldXpos]
+        sbb dx, [si + OldXpos+2]
         db 0x8A, 0xC4                           ; insn: mov al, ah
         db 0x8A, 0xE2                           ; insn: mov ah, dl
         db 0x8A, 0xD6                           ; insn: mov dl, dh
@@ -5125,7 +5125,7 @@ checkgoal:
         jmp near .24
 .17:
         mov word [regd1], 0x0
-        mov ax, [si + 0x6]
+        mov ax, [si + Ypos+2]
         xor ax, [regd0]
         mov [regd3], ax
         db 0x0B, 0xC0                           ; insn: or ax, ax
@@ -5133,13 +5133,13 @@ checkgoal:
         jmp near .25
 .18:
         neg word [regd0]
-        test byte [si + 0x44], 0x80
+        test byte [si + pflags], 0x80
         jz short .19
         jmp near .25
 .19:
         mov [bp + 0xa], di
         db 0x8B, 0xD7                           ; insn: mov dx, di
-        cmp word [si + 0xa], 0xd
+        cmp word [si + Zpos+2], 0xd
         jz short .20
         dec word [regd4]
         cmp [regd4], dx
@@ -5172,20 +5172,20 @@ checkgoal:
         mov ax, 0x1000
         call 0x0C11:randomd0
         mov [regd0], ax
-        cmp word [si + 0x6], 0x0
+        cmp word [si + Ypos+2], 0x0
         jl short .23
         neg word [regd0]
 .23:
         mov ax, [regd0]
-        mov [si + 0xe], ax
+        mov [si + Yvel], ax
         mov ax, 0x2000
         call 0x0C11:randomd0
         sub ax, 0x1000
-        mov [si + 0xc], ax
+        mov [si + Xvel], ax
         mov ax, 0x2000
         call 0x0C11:randomd0
         sub ax, 0x1000
-        mov [si + 0x10], ax
+        mov [si + Zvel], ax
         push si
         call 0x2519:puckflip
         jmp short .26
@@ -5193,8 +5193,8 @@ checkgoal:
 .24:
         mov word [regd0], 0x0
         mov word [regd1], 0x100
-        mov ax, [si + 0x2]
-        sub ax, [si + 0x66]
+        mov ax, [si + Xpos+2]
+        sub ax, [si + OldXpos+2]
         js short .25
         mov word [regd1], 0xff00
 .25:
@@ -5223,14 +5223,14 @@ wallcoll:
         push si
         mov si, [bp + 0x6]
         mov ax, [regd0]
-        mov [si + 0x30], ax
+        mov [si + Wallcos], ax
         mov ax, [regd1]
-        mov [si + 0x32], ax
-        mov dx, [si + 0xc]
+        mov [si + Wallsin], ax
+        mov dx, [si + Xvel]
         mov ax, [regd1]
         call 0x03A3:ImulRegs
         db 0x8B, 0xCA                           ; insn: mov cx, dx
-        mov dx, [si + 0xe]
+        mov dx, [si + Yvel]
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov ax, [regd0]
         mov [bp - 0x4], di
@@ -5244,11 +5244,11 @@ wallcoll:
         shl dh, 1
         db 0x1A, 0xF6                           ; insn: sbb dh, dh
         mov [regd2], ax
-        mov dx, [si + 0xc]
+        mov dx, [si + Xvel]
         mov ax, [regd0]
         call 0x03A3:ImulRegs
         db 0x8B, 0xCA                           ; insn: mov cx, dx
-        mov dx, [si + 0xe]
+        mov dx, [si + Yvel]
         db 0x8B, 0xF8                           ; insn: mov di, ax
         mov ax, [regd1]
         mov [bp - 0x8], di
@@ -5263,7 +5263,7 @@ wallcoll:
         db 0x1A, 0xF6                           ; insn: sbb dh, dh
         mov [regd3], ax
         neg word [regd2]
-        cmp word [si + 0x5e], 0xe
+        cmp word [si + SCnum], 0xe
         jz short .1
         jmp near .13
 .1:
@@ -5286,7 +5286,7 @@ wallcoll:
         mov ax, 0x800
         call 0x0C11:randomd0
         neg ax
-        mov [si + 0x10], ax
+        mov [si + Zvel], ax
         push si
         call 0x2519:puckflip
         add sp, 0x2
@@ -5300,7 +5300,7 @@ wallcoll:
         jns short .5
         db 0x2B, 0xFF                           ; insn: sub di, di
 .5:
-        cmp word [si + 0xa], 0xa
+        cmp word [si + Zpos+2], 0xa
         ja short .8
         mov bx, [puckc]
         cmp byte [bx], 0x0
@@ -5360,7 +5360,7 @@ wallcoll:
 .14:
         cmp word [regd2], 0xf000
         jg short .15
-        cmp word [si + 0x18], 0xa
+        cmp word [si + impact], 0xa
         jl short .15
         cmp word [nethit], 0x0
         jnz short .15
@@ -5390,7 +5390,7 @@ wallcoll:
         db 0x8A, 0xD6                           ; insn: mov dl, dh
         shl dh, 1
         db 0x1A, 0xF6                           ; insn: sbb dh, dh
-        mov [si + 0xc], ax
+        mov [si + Xvel], ax
         mov ax, [regd2]
         mov dx, [regd0]
         call 0x03A3:ImulRegs
@@ -5407,10 +5407,10 @@ wallcoll:
         db 0x8A, 0xD6                           ; insn: mov dl, dh
         shl dh, 1
         db 0x1A, 0xF6                           ; insn: sbb dh, dh
-        mov [si + 0xe], ax
-        cmp word [si + 0x10], 0x0
+        mov [si + Yvel], ax
+        cmp word [si + Zvel], 0x0
         jng short .17
-        mov word [si + 0x10], 0x0
+        mov word [si + Zvel], 0x0
 .17:
         pop si
         pop di
@@ -5441,35 +5441,35 @@ wallcollb:
         leave
         retf
 .2:
-        cmp word [si + 0xa], 0x1d
+        cmp word [si + Zpos+2], 0x1d
         jng short .3
         jmp near .7
 .3:
-        cmp word [si + 0xa], 0x12
+        cmp word [si + Zpos+2], 0x12
         jna short .1
-        cmp word [si + 0x6], 0xf8
+        cmp word [si + Ypos+2], 0xf8
         jl short .7
-        mov ax, [si + 0x2]
+        mov ax, [si + Xpos+2]
         cwd
         db 0x33, 0xC2                           ; insn: xor ax, dx
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         cmp ax, strict word 0x28
         jl short .1
-        mov ax, [si + 0x2]
+        mov ax, [si + Xpos+2]
         cwd
         db 0x33, 0xC2                           ; insn: xor ax, dx
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         cmp ax, strict word 0x38
         jg short .1
-        cmp word [si + 0xe], 0xfa0
+        cmp word [si + Yvel], 0xfa0
         jl short .1
         cmp word [lty], 0x26
         jl short .1
-        sar word [si + 0xe], 1
+        sar word [si + Yvel], 1
         lea bx, [si + 0x80]
         mov ax, SPAno(SPAbglass)
         call 0x2E42:SetSPA
-        cmp word [si + 0x2], 0x0
+        cmp word [si + Xpos+2], 0x0
         jl short .4
         mov ax, 0x3f
         jmp short .5
@@ -5492,10 +5492,10 @@ wallcollb:
         add word [crowdheat], 0xf
 .7:
         or byte [sflags], 0x40
-        or byte [si + 0x44], 0x4
-        cmp word [si + 0x6], 0x0
+        or byte [si + pflags], 0x4
+        cmp word [si + Ypos+2], 0x0
         jnl short .8
-        or byte [si + 0x49], 0x80
+        or byte [si + attribute], 0x80
 .8:
         mov word [si + 0x92], 0xffff
         test byte [gmode], 0x1
@@ -5602,24 +5602,24 @@ checkcx:
         mov di, [bp + 0xc]
         shl di, byte 0x7
         add di, SortCords
-        test byte [di + 0x44], 0x4
+        test byte [di + pflags], 0x4
         jz short .1
         jmp near .19
 .1:
-        test byte [di + 0x45], 0x20
+        test byte [di + pflags2], 0x20
         jz short .2
         jmp near .19
 .2:
-        cmp word [di + 0x5e], 0xb
+        cmp word [di + SCnum], 0xb
         jng short .3
-        cmp word [di + 0x5e], 0x10
+        cmp word [di + SCnum], 0x10
         jz short .3
         jmp near .19
 .3:
-        mov si, [di + 0x2]
+        mov si, [di + Xpos+2]
         test byte [sflags], 0x80
         jz short .4
-        mov si, [di + 0x6]
+        mov si, [di + Ypos+2]
 .4:
         sub si, [bp + 0x8]
         db 0x8B, 0xC6                           ; insn: mov ax, si
@@ -5655,17 +5655,17 @@ checkcx:
         jmp near .19
 .7:
         mov si, [bp + 0x6]
-        mov ax, [si + 0xc]
-        sub ax, [di + 0xc]
+        mov ax, [si + Xvel]
+        sub ax, [di + Xvel]
         mov [bp - 0x4], ax
-        mov cx, [si + 0xe]
-        sub cx, [di + 0xe]
+        mov cx, [si + Yvel]
+        sub cx, [di + Yvel]
         mov [bp - 0x6], cx
-        mov dx, [di + 0x2]
-        sub dx, [si + 0x2]
+        mov dx, [di + Xpos+2]
+        sub dx, [si + Xpos+2]
         mov [bp - 0x2], dx
-        mov bx, [di + 0x6]
-        sub bx, [si + 0x6]
+        mov bx, [di + Ypos+2]
+        sub bx, [si + Ypos+2]
         mov [bp + 0xa], bx
         mov [bp - 0xc], ax
         db 0x8B, 0xC3                           ; insn: mov ax, bx
@@ -5689,12 +5689,12 @@ checkcx:
         push 0x4
         push word regd1
         call 0x0000:LongSarAt
-        cmp word [si + 0x5e], 0x10
+        cmp word [si + SCnum], 0x10
         jz short .9
-        cmp word [di + 0x5e], 0x10
+        cmp word [di + SCnum], 0x10
         jz short .9
-        mov al, [si + 0x44]
-        xor al, [di + 0x44]
+        mov al, [si + pflags]
+        xor al, [di + pflags]
         test al, 0x40
         jz short .15
 .9:
@@ -5708,18 +5708,18 @@ checkcx:
 .10:
         mov ax, [regd4]
         mov [lastimpact], ax
-        add [si + 0x18], ax
+        add [si + impact], ax
         mov ax, [regd4]
-        add [di + 0x18], ax
-        test byte [di + 0x45], 0x1
+        add [di + impact], ax
+        test byte [di + pflags2], 0x1
         jnz short .11
-        mov ax, [si + 0x5e]
-        mov [di + 0x14], ax
+        mov ax, [si + SCnum]
+        mov [di + impactp], ax
 .11:
-        test byte [si + 0x45], 0x1
+        test byte [si + pflags2], 0x1
         jnz short .12
-        mov ax, [di + 0x5e]
-        mov [si + 0x14], ax
+        mov ax, [di + SCnum]
+        mov [si + impactp], ax
 .12:
         cmp word [regd4], 0x14
         jl short .14
@@ -5727,9 +5727,9 @@ checkcx:
         mov al, [bx]
         cbw
         mov [bp - 0x14], ax
-        cmp ax, [si + 0x5e]
+        cmp ax, [si + SCnum]
         jz short .13
-        mov ax, [di + 0x5e]
+        mov ax, [di + SCnum]
         cmp [bp - 0x14], ax
         jnz short .14
 .13:
@@ -5777,11 +5777,11 @@ checkcx:
         sar dx, 1
         rcr ax, 1
         mov [regd5], ax
-        mov al, [si + 0x4a]
+        mov al, [si + weight]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         add ax, 0x8c
         mov [regd0], ax
-        mov al, [di + 0x4a]
+        mov al, [di + weight]
         db 0x2A, 0xE4                           ; insn: sub ah, ah
         add ax, 0x8c
         mov [regd1], ax
@@ -5812,8 +5812,8 @@ checkcx:
         rcr ax, 1
         sar dx, 1
         rcr ax, 1
-        add ax, [di + 0xc]
-        mov [si + 0xc], ax
+        add ax, [di + Xvel]
+        mov [si + Xvel], ax
         mov ax, [regd5]
         mov dx, [bp - 0x2]
         call 0x03A3:ImulRegs
@@ -5832,8 +5832,8 @@ checkcx:
         rcr ax, 1
         sar dx, 1
         rcr ax, 1
-        add ax, [di + 0xe]
-        mov [si + 0xe], ax
+        add ax, [di + Yvel]
+        mov [si + Yvel], ax
         mov ax, [regd1]
         mov dx, [bp - 0x2]
         call 0x03A3:ImulRegs
@@ -5845,7 +5845,7 @@ checkcx:
         rcr ax, 1
         sar dx, 1
         rcr ax, 1
-        add [di + 0xc], ax
+        add [di + Xvel], ax
         mov ax, [regd1]
         mov dx, [bp + 0xa]
         call 0x03A3:ImulRegs
@@ -5857,28 +5857,28 @@ checkcx:
         rcr ax, 1
         sar dx, 1
         rcr ax, 1
-        add [di + 0xe], ax
+        add [di + Yvel], ax
         mov byte [collflag], 0xff
         test byte [gmode], 0x1
         jz short .17
         jmp near .19
 .17:
-        mov al, [si + 0x44]
-        xor al, [di + 0x44]
+        mov al, [si + pflags]
+        xor al, [di + pflags]
         test al, 0x40
         jnz short .19
-        mov ax, [di + 0x2]
-        sub ax, [si + 0x2]
-        mov dx, [di + 0x6]
-        sub dx, [si + 0x6]
+        mov ax, [di + Xpos+2]
+        sub ax, [si + Xpos+2]
+        mov dx, [di + Ypos+2]
+        sub dx, [si + Ypos+2]
         call 0x0D5F:VectorToDir8
         mov [bp - 0x2], ax
-        test byte [si + 0x44], 0x8
+        test byte [si + pflags], 0x8
         jnz short .18
-        mov ax, [si + 0x2a]
-        sub ax, [si + 0x2]
-        mov dx, [si + 0x2c]
-        sub dx, [si + 0x6]
+        mov ax, [si + temp3]
+        sub ax, [si + Xpos+2]
+        mov dx, [si + temp4]
+        sub dx, [si + Ypos+2]
         call 0x0D5F:VectorToDir8
         cmp ax, [bp - 0x2]
         jnz short .18
@@ -5890,12 +5890,12 @@ checkcx:
         call 0x2425:doplayeracc
         add sp, 0x4
 .18:
-        test byte [di + 0x44], 0x8
+        test byte [di + pflags], 0x8
         jnz short .19
-        mov ax, [di + 0x2a]
-        sub ax, [di + 0x2]
-        mov dx, [di + 0x2c]
-        sub dx, [di + 0x6]
+        mov ax, [di + temp3]
+        sub ax, [di + Xpos+2]
+        mov dx, [di + temp4]
+        sub dx, [di + Ypos+2]
         call 0x0D5F:VectorToDir8
         mov cl, [bp - 0x2]
         sub cl, 0xfc

@@ -105,20 +105,20 @@ updatereplay:
         mov di, 0x11
         mov es, [replayrecseg]
 .4:
-        mov ax, [bx + 0x2]
+        mov ax, [bx + Xpos+2]
         and ah, 0x3
         cwd
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        mov ax, [bx + 0x6]
+        mov ax, [bx + Ypos+2]
         db 0x8B, 0xF0                           ; insn: mov si, ax
-        mov ax, [bx + 0x12]
+        mov ax, [bx + frame]
         and ah, 0x3
         mov [bp - 0x4], cx
         mov [bp - 0x2], dx
         cwd
         shl ax, byte 0x4
         db 0x8B, 0xC8                           ; insn: mov cx, ax
-        mov ah, [bx + 0x49]
+        mov ah, [bx + attribute]
         and ax, 0x1800
         cwd
         shl ax, byte 0x3
