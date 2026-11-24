@@ -9,6 +9,7 @@
 #include "host.h"
 #include "overbar_client.h"
 #include <overbar/screen.h>
+#include <overbar/plat.h>
 #include <SDL.h>
 #include <stdarg.h>
 #include <sys/stat.h>
@@ -58,6 +59,7 @@ int main(int argc, char **argv)
   char args[128] = "";
   for (int i = 1; i < argc; i++) { strncat(args, " ", sizeof args - strlen(args) - 1); strncat(args, argv[i], sizeof args - strlen(args) - 1); }
 
+  ob_plat_dpi_aware();                          /* Windows: real pixels, no blurry stretching on a scaled display */
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER) < 0) { fprintf(stderr, "SDL: %s\n", SDL_GetError()); return 1; }
   video_init(!dump_dir);                        /* settings (hockey94.ini next to the program), window, menu bar */
   input_init();
