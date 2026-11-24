@@ -77,8 +77,41 @@ twice, on the old team and the new one (the "and" rows above). (Data)
 (leg power), speed, offensive and defensive awareness, shot power, checking, handedness, stickhandling, shot accuracy,
 endurance, shot/pass decision, passing and aggressiveness (Data). The ranges differ: 93 Genesis uses 0-15, 94 Genesis
 mostly 0-6, and PC `ATT.DB` uses 0-15 like 93 (Data). Example, Ray Bourque: 93 Genesis `778FCCCFF1F6F3F5`, 94 Genesis
-`77A5446560556252`, PC `ATT.DB` `01 0a 0d 08 0e 0f 0e 0d 0e 0e 0a 0f 05 0f 04 01 0a 0a 0a 07`. The PC's 20 bytes include
-Faceoffs and other extras; their order wasn't fully mapped, so no field-by-field PC comparison is claimed.
+`77A5446560556252`, PC `ATT.DB` `01 0a 0d 08 0e 0f 0e 0d 0e 0e 0a 0f 05 0f 04 01 0a 0a 0a 07`. The PC field order is
+mapped in the next table.
+
+**PC `ATT.DB` field order.** Each player has a 20-byte record; `KEY.DB` holds its offset (first of the three dwords at
+bytes 36-47; several players can share a record, which is why the file has fewer records than `KEY.DB`). The order comes
+from three places that agree: the player-card column tables in `dgroup.asm` (`SkaterCardCols` = 1, 2, 3, 4, 5, 6, 7, 9,
+10, 11, 12, 13, 14, 0x13 against the Speed ... Faceoffs labels; `GoalieCardCols` = 1-8, 10, 11 against Glove Left ...
+Defensive Awareness), the order `setplayer` (`src/engine/hockey.asm`) copies the bytes into the player struct, and a
+correlation of each byte against the 94 Genesis ratings of the same players (521 skaters, 49 goalies).
+
+| Byte | Skaters (card label) | Goalies (card label) | Console nibble it matches (94 Genesis correlation) | Confidence |
+|---|---|---|---|---|
+| 0 | Shoots L / R (0 = the other hand; sets the x-flip bit) | Glove hand | handedness (-0.80) | Code |
+| 1 | Speed | Glove Left | speed (0.82); goalies: aggressiveness slot = 93G glove-left save (0.83) | Code |
+| 2 | Agility | Glove Right | leg power (0.86); goalies: passing slot = glove-right save (0.89) | Code |
+| 3 | Weight | Stick Left | weight (0.90); goalies: shot/pass slot = stick-left save (0.86) | Code |
+| 4 | Shot Power | Stick Right | shot power (0.82); goalies: endurance slot = stick-right save (0.82) | Code |
+| 5 | Checking | Puck Control | checking (0.90) | Code |
+| 6 | StickHandling | Speed | stickhandling (0.89); goalies: speed (0.82) | Code |
+| 7 | Accuracy | Agility | shot accuracy (0.88); goalies: leg power (0.88) | Code |
+| 8 | not shown, not read by `setplayer` | Weight | skaters: none (0.67 with passing); goalies: weight (0.84) | Data |
+| 9 | Passing | not shown | passing (0.90) | Code |
+| 10 | Offensive Awareness | Offensive Awareness | offensive awareness (0.88; goalies 0.99) | Code |
+| 11 | Defensive Awareness | Defensive Awareness | defensive awareness (0.90; goalies 0.94) | Code |
+| 12 | Aggressiveness | not shown | aggressiveness (0.89) | Code |
+| 13 | Endurance | not shown | endurance (0.85) | Code |
+| 14 | Shoot/Pass Bias | not shown | shot/pass decision (0.90) | Code |
+| 15-18 | not shown, not read by `setplayer` | not shown | none clearly (16-18 track offensive awareness, about 0.65) | Unknown |
+| 19 | Faceoffs | not shown | none on consoles; centres average 10.3, wingers 5.7-5.8, defence 3.3 | Code (label), Data (values) |
+
+So the PC keeps every console rating and adds Faceoffs (byte 19), and stores them in the order the card shows them,
+not the console nibble order (jersey, weight, agility, speed, awareness, shot power, checking, hand, stickhandling,
+accuracy, endurance, shot/pass, passing, aggressiveness). The jersey number lives in `KEY.DB` instead. Skaters and
+goalies reuse the same byte positions for different ratings, just as the console nibbles do. Bytes 8 (skaters) and
+15-18 have no known use.
 
 **Verdict:** PC rosters are the 1992-93 rosters the 94 consoles were built from, before expansion, under the full NHL
 licence. They aren't the older NHLPA 93 rosters.
@@ -151,7 +184,8 @@ matters. Everything here is **Code** (the routine was read) unless marked otherw
 |---|---|---|---|---|---|
 | **Rink half-size: sides / end boards / goal line** | 136 / 298 / 264 (`checkwallcoll` #$88, #$12A) | Same (`checkwallcoll.asm`) | Same | Same; shots aim at y 264 (#$0108) | **160 / 264 / 232** (28BB:2A54: 0xA0, 0x108). 0.886 x the length, 1.176 x the width |
 | **Position update** | velocity x 16 x d7 | velocity x `velstep` (d7 x 16) | x 17 x d7 (NTSC) | x `velstep` (d7 x 16) | **x 16, no d7** (`updateplayers` 2E42:1D36) |
-| **Skating friction** | velocity -= max(1, velocity >> 6) (1.6%); >> 9 with friction off | velocity x table/256 by d7: $F7 at d7=1 (3.5%) ... $DE at d7=10; friction off $FF-$FC | Same as 93G | Table $FD at d7=1 (1.2%) ... $E3; friction off $FF-$FC | **As 93G** (>> 6, >> 9) |
+| **Skating friction** | velocity -= max(1, velocity >> 6) once per step, whatever d7 is; >> 9 with friction off | velocity x table/256, the table indexed by d7: $F7, $F5, $F2 ... $DE; friction off $FF-$FC | Same as 93G | Table $FD, $FA, $F7 ... $E3; friction off $FF-$FC | **As 93G** (>> 6, >> 9), 24 steps per game second |
+| **Speed kept after one game second of gliding** (24 frames) | d7 = 1: 0.69; d7 = 2: 0.83; d7 = 3: 0.88 | d7 = 1: 0.42; d7 = 2: 0.59; d7 = 3: 0.64 | As 93G | d7 = 1, 2, 3: 0.75 (the table is tuned to be frame-rate independent) | **0.69** |
 | **Gravity** | 96 per step | `gravstep` = d7 x 96 | Not compared | `gravstep` = d7 x 96 | 96 per step |
 | **Acceleration base** (`dirtab`) | runspeed 200 (diagonal 141), x d7 | 200 x d7 (`dirtab8F` = 4 x runspeed, then / 4) | 200 x d7 | 200 x d7 | **175 / 124**, pre-scaled by (agility + 48) >> 6 |
 | **Acceleration factor** (weight = rating x 8 on the consoles) | 32 - weight/8 + agility; goalie + agility + 8 | **32 - weight/16** + agility; goalie + agility + 8 (the '92 weight term: half the weight effect) | (64 - weight/4 + agility [+2 crowd]) [goalie + agility + 16] / 2; joypad puck carrier gets half | 32 - weight/8 + **1.5 x agility**; human goalie + 2 x agility + 8; computer goalie / carrier + 8 (minus agility when a pass receiver exists) | **32 - weight/8 + agility**; goalie + agility + 8 (the 93G formula) |
@@ -160,27 +194,56 @@ matters. Everything here is **Code** (the routine was read) unless marked otherw
 | **Stopping** (`stopna`) | 150 per axis per step | $70 (112) x d7 | 150 | ($70 + agility) x d7; human goalie halves velocity | **150** (2425:0D44) |
 | **Turn rate** | $300 minus speed class, minimum $180, steps of $10 | Same (`doplayeracc.asm`) | Same | Same | Same (`doplayeracc_ftab`) |
 | **Energy drain** | 1 call in 128: -33, plus endurance above $C00 | **1 in 64**: -33, plus endurance above $C00; only with line changes on | -33, plus endurance/2 | 1 in 64: -33, plus endurance above $C00 | -33, plus endurance, capped at $1000 |
-| **Shot speed** (`doshot`) | speed x (shot power x energy + 20) x **$5249** >> 16; backhand -25% | x **$2570** >> 16 (the error term then uses speed/8 instead of /16); backhand -25% | Shot power halved, $5249; one-timer minimum speed | $2570, backhand -25% | **$5249** (`doshot`, `src/engine/physics.asm`) plus shot-power boosts (+2 above 12 when close, +1 above 14, 13, 10) |
+| **Shot speed** (`doshot`) | speed x (shot power x energy + 20) x **$5249** >> 16; backhand -25% | x **$2570** >> 16, then puck x / y velocity doubled (`asl`): effectively **$4AE0 = 0.91 x Genesis**; backhand -25% | Shot power halved, $5249; one-timer minimum speed | $2570 then doubled, as 93S (0.91 x); backhand -25% | **$5249** (`doshot`, `src/engine/physics.asm`) plus shot-power boosts (+2 above 12 when close, +1 above 14, 13, 10) |
 | **Perfect shot** | distance <= 200 and rnd(16 + accuracy) > 14 | Same (#$C9, #$0F) | accuracy / 2; always with the goalie pulled or in a shootout | Same test as 93 (#$C9, #$0F) | Same as 93; accuracy +1 above 14 and above 13 |
 | **Aim error cap (x / y)** | 136 / 60, halved inside 250 | 136 (`Sideline`) / 60, halved inside 251 | 136 / 60 | 136 / 60, halved inside 251 | **160** / 60 (136 x 1.176, the width ratio) |
 | **Shot vector** | speed x **$44** x d / distance; lift $B33, max $1800 | $44; $B33; $1800 | $44, plus top-shelf lift | $44; $B33; $1800 | **0x3B** (59/68 = 0.868, the length ratio); $B33; $1800 |
 
-Two things in the SNES rows weren't traced to the end and are marked as open: the $2570 vs $5249 shot-speed factor
-(about 0.45 x) may be balanced by a differently scaled rating (`makepde`) on SNES, and the d7-indexed friction table
-gives a different loss per second only if the SNES steps cover a different number of frames than Genesis. Goalie
-reactions weren't compared.
+**SNES shot speed, resolved.** The SNES games don't rescale the rating: `setplayer` stores the shot power nibble the
+same way on both consoles, `makepde` scales it by energy the same way (rating x energy / $1000), and the wind-up starts
+at $F and grows by d7 on both. What differs is where the speed gets its scale: SNES `doshot` keeps `passspeed` at
+$2570/$5249 = 0.455 of the Genesis value, then doubles the puck's x and y velocity when it builds the shot vector
+(`asl` after each divide, in 93S and 94S). Net, SNES shots leave the stick at 2 x $2570 / $5249 = **0.91 x** the
+Genesis speed for the same player and wind-up. The aim error uses speed/8 instead of speed/16, so it comes out about
+0.91 x too, and the lift term ($B33 x distance / speed, then halved) matches Genesis. (Code)
+
+**Friction per game second.** A game second is 24 frames on every console. Genesis (and PC) take 1/64 off once per game
+step, so the loss per game second depends on how many frames each step covers (d7): 0.69 of the speed is left after a
+game second at one step per frame, 0.83 at one step per two frames. The SNES tables are indexed by d7 instead. 94 SNES
+is tuned so the loss is the same at any frame rate (0.75 left after a game second). 93 SNES has much more friction
+(0.42-0.64 left). The PC always takes 24 steps per game second, so it matches 93 Genesis at d7 = 1 (0.69). The typical
+d7 on each console wasn't measured. (Code for the tables, arithmetic for the per-second figures)
+
+### Goalie reactions
+
+When the puck touches a goalie, `puckgoalie` decides the save; before that, the goalie's assignment (`assgoalie`) moves
+him and picks a save animation. Everything here is from reading those routines (**Code**) unless marked otherwise.
+
+| | 93 Genesis | 93 SNES | 94 Genesis | 94 SNES | 94 PC |
+|---|---|---|---|---|---|
+| **Save roll when the puck hits him** | Region = high / low (puck z above 8) x left / right of his facing. Odds = (15 + that region's rating: glove left / glove right high, stick left / stick right low) x the goalie frame's 0-3 value for that region (`.list2`). Save if rnd(odds) >= 8, so 1 - 8 / odds: e.g. rating 8, frame value 1 = 65%, frame value 3 = 88%; value 0 = no save | Region rating + 15 is worked out but not used: no roll. Every touch is a save, except a hard shot (\|vy\| >= $3000) taken 80-169 from the goal line slips through with chance 1 in (182 - distance), and a diving goalie doesn't stop a puck in the air (z >= 2) | Rating + 15 and the frame value (`.list2` / `.list3`) are read, but no roll follows: every touch is a save | Like 93 SNES: rating + 15 read, no roll; dive frames checked against the puck height (#$05) | **The 93 Genesis roll**: odds = (15 + rating) x the frame value from `GoalieSaveSides`, save if rnd(odds) >= 8. But the rating is picked by side only, so it is always the stick-left or stick-right rating (struct bytes 0x53 / 0x55); the glove ratings aren't used here |
+| **Holding a slow loose puck** | Speed limit $C00 + rnd((2 + puck control) x 512) on x and y | Same | Not compared | Not compared | $C00 + rnd((2 + puck control x 5/4) x 512) |
+| **How often he re-aims** | Every defensive awareness / 4 frames | Same | Same | Timer + defensive awareness / 2 | Same as 93G |
+| **When he starts a save animation** | Puck crossing his goal line within $22 (34) frames and within $18 of centre | Within $14 (20) frames, $19 of centre | $22 frames | Not fully mapped | $22 frames (`assgoalie`, `logic.asm`) |
+
+So the PC goalie is the 93 Genesis goalie: the only other game with a real save roll, the same odds formula and
+timings. The PC's one change is that only the stick ratings feed the roll (Code, as read; the glove ratings show on the
+card and are loaded into the struct, but this routine doesn't use them). On 93 SNES and both 94 games a puck that
+reaches the goalie's body is stopped, so saves there come from positioning and the save animations, not a rating roll.
 
 **Which console is PC closest to?** **93 Genesis.** The PC matches 93 Genesis on every constant it doesn't rescale for
 its rink: the friction shifts (>> 6 / >> 9), stopping 150, the acceleration factor 32 - weight/8 + agility, the
-top-speed index (energy x speed) >> 12, gravity 96, the turn rate, and the $5249 shot-speed factor. 93 SNES differs on
-friction (a multiply table), stopping ($70 x d7), the weight term (weight/16), the top-speed index (energy/2 + $800) and
-the shot factor ($2570). 94 SNES has those SNES differences plus 1.5 x agility and goalie changes. 94 Genesis has the
-halved ratings, crowd boost, carrier half-acceleration and x 17 position step. None of the 94 changes, Genesis or SNES,
+top-speed index (energy x speed) >> 12, gravity 96, the turn rate, the $5249 shot-speed factor and the goalie
+save roll. 93 SNES differs on
+friction (a multiply table, much stronger), stopping ($70 x d7), the weight term (weight/16), the top-speed index
+(energy/2 + $800), shot speed (0.91 x) and goalies (no save roll). 94 SNES has those SNES
+differences (with milder friction) plus 1.5 x agility. 94 Genesis has the halved ratings, crowd boost, carrier
+half-acceleration, x 17 position step and no save roll. None of the 94 changes, Genesis or SNES,
 are in the PC code (Code).
 
-The table called `ShotSpeeds` in `dgroup.asm` is actually the shot x-offset table (0, $C, $10, ..., the values of 93's
-`.shotsets`), and `AccelFactors` is the top-speed table. Both have been renamed across the repos; this page calls them
-the shot x-offset table (formerly `ShotSpeeds`) and the top-speed table (formerly `AccelFactors`).
+Two PC tables in `dgroup.asm` were misnamed and have been renamed (PR #83): `ShotSpeeds` is now `shotsets` (the shot
+x-offset table: 0, $C, $10, ..., the values of 93's `.shotsets`), and `AccelFactors` / `AccelFactors2` are now
+`MaxSpeed` / `MaxSpeed_w2` (the top-speed table).
 
 ## Music and packaging
 
@@ -243,6 +306,7 @@ consoles.
 
 - A "not found" is a search of this labelled source (names, strings, animation and assignment tables). A feature hidden
   under an unrelated name could still have been missed.
-- Physics covers all four consoles and the PC; goalie reactions weren't compared, and two SNES points (shot-speed rating scale, friction per second) are open.
-- The PC `ATT.DB` rating order wasn't fully mapped.
+- The typical frames per game step (d7) on each console wasn't measured, so the per-second friction figures are given for d7 = 1-3.
+- 94 SNES goalie positioning was only partly mapped; the catch-speed rule wasn't compared for the 94 games.
+- `ATT.DB` bytes 8 (skaters) and 15-18 have no known use.
 - 94 Genesis and Sega CD music weren't compared note for note; packaging is from Abdul's comparison.
