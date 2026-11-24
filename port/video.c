@@ -13,6 +13,7 @@
 #include <string.h>
 #include <SDL.h>
 #include <overbar/plat.h>
+#include <overbar/screen.h>
 
 static SDL_Window *win;
 static SDL_Renderer *ren;
@@ -488,6 +489,7 @@ void video_view(int *vx, int *vy, int *vw, int *vh)
 }
 
 void video_mode_size(int *w, int *h) { *w = mode_w; *h = mode_h; }
+void video_client_size(int *w, int *h) { *w = *h = 0; client_size(w, h); }
 
 void video_confine_mouse(int on)
 {
@@ -562,11 +564,51 @@ void video_dump(const char *dir)
   fclose(f);
 }
 
+/* a full-window screen an add-on put up (overbar/screen.h): drawn at the window's size, the overlay over it, the game held (main.c) */
+static int screen_present(void)
+{
+  static uint32_t *px;
+  static long cap;
+  static SDL_Texture *stex;
+  static int sw, sh;
+  int ww = 0, wh = 0;
+  client_size(&ww, &wh);
+  if (ww < 16 || wh < 16) return 0;
+  if ((long)ww * wh > cap) {
+    uint32_t *n = (uint32_t *)realloc(px, (size_t)ww * wh * 4);
+    if (!n) return 0;
+    px = n; cap = (long)ww * wh;
+  }
+  ob_screen_draw(px, ww, wh, ww);
+  if (overbar_client_open()) overbar_client_draw(px, ww, wh, ww);
+  if (use_gl) {
+    int dw, dh;
+    SDL_GL_GetDrawableSize(win, &dw, &dh);
+    ob_gl_set_target(dw, dh);
+    ob_gl_render(win, ob_screen_look(), OB_CLASS_HIRES, px, ww, wh, 0, 0, dw, dh);
+  } else {
+    if (!stex || sw != ww || sh != wh) {
+      if (stex) SDL_DestroyTexture(stex);
+      stex = SDL_CreateTexture(ren, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, ww, wh);
+      sw = ww; sh = wh;
+      if (!stex) return 0;
+      SDL_SetTextureScaleMode(stex, SDL_ScaleModeLinear);
+    }
+    SDL_UpdateTexture(stex, 0, px, ww * 4);
+    SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
+    SDL_RenderClear(ren);
+    SDL_RenderCopy(ren, stex, 0, 0);
+    SDL_RenderPresent(ren);
+  }
+  return 1;
+}
+
 void video_present(void)
 {
   int w, h;
   uint32_t hash;
   if (!ren && !use_gl) return;
+  if (ob_screen_up() && screen_present()) return;
   fresh = 0;
   hash = render();
   w = mode_w; h = mode_h;

@@ -7,6 +7,7 @@
  */
 #include "overbar_client.h"
 #include "season.h"
+#include "box_pc94.h"
 
 #include <string.h>
 
@@ -19,6 +20,7 @@ void overbar_client_init(ob_profile profile, void (*apply)(ob_host *h))
     netplay_online_setup(&host);        /* the Online page (netplay.c) */
     port_season_setup(&host);
     apply_host = apply;
+    ob_box_init(&host, &BOX_PC94);      /* the box on the first launch (experimental; box_pc94.c) */
 }
 
 void overbar_client_free(void)
