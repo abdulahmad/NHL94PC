@@ -210,7 +210,7 @@ matters. Everything here is **Code** (the routine was read) unless marked otherw
 | **Rink half-size: sides / end boards / goal line** | 136 / 298 / 264 (`checkwallcoll` #$88, #$12A) | Same (`checkwallcoll.asm`) | Same | Same; shots aim at y 264 (#$0108) | **160 / 264 / 232** (28BB:2A54: 0xA0, 0x108). 0.886 x the length, 1.176 x the width |
 | **Position update** | velocity x 16 x d7 | velocity x `velstep` (d7 x 16) | x 17 x d7 (NTSC) | x `velstep` (d7 x 16) | **x 16, no d7** (`updateplayers` 2E42:1D36) |
 | **Skating friction** | velocity -= max(1, velocity >> 6) once per step, whatever d7 is; >> 9 with friction off | velocity x table/256, the table indexed by d7: $F7, $F5, $F2 ... $DE; friction off $FF-$FC | Same as 93G | Table $FD, $FA, $F7 ... $E3; friction off $FF-$FC | **As 93G** (>> 6, >> 9), 24 steps per game second |
-| **Speed kept after one game second of gliding** (24 frames) | d7 = 1: 0.69; d7 = 2: 0.83; d7 = 3: 0.88 | d7 = 1: 0.42; d7 = 2: 0.59; d7 = 3: 0.64 | As 93G | d7 = 1, 2, 3: 0.75 (the table is tuned to be frame-rate independent) | **0.69** |
+| **Speed kept after one game second of gliding** (24 frames) | d7 = 1: 0.69; d7 = 2: 0.83; d7 = 3: 0.88. If the step finishes in one vblank, d7 = 1 (0.69) | d7 = 1: 0.42; d7 = 2: 0.59; d7 = 3: 0.64. If in budget, d7 = 1 (0.42) | As 93G | d7 = 1, 2, 3: 0.75 (the table is tuned to be frame-rate independent) | **0.69** (no d7; 24 steps per game second) |
 | **Gravity** | 96 per step | `gravstep` = d7 x 96 | Not compared | `gravstep` = d7 x 96 | 96 per step |
 | **Acceleration base** (`dirtab`) | runspeed 200 (diagonal 141), x d7 | 200 x d7 (`dirtab8F` = 4 x runspeed, then / 4) | 200 x d7 | 200 x d7 | **175 / 124**, pre-scaled by (agility + 48) >> 6 |
 | **Acceleration factor** (weight = rating x 8 on the consoles) | 32 - weight/8 + agility; goalie + agility + 8 | **32 - weight/16** + agility; goalie + agility + 8 (the '92 weight term: half the weight effect) | (64 - weight/4 + agility [+2 crowd]) [goalie + agility + 16] / 2; joypad puck carrier gets half | 32 - weight/8 + **1.5 x agility**; human goalie + 2 x agility + 8; computer goalie / carrier + 8 (minus agility when a pass receiver exists) | **32 - weight/8 + agility**; goalie + agility + 8 (the 93G formula) |
@@ -232,12 +232,29 @@ $2570/$5249 = 0.455 of the Genesis value, then doubles the puck's x and y veloci
 Genesis speed for the same player and wind-up. The aim error uses speed/8 instead of speed/16, so it comes out about
 0.91 x too, and the lift term ($B33 x distance / speed, then halved) matches Genesis. (Code)
 
-**Friction per game second.** A game second is 24 frames on every console. Genesis (and PC) take 1/64 off once per game
-step, so the loss per game second depends on how many frames each step covers (d7): 0.69 of the speed is left after a
-game second at one step per frame, 0.83 at one step per two frames. The SNES tables are indexed by d7 instead. 94 SNES
-is tuned so the loss is the same at any frame rate (0.75 left after a game second). 93 SNES has much more friction
-(0.42-0.64 left). The PC always takes 24 steps per game second, so it matches 93 Genesis at d7 = 1 (0.69). The typical
-d7 on each console wasn't measured. (Code for the tables, arithmetic for the per-second figures)
+**Friction per game second.** A game second is 24 game-clock ticks on every console. On the consoles, d7 is the number
+of video frames (60 Hz on NTSC) since the last game step: `DoGameFrame` / `Gameloop` waits until `Vcount` has moved on
+from `OldVcount`, then d7 = `Vcount` - `OldVcount` (93G `hockey93.asm` 171-175, 94G `hockey94.asm` 171-175, 95G
+`hockey95.asm` 269-274, 93S `Gameloop.asm` 5-12, 94S `Gameloop.asm` 4-37). `Vcount` goes up by 1 in the vblank (94G
+`video94.asm` 42) or NMI (94S `NMI_Tick` in `NMI_SendOAM.asm` 25-32). On 94 SNES PAL, `vcountstep` = `$3333` is added
+to a fraction each NMI so `Vcount` also keeps a 60 Hz step on a 50 Hz set (ram94s.asm 527-528). The wait means d7 is at
+least 1. It is 1 whenever the previous step finished before the next vblank after `OldVcount` was stored, and 2 or more
+only when that step ran long enough to miss a vblank. The work in a step is `periodicevents`, `updateplayers`, the
+replay, and `setvideo` (the sprite and DMA lists); the vblank itself also runs `DumpSprites` / OAM DMA and the music
+tick, which steals time from the main thread. 94 SNES also stores `gamefps` = `gameframes` x 60 / `FrameCount` in RAM
+(`Gameloop.asm` 8-16) but nothing displays it.
+
+The code does not record a typical d7, and it was not measured here (no Genesis or SNES emulator on the machine).
+Bounds from the code: 93 SNES hangs if d7 is 10 or more (`updateplayers.asm` `.hang`), so they treated 10+ as
+impossible; both SNES friction tables have 10 entries, for d7 = 1-10. Genesis and 94 SNES do not clamp d7. If play
+stays inside one vblank, d7 is 1.
+
+Genesis (and PC) take 1/64 off once per game step, so the loss per game second depends on d7: 0.69 of the speed is
+left after a game second at one step per frame (d7 = 1), 0.83 at d7 = 2, 0.88 at d7 = 3. The PC always takes 24 steps
+per game second, so it matches 93 Genesis at d7 = 1 (0.69). The SNES tables are indexed by d7 instead. 94 SNES is
+tuned so the loss is the same at any of those rates (0.75 left after a game second). 93 SNES has much more friction
+(0.42-0.64 left). The 1-3 range is kept because a missed vblank is possible and the SNES tables go to 10. (Code for
+the loops and the tables, arithmetic for the per-second figures)
 
 ### Goalie reactions
 
@@ -247,14 +264,22 @@ him and picks a save animation. Everything here is from reading those routines (
 | | 93 Genesis | 93 SNES | 94 Genesis | 94 SNES | 94 PC |
 |---|---|---|---|---|---|
 | **Save roll when the puck hits him** | Region = high / low (puck z above 8) x left / right of his facing. Odds = (15 + that region's rating: glove left / glove right high, stick left / stick right low) x the goalie frame's 0-3 value for that region (`.list2`). Save if rnd(odds) >= 8, so 1 - 8 / odds: e.g. rating 8, frame value 1 = 65%, frame value 3 = 88%; value 0 = no save | Region rating + 15 is worked out but not used: no roll. Every touch is a save, except a hard shot (\|vy\| >= $3000) taken 80-169 from the goal line slips through with chance 1 in (182 - distance), and a diving goalie doesn't stop a puck in the air (z >= 2) | Rating + 15 and the frame value (`.list2` / `.list3`) are read, but no roll follows: every touch is a save | Like 93 SNES: rating + 15 read, no roll; dive frames checked against the puck height (#$05) | **The 93 Genesis roll**: odds = (15 + rating) x the frame value from `GoalieSaveSides`, save if rnd(odds) >= 8. But the rating is picked by side only, so it is always the stick-left or stick-right rating (struct bytes 0x53 / 0x55); the glove ratings aren't used here |
-| **Holding a slow loose puck** | Speed limit $C00 + rnd((2 + puck control) x 512) on x and y | Same | Not compared | Not compared | $C00 + rnd((2 + puck control x 5/4) x 512) |
+| **Holding a slow loose puck** | $C00 + rnd((2 + puck control) x 512) on x and y | Same | Same base, then doubled (cap $7FFF). Near the crease (\|x\| <= $2C and $D2 < \|y\| <= $10E) and not already in a save animation, that limit is /4, so a slower puck still bounces | Same formula, but the base is $2000 rather than $C00; no doubling and no crease cut | $C00 + rnd((2 + puck control x 5/4) x 512); no doubling, no crease cut |
 | **How often he re-aims** | Every defensive awareness / 4 frames | Same | Same | Timer + defensive awareness / 2 | Same as 93G |
-| **When he starts a save animation** | Puck crossing his goal line within $22 (34) frames and within $18 of centre | Within $14 (20) frames, $19 of centre | $22 frames | Not fully mapped | $22 frames (`assgoalie`, `logic.asm`) |
+| **When he starts a save animation** | puckcross frames <= $22 and \|x\| <= $18; the animation starts only when frames <= $C and the puck is still between the goal lines | frames < $14 and \|x\| < $19; the animation starts when frames < $C and \|puck y\| < $109 | Same $22 / $18 / $C as 93G, plus a shootout / puck-in-front-of-the-net path | frames < $23 (so <= $22) and \|x\| < $19; the animation starts when frames < $13. A human goalie can also start a save with A; on a save his speed is halved | Same $22 / $18 / $C as 93G, with the y limit scaled to the PC goal line (\|y\| <= $E8 = 232) |
 
 So the PC goalie is the 93 Genesis goalie: the only other game with a real save roll, the same odds formula and
-timings. The PC's one change is that only the stick ratings feed the roll (Code, as read; the glove ratings show on the
-card and are loaded into the struct, but this routine doesn't use them). On 93 SNES and both 94 games a puck that
-reaches the goalie's body is stopped, so saves there come from positioning and the save animations, not a rating roll.
+the same save-start timings ($22 / $18 / $C), with the y limit scaled to the PC goal line (`logic.asm` 2466-2557).
+The PC's changes are that only the stick ratings feed the roll (Code, as read; the glove ratings show on the card
+and are loaded into the struct, but this routine doesn't use them) and that puck control is scaled by 5/4 in the
+catch-speed limit (`physics.asm` 3704-3726). On 93 SNES and both 94 games a puck that reaches the goalie's body is
+stopped, so saves there come from positioning and the save animations, not a rating roll.
+
+Catch speed is in `puckgoalie` (93G `hockey93.asm` 2692-2708, 93S 218-283, 94G `collide94.asm` 2326-2367, 94S
+194-222). 94 Genesis and 94 SNES both change the 93 limit: 94G doubles it, then cuts it to a quarter near the
+crease; 94S uses a $2000 base instead of $C00 (no doubling, no crease cut). Save-start is in `assgoalie` (93G
+`logic93.asm` 2688-2700, 93S 454-476, 94G `logic94.asm` 3678-3686, 94S 624-657). 94 SNES starts the animation
+earlier (frames < $13, not <= $C).
 
 **Which console is PC closest to?** **93 Genesis.** The PC matches 93 Genesis on every constant it doesn't rescale for
 its rink: the friction shifts (>> 6 / >> 9), stopping 150, the acceleration factor 32 - weight/8 + agility, the
@@ -336,8 +361,10 @@ speed, skating end to end takes 1.02-1.08 times as many game steps as on the Gen
 times. For the same speed a PC skater covers 30% fewer feet across than along (2.64 / 3.76). No per-axis compensation
 was found, either for feet or for pixel aspect. The 95 PC page has the 95 PC numbers (same rink, faster skating).
 
-Open: speeds are compared per game step. Frame rates and d7 weren't measured, so these aren't per real second. That
-the length follows 200 / 224 is read from the numbers; no comment or table in the code says why.
+Open: speeds are compared per game step. How d7 is produced is now in the friction section above: it is 1 when a
+step finishes in a vblank, and 2 or more only on an overrun, but the typical value was not measured, so these still
+aren't per real second. That the length follows 200 / 224 is read from the numbers; no comment or table in the code
+says why.
 
 ## Music and packaging
 
@@ -429,7 +456,8 @@ consoles.
 
 - A "not found" is a search of this labelled source (names, strings, animation and assignment tables). A feature hidden
   under an unrelated name could still have been missed.
-- The typical frames per game step (d7) on each console wasn't measured, so the per-second friction figures are given for d7 = 1-3.
-- 94 SNES goalie positioning was only partly mapped; the catch-speed rule wasn't compared for the 94 games.
+- The typical frames per game step (d7) on each console wasn't measured in an emulator. The loops and the 93 SNES
+  hang at d7 >= 10 are in the friction section; the per-second figures stay listed for d7 = 1-3, and d7 = 1 is what
+  you get if a step finishes in one vblank.
 - `ATT.DB` bytes 8 (skaters) and 15-18 have no known use.
 - 94 Genesis and Sega CD music weren't compared note for note; packaging is from Abdul's comparison.
