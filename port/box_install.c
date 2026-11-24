@@ -224,12 +224,12 @@ static void type_then(const char *s, int speed, int pc) { I.typing = s; I.tpos =
 
 /* the views */
 static void cam_desk(float ms) { bx_cam_to(5, 23, 50, ms); }
-static void cam_drive(float ms) { bx_cam_to(9.5f, 14.5f, 25, ms); }
+static void cam_drive(float ms) { r3_node *s = bx_n(slot); bx_cam_to(s->pos[0] - 1.15f, s->pos[1] + 3.6f, s->pos[2] + 20.5f, ms); }
 static void cam_screen(float ms) { bx_cam_to(-3, 11.4f, 30, ms); }
 static float look[3] = { 5, 5.2f, 2 };
 static void look_to(float x, float y, float z, float ms) { bx_tw3(look, x, y, z, ms, 0); }
 static void view_desk(float ms) { cam_desk(ms); look_to(5, 5.2f, 2, ms); }
-static void view_drive(float ms) { cam_drive(ms); look_to(10, 9.5f, 3, ms); }
+static void view_drive(float ms) { r3_node *s = bx_n(slot); cam_drive(ms); look_to(s->pos[0] - .65f, s->pos[1] - 1.4f, s->pos[2] - 1.5f, ms); }   /* follows the floppy drive */
 static void view_screen(float ms) { cam_screen(ms); look_to(-3, 8.4f, -1, ms); }
 
 /* a disk into the drive: lifted, turned label up with its shutter first, in front of the slot, then pushed in */
