@@ -184,7 +184,7 @@ checkwindow:
         sub ax, [camy]
         mov [regd2], ax
         mov bx, [bp - 0x8]
-        mov cx, [bx + 0x2c]
+        mov cx, [bx + temp4]
         sub cx, [camy]
         mov [regd3], cx
         db 0x33, 0xC1                           ; insn: xor ax, cx
@@ -206,7 +206,7 @@ checkwindow:
         db 0x2B, 0xC2                           ; insn: sub ax, dx
         db 0x3B, 0xC1                           ; insn: cmp ax, cx
         jnl short .25
-        mov ax, [bx + 0x2c]
+        mov ax, [bx + temp4]
         jmp short .23
         db 0x90
 .25:
@@ -215,12 +215,12 @@ checkwindow:
 .26:
         mov ax, [xc1]
         mov [regd3], ax
-        mov si, [bx + 0x1c]
+        mov si, [bx + assnum]
         cmp byte [bx + si + 0x1e], 0x22
         jz short .27
         jmp near .40
 .27:
-        mov ax, [bx + 0x6]
+        mov ax, [bx + Ypos+2]
         db 0x8B, 0xD0                           ; insn: mov dx, ax
         sub dx, [foy]
         db 0x8B, 0xC2                           ; insn: mov ax, dx
@@ -271,7 +271,7 @@ checkwindow:
         mov [bp - 0x8], ax
         mov word [regd0], 0x2
         db 0x8B, 0xD8                           ; insn: mov bx, ax
-        cmp word [bx + 0x5e], 0x10
+        cmp word [bx + SCnum], 0x10
         jnz short .32
         mov al, [bx + 0xf]
         cbw
@@ -280,9 +280,9 @@ checkwindow:
         jmp short .39
         db 0x90, 0x90
 .32:
-        test byte [bx + 0x44], 0x80
+        test byte [bx + pflags], 0x80
         jz short .35
-        cmp word [bx + 0xe], -0x64
+        cmp word [bx + Yvel], -0x64
         jnl short .33
         mov ax, 0x1
         jmp short .34
@@ -299,7 +299,7 @@ checkwindow:
         jmp short .39
         db 0x90
 .35:
-        cmp word [bx + 0xe], 0x64
+        cmp word [bx + Yvel], 0x64
         jng short .36
         mov ax, 0x1
         jmp short .37

@@ -1430,13 +1430,13 @@ QueueGoalieNote:
         mov si, [penaltysc]
         shl si, byte 0x7
         add si, SortCords
-        mov al, [si + 0x44]
+        mov al, [si + pflags]
         and al, 0x40
         cmp al, 0x1
         db 0x1B, 0xC0                           ; insn: sbb ax, ax
         inc ax
         mov [bp - 0x2], ax
-        mov bx, [si + 0x60]
+        mov bx, [si + tmptr]
         mov cl, [bx + 0x24]
         mov di, 0x1
         shl di, cl
@@ -1452,7 +1452,7 @@ QueueGoalieNote:
         push 0x0
         push 0x0
         push 0x0
-        mov al, [si + 0x47]
+        mov al, [si + pnum]
         cbw
         push ax
         push word [bp - 0x2]

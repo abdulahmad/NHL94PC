@@ -275,16 +275,16 @@ StartHL2:
         shl bx, 1
         add ax, [bx + HL2Offsets2]
         mov bx, [bp - 0xf6]
-        mov [bx + 0x6], ax
+        mov [bx + Ypos+2], ax
         db 0x2B, 0xC0                           ; insn: sub ax, ax
-        mov [bx + 0xe], ax
-        mov [bx + 0xc], ax
+        mov [bx + Yvel], ax
+        mov [bx + Xvel], ax
         mov si, [puckx]
         mov ax, [si]
-        sub ax, [bx + 0x2]
+        sub ax, [bx + Xpos+2]
         mov si, [pucky]
         mov dx, [si]
-        sub dx, [bx + 0x6]
+        sub dx, [bx + Ypos+2]
         call 0x0D5F:VectorToDir8
         mov bx, [bp - 0xf6]
         mov [bx + 0x36], ax
