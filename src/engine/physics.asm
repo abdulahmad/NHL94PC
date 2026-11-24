@@ -4485,7 +4485,7 @@ doshot:
 .9:
         mov bx, [passdir]
         shl bx, byte 0x2
-        mov ax, [bx + ShotSpeeds]
+        mov ax, [bx + shotsets]
         db 0x8B, 0xCB                           ; insn: mov cx, bx
         mov bx, [puckx]
         sub ax, [bx]

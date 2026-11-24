@@ -1,5 +1,5 @@
-AccelFactors		equ	0x590A
-AccelFactors2		equ	0x590C
+MaxSpeed		equ	0x590A
+MaxSpeed_w2		equ	0x590C
 AddDirtyRect		equ	0x3FE
 AddrFlag0		equ	0x489
 AllocCanvases		equ	0x3804
@@ -208,7 +208,7 @@ SetDeadline.regs		equ	0x1A6E
 SetRemapTable		equ	0x442
 SetStartPage		equ	0x1320
 Setplass_alist		equ	0x6106
-ShotSpeeds		equ	0x5AD0
+shotsets		equ	0x5AD0
 SortCords		equ	0xB50E
 SortCords_m2		equ	0xB50C
 SortPairs		equ	0x92
