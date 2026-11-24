@@ -1778,147 +1778,147 @@ g_8D0E,PaletteFlagsSeg2,g_8D0E,new,medium,paragraph of palette_flags,src/data/dg
 g_8D10,WorkBufferSeg,g_8D10,new,medium,paragraph of work_buffer,src/data/dgroup/segment_words.asm
 g_8D12,WorkBufferSeg2,g_8D12,new,medium,paragraph of work_buffer,src/data/dgroup/segment_words.asm
 g_8D14,WorkBufferSeg3,g_8D14,new,medium,paragraph of work_buffer,src/data/dgroup/segment_words.asm
-g_8EDC,UnpackSpare1,g_8EDC,new,medium,word before InPtr,src/data/dgroup_bss.asm
-g_8EE0,UnpackSpare2,g_8EE0,new,medium,word before MapPair,src/data/dgroup_bss.asm
-g_8EE6,UnpackSpare3,g_8EE6,new,medium,word before BitCount,src/data/dgroup_bss.asm
-g_8EEA,SentencePtr,g_8EEA,new,medium,current speech sentence,src/data/dgroup_bss.asm
-g_8EEC,SentenceSeg,g_8EEC,new,medium,its segment,src/data/dgroup_bss.asm
-g_8EEE,PauseSampleOff,g_8EEE,new,medium,"silent sample, offset",src/data/dgroup_bss.asm
-g_8EF0,PauseSampleSeg,g_8EF0,new,medium,"silent sample, segment",src/data/dgroup_bss.asm
-g_8EF2,WantedList,g_8EF2,new,medium,"samples wanted, offset",src/data/dgroup_bss.asm
-g_8EF4,WantedListSeg,g_8EF4,new,medium,"samples wanted, segment",src/data/dgroup_bss.asm
-g_8EF6,SpeechBank,g_8EF6,new,medium,"speech bank, offset",src/data/dgroup_bss.asm
-g_8EF8,SpeechBankSeg,g_8EF8,new,medium,"speech bank, segment",src/data/dgroup_bss.asm
-g_8EFA,MoveBlockOff,g_8EFA,new,medium,"MoveMemBlock target, offset",src/data/dgroup_bss.asm
-g_8EFC,MoveBlockSeg,g_8EFC,new,medium,"MoveMemBlock target, segment",src/data/dgroup_bss.asm
-g_8F56,ShadeTableOff,g_8F56,new,medium,"shade table being built, offset",src/data/dgroup_bss.asm
-g_8F58,ShadeTableSeg,g_8F58,new,medium,"shade table being built, segment",src/data/dgroup_bss.asm
-g_8F5A,ShadeFactorR,g_8F5A,new,medium,red factor,src/data/dgroup_bss.asm
-g_8F5C,ShadeFactorG,g_8F5C,new,medium,green factor,src/data/dgroup_bss.asm
-g_8F5E,ShadeFactorB,g_8F5E,new,medium,blue factor,src/data/dgroup_bss.asm
-g_8F60,ShadeR,g_8F60,new,medium,red result,src/data/dgroup_bss.asm
-g_8F62,ShadeG,g_8F62,new,medium,green result,src/data/dgroup_bss.asm
-g_8F64,ShadeB,g_8F64,new,medium,blue result,src/data/dgroup_bss.asm
-g_8F66,ShadeGrey,g_8F66,new,medium,grey the result,src/data/dgroup_bss.asm
-g_8F68,MidiMsg,g_8F68,new,medium,MIDI message being sent: status byte,src/data/dgroup_bss.asm
-g_8F69,MidiMsg1,g_8F69,new,medium,first data byte,src/data/dgroup_bss.asm
-g_8F6A,MidiMsg2,g_8F6A,new,medium,second data byte,src/data/dgroup_bss.asm
-g_8FA8,PatchMsg,g_8FA8,new,medium,patch message: status byte,src/data/dgroup_bss.asm
-g_8FA9,PatchMsg1,g_8FA9,new,medium,patch message byte 1,src/data/dgroup_bss.asm
-g_8FAA,PatchMsg2,g_8FAA,new,medium,patch message byte 2,src/data/dgroup_bss.asm
-g_8FAB,PatchMsg3,g_8FAB,new,medium,patch message byte 3,src/data/dgroup_bss.asm
-g_8FAC,SongFileName,g_8FAC,new,medium,song file name,src/data/dgroup_bss.asm
-g_8FC0,SongFileNameEnd,g_8FC0,new,medium,end of the song file name,src/data/dgroup_bss.asm
-g_8FC2,SongBankNum,g_8FC2,new,medium,song bank number,src/data/dgroup_bss.asm
-g_8FC6,SfxMsg,g_8FC6,new,medium,effect message: status byte,src/data/dgroup_bss.asm
-g_8FC7,SfxMsg1,g_8FC7,new,medium,effect message byte 1,src/data/dgroup_bss.asm
-g_8FC8,SfxMsg2,g_8FC8,new,medium,effect message byte 2,src/data/dgroup_bss.asm
-g_8FCE,DrvTableName,g_8FCE,new,medium,"driver table: name, entry -8",src/data/dgroup_bss.asm
-g_8FD0,DrvTableSeg,g_8FD0,new,medium,"driver table: segment, entry -6",src/data/dgroup_bss.asm
-g_8FD6,DrvTableInit,g_8FD6,new,medium,driver table: init routine (38h-byte entries),src/data/dgroup_bss.asm
-g_8FDA,DrvTableCall04,g_8FDA,new,medium,driver table: routine +4,src/data/dgroup_bss.asm
-g_8FDE,DrvTableCall08,g_8FDE,new,medium,driver table: routine +8,src/data/dgroup_bss.asm
-g_8FE2,DrvTableShutdown,g_8FE2,new,medium,driver table: shutdown routine,src/data/dgroup_bss.asm
-g_8FE6,DrvTableCall10,g_8FE6,new,medium,driver table: routine +10h,src/data/dgroup_bss.asm
-g_8FEA,DrvTableService,g_8FEA,new,medium,driver table: service routine,src/data/dgroup_bss.asm
-g_8FEE,DrvTableNeedsService,g_8FEE,new,medium,driver table: needs-service routine,src/data/dgroup_bss.asm
-g_8FF2,DrvTableLoadBank,g_8FF2,new,medium,driver table: load bank routine,src/data/dgroup_bss.asm
-g_9002,DrvTableSendMidi,g_9002,new,medium,driver table: send MIDI routine,src/data/dgroup_bss.asm
-g_900A,DrvTablePlaySample,g_900A,new,medium,driver table: play sample routine,src/data/dgroup_bss.asm
-g_9096,StrBufPtr,g_9096,new,medium,sprintf string stream: pointer,src/data/dgroup_bss.asm
-g_9098,StrBufCnt,g_9098,new,medium,sprintf string stream: space left,src/data/dgroup_bss.asm
-g_909A,StrBufBase,g_909A,new,medium,sprintf string stream: base,src/data/dgroup_bss.asm
-g_909C,StrBufFlag,g_909C,new,medium,sprintf string stream: flags,src/data/dgroup_bss.asm
-g_909E,FloatArgPtr,g_909E,new,medium,float argument being formatted,src/data/dgroup_bss.asm
-g_90A8,FltOutFlags,g_90A8,new,medium,float output flags,src/data/dgroup_bss.asm
-g_90A9,FltOutFlags1,g_90A9,new,medium,"float output flags, high byte",src/data/dgroup_bss.asm
-g_90AA,FltOutExp,g_90AA,new,medium,float output exponent,src/data/dgroup_bss.asm
-g_AE90,HeapSizeLo,g_AE90,new,medium,"heap size, low word",src/data/dgroup_bss.asm
-g_AE92,HeapSizeHi,g_AE92,new,medium,"heap size, high word",src/data/dgroup_bss.asm
-g_AE98,DialogData,g_AE98,new,medium,"dialog data, offset",src/data/dgroup_bss.asm
-g_AE9A,DialogDataSeg,g_AE9A,new,medium,"dialog data, segment",src/data/dgroup_bss.asm
-g_AEA0,HeapVar0,g_AEA0,new,medium,heap variable,src/data/dgroup_bss.asm
-g_AEA2,HeapList,g_AEA2,new,medium,far heap list,src/data/dgroup_bss.asm
-g_AEA4,HeapVar1,g_AEA4,new,medium,heap variable,src/data/dgroup_bss.asm
-g_AEA6,HeapVar2,g_AEA6,new,medium,heap variable,src/data/dgroup_bss.asm
-g_AEA8,HeapVar3,g_AEA8,new,medium,heap variable,src/data/dgroup_bss.asm
-g_AEAA,HeapVar4,g_AEAA,new,medium,heap variable,src/data/dgroup_bss.asm
-g_AEAC,HeapVar5,g_AEAC,new,medium,heap variable,src/data/dgroup_bss.asm
-g_AEAE,HeapVar6,g_AEAE,new,medium,heap variable,src/data/dgroup_bss.asm
-g_AEB0,HeapVar7,g_AEB0,new,medium,heap variable,src/data/dgroup_bss.asm
-g_AEB2,MemBlock1Off,g_AEB2,new,medium,"memory block 1, offset",src/data/dgroup_bss.asm
-g_AEB4,MemBlock1Seg,g_AEB4,new,medium,"memory block 1, segment",src/data/dgroup_bss.asm
-g_AEB6,MemBlock2Off,g_AEB6,new,medium,"memory block 2, offset",src/data/dgroup_bss.asm
-g_AEB8,MemBlock2Seg,g_AEB8,new,medium,"memory block 2, segment",src/data/dgroup_bss.asm
-g_AEBA,MemBlock3Off,g_AEBA,new,medium,"memory block 3, offset",src/data/dgroup_bss.asm
-g_AEBC,MemBlock3Seg,g_AEBC,new,medium,"memory block 3, segment",src/data/dgroup_bss.asm
-g_AECE,InputFlags,g_AECE,new,medium,input device flags,src/data/dgroup_bss.asm
-g_AED0,InputQueue,g_AED0,new,medium,input event queue,src/data/dgroup_bss.asm
-g_AFD0,CursorX,g_AFD0,new,medium,cursor x,src/data/dgroup_bss.asm
-g_AFD2,CursorY,g_AFD2,new,medium,cursor y,src/data/dgroup_bss.asm
-g_B06A,PadStatePtr,g_B06A,new,medium,pad state being updated,src/data/dgroup_bss.asm
-g_B08E,HotKeyFn,g_B08E,new,medium,far routine for hot keys,src/data/dgroup_bss.asm
-g_B090,HotKeyFnSeg,g_B090,new,medium,its segment,src/data/dgroup_bss.asm
-g_B0C4,TeamPalette1,g_B0C4,new,medium,first team palette,src/data/dgroup_bss.asm
-g_B1C4,TeamPalette2,g_B1C4,new,medium,second team palette,src/data/dgroup_bss.asm
-g_B2CA,ArenaJingleSet,g_B2CA,new,medium,arena jingle per team,src/data/dgroup_bss.asm
-g_B2CC,BoxSaveX,g_B2CC,new,medium,box save x,src/data/dgroup_bss.asm
-g_B2CE,BoxSaveY,g_B2CE,new,medium,box save y,src/data/dgroup_bss.asm
-g_B2D0,YesNoText,g_B2D0,new,medium,"AskYesNo text, offset",src/data/dgroup_bss.asm
-g_B2D2,YesNoTextSeg,g_B2D2,new,medium,"AskYesNo text, segment",src/data/dgroup_bss.asm
-g_B2D4,MessageBoxSel,g_B2D4,new,medium,message box selection (FFFFh for none),src/data/dgroup_bss.asm
-g_B2D6,ArenaJingleArg1,g_B2D6,new,medium,arena jingle argument,src/data/dgroup_bss.asm
-g_B2D8,ArenaJingleArg2,g_B2D8,new,medium,arena jingle argument,src/data/dgroup_bss.asm
-g_B2DA,JingleSongOff,g_B2DA,new,medium,"jingle song, offset",src/data/dgroup_bss.asm
-g_B2DC,JingleSongSeg,g_B2DC,new,medium,"jingle song, segment",src/data/dgroup_bss.asm
-g_B2DE,JingleBufOff,g_B2DE,new,medium,"jingle buffer, offset",src/data/dgroup_bss.asm
-g_B2E0,JingleBufSeg,g_B2E0,new,medium,"jingle buffer, segment",src/data/dgroup_bss.asm
-g_B2E2,JingleTempo,g_B2E2,new,medium,jingle tempo (14h),src/data/dgroup_bss.asm
-g_B2E7,JingleChannel,g_B2E7,new,medium,jingle channel (FFh),src/data/dgroup_bss.asm
-g_B2E8,JingleVolume,g_B2E8,new,medium,jingle volume (3Fh),src/data/dgroup_bss.asm
-g_B2E9,JinglePan,g_B2E9,new,medium,jingle pan,src/data/dgroup_bss.asm
-g_B2EE,ArenaJingleA,g_B2EE,new,medium,arena jingle table,src/data/dgroup_bss.asm
-g_B2F0,ArenaJingleASeg,g_B2F0,new,medium,"arena jingle table, segment",src/data/dgroup_bss.asm
-g_B2FA,ArenaJingleB,g_B2FA,new,medium,arena jingle table,src/data/dgroup_bss.asm
-g_B2FC,ArenaJingleBSeg,g_B2FC,new,medium,"arena jingle table, segment",src/data/dgroup_bss.asm
-g_B31E,ArenaJingleC,g_B31E,new,medium,arena jingle table,src/data/dgroup_bss.asm
-g_B320,ArenaJingleCSeg,g_B320,new,medium,"arena jingle table, segment",src/data/dgroup_bss.asm
-g_B336,ArenaJingleD,g_B336,new,medium,arena jingle table,src/data/dgroup_bss.asm
-g_B338,ArenaJingleDSeg,g_B338,new,medium,"arena jingle table, segment",src/data/dgroup_bss.asm
-g_B34E,VgaSave0Off,g_B34E,new,medium,"saved plane 0, offset",src/data/dgroup_bss.asm
-g_B350,VgaSave0Seg,g_B350,new,medium,"saved plane 0, segment",src/data/dgroup_bss.asm
-g_B352,VgaSave1Off,g_B352,new,medium,"saved plane 1, offset",src/data/dgroup_bss.asm
-g_B354,VgaSave1Seg,g_B354,new,medium,"saved plane 1, segment",src/data/dgroup_bss.asm
-g_B356,VgaSave2Off,g_B356,new,medium,"saved plane 2, offset",src/data/dgroup_bss.asm
-g_B358,VgaSave2Seg,g_B358,new,medium,"saved plane 2, segment",src/data/dgroup_bss.asm
-g_B35A,VgaSave3Off,g_B35A,new,medium,"saved plane 3, offset",src/data/dgroup_bss.asm
-g_B35C,VgaSave3Seg,g_B35C,new,medium,"saved plane 3, segment",src/data/dgroup_bss.asm
-g_DF72,RetraceCount,g_DF72,new,medium,retrace count measured by CalibrateRetrace,src/data/dgroup_bss.asm
-g_DF74,MidiQueue,g_DF74,new,medium,128-byte MIDI queue,src/data/dgroup_bss.asm
-g_DF75,MidiQueue1,g_DF75,new,medium,"MIDI queue, second byte",src/data/dgroup_bss.asm
-g_DFF4,PatchBank,g_DFF4,new,medium,"patch bank, offset",src/data/dgroup_bss.asm
-g_DFF6,PatchBankSeg,g_DFF6,new,medium,"patch bank, segment",src/data/dgroup_bss.asm
-g_DFF8,ChannelUsed,g_DFF8,new,medium,"channel in use, per MIDI channel",src/data/dgroup_bss.asm
-g_E008,LoadedSongs,g_E008,new,medium,"10 loaded songs, offsets",src/data/dgroup_bss.asm
-g_E00A,LoadedSongsSeg,g_E00A,new,medium,"loaded songs, segments",src/data/dgroup_bss.asm
-g_E030,SongParts,g_E030,new,medium,parts tables of the loaded songs,src/data/dgroup_bss.asm
-g_E032,SongPartsSeg,g_E032,new,medium,"parts tables, segments",src/data/dgroup_bss.asm
-g_E058,SongSeqs,g_E058,new,medium,sequence tables of the loaded songs,src/data/dgroup_bss.asm
-g_E05A,SongSeqsSeg,g_E05A,new,medium,"sequence tables, segments",src/data/dgroup_bss.asm
-g_E080,SeqTimerSlot,g_E080,new,medium,timer slot of the sequencer,src/data/dgroup_bss.asm
-g_E082,SeqTimerSlotSeg,g_E082,new,medium,"timer slot, segment",src/data/dgroup_bss.asm
-g_E084,DriverTypes,g_E084,new,medium,driver type per driver,src/data/dgroup_bss.asm
-g_E086,DriverEntrySeg,g_E086,new,medium,driver entry segment,src/data/dgroup_bss.asm
-g_E08C,VoiceFreeList,g_E08C,new,medium,free voice list,src/data/dgroup_bss.asm
-g_E08E,VoiceFreeListSeg,g_E08E,new,medium,"free voice list, segment",src/data/dgroup_bss.asm
-g_E090,VoiceListNext,g_E090,new,medium,voice list links,src/data/dgroup_bss.asm
-g_E092,VoiceListNextSeg,g_E092,new,medium,"voice list links, segment",src/data/dgroup_bss.asm
-g_E094,VoiceListPrev,g_E094,new,medium,voice list back links,src/data/dgroup_bss.asm
-g_E096,VoiceListPrevSeg,g_E096,new,medium,"voice list back links, segment",src/data/dgroup_bss.asm
-g_E09D,VoiceListId,g_E09D,new,medium,voice list id byte,src/data/dgroup_bss.asm
-g_E11C,VoiceListEnd,g_E11C,new,medium,end of the voice lists,src/data/dgroup_bss.asm
-g_E11E,VoiceListEndSeg,g_E11E,new,medium,"end of the voice lists, segment",src/data/dgroup_bss.asm
-g_E120,VoiceListFlags,g_E120,new,medium,voice list flags,src/data/dgroup_bss.asm
+g_8EDC,UnpackSpare1,g_8EDC,new,medium,word before InPtr,src/data/dgroup_bss/modules.asm
+g_8EE0,UnpackSpare2,g_8EE0,new,medium,word before MapPair,src/data/dgroup_bss/modules.asm
+g_8EE6,UnpackSpare3,g_8EE6,new,medium,word before BitCount,src/data/dgroup_bss/modules.asm
+g_8EEA,SentencePtr,g_8EEA,new,medium,current speech sentence,src/data/dgroup_bss/modules.asm
+g_8EEC,SentenceSeg,g_8EEC,new,medium,its segment,src/data/dgroup_bss/modules.asm
+g_8EEE,PauseSampleOff,g_8EEE,new,medium,"silent sample, offset",src/data/dgroup_bss/modules.asm
+g_8EF0,PauseSampleSeg,g_8EF0,new,medium,"silent sample, segment",src/data/dgroup_bss/modules.asm
+g_8EF2,WantedList,g_8EF2,new,medium,"samples wanted, offset",src/data/dgroup_bss/modules.asm
+g_8EF4,WantedListSeg,g_8EF4,new,medium,"samples wanted, segment",src/data/dgroup_bss/modules.asm
+g_8EF6,SpeechBank,g_8EF6,new,medium,"speech bank, offset",src/data/dgroup_bss/modules.asm
+g_8EF8,SpeechBankSeg,g_8EF8,new,medium,"speech bank, segment",src/data/dgroup_bss/modules.asm
+g_8EFA,MoveBlockOff,g_8EFA,new,medium,"MoveMemBlock target, offset",src/data/dgroup_bss/modules.asm
+g_8EFC,MoveBlockSeg,g_8EFC,new,medium,"MoveMemBlock target, segment",src/data/dgroup_bss/modules.asm
+g_8F56,ShadeTableOff,g_8F56,new,medium,"shade table being built, offset",src/data/dgroup_bss/modules.asm
+g_8F58,ShadeTableSeg,g_8F58,new,medium,"shade table being built, segment",src/data/dgroup_bss/modules.asm
+g_8F5A,ShadeFactorR,g_8F5A,new,medium,red factor,src/data/dgroup_bss/modules.asm
+g_8F5C,ShadeFactorG,g_8F5C,new,medium,green factor,src/data/dgroup_bss/modules.asm
+g_8F5E,ShadeFactorB,g_8F5E,new,medium,blue factor,src/data/dgroup_bss/modules.asm
+g_8F60,ShadeR,g_8F60,new,medium,red result,src/data/dgroup_bss/modules.asm
+g_8F62,ShadeG,g_8F62,new,medium,green result,src/data/dgroup_bss/modules.asm
+g_8F64,ShadeB,g_8F64,new,medium,blue result,src/data/dgroup_bss/modules.asm
+g_8F66,ShadeGrey,g_8F66,new,medium,grey the result,src/data/dgroup_bss/modules.asm
+g_8F68,MidiMsg,g_8F68,new,medium,MIDI message being sent: status byte,src/data/dgroup_bss/modules.asm
+g_8F69,MidiMsg1,g_8F69,new,medium,first data byte,src/data/dgroup_bss/modules.asm
+g_8F6A,MidiMsg2,g_8F6A,new,medium,second data byte,src/data/dgroup_bss/modules.asm
+g_8FA8,PatchMsg,g_8FA8,new,medium,patch message: status byte,src/data/dgroup_bss/modules.asm
+g_8FA9,PatchMsg1,g_8FA9,new,medium,patch message byte 1,src/data/dgroup_bss/modules.asm
+g_8FAA,PatchMsg2,g_8FAA,new,medium,patch message byte 2,src/data/dgroup_bss/modules.asm
+g_8FAB,PatchMsg3,g_8FAB,new,medium,patch message byte 3,src/data/dgroup_bss/modules.asm
+g_8FAC,SongFileName,g_8FAC,new,medium,song file name,src/data/dgroup_bss/modules.asm
+g_8FC0,SongFileNameEnd,g_8FC0,new,medium,end of the song file name,src/data/dgroup_bss/modules.asm
+g_8FC2,SongBankNum,g_8FC2,new,medium,song bank number,src/data/dgroup_bss/modules.asm
+g_8FC6,SfxMsg,g_8FC6,new,medium,effect message: status byte,src/data/dgroup_bss/modules.asm
+g_8FC7,SfxMsg1,g_8FC7,new,medium,effect message byte 1,src/data/dgroup_bss/modules.asm
+g_8FC8,SfxMsg2,g_8FC8,new,medium,effect message byte 2,src/data/dgroup_bss/modules.asm
+g_8FCE,DrvTableName,g_8FCE,new,medium,"driver table: name, entry -8",src/data/dgroup_bss/modules.asm
+g_8FD0,DrvTableSeg,g_8FD0,new,medium,"driver table: segment, entry -6",src/data/dgroup_bss/modules.asm
+g_8FD6,DrvTableInit,g_8FD6,new,medium,driver table: init routine (38h-byte entries),src/data/dgroup_bss/modules.asm
+g_8FDA,DrvTableCall04,g_8FDA,new,medium,driver table: routine +4,src/data/dgroup_bss/modules.asm
+g_8FDE,DrvTableCall08,g_8FDE,new,medium,driver table: routine +8,src/data/dgroup_bss/modules.asm
+g_8FE2,DrvTableShutdown,g_8FE2,new,medium,driver table: shutdown routine,src/data/dgroup_bss/modules.asm
+g_8FE6,DrvTableCall10,g_8FE6,new,medium,driver table: routine +10h,src/data/dgroup_bss/modules.asm
+g_8FEA,DrvTableService,g_8FEA,new,medium,driver table: service routine,src/data/dgroup_bss/modules.asm
+g_8FEE,DrvTableNeedsService,g_8FEE,new,medium,driver table: needs-service routine,src/data/dgroup_bss/modules.asm
+g_8FF2,DrvTableLoadBank,g_8FF2,new,medium,driver table: load bank routine,src/data/dgroup_bss/modules.asm
+g_9002,DrvTableSendMidi,g_9002,new,medium,driver table: send MIDI routine,src/data/dgroup_bss/modules.asm
+g_900A,DrvTablePlaySample,g_900A,new,medium,driver table: play sample routine,src/data/dgroup_bss/modules.asm
+g_9096,StrBufPtr,g_9096,new,medium,sprintf string stream: pointer,src/data/dgroup_bss/modules.asm
+g_9098,StrBufCnt,g_9098,new,medium,sprintf string stream: space left,src/data/dgroup_bss/modules.asm
+g_909A,StrBufBase,g_909A,new,medium,sprintf string stream: base,src/data/dgroup_bss/modules.asm
+g_909C,StrBufFlag,g_909C,new,medium,sprintf string stream: flags,src/data/dgroup_bss/modules.asm
+g_909E,FloatArgPtr,g_909E,new,medium,float argument being formatted,src/data/dgroup_bss/modules.asm
+g_90A8,FltOutFlags,g_90A8,new,medium,float output flags,src/data/dgroup_bss/modules.asm
+g_90A9,FltOutFlags1,g_90A9,new,medium,"float output flags, high byte",src/data/dgroup_bss/modules.asm
+g_90AA,FltOutExp,g_90AA,new,medium,float output exponent,src/data/dgroup_bss/modules.asm
+g_AE90,HeapSizeLo,g_AE90,new,medium,"heap size, low word",src/data/dgroup_bss/game_records.asm
+g_AE92,HeapSizeHi,g_AE92,new,medium,"heap size, high word",src/data/dgroup_bss/game_records.asm
+g_AE98,DialogData,g_AE98,new,medium,"dialog data, offset",src/data/dgroup_bss/front_end.asm
+g_AE9A,DialogDataSeg,g_AE9A,new,medium,"dialog data, segment",src/data/dgroup_bss/front_end.asm
+g_AEA0,HeapVar0,g_AEA0,new,medium,heap variable,src/data/dgroup_bss/front_end.asm
+g_AEA2,HeapList,g_AEA2,new,medium,far heap list,src/data/dgroup_bss/front_end.asm
+g_AEA4,HeapVar1,g_AEA4,new,medium,heap variable,src/data/dgroup_bss/front_end.asm
+g_AEA6,HeapVar2,g_AEA6,new,medium,heap variable,src/data/dgroup_bss/front_end.asm
+g_AEA8,HeapVar3,g_AEA8,new,medium,heap variable,src/data/dgroup_bss/front_end.asm
+g_AEAA,HeapVar4,g_AEAA,new,medium,heap variable,src/data/dgroup_bss/front_end.asm
+g_AEAC,HeapVar5,g_AEAC,new,medium,heap variable,src/data/dgroup_bss/front_end.asm
+g_AEAE,HeapVar6,g_AEAE,new,medium,heap variable,src/data/dgroup_bss/front_end.asm
+g_AEB0,HeapVar7,g_AEB0,new,medium,heap variable,src/data/dgroup_bss/front_end.asm
+g_AEB2,MemBlock1Off,g_AEB2,new,medium,"memory block 1, offset",src/data/dgroup_bss/front_end.asm
+g_AEB4,MemBlock1Seg,g_AEB4,new,medium,"memory block 1, segment",src/data/dgroup_bss/front_end.asm
+g_AEB6,MemBlock2Off,g_AEB6,new,medium,"memory block 2, offset",src/data/dgroup_bss/front_end.asm
+g_AEB8,MemBlock2Seg,g_AEB8,new,medium,"memory block 2, segment",src/data/dgroup_bss/front_end.asm
+g_AEBA,MemBlock3Off,g_AEBA,new,medium,"memory block 3, offset",src/data/dgroup_bss/front_end.asm
+g_AEBC,MemBlock3Seg,g_AEBC,new,medium,"memory block 3, segment",src/data/dgroup_bss/front_end.asm
+g_AECE,InputFlags,g_AECE,new,medium,input device flags,src/data/dgroup_bss/front_end.asm
+g_AED0,InputQueue,g_AED0,new,medium,input event queue,src/data/dgroup_bss/front_end.asm
+g_AFD0,CursorX,g_AFD0,new,medium,cursor x,src/data/dgroup_bss/front_end.asm
+g_AFD2,CursorY,g_AFD2,new,medium,cursor y,src/data/dgroup_bss/front_end.asm
+g_B06A,PadStatePtr,g_B06A,new,medium,pad state being updated,src/data/dgroup_bss/front_end.asm
+g_B08E,HotKeyFn,g_B08E,new,medium,far routine for hot keys,src/data/dgroup_bss/front_end.asm
+g_B090,HotKeyFnSeg,g_B090,new,medium,its segment,src/data/dgroup_bss/front_end.asm
+g_B0C4,TeamPalette1,g_B0C4,new,medium,first team palette,src/data/dgroup_bss/front_end.asm
+g_B1C4,TeamPalette2,g_B1C4,new,medium,second team palette,src/data/dgroup_bss/front_end.asm
+g_B2CA,ArenaJingleSet,g_B2CA,new,medium,arena jingle per team,src/data/dgroup_bss/front_end.asm
+g_B2CC,BoxSaveX,g_B2CC,new,medium,box save x,src/data/dgroup_bss/front_end.asm
+g_B2CE,BoxSaveY,g_B2CE,new,medium,box save y,src/data/dgroup_bss/front_end.asm
+g_B2D0,YesNoText,g_B2D0,new,medium,"AskYesNo text, offset",src/data/dgroup_bss/front_end.asm
+g_B2D2,YesNoTextSeg,g_B2D2,new,medium,"AskYesNo text, segment",src/data/dgroup_bss/front_end.asm
+g_B2D4,MessageBoxSel,g_B2D4,new,medium,message box selection (FFFFh for none),src/data/dgroup_bss/front_end.asm
+g_B2D6,ArenaJingleArg1,g_B2D6,new,medium,arena jingle argument,src/data/dgroup_bss/front_end.asm
+g_B2D8,ArenaJingleArg2,g_B2D8,new,medium,arena jingle argument,src/data/dgroup_bss/front_end.asm
+g_B2DA,JingleSongOff,g_B2DA,new,medium,"jingle song, offset",src/data/dgroup_bss/front_end.asm
+g_B2DC,JingleSongSeg,g_B2DC,new,medium,"jingle song, segment",src/data/dgroup_bss/front_end.asm
+g_B2DE,JingleBufOff,g_B2DE,new,medium,"jingle buffer, offset",src/data/dgroup_bss/front_end.asm
+g_B2E0,JingleBufSeg,g_B2E0,new,medium,"jingle buffer, segment",src/data/dgroup_bss/front_end.asm
+g_B2E2,JingleTempo,g_B2E2,new,medium,jingle tempo (14h),src/data/dgroup_bss/front_end.asm
+g_B2E7,JingleChannel,g_B2E7,new,medium,jingle channel (FFh),src/data/dgroup_bss/front_end.asm
+g_B2E8,JingleVolume,g_B2E8,new,medium,jingle volume (3Fh),src/data/dgroup_bss/front_end.asm
+g_B2E9,JinglePan,g_B2E9,new,medium,jingle pan,src/data/dgroup_bss/front_end.asm
+g_B2EE,ArenaJingleA,g_B2EE,new,medium,arena jingle table,src/data/dgroup_bss/front_end.asm
+g_B2F0,ArenaJingleASeg,g_B2F0,new,medium,"arena jingle table, segment",src/data/dgroup_bss/front_end.asm
+g_B2FA,ArenaJingleB,g_B2FA,new,medium,arena jingle table,src/data/dgroup_bss/front_end.asm
+g_B2FC,ArenaJingleBSeg,g_B2FC,new,medium,"arena jingle table, segment",src/data/dgroup_bss/front_end.asm
+g_B31E,ArenaJingleC,g_B31E,new,medium,arena jingle table,src/data/dgroup_bss/front_end.asm
+g_B320,ArenaJingleCSeg,g_B320,new,medium,"arena jingle table, segment",src/data/dgroup_bss/front_end.asm
+g_B336,ArenaJingleD,g_B336,new,medium,arena jingle table,src/data/dgroup_bss/front_end.asm
+g_B338,ArenaJingleDSeg,g_B338,new,medium,"arena jingle table, segment",src/data/dgroup_bss/front_end.asm
+g_B34E,VgaSave0Off,g_B34E,new,medium,"saved plane 0, offset",src/data/dgroup_bss/front_end.asm
+g_B350,VgaSave0Seg,g_B350,new,medium,"saved plane 0, segment",src/data/dgroup_bss/front_end.asm
+g_B352,VgaSave1Off,g_B352,new,medium,"saved plane 1, offset",src/data/dgroup_bss/front_end.asm
+g_B354,VgaSave1Seg,g_B354,new,medium,"saved plane 1, segment",src/data/dgroup_bss/front_end.asm
+g_B356,VgaSave2Off,g_B356,new,medium,"saved plane 2, offset",src/data/dgroup_bss/front_end.asm
+g_B358,VgaSave2Seg,g_B358,new,medium,"saved plane 2, segment",src/data/dgroup_bss/front_end.asm
+g_B35A,VgaSave3Off,g_B35A,new,medium,"saved plane 3, offset",src/data/dgroup_bss/front_end.asm
+g_B35C,VgaSave3Seg,g_B35C,new,medium,"saved plane 3, segment",src/data/dgroup_bss/front_end.asm
+g_DF72,RetraceCount,g_DF72,new,medium,retrace count measured by CalibrateRetrace,src/data/dgroup_bss/sound_driver.asm
+g_DF74,MidiQueue,g_DF74,new,medium,128-byte MIDI queue,src/data/dgroup_bss/sound_driver.asm
+g_DF75,MidiQueue1,g_DF75,new,medium,"MIDI queue, second byte",src/data/dgroup_bss/sound_driver.asm
+g_DFF4,PatchBank,g_DFF4,new,medium,"patch bank, offset",src/data/dgroup_bss/sound_driver.asm
+g_DFF6,PatchBankSeg,g_DFF6,new,medium,"patch bank, segment",src/data/dgroup_bss/sound_driver.asm
+g_DFF8,ChannelUsed,g_DFF8,new,medium,"channel in use, per MIDI channel",src/data/dgroup_bss/sound_driver.asm
+g_E008,LoadedSongs,g_E008,new,medium,"10 loaded songs, offsets",src/data/dgroup_bss/sound_driver.asm
+g_E00A,LoadedSongsSeg,g_E00A,new,medium,"loaded songs, segments",src/data/dgroup_bss/sound_driver.asm
+g_E030,SongParts,g_E030,new,medium,parts tables of the loaded songs,src/data/dgroup_bss/sound_driver.asm
+g_E032,SongPartsSeg,g_E032,new,medium,"parts tables, segments",src/data/dgroup_bss/sound_driver.asm
+g_E058,SongSeqs,g_E058,new,medium,sequence tables of the loaded songs,src/data/dgroup_bss/sound_driver.asm
+g_E05A,SongSeqsSeg,g_E05A,new,medium,"sequence tables, segments",src/data/dgroup_bss/sound_driver.asm
+g_E080,SeqTimerSlot,g_E080,new,medium,timer slot of the sequencer,src/data/dgroup_bss/sound_driver.asm
+g_E082,SeqTimerSlotSeg,g_E082,new,medium,"timer slot, segment",src/data/dgroup_bss/sound_driver.asm
+g_E084,DriverTypes,g_E084,new,medium,driver type per driver,src/data/dgroup_bss/sound_driver.asm
+g_E086,DriverEntrySeg,g_E086,new,medium,driver entry segment,src/data/dgroup_bss/sound_driver.asm
+g_E08C,VoiceFreeList,g_E08C,new,medium,free voice list,src/data/dgroup_bss/sound_driver.asm
+g_E08E,VoiceFreeListSeg,g_E08E,new,medium,"free voice list, segment",src/data/dgroup_bss/sound_driver.asm
+g_E090,VoiceListNext,g_E090,new,medium,voice list links,src/data/dgroup_bss/sound_driver.asm
+g_E092,VoiceListNextSeg,g_E092,new,medium,"voice list links, segment",src/data/dgroup_bss/sound_driver.asm
+g_E094,VoiceListPrev,g_E094,new,medium,voice list back links,src/data/dgroup_bss/sound_driver.asm
+g_E096,VoiceListPrevSeg,g_E096,new,medium,"voice list back links, segment",src/data/dgroup_bss/sound_driver.asm
+g_E09D,VoiceListId,g_E09D,new,medium,voice list id byte,src/data/dgroup_bss/sound_driver.asm
+g_E11C,VoiceListEnd,g_E11C,new,medium,end of the voice lists,src/data/dgroup_bss/sound_driver.asm
+g_E11E,VoiceListEndSeg,g_E11E,new,medium,"end of the voice lists, segment",src/data/dgroup_bss/sound_driver.asm
+g_E120,VoiceListFlags,g_E120,new,medium,voice list flags,src/data/dgroup_bss/sound_driver.asm
 RandomRange,randomd0,RandomRange,94G middle94.asm,high,"same generator: seed*BB40E62Dh+1, result scaled to the range",src/pc/random.asm
 RandSeedLo,seed,RandSeedLo,94G ram94.asm,high,the seed randomd0 steps; the high word is seed+2,src/data/dgroup/game_state.asm
 CrowdLevel,Crowdlevel,CrowdLevel,94G ram94.asm,medium,crowd noise level the crowd update ramps,src/data/dgroup/front_end.asm
@@ -3132,142 +3132,142 @@ g_8B76,musicslot,g_8B76,95 PC,medium,"same place in the routines that use it, ma
 g_8C6E,PoStandingsMode,g_8C6E,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup/segment_words.asm
 g_8CD0,hmplstats,g_8CD0,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup/segment_words.asm
 g_8CD2,hmglstats,g_8CD2,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup/segment_words.asm
-g_A550,hmroster,g_A550,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_A557,hmrosterpos,g_A557,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B06C,curevent,g_B06C,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B06E,curevent_b1,g_B06E,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B06F,curevent_b2,g_B06F,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B070,curevent_b3,g_B070,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B071,curevent_b4,g_B071,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B072,curevent_b5,g_B072,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B073,curevent_b6,g_B073,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B074,curevent_b7,g_B074,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B075,curevent_b8,g_B075,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B076,curevent_b9,g_B076,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B077,curevent_b10,g_B077,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B078,goalevent,g_B078,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B36E,hmscore,g_B36E,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B378,hmtmline,g_B378,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B37A,hmtmlcnt,g_B37A,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B37C,hmtmextra,g_B37C,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B384,hmtmap,g_B384,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B386,hmtmgoalie,g_B386,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B38C,hmtmflags,g_B38C,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B41A,hmtmcoach_d2,g_B41A,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B41B,hmtmcoach_d3,g_B41B,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B41C,hmtmcoachflags,g_B41C,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B41D,hmtmcoachmode,g_B41D,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B41E,hmtmcoachenergy,g_B41E,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B420,hmtmlines,g_B420,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B422,hmtmsort,g_B422,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B424,hmtmplattr,g_B424,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B42E,hmtmglstats,g_B42E,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B430,hmtmroster,g_B430,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B434,hmtmptrF2,g_B434,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B444,awscore,g_B444,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B44E,awtmline,g_B44E,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B450,awtmlcnt,g_B450,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B45A,awtmap,g_B45A,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B45C,awtmgoalie,g_B45C,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B462,awtmflags,g_B462,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B4F0,awtmcoach_d2,g_B4F0,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B4F1,awtmcoach_d3,g_B4F1,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B4F2,awtmcoachflags,g_B4F2,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B4F3,awtmcoachmode,g_B4F3,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B4F4,awtmcoachenergy,g_B4F4,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B4F8,awtmsort,g_B4F8,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B4FC,awtmglattr,g_B4FC,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B4FE,awtmlines,g_B4FE,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B500,awtmplstats,g_B500,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B502,awtmglstats,g_B502,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B508,awtmptrF2,g_B508,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_B552,CwdExciteLvl,g_B552,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_BC14,puckstruct,g_BC14,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_BC34,pucktemp1,g_BC34,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_BC53,puckpflags2,g_BC53,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_BD14,refYpos2,g_BD14,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_BD1A,refXvel,g_BD1A,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_BD2A,refposition,g_BD2A,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_BD2C,refasslist,g_BD2C,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_BD38,reftemp3,g_BD38,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_BD97,gmrosterjersey,g_BD97,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_BD98,gmrosterslot,g_BD98,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_BFFE,curperiod,g_BFFE,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_C042,statsgoaliebuf,g_C042,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_C046,statsskaterbuf,g_C046,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_C04A,statsplayerbuf,g_C04A,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_C04E,statsteambuf,g_C04E,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_C052,leaguestatsmode,g_C052,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_C0DE,lgfiles,g_C0DE,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_C0E6,lgfilenames,g_C0E6,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_C1EC,fdlgtab,g_C1EC,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_C204,playofftree,g_C204,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_C274,teamselresult,g_C274,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_C29E,lgschedrec_b4,g_C29E,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_C2A0,statspalshape,g_C2A0,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_C2B2,statsbgshapes,g_C2B2,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_C2B6,startm,g_C2B6,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_C2B8,starpl,g_C2B8,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_CF1C,statsplayer,g_CF1C,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_CFD0,fileoncd,g_CFD0,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_CFD2,cddriveptr,g_CFD2,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D000,regd5,g_D000,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D006,LastShooterTeam,g_D006,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D1AE,rinkobjs,g_D1AE,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D1B0,rinkobjs_w2,g_D1B0,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D470,lcline,g_D470,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D472,lctimer,g_D472,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D4B8,textline3,g_D4B8,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D506,textline1,g_D506,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D542,textline2,g_D542,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D57E,textline4,g_D57E,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D5BA,textline5,g_D5BA,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D5F6,PlList,g_D5F6,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D602,fofdata2,g_D602,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D616,puckcross,g_D616,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D61E,GoalState,g_D61E,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D620,lj1,g_D620,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D622,lj2,g_D622,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D624,lasttouch,g_D624,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D626,ltx,g_D626,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D628,lty,g_D628,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D62A,iflags,g_D62A,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D66C,regd0,g_D66C,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D672,regd1,g_D672,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D676,PenBuf,g_D676,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D677,PenBuf_pl,g_D677,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D6B8,regd2,g_D6B8,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D6C0,regd3,g_D6C0,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D6C6,PBnum,g_D6C6,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D6C8,regd4,g_D6C8,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D6CC,viewscrollx,g_D6CC,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D6D0,frameaccum,g_D6D0,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D6D2,hudhundaccum,g_D6D2,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_D728,hudhundstep,g_D728,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_DAA0,clockcolon,g_DAA0,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_DB1E,replayptrx,g_DB1E,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_DCD2,lastimpact,g_DCD2,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_DCD4,gwgplayer,g_DCD4,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_DCD6,gwgteam,g_DCD6,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_DD0C,offsort_fwd,g_DD0C,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_DD3E,defsort_d,g_DD3E,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_DECE,dressflags,g_DECE,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_DF00,lineslotmark,g_DF00,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_DF64,dresseddefs,g_DF64,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_DF66,dressedfwds,g_DF66,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
-g_DF68,dressedskaters,g_DF68,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss.asm
+g_A550,hmroster,g_A550,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_records.asm
+g_A557,hmrosterpos,g_A557,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_records.asm
+g_B06C,curevent,g_B06C,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_end.asm
+g_B06E,curevent_b1,g_B06E,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_end.asm
+g_B06F,curevent_b2,g_B06F,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_end.asm
+g_B070,curevent_b3,g_B070,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_end.asm
+g_B071,curevent_b4,g_B071,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_end.asm
+g_B072,curevent_b5,g_B072,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_end.asm
+g_B073,curevent_b6,g_B073,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_end.asm
+g_B074,curevent_b7,g_B074,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_end.asm
+g_B075,curevent_b8,g_B075,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_end.asm
+g_B076,curevent_b9,g_B076,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_end.asm
+g_B077,curevent_b10,g_B077,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_end.asm
+g_B078,goalevent,g_B078,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_end.asm
+g_B36E,hmscore,g_B36E,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B378,hmtmline,g_B378,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B37A,hmtmlcnt,g_B37A,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B37C,hmtmextra,g_B37C,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B384,hmtmap,g_B384,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B386,hmtmgoalie,g_B386,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B38C,hmtmflags,g_B38C,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B41A,hmtmcoach_d2,g_B41A,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B41B,hmtmcoach_d3,g_B41B,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B41C,hmtmcoachflags,g_B41C,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B41D,hmtmcoachmode,g_B41D,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B41E,hmtmcoachenergy,g_B41E,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B420,hmtmlines,g_B420,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B422,hmtmsort,g_B422,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B424,hmtmplattr,g_B424,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B42E,hmtmglstats,g_B42E,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B430,hmtmroster,g_B430,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B434,hmtmptrF2,g_B434,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B444,awscore,g_B444,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B44E,awtmline,g_B44E,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B450,awtmlcnt,g_B450,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B45A,awtmap,g_B45A,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B45C,awtmgoalie,g_B45C,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B462,awtmflags,g_B462,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B4F0,awtmcoach_d2,g_B4F0,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B4F1,awtmcoach_d3,g_B4F1,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B4F2,awtmcoachflags,g_B4F2,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B4F3,awtmcoachmode,g_B4F3,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B4F4,awtmcoachenergy,g_B4F4,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B4F8,awtmsort,g_B4F8,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B4FC,awtmglattr,g_B4FC,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B4FE,awtmlines,g_B4FE,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B500,awtmplstats,g_B500,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B502,awtmglstats,g_B502,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B508,awtmptrF2,g_B508,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/teams.asm
+g_B552,CwdExciteLvl,g_B552,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/objects.asm
+g_BC14,puckstruct,g_BC14,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/objects.asm
+g_BC34,pucktemp1,g_BC34,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/objects.asm
+g_BC53,puckpflags2,g_BC53,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/objects.asm
+g_BD14,refYpos2,g_BD14,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/objects.asm
+g_BD1A,refXvel,g_BD1A,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/objects.asm
+g_BD2A,refposition,g_BD2A,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/objects.asm
+g_BD2C,refasslist,g_BD2C,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/objects.asm
+g_BD38,reftemp3,g_BD38,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/objects.asm
+g_BD97,gmrosterjersey,g_BD97,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_screens.asm
+g_BD98,gmrosterslot,g_BD98,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_screens.asm
+g_BFFE,curperiod,g_BFFE,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_screens.asm
+g_C042,statsgoaliebuf,g_C042,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_screens.asm
+g_C046,statsskaterbuf,g_C046,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_screens.asm
+g_C04A,statsplayerbuf,g_C04A,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_screens.asm
+g_C04E,statsteambuf,g_C04E,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_screens.asm
+g_C052,leaguestatsmode,g_C052,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_screens.asm
+g_C0DE,lgfiles,g_C0DE,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_screens.asm
+g_C0E6,lgfilenames,g_C0E6,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_screens.asm
+g_C1EC,fdlgtab,g_C1EC,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_screens.asm
+g_C204,playofftree,g_C204,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_screens.asm
+g_C274,teamselresult,g_C274,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_screens.asm
+g_C29E,lgschedrec_b4,g_C29E,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_screens.asm
+g_C2A0,statspalshape,g_C2A0,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_screens.asm
+g_C2B2,statsbgshapes,g_C2B2,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_screens.asm
+g_C2B6,startm,g_C2B6,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_screens.asm
+g_C2B8,starpl,g_C2B8,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_screens.asm
+g_CF1C,statsplayer,g_CF1C,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_screens.asm
+g_CFD0,fileoncd,g_CFD0,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_screens.asm
+g_CFD2,cddriveptr,g_CFD2,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_screens.asm
+g_D000,regd5,g_D000,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_screens.asm
+g_D006,LastShooterTeam,g_D006,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/front_screens.asm
+g_D1AE,rinkobjs,g_D1AE,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_D1B0,rinkobjs_w2,g_D1B0,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_D470,lcline,g_D470,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_D472,lctimer,g_D472,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_D4B8,textline3,g_D4B8,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_D506,textline1,g_D506,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_D542,textline2,g_D542,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_D57E,textline4,g_D57E,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_D5BA,textline5,g_D5BA,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_D5F6,PlList,g_D5F6,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_D602,fofdata2,g_D602,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_D616,puckcross,g_D616,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_D61E,GoalState,g_D61E,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_D620,lj1,g_D620,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_D622,lj2,g_D622,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_D624,lasttouch,g_D624,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_D626,ltx,g_D626,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_D628,lty,g_D628,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_D62A,iflags,g_D62A,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_D66C,regd0,g_D66C,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_D672,regd1,g_D672,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_D676,PenBuf,g_D676,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_D677,PenBuf_pl,g_D677,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_D6B8,regd2,g_D6B8,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_D6C0,regd3,g_D6C0,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_D6C6,PBnum,g_D6C6,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_D6C8,regd4,g_D6C8,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_D6CC,viewscrollx,g_D6CC,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_D6D0,frameaccum,g_D6D0,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_D6D2,hudhundaccum,g_D6D2,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_D728,hudhundstep,g_D728,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_DAA0,clockcolon,g_DAA0,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_DB1E,replayptrx,g_DB1E,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_DCD2,lastimpact,g_DCD2,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_DCD4,gwgplayer,g_DCD4,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_DCD6,gwgteam,g_DCD6,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_DD0C,offsort_fwd,g_DD0C,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_DD3E,defsort_d,g_DD3E,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_DECE,dressflags,g_DECE,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_DF00,lineslotmark,g_DF00,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_DF64,dresseddefs,g_DF64,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_DF66,dressedfwds,g_DF66,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
+g_DF68,dressedskaters,g_DF68,95 PC,medium,"same place in the routines that use it, matched to the 95 PC variable",src/data/dgroup_bss/game_state.asm
 g_29D8,penaltysc,g_29D8,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup/game_state.asm
 g_4A56,photobankf,g_4A56,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup/game_state.asm
-g_B37E,hmtmtouch1,g_B37E,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup_bss.asm
-g_B380,hmtmtouch2,g_B380,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup_bss.asm
-g_B382,hmtmtouch3,g_B382,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup_bss.asm
-g_B452,awtmextra,g_B452,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup_bss.asm
-g_B454,awtmtouch1,g_B454,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup_bss.asm
-g_B456,awtmtouch2,g_B456,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup_bss.asm
-g_B458,awtmtouch3,g_B458,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup_bss.asm
-g_BC4C,pucknopuck,g_BC4C,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup_bss.asm
-g_BD34,reftemp1,g_BD34,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup_bss.asm
-g_D5FC,LinePlayersAway,g_D5FC,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup_bss.asm
+g_B37E,hmtmtouch1,g_B37E,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup_bss/teams.asm
+g_B380,hmtmtouch2,g_B380,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup_bss/teams.asm
+g_B382,hmtmtouch3,g_B382,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup_bss/teams.asm
+g_B452,awtmextra,g_B452,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup_bss/teams.asm
+g_B454,awtmtouch1,g_B454,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup_bss/teams.asm
+g_B456,awtmtouch2,g_B456,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup_bss/teams.asm
+g_B458,awtmtouch3,g_B458,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup_bss/teams.asm
+g_BC4C,pucknopuck,g_BC4C,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup_bss/objects.asm
+g_BD34,reftemp1,g_BD34,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup_bss/objects.asm
+g_D5FC,LinePlayersAway,g_D5FC,95 PC,medium,"between two matched variables, same spacing as 95 PC",src/data/dgroup_bss/game_state.asm
 f_35F3_0017,msgThereAreNoHilights,f_35F3_0017,new,high,message list of 1 far string pointer: 'There are no hilights!',src/data/far/hilight_messages.asm
 f_36A8_0077,msgCouldNotFindA,f_36A8_0077,new,high,message list of 1 far string pointer: 'Could not find a',src/data/far/playoff_dialog_rects.asm
 f_36A8_00AC,msgInitializingTheMt32CardPlease,f_36A8_00AC,new,high,message list of 2 far string pointers: 'Initializing the MT32 card. / Please wait.',src/data/far/playoff_dialog_rects.asm
@@ -3871,54 +3871,54 @@ g_8CFC,segDgroup22,g_8CFC,new,high,segment constant 45C9h (dgroup) loaded into e
 g_8CFE,segDgroup23,g_8CFE,new,high,segment constant 45C9h (dgroup) loaded into es by FadeDissolve,src/data/dgroup/segment_words.asm
 g_8D00,segDgroup24,g_8D00,new,high,segment constant 45C9h (dgroup) loaded into es by FadeBoxGrow,src/data/dgroup/segment_words.asm
 g_8D02,segDgroup25,g_8D02,new,high,segment constant 45C9h (dgroup) loaded into es by FadeDirectional,src/data/dgroup/segment_words.asm
-puckstruct,puckYpos2,puckstruct,95 PC,high,puck sort object field +06h (the object starts 6 bytes before),src/data/dgroup_bss.asm
-refposition,ref_1C,refposition,new,medium,referee sort object field +1Ch,src/data/dgroup_bss.asm
-g_B510,sortobj0_Xpos2,g_B510,new,medium,"sort object 0 (sortobj0), field +02h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_B514,sortobj0_Ypos2,g_B514,new,medium,"sort object 0 (sortobj0), field +06h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_B528,sortobj0_position,g_B528,new,medium,"sort object 0 (sortobj0), field +1Ah; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_B553,sortobj0_pflags2,g_B553,new,medium,"sort object 0 (sortobj0), field +45h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_B555,sortobj0_47,g_B555,new,medium,"sort object 0 (sortobj0), field +47h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BB10,sortobj12_Xpos2,g_BB10,new,medium,"sort object 12 (sortobj12), field +02h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BB14,sortobj12_Ypos2,g_BB14,new,medium,"sort object 12 (sortobj12), field +06h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BB1A,sortobj12_Xvel,g_BB1A,new,medium,"sort object 12 (sortobj12), field +0Ch; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BB1C,sortobj12_Yvel,g_BB1C,new,medium,"sort object 12 (sortobj12), field +0Eh; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BB90,sortobj13_Xpos2,g_BB90,new,medium,"sort object 13 (sortobj13), field +02h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BB94,sortobj13_Ypos2,g_BB94,new,medium,"sort object 13 (sortobj13), field +06h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BB9A,sortobj13_Xvel,g_BB9A,new,medium,"sort object 13 (sortobj13), field +0Ch; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BB9C,sortobj13_Yvel,g_BB9C,new,medium,"sort object 13 (sortobj13), field +0Eh; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BC10,puckXpos2,g_BC10,new,medium,"sort object 14 (puck), field +02h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BC18,puckZpos2,g_BC18,new,medium,"sort object 14 (puck), field +0Ah; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BC1A,puckXvel,g_BC1A,new,medium,"sort object 14 (puck), field +0Ch; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BC1C,puckYvel,g_BC1C,new,medium,"sort object 14 (puck), field +0Eh; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BC20,puckframe,g_BC20,new,medium,"sort object 14 (puck), field +12h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BC2A,puck_1C,g_BC2A,new,medium,"sort object 14 (puck), field +1Ch; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BC2C,puckasslist,g_BC2C,new,medium,"sort object 14 (puck), field +1Eh; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BC36,pucktemp2,g_BC36,new,medium,"sort object 14 (puck), field +28h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BC56,puck_48,g_BC56,new,medium,"sort object 14 (puck), field +48h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BC8E,doorstruct,g_BC8E,new,medium,"sort object 15 (door), field +00h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BC90,doorXpos2,g_BC90,new,medium,"sort object 15 (door), field +02h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BC94,doorYpos2,g_BC94,new,medium,"sort object 15 (door), field +06h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BC98,doorZpos2,g_BC98,new,medium,"sort object 15 (door), field +0Ah; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BC9A,doorXvel,g_BC9A,new,medium,"sort object 15 (door), field +0Ch; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BC9C,doorYvel,g_BC9C,new,medium,"sort object 15 (door), field +0Eh; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BCA0,doorframe,g_BCA0,new,medium,"sort object 15 (door), field +12h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BCB4,doortemp1,g_BCB4,new,medium,"sort object 15 (door), field +26h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BCB6,doortemp2,g_BCB6,new,medium,"sort object 15 (door), field +28h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BCC6,door_38,g_BCC6,new,medium,"sort object 15 (door), field +38h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BCD2,doorpflags,g_BCD2,new,medium,"sort object 15 (door), field +44h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BCD4,doorpflags3,g_BCD4,new,medium,"sort object 15 (door), field +46h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BCD6,door_48,g_BCD6,new,medium,"sort object 15 (door), field +48h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BD0E,refstruct,g_BD0E,new,medium,"sort object 16 (ref), field +00h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BD10,refXpos2,g_BD10,new,medium,"sort object 16 (ref), field +02h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BD1C,refYvel,g_BD1C,new,medium,"sort object 16 (ref), field +0Eh; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BD20,refframe,g_BD20,new,medium,"sort object 16 (ref), field +12h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BD28,refposition,g_BD28,new,medium,"sort object 16 (ref), field +1Ah; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BD3A,reftemp4,g_BD3A,new,medium,"sort object 16 (ref), field +2Ch; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BD3C,reftemp5,g_BD3C,new,medium,"sort object 16 (ref), field +2Eh; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BD44,ref_36,g_BD44,new,medium,"sort object 16 (ref), field +36h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BD58,ref_4A,g_BD58,new,medium,"sort object 16 (ref), field +4Ah; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BD59,ref_4B,g_BD59,new,medium,"sort object 16 (ref), field +4Bh; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
-g_BD5A,ref_4C,g_BD5A,new,medium,"sort object 16 (ref), field +4Ch; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
+puckstruct,puckYpos2,puckstruct,95 PC,high,puck sort object field +06h (the object starts 6 bytes before),src/data/dgroup_bss/objects.asm
+refposition,ref_1C,refposition,new,medium,referee sort object field +1Ch,src/data/dgroup_bss/objects.asm
+g_B510,sortobj0_Xpos2,g_B510,new,medium,"sort object 0 (sortobj0), field +02h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_B514,sortobj0_Ypos2,g_B514,new,medium,"sort object 0 (sortobj0), field +06h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_B528,sortobj0_position,g_B528,new,medium,"sort object 0 (sortobj0), field +1Ah; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_B553,sortobj0_pflags2,g_B553,new,medium,"sort object 0 (sortobj0), field +45h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_B555,sortobj0_47,g_B555,new,medium,"sort object 0 (sortobj0), field +47h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BB10,sortobj12_Xpos2,g_BB10,new,medium,"sort object 12 (sortobj12), field +02h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BB14,sortobj12_Ypos2,g_BB14,new,medium,"sort object 12 (sortobj12), field +06h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BB1A,sortobj12_Xvel,g_BB1A,new,medium,"sort object 12 (sortobj12), field +0Ch; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BB1C,sortobj12_Yvel,g_BB1C,new,medium,"sort object 12 (sortobj12), field +0Eh; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BB90,sortobj13_Xpos2,g_BB90,new,medium,"sort object 13 (sortobj13), field +02h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BB94,sortobj13_Ypos2,g_BB94,new,medium,"sort object 13 (sortobj13), field +06h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BB9A,sortobj13_Xvel,g_BB9A,new,medium,"sort object 13 (sortobj13), field +0Ch; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BB9C,sortobj13_Yvel,g_BB9C,new,medium,"sort object 13 (sortobj13), field +0Eh; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BC10,puckXpos2,g_BC10,new,medium,"sort object 14 (puck), field +02h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BC18,puckZpos2,g_BC18,new,medium,"sort object 14 (puck), field +0Ah; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BC1A,puckXvel,g_BC1A,new,medium,"sort object 14 (puck), field +0Ch; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BC1C,puckYvel,g_BC1C,new,medium,"sort object 14 (puck), field +0Eh; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BC20,puckframe,g_BC20,new,medium,"sort object 14 (puck), field +12h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BC2A,puck_1C,g_BC2A,new,medium,"sort object 14 (puck), field +1Ch; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BC2C,puckasslist,g_BC2C,new,medium,"sort object 14 (puck), field +1Eh; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BC36,pucktemp2,g_BC36,new,medium,"sort object 14 (puck), field +28h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BC56,puck_48,g_BC56,new,medium,"sort object 14 (puck), field +48h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BC8E,doorstruct,g_BC8E,new,medium,"sort object 15 (door), field +00h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BC90,doorXpos2,g_BC90,new,medium,"sort object 15 (door), field +02h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BC94,doorYpos2,g_BC94,new,medium,"sort object 15 (door), field +06h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BC98,doorZpos2,g_BC98,new,medium,"sort object 15 (door), field +0Ah; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BC9A,doorXvel,g_BC9A,new,medium,"sort object 15 (door), field +0Ch; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BC9C,doorYvel,g_BC9C,new,medium,"sort object 15 (door), field +0Eh; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BCA0,doorframe,g_BCA0,new,medium,"sort object 15 (door), field +12h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BCB4,doortemp1,g_BCB4,new,medium,"sort object 15 (door), field +26h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BCB6,doortemp2,g_BCB6,new,medium,"sort object 15 (door), field +28h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BCC6,door_38,g_BCC6,new,medium,"sort object 15 (door), field +38h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BCD2,doorpflags,g_BCD2,new,medium,"sort object 15 (door), field +44h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BCD4,doorpflags3,g_BCD4,new,medium,"sort object 15 (door), field +46h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BCD6,door_48,g_BCD6,new,medium,"sort object 15 (door), field +48h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BD0E,refstruct,g_BD0E,new,medium,"sort object 16 (ref), field +00h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BD10,refXpos2,g_BD10,new,medium,"sort object 16 (ref), field +02h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BD1C,refYvel,g_BD1C,new,medium,"sort object 16 (ref), field +0Eh; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BD20,refframe,g_BD20,new,medium,"sort object 16 (ref), field +12h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BD28,refposition,g_BD28,new,medium,"sort object 16 (ref), field +1Ah; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BD3A,reftemp4,g_BD3A,new,medium,"sort object 16 (ref), field +2Ch; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BD3C,reftemp5,g_BD3C,new,medium,"sort object 16 (ref), field +2Eh; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BD44,ref_36,g_BD44,new,medium,"sort object 16 (ref), field +36h; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BD58,ref_4A,g_BD58,new,medium,"sort object 16 (ref), field +4Ah; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BD59,ref_4B,g_BD59,new,medium,"sort object 16 (ref), field +4Bh; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
+g_BD5A,ref_4C,g_BD5A,new,medium,"sort object 16 (ref), field +4Ch; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss/objects.asm
 g_58A6,GoalieSaveSides,g_58A6,new,medium,"save side bytes of puckgoalie, indexed by the hit direction",src/data/dgroup/game_tables.asm
 g_58E2,PenaltyNamePtrs,g_58E2,new,medium,penalty name pointers of the game summary events (PostPenaltyEvent),src/data/dgroup/game_tables.asm
 g_590A,MaxSpeed,g_590A,95 PC,high,"top speed (squared) per leg speed rating; playeracc reads MaxSpeed[d2*4] as a long (was AccelFactors)",src/data/dgroup/game_tables.asm
@@ -3963,423 +3963,423 @@ g_74FA,VenetianRowBytes,g_74FA,new,medium,row length in bytes read by FadeVeneti
 g_8C36,SeasonTitleSegs,g_8C36,new,medium,segment words of the season titles (SetupStatsMenus),src/data/dgroup/segment_words.asm
 g_8C9C,JingleSegs,g_8C9C,new,medium,segment words of the jingle data (LoadArenaJingles),src/data/dgroup/segment_words.asm
 g_8CE2,AnimSeqSegs,g_8CE2,new,medium,"segment words of the animation sequences (DecayCrowdLevel, SetRinkObject)",src/data/dgroup/segment_words.asm
-g_8EFE,RandomBlockDone,g_8EFE,new,medium,88 flags of the blocks already drawn (FadeRandomBlocks2),src/data/dgroup_bss.asm
-g_91D0,FrameTable,g_91D0,new,medium,frame pointer table (offset words) built by IndexPPVFrames,src/data/dgroup_bss.asm
-g_91D2,FrameTableSeg,g_91D2,new,medium,frame pointer table (segment words),src/data/dgroup_bss.asm
-g_9F80,GameTeamRecs,g_9F80,new,medium,team records read by LoadGameTeams (76 bytes),src/data/dgroup_bss.asm
-g_9FCC,GamePlayerNames,g_9FCC,new,medium,player name pointers (offset) of the game summary and lineups,src/data/dgroup_bss.asm
-g_9FCE,GamePlayerNamesSeg,g_9FCE,new,medium,player name pointers (segment),src/data/dgroup_bss.asm
-g_A03C,HomeLinesRec,g_A03C,new,medium,home line record written by WriteTeamLines,src/data/dgroup_bss.asm
-g_A06C,TeamLinesRecs,g_A06C,new,medium,line records written by WriteTeamLines,src/data/dgroup_bss.asm
-g_A268,GameRosterRecs,g_A268,new,medium,roster records read by LoadGameTeams (744 bytes),src/data/dgroup_bss.asm
-g_A556,hmrosterjersey,g_A556,new,medium,jersey byte of the home roster records,src/data/dgroup_bss.asm
-g_A9B0,GamePlayerFlags,g_A9B0,new,medium,player flags filled by LoadGameTeams,src/data/dgroup_bss.asm
-g_AE10,HomeTeamRec,g_AE10,new,medium,home team record saved with the game (36 bytes),src/data/dgroup_bss.asm
-g_AE34,HomeTeamAbbr,g_AE34,new,medium,first byte of the home team abbreviation,src/data/dgroup_bss.asm
-g_AE35,HomeTeamAbbr_b1,g_AE35,new,medium,rest of the home team abbreviation,src/data/dgroup_bss.asm
-g_AE38,HomeTeamColours,g_AE38,new,medium,home team colour bytes (LoadGameTeams),src/data/dgroup_bss.asm
-g_AE40,AwayTeamRec,g_AE40,new,medium,away team record saved with the game (36 bytes),src/data/dgroup_bss.asm
-g_AE64,AwayTeamAbbr,g_AE64,new,medium,first byte of the away team abbreviation,src/data/dgroup_bss.asm
-g_AE65,AwayTeamAbbr_b1,g_AE65,new,medium,rest of the away team abbreviation,src/data/dgroup_bss.asm
-g_AE68,AwayTeamColours,g_AE68,new,medium,away team colour bytes,src/data/dgroup_bss.asm
-g_AE70,gsummarypath,g_AE70,new,medium,path of gsummary.db (MakeGSummaryPath),src/data/dgroup_bss.asm
-g_AE94,POTreeBuf,g_AE94,new,medium,far pointer (offset) to the playoff tree buffer,src/data/dgroup_bss.asm
-g_AE96,POTreeBufSeg,g_AE96,new,medium,its segment,src/data/dgroup_bss.asm
-g_B07A,goalevent_b1,g_B07A,new,medium,scorer jersey of the goal event,src/data/dgroup_bss.asm
-g_B07B,goalevent_b2,g_B07B,new,medium,first assist jersey,src/data/dgroup_bss.asm
-g_B07C,goalevent_b3,g_B07C,new,medium,second assist jersey,src/data/dgroup_bss.asm
-g_B07D,goalevent_text,g_B07D,new,medium,team abbreviation of the goal event,src/data/dgroup_bss.asm
-g_B092,TextOverlayPtr,g_B092,new,medium,text overlay string pointer (offset),src/data/dgroup_bss.asm
-g_B094,TextOverlaySeg,g_B094,new,medium,its segment,src/data/dgroup_bss.asm
-g_B096,viewcellx,g_B096,new,medium,"scroll position in 8-pixel cells, x",src/data/dgroup_bss.asm
-g_B098,viewcelly,g_B098,new,medium,"scroll position in 8-pixel cells, y",src/data/dgroup_bss.asm
-g_B09A,RinkMapWidth,g_B09A,new,medium,rink map width in cells,src/data/dgroup_bss.asm
-g_B09C,RinkRowBytes,g_B09C,new,medium,bytes per rink row,src/data/dgroup_bss.asm
-g_B09E,otherscoresb,g_B09E,new,medium,other games: scores (12 bytes),src/data/dgroup_bss.asm
-g_B0AA,otherscorehome,g_B0AA,new,medium,other games: home team bytes,src/data/dgroup_bss.asm
-g_B0AB,otherscorehome_b1,g_B0AB,new,medium,other games: home team bytes from +1,src/data/dgroup_bss.asm
-g_B0B6,otherscoreaway,g_B0B6,new,medium,other games: away team bytes,src/data/dgroup_bss.asm
-g_B0B7,otherscores,g_B0B7,new,medium,other games: away team bytes from +1,src/data/dgroup_bss.asm
-g_B0C2,scrolldelay,g_B0C2,new,medium,scroll redraw countdown,src/data/dgroup_bss.asm
-g_B107,PanelText,g_B107,new,medium,panel text bytes (DrawHudPanel),src/data/dgroup_bss.asm
-g_B1C9,LockerText1,g_B1C9,new,medium,locker room text byte 1,src/data/dgroup_bss.asm
-g_B1CB,LockerText2,g_B1CB,new,medium,locker room text from +2,src/data/dgroup_bss.asm
-g_B1D4,LockerText3,g_B1D4,new,medium,locker room text byte,src/data/dgroup_bss.asm
-g_B1D5,LockerText4,g_B1D5,new,medium,locker room text bytes,src/data/dgroup_bss.asm
-g_B1D7,LockerText5,g_B1D7,new,medium,locker room text byte,src/data/dgroup_bss.asm
-g_B1D8,LockerText6,g_B1D8,new,medium,locker room text bytes,src/data/dgroup_bss.asm
-g_B1DA,LockerText7,g_B1DA,new,medium,locker room text block,src/data/dgroup_bss.asm
-g_B207,PanelText2,g_B207,new,medium,panel text bytes,src/data/dgroup_bss.asm
-g_B20D,LockerText8,g_B20D,new,medium,locker room text block,src/data/dgroup_bss.asm
-g_B214,LockerText9,g_B214,new,medium,locker room text byte,src/data/dgroup_bss.asm
-g_B215,LockerText10,g_B215,new,medium,locker room text block,src/data/dgroup_bss.asm
-g_B224,LockerText11,g_B224,new,medium,locker room text block,src/data/dgroup_bss.asm
-g_B2BF,LockerText12,g_B2BF,new,medium,locker room text byte,src/data/dgroup_bss.asm
-g_B2C0,LockerText13,g_B2C0,new,medium,locker room text byte,src/data/dgroup_bss.asm
-g_B2C1,LockerText14,g_B2C1,new,medium,locker room text byte,src/data/dgroup_bss.asm
-g_B2C2,LockerText15,g_B2C2,new,medium,locker room text block,src/data/dgroup_bss.asm
-g_B2F2,JingleBuf1,g_B2F2,new,medium,jingle buffer pointer 1 (offset),src/data/dgroup_bss.asm
-g_B2F4,JingleBuf1Seg,g_B2F4,new,medium,its segment,src/data/dgroup_bss.asm
-g_B2F6,JingleBuf2,g_B2F6,new,medium,jingle buffer pointer 2 (offset),src/data/dgroup_bss.asm
-g_B2F8,JingleBuf2Seg,g_B2F8,new,medium,its segment,src/data/dgroup_bss.asm
-g_B2FE,JingleBuf3,g_B2FE,new,medium,jingle buffer pointer 3 (offset),src/data/dgroup_bss.asm
-g_B300,JingleBuf3Seg,g_B300,new,medium,its segment,src/data/dgroup_bss.asm
-g_B302,JingleBuf4,g_B302,new,medium,jingle buffer pointer 4 (offset),src/data/dgroup_bss.asm
-g_B304,JingleBuf4Seg,g_B304,new,medium,its segment,src/data/dgroup_bss.asm
-g_B306,JingleCfgBufs,g_B306,new,medium,jingle config buffer pointers (offset),src/data/dgroup_bss.asm
-g_B308,JingleCfgBufsSeg,g_B308,new,medium,their segments,src/data/dgroup_bss.asm
-g_B312,JingleKmsBufs,g_B312,new,medium,jingle song buffer pointers (offset),src/data/dgroup_bss.asm
-g_B314,JingleKmsBufsSeg,g_B314,new,medium,their segments,src/data/dgroup_bss.asm
-g_B35E,editopts,g_B35E,new,medium,option bits being edited by the settings dialogs,src/data/dgroup_bss.asm
-g_B35F,editopts_b1,g_B35F,new,medium,high byte of editopts,src/data/dgroup_bss.asm
-g_B360,editctlopts,g_B360,new,medium,controller option bits being edited,src/data/dgroup_bss.asm
-g_B362,hmshots,g_B362,new,medium,home shots,src/data/dgroup_bss.asm
-g_B364,hmppgoals,g_B364,new,medium,home power play goals,src/data/dgroup_bss.asm
-g_B366,hmppchances,g_B366,new,medium,home power play chances,src/data/dgroup_bss.asm
-g_B368,hmpenalties,g_B368,new,medium,home penalty count,src/data/dgroup_bss.asm
-g_B36A,hmpenmins,g_B36A,new,medium,home penalty minutes,src/data/dgroup_bss.asm
-g_B36C,hmattacktime,g_B36C,new,medium,home attack zone time,src/data/dgroup_bss.asm
-g_B370,hmfaceoffs,g_B370,new,medium,home faceoffs won,src/data/dgroup_bss.asm
-g_B372,hmchecks,g_B372,new,medium,home body checks,src/data/dgroup_bss.asm
-g_B374,hmpassatt,g_B374,new,medium,home pass attempts,src/data/dgroup_bss.asm
-g_B376,hmpasscmp,g_B376,new,medium,home passes completed,src/data/dgroup_bss.asm
-g_B387,hmtmgoalie_b1,g_B387,new,medium,"home goalie, high byte",src/data/dgroup_bss.asm
-g_B38E,hmtmpde,g_B38E,new,medium,home player energy (56 bytes),src/data/dgroup_bss.asm
-g_B3C6,hmtmpdst,g_B3C6,new,medium,home player status per roster slot (56 bytes),src/data/dgroup_bss.asm
-g_B3FE,hmtmpbox_m1,g_B3FE,new,medium,home team bytes before hmtmpbox (28 bytes),src/data/dgroup_bss.asm
-g_B426,hmtmglattr,g_B426,new,medium,home goalie attributes pointer,src/data/dgroup_bss.asm
-g_B428,hmtmglattrseg,g_B428,new,medium,its segment,src/data/dgroup_bss.asm
-g_B42A,hmtmplstats,g_B42A,new,medium,home player stats pointer,src/data/dgroup_bss.asm
-g_B42C,hmtmplstatsseg,g_B42C,new,medium,its segment,src/data/dgroup_bss.asm
-g_B432,hmtmrosterptr,g_B432,new,medium,home roster pointer,src/data/dgroup_bss.asm
-g_B436,hmtmptrs,g_B436,new,medium,further home team pointers (14 bytes),src/data/dgroup_bss.asm
-g_B4D4,awtmpbox_m1,g_B4D4,new,medium,away team bytes before awtmpbox (28 bytes),src/data/dgroup_bss.asm
-g_B4F6,awtmteamrec,g_B4F6,new,medium,away team record pointer,src/data/dgroup_bss.asm
-g_B4FA,awtmglattrseg,g_B4FA,new,medium,segment of the away goalie attributes,src/data/dgroup_bss.asm
-g_B504,awtmglstatsptr,g_B504,new,medium,away goalie stats pointer,src/data/dgroup_bss.asm
-g_B506,awtmglstatsseg,g_B506,new,medium,its segment,src/data/dgroup_bss.asm
-g_B50A,awtmroster,g_B50A,new,medium,away roster pointer,src/data/dgroup_bss.asm
+g_8EFE,RandomBlockDone,g_8EFE,new,medium,88 flags of the blocks already drawn (FadeRandomBlocks2),src/data/dgroup_bss/modules.asm
+g_91D0,FrameTable,g_91D0,new,medium,frame pointer table (offset words) built by IndexPPVFrames,src/data/dgroup_bss/game_records.asm
+g_91D2,FrameTableSeg,g_91D2,new,medium,frame pointer table (segment words),src/data/dgroup_bss/game_records.asm
+g_9F80,GameTeamRecs,g_9F80,new,medium,team records read by LoadGameTeams (76 bytes),src/data/dgroup_bss/game_records.asm
+g_9FCC,GamePlayerNames,g_9FCC,new,medium,player name pointers (offset) of the game summary and lineups,src/data/dgroup_bss/game_records.asm
+g_9FCE,GamePlayerNamesSeg,g_9FCE,new,medium,player name pointers (segment),src/data/dgroup_bss/game_records.asm
+g_A03C,HomeLinesRec,g_A03C,new,medium,home line record written by WriteTeamLines,src/data/dgroup_bss/game_records.asm
+g_A06C,TeamLinesRecs,g_A06C,new,medium,line records written by WriteTeamLines,src/data/dgroup_bss/game_records.asm
+g_A268,GameRosterRecs,g_A268,new,medium,roster records read by LoadGameTeams (744 bytes),src/data/dgroup_bss/game_records.asm
+g_A556,hmrosterjersey,g_A556,new,medium,jersey byte of the home roster records,src/data/dgroup_bss/game_records.asm
+g_A9B0,GamePlayerFlags,g_A9B0,new,medium,player flags filled by LoadGameTeams,src/data/dgroup_bss/game_records.asm
+g_AE10,HomeTeamRec,g_AE10,new,medium,home team record saved with the game (36 bytes),src/data/dgroup_bss/game_records.asm
+g_AE34,HomeTeamAbbr,g_AE34,new,medium,first byte of the home team abbreviation,src/data/dgroup_bss/game_records.asm
+g_AE35,HomeTeamAbbr_b1,g_AE35,new,medium,rest of the home team abbreviation,src/data/dgroup_bss/game_records.asm
+g_AE38,HomeTeamColours,g_AE38,new,medium,home team colour bytes (LoadGameTeams),src/data/dgroup_bss/game_records.asm
+g_AE40,AwayTeamRec,g_AE40,new,medium,away team record saved with the game (36 bytes),src/data/dgroup_bss/game_records.asm
+g_AE64,AwayTeamAbbr,g_AE64,new,medium,first byte of the away team abbreviation,src/data/dgroup_bss/game_records.asm
+g_AE65,AwayTeamAbbr_b1,g_AE65,new,medium,rest of the away team abbreviation,src/data/dgroup_bss/game_records.asm
+g_AE68,AwayTeamColours,g_AE68,new,medium,away team colour bytes,src/data/dgroup_bss/game_records.asm
+g_AE70,gsummarypath,g_AE70,new,medium,path of gsummary.db (MakeGSummaryPath),src/data/dgroup_bss/game_records.asm
+g_AE94,POTreeBuf,g_AE94,new,medium,far pointer (offset) to the playoff tree buffer,src/data/dgroup_bss/front_end.asm
+g_AE96,POTreeBufSeg,g_AE96,new,medium,its segment,src/data/dgroup_bss/front_end.asm
+g_B07A,goalevent_b1,g_B07A,new,medium,scorer jersey of the goal event,src/data/dgroup_bss/front_end.asm
+g_B07B,goalevent_b2,g_B07B,new,medium,first assist jersey,src/data/dgroup_bss/front_end.asm
+g_B07C,goalevent_b3,g_B07C,new,medium,second assist jersey,src/data/dgroup_bss/front_end.asm
+g_B07D,goalevent_text,g_B07D,new,medium,team abbreviation of the goal event,src/data/dgroup_bss/front_end.asm
+g_B092,TextOverlayPtr,g_B092,new,medium,text overlay string pointer (offset),src/data/dgroup_bss/front_end.asm
+g_B094,TextOverlaySeg,g_B094,new,medium,its segment,src/data/dgroup_bss/front_end.asm
+g_B096,viewcellx,g_B096,new,medium,"scroll position in 8-pixel cells, x",src/data/dgroup_bss/front_end.asm
+g_B098,viewcelly,g_B098,new,medium,"scroll position in 8-pixel cells, y",src/data/dgroup_bss/front_end.asm
+g_B09A,RinkMapWidth,g_B09A,new,medium,rink map width in cells,src/data/dgroup_bss/front_end.asm
+g_B09C,RinkRowBytes,g_B09C,new,medium,bytes per rink row,src/data/dgroup_bss/front_end.asm
+g_B09E,otherscoresb,g_B09E,new,medium,other games: scores (12 bytes),src/data/dgroup_bss/front_end.asm
+g_B0AA,otherscorehome,g_B0AA,new,medium,other games: home team bytes,src/data/dgroup_bss/front_end.asm
+g_B0AB,otherscorehome_b1,g_B0AB,new,medium,other games: home team bytes from +1,src/data/dgroup_bss/front_end.asm
+g_B0B6,otherscoreaway,g_B0B6,new,medium,other games: away team bytes,src/data/dgroup_bss/front_end.asm
+g_B0B7,otherscores,g_B0B7,new,medium,other games: away team bytes from +1,src/data/dgroup_bss/front_end.asm
+g_B0C2,scrolldelay,g_B0C2,new,medium,scroll redraw countdown,src/data/dgroup_bss/front_end.asm
+g_B107,PanelText,g_B107,new,medium,panel text bytes (DrawHudPanel),src/data/dgroup_bss/front_end.asm
+g_B1C9,LockerText1,g_B1C9,new,medium,locker room text byte 1,src/data/dgroup_bss/front_end.asm
+g_B1CB,LockerText2,g_B1CB,new,medium,locker room text from +2,src/data/dgroup_bss/front_end.asm
+g_B1D4,LockerText3,g_B1D4,new,medium,locker room text byte,src/data/dgroup_bss/front_end.asm
+g_B1D5,LockerText4,g_B1D5,new,medium,locker room text bytes,src/data/dgroup_bss/front_end.asm
+g_B1D7,LockerText5,g_B1D7,new,medium,locker room text byte,src/data/dgroup_bss/front_end.asm
+g_B1D8,LockerText6,g_B1D8,new,medium,locker room text bytes,src/data/dgroup_bss/front_end.asm
+g_B1DA,LockerText7,g_B1DA,new,medium,locker room text block,src/data/dgroup_bss/front_end.asm
+g_B207,PanelText2,g_B207,new,medium,panel text bytes,src/data/dgroup_bss/front_end.asm
+g_B20D,LockerText8,g_B20D,new,medium,locker room text block,src/data/dgroup_bss/front_end.asm
+g_B214,LockerText9,g_B214,new,medium,locker room text byte,src/data/dgroup_bss/front_end.asm
+g_B215,LockerText10,g_B215,new,medium,locker room text block,src/data/dgroup_bss/front_end.asm
+g_B224,LockerText11,g_B224,new,medium,locker room text block,src/data/dgroup_bss/front_end.asm
+g_B2BF,LockerText12,g_B2BF,new,medium,locker room text byte,src/data/dgroup_bss/front_end.asm
+g_B2C0,LockerText13,g_B2C0,new,medium,locker room text byte,src/data/dgroup_bss/front_end.asm
+g_B2C1,LockerText14,g_B2C1,new,medium,locker room text byte,src/data/dgroup_bss/front_end.asm
+g_B2C2,LockerText15,g_B2C2,new,medium,locker room text block,src/data/dgroup_bss/front_end.asm
+g_B2F2,JingleBuf1,g_B2F2,new,medium,jingle buffer pointer 1 (offset),src/data/dgroup_bss/front_end.asm
+g_B2F4,JingleBuf1Seg,g_B2F4,new,medium,its segment,src/data/dgroup_bss/front_end.asm
+g_B2F6,JingleBuf2,g_B2F6,new,medium,jingle buffer pointer 2 (offset),src/data/dgroup_bss/front_end.asm
+g_B2F8,JingleBuf2Seg,g_B2F8,new,medium,its segment,src/data/dgroup_bss/front_end.asm
+g_B2FE,JingleBuf3,g_B2FE,new,medium,jingle buffer pointer 3 (offset),src/data/dgroup_bss/front_end.asm
+g_B300,JingleBuf3Seg,g_B300,new,medium,its segment,src/data/dgroup_bss/front_end.asm
+g_B302,JingleBuf4,g_B302,new,medium,jingle buffer pointer 4 (offset),src/data/dgroup_bss/front_end.asm
+g_B304,JingleBuf4Seg,g_B304,new,medium,its segment,src/data/dgroup_bss/front_end.asm
+g_B306,JingleCfgBufs,g_B306,new,medium,jingle config buffer pointers (offset),src/data/dgroup_bss/front_end.asm
+g_B308,JingleCfgBufsSeg,g_B308,new,medium,their segments,src/data/dgroup_bss/front_end.asm
+g_B312,JingleKmsBufs,g_B312,new,medium,jingle song buffer pointers (offset),src/data/dgroup_bss/front_end.asm
+g_B314,JingleKmsBufsSeg,g_B314,new,medium,their segments,src/data/dgroup_bss/front_end.asm
+g_B35E,editopts,g_B35E,new,medium,option bits being edited by the settings dialogs,src/data/dgroup_bss/front_end.asm
+g_B35F,editopts_b1,g_B35F,new,medium,high byte of editopts,src/data/dgroup_bss/front_end.asm
+g_B360,editctlopts,g_B360,new,medium,controller option bits being edited,src/data/dgroup_bss/front_end.asm
+g_B362,hmshots,g_B362,new,medium,home shots,src/data/dgroup_bss/teams.asm
+g_B364,hmppgoals,g_B364,new,medium,home power play goals,src/data/dgroup_bss/teams.asm
+g_B366,hmppchances,g_B366,new,medium,home power play chances,src/data/dgroup_bss/teams.asm
+g_B368,hmpenalties,g_B368,new,medium,home penalty count,src/data/dgroup_bss/teams.asm
+g_B36A,hmpenmins,g_B36A,new,medium,home penalty minutes,src/data/dgroup_bss/teams.asm
+g_B36C,hmattacktime,g_B36C,new,medium,home attack zone time,src/data/dgroup_bss/teams.asm
+g_B370,hmfaceoffs,g_B370,new,medium,home faceoffs won,src/data/dgroup_bss/teams.asm
+g_B372,hmchecks,g_B372,new,medium,home body checks,src/data/dgroup_bss/teams.asm
+g_B374,hmpassatt,g_B374,new,medium,home pass attempts,src/data/dgroup_bss/teams.asm
+g_B376,hmpasscmp,g_B376,new,medium,home passes completed,src/data/dgroup_bss/teams.asm
+g_B387,hmtmgoalie_b1,g_B387,new,medium,"home goalie, high byte",src/data/dgroup_bss/teams.asm
+g_B38E,hmtmpde,g_B38E,new,medium,home player energy (56 bytes),src/data/dgroup_bss/teams.asm
+g_B3C6,hmtmpdst,g_B3C6,new,medium,home player status per roster slot (56 bytes),src/data/dgroup_bss/teams.asm
+g_B3FE,hmtmpbox_m1,g_B3FE,new,medium,home team bytes before hmtmpbox (28 bytes),src/data/dgroup_bss/teams.asm
+g_B426,hmtmglattr,g_B426,new,medium,home goalie attributes pointer,src/data/dgroup_bss/teams.asm
+g_B428,hmtmglattrseg,g_B428,new,medium,its segment,src/data/dgroup_bss/teams.asm
+g_B42A,hmtmplstats,g_B42A,new,medium,home player stats pointer,src/data/dgroup_bss/teams.asm
+g_B42C,hmtmplstatsseg,g_B42C,new,medium,its segment,src/data/dgroup_bss/teams.asm
+g_B432,hmtmrosterptr,g_B432,new,medium,home roster pointer,src/data/dgroup_bss/teams.asm
+g_B436,hmtmptrs,g_B436,new,medium,further home team pointers (14 bytes),src/data/dgroup_bss/teams.asm
+g_B4D4,awtmpbox_m1,g_B4D4,new,medium,away team bytes before awtmpbox (28 bytes),src/data/dgroup_bss/teams.asm
+g_B4F6,awtmteamrec,g_B4F6,new,medium,away team record pointer,src/data/dgroup_bss/teams.asm
+g_B4FA,awtmglattrseg,g_B4FA,new,medium,segment of the away goalie attributes,src/data/dgroup_bss/teams.asm
+g_B504,awtmglstatsptr,g_B504,new,medium,away goalie stats pointer,src/data/dgroup_bss/teams.asm
+g_B506,awtmglstatsseg,g_B506,new,medium,its segment,src/data/dgroup_bss/teams.asm
+g_B50A,awtmroster,g_B50A,new,medium,away roster pointer,src/data/dgroup_bss/teams.asm
 g_58A6,GoalieSaveSides2,g_58A6,new,medium,"save side bytes of puckgoalie, indexed by the hit direction",
-g_B50C,SortCords_m2,g_B50C,new,medium,"the word before SortCords and the first two bytes of it (clearteams stores 0B80Eh, an object address)",src/data/dgroup_bss.asm
-g_BD8E,TitleJingle,g_BD8E,new,medium,title jingle buffer pointer (offset),src/data/dgroup_bss.asm
-g_BD90,TitleJingleSeg,g_BD90,new,medium,its segment,src/data/dgroup_bss.asm
-g_BD92,TitleJingle2,g_BD92,new,medium,second title jingle buffer pointer (offset),src/data/dgroup_bss.asm
-g_BD94,TitleJingle2Seg,g_BD94,new,medium,its segment,src/data/dgroup_bss.asm
-g_BD96,gmrosterpos,g_BD96,new,medium,"roster position letter (C, L, R, D, G) of the game roster entries",src/data/dgroup_bss.asm
-g_BD99,gmrosterjersey_b2,g_BD99,new,medium,game roster entry byte +3,src/data/dgroup_bss.asm
-g_BD9A,gmrosterdot,g_BD9A,new,medium,game roster entry: the '.' after the initial,src/data/dgroup_bss.asm
-g_BD9B,gmrosterspace,g_BD9B,new,medium,game roster entry: the space before the name,src/data/dgroup_bss.asm
-g_BD9C,gmrostername,g_BD9C,new,medium,game roster entry names,src/data/dgroup_bss.asm
-g_BFBC,gmroster2pos,g_BFBC,new,medium,second game roster: first byte,src/data/dgroup_bss.asm
-g_BFBD,gmroster2jersey,g_BFBD,new,medium,second game roster: jersey bytes,src/data/dgroup_bss.asm
-g_BFBF,gmroster2init,g_BFBF,new,medium,second game roster: initial,src/data/dgroup_bss.asm
-g_BFC0,gmroster2dot,g_BFC0,new,medium,second game roster: the '.',src/data/dgroup_bss.asm
-g_BFC1,gmroster2space,g_BFC1,new,medium,second game roster: the space,src/data/dgroup_bss.asm
-g_BFC2,gmroster2name,g_BFC2,new,medium,second game roster: names,src/data/dgroup_bss.asm
-g_C000,HomeTeamDbName,g_C000,new,medium,home team database name (32 bytes),src/data/dgroup_bss.asm
-g_C020,AwayTeamDbName,g_C020,new,medium,away team database name (32 bytes),src/data/dgroup_bss.asm
-g_C040,statsgoaliebufseg,g_C040,new,medium,segment of statsgoaliebuf,src/data/dgroup_bss.asm
-g_C044,statsskaterbufseg,g_C044,new,medium,segment of statsskaterbuf,src/data/dgroup_bss.asm
-g_C048,statsplayerbufseg,g_C048,new,medium,segment of statsplayerbuf,src/data/dgroup_bss.asm
-g_C04C,statsteambufseg,g_C04C,new,medium,segment of statsteambuf,src/data/dgroup_bss.asm
-g_C050,statsrosterteam,g_C050,new,medium,team shown on the roster screen,src/data/dgroup_bss.asm
-g_C054,savedcount1,g_C054,new,medium,number of saved games of the first kind (ScanSavedGames),src/data/dgroup_bss.asm
-g_C056,savedsel1,g_C056,new,medium,selected saved game of the first kind,src/data/dgroup_bss.asm
-g_C058,savedtop1,g_C058,new,medium,"first saved game shown, first kind",src/data/dgroup_bss.asm
-g_C05A,savedrows1,g_C05A,new,medium,rows of the first saved game list,src/data/dgroup_bss.asm
-g_C05C,savednames1,g_C05C,new,medium,name pointers (offset) of the first saved game list,src/data/dgroup_bss.asm
-g_C05E,savednames1seg,g_C05E,new,medium,further name pointers of the first list,src/data/dgroup_bss.asm
-g_C0DC,savedcount2,g_C0DC,new,medium,number of saved games of the second kind,src/data/dgroup_bss.asm
-g_C0E0,savedtop2,g_C0E0,new,medium,"first saved game shown, second kind",src/data/dgroup_bss.asm
-g_C0E2,savedrows2,g_C0E2,new,medium,rows of the second list,src/data/dgroup_bss.asm
-g_C0E4,savednames2,g_C0E4,new,medium,name pointers of the second list,src/data/dgroup_bss.asm
-g_C164,savedcount3,g_C164,new,medium,number of saved games of the third kind,src/data/dgroup_bss.asm
-g_C166,savedsel3,g_C166,new,medium,selected saved game of the third kind,src/data/dgroup_bss.asm
-g_C168,savedtop3,g_C168,new,medium,"first saved game shown, third kind",src/data/dgroup_bss.asm
-g_C16A,savedrows3,g_C16A,new,medium,rows of the third list,src/data/dgroup_bss.asm
-g_C16C,savednames3,g_C16C,new,medium,name pointers of the third list,src/data/dgroup_bss.asm
-g_C16E,savednames3seg,g_C16E,new,medium,further name pointers of the third list,src/data/dgroup_bss.asm
-g_C1EE,fdlgflags,g_C1EE,new,medium,"file dialog flag bits (80h, 40h, 20h)",src/data/dgroup_bss.asm
-g_C1EF,fdlgflags2,g_C1EF,new,medium,"file dialog flag bits, second byte",src/data/dgroup_bss.asm
-g_C1F0,SoundDrvBuf,g_C1F0,new,medium,sound driver buffer pointer (offset),src/data/dgroup_bss.asm
-g_C1F2,SoundDrvBufSeg,g_C1F2,new,medium,its segment,src/data/dgroup_bss.asm
-g_C1F4,POTitleText,g_C1F4,new,medium,playoff title text (16 bytes),src/data/dgroup_bss.asm
-g_C206,POTreeSlots,g_C206,new,medium,playoff tree slot words,src/data/dgroup_bss.asm
-g_C224,POTreeRows,g_C224,new,medium,playoff tree row words (19h),src/data/dgroup_bss.asm
-g_C238,standingsteam,g_C238,new,medium,team of the standings row,src/data/dgroup_bss.asm
-g_C23A,standingsprev,g_C23A,new,medium,previous standings value,src/data/dgroup_bss.asm
-g_C23C,standingskey,g_C23C,new,medium,standings sort key,src/data/dgroup_bss.asm
-g_C23E,standingskey2,g_C23E,new,medium,second standings sort key,src/data/dgroup_bss.asm
-g_C240,standingsrank,g_C240,new,medium,standings rank,src/data/dgroup_bss.asm
-g_C242,DeskTitleText,g_C242,new,medium,sports desk title text (22 bytes),src/data/dgroup_bss.asm
-g_C258,ScoreboardArt,g_C258,new,medium,scoreboard art pointer (offset),src/data/dgroup_bss.asm
-g_C25A,ScoreboardArtSeg,g_C25A,new,medium,its segment,src/data/dgroup_bss.asm
-g_C25C,RinkEndArt,g_C25C,new,medium,rink end art pointer (offset),src/data/dgroup_bss.asm
-g_C25E,RinkEndArtSeg,g_C25E,new,medium,its segment,src/data/dgroup_bss.asm
-g_C260,editactive,g_C260,new,medium,text field: editing active,src/data/dgroup_bss.asm
-g_C262,editcursorx,g_C262,new,medium,text field: cursor x,src/data/dgroup_bss.asm
-g_C264,editx,g_C264,new,medium,text field: x,src/data/dgroup_bss.asm
-g_C266,edity,g_C266,new,medium,text field: y,src/data/dgroup_bss.asm
-g_C268,editpos,g_C268,new,medium,text field: cursor position,src/data/dgroup_bss.asm
-g_C26A,editlen,g_C26A,new,medium,text field: text length,src/data/dgroup_bss.asm
-g_C26C,editmax,g_C26C,new,medium,text field: maximum width,src/data/dgroup_bss.asm
-g_C26E,calresult,g_C26E,new,medium,calendar result (-1 none),src/data/dgroup_bss.asm
-g_C270,calmonth,g_C270,new,medium,calendar month shown (0-11),src/data/dgroup_bss.asm
-g_C272,calday,g_C272,new,medium,calendar day chosen (-1 none),src/data/dgroup_bss.asm
-g_C276,floppydrive,g_C276,new,medium,floppy drive chosen,src/data/dgroup_bss.asm
-g_C278,floppyok,g_C278,new,medium,floppy drive flags,src/data/dgroup_bss.asm
-g_C27A,floppycount,g_C27A,new,medium,number of floppy drives,src/data/dgroup_bss.asm
-g_C27C,tradestate,g_C27C,new,medium,"trade screen state (1 done, -1 cancelled, 0 running)",src/data/dgroup_bss.asm
-g_C27E,savleague,g_C27E,new,medium,league name of the game being played (14 bytes),src/data/dgroup_bss.asm
-g_C28C,savleague2,g_C28C,new,medium,second league name (14 bytes),src/data/dgroup_bss.asm
-g_C29A,lgschedrec,g_C29A,new,medium,schedule record of the league game,src/data/dgroup_bss.asm
-g_C29B,lgschedrec_b1,g_C29B,new,medium,schedule record byte +1,src/data/dgroup_bss.asm
-g_C29C,lgschedrec_b2,g_C29C,new,medium,schedule record byte +2,src/data/dgroup_bss.asm
-g_C29D,lgschedrec_b3,g_C29D,new,medium,schedule record byte +3,src/data/dgroup_bss.asm
-g_C29F,lgschedrec_b5,g_C29F,new,medium,schedule record byte +5,src/data/dgroup_bss.asm
-g_C2A2,calcursor,g_C2A2,new,medium,calendar cursor day,src/data/dgroup_bss.asm
-g_C2A4,calcursor2,g_C2A4,new,medium,calendar cursor row,src/data/dgroup_bss.asm
-g_C2A6,lghometeam,g_C2A6,new,medium,home team of the league game,src/data/dgroup_bss.asm
-g_C2A8,lgoppteam,g_C2A8,new,medium,other team of the league game,src/data/dgroup_bss.asm
-g_C2AA,lggamestate,g_C2AA,new,medium,league game state (-1 none),src/data/dgroup_bss.asm
-g_C2AC,lgreadword,g_C2AC,new,medium,word read with the league game reference,src/data/dgroup_bss.asm
-g_C2AE,lgreadword2,g_C2AE,new,medium,second word read with the league game reference,src/data/dgroup_bss.asm
-g_C2B0,lggameidx,g_C2B0,new,medium,index of the league game,src/data/dgroup_bss.asm
-g_C2B4,statsbgseg,g_C2B4,new,medium,stats background shape segment,src/data/dgroup_bss.asm
-g_C2C2,traderows,g_C2C2,new,medium,trade screen rows,src/data/dgroup_bss.asm
-g_C2C3,traderows_b1,g_C2C3,new,medium,trade screen rows from +1,src/data/dgroup_bss.asm
-g_C2C4,traderows_b2,g_C2C4,new,medium,trade screen row bytes from +2,src/data/dgroup_bss.asm
-g_C52A,traderoster,g_C52A,new,medium,trade roster (BuildTradeRoster),src/data/dgroup_bss.asm
-g_C792,tradesel,g_C792,new,medium,selected trade rows,src/data/dgroup_bss.asm
-g_C794,tradesel2,g_C794,new,medium,second trade selection word,src/data/dgroup_bss.asm
-g_C796,tradescroll,g_C796,new,medium,trade list scroll,src/data/dgroup_bss.asm
-g_C798,tradescroll2,g_C798,new,medium,second trade scroll word,src/data/dgroup_bss.asm
-g_C79A,tradecursor,g_C79A,new,medium,trade screen cursor,src/data/dgroup_bss.asm
-g_C79C,tradecolour,g_C79C,new,medium,trade screen row colour,src/data/dgroup_bss.asm
-g_C79E,tradecolour2,g_C79E,new,medium,second trade row colour,src/data/dgroup_bss.asm
-g_C7A0,mergestate,g_C7A0,new,medium,merge state of the league files,src/data/dgroup_bss.asm
-g_C7A2,AwardRawA,g_C7A2,new,medium,award art raw handle,src/data/dgroup_bss.asm
-g_C7A4,AwardRawB,g_C7A4,new,medium,second award art raw handle,src/data/dgroup_bss.asm
-g_C7A6,AwardRawC,g_C7A6,new,medium,third award art raw handle,src/data/dgroup_bss.asm
-g_C7A8,AwardRawD,g_C7A8,new,medium,fourth award art raw handle,src/data/dgroup_bss.asm
-g_C7AA,AwardFrames,g_C7AA,new,medium,award EMS frames (offset),src/data/dgroup_bss.asm
-g_C7AC,AwardFramesSeg,g_C7AC,new,medium,award EMS frames,src/data/dgroup_bss.asm
-g_C7D2,AwardFrames2,g_C7D2,new,medium,second award EMS frames,src/data/dgroup_bss.asm
-g_C7D4,AwardFrames2Seg,g_C7D4,new,medium,second award EMS frames,src/data/dgroup_bss.asm
-g_C7FA,AwardFrames3,g_C7FA,new,medium,third award EMS frame,src/data/dgroup_bss.asm
-g_C7FC,AwardFrames3Seg,g_C7FC,new,medium,third award EMS frames,src/data/dgroup_bss.asm
-g_C806,AwardScores,g_C806,new,medium,award score bytes (ShowAwardScreens),src/data/dgroup_bss.asm
-g_CC05,AwardText,g_CC05,new,medium,award text buffer,src/data/dgroup_bss.asm
-g_CC29,AwardCandidates,g_CC29,new,medium,award candidate bytes (PickAwardWinners),src/data/dgroup_bss.asm
-g_CEE8,standingstab,g_CEE8,new,medium,standings table (26-byte rows),src/data/dgroup_bss.asm
-g_CF18,rostertop,g_CF18,new,medium,roster screen first row,src/data/dgroup_bss.asm
-g_CF1A,statscardteam,g_CF1A,new,medium,stats card team,src/data/dgroup_bss.asm
-g_CF1B,statscardplayer,g_CF1B,new,medium,stats card player,src/data/dgroup_bss.asm
-g_CF1D,rosterfilter,g_CF1D,new,medium,roster filter text,src/data/dgroup_bss.asm
-g_CF2D,rosterfilter2,g_CF2D,new,medium,second roster filter text,src/data/dgroup_bss.asm
-g_CF3E,statsfilepos,g_CF3E,new,medium,stats file position (low),src/data/dgroup_bss.asm
-g_CF40,statsfileposhi,g_CF40,new,medium,stats file position (high),src/data/dgroup_bss.asm
-g_CF42,statscardrec,g_CF42,new,medium,stats card record pointer,src/data/dgroup_bss.asm
-g_CF44,statscardrecseg,g_CF44,new,medium,its segment,src/data/dgroup_bss.asm
-g_CF46,statscardrec2,g_CF46,new,medium,second stats card record pointer,src/data/dgroup_bss.asm
-g_CF48,statscardrec2seg,g_CF48,new,medium,its segment,src/data/dgroup_bss.asm
-g_CF4A,statscardgoalie,g_CF4A,new,medium,stats card goalie flag,src/data/dgroup_bss.asm
-g_CF4C,statscardrec3,g_CF4C,new,medium,third stats card record word,src/data/dgroup_bss.asm
-g_CF4E,rosterrows,g_CF4E,new,medium,roster screen row records,src/data/dgroup_bss.asm
-g_CF80,rosterrowptrs,g_CF80,new,medium,roster screen row pointers,src/data/dgroup_bss.asm
-g_CFB2,rosterrows2,g_CFB2,new,medium,second roster row records,src/data/dgroup_bss.asm
-g_CFBC,rosterrowptrs2,g_CFBC,new,medium,second roster row pointers,src/data/dgroup_bss.asm
-g_CFC6,rostersel,g_CFC6,new,medium,roster selected row,src/data/dgroup_bss.asm
-g_CFC8,statsrecs,g_CFC8,new,medium,stats records pointer (offset),src/data/dgroup_bss.asm
-g_CFCA,statsrecsseg,g_CFCA,new,medium,its segment,src/data/dgroup_bss.asm
-g_CFCC,statscmpsum,g_CFCC,new,medium,comparator sum,src/data/dgroup_bss.asm
-g_CFCE,statscmpsum2,g_CFCE,new,medium,"comparator sum, high word",src/data/dgroup_bss.asm
-g_CFD4,statstext,g_CFD4,new,medium,text buffer of DrawTextFmt (40 bytes),src/data/dgroup_bss.asm
-g_CFFC,cupseries,g_CFFC,new,medium,cup series buffer pointer (offset),src/data/dgroup_bss.asm
-g_CFFE,cupseriesseg,g_CFFE,new,medium,its segment,src/data/dgroup_bss.asm
-g_D002,lastgoalx,g_D002,new,medium,last goal position x,src/data/dgroup_bss.asm
-g_D004,crowdtimer,g_D004,new,medium,crowd timer,src/data/dgroup_bss.asm
-g_D008,lastgoaly,g_D008,new,medium,last goal position y,src/data/dgroup_bss.asm
-g_D00A,crowdcount,g_D00A,new,medium,crowd counter,src/data/dgroup_bss.asm
-g_D00C,cleared1,g_D00C,new,medium,game variable cleared by cleargamevars,src/data/dgroup_bss.asm
-g_D00E,cleared2,g_D00E,new,medium,game variable cleared by cleargamevars,src/data/dgroup_bss.asm
-g_D010,crowdsum,g_D010,new,medium,crowd excitement sum (low),src/data/dgroup_bss.asm
-g_D012,crowdsumhi,g_D012,new,medium,crowd excitement sum (high),src/data/dgroup_bss.asm
-g_D014,replayrecptr,g_D014,new,medium,replay record pointer (offset),src/data/dgroup_bss.asm
-g_D016,replayrecseg,g_D016,new,medium,replay record pointer (segment),src/data/dgroup_bss.asm
-g_D018,replayplay,g_D018,new,medium,replay play pointer (offset),src/data/dgroup_bss.asm
-g_D01A,replayplayseg,g_D01A,new,medium,replay play pointer (segment),src/data/dgroup_bss.asm
-g_D01C,plstatsoff,g_D01C,new,medium,player stats offsets,src/data/dgroup_bss.asm
-g_D01E,plstatsoff2,g_D01E,new,medium,"player stats offsets, second word",src/data/dgroup_bss.asm
-g_D020,plstatsoff3,g_D020,new,medium,"player stats offsets, third word",src/data/dgroup_bss.asm
-g_D022,plstatsrecs,g_D022,new,medium,player stats offset table (394 bytes),src/data/dgroup_bss.asm
-g_D1AC,gameclock2,g_D1AC,new,medium,game clock copy,src/data/dgroup_bss.asm
-g_D2C6,SpriteFrames,g_D2C6,new,medium,sprite frame pointers (offset),src/data/dgroup_bss.asm
-g_D2C8,SpriteFramesSeg,g_D2C8,new,medium,sprite frame pointers,src/data/dgroup_bss.asm
-g_D446,NumberFrames,g_D446,new,medium,number sprite frames,src/data/dgroup_bss.asm
-g_D448,NumberFramesSeg,g_D448,new,medium,number sprite frames,src/data/dgroup_bss.asm
-g_D456,NumberFrames2,g_D456,new,medium,second number sprite frames,src/data/dgroup_bss.asm
-g_D458,NumberFrames2Seg,g_D458,new,medium,second number sprite frames,src/data/dgroup_bss.asm
-g_D46A,gameframe,g_D46A,new,medium,game frame counter,src/data/dgroup_bss.asm
-g_D46C,controlled,g_D46C,new,medium,controlled player per controller,src/data/dgroup_bss.asm
-g_D46E,controlled2,g_D46E,new,medium,second controlled player word,src/data/dgroup_bss.asm
-g_D474,objxlist,g_D474,new,medium,object x list (34 bytes),src/data/dgroup_bss.asm
-g_D496,objylist,g_D496,new,medium,object y list (34 bytes),src/data/dgroup_bss.asm
-g_D4F3,OOlist_m1,g_D4F3,new,medium,byte before OOlist,src/data/dgroup_bss.asm
-g_D4F5,OOlist_b1,g_D4F5,new,medium,OOlist from +1,src/data/dgroup_bss.asm
-g_D604,fofdata,g_D604,new,medium,faceoff data word,src/data/dgroup_bss.asm
-g_D606,fofdata_w2,g_D606,new,medium,faceoff data word +2,src/data/dgroup_bss.asm
-g_D608,fofdata_w4,g_D608,new,medium,faceoff data word +4,src/data/dgroup_bss.asm
-g_D60A,fofdata_w6,g_D60A,new,medium,faceoff data word +6,src/data/dgroup_bss.asm
-g_D60C,fofdata_w8,g_D60C,new,medium,faceoff data word +8,src/data/dgroup_bss.asm
-g_D60E,mousex,g_D60E,new,medium,mouse x,src/data/dgroup_bss.asm
-g_D610,mousey,g_D610,new,medium,mouse y,src/data/dgroup_bss.asm
-g_D612,savedword1,g_D612,new,medium,game variable saved with the game,src/data/dgroup_bss.asm
-g_D614,savedword2,g_D614,new,medium,game variable saved with the game,src/data/dgroup_bss.asm
-g_D618,GoalState_m6,g_D618,new,medium,home goal state byte,src/data/dgroup_bss.asm
-g_D619,GoalState_m5,g_D619,new,medium,home goal state bytes,src/data/dgroup_bss.asm
-g_D61C,GoalState_m2,g_D61C,new,medium,away goal state byte,src/data/dgroup_bss.asm
-g_D61D,GoalState_m1,g_D61D,new,medium,away goal state byte,src/data/dgroup_bss.asm
-g_D62B,iflags_b1,g_D62B,new,medium,iflags high byte,src/data/dgroup_bss.asm
-g_D62C,OverlayGfx,g_D62C,new,medium,text overlay graphics pointer (offset),src/data/dgroup_bss.asm
-g_D62E,OverlayGfxSeg,g_D62E,new,medium,its segment,src/data/dgroup_bss.asm
-g_D630,OverlayFrames,g_D630,new,medium,text overlay frames,src/data/dgroup_bss.asm
-g_D632,OverlayFramesSeg,g_D632,new,medium,text overlay frames,src/data/dgroup_bss.asm
-g_D658,overlaytimer,g_D658,new,medium,text overlay timer,src/data/dgroup_bss.asm
-g_D65A,overlaystate,g_D65A,new,medium,text overlay state (1..5),src/data/dgroup_bss.asm
-g_D65C,overlayscript,g_D65C,new,medium,text overlay script pointer (offset),src/data/dgroup_bss.asm
-g_D65E,overlayscriptseg,g_D65E,new,medium,its segment,src/data/dgroup_bss.asm
-g_D660,scorerflags,g_D660,new,medium,scorer milestone flags,src/data/dgroup_bss.asm
-g_D661,scorerflags2,g_D661,new,medium,second scorer milestone flags,src/data/dgroup_bss.asm
-g_D662,gamevar1,g_D662,new,medium,game variable saved with the game,src/data/dgroup_bss.asm
-g_D663,gamevar2,g_D663,new,medium,game variable cleared by ResetGameVars,src/data/dgroup_bss.asm
-g_D664,gamevar3,g_D664,new,medium,game variable saved with the game,src/data/dgroup_bss.asm
-g_D666,gamevar4,g_D666,new,medium,game variable saved with the game,src/data/dgroup_bss.asm
-g_D668,stoppagetime,g_D668,new,medium,clock at the last stoppage,src/data/dgroup_bss.asm
-g_D66A,gamevar5,g_D66A,new,medium,game variable saved with the game,src/data/dgroup_bss.asm
-g_D66D,regd0_b1,g_D66D,new,medium,regd0 high byte,src/data/dgroup_bss.asm
-g_D66E,regd0_w2,g_D66E,new,medium,regd0 high word,src/data/dgroup_bss.asm
-g_D670,gamevar6,g_D670,new,medium,game variable saved with the game,src/data/dgroup_bss.asm
-g_D673,regd1_b1,g_D673,new,medium,regd1 byte +1,src/data/dgroup_bss.asm
-g_D674,regd1_w2,g_D674,new,medium,regd1 high word,src/data/dgroup_bss.asm
-g_D678,PenBuf_b2,g_D678,new,medium,penalty buffer from +2,src/data/dgroup_bss.asm
-g_D6BA,regd2_w2,g_D6BA,new,medium,regd2 high word,src/data/dgroup_bss.asm
-g_D6BC,gamevar7,g_D6BC,new,medium,game variable saved with the game,src/data/dgroup_bss.asm
-g_D6BE,gamevar8,g_D6BE,new,medium,game variable saved with the game,src/data/dgroup_bss.asm
-g_D6C2,regd3_w2,g_D6C2,new,medium,regd3 high word,src/data/dgroup_bss.asm
-g_D6C4,crowdheat,g_D6C4,new,medium,"crowd heat, raised by goals and shots",src/data/dgroup_bss.asm
-g_D6C7,PBnum_b1,g_D6C7,new,medium,away penalty box count (PBnum+1),src/data/dgroup_bss.asm
-g_D6CA,regd4_w2,g_D6CA,new,medium,regd4 high word,src/data/dgroup_bss.asm
-g_D6CE,ovltimer2,g_D6CE,new,medium,frame timer of the replay and intro loops,src/data/dgroup_bss.asm
-g_D6D4,GameGfx,g_D6D4,new,medium,game graphics pointer (offset),src/data/dgroup_bss.asm
-g_D6D6,GameGfxSeg,g_D6D6,new,medium,its segment,src/data/dgroup_bss.asm
-g_D6D8,NumberSprites,g_D6D8,new,medium,jersey number sprites,src/data/dgroup_bss.asm
-g_D6DA,NumberSpritesSeg,g_D6DA,new,medium,jersey number sprites,src/data/dgroup_bss.asm
-g_D700,NumberSprites2,g_D700,new,medium,second jersey number sprites,src/data/dgroup_bss.asm
-g_D702,NumberSprites2Seg,g_D702,new,medium,second jersey number sprites,src/data/dgroup_bss.asm
-g_D71C,RinkEndFrames,g_D71C,new,medium,rink end frames pointer (offset),src/data/dgroup_bss.asm
-g_D71E,RinkEndFramesSeg,g_D71E,new,medium,rink end frames,src/data/dgroup_bss.asm
-g_D9D6,dirtycount,g_D9D6,new,medium,dirty rectangle counts per page,src/data/dgroup_bss.asm
-g_D9DA,rinkobjused,g_D9DA,new,medium,rink object frame bits,src/data/dgroup_bss.asm
-g_D9FA,hilightslots,g_D9FA,new,medium,highlight slot words,src/data/dgroup_bss.asm
-g_DA06,MovieBuf,g_DA06,new,medium,movie buffer pointer (offset),src/data/dgroup_bss.asm
-g_DA08,MovieBufSeg,g_DA08,new,medium,its segment,src/data/dgroup_bss.asm
-g_DA0A,PanelShapes,g_DA0A,new,medium,panel shapes,src/data/dgroup_bss.asm
-g_DA0C,PanelShapes_b2,g_DA0C,new,medium,panel shapes from +2,src/data/dgroup_bss.asm
-g_DA0D,PanelShapes_b3,g_DA0D,new,medium,panel shapes from +3,src/data/dgroup_bss.asm
-g_DA2A,PanelClockShape,g_DA2A,new,medium,panel clock shape pointer,src/data/dgroup_bss.asm
-g_DA2C,PanelClockShapeSeg,g_DA2C,new,medium,its segment,src/data/dgroup_bss.asm
-g_DA2E,PanelScoreShape,g_DA2E,new,medium,panel score shape pointer,src/data/dgroup_bss.asm
-g_DA30,PanelScoreShapeSeg,g_DA30,new,medium,its segment,src/data/dgroup_bss.asm
-g_DA4A,PenaltyShapes,g_DA4A,new,medium,panel penalty shapes,src/data/dgroup_bss.asm
-g_DA4C,PenaltyShapesSeg,g_DA4C,new,medium,panel penalty shapes,src/data/dgroup_bss.asm
-g_DA72,PenaltyShape,g_DA72,new,medium,panel penalty shape,src/data/dgroup_bss.asm
-g_DA74,PenaltyShapeSeg,g_DA74,new,medium,its segment,src/data/dgroup_bss.asm
-g_DA76,ClockDigits,g_DA76,new,medium,panel clock digit shapes,src/data/dgroup_bss.asm
-g_DA78,ClockDigitsSeg,g_DA78,new,medium,panel clock digit shapes,src/data/dgroup_bss.asm
-g_DA9E,ClockColonShape,g_DA9E,new,medium,panel clock colon shape,src/data/dgroup_bss.asm
-g_DAA2,ScoreDigits,g_DAA2,new,medium,panel score digit shapes,src/data/dgroup_bss.asm
-g_DAA4,ScoreDigitsSeg,g_DAA4,new,medium,panel score digit shapes,src/data/dgroup_bss.asm
-g_DACE,ReplayFont,g_DACE,new,medium,replay font pointer (offset),src/data/dgroup_bss.asm
-g_DAD0,ReplayFontSeg,g_DAD0,new,medium,its segment,src/data/dgroup_bss.asm
-g_DAD2,replaymousex,g_DAD2,new,medium,replay pointer x,src/data/dgroup_bss.asm
-g_DAD4,replaymousey,g_DAD4,new,medium,replay pointer y,src/data/dgroup_bss.asm
-g_DAD6,replaydx,g_DAD6,new,medium,replay pointer x step,src/data/dgroup_bss.asm
-g_DAD8,replayspeed,g_DAD8,new,medium,replay speed,src/data/dgroup_bss.asm
-g_DADA,ReplayGadgets,g_DADA,new,medium,replay gadget shapes,src/data/dgroup_bss.asm
-g_DADC,ReplayGadgetsSeg,g_DADC,new,medium,replay gadget shapes,src/data/dgroup_bss.asm
-g_DADE,ReplayGadgets2,g_DADE,new,medium,further replay gadget shapes,src/data/dgroup_bss.asm
-g_DAE6,ReplayPanel,g_DAE6,new,medium,replay panel shape,src/data/dgroup_bss.asm
-g_DAE8,ReplayPanelSeg,g_DAE8,new,medium,its segment,src/data/dgroup_bss.asm
-g_DAEA,ReplayPanels,g_DAEA,new,medium,further replay panel shapes,src/data/dgroup_bss.asm
-g_DAFE,ReplayPointer,g_DAFE,new,medium,replay pointer shape,src/data/dgroup_bss.asm
-g_DB00,ReplayPointerSeg,g_DB00,new,medium,its segment,src/data/dgroup_bss.asm
-g_DB02,ReplayPointers,g_DB02,new,medium,further replay pointer shapes,src/data/dgroup_bss.asm
-g_DB10,ReplayBack,g_DB10,new,medium,replay background shape,src/data/dgroup_bss.asm
-g_DB12,ReplayBackSeg,g_DB12,new,medium,its segment,src/data/dgroup_bss.asm
-g_DB14,ReplayBack2,g_DB14,new,medium,second replay background shape,src/data/dgroup_bss.asm
-g_DB16,replaysaved,g_DB16,new,medium,replay saved flag,src/data/dgroup_bss.asm
-g_DB18,replayplaying,g_DB18,new,medium,replay playing flag,src/data/dgroup_bss.asm
-g_DB1A,replaystart,g_DB1A,new,medium,replay start frame,src/data/dgroup_bss.asm
-g_DB1C,replayend,g_DB1C,new,medium,replay end frame,src/data/dgroup_bss.asm
-g_DB20,replaypick,g_DB20,new,medium,player picked in the replay,src/data/dgroup_bss.asm
-g_DB22,replayfollow,g_DB22,new,medium,player the replay follows (-1 none),src/data/dgroup_bss.asm
-g_DB24,replayfollow2,g_DB24,new,medium,previous followed player,src/data/dgroup_bss.asm
-g_DB26,replayfwd,g_DB26,new,medium,replay direction,src/data/dgroup_bss.asm
-g_DB28,replaybutton,g_DB28,new,medium,replay button pressed,src/data/dgroup_bss.asm
-g_DB2A,replaystep,g_DB2A,new,medium,replay step,src/data/dgroup_bss.asm
-g_DB2C,replaysavestate,g_DB2C,new,medium,replay save state,src/data/dgroup_bss.asm
-g_DB2E,rpl_x,g_DB2E,new,medium,replay frame: object x,src/data/dgroup_bss.asm
-g_DB4A,rpl_puckx,g_DB4A,new,medium,replay frame: puck x,src/data/dgroup_bss.asm
-g_DB4C,rpl_puckframe,g_DB4C,new,medium,replay frame: puck frame,src/data/dgroup_bss.asm
-g_DB50,rpl_y,g_DB50,new,medium,replay frame: object y,src/data/dgroup_bss.asm
-g_DB6C,rpl_pucky,g_DB6C,new,medium,replay frame: puck y,src/data/dgroup_bss.asm
-g_DB6E,rpl_shadow,g_DB6E,new,medium,replay frame: puck shadow,src/data/dgroup_bss.asm
-g_DB72,rpl_frame,g_DB72,new,medium,replay frame: object frame,src/data/dgroup_bss.asm
-g_DB8E,rpl_reff,g_DB8E,new,medium,replay frame: referee frame,src/data/dgroup_bss.asm
-g_DB90,rpl_door,g_DB90,new,medium,replay frame: door frame,src/data/dgroup_bss.asm
-g_DB94,rpl_flags,g_DB94,new,medium,replay frame: object flags,src/data/dgroup_bss.asm
-g_DBA5,rpl_jerseys,g_DBA5,new,medium,replay frame: jerseys,src/data/dgroup_bss.asm
-g_DBB1,rpl_puckowner,g_DBB1,new,medium,replay frame: puck owner,src/data/dgroup_bss.asm
-g_DBB2,rpl_bytes,g_DBB2,new,medium,replay frame bytes,src/data/dgroup_bss.asm
-g_DBBE,rpl_camx,g_DBBE,new,medium,replay frame: camera x,src/data/dgroup_bss.asm
-g_DBC0,rpl_word,g_DBC0,new,medium,replay frame word,src/data/dgroup_bss.asm
-g_DBC2,rpl_b1,g_DBC2,new,medium,replay frame byte,src/data/dgroup_bss.asm
-g_DBC3,rpl_b2,g_DBC3,new,medium,replay frame byte,src/data/dgroup_bss.asm
-g_DBC4,rpl_b3,g_DBC4,new,medium,replay frame byte,src/data/dgroup_bss.asm
-g_DBC5,rpl_b4,g_DBC5,new,medium,replay frame byte,src/data/dgroup_bss.asm
-g_DBC6,rpl_b5,g_DBC6,new,medium,replay frame bytes,src/data/dgroup_bss.asm
-g_DBC8,rpl_w1,g_DBC8,new,medium,replay frame word,src/data/dgroup_bss.asm
-g_DBCA,rpl_w2,g_DBCA,new,medium,replay frame word,src/data/dgroup_bss.asm
-g_DBCC,rpl_words,g_DBCC,new,medium,replay frame words,src/data/dgroup_bss.asm
-g_DBF4,rpl_b6,g_DBF4,new,medium,replay frame byte,src/data/dgroup_bss.asm
-g_DBF5,rpl_b7,g_DBF5,new,medium,replay frame bytes,src/data/dgroup_bss.asm
-g_DC08,rpl_words2,g_DC08,new,medium,replay frame words,src/data/dgroup_bss.asm
-g_DC2A,defertab_a1,g_DC2A,new,medium,deferred call argument 1,src/data/dgroup_bss.asm
-g_DC2C,defertab_a2,g_DC2C,new,medium,deferred call argument 2,src/data/dgroup_bss.asm
-g_DC2E,defertab_a3,g_DC2E,new,medium,deferred call argument 3,src/data/dgroup_bss.asm
-g_DC30,defertab_a4,g_DC30,new,medium,deferred call argument 4,src/data/dgroup_bss.asm
-g_DC32,defertab_a5,g_DC32,new,medium,deferred call argument 5,src/data/dgroup_bss.asm
-g_DC34,defertab_a6,g_DC34,new,medium,deferred call argument 6,src/data/dgroup_bss.asm
-g_DC36,defertab_a7,g_DC36,new,medium,deferred call argument 7,src/data/dgroup_bss.asm
-g_DC38,defertab_fn,g_DC38,new,medium,deferred call routine offset,src/data/dgroup_bss.asm
-g_DC3A,defertab_seg,g_DC3A,new,medium,deferred call routine segment,src/data/dgroup_bss.asm
-g_DC72,gsumqueue,g_DC72,new,medium,queued game summary records,src/data/dgroup_bss.asm
-g_DCD8,introtimers,g_DCD8,new,medium,intro timers,src/data/dgroup_bss.asm
-g_DEE7,dressflags_aw,g_DEE7,new,medium,away dressed flags,src/data/dgroup_bss.asm
-g_DF32,possort,g_DF32,new,medium,players sorted by position,src/data/dgroup_bss.asm
-g_DF6A,fadex,g_DF6A,new,medium,fade area x,src/data/dgroup_bss.asm
-g_DF6C,fadey,g_DF6C,new,medium,fade area y,src/data/dgroup_bss.asm
-g_DF6E,fadew,g_DF6E,new,medium,fade area width,src/data/dgroup_bss.asm
-g_DF70,fadeh,g_DF70,new,medium,fade area height,src/data/dgroup_bss.asm
-g_E366,savedteam1,g_E366,new,medium,saved team byte,src/data/dgroup_bss.asm
-g_E367,savedteam2,g_E367,new,medium,saved team byte,src/data/dgroup_bss.asm
-g_E368,savedbyte3,g_E368,new,medium,saved game byte,src/data/dgroup_bss.asm
-g_E369,savedbyte4,g_E369,new,medium,saved game byte,src/data/dgroup_bss.asm
-g_E36A,savedbyte5,g_E36A,new,medium,saved game byte,src/data/dgroup_bss.asm
-g_E36B,lgflags,g_E36B,new,medium,league flags and buffers,src/data/dgroup_bss.asm
-g_D4F4,OOlist,g_D4F4,95 PC,medium,sorted object order list,src/data/dgroup_bss.asm
-g_D4F4,OOlist,g_D4F4,95 PC,medium,sorted object order list; OOlist_m1 and OOlist_b1 are its neighbours,src/data/dgroup_bss.asm
+g_B50C,SortCords_m2,g_B50C,new,medium,"the word before SortCords and the first two bytes of it (clearteams stores 0B80Eh, an object address)",src/data/dgroup_bss/teams.asm
+g_BD8E,TitleJingle,g_BD8E,new,medium,title jingle buffer pointer (offset),src/data/dgroup_bss/front_screens.asm
+g_BD90,TitleJingleSeg,g_BD90,new,medium,its segment,src/data/dgroup_bss/front_screens.asm
+g_BD92,TitleJingle2,g_BD92,new,medium,second title jingle buffer pointer (offset),src/data/dgroup_bss/front_screens.asm
+g_BD94,TitleJingle2Seg,g_BD94,new,medium,its segment,src/data/dgroup_bss/front_screens.asm
+g_BD96,gmrosterpos,g_BD96,new,medium,"roster position letter (C, L, R, D, G) of the game roster entries",src/data/dgroup_bss/front_screens.asm
+g_BD99,gmrosterjersey_b2,g_BD99,new,medium,game roster entry byte +3,src/data/dgroup_bss/front_screens.asm
+g_BD9A,gmrosterdot,g_BD9A,new,medium,game roster entry: the '.' after the initial,src/data/dgroup_bss/front_screens.asm
+g_BD9B,gmrosterspace,g_BD9B,new,medium,game roster entry: the space before the name,src/data/dgroup_bss/front_screens.asm
+g_BD9C,gmrostername,g_BD9C,new,medium,game roster entry names,src/data/dgroup_bss/front_screens.asm
+g_BFBC,gmroster2pos,g_BFBC,new,medium,second game roster: first byte,src/data/dgroup_bss/front_screens.asm
+g_BFBD,gmroster2jersey,g_BFBD,new,medium,second game roster: jersey bytes,src/data/dgroup_bss/front_screens.asm
+g_BFBF,gmroster2init,g_BFBF,new,medium,second game roster: initial,src/data/dgroup_bss/front_screens.asm
+g_BFC0,gmroster2dot,g_BFC0,new,medium,second game roster: the '.',src/data/dgroup_bss/front_screens.asm
+g_BFC1,gmroster2space,g_BFC1,new,medium,second game roster: the space,src/data/dgroup_bss/front_screens.asm
+g_BFC2,gmroster2name,g_BFC2,new,medium,second game roster: names,src/data/dgroup_bss/front_screens.asm
+g_C000,HomeTeamDbName,g_C000,new,medium,home team database name (32 bytes),src/data/dgroup_bss/front_screens.asm
+g_C020,AwayTeamDbName,g_C020,new,medium,away team database name (32 bytes),src/data/dgroup_bss/front_screens.asm
+g_C040,statsgoaliebufseg,g_C040,new,medium,segment of statsgoaliebuf,src/data/dgroup_bss/front_screens.asm
+g_C044,statsskaterbufseg,g_C044,new,medium,segment of statsskaterbuf,src/data/dgroup_bss/front_screens.asm
+g_C048,statsplayerbufseg,g_C048,new,medium,segment of statsplayerbuf,src/data/dgroup_bss/front_screens.asm
+g_C04C,statsteambufseg,g_C04C,new,medium,segment of statsteambuf,src/data/dgroup_bss/front_screens.asm
+g_C050,statsrosterteam,g_C050,new,medium,team shown on the roster screen,src/data/dgroup_bss/front_screens.asm
+g_C054,savedcount1,g_C054,new,medium,number of saved games of the first kind (ScanSavedGames),src/data/dgroup_bss/front_screens.asm
+g_C056,savedsel1,g_C056,new,medium,selected saved game of the first kind,src/data/dgroup_bss/front_screens.asm
+g_C058,savedtop1,g_C058,new,medium,"first saved game shown, first kind",src/data/dgroup_bss/front_screens.asm
+g_C05A,savedrows1,g_C05A,new,medium,rows of the first saved game list,src/data/dgroup_bss/front_screens.asm
+g_C05C,savednames1,g_C05C,new,medium,name pointers (offset) of the first saved game list,src/data/dgroup_bss/front_screens.asm
+g_C05E,savednames1seg,g_C05E,new,medium,further name pointers of the first list,src/data/dgroup_bss/front_screens.asm
+g_C0DC,savedcount2,g_C0DC,new,medium,number of saved games of the second kind,src/data/dgroup_bss/front_screens.asm
+g_C0E0,savedtop2,g_C0E0,new,medium,"first saved game shown, second kind",src/data/dgroup_bss/front_screens.asm
+g_C0E2,savedrows2,g_C0E2,new,medium,rows of the second list,src/data/dgroup_bss/front_screens.asm
+g_C0E4,savednames2,g_C0E4,new,medium,name pointers of the second list,src/data/dgroup_bss/front_screens.asm
+g_C164,savedcount3,g_C164,new,medium,number of saved games of the third kind,src/data/dgroup_bss/front_screens.asm
+g_C166,savedsel3,g_C166,new,medium,selected saved game of the third kind,src/data/dgroup_bss/front_screens.asm
+g_C168,savedtop3,g_C168,new,medium,"first saved game shown, third kind",src/data/dgroup_bss/front_screens.asm
+g_C16A,savedrows3,g_C16A,new,medium,rows of the third list,src/data/dgroup_bss/front_screens.asm
+g_C16C,savednames3,g_C16C,new,medium,name pointers of the third list,src/data/dgroup_bss/front_screens.asm
+g_C16E,savednames3seg,g_C16E,new,medium,further name pointers of the third list,src/data/dgroup_bss/front_screens.asm
+g_C1EE,fdlgflags,g_C1EE,new,medium,"file dialog flag bits (80h, 40h, 20h)",src/data/dgroup_bss/front_screens.asm
+g_C1EF,fdlgflags2,g_C1EF,new,medium,"file dialog flag bits, second byte",src/data/dgroup_bss/front_screens.asm
+g_C1F0,SoundDrvBuf,g_C1F0,new,medium,sound driver buffer pointer (offset),src/data/dgroup_bss/front_screens.asm
+g_C1F2,SoundDrvBufSeg,g_C1F2,new,medium,its segment,src/data/dgroup_bss/front_screens.asm
+g_C1F4,POTitleText,g_C1F4,new,medium,playoff title text (16 bytes),src/data/dgroup_bss/front_screens.asm
+g_C206,POTreeSlots,g_C206,new,medium,playoff tree slot words,src/data/dgroup_bss/front_screens.asm
+g_C224,POTreeRows,g_C224,new,medium,playoff tree row words (19h),src/data/dgroup_bss/front_screens.asm
+g_C238,standingsteam,g_C238,new,medium,team of the standings row,src/data/dgroup_bss/front_screens.asm
+g_C23A,standingsprev,g_C23A,new,medium,previous standings value,src/data/dgroup_bss/front_screens.asm
+g_C23C,standingskey,g_C23C,new,medium,standings sort key,src/data/dgroup_bss/front_screens.asm
+g_C23E,standingskey2,g_C23E,new,medium,second standings sort key,src/data/dgroup_bss/front_screens.asm
+g_C240,standingsrank,g_C240,new,medium,standings rank,src/data/dgroup_bss/front_screens.asm
+g_C242,DeskTitleText,g_C242,new,medium,sports desk title text (22 bytes),src/data/dgroup_bss/front_screens.asm
+g_C258,ScoreboardArt,g_C258,new,medium,scoreboard art pointer (offset),src/data/dgroup_bss/front_screens.asm
+g_C25A,ScoreboardArtSeg,g_C25A,new,medium,its segment,src/data/dgroup_bss/front_screens.asm
+g_C25C,RinkEndArt,g_C25C,new,medium,rink end art pointer (offset),src/data/dgroup_bss/front_screens.asm
+g_C25E,RinkEndArtSeg,g_C25E,new,medium,its segment,src/data/dgroup_bss/front_screens.asm
+g_C260,editactive,g_C260,new,medium,text field: editing active,src/data/dgroup_bss/front_screens.asm
+g_C262,editcursorx,g_C262,new,medium,text field: cursor x,src/data/dgroup_bss/front_screens.asm
+g_C264,editx,g_C264,new,medium,text field: x,src/data/dgroup_bss/front_screens.asm
+g_C266,edity,g_C266,new,medium,text field: y,src/data/dgroup_bss/front_screens.asm
+g_C268,editpos,g_C268,new,medium,text field: cursor position,src/data/dgroup_bss/front_screens.asm
+g_C26A,editlen,g_C26A,new,medium,text field: text length,src/data/dgroup_bss/front_screens.asm
+g_C26C,editmax,g_C26C,new,medium,text field: maximum width,src/data/dgroup_bss/front_screens.asm
+g_C26E,calresult,g_C26E,new,medium,calendar result (-1 none),src/data/dgroup_bss/front_screens.asm
+g_C270,calmonth,g_C270,new,medium,calendar month shown (0-11),src/data/dgroup_bss/front_screens.asm
+g_C272,calday,g_C272,new,medium,calendar day chosen (-1 none),src/data/dgroup_bss/front_screens.asm
+g_C276,floppydrive,g_C276,new,medium,floppy drive chosen,src/data/dgroup_bss/front_screens.asm
+g_C278,floppyok,g_C278,new,medium,floppy drive flags,src/data/dgroup_bss/front_screens.asm
+g_C27A,floppycount,g_C27A,new,medium,number of floppy drives,src/data/dgroup_bss/front_screens.asm
+g_C27C,tradestate,g_C27C,new,medium,"trade screen state (1 done, -1 cancelled, 0 running)",src/data/dgroup_bss/front_screens.asm
+g_C27E,savleague,g_C27E,new,medium,league name of the game being played (14 bytes),src/data/dgroup_bss/front_screens.asm
+g_C28C,savleague2,g_C28C,new,medium,second league name (14 bytes),src/data/dgroup_bss/front_screens.asm
+g_C29A,lgschedrec,g_C29A,new,medium,schedule record of the league game,src/data/dgroup_bss/front_screens.asm
+g_C29B,lgschedrec_b1,g_C29B,new,medium,schedule record byte +1,src/data/dgroup_bss/front_screens.asm
+g_C29C,lgschedrec_b2,g_C29C,new,medium,schedule record byte +2,src/data/dgroup_bss/front_screens.asm
+g_C29D,lgschedrec_b3,g_C29D,new,medium,schedule record byte +3,src/data/dgroup_bss/front_screens.asm
+g_C29F,lgschedrec_b5,g_C29F,new,medium,schedule record byte +5,src/data/dgroup_bss/front_screens.asm
+g_C2A2,calcursor,g_C2A2,new,medium,calendar cursor day,src/data/dgroup_bss/front_screens.asm
+g_C2A4,calcursor2,g_C2A4,new,medium,calendar cursor row,src/data/dgroup_bss/front_screens.asm
+g_C2A6,lghometeam,g_C2A6,new,medium,home team of the league game,src/data/dgroup_bss/front_screens.asm
+g_C2A8,lgoppteam,g_C2A8,new,medium,other team of the league game,src/data/dgroup_bss/front_screens.asm
+g_C2AA,lggamestate,g_C2AA,new,medium,league game state (-1 none),src/data/dgroup_bss/front_screens.asm
+g_C2AC,lgreadword,g_C2AC,new,medium,word read with the league game reference,src/data/dgroup_bss/front_screens.asm
+g_C2AE,lgreadword2,g_C2AE,new,medium,second word read with the league game reference,src/data/dgroup_bss/front_screens.asm
+g_C2B0,lggameidx,g_C2B0,new,medium,index of the league game,src/data/dgroup_bss/front_screens.asm
+g_C2B4,statsbgseg,g_C2B4,new,medium,stats background shape segment,src/data/dgroup_bss/front_screens.asm
+g_C2C2,traderows,g_C2C2,new,medium,trade screen rows,src/data/dgroup_bss/front_screens.asm
+g_C2C3,traderows_b1,g_C2C3,new,medium,trade screen rows from +1,src/data/dgroup_bss/front_screens.asm
+g_C2C4,traderows_b2,g_C2C4,new,medium,trade screen row bytes from +2,src/data/dgroup_bss/front_screens.asm
+g_C52A,traderoster,g_C52A,new,medium,trade roster (BuildTradeRoster),src/data/dgroup_bss/front_screens.asm
+g_C792,tradesel,g_C792,new,medium,selected trade rows,src/data/dgroup_bss/front_screens.asm
+g_C794,tradesel2,g_C794,new,medium,second trade selection word,src/data/dgroup_bss/front_screens.asm
+g_C796,tradescroll,g_C796,new,medium,trade list scroll,src/data/dgroup_bss/front_screens.asm
+g_C798,tradescroll2,g_C798,new,medium,second trade scroll word,src/data/dgroup_bss/front_screens.asm
+g_C79A,tradecursor,g_C79A,new,medium,trade screen cursor,src/data/dgroup_bss/front_screens.asm
+g_C79C,tradecolour,g_C79C,new,medium,trade screen row colour,src/data/dgroup_bss/front_screens.asm
+g_C79E,tradecolour2,g_C79E,new,medium,second trade row colour,src/data/dgroup_bss/front_screens.asm
+g_C7A0,mergestate,g_C7A0,new,medium,merge state of the league files,src/data/dgroup_bss/front_screens.asm
+g_C7A2,AwardRawA,g_C7A2,new,medium,award art raw handle,src/data/dgroup_bss/front_screens.asm
+g_C7A4,AwardRawB,g_C7A4,new,medium,second award art raw handle,src/data/dgroup_bss/front_screens.asm
+g_C7A6,AwardRawC,g_C7A6,new,medium,third award art raw handle,src/data/dgroup_bss/front_screens.asm
+g_C7A8,AwardRawD,g_C7A8,new,medium,fourth award art raw handle,src/data/dgroup_bss/front_screens.asm
+g_C7AA,AwardFrames,g_C7AA,new,medium,award EMS frames (offset),src/data/dgroup_bss/front_screens.asm
+g_C7AC,AwardFramesSeg,g_C7AC,new,medium,award EMS frames,src/data/dgroup_bss/front_screens.asm
+g_C7D2,AwardFrames2,g_C7D2,new,medium,second award EMS frames,src/data/dgroup_bss/front_screens.asm
+g_C7D4,AwardFrames2Seg,g_C7D4,new,medium,second award EMS frames,src/data/dgroup_bss/front_screens.asm
+g_C7FA,AwardFrames3,g_C7FA,new,medium,third award EMS frame,src/data/dgroup_bss/front_screens.asm
+g_C7FC,AwardFrames3Seg,g_C7FC,new,medium,third award EMS frames,src/data/dgroup_bss/front_screens.asm
+g_C806,AwardScores,g_C806,new,medium,award score bytes (ShowAwardScreens),src/data/dgroup_bss/front_screens.asm
+g_CC05,AwardText,g_CC05,new,medium,award text buffer,src/data/dgroup_bss/front_screens.asm
+g_CC29,AwardCandidates,g_CC29,new,medium,award candidate bytes (PickAwardWinners),src/data/dgroup_bss/front_screens.asm
+g_CEE8,standingstab,g_CEE8,new,medium,standings table (26-byte rows),src/data/dgroup_bss/front_screens.asm
+g_CF18,rostertop,g_CF18,new,medium,roster screen first row,src/data/dgroup_bss/front_screens.asm
+g_CF1A,statscardteam,g_CF1A,new,medium,stats card team,src/data/dgroup_bss/front_screens.asm
+g_CF1B,statscardplayer,g_CF1B,new,medium,stats card player,src/data/dgroup_bss/front_screens.asm
+g_CF1D,rosterfilter,g_CF1D,new,medium,roster filter text,src/data/dgroup_bss/front_screens.asm
+g_CF2D,rosterfilter2,g_CF2D,new,medium,second roster filter text,src/data/dgroup_bss/front_screens.asm
+g_CF3E,statsfilepos,g_CF3E,new,medium,stats file position (low),src/data/dgroup_bss/front_screens.asm
+g_CF40,statsfileposhi,g_CF40,new,medium,stats file position (high),src/data/dgroup_bss/front_screens.asm
+g_CF42,statscardrec,g_CF42,new,medium,stats card record pointer,src/data/dgroup_bss/front_screens.asm
+g_CF44,statscardrecseg,g_CF44,new,medium,its segment,src/data/dgroup_bss/front_screens.asm
+g_CF46,statscardrec2,g_CF46,new,medium,second stats card record pointer,src/data/dgroup_bss/front_screens.asm
+g_CF48,statscardrec2seg,g_CF48,new,medium,its segment,src/data/dgroup_bss/front_screens.asm
+g_CF4A,statscardgoalie,g_CF4A,new,medium,stats card goalie flag,src/data/dgroup_bss/front_screens.asm
+g_CF4C,statscardrec3,g_CF4C,new,medium,third stats card record word,src/data/dgroup_bss/front_screens.asm
+g_CF4E,rosterrows,g_CF4E,new,medium,roster screen row records,src/data/dgroup_bss/front_screens.asm
+g_CF80,rosterrowptrs,g_CF80,new,medium,roster screen row pointers,src/data/dgroup_bss/front_screens.asm
+g_CFB2,rosterrows2,g_CFB2,new,medium,second roster row records,src/data/dgroup_bss/front_screens.asm
+g_CFBC,rosterrowptrs2,g_CFBC,new,medium,second roster row pointers,src/data/dgroup_bss/front_screens.asm
+g_CFC6,rostersel,g_CFC6,new,medium,roster selected row,src/data/dgroup_bss/front_screens.asm
+g_CFC8,statsrecs,g_CFC8,new,medium,stats records pointer (offset),src/data/dgroup_bss/front_screens.asm
+g_CFCA,statsrecsseg,g_CFCA,new,medium,its segment,src/data/dgroup_bss/front_screens.asm
+g_CFCC,statscmpsum,g_CFCC,new,medium,comparator sum,src/data/dgroup_bss/front_screens.asm
+g_CFCE,statscmpsum2,g_CFCE,new,medium,"comparator sum, high word",src/data/dgroup_bss/front_screens.asm
+g_CFD4,statstext,g_CFD4,new,medium,text buffer of DrawTextFmt (40 bytes),src/data/dgroup_bss/front_screens.asm
+g_CFFC,cupseries,g_CFFC,new,medium,cup series buffer pointer (offset),src/data/dgroup_bss/front_screens.asm
+g_CFFE,cupseriesseg,g_CFFE,new,medium,its segment,src/data/dgroup_bss/front_screens.asm
+g_D002,lastgoalx,g_D002,new,medium,last goal position x,src/data/dgroup_bss/front_screens.asm
+g_D004,crowdtimer,g_D004,new,medium,crowd timer,src/data/dgroup_bss/front_screens.asm
+g_D008,lastgoaly,g_D008,new,medium,last goal position y,src/data/dgroup_bss/game_state.asm
+g_D00A,crowdcount,g_D00A,new,medium,crowd counter,src/data/dgroup_bss/game_state.asm
+g_D00C,cleared1,g_D00C,new,medium,game variable cleared by cleargamevars,src/data/dgroup_bss/game_state.asm
+g_D00E,cleared2,g_D00E,new,medium,game variable cleared by cleargamevars,src/data/dgroup_bss/game_state.asm
+g_D010,crowdsum,g_D010,new,medium,crowd excitement sum (low),src/data/dgroup_bss/game_state.asm
+g_D012,crowdsumhi,g_D012,new,medium,crowd excitement sum (high),src/data/dgroup_bss/game_state.asm
+g_D014,replayrecptr,g_D014,new,medium,replay record pointer (offset),src/data/dgroup_bss/game_state.asm
+g_D016,replayrecseg,g_D016,new,medium,replay record pointer (segment),src/data/dgroup_bss/game_state.asm
+g_D018,replayplay,g_D018,new,medium,replay play pointer (offset),src/data/dgroup_bss/game_state.asm
+g_D01A,replayplayseg,g_D01A,new,medium,replay play pointer (segment),src/data/dgroup_bss/game_state.asm
+g_D01C,plstatsoff,g_D01C,new,medium,player stats offsets,src/data/dgroup_bss/game_state.asm
+g_D01E,plstatsoff2,g_D01E,new,medium,"player stats offsets, second word",src/data/dgroup_bss/game_state.asm
+g_D020,plstatsoff3,g_D020,new,medium,"player stats offsets, third word",src/data/dgroup_bss/game_state.asm
+g_D022,plstatsrecs,g_D022,new,medium,player stats offset table (394 bytes),src/data/dgroup_bss/game_state.asm
+g_D1AC,gameclock2,g_D1AC,new,medium,game clock copy,src/data/dgroup_bss/game_state.asm
+g_D2C6,SpriteFrames,g_D2C6,new,medium,sprite frame pointers (offset),src/data/dgroup_bss/game_state.asm
+g_D2C8,SpriteFramesSeg,g_D2C8,new,medium,sprite frame pointers,src/data/dgroup_bss/game_state.asm
+g_D446,NumberFrames,g_D446,new,medium,number sprite frames,src/data/dgroup_bss/game_state.asm
+g_D448,NumberFramesSeg,g_D448,new,medium,number sprite frames,src/data/dgroup_bss/game_state.asm
+g_D456,NumberFrames2,g_D456,new,medium,second number sprite frames,src/data/dgroup_bss/game_state.asm
+g_D458,NumberFrames2Seg,g_D458,new,medium,second number sprite frames,src/data/dgroup_bss/game_state.asm
+g_D46A,gameframe,g_D46A,new,medium,game frame counter,src/data/dgroup_bss/game_state.asm
+g_D46C,controlled,g_D46C,new,medium,controlled player per controller,src/data/dgroup_bss/game_state.asm
+g_D46E,controlled2,g_D46E,new,medium,second controlled player word,src/data/dgroup_bss/game_state.asm
+g_D474,objxlist,g_D474,new,medium,object x list (34 bytes),src/data/dgroup_bss/game_state.asm
+g_D496,objylist,g_D496,new,medium,object y list (34 bytes),src/data/dgroup_bss/game_state.asm
+g_D4F3,OOlist_m1,g_D4F3,new,medium,byte before OOlist,src/data/dgroup_bss/game_state.asm
+g_D4F5,OOlist_b1,g_D4F5,new,medium,OOlist from +1,src/data/dgroup_bss/game_state.asm
+g_D604,fofdata,g_D604,new,medium,faceoff data word,src/data/dgroup_bss/game_state.asm
+g_D606,fofdata_w2,g_D606,new,medium,faceoff data word +2,src/data/dgroup_bss/game_state.asm
+g_D608,fofdata_w4,g_D608,new,medium,faceoff data word +4,src/data/dgroup_bss/game_state.asm
+g_D60A,fofdata_w6,g_D60A,new,medium,faceoff data word +6,src/data/dgroup_bss/game_state.asm
+g_D60C,fofdata_w8,g_D60C,new,medium,faceoff data word +8,src/data/dgroup_bss/game_state.asm
+g_D60E,mousex,g_D60E,new,medium,mouse x,src/data/dgroup_bss/game_state.asm
+g_D610,mousey,g_D610,new,medium,mouse y,src/data/dgroup_bss/game_state.asm
+g_D612,savedword1,g_D612,new,medium,game variable saved with the game,src/data/dgroup_bss/game_state.asm
+g_D614,savedword2,g_D614,new,medium,game variable saved with the game,src/data/dgroup_bss/game_state.asm
+g_D618,GoalState_m6,g_D618,new,medium,home goal state byte,src/data/dgroup_bss/game_state.asm
+g_D619,GoalState_m5,g_D619,new,medium,home goal state bytes,src/data/dgroup_bss/game_state.asm
+g_D61C,GoalState_m2,g_D61C,new,medium,away goal state byte,src/data/dgroup_bss/game_state.asm
+g_D61D,GoalState_m1,g_D61D,new,medium,away goal state byte,src/data/dgroup_bss/game_state.asm
+g_D62B,iflags_b1,g_D62B,new,medium,iflags high byte,src/data/dgroup_bss/game_state.asm
+g_D62C,OverlayGfx,g_D62C,new,medium,text overlay graphics pointer (offset),src/data/dgroup_bss/game_state.asm
+g_D62E,OverlayGfxSeg,g_D62E,new,medium,its segment,src/data/dgroup_bss/game_state.asm
+g_D630,OverlayFrames,g_D630,new,medium,text overlay frames,src/data/dgroup_bss/game_state.asm
+g_D632,OverlayFramesSeg,g_D632,new,medium,text overlay frames,src/data/dgroup_bss/game_state.asm
+g_D658,overlaytimer,g_D658,new,medium,text overlay timer,src/data/dgroup_bss/game_state.asm
+g_D65A,overlaystate,g_D65A,new,medium,text overlay state (1..5),src/data/dgroup_bss/game_state.asm
+g_D65C,overlayscript,g_D65C,new,medium,text overlay script pointer (offset),src/data/dgroup_bss/game_state.asm
+g_D65E,overlayscriptseg,g_D65E,new,medium,its segment,src/data/dgroup_bss/game_state.asm
+g_D660,scorerflags,g_D660,new,medium,scorer milestone flags,src/data/dgroup_bss/game_state.asm
+g_D661,scorerflags2,g_D661,new,medium,second scorer milestone flags,src/data/dgroup_bss/game_state.asm
+g_D662,gamevar1,g_D662,new,medium,game variable saved with the game,src/data/dgroup_bss/game_state.asm
+g_D663,gamevar2,g_D663,new,medium,game variable cleared by ResetGameVars,src/data/dgroup_bss/game_state.asm
+g_D664,gamevar3,g_D664,new,medium,game variable saved with the game,src/data/dgroup_bss/game_state.asm
+g_D666,gamevar4,g_D666,new,medium,game variable saved with the game,src/data/dgroup_bss/game_state.asm
+g_D668,stoppagetime,g_D668,new,medium,clock at the last stoppage,src/data/dgroup_bss/game_state.asm
+g_D66A,gamevar5,g_D66A,new,medium,game variable saved with the game,src/data/dgroup_bss/game_state.asm
+g_D66D,regd0_b1,g_D66D,new,medium,regd0 high byte,src/data/dgroup_bss/game_state.asm
+g_D66E,regd0_w2,g_D66E,new,medium,regd0 high word,src/data/dgroup_bss/game_state.asm
+g_D670,gamevar6,g_D670,new,medium,game variable saved with the game,src/data/dgroup_bss/game_state.asm
+g_D673,regd1_b1,g_D673,new,medium,regd1 byte +1,src/data/dgroup_bss/game_state.asm
+g_D674,regd1_w2,g_D674,new,medium,regd1 high word,src/data/dgroup_bss/game_state.asm
+g_D678,PenBuf_b2,g_D678,new,medium,penalty buffer from +2,src/data/dgroup_bss/game_state.asm
+g_D6BA,regd2_w2,g_D6BA,new,medium,regd2 high word,src/data/dgroup_bss/game_state.asm
+g_D6BC,gamevar7,g_D6BC,new,medium,game variable saved with the game,src/data/dgroup_bss/game_state.asm
+g_D6BE,gamevar8,g_D6BE,new,medium,game variable saved with the game,src/data/dgroup_bss/game_state.asm
+g_D6C2,regd3_w2,g_D6C2,new,medium,regd3 high word,src/data/dgroup_bss/game_state.asm
+g_D6C4,crowdheat,g_D6C4,new,medium,"crowd heat, raised by goals and shots",src/data/dgroup_bss/game_state.asm
+g_D6C7,PBnum_b1,g_D6C7,new,medium,away penalty box count (PBnum+1),src/data/dgroup_bss/game_state.asm
+g_D6CA,regd4_w2,g_D6CA,new,medium,regd4 high word,src/data/dgroup_bss/game_state.asm
+g_D6CE,ovltimer2,g_D6CE,new,medium,frame timer of the replay and intro loops,src/data/dgroup_bss/game_state.asm
+g_D6D4,GameGfx,g_D6D4,new,medium,game graphics pointer (offset),src/data/dgroup_bss/game_state.asm
+g_D6D6,GameGfxSeg,g_D6D6,new,medium,its segment,src/data/dgroup_bss/game_state.asm
+g_D6D8,NumberSprites,g_D6D8,new,medium,jersey number sprites,src/data/dgroup_bss/game_state.asm
+g_D6DA,NumberSpritesSeg,g_D6DA,new,medium,jersey number sprites,src/data/dgroup_bss/game_state.asm
+g_D700,NumberSprites2,g_D700,new,medium,second jersey number sprites,src/data/dgroup_bss/game_state.asm
+g_D702,NumberSprites2Seg,g_D702,new,medium,second jersey number sprites,src/data/dgroup_bss/game_state.asm
+g_D71C,RinkEndFrames,g_D71C,new,medium,rink end frames pointer (offset),src/data/dgroup_bss/game_state.asm
+g_D71E,RinkEndFramesSeg,g_D71E,new,medium,rink end frames,src/data/dgroup_bss/game_state.asm
+g_D9D6,dirtycount,g_D9D6,new,medium,dirty rectangle counts per page,src/data/dgroup_bss/game_state.asm
+g_D9DA,rinkobjused,g_D9DA,new,medium,rink object frame bits,src/data/dgroup_bss/game_state.asm
+g_D9FA,hilightslots,g_D9FA,new,medium,highlight slot words,src/data/dgroup_bss/game_state.asm
+g_DA06,MovieBuf,g_DA06,new,medium,movie buffer pointer (offset),src/data/dgroup_bss/game_state.asm
+g_DA08,MovieBufSeg,g_DA08,new,medium,its segment,src/data/dgroup_bss/game_state.asm
+g_DA0A,PanelShapes,g_DA0A,new,medium,panel shapes,src/data/dgroup_bss/game_state.asm
+g_DA0C,PanelShapes_b2,g_DA0C,new,medium,panel shapes from +2,src/data/dgroup_bss/game_state.asm
+g_DA0D,PanelShapes_b3,g_DA0D,new,medium,panel shapes from +3,src/data/dgroup_bss/game_state.asm
+g_DA2A,PanelClockShape,g_DA2A,new,medium,panel clock shape pointer,src/data/dgroup_bss/game_state.asm
+g_DA2C,PanelClockShapeSeg,g_DA2C,new,medium,its segment,src/data/dgroup_bss/game_state.asm
+g_DA2E,PanelScoreShape,g_DA2E,new,medium,panel score shape pointer,src/data/dgroup_bss/game_state.asm
+g_DA30,PanelScoreShapeSeg,g_DA30,new,medium,its segment,src/data/dgroup_bss/game_state.asm
+g_DA4A,PenaltyShapes,g_DA4A,new,medium,panel penalty shapes,src/data/dgroup_bss/game_state.asm
+g_DA4C,PenaltyShapesSeg,g_DA4C,new,medium,panel penalty shapes,src/data/dgroup_bss/game_state.asm
+g_DA72,PenaltyShape,g_DA72,new,medium,panel penalty shape,src/data/dgroup_bss/game_state.asm
+g_DA74,PenaltyShapeSeg,g_DA74,new,medium,its segment,src/data/dgroup_bss/game_state.asm
+g_DA76,ClockDigits,g_DA76,new,medium,panel clock digit shapes,src/data/dgroup_bss/game_state.asm
+g_DA78,ClockDigitsSeg,g_DA78,new,medium,panel clock digit shapes,src/data/dgroup_bss/game_state.asm
+g_DA9E,ClockColonShape,g_DA9E,new,medium,panel clock colon shape,src/data/dgroup_bss/game_state.asm
+g_DAA2,ScoreDigits,g_DAA2,new,medium,panel score digit shapes,src/data/dgroup_bss/game_state.asm
+g_DAA4,ScoreDigitsSeg,g_DAA4,new,medium,panel score digit shapes,src/data/dgroup_bss/game_state.asm
+g_DACE,ReplayFont,g_DACE,new,medium,replay font pointer (offset),src/data/dgroup_bss/game_state.asm
+g_DAD0,ReplayFontSeg,g_DAD0,new,medium,its segment,src/data/dgroup_bss/game_state.asm
+g_DAD2,replaymousex,g_DAD2,new,medium,replay pointer x,src/data/dgroup_bss/game_state.asm
+g_DAD4,replaymousey,g_DAD4,new,medium,replay pointer y,src/data/dgroup_bss/game_state.asm
+g_DAD6,replaydx,g_DAD6,new,medium,replay pointer x step,src/data/dgroup_bss/game_state.asm
+g_DAD8,replayspeed,g_DAD8,new,medium,replay speed,src/data/dgroup_bss/game_state.asm
+g_DADA,ReplayGadgets,g_DADA,new,medium,replay gadget shapes,src/data/dgroup_bss/game_state.asm
+g_DADC,ReplayGadgetsSeg,g_DADC,new,medium,replay gadget shapes,src/data/dgroup_bss/game_state.asm
+g_DADE,ReplayGadgets2,g_DADE,new,medium,further replay gadget shapes,src/data/dgroup_bss/game_state.asm
+g_DAE6,ReplayPanel,g_DAE6,new,medium,replay panel shape,src/data/dgroup_bss/game_state.asm
+g_DAE8,ReplayPanelSeg,g_DAE8,new,medium,its segment,src/data/dgroup_bss/game_state.asm
+g_DAEA,ReplayPanels,g_DAEA,new,medium,further replay panel shapes,src/data/dgroup_bss/game_state.asm
+g_DAFE,ReplayPointer,g_DAFE,new,medium,replay pointer shape,src/data/dgroup_bss/game_state.asm
+g_DB00,ReplayPointerSeg,g_DB00,new,medium,its segment,src/data/dgroup_bss/game_state.asm
+g_DB02,ReplayPointers,g_DB02,new,medium,further replay pointer shapes,src/data/dgroup_bss/game_state.asm
+g_DB10,ReplayBack,g_DB10,new,medium,replay background shape,src/data/dgroup_bss/game_state.asm
+g_DB12,ReplayBackSeg,g_DB12,new,medium,its segment,src/data/dgroup_bss/game_state.asm
+g_DB14,ReplayBack2,g_DB14,new,medium,second replay background shape,src/data/dgroup_bss/game_state.asm
+g_DB16,replaysaved,g_DB16,new,medium,replay saved flag,src/data/dgroup_bss/game_state.asm
+g_DB18,replayplaying,g_DB18,new,medium,replay playing flag,src/data/dgroup_bss/game_state.asm
+g_DB1A,replaystart,g_DB1A,new,medium,replay start frame,src/data/dgroup_bss/game_state.asm
+g_DB1C,replayend,g_DB1C,new,medium,replay end frame,src/data/dgroup_bss/game_state.asm
+g_DB20,replaypick,g_DB20,new,medium,player picked in the replay,src/data/dgroup_bss/game_state.asm
+g_DB22,replayfollow,g_DB22,new,medium,player the replay follows (-1 none),src/data/dgroup_bss/game_state.asm
+g_DB24,replayfollow2,g_DB24,new,medium,previous followed player,src/data/dgroup_bss/game_state.asm
+g_DB26,replayfwd,g_DB26,new,medium,replay direction,src/data/dgroup_bss/game_state.asm
+g_DB28,replaybutton,g_DB28,new,medium,replay button pressed,src/data/dgroup_bss/game_state.asm
+g_DB2A,replaystep,g_DB2A,new,medium,replay step,src/data/dgroup_bss/game_state.asm
+g_DB2C,replaysavestate,g_DB2C,new,medium,replay save state,src/data/dgroup_bss/game_state.asm
+g_DB2E,rpl_x,g_DB2E,new,medium,replay frame: object x,src/data/dgroup_bss/game_state.asm
+g_DB4A,rpl_puckx,g_DB4A,new,medium,replay frame: puck x,src/data/dgroup_bss/game_state.asm
+g_DB4C,rpl_puckframe,g_DB4C,new,medium,replay frame: puck frame,src/data/dgroup_bss/game_state.asm
+g_DB50,rpl_y,g_DB50,new,medium,replay frame: object y,src/data/dgroup_bss/game_state.asm
+g_DB6C,rpl_pucky,g_DB6C,new,medium,replay frame: puck y,src/data/dgroup_bss/game_state.asm
+g_DB6E,rpl_shadow,g_DB6E,new,medium,replay frame: puck shadow,src/data/dgroup_bss/game_state.asm
+g_DB72,rpl_frame,g_DB72,new,medium,replay frame: object frame,src/data/dgroup_bss/game_state.asm
+g_DB8E,rpl_reff,g_DB8E,new,medium,replay frame: referee frame,src/data/dgroup_bss/game_state.asm
+g_DB90,rpl_door,g_DB90,new,medium,replay frame: door frame,src/data/dgroup_bss/game_state.asm
+g_DB94,rpl_flags,g_DB94,new,medium,replay frame: object flags,src/data/dgroup_bss/game_state.asm
+g_DBA5,rpl_jerseys,g_DBA5,new,medium,replay frame: jerseys,src/data/dgroup_bss/game_state.asm
+g_DBB1,rpl_puckowner,g_DBB1,new,medium,replay frame: puck owner,src/data/dgroup_bss/game_state.asm
+g_DBB2,rpl_bytes,g_DBB2,new,medium,replay frame bytes,src/data/dgroup_bss/game_state.asm
+g_DBBE,rpl_camx,g_DBBE,new,medium,replay frame: camera x,src/data/dgroup_bss/game_state.asm
+g_DBC0,rpl_word,g_DBC0,new,medium,replay frame word,src/data/dgroup_bss/game_state.asm
+g_DBC2,rpl_b1,g_DBC2,new,medium,replay frame byte,src/data/dgroup_bss/game_state.asm
+g_DBC3,rpl_b2,g_DBC3,new,medium,replay frame byte,src/data/dgroup_bss/game_state.asm
+g_DBC4,rpl_b3,g_DBC4,new,medium,replay frame byte,src/data/dgroup_bss/game_state.asm
+g_DBC5,rpl_b4,g_DBC5,new,medium,replay frame byte,src/data/dgroup_bss/game_state.asm
+g_DBC6,rpl_b5,g_DBC6,new,medium,replay frame bytes,src/data/dgroup_bss/game_state.asm
+g_DBC8,rpl_w1,g_DBC8,new,medium,replay frame word,src/data/dgroup_bss/game_state.asm
+g_DBCA,rpl_w2,g_DBCA,new,medium,replay frame word,src/data/dgroup_bss/game_state.asm
+g_DBCC,rpl_words,g_DBCC,new,medium,replay frame words,src/data/dgroup_bss/game_state.asm
+g_DBF4,rpl_b6,g_DBF4,new,medium,replay frame byte,src/data/dgroup_bss/game_state.asm
+g_DBF5,rpl_b7,g_DBF5,new,medium,replay frame bytes,src/data/dgroup_bss/game_state.asm
+g_DC08,rpl_words2,g_DC08,new,medium,replay frame words,src/data/dgroup_bss/game_state.asm
+g_DC2A,defertab_a1,g_DC2A,new,medium,deferred call argument 1,src/data/dgroup_bss/game_state.asm
+g_DC2C,defertab_a2,g_DC2C,new,medium,deferred call argument 2,src/data/dgroup_bss/game_state.asm
+g_DC2E,defertab_a3,g_DC2E,new,medium,deferred call argument 3,src/data/dgroup_bss/game_state.asm
+g_DC30,defertab_a4,g_DC30,new,medium,deferred call argument 4,src/data/dgroup_bss/game_state.asm
+g_DC32,defertab_a5,g_DC32,new,medium,deferred call argument 5,src/data/dgroup_bss/game_state.asm
+g_DC34,defertab_a6,g_DC34,new,medium,deferred call argument 6,src/data/dgroup_bss/game_state.asm
+g_DC36,defertab_a7,g_DC36,new,medium,deferred call argument 7,src/data/dgroup_bss/game_state.asm
+g_DC38,defertab_fn,g_DC38,new,medium,deferred call routine offset,src/data/dgroup_bss/game_state.asm
+g_DC3A,defertab_seg,g_DC3A,new,medium,deferred call routine segment,src/data/dgroup_bss/game_state.asm
+g_DC72,gsumqueue,g_DC72,new,medium,queued game summary records,src/data/dgroup_bss/game_state.asm
+g_DCD8,introtimers,g_DCD8,new,medium,intro timers,src/data/dgroup_bss/game_state.asm
+g_DEE7,dressflags_aw,g_DEE7,new,medium,away dressed flags,src/data/dgroup_bss/game_state.asm
+g_DF32,possort,g_DF32,new,medium,players sorted by position,src/data/dgroup_bss/game_state.asm
+g_DF6A,fadex,g_DF6A,new,medium,fade area x,src/data/dgroup_bss/game_state.asm
+g_DF6C,fadey,g_DF6C,new,medium,fade area y,src/data/dgroup_bss/game_state.asm
+g_DF6E,fadew,g_DF6E,new,medium,fade area width,src/data/dgroup_bss/game_state.asm
+g_DF70,fadeh,g_DF70,new,medium,fade area height,src/data/dgroup_bss/game_state.asm
+g_E366,savedteam1,g_E366,new,medium,saved team byte,src/data/dgroup_bss/sound_driver.asm
+g_E367,savedteam2,g_E367,new,medium,saved team byte,src/data/dgroup_bss/sound_driver.asm
+g_E368,savedbyte3,g_E368,new,medium,saved game byte,src/data/dgroup_bss/sound_driver.asm
+g_E369,savedbyte4,g_E369,new,medium,saved game byte,src/data/dgroup_bss/sound_driver.asm
+g_E36A,savedbyte5,g_E36A,new,medium,saved game byte,src/data/dgroup_bss/sound_driver.asm
+g_E36B,lgflags,g_E36B,new,medium,league flags and buffers,src/data/dgroup_bss/sound_driver.asm
+g_D4F4,OOlist,g_D4F4,95 PC,medium,sorted object order list,src/data/dgroup_bss/game_state.asm
+g_D4F4,OOlist,g_D4F4,95 PC,medium,sorted object order list; OOlist_m1 and OOlist_b1 are its neighbours,src/data/dgroup_bss/game_state.asm
 seg000:279E,_flushall,seg000:279E,MSC,high,"mov ax,1 / push / call FlushAll / retf: the far C _flushall, left as data before",src/lib/msc_runtime.asm
 seg000:18A6,OutputStates,seg000:18A6,MSC,high,jmp word [cs:bx+OutputStates] in _output: eight state handlers,src/lib/msc_runtime.asm
 seg000:29AE,FpTenthA,seg000:29AE,new,high,ten-byte 0.1 (CDCC..FB3F),src/lib/msc_runtime.asm
@@ -4427,11 +4427,11 @@ g_8B04,PreTermTable,g_8B04,MSC,high,_initterm span in ExitCommon,src/data/dgroup
 g_8B08,TermTable,g_8B08,MSC,high,empty _initterm span in ExitCommon,src/data/dgroup/msc_runtime.asm
 g_8D16,FpZero,g_8D16,new,high,double 0.0 for FloatLoad,src/data/dgroup/segment_words.asm
 g_8D26,NmsgTable,g_8D26,MSC,high,runtime message table after <<NMSG>>,src/data/dgroup/segment_words.asm
-g_90A0,FloatAccum,g_90A0,MSC,high,atof result,src/data/dgroup_bss.asm
-g_90B0,FltInValue,g_90B0,MSC,high,double of the _fltin block,src/data/dgroup_bss.asm
-g_90B8,AtexitTable,g_90B8,MSC,high,_initterm span AtexitTable..AtexitTableEnd in ExitCommon,src/data/dgroup_bss.asm
-g_9138,AtexitTableEnd,g_9138,MSC,high,"cmp bx, AtexitTableEnd in atexit",src/data/dgroup_bss.asm
-g_E370,StackBottom,g_E370,MSC,high,"EXE header SS 5400h = DGROUP + E37h paragraphs, SP 1800h",src/data/dgroup_bss.asm
+g_90A0,FloatAccum,g_90A0,MSC,high,atof result,src/data/dgroup_bss/modules.asm
+g_90B0,FltInValue,g_90B0,MSC,high,double of the _fltin block,src/data/dgroup_bss/modules.asm
+g_90B8,AtexitTable,g_90B8,MSC,high,_initterm span AtexitTable..AtexitTableEnd in ExitCommon,src/data/dgroup_bss/modules.asm
+g_9138,AtexitTableEnd,g_9138,MSC,high,"cmp bx, AtexitTableEnd in atexit",src/data/dgroup_bss/modules.asm
+g_E370,StackBottom,g_E370,MSC,high,"EXE header SS 5400h = DGROUP + E37h paragraphs, SP 1800h",src/data/dgroup_bss/stack.asm
 
 g_8B0A,CentisPerSample,g_8B0A,new,high,"double 1/110.25 (11025 Hz samples to 1/100 s), fmul in the speech loader",src/data/dgroup.asmseg062:0EA0,LeftMasks,seg062:0EA0,new,high,"mov bl,[cs:bx+LeftMasks] with bx = 1..8 in the DrawChar body",src/pc/video/vga.asm
 seg028:0EA9,DrawCharSame,seg028:0EA9,new,high,second copy of the DrawChar prologue falling into its body; was left as data,src/pc/video/vga.asm
@@ -4460,13 +4460,13 @@ g_7017,JoyYUpEdge,g_7017,new,high,PollJoy / InitJoy: up threshold,src/data/dgrou
 g_7019,JoyYDownEdge,g_7019,new,high,PollJoy / InitJoy: down threshold,src/data/dgroup/system_video.asm
 g_701B,JoyXScale,g_701B,new,high,"PollJoy / InitJoy: 4000h / X range, JoyScaleX",src/data/dgroup/system_video.asm
 g_701D,JoyYScale,g_701D,new,high,"PollJoy / InitJoy: 4000h / Y range, JoyScaleY",src/data/dgroup/system_video.asm
-g_8F74,SeqEmsMap,g_8F74,new,high,EmsSaveMap / EmsRestoreMap buffer around DrvService,src/data/dgroup_bss.asm
-g_8F7C,MidiEvent,g_8F7C,new,high,ParseMidiEvent target in SeqStepTrack,src/data/dgroup_bss.asm
-g_8F80,MidiEvCmd,g_8F80,new,high,"event command, D9h and up are sequencer commands",src/data/dgroup_bss.asm
-g_8F81,MidiEvData,g_8F81,new,high,event data byte,src/data/dgroup_bss.asm
-g_8F82,MidiEvValue,g_8F82,new,high,event value dword,src/data/dgroup_bss.asm
-g_8F86,MidiEvLength,g_8F86,new,high,"event length, added to the track pointer",src/data/dgroup_bss.asm
-g_8F88,MidiNextEvent,g_8F88,new,high,"second ParseMidiEvent target, delta only",src/data/dgroup_bss.asm
+g_8F74,SeqEmsMap,g_8F74,new,high,EmsSaveMap / EmsRestoreMap buffer around DrvService,src/data/dgroup_bss/modules.asm
+g_8F7C,MidiEvent,g_8F7C,new,high,ParseMidiEvent target in SeqStepTrack,src/data/dgroup_bss/modules.asm
+g_8F80,MidiEvCmd,g_8F80,new,high,"event command, D9h and up are sequencer commands",src/data/dgroup_bss/modules.asm
+g_8F81,MidiEvData,g_8F81,new,high,event data byte,src/data/dgroup_bss/modules.asm
+g_8F82,MidiEvValue,g_8F82,new,high,event value dword,src/data/dgroup_bss/modules.asm
+g_8F86,MidiEvLength,g_8F86,new,high,"event length, added to the track pointer",src/data/dgroup_bss/modules.asm
+g_8F88,MidiNextEvent,g_8F88,new,high,"second ParseMidiEvent target, delta only",src/data/dgroup_bss/modules.asm
 wbuf:B96E,SysexBuffer,wbuf:B96E,new,medium,push work_buffer:SysexBuffer with the event length - 4 in SeqStepTrack,src/data/far/work_buffer.asm
 wbuf:BB6F,ChannelSetup,wbuf:BB6F,new,medium,"[es:bx+ChannelSetup], bx = channel*7, sent as controller 7",src/data/far/work_buffer.asm
 g_0000,DgroupStart,g_0000,new,high,"offset 0 of DGROUP, for label arithmetic across a segment end",src/data/dgroup/runtime_teams.asm
@@ -4507,27 +4507,27 @@ dgroup:77C3,VidEquip,,new,medium,byte,src/data/dgroup/system_video.asm
 dgroup:77C4,VidCols,,new,medium,word,src/data/dgroup/system_video.asm
 dgroup:77C6,VidRows,,new,medium,byte,src/data/dgroup/system_video.asm
 dgroup:8ACC,AllocBlockSize,,new,medium,"near heap growth size in bytes (2000h), read by the heap allocator",src/data/dgroup/msc_runtime.asm
-dgroup_bss:8ED6,MapLo,,new,medium,word,src/data/dgroup_bss.asm
-dgroup_bss:8ED8,MapHi,,new,medium,word,src/data/dgroup_bss.asm
-dgroup_bss:8EDA,OutPtr,,new,medium,word,src/data/dgroup_bss.asm
-dgroup_bss:8EDE,InPtr,,new,medium,word,src/data/dgroup_bss.asm
-dgroup_bss:8EE2,MapPair,,new,medium,word,src/data/dgroup_bss.asm
-dgroup_bss:8EE4,BitBuf,,new,medium,word,src/data/dgroup_bss.asm
-dgroup_bss:8EE8,BitCount,,new,medium,word,src/data/dgroup_bss.asm
-dgroup_bss:8F94,PatchFileName,,new,medium,'bank%d.pat' name built by LoadBankNumber,src/data/dgroup_bss.asm
-dgroup_bss:9046,DriverFileName,,new,medium,'c:\eaclib\' path of the sound driver built by LoadSoundDriver,src/data/dgroup_bss.asm
-dgroup_bss:9140,PPVFiles,,new,medium,far pointers to the 18 loaded PPV files (LoadPlayerFrames); the 72 bytes after them are not used,src/data/dgroup_bss.asm
-dgroup_bss:AE9C,ChainIdx,,new,medium,word,src/data/dgroup_bss.asm
-dgroup_bss:AE9E,ChainPtr,,new,medium,word,src/data/dgroup_bss.asm
-dgroup_bss:AFD4,PadReadings,,new,medium,"3 bytes a pad (stick, buttons, hot key) filled by ReadControllerPad",src/data/dgroup_bss.asm
-dgroup_bss:B438,awshots,,new,medium,away shots; the away team stats start here,src/data/dgroup_bss.asm
-dgroup_bss:B43A,awppgoals,,new,medium,away power play goals,src/data/dgroup_bss.asm
-dgroup_bss:B43C,awppchances,,new,medium,away power play chances,src/data/dgroup_bss.asm
-dgroup_bss:B43E,awpenalties,,new,medium,away penalties,src/data/dgroup_bss.asm
-dgroup_bss:B440,awpenmins,,new,medium,away penalty minutes,src/data/dgroup_bss.asm
-dgroup_bss:B442,awattacktime,,new,medium,away attack time,src/data/dgroup_bss.asm
-dgroup_bss:B50E,SortCords,,new,medium,"the sort objects, 80h bytes each; sort object 0 starts here",src/data/dgroup_bss.asm
-dgroup_bss:E15E,StdinBuf,,new,medium,"stdin buffer of _iob (512 bytes, then 8 unused bytes)",src/data/dgroup_bss.asm
+dgroup_bss:8ED6,MapLo,,new,medium,word,src/data/dgroup_bss/modules.asm
+dgroup_bss:8ED8,MapHi,,new,medium,word,src/data/dgroup_bss/modules.asm
+dgroup_bss:8EDA,OutPtr,,new,medium,word,src/data/dgroup_bss/modules.asm
+dgroup_bss:8EDE,InPtr,,new,medium,word,src/data/dgroup_bss/modules.asm
+dgroup_bss:8EE2,MapPair,,new,medium,word,src/data/dgroup_bss/modules.asm
+dgroup_bss:8EE4,BitBuf,,new,medium,word,src/data/dgroup_bss/modules.asm
+dgroup_bss:8EE8,BitCount,,new,medium,word,src/data/dgroup_bss/modules.asm
+dgroup_bss:8F94,PatchFileName,,new,medium,'bank%d.pat' name built by LoadBankNumber,src/data/dgroup_bss/modules.asm
+dgroup_bss:9046,DriverFileName,,new,medium,'c:\eaclib\' path of the sound driver built by LoadSoundDriver,src/data/dgroup_bss/modules.asm
+dgroup_bss:9140,PPVFiles,,new,medium,far pointers to the 18 loaded PPV files (LoadPlayerFrames); the 72 bytes after them are not used,src/data/dgroup_bss/game_records.asm
+dgroup_bss:AE9C,ChainIdx,,new,medium,word,src/data/dgroup_bss/front_end.asm
+dgroup_bss:AE9E,ChainPtr,,new,medium,word,src/data/dgroup_bss/front_end.asm
+dgroup_bss:AFD4,PadReadings,,new,medium,"3 bytes a pad (stick, buttons, hot key) filled by ReadControllerPad",src/data/dgroup_bss/front_end.asm
+dgroup_bss:B438,awshots,,new,medium,away shots; the away team stats start here,src/data/dgroup_bss/teams.asm
+dgroup_bss:B43A,awppgoals,,new,medium,away power play goals,src/data/dgroup_bss/teams.asm
+dgroup_bss:B43C,awppchances,,new,medium,away power play chances,src/data/dgroup_bss/teams.asm
+dgroup_bss:B43E,awpenalties,,new,medium,away penalties,src/data/dgroup_bss/teams.asm
+dgroup_bss:B440,awpenmins,,new,medium,away penalty minutes,src/data/dgroup_bss/teams.asm
+dgroup_bss:B442,awattacktime,,new,medium,away attack time,src/data/dgroup_bss/teams.asm
+dgroup_bss:B50E,SortCords,,new,medium,"the sort objects, 80h bytes each; sort object 0 starts here",src/data/dgroup_bss/teams.asm
+dgroup_bss:E15E,StdinBuf,,new,medium,"stdin buffer of _iob (512 bytes, then 8 unused bytes)",src/data/dgroup_bss/sound_driver.asm
 char_table:0100,LineSlotPoints,,new,medium,"(x, y) word pairs of the player slots, read by GameLineEditorLoop",src/data/far/char_table.asm
 credits:05CD,CreditLines,,new,medium,"far pointers to the credit lines, read by the title screen",src/data/far/credits.asm
 dialog_rects:0000,FileDialogHitRects,,new,medium,"hit rectangles of the file dialog buttons (x1, y1, x2, y2)",src/data/far/dialog_rects.asm
@@ -4815,9 +4815,9 @@ vga:377B,CopyPageRectJumpTable,,new,medium,word,src/pc/video/vga.asm
 vga:3C53,DrawScaledJumpTable,,new,medium,word,src/pc/video/vga.asm
 vga:3CEE,DrawLineClippedJumpTable,,new,medium,word,src/pc/video/vga.asm
 vga:3F22,DrawLineClippedJumpTable2,,new,medium,word,src/pc/video/vga.asm
-g_D46C,lcrequest,controlled,95 PC,high,"per team line-change request flag: HandleHotKey sets it for F1-F4 (team 1) / F5-F8 (team 2 at +2), doinput passes lcreqchoice to lcselect and clears it; 95 PC lcrequest",src/data/dgroup_bss.asm
-g_D46E,lcrequest+2,controlled2,95 PC,high,team 2 word of lcrequest (folded into lcrequest+2 as in 95 PC),src/data/dgroup_bss.asm
-g_D470,lcreqchoice,lcline,95 PC,high,"per team requested line choice (key - 3Bh / - 3Fh) passed to lcselect; 95 PC lcreqchoice (95 PC's lcline is the line offered in the box)",src/data/dgroup_bss.asm
-g_D472,lcreqchoice+2,lctimer,95 PC,high,team 2 word of lcreqchoice (folded into lcreqchoice+2 as in 95 PC),src/data/dgroup_bss.asm
+g_D46C,lcrequest,controlled,95 PC,high,"per team line-change request flag: HandleHotKey sets it for F1-F4 (team 1) / F5-F8 (team 2 at +2), doinput passes lcreqchoice to lcselect and clears it; 95 PC lcrequest",src/data/dgroup_bss/game_state.asm
+g_D46E,lcrequest+2,controlled2,95 PC,high,team 2 word of lcrequest (folded into lcrequest+2 as in 95 PC),src/data/dgroup_bss/game_state.asm
+g_D470,lcreqchoice,lcline,95 PC,high,"per team requested line choice (key - 3Bh / - 3Fh) passed to lcselect; 95 PC lcreqchoice (95 PC's lcline is the line offered in the box)",src/data/dgroup_bss/game_state.asm
+g_D472,lcreqchoice+2,lctimer,95 PC,high,team 2 word of lcreqchoice (folded into lcreqchoice+2 as in 95 PC),src/data/dgroup_bss/game_state.asm
 g_29E0,dirtab,dirtab0,93G,high,"start of the direction table of x, y word pairs (93G dirtab); the x column (dopass adds it to Xvel, skate.asm / logic.asm read it first)",src/data/dgroup/game_state.asm
 g_29E2,dirtab_y,dirtab_x,95 PC,high,"y column of dirtab (dirtab+2; dopass adds it to Yvel); was named the x column; 95 PC dirtab_y",src/data/dgroup/game_state.asm
