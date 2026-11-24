@@ -1,66 +1,209 @@
 # NHL '94 PC compared with the 93 and 94 console games
 
 People often say NHL '94 PC (EA's DOS "NHL Hockey", 1993) is really NHLPA 93 because it has no Anaheim or Florida.
-This page checks the game code instead. Each row compares a gameplay feature in this repo's disassembly
-of `HOCKEY.EXE` and its overlays with the NHLPA 93 and NHL 94 console disassemblies:
+This page checks the game code (this repo's disassembly of `HOCKEY.EXE` and its overlays) instead. For each
+feature: is 94 PC the same as the 93 consoles and the 94 consoles, and if not, how it differs. Under each answer is
+the code that shows it: the routine or table and its file in each repo. Files are paths in this repo, or in [NHLPA93Genesis](https://github.com/abdulahmad/NHLPA93Genesis) (93G),
+[NHLPA93SNES](https://github.com/abdulahmad/NHLPA93SNES) (93S), [NHL94Genesis](https://github.com/abdulahmad/NHL94Genesis)
+(94G) and [NHL94SNES](https://github.com/abdulahmad/NHL94SNES) (94S).
 
-- 93 consoles: [NHLPA93Genesis](https://github.com/abdulahmad/NHLPA93Genesis) and [NHLPA93SNES](https://github.com/abdulahmad/NHLPA93SNES)
-- 94 consoles: [NHL94Genesis](https://github.com/abdulahmad/NHL94Genesis) and [NHL94SNES](https://github.com/abdulahmad/NHL94SNES)
+Addresses are `segment:offset` from the routine headers in this repo; labels are the repo's current names. "Not
+found" means the search of that repo found nothing; a feature under an unrelated name could still be missed. "Data"
+means a string, table or data file shows it but the logic wasn't traced. Written 2026-11-24.
 
-Addresses are `segment:offset` from the routine headers in this repo. The labels are the repo's current names.
+## At a glance
 
-Confidence levels:
+"New" means 94 PC has it and those console games don't. "Missing on PC" means those console games have it and
+94 PC doesn't. "PC only" means none of the four console games has it.
 
-- **Code**: the routine or table was read and compared.
-- **Data**: a string or table shows it, but the logic wasn't traced.
-- **Not found**: searched for and absent. That is strong evidence but not proof.
-
-## Feature table
-
-| Feature | 93 consoles | 94 consoles | 94 PC | Evidence | Confidence |
-|---|---|---|---|---|---|
-| **Fighting** | Yes. `checkfight` starts fights; `assfight` / `assfwatch` assignments; Fighting, Fighting * and Fight Instigator penalties (93G `hockey93.asm`, `tables93.asm`) | Removed. 94G keeps `checkfight` as a bare `rts` (`collide94.asm`); the fight frames are left over and unused | **Removed (94-like).** The collision routine `checkcx` (28BB:319A) calls `newcheck`, `checkint`, `checkcheck` and nothing else, so even the `checkfight` call is gone. `asstab` has no fight assignments; the slots after `asspassrec` hold `assstarskate` / `assthreestars`. The SPA table (`SPAlist`) has no fight animation. The penalty name list has no fighting penalty | Code |
-| **Fighting rating on the player card** | Shown: `[ Fighting ]` column (93G `tables93.asm` PAttribColumns, 93S `PAttribColumns.asm`) | Gone from the card; the list ends at Checking (94G `tables94.asm`, 94S `PAttribColumns.asm`) | **Gone (94-like).** The skater ratings list is Speed, Agility, Weight, Shot Power, Checking, StickHandling, Accuracy, Passing, Off./Def. Awareness, Aggressiveness, Endurance, then Shoot/Pass Bias and Faceoffs. No Fighting. (Shoot/Pass Bias isn't new: the 93 and 94 console player records already carry a shot/pass decision value, they just don't show it on the card; see Teams and rosters.) (`dgroup.asm`, `str_Speed_2` onward) | Data |
-| **One-timers** | None: no one-timer code or animation in either 93 disassembly | New in 94: 94G `onetimer94.asm`; 94S `asspassrec` / `assbreakaway` with `SPAonetimerf` / `SPAonetimerb` | **Yes (94-like).** `assonetimer` (2C24:0746) plays `SPAonetimef` / `SPAonetimeb` as the pass arrives. `asspassrec` (2C24:0A1C) calls it when `onetimerflag` is set. `OneTimerChk` (2C24:096C) lets the CPU team set up one-timers too | Code |
-| **Which 94 one-timer it resembles** | n/a | 94G: aimed pass to a target spot (`OneTimerPass`). 94S: the receiver swings, with forehand / backhand picked by `Findhittype` | **The 94 SNES design.** `assonetimer` follows the same steps as 94S `asspassrec`. If the player is already in the one-timer animation it releases the shot. Otherwise it builds the vector to the goal, calls `Findhittype` and sets the backhand or forehand one-timer animation | Code |
-| **Goalie wall animations** | Not in either 93 game (no `SPAgwall*`) | 94 SNES only: `asseben` / `assbench` give a goalie `SPAgwallright` / `SPAgwallleft` where skaters get `SPAwallright` / `SPAwallleft` | **Yes, as in 94 SNES.** `asseben` (2519:0A62) does `cmp [si+0x1a],1 / sbb / and 0x574 / add SPAno(SPAwallright)`, so a goalie (position 0) gets SPA number +0x574. Counting the SPA table shows that +0x574 from `SPAwallright` is exactly `SPAgwallright` (and +0x56E from `SPAwallleft` is `SPAgwallleft`) | Code |
-| **Board checks, bench check, cross-check animation** | No: `FallDown` picks from `SPAfallfwd`, `SPAfallback`, `SPAflip`, `SPAstumble`, `SPAinjury1` | Yes: 94G `FallDown` adds `SPAboardfront/back/left/right`, `SPAbenchcheckl/r`, `SPAcrosscheck`, `SPAinjuryfall` (94S has the same family) | **No (93-like).** `FallDown` (28BB:1848) uses only `SPAfallfwd`, `SPAfallback`, `SPAflip`, `SPAstumble`, `SPAinjury1` (plus `SPAreffallback` for the referee). None of the board, bench or cross-check animations exist in `SPAlist`. `checkcheck` (28BB:0284) uses `SPAsweepchk`, `SPAHold`, `SPAhook`, `SPAburst` and the `CheckAnims` table | Code |
-| **Penalty shots** | None | Yes: `PenShotChk` turns a penalty on a breakaway into a penalty shot; there are penalty-shot forms of the penalties (`PenDatachargeps` etc.) and `BA_PS_flags` | **Not found (93-like).** `checkcheck` calls `AddPenalty` directly with no breakaway or penalty-shot check. The penalty names have no duplicate penalty-shot forms. There is no penalty-shot assignment in `asstab`. Note: routines labelled `PenShotStart` / `PenShotAssign` (2164:00E0 / 2164:0152) were named by their position in 95 PC. The code sends skaters to `asstakeposition` / `assleavebox` / `assbenchwait` after the referee's whistle and doesn't look like a penalty shot, so those labels need review | Code (absence) |
-| **Shootout mode** | None | Yes: 94G `shootout94.asm`, `shootoutpath94.asm`; 94S the same | **Not found (93-like).** No shootout strings or code. The `clockcont_0` header comment mentions "shootout", but no shootout code was found to back it up, so that comment needs review | Data (absence) |
-| **In-game team stats** | 8 rows: Score, Shots, Power Play, Penalties, Faceoffs Won, Body Checks, Attack Zone, Passing (93G `stats93.asm` TeamStatTextTbl) | 16 rows: adds Shooting Pct, PP Minutes, PP Shots, SH Goals, Breakaways, One-Timers, Penalty Shots, Passing Pct (94G `period94.asm`, 94S `TeamStatNames.asm`) | **The 93 list, in the same order (93-like):** Score, Shots, Power play, Penalties, Faceoffs won, Body checks, Attack zone, Passing (`data/far/stat_names.asm`). The PC league stats screens (PP / SH goal leaders etc.) are separate and PC-only | Data |
-| **Players per game** | 2 | 94G: up to 4 with 4 Way Play (`fourway94.asm`). 94S: up to 5 with the MultiPlayer 5 multitap. `PlayerSelect` clears and places five pads (`cont1team`-`cont5team`, `ram94s.asm`), and `Multi5Init` / `Multi5ConnectCheck` detect the adaptor. The boxes say 1-4 (94G) and 1-5 (94S, "Hudson Soft Super Multitap") | **2 (not 94-like).** Only `cont1team` / `cont2team` exist; `SetupControllers` (1F9C:0000) sets up two players. The box says "play one or two players head to head" | Code |
-| **Manual goalie toggle** | No pause-menu goalie mode | 94G pause item "Manual Goalie / Auto Goalie" (`period94.asm` ManualGoalieMenu) | **Not found.** The PC menus have Home / Visiting Team Goalie, but that picks which goalie starts. The PC also has PULL GOALIE / RETURN GOALIE, like both consoles | Data |
-| **Hot / cold streaks and scouting text** | 93G and 93S have a pregame scouting report (93G `ScoutingReport`, `hockey93.asm`), as NHL Hockey (92) Genesis already did (`ScoutingReport`, `hockey.asm`; its box lists "scouting reports"); no hot / cold | 94G hot / cold tables (`Create_HotCold_Table`, `HotColdIcon`) feed the ratings | **Not found** | Data (absence) |
-| **Organ music** | Eight songs in all ($30-$37: goal, period start, power play, faceoff, title and so on); no per-team organ tunes and no organ credit | Per-team organ tunes (94G `arena94.asm` `TeamSongs`), credited "Organ Music by Dieter Ruehle" | **The 94 per-team organ set**, loaded from `.KMS` files (`LoadArenaJingles` 2137:0004, `PlayArenaJingle`), credited "Organ Music" / Dieter Ruehle. The manual's credits read "Organ Music: Dieter Ruehle, Michael J. Sokyrka" and "Original Music Composition: Michael J. Sokyrka". 50 of its 53 tunes match 94 SNES note for note; see Music and packaging | Code |
-| **Line changes, energy, injuries, instant replay, pulling the goalie, playoffs** | Yes | Yes | Yes | Present in all of them, so they don't separate 93 from 94 | Data |
-| **Referee on the ice** | No referee animations | No referee animations | **PC-only:** `SPArefglide` ... `SPArefbehind` with penalty signals, and the `assref*` assignments | Code |
-| **Anthem, Stanley Cup presentation, three stars skate** | `SPAstanley` celebration only | `SPAstanley` only | **PC-only:** `SPAanthem1-5`, `SPAgetcup`, `SPAbrcup`, `SPAgvcup`, `SPAstansk`, `assstarskate`, `assthreestars` | Code |
-| **Other PC-only gameplay bits** | | | Faceoff poke (`SPAfaceoffpoke`), Abuse of Official and Checking from Behind penalties, a Faceoffs rating, Shoot/Pass Bias shown on the card, league / season mode with leader boards, mouse / joystick setup | Data |
-
-## What the box says
-
-Abdul transcribed the back of every EA NHL box from 92 to 96. The 94 PC claims are checked against the code here.
-Box text is marketing, so it is quoted as "the box says". Where the box and the code disagree, the code wins.
-
-| The box says (94 PC floppy) | Code | Confidence |
+| Feature | 93 consoles | 94 consoles |
 |---|---|---|
-| "create a league of your own with up to 24 human participants" | **Matches.** New League asks for the human-controlled teams (`str_SelectHumanControlledTeams`, `LeagueTeamSelect` in `front/new_league.asm`), and the only refusal when adding one is "All the teams are already human" (`front/league_teams.asm`). So any of the 24 teams can be human. Each human team has a password (`AskTeamPassword`), and there is a league master password (`CheckMasterPassword`). The manual confirms it: "an entire league schedule, with up to twenty four human players controlling the different teams" (League Play) | Data; Manual |
-| "team and player stats in over 15 categories" | **Matches: 16 leader-board sorts plus standings.** Teams have 5 (Scoring, Defense, Penalty Killing, Power Play, Penalties), players 8 (Points, Goals, Assists, Power Play Goals, Shorthanded Goals, Plus/Minus, Penalty Minutes, Shooting Percentage) and goalies 3 (Goals Against Average, Wins, Save Percentage) (`data/far/menu_text.asm`) | Data |
-| "end-of-season awards including Hart, Norris and Ross" | **Matches.** 94 PC has the 10-award list (see the NHL95PC page). No 94 console has season awards, and the 95G and 95S boxes call season mode and its awards "all new in 95". So 94 PC had a season with awards a year before the consoles | Data |
-| "instant replay that saves highlights to a personal highlight reel" | **Matches.** `ReplaySaveHilight` writes highlights to disk ("Insufficient disk space to save hilights.", `data/far/hilight_save_messages.asm`), and the menus have "League Hilights ...", "Play-Off Hilights ..." and "Select a hilight". Instant replay itself is in every game back to NHL Hockey (92) Genesis, whose box lists it too | Data |
-| "simulate the actual 1993 NHL season" (and an 84-game schedule, implied) | **Consistent.** The trade deadline check in `TradePlayers` (`front/trade.asm`) closes trading from March 20 (month 3, day 0x14), in months 4-9, or once 1008 games have been played. The manual: "There's a trading deadline that goes into effect on March 20th", and trades are allowed only between human-controlled teams (Trade Players). 1008 is 24 teams x 84 games / 2, so the full schedule is the 84-game 1992-93 season | Code (the check); Inferred (84 games) |
-| "over 70 pieces of digitized organ music" | **Partly.** The game ships 71 `.KMS` songs, but only 53 of them are team organ tunes. The rest are menu and event songs. They are sequenced songs in EA's song format, not digitized recordings. 95 PC is the first PC game with digitized `.IFF` music (see the NHL95PC page). The 94G and 94S boxes also say "over 70". 94G has 72 organ songs, 70 of which its tables can play. 94S has 53, because it merges key and tempo variants (see Music and packaging) | Data |
-| "one-timers (drop a set pass to your big stick at the point)" | **Matches** the one-timer rows above. "Drop a set pass" here means the pass that sets up the one-timer, not a drop-pass move: 94 PC has **no drop pass at all**. `dopass` (`engine/physics.asm`, 28BB:0B96) always either passes to the closest teammate within one 45° step of `passdir`, straight ahead preferred (`passtoa0`), or, with nobody there, sends the puck along `passdir` at the pass speed plus the passer's velocity. No branch leaves the puck behind. 95 PC adds one (`PassLaneChk` / `ScatterPass`, see the NHL95PC page); 95G's is a separate button move | Code |
-| "play one or two players head to head" | **Matches** (Players per game row). Two players can also share a team: `puckfaceoff` tests `cont1team` against `cont2team` | Code |
+| Fighting | Missing on PC | Same (none) |
+| Fighting rating on the card | Missing on PC | Same (none) |
+| One-timers | New | Same as 94S |
+| Goalie wall animations | New | Same as 94S |
+| Board, bench, cross-checks | Same (none) | Missing on PC |
+| Penalty shots | Same (none) | Missing on PC |
+| Shootout | Same (none) | Missing on PC |
+| In-game team stats | Same | Different |
+| More than 2 players | Same (none) | Missing on PC |
+| Manual goalie option | Same (none) | Missing on PC |
+| Scouting report, hot / cold | Missing on PC | Missing on PC |
+| Per-team organ music | New | Same as 94S |
+| Line changes, replay, playoffs | Same | Same |
+| Referee, anthem, cup, three stars | PC only | PC only |
+| League mode, awards | PC only | PC only |
+| Teams, rosters, licence | Different | Same season |
+| Skating and shooting | Same formulas | Different |
+| Goalie saves | Same as 93G | Different |
+| Rink shape | Different | Different |
 
-The other 94 boxes, compared with the code:
+## Fighting
 
-- **94 Genesis "Battery back-up (records for you and 6 friends)":** yes. `sram94.asm` validates and reads the save RAM
-  (`ValidSRAM`), and `cards94.asm` `UpdateRecords` keeps the user records unless they're turned off (`OptUserRec`). The
-  Sega CD keeps the same records in its backup RAM (see NHL94Genesis `docs/segacd_differences.md`). **94 SNES** has
-  no battery: its header gives an SRAM size of none (`header/snes_header.asm`), and its box doesn't claim one. 94 PC
-  saves league stats and highlights to disk instead. (Code / Data)
-- **94 SNES "5-player support":** yes, see Players per game. (Code)
+- **94 PC: none.** The collision routine `checkcx` (28BB:319A, src/engine/physics.asm) calls `newcheck`, `checkint`,
+  `checkcheck` and nothing else, so even the `checkfight` call is gone. `asstab` has no fight assignments; the slots
+  after `asspassrec` hold `assstarskate` / `assthreestars`. The SPA table (`SPAlist`) has no fight animation, and the
+  penalty name list has no fighting penalty.
+- **vs 93 consoles: missing on PC.** 93G has `checkfight` (hockey93.asm), the `assfight` / `assfwatch` assignments
+  (tables93.asm, logic93.asm) and Fighting, Fighting * and Fight Instigator penalties.
+- **vs 94 consoles: same (none).** 94G keeps `checkfight` as a bare `rts` (src/engine/collide94.asm); the fight frames
+  are left over and unused.
+
+## Fighting rating on the player card
+
+- **94 PC: none.** The skater ratings list is Speed, Agility, Weight, Shot Power, Checking, StickHandling, Accuracy,
+  Passing, Off./Def. Awareness, Aggressiveness, Endurance, then Shoot/Pass Bias and Faceoffs (src/data/dgroup.asm,
+  `str_Speed_2` onward; Data). Shoot/Pass Bias isn't new: the 93 and 94 console player records already carry a
+  shot/pass decision value, they just don't show it on the card (see Teams and rosters).
+- **vs 93 consoles: missing on PC.** Shown as a `[ Fighting ]` column (93G tables93.asm `PAttribColumns`, 93S
+  src/data/text/PAttribColumns.asm).
+- **vs 94 consoles: same (none).** The list ends at Checking (94G tables94.asm, 94S src/data/text/PAttribColumns.asm).
+
+## One-timers
+
+- **94 PC:** `assonetimer` (2C24:0746, src/engine/input.asm) plays `SPAonetimef` / `SPAonetimeb` as the pass arrives.
+  `asspassrec` (2C24:0A1C) calls it when `onetimerflag` is set. `OneTimerChk` (2C24:096C) lets the CPU team set up
+  one-timers too. If the player is already in the one-timer animation `assonetimer` releases the shot; otherwise it
+  builds the vector to the goal, calls `Findhittype` and sets the backhand or forehand one-timer animation.
+- **vs 93 consoles: new.** No one-timer code or animation in either 93 disassembly.
+- **vs 94 SNES: same design.** 94S's `asspassrec` (src/routines/logic/assignments/asspassrec.asm) and `assbreakaway`
+  have the receiver swing, with forehand / backhand (`SPAonetimerf` / `SPAonetimerb`) picked by `Findhittype`;
+  `assonetimer` follows the same steps.
+- **vs 94 Genesis: different.** 94G aims a pass to a target spot (`OneTimerPass`, `OneTimerTarget`,
+  src/engine/onetimer94.asm).
+
+## Goalie wall animations
+
+- **94 PC:** `asseben` (2519:0A62, src/engine/logic.asm) does
+  `cmp [si+0x1a],1 / sbb / and 0x574 / add SPAno(SPAwallright)`, so a goalie (position 0) gets SPA number +0x574. Counting the SPA table shows that +0x574 from
+  `SPAwallright` is exactly `SPAgwallright` (and +0x56E from `SPAwallleft` is `SPAgwallleft`).
+- **vs 93 consoles: new.** Neither 93 game has `SPAgwall*`.
+- **vs 94 SNES: same.** `asseben` / `assbench` give a goalie `SPAgwallright` / `SPAgwallleft` where skaters get
+  `SPAwallright` / `SPAwallleft`. **vs 94 Genesis:** missing there.
+
+## Board checks, bench check, cross-check
+
+- **94 PC: none.** `FallDown` (28BB:1848, src/engine/physics.asm) uses only `SPAfallfwd`, `SPAfallback`, `SPAflip`,
+  `SPAstumble`, `SPAinjury1` (plus `SPAreffallback` for the referee). None of the board, bench or cross-check
+  animations exist in `SPAlist`. `checkcheck` (28BB:0284) uses `SPAsweepchk`, `SPAHold`, `SPAhook`, `SPAburst` and the
+  `CheckAnims` table.
+- **vs 93 consoles: same.** Their `FallDown` picks from the same five animations.
+- **vs 94 consoles: missing on PC.** 94G's `FallDown` adds `SPAboardfront/back/left/right`, `SPAbenchcheckl/r`,
+  `SPAcrosscheck` and `SPAinjuryfall`; 94S has the same family.
+
+## Penalty shots
+
+- **94 PC: not found.** `checkcheck` calls `AddPenalty` directly with no breakaway or penalty-shot check. The penalty
+  names have no duplicate penalty-shot forms, and `asstab` has no penalty-shot assignment.
+- The routines labelled `PenShotStart` / `PenShotAssign` (2164:00E0 / 2164:0152, src/engine/faceoff.asm) were named by
+  their position in 95 PC. The code sends skaters to `asstakeposition` / `assleavebox` / `assbenchwait` after the
+  referee's whistle and doesn't look like a penalty shot, so those labels need review.
+- **vs 93 consoles: same (none).**
+- **vs 94 consoles: missing on PC.** `PenShotChk` turns a penalty on a breakaway into a penalty shot; there are
+  penalty-shot forms of the penalties (94G `PenDatachargeps` etc., tables94.asm) and `BA_PS_flags` (ram94.asm).
+
+## Shootout
+
+- **94 PC: not found.** No shootout strings or code. The `clockcont_0` header comment (src/engine/hockey.asm) mentions
+  "shootout", but no shootout code was found to back it up, so that comment needs review.
+- **vs 93 consoles: same (none).**
+- **vs 94 consoles: missing on PC.** 94G has src/front/shootout94.asm and src/engine/shootoutpath94.asm; 94S the same.
+
+## In-game team stats
+
+- **94 PC: the 93 list, in the same order:** Score, Shots, Power play, Penalties, Faceoffs won, Body checks, Attack
+  zone, Passing (src/data/far/stat_names.asm; Data). The PC league stats screens (PP / SH goal leaders etc.) are
+  separate and PC only.
+- **vs 93 consoles: same.** 8 rows: Score, Shots, Power Play, Penalties, Faceoffs Won, Body Checks, Attack Zone,
+  Passing (93G stats93.asm `TeamStatTextTbl`).
+- **vs 94 consoles: different.** 16 rows: adds Shooting Pct, PP Minutes, PP Shots, SH Goals, Breakaways, One-Timers,
+  Penalty Shots, Passing Pct (94G src/engine/period94.asm, 94S src/data/text/TeamStatNames.asm).
+
+## Number of players
+
+- **94 PC: two.** Only `cont1team` / `cont2team` exist; `SetupControllers` (1F9C:0000,
+  src/front/setup_controllers.asm) sets up two players. Two players can share a team: `puckfaceoff`
+  (src/engine/faceoff.asm) tests `cont1team` against `cont2team`.
+- **vs 93 consoles: same (two).**
+- **vs 94 Genesis: missing on PC.** Up to 4 with 4 Way Play (src/engine/fourway94.asm).
+- **vs 94 SNES: missing on PC.** Up to 5 with the MultiPlayer 5 multitap: `PlayerSelect`
+  (src/routines/optsetup/PlayerSelect.asm) clears and places five pads (`cont1team`-`cont5team`, ram94s.asm), and
+  `Multi5Init` / `Multi5ConnectCheck` detect the adaptor.
+
+## Manual goalie option
+
+- **94 PC: not found.** The PC menus have Home / Visiting Team Goalie, but that picks which goalie starts. The PC also
+  has PULL GOALIE / RETURN GOALIE, like both consoles. (Data)
+- **vs 93 consoles: same (none).** No pause-menu goalie mode.
+- **vs 94 Genesis: missing on PC.** Pause item "Manual Goalie / Auto Goalie" (`ManualGoalieMenu`,
+  src/engine/period94.asm).
+
+## Scouting report and hot / cold streaks
+
+- **94 PC: not found.** (Data, absence)
+- **vs 93 consoles: missing on PC.** 93G and 93S have a pregame scouting report (93G `ScoutingReport`, middle93.asm,
+  called from `Opening4` in hockey93.asm), as NHL Hockey (92) Genesis already did (`ScoutingReport`, hockey.asm). No
+  hot / cold.
+- **vs 94 Genesis: missing on PC.** Hot / cold tables (`Create_HotCold_Table`, src/front/scout94.asm; `HotColdIcon`,
+  src/front/logos94.asm) feed the ratings.
+
+## Organ music
+
+- **94 PC: the 94 per-team organ set,** loaded from `.KMS` files (`LoadArenaJingles` 2137:0004,
+  src/pc/sound/arena_jingles.asm; `PlayArenaJingle`, src/front/crowd.asm). The credits read "Original Music
+  Composition: Michael J. Sokyrka" and "Organ Music: Dieter Ruehle, Michael J. Sokyrka" (src/data/far/credits.asm).
+  50 of its 53 tunes match 94 SNES note for note (see Music and packaging).
+- **vs 93 consoles: new.** Eight songs in all ($30-$37: goal, period start, power play, faceoff, title and so on); no
+  per-team organ tunes and no organ credit.
+- **vs 94 consoles: same as 94S.** Per-team organ tunes (94G src/front/arena94.asm `TeamSongs`), credited "Organ Music
+  by Dieter Ruehle".
+
+## Line changes, energy, injuries, replay, pulling the goalie, playoffs
+
+- **94 PC, 93 consoles and 94 consoles: same.** All of them have these, so they don't separate 93 from 94. (Data)
+- A team's lines in the Line Editor: forward lines 1-4, defence 1-3, penalty kill 1-2, power play 1-2, goaltenders and
+  extra attackers (`DrawLineEditorScreen` 2047:19E0, src/front/game_lines.asm; the titles in src/data/dgroup.asm).
+  `lcselect` (src/engine/input.asm) makes the line choice in a game.
+- The replay is recorded in a ring buffer (src/engine/replay.asm); its length in seconds: not confirmed in code.
+  Whether only human teams can edit lines or pull the goalie: not confirmed in code.
+
+## Referee, anthem, Stanley Cup, three stars
+
+- **94 PC: PC only.** A referee on the ice: `SPArefglide` ... `SPArefbehind` with penalty signals, and the `assref*`
+  assignments. Anthem, cup and three stars: `SPAanthem1-5`, `SPAgetcup`, `SPAbrcup`, `SPAgvcup`, `SPAstansk`,
+  `assstarskate`, `assthreestars`.
+- **vs 93 and 94 consoles:** no referee animations; only the `SPAstanley` celebration.
+- Other PC-only bits: a faceoff poke (`SPAfaceoffpoke`), Abuse of Official and Checking from Behind penalties, a
+  Faceoffs rating, Shoot/Pass Bias shown on the card, mouse / joystick setup. (Data)
+
+## League mode, stats and awards
+
+- **94 PC: PC only.** New League (src/front/new_league.asm) asks for the human-controlled teams
+  (`str_SelectHumanControlledTeams`; the team picker is `LeagueTeamSelect`, src/front/league_setup.asm), and the only
+  refusal when adding one is "All the teams are already human" (src/front/league_teams.asm). So any of the 24 teams can
+  be human. Each human team has a password (`AskTeamPassword`, src/front/league_password.asm), and there is a league
+  master password (`CheckMasterPassword`, src/front/league_list.asm).
+- Trades: `TradePlayers` (src/front/trade.asm) refuses with "There is only one human controlled team!"
+  (`msgThereIsOnlyOneHuman`) and closes trading from March 20 (month 3, day 0x14), in months 4-9, or once 1008 games
+  have been played. 1008 is 24 teams x 84 games / 2, so the full schedule is the 84-game 1992-93 season (inferred).
+- Leader boards: 16 sorts plus standings. Teams have 5 (Scoring, Defense, Penalty Killing, Power Play, Penalties),
+  players 8 (Points, Goals, Assists, Power Play Goals, Shorthanded Goals, Plus/Minus, Penalty Minutes, Shooting
+  Percentage) and goalies 3 (Goals Against Average, Wins, Save Percentage) (src/data/far/menu_text.asm; Data).
+- Awards: the 10-award list (see the NHL95PC page). No 94 console has season awards, so 94 PC had a season with awards
+  a year before the consoles.
+- Highlights: `ReplaySaveHilight` (src/front/replay_controls.asm) writes highlights to disk ("Insufficient disk space to
+  save hilights.", src/data/far/hilight_save_messages.asm), and the menus have "League Hilights ...", "Play-Off
+  Hilights ..." and "Select a hilight". Instant replay itself is in every game back to NHL Hockey (92) Genesis.
+- **vs 93 and 94 consoles: PC only.** 94 PC saves league stats and highlights to disk; for the console save RAM see
+  Box features.
+
+## Drop pass
+
+- **94 PC: none.** `dopass` (28BB:0B96, src/engine/physics.asm) always either passes to the closest teammate within one
+  45° step of `passdir`, straight ahead preferred (`passtoa0`), or, with nobody there, sends the puck along `passdir`
+  at the pass speed plus the passer's velocity. No branch leaves the puck behind.
+- **vs 93 and 94 consoles:** none there either. 95 PC adds one (`PassLaneChk` / `ScatterPass`, see the NHL95PC page);
+  95G's is a separate button move.
 
 ## Teams and rosters
 
@@ -79,7 +222,8 @@ from the console team data (`teamdata93.asm` / `teamdata94.asm` and the SNES equ
 | **Same player on the same team as PC** | 353 of 660 PC roster spots (53%) | 94G 561 (85%), 94S 537 (81%) | (reference) | Data |
 | **1993-94 rookies** (Daigle, Pronger, Arnott, Brodeur, Renberg, Niedermayer, Yashin) | Absent | Absent | Absent | Data |
 
-Where some well-known players are (PC / 93 Genesis / 94 Genesis / 94 SNES):
+Where some well-known players are (PC / 93 Genesis / 94 Genesis / 94 SNES). 94 Genesis lists some expansion-draft
+players twice, on the old team and the new one (the "and" rows):
 
 | Player | 94 PC | 93 Genesis | 94 Genesis | 94 SNES |
 |---|---|---|---|---|
@@ -95,8 +239,7 @@ Where some well-known players are (PC / 93 Genesis / 94 Genesis / 94 SNES):
 | Guy Hebert | STL | STL | STL and ANH | ANH |
 
 The PC All-Star teams carry the 1993 game's one-time picks (Campbell: Gretzky, Kisio, Falloon, Bradley; Wales: Marsh,
-Sidorkiewicz, Zalapski, Duchesne), which is how the roster date was pinned. 94 Genesis lists some expansion-draft players
-twice, on the old team and the new one (the "and" rows above). (Data)
+Sidorkiewicz, Zalapski, Duchesne), which is how the roster date was pinned. (Data)
 
 **Ratings.** All three generations store the same 16 four-bit values per player: jersey (two digits), weight, agility
 (leg power), speed, offensive and defensive awareness, shot power, checking, handedness, stickhandling, shot accuracy,
@@ -315,6 +458,13 @@ Genesis uses a square root (`Sroot`); the PC uses `SqrtLong` for passes and, for
 then divide by the sine or cosine). The only per-axis numbers are the aim error caps (x 136 on Genesis,
 160 on PC; y 60), and the x cap follows the rink width.
 
+Feet are from the 1992-93 NHL rink: 200 x 85 ft, goal lines 11 ft from the end boards, blue lines 60 ft out from the
+goal lines (a 58 ft neutral zone; NHL Records, historical rule changes). The Genesis y axis is even all along: 2.97
+units per foot to the goal line, 2.93 from goal line to blue line, 3.03 to the blue line, 2.98 to the boards. The PC
+gives 2.61, 2.57, 2.69 and 2.64. Genesis values: `Sideline` = $88, `Blueline` = $58, `goalline` = 176 past the blue
+line (`ram93.asm`), end boards #$12A (`checkwallcoll`). PC values: `checkwallcoll` (28BB:2A54) 0xA0 / 0x108 / 0x40,
+blue line 0x4E and goal line 0xE8 in `physics.asm` and `logic.asm`.
+
 | | Genesis | PC | PC / Gen |
 |---|---|---|---|
 | Side boards (x) | ±136 | ±160 | 1.176 |
@@ -326,13 +476,6 @@ then divide by the sine or cosine). The only per-axis numbers are the aim error 
 | Units per foot, y | 2.98 | 2.64 | 0.89 |
 | x / y | 1.07 | 1.43 | |
 | One screen shows | 256 x 224 | 320 x 168 | |
-
-Feet are from the 1992-93 NHL rink: 200 x 85 ft, goal lines 11 ft from the end boards, blue lines 60 ft out from the
-goal lines (a 58 ft neutral zone; NHL Records, historical rule changes). The Genesis y axis is even all along: 2.97
-units per foot to the goal line, 2.93 from goal line to blue line, 3.03 to the blue line, 2.98 to the boards. The PC
-gives 2.61, 2.57, 2.69 and 2.64. Genesis values: `Sideline` = $88, `Blueline` = $58, `goalline` = 176 past the blue
-line (`ram93.asm`), end boards #$12A (`checkwallcoll`). PC values: `checkwallcoll` (28BB:2A54) 0xA0 / 0x108 / 0x40,
-blue line 0x4E and goal line 0xE8 in `physics.asm` and `logic.asm`.
 
 **The PC playfield is 320 x 168.** The camera sits at screen row 84 (scroll y = 0xEC - camy, clamped to 0-0x1A8, in
 `ThreeStarsLoop` 2CD2:02DA, `StartHL2` 1FAA:000E and `InstantReplay` 2581:000E), and `SetScrollCell`
@@ -385,11 +528,11 @@ be compared directly (pitch steps and timing on every track):
 
 So the whole 94 SNES organ set is in the PC game, 50 of 53 exactly (Code).
 
-**Why 94 Genesis has 72 and 94 SNES 53.** Both boxes say "over 70 pieces of organ music". (Code)
+**Why 94 Genesis has 72 and 94 SNES 53.** (Code)
 
 - 94 Genesis has 72 organ songs, `$30`-`$77` (`NHL94_music_001`-`072`, `src/sound/sound94.asm` 15-86). `TeamSongs` and
   `RandomSongs` (`src/front/arena94.asm` 154-188) use 70 of them. `$62` and `$72` (two Go Team Go [C] versions) are in
-  neither table, so no game plays them. The 94G box is right: 72 exist and 70 play.
+  neither table, so no game plays them. So 72 exist and 70 play.
 - 94 SNES has 53 (`src/data/sound/Song*.asm`). Its `TeamSongs` has the 94G team order and slots. Matching it to 94G
   slot by slot (plus `DefaultSongs` to `RandomSongs`) puts every one of the 70 playable 94G songs under exactly one
   SNES song. 17 are merged: wherever 94G has any of a group of variants (by their titles, the same tune in another key,
@@ -397,22 +540,20 @@ So the whole 94 SNES organ set is in the PC game, 50 of 53 exactly (Code).
   `$4A`, `$54`), O'Malley's Steps (`$3C`, `$4F`, `$71`, `$74`, `$75`), Rally Time (`$33`, `$47`, `$77`), the Mexican Hat
   Dance (`$3A`, `$3D`, `$45`), and two each for Kalinka, Birthday, La Raspa, Charge, Let's Go [F] and Buildup / Charge.
   70 - 17 = 53. The SNES also gives Anaheim, Florida and the All-Star teams no team songs (`DefaultSongs` instead).
-  So the 94S box's "over 70" overstates it: the SNES has 53 organ songs.
 - 94 PC ships the 94 SNES set (above), so it also has 53 organ tunes.
 
 The Genesis streams use a different format and weren't compared note for note, so "every Genesis tune is on PC"
 isn't claimed (Not checked). This agrees with Abdul's finding from NHL9X Studio that Ruehle's organ music is in the PC
 version.
 
-**Other songs.** Per Abdul's comparison, the PC soundtrack is generally the same as 94 SNES / Genesis:
+**Other songs.** Per Abdul's comparison, the PC soundtrack is generally the same as 94 SNES / Genesis. Sega CD wasn't
+checked here:
 
 | PC song | Per Abdul's comparison | Checked here (notes compared) |
 |---|---|---|
 | Awards (`ADAWARDS`) | Genesis / Sega CD main menu music | Matches the 94 Genesis title / menu song ($78) exactly, and the 94 SNES song labelled "PlayoffSong" |
 | Game Summary (`ADSUM`) | Genesis / Sega CD Intermission song and the SNES main menu song | Matches the 94 Genesis end-of-period song ($79) and the 94 SNES song labelled "MenuSong" (both near-exact) |
 | Intro (`ADTITLE`, `TITLE`) | Genesis Scouting Report music, the SNES Intro song and the Sega CD Intro song | Matches the 94 Genesis Scouting Report song ($7A) exactly. Against 94 SNES it is a partial match (shared phrases, not note for note) to the song labelled "TitleSong" |
-
-Sega CD wasn't checked here.
 
 **Packaging.** Per Abdul's comparison, and visible in the photos below: the 94 PC floppy labels and the 94 Genesis
 cartridge label use the same design: EA Sports banner, NHL logo block, NHL shield and NHLPA logos, red and black layout,
@@ -432,21 +573,33 @@ cartridge says "NHL '94".
 
 <!-- 300 px wide copies only; each .svg wraps a small embedded JPEG / PNG. -->
 
-## What the 94 PC manual says, against the code
+## Box features
 
-From the public scan of the US manual (archive.org item ea-nhl94-nhl95-nhl96-nhl97-ibm-pc-dos-win-scans), by section.
-Each line says whether the code confirms it.
+What the code has for each line on the 94 PC floppy box, and for the other 94 boxes:
 
-- **Players:** Head to Head, and Two Player Cooperative: "two players to compete on the same team against the
-  computer". Code: `puckfaceoff` (src/engine/faceoff.asm) tests `cont1team` against `cont2team` for two pads on one team.
-- **Lines:** "four forward lines, three defensive pairs, two penalty killing lines, and two power play lines". Code:
-  `lcselect` (src/engine/input.asm) for the line choice; the counts: not confirmed in code. Only human teams editing
-  lines or pulling the goalie: not confirmed in code.
-- **Replay:** "the last 25 seconds of the game-play". The length: not confirmed in code.
-- **League:** up to 24 human players (see the box table: `LeagueTeamSelect`). Trades only between human teams: code,
-  `TradePlayers` (src/front/trade.asm) refuses with `msgThereIsOnlyOneHuman`. The March 20 deadline: code, `TradePlayers`
-  (month 3, day 14h).
-- **Credits:** "Original Music Composition: Michael J. Sokyrka", "Organ Music: Dieter Ruehle, Michael J. Sokyrka".
+- **"Create a league of your own with up to 24 human participants":** yes (see League mode).
+- **"Team and player stats in over 15 categories":** yes, 16 leader-board sorts plus standings (see League mode).
+- **"End-of-season awards including Hart, Norris and Ross":** yes, the 10-award list. The 95G and 95S boxes call season
+  mode and its awards "all new in 95".
+- **"Instant replay that saves highlights to a personal highlight reel":** yes, `ReplaySaveHilight` (see League mode).
+  NHL Hockey (92) Genesis's box lists instant replay too.
+- **"Simulate the actual 1993 NHL season" (and an 84-game schedule, implied):** consistent with the trade deadline
+  check (see League mode).
+- **"Over 70 pieces of digitized organ music":** partly. The game ships 71 `.KMS` songs, but only 53 of them are team
+  organ tunes; the rest are menu and event songs. They are sequenced songs in EA's song format, not digitized
+  recordings. 95 PC is the first PC game with digitized `.IFF` music (see the NHL95PC page). The 94G and 94S boxes also
+  say "over 70": 94G has 72 organ songs, 70 of which its tables can play, so that box is right; 94S has 53, because it
+  merges key and tempo variants, so its "over 70" overstates it (see Music and packaging).
+- **"One-timers (drop a set pass to your big stick at the point)":** yes (see One-timers). "Drop a set pass" here means
+  the pass that sets up the one-timer, not a drop-pass move: 94 PC has no drop pass (see Drop pass).
+- **"Play one or two players head to head":** yes (see Number of players).
+- **94 Genesis "Battery back-up (records for you and 6 friends)":** yes. src/sram94.asm validates and reads the save RAM
+  (`ValidSRAM`), and src/front/cards94.asm `UpdateRecords` keeps the user records unless they're turned off
+  (`OptUserRec`). The Sega CD keeps the same records in its backup RAM (see NHL94Genesis `docs/segacd_differences.md`).
+  **94 SNES** has no battery: its header gives an SRAM size of none (src/header/snes_header.asm), and its box doesn't
+  claim one. 94 PC saves league stats and highlights to disk instead.
+- **94 SNES "5-player support":** yes, see Number of players.
+- **94S "Hudson Soft Super Multitap", 1-5 players, and 94G 1-4 players:** match the code (see Number of players).
 
 ## What this means
 
