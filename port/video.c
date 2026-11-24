@@ -518,6 +518,16 @@ int video_is_fullscreen(void) { return fullscreen; }
 void video_init(int want_gl)
 {
   int ww = getenv("NHL94_WINDOW_W") ? atoi(getenv("NHL94_WINDOW_W")) : 960, wh = getenv("NHL94_WINDOW_H") ? atoi(getenv("NHL94_WINDOW_H")) : 720;
+  if (!getenv("NHL94_WINDOW_W")) {             /* DPI aware: the first window as big on screen as before, inside the display */
+    float k = ob_plat_dpi_scale(0);
+    SDL_Rect u;
+    ww = (int)(ww * k); wh = (int)(wh * k);
+    if (SDL_GetDisplayUsableBounds(0, &u) == 0 && u.w > 0 && u.h > 0) {
+      int mh = u.h - (int)(80 * k);              /* room for the title and the bar */
+      if (wh > mh) { ww = ww * mh / wh; wh = mh; }
+      if (ww > u.w) { wh = wh * u.w / ww; ww = u.w; }
+    }
+  }
   settings_load();
   ob_present_apply_hints(ob_profile_detect(SDL_GetCurrentVideoDriver(), ob_handheld_env()));
   overbar_client_init(ob_profile_detect(SDL_GetCurrentVideoDriver(), ob_handheld_env()), overbar_apply_host);

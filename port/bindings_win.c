@@ -7,6 +7,14 @@
 #include "bindings.h"
 #include <SDL.h>
 
+/* back to the thread's own DPI awareness (the dialog runs unaware) */
+static void dpi_restore(HANDLE was)
+{
+    typedef HANDLE(WINAPI * thr_fn)(HANDLE);
+    HMODULE u = GetModuleHandleA("user32.dll");
+    thr_fn f = u ? (thr_fn)(void *)GetProcAddress(u, "SetThreadDpiAwarenessContext") : NULL;
+    if (f && was) f(was);
+}
 #define DW 560                                  /* the width of the window */
 #define TITLE_H 44
 #define TABS_H 38
@@ -462,9 +470,16 @@ void bindings_dialog_open(void *parent)
     listen = pick = hov = -1;
     own[0] = W.joy[0][ACT_HOLD] != 0; own[1] = W.joy[1][ACT_HOLD] != 0; own[2] = W.kb[ACT_HOLD] != 0; own[3] = W.ms[2] != 0;
     owner = (HWND)parent;
+    HANDLE dpi_was = NULL;
+    {   /* the game's window is DPI aware; this dialog is drawn in fixed pixels, so Windows scales it as before (DPI unaware) */
+        typedef HANDLE(WINAPI * thr_fn)(HANDLE);
+        HMODULE u = GetModuleHandleA("user32.dll");
+        thr_fn f = u ? (thr_fn)(void *)GetProcAddress(u, "SetThreadDpiAwarenessContext") : NULL;
+        if (f) dpi_was = f((HANDLE)(INT_PTR)-1);
+    }
     if (owner && GetWindowRect(owner, &pr)) { x = pr.left + (pr.right - pr.left - DW) / 2; y = pr.top + 40; if (x < 0) x = 0; }
     dlg = CreateWindowExA(0, "NHL94Bindings", "Input bindings", WS_POPUP, x, y, DW, 600, owner, 0, GetModuleHandle(0), 0);
-    if (!dlg) { fprintf(stderr, "Input bindings window: error %lu\n", (unsigned long)GetLastError()); return; }
+    if (!dlg) { fprintf(stderr, "Input bindings window: error %lu\n", (unsigned long)GetLastError()); dpi_restore(dpi_was); return; }
     relayout();
     ShowWindow(dlg, SW_SHOW);
     SetForegroundWindow(dlg);
@@ -473,6 +488,7 @@ void bindings_dialog_open(void *parent)
     if (owner) EnableWindow(owner, FALSE);
     while (dlg && (r = GetMessage(&m, 0, 0, 0)) > 0) { TranslateMessage(&m); DispatchMessage(&m); }
     if (dlg) close_dlg();
+    dpi_restore(dpi_was);
     if (r == 0) PostQuitMessage((int)m.wParam);
     if (owner) { EnableWindow(owner, TRUE); SetForegroundWindow(owner); }
     owner = 0;
