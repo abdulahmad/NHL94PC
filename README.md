@@ -41,7 +41,7 @@ NHL '94 PC is based on [NHLPA93SNES](https://github.com/abdulahmad/NHLPA93SNES) 
 
 ## Build
 
-Needs NASM 2.15+ and Python 3. `./build.sh` ends with `MATCH output/HOCKEY.EXE and the 20 overlays` (the overlays are compared with the retail files in `lst/game/`). Run `python3 tools/make_ovl_syms.py` after changing a label that another file or an overlay uses. `sh tools/verify_all.sh` deletes `output/` and `Extracted/`, rebuilds, checks every segment and runs `tools/check_spa.py` (the overlays' SPA labels against `src/data/frames.asm`), last line MATCH.
+Needs NASM 2.15 (2.15.05; 2.16 encodes `xchg reg,reg` the other way round, so the EXE no longer matches; point `NASM=` at 2.15) and Python 3. `./build.sh` ends with `MATCH output/HOCKEY.EXE and the 20 overlays` (the overlays are compared with the retail files in `lst/game/`). Run `python3 tools/make_ovl_syms.py` after changing a label that another file or an overlay uses. `sh tools/verify_all.sh` deletes `output/` and `Extracted/`, rebuilds, checks every segment and runs `tools/check_spa.py` (the overlays' SPA labels against `src/data/frames.asm`), last line MATCH.
 
 ## Running the game on a modern PC (SDL2 port)
 

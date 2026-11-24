@@ -13,7 +13,7 @@ This repo is a disassembly only: labelled 16-bit x86 assembly (NASM) that reasse
 
 ## 1. Setup
 
-NASM 2.15+ (`apt install nasm` / `brew install nasm`) and Python 3. If the EXE is missing, `./build.sh` prints the path, SHA-1, CRC32 and size.
+NASM 2.15.05 (2.16 encodes `xchg reg,reg` the other way round and the EXE no longer matches; set `NASM=` to a 2.15 build) and Python 3. If the EXE is missing, `./build.sh` prints the path, SHA-1, CRC32 and size.
 
 ## 2. Build and confirm MATCH
 
