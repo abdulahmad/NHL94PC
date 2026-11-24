@@ -18,6 +18,7 @@ int video_changed(void);                               /* VRR: the picture the g
 double video_present_interval(void);                   /* seconds between pictures at 60 or 70 Hz */
 int video_vrr(void);
 void video_view(int *vx, int *vy, int *vw, int *vh);   /* where the 4:3 picture is in the window (window coordinates) */
+void video_client_size(int *w, int *h);                 /* the window's client area (window coordinates) */
 void video_mode_size(int *w, int *h);                  /* the game's screen size (320x200 or 640x480) */
 void video_confine_mouse(int on);                      /* keep the host's pointer on the 4:3 picture */
 void video_toggle_fullscreen(void);                    /* Alt+Enter */

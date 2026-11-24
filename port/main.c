@@ -8,6 +8,7 @@
 #include "sound.h"
 #include "host.h"
 #include "overbar_client.h"
+#include <overbar/screen.h>
 #include <SDL.h>
 #include <stdarg.h>
 #include <sys/stat.h>
@@ -81,7 +82,7 @@ int main(int argc, char **argv)
     if (overbar_client_quit()) cpu_quit = 1;
     int net_idle = 0;
     if (netplay_frame(now, &net_idle)) halted = net_idle;
-    else if (!overbar_client_open()) {
+    else if (!overbar_client_open() && !ob_screen_up()) {     /* (held while the overlay or a full-window screen is up) */
       if (!vtime_free && (now - t_start) - vtime() > 0.25) { vtime_begin_chunk(); vtime_end_chunk((now - t_start) - vtime() - 0.05); }   /* (after a pause: no catching up) */
       if (vtime_free || vtime() <= now - t_start) {            /* the PC's time is behind the host's: run it (it never runs ahead of it) */
         double wait = 0;
