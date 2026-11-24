@@ -11,7 +11,7 @@
 #define SH 10.9f
 #define GT .54f
 #define BT 1.5f
-#define DD (GT + BT + .55f)
+#define DD (GT + BT + .14f)                      /* packed tight: sleeve walls .06, a hair of play */
 
 enum { S_SLEEVE, S_OUT, S_GUIDE, S_BOX, S_ARRANGED, S_TECH };
 static int st, busy, focus = -1;
@@ -51,7 +51,7 @@ static void book_set(book *b)
     bx_n(b->g)->pos[0] = f <= 1 ? (-b->w / 2 + (b->w / 2) * f) : (f >= b->n - 1 ? (b->w / 2) * (f - (b->n - 1)) : 0);
     bx_n(b->blk)->vis = f < .001f;
     bx_n(b->bc)->vis = f < b->n - .5f;
-    bx_n(b->sp)->vis = f < b->n - .5f;
+    bx_n(b->sp)->vis = f < .05f;                     /* the spine only while closed: open, it curls behind the pages */
 }
 static void fold_set(void)
 {
@@ -111,8 +111,8 @@ static void reset_pose(void)
     r3_node *r = bx_n(rig);
     bx_set3(r->pos, 0, 0, 0); bx_set3(r->rot, .12f, -.5f, 0); bx_set3(r->scale, 1, 1, 1); r->vis = 1;
     bx_parent(guide, rig); bx_parent(inbox, rig);
-    bx_set3(bx_n(guide)->pos, 0, 0, -DD / 2 + GT / 2 + .14f); bx_set3(bx_n(guide)->rot, 0, PI_F, 0); bx_set3(bx_n(guide)->scale, 1, 1, 1);
-    bx_set3(bx_n(inbox)->pos, 0, 0, DD / 2 - BT / 2 - .14f); bx_set3(bx_n(inbox)->rot, 0, PI_F, 0); bx_set3(bx_n(inbox)->scale, 1, 1, 1);
+    bx_set3(bx_n(guide)->pos, 0, 0, -DD / 2 + .065f + GT / 2); bx_set3(bx_n(guide)->rot, 0, PI_F, 0); bx_set3(bx_n(guide)->scale, 1, 1, 1);
+    bx_set3(bx_n(inbox)->pos, 0, 0, DD / 2 - .065f - BT / 2); bx_set3(bx_n(inbox)->rot, 0, PI_F, 0); bx_set3(bx_n(inbox)->scale, 1, 1, 1);
     bx_parent(lid, inbox); bx_set3(bx_n(lid)->pos, 0, 0, 0); bx_set3(bx_n(lid)->rot, 0, 0, 0); bx_set3(bx_n(lid)->scale, 1, 1, 1); bx_n(lid)->vis = 1;
     bx_n(tray)->vis = 1;
     for (int i = 0; i < nitems; i++) {
@@ -191,7 +191,7 @@ static void to_sleeve(void)
     busy = 1; st = S_SLEEVE; caption();
     bx_attach(guide, rig); bx_attach(inbox, rig);
     bx_tw3(bx_n(rig)->pos, 0, 0, 0, 1000, 0); bx_tw3(bx_n(rig)->rot, .12f, -.5f, 0, 1000, 0); bx_tw3(bx_n(rig)->scale, 1, 1, 1, 1000, 0);
-    float pz[2] = { -DD / 2 + GT / 2 + .14f, DD / 2 - BT / 2 - .14f };
+    float pz[2] = { -DD / 2 + .065f + GT / 2, DD / 2 - .065f - BT / 2 };
     int o[2] = { guide, inbox };
     for (int i = 0; i < 2; i++) {
         r3_node *n = bx_n(o[i]);
@@ -360,6 +360,7 @@ void box_pc94_arranged(void) { enter(99); }
 
 static void frame(float dt)
 {
+    if (box_install_up()) { box_install_frame(dt); return; }
     book_set(&gB); book_set(&tB); fold_set(); flip_set();
     float k = powf(.9f, dt / 16.7f);
     int hv = bx_hovered_node();
@@ -399,6 +400,7 @@ static void back(void)
 static void back_btn(int a) { (void)a; back(); }
 static void draw2d(void)
 {
+    if (box_install_up()) { box_install_draw2d(); return; }
     float u = BX_C.u, top = BX_C.sy + 1.4f * u;
     if (!(st == S_SLEEVE && BX.first)) bx_button(BX_C.sx + 2 * u, top, st == S_SLEEVE ? "< Back to the game" : "< Back", back_btn, 0, -1);
     bx_text(BX_C.sx + BX_C.sw - 2 * u, top + 2.0f * u, 1.5f * u, 0xb5a58f, 255, BX.title, 0, 1);
@@ -426,6 +428,7 @@ static void disk_pick(int n)
 static void activate(int node, float sx, float sy)
 {
     (void)sy;
+    if (box_install_up()) { box_install_activate(node); return; }
     if (busy || node < 0) return;
     if (node == sleeve) { if (st == S_SLEEVE) to_out(); else if (st == S_OUT) to_sleeve(); return; }
     if ((node == guide || node == inbox) && st == S_SLEEVE) { to_out(); return; }
@@ -456,15 +459,13 @@ static void drag(int node, float dx, float dy)
     int t = -1;
     if (st == S_SLEEVE || node == sleeve) t = rig;
     else if (node >= 0 && !(st == S_TECH && node == focus)) t = node;
-    if (t < 0 || busy) return;
+    if (t < 0 || busy || box_install_up()) return;
     r3_node *n = bx_n(t);
     n->rot[1] += dx * .012f;
     n->rot[0] += dy * .012f;
     if (n->rot[0] > 1.3f) n->rot[0] = 1.3f;
     if (n->rot[0] < -1.3f) n->rot[0] = -1.3f;
 }
-static int draws_3d(void) { return !box_install_up(); }
-static void key(int k) { (void)k; }
 
 static void skip(void) { box_install_skip(0); }
-const bx_scene BOX_PC94 = { "pc94", enter, frame, draw2d, activate, back, drag, open_manual, draws_3d, box_install_draw, key, skip };
+const bx_scene BOX_PC94 = { "pc94", enter, frame, draw2d, activate, back, drag, open_manual, NULL, NULL, NULL, skip };

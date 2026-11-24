@@ -103,7 +103,7 @@ int main(int argc, char **argv)
     sound_pump(now);
     input_script_run(now - t_start);
     if (now >= next_poll) { input_poll(); next_poll = now + 1.0 / 250; }
-    if (video_vrr()) {                          /* VRR: draw each new picture as the game finishes it (at least every 0.1 s) */
+    if (video_vrr() && !ob_screen_up()) {       /* VRR: draw each new picture as the game finishes it (at least every 0.1 s); a full-window screen animates on schedule */
       if (video_changed() || now >= next_frame) { video_present(); next_frame = now + 0.1; }
     } else if (now >= next_frame) {             /* 60 or 70 Hz on schedule */
       video_present();
