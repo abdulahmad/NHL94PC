@@ -4,7 +4,7 @@ Built from [abdulahmad/nhl94pc](https://github.com/abdulahmad/nhl94pc) by abdula
 (Mhopkinsinc) and Drezz, with special thanks to smozoma and kingraph. The CPU core is
 [libx86emu](https://github.com/wfeldt/libx86emu); FM sound is [Nuked-OPL3](https://github.com/nukeykt/Nuked-OPL3); the MT-32 is
 [Munt](https://github.com/munt/munt). The sound devices, the OpenGL looks, the window and menu bar, the input bindings and the pointer
-rules are taken from the NHL 95 PC port ([nhl95pc](https://github.com/abdulahmad/nhl95pc), branch `sdl2-port`). The MiSTer look
+rules are taken from the NHL 95 PC port ([nhl95pc](https://github.com/abdulahmad/nhl95pc), `main`). The MiSTer look
 reads the MiSTer FPGA project's filter, gamma, shadow mask and preset files (`port/overbar/mister`, GPL-3.0; authors in
 `port/overbar/mister/README.md`). Ship this credit with any build you release.
 
@@ -24,9 +24,9 @@ is not used: `./build.sh` still ends with `MATCH`.
 | `port/vga.c` | Register-level VGA: 4 planes, latches, write modes 0-3, read modes 0-1, chain-4 / unchained / 16-colour, CRTC start, offset and line compare (the split screen of the score bar), retrace at 70 Hz from host time. |
 | `port/main.c` | Finds the game, loads `HOCKEY.EXE`, main loop, test variables. |
 | `port/video.c` | The window, the picture and its looks, picture height, refresh, the stats display, fullscreen, `hockey94.ini` (from the NHL 95 port's `video.c`, without its VESA part). |
-| `port/video_gl.c` | OpenGL picture and looks (from the NHL 95 port). |
+| `port/overbar/` | The [overbar](https://github.com/abdulahmad/overbar) submodule shared with the other ports: OpenGL picture and looks (`port/overbar/src/gl.c`, `look.c`), the menu bar (`menu.c`, `bar_win.c`, `bar_mac.m`). |
 | `port/input.c` | Keyboard (SDL scancode to XT set 1), absolute mouse, game controllers on the game port, input bindings, the system pointer rules, hotkeys, scripted input, and the two game hooks that tell the host what the game is doing (below). |
-| `port/bindings.c`, `port/bindings_win.c`, `port/menu_win.c`, `port/plat.c` | Input bindings and their window, the Windows menu bar, CPU and GPU use for the stats display (from the NHL 95 port). |
+| `port/bindings.c`, `port/bindings_win.c`, `port/plat.c` | Input bindings and their window, CPU and GPU use for the stats display (from the NHL 95 port). |
 | `port/audio.c opl.c sb.c dma.c mpu.c speaker.c` | The NHL 95 port's sound devices nearly unchanged (`sndhost.h` is the shim, `sound.c` the port map). |
 
 The main loop runs the CPU in slices of 20 000 instructions, advances the PIT from the host clock, feeds the keyboard one
