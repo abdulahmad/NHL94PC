@@ -12,9 +12,9 @@ ClockTickThunk		equ	0x2959
 CloseHandlePtr		equ	0x41E
 CrowdFadeOut		equ	0x24E
 CrowdNoiseOff		equ	0x1DC
-Crowd_Noise		equ	0x2
 CrowdNoiseReset		equ	0x29A
 CrowdState		equ	0x1B6
+Crowd_Noise		equ	0x2
 CurLeagueName		equ	0xE53
 CurPage		equ	0x74DC
 DGROUP		equ	0x45C9
@@ -94,11 +94,11 @@ SfxOff		equ	0x13B6
 SfxOn		equ	0x13A8
 ShowGoalieBannerThunk		equ	0x296D
 SoundOptions		equ	0x1C6
+SpeechStopQueue		equ	0x47A
 SportsDeskThunk		equ	0x255D
 SpriteBlitFns		equ	0x4B24
 StartThreeStarsThunk		equ	0x29A9
 StopJingle		equ	0x5B8
-SpeechStopQueue		equ	0x47A
 TeamNameClips		equ	0x1E0
 TeamPalette1		equ	0xB0C4
 TeamPalette2		equ	0xB1C4

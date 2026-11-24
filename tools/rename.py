@@ -48,6 +48,7 @@ def main(path, only_generated=False):
         t2 = big.sub(lambda mm: m[mm.group(1)], t)
         if t2 != t:
             open(f, 'w').write(t2)
+    sort_equ_files()
     if only_generated:
         print(f'{len(pairs)} re-applied')
         return
@@ -60,6 +61,20 @@ def main(path, only_generated=False):
             addr = f'seg{mm.group(1)}:{mm.group(2)}' if mm else old
             w.writerow([addr, new, old, src, conf, ev, os.path.relpath(f, ROOT) if f else ''])
     print(f'{len(pairs)} renamed')
+
+
+def sort_equ_files():
+    """keep the equate files make_ovl_syms.py writes sorted by name after a rename, so its --check still passes"""
+    for f in glob.glob(os.path.join(ROOT, 'src', 'ovl', '*_syms.inc')) + \
+            [os.path.join(ROOT, 'src', 'lib', 'rtlink', 'ovl_entries.inc')]:
+        if not os.path.exists(f):
+            continue
+        L = open(f).read().split('\n')[:-1]
+        head = [l for l in L if l.startswith(';')]
+        rows = sorted((l for l in L if not l.startswith(';')), key=lambda l: l.split('\t', 1)[0])
+        t = '\n'.join(head + rows) + '\n'
+        if t != open(f).read():
+            open(f, 'w').write(t)
 
 
 main(sys.argv[-1], '--generated' in sys.argv)

@@ -78,7 +78,6 @@ DrawRleTransAt		equ	0x1857
 DrawRleTransBody		equ	0x1874
 DrawRleTransRemapAt		equ	0x2183
 DrawRleTransRemapFastAt		equ	0x2FBB
-PrintShadowText		equ	0x166
 DrawShadowTextCentered		equ	0xE4
 DrawShadowTextF		equ	0x210
 DrawShadowTextF2		equ	0x238
@@ -165,6 +164,7 @@ PageTableSeg		equ	0x7572
 PasswordKey		equ	0xDC2
 PlayGameThunk		equ	0x24E5
 PlayJingle		equ	0x5F8
+PrintShadowText		equ	0x166
 PutBlock		equ	0x492
 PutBlockAt		equ	0x4B5
 RawBase		equ	0x1532
@@ -234,8 +234,8 @@ WaitTimerRetrace.calibrated		equ	0x342F
 WriteAtOffset		equ	0x496
 WriteModeStateThunk		equ	0x23D7
 WriteRecord52		equ	0x504
-XorRectOutline		equ	0xE
 XorRect		equ	0x352C
+XorRectOutline		equ	0xE
 YesNoText		equ	0xB2D0
 YesNoTextSeg		equ	0xB2D2
 __aFldiv		equ	0x118C

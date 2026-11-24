@@ -1,11 +1,5 @@
 AllocCanvases		equ	0x3804
 AllocRecData		equ	0x30
-PaElseNhl		equ	0x4CC
-PaHighlightIntro		equ	0x4E0
-PaLineups		equ	0x4B8
-PaScoringPeriod		equ	0x46E
-PaTonightIntro		equ	0x418
-PaPlayoffTonight		equ	0x542
 AnnouncerFlags		equ	0x1B7
 ArenaJingleA		equ	0xB2EE
 ArenaJingleASeg		equ	0xB2F0
@@ -39,9 +33,9 @@ CopyPlane		equ	0x10A7
 CreateFileNormal		equ	0x40C
 CrestShapeNames		equ	0x5604
 CrowdNoiseOff		equ	0x1DC
-Crowd_Noise		equ	0x2
 CrowdSound		equ	0x4A54
 CrowdState		equ	0x1B6
+Crowd_Noise		equ	0x2
 Crowdlevel		equ	0xA18
 CurLeagueName		equ	0xE53
 CurPage		equ	0x74DC
@@ -68,7 +62,6 @@ DrawRleTransAt		equ	0x1857
 DrawRleTransFast		equ	0x1C4E
 DrawRleTransRemapFastAt		equ	0x2FBB
 DrawRleTransRemapFastBody		equ	0x2FD8
-PrintShadowText		equ	0x166
 DrawShadowTextCentered		equ	0xE4
 DrawSpriteClipped		equ	0x2
 DrawSpriteNumber		equ	0x60
@@ -198,6 +191,12 @@ OverlayGfxSeg		equ	0xD62E
 PBnum		equ	0xD6C6
 POSeedTable		equ	0x128
 PPVFiles		equ	0x9140
+PaElseNhl		equ	0x4CC
+PaHighlightIntro		equ	0x4E0
+PaLineups		equ	0x4B8
+PaPlayoffTonight		equ	0x542
+PaScoringPeriod		equ	0x46E
+PaTonightIntro		equ	0x418
 PadRepeatOn		equ	0x524
 PadStates		equ	0x52C
 PadStates2		equ	0x52D
@@ -216,6 +215,7 @@ PlList		equ	0xD5F6
 PlanarToLinearThunk		equ	0x2431
 PlayJingle		equ	0x5F8
 PlaySoundEffect		equ	0x2E0
+PrintShadowText		equ	0x166
 PutBlockAt		equ	0x4B5
 PutGSumHeaderThunk		equ	0x2AA3
 PutGSumTailThunk		equ	0x29DB
@@ -260,6 +260,8 @@ RinkOverlayFrames2		equ	0x4A2C
 RinkRowBytes		equ	0xB09C
 RinkTilesPtr		equ	0x8FE
 RinkTilesSeg		equ	0x900
+SPAglide		equ	0x3014
+SPAlist		equ	0x2B02
 SaveCharTab		equ	0xC7A
 SaveModeStateThunk		equ	0x249F
 SaveVgaPlanes		equ	0x4
@@ -820,5 +822,3 @@ viewscrollx		equ	0xD6CC
 xc1		equ	0x29AC
 yc1		equ	0x29AE
 yleader		equ	0x29B0
-SPAglide		equ	0x3014
-SPAlist		equ	0x2B02
