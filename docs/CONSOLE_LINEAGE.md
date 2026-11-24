@@ -303,9 +303,23 @@ version.
 
 Sega CD wasn't checked here.
 
-**Packaging.** Per Abdul's comparison (not checked here): the 94 PC floppy labels and the 94 Genesis cartridge label use the
-same design: EA Sports banner, NHL logo block, NHL shield and NHLPA logos, red and black layout. The PC disk says "NHL
-Hockey" and the cartridge "NHL '94".
+**Packaging.** Per Abdul's comparison, and visible in the photos below: the 94 PC floppy labels and the 94 Genesis
+cartridge label use the same design: EA Sports banner, NHL logo block, NHL shield and NHLPA logos, red and black layout,
+"© 1993 Electronic Arts". The PC shipped as "NHL Hockey" rather than "NHL '94": the disk says "NHL Hockey" where the
+cartridge says "NHL '94".
+
+<table>
+<tr>
+<td align="center"><img src="images/packaging/nhl94g_cart.svg" width="300" alt="NHL '94 Genesis cartridge label"></td>
+<td align="center"><img src="images/packaging/nhl94pc_floppy.svg" width="300" alt="NHL Hockey PC floppy label, Disk 1"></td>
+</tr>
+<tr>
+<td align="center">NHL '94 Genesis cartridge (16-bit cartridge, EA 7228)</td>
+<td align="center">NHL Hockey PC floppy, Disk 1 (451402)</td>
+</tr>
+</table>
+
+<!-- 300 px wide copies only; each .svg wraps a small embedded JPEG / PNG. -->
 
 ## What this means
 
