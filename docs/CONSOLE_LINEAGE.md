@@ -51,7 +51,7 @@ Box text is marketing, so it is quoted as "the box says". Where the box and the 
 | "simulate the actual 1993 NHL season" (and an 84-game schedule, implied) | **Consistent.** The trade deadline check in `TradePlayers` (`front/trade.asm`) closes trading from March 20 (month 3, day 0x14), in months 4-9, or once 1008 games have been played. The manual: "There's a trading deadline that goes into effect on March 20th", and trades are allowed only between human-controlled teams (Trade Players). 1008 is 24 teams x 84 games / 2, so the full schedule is the 84-game 1992-93 season | Code (the check); Inferred (84 games) |
 | "over 70 pieces of digitized organ music" | **Partly.** The game ships 71 `.KMS` songs, but only 53 of them are team organ tunes. The rest are menu and event songs. They are sequenced songs in EA's song format, not digitized recordings. 95 PC is the first PC game with digitized `.IFF` music (see the NHL95PC page). The 94G and 94S boxes also say "over 70". 94G has 72 organ songs, 70 of which its tables can play. 94S has 53, because it merges key and tempo variants (see Music and packaging) | Data |
 | "one-timers (drop a set pass to your big stick at the point)" | **Matches** the one-timer rows above. "Drop a set pass" here means the pass that sets up the one-timer, not a drop-pass move: 94 PC has **no drop pass at all**. `dopass` (`engine/physics.asm`, 28BB:0B96) always either passes to the closest teammate within one 45° step of `passdir`, straight ahead preferred (`passtoa0`), or, with nobody there, sends the puck along `passdir` at the pass speed plus the passer's velocity. No branch leaves the puck behind. 95 PC adds one (`PassLaneChk` / `ScatterPass`, see the NHL95PC page); 95G's is a separate button move | Code |
-| "play one or two players head to head" | **Matches** (Players per game row). The manual also has Two Player Cooperative: two players on the same team against the computer | Code; Manual |
+| "play one or two players head to head" | **Matches** (Players per game row). Two players can also share a team: `puckfaceoff` tests `cont1team` against `cont2team` | Code |
 
 The other 94 boxes, compared with the code:
 
@@ -432,17 +432,20 @@ cartridge says "NHL '94".
 
 <!-- 300 px wide copies only; each .svg wraps a small embedded JPEG / PNG. -->
 
-## What the 94 PC manual says
+## What the 94 PC manual says, against the code
 
-From the public scan of the US manual (archive.org item ea-nhl94-nhl95-nhl96-nhl97-ibm-pc-dos-win-scans), by section:
+From the public scan of the US manual (archive.org item ea-nhl94-nhl95-nhl96-nhl97-ibm-pc-dos-win-scans), by section.
+Each line says whether the code confirms it.
 
-- **Players:** Head to Head Competition, and Two Player Cooperative: "two players to compete on the same team against
-  the computer".
-- **Lines:** "Each team has four forward lines, three defensive pairs, two penalty killing lines, and two power play
-  lines". Only human-controlled teams can edit lines or remove their goalie.
-- **Replay:** "The replay tape shows the last 25 seconds of the game-play."
-- **League:** up to 24 human players; trades only between human-controlled teams, after merging the league files;
-  trading deadline March 20.
+- **Players:** Head to Head, and Two Player Cooperative: "two players to compete on the same team against the
+  computer". Code: `puckfaceoff` (src/engine/faceoff.asm) tests `cont1team` against `cont2team` for two pads on one team.
+- **Lines:** "four forward lines, three defensive pairs, two penalty killing lines, and two power play lines". Code:
+  `lcselect` (src/engine/input.asm) for the line choice; the counts: not confirmed in code. Only human teams editing
+  lines or pulling the goalie: not confirmed in code.
+- **Replay:** "the last 25 seconds of the game-play". The length: not confirmed in code.
+- **League:** up to 24 human players (see the box table: `LeagueTeamSelect`). Trades only between human teams: code,
+  `TradePlayers` (src/front/trade.asm) refuses with `msgThereIsOnlyOneHuman`. The March 20 deadline: code, `TradePlayers`
+  (month 3, day 14h).
 - **Credits:** "Original Music Composition: Michael J. Sokyrka", "Organ Music: Dieter Ruehle, Michael J. Sokyrka".
 
 ## What this means
