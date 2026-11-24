@@ -3921,14 +3921,14 @@ g_BD59,ref_4B,g_BD59,new,medium,"sort object 16 (ref), field +4Bh; sort objects 
 g_BD5A,ref_4C,g_BD5A,new,medium,"sort object 16 (ref), field +4Ch; sort objects are 80h bytes from 0B50Eh",src/data/dgroup_bss.asm
 g_58A6,GoalieSaveSides,g_58A6,new,medium,"save side bytes of puckgoalie, indexed by the hit direction",src/data/dgroup.asm
 g_58E2,PenaltyNamePtrs,g_58E2,new,medium,penalty name pointers of the game summary events (PostPenaltyEvent),src/data/dgroup.asm
-g_590A,AccelFactors,g_590A,new,medium,acceleration factor table of playeracc,src/data/dgroup.asm
-g_590C,AccelFactors2,g_590C,new,medium,second acceleration table of playeracc,src/data/dgroup.asm
+g_590A,MaxSpeed,g_590A,95 PC,high,"top speed (squared) per leg speed rating; playeracc reads MaxSpeed[d2*4] as a long (was AccelFactors)",src/data/dgroup.asm
+g_590C,MaxSpeed_w2,g_590C,95 PC,high,"high word of each MaxSpeed long (MaxSpeed+2), read with MaxSpeed by playeracc (was AccelFactors2)",src/data/dgroup.asm
 g_594A,asswingo_dedata,g_594A,new,medium,winger attack spots: x,src/data/dgroup.asm
 g_594C,asswingo_dedata_xrand,g_594C,new,medium,winger attack spots: random x range,src/data/dgroup.asm
 g_594E,asswingo_dedata_y,g_594E,new,medium,winger attack spots: y,src/data/dgroup.asm
 g_5950,asswingo_dedata_yrand,g_5950,new,medium,winger attack spots: random y range,src/data/dgroup.asm
 g_5A2C,CheckAnims,g_5A2C,new,medium,check animation table of checkcheck,src/data/dgroup.asm
-g_5AD0,ShotSpeeds,g_5AD0,new,medium,shot speed table of doshot,src/data/dgroup.asm
+g_5AD0,shotsets,g_5AD0,95 PC,high,"x offset of each shot direction, read at passdir*4 by doshot (z word at shotsetz); same values as 93G .shotsets (was ShotSpeeds)",src/data/dgroup.asm
 g_5AF6,LineChoiceKeys,g_5AF6,new,medium,line choice table of lineinput,src/data/dgroup.asm
 g_5B06,lchoicetab_m1,g_5B06,new,medium,entry before lchoicetab,src/data/dgroup.asm
 g_5B66,OneTimerDirs,g_5B66,new,medium,direction offsets of assonetimer,src/data/dgroup.asm
