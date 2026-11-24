@@ -52,7 +52,7 @@ means a string, table or data file shows it but the logic wasn't traced. Written
 ## Fighting rating on the player card
 
 - **94 PC: none.** The skater ratings list is Speed, Agility, Weight, Shot Power, Checking, StickHandling, Accuracy,
-  Passing, Off./Def. Awareness, Aggressiveness, Endurance, then Shoot/Pass Bias and Faceoffs (src/data/dgroup.asm,
+  Passing, Off./Def. Awareness, Aggressiveness, Endurance, then Shoot/Pass Bias and Faceoffs (src/data/dgroup/stats.asm,
   `str_Speed_2` onward; Data). Shoot/Pass Bias isn't new: the 93 and 94 console player records already carry a
   shot/pass decision value, they just don't show it on the card (see Teams and rosters).
 - **vs 93 consoles: missing on 94 PC.** Shown as a `[ Fighting ]` column (93G tables93.asm `PAttribColumns`, 93S
@@ -162,7 +162,7 @@ means a string, table or data file shows it but the logic wasn't traced. Written
 
 - **94 PC, 93 consoles and 94 consoles: same.** All of them have these, so they don't separate 93 from 94. (Data)
 - A team's lines in the Line Editor: forward lines 1-4, defence 1-3, penalty kill 1-2, power play 1-2, goaltenders and
-  extra attackers (`DrawLineEditorScreen` 2047:19E0, src/front/game_lines.asm; the titles in src/data/dgroup.asm).
+  extra attackers (`DrawLineEditorScreen` 2047:19E0, src/front/game_lines.asm; the titles in src/data/dgroup/front_end.asm).
   `lcselect` (src/engine/input.asm) makes the line choice in a game.
 - The replay is recorded in a ring buffer (src/engine/replay.asm); its length in seconds: not confirmed in code.
   Whether only human teams can edit lines or pull the goalie: not confirmed in code.
@@ -250,7 +250,7 @@ mapped in the next table.
 
 **94 PC `ATT.DB` field order.** Each player has a 20-byte record; `KEY.DB` holds its offset (first of the three dwords at
 bytes 36-47; several players can share a record, which is why the file has fewer records than `KEY.DB`). The order comes
-from three places that agree: the player-card column tables in `dgroup.asm` (`SkaterCardCols` = 1, 2, 3, 4, 5, 6, 7, 9,
+from three places that agree: the player-card column tables in `dgroup/stats.asm` (`SkaterCardCols` = 1, 2, 3, 4, 5, 6, 7, 9,
 10, 11, 12, 13, 14, 0x13 against the Speed ... Faceoffs labels; `GoalieCardCols` = 1-8, 10, 11 against Glove Left ...
 Defensive Awareness), the order `setplayer` (`src/engine/hockey.asm`) copies the bytes into the player struct, and a
 correlation of each byte against the 94 Genesis ratings of the same players (521 skaters, 49 goalies).
@@ -434,7 +434,7 @@ differences (with milder friction) plus 1.5 x agility. 94 Genesis has the halved
 half-acceleration, x 17 position step and no save roll. None of the 94 changes, Genesis or SNES,
 are in the 94 PC code (Code).
 
-Two 94 PC tables in `dgroup.asm` were misnamed and have been renamed (PR #83): `ShotSpeeds` is now `shotsets` (the shot
+Two 94 PC tables in `dgroup/` were misnamed and have been renamed (PR #83): `ShotSpeeds` is now `shotsets` (the shot
 x-offset table: 0, $C, $10, ..., the values of 93's `.shotsets`), and `AccelFactors` / `AccelFactors2` are now
 `MaxSpeed` / `MaxSpeed_w2` (the top-speed table).
 

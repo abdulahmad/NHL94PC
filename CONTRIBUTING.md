@@ -39,7 +39,7 @@ of its README and in every release. Add it first.
   saving), from the EXE and the overlays.
 - `src/lib/`: libraries: `msc_runtime.asm` and `fp_emulator.asm` (Microsoft C), `eaclib/` (EA sound library),
   `rtlink/` (the RTLink/Plus overlay manager and runtime).
-- `src/data/`: DGROUP (`dgroup.asm`, `dgroup_bss.asm`), the far data segments (`far/`), the RTLink relocations.
+- `src/data/`: DGROUP (`dgroup.asm` includes the subject files of `dgroup/` in link order; `dgroup_bss.asm`), the far data segments (`far/`), the RTLink relocations.
 - `src/header/`: the MZ header. `src/hockey94pc.asm` includes every file in EXE order; `segmap.json` lists each one.
 - `src/ovl/<name>.asm`: one overlay: its relocation table, then its segment files in load order
   (`docs/cleanup/files_94pc_ovl.txt`). `src/ovl/<name>_syms.inc` and `_build.asm` are written by `tools/make_ovl_syms.py`.
