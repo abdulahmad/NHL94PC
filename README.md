@@ -74,8 +74,8 @@ And thank you to the original developers of the game.
 
 The SDL2 port runs on [libx86emu](https://github.com/wfeldt/libx86emu) (the CPU core, SciTech/SUSE licence), plays FM through
 [Nuked-OPL3](https://github.com/nukeykt/Nuked-OPL3) and the MT-32 through [Munt](https://github.com/munt/munt) (both LGPL 2.1+). They
-are downloaded at build time, not committed. Its sound devices and OpenGL looks come from the NHL 95 PC port (`sdl2-port` branch of
-[nhl95pc](https://github.com/abdulahmad/nhl95pc)).
+are downloaded at build time, not committed. Its sound devices and OpenGL looks come from the NHL 95 PC port (on `main` of
+[nhl95pc](https://github.com/abdulahmad/nhl95pc); the shared parts are now the [overbar](https://github.com/abdulahmad/overbar) submodule in `port/overbar`).
 
 This project is the result of my work and the work of the people credited above. If you build anything from it, including mods, ROM or EXE hacks, ports, released forks, tools, or any other derivative work, you must credit us:
 

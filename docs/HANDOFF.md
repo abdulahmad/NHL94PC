@@ -155,11 +155,11 @@ Thunks in the resident EXE call indexes 0 MENUS (76), 1 LP (26), 2 STATS (63), 3
 
 ## From NHL95PC (overlay loading only)
 
-NHL 95 PC does not load code overlays. Its retail EXE is one Watcom LE image bound to DOS/4GW, not an RTLink MZ. Files read:
+NHL 95 PC ([NHL95PC](https://github.com/abdulahmad/NHL95PC) on GitHub) does not load code overlays. Its retail EXE is one Watcom LE image bound to DOS/4GW, not an RTLink MZ. Files read:
 
-- `/tmp/nhl95pc/README.md` — `HOCKEY.EXE` is a Watcom C/C++32 10.0 Linear Executable bound to DOS/4GW. No `.OVL`, no RTLink.
-- `/tmp/nhl95pc/HANDOFF.md` — same EXE (1,179,067 bytes, SHA-1 `3961e0eba6b0338fad1613bb534efafd9406ed4a`), built as one image.
-- `/tmp/nhl95pc/src/c/004_13320_asset_loading/LoadTransparentRinkEndOverlay.c` — the only "overlay" loader. It loads the graphics bank
+- [`README.md`](https://github.com/abdulahmad/NHL95PC/blob/main/README.md) — `HOCKEY.EXE` is a Watcom C/C++32 10.0 Linear Executable bound to DOS/4GW. No `.OVL`, no RTLink.
+- [`HANDOFF.md`](https://github.com/abdulahmad/NHL95PC/blob/main/HANDOFF.md) — same EXE (1,179,067 bytes, SHA-1 `3961e0eba6b0338fad1613bb534efafd9406ed4a`), built as one image.
+- [`src/pc/asset_loading/LoadTransparentRinkEndOverlay.c`](https://github.com/abdulahmad/NHL95PC/blob/main/src/pc/asset_loading/LoadTransparentRinkEndOverlay.c) — the only "overlay" loader. It loads the graphics bank
   `TRINKND.PPV` (via `MakePath` / `str_PPV`), not code.
 
 A search of that tree for `RTLink`, `.OVL` and an overlay manager found nothing else. Nothing there describes the 94 thunks or the `.OVL`
