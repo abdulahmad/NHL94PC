@@ -105,7 +105,17 @@ int main(int argc, char **argv)
     sound_pump(now);
     input_script_run(now - t_start);
     if (now >= next_poll) { input_poll(); next_poll = now + 1.0 / 250; }
-    if (video_vrr() && !ob_screen_up()) {       /* VRR: draw each new picture as the game finishes it (at least every 0.1 s); a full-window screen animates on schedule */
+    if (ob_screen_up()) {                       /* the box: once per refresh of the display. A swap that waited for the display (vsync)
+                                                   paces it; when the driver does not wait, the clock does */
+      video_box_vsync(1);
+      if (now >= next_frame) {
+        double p = video_box_interval();
+        video_present();
+        double after = host_time();
+        if (after - now > p / 2) next_frame = after;
+        else { next_frame += p; if (next_frame < now) next_frame = now + p; }
+      }
+    } else if (video_box_vsync(0), video_vrr()) {       /* VRR: draw each new picture as the game finishes it (at least every 0.1 s) */
       if (video_changed() || now >= next_frame) { video_present(); next_frame = now + 0.1; }
     } else if (now >= next_frame) {             /* 60 or 70 Hz on schedule */
       video_present();
