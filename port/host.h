@@ -17,6 +17,8 @@ void video_present(void);                              /* draw the game's curren
 int video_changed(void);                               /* VRR: the picture the game shows changed since it was last drawn */
 double video_present_interval(void);                   /* seconds between pictures at 60 or 70 Hz */
 int video_vrr(void);
+double video_box_interval(void);                      /* one refresh of the display, for the box */
+void video_box_vsync(int on);                         /* vsync on while the box is up */
 void video_view(int *vx, int *vy, int *vw, int *vh);   /* where the 4:3 picture is in the window (window coordinates) */
 void video_client_size(int *w, int *h);                 /* the window's client area (window coordinates) */
 void video_mode_size(int *w, int *h);                  /* the game's screen size (320x200 or 640x480) */

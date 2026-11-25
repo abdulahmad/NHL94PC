@@ -205,6 +205,17 @@ void settings_save_all(void) { settings_save(); }
 
 double video_present_interval(void) { return 1.0 / present_hz; }
 int video_vrr(void) { return vrr_on; }
+/* the box (a full-window screen) is drawn once per refresh of the display, vsync on, whatever the refresh and vsync settings say
+   (they are kept, not saved over, and come back when it closes) */
+static int box_vsync;
+double video_box_interval(void) { return 1.0 / ob_window_hz(win); }
+void video_box_vsync(int on)
+{
+  if (on == box_vsync) return;
+  box_vsync = on;
+  if (use_gl) ob_gl_set_vsync(on || vsync_on);
+  else if (ren) SDL_RenderSetVSync(ren, on || vsync_on);
+}
 int video_pointer_mode(void) { return ptr_mode; }
 void *video_window(void) { return win; }
 
